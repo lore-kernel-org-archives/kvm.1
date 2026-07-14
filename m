@@ -1,95 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCAE32937A;
-	Tue, 14 Jul 2026 05:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3387227FB37
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 05:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784006893; cv=none; b=d2kWEGXaJlCHdHCOR0LRZY0ktZO3gzAN0QMEjw0riylfQhAfi1FIwJdHP2eXwqpfMDxOfEhzZcPVXpGKW1BAxjl9CqmoM1MYza7hUsusgiG1sBuYvFy10oU6EqTPlvuItNQlizvqI94AT3q9nDSPJQfWZ9cDcN9RfHDY5MJOQB4=
+	t=1784006980; cv=none; b=I8LRlJKMR/MPKJC6yOQEpxLrhSCR07gIg6hlVYIitJ7+unf9OJivOSC74AM9Gi9vArKFVB7meAqzgMGew1z7uaLkAWfDQEWC4bQ8BzhgebyDYIfCLD/WfdURf0ZV/WdxsaX0IigJZv630qQV//dQvIELnQuWjScqCLXA0HRu1oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784006893; c=relaxed/simple;
-	bh=rxF2ZPwEcLUjmzWN7LNbEAcEr6iY437bDdZ5V2zlGXc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+H9tv+QOPHyaqqugGBrxpO+MH5kjCdz+siF1/edakXLTefvgCg0k8FDR0+gz0eBzzStggw6IKOzMXkeKFgDREJxRzJuUgm0+9Xg+1UXHU/8qsJz8rGOgDSenk2tiQm7a8i/Q4MekFG+gU9J2iYuu1EBtX1vlakxAuuZWsHlbgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VQEWDDHa; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784006980; c=relaxed/simple;
+	bh=PrdA3rO2Bf7uV4RqvmlgINoaSdyZ2UtJO0Pv0djbexg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=udQZ6j5rK7Jx9wKuqGCaQ0HOSVNHHjDoU7XrUD6klyLO9iAaF03oBUBJ5XBlLItCzxUj+ft/VrBTjzahMKhISW/4nIUFg9+B839r8LIZjjUN14vy5DhXXSAcGa7nDB6zcftn8q/Gdqcy1OT/exKYlQJGLal26oN5MIB5sZ3R6Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ha8a8No/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VQEWDDHa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784006891; x=1815542891;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=rxF2ZPwEcLUjmzWN7LNbEAcEr6iY437bDdZ5V2zlGXc=;
-  b=VQEWDDHaRb54CX3fR7XVU4RIjMwkHPfygG9dma0TY4Z40nH+rXGVEcV5
-   ag60gOmsOPdR+bRpncfWD0jU0LywcylCEPhUJ2gq/BKigs9gwRDc0jvx7
-   KMFlN5F75uuR+nFXgeyrSuNDTh9YEoB9uiW+hqW+Z4VLaYJUvNVA2+YN7
-   q7cFv/2usxoX87nMvNgfjaULUzyOyf7DPH6o2erpXz2nHvDWE41vA1U/e
-   y0bt25xdBSbzUnMEb5Ee/fzbuqTXzIvnWIykWBaFM3K/nMAWXl94kgWqV
-   YPUuXxZWLVgI56L8jsW8L/Ne18h8KciABbKWMg3QHLN2x3XZZirM7Pmwq
-   g==;
-X-CSE-ConnectionGUID: dviGjtIxQ0m6hOIbtdT8Wg==
-X-CSE-MsgGUID: 0mNwamEQQfSUb5uzop8z/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="72144969"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="72144969"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 22:28:10 -0700
-X-CSE-ConnectionGUID: d+pV0auzSfOYukVkVHSpkQ==
-X-CSE-MsgGUID: ljJkCMdJSj2Waq34yefq2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="252366307"
-Received: from unknown (HELO [10.238.3.181]) ([10.238.3.181])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jul 2026 22:28:07 -0700
-Message-ID: <dc8adc2b-ca9f-4ac6-9f15-e9e954e90b15@linux.intel.com>
-Date: Tue, 14 Jul 2026 13:28:05 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ha8a8No/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900D11F000E9;
+	Tue, 14 Jul 2026 05:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784006978;
+	bh=5g3TEZoA5+PETOdEa1dR3nWOOivGjLkDzfZZG+aa1ik=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ha8a8No/xyGf2dKDO8In0wc/1RkcROG1inva6GAd4kWgMXI33yBDUk11zQoCVim2x
+	 4HgF7ua5BUh6/DteKHf6V6E80X+McbGE/u8451ReIvIYSHwhQJMHqGWaubdPsfLRn4
+	 OUgGR3EaC4lisbTG7FGNeN3wf2rD6LD2rQQxsC1gitMowMwQpMjTc/tB995/WlH16j
+	 Y430IrcpdvDpIov2+PxeM1VV7nQIcglJqtX0xZMhKYBn6jntivpmeCPAcUrul62oEM
+	 ZF478IjvRDKzUmrnKh0TAq2JJH9Wwe9QwbhkJ+8/+ZFunBnHvqP8YGIfmAuynp1QYZ
+	 CdtMtMVYLOhhw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 8/8] KVM: selftests: Add nested SVM DecodeAssists
+ test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tina Zhang" <zhang_wei@open-hieco.net>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <6ce7357cee9aac5e57434681b9aff9ab8d9f8162.1783999988.git.zhang_wei@open-hieco.net>
+References: <cover.1783999988.git.zhang_wei@open-hieco.net>
+ <6ce7357cee9aac5e57434681b9aff9ab8d9f8162.1783999988.git.zhang_wei@open-hieco.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 14 Jul 2026 05:29:38 +0000
+Message-Id: <20260714052938.900D11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed counter
- 3 tests
-To: Jim Mattson <jmattson@google.com>
-Cc: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260629231938.15129-1-zide.chen@intel.com>
- <20260629231938.15129-9-zide.chen@intel.com>
- <32a1e1d2-c437-4cd1-8455-43fa9082cb50@linux.intel.com>
- <CALMp9eQR4rFTSDMrOSHsLXsKvTdm9BbhorMEK329RqRk5Rr7Og@mail.gmail.com>
- <5760cb18-739c-4907-b582-60933d11a72d@linux.intel.com>
- <CALMp9eTs1A73DUDQwO_mHDQF8UfJQG2B_GgJczdu2uxdazG+KQ@mail.gmail.com>
- <212b058b-5804-4a00-a95a-67f58546fd9a@linux.intel.com>
- <CALMp9eQGTde_nbCtHN5E4GiuBKrcKC+Sq_6O_JoyHZCaf+S=rw@mail.gmail.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <CALMp9eQGTde_nbCtHN5E4GiuBKrcKC+Sq_6O_JoyHZCaf+S=rw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] Unmapping the page containing `npf_target` may accidentally unma=
+p other variables like `l2_guest_stack`, causing unintended page faults.
+- [Medium] Guest assertion failures are obscured because `get_ucall()`'s re=
+turn value is checked with a simple equality assertion rather than handling=
+ `UCALL_ABORT`.
+--
 
-On 7/14/2026 1:11 PM, Jim Mattson wrote:
-> On Mon, Jul 13, 2026 at 12:12 AM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->
->> rdpmc is the preferable way to read PMU counters since the better
->> performance than rdmsr, and most of current code regardless of kernel or
->> user-space already use rdpmc to read PMC counters. If we set the rdpmc to
->> interception by default, then it may cause extra performance hit.
->>
->> Currently I didn't hear there is any plan to extend the rdpmc to support
->> more types for Intel platforms ...
-> Is Intel willing to commit to that?
+--- Patch [8]: [PATCH v2 8/8] KVM: selftests: Add nested SVM DecodeAssists =
+test ---
+commit 022271cf32a29cba4b8af8cdce602deac0fd3ec4
+Author: Tina Zhang <zhang_wei@open-hieco.net>
 
-I'm afraid not. :( 
+KVM: selftests: Add nested SVM DecodeAssists test
 
-rdpmc is still possible to be extended to support more types in the future,
-but recently we don't see such requirements. 
+This commit adds a nested SVM selftest for DecodeAssists to verify that KVM
+exposes the feature to L1 and provides the correct architectural exit state
+for various intercepts.
 
+> diff --git a/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_te=
+st.c b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+> new file mode 100644
+> index 0000000000000..ac9601dda9365
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+> @@ -0,0 +1,694 @@
 
+[ ... ]
+
+> +#define USERSPACE_PF_STAGE 1
+> +#define TEST_IOPM_SIZE (3 * PAGE_SIZE)
+> +
+> +static u64 npf_target __aligned(PAGE_SIZE);
+> +static u8 boundary_outsb_code[2 * PAGE_SIZE] __aligned(PAGE_SIZE);
+> +static u8 limit_outsb_code[PAGE_SIZE] __aligned(PAGE_SIZE);
+> +static unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+
+[ ... ]
+
+> +	tdp_identity_map_default_memslots(vm);
+> +	pte =3D tdp_get_pte(vm, npf_gpa);
+> +	*pte &=3D ~PTE_PRESENT_MASK(&vm->stage2_mmu);
+
+[Severity: Medium]
+Since npf_target is only 8 bytes long but page-aligned, could the linker
+pack other variables (like l2_guest_stack) into the remaining 4088 bytes
+of the same page?
+
+If so, when this code unmaps the stage-2 PTE for the page containing
+npf_target, it might accidentally unmap the guest stack. Would L2
+execution then #NPF on its first stack operation and fail the test
+misleadingly?
+
+> +	pte =3D tdp_get_pte(vm, fetch_npf_gpa);
+> +	*pte &=3D ~PTE_PRESENT_MASK(&vm->stage2_mmu);
+> +
+> +	boundary_page_gva =3D (gva_t)&boundary_outsb_code[PAGE_SIZE];
+> +	pte =3D vm_get_pte(vm, boundary_page_gva);
+> +	*pte &=3D ~PTE_PRESENT_MASK(&vm->mmu);
+> +
+> +	vcpu_args_set(vcpu, 5, svm_gva, npf_gpa, fetch_npf_gva,
+> +		      fetch_npf_gpa, iopm_gpa);
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+> +	{
+> +		struct ucall uc;
+> +
+> +		TEST_ASSERT_EQ(get_ucall(vcpu, &uc), UCALL_SYNC);
+
+[Severity: Medium]
+If a guest assertion fails, it exits with UCALL_ABORT containing detailed
+file, line, and message information.
+
+By using a simple equality assertion here, wouldn't a guest failure result
+in a generic host-side failure (e.g., "Expected UCALL_SYNC, got UCALL_ABORT=
+")
+and drop the actual guest failure reason, making it harder to debug?
+
+> +		TEST_ASSERT_EQ(uc.args[1], USERSPACE_PF_STAGE);
+> +	}
+> +	queue_userspace_pf(vcpu);
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
+
+[Severity: Medium]
+Similarly, wouldn't this assertion also silently drop the payload of a
+UCALL_ABORT if the guest aborts at the end of the test?
+
+> +
+> +	kvm_vm_free(vm);
+> +	return 0;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1783999988.gi=
+t.zhang_wei@open-hieco.net?part=3D8
