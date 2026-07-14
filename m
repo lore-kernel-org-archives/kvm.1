@@ -1,120 +1,96 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E696B3033E6;
-	Tue, 14 Jul 2026 02:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD7239182D
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 02:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783996354; cv=none; b=rUWESPC7+sYin7HNuaA06/VEFFNrNHutiKvvZk3mb2DWqQyJrUCPWmDaKWMrLY3+5LCjsRfrHKmgpVTcKru8ufdOAiGHJBpEhCoqM2AdT3l3At9m/aDAPLjMNh2H/H5DdXp2BCHHlFC8PKHCD+Y3sD+0NHvoEaI1wa8bChk8uXU=
+	t=1783997109; cv=none; b=SCF8PONCDLU5rew3GfyBIYu+cjvqCQDnGEUq41+igwiP6CmBh8wHVBqBYb+Y6Z9AtqNFCK/iBUEyyWyroh65oyeImrMTc1KWcbi+U5NiM3QtVcSv/SV7/7MmsxpFxiHKjYsQEgsBRsIEl4GTUUHk955sOd006nKYRxdrIqWvRqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783996354; c=relaxed/simple;
-	bh=x+h1ubtG+2wZwiufM4mHMA8AtNY8oxjrGB9PfBbtfbg=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=JgALy3NQlUe41u9pgwd8CM7sH2ZSEcNw0HNGouejs6mACqRpTI8UxySWMDa4SyalZLUYK2f1kTVXcaU57/d6GtJOVxGfT041k6jCfPA7e7arPnj1sGUYfERjaZ7kP6PM4Mr/S3lwAm5dPGZqCBna2/LRUKTb6uQOwvk2/EDCJzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxNOq5n1VqBkUDAA--.11901S3;
-	Tue, 14 Jul 2026 10:32:25 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxPcW2n1VqZlcMAA--.57755S2;
-	Tue, 14 Jul 2026 10:32:22 +0800 (CST)
-Subject: Re: [PATCH 1/2] LoongArch: KVM: EIOINTC: clamp ipnum to valid range
- in INT_ENCODE mode
-To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org
-Cc: kernel@xen0n.name, lixianglai@loongson.cn, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-References: <20260714012452.1021833-1-cui.tao@linux.dev>
- <20260714012452.1021833-2-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <69470d5d-6c67-c42d-b8f8-8c115599703e@loongson.cn>
-Date: Tue, 14 Jul 2026 10:32:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1783997109; c=relaxed/simple;
+	bh=r+BhOWwHZR/nXn933MZz2l4J+vv7UjbRlj2bs9BJtFY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KXfpW+SZ2HQ0hIaZJM5HLFGMN/WGhrSiuKPlW00csPTB/JON/oLA3io1m6xnYZruWZ2DhVD6+k+RoguyxTFYP3riVCaHJannTkZtx32S+qTrlU2lIGGbH7YEL2yYeVQ1h1INMEG0yaxWX+272lY7MYGaLjvNnz3p1HBRSke2JhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eJZWLYGe; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eJZWLYGe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=eg
+	NvZkkgF0O2goDym7Bxh4vIiL8gXxR26e03veP3E3I=; b=eJZWLYGeTPSdRKxJDs
+	lxXiXSpWdTAOy9lO9b+vJ0vCbEWMdQTnTZcRYxKrpPdIsUMA4eLysplG49r9fmnl
+	Z7Cazs2S6DSk+9v6ZhiOKzE+XsBSsF3F5BTThgi9FzIOVwbV6cf9KfY3uIopT/HM
+	7jIMPfdAB34TKOENeQgHtEqrw=
+Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDX0kKSolVqaKemGA--.24446S2;
+	Tue, 14 Jul 2026 10:44:34 +0800 (CST)
+From: weimin xiong <15927021679@163.com>
+To: virtualization@lists.linux.dev
+Cc: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	kvm@vger.kernel.org,
+	xiongweimin <xiongweimin@kylinos.cn>
+Subject: [PATCH] vhost: fix inaccurate kdoc in iotlb helpers
+Date: Tue, 14 Jul 2026 10:44:34 +0800
+Message-ID: <20260714024434.188302-1-15927021679@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260714012452.1021833-2-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxPcW2n1VqZlcMAA--.57755S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF15Xr15JryxZr4rXFy3KFX_yoW8uw4Upr
-	W7Aa1YkrZ5Jr1UJay7ta15Ga1Yk3s5t3yUKF4jqa4xCFWrXF1YyFyrCr42qFyIkw48KF40
-	qFW7Ca4ava1jv3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUc-eODUUUU
+X-CM-TRANSID:PCgvCgDX0kKSolVqaKemGA--.24446S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4rKr48ur4fZr1UZw13Jwb_yoW8Gw4DpF
+	4xW34UKr1jvw1UJw4DC3WfGFnYg3WxCr48CrWfW3W5Zrn8JryUGrsIk3WUtr1xCFW8CF13
+	XFy0vF15KrykC37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j8J5rUUUUU=
+X-CM-SenderInfo: jprvmjixqsilmxzbiqqrwthudrp/xtbC8xO8RWpVopO9bgAA3E
 
-Hi Tao,
+From: xiongweimin <xiongweimin@kylinos.cn>
 
-Thanks to catch this, there is similar modification which can be located at:
-https://lore.kernel.org/lkml/20260709082109.1361767-5-maobibo@loongson.cn/
+Correct missing "if" in the add_range_ctx return description, and
+align vhost_iotlb_alloc documentation with its NULL return on
+allocation failure.
 
-Regards
-Bibo Mao
+Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
+---
+ drivers/vhost/iotlb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-On 2026/7/14 上午9:24, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> The IP-number decode in eiointc_set_sw_coreisr() and eiointc_update_irq()
-> clamps ipnum only in the default (1-hot) mode. In INT_ENCODE mode the raw
-> ipmap byte (0..255) is used as the index into sw_coreisr[cpu][ipnum],
-> whose second dimension is LOONGSON_IP_NUM (8), so any ipmap byte >= 8
-> accesses the array out of bounds.
-> 
-> The value is guest-programmable through the EIOINTC virtual extension
-> (VIRT_CONFIG enables INT_ENCODE and the IPMAP IOCSR write is unvalidated)
-> and is also restored unvalidated from a migration stream via the
-> LOAD_FINISHED control attribute, resulting in a host slab out-of-bounds
-> access reachable from an unprivileged guest.
-> 
-> Clamp ipnum to [0, LOONGSON_IP_NUM) in INT_ENCODE mode as well.
-> 
-> Fixes: 3956a52bc05b ("LoongArch: KVM: Add EIOINTC read and write functions")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->   arch/loongarch/kvm/intc/eiointc.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-> index 2b14485d14a7..0c34d7ab264d 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -17,6 +17,8 @@ static void eiointc_set_sw_coreisr(struct loongarch_eiointc *s)
->   		if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
->   			ipnum = count_trailing_zeros(ipnum);
->   			ipnum = ipnum < 4 ? ipnum : 0;
-> +		} else {
-> +			ipnum = (ipnum < LOONGSON_IP_NUM) ? ipnum : 0;
->   		}
->   
->   		cpuid = ((u8 *)s->coremap)[irq];
-> @@ -42,6 +44,8 @@ static void eiointc_update_irq(struct loongarch_eiointc *s, int irq, int level)
->   	if (!(s->status & BIT(EIOINTC_ENABLE_INT_ENCODE))) {
->   		ipnum = count_trailing_zeros(ipnum);
->   		ipnum = ipnum < 4 ? ipnum : 0;
-> +	} else {
-> +		ipnum = (ipnum < LOONGSON_IP_NUM) ? ipnum : 0;
->   	}
->   
->   	cpu = s->sw_coremap[irq];
-> 
+diff --git a/drivers/vhost/iotlb.c b/drivers/vhost/iotlb.c
+index e1414c774..10d1c4073 100644
+--- a/drivers/vhost/iotlb.c
++++ b/drivers/vhost/iotlb.c
+@@ -44,7 +44,7 @@ EXPORT_SYMBOL_GPL(vhost_iotlb_map_free);
+  * @perm: access permission of this range
+  * @opaque: the opaque pointer for the new mapping
+  *
+- * Returns an error last is smaller than start or memory allocation
++ * Returns an error if last is smaller than start or memory allocation
+  * fails
+  */
+ int vhost_iotlb_add_range_ctx(struct vhost_iotlb *iotlb,
+@@ -143,11 +143,11 @@ void vhost_iotlb_init(struct vhost_iotlb *iotlb, unsigned int limit,
+ EXPORT_SYMBOL_GPL(vhost_iotlb_init);
+ 
+ /**
+- * vhost_iotlb_alloc - add a new vhost IOTLB
++ * vhost_iotlb_alloc - allocate a new vhost IOTLB
+  * @limit: maximum number of IOTLB entries
+  * @flags: VHOST_IOTLB_FLAG_XXX
+  *
+- * Returns an error is memory allocation fails
++ * Returns NULL if memory allocation fails
+  */
+ struct vhost_iotlb *vhost_iotlb_alloc(unsigned int limit, unsigned int flags)
+ {
+-- 
+2.43.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
 
