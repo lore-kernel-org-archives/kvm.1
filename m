@@ -1,92 +1,91 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A45E41A906
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627EF377A8F
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784054590; cv=none; b=H3S2+0/17gAaTXKmXjl/CFADRsa9od4El1+utF0V7HRzwpwx5Go98mJaI0NqLXrn/89vlZlF2118VxTZsO7h42ljdbAG5ZpSe8DxChsMi11QKVbL/32KjbrJygWujn8qsiGVfW4hMEj8EPMk5Y22Xhl1Ow8/SrJoo5f8uuFdBWA=
+	t=1784054596; cv=none; b=sIRurnpctbvyhAuDTxEDma/reL2l1KgDAJDspdVcMH4HrNa66WBZjMvcLw47oTYX9mwP8Ix5f2Qm6/NKU63imemgRwmJWE4AqseISVTcR5gmLZdfyIgy5IDcnOnMr7c3T8Bdi3Fc9VAJ9IdRqFMl+aScwRtH3xG0e6ry5zuA0yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784054590; c=relaxed/simple;
-	bh=Y3nB/YWKgse6fE4CYr8dGPQclxUSNIMISmiDxbWmKWo=;
+	s=arc-20240116; t=1784054596; c=relaxed/simple;
+	bh=QMtboOij6SiylMyty5zxOifbocl7KL0C8wQdf1+7zio=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R5GZ7/yvX8z0w4y41C07gFtbWu9MyJGoRp7/ICFD2zKPlDzqqMOEnR3o7uctfIFtoWR9yy6NyYg0vYNdK0D1IGxPJOE2PdiIAO9WvmlECc+ikxGOZkuK0w91MtzG3OyYo8p9rv6wXvjgZERVz2s+9NMyEV4xYjSDWGDTfogZ9BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QWXf1FZ+; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=tT65jNCuUyKBtCZd3xHWdmQLEAngux++2ItXK00Xm2zWkT1UciZRoqVkX7wQL/ggjR+JBoUcjd2L+fuMu/hrEPwudlm9iFEwRl9ryWp3x1GllnqV5kO0d/0jzQ58lysgvYbBmznvsmLEM+RF+f44jzy5gzBeXwBCEQDCJb9cz84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vS3PrwL9; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QWXf1FZ+"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84842381150so8249647b3a.3
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:42:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vS3PrwL9"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88ab059052so1468485a12.1
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784054577; x=1784659377; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784054582; x=1784659382; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sgiWf1c5WxAndJDe6W3Ef5+DmyX9WQWvy7zVaNhvy+4=;
-        b=QWXf1FZ+B3p2u2LNBXrfgwQ5gglqoRLbNzGa4ojNz1ywM27H2OCnq0zJgSvPOSVUVl
-         rATQbIXi94frTuJo1uo/xEp1khcY+GHNPyuvpYx8+Pf22yvDE8Vc+Qd4KrCPpHZu8n6s
-         Nt614CtKbJyFEsaB36ZC1o9yDrGRe8/sCV+dtit0gbfsKcjlbnfCMo5ack7XtH85du+P
-         Jk/HZij6NVagTAvqyflOHsE8rwI928mvMVp4h+igJcc3srYNfHQ+pCM9ryzB8l3YNkNL
-         Nzs/rxgo4mjppPI3P44SvNTM+MA3n4Rr3aQjjw2r4TJ3sP3WMOTc92qF8tkTiZcshoJ4
-         ZWVA==
+        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
+        b=vS3PrwL9O93UhSRKW2/+GkIkRt0rFPZ24ewFqjz2pNmhT/sTheqMuuc75myRi5uzVB
+         hE+S5JgSFSo57HjO39305WTO1TyJ7sV+TvKKgtI4k+HbNti9lf9sIwN8wXyCCxzHO7tp
+         qxgkYXA4GS3qpLglFUut4sEyTEqySylE5hroAHmcaaT7S2fG6nTzMx7+vLXvXOZQ2VlG
+         V/JDl+N3fa/Rvqrvcg8DuFlDfuseGnPzHgp8XpJp0bufvNMFKvqZGjFieEV/YYZcOq7y
+         l3vMxtN8N6q6EEa+bUb1qeOYf/CQXq5pytkfKLU0Dt3wbdfcMKL94YSYkrScwRbgRTrz
+         pVBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784054577; x=1784659377;
+        d=1e100.net; s=20251104; t=1784054582; x=1784659382;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=sgiWf1c5WxAndJDe6W3Ef5+DmyX9WQWvy7zVaNhvy+4=;
-        b=MKgCicmtSF3i9YG2CraUBXyMqRM8FPCec4loRnKD3A8MgPMvcRJFIsw+djcXUV5bxe
-         MueR88YjS50fm+ZbgTvPrbZU+1NZH3WZ9eBJWnmoyaslZ+no091CC+C0QLVPX+rmyUuh
-         uNCeeFw8c6RCkkFqHbPJUH6PZ9pgEu3DGGEsJFVI+2at+Mvir3HIvRe4LsfQwkGXbxNp
-         iMnTT+cWrAPsAoyvNNGniB6FKx8Fo6k/BwABXWfa9ILTZRYv0SdPwYj1mS299yXzAmM3
-         ukvOgA2DYIho85i0wFhmwnIGWBWX+j4Fr3c3jNdLMaxiqVXfzohNR/8uDbUVmsZwoJ5k
-         /M6w==
-X-Forwarded-Encrypted: i=1; AHgh+RpT+pjBDON+sCcm7VFF7CHt80rns4pv6KBdWqDYYYITP/rKuEh+KEKvi5PJ5zgEtfGz0QI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJpr59Y0zjN82VC1o/1rfTG3UwuemaCEg98j0HfJ+n+GhEvDXR
-	Y1MLYtfVIM5lleqc83AB4UfDlfeZsGe+uBLwA2R+MThhqrYMoDdPAuw2vY4on2vWFtDLANWF07E
-	Aij9+QQ==
-X-Received: from pfx27.prod.google.com ([2002:a05:6a00:a45b:b0:848:5415:1869])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e01:b0:846:2f3c:3f66
- with SMTP id d2e1a72fcca58-84a5585047dmr3493128b3a.60.1784054576849; Tue, 14
- Jul 2026 11:42:56 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:03 -0700
-In-Reply-To: <20260609075748.612704-1-binbin.wu@linux.intel.com>
+        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
+        b=omPgtsseavwb6QCZuO0FyFf8BWI6m5Uxtx9v155jReQECbpuS0NJrBAW8tD/cAzvbD
+         hdTV/xZ3bzK6OhCgA+oCppuY/PwZIgXwKSAlg7+I1El1cuiMlTYEw/VhSOXN7j0VRofz
+         z9NNaiR6lL1yfXGRpRQXYanyvXSCC3bz7INBLIaDZ+r8+H2l4ki6kWXyMB1KCfo7GL2o
+         2ql/wXLyjMepGNYMBUNWrGTKeuUlLwTnDX3ScV9lxrKAr0GX3/P3osEKAkLhneI33392
+         X9wJulwQD4bd8Eu7uENtcm4Bhv1fzBN9RnI2PeVo4vTn2ospN7Gc8azTo5spGUTYTgMc
+         7P3w==
+X-Forwarded-Encrypted: i=1; AHgh+RqGoEfSmuI+gBAaA7gzARSAGVjnQOrVC27r4+7Z774Fl/tfQ7F/aF3/omVGl48QQmMB+Ro=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTDYx+F0XuGkukgHycerCDjhteaaqK2kQjrIw6dRgKLy7Sxwyq
+	BliJgV/xA37eRBC7NcRoUIvkiYXramWkDFMknadurDZ+9aYYjrbamfFH1UAiEtmfcYoYIKik8L1
+	UXcM8IA==
+X-Received: from pjbqe4.prod.google.com ([2002:a17:90b:4f84:b0:38d:c157:c023])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3901:b0:37f:d265:18d2
+ with SMTP id 98e67ed59e1d1-38dc81b0ec8mr11584484a91.7.1784054582147; Tue, 14
+ Jul 2026 11:43:02 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:05 -0700
+In-Reply-To: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260609075748.612704-1-binbin.wu@linux.intel.com>
+References: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405421131.3138286.344633568989606466.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: x86: Fix emulated CPUID features being applied to
- wrong sub-leaf
+Message-ID: <178405257201.3111763.16358668642306263283.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry count
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+To: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
 	Binbin Wu <binbin.wu@linux.intel.com>
-Cc: pbonzini@redhat.com, rick.p.edgecombe@intel.com, xiaoyao.li@intel.com, 
-	chao.gao@intel.com, kai.huang@intel.com
+Cc: stable@vger.kernel.org, pbonzini@redhat.com, kas@kernel.org, 
+	rick.p.edgecombe@intel.com, thorsten.blum@linux.dev
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 09 Jun 2026 15:57:48 +0800, Binbin Wu wrote:
-> Pass the CPUID index into cpuid_func_emulated() and return no emulated
-> features for indexed CPUID leaves with a non-zero index.
+On Fri, 10 Jul 2026 11:53:23 +0800, Binbin Wu wrote:
+> Reject KVM_TDX_INIT_VM if userspace changes cpuid.nent between the
+> initial read and the subsequent copy of the initialization data.
 > 
-> KVM currently emulates CPUID features only for index 0, but
-> kvm_vcpu_after_set_cpuid() looks up emulated features by function alone.
-> As a result, reverse_cpuid[] entries that share a function but use a
-> non-zero index, e.g. CPUID.7.1:ECX, can inherit emulated features that
-> belong to index 0.  For example, RDPID, which is CPUID.7.0:ECX[22], can
-> be incorrectly OR'd into CPUID.7.1:ECX.
+> tdx_td_init() first reads user_data->cpuid.nent to size the flexible
+> kvm_tdx_init_vm copy.  The copied structure also contains cpuid.nent,
+> and that field can differ from the value used to size the allocation if
+> userspace modifies the input concurrently.  setup_tdparams_cpuids() later
+> passes init_vm->cpuid.nent to kvm_find_cpuid_entry2(), which uses it as
+> the array bound for the copied entries.
 > 
 > [...]
 
-Applied to kvm-x86 misc, thanks!
+Applied to kvm-x86 fixes, thanks!
 
-[1/1] KVM: x86: Fix emulated CPUID features being applied to wrong sub-leaf
-      https://github.com/kvm-x86/linux/commit/8835a24a5608
+[1/1] KVM: TDX: Reject concurrent change to CPUID entry count
+      https://github.com/kvm-x86/linux/commit/cfbebb55e512
 
 --
 https://github.com/kvm-x86/linux/tree/next
