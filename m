@@ -1,91 +1,91 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627EF377A8F
-	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7804F41A911
+	for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 18:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784054596; cv=none; b=sIRurnpctbvyhAuDTxEDma/reL2l1KgDAJDspdVcMH4HrNa66WBZjMvcLw47oTYX9mwP8Ix5f2Qm6/NKU63imemgRwmJWE4AqseISVTcR5gmLZdfyIgy5IDcnOnMr7c3T8Bdi3Fc9VAJ9IdRqFMl+aScwRtH3xG0e6ry5zuA0yo=
+	t=1784054607; cv=none; b=evbn5JJlOVxfELEIV4WXA+gGAprVxvUGh7hXAonOG6t6hw5634gpGwo7peDw25AOXeM2MNiDjKiRH3Q3DUQ2WlZpSe9EDgZP8dcov7V0vsrgg/tcHWWdCtm1iN6hSE0s7kh6AMEEMEJs5gs8XKfUrD5JVIKchDJMVK76PeR/33E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784054596; c=relaxed/simple;
-	bh=QMtboOij6SiylMyty5zxOifbocl7KL0C8wQdf1+7zio=;
+	s=arc-20240116; t=1784054607; c=relaxed/simple;
+	bh=dgzRb/XsbC9d25X8Xc2hjxOupkFfKyvTCYsQ/eMOgmo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tT65jNCuUyKBtCZd3xHWdmQLEAngux++2ItXK00Xm2zWkT1UciZRoqVkX7wQL/ggjR+JBoUcjd2L+fuMu/hrEPwudlm9iFEwRl9ryWp3x1GllnqV5kO0d/0jzQ58lysgvYbBmznvsmLEM+RF+f44jzy5gzBeXwBCEQDCJb9cz84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vS3PrwL9; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=eykO4epSzSAz4aHoRp09nlLDfLJMP9Q3gboBxQP33r1zAfkcd6iXeVMyFAX37A/+l0mOjS9rn/CttO5wYIBslKBIyd0wNGq9VIGfVrwY0GFN8OUXBCVOb8bJ9MJFiLWsvAkQ/7reMUPsry84z/bIpWYarK9qEZvmO/VKw2ricEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cKtNCRj/; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vS3PrwL9"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88ab059052so1468485a12.1
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:43:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cKtNCRj/"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cce14a21faso24011045ad.0
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 11:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784054582; x=1784659382; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784054595; x=1784659395; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
-        b=vS3PrwL9O93UhSRKW2/+GkIkRt0rFPZ24ewFqjz2pNmhT/sTheqMuuc75myRi5uzVB
-         hE+S5JgSFSo57HjO39305WTO1TyJ7sV+TvKKgtI4k+HbNti9lf9sIwN8wXyCCxzHO7tp
-         qxgkYXA4GS3qpLglFUut4sEyTEqySylE5hroAHmcaaT7S2fG6nTzMx7+vLXvXOZQ2VlG
-         V/JDl+N3fa/Rvqrvcg8DuFlDfuseGnPzHgp8XpJp0bufvNMFKvqZGjFieEV/YYZcOq7y
-         l3vMxtN8N6q6EEa+bUb1qeOYf/CQXq5pytkfKLU0Dt3wbdfcMKL94YSYkrScwRbgRTrz
-         pVBw==
+        bh=6Wdiurl2cveXIjUq1jMXLo7X86IJowePXG6hYm4wV0A=;
+        b=cKtNCRj/C79nYbn4brS4jFEizuIejXft9IMVRQGF1DV+L11Q1Gfx1DQ0vglTL/93L8
+         M9F1Y0ju7G7tBr6B7gGEW4fT3xel54SLJ1r1GROP8QuRLR6WZiXQ8yfz978BLrclgevE
+         ICMpPFTn2xL3H3aUaam/XyzPEirVZ16koBku4fukUiIGE0cN5YDlHHXSSNT5CawLVA7b
+         hGU7cT/Qr2lmLaXyjLgxbWcgT1yc08KPy/wC94c1ZDv94kcLmS3GlnueXtWZ3lMTCRLA
+         ZkW0q1OLqbu/OyM+MyJouMp5hzO5PIBpkEbS696nrqxy2aSvcnYuSrbM5/LAcp116bss
+         bv7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784054582; x=1784659382;
+        d=1e100.net; s=20251104; t=1784054595; x=1784659395;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8a7Ma3SWbuWG4d5N6WsHS2bhQ3Z4xI82D2YlDjqK2yg=;
-        b=omPgtsseavwb6QCZuO0FyFf8BWI6m5Uxtx9v155jReQECbpuS0NJrBAW8tD/cAzvbD
-         hdTV/xZ3bzK6OhCgA+oCppuY/PwZIgXwKSAlg7+I1El1cuiMlTYEw/VhSOXN7j0VRofz
-         z9NNaiR6lL1yfXGRpRQXYanyvXSCC3bz7INBLIaDZ+r8+H2l4ki6kWXyMB1KCfo7GL2o
-         2ql/wXLyjMepGNYMBUNWrGTKeuUlLwTnDX3ScV9lxrKAr0GX3/P3osEKAkLhneI33392
-         X9wJulwQD4bd8Eu7uENtcm4Bhv1fzBN9RnI2PeVo4vTn2ospN7Gc8azTo5spGUTYTgMc
-         7P3w==
-X-Forwarded-Encrypted: i=1; AHgh+RqGoEfSmuI+gBAaA7gzARSAGVjnQOrVC27r4+7Z774Fl/tfQ7F/aF3/omVGl48QQmMB+Ro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTDYx+F0XuGkukgHycerCDjhteaaqK2kQjrIw6dRgKLy7Sxwyq
-	BliJgV/xA37eRBC7NcRoUIvkiYXramWkDFMknadurDZ+9aYYjrbamfFH1UAiEtmfcYoYIKik8L1
-	UXcM8IA==
-X-Received: from pjbqe4.prod.google.com ([2002:a17:90b:4f84:b0:38d:c157:c023])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3901:b0:37f:d265:18d2
- with SMTP id 98e67ed59e1d1-38dc81b0ec8mr11584484a91.7.1784054582147; Tue, 14
- Jul 2026 11:43:02 -0700 (PDT)
-Date: Tue, 14 Jul 2026 11:41:05 -0700
-In-Reply-To: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
+        bh=6Wdiurl2cveXIjUq1jMXLo7X86IJowePXG6hYm4wV0A=;
+        b=ms54ybYpydJ8tsBJDbnQFYJEw8MZXM9/Q5ubVe/VQsi9akn9uBZUZMFmhYQTMXqX5a
+         KkIdsEfKuFJlWJbsqOdXUKwyWOZ7eM2bcdx5Qk6xweE8dlFo/O8SpQXnX2rx4ANAdGuR
+         Cuti20ywGP7Yza6bzrFDce6Z+mVzE2FnIbbyUM5etOBTCjlXuUxJGBwk4CYf3BB5M06Q
+         fx6A96Zz9W3F5WILTwarGiHwZC2lsbzam/oFVstdaq4OeAmGY3dhZXNzdX2rfnpC081x
+         pFUHkngHrv+jLPjfNFJmy/3OG3HAiVusqbhqxizYM41Eo7Nrh0qWCiA2oSjghNr6Yk85
+         y+fQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrHLwjoai6yVdocBhB70TeV6smHRnZTo4Uu26OuCGJWVxs9aUfMu2FsSYv7aHjG7u6oHio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTBZ/AfMjmGA84sIvyCfkSiAgtoco9KR7ywg4tSwIBnvcxQcUJ
+	ltyuL8sk2O8hlauuo/itq83MsaWCwM8Dw9O+qrWyo/pPXSOd7NZlaUu98mPt6ejfeK6It4PEXe2
+	ceXq0xw==
+X-Received: from plbbd8.prod.google.com ([2002:a17:902:8308:b0:2ce:8fc6:56b2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d98b:b0:2c9:d8c5:d55d
+ with SMTP id d9443c01a7336-2cea18211a9mr130149865ad.16.1784054594713; Tue, 14
+ Jul 2026 11:43:14 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:41:07 -0700
+In-Reply-To: <20260710134055.16432-1-danielpaziyski@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260710035324.3170534-1-binbin.wu@linux.intel.com>
+References: <20260710134055.16432-1-danielpaziyski@gmail.com>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-Message-ID: <178405257201.3111763.16358668642306263283.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: TDX: Reject concurrent change to CPUID entry count
+Message-ID: <178405241734.3109284.13844633834101663911.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: x86: Fix null pointer dereference in trace_kvm_inj_exception
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Cc: stable@vger.kernel.org, pbonzini@redhat.com, kas@kernel.org, 
-	rick.p.edgecombe@intel.com, thorsten.blum@linux.dev
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Daniel Paziyski <danielpaziyski@gmail.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 10 Jul 2026 11:53:23 +0800, Binbin Wu wrote:
-> Reject KVM_TDX_INIT_VM if userspace changes cpuid.nent between the
-> initial read and the subsequent copy of the initialization data.
-> 
-> tdx_td_init() first reads user_data->cpuid.nent to size the flexible
-> kvm_tdx_init_vm copy.  The copied structure also contains cpuid.nent,
-> and that field can differ from the value used to size the allocation if
-> userspace modifies the input concurrently.  setup_tdparams_cpuids() later
-> passes init_vm->cpuid.nent to kvm_find_cpuid_entry2(), which uses it as
-> the array bound for the copied entries.
+On Fri, 10 Jul 2026 15:40:54 +0200, Daniel Paziyski wrote:
+> The trace_kvm_inj_exception tracepoint takes as arguments the exception
+> vector, whether the exception has an error code (and subsequently, the
+> error code), and whether it is being reinjected. The error code is
+> formatted to the trace log as a string using __print_symbolic,
+> which takes an integer value and an array of structs containing a mask
+> value and a string. An empty struct is being passed, which makes the
+> kernel derefence a NULL pointer when the error code is 0. Remove this
+> stray struct in the invocation of __print_symbolic.
 > 
 > [...]
 
 Applied to kvm-x86 fixes, thanks!
 
-[1/1] KVM: TDX: Reject concurrent change to CPUID entry count
-      https://github.com/kvm-x86/linux/commit/cfbebb55e512
+[1/1] KVM: x86: Fix null pointer dereference in trace_kvm_inj_exception
+      https://github.com/kvm-x86/linux/commit/9c66085e6dcf
 
 --
 https://github.com/kvm-x86/linux/tree/next
