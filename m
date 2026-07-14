@@ -1,125 +1,129 @@
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F6C24113D;
-	Tue, 14 Jul 2026 13:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A3A35E1D3;
+	Tue, 14 Jul 2026 14:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784037479; cv=none; b=Fxe5dOWOkCJ8YAftgfZOg5xkp9lEzjAKLHbaB7lDc3sksE/VNhfF+0zW+zQhUeAnlcXx7GItmCtiqgPV6HRpf6f1BDudwliMa4LKrXi/d4SzvvjNWM7QPr41e7H9B+iF0Tf5vi+yTM7ARHoNab8IBHaw1ZdIqb1PlfSomrK+fY0=
+	t=1784038344; cv=none; b=UejDA82EXau0Cw43KocA3ESe4KaVdJKDXkKsNVr6iQY8Go5TRRNSN1BhgViqfVn2cFaqlwSlUHV2WXM4Uniz+PsZrS2pl0saQcR5ehNUhqY7v9o4yNTxYC3x/EvD5oCWawfc1N5XWAIU5K3xzrO5cyICHYHRxdtTG9jhziT1MDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784037479; c=relaxed/simple;
-	bh=k0x2ldVAWogUGC6AwisbdfeksKhgBBOVNUIxEzSrBRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aTKkyhdwYXKtrfi86m6gL4VzbFck5BGjNJhLAhxhZ45Xr8e6A8zaYRIkgA+oqtRi4GSyR+zXkuMQDZTHzoyOLr7XiGK7ZTJhs6q+tcJRbQd1p+fcJRRuZoIe07RLVLOechT6ozXWFE248dluOZpDMn7BeIUoz2DFk9siiES49tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RRqvVtn8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NlPmbpBg; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1784038344; c=relaxed/simple;
+	bh=aLyPVzhCOpxEYvqb+mdtt5+ZdV9EvzfsF8uBakUUHW0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GDS5cpX2Wm2GjP+98ZVi8FbhZtDirEA1sYGhvZcUi64Z8l6yVkRs9CPK4j3MS36u7tPVG1EAHj5sWx2tmIZF83cB9t1hDQ15LMbkNoVafqqXfsAlJjAkIT5547rCvFI5yEFwNqZgO3rg55Um2Hm7yOdg7AImpmLXxa36dwzsJC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7a3NiNh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RRqvVtn8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NlPmbpBg"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 306581400133;
-	Tue, 14 Jul 2026 09:57:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 14 Jul 2026 09:57:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784037476;
-	 x=1784123876; bh=FXcyRMAnaBVkY3h3vTCMYcn9yVpLjNn6jR09gxzZf5E=; b=
-	RRqvVtn8T+3Htv65IdSSBrFLyvzW7Hbp1ewEg8ew04E/SsHfwhFIAn6h2ISUVqs8
-	EYh0xYRfo20w+IY1UBWHg2PpNqOj5Tq9gsbwY/iTjdqDiQ9Xl5w41eoK+oloSp9t
-	JWy/stfnm11mI0fZwnc5jeAtG+T+LZlDrX7mS32IuxWa/rmUPG3PWDvXEGZgg7YD
-	02w3Eu5gtIi8VYigL5Fb9RPxjNNwQuh/2vY00kNGyifV5e0H9+vHV+qDP021pxIY
-	BK5cIBQQXKC3YJSjXkMMLpXYOmQLkPxR2HB9ZhiPZLWTvKedZPlG5v9dLQEyplgy
-	lyOvk3GdXnPD5v+RFiwX2g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784037476; x=
-	1784123876; bh=FXcyRMAnaBVkY3h3vTCMYcn9yVpLjNn6jR09gxzZf5E=; b=N
-	lPmbpBgkfq0hpXshOCwgtgMhfzVkcjuIWcA0gixInrF85ter3KqZvY8wiZhxTHyw
-	POCqvbIlkNMuu7SzHXmNabK+FhL5FilSDcyOVQXFFC0e5JIuokct+FLSrMdonu6h
-	KaccO7AJl1K+utNa0PJte7rfYKfQ8Dj+J3xUGQH8J4GxCdkSAQKERzkBPlr/aRYz
-	ioCdIzb4I6pQSZhGA7glbtx2KxrKb28Rf2bubqPz6cPRevLagri6WbtznH93eQnu
-	uu6Dl94wZ9YMx4MaciaG9mm7R9lG9ifPLPw3l7gW5GwrM9Eyk2ml0Vpmjc1JOKJq
-	OquoBuem4nvI/CeHc95kw==
-X-ME-Sender: <xms:Y0BWanpRE4ZRdT1PM7oWATf0ZDkJauZIXJF6e_dOorUIR6r6lAu_jg>
-    <xme:Y0BWajOKk4wNRQ-bmfNy-h-k93I52PH75T_N8PRtK_l2fjt8bBrS9SylA3A9Pk2eq
-    bPdH3y8eoykZ2CDAY_VnnRbr6zFOAeY_r1lRCLbdwdmORqKiI2YWg>
-X-ME-Received: <xmr:Y0BWajdAilAbagfSvI4FTvsora7fQUgKfDOtp-DyKqo9qxKFJhP7j7_NGsbjew>
-X-ME-Proxy-Cause: dmFkZTEsUshoaZt6MT3OwqLTgfDBAaGcMOajv/1i342AuXmNIS9/WjerbNODts8Q5KRdwC
-    /l23SZJ3OevmievZk+QEYxEn3T85GT7sxSA6xNKYahZoQ60BLN9dxsW02G33MEoyoGgN9c
-    6EiM9xPy0iOBfiVNIsslCFyW5/yq/O8S+F/3NJ6vmx02fwjoi1vgIfhgDceadJxCM9187G
-    11AboWCmXIAJ8wuxmvtjq8xo6C3wPoRR3MtXyv/7s2Dgblkoopzn/cVTGtcYXNt0BVLRmW
-    lO91ZreSgf0Sa2/LuyOYOOL2qci6jHouJmFFuLwAO6suOkCvqSkLqZr64JyPHKOfpZweoo
-    sYNI2dzIPKzkNx9UlLCsPVvkrb8I81KwOZbGKzOVEWoftdPhckSGBcfM0YJGLyV/h5Gms7
-    ZIi84Uy+16HQYiGSbfJkw2KfWGVmsoPQ+yDHCA/P+oMWSz5psUyXj9VqmB5s/CC4BuAbOK
-    TPoePl1+w3QdfrGtHWN20h1twz/3aA8iS1RoDB+iCt2RlqEgUFsYehe0NZsdurpB7nqMsT
-    jMBjodHcsdApoYrzCv1tpO7rIBEmgLUUZQiwpYVSyOXWgkt8RBqm4gspBCDp+o02worDeh
-    4tfgxXH+iN4IJeMkUnIo+pGJCjJlRpOBkHfduhKqEmQ0MrkJddBNGaGK8Vng
-X-ME-Proxy: <xmx:Y0BWahWTQZCFdztBkC9rho2sq5VwBKZza03jr-iB6xhD74LDvZ0ayw>
-    <xmx:Y0BWasCLBe3ld7Vh4tYWciuAQQt2pSkhNIJEeESXy1dB0kgbKPu61A>
-    <xmx:Y0BWak5_VY6kLOpXGgfJCcM5K0ijGlzIkKLYgSyIVYz-YCDmcQT8_g>
-    <xmx:Y0BWar1pn-dblKk9QOBXu9BWHFdox4zlkz4o6iiNTBaU0ovN0OEZeg>
-    <xmx:ZEBWap--NWoMSEX96b7aY--FJ4nYV0kr8PxKHpc0hX-DPan8TirM80t4>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 14 Jul 2026 09:57:54 -0400 (EDT)
-Date: Tue, 14 Jul 2026 07:57:53 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
- <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
- <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v19 12/18] vfio/pci: Add dmabuf TPH metadata storage and
- fd query helper
-Message-ID: <20260714075753.20052573@shazbot.org>
-In-Reply-To: <0768658f-de72-4ddb-a44b-e91a7e294b20@huawei.com>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
-	<20260702124224.57168-13-fengchengwen@huawei.com>
-	<20260708173117.3e399c4b@shazbot.org>
-	<bb0e583e-501f-4356-b554-784482b35331@huawei.com>
-	<20260709125012.21784d0a@shazbot.org>
-	<0768658f-de72-4ddb-a44b-e91a7e294b20@huawei.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7a3NiNh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6971F000E9;
+	Tue, 14 Jul 2026 14:12:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784038343;
+	bh=hNRmwdjWvBOciKRs4ryAEgtsV7SkVI3x2lqu3ub7VWM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=S7a3NiNhkCoB5S81qVFcNTN/3CfyXyUFG+Y2GyW1fh5N4yj3cXWTg84JmLK/ICLvq
+	 0l+aatEwDgQEQ9YVZiLSKh36PgXMwY166nXSgiVjaf4bC8TgtyauZ3/rHHvTva54kV
+	 WCVjMoQBk2LpdhHxi59dDlnzEvjtg/U3DZ4Ud94818y9mP15bKhG6NGiL/wKiiB1sP
+	 tocpVjVeZgb+7UaXKp04ZI0NHGS6uzNrluB0LkEvBGkuO4mD3q+wQ4zkn6NIznfx5V
+	 r9Kq2L906KfmdsBfqvPMZmZoy3S/WECb9PI+wHQ0beAEwndFHnoM6Nk35CSqXrMrAu
+	 YREP8onuq7KdQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wjdrx-00000004w2v-0hGd;
+	Tue, 14 Jul 2026 14:12:21 +0000
+Date: Tue, 14 Jul 2026 15:12:20 +0100
+Message-ID: <86se5loe2j.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev,
+	"Oliver Upton" <oupton@kernel.org>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 09/28] KVM: arm64: Relax CPTR_EL2 handling when FEAT_NV2p1 is present
+In-Reply-To: <20260714101236.905141F000E9@smtp.kernel.org>
+References: <20260714091641.1970822-1-maz@kernel.org>
+	<20260714091641.1970822-10-maz@kernel.org>
+	<20260714101236.905141F000E9@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 14 Jul 2026 18:46:51 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
-> On 7/10/2026 2:50 AM, Alex Williamson wrote:
-> > 
-> > Additionally, dma_buf_get_pci_tph() defines that the provided values
-> > are only valid until invalidate_mappings, but this series has no
-> > plumbing to honor that requirement.
-> > 
-> > This needs significant work if we need to track the lifecycle of every
-> > dmabuf related TPH value.  Thanks,  
+On Tue, 14 Jul 2026 11:12:36 +0100,
+sashiko-bot@kernel.org wrote:
 > 
-> Is it possible to use this as a risk warning? After all, even if the
-> invalid mapping is performed, the ST only causes performance loss to
-> the system, and there will be no function problems.
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] Nested trap configuration for CPTR_EL2 is evaluated using a stale memory backing store under FEAT_NV2P1, breaking nested virtualization isolation.
+> --
+> 
+> --- Patch [9]: [PATCH v2 09/28] KVM: arm64: Relax CPTR_EL2 handling when FEAT_NV2p1 is present ---
+> commit c67129a02beeb5d291611085a5d2f889ac9d97e8
+> Author: Marc Zyngier <maz@kernel.org>
+> 
+> KVM: arm64: Relax CPTR_EL2 handling when FEAT_NV2p1 is present
+> 
+> This patch relaxes the handling of CPTR_EL2 accesses via CPACR_EL1 when
+> FEAT_NV2P1 is present, stopping the trap of CPACR_EL1. It modifies the
+> read path to use the hardware SYS_CPACR_EL1 register instead of the
+> memory backing store for CPTR_EL2.
+> 
+> [ ... ]
+> 
+> > diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> > index 6b47d936efb32..1dfc1f88bec82 100644
+> > --- a/arch/arm64/kvm/sys_regs.c
+> > +++ b/arch/arm64/kvm/sys_regs.c
+> > @@ -326,7 +326,10 @@ u64 vcpu_read_sys_reg(const struct kvm_vcpu *vcpu, enum vcpu_sysreg reg)
+> >  			val |= __vcpu_sys_reg(vcpu, reg) & ~CNTKCTL_VALID_BITS;
+> >  			return val;
+> >  		case CPTR_EL2:
+> > -			return __vcpu_sys_reg(vcpu, reg);
+> > +			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> > +				return read_sysreg_el1(SYS_CPACR);
+> > +			else
+> > +				return __vcpu_sys_reg(vcpu, reg);
+> 
+> [Severity: High]
+> Since this changes CPTR_EL2 to be read directly from the hardware register
+> SYS_CPACR under FEAT_NV2P1 (as the memory backing store can be stale without
+> trapping), will direct readers of the backing store now read stale values?
+> 
+> For example, in arch/arm64/kvm/emulate-nested.c:get_behaviour():
+> 
+>     val = __vcpu_sys_reg(vcpu, tb->index);
 
-Seems like the sort of thing that should have been resolved BEFORE
-sending out v20.  By the same argument, maybe it's sufficient to zero
-invalidated STs automatically, but we can only do that for IV mode
-in-kernel and rely on userspace to perform the same for DS mode, but
-regardless, no mechanism is proposed to perform such invalidation.
+get_behaviour() is only called when a trap from L2 needs to be routed
+to L1. Therefore, the L1 registers cannot be resident at this point,
+and looking for them in memory is the right thing to do.
 
-IMO, this brings into question the supportability of STs provided
-through dmabufs.  It would seem vfio-pci needs to become an importer of
-the dmabuf, rather than simply scraping TPH data from it, but maybe it
-can only be supported in IV mode.  We don't have a means to represent
-that.
+> 
+> And in arch/arm64/kvm/emulate-nested.c:check_cptr_tta():
+> 
+>     u64 val = __vcpu_sys_reg(vcpu, CPTR_EL2);
+> 
+> Because the L1 guest writes to CPACR_EL1 natively without trapping, the
+> backing store is not synchronously updated. If an L2 guest traps to host
+> KVM, wouldn't these functions evaluate trap configurations using the stale
+> memory backing store, potentially bypassing the L1 hypervisor's trap
+> configurations?
 
-Alex
+If running an L2, L1's view of CPTR_EL2 (which it accessed as
+CPACR_EL1) cannot be resident. Where would L2's accesses to CPACR_EL1
+go otherwise?
+
+You don't understand NV.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
