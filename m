@@ -1,92 +1,111 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F204A2E01;
-	Wed, 15 Jul 2026 14:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E91739182F;
+	Wed, 15 Jul 2026 14:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784125919; cv=none; b=RUFm9IdZwTiN0IdC9lV3ay8dY+oVBBeS4Oawyn+aspxdlCdfLQLo/P9wTYYv9iEHyQrfauNH10Yv3HfQV63hnH+oHEn2T37IKKnWJz0lRq6d6Gb20bK/pum8WOWtOwB1VhaqS9c/x7bCT6RNGmHNvVSA3EZmqJLyQYAlQE4XmiE=
+	t=1784126286; cv=none; b=X40VSfJhzSIxfaYdUkeZCyNJBLzvYK1lvY3TiWkyRFpGzCegYJslCKI80PVOXc2qxSQoNyUPBnLa+cIqJF5U6ZCOVBkqQM/N82rLllHjmwAQ2ht9fAZ+MZNVV+nw988fOFGN0a5IBH72n5gbZse9SGVt6yEfQmlTOOj6teb4epQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784125919; c=relaxed/simple;
-	bh=hTHvGHo3aq13/0hCdni+YB/1LbAGuEZAjUd+4tZoURQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iovo207IGyZTK4gzgTTJXh8Es/3I3bB9+GvsciMOnpMjppMRazUqSySDnlyRcVMkTUGQW8BANOHyujVf/b019I4g1IhC1dvV/fNlO9KxHaqcB/U1Bp/r7ZVi2p+sxwzWenVTqd9mhRz/T/DuUHIK+fRq8s6chcgDCGL0D+EeQPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=AR2vGpGk; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784126286; c=relaxed/simple;
+	bh=9aJAXcchJ+rfE/kpIHbVZ9K/PIeoh4HZqadIKM5TZgk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MbhDwAudFPDmYElkDM97cawPF4K79JCGExJvCRtpGoaynU5zh9Ui4aY5PH5b5Lu9Dl3WrNPVXxFCoIlFOMlhyEVZZqeMNmUa0eJdSXvrcHxIFD49ZERsUFhSnXjD0GDV4U4T/mvmKkGms1tyZGbXHo6nRQI8S8a5OutgjE2X/UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gfbsuczh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="AR2vGpGk"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4133D1576;
-	Wed, 15 Jul 2026 07:31:46 -0700 (PDT)
-Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.25.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4B4FA3F7B4;
-	Wed, 15 Jul 2026 07:31:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784125910; bh=hTHvGHo3aq13/0hCdni+YB/1LbAGuEZAjUd+4tZoURQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AR2vGpGk/pJKe3cSknWcS3UCEVyGMxAWtRMINXoVYuQ5KnoUiu3HircLCLB7+QqRS
-	 l3NnR1yUEHGBt1G8I6z0uTusataDJtdw1V5AnjVcCS7dcysd+dq64vL73OVK3VSJOu
-	 RelST7tzou4LH3wGD49r4zLAwVpDqy0yuTwKEPTQ=
-From: Steven Price <steven.price@arm.com>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: [PATCH v15 37/37] KVM: arm64: CCA: Enable realms to be created
-Date: Wed, 15 Jul 2026 15:28:39 +0100
-Message-ID: <20260715142841.80544-38-steven.price@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260715142841.80544-1-steven.price@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gfbsuczh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF41F000E9;
+	Wed, 15 Jul 2026 14:38:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784126285;
+	bh=haHzTa+1fgT3vzs6VVQ/iPu/MW28WXGQBU/ZPKrQRtQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GfbsuczhuAHAzcnmjR63XqP+D2Eq5GfXqgWE6Ep23IJNwTQDmHagAYc2LYfX+hgO2
+	 21W4+JUxn88IoedTbAK8FyQpcT89si0pxrLf/HayUDwDQigh1TXrJVcg2GE1O/IlOh
+	 2uzeYeRLe8TzgcE3nGZEPxjWCL8xc6RWxrwa2CtsWWsqm8Mbemf8IyrdAoFDxZEEKb
+	 Dzm8hp2/VjLyUGu5qOgF89J8HGEkS2ixIiOTVmZZJxuQM1QQLtUWZqLkqwIgrmzjPR
+	 ilV+XdlnG3g8hCsMqqREUIO8uGsvTGJlemYW4m1GDtVUgsZpCNAlyDrJS1MC1kFhXJ
+	 1yMbuMtSV7UIw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/6] firmware: arm_rmm: Add SMC definitions for calling
+ the RMM
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steven Price" <steven.price@arm.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+In-Reply-To: <20260715142739.80398-2-steven.price@arm.com>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-2-steven.price@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 14:38:04 +0000
+Message-Id: <20260715143804.ADDF41F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-All the pieces are now in place, so enable kvm_rmi_is_available when the
-RMM is detected.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] `struct rec_exit` contains 4 bytes of implicit compiler padding bet=
+ween `padding9` and `plane`.
+- [Low] Discrepancy between the `PROT_MAP` macro prefix and the `DATA_MAP` =
+comment and SMC command name.
+--
 
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/rmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+--- Patch [1]: [PATCH 1/6] firmware: arm_rmm: Add SMC definitions for calli=
+ng the RMM ---
+commit c161f24da1669945cb4dc961f3a3c4ef452450b6
+Author: Steven Price <steven.price@arm.com>
+firmware: arm_rmm: Add SMC definitions for calling the RMM
 
-diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-index 3f1c6351b71a..06cc85fb5092 100644
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -1518,5 +1518,6 @@ void kvm_init_rmi(void)
- 	if (rmm_check_features())
- 		return;
- 
--	/* Future patch will enable static branch kvm_rmi_is_available */
-+	kvm_info("Realm guests supported\n");
-+	static_branch_enable(&kvm_rmi_is_available);
- }
--- 
-2.43.0
+The RMM (Realm Management Monitor) provides functionality that can be
+accessed by SMC calls from the host.
 
+> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
+> new file mode 100644
+> index 0000000000000..c965e8867518f
+> --- /dev/null
+> +++ b/include/linux/arm-smccc-rmi.h
+
+[ ... ]
+
+> +	union { /* 0x600 */
+> +		struct {
+> +			u16 imm;
+> +			u16 padding9;
+> +			u64 plane;
+
+[Severity: Low]
+Does this struct layout contain implicit padding? The sequence of two u16
+fields followed by a u64 field forces the compiler to inject 4 bytes of
+padding to align the plane field to an 8-byte boundary. While deterministic
+on ARM64, implicit padding in ABI structures shared with firmware is usually
+avoided. Should an explicit 32-bit padding field be added here?
+
+> +		};
+> +		u8 padding6[0x100];
+> +	};
+
+[ ... ]
+
+> +/* RMI_RTT_DATA_MAP_FLAGS definitions */
+> +#define RMI_RTT_PROT_MAP_FLAGS_OADDR_TYPE	GENMASK(1, 0)
+> +#define RMI_RTT_PROT_MAP_FLAGS_LIST_COUNT	GENMASK(15, 2)
+
+[Severity: Low]
+This isn't a bug, but there seems to be a naming discrepancy. The comment
+mentions RMI_RTT_DATA_MAP_FLAGS, which corresponds to the
+SMC_RMI_RTT_DATA_MAP command, but the macros are prefixed with
+RMI_RTT_PROT_MAP_FLAGS. Should these macros use the DATA_MAP prefix instead?
+
+> +
+> +/* S2AP Direct Encodings, used in RMI_RTT_UNPROT_MAP_FLAGS_S2AP */
+> +#define RMI_S2AP_DIRECT_WRITE			BIT(0)
+> +#define RMI_S2AP_DIRECT_READ			BIT(1)
+> +
+> +#endif /* __LINUX_ARM_SMCCC_RMI_H_ */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715142739.8039=
+8-1-steven.price@arm.com?part=3D1
