@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A3D42BC58;
-	Wed, 15 Jul 2026 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3490047F2F2
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784128017; cv=none; b=jNriJo1O/LfSOwwzthpGHsWcHmizie2lCsPB4IWw0k8QgUbI9vHMhVxrQ1HQwhpttErq21VAajghmDNbBBn+UxK9H/0YFcMriEfdgZ7mO92Q5GKpXFC2HAa45OWpfR9J1PPM8twOLcKzq7hBtzlA5zsTPceglaZk8Q0J+bw1pnw=
+	t=1784128630; cv=none; b=G3HIBmWgIC7Pirlvs9+uej4R7wjSQrVGPveovjZBGpvzgn+VrTT/SsjfgpAI4HjShvH1x0QipKbADZMtgC9Mll7bCJ8JfOunHo2U8Ip7/TA9DJcD+59/DR+PqdXD04iRc4ILZ+TJmrgPeZbbrm1J1tOfkxlwbu7amrnbc6v8DIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784128017; c=relaxed/simple;
-	bh=TUZGVsbgQlqpPNw19QmZ4TpzXd38zHRHXwauyCE/oz4=;
+	s=arc-20240116; t=1784128630; c=relaxed/simple;
+	bh=k40W8CexIoKm7x8yfjHCqRIHTPfR+gaWB1asyujvZNw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WIbLa7ZqI+JWKvr6SJRdh+7Bz0P5prOLI8/QWJ7tcoyHiBKpNTKHnE+Tvh7zYccqeoRlGpUt8n48/Vskvjd4mrosZ5VMUo4CG29a/ygHUcrhQ+AfNNahZOhw7g6SSaqkr8S2MVt01sUMzaqtBeXMjCRGJ9pQghagpMs760bZp28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQwrA61Y; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=WCgpFcCCv9diQtJO006Ek6LDbs1i/UatqjZtlRr2d1h+7G/JOCrK+M5jll5U8ZKhfpzWwJlJtqbPIsuIyvIpRMmrpaugPsV5OZDUDjdH2v/D6cIcFB0BEg5+OcRYfJKKknfE6+Ug4uKT/o4gt3eohk1oEtKdMVbEH5ApAxhro7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTY0wSyC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQwrA61Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0A61F00A3A;
-	Wed, 15 Jul 2026 15:06:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTY0wSyC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290E1F000E9;
+	Wed, 15 Jul 2026 15:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784128016;
-	bh=8gNRNQSW6vsktM1lbk7lGhKHurw9QaFYDhPaWxlP0Cc=;
+	s=k20260515; t=1784128628;
+	bh=4tkJWnJ1x5ESWRzPOy2pZYIBUKWmEJnvT6/VCEFzgyg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MQwrA61Ykf0ssG5unhBw8veYKROdA1mQdlXY+yx9U6WOajRyL7xTsVfub5kEaP+eW
-	 /eals2r8UCuZjDKMGKKgfdyF3NuXFCpGofNIi4ZqzP4cXiBj8sMxnmZVBevTKBUYOJ
-	 J7rJwEnFCsxPP2RvfW3rSaNQRK+NN6BcDpmAvexlldJIXcoaSJfVyvXBpJduZ6YPlG
-	 9NJspzKdHkoeiUwFQK+6rztLz8C+nd5zi6KUjyO4yCj35H4uATihIZrvNinHokfO4R
-	 QkSNurk+G36Ec30P7HrIhb4qH4WnDZfTKwD0CRHM+G8od7DThAbXRw/+wULqlhIwpI
-	 zhgfZXrc5kS3A==
+	b=aTY0wSyCoZqAVvIqxVrvKhmHfEUSSiWjAWUyqKpWJm9+yHdnPgjiIYVPaPYSSMvup
+	 8HGqq8qpMfNODj5yuV0iWKYR+1gfaEpvdiHrwK2QsavDbxgRlywDzD8iaw/8njcckw
+	 IQEG70UOeB/bWTwWbpIc0849/GaN62FO0RUJuk7lYbhIJR+gG/G08aq4xJR1J+D5Zf
+	 Hz5kiNzu6uKWQOF0OipGznsu0Few1Q/og6S3PjI0VU8pHOFsZFfZjgGvqCUjDWjdxB
+	 m9QtwaHUS8y7+5pf4MPAgkIZyqOQ8ZwYrmbc7bYbZ44rtZb1vSvfJKeGxRd3+YqAF8
+	 xOITvE7oLu39Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/6] firmware: arm_rmm: Check for RMI support at init
+Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
+ workers
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steven Price" <steven.price@arm.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260715142739.80398-4-steven.price@arm.com>
-References: <20260715142739.80398-1-steven.price@arm.com>
- <20260715142739.80398-4-steven.price@arm.com>
+To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
+References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+ <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 15:06:55 +0000
-Message-Id: <20260715150656.4D0A61F00A3A@smtp.kernel.org>
+Date: Wed, 15 Jul 2026 15:17:08 +0000
+Message-Id: <20260715151708.9290E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,65 +47,78 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] The function `is_rmi_available()` is declared in the header but its=
- implementation is missing.
+- [High] Executing queued works synchronously in `vhost_workers_free` runs =
+them in the caller's user task context, triggering a `WARN_ON` in `kcov_rem=
+ote_start` and causing concurrency issues.
 --
 
---- Patch [3]: [PATCH 3/6] firmware: arm_rmm: Check for RMI support at init=
- ---
-commit 422535e6880c00ddffdc5f970e459e2cf571e957
-Author: Steven Price <steven.price@arm.com>
+--- Patch [4]: [PATCH v4 4/5] vhost: synchronize with RCU readers when free=
+ing workers ---
+commit bda2bbe84ea18859f63f457a24229bd9742c9be1
+Author: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 
-firmware: arm_rmm: Check for RMI support at init
+vhost: synchronize with RCU readers when freeing workers
 
-Query the RMI version number and check if it is a compatible version.
-The first two feature registers are read and exposed for future code to
-use.
+This patch synchronizes with RCU readers in vhost_workers_free() before
+destroying vhost workers. It waits for a grace period and then explicitly
+runs any newly queued work items left on the workers' lists. This ensures
+nothing is left with VHOST_WORK_QUEUED set.
 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
-i.c
-> new file mode 100644
-> index 0000000000000..c4850976544ff
-> --- /dev/null
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-
-[ ... ]
-
-> +static int __init arm64_init_rmi(void)
-> +{
-> +	int ret;
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 4c525b3e16ead..0d1414d40f4e7 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+> =20
+>  	for (i =3D 0; i < dev->nvqs; i++)
+>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
 > +
-> +	/* Continue without realm support if we can't agree on a version */
-> +	ret =3D rmi_check_version();
-> +	if (ret)
-> +		return ret;
+> +	/*
+> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+> +	 * caller that fetched a worker before we cleared the pointers above
+> +	 * may still be about to queue work on it.  Wait for those RCU readers
+> +	 * to finish before freeing the worker, then run whatever they queued
+> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
+> +	 * vhost_worker_killed().
+> +	 */
+> +	if (!xa_empty(&dev->worker_xa)) {
+> +		synchronize_rcu();
+> +		xa_for_each(&dev->worker_xa, i, worker)
+> +			vhost_run_work_list(worker);
+
+[Severity: High]
+Can executing vhost_run_work_list() synchronously in the caller's task cont=
+ext
+trigger a KCOV warning or cause concurrency issues?
+
+When vhost_workers_free() is called from a user task (like handling the
+VHOST_RESET_OWNER ioctl), vhost_run_work_list() will be executed in that
+task's context.
+
+This calls kcov_remote_start_common(), which expects to be called from a
+background thread and will trigger a warning if KCOV is already enabled for
+the current task:
+
+kernel/kcov.c:kcov_remote_start() {
+	...
+	if (WARN_ON(in_task() && kcov_mode_enabled(mode))) {
+		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
+		return;
+	}
+	...
+}
+
+Additionally, since the worker kthreads are not stopped until
+vhost_worker_destroy() is called later in this function, could the ioctl
+thread and the kthread concurrently dequeue and execute work items, breaking
+vhost work serialization?
+
+> +	}
 > +
-> +	ret =3D rmi_read_features();
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Note arm64_init_rmi() must be called before kvm_init_rmi() otherwise =
-KVM
-> + * will not support realm guests. subsys_initcall() is called before
-> + * module_init() (used for KVM) so this is OK.
-> + */
-> +subsys_initcall(arm64_init_rmi);
-
-[Severity: Low]
-Is the implementation of is_rmi_available() missing here?
-
-It is declared for external callers in include/linux/arm-rmi-cmds.h:
-
-bool is_rmi_available(void);
-
-However, the corresponding definition appears to be missing from
-drivers/firmware/arm_rmm/rmi.c, which could lead to link-time undefined
-reference errors when another subsystem attempts to use it.
+>  	/*
+>  	 * Free the default worker we created and cleanup workers userspace
+>  	 * created but couldn't clean up (it forgot or crashed).
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715142739.8039=
-8-1-steven.price@arm.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714151638.1430=
+19-1-andrey.drobyshev@virtuozzo.com?part=3D4
