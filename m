@@ -1,121 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C55E43F0A2
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 19:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01893CB542
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 19:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784142132; cv=none; b=VUAvAjT7t2zvIR6tDkt8YatlQXve2NPC+xjtXpmky3vwEDL2AoeTpOUFfYoUtARCuo5OkO6mcajIMT/bG+7VBZC3fkQLBLt4JF5fx5J3NrUTGGtRr66pLnImIX3MwNGy2+Z9xg9MywcVlpu6sPdElCAhjgbIXblpuxHTPdRDKuI=
+	t=1784142787; cv=none; b=A7ZbhPWfV4PHeggqYivsEmxslmbwYdwsFQhwYf+XhsWrJRNEKxp+tRfkuchHy7KKSmIr7hJi1ThZkbqbYU4EAs/eQf7PW+uqlYcb2qdgWholTFfdGZaVxOph0m6eVYTHXYBUqLjcnqFD5/oyDMvmqn1sgCCjNm1BWWNaX0woSg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784142132; c=relaxed/simple;
-	bh=j77alrfbvnCO0YNl6YJy549gRlmScGSVE2nSTsu2t5o=;
+	s=arc-20240116; t=1784142787; c=relaxed/simple;
+	bh=gz7tUSByq1tD49kFS0Ljgf7UvGXeVha/vkbt5ciSuKk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VxOklgonYe/9lZDQH7TyAoVeA6HX8HWozN8jCeUC5tiemL905uLje0K3BAhLqvqq13maDVHOokLo1Vxf9swgKKI69TfbtnuCMdEaafGrD+g6Sd+PJaRe5N9WW8iS+JTBETiYSQAkTbW9z9nx4fgCQMU4uepRGJ1A+1j6a7rNovw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLdyYyZh; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=i1XH9qRxTlU5Fyx8vewy3B19Gt8t7TbevlNEhdea+TTwtJ+S7+1r7jtmCH2F4FKN9VZoi8xkhxzm62errSxaDrvTDIBI9XFGAu0t5rv1ZpGPEMQMa8UMPai7MxFEybc2SUX9K/ExHG9i1+IyWUHAqRXZGovwJIlZPXAIe16FgeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZ8qgZEj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLdyYyZh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5B61F00A3E
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 19:01:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZ8qgZEj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7731F00ACF
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 19:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784142118;
-	bh=zEnU+s/1/zWxeu2dzngISTWBB6S+j8RtsiPGlrld318=;
+	s=k20260515; t=1784142771;
+	bh=j1j6l8MtuogCupTQcxeq3XrYuDjq9to6D8rqrZbCIiw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FLdyYyZh8SgOeKXLSr3Txuf+8Hy2ggLlo2hQmlG5GWOdoI244pb5W94ja5nDSuHkq
-	 V16pLi57PSQE/PWWU4lwZfIMLH+mQ4b7gMpKBR0ZwPBRV3U6LAeV32AzOEiCkwSOq1
-	 m7Mik61pQrVwcSTmoW6ct5FMaH9jaHEZwbmEBzr7D9JWrkieJJ3o2mc4gA7GT/G/KC
-	 kRFnaDVuExxnfSXUBbT4/GzYuFJm/094Ko1qERGO3Lgb5QtEcI5j80cftMCeWABkPi
-	 tK8gUE4v2e7qKAV2MN/kauKwuafFh9iCKltC+9vrMNIrqayhleerfymFgZMfMWWN+s
-	 1rjEH9/jxrH2w==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c15b509c323so755064766b.0
-        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 12:01:57 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyL+f0fMuKheOrLW57SEUuGCrgyBl5/1cBwz6JjaeOkD1U8X8Y8
-	FKD6JwIhUNoh4IBlClOlNhBbqoA/u1CcyOwg8cr0qdhZzoBeqT/1r9Kb19/uPzLkT1wZq8k0tJE
-	7mnHzq00wnxNyksd0AVJAB0Qy91vLD7A=
-X-Received: by 2002:a05:6938:a093:10b0:c16:7e23:e83f with SMTP id
- a640c23a62f3a-c167e23ec4cmr145364066b.35.1784142116936; Wed, 15 Jul 2026
- 12:01:56 -0700 (PDT)
+	b=VZ8qgZEjhIsPqb/chMNyUhYczbydMGAxsW9wPfgPzrWah6I1xJt7Dj1pWiSIJ7XWw
+	 ruolQh4sWafCiM25Drday6fDMFzx1YCY136XHsadk4K4i+ZP8ghWJXjwA01ZYhwGy3
+	 LTq06cIQvsXxFW8hKSDKUp6O30dVCtoZx8BbjRc850ZVO1l6HDbPWTRDyCgotQJ3mm
+	 1BKJx2WXf1Kna+GI1ilu6dZ58v+naOY0R1gHFV8+4wSmT1aqGDAolL8DY1kRr4hPbp
+	 Fpks8BeFIZmHU25BhyQCRIAhHXOuA8LCYJVX30cz0eQd0X5RaYr9dEz7mU6CzbN4WT
+	 L443i97HOdGsA==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c15cb6f5c12so997453566b.0
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 12:12:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrKQZinTvSQ2RpRp/lsg3iPV0h89zv5cB2Gr7Hq2Gcmyia/k3tgmtY0xN5IhW9O6sKznRA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ+sHjZrcE/kpnokfdamqnSTcHE4vj+TOGc44SQ/E2AFfDhR1f
+	iwae5WAI/vjcF25mk7R6DWmCiFtEB9gL/3rFDCXKGEEeQCyLyCe4vGCSGAvyjDPkYRC6V7zObYJ
+	i4zDE5NhQlQkUEcepfOJZIwsMlPmJpyQ=
+X-Received: by 2002:a17:907:3c8e:b0:bfe:ed06:5a20 with SMTP id
+ a640c23a62f3a-c16794d13f7mr278226266b.53.1784142770399; Wed, 15 Jul 2026
+ 12:12:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260715063506.672432-1-nikunj@amd.com>
-In-Reply-To: <20260715063506.672432-1-nikunj@amd.com>
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
+ <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+ <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+ <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
+ <CAO9r8zMYDn_zY47p5Fe-tbHk2Cij1eZJ8u5w8taGoZEusm2Gjg@mail.gmail.com> <CALMp9eQVeEdaaZGEeXJ3S7Ycmc+s35uQykMyirnMc=7hCogBqQ@mail.gmail.com>
+In-Reply-To: <CALMp9eQVeEdaaZGEeXJ3S7Ycmc+s35uQykMyirnMc=7hCogBqQ@mail.gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 15 Jul 2026 12:01:45 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPAxp+qyB6gLAo5D8EZBdQy1XB4wWEeSReF3TsFx=3nnw@mail.gmail.com>
-X-Gm-Features: AUfX_mzDqnZWGyRtkChm3EWHGEgw3OKZquAXB5ceg2zJNNGhwGy03OfoqcBXBxk
-Message-ID: <CAO9r8zPAxp+qyB6gLAo5D8EZBdQy1XB4wWEeSReF3TsFx=3nnw@mail.gmail.com>
-Subject: Re: [PATCH] KVM: SVM: Bump asid_generation on CPU online to avoid
- ASID collision after hotplug
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
-	naveen.rao@amd.com, Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>, 
-	Srikanth Aithal <Srikanth.Aithal@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
+Date: Wed, 15 Jul 2026 12:12:38 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO-n+YHyvgCBBcAT4a_h7_zLLtyVuH3K=a9uXtaeLF3zg@mail.gmail.com>
+X-Gm-Features: AUfX_mxwCiuoq0Jpr_Fiz2dJCTRvxjU5rBGkrVxy0EV_Cu4T9F_HZe8A_RSAzlA
+Message-ID: <CAO9r8zO-n+YHyvgCBBcAT4a_h7_zLLtyVuH3K=a9uXtaeLF3zg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026 at 11:35=E2=80=AFPM Nikunj A Dadhania <nikunj@amd.com>=
- wrote:
+On Wed, Jul 15, 2026 at 11:20=E2=80=AFAM Jim Mattson <jmattson@google.com> =
+wrote:
 >
-> If a vCPU stays scheduled out (or blocked) while the last pCPU it ran
-> on goes through a hotplug cycle (online->offline->online), and the vCPU
-> then resumes execution on the same pCPU, then it is possible for it to
-> run with an ASID that has now been assigned to a different vCPU,
-> resulting in stale TLB translations being used.
+> On Wed, Jul 15, 2026 at 10:45=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> >
+> > On Tue, Jul 14, 2026 at 11:32=E2=80=AFPM Jim Mattson <jmattson@google.c=
+om> wrote:
+> > >
+> > > On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > >
+> > > > What complications?  Advertise the lowest common feature set for th=
+e pool, just
+> > > > like userspace has to do for literally every other feature.
+> > >
+> > > The problem with passing through the number of host ASIDs to the gues=
+t
+> > > is what to do when the combined host plus guest usage exceeds the
+> > > number of available ASIDs, particularly when FlushByASID is not
+> > > available.
+> >
+> > I think that particular scenario is fine because they are two separate
+> > domains. KVM assigns 1 ASIDs per vCPU for L2 (in this series),
+> > regardless of what L1 assigns L2. We flush that ASID if L1 changes the
+> > ASID it uses. We can use more than 1 ASID in the future, but I think
+> > KVM will still allocate a certain number of ASIDs per L2 and the
+> > domains will remain separate.
 >
-> svm_enable_virtualization_cpu() resets asid_generation to 1 and sets
-> next_asid to max_asid + 1 on every CPU online event, including hotplug
-> cycles.  Because next_asid starts beyond the pool boundary, the first
-> call to new_asid() after an online event always wraps the pool,
-> incrementing asid_generation to 2 and assigning ASIDs starting from
-> min_asid.
+> IIRC, Hyper-V uses two ASIDs per vCPU--or, at least, it used to. It
+> might be worth checking to see if that is still the case.
 >
-> Consider two vCPUs from different VMs, vCPU-A pinned to CPU-X holding
-> asid_generation=3D2 and ASID=3DN from before the hotplug event:
+> > If your concern is the fact that without FlushByASID KVM will do a lot
+> > of full flushes, you are right, and this series aggressively falls
+> > back to full flushes when FlushByASID isn't available, rather than
+> > using a different ASID like the current approach. My assumption has
+> > been that we don't care about performance that much on these old CPUs.
 >
->   1. CPU-X goes offline and back online: asid_generation resets to 1,
->      next_asid =3D max_asid + 1.
->
->   2. One or more vCPUs migrate to CPU-X and call new_asid(), wrapping
->      the pool and consuming ASIDs starting from min_asid.  Eventually
->      vCPU-B from a different VM is assigned asid_generation=3D2, ASID=3DN
->      =E2=80=94 the same ASID that vCPU-A held before the hotplug.
->
->   3. vCPU-A enters pre_svm_run() on CPU-X: current_vmcb->cpu is
->      unchanged so the migration branch is skipped.  Its saved
->      asid_generation=3D2 matches sd->asid_generation=3D2, so the generati=
-on
->      check silently passes and vCPU-A continues running with ASID=3DN =E2=
-=80=94
->      the same ASID just freshly assigned to vCPU-B.
->
-> Both vCPUs from different VMs now run on CPU-X with the same ASID,
-> causing them to share NPT TLB entries and producing stale translations.
->
-> The collision manifests as a KVM internal error (Suberror: 1, emulation
-> failure).  The NPT page fault reports a faulting GPA far outside the
-> VM's physical memory range =E2=80=94 a sign of stale TLB translations bei=
-ng
-> used.  KVM falls back to instruction emulation, which fails on
-> FPU/XSave instructions (XRSTOR, STMXCSR) that the emulator does not
-> implement.
->
-> Fix this by incrementing asid_generation instead of resetting it to 1
-> in svm_enable_virtualization_cpu().  On module load, asid_generation
-> starts at 0 (memset) and the increment produces 1, identical to the
-> old behaviour.  On subsequent hotplug cycles the generation advances
-> beyond any value a vCPU previously observed on this CPU, so the
-> generation check in pre_svm_run() reliably forces new_asid() on every
-> vCPU after every hotplug cycle.
->
-> Fixes: 774c47f1d78e ("[PATCH] KVM: cpu hotplug support")
-> Reported-by: Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>
-> Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
-> Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+> ...until someone complains? :)
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+I am not sure how many people run VMs on pre-Bulldozer CPUs and care
+about performance, but practically it's only a problem if the full
+flush actually makes a difference. It is possible that the TLB is not
+big enough; flushing the ASID vs flushing the entire TLB makes a
+difference.
+
+If we really care, it's a problem not specifically for nested, but for
+assigning a fixed ASID to each vCPU in general (similar to VPIDs). It
+is a nice simplification, but AFAICT it's not necessary, the very
+first version of the RFC didn't have it [1], it was suggested by Sean
+(well, we went to per-VM ASIDs first, then per-vCPU ASIDs).
+
+[1]https://lore.kernel.org/lkml/20250205182402.2147495-1-yosry.ahmed@linux.=
+dev/
