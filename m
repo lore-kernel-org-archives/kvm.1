@@ -1,97 +1,97 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2F18AE3
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 00:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23414219E8
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 00:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784074022; cv=pass; b=atICwTuJsfjTYBmEHL/e33YwqVRT3oKEFp+ve+N4fkCTppw6WfP3KjOT7kPj6ivvQar/ApZ30FrwDAJvG+59Zx3pIua+e8gDg2K9ivW87DZxZcgBgMfTbeYbq8mNMuLrnQFfG7pebDr3gabZIBc+zk8h42vaNs3QeiIzmhRucFc=
+	t=1784074185; cv=pass; b=QTaEB54mOQvDhJve2gBj7C9cMqbFoTPqgJYbSFDLi9cSNOSGi9mK5FGu7MZ4wH5jAZ2HAwFOkcLBECu3aMVt8ttqdsUOHMP35PjiIj6YKa+tRFGWNz1WF19dTY6QwtNMTQ8PW5wTh+qbtujKpDaBnUf2Eg26rtBp93tMZvTyMrE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784074022; c=relaxed/simple;
-	bh=YU0lyzGyOUNNiU5haIvFPS1QAnEsD8Z6p2DCYWVvj1s=;
+	s=arc-20240116; t=1784074185; c=relaxed/simple;
+	bh=/Posiz6SyHI18ZzNxfW2MMGe/wdPnlrQImo+lR8UcNI=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=llKnj3zwQ/ui6QXFKVhUCDjcAssvyuyRmwM7XH4O5I88RItGQM3/K19DxeNj+RuVgLi9wu8/BFGefznFhTJGngqKsTAGWg8u0Pyg4SbKjyaAuccyVg9HduS7ySdwgeiP91Ym+185M3Y+msLpbKNeMMbigNsXTTsFMMmAoD0HrmQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KlrrwGfB; arc=pass smtp.client-ip=209.85.215.169
+	 To:Cc:Content-Type; b=s2ERnL7jyA8eiIjfz+1b8zerz3FFDGjJR37saoijAPMWFNNp6NW25mIREq48ze28wqD98KDeclkSxUg86Vj3NmYMGIuuYFUGWZwOEVoShMZ/Eb5cTZSXgGKPoKBNXRQJQ5+eXDmTBRMF+8q1r1V2L+w1wBLlpr07QIwh9qgw+5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sI8xp0Bl; arc=pass smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KlrrwGfB"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c9aea40d799so713085a12.0
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 17:07:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784074020; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sI8xp0Bl"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9e30214d8fso3417829a12.3
+        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 17:09:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784074182; cv=none;
         d=google.com; s=arc-20260327;
-        b=GB29CVavFl52bsUyK6xqlY2pKlBYhEhEA3aamaXqGholoP/DIs20ftpZ9j0J8fz8Rl
-         ZXfz/vrzAroKdKiFQM+T5GV72LBexZ5I9YMGfQFg+/sKb7EjVCRWc9ITwXvsWZS5r6yX
-         Jv/N78Mu6sF3wBVzUZxEeaBdZaTyo2P8KgVg7mOOjqgU0tCt1AyPsU5cEa4QOG5m7aN6
-         wjCBth14weSdXB1++dVvDlqbaoq59IGGhi2Dhvg57j0MPOFo+B+7WO6GL8Jb+DCKBAeM
-         2YJQCUgD6qyLTYGJbLQoKmuOzpXqExcYeUgUEpbVOHbdbXcSfNf0bgkaBVrmDgtmnOcX
-         cw3w==
+        b=gMRT7+4TumHxrxcm9y/iHUovLuXQn+b9JNppnEDotYQHqYDCl0OG4g9yVnH6UVY83X
+         oynyxbB6Okym5MxWEqaoHWSULgg7tUdgAVxrTnq4/7rd7T1fnbCoY8JY7xJuoxAdR2au
+         lgrUzbTzizCUEopjPNbMyt/q1dY6BFHdmAOMeOy7x6RLTJIoFIvEFJiMY3CYo76Ge+ZG
+         URs/OGmYuT8HDamwZNqu11/NVC3tnFAJNe9SMt9GpwbxhL4ldPXV3no8AAS7IaFMIQrF
+         8MNqn6K4lfHTWGwwkIMwhlCqV9T3+Nc77CN7DvVxFTfQkwMM7KBo2hWupVHUOVGK/8bw
+         iD2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=0s2vP5FfW86C14AQBw3ERXXReFpty64yWPMq0+acSrU=;
+        bh=/Posiz6SyHI18ZzNxfW2MMGe/wdPnlrQImo+lR8UcNI=;
         fh=ejauVw2v2JC22nsitInIhki0uBsyhmGPpwY68+5cDUk=;
-        b=DBEHVX5zKzF/XSQSxbpyZPK5Yx4/snuU3ev7RpUCaUrHIwV3+hI0AC6mpXfP2JhGvc
-         OuMvn8WlXGJuPzRg9WH+zMrUAat5kN07JXPQnfl7l83tsUo9/EwXEiISicF4/1J5hQ6b
-         Xd17nUKIL8kD/8v6n3CFWrqNS4rxtyZfbgbGOLoWgVhcH7RQPIIcZVX+ldk16L+lUAsG
-         4Ac5V4VDEkNM2/rqzBA3sX/8G0GM/tN0+nio9c+NXW3kFG78VI1GCGI3a+xFthNXWrH6
-         TMHOr1TMZoopJGeIQJAOmPStR0jr0g5H8c1uHf/OHmo26w1SaEm/mKj08+DUXhNe8rG0
-         9SVQ==;
+        b=AvxrY6aSeC4R+9Wf+XT4W89Jp4CmegsRTD3773cJxwWW8+bOvm6RVSfLHDSEMsm/lg
+         BaS8/vapudSF3NBi1uysMb310eNK3OCiu7MJykWcZm0nIog/Dra3Oay3WjLNrfMP6pfL
+         uo6Kpg7Y87xihwv1Nzc/KPiAwBgMdAppADI/FqxIi8Uh2h4B/Fn33hlbeXZWLfPBtMxM
+         r1cYFqlN1qPCr809FihFyZWvPUJujeBV780xpvIa7S2tWKbU3L3SEVo2VNbVGh1avfqZ
+         LYBJMUSIO4SYbzI3wqgGQkpa9wQ38biC1JP7PpGs2lgp7tkYp/KzQUxI7k2xk27jlukK
+         uNbg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784074020; x=1784678820; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784074182; x=1784678982; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0s2vP5FfW86C14AQBw3ERXXReFpty64yWPMq0+acSrU=;
-        b=KlrrwGfBCK15ej2pw0QdvhZRpCeIwsgO/VjEEMAWtwxZH9V1r3ZP6skpM0ouE0o+oe
-         t2T4nmBtwxoo1R5Y40c8XN1HCbfrIM62LwcCrjvtkba8KkwwNkabXQGtk7J2VBMtZ8P8
-         8PC0CTuTfJvBSujNqDxJ26kQsH3HL/y8brchcvrOejBrIDDnr36yGjZ+JONNO/z6Xz5I
-         gE6q9TCqDih4g/EddrnVVzb8tLjuJfNKVNsBo7tY8kHxi3oACKApWFJcpNmE4DNQ3w6A
-         4iDZsxViJV4ZxStRHpKenj501JVaXok1HejtnSJogpXxCQa+1XFs9eIpt6U6rumXQU2L
-         6zNg==
+        bh=/Posiz6SyHI18ZzNxfW2MMGe/wdPnlrQImo+lR8UcNI=;
+        b=sI8xp0BlxlkpIiMBiwpyMPXpcPhOcVBQVOYuhgBRJnqDR6KMZy3AoNHS8RPxeqnggT
+         G4i7zHfec5LnFB1ai6hfo/xkNP6VCMEBGCol9glnP4kiD6ZKSaCTFSCtiIe6a89b9RZ2
+         0tIs7W66QoLoEYacJaQgLh/RfMMpyEBOnp+IS3kxXdJzy0u/+0kVF4uXDvMDTj0YyR7I
+         bXD235kext2M7+aNL7uLNz7fGDgAy9FEKdMv48Q6OVECe+J/N+ywzlxi91I8Bvw2klp0
+         IJXoZcbWDv+Bg68VkQLfnzg2dILte3y0I0UOAY/mZyHxRpCu0XOL8R86FPHNkIshq91G
+         10Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784074020; x=1784678820;
+        d=1e100.net; s=20251104; t=1784074182; x=1784678982;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0s2vP5FfW86C14AQBw3ERXXReFpty64yWPMq0+acSrU=;
-        b=POrCVBPzSD5JPlJzNjWZLNTBzyX7LrWAXG8zYSpev1kun/Qa0B8tT+8VbljQx8uiqi
-         H3o5dtkFtK4jFEqS7ZvLn+/XMI8PZtaUNnJEipZpGC2uLn3Dg8D759zMOnOKD8Xbz24/
-         d3zEF4i2aPYRKjfdW3fMNqs0DEY9X0b+Umu2PIkze9IVODP7PW0KeY5WeOF9r3zhsaC+
-         yezzX4XTZ90Zh4miX82udMPs/4RF3XSUzORuwC2/Dbfjhez5CKbVPwLHT9edjHnyr+Ep
-         51uUoGYFxtCgucWicEjt863QPaSHTe9+0WGYEgYASBs3BH8ghh5bwheFHbIEVgHCfZ4M
-         vmbw==
-X-Gm-Message-State: AOJu0Yw48HRt0iitBfhHStRuGHKY23HL4vZt8bBk7irZ1mMvLydIhxly
-	r3STjF5jk/bl8QS9XckzuUSNCWHEwEQDpFv+uHrv6kINEkoh3I0c7BHejVQxnGfADJGiISsA01u
-	+1/7ckVcHQpuHWaqxzBb81aFgVE/2sj9aYwVZ3NfBcTYeTxbKotkJAggj
-X-Gm-Gg: AfdE7clXiV1eQeQsONLB2FbZFOAiqzeAlAWd+LLUH/tMIHzXuWW/WtfZBPaJLbaG/nC
-	WRxKaIQ4slD7SAhIVfdudTp0HEwtyLANg/RZAqtl1Pc8wLSNeWvK1AXTCQcMfhZZTtOmcfoJayx
-	WK5kmZSOeDBcNVfc+mgdeU+QdzWoqQ73cONe/e5dmVUDMYS7LTtC6Unt68Ikl7u5A1tM7AV+FP4
-	2AcAy/k+BhDbhZ7/oyKSX+ypGKI50vJCmazQNhJSO560oqPt2a64EoKdT3eVHuMmmGjJpDMxU+9
-	vtnPg+vb6Hih68pePcNEx9M3aLa69uWOKESacQ+Ezt8so8nFNviZyRXeEr4=
-X-Received: by 2002:a05:6a21:4d8f:b0:3c0:9c1a:894f with SMTP id
- adf61e73a8af0-3c110b33403mr17211533637.71.1784074019800; Tue, 14 Jul 2026
- 17:06:59 -0700 (PDT)
+        bh=/Posiz6SyHI18ZzNxfW2MMGe/wdPnlrQImo+lR8UcNI=;
+        b=dWuXT9PM6Icj+jK+zBeFLfKvGMZ/wxQeb6BKydrjBilbt97IMRNqSo0X9udHsV70Bn
+         yfLyJXaKK6n62gXe7ndBIiBLt4QnUqxNopl5taOddB7hj7hVhF0d+Ed8eND3+1gf+zyM
+         RFmfNKSCx77veeLKdkJBa2MofyhJhEWTjP5AlQyQvxU7WuIfgf/Lrq0d+U4XS5v3WeLH
+         Yq8z3lBsEbJgK+k4/MQozihGcbGBauY/7FOKJSk3MILcIka7jesoOtOt0r+wIelFsky4
+         nspYySC1ePAbcYZPLey74YFIjY06PX4k27+K37ArRSbtXR5ggp4BxTnbKFQ/ZgTBiqZh
+         ey0g==
+X-Gm-Message-State: AOJu0YwbG/GWMA00GH1bxcVfnvQf/MK6B9xLvKfhJ9Qdevf6T+dWZ+j5
+	9IoFzJz6/EZzfc9EGE8T+K5hutgM/3bFcg9c/IvcR5g23By9RybERJV9dqA4czLfgxmSYVnhb0g
+	rUWyTzVm8j37YkFiR2hwDBVA31HMmSHFy4/CFSmhZ
+X-Gm-Gg: AfdE7ck0HVVellh3scOF8ieQQnY7lTM2XBaeLFokItjIA1spUEjGUhw+loBv7agWZnn
+	XQ6iaholwiqacMjK9N8a7w3ppTiL55fxQV5tylD7yp6AJnQL7S4e/xhtMhKtbFqEZ9Q2hQ1s/3P
+	kAqvoqXVL7vthzFBo18kt4xi2gG/Gk/NjpKMHrSJm42V5T9tFykLZqNUYuX73bDPpJg9j/TUqKv
+	Ikjm7+EsGQyl4Jl2oI5rCxGKAuMFhr3hXu8CpepwmjbVn7yuTsaI+kYLKCuZrVMXrpMR5nCvAOo
+	LThSwUjO1RQ522qNWT5YhPWTNk92Aa2O627QHho+88CUZdqNbqN3o4ZYRzk=
+X-Received: by 2002:a05:6a20:7344:b0:3c0:9c19:65b5 with SMTP id
+ adf61e73a8af0-3c36c42b1ebmr706771637.61.1784074182038; Tue, 14 Jul 2026
+ 17:09:42 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 14 Jul 2026 17:06:59 -0700
+ HTTPREST; Tue, 14 Jul 2026 17:09:41 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 14 Jul 2026 17:06:59 -0700
+ HTTPREST; Tue, 14 Jul 2026 17:09:41 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260714231015.3337831-7-seanjc@google.com>
-References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-7-seanjc@google.com>
+In-Reply-To: <20260714231015.3337831-8-seanjc@google.com>
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-8-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 14 Jul 2026 17:06:59 -0700
-X-Gm-Features: AUfX_mxQm68yl4Vo3_LIRVbitzTqwBY7WF58Mhm8WJlRgKBSK0sif-PgrebnF2A
-Message-ID: <CAEvNRgG1Jm7k1F1H9TK3ACvsbHYBzoNEohvii_N0_da_ForTRw@mail.gmail.com>
-Subject: Re: [PATCH v5 6/7] KVM: x86: Combine .gmem_prepare()+.gmem_invalidate()
- into .gmem_convert()
+Date: Tue, 14 Jul 2026 17:09:41 -0700
+X-Gm-Features: AUfX_mz2v0InLZxjxyRyoHZNy0Kaohoxa7Y2asUmYCzSui5X52JB2vtDhTdcpZg
+Message-ID: <CAEvNRgGCy5yqtRWT5vfa_hT-u7mu8D1wDGPAjPyx5qgKHHFyUw@mail.gmail.com>
+Subject: Re: [PATCH v5 7/7] KVM: guest_memfd: Rework PREPARE config and hook
+ into a more generic CONVERT
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Fuad Tabba <tabba@google.com>
@@ -99,44 +99,18 @@ Content-Type: text/plain; charset="UTF-8"
 
 Sean Christopherson <seanjc@google.com> writes:
 
-> +int sev_gmem_convert(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> +		     kvm_pfn_t nr_pages, int order, bool to_private)
-> +{
-> +	if (to_private) {
-> +		if (WARN_ON_ONCE(!kvm || gfn >> (kvm_host.maxphyaddr - PAGE_SHIFT)))
-
-Omg, maxphyaddr is actually the number of bits in an address and not an
-address!
-
-Thanks for explaining on v4.
-
-> +			return -EIO;
-> +
-> +		return sev_gmem_make_private(kvm, gfn, pfn, nr_pages, order);
-> +	}
-> +
-> +	sev_gmem_make_shared(pfn, nr_pages);
-> +	return 0;
-> +}
-> +
+> Rework guest_memfd's "prepare" hook into a more generic "convert" flow in
+> anticipation of supporting in-place conversion, at which point KVM will use
+> the hook for both to-private and to-shared conversions, not just to
+> "prepare" PRIVATE memory.
 >
-> [...snip...]
+> Opportunistically rename kvm_gmem_prepare_folio() to kvm_gmem_make_private()
+> to better reflect its role.
 >
-
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
->  void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
->  {
-> -	kvm_x86_call(gmem_invalidate)(pfn, pfn + nr_pages);
-> +	WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
-
-This setup means later pKVM would have to define a .gmem_convert but
-actually only use it for reclaim, which seems kind of an odd
-definition. (We can fix this later.)
+> No functional change intended.
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
->  }
->  #endif
->
-> --
-> 2.55.0.141.g00534a21ce-goog
+Thanks!
