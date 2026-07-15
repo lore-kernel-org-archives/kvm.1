@@ -1,286 +1,347 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFB840EBA9;
-	Wed, 15 Jul 2026 15:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3E0480DE6;
+	Wed, 15 Jul 2026 15:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784129015; cv=none; b=TFN+bKZjvz00aq1X+GcCrPdWiTitVGmPD7/mig7wgFepy6DUvO/YcOPky9lTS7Q2ESfIcibCXl4Uc+YFo0DIX7xejCOqGtTHLlA3MWSezX14qeGHnfq3OluZVyAW6DLT3lWfyb27yiOhlFtK/glexQLlMtRaQeytJH54U0NjPk8=
+	t=1784129397; cv=none; b=JJez2hGOMi/Vt5+mKT2LhTJjeBV7hgb/Z07yPBndiXLrF0+YZjJnW2ZtKeE+lSwf+i6xc7o9MRdx8YTRduiImzv3KR1g6le7hfbSJrQjdQrwIZ4Y2+D129v3c4NWfWIq5rpSiiKCxv07sAHsaYchVyBRxQmLaxreWk0mAIwqc40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784129015; c=relaxed/simple;
-	bh=9qP5LTAAk44gQZWTOXHoo7e15j4FHHXFk9sg8XT9+0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u03MzYz3xa6h66jCcaIBK9vHWA9H6o0xbd/kAtalWra2u7LemVbnTirWdid7nFS1XTcmsOlVrnfI3W6JxRF5m9ZRMtKvzmG12/3ni2gYR+KmTFtk/PoENoruO1cdNaOczfrjfSur2Q1b3zvx00M27orqs83+Zdwl5EoU6TfuW2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHFyZ3/E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784129397; c=relaxed/simple;
+	bh=hyBfho3fe9EoSQo9+7TxXsKWR0m1HcRr+LjZ1CToV9g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MvFIY8uGUGXm4juRDs7Tts9CiBhJGpLO2nStYUKIO6BHgJmezbJKsiUexGtedeaIvo4tUlWOG0qAYA7wdFxHb4rfWulcKdPHHx9F7TdRptVnx2SiCZTPY1aemjqeRkFpfykHe0QNjoDeyTm3OD5foaZPJnVfEs6A4M2h3EFjDqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nP9Vcfd0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHFyZ3/E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C0D1F000E9;
-	Wed, 15 Jul 2026 15:23:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nP9Vcfd0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAEA1F000E9;
+	Wed, 15 Jul 2026 15:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784129013;
-	bh=gADdUqFqdyogeafk3zRAASxcmVNA8sWMqOF6K7MzJug=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZHFyZ3/ESAlbGMLodf52X6TrDO35Fk0c445fZjc/iDIOmZR8ceLOBcpqvIoraEE/T
-	 zeZLVqqi8htF9IPg8x+JFm/Ztq0YO7W22l91dvkihGZ/j+CaDbNRZ39M+h2IRRAPJn
-	 gOwM6i12c2CphR2jeaPmOSZdn2QRqByY6vZbMn4L22uOeN5KpZu94g9LE+GSWDYy6a
-	 desBFAJqgZSmmDqsf6sL7guf2TNq50pwPkhffsRmu0Wzj0YQUUSEp7cTuNMhMWtN9x
-	 FtkNO+2bfvmhwRnIK4YG/8FPR+l9FBnCEYqbL8I9dQIXx97pCo7on9ZfnrfGoOLbdP
-	 TCsIyKOC40Lgg==
-Message-ID: <e98110da-f26a-46ca-8360-fc84fc159bd8@kernel.org>
-Date: Wed, 15 Jul 2026 17:23:09 +0200
+	s=k20260515; t=1784129395;
+	bh=68L1pqlN1cUg3j3+jVJQc9w3RUlgKSEU0hp6XIkSh+k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nP9Vcfd0f5Hvf8GrOOzdUsHuiKypNQaqX5VwATh0Pxo232IAWZHKCQ/NOhBjWzsM8
+	 eSB8ycRB4DMSlRnGTJTWon6tH3lsyUux+8PJqWtsNVN4x/oC0uN3AAnPeBJQoac24Z
+	 wJFqdIzTxfYXK1RIbCIbKuBpOc3Ys7uSTpvpRwN7SBR+CGxR6CCHPEvR/ZfzB7TXwS
+	 kNUHDKlImtHyOHnftHgVGBum01xsLMJIYjz2Ymh8gTK1aH9gHgrajhnrSE9ISy/Xgl
+	 0XOKTkDDwJqS8hm1w3cpXg5Y5Yf3YDiuzpM4Zbm51RA6gA5k2l/h65fjMesjzNO2OC
+	 qw8bHMkWkCASQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 5/6] firmware: arm_rmm: Add support for SRO
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Steven Price" <steven.price@arm.com>
+Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
+In-Reply-To: <20260715142739.80398-6-steven.price@arm.com>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-6-steven.price@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 15 Jul 2026 15:29:54 +0000
+Message-Id: <20260715152954.ECAEA1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 18/33] mm/vma: use vma_start_pgoff(),
- linear_page_index() in mm code
-Content-Language: en-US
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>,
- Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
- Peter Xu <peterx@redhat.com>, Kees Cook <kees@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov
- <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Usama Arif <usama.arif@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- damon@lists.linux.dev, iommu@lists.linux.dev, kasan-dev@googlegroups.com,
- linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-18-2a5aa403d977@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-18-2a5aa403d977@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 7/10/26 22:16, Lorenzo Stoakes wrote:
-> There are many instances in which linear_page_index() (as well as
-> linear_page_delta()) is open-coded, which is confusing and inconsistent.
-> 
-> Additionally, vma->vm_pgoff doesn't necessarily make it clear that this is
-> the page offset of the start of the VMA range.
-> 
-> Doing so also aids greppability.
-> 
-> So use vma_start_pgoff() in favour of directly accessing vma->vm_pgoff, and
-> linear_page_index() where we can.
-> 
-> This also lays the ground for future changes which will add an anonymous
-> page offset in order to be able to index MAP_PRIVATE-file backed anon
-> folios in terms of their virtual page offset.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: SJ Park <sj@kernel.org>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Thank you for your contribution! Sashiko AI review found 8 potential issue(=
+s) to consider:
+- [High] Kernel infinite loop when SRO memory allocation fails and the oper=
+ation cannot be cancelled.
+- [High] SRO wrappers wipe and free the `rmi_sro_state` struct unconditiona=
+lly, leaking cached memory and breaking cross-call reuse.
+- [High] `rmi_op_cancel` overwrites the `regs` structure with the cancellat=
+ion request result, destroying the SRO loop state and leaving the RMM opera=
+tion incomplete.
+- [High] Out-of-bounds array read and arbitrary memory free when handling a=
+n overflow condition in SRO reclaim.
+- [High] Missing clamp on `donated_granules` in `rmi_sro_donate_contig` all=
+ows a malicious or buggy RMM to trigger arbitrary out-of-bounds page frees.
+- [Medium] Incorrect alignment check using `IS_ALIGNED` with potentially no=
+n-power-of-two sizes.
+- [Medium] SRO wrappers hardcode `GFP_KERNEL`, directly contradicting the s=
+tated goal of supporting atomic execution contexts.
+- [Low] Usage of non-standard macro `kmalloc_obj()` causes compilation fail=
+ure.
+--
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+--- Patch [5]: [PATCH 5/6] firmware: arm_rmm: Add support for SRO ---
+commit 105823e0511b9065ecd4f5281f43bd808384b24c
+Author: Steven Price <steven.price@arm.com>
 
-Nit:
+firmware: arm_rmm: Add support for SRO
 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 2058db9c01d5..d10b8042adb5 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -10,6 +10,7 @@
->  #include <linux/mman.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/page_idle.h>
-> +#include <linux/pagemap.h>
->  #include <linux/pagewalk.h>
->  #include <linux/sched/mm.h>
->  
-> @@ -623,8 +624,8 @@ static void damos_va_migrate_dests_add(struct folio *folio,
->  	}
->  
->  	order = folio_order(folio);
-> -	ilx = vma->vm_pgoff >> order;
-> -	ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> +	ilx = vma_start_pgoff(vma) >> order;
-> +	ilx += linear_page_delta(vma, addr) >> order;
+This commit introduces Stateful RMI Operations (SRO) for RMM v2.0, allowing
+SMC operations to return while still in progress and be continued later. It
+adds infrastructure to track and reuse allocated memory during these
+operations to support execution in contexts where memory allocation is
+difficult. The patch also provides wrappers for SRO commands and modifies
+delegate/undelegate handlers to use the stateful infrastructure.
 
-Could these be combined to linear_page_index(vma, addr) >> order?
+> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/r=
+mi_cmds.h
+> index 7eb2c8d7f7fa8..f13ecdb40ded4 100644
+> --- a/arch/arm64/include/asm/rmi_cmds.h
+> +++ b/arch/arm64/include/asm/rmi_cmds.h
 
->  
->  	for (i = 0; i < dests->nr_dests; i++)
->  		weight_total += dests->weight_arr[i];
+[ ... ]
 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index b39111abdc4b..1dbb4c6f824e 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3411,8 +3411,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * of memory.
->  		 */
->  		struct vm_area_struct *vma = vmf->vma;
-> -		unsigned long start = vma->vm_pgoff;
-> -		unsigned long end = start + vma_pages(vma);
-> +		const unsigned long start = vma_start_pgoff(vma);
-> +		const unsigned long end = vma_end_pgoff(vma);
->  		unsigned long ra_end;
->  
->  		ra->order = exec_folio_order();
-> @@ -3930,7 +3930,8 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		goto out;
->  	}
->  
-> -	addr = vma->vm_start + ((start_pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +	addr = vma->vm_start +
-> +		((start_pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-
-This could be linear_page_index(vma, start_pgoff) <<
-
->  	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
->  	if (!vmf->pte) {
->  		folio_unlock(folio);
-
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2049,8 +2049,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
->  		pol = get_task_policy(current);
->  	if (pol->mode == MPOL_INTERLEAVE ||
->  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
-> -		*ilx += vma->vm_pgoff >> order;
-> -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> +		*ilx += vma_start_pgoff(vma) >> order;
-> +		*ilx += linear_page_delta(vma, addr) >> order;
-
-Also?
-
->  	}
->  	return pol;
+> @@ -46,6 +142,98 @@ static inline int rmi_realm_activate(unsigned long rd)
+>  	return res.a0;
 >  }
+> =20
+> +/**
+> + * rmi_realm_create() - Create a realm
+> + * @rd: PA of the RD
+> + * @params: PA of realm parameters
+> + * @sro: Preallocated SRO context to be used
+> + *
+> + * Create a new realm using the given parameters.
+> + *
+> + * Return: RMI return code
+> + */
+> +static inline int rmi_realm_create(unsigned long rd, unsigned long param=
+s,
+> +				   struct rmi_sro_state *sro)
+> +{
+> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
+> +				   SMC_RMI_REALM_CREATE, rd, params);
+> +}
 
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -975,7 +975,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
->  		/* read the contents of a file into the copy */
->  		loff_t fpos;
->  
-> -		fpos = vma->vm_pgoff;
-> +		fpos = vma_start_pgoff(vma);
->  		fpos <<= PAGE_SHIFT;
->  
->  		ret = kernel_read(vma->vm_file, base, len, &fpos);
-> @@ -1378,7 +1378,8 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	delete_nommu_region(vma->vm_region);
->  	if (new_below) {
->  		vma->vm_region->vm_start = vma->vm_start = addr;
-> -		vma->vm_region->vm_pgoff = vma->vm_pgoff += npages;
+[Severity: Medium]
+The commit message states the SRO framework permits operations to be done i=
+n a
+context where memory allocation may be difficult, such as an atomic context.
+However, does passing GFP_KERNEL here directly contradict that goal? If
+rmi_sro_ensure_capacity() requires memory, it will call alloc_pages_exact()
+with GFP_KERNEL, which will sleep.
 
-yuck, good to remove that ugly construct
-it's not the only occurence in this function
-oh well
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
+i.c
+> index e7ab4a7df3ca8..6a9f61760fd77 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
 
-> +		vma->vm_pgoff += npages;
-> +		vma->vm_region->vm_pgoff = vma_start_pgoff(vma);
->  	} else {
->  		vma->vm_region->vm_end = vma->vm_end = addr;
->  		vma->vm_region->vm_top = addr;
+[ ... ]
+
+> @@ -22,6 +23,487 @@ unsigned long rmi_feat_reg(unsigned long id)
+
+[ ... ]
+
+> +static void rmi_op_cancel(unsigned long sro_handle,
+> +			  struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	struct arm_smccc_1_2_regs regs =3D {
+> +		SMC_RMI_OP_CANCEL, sro_handle
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +}
+
+[Severity: High]
+Does rmi_op_cancel() overwrite the caller's out_regs with the cancellation
+result? When called from rmi_sro_memxfer_execute(), a successful cancel
+returns RMI_SUCCESS in out_regs->a0. This would cause the loop condition
+(RMI_RETURN_STATUS(regs->a0) =3D=3D RMI_INCOMPLETE) to fail early and aband=
+on
+the operation before it completes, potentially causing future RMM operations
+to fail.
+
+[ ... ]
+
+> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+> +				 unsigned long sro_handle,
+> +				 unsigned long donatereq,
+> +				 struct arm_smccc_1_2_regs *out_regs,
+> +				 gfp_t gfp)
+> +{
+> +	unsigned long unit_size =3D RMI_DONATE_SIZE(donatereq);
+> +	unsigned long unit_size_bytes =3D donate_req_to_size(donatereq);
+> +	unsigned long count =3D RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state =3D RMI_DONATE_STATE(donatereq);
+> +	unsigned long size =3D unit_size_bytes * count;
+> +	unsigned long addr_range;
+> +	int ret;
+> +	void *virt;
+> +	phys_addr_t phys;
+> +
+> +	for (int i =3D 0; i < sro->addr_count; i++) {
+> +		unsigned long entry =3D sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_SIZE(entry) =3D=3D unit_size &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) =3D=3D count &&
+> +		    RMI_ADDR_RANGE_STATE(entry) =3D=3D state &&
+> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+
+[Severity: Medium]
+Can size be a non-power-of-two here? The IS_ALIGNED() macro evaluates a
+bitwise AND with (size - 1) and strictly requires the alignment to be a
+power of two. If the RMM requests a contiguous donation where count is not a
+power of two, this check uses an invalid bitmask.
+
+> +			sro->addr_count--;
+> +			swap(sro->addr_list[sro->addr_count],
+> +			     sro->addr_list[i]);
+> +
+> +			goto out;
+> +		}
+> +	}
+
+[ ... ]
+
+> +out:
+> +	rmi_op_mem_donate(sro_handle,
+> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+> +			  0, out_regs);
+> +
+> +	unsigned long donated_granules =3D out_regs->a1;
+> +	unsigned long donated_size =3D donated_granules << PAGE_SHIFT;
+> +
+> +	if (donated_granules =3D=3D 0) {
+> +		/* No pages used by the RMM */
+> +		sro->addr_count++;
+> +	} else if (donated_size < size) {
+
+[Severity: High]
+Is it possible for the RMM to return a maliciously large value for
+donated_granules here? Unlike rmi_sro_donate_noncontig() which clamps
+this value, this function does not. If the value overflows the bitwise shif=
+t,
+donated_size could appear small, causing the kernel to erroneously enter the
+free loop below and release pages that the RMM may actively be using.
+
+> +		phys =3D sro->addr_list[sro->addr_count] & RMI_ADDR_RANGE_ADDR_MASK;
+> +
+> +		/* Not all granules used by the RMM, free the remaining pages */
+> +		for (long i =3D donated_size; i < size; i +=3D PAGE_SIZE) {
+> +			if (state =3D=3D RMI_OP_MEM_DELEGATED)
+> +				free_delegated_page(phys + i);
+> +			else
+> +				__free_page(phys_to_page(phys + i));
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+> +			   unsigned long sro_handle,
+> +			   struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	unsigned long capacity;
+> +	int ret;
+> +
+> +	ret =3D rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		rmi_sro_free(sro);
+
+[Severity: High]
+If rmi_sro_ensure_capacity() fails because sro->addr_count is greater than
+RMI_MAX_ADDR_LIST, it returns -EOVERFLOW. Passing sro to rmi_sro_free() in
+this state will cause the loop in rmi_sro_free() to iterate out-of-bounds
+past the end of the addr_list array, reading garbage data and attempting to
+free it.
+
+> +
+> +	capacity =3D RMI_MAX_ADDR_LIST - sro->addr_count;
+
+[ ... ]
+
+> +unsigned long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t g=
+fp)
+> +{
+> +	unsigned long sro_handle;
+> +	struct arm_smccc_1_2_regs *regs =3D &sro->regs;
+> +
+> +	rmi_smccc_invoke(regs, regs);
+> +
+> +	sro_handle =3D regs->a1;
+> +
+> +	while (RMI_RETURN_STATUS(regs->a0) =3D=3D RMI_INCOMPLETE) {
+> +		bool can_cancel =3D RMI_RETURN_CAN_CANCEL(regs->a0);
+> +		int ret =3D 0;
+> +
+> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+> +		case RMI_OP_MEM_REQ_NONE:
+> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+> +					regs);
+> +			break;
+> +		case RMI_OP_MEM_REQ_DONATE:
+> +			ret =3D rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+> +					     gfp);
+> +			break;
+> +		case RMI_OP_MEM_REQ_RECLAIM:
+> +			ret =3D rmi_sro_reclaim(sro, sro_handle, regs);
+> +			break;
+> +		default:
+> +			ret =3D WARN_ON_ONCE(1);
+> +			break;
+> +		}
+> +
+> +		if (ret) {
+> +			if (can_cancel)
+> +				rmi_op_cancel(sro_handle, regs);
+> +
+> +			if (WARN_ON_ONCE(RMI_RETURN_STATUS(regs->a0) !=3D RMI_INCOMPLETE))
+> +				return ret;
+> +		}
+> +	}
+
+[Severity: High]
+Does this code loop infinitely if a memory allocation fails and can_cancel =
+is
+false? If ret is set to an error code and can_cancel is false, rmi_op_cance=
+l()
+is skipped. The regs state is not modified, so RMI_RETURN_STATUS(regs->a0)
+remains RMI_INCOMPLETE, the WARN_ON_ONCE check fails, and the loop repeats
+indefinitely without returning the error.
+
+[ ... ]
+
+> @@ -80,8 +562,9 @@ static int rmi_configure(void)
+>  {
+>  	unsigned long ret;
+>  	struct rmm_config *config __free(free_page) =3D (struct rmm_config *)ge=
+t_zeroed_page(GFP_KERNEL);
+> +	struct rmi_sro_state *sro __free(kfree) =3D (struct rmi_sro_state *)kma=
+lloc_obj(*sro);
+
+[Severity: Low]
+Is kmalloc_obj() a standard kernel macro? It does not appear to exist in the
+standard kernel headers, which will result in an implicit function declarat=
+ion
+error and build failure.
+
+> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+> index c038c1d685fad..138983ab4e3c2 100644
+> --- a/include/linux/arm-rmi-cmds.h
+> +++ b/include/linux/arm-rmi-cmds.h
+
+[ ... ]
+
+> @@ -19,10 +19,45 @@ struct rtt_entry {
+
+[ ... ]
+
+> +#define rmi_sro_memxfer_cmd(sro, gfp, ...) ({				\
+> +	struct rmi_sro_state *__sro =3D (sro);				\
+> +	*__sro =3D (struct rmi_sro_state){ .regs =3D {__VA_ARGS__} };	\
+> +	int __ret =3D rmi_sro_memxfer_execute(__sro, gfp);		\
+> +	rmi_sro_free(__sro);						\
+> +	__ret;								\
+> +})
+
+[Severity: High]
+Does this macro unconditionally wipe and free the rmi_sro_state struct? The
+compound literal assignment *__sro =3D (struct rmi_sro_state){ ... } will
+zero-initialize addr_count and addr_list, wiping any cached addresses from a
+previous attempt. Furthermore, calling rmi_sro_free() unconditionally before
+returning frees any allocated memory, defeating the stated design goal of
+reusing memory across calls.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715142739.8039=
+8-1-steven.price@arm.com?part=3D5
