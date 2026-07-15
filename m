@@ -1,121 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466A197A7D;
-	Wed, 15 Jul 2026 07:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00BBD3B7B96;
+	Wed, 15 Jul 2026 07:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100811; cv=none; b=cRbYNtVfYG/0Pjw8pvW324wd2Ehs1sO3o2Ox+F6ZOQ3OH+N8dJ6iTG5DGbHQGJeUXMJ8kfUw7iqhDpmgH/FSXnXEKPqdO8v8mbFbx7qS1c5Yv50Jtv1XBVtSc34itU5GatppTmgAIZBdSV7v6uH+mJo8WEiSXZgDt1UZvM7LL0I=
+	t=1784100952; cv=none; b=M8V+wdLUyRnt1HWkNmwOfzlADjHxjxxlr1knqWbhQbQ09tOG0UmcxEfqKdc8gv5MlOu3uuJc5/kOdH7aqttYJ5qyvtzriCeBy5mDjLFf101HARzpxgv5zPma0II5b4+qnTCfw/CohLINlfOytczqBzrcJmgOBNxV7L3PejKaSGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100811; c=relaxed/simple;
-	bh=HwzDIVLtMNUqyvmxz+Fkvf74eeV+hT3xl516AIkD1ro=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s0eg7STKst7sxD8uW3raxNqXG42Wm+9Kh1Jy/gucyHe8eVI/uQSRhoxDea9Gr5xjBL54X+d6OR40D7XgovV9luX3htC02uIe0b/RpzJzzM0n3oW4Y2Qq/HthuYPNUoEWDOgoXVRGNKEEegpln7K3DY1rBEbCa9FPtmZO8T5rgBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAB8e4gF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784100952; c=relaxed/simple;
+	bh=NptDMkS6Qr1yixQJUThm0z6U00IUO35X14f2lvHWgPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RUycDMCs3GAAaw42Z9H8me/EIRW0YJGwzbAmLqWgw5hjeqMHbz9JK7uRqT1vw4l2JGOsrEggz9+xcyfhpvHhuJOuV8jqAffEsyeJdQrYovON8neVkNOlwqPaQ/XoaZzFSXHHWeKfneED8QHfeeqqNzsUk+ZSewowRAI61FJxAPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoXslAMM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAB8e4gF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DBD1F000E9;
-	Wed, 15 Jul 2026 07:33:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoXslAMM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FADF1F00A3D;
+	Wed, 15 Jul 2026 07:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784100809;
-	bh=ldCo8PQ8EYqHIgnSDGINw7RWQgX50oxLyi+MVwAa4CI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gAB8e4gFfwZMP7ZEp6O4/plbFeDHqfG2G38PzFUhDrns5P55nwXMlNn+FZJJlQ/u4
-	 TULI+Tu++obKIOtV6s8TaIQDZURTljeCHo4qL6Mgfzruq8r300JZBLlGiWV5ue0EwO
-	 /7mRp9dY9nJLPXkyziVUhewqLWtjAgCrjMktr4tOMwPsab7sjuN4828xlJZ62tBoqh
-	 oOBnel3iOgsfWcj5B9RWxXOqOe21w82F/qtsjia/OYPaGUxLzUgqzSdiWV855hhUC3
-	 +aXa9z9i3ti46255+rQG0cjfC5NEJhzbPEGp/9XZ0usBvp6s95w1QVq8rs2rRUY13a
-	 vlDBhk9g/hyGA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wju7T-00000005BTO-1ZMR;
-	Wed, 15 Jul 2026 07:33:27 +0000
-Date: Wed, 15 Jul 2026 08:33:26 +0100
-Message-ID: <86fr1kogft.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Wei-Lin Chang <weilin.chang@arm.com>
-Cc: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: Re: [PATCH v2 25/28] KVM: arm64: Engage NV3 TLBI trap elision
-In-Reply-To: <nre6kiamcmf4azxni5def5kd5p74ia7rp7ynenpyczqticjcof@4inxwalqfyth>
-References: <20260714091641.1970822-1-maz@kernel.org>
-	<20260714091641.1970822-26-maz@kernel.org>
-	<nre6kiamcmf4azxni5def5kd5p74ia7rp7ynenpyczqticjcof@4inxwalqfyth>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1784100944;
+	bh=vOrSGgvjfu6AlrRDbJK8SzilZUKXB43aBCWFKatGaw0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KoXslAMMJINuAQGsJNWtQ+lLOUhDhlf3IKGAL1uZ88QrKUJg3DSiOLRN5+x9k2Nu5
+	 JvfJmWp5JE3kXdebKvLD4sGs+uXVb2m9cjw6Jcod11ct7o+sqn7yH6cOlao93CTAzQ
+	 NABQb4e7+w5dp5RNSFDNNz1mxRw8M+i01v8xTKAR+IM3kCayePMAp2S+dxXKoQuKRu
+	 r9Paw5AFd8hyiu3Y1htVzLNqYb3xTLyM3yiCcolqOvy3dZXrZkJUvg9IeYHApec8Dt
+	 Dxk7sgu7XmoWT+L0PXJfE/R73nE6Z+JbP0++KMHrYVGsCzZYfv/XyeBtFX3zW+8K4o
+	 6bVRzC1KMGqHg==
+Date: Wed, 15 Jul 2026 08:35:30 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org, bp@alien8.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, 
+	thomas.lendacky@amd.com, hpa@zytor.com, david@kernel.org, yangge1116@126.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: SEV: drop FOLL_WRITE for encrypted region
+ registration
+Message-ID: <alc4HsXeNaJczPSi@lucifer>
+References: <20260715063626.65899-1-pankaj.gupta@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: weilin.chang@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715063626.65899-1-pankaj.gupta@amd.com>
 
-On Wed, 15 Jul 2026 01:16:44 +0100,
-Wei-Lin Chang <weilin.chang@arm.com> wrote:
-> 
-> On Tue, Jul 14, 2026 at 10:16:38AM +0100, Marc Zyngier wrote:
-> > Similarly to the ERET elision mechanism, FEAT_NV3 can elide TLBIs
-> > that only affects the guest's S1 translation. Enable this, with the
-> > express condition that the guest isn't NV2 aware, as we otherwise
-> > need to trap these TLBIs to deal with VNCR mappings.
-> > 
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/kvm_emulate.h | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> > index b32870a5e1236..d17b161d4ba3a 100644
-> > --- a/arch/arm64/include/asm/kvm_emulate.h
-> > +++ b/arch/arm64/include/asm/kvm_emulate.h
-> > @@ -715,6 +715,19 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
-> >  		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
-> >  		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
-> >  			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
-> > +
-> > +			/*
-> > +			 * If the guest is NV2-capable, then we need to see
-> > +			 * all the TLBIs, as configured in HCR_EL2.
-> > +			 * Otherwise, relax the TLBI traps to only TGE=0.
-> > +			 */
-> > +			if (!kvm_has_nv2(vcpu->kvm)) {
-> > +				vcpu->arch.hcrx_el2 |= (HCRX_EL2_NVnTTLB   |
-> > +							HCRX_EL2_NVnTTLBIS);
-> > +
-> > +				if (kvm_has_feat(kvm, ID_AA64ISAR0_EL1, TLB, OS))
-> > +					vcpu->arch.hcrx_el2 |= HCRX_EL2_NVnTTLBOS;;
-> > +			}
-> 
-> I also suspected if this is dead code, but Sashiko had beat me to it :P
-> So from your response in v1, is this code here just for completeness?
+On Wed, Jul 15, 2026 at 01:36:26AM -0500, Pankaj Gupta wrote:
+> Commit 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering
+> encrypted memory regions") added FOLL_LONGTERM to
+> sev_mem_enc_register_region() so anonymous guest RAM is migrated out of
+> MIGRATE_CMA/ZONE_MOVABLE before a long term pin. It also kept
+> FOLL_WRITE on the pin.
+>
+> Combining FOLL_WRITE with FOLL_LONGTERM breaks registration of file-backed
+> guest memory, such as virtio-pmem host memory-backend-file mappings
+> (MAP_SHARED). GUP rejects long-term writable pins on dirty tracked file
+> mappings since:
+>
+> commit 8ac268436e6d ("mm/gup: disallow FOLL_LONGTERM GUP-nonfast writing to file-backed mappings")
+> commit a6e79df92e4a ("mm/gup: disallow FOLL_LONGTERM GUP-fast writing to file-backed mappings").
+>
+> Region registration only requires long-term pin to prevent page migration and
+> does not write through this GUP pin.
+>
+> Drop FOLL_WRITE and pin guest memory only with FOLL_LONGTERM.
+>
+> Fixes: 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering encrypted memory regions")
+> Cc: stable@vger.kernel.org
+> Suggested-by: "David Hildenbrand (Arm)" <david@kernel.org>
+> Link: https://lore.kernel.org/all/ad784f05-b36c-4e91-9f17-4c5b826735d0@kernel.org/
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@amd.com>
 
-No, this is functional. It is just that we don't have any way to
-expose to a nested guest something that would be in the outer
-shareable domain, and not in the inner one.
+Nice and simple, works for me :) So:
 
-> It's amusing that we're not able to take advantage of this feature at
-> all!
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-We can. It is just that there is nothing out there that will exercise
-it.
+> ---
+> v1 -> v2
+> - Remove FOLL_WRITE when the pin is not used for host writes
+>
+> v1: https://lore.kernel.org/all/20260701144543.39582-1-pankaj.gupta@amd.com/
+>
+>  arch/x86/kvm/svm/sev.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 427229347876..5f2998761462 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2752,7 +2752,7 @@ int sev_mem_enc_register_region(struct kvm *kvm,
+>  		return -ENOMEM;
+>
+>  	region->pages = sev_pin_memory(kvm, range->addr, range->size, &region->npages,
+> -				       FOLL_WRITE | FOLL_LONGTERM);
+> +				       FOLL_LONGTERM);
+>  	if (IS_ERR(region->pages)) {
+>  		ret = PTR_ERR(region->pages);
+>  		goto e_free;
+> --
+> 2.34.1
+>
 
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Cheers, Lorenzo
