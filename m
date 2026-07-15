@@ -1,238 +1,204 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C7148C8A1
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 20:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513C9302149
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 20:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784146897; cv=none; b=JYszX+m7eAc2PYJmDST/NSrCecZrIMroLjsD+tVjwBpxM9mbaBrRY+kDW8cq2v8WyQa9ZNm6AUBf+Ib6x4RWgdGmwVmtVaN0QHUbhjhoMbQGFmK5aburTys9hAS3aloQ1k7f+Cv9Ev+A8kOxg9oAbPdh4LpDkJmag/2wW3y7K4w=
+	t=1784148366; cv=none; b=e85/3+FULKFloZJDl36H/4Jo58B+mphToriDGFYstyrk1erpzVLeffpzMRbv8LTwJjnI2XY/Bb5JeJNDw9umbmOrSWm06qMvw+uvdulmplQKcyN4SxN/6qfweAZGADToFKvfYfOdpqY+q56mWZ6jWwCLZS5do+1g47jKVbb6YdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784146897; c=relaxed/simple;
-	bh=TMO+ZtzOekX2OtuNgEzrmbwxifGyKoAWld9R+o0jWjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BNicCmZ644Y7824LtoeXv4UpRVT5w0J6mBRc+dnBxk+LCa4X8sNZHmRS1TEz7F+01GQ5yafFFGx8mYNHTNMn7kVk2vuutotrBnPPzJYpZk2V8jYOWLdcCLWxlyWpbWH5wbmMQ0JMZ4CnXLxBUMDKKmfjf5K0jo0V6BRnrnnqNcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TpfpiO1f; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1784148366; c=relaxed/simple;
+	bh=CxIAFZrQrMfyrJD798A2khL2NXf11+oUSp6ceco9Zwk=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PyJw6LE2QIyMkldcDFI8Fpw/Cgs1vVu5Wdki8kLG5d+hczke/wKeMNFa2uLcRbst6BtRscz/3u8ivP1PcBDO0aRvhSAz6019Ja8T6jURWXw17vmtvVq64VW/uDBl1KEgNaM5z8VeOYfboFHetQfRSKV156knihrjxn4s9ub1MZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=FIwiFHwI; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TpfpiO1f"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso2778689a91.2
-        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 13:21:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1784146895; x=1784751695; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fBNMuYev9SK9XP/q4UAGz8mTO3r2lm4owsLqkSYGd/A=;
-        b=TpfpiO1f7umugSa6EaiIH4mwOfmLcR5DNL8UOsNyU7Oeh9ZLnbUDnZJ78ce2pk6U/g
-         WoIcTNVqugFco9ta4FHPYolpjJltguRDcXOG+sIpNGhdgyof0g+ph7GEM79Kxga4ucKC
-         9tR8CJPmZMfAXYYZzq8BcfSiGrgMYO8P7zK4UuZ3u2SxShM6oy9EbNlu54tezpHEWNAl
-         j2rq13KIGaFfEzDUEy2iyonPjR5ZO6vGvn2nFKpZSJ5OVTaeVDGfwdF4cvdfcpnjbzTy
-         EK/kWhLXTL5s/uD+UJ6tPOC0xqfVAC1+J8ihSdHJLlirpFF2p8XRuRy2vI/mnpOsUYt5
-         jOZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784146895; x=1784751695;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fBNMuYev9SK9XP/q4UAGz8mTO3r2lm4owsLqkSYGd/A=;
-        b=XrrmbDL5VbKR7umfeA3D8geMLMUSpoxAWwljzM7LTigJlYDOSpe4XrXJOXRRwesIlU
-         eJfb9KDHUZ9YGKdyRmkdT1TYjEc2Fn0/zgBFL2EbHI15MO5PR+bGwXIZsqLDrjjVLAg+
-         pCR+HvBzxUN3VS1sMteg8wl1v4PwhjOQKwFTPpm6BRUHkloZPXY5kY7+me6mpRdfkUeQ
-         UU2PNlt6XiFcpHPnmhOjBRLxyFnSJCtxpFw3HQWDK3DWe47tSatNysFcf1ljQAR44o4k
-         NuKszBjtB228nKMTNExP+msRhHkE2pcVQgeZidyFRMpMxvqz073dOmETqvjUvXfI5LO7
-         ielw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpy9oOaZCe7zAY7D7XNDKRgLmmpiGgryJosPGVM8Z2ZlBt3Gkb21PlWM0CPMmMRVEciJRo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgKZ2/w96ULuE35njzc+hzSzA/d9NnaQ8Ee/RT0gOPYjzGEL+I
-	+ZyM9CUSTrvX+2XX+kWeI9KaNtavZii4oQ7nA+uSZYZii47ayRvbTx+vpo3GsoTVhuU=
-X-Gm-Gg: AfdE7cmoVh2To4BSiiLUOkabkym02f3uoqFe7tgFLO0usHRZnh4tvBkBvGODaz+pymd
-	KWmaCGhGQs3z0btcdajHIZchrTqgt8HIjpmx9ABAL2WIQ3gkNhMa6LUinTaD2CN5kwlGEcR/z0O
-	mHMUIcJCieKYflAvLBDEjFkOe4Hb2c2DZmDtvVNGFmwNkLbEJoSmi2YYAVTnh+4GHyMi1RyDwqb
-	xhp+9O/INBZ0yczCh9YJJLBpKr6YJu5G/FSuYC+rCiKVxqaVlpPUCEytS821Wtm8jq8F0jxCjdB
-	NgSWGNiqe00QLt7Ocqg6zHH8y+9EFjVnNxvt2XEcYPCh3tAVdfjRqkQKSBvOdk5YNCBcGq9JxdZ
-	1imDkCHQUJvzIivEHdZNg2khecNO6vqWCQWigPSuR3KiO2Bp4hKw1V8TXDQiYEq2nb72DQaILSp
-	YQIvTZoUbHXWsSaRzG
-X-Received: by 2002:a17:90b:38c8:b0:38d:dbc7:5178 with SMTP id 98e67ed59e1d1-38ddbc75254mr15794311a91.22.1784146895116;
-        Wed, 15 Jul 2026 13:21:35 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:4f38:9a5e:fd18:7a9b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e39e74279sm134375a91.17.2026.07.15.13.21.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 13:21:34 -0700 (PDT)
-Date: Wed, 15 Jul 2026 14:21:31 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
-	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 04/25] target/arm/kvm-rme: Add mechanic to initialize
- realms
-Message-ID: <alfry2MJwRFz2hPS@p14s>
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-5-mathieu.poirier@linaro.org>
- <4ffc3787-a53e-4889-b245-458de4463cb9@redhat.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="FIwiFHwI"
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66FKQM8x942698
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 13:46:04 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=hnyuo+QLyIX78Ha3FzEk0mRWfvM2HTMwdWd3nP7nvPo=; b=FIwiFHwI5D2D
+	3JGXKfkGy8bYmYBlsBg5q41kA5nkp8E3LTqfYi+CP3cntH8lX9cKnu+Z159FtihP
+	369YoJIbC9fOPLY3fbP1CoJjVBVEC3Gi9bsKbQoTPvAvU14X+ubrmTxRH5yzXj/R
+	LDgTFgVpeYlGP82B/o/vY3Gukpi1OhzAsEFdTZYDV/Q08j4viapQld2finVqeOue
+	UX40S3vVXnmwhay69EOfvjnkwHpEDc1eWCxvImYButJo/pbPACJ+MPZkQQi21nlh
+	EijMQysP5jwJKnIez1tnk4/LWLTBdSzuhPZMMUWk+ARlzVoDKts7Cu4iGyZ8BExh
+	rX/T4Rce8A==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4feamkk0qx-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 13:46:04 -0700 (PDT)
+Received: from twshared4170.04.frc1.facebook.com (2620:10d:c085:208::f) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.41; Wed, 15 Jul 2026 20:46:01 +0000
+Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
+	id 541B2423AA016; Wed, 15 Jul 2026 13:40:10 -0700 (PDT)
+From: Zhiping Zhang <zhipingz@meta.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Michael
+ Guralnik <michaelgur@nvidia.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Alex Williamson
+	<alex@shazbot.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Zhiping Zhang
+	<zhipingz@meta.com>
+Subject: [PATCH v12 1/4] PCI/TPH: Add requester/completer type helpers
+Date: Wed, 15 Jul 2026 13:39:56 -0700
+Message-ID: <20260715204008.3911275-2-zhipingz@meta.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260715204008.3911275-1-zhipingz@meta.com>
+References: <20260715204008.3911275-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ffc3787-a53e-4889-b245-458de4463cb9@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDIwNyBTYWx0ZWRfX4WzbgKIG41IY
+ 5XVFC6zCn1ZSv7EqntNB8LVJhj72F3dyDAkki6CBSe/8jJ3xklqLRp3xdC+TyPoZkWjGdzgwO2m
+ AHqicolN0hJKNXtOYvuHvwtLETVdqw4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDIwNyBTYWx0ZWRfX0sErlZbQIsn4
+ mu53ZWofQqrx0HuDDoD4zxMeeXfeo1qMFGGZy+LDwCjCrgPA2qXEJFphoaLQKTShOCBdqYEaCyd
+ raalAtHiRmMzSG/QKgKxAwtJ7cvkH9tPnssy/+L8AxUmZPNHMv3nB6PcBthw4icGBAUlkgaHW62
+ fpFY/s4JwqPXxkEFNE1n79d6zVAqfDg41jh0YfPLIhDlMn8XhIuz3ED5TlvQ87qMF1fB8PNkt/y
+ MSbRkh9NjcERqJa6BuC8v0V0UZUj6Pm87AAHv2tj4o7wDM4TUYAcSNUFV/NcjV0uy1UM2d0nMTV
+ yHSMJZjv1ha+0hnQwu6qVoh6aQ8ro7UG2RWkYwwF7h/J0/34FSJ4rmiVYZnlK2Hww5OcttDFQ5k
+ G3Urc/HUmqcMBChRUY8JfIxYFPeQXlfLMC1pMeHVNM+EbgyGvd5blP58M0sk2EWjjDTRF72pSRA
+ L49i14lfqCKK/ZIdvug==
+X-Proofpoint-ORIG-GUID: A7w_6xTH74xSYebvoP7bgVkKDz3DbFZ-
+X-Authority-Analysis: v=2.4 cv=bJEm5v+Z c=1 sm=1 tr=0 ts=6a57f18c cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8 a=74QsV7IkigCJGj90HksA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: A7w_6xTH74xSYebvoP7bgVkKDz3DbFZ-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-15_05,2026-07-15_02,2025-10-01_01
 
-On Mon, Jul 13, 2026 at 03:34:20PM +1000, Gavin Shan wrote:
-> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > Initialise an @rme_guest object and install a handler to get notified
-> > when the Realm is ready to start.  That way we can finish reading the
-> > Realm once we know everything is in place.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > ---
-> >   target/arm/kvm-rme.c  | 50 +++++++++++++++++++++++++++++++++++++++++++
-> >   target/arm/kvm-stub.c |  5 +++++
-> >   target/arm/kvm.c      |  7 +++++-
-> >   target/arm/kvm_arm.h  |  9 ++++++++
-> >   4 files changed, 70 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > index 42e1d1e7b859..b86b9d6a25cb 100644
-> > --- a/target/arm/kvm-rme.c
-> > +++ b/target/arm/kvm-rme.c
-> > @@ -13,6 +13,7 @@
-> >   #include "kvm_arm.h"
-> >   #include "migration/blocker.h"
-> >   #include "qapi/error.h"
-> > +#include "qemu/error-report.h"
-> >   #include "qom/object_interfaces.h"
-> >   #include "system/confidential-guest-support.h"
-> >   #include "system/kvm.h"
-> > @@ -29,14 +30,63 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> >                                             CONFIDENTIAL_GUEST_SUPPORT,
-> >                                             { TYPE_USER_CREATABLE }, { })
-> > +static RmeGuest *rme_guest;
-> > +
-> > +static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> > +{
-> > +    if (!running) {
-> > +        return;
-> > +    }
-> > +
-> > +    kvm_mark_guest_state_protected();
-> 
-> This would be called in kvm_arm_rme_init(), why we can't call this to mark the
-> KVM state as protected in kvm_arm_rme_init() ?
->
+Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+requester mode without reaching into pci_dev internals.
 
-One of the very last things happening in qemu_init() is a call to
-qmp_x_exit_preconfig(), which ultimately ends up calling qemu_system_reset().
-If we mark the guest state as protected before qemu_system_reset() is called, as
-it would be the case if we move kvm_mark_guest_state_protected() to
-kvm_arm_rme_init(), general purposes and the program counter registers don't get
-pushed down to KVM, resulting in a failure to start the Realm.
- 
-> > +}
-> > +
-> >   static void rme_guest_class_init(ObjectClass *oc, const void *data)
-> >   {
-> >   }
-> >   static void rme_guest_init(Object *obj)
-> >   {
-> > +    if (rme_guest) {
-> > +        error_report("a single instance of RmeGuest is supported");
-> > +        exit(1);
-> > +    }
-> > +    rme_guest = RME_GUEST(obj);
-> >   }
-> >   static void rme_guest_finalize(Object *obj)
-> >   {
-> >   }
-> > +
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> > +{
-> > +    static Error *rme_mig_blocker;
-> > +    ConfidentialGuestSupport *cgs = ms->cgs;
-> > +
-> > +    if (!rme_guest) {
-> > +        return 0;
-> > +    }
-> > +
-> > +    if (!cgs) {
-> > +        error_report("missing -machine confidential-guest-support parameter");
-> > +        return -EINVAL;
-> > +    }
-> > +
-> > +    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
-> > +        error_report("KVM doesn't support Realms");
-> > +        return -ENODEV;
-> > +    }
-> > +
-> > +    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-> > +    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
-> > +
-> > +    /*
-> > +     * The realm activation is done last, when the VM starts, after all images
-> > +     * have been loaded and all vcpus finalized.
-> > +     */
-> > +    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
-> > +
-> > +    cgs->require_guest_memfd = true;
-> > +    cgs->ready = true;
-> > +    return 0;
-> > +}
-> > diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
-> > index 88cbe8d85c41..eec1ca3dd2e5 100644
-> > --- a/target/arm/kvm-stub.c
-> > +++ b/target/arm/kvm-stub.c
-> > @@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
-> >   {
-> >       g_assert_not_reached();
-> >   }
-> > +
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s)
-> > +{
-> > +    g_assert_not_reached();
-> > +}
-> > diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-> > index ed99be7fd80c..28d5643d6779 100644
-> > --- a/target/arm/kvm.c
-> > +++ b/target/arm/kvm.c
-> > @@ -660,7 +660,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-> >       hw_breakpoints = g_array_sized_new(true, true,
-> >                                          sizeof(HWBreakpoint), max_hw_bps);
-> > -    return 0;
-> > +    ret = kvm_arm_rme_init(ms, s);
-> > +    if (ret) {
-> > +        error_report("Failed to enable RME: %s", strerror(-ret));
-> > +    }
-> > +
-> > +    return ret;
-> >   }
-> >   unsigned long kvm_arch_vcpu_id(CPUState *cpu)
-> > diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
-> > index e7c40fb003e4..6d058b0e08a2 100644
-> > --- a/target/arm/kvm_arm.h
-> > +++ b/target/arm/kvm_arm.h
-> > @@ -240,4 +240,13 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
-> >    */
-> >   char *kvm_print_register_name(uint64_t regidx);
-> > +/**
-> > + * kvm_arm_rme_init
-> > + * @ms: the machine state
-> > + * @s: State of KVM
-> > + *
-> > + * Prepare the machine to be a Realm, if the user enabled it.
-> > + */
-> > +int kvm_arm_rme_init(MachineState *ms, KVMState *s);
-> > +
-> >   #endif
-> 
-> Thanks,
-> Gavin
-> 
+Add pcie_tph_completer_type() so drivers that publish TPH metadata for a
+device acting as a completer can gate on the "TPH Completer Supported"
+field of Device Capabilities 2 (bits 13:12, PCI_EXP_DEVCAP2_TPH_COMP_MASK=
+)
+rather than reusing requester-side state. It reuses the same reserved-
+encoding fold as get_rp_completer_type() so the completer decode stays in
+one place.
+
+This keeps pci_dev::tph_req_type and the completer-capability decode
+inside the PCI/TPH code and provides !CONFIG_PCIE_TPH stubs for callers.
+
+Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+---
+ drivers/pci/tph.c       | 39 +++++++++++++++++++++++++++++++++++++++
+ include/linux/pci-tph.h |  8 ++++++++
+ 2 files changed, 47 insertions(+)
+
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index ebe1aa5ba5eb..64a6e1da99dc 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -230,6 +230,45 @@ static u8 get_rp_completer_type(struct pci_dev *pdev=
+)
+ 						 reg));
+ }
+=20
++/**
++ * pcie_tph_enabled_req_type - Return the device's enabled TPH requester=
+ type
++ * @pdev: PCI device to query
++ *
++ * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_=
+TPH.
++ */
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{
++	return pdev->tph_req_type;
++}
++EXPORT_SYMBOL(pcie_tph_enabled_req_type);
++
++/**
++ * pcie_tph_completer_type - Return the device's TPH Completer support
++ * @pdev: PCI device to query
++ *
++ * Reads the "TPH Completer Supported" field (bits 13:12) of Device
++ * Capabilities 2. The reserved 0b10 encoding is folded into
++ * "not supported" so callers only need to compare against the three
++ * defined values.
++ *
++ * Return: one of %PCI_EXP_DEVCAP2_TPH_COMP_NONE,
++ *         %PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY or
++ *         %PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH.
++ */
++u8 pcie_tph_completer_type(struct pci_dev *pdev)
++{
++	u32 reg;
++
++	if (pcie_capability_read_dword(pdev, PCI_EXP_DEVCAP2, &reg))
++		return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
++	if (PCI_POSSIBLE_ERROR(reg))
++		return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
++
++	return tph_completer_type_fold(FIELD_GET(PCI_EXP_DEVCAP2_TPH_COMP_MASK,
++						 reg));
++}
++EXPORT_SYMBOL(pcie_tph_completer_type);
++
+ /* Write tag to ST table - Return 0 if OK, otherwise -errno */
+ static int write_tag_to_st_table(struct pci_dev *pdev, int index, u16 ta=
+g)
+ {
+diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+index be68cd17f2f8..7743af6fe432 100644
+--- a/include/linux/pci-tph.h
++++ b/include/linux/pci-tph.h
+@@ -9,6 +9,8 @@
+ #ifndef LINUX_PCI_TPH_H
+ #define LINUX_PCI_TPH_H
+=20
++#include <linux/pci_regs.h>
++
+ /*
+  * According to the ECN for PCI Firmware Spec, Steering Tag can be diffe=
+rent
+  * depending on the memory type: Volatile Memory or Persistent Memory. W=
+hen a
+@@ -30,6 +32,8 @@ void pcie_disable_tph(struct pci_dev *pdev);
+ int pcie_enable_tph(struct pci_dev *pdev, int mode);
+ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
++u8 pcie_tph_completer_type(struct pci_dev *pdev);
+ #else
+ static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+ 					unsigned int index, u16 tag)
+@@ -41,6 +45,10 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *=
+dev,
+ static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+ static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+ { return -EINVAL; }
++static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{ return PCI_TPH_REQ_DISABLE; }
++static inline u8 pcie_tph_completer_type(struct pci_dev *pdev)
++{ return PCI_EXP_DEVCAP2_TPH_COMP_NONE; }
+ #endif
+=20
+ #endif /* LINUX_PCI_TPH_H */
+--=20
+2.53.0-Meta
+
