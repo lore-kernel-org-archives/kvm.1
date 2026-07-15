@@ -1,103 +1,124 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F033C140F;
-	Wed, 15 Jul 2026 07:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5040348C78;
+	Wed, 15 Jul 2026 07:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784100636; cv=none; b=b6tNTR/nb4nY3OY7Z2dHlaUAiqxeHe2ysYNQQzX7tRrvtusipEQXGTw+O8peGgMSoCVUxYUe0isIA+EhOvb1fbs2LAnIXfpMSHE9FLcSujINTA0fftR2j91AWb5q5M9383CCD6zjR2xYHVa/yfPZT609kGyizwU0PEREg1kSD6k=
+	t=1784100755; cv=none; b=ZzBzvJKa5ZRLVD+EAiibUpghPLcerR/+qcamGGdgSHpQ1ZyKDVrEPNUaT55pFfb1kNgN+ipprqdoCRKQf6xDah20sJjoCGTys6MZbYRuposkvF4RhYX1FlTVgBfyIt0qDXJmLClqCx1/bVQB9A4UTZfYaTvQS+jz3+vtEcK4mTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784100636; c=relaxed/simple;
-	bh=HUWPQqrAg4GAN1ssTHrrHq+Snkvb4M1tCYOKyJij9Yo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FijCdg3F5sizZ5KMs5AVqG+0D4annHrUalgWUtncVCUx+ZXR6WhJEe2xQ+QDbzCRdrBRJ24/83fyjA/CBgAHcRgjsQ0DKNswSC/GpbGpd/2DsD8g/MsxkXAgUsUMO1n8DSiGtWU4TazS2M6Xqw0E4WlEGR+Y3q9EMhGLwB/hv1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YediSwNP; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784100755; c=relaxed/simple;
+	bh=OjS9tokFABB+d5eR2JMPpkESEL2SdOLbHPohg4+yP/Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JIao/0rXBdI973TLCeL1KFscXYwOFnrHtyl2nCrZfL9scafT676ZebakV9gfrEgYEsynQnjz0mGXRnziPh5/M3QxOif2I+cD4rZIf/eCL6dbovs7Z8kJCaIlDkvF3+j9lT/KMjvhsKU+RJfPqn9OKCZLQ0LGEkO3h80DZe+mhSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=KW66kTDx; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YediSwNP"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784100621;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=uYCTfFe4DS/mxZ1jEMMuLq6qG0NAu/+hUJw4bEZOCzk=;
-	b=YediSwNPLOr8UddFmY6mamkXwscW4v4AT6RnW3sQpgPNxByu+IHdKSCwgtppNJCyH0GuNa
-	dsXn7IVHZXT1PSU+7wIEGkS4A3DAspg8P/W5aYPFlQ8U/+xQGGHkvvRniHEjWCEiKH5up3
-	BjB9/oSLe30LdV4gmPq4YvnzG4XtHDI=
-From: Tao Cui <cui.tao@linux.dev>
-To: zhaotianrui@loongson.cn,
-	maobibo@loongson.cn
-Cc: chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lixianglai@loongson.cn,
-	cuitao@kylinos.cn,
-	cui.tao@linux.dev
-Subject: [PATCH v2] LoongArch: KVM: Reload one-shot TVAL on migration destination
-Date: Wed, 15 Jul 2026 15:29:52 +0800
-Message-ID: <20260715072952.1433171-1-cui.tao@linux.dev>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="KW66kTDx"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=WZB1bL1yOc1IiYk9ev+rKFg4EaUjYHyraaIG38ewn2w=;
+	b=KW66kTDxVcFYNs19sMN7t0azfc3iExpjSbcj7yuczKzF0+i4W/fNtQnbxe0+ptvLmmqT/88jX
+	FBk/MlhrIKFx8KcpfyakRFql1sO/9m9C6G3UkwEMBGpSTM2y+GrAdcxWxXcszPrMmh+XiDl/krH
+	U7pdvFx3sq+z8WLJlW20RnM=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h0SM83t5Jz1T4Mc;
+	Wed, 15 Jul 2026 15:23:16 +0800 (CST)
+Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 12F4340538;
+	Wed, 15 Jul 2026 15:32:27 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 15 Jul 2026 15:32:26 +0800
+Message-ID: <2fbef56c-d6a7-45bd-9940-b350b28816e7@huawei.com>
+Date: Wed, 15 Jul 2026 15:32:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v19 17/18] vfio/pci: Reset hardware TPH state on device
+ enable/disable
+To: Alex Williamson <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+ <20260702124224.57168-18-fengchengwen@huawei.com>
+ <20260708172944.685c3cea@shazbot.org>
+ <0fe381d6-8ea9-41d6-baf6-97db48b40aa0@huawei.com>
+ <20260714222313.2fc9069f@shazbot.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260714222313.2fc9069f@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemo500009.china.huawei.com (7.202.194.199)
 
-From: Tao Cui <cuitao@kylinos.cn>
+Hi Alex,
 
-kvm_restore_timer() rebuilds the remaining timer countdown from
-vcpu->arch.expire, which is host-internal and is not part of the migrated
-vCPU state. On the migration destination it is still 0, so for a one-shot
-timer that has not expired yet the computed delta is 0 and
-write_gcsr_timertick(0) injects the timer interrupt immediately instead of
-after the remaining time.
+On 7/15/2026 12:23 PM, Alex Williamson wrote:
+> On Wed, 15 Jul 2026 11:09:28 +0800
+> fengchengwen <fengchengwen@huawei.com> wrote:
+>> On 7/9/2026 7:29 AM, Alex Williamson wrote:
+>>> On Thu, 2 Jul 2026 20:42:23 +0800
+>>> Chengwen Feng <fengchengwen@huawei.com> wrote:
+>>>   
+>>>> VFIO allows user space to enable and modify PCI TPH state, but device
+>>>> reset only clears hardware TPH registers, while the software TPH state
+>>>> maintained in pci/tph.c remains stale.  
+>>>
+>>> It's saved and restored, why is it "stale"?  It seems more that the
+>>> interface simply doesn't meet our use case.
+>>>
+>>> What about resets through vfio-pci interfaces, should TPH be
+>>> automatically disabled?  Thanks,  
+>>
+>> I initially added TPH disable logic into VFIO reset paths in v20 to make
+>> all reset scenarios consistent, but after reviewing Sashiko's feedback
+>> and re-checking PCI core state management, I agree we do NOT need extra
+>> pcie_disable_tph() calls in VFIO reset ioctl handlers.
+>>
+>> VFIO reset ioctls eventually trigger the PCI state save/restore flow,
+>> which invokes pci_save_tph_state() and pci_restore_tph_state() to handle
+>> TPH capability and control registers properly. TPH configuration state
+>> will be restored to the saved value automatically after reset.
+>>
+>> One important exception is the Steering Tag table when located in MSI-X
+>> vector space (PCI_TPH_LOC_MSIX). The pci_save_tph_state() helper only
+>> saves TPH capability registers; it does not back up ST entries stored in
+>> MSI-X table entries. After any PCI reset, those ST values are lost along
+>> with the rest of the MSI-X table and are not restored automatically.
+> 
+> False.  It's not restored as a separate TPH operation, the ST
+> upper/lower is stored in the MSI-X vector control register, which is
+> restored from kernel state (without a separate save-state function)
+> via:
+> 
+> __pci_restore_msix_state()
+> 	pci_msix_write_vector_ctrl(entry, entry->pci.msix_ctrl);
 
-The expired one-shot case (TVAL = -1) is already handled earlier. When
-expire has not been set (i.e. on the migration destination), reload the
-remaining countdown from the migrated TVAL. The regular preempt/resume
-path on the source, where expire is valid, is unchanged.
+That's great. Thanks for pointing that out.
 
-Suggested-by: Bibo Mao <maobibo@loongson.cn>
-Fixes: a5857b9ff6e0 ("LoongArch: KVM: Implement vcpu timer operations")
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>  
+>> I will add explicit documentation to the VFIO_DEVICE_FEATURE_TPH_ST uAPI
+>> comments stating that userspace must re-program all ST table entries via
+>> this feature after any device reset, as ST entries are not preserved
+>> across PCI resets (especially for MSI-X backed ST tables).
+> 
+> Only DS is not saved and restored.
 
----
+Should this be explicitly document in the uAPI?
 
-Changes in v2:
-- Move the expire check before ktime_before() (suggested by Bibo Mao)
-- Remove the old else-if branch that was one-shot only.
+Thanks
 
----
- arch/loongarch/kvm/timer.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-index 3829f35a4070..08359a612bde 100644
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -119,6 +119,17 @@ void kvm_restore_timer(struct kvm_vcpu *vcpu)
- 	delta = 0;
- 	now = ktime_get();
- 	expire = vcpu->arch.expire;
-+	if (!expire) {
-+		/*
-+		 * vcpu->arch.expire is host-internal and is not migrated,
-+		 * so it is 0 after migration. Reload the remaining countdown
-+		 * from the migrated TVAL.
-+		 */
-+		if (ticks < cfg)
-+			delta = tick_to_ns(vcpu, ticks);
-+		expire = ktime_add_ns(ktime_get(), delta);
-+	}
-+
- 	if (ktime_before(now, expire))
- 		delta = ktime_to_tick(vcpu, ktime_sub(expire, now));
- 	else if (cfg & CSR_TCFG_PERIOD) {
--- 
-2.43.0
+> 
+> Alex
 
