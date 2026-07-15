@@ -1,133 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9A53C2BBA
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 07:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C42C3C4B6A;
+	Wed, 15 Jul 2026 07:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784101369; cv=none; b=R0hDxVBd/lWTR6Q84zk+nEFv2Q7t1K4ZVN2PAmAtonVmQA7GP5pPhtOG1gFfqQUO6zRkTZFjlbmNg2vOv+6PN0+Is1w9/AsBwVZ1BanFeI1v5WDXdQLmiC4ImhIgZQAjmrYeqlFQdyeui/A1C1rFjls/C1zM0FASUS654DyqTY0=
+	t=1784101941; cv=none; b=q4NjpEYAKmXo7UxMdcKLRNmTx6TeoAjaYUDZjXv8qF6GyZ9cmYa84KfX7Uzco20kYaE2ZDEO5aK6EbGZaLC0yXQf0x2AdYNrEldTdibwMVcHtGt5/rQo7ctAztWW6m6mUNu3qZvzJn7sefp1DIOKbYNGsj/GvZwjAQDH78vsIsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784101369; c=relaxed/simple;
-	bh=dl5hrc1CrRPyE7slN20IyizMjIjploeT96l+5tgrKqI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UzZvi+m20Dus97ZwxBDKrH1q/M6vO7QjulSN5mrSsGfy0/+1NRKmvf1fU6WvA7e9E4p2jRTZiwAf/xafO/gSAnEdoRvepzCmO4ytK2lQW/2FQ5zS8NvQLllm1zozpT4y6Q3F2d4PV6IMTmjbviXXNtO0mamwwGVKhqSwwwaR6p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Erq6AJHy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784101941; c=relaxed/simple;
+	bh=nrWukbd4qzX+TpgXVB9Zi/NIYLzpkyvqBbK8S35Q2Vw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rW+flgRkXOUCgr1h3RhRUWfd1COiJkCuZNZRN7r/363rNyGjlh/+MQBQpswu2xi1ez3vWLkHF693U2QWfhYd89wFYHLSBYC5bwKCye/NWXOjn2pLftawmB+vtdNTlQ2ysytKiRcg264Ag2YfxkjCj6sUqh+IRPQdtby0aEqi2YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=trGauMhr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Erq6AJHy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7311F000E9;
-	Wed, 15 Jul 2026 07:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784101367;
-	bh=8eU6lAQ+eRP5xrGiMmyuuUmXjv5xyenXqls2/EC0eas=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Erq6AJHycSlSEtG+E+NAkf69mwbBA7Z69bJ8aemrl2pU8RprZRFNOOJp0Pw6C3Wqz
-	 NDZvZhwDE8n1yQqGyvHIYYjUxny5SqceTDBNEH+c1IP4v0XXCRisWTgA8fSpcAnKIr
-	 /lTdthreUPt2Q5wdkePnDA2BP913ZIwL5JPPPD96CAvgoCzFPTNtCyVXWA2HENCwnt
-	 72bZLTkaZGbG/IkwQtVHrzZvjYKGjdPd+VLUloCi+uGUF2L/1fz0WY9SKMjjpHCpbM
-	 CpNtXiFY7ADo6F9b6yYH2B4jr3kkfeB+IZ9xHTvK+JKq1EPQdflwvqC8LySJxmBB9U
-	 pHFOxkbxbtI4g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] LoongArch: KVM: Reload one-shot TVAL on migration
- destination
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260715072952.1433171-1-cui.tao@linux.dev>
-References: <20260715072952.1433171-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 07:42:46 +0000
-Message-Id: <20260715074247.4F7311F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="trGauMhr"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F4BxuT3272800;
+	Wed, 15 Jul 2026 07:52:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=74XsCv
+	WQ0S9Br/3owegjCwMZF3S+wf6QCgX8swb5dL8=; b=trGauMhroJVGIMIZ/QJZ+F
+	Xdbr7IHg4IR4xAPJG5VmS+ofsK75lTghY4boNrhVSy2YGvcIXt/HrR6YkH/C64S+
+	byUhSt3WjYebJVcxmrvq00yXWwcBQsavEgHJUr9+Mf6hItBujjAgP8nKUfH5UMDN
+	vCoMOpjxedSaTcK1zPenMUjPr60e9ZP/NgbYKxEd2cY1BeYQq18RVuo+HK5lFERZ
+	clG8x1fvQ5RkQaO3LWygpw68kSYTl8IELDg/CiNdXzD4fPiXiJsW35b2vnzMsj5x
+	+Mhanu3PAdPezDrDSvKvEDPINciyXWmY7xLxpK9k8r6Tmqd/QETBVlTr0bzItkcw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegbsq03-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 07:52:16 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66F7nbUc016955;
+	Wed, 15 Jul 2026 07:52:15 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2cgejkx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 07:52:15 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66F7qBf743843934
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jul 2026 07:52:11 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52DF42004D;
+	Wed, 15 Jul 2026 07:52:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC5D32004F;
+	Wed, 15 Jul 2026 07:52:10 +0000 (GMT)
+Received: from [9.111.23.116] (unknown [9.111.23.116])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Jul 2026 07:52:10 +0000 (GMT)
+Message-ID: <cd037130-b99a-48c4-81a6-649b4ef7842f@linux.ibm.com>
+Date: Wed, 15 Jul 2026 09:52:10 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 04/21] KVM: s390: vsie: Add SCAO read and write helpers
+To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Cc: David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        Eric Farman <farman@linux.ibm.com>
+References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+ <20260709-vsie-sigpi-v1-4-ea9f12066408@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20260709-vsie-sigpi-v1-4-ea9f12066408@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a573c30 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=9oAxtj6az9Sey8u1omcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA3MyBTYWx0ZWRfX57uIVFrKDUCe
+ Ij+KjmDLOXAOYcGf3JnbgzZmTSPc+r0qISzR/Auh846Vq3lYqLgJA/pprvIVPl0/eb5KWORSkz0
+ iZySuvHJAk4kzC3VvX5BNhpVOmtLzzhB75IPhuIGG9jCFwacjfFVu5L0zLLDKoKsbho3ttrDwrY
+ AN+isSUX2ULUGPxgDQI2unPL/SaPYcrQqcB+YHovZ9iaIOofkjE9RY1EmCgrTFPIfQq2v0ajE/3
+ cfQfxCRM6OyDQs5IBYiyOB//CXdiDf2JbxRhbV2g+yNJeSps8d8PXHGXtC91f2+SQsuf/7darom
+ +AGa/z75amfHzCvJdiAHQjtUl8PMudMMF9F0ekOobty2uXBR4TySGqsBMpTQtQhoiypzoYviieK
+ 9+lIysty55CXhz30/A4jFDSAvd2ZjxfEvM4XP0E9vneyvjXL5xjU60xvXurkQ1XH/0js0jEWBOJ
+ stgxo2VI5cdn/HPydSw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA3MyBTYWx0ZWRfX8FFVgO48B4eP
+ EQVOeiHaZ3vM/fF/ANLS1bNYZvR99Vf3jjM49Ax2uPftX5naYs4QOgT18sUXrCtjqtY2sBWFv8b
+ Sr2IqIn8InKgIH7V+Rut2k5L3VjiDU0=
+X-Proofpoint-GUID: K3J8poIBMq5c9f1g9ZNDQni-7IPCOj92
+X-Proofpoint-ORIG-GUID: K3J8poIBMq5c9f1g9ZNDQni-7IPCOj92
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607150073
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-
-New issues:
-- [Medium] Redundant ktime_get() call introduces a race condition and non-d=
-eterministic timer inflation.
-
-Pre-existing issues:
-- [High] Unvalidated guest-controlled timer period leads to a division by z=
-ero and host kernel panic.
---
-
---- Patch [1]: [PATCH v2] LoongArch: KVM: Reload one-shot TVAL on migration=
- destination ---
-commit 76bdf1c5f64a97f768f72eb78cf6f70484cc8af9
-Author: Tao Cui <cuitao@kylinos.cn>
-
-LoongArch: KVM: Reload one-shot TVAL on migration destination
-
-This commit handles restoring one-shot timers on migration destinations whe=
-re
-vcpu->arch.expire is uninitialized. It calculates the remaining countdown
-using the migrated TVAL.
-
-> diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-> index 3829f35a4070b..08359a612bdee 100644
-> --- a/arch/loongarch/kvm/timer.c
-> +++ b/arch/loongarch/kvm/timer.c
-
-[ ... ]
-
-> @@ -119,6 +119,17 @@ void kvm_restore_timer(struct kvm_vcpu *vcpu)
->  	delta =3D 0;
->  	now =3D ktime_get();
->  	expire =3D vcpu->arch.expire;
-> +	if (!expire) {
-> +		/*
-> +		 * vcpu->arch.expire is host-internal and is not migrated,
-> +		 * so it is 0 after migration. Reload the remaining countdown
-> +		 * from the migrated TVAL.
-> +		 */
-> +		if (ticks < cfg)
-> +			delta =3D tick_to_ns(vcpu, ticks);
-> +		expire =3D ktime_add_ns(ktime_get(), delta);
-
-[Severity: Medium]
-Is it intentional to call ktime_get() again here instead of reusing the 'no=
-w'
-timestamp captured just above?
-
-If the host thread is preempted or delayed between capturing 'now' and
-evaluating this second ktime_get(), the execution delay is effectively added
-to the remaining timer duration.
-
-For an already expired one-shot timer, could this cause the code to program
-a small positive tick value instead of 0, delaying the interrupt injection?
-
-> +	}
+On 7/9/26 17:15, Christoph Schlameuss wrote:
+> Introduce some small helper functions to get and set the system control
+> area origin address from the SIE control block.
+> 
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
+> ---
+>   arch/s390/kvm/vsie.c | 28 ++++++++++++++++++++--------
+>   1 file changed, 20 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
+> index 937f9c99bc00..aa0cebece2d5 100644
+> --- a/arch/s390/kvm/vsie.c
+> +++ b/arch/s390/kvm/vsie.c
+> @@ -72,6 +72,22 @@ struct vsie_page {
+>   
+>   static_assert(sizeof(struct vsie_page) == PAGE_SIZE);
+>   
+> +static unsigned long read_scao(struct kvm *kvm, struct kvm_s390_sie_block *scb)
+> +{
+> +	unsigned long vsie_sca = READ_ONCE(scb->scaol) & ~0xfUL;
 > +
->  	if (ktime_before(now, expire))
->  		delta =3D ktime_to_tick(vcpu, ktime_sub(expire, now));
->  	else if (cfg & CSR_TCFG_PERIOD) {
-> 		period =3D cfg & CSR_TCFG_VAL;
-> 		delta =3D ktime_to_tick(vcpu, ktime_sub(now, expire));
-> 		delta =3D period - (delta % period);
+> +	if (test_kvm_cpu_feat(kvm, KVM_S390_VM_CPU_FEAT_64BSCAO))
+> +		vsie_sca |= (u64)READ_ONCE(scb->scaoh) << 32;
 
-[Severity: High]
-This isn't a bug introduced by this patch, but does this code allow a guest
-to trigger a host kernel panic?
+Sashiko is right, you need to distinguish between host and guest 
+features. scbo can have this masking/extending but scbs can't have it 
+since 64bscao is a prereq for vsie in KVM.
 
-If a malicious guest writes to LOONGARCH_CSR_TCFG, setting the CSR_TCFG_PER=
-IOD
-bit but leaving the CSR_TCFG_VAL bits as 0, 'period' will evaluate to 0.
+I see a couple of ways to handle this automatically but none of them are 
+nice to look at.
 
-When the vCPU is scheduled out and later restored, this branch executes
-because the timer is past its expiration, resulting in a modulo by zero
-operation.
+I shortly considered storing the hpa in the vsie_page in addition to the 
+gpa but this is the only case where we need to do these shenanigans to 
+generate an address so it would only complicate things and cost storage 
+with no benefit.
 
-Could this division by zero in the host kernel be prevented by validating t=
-he
-guest-controlled timer period?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715072952.1433=
-171-1-cui.tao@linux.dev?part=3D1
