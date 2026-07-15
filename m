@@ -1,274 +1,303 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DEC44C65F;
-	Wed, 15 Jul 2026 12:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C35E472768
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 12:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784118121; cv=none; b=b3y34WwjJTvfM6aEk0hWYlKIbuaMkwGrqlIngRSc9kKSAmZ2xvjpUjG7g4j3StttOxWL6Z3maQ6HAZA3nicKlkdQwmDlKk8p9f39G5Mu3YHnkd8SSfdvNcV/7drR/UR5tulLqCmd6dJpGtJ2F+RvSxjIM9j9K9WB42TDoSzZgzA=
+	t=1784119374; cv=none; b=s4kNbcdeGSD/zWCTuhXc8aOOMpuKqOFPDhW7wIGOtUyafXOjb4eUihQL/hoiGxTBoUVuFSMsvQn9TB+N6gWQmh7nYdaXEu0AVecKf3WXlOvXERp6QIKdcjy145N0FA7V81kI+Xj/d963+L8HyDK4KAbSYLO3jhZp7MAyKpQO2ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784118121; c=relaxed/simple;
-	bh=x/+Deqo72SEBIsarop1qZEWlqqsNvS9ulVXGIckFS0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ApzCE1S1URskC6j4lVUxYv/ogJBt0EUzR2ltc3sY4EQKWIt8JBLKMwwm1gDr8sWk/lE1Iwt740t3U/AWamLY7fqBeriWPCnxmOQ7v2+kjl8fkX1JHXwChVSwN6hDCAdK4MZAI5bMygJvLOwZPPcBkFTdzmNyth2OSifAwzD2ETM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U9JW+Sf1; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784119374; c=relaxed/simple;
+	bh=cxPUQ8mqLOh08M7lDpLo2whW8TN+9q/SMBxitB7xFV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UiQ9I1GXi2899j51W5ibgS66/z9N/q7X5MpDftUNU3MNQrsPY/o1/S5DAAB0jGDVzGywzR0xM4iTR4u9NQiENrH6JpKl/p6UwO4+mw7NG+0LTXps9nnMnhYBCZiEXdH7BBUctCy/TIB1/350TFzIXSmZC76t8Sy7+Q2DIQsJZA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L7RWZ+uI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U9JW+Sf1"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66FBfYVM2370482;
-	Wed, 15 Jul 2026 12:21:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=nvXOTE
-	192DT2O9k6oybYScSvBhqBDbOeX3gUaBQjxak=; b=U9JW+Sf1SsJWZ45G1bdkya
-	Op42m4pX6osIEgFEUReqTzK9pCwqHF/ncKyD4uPXp/NtJdr2DPLjKXiVWHaQgGss
-	MlfJMbRbyU2HHvmpA3FNzRHmxRlKX5T6ccLOCJnsj9G1WcvcF8TZ+O5QKJCLrcKG
-	uDHbQET2jEdj2RgFyhnNqLei9KUr6E9kvgcQFfyIgdaGvak09ae/oLrlJF+9IS/a
-	1EJpK9jzUDbvNaF3f7LIO+nmokhs3inA15+9WLEpWdYpCI4Rl0HEjbZz1Yl48DDg
-	xDxVkxWnz0M+xzPr0TjS0Ke9swlr2z1Ee5kEdMZ8emDqSQcbf9V4vT4gAc6waqTA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fcv33c15c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 12:21:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66FCJbw4032513;
-	Wed, 15 Jul 2026 12:21:50 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2cgfqyy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 12:21:49 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66FCLkhk49021280
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Jul 2026 12:21:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 59A8A2004D;
-	Wed, 15 Jul 2026 12:21:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F022F20040;
-	Wed, 15 Jul 2026 12:21:45 +0000 (GMT)
-Received: from [9.111.23.116] (unknown [9.111.23.116])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Jul 2026 12:21:45 +0000 (GMT)
-Message-ID: <2b51de93-eb60-4ce0-87e0-6ff98c9cb5c0@linux.ibm.com>
-Date: Wed, 15 Jul 2026 14:21:45 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L7RWZ+uI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784119367;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sFxZTrGt2w+HcUGuHyexRURbS0eVpPFhL4MEch1ympQ=;
+	b=L7RWZ+uI29/iPa2aHL9UKzPUVwKqfn9posBA4bDro/GF6x+2vNSWiQBxbpgi8lDunaqsMV
+	/TFkqQfHMnl5OQKRpBngRmEP7EREBbfmpc02ImHxLSIUdwUWg/jqZWa97joCAyWnw0tcKb
+	j6ru3425C9HC40gHJF5nNnYVpJXQMgY=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-149-to0OTG11NV2iou5ucZk3uw-1; Wed,
+ 15 Jul 2026 08:42:46 -0400
+X-MC-Unique: to0OTG11NV2iou5ucZk3uw-1
+X-Mimecast-MFC-AGG-ID: to0OTG11NV2iou5ucZk3uw_1784119365
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2228C1955F07;
+	Wed, 15 Jul 2026 12:42:45 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.22.29])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ABC8030001B9;
+	Wed, 15 Jul 2026 12:42:43 +0000 (UTC)
+From: Anthony Harivel <aharivel@redhat.com>
+To: kvm@vger.kernel.org
+Cc: pbonzini@redhat.com,
+	seanjc@google.com,
+	aharivel@redhat.com
+Subject: [RFC PATCH] KVM: x86: RFC for per-VM C-state policy enforcement (KVM_CAP_CSTATE_POLICY)
+Date: Wed, 15 Jul 2026 14:42:11 +0200
+Message-ID: <20260715124235.1444895-1-aharivel@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/21] KVM: s390: vsie: Add struct vsie_sca with pin and
- unpin
-To: Christoph Schlameuss <schlameuss@linux.ibm.com>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: David Hildenbrand <david@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Nico Boehr <nrb@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-        Eric Farman <farman@linux.ibm.com>
-References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
- <20260709-vsie-sigpi-v1-15-ea9f12066408@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260709-vsie-sigpi-v1-15-ea9f12066408@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDEyMSBTYWx0ZWRfX7ppKYt6Q8ca4
- tQSMPIthLEulQT1lddkUJhHhOdpfmDBuNiStxQLZlIUQp0o4axAhgxcy08Im7TvwLZXN3GyiZ1m
- fSHFOoBoPUwtbny4pmnYW6+T8NaldS8=
-X-Authority-Analysis: v=2.4 cv=Mp1iLWae c=1 sm=1 tr=0 ts=6a577b5f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
- a=PGrXbKZJNvlhCRs6KjAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: HK2RbLkZGteAS7Vx7YY3Yu-zZlWK9qFI
-X-Proofpoint-ORIG-GUID: HK2RbLkZGteAS7Vx7YY3Yu-zZlWK9qFI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDEyMSBTYWx0ZWRfXx34ccdGpUz0E
- iiOLlpCSYUSdxSjK9YC5yOpKVE0Qb/sj0hpdzMb57+YO8tMxotX+irNqki5a/Z079SxcVLZAAvP
- au2IQIIL7M4cOGlerfGzSZHYILu+UTsD3MFKaBM1piYTjevrXMD9N8jaRND9bDACl7J6soRILh5
- FR097y5tm0dLEzHG/fuo4MboDX7XPOTpSjhBXtUZDonM/1Ky83ST+C/+cLWYWP8AkOIXtg93rsK
- rGwCE+Ld4QToo4WYSeIfd9mo4B+jLp/Pp0XajpCtmQQMBf71unZcYIifdyL5486m0NGcJ7OIi7U
- +GmdRnjOUFt9vbMs7UzRA5jc5BkTxkor/E8RZ3XbaqtqfW2TF5u2T55nrOCMH6ikHYs293EH/Ex
- HdhaWYJINmZE/tmgvPIuBVMoYABgL4hk88ZQ8Rl5rIzMG18vVuGf1L8jommGs0mb9Z/NpXbvRaO
- g8znP51LxNixHK9iiYg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607150121
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 7/9/26 17:15, Christoph Schlameuss wrote:
-> Introduce the struct vsie_sca to hold the SSCA and required management
-> data along with alloc and free methods to use with the struct.
-> On this basis we can also add methods {,un}pin_sca() to simplify the
-> pinning SCAs in g1.
-> 
-> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
-> ---
->   arch/s390/include/asm/kvm_host_types.h |  1 +
->   arch/s390/kvm/vsie.c                   | 79 +++++++++++++++++++++++++++++++++-
->   2 files changed, 79 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/s390/include/asm/kvm_host_types.h b/arch/s390/include/asm/kvm_host_types.h
-> index 6540146b4b00..d6025b34a66d 100644
-> --- a/arch/s390/include/asm/kvm_host_types.h
-> +++ b/arch/s390/include/asm/kvm_host_types.h
-> @@ -7,6 +7,7 @@
->   #include <linux/types.h>
->   
->   #define KVM_S390_MAX_VSIE_VCPUS 256
-> +#define KVM_S390_MAX_SCA_PAGES 5
->   
->   #define KVM_S390_BSCA_CPU_SLOTS 64
->   #define KVM_S390_ESCA_CPU_SLOTS 248
-> diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-> index 874ed2a55347..4b492af15542 100644
-> --- a/arch/s390/kvm/vsie.c
-> +++ b/arch/s390/kvm/vsie.c
-> @@ -29,6 +29,7 @@
->   
->   enum vsie_page_flags {
->   	VSIE_PAGE_IN_USE = 0,
-> +	VSIE_PAGE_PINNED = 1,
->   };
+KVM currently provides two mutually exclusive modes for guest idle
+management: full interception (cpu-pm=off, host controls C-states but
+pays VM exit overhead) or full delegation (cpu-pm=on, guest MWAIT
+executes directly with zero overhead but host loses all control).
 
-This seems to belong to the next patch.
-Also I'd adjust the name and incorporate scb into it so it's clear we're 
-not pinning the vsie_page.
+There is no middle ground. With cpu-pm=on, the host cannot override
+guest C-state decisions - not via cpuidle sysfs, not via MSR 0xE2
+(BIOS-locked), and not via any KVM interface.
 
->   
->   struct vsie_page {
-> @@ -64,7 +65,8 @@ struct vsie_page {
->   	gpa_t scb_gpa;				/* 0x0258 */
->   	/* the shadow gmap in use by the vsie_page */
->   	struct gmap_cache gmap_cache;		/* 0x0260 */
-> -	__u8 reserved[0x06f8 - 0x0278];		/* 0x0278 */
-> +	struct vsie_sca *vsie_sca;		/* 0x0278 */
-> +	__u8 reserved[0x06f8 - 0x0280];		/* 0x0280 */
->   	struct kvm_s390_crypto_cb crycb;	/* 0x06f8 */
->   	__u8 fac[8 + S390_ARCH_FAC_LIST_SIZE_BYTE];/* 0x07f8 */
->   };
-> @@ -76,6 +78,27 @@ struct kvm_address_pair {
->   	hpa_t hpa;
->   };
->   
-> +enum vsie_sca_flags {
-> +	VSIE_SCA_ESCA = 0,
-> +	VSIE_SCA_PINNED = 1,
-> +};
-> +
-> +struct vsie_sca {
-> +	struct ssca_block	ssca;
-> +	struct vsie_page	*pages[KVM_S390_MAX_VSIE_VCPUS];
-> +	struct mutex		mutex;
+This RFC proposes KVM_CAP_CSTATE_POLICY, a new VM-scoped capability
+that lets the host set a per-VM maximum C-state ceiling. When active,
+KVM intercepts MWAIT, inspects the requested C-state, and enforces
+the ceiling before executing the idle instruction on behalf of the
+guest.
 
-You added a description about what the mutex is protecting to the next 
-patch. Move it to this patch please.
+The capability follows the KVM_CAP_HALT_POLL pattern: a per-VM ioctl,
+changeable at runtime without VM restart.
 
-> +	atomic_t		ref_count;
-> +	gpa_t			sca_gpa;
-> +	unsigned long		flags;
-> +	u64			mcn[4];
-> +	unsigned long		sca_o_nr_pages;
+Semantics:
+  args[0] = max_cstate
+    -1 = unrestricted (current cpu-pm=on, no interception)
+     0 = force C0 (no idle)
+     1 = cap at C1 (kill switch for deep C-states)
+     6 = cap at C6 (monitor but don't restrict)
 
-unsigned long might be a bit much for a handful of pages.
+Measured VM exit overhead on Haswell-EP (ftrace, x86-tsc clock):
+  Median: 867 ns (0.87 us)
+  p99:    3,740 ns (3.74 us)
 
-> +	struct kvm_address_pair	sca_o_pages[KVM_S390_MAX_SCA_PAGES];
-> +};
-> +
-> +static_assert(!(offsetof(struct vsie_sca, ssca) & 0x3f));
-> +static_assert((offsetof(struct vsie_sca, ssca) & ~PAGE_MASK) +
-> +	      offsetof(struct ssca_block, cpu[0]) <= PAGE_SIZE);
+Relative to C-state exit latencies this is negligible: +0.65% for C6
+(133 us exit latency), +2.6% for C3 (33 us).
 
-If we force ssca to offset 0 will the second assert be unnecessary?
-Where did you get the second check from anyway? Send me a DM.
+Use case: NFV deployments where the VNF vendor owns C-state selection
+via guest cpuidle, but the cloud operator needs a host-side kill
+switch to cap deep C-states per-VM for debugging or SLA enforcement,
+without guest cooperation.
 
-Something like this could be a bit clearer:
-/* SSCA needs to be 32-byte aligned. Let's be lazy and force it to 
-offset 0. */
-static_assert(!(offsetof(struct vsie_sca, ssca)));
+Design questions in rfc/KVM_CAP_CSTATE_POLICY.txt:
+  (a) VMCS "MWAIT exiting" runtime toggle pattern
+  (b) MWAIT hint to logical C-state mapping across CPU families
+  (c) HLT handling (no C-state hint in instruction)
+  (d) Interaction with halt_poll_ns
+  (e) Per-vCPU vs per-VM granularity
 
-> +
->   static inline bool sie_uses_esca(struct kvm_s390_sie_block *scb)
->   {
->   	return (scb->ecb2 & ECB2_ESCA);
-> @@ -831,6 +854,60 @@ static int pin_scb(struct kvm_vcpu *vcpu, struct vsie_page *vsie_page,
->   	return 0;
->   }
->   
-> +/*
-> + * Unpin g2 original sca in g1 memory.
-> + *
-> + * Called with vsie_sca_lock held.
-> + */
-> +static void unpin_sca(struct kvm *kvm, struct vsie_sca *vsie_sca)
-> +{
-> +	if (!test_bit(VSIE_SCA_PINNED, &vsie_sca->flags))
-> +		return;
-> +
-> +	unpin_guest_pages(kvm, vsie_sca->sca_o_pages, vsie_sca->sca_o_nr_pages);
-> +	vsie_sca->sca_o_nr_pages = 0;
-> +
-> +	__clear_bit(VSIE_SCA_PINNED, &vsie_sca->flags);
-> +}
-I think you moved out the wrong code.
-Leave the structs and constants and move the functions into the next 
-patch so it's less confusing for me and the LLM :)
+I am looking for feedback on the overall approach. If there is
+consensus that this capability belongs in KVM, I am willing to
+implement the full stack - starting with the KVM ioctl, followed
+by QEMU and libvirt integration.
 
-You can consider splitting the scb pin functions from the next patch as 
-well as get_vsie_page() (if possible, didn't fully check).
+Signed-off-by: Anthony Harivel <aharivel@redhat.com>
+---
+ rfc/KVM_CAP_CSTATE_POLICY.txt | 179 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 179 insertions(+)
+ create mode 100644 rfc/KVM_CAP_CSTATE_POLICY.txt
+
+diff --git a/rfc/KVM_CAP_CSTATE_POLICY.txt b/rfc/KVM_CAP_CSTATE_POLICY.txt
+new file mode 100644
+index 000000000000..15439e6e7ebb
+--- /dev/null
++++ b/rfc/KVM_CAP_CSTATE_POLICY.txt
+@@ -0,0 +1,179 @@
++KVM: x86: Proposal for per-VM C-state policy enforcement
++========================================================
++
++1. Problem statement
++--------------------
++
++KVM currently offers two mutually exclusive modes for guest idle
++management on x86:
++
++  (a) Default (cpu-pm=off): guest HLT/MWAIT causes a VM exit. KVM
++      intercepts and decides the C-state via the host cpuidle governor.
++      The host has full control but pays exit overhead on every idle.
++
++  (b) Delegated (cpu-pm=on, QEMU -overcommit cpu-pm=on): guest MWAIT
++      executes directly on hardware via VMCS secondary execution control
++      "MWAIT exiting" = 0. Zero VM exit overhead, but the host has no
++      visibility or control over which C-states the guest enters.
++
++There is no middle ground. With delegation active, the host cannot cap
++the deepest C-state a guest may enter — not via host cpuidle sysfs, not
++via MSR 0xE2 (PKG_CST_CONFIG_CONTROL, typically BIOS-locked), and not
++via any KVM interface.
++
++This creates an operational gap for NFV and latency-sensitive cloud
++deployments where:
++
++  - The guest (VNF) should own C-state selection because it knows its
++    own latency requirements.
++  - The host operator needs a "kill switch" to cap deep C-states per-VM
++    for debugging or SLA enforcement, without VM restart and without
++    requiring guest cooperation (SSH/agent may be unavailable).
++
++2. Proposed capability: KVM_CAP_CSTATE_POLICY
++----------------------------------------------
++
++A new KVM VM-scoped capability that lets the host set a maximum C-state
++ceiling per VM. When a policy is active, KVM intercepts MWAIT/HLT,
++inspects the requested C-state, and enforces the ceiling before
++executing the idle instruction on behalf of the guest.
++
++  KVM_CAP_CSTATE_POLICY
++    Architecture: x86
++    Target:       VM (struct kvm)
++    Parameters:
++      args[0] = max_cstate (-1 to 6)
++      args[1] = flags (reserved, must be 0)
++
++  Semantics:
++    max_cstate = -1  No interception; current cpu-pm=on behavior.
++                     MWAIT executes directly (VMCS "MWAIT exiting" = 0).
++    max_cstate = 0   Force C0. Guest halts return immediately (no idle).
++    max_cstate = 1   Cap at C1. Guest requests for C3/C6 are downgraded.
++    max_cstate = 6   Cap at C6 (effectively unrestricted on most
++                     platforms, but interception is active for
++                     monitoring).
++
++The capability follows the same pattern as KVM_CAP_HALT_POLL: a per-VM
++ioctl that overrides system-wide behavior for a specific VM, changeable
++at runtime without VM restart.
++
++3. Internal flow
++----------------
++
++When max_cstate >= 0 (policy active):
++
++  1. VMCS "MWAIT exiting" = 1 (intercept MWAIT).
++  2. On VM exit for MWAIT:
++     a. Extract the C-state hint from the MWAIT operand.
++     b. Map the hint to a logical C-state level (MWAIT sub-states
++        are CPU-family-specific; a translation table is needed).
++     c. If requested_cstate <= max_cstate: execute native MWAIT with
++        the guest's original hint.
++     d. If requested_cstate > max_cstate: execute MWAIT with the
++        capped hint, or return to guest immediately (C0).
++  3. For HLT exits: KVM selects a C-state up to max_cstate via the
++     host cpuidle governor (existing behavior, but now capped).
++
++When max_cstate = -1 (unrestricted):
++
++  1. VMCS "MWAIT exiting" = 0 (direct execution, no VM exit).
++  2. Equivalent to current cpu-pm=on behavior.
++
++Transitioning between -1 and >= 0 requires toggling the VMCS secondary
++execution control at runtime. This is the same mechanism used for other
++VMCS control toggles and is well-precedented in KVM.
++
++4. Measured VM exit overhead
++----------------------------
++
++We benchmarked the exit-entry round-trip cost on Intel Xeon E5-2630 v3
++(Haswell-EP, 2x8C/16T) using ftrace with x86-tsc clock (nanosecond
++precision). MSR_WRITE exits were used as a proxy for pure exit mechanism
++cost — fast synchronous round-trips with no scheduling or blocking.
++
++  Samples:  154
++  Min:      433 ns
++  Median:   867 ns  (0.87 us)
++  Mean:     1,523 ns (1.52 us)
++  p95:      3,037 ns (3.04 us)
++  p99:      3,740 ns (3.74 us)
++  Max:      13,963 ns (13.96 us)
++
++Relative to C-state exit latencies:
++
++  C-state   Exit latency   VM exit adds   Relative overhead
++  C1E       10 us          +0.87 us       +8.7%
++  C3        33 us          +0.87 us       +2.6%
++  C6        133 us         +0.87 us       +0.65%
++
++The interception overhead is sub-microsecond at median and negligible
++relative to the C-state transitions it governs. For the deepest C-states
++where power savings matter most (C3/C6), the overhead is under 3%.
++
++5. Design questions for discussion
++-----------------------------------
++
++(a) VMCS control toggling: switching "MWAIT exiting" at runtime when
++    the policy changes between -1 and >= 0. This requires a VMCS
++    update on each vCPU. Safe to do via kvm_vcpu_kick() + request
++    flag, or is there a better pattern?
++
++(b) MWAIT hint to C-state mapping: MWAIT sub-states (EAX[7:4] for
++    C-state, EAX[3:0] for sub-state) vary across CPU families. Should
++    KVM maintain a per-model translation table, or should the policy
++    operate on raw MWAIT hints directly?
++
++(c) HLT handling: when a guest uses HLT (no C-state hint), KVM
++    currently enters kvm_vcpu_halt() which may poll (halt_poll_ns)
++    then block. With a max_cstate policy, should KVM cap the C-state
++    the host cpuidle governor selects for the blocked vCPU thread?
++    This would require hooking into cpuidle or using
++    MONITOR/MWAIT-based idle with a capped hint instead of schedule().
++
++(d) Interaction with halt_poll_ns: when policy is active (max_cstate
++    >= 0), interception is on, so halt polling applies again. The two
++    knobs become orthogonal:
++      halt_poll_ns = spin duration before any C-state
++      max_cstate   = deepest C-state after polling fails
++    Is this the right interaction model?
++
++(e) Per-vCPU vs per-VM: starting with per-VM is simpler. Per-vCPU
++    would allow mixed policies (dataplane vCPUs in C0, control-plane
++    vCPUs in C6). Worth the complexity for v1?
++
++6. Userspace integration path
++-----------------------------
++
++  Kernel:   KVM ioctl (this proposal)
++  QEMU:     New -overcommit sub-option: cpu-pm-max-cstate=N
++  libvirt:  New XML element in <features><kvm>
++
++Runtime changes via the ioctl would allow virsh/QEMU monitor commands
++to adjust the policy on a live VM without restart.
++
++7. Prior art
++------------
++
++  - KVM_CAP_HALT_POLL: per-VM halt polling override. Same design
++    pattern — VM capability, ioctl, per-VM value. Merged in 2020.
++
++  - Xen ACPI idle driver: Xen has per-domain C-state policy via its
++    ACPI integration. KVM has no equivalent.
++
++  - Host kernel max_cstate: the kernel parameter
++    intel_idle.max_cstate= caps C-states system-wide, but has no
++    per-VM or per-CPU granularity.
++
++  - QEMU cpu-pm=on: delegates MWAIT/HLT to guest but provides no
++    policy mechanism. libvirt support for cpu-pm was never merged
++    upstream despite being documented.
++
++8. Next steps
++-------------
++
++I am looking for feedback on the overall approach and the design
++questions above. If there is consensus that this capability belongs
++in KVM, I am willing to implement the full stack — starting with the
++KVM ioctl and MWAIT/HLT exit handler changes, followed by the QEMU
++and libvirt integration.
+-- 
+2.53.0
+
