@@ -1,182 +1,226 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2E2242910;
-	Wed, 15 Jul 2026 17:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61E148C8B2
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 17:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784137219; cv=none; b=B9ixDAW/2Vwz5lRIPYK2ngIbz0QcJIjoV0epejSIseEcbOUAhEMjEd1WONGv/KWcTfJjjNco+hRryv0RJ5dPJSQuLkLklPVRK2zLFh23x3Tm0gzKL/nYEZ2GC7iGQqUGQpismsz2hAQFIsR+cX3IdaxL1PNInB4Ia6fA6di+yrw=
+	t=1784137295; cv=none; b=Zj4PbJB7tfBdkh6uPuV/BWqxJj63YvfTZMjM5pctNcDF8It5IzoiiNxaYZT8BcEYs/nAcBbkHVVao/hACKHq3CpNED/m91E+uAd2gFb/M+t37BeGWEQhcoCzgiJk4y7C3n5sVsv19vx/0NTY6XtZoVmzuai5eOh9DR2GwWwbSsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784137219; c=relaxed/simple;
-	bh=T8mP9i0LpfOfBDrS2kQv1LY4K/bRcfEJQ0F4sS0l0XQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mZq2FVClK23l+MyXYOsel+LE9TJXbms01Jne7CeEdrNg7JpqjhP14uIIXEgGmMCIbyk1sMs37lcBdTqrqGx1Q/c4T3da4dPDJfkrAezbObg+tGNGeOER6CN2NNRoOAchtfXlVduL+X/O/BHqjn7YEZnoMrDqO5NS2icaloBr7gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GA0+FLfe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784137295; c=relaxed/simple;
+	bh=smtV0x0tSrvbooxlb8DQX67sofExrkLcTBABJIJV6Vo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MWVbP/Pb3Gmwdq/jVHLLgKrpECOsABWUYlpFji37qKHejdrDz9MRjkwPYm4IsYWqacYJb8Pdj5ThAXv5HLEIEuBJKQW/MzKXrVye2p6NRS9yolOrPnCXjGELRa473D+rhRIcqY6TQADySkk/CFxOrpz+aE8J7Mh4rZOYwJ0WiJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Spwdd1rQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GA0+FLfe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1CD1F000E9;
-	Wed, 15 Jul 2026 17:39:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Spwdd1rQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B961F00A3E
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 17:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784137218;
-	bh=tH4QyDNP0efpSTBbWpcQuJMGvW7RLC8yuTK2WVW/q3U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GA0+FLfepgKGsqfA851a3z/LBMqjNvN7mlxIZadRUM1CQ31syIV69n+3dBWRo/wp1
-	 fJUduYImYES3PnHo2TdgTzhpdpkEUIFUX6NB8XvGrMhPgzcSqV1W6XUbdCo5iug2no
-	 IdjQNOsEYydF6h4M0TiG0qei9Y0DJcVDuF0swmZ588A1y1UkMZ3oIAhSrnsOi6In+v
-	 RsO/Z7TAh1/wV97q57f/nNooWy1GN3foCaP7j/ZbLLzTa9vJSIzN9ivMFGs2IXYXAP
-	 f4rr087CYj2fwrWuOva4EjDNOYMBshVbZ2amcUZakPRusysh8mUltZl9STn+gyKYpY
-	 NZezqYRSbhmRg==
-Message-ID: <cfd512d8-4c2b-4359-9255-a18b2f2f91bf@kernel.org>
-Date: Wed, 15 Jul 2026 19:39:53 +0200
+	s=k20260515; t=1784137293;
+	bh=s5GhKhxLV/U51lTF1/rLwa7GLEgA1N8qBJ9WWTgvNLo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Spwdd1rQjjt1VfB1YXu52VChsIgZmarwZRrscAOrfpQYgN+3ygJ0unJaRXGdYTEWt
+	 XtpRvHrliyO7EFOszm/bPcoR8NyHhmYP8XcTrcOHchZmSIFoh1TzmCGMtvE05ORc9/
+	 9J6PkK371+wSZ1G3iXfB9ovxcxdGrEaYpnyMNqjq5qM9faqx22L4PF1+1tjtUhFEZU
+	 RNBpiVP4IHouTxwZkI9FPvyexDHiCFR0L4mQw2QE/Yuu0eRQSKkcnxvsCs7eIbxBbS
+	 hDRI2ZdXS5pC4+YLbc7IxFNYmItlxGgb7epylqlNTqxqySrr5nlKSLcaV5BkGgC3XV
+	 ZDAn+nP/Rx2fw==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c16794450aeso125905166b.2
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 10:41:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrzGqPQSLfsqfHaoDKTybfppBRjROabiwuqBtX5vOaXfYA7AN50u3cawrob8BpzAceKfqE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGgY4MRRIXVUBKH1c1TwLDf+GIqqWK+qNZQfN4/NvpMK3a+7US
+	+z7fNGb94gDJmBR1BZKgZWZoVKT64R+UhbxNoTakSNXCiZHFY6jiZyuWv+YunmJZZ2BuulFqobd
+	WwsyI2wEePJnULMWGtFL4hy4IdTiIFD4=
+X-Received: by 2002:a17:907:3ccb:b0:c16:12b6:243e with SMTP id
+ a640c23a62f3a-c16618b0bb3mr532597966b.44.1784137292485; Wed, 15 Jul 2026
+ 10:41:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 24/33] mm/vma: move __install_special_mapping() to
- vma.c
-Content-Language: en-US
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>,
- Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
- Peter Xu <peterx@redhat.com>, Kees Cook <kees@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov
- <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Usama Arif <usama.arif@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- damon@lists.linux.dev, iommu@lists.linux.dev, kasan-dev@googlegroups.com,
- linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-24-2a5aa403d977@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-24-2a5aa403d977@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
+ <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+ <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com> <albJNb-akQJ97Yor@google.com>
+In-Reply-To: <albJNb-akQJ97Yor@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 15 Jul 2026 10:41:20 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNEazPF=uVfwNZWXcCg7Kzp7Q=so3uvuWCvCTqJxek1DQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxZ8fNpSgC7-i06XXBz09I14NQVtliOil_Fe5a4Lto0Mo4n0jfQQeVLurQ
+Message-ID: <CAO9r8zNEazPF=uVfwNZWXcCg7Kzp7Q=so3uvuWCvCTqJxek1DQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/10/26 22:17, Lorenzo Stoakes wrote:
-> This function is operating on VMAs and rightly belongs in vma.c, where it
-> can be subject to VMA userland testing and allows us to isolate it from the
-> rest of mm.
-> 
-> The _install_special_mapping() function will remain in mmap.c as a wrapper,
-> since this is used by architecture-specific code.
-> 
-> Doing so allows us to isolate more functions in vma.c for the same reasons.
-> 
-> This forms part of work to allow for tracking MAP_PRIVATE file-backed
-> mappings by their anonymous virtual page offset, as doing so allows us to
-> isolate and keep code that interacts with this together.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Tue, Jul 14, 2026, Yosry Ahmed wrote:
+> > On Tue, Jul 14, 2026 at 2:28=E2=80=AFPM Jim Mattson <jmattson@google.co=
+m> wrote:
+> > > > > Note: QEMU currently hardcodes the number of ASIDs to 16, so this=
+ change
+> > > > > doesn't help QEMU VMs (without making a similar change in QEMU).
+> > > >
+> > > > I had a discussion with Jim internally about what our VMM should
+> > > > advertise as the number of ASIDs, and based on that I think passing
+> > > > through the hardware value may not be the best idea, at least not
+> > > > without some disclaimers.
+> > > >
+> > > > Jim pointed out that AMD CPUs will ignore unsupported ASID bits, or=
+ at
+> > > > least earlier ones did, even though it's not mentioned in the APM
+> > > > (last time I checked). This means that technically KVM can ignore t=
+he
+> > > > higher bits of the ASID set by L1 beyond supported ones (e.g. if it
+> > > > uses a hashtable to multiplex L1 ASIDs onto several physical ASIDs)=
+.
+> > > > KVM doesn't currently do so with or without this series, but it cou=
+ld.
+>
+> Deliberately ignoring ASID bits would certainly be a choice.  I can see w=
+hy
+> hardware might make that compromise, but I don't see any reason why KVM s=
+hould
+> do the same.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Right, but KVM could decide to start doing that in the future and
+still be architecturally sound.
 
+>
+> > > > The problem happens if a migration pool contains multiple AMD CPUs
+> > > > with a different number of ASIDs in hardware. If the VMM advertises
+> > > > the greater value of the two, it would technically be advertising a=
+n
+> > > > unsupported number of ASIDs on one of the CPUs. If KVM ignores the
+> > > > upper bits based on what it supports, not what userspace advertises=
+ in
+> > > > CPUID, then userspace would be shooting itself in the foot.
+> > > >
+> > > > I think technically speaking userspace would be in the wrong for us=
+ing
+> > > > a number of ASIDs above what KVM_GET_SUPPORTED_CPUID provides, and =
+it
+> > > > should use a number of ASIDs that is supported by all CPUs in a
+> > > > migration pool. However, this makes the VMM's life difficult, say i=
+f
+> > > > AMD decides to reduce the number of ASIDs in a newer CPU just for
+> > > > kicks.
+> > > >
+> > > > All of this is hypothetical in nature, but it's a very valid concer=
+n imo.
+>
+> Eh, I disagree.  It's hypothetical, and not a concern for KVM.
+>
+> > > > I think there are several ways we can handle this so that VMMs can
+> > > > reasonably start advertising more ASIDs to guests without these
+> > > > complications:
+>
+> What complications?  Advertise the lowest common feature set for the pool=
+, just
+> like userspace has to do for literally every other feature.
+
+See below.
+
+> > > > 1. We can just advertise a larger ASID value instead of 8 (say 16K =
+or
+> > > > 32K), rather than passthrough what's in hardware. I assume this wou=
+ld
+> > > > mean that KVM is more-or-less committing to supporting that number =
+of
+> > > > ASIDs regardless of underlying hardware (i.e. KVM wouldn't reduce i=
+t
+> > > > in the future). In this case, a VMM can just advertise the same val=
+ue.
+> > > >
+> > > > 2. We can advertise the maximum number of ASIDs (2^32 - 1?), which =
+is
+> > > > the same as option (1), except that we're biting the bullet and
+> > > > preventing the possibility of KVM ignoring upper bits completely.
+> > > > Might be too aggressive.
+>
+> And potentially suboptimal for performance.  There might be a legitimate =
+reason
+> why a CPU generation advertises X instead of Y.
+
+Right, for the CPU, but why would it be suboptimal for KVM to
+advertise the max number of ASIDs. It's actually more optimal with the
+current implementation of KVM, because L1 KVM has the least chance of
+doing a full flush and flushing its own TLB entries unnecessarily.
+
+> > > > 3. Document (somewhere) that KVM should use the userspace advertise=
+d
+> > > > value as the source of truth for ignorable bits, even if KVM
+> > > > technically supports a lower value. As I am writing this I am
+> > > > realizing it doesn't make much sense as it means that the value
+> > > > supported by KVM is meaningless.
+>
+> As above, I don't think KVM should have "ignorable bits" in the first pla=
+ce.
+
+I agree, but nothing guarantees that, unless it falls under "don't
+break userspace"?
+
+>
+> > > > Maybe that comes naturally with the "don't break userspace" rule, b=
+ut it
+> > > > could also fall under the category of userspace shooting itself in =
+the
+> > > > foot and KVM letting it.
+> > > >
+> > > > 4. Do nothing, let this be userspace's problem, and hope that AMD
+> > > > doesn't reduce the number of ASIDs in a future CPU.
+>
+> By "Do nothing", I assume you mean "advertise what's reported in CPUID"?
+
+Yeah, like this patch essentially.
+
+>
+> If so there's a fifth option.
+>
+>  5. Be super paranoid and zero the entry, like KVM does for the topology =
+leaves.
+>     See commit 45e966fcca03 ("KVM: x86: Do not return host topology infor=
+mation
+>     from KVM_GET_SUPPORTED_CPUID").
+>
+> IMO, the only sane options are #4 and #5, and #5 feels unnecessarily para=
+noid.
+> I genuinely don't see how this is any different than any other feature wh=
+ere
+> userspace needs to not over-advertise features across its migration pool.
+
+I think the ASIDs case is more nuanced, at least in my mind, because:
+- It's more likely for future CPUs to advertise a lower number of
+ASIDs than stop supporting a feature.
+- What KVM advertises to userspace is not really a hard cap, it's
+actually meaningless today, and userspace can just ignore it and
+advertise whatever and it would work. But, there is no guarantee this
+will continue to work if KVM decides otherwise.
+
+Sure, KVM can still punt this to userspace, but it might just make
+VMM's lives more difficult for no good reason. This came up internally
+when we discussed what our internal VMM should advertise. If we just
+advertise the same number of ASIDs advertised by HW for the virtual
+CPU, we risk not being able to add future AMD CPUs to the migration
+pool if they have a lower number of ASIDs.
+
+> "Simple" use cases that don't do migration and just reflect KVM's CPUID i=
+nto
+> the guest Just Work, and more sophisticated use cases get an explicit hin=
+t from
+> KVM as to the optimal number of ASIDs to advertise.  I don't see why we n=
+eed to
+> make it more complex than that.
+
+As long as it's "a hint" it should be fine. The problem happens if KVM
+decides to make it a hard limit and ignore upper bits based on it.
+AFAICT, nothing prevents KVM from doing this in the future.
