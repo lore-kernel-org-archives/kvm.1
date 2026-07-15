@@ -1,85 +1,97 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A702D219E8
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 00:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985E342BC50
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 00:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784074260; cv=none; b=et8Y8QH/KvlpqHJN5/XGIvDLPBeiz4icuaiIdrU9LROSO/LEc6wa+zPUpL/i6icn5t76O2yojt/FSMsVU6btd3d3WXawcCGFJFN5qLYo/M0kNG52PKEVgkxSzdJxMnS175vESMqFYPAY2KPMUMKDKmcn2nxWjh+WOtoQNxVc/Oc=
+	t=1784074637; cv=none; b=CJrbq+Lr8yvLz6GYgOf94N7qcQWbJWMaS+126elA2p0JLDOCiCALsDwkVZKDjFOxkenUAnQ1S50TgL8QkmLTgwL0vjLFIdl02y+happi5mf62VBpyxs9GWcod38+s1MDwB06+6pEesxima+hjYJFmOBSrHc0pZ4nnBg78ezZ1KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784074260; c=relaxed/simple;
-	bh=FMSJZadlcgd+A7MpAhd72+rcWZ4vSJmY9sFHRGA+t3A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qZDHpkRuxrGBErZy2I+eWlkuxNtWAnK8qJFzzfUacMSsWpj++Fqucwv7NtpVJPJCim//4uZegKVOechvjAD2Qxejed/Kvi2qkTGBV0c6zTXAEi90RieNUIAYjJnSrlsMHf6TDohE+v9Q4QC+DiiU3Y1lc5YSSuyjQWtrN3QAdks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U4dIqrRs; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784074637; c=relaxed/simple;
+	bh=yKfQ0GflKniKbcTiQEcokqqiBLZSSKEnGRM/ps+7LEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOKt08NiBPvPTWC1fGN6A5L4NwFCWL+PsLBQ6HctkBQRp+/Uqhey6pD9rVh9ROx+3zVW6pWxtOM0hlMKYjf9GQECnbOS6hP/erWJJBeM01Gb+QJ1kQRpSsL+bYvGs6m3fMcFnG/wbGMKgFNrbOdmXpxaoM289ew3vygPxgg7yac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fRua4iHZ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U4dIqrRs"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c354050c34so83663045ad.3
-        for <kvm@vger.kernel.org>; Tue, 14 Jul 2026 17:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784074259; x=1784679059; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H1rv/O3i63Qn52gM6nXIO1foOK5d+gOMzfG7jT/SI1U=;
-        b=U4dIqrRs/tFht83P9eK2yhjZb2q2NewlSJXpQ1pPeo2GTKc4M1v2NlQG6f8oFyscBg
-         CDibz0fylQUSm0Zb/HNwC9+C9GUwqFefQnVTMG7MntRfG2kE2YlVXYciJuhp0vcndIV/
-         WbgBnpqYeQZnTIrtzHSWoCSgK3Xflgr+Ge0lJxh9IsBTJjvlp85G5IaDfeY7uV09M5xe
-         /ac7kI3lCn2dIpFIvguNl8rrIg3BI5JDiZ9DzNHxNdFJz04MKW8kH9KxtX+MHCMUZGyM
-         pffGxITmzWSxp0DZS1V7N/6LEBhUN2+K14UxzLWVomjgnFyJKtrJ1qWOpwS/qfcVX6Jd
-         mgUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784074259; x=1784679059;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=H1rv/O3i63Qn52gM6nXIO1foOK5d+gOMzfG7jT/SI1U=;
-        b=S1MBnGp6XVj52R9Ya6byvzu1r12bVrPJX6wZGJr+swxrwexTIjGcy6rH3bGHQ5nND6
-         XlLuEjpTo5xptpM1L1KbTwa9WZPAPzp0uMns7YVQvisvdlpMCvbo5y7gr21NUH9eqfZK
-         rH6BZiaDuJ8v0parqW77mbWuD/E+lIj0DhFsuKmO9gB1WnM/H32jULQtyYFCfx4obRlA
-         +pfiloVrGaAHlVwoDEbUyUedbolKyjL4lnuszqYL4UKH88jvDdVz0ll+zY9SZ4GIrNpM
-         Q47ENitgKMAzHKjgenE8R7oKGQCKWhMavJOKS5qr+7FN6Cm5XnRAvDntD3FGA4W9aFho
-         mC+g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro75hMtrCMtUP2WSc7FeGUsmsPE81vDvbRrE2Vt7RfSWgUo7kas9ePWpw6OGaX8rs7sMEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+EKAxugl+fpTCI3dM8YFL3y5bjlH0m8kZDqEeaNqSiWrLvDTQ
-	aAfKThxi9KM2Qs9ft8RXz/jsW99R79YszqmQGifj3G2eijXqBfZev5h2C8qP2GRm2jup3jtMWjZ
-	WUQF+CQ==
-X-Received: from plqt9.prod.google.com ([2002:a17:902:a5c9:b0:2cc:b904:3254])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54f:b0:2cc:670d:9b2f
- with SMTP id d9443c01a7336-2cf03d9c767mr4896855ad.33.1784074258756; Tue, 14
- Jul 2026 17:10:58 -0700 (PDT)
-Date: Tue, 14 Jul 2026 17:10:58 -0700
-In-Reply-To: <CAEvNRgG1Jm7k1F1H9TK3ACvsbHYBzoNEohvii_N0_da_ForTRw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fRua4iHZ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3B1BE339;
+	Tue, 14 Jul 2026 17:17:09 -0700 (PDT)
+Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C67573F7D8;
+	Tue, 14 Jul 2026 17:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784074633; bh=yKfQ0GflKniKbcTiQEcokqqiBLZSSKEnGRM/ps+7LEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fRua4iHZvThGUR/J15sDSpBSVZDSq6MoZM6eoRmjBJ/YIJW0HpdFfris79gLUuOcR
+	 HE43sySB5EsjwfP/Q3jUaSMJgqZwaUahQJAFu2eNtvT60+DnwWfLtA8L3x7bA8oUYW
+	 EXfqwaFXdu3vj+FUWVM1qh3SEn8n+cPYopQ8l2cw=
+Date: Wed, 15 Jul 2026 01:16:44 +0100
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v2 25/28] KVM: arm64: Engage NV3 TLBI trap elision
+Message-ID: <nre6kiamcmf4azxni5def5kd5p74ia7rp7ynenpyczqticjcof@4inxwalqfyth>
+References: <20260714091641.1970822-1-maz@kernel.org>
+ <20260714091641.1970822-26-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-7-seanjc@google.com>
- <CAEvNRgG1Jm7k1F1H9TK3ACvsbHYBzoNEohvii_N0_da_ForTRw@mail.gmail.com>
-Message-ID: <albQErGisdVyHoQL@google.com>
-Subject: Re: [PATCH v5 6/7] KVM: x86: Combine .gmem_prepare()+.gmem_invalidate()
- into .gmem_convert()
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260714091641.1970822-26-maz@kernel.org>
 
-On Tue, Jul 14, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> >  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-> >  void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
-> >  {
-> > -	kvm_x86_call(gmem_invalidate)(pfn, pfn + nr_pages);
-> > +	WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
+On Tue, Jul 14, 2026 at 10:16:38AM +0100, Marc Zyngier wrote:
+> Similarly to the ERET elision mechanism, FEAT_NV3 can elide TLBIs
+> that only affects the guest's S1 translation. Enable this, with the
+> express condition that the guest isn't NV2 aware, as we otherwise
+> need to trap these TLBIs to deal with VNCR mappings.
 > 
-> This setup means later pKVM would have to define a .gmem_convert but
-> actually only use it for reclaim, which seems kind of an odd
-> definition. (We can fix this later.)
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/include/asm/kvm_emulate.h | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> index b32870a5e1236..d17b161d4ba3a 100644
+> --- a/arch/arm64/include/asm/kvm_emulate.h
+> +++ b/arch/arm64/include/asm/kvm_emulate.h
+> @@ -715,6 +715,19 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
+>  		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
+>  		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
+>  			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
+> +
+> +			/*
+> +			 * If the guest is NV2-capable, then we need to see
+> +			 * all the TLBIs, as configured in HCR_EL2.
+> +			 * Otherwise, relax the TLBI traps to only TGE=0.
+> +			 */
+> +			if (!kvm_has_nv2(vcpu->kvm)) {
+> +				vcpu->arch.hcrx_el2 |= (HCRX_EL2_NVnTTLB   |
+> +							HCRX_EL2_NVnTTLBIS);
+> +
+> +				if (kvm_has_feat(kvm, ID_AA64ISAR0_EL1, TLB, OS))
+> +					vcpu->arch.hcrx_el2 |= HCRX_EL2_NVnTTLBOS;;
+> +			}
 
-No, pKVM (on arm64) would just implement kvm_arch_gmem_reclaim(), and then do
-whatever it wants under the hood.
+I also suspected if this is dead code, but Sashiko had beat me to it :P
+So from your response in v1, is this code here just for completeness?
+
+It's amusing that we're not able to take advantage of this feature at
+all!
+
+Thanks,
+Wei-Lin Chang
+
+>  		}
+>  	}
+>  }
+> -- 
+> 2.47.3
+> 
