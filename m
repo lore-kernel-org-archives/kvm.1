@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3490047F2F2
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA476480971;
+	Wed, 15 Jul 2026 15:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784128630; cv=none; b=G3HIBmWgIC7Pirlvs9+uej4R7wjSQrVGPveovjZBGpvzgn+VrTT/SsjfgpAI4HjShvH1x0QipKbADZMtgC9Mll7bCJ8JfOunHo2U8Ip7/TA9DJcD+59/DR+PqdXD04iRc4ILZ+TJmrgPeZbbrm1J1tOfkxlwbu7amrnbc6v8DIM=
+	t=1784128732; cv=none; b=NaC+mMGsDMKyvHSkp3C6ie9wJKtFl3jA1ZVEyDiG23CRpW7VopEvfP8TrQ7nKHKpi5ifKDshr5e2zxwxAijzBeZ6AGFFRGhpTgchD1xw7EszlvYG2ffpT2nJ5cc5pHLtKVG3syCnXAZaW/SRE0xiUAe6S8S7XGfQwibysjNk5VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784128630; c=relaxed/simple;
-	bh=k40W8CexIoKm7x8yfjHCqRIHTPfR+gaWB1asyujvZNw=;
+	s=arc-20240116; t=1784128732; c=relaxed/simple;
+	bh=7hf5JVDwb+6R367XfuWZtA/gXynUN3Xdrrw4KMRxIQ8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=WCgpFcCCv9diQtJO006Ek6LDbs1i/UatqjZtlRr2d1h+7G/JOCrK+M5jll5U8ZKhfpzWwJlJtqbPIsuIyvIpRMmrpaugPsV5OZDUDjdH2v/D6cIcFB0BEg5+OcRYfJKKknfE6+Ug4uKT/o4gt3eohk1oEtKdMVbEH5ApAxhro7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTY0wSyC; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=qgAbEBT9mU28/dhpCfJUvYCfRe2qKE7d+ycRZaODf8MWwqQFSOhEmJ96RWn9nZXjmrpTf40bh18NbkOZhF4cmOlwvbCGoCLgAnjLYK/ixbEJAuFlxaYK5abfOZDR93v40rITIyO6nE4/Cp2LYmOyalDOTy84NpNDmLgWe8TkcGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZaZJUr6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTY0wSyC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290E1F000E9;
-	Wed, 15 Jul 2026 15:17:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZaZJUr6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFC11F00A3D;
+	Wed, 15 Jul 2026 15:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784128628;
-	bh=4tkJWnJ1x5ESWRzPOy2pZYIBUKWmEJnvT6/VCEFzgyg=;
+	s=k20260515; t=1784128729;
+	bh=VKifGp3mPQX2/U48u5MKY8fdmpIO/6UZ7MVCWzIkzGU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aTY0wSyCoZqAVvIqxVrvKhmHfEUSSiWjAWUyqKpWJm9+yHdnPgjiIYVPaPYSSMvup
-	 8HGqq8qpMfNODj5yuV0iWKYR+1gfaEpvdiHrwK2QsavDbxgRlywDzD8iaw/8njcckw
-	 IQEG70UOeB/bWTwWbpIc0849/GaN62FO0RUJuk7lYbhIJR+gG/G08aq4xJR1J+D5Zf
-	 Hz5kiNzu6uKWQOF0OipGznsu0Few1Q/og6S3PjI0VU8pHOFsZFfZjgGvqCUjDWjdxB
-	 m9QtwaHUS8y7+5pf4MPAgkIZyqOQ8ZwYrmbc7bYbZ44rtZb1vSvfJKeGxRd3+YqAF8
-	 xOITvE7oLu39Q==
+	b=GZaZJUr6QhVgXHdIC49D9S2DBSKIZKW/iEhhLqevdyCDFmid35uwns/pcQBLswRZL
+	 TONqZnv+uTtykLsI+TWwG/awotD7oRYZ/DfZ+9qx4e9nc09L9BatjZ+tHrHgaC/GAU
+	 X4mu+CPl36rxcf33AluPsCAMZTEAvh80jVszKRiCcIzEQn3ZhC4XwNSxyLx0rEsWUF
+	 /tdA/SNsmTK4LQwzoMc3tuvH+VZkCzOe14WQe0CZUj/eGhJdErNdgiK0l4VgHil+s5
+	 k3zfR6azI8yXcYGkpKFABr1kiAslhQ0mKCtZ8Ouf0kvSlgRoLc6mSFtjChi89yffU/
+	 mqMqgGulwP+1g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
- workers
+Subject: Re: [PATCH 4/6] firmware: arm_rmm: Configure the RMM with the
+ host's page size
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andrey Drobyshev" <andrey.drobyshev@virtuozzo.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
-References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
- <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
+To: "Steven Price" <steven.price@arm.com>
+Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
+ Zyngier" <maz@kernel.org>, kvm@vger.kernel.org
+In-Reply-To: <20260715142739.80398-5-steven.price@arm.com>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-5-steven.price@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 15:17:08 +0000
-Message-Id: <20260715151708.9290E1F000E9@smtp.kernel.org>
+Date: Wed, 15 Jul 2026 15:18:49 +0000
+Message-Id: <20260715151849.4CFC11F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,78 +48,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Executing queued works synchronously in `vhost_workers_free` runs =
-them in the caller's user task context, triggering a `WARN_ON` in `kcov_rem=
-ote_start` and causing concurrency issues.
+- [Medium] Missing validation of RMM granule size against cached feature re=
+gisters.
 --
 
---- Patch [4]: [PATCH v4 4/5] vhost: synchronize with RCU readers when free=
-ing workers ---
-commit bda2bbe84ea18859f63f457a24229bd9742c9be1
-Author: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+--- Patch [4]: [PATCH 4/6] firmware: arm_rmm: Configure the RMM with the ho=
+st's page size ---
+commit db91734b5b3e860f7a56847c4c9ab7f969eaf312
+Author: Steven Price <steven.price@arm.com>
 
-vhost: synchronize with RCU readers when freeing workers
+firmware: arm_rmm: Configure the RMM with the host's page size
 
-This patch synchronizes with RCU readers in vhost_workers_free() before
-destroying vhost workers. It waits for a grace period and then explicitly
-runs any newly queued work items left on the workers' lists. This ensures
-nothing is left with VHOST_WORK_QUEUED set.
+This commit introduces a function to configure the RMM's granule size to ma=
+tch
+the host's page size. It allocates a configuration page, populates the
+rmi_granule_size according to PAGE_SIZE, and calls rmi_rmm_config_set() to
+apply the settings.
 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 4c525b3e16ead..0d1414d40f4e7 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rm=
+i.c
+> index c4850976544ff..e7ab4a7df3ca8 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+[ ... ]
+> @@ -76,6 +76,45 @@ static int rmi_read_features(void)
+>  	return 0;
+>  }
 > =20
->  	for (i =3D 0; i < dev->nvqs; i++)
->  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+> +static int rmi_configure(void)
+> +{
+> +	unsigned long ret;
+> +	struct rmm_config *config __free(free_page) =3D (struct rmm_config *)ge=
+t_zeroed_page(GFP_KERNEL);
 > +
-> +	/*
-> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
-> +	 * caller that fetched a worker before we cleared the pointers above
-> +	 * may still be about to queue work on it.  Wait for those RCU readers
-> +	 * to finish before freeing the worker, then run whatever they queued
-> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
-> +	 * vhost_worker_killed().
-> +	 */
-> +	if (!xa_empty(&dev->worker_xa)) {
-> +		synchronize_rcu();
-> +		xa_for_each(&dev->worker_xa, i, worker)
-> +			vhost_run_work_list(worker);
+> +	if (!config)
+> +		return -ENOMEM;
+> +
+> +	switch (PAGE_SIZE) {
 
-[Severity: High]
-Can executing vhost_run_work_list() synchronously in the caller's task cont=
-ext
-trigger a KCOV warning or cause concurrency issues?
+[Severity: Medium]
+The commit message states "Check the feature registers and configure the
+RMM so that it matches the host's page size."
 
-When vhost_workers_free() is called from a user task (like handling the
-VHOST_RESET_OWNER ioctl), vhost_run_work_list() will be executed in that
-task's context.
+Does rmi_configure() actually verify the host's PAGE_SIZE against the
+cached RMM feature registers before proceeding?
 
-This calls kcov_remote_start_common(), which expects to be called from a
-background thread and will trigger a warning if KCOV is already enabled for
-the current task:
+It appears to unconditionally assign the configuration based on PAGE_SIZE.
+If the RMM does not support the host's page size, the driver will blindly
+send an unsupported configuration to the RMM firmware.
 
-kernel/kcov.c:kcov_remote_start() {
-	...
-	if (WARN_ON(in_task() && kcov_mode_enabled(mode))) {
-		local_unlock_irqrestore(&kcov_percpu_data.lock, flags);
-		return;
-	}
-	...
-}
+Should there be a validation check here using the features read in
+rmi_read_features() before configuring the granule size?
 
-Additionally, since the worker kthreads are not stopped until
-vhost_worker_destroy() is called later in this function, could the ioctl
-thread and the kthread concurrently dequeue and execute work items, breaking
-vhost work serialization?
-
+> +	case SZ_4K:
+> +		config->rmi_granule_size =3D RMI_GRANULE_SIZE_4KB;
+> +		break;
+> +	case SZ_16K:
+> +		config->rmi_granule_size =3D RMI_GRANULE_SIZE_16KB;
+> +		break;
+> +	case SZ_64K:
+> +		config->rmi_granule_size =3D RMI_GRANULE_SIZE_64KB;
+> +		break;
+> +	default:
+> +		BUILD_BUG();
 > +	}
-> +
->  	/*
->  	 * Free the default worker we created and cleanup workers userspace
->  	 * created but couldn't clean up (it forgot or crashed).
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714151638.1430=
-19-1-andrey.drobyshev@virtuozzo.com?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715142739.8039=
+8-1-steven.price@arm.com?part=3D4
