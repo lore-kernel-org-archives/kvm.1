@@ -1,115 +1,143 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98188378D8C;
-	Wed, 15 Jul 2026 03:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553B62931D1;
+	Wed, 15 Jul 2026 04:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784087377; cv=none; b=FRF4D7HWxb/i3zyEaaQDEQg+GDWbDAyBeMq9XsRsksJd13Phjvvpx3g28cuVfDv2mNQHDcSZT7dNSYL6N2LTNafiT6KtO9M8e5z6TIc7ikZLOnx2s6pnG7zoAl/CAcQ6LE8Hqoxso8eGaJIFf+aqxhVGlFTBQpFMg1w/6mLdZSA=
+	t=1784089402; cv=none; b=JdCIxrT4cWSDx3/gF9yuJS295WGSNyJsECWcq4aM9k6K4ojBrdRVkNxEJKQPQp/hfIYLjEgEt6p79p3nUT8CTu2gokBYw+GH7XKVwUYfEOoA/kNU4C18cibAyewIE21Prq0zN9JTXvBzhgveyvfkPNI/+U1nW79PAWdOAhemdzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784087377; c=relaxed/simple;
-	bh=vFwQz2etGugy0LsEvX5fe1cAB9D9ybGz33nLn/EK4yQ=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=JEY9cvcC2M5zen0Z0iVH1lac9QvzUXueTpXk43nvfGYLfHQBnG2ZKwqV32iW2h2848IsMRT7+9X9/d/C00DTVYXMzJ90n3RDV4++QRkI7+JzptgrrIHILsUI1snprctzxfsfXt6kTqJZhwhF6wBzlhXWV1UzPplJG3dJTokau54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bx1+pEA1dq0KcDAA--.14688S3;
-	Wed, 15 Jul 2026 11:49:24 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJAxTsVDA1dqeIwNAA--.65426S2;
-	Wed, 15 Jul 2026 11:49:23 +0800 (CST)
-Subject: Re: [PATCH] LoongArch: KVM: Reload one-shot TVAL on migration
- destination
-To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn
-Cc: chenhuacai@kernel.org, kernel@xen0n.name, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
- lixianglai@loongson.cn, cuitao@kylinos.cn
-References: <20260715032831.1411664-1-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <a93bc0fe-58b9-f5af-aefb-f5659e54304f@loongson.cn>
-Date: Wed, 15 Jul 2026 11:49:15 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1784089402; c=relaxed/simple;
+	bh=n8meWVIJ6XoKqBHq7mfRFl6nWTKf4LXT6KDpYiegEYQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T4quf5LiYysB2wfnoHljvIlSiYytylV/3VFcvrprIVDHNBSQI8vCcxCIAtDCC0n7IE7kG0M0VwiC8eOV5dlEWmyuXv1jDfyAnlvy2/icw7StvokXxsZQEPwXWbjOqY1o3OrlMTeV5YjWELYF8JOedCIyUQXmBO4Sf4SQhvMqGxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=QjsvMvZo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KnmFOFt2; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="QjsvMvZo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KnmFOFt2"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 33F2A7A012A;
+	Wed, 15 Jul 2026 00:23:18 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Wed, 15 Jul 2026 00:23:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784089398;
+	 x=1784175798; bh=NC4t+3SR0JHIfpIrEmQZGfemr+CE/kcOR6I9ANw2C4E=; b=
+	QjsvMvZoLEwO3kyjh5vgJRlqkaQCsxHDs4lKiModb2lDh4y/qDkzStE0w0KIlDvi
+	g/n4zNtKQ1zk/OfuJlwSJlQwf1uW7GEk5HAurr/4OCg+SRye5h40uPoHRfksIWk7
+	+rG+NsYUW5ngJi+1r7mqKgm0UozBHdjYlvn+OHUFbuUv8vB34PMx0ijqazuDF7Pg
+	c59SYHW2FThN7rn6YPQt43HEXw5655UmdI3c5607lHju8Vvh7L9V7b+vfvS9wBz3
+	KPWTp7NUH1eVbtIuS9n7ZEudq1Ux0dVAY7YAtW6tgE25Mp/h9/s73fQw2eOm+e2M
+	7mCvsxpzQ+5J3mYe7AN/Rg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784089398; x=
+	1784175798; bh=NC4t+3SR0JHIfpIrEmQZGfemr+CE/kcOR6I9ANw2C4E=; b=K
+	nmFOFt2mPc5glEFy9amUZn/Epoj5TogmNIUyvFSL0f6ec5ve5zMR07jS/CGWWDEb
+	5OMAaGIkPg8D5Z06rgjCFbmMpftk7IHR9JA5hAEPhX/XDdsyWrubISBJWCwepMs8
+	riRxDotPm0a2ehvP6IMRUjsnYEiqy2sib8ATnv5ngfCR58d7u+ckgozedDPYVGN/
+	oIC48ApOqPKIWZLM8ihw6IknJ6thhFoNAimPLsCmQHpGIlZUebsEs/r7B4JQbmAs
+	tWZM3vGTifdPdBIiLZjCeWxcXa7O4WXOow6gNjtwp3/4PiNoV7CbvSPlc+3mwR+H
+	rK2Aniflxi6FJq0qLT14g==
+X-ME-Sender: <xms:NAtXagN_RDbwOUzuCyAyYoDvDkDPnImV55NsYNJzvd1rWmpIrbdGfA>
+    <xme:NAtXaogDuYhfDfokqxw1djgioTaJ9IqEthJ-EWDOPgON8hE6S6tHQJu2yFprcDWYN
+    s5YyVKN7l8lVMS5ZIsiizJIUYgKJS0yj-aWYtmrtU2pSLF7e3xP-A>
+X-ME-Received: <xmr:NAtXamhH3eceCTMJy78RaZIpEJitCkN1eGFVApUzECAVrwCIF6rcYkr-3tqbQA>
+X-ME-Proxy-Cause: dmFkZTEccTUvGxRRFY9lj/25aEwKQtu3a8rdNxW0FXCXubLh8bgQJAuyoMAUrFVusCxqc4
+    1OEwrmvuBDR+6+fkapj+98QUwtAcZRQt/RhYd2wYzwGurzZcePzKA/ogsV8yFsDcF+esKT
+    4DlBaHG7aQuqXJ4tGdebATyW6kkfykM37mVcOHJQEadZxdOKyy2hbeYLJ2DVHX6XxWDsDE
+    nDD+WxeqtvvH5PllHjlacMZQk+MFxESQauoZoB6hIBy6F7JMNM9w2673F/7DxdLA89NxW4
+    4SZ79EYgYlk2OAholROdVlQA3ChAfUXH2jDfufxtnlom6aLm+kJ1X4RAWGRVSchhAPj2NH
+    4XE+dnNUpVEiEvnDPzYBa5lAgQL+cwnoH5KP5eH+I3SukGssfUrD6S3vV6OEmtb3CF8alC
+    5gN1VZ/u2T2tJ2gLQNq4UBJ77Rh+pL3x39weZPpeBnqA8S/Oy2VShb+LbChUOW/UA7ED8c
+    LEjEHg/ymoUgtO7DL2UR4j+RVNLiTMqJ4NN5XKifMyYtI+C17GF5/RksnKv9RyNSNE7kFi
+    ceETqmTq2wGpPnqBFXSxkYUz2a0KWQUdsAKyHamaeYNxnZoKMReiq0NtAZSbboPQAC4uhA
+    nJaAlSrZed1DjtsPEXbeE7J6l4toz7L8MZCnzano6UOteHThgroH1a47U5MA
+X-ME-Proxy: <xmx:NAtXavKoPba2TFy-ijkk9Z9sxgJSQwWJDyyEQ1LChy5l69mevlRPFw>
+    <xmx:NAtXatlou2Ia86UbNipi1H8fGJCljcVIz7Ok6OmptGGwPF7CR6g9hQ>
+    <xmx:NAtXavMYdZLeOsEQhd1Qs6m9GUQwAQAhRHifzITrEoT-IBqppX33rQ>
+    <xmx:NAtXav4SOscouLpu4Pbks3297enSj0lC2chRQ-or4x7ZDSye8Ucu6w>
+    <xmx:NgtXatSSk_tneoAHrCOEPOKOg9xEYv6xdVnR4DxuFw_EZz1sEgV6-M_6>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 Jul 2026 00:23:15 -0400 (EDT)
+Date: Tue, 14 Jul 2026 22:23:13 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
+ <wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
+ <wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v19 17/18] vfio/pci: Reset hardware TPH state on device
+ enable/disable
+Message-ID: <20260714222313.2fc9069f@shazbot.org>
+In-Reply-To: <0fe381d6-8ea9-41d6-baf6-97db48b40aa0@huawei.com>
+References: <20260702124224.57168-1-fengchengwen@huawei.com>
+	<20260702124224.57168-18-fengchengwen@huawei.com>
+	<20260708172944.685c3cea@shazbot.org>
+	<0fe381d6-8ea9-41d6-baf6-97db48b40aa0@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260715032831.1411664-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxTsVDA1dqeIwNAA--.65426S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ArW5CFWxZw1xZw1ruryrXwc_yoW8ZFy8pF
-	4xAwnxJrZ5Zr17G3Z8W3WYgFy3u3y8Gr1fWa4DCrWakrsxtw1rtF4IgFW7XFW3Kw40v39a
-	qr4Fgw15Z3WDA3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 15 Jul 2026 11:09:28 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
+> On 7/9/2026 7:29 AM, Alex Williamson wrote:
+> > On Thu, 2 Jul 2026 20:42:23 +0800
+> > Chengwen Feng <fengchengwen@huawei.com> wrote:
+> >   
+> >> VFIO allows user space to enable and modify PCI TPH state, but device
+> >> reset only clears hardware TPH registers, while the software TPH state
+> >> maintained in pci/tph.c remains stale.  
+> > 
+> > It's saved and restored, why is it "stale"?  It seems more that the
+> > interface simply doesn't meet our use case.
+> > 
+> > What about resets through vfio-pci interfaces, should TPH be
+> > automatically disabled?  Thanks,  
+> 
+> I initially added TPH disable logic into VFIO reset paths in v20 to make
+> all reset scenarios consistent, but after reviewing Sashiko's feedback
+> and re-checking PCI core state management, I agree we do NOT need extra
+> pcie_disable_tph() calls in VFIO reset ioctl handlers.
+> 
+> VFIO reset ioctls eventually trigger the PCI state save/restore flow,
+> which invokes pci_save_tph_state() and pci_restore_tph_state() to handle
+> TPH capability and control registers properly. TPH configuration state
+> will be restored to the saved value automatically after reset.
+> 
+> One important exception is the Steering Tag table when located in MSI-X
+> vector space (PCI_TPH_LOC_MSIX). The pci_save_tph_state() helper only
+> saves TPH capability registers; it does not back up ST entries stored in
+> MSI-X table entries. After any PCI reset, those ST values are lost along
+> with the rest of the MSI-X table and are not restored automatically.
 
+False.  It's not restored as a separate TPH operation, the ST
+upper/lower is stored in the MSI-X vector control register, which is
+restored from kernel state (without a separate save-state function)
+via:
 
-On 2026/7/15 上午11:28, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> kvm_restore_timer() rebuilds the remaining timer countdown from
-> vcpu->arch.expire, which is host-internal and is not part of the migrated
-> vCPU state. On the migration destination it is still 0, so for a one-shot
-> timer that has not expired yet the computed delta is 0 and
-> write_gcsr_timertick(0) injects the timer interrupt immediately instead of
-> after the remaining time. The guest observes a premature timer event right
-> after migration.
-> 
-> The expired one-shot case (TVAL = -1) is already handled earlier, so only
-> the non-expired one-shot path is affected. When expire has not been set
-> (i.e. on the destination), reload the remaining countdown from the
-> migrated TVAL. The regular preempt/resume path on the source, where
-> expire is valid, is unchanged.
-> 
-> Fixes: a5857b9ff6e0 ("LoongArch: KVM: Implement vcpu timer operations")
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->   arch/loongarch/kvm/timer.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-> index 3829f35a4070..57f53d19a00a 100644
-> --- a/arch/loongarch/kvm/timer.c
-> +++ b/arch/loongarch/kvm/timer.c
-> @@ -132,6 +132,14 @@ void kvm_restore_timer(struct kvm_vcpu *vcpu)
->   		 * during injecting intr async
->   		 */
->   		kvm_queue_irq(vcpu, INT_TI);
-> +	} else if (!expire) {
-> +		/*
-> +		 * One-shot timer on the migration destination: vcpu->arch.expire
-> +		 * is host-internal and is not migrated, so it is still 0 here.
-Good catch, I ever noticed this issue before however without good 
-method. My previous method is to recalculate vcpu->arch.expire in 
-function _kvm_setcsr() when LOONGARCH_CSR_TVAL is set and value of 
-vcpu->arch.expire is 0.
+__pci_restore_msix_state()
+	pci_msix_write_vector_ctrl(entry, entry->pci.msix_ctrl);
+ 
+> I will add explicit documentation to the VFIO_DEVICE_FEATURE_TPH_ST uAPI
+> comments stating that userspace must re-program all ST table entries via
+> this feature after any device reset, as ST entries are not preserved
+> across PCI resets (especially for MSI-X backed ST tables).
 
-Regards
-Bibo Mao
-> +		 * Reload the remaining countdown from the migrated TVAL instead
-> +		 * of firing the timer immediately.
-> +		 */
-> +		delta = ticks;
->   	}
->   
->   	write_gcsr_timertick(delta);
-> 
+Only DS is not saved and restored.
 
+Alex
