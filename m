@@ -1,60 +1,69 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010036.outbound.protection.outlook.com [52.101.193.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077D8420899;
-	Wed, 15 Jul 2026 09:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784107175; cv=none; b=ngMycn/Um1yh7HVDAGluSJUvs+GYj4ZY8yAu/nqfHfR8Z47M2WcCJr/Wmqz47kPpmekOCQj0inRTUneEmrocbachdiBsowTxI2xpvCgYxAZKhnzmOzD0HE3DH77Sr5Gz00dsnuCFIjYbSZhlxL9MH3WOFukU5qFkTplP/fr+S4A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784107175; c=relaxed/simple;
-	bh=nUk7g+IhB5Nyz/prQTTYbYB25//DpD+rB1OcRETpl5E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rpyJroKk8prBZKs/ic5/k0rEay1noGi1Y7Gb8+8KEJulLRLLyzwkK4WqxlZPCTOfS19Vb5wAleJaD8T3fzT4rZShn8rkHAMAsvyBCfwZS9GuXU/zV43j3AfaBRcAAtIEyRk+Pq1f1lsl4iMyC3qgwE1b9c+5xhxChvHpx+jAA50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Kkt4dOEb; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8677E3C8708
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 09:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.36
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784108303; cv=fail; b=S3oGbQgnuFtPPH87iGlrAU+g1UsCVaKMV1s2PAD71/Si56qs6Ab7c1CIt+1jYCKrv8Dk/j4YGXar2Heb+soFcFleYHl+mMdjUwz7oOJP44aBAaeAMw7Ol+19sx2+7S2GV9xBNbog6OCcCDI/HOeU1c1vqtipV0cfQgeqVwWetis=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784108303; c=relaxed/simple;
+	bh=bs3YEiUcqGUCEoa16qGLOUomGnAO4ZJLHzg4QJaoNJ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZpIn8XWBUy7wAfdeTrkN0+59S1dptqFa7IZOHLnPGxORo1rmnDW2KrtmLM6a+/HGQWM9bovCo34zSEynifuv/ZzlQr1X6jcFRU9BWSGrJ7hDjefZbW4nGOAJfOgigWvIJaEVxjmbgpQqWW1Ji0iLAIQ5WIObXoXJIyjd4p6LzM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=xTUO2IHv; arc=fail smtp.client-ip=52.101.193.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Kkt4dOEb"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F4C5oU3272900;
-	Wed, 15 Jul 2026 09:19:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Coji7X
-	c69oHilevycZqRnTjxpr+xLAAwbkdPXHNk9To=; b=Kkt4dOEbDrhdFoWNK+rYMz
-	AjTqce7fP9KG/q0CrETsRlA1G65Lq7yLbp9v5v0AFP/aLuyKkj0ijW7DBq44VXLS
-	mhSE1K+KLKar0YyZx+vdwN1djcOUzyTUW/m5fbV1k1n2mFGJz4A2MuPy603TzSzF
-	W+/6ecTFpc13UhnbZMsLgl6n1IIuSXnV9FMYMisGA4zJzTt3tCAE/G9U2REqYfzh
-	YXeEUOE5c7Ax2hBVWr1MNcEWax49Dii7F8yihpBNEeYDkJT3A2aouSUHJ75YpSyP
-	5ynlHp/DveCqVJ+BUvyguXsyHzCyoyGS0R34YftpB80AlQ6bp8WMPShX3ziqmVFw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegbt3b4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 09:19:30 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66F94dAp017046;
-	Wed, 15 Jul 2026 09:19:30 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uy6tw6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Jul 2026 09:19:30 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66F9JQ9r34406872
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Jul 2026 09:19:26 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 558582004B;
-	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23D9920040;
-	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
-Received: from [9.111.23.116] (unknown [9.111.23.116])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
-Message-ID: <869ceed8-1c04-46ff-aa0d-c1ae5e01badb@linux.ibm.com>
-Date: Wed, 15 Jul 2026 11:19:25 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="xTUO2IHv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FDzxigiMJ85TlfujtVA+1euxj2QefZR2LC/3OuxUnSL2P24GpCYSFyQEtOk5XaQMCIBNzoQSiRv4zasnenj4PNXSjtmYGdS0sYUMUJEFemKh5WwgFlObTdhz76nJPh+B/+I8oRjPMIrHtpbM3NHNZLt/y5L8tpsOPVubzf/Pi3y7pjAq0Xc3e3svLGO8FzE/gAYKhE6iuGm4WOnZPBr3DlrBW/2mLaFBuEnfUaEY4hq+L6MQX++SOGtKfYLEUC4g/WXjaAGii1oYATwvz6G4S6+a4/clXUsLbOWZ8k+NrbtOf7VLz+YVDQyrlSWCV/o8OYxnrh87Oby1bezfao+0sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YlCmkR/b+9BDnbreKMjPsH5BqgxPgpJiIFQLHSz3VV8=;
+ b=h71GMJRBIKoHypbicvTyyMPNR2kGj7FdQ2Rois9kxtknoZEJSDwLDNzYvrqkuoGlx3ggGPlqKxoh/vLVpkyLiRqTK/Zv3lwp9Jr0DS73O+EfPcLlt04WSNobSV7663/9sB+We20LxhULhtgzAG/z4O8DLieSVSmCb/gt5z8I4u7VIZmJwb3m8XoofYuABnYsk8zydMs4gMyHVSqzueGknU7b1AGRtO4fEMemVVtwH+NYSXkMDHFe8vYyyrJ9cu83W37k2r2hO+5R/OqMwM6HOctmInogUXauxAUfEjiwRPWRXfaJVyGTihNQhQARgVLOlHUYdz+uh3oAe3dA0ARhew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YlCmkR/b+9BDnbreKMjPsH5BqgxPgpJiIFQLHSz3VV8=;
+ b=xTUO2IHvMkdVAk2OdFQZFkeyQuCQkvWr29ch86QHPsJIQ0WsCXzSeykGD32UgRKaeqUUO6r+GV0HYGNAhb+V5Ax72cNEcrGeIOT/LN2AeKp2srKFO8cQMoxcRmGpUJQOS7BJnvzeaXKsBptnbEOwVwu+5cD/qt1s95tCeWEb1hs=
+Received: from SJ0PR03CA0267.namprd03.prod.outlook.com (2603:10b6:a03:3a0::32)
+ by LV1PR12MB999304.namprd12.prod.outlook.com (2603:10b6:408:3f5::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Wed, 15 Jul
+ 2026 09:38:09 +0000
+Received: from SJ5PEPF000001D2.namprd05.prod.outlook.com
+ (2603:10b6:a03:3a0:cafe::31) by SJ0PR03CA0267.outlook.office365.com
+ (2603:10b6:a03:3a0::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.12 via Frontend Transport; Wed,
+ 15 Jul 2026 09:38:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ5PEPF000001D2.mail.protection.outlook.com (10.167.242.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.223.9 via Frontend Transport; Wed, 15 Jul 2026 09:38:09 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 15 Jul
+ 2026 04:38:09 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 15 Jul
+ 2026 04:38:09 -0500
+Received: from [10.252.195.157] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Wed, 15 Jul 2026 04:38:04 -0500
+Message-ID: <8786c93c-f27d-4543-9322-007054336cd2@amd.com>
+Date: Wed, 15 Jul 2026 15:07:58 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,117 +71,198 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/21] KVM: s390: vsie: Add helper to pin multiple guest
- pages
-To: sashiko-reviews@lists.linux.dev,
-        Christoph Schlameuss <schlameuss@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        kvm@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
- <20260709-vsie-sigpi-v1-13-ea9f12066408@linux.ibm.com>
- <20260709152820.BA50D1F000E9@smtp.kernel.org>
+Subject: Re: [PATCH v3 4/5] KVM: SVM: Compute DEBUGCTL reserved bits
+ dynamically
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <kvm@vger.kernel.org>, <x86@kernel.org>,
+	<yosry.ahmed@linux.dev>, <jmattson@google.com>, <thomas.lendacky@amd.com>,
+	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <santosh.shukla@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20260709082953.69434-1-shivansh.dhiman@amd.com>
+ <20260709082953.69434-5-shivansh.dhiman@amd.com>
+ <bdccb813-66f3-4002-a2a0-49ec6f093bb7@amd.com>
 Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260709152820.BA50D1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <bdccb813-66f3-4002-a2a0-49ec6f093bb7@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a5750a2 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=0UtCLVEFYwN47_7NgLQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA4OSBTYWx0ZWRfXx/3B99pr1eWr
- 8CJk8TT/cBOjw28vTs6RBPeKDTB0jALnFlu4haArlrQv1DowFO5lXIKhZpO50V+3t3Pp9DBG+7U
- GGCpRs7gpQBREq7UXk2m8UkuJgcP06VVoATaOmasGcOf2RmM6jRhjmwHP41V3HY1B9xHDc3JWUU
- c2XBv0Dpp9qyRMCWKFI2Cbu0EPQfvHFVUq5SrKvHamwkm/8XMh2oLLGxy4wlRnTAP9SOxRIcYGE
- oj3JHq8oU3ehU9DHOlR0fjmL3REg80FfETyVEt7AyW/7MHsV4jQRDRhwsTmX9UUFt9kniT2X5RC
- 3hFly69v6/6WjndQLzaMgPX3tThNhIM4GDAaph2j3In9ZOxE5uA/T1DRqb0zW3XhEVTtkemSQE5
- EF7wOYdRPOTQPfstN1ZXuf1Dfb6wmP91ZY41EVxxW3wiSfYEAaFqTpe+yHwRkQ+/boGhH3xBk7p
- Aoqm1sIE4edltbrW53g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA4OSBTYWx0ZWRfXza9QSkZwZmtD
- x9q5+eDUqXYTDwIH0O8pcMeK5y7RlbsBesEspuN0XkyYRTYrHtfrdo1sM02R+bsieG8jQvARVBm
- vUUQqm78HM/Th8YPdxjAnIlyv/eQzW8=
-X-Proofpoint-GUID: aJroS7LVlYVadbndY5Nfpuik1B_SGNSn
-X-Proofpoint-ORIG-GUID: aJroS7LVlYVadbndY5Nfpuik1B_SGNSn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1011 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607150089
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D2:EE_|LV1PR12MB999304:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e60cc17-77b3-4fa7-dcfc-08dee254c834
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|36860700016|23010399003|82310400026|56012099006|11063799006|4143699003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Lzwl2c4jHyOheeYRZ8ZIvD6nLs2RqYHAImigIC7Gb2uEu7OEnb/Strhx50hqJ/Uc3RCtBTU2KiGfwgeSriYY76eh3sApRCUXpwMaJuWZ0hKKVqe2GbtyKOiYXK4e9E54kaFps+JYjLUF7b23JDIeVIW8cUkRZ+3HUA7zyPEZbY4KEJ/Qs7Rf1Z4OXH56+O6yjO8Pt/tL8S+LaGhuOx1SE1mCOYn4YjKtiUkxtz98t8tTa4ts/uF5qfWy0xpp9tNQxPWYvLTKtfm6zXhJX+sYXJoE4gsHNEbkfmE8/ELQutKTRy6wkHDpqeZTswCBaBPIFIbg1HIpoGv9qruXsIchkaKBjCtQHuFY7HA0hbTaHvrwNzyoqIL7tJc/G30/1rLI9/Lj2Etr2da/8g75AXQKkOA9tgrC9oxyJ+9fAvIAto61E2Vgqf7rd7JOb8JFIL7qS3o+70jJvEWoQE2wlE13SqMPXHGf6oK+SZ2bjTwJqN23iuQb1smjm89wQxcF843AfR2nvwe//QmQgEMJhRJO1wODpjdiI43v/7R4pEyErVskuTger6xz262urvdgN3mjgl9U3WBF6NH6s9wbVW1zm/1f53d9tWqZWtftd2jBNeVu7xyo+zHBz38UFjXaQRrpj1lXNPwC33Y7yijWFrzIExvGriYoexlSIh/8r9rm4ZpprvP8L+SCqC0qsWvWcNNNmhx+VGtvIVNcNk9z/kqvPw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(1800799024)(36860700016)(23010399003)(82310400026)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	3YHFrZrbCiG8CuMGJ5MKDqnzfhsSFmyCJeSgdgkStkhPqs90XU40St7QYXhrr9mu9/Na1ttmQR1Dbcd/zq0bdhP3X5mM50P6opeEWA2WqLF60OSGBZ7kYPVpjz64ilp2pg4G0W+sDNy/fGsbzqt+52LDSTKw84K0ceWfiPnxr4QlwbCeWRsYIpzHHiRENb9bx3zopwDw7hXth/3C0BInc99qV63C3Fhdz1QoBBv+8dhKxfjLxyDSEqmLjvlENkO2XXbzp21fWvU9znwOmzXifEL/aacWUl+0mdzHanoG+DUuLvNTR//MtBleru1nT0QvAYaFbZGv4DhakzukQPyeSJ6i45tUdysimikZc4sYRG8GeOWl4z/YruUPyxJc0VnwoaSWpG3K8dXBTZNKSJ22lMSi4JCzPIGGP74qWP3rK8znRXS0w0PrZLn2ldksSIeJ
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2026 09:38:09.6527
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e60cc17-77b3-4fa7-dcfc-08dee254c834
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001D2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR12MB999304
 
-On 7/9/26 17:28, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] Incorrect address calculation for unaligned GPAs in `pin_guest_pages`, leading to data corruption for multi-page contiguous buffers.
-> --
 
-[...]
+
+On 15-07-26 14:30, Nikunj A. Dadhania wrote:
+> 
+> 
+> On 7/9/2026 1:59 PM, Shivansh Dhiman wrote:
+>> Replace the static DEBUGCTL_RESERVED_BITS macro with a helper,
+>> svm_get_debugctl_reserved_bits(), that derives the reserved bits from the
+>> guest's CPUID. This will allow DEBUGCTLMSR_BUS_LOCK_DETECT only when the
+>> guest supports Bus Lock Detect, on both the MSR write and nested load
+>> paths.
+>>
+>> Plumb the vCPU into svm_copy_vmrun_state() so it can pass it to the helper.
+>>
+>> Co-developed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+>> Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> ---
+> 
+> LGTM, this will be effective when BUS_LOCK_DETECT is enabled in the next patch.
+> 
+> With a minor nit below.
+> 
+> Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+
+Thanks for the review and Reviewed-by!
 
 > 
-> [Severity: Medium]
-> Could this address calculation cause issues if the initial gpa is unaligned?
+>> Changelog:
+>> v3:
+>>  * New patch.
+>>  * Replaced the static DEBUGCTL_RESERVED_BITS macro with a per-vCPU helper
+>>    that gates the bit on guest CPUID.
+>>
+>> ---
+>>  arch/x86/kvm/svm/nested.c |  8 ++++----
+>>  arch/x86/kvm/svm/svm.c    |  6 +++---
+>>  arch/x86/kvm/svm/svm.h    | 12 ++++++++++--
+>>  3 files changed, 17 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index 0a9e28a02692..4dfccc2deda8 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -821,7 +821,7 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm)
+>>  		 * svm_set_msr's definition of reserved bits.
+>>  		 */
+>>  		svm_copy_lbrs(&vmcb02->save, save);
+>> -		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+>> +		vmcb02->save.dbgctl &= ~svm_get_debugctl_reserved_bits(vcpu);
+>>  	} else {
+>>  		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
+>>  	}
+>> @@ -1204,7 +1204,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+>>  }
+>>  
+>>  /* Copy state save area fields which are handled by VMRUN */
+>> -void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+>> +void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, struct vmcb_save_area *to_save,
+>>  			  struct vmcb_save_area *from_save)
+>>  {
+>>  	to_save->es = from_save->es;
+>> @@ -1231,7 +1231,7 @@ void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+>>  
+>>  	if (kvm_cpu_cap_has(X86_FEATURE_LBRV)) {
+>>  		svm_copy_lbrs(to_save, from_save);
+>> -		to_save->dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+>> +		to_save->dbgctl &= ~svm_get_debugctl_reserved_bits(vcpu);
+>>  	}
+>>  }
+>>  
+>> @@ -2072,7 +2072,7 @@ static int svm_set_nested_state(struct kvm_vcpu *vcpu,
+>>  
+>>  	svm->nested.vmcb12_gpa = kvm_state->hdr.svm.vmcb_pa;
+>>  
+>> -	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, save);
+>> +	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, save);
+>>  	nested_copy_vmcb_control_to_cache(svm, ctl);
+>>  
+>>  	svm_switch_vmcb(svm, &svm->nested.vmcb02);
+>> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+>> index cead8f99d856..a59389c322da 100644
+>> --- a/arch/x86/kvm/svm/svm.c
+>> +++ b/arch/x86/kvm/svm/svm.c
+>> @@ -3164,7 +3164,7 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
+>>  			data &= ~DEBUGCTLMSR_BTF;
+>>  		}
+>>  
+>> -		if (data & DEBUGCTL_RESERVED_BITS)
+>> +		if (data & svm_get_debugctl_reserved_bits(vcpu))
+>>  			return 1;
+>>  
+>>  		if (svm->vmcb->save.dbgctl == data)
+>> @@ -5037,7 +5037,7 @@ static int svm_enter_smm(struct kvm_vcpu *vcpu, union kvm_smram *smram)
+>>  
+>>  	BUILD_BUG_ON(offsetof(struct vmcb, save) != 0x400);
+>>  
+>> -	svm_copy_vmrun_state(map_save.hva + 0x400,
+>> +	svm_copy_vmrun_state(vcpu, map_save.hva + 0x400,
+>>  			     &svm->vmcb01.ptr->save);
 > 
-> If a caller passes an unaligned gpa to pin_guest_pages() (for example, 0x1010),
-> adding PAGE_SIZE * i propagates this initial page offset to every subsequent
-> page. This would mean the calculation requests 0x2010, 0x3010, and so on,
-> skipping the guest memory between 0x2000 and 0x200F.
-> 
-> Would it be safer to align the gpa calculation for the subsequent pages to
-> ensure a truly contiguous buffer is correctly pinned?
-> 
->> +		if (rc)
->> +			goto err;
->> +		addr[i].gpa = gpa + PAGE_SIZE * i;
->> +		addr[i].hpa = hpa;
->> +	}
-When unpinning that shouldn't matter since gpa_to_gfn() removes those 
-remaining bits. Are you ever using a hpa other than the index 0 one?
+> While at it, the wrapped call can be collapsed to a single line.
 
-But yeah, there shouldn't be any offsets for follow on pages.
+Sure, will do that in next version.
+
+> 
+> Regards,
+> Nikunj
+> 
+>>  
+>>  	kvm_vcpu_unmap(vcpu, &map_save);
+>> @@ -5081,7 +5081,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+>>  	 * used during SMM (see svm_enter_smm())
+>>  	 */
+>>  
+>> -	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, map_save.hva + 0x400);
+>> +	svm_copy_vmrun_state(vcpu, &svm->vmcb01.ptr->save, map_save.hva + 0x400);
+>>  
+>>  	/*
+>>  	 * Enter the nested guest now
+>> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+>> index 8d77c10cf4f6..402a827f622d 100644
+>> --- a/arch/x86/kvm/svm/svm.h
+>> +++ b/arch/x86/kvm/svm/svm.h
+>> @@ -783,7 +783,15 @@ BUILD_SVM_MSR_BITMAP_HELPERS(bool, test, test)
+>>  BUILD_SVM_MSR_BITMAP_HELPERS(void, clear, __clear)
+>>  BUILD_SVM_MSR_BITMAP_HELPERS(void, set, __set)
+>>  
+>> -#define DEBUGCTL_RESERVED_BITS (~DEBUGCTLMSR_LBR)
+>> +static inline u64 svm_get_debugctl_reserved_bits(struct kvm_vcpu *vcpu)
+>> +{
+>> +	u64 debugctl = DEBUGCTLMSR_LBR;
+>> +
+>> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_BUS_LOCK_DETECT))
+>> +		debugctl |= DEBUGCTLMSR_BUS_LOCK_DETECT;
+>> +
+>> +	return ~debugctl;
+>> +}
+>>  
+>>  /* svm.c */
+>>  extern bool dump_invalid_vmcb;
+>> @@ -873,7 +881,7 @@ void svm_leave_nested(struct kvm_vcpu *vcpu);
+>>  void svm_free_nested(struct vcpu_svm *svm);
+>>  int svm_allocate_nested(struct vcpu_svm *svm);
+>>  int nested_svm_vmrun(struct kvm_vcpu *vcpu);
+>> -void svm_copy_vmrun_state(struct vmcb_save_area *to_save,
+>> +void svm_copy_vmrun_state(struct kvm_vcpu *vcpu, struct vmcb_save_area *to_save,
+>>  			  struct vmcb_save_area *from_save);
+>>  void svm_copy_vmloadsave_state(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
+>>  void nested_svm_vmexit(struct vcpu_svm *svm);
+> 
+
