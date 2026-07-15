@@ -1,40 +1,60 @@
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D6541B8D3;
-	Wed, 15 Jul 2026 09:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077D8420899;
+	Wed, 15 Jul 2026 09:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784107030; cv=none; b=PYN6mhQip8DmHo6x9Y40v7gbv8IYcThT0jWGr6ZEZnjum3ChBVpSqAokqY3DgVuZFdiQncZmfmVWUktdPQolJ488hClZemFeCqSAL2ojWFggWdND5oxfNBU3zBKDsy84poTnk7CDLSs3cIBzF5dQCQp1jqFGXNsExNr2KH+XaI0=
+	t=1784107175; cv=none; b=ngMycn/Um1yh7HVDAGluSJUvs+GYj4ZY8yAu/nqfHfR8Z47M2WcCJr/Wmqz47kPpmekOCQj0inRTUneEmrocbachdiBsowTxI2xpvCgYxAZKhnzmOzD0HE3DH77Sr5Gz00dsnuCFIjYbSZhlxL9MH3WOFukU5qFkTplP/fr+S4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784107030; c=relaxed/simple;
-	bh=eElwgUkUkox9F70gv1LzUtbkgfuSf6Q+6LsipvKxauA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Qvd6gCsJLspDTG1SVUbltgDvmMSGcLpggZHu5+3tdkle1oWOAqTd4FfJUvMJbL/SS7W2kwA3Jt6sG/JqxKius96f32ua797le6jN4JmogWxdYaFca5e4Ea9XsLRaGKFemzfL2sm6nMbDoFfFIj0nw6vUBjciOTHC27cB7ov5fKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=2LI+n88z; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1784107175; c=relaxed/simple;
+	bh=nUk7g+IhB5Nyz/prQTTYbYB25//DpD+rB1OcRETpl5E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rpyJroKk8prBZKs/ic5/k0rEay1noGi1Y7Gb8+8KEJulLRLLyzwkK4WqxlZPCTOfS19Vb5wAleJaD8T3fzT4rZShn8rkHAMAsvyBCfwZS9GuXU/zV43j3AfaBRcAAtIEyRk+Pq1f1lsl4iMyC3qgwE1b9c+5xhxChvHpx+jAA50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Kkt4dOEb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="2LI+n88z"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=dH5jL6YB5OieydwdIYKQd8DRqZORSBSglWLgHTZ76SM=;
-	b=2LI+n88z7up6IjvryZB1GQjeuLBiqIQH7kp3OEr5kk5AREpcwFFs0pPwLXL2OrgTkU/IYYqgW
-	dpF/15bOYBxSN0mpjcG67+KKlYTJ/eFjGtsBuHUXvKy3O6RPLJRjSBrH5EFVk0umeV0T4MA+Ohy
-	opcSdClMmSRQUFSrP+zP3gM=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h0Vgd56Bzz1T4Mc;
-	Wed, 15 Jul 2026 17:07:41 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 547B740537;
-	Wed, 15 Jul 2026 17:16:52 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 15 Jul 2026 17:16:51 +0800
-Message-ID: <f360c92e-878d-49b5-bcd4-e18240a3600a@huawei.com>
-Date: Wed, 15 Jul 2026 17:16:51 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Kkt4dOEb"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F4C5oU3272900;
+	Wed, 15 Jul 2026 09:19:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Coji7X
+	c69oHilevycZqRnTjxpr+xLAAwbkdPXHNk9To=; b=Kkt4dOEbDrhdFoWNK+rYMz
+	AjTqce7fP9KG/q0CrETsRlA1G65Lq7yLbp9v5v0AFP/aLuyKkj0ijW7DBq44VXLS
+	mhSE1K+KLKar0YyZx+vdwN1djcOUzyTUW/m5fbV1k1n2mFGJz4A2MuPy603TzSzF
+	W+/6ecTFpc13UhnbZMsLgl6n1IIuSXnV9FMYMisGA4zJzTt3tCAE/G9U2REqYfzh
+	YXeEUOE5c7Ax2hBVWr1MNcEWax49Dii7F8yihpBNEeYDkJT3A2aouSUHJ75YpSyP
+	5ynlHp/DveCqVJ+BUvyguXsyHzCyoyGS0R34YftpB80AlQ6bp8WMPShX3ziqmVFw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegbt3b4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 09:19:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66F94dAp017046;
+	Wed, 15 Jul 2026 09:19:30 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fc2uy6tw6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jul 2026 09:19:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66F9JQ9r34406872
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jul 2026 09:19:26 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 558582004B;
+	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 23D9920040;
+	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
+Received: from [9.111.23.116] (unknown [9.111.23.116])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 15 Jul 2026 09:19:26 +0000 (GMT)
+Message-ID: <869ceed8-1c04-46ff-aa0d-c1ae5e01badb@linux.ibm.com>
+Date: Wed, 15 Jul 2026 11:19:25 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,322 +62,117 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] KVM: arm64: Add HDBSS per-vCPU buffer management
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
-	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
-	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <20260709104026.2612599-5-zhengtian10@huawei.com>
- <alTqqxEZLuYN-gY6@LeoBrasDK>
- <df479edc-cca0-4b54-aed0-4d8c6fd4ffc7@huawei.com>
- <alYTt-fG5rJ9D6Dm@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <alYTt-fG5rJ9D6Dm@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+Subject: Re: [PATCH 13/21] KVM: s390: vsie: Add helper to pin multiple guest
+ pages
+To: sashiko-reviews@lists.linux.dev,
+        Christoph Schlameuss <schlameuss@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        kvm@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+ <20260709-vsie-sigpi-v1-13-ea9f12066408@linux.ibm.com>
+ <20260709152820.BA50D1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20260709152820.BA50D1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a5750a2 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=0UtCLVEFYwN47_7NgLQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA4OSBTYWx0ZWRfXx/3B99pr1eWr
+ 8CJk8TT/cBOjw28vTs6RBPeKDTB0jALnFlu4haArlrQv1DowFO5lXIKhZpO50V+3t3Pp9DBG+7U
+ GGCpRs7gpQBREq7UXk2m8UkuJgcP06VVoATaOmasGcOf2RmM6jRhjmwHP41V3HY1B9xHDc3JWUU
+ c2XBv0Dpp9qyRMCWKFI2Cbu0EPQfvHFVUq5SrKvHamwkm/8XMh2oLLGxy4wlRnTAP9SOxRIcYGE
+ oj3JHq8oU3ehU9DHOlR0fjmL3REg80FfETyVEt7AyW/7MHsV4jQRDRhwsTmX9UUFt9kniT2X5RC
+ 3hFly69v6/6WjndQLzaMgPX3tThNhIM4GDAaph2j3In9ZOxE5uA/T1DRqb0zW3XhEVTtkemSQE5
+ EF7wOYdRPOTQPfstN1ZXuf1Dfb6wmP91ZY41EVxxW3wiSfYEAaFqTpe+yHwRkQ+/boGhH3xBk7p
+ Aoqm1sIE4edltbrW53g==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA4OSBTYWx0ZWRfXza9QSkZwZmtD
+ x9q5+eDUqXYTDwIH0O8pcMeK5y7RlbsBesEspuN0XkyYRTYrHtfrdo1sM02R+bsieG8jQvARVBm
+ vUUQqm78HM/Th8YPdxjAnIlyv/eQzW8=
+X-Proofpoint-GUID: aJroS7LVlYVadbndY5Nfpuik1B_SGNSn
+X-Proofpoint-ORIG-GUID: aJroS7LVlYVadbndY5Nfpuik1B_SGNSn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607150089
 
+On 7/9/26 17:28, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] Incorrect address calculation for unaligned GPAs in `pin_guest_pages`, leading to data corruption for multi-page contiguous buffers.
+> --
 
-On 7/14/2026 6:47 PM, Leonardo Bras wrote:
-> On Tue, Jul 14, 2026 at 03:15:03PM +0800, Tian Zheng wrote:
->> On 7/13/2026 9:39 PM, Leonardo Bras wrote:
->>> On Thu, Jul 09, 2026 at 06:40:24PM +0800, Tian Zheng wrote:
->>>> From: eillon <yezhenyu2@huawei.com>
->>>>
->>>> Add HDBSS (Hardware Dirty Bit State Structure) per-vCPU buffer
->>>> management including allocation, freeing, and loading of HDBSS
->>>> registers during vCPU load.
->>>>
->>>> This patch creates the foundational infrastructure:
->>>> - struct vcpu_hdbss_state and enable_hdbss/hdbss_order in kvm_arch
->>>> - kvm_dirty_bit.h header with alloc/free declarations
->>>> - dirty_bit.c with alloc/free helpers
->>>> - __load_hdbss() in VHE switch for register loading
->>>> - vCPU create/destroy hooks for buffer lifecycle
->>>> - sysreg definitions for HDBSS register manipulation
->>>> - Makefile update for dirty_bit.o
->>>>
->>>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
->>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
->>>> ---
->>>>    arch/arm64/include/asm/kvm_dirty_bit.h | 16 ++++++++
->>>>    arch/arm64/include/asm/kvm_host.h      | 13 +++++++
->>>>    arch/arm64/include/asm/sysreg.h        | 11 ++++++
->>>>    arch/arm64/kvm/Makefile                |  1 +
->>>>    arch/arm64/kvm/arm.c                   |  7 ++++
->>>>    arch/arm64/kvm/dirty_bit.c             | 52 ++++++++++++++++++++++++++
->>>>    arch/arm64/kvm/hyp/vhe/switch.c        | 15 ++++++++
->>>>    arch/arm64/kvm/mmu.c                   |  1 +
->>>>    arch/arm64/kvm/reset.c                 |  4 ++
->>>>    9 files changed, 120 insertions(+)
->>>>    create mode 100644 arch/arm64/include/asm/kvm_dirty_bit.h
->>>>    create mode 100644 arch/arm64/kvm/dirty_bit.c
->>>>
->>>> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
->>>> new file mode 100644
->>>> index 000000000000..84b12f0a10af
->>>> --- /dev/null
->>>> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
->>>> @@ -0,0 +1,16 @@
->>>> +/* SPDX-License-Identifier: GPL-2.0-only */
->>>> +/*
->>>> + * Copyright (C) 2026 ARM Ltd.
->>>> + * Author: Leonardo Bras <leo.bras@arm.com>
->>> You are adding the file, so the copyright note should be yours, then?
->>
->> I originally thought your earlier patchset had already created this file, so
->> I
->>
->> kept your copyright and author info. I'll update it to mine in the next
->> version.
->>
->>
->> Thanks for pointing that out!
-> :)
->
->>
->>>> + */
->>>> +
->>>> +#ifndef __ARM64_KVM_DIRTY_BIT_H__
->>>> +#define __ARM64_KVM_DIRTY_BIT_H__
->>>> +
->>>> +#include <asm/kvm_pgtable.h>
->>>> +#include <asm/sysreg.h>
->>>> +
->>>> +int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
->>>> +void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
->>>> +
->>>> +#endif /* __ARM64_KVM_DIRTY_BIT_H__ */
->>>> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
->>>> index bae2c4f92ef5..c41ec6d9c45a 100644
->>>> --- a/arch/arm64/include/asm/kvm_host.h
->>>> +++ b/arch/arm64/include/asm/kvm_host.h
->>>> @@ -420,6 +420,10 @@ struct kvm_arch {
->>>>    	 */
->>>>    	struct kvm_protected_vm pkvm;
->>>>
->>>> +	/* HDBSS: per-VM dirty tracking state */
->>>> +	bool enable_hdbss;
->>> Is there not a way of checking hdbss without adding this new member on the
->>> struct? Would not checking the vcpu_hdbss_state from current vcpu should be
->>> enough?
->>
->> HDBSS is a VM-wide property, so I currently use a VM-level flag
->> (kvm->arch.enable_hdbss)
->>
->> to track whether it's enabled. Paths like kvm_arch_commit_memory_region()
->> and VM teardown
->>
->> don't have a vCPU context to query, so per-vCPU state wouldn't work there.
->>
->>
->> But you're right, maybe we don't need a value to store it — we could remove
->> this flag and instead
->>
->> check the VTCR_EL2_HDBSS bit directly from kvm->arch.mmu.vtcr:
->>
->>
->> ```
->> static inline bool kvm_hdbss_enabled(const struct kvm *kvm)
->> {
->>      return kvm->arch.mmu.vtcr & VTCR_EL2_HDBSS;
->> }
->>
->> if (kvm_hdbss_enabled(kvm))
->>      ...
->> ```
-> That looks better :)
->
->>
->>>> +	unsigned int hdbss_order;
->>> Is that the order for hdbss buffer size?
->>> Haven't finished reading the series, but would that be bad if this was also
->>> in the per-vcpu state struct, instead?
->>>
->>> Also, here I suggest that we save a number, instead of the encoding for
->>> HDBSSBR_ELS_SZ, and convert it on hdbss setup. It could be either a
->>> shift, or size.
->>>
->>> Reason being that you used this to compare with HDBSS_MAX_ORDER at some
->>> point, and there is no guarantee that the encoding will always be in
->>> crescent form.
->>>
->>> Also, it's not clear where you set this value.
->>
->> Yes, this is the HDBSS buffer order (2^order bytes per vCPU).
->>
->> I put it in kvm->arch *to make sure all vCPUs in a VM have the same order*.
->>
-> Right, but do we need to retrieve this value at any context that is not
-> per-vcpu later? If all allocations happen at the same time, and the vcpus
-> can get the size of their arrays (even by the register itself), maybe there
-> is no need to add this member in the kvm_arch structure.
->
->>
->> I agree we should store a plain order number rather than the raw SZ
->> encoding.
->>
-> I would recommend we always save the value in the way its most convenient
-> to use. In this case, I only recall it to be used as bounds to read the
-> HDBSS array, so it would be better if we save it as plain size.
->
->> The assignment should happen in kvm_arm_enable_hdbss_global(), which I
->> missed in v4 and will add in v5.
->>
-> Okay
->
->>>> +
->>>>    #ifdef CONFIG_PTDUMP_STAGE2_DEBUGFS
->>>>    	/* Nested virtualization info */
->>>>    	struct dentry *debugfs_nv_dentry;
->>>> @@ -838,6 +842,12 @@ struct vcpu_reset_state {
->>>>    	bool		reset;
->>>>    };
->>>>
->>>> +struct vcpu_hdbss_state {
->>>> +	phys_addr_t base_phys;   /* for memory free */
->>>> +	u64 hdbssbr_el2;         /* load directly */
->>>> +	u64 hdbssprod_el2;       /* save directly */
->>>> +};
->>>> +
->>>>    struct vncr_tlb;
->>>>
->>>>    struct kvm_vcpu_arch {
->>>> @@ -945,6 +955,9 @@ struct kvm_vcpu_arch {
->>>>
->>>>    	/* Hyp-readable copy of kvm_vcpu::pid */
->>>>    	pid_t pid;
->>>> +
->>>> +	/* HDBSS registers info */
->>>> +	struct vcpu_hdbss_state hdbss;/
->>>>    };
->>>>
->>>>    /*
->>>> diff --git a/arch/arm64/include/asm/sysreg.h b/arch/arm64/include/asm/sysreg.h
->>>> index 7aa08d59d494..1354a58c3316 100644
->>>> --- a/arch/arm64/include/asm/sysreg.h
->>>> +++ b/arch/arm64/include/asm/sysreg.h
->>>> @@ -1039,6 +1039,17 @@
->>>>
->>>>    #define GCS_CAP(x)	((((unsigned long)x) & GCS_CAP_ADDR_MASK) | \
->>>>    					       GCS_CAP_VALID_TOKEN)
->>>> +
->>>> +/*
->>>> + * Definitions for the HDBSS feature
->>>> + */
->>>> +#define HDBSS_MAX_ORDER		HDBSSBR_EL2_SZ_2MB
->>>> +
->>> See above comment on using the encoding instead of an actual size/shift
->>> number.
->>
->> You're right — I will fix this in the next version as follows:
->>
->> First, HDBSS_MAX_ORDER will be defined as a plain order number. In v4 I only
->> considered the 4KB page
-> Maybe consider a plain size number, instead.
->
->> case and hard-coded it to 9. To make it work for any PAGE_SIZE configuration
->> (4KB, 16KB, or 64KB), I'll derive
->>
->> it from HDBSSBR_EL2_SZ_2MB:
->>
->> ```
->> #define HDBSS_MAX_ORDER    (12 + HDBSSBR_EL2_SZ_2MB - PAGE_SHIFT)
->> ```
->>
->> This evaluates to 9 on 4KB pages, and the correct value on 16KB/64KB pages
->> as well.
-> Wait, I don't see what you are trying to achieve here with this.
-> This order is related to the size of a HDBSS buffer, which is defined
-> independently of the page size being used. In 2MB example, it does hold
-> 256K HDBSS entries, disregarding on the page size, IIRC.
->
->
->> Second, I will add two conversion helpers in sysreg.h to bridge between
->> kernel semantics (alloc_pages order)
->>
->> and hardware encoding (HDBSSBR_EL2.SZ):
->>
->> ```
->> /* Convert alloc_pages order to HDBSSBR_EL2.SZ encoding */
->> #define hdbss_order_to_sz(order)  (PAGE_SHIFT + (order) - 12)
->> ```
-> (would be *_to_shift() no?)
->
-> In any case, see above.
->
->> These helpers work for any PAGE_SIZE configuration (4KB, 16KB, or 64KB)
->> because they use PAGE_SHIFT directly.
->>
->> Third, I will update the HDBSSBR_EL2 register construction in
->> kvm_arm_vcpu_alloc_hdbss()：
->>
->> ```
->> /* before */
->> .hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg), order),
->>
->> /* after */
->> .hdbssbr_el2 = HDBSSBR_EL2(page_to_phys(hdbss_pg),
->>                              hdbss_order_to_sz(order)),
->> ```
->>
-> That would be the other way around, right? I mean, here you would want the
-> order encoded in HDBSSBR_SZ from the page shift, not the other way around.
->
-> In any case, see above.
->
->
->> And I will also update the __free_pages() call to use
->> vcpu->kvm->arch.hdbss_order directly, since that field
->>
->> stores the plain order number and avoids decoding the SZ encoding at free
->> time:
->>
->>
->> ```
->> /* before */
->> __free_pages(hdbss_pg,
->>       FIELD_GET(HDBSSBR_EL2_SZ_MASK,
->>                 vcpu->arch.hdbss.hdbssbr_el2));
->>
->> /* after */
->> __free_pages(hdbss_pg,
->>       vcpu->kvm->arch.hdbss_order);
->> ```
->>
-> Ah, you use the 'order' to free the buffers as well, ok.
-> But those are per-vcpu buffers as well, right?
->
-> Again, the HDBSSBR_EL2.SZ AFAIK is not related to page size.
->
-> Thanks!
-> Leo
+[...]
 
+> 
+> [Severity: Medium]
+> Could this address calculation cause issues if the initial gpa is unaligned?
+> 
+> If a caller passes an unaligned gpa to pin_guest_pages() (for example, 0x1010),
+> adding PAGE_SIZE * i propagates this initial page offset to every subsequent
+> page. This would mean the calculation requests 0x2010, 0x3010, and so on,
+> skipping the guest memory between 0x2000 and 0x200F.
+> 
+> Would it be safer to align the gpa calculation for the subsequent pages to
+> ensure a truly contiguous buffer is correctly pinned?
+> 
+>> +		if (rc)
+>> +			goto err;
+>> +		addr[i].gpa = gpa + PAGE_SIZE * i;
+>> +		addr[i].hpa = hpa;
+>> +	}
+When unpinning that shouldn't matter since gpa_to_gfn() removes those 
+remaining bits. Are you ever using a hpa other than the index 0 one?
 
-Got it. I'll store the plain size (in bytes) instead of the order or SZ
-encoding.
-
-One clarification though: I'd like to keep this as a VM-level field
-(kvm->arch.hdbss_buffer_size) in case we may want to allow userspace to
-configure the buffer size via ioctl in the future.
-
-The field would be unsigned long hdbss_buffer_size (in bytes), with helpers
-to convert to order or SZ encoding when needed:
-   - get_order(size) → for alloc_pages()
-   - ilog2(size) - 12 → for HDBSSBR_EL2.SZ
-
-Does that work for you?
-
-
-Thanks!
-
-Tian
-
-
+But yeah, there shouldn't be any offsets for follow on pages.
