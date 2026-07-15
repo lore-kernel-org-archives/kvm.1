@@ -1,126 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604AF1F192E
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 05:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDBA3546FD
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 05:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784093683; cv=none; b=mmvQ8a2jsYVUsLqnBabF0H4Bexyf+TztE0P3rznkil+RexTAPvXaMzM2evA2Sq9qG9mAKe2JaTptVi1UBXQ2WZ7pg9y9s+v30cVj86fD/cevE3X02E2L8FHgxzDhmFA5dH4Kw49Nxvyx2k4meCp5+En5XgqXIhQtlmaUhG5R+mI=
+	t=1784094832; cv=none; b=p6SFKPMk6M45qF/2OYIZ4xKkd58A4uzWeUI/wjX5blUErYIZDyg3V9q6gXMZ3LMC2OlZTE+saienk8qDQDp/5w1XZuHkv2IPf3HBUDwXOweDippxtQ1URK/MLxNxX/gbcF+HjyhIhWZLUiYMRJ/glHcXbWjPYAGF9xPwS6RyG5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784093683; c=relaxed/simple;
-	bh=eWOPrXnMsfT7YAkCdpedPcQgIefE+rjsPWP0Pc9qH5w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YmqCnDb5jJOTmb6LYLEsAlKyZccNtdyxuuCLGG7ofXwXR0hOApICQ5+JPA+YsEOkwS98fo0g0byn1NIfgLHA5i6cn5EWWVhD4ZQXbsPj2BPRxLsQjuX77MXOeqa9qtJtgB0ScaTyjo2DV4z7iP3GNsgHleSeCgAtQZPNWXABF/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+K6f5QR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784094832; c=relaxed/simple;
+	bh=mh1vCbq0AjnG2jjglQrce4FGyktG13wVT2zI0y1Swhk=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oOu03brRsyV6FFjJ2GOVt6Hv/aJG6aWFIM5QUQ84IDs4x5YV0bXekX/KIbzeqDzM8TkXpRhDmLyvo0taJx97zn/UZHDo860eM4D8Mn3B5kaeGE3WGYvB294TW9vWZv8ZCdPMZxqZciCgXNo+46WmQlJZvWP0OqIVbL0Gnp40EHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BeDlWy/0; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+K6f5QR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BF41F000E9;
-	Wed, 15 Jul 2026 05:34:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784093682;
-	bh=lublCE11CUik7T24QQJw9Hy8+deTiepOQ2uy7K9DO20=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T+K6f5QRBMJCDsJXvlWqSFNCWZ2dumBnSnctQe4+AVTM6V6EdO2d9pS+UauxVLL64
-	 WEYFOdsJTR/TrVySClWDGBwcg+foBw2yJLluCeBlH16EuolEZ12Q4xPm0jr/PzQL5U
-	 g3E6+0xjk2O9tFtFsuF0arxDPHwPFkOiRgK2AEp5tT0coTCmS2gp/EIJS8z+n89tFj
-	 oFq1KI0ZxjkZwXtXy63gVbhY5W8dOZjQzWdi4voI6MA7+4k3GSZpD3xprbRgRqGGby
-	 K9Erw931TX8yJR6yKGECBUHA1knnf0mur3m3NMKoqdWUiuTEg4dboJo+Ixw70QVy61
-	 pZH8oauwGJATA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/3] RISC-V: KVM: fix vcpu vector context handling
- for kernel-mode vector
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andy Chiu" <tchiu@tenstorrent.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260715051629.1169645-4-tchiu@tenstorrent.com>
-References: <20260715051629.1169645-1-tchiu@tenstorrent.com>
- <20260715051629.1169645-4-tchiu@tenstorrent.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 05:34:41 +0000
-Message-Id: <20260715053441.E9BF41F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BeDlWy/0"
+Message-ID: <5c4f0ea6-b13c-4263-964f-cc4653c5cf6d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784094826;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n+scqyocUQL7GsnyVGF39blNq5Nv51aV4mHYAk+g538=;
+	b=BeDlWy/04CNtpBUg/5Z0ZA7jYM2UVVNXEzawfTnPK1umlI+99iw/+LPQX/lRKftUbtjqss
+	fdj1HMwb0uo87PLqLth8gJf6ELWmrwjyreUhCQXyLjBFenatpxE4JEN/bzI01uuETJu3Tb
+	SzXVUfErW4oecSdro13eZ3w51ak/mvk=
+Date: Wed, 15 Jul 2026 13:53:40 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Cc: cui.tao@linux.dev, chenhuacai@kernel.org, kernel@xen0n.name,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lixianglai@loongson.cn, cuitao@kylinos.cn
+Subject: Re: [PATCH] LoongArch: KVM: Reload one-shot TVAL on migration
+ destination
+To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn
+References: <20260715032831.1411664-1-cui.tao@linux.dev>
+ <a93bc0fe-58b9-f5af-aefb-f5659e54304f@loongson.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <a93bc0fe-58b9-f5af-aefb-f5659e54304f@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] The `RISCV_V_VCPU_NEED_RESTORE` thread flag is leaked across K=
-VM_RUN boundaries, leading to uninitialized kernel memory disclosure.
---
 
---- Patch [3]: [PATCH v2 3/3] RISC-V: KVM: fix vcpu vector context handling=
- for kernel-mode vector ---
-commit 48826c7676c07c389b4f37039e65e239445a85c8
-Author: Andy Chiu <tchiu@tenstorrent.com>
 
-RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector
+在 2026/7/15 11:49, Bibo Mao 写道:
+> 
+> 
+> On 2026/7/15 上午11:28, Tao Cui wrote:
+>> From: Tao Cui <cuitao@kylinos.cn>
+>>
+>> kvm_restore_timer() rebuilds the remaining timer countdown from
+>> vcpu->arch.expire, which is host-internal and is not part of the migrated
+>> vCPU state. On the migration destination it is still 0, so for a one-shot
+>> timer that has not expired yet the computed delta is 0 and
+>> write_gcsr_timertick(0) injects the timer interrupt immediately instead of
+>> after the remaining time. The guest observes a premature timer event right
+>> after migration.
+>>
+>> The expired one-shot case (TVAL = -1) is already handled earlier, so only
+>> the non-expired one-shot path is affected. When expire has not been set
+>> (i.e. on the destination), reload the remaining countdown from the
+>> migrated TVAL. The regular preempt/resume path on the source, where
+>> expire is valid, is unchanged.
+>>
+>> Fixes: a5857b9ff6e0 ("LoongArch: KVM: Implement vcpu timer operations")
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+>> ---
+>>   arch/loongarch/kvm/timer.c | 8 ++++++++
+>>   1 file changed, 8 insertions(+)
+>>
+>> diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
+>> index 3829f35a4070..57f53d19a00a 100644
+>> --- a/arch/loongarch/kvm/timer.c
+>> +++ b/arch/loongarch/kvm/timer.c
+>> @@ -132,6 +132,14 @@ void kvm_restore_timer(struct kvm_vcpu *vcpu)
+>>            * during injecting intr async
+>>            */
+>>           kvm_queue_irq(vcpu, INT_TI);
+>> +    } else if (!expire) {
+>> +        /*
+>> +         * One-shot timer on the migration destination: vcpu->arch.expire
+>> +         * is host-internal and is not migrated, so it is still 0 here.
+> Good catch, I ever noticed this issue before however without good method. My previous method is to recalculate vcpu->arch.expire in function _kvm_setcsr() when LOONGARCH_CSR_TVAL is set and value of vcpu->arch.expire is 0.
+> 
+Thanks for the review and for sharing your idea. I also considered
+recalculating expire in _kvm_setcsr() when TVAL is restored, but ended
+up keeping the change within kvm_restore_timer() to avoid touching the
+core CSR write path. Both approaches are functionally equivalent since
+the first save_timer() after restore will set expire correctly either
+way.
 
-This patch registers an RCU-protected callback to flush the vector context
-when the kernel-mode vector is serving a guest. This addresses vtype
-corruption during vector workloads by correctly saving the guest's context
-and sourcing the right status.VS.
+That said, if you prefer the _kvm_setcsr() approach, I'm happy to
+rework the patch accordingly.
 
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> index cf6e231e76e25..b7b68809a5817 100644
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
+Thanks,
+Tao
+> Regards
+> Bibo Mao
+>> +         * Reload the remaining countdown from the migrated TVAL instead
+>> +         * of firing the timer immediately.
+>> +         */
+>> +        delta = ticks;
+>>       }
+>>         write_gcsr_timertick(delta);
+>>
+> 
 
-[ ... ]
-
-> @@ -765,6 +769,12 @@ static void noinstr kvm_riscv_vcpu_enter_exit(struct=
- kvm_vcpu *vcpu,
->  	kvm_riscv_vcpu_swap_in_guest_state(vcpu);
->  	guest_state_enter_irqoff();
-> =20
-> +	if (current->thread.riscv_v_flags & RISCV_V_VCPU_NEED_RESTORE) {
-> +		current->thread.riscv_v_flags &=3D ~RISCV_V_VCPU_NEED_RESTORE;
-> +		__kvm_riscv_vector_restore(gcntx);
-> +		gcntx->sstatus =3D (gcntx->sstatus & ~SR_VS) | SR_VS_CLEAN;
-> +	}
-> +
-
-[Severity: Critical]
-Could this leak uninitialized kernel memory to the guest if the thread flag
-carries over from a previous vCPU run?
-
-If a softirq uses Kernel Mode Vector while a vCPU is loaded, it sets
-RISCV_V_VCPU_NEED_RESTORE via kvm_riscv_vcpu_flush_vector(). If the thread
-subsequently exits KVM to userspace, and then runs a different vCPU (for
-example, one without the vector extension), this code will consume the
-leaked flag.
-
-Will this blindly restore the new vCPU's uninitialized gcntx->vector.datap
-(which was allocated via kmalloc) into the physical vector registers, and
-illegitimately force SR_VS_CLEAN in the guest's sstatus?
-
-[ ... ]
-
-> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-> index 62d2fb77bb9b9..d25c10bd99a89 100644
-> --- a/arch/riscv/kvm/vcpu_vector.c
-> +++ b/arch/riscv/kvm/vcpu_vector.c
-
-[ ... ]
-
-> @@ -72,6 +73,7 @@ void kvm_riscv_vcpu_host_vector_restore(struct kvm_cpu_=
-context *cntx)
->  {
->  	if (!kvm_riscv_isa_check_host(V))
->  		__kvm_riscv_vector_restore(cntx);
-> +	riscv_v_flags_set(riscv_v_flags() & ~RISCV_V_VCPU_CTX);
->  }
-
-[Severity: Critical]
-Should RISCV_V_VCPU_NEED_RESTORE also be cleared here to prevent it from
-leaking to the thread's future execution?
-
-Since kvm_arch_vcpu_put() calls kvm_riscv_vcpu_host_vector_restore() during
-KVM exit, clearing it here might prevent the cross-vCPU leakage described
-above.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715051629.1169=
-645-1-tchiu@tenstorrent.com?part=3D3
