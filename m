@@ -1,217 +1,129 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C657435539
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 10:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBBC43A80F
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 10:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110466; cv=pass; b=lfljiwTtTOocIdiQk1UuqbHPDeEeT3K6pzCqxgvPeCWp1ysoo8ir855apsyOOI8hKYFzsg/w/ZOGs3bUaCBiuDX64KftkS63Pibh3CxZ8djsFEt8JJbAv13bd3Izx1ob1ze7mTrV5g4DOxDw0EcgObWuFdkrwEZ41p7lL9nYD2U=
+	t=1784110530; cv=pass; b=oiX7ZH/QYImvz+hg35pBTLipVG7eIJTgx1KxJIWfq00pkcN7DxX8iOd2KUXKZCWzqkfXGRyWDWUmS2dvi3uwRb9pRGlWZk2axtmXvGZKMMgmfnCd9bEvI7GIFgGJIhWTNjYiV7NEkmxQq6IsZl0odTFdqcuT+T7dDaNqp8lBRJ4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110466; c=relaxed/simple;
-	bh=bQhFfWQ2UxJga9eW4whcQbngDhCAqLTkvi+3GBBScv4=;
+	s=arc-20240116; t=1784110530; c=relaxed/simple;
+	bh=cQpl7LYp+UTwsZRMmNYXdN0HEXYHQDd3DrjgpzrVU5A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9BvpPbQ/XbnuuKARspNBLtzERdWZMiM6GvCMbnTjgCJY8RA860kWrZ5jC0KZGowkjbBo24vOR9wkHkYJEGs5yh+bwkBozfnXujHkvfaMk2vBv7PLmyyYSoP/Ym+pWCpttBYKP/V6f8v+8eocsoMiBOki8pxikx6vwA1akAb5Fc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CCz7Lmqj; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUfKe2s4; arc=pass smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=QFbp9C7nIjU2d66N8/8o6qGUbDp226fP58q1m+RCa7vcGTECZnCoPlVEolXPzHssPYVddNBunT5H9e1d8NrpHTSCAsaTWIso+xv4u8GTFRO9kM4753nIFgv176JfQ1baCKGiVE8e3OVsefcFAPL6ZiFbdsJKkEimx0M2kh7DlBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SBK5tH5I; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ooE4a9Lq; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CCz7Lmqj";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUfKe2s4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SBK5tH5I";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ooE4a9Lq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784110463;
+	s=mimecast20190719; t=1784110528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OTfS1o6FG2+VSRsM8RoeMYV4oV1nuMVaP/qPFLezgiM=;
-	b=CCz7LmqjaBLeLgxGhJqmXaUUkUyu8fZ3koycP6UsOVGeab/4+X5XuOvCGST07T6hZEnX4x
-	53AJZ1Cgv9a2C226HM0BQ33g9CPObAMW7BwXa2DIWJ9LRocHUzfyD5RV7+4fvj8nknjn88
-	s5+MmTBkbngXe2MqVAFasfVK29afxi4=
+	bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
+	b=SBK5tH5I2KnlD5YLMflTmr3GHqHNgLtXj36eEcr8Fv21Aip95fmTTTWNHiHWubPRgER6Wl
+	AjjdhUJH8zc2GApfpaepv0x3/+xskQlFrggvj6bHPWh6U3jwc42JjzilQi4CzP6xz8yvLJ
+	HWlkcfnPQgcSi3VXr9oQJyqMuA/66qQ=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-tvNxO_U6Pg2SepsNejWRLA-1; Wed, 15 Jul 2026 06:14:21 -0400
-X-MC-Unique: tvNxO_U6Pg2SepsNejWRLA-1
-X-Mimecast-MFC-AGG-ID: tvNxO_U6Pg2SepsNejWRLA_1784110461
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47d81cf0c4cso3932050f8f.2
-        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 03:14:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784110460; cv=none;
+ us-mta-248-bo5twy8FPJ6ft9hY6_cK2Q-1; Wed, 15 Jul 2026 06:15:26 -0400
+X-MC-Unique: bo5twy8FPJ6ft9hY6_cK2Q-1
+X-Mimecast-MFC-AGG-ID: bo5twy8FPJ6ft9hY6_cK2Q_1784110525
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-472bdd6f529so3251232f8f.1
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 03:15:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784110525; cv=none;
         d=google.com; s=arc-20260327;
-        b=XsqSthYCET4jXWs6uNB0apa83YEaUuwTnxCEpjTbhW1tpiVTPD7tMr8qt2TQdVAsZE
-         Hl1MeMjYfTcnNR005r/inoZP/tD+wDWgcM648wb1LF7l93JI06MfJjbfbBMtmabj4kVx
-         Wya2MYXJtUIgGyj9mz2dqLyvW0A68plRJI3Mm81A+9S5CO3UIJzYq/7BS6eo31vyQSYK
-         4Z3SG1ylGd0IgTxqAV+pitYfxojA/MnrcTNRlfom00hurgUuvToUKW6HUum/kLsyJfDx
-         GLYUlDlsH4oZEME3DVfDeMFo3KCiwGSrq8OtmTLzaHD9armkU632ujoBZC5jjNjQsL84
-         66cQ==
+        b=Bv+g28XLaouO8HjXKw4zP5Ze6Z4IQqJQqcVTSzgMsTzse4CsKjabFohidc2QdgeMCy
+         /G9PYs5r8t00PM/mHmtMfdz8AhZf47E91iWk+ipzXK2Ax9iXq2UDKHXUij0MXkNnnyy4
+         opuyUzGjCCUBMjKHLplSBjXiRCKqgx9lPp85uLT1uKDr4WQdxE9tG58JYcZL+VWNGYrY
+         d2V/vzKboIsfln64gXqZKs30jBJjNRWNl6Oall+3nHHmUpa1REjtf+saR0SFuA/fn0qJ
+         HJpmSPWBoAXWaeytkSNKJbXYz7qM/om3zqyASu5FzHekiYU0oJ3IDsxk9qGmMGJCDaaU
+         cn+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=OTfS1o6FG2+VSRsM8RoeMYV4oV1nuMVaP/qPFLezgiM=;
-        fh=SyjyeewRWQrNXAkqGCDCtYYgNDCQdCWD+lmI/eJkfs8=;
-        b=Dca+6RyK5IbGpvnwB3jWVqcvTvayUc9YdoiPE1Ni8aptFN4y55p22+90gi8FCYBxoq
-         bzaL6qY7919WJGQXrGhKUywKd4xP20UNZjoZCJIM5oUphgeGnmtnPz3QP/vMxVcuLUQK
-         llvYsk+fqPzkWxw09o+fTF1s9mFqpkJ9zoOUVeo1Jg5SOC6+GT4sC47tJqjJvyDMR0T9
-         teWYsLyC93niaF1Wuy2SAGjRl5H3SFCbuKa0ehQaom7lGXQvU4jIk4FTv/LF9febdyxc
-         8FzeHrPhNWDpWi/+rt4ADdz4fCPL/QCCwVdL0KuFcfgmbtKuBs2Ubq0lGboPUXD5O31a
-         Sh+g==;
+        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
+        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
+        b=LeEDSmSd7QjPGzxGjhvAaPntNAY0nYIpzmCb0u6GQnjEJeWMS/b134xFh+C5Rbi7hS
+         loVWUXGTVFIKFxDhpky+GJ75iAMfA9RCaC4ei+PfUhO+/FJxt3MQrkxlfTZ5ExAm+yd9
+         ym+2FTNMigNXfT5qUrROKEE3VSdVjbyCqwkGGhUKAVOx+RLTbezmc9MmdgOWpDzWY/ps
+         H3X5whPUbTJp3GR5bbUVU3yRkMfe4vd8WR6K2gWzjZmu71LDL+7gMLeiWG6XNKf4WwgO
+         nvUY4k85I32jv0Sj+XnvnVXyOb1vkiYK59lQTiUKuMqlY8TDnbgpVbaU+pznHZjWCCuf
+         nkVw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784110460; x=1784715260; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1784110525; x=1784715325; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=OTfS1o6FG2+VSRsM8RoeMYV4oV1nuMVaP/qPFLezgiM=;
-        b=OUfKe2s4H5Fh8CvctwoI3Sk8DOGmWHVzZrf2CHayVK1rJ9xUjayG9ip75/iH7MieTQ
-         oJaJT5se/GjSTMbn80TPTvRM/NAXtpTUYvuqn6BgVGYfQ1HGL/8l/cVZ+mbU7d4h12DW
-         51Co5kf4ZhxBHM2A6TqNZTm4YdzG6sjecApXWCoICEemrneIACpMhM6oNGzamJYprARY
-         qgwhGjZC/eggVWXkGd1MT+ZbicweXsKKyz/XsfY1jeZnE7mm4sqKIHAESAGVeLbcWK9n
-         GQo8zjGkCovJLvaGDvrBz3FEqiz0WG+36E/0wnbnMJ0qG1AjRGQ7xUQBzs/kJ5QbOnsi
-         ZFkw==
+        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
+        b=ooE4a9LqjOuM6WtV1gNLVILtFYt2Rr/O36wKRAK2cRITbfaMMwMfF+cFFk5KbX7ECc
+         T6NIsqYNoYBB36rxAzDd+mGT7pcr1oVaVd3vr6rJwWuqX2HocSYe/lqB1Yzx8yugQv8y
+         xKyUgp3eI60zIA+EeYlD5EKWYX+JFzfo49FlwF+IW6ON018QgSxu09q6Qjm4GzxoG+pr
+         aAZ1HdN+D7hnki1h3tnBpNwxOfquRIgc7AARyO5/aXy9QewyeILIoMGKbgjV1HAJr++u
+         LgpmdPSoWZjsqTaSJoS/MwJZVArlRAIDcOmupEaU0VBYb40DfuPCx2wpLyxF77ecbugK
+         X7fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784110460; x=1784715260;
+        d=1e100.net; s=20251104; t=1784110525; x=1784715325;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OTfS1o6FG2+VSRsM8RoeMYV4oV1nuMVaP/qPFLezgiM=;
-        b=TRO9steC2436HIwJCwt0JT//yTMDPEecj5tKewsiU6/78gKTh4He23am8z/s3ct/6E
-         rO+BHfSf/BmWkP26E3mQG2VCKfR0jvCdd0eCmcEM5Yn0S7b2OAaQj00A/qSgADYFtz8x
-         AJfLE5fuTMf9Wn49RvQFHgoLnYx0sdCY6Wm5TubkqU6MxFDtjHX+pmToIInzmLldSCkn
-         VDP6zGoBHLN80V7p9OZFloCQlMYnUd20Y6mQlMG9GkqLSYsaPiVzt2Oemb+7ZhmYAJi+
-         bWyyjt24m7giOnj5GjmsPbK7fKX3k46wUTaJchYmNQ654fphRFhJpF70xRiBsqbs7rqf
-         tMJw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro9TWEGfdo88ERnvWGK+EzflGieAVTP351bIcJX+36VjJmRb5ny21lg3tTxqgtxsdS58D0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzC2TVXgbwR3lBZaA2CK4hxYTN8M0mqDAQF97rmUY6TGCF6V9im
-	BCm/3+QDGhGdotfjgCHiWvTSFOytS3v7vQ1wJKGSSvGXtHPwvdHjGkghJsWlw9CUluOz1bEv9Nu
-	IXLL74hJ02lB4C6S7NPsSubR3bPlv+6hiLKiXyFwTxlxI0sd7zQw0fYQzc2SkozlXTetyT0/tKk
-	iTkXeEoyRKcL6PWMcug2dIctR9R9ec
-X-Gm-Gg: AfdE7clZCr6qj+pU3+tT01aHuJ9PLMzvddC+BUmlVlrCokPPkQdGWzfKtZLQC74mcvl
-	U7vfaXsTYP4uGn8hUyT2Oy149rXraxQ8Ub8iZwJsyhpHDFdvLHgioVLs0zB8MsnPEzTsa+sEGsL
-	ifNAzqvqI5+1XdUScLo1KD02LvskBmyffEaY97lhQgVVw13JC9R8rw06/7j8+JiGqjuGvOpjV0s
-	tY2HADcGdDBKqqw8DlJK1P9f0X1RZVsAMsBKoBMI2ekw9W2r7KmulS6KnlOUGtJePxlwA==
-X-Received: by 2002:adf:f0c3:0:b0:460:3233:beef with SMTP id ffacd0b85a97d-47f46386e3fmr7594774f8f.43.1784110460616;
-        Wed, 15 Jul 2026 03:14:20 -0700 (PDT)
-X-Received: by 2002:adf:f0c3:0:b0:460:3233:beef with SMTP id
- ffacd0b85a97d-47f46386e3fmr7594731f8f.43.1784110460011; Wed, 15 Jul 2026
- 03:14:20 -0700 (PDT)
+        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
+        b=qp3hBU5ZWH4Y0tnDrWNt4XMGT8fJyukR2QqyEtoxbhX4X2adzWmD8pRPJU47qyWva9
+         EsDW4B2DQpk3ZsFoNhJfaIAy96JM29xi0jOBn8CcNfdPqn4ZMB09WRMQytzjF0MiZ/As
+         ZAn7fCTDU30aseClhZxjFDV5GW3319joPOB9mCsuD29/lY3AuURnwZ8C+VS5eZRlo7sP
+         0QMIwK0a/jGJZpgT8Fz1YZAYQfcfqu5KwyLN22eS6yNBVATdayorBPhTueCY1GTWV5fh
+         Xj6RcoNoEVG0/V/uENoQD+db/XBxaDA1GojzsCST5My15yKAsdPn/aBnivlVliHpXb50
+         YC1w==
+X-Gm-Message-State: AOJu0Yz6nRAYsvZCpdThtbaoh4oxkKptzJb9yeFqT/JP2sGrO5LVuQS9
+	xcINx/VHniYv6Ut20b8LjqnslWvEAsHtp3MVOeXQvg0hEXlspNU5F9C7/HwRoteKJZNnwkyO/+K
+	KvkxD4O2fDiJuedsJ67R5lfx0xziX2g0jFXaGVsVUihUeJHG/YI3mMShFZgnCcYujvyzwthKFmw
+	pCwIHgAzECNf5xmKIs8KDOn35zuZva
+X-Gm-Gg: AfdE7cnFKpnbrT5IT5tnucb/i3BQA1DGZFk02Les1+JVktIQOk+uEsJYcsY3wqgDfnB
+	L4PWIYgzdmmOuqMjgk/CIBWZ8Qd05F5/INjBjO2QoRXN/JS6WNdAp9QFZCujds51SXch8ZgWiPA
+	tMtHkgIP6Me/ZRnUcNWG0gXY1GKQCRQdXsQq/Z2u8XY5t9hfyKDV2fwJF/pbFIYDcb/Y8fhNAay
+	ffzPc/EMT9HPPSjfPTne1QDn0O4c8RPNzNzEqEMaykgcngdjbIKK6Cb+MIbZPay+ocEXw==
+X-Received: by 2002:a05:6000:41fd:b0:46d:9871:1a44 with SMTP id ffacd0b85a97d-47f488b250cmr7413650f8f.32.1784110525369;
+        Wed, 15 Jul 2026 03:15:25 -0700 (PDT)
+X-Received: by 2002:a05:6000:41fd:b0:46d:9871:1a44 with SMTP id
+ ffacd0b85a97d-47f488b250cmr7413619f8f.32.1784110525016; Wed, 15 Jul 2026
+ 03:15:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260708161242.1912769-1-maz@kernel.org>
-In-Reply-To: <20260708161242.1912769-1-maz@kernel.org>
+References: <20260714180302.3105706-1-seanjc@google.com>
+In-Reply-To: <20260714180302.3105706-1-seanjc@google.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 15 Jul 2026 12:14:08 +0200
-X-Gm-Features: AUfX_mzYYojltzRopjsZWj-BSyvTHnDNy-EhsjgnxP0aoffOaIAQ3DKZpIh1JXg
-Message-ID: <CABgObfbpDt2iATf=d-BiawY_41rLnYFzNiDLDx8W8c-iRCxEXA@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.2, take #2
-To: Marc Zyngier <maz@kernel.org>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Mark Brown <broonie@kernel.org>, 
-	Mostafa Saleh <smostafa@google.com>, Oliver Upton <oupton@kernel.org>, 
-	Sebastian Ene <sebastianene@google.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
-	Vincent Donnefort <vdonnefort@google.com>, Wei-Lin Chang <weilin.chang@arm.com>, 
-	Will Deacon <will@kernel.org>, Steffen Eiden <seiden@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date: Wed, 15 Jul 2026 12:15:12 +0200
+X-Gm-Features: AUfX_mx7XmtLR7fHfiwrO2RgUyVpIFzZ1fuR5buMmku7z4UD4yPutX0ZtSzv0js
+Message-ID: <CABgObfZZu_gyZ2XJ7RQfaeRnYhVCevrY5++6VtuzE5un=88Ovg@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM: x86: Fixes for 7.2-rcN
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 8, 2026 at 6:13=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
+On Tue, Jul 14, 2026 at 8:03=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
-> Paolo,
->
-> Here's the second drop of KVM/arm64 fixes for 7.2. This time around,
-> we have a locking issue in kvm_io_bus_get_dev(), which is only used by
-> arm64, a few S2 page table fixes, a set of FFA proxy fixes for pKVM,
-> and finally a very esoteric fix for emulation of sign-extended loads
-> from MMIO. Not only this is rather niche, it dates back to day one of
-> KVM support for 32bit ARM...
->
-> Note that this is on top of the kvmarm-fixes-7.2-1 tag pull request
-> posted at [1] about 12 days ago.
+> Please pull x86 fixes for 7.2.  Nothing in here is super urgent, but all =
+of
+> these are fixes for high-impact bugs (though the ept=3Dn bugs are agruabl=
+y not
+> impactful in practice).
 
-Yes, pulled that first and then this one.
+... but the similar PDPTR issue might be, I'll figure out that one out.
+
+Pulled, thanks.
 
 Paolo
-
-> Please pull,
->
->         M.
->
-> [1] https://lore.kernel.org/all/20260626133526.817232-1-maz@kernel.org
->
-> The following changes since commit d098bb75d14fde2f12155f1a95ec0168160867=
-ce:
->
->   KVM: arm64: account pKVM reclaim against the VM mm (2026-06-22 10:48:08=
- +0100)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kv=
-marm-fixes-7.2-2
->
-> for you to fetch changes up to 8d187d4b33c262c0f3e44842553521151d8629e8:
->
->   KVM: arm64: Fix propagation of TLBI level in kvm_pgtable_stage2_relax_p=
-erms() (2026-07-07 17:43:39 +0100)
->
-> ----------------------------------------------------------------
-> KVM/arm64 fixes for 7.2, take #2
->
-> - Move locking for kvm_io_bus_get_dev() into the caller, ensuring
->   race-free checks that the returned object is of the correct type
->
-> - Fix initialisation of the page-table walk level when relaxing
->   permissions
->
-> - Correctly update the XN attribute when relaxing permissions
->
-> - Fix the sign extension of loads from emulated MMIO regions
->
-> - Assorted collection of fixes for pKVM's FFA proxy, together with a
->   couple of FFA driver adjustments
->
-> ----------------------------------------------------------------
-> Fuad Tabba (2):
->       KVM: arm64: Fix sign-extension of MMIO loads
->       KVM: arm64: selftests: Add MMIO sign-extending load test
->
-> Marc Zyngier (2):
->       KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
->       KVM: arm64: Fix propagation of TLBI level in kvm_pgtable_stage2_rel=
-ax_perms()
->
-> Mostafa Saleh (3):
->       KVM: arm64: Fix bounds checking in do_ffa_mem_reclaim()
->       KVM: arm64: Ensure FFA ranges are page aligned
->       firmware: arm_ffa: Fix out-of-bound writes in ffa_setup_and_transmi=
-t()
->
-> Oliver Upton (2):
->       KVM: arm64: Ensure level is always initialized when relaxing perms
->       KVM: arm64: Only update XN attr when requested during S2 relaxation
->
-> Sebastian Ene (3):
->       KVM: arm64: Validate the offset to the mem access descriptor
->       KVM: arm64: Zero out the stack initialized data in the FFA handler
->       firmware: arm_ffa: Fix Endpoint Memory Access Descriptor offset cal=
-culation
->
->  arch/arm64/kvm/hyp/nvhe/ffa.c                     |  44 ++--
->  arch/arm64/kvm/hyp/pgtable.c                      |  15 +-
->  arch/arm64/kvm/mmio.c                             |   7 +-
->  arch/arm64/kvm/vgic/vgic-its.c                    |   2 +
->  drivers/firmware/arm_ffa/driver.c                 |  25 ++-
->  include/linux/arm_ffa.h                           |   9 +-
->  tools/testing/selftests/kvm/Makefile.kvm          |   1 +
->  tools/testing/selftests/kvm/arm64/mmio_sign_ext.c | 255 ++++++++++++++++=
-++++++
->  virt/kvm/kvm_main.c                               |  16 +-
->  9 files changed, 331 insertions(+), 43 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/arm64/mmio_sign_ext.c
->
 
