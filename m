@@ -1,129 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBBC43A80F
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 10:15:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791413E51EF
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 10:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784110530; cv=pass; b=oiX7ZH/QYImvz+hg35pBTLipVG7eIJTgx1KxJIWfq00pkcN7DxX8iOd2KUXKZCWzqkfXGRyWDWUmS2dvi3uwRb9pRGlWZk2axtmXvGZKMMgmfnCd9bEvI7GIFgGJIhWTNjYiV7NEkmxQq6IsZl0odTFdqcuT+T7dDaNqp8lBRJ4=
+	t=1784110578; cv=pass; b=tjaZM5hhpqTDl+Cc43RQf82Ei9ZyFd3GStIpKJwsvlQ/7pB5aGff4tgswoRGSty0Y8gJSySM2VDzJBTi9qSwdoJsqzB8A2LxSQuFKlHLhE4QqeahHcxt2AnLrR7Jaor3MHv6ZnIWZHuRlE8FA6UlA7FiUYbVVJIAXSOxLya/CM0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784110530; c=relaxed/simple;
-	bh=cQpl7LYp+UTwsZRMmNYXdN0HEXYHQDd3DrjgpzrVU5A=;
+	s=arc-20240116; t=1784110578; c=relaxed/simple;
+	bh=TeXan7JGFfsg6yrmywwHvvL9MdAl1Bc9W8Rbhlw4hmU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QFbp9C7nIjU2d66N8/8o6qGUbDp226fP58q1m+RCa7vcGTECZnCoPlVEolXPzHssPYVddNBunT5H9e1d8NrpHTSCAsaTWIso+xv4u8GTFRO9kM4753nIFgv176JfQ1baCKGiVE8e3OVsefcFAPL6ZiFbdsJKkEimx0M2kh7DlBQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SBK5tH5I; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ooE4a9Lq; arc=pass smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=S/lFEbAim3Kp0jysB2s8e0E+pkCRJREd16hmM/FQqVfoYAK/PTrg1xw5Ii+xrqC+hXGu1/bcaNrmKZRhGtI8oWIqtjOvqaeEWHfxVsjSXAqvNgmeTtCBlTqVIpPrVOsklghTpar/5kp9dVU85joRTkAfOR3hglm5UKPceHH3bAs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fpIpP8fZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=chi+lize; arc=pass smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SBK5tH5I";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ooE4a9Lq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fpIpP8fZ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="chi+lize"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784110528;
+	s=mimecast20190719; t=1784110576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
-	b=SBK5tH5I2KnlD5YLMflTmr3GHqHNgLtXj36eEcr8Fv21Aip95fmTTTWNHiHWubPRgER6Wl
-	AjjdhUJH8zc2GApfpaepv0x3/+xskQlFrggvj6bHPWh6U3jwc42JjzilQi4CzP6xz8yvLJ
-	HWlkcfnPQgcSi3VXr9oQJyqMuA/66qQ=
+	bh=5Vl9QN7NrDMgbM574d5FZjPwxnbkejsp2FCaMY17Kxg=;
+	b=fpIpP8fZdfWzMF7oUui4FOieyjKDAqAITmYqrs8EW92zdLyPvd9bKz9vEby4wqPUPfDZhx
+	wuF9+Ej0av+ATIOrd84Ix85Q+sCV3r4Q+3+NA3b+YeN1l9pT9EODLYqy8BwJJOoqZhqS7A
+	59OFtbancJ9817btSpws9SfeSpi79tE=
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
  [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-bo5twy8FPJ6ft9hY6_cK2Q-1; Wed, 15 Jul 2026 06:15:26 -0400
-X-MC-Unique: bo5twy8FPJ6ft9hY6_cK2Q-1
-X-Mimecast-MFC-AGG-ID: bo5twy8FPJ6ft9hY6_cK2Q_1784110525
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-472bdd6f529so3251232f8f.1
-        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 03:15:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784110525; cv=none;
+ us-mta-85-iYPJQfTNMq-SgDmV8I8MMA-1; Wed, 15 Jul 2026 06:16:15 -0400
+X-MC-Unique: iYPJQfTNMq-SgDmV8I8MMA-1
+X-Mimecast-MFC-AGG-ID: iYPJQfTNMq-SgDmV8I8MMA_1784110574
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47e9f03e80bso2048869f8f.3
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 03:16:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784110574; cv=none;
         d=google.com; s=arc-20260327;
-        b=Bv+g28XLaouO8HjXKw4zP5Ze6Z4IQqJQqcVTSzgMsTzse4CsKjabFohidc2QdgeMCy
-         /G9PYs5r8t00PM/mHmtMfdz8AhZf47E91iWk+ipzXK2Ax9iXq2UDKHXUij0MXkNnnyy4
-         opuyUzGjCCUBMjKHLplSBjXiRCKqgx9lPp85uLT1uKDr4WQdxE9tG58JYcZL+VWNGYrY
-         d2V/vzKboIsfln64gXqZKs30jBJjNRWNl6Oall+3nHHmUpa1REjtf+saR0SFuA/fn0qJ
-         HJpmSPWBoAXWaeytkSNKJbXYz7qM/om3zqyASu5FzHekiYU0oJ3IDsxk9qGmMGJCDaaU
-         cn+A==
+        b=KFCWIe2PD8khEeJsn0UHf71pFM+IxdxHdqhRcSU/P4Z2Qswkch1KYHMa/7s2bfDUNg
+         cutBLS3gsnS3KOrjKewrUmlSGp1ggSJK13JoPBexQj7tUaembFF/BQD975STeOmXBwM9
+         jEbyN/DG3BnNBoTxJEqW4wFKkFBbIoO593H0DOmTHLGAO5xcME/WgGc3YF7Sf7/0lQvr
+         RYbK5vbpTp3JeOBObeARCNnuJ768Laqjd3yyJLPh4XIzaK5G4luk52Bbuo/I6ZwExRxm
+         7kUFx0O2/lcBbqwkvKD7qjrdtx87sleCGJP/QwKqKf4ghrjSw7/c28c6vdSl/y8BCdE6
+         Px2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
-        fh=qaYm4b6GKYlZ0T3gtLZ7fjEfCEC8jMv5XzYe6fOhw1Y=;
-        b=LeEDSmSd7QjPGzxGjhvAaPntNAY0nYIpzmCb0u6GQnjEJeWMS/b134xFh+C5Rbi7hS
-         loVWUXGTVFIKFxDhpky+GJ75iAMfA9RCaC4ei+PfUhO+/FJxt3MQrkxlfTZ5ExAm+yd9
-         ym+2FTNMigNXfT5qUrROKEE3VSdVjbyCqwkGGhUKAVOx+RLTbezmc9MmdgOWpDzWY/ps
-         H3X5whPUbTJp3GR5bbUVU3yRkMfe4vd8WR6K2gWzjZmu71LDL+7gMLeiWG6XNKf4WwgO
-         nvUY4k85I32jv0Sj+XnvnVXyOb1vkiYK59lQTiUKuMqlY8TDnbgpVbaU+pznHZjWCCuf
-         nkVw==;
+        bh=5Vl9QN7NrDMgbM574d5FZjPwxnbkejsp2FCaMY17Kxg=;
+        fh=6mN4cZZ09xaNaFZ6MoaNFvNj8shmcdFGAfxbTn5x2/A=;
+        b=RB9T57ou1zd1CHblImctY73l4EGj2XhuQTTHQxBkHoWVutWb1txU5X0nIbNQuHkDw9
+         LepKA2vHNlITPI7upWmwsTOUhRj9GLuKp8IOHZykdZhzDkM0CKo4TRSQIPWSeTuC24NJ
+         hnmZeyZQfxNqCgcB4bd32V1ixMeNzkAtfeJRXqD5E10gidRwij9pAu9VR9FoDxswbbWa
+         4UGKu+yOAsxAkb8e22mJjXm21OAVl/WNrHFBRKsG+w88aKyvz0DN+EpuPGiXWUyXPd+j
+         QdGIQJLHNnjefm3BBMZjCXZaOqeBSMUqlxCFgUthCdynIjcI5BZB3XsOCdkzlDr/4xLn
+         xtOA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784110525; x=1784715325; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1784110574; x=1784715374; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
-        b=ooE4a9LqjOuM6WtV1gNLVILtFYt2Rr/O36wKRAK2cRITbfaMMwMfF+cFFk5KbX7ECc
-         T6NIsqYNoYBB36rxAzDd+mGT7pcr1oVaVd3vr6rJwWuqX2HocSYe/lqB1Yzx8yugQv8y
-         xKyUgp3eI60zIA+EeYlD5EKWYX+JFzfo49FlwF+IW6ON018QgSxu09q6Qjm4GzxoG+pr
-         aAZ1HdN+D7hnki1h3tnBpNwxOfquRIgc7AARyO5/aXy9QewyeILIoMGKbgjV1HAJr++u
-         LgpmdPSoWZjsqTaSJoS/MwJZVArlRAIDcOmupEaU0VBYb40DfuPCx2wpLyxF77ecbugK
-         X7fw==
+        bh=5Vl9QN7NrDMgbM574d5FZjPwxnbkejsp2FCaMY17Kxg=;
+        b=chi+lizepEe7PIAyGY8WQ7fmPu7STRFl+x5IkLsFEb9GvEYz4pJ30Y1uT5lH6kN1ei
+         nHEfuQ/fFafpC6L7YrJySEqrFrp0pkZrx2lYMlHLzoLM9rG12VCtB5KKliwKmmJPGJ9F
+         hKvBYYpTjC0qkuI4xSvP82legWmHU8LhaJtlo1w6yCH9jZfHxXtMMy8EReeBHlPTjtFO
+         qGNYQ2phPqAcYhg6erF50ij57nUm9etZ9tHmRymAt8Oevy/OnqS5raDu63LQuo/FVHf2
+         kSDjRnhJ4oRZyyEDncQpL9J2XzD2WEzwxh638RNEoy75hBwj3shGIz4tW4miGXjSgux6
+         666w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784110525; x=1784715325;
+        d=1e100.net; s=20251104; t=1784110574; x=1784715374;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wv4lRovdcCuM6Tpi+X6YoVUVfiavJYkL9gFkIsPmXb8=;
-        b=qp3hBU5ZWH4Y0tnDrWNt4XMGT8fJyukR2QqyEtoxbhX4X2adzWmD8pRPJU47qyWva9
-         EsDW4B2DQpk3ZsFoNhJfaIAy96JM29xi0jOBn8CcNfdPqn4ZMB09WRMQytzjF0MiZ/As
-         ZAn7fCTDU30aseClhZxjFDV5GW3319joPOB9mCsuD29/lY3AuURnwZ8C+VS5eZRlo7sP
-         0QMIwK0a/jGJZpgT8Fz1YZAYQfcfqu5KwyLN22eS6yNBVATdayorBPhTueCY1GTWV5fh
-         Xj6RcoNoEVG0/V/uENoQD+db/XBxaDA1GojzsCST5My15yKAsdPn/aBnivlVliHpXb50
-         YC1w==
-X-Gm-Message-State: AOJu0Yz6nRAYsvZCpdThtbaoh4oxkKptzJb9yeFqT/JP2sGrO5LVuQS9
-	xcINx/VHniYv6Ut20b8LjqnslWvEAsHtp3MVOeXQvg0hEXlspNU5F9C7/HwRoteKJZNnwkyO/+K
-	KvkxD4O2fDiJuedsJ67R5lfx0xziX2g0jFXaGVsVUihUeJHG/YI3mMShFZgnCcYujvyzwthKFmw
-	pCwIHgAzECNf5xmKIs8KDOn35zuZva
-X-Gm-Gg: AfdE7cnFKpnbrT5IT5tnucb/i3BQA1DGZFk02Les1+JVktIQOk+uEsJYcsY3wqgDfnB
-	L4PWIYgzdmmOuqMjgk/CIBWZ8Qd05F5/INjBjO2QoRXN/JS6WNdAp9QFZCujds51SXch8ZgWiPA
-	tMtHkgIP6Me/ZRnUcNWG0gXY1GKQCRQdXsQq/Z2u8XY5t9hfyKDV2fwJF/pbFIYDcb/Y8fhNAay
-	ffzPc/EMT9HPPSjfPTne1QDn0O4c8RPNzNzEqEMaykgcngdjbIKK6Cb+MIbZPay+ocEXw==
-X-Received: by 2002:a05:6000:41fd:b0:46d:9871:1a44 with SMTP id ffacd0b85a97d-47f488b250cmr7413650f8f.32.1784110525369;
-        Wed, 15 Jul 2026 03:15:25 -0700 (PDT)
-X-Received: by 2002:a05:6000:41fd:b0:46d:9871:1a44 with SMTP id
- ffacd0b85a97d-47f488b250cmr7413619f8f.32.1784110525016; Wed, 15 Jul 2026
- 03:15:25 -0700 (PDT)
+        bh=5Vl9QN7NrDMgbM574d5FZjPwxnbkejsp2FCaMY17Kxg=;
+        b=I3XvN37vhXq32VqYbVsz16RNM+tfpmK/Xghc5nWZriQZ7ASxlhBHgOS567m+F+6y/D
+         36s5JVS6g/AFdoDYombd98X4RLbkb9gychmCa1OB1PhSAoOtqiohW6NoiqKQC32r0mWK
+         70JfM1HZGOQz3cMg9rPJQ+r3MBxv19tbO9fPr2xaY1qFnMX6hfozthwst4QU5TPX6Og4
+         eTioxBf8oqHRBdUJGQpGtClv07tgTEKs9pDwUmBWKIvplOAQ+lBTFEcckxkubHycPOrn
+         6Mz+OXLZKFpqit03ZuA93C7rzmsfwJ9SRC4TmSP1++BOHZJIJoQ7rO9/4tnex8OwiiH6
+         SvOA==
+X-Gm-Message-State: AOJu0YyVFEycw0P2N0IoEaOUhnnw1jnwFGD71n/gUTm6ijpVqF5zSyaJ
+	fp8F5PKCsNPXvrZwpKp/0/mThROEgCGXqNVI/dn27VqyiU3IVQvHQALe+dYGEZXIEnWr13F0ipQ
+	TupJvpbUyz1jrCinGXkdY1Gw7iyX5vIuX6NMcmnAsK0ty3CP3phGIIkIIkArJ+egFn1VusQtAiE
+	FjF+BDFIMM5sqrjIGxefrpeKQeNMV/
+X-Gm-Gg: AfdE7clVt0VLy/jZb15LiJ79cerya8UANkTCtdq2zSFjJAmTptT+FGbFnOmDDrN0E+M
+	fH5Ybq7iOL+bWNNjVrYA+RwHJobSQBthA8586cHvmI4sWtgDYxvK12/uz84yuO7xcC7KZ/BH+2c
+	ef/rVQ38lFSl3eoe6WmStWOIuLwJyVMFH7TVV/i8iKHz2LOItwjquEw5h0YK+O3L5mNyRMC/zQW
+	Ea+dplaqIc9g8cEPwYRR2HYBbGNW1e5myH2Och/Dap6t7z8ylC1EX/sYVHoSbqyx/whlg==
+X-Received: by 2002:a5d:5f48:0:b0:470:3edf:e28e with SMTP id ffacd0b85a97d-47f488486f8mr7258361f8f.10.1784110573798;
+        Wed, 15 Jul 2026 03:16:13 -0700 (PDT)
+X-Received: by 2002:a5d:5f48:0:b0:470:3edf:e28e with SMTP id
+ ffacd0b85a97d-47f488486f8mr7258297f8f.10.1784110573180; Wed, 15 Jul 2026
+ 03:16:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714180302.3105706-1-seanjc@google.com>
-In-Reply-To: <20260714180302.3105706-1-seanjc@google.com>
+References: <20260713083007.65863-1-borntraeger@de.ibm.com> <03826018-1116-47be-8ad5-4a07e6f96e67@de.ibm.com>
+In-Reply-To: <03826018-1116-47be-8ad5-4a07e6f96e67@de.ibm.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 15 Jul 2026 12:15:12 +0200
-X-Gm-Features: AUfX_mx7XmtLR7fHfiwrO2RgUyVpIFzZ1fuR5buMmku7z4UD4yPutX0ZtSzv0js
-Message-ID: <CABgObfZZu_gyZ2XJ7RQfaeRnYhVCevrY5++6VtuzE5un=88Ovg@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM: x86: Fixes for 7.2-rcN
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 15 Jul 2026 12:16:01 +0200
+X-Gm-Features: AUfX_mzZPDV3voE9ojgWKY5KKQeCQr88BqFgkW4Ss6eDq4suBzMoKlrmVBh1WBI
+Message-ID: <CABgObfZ9OmQ_MZy7F+g0MVMNM8hypP6Ya75OrCEm5nKX75=A+g@mail.gmail.com>
+Subject: Re: [GIT PULL 0/5] KVM: s390: Fixes for 7.2
+To: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: KVM <kvm@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, 
+	Janosch Frank <frankja@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Matthew Rosato <mjrosato@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>, 
+	Eric Farman <farman@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026 at 8:03=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Mon, Jul 13, 2026 at 1:34=E2=80=AFPM Christian Borntraeger
+<borntraeger@de.ibm.com> wrote:
 >
-> Please pull x86 fixes for 7.2.  Nothing in here is super urgent, but all =
-of
-> these are fixes for high-impact bugs (though the ept=3Dn bugs are agruabl=
-y not
-> impactful in practice).
+> Am 13.07.26 um 10:30 schrieb Christian Borntraeger:
+> > From: Christian Borntraeger <borntraeger@linux.ibm.com>
+> >
+> > Paolo,
+> >
+> > please pull the following changes since commit 8cdeaa50eae8dad34885515f=
+62559ee83e7e8dda:
+> >
+> >    Linux 7.2-rc2 (2026-07-05 14:44:06 -1000)
+> >
+> > from the Git repository at:
+> >
+> >    git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tag=
+s/kvm-s390-master-7.2-1
+> >
+> > for you to fetch changes up to 3e3aa6da87d30a0064a17b836685cd43c90a3572=
+:
+> >
+> >    KVM: s390: pci: Fix handling of AIF enable without AISB (2026-07-09 =
+16:23:10 +0200)
+> >
+> > ----------------------------------------------------------------
+> > KVM: s390: Fixes for 7.2
+> >
+> > - more gmap KVM memory management fixes
+> > - PCI passthru fixes
+> >
+> Paolo, FYI the PCI sashiko findings are independent from these patches an=
+d Farhan and Matt are
+> already working on additional fixes.
 
-... but the similar PDPTR issue might be, I'll figure out that one out.
-
-Pulled, thanks.
+Thanks, pulled these ones for now.
 
 Paolo
 
