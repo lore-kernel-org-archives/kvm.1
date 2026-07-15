@@ -1,104 +1,94 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437902E8897;
-	Wed, 15 Jul 2026 01:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CF138F64C;
+	Wed, 15 Jul 2026 02:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784079454; cv=none; b=Sgvq81WWiYAzz+iiPAFY7lphnJDfLu10JkjCH4XFVz/FBp5MKZlu6UAkzXdSb3Obe1ztlauOBNkg5Hk7K80oqVyWu2FDCoGhPzRzewvFdxD9yMObe8JFVQQ/8XDIBLzAKjGPYTXp64LUNwIbkAIuJ3pKSmOw8x6Cdhn7pxM9s2Y=
+	t=1784081069; cv=none; b=PybACNXj8PSUZ2geuKozToFcmX7KLV6wR49rXa7aiVwf4VIHLz1Y+kFGYrQmSDZ1g/tOJ/tZcUwO2afkbU8cyfbjXYu3/Vhp14W1de7z3OYlah3kI74vezbWe4ZCWGM48+SWTcJSweIvVIAh+4loZzPSN5mIEL3A4+MLmVqYqiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784079454; c=relaxed/simple;
-	bh=k+Wp+DsUR0IbYDoweuQ3iiAvwpfn+mzdsaqbOUPhUEc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=HtR2EMjgJCP/iyXq7RgFYvuKn795MkfZpAgTJfgoEq07NoS9joWe/btYC2nMqJ8dLw+IviMU0mTd8EuA4qGDtLRAXFNG7/+UIhh2B8KeUO1aKJOlVwBCZ+uTF8xrjrUv0s+uCUxB/IZ3dnpMYLqengI18I0TWSmUMlxZc5pPvH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=1fzVik5i; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1784081069; c=relaxed/simple;
+	bh=PX5km05g/W6UeP4bHhbxX3nQahWLu0TE7I9fhNhU8ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eUsPqRNGH0IY7pfexbId0t6d8NrDntYXLTx/efWCmlzFiaEVL74yLzQUX21OA+1tBieaf2S6nZC8oKdUwX1p9ZJ+98dA42tmLa5Nt7QHgXQK+95L0e7FLw6Dso73DYQpqmxornn57nSg8JLZZzAuRaOb/rIPaM7rXBUhF6RG+f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=ECfOVz8J; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="1fzVik5i"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=egjsnN/zFtVv4maZH5rF6t+ojEEbcEZuzOTemXzrlM0=;
-	b=1fzVik5iAleGA7hkybxtLGl7/fXwCxEQvJp/bgIT0EiJRH2HbY7WRvii5izZIryW8dVHBpVhy
-	4cTt43K8c43d91NcWkM4VyFTmDG9vcM86x59Iw41KPNiInu1DKMsn1xG/zACW+eScgDl21q6Wm4
-	LmnsvzKZjNRy1wILYM01bKg=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4h0JTQ2WdSz1K96b;
-	Wed, 15 Jul 2026 09:28:10 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4415240586;
-	Wed, 15 Jul 2026 09:37:27 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 15 Jul 2026 09:37:26 +0800
-Message-ID: <d7458563-0439-498c-af0f-edb8ca2aff46@huawei.com>
-Date: Wed, 15 Jul 2026 09:37:26 +0800
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="ECfOVz8J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-ID:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=Ux+YlDFnPNWIMjq0BvNP9tiG0/QVCKDhsi
+	CSzr+cmBM=; b=ECfOVz8JkJ/xiz+0tGE5UVlsczMbKo580e3uvhIWyTrGXXtKP9
+	iBrfeVxO70nCGlb0tOmssK6DlPMV9RCAxvtLSd6GaV1+Hhh+rDXXP9v05mZv0GZ1
+	QlXb3JQQdf8dy0O1CCDQzzTxCyYmwVD8yCTn/VV0uJcB8jvbXeNG9P89Y=
+Received: from ur-dp1000 (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwAnYUKu6lZqDtkRAA--.16825S2;
+	Wed, 15 Jul 2026 10:04:31 +0800 (CST)
+From: Xie Bo <xb@ultrarisc.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Xie Bo <xb@ultrarisc.com>,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alexander Graf <graf@amazon.com>,
+	kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] RISC-V: KVM: Serialize virtual interrupt pending state updates
+Date: Wed, 15 Jul 2026 10:03:58 +0800
+Message-ID: <20260715020359.1521354-1-xb@ultrarisc.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <CAAhSdy0hX0z6BpOUZSnCmhh7aeHUm3Yh5k9TdzUGC+4A1W+Czw@mail.gmail.com>
+References: <178159067899.108868.8176174463274678253@ultrarisc.com> <CAAhSdy3_YnzNiSE=KykriwSWU8X2CLhdr2E8CB=32JxA_L7caA@mail.gmail.com> <20260713073346.1293408-1-xb@ultrarisc.com> <20260713073346.1293408-2-xb@ultrarisc.com> <CAAhSdy0hX0z6BpOUZSnCmhh7aeHUm3Yh5k9TdzUGC+4A1W+Czw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 12/18] vfio/pci: Add dmabuf TPH metadata storage and
- fd query helper
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <helgaas@kernel.org>, <wathsala.vithanage@arm.com>,
-	<wei.huang2@amd.com>, <zhipingz@meta.com>, <wangzhou1@hisilicon.com>,
-	<wangyushan12@huawei.com>, <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20260702124224.57168-1-fengchengwen@huawei.com>
- <20260702124224.57168-13-fengchengwen@huawei.com>
- <20260708173117.3e399c4b@shazbot.org>
- <bb0e583e-501f-4356-b554-784482b35331@huawei.com>
- <20260709125012.21784d0a@shazbot.org>
- <0768658f-de72-4ddb-a44b-e91a7e294b20@huawei.com>
- <20260714075753.20052573@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260714075753.20052573@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAfwAnYUKu6lZqDtkRAA--.16825S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrtrW8KF1xur43XFWDJw1UJrb_yoWxArg_W3
+	4aka17G34kJF43ta95Ar48CrsYgw1DCa4xGw4Sgr9rtrn5CF43WFZ7ArnxWwn7J3yYva43
+	twn09an2gayayjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb-AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2
+	IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v2
+	6r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
+	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
+	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAHB2pUYNAARQAEsO
 
-On 7/14/2026 9:57 PM, Alex Williamson wrote:
-> On Tue, 14 Jul 2026 18:46:51 +0800
-> fengchengwen <fengchengwen@huawei.com> wrote:
->> On 7/10/2026 2:50 AM, Alex Williamson wrote:
->>>
->>> Additionally, dma_buf_get_pci_tph() defines that the provided values
->>> are only valid until invalidate_mappings, but this series has no
->>> plumbing to honor that requirement.
->>>
->>> This needs significant work if we need to track the lifecycle of every
->>> dmabuf related TPH value.  Thanks,  
->>
->> Is it possible to use this as a risk warning? After all, even if the
->> invalid mapping is performed, the ST only causes performance loss to
->> the system, and there will be no function problems.
-> 
-> Seems like the sort of thing that should have been resolved BEFORE
-> sending out v20.  By the same argument, maybe it's sufficient to zero
-> invalidated STs automatically, but we can only do that for IV mode
-> in-kernel and rely on userspace to perform the same for DS mode, but
-> regardless, no mechanism is proposed to perform such invalidation.
-> 
-> IMO, this brings into question the supportability of STs provided
-> through dmabufs.  It would seem vfio-pci needs to become an importer of
-> the dmabuf, rather than simply scraping TPH data from it, but maybe it
-> can only be supported in IV mode.  We don't have a means to represent
-> that.
+Hi Anup,
 
-There might be another issue regarding P2P TPH stash access, which requires
-restricting two devices under the same root port; otherwise, traffic will
-first pass through the root port (at which point the ST value would be
-incorrectly parsed as stash to host).
+I addressed your comments in v5:
 
-Thanks
+- kept kvm_riscv_vcpu_aia_has_interrupts() as a single helper and made
+  it acquire irqs_pending_lock internally while checking the high
+  pending bitmap;
+- released irqs_pending_lock before the IMSIC VS-file check, since that
+  path takes vsfile_lock;
+- kept the guest CSR updates outside the critical section and protected
+  only the dirty bitmap updates; and
+- added the requested whitespace and clarified the race example.
 
-> 
-> Alex
+The patch remains based on Linux 7.2-rc3. RV64, RV32, and RV64 with
+PREEMPT_RT KVM builds pass, and checkpatch reports no issues.
+
+The v5 patch follows this reply.
+
+Regards,
+Xie Bo
 
