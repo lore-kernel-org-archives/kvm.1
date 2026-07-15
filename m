@@ -1,111 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E91739182F;
-	Wed, 15 Jul 2026 14:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C688C385D70
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 14:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784126286; cv=none; b=X40VSfJhzSIxfaYdUkeZCyNJBLzvYK1lvY3TiWkyRFpGzCegYJslCKI80PVOXc2qxSQoNyUPBnLa+cIqJF5U6ZCOVBkqQM/N82rLllHjmwAQ2ht9fAZ+MZNVV+nw988fOFGN0a5IBH72n5gbZse9SGVt6yEfQmlTOOj6teb4epQ=
+	t=1784126598; cv=none; b=mtzQLMh3szZdD6yOFEAPI0YDxdrSFjE17i4lPfAhOy2+3dpFnUwQL8DIKInU+KnXhpwp0O82OuycLpLOSlq3KgG/4jO67/XukqN+Co5Gym1mG/ycwdFpmBT+DFcQUx+/rzMFzu3qhXv1UBD9Vom+PL6BTtOypVeGKnK359iLUZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784126286; c=relaxed/simple;
-	bh=9aJAXcchJ+rfE/kpIHbVZ9K/PIeoh4HZqadIKM5TZgk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MbhDwAudFPDmYElkDM97cawPF4K79JCGExJvCRtpGoaynU5zh9Ui4aY5PH5b5Lu9Dl3WrNPVXxFCoIlFOMlhyEVZZqeMNmUa0eJdSXvrcHxIFD49ZERsUFhSnXjD0GDV4U4T/mvmKkGms1tyZGbXHo6nRQI8S8a5OutgjE2X/UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gfbsuczh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784126598; c=relaxed/simple;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZPXPEwtHe0RxZOTymvFMWfejghq70aH1N8pxkb3+8FWWtTJQa+tKbUvsHKLXRlFJpamZlJBK1WQxE2l3R/NJlvM5gwXo/w/t9RAkktFaf4zRcxCaaA9T1IvWCswBi51vwjZVPQLJQZl2YBevRIiER+v3D9mzUBs1H127E4kPLw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IUy6INnu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CrMhcxR3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gfbsuczh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF41F000E9;
-	Wed, 15 Jul 2026 14:38:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784126285;
-	bh=haHzTa+1fgT3vzs6VVQ/iPu/MW28WXGQBU/ZPKrQRtQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GfbsuczhuAHAzcnmjR63XqP+D2Eq5GfXqgWE6Ep23IJNwTQDmHagAYc2LYfX+hgO2
-	 21W4+JUxn88IoedTbAK8FyQpcT89si0pxrLf/HayUDwDQigh1TXrJVcg2GE1O/IlOh
-	 2uzeYeRLe8TzgcE3nGZEPxjWCL8xc6RWxrwa2CtsWWsqm8Mbemf8IyrdAoFDxZEEKb
-	 Dzm8hp2/VjLyUGu5qOgF89J8HGEkS2ixIiOTVmZZJxuQM1QQLtUWZqLkqwIgrmzjPR
-	 ilV+XdlnG3g8hCsMqqREUIO8uGsvTGJlemYW4m1GDtVUgsZpCNAlyDrJS1MC1kFhXJ
-	 1yMbuMtSV7UIw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/6] firmware: arm_rmm: Add SMC definitions for calling
- the RMM
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Steven Price" <steven.price@arm.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-In-Reply-To: <20260715142739.80398-2-steven.price@arm.com>
-References: <20260715142739.80398-1-steven.price@arm.com>
- <20260715142739.80398-2-steven.price@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 15 Jul 2026 14:38:04 +0000
-Message-Id: <20260715143804.ADDF41F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IUy6INnu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CrMhcxR3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784126595;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+	b=IUy6INnuK1Ca+jXEuHzUAwguP0txqQXI2cEgQEFSIbIZSgavyEXq+ZU0c5fFYvjBlaYTIC
+	U+G7VS03Z3wuKG67Rx5HleR7v38P8UoezUlz9+O3pcIfiGLjy3AxqM4tUF1lV8yHwkzfPq
+	DaVBviWGvqVTFWSC256+DbTawGrZbYw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-395-F0erXKt6N-mSZTie29qMMw-1; Wed, 15 Jul 2026 10:43:14 -0400
+X-MC-Unique: F0erXKt6N-mSZTie29qMMw-1
+X-Mimecast-MFC-AGG-ID: F0erXKt6N-mSZTie29qMMw_1784126593
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493ce08a6b4so50207765e9.1
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 07:43:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784126593; x=1784731393; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+        b=CrMhcxR3RjLcVj6xqVMmvlRN3vJ8fApkXC+u5/CE9JZBrFacpgbUOEnr4s5/4NIYAx
+         wI8e1Xz6QzU0Ii5jTDgGQao9JvyV/JRFSNrpFOOBWaP3VFNxQ3Dx5TgvH4mOWr8LIENi
+         FzxtR+/KiOdst78PTlqQiMN8GUPvrNer6Y/clviPWLxXqZ91GBdGfYbN/2NBt4EjbnE4
+         jnzdCn+aAU06V85VxfN2FtPfVQ7EMksuiqPz1e6bKgggGj1BXHZ2kBcyBY1MhAR2p1ns
+         IPfJh9oXWGpHrxuJGxZsFQJ1cWC0Ks3kcP7cAhXxDKsbbvtGs92W03aijoq0dgA+eAA1
+         qe9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784126593; x=1784731393;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+        b=IBM3VEBeEDVMZSfP51M0nNYNwteL06ND8E6bPsQ5AXUZz6lcbdgJyAsT+GW9jmIl52
+         Wo9k71HdDLJt8ndVw1H8Whmn3vd5uDAgDT0sRfdwaFcdfSxPMswRIph5asKnKAD26nW6
+         mIhfPMWlX4ltfnMj6Xb0/EjZ65l64e5lwKlrEHTEafNQR8FKh6g4KDmlq3ieag08obXI
+         hCxmiq0G6sBqJHkmL7DlTSWiOOKjkpKg9sQ8i4wvCjZC7+u+Gyb7eS4NGwjZbLEyXUO4
+         FuOpoEp2C7gHlwwmcfoDOg9/bGCFCKTVYi9yravMPn+8P0NsXxsMZFayA37NTliObi/8
+         kvPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpvA4of67MvyIg8jku7jsm3V0HwihpRYK93Mc19eB9+qk64eGmClfGVc4ROjAjROMl91MQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCu1Y51dCJhNXJSIEXaSYDrnXWDRK1Ou4b2AvhIHH+RY758Njt
+	L+Fv8I+yP3UuLdwmoTk19E1ly0Ragf0YKRfKMvkTPmKwiNS8q2j/31BuzOkFLBkWilUHvVjUbdv
+	ercSoW3J8WChVCZXMsuaw8p/3jIRJwZJMmcNzqcyRrEK6YX3BD+nVLg==
+X-Gm-Gg: AfdE7cnlXMbion8PR/ji9JZ5IyNDLYtFyNhgoCfLMx2+BFQr9NJ5g8oNLE01AW0DvLP
+	xLdQjnpR1Fg+3TJZOPJPW65wC1P65hm79Osynt+WF16hWj30ipA6N5SR9t/agR6fBpvFKkvoRqd
+	p0y5Q5geTvbR0EPihHW3TiwptBhUEOzTz7urGhanOsxdVFse/RdsXk5GZbfwZOjhOMUlF8uCqEC
+	kCqoFetlPi7JTDHe9oMTp2lE/c2lK3VJfLrMMmVqIF7Pwfztu5opkYUQzFkSqWR9OYq7Jm96wNm
+	tjc43a8yDGt44IzX8xcaq2SqWL06hfKYWcRMeIik8gkymD8RiCr25sE4Xda69zhgyYyqJWAcESn
+	OIB6MBBWvc2j25quYQEMfFcaiIRc16vdCIFpZtcVGYnz6s0tkQVdjnzcB81y6qVHovJVkV2x5Sr
+	SAjMCIIBGWzKykuA==
+X-Received: by 2002:a05:600d:84ca:20b0:493:c984:db9c with SMTP id 5b1f17b1804b1-495389ce041mr53836375e9.2.1784126592969;
+        Wed, 15 Jul 2026 07:43:12 -0700 (PDT)
+X-Received: by 2002:a05:600d:84ca:20b0:493:c984:db9c with SMTP id 5b1f17b1804b1-495389ce041mr53836065e9.2.1784126592437;
+        Wed, 15 Jul 2026 07:43:12 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.47.37])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464bbb0esm17089575f8f.28.2026.07.15.07.43.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 07:43:10 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v2 00/19] KVM: apply chainsaw to struct kvm_mmu
+Date: Wed, 15 Jul 2026 16:43:08 +0200
+Message-ID: <20260715144308.331055-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260624213102.71082-1-pbonzini@redhat.com>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Low] `struct rec_exit` contains 4 bytes of implicit compiler padding bet=
-ween `padding9` and `plane`.
-- [Low] Discrepancy between the `PROT_MAP` macro prefix and the `DATA_MAP` =
-comment and SMC command name.
---
+Queued, thanks.
 
---- Patch [1]: [PATCH 1/6] firmware: arm_rmm: Add SMC definitions for calli=
-ng the RMM ---
-commit c161f24da1669945cb4dc961f3a3c4ef452450b6
-Author: Steven Price <steven.price@arm.com>
-firmware: arm_rmm: Add SMC definitions for calling the RMM
+Paolo
 
-The RMM (Realm Management Monitor) provides functionality that can be
-accessed by SMC calls from the host.
-
-> diff --git a/include/linux/arm-smccc-rmi.h b/include/linux/arm-smccc-rmi.h
-> new file mode 100644
-> index 0000000000000..c965e8867518f
-> --- /dev/null
-> +++ b/include/linux/arm-smccc-rmi.h
-
-[ ... ]
-
-> +	union { /* 0x600 */
-> +		struct {
-> +			u16 imm;
-> +			u16 padding9;
-> +			u64 plane;
-
-[Severity: Low]
-Does this struct layout contain implicit padding? The sequence of two u16
-fields followed by a u64 field forces the compiler to inject 4 bytes of
-padding to align the plane field to an 8-byte boundary. While deterministic
-on ARM64, implicit padding in ABI structures shared with firmware is usually
-avoided. Should an explicit 32-bit padding field be added here?
-
-> +		};
-> +		u8 padding6[0x100];
-> +	};
-
-[ ... ]
-
-> +/* RMI_RTT_DATA_MAP_FLAGS definitions */
-> +#define RMI_RTT_PROT_MAP_FLAGS_OADDR_TYPE	GENMASK(1, 0)
-> +#define RMI_RTT_PROT_MAP_FLAGS_LIST_COUNT	GENMASK(15, 2)
-
-[Severity: Low]
-This isn't a bug, but there seems to be a naming discrepancy. The comment
-mentions RMI_RTT_DATA_MAP_FLAGS, which corresponds to the
-SMC_RMI_RTT_DATA_MAP command, but the macros are prefixed with
-RMI_RTT_PROT_MAP_FLAGS. Should these macros use the DATA_MAP prefix instead?
-
-> +
-> +/* S2AP Direct Encodings, used in RMI_RTT_UNPROT_MAP_FLAGS_S2AP */
-> +#define RMI_S2AP_DIRECT_WRITE			BIT(0)
-> +#define RMI_S2AP_DIRECT_READ			BIT(1)
-> +
-> +#endif /* __LINUX_ARM_SMCCC_RMI_H_ */
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260715142739.8039=
-8-1-steven.price@arm.com?part=3D1
