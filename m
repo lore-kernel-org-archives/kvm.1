@@ -1,116 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068902F8EA4
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 08:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD8B3CCFB4;
+	Wed, 15 Jul 2026 08:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784103550; cv=none; b=p9JMiHT5OLzeJNnaWYTH2FQt/2t2fGcSzmF++5ZWuLF7avE1G0ochQlqOGxuBrhhr3j4zZAxe+aRDyJoXfljef/qNxpH7D2XQ11cMg7HnNNSgbNIu1GfaEk2SwYVZ1v5jT8iiEHdbSOk3dCsCD1yMxKdg+VS1uffIecOAlwhB2U=
+	t=1784103553; cv=none; b=p+Bi1KK1XouU4dn3MWoXPzWC9zyM+CbJzYiKePYq+us4u06o37IvfccyrdKbDbkypSa7ANQdIQIiFei2Cv/H5bYKwVa8wy/QOSZRRVMs4uPb77mAXFalJm8bjU+QgjMpvDLhrpnGPXEYlUVSa7kxfEch+8qSCx4BFYC9OTOjqt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784103550; c=relaxed/simple;
-	bh=Rb2vamw9hZSFDhIwOla7JE+bNgr/bCVaaW2mS7Y38Kk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZNnS7eAVSaAXBtYr9ZGjz50sW3xiWZvqMPPnzCHFpXjCPd00wI9ZUMMtAks/9vZAzZQk7ZYrqQL//T49nAqDXeX73cmwwtOIlT3j8ByYC6KuO2eJcQk2FnMqrYR3CEqthAtMluRNSX69MEq7salO79pJn2kUBteJmGmZS1FfK3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GbmJiSEw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784103553; c=relaxed/simple;
+	bh=gNxk6vXq829mh4d+7zt2FEOFWIMJWMdp/e4v1P0G1ds=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KmZvVvZVy2UdZGCFrTGH+NZUhaD5r74bsK96bGSkMduiXBFW22vQWrPJlRvbHSwUKp0ffwnqRk1oKjWeYsDWiaetR80HYapEoo2Avosh6hsv4bzq36eYjAhhgmQAidzqy2m93ZCX6vmc2iFpow7Tm/wR3gXJbDBazmExqXNMXxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQK1MBtw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GbmJiSEw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0255C1F00A3A;
-	Wed, 15 Jul 2026 08:19:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQK1MBtw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADDF1F000E9;
+	Wed, 15 Jul 2026 08:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784103548;
-	bh=v4cntppyKkMahSCtsvhPYtE59WHDOJ4aGJgYd/b1x6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GbmJiSEwYygrH5HIRo9SL4osFlpdFQ6JZckWuJLXgpEK3T/GpDkGXuYF1KKzKxLEL
-	 U0zPFCloO1hqvXpqW7dPycXM5WkFBQ5Jwruk7F2VWJkqy2/0vrZeRVqhPbRYm4vwRl
-	 TqUiH2nckJDjJTWLBYd/WYYn/okXUAkNKgzLjk9+ZDqLufxHY9n1ItBO53LcZpCAl8
-	 JDRs25c7+aBO2rzfzS4cvWxdgYXJVZtrFj5uN0Tp//8fUdUGrtZmxEa+3B9YqliVPe
-	 yuxT4+TuH6zTfW0eObeD6AXYNxAUvKq8ezzudpJ6iQYWzUW9qCptwtTwv/yloOgxMJ
-	 ti9Ahe6yWgyYA==
-Date: Wed, 15 Jul 2026 13:46:30 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
-	yosry@kernel.org, Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>, 
-	Srikanth Aithal <Srikanth.Aithal@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: Re: [PATCH] KVM: SVM: Bump asid_generation on CPU online to avoid
- ASID collision after hotplug
-Message-ID: <aldBh9GummZYUayT@blrnaveerao1>
-References: <20260715063506.672432-1-nikunj@amd.com>
+	s=k20260515; t=1784103551;
+	bh=9di0iPNirA8i2aRvfh+nDPIZh/v7N+As+I0AKLeoCG0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kQK1MBtwlgMoUlw+ZFZSEhZkWzYiwM2C/vf8niFWavErPgPikzRicOEYoGcwwepk7
+	 YZg960F967Jt5M7QRlZl11I5DfvP0ZMzXEkdaAufi9S065qa7Q/+o1ClThI1TMWY7Z
+	 nCG3wDL2zfiO8jbCKZEsajqFsSO8cvdXFXSY/CUOXLBqveWGc+nf+RuP82N8xYqjOg
+	 BEJIF5uG8RcqPog75uL5SxO3HOGy9ibKdI64bDU/HO3+8I2+EB0wB3Bf4UvID2uqE6
+	 MmV8LPG6YKD2vNb7HDEmBEzJs1q0S95BCZvEmqilgFpsp2D13u1xsNEFd7Fbg/9mLK
+	 XhJNXkIYxRrJA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wjuph-00000005CWU-3n29;
+	Wed, 15 Jul 2026 08:19:09 +0000
+Date: Wed, 15 Jul 2026 09:19:09 +0100
+Message-ID: <86ech4oebm.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Oliver Upton <oupton@kernel.org>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: Re: [PATCH v2 07/28] KVM: arm64: Don't evaluate HCR_EL2.NV nor HFGITR_EL2.ERET on ERET fast path
+In-Reply-To: <alc-JSvHDjSV5c_G@kernel.org>
+References: <20260714091641.1970822-1-maz@kernel.org>
+	<20260714091641.1970822-8-maz@kernel.org>
+	<alc-JSvHDjSV5c_G@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260715063506.672432-1-nikunj@amd.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: oupton@kernel.org, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jul 15, 2026 at 06:35:06AM +0000, Nikunj A Dadhania wrote:
-> If a vCPU stays scheduled out (or blocked) while the last pCPU it ran
-> on goes through a hotplug cycle (online->offline->online), and the vCPU
-> then resumes execution on the same pCPU, then it is possible for it to
-> run with an ASID that has now been assigned to a different vCPU,
-> resulting in stale TLB translations being used.
+On Wed, 15 Jul 2026 09:00:37 +0100,
+Oliver Upton <oupton@kernel.org> wrote:
 > 
-> svm_enable_virtualization_cpu() resets asid_generation to 1 and sets
-> next_asid to max_asid + 1 on every CPU online event, including hotplug
-> cycles.  Because next_asid starts beyond the pool boundary, the first
-> call to new_asid() after an online event always wraps the pool,
-> incrementing asid_generation to 2 and assigning ASIDs starting from
-> min_asid.
+> Hey,
 > 
-> Consider two vCPUs from different VMs, vCPU-A pinned to CPU-X holding
-> asid_generation=2 and ASID=N from before the hotplug event:
+> On Tue, Jul 14, 2026 at 10:16:20AM +0100, Marc Zyngier wrote:
+> > We currently avoid using the ERET fast path if the guest has HCR_EL2.NV
+> > set. This is an odd check, as NV doesn't mean much if HCR_EL2.TGE==1.
+> > 
+> > Similarly, evaluating HFGITR_EL2.ERET makes little sense, as
+> > this only applies to the nested context, while the ERET fast-path
+> > is purely for the benefit of L1.
+> > 
+> > Replace these bizarre checks with is_nested_ctxt() which makes a lot
+> > more sense: if we are running an L2, the ERET trap must go to L1.
+> > 
+> > Fixes: dd0717a998f77 ("KVM: arm64: nv: Fast-track 'InHost' exception returns")
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/kvm/hyp/vhe/switch.c | 9 +++------
+> >  1 file changed, 3 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> > index bbe9cebd3d9d5..a83be345f8450 100644
+> > --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> > @@ -344,13 +344,10 @@ static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
+> >  	 * if this is a VHE guest hypervisor returning to its own
+> >  	 * userspace, or the hypervisor performing a local exception
+> >  	 * return. No need to save/restore registers, no need to
+> > -	 * switch S2 MMU. Just do the canonical ERET.
+> > -	 *
+> > -	 * Unless the trap has to be forwarded further down the line,
+> > -	 * of course...
+> > +	 * switch S2 MMU. Just do the canonical ERET unlesss we are in
+> > +	 * nested context.
+> >  	 */
 > 
->   1. CPU-X goes offline and back online: asid_generation resets to 1,
->      next_asid = max_asid + 1.
+> typo: unless
 > 
->   2. One or more vCPUs migrate to CPU-X and call new_asid(), wrapping
->      the pool and consuming ASIDs starting from min_asid.  Eventually
->      vCPU-B from a different VM is assigned asid_generation=2, ASID=N
->      — the same ASID that vCPU-A held before the hotplug.
-> 
->   3. vCPU-A enters pre_svm_run() on CPU-X: current_vmcb->cpu is
->      unchanged so the migration branch is skipped.  Its saved
->      asid_generation=2 matches sd->asid_generation=2, so the generation
->      check silently passes and vCPU-A continues running with ASID=N —
->      the same ASID just freshly assigned to vCPU-B.
-> 
-> Both vCPUs from different VMs now run on CPU-X with the same ASID,
-> causing them to share NPT TLB entries and producing stale translations.
-> 
-> The collision manifests as a KVM internal error (Suberror: 1, emulation
-> failure).  The NPT page fault reports a faulting GPA far outside the
-> VM's physical memory range — a sign of stale TLB translations being
-> used.  KVM falls back to instruction emulation, which fails on
-> FPU/XSave instructions (XRSTOR, STMXCSR) that the emulator does not
-> implement.
-> 
-> Fix this by incrementing asid_generation instead of resetting it to 1
-> in svm_enable_virtualization_cpu().  On module load, asid_generation
-> starts at 0 (memset) and the increment produces 1, identical to the
-> old behaviour.  On subsequent hotplug cycles the generation advances
-> beyond any value a vCPU previously observed on this CPU, so the
-> generation check in pre_svm_run() reliably forces new_asid() on every
-> vCPU after every hotplug cycle.
-> 
-> Fixes: 774c47f1d78e ("[PATCH] KVM: cpu hotplug support")
-> Reported-by: Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>
-> Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
-> Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-> ---
->  arch/x86/kvm/svm/svm.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> I feel like it wouldn't hurt to add a bit more detail to the comment
+> here, that L0 KVM doesn't use ERET traps in the nested context.
+> Otherwise it isn't clear why these always belong to the L1.
 
+We already have a tiny bit of information in kvm_handle_eret(), but
+that's obviously a bit far down the line. Something like this?
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index a83be345f8450..684cebf23aa0e 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -344,8 +344,13 @@ static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 	 * if this is a VHE guest hypervisor returning to its own
+ 	 * userspace, or the hypervisor performing a local exception
+ 	 * return. No need to save/restore registers, no need to
+-	 * switch S2 MMU. Just do the canonical ERET unlesss we are in
++	 * switch S2 MMU. Just do the canonical ERET unless we are in
+ 	 * nested context.
++	 *
++	 * Note that this is made possible because KVM itself never traps
++	 * ERET when running an L2. The consequence is that any ERET trap is
++	 * the result of HCR_EL2 or HFGITR_EL2 programming by L1 for its own
++	 * guest, and the exception must be forwarded to L1.
+ 	 */
+ 	if (is_nested_ctxt(vcpu))
+ 		return false;
 
+Thanks,
 
-- Naveen
+	M.
 
+-- 
+Without deviation from the norm, progress is not possible.
