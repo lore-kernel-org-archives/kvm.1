@@ -1,131 +1,116 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50213CB918
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 08:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068902F8EA4
+	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 08:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784103378; cv=none; b=MhyFAmdxszB/nKwYjRWq4fyIcFbI7HeV3g+E0OrW05AMRYFEay0h2rb0AELwivfVql+wePX4LBuFkPEUPxHR6htSwwr+ukDBbxxJZ3AJ56BJJF8y6norLUsCwP0dR9D5xNPJln/72bjQNccDSKEWnx9Ay0MoXUQAc9UG2wBmp78=
+	t=1784103550; cv=none; b=p9JMiHT5OLzeJNnaWYTH2FQt/2t2fGcSzmF++5ZWuLF7avE1G0ochQlqOGxuBrhhr3j4zZAxe+aRDyJoXfljef/qNxpH7D2XQ11cMg7HnNNSgbNIu1GfaEk2SwYVZ1v5jT8iiEHdbSOk3dCsCD1yMxKdg+VS1uffIecOAlwhB2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784103378; c=relaxed/simple;
-	bh=iM2lFgpaEeftMaOmGUmZb24aXBY27UDHmiD6vsYhnbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QCdMJHrQ9hx3H+5uVB+pi5V0gYWA4kiu1ZvSvLlg3Lj5idcGHpak2uLnXe+TteVQphehIX5JAKYDFmmWxlSfyB+yEH+zOARM5U7AgwCBt2LgUZuyYI/XlY1CHYUYftsvaAirH3PGDkyFwdCY1POR6DuIbASjy3+06DUO5g/dsDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xsgf+Gbk; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784103550; c=relaxed/simple;
+	bh=Rb2vamw9hZSFDhIwOla7JE+bNgr/bCVaaW2mS7Y38Kk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZNnS7eAVSaAXBtYr9ZGjz50sW3xiWZvqMPPnzCHFpXjCPd00wI9ZUMMtAks/9vZAzZQk7ZYrqQL//T49nAqDXeX73cmwwtOIlT3j8ByYC6KuO2eJcQk2FnMqrYR3CEqthAtMluRNSX69MEq7salO79pJn2kUBteJmGmZS1FfK3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GbmJiSEw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xsgf+Gbk"
-X-Forwarded-Encrypted: i=1; AHgh+RrJ8203kvOfUFOA7cWXWR5anClPln71jFudpOy+29VyNeTg6q+Z6a4TdmTJ813m0wmM0yw=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784103374;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u5OhqlZJmCqfdfQFQmFzst115rcNLH7EtMRkp6F4shU=;
-	b=xsgf+GbkOP6te49CIbB7kAGbBJjDxV8wAMmYugJsSUo2+yODVxotV/cpjqDW0rOmVr0LiV
-	0kVxYguFOpTdIb7pq/eUKxNOLZpGIFir20Azuuv1aSFOECn0QhGQ1CfsvL1amgKTnxMqod
-	XjFyffjJldYFozLNdIhOrINOnluf7io=
-X-Gm-Message-State: AOJu0YwuHyWfPJI70GpVg38/SDZCGZEkwSjR81FRw0hGkxEVPuqu7hGi
-	h1r/n/UjJJvRrQkjIEdFkcwdNddFlqevLliICHa+Qbp46S9aQCvq6L/s7b+qn1uzXD30BxGXAiu
-	/UKh0pN/02BkgwEmK6mxXIbgNpw9vrodhPjRtJKps
-X-Received: by 2002:a05:622a:11d5:b0:4ff:c0e7:be9c with SMTP id
- d75a77b69052e-51d71390395mr23797331cf.0.1784103361925; Wed, 15 Jul 2026
- 01:16:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GbmJiSEw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0255C1F00A3A;
+	Wed, 15 Jul 2026 08:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784103548;
+	bh=v4cntppyKkMahSCtsvhPYtE59WHDOJ4aGJgYd/b1x6U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GbmJiSEwYygrH5HIRo9SL4osFlpdFQ6JZckWuJLXgpEK3T/GpDkGXuYF1KKzKxLEL
+	 U0zPFCloO1hqvXpqW7dPycXM5WkFBQ5Jwruk7F2VWJkqy2/0vrZeRVqhPbRYm4vwRl
+	 TqUiH2nckJDjJTWLBYd/WYYn/okXUAkNKgzLjk9+ZDqLufxHY9n1ItBO53LcZpCAl8
+	 JDRs25c7+aBO2rzfzS4cvWxdgYXJVZtrFj5uN0Tp//8fUdUGrtZmxEa+3B9YqliVPe
+	 yuxT4+TuH6zTfW0eObeD6AXYNxAUvKq8ezzudpJ6iQYWzUW9qCptwtTwv/yloOgxMJ
+	 ti9Ahe6yWgyYA==
+Date: Wed, 15 Jul 2026 13:46:30 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
+	yosry@kernel.org, Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>, 
+	Srikanth Aithal <Srikanth.Aithal@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH] KVM: SVM: Bump asid_generation on CPU online to avoid
+ ASID collision after hotplug
+Message-ID: <aldBh9GummZYUayT@blrnaveerao1>
+References: <20260715063506.672432-1-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-2-seanjc@google.com>
-In-Reply-To: <20260714231015.3337831-2-seanjc@google.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 15 Jul 2026 09:15:25 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyymGPjSQKv5YKFeBPWAU5g+bq6zw6mjjMUYbKXeePaEA@mail.gmail.com>
-X-Gm-Features: AUfX_my3irx__1K-vOX_9h1iV-XHlNA8efEJbB8MOGP7d-c7LbA99cRoeNeVwrQ
-Message-ID: <CA+EHjTyymGPjSQKv5YKFeBPWAU5g+bq6zw6mjjMUYbKXeePaEA@mail.gmail.com>
-Subject: Re: [PATCH v5 1/7] KVM: guest_memfd: Plumb the number of pages and
- max order into .invalidate()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260715063506.672432-1-nikunj@amd.com>
 
-On Wed, 15 Jul 2026 at 00:10, Sean Christopherson <seanjc@google.com> wrote:
->
-> Plumb the number of pages to "invalidate", i.e. reclaim, along with the max
-> order with which the pages can be mapped.  This will allow x86 to combine
-> its vendor-specific implementations for conversion and reclaim, a.k.a.
-> preparation and invalidation, into a single hook.
->
-> No functional change intended.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, Jul 15, 2026 at 06:35:06AM +0000, Nikunj A Dadhania wrote:
+> If a vCPU stays scheduled out (or blocked) while the last pCPU it ran
+> on goes through a hotplug cycle (online->offline->online), and the vCPU
+> then resumes execution on the same pCPU, then it is possible for it to
+> run with an ASID that has now been assigned to a different vCPU,
+> resulting in stale TLB translations being used.
+> 
+> svm_enable_virtualization_cpu() resets asid_generation to 1 and sets
+> next_asid to max_asid + 1 on every CPU online event, including hotplug
+> cycles.  Because next_asid starts beyond the pool boundary, the first
+> call to new_asid() after an online event always wraps the pool,
+> incrementing asid_generation to 2 and assigning ASIDs starting from
+> min_asid.
+> 
+> Consider two vCPUs from different VMs, vCPU-A pinned to CPU-X holding
+> asid_generation=2 and ASID=N from before the hotplug event:
+> 
+>   1. CPU-X goes offline and back online: asid_generation resets to 1,
+>      next_asid = max_asid + 1.
+> 
+>   2. One or more vCPUs migrate to CPU-X and call new_asid(), wrapping
+>      the pool and consuming ASIDs starting from min_asid.  Eventually
+>      vCPU-B from a different VM is assigned asid_generation=2, ASID=N
+>      — the same ASID that vCPU-A held before the hotplug.
+> 
+>   3. vCPU-A enters pre_svm_run() on CPU-X: current_vmcb->cpu is
+>      unchanged so the migration branch is skipped.  Its saved
+>      asid_generation=2 matches sd->asid_generation=2, so the generation
+>      check silently passes and vCPU-A continues running with ASID=N —
+>      the same ASID just freshly assigned to vCPU-B.
+> 
+> Both vCPUs from different VMs now run on CPU-X with the same ASID,
+> causing them to share NPT TLB entries and producing stale translations.
+> 
+> The collision manifests as a KVM internal error (Suberror: 1, emulation
+> failure).  The NPT page fault reports a faulting GPA far outside the
+> VM's physical memory range — a sign of stale TLB translations being
+> used.  KVM falls back to instruction emulation, which fails on
+> FPU/XSave instructions (XRSTOR, STMXCSR) that the emulator does not
+> implement.
+> 
+> Fix this by incrementing asid_generation instead of resetting it to 1
+> in svm_enable_virtualization_cpu().  On module load, asid_generation
+> starts at 0 (memset) and the increment produces 1, identical to the
+> old behaviour.  On subsequent hotplug cycles the generation advances
+> beyond any value a vCPU previously observed on this CPU, so the
+> generation check in pre_svm_run() reliably forces new_asid() on every
+> vCPU after every hotplug cycle.
+> 
+> Fixes: 774c47f1d78e ("[PATCH] KVM: cpu hotplug support")
+> Reported-by: Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>
+> Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+> Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 > ---
->  arch/x86/kvm/x86.c       | 4 ++--
->  include/linux/kvm_host.h | 2 +-
->  virt/kvm/guest_memfd.c   | 7 ++-----
->  3 files changed, 5 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 1f5dc685f049..a2cbf6fae118 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10627,9 +10627,9 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
-> +void kvm_arch_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
->  {
-> -       kvm_x86_call(gmem_invalidate)(start, end);
-> +       kvm_x86_call(gmem_invalidate)(pfn, pfn + nr_pages);
->  }
->  void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
->  {
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 9db6eb4023c4..996b39ebdb68 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2614,7 +2614,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
-> +void kvm_arch_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int order);
+>  arch/x86/kvm/svm/svm.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 
-nit: the declaration names the last parameter "order" here, but the
-definition in arch/x86/kvm/x86.c calls it "max_order".
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: stable@vger.kernel.org
+Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
 
-Cheers,
-/fuad
 
->  void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
->  #endif
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 171a9da1b685..99c070bfd446 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -530,11 +530,8 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->  static void kvm_gmem_free_folio(struct folio *folio)
->  {
-> -       struct page *page = folio_page(folio, 0);
-> -       kvm_pfn_t pfn = page_to_pfn(page);
-> -       int order = folio_order(folio);
-> -
-> -       kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
-> +       kvm_arch_gmem_invalidate(folio_file_pfn(folio, 0), folio_nr_pages(folio),
-> +                                folio_order(folio));
->  }
->  #endif
->
-> --
-> 2.55.0.141.g00534a21ce-goog
->
+- Naveen
+
