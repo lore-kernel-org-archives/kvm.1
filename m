@@ -1,62 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4AD392C32
-	for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 15:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F00C4156CE;
+	Wed, 15 Jul 2026 15:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784130473; cv=none; b=GoWKHvD0b9R23Nc6CuWLlGYyR224zbGAsLMWoJ1bdiErrEYKbPAoOOUJj15UrCnJjkZKwN8/XD1U1IRkcsn3uLDTRkhY49Zfl1kRQGvq84NMOE+2KU/goLpQxXLGv75WTNc1NmlKiI5pcgHIDIXdPN2YA8FMM5VmvR9WaY5Jiww=
+	t=1784131062; cv=none; b=hZerW6icMaXo+jncXB7z98QbtaTHRV1OJgktMZObjHda2YHMW9AuT4z/bvMPDYwWjNjYVz37tjJzdagF30wCjU1Pluw2DtHDbIzCUog9p78jaeydBeJm0+/8RElBZgmrt9xhcguihrzJ9xQ4NYl8zqbb9aQ9dMq9h/ErAv3FrqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784130473; c=relaxed/simple;
-	bh=/vHYl1kUal+AjTwaOme0WSizPI6J2ggmZxc5VKvR0AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfKGHkU46W10WNxjd8YUXJy/3AuFF4YaGM5xsUnkfo8+CCZgTpmxRFC9o2CvUpzHkpXuDDTfxt+YRof0NdY+XskBw3HE0F6oZGSYd+np+UqahxRuPtmbyVKdAvL+D1dJm8lEfbBr5YODULNt8mevxXfSIBXh/1aiz6ABV2poTEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqFRVASb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784131062; c=relaxed/simple;
+	bh=Iei6Z4bv03ksicPJdsQKwAsUO5AzQQU72LhtPCF6AAE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PLF2lA4UWYe8opaNuzG3Y+eW54sILKVsNoXJZQ/PrmAo6H+xXWtQRgb4tRDKvD/SsVAbpKxQKDYSQBBW3VBukQ/CgW6HK0yMBlmfmkwGx/tNsXoIWTjmGezDGEnDgQQdSi+q7GyBFrb95bSxrBNBDeya78fIfbyjV9fnAhV6zvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwt0wudy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqFRVASb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4301F000E9;
-	Wed, 15 Jul 2026 15:47:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwt0wudy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC961F00A3A;
+	Wed, 15 Jul 2026 15:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784130471;
-	bh=F0FU3lNehG+4TnQoHX+uc37JhH7yhRS6evt0dkOoErA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AqFRVASb5Gu0NBapiDbDAMMEzRh8pR4sJV6sMAHXo+f9KXWVM6zk/0/4wkxqxAFPn
-	 nAxzZBNSpYgU+LBRDGwMY3Yb2USieChlBzVZPQf+O9QirCozzpoExJi4xE2LsjY2dp
-	 lrnkm+wybdRBs2F5TJPnyqYzmEXcwMAlWJhfXx/PDCy24VpcHzauiFaQPlQMvhz9TX
-	 hvKaDcEJTQXCtxWb0KS9PR5g3gdadOeTZ4khdL3mLWVHpgcI3TVqT5jchfscfpoShm
-	 ele+gywPTrado3SJPbFdS9NEao7QJhYSRw0aMRQvOR3y/X1UkrRfVHRietpeWeEa5J
-	 kCfu1GugULPtQ==
-Date: Wed, 15 Jul 2026 16:47:47 +0100
-From: Will Deacon <will@kernel.org>
-To: Jinyu Tang <tjytimi@163.com>
-Cc: kvm@vger.kernel.org, Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [RFC PATCH 0/2] PCI bus/CPU address translation for MMIO
-Message-ID: <alero77xVv6xrw6i@willie-the-truck>
-References: <20260701142654.483659-1-tjytimi@163.com>
+	s=k20260515; t=1784131060;
+	bh=XDk0Of4Ii82xYZ6joqOrrIwhzl5iv/e/NSKekosnOY0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=kwt0wudy3mYXXqfhCr12TM/l479wknYIrDYxMIkO9sP9BH3icQgfDObNvzDUNhVBR
+	 EycTqxzIw5coFW/yIfMyHtfMPvfHivYLxf9JECR4GgDzBRacoX+5l+o1xPFWycOBA1
+	 nZVX80Z6WUud6jPDlk3CahjPIZdmxnM+4wQkvz0pM4EtPOMm0pm1lZYvre5SL+hndr
+	 cjLepI8IY/JT6yt+CJeWSPKhrcdjU+recDjPDZG1TCkSsFVAjfdB1mWD1lw5F1Eazv
+	 lfHXICV2wpdmX5Uw48OKCvGQ5hUiuCPnFlcHMNVZQkkmWcqveiwZSihRH9wVNI3DWg
+	 Ms+BlBkC8NakA==
+Received: from [194.56.92.2] (helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wk1zO-00000005Nsf-2dLH;
+	Wed, 15 Jul 2026 15:57:38 +0000
+Date: Wed, 15 Jul 2026 16:59:28 +0100
+Message-ID: <871pd45jmn.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 02/37] KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+In-Reply-To: <20260715142841.80544-3-steven.price@arm.com>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<20260715142841.80544-3-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701142654.483659-1-tjytimi@163.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 194.56.92.2
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jul 01, 2026 at 10:26:52PM +0800, Jinyu Tang wrote:
-> PCI BARs contain PCI bus addresses, while KVM MMIO exits and ioctls use
-> CPU physical addresses.
+On Wed, 15 Jul 2026 15:28:04 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> kvmtool currently assumes that these two address spaces are identical.
-> That is true for the existing default layouts, but it breaks once an
-> architecture exposes a non-identity PCI MMIO window to the guest.
+> To avoid future include cycles, drop the linux/kvm_host.h include in
+> kvm_pgtable.h and include the lightweight headers required for the types and
+> inline helpers used there. Additionally provide a forward declaration for
+> struct kvm_s2_mmu as it's only used as a pointer in this file.
 > 
-> This series adds PCI bus/CPU address translation hooks with an identity
-> default, then wires up RISC-V to exercise a non-identity PCI MMIO window
-> through a new --pci-mmio-cpu-base option.
+> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
+> kvm_host.h, so make that explicit.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> New patch in v13
+> ---
+>  arch/arm64/include/asm/kvm_pgtable.h | 6 +++++-
+>  arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
+>  arch/arm64/kvm/hyp/pgtable.c         | 1 +
+>  3 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+> index 41a8687938eb..c2e4b29e605f 100644
+> --- a/arch/arm64/include/asm/kvm_pgtable.h
+> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+> @@ -8,9 +8,13 @@
+>  #define __ARM64_KVM_PGTABLE_H__
+>  
+>  #include <linux/bits.h>
+> -#include <linux/kvm_host.h>
+> +#include <linux/kvm_types.h>
+> +#include <linux/rbtree_types.h>
+> +#include <linux/rcupdate.h>
+>  #include <linux/types.h>
+>  
+> +struct kvm_s2_mmu;
+> +
+>  #define KVM_PGTABLE_FIRST_LEVEL		-1
+>  #define KVM_PGTABLE_LAST_LEVEL		3
+>  
+> diff --git a/arch/arm64/include/asm/kvm_pkvm.h b/arch/arm64/include/asm/kvm_pkvm.h
+> index 74fedd9c5ff0..a0f7a699d690 100644
+> --- a/arch/arm64/include/asm/kvm_pkvm.h
+> +++ b/arch/arm64/include/asm/kvm_pkvm.h
+> @@ -9,7 +9,7 @@
+>  #include <linux/arm_ffa.h>
+>  #include <linux/memblock.h>
+>  #include <linux/scatterlist.h>
+> -#include <asm/kvm_host.h>
+> +#include <linux/kvm_host.h>
 
-Why is that something a user would want to do?
+nit: please keep the include directives in alphabetical order.
 
-Will
+	M.
+
+-- 
+Jazz isn't dead. It just smells funny.
