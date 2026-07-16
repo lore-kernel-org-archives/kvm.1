@@ -1,143 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FB526738C
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 03:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044C3386425
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 04:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784171532; cv=none; b=Dn4rEvmy3Gu8ZS+dCmcnLqcRN9goJ9gtLw0Gef8pRE0lHuipp2Ix10xuVSdpJ+oL4FbOyHtkL2YGz5gysBv+5wiYxMJO23InuHfCsZWpJSJ20fxUyNSFzuVy5moF1RPuebRxoHCwFZ+/K8EV26ByVl0LC+SYGAFXvGI7fQBoOiU=
+	t=1784176060; cv=none; b=G34X2WvlO3pQoBzhEB1k8zTUyhrFAZSd47Ue3sANXQolBqvI1bNwHiW6B63jwXNQKSIV5WaVBrXuamxYqpDkKJEtFW+c6LytiR0avCWqZdrofKdki+VSnX/aU6K+/KT5K3rBLWxjNJYRA0Qnpzo1L7J3/AaJ/v/jhNRe+rp1lew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784171532; c=relaxed/simple;
-	bh=T8YizExBAgnXwce39MQlZxgK33iUkkmLN60IlCcFBT4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=aZO2lj0gmWlJfAA++V3+yv9b/lcRqcqqhhoWfRKMmLkdPIBC2a7vwI2AvFjydJkNR9mdxIEy9+Q2NRjZh4ho2M+nyPAv/PQbxBjWEFR+G0fqlIlHTyT6TlFKiq1VQrVZlXV8WcYai88yqLZ7O+mVh+50HTFegFx+NFvw+/yb6gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6oOQ4mT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784176060; c=relaxed/simple;
+	bh=63gjmWL5Fz89F/dEprKVRiK17rGkpqgZZqPJjwqPtc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lBraFZkDoQpuNU2jXMLqiukleil1DMVRIHHgDG/xBt9ZDX2oGxud9+CyiUZ4SBLz8IEaLgQXHHhADPDWgDQIwkT8J7UO9PSLFtbDzGzM/hm+rLDenEtusZpkkt23084DDFqKW9Bz+5lkTMahc7wSgy0nF5iJfYJKgiEWKAGPUpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oafvANcA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6oOQ4mT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976121F000E9;
-	Thu, 16 Jul 2026 03:12:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oafvANcA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3071F00AC4
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 04:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784171530;
-	bh=vc6KhTZOo3QuS5PdZ3u8SXWTB7wHLAmWJdXDFPGFsCw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j6oOQ4mT7yAD9YL5GLlHTBmYApP0/hiWw9o6fDXwJtr7i1AUsSgBdbkV8FDfdvmnx
-	 fHzGaZDfC62Zlzv2EEie0tEtRSPZ5VNpk3KRy7PQLvYUxCQTo3zabeZ4mEv3SSTv6L
-	 a6j/c17X9MN1mDtJD+DCirdpOKcmk15j0qL1QLUQ0Wc4TEhyXMYds7sBxPm8NzgXro
-	 tjjPTW7tvzK+WjDHuoIBsQxtFVh2FmRZG9xLI5oRIvxPlsw3m/AxAEKkdD47QJSeg9
-	 ix3sdbodRvKwnsL/0Qq5w56wMKueoqp9YIKYOVxD+/3obtSODZinvnJyukbzg/wYak
-	 iKsEFf+dO1pnw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vdpa/mlx5: fix MR state corruption on
- setup_vq_resources failure
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Weimin Xiong" <xiongwm2026@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716030241.124412-1-xiongwm2026@163.com>
-References: <20260716030241.124412-1-xiongwm2026@163.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 03:12:10 +0000
-Message-Id: <20260716031210.976121F000E9@smtp.kernel.org>
+	s=k20260515; t=1784176058;
+	bh=lP101U3EtuK5bjCMOxvSA1SffQMwLcZldCvQuoqNvtc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oafvANcAdOUfD7cuYzp9MVGA95G9eWOwTDgZnw1GFnUItzikPbUtvwmYqnZVCwDGO
+	 x4nzWSi9KEgwc0AgLdCJcJWd4eIGMZhs2E0er2LB4+76vhaJxpEpWQKLH2hHHgTIWX
+	 RM1RhKkHQ6//kbr6nkSb+JpnlQBDbocstdaFlMugJ0YJCAPRobrcPIXBmph04yT9rM
+	 w59JVAlG09oWhWOYk+X69PfRjfMkMNLl0iImXTq8tmjqZs4FIi3nhFCJP3V36o5ohJ
+	 LU7e3sVBtsWpmwPLBi3qu38qDKHoIUAW0Qx2kDxZb4QvEV/oqgZZ4Qv85nKCBbNL0+
+	 7cFxBtUou1J/A==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-698ae09e356so8852753a12.2
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 21:27:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RronZLsLUHFT6ag4B48lLni44C/JEYeSVC2BUCSgDlUN5LQo64piJ6Bnysa5GZsgKj0dHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIE1SmcUp11OGx4hvJCeXkx6SMtO1mcJaPYRU6NACE3WCJN0+G
+	SD6VD62K4Pi3Jkhs2kzGZeWfHgvrY3OGHgfj4P7oo1d9S/d26AvM2OOMqfrm6MlkD177PIrtRq9
+	nFdz3jkrP37tMI6ShbVyNqHIvzTkIHEQ=
+X-Received: by 2002:a17:907:3e0e:b0:bec:2ad0:cba5 with SMTP id
+ a640c23a62f3a-c1667a57571mr554148366b.29.1784176057205; Wed, 15 Jul 2026
+ 21:27:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260716013823.3259816-1-maobibo@loongson.cn>
+In-Reply-To: <20260716013823.3259816-1-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 16 Jul 2026 12:27:25 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4RUWDWHRZ5FJ388e0ZcMD5VS=rPThY3kYNR+WY917i5w@mail.gmail.com>
+X-Gm-Features: AUfX_mwwy76z4l2N9WQ2qnRsOCdpZt-K2IzS_6bSPA1MPvSNtn-TkRm3Fs2Zn8o
+Message-ID: <CAAhV-H4RUWDWHRZ5FJ388e0ZcMD5VS=rPThY3kYNR+WY917i5w@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Allow to set pv_feature until vCPU run
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: WANG Xuerui <kernel@xen0n.name>, Tao Cui <cui.tao@linux.dev>, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Moving the MR update to the end of mlx5_vdpa_change_map() causes h=
-ardware virtqueues to be programmed with the old Memory Region (MR) keys in=
-stead of the new ones, leading to device malfunction and hardware faults.
---
+Hi, Bibo,
 
---- Patch [1]: [PATCH] vdpa/mlx5: fix MR state corruption on setup_vq_resou=
-rces failure ---
-commit 0e93d2962a61c5461c3028e043cb48591fa19ebe
-Author: xiongweimin <xiongweimin@kylinos.cn>
+On Thu, Jul 16, 2026 at 9:45=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+> Now pv_feature can be set only once, there is problem with VM migration.
+> Where it is set when vCPU is created and after migration, here it is
+> allow to set for many times, until vCPU starts to run.
+>
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  arch/loongarch/include/asm/kvm_host.h |  4 +++-
+>  arch/loongarch/kvm/vcpu.c             | 15 +++++++++++----
+>  2 files changed, 14 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/inclu=
+de/asm/kvm_host.h
+> index 23cfbecebbd7..af376fc44c44 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -163,7 +163,6 @@ enum emulation_result {
+>  #define KVM_LARCH_SWCSR_LATEST (0x1 << 3)
+>  #define KVM_LARCH_HWCSR_USABLE (0x1 << 4)
+>
+> -#define LOONGARCH_PV_FEAT_UPDATED      BIT_ULL(63)
+>  #define LOONGARCH_PV_FEAT_MASK         (BIT(KVM_FEATURE_IPI) |         \
+>                                          BIT(KVM_FEATURE_PREEMPT) |     \
+>                                          BIT(KVM_FEATURE_STEAL_TIME) |  \
+> @@ -250,6 +249,9 @@ struct kvm_vcpu_arch {
+>         /* cpucfg */
+>         u32 cpucfg[KVM_MAX_CPUCFG_REGS];
+>
+> +       /* VCPU ran at least once */
+> +       bool ran_atleast_once;
+So long a name? Maybe has_run is enough?
 
-vdpa/mlx5: fix MR state corruption on setup_vq_resources failure
-
-This commit defers mlx5_vdpa_update_mr() until after setup_vq_resources()
-and resume_vqs() to prevent MR state corruption if resource setup fails.
-
-> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/ml=
-x5_vnet.c
-> index ad0d5fbbbca84..8a6ddc00b8e07 100644
-> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-> @@ -3067,24 +3067,28 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_=
-dev *mvdev,
->  		teardown_vq_resources(ndev);
->  	}
-> =20
-> -	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
-> -
->  	for (int i =3D 0; i < mvdev->max_vqs; i++)
->  		ndev->vqs[i].modified_fields |=3D MLX5_VIRTQ_MODIFY_MASK_VIRTIO_Q_MKEY=
- |
->  						MLX5_VIRTQ_MODIFY_MASK_DESC_GROUP_MKEY;
-> =20
->  	if (!(mvdev->status & VIRTIO_CONFIG_S_DRIVER_OK) || mvdev->suspended)
-> -		return 0;
-> +		goto done;
-> =20
->  	if (teardown) {
->  		restore_channels_info(ndev);
->  		err =3D setup_vq_resources(ndev, true);
->  		if (err)
-> -			return err;
-> +			goto out_err;
-
-[Severity: High]
-Does deferring the MR update cause the hardware virtqueues to be programmed
-with the old MR keys?
-
-setup_vq_resources() eventually calls create_virtqueue(), which reads the MR
-keys from the mvdev->mres.mr array before it has been updated:
-
-drivers/vdpa/mlx5/net/mlx5_vnet.c:create_virtqueue() {
-    ...
-    vq_mr =3D mvdev->mres.mr[mvdev->mres.group2asid[MLX5_VDPA_DATAVQ_GROUP]=
-];
-    if (vq_mr)
-        MLX5_SET(virtio_q, vq_ctx, virtio_q_mkey, vq_mr->mkey);
-    ...
-}
-
->  	}
-> =20
->  	resume_vqs(ndev, 0, ndev->cur_num_vqs);
-
-Similarly, resume_vqs() modifies virtqueues using the stale MR keys:
-
-drivers/vdpa/mlx5/net/mlx5_vnet.c:fill_modify_virtqueue_cmd() {
-    ...
-    vq_mr =3D mvdev->mres.mr[mvdev->mres.group2asid[MLX5_VDPA_DATAVQ_GROUP]=
-];
-    if (vq_mr)
-        MLX5_SET(virtio_q, vq_ctx, virtio_q_mkey, vq_mr->mkey);
-    ...
-}
-
-> +	goto done;
-> =20
-> +out_err:
-> +	return err;
+Huacai
 > +
-> +done:
-> +	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
-
-Since mlx5_vdpa_update_mr() happens here at the end, does it destroy the ol=
-d MR
-while the hardware is actively configured to use it?
-
-Could this lead to IOMMU faults and memory corruption when the memory
-map changes?
-
->  	return 0;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716030241.1244=
-12-1-xiongwm2026@163.com?part=3D1
+>         /* paravirt steal time */
+>         struct {
+>                 u64 guest_addr;
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..ce6a1b06d50d 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1164,11 +1164,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct k=
+vm_vcpu *vcpu,
+>                 if (val & ~valid)
+>                         return -EINVAL;
+>
+> -               /* All vCPUs need set the same PV features */
+> -               if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+> -                               && ((kvm->arch.pv_features & valid) !=3D =
+val))
+> +               if ((kvm->arch.pv_features & valid) =3D=3D val)
+> +                       return 0;
+> +
+> +               if (vcpu->arch.ran_atleast_once)
+>                         return -EINVAL;
+> -               kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED=
+;
+> +
+> +               /* All vCPUs need set the same PV features */
+> +               kvm->arch.pv_features =3D val;
+>                 return 0;
+>         default:
+>                 return -ENXIO;
+> @@ -1851,6 +1854,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>         int r =3D -EINTR;
+>         struct kvm_run *run =3D vcpu->run;
+>
+> +       /* Mark this VCPU ran at least once */
+> +       if (!vcpu->arch.ran_atleast_once)
+> +               vcpu->arch.ran_atleast_once =3D true;
+> +
+>         if (vcpu->mmio_needed) {
+>                 if (!vcpu->mmio_is_write)
+>                         kvm_complete_mmio_read(vcpu, run);
+>
+> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+> --
+> 2.39.3
+>
