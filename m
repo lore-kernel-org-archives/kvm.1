@@ -1,101 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAEF3DA7F2
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 23:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611AE43F093
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 23:57:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784245591; cv=none; b=DKHREpsF3uVdwe98RIRarJV2CP2cbEAbIIpOHyNg4Xy+nzD+OhTa3XkkmOv6DKGhV8JbrfgF5nPdZi3AogFAKVCKhgjR0pSpobeZwE6RGKIazNSJXtizXcQMUztm+yb23mK6dPqK0M3xhzR+jcdYkMROWKOzBGEFoe45UvzzCA8=
+	t=1784246256; cv=none; b=ev6UUBv6Lx4s404Tsm9N0YuJ5vpOi8w0pQiC6EP/0MK6Pi9r+IyQ9zBUIkW8Misga1/LgOrpG6vLraPe0zoC5zfZvNwR54//MP1apdXWaMZJzxPv8yUQAWpW1Ct5BJ6UNNpMi5BztXvVWzEP/Iq1xOFFS2GyJSw3yo/MB/4644A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784245591; c=relaxed/simple;
-	bh=csysM6KrdelSFwJIPqZyvGnMAjp9MoC1r6IdQFox180=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ch/fQltUPyEBqFJS/EcsLpy4J6l4z7wE7rCSmbkosOWC+MqfS2u20GqY8WpnGVvbRqRMZaFMGZg6oSeG5pOPyFduuufVacXufZ98AKH6p4S0a3fPbNvdk6sxGyD9shXPqOfPcMLX2Y5a7pD1osRSy6OTQ6Es4dLp/0VvdssLBcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTe+EKIK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784246256; c=relaxed/simple;
+	bh=ozMcGOxt7KtDlMKiHx3sJsxpSbbDQTD4B/6p7zzan+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FL3CkDJ/5klrvDk1sfLL91oF7IQfBJksA5k0YmyPE+SLeuJtctQrin1xZ0I28fgjxUyTFMcGD/NWDoQSjLG8twdmvxygcxT9TElN+v3uK2JmNOIdaaJbNF6DT6sZyb6wHfgcVEKqsV2soB0RtAOhx+7cgdjRpjfHLc1xKPMB3hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=glDwDTI2; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTe+EKIK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0681F000E9;
-	Thu, 16 Jul 2026 23:46:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784245589;
-	bh=MarmyN8R2yEwt5pYmjhr5mZg5Z8GsqweZPWF6t7Ikss=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BTe+EKIK5M3Cs2Hb0hMBdlMDH49ZAq2RPQ0Uv+Z3e0uKxAy598lc9bX+EY9MaHzkk
-	 eFjvwMtmNuYdOOfvYNIOdOHMcnZVk4TsCU/pCAHt/hvSXIPj5lY1FsTA8kJX5T5fWb
-	 8CtsGkASBTJzM1YP7DFfKTirQ3h6oa846FiSfnG2i9H3gk3dpHYbbiksVe2bLUmtIy
-	 +8QQHrYWcNKAdytE2Cq++GYHbP2eLvmr+EbGKr4weJ0tPaSalWmR0B8R9eoJfvCP0w
-	 2G4relkOhIJqTtcCepGzx22UWimtJhikSJ8bM3odlKKr3+7Hv8zlPN5MPwYEy4yxjW
-	 sLc1FIP8eZHCQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/3] KVM: SVM: Configure ALLOW_LARGER_RAP in
- svm_vcpu_after_set_cpuid()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jim Mattson" <jmattson@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716232524.2092085-2-jmattson@google.com>
-References: <20260716232524.2092085-1-jmattson@google.com>
- <20260716232524.2092085-2-jmattson@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 23:46:29 +0000
-Message-Id: <20260716234629.BF0681F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="glDwDTI2"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4925a778491so2740805e9.0
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 16:57:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784246254; x=1784851054; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zF1WoIXi0Om6O5In6dkRDz7JXjPfofGyJ4Oa6lCowks=;
+        b=glDwDTI2hC21EMdUig0dUrJOYh1kVbrYc1kicifvASBSk4EKh+m5BKsnVAZN8Npu9w
+         54X4ws0emkDr8mqiFB54bHcbrwa4lJIieIoJJka8zOwgztpn2H1XxjsqyG1EGfY+BOVB
+         cds8jSj2PsnJDT/KMcWVNkfpzOZnRTISXCUvh4TtfHytEY8BK73l3k80t9CaTO8M90BN
+         zJgVMaPPBgYhdhfxtcN+zoY5hq91GcvsOTIfb5+2GzWyY9iSB1oTq7Nr4jWc1e/YiMvU
+         mrfJU7a6TfE4ZxoP9AfMv/XD+dSrd4+eVBhutE/kzGvvv8lurszqM4FlajaauzrKf9O3
+         Lb+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784246254; x=1784851054;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zF1WoIXi0Om6O5In6dkRDz7JXjPfofGyJ4Oa6lCowks=;
+        b=seU+2Qw9/cRAFCKH12+iIlOzud6p4bgY/raFEnLHeOIN8Ra/Lxjve7UCslnbhm/whz
+         vOIXReNMoQb+Df9P4hSijgKowJfKiiGDRwcYfp/3j4MF6m6btflk2kvk1g75n2DCkUcf
+         5gee3sQ5g8BQGpVT64AmyDoUv4u3K0cOBgaL5gSCONtXmiko+WHuZydVqI6aFNpOL0w7
+         8Xd0gPkju6QANS/LMpKmAwi4lGRj1jN42mm0W1VwNMjIFzEV2JTjmzXLak8bjdQcaNmy
+         jMyHA8nvw7vvaRNHfyfruIk6/49rsHw8WcK2ug252ADmhOod6V87byKZiDVq2sWBDSEV
+         Frpw==
+X-Forwarded-Encrypted: i=1; AHgh+RoRCJhdib3VsqhYsZJSpZFKESOsX/huHnt0DkcbGa4cybx1EQViNOndUdPNnJY/7WdhXfM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy602FJlbD4VUKLWGCG36zs4gub/k2a+XxRF6kICsqhzf9iLbEA
+	jx0xXqccfPXfRvBAM7yE6uU55L0q4JBdvASd6iw99YZ1ZVHMAwl3q4jP
+X-Gm-Gg: AfdE7clRye1le885iSIQ7jw48+jn+9BZBuaRbgaJMpSZbr930w/vx3b7qJopZCRJ2Bz
+	si1lBM/Gtq+mLa7f/z9VvOhkyyJW8YBYHy8IiU0zXcU+/DWWAbJVKY6nGLlTC7q5DZKX0gPnc57
+	i6LRHsdG504fxteiwulaybseAvPAnWmZegB1oCh+Rq7Tbp98A8Qsbmfzlu3NGO5M+CUzdMvqBZb
+	YojsK7rp13f/JpNaIV1uVuH1BJR/HwRroCAIrU0lEs8QNxb0L1rUHFgXEccGN//XFuAtx6wEqea
+	iV0W9zPHsDlGXZS/HecdVJnci4BN7yeDRr+kZXcUfUsVG7tlne26icL6pkWqKsLDbOQMQPBzAtV
+	1NToyDLRADnVgjarFBU9wXz6JZzWf/dnVXSaLn1s6UZ5PCXSsSE16idqoBsHQmtF+3AHYEUHK1v
+	giWiSkLMtvaZQQhT8JgXCi6ifPfrqzPrLJU49k
+X-Received: by 2002:a05:600c:1f8c:b0:492:1e4d:d44b with SMTP id 5b1f17b1804b1-4954a5295b2mr525635e9.8.1784246253215;
+        Thu, 16 Jul 2026 16:57:33 -0700 (PDT)
+Received: from Kayra-MacBook-Pro ([2a00:1d34:9c3:b900:9e6:fee9:3abd:e258])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954966a033sm8306405e9.0.2026.07.16.16.57.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 16 Jul 2026 16:57:32 -0700 (PDT)
+From: Kayra Cizmeci <kayracizmeci@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: x86: Add IDT limit check in __emulate_int_real()
+Date: Fri, 17 Jul 2026 02:57:14 +0300
+Message-ID: <20260716235714.28747-1-kayracizmeci@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260608134642.25849-1-kayracizmeci@gmail.com>
+References: <20260608134642.25849-1-kayracizmeci@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The ERAP_CONTROL_ALLOW_LARGER_RAP bit in the VMCB is permanently l=
-ost if the vCPU is reset due to a triple-fault (SHUTDOWN intercept).
---
+Hello, just following on this patch. I wanted to also add some missing details. 
 
---- Patch [1]: [PATCH 1/3] KVM: SVM: Configure ALLOW_LARGER_RAP in svm_vcpu=
-_after_set_cpuid() ---
-commit 7fe0a6077a4e214f36b5f568e5752ff88dbf1752
-Author: Jim Mattson <jmattson@google.com>
-
-KVM: SVM: Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid()
-
-This commit moves the configuration of the ALLOW_LARGER_RAP bit from
-init_vmcb() to svm_vcpu_after_set_cpuid() so that it is properly set
-when userspace configures the guest CPUID. It removes the previous
-initialization logic from init_vmcb().
-
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index ef69a51ab27f9..11e023abc7ab9 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -1243,9 +1243,6 @@ static void init_vmcb(struct kvm_vcpu *vcpu, bool i=
-nit_event)
->  		svm_clr_intercept(svm, INTERCEPT_PAUSE);
->  	}
-> =20
-> -	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
-> -		svm->vmcb->control.erap_ctl |=3D ERAP_CONTROL_ALLOW_LARGER_RAP;
-> -
-
-[Severity: High]
-Does removing this initialization cause the ALLOW_LARGER_RAP bit to be
-permanently lost after a triple-fault?
-
-When a guest triggers a triple fault, KVM intercepts the shutdown and wipes
-the VMCB:
-
-arch/x86/kvm/svm/svm.c:shutdown_interception() {
-    ...
-    clear_page(svm->vmcb);
-    kvm_vcpu_reset(vcpu, true);
-    ...
-}
-
-kvm_vcpu_reset() then calls init_vmcb() to reinitialize the VMCB. Since the
-ALLOW_LARGER_RAP setup is removed from init_vmcb(), and userspace typically
-does not call KVM_SET_CPUID2 during a soft VM reset, will the ERAPS capabil=
-ity
-remain disabled indefinitely after the reset?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716232524.2092=
-085-1-jmattson@google.com?part=3D1
+The reason that SrcImmByte is changed to SrcImmUByte is when the vectors are 
+bigger than 127, become negative. And our calculations for the limit check does not 
+work. So with this change this problem is solved. Also I accidentally sent out 
+Linux 7.1-rc7 patch. Sorry for that and skipping the details at first place. 
