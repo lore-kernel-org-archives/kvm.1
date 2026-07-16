@@ -1,124 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793313DA7F9;
-	Thu, 16 Jul 2026 18:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B90443A8D
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784225302; cv=none; b=i8rGNL3mmqGv9Cp/E79DeRwbaC/qZB9FCLm7/I90qKCq393XFaxUfpk99cLZJozKdPsXsltf5bl3h0kgyWi/3q0cl11E8ZwyqS3czjbSl1QJSwU+1/c4l5kyus/Jps+LNlXkrSEgjJJUbibbShQcmD5lETs54gxi7eUD4NShX1Q=
+	t=1784225709; cv=none; b=WyyRUfCe6xHUNXQ38t/V+FXMlUnv0RLgR9sHiENh4WeiN87bz0CKRjbytkMI/VWKyX1VmD1lQG+i1/+FXME4JBtk9/HwcMJRDnLxklZghkR9PrZ/JbDx7KkaGQwdLjHIS8VszvhVUCREAiUDEOrPVx1cH9JT8FQIcMT7yoGNURE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784225302; c=relaxed/simple;
-	bh=qbYBgeiXQ8CBm/bZPw/JQ9u2a7bdj/xb0VcYxliQT2c=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=smcpr9/Hyrt7KD3IfE8MdNW3saF+MFgrAflVhwlnzqDxh5Fp57Zz6KNNYcnIfgOP8cy749UuLHiV1v7lQVyAhML0nZdL+H185oZixWeMnto/krCQZIYG3bv0d+VrYjVQeFJQIZVRCJXsT5hJH6dOLbq4lhShxu+7S7fEQzxUjzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eue2HDEs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784225709; c=relaxed/simple;
+	bh=a8PF7SbM0fd04w0iq2kodW9LEQN4/g9z3k0clpm7csA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WzSy1oxkRaJPzhRbMf39EgtIoksSZohAmv1/cEiggdBiFfYgUXONtjhQuzWzm8apq13W1KpzQUG2+djfK44qLytJmntui+zMh9HkPECNKhrMPSj61tFmYf4P2uNn+ZikzSTWzKjqQYrf3dQvHTKtYG3R2RglzhXM9spNuHzaKqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RYSkxA7W; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eue2HDEs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD461F000E9;
-	Thu, 16 Jul 2026 18:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784225299;
-	bh=KNb4Y/PUQZYj0NYXmCyHWJsTdJWI8x2jhTbPt5qhzDc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eue2HDEstqmQvUncb5yqSo/qsNdYrDlkxNFbPZOPWbLWjbqY1BitSQSRMLic8NzEX
-	 mK2HBrOKWEotmbeufKXIjYhfzE/taUSDPk1SmNsMMmAwH/yxWnzdLxJnOV8W+pNjAh
-	 cJLwBGtZ34x/Yn4EAzOG0IXP7rONg11SoUuBXnHgBynChc1NSv45uKHta12DyNMh2R
-	 nBFnXTNPSVU1BFEkwkYjH5a9e0Wqvw650ztS7tmtDljq/DbjGzykv+5xWLT7y33hbh
-	 zfA/JILEa06UgrjbQkf2X2QUtDe74Vf1GJMsmItOZOyA9kelD2422+uEISDZExZwMv
-	 SEBQucs1sCBYw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/4] KVM: s390: pci: Fix memory accounting for
- pinned/unpinned pages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Farhan Ali" <alifm@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260716175241.1039-2-alifm@linux.ibm.com>
-References: <20260716175241.1039-1-alifm@linux.ibm.com>
- <20260716175241.1039-2-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 18:08:19 +0000
-Message-Id: <20260716180819.7BD461F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RYSkxA7W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784225704;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wNzIu7vEv4oBxoHkiuC1yFCUUcwdFOHiiEk7gNbeV+M=;
+	b=RYSkxA7WeTKq9iX7d7cRrgKLvT3SldPQ7T+A1A7KKfg4kZYH7Nq2Lrqs9n2Ri2/G3hRMdx
+	GI+bAfwCi6za0ASnnoxQQ6UvdG3qda3frF6ymbw/gsBsA3xr9POl6JG7KdGh+DtEl4vMYq
+	hbg7ePJgLnQxpDt5ZwjXoYfvw693m2g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-tNiJotxWN2iLopizr2b6qA-1; Thu,
+ 16 Jul 2026 14:15:01 -0400
+X-MC-Unique: tNiJotxWN2iLopizr2b6qA-1
+X-Mimecast-MFC-AGG-ID: tNiJotxWN2iLopizr2b6qA_1784225700
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 128FF1800667;
+	Thu, 16 Jul 2026 18:15:00 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E068195604E;
+	Thu, 16 Jul 2026 18:14:59 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: nsaenz@amazon.com
+Subject: [PATCH 03/24] KVM: x86: hyperv: Introduce memory fault on hcalls with bad ingpas
+Date: Thu, 16 Jul 2026 14:14:35 -0400
+Message-ID: <20260716181456.402786-4-pbonzini@redhat.com>
+In-Reply-To: <20260716181456.402786-1-pbonzini@redhat.com>
+References: <20260716181456.402786-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Sequential calls to the KVM_S390_ZPCIOP_REG_AEN ioctl on the same =
-device overwrite kzdev->user_account and kzdev->mm_account without dropping=
- previous references, causing a permanent leak of mm_struct references and =
-pinned pages.
---
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
---- Patch [1]: [PATCH v2 1/4] KVM: s390: pci: Fix memory accounting for pin=
-ned/unpinned pages ---
-commit cbbebe9ad7b7a6af2ee4a68dd67b2e520770bd20
-Author: Farhan Ali <alifm@linux.ibm.com>
-KVM: s390: pci: Fix memory accounting for pinned/unpinned pages
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/hyperv.c           | 32 ++++++++++++++++++++++++++++++++
+ arch/x86/kvm/x86.c              |  7 +++++++
+ include/uapi/linux/kvm.h        |  1 +
+ 4 files changed, 41 insertions(+)
 
-This patch addresses a bug where unaccount_mem() could be called from a
-different process context than the one that initially pinned the pages. It
-resolves this by storing the pinning process's user_struct and mm_struct
-when accounting for pinned pages, so they can be properly freed later.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b517257a6315..d0c1d0ab03c2 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1274,6 +1274,7 @@ struct kvm_hv {
+ 	struct kvm_hv_syndbg hv_syndbg;
+ 
+ 	bool xsaves_xsavec_checked;
++	bool hcall_fault_exit;
+ };
+ #endif
+ 
+diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+index 1ee0d23f8949..d688759df081 100644
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -2531,11 +2531,30 @@ static bool hv_check_hypercall_access(struct kvm_vcpu_hv *hv_vcpu, u16 code)
+ 	return true;
+ }
+ 
++static unsigned int kvm_hv_hypercall_mem_access(u16 code)
++{
++	switch (code) {
++	case HVCALL_SIGNAL_EVENT:
++	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST:
++	case HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST_EX:
++	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE:
++	case HVCALL_FLUSH_VIRTUAL_ADDRESS_SPACE_EX:
++	case HVCALL_SEND_IPI:
++	case HVCALL_SEND_IPI_EX:
++		return KVM_MEMORY_EXIT_FLAG_READ;
++	}
++
++	return KVM_MEMORY_EXIT_FLAG_WRITE;
++}
++
+ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_vcpu_hv *hv_vcpu = to_hv_vcpu(vcpu);
++	struct kvm *kvm = vcpu->kvm;
+ 	struct kvm_hv_hcall hc;
+ 	u64 ret = HV_STATUS_SUCCESS;
++	unsigned int access;
++	unsigned long addr;
+ 
+ 	/*
+ 	 * hypercall generates UD from non zero cpl and real mode
+@@ -2590,6 +2609,19 @@ int kvm_hv_hypercall(struct kvm_vcpu *vcpu)
+ 		kvm_hv_hypercall_read_xmm(&hc);
+ 	}
+ 
++	if (!hc.fast && kvm->arch.hyperv.hcall_fault_exit) {
++		bool writable = true;
++		access = kvm_hv_hypercall_mem_access(hc.code);
++		addr = kvm_vcpu_gfn_to_hva_prot(vcpu, gpa_to_gfn(hc.ingpa), &writable);
++		if (addr == KVM_HVA_ERR_BAD ||
++		    (access == KVM_MEMORY_EXIT_FLAG_WRITE && !writable)) {
++			kvm_prepare_memory_fault_exit(vcpu, hc.ingpa, PAGE_SIZE,
++						      access == KVM_MEMORY_EXIT_FLAG_WRITE,
++						      false, false);
++			return -EFAULT;
++		}
++	}
++
+ 	switch (hc.code) {
+ 	case HVCALL_NOTIFY_LONG_SPIN_WAIT:
+ 		if (unlikely(hc.rep || hc.var_cnt)) {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0626e835e9eb..352d289076f6 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2224,6 +2224,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_HYPERV_CPUID:
+ 	case KVM_CAP_HYPERV_ENFORCE_CPUID:
+ 	case KVM_CAP_SYS_HYPERV_CPUID:
++	case KVM_CAP_HYPERV_HCALL_FAULT_EXIT:
+ #endif
+ 	case KVM_CAP_PCI_SEGMENT:
+ 	case KVM_CAP_DEBUGREGS:
+@@ -4190,6 +4191,12 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		mutex_unlock(&kvm->lock);
+ 		break;
+ 	}
++#ifdef CONFIG_KVM_HYPERV
++	case KVM_CAP_HYPERV_HCALL_FAULT_EXIT:
++		kvm->arch.hyperv.hcall_fault_exit = cap->args[0];
++		r = 0;
++		break;
++#endif
+ 	default:
+ 		r = -EINVAL;
+ 		break;
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 720b1ffe880b..3b235e953923 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1000,6 +1000,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_HYPERV_HCALL_FAULT_EXIT 250
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
+-- 
+2.52.0
 
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index 720bb58cabe2e..dd17f8a7b4734 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-[ ... ]
-> @@ -206,17 +220,24 @@ static inline int account_mem(struct kvm_zdev *kzde=
-v, unsigned long nr_pages)
->  	do {
->  		new_pages =3D cur_pages + nr_pages;
-> -		if (new_pages > page_limit)
-> -			return -ENOMEM;
-> +		if (new_pages > page_limit) {
-> +			rc =3D  -ENOMEM;
-> +			goto out;
-> +		}
->  	} while (!atomic_long_try_cmpxchg(&user->locked_vm, &cur_pages, new_pag=
-es));
-> =20
-> +	mmgrab(current->mm);
->  	atomic64_add(nr_pages, &current->mm->pinned_vm);
-> +	kzdev->user_account =3D user;
-> +	kzdev->mm_account =3D current->mm;
 
-[Severity: High]
-If kvm_s390_pci_aif_enable() is called multiple times for the same device,
-will this overwrite kzdev->user_account and kzdev->mm_account and leak
-the previously acquired references?
-
-It looks like kvm_s390_pci_aif_enable() doesn't check if the device is
-already enabled before proceeding. If a userspace process calls the
-KVM_S390_ZPCIOP_REG_AEN ioctl twice on the same device, the first call
-will successfully populate these pointers.=20
-
-The second call would then overwrite them here, leaking the original
-mm_struct reference and permanently stranding the initially pinned pages.
-If that second call subsequently fails, unaccount_mem() drops the new
-reference and sets the pointers to NULL, leaving the original references
-permanently orphaned.
-
-Should there be a check in kvm_s390_pci_aif_enable() to bail out if it
-is already enabled, or a check here to ensure we aren't overwriting an
-existing reference?
-
-> =20
->  	return 0;
-> +
-> +out:
-> +	free_uid(user);
-> +	return rc;
->  }
-> =20
->  static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fi=
-b *fib,
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716175241.1039=
--1-alifm@linux.ibm.com?part=3D1
