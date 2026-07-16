@@ -1,64 +1,63 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813B53F65EC
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC35841F342
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784205773; cv=none; b=WNS1MDE7oz1F/jWwXR0z6cCZOAobvVLW+jtHpzEQeShsHLr3neH0R4LejD7xzJNe1eOPXeFIEfASqcfIjF8o33avb5DbNNcq5QnYQMdE22Qp/5W5Hsi6KnpcAlblCEbphfzPVKydqCefhs16mlJluht9eyA7pk9GVEcX5nYeovw=
+	t=1784205783; cv=none; b=Fq3xbyx5CTQzWwsvHIgd8sS4CjMXw9MMsA55oDy4UnfVhHk1XpbG7BoPN4DmPiZ2AL6GZSB2/zCr48YMw2FKDWHm5nKnX6gDMa/nSAyonh4djuIK2vuPTBuOUUpw/V9eANe1tok67PsUQpU/7buJt8lNKor475h3jOdKf75Z8RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784205773; c=relaxed/simple;
-	bh=jmB8ZxaP9KZ9H5hjyIDQqs433spDH1VvQeRVLO+7GUs=;
+	s=arc-20240116; t=1784205783; c=relaxed/simple;
+	bh=Nx5Yl6cR2reFM/yshhQpyFD0LbkKqFxW/sLhFH1f5LA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kT23ztah2w5zCAx/dmSlbuF6T23P8hsoEfwlV1E7VKasqGRa/dmBsm9BN6FtUfdx5oiZfMtoz87FyHlV5uLuvRosq9T+0j/ajztiNbO7Zy08T9cnzZdYMXBB89+Rk9bx4l+QvxNby5BUVVeRuUopo52hy+O1IDBRr2NsccJpQV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=P9+z8fHh; arc=none smtp.client-ip=209.85.215.179
+	 MIME-Version; b=thhXnVtL4o2Z/jL4edEK8lVp+ZMGMOa6+Jz50+7HqxFc93n3KhoRB/gRUgypx1vA/1vDHHOG+uMrbAXaORCNBuUqT5GpIBXrVa5C+73Nfm9/thNDzdMVuiOXEoUvM7MUqY8ciE2KgHef8EcZyATaz4VHEKQy9ir3NpbupOKxPmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=EtgFCpD2; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="P9+z8fHh"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so2824107a12.3
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:42:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="EtgFCpD2"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c85b73ffb52so3793348a12.3
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205771; x=1784810571; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1784205780; x=1784810580; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
-        b=P9+z8fHh1N/OKq9OL7RTrKa97dgUNt51cIK+ukj8LHEsIGohEQgvmrSj+qckvzk5Lm
-         /lMgeCUdDFDFHHT0wxp2mjdO6NgcQC3ctH4AmfUKoxB+UuQo0r3Mx2A+pIRjaqrllyKj
-         q0v7KRT/weXliMYhn/PiOjPesRRpJw0+Z6lkr+fQqPf0Fmm3442uQadFfJndNAo6VESD
-         ojx2zg749LzadpGbNP7NoOQAMoKM0OD8xetnorJ92lZmfIIoEgEg+8+BtPhsgg+TIqWd
-         pJFBEF5MdisH0Gx8J7PKq9F/UINF0nXRXgWAZRX64m8hD2A8UDB6zcQC6hKyoiw5EF8a
-         zV6g==
+        bh=rFSd9gJ52z3Dc4l0Wp7sqaI2N1wGspZkVOhizZNhqfU=;
+        b=EtgFCpD25fizNROUuJswoYa2JWJH1h0tXeDyFL52FqKuZmI/LyPrWDjoUytXc+PrER
+         8OtNfdQyYXq19G9qIEhUNVs9ZIBS/SgP1iI+t43ZZg9QA9zsIuiNscE5gduprrf4nS36
+         obfCBtbUg9woy/R6IIbU1kbgI3BAMaZM2jTWtkGhiVQXrXeHydb8YS8yNc761ziWRSqf
+         SfIMJ2Oj3hoS35shg1PcFwZcYJM3Q7mOTHaQj9254ohEq7HOFw+cbeLUZcLp3r0kA+xe
+         nEz+wRjOR2XHrBMt6bMOWn8xA8RZDHFrz8SdP7R3LGJTpSQJTXbKsLhD0IFBVmmbxZT2
+         ddZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205771; x=1784810571;
+        d=1e100.net; s=20251104; t=1784205780; x=1784810580;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ldlfwiuLgMW2soE43Rq8OVhlEemN/KhXMrXMzIbx114=;
-        b=LQTGn+KFqlnCmppsME7zDE65URgAG25pl2585OFgUJ/wmDT7ddEzFaz33u/tiaVZ16
-         ftqHCnQAhZgehdx0yLDf4LpYVUUXMg5Ya/1qtDFFC9o1gD4NKoptqF9mg5gBbJZV46FR
-         v+ZYmEiEhbe+SfVc8Q4B+Onand00EEzB4Cta4WbZ6BoO4COZri5KqRtTNyzMe7ecKTCg
-         LEdA5bdtFnUAmjsUmPYtTzXhb8rLmSeTYUmijXsOYrJCRjqujgkO+01HNYHA+a1OFNa4
-         eblC6qlNqbRXeTBNAbIyY9YuVp9BPn7DB43Vb5nFMok04KY6qEr4Q9BW0+jFxh/cV5Pv
-         T2Kg==
-X-Forwarded-Encrypted: i=1; AHgh+RqU7vjXf8xfP1qKDEbnYIpj1TPhG4Uozz9U0pSlCY1CIhjDb6eIqtZ2ID9Lf/WPCPH+ZA4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNSaW6+u+egvDiBzF1jt7ggHTLn76EIZolBm9s3uOiX8y1b+Zq
-	0L0H3AEYKCjMmibunNwqt5wDUtO2xGgBlAZep2lvAVgLZ5kMC1KJLn7yDEGXEkCcj+xqKythpNl
-	nuN2lge0=
-X-Gm-Gg: AfdE7cl2ubSclnFXe091pf7sIk4HrKsexE3qrOwHd9biExAuURPUey6kwKUpPYaehs/
-	VPYF76HTTcrOm0i1CiK7P6XLQbmRoANgJHerDYQEEGg58CAo+6YlMGcUk80/huG/OHyp9Z1ZTht
-	2g032ati1OZ/GG4byQUdsFF0MksVAI0BUVahDaN78kV+z3uq86OoTP6flBEpkUGe4BswTSowfIi
-	Cng/Jp0uaGuIfJbdk9cfaSBiwL3ShA3SRrwZyOQK9TpEfc0F02vskZOFnOHivs2aCd9KvnLtjSc
-	YX0vcx4rcOvAuhWyHK3i0HD0VFYDhnlDHI7wdoxpQZcDmEHUrBRFvnO/NwHZarxql+Dk6eRbhYX
-	uQg5W/4VJVxZZLlG2Sijto0Lp35gDZpfexRiLL8Y1w1cyeb9kx4+x9rG1J38Y7XG8mhZHwZ0IIx
-	x0nPPYRreh5fvgOTTQ0plW/TCB6dUdji6HiA==
-X-Received: by 2002:a05:6a21:10b:b0:3bf:b1d3:393e with SMTP id adf61e73a8af0-3c110009b76mr25226010637.2.1784205770620;
-        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+        bh=rFSd9gJ52z3Dc4l0Wp7sqaI2N1wGspZkVOhizZNhqfU=;
+        b=U6JZofGPT27YXwHb61u+LjnBHk1ePaWsnofJLbjbxDF5d6XhMbBkhejdRjJOJcCmlK
+         kmfgvbFuHWhACtQ7j6SvDdjmcGuKiJmVlUTnRYv3uUytnAJym4t5LguzyzxxW2/jefLp
+         r8S+oLY6VEVxk7Dy0yKwuVWJBccQFRENqO3ixFNeh9eqPwUSrodK7pVXzKoR45V/5kAO
+         mG3IcppizsD0Jqmbcu7MCA1nik5Rx6x50Qovvi/ycJrjPaEnniLrqWQl7ChLQOOcQ2bN
+         +MItbzvJGTEdD26FAAS0XOI+3yyltuK9PZaytFhNQSVOVDz4BuXnWSFr6JGLi6ZkK+uM
+         R3WA==
+X-Forwarded-Encrypted: i=1; AHgh+RqfGm1I+8sI3bl+6RGcTs+9Ok0p6b9sEwnDqDLNH9EgIPVP5WU5NSlSqwBL26SJ0Qotvtg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoWB6t1PpHEcMoBBK0LUQirSVunDYRDfMdqx0fDfP7+1i6CKWv
+	1IDnWcCe2wKuOmz0IMQUFGgbFiCE7W6cRm44kgggs4ofR75xVpT50swqdRC0R8et+1g=
+X-Gm-Gg: AfdE7cnn0xLfcjniNFtDGCm1Gyf7/imZ9Jhm0wLiO/i5vf5KKdMmdfzDFDkVJcjRcp6
+	F+Vawl9lim9HP146MmjGS8wIQTBIx2YTXdEVPraI1ZGzJ4DRtCLkILasvPk7yn8L4N9wY4X+jkJ
+	usz2EnQWvSKrsL+4V+qJ1ih7ErjAM7lICEjwKAWJQXSMgEFmu+nMrsXZC1zGdIZzKxa7pLHIBmN
+	xUQJQTAYfQcCEtGFSZyRp7Reym/VQ0DJ0qPvt/thc4n53psXkWiKHZJd0ZBzWtQ8hVE/CEuCeRt
+	UTiGfIgdh0BP1Ua6G0vapw2NG045E7zu/2bRwkSdbEiUcBVJYa3nrN1WYGOlRYheLXO4l2OHV2Q
+	coJdohaCim2UT2DgxRMr4f0AXzgv8JFjrSGuxA08oO2Eu7pAOOPysWIbqXcZC3ItElFJRAdGJ86
+	HSq7vBEkuum6R+2/BcA+gf1GA=
+X-Received: by 2002:a05:6a21:d82:b0:3c0:9c19:65a2 with SMTP id adf61e73a8af0-3c36c45b9b5mr7903332637.74.1784205779488;
+        Thu, 16 Jul 2026 05:42:59 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.42.42
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.42.51
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:42:50 -0700 (PDT)
+        Thu, 16 Jul 2026 05:42:58 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
@@ -71,9 +70,9 @@ Cc: linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 01/15] riscv: introduce raw PTE helpers
-Date: Thu, 16 Jul 2026 20:41:36 +0800
-Message-Id: <2bde82cde4c262d35663d386e8a16455c76ec3e6.1784201104.git.cuiyunhui@bytedance.com>
+Subject: [PATCH v2 02/15] riscv: switch arch page-table users to raw PTE helpers
+Date: Thu, 16 Jul 2026 20:41:37 +0800
+Message-Id: <304b13bffd2f5299da4ae80c37803e527fb1719d.1784201104.git.cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
 References: <cover.1784201104.git.cuiyunhui@bytedance.com>
@@ -85,225 +84,740 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Svnapot needs RISC-V to distinguish between two PTE views: the raw encoded
-entries used by architecture code, and the logical per-page PTE view that
-will later be exposed to generic MM paths.
+Convert RISC-V internal page-table walkers and mutators over to the raw
+PTE helper layer so they keep operating on the encoded hardware entries.
+This keeps arch-private users independent from the Svnapot-aware public
+PTE view that will be added on top for generic mm paths.
 
-Split the low-level RISC-V PTE operations from the public helpers so the
-raw helpers can keep operating on the hardware encoding, while follow-up
-changes build the Svnapot-aware public view on top.
+Add a raw get-and-clear helper without page-table-check side effects so
+NAPOT-aware arch callers can report the effective non-NAPOT leaf view
+explicitly when tearing down contiguous mappings.
+
+Also update the hugetlb Svnapot clear/rewrite paths so they keep operating
+on the contiguous block with page-table-check behavior consistent with the
+raw-helper model.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/include/asm/pgtable.h | 129 +++++++++++++++++++++++++++----
- 1 file changed, 114 insertions(+), 15 deletions(-)
+ arch/riscv/include/asm/kfence.h  |   4 +-
+ arch/riscv/include/asm/pgtable.h |  14 +++-
+ arch/riscv/kernel/efi.c          |   4 +-
+ arch/riscv/kernel/hibernate.c    |   3 +-
+ arch/riscv/kvm/gstage.c          |  25 +++---
+ arch/riscv/kvm/mmu.c             |   4 +-
+ arch/riscv/mm/fault.c            |   4 +-
+ arch/riscv/mm/hugetlbpage.c      | 135 ++++++++++++++++++++-----------
+ arch/riscv/mm/init.c             |   8 +-
+ arch/riscv/mm/kasan_init.c       |  16 ++--
+ arch/riscv/mm/pageattr.c         |  12 +--
+ arch/riscv/mm/pgtable.c          |  34 +++++---
+ 12 files changed, 165 insertions(+), 98 deletions(-)
 
+diff --git a/arch/riscv/include/asm/kfence.h b/arch/riscv/include/asm/kfence.h
+index 29cb3a6ee113d..8325962a9d7e8 100644
+--- a/arch/riscv/include/asm/kfence.h
++++ b/arch/riscv/include/asm/kfence.h
+@@ -19,9 +19,9 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
+ 	pte_t *pte = virt_to_kpte(addr);
+ 
+ 	if (protect) {
+-		set_pte(pte, __pte(pte_val(ptep_get(pte)) & ~_PAGE_PRESENT));
++		__set_pte(pte, __pte(pte_val(__ptep_get(pte)) & ~_PAGE_PRESENT));
+ 	} else {
+-		set_pte(pte, __pte(pte_val(ptep_get(pte)) | _PAGE_PRESENT));
++		__set_pte(pte, __pte(pte_val(__ptep_get(pte)) | _PAGE_PRESENT));
+ 		mark_new_valid_map();
+ 	}
+ 
 diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index a810655ce8f9b..8ca5da9534967 100644
+index 8ca5da9534967..a0f64e980e981 100644
 --- a/arch/riscv/include/asm/pgtable.h
 +++ b/arch/riscv/include/asm/pgtable.h
-@@ -9,6 +9,7 @@
+@@ -9,7 +9,6 @@
  #include <linux/mmzone.h>
  #include <linux/sizes.h>
  
-+#include <asm/cmpxchg.h>
+-#include <asm/cmpxchg.h>
  #include <asm/pgtable-bits.h>
  
  #ifndef CONFIG_MMU
-@@ -628,11 +629,13 @@ static inline int pte_same(pte_t pte_a, pte_t pte_b)
-  * a page table are directly modified.  Thus, the following hook is
-  * made available.
-  */
--static inline void set_pte(pte_t *ptep, pte_t pteval)
-+static inline void __set_pte(pte_t *ptep, pte_t pteval)
- {
- 	WRITE_ONCE(*ptep, pteval);
+@@ -124,6 +123,7 @@
+ 
+ #ifndef __ASSEMBLER__
+ 
++#include <asm/cmpxchg.h>
+ #include <asm/page.h>
+ #include <asm/tlbflush.h>
+ #include <linux/mm_types.h>
+@@ -468,6 +468,11 @@ static inline pte_t pte_mkdirty(pte_t pte)
+ 	return __pte(pte_val(pte) | _PAGE_DIRTY | _PAGE_SOFT_DIRTY);
  }
  
-+#define __set_pte __set_pte
++static inline pte_t riscv_pte_mkhwdirty(pte_t pte)
++{
++	return __pte(pte_val(pte) | _PAGE_DIRTY);
++}
 +
- void flush_icache_pte(struct mm_struct *mm, pte_t pte);
- 
- static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
-@@ -640,13 +643,13 @@ static inline void __set_pte_at(struct mm_struct *mm, pte_t *ptep, pte_t pteval)
- 	if (pte_present(pteval) && pte_exec(pteval))
- 		flush_icache_pte(mm, pteval);
- 
--	set_pte(ptep, pteval);
-+	__set_pte(ptep, pteval);
- }
- 
- #define PFN_PTE_SHIFT		_PAGE_PFN_SHIFT
- 
--static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
--		pte_t *ptep, pte_t pteval, unsigned int nr)
-+static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
-+			      pte_t *ptep, pte_t pteval, unsigned int nr)
+ static inline pte_t pte_mkclean(pte_t pte)
  {
- 	page_table_check_ptes_set(mm, addr, ptep, pteval, nr);
+ 	return __pte(pte_val(pte) & ~(_PAGE_DIRTY));
+@@ -756,6 +761,13 @@ static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
  
-@@ -658,24 +661,85 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_val(pteval) += 1 << _PAGE_PFN_SHIFT;
+ #define __ptep_get_and_clear __ptep_get_and_clear
+ 
++static inline pte_t __ptep_get_and_clear_noptc(pte_t *ptep)
++{
++	return __pte(atomic_long_xchg((atomic_long_t *)ptep, 0));
++}
++
++#define __ptep_get_and_clear_noptc __ptep_get_and_clear_noptc
++
+ static inline pte_t __ptep_clear_flush(struct vm_area_struct *vma,
+ 				       unsigned long address, pte_t *ptep)
+ {
+diff --git a/arch/riscv/kernel/efi.c b/arch/riscv/kernel/efi.c
+index 2d3cc57b45352..81ea2546d2922 100644
+--- a/arch/riscv/kernel/efi.c
++++ b/arch/riscv/kernel/efi.c
+@@ -60,7 +60,7 @@ int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
+ static int __init set_permissions(pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	efi_memory_desc_t *md = data;
+-	pte_t pte = ptep_get(ptep);
++	pte_t pte = __ptep_get(ptep);
+ 	unsigned long val;
+ 
+ 	if (md->attribute & EFI_MEMORY_RO) {
+@@ -72,7 +72,7 @@ static int __init set_permissions(pte_t *ptep, unsigned long addr, void *data)
+ 		val = pte_val(pte) & ~_PAGE_EXEC;
+ 		pte = __pte(val);
  	}
- }
--#define set_ptes set_ptes
+-	set_pte(ptep, pte);
++	__set_pte(ptep, pte);
  
--static inline void pte_clear(struct mm_struct *mm,
--	unsigned long addr, pte_t *ptep)
-+#define __set_ptes __set_ptes
-+
-+static inline void __pte_clear(struct mm_struct *mm,
-+			       unsigned long addr, pte_t *ptep)
+ 	return 0;
+ }
+diff --git a/arch/riscv/kernel/hibernate.c b/arch/riscv/kernel/hibernate.c
+index 982843828adb7..c7d5c7d4bbcde 100644
+--- a/arch/riscv/kernel/hibernate.c
++++ b/arch/riscv/kernel/hibernate.c
+@@ -186,7 +186,8 @@ static int temp_pgtable_map_pte(pmd_t *dst_pmdp, pmd_t *src_pmdp, unsigned long
+ 		pte_t pte = READ_ONCE(*src_ptep);
+ 
+ 		if (pte_present(pte))
+-			set_pte(dst_ptep, __pte(pte_val(pte) | pgprot_val(prot)));
++			__set_pte(dst_ptep,
++				  __pte(pte_val(pte) | pgprot_val(prot)));
+ 	} while (dst_ptep++, src_ptep++, start += PAGE_SIZE, start < end);
+ 
+ 	return 0;
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index c4c3b79567f10..67b2c75f5cec1 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -88,7 +88,7 @@ bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
+ 	*ptep_level = current_level;
+ 	ptep = (pte_t *)gstage->pgd;
+ 	ptep = &ptep[gstage_pte_index(gstage, addr, current_level)];
+-	while (ptep && pte_val(ptep_get(ptep))) {
++	while (ptep && pte_val(__ptep_get(ptep))) {
+ 		if (gstage_pte_leaf(ptep)) {
+ 			*ptep_level = current_level;
+ 			*ptepp = ptep;
+@@ -98,7 +98,7 @@ bool kvm_riscv_gstage_get_leaf(struct kvm_gstage *gstage, gpa_t addr,
+ 		if (current_level) {
+ 			current_level--;
+ 			*ptep_level = current_level;
+-			ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
++			ptep = (pte_t *)gstage_pte_page_vaddr(__ptep_get(ptep));
+ 			ptep = &ptep[gstage_pte_index(gstage, addr, current_level)];
+ 		} else {
+ 			ptep = NULL;
+@@ -152,18 +152,18 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
+ 		if (gstage_pte_leaf(ptep))
+ 			return -EEXIST;
+ 
+-		if (!pte_val(ptep_get(ptep))) {
++		if (!pte_val(__ptep_get(ptep))) {
+ 			if (!pcache)
+ 				return -ENOMEM;
+ 			next_ptep = kvm_mmu_memory_cache_alloc(pcache);
+ 			if (!next_ptep)
+ 				return -ENOMEM;
+-			set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
+-					      __pgprot(_PAGE_TABLE)));
++			__set_pte(ptep, pfn_pte(PFN_DOWN(__pa(next_ptep)),
++						__pgprot(_PAGE_TABLE)));
+ 		} else {
+ 			if (gstage_pte_leaf(ptep))
+ 				return -EEXIST;
+-			next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
++			next_ptep = (pte_t *)gstage_pte_page_vaddr(__ptep_get(ptep));
+ 		}
+ 
+ 		current_level--;
+@@ -171,7 +171,7 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
+ 	}
+ 
+ 	if (pte_val(*ptep) != pte_val(map->pte)) {
+-		set_pte(ptep, map->pte);
++		__set_pte(ptep, map->pte);
+ 		if (gstage_pte_leaf(ptep))
+ 			gstage_tlb_flush(gstage, current_level, map->addr);
+ 	}
+@@ -371,18 +371,18 @@ bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+ 
+ 	WARN_ON(addr & (page_size - 1));
+ 
+-	if (!pte_val(ptep_get(ptep)))
++	if (!pte_val(__ptep_get(ptep)))
+ 		return false;
+ 
+ 	if (ptep_level && !gstage_pte_leaf(ptep)) {
+-		next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
++		next_ptep = (pte_t *)gstage_pte_page_vaddr(__ptep_get(ptep));
+ 		next_ptep_level = ptep_level - 1;
+ 		ret = gstage_level_to_page_size(gstage, next_ptep_level, &next_page_size);
+ 		if (ret)
+ 			return false;
+ 
+ 		if (op == GSTAGE_OP_CLEAR)
+-			set_pte(ptep, __pte(0));
++			__set_pte(ptep, __pte(0));
+ 		for (i = 0; i < PTRS_PER_PTE; i++)
+ 			flush |= kvm_riscv_gstage_op_pte(gstage, addr + i * next_page_size,
+ 							 &next_ptep[i], next_ptep_level, op);
+@@ -391,9 +391,10 @@ bool kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+ 	} else {
+ 		old_pte = *ptep;
+ 		if (op == GSTAGE_OP_CLEAR)
+-			set_pte(ptep, __pte(0));
++			__set_pte(ptep, __pte(0));
+ 		else if (op == GSTAGE_OP_WP)
+-			set_pte(ptep, __pte(pte_val(ptep_get(ptep)) & ~_PAGE_WRITE));
++			__set_pte(ptep,
++				  __pte(pte_val(__ptep_get(ptep)) & ~_PAGE_WRITE));
+ 		if (pte_val(*ptep) != pte_val(old_pte))
+ 			flush = true;
+ 	}
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 082f9b2617338..48dfc88d8cea6 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -278,7 +278,7 @@ bool kvm_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ 				       &ptep, &ptep_level))
+ 		return false;
+ 
+-	return ptep_test_and_clear_young(NULL, 0, ptep);
++	return __ptep_test_and_clear_young(NULL, 0, ptep);
+ }
+ 
+ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+@@ -298,7 +298,7 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
+ 				       &ptep, &ptep_level))
+ 		return false;
+ 
+-	return pte_young(ptep_get(ptep));
++	return pte_young(__ptep_get(ptep));
+ }
+ 
+ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 04ed6f8acae4f..0b725ed723023 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -69,7 +69,7 @@ static void show_pte(unsigned long addr)
+ 	if (!ptep)
+ 		goto out;
+ 
+-	pte = ptep_get(ptep);
++	pte = __ptep_get(ptep);
+ 	pr_cont(", pte=%016lx", pte_val(pte));
+ 	pte_unmap(ptep);
+ out:
+@@ -231,7 +231,7 @@ static inline void vmalloc_fault(struct pt_regs *regs, int code, unsigned long a
+ 	 * silently loop forever.
+ 	 */
+ 	pte_k = pte_offset_kernel(pmd_k, addr);
+-	if (!pte_present(ptep_get(pte_k))) {
++	if (!pte_present(__ptep_get(pte_k))) {
+ 		no_context(regs, addr);
+ 		return;
+ 	}
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index a6d217112cf46..5ededac02161d 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -7,7 +7,7 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
  {
- 	__set_pte_at(mm, ptep, __pte(0));
+ 	unsigned long pte_num;
+ 	int i;
+-	pte_t orig_pte = ptep_get(ptep);
++	pte_t orig_pte = __ptep_get(ptep);
+ 
+ 	if (!pte_present(orig_pte) || !pte_napot(orig_pte))
+ 		return orig_pte;
+@@ -15,10 +15,10 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ 	pte_num = napot_pte_num(napot_cont_order(orig_pte));
+ 
+ 	for (i = 0; i < pte_num; i++, ptep++) {
+-		pte_t pte = ptep_get(ptep);
++		pte_t pte = __ptep_get(ptep);
+ 
+ 		if (pte_dirty(pte))
+-			orig_pte = pte_mkdirty(orig_pte);
++			orig_pte = riscv_pte_mkhwdirty(orig_pte);
+ 
+ 		if (pte_young(pte))
+ 			orig_pte = pte_mkyoung(orig_pte);
+@@ -74,7 +74,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
+ 
+ out:
+ 	if (pte) {
+-		pte_t pteval = ptep_get_lockless(pte);
++		pte_t pteval = __ptep_get_lockless(pte);
+ 
+ 		WARN_ON_ONCE(pte_present(pteval) && !pte_huge(pteval));
+ 	}
+@@ -145,28 +145,52 @@ unsigned long hugetlb_mask_last_page(struct hstate *h)
+ 	return 0UL;
  }
  
-+#define __pte_clear __pte_clear
-+
-+#define __ptep_get __ptep_get
-+static inline pte_t __ptep_get(pte_t *ptep)
++static unsigned long napot_hugetlb_block_addr(pte_t pte, unsigned long addr)
 +{
-+	return READ_ONCE(*ptep);
++	unsigned long order;
++
++	if (!pte_napot(pte))
++		return addr;
++
++	order = napot_cont_order(pte);
++
++	return addr & napot_cont_mask(order);
 +}
 +
-+#define __ptep_get_lockless __ptep_get_lockless
-+static inline pte_t __ptep_get_lockless(pte_t *ptep)
-+{
-+	return __ptep_get(ptep);
-+}
-+
-+static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
-+					   unsigned long addr, pte_t *ptep,
-+					   pte_t pte, cydp_t flags)
-+{
-+	pte_t old_pte;
-+
-+	do {
-+		old_pte = pte;
-+
-+		if (flags & CYDP_CLEAR_YOUNG)
-+			pte = pte_mkold(pte);
-+		if (flags & CYDP_CLEAR_DIRTY)
-+			pte = pte_mkclean(pte);
-+
-+		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+					       pte_val(old_pte),
-+					       pte_val(pte));
-+	} while (pte_val(pte) != pte_val(old_pte));
-+}
-+
-+static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
-+					    unsigned long addr, pte_t *ptep,
-+					    unsigned int nr, cydp_t flags)
++static pte_t napot_hugetlb_get_and_clear(struct mm_struct *mm,
++					 unsigned long addr, pte_t *ptep)
 +{
 +	pte_t pte;
 +
-+	for (;;) {
-+		pte = __ptep_get(ptep);
-+
-+		if (flags == (CYDP_CLEAR_YOUNG | CYDP_CLEAR_DIRTY))
-+			__set_pte(ptep, pte_mkclean(pte_mkold(pte)));
-+		else
-+			__clear_young_dirty_pte(vma, addr, ptep, pte, flags);
-+
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+
- #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS	/* defined in mm/pgtable.c */
- extern int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
- 				 pte_t *ptep, pte_t entry, int dirty);
-+int __ptep_set_access_flags(struct vm_area_struct *vma,
-+			    unsigned long address, pte_t *ptep,
-+			    pte_t entry, int dirty);
- #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG	/* defined in mm/pgtable.c */
- bool ptep_test_and_clear_young(struct vm_area_struct *vma,
--		unsigned long address, pte_t *ptep);
-+			       unsigned long address, pte_t *ptep);
-+bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
-+				 unsigned long address, pte_t *ptep);
- 
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
--static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
--				       unsigned long address, pte_t *ptep)
-+static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
-+					 unsigned long address, pte_t *ptep)
- {
- #ifdef CONFIG_SMP
- 	pte_t pte = __pte(xchg(&ptep->pte, 0));
-@@ -690,9 +754,24 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	return pte;
- }
- 
-+#define __ptep_get_and_clear __ptep_get_and_clear
-+
-+static inline pte_t __ptep_clear_flush(struct vm_area_struct *vma,
-+				       unsigned long address, pte_t *ptep)
-+{
-+	pte_t pte = __ptep_get_and_clear(vma->vm_mm, address, ptep);
-+
-+	if (pte_accessible(vma->vm_mm, pte))
-+		flush_tlb_page(vma, address);
++	pte = __ptep_get_and_clear_noptc(ptep);
++	page_table_check_pte_clear(mm, addr, pte_mknonnapot(pte, addr));
 +
 +	return pte;
 +}
 +
-+#define __ptep_clear_flush __ptep_clear_flush
-+
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
--static inline void ptep_set_wrprotect(struct mm_struct *mm,
--				      unsigned long address, pte_t *ptep)
-+static inline void __ptep_set_wrprotect(struct mm_struct *mm,
-+					unsigned long address, pte_t *ptep)
+ static pte_t get_clear_contig(struct mm_struct *mm,
+ 			      unsigned long addr,
+ 			      pte_t *ptep,
+ 			      unsigned long ncontig)
  {
- 	pte_t read_pte = READ_ONCE(*ptep);
- 	/*
-@@ -705,9 +784,11 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm,
- 			((pte_val(read_pte) & ~(unsigned long)_PAGE_WRITE) | _PAGE_READ));
+-	pte_t pte, tmp_pte;
+-	bool present;
+-
+-	pte = ptep_get_and_clear(mm, addr, ptep);
+-	present = pte_present(pte);
+-	while (--ncontig) {
+-		ptep++;
+-		addr += PAGE_SIZE;
+-		tmp_pte = ptep_get_and_clear(mm, addr, ptep);
+-		if (present) {
+-			if (pte_dirty(tmp_pte))
+-				pte = pte_mkdirty(pte);
+-			if (pte_young(tmp_pte))
+-				pte = pte_mkyoung(pte);
+-		}
++	pte_t orig_pte = __ptep_get(ptep);
++	unsigned long i;
++
++	addr = napot_hugetlb_block_addr(orig_pte, addr);
++	if (pte_napot(orig_pte))
++		ptep = huge_pte_offset(mm, addr,
++				       napot_cont_size(napot_cont_order(orig_pte)));
++
++	for (i = 0; i < ncontig; i++, addr += PAGE_SIZE, ptep++) {
++		pte_t pte = napot_hugetlb_get_and_clear(mm, addr, ptep);
++
++		if (pte_dirty(pte))
++			orig_pte = riscv_pte_mkhwdirty(orig_pte);
++		if (pte_young(pte))
++			orig_pte = pte_mkyoung(orig_pte);
+ 	}
+-	return pte;
++
++	return orig_pte;
  }
  
-+#define __ptep_set_wrprotect __ptep_set_wrprotect
-+
- #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
--static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
--		unsigned long address, pte_t *ptep)
-+static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
-+					    unsigned long address, pte_t *ptep)
+ static pte_t get_clear_contig_flush(struct mm_struct *mm,
+@@ -174,10 +198,13 @@ static pte_t get_clear_contig_flush(struct mm_struct *mm,
+ 				    pte_t *ptep,
+ 				    unsigned long pte_num)
  {
- 	/*
- 	 * This comment is borrowed from x86, but applies equally to RISC-V:
-@@ -724,9 +805,27 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
- 	 * shouldn't really matter because there's no real memory
- 	 * pressure for swapout to react to. ]
- 	 */
--	return ptep_test_and_clear_young(vma, address, ptep);
-+	return __ptep_test_and_clear_young(vma, address, ptep);
++	pte_t pte = __ptep_get(ptep);
+ 	pte_t orig_pte = get_clear_contig(mm, addr, ptep, pte_num);
+ 	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
+ 	bool valid = !pte_none(orig_pte);
+ 
++	addr = napot_hugetlb_block_addr(pte, addr);
++
+ 	if (valid)
+ 		flush_tlb_range(&vma, addr, addr + (PAGE_SIZE * pte_num));
+ 
+@@ -207,14 +234,31 @@ static void clear_flush(struct mm_struct *mm,
+ 			unsigned long ncontig)
+ {
+ 	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
++	pte_t pte = __ptep_get(ptep);
+ 	unsigned long i, saddr = addr;
+ 
++	addr = napot_hugetlb_block_addr(pte, addr);
++	if (pte_napot(pte))
++		ptep = huge_pte_offset(mm, addr,
++				       napot_cont_size(napot_cont_order(pte)));
++	saddr = addr;
++
+ 	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
+-		ptep_get_and_clear(mm, addr, ptep);
++		napot_hugetlb_get_and_clear(mm, addr, ptep);
+ 
+ 	flush_tlb_range(&vma, saddr, addr);
  }
  
-+#define __ptep_clear_flush_young __ptep_clear_flush_young
-+
-+#define ptep_get __ptep_get
-+#define ptep_get_lockless __ptep_get_lockless
-+#define set_pte __set_pte
-+#define set_ptes __set_ptes
-+
-+static inline void pte_clear(struct mm_struct *mm,
-+			     unsigned long addr, pte_t *ptep)
++static void set_huge_napot_ptes(struct mm_struct *mm, unsigned long addr,
++				pte_t *ptep, pte_t pte, unsigned long pte_num)
 +{
-+	__pte_clear(mm, addr, ptep);
++	unsigned long i;
++
++	page_table_check_ptes_set(mm, addr, ptep, pte, pte_num);
++	for (i = 0; i < pte_num; i++)
++		__set_pte_at(mm, ptep + i, pte);
 +}
 +
-+#define ptep_get_and_clear __ptep_get_and_clear
-+#define clear_young_dirty_ptes __clear_young_dirty_ptes
-+#define ptep_set_wrprotect __ptep_set_wrprotect
-+#define ptep_clear_flush_young __ptep_clear_flush_young
-+
- #define pgprot_nx pgprot_nx
- static inline pgprot_t pgprot_nx(pgprot_t _prot)
+ static int num_contig_ptes_from_size(unsigned long sz, size_t *pgsize)
  {
+ 	unsigned long hugepage_shift;
+@@ -256,19 +300,18 @@ void set_huge_pte_at(struct mm_struct *mm,
+ 
+ 	if (!pte_present(pte)) {
+ 		for (i = 0; i < pte_num; i++, ptep++, addr += pgsize)
+-			set_ptes(mm, addr, ptep, pte, 1);
++			__set_ptes(mm, addr, ptep, pte, 1);
+ 		return;
+ 	}
+ 
+ 	if (!pte_napot(pte)) {
+-		set_ptes(mm, addr, ptep, pte, 1);
++		__set_ptes(mm, addr, ptep, pte, 1);
+ 		return;
+ 	}
+ 
+ 	clear_flush(mm, addr, ptep, pgsize, pte_num);
+ 
+-	for (i = 0; i < pte_num; i++, ptep++, addr += pgsize)
+-		set_pte_at(mm, addr, ptep, pte);
++	set_huge_napot_ptes(mm, addr, ptep, pte, pte_num);
+ }
+ 
+ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+@@ -280,10 +323,10 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	unsigned long order;
+ 	pte_t orig_pte;
+-	int i, pte_num;
++	int pte_num;
+ 
+ 	if (!pte_napot(pte))
+-		return ptep_set_access_flags(vma, addr, ptep, pte, dirty);
++		return __ptep_set_access_flags(vma, addr, ptep, pte, dirty);
+ 
+ 	order = napot_cont_order(pte);
+ 	pte_num = napot_pte_num(order);
+@@ -291,13 +334,12 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 	orig_pte = get_clear_contig_flush(mm, addr, ptep, pte_num);
+ 
+ 	if (pte_dirty(orig_pte))
+-		pte = pte_mkdirty(pte);
++		pte = riscv_pte_mkhwdirty(pte);
+ 
+ 	if (pte_young(orig_pte))
+ 		pte = pte_mkyoung(pte);
+ 
+-	for (i = 0; i < pte_num; i++, addr += PAGE_SIZE, ptep++)
+-		set_pte_at(mm, addr, ptep, pte);
++	set_huge_napot_ptes(mm, addr, ptep, pte, pte_num);
+ 
+ 	return true;
+ }
+@@ -306,14 +348,13 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+ 			      unsigned long addr,
+ 			      pte_t *ptep, unsigned long sz)
+ {
+-	size_t pgsize;
+-	pte_t orig_pte = ptep_get(ptep);
++	pte_t orig_pte = __ptep_get(ptep);
+ 	int pte_num;
+ 
+ 	if (!pte_napot(orig_pte))
+-		return ptep_get_and_clear(mm, addr, ptep);
++		return __ptep_get_and_clear(mm, addr, ptep);
+ 
+-	pte_num = num_contig_ptes_from_size(sz, &pgsize);
++	pte_num = napot_pte_num(napot_cont_order(orig_pte));
+ 
+ 	return get_clear_contig(mm, addr, ptep, pte_num);
+ }
+@@ -322,13 +363,13 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 			     unsigned long addr,
+ 			     pte_t *ptep)
+ {
+-	pte_t pte = ptep_get(ptep);
++	pte_t pte = __ptep_get(ptep);
+ 	unsigned long order;
+ 	pte_t orig_pte;
+-	int i, pte_num;
++	int pte_num;
+ 
+ 	if (!pte_napot(pte)) {
+-		ptep_set_wrprotect(mm, addr, ptep);
++		__ptep_set_wrprotect(mm, addr, ptep);
+ 		return;
+ 	}
+ 
+@@ -339,19 +380,18 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ 
+ 	orig_pte = pte_wrprotect(orig_pte);
+ 
+-	for (i = 0; i < pte_num; i++, addr += PAGE_SIZE, ptep++)
+-		set_pte_at(mm, addr, ptep, orig_pte);
++	set_huge_napot_ptes(mm, addr, ptep, orig_pte, pte_num);
+ }
+ 
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+ 			    unsigned long addr,
+ 			    pte_t *ptep)
+ {
+-	pte_t pte = ptep_get(ptep);
++	pte_t pte = __ptep_get(ptep);
+ 	int pte_num;
+ 
+ 	if (!pte_napot(pte))
+-		return ptep_clear_flush(vma, addr, ptep);
++		return __ptep_clear_flush(vma, addr, ptep);
+ 
+ 	pte_num = napot_pte_num(napot_cont_order(pte));
+ 
+@@ -363,19 +403,16 @@ void huge_pte_clear(struct mm_struct *mm,
+ 		    pte_t *ptep,
+ 		    unsigned long sz)
+ {
+-	size_t pgsize;
+-	pte_t pte = ptep_get(ptep);
+-	int i, pte_num;
++	pte_t pte = __ptep_get(ptep);
++	int pte_num;
+ 
+ 	if (!pte_napot(pte)) {
+-		pte_clear(mm, addr, ptep);
++		__pte_clear(mm, addr, ptep);
+ 		return;
+ 	}
+ 
+-	pte_num = num_contig_ptes_from_size(sz, &pgsize);
+-
+-	for (i = 0; i < pte_num; i++, addr += pgsize, ptep++)
+-		pte_clear(mm, addr, ptep);
++	pte_num = napot_pte_num(napot_cont_order(pte));
++	get_clear_contig(mm, addr, ptep, pte_num);
+ }
+ 
+ static bool is_napot_size(unsigned long size)
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index e2be64bacf160..d44bb7db22b43 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -378,9 +378,9 @@ void __set_fixmap(enum fixed_addresses idx, phys_addr_t phys, pgprot_t prot)
+ 	ptep = &fixmap_pte[pte_index(addr)];
+ 
+ 	if (pgprot_val(prot))
+-		set_pte(ptep, pfn_pte(phys >> PAGE_SHIFT, prot));
++		__set_pte(ptep, pfn_pte(phys >> PAGE_SHIFT, prot));
+ 	else
+-		pte_clear(&init_mm, addr, ptep);
++		__pte_clear(&init_mm, addr, ptep);
+ 	local_flush_tlb_page(addr);
+ }
+ 
+@@ -1571,11 +1571,11 @@ static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, un
+ 			next = end;
+ 
+ 		ptep = pte_base + pte_index(addr);
+-		pte = ptep_get(ptep);
++		pte = __ptep_get(ptep);
+ 		if (!pte_present(*ptep))
+ 			continue;
+ 
+-		pte_clear(&init_mm, addr, ptep);
++		__pte_clear(&init_mm, addr, ptep);
+ 		if (is_vmemmap)
+ 			free_vmemmap_storage(pte_page(pte), PAGE_SIZE, altmap);
+ 	}
+diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
+index 1f3aa9611187f..c5d5513b206ca 100644
+--- a/arch/riscv/mm/kasan_init.c
++++ b/arch/riscv/mm/kasan_init.c
+@@ -39,9 +39,9 @@ static void __init kasan_populate_pte(pmd_t *pmd, unsigned long vaddr, unsigned
+ 	ptep = pte_offset_kernel(pmd, vaddr);
+ 
+ 	do {
+-		if (pte_none(ptep_get(ptep))) {
++		if (pte_none(__ptep_get(ptep))) {
+ 			phys_addr = memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
+-			set_pte(ptep, pfn_pte(PFN_DOWN(phys_addr), PAGE_KERNEL));
++			__set_pte(ptep, pfn_pte(PFN_DOWN(phys_addr), PAGE_KERNEL));
+ 			memset(__va(phys_addr), KASAN_SHADOW_INIT, PAGE_SIZE);
+ 		}
+ 	} while (ptep++, vaddr += PAGE_SIZE, vaddr != end);
+@@ -327,8 +327,8 @@ asmlinkage void __init kasan_early_init(void)
+ 		KASAN_SHADOW_END - (1UL << (64 - KASAN_SHADOW_SCALE_SHIFT)));
+ 
+ 	for (i = 0; i < PTRS_PER_PTE; ++i)
+-		set_pte(kasan_early_shadow_pte + i,
+-			pfn_pte(virt_to_pfn(kasan_early_shadow_page), PAGE_KERNEL));
++		__set_pte(kasan_early_shadow_pte + i,
++			  pfn_pte(virt_to_pfn(kasan_early_shadow_page), PAGE_KERNEL));
+ 
+ 	for (i = 0; i < PTRS_PER_PMD; ++i)
+ 		set_pmd(kasan_early_shadow_pmd + i,
+@@ -520,10 +520,10 @@ void __init kasan_init(void)
+ 		       kasan_mem_to_shadow((const void *)MODULES_VADDR + SZ_2G));
+ 
+ 	for (i = 0; i < PTRS_PER_PTE; i++)
+-		set_pte(&kasan_early_shadow_pte[i],
+-			mk_pte(virt_to_page(kasan_early_shadow_page),
+-			       __pgprot(_PAGE_PRESENT | _PAGE_READ |
+-					_PAGE_ACCESSED)));
++		__set_pte(&kasan_early_shadow_pte[i],
++			  mk_pte(virt_to_page(kasan_early_shadow_page),
++				 __pgprot(_PAGE_PRESENT | _PAGE_READ |
++					  _PAGE_ACCESSED)));
+ 
+ 	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
+ 	init_task.kasan_depth = 0;
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 3f76db3d27699..e0271e2a0b295 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -68,10 +68,10 @@ static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+ static int pageattr_pte_entry(pte_t *pte, unsigned long addr,
+ 			      unsigned long next, struct mm_walk *walk)
+ {
+-	pte_t val = ptep_get(pte);
++	pte_t val = __ptep_get(pte);
+ 
+ 	val = __pte(set_pageattr_masks(pte_val(val), walk));
+-	set_pte(pte, val);
++	__set_pte(pte, val);
+ 
+ 	return 0;
+ }
+@@ -121,7 +121,7 @@ static int __split_linear_mapping_pmd(pud_t *pudp,
+ 
+ 			ptep_new = (pte_t *)page_address(pte_page);
+ 			for (i = 0; i < PTRS_PER_PTE; ++i, ++ptep_new)
+-				set_pte(ptep_new, pfn_pte(pfn + i, prot));
++				__set_pte(ptep_new, pfn_pte(pfn + i, prot));
+ 
+ 			smp_wmb();
+ 
+@@ -406,14 +406,14 @@ static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
+ {
+ 	int enable = *(int *)data;
+ 
+-	unsigned long val = pte_val(ptep_get(pte));
++	unsigned long val = pte_val(__ptep_get(pte));
+ 
+ 	if (enable)
+ 		val |= _PAGE_PRESENT;
+ 	else
+ 		val &= ~_PAGE_PRESENT;
+ 
+-	set_pte(pte, __pte(val));
++	__set_pte(pte, __pte(val));
+ 
+ 	return 0;
+ }
+@@ -466,5 +466,5 @@ bool kernel_page_present(struct page *page)
+ 		return true;
+ 
+ 	pte = pte_offset_kernel(pmd, addr);
+-	return pte_present(ptep_get(pte));
++	return pte_present(__ptep_get(pte));
+ }
+diff --git a/arch/riscv/mm/pgtable.c b/arch/riscv/mm/pgtable.c
+index 9c4427d0b1874..43bd542c6ff02 100644
+--- a/arch/riscv/mm/pgtable.c
++++ b/arch/riscv/mm/pgtable.c
+@@ -5,14 +5,13 @@
+ #include <linux/kernel.h>
+ #include <linux/pgtable.h>
+ 
+-int ptep_set_access_flags(struct vm_area_struct *vma,
+-			  unsigned long address, pte_t *ptep,
+-			  pte_t entry, int dirty)
++int __ptep_set_access_flags(struct vm_area_struct *vma,
++			    unsigned long address, pte_t *ptep,
++			    pte_t entry, int dirty)
+ {
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SVVPTC)) {
+-		if (!pte_same(ptep_get(ptep), entry)) {
++		if (!pte_same(__ptep_get(ptep), entry)) {
+ 			__set_pte_at(vma->vm_mm, ptep, entry);
+-			/* Here only not svadu is impacted */
+ 			flush_tlb_page(vma, address);
+ 			return true;
+ 		}
+@@ -20,7 +19,7 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
+ 		return false;
+ 	}
+ 
+-	if (!pte_same(ptep_get(ptep), entry))
++	if (!pte_same(__ptep_get(ptep), entry))
+ 		__set_pte_at(vma->vm_mm, ptep, entry);
+ 	/*
+ 	 * update_mmu_cache will unconditionally execute, handling both
+@@ -29,13 +28,30 @@ int ptep_set_access_flags(struct vm_area_struct *vma,
+ 	return true;
+ }
+ 
+-bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+-		unsigned long address, pte_t *ptep)
++int ptep_set_access_flags(struct vm_area_struct *vma,
++			  unsigned long address, pte_t *ptep,
++			  pte_t entry, int dirty)
+ {
+-	if (!pte_young(ptep_get(ptep)))
++	return __ptep_set_access_flags(vma, address, ptep, entry, dirty);
++}
++
++bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
++				 unsigned long address,
++				 pte_t *ptep)
++{
++	if (!pte_young(__ptep_get(ptep)))
+ 		return false;
++
+ 	return test_and_clear_bit(_PAGE_ACCESSED_OFFSET, &pte_val(*ptep));
+ }
++EXPORT_SYMBOL_GPL(__ptep_test_and_clear_young);
++
++bool ptep_test_and_clear_young(struct vm_area_struct *vma,
++			       unsigned long address,
++			       pte_t *ptep)
++{
++	return __ptep_test_and_clear_young(vma, address, ptep);
++}
+ EXPORT_SYMBOL_GPL(ptep_test_and_clear_young);
+ 
+ #ifdef CONFIG_64BIT
 -- 
 2.39.5
 
