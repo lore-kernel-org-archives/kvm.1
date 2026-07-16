@@ -1,189 +1,145 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0623223DFF
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 06:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F85346FA1
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 06:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784182969; cv=none; b=brFCUdWgJ0gn/biJDbLec+5yI+V9yDCSPqKb61hlDYmlR5BPxitDND0vuHTgR0ElMBd0yS+TdUXDgCzmrsKftOY7QkU9yHpJHYpOUQyG+gWpKosgYZe2XKMTC4aZWiO9UbAcR5GlXH/dazQeGAlzEYEB/QBonTub4aOap8Q6dN4=
+	t=1784184074; cv=none; b=dmK44b6wGzG9VMD34pila7ulqIFXxJTHMEsDaB+FRSJqWQoYYgFpmytwpp5qG8jst++aqRLEJNN5IF3RMojBHkx2yTb2xgP5WlDiXSgnLCBqYsW+omdOJe3rZLL5WubQQXWupxrd774FCXyo5tngKohLWli8/kP338eQWdC/t6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784182969; c=relaxed/simple;
-	bh=xRnDEBlWCIFl2WCdNlTAWAbelcBLDP2ZuWJdJbE0ipc=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Hg0EttLucLae7ZtOmP5mG26i+T8Dxk9QxiN+M0YF3bJb3AVePbitZvOQKzjcz7a0Rg1iekyGAbPz3UICDBFV9CM9df+nbfaozJUj6ScSWpLYq0JJ7mFv0foX0Ny7e6n+KUHLhWF0qbBv85R5ZahA9osVFjEg1m2b/FltI2fF2rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8AxCOuyeFhqxRcEAA--.16388S3;
-	Thu, 16 Jul 2026 14:22:42 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxDceteFhq_q4OAA--.6820S2;
-	Thu, 16 Jul 2026 14:22:40 +0800 (CST)
-Subject: Re: [PATCH v4 0/3] LoongArch: KVM: Add PV TLB flush support
-To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, loongarch@lists.linux.dev
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, Tao Cui <cuitao@kylinos.cn>
-References: <20260615082154.42144-1-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <438d76ac-b447-1613-1c00-7c2186ac4014@loongson.cn>
-Date: Thu, 16 Jul 2026 14:22:29 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1784184074; c=relaxed/simple;
+	bh=ARwBqNXy7iYAR/zvzCQFr6JDEhfZR9bP5dOWQAURFD4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WEwwdM+486jn+PH/StoRy2P539BFB0M0ie++uiW8mZ90P7NARuuGQ001D6kzJ/sHk0ZV6VJYWrj3KDrnWVOFUQCqwvIyTLKgb8BJVUoIOshoP/sjmLxs1I69y2R7FT23xLi9uoZGxLxb5Pwo3P+SavkA7FSP2sqczumwwYHiqdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mNKBabSz; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mNKBabSz"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c9eefcf9175so2568414a12.3
+        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 23:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784184072; x=1784788872; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8J2PB70MWAXXQG95F609SxeXRC3aZLcryE0e4szEh2g=;
+        b=mNKBabSzr7e6d9eYDXFsrOOIme6opLnCbMqdxVWsqFAZoqisYQzpmAP+aheZO+ojE9
+         8R6il7HTeF9hkN5QDo9Wlx+3QLYmefBW2zzwV3+LDVOxsM0xuk9Xi+G+B+VNXe1jQAwT
+         dISrkmT334aKh39dqI2q2uvjwEc6CbOjjUiYJfrfOGY4YJDx+orRX6D7iFGiXAKMIxke
+         aM28OOLNLB9ce5snzFG1SMLt9NZNHu3HTBYHXk5HNNxTCX99GpmuKLmHE07jtvONY4Hc
+         QRvs+zWI53ojl1ZwE8RH0P/0TA8mDC8SHWnc85HF054MKQhLGqFs0zACvQqWS7kiCEyW
+         0QXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784184072; x=1784788872;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8J2PB70MWAXXQG95F609SxeXRC3aZLcryE0e4szEh2g=;
+        b=RzUUBBHHgueNEr8vXiA1fBqVOmB8cTyPoYdpGJw9C9oBcFr90nygnbRJi9mD3P/l/0
+         vYpiyOv4IjM2BL9MmKpo1i4r4QIR8P/HAR/rcJMrEluQeztWBUaRPVDKwKPkfxjbudNC
+         n/SQD4yWAtyKtKLvF4coDHl94H6Jr2oOQpzPpYOQAprQwDxlKtjxokmfcMPpgtc3h0NS
+         8gCBaU5qPxjfcjpzb9TUjmqQNh5xMV2FzFX5z/3msuV18LuV1wkKE7xya5XMGuMN1RPd
+         QDaBiXBKsce+c3+mhK2Ng+KcwVtZadd/rAP8tk205n3bn0BPxF57u4p+J6IFkLmX/fqk
+         syYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpG/vWT2VbxvSoxWcQXWnGHUVV9kbY8HWp7LobWttJIey+k45MmGVKGPyuKYWKeKU4FPFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNsWkOyysUi8jj8pKIdd1zETJYAD7q63gLojj+YfIEMmLx+6iB
+	7KLpWo7isoJgZj9F1aZDYS0WPcSY/GOFuvTecv2VQmyh4h6vcvZTtyWv
+X-Gm-Gg: AfdE7cmpGzgmSSHrt872e7iC60ov8gQHavKZ9oN67OPvY4tdPStxswDnjsqCm8vjKBk
+	hIj/TinYJXc0J6x1An8je5OEh5Bi4FgXzQn/KlcwBZBp0LfxJJWB0DbW1y62BsA59wmxbMRx5s7
+	lMDAA33KgHUDmFt6WkDOxTY3+yTaaGfrJi8P756vnMG0Qzb0B+f4oUmZ7EfjNrxB6pl4Y/MNthn
+	VjUSNnnaljGZ/M2iMc3Scy0BQ6yA9O1YR3vl147SFal6mWZEkA7doEwsrdJdKW7o0JffTVZW8Jv
+	UEEEh96O74xSuOeGaDbmpgXwPIXWdmnhkVQWeT8cR4OFBMJt3PyKAKJuxOrkIKB8KHw0NIujhSG
+	4YGvBe1Ny2+2r9KSjdAeCK/k76qZOhDmQqK8dRwVScCiuAsCGLVURfK3boh113RP8fqd0CbDf44
+	5slty8067P9rFKhz3YKRwi
+X-Received: by 2002:a05:6a21:495:b0:3c0:9c1b:d0b5 with SMTP id adf61e73a8af0-3c1109f44ebmr22579230637.64.1784184072215;
+        Wed, 15 Jul 2026 23:41:12 -0700 (PDT)
+Received: from cyh-System-Product-Name.. ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eb856dsm1412425a12.6.2026.07.15.23.41.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 23:41:11 -0700 (PDT)
+From: yhchen312@gmail.com
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	"Yuhang.chen" <yhchen312@gmail.com>,
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: [PATCH] RISC-V: KVM: Use raw_spinlock for VMID update critical section
+Date: Thu, 16 Jul 2026 14:40:11 +0800
+Message-Id: <20260716064011.2387501-1-yhchen312@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260615082154.42144-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxDceteFhq_q4OAA--.6820S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3XFy7AFWDCrWfXrWfury5ZFc_yoW7tw47pF
-	W2vFn5Kr4kGFyfAanrtw1Iqr9YvrWfJa13Xa4ak34rZws8Gr10krySkrykXF1DX3WfWrWF
-	gF1kZr9IqF17AagCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz2NtUUUUU=
 
+From: "Yuhang.chen" <yhchen312@gmail.com>
 
+The VMID update critical section performs an IPI broadcast via
+on_each_cpu_mask() on VMID version rollover, which must not be preempted
+under PREEMPT_RT. Convert vmid_lock to raw_spinlock_t and use plain
+raw_spin_lock()/raw_spin_unlock() (interrupts stay enabled, since
+on_each_cpu_mask() requires it).
 
-On 2026/6/15 下午4:21, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
-> 
-> This series implements paravirtualized TLB flush for LoongArch KVM
-> guests.
-> 
-> In multi-vCPU KVM guests, remote TLB flushes broadcast IPIs to all
-> target vCPUs, including those preempted by the host. Sending IPIs to
-> preempted vCPUs causes unnecessary VM exits and grows with vCPU count,
-> becoming severe in overcommitted deployments.
-> 
-> Reuse the existing steal-time shared memory page by adding a new
-> KVM_VCPU_FLUSH_TLB flag to the preempted byte. On the guest side,
-> skip IPIs to preempted vCPUs and set the flag via cmpxchg instead.
-> On the host side, when re-entering a vCPU in kvm_update_stolen_time(),
-> check and clear the flag; if set, drop the VPID to trigger a full TLB
-> flush on the next VM entry. No new shared memory page, hypercall, or
-> Kconfig option is needed.
-After a second thought, the PV TLB flush can only work on hardware PTW, 
-there is problem on software PTW.
+Assisted-by: YuanSheng:deepseek-v4-pro
+Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
+---
+ arch/riscv/kvm/vmid.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-With TLB flush flow, the current CPU sends IPI interrupter to other CPUs 
-to flush TLB. With software PTW, other CPUs may execute TLB refill or 
-TLB exception with interrupt disabled. IPI interrupt will not trigger 
-until TLB refill/exception finishes, however with PV TLB method, other 
-vCPUs will trap to host and flush TLBs, and continue to execute TLB 
-refill/exception, stale TLB may be added.
-
-Regards
-Bibo Mao
-> 
-> The feature is advertised through the existing KVM PV feature
-> negotiation: the kernel exposes KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH as
-> a VM-level capability, and userspace (QEMU) sets
-> KVM_FEATURE_PV_TLB_FLUSH in the guest's CPUCFG_KVM_FEATURE mask after
-> probing it. A corresponding QEMU patch ("target/loongarch: Enable PV
-> TLB flush advertisement to the guest") is posted alongside this
-> series.
-> 
-> - Host side: only trace a PV TLB flush request when one is observed.
-> - (Carried over) Host uses amand_db.w to atomically read and clear the
->    preempted byte; selftest gained input validation and failure cleanup.
-> 
-> Testing: the PV TLB flush path itself is unchanged from v3, so the
-> benchmark numbers below still hold.  Note that, unlike v3, the feature
-> must now be enabled by userspace: run a QEMU built with the companion
-> patch (or with -cpu kvm-pv-tlb-flush=on) so the guest actually observes
-> KVM_FEATURE_PV_TLB_FLUSH.  Boot a 32-vCPU guest and run the selftest
-> inside it with sleep-idle (PV helps) and busy-spin (PV cannot optimize)
-> modes respectively:
-> 
->    qemu-system-loongarch64 \
->      -m 4G -smp 32 --cpu la464 --machine virt \
->      -bios .../QEMU_EFI.fd \
->      -kernel .../vmlinuz-...-pvtlb-v4+ \
->      -initrd /tmp/ramdisk_test.gz \
->      -serial mon:stdio \
->      -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
->      -device virtio-net-pci,netdev=net0 \
->      -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" -nographic
-> 
->    # PV TLB flush enabled (idle threads sleep, vCPUs get preempted)
->    guest# ./pv_tlb_flush_test 1 31 50000 0
-> 
->    # Baseline (idle threads busy-spin, all vCPUs stay active)
->    guest# ./pv_tlb_flush_test 1 31 50000 1
-> 
->    With PV TLB flush (sleep idle):    ~152,285 ns/flush
->    Without PV TLB flush (busy-spin):  ~481,045 ns/flush
-> 
->    Improvement: ~68% latency reduction (~3.2x throughput increase)
-> 
-> Tao Cui (3):
->    LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
->    LoongArch: KVM: Implement guest-side PV TLB flush
->    KVM: selftests: loongarch: Add PV TLB flush performance test
-> 
->   arch/loongarch/include/asm/kvm_host.h              |   1 +
->   arch/loongarch/include/asm/kvm_para.h              |   9 +
->   arch/loongarch/include/asm/paravirt.h              |  21 +++
->   arch/loongarch/include/uapi/asm/kvm.h              |   1 +
->   arch/loongarch/include/uapi/asm/kvm_para.h         |   1 +
->   arch/loongarch/kernel/paravirt.c                   |  60 ++++++
->   arch/loongarch/kernel/smp.c                        |  30 +++-
->   arch/loongarch/kvm/trace.h                         |  15 ++
->   arch/loongarch/kvm/vcpu.c                          |  34 +++-
->   arch/loongarch/kvm/vm.c                            |   3 +
->   .../selftests/kvm/loongarch/pv_tlb_flush_test.c    | 194 +++++++++++++++++++++
->   11 files changed, 362 insertions(+), 7 deletions(-)
-> 
-> ---
-> Changes in v4:
-> - Drop the "Preserve auto-enabled PV features on userspace override"
->    patch: forcing auto-enabled features back on is migration-unsafe, and
->    for PV TLB flush (which cannot degrade gracefully) a missed flush
->    would corrupt the guest.  Enablement now follows the usual KVM model
->    -- the kernel advertises KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH and
->    userspace (QEMU) explicitly sets KVM_FEATURE_PV_TLB_FLUSH after
->    probing it; a companion QEMU patch is posted alongside, and the
->    feature can be kept off for an older destination
->    (-cpu kvm-pv-tlb-flush=off).
-> 
-> Changes in v3:
-> - Host side: replace amswap_db.w with amand_db.w to atomically read
->    and clear only the preempted byte, preserving the pad bytes for
->    future UAPI use.  Issue a normal load (unsafe_get_user) before the
->    atomic amand_db.w to avoid operating on stale cache data.
-> - Host side: move the pv_auto_features OR operation before the
->    compatibility check in kvm_loongarch_cpucfg_set_attr() so that
->    userspace does not need updating for pure kernel-internal PV
->    feature additions.
-> - Selftest: add input validation, error checking on pthread_create,
->    and cleanup handling on failure.
-> 
-> Changes in v2:
-> - Host side: replace non-atomic unsafe_get_user + unsafe_put_user with
->    atomic amswap_db.w inline assembly. This fixes two issues:
->    1) unsafe_put_user failure could skip the TLB flush entirely
->    2) non-atomic read+write race with guest-side try_cmpxchg could
->       cause FLUSH_TLB requests to be lost
-> - Guest side: consolidate two separate READ_ONCE calls into a single
->    READ_ONCE to eliminate a TOCTOU race where the host could clear
->    preempted between the two reads. Also switch from byte-sized
->    try_cmpxchg to 32-bit try_cmpxchg on the aligned word containing
->    preempted.
-> 
+diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
+index c15bdb1dd8be..21c2b276b55d 100644
+--- a/arch/riscv/kvm/vmid.c
++++ b/arch/riscv/kvm/vmid.c
+@@ -21,7 +21,7 @@
+ static unsigned long vmid_version = 1;
+ static unsigned long vmid_next;
+ static unsigned long vmid_bits __ro_after_init;
+-static DEFINE_SPINLOCK(vmid_lock);
++static DEFINE_RAW_SPINLOCK(vmid_lock);
+ 
+ void __init kvm_riscv_gstage_vmid_detect(void)
+ {
+@@ -78,14 +78,14 @@ void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *vcpu)
+ 	if (!kvm_riscv_gstage_vmid_ver_changed(vmid))
+ 		return;
+ 
+-	spin_lock(&vmid_lock);
++	raw_spin_lock(&vmid_lock);
+ 
+ 	/*
+ 	 * We need to re-check the vmid_version here to ensure that if
+ 	 * another vcpu already allocated a valid vmid for this vm.
+ 	 */
+ 	if (!kvm_riscv_gstage_vmid_ver_changed(vmid)) {
+-		spin_unlock(&vmid_lock);
++		raw_spin_unlock(&vmid_lock);
+ 		return;
+ 	}
+ 
+@@ -117,7 +117,7 @@ void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *vcpu)
+ 
+ 	WRITE_ONCE(vmid->vmid_version, READ_ONCE(vmid_version));
+ 
+-	spin_unlock(&vmid_lock);
++	raw_spin_unlock(&vmid_lock);
+ 
+ 	/* Request G-stage page table update for all VCPUs */
+ 	kvm_for_each_vcpu(i, v, vcpu->kvm)
+-- 
+2.34.1
 
