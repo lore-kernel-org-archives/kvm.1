@@ -1,303 +1,133 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023119.outbound.protection.outlook.com [52.101.72.119])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D525030568D;
-	Thu, 16 Jul 2026 15:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.119
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784216396; cv=fail; b=dGOARxVRl9IR+fMKJolA//FKeMtS84Ei3r2IRFneX6+/zUxqgfD0xPXoaHME1h+KToEOkj4ebTRrj6jjx4pxvUQQIgd4mIdLmmElE3BJAGOfGbQfBPZsqw4BRidYDAHUIUoEAWlbgKVa8h0C2Q+YPVr5X5bvjQ8h+xQgUkpDflQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784216396; c=relaxed/simple;
-	bh=JWx2quMd/HEG5y4gIm9TU6a1zmHcOb8hNoCk82dFNpE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FlcGQRxWxHzygT6ifOrTAOHAm+eyH0B1s6EP+AFay/MMfTa5oHYmZBD0nN16yUNoFheL20Dpmd1dT6yaDtGaBfnoKgKlGi3RBPMkHVa61VD/hmODwSRVzpVkY0/q/Mi8JH3uJHI5lfJJXyV1372NqRIo3Ydkl9nuXDipj1C73nE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=O7rQks+F; arc=fail smtp.client-ip=52.101.72.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF56332913
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 15:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784216485; cv=none; b=GwDuHCHBw+R3QsIVcMmLRzucp/bn77LsZXjVjrEiwdjpbcd2raHyNnV0L1q83uWpLfAQpEV07xFP9YsYOn873oC9fnGJRzVOZcwp7Rhu3L6+gSJbpE5tYluHysMecqTv4agy2gP8AQAZb/aVftdJxcJlUfhsqYdjtlhuSOaOFQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784216485; c=relaxed/simple;
+	bh=I6DakvQi07t5HT3cxD4AOR+wrZ943nkYkvcpeYCPxDM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=EIqtnEZvi4Txc71d4xfBAfPYp3aNb/DL5qKHNSCZJoIPfgc4S5a90NIPFl3tcldv4bBYWC52oPMQVk16UKYyUM2VnAViPFHZdn55QrAdPuA3vlmIutKU9q2VO6ReZxSinMEDsTYikcXSmh9MV9W3nH+F+rCGcE72NzAn1DmKpNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+yb7sNx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="O7rQks+F"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d6ByxqRTXRWbF4vx3qSoqMR5j47cCPWak0WvhYwHd5rDi8fjA8zLxp3bylNAlbFn/Ilr6DGSBR9xCUh/GxidJXTihhLbm/NsdH7fWZy01owAiFQLhalFki/orMiqXbe58XXKBs7BnrwQr8xGexNV3dYYa4M9uueJF4FRDv5cg6N8idonWWmhyQ0ox0fkVFeP4X+apMQYV+WoHZY/DooCftY1q5619X6eWERkbju0oXD2Ei8waSxuTSiAmzmOFx4p8yGZD1nvUxBNzkdkIkIVSRWzMAnPoPc3wuIpbLfu9kcjcxYg5awJxunQX4ij/QwIag/Tr7/8QfWiQIq10qA9QQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e7MsonTAmiHKtK+k7ga7AWErWmbayxuuaHZRKhxOFxs=;
- b=ITth9ZEvTAqajRMUNw9mjIqOQtpBSPNecaxOdNTQ4AdHyl7TLbcBAQnaxf/QuGA7iJVike0wx8vToJgCLd3zgAeI9pTgJ8X7JAD5MiKavIXEWd3YlKfEgJRceAJeHPnXH8TMj/MwXy4H9a5o8JF+9gkCwT8KG+DkU2oi9LlKMO4YVVDTo+TgaEOBrqOh72e+8cn+cY4elNy2HMWKuflhRlGuAdp8/uftD7V8UhpdHcTHChcuxC1KrT9cRA0lNyaQR/tOoLXFmS3SYKtE/ef/K0DH1SznoH+RaTBp6i1D0rp2Kpo3OusDzM6hc+CEBMxvR5mKr6EgOAzAghGLC6m+Tw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e7MsonTAmiHKtK+k7ga7AWErWmbayxuuaHZRKhxOFxs=;
- b=O7rQks+FL3KX3OrfJLecxYELXl6ViB9MPBKPFCFglkq9tPWe86o1TfjuQq3/7TIGjQ+SFm2vclcvtdkVktMbCwzLo4WD89p8MYg6ro7vxmoiqztbg3kNeWJt3WDKhP7nSz+yOJNqmNDazgpuNujXNUa9SjiYc89ZZQdRIdNIXT6JHJewu4EiFMJszLDmxpmFd5R8fwAI05PZq2ZW1asi4jA1JoY+T25wyz0P8KBwjAOxeLurSFl2x6WxObVKkzhAE9hNVSXdBUZkJ4vbmSjL5ZgpnSLi/4GfSe2t8oaRMdjvX6UbyoodAfcMvf2JFNcuR/CG3gGLztqldE66BsuyeQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AS8PR08MB5927.eurprd08.prod.outlook.com
- (2603:10a6:20b:292::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Thu, 16 Jul
- 2026 15:39:50 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 15:39:49 +0000
-Message-ID: <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
-Date: Thu, 16 Jul 2026 18:39:48 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
- workers
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com,
- stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
- bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
- den@openvz.org
-References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
- <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
- <alibLtcrC7o5r4Dh@sgarzare-redhat>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <alibLtcrC7o5r4Dh@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0246.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:af::11) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+yb7sNx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DC01F000E9;
+	Thu, 16 Jul 2026 15:41:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784216483;
+	bh=9vJmtEa7ZvCe6+N4iC72T+uiuoXIKonH22FM7RGowQM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m+yb7sNx+89/9D1RQ1uJHnFBgGXJN3zVeec5ckJZo+jjtkP0czbcGobj/5SZMhoC3
+	 K2zq8KFj4Yw6alL394aY4ORe85vI7Uk9Vux2ATVRFwGZ7iVsaZ4vnz+xZGSn0ijwWT
+	 2G6vIMzN2SQWMba9P5rM/nVnKGDZZhBqrRfBQRyCDa522Bp9U9W5HwT2m61EmIrIpE
+	 zTdO5cVYjXoCxbF0scSTI+gMputZKjYLBcM1Cr5etPvwZQ3FlJaV9JwhxZ4YtrbOQj
+	 SWsEr177tRttgRFcFzP9vjj47YYfIOViIHeDcBmwh42NE9KXfLC7bGqMvnmlCisUau
+	 wZfbsGr5Nd6BQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 06/11] iommufd: Plumb dma-buf memory-type (RAM vs
+ MMIO) through the phys map
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>
+Cc: media-ci@linuxtv.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <a716d496ec095e1f71bb5fc8be3e2559bbe914cc.1784194290.git.dwmw@amazon.co.uk>
+References: <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
+ <a716d496ec095e1f71bb5fc8be3e2559bbe914cc.1784194290.git.dwmw@amazon.co.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 16 Jul 2026 15:41:22 +0000
+Message-Id: <20260716154123.32DC01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AS8PR08MB5927:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f23bbd3-2376-4778-7377-08dee35078cd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|4143699003|22082099003|56012099006|5023799004|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	yLTSU1r1F4jHjf6/aZ9D6jAvEJqkbhc0dr5MqscSctgoeEaOPHX50aHEEAf6pvlOSm1oGnH1o5UAOl5BviVs6Up4rF90ifgPRDrmoJXm4mSznJrbQgLU9rRVQh+LBx6HVlMApkEC3x10igNKFeHvkWJVWZ4qMM198JZcI+NZOu7Iir5TRW0Jy7GDvgSRizVIhWFqWe3p1nDQg3jWwWYOHRvji2qA5ktVjtzb1W+vozApu/66iY9J574zES+QIKJ4oDzdCmaCv5DSAcDtWt2cynCv/paF+4d+yjYqObWH5YoJPPGKoeo4Puc0VTZmyguTVfK6RmdyrTypka8+aDSSwulAsH/Xxc61l3S76exLqg3ctJ1Lzr5mqk0AIngaDk1XwTr6DOLJAeHGykPHI/cwDVRhaZUvpnGmovN8o9CGTYliNlC77htzyTz6k/asw2kupRLjx2kX5dMsfB8ElumEwvUqN68D40VYSSZKO56v40/UaAWeUcH9uatmA5Qbpun92C4xA/qcZPVLghVuy96vVdpIKyek6y/lCN3kQzB+vk8QdCJmP6m/KE9cfRV2G8ZBy6c85AJkHOT3Jo1wk5tlGyxt9SJZKY5gVOQextJrnh4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(4143699003)(22082099003)(56012099006)(5023799004)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q3R6emJsYTZwMUxBaHpGbEQ3QVRINEJRRElWbEdMNzFuVXJha251SEFsTFh5?=
- =?utf-8?B?VG1pT0MvSzc2WWhvamxTb25ScFBrbUxVcHM0aStjREFjWWFZQzY1ZFljdFAw?=
- =?utf-8?B?czNPL3N3eFNIcXpVcUhZd0NqV0NXdDRWMTlkYmRZUDFrZjRQK2h4Qk42c3Fk?=
- =?utf-8?B?bmNqdEtTdk5oSXdKRHRMRUJldUVURW5JNURoQkd4ck1LWnN4ZEpUbS9aY1Iz?=
- =?utf-8?B?dmt5TnBKelhkZ0REL0MzUFBQN3ZDRHBVaTBDcFIxR2p5WlBZUEJiVktQR1FU?=
- =?utf-8?B?bGtVSnBvWnhEL3RxL0ZhdTNFdlkzL0xJV2UvUDFIbnVXOHdzbDdaNjJ3alBC?=
- =?utf-8?B?ZWtlWVMxOHdpTjBGNWdCZlhBdUd1aTlpcGVyYkRZQ084Y29qMnd3Y1c3SGND?=
- =?utf-8?B?aXJ0bTlXTGZEdUdSaWZ2VmtjMExueW5MK25TcVEybFJmOEhXamM3a21QMWg3?=
- =?utf-8?B?UCswa0lZKzlZQVUrMnNEWVJVeVFpeWc0Z01TRHNzT1JCTndUZGVWa2FKa29q?=
- =?utf-8?B?anRwSlNpSUNmdTdzbTZncmZMSUNyblZOK2pmZmhDM29nMWlDVWI4eVFQRW84?=
- =?utf-8?B?VjB6K1FLSUtaNTlxV0lQbmpCaVpHSlJiT0I0aFV2MUxUQVUxZ3VpZzRNQkc4?=
- =?utf-8?B?cjRQU1RUNGhnVDRWSkR4WkRvZnFvRU9xYnE1dEdNZ0lHR1BMUkF1TDlvS3lz?=
- =?utf-8?B?VU80MTVLcXVDUk00dytpNENBbmd1cVlKZnZrNEREdWhGc3pnY3FwMmpsNEhE?=
- =?utf-8?B?cDZKUUMyZGtTNGVPSjBzQ1JaSHBpWU1sNCtwTnRTYnRuZ0kwRGFyanEwTisx?=
- =?utf-8?B?WlA3TklYZE81djRXOVBVQjEyN0xucVpSTG84MnI4NWxyMVk5Rm12UU1WTmZI?=
- =?utf-8?B?V2lLNjk1L0FOUW5YYUtwR2hqLzh0cUFYd0ZIYWRmRWE5VDY5VHZSTldTSTRj?=
- =?utf-8?B?dEp5UzJ6Sm56Nm5tS0t0OGw3VTJFTUlLdklSZVNMN2ZIQTRyclRTeVhTZkhu?=
- =?utf-8?B?L2t2bWxlcWp0cjRBNk9lMGgrTmJBMGF3eE5MTU1RRDBWOTYwK0t0V2IxZXc0?=
- =?utf-8?B?MlBZa2NHZUVEUytwYXVnUUhUTG1kaE5LQmZjM0Fqc215dGZaUDM4OUIrcURJ?=
- =?utf-8?B?YW5vUVpBendOc3dYdTZhOTlpZXpVcGNmYlF0b1UxMUZNV2RVcFNIWHZDcFNP?=
- =?utf-8?B?L2hnbXBSaE5LQXoySlNpRHJjK1ZGVW0xQVJDRnNoVFZEU1RGVDVRVE1UOXBB?=
- =?utf-8?B?TnF2N1k5b0FiU2JrR3hyUEc5WVNMZHBadjZwMXNyT3dEcExmYTA5MWFYeExw?=
- =?utf-8?B?T2xKYTdHb3hYKzFyNlNnb1dJY04yVkw4NE5INmdBR2w3UmdNS1Yydi9sM0xV?=
- =?utf-8?B?SEdhMUdCK1BGeHFma0ZWL3FlcWJsNkF3N1BJMXJ5ZkkrYytJNVd3bWl5alhQ?=
- =?utf-8?B?YkNudFBvSzMrT3dtVjUxWi91OEdTQlI2YVJPOUd0VnNSNGRnaEpkSFkzYnlE?=
- =?utf-8?B?NGlyZ2R5VUdpekI0SHpOcWR2TUdBd1I0dmdDeGRLbGgwcGtSSDFSWTBBZWlk?=
- =?utf-8?B?eEhGZVRoWjliOUxIWTl3Z00vVENLTndkR3J0eTR1SnlteUxadjRFTzJqMXVJ?=
- =?utf-8?B?QmVkNkptQlNmV1dxU09ZTnVwR2Q3VlU2TW1BcHI4NjhWcmhvZGFCNWwvR0I3?=
- =?utf-8?B?c0xqYzFwYWRwdVdZYUFxNWVFNWlLMnlXOUIzejdUb0hwK0xQMjZhZzY1T3Ba?=
- =?utf-8?B?ek90a0tkc0lqTmlMU2toUHlFSWl1ZUtWSVp2K1lvRzZBWTM3Y2JRK3Zzamdl?=
- =?utf-8?B?MGF1aEprNEhZS3hiNTFqdk0yYWtUcUJuZ0FQMXNzNW9BWkg4RWlXZ2w1UlR0?=
- =?utf-8?B?OGpLQ081YTgvVFcvN1hOaUNPVVZqcGlUUm5CcithMnhnRTd2K0VrajZvUGFH?=
- =?utf-8?B?TCtabng5UHpka3B6MzRYM3lXNEVjNk5Eb0owRWZJTHNkL3RrZlBoQ1N4Z1FB?=
- =?utf-8?B?MmRXRzFDK2dSTGl6TENmZGk4NHd3aFNIN3lmRGFpdEJpbmRKd21Rdnp3ZVlV?=
- =?utf-8?B?TVcxZWlUdWtnTzMrYXAwTXlWeVpRRDhOb3drZkNkRkkyamExK2REaWJLWUw3?=
- =?utf-8?B?ZUVBTkI2dVdCblFWcVh4cG5WeUlOd1B3SkdJcklaNkFhTGZSV3ZWZTdjSERG?=
- =?utf-8?B?WGZaL1Z4ZUd2c2FSdEh3OHdDYzRBZ29UZUJ5WC9VNzliZDJuY09YQUtoWGpS?=
- =?utf-8?B?VTVVYjB6VmlIdEdjZEZqQzVwcXdKMkY3OTUrbXFEUCt6NnJKTy85NlVBdW1r?=
- =?utf-8?B?YXhqR0ppN2tPY213VGVscFVWdG1xb2l6UDZBbGIyNm1BOHFjMFgyN3doNjZC?=
- =?utf-8?Q?rRjDQQYErITObIxU=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f23bbd3-2376-4778-7377-08dee35078cd
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 15:39:49.8097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ueQFx40CHHZod7G0vwjlGvQ1ja0FFi2b1+G+1XlbRUu8Fn8YLpljmkrcg8wyjN+wAk2g0t3ImMy8n65KWGfedaqWnDJWJ22u6nrPFRXCaZI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB5927
 
-On 7/16/26 11:57 AM, Stefano Garzarella wrote:
-> On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
->> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->> vq->worker and queues work on it.  vhost_workers_free() however clears
->> the vq->worker pointers and immediately frees the workers, without
->> waiting for a grace period.  A caller that fetched the worker right
->> before the pointer was cleared can therefore still be queueing work on
->> it while it is freed.  And even when the queueing itself wins the race,
->> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->> future attempts to queue it are silently skipped.
->>
->> None of the current callers can actually hit this: net and scsi stop
->> their virtqueues before the workers are freed, and vsock unhashes the
->> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->> in vhost-vsock keeps the device hashed while its workers are freed, so
->> the lockless send/cancel paths become able to race with the teardown.
->>
->> Close this the way vhost_worker_killed() already does: clear the
->> vq->worker pointers, wait for a grace period, run whatever the last
->> readers may have queued, and only then free the workers.  The
->> synchronize_rcu() is skipped if the device has no workers, so cleanup of
->> devices which never got an owner stays cheap.
->>
-> 
-> Do we need a Fixes tag for this?
->
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-I'm guessing it should be:
+Pre-existing issues:
+- [High] Secondary domain attachments map MMIO DMA-bufs with BATCH_CPU_MEMO=
+RY (IOMMU_CACHE) instead of BATCH_MMIO (IOMMU_MMIO), breaking DMA routing.
+--
 
-Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+--- Patch [6]: [RFC PATCH 06/11] iommufd: Plumb dma-buf memory-type (RAM vs=
+ MMIO) through the phys map ---
+commit de7dbdc51049f527858115cc709f25b2cee585cb
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-> Thanks for pointing out that the issue wasn't occurring, but I think we 
-> should add it because it's a sneaky problem we discovered by chance.
-> IMO the code should already have `synchronize_rcu()` after 
-> `rcu_assign_pointer()` loop.
-> 
-> @Michael, what do you think?
-> 
->> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> ---
->> drivers/vhost/vhost.c | 15 +++++++++++++++
->> 1 file changed, 15 insertions(+)
->>
->> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->> index 4c525b3e16ea..0d1414d40f4e 100644
->> --- a/drivers/vhost/vhost.c
->> +++ b/drivers/vhost/vhost.c
->> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
->>
->> 	for (i = 0; i < dev->nvqs; i++)
->> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->> +
->> +	/*
->> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
->> +	 * caller that fetched a worker before we cleared the pointers above
->> +	 * may still be about to queue work on it.  Wait for those RCU readers
->> +	 * to finish before freeing the worker, then run whatever they queued
->> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
->> +	 * vhost_worker_killed().
->> +	 */
->> +	if (!xa_empty(&dev->worker_xa)) {
->> +		synchronize_rcu();
->> +		xa_for_each(&dev->worker_xa, i, worker)
->> +			vhost_run_work_list(worker);
->> +	}
->> +
-> 
-> Following sashiko review [1], I tried to undersand why we need this, but 
-> TBH I'm really confused. That said, this seems wrong also because it 
-> will work only with vhost_tasks, and not with kthreads.
-> 
-> IIUC vhost_worker_killed() will be called anyway when calling 
-> vhost_worker_destroy(). For vhost_tasks, it will call 
-> vhost_task_do_stop() that calls vhost_task_stop(). This sets 
-> VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing 
-> stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that 
-> is exactly vhost_worker_killed() you mentioned we are mirroring here.
->
+iommufd: Plumb dma-buf memory-type (RAM vs MMIO) through the phys map
 
-Hmm, are we sure it's the case for our codepath?  Looking at the
-vhost_task loop function:
+This commit plumbs the memory type of a dma-buf (CPU RAM vs MMIO) through
+the IOMMU programming path. It adds an is_cpu_ram flag to dmabuf structures
+to correctly choose between BATCH_CPU_MEMORY and BATCH_MMIO during mapping.
+This prevents silent misrouting of device DMA on AMD-Vi when the physical
+memory is RAM instead of a PCI BAR.
 
-> static int vhost_task_fn(void *data)                                            
-> {
->     for (;;) {                                                                                                                                                   
->         if (signal_pending(current)) {
->             if (get_signal(&ksig))                                                 
->                 break;                                                          
->         }                                                                       
->         ...
->         if (test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
->             __set_current_state(TASK_RUNNING);
->             break;
->         }                                                                          
->         did_work = vtsk->fn(vtsk->data);                                           
->         ...
->     }
->                                                                                 
->     ...
->
->     if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {                       
->         set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);                         
->         vtsk->handle_sigkill(vtsk->data);                                       
->     }                                                                           
->     ...                                                                
-> } 
+> diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
+> index 2d4ea41460fdc..f9b2ae6d7e96c 100644
+> --- a/drivers/iommu/iommufd/pages.c
+> +++ b/drivers/iommu/iommufd/pages.c
 
-AFAICT, we exit the loop in 2 cases: signal delivery or STOP bit
-setting.  Like you said, STOP is set by vhost_task_stop.  E.g. for our
-RESET_OWNER case:
+[ ... ]
 
-vhost_vsock_reset_owner()
-  vhost_dev_reset_owner()
-    vhost_dev_cleanup()
-      vhost_workers_free()
-        vhost_worker_destroy()
-          vhost_task_stop()  // for vhost_task_ops backend
-            set_bit(VHOST_TASK_FLAGS_STOP)
+> @@ -1106,9 +1108,15 @@ static int pfn_reader_fill_dmabuf(struct pfn_reade=
+r_dmabuf *dmabuf,
+>  	 * always filled using page size aligned PFNs just like the other types.
+>  	 * If the dmabuf has been sliced on a sub page offset then the common
+>  	 * batch to domain code will adjust it before mapping to the domain.
+> +	 *
+> +	 * The exporter's memory type (CPU RAM vs MMIO/BAR) selects the batch
+> +	 * kind so downstream iommu_map sets IOMMU_CACHE for cache-coherent RAM
+> +	 * or IOMMU_MMIO for BAR memory.  The kind was captured at map time by
+> +	 * the exporter dispatch.
+>  	 */
+>  	batch_add_pfn_num(batch, PHYS_PFN(dmabuf->phys.paddr + start),
+> -			  last_index - start_index + 1, BATCH_MMIO);
+> +			  last_index - start_index + 1,
+> +			  dmabuf->is_cpu_ram ? BATCH_CPU_MEMORY : BATCH_MMIO);
+>  	return 0;
+>  }
 
-So, first of all, actual work by .fn() callback is done after the exit
-checks, therefore we skip it - no chance to drain there.
+[Severity: High]
+This is a pre-existing issue, but does attaching a secondary domain map MMIO
+DMA-bufs with BATCH_CPU_MEMORY instead of BATCH_MMIO?
 
-Secondly, the handle_sigkill() callback is deliberately NOT called in
-the STOP case and only called on fatal signal delivery.  And for
-vhost_task backend the .handle_sigkill() callback is exactly
-vhost_worker_killed().
+When reading PFNs for a secondary domain, pfn_reader_fill_span() routes the
+read to batch_from_domain() instead of pfn_reader_fill_dmabuf():
 
-So my understanding is: if we only call synchronize_rcu() here and leave
-this path undrained, then whatever work which was put by send_pkt() for
-the worker currently being freed - will be lost.  Please correct me if
-I'm wrong.
+pfn_reader_fill_span() {
+	if (span->is_used =3D=3D 2) {
+		/* ... */
+		batch_from_domain(
+			&pfns->batch, area->storage_domain, area, ...);
+		return 0;
+	}
+}
 
-That said, I agree that vhost_run_work_list() will only work with
-vhost_task backend, not with kthreads backend.  If we do
-vhost_worker_flush() instead - I guess it'll keep the drain here, yet
-become backend-agnostic. I.e.:
+Then batch_from_domain() extracts PFNs from the already mapped domain and
+unconditionally delegates to batch_add_pfn():
 
-> +       if (!xa_empty(&dev->worker_xa)) {
-> +               synchronize_rcu();
-> +               xa_for_each(&dev->worker_xa, i, worker)
-> +                       vhost_worker_flush(worker);
-> +       }
+batch_from_domain() {
+	/* ... */
+	phys =3D iommu_iova_to_phys(domain, iova) - page_offset;
+	if (!batch_add_pfn(batch, PHYS_PFN(phys)))
+		return;
+}
 
-With the last 2 lines being equivalent to just calling
-vhost_dev_flush(dev).  And once we become backend-agnostic here, I'm
-guessing the warning reported by Sashiko should be dealt with as well.
+And batch_add_pfn() explicitly hardcodes BATCH_CPU_MEMORY:
 
-WDYT?
+static bool batch_add_pfn(struct pfn_batch *batch, unsigned long pfn)
+{
+	return batch_add_pfn_num(batch, pfn, 1, BATCH_CPU_MEMORY);
+}
 
-Andrey
+Could this silently overwrite the original memory type (e.g., BATCH_MMIO)
+for secondary domain mappings, causing device DMA to misroute on AMD-Vi
+even after this patch?
 
-
-> So, why we need this?
-> 
-> Should be enough to call synchronize_rcu() in any case after the 
-> rcu_assign_pointer() loop?
-> 
-> Thanks,
-> Stefano
->
-> [1] 
-> https://sashiko.dev/#/patchset/20260714151638.143019-1-andrey.drobyshev@virtuozzo.com?part=4
-> 
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/f09647f427565c1789a=
+6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk?part=3D6
