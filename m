@@ -1,89 +1,87 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3803330651
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 07:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2971D31E851
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 07:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784188005; cv=none; b=JG+RPeeOT40kIDqA9j3FpViMDpwmaj3v1Djt6Oa8gdjk30/ji5+4nJjVPvSmg85NAlGlpK8XhipaH1ovFRI4qJO/dkaURNJFDxijbDP38A8NNgIcG6+sxE3Q53TLbjSrxvKldGfkHJYbASy4Y7Uneoc4IlXStikMV9jGOBToq8k=
+	t=1784188020; cv=none; b=s1lZZ9IW3c+DXMIkjbBsj+xLPQvzdDNKgWFaS6m4GKrrKCeGg1PpHaOBup2TXXD4jmtwWfwG2paoQiO+CPwYcYKwB7l90MzrrnmL/Esiejf3D1Ie07miNNXLpP2jQ5JSLr9FLeokt6bOmOZNRYb6BOXDGGIz17k+AgBn2ejPKjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784188005; c=relaxed/simple;
-	bh=HbK1+JLVKgOJTFvYTojhO7JSe+mVALcF9merhE7NbHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DmHadEOHn4DYkHgj8huhPsJPNMB0jU+bcJNjoU9ZkgjbvFC5hddVkATKtkO+AReK6b3hhAiziUG27ysPgQjatUKvIDEsA0p1ereoTcTNND0yUaHsD2c2B690SjjBlKON1Yx1EIDaosRv6xDfHn2bAedUOCVGsST47p3qIZlwnkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UTr2uhPL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4XsqW/m; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1784188020; c=relaxed/simple;
+	bh=2+5Uzjn9YlVD9poLWCJQ/E6ehSOi0WUUjK73kBRF+54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nIx/9lO4Bw8h2OqmBcW2uqbd1XkW6cs/He193rTODLoVp1YeHTjHiqQdU/1eHudntgTSTnfc3eudAhPUXimLqYRQ2edOkwsjjXiossdF4sgik8hmO/uCdpMwwe/X6hsyvdpX9iQA4QuF9g4WbibnxiLGgcSxgGGw8dqhyT8Wzfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ETRlBxH0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vpd9yXSj; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UTr2uhPL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4XsqW/m"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ETRlBxH0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vpd9yXSj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784188001;
+	s=mimecast20190719; t=1784188018;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=Bl2gNkOAcxltrIfsVP1WCcvdBOInCr+iXCm5EqvvKhY=;
-	b=UTr2uhPLyDS+T7ECAA3m8leB0DhrkTN7p89H0o4g5PNcJZZ7WTa6HC2rX51zrPCoRhYEei
-	8Sfc7g7lL7UaK9v74ghcxywQsfyrfHN/ZxGuxwA+T7SAjUny1e+vAlhUulq9A0S3fUEztd
-	Wx/DxL2JK9dY9K74wrLta8pjy1xkyTw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=uYw9j1fO42gb66b9gpIRvTZmYbg8IcVeOQ7OFLlMih4=;
+	b=ETRlBxH0DeCaGFCrqKD7IWj7eZ4cwtSAIxfFXJ5acZ+H8SZZkLQqrIRhIzfHSNmD2UtiP0
+	SZ9jrqDlTTcoWDt5PMF3iVmEDItj0WscGWDRhuP2sgAMcYdkYkbnEjYvT0KNMY+Flwllgo
+	HkvNUBen+hvXK4wSrXWfSIbkkBiUyAM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-cfUP88fTNHOlRzI74KjpkQ-1; Thu, 16 Jul 2026 03:46:40 -0400
-X-MC-Unique: cfUP88fTNHOlRzI74KjpkQ-1
-X-Mimecast-MFC-AGG-ID: cfUP88fTNHOlRzI74KjpkQ_1784187999
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-475de65009dso2360520f8f.0
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 00:46:40 -0700 (PDT)
+ us-mta-613-spgaJZ93P3G3Q9YOflFAvQ-1; Thu, 16 Jul 2026 03:46:56 -0400
+X-MC-Unique: spgaJZ93P3G3Q9YOflFAvQ-1
+X-Mimecast-MFC-AGG-ID: spgaJZ93P3G3Q9YOflFAvQ_1784188015
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47eaa4006a1so153729f8f.0
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 00:46:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784187999; x=1784792799; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1784188015; x=1784792815; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Bl2gNkOAcxltrIfsVP1WCcvdBOInCr+iXCm5EqvvKhY=;
-        b=E4XsqW/mAGYBPdPIj1krXkDw68fVLtpkflszoDVZNymRS2PAAam6Bv1PNFWnaijC9/
-         D9XdnRYxYP0f3S5YFnpPluTI5L3f1r+nTzEt+N5wBlJ0fLSHguVIcuAKZYn23KGe6IIu
-         TIH/dLpbHztMgFaxDu0epy0q2m49CBgDcKgSxQCLX+jicQdL8PCNb1wS9REs1IOAuVqy
-         Vo345WecjRoPAawxoPdPh/PyfbfG4b27ffKYS5e///OYBZrajfNDzmmUlMfMaXoFBF6e
-         6bt762lanYP15ScDLLf7YbdUbVhBJIE8lADm0WIqRo+V5lEb0zDAk66/rS3KMztQ+h4Q
-         lGFw==
+        bh=uYw9j1fO42gb66b9gpIRvTZmYbg8IcVeOQ7OFLlMih4=;
+        b=Vpd9yXSjS9LFQN+KONfnUxfFM9U3ezhJ7pcH+zm6RitqfGl6RyTeUwbBcbKIAJgowt
+         N9UTPA2Rhm1z3foadp773xvOMhcUhFlvqM/NbxbXFOHWszvaOh4Vbq2xxwCg7Q4Cf2jf
+         HCykNmnYHwsgJ3BKkpt/amATPb3qoibhdv/CT+ZpgAobcmoXban9nhO2VyYItdYaV1kE
+         N3wI20VEp4BTT9ltX37q4NCGnM6vKda/kJ0EIsNQuOL9sV/Zhzd2xNEvVlRJFFNTewH/
+         OLeLq7z0b6nmjIeShwUVAoOhOAbNBfN50+gwB6/qltaph8NXWFDGwxcPvi8bt71mY+Iz
+         sxsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784187999; x=1784792799;
+        d=1e100.net; s=20251104; t=1784188015; x=1784792815;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Bl2gNkOAcxltrIfsVP1WCcvdBOInCr+iXCm5EqvvKhY=;
-        b=pXdQURWwHnSgSP6uFnCuRRvk6MDatPi9ACxOGbzpgDCT22JtRn+Rrqav0X7EAOSoNm
-         E9Za5yoZAot1f4fsuRFqLZsi5YlLlGB3y1SAF4bhdiSkXZhGw+fbkIGMBYLoVdor2j0n
-         EtdFi7c8hGO+29mn3w9L8r2jhTsCJfnLbADw0y6nuW4tvDl4qx9OgDK/q//DaDUimkz2
-         lilILUxZmH1K2Zvwl8dk3jTsw5JGyI0nvSFXWsLBvRYHItXbKqimzi9TYPR/Jg7R5Om9
-         d2yU0QV/XK4PLdpjEjviz2GtZcP2mJi9kpen/AnYUqy55KGPfX+wvCxlJmNbuW/vTOWv
-         RAhw==
-X-Forwarded-Encrypted: i=1; AHgh+RoRp+MO1vTESx/7xpjUAXflCh5Z/KXmKxKyQhuRNpYOpAzWKuTQ814Rk96Cmzf0YDnPKDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxywHJJ5ANqqdhW4qwttn7b+wtVII9IcjiDOSlWXwJM78NjI9rj
-	+Ks85RJ+Np9VAqivmjm1m/LnfUOlxvSBZJiqjvyt41zqjkNwzxe7zcjwe6XdCw5n1uc678IjA45
-	gyVxmbpnlkwPmCD1Lz1iBK00q0FfTdBr1JKZnZ0lKr89YCiSmdJPHbw==
-X-Gm-Gg: AfdE7cnjz0ixHv2Vu019UEKgd3BCizcUbWEwG+ebI77CsHw4IEnr6QKgC+JTNKnUml4
-	2cX3LSFij5UgSw/+CHW6UiW66XD7cx44fbWCS1kkm77uE1rxCgo+OGuBGU2D08UflkMau7/oi1L
-	HZLR6jjI/+mnHlEaLHyrCNpxuCIJBu192j1v+uVAEJIEtw8L7+KDjoCNMMbl0Sbs94eebPW83tD
-	OyfZgWT0Qy8dYedavuiv7BKrBwGf3PWZt2+XKLQ4gZcnaDAUVf1hpOFOBLnQNV0o15xOjBCZf49
-	dI0pKJqLD9rwi2qXQPkxQen4TblaOnjYYr51Qjq0k+hIALkGLCDTL7IrzF1zgjYTyT4usAFcj+J
-	Zl2CEF1QGzSrmATDZMANnLK04pz5f/9DOCGm1vcq/uHfkCnEbkRdraTR04KSWA+MSbwr5gOdlLi
-	mRwbA=
-X-Received: by 2002:a5d:5846:0:b0:475:94e1:29d5 with SMTP id ffacd0b85a97d-47f2dce942amr23649755f8f.20.1784187999228;
-        Thu, 16 Jul 2026 00:46:39 -0700 (PDT)
-X-Received: by 2002:a5d:5846:0:b0:475:94e1:29d5 with SMTP id ffacd0b85a97d-47f2dce942amr23649701f8f.20.1784187998681;
-        Thu, 16 Jul 2026 00:46:38 -0700 (PDT)
+        bh=uYw9j1fO42gb66b9gpIRvTZmYbg8IcVeOQ7OFLlMih4=;
+        b=IitqCOlHoyNN9Pv8KlwZXhnduFLPgzYg3jTSXSrrnLOZh70OJw9wV7r040uIGomo0i
+         Fydxw+LqnF2ZM3HPq6FLXZzWUMiJzZIhzrIFKvfIZ7fGo50BM815LYbNr7aAJHNMM74l
+         jO/5esw19/i1SMNwar8k8TnT5jD3CA3Y3pickkaJdVgY2talpdlO9FttFrpCFkHRD+Tm
+         +zvDLU1yFdpTSVurOLg4bkSk8tQuBHGp6GCRHgi2AfE1inH7fp1dyzEE0T3DQLS8Sb9e
+         sjOyWNFzMJYsT+c6yk8SpjIsxIwWHKad0JuJTzidbdikATUdw/KAYHRDxEVTKytDbll0
+         p77Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqUIPxBXAWkptrYvrY/K37oglPUmOldGtzchLCfxyIWBseaf35yv4ihRQp1VKJeGo0QFbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzut6rd9M+OZj4/Yl8U5t+LCgMumEHBRXr9/9ESHSH/WZ/Mc36M
+	dCK++VW8kbgtEmVuomnZfTg7MT/ki/rGc7BTGhZKihcSifJk/CRKl9OU8lmkoHrI0aqLG5r/G1o
+	+WwXr+IOA/gaEy89hq550IEcaWW60TNiNVt8ghXSwLAL0euVZRolT9Q==
+X-Gm-Gg: AfdE7ck1QBKJWTdA4mvdY+rXTIAFbi6rhvRl9SPRW/1a6hyd7U9OKnAQSYFJX73zjIt
+	PNXTSvIFhgmG2cvvNhwOgaUB49zi0XXWejRvb2098b8f9Ac06iKMyVb3Jmkl5G791kLH2UkFvCD
+	HAQzomp+0af3Y4wAVK3eS00vV0doHGaNTkAGA90DoHdtvkZYj+iXZpoY5vSW+6RhN0UPHYSfRDo
+	TmIJFPweLJHod5ns34k6DY+QSiHTLqtzISwAVUNCqPXncpT+PCBVuPURhcLqKJEIresyPMvhXO6
+	KZk50a8OMB6s30EVbtmdbtPvxbeELQMKf9YXsGuKwUtDh6cdWuB53ImyOc6iIwVZ4yyPzc+S3HO
+	/P4/lOwAiC00SMhCl6RWdi3LTn+BL33faiC8TOfB+KrkjybMZCLKH0jD6yCDLhbJP6XnWPQcrp2
+	Rl1Ts=
+X-Received: by 2002:a05:6000:41f0:b0:460:d18:865c with SMTP id ffacd0b85a97d-47f5a4182c4mr1607695f8f.1.1784188015098;
+        Thu, 16 Jul 2026 00:46:55 -0700 (PDT)
+X-Received: by 2002:a05:6000:41f0:b0:460:d18:865c with SMTP id ffacd0b85a97d-47f5a4182c4mr1607666f8f.1.1784188014580;
+        Thu, 16 Jul 2026 00:46:54 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.47.37])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464d6fa7sm22810165f8f.37.2026.07.16.00.46.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f47688f29sm20172834f8f.21.2026.07.16.00.46.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 00:46:37 -0700 (PDT)
+        Thu, 16 Jul 2026 00:46:53 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails due to invalid guest state
-Date: Thu, 16 Jul 2026 09:46:36 +0200
-Message-ID: <20260716074636.756689-1-pbonzini@redhat.com>
+Subject: [GIT PULL] KVM fixes for Linux 7.2-rc4
+Date: Thu, 16 Jul 2026 09:46:52 +0200
+Message-ID: <20260716074652.756719-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -93,44 +91,213 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Christopherson <seanjc@google.com>
+Linus,
 
-Put all vmcs12 pages if KVM synthesizes a nested VM-Exit due to invalid
-guest while emulating VMLAUNCH or VMRESUME.  The invalid guest state path
-doesn't use nested_vmx_vmexit() as that API is intended to be used if and
-only if L2 is active, and the open coded equivalent neglects to put the
-vmcs12 pages.  Failure to put the vmcs12 pages leaks any pinned pages
-(and/or mappings) if L1 retries VMLAUNCH/VMRESUME.
+The following changes since commit a13c140cc289c0b7b3770bce5b3ad42ab35074aa:
 
-Note, the !from_vmenter scenario doesn't suffer the same problem, as
-vmx_get_nested_state_pages() only gets/pins/maps the vmcs12 pages if L2 is
-active, i.e. if a "full" VM-Exit is guaranteed before KVM will retry
-getting vmcs12 pages.
+  Linux 7.2-rc3 (2026-07-12 14:16:39 -0700)
 
-Fixes: 96c66e87deee ("KVM/nVMX: Use kvm_vcpu_map when mapping the virtual APIC page")
-Fixes: 3278e0492554 ("KVM/nVMX: Use kvm_vcpu_map when mapping the posted interrupt descriptor table")
-Fixes: fe1911aa443e ("KVM: nVMX: Use kvm_vcpu_map() to get/pin vmcs12's APIC-access page")
-Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/vmx/nested.c | 2 ++
- 1 file changed, 2 insertions(+)
+are available in the Git repository at:
 
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index bb0eb40b4448..220d42ebc82e 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -3761,6 +3761,8 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root_mode(struct kvm_vcpu *vcpu,
- 	if (!from_vmentry)
- 		return NVMX_VMENTRY_VMEXIT;
- 
-+	nested_put_vmcs12_pages(vcpu);
-+
- 	load_vmcs12_host_state(vcpu, vmcs12);
- 	vmcs12->vm_exit_reason = exit_reason.full;
- 	if (enable_shadow_vmcs || nested_vmx_is_evmptr12_valid(vmx))
--- 
-2.54.0
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+
+for you to fetch changes up to 25f744ffa0c8e799e06250ce2e618367b166b0d4:
+
+  KVM: SVM: Bump asid_generation on CPU online to avoid ASID collision after hotplug (2026-07-16 08:55:03 +0200)
+
+A larger pull request with everything that accumulated while I was
+away from git.
+
+Paolo
+
+----------------------------------------------------------------
+Arm:
+
+- Fix an accounting buglet when reclaiming pages from a protected guest
+
+- Fix a bunch of architectural compliance issues when injecting a
+  synthesised exception, most of which were missing the PSTATE.IL bit
+  indicating a 32bit-wide instruction
+
+- Another set of fixes addressing issues with translation of VNCR_EL2,
+  including corner cases where the guest point that register at a RO
+  page...
+
+- Don't warn when trapping accesses to ZCR_EL2 from an L2 guest, as
+  that's not unexpected at all
+
+- Address a bunch of races with LPI migration vs LPIs being disabled
+
+- Fix a total howler of a bug combining FEAT_MOPS and NV, resulting in
+  exception returning in the wrong place...
+
+- Move locking for kvm_io_bus_get_dev() into the caller, ensuring
+  race-free checks that the returned object is of the correct type
+
+- Fix initialisation of the page-table walk level when relaxing
+  permissions
+
+- Correctly update the XN attribute when relaxing permissions
+
+- Fix the sign extension of loads from emulated MMIO regions
+
+- Assorted collection of fixes for pKVM's FFA proxy, together with a
+  couple of FFA driver adjustments
+
+- Coerce Fuad Tabba into a reviewer role, and may his Inbox catch fire!
+
+s390:
+
+- more gmap KVM memory management fixes
+
+- PCI passthru fixes
+
+x86:
+
+- Fix a bug where KVM will trigger a UAF if updating IOMMU IRTEs fails when
+  registering an IRQ-bypass producer.
+
+- Ignore pending PV EOI instead of BUG()ing the host if the feature was
+  disabled by the guest.
+
+- Fix nVMX bugs where KVM would run L1 with an L1-controlled CR3 after a
+  failed "late" consistency check when KVM is NOT using EPT.
+
+- Disallow intra-host migration/mirroring of SNP VMs as KVM doesn't yet
+  support moving/mirroring SNP state.
+
+- Fix a TOCTOU bug in KVM's handling of the "trusted" CPUID for TDX guests.
+
+- Fix a NULL pointer deref in trace_kvm_inj_exception() where a change to the
+  core infrastructure missed KVM's unique (ab)use of __print_symbolic().
+
+- Put vmcs12 pages if nested VM-Enter fails due to invalid guest state
+
+- Fix TLB conflicts between two VMs if one of them VM is run on a CPU before
+  and after it is hotplugged.
+
+----------------------------------------------------------------
+Atish Patra (2):
+      KVM: SEV: Do not allow intra-host migration/mirroring of SNP VMs
+      KVM: selftests: Verify SNP VMs are rejected from migration and mirroring
+
+Binbin Wu (1):
+      KVM: TDX: Reject concurrent change to CPUID entry count
+
+Bradley Morgan (1):
+      KVM: arm64: account pKVM reclaim against the VM mm
+
+Claudio Imbrenda (3):
+      KVM: s390: vsie: Avoid potential deadlock with real spaces
+      KVM: s390: Fix dat_crste_walk_range() early return
+      KVM: s390: Improve kvm_s390_vm_stop_migration()
+
+Daniel Paziyski (1):
+      KVM: x86: Fix null pointer deref due to dummy array in trace_kvm_inj_exception()
+
+Fuad Tabba (13):
+      KVM: arm64: nv: Write ESR_EL2 for injected nested SError exceptions
+      KVM: arm64: Sync SPSR_EL1 when injecting an exception into a pVM
+      KVM: arm64: nv: Fix PSTATE construction on illegal exception return
+      KVM: arm64: Add Fuad Tabba as a reviewer
+      KVM: arm64: Set ESR_ELx.IL for injected undefined exceptions at EL2
+      KVM: arm64: Unconditionally set IL for injected undefined exceptions
+      KVM: arm64: Unconditionally set IL for injected abort exceptions
+      KVM: arm64: Set IL for injected FPAC exceptions during ERET emulation
+      KVM: arm64: Set IL for emulated SError injection
+      KVM: arm64: Set IL for nested SError injection
+      KVM: arm64: Set IL in fake ESR for pKVM memory sharing exit
+      KVM: arm64: Fix sign-extension of MMIO loads
+      KVM: arm64: selftests: Add MMIO sign-extending load test
+
+Haoxiang Li (1):
+      KVM: s390: pci: Fix GISC refcount leak on AIF enable failure
+
+Hyunwoo Kim (1):
+      KVM: arm64: vgic: Check the interrupt is still ours before migrating it
+
+Marc Zyngier (3):
+      KVM: arm64: vgic: Handle race between interrupt affinity change and LPI disabling
+      KVM: Move kvm_io_bus_get_dev() locking responsibilities to callers
+      KVM: arm64: Fix propagation of TLBI level in kvm_pgtable_stage2_relax_perms()
+
+Matthew Rosato (1):
+      KVM: s390: pci: Fix handling of AIF enable without AISB
+
+Mostafa Saleh (3):
+      KVM: arm64: Fix bounds checking in do_ffa_mem_reclaim()
+      KVM: arm64: Ensure FFA ranges are page aligned
+      firmware: arm_ffa: Fix out-of-bound writes in ffa_setup_and_transmit()
+
+Nikunj A Dadhania (1):
+      KVM: SVM: Bump asid_generation on CPU online to avoid ASID collision after hotplug
+
+Oliver Upton (8):
+      KVM: arm64: nv: Drop bogus WARN for write to ZCR_EL2
+      KVM: arm64: nv: Respect read-only PFN when mapping L1 VNCR
+      KVM: arm64: nv: Inject SEA if kvm_translate_vncr() can't resolve PFN
+      KVM: arm64: nv: Re-translate VNCR before injecting abort
+      KVM: arm64: nv: Inject SEA if guest VNCR isn't normal memory
+      KVM: arm64: nv: Mark VM as bugged for unexpected VNCR abort
+      KVM: arm64: Ensure level is always initialized when relaxing perms
+      KVM: arm64: Only update XN attr when requested during S2 relaxation
+
+Paolo Bonzini (4):
+      Merge tag 'kvmarm-fixes-7.2-1' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+      Merge tag 'kvmarm-fixes-7.2-2' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+      Merge tag 'kvm-x86-fixes-7.2-rc4' of https://github.com/kvm-x86/linux into HEAD
+      Merge tag 'kvm-s390-master-7.2-1' of git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
+
+Sean Christopherson (4):
+      KVM: x86: Ignore pending PV EOI if the vCPU has since disabled PV EOIs
+      KVM: nVMX: Move vTPR vs. TPR Threshold consistency check into "normal" checks
+      KVM: nVMX: Don't use vmcs01.GUEST_CR3 to snapshot L1's CR3 when EPT is disabled
+      KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails due to invalid guest state
+
+Sebastian Ene (3):
+      KVM: arm64: Validate the offset to the mem access descriptor
+      KVM: arm64: Zero out the stack initialized data in the FFA handler
+      firmware: arm_ffa: Fix Endpoint Memory Access Descriptor offset calculation
+
+Weiming Shi (1):
+      KVM: arm64: nv: Fix SPSR_EL2 restore in kvm_hyp_handle_mops()
+
+leixiang (1):
+      KVM: x86: Nullify irqfd->producer if updating IRTE for bypass fails
+
+ MAINTAINERS                                        |   1 +
+ arch/arm64/include/asm/kvm_nested.h                |   8 +
+ arch/arm64/kvm/at.c                                |   8 -
+ arch/arm64/kvm/emulate-nested.c                    |  41 +++-
+ arch/arm64/kvm/hyp/include/hyp/switch.h            |  11 +-
+ arch/arm64/kvm/hyp/nvhe/ffa.c                      |  44 ++--
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                     |   3 +-
+ arch/arm64/kvm/hyp/nvhe/sys_regs.c                 |   3 +-
+ arch/arm64/kvm/hyp/pgtable.c                       |  15 +-
+ arch/arm64/kvm/inject_fault.c                      |  18 +-
+ arch/arm64/kvm/mmio.c                              |   7 +-
+ arch/arm64/kvm/nested.c                            | 164 ++++++-------
+ arch/arm64/kvm/pkvm.c                              |   2 +-
+ arch/arm64/kvm/vgic/vgic-its.c                     |   2 +
+ arch/arm64/kvm/vgic/vgic.c                         |  20 +-
+ arch/s390/kvm/dat.c                                |   2 +
+ arch/s390/kvm/gmap.c                               |   7 +-
+ arch/s390/kvm/kvm-s390.c                           |   6 +-
+ arch/s390/kvm/pci.c                                |  12 +-
+ arch/x86/kvm/irq.c                                 |   4 +-
+ arch/x86/kvm/lapic.c                               |   8 +-
+ arch/x86/kvm/svm/sev.c                             |   6 +-
+ arch/x86/kvm/svm/svm.c                             |   7 +-
+ arch/x86/kvm/trace.h                               |   2 +-
+ arch/x86/kvm/vmx/nested.c                          |  89 ++++---
+ arch/x86/kvm/vmx/tdx.c                             |   6 +-
+ arch/x86/kvm/vmx/vmx.h                             |   7 +
+ drivers/firmware/arm_ffa/driver.c                  |  25 +-
+ include/linux/arm_ffa.h                            |   9 +-
+ tools/testing/selftests/kvm/Makefile.kvm           |   1 +
+ tools/testing/selftests/kvm/arm64/mmio_sign_ext.c  | 255 +++++++++++++++++++++
+ .../testing/selftests/kvm/x86/sev_migrate_tests.c  |  47 ++++
+ virt/kvm/kvm_main.c                                |  16 +-
+ 33 files changed, 621 insertions(+), 235 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/arm64/mmio_sign_ext.c
 
