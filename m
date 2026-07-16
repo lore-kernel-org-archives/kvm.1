@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519AC34574B
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 06:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AE42D59E8;
+	Thu, 16 Jul 2026 06:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784184879; cv=none; b=QuLdbQygLERmZLUBA5lnER5oZVFExEUcFzhc2c1kdygwJNhXAJHmBieXVUoOCE8u+u2iR8BBxEU+bjO4PkRrrUELRunyn3y+Mm6FHIVMDhbrd85+DhG910KCjcQP7jSLocBjRjn9wCEGmhw7SZNHFjt5CfAESKTPtEQVQ1XDVn0=
+	t=1784185080; cv=none; b=WF2RYJC26iCuuJ+hWZXL4uTCnyV6oJzOHpDUqxGZWLXKnB0xMpyDapHqxfGy7lWhxhmZ8yfM1IFcoxKf4hOC52uRZEE0Z7b3LeRw4EFqoxAlN0ljass8Bp6JI7U4IiYh7MoLSDlP8I9NR99cEH/iZZhgMWb4shM+qfBwtK4h2Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784184879; c=relaxed/simple;
-	bh=uqW1ISkemJR21Z0Tg35aXogGY1XrzMFnDRlJRoZZCEs=;
+	s=arc-20240116; t=1784185080; c=relaxed/simple;
+	bh=srJ/3g4KEaTGpwoCotGl56p8vv2YEVYPO6lGXmFWfb0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=goHFpSSRoYxiAqYrGEB90WxRCiyWQmmRF2EFJcXJOkDO2L8rHFEr4V8zaU2iHYN4j93vxgbCyHoj4vy9Wn4ZDF36a+qxXTicWv7q0/2JgJXAvHKeqcnr2br3m6nDQAQ3w0eCbYMmMWfVGRHCSrLdezhBvqW1e/DYwyFZzu1neWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4QTCJie; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=CGVY/mGyp4GTmENIwSMejry8KRI/82UyQL3ykj2qdkNhxXO0M2e/9h1Mt5Oi8nW8ncaimbRG60Bj8sj4iS1vGQMeQmoBwhPByJkpmMlVXZd3D3b4hNxw6uLAxu3m6TesIrtMV3rBBsGsH9FoMC96Q+lFr6YhTPs6ZAnUbmTobLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXKAfbsi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4QTCJie"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDCB1F000E9;
-	Thu, 16 Jul 2026 06:54:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXKAfbsi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9461F000E9;
+	Thu, 16 Jul 2026 06:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784184877;
-	bh=sAFAgWFPEdA5XzbFyA3CHpMglJ/pZDKGKSKbacbE1Vw=;
+	s=k20260515; t=1784185078;
+	bh=lXWjQrv0O336LlV97/OEJZN+TLRP32cXFFg4W5AvGqs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R4QTCJieSCJ3km4fOTmJbUPrwMOSeOmoys2ffOkfr6HvhtDEhNB5bf6kMEb3J5fhS
-	 Js0jYR7sDdMF37CELSP0rQ21SqJZegYkbGjImFIy1Slrt58RyYYK6JvkAzZQjzPDZa
-	 TUdAs2hMe8LimAr7ckFM23gJNI7QmzH3YI+7ueB9tuyFSipbYEdUaiy9q0vWGj/G6i
-	 lCGIrd0+sz/S8eblZkFfcGtk1ZuyEVJdDFGVv/ZXwZygbM97HSeLqE3C7UIcpYrtuS
-	 26q2LrldxYRFeUeZdpAn1YQEXR2/HilSRhsieBN5bKEq/zBTejGz7U6yEYTfYQLhex
-	 zrVWdl35QPYtg==
+	b=OXKAfbsiJkR2xhHkuWfFBE4JX0egad8Kj7KCzfrA5Vzm5aEk27pGzDJrr/xisUknQ
+	 Bw+BkWNKV0HqZpbDix7Rqq1p8b4UT+CE792YDnp/z3wQroI/XjnGoCjcSyRSqUk2YK
+	 yj50vv1sb5rJDh8eFhADLk59clVdCxfKD9VAgLGJWgRs6EmnBcdnrA0tYSdWy0nxQi
+	 Gr75tTkJvNJDlzbIe5WoZMG3RGUsUQCpaakIaYd5tCKorV7RpvYopm9JTSRWosvwDH
+	 hxakgpNLP6yMcAbuA7AoE1xtA3znLEaQEidEltQfQknKTiL4JdMqgCQlqQuK5t8ZcQ
+	 MT6TJlYka/aQg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Account VM-scoped allocations to the VM
- cgroup
+Subject: Re: [PATCH] RISC-V: KVM: Use raw_spinlock for VMID update critical
+ section
 Reply-To: sashiko-reviews@lists.linux.dev
 To: yhchen312@gmail.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716064112.2387938-1-yhchen312@gmail.com>
-References: <20260716064112.2387938-1-yhchen312@gmail.com>
+Cc: kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260716064011.2387501-1-yhchen312@gmail.com>
+References: <20260716064011.2387501-1-yhchen312@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 06:54:37 +0000
-Message-Id: <20260716065437.ADDCB1F000E9@smtp.kernel.org>
+Date: Thu, 16 Jul 2026 06:57:57 +0000
+Message-Id: <20260716065758.4A9461F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,73 +47,83 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
-New issues:
-- [Medium] The `kvpmu->sdata` allocation uses `GFP_ATOMIC | __GFP_ACCOUNT` =
-in a context that can safely sleep, draining atomic reserves and causing sp=
-urious memcg allocation failures.
-
 Pre-existing issues:
-- [High] Unconditional memory allocation for the PMU snapshot area leads to=
- a memory leak if the guest repeatedly configures the snapshot.
+- [Critical] Race condition during VMID rollover allows a vCPU to transient=
+ly execute in guest mode with a stale VMID, compromising cross-VM isolation.
+- [High] Integer overflow in the VMID generation counter (vmid_version) on =
+32-bit systems causes a cross-VM isolation break.
 --
 
---- Patch [1]: [PATCH] RISC-V: KVM: Account VM-scoped allocations to the VM=
- cgroup ---
-commit 7f2fdf55e4a9227b8c7e4853c498204f0c3f9d48
+--- Patch [1]: [PATCH] RISC-V: KVM: Use raw_spinlock for VMID update critic=
+al section ---
+commit 7d899ea43321661351b3cdd958ba47c38d85eeed
 Author: Yuhang.chen <yhchen312@gmail.com>
 
-RISC-V: KVM: Account VM-scoped allocations to the VM cgroup
+RISC-V: KVM: Use raw_spinlock for VMID update critical section
 
-Charge the per-VM and per-vCPU allocations (stage-2 PGD, APLIC state,
-IMSIC context, vector context, FWFT config, PMU snapshot) to the
-allocating process's memory cgroup via GFP_KERNEL_ACCOUNT / __GFP_ACCOUNT.
+This commit converts the vmid_lock to a raw_spinlock_t to prevent
+preemption during the VMID update section under PREEMPT_RT. The update
+path performs an IPI broadcast which requires preemption to be disabled.
 
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index bb46dcbfb24da..e5018784779d5 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -452,7 +452,7 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_=
-vcpu *vcpu, unsigned long s
->  		}
->  	}
+> diff --git a/arch/riscv/kvm/vmid.c b/arch/riscv/kvm/vmid.c
+> index 3b426c800480c..33efde4bb9d75 100644
+> --- a/arch/riscv/kvm/vmid.c
+> +++ b/arch/riscv/kvm/vmid.c
+> @@ -20,7 +20,7 @@
+>  static unsigned long vmid_version =3D 1;
+>  static unsigned long vmid_next;
+>  static unsigned long vmid_bits __ro_after_init;
+> -static DEFINE_SPINLOCK(vmid_lock);
+> +static DEFINE_RAW_SPINLOCK(vmid_lock);
 > =20
-> -	kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC);
-> +	kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC | __GFP_ACCOUNT=
-);
+>  void __init kvm_riscv_gstage_vmid_detect(void)
+>  {
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does this leak memory if the
-guest repeatedly configures the snapshot?
+This is a pre-existing issue, but does this unsigned long counter present an
+overflow risk on 32-bit systems?
 
-If a guest makes multiple SBI_EXT_PMU_SNAPSHOT_SET_SHMEM calls, it looks
-like this unconditionally allocates and overwrites kvpmu->sdata without
-freeing the previous allocation.
+If a host user rapidly creates and destroys VMs, the 32-bit vmid_version co=
+uld
+wrap back to 0. Since a new VM's kvm_vmid struct is zero-initialized,
+kvm_riscv_gstage_vmid_ver_changed() would evaluate (0 !=3D 0) as false:
 
-[Severity: Medium]
-Is it necessary to use GFP_ATOMIC here?
+kvm_riscv_gstage_vmid_ver_changed() {
+    ...
+    return unlikely(READ_ONCE(vmid->vmid_version) !=3D
+                    READ_ONCE(vmid_version));
+}
 
-Since the immediate next call is kvm_vcpu_write_guest(), which can sleep:
+Could this cause multiple new VMs to share VMID 0, breaking cross-VM isolat=
+ion
+by allowing their memory accesses to hit each other's TLB entries?
 
-	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does =
-it internally */
-	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
-		kfree(kvpmu->sdata);
-		kvpmu->sdata =3D NULL;
-		sbiret =3D SBI_ERR_INVALID_ADDRESS;
-		goto out;
-	}
+[ ... ]
 
-it seems this allocation could safely use GFP_KERNEL_ACCOUNT instead.
+> @@ -118,7 +118,7 @@ void kvm_riscv_gstage_vmid_update(struct kvm_vcpu *vc=
+pu)
+> =20
+>  	WRITE_ONCE(vmid->vmid_version, READ_ONCE(vmid_version));
+> =20
+> -	spin_unlock(&vmid_lock);
+> +	raw_spin_unlock(&vmid_lock);
+> =20
+>  	/* Request G-stage page table update for all VCPUs */
+>  	kvm_for_each_vcpu(i, v, vcpu->kvm)
+>  		kvm_make_request(KVM_REQ_UPDATE_HGATP, v);
 
-Combining __GFP_ACCOUNT with GFP_ATOMIC prevents the allocation from sleepi=
-ng
-to perform direct reclaim, which might cause spurious memcg allocation
-failures when the cgroup is under pressure.
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does dropping the lock before
+making the requests open a race window?
 
->  	if (!kvpmu->sdata) {
->  		sbiret =3D SBI_ERR_FAILURE;
->  		goto out;
+If the lock is released after updating vmid_version but before setting
+KVM_REQ_UPDATE_HGATP, could a concurrent vCPU from the same VM observe the
+new vmid_version without the lock?
+
+If it sees no pending requests, it might proceed to enter the guest with a
+stale VMID. If a global VMID rollover just occurred, could this stale VMID
+have been re-assigned to a different VM, causing an isolation break?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716064112.2387=
-938-1-yhchen312@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716064011.2387=
+501-1-yhchen312@gmail.com?part=3D1
