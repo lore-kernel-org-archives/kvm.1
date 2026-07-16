@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5991337A832
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707863859F3
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784227211; cv=none; b=OGUoGyqAC9FqBUyMhnHl8JOr4ru1ps1/iQMotBglwiJQzxkaRFfBQ1AvNf6zRQx5KR8XVqeSLdJWXGukm2RAmWb+jIFnsWuF+OvDO5QTT7ZsqeVRlYs5kUy2LmG0x+MczOqH8k15sveK0724CrSKdEIJ4lRA+59k8r5TJNfO61o=
+	t=1784227243; cv=none; b=kPnYdm25xTpc8CEyL7mwCNISVmXOZOIOmKAJ67vtBO0KSt3H+p2KnyNCYpd+cYkMH88Jp3HXLl8q/bLb5Y0Gjk/UJLax4A6yHj6hY1xvOB3f8MWZmzK/EQ7sGwGJBeANZTjf4Q3MO3QUAe1B/adueJp9OtSWY1vQCrW3FSGt83o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784227211; c=relaxed/simple;
-	bh=F/EHhhzuBXw9YX4Su3+3QyszK+q1zNA41YYgH5D9knM=;
+	s=arc-20240116; t=1784227243; c=relaxed/simple;
+	bh=0FRkHr5cfGUxhseN4HRI/EO1/gUn5h5UMAEf11ZlENc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lhC2Yy7rZX+YJkTblQuUp7Ti3VEFFBbpINUVp+kPi53KVGob41N4RCtDPyYQUN67HQBA3oSU2PuUtMuT9HBrfP3BFRhKan6KMU0BP5N5Tiyt07ZiFJ4GgZDAw2VUbZO4jtzjICVgMAGjLVhqwGJA+fcyRE6KdrDppXHUIgJL/Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JT/4Ke5n; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ZA9IWSQx0MmiBsSEMYHC/is4aKetzOw0mVmVmtZLUXrM3t0P3f6ZWgMmIVKos3OLw8JPh/Jqks+wVwG2Q6souD1CTFo25VtGAuPbNzkNpWiD+q00s3CO4K0ZwywractTnqAcUZMzElJw8wH5oHBcVPo4vFsKgelVmwAbugVX9DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmSPkfXO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JT/4Ke5n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1412D1F000E9;
-	Thu, 16 Jul 2026 18:40:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmSPkfXO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79711F000E9;
+	Thu, 16 Jul 2026 18:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784227210;
-	bh=RhBOqEutEr928XSNKfUchuwR+xwAeNuJbp7kSHhpxBY=;
+	s=k20260515; t=1784227242;
+	bh=XA5z9BF7BPURecDveh7ZmG0BLqiV8EXR1bLuHFICwJM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JT/4Ke5nbz1Cgs9Mk2PHNZRwmDaR5NLNIwOWikXJP1Rq9ZwbQADHmAGk7D0g87FE4
-	 zj9AUj6iiJ5CozweoD0l2EfvOcGbTxETj5Ved/kLEJ6xmhEHGImSpEFfI8E8ohRxLE
-	 nUJI++BQmjlzyN/PqVYEv5qIzQzfNOLWlMRr7fyPZw8uApRje8KhDc3YFbTHyGZ6fU
-	 G2hDnZ+4X0iG5Ddm3c9j66VFS2RL8mxGfY2vbZ8uvxmw15MoWF758wDKIvbKeocuqf
-	 XPFKyauunrJFtXEMWLy7JXEb3+AryLJf9qSum1ZNNGK3RT+sZXpASXS82ACmrBIigS
-	 tVPuY2r5NCX/g==
+	b=LmSPkfXOmatlSktN1L0XQy9I0CIsirJ9GwoLQ1GW8QMBy2HZD5WulY1ZqjifyizSt
+	 lyVi4QrUG5cUtt6M3fzs5NRk+5Yns/xHm0wezgXdsSCAaBpRQOC1cic9oIXe8PlxqE
+	 n058WnKZqdb5ocflhohp386hylFx67pP0grSYDLCdvmWlrNQYyi/690pPfsGQ3MY9G
+	 l7L+Ky/FGuUUFnip7g7Xt+7/5Ko9Qq+Q/Q1JThJljoAxZwvixeLxGGNltq+VLULBAD
+	 29ja3ybKpUG6P7gUHlsZLX0E5ApmyzZo5y2hdBalQG/HB+4NuQMZus4THJ8ka11z/x
+	 /EcBHGLcZf77Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 21/24] KVM: x86/mmu: Obsolete all roots if memattr
- contains gPTEs
+Subject: Re: [PATCH 19/24] KVM: x86/mmu: Do not update accessed/dirty if
+ guest PTE is read-only
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716181456.402786-22-pbonzini@redhat.com>
+In-Reply-To: <20260716181456.402786-20-pbonzini@redhat.com>
 References: <20260716181456.402786-1-pbonzini@redhat.com>
- <20260716181456.402786-22-pbonzini@redhat.com>
+ <20260716181456.402786-20-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 18:40:09 +0000
-Message-Id: <20260716184010.1412D1F000E9@smtp.kernel.org>
+Date: Thu, 16 Jul 2026 18:40:41 +0000
+Message-Id: <20260716184041.D79711F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,91 +47,117 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] Unbounded iteration over a potentially massive guest-controlled GF=
-N range while holding `mmu_lock` for write causes host soft lockups.
-- [High] Invalidated TDP MMU roots are never zapped, leading to a massive p=
-ermanent memory leak of page tables and root references.
-- [Medium] A `trace_printk()` call was left in the production code path, cr=
-eating an information leak and triggering a prominent boot warning.
+- [High] Silently skipping Accessed/Dirty (A/D) bit updates for guest page =
+tables protected by read-only memory attributes allows KVM to map writable =
+SPTEs without updating the guest's dirty bit, causing silent data corruptio=
+n in the guest OS.
+- [High] When a guest page table walk fails due to a memory attribute read =
+fault, KVM incorrectly reports the original instruction's access type (writ=
+e/exec) to userspace instead of reporting a read fault on the page table.
+- [High] KVM injects a fatal guest Page Fault instead of exiting to userspa=
+ce when an emulated instruction's page table walk hits a memory attribute r=
+ead fault.
 --
 
---- Patch [21]: [PATCH 21/24] KVM: x86/mmu: Obsolete all roots if memattr c=
-ontains gPTEs ---
-commit 6d375c0ae74e01be130495175a78c166ea5a1aac
+--- Patch [19]: [PATCH 19/24] KVM: x86/mmu: Do not update accessed/dirty if=
+ guest PTE is read-only ---
+commit 0ad73786bede76212593913d2d0fa39e55055d34
 Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-KVM: x86/mmu: Obsolete all roots if memattr contains gPTEs
+KVM: x86/mmu: Do not update accessed/dirty if guest PTE is read-only
+   =20
+This commit modifies the guest page table walk in KVM's x86 MMU to check if
+the guest page table's physical address is writable according to KVM memory
+attributes. If not, it marks the PTE as not writable in the guest walker.
+This appears to be an optimization to avoid exiting to userspace when guest
+page tables are mapped read-only.
 
-This commit introduces a mechanism to zap obsolete pages and all mmu roots
-when applying memory protection attributes against a GPTE page.
-
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 8e85f672a08d5..676bc6b61f032 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-
-[ ... ]
-
-> @@ -8281,6 +8297,33 @@ bool kvm_arch_post_set_memory_attributes(struct kv=
-m *kvm,
->  				hugepage_set_mixed(slot, gfn, level);
+> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
+l.h
+> index 23d7a7d9769fe..ee5c23d1b77a8 100644
+> --- a/arch/x86/kvm/mmu/paging_tmpl.h
+> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
+> @@ -419,6 +419,9 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
+er *walker,
+>  			goto error;
 >  		}
->  	}
+> =20
+> +		if (!kvm_mem_attributes_may_write_gfn(vcpu->kvm, gpa_to_gfn(real_gpa)))
+> +			walker->pte_writable[walker->level - 1] =3D false;
 > +
-> +	/*
-> +	 * There are special considerations when applying an memory protection
-> +	 * attibute against a GPTE page. If set read-only, access/dirty bits
-> +	 * within that page shouldn't be updated. If set non-accesible,
-> +	 * accessing a virtual address that requires traversing that GPTE page
-> +	 * should fault.
-> +	 *
-> +	 * On TDP enabled guests, the CPU faults on the GPTE address upon
-> +	 * detecting such a situation.
-> +	 *
-> +	 * On non-TDP, upon detecting this situation, and based on the fact it
-> +	 * should be a rare occasion, invalidate all the mmu roots.
-> +	 */
-> +	for (gfn_t gfn =3D range->start; gfn < range->end; gfn++) {
 
 [Severity: High]
-Does this unbounded loop over a guest-controlled range cause host soft
-lockups? It iterates over every 4K page from range->start to range->end
-while kvm->mmu_lock is held for write, disabling preemption. If a massive
-range is passed (e.g., hundreds of gigabytes), iterating millions of pages
-without yielding could stall the host CPU.
+Does this silently skip Accessed/Dirty (A/D) bit updates for guest page
+tables?
 
-> +		for_each_gfn_valid_sp_with_gptes(kvm, sp, gfn) {
-> +			gen_update =3D true;
-> +			trace_printk("needs gen update! %llx\n", gfn);
+When the VMM sets a page table's GPA as read-only via KVM memory attributes,
+this sets pte_writable to false. Later, FNAME(update_accessed_dirty_bits)()
+uses this flag to handle read-only ROM slots:
 
-[Severity: Medium]
-Is this trace_printk() intended for production? Using it unconditionally
-allocates tracing ring buffers globally and emits a prominent warning to
-dmesg at boot, which is generally avoided in upstream code.
+		if (unlikely(!walker->pte_writable[level - 1]))
+			continue;
 
-> +			goto exit_loop;
-> +		}
-> +	}
-> +exit_loop:
-> +	if (gen_update)
-> +		__kvm_mmu_zap_all_fast(kvm);
-> +
-> +	// todo: what to do with kvm_tdp_mmu_zap_invalidated_roots()?
+Since FNAME(update_accessed_dirty_bits)() reports success by returning 0, K=
+VM
+will proceed to map the leaf page as writable in the shadow page table (SPT=
+E).
+
+Could this lead to silent data corruption in the guest OS, since it can then
+write to the page without faulting while its own page table is never update=
+d?
+
 
 [Severity: High]
-Does this sequence leak KVM MMU page tables and root structures?
+Does KVM report the incorrect access flags to the VMM when a page table walk
+fails due to a memory attribute read fault?
 
-When tdp_mmu_enabled is true, __kvm_mmu_zap_all_fast() marks TDP roots as
-invalid and takes a reference to them via kvm_tdp_mmu_invalidate_roots().
+In FNAME(page_fault)(), KVM prepares the exit using fault->gfn =3D walker.g=
+fn
+but passes the original fault object:
 
-The caller must subsequently invoke kvm_tdp_mmu_zap_invalidated_roots()
-to consume these scheduled roots and put the gifted references. Since this
-cleanup step is skipped here, the roots appear to be leaked permanently.
+		if (walker.memory_attributes_fault) {
+			fault->gfn =3D walker.gfn;
+			kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
+			return -EFAULT;
+		}
 
-> +	// add kvm_arch_post_set_memory_attributes_unlocked?
-> +	return false;
->  }
+This passes the write/exec flags of the instruction attempting to access the
+leaf page, rather than the KVM page walker's read access to the guest page
+table. Could this confuse the VMM's fault handling logic?
+
+
+[Severity: High]
+Is the memory attribute read fault correctly handled by the instruction
+emulator?
+
+When FNAME(walk_addr_generic)() encounters a page table mapped as unreadabl=
+e,
+it sets walker.memory_attributes_fault =3D true and populates a synthetic #=
+PF in
+walker.fault.
+
+In FNAME(gva_to_gpa)():
+
+	r =3D FNAME(walk_addr_generic)(&walker, vcpu, w, addr, access);
+
+	if (r) {
+		gpa =3D gfn_to_gpa(walker.gfn);
+		gpa |=3D addr & ~PAGE_MASK;
+	} else if (exception)
+		*exception =3D walker.fault;
+
+The memory_attributes_fault flag is ignored, and the synthetic #PF is bubbl=
+ed
+up to the emulator, which will blindly inject it into the guest.=20
+
+Should this trigger a KVM_EXIT_MEMORY_FAULT instead of injecting a fatal gu=
+est
+page fault?
+
+>  		ptep_user =3D (pt_element_t __user *)((void *)host_addr + offset);
+>  		if (unlikely(get_user(pte, ptep_user)))
+>  			goto error;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716181456.4027=
-86-1-pbonzini@redhat.com?part=3D21
+86-1-pbonzini@redhat.com?part=3D19
