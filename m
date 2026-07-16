@@ -1,77 +1,83 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18E141F5CB
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 15:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE76318146;
+	Thu, 16 Jul 2026 15:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784214734; cv=none; b=bpzhQJTNbAgqcPsqtVm6BAYQ3PsxQiJ6/5VSH4e1hdZ91z3iHuRC31mJOrb+zJlB8JzlC+jyeaaWhssO19LeHntCQJtfrLB9ZehsR5dCS4Pdj+nQZQ3mTfyJiesdKYJmF8wYxlMeUNDUahAkD4qE4rCQKMpS+2th6H5EH5yPtvE=
+	t=1784215034; cv=none; b=ihTznV+xOleXpSS1S9NPnwAziSEzUpEiSDMSRbTRjeynkB5uo5uWlFVRspgVRQshxLQkWm1RLIYWrXAL3ck5+9kJpMt1JbD+RarnIkjjJuKNW7b9ZlkXJlX9i8qtaSwvWIiyouaw6IT9XciVxHtyaV4D5632+roXII2SBhNkcX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784214734; c=relaxed/simple;
-	bh=GLp+juEsDrHE2elzXTCgtE3pWsJmhXsNM8FsKwMAwIg=;
+	s=arc-20240116; t=1784215034; c=relaxed/simple;
+	bh=TjhqJy+5Ugidr1xvDMqCN+u7PFOVsr4vq7Ut2lOoUg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWHW62N+IfWUqAYrGiVUs6jS7PpTGisqYbObKSg3UqxRZNveE7em0wAmfQpwekfErzgeTTEyiH9KSxeIHqGQ14KusuwzivV84MkvBF3Zy0EUmBaamrRCzpkvlZrnwhxQsTIU8rF/nCX6rFa1wYULyqzwVVsMJvEERaFRGhxmckM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHpSh/pZ; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=TXdOck/oIP6yb0+SyHxCl7q0qUqW3Ty/AEqAbIMXvUURCO6kz6DcAEHEzkpGYIfpnykm57N6HC7PpTWPIPBfkSM2RW9fdwRVNJJriJedM7IfoWPSxepy6IVkRNaGC7FimUr6vVxZ1j/TIzE4Udv8aF5cbAx1NKUMrBWjzlov6m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=HS++1uoM; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHpSh/pZ"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1601d552a8so707847066b.2
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 08:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784214731; x=1784819531; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gG+g7cvO60t9OK2852iCKFbaTdC0A88G603w2VBtTG4=;
-        b=dHpSh/pZNB8atMItYiZo+fDpuf1ZirdSMwAg403dTdmvn+AnqNlPZ8H/w4ekneM8xY
-         c/sTs4xyR9BgvXdhyLcPk0h4GlnEK5AOkmIhI52684XFeHTZsjRag8LhvL9/LGsueKPg
-         ntKjoPaaIZ3kpUfBu3xNLHmp7GD82m+DixW59YRqDdnQlW9FkWyY/yxvcZEU3wH0Aeiq
-         q4c55i+IpS6EL1kEz7XoksEn2WYfsJRnri0xhAipJpfDXKpcrdsFtBu5iHxER0t0ahHV
-         QZgfcwGoH/KK8FXUH8d2HWTguZqqQkJXeYwvEO7/UgllCjb5Fd0Yucjtc/jh1D0EBTTC
-         a2dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784214731; x=1784819531;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gG+g7cvO60t9OK2852iCKFbaTdC0A88G603w2VBtTG4=;
-        b=KyEPNKPvpvsFYQuGjcvJIEHIXy3xQNr6R7oCXmpcOcJV/yKw5gxDBdFO0r+uDFZEke
-         yJDrZ7GtHLPId4ooBjRKr5XRxFh8QPOgFL3mtBozvtKS2zb8O3EouamZGJ0KRWnGnQst
-         bq+Tv8K24zotuJjksHPbB7z4V8nce+F2GmrKQmt/nmvDnBBrBSl7zik6+gWcHL7NjE0U
-         /w68j638sjZJUtjdhZlMX4c43+C2TG6z5pnFXWGydE012EidgrFo/4dkq90DwvMv9ZmN
-         kv4ILSVjtbf6Gh1/RK4fgTR77bScS15mSvwCBcAU1SLfLZTJHMMrzTBWIraGNt+TtcJr
-         kNHA==
-X-Gm-Message-State: AOJu0Yy7SBo4EEmAViCNDGzWwgt9Hkb7Xq9FG4g/f9xUvX3cLLw/T+Eg
-	k2NbbyNPVm4MWJTZClOfhj4K5a9Vv08U0FFIKUIKkkmlsN/AE+TC3cHqzFSZwFm5YY8=
-X-Gm-Gg: AfdE7ckfqlFejxMtO1tTK/WEwOD/nbgwORGkxuijQBj/Ke48lBCt5cpBmeJgg91GJfD
-	fyTfLHXWsEChyXctxNetisWIgJ0QD26X0esIKobg+QJp4BSVExM7pI/r4xZXLWI+4A0uwF9ErZy
-	u28KRkKV+m+P7MCKEIe4WjkyHKrM6PE/ow7PjoCwHJsUagM5fMfRt+S3u0G0+AvVK5uAgO1GbT2
-	gNAsorpQ8xe5MmI0+wve6acfZyMoK+oAqkV/PWE1B34+qgR0FUn39NhNkV3pFbwLK1C5Aq+q5Z1
-	RaXdMQj17GuibkKMfGfIA6zXIiQbSS9/ZUu0AdiQPoQMDobJDtKGHj1x21M/O5Lf7D74euO0VxB
-	bpYtzofvaKVt5wNaLGqa3o7BYFgvvatvnEJIcOgc6LCgwOczI0sOxn1mhSsAnf1Z7xeUQ0pJ8dW
-	nL28JS3J0FbpCUKv+wDFcfN02O0iGuVz00UvzvdLJL+jCTKLWlzS1Vy5FDPLbaGpV9XWNuOuOXP
-	sZofA==
-X-Received: by 2002:a17:907:3f12:b0:c16:13c3:b1ef with SMTP id a640c23a62f3a-c1667a0cd22mr638712366b.24.1784214730734;
-        Thu, 16 Jul 2026 08:12:10 -0700 (PDT)
-Received: from arch-piotr.tailb7ebba.ts.net (226.55.classcom.pl. [195.150.55.226])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c16871262casm236607466b.6.2026.07.16.08.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 08:12:10 -0700 (PDT)
-From: Piotr Zarycki <piotr.zarycki@gmail.com>
-To: kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: seanjc@google.com,
-	vkuznets@redhat.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Piotr Zarycki <piotr.zarycki@gmail.com>
-Subject: [PATCH v4] selftests: add swap() macro to kselftest.h
-Date: Thu, 16 Jul 2026 17:11:51 +0200
-Message-ID: <20260716151151.697403-1-piotr.zarycki@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
-References: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="HS++1uoM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=GTHIrhHvcUG8/tD5uBJopZ/Rj0rXLsmqhUefdkxikN0=; b=HS++1uoM7E5qtarYIMUkV/1EuE
+	tl9Rn8Dh3nZj8UiZoEQYvnIxAW4vlOyP5bN9Xaq4l9l6B5TZKpk+f6U/tJS0XvyNNwrQ7BimdbFZd
+	GpwE2LNTMVCABQTuw9hE0UVDRTUR8zhyIEgmAf762qUsBKPAKeMtn3egkZKfoXN2GX8HnnJ4azGov
+	e2UIsT2XO7WhtFbLFfYtuWrFYdkD2j9/YA1mf4oy79KP14B9+B7H1LEurDTpvRaWcQkwQIBcS0rEl
+	I9jUBFM1VKjH9V27/PwBGFb/LBx+mHVBxBLsF4g6uUxL+OD831WL6ju4RMtQmYFaztp8G7xwrVqdW
+	yfYM7LqQ==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wkNpj-00000002l0F-1dP3;
+	Thu, 16 Jul 2026 15:17:07 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wkNpj-000000012sq-04E5;
+	Thu, 16 Jul 2026 16:17:07 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Tycho Andersen <tycho@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Connor Williamson <connordw@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Zhou Yuhang <zhouyuhang@kylinos.cn>,
+	Zi Li <zi.li@linux.dev>,
+	Dan Williams <djbw@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	connordw@amazon.co.uk,
+	graf@amazon.de,
+	fgriffo@amazon.co.uk,
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [RFC PATCH 01/11] KVM: selftests: sev_smoke_test: Only run VM types the host offers
+Date: Thu, 16 Jul 2026 10:31:21 +0100
+Message-ID: <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260716151706.244987-1-dwmw2@infradead.org>
+References: <20260716151706.244987-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -79,83 +85,48 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Add swap() to tools/testing/selftests/kselftest.h with an #ifndef guard.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Remove the local swap() definition from mm/uffd-stress.c; kselftest.h is
-already included via uffd-common.h, so the local definition is redundant.
+sev_smoke_test ran the plain SEV subtest unconditionally, gated only on
+the X86_FEATURE_SEV CPUID bit, while gating SEV-ES and SNP on the
+KVM_CAP_VM_TYPES bits.  CPUID reporting SEV does not mean KVM offers the
+SEV VM type: when all SEV ASIDs are assigned to SEV-SNP, KVM_X86_SEV_VM
+is unavailable even though X86_FEATURE_SEV is set.  On such a host the
+test aborts in KVM_CREATE_VM instead of exercising the available modes.
 
-Use swap() in hyperv_tlb_flush.c to replace the open-coded PTE swap and
-remove the TODO comment.
+Gate the SEV subtest on KVM_CAP_VM_TYPES like the others, so the test
+runs the VM types the host actually offers.
 
-Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
-Changes in v4:
-- Drop uffd-stress.c's local swap() entirely instead of guarding it;
-  kselftest.h is already included via uffd-common.h.
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- Add #ifndef guard to mm/uffd-stress.c to fix a redefinition warning;
-  uffd-stress.c defines its own swap() without a guard, which conflicts
-  when kselftest.h is included first via uffd-common.h.
-
-Changes in v2:
-- Move swap() from tools/include/linux/kernel.h to kselftest.h; kernel.h
-  breaks perf (swap is used there as a function pointer call).
-
- tools/testing/selftests/kselftest.h                | 4 ++++
- tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c | 6 +-----
- tools/testing/selftests/mm/uffd-stress.c           | 2 --
- 3 files changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/tools/testing/selftests/kselftest.h b/tools/testing/selftests/kselftest.h
-index 60838b61a2da..7f53751523d8 100644
---- a/tools/testing/selftests/kselftest.h
-+++ b/tools/testing/selftests/kselftest.h
-@@ -64,6 +64,10 @@
- #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
- #endif
- 
-+#ifndef swap
-+#define swap(a, b)  do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-+#endif
-+
- #if defined(__i386__) || defined(__x86_64__) /* arch */
- /*
-  * gcc cpuid.h provides __cpuid_count() since v4.4.
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c b/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-index 15ee8b7bfc11..514d41f00714 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_tlb_flush.c
-@@ -131,14 +131,10 @@ static void set_expected_val(void *addr, u64 val, int vcpu_id)
- 
- /*
-  * Update PTEs swapping two test pages.
-- * TODO: use swap()/xchg() when these are provided.
-  */
- static void swap_two_test_pages(gpa_t pte_gva1, gpa_t pte_gva2)
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 6b2cbe2a90b7..bf27b6187afa 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -247,7 +247,14 @@ int main(int argc, char *argv[])
  {
--	u64 tmp = *(u64 *)pte_gva1;
--
--	*(u64 *)pte_gva1 = *(u64 *)pte_gva2;
--	*(u64 *)pte_gva2 = tmp;
-+	swap(*(u64 *)pte_gva1, *(u64 *)pte_gva2);
- }
+ 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
  
- /*
-diff --git a/tools/testing/selftests/mm/uffd-stress.c b/tools/testing/selftests/mm/uffd-stress.c
-index 700fbaa18d44..3a85a29203f4 100644
---- a/tools/testing/selftests/mm/uffd-stress.c
-+++ b/tools/testing/selftests/mm/uffd-stress.c
-@@ -56,8 +56,6 @@ static uffd_global_test_opts_t *gopts;
- static char *zeropage;
- pthread_attr_t attr;
+-	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
++	/*
++	 * Only exercise VM types the host actually offers.  CPUID reporting
++	 * SEV does not guarantee KVM offers the SEV VM type: when all SEV
++	 * ASIDs are assigned to SEV-SNP, KVM_X86_SEV_VM is unavailable even
++	 * though X86_FEATURE_SEV is set.  Gate every type on KVM_CAP_VM_TYPES.
++	 */
++	if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM))
++		test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
  
--#define swap(a, b) \
--	do { __auto_type __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
- 
- const char *examples =
- 	"# Run anonymous memory test on 100MiB region with 99999 bounces:\n"
+ 	if (kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM))
+ 		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
+
+base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
 -- 
-2.55.0
+2.54.0
 
