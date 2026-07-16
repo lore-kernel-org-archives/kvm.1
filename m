@@ -1,221 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A86033D6F8
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED943B4EAF
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784228101; cv=none; b=eQZuXfqlOySSVZJaR6CGqO6bgTQg4XX+bWxz7QwMtmk0HvFTpykL0IJhlRiz5Va7MWWUTiiQ8AGDapOGAEaDOVa8XBsZervcBCj2CvRxEY3nCWlKuIEfn24f9HslbrMY+yJm39EX1lteOM/UzbKul3EW7aXNHtxL4Op2F5d9OXQ=
+	t=1784228388; cv=none; b=qZyFKKkBz0TNaC5PtKscnIqACqg+TsFUjpu87NenxWf+n+T5PZP6sS6TND2HL4HaGfMqFFfvGNH6NugvLjBEFxOQRyfaUhUmN+gy3OWEJBROUlKKaJZUKQNA0W5qlkjDfD45GKJAVF5Zn+hHW44+2A84bEJsso2hLm9Q7UWvog8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784228101; c=relaxed/simple;
-	bh=sp/6DpII1XKCu8RCOdLqknqYu7IfAsXwYu1fZRGnkuw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=X98hc9ktxjg7yU7el6bL7MYzoQRKtGvdrGtpMKDFL3UZFDAZcUVjAhYeAjwYkYxY85PQXGlu95nHMqFX3boNxC5j4+S6aOtEUagdpSjYiH68SxibBMCM4NRIHlZtuFcZprsw1Bj/2CncFZbo4zqr+0zUBsOhRDUwCEJw41/JVmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgH29TuQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784228388; c=relaxed/simple;
+	bh=+vx12DnbrH1jEO3hyC82AQB3qS5V7/xSoVL7LiHkQ68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQMSXguwbZokGTKJSJFIu2r4+dZCBdTwmhNAH1MIZ3+6VctezVIhdP5Ujso4V2N/Jt3R4SSf5wwENvC8TMCuOEIEX8g/gDdSAPZ5SMjAWNpDsqCRaDvqw5h0EZH3RapMwZ2ST9iQbNxs4AHmK7xMuhvQAc5kihhCyr6MMwbCb2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GeuEGCcQ; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgH29TuQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90A31F000E9;
-	Thu, 16 Jul 2026 18:54:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784228100;
-	bh=CurTDQoK61XVqJ7KNWgdGmwUjEdFArQ9DOwxbr5fykc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GgH29TuQSMaC81B34Wtxv3LpRHH1rp+m2L+Qj41MYciSSi9nwEQ1svnYD3W5MWLF5
-	 uYJnqy1wuiz4pHDguzj6p0IwSdKvZa8abk+7WzrRAwROnkppYPv7DTWaBVB1uzhdRp
-	 oklKvIp/1CFrbPjsSgoLo5AGvWYYvZd/cWfG8/jNRLSoQ8DsppT+flqXqg5TI0Hzfm
-	 ac6BaXltzTaUNle8QvqacVBguRYtoWeI6xGJaGj1CKCiuT01J3HYJ6uwIGEfWUNR+U
-	 2WmJelDZQ7MpGkpIS70o1udQyUCGnT5lihaDq0FjmNlb7DIWo1SAqmxR1fm1kobGYt
-	 k7DFJ8VBF47HA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 24/24] KVM: x86: selftests: Introduce memory attributes
- side-channel tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716181456.402786-25-pbonzini@redhat.com>
-References: <20260716181456.402786-1-pbonzini@redhat.com>
- <20260716181456.402786-25-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 18:54:59 +0000
-Message-Id: <20260716185459.E90A31F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GeuEGCcQ"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-698ae09e356so10225641a12.2
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 11:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784228386; x=1784833186; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bpwBCMUqOktawB/a/lGWrgRdo+N7QGVrFJhgBZS8dP4=;
+        b=GeuEGCcQH3ItJLJJTIj/+a1WALF+NjLPuhoIZJL8l5/Euwiksom+cCq6BnzZ+qP+Dw
+         IOeN5tP5J4BLyEtQqRBr38NG8S7E35jnjjT/NU8xuJd9z80PraCDdlrB0w4CEdwYrSEJ
+         Q7CpjyvH7ttp4Z2wm64U4i0+ghDUkhiyhHv+t9EnYsEywcjYug08ryPiqNsHt257pofb
+         1dU/9JxR+IQGaZUVxyMBejvvnyNKwnmhlFxk7MT7Vpnn+sNLaTI0f8CI0OBsR5pZBAGW
+         UsElyW7awjPGXMSa1+2coHfDjunNo6gpqT8gZA3aqStcvcWzQ/Jo/WNUO2pjGN3iTNVF
+         wQ+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784228386; x=1784833186;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bpwBCMUqOktawB/a/lGWrgRdo+N7QGVrFJhgBZS8dP4=;
+        b=JUQNmKgvJtJxYhxgi1cr+KSZuZDj9vnXGX0QkpUP3G63LcJkGCvmBGpVXvegfCHc2v
+         64puKem8Hogc9C9g7aO9oh9zeyK06YadBsjwd0VQUSXRJWPsw5Eoe7Y1NraLeLkQcUyL
+         OoICvunwrAsz9Pbi3vV+JsnTpyPh5itSupMsLzvfNxMmIcD/Cw91LjWwoFjsnMQT62+i
+         mkPt/+aBQ+1eaU19lUY/62ecy6//pq6Xt1HaWmQFYnip0ilYtkB5B16ayjtwvxBCTh6e
+         N+Cf01bj+RC+FPLWYWTj+/TzPlFehoeilaxUhojK4rHmWRoNu9HyNGJV+PXCKbeEPhFg
+         NnsQ==
+X-Gm-Message-State: AOJu0YyBX9uQO4IB0iMbQa/lK1eUS5Fg3wCHB79VIsQSF6iMOR8mBHDZ
+	zaJmX9nfRc4I4TgD8fji5plukbtKW56ny1ZAguudkUysb9NhFeC82EJD
+X-Gm-Gg: AfdE7clxeFyPb2wUN7p8hJfm6JdY1GdTPG4dDCzT8bthllY3Qq/zWP1Xckg71TWJ0V6
+	df9wLBvqv9tW+aKPcdFnEeK1/YqU8UPqjieCgI9PgbzgHau8Js2iiqboVrdbirwxTv8x6lHdkTT
+	xI0y9xqCQAbFfyNwsszeHwh/bxx2qGve3CODoCIttuei95uIWyYXxZvGrWklJiN/UhqWl80qHBK
+	bOb7I2tpAaoNW5zBNtmp4WNmqInZUsDN67g27uM7eKDjbkdKh17fBS7cauHJOnnT3JpTdYo6erJ
+	UCnvNIaejrBT23RL5AzAUxC6PIc+XKMiRe+qPvVocYkmD6qyWQe+g3noZrwtY4ZVr+K/OiZJgaG
+	g3ALOm7AwRCSuflgc+xViKJ5z2eKKGdT0LoCX6QKGwefBM+gMQetI5e3XxBia2hA0j0mLsgo7sj
+	+xWz4bl3LRE4cz0SMO5fsgVjnMijlNfpmMfmsv7JuQxnprXfyPJPegxS47A10fG/E=
+X-Received: by 2002:a17:907:9485:b0:c16:5867:e098 with SMTP id a640c23a62f3a-c1667ad9fe4mr699209666b.40.1784228385516;
+        Thu, 16 Jul 2026 11:59:45 -0700 (PDT)
+Received: from localhost (226.55.classcom.pl. [195.150.55.226])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1687126353sm269375566b.13.2026.07.16.11.59.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 11:59:44 -0700 (PDT)
+Date: Thu, 16 Jul 2026 21:00:13 +0200
+From: Piotr Zarycki <piotr.zarycki@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	vkuznets@redhat.com, shuah@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] selftests: add swap() macro to kselftest.h
+Message-ID: <alkp6pv1Z-zHTka6@arch-piotr>
+References: <20260528154003.3594107-1-piotr.zarycki@gmail.com>
+ <20260625070914.2175124-1-piotr.zarycki@gmail.com>
+ <ak-2To4F5tNjyolt@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ak-2To4F5tNjyolt@google.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Medium] `test_side_channel_pvclock` assumes KVM periodically updates `ts=
-c_timestamp` in the background, which is false and causes the guest to hang=
- indefinitely.
-- [Medium] `test_side_channel_hyperv_hypercall_inputs` fails to zero-initia=
-lize the `struct hv_send_ipi_ex` object in reused guest memory, causing the=
- hypercall to fail.
-- [Low] `test_side_channel_hyperv_hypercall_inputs` computes the physical a=
-ddress using stale `test_data->vaddr` instead of the passed parameter.
-- [Low] `vcpu_translate()` passes a partially uninitialized `struct kvm_tra=
-nslation` to the KVM ioctl.
---
+O Thu, Jul 09, 2026 at 07:55:10AM -0700, Sean Christopherson wrote:
+> On Thu, Jun 25, 2026, Piotr Zarycki wrote:
+> > Add swap() to tools/testing/selftests/kselftest.h with an #ifndef guard.
+> > 
+> > Guard the local swap() definition in mm/uffd-stress.c with #ifndef to
+> > prevent a redefinition warning.
+> > 
+> > Use swap() in hyperv_tlb_flush.c to replace the open-coded PTE swap and
+> > remove the TODO comment.
+> > 
+> > Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+> > ---
+> > Changes in v3:
+> > - Add #ifndef guard to mm/uffd-stress.c to fix a redefinition warning;
+> >   uffd-stress.c defines its own swap() without a guard, which conflicts
+> >   when kselftest.h is included first via uffd-common.h.
+> 
+> Why not explicitly include kselftest.h in mm/uffd-stress.c and drop uffd-stress.c's
+> version of swap()?
 
---- Patch [24]: [PATCH 24/24] KVM: x86: selftests: Introduce memory attribu=
-tes side-channel tests ---
-commit 4f5cb036a6a68d87d1e673199973b66af14cd6a4
-Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
-
-KVM: x86: selftests: Introduce memory attributes side-channel tests
-   =20
-Introduce memory attributes selftests to catch any vulnerable
-side-channels.
-
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testi=
-ng/selftests/kvm/include/kvm_util.h
-> index 54d73ea46e11f..3160a25966a10 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -883,6 +883,16 @@ static inline int vcpu_get_stats_fd(struct kvm_vcpu =
-*vcpu)
->  	return fd;
->  }
-> =20
-> +static inline struct kvm_translation vcpu_translate(struct kvm_vcpu *vcp=
-u,
-> +						    u64 gva)
-> +{
-> +	struct kvm_translation tr;
-> +
-> +	tr.linear_address =3D gva;
-> +	vcpu_ioctl(vcpu, KVM_TRANSLATE, &tr);
-
-[Severity: Low]
-Does this pass uninitialized stack memory to the kernel?
-
-Since only linear_address is initialized, the remainder of the struct conta=
-ins
-uninitialized stack memory. When the kernel reads the struct via
-copy_from_user(), it will read this uninitialized memory, which can trigger
-MemorySanitizer or Valgrind failures in CI environments.
-
-Should this struct be zero-initialized first?
-
-> +	return tr;
-> +}
-> +
->  int __kvm_has_device_attr(int dev_fd, u32 group, u64 attr);
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/memory_attributes.c b/tools/test=
-ing/selftests/kvm/memory_attributes.c
-> index c66d5d085a9c1..843fafcf4d96d 100644
-> --- a/tools/testing/selftests/kvm/memory_attributes.c
-> +++ b/tools/testing/selftests/kvm/memory_attributes.c
-
-[ ... ]
-
-> @@ -88,6 +125,25 @@ static void guest_code(void *data)
->  				     :: "b" (vaddr): "memory");
->  			GUEST_SYNC(stage++);
->  			break;
-> +		case TEST_OP_HYPERV_HYPERCALL_INPUT: {
-> +			hyperv_hypercall(HVCALL_SEND_IPI_EX, paddr, 0);
-> +			asm volatile ("sti; hlt; cli;");
-> +			GUEST_ASSERT_EQ(ipis_rcvd, 1);
-> +			GUEST_SYNC(stage++);
-> +			break;
-> +		}
-> +		case TEST_OP_MONITOR_ADDRESS: {
-> +			uint64_t *pval =3D (uint64_t *)vaddr;
-> +			uint64_t val =3D READ_ONCE(*pval);
-> +
-> +			while (READ_ONCE(*pval) =3D=3D val &&
-> +			       /* So host can force the op out of the loop */
-> +			       READ_ONCE(test_data->op) =3D=3D TEST_OP_MONITOR_ADDRESS)
-> +				asm volatile("nop");
-
-[Severity: Medium]
-Can this loop hang the guest indefinitely?
-
-In test_side_channel_pvclock(), the guest is expected to exit this loop when
-the pvclock tsc_timestamp changes. However, KVM only updates the pvclock
-structure synchronously before entering the guest (e.g., when processing
-KVM_REQ_CLOCK_UPDATE).
-
-Since the guest is spinning here without causing a VM-exit, KVM never gets a
-chance to process clock updates, tsc_timestamp will never change, and the h=
-ost
-thread will time out waiting in pthread_tryjoin_np().
-
-> +
-> +			GUEST_SYNC(stage++);
-> +			break;
-> +		}
->  #endif
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/kvm/x86/memory_attributes.c b/tools/=
-testing/selftests/kvm/x86/memory_attributes.c
-> index 3d2bcfe718848..5203d284d2d36 100644
-> --- a/tools/testing/selftests/kvm/x86/memory_attributes.c
-> +++ b/tools/testing/selftests/kvm/x86/memory_attributes.c
-
-[ ... ]
-
-> +static void test_side_channel_hyperv_hypercall_inputs(struct kvm_vcpu *v=
-cpu,
-> +						      gva_t vaddr,
-> +						      size_t size)
-> +{
-> +	struct kvm_vm *vm =3D vcpu->vm;
-> +	struct hv_send_ipi_ex *ipi_ex =3D addr_gva2hva(vm, vaddr);
-> +	gpa_t paddr =3D addr_gva2gpa(vm, test_data->vaddr);
-
-[Severity: Low]
-Does this use stale global state instead of the vaddr parameter?
-
-Using test_data->vaddr here before it gets updated for this test phase reli=
-es
-on it holding a left-over value from the previous test run. Should this use=
- the
-vaddr parameter passed into the function instead?
-
-> +
-> +	if (!kvm_has_cap(KVM_CAP_HYPERV_SEND_IPI) ||
-> +	    !kvm_has_cap(KVM_CAP_HYPERV_HCALL_FAULT_EXIT))
-> +		return;
-> +
-> +	vm_enable_cap(vcpu->vm, KVM_CAP_HYPERV_HCALL_FAULT_EXIT, 1);
-> +
-> +	ipis_rcvd =3D 0;
-> +	vm_install_exception_handler(vm, IPI_VECTOR, guest_ipi_handler_hv);
-> +	vcpu_set_msr(vcpu, HV_X64_MSR_GUEST_OS_ID, HYPERV_LINUX_OS_ID);
-> +
-> +	ipi_ex->vector =3D IPI_VECTOR;
-> +	ipi_ex->vp_set.format =3D HV_GENERIC_SET_ALL;
-
-[Severity: Medium]
-Will this hypercall fail due to an uninitialized reserved field?
-
-The struct hv_send_ipi_ex object is mapped over previously used guest memory
-(vaddr). Because the reserved field isn't initialized here, it will contain
-garbage data left over from prior tests.
-
-The KVM handler for HVCALL_SEND_IPI_EX explicitly checks that reserved =3D=
-=3D 0 and
-will return HV_STATUS_INVALID_PARAMETER otherwise, causing the test to fail.
-
-Should the struct be cleared using memset() first?
-
-> +	vm_set_memory_attributes(vm, paddr, vm->page_size, KVM_MEMORY_ATTRIBUTE=
-_NO_ACCESS);
-> +	test_page_restricted(vcpu, TEST_OP_HYPERV_HYPERCALL_INPUT, vaddr, paddr,
-> +			     KVM_MEMORY_EXIT_FLAG_READ);
-> +	vm_set_memory_attributes(vm, paddr, vm->page_size, 0);
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716181456.4027=
-86-1-pbonzini@redhat.com?part=3D24
+Dropped the local definition entirely. Sending v4.
