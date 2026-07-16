@@ -1,83 +1,142 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2861C33987F
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 04:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C0D2D876B
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 04:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784176348; cv=none; b=Qe9JUYMrTbumdZTJo0LfH0qJq4m+XxR6eQpriWPjTams5OMHzAxzpexvIzRE1Eie8+0frYPeLOUNnoftrKU4pHJ+OzE1+t7Pui7xda87Zf40ojI6UqBl0qCjIhLjL6+74e4u0usHf70w8IrqKclwQQLnFkXGdHggYZt5YOHYZog=
+	t=1784177205; cv=none; b=hyQa+CIDznYKBImnfxunNDR9pp7KJDfHYJHBZ2AB1MfIwmUv37HYcASm8JNNF2rf2lFR+e5cwWnnNzIefI8IiMhytwV1Y1mgRY2NGlrZVrGQ/a6v/Hjsaox2mT5e/HT3a+5QXiAR1x7IOERl9TQRl5BCqBD4B768Fw/be3ng79w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784176348; c=relaxed/simple;
-	bh=buIiHh+a9surrRv0ITzM9GoUVID2qhVQUJmUHWI7/MM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gPJauuKK9a2MScJGWky71A5Wtubuemci7yJ1VbINNsY0+FxVsaVZdHY4JuC0MHeMz/S1xtOvqmFkZCpzZ8CEGl/xxw/dLRhkGk1wzsDS2x8L6BW+yClPi6vXHKcATuzxppptN1fOyqstxLXo8WwwFgwu9AIyE7cGEi518nQyYHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-497e582f42fso4077358b6e.3
-        for <kvm@vger.kernel.org>; Wed, 15 Jul 2026 21:32:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784176346; x=1784781146;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rhntkibp3+/LKKvXlJ5XyUvRyysqRXve0wvWF3XcRqQ=;
-        b=F6LMJKqmYVZEsXL18fO4oVatLHC5SXaCSyNzDihCmxzGv5i95jPxT3FW/4y9/DB0LT
-         kAVNP157faceQBDhBr91myJbway3JuNj5oX0cg1qn6A7DSulkfimllqf8ONzC1xTPNfe
-         d9R+apCmCGuYDoT42xtXI7iEafvh4+fC2o+d9yS5xLbi754he/uOHFzZ0UpdCX3SKhlO
-         Iw6yJwVyB5boR+rxptx3cLS32D8xLkr/8vJiyRTXO87lrWvDda+toJAgPxd6hFYTU6Uz
-         qvAa8KO3CNHEJZg+8JUq539RyAcJ1UMBE7qMpjalP4T9e49EuPgcf0FT2dS2GxJYioh7
-         yTWQ==
-X-Gm-Message-State: AOJu0YzuJD2/WvwAvF53a4GRoviYhVA4mejtEwGB7Rfr7mpbbVAc1dpm
-	oNN4U5pLMFzBgC7HS5sm0+mh2v8qs22QSm0vcURvO7s4QN9UQ0N3lRMml7iP3kaInbdU8GLqB4T
-	0FK3DAopVlUEM4d+pLDUv7crwDeUbT6B2EuDraUF3jaPTje8sUfAm2iYS2w8=
+	s=arc-20240116; t=1784177205; c=relaxed/simple;
+	bh=PLge3ahmGHSUSYjY+q3DA+gXzkxSblEk5wH0z+3EJKg=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=FIzeReBDAV1NkqbxBJFQu6li39GmT+NuOnfTnBxiccrD9M6Rh9I3LpyW8uZcEqIReIwTs+SZsxjtwu7YKk2xpwL/tuRyroGSoLAuIfR4DykS4SsNYMoC0vJjueJfO2NcKBAqY9a5iikJey2mx4izcgq/At+JZAaZbhr0V0vheuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fWxUDD7x; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fWxUDD7x"
+Message-ID: <6ea8e8dd-b65f-4ada-8376-54f207d95b3d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784177190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FclzmYUSWhBMXSxmeiWZ93Np1Bc9uMRxbrMcQ2zEB6g=;
+	b=fWxUDD7x8GQoJX8drEA5IXW6P3YuKpTetzFbx5p+Z/WyvJVI3BkLW25UlQgfGhxuedvU2d
+	s/kPXUFpVMV7WYjzbiDmSSC29dTgVuU52MeHsRDBAOwT/0BIFsgrzor9WqD6NAMrO6y9ou
+	XmDvwYXTXkpLpRA/KFyhJOOT3Y7nNTs=
+Date: Thu, 16 Jul 2026 12:46:23 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c40d:b0:48a:e28a:7378 with SMTP id
- 5614622812f47-4a42b07f4eamr13385254b6e.38.1784176346072; Wed, 15 Jul 2026
- 21:32:26 -0700 (PDT)
-Date: Wed, 15 Jul 2026 21:32:26 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a585eda.c96faac9.59e0.000d.GAE@google.com>
-Subject: [syzbot] Monthly kvm report (Jul 2026)
-From: syzbot <syzbot+list9322024a56da9e1a39ec@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Cc: cui.tao@linux.dev, WANG Xuerui <kernel@xen0n.name>, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH] LoongArch: KVM: Allow to set pv_feature until vCPU run
+To: Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
+References: <20260716013823.3259816-1-maobibo@loongson.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Tao Cui <cui.tao@linux.dev>
+In-Reply-To: <20260716013823.3259816-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello kvm maintainers/developers,
 
-This is a 31-day syzbot report for the kvm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/kvm
 
-During the period, 0 new issues were detected and 0 were fixed.
-In total, 7 issues are still open and 68 have already been fixed.
-There is also 1 low-priority issue.
+在 2026/7/16 09:38, Bibo Mao 写道:
+> Now pv_feature can be set only once, there is problem with VM migration.
+> Where it is set when vCPU is created and after migration, here it is
+> allow to set for many times, until vCPU starts to run.
+> 
+Hi Bibo,
 
-Some of the still happening issues:
+The Sashiko AI review raised two concerns on this patch that I think
+are valid:
 
-Ref Crashes Repro Title
-<1> 147     Yes   WARNING in __kvm_gpc_refresh (3)
-                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
-<2> 4       Yes   WARNING in virtio_transport_send_pkt_info (2)
-                  https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
-<3> 28      Yes   BUG: unable to handle kernel paging request in vgic_its_save_tables_v0
-                  https://syzkaller.appspot.com/bug?extid=4ebd710a879482a93f8f
+1. Since ran_atleast_once is per-vCPU but pv_features is VM-wide,
+   userspace could run vCPU 0 and then use vCPU 1 (whose
+   ran_atleast_once is still false) to change pv_features while
+   vCPU 0 is executing.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+2. Without the old LOONGARCH_PV_FEAT_UPDATED latch, setting different
+   PV features on different un-run vCPUs silently overwrites
+   pv_features instead of returning -EINVAL.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+Both stem from using a per-vCPU flag to protect VM-wide state.
+Would a VM-level bool in kvm_arch (e.g. pv_features_configured),
+set on first SET_ATTR or first RUN of any vCPU, work?  It would
+not be migrated since it is not exposed via any ioctl.
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+Thanks,
+Tao
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>  arch/loongarch/include/asm/kvm_host.h |  4 +++-
+>  arch/loongarch/kvm/vcpu.c             | 15 +++++++++++----
+>  2 files changed, 14 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+> index 23cfbecebbd7..af376fc44c44 100644
+> --- a/arch/loongarch/include/asm/kvm_host.h
+> +++ b/arch/loongarch/include/asm/kvm_host.h
+> @@ -163,7 +163,6 @@ enum emulation_result {
+>  #define KVM_LARCH_SWCSR_LATEST	(0x1 << 3)
+>  #define KVM_LARCH_HWCSR_USABLE	(0x1 << 4)
+>  
+> -#define LOONGARCH_PV_FEAT_UPDATED	BIT_ULL(63)
+>  #define LOONGARCH_PV_FEAT_MASK		(BIT(KVM_FEATURE_IPI) |		\
+>  					 BIT(KVM_FEATURE_PREEMPT) |	\
+>  					 BIT(KVM_FEATURE_STEAL_TIME) |	\
+> @@ -250,6 +249,9 @@ struct kvm_vcpu_arch {
+>  	/* cpucfg */
+>  	u32 cpucfg[KVM_MAX_CPUCFG_REGS];
+>  
+> +	/* VCPU ran at least once */
+> +	bool ran_atleast_once;
+> +
+>  	/* paravirt steal time */
+>  	struct {
+>  		u64 guest_addr;
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31..ce6a1b06d50d 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1164,11 +1164,14 @@ static int kvm_loongarch_cpucfg_set_attr(struct kvm_vcpu *vcpu,
+>  		if (val & ~valid)
+>  			return -EINVAL;
+>  
+> -		/* All vCPUs need set the same PV features */
+> -		if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+> -				&& ((kvm->arch.pv_features & valid) != val))
+> +		if ((kvm->arch.pv_features & valid) == val)
+> +			return 0;
+> +
+> +		if (vcpu->arch.ran_atleast_once)
+>  			return -EINVAL;
+> -		kvm->arch.pv_features = val | LOONGARCH_PV_FEAT_UPDATED;
+> +
+> +		/* All vCPUs need set the same PV features */
+> +		kvm->arch.pv_features = val;
+>  		return 0;
+>  	default:
+>  		return -ENXIO;
+> @@ -1851,6 +1854,10 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  	int r = -EINTR;
+>  	struct kvm_run *run = vcpu->run;
+>  
+> +	/* Mark this VCPU ran at least once */
+> +	if (!vcpu->arch.ran_atleast_once)
+> +		vcpu->arch.ran_atleast_once = true;
+> +
+>  	if (vcpu->mmio_needed) {
+>  		if (!vcpu->mmio_is_write)
+>  			kvm_complete_mmio_read(vcpu, run);
+> 
+> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
 
-You may send multiple commands in a single email message.
