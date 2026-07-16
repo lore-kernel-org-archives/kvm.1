@@ -1,63 +1,63 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7F941F5DF
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FE441F5D0
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784205856; cv=none; b=bnexhGz1qVq2tPOcHBuanrG3/Df62cP3neKvG8rerF+f06oUg76Xs2TlefYKzeeuq5qvARt27k+f4hjRFEqfgmY7kHOl8DB8fHejsP33uFNwSf/Oo0SW0O4erAzDAjm3f9Ei7FO/G7xhybkHrpywqCBWMKu4sJ/Kcs0WE3Rvm5g=
+	t=1784205865; cv=none; b=eDVDW8EVuc98lP8nVEoQsu4Frl6hZYgnLubLDoD4thbEIa8PafDlb/kywOwXetJ4MbspATClEcMBMm3bjQQw6oFeUqWnC1ioH2bEXIDMxDV/Joe3DCWNCyp8/SL1a+dSXbopyyoYGPqA8CvvsjBrloleexqirWKBjHQ7YYYHz6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784205856; c=relaxed/simple;
-	bh=4deY2p8H6GZ6zm5fDTusItQoJGUZoIhd5ZPqjCZKV8M=;
+	s=arc-20240116; t=1784205865; c=relaxed/simple;
+	bh=rftdHtLNV98O/408NnTvtHdmuZ/zkcn7vT2O02oj0qc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OcVvOazkgRxD8hGfgAraMyzFhws0Pdc+HwDwOXji4Lxqw8jjAe98W9c41F6nbcrDOqSQ9EOIRhuz4hIsPwypE1jpgdjiV80JEHR/dDd1tsfXMzCK7pA23L5f5mBDxfG2SKZ1zBeW32YBzKkT9LxcO+OcUNCIWMzD3HARt1zWbh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ZAj+7QOj; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=NVst4jS7lcszRCbOg9SNESJf79Cn1C9S+saAZjgpFgXL0M8dt/3pkrVpzvL4aZTJLxXbUp/tGejjtxjhoR3eYAHcvmoYVCu4zmSwHpjG0eY5F3ceNhoRX8tha1K4xM7xDO5GNeknEeblXpw09KCs4LQwyAm+t3bYwnjMuYuk7bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=St7eDzRl; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ZAj+7QOj"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-848743155bcso1367536b3a.0
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:44:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="St7eDzRl"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-84861fc51f5so3650288b3a.1
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:44:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205854; x=1784810654; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1784205863; x=1784810663; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZqzuyyB7zI40Qj8rdd4/j/Hz77YcBH2L+r/0EHWbI6M=;
-        b=ZAj+7QOjASlsckuQXpHLU0FAunWhMybQoKD5W1AGa50FQayUMJnImiyviiMSbReByf
-         va4QGfRhrqAk25/wcSzdNnk7Uh+wRnkJmRmorSkk3ZueuR5PhG4jW5y5CLMzyErWfUCe
-         PV3JOuaWu6DLe1gZvFlvl2NcWkbb2atm7j7MfDmn56Ndaz6yPyc4P3Buux7GIlpsjUz1
-         O9OcZzo5ZEGSFis8y/e4dj8Edgugo5P3zZOn62SIZPiC5lk0LQU85KcX58BXc361Qf7H
-         n5qvwflHbCKVpNF1yk7nWMc5X5VbqNH7sSb1x+IXZ4m8L7mNy8+vS2S33zqMuWOk0PaE
-         6fYg==
+        bh=MW3VkNC58mnWKcn8BtrFop2mUDTlw3bfVwg/aYM+yrM=;
+        b=St7eDzRlxPTWCxHLHWoBJomIpw2Aw3SH5gTQBQlCcxnQd4tuAszGXCMIZDPuSq4VbB
+         LkL5Y7Wzu2Tmvl54F6R9RdKK3SHWkuxSxiuEaZoTouaqTni1jlHo9cDKTwRnvaDkVgSA
+         qnwyncSsWLdJsm1InJCJ9cBGs5XNR9HjzIqUNReUUweHUYEb995UrPL8kZCJxom3ocSW
+         u9LOmPUwngXgZADEAMCOD7PT+wtybezb37fKnHAR5zDLVV3eBpRsFDmS5jM5BLeIAY2v
+         kFLeZx7WZEubSA8oog8n1GUMtv0gjDuQNqKrVXuAQmI+krN7QhPNrQk/PJz0P299kqpI
+         laJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205854; x=1784810654;
+        d=1e100.net; s=20251104; t=1784205863; x=1784810663;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZqzuyyB7zI40Qj8rdd4/j/Hz77YcBH2L+r/0EHWbI6M=;
-        b=SfhHcntnEL83DxQZl5QxHMLrdDzR5bTKJh0QY5TFSG75K/LeSnm55WuLsHE1MHV1zK
-         PigfPtLvn+Vq4fxVjzPfBiV0ekkmSlcg+QNoNDkrGThtMOpJziy+kIojwagmr0x+F6OQ
-         AFDPOO2/TYsLSEAB76sm0iYMnnztOTGpaM585XRlAp+4l9ClARjtsqJo5S+JQ9YLvZK2
-         g1FfQzdS/bEzAuuPRMe3O0ANIU5GjqeFG3sGf/8OL+JSXBrELiU/nlaas37qiTRoCK89
-         XLt83ou/poQVaGAo4AxD3+8Hv4ed9j7Fp6r8OjpFX+aG3tFxnSX7s/X/jNXO6jJOFD83
-         MbfA==
-X-Forwarded-Encrypted: i=1; AHgh+RpjNAWA2Ru9TYh55aD2MLH0ON0HUyZ3dzqyuNtGu4ChaWNPzWx8W5iOUzR4GtSOvgxxteI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKYCLJZI5noZysu6yNSYYDD4AGMVPzBkMac7O+PJQ3vk2LhZ90
-	4gtpncFjCUV9Z5TLxtJAhX5sM7QIPBJ906kse/trQptqdAs70XeijZHuebx1iQlPyKs=
-X-Gm-Gg: AfdE7clsUCNzmjmzfF+f90S4V1S44WPuiuoUe8LpNfmO4X7Hx8WN3rNJ10yzaYspM4w
-	2ihBUHquYLP28qq4hrwxPdJreD8xZ6ZFFJMlvj4kWiGkjcKwOSDDoh9wdSn+DfGDQwFwirUgSwZ
-	YAYdn2gHZat5tq8e4NMVVhOWzR0io8nkeJ7+pokIA3LOCfcTAc6u4An/1Rj0vNiEUZn4ASqXEVn
-	oeAiONQSOb9nOoRzrZZHqanNbXMs98810My2DPhZm84fI2LvjCKGMRs/4r/9qyy6LIcY6GkGYKr
-	D2NBpW04avtRHWI8JCozt9YIYhWnydhvZKSy6RUXhcy3El17o8+kfLnJLUP8gJ/9LODDsxufjwV
-	FX9aRbTlkAKKuPEArVSgAHkY5Xk5INZDm4Ys5SwXZ/kjMLGR3ELMVTNJyTzsTqT9ULuYMrRGdSo
-	EP51bi1eMd6SOL6kJdNG6QKWg=
-X-Received: by 2002:a05:6a00:21d2:b0:845:c6fc:2821 with SMTP id d2e1a72fcca58-84889604f51mr19555102b3a.22.1784205853705;
-        Thu, 16 Jul 2026 05:44:13 -0700 (PDT)
+        bh=MW3VkNC58mnWKcn8BtrFop2mUDTlw3bfVwg/aYM+yrM=;
+        b=ry97vh/qPmrV9G4NpjQBsGTsGQDXsbQBatSjrHxb/sRpcBQ1DFLZHavufsI6q+FxMz
+         IvUf0cYmE1f8qYYV5rT+fwTu9NB3l0DPqH2F+bcZG9H1GzinWhRF99PAnHjag9KSjfVm
+         dofxl46s+z/cKKjUd4EZpJZdQZ57rKwfs9xzoVTe0j+lTf1wipJ/Te9KO+9P71mz+b+g
+         c448wJQqVD/SMmMuK9a8aCOci9CT371ySW7OSb36kkBqcn5TAKpnLUPb3F3DR0Am23TI
+         nJdUr5HWhR9Qjj+TdZTmAYFInX81DCV69JMXrLheVY6g4KK1OLbI8d1pzq4xGvCK+doE
+         EdjA==
+X-Forwarded-Encrypted: i=1; AHgh+RqSbqSn30HICG26fB5q286TARwZ9pjj9YGJKKjc4pPlcXe4g70bJ4q83ttiyHn4PUfEzrQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5OFayeicDBysaAXADfR7haV/UXgylypxtSzYliWNcrmjUPVsa
+	CkzLg1THgw9qR49mKZmIAe1Cm1AEduIWEFK+kBNhIxjBIhSxMIW4khvDoUujf8wXJDw=
+X-Gm-Gg: AfdE7cmxm8PnCXb1T1nIkmy/duOTUVvfYgp5imYa6FRZhvwMxvpRcDEKtNcdlbB7qJX
+	0+wcncpp7UY6Gem7k9u80pvDB6vTmMlOEXBFXSv3E+sqtQNTG2rreFBT8didit8FV5wspXaU6TO
+	Lkhqkeqci99l9k9+cc2lhO7jlfDNX6+QNR/Ca2TZ4ASgpwCN95jkmp2yboyKd3vYCVd7pTW8NUt
+	xSCYtY9KPgdHx544hPoo9mBwKHEPK/IZWGGHGwQdGl4oqmTsDIA0Lz6K/i2v1nEy6SP/7FuSpL3
+	tDwl0uHtV8YyEZ8Gn8LmBOpkoJPXaeoKCGL8i1GkbVXMqE8j9aR/TWWwQRrDZN/m2YnA6YX267f
+	iyp2CidTeUv4UOJswCKtrN3tqRaLN8avYI6KS8yCqQRG9tuKJ5j3nBjuS33JbugKRNQwufg1ZI6
+	0eP0RlpKqtlDoA4vQ+4IToeqE=
+X-Received: by 2002:a05:6a00:4c98:b0:848:4b27:36ce with SMTP id d2e1a72fcca58-84a673c79a1mr6078389b3a.73.1784205863094;
+        Thu, 16 Jul 2026 05:44:23 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.04
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.14
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:44:12 -0700 (PDT)
+        Thu, 16 Jul 2026 05:44:21 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
@@ -70,9 +70,9 @@ Cc: linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 10/15] mm/gup: add fast-GUP specific lockless PTE helpers
-Date: Thu, 16 Jul 2026 20:41:45 +0800
-Message-Id: <138d74aa9863ae8ff445e16a2798d062895b75bc.1784201104.git.cuiyunhui@bytedance.com>
+Subject: [PATCH v2 11/15] riscv: mm: avoid Svnapot A/D aggregation in fast-GUP
+Date: Thu, 16 Jul 2026 20:41:46 +0800
+Message-Id: <95699db9c9b90fd1f95310e9d95b000eb8cfc616.1784201104.git.cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
 References: <cover.1784201104.git.cuiyunhui@bytedance.com>
@@ -84,79 +84,84 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fast-GUP snapshots a PTE without holding the PTL, pins the page, and
-then revalidates that the PTE did not change. Keep both reads under the
-same lockless PTE semantics by defaulting the fast-GUP revalidation to
-ptep_get_lockless().
+fast-GUP only needs the PTE state for the current virtual address and
+revalidates the raw PTE after pinning the page. It does not consume the
+block-wide accessed/dirty aggregation provided by the public Svnapot
+lockless getter.
 
-Introduce fast-GUP specific PTE snapshot and revalidation helpers. The
-default implementation preserves the existing ptep_get_lockless()
-semantics, while allowing architectures to override the helpers when the
-public lockless getter provides extra semantics that fast-GUP does not
-consume.
+Override the fast-GUP PTE helpers to translate a NAPOT PTE into the
+current sub-PTE without scanning the whole NAPOT block. Keep the public
+ptep_get_lockless() semantics unchanged for other lockless users.
+
+With 64K THP enabled in always mode, fio 4K random direct read
+throughput improves by about 10% over the previous implementation on the
+same system, from 2.615M to 2.874M IOPS and from 9.97GiB/s to 11.0GiB/s,
+while average clat drops from 95.54 usec to 86.97 usec.
 
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- include/linux/pgtable.h | 18 ++++++++++++++++++
- mm/gup.c                |  6 ++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 20 ++++++++++++++++++++
+ arch/riscv/mm/contpte.c          |  9 +++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index da14328093a86..62943fcbf7046 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -813,6 +813,24 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index dd56c20a817bb..3727c148fa0fc 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -597,6 +597,7 @@ void __napotpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+ 			   pte_t *ptep, pte_t pte);
+ pte_t napotpte_ptep_get(pte_t *ptep, pte_t orig_pte);
+ pte_t napotpte_ptep_get_lockless(pte_t *ptep);
++pte_t napotpte_ptep_get_gup_fast(pte_t *ptep, pte_t orig_pte);
+ void napotpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ 		       pte_t *ptep, pte_t pte, unsigned int nr);
+ void napotpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+@@ -956,6 +957,25 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+ 	return napotpte_ptep_get_lockless(ptep);
  }
- #endif
  
-+#ifndef gup_ptep_get_lockless
++#define gup_ptep_get_lockless gup_ptep_get_lockless
 +static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
 +{
-+	pte_t pte = ptep_get_lockless(ptep);
++	pte_t pte = __ptep_get_lockless(ptep);
 +
 +	*rawp = pte;
 +
-+	return pte;
-+}
-+#endif
++	if (likely(!pte_present_napot(pte)))
++		return pte;
 +
-+#ifndef gup_ptep_revalidate
++	return napotpte_ptep_get_gup_fast(ptep, pte);
++}
++
++#define gup_ptep_revalidate gup_ptep_revalidate
 +static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
 +{
-+	return pte_val(raw_pte) == pte_val(ptep_get_lockless(ptep));
++	return pte_val(raw_pte) == pte_val(__ptep_get_lockless(ptep));
 +}
-+#endif
 +
- #ifndef pmdp_get_lockless
- static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
+ #define set_ptes set_ptes
+ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ 			    pte_t *ptep, pte_t pteval, unsigned int nr)
+diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
+index 0f66426b0ecfd..b0b8ff0aade3a 100644
+--- a/arch/riscv/mm/contpte.c
++++ b/arch/riscv/mm/contpte.c
+@@ -413,6 +413,15 @@ pte_t napotpte_ptep_get_lockless(pte_t *orig_ptep)
+ }
+ EXPORT_SYMBOL(napotpte_ptep_get_lockless);
+ 
++pte_t napotpte_ptep_get_gup_fast(pte_t *orig_ptep, pte_t orig_pte)
++{
++	if (!napot_hw_supported() || !pte_present_napot(orig_pte))
++		return orig_pte;
++
++	return napotpte_subpte(orig_ptep, orig_pte);
++}
++EXPORT_SYMBOL(napotpte_ptep_get_gup_fast);
++
+ unsigned int napotpte_pte_batch_hint_from_pte(pte_t *ptep, pte_t orig_pte,
+ 					      fpb_t flags)
  {
-diff --git a/mm/gup.c b/mm/gup.c
-index 99902c15703b0..72fb147193e55 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2842,10 +2842,12 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
- 	if (!ptep)
- 		return 0;
- 	do {
--		pte_t pte = ptep_get_lockless(ptep);
-+		pte_t raw_pte, pte;
- 		struct page *page;
- 		struct folio *folio;
- 
-+		pte = gup_ptep_get_lockless(ptep, &raw_pte);
-+
- 		/*
- 		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
- 		 * pte_access_permitted() better should reject these pages
-@@ -2871,7 +2873,7 @@ static int gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp, unsigned long addr,
- 			goto pte_unmap;
- 
- 		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
--		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
-+		    unlikely(!gup_ptep_revalidate(ptep, raw_pte))) {
- 			gup_put_folio(folio, 1, flags);
- 			goto pte_unmap;
- 		}
 -- 
 2.39.5
 
