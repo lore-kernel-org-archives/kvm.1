@@ -1,171 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929A3F4DF0
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 09:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194917; cv=pass; b=r7smlWCWp7DgMolm2h5RWVlztNilcxyOaWZSr2IyU0T0wl8gB8ZWrWQn34WxT2R/h4WGAaVJZgM0EqQfGEnFMm1f63s3ZbiFMAP6gi8H5efa8cE1m+gEHRztBgMzomwZoM4G4Nxb4BjOHzV4pTHwXjmvnHW2dZAbzEQx/X2Z3GM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194917; c=relaxed/simple;
-	bh=LqqsdM1x0Zd6TudpeBiM7tPh+032sxPHxb49LL/o6kA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rAbdUYtRyQ3/UIfmrDS7Axq0QDpGc6TeCgKVY4bwOHuA8SJWYU0FYo6lPx6IC0g8sTtKZUQm5RoUMgiTCWP/vN689oEszbBzvqqPHUPoHouszx88z+sqeYc1L/pSadFd0zN6dMC50/Oazy2ioScIJw0le5r18VVbBiEMoKhWrEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G1f9jGbM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BhJCKv9T; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB763CF207;
+	Thu, 16 Jul 2026 09:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784194961; cv=none; b=l50e4i3un03KRXjTfhI+Q5j5FttXTEMGdb2j6iTBLTx+qTuS9vRtH794/8DxgpyyltOtP9GOykf0JjC8eNzgzzwRgsZ6KbdWkrhBjPNe6suReP9EUoa4KMqGDMFANsC5kXy1D9q1YXsHzGuyuICQJ12JX2h1OxNI2VZ3yWfdjBI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784194961; c=relaxed/simple;
+	bh=lDsA2o0CiYcDtc0UdSTPL7Rg7ox1QEr/Ll9MILNoBDE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GvYGkzfWg5im/VUSaW1jzbzSVUQe46xyNQGzOtwSCuOszzlyLiTDElZiXAMGU7PUXvddO8h8fjQW8iT3V6FkAvLYf+kCaMkGlUFPWo4TrFC3KLp9VkWZUnIz7KuAdjgbolrNuBXjwKjUzSVOzeCnFCpUIUM8Qt/ms4Wr5sfo9LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbw8oxH8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G1f9jGbM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BhJCKv9T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784194912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
-	b=G1f9jGbMcwFJ0tDY9Df77AdUu0mrCFca2RyaslpcWANFnOTI7eXgBB+bNLXiG6fkGYKvcP
-	PB1An7YaqVkVZmCznOIRqGnu8gBhtDTjX8WE0JiwWDDXgxvhNkgomJR8gG6uPPtPWVqjss
-	IxFcn34Oj/sOIh7m0veu/Sz/oThzbJU=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-eGbL190sNEylacgm8Uqkqg-1; Thu, 16 Jul 2026 05:41:51 -0400
-X-MC-Unique: eGbL190sNEylacgm8Uqkqg-1
-X-Mimecast-MFC-AGG-ID: eGbL190sNEylacgm8Uqkqg_1784194910
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-7f582244e9eso198548847b3.3
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 02:41:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784194910; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AvhZa29oa63nqECa25lfr74+ngJVXLPGfm1F2eMjcD4VnB/JR0XsPr0Mh4jskBY3wa
-         4oLFBFyzOAFZc/QQvlglSBpt0lZB3CEP7Q2rZ0O/nmcgZYthQ98+F44cHhJHyuScVYIz
-         JAe5/IkJUFrTBrn4GPkXZRLGTB5TTdR2hrrkbgKbSW0txNS5B0JaDSCRqAZSBgFlf9qR
-         Lu+5jfspuO0ggU6I6p/puIO8FXrkvBlt35N186cy83oh/9vLPAMUr+/mnjZGcs7bLRua
-         QbvISg8X6HiW/pvGrtI7H9f1Jl+kO5awQ8nRLpKGFToaJkGtMGPeBvnw+Rd7XZu0NmNU
-         AOVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
-        fh=JZ0JnCs4Fg567n8QvaMmKZh9il/UxPu/7EQEkExr+uU=;
-        b=TMRoTIRVex/nOrd/IXdgZp4duVjzPlK7Fy6MAzcXuWTnvUasNDrhRaph+HKk9ghdT6
-         1bLZ1nQ3YY6ayZBh6zxzQwJAfcrKO8PEtaWvir0qAVyPNsXQJZc/go70ehR9fM0pHJ/q
-         rOA2H4xCkUYzwH+hac1sX2/FMtgT6MB79APgyXaIXdg3p5pb0FQzj7VlitDtC+Byt38r
-         ue685U1fNev444O4tJYJ0YsI3fgOJaXoXM51axxkY2qsA8iqS44mMceKAiAjhDpFyPX+
-         Re4euLGrKNjwEWLrDJNVB3R6LQuNzf+x+W6e1MQsyD4nSZfd9RqwnmAyfHn2M4P6s6CO
-         4QTg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784194910; x=1784799710; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
-        b=BhJCKv9TXVDrgois5zsqTO0a+cs4+RQmeCu9YW20l+GA5pGHySFacdMFdbXyAOXEkx
-         mPSJ10Y5ydJSFRH/UQCyclDY5QlmNcvTPZgub51ohs8llDG/3sDzkh1XiiWaNedpSLwl
-         W6J3UYTXSG+lvu7WPkPIQypiVMnaOgC/cjV5RK6sZkAGWkgOQxMstSAa/QdcNuwwlxSJ
-         RBcbzisv5yzmF2wxwIxYbUHKguiCvKvvIJVEdYlFtTMnKBEXgv0Ymp0Kf4eH8CqAME4G
-         oPypXdiyE031+gnsPnLs7ipryj9O+fIHrJmT+s64vdKUlpAyh9FuFFZM4ZS509Phqb7E
-         ORXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784194910; x=1784799710;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EXu8rj/Lq4zKxTkQDISmUqipyXnuZss0b7jMIW5OWBE=;
-        b=Gqzd1hBvubWxjYdgx2iu0eHAngIaffxYU6FP0MEys3cg/TO9yYz229VrgtFUGgjhrz
-         IRbpQYqCdXiwP3YlR9el8H7K9Z/eZQVQ1I3+xtu9XNi5VafAPAvwMGNEDf1lmW6QnjZa
-         1av93RyJuvupTwpSi0n2cevbvguuoAfZHrgW2egTFXUWfgZjUyDYPNd15LZrw2sUC+up
-         CL4KFPMOx3P8TaJXKo+kxkxhPQxL5gR5aEewCmYUM44y3y7ADP4dOFovQY+nUNCzTqTR
-         H6m7nNWnZf3L76xB0XfoD07uwbO2TwskmsrO2lwCkS2CBLpCUWI6OgHzxSdeyt4u+Q7B
-         US/g==
-X-Forwarded-Encrypted: i=1; AHgh+RpKofQeMIVLkxOfcl4krEUGF0AhBFj0lwMYZtbZiRahAk9TdvlADVDHbZV8L5e3RmPBjjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yza+yi9qhjPi4DdY7gR0N17d7E060+rL5g7vNyC6czfjhARyRhl
-	hEmKLVwaePO0wqwaJJ8Rq4SDh7v5iO5lO1Q/Y1QzyVVQnFStuYNbG9UclucG0IEmCaoPjjHbCFL
-	FCfoRvrBT9/3JOD2QUelevif149nUjgKT835tYsTFokxuinDZrbiIL/volb74F3HL2xBZKKDY/p
-	UEHjQSurFea6o9BjYQW4XL704jUU7e
-X-Gm-Gg: AfdE7ckkAKFBq3dtNlArjP+P+b3ZoqwbOShi+MfFhKA1EL1y893bn0EGAOGBcU1I0i3
-	wtypu3YhIoGGzZRyOx5Q7RzYabI2yrQPQv6SN5Qjg9SMWt1Kj8SFW/svaO7lPFHGOANiSyklxwB
-	VGEpr5crg6mHTYnhlJndCyGw+aetUslNqpSjBJkKUbtGe8OaU4yK2gjKOm5SS/17vpKphu4OkH3
-	UJhDOgFI1LMV/qiI2+HQ4CzqMxa5VTKJQpcieN0kLdfJQB2squmzxZu5xCeH5h8MDqogQwttE5g
-	U7nXe7BGmTybZBA=
-X-Received: by 2002:a05:690c:6a12:b0:809:fd83:a88b with SMTP id 00721157ae682-81ebfda0fedmr73234477b3.3.1784194910363;
-        Thu, 16 Jul 2026 02:41:50 -0700 (PDT)
-X-Received: by 2002:a05:690c:6a12:b0:809:fd83:a88b with SMTP id
- 00721157ae682-81ebfda0fedmr73234217b3.3.1784194909834; Thu, 16 Jul 2026
- 02:41:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbw8oxH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626D31F00A3A;
+	Thu, 16 Jul 2026 09:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784194957;
+	bh=yi0EepmVgk/ZSGOBm4X0BGSIEyfZ6GxmDiTXsDw96Hw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mbw8oxH81x13vyIH3ecHa6vW/B7UnUhZ/q0XVerAaTTPlpoKH70NoCAR0K5Wk43dy
+	 jC/hDuCPFTbnhfvwsmUAtIdUwKw/RyxKNZhJcYXWEmZCT6eyfYxMLYalt/IqbfpqIY
+	 29FKVActwiLPjTkBIbflcOlmYg9KYQ7AcK71/Gr0QK48T0Qow3mAExMi9z4ngnnQRl
+	 nbBxQ9OOvP0P2I/gpTXDxX8ZowHSRJZ0FHJdAbTVfLso9OIWL2aEToTADUVuifwL0L
+	 elOqpTUHc1v2sXPhR0FcjDu6d/STxFhloDRHZhhZdMDe6b2AEJrCWQpoVT7UmVBVNF
+	 Mhy5Wqgqm1Jmg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wkIbz-00000005cn6-1GgE;
+	Thu, 16 Jul 2026 09:42:35 +0000
+Date: Thu, 16 Jul 2026 10:42:34 +0100
+Message-ID: <86ech3feyd.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 00/37] arm64: Support for Arm CCA in KVM
+In-Reply-To: <2aba2dc2-eac5-474f-9bed-af2cb3003136@arm.com>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<868q7bnxf3.wl-maz@kernel.org>
+	<2aba2dc2-eac5-474f-9bed-af2cb3003136@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260716030236.124322-1-xiongwm2026@163.com>
-In-Reply-To: <20260716030236.124322-1-xiongwm2026@163.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Thu, 16 Jul 2026 11:41:13 +0200
-X-Gm-Features: AUfX_myzajePn8mltUINphDNuq-00hOZMHHFFuGnRbdhRoWqlQATXfpqP4mVDnA
-Message-ID: <CAJaqyWfW9n5o+ojrEjK-m+6cwH_TSxWckjkvEXowZA8r=vDmdQ@mail.gmail.com>
-Subject: Re: [PATCH] vhost: reject zero-size IOTLB INVALIDATE
-To: Weimin Xiong <xiongwm2026@163.com>
-Cc: virtualization@lists.linux.dev, mst@redhat.com, jasowangio@gmail.com, 
-	netdev@vger.kernel.org, kvm@vger.kernel.org, 
-	xiongweimin <xiongweimin@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Jul 16, 2026 at 5:02=E2=80=AFAM Weimin Xiong <xiongwm2026@163.com> =
-wrote:
->
-> From: xiongweimin <xiongweimin@kylinos.cn>
->
-> Reject VHOST_IOTLB_INVALIDATE messages with size =3D=3D 0 to prevent
-> iova + size - 1 from underflowing to U64_MAX, which would
-> incorrectly delete the entire IOTLB.
->
-> Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
-> ---
->  drivers/vhost/vhost.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 3c080c454e374cabd7321416ed92c5f7d3135254..xxxxxxxxxx 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -1656,6 +1656,10 @@ static int vhost_process_iotlb_msg(struct vhost_de=
-v *dev, u32 asid,
->                 if (!dev->iotlb) {
->                         ret =3D -EFAULT;
->                         break;
-> +               }
-> +               if (!msg->size) {
-> +                       ret =3D -EINVAL;
-> +                       break;
->                 }
+On Thu, 16 Jul 2026 10:20:49 +0100,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> On 16/07/2026 09:36, Marc Zyngier wrote:
+> > On Wed, 15 Jul 2026 15:28:02 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> This series adds support for running protected VMs using KVM under the
+> >> Arm Confidential Compute Architecture (CCA).
+> >>
+> >> It is the second part of the Arm CCA host support that was previously
+> >> posted as a single 44-patch series. The generic firmware/RMM support has
+> >> now been split into a separate 6-patch base series[0] so that it can also be
+> >> used by other work (and hopefully make reviewing a little easier). This
+> >> series applies on top of that base.
+> > 
+> > Splitting the series this way means that no Sashiko review can occur,
+> > as nothing applies on its own:
+> > 
+> > https://sashiko.dev/#/patchset/20260715142841.80544-1-steven.price%40arm.com
+> > 
+> > In the future, please post this with the relevant patches as an
+> > integral prefix, so that we can make use of the tooling.
+> 
+> Ah, I wonder if there's a way to teach Sashiko to deal with dependencies
+> like this? Anyway if you're happy with everything in one series and
+> (hopefully) merging a prefix earlier then I'll go back to that - it's
+> easier for me too.
 
-I think the issue is real, but how about adding the condition to the
-caller vhost_chr_write_iter? It is already the
+Sashiko had plenty to say about the first series, and you've been Cc'd
+on the reports. I'd expect responses to the reports explaining why
+this isn't a problem, or how you are planning to address it.
 
-if (msg.type =3D=3D VHOST_IOTLB_UPDATE && msg.size =3D=3D 0) {
-        ret =3D -EINVAL;
-        goto done;
-}
+Thanks,
 
-So it should be somthing in the line of:
+	M.
 
-if ((msg.type =3D=3D VHOST_IOTLB_UPDATE || msg.type =3D=3D
-VHOST_IOTLB_INVALIDATE) && msg.size =3D=3D 0) {
-        ret =3D -EINVAL;
-        goto done;
-}
-
-With that, please add my acked-by.
-
->                 vhost_vq_meta_reset(dev);
->                 vhost_iotlb_del_range(dev->iotlb, msg->iova,
-> --
-> 2.39.3
->
-
+-- 
+Without deviation from the norm, progress is not possible.
