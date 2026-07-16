@@ -1,63 +1,63 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F29741F34D
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7669941F5F2
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 12:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784205873; cv=none; b=XggOe1znHLMjJDiIzjafpmiCe3xzkiQuvQUyS2LaiBY6rEYXtZalxVEn+ESQZcsckbHrR1z/LFJt9w3EtrK9bNLTMLmJ4wenFu6mOdUvZUVnmikpGz/rXxubwzwvqj9wkd6cPj/kc1jpUngLlWjobmtLYRB/4AXrZCsZnVJGB5A=
+	t=1784205882; cv=none; b=Kcy7mevXODgF6XmdNLAXInPhuA/l+S/1GMO5G9yp9vkCeT3775EjnBXHp1VVMvxkRE7u7NJ3V+OY1+rxL1vPbylxoeO6VKqgHte5IShYLl4m3po3iPGfUT0HAmDw4icxzvED4MM/7TW2qekpTs1b8J2b7vnhBhaPltZEU7+Pa6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784205873; c=relaxed/simple;
-	bh=z8jC4aCjR+Oesc+bLFA5i5JVDTkwm+Fh6FK3DV0FuyQ=;
+	s=arc-20240116; t=1784205882; c=relaxed/simple;
+	bh=C9vr1GpyOKZPJayEcfEUxAQT/YmOuTmwy42kU/s05EI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BAOHP1Fs3DDv1XLhBWtj3+TcGMk8qgI2nLvY1VL4mMq+ilsNiKqiAfzJY6UVfDSl/r4s4kRmcgqKHh5RuS6mJRPQT9fcHxFvXddjlWov36q9pLOfRCgaiJzcbDaGWPZL/xQ5ERFKsIU3L8MdwF5gvjJw7wfblWZK2qdGNPTz08Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=C45IRpyv; arc=none smtp.client-ip=209.85.210.171
+	 MIME-Version; b=otPPkLh1kp8RXN7wjfuKJyOuRNIdQuBLq7qFJoYwX+XyN1hZocdjtvBlhl1hyI0HqD7Cw34JCofipIrlY3aD3AJYems3Md7U4RBbj6ZjnucXJz8mpJHBV2xnPuveSUTFWi80SJM877F2spU+FDvDeinQApGtpuyLS8qhkCEn9RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=gyogljhk; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="C45IRpyv"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8485b358552so7269903b3a.2
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:44:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="gyogljhk"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-ca12086c06eso5530848a12.0
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 05:44:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1784205872; x=1784810672; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1784205881; x=1784810681; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=s0haKjxFEA+XqfWLiPeMGRklJhvkZG2bsdABvuKjaV0=;
-        b=C45IRpyvX6HmHdRZR3ZZ+1wy3BA5jkkEbDBp8+0GIb3o9EyyKPwbNvHw2gGop+WH2c
-         pJiaNzVp6Tniz9si9bxp1FJoCGkPE8k84euMkqm9kHAOFakSHiXZCDq0Q+XNGenmtk0X
-         AcNSdJFQzBIV3POW6J76B1U56B9a2HCGgTukkQN1LtUpyVMDf+QoJHwDHIP6cYbYhScP
-         4Dl8WlrRhjr4kPy3MarWxpCJp9GcpM6nLT8uYIJ1cgPvf+qJwvLg+0bPsQ6qcGg1d3A1
-         k+9C/SiPoGlnyNUZlQMiavpIldAGPonCUQBrMKCOqletZW6U9r8Ivbrkc7cDS/RvKyUG
-         xz0Q==
+        bh=xl9SXJgNY1wsw8DmDdohBTpB25DAPwcBNYqh5j7w6mI=;
+        b=gyogljhkXmG1zV+1zNRnCZRoh21QCNeeGkdNQELVkKXZH4wUKLl1pSeGbO5DaqQ1xX
+         EcgA2ESGbQqnTh6ou9FS172rAiOIeTOxWAgaUqRVLLmtlW0+foeAfUOQxcnYOJKHPE9l
+         IeGjgzvqMPw6fgvV47OczXuexfBLjQZSOclJiYivqiPs1vMBcbwvrp8RR/2wtgXD46rD
+         d8HZtq7Sv8P7vIn5DZmaTrVuICREhUejrDDon2KLJnUeGZwrNwLfw8x52DRXyICLNmSG
+         7ySDml4AWSjLzOc5TTNg4h27Ia9n9pr5EfMXRmxUSxPdwi3JNFuLFjIARTLEzy9ZqQkI
+         f6Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784205872; x=1784810672;
+        d=1e100.net; s=20251104; t=1784205881; x=1784810681;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=s0haKjxFEA+XqfWLiPeMGRklJhvkZG2bsdABvuKjaV0=;
-        b=ZZRCQg2J1NL9P6c7enjsU9xEEmSdBiobss3P8T8IoJqrOKi2f8BZo6KJC6Wbxq2h9G
-         tmJ9m0VghRJ5QWex5AXjJmHAzZxy4xvaUWZRce37PTwar/KEsahx+yhuklc164Ul0bHs
-         1fuG2+almI2NN7XIQxCELIQDNozonOEsAl8JLuTc/aFnjP3QIfqIy38eyD4STNHpMKnZ
-         rAFGu8kzHtxygeJ9d8DYyDjlmiZqwOrN/ArzumYTJhsNwPVnr4SZJtkrYW1lzfQwidM3
-         2UWRuWkIb//yKu4/B+03BQd4Fm1yr83meUyGDeloXPfZpINIUqsU2jiHPaYXDcioB/b1
-         SPHA==
-X-Forwarded-Encrypted: i=1; AHgh+RooG/RW4alJIE6Z55QghYxdeXjWWM9moq+/h9IwH6OSg0igP82h5i6IURN3TYolI44/w6Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMgCjxZTJdzdCHd2h2KotOkHyZweG2Kt4t3y8ASxxeZ2QA8x3u
-	c8/meqXZxbl1Kx0h65Yxl65xXa2ZSY9gkoBPMR8QoXvlKJFKCQh1jGKlXfvqLULnzWU=
-X-Gm-Gg: AfdE7ckiO43wk7yx+9RI4vfA4kFc2n6smoSs2wO/PxeOVjYNMa/q5XnDMb0FJH428b6
-	DaXN6iJk3I09D+H4AVvqSn1XQNV9hfxPxXzcdn9i2TcPAdhERRcqIMllNFKRiQebnOnL08/v6T8
-	qTa5lKaVw+6ZDSxqGN2MjsqTzOu/ZFMZlHuYyHTwQ4reN17j8xXcH9s2cBDLBiXAlRzrrUI30Qo
-	LyDL7wxdKs83VYlMPCLjFEnXHR301G3W1aNipIyG31XZqsCXhzKDLIQYAdna/7A+LPKD1uG6OZU
-	Uu6MtQgw7ATGNzoU7ky8w35Tpvm7ayGhGMptgMvbFrqmR+/6lHQHjPQXC5wts4eei9i8Z1hUCUj
-	YcUQgHoBr8gKmaUTEJqPvPGxHMdbPPGd7wJNHs3fe0UJeKeoec36/zLiZ7Xdori6HcSFmjk1eWi
-	mJm3Uq0EmWPUK4TlKGBo6sDSSxkOG4BiUT0w==
-X-Received: by 2002:a05:6a20:e615:b0:3c0:9c19:6590 with SMTP id adf61e73a8af0-3c3576c37f6mr12235735637.74.1784205871769;
-        Thu, 16 Jul 2026 05:44:31 -0700 (PDT)
+        bh=xl9SXJgNY1wsw8DmDdohBTpB25DAPwcBNYqh5j7w6mI=;
+        b=U4ROXntZE12dNv6DBWrLY8Y6NOZ8XKVd5kzqzkGlYN/ZaLkDeFXqt8p+yMi4nBglhf
+         07H9Nod7bw4Fwljjj2r5j9GA99IC6ZVFsOLN8R+ag6ZhsZ0lYAfsL4A9/SUmfPIry4IT
+         MjAWou7flMJTNGQIXIZIwYrLYo2LcewqLfG4TAQkWQDx9krmdmKGqSnZDzun9e9MhpOf
+         iZbftbHi75U7Ww6ka9/H9JsIsCrs5AQjAEq61Crc88aQu7A+WjI+NExYVD7L06vcLsHA
+         nTvdlLIU9AVe6NTUFFyD78RA1ygPkwL3whmb9MehP0hX5Ew7vHdf6+4zq90gnbI9zEio
+         y/aA==
+X-Forwarded-Encrypted: i=1; AHgh+RqSk7daTLKiT2nj9+V3+hAC27A3j2FJKpk7QVEg7FdNKNdpVjLdIURh8toa5pd1eBU2O/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaxzogHFfE0ejGPlXQ2ukW/88tqqyCpGqdl0Cqtgo2DTLmf652
+	3v/4Y4th5CJwmx24rXHvq/H/SLRbscoOdI20frx0SZdSdWDFogaD2/fb6DcWEMURZaE=
+X-Gm-Gg: AfdE7cni4z84Dju9Z03WNly3HoxFcxS2oHtN7BjgB41csqLAuP9GqUJOX4tDPhLBFZK
+	ugJpSloPh61QKRmbFXrWZ2pX1GJCSHGygsG9PpLkpi1fCfXFmfqAtNo/zNNMKWCVbMQBhdpxqdb
+	OW3ef9fRUc/+JNKxMZpkM6yPiIzRakJyAzXOtjN/R08BZZyqA3e5muLsh/gnAzZuKg0ehwxdhpu
+	848tJKJHMCOGBLYa4atZhNMBXuAOb+RD+brwnnPBjHqm3b1tWg4z+uZZrD5zWW83UjW1tJ4Qn8h
+	RDFKa8Tz8DFHusrLJ1/8BK/9YQenlG/d2AFsPqOOFYMvgGC+fVh7kH92bW3tBpCY2/mNzTH+5Wd
+	NBqiKepgCTxkQRxYbQbHEyIp0QDRN7+vn9Ezirzuj/UXQFIncI+XepZMGq3Ii3TSGz+B0AfKYPu
+	+plFVhdXp9yox2UXINSY7GyhU=
+X-Received: by 2002:a05:6a21:114c:b0:3b4:b275:c5b1 with SMTP id adf61e73a8af0-3c36c1cf118mr8945730637.26.1784205880687;
+        Thu, 16 Jul 2026 05:44:40 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([2408:8606:1800:501::2:f])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.23
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eeaba2sm1730793a12.12.2026.07.16.05.44.32
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 16 Jul 2026 05:44:31 -0700 (PDT)
+        Thu, 16 Jul 2026 05:44:39 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: linux-riscv@lists.infradead.org,
 	linux-mm@kvack.org,
@@ -70,9 +70,9 @@ Cc: linux-arch@vger.kernel.org,
 	linux-perf-users@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v2 12/15] arm64: mm: avoid contpte A/D aggregation in fast-GUP
-Date: Thu, 16 Jul 2026 20:41:47 +0800
-Message-Id: <92fbae3247b4bf0d7989ba20a8763ecb836d0279.1784201104.git.cuiyunhui@bytedance.com>
+Subject: [PATCH v2 13/15] riscv/mm: remove redundant TLB flush in napotpte_convert
+Date: Thu, 16 Jul 2026 20:41:48 +0800
+Message-Id: <e55fb906990083b05272648f5299514a68cf8456.1784201104.git.cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <cover.1784201104.git.cuiyunhui@bytedance.com>
 References: <cover.1784201104.git.cuiyunhui@bytedance.com>
@@ -84,47 +84,71 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fast-GUP only needs the PTE state for the current virtual address and
-revalidates the raw PTE after pinning the page. It does not consume the
-contpte block-wide accessed/dirty aggregation provided by the public
-lockless getter.
+napotpte_convert() switches a NAPOT block between the Svnapot encoding
+and the equivalent set of base PTEs. The conversion itself preserves the
+effective translations: PFNs and permissions are kept the same while the
+page-table representation changes.
 
-Override the fast-GUP PTE helpers to use the raw PTE for the current
-entry and raw revalidation. Keep the public ptep_get_lockless() semantics
-unchanged for other lockless users.
+Do not issue an SFENCE.VMA in the middle of this representation change.
+For partial updates, such as unfolding a writable NAPOT block before
+write-protecting one subrange, a flush at conversion time would not be the
+operation that enforces the final permission downgrade. Writable base-PTE
+translations could still be refilled after the conversion and before the
+subrange is write-protected. The required TLB maintenance belongs to the
+operation that actually changes the effective mapping.
 
+The RISC-V privileged architecture discussion clarifies that Svnapot is
+an encoding of a naturally aligned range. When napotpte_convert() only
+switches between the NAPOT encoding and the corresponding set of base PTEs
+for the same effective translations, the conversion itself does not
+require an extra TLB invalidation beyond the usual page-table update
+rules.
+
+Link: https://lists.riscv.org/g/tech-privileged/message/2950
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/arm64/include/asm/pgtable.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/riscv/mm/contpte.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 018781a1fcbee..d1e08dce9f7c5 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1760,6 +1760,22 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
- 	return contpte_ptep_get_lockless(ptep);
- }
- 
-+#define gup_ptep_get_lockless gup_ptep_get_lockless
-+static inline pte_t gup_ptep_get_lockless(pte_t *ptep, pte_t *rawp)
-+{
-+	pte_t pte = __ptep_get(ptep);
-+
-+	*rawp = pte;
-+
-+	return pte;
-+}
-+
-+#define gup_ptep_revalidate gup_ptep_revalidate
-+static inline bool gup_ptep_revalidate(pte_t *ptep, pte_t raw_pte)
-+{
-+	return pte_val(raw_pte) == pte_val(__ptep_get(ptep));
-+}
-+
- static inline void set_pte(pte_t *ptep, pte_t pte)
+diff --git a/arch/riscv/mm/contpte.c b/arch/riscv/mm/contpte.c
+index b0b8ff0aade3a..8289f39d6e188 100644
+--- a/arch/riscv/mm/contpte.c
++++ b/arch/riscv/mm/contpte.c
+@@ -129,7 +129,7 @@ static pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
+ static void napotpte_convert(struct mm_struct *mm, unsigned long addr,
+ 			     pte_t *ptep, pte_t target)
  {
- 	/*
+-	unsigned long start_addr, end, ptent_addr;
++	unsigned long start_addr, ptent_addr;
+ 	pte_t *start_ptep;
+ 	pte_t ptent, pte;
+ 	unsigned int i, nr;
+@@ -137,7 +137,6 @@ static void napotpte_convert(struct mm_struct *mm, unsigned long addr,
+ 	start_addr = napot_align_addr(addr);
+ 	start_ptep = napot_align_ptep(ptep);
+ 	nr = napotpte_pte_num();
+-	end = start_addr + napotpte_size();
+ 
+ 	for (i = 0; i < nr; i++) {
+ 		ptent_addr = start_addr + i * PAGE_SIZE;
+@@ -150,8 +149,15 @@ static void napotpte_convert(struct mm_struct *mm, unsigned long addr,
+ 			target = pte_mkyoung(target);
+ 	}
+ 
+-	flush_tlb_mm_range(mm, start_addr, end, PAGE_SIZE);
+-
++	/*
++	 * This conversion only changes the representation of the same
++	 * effective translations: NAPOT encoding <-> equivalent base PTEs.
++	 * A flush here would not replace the TLB maintenance required by a
++	 * later permission downgrade, because writable base-PTE translations
++	 * could be refilled after this conversion and before that downgrade.
++	 * Leave TLB invalidation to the operation that changes the effective
++	 * mapping.
++	 */
+ 	page_table_check_ptes_set(mm, start_addr, start_ptep, target, nr);
+ 	if (pte_napot(target)) {
+ 		for (i = 0; i < nr; i++)
 -- 
 2.39.5
 
