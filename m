@@ -1,105 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AB93CC7DF;
-	Thu, 16 Jul 2026 10:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5830925B0B8
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 10:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784196329; cv=none; b=MABSGxsVxX+j4KJn4agCvV49zJG/2aQTWqTiMjW081/F/TtA1keSBUt1BivbFvHXRuHzdV4Hdoa5QZAERc1c1PVVrIeMY18z29q6wmcxR+KaBSenn7tDn7SV36U4gYGEqxnLjoyazFINfLx7D18LIo27DcVX4JkSGJmYMu6FpHs=
+	t=1784196352; cv=none; b=BXJ3X+ZafYW1u7ND4jR1UkhZcdfx5zTket7RHJb/AnBImAaZvMCcnpBu3yKnsQKyWK7VGqN1gWWh/4xgXiG3qU7JYtPSoKBFXTquPIGM7YS4f+rVJL8KCLtZQK4TVEMGqsblQKodpxnTVqlzupxzYZhRUlp8cS+4RSazAfxd31M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784196329; c=relaxed/simple;
-	bh=v2BPZwnXmF22RXL/VjHtWzCyXdlbktgx6fL2lw//kkg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t59yvcDWitkMjjswn55raRKjvgVnOAdH024G+fLDQ1RMdRzxxG5BhaDWGPbcN/gdhajmeSvsXVAfHSZlA1HoWD3vpcib2eWp8jx5clHGR8qanY4Mp2ia/AtZRzEsFEw+eSZSDwkKwyYVW5OeBRyc795uX37dbv+uB0iiM9wfiDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RUossjHW; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784196352; c=relaxed/simple;
+	bh=oaNcItQX3+lZDLiWbz3+OgDBTksCf3a74PZXGOrAarc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nI4S7nYMV03dF0P/8qQF2VaXZ+0ODJEMnLtLftD0ug7zZJVTtaU4j6iA2lNrvk8ov9iVy4hLOqmexkryi/r3/pwWwSyc9jDjKVqzmVlyt23lSP569dsjRqVh/02yq88qBYTdKq8YxHgGd/RKU9l/b78H1H9SzOZYqx286bwlkZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=F7L2LVDW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RUossjHW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784196329; x=1815732329;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=v2BPZwnXmF22RXL/VjHtWzCyXdlbktgx6fL2lw//kkg=;
-  b=RUossjHW1KwgH/vswx7JYqiZPXRYoZoEms/N0Qzs/SRUxBxcvEuugvGu
-   yZ1DinB+iDVTX7gVbF+moqAAjAA5Q/YKHhtKCOBUfnHIudp507lqX7iZ5
-   Z4pOngdWYAK4mxN2FrUaHD7nCmTu4Bbs4IF8qcF+Nd4jus6y5VwtGDnmW
-   gearvbQw9oFBrWLRxSbGaoI4Ldz9MvwLqSyUS9rZdAgcNL+aDEqBqWQ8j
-   U9XuoE2oCtkTjwoGMR0pwck8zNy+8Uj8GBtoSYokjGj74UGFP4lqxC8Km
-   OCJw7FmZKLaqYRlYBgoWuoQMS6HPwX2FbuISn8frrFZpvHBFjxAA7/4zP
-   g==;
-X-CSE-ConnectionGUID: 4nAS+QYzQ7eYI1MgtSYfww==
-X-CSE-MsgGUID: akCPKJIKSXK3sBMQ0SkGOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="96365601"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="96365601"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 03:05:24 -0700
-X-CSE-ConnectionGUID: 0z+HCuetQzOxu4lyctjEFQ==
-X-CSE-MsgGUID: N+V5ncrZSV20XqFdhJRcGA==
-X-ExtLoop1: 1
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 03:05:20 -0700
-Message-ID: <87a7acb9-8a00-409f-86d3-b15c28f41a4c@intel.com>
-Date: Thu, 16 Jul 2026 18:05:17 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="F7L2LVDW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784196350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mAq1Bt90R9SWsWMZK2rHJPQpSqkEPM2EYKiyU0yD7NU=;
+	b=F7L2LVDWXzOga16iaX1NlXUnpBFatf6UONbuExyO+djTKWgchWA0HeJCXMN2jtp4Xk3kkw
+	NffgpMHUfjoAxZ6ami6GHCUsg21FgaOZUNrBeGTchLBZLXzsKOAoBoMMAuCowZfMjWu31a
+	9HhQKQ5L2g6wXk280l5kyGjoKPba8zw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-Uv_d8R6WMrGk4SaouL40hQ-1; Thu,
+ 16 Jul 2026 06:05:46 -0400
+X-MC-Unique: Uv_d8R6WMrGk4SaouL40hQ-1
+X-Mimecast-MFC-AGG-ID: Uv_d8R6WMrGk4SaouL40hQ_1784196346
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0004F1955D9C;
+	Thu, 16 Jul 2026 10:05:45 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.22.29])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4667E1955F74;
+	Thu, 16 Jul 2026 10:05:43 +0000 (UTC)
+From: Anthony Harivel <aharivel@redhat.com>
+To: aharivel@redhat.com
+Cc: kvm@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com
+Subject: Re: [RFC PATCH] KVM: x86: RFC for per-VM C-state policy enforcement (KVM_CAP_CSTATE_POLICY)
+Date: Thu, 16 Jul 2026 12:05:38 +0200
+Message-ID: <20260716100539.2059970-1-aharivel@redhat.com>
+In-Reply-To: <20260715124235.1444895-1-aharivel@redhat.com>
+References: <20260715124235.1444895-1-aharivel@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] KVM: guest_memfd: Drop the redundant printk on
- arch gmem_prepare() failure
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
-References: <20260714231015.3337831-1-seanjc@google.com>
- <20260714231015.3337831-4-seanjc@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260714231015.3337831-4-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 7/15/2026 7:10 AM, Sean Christopherson wrote:
-> Drop guest_memfd's ratelimited printk to log "preparation" failures, as KVM
-> SNP alreads logs more precise messages in all error paths, and whether or
-> not failure to convert the pfn to private is "unexpected", i.e. warrants
-> logging, is firmly an architecture specific detail.
-> 
-> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Hi Paolo, Sean,
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+I sent an RFC to kvm@ for a per-VM C-state policy capability
+(KVM_CAP_CSTATE_POLICY). The idea is to let the host set a max C-state ceiling
+per VM, filling the gap between full interception (cpu-pm=off) and full
+delegation (cpu-pm=on).
 
-> ---
->   virt/kvm/guest_memfd.c | 10 +++-------
->   1 file changed, 3 insertions(+), 7 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index d5d227476cda..62c2c157f0c1 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -66,15 +66,11 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
->   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
->   	kvm_pfn_t pfn = folio_file_pfn(folio, index);
->   	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
-> -	int rc = kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
-> -	if (rc) {
-> -		pr_warn_ratelimited("gmem: Failed to prepare folio for index %lx GFN %llx PFN %llx error %d.\n",
-> -				    index, gfn, pfn, rc);
-> -		return rc;
-> -	}
-> -#endif
->   
-> +	return kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
-> +#else
->   	return 0;
-> +#endif
->   }
->   
->   /*
+https://lore.kernel.org/kvm/20260715124235.1444895-1-aharivel@redhat.com/
+
+I've been tracing the implementation path and I've hit a design question I'd
+value your input on before going further.
+
+The enforcement point is kvm_vcpu_halt() → kvm_vcpu_block() → schedule()
+→ cpuidle. The problem is that cpuidle has no per-task C-state constraint
+— states_usage[].disable is per-CPU, and forced_idle_latency_limit_ns is also
+per-CPU.
+
+So three options:
+
+  (a) Temporarily toggle states_usage[i].disable on the pinned pCPU
+      before/after kvm_vcpu_block(). Simple, works with existing API,
+      but only correct with dedicated pinning (overcommit with mixed
+      policies would race on the disable flags).
+
+  (b) Use forced_idle_latency_limit_ns on the pCPU — same per-CPU
+      limitation, and latency-based rather than state-index-based.
+
+  (c) Propose a new cpuidle API for per-task idle constraints (e.g.
+      a per-task_struct annotation checked by the governor). Correct
+      for all cases, but bigger scope and needs cpuidle maintainer
+      buy-in (Rafael Wysocki).
+
+My use case is NFV with dedicated pinned cores, so option (a) would work.
+
+But I'm wondering:
+
+1. Is this use case too niche for upstream KVM? The target is cloud
+operators running VNFs on dedicated cores who need a host-side
+kill switch for deep C-states without guest cooperation.
+
+2. If it is worth pursuing — would you accept option (a) scoped to
+the dedicated-pinning case for v1, or would you want the cleaner
+option (c) from the start?
+
+3. Is there a simpler approach I'm missing entirely? I looked at
+whether KVM could cap things before reaching schedule() (e.g.
+custom idle with MONITOR+MWAIT), but that breaks scheduler/RCU
+invariants as the sashiko review pointed out.
+
+Happy to prototype whichever direction you think has the best chance of landing.
+
+Anthony
 
