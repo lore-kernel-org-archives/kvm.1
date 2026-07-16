@@ -1,95 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185ED3BCD01;
-	Thu, 16 Jul 2026 07:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEEE3BD63A;
+	Thu, 16 Jul 2026 07:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784187558; cv=none; b=OnjqwNB+bln0bFcTlRwh2Ev/csI2LSuWKqsBJJvpQkDr5NMJP/ZqEPonj3HiTs07TleYug0s7Qhi6iBwUyybMMGjDwF1vHcDB+uEZxfbN+3HYhVsFf1nrTagPNsgFzvfDG3k4CXNqDnspAICyTz4ob2ozhyI++3dh+odpp2prew=
+	t=1784187562; cv=none; b=t40KutfbIYV8UM6naJonUlGsBmJwIz6kss9fjICcurjVuJC4yRuShAQKVbU2Hhypv9MJAfkVKH8kgscYPTkwvVUcDl0sKtlgXRMpg4KfjSiBHLTq6oiqBYgwkTxiozn7YF+KcCnc7HZidM06ncCmOVQ33L8xXpusbzsQ4dIb8XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784187558; c=relaxed/simple;
-	bh=Np5vro/iaKpCDRoTmTN0z2nXvU3o+YX83+k/D/xhD9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZfY3StGnSZRiqGq5QJ7T/YWM7Lt0oDlUzwKI43dTZAbG0UeBj8eZbb5eN0zF6A/1ByKLO4osi9juZ38/SztKMPGa5HZzmsIbAIU9LFLVB1BDYA0NDctPWn3BnZMoWMva5MTtGynlGohWzzDszm5q98WIrAim3RNibLDYKIoBWuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hO/BIT9l; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784187562; c=relaxed/simple;
+	bh=zyrLfzWQaKc9gapHtEKpwLe0w9arwGPB8VIsXpBv1QE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VokfL0qkWM+RdxD9wMUqUSeyH7xDdmccEAKk2A2HUTxcudsvfQzYh1rQfRYtAb9wZwxlE/q1IW2D0WZnveP4BsGtxNT1jCxkXz80HSJWOr9gVcpOxUAJ7fp3MUzfxGXD00PMll2Jvos6kd7ZTlBwZJmOvrJr+BAuotxgy4LYxyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=BpfmbnTx; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hO/BIT9l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD321F00A3A;
-	Thu, 16 Jul 2026 07:39:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784187556;
-	bh=malUCnvO8ek8Kt+Gg1lNXeMv1KHUcTELIq/XhwfI6sg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hO/BIT9ln2bUAPkNbyvzxxux7ErFAgTUvcalcKpl5Jaf+VQYiVFJMug5EX3x8Bqc2
-	 S4U7rwqfVZmmDD2NmfZ/vJVLSZOVa6ASiCBGIma65ebcTMNqGIl959cmGtsobnmYGO
-	 s1xSxQRZv56yqAwUlyV8vZPK7tlE5UhGYqmKl6f7o1+7k0JahWCyC3DUNHhmnkYIwN
-	 zkyGSLvfliQQfKz+IhioE/uCXL21tndw4re04pxz0HUIomjL9BZhcP5DaONo76hN+H
-	 sYnyphfPKqhyi2s9T7mptMyC4kPKF/xNSxFVnr6v1mUMLMHDD87mv65Xn9dB96zc8s
-	 YmAfeXShj9fZw==
-Date: Thu, 16 Jul 2026 00:39:15 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: maz@kernel.org, catalin.marinas@arm.com, will@kernel.org,
-	yuzenghui@huawei.com, wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com, caijian11@h-partners.com,
-	liuyonglong@huawei.com, yezhenyu2@huawei.com, yubihong@huawei.com,
-	linuxarm@huawei.com, joey.gouly@arm.com, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, seiden@linux.ibm.com,
-	suzuki.poulose@arm.com, leo.bras@arm.com
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
- dirty tracking
-Message-ID: <aliKo7dTZzKcWHzI@kernel.org>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <20260709104026.2612599-4-zhengtian10@huawei.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="BpfmbnTx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0J
+	XU3cAUzaSbuwG+IlW2Ctt3lxfI9p33+cxpVmrZTCY=; b=BpfmbnTxJjIhkGOMH4
+	evePfG+TieRPYpeMG7SNLkqTTeuA1k8xRJmqZbjG3CM+xyanBeAa10dvjwGALRw+
+	d9mtF3Auf40V8cyk4QvabMEiBdgZdaPWrHZZZaOkHyE6oZizvbxxf9f5IUylarnS
+	3z5yiL4qxscG9vju/XdDlscS0=
+Received: from thinkpadx13gen2i.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wBXvgNdilhqW6A9Jw--.32504S2;
+	Thu, 16 Jul 2026 15:38:06 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: anup@brainfault.org,
+	atish.patra@linux.dev,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr
+Cc: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH] KVM: riscv: Fix infinite loop in NACL hfence entry allocation
+Date: Thu, 16 Jul 2026 15:37:56 +0800
+Message-Id: <20260716073756.44153-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260709104026.2612599-4-zhengtian10@huawei.com>
+X-CM-TRANSID:_____wBXvgNdilhqW6A9Jw--.32504S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKrWrGFy3AF45Gr1UAry3XFb_yoWDWwc_C3
+	WxX3yxWrW8ta1jv3Z3Ww4rXF4aya98C34DGr1Iyry7ta4Fq3yaqa4kKw1DGryUAr45Zasx
+	Jr1rXr13Z3ZrujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8jiiDUUUUU==
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC8x5qFmpYil75OQAA33
 
-Hi Tian,
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
-> -	if (prot & KVM_PGTABLE_PROT_W)
-> +	if (prot & KVM_PGTABLE_PROT_W) {
->  		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> 
-> +		/*
-> +		 * No DEVICE filter needed here: relax_perms is only called
-> +		 * on FSC_PERM faults. Device pages always get full RW from
-> +		 * initial mapping and are never write-protected during
-> +		 * migration, so they never trigger a permission fault.
-> +		 */
-> +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
-> +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> +	} else {
-> +		/*
-> +		 * Clear DBM on W→RO downgrade to prevent hardware from
-> +		 * silently upgrading RO+DBM back to W+dirty, which would
-> +		 * bypass KVM's write tracking and cause data corruption.
-> +		 */
-> +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> +	}
-> +
+try_count is initialized to 5 but never decremented in the retry path,
+making the `if (try_count)` check always true. If all NACL shared memory
+hfence entries remain in the pending state after sync, the function loops
+forever, causing a soft lockup. Decrement try_count on each retry so the
+fallback warning and return become reachable.
 
-This block makes it pretty evident that the DBM bit really *is* the
-write permission bit. I'd much rather we introduce the concept of dirty
-state to the page table library and migrate the abstract write
-permission to the DBM field, even if we don't have FEAT_HAFDBS.
+Fixes: d466c19cead5 ("RISC-V: KVM: Add common nested acceleration support")
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+---
+ arch/riscv/kvm/nacl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-That way everything 'just works' from outside the page-table library:
-write-protecting hugepages would have the effect of clearing DBM and we
-can separately reap dirty state from page descriptors.
+diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
+index 6f9f8963e9dd..9aff03c4f667 100644
+--- a/arch/riscv/kvm/nacl.c
++++ b/arch/riscv/kvm/nacl.c
+@@ -33,7 +33,7 @@ void __kvm_riscv_nacl_hfence(void *shmem,
+ 	}
+ 
+ 	if (ent < 0) {
+-		if (try_count) {
++		if (try_count--) {
+ 			nacl_sync_hfence(-1UL);
+ 			goto again;
+ 		} else {
+-- 
+2.34.1
 
-If/when the architecture forces FEAT_S2PIE upon us we will need to make
-this change anyway since dirty state management is unconditional and
-handled separately from the actual permissions.
 
-Thanks,
-Oliver
+No virus found
+		Checked by Hillstone Network AntiVirus
+
