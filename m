@@ -1,95 +1,130 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05735313283
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 10:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E7240A92F;
+	Thu, 16 Jul 2026 10:19:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784196489; cv=none; b=EkTUIySvlMpMXDj1MyfQ6hPw1m5Xvj3iHUE8sg9Ma0IBVOE8dK2vGG/xGe/N8ktk0aiRS0S01c8DKOyRFWhwRAsk36hrDorqgqOze1ILjRurukm3MQSrt1i6Cfo969DK/jPbVOAMx45bOTcY3CQNb3+LLIFyV0f/kS/ldvNo8yQ=
+	t=1784197187; cv=none; b=RsFXfAxgXKNYHBwGtQCe2G1Dy4xJ/Og2PyRARoqzHJvUoIBWfm+o8MPPA2+6liHNMaAECyA9jPTt2+hTXg29gEJJzjVP8kzWNZyV9H+6NJXQxnF5H7dbtng+3SwLhHY0csWXQV6CFhCUxfTuFoWIXAiGNPNUdEuOFocE73g9xxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784196489; c=relaxed/simple;
-	bh=0JdSEfgAVgO/L7bsCHzX4DJzUNLdqutxKoKw7iNGDsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MlXpEy4XjSZXosxhC0kD8WUAwvFAYwgkiraML6C7oH2Z9NWspHaeiVzduRXsfPPr3WdJ7vA2ctsBlYHoTiZcDxdEL90PNGYVQej/iFvP/WvqstaefbytjCP0GDVHrbb8tUORttVuS2GMFjXl6WHaDSM6OkhiE0Dk1ojDxX5rFik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ko1Br3B7; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1784197187; c=relaxed/simple;
+	bh=3WOmSOJUE6+XMbdwY5Q6POKB6yIL5s1FNm2WoXf4Wfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gOofZieFQNNAjHfVFBp33UAo4svvLTkzosMIjAzYWb1iOm2Edgs+D/TQEfyfta3xsOlKUyGkkBrCNAajTw7lPQ/jghZytiY9lIVLS7IwmFfEABcIoXGScwjOHdgqC5H1jgcMotxPprMTsEYP8rZoq0YssBAmVhv82N3n1eh3du4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NFjy308A; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ko1Br3B7"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784196482; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=pUYM84ocghtsnSmh5pKhh7fbVoEF0MqzNRBNTH72wY0=;
-	b=ko1Br3B76vtmBNs8PdLVumFtVV6ZGEweIpUZOoYbDCyF9+P1GA3k7Nj7HYx09XqHblIs7R4AMlFa/6Ou+rKyUKoYQnhPGtZ3EE83F4k11/6tS+IDxpfsLpsXYibKCzv1a9ENVvze69ymaqu/WKl/amz37elIcKVuAuHM6mLMLhA=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=yexun@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X7E-JGC_1784196481;
-Received: from localhost.localdomain(mailfrom:yexun@linux.alibaba.com fp:SMTPD_---0X7E-JGC_1784196481 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 16 Jul 2026 18:08:02 +0800
-From: Yexuan Yang <yexun@linux.alibaba.com>
-To: kvm@vger.kernel.org
-Cc: binbin.wu@linux.intel.com,
-	chao.gao@intel.com,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	Yexuan Yang <yexun@linux.alibaba.com>
-Subject: [kvm-unit-tests PATCH v4] x86/lam: Allocate test page from AREA_LOW instead of AREA_NORMAL
-Date: Thu, 16 Jul 2026 18:07:16 +0800
-Message-ID: <20260716100716.1313-1-yexun@linux.alibaba.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NFjy308A"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40AF12F;
+	Thu, 16 Jul 2026 03:19:40 -0700 (PDT)
+Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1E8113F7B4;
+	Thu, 16 Jul 2026 03:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784197184; bh=3WOmSOJUE6+XMbdwY5Q6POKB6yIL5s1FNm2WoXf4Wfg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NFjy308AFS81BzQdrpSGjAeDy6Hf7XBhjRBE/6OcoG++oXkcBCD3OSw5h600E3GjH
+	 swcDTklYpzr57MS9w5mD4mVaMFTx5pmujDBtvqTsjX3msSQKcHOg3UMlDpP8j+7+ZC
+	 LCM09mvWgzo9NUJrHI2aV29iJK9cv0lkKVG7uWkQ=
+Message-ID: <5c03fc19-43c1-4828-ab8d-4777ba5ff4f3@arm.com>
+Date: Thu, 16 Jul 2026 11:19:39 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 27/37] KVM: arm64: CCA: Allow userspace to inject
+ aborts
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Joey Gouly <joey.gouly@arm.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-28-steven.price@arm.com>
+Content-Language: en-US
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260715142841.80544-28-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The lam test does not set a guest memory size in x86/unittests.cfg, so
-QEMU falls back to the default of 128 MiB. AREA_NORMAL starts at PFN
-BIT(36-12), i.e. physical 64 GiB, which is never initialized in a
-128 MiB guest. As a result, alloc_pages_flags(0, AREA_NORMAL) returns
-NULL and test_lam_user() ends up running its LAM checks against a NULL
-pointer, which is semantically meaningless even if the metadata-bit
-arithmetic happens to succeed.
+On 15/07/2026 15:28, Steven Price wrote:
+> From: Joey Gouly <joey.gouly@arm.com>
+> 
+> Extend KVM_SET_VCPU_EVENTS to support realms, where KVM cannot set the
+> system registers, and the RMM must perform it on next REC entry.
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> ---
 
-Allocate from AREA_LOW instead. AREA_LOW_PFN is BIT(24-12) (16 MiB),
-well within a 128 MiB guest, and bits 63..47 of the resulting linear
-address are still zero, so the LAM48/LAM57 metadata-bit checks remain
-valid. Update the adjacent comment accordingly.
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-Fixes: 0164d7595c85 ("x86: Add test cases for LAM_{U48,U57}")
-Signed-off-by: Yexuan Yang <yexun@linux.alibaba.com>
----
-v4: Change author information.
-v3: Change static_assert to assert.
-    https://lore.kernel.org/all/20260603015831.41664-1-yexun@linux.alibaba.com/
-v2: Assert vaddr instead of pfn.
-    https://lore.kernel.org/all/20260602060116.35206-1-yexun@linux.alibaba.com/
-v1: https://lore.kernel.org/all/20260601035401.39303-1-yexun@linux.alibaba.com/
 
- x86/lam.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/x86/lam.c b/x86/lam.c
-index 87efc5dd..63a36539 100644
---- a/x86/lam.c
-+++ b/x86/lam.c
-@@ -231,13 +231,13 @@ static void test_lam_user(void)
- 	bool has_lam = this_cpu_has(X86_FEATURE_LAM);
- 
- 	/*
--	 * The physical address of AREA_NORMAL is within 36 bits, so that using
-+	 * The physical address of AREA_LOW is within 36 bits, so that using
- 	 * identical mapping, the linear address will be considered as user mode
- 	 * address from the view of LAM, and the metadata bits are not used as
- 	 * address for both LAM48 and LAM57.
- 	 */
--	vaddr = alloc_pages_flags(0, AREA_NORMAL);
--	static_assert((AREA_NORMAL_PFN & GENMASK(63, 47)) == 0UL);
-+	vaddr = alloc_pages_flags(0, AREA_LOW);
-+	assert(((u64)vaddr & GENMASK(63, 47)) == 0UL);
- 
- 	/*
- 	 * Note, LAM doesn't have a global control bit to turn on/off LAM
--- 
-2.54.0
+>   Documentation/virt/kvm/api.rst |  2 ++
+>   arch/arm64/kvm/guest.c         | 24 ++++++++++++++++++++++++
+>   2 files changed, 26 insertions(+)
+> 
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index e39d146b34a3..85bec9b4f021 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -1314,6 +1314,8 @@ User space may need to inject several types of events to the guest.
+>   Set the pending SError exception state for this VCPU. It is not possible to
+>   'cancel' an Serror that has been made pending.
+>   
+> +User space cannot inject SErrors into Realms.
+> +
+>   If the guest performed an access to I/O memory which could not be handled by
+>   userspace, for example because of missing instruction syndrome decode
+>   information or because there is no device mapped at the accessed IPA, then
+> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
+> index 3e970c4f6214..5469c9a97fad 100644
+> --- a/arch/arm64/kvm/guest.c
+> +++ b/arch/arm64/kvm/guest.c
+> @@ -827,6 +827,30 @@ int __kvm_arm_vcpu_set_events(struct kvm_vcpu *vcpu,
+>   	u64 esr = events->exception.serror_esr;
+>   	int ret = 0;
+>   
+> +	if (vcpu_is_rec(vcpu)) {
+> +		/* Cannot inject SError into a Realm. */
+> +		if (serror_pending)
+> +			return -EINVAL;
+> +
+> +		/*
+> +		 * If a data abort is pending, set the flag and let the RMM
+> +		 * inject an SEA when the REC is scheduled to be run.
+> +		 */
+> +		if (ext_dabt_pending) {
+> +			/*
+> +			 * Can only inject SEA into a Realm if the previous exit
+> +			 * was due to a data abort of an Unprotected IPA.
+> +			 */
+> +			if (!(vcpu->arch.rec.run->enter.flags & REC_ENTER_FLAG_EMULATED_MMIO))
+> +				return -EINVAL;
+> +
+> +			vcpu->arch.rec.run->enter.flags &= ~REC_ENTER_FLAG_EMULATED_MMIO;
+> +			vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
+> +		}
+> +
+> +		return 0;
+> +	}
+> +
+>   	/*
+>   	 * Immediately commit the pending SEA to the vCPU's architectural
+>   	 * state which is necessary since we do not return a pending SEA
 
