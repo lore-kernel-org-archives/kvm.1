@@ -1,122 +1,188 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE19F346A0C
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28934398F4
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784227336; cv=none; b=H7oxIC2aYgRJY9c8j+NDPtt+xItC+DEzkMN9CTviVXkWBtKKT++LvMbsETdYUfIL5SjyRDM+RD49xnGc3GgHH6Neqx+p1RnsRUZyJRraGRdsIlpDQLnkq6f5J5NOLi63vQ8ur17i4Ux0E/ebl2JAUAKww9MQp5U7tfDYCyxknZI=
+	t=1784227590; cv=none; b=U04Na7r31WpqvjTrIS+eOuYWh11WUuyaBDAPy6EbPsjRXdXyepJ25V6wd6U7yLyWUOT8fwbF5jCh4LW+UDxJC+oPtmvwlG5Oj0JXUbDN9M/QF1E7LtkxcJHXibpU8R3cydTjtkj6D1u0j/inYFKWxzJzpSKDf6WJz5OAnJIuShI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784227336; c=relaxed/simple;
-	bh=cS3YOcQNymVM+5eDftFBzr+Eiu6SRAP8/LOjmzJXNnM=;
+	s=arc-20240116; t=1784227590; c=relaxed/simple;
+	bh=1eiecpk9ggKppYTwkxwcLlrlH1rW7xFoBWU6DJoaQ6k=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jioEZVPy5J8EVd6Rr06RWIao4jmUx4eOhSCZugy6yMQODGNr4rDCubY8K7qIZHsb4JYn0b4EqHmo0bNhwOUg4T6y23BebVcthtHVDShp6Q/jMOk9gRQrHOlMMgZwImymcjRV/KqTYjzAfmCPpRk/V9TVAtqbOGF78Azrtn7Yznk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmF1O6cv; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=naq5BQvwT4B5XXNbzB8Cz/qkJpIbAhFSmr3np/kA+HOaeChM4HmYWq9Eh5RAiMwhwVNPtBrAb3kAljuSw5hcAVgYS+vZZfgT8xif9JF+utpnyLyAQS9mOAB3RR3tUmCdymXUr5KbOWmOuxPAWHhM+ZCcR/Zoj7z9bNULTl919nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haDLei/1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmF1O6cv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA881F000E9;
-	Thu, 16 Jul 2026 18:42:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haDLei/1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5411F000E9;
+	Thu, 16 Jul 2026 18:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784227334;
-	bh=H3Xb1k3M0yXIRP85rZMw12UEZtAQikJx1iPgSWsFg/M=;
+	s=k20260515; t=1784227588;
+	bh=UcCyUAnRT9KRo0eV3o9BL4WbqROi8VjqZRooVMe5DBE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gmF1O6cvC67cQInFrJS91wLJ4XfBAMqqB1CksfZcM8ceU9FDIWvkhO06pgbfqZfax
-	 eAOMaxPHC1u8aTgJ2Ilxd70xTZ61guHFk9wvLdBxhdR4W98zUcxiFd71OANURotbsf
-	 +OBJJNib1DswJDRb1Au+Te4jHcpLARI0X9HCUBqigdq6Nr9TPi9YiSU0fHBNB/0P9K
-	 OgylClpCNJ/wpSYSCINq6wwGJvQQXbSNGo5X+vw1N8ct4Bqynj+eoWZ6oYSeVDLeE1
-	 yLiSXzRoyu9rxNzU8YndNfWVXpdL+aJLwRgrEe1NfVrv65TfghdUSn+L5yVL0f9oSJ
-	 gCdN7C2i1BySQ==
+	b=haDLei/1eeSQxLvz0GL3BtkGChyyWdtQN8G1hYtYRnhUoJjbRae1w1LA3h+EYB2E1
+	 cL//Z/G+LbfPgjG0dsV0FC1UQB98BRAZtn/rqwD8cY+X0RvckROfurO02LxnrtXZf2
+	 oXL7LDI3hadNFS1/t71luVMHLgaSSVo+eJs5Zk37fj0iJQdDQIMALaQRcGluuHoegu
+	 CZAPno3u02jWtoyYU3Gae/Bqp9IFy/jhTiYOh5bqFq2NsRIeFQiElR8jOGqRlcSV8R
+	 QDFkDvkDab2x2L1IuGEK5ZSWdjeRM4lAQ7sRgJMy3zqs4/COE2Wu5OQljq8JLBWnzX
+	 tCgwHFIDDh7iA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 22/24] KVM: x86: selftests: Introduce memory attributes
- test
+Subject: Re: [PATCH 15/24] KVM: Take memory protections into account for
+ accesses with cached gfn->hva
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716181456.402786-23-pbonzini@redhat.com>
+In-Reply-To: <20260716181456.402786-16-pbonzini@redhat.com>
 References: <20260716181456.402786-1-pbonzini@redhat.com>
- <20260716181456.402786-23-pbonzini@redhat.com>
+ <20260716181456.402786-16-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 18:42:14 +0000
-Message-Id: <20260716184214.AAA881F000E9@smtp.kernel.org>
+Date: Thu, 16 Jul 2026 18:46:27 +0000
+Message-Id: <20260716184628.2C5411F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] Massive unintended memory allocation in the memory attributes te=
-st.
-- [Medium] Masked validation test for unsupported KVM_SET_MEMORY_ATTRIBUTES=
- flags.
+- [High] gfn_to_pfn_cache (GPC) bypasses memory attribute protections (NR/N=
+W).
+- [Medium] Redundant memory attribute checks in __kvm_get_guest and __kvm_p=
+ut_guest lead to duplicate xarray lookups (performance regression).
+- [Low] kvm_memslots_check_gen() causes a build failure when CONFIG_KVM_GEN=
+ERIC_MEMORY_ATTRIBUTES is disabled.
 --
 
---- Patch [22]: [PATCH 22/24] KVM: x86: selftests: Introduce memory attribu=
-tes test ---
-commit 4443977bb70263dd7f96620eede82bb13ee6a48d
+--- Patch [15]: [PATCH 15/24] KVM: Take memory protections into account for=
+ accesses with cached gfn->hva ---
+commit 51177f153d521afab2fb1286cac8c924ca7aa90d
 Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-KVM: x86: selftests: Introduce memory attributes test
+KVM: Take memory protections into account for accesses with cached gfn->hva
 
-This commit introduces a new selftest for the KVM_SET_MEMORY_ATTRIBUTES
-ioctl. It tests various memory attribute combinations, MMIO access handling,
-and input parameter validations.
+Account for memory attributes when accessing guest memory through
+kvm_get/put_guest().
 
-> diff --git a/tools/testing/selftests/kvm/memory_attributes.c b/tools/test=
-ing/selftests/kvm/memory_attributes.c
-> new file mode 100644
-> index 0000000000000..7066ae791b99a
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/memory_attributes.c
+This requires tracking the memory attributes generation as part of
+gfn_to_hva_cache's data, invalidate the cached information if the
+generation changes, and failing to refresh the cache if restrictive
+memory attributes are found within the GPA range.
 
+> Similar to how gfn_to_hva_cache disallows caching gfns mapped within
+> read-only memory slots, gfns marked as read-only by memory attributes
+> will also fail to initialize. Unsurprisingly, the same behaviour applies
+> to gfns mapped as non-accessible (NR/NW), while non-executable mappings
+> are okay.
+
+[Severity: High]
+Does gfn_to_pfn_cache (GPC) bypass memory attribute protections (NR/NW) whi=
+le
+this patch updates gfn_to_hva_cache (GHC)?
+
+In virt/kvm/pfncache.c:__kvm_gpc_refresh():
+
+			gpc->attrs_generation =3D kvm_mem_attributes_generation(kvm);
+			gpc->gpa =3D gpa;
+			gpc->slots_generation =3D slots->generation;
+			gpc->memslot =3D __gfn_to_memslot(slots, gfn);
+			gpc->uhva =3D gfn_to_hva_memslot(gpc->memslot, gfn);
+
+The HVA is retrieved without evaluating memory attributes to see if access =
+is
+actually permitted. KVM can bypass guest memory isolation boundaries, writi=
+ng
+to memory that the guest expects to be read-only (NW). Should gfn_to_pfn_ca=
+che
+also validate kvm_mem_attributes_may_write_gfn()?
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 1fad3eb303c17..71ab2cbecbd12 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
 [ ... ]
-
-> +static void test_input_validation(struct kvm_vm *vm)
-> +{
-> +	uint64_t flags, gpa =3D 0, size =3D 0, attrs =3D 0;
-> +	int rc;
-> +
-> +	/* 'flags' is unsupported */
-> +	flags =3D BIT(0);
-> +	rc =3D __vm_set_memory_attributes(vm, gpa, size, attrs, flags);
+> @@ -1351,7 +1351,8 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, stru=
+ct gfn_to_hva_cache *ghc,
+>  	typeof(v) __user *__uaddr =3D (typeof(__uaddr))(__addr + offset);	\
+>  	int __ret =3D -EFAULT;						\
+>  									\
+> -	if (!kvm_is_error_hva(__addr))					\
+> +	if (!kvm_is_error_hva(__addr) &&                                \
+> +	    kvm_mem_attributes_may_read_gfn(kvm, gfn))		\
+>  		__ret =3D get_user(v, __uaddr);				\
+>  	__ret;								\
+>  })
 
 [Severity: Medium]
-Could this validation test pass for the wrong reason?
+Are these memory attribute checks redundant and introducing an unnecessary
+xarray lookup on the fast path?
 
-Because size is initialized to 0, the ioctl will return -EINVAL even if the
-kernel's validation for the flags parameter is broken or missing. Setting
-size to a valid, page-aligned non-zero value here would ensure this check
-actually isolates and verifies the rejection of unsupported flags.
+gfn_to_hva() inherently checks memory attributes and fails if not permitted,
+rendering these macro checks redundant:
 
-[ ... ]
+virt/kvm/kvm_main.c:gfn_to_hva() {
+    ...
+	if (!kvm_mem_attributes_may_write_gfn(kvm, gfn))
+		return KVM_HVA_ERR_RO_BAD;
+    ...
+}
 
-> +int main(int argc, char *argv[])
-> +{
-> +	uint32_t guest_page_size =3D vm_guest_mode_params[VM_MODE_DEFAULT].page=
-_size;
-> +	unsigned int ptes_per_page =3D guest_page_size / 8;
-> +	size_t size =3D guest_page_size * ptes_per_page * 2; /* 2 huge-pages */
-> +	struct kvm_vcpu *vcpu;
-> +	gva_t test_mem;
-> +	struct kvm_vm *vm;
-> +
-> +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_MEMORY_ATTRIBUTES) &
-> +		     KVM_MEMORY_ATTRIBUTE_NO_ACCESS);
-> +
-> +	vm =3D __vm_create_with_one_vcpu(&vcpu, size, guest_code);
+If !kvm_is_error_hva(__addr) is true, the memory is already guaranteed to be
+readable and writable.
+
+> @@ -1371,7 +1372,8 @@ int kvm_gfn_to_hva_cache_init(struct kvm *kvm, stru=
+ct gfn_to_hva_cache *ghc,
+>  	typeof(v) __user *__uaddr =3D (typeof(__uaddr))(__addr + offset);	\
+>  	int __ret =3D -EFAULT;						\
+>  									\
+> -	if (!kvm_is_error_hva(__addr))					\
+> +	if (!kvm_is_error_hva(__addr) &&                                \
+> +	    kvm_mem_attributes_may_write_gfn(kvm, gfn))		\
+>  		__ret =3D put_user(v, __uaddr);				\
+>  	if (!__ret)							\
+>  		mark_page_dirty(kvm, gfn);				\
 
 [Severity: Medium]
-Does this code inadvertently request a massive amount of memory?
+Similar to __kvm_get_guest above, does this inject a redundant xarray lookup
+since !kvm_is_error_hva() already confirmed the memory is writable?
 
-The size variable is calculated in bytes (e.g. 4 MB), but it is passed to
-__vm_create_with_one_vcpu() which expects the second parameter to be a page
-count (extra_mem_pages). Passing a byte count directly causes the test to
-request millions of extra pages for page tables (e.g. 16 GB), which could
-lead to test failures due to ENOMEM on systems with stricter overcommit
-limits or insufficient free memory.
+[ ... ]
+> @@ -2632,6 +2634,12 @@ static inline unsigned long kvm_get_memory_attribu=
+tes(struct kvm *kvm, gfn_t gfn
+>  {
+>  	return 0;
+>  }
+> +static inline bool kvm_range_has_any_memory_attributes(struct kvm *kvm,
+> +						       gfn_t start, gfn_t end,
+> +						       unsigned long mask)
+> +{
+> +	return false;
+> +}
+>  static inline u64 kvm_mem_attributes_generation(struct kvm *kvm)
+>  {
+>  	return 0;
+>  }
+
+[Severity: Low]
+Will kvm_memslots_check_gen() cause a build failure when
+CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES is disabled?
+
+kvm_memslots_check_gen() unconditionally accesses kvm->mem_attrs.generation:
+
+include/linux/kvm_host.h:kvm_memslots_check_gen() {
+    ...
+	return slots->generation =3D=3D slots_generation &&=20
+               kvm->mem_attrs.generation =3D=3D attrs_generation;
+}
+
+However, the mem_attrs struct member is conditionally compiled under
+CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES. Should kvm_memslots_check_gen() use t=
+he
+kvm_mem_attributes_generation(kvm) wrapper instead, which correctly returns=
+ 0
+when the feature is disabled?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716181456.4027=
-86-1-pbonzini@redhat.com?part=3D22
+86-1-pbonzini@redhat.com?part=3D15
