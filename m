@@ -1,184 +1,188 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047F32F84F
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 21:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784237010; cv=none; b=XOXYYQLK/k+F7eUh9xC0h/V03hAEvFzOFRTO76zDBH4+gSm0Ys4Ax/6I1+T62naLhNyp0yTFfk2u9VIRpi9nrVEPA8HlZf+MaquaKvrOY3MZYiJX6YO9Rjw1c+VPm57AXcRLwPOunGI6zu1sAS0V2cWLFaiyVtt/Ov22usUNxqo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784237010; c=relaxed/simple;
-	bh=2dz68d3IIffgLX4URWZkOL5j0TmHliJyOzsjNddX9qU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HyM6+utJRVgqIwxBmg2rO409YuvjBACoyukzh8qynwaBGvBRKBoSPpnwvZahPtRJvsPxZI2QaayD5JIY0YAQTcOHiEXT4LZjeiqrfii4/v2Cm+SOGZk/0XXd4PmwKYTWFweMwrAK8lT4eR0FzwKckozDZulxT62IysVQoJeHD30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D1p0XKei; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3C2313550
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 21:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784238146; cv=pass; b=Yqsu3U/pcLjtqhvHz5WGioCHwZmGjmj7R2sPG0lL5Nt3OyprnGTxjU64x4swskrYc1AktvmIB9wEQlXpbZvIV0R/+3Ooevib09mPVjd8ciIH2a9Wpkab40wthWga2xHwNVNlbmcto6yNti0+hCdidjtfSaf/7sKl70uDK8pbxGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784238146; c=relaxed/simple;
+	bh=K1XwcmlHD8GKn3K0WyP7nUyryobefrvezMejetBDIq0=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hc6SDJ32BuuNWxwxdza3LgrSfYosbx+kKgBg+mcqeYzii6Smw1Ga62VgByqEIOa5nG7roduZq+XUIFddUShgrzzpHnwVtgxCCANuwF2QURIhkeg8Ie57P2s4Gkll4ATYAqWoRuGOQaPkydp8z8r1w3r518ZSEBkQ2kXspCU8Lz4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YN1UdPYH; arc=pass smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D1p0XKei"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-384c94c9414so3240207a91.3
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 14:23:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YN1UdPYH"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cab973140bso87400435ad.3
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 14:42:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784238144; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AwpLLfQV5kzHsXULQ24lxVpGojOk7o+3ugCYz1bTfSh4jZQgyOcvWEdYOG5hea6FMp
+         +4nJsv1X22ZlfVPU1xspzCW+sehxCUjLpgzGs8U++oBm4qSOjkOZdXkBJVW6VcG97sSl
+         6orakImwQYYYJIxvqqJVhBBm170i9OxFxiC4yMVmTzA8u0m6KH4sD6GL6vON6meLfvsi
+         Fh97md94jCsIROhecZiSYd915Wg5WiLZBhdraDj8m1OFau2OHZCQLTy0IFMAdg6KADXC
+         STpC2r1Zl0mdnZhA1UcutakWnsTpuL4MvClsSYRcVBuO/FGH7GQpRB/JS//XG1sm5AGi
+         0lcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=jgZKN45+I/JTFc1EhYAUwr+BvCmfXGL3CG7uH8bW3rs=;
+        fh=ntAqyAPUC5S0zXBhvATmimLk4ai4PQVCftFFHR2Jc0o=;
+        b=cppshfs3QppEK32IxMLHWg2nWeyg3NJYz8pojgaJocX1+uodldAEkQKqvVPd2FOQQM
+         qmO/O/qDfvebo+fxmERvUBTuDhgpPHTHvzgaYasfIoLPXLP9nAtac4wf1C9N8b8EqbzR
+         n7L9QeVz3CYwzJXvoeX8YmFEZ8YzT/4TykCTdL6B4CiRft8VJTUyXIwFqtdydk34g+x/
+         YNU+qm91RRC9PdsRFMrmEzJDpLeanEktFN54OLOaQbzadl0XCKPMliaVMxqYyPIu2vrN
+         HaglE41hSeypykkrRAMpFxkFydWvDl0UCvHvkplcBj6mQBu6jI3hAZViWij1/zePI1sS
+         aVxw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784237007; x=1784841807; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wrUaBLbbTwHv098p1q3JOceP8CDyR8hElSHBW7qR1/4=;
-        b=D1p0XKeiNw0wz2nurr5IeJpU2USPWoaODN4YOsNGzYWLKjapmhuwB17eQbcSpQcQ1+
-         61KVnc74cF6dcsRq9JHmR0ScLneakxq8getGNh0nlFOnfZAMjdxfk+S02eNOLCrlv/DK
-         Hj33AU1B7AzXvZkMkibyWCmPSN6+mrqUsVNl55vxhVc545QC9pntLPXhXTTZgTUFSCVJ
-         XbE3C4sYFC5Nr7GA6mSeU3eGLcMablWhdkYwFLs7CvUw9SshbU+HMRSSJqjCmsMYBSmb
-         NsJgFyu1DHO6EtcjRaYZY7k0LOcqF7/P5MYaaGlLwx+xuE7yxRE8sb7/pU0kCCoA+Osa
-         ADQw==
+        d=google.com; s=20251104; t=1784238144; x=1784842944; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jgZKN45+I/JTFc1EhYAUwr+BvCmfXGL3CG7uH8bW3rs=;
+        b=YN1UdPYHnE5WyLlm4Lsw2SBFvEfW38verZApc7xNQ6Zsvpi+9uPawzvFdyUINgbvm8
+         n8F1qBYSK/7jdcsc4DLOjpy3V5Dsu6Qifb0pr4RXMDDaVoxwmAvXoxPj+ZRFGYVQfqTC
+         iBJvnss7bsAYgcuV29e8AKxzl4jcXGTk+J1eDYjhQajG7UrF1Ox/KF3huh1XvEHinVru
+         iCCUV0Fhmy1nDCUTjUsgy/KCSWQdlM1QDBWAoeN79BVrdSHb3wW5L2JAFbx6LRBfDiqk
+         QBYRpGHfcLkXzJZiBOoEAFODSngeyAkP2jmHfN27JZTmDxLjDGprV+524+JpfWfZvTHe
+         jJsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784237007; x=1784841807;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wrUaBLbbTwHv098p1q3JOceP8CDyR8hElSHBW7qR1/4=;
-        b=fsvuu4Pzg8nTDJ9f11HYgig/SgY85k5Z62KlR1LeC5yzUTFKm+Y21BAWyHmSLByh5C
-         9rIzThLL6MHUZucXdoNMKe0k4AyXOloEdfq2xYhEY4vnMk8+YLXa1YiU/gu/VtMFa3V9
-         p3EuhtlOspD95jtbnOAAhWc69m3vnAWqjVNRa/iidA9Okzg0UwJyJCq1l7lugrYGwD9Z
-         akmk3uztvLte8tOGG1ouJz41a1Tgc6vQNVpJ3FAnomB6TXqTotAq2wgEnyY/c+vXXQY6
-         5QsjBPFGPoc/Rlx7mSV2pPII3K3Am39EJqjVt1BKirDDisrO5uhqDDdcHnKIQZGod9cc
-         iBEg==
-X-Forwarded-Encrypted: i=1; AHgh+RpFZlsByOanH6XhWAOVZ3RCd8rEYBDZTRGvYcoLYaUB+niZDeBdGlZAaG3OLOv70lNLZio=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3U2nKmGraoOSN5cjYxBgovAN1uAe/D3F8zfJ8bMaCjwVS0aCh
-	vFNoEzpYxTQu/Q7vR2hMGa1UvkogTZn0mGmMIDwOcvt5E7LvAye9iwnKno62nnPLCg==
-X-Gm-Gg: AfdE7cmiC7tgoZCW/biqCp/y4Rl2NFhwjZfmd65gjuvn1oj9IJLE3l2AzTsOa97Jd5X
-	3dUBLaBlaO8QpzEwdddBiubO3ShApyzzO8Bk0d9mDkjuw8pmx285Rj9kZGAiu1OiDDSGo2EMcKn
-	0kxT7IRLe7pMkPa17Ss8+2p/jEJEMI756beceERnFCRSMR14APT+TdcAnC9saJUrNg8XmhrkrUe
-	gpWAEcFmSkzFcs2N9OTfIgIy6q9TjDSq2VbF9Shaev1LgD/9WjkrolgRP9RbNMgZ0JqIryn0mWJ
-	jW4LsD60WyAZj3U9luXRJJgf0Yn9IvtUDgomxOELRq3Bm/wa7SrB/B6j11lHMX6hZ+9tssHtrH6
-	vCyoQh08h9DhlWKSMzn2q+ttiUkAr0ponh2lV5ci2dy5PwSz2oXMY34AQbPIiL0Ax7oJ4lxWSiH
-	LkgXcGBm5TJy4oXyw3ykhyOx5CWx9GFsQbw4ARQQgZ
-X-Received: by 2002:a17:90b:3d90:b0:38e:250b:122f with SMTP id 98e67ed59e1d1-38e467597f3mr1142655a91.16.1784237006752;
-        Thu, 16 Jul 2026 14:23:26 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e39fe37d1sm1841599a91.12.2026.07.16.14.23.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 14:23:25 -0700 (PDT)
-Date: Thu, 16 Jul 2026 21:23:22 +0000
-From: David Matlack <dmatlack@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5 0/9] vfio/pci: Add mmap() for DMABUFs
-Message-ID: <allLypOmtbnPrgbw@google.com>
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <CALzav=fH7N+ionUnELqw5ZaGrPmgp_w6kxoCtoY8fMmZY_S4zw@mail.gmail.com>
- <65ba06e7-4c54-437d-9fbd-632c0468f66d@ozlabs.org>
+        d=1e100.net; s=20251104; t=1784238144; x=1784842944;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jgZKN45+I/JTFc1EhYAUwr+BvCmfXGL3CG7uH8bW3rs=;
+        b=PnJVjtW6ClWmDSaG8RkcCLls6A0EIbAz3F9iOPw7x7yT0V7qO3KFh1199F7ClWaM/r
+         WRxoMoFsIP5GWaYeJbQeDeWj1o3sYa5UzkT2doZX+7RtdWsvfYAKY+fDWZwmpqhFUt/b
+         ybmD0R/XOBJvBcLFnB75LMq/UEa7cXeJyhWS6zmTYm9x6Qtqt4SEm2aNMB9yLsrB3hxy
+         z42gb1HEaw8+HAI1Km7YqXERT3vOZY7dt4GnpVYysQFMu5BOvvqhxJ0tzUaLbjX/2KsN
+         CS4FBIhbe1T/bEqQn2Q/ULA4yjfS86O6GxD5cCAG4i7T0SEB9jkect739YA9iAtgY/h6
+         7E6Q==
+X-Gm-Message-State: AOJu0Ywb86C+492+L53J04PWvCdenE0++m3+rHYaWmqjNfgqKUCN4kr6
+	HmmI+eIMp4ILginCRvt9Ekxov3KjWzTTlix8kybRb7O+uz4pBDgBuTRpVqD3s5KZUJCaACvbCcE
+	b4BYLvY9Zd8jZPp/thylZkBjXVmhss17dU9SvVgow
+X-Gm-Gg: AfdE7ck/QgAp9Vj6Ljld2JX+F8fZS7T1rHHoplEfDYrs5/PToKVtlZ39ptfZf1UgJWk
+	NZl+Oj/uRhbGp0vnxZWd9mg/GUrmZlulwturDZr1AY36886LhR97dhwf8jM8tW4TL4mdQG8OBnQ
+	96Of2eF0pjO7X1aK9TOUGnepoVsjDmZbMLvm87bXigOaOU+0pubI7N625AFqRPXLILBjTxv9QWX
+	ieZRxLRlI+Hst2umBTlBm8zsSz94cP9G8Ij8PuDHSrcORJkJRaZOc0pX2epSaZZY5gjYM+CPksQ
+	oZNN5AXAYG322NzOcB+tRq2WWUJGQ0n2CwpSw5Hc8sZxl0h4nA==
+X-Received: by 2002:a17:903:19ec:b0:2c2:be43:39bc with SMTP id
+ d9443c01a7336-2cf03cef84dmr94490085ad.22.1784238143561; Thu, 16 Jul 2026
+ 14:42:23 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 16 Jul 2026 14:42:22 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 16 Jul 2026 14:42:22 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <a236d1ba-8d13-4151-a7df-a8c390b33a24@intel.com>
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-8-seanjc@google.com>
+ <a236d1ba-8d13-4151-a7df-a8c390b33a24@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <65ba06e7-4c54-437d-9fbd-632c0468f66d@ozlabs.org>
+Date: Thu, 16 Jul 2026 14:42:22 -0700
+X-Gm-Features: AUfX_mwDdmoshrS8cdNdteZn70Xc4zcu_ntWSVV36lwfZSNTUg38XQ37kpdsEkk
+Message-ID: <CAEvNRgGz_Qm1z+e-7Rh2OZ1bfjVBMEB91-Ki+3Vi3mBf5uMdiQ@mail.gmail.com>
+Subject: Re: [PATCH v5 7/7] KVM: guest_memfd: Rework PREPARE config and hook
+ into a more generic CONVERT
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-07-16 03:51 PM, Matt Evans wrote:
-> Hi David,
-> 
-> On 15/07/2026 19:12, David Matlack wrote:
-> > On Wed, Jul 15, 2026 at 10:47 AM Matt Evans <matt@ozlabs.org> wrote:
-> > 
-> >> This is based on v7.2-rc3.
-> >>
-> >> These commits are on GitHub for easier browsing, along with
-> >> "[RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test":
-> >>
-> >> https://github.com/metamev/linux/compare/v7.2-rc3...dev/mev/vfio-dmabuf-mmap-v5
-> > 
-> > It'd be great to have this test upstream. I'm happy to review it when
-> > you're ready. Looks like it just needs to be redone to use the VFIO
-> > selftests library and kselftests harness. AI could probably do the
-> > conversion pretty quick :)
-> 
-> For sure, I'd intended to catch up with you on best approach here. :)
-> 
-> Aside from the organic structure of the test (the open-coded VFIO
-> device/group setup/init needs to go), the main issue is that it relies
-> on a hacked/out of tree QEMU "EDU++" device with a second larger BAR
-> (containing freely read-writable memory).  A subset of tests run with
-> the in-tree EDU device, but coverage is too low.
-> 
-> The desirable properties are:
-> 
->  - Having a BAR that is pure memory (all locations present, writable
-> without disruptive side-effects) so that mapping aliases can be
-> constructed and detected.  This is good to test things like non-zero
-> vm_pgoffs and VA space presentation of physically-discontiguous DMABUFs.
-> 
->  - BAR >> hugepage size so we can eyeball huge mappings work (or better,
->  mechanically test for them).  At least 32MB would tick this box for 4K,
-> 16K page systems.
-> 
->  - Something QEMU supports*, so one can run the test in a VM/TCG system.
-> 
-> There were some real device models in QEMU that could be used this way,
-> but needed a fair bit of setup;  I didn't want to rathole
-> vfio_dmabuf_mmap_test on including a ton of device-specific code for
-> some video card or similar.
-> 
-> I'll dig more for a simple target that provides these properties --
-> obviously it would be better to point this test at an off-the-shelf
-> device (including silicon!).  And, proposing EDU extensions to the QEMU
-> folks may be useful (there're uses for a better EDU in other contexts too).
-> 
-> Since this test uses MMIO for a specific [class of] function, my first
-> thought is it should be another VFIO driver-type test sibling of
-> vfio_pci_driver_test.  For example, we could extend the driver-type
-> tests' backend struct vfio_pci_driver_ops for functions capable of
-> providing a Big Memory BAR, like QEMU EDU++.  EDU can also memcpy, so
-> could also support vfio_pci_driver_test.
-> 
-> The spirit of the device backends hiding setup of a complex device is
-> handy, and it's plausible that several backends could provide this "big
-> memory BAR" service.  What do you think, any concerns with extending
-> vfio_pci_driver_ops like that?
+Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-I wouldn't recommend leveraging the driver framework unless absolutely
-necessary. It makes the test harder to run.
+> On 7/15/2026 7:10 AM, Sean Christopherson wrote:
+>> Rework guest_memfd's "prepare" hook into a more generic "convert" flow in
+>> anticipation of supporting in-place conversion, at which point KVM will use
+>> the hook for both to-private and to-shared conversions, not just to
+>> "prepare" PRIVATE memory.
+>>
+>> Opportunistically rename kvm_gmem_prepare_folio() to kvm_gmem_make_private()
+>> to better reflect its role.
+>>
+>
+> [...]
+>
+>> @@ -90,8 +90,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>   	gfn = ALIGN_DOWN(gfn, nr_pages);
+>>   	index = kvm_gmem_get_index(slot, gfn);
+>>
+>> -	return kvm_arch_gmem_prepare(kvm, gfn, folio_file_pfn(folio, index),
+>> -				     nr_pages, folio_order(folio));
+>> +	return kvm_arch_gmem_convert(kvm, gfn, folio_file_pfn(folio, index),
+>> +				     nr_pages, folio_order(folio), true);
+>>   #else
+>>   	return 0;
+>>   #endif
+>> @@ -798,7 +798,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>   		folio_mark_uptodate(folio);
+>>   	}
+>>
+>> -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>> +	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+>
+> I think this and above renaming don't make sense, because
+> kvm_gmem_get_pfn() can be invoked for shared memory for non-Coco VMs
+> when KVM_MEMSLOT_GMEM_ONLY is set.
+>
 
-The biggest issue I see with the proposed properties is being able to
-treat the BAR as memory. That obviously will depend on the device and
-may require device-specific setup. If we decide that treating the BAR as
-memory is truly required then using the driver framework is the way to
-go. But I'm hoping we can avoid that requirement.
+Makes sense.
 
-Instead, I think you can get pretty far by inspecting /proc/pid/pagemap
-to determine if the mmap() set things up correctly, without actually
-accessing the BAR. You can use /proc/pid/pagemap to look up the PFN and
-PAGEMAP_SCAN to detect huge pages.
+> Maybe this patch can be moved to gmem in-place series and after [1]?
+>
+> [1]
+> https://lore.kernel.org/all/3b64e897-93a8-4f9c-88a9-f416ff44b09d@intel.com/
+>
 
-With that requirement gone, then all you really need is a device with a
-large enough BAR. And even that it not a hard requirement. I'm sure
-there are plenty of test cases that could work with smaller BARs. The
-few tests that want to exercise huge mappings can inspect the device BAR
-sizes first, and if they're all too small, SKIP() the test.
+How about doing everything else in this patch in this patch, other than
+this:
 
-If you structure the test this way, then it's easy for the test to be
-used. It can be run against any device for the basic functional
-coverage, and can be run against a device with a larger BAR for full
-coverage of huge mappings.
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 173a7ed008d17..9df6927dd8f55 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -66,8 +66,8 @@ static pgoff_t kvm_gmem_get_index(struct
+kvm_memory_slot *slot, gfn_t gfn)
+  * On successful return the guest sees a zero page so as to avoid
+  * leaking host data and the up-to-date flag is set.
+  */
+-static int kvm_gmem_make_private(struct kvm *kvm, struct kvm_memory_slot *slot,
+-				 gfn_t gfn, struct folio *folio)
++static int kvm_gmem_prepare_folio(struct kvm *kvm, struct
+kvm_memory_slot *slot,
++				  gfn_t gfn, struct folio *folio)
+ {
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -798,7 +798,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
+kvm_memory_slot *slot,
+ 		folio_mark_uptodate(folio);
+ 	}
 
-Does QEMU emulate any devices that have 32MB or larger BARs?
+-	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
++	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+
+ 	folio_unlock(folio);
+
+I'll move just this renaming to [1] like you suggested.
+
+I think it's okay to continue to always call prepare_folio(), and within
+the prepare_folio() function, only do conversion when the CONVERT CONFIG
+is defined.
+
+I'll also move "Opportunistically rename kvm_gmem_prepare_folio() to
+kvm_gmem_make_private() to better reflect its role." from Sean's commit
+message to [1].
+
+>>   	folio_unlock(folio);
+>>
