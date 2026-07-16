@@ -1,227 +1,274 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E423C416B
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 16:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440F13FFF85
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 16:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784218107; cv=none; b=FqNDDrBbc0VRV/4ZopsClKZA8lFA+0pJLg+ApCU4gNk98jTPk4c/hMjtC7Hl7aT0cijMQIOWFHon6po11gEU2P7Gy0FAJYo7Nl9idffaW7Z77aiuowNAGVWk54QfH4ZWSRu0XBpf15ypByGMt8q9ApDsyXTrLAUordAcKK7bmto=
+	t=1784218397; cv=none; b=OSMk7ngfr7K5pdQePzgMfV+5vlYPf2hS5Hif9HBRwwzZbydGenv5OZwoDF9eGfMl46XZgsGsKs826ZX83OLU4sNFarD7s8XHsWI0Utr0yU4jq0V69fsiaS+GTND42R6nXGA/g2GpWga4KFo9R/ZJJOU0RLN4bBxVFSApPPuFAL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784218107; c=relaxed/simple;
-	bh=XXD5JiD6MbZACed2L2oAqZip9Q+NlM5VYmK7EyLsEnA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nr8XUPBNCySesMVBc3yKm4Ci3Weec7JWAQ9fUsKJ1HOPt/3XA8UmsB3sCTFFAlNt6qqa5ubwWUMPptvggPxXC6uja8v0c8bpqq0eadzNpuSEdPZLNnTk+46VhkC2kHsmsKMbMLQjyEMACeas22QHZNV0N7YPD+qXiwDX5tkuhW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Hf0MdhKq; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1784218397; c=relaxed/simple;
+	bh=kKKZU3L+6reK4B7gcJARVHlxz60vhrpuTNd2xoB+G8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUFUPBE3PRxR8z9tRmW8H9xqKDSZZ70ZO8JxdxCJB3Inrht+DhlrIUy/7KWpKEn108t1FxL3pY6slD2mr/Iow+o9U0JWy9ZQddt/R5EZma4KJn1xbFjMyaE93IaerDhfiGGwSdCz9haZ62ApUUCUTTlIRA1A6ewQbWNYdlZyUBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZFHIhdnl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dt4uYwX7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Hf0MdhKq"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49547fc63a0so354105e9.2
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 09:08:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZFHIhdnl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dt4uYwX7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784218394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+	b=ZFHIhdnl40KmeJeUXxYpHBY9XJi3UKPTWftXqBkOjcVJ0gpTxlRowXgPwVeZa9Wmht7aQO
+	yZmKABUzP3GCEbcDMoCTyN16BCzXL4YpU3cMrD2p/AkUYmKcs9HCISQGVksoU0+VwS/CgR
+	QYruB+G6pgLAWzH1l0IkV00OLV27Vzs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-369-F0wzPFs3NX25ecu7ILCqYw-1; Thu, 16 Jul 2026 12:13:10 -0400
+X-MC-Unique: F0wzPFs3NX25ecu7ILCqYw-1
+X-Mimecast-MFC-AGG-ID: F0wzPFs3NX25ecu7ILCqYw_1784218389
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47485fde05aso4058136f8f.0
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 09:13:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1784218103; x=1784822903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P33ACgM5WRF/Wf41Mm64IYg79T9oy5SYkqINyFAwCd0=;
-        b=Hf0MdhKqRcUjzFV9CsuUQAhPnmoc8sL+xKctst+Ohwk1wIW/eZvVAENs5nCLFtFclL
-         pxRQuHz5nSpBsJueHDd9Nulg9m5/O/z8tWvIC5PiVBmgqLydsIfmlewJuAjkoGFtpT12
-         laWxdnqu3ggaVRytTjyJTZk2sAYWbUwLvRKL0=
+        d=redhat.com; s=google; t=1784218389; x=1784823189; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+        b=dt4uYwX7EYt46fsT6WqnWoMbi6wUVXURuB0b7YbA8MINGXJ4GP0h6IiazDw6NrVo7A
+         /b8sepZ3CYyCY7uFRqz5m68Pkd+tbJRA36Y8jOpLUbrwEItNO9ELq2NDeDdOUg2hq11X
+         Sep4/FS473fP7WqO/Q9fPhF9BBKKn9SdJ+uZD0IuZqoK2Sdn1BKr/RfSajd4NxNbpkU/
+         ormc3uWp9A0FjHABDTZ2ioLt2lw0TpmqI02ZMWo2cavtvFyT5FbblvXxgbvyhRfuXO6t
+         1sv0cW4cq6OUT5o8+K87mfqV7M1W9PMA/XU52OQporTFSCf7ooix8apM7GvcGyWI5v20
+         2Vfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784218103; x=1784822903;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P33ACgM5WRF/Wf41Mm64IYg79T9oy5SYkqINyFAwCd0=;
-        b=XD7FqNGqSs3VTPXAoXd9VjnW0eHuO2t3fkk5CrtKwN6F8vNPocleE/1XNjf1NOweLw
-         SCvutjdR9+HwMTrYubEGpMvH8RVc2vxcP9/hlFD0rw94a/pxB7dgWfuPN4zc5LrxYxYK
-         zZ5rJ+OWXjwKy/sXFPnYQxUk+lB0lwPCsDmDZC5CPrkVGSTb4PvlzUR1RIbfGFWFU+Al
-         IS7zjVVqVPSQxCp/n4QSqdhUqfP3msg7EpfX9Ah3ZIZH5ON8IC1pM3Axo7zYsEOulo/v
-         bd4wn69vCi7Dwxfy56Fth6uQPNHvYRKBbhh7HRbJED3AgiDSa07lc5XoOgQCFg9XY65b
-         rWZQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpwVRWuboHUHzpjPsEKOeadlH37NLXdqx/faijmuhvE+R9EV/FJv8l2nx4J/b12cKgye5Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDyDaCscm9ZAeBDJlJsxLnpEjHvMH6lkbO1MDYX+7WCwbB0rvN
-	Ki2waI0MBXsLckJ78LvrFbVbrht6djy2MKkJI4jK5qF/GipKxazJA/TKD0KutJX2yw==
-X-Gm-Gg: AfdE7cnxgBey1jHJmwf8zaisaamM5k8J8W65lBH1E/mWQEs7ZZDlW8yYYpKqQVnu/1C
-	8fL12UCWZwuQUUx8KPAgh85Xz8A7uiMqA3TGL1Uhh1JdC2rvxVR27QLGddj+k68AArRIU0+om+W
-	yYPgeFwVPx2wF353IM/W7o9juDGsr0MMG3+QotS2MkBbqoz991mM534Dys/d+s5Y7a+l/xkC8OU
-	ntQzdF0X1OmxquGI6xx+XEJH4dTteCKDgKfnAbQLlIctfgJY7rFbbYGVciqJSAHHuDGGYeRov7J
-	fXW3IxDwAdtGRT9U0DAeQfxXtFRMbJ1XX/4jSlRv/gksM6MD6GKQqHP9LecSPmCEcW+3mJbhjv5
-	Ra6SPPG+MivfBz+XE+qc8xqrkZTzq3xt98TyJVJu0J9U9XyV08ariIDz1YSPiJxtdjty23i1sQ4
-	7zhIp5om/hCd2HuTsPZzkp0J4liD9h8pN9fH4qrrCs53SnnJ9pw9zASBvVUOKyBEo=
-X-Received: by 2002:a05:600c:3144:b0:493:f6c1:2f09 with SMTP id 5b1f17b1804b1-4953c145152mr93839855e9.6.1784218102908;
-        Thu, 16 Jul 2026 09:08:22 -0700 (PDT)
-Received: from dmaluka.c.googlers.com.com (206.39.187.35.bc.googleusercontent.com. [35.187.39.206])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e93295sm65511545e9.10.2026.07.16.09.08.22
+        d=1e100.net; s=20251104; t=1784218389; x=1784823189;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x9r6s/Iraoqi/k6oOHzDzgVXH/SASqKiz7NyQ8JhZ6M=;
+        b=K6tP0cHQosIw+zrIYtROAV8EOmSreNm0mYOnDt1lgLqcPrY4Oq6+a7XCwqBdMJxTD9
+         CBx+tRIdD5m8S319VNuBATveFi+y/Hp133ELFPlWDTAyQhl9n91LXGY0RjJRC1D3hMDH
+         bgQxlk+YId4dtCGQFwtVQssAXkUmCJ2/3uN4O2pEfcCJXAewG04nkz1FWJrqwqtU6cLQ
+         hWa3x5lhHWyaIRZgQHKBU2rxuxnzCFwR9T0w+q1surSwXB8Vnk9cbiqrSeVajqWmNHha
+         T8T6Y6IAKShqK3LF4Qc7aAwSFpOzhrahD+L3Ctp8lxvC/XGSmzIrW00x1Bxj/qCKC5qR
+         M+GA==
+X-Forwarded-Encrypted: i=1; AHgh+RoVJmEA6f0DlJykd405VQBdTuo4OJFqf1Bxu8OrQ6z5inO2aB39TMvlmgESP9HJeQL9KS0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdo48+K3Sey7k4DbW9/LTiAVjMDC82+KCSvSD83MAOydaWUryf
+	Nv9O8lOwCk+z8GH0ewf6UW+PpovUDvysiTZ+SIkTTXlHHkB0UvYaOR9vn41wX2rvanoveP3EUCz
+	90AzbWFEgJBUCRNNPLcgrb32OcS0QODluCX1KPIR64Wwe6F5ihJJnLw==
+X-Gm-Gg: AfdE7cmUsVSEe2kfbM5ngz4l8gE7rPP0PWEvdLADnAMAYOST+pXNnYa93cQoCXQJsua
+	nbG5TcCIvoEJRdg2dqrP8KEYAHbkA32UjcNpFbHrQ8K+4t7Jvf05EIfO77TBtwD5n6/EohlwTOF
+	KXgLUdD2u3iEgAutcSREi6t/FkGJD9XOejGCg+bSvwGGk6bVspKD7HGaBgcLhurr+xVeLKaQfuJ
+	+hxQc1LeJqV88yDjfrzcUvY4hn7Ob4d8tQYtqMF0IwLhkqO7o9VQ36BOARFUIiBFxW8OHUuwh26
+	H3xXqOriTh0qD4CluLQONuLLTr6k7QHmQK2YWBxww28xjWSYlj5xuuq0JDoGSOxu6w3LE69+d4z
+	ui//5AZpK2FBq1qZXc49zsU665ew3bfGqsPlUaZlFSuR+1vSvMA==
+X-Received: by 2002:a05:600d:6445:20b0:495:4182:444c with SMTP id 5b1f17b1804b1-49541824759mr38415255e9.26.1784218389328;
+        Thu, 16 Jul 2026 09:13:09 -0700 (PDT)
+X-Received: by 2002:a05:600d:6445:20b0:495:4182:444c with SMTP id 5b1f17b1804b1-49541824759mr38414535e9.26.1784218388605;
+        Thu, 16 Jul 2026 09:13:08 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49541e9ee07sm70836725e9.15.2026.07.16.09.13.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 09:08:22 -0700 (PDT)
-From: Dmytro Maluka <dmaluka@chromium.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Zeng Guang <guang.zeng@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vineeth Pillai <vineeth@bitbyteword.org>,
-	Chuanxiao Dong <chuanxiao.dong@intel.com>,
-	Aashish Sharma <aashish@aashishsharma.net>,
-	Grzegorz Jaszczyk <jaszczyk@chromium.org>,
-	Dmytro Maluka <dmaluka@chromium.org>
-Subject: [PATCH] KVM: VMX: Postpone IPIv setup after successful vCPU creation
-Date: Thu, 16 Jul 2026 16:08:01 +0000
-Message-ID: <20260716160801.3155582-1-dmaluka@chromium.org>
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+        Thu, 16 Jul 2026 09:13:07 -0700 (PDT)
+Date: Thu, 16 Jul 2026 18:13:02 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <alj_YKTitwqMjAez@sgarzare-redhat>
+References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+ <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
+ <alibLtcrC7o5r4Dh@sgarzare-redhat>
+ <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
 
-vCPU creation in kvm_vm_ioctl_create_vcpu() may fail after
-kvm_arch_vcpu_create() -> vmx_vcpu_create() already succeeded. In such
-case kvm_vm_ioctl_create_vcpu() destroys the newly created vCPU in the
-failure path. However, that leaves a side effect: the IPIv pid_table
-entry remains configured with this vCPU's pi_desc address. As a result,
-when another vCPU sends an IPI to the APIC ID of this failed-to-create
-vCPU, it will cause HW to write to this (freed!) pi_desc memory. [*]
+On Thu, Jul 16, 2026 at 06:39:48PM +0300, Andrey Drobyshev wrote:
+>On 7/16/26 11:57 AM, Stefano Garzarella wrote:
+>> On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
+>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>> the vq->worker pointers and immediately frees the workers, without
+>>> waiting for a grace period.  A caller that fetched the worker right
+>>> before the pointer was cleared can therefore still be queueing work on
+>>> it while it is freed.  And even when the queueing itself wins the race,
+>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>> future attempts to queue it are silently skipped.
+>>>
+>>> None of the current callers can actually hit this: net and scsi stop
+>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>> the lockless send/cancel paths become able to race with the teardown.
+>>>
+>>> Close this the way vhost_worker_killed() already does: clear the
+>>> vq->worker pointers, wait for a grace period, run whatever the last
+>>> readers may have queued, and only then free the workers.  The
+>>> synchronize_rcu() is skipped if the device has no workers, so cleanup of
+>>> devices which never got an owner stays cheap.
+>>>
+>>
+>> Do we need a Fixes tag for this?
+>>
+>
+>I'm guessing it should be:
+>
+>Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>
+>> Thanks for pointing out that the issue wasn't occurring, but I think we
+>> should add it because it's a sneaky problem we discovered by chance.
+>> IMO the code should already have `synchronize_rcu()` after
+>> `rcu_assign_pointer()` loop.
+>>
+>> @Michael, what do you think?
+>>
+>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>> ---
+>>> drivers/vhost/vhost.c | 15 +++++++++++++++
+>>> 1 file changed, 15 insertions(+)
+>>>
+>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>>> index 4c525b3e16ea..0d1414d40f4e 100644
+>>> --- a/drivers/vhost/vhost.c
+>>> +++ b/drivers/vhost/vhost.c
+>>> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>>>
+>>> 	for (i = 0; i < dev->nvqs; i++)
+>>> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>>> +
+>>> +	/*
+>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>>> +	 * caller that fetched a worker before we cleared the pointers above
+>>> +	 * may still be about to queue work on it.  Wait for those RCU readers
+>>> +	 * to finish before freeing the worker, then run whatever they queued
+>>> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
+>>> +	 * vhost_worker_killed().
+>>> +	 */
+>>> +	if (!xa_empty(&dev->worker_xa)) {
+>>> +		synchronize_rcu();
+>>> +		xa_for_each(&dev->worker_xa, i, worker)
+>>> +			vhost_run_work_list(worker);
+>>> +	}
+>>> +
+>>
+>> Following sashiko review [1], I tried to undersand why we need this, but
+>> TBH I'm really confused. That said, this seems wrong also because it
+>> will work only with vhost_tasks, and not with kthreads.
+>>
+>> IIUC vhost_worker_killed() will be called anyway when calling
+>> vhost_worker_destroy(). For vhost_tasks, it will call
+>> vhost_task_do_stop() that calls vhost_task_stop(). This sets
+>> VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing
+>> stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that
+>> is exactly vhost_worker_killed() you mentioned we are mirroring here.
+>>
+>
+>Hmm, are we sure it's the case for our codepath?  Looking at the
+>vhost_task loop function:
+>
+>> static int vhost_task_fn(void *data)
+>> {
+>>     for (;;) {
+>>         if (signal_pending(current)) {
+>>             if (get_signal(&ksig))
+>>                 break;
+>>         }
+>>         ...
+>>         if (test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>             __set_current_state(TASK_RUNNING);
+>>             break;
+>>         }
+>>         did_work = vtsk->fn(vtsk->data);
+>>         ...
+>>     }
+>>
+>>     ...
+>>
+>>     if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
+>>         set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
+>>         vtsk->handle_sigkill(vtsk->data);
+>>     }
+>>     ...
+>> }
+>
+>AFAICT, we exit the loop in 2 cases: signal delivery or STOP bit
+>setting.  Like you said, STOP is set by vhost_task_stop.  E.g. for our
+>RESET_OWNER case:
+>
+>vhost_vsock_reset_owner()
+>  vhost_dev_reset_owner()
+>    vhost_dev_cleanup()
+>      vhost_workers_free()
+>        vhost_worker_destroy()
+>          vhost_task_stop()  // for vhost_task_ops backend
+>            set_bit(VHOST_TASK_FLAGS_STOP)
+>
+>So, first of all, actual work by .fn() callback is done after the exit
+>checks, therefore we skip it - no chance to drain there.
+>
+>Secondly, the handle_sigkill() callback is deliberately NOT called in
+>the STOP case and only called on fatal signal delivery.  And for
+>vhost_task backend the .handle_sigkill() callback is exactly
+>vhost_worker_killed().
+>
+>So my understanding is: if we only call synchronize_rcu() here and leave
+>this path undrained, then whatever work which was put by send_pkt() for
+>the worker currently being freed - will be lost.  Please correct me if
+>I'm wrong.
 
-An easy fix would be to clear the pid_table entry in vmx_vcpu_free().
-However that would be still problematic, for the following reason:
-userspace may try to create a vCPU with the same vcpu_id as an existing
-one; vmx_vcpu_create() will succeed, and only after that
-kvm_vm_ioctl_create_vcpu() will check for the duplicate vcpu_id and
-fail with -EEXIST and then free the vCPU in the failure path. So in this
-failure path, vmx_vcpu_free() would clear the pid_table entry for that
-already existing good vCPU, i.e. effectively disable IPIv for that vCPU.
+Yep, your right. But what will be the issue of loosing them?
 
-So instead fix the issue by moving the pid_table entry setup from
-.vcpu_create() to the newly introduced .vcpu_postcreate() callback
-called at the end of kvm_vm_ioctl_create_vcpu(), when we are sure that
-the vCPU creation succeeded.
+IIUC we are not loosing any data, just avoiding some works that will be 
+handled later when/if will set a new owner.
 
-[*] Although, since this memory is freed into the kvm_vcpu_cache kmem
-    cache which is only used for allocating kvm_vcpus, _maybe_ this
-    memory will only be reused for pi_desc of another vCPU, not for
-    anything else. So _maybe_ this will only result in delivering the
-    IPI to a wrong vCPU (possibly of another VM) in the worst case, not
-    in a random corruption of kernel memory.
+>
+>That said, I agree that vhost_run_work_list() will only work with
+>vhost_task backend, not with kthreads backend.  If we do
+>vhost_worker_flush() instead - I guess it'll keep the drain here, yet
+>become backend-agnostic. I.e.:
+>
+>> +       if (!xa_empty(&dev->worker_xa)) {
+>> +               synchronize_rcu();
+>> +               xa_for_each(&dev->worker_xa, i, worker)
+>> +                       vhost_worker_flush(worker);
+>> +       }
+>
+>With the last 2 lines being equivalent to just calling
+>vhost_dev_flush(dev).  And once we become backend-agnostic here, I'm
+>guessing the warning reported by Sashiko should be dealt with as well.
 
-Fixes: d588bb9be1da ("KVM: VMX: enable IPI virtualization")
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
----
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    |  1 +
- arch/x86/kvm/vmx/main.c            |  9 +++++++++
- arch/x86/kvm/vmx/vmx.c             | 11 +++++++----
- arch/x86/kvm/vmx/x86_ops.h         |  1 +
- arch/x86/kvm/x86.c                 |  1 +
- 6 files changed, 20 insertions(+), 4 deletions(-)
+I'd avoid `if !xa_empty(&dev->worker_xa)` at all, and call 
+synchronize_rcu() in any case.
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 83dc5086138b..aecbe9c54004 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -25,6 +25,7 @@ KVM_X86_OP_OPTIONAL(vm_destroy)
- KVM_X86_OP_OPTIONAL(vm_pre_destroy)
- KVM_X86_OP_OPTIONAL_RET0(vcpu_precreate)
- KVM_X86_OP(vcpu_create)
-+KVM_X86_OP_OPTIONAL(vcpu_postcreate)
- KVM_X86_OP(vcpu_free)
- KVM_X86_OP(vcpu_reset)
- KVM_X86_OP(prepare_switch_to_guest)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 5f6c1ce9673b..3ed9d8fc3b96 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1803,6 +1803,7 @@ struct kvm_x86_ops {
- 	/* Create, but do not attach this VCPU */
- 	int (*vcpu_precreate)(struct kvm *kvm);
- 	int (*vcpu_create)(struct kvm_vcpu *vcpu);
-+	void (*vcpu_postcreate)(struct kvm_vcpu *vcpu);
- 	void (*vcpu_free)(struct kvm_vcpu *vcpu);
- 	void (*vcpu_reset)(struct kvm_vcpu *vcpu, bool init_event);
- 
-diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
-index 83d9921277ea..bdf5ba3155f6 100644
---- a/arch/x86/kvm/vmx/main.c
-+++ b/arch/x86/kvm/vmx/main.c
-@@ -78,6 +78,14 @@ static int vt_vcpu_create(struct kvm_vcpu *vcpu)
- 	return vmx_vcpu_create(vcpu);
- }
- 
-+static void vt_vcpu_postcreate(struct kvm_vcpu *vcpu)
-+{
-+	if (is_td_vcpu(vcpu))
-+		return;
-+
-+	vmx_vcpu_postcreate(vcpu);
-+}
-+
- static void vt_vcpu_free(struct kvm_vcpu *vcpu)
- {
- 	if (is_td_vcpu(vcpu)) {
-@@ -898,6 +906,7 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
- 
- 	.vcpu_precreate = vt_op(vcpu_precreate),
- 	.vcpu_create = vt_op(vcpu_create),
-+	.vcpu_postcreate = vt_op(vcpu_postcreate),
- 	.vcpu_free = vt_op(vcpu_free),
- 	.vcpu_reset = vt_op(vcpu_reset),
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index cc75feec05da..ae6cef9c13e0 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7752,10 +7752,6 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 		vmx->ve_info = page_to_virt(page);
- 	}
- 
--	if (vmx_can_use_ipiv(vcpu))
--		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id],
--			   __pa(&vmx->vt.pi_desc) | PID_TABLE_ENTRY_VALID);
--
- 	return 0;
- 
- free_vmcs:
-@@ -7767,6 +7763,13 @@ int vmx_vcpu_create(struct kvm_vcpu *vcpu)
- 	return err;
- }
- 
-+void vmx_vcpu_postcreate(struct kvm_vcpu *vcpu)
-+{
-+	if (vmx_can_use_ipiv(vcpu))
-+		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id],
-+			   __pa(&to_vmx(vcpu)->vt.pi_desc) | PID_TABLE_ENTRY_VALID);
-+}
-+
- #define L1TF_MSG_SMT "L1TF CPU bug present and SMT on, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
- #define L1TF_MSG_L1D "L1TF CPU bug present and virtualization mitigation disabled, data leak possible. See CVE-2018-3646 and https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/l1tf.html for details.\n"
- 
-diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
-index 409858074246..defc2c3a37c8 100644
---- a/arch/x86/kvm/vmx/x86_ops.h
-+++ b/arch/x86/kvm/vmx/x86_ops.h
-@@ -21,6 +21,7 @@ int vmx_vm_init(struct kvm *kvm);
- void vmx_vm_destroy(struct kvm *kvm);
- int vmx_vcpu_precreate(struct kvm *kvm);
- int vmx_vcpu_create(struct kvm_vcpu *vcpu);
-+void vmx_vcpu_postcreate(struct kvm_vcpu *vcpu);
- int vmx_vcpu_pre_run(struct kvm_vcpu *vcpu);
- fastpath_t vmx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags);
- void vmx_vcpu_free(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index afcac1042947..c9f512a30fec 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -12873,6 +12873,7 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
- 		return;
- 	vcpu_load(vcpu);
- 	kvm_synchronize_tsc(vcpu, NULL);
-+	kvm_x86_call(vcpu_postcreate)(vcpu);
- 	vcpu_put(vcpu);
- 
- 	/* poll control enabled by default */
--- 
-2.55.0.141.g00534a21ce-goog
+About vhost_dev_flush(), we are calling it in several places, and maybe 
+we should re-check them. E.g. we call in vhost_vsock_flush(), but it's 
+also called by vhost_dev_stop(), maybe we can avoid to call 
+vhost_vsock_flush() if we call vhost_dev_stop().
+
+I'm not sure we really need another one here, but if you think some 
+other works can be queued between the vhost_dev_stop() and the 
+synchronize_rcu() we are adding here, then okay, it may have sense.
+
+Thanks,
+Stefano
 
