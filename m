@@ -1,100 +1,304 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2686400DE8;
-	Thu, 16 Jul 2026 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DD2169AD2
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 15:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784215691; cv=none; b=L1R+gQqKjDYFqgODq+RRwuQlTi//4ZTphQhfFblJi2gP0YmiQnSnhjkqEqsrZTgKruJV8VyD9klm8imDBSsITSrWEPVIvQoGTYSpZQD+dKHq2XAB1kPPizdZZLkhFty1vqBWpmkjAXm6UlPxndijLPYUdv1wU+EzFoQ+WkjrKwk=
+	t=1784215806; cv=none; b=ItPa5d07a8ajrn/WLhV8cHcWpHxT0RYqd1iXyKKDtMlPW23KEbteHGl+MlT3uAEr3kw2Q9y2SXTdHKPCd+ICyqy9c0lbfdxbGlIawMjuand+IpSgvDGLulfuIhACOI9B+YP//6WXj/3nyXbM3etTGIFVt3DcSPgMqi+GHd6qonU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784215691; c=relaxed/simple;
-	bh=hsDRfma56w206p8//l5E5r8hf0aTgPp91AYKBXlklaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tm4do6gZarqBx89tI8Jm2Giwks/4BFQ5SzFCuaztLyAh5KrEUy0T3acyI0XbU4sx/5USkhlCTlk/Ba8Eu5ZmZ0AzhZKVatAIZuMFmOYmcknpOW75+Vuy7d8oCS1ghwX9EPll1LTedS9vPvCsDVWS5VkYgIZX25AWe5GGb7rbQ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSjOcuzd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784215806; c=relaxed/simple;
+	bh=fvCbLMj2HvR65YBF6j5pAMHKDEbaT7bzzlWrb8TILOs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=mwpQsNR5jrB7Unzk0Xa229tu4TDZew0miyQ8d1Nc1gkf/CnRcKnYu0KQA0NchK7/b8o2SgLgT+2LtyUj1fQzdo9Tz3mBUp0WzuDeA39DIGD4GL3+wZ/CzWwaqehps+oUq1kYBT9Q8hyWZS0xdL09bS7owsAz/Kyup7Bh2L9VtDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGBTPv7N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSjOcuzd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243E01F00A3A;
-	Thu, 16 Jul 2026 15:28:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGBTPv7N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC3B1F000E9;
+	Thu, 16 Jul 2026 15:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784215689;
-	bh=oaIf2bJqWuKl6xlqqkPnkkfbrbDLiH3vk192GmIwHZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DSjOcuzd0iLGxdIes4vVV48dc4V0xwUGKeQz/5Xho6MHAQsIujpe+BdnwPw0wg0+U
-	 kWn78oND/Nsyb65Ui+FTYIxM21ZVE43nzaOmR/4/FweSh5R46+jozUFTMk/oL1ydAb
-	 CMvoOwXNblYtgrjwlIPoNL9RBSOsH8r4OUI+XhSIcjVLJ1PHC2YGWYSDMK+yufe6bB
-	 KJPe5uyJWBiwSGKikLPe/hBOjcKysvFYtcoYGIh3j7SQ2QuAGDX6axU1hn1qNqWWhk
-	 JA5jOhLn61lR6HAAU2byHYkiPbBtgcsbjOnAzsWuNBZkk7d+b99KGn275vXpLWebDq
-	 a1DHcX04mcdbA==
-Date: Thu, 16 Jul 2026 16:28:02 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
- <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org>
- <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
+	s=k20260515; t=1784215805;
+	bh=3BGn5puD2EBaMaIf/11InBqC7iJBnOjjLNUdkyXw58Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EGBTPv7Nyj0afMbPmfFNoDJCyWvebybMPZmQuUa0VwIhj/Sn/dJBEQBSJFds2IlOM
+	 ShygCPaxSdFw/etLPazoy3IZ5l96kaQW3fJFLd5Dg8eR53/oL9eHKj/QtEVkoDBs0o
+	 tY2AUMqC+0RhtMxBY+fO9rWDHUmXdgKcClcxHK30a0QbKyZwvZn64obFApPk/wle1b
+	 K7EmxZv9UtDHUs+SPKcRyVN29Cam2F3dal56Wk9yaHkOiYm0YAzhcO7OSXSuJiKBrI
+	 cQDJyE8YR7LpCfRuuxZfsNIfrPdNzmCppgsPxO4ySSvvGKs8mWk5XcjJPdIw+kUqEe
+	 kk2faIsvQK3qw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 04/11] KVM: guest_memfd: Introduce guest memory ops
+ and route native gmem through them
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org, media-ci@linuxtv.org, dri-devel@lists.freedesktop.org
+In-Reply-To: <1256966e1b1b112ad92bf1b248c439ac23d61535.1784194290.git.dwmw@amazon.co.uk>
+References: <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
+ <1256966e1b1b112ad92bf1b248c439ac23d61535.1784194290.git.dwmw@amazon.co.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 16 Jul 2026 15:30:04 +0000
+Message-Id: <20260716153004.CBC3B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xV6YaOAEqkneq9ee"
-Content-Disposition: inline
-In-Reply-To: <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
-X-Cookie: The more the merrier.
 
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [Critical] Dropped page reference in `kvm_gmem_populate_one` causes a TOC=
+TOU Use-After-Free on physical pages.
+- [High] Use-After-Free (UAF) in `kvm_gmem_unbind` due to lockless derefere=
+nce of unrefcounted `slot->gmem.file`.
+- [High] Missing module reference count in `kvm_gmem_ops` allows foreign ba=
+ckend unload, causing kernel panic.
+- [High] `kvm_gmem_bind` API contract fails to initialize `slot->gmem.file`=
+, breaking KVM core state tracking.
+--
 
---xV6YaOAEqkneq9ee
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--- Patch [4]: [RFC PATCH 04/11] KVM: guest_memfd: Introduce guest memory o=
+ps and route native gmem through them ---
+commit 4ae3212093e20a291a948708162e27b1bb7009da
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-On Thu, Jul 16, 2026 at 11:52:36AM +0100, Mark Rutland wrote:
+KVM: guest_memfd: Introduce guest memory ops and route native gmem through =
+them
 
-> >  		if (test_thread_flag(TIF_SME)) {
-> > -			unsigned long vq = sve_vq_from_vl(sme_vl);
-> > -			sysreg_clear_set_s(SYS_SMCR_EL1, SMCR_ELx_LEN, vq - 1);
-> > +			sysreg_cond_update_s(SYS_SMCR_EL1, task_smcr(current));
-> > +			isb();
-> >  		}
+This commit introduces a kvm_gmem_ops vtable to allow other subsystems to
+supply guest memory backing. It routes the built-in guest_memfd operations
+through this vtable and refactors the generic bind, unbind, and populate
+flows.
 
-> What's the ISB for? That mysteriously appeared in v11 without
-> explanation. It wasn't in the original code, prior versions of the
-> series, or my suggested rework with the task_smcr() helper.
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index ab8cfaec82d31..b33d2f4750426 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+[ ... ]
+> @@ -621,6 +621,88 @@ static inline bool kvm_slot_has_gmem(const struct kv=
+m_memory_slot *slot)
+>  	return slot && (slot->flags & KVM_MEM_GUEST_MEMFD);
+>  }
+> =20
+> +#ifdef CONFIG_KVM_GUEST_MEMFD
+> +/*
+> + * struct kvm_gmem_ops - vtable a guest_memfd backing implementation exp=
+oses.
+> + *
+> + * Every file that can back KVM guest memory -- KVM's own guest_memfd (s=
+ee
+> + * kvm_gmem_create()) and any other subsystem opting in -- is created wi=
+th
+> + * the shared kvm_gmem_fops (see is_kvm_gmem_file()).  file->private_dat=
+a on
+> + * such a file points at a struct kvm_gmem_backing whose ->ops field is =
+the
+> + * per-instance vtable below.  KVM never looks any further; the rest of =
+the
+> + * per-file state (allocator, refcount, private xarray, ...) is up to the
+> + * implementation and is reached via container_of() from the backing.
+> + *
+> + * The memory-side callbacks (bind, unbind, get_pfn, populate, invalidat=
+e)
+> + * are the reason the interface exists.  The file-level callbacks (relea=
+se,
+> + * mmap, fallocate, ...) are dispatched by kvm_gmem_fops so that every
+> + * implementation gets a private hook -- see the dispatchers in
+> + * virt/kvm/guest_memfd.c.
+> + *
+> + * get_pfn() contract:
+> + *  - *pfn is the host PFN backing @gfn.  It need not have a struct page.
+> + *  - *max_order is the largest order KVM may use to map starting at @gf=
+n.
+> + *    The implementation MUST clamp it to the physical contiguity and the
+> + *    HPA/GPA alignment of the backing, so KVM never builds a huge SPTE =
+that
+> + *    spans discontiguous physical memory.
+> + *  - If *page is non-NULL on return the caller owns that page reference=
+ and
+> + *    is responsible for put_page() after use.  If *page is left NULL th=
+e PFN
+> + *    is treated as non-refcounted, and its lifetime is owned by the
+> + *    implementation across bind()/unbind().
+> + *
+> + * Memory intended to back guest RAM MUST be reported as E820_TYPE_RAM b=
+y the
+> + * host so KVM maps it write-back (and applies the memory-encryption bit=
+ on
+> + * encrypted hosts) rather than treating it as MMIO.
+> + */
+> +struct kvm_gmem_ops {
+> +	/* Memory operations. */
 
-> I don't believe it's necessary to add an ISB here.
+[Severity: High]
+Is there a missing module reference count in struct kvm_gmem_ops?=20
 
-I can't remember or figure it out, I'll delete.
+The operations table lacks an owner field (like struct module *owner) to pin
+the backend module.
 
---xV6YaOAEqkneq9ee
-Content-Type: application/pgp-signature; name="signature.asc"
+Since the shared kvm_gmem_fops routes file operations to a foreign backend's
+vtable, could a user open the guest_memfd, unload the backend module, and
+then close the file? The release dispatcher would then call into the unload=
+ed
+module's release hook, potentially causing a kernel panic.
 
------BEGIN PGP SIGNATURE-----
+> +	int (*bind)(struct file *file, struct kvm *kvm,
+> +		    struct kvm_memory_slot *slot, loff_t offset);
+[ ... ]
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index db57c5766ab60..2b277468a12f0 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -692,15 +782,51 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memor=
+y_slot *slot,
+[ ... ]
+> +int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+> +		  unsigned int fd, uoff_t offset)
+> +{
+> +	const struct kvm_gmem_ops *ops;
+> +	struct file *file;
+> +	int r;
+> +
+> +	BUILD_BUG_ON(sizeof(gpa_t) !=3D sizeof(offset));
+> +	BUILD_BUG_ON(sizeof(gfn_t) !=3D sizeof(slot->gmem.pgoff));
+> +
+> +	file =3D fget(fd);
+> +	if (!file)
+> +		return -EBADF;
+> +
+> +	ops =3D kvm_gmem_get_ops(file);
+> +	if (!ops || !ops->bind || !ops->get_pfn) {
+> +		r =3D -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	if (!PAGE_ALIGNED(offset)) {
+> +		r =3D -EINVAL;
+> +		goto out;
+> +	}
+> =20
+>  	/*
+> -	 * Drop the reference to the file, even on success.  The file pins KVM,
+> -	 * not the other way 'round.  Active bindings are invalidated if the
+> -	 * file is closed before memslots are destroyed.
+> +	 * On success .bind() associates the fd with @kvm and (if the
+> +	 * implementation needs it) records the reference that makes the fd
+> +	 * pin the VM.  A .bind() that returns success is trusted to have
+> +	 * done so; there is no separate ownership check here.
+> +	 */
+> +	r =3D ops->bind(file, kvm, slot, offset);
+> +out:
+> +	/*
+> +	 * Drop the reference to the file even on success.  The file pins
+> +	 * KVM, not the other way 'round: it is the implementation's job to
+> +	 * invalidate its bindings if the fd is closed before the memslots
+> +	 * are destroyed.
+>  	 */
+> -	r =3D 0;
+> -err:
+>  	fput(file);
+>  	return r;
+>  }
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpY+IEACgkQJNaLcl1U
-h9C7Iwf/YuGnlCXvhBlz9BWXCUqYqn9u51Mi2A5/kXGFOEGaMF0Uu9MGkvq2Jk8F
-EOseSkFIRcD7GiH3vDa2USAS+1NLt+TPjQy2gRSMD62MCXm8N7BJY5LioojxX7Rz
-Ta0iqU+mWhVRuJxJ82JAWagl6zKf47yda6x+5tFDegJFU+5bUTTPcagYyWtDvfgt
-sEVPNBjbQBZdC4QdbkH7/6gw23LCPuaMWqZlOP5UHuFn83ZwvAKy6/PxzpMs2y4p
-4+4qFfGT6oanft1qW1XJ9TfgyqAjrQ1Ug6KUpdVpktBfyigwcw2MFWxdUzLmSLKG
-LbYJk26LLkkGxmTPXVFVEAKBHv2b+Q==
-=/cAU
------END PGP SIGNATURE-----
+[Severity: High]
+Does this function miss initializing slot->gmem.file on a successful bind?
 
---xV6YaOAEqkneq9ee--
+KVM core code relies heavily on slot->gmem.file being populated to later ca=
+ll
+unbind. If a foreign backend succeeds in ops->bind but doesn't intentionally
+mutate KVM's internal slot->gmem.file state, KVM might never call unbind
+when the memslot is subsequently freed.
+
+Could this leak backend resources or leave dangling memslot pointers in the
+backend?
+
+> @@ -741,15 +861,41 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
+[ ... ]
+> +void kvm_gmem_unbind(struct kvm *kvm, struct kvm_memory_slot *slot)
+> +{
+> +	const struct kvm_gmem_ops *ops;
+> +	struct file *file;
+> +
+> +	/*
+> +	 * Nothing to do if the underlying file was _already_ closed, as
+> +	 * kvm_gmem_release() invalidates and nullifies all bindings.
+> +	 */
+> +	file =3D READ_ONCE(slot->gmem.file);
+> +	if (!file)
+> +		return;
+> +
+> +	ops =3D kvm_gmem_get_ops(file);
+
+[Severity: High]
+Is it safe to dereference the file locklessly here?
+
+The generic code previously used get_file_active() to safely obtain a
+reference. Because kvm_gmem_bind() intentionally drops its reference to the
+file on success (via fput(file)), userspace can close the guest_memfd
+concurrently while the memslot is being destroyed.
+
+Could this result in a use-after-free when kvm_gmem_get_ops() attempts to
+dereference the unrefcounted file pointer?
+
+> +	if (ops && ops->unbind)
+> +		ops->unbind(file, kvm, slot);
+[ ... ]
+> @@ -860,11 +1020,50 @@ static long __kvm_gmem_populate(struct kvm *kvm, s=
+truct kvm_memory_slot *slot,
+>  	return ret;
+>  }
+> =20
+> +static int kvm_gmem_populate_one(const struct kvm_gmem_ops *ops,
+> +				      struct file *file, struct kvm *kvm,
+> +				      struct kvm_memory_slot *slot, gfn_t gfn,
+> +				      struct page *src_page,
+> +				      kvm_gmem_populate_cb post_populate,
+> +				      void *opaque)
+> +{
+> +	kvm_pfn_t pfn;
+> +	int ret;
+> +
+> +	/*
+> +	 * Resolve the PFN via the ops.  A populate() op may also copy
+> +	 * @src_page into the backing before the arch post_populate() step
+> +	 * (e.g. SNP LAUNCH_UPDATE); otherwise fall back to get_pfn().
+> +	 */
+> +	if (ops->populate)
+> +		ret =3D ops->populate(file, kvm, slot, gfn, &pfn,
+> +				    src_page, 0);
+> +	else {
+> +		struct page *ignored_page =3D NULL;
+> +
+> +		ret =3D ops->get_pfn(file, kvm, slot, gfn, &pfn,
+> +				   &ignored_page, NULL);
+> +		/*
+> +		 * Populate does not consume a refcount on the destination page.
+> +		 * If get_pfn() handed a refcount back through @page, drop it.
+> +		 * Implementations whose PFNs aren't refcounted per-call leave
+> +		 * @page NULL and this is a no-op.
+> +		 */
+> +		if (!ret && ignored_page)
+> +			put_page(ignored_page);
+> +	}
+> +	if (ret)
+> +		return ret;
+> +
+> +	return post_populate(kvm, gfn, pfn, src_page, opaque);
+> +}
+
+[Severity: Critical]
+Does dropping the page reference before calling post_populate() introduce a
+time-of-check to time-of-use race?
+
+If the backend provides a physical page via get_pfn() and we drop the pin
+with put_page(ignored_page) early, the page could be concurrently freed and
+reallocated to another process.
+
+Could this cause the hardware post_populate callback (such as SNP RMPUPDATE)
+to operate on a physical page that now belongs to an innocent host process,
+corrupting host memory?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/f09647f427565c1789a=
+6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk?part=3D4
