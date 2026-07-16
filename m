@@ -1,258 +1,399 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E575B3BCD2A
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 15:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07400371D05
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 16:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784217252; cv=none; b=hUPWjgeOENBmqhC6cb9Mi1vpHc5npIwTGBLGghRx0wqE5TTzr6uNcnniXfXTWROzHRy3FK7E4upr1U68Udqy0SW1YMLF2t24XGhuVo4w+b6+rH8XwV3bt9JOsBgbXIKOzRHPqu/TcSiq08gLefKSZ0S574GPRgh/2QzEktxKyyk=
+	t=1784217898; cv=none; b=OS0W5clL45ZS050d8brRqO9CkXYcU0N/8opOIOuHTCI3syq4Vjw9HOucgW/NT7XSB71luhv4Qihy5QDmrixFycnm+BMze7si1909z1Cl4GMgzmg/hzN6Dg5HEO6Dzf429vCsujqqhxZFIYDRKOUXIq6K5ARll/fSrFmIdKSoNs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784217252; c=relaxed/simple;
-	bh=UtiCeYyqcpFhheCEGgTvjVKcloB9noc7UPHk4JYgU2k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BQh0OCzLvLz2NwtXHlhtMs1D1yOOz3QPKgOkn9dtv0TdhUBQohvup9VA7wfIAFoNrO6wdg5st0zlt2rqbyXxxVNnQfKqI05HsTjum7BXA3TX77S1ntoSVG/GQckznY35gopQRM4geFQuHu+wDKzdm7j3FXYFcF8Y50G/fLT5c9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evns715z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784217898; c=relaxed/simple;
+	bh=e+knd2aySDpztrDcilmsVa3LPUBYbigaUm4PhJZZo+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VKTMJQKmUeJAItQUzYVrs6biDM3FU4ooKOwCy7X7wiObJMPGhYv2WXciV3+luvKFgBAKgNrCs2QpDJUBsju6ZaZjJYySzbaWsI6SPa3BTb9O6BpbCeRumaeEWoy4Y5WqP3sIjC/O5jeMFZer9Nk6ky5c0DHI0KnsIP+GqlF19Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=HDdsPvgo; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evns715z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E961F000E9;
-	Thu, 16 Jul 2026 15:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784217246;
-	bh=2ARGlddhlq6oOWMKmHU+qGHk6wvboO59UD0OjBYEhFY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=evns715z+HjckQtjK3KvZAzKH73Vhj1EMH5vopg+gT0ZoDRQ9UVaBw5Xyoou4W7vn
-	 Mrt4LchDhG2hq5Qn8JGchy+G3a92Y8MnqGkL4TbUxip/ave3RmFSZcnlducqYgQKJ+
-	 zNaxnq6xessVv1RXsRDc+LNuPdS2uhDMTk0xO+6emKaE1eHX0eO6YwUec9M1FEmB4i
-	 yo3l6oyuBJxoDFZLsFZ87pUFiJkA9njNaSOs4kOKC8H1U8xL+oET1uMZrsbhCw8i2L
-	 bInTVFVuo/7dggWYDz9AAW0+73AlYXMHac1NSi8y23Qa56bjpgMCCRo8eu3NVcH95v
-	 tuOzsqzcsHlOg==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 11/11] samples/kvm, selftests/kvm: Allow the
- gmem_provider NVMe DMA test on arm64
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, media-ci@linuxtv.org
-In-Reply-To: <a8a919d0b2884e4169a6951ba11152b3c8b1d07d.1784194290.git.dwmw@amazon.co.uk>
-References: <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
- <a8a919d0b2884e4169a6951ba11152b3c8b1d07d.1784194290.git.dwmw@amazon.co.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 15:54:06 +0000
-Message-Id: <20260716155406.A9E961F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="HDdsPvgo"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B5992B;
+	Thu, 16 Jul 2026 09:04:51 -0700 (PDT)
+Received: from [10.1.25.27] (e122027.cambridge.arm.com [10.1.25.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3439B3F7B4;
+	Thu, 16 Jul 2026 09:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784217895; bh=e+knd2aySDpztrDcilmsVa3LPUBYbigaUm4PhJZZo+M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HDdsPvgo59wTS2pWZEFgH3Ffhl5VVm5i72D/PjJ1GhJ8lrAIS+jYY+I75uf94btUC
+	 O9bfBs9NlrcKHqWEuGJfuIyTOEZIjbfD/5B+NvpnPTOgOT20s9+uAdLoA2vWarKZp2
+	 7RpBN6/HjdRMzeSKIfMmgXVPDBPYBE0UD+CYRdrE=
+Message-ID: <69af1617-bd20-4cb3-bdb8-725b8f22b072@arm.com>
+Date: Thu, 16 Jul 2026 17:04:52 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] firmware: arm_rmm: Add support for SRO
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-6-steven.price@arm.com>
+ <20260715152954.ECAEA1F000E9@smtp.kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260715152954.ECAEA1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential issue(=
-s) to consider:
-- [Critical] The gmem_provider sample module blindly trusts the `setup.kvm_=
-fd` file descriptor, leading to type confusion and local privilege escalati=
-on.
-- [High] A data race on the `info->kvm` pointer between `gmem_bind` and `gm=
-em_fd_ioctl` allows a concurrent binding to drop the VM reference while it =
-is actively being used, leading to a Use-After-Free.
-- [Medium] The NVMe DMA selftest hardcodes the Amazon PCI Vendor ID (0x1d0f=
-), causing it to fail on non-Amazon NVMe devices.
-- [Medium] The selftest implicitly assumes a 4KB system page size, causing =
-IOMMU mapping failures on architectures with larger page sizes.
-- [Medium] The selftest bypasses architecture-specific I/O accessors and om=
-its mandatory memory barriers, causing data races on weakly-ordered archite=
-ctures.
-- [Medium] The selftest performs raw, native-endian memory accesses on stri=
-ctly little-endian PCI configuration space and NVMe registers, causing corr=
-uption on big-endian architectures.
---
+On 15/07/2026 16:29, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 8 potential issue(s) to consider:
+> - [High] Kernel infinite loop when SRO memory allocation fails and the operation cannot be cancelled.
+> - [High] SRO wrappers wipe and free the `rmi_sro_state` struct unconditionally, leaking cached memory and breaking cross-call reuse.
+> - [High] `rmi_op_cancel` overwrites the `regs` structure with the cancellation request result, destroying the SRO loop state and leaving the RMM operation incomplete.
+> - [High] Out-of-bounds array read and arbitrary memory free when handling an overflow condition in SRO reclaim.
+> - [High] Missing clamp on `donated_granules` in `rmi_sro_donate_contig` allows a malicious or buggy RMM to trigger arbitrary out-of-bounds page frees.
+> - [Medium] Incorrect alignment check using `IS_ALIGNED` with potentially non-power-of-two sizes.
+> - [Medium] SRO wrappers hardcode `GFP_KERNEL`, directly contradicting the stated goal of supporting atomic execution contexts.
+> - [Low] Usage of non-standard macro `kmalloc_obj()` causes compilation failure.
+> --
+> 
+> --- Patch [5]: [PATCH 5/6] firmware: arm_rmm: Add support for SRO ---
+> commit 105823e0511b9065ecd4f5281f43bd808384b24c
+> Author: Steven Price <steven.price@arm.com>
+> 
+> firmware: arm_rmm: Add support for SRO
+> 
+> This commit introduces Stateful RMI Operations (SRO) for RMM v2.0, allowing
+> SMC operations to return while still in progress and be continued later. It
+> adds infrastructure to track and reuse allocated memory during these
+> operations to support execution in contexts where memory allocation is
+> difficult. The patch also provides wrappers for SRO commands and modifies
+> delegate/undelegate handlers to use the stateful infrastructure.
+> 
+>> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
+>> index 7eb2c8d7f7fa8..f13ecdb40ded4 100644
+>> --- a/arch/arm64/include/asm/rmi_cmds.h
+>> +++ b/arch/arm64/include/asm/rmi_cmds.h
+> 
+> [ ... ]
+> 
+>> @@ -46,6 +142,98 @@ static inline int rmi_realm_activate(unsigned long rd)
+>>  	return res.a0;
+>>  }
+>>  
+>> +/**
+>> + * rmi_realm_create() - Create a realm
+>> + * @rd: PA of the RD
+>> + * @params: PA of realm parameters
+>> + * @sro: Preallocated SRO context to be used
+>> + *
+>> + * Create a new realm using the given parameters.
+>> + *
+>> + * Return: RMI return code
+>> + */
+>> +static inline int rmi_realm_create(unsigned long rd, unsigned long params,
+>> +				   struct rmi_sro_state *sro)
+>> +{
+>> +	return rmi_sro_memxfer_cmd(sro, GFP_KERNEL,
+>> +				   SMC_RMI_REALM_CREATE, rd, params);
+>> +}
+> 
+> [Severity: Medium]
+> The commit message states the SRO framework permits operations to be done in a
+> context where memory allocation may be difficult, such as an atomic context.
+> However, does passing GFP_KERNEL here directly contradict that goal? If
+> rmi_sro_ensure_capacity() requires memory, it will call alloc_pages_exact()
+> with GFP_KERNEL, which will sleep.
 
---- Patch [11]: [RFC PATCH 11/11] samples/kvm, selftests/kvm: Allow the gme=
-m_provider NVMe DMA test on arm64 ---
-commit fc0ebbb277714921db32af720eb2c5783d061ea0
-Author: David Woodhouse <dwmw@amazon.co.uk>
+But this particular RMI function is called from a context where sleeping
+is fine.
 
-samples/kvm, selftests/kvm: Allow the gmem_provider NVMe DMA test on arm64
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index e7ab4a7df3ca8..6a9f61760fd77 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+> 
+> [ ... ]
+> 
+>> @@ -22,6 +23,487 @@ unsigned long rmi_feat_reg(unsigned long id)
+> 
+> [ ... ]
+> 
+>> +static void rmi_op_cancel(unsigned long sro_handle,
+>> +			  struct arm_smccc_1_2_regs *out_regs)
+>> +{
+>> +	struct arm_smccc_1_2_regs regs = {
+>> +		SMC_RMI_OP_CANCEL, sro_handle
+>> +	};
+>> +
+>> +	rmi_smccc_invoke(&regs, out_regs);
+>> +}
+> 
+> [Severity: High]
+> Does rmi_op_cancel() overwrite the caller's out_regs with the cancellation
+> result?
 
-The sample provider and the NVMe DMA selftest have no x86 specifics.
-Drop the X86_64 gate on the sample's Kconfig (arm64 also has
-KVM_GUEST_MEMFD; the SEV RMP reset is already guarded by
-CONFIG_AMD_MEM_ENCRYPT) and move the NVMe DMA selftest from
-TEST_GEN_PROGS_x86 to TEST_GEN_PROGS_COMMON so it also builds on
-architectures with an IOMMU (arm64 SMMU-v3, ...).
+Yes
 
-> diff --git a/samples/Kconfig b/samples/Kconfig
-> index 3482659638b5b..d26a03dea0728 100644
-> --- a/samples/Kconfig
-> +++ b/samples/Kconfig
-> @@ -328,7 +328,7 @@ source "samples/damon/Kconfig"
-> =20
->  config SAMPLE_KVM_GMEM_PROVIDER
->  	tristate "Build sample guest_memfd provider -- loadable module only"
-> -	depends on KVM_GUEST_MEMFD && X86_64 && m
-> +	depends on KVM_GUEST_MEMFD && (X86_64 || ARM64) && m
+> When called from rmi_sro_memxfer_execute(), a successful cancel
+> returns RMI_SUCCESS in out_regs->a0.
 
-[Severity: Critical]
-Is it safe to blindly trust the kvm_fd here?
+A 'successful' cancel returns RMI_INCOMPLETE. Or as the spec puts it:
 
-In gmem_ctl_ioctl(), the user-provided setup.kvm_fd is resolved and used
-like this:
+ | The RMI_OP_CANCEL command does not have any success conditions
 
-samples/kvm/gmem_provider.c:gmem_ctl_ioctl() {
-    ...
-	kvm_file =3D fget(setup.kvm_fd);
-	if (!kvm_file)
-		return -EBADF;
-	kvm =3D kvm_file->private_data;
-	if (!kvm) {
-		fput(kvm_file);
-		return -EINVAL;
-	}
-	kvm_get_kvm(kvm);
-    ...
-}
+> This would cause the loop condition
+> (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) to fail early and abandon
+> the operation before it completes, potentially causing future RMM operations
+> to fail.
 
-If a user passes an arbitrary file descriptor, it could lead to type confus=
-ion
-since we don't verify the file's operations before extracting private_data =
-and
-performing an out-of-bounds refcount_inc(&kvm->users_count).
+There's a WARN_ON_ONCE if regs->a0 is anything but RMI_INCOMPLETE in
+rmi_sro_memxfer_execute(). This should never happen.
 
-[Severity: High]
-Can gmem_fd_ioctl() safely use info->kvm without synchronization?
+> [ ... ]
+> 
+>> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+>> +				 unsigned long sro_handle,
+>> +				 unsigned long donatereq,
+>> +				 struct arm_smccc_1_2_regs *out_regs,
+>> +				 gfp_t gfp)
+>> +{
+>> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+>> +	unsigned long unit_size_bytes = donate_req_to_size(donatereq);
+>> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+>> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+>> +	unsigned long size = unit_size_bytes * count;
+>> +	unsigned long addr_range;
+>> +	int ret;
+>> +	void *virt;
+>> +	phys_addr_t phys;
+>> +
+>> +	for (int i = 0; i < sro->addr_count; i++) {
+>> +		unsigned long entry = sro->addr_list[i];
+>> +
+>> +		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
+>> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+>> +		    RMI_ADDR_RANGE_STATE(entry) == state &&
+>> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+> 
+> [Severity: Medium]
+> Can size be a non-power-of-two here?
 
-In gmem_fd_ioctl(), info->kvm is used without holding a lock:
+According to the spec: no.
 
-samples/kvm/gmem_provider.c:gmem_fd_ioctl() {
-    ...
-		if (info->kvm)
-			kvm_gmem_invalidate_range(info->kvm,
-				info->base_gfn + start_index - info->pgoff,
-				info->base_gfn + end_index - info->pgoff);
-    ...
-}
+> The IS_ALIGNED() macro evaluates a> bitwise AND with (size - 1) and
+strictly requires the alignment to be a
+> power of two. If the RMM requests a contiguous donation where count is not a
+> power of two, this check uses an invalid bitmask.
 
-Concurrently, gmem_bind() can swap info->kvm and drop the underlying
-reference:
+I'll add a check (with a WARN_ON_ONCE) for buggy RMM behaviour which
+errors out early.
 
-samples/kvm/gmem_provider.c:gmem_bind() {
-    ...
-	if (info->kvm !=3D kvm) {
-		kvm_get_kvm(kvm);
-		if (info->kvm)
-			kvm_put_kvm(info->kvm);
-		info->kvm =3D kvm;
-	}
-    ...
-}
+>> +			sro->addr_count--;
+>> +			swap(sro->addr_list[sro->addr_count],
+>> +			     sro->addr_list[i]);
+>> +
+>> +			goto out;
+>> +		}
+>> +	}
+> 
+> [ ... ]
+> 
+>> +out:
+>> +	rmi_op_mem_donate(sro_handle,
+>> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+>> +			  0, out_regs);
+>> +
+>> +	unsigned long donated_granules = out_regs->a1;
+>> +	unsigned long donated_size = donated_granules << PAGE_SHIFT;
+>> +
+>> +	if (donated_granules == 0) {
+>> +		/* No pages used by the RMM */
+>> +		sro->addr_count++;
+>> +	} else if (donated_size < size) {
+> 
+> [Severity: High]
+> Is it possible for the RMM to return a maliciously large value for
+> donated_granules here?
 
-Could this concurrent binding drop the VM reference to zero while it is bei=
-ng
-accessed by the ioctl, leading to a use-after-free?
+Yes, but the RMM is considered trusted.
 
-[ ... ]
+> Unlike rmi_sro_donate_noncontig() which clamps
+> this value, this function does not. If the value overflows the bitwise shift,
+> donated_size could appear small, causing the kernel to erroneously enter the
+> free loop below and release pages that the RMM may actively be using.
 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index 7f46843e7428f..12004a487c326 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -58,6 +58,7 @@ TEST_PROGS_x86 +=3D x86/nx_huge_pages_test.sh
->  # Compiled test targets valid on all architectures with libkvm support
->  TEST_GEN_PROGS_COMMON =3D demand_paging_test
->  TEST_GEN_PROGS_COMMON +=3D dirty_log_test
-> +TEST_GEN_PROGS_COMMON +=3D gmem_provider_nvme_dma_test
+There are plenty of other ways of the RMM breaking the normal world. In
+particular APIs like RMI_RTT_DATA_UNMAP return physical addresses which
+Linux trusts are correct.
 
-[Severity: Medium]
-Will this regression cause the test to fail on host hardware that doesn't u=
-se
-an Amazon NVMe device?
+>> +		phys = sro->addr_list[sro->addr_count] & RMI_ADDR_RANGE_ADDR_MASK;
+>> +
+>> +		/* Not all granules used by the RMM, free the remaining pages */
+>> +		for (long i = donated_size; i < size; i += PAGE_SIZE) {
+>> +			if (state == RMI_OP_MEM_DELEGATED)
+>> +				free_delegated_page(phys + i);
+>> +			else
+>> +				__free_page(phys_to_page(phys + i));
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> 
+> [ ... ]
+> 
+>> +static int rmi_sro_reclaim(struct rmi_sro_state *sro,
+>> +			   unsigned long sro_handle,
+>> +			   struct arm_smccc_1_2_regs *out_regs)
+>> +{
+>> +	unsigned long capacity;
+>> +	int ret;
+>> +
+>> +	ret = rmi_sro_ensure_capacity(sro, 1);
+>> +	if (ret)
+>> +		rmi_sro_free(sro);
+> 
+> [Severity: High]
+> If rmi_sro_ensure_capacity() fails because sro->addr_count is greater than
+> RMI_MAX_ADDR_LIST, it returns -EOVERFLOW.
 
-The test hardcodes the Amazon PCI Vendor ID:
+This is a "should never happen" condition (which has a WARN_ON_ONCE).
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:main() {
-    ...
-		TEST_ASSERT(vid =3D=3D 0x1d0f,
-			    "unexpected VID 0x%04x in provider region -- Identify DMA landed els=
-ewhere?\n"
-    ...
-}
+> Passing sro to rmi_sro_free() in> this state will cause the loop in
+rmi_sro_free() to iterate out-of-bounds
+> past the end of the addr_list array, reading garbage data and attempting to
+> free it.
 
-Should the expected VID be read dynamically from offset 0x00 instead?
+True - a corrupted list length causes further things to break. It seems
+a bit much to try to handle such corruption.
 
-[Severity: Medium]
-Does the implicit 4KB system page size assumption introduce a regression on
-architectures that commonly use larger page sizes, such as arm64?
+>> +
+>> +	capacity = RMI_MAX_ADDR_LIST - sro->addr_count;
+> 
+> [ ... ]
+> 
+>> +unsigned long rmi_sro_memxfer_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +	unsigned long sro_handle;
+>> +	struct arm_smccc_1_2_regs *regs = &sro->regs;
+>> +
+>> +	rmi_smccc_invoke(regs, regs);
+>> +
+>> +	sro_handle = regs->a1;
+>> +
+>> +	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
+>> +		int ret = 0;
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			rmi_op_continue(sro_handle, RMI_CONTINUE_KEEP_GOING,
+>> +					regs);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_DONATE:
+>> +			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+>> +					     gfp);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_RECLAIM:
+>> +			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+>> +			break;
+>> +		default:
+>> +			ret = WARN_ON_ONCE(1);
+>> +			break;
+>> +		}
+>> +
+>> +		if (ret) {
+>> +			if (can_cancel)
+>> +				rmi_op_cancel(sro_handle, regs);
+>> +
+>> +			if (WARN_ON_ONCE(RMI_RETURN_STATUS(regs->a0) != RMI_INCOMPLETE))
+>> +				return ret;
+>> +		}
+>> +	}
+> 
+> [Severity: High]
+> Does this code loop infinitely if a memory allocation fails and can_cancel is
+> false?
 
-The test uses hardcoded 4KB offsets and lengths for IOMMU mapping:
+The specification requires that can_cancel is true when a memory
+allocation is requested.
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:main() {
-    ...
-	TEST_ASSERT(!ioas_map_user(iommufd_fd, alloc.out_ioas_id, sq_buf, IOVA_SQ,=
- 0x1000),
-		    "IOAS_MAP(sq) errno=3D%d", errno);
-	TEST_ASSERT(!ioas_map_user(iommufd_fd, alloc.out_ioas_id, cq_buf, IOVA_CQ,=
- 0x1000),
-		    "IOAS_MAP(cq) errno=3D%d", errno);
-    ...
-}
+It's also not really clear what the alternative is here - if the RMM
+requests memory and doesn't allow cancellation then the only way of
+finishing the operation is to provide it with the memory.
 
-Since iommufd requires mapping lengths and IOVAs to be aligned to the system
-page size, won't this fail on kernels running with 16KB or 64KB page sizes?
+> If ret is set to an error code and can_cancel is false,
+> rmi_op_cancel()> is skipped. The regs state is not modified, so
+RMI_RETURN_STATUS(regs->a0)
+> remains RMI_INCOMPLETE, the WARN_ON_ONCE check fails, and the loop repeats
+> indefinitely without returning the error.
 
-[Severity: Medium]
-Can a data race occur on weakly-ordered architectures without memory barrie=
-rs?
+Indeed, if the operation is incomplete the code attempts to complete the
+operation. The only other option would be to give up on using the RMM,
+but how do we choose the maximum number of loops before giving up?
 
-The custom MMIO accessors use plain volatile writes:
+Ultimately we do have to trust the RMM to some extent to obey the spec.
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:wr32() {
-    ...
-static void     wr32(void *b, uint32_t o, uint32_t v) { *(volatile uint32_t=
- *)((char *)b + o) =3D v; }
-    ...
-}
+> [ ... ]
+> 
+>> @@ -80,8 +562,9 @@ static int rmi_configure(void)
+>>  {
+>>  	unsigned long ret;
+>>  	struct rmm_config *config __free(free_page) = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>> +	struct rmi_sro_state *sro __free(kfree) = (struct rmi_sro_state *)kmalloc_obj(*sro);
+> 
+> [Severity: Low]
+> Is kmalloc_obj() a standard kernel macro?
 
-When ringing the doorbell:
+Yes
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:main() {
-    ...
-	/* Ring SQ0 tail doorbell. */
-	wr32(bar, NVME_SQ0TDBL, 1);
-    ...
-}
+> It does not appear to exist in the> standard kernel headers, which
+will result in an implicit function declaration
+> error and build failure.
 
-Without an explicit memory barrier, is the CPU free to reorder the MMIO wri=
-te
-to the doorbell ahead of the normal RAM writes to the Submission Queue Entr=
-y?
+I'm not sure what braindead version of Sashiko was used on this patch.
+For some reason it seems to have completely forgotten standard Linux and
+somewhat missed the context of how the RMM fits into the system.
 
-[Severity: Medium]
-Does this code corrupt device state on big-endian architectures?
+>> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+>> index c038c1d685fad..138983ab4e3c2 100644
+>> --- a/include/linux/arm-rmi-cmds.h
+>> +++ b/include/linux/arm-rmi-cmds.h
+> 
+> [ ... ]
+> 
+>> @@ -19,10 +19,45 @@ struct rtt_entry {
+> 
+> [ ... ]
+> 
+>> +#define rmi_sro_memxfer_cmd(sro, gfp, ...) ({				\
+>> +	struct rmi_sro_state *__sro = (sro);				\
+>> +	*__sro = (struct rmi_sro_state){ .regs = {__VA_ARGS__} };	\
+>> +	int __ret = rmi_sro_memxfer_execute(__sro, gfp);		\
+>> +	rmi_sro_free(__sro);						\
+>> +	__ret;								\
+>> +})
+> 
+> [Severity: High]
+> Does this macro unconditionally wipe and free the rmi_sro_state struct? The
+> compound literal assignment *__sro = (struct rmi_sro_state){ ... } will
+> zero-initialize addr_count and addr_list, wiping any cached addresses from a
+> previous attempt. Furthermore, calling rmi_sro_free() unconditionally before
+> returning frees any allocated memory, defeating the stated design goal of
+> reusing memory across calls.
+> 
 
-Since the test is now built for all architectures, it will run on big-endian
-systems. However, the test uses native-endian assignments to interact with
-little-endian PCI configuration space and NVMe registers:
+Yes it unconditionally wipes the context of the struct - the struct is
+provided purely to avoid having to do an extra memory allocation. This
+is a helper maco for the cases where we don't provide a way of dropping
+into a less restrictive state to retry the allocation.
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:main() {
-    ...
-	TEST_ASSERT(pread(vfio_fd, &pci_cmd, 2, cfg_off + 0x04) =3D=3D 2, "cfg CMD=
- read");
-	pci_cmd |=3D 0x0006;
-	TEST_ASSERT(pwrite(vfio_fd, &pci_cmd, 2, cfg_off + 0x04) =3D=3D 2, "cfg CM=
-D write");
-    ...
-}
+This is admittedly a missing piece - currently there are no call sites
+that do the stated dance of dropping locks to retry a memory allocation.
 
-And for the NVMe SQE:
+Steve
 
-tools/testing/selftests/kvm/gmem_provider_nvme_dma_test.c:main() {
-    ...
-		s[0]  =3D 0x00010006;	/* CID=3D1 << 16 | OPC=3DIdentify */
-    ...
-}
-
-Will these direct native-endian accesses produce byte-swapped data on
-big-endian CPUs and cause the test to fail?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/f09647f427565c1789a=
-6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk?part=3D11
