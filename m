@@ -1,109 +1,143 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC80371CE3
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 03:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FB526738C
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 03:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784170979; cv=none; b=dkSNtYCuMe39ODfs5iG4OKTCsju0OkNAPXXteQLoo05pHA5G5YG4xwl4OYd8HISSc40TOd4Q2cpK7V6wvlbnv0NiOs4KCEuVjyJIV8etdwK6OkwkfrlWmkBV8HjukAnnZBTop4Za9k+ciJzUyaN7CiN9FhzhAeuKObJBNHh2CnM=
+	t=1784171532; cv=none; b=Dn4rEvmy3Gu8ZS+dCmcnLqcRN9goJ9gtLw0Gef8pRE0lHuipp2Ix10xuVSdpJ+oL4FbOyHtkL2YGz5gysBv+5wiYxMJO23InuHfCsZWpJSJ20fxUyNSFzuVy5moF1RPuebRxoHCwFZ+/K8EV26ByVl0LC+SYGAFXvGI7fQBoOiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784170979; c=relaxed/simple;
-	bh=8cHM0BZyWFnwWbxwNz3AyzT6I9Q2rXFPmSViRVuevvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kmw9nPKDhUPCXr/9YB1bG06tFCPdswCqOpc/lA7xBDl2Tx6ISnOGj9fM0x1PmNKWNvyb1YJwC9DKL8FbtvxF5tuAtkXEiPBRf33SN7v/8WDwP+LUyqC+SEX3rIkPoEjR8QPG/JLs2gK/Jn4jQQrW2962tmzWzKpFQ2ytJk/trhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MSRrphyS; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784171532; c=relaxed/simple;
+	bh=T8YizExBAgnXwce39MQlZxgK33iUkkmLN60IlCcFBT4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=aZO2lj0gmWlJfAA++V3+yv9b/lcRqcqqhhoWfRKMmLkdPIBC2a7vwI2AvFjydJkNR9mdxIEy9+Q2NRjZh4ho2M+nyPAv/PQbxBjWEFR+G0fqlIlHTyT6TlFKiq1VQrVZlXV8WcYai88yqLZ7O+mVh+50HTFegFx+NFvw+/yb6gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6oOQ4mT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MSRrphyS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=vr
-	q+uW6BkBZKWYz5ksyQ44ROYJQVsXZ5qBm8e5hwgIY=; b=MSRrphySzty3i3rp4F
-	wUY5ULOkRw1w0XQ0YwuLMOftt+Dgi+/9QWFzGb3YkHeTxssgUzKV2AjMCNjW7taA
-	Rtjk5M6BeomzQ5GvAUqTYx6gUtWQwE/lFMZLQYLe/0Xlma0GRkJ1/bZn0kb1CJ8C
-	XIXHTNFyc9+q+0Ec3+YGCSwwQ=
-Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wCHLtnMSVhqdqI8KA--.51016S2;
-	Thu, 16 Jul 2026 11:02:37 +0800 (CST)
-From: Weimin Xiong <xiongwm2026@163.com>
-To: virtualization@lists.linux.dev
-Cc: mst@redhat.com,
-	jasowangio@gmail.com,
-	dtatulea@nvidia.com,
-	kvm@vger.kernel.org,
-	xiongweimin <xiongweimin@kylinos.cn>
-Subject: [PATCH] vdpa/mlx5: fix MR state corruption on setup_vq_resources failure
-Date: Thu, 16 Jul 2026 11:02:41 +0800
-Message-ID: <20260716030241.124412-1-xiongwm2026@163.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6oOQ4mT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976121F000E9;
+	Thu, 16 Jul 2026 03:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784171530;
+	bh=vc6KhTZOo3QuS5PdZ3u8SXWTB7wHLAmWJdXDFPGFsCw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=j6oOQ4mT7yAD9YL5GLlHTBmYApP0/hiWw9o6fDXwJtr7i1AUsSgBdbkV8FDfdvmnx
+	 fHzGaZDfC62Zlzv2EEie0tEtRSPZ5VNpk3KRy7PQLvYUxCQTo3zabeZ4mEv3SSTv6L
+	 a6j/c17X9MN1mDtJD+DCirdpOKcmk15j0qL1QLUQ0Wc4TEhyXMYds7sBxPm8NzgXro
+	 tjjPTW7tvzK+WjDHuoIBsQxtFVh2FmRZG9xLI5oRIvxPlsw3m/AxAEKkdD47QJSeg9
+	 ix3sdbodRvKwnsL/0Qq5w56wMKueoqp9YIKYOVxD+/3obtSODZinvnJyukbzg/wYak
+	 iKsEFf+dO1pnw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vdpa/mlx5: fix MR state corruption on
+ setup_vq_resources failure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Weimin Xiong" <xiongwm2026@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260716030241.124412-1-xiongwm2026@163.com>
+References: <20260716030241.124412-1-xiongwm2026@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 16 Jul 2026 03:12:10 +0000
+Message-Id: <20260716031210.976121F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCHLtnMSVhqdqI8KA--.51016S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw15uw4xuw45Zw47urWfKrg_yoW8Ww4UpF
-	WfKFnIkrWDXFy3XFsIgF4rXF15uayrtrW8K3y2grnIywn8tryDJrs5KFyrZryUCrWrCFsx
-	Kr48Ja18GFykWFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jNmRUUUUUU=
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbCzQ02xWpYSc1SQgAA3V
 
-From: xiongweimin <xiongweimin@kylinos.cn>
-
-In mlx5_vdpa_change_map(), mlx5_vdpa_update_mr() is called before
-setup_vq_resources(), which releases the old MR and updates
-mres.mr[asid] to point to new_mr. If setup_vq_resources() then
-fails, the function returns an error but the MR pointer is already
-updated, leaving mres.mr[asid] pointing to a potentially invalid
-state.
-
-Fix by calling setup_vq_resources() before updating the MR pointer.
-On failure, the old MR is still intact and can be restored by the
-caller.
-
-Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
----
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 24 ++++++++++++++++----------
- 1 file changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index ad0d5fbbb..8a6ddc00b 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -3067,24 +3067,28 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_dev *mvdev,
- 		teardown_vq_resources(ndev);
- 	}
- 
--	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
--
- 	for (int i = 0; i < mvdev->max_vqs; i++)
- 		ndev->vqs[i].modified_fields |= MLX5_VIRTQ_MODIFY_MASK_VIRTIO_Q_MKEY |
- 						MLX5_VIRTQ_MODIFY_MASK_DESC_GROUP_MKEY;
- 
- 	if (!(mvdev->status & VIRTIO_CONFIG_S_DRIVER_OK) || mvdev->suspended)
--		return 0;
-+		goto done;
- 
- 	if (teardown) {
- 		restore_channels_info(ndev);
- 		err = setup_vq_resources(ndev, true);
- 		if (err)
--			return err;
-+			goto out_err;
- 	}
- 
- 	resume_vqs(ndev, 0, ndev->cur_num_vqs);
-+	goto done;
- 
-+out_err:
-+	return err;
-+
-+done:
-+	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
- 	return 0;
- }
- 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Moving the MR update to the end of mlx5_vdpa_change_map() causes h=
+ardware virtqueues to be programmed with the old Memory Region (MR) keys in=
+stead of the new ones, leading to device malfunction and hardware faults.
 --
-2.39.3
 
+--- Patch [1]: [PATCH] vdpa/mlx5: fix MR state corruption on setup_vq_resou=
+rces failure ---
+commit 0e93d2962a61c5461c3028e043cb48591fa19ebe
+Author: xiongweimin <xiongweimin@kylinos.cn>
+
+vdpa/mlx5: fix MR state corruption on setup_vq_resources failure
+
+This commit defers mlx5_vdpa_update_mr() until after setup_vq_resources()
+and resume_vqs() to prevent MR state corruption if resource setup fails.
+
+> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/ml=
+x5_vnet.c
+> index ad0d5fbbbca84..8a6ddc00b8e07 100644
+> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> @@ -3067,24 +3067,28 @@ static int mlx5_vdpa_change_map(struct mlx5_vdpa_=
+dev *mvdev,
+>  		teardown_vq_resources(ndev);
+>  	}
+> =20
+> -	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
+> -
+>  	for (int i =3D 0; i < mvdev->max_vqs; i++)
+>  		ndev->vqs[i].modified_fields |=3D MLX5_VIRTQ_MODIFY_MASK_VIRTIO_Q_MKEY=
+ |
+>  						MLX5_VIRTQ_MODIFY_MASK_DESC_GROUP_MKEY;
+> =20
+>  	if (!(mvdev->status & VIRTIO_CONFIG_S_DRIVER_OK) || mvdev->suspended)
+> -		return 0;
+> +		goto done;
+> =20
+>  	if (teardown) {
+>  		restore_channels_info(ndev);
+>  		err =3D setup_vq_resources(ndev, true);
+>  		if (err)
+> -			return err;
+> +			goto out_err;
+
+[Severity: High]
+Does deferring the MR update cause the hardware virtqueues to be programmed
+with the old MR keys?
+
+setup_vq_resources() eventually calls create_virtqueue(), which reads the MR
+keys from the mvdev->mres.mr array before it has been updated:
+
+drivers/vdpa/mlx5/net/mlx5_vnet.c:create_virtqueue() {
+    ...
+    vq_mr =3D mvdev->mres.mr[mvdev->mres.group2asid[MLX5_VDPA_DATAVQ_GROUP]=
+];
+    if (vq_mr)
+        MLX5_SET(virtio_q, vq_ctx, virtio_q_mkey, vq_mr->mkey);
+    ...
+}
+
+>  	}
+> =20
+>  	resume_vqs(ndev, 0, ndev->cur_num_vqs);
+
+Similarly, resume_vqs() modifies virtqueues using the stale MR keys:
+
+drivers/vdpa/mlx5/net/mlx5_vnet.c:fill_modify_virtqueue_cmd() {
+    ...
+    vq_mr =3D mvdev->mres.mr[mvdev->mres.group2asid[MLX5_VDPA_DATAVQ_GROUP]=
+];
+    if (vq_mr)
+        MLX5_SET(virtio_q, vq_ctx, virtio_q_mkey, vq_mr->mkey);
+    ...
+}
+
+> +	goto done;
+> =20
+> +out_err:
+> +	return err;
+> +
+> +done:
+> +	mlx5_vdpa_update_mr(mvdev, new_mr, asid);
+
+Since mlx5_vdpa_update_mr() happens here at the end, does it destroy the ol=
+d MR
+while the hardware is actively configured to use it?
+
+Could this lead to IOMMU faults and memory corruption when the memory
+map changes?
+
+>  	return 0;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716030241.1244=
+12-1-xiongwm2026@163.com?part=3D1
