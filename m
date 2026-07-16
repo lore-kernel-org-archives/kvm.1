@@ -1,251 +1,217 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013037.outbound.protection.outlook.com [40.93.201.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0E385D76
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 16:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784219874; cv=none; b=KZlsMq2+XLFef9S56IuZtFo7/aJ/P5/mQ3Ap8N5Ws7q4b3/DTg6Sd/qAbU5RXdYjHhqkjshdCyPt1i/2J5FXe1c6oiTadeUH5VagX531xJJmqL9cR3Ds/CvJoiBOHpFhJHxIY2QsKFHbA8chnkogHMuivq4GbnZLrKIg1s6nIOk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784219874; c=relaxed/simple;
-	bh=o/HwCVgYgQFkz0/ODb7pKMxQLGAduLjD199HG59bSMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t4oLdGGlI3euNCz/1cUtXOzVbTVT9zW3gvaoD86/Ry1X42wixirsk9SM9NhPk0RHoL69yObKQmfJe4tlALrNx9uXH6emBNWxHKrTReDe8Estw3rRTFuIeTzVQ7DyY116Xy/Kvh/RhAckMjTOOlkMGXQpjCib6TT6uTF49T2f2Ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7f48cp4; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C355B43634C;
+	Thu, 16 Jul 2026 17:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784221418; cv=fail; b=qgJf03RK2Xn9Au5wQPSa/zaEqOY3cbnCwu1YfVtEcDNFnvlET74ugApQ6KmOYv0J3gpMW562sB/DVjXIr/8iUCpsXfkq62jtBGP27pMmXmr0vHDsUqXFWm95oipepID2KCL+6Ayaxbp4ZvDgNUb59Pv7SGGSeyWI5GQdPQcN8lo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784221418; c=relaxed/simple;
+	bh=RNxftcYAWrzxIPfWdt0hRQcyqXniFFAC9b+HROvlWlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hj1G3KoKfFeKQCNRyG4fkDKkjr+AOW6QBIASLAk3e442gH0zrfzz6lss3arrqH8v65rc2iD+XNuKQGQ8zHC6YSE0QAm5mNI/lSHVXR1q/saSlMuFExIuMEHNjv0urAhxMfILsT4oidLXeYqxxyvqqYBRKeexWcZ4qgyfjVDAajw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EKLPFww+; arc=fail smtp.client-ip=40.93.201.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7f48cp4"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5aeb5e85378so7413181e87.1
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 09:37:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784219862; x=1784824662; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7CwBdf7YTl0lNtDo3SBe9j9ZzLE2uAoBiUh1WwfPJrk=;
-        b=M7f48cp4I0hteFI5/USpDZwKw8qvmCAzFC8n/QB7fNdDX95CxoWBuu80JmXBzvpQL5
-         +A1XWjIq+J8JdgUGBDIYvWTLthSNeQx2fvuvkr6bI8TBslhO/rjk0G1yoad7VM2OWv3n
-         gh4J5gDfSLKeLCtuF/nj8zd/lT6mdhwwSr03sdkm3y4HTZD/kLDqVhYgvZdpZeEkV+iO
-         4TrnEaKTvbopKIB7Ph8OZLM3r4ncsqPoVGkTa9GtHgp5RBl5o4coht+cD6eZDA0Z3uY5
-         37RTWcQ/eqj15gEomEcIA+lVZP8yL8W4zf2auHajOx4rfbeViVscHWAZRLldN/TgWUSL
-         wEVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784219862; x=1784824662;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7CwBdf7YTl0lNtDo3SBe9j9ZzLE2uAoBiUh1WwfPJrk=;
-        b=Jig1G/VQZy3UkHEjRUCpms1AhVeZn1l4YAVjLgvjq5yNOEd/dLTtBcO8Jvodrgo22P
-         NpkmjYUWCvg0Wzj4zBzCqZmVMqo6Z/09j4ffL6XFsrYQoBcHx+/5CvWBphpkDLJiYbWY
-         uxppMld62fwg/H7ffOy7kMQvejoMZk7T0C8uaTkuZXi4pb/GiDescOlXUEZiXk9EfQnQ
-         M4T1w5/yPc75BhGqCq65K98MoruyPj4w4g62KBBNxdsIkk0cdaNHE9WIWzmgc9aOi7vn
-         ZIca1ve7DmM9zEB99Dpe4puVoV2GaAQ+z8pJ+mjAIr6A7RMjxZxE4BRUP4FkB/DHDIuC
-         DOxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrJ0xaYf6D3VnVIas+3bppJLU2y2HmThXxdWEvIBUdZasFwPbKaGcWZE1Lz8fPShVWECq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysmaV71DxFyqDXdke1Icd5TcaQmimfbxjt/PBhlErLrwRd+HPx
-	K043OLvSlF8gEnVJ/SjakqkrP/i+LV9Sl3HLyosH/TsJYPxAuqMl5UF3
-X-Gm-Gg: AfdE7clzMl6q1jv5xbVVUU8xgXpZ1lt2BA3wwWjZbconanWNDc+2gvRqal4lffRhdHG
-	6A/M4HxsV0kIJ6lxC0Z/w0GZq/oNAo9nJq3Uwzz75qqbsbNe9JeBqJxFqeAnEYFnNXBXDLF+8SD
-	WaASoFWcYB+3pVSmHdWmSFIpOCanDkt8yr9xeYQfqVOxLMHIY+swRoqXqeayUBiZEg3lTDPBB21
-	zpCNZpuV2RA2uGdm86i2iUaKTkVHSzvAMzNoXlwQ7yUlYPv65ObIlzpau5F7G1d5qUdwnpKW+pl
-	kLW6cdSLXMlos+5+BBhSNYLA9bHnH2LKAjq2+xMmbNmW3R5YM24ZXSAKoNChYDD6tZ4xlymFc9A
-	H+7cQ8Y+9c8uDhMKon/ddlXmBlzIKddM3tuZvlxLblgCpAVbQNaajRw+VR8dD72WVC+FaydNnZ/
-	wyZCNFDoSI
-X-Received: by 2002:a05:6512:3b20:b0:5b0:21e3:672a with SMTP id 2adb3069b0e04-5b159b8b887mr2052865e87.56.1784219862231;
-        Thu, 16 Jul 2026 09:37:42 -0700 (PDT)
-Received: from grower.astralinux.ru ([81.9.21.4])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b01caaf468sm5164318e87.68.2026.07.16.09.37.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 09:37:40 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Martyniuk <alexevgmart@gmail.com>,
-	lvc-project@linuxtesting.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	virtualization@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EKLPFww+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Lu8oQjOR+Rs5B3NyemSSxJkJ26eUmw7NhcfEWzt0fngaYDB3iHe/IL3MOjZKMypNcIhlOY3m0KlRSHIaHZjEzZcLa5LIB+PTJEq1H+Lydw5NXQJRIjLv/kjZHqJHn6UFBH0xrcrH7fTywQfd1BwSTVlU3JNP0FeLdfOWHAwqdRsN3rBWFDwsrm6YZv0azXdRWC8ceUhs7oFmBExebkkBz3DT6knxNTKZSKgLNm+mjHOKCitJYDHSJPiZbmRMsaFrne/TC1pnXF+rG0usjt5l9uEjS4FKkB0ldEZV8vcy0Im/up0gv0POXXphcfFSkkGDB5GjpJ4qg7kvvK6+HPUJdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TUN/a6w8yIfp6SLHmD687iLllmRcYxz7sJAAt6wpeDg=;
+ b=U8yBoBt1zy15oDRDQRK2/MUGnyMZG+oYtvxTPOmD9OPE52C82ntyx3XakxPglzhyLxjl+E/7tqMNr15xXiqL9SpT+7MJ87dDnhsqXfEc+YsHK1AEld2fNtPOwHR+0SopGd3aEn1MNhRKyzRdArDvUVBXHhXGH+TSMXO9/kxflg65Qso08RN1lHNWRLfGgUSFWyrDziTfhdRhM8tOmPqtosFU7bHJ7kmxEQ7caZhAF0F/2jgOQo1tYGG2oghKvXkSK1HaW8GkY/yZSlGkZNgS+1gZ0oC/JPphtVsIVupK02wSfNr8dpdhBb11yQ0zsxL0Fn22JyvI/4Z2mHbOk6v1iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TUN/a6w8yIfp6SLHmD687iLllmRcYxz7sJAAt6wpeDg=;
+ b=EKLPFww+k1hYXpelwZiaocxJ9ZjzkUwhEP/LC6Xsa2RjiFDQJSyWiNL/EKtAXaOGFxpB1LAZqLCsaplUTAFWR5wnkqi1rcSiaNrVCbuzfOoBqSJqE0SmKlCQGFxG8jmXdqHMk5KIqc/16pi/Jnwuq8n9VFNPdvw2XlAraxQRB9ZGs7VZOcCtaIsgPZ81YPWjoTTzccYXX7L5TEhryNOlxQkwNrjcMf9tTqWbSkVKqoYGdOK8t4bTZCUESD6uqfa1NhNCfFhA9ZNTZTfQpGNkxJ1PsUacRxhD6C5ms0C4SGeAoBaMhhCX5NJiNi/LeMV+Aq3Ldd4pO61sqEsVbSzknw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CH3PR12MB9731.namprd12.prod.outlook.com (2603:10b6:610:253::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Thu, 16 Jul
+ 2026 17:03:28 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%4]) with mapi id 15.21.0202.014; Thu, 16 Jul 2026
+ 17:03:28 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	Justin Stitt <justinstitt@google.com>,
 	kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Mark Bloch <mbloch@nvidia.com>,
+	Bill Wendling <morbo@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Maher Azzouzi <maherazz04@gmail.com>
-Subject: [PATCH 6.12] vsock/virtio: fix zerocopy completion for multi-skb sends
-Date: Thu, 16 Jul 2026 19:35:59 +0300
-Message-ID: <20260716163600.115458-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>
+Cc: patches@lists.linux.dev
+Subject: [PATCH v3 01/11] net/mlx5: Add IFC structures for CQE and WQE
+Date: Thu, 16 Jul 2026 14:03:17 -0300
+Message-ID: <1-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+In-Reply-To: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: YT3PR01CA0108.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:85::25) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CH3PR12MB9731:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53c17132-d676-4438-5bdc-08dee35c2852
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|921020|22082099003|18002099003|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	2+dvNkawpC1In216huTQFtNviVBJ2cYpRCwphQXepHbh1HKJJAtHqZOZA7+2mgQuCuI140ajaMFl1rBJeQrDBoA0boNyKMLMxgt3U358/SCvZLJD3XkDk3FP3L/AByx8pLxIgovyGLbBnfs4cJRaeYEUJNV2Fcyzi0GItSkBW1g8X4fj7+gEnkmwPwfnCYopGaHxer2IeFR+tJ71xQwL+R93CeiYTekfckmCw2kl/QARA7YNokOvmJlPnc3ITZWbzWiIKUNfY115CSu3utEPaJvzx3AyHdLx1NdpEeh+bfkT+Wp7goDfbM3Qqjtrs8vTf2q+h4H520DNeRE15B8IZJPsi0uaK2aw6AKWkQrPXV09jh7949vOOJYrVqMiK6kVTzZzrHNHLDqnsrwDMirV+LCHe9CVeEp5URHwThI6HwlKSnPBdyrPpRF2n6u7+AuL6ykgmfKd8tM30iq9bAlStyGyOeNvvFmTOO0hemMKZa43o7w0fzAfCC3EZWjcMhn/jvGLapIkPb5FbxQVPKGTXGO/QjY6PXlkH/x+r4m+CTNLwbpm6CZK/J3XwKmVhpPQZ2bqftdBYFsp9Crtr9NJKAZmAcBC8G9dcHc6EICBytphN10w9nSNmAO30q6KYw3/eGqCuMIIUpq2RcXrLsSLVpvCk+0fl9RiE3Czd4yTrcKo8GrlI1dn81WEWv/sPM6qzmpSO56jKSe5Jkq0Oop3CQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(921020)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?K33BfoEqmktm4bL6FfpfPvxozURw6JqJiaxBMllroexPUcZ0K6u3fQ+IPpA0?=
+ =?us-ascii?Q?lTGL0+0KZRkGzJmeC3liUkvK3MowkEPQ5Bbq2BK0DHVy60fDz4YyXlb96C6K?=
+ =?us-ascii?Q?Bh3Em6jcZFSV5wKCEMIB76phqcgG2eVMUCFQ/q01HtdbBBDSf0uFSwXo+UEI?=
+ =?us-ascii?Q?65MOvm8QWInKq678p346yC8k2rIOXyvy59uDg2FXnD4RXR0qnip4yPVjnf7x?=
+ =?us-ascii?Q?i5ZVaCPtLtrrf+8WVWvOZrsfZXytBfS5I/w5YTxlvmsJF4ouu0hxL0jzxDLB?=
+ =?us-ascii?Q?lHe1E3z8nfuqUE7TO2JcVSPLaFOyc3mpzw/0ds4OAF+/lVP9T2d6e+4SX8Qb?=
+ =?us-ascii?Q?5/fvrLs8s4LImIlCZIAZ2E/vdn8cX91SbV8VX+MGTvDQis4jzxW5HlyuXL9z?=
+ =?us-ascii?Q?yTKMXCeN3D0UBpKJqF6Bqa3VYldeH9Jf5q50HIeFJklGv+syaMt3IG/fPRMt?=
+ =?us-ascii?Q?+6lygL1ML7uA9hh36y3HCdQuR5iUlaT68NcdXS/3uUqgoaJ0elUwpDwaS0Ma?=
+ =?us-ascii?Q?BU0qnFP95CD0QY285cpohdjfe1qj0nZQjKmVfXex+uqWIb9g3okgiNgTf8j8?=
+ =?us-ascii?Q?BnlOwutPdZL5CKMg8I3fWbWXgyu5iTKP0wrINwwfVMztTLeCnYgSWmnBuXP0?=
+ =?us-ascii?Q?QyF+jMQRus6G4XiBONtrIKkH+P9EuC0mnSYi/Mdjuu+GflQQcyUW8lcpd8/3?=
+ =?us-ascii?Q?0RLuKWOGc7gAKxqqwdNoif/VlGJPn/15umxyuKIn+Eul/cWvR78belDvQ+Mj?=
+ =?us-ascii?Q?J2wYiFl2JvvROrnAEoOYP8cs01GViVX4THfqwbns/dalfRgAabYdWjamPDbA?=
+ =?us-ascii?Q?7/qHcI+tzVfjP3/PQfKidaPiNSJj/4xIGAUQnr2koRuP0DzGZ3Xmtlh0SC6g?=
+ =?us-ascii?Q?IZaqfRRXQFBrhnfzs9ujXQEYwnRKjMDvyc4mv0yYTbodvesrE8c+4UqxgTyE?=
+ =?us-ascii?Q?gHX9Q1QJhKKJNvemkSnIP0edRv9OmY66gRH/vzLRQGIGY6HkNYrOu0wDjSvm?=
+ =?us-ascii?Q?fKKN92YWod+c1QHjcby+GGRD6rDdEsECfuu2HJEiRhfbm7u9V2rzUo7brO20?=
+ =?us-ascii?Q?Es0XaXq2SGjSmLKGFum9gRmRin2jAK5oIPWu3/5paiLlKWinIwgMZpzhJDYM?=
+ =?us-ascii?Q?/aVhCfSdpgZJKE0T/V3T9GQmmrAUO7e2JrmOpC5prUqUbhFJkP8gDc474uxX?=
+ =?us-ascii?Q?umxoUeBiOlc1rok7pa1wdrg+4+YPx2qHhois0+JYelVWZKmSS8Xfa78D576D?=
+ =?us-ascii?Q?p9VssoxWEevlYd77ZaR7J1nr/+GlRbnnPMp6NedPNHMDFhw4AV4jmf1QyKYR?=
+ =?us-ascii?Q?TEbhOfZkMEGSetW/BNNhUPxj4m49ANDlpEuUiDj5EiOrApFIdO9tHb7CRxR9?=
+ =?us-ascii?Q?3ORbLtKRRw9iDDlCjly1LKy9PsyEmT/qFrilnHzb+tvaXnO8nDB+0f1sONmf?=
+ =?us-ascii?Q?JJcOyBmY+uLljgHqVFoyDtmY4kZvhzzn4I1HXmI6+VyuLDiGy/dkc22/vhfA?=
+ =?us-ascii?Q?jctXy3lWZkSRnb/bCFRUVqIOweSGheIJrnR3dDt+iF/rRBKx722GMfEjaoq9?=
+ =?us-ascii?Q?q7KtDkuBfv25txkiH7kRi5hWXN2wni6Fv1+vEGFUloK7HXy0hfkk4axNbeV/?=
+ =?us-ascii?Q?Aq9gasNyS7dskq1zXtenBkwjABEK0lynx80diZ1Nm/OAF+J6EAfTssFpeQX5?=
+ =?us-ascii?Q?7rtAL8sEyBwG3EvhANC1p2ehmBDyULhh9Zjg7HHCEBoF1kWl?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53c17132-d676-4438-5bdc-08dee35c2852
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 17:03:28.7705
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OryPv0QLFTtY/TwVmrBitvPEdes9WUSG+mlgn5a9HI3REPMSLEQSpRj39IsOF+yO
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9731
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+Building the WQE and CQE using the IFC system is easier than with a
+C layout struct. Add definitions for their layout. Structs for:
 
-commit ae38d9179190a956e2a87a69ef1dd6f451b51c4d upstream.
+  - wqe_ctrl_seg_bits (16B): WQE control segment
+  - wqe_raddr_seg_bits (16B): RDMA remote address segment
+  - wqe_data_seg_bits (16B): data segment
+  - cqe64_bits (64B): 64-byte CQE with error syndrome union
 
-When a large message is fragmented into multiple skbs, the zerocopy
-uarg is only allocated and attached to the last skb in the loop.
-Non-final skbs carry pinned user pages with no completion tracking,
-so the kernel has no way to notify userspace when those pages are safe
-to reuse. If the loop breaks early the uarg is never allocated at all,
-leaking pinned pages with no completion notification.
+The VFIO mlx5 selftest will use these.
 
-Fix this by following the approach used by TCP: allocate the zerocopy
-uarg (if not provided by the caller) before the send loop and attach
-it to every skb via skb_zcopy_set(), which takes a reference per skb.
-Each skb's completion properly decrements the refcount, and the
-notification only fires after the last skb is freed.
-On failure, if no data was sent, the uarg is cleanly aborted via
-net_zcopy_put_abort().
-
-This issue was initially discovered by sashiko while reviewing commit
-1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-but was pre-existing.
-
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Link: https://patch.msgid.link/20260514092948.268720-1-sgarzare@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
-Backport fix for CVE-2026-53365
- net/vmw_vsock/virtio_transport_common.c | 78 +++++++++++--------------
- 1 file changed, 34 insertions(+), 44 deletions(-)
+ include/linux/mlx5/mlx5_ifc.h | 55 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 95170c7be758..aeb205e84bd3 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -72,35 +72,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- 	return true;
- }
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 695c86ee6d7a3f..a83eb731764a0f 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -5979,6 +5979,61 @@ struct mlx5_ifc_cqe_error_syndrome_bits {
+ 	u8         syndrome[0x8];
+ };
  
--static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
--					   struct sk_buff *skb,
--					   struct msghdr *msg,
--					   bool zerocopy)
--{
--	struct ubuf_info *uarg;
--
--	if (msg->msg_ubuf) {
--		uarg = msg->msg_ubuf;
--		net_zcopy_get(uarg);
--	} else {
--		struct iov_iter *iter = &msg->msg_iter;
--		struct ubuf_info_msgzc *uarg_zc;
--
--		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--					    iter->count,
--					    NULL);
--		if (!uarg)
--			return -1;
--
--		uarg_zc = uarg_to_msgzc(uarg);
--		uarg_zc->zerocopy = zerocopy ? 1 : 0;
--	}
--
--	skb_zcopy_init(skb, uarg);
--
--	return 0;
--}
--
- static int virtio_transport_fill_skb(struct sk_buff *skb,
- 				     struct virtio_vsock_pkt_info *info,
- 				     size_t len,
-@@ -321,8 +292,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	u32 src_cid, src_port, dst_cid, dst_port;
- 	const struct virtio_transport *t_ops;
- 	struct virtio_vsock_sock *vvs;
-+	struct ubuf_info *uarg = NULL;
- 	u32 pkt_len = info->pkt_len;
- 	bool can_zcopy = false;
-+	bool have_uref = false;
- 	u32 rest_len;
- 	int ret;
- 
-@@ -364,6 +337,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		if (can_zcopy)
- 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
- 					    (MAX_SKB_FRAGS * PAGE_SIZE));
++struct mlx5_ifc_wqe_ctrl_seg_bits {
++	u8         opmod[0x8];
++	u8         wqe_index[0x10];
++	u8         opcode[0x8];
 +
-+		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-+		    info->op == VIRTIO_VSOCK_OP_RW) {
-+			uarg = info->msg->msg_ubuf;
++	u8         qp_or_sq[0x18];
++	u8         reserved_at_38[0x2];
++	u8         ds[0x6];
 +
-+			if (!uarg) {
-+				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-+							    pkt_len, NULL);
-+				if (!uarg) {
-+					virtio_transport_put_credit(vvs, pkt_len);
-+					return -ENOMEM;
-+				}
++	u8         signature[0x8];
++	u8         reserved_at_48[0x10];
++	u8         fm[0x3];
++	u8         reserved_at_5b[0x1];
++	u8         ce[0x2];
++	u8         se[0x1];
++	u8         reserved_at_5f[0x1];
 +
-+				if (!can_zcopy)
-+					uarg_to_msgzc(uarg)->zerocopy = 0;
++	u8         imm[0x20];
++};
 +
-+				have_uref = true;
-+			}
-+		}
- 	}
- 
- 	rest_len = pkt_len;
-@@ -382,21 +374,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 			break;
- 		}
- 
--		/* We process buffer part by part, allocating skb on
--		 * each iteration. If this is last skb for this buffer
--		 * and MSG_ZEROCOPY mode is in use - we must allocate
--		 * completion for the current syscall.
--		 */
--		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
--		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
--			if (virtio_transport_init_zcopy_skb(vsk, skb,
--							    info->msg,
--							    can_zcopy)) {
--				kfree_skb(skb);
--				ret = -ENOMEM;
--				break;
--			}
--		}
-+		skb_zcopy_set(skb, uarg, NULL);
- 
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
-@@ -420,6 +398,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 
- 	virtio_transport_put_credit(vvs, rest_len);
- 
-+	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-+	 * skb_zcopy_set() increases it for each skb, so we can drop that
-+	 * initial reference to keep it balanced.
-+	 */
-+	if (have_uref) {
-+		if (rest_len == pkt_len)
-+			/* No data sent, abort the notification. */
-+			net_zcopy_put_abort(uarg, true);
-+		else
-+			net_zcopy_put(uarg);
-+	}
++struct mlx5_ifc_wqe_raddr_seg_bits {
++	u8         raddr[0x40];
 +
- 	/* Return number of bytes, if any data has been sent. */
- 	if (rest_len != pkt_len)
- 		ret = pkt_len - rest_len;
++	u8         rkey[0x20];
++	u8         reserved_at_60[0x20];
++};
++
++struct mlx5_ifc_wqe_data_seg_bits {
++	u8         reserved_at_0[0x1];
++	u8         byte_count[0x1f];
++
++	u8         lkey[0x20];
++
++	u8         addr[0x40];
++};
++
++struct mlx5_ifc_cqe64_bits {
++	u8         reserved_at_0[0x1a0];
++
++	union {
++		u8         reserved_at_1a0[0x20];
++		struct mlx5_ifc_cqe_error_syndrome_bits error_syndrome;
++	};
++
++	u8         send_wqe_opcode[0x8];
++	u8         qpn_or_dctn_or_flow_tag[0x18];
++
++	u8         wqe_counter[0x10];
++	u8         signature[0x8];
++	u8         opcode[0x4];
++	u8         cqe_format[0x2];
++	u8         se[0x1];
++	u8         owner[0x1];
++};
++
+ struct mlx5_ifc_qp_context_extension_bits {
+ 	u8         reserved_at_0[0x60];
+ 
 -- 
 2.43.0
 
