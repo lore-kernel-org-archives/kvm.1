@@ -1,158 +1,152 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F473345CC9
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 20:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784232672; cv=fail; b=KQJq1FYMSTKqCGIGGiQQP/n6BzRfWUtr00aT0SAhpkXDtFsy8Nc2/JnVykJBv2Qp7ozvUHxvq+Frx+OZRni4y4PwM4s6GaWuXKNGibHFbtDuYVRAYTeIoMN/eVRSOHwWOXQnv23k6bS+lBtxrW7tU7d947a95CmCwap5KWOmNK4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784232672; c=relaxed/simple;
-	bh=FmELQBnFhyva8tqlkEZm6vsX9KbwpXPdoDW/5vArsKs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q3gjL49VjPGNNFu1HbrVRg/Fgs+dMaduSTsGisYqm02R2ETau7HrO1kuWkPvF9jz9rEFx1Mw0+J7ryG2+sQymhyjNUVtgWWmVw3ZPWwD51qFBC87v0AjD1JQxrCQ/tV9zJVQqlifzi47UWCGjF4lc2pbm+GkPfrx2B/Sh1IOXoY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=BeR11qvm; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150F53AA1A1
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 20:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784235265; cv=none; b=n0dszhJF8w4zwTDwhb44wwSVJStFtY2CEXdR1O/A/k1bDRLtxXn3OWxtLEv4DHVVXUym7dLk1iO5GGSkZzRSs6rlFi6adnATAYB61UEyt+/MrxHZcuC0kQ6WlW4E0Daw8cmoRhiz0zSh45mVTsTVcI4vdZtrcZ0vxZkbAyKhsv4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784235265; c=relaxed/simple;
+	bh=qRjhuCsO5as+7lZfGtHRB4kpUgjF68RomSL+mcrcOOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sC37akNuo3mDveG5kuOfkNi+lcEk+D3maXfQe39q1q6xxUcv2Q7mnN40nVaO8nyMSG1YQdpZpCed8YZME75xdXLxsEvJRZJA4AUGnzMy9uU1YSRgu5Zy5xeOsI8NBarodNFx2NJgErMQ8lkRlkUle8s7INQC6e7l5k/5wt2+UbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kmcgoWUF; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="BeR11qvm"
-Received: from pps.filterd (m0148461.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66GJoxBq4044233
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 13:11:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=FmELQBnFhyva8tqlkEZm6vsX9KbwpXPdoDW/5vArsKs=; b=BeR11qvmnnNI
-	DzI/KcfGXkxY1JZELI8FYHdPO9IXUhqdHYrWC8lX59Hu2MJ0ZHd4AsNG2hgDGQpG
-	IHT6XH5Qlfcp5OP6jzCLd5FvYJglbau8ApcPoD8Xz8kK/fSxfdjJ8AN8toSgqmVe
-	v5wge45nB//G/3uFGquRWqSQUTJvOt53gIka1wnS/2dOzX9ajVcld2KKhTTJDgb2
-	HLYpsvHpWstKTDtQXwYKzP+utDzERk+q65fDYWCP+ttjXMpPWN/GGjFizYxN52+n
-	0G14OHlgtzgd5o2++cURe6sCIkND9KFf2CJXFvIJACRpxYjoKeFIkldXMd9VvGym
-	8BWJjHisZA==
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fewap3d4e-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 13:11:10 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e9f686e18cso4033739a34.0
-        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 13:11:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784232670; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SruYmIt2a91E5QkezsebQKFlHb4J6lbuxZaFovE46LrCN+QUHS2sBO7HyUkkt+Qs5b
-         WvutIFdaRNZeHG/zG4qBylLXig9q27xJSAYnKZ9wKCUTcU1v/OP99ttpDjkVesb3jWlW
-         HrwrtJPXw3u1xExcGRzvXYN2nv4a0LNmW2I0Fquy3YIVHFjTpdmgzVPBNzDA2sAWuDUA
-         u/0YpSQ2t6QSk87MGc5QtMpvCIj8TGHibjP81a+ZnamQEt1gSLmQsCA49VTmjIxQjZyD
-         zt0kk4lpE4WCy6u0IP5CA7CIYkJqhNcn7mJKzYFKn6Q8sxfVQU8YRZKbbwWxFI2ozoOG
-         soZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=h9z4CHpNCAe01AgBaapdbFFT33ePTDg6qz9BNy0e+IE=;
-        fh=ozD0oJSq5G050lBNupBhubTJ2K9W43k+/k4kJyXoy/g=;
-        b=SZsNtMeLgV2dnJjHeCdMh1yPdLi23LxAvZmrC6Eevc8yBgVXF0ivRkVrIDcZ5KFtAQ
-         sYxLWoTBK+bUQ1v1UFUGQeps0OPMRQRP2bjy4j4XfBsajbcRWNpYg2sh6y6WgpXtMp60
-         4IN5rOwdRDkjnA80Vc37QWmy+NR4156sieMDCw/K/GWEIlzBFRjZ7lbE4hlpx3mPTR4r
-         gwhEc1f0+l7R/MORTmnk0dTkIpJIiV8jrDMY/vhDjHoeXTZqYEzi2nK/GHMXkAw4Qdsq
-         Lj1YX9X2NG9MjKVchY7DWA3DpaVzdzoLIYfrsAFwDPE4KSxYn3sSF8+C8Z/8jn2zM6ZQ
-         wWZA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kmcgoWUF"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84a4d8fd6ecso3969503b3a.1
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 13:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1784235263; x=1784840063; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BJzIIFDdDzqLtCWmyUzRxr6o/+lBrb/0M6xgQK1DoGI=;
+        b=kmcgoWUFmGhY/MR+kTW3E4lgCKcnIXe3+W1Y8zm3navpZXLPWrOKhEaPkGYdmGwvw1
+         3nZ6wnd9m9/jigXqSeydBkYECjq0PJNPgUL26i0wt62jrwx9aMmrtb3atUGsdbZ+sgG2
+         gpOKdCNLx5dQeIOkUlBcjA+z3mXBVmMKYMCp18ySNfX6O/Cw4zftuAi1Km5dT4Baved/
+         Y7Mtf14R+rl0Gr+M7vCO8WmCpsU5a4JuoO+5Lg89+HlqGSndP7wvtgDL4rhT5EW9SiXJ
+         2adadZtTjLIQ/0THD8n2mhlNYrtuHh562tn50pIQ2yhQBZFpz0gn5q5/yeBvn21fYJ9f
+         gIRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784232670; x=1784837470;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784235263; x=1784840063;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h9z4CHpNCAe01AgBaapdbFFT33ePTDg6qz9BNy0e+IE=;
-        b=FQ6754A72CFsY5oT0aCzrGelEXB7Piaxq+72oHzG0PSepnA+RCRkfnk/H2b14fb5jw
-         ZI0HkwTli91STmISXAf7nMNB4jJyv/Y6WLqiV9YfQg48xxMoTLup9cEpwXgaVvti3VJI
-         UohB8e/ciSXtMz47DO2WOcLDhhEECi95FZm7nD+7Qhi6U10F/dLxa6f9bMzgYxg9NQMo
-         RTpiH3LbyyU8Z9Z/hSXBjW5X/RNSmrxwRN+qfyfYlKedKzt5QS7sHZYJB0GybX6P2HB4
-         F/u/b8l3dquLzPEJcXt38BsghlyHs1N8Rryq5DXDGokJM76OXRKtP7G8lM8/Ng4tb65h
-         BUuw==
-X-Forwarded-Encrypted: i=1; AHgh+RpmE0SOjFNAAMs3cHowYbki/LXpvtjrrFHljiycWH+8EOdmqxbBSzxp5lgIc8lJREW/JVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzpWAspmt9dj94EKqQPxGSU7/2MDKdOJQ+SWwmZhoZvL6U6NKV
-	rd88Rh7aONtiUCPElHaE5qrUie9cFokLxvazSPQRVfNHNlGb8OPry9Hr0rJ7eLk7V3r2vh2VFmB
-	nUoNcFB+isfT0+pNBXKLjX6YrzmLdFuyIJ3TV29ICoBUjs751fovtFH7c45/g20IScpxXTD7Cl/
-	I4zwb/gjqKClQiNBbOBgj1OCq1K9I=
-X-Gm-Gg: AfdE7ckDP2WSmHvybhyma88RelSQvVFOsxMEPVwKZJ16GXFi1t/8XFzqlAuDSidJUu5
-	T4BAk4HqXQN9Y0QjRCpIcEec2TovvBHKKGss7b096cRAzz8/1f37BBv4e3bA6PTyzMh3L5bKjSo
-	0qTzlsSglmCtdmZYbZzHZDWTD/QqwsrIXFPZHSbVh0U00gJ6hzF6kaXOzDzjpwCibc0Lhfc2QHi
-	N6o5G8JRgOkEFgPxUk=
-X-Received: by 2002:a05:6830:6aaf:b0:7e6:e162:915 with SMTP id 46e09a7af769-7ec97340ddamr801704a34.5.1784232670073;
-        Thu, 16 Jul 2026 13:11:10 -0700 (PDT)
-X-Received: by 2002:a05:6830:6aaf:b0:7e6:e162:915 with SMTP id
- 46e09a7af769-7ec97340ddamr801684a34.5.1784232669654; Thu, 16 Jul 2026
- 13:11:09 -0700 (PDT)
+        bh=BJzIIFDdDzqLtCWmyUzRxr6o/+lBrb/0M6xgQK1DoGI=;
+        b=gtQsCA6oE/i4th5+omHD4mmviy+A1XJjnuhmE7UH07I2iUcOZ6ZD4sX35csGJ1o6UI
+         pEbD/azl9eDTU8+IRr4XMoK9fqgzfGyIxKdoyEUADkKhikh/q5CbWtYqLypWojsUWJL9
+         et9vW1Mxv8eMD0iz+hzc1DDCCjNesnnb0jue2MaQS7yapmCGAomzbEbGQNUQZkG+I/Mc
+         DuFVy0J4nPCdqKPF2gkZK9JqJRkXO5kc+LEZcwbufXVa2KKClujASRvA9eXvYpYGxe6D
+         IVc+h4IzgEiqtmwyyRUr91oEIhJUf14O0D6wLFu1Om5iFLdMZZBEo5oajNXSk6aZV8oh
+         KyAg==
+X-Forwarded-Encrypted: i=1; AHgh+RpFfBTVqrSMBPXUCcYVaQdMq40xojNuunCazojfQ72udBO7VD14NRRqAeX0sYI4MfMfA2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd3Fk2VbrcuODHLTWxee8PVSJG5Zj+5TnAN/I6DMTekOHWini8
+	6btERZLVorpfocG6BNOLohjFXo7KkRAkjefklx4Q6IZIr0kuAcVNB5eovjIVmd/4YK0=
+X-Gm-Gg: AfdE7cn6ig2gbwuKedVKgwJVkhQdsbo45Y1VlJF5w2vTOd5vOHLixvJIeJWS3l8nhK0
+	har11KmoDeoKSNpOeJqQeSK9Mc9IemjbsdMjJoiMWxudEJrxHakRlvs9+l6eHqkzCfddhg7349t
+	rjwmBAlfLWLPYQY2LIpZnY3l6c2bgdXR34gcoWAAVVwmVjR/MqzUbnLzOJLoVrNoX11gNXAPane
+	HM4tQex+eQ9Plx75HYbqyrKGTthRNvzOWk+MbFqf0PIhsvN6h15t41ymx0JNTiv3y/LKFxPscHR
+	9oDeom0mclCb5TMix0bI5Xyhs2x8LG3KbXSMM95O17k6PMLs7jhBOe6KRaJDCB87YrN1qmZJXo5
+	Wm0yxaY9/nD7Oqc7iQjpkW94gvKyeDrr7J8/DxQjCJ9fiWgU8MJV4weM32PMPPNE6zIGjJnBUG0
+	6fw7EzGA==
+X-Received: by 2002:a05:6a00:1808:b0:848:6698:2d5a with SMTP id d2e1a72fcca58-84a6726c042mr7950638b3a.20.1784235263350;
+        Thu, 16 Jul 2026 13:54:23 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:bc13:5578:20b0:9bee])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cb258eb856dsm2492407a12.6.2026.07.16.13.54.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 13:54:22 -0700 (PDT)
+Date: Thu, 16 Jul 2026 14:54:20 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
+	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v1 08/25] target/arm/kvm: Use kvm_vm_check_extension()
+ where necessary
+Message-ID: <allE_PUn5T4FRTXr@p14s>
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-9-mathieu.poirier@linaro.org>
+ <3ac5a5b7-e41d-499e-a4d2-e9a5a78f8c0c@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260715204008.3911275-1-zhipingz@meta.com> <7dd5c995-a23c-4d3a-9ba0-7fc77972339f@huawei.com>
- <20260716144708.GD210048@ziepe.ca>
-In-Reply-To: <20260716144708.GD210048@ziepe.ca>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Thu, 16 Jul 2026 13:10:58 -0700
-X-Gm-Features: AUfX_myheEIlUGdSHFK_vqkE1hm0qjp53c8YkJwDa1cVW2p7StXgd-p-wIuQhRA
-Message-ID: <CAH3zFs2fLC5GodysR9_QhFMb169DjtsNFnfBeO9MPk9S=DLcfA@mail.gmail.com>
-Subject: Re: [PATCH v12 0/4] vfio/dma-buf: add TPH support for peer-to-peer access
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: fengchengwen <fengchengwen@huawei.com>, Leon Romanovsky <leon@kernel.org>,
-        Michael Guralnik <michaelgur@nvidia.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian Konig <christian.koenig@amd.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: SfYv3oHYuyZ6E_9M3UdbS1-Nne3_2KJo
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE2MDIwNiBTYWx0ZWRfX6U2+JrRIS3/f
- A3ekqQliRSha2CbWZkCK90/wMJxDG3C8LZ9eh5WBBiErRIgcKTKxxvoUUilagkPeOtkpkFQmae3
- 9gMiUgqi1kli5b/AmggNcBWjcCF0NjU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE2MDIwNiBTYWx0ZWRfX/diUQ/ObQaTk
- pFFk29KdgK4aEJtWcOStWi9JgVAhtgq9+e+LjMo95lYHEit4iVcdksTsIKNw7XuMtIfctr/ohiF
- uYnTkR/Xlda0lxQ+3E8YsI1YeNbV1YtkhBaxfgoCYvkZvoSiasxzhraTfSmudD5Ici4JbYMXFDx
- m8a6gi+FXbX2XPx9PFRAM9H0sED5/OxR9JK0lbNAUUwHNRgf5QBnx6rdnFCuPH31Jdpkxyyobar
- XRZV4WCNcVB6Jbzd5b00By+3CkbSLR2WOtKqmebpdYgPUT1wolBzNrffNvXmSaJfmNlypkdI4X2
- SzmT2HAjfCpYAeFRJ8y4XN8pTcP/rFx6V3lZVKIVo3tpK43pZJjcXfO6BlAMX6+HOTyAQoy5za8
- o+ytEwjY5R/8qi3Lc92vqoZCSNT9aCWju/i2u+zS6DeFWjgpfkrdZOHxntsRSlEaaLhgglVxQ0h
- fJ3c5RHnCqRlYo4ccDQ==
-X-Authority-Analysis: v=2.4 cv=D9t37PRj c=1 sm=1 tr=0 ts=6a593ade cx=c_pps
- a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=03ozwUkBphtHgyqjj1sw:22
- a=9jRdOu3wAAAA:8 a=AMAE7NpZmBqY-1WNrTMA:9 a=QEXdDO2ut3YA:10
- a=EXS-LbY8YePsIyqnH6vw:22 a=ZE6KLimJVUuLrTuGpvhn:22
-X-Proofpoint-GUID: SfYv3oHYuyZ6E_9M3UdbS1-Nne3_2KJo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-16_07,2026-07-15_02,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3ac5a5b7-e41d-499e-a4d2-e9a5a78f8c0c@redhat.com>
 
-On Thu, Jul 16, 2026 at 7:47=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
->
-> >
-> On Thu, Jul 16, 2026 at 09:07:35AM +0800, fengchengwen wrote:
-> > Because cross-Root-Port P2P traffic with ST does not affect the host, b=
-ut
-> > merely the completer may experience some performance degradation because
-> > it lacks the TPH hint. In this case, I suggest adding restrictions in t=
-he
-> > uAPI.
->
-> I don't think this is complexity is worth doing for something that has
-> no functional impact.
->
-> There is no difference between supplying the TPH and not supplying it,
-> so may as well supply it.
->
-> Jason
+On Mon, Jul 13, 2026 at 10:43:37AM +1000, Gavin Shan wrote:
+> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > The Arm KVM code can return different values from KVM_CHECK_EXTENSION
+> > depending on the VM type. Use kvm_vm_check_extension() where necessary
+> > to ensure we get the right response from KVM.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > ---
+> >   target/arm/kvm.c | 8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> 
+> I'm putting a note here so that we won't forget. The following changes are needed
+> so that capability KVM_CAP_ARM_NISV_TO_USER won't be enabled for realm guest since
+> it has been hidden from the realm guest in (v14) host series.
+> 
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index 3d5e16a21c..4c52ee7e1b 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -623,7 +623,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>          return -EINVAL;
+>      }
+> -    if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
+> +    if (kvm_vm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
 
-Agreed, thanks -- that's the intended model. The ST is an advisory
-hint; when it can't reach the completer the traffic just behaves as
-the non-TPH baseline, so there's nothing to gate in the uAPI.
+Addressed.
 
-Thanks,
-Zhiping
+>          if (kvm_vm_enable_cap(s, KVM_CAP_ARM_NISV_TO_USER, 0)) {
+>              error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap");
+>          } else {
+> 
+> > diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> > index 6aa1cd04e484..c69b5310c184 100644
+> > --- a/target/arm/kvm.c
+> > +++ b/target/arm/kvm.c
+> > @@ -328,7 +328,7 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+> >                                1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
+> >       }
+> > -    if (kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
+> > +    if (kvm_vm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
+> >           init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
+> >           pmu_supported = true;
+> >           features |= 1ULL << ARM_FEATURE_PMU;
+> > @@ -654,11 +654,11 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+> >           }
+> >       }
+> > -    max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
+> > +    max_hw_wps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
+> >       hw_watchpoints = g_array_sized_new(true, true,
+> >                                          sizeof(HWWatchpoint), max_hw_wps);
+> > -    max_hw_bps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
+> > +    max_hw_bps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
+> >       hw_breakpoints = g_array_sized_new(true, true,
+> >                                          sizeof(HWBreakpoint), max_hw_bps);
+> > @@ -1905,7 +1905,7 @@ void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
+> >   void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
+> >   {
+> > -    bool has_steal_time = kvm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
+> > +    bool has_steal_time = kvm_vm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
+> >       if (cpu->kvm_steal_time == ON_OFF_AUTO_AUTO) {
+> >           if (!has_steal_time || !arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
+> 
