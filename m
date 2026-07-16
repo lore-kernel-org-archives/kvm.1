@@ -1,176 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9D63CF661;
-	Thu, 16 Jul 2026 08:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F833CF694
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 08:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784191219; cv=none; b=HQT/Yq8XDKwx8P2j9w8T4p+TNte97kQAOqrL3ZBh1SVmV7RFIVqGZ2FcGudMHMAU43hiGNK/TTG9nMljLorboQ8zF1xFaaVitBceAaK92yrKQDUlksCiRtYXjGaML4fAsO55nfxMWRSSO14va6TzyWTvga7oq5avK/fJadRB3S4=
+	t=1784192259; cv=none; b=RlrpLkt7kR8ZHf0CyJD+uHNtMrjamidv+M2WzAiTo7Y93CDI3ovBpp2tQUtVjlkosBcfwSmC0u/ENbkc8J2PEmnEBz2960BRUEtq7buzryV8WyCe/0UN1z9+r3oU5IlXO0yx6mCKM11dRb5uNZ3M7NYkt46HZ//d7M4jH4r4WKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784191219; c=relaxed/simple;
-	bh=5Bjj8pvZPawyu0paZBNTWFSnkf00wqhCzrNLa0iw1JU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ae3Oqx3FCvUOgd2Zy7p7JgE5oYCKUxJcMxkJkyDDCeoUsigu8hm0NN2Ahsq5YMisyUajF/Rra+ywEwCf7w3xN1aXTzEnO4ROEOhMGPUsfAfzBeHSIuFDiIn1YEI3ftVCGfQd745xJiVH0BBEAuQ6wHpGVYO7MSK2XRBtrjDNVVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFTdKJBv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784192259; c=relaxed/simple;
+	bh=mEjKg4AVLSWrUhKw9xfuQN61xzTZPl4Xk3fNow6F/Kw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bcNPnE+DnIFtc2M420dTRaamKu+6MrA5FB6OI7ZTUbvFqii7eyXdsIWJrSa2UjKcRv7JYtdyTtisL/9Df9swosimBDiRSVG2diCuYaJ/LEnpQZkenEZCU3ai2S+VzjyM1OY52h7hSQlmfFyJ8p1B8BYr8oRbB/E2m9fOKcuhijU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZQDgewVY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PXGnpmu8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFTdKJBv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592CC1F000E9;
-	Thu, 16 Jul 2026 08:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784191217;
-	bh=BwEiU6teZIE3flR9vElc+4yj0i8+JAFfTjNxsGNdNcI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mFTdKJBvFjlR0fJPqcox865iCgzD3SqVt1ekSBxJwXUCAe40Yjcs2Fcj/mdEY9ZO0
-	 uv/zu+Oi9pQHZauwCE+hu2Jk9XJ8vzl990ylL3HlbjoOt5SnC5BdBK7goJE6+B/QtK
-	 8fOlS0ofrTIrKqeKev9zI2/bPrSMIW6+CtG/cS5ypXB+4kLi32O+r7PZXQkutzqs7J
-	 lUJYHuF+YQ4AE1nU97nlky3lhy7KKC3TRuE3282XbLOydNZNtuGqrKkfY1KEZtpYSg
-	 lfpDMZYDnPvrjfuQTMIMxAy1w+FstOikPijx3fqV+Kz6EFMFcgiVZ4waFiHhwnz8bI
-	 gLMDgglX0qAcg==
-Message-ID: <ff9d266a-b037-4b40-a94e-3f059c6e0459@kernel.org>
-Date: Thu, 16 Jul 2026 10:39:54 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZQDgewVY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PXGnpmu8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784192251;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FhxSO78Yf0RPA4wZRxf7Fd3u153hjXB7c8vtU2XnoBg=;
+	b=ZQDgewVYA7DD3oe3ZVg7jY2BgmCNKBbSe+t26Dduv/9uLyAEG8niz/ouldT3Yu2mavRP3H
+	RLy48DgJ8HMWcxr3iGRkFnZ1CxcKqds2bWSLT3qClC+rNKmeeSNJFhZatFJe/tzBW/hFue
+	RbhoevmmxkMlY6SpVL/IvjwxvCruQw8=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-300-WAa0U2IPMwihLyDxeJeIPA-1; Thu, 16 Jul 2026 04:57:30 -0400
+X-MC-Unique: WAa0U2IPMwihLyDxeJeIPA-1
+X-Mimecast-MFC-AGG-ID: WAa0U2IPMwihLyDxeJeIPA_1784192249
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-474170b59dfso3549961f8f.3
+        for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 01:57:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784192249; x=1784797049; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FhxSO78Yf0RPA4wZRxf7Fd3u153hjXB7c8vtU2XnoBg=;
+        b=PXGnpmu8dok8k9tzU3nIvPSEnkW6Wz6OKd19OrLDlcn/LkKcai0eezaT9/Ou1qhODf
+         CiJwLHf9mJVlx84oQj+LQKNzxJhFmTj92WnfgMYzx2hSDHrwbB7xnBk+Y+M3Ml+8ldnL
+         sSQSbkbUrJwcLvSvS9fFY+Vnq/UCd1v36RhwZ4SipNNAA/vat80K2yGmCCI8trLvAb56
+         ifXCqFUm5vlFtFp1vX/KT/96hN2P92tws7HlECHneN6ZhJ/DI80cWKwPujW0NZgegdqk
+         RAkGnw+IYFB03o198jILu0sm9a60RhYnrFDNUMxlaj1oX8i91wbNSmbzl6zf0aD4C0oc
+         mthw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784192249; x=1784797049;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FhxSO78Yf0RPA4wZRxf7Fd3u153hjXB7c8vtU2XnoBg=;
+        b=LLMcjcEIVxIv2CStSPXCEHZFBo5hoGVKKuYFaNwIJ9J2NAYopYJoMWStbAiKFOemuI
+         PpJiEL3EnZTjxRNh8MmaOkFtkFLq2y1hCIBgs66lc/55dm8QI4mKUnPHXfGFzhbXqTUT
+         TQfZ7e4uSwkqGM3uhIj5U9n/LM/L8NJCF6v1zbt3zIN2q/dMgRi8ABoM2a6Tvw8uI2+z
+         C51oj98B+5ePbqwXnPZGHPhaH/1GWHgvb4rNeGgi/yuycFrjm8Kbe6dmV67SIQKNZtx3
+         ALySj0f6rLutHGoa4Wo4Oh2MA5nKJObw7cAT7EdMre9HiZaWFkPcTy9BXNxDlULNW4/S
+         6UEQ==
+X-Forwarded-Encrypted: i=1; AHgh+RouKtlhL3k9whU5rmgwv+tu7qu6Z6HvvI0fbfJEIdbjHgwVgTIxm4o2buJndb88FyR3d4E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4WhGcNoW3rt0AAQFQ9+h88KFaMDCmy0sb04ga5/u3uH1rY7uY
+	Md3nb3E3JxyX2dmf+cbnOfBJ+sPkKhBC6zvgcQdFDSqgsBfun9kWuKJzkYgMgTAJ0IW0LyBcbX7
+	mpv+HbERDFb+V57JCbQTWPc5kpeJs/BGgZAfDIuX7bchJ2xKmnMlgmQ==
+X-Gm-Gg: AfdE7ckDBEzZefZFb+gkj8UuHsO6ZRIp/UMWMb3CJmul3imtKA+KUDQ+yy5Q2jOV7PO
+	SSs/XAboUjbHYxAeLIUUnvwSqRWcucMW55TtgkA9D+P0XjqwEugmokec62imwQiSuU7wdTvQAKX
+	73Z8dpEDuDuAxGOVwdbEWd0bc/ZEbcvsSTbwvTs3MRWy3TG5qDPEZw3HfYe0s8oU9StOo6Q+KKd
+	uOKx21SlxrDwuFpvfjAsVZQUI/6WIuVRCvwoCuo/yMl/hmARy1JHN6IKSmomEbR0ilhmvVFrI6v
+	jcJF2LzPL+wsqNDN9QpDmaq3t0ogpfj7ihpLERr096jwG2jNcV0wGxuvsDIJZsJfHPSpeJjz2FG
+	AmtOnobI527Zec7CRM5GnvJdquHL+MG03wgUsbWzJ/HYEva+cww==
+X-Received: by 2002:a05:6000:46c2:b0:47f:5298:a010 with SMTP id ffacd0b85a97d-47f5298a31emr4384417f8f.41.1784192249020;
+        Thu, 16 Jul 2026 01:57:29 -0700 (PDT)
+X-Received: by 2002:a05:6000:46c2:b0:47f:5298:a010 with SMTP id ffacd0b85a97d-47f5298a31emr4384387f8f.41.1784192248495;
+        Thu, 16 Jul 2026 01:57:28 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f4635aa34sm20900447f8f.15.2026.07.16.01.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jul 2026 01:57:27 -0700 (PDT)
+Date: Thu, 16 Jul 2026 10:57:19 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <alibLtcrC7o5r4Dh@sgarzare-redhat>
+References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
+ <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 31/33] mm/vma: use guard clauses in
- can_vma_merge_[before, after]()
-Content-Language: en-US
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>,
- Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
- Peter Xu <peterx@redhat.com>, Kees Cook <kees@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov
- <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>,
- Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Matthew Auld <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yishai Hadas <yishaih@nvidia.com>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Usama Arif <usama.arif@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
- iommu@lists.linux.dev, kasan-dev@googlegroups.com,
- linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-31-2a5aa403d977@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-31-2a5aa403d977@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
 
-On 7/10/26 22:17, Lorenzo Stoakes wrote:
-> Rather than combining a bunch of conditionals in a single expression,
-> simplify by inverting the mergeability requirements into guard clauses.
-> 
-> that is - instead of checking what must be true for the conditions to be
-> met, instead check the inverse of the requirements and return false if any
-> are true, defaulting to true.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
+>vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>vq->worker and queues work on it.  vhost_workers_free() however clears
+>the vq->worker pointers and immediately frees the workers, without
+>waiting for a grace period.  A caller that fetched the worker right
+>before the pointer was cleared can therefore still be queueing work on
+>it while it is freed.  And even when the queueing itself wins the race,
+>the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>future attempts to queue it are silently skipped.
+>
+>None of the current callers can actually hit this: net and scsi stop
+>their virtqueues before the workers are freed, and vsock unhashes the
+>device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>in vhost-vsock keeps the device hashed while its workers are freed, so
+>the lockless send/cancel paths become able to race with the teardown.
+>
+>Close this the way vhost_worker_killed() already does: clear the
+>vq->worker pointers, wait for a grace period, run whatever the last
+>readers may have queued, and only then free the workers.  The
+>synchronize_rcu() is skipped if the device has no workers, so cleanup of
+>devices which never got an owner stays cheap.
+>
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Do we need a Fixes tag for this?
+
+Thanks for pointing out that the issue wasn't occurring, but I think we 
+should add it because it's a sneaky problem we discovered by chance.
+IMO the code should already have `synchronize_rcu()` after 
+`rcu_assign_pointer()` loop.
+
+@Michael, what do you think?
+
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vhost.c | 15 +++++++++++++++
+> 1 file changed, 15 insertions(+)
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..0d1414d40f4e 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>
+> 	for (i = 0; i < dev->nvqs; i++)
+> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+
+>+	/*
+>+	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>+	 * caller that fetched a worker before we cleared the pointers above
+>+	 * may still be about to queue work on it.  Wait for those RCU readers
+>+	 * to finish before freeing the worker, then run whatever they queued
+>+	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
+>+	 * vhost_worker_killed().
+>+	 */
+>+	if (!xa_empty(&dev->worker_xa)) {
+>+		synchronize_rcu();
+>+		xa_for_each(&dev->worker_xa, i, worker)
+>+			vhost_run_work_list(worker);
+>+	}
+>+
+
+Following sashiko review [1], I tried to undersand why we need this, but 
+TBH I'm really confused. That said, this seems wrong also because it 
+will work only with vhost_tasks, and not with kthreads.
+
+IIUC vhost_worker_killed() will be called anyway when calling 
+vhost_worker_destroy(). For vhost_tasks, it will call 
+vhost_task_do_stop() that calls vhost_task_stop(). This sets 
+VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing 
+stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that 
+is exactly vhost_worker_killed() you mentioned we are mirroring here.
+
+So, why we need this?
+
+Should be enough to call synchronize_rcu() in any case after the 
+rcu_assign_pointer() loop?
+
+Thanks,
+Stefano
+
+[1] 
+https://sashiko.dev/#/patchset/20260714151638.143019-1-andrey.drobyshev@virtuozzo.com?part=4
 
