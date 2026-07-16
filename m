@@ -1,228 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FF33BB126;
-	Thu, 16 Jul 2026 09:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710E63BB126;
+	Thu, 16 Jul 2026 09:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784194603; cv=none; b=N9mgmQsmcOfgazajJEbCLS9q0y392y0XMBLyoA3DX08UyDHKy7t2jVKPFFf+xD5MiGI7e6ri/MTaFlOgsdjg6hf4lXYThour60tmumiYnLfbqDhVG8SE9Ybf9gr5eKE8RW6CbTxR3SaCZ7WDWnv8bt1oFzZd8meJQDoT0PNGQT0=
+	t=1784194651; cv=none; b=pCYDv+9WBWsGhKA9dKT6hiVgRPLN0mJFuT8uA2r1rQdF5D5KHv/lXkpQMv9lANNWFJvYw4nk7yqpkqSSdOHaDaZEPKjGkwxFkncB8lEB9W7avAB5IQqj7qaa+hyYdr5quBwdg5MheNPEgNiByzGUZd+jx5qgrflbugt+MVadowY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784194603; c=relaxed/simple;
-	bh=hJH4yG48JfZTWrhLzphPH7J/2K7VhJiq+izQbmOi3No=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QbJtPz1z9Gf52XVJ+Q/if/gdTgX9uWZ2GXmkYuQt8Yb/9VSfCyQMR/GsjTlP/jKWY6aLu9DkQWOkq+53yBo5Bmkr+HYX09KYZv/mlcXoxPuZzeFElpzGiZ0j0HxofIzQtzcatyuS8Oh7NTvtPRiav8EmG/sjM0/2e2ywwGAwarw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHRhRgI1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784194651; c=relaxed/simple;
+	bh=GozKNxM+V0o39iZwsloK/FOhTaRmLabJa9h/vKm+xkU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q6oO1DhhyUcN1iCmPou3HaVdTfRypF6bBYN+vh8tPTSgguv+efqIImbT7nogaaQl/ZqCqiGuIzh1oysV+DOhOs6YQtKbQ2dp2qGCZhsdZj7A7f3qx2+Q5BhBaYxKpsKkyXz67ufIFg+52sArfUw6TTeYqqRjkHdUiHfhp8YfE/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bLOfCpsh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHRhRgI1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D029A1F000E9;
-	Thu, 16 Jul 2026 09:36:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bLOfCpsh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000121F000E9;
+	Thu, 16 Jul 2026 09:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784194601;
-	bh=Mw498kcdRvtwf0TpnGBwleBL9K3C9jrPcH99BicHGcY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YHRhRgI1niM3PlrZwisO9rOxfS9iIj2SYZEGwL3nW9xTChS885ATXnOpZrMbCmfcO
-	 TEfa1QQhY3PrSN+0+QhLp18PfrTV/Vbj6oj1ihy3kDX5+yLPpiLN7IqJIXodmXMTxA
-	 oeuc8fvAK3hIiP354563i84BomUHhL9TK1MpwY9jIW5Q9akTwY3BjKHgxm/xB0scRP
-	 CjozPQeYUlzQgbZcJcn3/ZlAoQ4/7QzR/d6WwcwX3rQBBAiyttlcUrcNx6eCqL3EsE
-	 VoVo3toLwNuiCOlGj3wlj1VmkF8ZUmOJMRu5lq+kk0xKz6iw5plXK5qO3T06uw8h73
-	 wwA2M2VwCazzg==
-Date: Thu, 16 Jul 2026 10:36:05 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	SJ Park <sj@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Peter Xu <peterx@redhat.com>, 
-	Kees Cook <kees@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, iommu@lists.linux.dev, 
-	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 25/33] mm/vma: make vma_set_range() static, drop
- insert_vm_struct() decl
-Message-ID: <alilxy8lRdNIbtS-@lucifer>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-25-2a5aa403d977@kernel.org>
- <b470eb19-d59c-4dd6-bf57-648b51281691@kernel.org>
+	s=k20260515; t=1784194650;
+	bh=EPFwJ3WEuBcm2rx9cZEvteDwo2+iijOpn/63IcGELo4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bLOfCpshJI9arPQk13D/3FzzjPN5KW7Lwe2sFGx9PbCCHlW5Nwh+GGSY1Y8/Vz+f/
+	 /aWunZGjzog0ejKw+sqk4c7Da/L/uOGrjrJKvnzNItOUdk3U7WAB0zSw2AD1q0IBu6
+	 s2Zr2R6l3yo9DPObKM5TmY18oKkz8dp3xEM/w3QK8V0Pw2I4ccPA4gtSHmnzXOzvoI
+	 0hZlaif37EuuKP/s4boMscRXhDaFJYMVCordJwTO2dLdiUaCTXoC9YUCE3bM83zM3S
+	 7MAlPtOKNqvPzT6t7jJf3NHdxPAmk0W8SMTiREEDaU/MzyiXlpVVDFSpn/u5v+dp2m
+	 OMeccACFs6rYA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wkIX1-00000005ccs-1RQq;
+	Thu, 16 Jul 2026 09:37:27 +0000
+Date: Thu, 16 Jul 2026 10:37:21 +0100
+Message-ID: <86fr1jff72.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,	kvmarm@lists.linux.dev,	Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,	James Morse <james.morse@arm.com>,	Oliver Upton <oliver.upton@linux.dev>,	Suzuki K Poulose <suzuki.poulose@arm.com>,	Zenghui Yu <yuzenghui@huawei.com>,	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,	Joey Gouly <joey.gouly@arm.com>,	Alexandru Elisei <alexandru.elisei@arm.com>,	Christoffer Dall <christoffer.dall@arm.com>,	Fuad Tabba <tabba@google.com>,	linux-coco@lists.linux.dev,	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,	Gavin Shan <gshan@redhat.com>,	Shanker Donthineni <sdonthineni@nvidia.com>,	Alper Gun <alpergun@google.com>,	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,	Emi Kisanuki <fj0570is@fujitsu.com>,	Vishal Annapurve <vannapurve@google.com>,	WeiLin.Chang@arm.com,	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 09/37] KVM: arm64: CCA: Allow passing the machine type in KVM creation
+In-Reply-To: <9eb4e4c0-f1f6-4ab9-956a-0b233d1656c9@arm.com>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<20260715142841.80544-10-steven.price@arm.com>
+	<87zezs44cf.wl-maz@kernel.org>
+	<9eb4e4c0-f1f6-4ab9-956a-0b233d1656c9@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b470eb19-d59c-4dd6-bf57-648b51281691@kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jul 15, 2026 at 07:45:59PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 7/10/26 22:17, Lorenzo Stoakes wrote:
-> > With __install_special_mapping() moved to vma.c, vma_set_range() can be
-> > made into a static function there and is now completely isolated from the
-> > rest of mm.
->
-> Pedantic nit: it was already "static", but in a .h file
-> Yeah it was also "inline" but that's not the important part of this change.
->
-> So I'd say it was rather moved to vma.c, but you can ignore this nit if you
-> want.
+On Thu, 16 Jul 2026 10:17:21 +0100,
+Steven Price <steven.price@arm.com> wrote:
+> 
+> On 15/07/2026 17:14, Marc Zyngier wrote:
+> > On Wed, 15 Jul 2026 15:28:11 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> Previously machine type was used purely for specifying the physical
+> >> address size of the guest. Reserve the higher bits to specify an ARM
+> >> specific machine type and declare a new type 'KVM_VM_TYPE_ARM_REALM'
+> >> used to create a realm guest.
+> >>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> ---
+> >> Changes since v13:
+> >>  * Rework to use the two top bits for the machine type now that pKVM has
+> >>    merged and used the top bit for KVM_VM_TYPE_ARM_PROTECTED.
+> >>  * Update the documentation to include KVM_VM_TYPE_ARM_PROTECTED as
+> >>    well.
+> >> Changes since v9:
+> >>  * Explictly set realm.state to REALM_STATE_NONE rather than rely on the
+> >>    zeroing of the structure.
+> >> Changes since v7:
+> >>  * Add some documentation explaining the new machine type.
+> >> Changes since v6:
+> >>  * Make the check for kvm_rme_is_available more visible and report an
+> >>    error code of -EPERM (instead of -EINVAL) to make it explicit that
+> >>    the kernel supports RME, but the platform doesn't.
+> >> ---
+> >>  Documentation/virt/kvm/api.rst | 18 ++++++++++++++++--
+> >>  arch/arm64/kvm/arm.c           | 11 +++++++++++
+> >>  include/uapi/linux/kvm.h       |  7 ++++++-
+> >>  3 files changed, 33 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> >> index b38e090ad95d..e39d146b34a3 100644
+> >> --- a/Documentation/virt/kvm/api.rst
+> >> +++ b/Documentation/virt/kvm/api.rst
+> >> @@ -181,8 +181,22 @@ flag KVM_VM_MIPS_VZ.
+> >>  ARM64:
+> >>  ^^^^^^
+> >>  
+> >> -On arm64, the physical address size for a VM (IPA Size limit) is limited
+> >> -to 40bits by default. The limit can be configured if the host supports the
+> >> +On arm64, the machine type identifier is used to encode a type and the
+> >> +physical address size for the VM. The lower byte (bits[7-0]) encode the
+> >> +address size and the upper bits[30-31] encode a machine type. The machine
+> >> +types that might be available are:
+> >> +
+> >> + =========================   ============================================
+> >> + KVM_VM_TYPE_ARM_NORMAL      A standard VM
+> >> + KVM_VM_TYPE_ARM_REALM       A "Realm" VM using the Arm Confidential
+> >> +                             Compute extensions, the VM's memory is
+> >> +                             protected from the host.
+> >> + KVM_VM_TYPE_ARM_PROTECTED   A "protected" VM using pKVM to isolate the
+> >> +                             VM from the host.
+> >> + =========================   ============================================
+> >> +
+> > 
+> > Probably worth mentioning that REALM+PROTECTED is an illegal
+> > combination.
+> 
+> The original intention was that these were enum values not separate bit
+> fields. Having to adapt to the pKVM changes when they were merged has
+> somewhat messed this up. I'll add a clarification, but hopefully we
+> haven't actually burnt the combination in case we have a 4th type in the
+> future.
 
-That is pretty pedantic ;) I mean to say bare 'static' here obvs. I can fix if
-any respin but I think ok as-is for now.
+A good way to avoid ambiguity would be to list the actual values for
+the [31:30] field (0b00, 0b01, 0b10).
 
->
-> > While we're here, we can also remove the insert_vm_struct() declaration
-> > from mm.h - the function is implemented in vma.c and already declared in
-> > vma.h, and has no users outside of mm.
-> >
-> > Also update the VMA userland tests to reflect this change.
-> >
-> > No functional change intended.
-> >
-> > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> > Reviewed-by: Gregory Price <gourry@gourry.net>
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Thanks,
 
-Thanks! :)
+	M.
 
->
-> > ---
-> >  include/linux/mm.h         | 1 -
-> >  mm/internal.h              | 9 ---------
-> >  mm/vma.c                   | 8 ++++++++
-> >  tools/testing/vma/shared.c | 9 ---------
-> >  tools/testing/vma/shared.h | 5 -----
-> >  5 files changed, 8 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 3d69b597b9b1..762313b47301 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -4130,7 +4130,6 @@ void anon_rmap_tree_verify(struct anon_vma_chain *avc);
-> >
-> >  /* mmap.c */
-> >  extern int __vm_enough_memory(const struct mm_struct *mm, long pages, int cap_sys_admin);
-> > -extern int insert_vm_struct(struct mm_struct *, struct vm_area_struct *);
-> >  extern void exit_mmap(struct mm_struct *);
-> >  bool mmap_read_lock_maybe_expand(struct mm_struct *mm, struct vm_area_struct *vma,
-> >  				 unsigned long addr, bool write);
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 01a762bcc2b2..2c650d280e90 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -1540,15 +1540,6 @@ extern bool mirrored_kernelcore;
-> >  bool memblock_has_mirror(void);
-> >  void memblock_free_all(void);
-> >
-> > -static __always_inline void vma_set_range(struct vm_area_struct *vma,
-> > -					  unsigned long start, unsigned long end,
-> > -					  pgoff_t pgoff)
-> > -{
-> > -	vma->vm_start = start;
-> > -	vma->vm_end = end;
-> > -	vma->vm_pgoff = pgoff;
-> > -}
-> > -
-> >  static inline bool vma_soft_dirty_enabled(struct vm_area_struct *vma)
-> >  {
-> >  	/*
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 5308aa5a8c91..cc0e449ad0be 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -70,6 +70,14 @@ struct mmap_state {
-> >  		.state = VMA_MERGE_START,				\
-> >  	}
-> >
-> > +static void vma_set_range(struct vm_area_struct *vma, unsigned long start,
-> > +			  unsigned long end, pgoff_t pgoff)
-> > +{
-> > +	vma->vm_start = start;
-> > +	vma->vm_end = end;
-> > +	vma->vm_pgoff = pgoff;
-> > +}
-> > +
-> >  /* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-> >  static bool vma_is_fork_child(struct vm_area_struct *vma)
-> >  {
-> > diff --git a/tools/testing/vma/shared.c b/tools/testing/vma/shared.c
-> > index 2565a5aecb80..bea9ea6db02a 100644
-> > --- a/tools/testing/vma/shared.c
-> > +++ b/tools/testing/vma/shared.c
-> > @@ -120,12 +120,3 @@ unsigned long rlimit(unsigned int limit)
-> >  {
-> >  	return (unsigned long)-1;
-> >  }
-> > -
-> > -void vma_set_range(struct vm_area_struct *vma,
-> > -		   unsigned long start, unsigned long end,
-> > -		   pgoff_t pgoff)
-> > -{
-> > -	vma->vm_start = start;
-> > -	vma->vm_end = end;
-> > -	vma->vm_pgoff = pgoff;
-> > -}
-> > diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
-> > index 8b9e3b11c3cb..ca4f1238f1c7 100644
-> > --- a/tools/testing/vma/shared.h
-> > +++ b/tools/testing/vma/shared.h
-> > @@ -125,8 +125,3 @@ void __vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-> >  /* Provide a simple dummy VMA/anon_vma dummy setup for testing. */
-> >  void vma_set_dummy_anon_vma(struct vm_area_struct *vma,
-> >  			    struct anon_vma_chain *avc);
-> > -
-> > -/* Helper function to specify a VMA's range. */
-> > -void vma_set_range(struct vm_area_struct *vma,
-> > -		   unsigned long start, unsigned long end,
-> > -		   pgoff_t pgoff);
-> >
->
-
-Cheers, Lorenzo
+-- 
+Without deviation from the norm, progress is not possible.
