@@ -1,163 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707863859F3
-	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498D3382DC
+	for <kvm@vger.kernel.org>; Thu, 16 Jul 2026 18:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784227243; cv=none; b=kPnYdm25xTpc8CEyL7mwCNISVmXOZOIOmKAJ67vtBO0KSt3H+p2KnyNCYpd+cYkMH88Jp3HXLl8q/bLb5Y0Gjk/UJLax4A6yHj6hY1xvOB3f8MWZmzK/EQ7sGwGJBeANZTjf4Q3MO3QUAe1B/adueJp9OtSWY1vQCrW3FSGt83o=
+	t=1784227325; cv=none; b=uA/ZHYZ5ho1VCwzpFW46CSu+GI93MoBn/uU6bY6o9K2Vok7fmg7lCnbcY/Zk0aG8GygoWJv5WQ4VB98DZ3v+7H0rFL0qceypnUty+r/LNsOm9LRJwxbdd/S+HM0GUKo9HZDAW/FRz1vQmm5GX6S93vHimc8yRrhKnIckRoiApC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784227243; c=relaxed/simple;
-	bh=0FRkHr5cfGUxhseN4HRI/EO1/gUn5h5UMAEf11ZlENc=;
+	s=arc-20240116; t=1784227325; c=relaxed/simple;
+	bh=awLHZzaezstA9RH8IhjiWzcsJEOu9E+3op0C3Kjv+Dk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZA9IWSQx0MmiBsSEMYHC/is4aKetzOw0mVmVmtZLUXrM3t0P3f6ZWgMmIVKos3OLw8JPh/Jqks+wVwG2Q6souD1CTFo25VtGAuPbNzkNpWiD+q00s3CO4K0ZwywractTnqAcUZMzElJw8wH5oHBcVPo4vFsKgelVmwAbugVX9DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmSPkfXO; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=aRjpXSatJ+fGCCUzrvFe/lOfZS9KUr9CtioCqKNBLVe4CIk5KbMXMkf4xwIXLyQLOBUecf7fVzrnlIo6O/W4nddpsr0b9dULMsc7aY4qCv/lA9R7oZmFPCBEJZVr2A/J9QyyCa7TldzNN9EL6PyGLLPJEdd/kUV8xgpnotftYjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFOCvXB6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmSPkfXO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79711F000E9;
-	Thu, 16 Jul 2026 18:40:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFOCvXB6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DC51F000E9;
+	Thu, 16 Jul 2026 18:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784227242;
-	bh=XA5z9BF7BPURecDveh7ZmG0BLqiV8EXR1bLuHFICwJM=;
+	s=k20260515; t=1784227324;
+	bh=CyLwxuOa1i9bWpGxthEm6A1iNUaLdTx8FMU/0oz1Tck=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LmSPkfXOmatlSktN1L0XQy9I0CIsirJ9GwoLQ1GW8QMBy2HZD5WulY1ZqjifyizSt
-	 lyVi4QrUG5cUtt6M3fzs5NRk+5Yns/xHm0wezgXdsSCAaBpRQOC1cic9oIXe8PlxqE
-	 n058WnKZqdb5ocflhohp386hylFx67pP0grSYDLCdvmWlrNQYyi/690pPfsGQ3MY9G
-	 l7L+Ky/FGuUUFnip7g7Xt+7/5Ko9Qq+Q/Q1JThJljoAxZwvixeLxGGNltq+VLULBAD
-	 29ja3ybKpUG6P7gUHlsZLX0E5ApmyzZo5y2hdBalQG/HB+4NuQMZus4THJ8ka11z/x
-	 /EcBHGLcZf77Q==
+	b=MFOCvXB6eeRJERTWPZ2skCp00iy9BAaKTeL/OYQwnMnyL65Q1NbyjxuKehSPLyci3
+	 ZRjC2MlAyQ2NNBvvhjUT2VhUPfhZnZ36YnVPDH0TCAqOpTeN96mmnKOAgHInrKhir8
+	 CeoVo9ntcInIb+Xqm0ddxoUQ9wDocaTSYe8k90ncCspLjkF4ntSbidJequCJPI/BmK
+	 x4LOaKsL8IwE5XfU2PsZXaPtMEO38QiFbqr5IMc1YOg2rWZCbBkmLq3gtNKO7XV3aa
+	 uR+T3b7knLgWu7hJySsrSRe2sqHzaR/Rv5KqgBdUM6RO8+L7yfQnYVPjq0P9RcQSUI
+	 VyESvgShW3QGA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 19/24] KVM: x86/mmu: Do not update accessed/dirty if
- guest PTE is read-only
+Subject: Re: [PATCH 06/24] KVM: x86: Avoid warning when installing
+ non-private memory attributes
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Paolo Bonzini" <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716181456.402786-20-pbonzini@redhat.com>
+In-Reply-To: <20260716181456.402786-7-pbonzini@redhat.com>
 References: <20260716181456.402786-1-pbonzini@redhat.com>
- <20260716181456.402786-20-pbonzini@redhat.com>
+ <20260716181456.402786-7-pbonzini@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 16 Jul 2026 18:40:41 +0000
-Message-Id: <20260716184041.D79711F000E9@smtp.kernel.org>
+Date: Thu, 16 Jul 2026 18:42:03 +0000
+Message-Id: <20260716184204.07DC51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Silently skipping Accessed/Dirty (A/D) bit updates for guest page =
-tables protected by read-only memory attributes allows KVM to map writable =
-SPTEs without updating the guest's dirty bit, causing silent data corruptio=
-n in the guest OS.
-- [High] When a guest page table walk fails due to a memory attribute read =
-fault, KVM incorrectly reports the original instruction's access type (writ=
-e/exec) to userspace instead of reporting a read fault on the page table.
-- [High] KVM injects a fatal guest Page Fault instead of exiting to userspa=
-ce when an emulated instruction's page table walk hits a memory attribute r=
-ead fault.
+- [Medium] The defensive sanitization of memory attributes is ineffective, =
+containing a dead store and failing to prevent inconsistent xarray state.
 --
 
---- Patch [19]: [PATCH 19/24] KVM: x86/mmu: Do not update accessed/dirty if=
- guest PTE is read-only ---
-commit 0ad73786bede76212593913d2d0fa39e55055d34
+--- Patch [6]: [PATCH 06/24] KVM: x86: Avoid warning when installing non-pr=
+ivate memory attributes ---
+commit 08f754e61d84422c72539df0f4a05fb7d05a02f5
 Author: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-KVM: x86/mmu: Do not update accessed/dirty if guest PTE is read-only
-   =20
-This commit modifies the guest page table walk in KVM's x86 MMU to check if
-the guest page table's physical address is writable according to KVM memory
-attributes. If not, it marks the PTE as not writable in the guest walker.
-This appears to be an optimization to avoid exiting to userspace when guest
-page tables are mapped read-only.
+KVM: x86: Avoid warning when installing non-private memory attributes
 
-> diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmp=
-l.h
-> index 23d7a7d9769fe..ee5c23d1b77a8 100644
-> --- a/arch/x86/kvm/mmu/paging_tmpl.h
-> +++ b/arch/x86/kvm/mmu/paging_tmpl.h
-> @@ -419,6 +419,9 @@ static int FNAME(walk_addr_generic)(struct guest_walk=
-er *walker,
->  			goto error;
->  		}
+This commit adds a check to warn and clear KVM_MEMORY_ATTRIBUTE_PRIVATE in
+both kvm_arch_pre_set_memory_attributes() and
+kvm_arch_post_set_memory_attributes() when private memory is not supported.
+It replaces the unconditional WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm))
+checks that were previously throwing warnings.
+
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 424f4e1136822..055e0b45a8ee9 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -8078,9 +8078,15 @@ static void hugepage_set_mixed(struct kvm_memory_s=
+lot *slot, gfn_t gfn,
+>  bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+>  					struct kvm_gfn_range *range)
+>  {
+> +	unsigned long attrs =3D range->arg.attributes;
+>  	struct kvm_memory_slot *slot =3D range->slot;
+>  	int level;
 > =20
-> +		if (!kvm_mem_attributes_may_write_gfn(vcpu->kvm, gpa_to_gfn(real_gpa)))
-> +			walker->pte_writable[walker->level - 1] =3D false;
+> +	if (!kvm_arch_has_private_mem(kvm)) {
+> +		WARN_ON(attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +		attrs &=3D ~KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +	}
 > +
 
-[Severity: High]
-Does this silently skip Accessed/Dirty (A/D) bit updates for guest page
-tables?
+[Severity: Medium]
+Is this attrs update effective, or does it result in a dead store?
 
-When the VMM sets a page table's GPA as read-only via KVM memory attributes,
-this sets pte_writable to false. Later, FNAME(update_accessed_dirty_bits)()
-uses this flag to handle read-only ROM slots:
+Looking further down in kvm_arch_pre_set_memory_attributes(), the unmap
+filter logic evaluates the unmodified range->arg.attributes instead of using
+this newly sanitized attrs variable:
 
-		if (unlikely(!walker->pte_writable[level - 1]))
-			continue;
+	/* Unmap the old attribute page. */
+	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
+		range->attr_filter =3D KVM_FILTER_SHARED;
+	else
+		range->attr_filter =3D KVM_FILTER_PRIVATE;
 
-Since FNAME(update_accessed_dirty_bits)() reports success by returning 0, K=
-VM
-will proceed to map the leaf page as writable in the shadow page table (SPT=
-E).
+Does this mean the invalid attributes are still processed if they manage to
+reach this path?
 
-Could this lead to silent data corruption in the guest OS, since it can then
-write to the page without faulting while its own page table is never update=
-d?
+[ ... ]
 
+> @@ -8165,16 +8168,17 @@ bool kvm_arch_post_set_memory_attributes(struct k=
+vm *kvm,
+>  	lockdep_assert_held_write(&kvm->mmu_lock);
+>  	lockdep_assert_held(&kvm->slots_lock);
+> =20
+> +	if (!kvm_arch_has_private_mem(kvm)) {
+> +		WARN_ON(attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +		attrs &=3D ~KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +	}
+> +
 
-[Severity: High]
-Does KVM report the incorrect access flags to the VMM when a page table walk
-fails due to a memory attribute read fault?
+[Severity: Medium]
+Could sanitizing attrs locally here lead to inconsistent state evaluations
+later on?
 
-In FNAME(page_fault)(), KVM prepares the exit using fault->gfn =3D walker.g=
-fn
-but passes the original fault object:
+In virt/kvm/kvm_main.c:kvm_vm_set_mem_attributes(), the unmodified attribut=
+es
+argument is unconditionally stored into the global xarray before the
+arch-specific callbacks run:
 
-		if (walker.memory_attributes_fault) {
-			fault->gfn =3D walker.gfn;
-			kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-			return -EFAULT;
-		}
+	r =3D xa_err(xa_store(&kvm->mem_attr_array, i, entry,
+			    GFP_KERNEL_ACCOUNT));
 
-This passes the write/exec flags of the instruction attempting to access the
-leaf page, rather than the KVM page walker's read access to the guest page
-table. Could this confuse the VMM's fault handling logic?
-
-
-[Severity: High]
-Is the memory attribute read fault correctly handled by the instruction
-emulator?
-
-When FNAME(walk_addr_generic)() encounters a page table mapped as unreadabl=
-e,
-it sets walker.memory_attributes_fault =3D true and populates a synthetic #=
-PF in
-walker.fault.
-
-In FNAME(gva_to_gpa)():
-
-	r =3D FNAME(walk_addr_generic)(&walker, vcpu, w, addr, access);
-
-	if (r) {
-		gpa =3D gfn_to_gpa(walker.gfn);
-		gpa |=3D addr & ~PAGE_MASK;
-	} else if (exception)
-		*exception =3D walker.fault;
-
-The memory_attributes_fault flag is ignored, and the synthetic #PF is bubbl=
+If kvm_arch_post_set_memory_attributes() passes this locally sanitized attrs
+variable into hugepage_has_attrs(), will it erroneously compare the sanitiz=
 ed
-up to the emulator, which will blindly inject it into the guest.=20
+value against the unsanitized values stored in the xarray?
 
-Should this trigger a KVM_EXIT_MEMORY_FAULT instead of injecting a fatal gu=
-est
-page fault?
-
->  		ptep_user =3D (pt_element_t __user *)((void *)host_addr + offset);
->  		if (unlikely(get_user(pte, ptep_user)))
->  			goto error;
+>  	/*
+>  	 * Calculate which ranges can be mapped with hugepages even if the slot
+>  	 * can't map memory PRIVATE.  KVM mustn't create a SHARED hugepage over
+>  	 * a range that has PRIVATE GFNs, and conversely converting a range to
+>  	 * SHARED may now allow hugepages.
+> -	 */
+> -	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
+> -		return false;
+> -
+> -	/*
+>  	 * The sequence matters here: upper levels consume the result of lower
+>  	 * level's scanning.
+>  	 */
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716181456.4027=
-86-1-pbonzini@redhat.com?part=3D19
+86-1-pbonzini@redhat.com?part=3D6
