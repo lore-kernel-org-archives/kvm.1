@@ -1,167 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843A643F0A9
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871A230100E
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 17:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784306767; cv=none; b=X0fN6jmcaSL2j1C6nS8NiGmUv8HtjsYiAWK0T4UuA+Tn2rfA1VrRpFcr2Yyuo6l9vJNVIsh9TPyjXDMAIkNyVgIKuWXE4mc4ntPVOjar/Jokdz0ZwwHGE+JNKpT1vAVIWJqtgWoAAI44naWjNMmaKikUz53cTkf3oWu3c1Huk/g=
+	t=1784307842; cv=none; b=U88uHJB9wwlkaChRnkIwoVjzjd5ziYK18WlZzRljpktQFGBmhcQiz7KbekIqI0AU2KBHnxX/5oNiVIHPa79LufuoIemqmpu627INkCEwvPO+6h0VqHCNTQTtvo1jipQrLbCBobpoG3BcqCDKyclUgxpz29Fy+LFSSjn/oXSYV8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784306767; c=relaxed/simple;
-	bh=nviwvVLUwfTAa1t0mN3Eb0+fM/GyZ0mwhfHpc6hHwxc=;
+	s=arc-20240116; t=1784307842; c=relaxed/simple;
+	bh=knIeDDtzWi/HNAJfoGWiKKGN20w1vIKoAn7qwXf87ww=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=R9K+RZ7KAgzgitpWKXOkdwqrfm4Qzpu+kDNkD1vnFZdx7OKO5jJxxHYT4SyNqD2LeqtI9BHlbRRNoBdQpp0y/fWqLc+jHhbixsjBgocVUMFn86UcF88HubUAwONCbvaGo4lg8tNV5mok9leSZiavNM9ZmR3J2Z450TSWC+n1NEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eAi2tSL2; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hxlR6K59NeHh5eYiB29MGPxSF8toCJobTy3iOr8YS/t5+nIhBMuWiKfrRrRBCmU5vbD4HPO4jH47+dYTSeaSz491uITVjYx69iXy1NmZTkdb7Fyah3p9ogPkzUBbydI8TVCzwQNGLzQo7H3pANuzOqmZdAN4OZT3eeJaRIUK0dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2VoQ3Gy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eAi2tSL2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F2B1F00A3A;
-	Fri, 17 Jul 2026 16:46:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2VoQ3Gy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AF51F000E9;
+	Fri, 17 Jul 2026 17:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784306766;
-	bh=BVnwEgfUNr5qM2RQQfmP+GbSkxrpVcW6gxmmU0eaw5w=;
+	s=k20260515; t=1784307841;
+	bh=1c8mUe2hlQquhx5UwI2DWAe0MxjBj9HwoY6aNRnMwbE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eAi2tSL2tLcIwZ8kJnFs1LyZJH/NauV/YsByu3LyJ7IUMyURn/jOOOdfwRDqvrkKg
-	 hTiXvBtT+mZuLbPcKw1uWi+oe1m1rdGN9qNKBWNmR39Hz+BIQtCi4dA8NDLoM/rZ3p
-	 VztZZv7f50FQjyNac+XR5E5EfzQjI1TTWDWjeLWAIEUFKUuz41tjXXdNaPVj4QucLp
-	 /kp17rFIqo2hJuiTGtS/h4ICFf0Ag+kr6FVqZrGuz9u/9MwQshVaQCjPG0GMMlvLT9
-	 vnec/S4pYuiZEHhR7mWMeHWYriAgHpV3MFaXccMF4TYUdyyaS35f7Qth1NlYejHVEw
-	 XoxIzV09ZN9yw==
+	b=o2VoQ3GyFu+LOQdXHb2w2oNAjsZpyhYc72M1loZZFxaN0k3vR2z28UImVdy4sv9Qc
+	 g45VfcEkt+DWmHCh5GgSvpTOKxS88Tz0MhZLycEtxPy4TaqjnmqIJ2oaMsa/XqZobd
+	 eFJ/RgsKTjMwiUlG7UDsnfe7rYozbeHgxZ8oMzf6Haxd/qVwnOxbMTJgQNX1+Yv3SF
+	 EGNDAJlHSKCB9sj90AofShIH+69mOF2ISOmxS1d4sz9sCH2H1ssY5+YaT699Mec8h3
+	 IZd1Gb1Ft8uYLf+ktvR9WKSp110xem+lxFFiAaqxAIeH7NUhr9D7mfXUzKb0L8lzBK
+	 yX/T7fgdK7MuQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6.12] vsock/virtio: fix zerocopy completion for
- multi-skb sends
+Subject: Re: [PATCH v3 07/11] vfio: selftests: Allow drivers to specify
+ required region size
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alexander Martyniuk" <alexevgmart@gmail.com>
+To: "Jason Gunthorpe" <jgg@nvidia.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260716163600.115458-1-alexevgmart@gmail.com>
-References: <20260716163600.115458-1-alexevgmart@gmail.com>
+In-Reply-To: <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+References: <7-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 16:46:05 +0000
-Message-Id: <20260717164606.15F2B1F00A3A@smtp.kernel.org>
+Date: Fri, 17 Jul 2026 17:04:00 +0000
+Message-Id: <20260717170401.21AF51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Failure during zerocopy skb allocation advances the user's `io=
-v_iter` without reverting it, causing subsequent loop iterations to skip by=
-tes and silently corrupt the message stream.
-- [High] MSG_ZEROCOPY violates its API contract by generating multiple comp=
-letion IDs for a single sendmsg() syscall when the message is fragmented by=
- the socket's wait loop, which can cause Use-After-Free in userspace.
+- [Medium] The computed driver region size uses `getpagesize()` as the mini=
+mum instead of `SZ_2M`, contradicting the commit message and altering test =
+behavior.
 --
 
---- Patch [1]: [PATCH 6.12] vsock/virtio: fix zerocopy completion for multi=
--skb sends ---
-commit 60570416b19b3acf053340573a6882df58212cc4
-Author: Stefano Garzarella <sgarzare@redhat.com>
+--- Patch [7]: [PATCH v3 07/11] vfio: selftests: Allow drivers to specify r=
+equired region size ---
+commit 1aaddaa801402ac0c163d72d8dfe6ba18a6b7295
+Author: Jason Gunthorpe <jgg@ziepe.ca>
 
-vsock/virtio: fix zerocopy completion for multi-skb sends
+vfio: selftests: Allow drivers to specify required region size
 
-This commit fixes an issue where non-final skbs in a fragmented message do
-not carry zerocopy completion tracking. It resolves this by pre-allocating
-the zerocopy uarg before the send loop and attaching it to every skb via
-skb_zcopy_set. Notification only fires after the last skb is freed.
+Add a region_size field to struct vfio_pci_driver_ops to let drivers
+declare their DMA-mapped region size requirements. The core code will
+round up and minimize the size to avoid changing test behavior.
 
-Link: https://patch.msgid.link/20260514092948.268720-1-sgarzare@redhat.com
-
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virt=
-io_transport_common.c
-> index 9acc13ab3f822..62d753e3df358 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/t=
+esting/selftests/vfio/lib/vfio_pci_driver.c
+> index 6827f4a6febe9..e13bbb7ee423d 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
 
 [ ... ]
 
-> @@ -372,6 +345,25 @@ static int virtio_transport_send_pkt_info(struct vso=
-ck_sock *vsk,
->  		if (can_zcopy)
->  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> @@ -28,6 +30,11 @@ void vfio_pci_driver_probe(struct vfio_pci_device *dev=
+ice)
+>  			continue;
+> =20
+>  		device->driver.ops =3D ops;
 > +
-> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> +		    info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
-> +			uarg =3D info->msg->msg_ubuf;
-> +
-> +			if (!uarg) {
-> +				uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
-> +							    pkt_len, NULL);
+> +		VFIO_ASSERT_NE(ops->region_size, 0);
+> +		device->driver.region.size =3D
+> +			max_t(u64, roundup_pow_of_two(ops->region_size),
+> +			      getpagesize());
 
-[Severity: High]
-This is a pre-existing issue, but does MSG_ZEROCOPY generate multiple=20
-completion IDs for a single sendmsg() syscall here?=20
+[Severity: Medium]
+The commit message mentions that the core code will "minimize it to SZ_2M
+so as not to change any test behavior."
 
-If the peer lacks sufficient credit, stream_enqueue() in af_vsock.c can
-return a short write, causing vsock_connectible_sendmsg() to loop and wait.=
-=20
-In the next iteration, info->msg->msg_ubuf remains NULL because it was=20
-never updated with the previously allocated uarg.
+Does this code in vfio_pci_driver_probe() compute the minimum size correctly
+by using getpagesize() instead of SZ_2M? This appears to shrink the allocat=
+ed
+DMA region size for existing test drivers down to the page size, which might
+alter the test behavior the commit message intended to preserve.
 
-When virtio_transport_send_pkt_info() is called again, does it allocate a=20
-new uarg with msg_zerocopy_realloc(..., NULL) and increment the socket's=20
-sk_zckey? This would return multiple completion IDs for one syscall, which=
-=20
-might cause userspace to desynchronize its tracking and prematurely free=20
-buffers.
-
-> +				if (!uarg) {
-> +					virtio_transport_put_credit(vvs, pkt_len);
-> +					return -ENOMEM;
-> +				}
-> +
-> +				if (!can_zcopy)
-> +					uarg_to_msgzc(uarg)->zerocopy =3D 0;
-> +
-> +				have_uref =3D true;
-> +			}
-> +		}
 >  	}
-> =20
->  	rest_len =3D pkt_len;
-> @@ -390,21 +382,7 @@ static int virtio_transport_send_pkt_info(struct vso=
-ck_sock *vsk,
->  			break;
->  		}
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but what happens to the user's
-iov_iter if virtio_transport_alloc_skb() (called just above this snippet)
-fails and the loop breaks?
-
-If virtio_transport_alloc_skb() fails because __zerocopy_sg_from_iter()=20
-hits an error after successfully pinning some pages, the iter has already=20
-been advanced. Since rest_len !=3D pkt_len, virtio_transport_send_pkt_info()
-returns the partial byte count without reverting msg_iter.
-
-Will the next iteration of vsock_connectible_sendmsg() read from the=20
-advanced iter, permanently skipping the user bytes that were pinned in the
-failed skb and silently corrupting the stream?
-
-> -		/* We process buffer part by part, allocating skb on
-> -		 * each iteration. If this is last skb for this buffer
-> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> -		 * completion for the current syscall.
-> -		 */
-> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> -		    skb_len =3D=3D rest_len && info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
-> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> -							    info->msg,
-> -							    can_zcopy)) {
-> -				kfree_skb(skb);
-> -				ret =3D -ENOMEM;
-> -				break;
-> -			}
-> -		}
-> +		skb_zcopy_set(skb, uarg, NULL);
-> =20
->  		virtio_transport_inc_tx_pkt(vvs, skb);
->
+>  }
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716163600.1154=
-58-1-alexevgmart@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v3-76f117ad04f1+2=
+8a90-mlx5st_jgg@nvidia.com?part=3D7
