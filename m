@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6B24AEEF
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 23:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEACB3E4C8D
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 23:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784329555; cv=none; b=VNoc1/SoL6xJtW/3CkH4SJdqMmKuI97R3PaEz2+Wk+bUtr1LJN6V0tvfKjuYi4AuoZlLJQoOjlZFQWGfI+7Qmknet5KFT66APO4KEIpue52VnluyfvQpxI0Y1I6CzIY8j4xl63/J6r4v1u3CeIymSQA2IMLgodWViWqVDtWUleA=
+	t=1784329556; cv=none; b=dGR1sh/UqPMxh777PISu5GCIab1P1/CKTl5BJEP43xWPIiQ4RWyMjnZrjK5LH0tpIf0DVlOmKujG3zZOkdUQLy4gMrZgYN6Y9xGa4f27G+ahAjjf4QFfyPstDUCL17kIAE+wZJcFLLDg0SLok1Y4VUYLJM7urJYoAIR/qcxv08c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784329555; c=relaxed/simple;
-	bh=T5ILZjsYbBLK6eQOM+jwZgT+vvbSlod0Bex0zmE2+/k=;
+	s=arc-20240116; t=1784329556; c=relaxed/simple;
+	bh=8DP1Nv5mrntUisaMj/2XiJxUBQCjHH/vmDN6cjhcl/w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SyY6gnkB4mWTTGuIz7u/eV4GaytMX4tc9fJJKD0Shzta35Kz76kGEs5TLkLh0/dEQaPQHvEMU3eWVnPIK0X5O/k/19sgWUU4h2ZwGTEA/vnJTmuwiWnxds8/cJSXWzGfZuOZ1FMtyUF46EPlcBG2020WS4/UK5NG8xkDJjWg2+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q/h3TMFu; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=megX5zDu0MAVx4Nk4rMf4ofsKBMvjfFoXFbE3aV48xPZQe10qYEw/ja7E5BPe8qIKxpNgkDfaKsaHYdwuzilIbSGVMsY0QfNFTTKPZuWtzan2TSJbHLVgKeooeevECmUOGSwOlC7tTXb7LEPGpNDKiWMR81LBsaVVFVzU/LlDDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qC0tIzXw; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q/h3TMFu"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848860def2cso9062263b3a.2
-        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:05:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qC0tIzXw"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cae455cf6dso115369075ad.2
+        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784329553; x=1784934353; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784329554; x=1784934354; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cG3cMcIeiFf9Df5u73W8KdC/PxzXs9gPssQ0h0Fmh3o=;
-        b=Q/h3TMFuXvZIEQCGKo+/Q8vLmDxrp9yZOg7g1fHiCVYGn9jx5za7qTRb6bfLmtCXSB
-         m2AbG4OWeZ3fhWYtDXTX0NT5R/8xpt1spTwPvKm1lTHnLlP3M5X6ISHPZmxXBK5XLTiq
-         oVnEWgESBuYTWliYWNYZVIf4ng7Ni9FlRI4Tq7fsQ4JyIN0fcHxsjq1l1406dIW2Fep5
-         tAcYT8k/esuTVcNNsu+9Mb/8IibyxImMYTNPvpMJu54/2LmbzQ9qe0HtXdsCbFgrqBWd
-         fzC4fwcw2h08Byxra7ITuIgwWTXqkFxfaMMT7CigIo4f9fzm0aXwvx3/p0IWYXEWgNWQ
-         dlzA==
+        bh=caaPdFlBKo2jqor4RiYmx0NOfk13xGgUe7w7Kj5cTuI=;
+        b=qC0tIzXwVol8v7EBfcgkeCUUooXrKa/YcJQWsWfoN1dDNeeW7zx/sYow1Hb/4b6TQY
+         jfor8XuDfV3lktIrfDqHTgsIAY5MitijuXy8MIsDIHsyTjD8FgOxwboIkOkp+H8GPuYh
+         HHyGdPcL6Ju3VH/Cd/8RQ7ew5T6J+1mLE3dn0ahTu8Jf4Se8iuKNevMmcoYTziNPS4CB
+         BtxMzlnJNaERiS0ZkxNH9jwhBb2aSe2kFVffwB+p5ZHqBNA2chWOrJZpqOnqUCd1Jbe2
+         uCMQH5eg2OCWdHmk55GP7flfz9ZCm/3gav6X0LMu71TSUL4tbdRmqnwL8SfOraEBMZ5W
+         U10w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784329553; x=1784934353;
+        d=1e100.net; s=20251104; t=1784329554; x=1784934354;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cG3cMcIeiFf9Df5u73W8KdC/PxzXs9gPssQ0h0Fmh3o=;
-        b=Q4M1zSjav2aOaiAgWZnoZyBG9aaMtVgiARCGCWN8VkgRtemy05mbk5sc4GgxKiGFYt
-         vNeV0COnZ/OKG5FrOj2cfMD34GegvgZ0aPtjlVH/88klUjzPGhwUagx/GxxQUrQT5jH7
-         IXAa97uWaCQVei5cpnbZUxt5IQyoEvxHmBDo3A+MSGYHop23npOsNCU6d+3cYZ7KkDHP
-         kYvY8HkhvXe0VCR7ng3LPhm3tRpeEuTUGB+fqTp0LvdMIC7eP76Guhx1Q22XST7ROdiT
-         /UN9w1CpoyawUwR3aWXemI5rKVNgrg00cu4VzVFaNVTBcVidY5jDQVZsBH6YmoOPB5Gr
-         qSUw==
-X-Forwarded-Encrypted: i=1; AHgh+RpwNtQHQAyeAzay/AjoBdQF6CiFnwAgI7AgAdP3qjhzCjBCKvCsIUtjdj6JEQ5BTu6piFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuaqpVlXowwoq7wpi0M8LnRrHdNU/MBzBxubUvvhNkPBbEWhRf
-	uLembcTvbw0X5yo52QwLsDrKsxPIR1ocm1T8WMQRk8zdvPX3DFwGiJXD6PK1vPHpfHQS7ctwew7
-	c7WfKI1sGN11tAw==
-X-Received: from pfbhg7.prod.google.com ([2002:a05:6a00:8607:b0:84b:62e9:404d])
+        bh=caaPdFlBKo2jqor4RiYmx0NOfk13xGgUe7w7Kj5cTuI=;
+        b=itNv4NIzyTrRhXJYfBfdp+EEOu8kRjlVIwdODroQ+0ETAmYu6WhmmVGDobf5tIyvcB
+         eNWBpm1hZCOUuigQqdtwNy5BgxvWuxNNV2TvztsuHj4GMWsfTFNgYi7WX2sJJ9heXh/W
+         eer9niUFTlQ/nelVpHuYmRuZwA9eh0cYWBbKTjROTrHv3xXwreZI18e+1IEPwB6X8Xat
+         6gPu8RbdnheqTeu6Zz20l68Hw8aGn4ZNiGhTunMQhSpte9KQPA1szJuEz/nX3xpEwBXq
+         E6c0TDci0CAX2tVmsxMPl8/Q7/PDws+xxiIBcTA/WPe2IArcRvjVUnfrY9XW0gpucrdl
+         Oydg==
+X-Forwarded-Encrypted: i=1; AHgh+RpGR1uDE9DCXzW/W4PyKVzBn+s7JQj3q15K7MUmj8E90r68HmOkZHw7Qa7huyEYojh/53U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw27VAvL45q/PiDT4tSM/cmPGAfUt2YwtgkewLB3oFJ5/PJysCP
+	dEWVVaUjxJQmkK3GdDt1Iwrj2764kWpeuP4AF/wXVGE9hwWBfDoSStTJwCo+z9y3UBiJGpma4ru
+	SxI4p+mXSzf60vg==
+X-Received: from pgx32.prod.google.com ([2002:a63:1760:0:b0:ca7:7de:194])
  (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2e28:b0:848:5bd5:6e86 with SMTP id d2e1a72fcca58-84c29532751mr4704264b3a.53.1784329552818;
- Fri, 17 Jul 2026 16:05:52 -0700 (PDT)
-Date: Fri, 17 Jul 2026 16:05:40 -0700
+ 2002:a05:6a20:7493:b0:3c0:9c19:65b4 with SMTP id adf61e73a8af0-3c3ada7a5b1mr5830824637.76.1784329553794;
+ Fri, 17 Jul 2026 16:05:53 -0700 (PDT)
+Date: Fri, 17 Jul 2026 16:05:41 -0700
 In-Reply-To: <20260717230542.3555587-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,48 +60,68 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260717230542.3555587-1-jmattson@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260717230542.3555587-2-jmattson@google.com>
-Subject: [PATCH v2 1/3] KVM: SVM: Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid()
+Message-ID: <20260717230542.3555587-3-jmattson@google.com>
+Subject: [PATCH v2 2/3] KVM: SVM: Dirty ERAPS register on all ASID TLB flushes
 From: Jim Mattson <jmattson@google.com>
 To: jmattson@google.com
 Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com, 
 	seanjc@google.com, venkateshs@google.com, yosry@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On initial vCPU creation, init_vmcb() is called before userspace configures
-guest CPUID via KVM_SET_CPUID2. Consequently, ERAP_CONTROL_ALLOW_LARGER_RAP
-is never set during initial vCPU creation. If an AP later receives an INIT
-signal after CPUID has been set, init_vmcb() would set the bit for that AP,
-but the BSP would be left with ALLOW_LARGER_RAP clear.
+Per the AMD APM, ERAPS clears the Return Address Predictor (RAP/RSB) on all
+implicit TLB invalidations (e.g. modifying certain CR[04] bits).
 
-Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid() to handle the BSP.
+Move kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS) into
+svm_flush_tlb_asid() so that any ASID-level TLB flush marks ERAPS dirty.
+Centralizing the ERAPS dirty call in svm_flush_tlb_asid() ensures that all
+ASID flushes (flush_tlb_current, flush_tlb_all, flush_tlb_guest) properly
+set ERAP_CONTROL_CLEAR_RAP on the next VMRUN.
 
-Keep the code in init_vmcb() to restore ALLOW_LARGER_RAP after the VMCB has
-been cleared on the VCPU triple-fault reset path.
+Remove the now redundant svm_flush_tlb_guest() wrapper.
 
 Fixes: db5e82496492 ("KVM: SVM: Virtualize and advertise support for ERAPS")
 Assisted-by: Gemini:Gemini-Next
 Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/svm/svm.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 4d2bacd00ec4..bf868da14cd2 100644
+index bf868da14cd2..f2fdca341dac 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -4736,6 +4736,11 @@ static void svm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- 	if (guest_cpuid_is_intel_compatible(vcpu))
- 		guest_cpu_cap_clear(vcpu, X86_FEATURE_V_VMSAVE_VMLOAD);
+@@ -4171,6 +4171,8 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
  
-+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
-+		svm->vmcb01.ptr->control.erap_ctl |= ERAP_CONTROL_ALLOW_LARGER_RAP;
-+	else
-+		svm->vmcb01.ptr->control.erap_ctl &= ~ERAP_CONTROL_ALLOW_LARGER_RAP;
++	kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
 +
- 	if (is_sev_guest(vcpu))
- 		sev_vcpu_after_set_cpuid(svm);
+ 	/*
+ 	 * Unlike VMX, SVM doesn't provide a way to flush only NPT TLB entries.
+ 	 * A TLB flush for the current ASID flushes both "host" and "guest" TLB
+@@ -4229,13 +4231,6 @@ static void svm_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
+ 	invlpga(gva, svm->vmcb->control.asid);
  }
+ 
+-static void svm_flush_tlb_guest(struct kvm_vcpu *vcpu)
+-{
+-	kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
+-
+-	svm_flush_tlb_asid(vcpu);
+-}
+-
+ static inline void sync_cr8_to_lapic(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -5383,7 +5378,7 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.flush_tlb_all = svm_flush_tlb_all,
+ 	.flush_tlb_current = svm_flush_tlb_current,
+ 	.flush_tlb_gva = svm_flush_tlb_gva,
+-	.flush_tlb_guest = svm_flush_tlb_guest,
++	.flush_tlb_guest = svm_flush_tlb_asid,
+ 
+ 	.vcpu_pre_run = svm_vcpu_pre_run,
+ 	.vcpu_run = svm_vcpu_run,
 -- 
 2.55.0.229.g6434b31f56-goog
 
