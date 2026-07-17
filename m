@@ -1,246 +1,171 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931D331D381
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 03:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6BD31D381;
+	Fri, 17 Jul 2026 03:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784260598; cv=none; b=P/bsvLaEjD2WbFYcU0f4ITH1Ke5mz3Oexx0fkOI/SXvTzAyJm5LhXZxPYLeUxcUQKHVM3JCfMfUKfk3StcbMDmtpxiC6a0G6aBTwBbDAGbOYo2NqFFFQgnI9rWLewdBSMxm4p8W9Ti5QVvKgNreVGyBuZZvvUjFgNnCrsmv0oIc=
+	t=1784260616; cv=none; b=QqjGzxfxuVYbpp5/km0QX5yqqFZpO/hsVGNvXP4H48w92ZkkGydSFq4CX1AlxQflOUfKJZDc9YoBa2AS+DihlV7Jojo+bXzjtuYoNKEI2gxE/HVexBLK5/URguBRkUYx229zmzf/KSiUW1OoMhPgAGhZKJRpfomqWKLoQhtYpmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784260598; c=relaxed/simple;
-	bh=LLSZBIItncLT1iUlCPGpnHKLAV2kP9fcaP7JuuGGMNI=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=qwqsyreh90obAxa/WDbTt78Yn07u5HHFBs2OOCycvrIbXwPQLjeGo02q37XnOvTi2fraogyZlcsqj4GzmMbOFNJTIBvt5ClLAUVYrBkvm57vNMptC7m9OTtG2Eo4G4b+J6Y7lLZkHAF1UZ4qYRbKGwss6la5WhNqj6E8MAnmHyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wfdvMSQA; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784260616; c=relaxed/simple;
+	bh=Cy7bUY8SN4eLrlWnDo2VbhzBy39q70bUvf6w9wB363c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rnm2bRb6ZzpMyOhPaH2nLPSGvtCNu92FCvqSf5MrogwXGm+pIC54xbJ22PVTssIm/yac8oTytGu3gi7G3LzUvbx69S+VEAXajH2+hXSIkh5qNDA+TKQj3GG4e6mkiIJ78e+CseLRMZac4gwEl+RlhkheYkyLBOMQ9KCHENGnLng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UL4Rl4M5; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wfdvMSQA"
-Message-ID: <0bfeca34-cdfe-4b05-a216-b57f3d00ed7f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784260584;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z272v53xlK5duJ9auTGDKTNLFATzwCEZcMiF1eHGdcM=;
-	b=wfdvMSQA1+4SHUilEN7yxR20jQKblFQ7TW9E0TvR7fzn0ywQrXgBoS/gfODnwPqfOF/ETd
-	xS9oDdAzyCQWjZ+wnB9ZLu2wqcm49DVAAfwIBhEZivPE/H6Yu0bz81bt1avTX3R+zdfWLF
-	psJI6p/j8h8bX9WKJRkJEi/E/UHjhLo=
-Date: Fri, 17 Jul 2026 11:56:10 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UL4Rl4M5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784260614; x=1815796614;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Cy7bUY8SN4eLrlWnDo2VbhzBy39q70bUvf6w9wB363c=;
+  b=UL4Rl4M5kWFhB3nrf4fW97we1K1N+9W7XTwhUmHkBQ41HgltTxcpQ8KH
+   KQxE6DWSxMbpYwuNtGxzMYHTjpsFj5hwVCyWeMzw3yf9DR22xFu3nNZ64
+   tscaCiuMz1fmwEjuvsnY+QTtrvZLC314ZA7Pg9ltb5B+P3Lt/1hRVHkDk
+   0EFpnWCrMFFuY5H0dnviFsvKG4p7a9LiCrPu7SXYfXccXOQ7APZ//PI6p
+   tk96YRIn6k2UI4KXkHObI7u/PC7KoU36ZbX3AREM+txhyYWLhfRtlmLXM
+   jetsr7G0rzh//fQW7HjVBE8zcuCYMmwixzqrANhOTu9eqbngrvWnkoiST
+   Q==;
+X-CSE-ConnectionGUID: aZ441L9kRKmjYr3MkpHm4Q==
+X-CSE-MsgGUID: EoJ7kiVvR4WBFkRC5Fg0dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84052132"
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; 
+   d="scan'208";a="84052132"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 20:56:53 -0700
+X-CSE-ConnectionGUID: C4H0DGINSgmAJ6x1J00lsQ==
+X-CSE-MsgGUID: A7AI4Q4VRPqcsFtxxJVL8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; 
+   d="scan'208";a="258676828"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 20:56:51 -0700
+Message-ID: <36036850-2d73-4c0f-84bc-64ba542ba425@intel.com>
+Date: Fri, 17 Jul 2026 11:56:48 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Cc: cui.tao@linux.dev, kernel@xen0n.name, kvm@vger.kernel.org,
- Tao Cui <cuitao@kylinos.cn>
-Subject: Re: [PATCH v4 0/3] LoongArch: KVM: Add PV TLB flush support
-To: Bibo Mao <maobibo@loongson.cn>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, loongarch@lists.linux.dev
-References: <20260615082154.42144-1-cui.tao@linux.dev>
- <438d76ac-b447-1613-1c00-7c2186ac4014@loongson.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <438d76ac-b447-1613-1c00-7c2186ac4014@loongson.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/7] KVM: guest_memfd: Rework PREPARE config and hook
+ into a more generic CONVERT
+To: Ackerley Tng <ackerleytng@google.com>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fuad Tabba <tabba@google.com>
+References: <20260714231015.3337831-1-seanjc@google.com>
+ <20260714231015.3337831-8-seanjc@google.com>
+ <a236d1ba-8d13-4151-a7df-a8c390b33a24@intel.com>
+ <CAEvNRgGz_Qm1z+e-7Rh2OZ1bfjVBMEB91-Ki+3Vi3mBf5uMdiQ@mail.gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CAEvNRgGz_Qm1z+e-7Rh2OZ1bfjVBMEB91-Ki+3Vi3mBf5uMdiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
-
-在 2026/7/16 14:22, Bibo Mao 写道:
+On 7/17/2026 5:42 AM, Ackerley Tng wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
 > 
-> 
-> On 2026/6/15 下午4:21, Tao Cui wrote:
->> From: Tao Cui <cuitao@kylinos.cn>
+>> On 7/15/2026 7:10 AM, Sean Christopherson wrote:
+>>> Rework guest_memfd's "prepare" hook into a more generic "convert" flow in
+>>> anticipation of supporting in-place conversion, at which point KVM will use
+>>> the hook for both to-private and to-shared conversions, not just to
+>>> "prepare" PRIVATE memory.
+>>>
+>>> Opportunistically rename kvm_gmem_prepare_folio() to kvm_gmem_make_private()
+>>> to better reflect its role.
+>>>
 >>
->> This series implements paravirtualized TLB flush for LoongArch KVM
->> guests.
+>> [...]
 >>
->> In multi-vCPU KVM guests, remote TLB flushes broadcast IPIs to all
->> target vCPUs, including those preempted by the host. Sending IPIs to
->> preempted vCPUs causes unnecessary VM exits and grows with vCPU count,
->> becoming severe in overcommitted deployments.
+>>> @@ -90,8 +90,8 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>>    	gfn = ALIGN_DOWN(gfn, nr_pages);
+>>>    	index = kvm_gmem_get_index(slot, gfn);
+>>>
+>>> -	return kvm_arch_gmem_prepare(kvm, gfn, folio_file_pfn(folio, index),
+>>> -				     nr_pages, folio_order(folio));
+>>> +	return kvm_arch_gmem_convert(kvm, gfn, folio_file_pfn(folio, index),
+>>> +				     nr_pages, folio_order(folio), true);
+>>>    #else
+>>>    	return 0;
+>>>    #endif
+>>> @@ -798,7 +798,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>>    		folio_mark_uptodate(folio);
+>>>    	}
+>>>
+>>> -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+>>> +	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
 >>
->> Reuse the existing steal-time shared memory page by adding a new
->> KVM_VCPU_FLUSH_TLB flag to the preempted byte. On the guest side,
->> skip IPIs to preempted vCPUs and set the flag via cmpxchg instead.
->> On the host side, when re-entering a vCPU in kvm_update_stolen_time(),
->> check and clear the flag; if set, drop the VPID to trigger a full TLB
->> flush on the next VM entry. No new shared memory page, hypercall, or
->> Kconfig option is needed.
-> After a second thought, the PV TLB flush can only work on hardware PTW, there is problem on software PTW.
-> 
-> With TLB flush flow, the current CPU sends IPI interrupter to other CPUs to flush TLB. With software PTW, other CPUs may execute TLB refill or TLB exception with interrupt disabled. IPI interrupt will not trigger until TLB refill/exception finishes, however with PV TLB method, other vCPUs will trap to host and flush TLBs, and continue to execute TLB refill/exception, stale TLB may be added.
-> 
-
-Sorry for that.
-
-This is indeed something I had overlooked -- thank you for catching it. It
-is a correctness issue, not just a performance one, so it has to gate the
-feature.
-
-I understand the race exactly as you describe it. With software PTW, a
-TLB miss runs the guest's refill handler with interrupts disabled, and
-that handler may already have loaded the old PTE into a register. A
-native remote flush sends an IPI, but the IPI is held until IE is
-re-enabled, so the flush always lands *after* the refill completes -- any
-stale entry the refill wrote gets purged. The PV path breaks this: the
-host flushes the target's TLB (drops the VPID) at an arbitrary instant,
-then the target resumes its disabled refill handler and writes the stale
-entry back with tlbfill/tlbwr, and nothing flushes it afterwards. The
-same applies to the steal-time variant if a vCPU is preempted mid-refill:
-it is flushed on re-entry and then resumes the refill. Only a hardware
-PTW is safe, because the refill is atomic and always reads the current
-table.
-
-So the feature must only be offered when the guest actually uses a
-hardware PTW. The real condition is on the *guest* -- a -cpu la464 guest
-still does software refill even on a PTW host -- so the host gate alone
-is not enough; a non-PTW guest must not observe the feature either.
-
-For the host side, cpu_has_ptw is the natural precondition, and there's
-already a precedent in kvm_vm_init_features() where
-KVM_LOONGARCH_VM_FEAT_PTW is gated on cpu_has_ptw. I'd wrap the
-advertisement the same way:
-
-    if (cpu_has_ptw) {
-        kvm->arch.pv_features  |= BIT(KVM_FEATURE_PV_TLB_FLUSH);
-        kvm->arch.kvm_features |= BIT(KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH);
-    }
-
-For the guest side: the guest discovers the feature by reading the
-CPUCFG_KVM_FEATURE leaf, so if feasible I'd mask KVM_FEATURE_PV_TLB_FLUSH
-off right there -- in kvm_emu_cpucfg() (the CPUCFG_KVM_FEATURE case in
-exit.c) and the matching one_reg getter kvm_loongarch_cpucfg_get_attr()
-in vcpu.c -- whenever the guest's own CPUCFG2.PTW (vcpu->arch.cpucfg[2],
-bit 24) is clear. The equivalent could also be done in QEMU alongside
-the companion patch, since QEMU already controls the guest model's PTW
-bit. Both look implementable; I'll need to actually test them to see how
-they behave.
-
-On the hardware side, I checked the box I ran the benchmarks on. It
-reports as a 3A6000 / LA664, but reading CPUCFG2 directly gives 0x7e7cccc7
-with the PTW bit (24) clear, so it has no hardware PTW either -- likely
-an early part. Your 3C5000 is LA464, which is software PTW too. That
-means the ebizzy and tlb_bench numbers I shared earlier were collected
-with PV TLB flush active on a -cpu la464 (software-refill) guest, i.e.
-exactly the unsafe configuration you pointed out. They show the mechanism
-works and its direction (hypercall ahead of steal-time, and PV preventing
-the overcommit collapse), but they were measured in a correctness-broken
-config, so I won't use them to justify enabling the feature on
-software-PTW silicon.
-
-For now I don't have a PTW-capable machine to test on. My reading is that
-a software-PTW-safe variant isn't really possible -- the native IPI is
-safe precisely because the flush is deferred past the IE=0 refill window,
-and a host-side flush can't reproduce that ordering without effectively
-becoming an IPI again. I'll spend some time confirming that, but
-unless I've missed something, gating to hardware-PTW guests is the
-answer.
-
-Thanks,
-Tao
-
-> Regards
-> Bibo Mao
->>
->> The feature is advertised through the existing KVM PV feature
->> negotiation: the kernel exposes KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH as
->> a VM-level capability, and userspace (QEMU) sets
->> KVM_FEATURE_PV_TLB_FLUSH in the guest's CPUCFG_KVM_FEATURE mask after
->> probing it. A corresponding QEMU patch ("target/loongarch: Enable PV
->> TLB flush advertisement to the guest") is posted alongside this
->> series.
->>
->> - Host side: only trace a PV TLB flush request when one is observed.
->> - (Carried over) Host uses amand_db.w to atomically read and clear the
->>    preempted byte; selftest gained input validation and failure cleanup.
->>
->> Testing: the PV TLB flush path itself is unchanged from v3, so the
->> benchmark numbers below still hold.  Note that, unlike v3, the feature
->> must now be enabled by userspace: run a QEMU built with the companion
->> patch (or with -cpu kvm-pv-tlb-flush=on) so the guest actually observes
->> KVM_FEATURE_PV_TLB_FLUSH.  Boot a 32-vCPU guest and run the selftest
->> inside it with sleep-idle (PV helps) and busy-spin (PV cannot optimize)
->> modes respectively:
->>
->>    qemu-system-loongarch64 \
->>      -m 4G -smp 32 --cpu la464 --machine virt \
->>      -bios .../QEMU_EFI.fd \
->>      -kernel .../vmlinuz-...-pvtlb-v4+ \
->>      -initrd /tmp/ramdisk_test.gz \
->>      -serial mon:stdio \
->>      -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
->>      -device virtio-net-pci,netdev=net0 \
->>      -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" -nographic
->>
->>    # PV TLB flush enabled (idle threads sleep, vCPUs get preempted)
->>    guest# ./pv_tlb_flush_test 1 31 50000 0
->>
->>    # Baseline (idle threads busy-spin, all vCPUs stay active)
->>    guest# ./pv_tlb_flush_test 1 31 50000 1
->>
->>    With PV TLB flush (sleep idle):    ~152,285 ns/flush
->>    Without PV TLB flush (busy-spin):  ~481,045 ns/flush
->>
->>    Improvement: ~68% latency reduction (~3.2x throughput increase)
->>
->> Tao Cui (3):
->>    LoongArch: KVM: Add PV TLB flush support via steal-time shared memory
->>    LoongArch: KVM: Implement guest-side PV TLB flush
->>    KVM: selftests: loongarch: Add PV TLB flush performance test
->>
->>   arch/loongarch/include/asm/kvm_host.h              |   1 +
->>   arch/loongarch/include/asm/kvm_para.h              |   9 +
->>   arch/loongarch/include/asm/paravirt.h              |  21 +++
->>   arch/loongarch/include/uapi/asm/kvm.h              |   1 +
->>   arch/loongarch/include/uapi/asm/kvm_para.h         |   1 +
->>   arch/loongarch/kernel/paravirt.c                   |  60 ++++++
->>   arch/loongarch/kernel/smp.c                        |  30 +++-
->>   arch/loongarch/kvm/trace.h                         |  15 ++
->>   arch/loongarch/kvm/vcpu.c                          |  34 +++-
->>   arch/loongarch/kvm/vm.c                            |   3 +
->>   .../selftests/kvm/loongarch/pv_tlb_flush_test.c    | 194 +++++++++++++++++++++
->>   11 files changed, 362 insertions(+), 7 deletions(-)
->>
->> ---
->> Changes in v4:
->> - Drop the "Preserve auto-enabled PV features on userspace override"
->>    patch: forcing auto-enabled features back on is migration-unsafe, and
->>    for PV TLB flush (which cannot degrade gracefully) a missed flush
->>    would corrupt the guest.  Enablement now follows the usual KVM model
->>    -- the kernel advertises KVM_LOONGARCH_VM_FEAT_PV_TLB_FLUSH and
->>    userspace (QEMU) explicitly sets KVM_FEATURE_PV_TLB_FLUSH after
->>    probing it; a companion QEMU patch is posted alongside, and the
->>    feature can be kept off for an older destination
->>    (-cpu kvm-pv-tlb-flush=off).
->>
->> Changes in v3:
->> - Host side: replace amswap_db.w with amand_db.w to atomically read
->>    and clear only the preempted byte, preserving the pad bytes for
->>    future UAPI use.  Issue a normal load (unsafe_get_user) before the
->>    atomic amand_db.w to avoid operating on stale cache data.
->> - Host side: move the pv_auto_features OR operation before the
->>    compatibility check in kvm_loongarch_cpucfg_set_attr() so that
->>    userspace does not need updating for pure kernel-internal PV
->>    feature additions.
->> - Selftest: add input validation, error checking on pthread_create,
->>    and cleanup handling on failure.
->>
->> Changes in v2:
->> - Host side: replace non-atomic unsafe_get_user + unsafe_put_user with
->>    atomic amswap_db.w inline assembly. This fixes two issues:
->>    1) unsafe_put_user failure could skip the TLB flush entirely
->>    2) non-atomic read+write race with guest-side try_cmpxchg could
->>       cause FLUSH_TLB requests to be lost
->> - Guest side: consolidate two separate READ_ONCE calls into a single
->>    READ_ONCE to eliminate a TOCTOU race where the host could clear
->>    preempted between the two reads. Also switch from byte-sized
->>    try_cmpxchg to 32-bit try_cmpxchg on the aligned word containing
->>    preempted.
+>> I think this and above renaming don't make sense, because
+>> kvm_gmem_get_pfn() can be invoked for shared memory for non-Coco VMs
+>> when KVM_MEMSLOT_GMEM_ONLY is set.
 >>
 > 
+> Makes sense.
+> 
+>> Maybe this patch can be moved to gmem in-place series and after [1]?
+>>
+>> [1]
+>> https://lore.kernel.org/all/3b64e897-93a8-4f9c-88a9-f416ff44b09d@intel.com/
+>>
+> 
+> How about doing everything else in this patch in this patch, other than
+> this:
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 173a7ed008d17..9df6927dd8f55 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -66,8 +66,8 @@ static pgoff_t kvm_gmem_get_index(struct
+> kvm_memory_slot *slot, gfn_t gfn)
+>    * On successful return the guest sees a zero page so as to avoid
+>    * leaking host data and the up-to-date flag is set.
+>    */
+> -static int kvm_gmem_make_private(struct kvm *kvm, struct kvm_memory_slot *slot,
+> -				 gfn_t gfn, struct folio *folio)
+> +static int kvm_gmem_prepare_folio(struct kvm *kvm, struct
+> kvm_memory_slot *slot,
+> +				  gfn_t gfn, struct folio *folio)
+>   {
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>   	unsigned long nr_pages = folio_nr_pages(folio);
+> @@ -798,7 +798,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct
+> kvm_memory_slot *slot,
+>   		folio_mark_uptodate(folio);
+>   	}
+> 
+> -	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+> +	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> 
+>   	folio_unlock(folio);
+> 
+> I'll move just this renaming to [1] like you suggested.
+> 
+> I think it's okay to continue to always call prepare_folio(), and within
+> the prepare_folio() function, only do conversion when the CONVERT CONFIG
+> is defined.
+
+I don't think so.
+
+This patch not only renames kvm_arch_gmem_prepare() to 
+kvm_arch_gmem_convert(), but also adds one more parameter
+
+   'bool to_private'
+
+and hardcodes the new parameter to true. This mean the arch callback 
+will convert the folio to private unconditionally in kvm_prepare_folio() 
+when CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT is enabled.
+
+Note the CONFIG is not a per-VM thing but a build time thing. The 
+unconditionally-converting-to-private semantic can also be applied to 
+gmem-only memslot for non-Coco VMs whenever the 
+HAVE_KVM_ARCH_GMEM_CONVERT is enabled when building the kernel.
+
+Though the code won't do anything for gmem-only memslot for non-Coco 
+VMs, the literal semantic of the function and parameter is wrong.
 
