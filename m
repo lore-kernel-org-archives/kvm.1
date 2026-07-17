@@ -1,122 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B5A3B9DAB
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 21:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AC03AC0DE
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 23:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784325332; cv=none; b=CyEjZ3tk7wpDKKrDzO+hCn5WVOXkqUuTerdl445BAfcT903+pyvFiRfOfyUVkqxscdrKf003jxQMOU/BgP70lFzAa4g/6Lc45e2XDeZKNvmX73ROzuOzL4JrlcTXk+EP0tXQkebndW27d84E6y0TB+i1J+6/9qqUlr4xkhZ9QXM=
+	t=1784329554; cv=none; b=RBwCxYGKIAPVQBEs9ZxgY9CA3sFVH8T+ZFtyKj98SpHuaby1RDAwbg9Nasbvsrbd0wPc79vGd0uDJ9jdJAHNKePrCv2ZfE9PwqSofVcKsI02zUv9RB76zuAUvM0DJ3ATwhFlKymLsYVXnwFbg5moKCCSItEfBT5971Na4nkVS+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784325332; c=relaxed/simple;
-	bh=0ldCdxEnkZoD7gS/g+cWx5VH49GnBCV4ffxYDKc37aE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=m2HAc1u3Jvqn2MlaNo93G1zrYrg/PuJ0rYXdpMlb1GKgXuQyqgnahlcf7AmqyH9H1oVUykoFXQAVPJWxJj3dbKnq8gchGfuI4DkDHqxd41Kcq6H0j19awQoy76gX81SR1bdDOp5JTCxSFmpvWGiA1sRbPZKigt5oE7GG4YAZX6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOQkcHDM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784329554; c=relaxed/simple;
+	bh=YFo3zkbVTjs0YmJ2DjKSL0yUhxfM+VLs8APaYv2776A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hRlU+bEY5kMKXciWqrw9UVSrWv8LvmwPhXr88XF07TeZwUdlSE6HC3Q5QuA5IwYoQIlqAfcIyWTtp1NFWsJP9OnmcANOP0SVj7GVVCAgRb2tjS26XzY/wnVUqKvmFHRQjsfPAYwpH9e5QNH0a465B6PPF97xUkVoN4zEN3PQZgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nFdm6KmQ; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOQkcHDM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C261F000E9;
-	Fri, 17 Jul 2026 21:55:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784325320;
-	bh=PbvhkeEZw6vkaQsnvLlFzI3K5X+68z3Ffru/nmqfppk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UOQkcHDMCMdEKZ/OYMu1643T2GsIz/XKyJQAGmj9y0xYhVRjN73R7J4XyW5+GWp+x
-	 om6hseK6t6tmEkuJ+lfAaaFgZl6pCIy6tL5Nfmf/NPBKrUu+N2jBo9vo9Rm//8d1c6
-	 DEErg/JF5NDK8clEfIXY2TeEMQJ5hgpXpueyO4LwEafCs7Y0HhVDkLnDwB74Hvqoa/
-	 R7NXKBcRpNqQePa54bEyF/nlyguC0j0XQY8BQPlpjsQ4vgECCeV8kus5th0bu0k7FD
-	 xtwe6pHqHbMfv1kMUIYUlUtCHfAXO0pxRuiiFNMJF46Awg9L5YKaoZ5byx8SXMhF/5
-	 hbUUaOEEX5jbQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer
- dynamically
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Peter Fang" <peter.fang@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260717214349.4075994-3-peter.fang@intel.com>
-References: <20260717214349.4075994-1-peter.fang@intel.com>
- <20260717214349.4075994-3-peter.fang@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 21:55:19 +0000
-Message-Id: <20260717215520.76C261F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nFdm6KmQ"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8423f1fe39eso9199509b3a.1
+        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:05:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784329552; x=1784934352; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LImVjT29mh2j7uDBMLgCCOMxIGI8tmVyPAD/C/xGkiE=;
+        b=nFdm6KmQcqt5FgRuSp7bOkm3K173HKVyLkhPGDCRenLY7hh597eLzmBlehp586MZoP
+         egyhlfe2EDu4mZpsbv3hwF+62ti5CFvsGtDWRfiFmh94/vYs65pZFW+c8bvDeLYIEqBc
+         eS8ahh2OiPKt8uvlkMXGy/vsy6tRILtF1I2BlJx+1iMLNF6ONeEqSIT4ZR+me6NSiL/D
+         8KKvI4uR/LwRACxDH8bt80p6gHtPetcpFxIG6LcMyCn/yhFE4wYjGJwZ+ttKpE7haNHt
+         uST86gmfLNFi1o8iXwE6eBKjqMUfK8Jx8lB43NwP5g4RbxZDj+Ih7n/X2ZABew/3XNTU
+         Wv3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784329552; x=1784934352;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LImVjT29mh2j7uDBMLgCCOMxIGI8tmVyPAD/C/xGkiE=;
+        b=iMR5gM4lY9vniQNb+uokkOvnKMYQemyHEx5685biiCK6fR0OKVbIv2eThYW/17Dn8+
+         XmQttR/cgtn6G/vQgFPyGZEDD1BTWlQi+PbT4f3HU4xYotcyuN3E9zj3y2t2L/cg/V3x
+         sSepOJupYVtHoiWorBIpTw417C66UkgeN4McedkfWQj/n/XjiYTOQNss7oQy94X7hhIq
+         NAeQUHcg/q3s2jv3Z4hJUhL1Q+YzTL2n/lonsNDuJhTry88IHfCCh2fu8XKhb0qH6l/8
+         frMcnmNaOKoV6k2qeqjQYTVDHOwO1vxb3CjWF0aH5XXHYDUO2SAGBxEAbpsjNYQvNitS
+         nMzQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrgmQmprQIHDnKdbBWbxbCAzVJFk/B+e5yAXuNi5VwR3fpBE81TunalYL5XDO8Tj1kMQxo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8yIc1tfKJZhqjVxVcgzuxnq70ebanUjbdLiZ+p6dbwN7czf8X
+	L0CW3Uwd3mnYL5NPNSl29ZuptsMi7q3Iu7YAnQNm00CFYfTKyDLPv0kWsrggjgUw9S+gBHRGz+F
+	scObflmAozte69w==
+X-Received: from pgmk20.prod.google.com ([2002:a63:5a54:0:b0:c8b:19f4:6228])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:3e13:b0:845:4d71:8d15 with SMTP id d2e1a72fcca58-84c294d4123mr4971069b3a.37.1784329551821;
+ Fri, 17 Jul 2026 16:05:51 -0700 (PDT)
+Date: Fri, 17 Jul 2026 16:05:39 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260717230542.3555587-1-jmattson@google.com>
+Subject: [PATCH v2 0/3] KVM: x86/SVM: Fixes for AMD ERAPS virtualization
+From: Jim Mattson <jmattson@google.com>
+To: jmattson@google.com
+Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, venkateshs@google.com, yosry@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+This series fixes three issues in KVM's virtualization of Enhanced Return
+Address Predictor Security (ERAPS):
 
-Pre-existing issues:
-- [High] Premature exposure of the misc device allows a Use-After-Free (UAF=
-) on the module initialization error path if `alloc_quote_buf()` fails.
---
+Patch 1 adds ALLOW_LARGER_RAP configuration to svm_vcpu_after_set_cpuid()
+so that the BSP will be properly configured. The ALLOW_LARGER_RAP
+configuration in init_vmcb() is retained to restore the bit after the VMCB
+is cleared on the VCPU triple fault path.
 
---- Patch [2]: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynami=
-cally ---
-commit e37e54ca6bcf9f24fca7285847baa3251ff5dfba
-Author: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.=
-com>
+Patch 2 moves ERAPS dirty tracking into svm_flush_tlb_asid(). AMD ERAPS
+architecturally requires clearing the Return Address Predictor (RAP/RSB) on
+all implicit TLB invalidations. Centralizing dirty tracking in
+svm_flush_tlb_asid() ensures that local/current ASID flushes
+(e.g. same-value CR3 reloads under shadow paging, CR4.PAE/SMEP toggles,
+single-context INVPCID) correctly mark ERAPS dirty and clear the RAP on the
+next VMRUN.
 
-virt: tdx-guest: Allocate Quote buffer dynamically
+Patch 3 adds a KVM_REQ_TLB_FLUSH_GUEST request to kvm_mtrr_set_msr() when
+MTRR MSRs are written via WRMSR. Per AMD APM and Intel SDM, MTRR writes are
+implicit TLB invalidations. Requesting a guest TLB flush restores x86
+architectural compliance and ensures ERAPS RAP clearing on MTRR writes.
 
-This modifies the TDX attestation driver to dynamically allocate the Quote
-buffer based on the size reported by the TDX module. It uses alloc_pages_ex=
-act()
-to allocate up to a 4MB contiguous buffer and fails quietly if the allocati=
-on
-cannot be satisfied.
+v1 -> v2:
 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/=
-tdx-guest/tdx-guest.c
-> index d0303e31e8161..ce2c2ef746762 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+* Restored the ALLOW_LARGER_RAP configuration in init_vmcb() [Sashiko]
 
-[ ... ]
+v1: https://lore.kernel.org/kvm/20260716232524.2092085-1-jmattson@google.com/
 
-> @@ -417,7 +442,7 @@ static int __init tdx_guest_init(void)
->  	if (ret)
->  		goto deinit_mr;
-> =20
-> -	quote_data =3D alloc_quote_buf();
-> +	quote_data =3D alloc_quote_buf(&quote_data_len);
+Jim Mattson (3):
+  KVM: SVM: Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid()
+  KVM: SVM: Dirty ERAPS register on all ASID TLB flushes
+  KVM: x86: Flush guest TLB on MTRR MSR writes
 
-[Severity: High]
-This is a pre-existing issue, but this patch makes it significantly more
-likely to trigger by introducing a large contiguous memory allocation (up to
-4MB) that can easily fail on fragmented systems.
+ arch/x86/kvm/mtrr.c    |  1 +
+ arch/x86/kvm/svm/svm.c | 16 ++++++++--------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-Can this lead to a Use-After-Free on the initialization error path?
 
-If misc_register(&tdx_misc_dev) (called just before this hunk) succeeds,=20
-the /dev/tdx_guest device is immediately exposed to userspace. A userspace=
-=20
-process can open it and call ioctl(TDX_CMD_GET_REPORT0), entering
-tdx_do_report() which uses tdx_report_buf.
+base-commit: 58717b2a1365d06c8c64b72aa948541b53fe31eb
+-- 
+2.55.0.229.g6434b31f56-goog
 
-If alloc_quote_buf() then fails, the error path calls misc_deregister() and=
-=20
-tdx_mr_deinit().=20
-   =20
-tdx_mr_deinit() executes:
-
-    kfree(tdx_report_buf);
-   =20
-This freeing happens without acquiring mr_lock, meaning it can race with th=
-e=20
-ongoing ioctl. Could the concurrent ioctl in tdx_do_report() then access th=
-e=20
-freed tdx_report_buf?
-
-Should misc_register() be moved to the end of tdx_guest_init() after all
-resource allocations succeed?
-
->  	if (!quote_data) {
->  		pr_err("Failed to allocate Quote buffer\n");
->  		ret =3D -ENOMEM;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717214349.4075=
-994-1-peter.fang@intel.com?part=3D2
