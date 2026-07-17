@@ -1,236 +1,162 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5742CAF4
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784305861; cv=pass; b=fQefpO2juBnGrlOAV6qxKxWzRBFQygNMKAr48kER8IQvLeKMZyK9T70+GFmbLk0tLSSrDdnWqQwe4ZuJniB+9BkmgmnJylAPethZ9J1YqlDxNzAQ0rVbpY00yhU2MXXuEGy45GHJuel4u7OMyWHbJBQvRS1z44/mR5su0je4MVU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784305861; c=relaxed/simple;
-	bh=x/TpikJydgPAR12gjRCW5tgQd0rdAPkfC74w1d+46DU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SkUpqJgRxfT1ClM/qpLYUTUe7RuRtPnXNpA7E2MlxePW/YyumnlX34+UbviWTwqxYEA4n4R7GDjogKrxGldx/6I+VIQYImriCW2YW3w3Hrq9aOKOJlo0iWaIZpLv3t1H5fdYvJfB6QIjsKATZVI6MNfxz1D0Mih4G2LIvKnQzqs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iQ5c9IGv; arc=pass smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE0733D6ED
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784305914; cv=none; b=oJ5dGo7JwD5/VybyX17Lr8QwYQW2FghObcVnZLvn2uBLGgN1ypI4Q455Nk6Fv2N90llcefBNEUat2xv7J70xwr62yfgdGpiCUfzeij9Xl6DhX43hKgxAXND9ARLz6WM/OmWKWHgmruqrZSe1EJb0tPiQ4e+Or8CcLnrqktbRwIE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784305914; c=relaxed/simple;
+	bh=CBfSqK2AvgdhR+Bzp0CO34iyovUNpliOo+OgVtl30zk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ut1vYzewij2bZVEJs+0mDWlotfDEKmgMU36C/ht7BwWUb1+ovawfKYZ0Hny697T2oB/M/zrnO8JK1n7RimEtqpa7tsSmqYt4SnZnPFlpTOsIi/BoZXbXQOwOZm5ekYjB2LqmNHDS/cHvGScsxCgf3jKLeTva2vPA4n30mACGEDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bsn0bczL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pmsu/1kO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iQ5c9IGv"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ceb096e675so75618625ad.0
-        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 09:30:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784305855; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eaGzrdkOgy663kMXhFqJVgjATqFBBtlqid7+bhcdECgRx+vgb48CuBgH6cb2XE4hLz
-         Mur4vsqfIhQqDq0FcnQpfI09FKCBq9PTNsHVt+Krn9YWbI926B3++9ibZ66jbvKGG25T
-         uWV/9/qA5OtAfvP5WR2JGjSkfZqmuJcCbua1tVGocyjG9aPl8+sfuVywPIq1QruIkbgN
-         VRS7xxbkhJM6wIdI5hQHhN5g31vdWljE7pezYl/XnyZ3qkH/S747Kk7DP5oPcBLiFzvO
-         dOCa8Rq1uizWc0jywsR1ZtKtTMevqBwPqq3ofwbk8TxoV84WiS/9C8dYIMnkwVbpXWFq
-         bzDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mEFacLIneOp/QmtLUJi4Z80V3TBrQh57oZzZOS5MMp4=;
-        fh=ybSdqbtSzk7gLNCTKqwY2B8q0zMmc7xJsPCk2zrTD8k=;
-        b=DVdmY6ejiifj+D9yt2UO9t7mK7+Y0B/28FBF2zHdrDZz9PZ8sbHUzjSQU27eB3RX2n
-         OPrtyoQU+UCCVAepCKcbEW8EeYnf/ThJip6f43TWx879RYg+U4cD0lN02nS5Qn60HjzD
-         biT7wysEVlhR3Ut2Vq2OA0G1udECNNOEGtsdmC3uQ1v30OJqihWrZQHtisSN5lmTyh4d
-         a6duqTbrxldVVQG8a7k9Q9EbKb2zNeW85eDhdOxf5z6aGkUHuHaQjIrumLCX841ZdV8D
-         dJML2pIBcCzcKe2+Dc3cFWdMEnyImw76+Is+Z5QYA5PO6zOxnnFkFaDGQwnj1kNW4Yty
-         UGBw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bsn0bczL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pmsu/1kO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784305906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+	b=Bsn0bczLdgO6ODU5YGth9ShbPJ3wdpdgDnC1jBL7O3u0AQtABAu140HnkQkgKOUUBfpdqf
+	EXFDSvXEcYaXi08BbTS9mF3qo6YTRu9CPpnQvin+0HSc8TM0Qw/d9ySobltthCAgrMmqVx
+	aF/Yiec2y5zrkD4bebIk9zTlYL1DP6Y=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-473-VrTNuIcaPQy73cI2JpA53g-1; Fri, 17 Jul 2026 12:31:44 -0400
+X-MC-Unique: VrTNuIcaPQy73cI2JpA53g-1
+X-Mimecast-MFC-AGG-ID: VrTNuIcaPQy73cI2JpA53g_1784305904
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47162f83c75so1059595f8f.1
+        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 09:31:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784305855; x=1784910655; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1784305903; x=1784910703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=mEFacLIneOp/QmtLUJi4Z80V3TBrQh57oZzZOS5MMp4=;
-        b=iQ5c9IGvFLkz0xaRw5nAwEGKUVzfx1qtxWW1wL4ki/D31ldKaTVYfS/REUdnOClFAp
-         bFSGlPRnARwsbo7ySwsFZkdP/l3xCwxILPqKik+Hs1JG5NhxTr7mYRqRJelDhBdSYxzz
-         H3gNmymPfHecpyeYAuGmTaDJN1NtqTxPJ1HIFFAR6KHCW5aMS8aC5Ro67pnFbiQEkafl
-         h55M6+/6V38K0W13XSqSlBi5118CJiV/Y1dj45sGAUjiqU2MkroSUulLnubCyO2cXmhY
-         ipNnwM4ovPP1xIwxpyODFIbd9Bpcbe2qxJM6wpgXGFzkeICs5Yu8RUQrbnyaNnNtJFP3
-         chHQ==
+        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+        b=pmsu/1kO3IEzA0DlV0HiXQ8K2bWbTiZGG/mO30bjNoIOvT6VJ+3+OJQGrwoECz/TPm
+         R9N/2xlwrePe/ltmpQxigppFTDoz29ArGPTWKusY0ZElIpv2A7toofijes4u9FnTGlit
+         kBNzgIcZdKJGFEbmRpelZVvrO0RVSewn+J8g4riTCBeWi3jA4KoMPPVBXElTrzZK2ft8
+         eIg3VkFV79CWYc4X6SjQV0CRtFWpTjvCV7JhS05AsopW0CU2ylr6+nNFcEH8XTtkCPSJ
+         JllRyuQcKxgfrmcDZnzLQSGH/RppFgitwC5jcIEgtlfGa2idBu7yg146zmyeydSsCUtp
+         qDqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784305855; x=1784910655;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784305903; x=1784910703;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mEFacLIneOp/QmtLUJi4Z80V3TBrQh57oZzZOS5MMp4=;
-        b=gwuIKapp3HucBN63HfPBIoYFLIW7NCp5E75kxh4OW0EX5ah6HtIMGnM/WW2egRk2oC
-         0vbykrDI6XNdSvov2nP2UV72ux8jSv151anwaELaypREV6g4ZHYKFXvH6Bf6Cw+J8/kW
-         ekO3lAeVqhR0FyE5/Y2vQQUoBBWRX6ZSUenggoayWW962KxwKQnA/9YYTb0H3Rp8dOc6
-         qZfhcBZ8970FpVso3mFG8BK1iUdk3cM9uDL0a7sYotmnKPCqUuAPnYgam851LhN4jCau
-         OgvfzkXGfuhQa85aJUKq33aJsuP5UtQ47ROIn55mkA1JKYXfZjZlP5NJy149JVYiNK3Z
-         HzPA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp4CUquF/vLSIr5e98rX5wy6ZNcbna1uyW4gNXkvRmefchH7r1BZgAUv6jB9dppMmYGMzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEwjL/Es54aXxsXNaf1Vqwa0NkjA34hInw/thtw9JLXJ0DwLe8
-	QQa2X8AZSWvTlVZsYJegHHmSIGwASGCtRaFvWJCHtKZbck4ygOkMRTFGvorqj5dtDEcR7akwXTi
-	NK6S7cqGnSyn2ZQZ4qjsdV1nmXPlYnVDogpCdQUpP
-X-Gm-Gg: AfdE7clZWa6Ink095qfvukAIgzxgyBDGySKb4wYkktfxs7qT5XQ9NqFs1SseGipOVg1
-	Hee/IwZ3yiluzKyqbwYCzOzriYe35Ur3gBdWDh759Dh7EBlrIKjt2/Ej5Wf8JAfGbWzwqCZpczG
-	V89VigtJs0rAKY06AkO4vt5Jz1SEAuIIdJpA/tGTvLd6ZTIuXSd5xY0IZOq1QA5yVTEWDoVlN2n
-	MvERXDauXrkt9DYgNfXnMnwAx0/89UyKCKRzmzVmN33w00OEBZewTQykzU95w==
-X-Received: by 2002:a17:903:19cc:b0:2cc:db71:4db5 with SMTP id
- d9443c01a7336-2cf349d3ee3mr39097735ad.37.1784305853798; Fri, 17 Jul 2026
- 09:30:53 -0700 (PDT)
+        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
+        b=mWCaoT6BxD4DRQuulYcao0+X18lp/wfOdjlJmqJXQeF3o7g5f+NxZ0Txn6+z4MUA9D
+         K/vCtYocAuckRA8MX65qD2OIbBm7xjRhURttd8DlfvICgsPfbI4os5l4Ql6h61vEw5hR
+         rCmvKlNienVyqQ5t/KDg8+39HkgN5YXNfY07IPWpymU29BHgsWWFBjDFB0voicDDlKdr
+         r+Ldnr+PQYOLrcmMpF36BpV563i4tc2H3WkXR4wXJfw59558vxIHVMMtLNm5zY/qAT2u
+         2cA6Otues+ggbZyPABe+B0IBYkpa8vVKXJq+/hWXptypQeK8D+y4uw4pwxdi9IsjU30l
+         8/eQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoT1Q9/PhCdjTaCj+ufd9C+fiTTrKp8G+7izxs/9ndhhBHmdv7qA/Q8yD6XRuc6GVpIMVg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCAyFO8FeFRbjQL+glSLNfl2yLr4EpeiiId6MBUP21d1/S1Q65
+	GQZao8XLDeKgiI/fs3KT2sbClHKBEV8Z/e57ztxGew0nqyza9yxD7MdNjjpH6I6UBP9ECZ6kRq1
+	/vWGFMrl08gwSWca3reC5QzhLAx/P2c1LXCD+usa8qLo5o7hJfxIw8A==
+X-Gm-Gg: AfdE7cmnA9qamTqy9fZSyQUFaPiX8F/2h7gXYBq8gWIvtDxVDRMeasc1T3Pk41fX+2b
+	BG3yjnKSWnq1N4u1GTySoC/D6n2mYKWLAl9uR+SuO/+Dq8trY3mr952rwl8fchcJhYnm8ygtnBY
+	9BVMCEtnVhuaD1GdtG69KbXpFwWOOM5xwb90w7+fVB27a17gw4Gdx95oUXQaFlKt/E8AW+pa0N9
+	6uogfCNkLOto+y6t4UeOd5EwVKvMhyjeE83kaxAOOs94S7hZIzIvzxP707rgvxmr2VNMEvZNNi+
+	7UfGcuMDlXUEu2mXN/v8qNeHMv3T4cjt4K8ipr/Vp8SE04qh/DWbd+ah6Vr4UR6MgfKjuiJquC4
+	EQuNK8Plb8t147FZ89hq6oxOq
+X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407840f8f.22.1784305903418;
+        Fri, 17 Jul 2026 09:31:43 -0700 (PDT)
+X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407792f8f.22.1784305902878;
+        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-24-117.inter.net.il. [80.230.24.117])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63eeece9sm5310864f8f.37.2026.07.17.09.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
+Date: Fri, 17 Jul 2026 12:31:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: Jia Jia <physicalmtea@gmail.com>, jasowang@redhat.com,
+	Linfeng Sun <slf@hdu.edu.cn>, pbonzini@redhat.com,
+	stefanha@redhat.com, eperezma@redhat.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL count
+Message-ID: <20260717123129-mutt-send-email-mst@kernel.org>
+References: <20260717142205.103515-1-physicalmtea@gmail.com>
+ <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260715174737.15287-1-matt@ozlabs.org> <CALzav=fH7N+ionUnELqw5ZaGrPmgp_w6kxoCtoY8fMmZY_S4zw@mail.gmail.com>
- <65ba06e7-4c54-437d-9fbd-632c0468f66d@ozlabs.org> <allLypOmtbnPrgbw@google.com>
- <20260717094230.21829508@pumpkin>
-In-Reply-To: <20260717094230.21829508@pumpkin>
-From: David Matlack <dmatlack@google.com>
-Date: Fri, 17 Jul 2026 09:30:25 -0700
-X-Gm-Features: AUfX_mwhrL8yyMXeQp2wwPQntVuYsbostLm0_QgQevpUJ-QTbHpefGc5UhWYaLU
-Message-ID: <CALzav=fx2i1ONLjBTheHpdOQqQJJ05OP9b4-D3HkK6NumKi=pg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/9] vfio/pci: Add mmap() for DMABUFs
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>, 
-	Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
 
-On Fri, Jul 17, 2026 at 1:42=E2=80=AFAM David Laight
-<david.laight.linux@gmail.com> wrote:
->
-> On Thu, 16 Jul 2026 21:23:22 +0000
-> David Matlack <dmatlack@google.com> wrote:
->
-> > On 2026-07-16 03:51 PM, Matt Evans wrote:
-> > > Hi David,
-> > >
-> > > On 15/07/2026 19:12, David Matlack wrote:
-> > > > On Wed, Jul 15, 2026 at 10:47=E2=80=AFAM Matt Evans <matt@ozlabs.or=
-g> wrote:
-> > > >
-> > > >> This is based on v7.2-rc3.
-> > > >>
-> > > >> These commits are on GitHub for easier browsing, along with
-> > > >> "[RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test"=
-:
-> > > >>
-> > > >> https://github.com/metamev/linux/compare/v7.2-rc3...dev/mev/vfio-d=
-mabuf-mmap-v5
-> > > >
-> > > > It'd be great to have this test upstream. I'm happy to review it wh=
-en
-> > > > you're ready. Looks like it just needs to be redone to use the VFIO
-> > > > selftests library and kselftests harness. AI could probably do the
-> > > > conversion pretty quick :)
-> > >
-> > > For sure, I'd intended to catch up with you on best approach here. :)
-> > >
-> > > Aside from the organic structure of the test (the open-coded VFIO
-> > > device/group setup/init needs to go), the main issue is that it relie=
-s
-> > > on a hacked/out of tree QEMU "EDU++" device with a second larger BAR
-> > > (containing freely read-writable memory).  A subset of tests run with
-> > > the in-tree EDU device, but coverage is too low.
-> > >
-> > > The desirable properties are:
-> > >
-> > >  - Having a BAR that is pure memory (all locations present, writable
-> > > without disruptive side-effects) so that mapping aliases can be
-> > > constructed and detected.  This is good to test things like non-zero
-> > > vm_pgoffs and VA space presentation of physically-discontiguous DMABU=
-Fs.
-> > >
-> > >  - BAR >> hugepage size so we can eyeball huge mappings work (or bett=
-er,
-> > >  mechanically test for them).  At least 32MB would tick this box for =
-4K,
-> > > 16K page systems.
-> > >
-> > >  - Something QEMU supports*, so one can run the test in a VM/TCG syst=
-em.
-> > >
-> > > There were some real device models in QEMU that could be used this wa=
-y,
-> > > but needed a fair bit of setup;  I didn't want to rathole
-> > > vfio_dmabuf_mmap_test on including a ton of device-specific code for
-> > > some video card or similar.
-> > >
-> > > I'll dig more for a simple target that provides these properties --
-> > > obviously it would be better to point this test at an off-the-shelf
-> > > device (including silicon!).  And, proposing EDU extensions to the QE=
-MU
-> > > folks may be useful (there're uses for a better EDU in other contexts=
- too).
-> > >
-> > > Since this test uses MMIO for a specific [class of] function, my firs=
-t
-> > > thought is it should be another VFIO driver-type test sibling of
-> > > vfio_pci_driver_test.  For example, we could extend the driver-type
-> > > tests' backend struct vfio_pci_driver_ops for functions capable of
-> > > providing a Big Memory BAR, like QEMU EDU++.  EDU can also memcpy, so
-> > > could also support vfio_pci_driver_test.
-> > >
-> > > The spirit of the device backends hiding setup of a complex device is
-> > > handy, and it's plausible that several backends could provide this "b=
-ig
-> > > memory BAR" service.  What do you think, any concerns with extending
-> > > vfio_pci_driver_ops like that?
-> >
-> > I wouldn't recommend leveraging the driver framework unless absolutely
-> > necessary. It makes the test harder to run.
-> >
-> > The biggest issue I see with the proposed properties is being able to
-> > treat the BAR as memory. That obviously will depend on the device and
-> > may require device-specific setup. If we decide that treating the BAR a=
-s
-> > memory is truly required then using the driver framework is the way to
-> > go. But I'm hoping we can avoid that requirement.
->
-> Could you run a test where only a known part of the BAR can be treated
-> as memory?
-> A large BAR is likely to have some areas that can be accessed as memory.
+On Fri, Jul 17, 2026 at 10:13:36AM -0500, Mike Christie wrote:
+> cc'ing Linfeng.
+> 
+> Linfeng also reported this bug and provided a patch that has your check and
+> an extra check to avoid calling into the function in the first place. It's
+> been stuck in some other list.
+> 
+> I think it might be best for Linfeng to re-submit their patch now so it can
+> get merged. For that patch, I think there was one outstanding question left
+> where Michael had asked if the issue was found with AI so the proper tag
+> could be added. I don't think that question was responded to.
 
-Yeah. But then the test can only run against devices the test knows
-about. So we have to update the test every time someone needs to use a
-new device.
+Right, was waiting for that.
 
-We could support a command line option to specify the BAR subregion.
-But then the user has to figure out what to pass there.
+> 
+> On 7/17/26 9:22 AM, Jia Jia wrote:
+> > The protection SGL path passes the result of vhost_scsi_calc_sgls()
+> > directly to sg_alloc_table_chained(). The helper returns a negative
+> > errno when the iterator is invalid or the request exceeds the segment
+> > limit. The negative errno is then treated as a very large unsigned count
+> > and sends the request into the SGL allocation path with an invalid size.
+> > 
+> > Repeated malformed T10-PI submissions from a host-side application caused
+> > memory usage to rise sharply. MemAvailable fell to about 200 MB, and PSI
+> > full avg10 reached about 1.46. The OOM killer terminated several userspace
+> > processes before the endpoint cleanup completed. The kernel log included:
+> > 
+> >      [17036.451028] Out of memory: Killed process 2345 (systemd)
+> >      [17036.493325] Out of memory: Killed process 2349 (sd-pam)
+> >      [17078.265127] Out of memory: Killed process 1793 (networkd-dispat)
+> > 
+> > Return the calculation error before setting up the protection SGL. This
+> > keeps the protection path consistent with the data SGL path and prevents
+> > the invalid count from entering the allocation path.
+> > 
+> > Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > ---
+> >   drivers/vhost/scsi.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> > index 9a1253b9d..8486652fd 100644
+> > --- a/drivers/vhost/scsi.c
+> > +++ b/drivers/vhost/scsi.c
+> > @@ -972,6 +972,9 @@ vhost_scsi_mapal(struct vhost_scsi *vs, struct vhost_scsi_cmd *cmd,
+> >   	if (prot_bytes) {
+> >   		sgl_count = vhost_scsi_calc_sgls(prot_iter, prot_bytes,
+> >   						 VHOST_SCSI_PREALLOC_PROT_SGLS);
+> > +		if (sgl_count < 0)
+> > +			return sgl_count;
+> > +
+> >   		cmd->prot_table.sgl = cmd->prot_sgl;
+> >   		ret = sg_alloc_table_chained(&cmd->prot_table, sgl_count,
+> >   					     cmd->prot_table.sgl,
+> > -- 
+> > 2.43.0
+> > 
 
-So if we can find a way to get equivalent test coverage with "any
-device with a large enough BAR", that would be ideal. Then it's just
-matter of the user picking a device, and it's easy enough to look at
-BAR sizes via lspci.
-
-> >
-> > Instead, I think you can get pretty far by inspecting /proc/pid/pagemap
-> > to determine if the mmap() set things up correctly, without actually
-> > accessing the BAR. You can use /proc/pid/pagemap to look up the PFN and
-> > PAGEMAP_SCAN to detect huge pages.
-> >
-> > With that requirement gone, then all you really need is a device with a
-> > large enough BAR. And even that it not a hard requirement. I'm sure
-> > there are plenty of test cases that could work with smaller BARs. The
-> > few tests that want to exercise huge mappings can inspect the device BA=
-R
-> > sizes first, and if they're all too small, SKIP() the test.
-> >
-> > If you structure the test this way, then it's easy for the test to be
-> > used. It can be run against any device for the basic functional
-> > coverage, and can be run against a device with a larger BAR for full
-> > coverage of huge mappings.
-> >
-> > Does QEMU emulate any devices that have 32MB or larger BARs?
-> >
->
