@@ -1,69 +1,112 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80B4293B5F;
-	Fri, 17 Jul 2026 01:30:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887E26FC5;
+	Fri, 17 Jul 2026 02:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784251804; cv=none; b=b5H3syqt+5c9ny7QEp+mmhTtwkwhgM3kv93YAfniCdcmhMrEy7wP+cLoHVtHgjutyZO2TJgEfiTKXFqJAzXQPEtuyM/r/j0erw3ORLdi/5t96qnvWNXxjZ7LINeGO6FjOxALV4GJM2ZY7cVbC3rojo418h2BzA5okYVn3GeUPco=
+	t=1784254410; cv=none; b=phwZsF+no6onompcklkgs7RJtc0rzhO6/AEsIYU3zN+n1gUv2ZIvgmhP1i00iBr11cUTMAFCYO6iptdlNIqxjeF11bVm37sAHtc4cZrNKNY/0E3ymR7t9MLreOqLiZVTGo96L04MlUa10T0alechDKRS+qiw9XY0RiEprWZvt7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784251804; c=relaxed/simple;
-	bh=Cv72BXt2ykCobSfdsv3Sfb3iGb/JNGGKvOHIHvHuBzY=;
+	s=arc-20240116; t=1784254410; c=relaxed/simple;
+	bh=T5Gh/RzLI5ItsHpkIRSaFUE259p+06RVDMAR1wSK1mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+CfqRn5z7jbR2AgMJv7JRhKNOv+2cAWvaFw9Rdi8i6aHDjQhqE8PfsvJd96v1CRIe+0b1//djRZKWFGGCG/ZdINmU3nSUxw8HUBIH9+521/bA4DvJlZnIVhuojNyiUKkg39wKLsIwUFCfkUIADPyl5wdS2xxJfUPJkQFrsEto4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=eqA6aE98; arc=none smtp.client-ip=117.135.210.3
+	 MIME-Version; b=pxe3tUK1aE7ozyjTHpCIVWJLsMgev65uMu/gL3L+NaiaEY5vznkO2svetbDtFpXZX+JCYxvOk9ijXuLszUu/VJNtjFUlJBKS2VHs1Sh0QTxYL3wbi0zwB5cWe7nH6IlskKveozS9/PlBrXsWNXGvle37IERXWi+SxkGi5vNjiy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Yt4CLx84; arc=none smtp.client-ip=117.135.210.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="eqA6aE98"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Yt4CLx84"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
-	Content-Type; bh=Cv72BXt2ykCobSfdsv3Sfb3iGb/JNGGKvOHIHvHuBzY=;
-	b=eqA6aE98Z9wQyg9X6/+J+ypdbVMmFLvv5ru7hfHAiogeFK4jOXyIUMvV1qqCPm
-	39wJytbef0Ih3o+gBKZDn6cPn5ufh5RrDZVe0C89rDW2vbfi2VPvVZdFZBJG4/oL
-	TGrPtZ0TIYL2aH/Y2jXQKhfHr3zqQWJcx5EMbQ3vRkPBg=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=w/
+	VEqc6IOpy65exxrKAozFQawljjck8mYtmYSkA/CgM=; b=Yt4CLx84OX5aQ5v4+T
+	tfyn9xn26W2dv6VGwxU80xy4gN197ReNrBqAGwfpCbruMAq3nHdk39Z0mZNVFnEq
+	JJsluklREzOgvU0Find3qDPfAP5Inlv0FQYphrNzx97sgFPW9z5EdwkOJYJTq8Qg
+	oouzpSDnnO+kZ/AD9bIvrBuOY=
 Received: from xwm-TianYi510Pro-14IMB.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgDHovmIhVlqlvwKHA--.3822S2;
-	Fri, 17 Jul 2026 09:29:44 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDH8Wawj1lqVSFNGg--.62837S2;
+	Fri, 17 Jul 2026 10:13:05 +0800 (CST)
 From: Weimin Xiong <xiongwm2026@163.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
+To: eperezma@redhat.com
 Cc: virtualization@lists.linux.dev,
 	mst@redhat.com,
 	jasowangio@gmail.com,
 	netdev@vger.kernel.org,
 	kvm@vger.kernel.org,
-	xiongweimin <xiongweimin@kylinos.cn>
-Subject: Re: [PATCH] vhost: reject zero-size IOTLB INVALIDATE
-Date: Fri, 17 Jul 2026 09:29:45 +0800
-Message-ID: <20260717012945.313018-1-xiongwm2026@163.com>
+	xiongweimin@kylinos.cn
+Subject: 
+Date: Fri, 17 Jul 2026 10:13:05 +0800
+Message-ID: <20260717021305.327441-1-xiongwm2026@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJaqyWfW9n5o+ojrEjK-m+6cwH_TSxWckjkvEXowZA8r=vDmdQ@mail.gmail.com>
-References: <CAJaqyWfW9n5o+ojrEjK-m+6cwH_TSxWckjkvEXowZA8r=vDmdQ@mail.gmail.com>
+In-Reply-To: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
+References: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgDHovmIhVlqlvwKHA--.3822S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxHGQDUUUU
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC7wh0BGpZhYhMKwAA3O
+X-CM-TRANSID:PCgvCgDH8Wawj1lqVSFNGg--.62837S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr1Uury3Ww15WF1rGr17Jrb_yoW8Wryxpr
+	Z5ury2kr97WryrtanFk3y5A3Z8Z392yrWUWFyFqw45ZF18tryv9rZ8Ca4j9F97JFyYkF12
+	va1xKw1DZasrWFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b1q2NUUUUU=
+X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC7xEBkGpZj7FufwAA3z
 
 From: xiongweimin <xiongweimin@kylinos.cn>
 
 Hi Eugenio,
 
-Thank you for your review and suggestion!
+Thanks for your review!
 
-I've updated the patch to v2, moving the check to vhost_chr_write_iter
-as you suggested. The existing check for VHOST_IOTLB_UPDATE is now extended
-to also cover VHOST_IOTLB_INVALIDATE.
+You are right. My original patch has an issue with the `break` statement,
+which skips the `v->in_batch = false` assignment when `set_map` fails.
+The correct approach is to simply capture the return value without
+breaking:
 
-Thanks for your Acked-by!
+```c
+case VHOST_IOTLB_BATCH_END:
+    if (v->in_batch && ops->set_map)
+        r = ops->set_map(vdpa, asid, iotlb);
+    v->in_batch = false;
+    break;
+```
 
-Best regards,
-Weimin Xiong
+This way:
+1. The return value of `set_map` is propagated to the caller
+2. `v->in_batch` is always reset, regardless of success or failure
+
+Updated patch attached below.
+
+---
+
+Subject: [PATCH] vhost-vdpa: propagate set_map error to caller
+
+The return value of ops->set_map() is currently ignored when handling
+VHOST_IOTLB_BATCH_END. If the backend fails to program the IOTLB,
+the VMM incorrectly believes the operation succeeded and may continue
+with stale or incorrect mappings.
+
+Propagate the error from ops->set_map() to the caller.
+
+Signed-off-by: xiongweimin <xiongweimin@kylinos.cn>
+---
+ drivers/vhost/vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index bb96b1aa5..b52d8d94e 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -1298,7 +1298,7 @@ static int vhost_vdpa_process_iotlb_msg(struct vhost_dev *dev, u32 asid,
+ 		break;
+ 	case VHOST_IOTLB_BATCH_END:
+ 		if (v->in_batch && ops->set_map)
+-			ops->set_map(vdpa, asid, iotlb);
++			r = ops->set_map(vdpa, asid, iotlb);
+ 		v->in_batch = false;
+ 		break;
+ 	default:
+--
+2.39.3
 
