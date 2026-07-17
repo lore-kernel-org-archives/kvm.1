@@ -1,112 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FB33845AC;
-	Fri, 17 Jul 2026 16:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE25133EB17
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784304724; cv=none; b=dFnhvSYuHLjCqKSYRon05941xShbBUnoR1zKYRivDgt3RtRdXP3uBXXTkEAU/jpByfUo/iKSlfwfi6S7irZCMpsrmKDdCTv9kkdcwrJDdvRCiDLLt7CMQr5/2Wv3jQ4DMsRImyws9MCENC5644guIKy0MUBdOC4miFa7oC7iX2A=
+	t=1784305220; cv=none; b=UJ8AknRVC51xhNrLTQ4wQqM918rbLTH8JDycXUomMtQkl1P76P0gRjcZMdePQOVscSuqOSesqTxsN7KFYaLA45yu4/cmvHt6Rtee7EbvcZ7PpNFIpaIXqTJw7wTYhVTa7hpkksRrOfD+QHe01uYKfvuW9SLHqtue2sT4Mi7ZoXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784304724; c=relaxed/simple;
-	bh=SEN/YeVMsxQtS7bmwpsfCTPZCAfGz7/VhnW49BhQgAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=IrHSjCqU62PxtHXtSZLuU6UAv7JT0mQqCfQlXc1p16X7CvFfRztFZuUfh07zPRQsMUIwtF84Zss6ol39Jx7z4qe4gDH8czm1omKxIuJlKFKgQTlCIB4IhFBheX8EDdwZPAxsef7s8fqIHf0a7/VdmcEbZOyCLDIxg3yhvOMZKSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKwmtxA6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784305220; c=relaxed/simple;
+	bh=XvPLC2O1lqhgPdjhRBgX3VePjbJ0w1QWfcgogcRU5CE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OBAMthwfXMfnVfZA0XHdxBIARksFMMgvOzvsHzX5jMlwUu3ClLpxSYA2pR6yu4Lte8l3maLl3T7teVYjFlM63MvNHgXkJbpGYlfZd066CNVM7AmkapG0xaJgYiXeJ76txFLtVjql7tZCTwN3+m34J9UnIhies4IGgah456+zWT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=SAeDyE/+; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKwmtxA6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294A91F000E9;
-	Fri, 17 Jul 2026 16:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784304722;
-	bh=UBD5yB8QIwgb8/LoWSnAjYgoqm58BFAYbzBEn94/G1g=;
-	h=Date:From:To:Cc:Subject;
-	b=BKwmtxA6ztStMVuuuKwFvbwirs9pW653fLedz1zHe9O5GMLyb7wR5nh42tHsp6ZyH
-	 kOvIejH73TOVCN+unPwa0o9/DbVzUDhrIzA+y0I/yaHlI6YOQI7YJY7MG8VwclxWFD
-	 R1DuTDnFsQ61RUGtoxZSBGV0isQ38xY150qv41CemchOYq91k78X75XHI+NTbI1siK
-	 7T6zl0PFMmydZCQPIORtFvryD9XIuD40Yj5vh4CoSF4kByv63WZxCw9yWuO6s8wQnY
-	 c3Y+VTm/GKSk+Boev/+djX70c+psFmrVrlZvEWtGYzopTu8o8XUIHhxsSxA4U7wQ43
-	 HOo5HgyV1hOBg==
-Date: Fri, 17 Jul 2026 17:11:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, KVM <kvm@vger.kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: linux-next: manual merge of the kvm tree with the tip tree
-Message-ID: <alpUTu5ttdBcjZCP@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SAeDyE/+"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4954df200ddso1927135e9.0
+        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 09:20:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1784305217; x=1784910017; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hJac4qKltuegfx9t2fMamL+c68Ol15fvhuIJm9Eo7Ao=;
+        b=SAeDyE/+5PwS+mOKagKGkOpb6k2+5J690Rh1mExzaehJ1eSleNwBIQ5aEXv9mwNdgd
+         Q6J+oI/fsnLfv2Q4LjvO2tyCA3diHjCGwhsMhtZHENJ1tQdhYtQYEUObTf1TYTlfPdRc
+         PJzy720YSlSJKug9Xk2XBuisgKPNdUPb4d8Yk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784305217; x=1784910017;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hJac4qKltuegfx9t2fMamL+c68Ol15fvhuIJm9Eo7Ao=;
+        b=l+uMIF7vAbU0SCu9m4B+JqiONNF9gAaTKPdvibY6T/cU+6pwes3jbC9hihk74g7jBD
+         xePcyn3Fee+X2S6vAz6emow4ZoIQhg5y27KwAqX1urwBXWxJXMlpkkxvecJXZX7OUrXF
+         g8LWJemZ2OVmxGnPk1spZXnLWI0FHk1GNGK36lQ58V1+Rndw8xFIxgwMaL+EKiLqUIMi
+         V1nIGmvpHbJXnSAs/DsX8CzjnzXyAHvTlP2KRwYC9vnuD45CWjzAkPGC8lGcDnFyBdj4
+         yMzNmX5LB20pvpQIF33fK3P8urYw+JmCGEciJV5GN/zFyJC8OrtpZELuBAN1wR+/yCD6
+         1u7w==
+X-Forwarded-Encrypted: i=1; AHgh+RoNqIsOD/Y6lEK7dLU1BHNC3g2ARGvKncHok0qBLiDNoL0L54Nf5Xbg2bFgeJpDNHYiqOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE550Hn9ZjPssrqXFVaR3lHYFXv7uhtH3kglpvM3mDbboO22Hx
+	krROC2cLZMa6AFcPMad8todPCh+HLOhXp/QhtGacrAQTZ1nWcLQZAAzWJMTjqTYMng==
+X-Gm-Gg: AfdE7clT0DRS5WftEOAb52Z6usNPocr4nWItAz4vPzWjrZxk6UUOlRM36OnxXjnzsvP
+	rvosMEel+9Dqv+SbPBoSQgrrS12/EXxY0PGpYrqr8HWDeRipsxYqEJlMmBFzIsxMiZViEO6vdm4
+	GIam75GlPcq+VucIVDQgoA3se1AhIcqC8O8l/vgn8GNooNnZNFyZda4MSEo93SKiGOPmPQwGWT/
+	5xVwnGFAry6pQtWd73EVO/UKncZ7dcdbxqwBl11j1sBoUNWbzYz6rAEhJuA9zG2MPPXZltSECcB
+	rh/ns3aygFKq8gjCfeTKDNeSmCzDjXO0ygvYsLzA1k48I3iPB4P/vd+5tUkzsvDAr2EQ7gp8yqn
+	DGLjtRC4SnHSCBFCu+3aNK7mMbQocTH6hMdhIBxXPK5kfKvkU/xq/73hyQvRbWniWFoPtX4y6CL
+	TcOri6T7+CAQnpEyJckYXlHQZqJdH9Nl/l1foc6siD/GWyGOE=
+X-Received: by 2002:a05:600c:1396:b0:493:b150:c607 with SMTP id 5b1f17b1804b1-4954a3f36a9mr38930265e9.12.1784305217170;
+        Fri, 17 Jul 2026 09:20:17 -0700 (PDT)
+Received: from google.com ([2a00:79e0:285b:8:8588:dee1:8c51:ece3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f67466e09sm2345117f8f.21.2026.07.17.09.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jul 2026 09:20:16 -0700 (PDT)
+Date: Fri, 17 Jul 2026 18:20:09 +0200
+From: Dmytro Maluka <dmaluka@chromium.org>
+To: "Huang, Kai" <kai.huang@intel.com>
+Cc: "seanjc@google.com" <seanjc@google.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"aashish@aashishsharma.net" <aashish@aashishsharma.net>,
+	"guang.zeng@intel.com" <guang.zeng@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"vineeth@bitbyteword.org" <vineeth@bitbyteword.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"jaszczyk@chromium.org" <jaszczyk@chromium.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"Dong, Chuanxiao" <chuanxiao.dong@intel.com>
+Subject: Re: [PATCH] KVM: VMX: Postpone IPIv setup after successful vCPU
+ creation
+Message-ID: <alpWONLi8h2T5WhZ@google.com>
+References: <20260716160801.3155582-1-dmaluka@chromium.org>
+ <792366b7d918faca3f40bccab56bab965e7e34f5.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yEMEG4PtvOkWsDVy"
-Content-Disposition: inline
-
-
---yEMEG4PtvOkWsDVy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <792366b7d918faca3f40bccab56bab965e7e34f5.camel@intel.com>
 
-Hi all,
+On Fri, Jul 17, 2026 at 12:59:38PM +0000, Huang, Kai wrote:
+> > 
+> > An easy fix would be to clear the pid_table entry in vmx_vcpu_free().
+> > However that would be still problematic, for the following reason:
+> > userspace may try to create a vCPU with the same vcpu_id as an existing
+> > one; vmx_vcpu_create() will succeed, and only after that
+> > kvm_vm_ioctl_create_vcpu() will check for the duplicate vcpu_id and
+> > fail with -EEXIST and then free the vCPU in the failure path. So in this
+> > failure path, vmx_vcpu_free() would clear the pid_table entry for that
+> > already existing good vCPU, i.e. effectively disable IPIv for that vCPU.
+> 
+> IMHO this seems a bit fragile?  If something similar to pid_table coming up in
+> the future, we could end up with a similar problem.
+> 
+> The "duplicated vcpu_id check" seems the ones that should happen as early as
+> possible.  Is it better to move the "duplicated vcpu_id check" earlier before
+> vmx_vcpu_create(), e.g., even before the kvm_arch_vcpu_precreate()?  In this
+> case we can do the pid_table cleanup in vmx_vcpu_free() I think.
 
-Today's linux-next merge of the kvm tree got a conflict in:
+Unfortunately it is not that simple. As I understand, the reason why the
+"duplicated vcpu_id check" is done later is that it needs to be done
+atomically together with inserting the vCPU into kvm->vcpu_array after
+it, i.e. both the check and the insertion need to be done with kvm->lock
+held (rather than releasing kvm->lock and taking it again between the
+two operations).
 
-  arch/x86/kvm/x86.c
+IOW, if we just move the "duplicated vcpu_id check" earlier (before the
+first unlock of kvm->lock), we have a race:
 
-between commits:
+1. vCPU A is being created but not installed in kvm->vcpu_array yet.
+2. vCPU B with the same vcpu_id is being created. It passes the
+   duplicated vcpu_id check, since the check doesn't find vCPU A in
+   kvm->vcpu_array.
+3. vCPU A is installed in kvm->vcpu_array, vCPU creation succeeds.
+4. vCPU B with the same vcpu_id is installed in kvm->vcpu_array, vCPU
+   creation succeeds.
 
-  3eaa50e1e255e ("x86/cpu: Hide and rename static_cpu_has()")
-  1620ddc0dcefc ("KVM/x86: Stop using 32-bit MSR interfaces")
+And we cannot just move the kvm->vcpu_array insertion earlier (before
+the first unlock of kvm->lock), at least because the vCPU is not even
+allocated at that point.
 
-=66rom the tip tree and commit:
-
-  7a26830801584 ("KVM: x86: Move the bulk of MSR specific code from x86.c t=
-o msrs.{c,h}")
-
-=66rom the kvm tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index c230b18d87e38..764cda8045a17 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -2579,9 +2579,9 @@ static void kvm_probe_feature_msr(u32 msr_index)
-=20
- static void kvm_probe_msr_to_save(u32 msr_index)
- {
--	u32 dummy[2];
-+	u64 dummy;
-=20
--	if (rdmsr_safe(msr_index, &dummy[0], &dummy[1]))
-+	if (rdmsrq_safe(msr_index, &dummy))
- 		return;
-=20
- 	/*
-
---yEMEG4PtvOkWsDVy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaVE0ACgkQJNaLcl1U
-h9AaDAf/Umw/i22hIiN+2r6CNNZMbdXh5JMfavq0YXwFZ1TtREWHTXgl6RE7IYyH
-pLr6fuPGlbvjZH5oOZ6lflQFuUwqW+mKiaWGQIXX8XRYJff16rdnsws5lhGizXDP
-qSUY5rPjwex/OiNhjk37luLSxnMtevHGoncmLxn0xwzCe5a6CPWSUdstttBot7lt
-g7NeIHwVicZX3oEcIWpgJ0nwWipieNMRipBxOyqFI8T1v/Poj91B2SqUlpx2CUug
-HJDZfRC6CUHnSPwYdMaD+na9bLAKSmIbP82kIU1hNvVzVjqG+BcsofqEfaFtKdJG
-M8OOqCPMduKgiVjft71IooluV4/p2w==
-=dgoq
------END PGP SIGNATURE-----
-
---yEMEG4PtvOkWsDVy--
+I guess we could track the used vcpu_ids separately in another xarray
+(or a bitmap) which could be checked and updated by the early
+"duplicated vcpu_id check" before the first unlock of kvm->lock. But do
+we want to pay the memory price for that?
