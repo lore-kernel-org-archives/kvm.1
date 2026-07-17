@@ -1,211 +1,172 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438003F12EF;
-	Fri, 17 Jul 2026 15:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FFE2C11C4;
+	Fri, 17 Jul 2026 15:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784301704; cv=none; b=PY3G761zetWjHsS0hIglSHQyCS9Gaf1VnxUGVq9P3X3zEKrqO7uBYatWcYJIr+rZkErln4IF5/E5u3qGUdPP//qk9Pg5rGSOpSm7R6D+1PyOemwgN1bLphAovx4xvh3dM+PbFQ4Lf4Hy7wG3onxePDaizSmT4XOe7WA08BoqRVw=
+	t=1784303037; cv=none; b=BweW1SPzmPfq4s+5+VCYptwmBq3y67/NIFQWTu1cX+nh0gfw5YW60Zbm7dup/groiE5EKUGqMrrv6FFDpkpUwk+ShOHqvi8fXl+DfrmD897zaZ60D5wdU7qc0dC4GOWeh/4rVi/nGPp2LbB9+K5OTppw9uYjAOJsq+muITuus1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784301704; c=relaxed/simple;
-	bh=hshQp5SW3TLdYcHxLEIRY0pDy1WP0fQxtmt0LEheZmU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=gkkXNt9c9O7N9AiTZ+k4SNgiATGMR6JB9p+6Fsg0SsU0tGEz8AmEihqtrC/3cqJU6qijAStw3AKorZUbtyUaLjuz8miIUyUkxu2H07HXrIgtYGfkieSAHkn12Shtqm80zECWMrBFbscn3K72drUeX3ZtZjGdb+fwMCaUcRDoC3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=eZ/BnOvi; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784303037; c=relaxed/simple;
+	bh=VpjJe2JfDCSec3LSyM2oNupD6f5ORXd35g/fIttj7mU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eBiX/v2DdQ4F3m/czsHwgo6Mdo5ADD6/+WePNZOCKLsRmN+mNZeT9RNcHiBNKAhGsqHsqpEtF0HCfSEsChzE61OKV7c9sOvIVwkONA8xHYywtlbTWdYW2QZw3n/q5IyKmF0o7WRhOs5Q8iI33QqJd2hEQDDGY6rclnZwJgBVFcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=GkEboOpv; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jNT1YDxq; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="eZ/BnOvi"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B1981476;
-	Fri, 17 Jul 2026 08:21:38 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C6333F905;
-	Fri, 17 Jul 2026 08:21:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784301702; bh=hshQp5SW3TLdYcHxLEIRY0pDy1WP0fQxtmt0LEheZmU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZ/BnOvi0wntk6aeCRcAnDUHvCjvHUZbPE/atxemoHCi7gQ3QqveUMZ6IQzHbnq8h
-	 AWNLRiFpA8cwMYv+9hA7cxO1KDDJJfNQeQOtYOaCDWgpMGrpmByeNagX2E4QVxIyVl
-	 JdXylIaq8Khx9l5zqMQuDywCEZuTxRMAV+JL/zOY=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	maz@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware dirty tracking
-Date: Fri, 17 Jul 2026 16:21:32 +0100
-Message-ID: <alpIfIOFfrudBzD5@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com> <20260709104026.2612599-4-zhengtian10@huawei.com> <aliKo7dTZzKcWHzI@kernel.org> <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="GkEboOpv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jNT1YDxq"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E5174140011F;
+	Fri, 17 Jul 2026 11:43:53 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 17 Jul 2026 11:43:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784303033;
+	 x=1784389433; bh=BGBh5ijHRJh+02AFHFZvYLL90NolghTRj6Q1F0snpwE=; b=
+	GkEboOpvwxQ9Kp30Rml1KxvEdZoGXKD9u0cfkDiFWZsNGieGTlAzJMW+zAztvjnG
+	Fo93jdoOFcOYYUS1DSLOKi1QVHS4L0KR2g1lU8hMHBW2PJ9Q4hCXBVNpp9eiPEsi
+	ZBiEF/SN7Uoh4DZhXqbo86vpGeO9HTt/Icx6lb39wEsL+LLZbotECSjhwnnLuhxY
+	kCa4/Tg8UtUJnDUHBnmv7eEO9jJOjx5sxd1fuzZDhOqNstFxi/GU4KZcIFSHV8uh
+	xxQ76RkHoa/BDwrzEUV424HRMHs8v78L/GQvUjwF/fbkibyxfxEbXiDg4g4mXVti
+	uTc6qYzyGbbXiwLe0nRUmg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784303033; x=
+	1784389433; bh=BGBh5ijHRJh+02AFHFZvYLL90NolghTRj6Q1F0snpwE=; b=j
+	NT1YDxqgFKo5H7NxZjfPJvhG8NKhoMPuOWMaxzCT9rI6bhc0AvB212/DDsaVYO7S
+	mnP6w7SnzGYMCqd3aNfBuXDQrlUExcLxzm+9PZJCl8Az0MvAyJMzXyTsb9eEgdfM
+	ykJEvrZvOb9H4SIJYR+pLViI4LDM78SStWnTDE85TJqpIp+GY6FuMvQiPlEVu5ic
+	UEN7Hgi2QqgFca1jp9osysVL9lyqqoNYqSOMexpGD1fcCuJxf82I7QfIoybUR3dl
+	P5mjUmS7yQhpm/7YgfNV37cwuN8pz8dsJx3LMqRBI3VHXHWAKy64gifQuPsCHWrO
+	3G8ps5ob8J8rvRIBbliGw==
+X-ME-Sender: <xms:uU1aahSmtMqVoW_lt6pLkRKllD0mq2f22W20ooz1WnO5UF-H5nK3ew>
+    <xme:uU1aaiYKa4JWsnLPh8RJfgMKc7S8Gmp3H7XOXHM1hbyonvu_13Rng1cHfGfBBQGdU
+    ovLMKjWkgqahkPjd2zNZMMxfEI9DzZVikQjurCCKCVWLnSGHsW6QA>
+X-ME-Received: <xmr:uU1aakdxIpChOycg6Vyh3JBn3CEjfb7OIAHtZZR4gjWsFH2wPkYk7--syPE>
+X-ME-Proxy-Cause: dmFkZTEy2zXuER1XoNziIjJVIVvASb/84FYkJYNW70SRcx1M3RLiBAgvmGliwMHBjBQit5
+    +wTFsfvGUWIW0lQDJq3TCFmrnSx9hh1eF+8ZIyHYplayqqo8q062CwIhOvW7Yhgm0zA6gg
+    Alo/KuFijTpJ0UY5xqJcBS6jKLZBdO6CXQrU1Dt5QlzpJeVNL58WCcglOgabKVP7LKJJiS
+    BvlqJiEZMzVWlZ3Nn8002anKqzbuOUZp4kO8qpRm5nAcu9yeEiv9hJzv6MXTx5wTCI4c8q
+    fr/ve8GN6ABxB8ra86i2SzSeHI+JdzR3bfHc5XWhLZmX3shgf+iUxMKWU9O5fHmeYievdY
+    pX4ZQxqQ4Oc/PorBl6auMdNfwAEvGLxvm2863uu7pOpkY3cXY2nnwCdSPW6VdSAi2F+4ZV
+    QwPfehyt1bZRd4pXFG2UWTQtbqbE7iXY5kadMfURGOLe68f2uT3HPNnlydq17xnyzV1iss
+    kirpOZPNy3jOp/WG0WD3scKRafi94XWxksh26NAsuf67hw86Y8ATd+dn3bh29pgMhWBi/C
+    8q4igpam1wE0wo5eTJXVX21HFFOf9W+e8H116y5vagy7Ly2dKiGzHjmEHYXq5nLuG3cHJo
+    PNq2mC7T8IyS4NV5HWabPnCGNmHJ7MQSF+ySyMOS/Tl6JcDY+7PkjoDWq4HQ
+X-ME-Proxy: <xmx:uU1aajLDcOO_rpjeR_0wgnBua7KwX0GExC_7Ott291srFLsBM9-Zsg>
+    <xmx:uU1aahImY-lcbqU7S6Q7l8VN6U8WOMHEj6DP9BcIMdBiaa4-l5QUDQ>
+    <xmx:uU1aaiXwQVD60JVlsW6MLGM2LYZkU7eGYyED4GRU6XAytqwjkw6fVQ>
+    <xmx:uU1aaql7qMIRhR3fz0EHpHMFND8Y6AoBMYU32mWvAfGUMCFue2gDvQ>
+    <xmx:uU1aasLlEBJCidToeK6OUT1yqLmRIQV8AjD4s7pJ9Ke1YqIUz7o9rrUv>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Jul 2026 11:43:52 -0400 (EDT)
+Date: Fri, 17 Jul 2026 09:43:50 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Rubin Du <rubind@nvidia.com>
+Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
+ kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v14 0/4] vfio: selftest: Add NVIDIA GPU Falcon DMA test
+ driver
+Message-ID: <20260717094350.1a7970e6@shazbot.org>
+In-Reply-To: <20260609232855.3808971-1-rubind@nvidia.com>
+References: <20260609232855.3808971-1-rubind@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 17, 2026 at 11:58:06AM +0800, Tian Zheng wrote:
-> 
-> On 7/16/2026 3:39 PM, Oliver Upton wrote:
-> > Hi Tian,
-> > 
-> > On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
-> > > -	if (prot & KVM_PGTABLE_PROT_W)
-> > > +	if (prot & KVM_PGTABLE_PROT_W) {
-> > >   		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> > > 
-> > > +		/*
-> > > +		 * No DEVICE filter needed here: relax_perms is only called
-> > > +		 * on FSC_PERM faults. Device pages always get full RW from
-> > > +		 * initial mapping and are never write-protected during
-> > > +		 * migration, so they never trigger a permission fault.
-> > > +		 */
-> > > +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
-> > > +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > +	} else {
-> > > +		/*
-> > > +		 * Clear DBM on W→RO downgrade to prevent hardware from
-> > > +		 * silently upgrading RO+DBM back to W+dirty, which would
-> > > +		 * bypass KVM's write tracking and cause data corruption.
-> > > +		 */
-> > > +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > +	}
-> > > +
-> > This block makes it pretty evident that the DBM bit really *is* the
-> > write permission bit. I'd much rather we introduce the concept of dirty
-> > state to the page table library and migrate the abstract write
-> > permission to the DBM field, even if we don't have FEAT_HAFDBS.
-> >
+On Tue,  9 Jun 2026 16:28:51 -0700
+Rubin Du <rubind@nvidia.com> wrote:
 
-Ohh, that's an amazing idea!
+> Patch 1:
+> 
+> Add a chunking loop to vfio_pci_driver_memcpy() so that it handles
+> arbitrarily sized memcpy requests by breaking them into
+> max_memcpy_size-sized chunks. This allows tests to request any memcpy
+> size. Update the test to use a size of 4x max_memcpy_size to exercise
+> the chunking logic.
+> 
+> Patch 2:
+> 
+> Add vfio_pci_cmd_set()/vfio_pci_cmd_clear() macros for PCI_COMMAND
+> operations.
+> 
+> Patch 3:
+> 
+> Allow drivers that cannot trigger MSI interrupts to leave the
+> send_msi callback NULL. Tests check ops->send_msi directly and
+> gracefully skip MSI-related operations when it is absent.
+> 
+> Patch 4:
+> 
+> Introduce the nv_falcon plugin driver, which extracts and adapts
+> relevant functionality from NVIDIA's gpu-admin-tools project [1] and
+> integrates it into the VFIO selftest framework. As a result, any
+> system equipped with a PCIe slot and a supported NVIDIA GPU can now
+> run VFIO DMA selftests using commonly available hardware.
+> 
+> Falcons are general-purpose microcontrollers present on NVIDIA GPUs
+> that can perform DMA operations between system memory and device
+> memory.
+> 
+> [1] https://github.com/NVIDIA/gpu-admin-tools
+> 
+> Changes for v14:
+>  - Re-tested with vfio_pci_driver_test on K2200, M60, P100, P4000, V100,
+>    T4, RTX 3090, RTX 4000 Ada and H100.
+>  - Alex prepared this respin addressing David's review of v13.
+>  - Patch 1 & 3: No change.
+>  - Patch 2: R-b collected.
+>  - Patch 4: address David's review -
+>    - Include <linux/types.h>
+>    - Factor out get_elapsed_ms()
+>    - Rename NV_*_BOOT_COMPLETE_MASK to _SUCCESS
+>    - Drop the redundant falcon_enable() and move the no_outside_reset
+>      check to the top of falcon_enable() so falcon_reset() is
+>      unconditional
+>    - Fold dev_err() and size_to_dma_encoding() into nv_falcon_dma()
+>    - Drop gpu->memcpy_count and the redundant GPU_ARCH_UNKNOWN assert
+>    - Alignment fixes
+> 
+> Note on version numbering: v1 through v9 were internal review iterations
+> that were mistakenly carried over to the upstream submission. Apologies
+> for the confusion, the internal changelog has been dropped.
+> 
+> Rubin Du (4):
+>   vfio: selftests: Add memcpy chunking to vfio_pci_driver_memcpy()
+>   vfio: selftests: Add generic PCI command register helpers
+>   vfio: selftests: Allow drivers without send_msi() support
+>   vfio: selftests: Add NVIDIA Falcon driver for DMA testing
+> 
+>  .../selftests/vfio/lib/drivers/nv_falcon/hw.h | 352 ++++++++
+>  .../vfio/lib/drivers/nv_falcon/nv_falcon.c    | 783 ++++++++++++++++++
+>  .../lib/include/libvfio/vfio_pci_device.h     |  14 +
+>  tools/testing/selftests/vfio/lib/libvfio.mk   |   2 +
+>  .../selftests/vfio/lib/vfio_pci_driver.c      |  21 +-
+>  .../selftests/vfio/vfio_pci_driver_test.c     |  57 +-
+>  6 files changed, 1206 insertions(+), 23 deletions(-)
+>  create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/hw.h
+>  create mode 100644 tools/testing/selftests/vfio/lib/drivers/nv_falcon/nv_falcon.c
+> 
+> 
+> base-commit: d0c3bcd5b8976159d835a897254048e078f447e6
+> --
+> 2.43.0
 
- 
-> > That way everything 'just works' from outside the page-table library:
-> > write-protecting hugepages would have the effect of clearing DBM and we
-> > can separately reap dirty state from page descriptors.
-> > 
-> > If/when the architecture forces FEAT_S2PIE upon us we will need to make
-> > this change anyway since dirty state management is unconditional and
-> > handled separately from the actual permissions.
-> >
-> > Thanks,
-> > Oliver
-> 
-> Hi Oliver,
-> 
-> Thanks again for your insightful review. Following your suggestion, I've
-> 
-> reworked the design around a unified three-state model that works regardless
-> 
-> of whether FEAT_HAFDBS is implemented:
-> 
-> **State table**
-> State               | DBM    | S2AP[1] | Without HTTU            | With  HTTU  (HAFDBS)
-> Non-writable   (N)  |  0     |    0    | write -> fault, inject  | write -> fault, inject
-> Writable-clean (C)  |  1     |    0    | write -> fault, sw C->D | write -> hw C->D, no fault, HDBSS logs
-> Writable-dirty (D)  |  1     |    1    | writable, no fault      | writable, no fault
-> 
+Applied to vfio next branch for v7.3.  Thanks,
 
-Yeah, that's how the table works with HAFDBS/HDBSS/HACDBS.
-
-> **Proposed changes**
-> 1. Remove KVM_PGTABLE_S2_DBM from enum kvm_pgtable_stage2_flags
-> 
-> — VTCR_EL2.{HD,HDBSS,HA} enablement in kvm_arm_enable_hdbss_global()
-> 
-> already keys off kvm->arch.enable_hdbss / system_supports_hdbss().
-> 
-
-We may need a system_support_hdbss() for the actual hdbss routines, though.
-
-
-> 2. stage2_set_prot_attr() — set DBM unconditionally on writable pages:
-> ```
-> if (prot & KVM_PGTABLE_PROT_W) {
->     attr |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
->     /* Writable-dirty: DBM=1 conveys write intent, S2AP[1]=1 marks dirty */
->     attr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> }
-> ```
-> 
-> 3. kvm_pgtable_stage2_relax_perms() — drop the else branch entirely:
-> ```
-> if (prot & KVM_PGTABLE_PROT_W) {
->     set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
->     /* Non-writable -> Writable-dirty: restore both write intent and dirty state */
->     set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-
-In the future, depending on the setup of HDBSS/splitting, we may want to 
-change this behavior. But for software only, it looks nice. 
-
-> }
-> /* no else: callers passing !W (e.g. exec faults) must not touch DBM */
-> ```
-> 
-> 4. kvm_pgtable_stage2_wrprotect() — unchanged: it only clears S2AP1 (D->C).
-> 
-> DBM is preserved so HDBSS re-arms next round.
->  ```
-> int kvm_pgtable_stage2_wrprotect(struct kvm_pgtable *pgt, u64 addr, u64
-> size)
-> {
->    /* Writable-dirty -> Writable-clean: clear dirty state (S2AP_W),
->    * preserve write intent (DBM) so HDBSS re-arms for next write.
->     */
->     return stage2_update_leaf_attrs(pgt, addr, size, 0,
->                          KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W,
->                          NULL, NULL,
->                          KVM_PGTABLE_WALK_IGNORE_EAGAIN);
-> }
-> ```
-> 
-> **One clarification**
-> In the three-state model above, wrprotect() clears S2AP[1] but preserves DBM
-> (D->C).
-> 
-> This allows HDBSS to re-arm on the next write. If we instead cleared DBM as
-> well (->N),
-> 
-> HDBSS would be permanently disabled on that page and we'd lose the benefit
-> of hardware
-> 
-> dirty tracking.
-> 
-> 
-> So my understanding is:
-> 
-> wrprotect() (dirty tracking): D->C — clears S2AP[1], preserves DBM
-> 
-> mkreadonly() (true RO, future): ->N — clears both S2AP[1] and DBM
-> 
-> Does this match what you had in mind?
-> 
-> Looking forward to your thoughts.
-> 
-> Thanks,
-> Tian
-> 
-> 
- 
-Thanks!
-Leo
+Alex
