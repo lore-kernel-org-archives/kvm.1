@@ -1,81 +1,149 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E8935959;
-	Fri, 17 Jul 2026 02:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66669346AC2
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 03:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784254656; cv=none; b=uZJBNVO1+H2g3hHnJKSJvJONhVELRdpIT/dH+6K+B0zGRKLXHeaQISIG+rGv68WX7hLKmGGcV9zYsCYErRYzbTyF1jHk8DxH/nDrTBrb1LabwCvF0BMSbhCo0MIfQpmubFlIrhbTrehvfadeJAhUpvE1l7M2n82MVZd0AwZXyCM=
+	t=1784257375; cv=none; b=ba5BC2EQSAy3zZ5pp8q4KXdhBah7PJiZxtZnhMi+pZOWvFs3yt2RSKbp+W2e+/4sKuCGCgx5onRD8+tPkoGQCU1jcJFw3bpquruPrxFVVZiKwx5bjs+w6xhooIKEjbkHKNeGJqeU8NWsHGaqmMRH3aqR59y+CJwmBJ1c2iiCI0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784254656; c=relaxed/simple;
-	bh=xDgkpvNQqfHrhFey0IHivSOFo7DoPR4Zz2HXVwGF/DU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=GbjhG2msmQ/BEnmfKipBqGqfe+0p1AcMa8WH9vzjNcMak4pF4r/Vv6fvuWmNjnKHjlJ2gxg2O+0Yivhp1YlHXyyTThZqJdEpzN78+IgP6VljoVJBR91OyLFXcQkY1ndADCRz0JAw+wATbNzrrAT2yE1fPjICAa3lCjBnw/xbiDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IQeZTsDF; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784257375; c=relaxed/simple;
+	bh=LONeDMb+UMp3w8PpMR6ELRp7HOJmPzIptom95SWo0Ag=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ICyZKDoGw8RNfoEx/Q7jkuKsS8IHk2fSu1EGjIKSJHwdOpImugjSXZJS3kDAy+n7Oa1NZenUehMUpBmNBkN3+vuoOPX+jl46o2se6RT214d5VhyFG0DRnm26G/jm8UkizyaXjK4ytbxZBjGZHFHnQeDCmVhS2Qo2WiRKrx0hBTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlE2l2QP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IQeZTsDF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=xDgkpvNQqfHrhFey0IHivSOFo7DoPR4Zz2HXVwGF/DU=; b=I
-	QeZTsDFHbvDpDAe5i7omm9x5a0ghyqbd3fwZ+f5GtrGTQD1Kfyu5UWoyEIlZBkSb
-	y3C7/1v8740EnTtoyf3HEQitF8MOHhGKozA6bYRkW8nycBN+5piSs2QjEAeBELet
-	Q8k0Nr8XZ0WFw+YKxGYo88Mua8pfP1Gx4kJRhg3NCY=
-Received: from xiongwm2026$163.com ( [116.128.244.169] ) by
- ajax-webmail-wmsvr-40-109 (Coremail) ; Fri, 17 Jul 2026 10:17:11 +0800
- (CST)
-Date: Fri, 17 Jul 2026 10:17:11 +0800 (CST)
-From: "Weimin Xiong" <xiongwm2026@163.com>
-To: eperezma@redhat.com
-Cc: virtualization@lists.linux.dev, mst@redhat.com, jasowangio@gmail.com,
-	netdev@vger.kernel.org, kvm@vger.kernel.org, xiongweimin@kylinos.cn
-Subject: Re: Re: [PATCH] vhost-vdpa: propagate set_map error to caller
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
-References: <CAJaqyWeNJwVNUihL8MAEH+-a5OsoaDGsgaPnP0BqQd6YH4ZhYg@mail.gmail.com>
-X-NTES-SC: AL_Qu2TBv6eu04o5yeRbekckk8Ugeg8Xsewsvgh249ec+IEgC3DxAc7ZUV/JFL5+t+2BASjkwWLfTtNyOVnb4ZZTET/v5QqVaNDtyH5WsdzUw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlE2l2QP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC92C1F000E9;
+	Fri, 17 Jul 2026 03:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784257373;
+	bh=3tsoV6pYdintvOFPBRnsl3/AAgm+hH6qqAaxCk3Oi4k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XlE2l2QPywOj6EOmlYXD7qb1MTt7txeDP6QipVRuJl6RLPqATN37RKZOEu4jmgsFI
+	 2rx7BOLVENDFZqnuR+lkYfQIhaIGl5F0Y9JVs8BKirnGZOOnOjAtvBu51G62+opcn3
+	 3HbftnePTMf+3O3CMGAGWNRedHndfRVvlc1AY/0l7KOSDn7CClzF9ULugPnuuOBnl6
+	 4MZaVWaVoWmdslnmvtNUkFoObEM6evOBIMsKLnl6ytG8RpLiter96OMvPz/jZ3zfZY
+	 O2cVGYqSIWrt+xdpck84vwoCxRRx2PW2lT9jR3YM8lIXadMLyxv+lfdJojSE2YMhbH
+	 WEqCw3pYKe77A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vhost: reject zero-size IOTLB INVALIDATE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Weimin Xiong" <xiongwm2026@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260716030236.124322-1-xiongwm2026@163.com>
+References: <20260716030236.124322-1-xiongwm2026@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 17 Jul 2026 03:02:53 +0000
+Message-Id: <20260717030253.BC92C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <1f3989d4.1c32.19f6ddd0f7e.Coremail.xiongwm2026@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:bSgvCgD3F3aokFlqhukfAA--.17787W
-X-CM-SenderInfo: x0lr0wdzpsijqw6rljoofrz/xtbC7wg-zmpZkKiI6AAA39
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-RnJvbTogeGlvbmd3ZWltaW4gPHhpb25nd2VpbWluQGt5bGlub3MuY24+CgpIaSBFdWdlbmlvLAoK
-VGhhbmtzIGZvciB5b3VyIHJldmlldyEKCllvdSBhcmUgcmlnaHQuIE15IG9yaWdpbmFsIHBhdGNo
-IGhhcyBhbiBpc3N1ZSB3aXRoIHRoZSBgYnJlYWtgIHN0YXRlbWVudCwKd2hpY2ggc2tpcHMgdGhl
-IGB2LT5pbl9iYXRjaCA9IGZhbHNlYCBhc3NpZ25tZW50IHdoZW4gYHNldF9tYXBgIGZhaWxzLgpU
-aGUgY29ycmVjdCBhcHByb2FjaCBpcyB0byBzaW1wbHkgY2FwdHVyZSB0aGUgcmV0dXJuIHZhbHVl
-IHdpdGhvdXQKYnJlYWtpbmc6CgpgYGBjCmNhc2UgVkhPU1RfSU9UTEJfQkFUQ0hfRU5EOgogICAg
-aWYgKHYtPmluX2JhdGNoICYmIG9wcy0+c2V0X21hcCkKICAgICAgICByID0gb3BzLT5zZXRfbWFw
-KHZkcGEsIGFzaWQsIGlvdGxiKTsKICAgIHYtPmluX2JhdGNoID0gZmFsc2U7CiAgICBicmVhazsK
-YGBgCgpUaGlzIHdheToKMS4gVGhlIHJldHVybiB2YWx1ZSBvZiBgc2V0X21hcGAgaXMgcHJvcGFn
-YXRlZCB0byB0aGUgY2FsbGVyCjIuIGB2LT5pbl9iYXRjaGAgaXMgYWx3YXlzIHJlc2V0LCByZWdh
-cmRsZXNzIG9mIHN1Y2Nlc3Mgb3IgZmFpbHVyZQoKVXBkYXRlZCBwYXRjaCBhdHRhY2hlZCBiZWxv
-dy4KCi0tLQoKU3ViamVjdDogW1BBVENIXSB2aG9zdC12ZHBhOiBwcm9wYWdhdGUgc2V0X21hcCBl
-cnJvciB0byBjYWxsZXIKClRoZSByZXR1cm4gdmFsdWUgb2Ygb3BzLT5zZXRfbWFwKCkgaXMgY3Vy
-cmVudGx5IGlnbm9yZWQgd2hlbiBoYW5kbGluZwpWSE9TVF9JT1RMQl9CQVRDSF9FTkQuIElmIHRo
-ZSBiYWNrZW5kIGZhaWxzIHRvIHByb2dyYW0gdGhlIElPVExCLAp0aGUgVk1NIGluY29ycmVjdGx5
-IGJlbGlldmVzIHRoZSBvcGVyYXRpb24gc3VjY2VlZGVkIGFuZCBtYXkgY29udGludWUKd2l0aCBz
-dGFsZSBvciBpbmNvcnJlY3QgbWFwcGluZ3MuCgpQcm9wYWdhdGUgdGhlIGVycm9yIGZyb20gb3Bz
-LT5zZXRfbWFwKCkgdG8gdGhlIGNhbGxlci4KClNpZ25lZC1vZmYtYnk6IHhpb25nd2VpbWluIDx4
-aW9uZ3dlaW1pbkBreWxpbm9zLmNuPgotLS0KIGRyaXZlcnMvdmhvc3QvdmRwYS5jIHwgMiArLQog
-MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0
-IGEvZHJpdmVycy92aG9zdC92ZHBhLmMgYi9kcml2ZXJzL3Zob3N0L3ZkcGEuYwppbmRleCBiYjk2
-YjFhYTUuLmI1MmQ4ZDk0ZSAxMDA2NDQKLS0tIGEvZHJpdmVycy92aG9zdC92ZHBhLmMKKysrIGIv
-ZHJpdmVycy92aG9zdC92ZHBhLmMKQEAgLTEyOTgsNyArMTI5OCw3IEBAIHN0YXRpYyBpbnQgdmhv
-c3RfdmRwYV9wcm9jZXNzX2lvdGxiX21zZyhzdHJ1Y3Qgdmhvc3RfZGV2ICpkZXYsIHUzMiBhc2lk
-LAogCQlicmVhazsKIAljYXNlIFZIT1NUX0lPVExCX0JBVENIX0VORDoKIAkJaWYgKHYtPmluX2Jh
-dGNoICYmIG9wcy0+c2V0X21hcCkKLQkJCW9wcy0+c2V0X21hcCh2ZHBhLCBhc2lkLCBpb3RsYik7
-CisJCQlyID0gb3BzLT5zZXRfbWFwKHZkcGEsIGFzaWQsIGlvdGxiKTsKIAkJdi0+aW5fYmF0Y2gg
-PSBmYWxzZTsKIAkJYnJlYWs7CiAJZGVmYXVsdDoKLS0KMi4zOS4zCg==
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [High] The patch adds a zero-size IOTLB INVALIDATE check to the generic v=
+host handler but completely misses the vDPA-specific handler, leaving vDPA =
+endpoints vulnerable to the IOTLB wipe bug.
+- [High] The patch prevents `msg->size =3D=3D 0` but fails to check for int=
+eger overflow when `msg->size` is extremely large. This causes `last` to wr=
+ap around, creating an inverted interval that incorrectly deletes unrelated=
+ IOTLB entries.
+--
+
+--- Patch [1]: [PATCH] vhost: reject zero-size IOTLB INVALIDATE ---
+commit a0b9048f6eadbd7dc5629192fc48fcb0eb48ce7f
+Author: xiongweimin <xiongweimin@kylinos.cn>
+vhost: reject zero-size IOTLB INVALIDATE
+
+This commit adds a check to reject VHOST_IOTLB_INVALIDATE messages with a s=
+ize
+of 0 in vhost_process_iotlb_msg(). This prevents an underflow calculation
+that would otherwise pass U64_MAX as the end of the range, incorrectly wipi=
+ng
+the entire IOTLB.
+
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index 4c525b3e16ead..5d15fc41a3e98 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -1657,6 +1657,10 @@ static int vhost_process_iotlb_msg(struct vhost_de=
+v *dev, u32 asid,
+>  			ret =3D -EFAULT;
+>  			break;
+>  		}
+> +		if (!msg->size) {
+> +			ret =3D -EINVAL;
+> +			break;
+> +		}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the vDPA-specific handl=
+er
+also need this zero-size check?
+
+Looking at vhost_vdpa_process_iotlb_msg() in drivers/vhost/vdpa.c, it seems
+to bypass this generic handler and processes the INVALIDATE message directl=
+y:
+
+drivers/vhost/vdpa.c:vhost_vdpa_process_iotlb_msg() {
+    ...
+	case VHOST_IOTLB_INVALIDATE:
+		vhost_vdpa_unmap(v, iotlb, msg->iova, msg->size);
+		break;
+    ...
+}
+
+If a userspace application sends an INVALIDATE message with msg->size =3D=
+=3D 0
+and msg->iova =3D=3D 0, vhost_vdpa_unmap() computes the last boundary as
+iova + size - 1, which underflows to U64_MAX and could delete the entire ma=
+p.
+
+A similar underflow might occur if an IOTLB UPDATE mapping fails in
+vhost_vdpa_va_map(). It calls vhost_vdpa_unmap(v, iotlb, iova, map_iova - i=
+ova)
+which would pass a size of 0 if it fails on the first iteration.
+
+Could this leave vDPA endpoints vulnerable to the same IOTLB wipe bug?
+
+>  		vhost_vq_meta_reset(dev);
+>  		vhost_iotlb_del_range(dev->iotlb, msg->iova,
+>  				      msg->iova + msg->size - 1);
+
+[Severity: High]
+This is a pre-existing issue, but could this calculation overflow u64 and
+create an inverted interval?
+
+If a userspace application provides a large size (for example,
+msg->iova =3D 0x1000 and msg->size =3D U64_MAX), msg->iova + msg->size - 1 =
+will
+overflow and wrap around to 0xFFE.
+
+Unlike vhost_iotlb_add_range_ctx(), vhost_iotlb_del_range() in
+drivers/vhost/iotlb.c doesn't seem to validate that start <=3D last before
+querying the interval tree:
+
+drivers/vhost/iotlb.c:vhost_iotlb_del_range() {
+	struct vhost_iotlb_map *map;
+
+	while ((map =3D vhost_iotlb_itree_iter_first(&iotlb->root,
+						   start, last)))
+		vhost_iotlb_map_free(iotlb, map);
+}
+
+The interval tree overlap check evaluates to true for any existing interval
+that spans the inverted gap, which could cause valid, unrelated IOTLB entri=
+es
+to be incorrectly deleted.
+
+Does this need an upper-bound overflow check?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260716030236.1243=
+22-1-xiongwm2026@163.com?part=3D1
