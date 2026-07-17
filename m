@@ -1,466 +1,182 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6875F384242;
-	Fri, 17 Jul 2026 07:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784273021; cv=none; b=CcQBAgqkeyemghFSY31EQaMl8TNSjqDghyvt5c6CzcW9wSgqA78OaCA0jnp98a1QF1byXNX6aOud4LZsxvMH1atHQ1jn11rskwMOxR1oY6Cjo4I3mdrS1E15aLK93czdjYVcvZHZxKOY/8y2+t4BK315wxilNese+jruXzIMQCA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784273021; c=relaxed/simple;
-	bh=2PVet34FGKhNonjh+LwGJeU9kR2xPLqhJ79u1ZeDeMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mv3t+3npL44fqmPFMCvk0DZAhd9C3b9mGVHcA2NclndYvShkJi9ZJsYCyzHM3hm3yuyn8udxhszt3j6EY+/sLE/sLrW8g/I+PSuTOeRIjfCeyhonvSV0KrnZaNn6MgGCJJ63Ybfmwzxiwx110em4ucFxuBiEId6GT2NYDKP27yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=e5DXECaH; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA1D3DC852;
+	Fri, 17 Jul 2026 08:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784275335; cv=fail; b=omqNOzruAm9CUL6x/FlPQLS9OtWdNJdqDU5UBO91IuZJ07IsQvW6U7QlYGkaE98nSPp5LZjCKK429NhjSihodXVL8cAcEp/aJHH+HZcz0SipiY4BE6wYp+1PLkFDIjVNsKXsie2YAJCjfCw5ZMP0jXmVE1GQbxYYTv4RqA8CMU4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784275335; c=relaxed/simple;
+	bh=jJL/HLu4mMj9/upMyN1WbN/Wr81t7SMgGrnz7X8Dx5Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=JdCmSoS1Gwqj+fw+crmc6pprRQdbV+k+e29iyJ8Y/8KUdbras33h9WAG9zoF9wnR3QbQ6a0guJamYmwgtuEa392hRSSOAb+DLVAeXbqgusW64bjZH/snf7dQfKgpcdH4qwaUdVu3e+p5xXEdRhxHiT3bfKg+vefAHKxC6HX/IaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gDQ/j0Oh; arc=fail smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="e5DXECaH"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QrkjOTVf61YiZqlRl+i7P0EykPYs03A7HSuM2kJgfsE=;
-	b=e5DXECaHoD+0+amPAU6R3XA9FRRzwXhKM6NDEX2faEd6/0Y9GjSW5eU16l0VlKx74YRto3gcW
-	6k5B07e91BvpSlMerrgeRBWcx8FbGQIjnWge19n1Y3M1pRSsCnUMOeG4ugCqN7sEv4rabjjdmLW
-	lt+Y15XZK0vlyWW4GtVOh0M=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4h1h3b4H7nz1prkx;
-	Fri, 17 Jul 2026 15:14:03 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 262AF4057D;
-	Fri, 17 Jul 2026 15:23:25 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gDQ/j0Oh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784275334; x=1815811334;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=jJL/HLu4mMj9/upMyN1WbN/Wr81t7SMgGrnz7X8Dx5Y=;
+  b=gDQ/j0Oh17/2t+ggFE4i4bE/pjXwBCUfF3t/8MrvBuxjzYaCLmAa0YOV
+   mCQSswhwK67DVOzMadxnrgZEDr9xPsbQgUZNNkOSWeoehn61IGxNlzocP
+   4bOCLZUQUcKQEifymApkI/FweUP4hBI8ODDIT953q/+ghInWriHRrwi6b
+   25aXjcAvKDGvCCv2PhPNQdpfpT36xDl9zB98Fes6wPEoFmxDM9XYORID4
+   aS2CP1UPmjTT11zluN9aXI5NnoGcbwmNt/2UPWrnPIPDsdw2btYxpptb2
+   qwipPeh5vM3x4tzASJiD58g6HonCuiIRip0WrJljSslZ0hL0EKrBbcZYM
+   A==;
+X-CSE-ConnectionGUID: 9lKBbGghSsiYtptSB9RgPA==
+X-CSE-MsgGUID: 88++2MTxSvOwKr+9PKsn/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="85036127"
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; 
+   d="scan'208";a="85036127"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 01:02:12 -0700
+X-CSE-ConnectionGUID: KCN+ZmJ6TNCf7xtl1knCbA==
+X-CSE-MsgGUID: ftQ2rsXhSg6yyTeas81uJA==
+X-ExtLoop1: 1
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 01:02:11 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 17 Jul 2026 15:23:24 +0800
-Message-ID: <02713422-0b1f-45c4-a93d-2fc7de2a0b84@huawei.com>
-Date: Fri, 17 Jul 2026 15:23:24 +0800
+ 15.2.2562.43; Fri, 17 Jul 2026 01:02:10 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Fri, 17 Jul 2026 01:02:10 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.15)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 17 Jul 2026 01:02:09 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XsTWg+V0EKcn3IGAnkahUC40I+nMLVbbHGKZgTdXu9bu4faHf+zh+GSCFL4PyHO6Zd8q6ayujr34d+oEKbjp5PM84wzTls5F+a813qFaM67HOF/XsTczcuWI/JPozTGZ5pRk1uZPUlR5slly6eWpQkL8BhiFfYNQgxvYytNrgwCD0dZcYugem8T/udoHY3kOyWu+x3XXbvaOoVRHBlOUJF5kgPxLTPwlQfAYrIiTP/2US8USi0uob+ke5L8K8RAWys/HmPbntjjKHLuwxNnPVQ1N06R9RE+mwro6T9iCv3bmfuhIJqMcssSTQUpWTeM52mX9/g2EbVvZo/ZS7LQwmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jJL/HLu4mMj9/upMyN1WbN/Wr81t7SMgGrnz7X8Dx5Y=;
+ b=JSdPWSnFYyJ/5hcT2kKkQ+UQhnchsDLGWx+mg2+wGQe7b6hqKIFhcBlHbMTjrKArfYrtk5HRGYEdGpDNNg/0TuLn0uKBODcOq68HtQ6zxrHuuV07LZbTfAdxUKzv1H7BcffFqahd/c0k9wnCh6lyX+dEzduO2kthhS7+O847+KpHAjWH6gBpkywlQHbEJt7Uz3Xxfo/Y+v3QpVqLocsi4TZtqA6kujAp+jEQQNhYVxj8j+GkQ+e4cNznEFQEgKxYQg5n6KtmGpLc8rxqUno6YrOG8/Gbn0YyaWUN9FRKz098PMnIQQhOMLB5hzJUrBosqtCZ9Zxsa8GZjMb3ucIVnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA2PR11MB4844.namprd11.prod.outlook.com (2603:10b6:806:f9::6)
+ by BL1PR11MB5977.namprd11.prod.outlook.com (2603:10b6:208:384::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.13; Fri, 17 Jul
+ 2026 08:02:04 +0000
+Received: from SA2PR11MB4844.namprd11.prod.outlook.com
+ ([fe80::61e5:7b38:b8a4:1abb]) by SA2PR11MB4844.namprd11.prod.outlook.com
+ ([fe80::61e5:7b38:b8a4:1abb%4]) with mapi id 15.21.0223.008; Fri, 17 Jul 2026
+ 08:02:04 +0000
+From: "Tian, Kevin" <kevin.tian@intel.com>
+To: Matt Evans <matt@ozlabs.org>, Alex Williamson <alex@shazbot.org>, "Leon
+ Romanovsky" <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro
+	<amastro@fb.com>, =?iso-8859-1?Q?Christian_K=F6nig?=
+	<christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, "Logan
+ Gunthorpe" <logang@deltatee.com>, Pranjal Shrivastava <praan@google.com>,
+	Longfang Liu <liulongfang@huawei.com>
+CC: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>, Sumit Semwal
+	<sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, Alistair Popple
+	<apopple@nvidia.com>, "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>
+Subject: RE: [PATCH v5 1/9] PCI/P2PDMA: Split pool-related cleanup out of
+ pci_p2pdma_release()
+Thread-Topic: [PATCH v5 1/9] PCI/P2PDMA: Split pool-related cleanup out of
+ pci_p2pdma_release()
+Thread-Index: AQHdFIIdvrzyk9/J/0mOPkEUyzecNrZxW7NA
+Date: Fri, 17 Jul 2026 08:02:04 +0000
+Message-ID: <SA2PR11MB4844CD49C4833D80C27C2CA58CC62@SA2PR11MB4844.namprd11.prod.outlook.com>
+References: <20260715174737.15287-1-matt@ozlabs.org>
+ <20260715174737.15287-2-matt@ozlabs.org>
+In-Reply-To: <20260715174737.15287-2-matt@ozlabs.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA2PR11MB4844:EE_|BL1PR11MB5977:EE_
+x-ms-office365-filtering-correlation-id: f23fbeed-4ad9-402f-836b-08dee3d9b0a9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|18002099003|22082099003|38070700021|10067099003|56012099006|11063799006|4143699003|921020;
+x-microsoft-antispam-message-info: iG9JkxZ5arSp8ZZybzHa0miweIO9K2LELncSjuzTrlsCQuFLC7+ET91OPKx2o38kAXjYSSWSH2BdD3/208KFUw5eXb1d0dVZDPIvZ0ohqel9rVint4VKudrFSYvKVIpizMlLgW9PPgeJ5A95b+JR7pZPQAI8aHjFm5QXWREXGHQWBNbsQJRnamY9mSyn4PcYeI0Btjxo6glcn6Ga+zd1bpVsOKzaPvaQ0e8a1OwfYeqs04Dh7vm6pxGSpFEKlkzuQZ5LGFpzbg+9567HSx/GNZQ2hEfnK1ql/wnM2QsnWGgM3He0pyT37H4bewC6R20F1rIxV8Lae6N0R08qkE4nwSMEn3IrBReMXtLImy8DDZNsNRLLGKHUapX8dZXFGr3GlAPlV3fkoow+J5VaK+JP93S2vG8X5RMkdAcn4/u1TB0gIJL/MvGsFbMwSwsDV88y6qq5YZ8tRaEspbWHPTK1NJzF++C0obXB9rUYyGOQy4K67+1uB7xNljlbzi1apfkXN6EqMrWCypmmDbqbJQAynsr9miNBQwP659k4Jbr2vP4UImMPXVlX7DbokTs7DrDu159bAc6dhTu8JYm+9Y+FQ7RS+p4y1pLN572e3vt2GCubsD2H9nfE6prAMuHIRY7bhoCBUvVMexWCNkUH1mLXU5EadVUCw33wcUXuOrsNhCitC+aFcpkEkVXz7+g06AFSzG/zBcJlxmeXLVqNEE+5NXW7fQrOytdkd/Yxczl128zB0mOTTVylp1rt+FQCZG19
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA2PR11MB4844.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(18002099003)(22082099003)(38070700021)(10067099003)(56012099006)(11063799006)(4143699003)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?tFEWJyMbCmGOK8EjkFJ/WrwIBsgV0lqYWUbrlK/1X+RNN7IDvfk+dtWOta?=
+ =?iso-8859-1?Q?QGWcXh5IH/V2bX3Ph8gd1ccKpvpWzUmgvV8aamgSXpqPeKD10UauSFOX9C?=
+ =?iso-8859-1?Q?VO0mtLfaW/pYy6uHKa1ziMQu14GmAD4sOuCSVUoq/e1+SltXJE2LJn6+0/?=
+ =?iso-8859-1?Q?rHIs4UKLPybj7VceS06GUStfAhCPkYKVs8CrlD1IlkVM9D1QzfZRr4zr09?=
+ =?iso-8859-1?Q?bvqA5eL55XkgxaYwkD0YEwpayyXYKpnGOgPXactCb8hHc2Y4P+FaSjDYEN?=
+ =?iso-8859-1?Q?8peRPrJ2AjpSIZZGUcsdvxFwSaoAGxEJKHy6p3zum+tX5T1evm9rp02y1H?=
+ =?iso-8859-1?Q?9ZQZ39whY+rLCxgnmSe4kjQxm8mk+IUt9/9xuhYHy2IP3ijBCY4jZD4aXY?=
+ =?iso-8859-1?Q?k1jCkR/t7XPKqljjmtLAHVJIummsW+9m9RZHOYJXgWGzPj/wnaviuB0cjJ?=
+ =?iso-8859-1?Q?fqzgcMCkacRa5XnTHmF524EMKGSmMuGXy6jgmgaBKg4yFtsGeZgx+yPYJY?=
+ =?iso-8859-1?Q?eIa1oa22p/s9KOvXFGf3051DtY1UuW+EOc5RkK/K/LEUlcISMPhOTH9FOE?=
+ =?iso-8859-1?Q?9t3uLYuWhbXtJ0Dln5FPPBqZ/hQXsooAzk1J94kdW6zQRpchV9UQCp7SMf?=
+ =?iso-8859-1?Q?+ByGYgAvKBqo/K57y5SgYFn62uBC394yCKl9Z8GRY8wLVx0+Pw2Fe9vnWh?=
+ =?iso-8859-1?Q?xnPlj3INXsS4r9ngdHtP3Hq+49IChlaqAGUc9/kdRULYrR+iWz+IwejX7B?=
+ =?iso-8859-1?Q?9GlmEgf+3C0NQ5VzWKcJtdxivf0LHCn/bFfVK6EqDJIpqN9vPIHmueGyTc?=
+ =?iso-8859-1?Q?MkR28H6dijGKezFRKPDBwXZciLYKWuxqKJOwpQWYJFSRO6lwAzUcNkB9Nb?=
+ =?iso-8859-1?Q?q64AFtt+NzDFQyciAyYWVAvHsfgZjfGNAwsYIlVAfIraJhdkjOQT4zbnr+?=
+ =?iso-8859-1?Q?uRqC9BjJYfUifIyV699KxzY/VOHuMhoVyqc6pSNNmTHQfQPNJ0Je2c/LTa?=
+ =?iso-8859-1?Q?mrVHQgR/Cgxc3F73pLd/cuC1NuGemH5rZV8IX/g6+nPmfvdEEdmcnDcksK?=
+ =?iso-8859-1?Q?PMh+hN9kG7Rk6Jz9DGFFcFeg6vkfkN9zTDyQ0RvpjcFyvHPcwx61kpN+FD?=
+ =?iso-8859-1?Q?k7xEBVtZfHzdaaCph15wZP/vSKoB7zMwc2gGGa/kPqaz81Fwzxu+QOU7mO?=
+ =?iso-8859-1?Q?Rn68hZ7ZUNRqKpu/XQVpxO3ApnOSpyAKwcdfcrIgFXe/PjVAAre9pGW+ID?=
+ =?iso-8859-1?Q?wLFiSXKOxqSanpi/OJfTcN46Xz5PbkAHVyJ7oyjzO78K9LOR34Ba1C5i/R?=
+ =?iso-8859-1?Q?E6sx/W+BVzAnHHnvvzMayk7b7eefkPBDfhhZLqq8wvprxNu8oKsnEZpSP8?=
+ =?iso-8859-1?Q?E7sSEQzZQ3ecB17jKgutdk9/v4AhczS0Afxya4l5nCY8SRE/NEkitBOeaI?=
+ =?iso-8859-1?Q?M/K6fgsES3JtBnS7zsX8fwVv9PKwh8Iqhqei6Zk50AALfN71HhP5zSF01P?=
+ =?iso-8859-1?Q?ZSN2tnvWdwt2I7Gs9VVtHmIgXElKCnHJ0Fl7QbrkqYHSXCovsOvzU3YXIO?=
+ =?iso-8859-1?Q?1ZQ5FfB22xznAqMLsaRTvV/LB7oCIXn2jc8Mos7xNWvyGPcgrl2pbqMVmr?=
+ =?iso-8859-1?Q?HrZ+IB9EAn2hdGbKdLI9s0tqTp6aOdi8UqzU4CSs+zGcDPokC2sUn7gtRH?=
+ =?iso-8859-1?Q?UqkvgbB6ISEnuwDiR5eP/09qSv5TGpcHeuAPgS2DygqXhtTz98vue3PsG7?=
+ =?iso-8859-1?Q?QzpTiuotPP/WbYSmWlih2iEnAL92oqNqChPWp2qF6boj7s?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/6] KVM: arm64: Add auto HDBSS enable/disable on dirty
- logging change
-To: Leonardo Bras <leo.bras@arm.com>
-CC: <maz@kernel.org>, <oupton@kernel.org>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <yuzenghui@huawei.com>, <wangzhou1@hisilicon.com>,
-	<yangjinqian1@huawei.com>, <caijian11@h-partners.com>,
-	<liuyonglong@huawei.com>, <yezhenyu2@huawei.com>, <yubihong@huawei.com>,
-	<linuxarm@huawei.com>, <joey.gouly@arm.com>, <kvmarm@lists.linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <seiden@linux.ibm.com>,
-	<suzuki.poulose@arm.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <20260709104026.2612599-7-zhengtian10@huawei.com>
- <alT7MeK_1ofOhIuv@LeoBrasDK>
- <6e8b23bc-d420-4f5a-a921-5a5d64d84200@huawei.com>
- <alYamq9BL5CTaAX7@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <alYamq9BL5CTaAX7@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr100010.china.huawei.com (7.202.195.125)
+X-Exchange-RoutingPolicyChecked: qk02GjSPIdh3RDkWQtRWTYCXoeZyW3dL5JSOBmrA+YZQTKmmuHe4bWTXTDFwVGjLoC7gzXltGnSoWwNvCVlUMfqrBBcU3osiIanMV81U0vNt26am8L5sQaODD2+4LH/clOX7gLFNCQKwVN2KBL9M0ARWq5IGbdERLdonzUktNaizJugjiYDCcovsrMOH7eraRqUSYpFFixyGw/oivN3z5JkwyAcGvCYuZul7/ad67AvkW6iD5YmXJ49Da6cjcFk6Q51k7Z2yFeoxA9RPfaH1zQ2rV4XEwTvtoPxVbtoY9MDlheL0XL1NwCs8XFCn5vihkhrA2LiZ99VeQU3521+E2A==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB4844.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f23fbeed-4ad9-402f-836b-08dee3d9b0a9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jul 2026 08:02:04.4132
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8D2sF3LhHmw5gVSXqoP506AGO6ueAXT6c6Nul21sJ+h3XijB0DcgFE2+c9MP9ZqYc+0hv8U/pG3Mpl64LwmnbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5977
+X-OriginatorOrg: intel.com
 
+> From: Matt Evans <matt@ozlabs.org>
+> Sent: Thursday, July 16, 2026 1:47 AM
+>=20
+> Preparing for a refactor in a subsequent patch, split the pool-related
+> release code into a new pci_p2pdma_release_pool() function.
+>=20
+> This allows future compile-time selection of a null implementation for
+> pci_p2pdma_release_pool(), when p2pdma.c is refactored into core- and
+> P2P-related files.
+>=20
+> Signed-off-by: Matt Evans <matt@ozlabs.org>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 
-
-On 7/14/2026 7:16 PM, Leonardo Bras wrote:
-> On Tue, Jul 14, 2026 at 04:58:37PM +0800, Tian Zheng wrote:
->>
->> On 7/13/2026 10:50 PM, Leonardo Bras wrote:
->>> On Thu, Jul 09, 2026 at 06:40:26PM +0800, Tian Zheng wrote:
->>>> From: eillon <yezhenyu2@huawei.com>
->>>>
->>>> HDBSS buffers store per-page dirty state after the stage-2 page tables
->>>> have been split down to page granularity (chunk_size == PAGE_SIZE).
->>> chunk_size != PAGE_SIZE now, but that should change as well :)
->>
->>
->> Thanks, I'll clarify the comment in v5.
-> 
-> By the discussion we are having in the HACDBS patchset, I think we can't
-> assume the pages are split in the future. :\
-> 
-
-Agreed.
-
->>
->>
->>>
->>>> When chunk_size == 0 the kernel may lazily skip splitting block mappings,
->>>> leaving the page table coarser than what HDBSS expects. Therefore,
->>>> enabling HDBSS requires disabling lazy split so that all block mappings
->>>> are eagerly broken down before the buffer starts recording.
->>> (See cover letter reply)
->>>
->>>> Add VM-level HDBSS enable/disable support. When dirty logging is
->>>> enabled on any memslot, HDBSS is automatically enabled. When dirty
->>>> logging is disabled on all memslots, HDBSS is automatically disabled.
->>>>
->>>> This includes:
->>>> - kvm_arm_enable_hdbss_global() to enable HDBSS for all vCPUs
->>>> - kvm_arm_disable_hdbss_global() to disable and free HDBSS buffers
->>>> - kvm_arm_hdbss_on_dirty_logging_change() for auto enable/disable
->>>> - kvm_arch_destroy_vm() cleanup path
->>>> - kvm_arch_commit_memory_region() integration
->>>>
->>>> Signed-off-by: Eillon <yezhenyu2@huawei.com>
->>>> Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
->>>> ---
->>>>    arch/arm64/include/asm/kvm_dirty_bit.h |   2 +
->>>>    arch/arm64/kvm/arm.c                   |   8 ++
->>>>    arch/arm64/kvm/dirty_bit.c             | 105 +++++++++++++++++++++++++
->>>>    arch/arm64/kvm/mmu.c                   |   3 +
->>>>    4 files changed, 118 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
->>>> index 4b28000e972f..a4cda8cdab24 100644
->>>> --- a/arch/arm64/include/asm/kvm_dirty_bit.h
->>>> +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
->>>> @@ -23,5 +23,7 @@ int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
->>>>    void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
->>>>    void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
->>>>    int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
->>>> +void kvm_arm_hdbss_on_dirty_logging_change(struct kvm *kvm, int nr_memslots_logging);
->>>> +void kvm_arm_disable_hdbss_global(struct kvm *kvm);
->>>>
->>>>    #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
->>>> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
->>>> index 566953a4e23a..536d94799ba8 100644
->>>> --- a/arch/arm64/kvm/arm.c
->>>> +++ b/arch/arm64/kvm/arm.c
->>>> @@ -317,6 +317,14 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
->>>>    	if (is_protected_kvm_enabled())
->>>>    		pkvm_destroy_hyp_vm(kvm);
->>>>
->>>> +	/*
->>>> +	 * Userspace may destroy the VM without disabling dirty logging,
->>>> +	 * so the auto-disable path is never reached. Force disable HDBSS
->>>> +	 * here to ensure vCPU buffers are freed and prevent memory leaks.
->>>> +	 */
->>>> +	if (kvm->arch.enable_hdbss)
->>>> +		kvm_arm_disable_hdbss_global(kvm);
->>>> +
->>>>    	kvm_uninit_stage2_mmu(kvm);
->>>>    	kvm_destroy_mpidr_data(kvm);
->>>>
->>>> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
->>>> index 002366337637..c5bf866c23ef 100644
->>>> --- a/arch/arm64/kvm/dirty_bit.c
->>>> +++ b/arch/arm64/kvm/dirty_bit.c
->>>> @@ -112,3 +112,108 @@ int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu)
->>>>    		return -EFAULT;
->>>>    	}
->>>>    }
->>>> +
->>>> +static unsigned int hdbss_auto_select_order(struct kvm *kvm)
->>>> +{
->>>> +	unsigned long npages = 0;
->>>> +	struct kvm_memory_slot *memslot;
->>>> +	int bkt;
->>>> +
->>>> +	kvm_for_each_memslot(memslot, bkt, kvm_memslots(kvm))
->>>> +		npages += memslot->npages;
->>>> +
->>>> +	if (npages <= 16384)
->>>> +		return 0;
->>>> +	else if (npages <= 262144)
->>>> +		return 3;
->>>> +	else if (npages <= 4194304)
->>>> +		return 6;
->>>> +	else
->>>> +		return 9;
->>>> +}
->>> IIUC you are counting the amount of pages the VM has, and based on that
->>> allocating a size for the HDBSS buffer.
->>>
->>> A few notes here:
->>> - It's not really nice to use magic numbers around like this. If you
->>>     actually want to use it, then use stuff like SZ_16K, SZ_256K, SZ_4M and
->>>     so on.
->>> - You are returning magic numbers as well, why is it 0, 3, 6, or 9 here?
->>>     It only makes sense if the person is reading HDBSSBR_EL2 documentation,
->>>     which should not be necessary at this point. That's one reason I
->>>     recommended to using sizes. If that was really the best way to use it,
->>>     I would recommend using the defines that we get from sysreg, and you
->>>     actually used before to set the maximum order on a previous patch.
->>> - Also, if you can return only valid values here, why do you check against
->>>     the maximum value in that previous patch?
->>> - Also, are you using some undisclosed rule here? On 'order 0' the
->>>     meanining is 4KB, which translate to 512 HDBSS entries. Why are you using
->>>     it for any value under 16K? Same for 3-32KB-4kEntries you use for under
->>>     256K pages (and so on). If you are assuming a logical rule such as
->>>     'N pages would be ok with N/32 entries' it has to be described here at
->>>     least.
->>> - Not sure VM size is the best way of doing that, since it will depend
->>>     more on the dirtying rate than the actual size, and most VMs would just
->>>     use the biggest size (4M x 4K pages is just 16GB). For instance with
->>>     dirty_ring we can use the dirty_ring.size as a better option.
->>>     (I know this is a hard one to estimate when using dirty-bitmap, though)
->>
->>
->> I'll replace the magic numbers and also add a comment in the next version
->> explaining
->>
->> the mapping between the thresholds and the order values.
->>
->>
->> On auto-choosing the size: VM memory size is a simple starting point, but I
->> agree it's
->>
->> not ideal. For dirty-ring mode we could use dirty_ring_size as a reference;
->> for dirty-bitmap
->>
->> mode there's no equivalent, so I don't have a good answer yet. I'd really
->> appreciate any
->>
->> suggestions from the community on a better idea for the dirty-bitmap case.
-> 
-> I am thinking that we could use a default value (say 1 PAGESIZE/vcpu) and
-> add an ioctl to optionally increase this value. This way we don't require
-> a new interface to benefit from HDBSS, but allow users to tune it.
-> 
-
-That makes sense. I think we can use a default value (e.g., 1 page per
-vCPU), but I'd prefer not to expose any ioctl for userspace to configure
-it. Since the kernel auto-enables HDBSS, a userspace size knob would be
-confusing — similar to what I mentioned in the discussion at [1].
-
-[1] 
-https://lore.kernel.org/linux-arm-kernel/3fb4b33e-4618-4523-b140-955e15fd9a8c@huawei.com/
-
->>
->> Also, since we automatically enable HDBSS in the kernel, the check against
->> HDBSS_MAX_ORDER is redundant. I'll remove it.
->>
->>
->>>> +
->>>> +/*
->>>> + * Enable HDBSS for all vCPUs in the VM.
->>>> + *
->>>> + * Called from kvm_arm_hdbss_on_dirty_logging_change() which is invoked
->>>> + * by kvm_arch_commit_memory_region() under kvm->slots_lock.
->>>> + *
->>>> + * If buffer allocation fails, HDBSS remains disabled and dirty tracking
->>>> + * falls back to the traditional software-based approach (PTE write-protect
->>>> + * + software dirty marking). This does not affect correctness; dirty
->>>> + * logging remains functional without HDBSS.
->>>> + */
->>>> +static int kvm_arm_enable_hdbss_global(struct kvm *kvm)
->>>> +{
->>>> +	int err;
->>>> +	unsigned long i;
->>>> +	unsigned int order;
->>>> +	struct kvm_vcpu *vcpu;
->>>> +
->>>> +	if (!system_supports_hdbss())
->>>> +		return 0;
->>>> +
->>>> +	if (kvm->dirty_ring_size) /* Don't support HDBSS in dirty ring mode */
->>>> +		return 0;
->>>> +
->>>> +	if (kvm->arch.enable_hdbss) /* Already On */
->>>> +		return 0;
->>>> +
->>>> +	/* Turn it on */
->>>> +	order = hdbss_auto_select_order(kvm);
->>>> +	kvm_for_each_vcpu(i, vcpu, kvm) {
->>>> +		err = kvm_arm_vcpu_alloc_hdbss(vcpu, order);
->>>> +		if (err)
->>>> +			goto error_alloc;
->>>> +	}
->>>> +
->>>> +	kvm->arch.enable_hdbss = true;
->>>> +	kvm->arch.mmu.vtcr |= VTCR_EL2_HD | VTCR_EL2_HDBSS | VTCR_EL2_HA;
->>>> +
->>>> +	/*
->>>> +	 * We should kick vcpus out of guest mode here to load new
->>>> +	 * vtcr value to vtcr_el2 register when re-enter guest mode.
->>>> +	 */
->>>> +	kvm_for_each_vcpu(i, vcpu, kvm)
->>>> +		kvm_vcpu_kick(vcpu);
->>>> +
->>>> +	return 0;
->>>> +
->>>> +error_alloc:
->>>> +	kvm_for_each_vcpu(i, vcpu, kvm)
->>>> +		if (vcpu->arch.hdbss.base_phys)
->>>> +			kvm_arm_vcpu_free_hdbss(vcpu);
->>>> +
->>>> +	pr_warn_once("kvm: failed to allocate HDBSS buffers (order=%u), "
->>>> +		     "falling back to software dirty tracking\n", order);
->>>> +	return -ENOMEM;
->>>> +}
->>>> +
->>>> +void kvm_arm_disable_hdbss_global(struct kvm *kvm)
->>>> +{
->>>> +	unsigned long i;
->>>> +	struct kvm_vcpu *vcpu;
->>>> +
->>>> +	if (!kvm->arch.enable_hdbss) /* Already Off */
->>>> +		return;
->>>> +
->>>> +	/* Turn it off */
->>>> +	kvm->arch.mmu.vtcr &= ~(VTCR_EL2_HD | VTCR_EL2_HDBSS | VTCR_EL2_HA);
->>>> +
->>>> +	kvm_for_each_vcpu(i, vcpu, kvm)
->>>> +		kvm_arm_vcpu_free_hdbss(vcpu);
->>>> +
->>>> +	kvm->arch.enable_hdbss = false;
->>>> +}
->>>> +
->>> Okay, say the user requested it to be disabled, you change the global vtcr,
->>> then free the hdbss on every vcpu.
->>>
->>> But the vcpus are still running, and since they will only disable this when
->>> they go out of the guest, then in again, HDBSS will still be running,
->>> right?
->>>
->>> If some page gets dirty in the between, would not the HDBSS try to write to
->>> the already loaded buffer adress, and write to memory that have already
->>> been freed here?
->>>
->>
->> You're right — this is a race condition. I'll fix this in v5 by clearing
->> VTCR_EL2_HDBSS from
->>
->> kvm->arch.mmu.vtcr first, then kicking all vCPUs to force them to exit guest
->> mode and reload the config.
->>
->> Once all vCPUs are out of guest mode, it will be safe to free the HDBSS
->> buffers.
->>
-> 
-> That would be safer, indeed.
->   
->>
->>>> +void kvm_arm_hdbss_on_dirty_logging_change(struct kvm *kvm, int nr_memslots_logging)
->>>> +{
->>>> +	/*
->>>> +	 * Called from kvm_arch_commit_memory_region() under kvm->slots_lock.
->>>> +	 * All state transitions are serialized by slots_lock.
->>>> +	 */
->>>> +	if (nr_memslots_logging > 0 && !kvm->arch.enable_hdbss)
->>>> +		kvm_arm_enable_hdbss_global(kvm);
->>>> +	else if (nr_memslots_logging == 0 && kvm->arch.enable_hdbss)
->>>> +		kvm_arm_disable_hdbss_global(kvm);
->>>> +}
->>>> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->>>> index 949fb895add6..484f48dae000 100644
->>>> --- a/arch/arm64/kvm/mmu.c
->>>> +++ b/arch/arm64/kvm/mmu.c
->>>> @@ -2588,6 +2588,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->>>>    {
->>>>    	bool log_dirty_pages = new && new->flags & KVM_MEM_LOG_DIRTY_PAGES;
->>>>
->>>> +	kvm_arm_hdbss_on_dirty_logging_change(kvm,
->>>> +		atomic_read(&kvm->nr_memslots_dirty_logging));
->>>> +
->>>>    	/*
->>>>    	 * At this point memslot has been committed and there is an
->>>>    	 * allocated dirty_bitmap[], dirty pages will be tracked while the
->>>> --
->>>> 2.33.0
->>>>
->>> Okay, reading the above I remembered something really complicated:
->>> We can't really enable HDBSS partially if we start with DBM set for all
->>> pages. Once we enable HDBSS wit will track changes for all memslots.
->>>
->>> The only way to enable it partially would be to set DBM during the
->>> dirty-bit tracking, which I recall being complicated for some reasons.
->>>
->>> Well, we have to think about the overall strategy before a next version.
->>>
->>> Thanks!
->>> Leo
->>
->>
->> Yes, I did consider this when I switched to global DBM injection in v4.
->> There are
->>
->> indeed some scenarios that are harder to control:
->>
->>
->>
->> Firstly, for lazy split, if we add the DBM tag lazily during live migration
->> dirty tracking (like v3 did),
->>
->> the first write to each page would trap. That trap serves two purposes: it
->> gives us a chance to split
->>
->> hugepages on demand (lazy split), and it ensures the DBM addition happens at
->> a safer, more controlled point.
-> 
-> It also allows us to do the dirty-tracking by slot, which is not possible
-> with the v4 approach.
-> 
-
-I think the per-memslot tracking capability is not a critical
-requirement. As I mentioned in my earlier reply [1], we can follow the
-same approach as PML on x86 — filtering at flush time works just fine.
-
-[1] 
-https://lore.kernel.org/linux-arm-kernel/a240e7a6-cd22-4fe4-a01d-472c95cc65e4@huawei.com/
-
->>
->> However, because v4 enables HDBSS and DBM upfront, we lose that initial
->> trap. That's exactly why we
->>
->> now rely on your eager hugepage splitting patch as a mandatory dependency.
->>
-> 
-> Correct.
-> 
->>
->>
->> Secondly, I'm also concerned about whether global DBM injection could
->> accidentally mark pages
->>
->> that shouldn't be tracked — for example, pages with special mappings.
-> 
-> Well, if we want to not track those pages, we have just to make sure we can
-> detect them and not mark them with the DBM bit.
-> 
->> If
->> that's possible, then the
->>
->> lazy approach (only adding DBM on the first write fault) would be safer
->> because it only touches pages
->>
->> that are actually written to.
->>
->>
->>
->> So I'd like to ask: is avoiding the first-trap overhead worth the potential
->> risks of global DBM injection?
->>
->> Or do you think the lazy approach is actually safer overall? I'd appreciate
->> your thoughts on this trade-off.
->>
-> 
-> Well, even though performance is important, the decision to set DBM bits
-> for all writtable pages at their mapping time was not driven by
-> performance, but instead by an issue with setting DBM while the VCPUs were
-> running. I have to rework what that was, and check if that is still an
-> issue, before we can even discuss what to do next :(
-> 
-> But the fact that the 'eager DBM setting' makes dirty-bit tracking start
-> global, instead of per-memslot, is something we have to consider as well.
-> 
-> 
-> Thanks!
-> Leo
-
-
-That makes sense. I think global eager DBM is workable.
-
-Thanks!
-Tian
-
-> 
-> 
-> 
-> 
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
