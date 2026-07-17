@@ -1,99 +1,146 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5921B3ECBF1
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 10:28:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1783D891B;
+	Fri, 17 Jul 2026 10:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784284128; cv=none; b=aC40fLkwBqDjZ0bLySM8F6Jkoln+xZgigsnmYS6DPOXqbNXIe6f3fPksJkBY75PJiwHhbgBlS1gl02NlbgH/05wu8N1SVYD4Mzdkoj3AfUztV7h5OmPj/bs2GXAygtFWcsMstFMjq+rMr2IRGVZSQBFkmaE/VsEcng5tJ5jBsVE=
+	t=1784284341; cv=none; b=D/JGDu6zbvKtq3+WJvFcvpuJUjxTGs+DdPq6mf5c98AoPPKZTgnTHwlSMMDK70PfIMqt/RWSosm0juLScv22sUB7QT8+e9o53PEwan6rOqvq81n10qDBvjAQHYrDJEEGlCo10vOlzWcUBZOzPgIeC16XmsRnFEd26PaQqVteICs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784284128; c=relaxed/simple;
-	bh=5vxcZkzEtmN43OFsk6YElbKdFFPmtXw6xx1BuTII70M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nRbdunb8il1RCwpFoUonzJ+GZSZzT5+7+gOKNtN6IWd3g6rPzsOViKsZG6fpHz8INV9r6n1HUHstWpAdc+UaIE9q0PROBC1CBaF4aW8fGWT3D6xv5YXw50ZDIQxBJn6AaU38ZevRsQkEF0nWyqRyOmpbnyJjl1En9bgrE4tSYgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TlXlQ5YL; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784284341; c=relaxed/simple;
+	bh=C46UBqr0Mf+iu19SS+N/tyqFtIZ40VVzqDtF0Wahcmw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N9pBZ1lsns24n3Q3aDjd49oIceOT3+lTw1D75UuwI770Km4RHglt3jj7DeqtTaVDpF+rjAm6UMhSuZPx1cEwq5ao49z+D4pdx6awUhtSKKFMI+MOZuEgTskpr9uXrJ8XN04KQvzV7Uv2Gs4afrVcIX6s5xYWv+Xrd5eV+Z8iXH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sUn56Fkn; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TlXlQ5YL"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5823C1476;
-	Fri, 17 Jul 2026 03:28:40 -0700 (PDT)
-Received: from [10.57.41.23] (unknown [10.57.41.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1F41B3F7D8;
-	Fri, 17 Jul 2026 03:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784284124; bh=5vxcZkzEtmN43OFsk6YElbKdFFPmtXw6xx1BuTII70M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TlXlQ5YLScUb+Tklku+f3lBDRai7frJfu8g0dE0QVqodDSgEeFqVbNpBu7S3B4gwc
-	 +ePN5Gu23RoOCcOman2Ix/Quuw/G0aZsUeLhGbIAxwuw4TL9aW/LUNV1iV8lRGQHpN
-	 MhAYcqZZEixiIyKFFK3fazc1SivJypgrohu+ButA=
-Message-ID: <ec5210e5-eef1-4188-b094-74908046533e@arm.com>
-Date: Fri, 17 Jul 2026 11:28:42 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sUn56Fkn"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66H6fsBU1278634;
+	Fri, 17 Jul 2026 10:32:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=32ycj5wkabR/zyHT6uGXLOtsByyh/P
+	AilrRb6WoKBe4=; b=sUn56Fkn5YUuvpNo0ZLm/bl0F8/FUXmZKg10pN0RSFtC0u
+	7SEilu3qK0An0hozLEDTX5plCwZJXcvQyiJjL42r7aoDEyceAxCghq0AF8euAUpZ
+	py7FepNqquNpsK4pXoY9ymTU3gDrjmW1XgkVxJ6EpUqY9pNdrcIaZkxTlvtHGSOp
+	qatE3zeUnbci5GakQ6DEnNJC3JyHND7ZuZearUfduxjNBvA5RwIiK04uMXgOsEft
+	TmbCC8rgD3pQjJk2XRSSET8NsHSynVhz8LNeew2Zf10zZhAP1scLs5z9JozieEV4
+	q4yLbNWCAOLiXb+KcXyc4RJ+JUE7XHZ5E26D1uDQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fbegc4xwg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 10:32:17 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66HAJZHv007812;
+	Fri, 17 Jul 2026 10:32:16 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fc1nhs5te-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jul 2026 10:32:16 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66HAWCuL22217074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jul 2026 10:32:13 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D68722004E;
+	Fri, 17 Jul 2026 10:32:12 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A1FE2004B;
+	Fri, 17 Jul 2026 10:32:12 +0000 (GMT)
+Received: from osiris (unknown [9.111.76.206])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 17 Jul 2026 10:32:12 +0000 (GMT)
+Date: Fri, 17 Jul 2026 12:32:11 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] KVM: s390: pv: Use VM_SPARSE area for guest
+ variable storage area
+Message-ID: <20260717103211.9583B33-hca@linux.ibm.com>
+References: <20260717092415.3039699-1-hca@linux.ibm.com>
+ <20260717092415.3039699-2-hca@linux.ibm.com>
+ <20260717094008.03CCD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH kvmtool v3 0/4] Add guest_memfd support for arm64
-Content-Language: en-GB
-To: Fuad Tabba <fuad.tabba@linux.dev>, kvm@vger.kernel.org
-Cc: kvmarm@lists.linux.dev, Will Deacon <will@kernel.org>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Andre Przywara <andre.przywara@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Marc Zyngier <maz@kernel.org>,
- Fuad Tabba <tabba@google.com>
-References: <20260712142536.1391557-1-fuad.tabba@linux.dev>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260712142536.1391557-1-fuad.tabba@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717094008.03CCD1F000E9@smtp.kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=fOcJG5ae c=1 sm=1 tr=0 ts=6a5a04b1 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=ekNSB3zd-DSi9SQrBuYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDEwMiBTYWx0ZWRfX7OCiI6xD4LA1
+ 4hMdZk1TJLtvvghWXtJcBNXL46va4U1ZkcIlJTXsQS8eDooMFf9zxFNYY8oPdeIC8KB7wQkqnNt
+ +p7x2/emGSyKuHWmegKgk1ogbTG/swruTRQboP+hb5V5W/0BBO5L1WyvNf//esdnrJ+lWixwVVP
+ 2BBXlre1sB9Rk8HUDTuQ1pglXayMNVausI2bnTejoORfNJDvGYtgxqfXOrWDHqAdi/o67FenSMK
+ AjOX5MJYWDKrzx1QEG2G4e7cp+CCeMvKw4lDhHGO1wnNMnxIRycGyLZmPI3jERSFngviesTjTu4
+ fltBqwrvzSqdm99wKR4cA6+5U07Foi8nwVfhOLG4xNj3+48Sl6GQ0p3zXe4uaBxKckNLmo/9rTL
+ PggB/FhuQwCyqB/Pljj7RVkP2gpSaKN9rL4sRorOyExiKh8qbBhmzmnk0pwWSsRjwfnAOXTqbJo
+ I+G8AvzNIIDzFisUJkw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDEwMiBTYWx0ZWRfX5Gc7QN6z7XaT
+ uab6HDo4e1zQL22rgXSG9xHSEfkPj0Phj0yVOrAvOPHSgH14HodrEbGHPuIU23wnSBF3IanXXp8
+ AyNGjm4JUnr4y4h2Mj44zdPaAeEgZjs=
+X-Proofpoint-GUID: F2YDvbvWq3Gd56F1aBHo9oJ3X-ns3_iR
+X-Proofpoint-ORIG-GUID: F2YDvbvWq3Gd56F1aBHo9oJ3X-ns3_iR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-17_02,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607170102
 
-Hi Fuad
+On Fri, Jul 17, 2026 at 09:40:07AM +0000, sashiko-bot@kernel.org wrote:
+> > +static int uv_free_range_cb(pte_t *ptep, unsigned long addr, void *data)
+> > +{
+> > +	pte_t pte = ptep_get(ptep);
+> > +
+> > +	if (!pte_present(pte))
+> > +		return 0;
+> > +	/*
+> > +	 * Note: do not update the pte here, since there is no code which
+> > +	 * accesses the memory range, besides bugs. The invalidation of ptes
+> > +	 * and TLB flushing is deferred like for regular vfree() calls.
+> > +	 */
+> > +	__free_page(pte_page(pte));
+> 
+> [Severity: High]
+> Does this create a window where the physical page is freed to the buddy
+> allocator but still mapped in the kernel page tables?
+> 
+> If another CPU reallocates the freed page before free_vm_area() unmaps and
+> flushes the TLB, could speculative execution or a stray kernel access to the
+> old virtual address read or corrupt the new owner's data?
 
-On 12/07/2026 15:25, Fuad Tabba wrote:
-> Hi folks,
-> 
+Intended per comment above.
 
+> > +static int uv_alloc_range_cb(pte_t *ptep, unsigned long addr, void *data)
+> > +{
+> > +	struct page *page;
+> > +	pte_t pte;
+> > +
+> > +	page = alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+> 
+> [Severity: High]
+> Can this allocation sleep while holding a spinlock?
+> 
+> The apply_to_page_range() function loops over the page tables and acquires
+> the page table spinlock (ptl) via pte_alloc_map_lock() before invoking the
+> callback.
+> 
+> Since GFP_KERNEL_ACCOUNT implies __GFP_DIRECT_RECLAIM, which can sleep
+> and invoke the scheduler, could calling this while holding the page table
+> spinlock trigger a scheduling while atomic bug or deadlock?
 
-> Due to popular demand, i.e., Alexandru asking me about it, I repolished my
-> guest_memfd support series. The one I sent years ago was stale and
-> over-engineered, so this is a fresh start instead.
-> 
-> This series adds support for backing guest RAM with guest_memfd on
-> arm64, for non-protected VMs under both regular KVM and pKVM.
-> 
-> The first two patches are standalone fixes in the code this series
-> builds on: an uninitialized return value in kvm__for_each_mem_bank(),
-> and doubled newlines in die() messages. Patch 3 adds guest_memfd
-> plumbing to kvm__register_mem(), using kvm_userspace_memory_region2
-> only for guest_memfd-backed slots.
-> 
-> A new --guest-memfd option creates guest RAM from a guest_memfd with
-> mmap support (GUEST_MEMFD_FLAG_MMAP and GUEST_MEMFD_FLAG_INIT_SHARED,
-> Linux 6.18+), maps it to provide the userspace mapping, and registers
-> it with KVM_SET_USER_MEMORY_REGION2.
-> 
-> Protected VMs need in-place shared/private conversion of guest_memfd,
-> which is still in progress in the kernel [3], so --protected rejects
-> the option.
-> 
-> Based on kvmtool master (ca0ddafa941d).
-> 
-> Cheers,
-> /fuad
-> 
-> [1] https://lore.kernel.org/all/20260708182239.1489297-1-fuad.tabba@linux.dev/
-> [2] https://lore.kernel.org/all/20260706083555.302972-1-fuad.tabba@linux.dev/
-> [3] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com/
-> 
-> Fuad Tabba (4):
->    Initialize the return value in kvm__for_each_mem_bank()
->    Remove newline from end of die() aborts
->    Add support for registering guest_memfd-backed memory regions
->    arm64: Add --guest-memfd option to back guest RAM with guest_memfd
-
-Thanks for reworking this again ! For the series:
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-
+Odd... this is not true if apply_to_page_range() is called with init_mm.
