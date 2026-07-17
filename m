@@ -1,162 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE0733D6ED
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EB03EB0FE
+	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784305914; cv=none; b=oJ5dGo7JwD5/VybyX17Lr8QwYQW2FghObcVnZLvn2uBLGgN1ypI4Q455Nk6Fv2N90llcefBNEUat2xv7J70xwr62yfgdGpiCUfzeij9Xl6DhX43hKgxAXND9ARLz6WM/OmWKWHgmruqrZSe1EJb0tPiQ4e+Or8CcLnrqktbRwIE=
+	t=1784306577; cv=none; b=M7X9PI8mPx2xUGz/KOI3NbeLgS2RpsqRKPx92S3ItSspz/INSgpv8uyhsLTNxeNZkc3XBjmPMBrTkDZVUxoMeXcFivqKIoISydzec6eVb4xNcsS73bGwRnoGVKcSnsc3scEczmwFUKFH6T9FDoUMOOj46gK+6bjcGnPL4/vGDLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784305914; c=relaxed/simple;
-	bh=CBfSqK2AvgdhR+Bzp0CO34iyovUNpliOo+OgVtl30zk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ut1vYzewij2bZVEJs+0mDWlotfDEKmgMU36C/ht7BwWUb1+ovawfKYZ0Hny697T2oB/M/zrnO8JK1n7RimEtqpa7tsSmqYt4SnZnPFlpTOsIi/BoZXbXQOwOZm5ekYjB2LqmNHDS/cHvGScsxCgf3jKLeTva2vPA4n30mACGEDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bsn0bczL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pmsu/1kO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784306577; c=relaxed/simple;
+	bh=b4h/3lJgzRH57MMe6fFpjc94WasnosnTFzGtQ4QeaIA=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=RCwC6zDFVmfoEZoR4m2doE5AIuYrkL/VbF5d9acXlWH5FOdwZ92cKKmHTYrTLn8Ex9UDiXvk9ffYywFEl9eUEjz11HiyfGFo2/4r2sP+9n+bVcpcdNV2HBzm/rz4R8BfiobDxxGatcxnQpFpCFMyO5V6rIQDv4zxyqmOOj98N0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digiscrypt.com; spf=none smtp.mailfrom=digiscrypt.com; dkim=pass (2048-bit key) header.d=digiscrypt.com header.i=@digiscrypt.com header.b=Vw7jwplO; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=digiscrypt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=digiscrypt.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bsn0bczL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pmsu/1kO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784305906;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
-	b=Bsn0bczLdgO6ODU5YGth9ShbPJ3wdpdgDnC1jBL7O3u0AQtABAu140HnkQkgKOUUBfpdqf
-	EXFDSvXEcYaXi08BbTS9mF3qo6YTRu9CPpnQvin+0HSc8TM0Qw/d9ySobltthCAgrMmqVx
-	aF/Yiec2y5zrkD4bebIk9zTlYL1DP6Y=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-VrTNuIcaPQy73cI2JpA53g-1; Fri, 17 Jul 2026 12:31:44 -0400
-X-MC-Unique: VrTNuIcaPQy73cI2JpA53g-1
-X-Mimecast-MFC-AGG-ID: VrTNuIcaPQy73cI2JpA53g_1784305904
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47162f83c75so1059595f8f.1
-        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 09:31:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=digiscrypt.com header.i=@digiscrypt.com header.b="Vw7jwplO"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cca0c5799eso56251965ad.0
+        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 09:42:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784305903; x=1784910703; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
-        b=pmsu/1kO3IEzA0DlV0HiXQ8K2bWbTiZGG/mO30bjNoIOvT6VJ+3+OJQGrwoECz/TPm
-         R9N/2xlwrePe/ltmpQxigppFTDoz29ArGPTWKusY0ZElIpv2A7toofijes4u9FnTGlit
-         kBNzgIcZdKJGFEbmRpelZVvrO0RVSewn+J8g4riTCBeWi3jA4KoMPPVBXElTrzZK2ft8
-         eIg3VkFV79CWYc4X6SjQV0CRtFWpTjvCV7JhS05AsopW0CU2ylr6+nNFcEH8XTtkCPSJ
-         JllRyuQcKxgfrmcDZnzLQSGH/RppFgitwC5jcIEgtlfGa2idBu7yg146zmyeydSsCUtp
-         qDqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784305903; x=1784910703;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=digiscrypt.com; s=google; t=1784306575; x=1784911375; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=J0HLfgnrtjxNOO4Lwlf1DY9lZMzmjOSTkB4j+MM+kqU=;
-        b=mWCaoT6BxD4DRQuulYcao0+X18lp/wfOdjlJmqJXQeF3o7g5f+NxZ0Txn6+z4MUA9D
-         K/vCtYocAuckRA8MX65qD2OIbBm7xjRhURttd8DlfvICgsPfbI4os5l4Ql6h61vEw5hR
-         rCmvKlNienVyqQ5t/KDg8+39HkgN5YXNfY07IPWpymU29BHgsWWFBjDFB0voicDDlKdr
-         r+Ldnr+PQYOLrcmMpF36BpV563i4tc2H3WkXR4wXJfw59558vxIHVMMtLNm5zY/qAT2u
-         2cA6Otues+ggbZyPABe+B0IBYkpa8vVKXJq+/hWXptypQeK8D+y4uw4pwxdi9IsjU30l
-         8/eQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoT1Q9/PhCdjTaCj+ufd9C+fiTTrKp8G+7izxs/9ndhhBHmdv7qA/Q8yD6XRuc6GVpIMVg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCAyFO8FeFRbjQL+glSLNfl2yLr4EpeiiId6MBUP21d1/S1Q65
-	GQZao8XLDeKgiI/fs3KT2sbClHKBEV8Z/e57ztxGew0nqyza9yxD7MdNjjpH6I6UBP9ECZ6kRq1
-	/vWGFMrl08gwSWca3reC5QzhLAx/P2c1LXCD+usa8qLo5o7hJfxIw8A==
-X-Gm-Gg: AfdE7cmnA9qamTqy9fZSyQUFaPiX8F/2h7gXYBq8gWIvtDxVDRMeasc1T3Pk41fX+2b
-	BG3yjnKSWnq1N4u1GTySoC/D6n2mYKWLAl9uR+SuO/+Dq8trY3mr952rwl8fchcJhYnm8ygtnBY
-	9BVMCEtnVhuaD1GdtG69KbXpFwWOOM5xwb90w7+fVB27a17gw4Gdx95oUXQaFlKt/E8AW+pa0N9
-	6uogfCNkLOto+y6t4UeOd5EwVKvMhyjeE83kaxAOOs94S7hZIzIvzxP707rgvxmr2VNMEvZNNi+
-	7UfGcuMDlXUEu2mXN/v8qNeHMv3T4cjt4K8ipr/Vp8SE04qh/DWbd+ah6Vr4UR6MgfKjuiJquC4
-	EQuNK8Plb8t147FZ89hq6oxOq
-X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407840f8f.22.1784305903418;
-        Fri, 17 Jul 2026 09:31:43 -0700 (PDT)
-X-Received: by 2002:a05:6000:2f85:b0:46e:6959:35a7 with SMTP id ffacd0b85a97d-47f623e803emr4407792f8f.22.1784305902878;
-        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-24-117.inter.net.il. [80.230.24.117])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63eeece9sm5310864f8f.37.2026.07.17.09.31.40
+        bh=QC+n+EJ2UpdBE53WiVqkFtqwQlqlsxDuXStZpPkZEEk=;
+        b=Vw7jwplOF6qhhvSUQc3lrfuwE544POAKZ+GeCtoP0ZgLu3k+rUFDobXRSppS/Ifk+c
+         zmZL8JUN1bk0P14gpscsqmbS0aX9LhhRYi5CoHCrRNae0v5lQ+tvTiB1v5jHJfRlUMzj
+         6p+5jTPEWjpWCXsCM1lG9Os5vxwJBBOQPKGdHe8HGukADhIcgXiQt41XAcJvYIWIX/TU
+         NZlo/e/HrRC1FgHrr2Yz/OiVExhSqA8Giv8G5D3wId5hvtUzrnBhjE/Wm6/CRnF5lpt4
+         SVq5PYRMN9S8tsqt8O1eZsGhOu0VrTapbaPaTzIh2Dr28eniYQr+k+yd4rQ+vroff+s8
+         y7gQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784306575; x=1784911375;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QC+n+EJ2UpdBE53WiVqkFtqwQlqlsxDuXStZpPkZEEk=;
+        b=O9ITx2TEIgvirD5LDb15W8OkGzUOb9bUpfeEhFvSoqSnMYpd+dUhCmIse2G0NirRva
+         DE2baTT4oc8GFVDGe9DBWNQk9kNal5Iv1/OLYYtbOnBNIN2pLsyXf3X2TNij/GGpgrtB
+         kmnoBK71h7Gctf0RiTq4wTlxJAJYacZfsI0FDxdfzwc1OCUa7nBA7PNaW3ua9qg6YhnT
+         UIW7WnL9QTGs66Lb/oO+iB7XzsN17VEOA+KRvZL5CxUfK+aMv3C8L7mMBh09+/E0822p
+         4gRAOCCedppU+0vz5zXRns1N5YL9fBNxdqF89zg9y8b8D3vCd66Yc0cX326xOsG73T3x
+         Zt7Q==
+X-Gm-Message-State: AOJu0YxC3KQbbg360etDRtj9/PrlcgMitJKmjLYlSZQq2pK26z04DF2V
+	nfR7vQMUXT5DCWIbQAu5IiUK96WZPuBH1r7i6XOcV/tOphLqitmFQFq8FvN1CcBpLw/LTKCRYbx
+	LUbd0Ilau
+X-Gm-Gg: AfdE7cm8rmtdOGmacUfoNKxAVR2K6mGqwY+QgnBSYAK7wZXgUtvuhTR5SElpgtkdc2M
+	V0QR5lovXc8mdyPD1Eywfkb2/dk4SVL3+NST0qkiF10wjhgF2Gvc8yDToWyx8uPcNJH84tFB9g3
+	8RZJzBRWwGJLX/sV5SE8LSFoIR3lM+g6sStCEn3RoCjeQMvpTDiCGJlgZOKorDC70VWSsdq8N/w
+	UAFPvX0GV2e9i8hymknLjMxXNBRxtUbMHBpDLkBJN1apqPTRO5G2B+vbvHRZL4OR6YSLsLfZM1a
+	FSHHj5wkLWtMyCjBhnLVwweCoVhMNivE9UqYkwiNEML81Ucy70jdaz+AALEFK6p1xD1xQy1eyQz
+	Am6+D+VM59XhjpFmrBIxJmuSIxXdjTfQh2H3C50QRTmO0V5Gr4O6teAk12iKaSN+7C2K6tSP57U
+	TI9BCWdpTXsgs3NST/1Pai8r5sxfB31sHkqSKNW++2W7jD0nqsxbj5gqJhRDXz53HP6kXkU5TRA
+	PKHkIUNJpxVKdfRvmSF+4RpdGd5YM/6P5tNpPfmDx1gSPJ1bRHZGOwjou62lVLsdUzm2c4AYMIg
+	0Xz7hAM=
+X-Received: by 2002:a17:903:440c:b0:2ca:1594:451e with SMTP id d9443c01a7336-2cf3496b583mr39682645ad.31.1784306574730;
+        Fri, 17 Jul 2026 09:42:54 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([81.17.122.65])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3448dac2sm14434255ad.3.2026.07.17.09.42.53
+        for <kvm@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 09:31:42 -0700 (PDT)
-Date: Fri, 17 Jul 2026 12:31:39 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Mike Christie <michael.christie@oracle.com>
-Cc: Jia Jia <physicalmtea@gmail.com>, jasowang@redhat.com,
-	Linfeng Sun <slf@hdu.edu.cn>, pbonzini@redhat.com,
-	stefanha@redhat.com, eperezma@redhat.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL count
-Message-ID: <20260717123129-mutt-send-email-mst@kernel.org>
-References: <20260717142205.103515-1-physicalmtea@gmail.com>
- <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
+        Fri, 17 Jul 2026 09:42:54 -0700 (PDT)
+From: Naveed Khan <naveed@digiscrypt.com>
+To: kvm@vger.kernel.org
+Subject:
+ [PATCH] LoongArch: KVM: Initialize vector array in dmsintc_inject_irq()
+Date: Fri, 17 Jul 2026 22:12:50 +0530
+Message-ID: <178430657065.19695.6391637564764566917@digiscrypt.com>
+X-CodeOps-Marker: fe2013c4e57a43cdafc770bff6cd6205
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8f5b5350-0be9-4b79-a6c9-069d418dee30@oracle.com>
 
-On Fri, Jul 17, 2026 at 10:13:36AM -0500, Mike Christie wrote:
-> cc'ing Linfeng.
-> 
-> Linfeng also reported this bug and provided a patch that has your check and
-> an extra check to avoid calling into the function in the first place. It's
-> been stuck in some other list.
-> 
-> I think it might be best for Linfeng to re-submit their patch now so it can
-> get merged. For that patch, I think there was one outstanding question left
-> where Michael had asked if the issue was found with AI so the proper tag
-> could be added. I don't think that question was responded to.
+dmsintc_inject_irq() declares the on-stack array 'vector[4]' without an
+initializer and only assigns an element when the corresponding
+ds->vector_map[] word is non-zero:
 
-Right, was waiting for that.
+	unsigned long vector[4], old;
+	...
+	for (i = 0; i < 4; i++) {
+		old = atomic64_read(&(ds->vector_map[i]));
+		if (old)
+			vector[i] = atomic64_xchg(&(ds->vector_map[i]), 0);
+	}
 
-> 
-> On 7/17/26 9:22 AM, Jia Jia wrote:
-> > The protection SGL path passes the result of vhost_scsi_calc_sgls()
-> > directly to sg_alloc_table_chained(). The helper returns a negative
-> > errno when the iterator is invalid or the request exceeds the segment
-> > limit. The negative errno is then treated as a very large unsigned count
-> > and sends the request into the SGL allocation path with an invalid size.
-> > 
-> > Repeated malformed T10-PI submissions from a host-side application caused
-> > memory usage to rise sharply. MemAvailable fell to about 200 MB, and PSI
-> > full avg10 reached about 1.46. The OOM killer terminated several userspace
-> > processes before the endpoint cleanup completed. The kernel log included:
-> > 
-> >      [17036.451028] Out of memory: Killed process 2345 (systemd)
-> >      [17036.493325] Out of memory: Killed process 2349 (sd-pam)
-> >      [17078.265127] Out of memory: Killed process 1793 (networkd-dispat)
-> > 
-> > Return the calculation error before setting up the protection SGL. This
-> > keeps the protection path consistent with the data SGL path and prevents
-> > the invalid count from entering the allocation path.
-> > 
-> > Fixes: bca939d5bcd0 ("vhost-scsi: Dynamically allocate scatterlists")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > ---
-> >   drivers/vhost/scsi.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> > index 9a1253b9d..8486652fd 100644
-> > --- a/drivers/vhost/scsi.c
-> > +++ b/drivers/vhost/scsi.c
-> > @@ -972,6 +972,9 @@ vhost_scsi_mapal(struct vhost_scsi *vs, struct vhost_scsi_cmd *cmd,
-> >   	if (prot_bytes) {
-> >   		sgl_count = vhost_scsi_calc_sgls(prot_iter, prot_bytes,
-> >   						 VHOST_SCSI_PREALLOC_PROT_SGLS);
-> > +		if (sgl_count < 0)
-> > +			return sgl_count;
-> > +
-> >   		cmd->prot_table.sgl = cmd->prot_sgl;
-> >   		ret = sg_alloc_table_chained(&cmd->prot_table, sgl_count,
-> >   					     cmd->prot_table.sgl,
-> > -- 
-> > 2.43.0
-> > 
+It then reads all four elements unconditionally to decide whether to OR
+them into the guest CSR registers LOONGARCH_CSR_ISR0..ISR3:
 
+	if (vector[0]) { ... }
+	if (vector[1]) { ... }
+	...
+
+When a vector_map word is zero, the matching vector[] element is left
+uninitialized. Its stale stack contents are then written into the
+guest-visible ISR registers, both leaking kernel stack data to the guest
+(which can read the ISR CSRs) and injecting spurious interrupt vectors.
+
+The path is guest reachable: a guest-directed MSI sets bits in
+vector_map via dmsintc_deliver_msi_to_vcpu(), and AVEC delivery
+(kvm_irq_deliver() -> dmsintc_inject_irq()) then consumes the
+partially-initialized array. In the common case where the guest only
+uses low vectors, only vector_map[0] is set and vector[1..3] are read
+uninitialized on every injection.
+
+Zero-initialize the array so that words with no pending vectors are
+skipped as intended.
+
+Signed-off-by: Naveed Khan <naveed@digiscrypt.com>
+---
+diff --git a/arch/loongarch/kvm/intc/dmsintc.c b/arch/loongarch/kvm/intc/dmsintc.c
+index de25735ce0..ef6c064e52 100644
+--- a/arch/loongarch/kvm/intc/dmsintc.c
++++ b/arch/loongarch/kvm/intc/dmsintc.c
+@@ -11,7 +11,7 @@
+ void dmsintc_inject_irq(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned int i;
+-	unsigned long vector[4], old;
++	unsigned long vector[4] = {}, old;
+ 	struct dmsintc_state *ds = &vcpu->arch.dmsintc_state;
+ 
+ 	if (!ds)
+-- 
+2.52.0
