@@ -1,272 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA132F7EED
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 17:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB44355814;
+	Fri, 17 Jul 2026 17:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784307843; cv=none; b=htWqoPGxXyfY+i1AELsx3kKuYC0CUIY6XrNPK44l34jl4tfvxuMkssRry+YRKkZMCkUsdHywHhdRQBZkk3ab+ThcQOFXPy7Y7jv8TVRAeFGAMKPF4XuTpHrRNAv4zghlBYtarTltEAZoYtoTLG61MPWjdD2kyfPQqUQc5Gretas=
+	t=1784308371; cv=none; b=mW4Mhua4VetOUiC0LzlrHmVm+kyTv63EsZaScHl7H9nLAE619gMMIJ4yhW7nbz0ryOIWxY+Dafwy3h/OcewNTm7sIKAuMMQAx3sT/QQ71wbKl3rSGG932tofuutm2D3vmHviCHEZ7M5YLQUrePTEY+CFB9F4goebkdHi7dB3oZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784307843; c=relaxed/simple;
-	bh=/NDpFYAO5ySRx7IrVGyt2GwcVfdjd6fwTFiRsvisUsI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=X24tnfwtd0RnLAmuhywzLXVbvsWr6g1cKj0O/WruNN+VXFHo6TgZhOxiSmCO4SyQtG7UUsOI2u6G0m8WWcWEXW309awbWrLOQp7sVIEkKb9SICRclp8uHzswp7nodoeveLFSV1vNBUubZVKBTA7ut6BWk011deFk1fyftO+xMdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvByTogj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784308371; c=relaxed/simple;
+	bh=aS7id/eBCMoARautj4ypXq6wb5YcFfvkkMDAecW8hkw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mTive1rWrnIbFVeV5ik3hsDX0XkkN4Q1nHP/O8H+O854cW/st36XdEa0lDTtlW2xnHilirxCu0vE86WRStVN7QmYllof7vBCAfyhVk/bkAaytU0vL7KT6YBvs3YmppmyR6K0GljmOgKjLqx+ieYSnDKYM+AoEEsjGuzVgBYPNPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=grMfq6z5; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvByTogj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B637B1F00A3A;
-	Fri, 17 Jul 2026 17:04:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784307841;
-	bh=rSKwurb6dJMlAkENuqB/t67VjYQ62q9MlGD9uunrFjI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XvByTogjNc+TJ/+ZmdoQag2exzzJkEBdUyVuqxC+RQ8vyATIasGo9dfN6nDZC5C7Z
-	 7RaEYQ9tJ3G+8zSgZcWZKuJjf2K4wZ6ALvUpRrj0PVEJ7sCUZr/p5KZ2fnCXFL3lrA
-	 UmuWmhDBpvk/vz9il7K6AJVHwgPrpfRrThra634oIgNrysJ4pAygO7EBkylM3YmNMC
-	 gQ3QKrctVYhJAjzVBJavrmpJ+Ockt02N9WWs4iPGdLp74eu2JJCm39xdc5flmHt1ZQ
-	 Bb4/71yf+0bAp+fcs/XIxR+o2S2vVB6UvJNg6VLmkODRfo6OEcRFSyKbhQVZQHPJDD
-	 eifESoJPCa62w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 09/11] vfio: selftests: Add mlx5 driver - HW init and
- command interface
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jason Gunthorpe" <jgg@nvidia.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <9-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
-References: <9-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 17 Jul 2026 17:04:01 +0000
-Message-Id: <20260717170401.B637B1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="grMfq6z5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1784308357;
+	bh=nyQdVDt2H7mP+A7V2At5qUwCiDU5WOHl96LejnRVOxc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=grMfq6z5BYS50WBYtl+dz/vvrBLXOBxSXV+F4f/DrXEUpHr8WGgc7jUDHqI3f8P2C
+	 4G1so0MlfCytQcKSy8ChQG3ba6hIDYyhmfCHK95mUS/vXauDvOwMZL12DAW3T9BeRs
+	 obatIMcVKW92Dz+aiJSCAQa+iaYqjIUZ0C3hvtORC5YObf+jvaG8WSbrKSYzoVq53p
+	 KGw4vABqDVjuLwO+VgGrtWPaT+2Y6HY+rjUDyfhZV8Bk42IuGNOErRfYOPLfR3O2wo
+	 B7OozPpY0To3P3I4NUzVRG8NkWKu/f5/6JCPq3+WFF5VC/v/V7EkYyRht//Zlu0Wax
+	 R1uvk0dGQ3z7Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4h1xL415l5z4wB7;
+	Sat, 18 Jul 2026 03:12:27 +1000 (AEST)
+Message-ID: <cc59a80f-afcc-4b2d-8e78-20f74c6b6871@ozlabs.org>
+Date: Fri, 17 Jul 2026 18:12:22 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/9] vfio/pci: Add mmap() for DMABUFs
+Content-Language: en-GB
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+ Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
+ Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20260715174737.15287-1-matt@ozlabs.org>
+ <CALzav=fH7N+ionUnELqw5ZaGrPmgp_w6kxoCtoY8fMmZY_S4zw@mail.gmail.com>
+ <65ba06e7-4c54-437d-9fbd-632c0468f66d@ozlabs.org>
+ <allLypOmtbnPrgbw@google.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <allLypOmtbnPrgbw@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 8 potential issue(=
-s) to consider:
-- [Medium] Valid hardware IDs like 0 are incorrectly treated as unallocated=
- resources, leading to resource leaks during teardown.
-- [Medium] Stale command data read due to missing ownership bit poll in asy=
-nc command completion.
-- [Medium] Asynchronous MANAGE_PAGES reclaim loses track of remaining pages=
- if firmware claims fewer pages than requested.
-- [Medium] Heap buffer overflow when processing unvalidated `num_claimed` c=
-ount from firmware.
-- [Medium] Out-of-bounds MMIO pointer derivation using unvalidated `uar_pag=
-e` index.
-- [Medium] Undefined behavior due to bitwise shift exceeding integer width.
-- [Medium] Spurious failure during HCA teardown when the firmware temporari=
-ly returns 0 reclaimed pages.
-- [Medium] Unconditional RoCE capability query crashes the selftest on devi=
-ces where RoCE is disabled or unsupported.
---
+Hi David,
 
---- Patch [9]: [PATCH v3 09/11] vfio: selftests: Add mlx5 driver - HW init =
-and command interface ---
-commit c0063c1d972772b9afac6911db9fe5ce5e21c852
-Author: Jason Gunthorpe <jgg@nvidia.com>
+On 16/07/2026 22:23, David Matlack wrote:
+> On 2026-07-16 03:51 PM, Matt Evans wrote:
+>> Hi David,
+>>
+>> On 15/07/2026 19:12, David Matlack wrote:
+>>> On Wed, Jul 15, 2026 at 10:47 AM Matt Evans <matt@ozlabs.org> wrote:
+>>>
+>>>> This is based on v7.2-rc3.
+>>>>
+>>>> These commits are on GitHub for easier browsing, along with
+>>>> "[RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test":
+>>>>
+>>>> https://github.com/metamev/linux/compare/v7.2-rc3...dev/mev/vfio-dmabuf-mmap-v5
+>>>
+>>> It'd be great to have this test upstream. I'm happy to review it when
+>>> you're ready. Looks like it just needs to be redone to use the VFIO
+>>> selftests library and kselftests harness. AI could probably do the
+>>> conversion pretty quick :)
+>>
+>> For sure, I'd intended to catch up with you on best approach here. :)
+>>
+>> Aside from the organic structure of the test (the open-coded VFIO
+>> device/group setup/init needs to go), the main issue is that it relies
+>> on a hacked/out of tree QEMU "EDU++" device with a second larger BAR
+>> (containing freely read-writable memory).  A subset of tests run with
+>> the in-tree EDU device, but coverage is too low.
+>>
+>> The desirable properties are:
+>>
+>>  - Having a BAR that is pure memory (all locations present, writable
+>> without disruptive side-effects) so that mapping aliases can be
+>> constructed and detected.  This is good to test things like non-zero
+>> vm_pgoffs and VA space presentation of physically-discontiguous DMABUFs.
+>>
+>>  - BAR >> hugepage size so we can eyeball huge mappings work (or better,
+>>  mechanically test for them).  At least 32MB would tick this box for 4K,
+>> 16K page systems.
+>>
+>>  - Something QEMU supports*, so one can run the test in a VM/TCG system.
+>>
+>> There were some real device models in QEMU that could be used this way,
+>> but needed a fair bit of setup;  I didn't want to rathole
+>> vfio_dmabuf_mmap_test on including a ton of device-specific code for
+>> some video card or similar.
+>>
+>> I'll dig more for a simple target that provides these properties --
+>> obviously it would be better to point this test at an off-the-shelf
+>> device (including silicon!).  And, proposing EDU extensions to the QEMU
+>> folks may be useful (there're uses for a better EDU in other contexts too).
+>>
+>> Since this test uses MMIO for a specific [class of] function, my first
+>> thought is it should be another VFIO driver-type test sibling of
+>> vfio_pci_driver_test.  For example, we could extend the driver-type
+>> tests' backend struct vfio_pci_driver_ops for functions capable of
+>> providing a Big Memory BAR, like QEMU EDU++.  EDU can also memcpy, so
+>> could also support vfio_pci_driver_test.
+>>
+>> The spirit of the device backends hiding setup of a complex device is
+>> handy, and it's plausible that several backends could provide this "big
+>> memory BAR" service.  What do you think, any concerns with extending
+>> vfio_pci_driver_ops like that?
+> 
+> I wouldn't recommend leveraging the driver framework unless absolutely
+> necessary. It makes the test harder to run.
+> 
+> The biggest issue I see with the proposed properties is being able to
+> treat the BAR as memory. That obviously will depend on the device and
+> may require device-specific setup. If we decide that treating the BAR as
+> memory is truly required then using the driver framework is the way to
+> go. But I'm hoping we can avoid that requirement.
+> 
+> Instead, I think you can get pretty far by inspecting /proc/pid/pagemap
+> to determine if the mmap() set things up correctly, without actually
+> accessing the BAR. You can use /proc/pid/pagemap to look up the PFN and
+> PAGEMAP_SCAN to detect huge pages.
 
-vfio: selftests: Add mlx5 driver - HW init and command interface
+Hmm, possible, although that's quite a different test at that point.  I
+agree never touching the device has advantages, but it's harder to test
+certain things if we _never_ do MMIO.  The mitigation effort to get
+coverage may not be the right tradeoff vs easier running.  I can think
+of some "easy" VFIO bugs that would be challenging to properly verify in
+userspace (e.g. PFNs all having some undesired offset).  The current
+test method is harder to fool per unit effort in writing it.
 
-This commit adds an mlx5 ConnectX selftest driver that initializes hardware
-VFs and PFs through the bare-metal command interface. It registers with the
-VFIO selftest framework and handles base HCA boot sequences, EQ creation,
-and resource allocation.
+Though, I will have a think about this no-touch flavour of test.
 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c b/tools=
-/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/lib/drivers/mlx5/mlx5.c
-[ ... ]
-> +	/* Read command queue geometry from BAR */
-> +	log_sz =3D MLX5_GET_MMIO(initial_seg, seg, log_cmdq_size);
-> +	dev->cmd_log_stride =3D MLX5_GET_MMIO(initial_seg, seg, log_cmdq_stride=
-);
-> +	dev->pages_slot =3D (1 << log_sz) - 1;
-> +
-> +	VFIO_ASSERT_LE((unsigned int)(1 << log_sz), 32u);
+What were you picturing regarding populating the VMA PTEs in order to
+inspect the result via /proc/pid/pagemap, whilst still upholding the
+principle of not touching the device?  For example,
+madvise(MADV_POPULATE_WRITE) won't work on the VFIO BAR regions because
+they're VM_PFNMAP/VM_IO.
 
-[Severity: Medium]
-Does this bitwise shift trigger undefined behavior if log_sz is 31 or
-greater? The shift 1 << log_sz uses a 32-bit signed integer literal,
-and it evaluates before the bounds check in VFIO_ASSERT_LE is reached.
+> With that requirement gone, then all you really need is a device with a
+> large enough BAR. And even that it not a hard requirement. I'm sure
+> there are plenty of test cases that could work with smaller BARs. The
+> few tests that want to exercise huge mappings can inspect the device BAR
+> sizes first, and if they're all too small, SKIP() the test.
+> 
+> If you structure the test this way, then it's easy for the test to be
+> used. It can be run against any device for the basic functional
+> coverage, and can be run against a device with a larger BAR for full
+> coverage of huge mappings.
+> 
+> Does QEMU emulate any devices that have 32MB or larger BARs?
 
-[ ... ]
-> +	} else if (dev->pages_pending_reclaim) {
-> +		batch =3D dev->pages_pending_reclaim < MAX_FW_PAGES_PER_CMD ?
-> +				dev->pages_pending_reclaim :
-> +				MAX_FW_PAGES_PER_CMD;
-> +		dev->pages_pending_reclaim -=3D batch;
-> +		mlx5st_pages_slot_reclaim(dev, dev->pages_pending_func_id,
-> +					  batch);
-> +	}
+Yep, looks like `-device pci-testdev,membar=64M,membar-backed=on` or
+even `-device bochs-display,vgamem=64M` would be suitable.
 
-[Severity: Medium]
-Does this lose track of the remaining pages if the firmware claims fewer
-pages than requested?
+So I'll also try moving the existing test over to one of these to at
+least remove the EDU++ device dependency.  (bochs-display has >1 BAR,
+and some MMIO regs which are nice for a quick kick-the-tyres access test.)
 
-In mlx5st_pages_slot_kick, the full batch is deducted from
-dev->pages_pending_reclaim before the command executes. If the completion
-handler receives a num_claimed less than the batch size, the un-reclaimed
-difference does not seem to be added back.
 
-[ ... ]
-> +static void mlx5st_pages_slot_complete(struct mlx5st_device *dev)
-> +{
-> +	struct mlx5st_cmd_queue_entry *cmd =3D dev->pages_cmd_lay;
-> +	void *cout;
-> +
-> +	dma_rmb();
-> +
-> +	cout =3D MLX5_ADDR_OF(cmd_queue_entry, cmd, command_output_inline_data);
+Cheers,
 
-[Severity: Medium]
-Can this result in reading stale command data?
 
-The output data is being read here without first polling the ownership bit
-of the command entry. Does the EQE delivery guarantee that the DMA write of
-the output data is fully visible to the CPU, or do we still need to check
-MLX5_GET_ONCE(cmd_queue_entry, cmd, ownership)?
+Matt
 
-[ ... ]
-> +		num_claimed =3D
-> +			MLX5_GET(manage_pages_out, out, output_num_entries);
-> +		for (i =3D 0; i < num_claimed; i++)
-> +			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
-> +						    i);
-
-[Severity: Medium]
-Could this cause a heap buffer overflow?
-
-If the firmware returns a num_claimed value larger than the allocated batch
-size of the iovas array, this loop will write out of bounds. Should we
-validate num_claimed against the requested batch size before iterating?
-
-[ ... ]
-> +static void mlx5st_alloc_uar(struct mlx5st_device *dev)
-> +{
-> +	u32 out[MLX5_ST_SZ_DW(alloc_uar_out)] =3D {};
-> +	u32 in[MLX5_ST_SZ_DW(alloc_uar_in)] =3D {};
-> +
-> +	MLX5_SET(alloc_uar_in, in, opcode, MLX5_CMD_OP_ALLOC_UAR);
-> +	mlx5st_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
-> +
-> +	dev->uar_page =3D MLX5_GET(alloc_uar_out, out, uar);
-> +	dev->uar_base =3D (u8 __iomem*)dev->bar0 + dev->uar_page * MLX5_HW_PAGE=
-_SIZE;
-
-[Severity: Medium]
-Can this calculation result in an out-of-bounds pointer?
-
-If the firmware returns an unexpectedly large uar index, dev->uar_base
-could point outside the boundaries of the PCI BAR, which might cause a
-segmentation fault when a doorbell is later written.
-
-[ ... ]
-> +static void mlx5st_fw_pages_reclaim(struct mlx5st_device *dev, u16 func_=
-id)
-> +{
-[ ... ]
-> +		mlx5st_cmd_exec(dev, in, inlen, out, outlen);
-> +
-> +		num_claimed =3D
-> +			MLX5_GET(manage_pages_out, out, output_num_entries);
-> +		for (i =3D 0; i < num_claimed; i++)
-> +			iovas[i] =3D MLX5_ARRAY_GET64(manage_pages_out, out, pas,
-> +						    i);
-
-[Severity: Medium]
-As mentioned in mlx5st_pages_slot_complete, could this also cause a heap
-buffer overflow if the hardware returns a num_claimed larger than the batch
-size of the iovas array?
-
-> +
-> +		mlx5st_fw_pages_free(dev, num_claimed, iovas);
-> +		total_claimed +=3D num_claimed;
-> +		npages -=3D num_claimed;
-> +
-> +		free(iovas);
-> +		free(in);
-> +		free(out);
-> +
-> +		if (!num_claimed && !dev->fw_pages_given)
-> +			break;
-> +		if (!num_claimed)
-> +			VFIO_FAIL("MANAGE_PAGES RECLAIM: FW returned 0 but %d pages still giv=
-en",
-> +				  dev->fw_pages_given);
-
-[Severity: Medium]
-Will this abort the selftest sporadically?
-
-The hardware can temporarily return 0 reclaimed pages while flushing intern=
-al
-states before making the pages available. Should this implement a sleep-ret=
-ry
-loop instead of immediately asserting failure?
-
-[ ... ]
-> +static void mlx5st_hca_teardown(struct mlx5st_device *dev)
-> +{
-[ ... ]
-> +	dev->have_eq =3D false;
-> +
-> +	if (dev->eqn) {
-> +		mlx5st_destroy_eq(dev);
-> +		dev->eqn =3D 0;
-> +	}
-
-[Severity: Medium]
-Could this skip teardown if the hardware allocates an EQ with an ID of 0?
-
-Since 0 can be a valid hardware allocation ID, checking if (dev->eqn)
-might skip destruction and leak the resource. Would it be better to check
-dev->have_eq here?
-
-[ ... ]
-> +static void mlx5st_query_fl_caps(struct mlx5st_device *dev)
-> +{
-> +	u32 out[MLX5_ST_SZ_DW(query_hca_cap_out)] =3D {};
-> +	u32 in[MLX5_ST_SZ_DW(query_hca_cap_in)] =3D {};
-> +	bool fl_roce_en, fl_roce_dis;
-> +
-> +	/* Query RoCE capabilities */
-> +	MLX5_SET(query_hca_cap_in, in, opcode, MLX5_CMD_OP_QUERY_HCA_CAP);
-> +	MLX5_SET(query_hca_cap_in, in, op_mod,
-> +		 MLX5_SET_HCA_CAP_OP_MOD_ROCE | HCA_CAP_OPMOD_GET_CUR);
-> +
-> +	mlx5st_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
-
-[Severity: Medium]
-Could this crash the selftest on devices that lack RoCE support?
-
-Issuing a QUERY_HCA_CAP for the RoCE capability page blindly might
-result in a BAD_PARAM failure from firmware if RoCE is disabled. Should we
-check the roce support bit in GENERAL_DEVICE capabilities first?
-
-[ ... ]
-> +static void mlx5st_remove(struct vfio_pci_device *device)
-> +{
-> +	struct mlx5st_device *dev =3D to_mlx5st(device);
-> +
-> +	dev_dbg(device, "teardown: destroy_mkey\n");
-> +	if (dev->mkey_index) {
-> +		mlx5st_destroy_mkey(dev);
-> +		dev->mkey_index =3D 0;
-> +	}
-> +
-> +	dev_dbg(device, "teardown: dealloc_pd\n");
-> +	if (dev->pdn) {
-> +		mlx5st_dealloc_pd(dev);
-> +		dev->pdn =3D 0;
-> +	}
-
-[Severity: Medium]
-Similar to the EQ ID above, could this leak the Protection Domain if the
-hardware allocates a PD with an ID of 0?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/0-v3-76f117ad04f1+2=
-8a90-mlx5st_jgg@nvidia.com?part=3D9
