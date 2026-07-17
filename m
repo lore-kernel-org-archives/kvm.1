@@ -1,138 +1,77 @@
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3263942A166;
-	Fri, 17 Jul 2026 14:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B112D1F1;
+	Fri, 17 Jul 2026 14:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298914; cv=none; b=Qto+jqG0tbCL4woK7zIj4GaxHU6ikQwcC3eHRi7b2hgLmLPV7PBLdcXKPw8iVt2aKBogVaUET5EQwAaFgmRXquaT+AejrCnFbPeG74qQQuh5sRdVDrcOVBiCc2BYwgKHBGt5nC1FMhi7VGwb3TcD7uIAE6oQby/V7szwxDxaVyM=
+	t=1784299772; cv=none; b=gSkPPQzQFNr8GnS4+Kp55WiSRJWM8ZJpIH0nwxZcKB45DkOy9u6NbdvOHVz+LoEDxwc6ebQ3hPRv0kW5Z3ITqQGIAjrKOkMuRh8gFs2d9Bjh+ZNzhFn6r8SfZmZY25FLMszI3jNOJx+ti0naYa6GeRDVj9XfoVNp2gPHw1bXiEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298914; c=relaxed/simple;
-	bh=hxGmcHmTQSG/tdRRf+oOX+HiB6sZ5o3RY6F7qAn0Qg8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tWwwPwlETNarimWjokbm5xoUf9ANjKC3uLwU2fDayEY6fHO2mN36WuvAuj2qQOzK3eZbpQHgBiXFWVBNyvadwARYYtDuTK6p1kjzx5IS6KpM0avmcoRwSSVAB95cwWwjZ1Ihch1TOlocV6PYQ/W2LmOJf0IXphIdNN8J/n/lT+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=podJ7VXE; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+	s=arc-20240116; t=1784299772; c=relaxed/simple;
+	bh=qa/81JIfcQybn4akAYQX/T13BkvL3/0IoNUaBDJcq+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s/a58uBnUEVXV6gV06+PvZNtDwOiIWzkzumm73Qtx46glmJ8SkDGdzwXxfCxZx/ToivUbgqOFAZ3v89wmeyPp9BEpgeDzghwc2UXEjZ2jbQPZLGIUW0rthhM7kCYN/W9IuBIGVFX/oPlMkRuKOa8OGc3hCIVKa3Z55D29ASGmJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4a2x4gI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="podJ7VXE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1784298912;
-	bh=hxGmcHmTQSG/tdRRf+oOX+HiB6sZ5o3RY6F7qAn0Qg8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=podJ7VXEOrozW0/nEkVk5DUdZHQ+jKSQ6mLUbZdvS3I1Wu4OjMzk94KILfZv/XDzH
-	 Ec/FKjwkDHi4qBngcOq9TDTwLIi7MsReMG/FnZhBNLpB6oXFaxJIMafGhoAw1chHHg
-	 m2Heto7gdDUeUaH+Dkyw2JU4hBcyj2zcgXY27FjQ=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::8c71])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 6AF891C0278;
-	Fri, 17 Jul 2026 10:35:11 -0400 (EDT)
-Message-ID: <570f82e8b8bc968a31a4ba859145f6c324e41247.camel@HansenPartnership.com>
-Subject: Re: [PATCH 35/60] kvm: Add VCPU plane-scheduling state and helpers
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: =?ISO-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, Paolo Bonzini
-	 <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>, Tom Lendacky	
- <thomas.lendacky@amd.com>, ashish.kalra@amd.com, michael.roth@amd.com, 
-	nsaenz@amazon.com, anelkz@amazon.de, Melody Wang <huibo.wang@amd.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev, 
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- x86@kernel.org, 	coconut-svsm@lists.linux.dev, joerg.roedel@amd.com
-Date: Fri, 17 Jul 2026 10:35:10 -0400
-In-Reply-To: <aigE2EvJyZlYDz0V@8bytes.org>
-References: <20260608144252.351443-1-joro@8bytes.org>
-	 <20260608144252.351443-36-joro@8bytes.org>
-	 <e7eb0dba-790a-4644-9895-5c9a7420d7fe@redhat.com>
-	 <aib8n5lO6HKbLC4Y@8bytes.org>
-	 <CABgObfbUsDeStnZF-7oyR-W-Bvd4qTMoeUwGizgn10UTdKtZ2A@mail.gmail.com>
-	 <aigE2EvJyZlYDz0V@8bytes.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNE
- lecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn
- 1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHU
- RfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8
- X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvd
- HRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGw
- MGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAml2ZBI
- FCS3GUMIACgkQgUrkfCFIVNZKjQf/deRzlXZClKxTC/Ee2yEPqqS7mm/INUA49KdQQ5oIhSxkUBy0
- 9J4qjMIo5F8ZFkFTqikBqeL35LKu7O7rn8WETfX8Bxvos3HUsl3jHo34DES4MUFIpoQPgtiLRGwLb
- K0cVCAArR2u2qj4ABmTRrs1I1kvdjEw6gatOuXtEe/j5O2fvfzTq9GBr0Q3n2IAsFXi4hLlx6VPE8
- tyWUZ8BWJKtih3JAeUiXFvASL3McV0rV9RnU0VbjEQEhSE7PMYhWpnDC9AyBb0lXJllQRvC3NSkUB
- 8KVQgNNxRPss0WE/nBoZ4dFA42jTyzTz8lNylxZoAWV7WJb3QxVg4oCodRVrxxrQhSmFtZXMgQm90
- dG9tbGV5IDxqZWpiQGtlcm5lbC5vcmc+iQFVBBMBCAA/AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeA
- QIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mYBQkbNYS9AAoJEIFK5HwhSFTWBpwIAL5Bk3
- 5FB34U6iHmDzzgdCbxLTs43T/YQyJpcGIvopBvnI/fDY8oSG6Df64/O6B+1R+A8TDp6ZG5ysUWnCC
- 6GuIaEHemBYkitMPglR6+sGCMQY7O0mlsPvdssvKK1KI9Bno4VU6ogaF2qVzefSqg1Djmf/DcsxWP
- rI/jdJ8FB5AYR2rjIdDFc+zRdAJuavo1/anyY2wgpFh/3R8IOYAEfWV9nGgYkf9+tA4EIn1sxE0I3
- L5oW2N3mbyRrkzuBwO8ztMCwqEPk7moWzhokcZqMXiAIahaZdkashJC+s2X2RZSGCy+g+pvY5NN4B
- BVG5XwLgVBqbHMTcxE0fbmPqz+q6O0LEphbWVzIEJvdHRvbWxleSA8amVqYkBoYW5zZW5wYXJ0bmV
- yc2hpcC5jb20+iQFXBBMBCABBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmODZ5ACGwMFCRs1hL0F
- CwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQgUrkfCFIVNZu0Af/TzvL2/NdgAcw9uN3x60H8
- jc4QUq14VpxcFEFEMpcj1morkX/G93V+56HBBaXZj+yK8PhxIA/SIz+sU7C/0YvKuvzakP8ZX/7WJ
- e32SOUtjfr/VTaqjIBzNj6OxLvZpmNbBw7s6DwhhNpHOWqJ/1ml+PtDRDV71IB58yVqQjp1xlNKVl
- ZppcJ5908EJzsFnRIVjiQiDSKoppqB2BCibBbrWcln7CiWMyOC/cco6SIn6twH+f7+aivJ3xGcOE2
- a9gBKF5rNi9TBoX9oyPmshv/TDmnohsVrH7AYXlGYfZTk15SWEiROh1QX8/uD9wl/gcIv5EDUpT/F
- L2jzOsA5663bw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4a2x4gI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B84E1F000E9;
+	Fri, 17 Jul 2026 14:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784299770;
+	bh=+q8YiWXqmTGRkRi0w5HPuLZXGyFgeLZWZr5ZctekBP0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=d4a2x4gIkZTEk1CE5Hsyf2XDeER920GZ6ahZHtyGapAoOhoKiNOivRAi6YlPVNH0t
+	 XgKt3Qirf0rU3OAZQl4n3mCv4VH3dgm8EJ8xXCdaCet3iKwxxRXpcVBnEcxdOQdo+k
+	 Y6DyVb0KqVQuZ9ELZYaWC3x2PGk1SZ0VIvHPnXXaOpIN6j3/m72psCVSpa5XYuGKoi
+	 cOg9HJ29PuK9ouPW/9885t08Z+JZgcUI+xOeJdr14jq9HgD0pk2/UlgQj4oSEE4AUN
+	 Ehs/91MSiTBfa6TDC6k6QP0fAZPaHMoCOWkKPPaNd56uRJTVJtbCxm4+coGu33ZR5J
+	 6MYtS4kKEwIyg==
+Date: Fri, 17 Jul 2026 08:49:25 -0600
+From: Tycho Andersen <tycho@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	iommu@lists.linux.dev, linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
+	Connor Williamson <connordw@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Zhou Yuhang <zhouyuhang@kylinos.cn>, Zi Li <zi.li@linux.dev>, Dan Williams <djbw@kernel.org>, 
+	Eric Biggers <ebiggers@kernel.org>, Colin Ian King <colin.i.king@gmail.com>, connordw@amazon.co.uk, 
+	graf@amazon.de, fgriffo@amazon.co.uk, David Woodhouse <dwmw@amazon.co.uk>
+Subject: Re: [RFC PATCH 01/11] KVM: selftests: sev_smoke_test: Only run VM
+ types the host offers
+Message-ID: <alpAqex9iHS2rk8b@tycho.pizza>
+References: <20260716151706.244987-1-dwmw2@infradead.org>
+ <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f09647f427565c1789a6979470045aab78661563.1784194290.git.dwmw@amazon.co.uk>
 
-On Tue, 2026-06-09 at 14:37 +0200, J=C3=B6rg R=C3=B6del wrote:
-> I read a bit more about VSM and it seems their prioritization of VTLs
-> is a bit more complicated. VTL0 has the least privileges but boots
-> first, then sets up VTL1. But VTL1 is only higher-privileged once it
-> is locked by VTL0. Another way to look at it is that VTL0 de-
-> prioritizes itself.
+On Thu, Jul 16, 2026 at 10:31:21AM +0100, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> sev_smoke_test ran the plain SEV subtest unconditionally, gated only on
+> the X86_FEATURE_SEV CPUID bit, while gating SEV-ES and SNP on the
+> KVM_CAP_VM_TYPES bits.  CPUID reporting SEV does not mean KVM offers the
+> SEV VM type: when all SEV ASIDs are assigned to SEV-SNP, KVM_X86_SEV_VM
+> is unavailable even though X86_FEATURE_SEV is set.  On such a host the
+> test aborts in KVM_CREATE_VM instead of exercising the available modes.
+> 
+> Gate the SEV subtest on KVM_CAP_VM_TYPES like the others, so the test
+> runs the VM types the host actually offers.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Actually, I don't think we have to follow the VSM model.  All we at
-Microsoft care about is that we can emulate VSM with the planes
-primitives provided.
-
-There's a definite reason not to do strict VTL privilege in that one
-can see two mutually distrusting planes sharing a common communication
-area.  This is definitely possible with TDX and so planes shouldn't
-disallow it.
-
-> The patches here are built around the assumption that plane0 is the
-> highest privileged one and is always runnable. Running any lower-
-> privilege plane must be triggered by the guest. This is clearly not
-> sufficient for VSM, the question is how to solve that.
-
-So this all depends how the planes are started.  If you're starting
-them from an IGVM file that loads the most privileged code and then
-runs the guest in a different plane, absolutely, it can work as you
-describe.  However, the common use case for serviceable security
-enclaves is you start the kernel first (necessarily in plane 0) and
-then bring up the enclaves later which means the planes > 0 are
-technically higher privilege since they're running hidden security
-code.  HOWEVER, there's no reason at all to trust a security enclave
-that's doing something like guarding private keys to be able to poke
-anywhere it wants in the guest ... that's a security breach waiting to
-happen, so it would really be better if the model were not
-hierarchical, but more akin to the ability to seal planes off from each
-other, so the kernel can start the enclave, which would then set itself
-and the communication area up, but then the plane 0 kernel would remove
-access to most memory from the enclave.
-
-In this sealing model, there's no absolute privilege levels; each plane
-would decide what the other planes can see of its memory space and, on
-security grounds, we'd likely configure the enclaves to have the least
-possible privilege.
-
-Now, Windows applications expect VSM to be strictly hierarchical in
-terms of privilege, but if we create a sealing primitive as described
-above, we can get it to build the strict VSM privilege hierarchy in the
-hyper-v driver.
-
-Regards,
-
-James
+Reviewed-by: Tycho Andersen (AMD) <tycho@kernel.org>
