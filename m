@@ -1,107 +1,108 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21493E8C55
-	for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 23:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46ABC29405;
+	Sat, 18 Jul 2026 00:35:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784329557; cv=none; b=CRZbha8BH38ZvyqDrvbQTCDORp7Ihbe3yJD2at/BNrzGIlryBg/BJ9hjlOk3+hADRelRGSkTgA+kyJzAkEAwv80OyH2HicK3tDnUYejJzjm68pJ3bbXIuuErWp92ywWTbFoVgZH1ar0LeDxT01ry/af+/NVC2BFZR1G7wFubA/c=
+	t=1784334929; cv=none; b=LShBIUHDWCEvZWJygo7NklhJPiWA9F6+MbjW75usRdI1KUZbo8zAeuJBSplPpSaws6jiT/1RzWqWpKhmu95r9cZSwPA45LJlOnLY80Tp6iEaqkcu2VNs4JerCY4rErEi1SmcoBrhKSzaGd3eD0sRTxvLBSRAdq1uu/x1kSUC8A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784329557; c=relaxed/simple;
-	bh=Q6s5oWeziQbUdIR9mUG8hB5uGd9x4H1hQjSaBJCG6to=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PiuaEqVxdVXxSFrBcBv3l+2fZKL9dqxV59UAX3fpPt3E7wPFI5glidhtehapMQ9j9mzyeEL7I4ndsvRuygcRaNSvY7RKyLWfucCR72/lnbzG/f7XAHsADo6BtNJbM3XmN5UdPhWAR/0iS3azDKx5XeFFGugxhfWXlxNRo0ToxTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=snYR0hNG; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	s=arc-20240116; t=1784334929; c=relaxed/simple;
+	bh=9WCZr/0a6+6yd4+H2iJZREJPaBMBp4S3/hNJ5RCJPrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqFoZkof+81zWdqP5YR9PVelDv+hXqe7QcqxHLYD1TW9cpniHr+OsbpHT/XSeBJSdduHpeuBMUnCFeqFY/B4bjML7nvDjL6W3/pV0LTxJ+XxTDLRvl7tyRxbB0HIQval1Hn9ftkiSbWkCN+PhPDagVkXMBjhzfDhDFdWkskkV40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZMqhG7j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="snYR0hNG"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2ccbb61893fso175704905ad.0
-        for <kvm@vger.kernel.org>; Fri, 17 Jul 2026 16:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784329555; x=1784934355; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/34FkR594BC+at52XqD18M2KRa+CuoEQnzCF2deRFEI=;
-        b=snYR0hNG6JC0MfhbretsIJQMb1RrRv9SLqi41mTcxqcRlYjfLQIcFS6tgJVUSU4/+s
-         m9S4eT9hMB9fxRz+aJvOsR2eMyWsZOQItpzjfmafQ8qDyIxy5dUe+ddZD2B4tOxv6RPa
-         f4wV5P3BBxczXXTjdkMixCRp9z3EGi3IFtabCGG4XrUiZioQHU1hBz2JBt6pHRVTvjRa
-         cmWrsUoL5rRtytkfK8wnf2ObD5f+9k8ZxwCGH+I+CTPd1EqboPE7MW9VCK4ENhgs60rW
-         6W8sNaOBrYhz4sVbkkh/RJj0KkhWMCw0O/5D9oi9t4XIt41HSLcirt2tzfRxh9GAZHa9
-         7Lsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784329555; x=1784934355;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/34FkR594BC+at52XqD18M2KRa+CuoEQnzCF2deRFEI=;
-        b=RU8MVy6aibpHECslBBRU7BiO6GdYYh+/Y33sVETtPq/gbwhzVqkWetEJAMuZ4u/RVE
-         3unmJEtY/gHSLNLqyDEvdgqhIVOQdERZnYpApUAHOnTD+j6TfACdB+StOzM2GOX5jd2I
-         ctvQB56Wh5SpnMByPu7JRb5QHQcZLHDvRAaWWxHYAJfnfiU5xY0snGfCNHJED/qYuN9w
-         6fr0NhBzf//hAQ6hyMNECEapDEFP0O7fkW1fs+I0D8PpsPwFJJs9Vz9hgx1QLNzhMgfc
-         xV0UlLd+GgaH7gjX8MfPIK5A76esJoHMbZkf+DE1nslmGKCspMtWMvPnLrMQgVCsIVw7
-         tkhQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp4Av9uHlrHKS49JtlBkDi6bazMe2K7+mdweLHzajNja2KjAbQWtJYogX5NUwz8UkXlSKI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyG5TkWpNhv6OEWm0h5o7MkPmLvjPjL9CcrOYNhEZJW2++K0Gou
-	1qr2UU0VSEr4ln4PxOQOSb6PV7/J4guOp2UqLEbmPt4WkKFVVnMdObBnj1YQFuJuOWLWFjL9Ez3
-	ZelaC/LJv42abGA==
-X-Received: from plrx15.prod.google.com ([2002:a17:902:b40f:b0:2ca:c162:e758])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:8c6:b0:2c9:9a2e:dab0 with SMTP id d9443c01a7336-2cf3481b70emr52410205ad.3.1784329554700;
- Fri, 17 Jul 2026 16:05:54 -0700 (PDT)
-Date: Fri, 17 Jul 2026 16:05:42 -0700
-In-Reply-To: <20260717230542.3555587-1-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZMqhG7j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4571F000E9;
+	Sat, 18 Jul 2026 00:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784334927;
+	bh=83/QFKPUAecuur3XiUDSCrCipZXjd2KIGyHaxlFSSCE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UZMqhG7jOCM0NcG8H7yxHekee//rMmL/U7Ry2BrLImm6unJIexmYIklkgmaYx2kJc
+	 w0QAzde1FMPP7tZgjagzsxmyGTzvWe+VetYaC6HyrUjg4v+PbZo1VN7Q8KWkcEo19T
+	 3EX+dn0yks9KVfhECXAzeEyN/luAsqwLZ2nH/c1kLeZxzu2Q27VxKzyUlYgTME67FT
+	 eIIkaE72/6x6u+8QvFPawI8tcNgDH3IBoD5VJYpu4gG8qoCTUHjV7m/6qrkXWvRkea
+	 vjYcsAWsbreVTHJrKt36aQ67Ts+zrieyLSdwkax7w8Vcuwbb7uH6ZPG5/tRr5i6KHP
+	 YHwLOVzyyTdgg==
+Date: Sat, 18 Jul 2026 01:35:21 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
+	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
+	Jean-Philippe Brucker <jpb@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
+ loading SME state
+Message-ID: <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
+References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
+ <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org>
+ <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
+ <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260717230542.3555587-1-jmattson@google.com>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260717230542.3555587-4-jmattson@google.com>
-Subject: [PATCH v2 3/3] KVM: x86: Flush guest TLB on MTRR MSR writes
-From: Jim Mattson <jmattson@google.com>
-To: jmattson@google.com
-Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, venkateshs@google.com, yosry@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="B1L8qt03Fu74vlzF"
+Content-Disposition: inline
+In-Reply-To: <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
+X-Cookie: Thufir's a Harkonnen now.
 
-Per both the AMD APM and the Intel SDM, writing to an MTRR with WRMSR is an
-implicit TLB invalidation that invalidates all TLB entries (including
-global entries). [The APM uses the word, "update," which could be construed
-to mean "modify," but it is unclear.]
 
-Previously, kvm_mtrr_set_msr() stored the updated MTRR state without
-requesting a TLB flush. This broke x86 architectural compliance by leaving
-existing TLB entries in hardware. Additionally, on AMD CPUs supporting
-ERAPS, omitting the TLB flush request meant VCPU_REG_ERAPS was never
-dirtied on MTRR writes, leaving the Return Address Predictor (RAP/RSB)
-uncleared.
+--B1L8qt03Fu74vlzF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Issue a KVM_REQ_TLB_FLUSH_GUEST request on every MTRR MSR write to match
-x86 architectural semantics.
+On Thu, Jul 16, 2026 at 04:28:02PM +0100, Mark Brown wrote:
+> On Thu, Jul 16, 2026 at 11:52:36AM +0100, Mark Rutland wrote:
 
-Fixes: 9ba075a664df ("KVM: MTRR support")
-Assisted-by: Gemini:Gemini-Next
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
- arch/x86/kvm/mtrr.c | 1 +
- 1 file changed, 1 insertion(+)
+> > >  		if (test_thread_flag(TIF_SME)) {
+> > > -			unsigned long vq = sve_vq_from_vl(sme_vl);
+> > > -			sysreg_clear_set_s(SYS_SMCR_EL1, SMCR_ELx_LEN, vq - 1);
+> > > +			sysreg_cond_update_s(SYS_SMCR_EL1, task_smcr(current));
+> > > +			isb();
+> > >  		}
 
-diff --git a/arch/x86/kvm/mtrr.c b/arch/x86/kvm/mtrr.c
-index 6f74e2b27c1e..ca5e5c7f7022 100644
---- a/arch/x86/kvm/mtrr.c
-+++ b/arch/x86/kvm/mtrr.c
-@@ -105,6 +105,7 @@ int kvm_mtrr_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
- 		return 1;
- 
- 	*mtrr = data;
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
- 	return 0;
- }
- 
--- 
-2.55.0.229.g6434b31f56-goog
+> > What's the ISB for? That mysteriously appeared in v11 without
+> > explanation. It wasn't in the original code, prior versions of the
+> > series, or my suggested rework with the task_smcr() helper.
 
+> > I don't believe it's necessary to add an ISB here.
+
+> I can't remember or figure it out, I'll delete.
+
+Actually I remembered: while SCMR_EL1.LEN is self synchronising the
+"without the need for explict synchronization" wording is not present
+for SMCR_EL1.{FA64,EZT0} and this is no longer explicitly just an update
+of LEN.  It's possible I'm being overly paranoid here, I'll leave the
+isb() and add a comment for the next version.
+
+--B1L8qt03Fu74vlzF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaykgACgkQJNaLcl1U
+h9DjvAf+Mo2V+vK8ka9ifnzNbT6e4l1B8v1nwzBzZqNOsHRBkYVA+3HzxPfa42iQ
+wBsUd5GDNYhvYnfigzrrCBiqP6iEXL2auvhxC05ZD/FMYpMpjg6l8a5YbyFZrCaI
+VCnHsZDwaYx0qDsmnOUgwi/AvliSoRdtky5XTuT5aJLAPePiiXhE3f3ltNCQqynG
+VzaW9xKH0Tng2mJ8kiajrNPlzKMChuJdcebmYosYMMiYFLiHjnE2FDyBqAf7A0It
+jjU1d99NHubQeKLYc+3Io4KDKVRAafjVK2BfVWpOhGPufaC/a+HxGr2ZkU250Q1q
+8YjIq/ZvP2kx3EodKw5prhfkTiaubw==
+=Oojd
+-----END PGP SIGNATURE-----
+
+--B1L8qt03Fu74vlzF--
