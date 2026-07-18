@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234E3190462
-	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 04:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8867A1B86C7
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 06:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784350104; cv=none; b=JHzZWsE15Jr/cQ+ohMUeWHtys1phL9S2PvGS/OPGYTy77b6IDyijx46oI8GQZRx1QEjN0zO7BLAeQHO9SH222vZswLyQ2GWj4CXukoRixtAp62znuCNO50Sbjn3mPFtNRoLO3wzO8qpjqK8EkZ8KjsXvXFw03NCKpHA6AE5LgnQ=
+	t=1784355052; cv=none; b=iv4ieJUazGB6j/KO6rLhWBuW2FLya24Z+GZ33t5dB6oge4JJeTsaMcJYcOdFlr5+x0tTVKj9aKjVrFrhXvRQXg4orXfwtHxcJFGbSSn3gHi06RicUDHiCtl/W+5ff7i55HrXF56b2dG4Fm8JZFldXCOInjKPgEWMa2gjXC4uASo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784350104; c=relaxed/simple;
-	bh=uEE2S+7tduJBT1m5jAfbWSkoKq9ufS5IbtHQ8T+6tWI=;
+	s=arc-20240116; t=1784355052; c=relaxed/simple;
+	bh=6Tp/rkrFRRREFMszZsq00R83mbtIGwGyOPth3d56PUU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mPj4Gbf4y4fQNvclbWuLKaiGh8abqMaHH+uFBBviFDIDRsZ1K+H4t57auwp8TnSl5hPQ/ju24dWTbxOVezpV2F+KQFpoyBGGiw9o+8xlXgnmER6dFYliHWpmmQwHBWwRm3Hlzi+BOBJmYO8HL6His9EjoGEHFwszV+vJM8SKxC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A0y6FAze; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=HiMBtViNKhqYo4+OkGlg0c5x5fMLkNAqAQAgz+615ajtdOULkbCtrq85dIOAgH1/7HafwxqvZqUN5dVwYEPbRUZKABRYwheAudCj/S38shRFSYikvFCtqWxRj+V9eAMAfCLvM5j2z3WXcZgy4qr2xC1aSADsGeVcOakBJeZHWRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej7bfyQT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A0y6FAze"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792B11F000E9;
-	Sat, 18 Jul 2026 04:48:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej7bfyQT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17B01F000E9;
+	Sat, 18 Jul 2026 06:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784350102;
-	bh=C8dpV5CvK7iP8m9Rq73Ozodr0ITu/uSF5aDfmTjmkPI=;
+	s=k20260515; t=1784355051;
+	bh=oaLugtF12mxw8+D45f0hX+P5OhKvHuoYQAexLUIHg10=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=A0y6FAzevu98nYD1CBn9djyWnoJlcBXl5ri9wlS7vMn5MptNKTZtF5/nIRNqjJUwo
-	 zaNfCdYrCHItFgllKi8+sbuvPgyRRSvo3uogrELGrdVNq/MC2gfrBYJaHMyfYauM1O
-	 7Wh9icvue1YH3+t0yjC3aBgVrZtgvYgdeJMtm/8qW/+wpkYU72+qclseU6jihva9IE
-	 0mQU1Aa0jVDnAjXEzJY71Y5GtfeDLGLQ0xvxXWEwLwjUOMO/sw7Ev/thKOWoai1aLs
-	 Lcf7LmVKCuvCrxVhSfi2/qOnS0EMB7Er2vuEM/wiA/dTmCcTDO+Q+tcMETnNHDZasf
-	 DTyOGyUyuWPLQ==
+	b=ej7bfyQTUK+de5EgZ1REE34L8gDiYgqssJqEB+tiEB0OqcafCra1d+VBrZm+IaHzq
+	 dnTxNu5L08zK8nt2zNSB2ZG/fMh/fj/HuFnLgIpN1tPUWnoB8lnwZH//NcssDW0S4+
+	 4Fj0UpHWMpVfvU9qWO5yT77bw4WteS1cY4tDItOgCvrkNsg4C/o5xMIKjbs5IP/vZT
+	 Rjfag2ayBT8OuIuRXu/VvgDk8DK4q3gp7TASuFASBZCG2J6oAFHOORTfyND4uXS+3x
+	 hZDboIpTtwVIXqdJ14KdR7gJyS06ECm/mNHQ3UYbJDe1+QSvGKUOUlE2c5Z96EkPwk
+	 gxNozjEKzB6/A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Reject overlapping AIA IMSIC address
- fields
+Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pengpeng Hou" <pengpeng@iscas.ac.cn>
+To: "Rick Edgecombe" <rick.p.edgecombe@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260718040000.005.6ede2881-caplitmus-rv@iscas.ac.cn>
-References: <20260718040000.005.6ede2881-caplitmus-rv@iscas.ac.cn>
+In-Reply-To: <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
+References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
+ <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 18 Jul 2026 04:48:22 +0000
-Message-Id: <20260718044822.792B11F000E9@smtp.kernel.org>
+Date: Sat, 18 Jul 2026 06:10:50 +0000
+Message-Id: <20260718061050.E17B01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,70 +47,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Cross-VM state corruption via TOCTOU in KVM_DEV_RISCV_AIA_GRP_=
-IMSIC device attribute handling.
+- [High] Infinite kernel loop in `kvm_tdp_mmu_map_private_pfn` due to perma=
+nent PAMT cache depletion on transient TDX module contention.
 --
 
---- Patch [1]: [PATCH] RISC-V: KVM: Reject overlapping AIA IMSIC address fi=
-elds ---
-commit 0b0c0711466532b5918ed0373b83ed94930f6c86
-Author: Pengpeng Hou <pengpeng@iscas.ac.cn>
+--- Patch [8]: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mappi=
+ng private memory ---
+commit 3474807f1c1bc4dedc75e2a756b65254c986a41d
+Author: Kiryl Shutsemau <kas@kernel.org>
 
-RISC-V: KVM: Reject overlapping AIA IMSIC address fields
+KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+   =20
+Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+removing guest memory (PAGE.REMOVE).
 
-This commit fixes an issue where overlapping IMSIC configuration fields cou=
-ld
-give a single address bit two different meanings. It adds a check during
-initialization to reject group-index layouts that overlap with the guest and
-HART index bits.
-
-> diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-> index b195a93add1ce..d0262ed3c0225 100644
-> --- a/arch/riscv/kvm/aia_device.c
-> +++ b/arch/riscv/kvm/aia_device.c
-> @@ -244,6 +244,12 @@ static int aia_init(struct kvm *kvm)
->  	if (aia->nr_sources && aia->aplic_addr =3D=3D KVM_RISCV_AIA_UNDEF_ADDR)
->  		return -EINVAL;
-> =20
-> +	/* Group index bits must not overlap guest and HART index bits. */
-> +	if (aia->nr_group_bits &&
-> +	    aia->nr_group_shift < IMSIC_MMIO_PAGE_SHIFT +
-> +					  aia->nr_guest_bits + aia->nr_hart_bits)
-> +		return -EINVAL;
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 528ebb3cb0389..049da8559882b 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -1679,16 +1693,28 @@ static struct page *tdx_spte_to_sept_pt(struct kv=
+m *kvm, gfn_t gfn,
+>  static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
+>  				     enum pg_level level, u64 new_spte)
+>  {
+> +	struct kvm_vcpu *vcpu =3D kvm_get_running_vcpu();
+>  	gpa_t gpa =3D gfn_to_gpa(gfn);
+>  	u64 err, entry, level_state;
+>  	struct page *sept_pt;
+> +	int ret;
 > +
+> +	if (KVM_BUG_ON(!vcpu, kvm))
+> +		return -EIO;
+> =20
+>  	sept_pt =3D tdx_spte_to_sept_pt(kvm, gfn, new_spte, level);
+>  	if (!sept_pt)
+>  		return -EIO;
+> =20
+> +	ret =3D tdx_pamt_get(page_to_pfn(sept_pt), &to_tdx(vcpu)->pamt_cache);
+> +	if (ret)
+> +		return ret;
+> +
+>  	err =3D tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
+>  			       &entry, &level_state);
+> +	if (err)
+> +		tdx_pamt_put(page_to_pfn(sept_pt));
+> +
+>  	if (unlikely(tdx_operand_busy(err)))
+>  		return -EBUSY;
 
 [Severity: High]
-This is a pre-existing issue, but is there a race window here that could
-corrupt cross-VM state?
+Does this error path risk causing an infinite loop if the TDX module
+contention leads to TDX_OPERAND_BUSY?
 
-Looking at kvm_riscv_aia_imsic_rw_attr() in arch/riscv/kvm/aia_imsic.c, the
-vsfile_lock is dropped before the IPI is sent:
+When tdh_mem_sept_add() returns TDX_OPERAND_BUSY, tdx_pamt_put() frees the
+PAMT pages directly back to the buddy allocator, not back into the vCPU's
+PAMT cache.
 
-	read_unlock_irqrestore(&imsic->vsfile_lock, flags);
+If this happens during VM initialization in a retry loop like
+kvm_tdp_mmu_map_private_pfn(), the vCPU memory caches are topped up outside
+of the loop:
 
-	if (!rc && vsfile_cpu >=3D 0)
-		rc =3D imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr_eix,
-				     isel, write, val);
+    r =3D mmu_topup_memory_caches(vcpu, false);
+    if (r)
+        return r;
 
-If the target VCPU migrates to another physical CPU concurrently, could the
-VCPU thread executing kvm_riscv_vcpu_aia_imsic_update() free the vsfile_hgei
-and reassign it to a different VM?
+    do {
+        ...
+        r =3D kvm_tdp_mmu_map(vcpu, &fault);
+    } while (r =3D=3D RET_PF_RETRY);
 
-A delayed IPI from imsic_vsfile_rw() would then execute on the original CPU
-in imsic_vsfile_local_rw():
+Since the PAMT pages are discarded rather than returned to the cache, a few
+busy retries will completely empty the vCPU's PAMT cache.
 
-	new_hstatus |=3D ((unsigned long)idata->hgei) << HSTATUS_VGEIN_SHIFT;
-	csr_write(CSR_HSTATUS, new_hstatus);
+On the next retry, tdx_pamt_get() will return -ENOMEM because the cache is
+empty and it does not fall back to alloc_page() when a cache is provided.
 
-Does this locally modify the hardware state without verifying if the target
-VCPU still owns it?
+The TDP MMU handles -ENOMEM by returning RET_PF_RETRY, but because the cache
+is never replenished inside the loop, the loop will infinitely fail and ret=
+ry.
 
->  	/* Initialize APLIC */
->  	ret =3D kvm_riscv_aia_aplic_init(kvm);
->  	if (ret)
+Could the PAMT pages be returned to the vCPU cache instead of the buddy
+allocator during transient failures, or should the cache top-up be moved
+inside the retry loop?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260718040000.005.=
-6ede2881-caplitmus-rv@iscas.ac.cn?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260718014500.2231=
+262-1-rick.p.edgecombe@intel.com?part=3D8
