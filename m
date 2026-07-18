@@ -1,172 +1,246 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFBA2DC76F
-	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 08:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784361780; cv=pass; b=F2ZMuNaZf70aSvZ11Z0L4JUwz2Qap+M9aZZj2jukE+VTxtxrLPAssCq7yVT5jozi7y71k9TOyGrjuXDLbOZMhy26CTVwdeaz+2sEKgXOYc5UlNSQ8zS1zsh1vCCpeV2fT7JcQFMfHnc1az10aVF/G3/im+bcUAHFCsMTbO0bKT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784361780; c=relaxed/simple;
-	bh=LH2gECeGj0O/0ahV9EVrVmOPRllM8ZCxrad3lQ+BgT4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gUDi7FCb1iv8ny/Wk0QaFDinBH05RvC66nqW3SQXzWud2Qn9/w04ZJ4AQsgV4nzG66C+T6wPTkYAiYD1hPXHt59WooJCC2ZilQYD1FPa2AhzTnSbN5OB4Awg0yL2/o/6b4/V95CrnQX6YWYchLZsCNn37Ep6q08bbbJwhrE216c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=vINP9XFU; arc=pass smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0BE282F2E
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 09:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784367253; cv=none; b=CN4BbQzLr7qU3opUCtWQys74ryDbHtHZydsQv54rAcG+99GL8+paIjamJThAOefJsN1PA//xTlVWBX30rTdph+gK40EJWJ1lV8hDmXymIr9JP6O1/M+K8Elk+uhnhVsMzr1y6hgX9WDEwuTbgV79uKEtNedmF2+W70n5SEKvvj0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784367253; c=relaxed/simple;
+	bh=2zh1HbefftEkKA3n3kmImS/gbP58lnTC+DchP3dZYpY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GLOkibYQQyjDBXiF0dkafeqjGpIovMBu+99poDkevoTl+omX4ni71upK7BIEGIEaYxP3aszyzKuHARvMjdBraKV+HpbNzsT/H3U11G/f9Kig4k0L3edENWC3+S3GKPzAZO5Etv3VIwmVndhXlPFSp4H1WqyBo+pHmq+69uJtAYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=RFqYCE8K; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="vINP9XFU"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-476a130c138so4959168f8f.0
-        for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 01:02:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784361777; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Nj+lmSGOWid7/JVmjprihzJ/+5dZpxc2cnBA2umD/EFv1kq9z/j0UFap2u6EgaJeGO
-         gEXAfWYSvE+Wi5gV3WNqXC/qcbj4G/KUQ1JwDrkfo6J/sldihyD1YE7A6cPWVx79Brvd
-         PkR4kEVQN9i3ic+f9Gq9SVrMsQM6kH+unVwKLJSNrKz5TGj6EBT1eBm+Cpua3iJB18Ep
-         REMvZp49a1epRlGQdRKDOwdqJM+BvA8fTrEe8oGTFYDfihR4SGdRLEBS4lnqPSH7FtD1
-         M2yMJ4paJvL70j54CB83Ip7xbuu21P2da7rhBAVAE7shpH0T8l1Aie1p2aI1DR9f1nr7
-         a1yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
-        fh=khz9XtMCgjGmjyHz2S8SWeV2jhSAdgNSRyD+JFy5+zI=;
-        b=Exv6lDltNtmVseQP1MosdP8v2GcXe7xoF619CRSJrIKi/Q9Z2iha+Vb7Naff4otKtw
-         OF1gx+GnQcORoHWU98J0Cnd3mnUbbCeUMExovKTqD7mv4ZBvrFvWDQaNpyk4/OhKcipZ
-         L/jSTNbxOI+n2tvIP1xPG1WlwK7jW6d0MjNu8woWMCSki5zVqOmeVr7jtqVFx3Gf6NwG
-         /nkKXci2/MWKBYXo4GCXY+ehpxDSmCdsPez88frvBWf2asff6jPltJaf1g2kha7wJwn3
-         mdWVZqao7md8YjuLKs52M9ssJGc4PauVa+PbXH6HK4uF/Ncib3cqEQBSVBZ2DLihMj2c
-         GJgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="RFqYCE8K"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-69a50b818c8so14076796a12.2
+        for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 02:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1784361777; x=1784966577; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
-        b=vINP9XFUyu0iGmcAy4QcQCY9j6VNsOtqwYP8U7N41aJoynCgjoHFCZFPh+xonEBGeT
-         evM/iyQznyverCML+dwqSz6RA7uJOsDjEsCRSlnvllXO4HPRUTlAPZGAguMJb7Que0xk
-         mMaPDVrvEYYdJCvlrTo+8U+L16DjLwagwIrgVu2YPcK/AmNnDwVwjJRS1hz7NhA22j+j
-         wIhTVdW8uQ7a7XRUp1SblHPG6t/shSHK9Icv4w8m61X0Evn6f8z0XQ4XEJC58yUhRw35
-         ztTlkIIbtYO89s6BOWYm5IAjPBtOvizJz6cdni5gIsM/VSVNWjB5REJFdQX/2OEEKIAW
-         Cv+g==
+        d=suse.com; s=google; t=1784367250; x=1784972050; darn=vger.kernel.org;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2zh1HbefftEkKA3n3kmImS/gbP58lnTC+DchP3dZYpY=;
+        b=RFqYCE8Ko+EPeplfFP9o3PZ7522ijX+cO8dJNFETmFcPVnXEwkBnPDX4h/zOaMMn56
+         6OwhCgGVcpZBDbxDirQ583KxDpbXLQUpMO176sg/4c2g+KIwiHU1/R++Wz6aHTbI/8pT
+         gHMye+41U2ab/4dK48vxgb+xh9B/PdVqRe0baEPi6/CxX9KZNBWun4adcZTkR3RkQrDI
+         E8a4FWKlqAfYmpBtR82kWcJIRvI83dmKKei1EAjoZQKNGsrW8dfMcaEkvVKL71DsRlXy
+         7hGpwH7rUd6H2Z383dZhXFxhYtibrKrjzG0dNW75OrfoqAJneHDYjt5QoNt1lAhyqT+j
+         kKVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784361777; x=1784966577;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
-        b=dEV8zibE/XvELtZQ0DzMiGPdjkUgcGrjaDoE/nJkAO81+JzC8u1gjnrIydLBdnnIt5
-         sqUOweYjWQhovKUGW8OD4XrO1FZ1O/ccjqUkICfm+PwG1QRpqFOoEiq0/nuIkMPURJX9
-         HvrbJsshCSge1QbDAg4V/wr0rCIHDvCNOGvfev/iXYmZpLuJNVkkSU+hh2uWLUjYR038
-         t8LMjpzE/ReZgs4sUNlzV5A7hQIck8sC+I5Q6BUyv/ZN9KNxQzth2UIx5MKkaP2TGR2w
-         bqsuUP8JOCGoeiwM8pNubQXF/7AChimSjjGZ+hewfBWAndHDXuJYw7Kg4fBe3g4FIvNg
-         /NEw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3Q5W6GPZssOHQQdvu7Jiti1RzWZrYg//TIIhFZKbql4r7zKQp6LHTEsWPhVNX/XRsXYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKQTvuAwIC+O8SrfPJuFvN9/EuiY4+UI+jGhLIBFzJFlNXFVes
-	v5+hGu8gsxK8JyAeZxeIloMfsnTKzN1w7YPP2kYbLsRcLqHxQvximrHn/Df6nvdFbSzwyFUKOeK
-	2SQuQo3Ml5I6wTZsBkbp/vmVx4jnmQIRGwPXz27ilcg==
-X-Gm-Gg: AfdE7ckOYQ4jwyvG0pVKkkmu5s1/LlrY0WEgPJionR7QvEbQP/SL4/Uo5Dy55oQ7qiN
-	7YU79s+Obct0Cp0bcbFLx+4NR1f8NodhrBLUo9FYT8FGBSjIQcNKPT+0SIMmjnmhSfrzx1M10LN
-	DTdTAb1Wx19cl0iPAZCa9fglNFEgFtyujd0e6jFBX5RHAS8/87i+19r62PoxNs2rDRgPQ4u47K6
-	2eQTZwycmLzYeGAFUksayJq0GTDgBFVU+sEyWIy2IWJyzIDDQSXAPsxPMPArvMb7MtTUQdmuhXt
-	+HQaFt82IE5qFBnXgqayllkKtCN3l5Oes9Yud3N79K+Mk4u7XAWH05hJmBFXVAxN2aish1tpUBM
-	oaNWw
-X-Received: by 2002:a05:600c:4f09:b0:490:e19b:bd99 with SMTP id
- 5b1f17b1804b1-4954a40bc1emr61521315e9.30.1784361776913; Sat, 18 Jul 2026
- 01:02:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784367250; x=1784972050;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2zh1HbefftEkKA3n3kmImS/gbP58lnTC+DchP3dZYpY=;
+        b=g9Ep40S/mrb6ImCvcH4V0OluYv+fnHSwgMPS45AF/p9ndLZOwDSFMdAvxvGmwQYI4w
+         NWQ12JSHAnXh767Uggg6NQUOcXmY9UG1qlRKZmcsZZHCGvLzGRInjVev/QQ9QCBp1DZy
+         Os6pKbhy+DeH9PdQSDCYs8L3NEpTyEl0+ZfZHi79Rw66QE6h/xsXwRXjCyarevcm8xD7
+         D7KK9GvY4wMhrO5+jZ2ykRx4oVIiY6m1udcf7QnwHtTDTkIlSh7h96dYmJR4rFdfR+gw
+         P9KccpwZuRWpkt/Vyxrx9EMGTZcviHb8PfaeV271dfeU+S0nU8Nl+bFNAH9FNLeWC9Sq
+         a1ug==
+X-Forwarded-Encrypted: i=1; AHgh+RpcrKIT/XJOOhbLJBJ6f4fDP9iVamKY8JuHtKxJImI3lLKVHjj++2L6YlvaDJntTzEBw/A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxF7JWdeB2w7fV0zCXzYTbgwSvd6L79v4gPSKnvSOOXr9K1+h2s
+	qrs2GhgyNnIRiSivpSSMtDnbtk7qBWBnrMMUfqLyzLu13xcwbq26bVI5kUu5qOYREIA=
+X-Gm-Gg: AfdE7cl35hQHqLPsbBT2QBE2KW2RWcbCQrVD15rs4NPGkAuwb7N+wJNkcPpA14b3q45
+	yT0xfqhDg6/zhBun1KWbfcOqKw10Xg+AvybFysyFTqbvCJ4PsSCX+rKnY86dCQ5QuzsOAcfbd9Z
+	0c2L5FCnxjqkjWbTdNFolVkA0q04u0LkEmY0Yk3njKhDMixu+VNDrk3f9A2npkQ6phiR3MGcBRT
+	WGNtLmApIq8NPEEvvkgNg/MjwDD0/Ke7tOconcOlcTKTRPijCwjvP3AWx9WZFwDGIIlrDkTgN2Y
+	e+Uaa2zgIWia/Dgg1SW1/S4uq6pee0084GKOwGRFKe+nrDaWmytgGsnTsiCA8i+o5Da4PgdyZBY
+	tw/MuAGRLRNCUOqZxLWYhlFXK/9gT+xae7lrtdHIDYGitU+r6EwWigDoCZwa7jUWhlMXJGYW5cy
+	Ob5M4ohocPG7e87vq6DaBNdBbimQshwqkBjuO/J29BVoJ8CJd998UBsAdALG0bGzhkwhctQJKvD
+	fKyNXGOwGqEeVOp7XJ6s+4GTuG2jTKS
+X-Received: by 2002:a17:907:c012:b0:c11:ff2c:4f33 with SMTP id a640c23a62f3a-c16b47c7127mr234618866b.45.1784367249941;
+        Sat, 18 Jul 2026 02:34:09 -0700 (PDT)
+Received: from ?IPV6:2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112? (2a00-12d0-af5d-ad01-5d3f-14e6-9bcb-5112.ip.tng.de. [2a00:12d0:af5d:ad01:5d3f:14e6:9bcb:5112])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1724f50bf7sm190595066b.49.2026.07.18.02.34.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jul 2026 02:34:09 -0700 (PDT)
+Message-ID: <cea69d2b-32ac-4e92-b1d3-ba184787bc2b@suse.com>
+Date: Sat, 18 Jul 2026 11:34:08 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Anup Patel <anup@brainfault.org>
-Date: Sat, 18 Jul 2026 13:32:45 +0530
-X-Gm-Features: AUfX_myMNGzt4ZSbXXn9B7HyuNCD1fPJy5lCNbHrmQgj6yVz1oiBXt5EwnVWQEg
-Message-ID: <CAAhSdy2iT3GmYz+n_jzbQ4V_5P7UdfFhmq=BSOgYCDEQ6PPuZA@mail.gmail.com>
-Subject: [GIT PULL] KVM/riscv fixes for 7.2 take #1
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
-	KVM General <kvm@vger.kernel.org>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: linux-next: manual merge of the kvm tree with the tip tree
+To: Mark Brown <broonie@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ KVM <kvm@vger.kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Sean Christopherson <seanjc@google.com>
+References: <alpUTu5ttdBcjZCP@sirena.org.uk>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <alpUTu5ttdBcjZCP@sirena.org.uk>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------1ok0Xx2rzejEh7UGMI00qkE0"
 
-Hi Paolo,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------1ok0Xx2rzejEh7UGMI00qkE0
+Content-Type: multipart/mixed; boundary="------------f0us4B6aufJYhK30GUqjvTW0";
+ protected-headers="v1"
+From: Juergen Gross <jgross@suse.com>
+To: Mark Brown <broonie@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ KVM <kvm@vger.kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Sean Christopherson <seanjc@google.com>
+Message-ID: <cea69d2b-32ac-4e92-b1d3-ba184787bc2b@suse.com>
+Subject: Re: linux-next: manual merge of the kvm tree with the tip tree
+References: <alpUTu5ttdBcjZCP@sirena.org.uk>
+In-Reply-To: <alpUTu5ttdBcjZCP@sirena.org.uk>
 
-We have the following fixes for the 7.2 kernel:
-1) Avoid redundant page-table allocations in ioremap pcache topup
-2) Apply SBI FWFT LOCK flag only on successful set
-3) Bound SBI PMU counter mask scan to BITS_PER_LONG
-4) Skip TLB flush when G-stage PTE becomes valid with Svvptc
-5) Zicbo[m|z|p] block sizes should be always present in ONE_REG
-6) Inject instruction access fault on unmapped guest fetch
-7) Serialize virtual interrupt pending state updates using a raw spinlock
-8) Fix Spectre-v1 in vector register access via ONE_REG
+--------------f0us4B6aufJYhK30GUqjvTW0
+Content-Type: multipart/mixed; boundary="------------mBa2eQI93JwYNemACO1F0L3e"
 
-Please pull.
+--------------mBa2eQI93JwYNemACO1F0L3e
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Regards,
-Anup
+T24gMTcuMDcuMjYgMTg6MTEsIE1hcmsgQnJvd24gd3JvdGU6DQo+IEhpIGFsbCwNCj4gDQo+
+IFRvZGF5J3MgbGludXgtbmV4dCBtZXJnZSBvZiB0aGUga3ZtIHRyZWUgZ290IGEgY29uZmxp
+Y3QgaW46DQo+IA0KPiAgICBhcmNoL3g4Ni9rdm0veDg2LmMNCj4gDQo+IGJldHdlZW4gY29t
+bWl0czoNCj4gDQo+ICAgIDNlYWE1MGUxZTI1NWUgKCJ4ODYvY3B1OiBIaWRlIGFuZCByZW5h
+bWUgc3RhdGljX2NwdV9oYXMoKSIpDQo+ICAgIDE2MjBkZGMwZGNlZmMgKCJLVk0veDg2OiBT
+dG9wIHVzaW5nIDMyLWJpdCBNU1IgaW50ZXJmYWNlcyIpDQo+IA0KPiBmcm9tIHRoZSB0aXAg
+dHJlZSBhbmQgY29tbWl0Og0KPiANCj4gICAgN2EyNjgzMDgwMTU4NCAoIktWTTogeDg2OiBN
+b3ZlIHRoZSBidWxrIG9mIE1TUiBzcGVjaWZpYyBjb2RlIGZyb20geDg2LmMgdG8gbXNycy57
+YyxofSIpDQo+IA0KPiBmcm9tIHRoZSBrdm0gdHJlZS4NCj4gDQo+IEkgZml4ZWQgaXQgdXAg
+KHNlZSBiZWxvdykgYW5kIGNhbiBjYXJyeSB0aGUgZml4IGFzIG5lY2Vzc2FyeS4gVGhpcw0K
+PiBpcyBub3cgZml4ZWQgYXMgZmFyIGFzIGxpbnV4LW5leHQgaXMgY29uY2VybmVkLCBidXQg
+YW55IG5vbiB0cml2aWFsDQo+IGNvbmZsaWN0cyBzaG91bGQgYmUgbWVudGlvbmVkIHRvIHlv
+dXIgdXBzdHJlYW0gbWFpbnRhaW5lciB3aGVuIHlvdXIgdHJlZQ0KPiBpcyBzdWJtaXR0ZWQg
+Zm9yIG1lcmdpbmcuICBZb3UgbWF5IGFsc28gd2FudCB0byBjb25zaWRlciBjb29wZXJhdGlu
+Zw0KPiB3aXRoIHRoZSBtYWludGFpbmVyIG9mIHRoZSBjb25mbGljdGluZyB0cmVlIHRvIG1p
+bmltaXNlIGFueSBwYXJ0aWN1bGFybHkNCj4gY29tcGxleCBjb25mbGljdHMuDQo+IA0KPiBk
+aWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL21zcnMuYyBiL2FyY2gveDg2L2t2bS9tc3JzLmMN
+Cj4gaW5kZXggYzIzMGIxOGQ4N2UzOC4uNzY0Y2RhODA0NWExNyAxMDA2NDQNCj4gLS0tIGEv
+YXJjaC94ODYva3ZtL21zcnMuYw0KPiArKysgYi9hcmNoL3g4Ni9rdm0vbXNycy5jDQo+IEBA
+IC0yNTc5LDkgKzI1NzksOSBAQCBzdGF0aWMgdm9pZCBrdm1fcHJvYmVfZmVhdHVyZV9tc3Io
+dTMyIG1zcl9pbmRleCkNCj4gICANCj4gICBzdGF0aWMgdm9pZCBrdm1fcHJvYmVfbXNyX3Rv
+X3NhdmUodTMyIG1zcl9pbmRleCkNCj4gICB7DQo+IC0JdTMyIGR1bW15WzJdOw0KPiArCXU2
+NCBkdW1teTsNCj4gICANCj4gLQlpZiAocmRtc3Jfc2FmZShtc3JfaW5kZXgsICZkdW1teVsw
+XSwgJmR1bW15WzFdKSkNCj4gKwlpZiAocmRtc3JxX3NhZmUobXNyX2luZGV4LCAmZHVtbXkp
+KQ0KPiAgIAkJcmV0dXJuOw0KPiAgIA0KPiAgIAkvKg0KDQpUaGUgZml4IGxvb2tzIGZpbmUu
+DQoNCg0KSnVlcmdlbg0K
+--------------mBa2eQI93JwYNemACO1F0L3e
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit a13c140cc289c0b7b3770bce5b3ad42ab35074aa:
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-  Linux 7.2-rc3 (2026-07-12 14:16:39 -0700)
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-are available in the Git repository at:
+--------------mBa2eQI93JwYNemACO1F0L3e--
 
-  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.2-1
+--------------f0us4B6aufJYhK30GUqjvTW0--
 
-for you to fetch changes up to 8d9c9b135b5c23de9811a8426257cbd2fa024a99:
+--------------1ok0Xx2rzejEh7UGMI00qkE0
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-  KVM: riscv: Fix Spectre-v1 in vector register access (2026-07-15
-18:06:16 +0530)
+-----BEGIN PGP SIGNATURE-----
 
-----------------------------------------------------------------
-KVM/riscv fixes for 7.2, take #1
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmpbSJAFAwAAAAAACgkQsN6d1ii/Ey/o
+VQf/X5pfJkZX8w3BFmNhO2Uy4oHFVtQ92tpZnIrK8acTsvXeHMzW4RDKzvCEsgXttf86lsVaZ22I
+N4aUZqpqKO4chQfMSzH9zrci168JQT46+H7dGfRax5ZZYqWhHO8dOIkhNUxe/2BXTmZO40v0nLfN
+NNpioCxbHGm9VYSegd8rHgCb2vkX2P9eoKq9MOZ9t2l+QDJTDV8JCq7U2f4Ojn8fKPQnHdnH89EK
+68GK7ps29ldMP9RrBzHPsKmRnMG3ev2PtLYyg3GSUck/iBezv6xUCK0dFNyt0WpoonXLVQSug5Fr
+klVxzkNaFGY4D7etuvp+6W7BP1Zsm1OvQbJUt3gsuQ==
+=Otao
+-----END PGP SIGNATURE-----
 
-- Avoid redundant page-table allocations in ioremap pcache topup
-- Apply SBI FWFT LOCK flag only on successful set
-- Bound SBI PMU counter mask scan to BITS_PER_LONG
-- Skip TLB flush when G-stage PTE becomes valid with Svvptc
-- Zicbo[m|z|p] block sizes should be always present in ONE_REG
-- Inject instruction access fault on unmapped guest fetch
-- Serialize virtual interrupt pending state updates using raw spinlock
-- Fix Spectre-v1 in vector register access via ONE_REG
-
-----------------------------------------------------------------
-Anup Patel (1):
-      RISC-V: KVM: Zicbo[m|z|p] block sizes should be always present in ONE_REG
-
-Dylan.Wu (1):
-      riscv: kvm: Skip TLB flush when G-stage PTE becomes valid with Svvptc
-
-Fangyu Yu (1):
-      RISC-V: KVM: Avoid redundant page-table allocations in ioremap topup
-
-Qingwei Hu (1):
-      RISC-V: KVM: Inject instruction access fault on unmapped guest fetch
-
-SeungJu Cheon (1):
-      KVM: riscv: SBI FWFT: Apply LOCK flag only on successful set
-
-Shengwen Cheng (1):
-      KVM: riscv: PMU: Bound counter mask scan to BITS_PER_LONG
-
-Xie Bo (1):
-      RISC-V: KVM: Serialize virtual interrupt pending state updates
-
-Zongmin Zhou (1):
-      KVM: riscv: Fix Spectre-v1 in vector register access
-
- arch/riscv/include/asm/kvm_host.h | 10 +++---
- arch/riscv/kvm/aia.c              | 35 ++++++++++++++++----
- arch/riscv/kvm/gstage.c           |  6 +++-
- arch/riscv/kvm/mmu.c              |  3 +-
- arch/riscv/kvm/vcpu.c             | 68 +++++++++++++++++++++++++++------------
- arch/riscv/kvm/vcpu_exit.c        | 19 +++++++++++
- arch/riscv/kvm/vcpu_onereg.c      | 46 +++++++-------------------
- arch/riscv/kvm/vcpu_pmu.c         |  4 +--
- arch/riscv/kvm/vcpu_sbi_fwft.c    |  6 ++--
- arch/riscv/kvm/vcpu_vector.c      | 14 ++++++--
- 10 files changed, 137 insertions(+), 74 deletions(-)
+--------------1ok0Xx2rzejEh7UGMI00qkE0--
