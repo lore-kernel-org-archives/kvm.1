@@ -1,128 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305AC2080C1
-	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 01:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442F92080C1;
+	Sat, 18 Jul 2026 01:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784338199; cv=none; b=qts0aXN65jjW8UGiGLQVbwcBlcw69PXtdyT6DDwYhHomgvrYHQgfR42Juf2xV+v65v5kqKInWi0laGuaSMQ6GSj2nyOsvza6llJSm1PpFk2T5UU42ANtwxf8YH5Lvd1idJp0VShlKU/bz7NVc1knzH2jYeimNXQIi5x6BJbzzMc=
+	t=1784339110; cv=none; b=lCiH2IjxW4FrWRZ48PP4hUCnQIz4f28WCCQZkmQeyu6PM/bz8yivnoioTEEy8LtfUlccV7KXhVO17MdPTbvIMs7G1Alxut6CLOYC+Clv4n15rsJ3AkT/i3H0hs5uUQpHg1VRFFRXYC97kwnMn2o/j8GieJYXhXKiJMdVXwarFx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784338199; c=relaxed/simple;
-	bh=xTcBrCQ0VcXsHWsTm7qhV7ayhNLIIQejrXLK4KlWY5Q=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kZH+QXkGYuOACCUa1BLAnCSeYUONWhZGIX/iK/0X1BLECZJUnqMFUp6pCYR/zVwXFIeocLF6/ragrarGXOtEwjE/xTQkK6+ADJ35Xql5RCbzn7P4MDsQ5BEdL4Q+s5a0SMh7XPM1GlSCXU8VNfqvByvPXtU1TpgI+mtjx4QwZT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmSmMpAP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784339110; c=relaxed/simple;
+	bh=KNbDEPG9tsgQrcj/LKaGpIifhR63eKrrnqQjkVLc7+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RmMdFt3/Sd2IuidOn2XvgYVYiOZUhNC+JXG8rPFDnYsyVUD2omekNB2n7A58l4WIbos6gb+6pDx4iuIISk13VSpHPKpcx4PniuBUJDwKEFEbxQABGrslAgXoIa3UW6B/Eo2Z3oVjaZjm/p6XhhkuxrGCzNPmV1FER52YuKywFek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cmzXQ8Lv; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmSmMpAP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A184E1F000E9;
-	Sat, 18 Jul 2026 01:29:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784338197;
-	bh=MX9/q0LLTHBGr51iGlIAf263oExGzxdBxWm4IZBCGoU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FmSmMpAPRbCW8Kmi8HkZPuB47fsMzAZjblD10+SJ0izskjvQ8DPfxzkdbBW64Lb6Z
-	 E6BvcRpv7KfN6hO3VYQUYL2Pzns22bzHh7kfsjoZhGgxmzlbVjhT4l5X9OazJxINgI
-	 Y0+H6DgxbNVHuaR7xEGVuGUbCOl/qgVUDdUheBLpU587dHambM9sPoH8HQpU1kdG+J
-	 T4sI0xwKHAFdzTF3fcg5FBGmG9BRRXj3rO6odCwdfz7Sh/g7kPBilzRT0LfmzxMsDP
-	 XPlIwN8SBs/OLFVWMjHSstMN4U3kFtToqelTtk29mRDkR+aAlKHbK2J5xhFpwVKg4v
-	 fUVlAOrexJZfQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] vhost: reject zero-size IOTLB INVALIDATE
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Weimin Xiong" <xiongwm2026@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260717012921.oyTkqBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z>
-References: <20260716030236.124322-1-xiongwm2026@163.com>
- <20260717012921.oyTkqBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 18 Jul 2026 01:29:57 +0000
-Message-Id: <20260718012957.A184E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cmzXQ8Lv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784339107; x=1815875107;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=KNbDEPG9tsgQrcj/LKaGpIifhR63eKrrnqQjkVLc7+A=;
+  b=cmzXQ8Lvrkpu2YqX8WzzFePGJHpWKih1Fr0NVbQK8NQcQeVbv6Amsp3W
+   29iKExOOLfhq2yl7l4PTJvCBN5yhogXij2iGD0dORh7dA0eUaTMaAV+3a
+   7xYOSZf9i23fftjsnpo/ExjuheMtb5XeduJqmSJN9UZSbja++wYAUxcsQ
+   5Q24C4ECrypv+8QFFuKTOKlug2c9c/iaJswOPuB3lnyaGK+E5FvjMHLiF
+   8P2wgvYeJe7CU66iktJIuhj8lkYzBjOcq3UFKnYhHwWZvfF03Fwapfb+z
+   YBFU1EizIGjhcOSAMJ20M1WYho4ku3Ohu4oAnBA9jfhuXJBsnxN1cUH9q
+   g==;
+X-CSE-ConnectionGUID: nfpS9nilSnaorNh2/IGFjw==
+X-CSE-MsgGUID: UFoPnjC+R0udaJq1m+8E2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="96377089"
+X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; 
+   d="scan'208";a="96377089"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 18:45:06 -0700
+X-CSE-ConnectionGUID: FjUMPCwESKqiF9AjUQgWIQ==
+X-CSE-MsgGUID: anBjIfbbSjehT3y2+lL7/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; 
+   d="scan'208";a="254296247"
+Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 18:45:06 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: bp@alien8.de,
+	dave.hansen@intel.com,
+	hpa@zytor.com,
+	kas@kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mingo@redhat.com,
+	nik.borisov@suse.com,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	tglx@kernel.org,
+	vannapurve@google.com,
+	x86@kernel.org,
+	chao.gao@intel.com,
+	yan.y.zhao@intel.com,
+	kai.huang@intel.com,
+	tony.lindgren@linux.intel.com,
+	binbin.wu@intel.com
+Cc: rick.p.edgecombe@intel.com
+Subject: [PATCH v7 00/11] Dynamic PAMT
+Date: Fri, 17 Jul 2026 18:44:49 -0700
+Message-ID: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi,
 
-Pre-existing issues:
-- [Critical] Missing integer overflow check in VHOST_IOTLB_INVALIDATE cause=
-s failed unmaps and stale DMA mappings.
-- [High] Unconditional access to `dev->vqs[0]` can cause a NULL pointer der=
-eference / page fault if a device has 0 virtqueues.
---
+This is hopefully the last revision of Dynamic PAMT TDX series. Thank you 
+to all the reviewers that helped polish off the last rough spots in v6[0]. 
+Sean please consider acking the two KVM patches. Dave, please consider 
+taking through tip.
 
---- Patch [1]: [PATCH v2] vhost: reject zero-size IOTLB INVALIDATE ---
-commit d375f3ebf8dae4831fa1035718b913506e8ff8fd
-Author: xiongweimin <xiongweimin@kylinos.cn>
-Subject: vhost: reject zero-size IOTLB INVALIDATE
+Kiryl and Vishal, I left your RBs because the other changes were trivial.
+Please shout if you prefer to drop them.
 
-This patch modifies vhost_chr_write_iter to reject VHOST_IOTLB_INVALIDATE
-messages with a size of 0. This prevents the end address calculation
-from underflowing and incorrectly deleting the entire IOTLB.
+Background
+==========
+Dynamic PAMT is a TDX feature that allows saving memory by allocating some 
+of its page tracking metadata dynamically, instead of statically at boot. 
+These static allocations take roughly 0.4% of system memory. The savings 
+are variable depending on system and TDX usage, but could be up to 100x. 
+For more Dynamic PAMT background, please refer to [1]. For more analysis 
+of the savings in different scenarios, see the v6 coverleter[0].
 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -1692,8 +1692,7 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
->  		offset =3D offsetof(struct vhost_msg, iotlb) - sizeof(int);
->  		break;
->  	case VHOST_IOTLB_MSG_V2:
->  		if (vhost_backend_has_feature(dev->vqs[0],
+It occurred to me that since the Dynamic PAMT effort began, RAM has become
+much more expensive. Consequently, this feature is even more valuable now.
+It would be good to enable it for TDX users.
 
-[Severity: High]
-This is a pre-existing issue, but can this code crash if the device was
-created with 0 virtqueues?
+Changes
+=======
+Besides the polishing type comments, there were two substantial ones. These
+ended up getting addressed with the same small change.
 
-If a vDPA or VDUSE device is registered with 0 virtqueues, dev->vqs is
-allocated using kmalloc_objs, returning a zero size pointer. When userspace
-writes a VHOST_IOTLB_MSG_V2 message, this code unconditionally accesses
-dev->vqs[0] to check backend features.
+Chao asked why the TDX module doesn't do the keyid range checks itself 
+that it requires, and then only expose the Dynamic PAMT feature0 bit when 
+it actually can support Dynamic PAMT. It seems the TDX module is open to 
+this change, but in any case, no modules exist today that have it. Since 
+Dynamic PAMT enablement failure will cause TDX enablement to fail, Dynamic 
+PAMT is made an opt-in for now by adding a kernel parameter for it. Then 
+the kernel side keyid checks are dropped.
 
-Dereferencing this pointer causes a kernel panic. Is it possible we need to
-check if dev->nvqs > 0 before accessing dev->vqs[0] here?
+The other significant comment was Dave asking whether the "x86/virt/tdx: 
+Optimize tdx_pamt_get/put()" was really needed. Later we discussed offline 
+to keep the patch for the sake of maintaining performance and being kind 
+to KVM's efforts to fault under a shared lock. However, now that the 
+feature requires an opt-in, it could be for limited use and not disturb any
+kernel upgraders. Then the optimization patch actually does become more 
+optional. So here it is moved to the end. I think the patch is in good 
+shape, but if there are any doubts we can drop it out of the initial
+support.
 
->  					      VHOST_BACKEND_F_IOTLB_ASID)) {
->  			ret =3D copy_from_iter(&asid, sizeof(asid), from);
+Base
+====
+This is based on v7.2-rc3. A full branch can be found here: [2].
 
-[ ... ]
+Testing
+=======
+This series was tested in the usual suite, and also with the optimization
+patch removed.
 
-> @@ -1716,7 +1716,8 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
->  		goto done;
->  	}
-> =20
-> -	if (msg.type =3D=3D VHOST_IOTLB_UPDATE && msg.size =3D=3D 0) {
-> +	if ((msg.type =3D=3D VHOST_IOTLB_UPDATE ||
-> +	     msg.type =3D=3D VHOST_IOTLB_INVALIDATE) && !msg.size) {
 
-[Severity: Critical]
-This is a pre-existing issue, but does this size validation fully protect
-against integer overflow in the invalidate path?
+[0] https://lore.kernel.org/lkml/20260526023515.288829-1-rick.p.edgecombe@intel.com/
+[1] https://lore.kernel.org/lkml/20250918232224.2202592-1-rick.p.edgecombe@intel.com/
+[2] https://github.com/intel-staging/tdx/tree/dpamt_v7
 
-If userspace sends a VHOST_IOTLB_INVALIDATE message with msg.iova =3D 2 and=
- a
-msg.size large enough to wrap around the 64-bit integer limit,=20
-msg.iova + msg.size - 1 will overflow to 0 in vhost_process_iotlb_msg().
+Kiryl Shutsemau (9):
+  x86/virt/tdx: Allocate page bitmap for Dynamic PAMT
+  x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
+  x86/virt/tdx: Allocate refcounts for Dynamic PAMT memory
+  x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
+  KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
+  KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+  x86/virt/tdx: Enable Dynamic PAMT
+  Documentation/x86: Add documentation for TDX's Dynamic PAMT
+  x86/virt/tdx: Optimize tdx_pamt_get/put()
 
-This inverted range is then passed to vhost_iotlb_del_range():
+Rick Edgecombe (2):
+  x86/virt/tdx: Simplify PAMT layout calculation
+  x86/tdx: Add APIs to support Dynamic PAMT ops from KVM's fault path
 
-drivers/vhost/iotlb.c:vhost_iotlb_del_range() {
-        ...
-        while ((map =3D vhost_iotlb_itree_iter_first(&iotlb->root,
-                                                   start, last)))
-}
+ .../admin-guide/kernel-parameters.txt         |  10 +
+ Documentation/arch/x86/tdx.rst                |  28 ++
+ arch/x86/include/asm/kvm-x86-ops.h            |   1 +
+ arch/x86/include/asm/kvm_host.h               |   2 +
+ arch/x86/include/asm/tdx.h                    |  26 +
+ arch/x86/include/asm/tdx_global_metadata.h    |   3 +
+ arch/x86/kvm/mmu/mmu.c                        |   4 +
+ arch/x86/kvm/vmx/tdx.c                        |  98 ++--
+ arch/x86/kvm/vmx/tdx.h                        |   2 +
+ arch/x86/virt/vmx/tdx/tdx.c                   | 452 +++++++++++++++---
+ arch/x86/virt/vmx/tdx/tdx.h                   |   2 +
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  23 +-
+ 12 files changed, 559 insertions(+), 92 deletions(-)
 
-Since start (2) > last (0), the interval tree search silently fails to
-delete the mappings, leaving stale DMA mappings in the vhost IOTLB intact.
+-- 
+2.54.0
 
-Should we also check if msg.size + msg.iova overflows?
-
->  		ret =3D -EINVAL;
->  		goto done;
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717012921.oyTk=
-qBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z?part=3D1
