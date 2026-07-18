@@ -1,136 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8867A1B86C7
-	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 06:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784355052; cv=none; b=iv4ieJUazGB6j/KO6rLhWBuW2FLya24Z+GZ33t5dB6oge4JJeTsaMcJYcOdFlr5+x0tTVKj9aKjVrFrhXvRQXg4orXfwtHxcJFGbSSn3gHi06RicUDHiCtl/W+5ff7i55HrXF56b2dG4Fm8JZFldXCOInjKPgEWMa2gjXC4uASo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784355052; c=relaxed/simple;
-	bh=6Tp/rkrFRRREFMszZsq00R83mbtIGwGyOPth3d56PUU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HiMBtViNKhqYo4+OkGlg0c5x5fMLkNAqAQAgz+615ajtdOULkbCtrq85dIOAgH1/7HafwxqvZqUN5dVwYEPbRUZKABRYwheAudCj/S38shRFSYikvFCtqWxRj+V9eAMAfCLvM5j2z3WXcZgy4qr2xC1aSADsGeVcOakBJeZHWRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ej7bfyQT; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFBA2DC76F
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 08:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784361780; cv=pass; b=F2ZMuNaZf70aSvZ11Z0L4JUwz2Qap+M9aZZj2jukE+VTxtxrLPAssCq7yVT5jozi7y71k9TOyGrjuXDLbOZMhy26CTVwdeaz+2sEKgXOYc5UlNSQ8zS1zsh1vCCpeV2fT7JcQFMfHnc1az10aVF/G3/im+bcUAHFCsMTbO0bKT4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784361780; c=relaxed/simple;
+	bh=LH2gECeGj0O/0ahV9EVrVmOPRllM8ZCxrad3lQ+BgT4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gUDi7FCb1iv8ny/Wk0QaFDinBH05RvC66nqW3SQXzWud2Qn9/w04ZJ4AQsgV4nzG66C+T6wPTkYAiYD1hPXHt59WooJCC2ZilQYD1FPa2AhzTnSbN5OB4Awg0yL2/o/6b4/V95CrnQX6YWYchLZsCNn37Ep6q08bbbJwhrE216c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=vINP9XFU; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ej7bfyQT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17B01F000E9;
-	Sat, 18 Jul 2026 06:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784355051;
-	bh=oaLugtF12mxw8+D45f0hX+P5OhKvHuoYQAexLUIHg10=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ej7bfyQTUK+de5EgZ1REE34L8gDiYgqssJqEB+tiEB0OqcafCra1d+VBrZm+IaHzq
-	 dnTxNu5L08zK8nt2zNSB2ZG/fMh/fj/HuFnLgIpN1tPUWnoB8lnwZH//NcssDW0S4+
-	 4Fj0UpHWMpVfvU9qWO5yT77bw4WteS1cY4tDItOgCvrkNsg4C/o5xMIKjbs5IP/vZT
-	 Rjfag2ayBT8OuIuRXu/VvgDk8DK4q3gp7TASuFASBZCG2J6oAFHOORTfyND4uXS+3x
-	 hZDboIpTtwVIXqdJ14KdR7gJyS06ECm/mNHQ3UYbJDe1+QSvGKUOUlE2c5Z96EkPwk
-	 gxNozjEKzB6/A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
- private memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Rick Edgecombe" <rick.p.edgecombe@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 18 Jul 2026 06:10:50 +0000
-Message-Id: <20260718061050.E17B01F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="vINP9XFU"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-476a130c138so4959168f8f.0
+        for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 01:02:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784361777; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Nj+lmSGOWid7/JVmjprihzJ/+5dZpxc2cnBA2umD/EFv1kq9z/j0UFap2u6EgaJeGO
+         gEXAfWYSvE+Wi5gV3WNqXC/qcbj4G/KUQ1JwDrkfo6J/sldihyD1YE7A6cPWVx79Brvd
+         PkR4kEVQN9i3ic+f9Gq9SVrMsQM6kH+unVwKLJSNrKz5TGj6EBT1eBm+Cpua3iJB18Ep
+         REMvZp49a1epRlGQdRKDOwdqJM+BvA8fTrEe8oGTFYDfihR4SGdRLEBS4lnqPSH7FtD1
+         M2yMJ4paJvL70j54CB83Ip7xbuu21P2da7rhBAVAE7shpH0T8l1Aie1p2aI1DR9f1nr7
+         a1yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
+        fh=khz9XtMCgjGmjyHz2S8SWeV2jhSAdgNSRyD+JFy5+zI=;
+        b=Exv6lDltNtmVseQP1MosdP8v2GcXe7xoF619CRSJrIKi/Q9Z2iha+Vb7Naff4otKtw
+         OF1gx+GnQcORoHWU98J0Cnd3mnUbbCeUMExovKTqD7mv4ZBvrFvWDQaNpyk4/OhKcipZ
+         L/jSTNbxOI+n2tvIP1xPG1WlwK7jW6d0MjNu8woWMCSki5zVqOmeVr7jtqVFx3Gf6NwG
+         /nkKXci2/MWKBYXo4GCXY+ehpxDSmCdsPez88frvBWf2asff6jPltJaf1g2kha7wJwn3
+         mdWVZqao7md8YjuLKs52M9ssJGc4PauVa+PbXH6HK4uF/Ncib3cqEQBSVBZ2DLihMj2c
+         GJgQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1784361777; x=1784966577; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
+        b=vINP9XFUyu0iGmcAy4QcQCY9j6VNsOtqwYP8U7N41aJoynCgjoHFCZFPh+xonEBGeT
+         evM/iyQznyverCML+dwqSz6RA7uJOsDjEsCRSlnvllXO4HPRUTlAPZGAguMJb7Que0xk
+         mMaPDVrvEYYdJCvlrTo+8U+L16DjLwagwIrgVu2YPcK/AmNnDwVwjJRS1hz7NhA22j+j
+         wIhTVdW8uQ7a7XRUp1SblHPG6t/shSHK9Icv4w8m61X0Evn6f8z0XQ4XEJC58yUhRw35
+         ztTlkIIbtYO89s6BOWYm5IAjPBtOvizJz6cdni5gIsM/VSVNWjB5REJFdQX/2OEEKIAW
+         Cv+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784361777; x=1784966577;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Rm7XhSy4D7GsNEFlHs1pBrGpKvn/WVAo06Ys8zEN9MY=;
+        b=dEV8zibE/XvELtZQ0DzMiGPdjkUgcGrjaDoE/nJkAO81+JzC8u1gjnrIydLBdnnIt5
+         sqUOweYjWQhovKUGW8OD4XrO1FZ1O/ccjqUkICfm+PwG1QRpqFOoEiq0/nuIkMPURJX9
+         HvrbJsshCSge1QbDAg4V/wr0rCIHDvCNOGvfev/iXYmZpLuJNVkkSU+hh2uWLUjYR038
+         t8LMjpzE/ReZgs4sUNlzV5A7hQIck8sC+I5Q6BUyv/ZN9KNxQzth2UIx5MKkaP2TGR2w
+         bqsuUP8JOCGoeiwM8pNubQXF/7AChimSjjGZ+hewfBWAndHDXuJYw7Kg4fBe3g4FIvNg
+         /NEw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3Q5W6GPZssOHQQdvu7Jiti1RzWZrYg//TIIhFZKbql4r7zKQp6LHTEsWPhVNX/XRsXYc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKQTvuAwIC+O8SrfPJuFvN9/EuiY4+UI+jGhLIBFzJFlNXFVes
+	v5+hGu8gsxK8JyAeZxeIloMfsnTKzN1w7YPP2kYbLsRcLqHxQvximrHn/Df6nvdFbSzwyFUKOeK
+	2SQuQo3Ml5I6wTZsBkbp/vmVx4jnmQIRGwPXz27ilcg==
+X-Gm-Gg: AfdE7ckOYQ4jwyvG0pVKkkmu5s1/LlrY0WEgPJionR7QvEbQP/SL4/Uo5Dy55oQ7qiN
+	7YU79s+Obct0Cp0bcbFLx+4NR1f8NodhrBLUo9FYT8FGBSjIQcNKPT+0SIMmjnmhSfrzx1M10LN
+	DTdTAb1Wx19cl0iPAZCa9fglNFEgFtyujd0e6jFBX5RHAS8/87i+19r62PoxNs2rDRgPQ4u47K6
+	2eQTZwycmLzYeGAFUksayJq0GTDgBFVU+sEyWIy2IWJyzIDDQSXAPsxPMPArvMb7MtTUQdmuhXt
+	+HQaFt82IE5qFBnXgqayllkKtCN3l5Oes9Yud3N79K+Mk4u7XAWH05hJmBFXVAxN2aish1tpUBM
+	oaNWw
+X-Received: by 2002:a05:600c:4f09:b0:490:e19b:bd99 with SMTP id
+ 5b1f17b1804b1-4954a40bc1emr61521315e9.30.1784361776913; Sat, 18 Jul 2026
+ 01:02:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Anup Patel <anup@brainfault.org>
+Date: Sat, 18 Jul 2026 13:32:45 +0530
+X-Gm-Features: AUfX_myMNGzt4ZSbXXn9B7HyuNCD1fPJy5lCNbHrmQgj6yVz1oiBXt5EwnVWQEg
+Message-ID: <CAAhSdy2iT3GmYz+n_jzbQ4V_5P7UdfFhmq=BSOgYCDEQ6PPuZA@mail.gmail.com>
+Subject: [GIT PULL] KVM/riscv fixes for 7.2 take #1
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+	KVM General <kvm@vger.kernel.org>, 
+	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Infinite kernel loop in `kvm_tdp_mmu_map_private_pfn` due to perma=
-nent PAMT cache depletion on transient TDX module contention.
---
+Hi Paolo,
 
---- Patch [8]: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mappi=
-ng private memory ---
-commit 3474807f1c1bc4dedc75e2a756b65254c986a41d
-Author: Kiryl Shutsemau <kas@kernel.org>
+We have the following fixes for the 7.2 kernel:
+1) Avoid redundant page-table allocations in ioremap pcache topup
+2) Apply SBI FWFT LOCK flag only on successful set
+3) Bound SBI PMU counter mask scan to BITS_PER_LONG
+4) Skip TLB flush when G-stage PTE becomes valid with Svvptc
+5) Zicbo[m|z|p] block sizes should be always present in ONE_REG
+6) Inject instruction access fault on unmapped guest fetch
+7) Serialize virtual interrupt pending state updates using a raw spinlock
+8) Fix Spectre-v1 in vector register access via ONE_REG
 
-KVM: TDX: Get/put PAMT pages when (un)mapping private memory
-   =20
-Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
-adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
-removing guest memory (PAGE.REMOVE).
+Please pull.
 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 528ebb3cb0389..049da8559882b 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -1679,16 +1693,28 @@ static struct page *tdx_spte_to_sept_pt(struct kv=
-m *kvm, gfn_t gfn,
->  static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
->  				     enum pg_level level, u64 new_spte)
->  {
-> +	struct kvm_vcpu *vcpu =3D kvm_get_running_vcpu();
->  	gpa_t gpa =3D gfn_to_gpa(gfn);
->  	u64 err, entry, level_state;
->  	struct page *sept_pt;
-> +	int ret;
-> +
-> +	if (KVM_BUG_ON(!vcpu, kvm))
-> +		return -EIO;
-> =20
->  	sept_pt =3D tdx_spte_to_sept_pt(kvm, gfn, new_spte, level);
->  	if (!sept_pt)
->  		return -EIO;
-> =20
-> +	ret =3D tdx_pamt_get(page_to_pfn(sept_pt), &to_tdx(vcpu)->pamt_cache);
-> +	if (ret)
-> +		return ret;
-> +
->  	err =3D tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
->  			       &entry, &level_state);
-> +	if (err)
-> +		tdx_pamt_put(page_to_pfn(sept_pt));
-> +
->  	if (unlikely(tdx_operand_busy(err)))
->  		return -EBUSY;
+Regards,
+Anup
 
-[Severity: High]
-Does this error path risk causing an infinite loop if the TDX module
-contention leads to TDX_OPERAND_BUSY?
+The following changes since commit a13c140cc289c0b7b3770bce5b3ad42ab35074aa:
 
-When tdh_mem_sept_add() returns TDX_OPERAND_BUSY, tdx_pamt_put() frees the
-PAMT pages directly back to the buddy allocator, not back into the vCPU's
-PAMT cache.
+  Linux 7.2-rc3 (2026-07-12 14:16:39 -0700)
 
-If this happens during VM initialization in a retry loop like
-kvm_tdp_mmu_map_private_pfn(), the vCPU memory caches are topped up outside
-of the loop:
+are available in the Git repository at:
 
-    r =3D mmu_topup_memory_caches(vcpu, false);
-    if (r)
-        return r;
+  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.2-1
 
-    do {
-        ...
-        r =3D kvm_tdp_mmu_map(vcpu, &fault);
-    } while (r =3D=3D RET_PF_RETRY);
+for you to fetch changes up to 8d9c9b135b5c23de9811a8426257cbd2fa024a99:
 
-Since the PAMT pages are discarded rather than returned to the cache, a few
-busy retries will completely empty the vCPU's PAMT cache.
+  KVM: riscv: Fix Spectre-v1 in vector register access (2026-07-15
+18:06:16 +0530)
 
-On the next retry, tdx_pamt_get() will return -ENOMEM because the cache is
-empty and it does not fall back to alloc_page() when a cache is provided.
+----------------------------------------------------------------
+KVM/riscv fixes for 7.2, take #1
 
-The TDP MMU handles -ENOMEM by returning RET_PF_RETRY, but because the cache
-is never replenished inside the loop, the loop will infinitely fail and ret=
-ry.
+- Avoid redundant page-table allocations in ioremap pcache topup
+- Apply SBI FWFT LOCK flag only on successful set
+- Bound SBI PMU counter mask scan to BITS_PER_LONG
+- Skip TLB flush when G-stage PTE becomes valid with Svvptc
+- Zicbo[m|z|p] block sizes should be always present in ONE_REG
+- Inject instruction access fault on unmapped guest fetch
+- Serialize virtual interrupt pending state updates using raw spinlock
+- Fix Spectre-v1 in vector register access via ONE_REG
 
-Could the PAMT pages be returned to the vCPU cache instead of the buddy
-allocator during transient failures, or should the cache top-up be moved
-inside the retry loop?
+----------------------------------------------------------------
+Anup Patel (1):
+      RISC-V: KVM: Zicbo[m|z|p] block sizes should be always present in ONE_REG
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260718014500.2231=
-262-1-rick.p.edgecombe@intel.com?part=3D8
+Dylan.Wu (1):
+      riscv: kvm: Skip TLB flush when G-stage PTE becomes valid with Svvptc
+
+Fangyu Yu (1):
+      RISC-V: KVM: Avoid redundant page-table allocations in ioremap topup
+
+Qingwei Hu (1):
+      RISC-V: KVM: Inject instruction access fault on unmapped guest fetch
+
+SeungJu Cheon (1):
+      KVM: riscv: SBI FWFT: Apply LOCK flag only on successful set
+
+Shengwen Cheng (1):
+      KVM: riscv: PMU: Bound counter mask scan to BITS_PER_LONG
+
+Xie Bo (1):
+      RISC-V: KVM: Serialize virtual interrupt pending state updates
+
+Zongmin Zhou (1):
+      KVM: riscv: Fix Spectre-v1 in vector register access
+
+ arch/riscv/include/asm/kvm_host.h | 10 +++---
+ arch/riscv/kvm/aia.c              | 35 ++++++++++++++++----
+ arch/riscv/kvm/gstage.c           |  6 +++-
+ arch/riscv/kvm/mmu.c              |  3 +-
+ arch/riscv/kvm/vcpu.c             | 68 +++++++++++++++++++++++++++------------
+ arch/riscv/kvm/vcpu_exit.c        | 19 +++++++++++
+ arch/riscv/kvm/vcpu_onereg.c      | 46 +++++++-------------------
+ arch/riscv/kvm/vcpu_pmu.c         |  4 +--
+ arch/riscv/kvm/vcpu_sbi_fwft.c    |  6 ++--
+ arch/riscv/kvm/vcpu_vector.c      | 14 ++++++--
+ 10 files changed, 137 insertions(+), 74 deletions(-)
