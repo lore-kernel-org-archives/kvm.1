@@ -1,132 +1,131 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C41238C2A
-	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 13:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909BB38911B
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 14:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784381458; cv=none; b=ahk78ujm8Ny6z15GbXpMF6FaWawlrkcxSPljS+YTjfvxMWvoI0yD8J4qwq5gSHtJBPQZh4p55WuWut/3kneAeCJ2FiTpi4pZaClICRapQ8BiNpAca53BriCYMuPFg4EQlkoskX8SYmHRdMRMuX5Fij+z6XjH7saa9cF0Xp45Lzc=
+	t=1784384546; cv=none; b=EKK2PECCgTFF5+/PrEvEYxzdEA1/4fPz/eriwlLTImu3ZFCP73pHwfCN83iUeaL+bWKvQaBGw3/CQJRz/ik8vv/tr/jd6HaB6ZRYHSgN0wjYX8LSiMYCepD4gK8TWEHaxhLtnak7SJdVvJovzSNgkDGh7IHwfhdUhyIYOUDsa9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784381458; c=relaxed/simple;
-	bh=gQs5POHdONT3YFPAMms0/iLYO69THG8mBGvtn8dsLsI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eEKjGUa0VCiGGAlYL1MRl1EExN2xaegTir39lvZjLXb+h3ccMsnBaa1G210uymd2n+MzWCRqDkmZdqDFeheBoZkfCb0pu2s2nTb1o7Qu2fdip5avHsq9LRfkyIUs34Hpn2zEJjYQRZUL5YgKa09FPs100D7sitLBNtulYus7UKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y+blA8PJ; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784384546; c=relaxed/simple;
+	bh=nj0RfTDOOk/RVuOqgAUDl8HA6RWcXJ3VWn4JbsFh+kc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=NOxcQ5yKOhG/6qusQR9nsl57Aawjhgba4xDbva6HiknfW5qPY09HwJEP5baouZQWsrX2jJ0PztYwdkt8BRS7s1wjwPaOUevhrcZ6lU8t2uOnoUhV9jdYPkSkIeFxGhKasIg1VhSKYMWyGCzDjdX2jTokClfW59P9qbBdx6FcbmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVAKrXZ1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y+blA8PJ"
-X-Forwarded-Encrypted: i=1; AHgh+RqfxL6TeU2nz2B3Ab2DvxjquK7PpcoODysQHoXbNX5PnPAXxPAbqXxaSbo5L3t80Xt1/pM=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784381454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pqtJZUk5qJxMkA61YT8ypQ7TqHYl3mzM3Ijtm1HishM=;
-	b=Y+blA8PJnr+QKjyyUzhFLOjaORYdbaAY6sbE27PAFHvBcAkg/sba1bwwYLougn5M7U63ma
-	cTLYPbEFwuDtIYix5uQVlJDZ9w6yTe+0+CjZIgqWQFmMhclOcOc442+caPHDPYGHI6G6fD
-	rkJMCmyytq2BIZPi0iIemAvh2VcZ4hw=
-X-Gm-Message-State: AOJu0YxiBEUUpyg92qPt9q20BKawu8cQlvT0YXQp/OgASdmuY7+pkvXW
-	HuGF1EoG5cDUR5BAL0SMMH/onLk0NesXmAV1lzVQyWuqwVrrLJhHHNlvTYE/V3pBDJkKcwh9Q1m
-	ZBWz8YZF9q+/CDu/SZ4SVaeF5OMskdiEds3rIgME8
-X-Received: by 2002:a05:622a:244a:b0:517:64f6:3365 with SMTP id
- d75a77b69052e-5223a857400mr7094371cf.4.1784381441644; Sat, 18 Jul 2026
- 06:30:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVAKrXZ1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6A51F000E9;
+	Sat, 18 Jul 2026 14:22:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784384543;
+	bh=TY7b7ut508wuq5P8ZN39L8x1vscBYmeS5nBuCLXCWdk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MVAKrXZ1+2J9PPPs+HMewH2d6uQUQShr0kd6OlrLGtjqx+OpKoOHbLrJBq1HpqTbn
+	 14QDNnmewtBWU8533nNVVtU3TR50OM2EjZ6ZGyppnWAPKWZhJBb6ny13en9UmsKfnx
+	 NWRObeVto63eXXSSTOYC66Th4GOPvJmHhbS4CUolkp+hQBH8qb+F2dlgVgiMFUMPT3
+	 9+Cw16XIRgkVZ9+MPsN1tzR52/Nx8Bh/LMzLy8b2bcHbWUmkw1U/f4HWqLaXvWuBLs
+	 j/DxV3tNjFYIaBR3RHEWaMBskmLwFTo9RwKg0Z02l1+wJoNN3N/90EAn4e0msOOLR2
+	 cw0V1fh3bb2iA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL
+ count
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jia Jia" <physicalmtea@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260717142205.103515-1-physicalmtea@gmail.com>
+References: <20260717142205.103515-1-physicalmtea@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 18 Jul 2026 14:22:23 +0000
+Message-Id: <20260718142223.9D6A51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
- <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org> <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
- <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk> <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
-In-Reply-To: <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Sat, 18 Jul 2026 14:30:04 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
-X-Gm-Features: AUfX_mxZ-9J4gmHZMd8M6CPDldWUxrDTcSR7f3kR1-CUFXH7d2lH_8uznFFC9qg
-Message-ID: <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
-Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-To: Mark Brown <broonie@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
-	Jean-Philippe Brucker <jpb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
 
-On Sat, 18 Jul 2026 at 01:35, Mark Brown <broonie@kernel.org> wrote:
->
-> On Thu, Jul 16, 2026 at 04:28:02PM +0100, Mark Brown wrote:
-> > On Thu, Jul 16, 2026 at 11:52:36AM +0100, Mark Rutland wrote:
->
-> > > >           if (test_thread_flag(TIF_SME)) {
-> > > > -                 unsigned long vq = sve_vq_from_vl(sme_vl);
-> > > > -                 sysreg_clear_set_s(SYS_SMCR_EL1, SMCR_ELx_LEN, vq - 1);
-> > > > +                 sysreg_cond_update_s(SYS_SMCR_EL1, task_smcr(current));
-> > > > +                 isb();
-> > > >           }
->
-> > > What's the ISB for? That mysteriously appeared in v11 without
-> > > explanation. It wasn't in the original code, prior versions of the
-> > > series, or my suggested rework with the task_smcr() helper.
->
-> > > I don't believe it's necessary to add an ISB here.
->
-> > I can't remember or figure it out, I'll delete.
->
-> Actually I remembered: while SCMR_EL1.LEN is self synchronising the
-> "without the need for explict synchronization" wording is not present
-> for SMCR_EL1.{FA64,EZT0} and this is no longer explicitly just an update
-> of LEN.  It's possible I'm being overly paranoid here, I'll leave the
-> isb() and add a comment for the next version.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-I went through the ARM ARM (DDI 0487 M.c) on this and I don't think
-you're being overly paranoid, I believe the isb() is needed here.
+Pre-existing issues:
+- [Critical] A malicious guest can reliably crash the host kernel by provid=
+ing a virtio-scsi request where the T10 Protection Information length equal=
+s or exceeds the total data payload size, triggering a BUG_ON() during SGL =
+allocation.
+--
 
-The self-synchronisation wording in the SMCR_EL1 description is
-attached to the LEN field only: "An indirect read of SMCR_EL1.LEN
-appears to occur in program order relative to a direct write of the
-same register, without the need for explicit synchronization." There
-is no equivalent wording for FA64 or EZT0, so they fall under the
-general rule in D24.1.2.2: "Unless otherwise stated in its System
-register definition, a direct write to a System register requires
-synchronization before software can rely on the effects of that write
-to affect instructions appearing in program order after the write."
-Table D24-1 has direct write -> indirect read as "Required".
+--- Patch [1]: [PATCH] vhost-scsi: Prevent OOM from invalid protection SGL =
+count ---
+commit ee69ef365d50119dd5831e263cc68413e6e2bee1
+Author: Jia Jia <physicalmtea@gmail.com>
 
-And task_fpsimd_load() does make indirect reads of both fields before
-the next context synchronization event: sme_load_state() executes LDR
-ZT0, whose execution at EL1 is trapped when SMCR_EL1.EZT0 is 0, and
-when PSTATE.SM is set sve_load_state() executes WRFFR, which is
-"illegal when executed in Streaming SVE mode, unless FEAT_SME_FA64 is
-implemented and enabled" (from the WRFFR description). The MSR SVCR in
-between doesn't provide the synchronization, since SVCR's
-self-synchronisation wording covers reads of its own SM and ZA fields
-only.
+vhost-scsi: Prevent OOM from invalid protection SGL count
 
-When the write does change FA64 or EZT0 (once KVM can disable them for
-a guest, and possibly on the return from suspend path now that
-sme_suspend_exit() no longer writes them), K1.2.4 "CONSTRAINED
-UNPREDICTABLE behavior due to inadequate context synchronization"
-applies without the isb(): "the behavior of the PE is consistent with
-the unsynchronized control value being either the old value or the new
-value", independently per use. So the ZT0 load or the FFR restore
-could take an unexpected SME trap (EC 0x1D) in the kernel, depending
-on the implementation.
+The protection SGL path passes the result of vhost_scsi_calc_sgls()
+directly to sg_alloc_table_chained(). The helper returns a negative
+errno when the iterator is invalid or the request exceeds the segment
+limit. The negative errno is then treated as a very large unsigned count
+and sends the request into the SGL allocation path with an invalid size.
 
-FWIW the other call sites look consistent with only this one needing
-it: in do_sme_acc() nothing ZT0 or FFR gated executes before the ERET,
-which is the context synchronization event, and ZCR_EL1 only has LEN
-allocated.
+Cc: stable@vger.kernel.org
 
-Cheers,
-/fuad
+> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> index 9a1253b9d8c50..8486652fd31e8 100644
+> --- a/drivers/vhost/scsi.c
+> +++ b/drivers/vhost/scsi.c
+> @@ -972,6 +972,9 @@ vhost_scsi_mapal(struct vhost_scsi *vs, struct vhost_=
+scsi_cmd *cmd,
+>  	if (prot_bytes) {
+>  		sgl_count =3D vhost_scsi_calc_sgls(prot_iter, prot_bytes,
+>  						 VHOST_SCSI_PREALLOC_PROT_SGLS);
+> +		if (sgl_count < 0)
+> +			return sgl_count;
+> +
+
+[Severity: Critical]
+This is a pre-existing issue, but could sgl_count evaluate to exactly 0 her=
+e?
+
+If a guest provides a virtio-scsi request where the protection information
+length (prot_bytes) equals or exceeds the total data payload size
+(exp_data_len), vhost_scsi_handle_vq() subtracts it without checking for
+underflow or equality:
+
+drivers/vhost/scsi.c:vhost_scsi_handle_vq() {
+        ...
+        if (prot_bytes) {
+                exp_data_len -=3D prot_bytes;
+                prot_iter =3D data_iter;
+                iov_iter_truncate(&prot_iter, prot_bytes);
+                iov_iter_advance(&data_iter, prot_bytes);
+        }
+        ...
+}
+
+This can reduce the data iterator's count to 0. When vhost_scsi_mapal() cal=
+ls
+vhost_scsi_calc_sgls() on the remaining iterators, iov_iter_npages() evalua=
+tes
+to 0, returning an sgl_count of 0.
+
+Because the error check added here only tests for < 0, a 0 value will slip
+through and be passed as nents to sg_alloc_table_chained(), which will panic
+the host kernel:
+
+lib/sg_pool.c:sg_alloc_table_chained() {
+        ...
+        BUG_ON(!nents);
+        ...
+}
+
+Would it make sense to change this check to if (sgl_count <=3D 0) (and
+similarly for the data SGL check below it) to prevent a guest-triggerable
+host panic?
+
+>  		cmd->prot_table.sgl =3D cmd->prot_sgl;
+>  		ret =3D sg_alloc_table_chained(&cmd->prot_table, sgl_count,
+>  					     cmd->prot_table.sgl,
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717142205.1035=
+15-1-physicalmtea@gmail.com?part=3D1
