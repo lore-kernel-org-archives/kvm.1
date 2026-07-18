@@ -1,108 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46ABC29405;
-	Sat, 18 Jul 2026 00:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305AC2080C1
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 01:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784334929; cv=none; b=LShBIUHDWCEvZWJygo7NklhJPiWA9F6+MbjW75usRdI1KUZbo8zAeuJBSplPpSaws6jiT/1RzWqWpKhmu95r9cZSwPA45LJlOnLY80Tp6iEaqkcu2VNs4JerCY4rErEi1SmcoBrhKSzaGd3eD0sRTxvLBSRAdq1uu/x1kSUC8A8=
+	t=1784338199; cv=none; b=qts0aXN65jjW8UGiGLQVbwcBlcw69PXtdyT6DDwYhHomgvrYHQgfR42Juf2xV+v65v5kqKInWi0laGuaSMQ6GSj2nyOsvza6llJSm1PpFk2T5UU42ANtwxf8YH5Lvd1idJp0VShlKU/bz7NVc1knzH2jYeimNXQIi5x6BJbzzMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784334929; c=relaxed/simple;
-	bh=9WCZr/0a6+6yd4+H2iJZREJPaBMBp4S3/hNJ5RCJPrk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UqFoZkof+81zWdqP5YR9PVelDv+hXqe7QcqxHLYD1TW9cpniHr+OsbpHT/XSeBJSdduHpeuBMUnCFeqFY/B4bjML7nvDjL6W3/pV0LTxJ+XxTDLRvl7tyRxbB0HIQval1Hn9ftkiSbWkCN+PhPDagVkXMBjhzfDhDFdWkskkV40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZMqhG7j; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784338199; c=relaxed/simple;
+	bh=xTcBrCQ0VcXsHWsTm7qhV7ayhNLIIQejrXLK4KlWY5Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=kZH+QXkGYuOACCUa1BLAnCSeYUONWhZGIX/iK/0X1BLECZJUnqMFUp6pCYR/zVwXFIeocLF6/ragrarGXOtEwjE/xTQkK6+ADJ35Xql5RCbzn7P4MDsQ5BEdL4Q+s5a0SMh7XPM1GlSCXU8VNfqvByvPXtU1TpgI+mtjx4QwZT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmSmMpAP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZMqhG7j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4571F000E9;
-	Sat, 18 Jul 2026 00:35:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmSmMpAP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A184E1F000E9;
+	Sat, 18 Jul 2026 01:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784334927;
-	bh=83/QFKPUAecuur3XiUDSCrCipZXjd2KIGyHaxlFSSCE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UZMqhG7jOCM0NcG8H7yxHekee//rMmL/U7Ry2BrLImm6unJIexmYIklkgmaYx2kJc
-	 w0QAzde1FMPP7tZgjagzsxmyGTzvWe+VetYaC6HyrUjg4v+PbZo1VN7Q8KWkcEo19T
-	 3EX+dn0yks9KVfhECXAzeEyN/luAsqwLZ2nH/c1kLeZxzu2Q27VxKzyUlYgTME67FT
-	 eIIkaE72/6x6u+8QvFPawI8tcNgDH3IBoD5VJYpu4gG8qoCTUHjV7m/6qrkXWvRkea
-	 vjYcsAWsbreVTHJrKt36aQ67Ts+zrieyLSdwkax7w8Vcuwbb7uH6ZPG5/tRr5i6KHP
-	 YHwLOVzyyTdgg==
-Date: Sat, 18 Jul 2026 01:35:21 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
- <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org>
- <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
- <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
+	s=k20260515; t=1784338197;
+	bh=MX9/q0LLTHBGr51iGlIAf263oExGzxdBxWm4IZBCGoU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FmSmMpAPRbCW8Kmi8HkZPuB47fsMzAZjblD10+SJ0izskjvQ8DPfxzkdbBW64Lb6Z
+	 E6BvcRpv7KfN6hO3VYQUYL2Pzns22bzHh7kfsjoZhGgxmzlbVjhT4l5X9OazJxINgI
+	 Y0+H6DgxbNVHuaR7xEGVuGUbCOl/qgVUDdUheBLpU587dHambM9sPoH8HQpU1kdG+J
+	 T4sI0xwKHAFdzTF3fcg5FBGmG9BRRXj3rO6odCwdfz7Sh/g7kPBilzRT0LfmzxMsDP
+	 XPlIwN8SBs/OLFVWMjHSstMN4U3kFtToqelTtk29mRDkR+aAlKHbK2J5xhFpwVKg4v
+	 fUVlAOrexJZfQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] vhost: reject zero-size IOTLB INVALIDATE
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Weimin Xiong" <xiongwm2026@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260717012921.oyTkqBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z>
+References: <20260716030236.124322-1-xiongwm2026@163.com>
+ <20260717012921.oyTkqBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 18 Jul 2026 01:29:57 +0000
+Message-Id: <20260718012957.A184E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="B1L8qt03Fu74vlzF"
-Content-Disposition: inline
-In-Reply-To: <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
-X-Cookie: Thufir's a Harkonnen now.
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
---B1L8qt03Fu74vlzF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Pre-existing issues:
+- [Critical] Missing integer overflow check in VHOST_IOTLB_INVALIDATE cause=
+s failed unmaps and stale DMA mappings.
+- [High] Unconditional access to `dev->vqs[0]` can cause a NULL pointer der=
+eference / page fault if a device has 0 virtqueues.
+--
 
-On Thu, Jul 16, 2026 at 04:28:02PM +0100, Mark Brown wrote:
-> On Thu, Jul 16, 2026 at 11:52:36AM +0100, Mark Rutland wrote:
+--- Patch [1]: [PATCH v2] vhost: reject zero-size IOTLB INVALIDATE ---
+commit d375f3ebf8dae4831fa1035718b913506e8ff8fd
+Author: xiongweimin <xiongweimin@kylinos.cn>
+Subject: vhost: reject zero-size IOTLB INVALIDATE
 
-> > >  		if (test_thread_flag(TIF_SME)) {
-> > > -			unsigned long vq = sve_vq_from_vl(sme_vl);
-> > > -			sysreg_clear_set_s(SYS_SMCR_EL1, SMCR_ELx_LEN, vq - 1);
-> > > +			sysreg_cond_update_s(SYS_SMCR_EL1, task_smcr(current));
-> > > +			isb();
-> > >  		}
+This patch modifies vhost_chr_write_iter to reject VHOST_IOTLB_INVALIDATE
+messages with a size of 0. This prevents the end address calculation
+from underflowing and incorrectly deleting the entire IOTLB.
 
-> > What's the ISB for? That mysteriously appeared in v11 without
-> > explanation. It wasn't in the original code, prior versions of the
-> > series, or my suggested rework with the task_smcr() helper.
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -1692,8 +1692,7 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+>  		offset =3D offsetof(struct vhost_msg, iotlb) - sizeof(int);
+>  		break;
+>  	case VHOST_IOTLB_MSG_V2:
+>  		if (vhost_backend_has_feature(dev->vqs[0],
 
-> > I don't believe it's necessary to add an ISB here.
+[Severity: High]
+This is a pre-existing issue, but can this code crash if the device was
+created with 0 virtqueues?
 
-> I can't remember or figure it out, I'll delete.
+If a vDPA or VDUSE device is registered with 0 virtqueues, dev->vqs is
+allocated using kmalloc_objs, returning a zero size pointer. When userspace
+writes a VHOST_IOTLB_MSG_V2 message, this code unconditionally accesses
+dev->vqs[0] to check backend features.
 
-Actually I remembered: while SCMR_EL1.LEN is self synchronising the
-"without the need for explict synchronization" wording is not present
-for SMCR_EL1.{FA64,EZT0} and this is no longer explicitly just an update
-of LEN.  It's possible I'm being overly paranoid here, I'll leave the
-isb() and add a comment for the next version.
+Dereferencing this pointer causes a kernel panic. Is it possible we need to
+check if dev->nvqs > 0 before accessing dev->vqs[0] here?
 
---B1L8qt03Fu74vlzF
-Content-Type: application/pgp-signature; name="signature.asc"
+>  					      VHOST_BACKEND_F_IOTLB_ASID)) {
+>  			ret =3D copy_from_iter(&asid, sizeof(asid), from);
 
------BEGIN PGP SIGNATURE-----
+[ ... ]
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaykgACgkQJNaLcl1U
-h9DjvAf+Mo2V+vK8ka9ifnzNbT6e4l1B8v1nwzBzZqNOsHRBkYVA+3HzxPfa42iQ
-wBsUd5GDNYhvYnfigzrrCBiqP6iEXL2auvhxC05ZD/FMYpMpjg6l8a5YbyFZrCaI
-VCnHsZDwaYx0qDsmnOUgwi/AvliSoRdtky5XTuT5aJLAPePiiXhE3f3ltNCQqynG
-VzaW9xKH0Tng2mJ8kiajrNPlzKMChuJdcebmYosYMMiYFLiHjnE2FDyBqAf7A0It
-jjU1d99NHubQeKLYc+3Io4KDKVRAafjVK2BfVWpOhGPufaC/a+HxGr2ZkU250Q1q
-8YjIq/ZvP2kx3EodKw5prhfkTiaubw==
-=Oojd
------END PGP SIGNATURE-----
+> @@ -1716,7 +1716,8 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+>  		goto done;
+>  	}
+> =20
+> -	if (msg.type =3D=3D VHOST_IOTLB_UPDATE && msg.size =3D=3D 0) {
+> +	if ((msg.type =3D=3D VHOST_IOTLB_UPDATE ||
+> +	     msg.type =3D=3D VHOST_IOTLB_INVALIDATE) && !msg.size) {
 
---B1L8qt03Fu74vlzF--
+[Severity: Critical]
+This is a pre-existing issue, but does this size validation fully protect
+against integer overflow in the invalidate path?
+
+If userspace sends a VHOST_IOTLB_INVALIDATE message with msg.iova =3D 2 and=
+ a
+msg.size large enough to wrap around the 64-bit integer limit,=20
+msg.iova + msg.size - 1 will overflow to 0 in vhost_process_iotlb_msg().
+
+This inverted range is then passed to vhost_iotlb_del_range():
+
+drivers/vhost/iotlb.c:vhost_iotlb_del_range() {
+        ...
+        while ((map =3D vhost_iotlb_itree_iter_first(&iotlb->root,
+                                                   start, last)))
+}
+
+Since start (2) > last (0), the interval tree search silently fails to
+delete the mappings, leaving stale DMA mappings in the vhost IOTLB intact.
+
+Should we also check if msg.size + msg.iova overflows?
+
+>  		ret =3D -EINVAL;
+>  		goto done;
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260717012921.oyTk=
+qBgRqNTWiMgAtjVgcCUBT2oIiZ3D44ekHl_MujM@z?part=3D1
