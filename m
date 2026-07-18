@@ -1,168 +1,132 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020083.outbound.protection.outlook.com [52.101.201.83])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B203859FA;
-	Sat, 18 Jul 2026 12:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784379560; cv=fail; b=kFacvPfO78Gu9WY0YIqUygVsJSe/cdFQ1lSNuikl3V+RChi3ORcgnx4MEqI0ntX2O0O+JJFLZWHOZeEySRwWRvv0drDek/JC2R5b/biQ4OElWRoI3KG4NojXPgZ5x/T4s/beB8rerR+Pnbq/O5QA+hjcaWi8hbW0QKYh8zK3Gig=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784379560; c=relaxed/simple;
-	bh=6ocI9MM8Xw/XZrLJi2qhqbdkLUBi3BsB3d+8UsXsn8c=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jpnPVQxHjAPDMIU4JS+UE/RLjFW6+vUwJlT7U7KnM1hK6+J5AmywyFwRTKwmJ+wg1Y/YhsRPOSr5cHX/+sZ7J6Eo7YbjfggFR7RoFwLa60+OlcpwH51Nl0fbU3UIKTE5wozHL4td0kpKKoCGITdIJQsbbGBTb4xrJEf0nOSXhJQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phil.gs; spf=pass smtp.mailfrom=phil.gs; dkim=pass (1024-bit key) header.d=NETORGFT5377951.onmicrosoft.com header.i=@NETORGFT5377951.onmicrosoft.com header.b=DvGXYnzB; arc=fail smtp.client-ip=52.101.201.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phil.gs
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phil.gs
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C41238C2A
+	for <kvm@vger.kernel.org>; Sat, 18 Jul 2026 13:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784381458; cv=none; b=ahk78ujm8Ny6z15GbXpMF6FaWawlrkcxSPljS+YTjfvxMWvoI0yD8J4qwq5gSHtJBPQZh4p55WuWut/3kneAeCJ2FiTpi4pZaClICRapQ8BiNpAca53BriCYMuPFg4EQlkoskX8SYmHRdMRMuX5Fij+z6XjH7saa9cF0Xp45Lzc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784381458; c=relaxed/simple;
+	bh=gQs5POHdONT3YFPAMms0/iLYO69THG8mBGvtn8dsLsI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eEKjGUa0VCiGGAlYL1MRl1EExN2xaegTir39lvZjLXb+h3ccMsnBaa1G210uymd2n+MzWCRqDkmZdqDFeheBoZkfCb0pu2s2nTb1o7Qu2fdip5avHsq9LRfkyIUs34Hpn2zEJjYQRZUL5YgKa09FPs100D7sitLBNtulYus7UKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y+blA8PJ; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=NETORGFT5377951.onmicrosoft.com header.i=@NETORGFT5377951.onmicrosoft.com header.b="DvGXYnzB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t6wti/HiHwYj3tBV0Bg0z765AzNCPR1qpzCj7VOddPYJaxdiosU84KxQcSB+PNQumExVbP4KAkHmfDgeOoccvmKMkzkkfuocb+znRpd6isUZ9gTshs5oxGNTdXaot+ODwrNoQAh7GZyvH+R4ww2NvEqbAU4YCr3UCZL7MTnM4HI9kKigZxBcy19wryOokoo3LEdlbl5U+Z9PSYoE84HlBZ1uocouj7S8QmmOkhmwGcjy1tEV4iIHv52aP0BY98ARSjE6ZFMcDU1c+uC0DJt0SLSzwqyL4lmXOVjMKncDzuIlPAY7Rr+tzyLWG2gi6Xsty9ZgXHnukWkcsE6yl1uxAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6ocI9MM8Xw/XZrLJi2qhqbdkLUBi3BsB3d+8UsXsn8c=;
- b=peTSOpL383rxuQQU7YcO9DxuPXKq2UK2JF4dvOIA/ZximiRsXzBSyUCpewNc0HPyeQGrRbr6Ka0sLZZZxM/AIwrscDCEUoadZ8qiw1TxJbHIkSVmXWWAunVjacOpT5UusZVU98HPU50M7yHbdd2sFu4FkrsSB/3A5TekVUVsRYLNacSOLl2khL/YROiPx5VkNRAcP+hMAUzALhh2JolITkRtQz3yb5iCfy9EggiIDZh4txzZPnDaMJ5ihQwdBGK+vEsPZvpNAx6uLdJRDI0mPaqFS4Bjzw/FXFSJWFXYtVh1TU26ho0Z6xieVrKktqWLtMKyDZJlLmLK6GkYz9DGVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=phil.gs; dmarc=pass action=none header.from=phil.gs; dkim=pass
- header.d=phil.gs; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=NETORGFT5377951.onmicrosoft.com;
- s=selector1-NETORGFT5377951-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6ocI9MM8Xw/XZrLJi2qhqbdkLUBi3BsB3d+8UsXsn8c=;
- b=DvGXYnzBA0yLwG0fVQbAGsqXGcqUG/Rl82C9mq1i1x0R0h23FCEmya1/VA919OrRsBlcWyA1TB6FH3IBuCGO50Mdfo3vGyHbcdUHWjjwNObFS9q0+ifqIjGV9kb0NTEcXcAY/Fq0szcKcMuZfCfiPIJcOp5wJtxUDefhtDywlwk=
-Received: from BY5PR04MB6472.namprd04.prod.outlook.com (2603:10b6:a03:1eb::10)
- by BN8PR04MB6386.namprd04.prod.outlook.com (2603:10b6:408:d9::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.14; Sat, 18 Jul
- 2026 12:59:17 +0000
-Received: from BY5PR04MB6472.namprd04.prod.outlook.com
- ([fe80::3a9:9dbc:2aeb:8827]) by BY5PR04MB6472.namprd04.prod.outlook.com
- ([fe80::3a9:9dbc:2aeb:8827%6]) with mapi id 15.21.0223.013; Sat, 18 Jul 2026
- 12:59:17 +0000
-From: Phil Rosenthal <phil@phil.gs>
-To: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>
-CC: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH] KVM: x86/mmu: Fix double-free of mmu_page_header_cache on
-  vendor module reload
-Thread-Topic: [PATCH] KVM: x86/mmu: Fix double-free of mmu_page_header_cache
- on  vendor module reload
-Thread-Index: AQHdFrU9BLUzBrbZrkCLVxfvABxMug==
-Date: Sat, 18 Jul 2026 12:59:17 +0000
-Message-ID: <3FD1B35F-ECF8-476D-B2F1-6A43E6E0B641@phil.gs>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=phil.gs;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BY5PR04MB6472:EE_|BN8PR04MB6386:EE_
-x-ms-office365-filtering-correlation-id: 8e245647-9e7e-4713-388a-08dee4cc607c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|19092799006|23010399003|1800799024|366016|38070700021|6133799003|56012099006|10067099003|7055299009|18002099003;
-x-microsoft-antispam-message-info:
- CR+L0Cf/jZaMpMpq+HWvmWKxqa00LYGgdCDNuqcj6c0ORgNt1rwoe/0XQ+SS1M833O7lK7CwaZ+IZpoyp3CySrfBUfv/9H3fjhDTcNVtwUSs2ZcPbmpN+U4OIq9vNalaVEPjWEGDesP/bPgu26hyra/QpQ0bbdQfLzjsL00cp2p7kXTUan0p3fN0AO5Un/1H/WNLFfVUxdE/7nA09F7X+fgX8ci52mN5cC8iLaXpFczmQo+k9601MfoYmsr6Og+wqnysxu17+mer3wCA0C3pQnPERdzL7AkzuwsMMaoKUksCaQSAMgceiCraD6/5eIsfAc1EiVJe5aM7FOcisRLEf0HpDTOKJjzzl8bbBhh78wjE8iLkrttTZaM/DQngEgqXk3gyprKedwiQKx4ExsqObpg9SgyfKtB2YafsA7PcH9QjKLHZw+eTBeBno2xPzpqXZcmlvIKJJ5na5xjDx40cbF8sJZylA/mm6OQm6mFxCq9B90M6bgkfXWdnbO36GQpjRdHJB/wbjpYzxszYYGeNSv5Zit0KJeTWXaJ3/wCfndKLUQJO16INDQ9qiUDuzPNmYom1QcfI8n3dbQntXWS2Vtgn/EWzIVCLaKlNEzfx54ItOhLLhiCGgMjCCNnrU9l5IxU60J7Y0WkAbLgCJ1NAG4GKc/vzDEe/LKVKevJDNMskXZFh+ZnS/NGepqbYXbkcmhGWLYi5sat1HITzF3FRbyZQKVHWx4conDm8GECmbnPmnw9Wq7XEuoG2EyKUpYCW
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR04MB6472.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(23010399003)(1800799024)(366016)(38070700021)(6133799003)(56012099006)(10067099003)(7055299009)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?VlI2MEpjd1pSb2xMVGc4VGg1OFhaN2J6MFArUDZ5Y0E4dU9mMG80bERrVWc4?=
- =?utf-8?B?K3hXOWk3ZXBxcFNiUDhZa1R2VmxXcll2b0M5VFc1YmhPZWw0QjhzVFpsRjB5?=
- =?utf-8?B?TGg5Y3Rxc29BdXVMWTJVSGMza3BnRjlhUmFtOFRiRWlTc2ZaOWZjSk0xYUNk?=
- =?utf-8?B?TjZlWFlnWTY3Ymd0eXFwYlJPOTgzNloyUUpGVmlaeU1NM0J1VUE0NlRPUjJI?=
- =?utf-8?B?blBiVFJ5UzdRUXlGTnRhSjlvbWdUblpseDlDOXlPcmVXdkFNUjdEQW13SnRa?=
- =?utf-8?B?bVFQN1dsS21jT0JoRTdwOEN4elg5ZXppZzB1dS80eTlCMjhrVW95KzBpejlL?=
- =?utf-8?B?ZXZhSUpwQ09PYmpraTF5eXozekJBRUp0ZEgzcW1JQ3pLUUM4QlBwQkY5b1Ax?=
- =?utf-8?B?enpZQ0xCZjVhMmtxWHdodjFrVmcxaFRreER2MEhpRGthTHppYlQzS2JlRDBu?=
- =?utf-8?B?Vk1WWFQ5WUJRdERXQ3B2RWtsdTd2QU1haDdqVmVVVFdua0FVR1hHZ1phNXpu?=
- =?utf-8?B?RVNUL2d1YVgyU0VVWUIxWEdhNHpIZVBUWlkxbnRXQnhuZEF2TnZmbFZ5QTlU?=
- =?utf-8?B?dU5WTHE3L3dBaWZJczVPVm5XdTVlUTNndTA3OHF5UUxYTEh5Q3AvTWhRdnBa?=
- =?utf-8?B?N2lXdThDV09LVE4rY0RPUnJTcHJWTXV5OE9JRnlSU0tRVlJMSlQ0bW5qR0dR?=
- =?utf-8?B?MEdjMkhvUkVHRG1vOTVPNUI3VXpLTm1UK1duNE9ublhObXRDeHl6ck04cW5v?=
- =?utf-8?B?RGNETHBOS0NoMmh4a21POFBXckJsWk1ndHZQR0x3dHM0ZTdsaDU0TG45TFRn?=
- =?utf-8?B?MGQvajZOZWdaSlMyRmtEZnRLVUljZTd2REVoVFNQV2RqeGhsKzFvRkFjQ29S?=
- =?utf-8?B?NDd0K2pQYjZ2a3ExL3JTSUMvOEhjdktqZkhjRXJYelRxdGRuT3R0cC9FWFRC?=
- =?utf-8?B?RitoOHUwMjA3bTNISkh6dE9DNHFEMXFVQjRzbWVvV3VrWThBdEF6Zy9qNHBL?=
- =?utf-8?B?TWJKYllRYXhsWHhWQ1ppVUJpcXU4Q09zRWtuQm15SjlSSGxRT0tzYWNaZzI5?=
- =?utf-8?B?L2hGeVlCQTlGL21LQkd2N1ZIR0FRcjZ5eGg3NFdITUNkbEVFaXRBdEFmdTJI?=
- =?utf-8?B?Z3c5VHlTZHhVTVpEQUNEU3l5UzJsOXNUeDhoeVdwbmxHcWgzNGRpQTB6b2sw?=
- =?utf-8?B?YkNwS1ZuMTMyRXVVdWdiOWJGU3RjQjEwL00yaVFXdmJxNGFLeEQ3WTNsNldv?=
- =?utf-8?B?aFkydUdob3FIWnVMR0pWSVNscUd2RnB1R3dvVDlKZkZQOEE5NGNyNjNSZXRn?=
- =?utf-8?B?V3VYZ2kxQmFwbFRDcnNsS2lpc3Y2OU9wZHFoWS9ySnJEeE15dkpVTGV3ajZU?=
- =?utf-8?B?M2dYSVhIcU92TnlNWUtjQ0libVhnMzNYc3ZkL3dPa0RIWFRzNlVGOWVOc3Iv?=
- =?utf-8?B?ZFJFbU40MkhLQklqTHQra3JlbDNYdzkxU1RBZzc1eTUzekVUWGlkK3hYaXFF?=
- =?utf-8?B?MEE0TTQ4L3JwTGgyZkplUjdmYUQ0ekNNTGhWVTM0SVMyUk5IbWtGTzJ5NTBP?=
- =?utf-8?B?SjcxdjJaQ3VXZjZoTjdUK1BJMm1DMjE3eXBYbEdRRTdoQnZmMWxpWlQ5K0NN?=
- =?utf-8?B?L3psL1QvYTBYZU5JOVBUejRGeWFtYkQxUmlNVkU2MUpOWHlsZlRtTnJnaXRk?=
- =?utf-8?B?cnQwb3dadnMwZlNwVmE5RHk3WjJKZ1lsZDRscmNRRW9yeVI2R0FEczVGcXdl?=
- =?utf-8?B?OWFwYXlXeUNldHBUanllUFdUMnRkcTVGL2FZdUg3U3J1dFlWdlJiNmljUFdk?=
- =?utf-8?B?cjdBMGlKaTdCaEw3SlFWaVl5WFJvZk5VWWRyQjYwU0Y1TWtYanJGcldOQm5R?=
- =?utf-8?B?WHFkUFJieVdoTXRJb2FReVNsSW0vOVJpMlBveUZvS29HdnFVQUNiN3owckNP?=
- =?utf-8?B?a0JESUlMVzAyMk1nd3c3ZmdKQTBOOFRpenFTK0JPNHJxcUdOZ25PKzErM3lF?=
- =?utf-8?B?cmRxcjdCQ0RsKzg2amFlMUNTNGtXelBCMmVncTRaVldKNmo4NWlkSjNBbWRm?=
- =?utf-8?B?YkR2QVBaMTJ6TTBnTXRYbGwrN1ZKZ0l4Q3crb3ZOZWFGTFZZYVZoMnZHVE9I?=
- =?utf-8?B?SG1iRTJ6K25tVFA1UjN5UmdQRnBUSE9heFFUOUg2TlRINGd2bWhaN0RXdDJa?=
- =?utf-8?B?WkU0cWRZVVZpQmJPSk5obkJNczFBK1d5ay9qRlhXazVPVkdhUzFvQ3dKU1I0?=
- =?utf-8?B?VThSQTJuU2F5Zm5lSHVIcEg0dFFKaGFBVHhZc0hNTzVkT3hGek1iUFNZT3RM?=
- =?utf-8?Q?P+gw+bzHtF0hr1yguc?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AE0AC54FD4A95A44B57089650D556EA5@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y+blA8PJ"
+X-Forwarded-Encrypted: i=1; AHgh+RqfxL6TeU2nz2B3Ab2DvxjquK7PpcoODysQHoXbNX5PnPAXxPAbqXxaSbo5L3t80Xt1/pM=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784381454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pqtJZUk5qJxMkA61YT8ypQ7TqHYl3mzM3Ijtm1HishM=;
+	b=Y+blA8PJnr+QKjyyUzhFLOjaORYdbaAY6sbE27PAFHvBcAkg/sba1bwwYLougn5M7U63ma
+	cTLYPbEFwuDtIYix5uQVlJDZ9w6yTe+0+CjZIgqWQFmMhclOcOc442+caPHDPYGHI6G6fD
+	rkJMCmyytq2BIZPi0iIemAvh2VcZ4hw=
+X-Gm-Message-State: AOJu0YxiBEUUpyg92qPt9q20BKawu8cQlvT0YXQp/OgASdmuY7+pkvXW
+	HuGF1EoG5cDUR5BAL0SMMH/onLk0NesXmAV1lzVQyWuqwVrrLJhHHNlvTYE/V3pBDJkKcwh9Q1m
+	ZBWz8YZF9q+/CDu/SZ4SVaeF5OMskdiEds3rIgME8
+X-Received: by 2002:a05:622a:244a:b0:517:64f6:3365 with SMTP id
+ d75a77b69052e-5223a857400mr7094371cf.4.1784381441644; Sat, 18 Jul 2026
+ 06:30:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: phil.gs
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR04MB6472.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e245647-9e7e-4713-388a-08dee4cc607c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jul 2026 12:59:17.6159
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 47d4f979-ea6f-4fcb-aea9-39371d64bc6b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2WZQ68XDYozilybstKGpIXX5a7NeTa05SpsYD2CrVdu0ZYTTL3U72kTqHQVfnyBo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR04MB6386
+References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
+ <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org> <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
+ <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk> <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
+In-Reply-To: <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Sat, 18 Jul 2026 14:30:04 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
+X-Gm-Features: AUfX_mxZ-9J4gmHZMd8M6CPDldWUxrDTcSR7f3kR1-CUFXH7d2lH_8uznFFC9qg
+Message-ID: <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
+Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
+ loading SME state
+To: Mark Brown <broonie@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Will Deacon <will@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>, Ben Horgan <ben.horgan@arm.com>, 
+	Jean-Philippe Brucker <jpb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Peter Maydell <peter.maydell@linaro.org>, Eric Auger <eric.auger@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-bW11X2Rlc3Ryb3lfY2FjaGVzKCkgZnJlZXMgcHRlX2xpc3RfZGVzY19jYWNoZSBhbmQgbW11X3Bh
-Z2VfaGVhZGVyX2NhY2hlDQpidXQgZG9lcyBub3Qgc2V0IHRoZSBwb2ludGVycyB0byBOVUxMLiAg
-QmVjYXVzZSB0aGV5IGFyZSBzdGF0aWMgZ2xvYmFscyBpbg0KdGhlIGFsd2F5cy1yZXNpZGVudCBr
-dm0ua28sIHRoZXkgc3Vydml2ZSBhIHZlbmRvciBtb2R1bGUgdW5sb2FkL3JlbG9hZA0KY3ljbGUu
-ICBJZiBhIHJlbG9hZCBvZiBrdm1faW50ZWwva3ZtX2FtZCBmYWlscyBiZWNhdXNlIHRoZSBmaXJz
-dA0Ka21lbV9jYWNoZSBhbGxvY2F0aW9uIHJldHVybnMgTlVMTCAoZS5nLiwgdW5kZXIgbWVtb3J5
-IHByZXNzdXJlKSwgdGhlDQplcnJvciBwYXRoIGNhbGxzIG1tdV9kZXN0cm95X2NhY2hlcygpIGFn
-YWluLiAgT24gdGhhdCBzZWNvbmQgY2FsbCwNCm1tdV9wYWdlX2hlYWRlcl9jYWNoZSBzdGlsbCBw
-b2ludHMgdG8gdGhlIGFscmVhZHktZnJlZWQgY2FjaGUsIHJlc3VsdGluZw0KaW4gYSBkb3VibGUt
-ZnJlZS4NCg0KQ29uY3JldGUgdHJpZ2dlcjoNCiAgMS4gTG9hZCBrdm0ua28gYW5kIHZlbmRvciBt
-b2R1bGUgKGJvdGggY2FjaGVzIGNyZWF0ZWQpLg0KICAyLiBVbmxvYWQgdmVuZG9yIG1vZHVsZSBb
-bGVhdmUga3ZtLmtvIGxvYWRlZF0gKGNhY2hlcyBmcmVlZCwgcG9pbnRlcnMgbGVmdCBkYW5nbGlu
-ZykuDQogIDMuIFJlbG9hZCB2ZW5kb3IgbW9kdWxlOyBmaXJzdCBjYWNoZSBjcmVhdGlvbiBmYWls
-cyDihpIgZXJyb3IgcGF0aA0KICAgICBkb3VibGUtZnJlZXMgbW11X3BhZ2VfaGVhZGVyX2NhY2hl
-Lg0KDQpGaXggYnkgcmVzZXR0aW5nIGJvdGggcG9pbnRlcnMgdG8gTlVMTCBpbW1lZGlhdGVseSBh
-ZnRlciBkZXN0cm95aW5nIHRoZQ0KY2FjaGVzLCBtYWtpbmcgdGhlIGNsZWFudXAgaWRlbXBvdGVu
-dC4NCg0KVGhlIGJ1ZyB3YXMgdmVyaWZpZWQgb24gYSBLQVNBTi1lbmFibGVkIGtlcm5lbCBieSBp
-bnN0cnVtZW50aW5nDQprdm1fbW11X3ZlbmRvcl9tb2R1bGVfaW5pdCgpIHRvIGZvcmNlIHRoZSBm
-aXJzdCBhbGxvY2F0aW9uIHRvIGZhaWwgb24gYQ0Kc2Vjb25kIGxvYWQsIHNpbXVsYXRpbmcgT09N
-OyBLQVNBTiByZXBvcnRlZDoNCg0KICBCVUc6IEtBU0FOOiBzbGFiLXVzZS1hZnRlci1mcmVlIGlu
-IGt2bV9tbXVfdmVuZG9yX21vZHVsZV9pbml0KzB4MWJhLzB4MWUwIFtrdm1dDQogIC4uLg0KICBB
-bGxvY2F0ZWQgYnkgdGFzayAxMTY5MzogICA8LSBmaXJzdCBsb2FkDQogIEZyZWVkIGJ5IHRhc2sg
-MTE2OTY6ICAgICAgIDwtIHByZXZpb3VzIHVubG9hZA0KDQpTaWduZWQtb2ZmLWJ5OiBQaGlsIFJv
-c2VudGhhbCA8cGhpbEBwaGlsLmdzPg0KVGVzdGVkLWJ5OiBQaGlsIFJvc2VudGhhbCA8cGhpbEBw
-aGlsLmdzPg0KLS0tDQogYXJjaC94ODYva3ZtL21tdS9tbXUuYyB8IDIgKysNCiAxIGZpbGUgY2hh
-bmdlZCwgMiBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vbW11L21t
-dS5jIGIvYXJjaC94ODYva3ZtL21tdS9tbXUuYw0KaW5kZXggMjM0ZDBhOTVhYmY1Li5lYzQ5Y2U5
-OGE0NDkgMTAwNjQ0DQotLS0gYS9hcmNoL3g4Ni9rdm0vbW11L21tdS5jDQorKysgYi9hcmNoL3g4
-Ni9rdm0vbW11L21tdS5jDQpAQCAtNzU3NCw3ICs3NTc0LDkgQEAgdm9pZCBrdm1fbW11X2ludmFs
-aWRhdGVfbW1pb19zcHRlcyhzdHJ1Y3Qga3ZtICprdm0sIHU2NCBnZW4pDQogc3RhdGljIHZvaWQg
-bW11X2Rlc3Ryb3lfY2FjaGVzKHZvaWQpDQogew0KICBrbWVtX2NhY2hlX2Rlc3Ryb3kocHRlX2xp
-c3RfZGVzY19jYWNoZSk7DQorIHB0ZV9saXN0X2Rlc2NfY2FjaGUgPSBOVUxMOw0KICBrbWVtX2Nh
-Y2hlX2Rlc3Ryb3kobW11X3BhZ2VfaGVhZGVyX2NhY2hlKTsNCisgbW11X3BhZ2VfaGVhZGVyX2Nh
-Y2hlID0gTlVMTDsNCiB9DQogICBzdGF0aWMgdm9pZCBrdm1fd2FrZV9ueF9yZWNvdmVyeV90aHJl
-YWQoc3RydWN0IGt2bSAqa3ZtKQ0KLS0gIDIuNDcuMw0KDQo=
+On Sat, 18 Jul 2026 at 01:35, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Thu, Jul 16, 2026 at 04:28:02PM +0100, Mark Brown wrote:
+> > On Thu, Jul 16, 2026 at 11:52:36AM +0100, Mark Rutland wrote:
+>
+> > > >           if (test_thread_flag(TIF_SME)) {
+> > > > -                 unsigned long vq = sve_vq_from_vl(sme_vl);
+> > > > -                 sysreg_clear_set_s(SYS_SMCR_EL1, SMCR_ELx_LEN, vq - 1);
+> > > > +                 sysreg_cond_update_s(SYS_SMCR_EL1, task_smcr(current));
+> > > > +                 isb();
+> > > >           }
+>
+> > > What's the ISB for? That mysteriously appeared in v11 without
+> > > explanation. It wasn't in the original code, prior versions of the
+> > > series, or my suggested rework with the task_smcr() helper.
+>
+> > > I don't believe it's necessary to add an ISB here.
+>
+> > I can't remember or figure it out, I'll delete.
+>
+> Actually I remembered: while SCMR_EL1.LEN is self synchronising the
+> "without the need for explict synchronization" wording is not present
+> for SMCR_EL1.{FA64,EZT0} and this is no longer explicitly just an update
+> of LEN.  It's possible I'm being overly paranoid here, I'll leave the
+> isb() and add a comment for the next version.
+
+I went through the ARM ARM (DDI 0487 M.c) on this and I don't think
+you're being overly paranoid, I believe the isb() is needed here.
+
+The self-synchronisation wording in the SMCR_EL1 description is
+attached to the LEN field only: "An indirect read of SMCR_EL1.LEN
+appears to occur in program order relative to a direct write of the
+same register, without the need for explicit synchronization." There
+is no equivalent wording for FA64 or EZT0, so they fall under the
+general rule in D24.1.2.2: "Unless otherwise stated in its System
+register definition, a direct write to a System register requires
+synchronization before software can rely on the effects of that write
+to affect instructions appearing in program order after the write."
+Table D24-1 has direct write -> indirect read as "Required".
+
+And task_fpsimd_load() does make indirect reads of both fields before
+the next context synchronization event: sme_load_state() executes LDR
+ZT0, whose execution at EL1 is trapped when SMCR_EL1.EZT0 is 0, and
+when PSTATE.SM is set sve_load_state() executes WRFFR, which is
+"illegal when executed in Streaming SVE mode, unless FEAT_SME_FA64 is
+implemented and enabled" (from the WRFFR description). The MSR SVCR in
+between doesn't provide the synchronization, since SVCR's
+self-synchronisation wording covers reads of its own SM and ZA fields
+only.
+
+When the write does change FA64 or EZT0 (once KVM can disable them for
+a guest, and possibly on the return from suspend path now that
+sme_suspend_exit() no longer writes them), K1.2.4 "CONSTRAINED
+UNPREDICTABLE behavior due to inadequate context synchronization"
+applies without the isb(): "the behavior of the PE is consistent with
+the unsynchronized control value being either the old value or the new
+value", independently per use. So the ZT0 load or the FFR restore
+could take an unexpected SME trap (EC 0x1D) in the kernel, depending
+on the implementation.
+
+FWIW the other call sites look consistent with only this one needing
+it: in do_sme_acc() nothing ZT0 or FFR gated executes before the ERET,
+which is the context synchronization event, and ZCR_EL1 only has LEN
+allocated.
+
+Cheers,
+/fuad
