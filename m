@@ -1,109 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4125F22B594;
-	Sun, 19 Jul 2026 12:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E728D7262A;
+	Sun, 19 Jul 2026 13:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784465973; cv=none; b=eN4YYGVG1W0T2k5lwrA8uGFTtBbFMykKnlZD4zf9iOXhJ1zJ0WCA5oWlojjCtTp7qjcifXGijNB2VzXypiKPeZAGwzg5A+B/0UKyUvUE7Ra2fA8vzlevZF6eYoYzHW/fZsx6TTioCIFRXpafyYwgXUCUbaqAlGMdwctCgmW/rOs=
+	t=1784466016; cv=none; b=Ly56d2kQ2oceVGiHkpWfyDd+ojMcHiVNTHm9lphMzzvna+WnIHT1Bd2LG0R77c1IdYpODe792NRF0B9NTipVHkMw5MExfljJvBNq+m7W3dyBZIWWKgLksBWxL2zoYwVGDbFx6cYOafdf+aeCRikKE8DMebnttYlTjmfjmG4MJWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784465973; c=relaxed/simple;
-	bh=tNtYGC2EJFlGi7TRbEJqSxVtjzAJPz/PG74LELuNwZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DBOwjFkYMHiexh+QB/8Q92PMpL3tA0fuwZZqU5XP5goFoT+mxIU/VhtOij83qgloGwdYdl66sttzgT4HBxF3HTiUHzw4cdrUr8G+wJx/1fzPGHITYLX0LWnSpeJM1RTD643msKonPahDRXc2YUz7mYnS9DP12HD6NQliiQi3ClE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMvdkFlp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784466016; c=relaxed/simple;
+	bh=OyYcqMbB9FY2u9nk1si4+E0HCFJIE7B8KifswfndNZw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tp93TaZOHK73t+rrr7KYAvHOuS47Wy8t1kvurwBay28XEgWHZwG+5UlApXHClpFHLkMYzIl3pHw4BfghzrGLiFgGFHV+pXahkDSAUx8sc7d1tkNhVYrbZAhR64WEJvxq3lauAj+4CJb1JHfIB2asgOQiP5806/XDYjUTt3ZBkKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ScVsxnXr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMvdkFlp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBBB1F000E9;
-	Sun, 19 Jul 2026 12:59:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784465971;
-	bh=dz6nstKPpdzr3m3YV5N5XtGEglEWs9DHWHKhwuF1feU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RMvdkFlpGDTGUknV5qMv7bvE17VSPmAKTlGBUF0dGAFTJIm5YEMiHRqDBCQodxSTY
-	 Ge9fz3IG2p0LxJTSK4uvO9VLO6lxN9I70ZNr31wO8qXETMT7OK6O8mjwj7gxC5H5Aa
-	 ewZJvnjGNPAZL9onmVrfy8cENJCMslHIdl+eM6QVFGhkQSwKCyZSTlY25S4ltfuh0P
-	 Kv+mAVZazCnspK3pbXmA3iCAqR8+wEd0HAJlUkfnPPYL3D6hA8HBRc0oR91uWmdD+Q
-	 n2D0/dLV9W+Ualim3Ug8bC9mPBH3yO+XeTq+BG9fS7qDxo6NwPxPQ+6bf2ob3AI5YZ
-	 FHoaByhPLJAMQ==
-Date: Sun, 19 Jul 2026 13:59:25 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Fuad Tabba <fuad.tabba@linux.dev>, Mark Rutland <mark.rutland@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <df08b81a-13b6-4273-88e7-0627063d4e9c@sirena.org.uk>
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
- <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org>
- <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
- <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
- <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
- <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
- <43f21c65-c5ba-44a3-9741-548390df369b@sirena.org.uk>
- <87a4rnqsuu.wl-maz@kernel.org>
- <18229974-b26d-4eed-82f7-7af7e1c26634@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ScVsxnXr"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66JBBsck3258057;
+	Sun, 19 Jul 2026 13:00:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=siJZ4QHaIqsKL/mro0wAOyhSm+JDHJumBB3JU3LO3
+	zI=; b=ScVsxnXrM5mS5R3IMfAZhyz93+Y3oM/ouNJhGNlRo9mCJD1hMSVuZCD8V
+	QFEHNn51a0IwukUoqLtAXwXRetKAeJJvDELcji379xxmjx9edUH64vb29UWMTZDh
+	KfULxHtQNdP0fe3lLjYF0RERa/h5MmXUp7jwisAwB2cdgMKcnsen7GJGkLFw7Sz2
+	MpLNK8w6r0wkl5SZDt2jzT+pqVF1mrevipUWa3glAKtpQZK6kk+fhjRu82s5gdY0
+	eBpHuW6FTgVqFmPrvaJuDBVkNNyODcLI8bNOrAREEHiul6pyhDtYqIOZd2zYlH7c
+	tzdN9F2tRLstVCmQVZW8wc7f1kKgw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78fucac-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 19 Jul 2026 13:00:11 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66JCnad6018664;
+	Sun, 19 Jul 2026 13:00:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgpgy1c8x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 19 Jul 2026 13:00:10 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66JD06iL45416818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 19 Jul 2026 13:00:06 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A0832004D;
+	Sun, 19 Jul 2026 13:00:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 69C7B2004B;
+	Sun, 19 Jul 2026 13:00:06 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun, 19 Jul 2026 13:00:06 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/6] s390: Reintroduce support for DCACHE_WORD_ACCESS
+Date: Sun, 19 Jul 2026 15:00:00 +0200
+Message-ID: <20260719130006.3882764-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cL9XJNQtGuI5OnYK"
-Content-Disposition: inline
-In-Reply-To: <18229974-b26d-4eed-82f7-7af7e1c26634@sirena.org.uk>
-X-Cookie: Courage is grace under pressure.
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX5DaDKFqThfMD
+ kUy/BUSibETFY2m/SGs8qvMBeIDjHFa2n3BthI6v/s6lbMJIOU+Xicgv7kK01J4b7itAsxxWdvJ
+ WfxOzypLajq8u2c8WJlDeyzjxKC7QKSGHvGPTAj4buSg+Y57M/5gT0xQGy9C9qCNDmNQwWyPbq3
+ tD71c37m0Ub7wd9XzQR2kB3lyVy9ObtVNBh0zpT68ed+WWvzhDX2trOfTvNlBNt+QSnrjeBAXHF
+ mePkcYXklcJ/WiGODfmVWtUeU7POvwc5GjvLsMYOVS2A/MI80YE0uPJp+2zPHrxcRalR1oIXMZR
+ nfYG9L84anBa0nY3rYYlSTw83AQtO3px/blxTNFELhTKMHEvO8QdtXVqAHWDguze3vz4Xs3O7UR
+ OdjFzyySpocu7B909c9BCHLnWzdQwGYzm3KI0oq59YOrrrj/tRh1HbTE+nyaSrovLVN07MQuCMT
+ yQUyBopqIi0fWlV0/Ww==
+X-Proofpoint-GUID: UGEle3GqFfHzLApijzDHojKzUc-M-zPf
+X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a5cca5b cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=oTK_JJbRH6YLXrI8L4wA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfXw1uYo4ox4Nn7
+ LZEqde8KGIqQIocZezSSv9azbVGagg+PFesumz4V+J0z7Wi0tgwMByYwFAMSYbh10djAYW4R+I8
+ ZUTP6NqVE3E/k5y66Mdd9476C6eZKYM=
+X-Proofpoint-ORIG-GUID: UGEle3GqFfHzLApijzDHojKzUc-M-zPf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-19_04,2026-07-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607190139
 
+v3:
+- Fix two more pre-existing bugs reported by Sashiko
+- Add Christian's Tested-by tag to four of the six patches
 
---cL9XJNQtGuI5OnYK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+v2:
+- Explicitely PAGE_ALIGN size in uv_alloc_stor_var() [Sashiko]
+- Document that lazy PTE update / TLB flushing is intended [Sashiko]
 
-On Sun, Jul 19, 2026 at 01:40:28PM +0100, Mark Brown wrote:
-> On Sun, Jul 19, 2026 at 09:35:53AM +0100, Marc Zyngier wrote:
+v1:
+Support for DCACHE_WORD_ACCESS was recently removed [1] since it caused
+problems with the incomplete handling of secure storage access
+exceptions. It looked like fixing the exception handler would be a larger
+effort; therefore support for DCACHE_WORD_ACCESS was removed as a work
+around.
 
-> > So leave this is a straight ISB, no optimisation. Once you come back
-> > with actual data showing that this is a terrible bottleneck affecting
-> > real workloads on real HW, we'll look at it. But until then, please
-> > keep it as stupid as possible.
+Address the potential problems that exist with secure storage access
+exceptions and add support for DCACHE_WORD_ACCESS again.
 
-> I've already left the KVM hypervisor code like that - I only updated the
-> code here in the main kernel since that keeps the end effect for
-> existing systems and workloads the same.  I am aware that there has been
-> a great deal of attention paid to the barriers we have in the context
-> switch path so I am concerned that other people might have a different
-> view on adding one.
+In particular address the following problems:
 
-It does also look odd do a conditional update of SMCR_EL1 and then
-unconditionally add a barrier after it, even if the conditional
-update suppressed the write.
+- Reading the guest variable storage area via the /proc/kcore interface
+  results in short reads. Address this by using a VM_SPARSE area for the
+  guest variable storage area. VM_SPARSE areas will be handled like
+  memory holes (zeros will be read).
 
---cL9XJNQtGuI5OnYK
-Content-Type: application/pgp-signature; name="signature.asc"
+- Fix handling of secure storage access exceptions in vmalloc area.
 
------BEGIN PGP SIGNATURE-----
+- Remove folio handling for secure storage access exceptions to avoid
+  potential data corruption.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpcyiwACgkQJNaLcl1U
-h9BpXwf+JYCe7VHaj7TfzZjCVUNf+N0uc2PbXDf9kiTps6TxEHMS/Lt7w8P5oqs3
-RDVLBZIPc43UyiYr27EH+NxHBS/jOGSdzNHCjkN4TN6hg+IEE08yL7RbnSH85hzX
-+iXiGHYKj6uzU0VxOCmw48BLoe1wkh4iToQT+ffGDaAd1yxraMDKWk1gom8j6Eaa
-Br6L+q2EfnbvuqtpZWEQ1WPGuRrcrcnTyrkEz2eQbNNAyMD1boHr9LHNeCRFoJSn
-2nDxtRYj6T2Vocmt59QX4JajZwM9fbfsZOR5NszhGW7Tm1EqgxbVg439ieY+ryMw
-AXrrkxhculDDRGWss27Ds2c+Cu+6ww==
-=CtjM
------END PGP SIGNATURE-----
+[1] 37540b8c287f ("s390: Revert support for DCACHE_WORD_ACCESS")
 
---cL9XJNQtGuI5OnYK--
+Heiko Carstens (6):
+  KVM: s390: pv: Use VM_SPARSE area for guest variable storage area
+  s390/mm: Add missing mm check to do_secure_storage_access()
+  s390/mm: Use lock_mm_and_find_vma() in do_secure_storage_access()
+  s390/mm: Fix handling of vmalloc area in do_secure_storage_access()
+  s390/mm: Remove folio handling for kernel faults in do_secure_storage_access()
+  s390: Add support for DCACHE_WORD_ACCESS (again)
+
+ arch/s390/Kconfig                      |  1 +
+ arch/s390/include/asm/asm-extable.h    |  4 ++
+ arch/s390/include/asm/uv.h             |  2 +
+ arch/s390/include/asm/word-at-a-time.h | 22 +++++++++
+ arch/s390/kernel/uv.c                  | 65 ++++++++++++++++++++++++++
+ arch/s390/kvm/pv.c                     |  6 +--
+ arch/s390/mm/extable.c                 | 18 +++++++
+ arch/s390/mm/fault.c                   | 20 +++-----
+ 8 files changed, 122 insertions(+), 16 deletions(-)
+
+-- 
+2.53.0
+
