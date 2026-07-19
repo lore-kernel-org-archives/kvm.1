@@ -1,251 +1,167 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7D711CBA
-	for <kvm@vger.kernel.org>; Sun, 19 Jul 2026 13:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905AC11CBA;
+	Sun, 19 Jul 2026 13:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784466196; cv=none; b=dOjXIHoVbI+8mCSmyFN4540uFQeYnqA+H87ntmq7yPPHh5O/vaQ1+TFvv8Eqq1k+N0EdRfigU2uVb5CKcZnbsTF6bseYkTnhwJ5tnSp3zHiE03+WqL3Utxkd9BlMva239Ij52WUoFPM3txmRqBt10y0FkY0CflDb8/p+Pk+wEa8=
+	t=1784466228; cv=none; b=Y/meGC9fSutKz7DowX6jm3Y4KyBtrcSykeoUXym58xBHYBBxa6yIMp/LjxVd4wnOT3GZQgnI4Nlp6YDzfs0TsI9T24kGDyNHQ/36EQDkW9hmDYAPuoIPZh4YhyfKczUbmboET9U0UsCWKwi3BWjekPhZQwDoY18t2So31j+4TNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784466196; c=relaxed/simple;
-	bh=KCZvCPkdDtsrUkJ2g1Isv8E5Xzdx3865pX1vJf1IcWg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUtGxnxsNqiqjnWywNN9iOgM5Mc4X+oGhet9jHSOsmtJwKyJn1QvaGVPBAnKsrW42VvIRTLyedvCpQ+giOLJFEREdL47onYJM5y5XNCrecB8WOUnNkf94Zg1Gqsy8k0EWINnSBVyTUgp14kfBnhGh3670vvrFm0MF5nU52Q5egE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Dv8KL+H5; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1784466228; c=relaxed/simple;
+	bh=IuvNPhz/qs9bKIOzWkFfEKumIM149XuxFtB5N3oRRLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EypcKDfElmXh8olW8SYyywhIozRaBH3LC3CIptU2eFpaeLclMTiCYALYRb852XFtzuK68EuCF1tukxl4k3DnWiRqJltjt8hxNvcQu5Eu4cuqTtjR2uEk6SJ1t+AEIkgtO74cEJqaXsdtukAZVmxirl3n0CrCqkg94YZAJdSNyuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=g5eZ2vt6; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Dv8KL+H5"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66JBC86j3272841;
-	Sun, 19 Jul 2026 13:03:07 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="g5eZ2vt6"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66JBChCl3352920;
+	Sun, 19 Jul 2026 13:03:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=PS7PtJoq8vwgXI2Sy
-	XKRjmL6kBfqe48fRU/jmUUJzdQ=; b=Dv8KL+H5HPesi8b1o2VANa0vp/cZ+86Wq
-	Q62L7TvmJfZcQHT6yACnnc9kQ6iocajiDmWBO/FK2oXIXJWR5aj84B2gM3JHXuVx
-	sYj3O0TC/GZaIBvburpSAny6ZBZLBHbbjzlMmUjEzNHW5zRqLPdFD5K/WnaKj6C0
-	goIQCnIsbox3sFjqyaHGCU/JG/bHnczwxH+YEsXPMpRaTPFIOCYwc1bh//mvmkWk
-	F5Bfacfih7iAbSDoSmQ/GTM9vQNklj8lbiDUEDJnFLfdvFY6pF3YFmcFoPM5JF7E
-	6zMGzhTVqAixTnr/cz6CdIvSQc7ekNlozwhgD0UFDAZaJvx6yXiCQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77jud0y-1
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=trwG6Z2mln5d7fkk2b+593flmrbwvv
+	jvX6Ut/8gYq7w=; b=g5eZ2vt6w92OGJm+kNsy9LA38wwBAKPovdSWGZ+uWImmFI
+	M+A/U8lK2NSXOqn/+QmL2VOBDnEN8Sui1w9BES0hL2M1rXaDFRznnzeXeFL/FqrO
+	xYHYITW6HdFhhF7RoAE4YBNCeIAxBSB4L2rVMI+AIS7LxFmmGiOjwm7BliUHv5XC
+	iYnk6+aXUr/nUrXetGuDVkZO+UCniVl2rUZwVZHzx5lc34J0/736gDkTePHFFS61
+	rQRlqu5+ojm0C7AWzSlZvLSxc5s544v95TJYE6FW74365Ok+H8xXXOlc0Z8QNVXa
+	sgr9m8Vc41qSGggz55nqEbKQNcTQIJS0YQzQZpgA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ab3g0t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jul 2026 13:03:07 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66JCoEpI014088;
-	Sun, 19 Jul 2026 13:03:06 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnagskhm-1
+	Sun, 19 Jul 2026 13:03:46 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66JCniO0001552;
+	Sun, 19 Jul 2026 13:03:45 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6vsshr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jul 2026 13:03:06 +0000 (GMT)
+	Sun, 19 Jul 2026 13:03:45 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66JD32RM33685830
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66JD3fdp39911892
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 19 Jul 2026 13:03:02 GMT
+	Sun, 19 Jul 2026 13:03:41 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 99AD520043;
-	Sun, 19 Jul 2026 13:03:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 7873F20043;
+	Sun, 19 Jul 2026 13:03:41 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B3A420040;
-	Sun, 19 Jul 2026 13:02:58 +0000 (GMT)
-Received: from li-18a0a34c-33fc-11b2-a85c-d9f1631c5692.ibm.com (unknown [9.124.218.35])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 19 Jul 2026 13:02:58 +0000 (GMT)
-From: Chinmay Rath <rathc@linux.ibm.com>
-To: thuth@redhat.com
-Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        andrew.jones@linux.dev, sbhat@linux.ibm.com,
-        Chinmay Rath <rathc@linux.ibm.com>
-Subject: [kvm-unit-tests PATCH v2 6/6] powerpc: Add a panic test
-Date: Sun, 19 Jul 2026 18:30:27 +0530
-Message-ID: <20260719130027.2347519-7-rathc@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260719130027.2347519-1-rathc@linux.ibm.com>
-References: <20260719130027.2347519-1-rathc@linux.ibm.com>
+	by IMSVA (Postfix) with ESMTP id 3759120040;
+	Sun, 19 Jul 2026 13:03:41 +0000 (GMT)
+Received: from osiris (unknown [9.87.153.223])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Sun, 19 Jul 2026 13:03:41 +0000 (GMT)
+Date: Sun, 19 Jul 2026 15:03:39 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: sashiko-reviews@lists.linux.dev, linux-s390@vger.kernel.org,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH 1/4] KVM: s390: pv: Use VM_SPARSE area for guest variable
+ storage area
+Message-ID: <20260719130339.22878A6e-hca@linux.ibm.com>
+References: <20260716141436.2125703-1-hca@linux.ibm.com>
+ <20260716141436.2125703-2-hca@linux.ibm.com>
+ <20260716143333.20B891F00A3A@smtp.kernel.org>
+ <778ba45f-bd2e-46e0-8b08-fcd209dd174d@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <778ba45f-bd2e-46e0-8b08-fcd209dd174d@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a5ccb0b cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=pGLkceISAAAA:8 a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8
- a=dqXfYlxAYPwuIwgSaMQA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX0fsQN3/LVOpq
- pvSMpOTfvmTxVeWSgKs/t7zu9bpXmNVxYl3mytV3FU/cpFDpgTHX8TRN7act9jcy+xVzstcxshI
- HwSIvDsKypp2hYQ8jeua2GsYQ7wR7FBZWJ6fsXH0+fYFEyGIjCnq484OIsmEOGG241eCZM+ZeDz
- uz6fccZ1E8JnNWHnB03JEjaMaeoFhWbwtimLoS4AVCJVYLiW4OHj+uq5ztngKlTE4c8Ad66YdO7
- EPI4uhYdDnn2BJk8vEZEFVGm9n/dLfGZoX8BqGavl2TtCTyqYvTA6ju23eErBVtRutM+orTzIM+
- /KukNtWF8IbkB2jqU7dgQOReJeIUMU0Uhr8YrHbgZaIWhnlpfGZQLfEwDUgwlnCNOmKkjlRXiyu
- MhkTC/oV5xBx9lizdMroCctg43zD7BqzhYMhh51NdT6VQU6fKu1hHauNxqcTTOFHFkYkP+ut1Ml
- kr0g7EallxAZs4SLnSw==
-X-Proofpoint-ORIG-GUID: 41SXwHNkjh6DJ4917grMxDrsxWGcU4Ck
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX53t2CAbN1FZz
- KPa5zllqql+ps/adHcOOOHeeSXr5j6kb7ghrD8VVEgF78+2wJryt9hm/YXC8gGjtVEx/ZciTgDD
- OqDlNtCKllbjBRIIBbX5ocHhQLdIY/Q=
-X-Proofpoint-GUID: -DKkfGVFu4yTCoeG-0bmsDilufLcsW2l
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX+Ug5FSmkny1x
+ yj39YhXZOX7SGQsXUgJ316pEUcInDdGc/mEU6tID1PnrFXmZUV4atDhMldPS2rHKc+3YvmTNvkT
+ fecpbQ4e5/qm5EChuptDbz9flHYHKoAx1knUTZ925xJHBKi4H7/nJVXEAnaeOwfd8kqW7529Y+U
+ W317acv72E1M95wK2ZIV3iQGc1cGybBsc0cFqcoMkbfML0QVrg1dgRjbkbjwOA2YXxOphWq1lVV
+ SO1bkm9hKnGQhpk7riza5rdCYiFXepHWcXQEZiUBRJD089SAphk5VV46aP+Xr7bC8DkORlfNwWd
+ ts4ujNUYthpy9skv8t/SpJmZbjYV/gQVQF4QOdAkUUMSUZ2kHeyW/qW/mzfQApvQP67Ql5D4V4P
+ BAcsD0dM6mI4x9jOtdiKvDklsJa271giqYr2N7s/VIxSKbM6QGw7TdRHpASTaVkFQUqp8iFmcQe
+ 1ADFwNOcpFjf/KWfpbw==
+X-Authority-Analysis: v=2.4 cv=F7ZnsKhN c=1 sm=1 tr=0 ts=6a5ccb32 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=xuUelXlGgw66GkdJ-MUA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: --knOerf1ZMHvZH9p9Z-x9qLGJcCk06h
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX9VKY//NZo/yE
+ EPjki8NfGUd/q2c7O8i9k2Q0G0jJ+oSVuKbhNo8xkQ3YSJoBpgtfjTw7pIUOPCmqpqvGvjretQD
+ uKV6jIEXLCCTyPpKSOt+sS8Muvsawa0=
+X-Proofpoint-GUID: --knOerf1ZMHvZH9p9Z-x9qLGJcCk06h
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-19_04,2026-07-17_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607190139
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607190139
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On Fri, Jul 17, 2026 at 11:12:09AM +0200, Christian Borntraeger wrote:
+> Am 16.07.26 um 16:33 schrieb sashiko-bot@kernel.org:
+> [...]
+> > [Severity: High]
+> > Does this create a Use-After-Free window during VM teardown?
+> > 
+> > In uv_free_stor_var(), we call apply_to_existing_page_range() which invokes
+> > uv_free_range_cb() for each page. The callback frees the physical page
+> > directly to the buddy allocator via __free_page() while the PTE remains
+> > fully present and writable in the init_mm page tables.
+> > 
+> > After all pages are freed, free_vm_area() is called to clear the PTEs and
+> > flush the TLB. If a freed page is immediately reallocated to another
+> > subsystem, can concurrent accesses via the stale vmalloc alias read or
+> > overwrite the newly reallocated page before free_vm_area() completes?
+> 
+> I guess this is a very very theoretical problem. Not sure if we really want
+> to address this. The necessary allocation in a freeing function might be
+> worse than temporary access via the kernel mapping.
 
-This adds a simple panic test for pseries that works with
-TCG (unlike the s390x panic tests), making it easier to test
-this part of the harness code.
+I added a comment why this won't be addressed. The existing vmalloc
+code already implements lazy TLB flushing (even though it is not
+active on only s390 because of our special ptep_get_and_clear()
+implementation).
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
----
- .gitlab-ci.yml         |  2 ++
- lib/powerpc/asm/rtas.h |  1 +
- lib/powerpc/rtas.c     | 16 ++++++++++++++++
- powerpc/run            |  2 +-
- powerpc/selftest.c     | 17 ++++++++++++++++-
- powerpc/unittests.cfg  |  5 +++++
- 6 files changed, 41 insertions(+), 2 deletions(-)
+> > > +void *uv_alloc_stor_var(unsigned long size)
+> > > +{
+> > > +	struct vm_struct *area;
+> > > +	unsigned long addr;
+> > > +
+> > > +	area = get_vm_area(size, VM_SPARSE);
+> > > +	if (!area)
+> > > +		return NULL;
+> > > +	addr = (unsigned long)area->addr;
+> > > +	if (apply_to_page_range(&init_mm, addr, size, uv_alloc_range_cb, NULL))
+> > 
+> > [Severity: High]
+> > If an unaligned size is passed to uv_alloc_stor_var(), could this cause an
+> > infinite loop in the page table walker?
+> > 
+> > The size parameter is passed directly to apply_to_page_range(). The internal
+> > page table walker loop relies on the end boundary being exactly page-aligned
+> > to terminate:
+> 
+> This is one of those things that wont happen in reality as the returned sized
+> will be aligned, but as the interface for base variable storage returns bytes
+> and in theory _COULD_ be unaligned
+> maybe change belows hunk to
+> 
+> @@ -369,7 +369,7 @@ static int kvm_s390_pv_alloc_vm(struct kvm *kvm)
+>  	/* Allocate variable storage */
+>  	vlen = ALIGN(virt * ((npages * PAGE_SIZE) / HPAGE_SIZE), PAGE_SIZE);
+> ---->	vlen += uv_info.guest_virt_base_stor_len;   <--- also add ALIGN here
+> -	kvm->arch.pv.stor_var = vzalloc(vlen);
+> +	kvm->arch.pv.stor_var = uv_alloc_stor_var(vlen);
+>  	if (!kvm->arch.pv.stor_var)
+>  		goto out_err;
+>  	return 0;
+> 
+> Could also be a separate patch if we want to.
 
-diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
-index 89329cd3..9d809b13 100644
---- a/.gitlab-ci.yml
-+++ b/.gitlab-ci.yml
-@@ -204,6 +204,7 @@ build-ppc64be:
-       rtas-set-time-of-day
-       selftest-migration
-       selftest-migration-skip
-+      selftest-panic
-       selftest-setup
-       sieve
-       smp
-@@ -235,6 +236,7 @@ build-ppc64le:
-       rtas-set-time-of-day
-       selftest-migration
-       selftest-migration-skip
-+      selftest-panic
-       selftest-setup
-       sieve
-       smp
-diff --git a/lib/powerpc/asm/rtas.h b/lib/powerpc/asm/rtas.h
-index 989b21bd..fdb3c544 100644
---- a/lib/powerpc/asm/rtas.h
-+++ b/lib/powerpc/asm/rtas.h
-@@ -26,6 +26,7 @@ extern int rtas_call(int token, int nargs, int nret, int *outputs, ...);
- extern int rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, int *outputs, ...);
- 
- extern void rtas_power_off(void);
-+extern void rtas_os_panic(void);
- extern void rtas_stop_self(void);
- #endif /* __ASSEMBLER__ */
- 
-diff --git a/lib/powerpc/rtas.c b/lib/powerpc/rtas.c
-index 9c1e0aff..98eee24f 100644
---- a/lib/powerpc/rtas.c
-+++ b/lib/powerpc/rtas.c
-@@ -182,3 +182,19 @@ void rtas_power_off(void)
- 	ret = rtas_call_unlocked(&args, token, 2, 1, NULL, -1, -1);
- 	printf("RTAS power-off returned %d\n", ret);
- }
-+
-+void rtas_os_panic(void)
-+{
-+	struct rtas_args args;
-+	uint32_t token;
-+	int ret;
-+
-+	ret = rtas_token("ibm,os-term", &token);
-+	if (ret) {
-+		puts("RTAS ibm,os-term not available\n");
-+		return;
-+	}
-+
-+	ret = rtas_call_unlocked(&args, token, 1, 1, NULL, "rtas_os_panic");
-+	printf("RTAS ibm,os-term returned %d\n", ret);
-+}
-diff --git a/powerpc/run b/powerpc/run
-index 06657764..718f08cb 100755
---- a/powerpc/run
-+++ b/powerpc/run
-@@ -57,7 +57,7 @@ fi
- 
- command="$qemu -nodefaults $A $M $B $D"
- command+=" -display none -serial stdio -kernel"
--command="$(migration_cmd) $(timeout_cmd) $command"
-+command="$(panic_cmd) $(migration_cmd) $(timeout_cmd) $command"
- 
- # powerpc tests currently exit with rtas-poweroff, which exits with 0.
- # run_test treats that as a failure exit and returns 1, so we need
-diff --git a/powerpc/selftest.c b/powerpc/selftest.c
-index 8d1a2c76..f6f24d6a 100644
---- a/powerpc/selftest.c
-+++ b/powerpc/selftest.c
-@@ -7,6 +7,7 @@
-  */
- #include <libcflat.h>
- #include <util.h>
-+#include <asm/rtas.h>
- #include <asm/setup.h>
- #include <asm/smp.h>
- 
-@@ -47,6 +48,17 @@ static void check_setup(int argc, char **argv)
- 		report_abort("missing input");
- }
- 
-+static void do_panic(void)
-+{
-+	if (machine_is_pseries()) {
-+		rtas_os_panic();
-+	} else {
-+		/* Cause a checkstop with MSR[ME] disabled */
-+		*((char *)0x10000000000) = 0;
-+	}
-+	report_fail("survived panic");
-+}
-+
- int main(int argc, char **argv)
- {
- 	report_prefix_push("selftest");
-@@ -60,7 +72,10 @@ int main(int argc, char **argv)
- 
- 		check_setup(argc-2, &argv[2]);
- 
-+	} else if (strcmp(argv[1], "panic") == 0) {
-+		do_panic();
-+	} else {
-+		report_abort("unknown test %s", argv[1]);
- 	}
--
- 	return report_summary();
- }
-diff --git a/powerpc/unittests.cfg b/powerpc/unittests.cfg
-index 60c73086..edd5b3e1 100644
---- a/powerpc/unittests.cfg
-+++ b/powerpc/unittests.cfg
-@@ -19,6 +19,11 @@ test_args = 'setup smp=2 mem=1024'
- qemu_params = -m 1g
- groups = selftest
- 
-+[selftest-panic]
-+file = selftest.elf
-+extra_params = -append 'panic'
-+groups = selftest panic
-+
- [selftest-migration]
- file = selftest-migration.elf
- machine = pseries
--- 
-2.53.0
-
+I added the alignment handling uv_alloc_stor_var(), so that it doesn't
+matter what callers pass.
