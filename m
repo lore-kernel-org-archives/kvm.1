@@ -1,72 +1,66 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E131F3D56;
-	Sun, 19 Jul 2026 13:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4324B1A3164
+	for <kvm@vger.kernel.org>; Sun, 19 Jul 2026 13:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784466018; cv=none; b=VTUqdQHKmP27GZS9ADlVXIxcERFEQ8xS2IJHDaUwzr1331WCEBtPZF5vZE67QbzCncSgh5poPHRLl62zhXSwzxix1QrJMAFuRTvMQI/cVOahuOj8JwWIPs72bRttKgMy9ZUHFjKLiW26oNeHBXFOD3rI2Y84q1nKz99SoRzS/IE=
+	t=1784466050; cv=none; b=rif3L3fK0W/xRAA2jYtX6wPJL16GT0h/bgf+LZqPSVDnDNwK7ehy1hd/CvF35AosAudq+OYj7a5nueAd2d1jyDqJ79fdLdG4wmxo1XzADAb5nUaf1no2JHqoQZgJTYPE08XKvUcT+4VR2H2zWgf75nl1+Xupl8p2F8VemfKrZh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784466018; c=relaxed/simple;
-	bh=mq+7Hjma1D/CJ3C7xoD4JKAYeJNhJFF8tW/av0J4vr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SD5Q56JDkCyDUKSsIrFT609eeIBoCKXf0ThAfFlVlfWWxJvFUB4jGyYIwZ4PDJwu/6RzYq7AdqVDixZ6g9IK+PMhzQ5iojiNW9dQe2d/kvIg3hd43ainkmu4EzLfKFCcCyPLzBIFoYyMiX94YtDni6a3t0hsLdUaKgUGbvNeHXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HMsNKqRH; arc=none smtp.client-ip=148.163.158.5
+	s=arc-20240116; t=1784466050; c=relaxed/simple;
+	bh=Hz4I1wx1m1fj6v5nlyFLtzXeT9tK9+NsonYJDvQRKcA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fU9G8LvooL2cjYwSSwsc6zFmuAwFkCkPsQGbJjWV2kPGHZCdVemHVtQ0IakB0AOVd8xwgOav0vZQuycWDtQ3Ttulm5/vO0XBPvLW+zzc9lMIuyBXGfecVCVzosCulA4lUBQ0/FJS3j12Yma6xll+jghFiTfFYAXNwRz3fNRa8s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QCw/Qc+b; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HMsNKqRH"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66JBC3e43258135;
-	Sun, 19 Jul 2026 13:00:13 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QCw/Qc+b"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66JBBoqC3351320;
+	Sun, 19 Jul 2026 13:00:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=64/77CkVHpdXmw95j
-	a1WPmh0G0GKWz5vBHXIbipy0jQ=; b=HMsNKqRH94HFqMVwrIzd/P0Of5di6tVbn
-	QzNjvTTiWbsJwmXm6TUVmKPrb1F3WMJCyeEmDHahz8fv9xYXOtPQoGswbBzx+lkg
-	r72XnKavw59MyeDDc/4BlNpeG6iMp7jWLKmmyEEK4uujMZySB2jHzFZrzD6X6iaU
-	9Qecx/5pitecYkDfAzKW9NQEjYPQVQEkPQ82TrP34KpzFu+Zrjm2chMjEHB7HQ0M
-	R9ts1vbQz0UV0JWCA4DxKkbYs0b3D94kIdxJ998VRyiWzVgEQas3lwNNiuXgFS3D
-	mspdGdGAoQp6PS0hBr6EXi2pE11cQEAoNu07f4fTOYTuIjkAI4rjQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78fucae-1
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=9jWfDmwdhTGoqfNFTEeqe4nf2DNYa7FlOgeY6USla
+	Fs=; b=QCw/Qc+b1Slq6jzWeSVcFMyrxGT+ukFOZIqZuIHcFHMq1jFpW+PS2Ynvy
+	I1WOTIJLW3yhUVpIl66ggxdRHjB6KJOetHDfCpbLLZNmhgOawiwe1mR4EPZ7C6R7
+	xkEvmy1Y0iK1WzyLJq0GVkCwXccnYQjFFTaWJ/3Rpy2hTbWNleAQAWcP8qkVy0zV
+	nGtHzBNjvD9Ddi8KBJieZXtvdFMwHveC2frfC+ejVYVpM8Od/aYOXZVTcjL/Z3MD
+	vfnbTFXiyykvCZTaxujB8zGyTBYWCkl6rbnsC4zsYpThsdSrjIMIZJGcmZosKQQR
+	4Ckq8nB9drgWewN5S4zHSlCk2ZT1Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ab3fs3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jul 2026 13:00:12 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66JCnjoE016751;
-	Sun, 19 Jul 2026 13:00:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktpstjr-1
+	Sun, 19 Jul 2026 13:00:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66JCna26032399;
+	Sun, 19 Jul 2026 13:00:39 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1g1fd1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 19 Jul 2026 13:00:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66JD08fF26935774
+	Sun, 19 Jul 2026 13:00:38 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66JD0ZoE48496994
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 19 Jul 2026 13:00:08 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F3EBD20043;
-	Sun, 19 Jul 2026 13:00:07 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C75032004E;
-	Sun, 19 Jul 2026 13:00:07 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 19 Jul 2026 13:00:07 +0000 (GMT)
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 6/6] s390: Add support for DCACHE_WORD_ACCESS (again)
-Date: Sun, 19 Jul 2026 15:00:06 +0200
-Message-ID: <20260719130006.3882764-7-hca@linux.ibm.com>
+	Sun, 19 Jul 2026 13:00:35 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 32AB820043;
+	Sun, 19 Jul 2026 13:00:35 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4834520040;
+	Sun, 19 Jul 2026 13:00:31 +0000 (GMT)
+Received: from li-18a0a34c-33fc-11b2-a85c-d9f1631c5692.ibm.com (unknown [9.124.218.35])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun, 19 Jul 2026 13:00:30 +0000 (GMT)
+From: Chinmay Rath <rathc@linux.ibm.com>
+To: thuth@redhat.com
+Cc: npiggin@gmail.com, harshpb@linux.ibm.com, lvivier@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        andrew.jones@linux.dev, sbhat@linux.ibm.com,
+        Chinmay Rath <rathc@linux.ibm.com>
+Subject: [kvm-unit-tests PATCH v2 0/6] powerpc improvements
+Date: Sun, 19 Jul 2026 18:30:21 +0530
+Message-ID: <20260719130027.2347519-1-rathc@linux.ibm.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260719130006.3882764-1-hca@linux.ibm.com>
-References: <20260719130006.3882764-1-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,155 +69,171 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX3Fici64kNAAK
- EKfBv773lAQvBNbjsQHVghnwmf9fJPD4rBHd8KkAWkTm9RzOeXsZ+hCaa8nFet9U1bYrPQP3xMP
- I47xRPZ+x//XbNAt3qC8Ezu7MZ1emFocT7KDbwibL1f/wpKk1JNWu2l2Yg9mHhtWk2kMR0nGYPl
- r0ahiEJnGaWuhOLc9uM3vWBPRzjEqB/+ekIfYO7My0A3+CzkBivYqY3wTh+P6RwEnnAUs9pj3xA
- t0dWAs+Xs1Nf9Z8A4vtrw0Yv341v3+wbc24ppgWPcAczcAVWTOL5uPcIf+Lp/94mEXwxW5QctBe
- n6S2inpY/cBrh+UqfOAJ0h2JK9r009//pXUrQFExycUMv2aaoShnWjZnOBTf4Z82yyMEcuaWXaA
- U4mr5COL9Y7Il3ed+1OCwiSCIQBopObxGFgaWYFhoejSMcUoVwhEQGWH7cbHDkpLMSFM1ccG8Nz
- OSRsTpZE/VFY62QEdHQ==
-X-Proofpoint-GUID: dzBqHHgR2lSW4AToSAqVdW8SXbMokrVw
-X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a5cca5c cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX69uWcnsT1qz8
+ 8twoL0+AZ0eounXEcTGfo/1w4gzI5cJYFjcv9gNEw/U3RQlXEYgXrGptfguVlkYsMlk6hloD72X
+ AV1YXBKHk7oh3F54PAhQEV/ViGtFVsGrT5LnfqsVRMDHnixU0xZ+10f+q7Zmtm+GaTp5ilwURg3
+ 7eu7gJWlnZgoCsKl1tgVjBP7I2XfsA81mc9zB1DDAL7FycP0lfYb9N3OnYOFoNVm66O0j/RwXWh
+ lsISCeZ/kBWLddspKZ0MQta5G9alO4QeBM6pKhKWknk+vcp2A2ktzQ5ojH1aQfAiZ5D4xv2NPAa
+ cHKnBKH6SyX/nVM4WZdhvezmfuktypa4LWVp9y0Vs3gjCyd2MPU+1002IQmJ6iMft1SEonMrU/E
+ ee3yrS8Bikos0+dvNpxRoH9wAyOBMGEuyuUvbTDqrjgr1mKyQ5+a1xvfBKGO2Hy36snr7M+QtN2
+ 3t2H8PIrv4ypF79SZpg==
+X-Authority-Analysis: v=2.4 cv=F7ZnsKhN c=1 sm=1 tr=0 ts=6a5cca78 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=iX4AGcIGDbhQ4BFKoYkA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfXzOyCAvCXWAze
- gSK3VugGPQtEOWasMHZ952Z9c87KpKn9djNxft4pR28/BVQpADDPmj5MEacS//GwxdhWB0QlNSM
- loRHGDwUASOlnAdcDpstGCtLr+HzduA=
-X-Proofpoint-ORIG-GUID: dzBqHHgR2lSW4AToSAqVdW8SXbMokrVw
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8
+ a=p0WdMEafAAAA:8 a=KPU2q0h6MznVOrGVyXwA:9
+X-Proofpoint-ORIG-GUID: 8i2l8iREW0qpTc3CM_cPvEg-65nPYMQX
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDEzOSBTYWx0ZWRfX2ft8x7xTpBty
+ AJGd8RH7Tknvr92Q2ekyO0tFhfoR6LxzE1xrOYPABSD257of2gef2brD9Ty3227cH3JPYS+rsl9
+ 89nFqw2+RW+hLZRe10sWKp938/QY70g=
+X-Proofpoint-GUID: DEBAe5hHC6MMGHI3vj_Xj9jhk0-sY6Vp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-19_04,2026-07-17_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607190139
 
-Implement load_unaligned_zeropad() and enable DCACHE_WORD_ACCESS to
-speed up string operations in fs/dcache.c and fs/namei.c.
+This series aims to add a couple of new powerpc tests and improve the
+powerpc build structure.
 
-With the secure storage access exception cases addressed, add support
-for DCACHE_WORD_ACCESS again.
+This is originally Nick's work. The last version (v10) of which can be seen here :
+https://lore.kernel.org/linuxppc-dev/20240612052322.218726-1-npiggin@gmail.com/
+Couple of patches from the series are already merged.
 
-Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
----
- arch/s390/Kconfig                      |  1 +
- arch/s390/include/asm/asm-extable.h    |  4 ++++
- arch/s390/include/asm/word-at-a-time.h | 22 ++++++++++++++++++++++
- arch/s390/mm/extable.c                 | 18 ++++++++++++++++++
- 4 files changed, 45 insertions(+)
+Since it has been 2 years since this series was posted, I originally
+posted this as a RFC. This v1 series has changes accomodating the review comments
+received in the RFC :
+https://lore.kernel.org/kvm/20260602064806.3101025-1-rathc@linux.ibm.com/
+v1:
+https://lore.kernel.org/kvm/20260708105122.1177210-1-rathc@linux.ibm.com/
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 84404e6778d5..fe81c539ef2f 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -163,6 +163,7 @@ config S390
- 	select ARCH_WANTS_THP_SWAP
- 	select BUILDTIME_TABLE_SORT
- 	select CLONE_BACKWARDS2
-+	select DCACHE_WORD_ACCESS if !KMSAN
- 	select DYNAMIC_FTRACE if FUNCTION_TRACER
- 	select FUNCTION_ALIGNMENT_8B if CC_IS_GCC
- 	select FUNCTION_ALIGNMENT_16B if !CC_IS_GCC
-diff --git a/arch/s390/include/asm/asm-extable.h b/arch/s390/include/asm/asm-extable.h
-index 99748c20e767..d23ea0c94e4e 100644
---- a/arch/s390/include/asm/asm-extable.h
-+++ b/arch/s390/include/asm/asm-extable.h
-@@ -12,6 +12,7 @@
- #define EX_TYPE_UA_FAULT	3
- #define EX_TYPE_UA_LOAD_REG	5
- #define EX_TYPE_UA_LOAD_REGPAIR	6
-+#define EX_TYPE_ZEROPAD		7
- #define EX_TYPE_FPC		8
- #define EX_TYPE_UA_MVCOS_TO	9
- #define EX_TYPE_UA_MVCOS_FROM	10
-@@ -79,6 +80,9 @@
- #define EX_TABLE_UA_LOAD_REGPAIR(_fault, _target, _regerr, _regzero)	\
- 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_UA_LOAD_REGPAIR, _regerr, _regzero, 0)
- 
-+#define EX_TABLE_ZEROPAD(_fault, _target, _regdata, _regaddr)		\
-+	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_ZEROPAD, _regdata, _regaddr, 0)
-+
- #define EX_TABLE_FPC(_fault, _target)					\
- 	__EX_TABLE(__ex_table, _fault, _target, EX_TYPE_FPC, __stringify(%%r0), __stringify(%%r0), 0)
- 
-diff --git a/arch/s390/include/asm/word-at-a-time.h b/arch/s390/include/asm/word-at-a-time.h
-index e9287036392d..eaa19dee7699 100644
---- a/arch/s390/include/asm/word-at-a-time.h
-+++ b/arch/s390/include/asm/word-at-a-time.h
-@@ -4,6 +4,7 @@
- 
- #include <linux/bitops.h>
- #include <linux/wordpart.h>
-+#include <asm/asm-extable.h>
- #include <asm/bitsperlong.h>
- 
- struct word_at_a_time {
-@@ -40,4 +41,25 @@ static inline unsigned long zero_bytemask(unsigned long data)
- 	return ~1UL << data;
- }
- 
-+/*
-+ * Load an unaligned word from kernel space.
-+ *
-+ * In the (very unlikely) case of the word being a page-crosser
-+ * and the next page not being mapped, take the exception and
-+ * return zeroes in the non-existing part.
-+ */
-+static inline unsigned long load_unaligned_zeropad(const void *addr)
-+{
-+	unsigned long data;
-+
-+	asm_inline volatile(
-+		"0:	lg	%[data],0(%[addr])\n"
-+		"1:	nopr	%%r7\n"
-+		EX_TABLE_ZEROPAD(0b, 1b, %[data], %[addr])
-+		EX_TABLE_ZEROPAD(1b, 1b, %[data], %[addr])
-+		: [data] "=d" (data)
-+		: [addr] "a" (addr), "m" (*(unsigned long *)addr));
-+	return data;
-+}
-+
- #endif /* _ASM_WORD_AT_A_TIME_H */
-diff --git a/arch/s390/mm/extable.c b/arch/s390/mm/extable.c
-index 063b4346742d..7498e858c401 100644
---- a/arch/s390/mm/extable.c
-+++ b/arch/s390/mm/extable.c
-@@ -50,6 +50,22 @@ static bool ex_handler_ua_load_reg(const struct exception_table_entry *ex,
- 	return true;
- }
- 
-+static bool ex_handler_zeropad(const struct exception_table_entry *ex, struct pt_regs *regs)
-+{
-+	unsigned int reg_addr = FIELD_GET(EX_DATA_REG_ADDR, ex->data);
-+	unsigned int reg_data = FIELD_GET(EX_DATA_REG_ERR, ex->data);
-+	unsigned long data, addr, offset;
-+
-+	addr = regs->gprs[reg_addr];
-+	offset = addr & (sizeof(unsigned long) - 1);
-+	addr &= ~(sizeof(unsigned long) - 1);
-+	data = *(unsigned long *)addr;
-+	data <<= BITS_PER_BYTE * offset;
-+	regs->gprs[reg_data] = data;
-+	regs->psw.addr = extable_fixup(ex);
-+	return true;
-+}
-+
- static bool ex_handler_fpc(const struct exception_table_entry *ex, struct pt_regs *regs)
- {
- 	fpu_sfpc(0);
-@@ -118,6 +134,8 @@ bool fixup_exception(struct pt_regs *regs)
- 		return ex_handler_ua_load_reg(ex, false, regs);
- 	case EX_TYPE_UA_LOAD_REGPAIR:
- 		return ex_handler_ua_load_reg(ex, true, regs);
-+	case EX_TYPE_ZEROPAD:
-+		return ex_handler_zeropad(ex, regs);
- 	case EX_TYPE_FPC:
- 		return ex_handler_fpc(ex, regs);
- 	case EX_TYPE_UA_MVCOS_TO:
+I have rebased the patches to the upstream state.
+For the patches which did not require any changes in the existing upstream code,
+I have retained the "Reviewed-by"s and "Acked-by" (patch 3,5 & 6) from
+Nick's series. I have also added Andrew's "Reviewed-by" received on
+patch 2 in the RFC. Nick had originally introduced powernv tests as well.
+Removed it for now since it was causing CI failure in the current upstream.
+
+Link to Gitlab tree with patches :
+https://gitlab.com/rathc/kvm-unit-tests/-/tree/ppc64
+Link to Gitlab pipeline :
+https://gitlab.com/rathc/kvm-unit-tests/-/pipelines/2688519679
+
+Change log from RFC to v1:
+1. Patch 2: Added Andrew's "Reviewed-by".
+2. Patch 4: Removed usage of gitlab-ci group to run test - Thomas
+   It would be nice to make use of the gitlab-ci group, but doing the
+   change of all archs would make sense in a separate series. I look
+   forward to doing that.
+3. Patch 6: Removed addition of panic test in gitlab-ci group - Thomas
+
+There was a discussion on the build failing in Travis CI with Clang, in the
+RFC, which I have addressed there.
+
+Change log from v1 to v2:
+Patch 4: Addressed all comments by Thomas :
+1. Removed extra blank line.
+2. Removed accel=kvm test from gitlab-ci.
+3. smp = 2 preserved in atmoics test.
+
+Nicholas Piggin (6):
+  powerpc: add pmu tests
+  configure: Make arch_libdir a first-class entity
+  powerpc: Remove remnants of ppc64 directory and build structure
+  powerpc: gitlab CI update
+  scripts/arch-run.bash: Fix run_panic() success exit status
+  powerpc: Add a panic test
+
+ .gitlab-ci.yml                             |  18 +-
+ MAINTAINERS                                |   1 -
+ Makefile                                   |   2 +-
+ configure                                  |  21 +-
+ lib/{ppc64 => powerpc}/asm-offsets.c       |   0
+ lib/{ppc64 => powerpc}/asm/asm-offsets.h   |   0
+ lib/{ppc64 => powerpc}/asm/atomic.h        |   0
+ lib/{ppc64 => powerpc}/asm/barrier.h       |   4 +-
+ lib/{ppc64 => powerpc}/asm/bitops.h        |   4 +-
+ lib/{ppc64 => powerpc}/asm/io.h            |   4 +-
+ lib/{ppc64 => powerpc}/asm/mmu.h           |   0
+ lib/{ppc64 => powerpc}/asm/opal.h          |   4 +-
+ lib/{ppc64 => powerpc}/asm/page.h          |   6 +-
+ lib/{ppc64 => powerpc}/asm/pgtable-hwdef.h |   6 +-
+ lib/{ppc64 => powerpc}/asm/pgtable.h       |   2 +-
+ lib/powerpc/asm/processor.h                |   2 +
+ lib/{ppc64 => powerpc}/asm/ptrace.h        |   6 +-
+ lib/powerpc/asm/reg.h                      |   9 +
+ lib/powerpc/asm/rtas.h                     |   1 +
+ lib/powerpc/asm/setup.h                    |   1 +
+ lib/powerpc/asm/spinlock.h                 |   6 +
+ lib/powerpc/asm/stack.h                    |   3 +
+ lib/{ppc64 => powerpc}/asm/vpa.h           |   0
+ lib/{ppc64 => powerpc}/mmu.c               |   0
+ lib/{ppc64 => powerpc}/opal-calls.S        |   0
+ lib/{ppc64 => powerpc}/opal.c              |   0
+ lib/powerpc/rtas.c                         |  16 +
+ lib/powerpc/setup.c                        |  20 +
+ lib/{ppc64 => powerpc}/stack.c             |   0
+ lib/ppc64/.gitignore                       |   1 -
+ lib/ppc64/asm/handlers.h                   |   1 -
+ lib/ppc64/asm/hcall.h                      |   1 -
+ lib/ppc64/asm/memory_areas.h               |   6 -
+ lib/ppc64/asm/ppc_asm.h                    |   1 -
+ lib/ppc64/asm/processor.h                  |   1 -
+ lib/ppc64/asm/reg.h                        |   1 -
+ lib/ppc64/asm/rtas.h                       |   1 -
+ lib/ppc64/asm/setup.h                      |   1 -
+ lib/ppc64/asm/smp.h                        |   1 -
+ lib/ppc64/asm/spinlock.h                   |   6 -
+ lib/ppc64/asm/stack.h                      |  11 -
+ lib/ppc64/asm/time.h                       |   1 -
+ powerpc/Makefile                           | 111 +++-
+ powerpc/Makefile.common                    |  94 ----
+ powerpc/Makefile.ppc64                     |  31 --
+ powerpc/pmu.c                              | 567 +++++++++++++++++++++
+ powerpc/run                                |   2 +-
+ powerpc/selftest.c                         |  17 +-
+ powerpc/unittests.cfg                      |   8 +
+ scripts/arch-run.bash                      |   1 +
+ 50 files changed, 806 insertions(+), 194 deletions(-)
+ rename lib/{ppc64 => powerpc}/asm-offsets.c (100%)
+ rename lib/{ppc64 => powerpc}/asm/asm-offsets.h (100%)
+ rename lib/{ppc64 => powerpc}/asm/atomic.h (100%)
+ rename lib/{ppc64 => powerpc}/asm/barrier.h (83%)
+ rename lib/{ppc64 => powerpc}/asm/bitops.h (69%)
+ rename lib/{ppc64 => powerpc}/asm/io.h (50%)
+ rename lib/{ppc64 => powerpc}/asm/mmu.h (100%)
+ rename lib/{ppc64 => powerpc}/asm/opal.h (90%)
+ rename lib/{ppc64 => powerpc}/asm/page.h (94%)
+ rename lib/{ppc64 => powerpc}/asm/pgtable-hwdef.h (93%)
+ rename lib/{ppc64 => powerpc}/asm/pgtable.h (99%)
+ rename lib/{ppc64 => powerpc}/asm/ptrace.h (89%)
+ create mode 100644 lib/powerpc/asm/spinlock.h
+ rename lib/{ppc64 => powerpc}/asm/vpa.h (100%)
+ rename lib/{ppc64 => powerpc}/mmu.c (100%)
+ rename lib/{ppc64 => powerpc}/opal-calls.S (100%)
+ rename lib/{ppc64 => powerpc}/opal.c (100%)
+ rename lib/{ppc64 => powerpc}/stack.c (100%)
+ delete mode 100644 lib/ppc64/.gitignore
+ delete mode 100644 lib/ppc64/asm/handlers.h
+ delete mode 100644 lib/ppc64/asm/hcall.h
+ delete mode 100644 lib/ppc64/asm/memory_areas.h
+ delete mode 100644 lib/ppc64/asm/ppc_asm.h
+ delete mode 100644 lib/ppc64/asm/processor.h
+ delete mode 100644 lib/ppc64/asm/reg.h
+ delete mode 100644 lib/ppc64/asm/rtas.h
+ delete mode 100644 lib/ppc64/asm/setup.h
+ delete mode 100644 lib/ppc64/asm/smp.h
+ delete mode 100644 lib/ppc64/asm/spinlock.h
+ delete mode 100644 lib/ppc64/asm/stack.h
+ delete mode 100644 lib/ppc64/asm/time.h
+ delete mode 100644 powerpc/Makefile.common
+ delete mode 100644 powerpc/Makefile.ppc64
+ create mode 100644 powerpc/pmu.c
+
 -- 
 2.53.0
 
