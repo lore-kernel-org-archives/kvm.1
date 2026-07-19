@@ -1,35 +1,37 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8493019BA;
-	Sun, 19 Jul 2026 19:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7C316A956;
+	Sun, 19 Jul 2026 20:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784489273; cv=none; b=N2DozKXGwPkxLVG1uh/LJ05mVXEJqlXVh0/JUOgkkGbud7Bpi7lgdnu8PtV4Te4X40PNO3JQCocTwFJH0iBUTQO2jloAFkqZLzSgih/QcQGDHGakq1H31c1HgRrj6VNLC/Z8FxOdj/eLuBhJHU6EBqrzk/oGRtNW2fbCKwGIQ6c=
+	t=1784492339; cv=none; b=jQMHyFlaHc7EI/Q2r5s4EP5PXitiD/yNsYIDLJ7PzGMxk/+iIXeqycsE1AxQ+2PnU7KTUGgMFg1M9/ubUyM/3z+pL4QgMXVZJtBX1VLJZUZGn7m6HbtQTrTmnnvb0e8AkDgS4SCVzORg4s6R93njGbOU1xgJBW++L+JE+m2pQBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784489273; c=relaxed/simple;
-	bh=DK8u6eI1AOLX9khBmbKeOjy8kwTjeZcin0pkZ329WfM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iH0aQCi6XTEre16hmQq49mdFOYzClkR56QGfKGIh80W29ty+/oX6UFNzYHappaedJQAATeU4cBc8blCuMlUGyJDn8eOI5RnJwXCqsbw1aEqfweWTdbIuO6O2ocVkxMkKK96KrEhX30v39j0ocuwtgnC0IUIDm7j88GjABlFepgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pr8H2VLC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784492339; c=relaxed/simple;
+	bh=thVtydnaWoT8dmenlclZXGezzqGziGmuZyJmX5O7ieY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RyQLrpumJaeIzZPsi+7GqWb+FSoD5JL1F7WWbAmZKrQJljd8q1xNv6uuRLABtR+juPZuKmw/igNUoCn6A1mHCkCP/p4kI+jkPF5TPFbIAEjboDB7FvCJxUqscTt9mlCY33qIobBp4jKM4mf8dQhGAWZefe+i+hfRrDD8h9igfaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onar85+4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pr8H2VLC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9276B1F00A3A;
-	Sun, 19 Jul 2026 19:27:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784489270;
-	bh=OQ9SblTR7KigLdZW5ofDTAUXhaHQsNkXQ2cHNbZ5LSc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Pr8H2VLCwW41lfa5NTejqUGUZlXiHZmblOSZV3DEkm+OFVpcJQ+W7IKtmKBfVgH6P
-	 08fSNlJH41MWhRCV5jVTR0Kex56nQ8P4aoFnG8ebBqpuTAO+H9Mz8gt/nZ8RjS2TZW
-	 ZIpa+6OxUUUCEFcdJ5xhjPAgARGA+uHMDYZcDw7Oe0EjBzYF/O/YcE7A2wJVtUc2yJ
-	 MIWcqq85K9KpR6S8E1YLeewWL3Lz0N9C88NerDfLIQZ79hEeYSaGyN1ZmnCBj7ELkr
-	 Qn01bhKrT1s3c8UdKue/3xRtVdEPEPARXBMRqiCOxfn9uY36tnHq8jUxCiWAVIrLcR
-	 dXdbeF51LDfpg==
-From: Mark Brown <broonie@kernel.org>
-Date: Sun, 19 Jul 2026 20:24:42 +0100
-Subject: [PATCH v6 3/3] KVM: selftests: arm64: Make set_id_regs bitfield
- validatity checks non-fatal
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onar85+4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5F662C19425;
+	Sun, 19 Jul 2026 20:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784492339;
+	bh=thVtydnaWoT8dmenlclZXGezzqGziGmuZyJmX5O7ieY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=onar85+4FlH7TPpgF0ZHjBrBDAcfCup/5dd3t/t0dzGVmtdHrw6fCHlnwc77NEUCQ
+	 MPlrg2YdNsUyEO4tzz4H8GQYAOvRhicHhjkPTNbP2j2nxx7bWIb1N4Ysxxr/IXCDS3
+	 K6WLhqvH1viyB44VHRNMSDsStSfe+S/W6QcyK4SCxPSRhf8tENCzZ5IZ/6Cz9Z21Yn
+	 lbB+oe/eg28woAdGdjdmxFCgP3Neg9a5pOvxR7jVv2apJdRVBeARQLoSPFBuQZhcHR
+	 i5wqCQSju/XHlJpZtb3QriVx+FQ7Oe17hMT30/co0qAEpf7XL9TLN9egjvbpvoHoQg
+	 9/1uas6aHR9eQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AA00C4451B;
+	Sun, 19 Jul 2026 20:18:59 +0000 (UTC)
+From: Phil Rosenthal via B4 Relay <devnull+phil.phil.gs@kernel.org>
+Date: Sun, 19 Jul 2026 16:18:56 -0400
+Subject: [PATCH] KVM: x86/mmu: Skip rmap aging when the rmap lock was
+ elided
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -38,122 +40,150 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260719-kvm-arm64-set-id-regs-aarch64-v6-3-724287f5f108@kernel.org>
-References: <20260719-kvm-arm64-set-id-regs-aarch64-v6-0-724287f5f108@kernel.org>
-In-Reply-To: <20260719-kvm-arm64-set-id-regs-aarch64-v6-0-724287f5f108@kernel.org>
-To: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
- Oliver Upton <oupton@kernel.org>
-Cc: Ben Horgan <ben.horgan@arm.com>, linux-arm-kernel@lists.infradead.org, 
- kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3509; i=broonie@kernel.org;
- h=from:subject:message-id; bh=DK8u6eI1AOLX9khBmbKeOjy8kwTjeZcin0pkZ329WfM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqXSUrpJq3vjSVtOaSeroeYgbbuyrVgFNCYdsju
- NhNlusit5GJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCal0lKwAKCRAk1otyXVSH
- 0GrOB/oC9jMowK2A16z7DlHP0OzNMjMvEpjKNVRF6rNJoGOPSbzXeXIp3KrMh5tVZ0kXmEyMKfr
- 92T7FwEzvzApE0/mxX2vXrAQbQsJa0ZEcaGfr0HHKbo6EJvikD92ditRFFIevn+HvsMJRq2I0b4
- T9HmPWaHacqN5/qYGzhx4HuTUwvANVsxAW4C0rYV39iCme43GAP6Ww2/KrypK+Ms6g3N/eEhWQJ
- 2Z5ZeQki+yAZUQ7u65Ci69OiGfo8SUldtcTclSXtxlcFm5S2sDB2k7TmsD8J87t3/DSrohcEULS
- paVV1Vwwy/dxlYjna6/hyhlvZ56OFFlJoKmMlMmqi5G/i8Y9
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Message-Id: <20260719-rmap-age-elided-submit-v1-1-cb32f2390765@phil.gs>
+X-B4-Tracking: v=1; b=H4sIAC8xXWoC/x2MSQqAMAwAvyI5G7DiVr8iHloTNeBGqyIU/27xO
+ AMzATw7YQ9tEsDxLV72LYJKExhms02MQpEhz/Iqq5VGt5oDTfS8CDGhv+wqJ+qGLBWlstoaiPH
+ heJTnH3f9+36uZLuVaAAAAA==
+X-Change-ID: 20260719-rmap-age-elided-submit-98dbd451b9ba
+To: Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Phil Rosenthal <phil@phil.gs>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784492338; l=5986;
+ i=phil@phil.gs; s=20260718; h=from:subject:message-id;
+ bh=AB9wnwC4hzODsYdAQ8GBVdzTy/ojWza4YJOqutVPhTM=;
+ b=lc8sIjUmRodDeHa6Ck/I43b/DlbZqJTFma4cV2NWzloVrBMU6oSwGYrrI2H/hzg6XrhZFv6kj
+ FB7sad4p8kBBVknq69pmmBmoM/adaC9QNOtTvLL+hbyIIMoBDLr8QHY
+X-Developer-Key: i=phil@phil.gs; a=ed25519;
+ pk=08BMg1YPtTS5NnKn5I1Mq1ra3MdAg49Awe6OjrC59fs=
+X-Endpoint-Received: by B4 Relay for phil@phil.gs/20260718 with auth_id=881
+X-Original-From: Phil Rosenthal <phil@phil.gs>
+Reply-To: phil@phil.gs
 
-Currently when set_id_regs encounters a problem checking validation of
-writes to feature registers it uses an immediately fatal assert to report
-the problem. This is not idiomatic for kselftest, and it is also not great
-for usability. The affected bitfield is not clearly reported and further
-tests do not have their results reported.
+From: Phil Rosenthal <phil@phil.gs>
 
-Switch to using standard kselftest result reporting for the two asserts
-we do, these are non-fatal asserts so allow the program to continue and the
-test names include the affected field.
+__kvm_rmap_lock() deliberately elides the rmap lock when it observes an
+empty rmap.  In that case kvm_rmap_lock_readonly() also re-enables
+preemption and returns zero, so the caller holds neither the rmap lock
+nor a preemption reference.  The elision documents the invariant it
+relies on:
 
-Reviewed-by: Ben Horgan <ben.horgan@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+	 * Elide the lock if the rmap is empty, as lockless walkers (read-only
+	 * mode) don't need to (and can't) walk an empty rmap, nor can they add
+	 * entries to the rmap.  I.e. the only paths that process empty rmaps
+	 * do so while holding mmu_lock for write, and are mutually exclusive.
+
+kvm_rmap_age_gfn_range() ignores the returned value and unconditionally
+enters for_each_rmap_spte_lockless().  The iterator starts with
+rmap_get_first(), which re-reads rmap_head->val rather than using the
+value returned by the lock.  If a writer populates the rmap between the
+lock's read and the iterator's re-read, the aging path walks the newly
+installed rmap without holding its lock.
+
+For a KVM_RMAP_MANY rmap this leaves the walker following a
+pte_list_desc chain that it never locked.  A writer holding mmu_lock for
+write may free that chain (e.g. kvm_zap_all_rmap_sptes() on the recycle
+path, or any rmap zap) via kmem_cache_free() while the walk is in
+progress, giving a slab use-after-free.  Nothing serialises the two: the
+aging path runs without mmu_lock when CONFIG_KVM_MMU_LOCKLESS_AGING=y,
+and the rmap lock that would otherwise exclude the writer was elided.
+Because the empty path re-enables preemption, the interval between the
+two reads can span an arbitrary scheduling delay.
+
+Skip the walk when locking returned zero, as required by the
+lock-elision invariant.  kvm_rmap_unlock_readonly() already treats zero
+as requiring no unlock, so the early continue does not leak a lock or a
+preemption reference.  Missing an SPTE installed after the empty
+observation is harmless because aging is best-effort.
+
+Fixes: af3b6a9eba48 ("KVM: x86/mmu: Walk rmaps (shadow MMU) without holding mmu_lock when aging gfns")
+Cc: stable@vger.kernel.org
+Signed-off-by: Phil Rosenthal <phil@phil.gs>
 ---
- tools/testing/selftests/kvm/arm64/set_id_regs.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+This bug was identified and confirmed with AI assistance; per
+Documentation/process/security-bugs.rst it is therefore reported in the
+open rather than via the security list.
 
-diff --git a/tools/testing/selftests/kvm/arm64/set_id_regs.c b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-index 3aa8886e8b70..385e1f1c0133 100644
---- a/tools/testing/selftests/kvm/arm64/set_id_regs.c
-+++ b/tools/testing/selftests/kvm/arm64/set_id_regs.c
-@@ -422,6 +422,7 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
- 	u8 shift = ftr_bits->shift;
- 	u64 mask = ftr_bits->mask;
- 	u64 val, new_val, ftr;
-+	bool match;
- 
- 	val = vcpu_get_reg(vcpu, reg);
- 	ftr = (val & mask) >> shift;
-@@ -434,7 +435,10 @@ static u64 test_reg_set_success(struct kvm_vcpu *vcpu, u64 reg,
- 
- 	vcpu_set_reg(vcpu, reg, val);
- 	new_val = vcpu_get_reg(vcpu, reg);
--	TEST_ASSERT_EQ(new_val, val);
-+	match = new_val == val;
-+	if (!match)
-+		ksft_print_msg("%lx != %lx\n", new_val, val);
-+	ksft_test_result(match, "%s valid write succeeded\n", ftr_bits->name);
- 
- 	return new_val;
- }
-@@ -446,6 +450,7 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
- 	u64 mask = ftr_bits->mask;
- 	u64 val, old_val, ftr;
- 	int r;
-+	bool match;
- 
- 	val = vcpu_get_reg(vcpu, reg);
- 	ftr = (val & mask) >> shift;
-@@ -462,7 +467,10 @@ static void test_reg_set_fail(struct kvm_vcpu *vcpu, u64 reg,
- 		    "Unexpected KVM_SET_ONE_REG error: r=%d, errno=%d", r, errno);
- 
- 	val = vcpu_get_reg(vcpu, reg);
--	TEST_ASSERT_EQ(val, old_val);
-+	match = val == old_val;
-+	if (!match)
-+		ksft_print_msg("%lx != %lx\n", val, old_val);
-+	ksft_test_result(match, "%s invalid write rejected\n", ftr_bits->name);
- }
- 
- static u64 test_reg_vals[KVM_ARM_FEATURE_ID_RANGE_SIZE];
-@@ -502,7 +510,11 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
- 		for (int j = 0;  ftr_bits[j].type != FTR_END; j++) {
- 			/* Skip aarch32 reg on aarch64 only system, since they are RAZ/WI. */
- 			if (aarch64_only && sys_reg_CRm(reg_id) < 4) {
--				ksft_test_result_skip("%s on AARCH64 only system\n",
-+				ksft_print_msg("%s on AARCH64 only system\n",
-+					       ftr_bits[j].name);
-+				ksft_test_result_skip("%s invalid write rejected\n",
-+						      ftr_bits[j].name);
-+				ksft_test_result_skip("%s valid write succeeded\n",
- 						      ftr_bits[j].name);
- 				continue;
- 			}
-@@ -514,8 +526,6 @@ static void test_vm_ftr_id_regs(struct kvm_vcpu *vcpu, bool aarch64_only)
- 
- 			test_reg_vals[idx] = test_reg_set_success(vcpu, reg,
- 								  &ftr_bits[j]);
--
--			ksft_test_result_pass("%s\n", ftr_bits[j].name);
- 		}
- 	}
- }
-@@ -882,7 +892,7 @@ int main(void)
- 		ID_REG_RESET_UNCHANGED_TEST;
- 	for (i = 0; i < ARRAY_SIZE(test_regs); i++)
- 		for (j = 0; test_regs[i].ftr_bits[j].type != FTR_END; j++)
--			test_cnt++;
-+			test_cnt += 2;
- 
- 	ksft_set_plan(test_cnt);
- 
+The static analysis and runtime evidence are described separately.
 
+Static: the invariant quoted above is stated by __kvm_rmap_lock(), and
+kvm_rmap_age_gfn_range() is the one caller that violates it by walking
+after an elided (zero) lock.  This holds regardless of any runtime
+result.
+
+Runtime: I confirmed the use-after-free is reachable on a KASAN build
+(CONFIG_KASAN_GENERIC=y, CONFIG_KVM_MMU_LOCKLESS_AGING=y, kvm.tdp_mmu=0,
+kvm_intel.ept=0 so shared pages build multi-SPTE pte_list_desc rmaps).
+This is not a natural reproducer: it is a test-only race amplifier.  A
+test hook widens two windows (a delay after the zero-lock observation,
+and a delay after the iterator has cached iter->desc) and schedules the
+real lockless aging function onto recently recycled gfns.  The alloc and
+free are unmodified production paths; only the scheduling of the aging
+walk and the two delays are injected.  The test-only instrumentation is
+available privately on request.  KASAN then reports a
+slab-use-after-free, read in the rmap_get_next() step of
+for_each_rmap_spte_lockless() (the symbol is
+kvm_rmap_age_gfn_range.isra.0 in the instrumented build):
+
+  BUG: KASAN: slab-use-after-free in kvm_rmap_age_gfn_range.isra.0+0x7e4/0xa60 [kvm]
+  Read of size 8 at addr ffff88814690c6d8 by task kworker/12:2/81966
+  Workqueue: events age_race_workfn [kvm]     <- test hook: lockless aging, no mmu_lock
+   kvm_rmap_age_gfn_range.isra.0+0x7e4/0xa60 [kvm]
+   age_race_workfn+0x14b/0x1a0 [kvm]
+   process_one_work+0x6c8/0x1020
+  Allocated by task 94096:
+   kmem_cache_alloc_noprof+0x179/0x460
+   __kvm_mmu_topup_memory_cache+0x136/0x540 [kvm]
+   paging64_page_fault+0x2b6/0x1e70 [kvm]      <- one vCPU faults, allocs the desc
+  Freed by task 94095:
+   kmem_cache_free+0x11d/0x4a0
+   kvm_zap_all_rmap_sptes+0xe9/0x1a0 [kvm]
+   __rmap_add+0x2c4/0x5e0 [kvm]
+   mmu_set_spte+0x6d6/0x1060 [kvm]
+   paging64_page_fault+0x1385/0x1e70 [kvm]     <- another vCPU, under mmu_lock,
+                                                  recycles and frees the desc
+  The buggy address belongs to the object at ffff88814690c6c0
+   which belongs to the cache pte_list_desc of size 128
+
+The three tasks are distinct (read 81966 / alloc 94096 / free 94095),
+confirming genuine concurrency rather than a self-inflicted free.  With
+the fix applied under the same injection load, the zero -> populated
+window is still observed but the walk is skipped and no KASAN report is
+produced.
+
+Alternative fix: this patch fixes the only current caller that ignores
+an empty return.  A class-wide alternative would pass the value returned
+by kvm_rmap_lock_readonly() into the iterator instead of having
+rmap_get_first() re-read the rmap, so no lockless walker could
+reintroduce the bug.  I chose the smaller change for ease of
+backporting, and can send the larger one if preferred.
+---
+ arch/x86/kvm/mmu/mmu.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 234d0a95abf534193e8285e61dfb7e0c56ba19ad..e57c4580f58564bbf984364b3563f6b00aee21a9 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -1723,6 +1723,9 @@ static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
+ 			rmap_head = gfn_to_rmap(gfn, level, range->slot);
+ 			rmap_val = kvm_rmap_lock_readonly(rmap_head);
+ 
++			if (!rmap_val)
++				continue;
++
+ 			for_each_rmap_spte_lockless(rmap_head, &iter, sptep, spte) {
+ 				if (!is_accessed_spte(spte))
+ 					continue;
+
+---
+base-commit: 25f744ffa0c8e799e06250ce2e618367b166b0d4
+change-id: 20260719-rmap-age-elided-submit-98dbd451b9ba
+
+Best regards,
 -- 
-2.47.3
+Phil Rosenthal <phil@phil.gs>
+
 
