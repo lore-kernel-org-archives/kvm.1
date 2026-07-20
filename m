@@ -1,146 +1,87 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE183449B25;
-	Mon, 20 Jul 2026 22:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AAF39C657
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 22:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784586173; cv=none; b=UFQAwJ64f59CUNNwWp/Euxd3sAV78HKOWNapUd4HK0I34hGhEMTW6eG8Krm6XynnK3MiMAiRtcUjOiW248q96qHJls5J5EWF2GJRHGDqXAA//RhND2alqZKzRLJApOsvj3n8z+CaCab/WU6b8Z3JLX625nL1+FdkUxfe3NTJfnA=
+	t=1784586468; cv=none; b=bCZCGTi8NP7RZWmH5oe7pI/RtyDJ6fEPgnGJKod1iNBx7HO8K6bMEHohSxoVEpXvVFiyzwDc+S8mUl+y2/yrWUXfiEUgIFReYn567lz0BTs6c0TJ/XXa20jOV8zNXbvlUv8KjtNfShhJLoSIZW+5JSHulZDbJuF/ze3xndQ7jHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784586173; c=relaxed/simple;
-	bh=Rxy0yIKRfMPcf3+ShCD2kUCFrShrLuuTgNqOJF2bJL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yr60I/dJT2PQg+giLjsuUW/yQfUKaWujtJQRNxdsR3nja9PiuIvAZ6il74fbLvGr51sm41YGDMJ5cRG4pz6uCRXbub1AMPS0yrwbsqcsOLAVqq4TXS7MpGKa6mU7lWc+q/6V/5JkF22BOE5qZQQEAfdKbjnVQyK+mGiFNGCr0Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aHYJM4AI; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784586468; c=relaxed/simple;
+	bh=+3zvmdX/AUa5Ass/AisUI0/xOQ7LXZ32buEYAGnRgUs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iY1UZt8jXBYxKrJOcUsfUf84fwsYVWmv9sndJ/QyCI7Dhg4aPt+Hi+7Q4dhZ4yrDeIYgAy7ZRmB6i+2ocWVxCXVbYnuY0oQby5vxkf+G68tfz1paKQ7PYtQ92PVamxZ7Ot2Rby25WKbMAVlWU3KSUmjA+MDqu0SUsqMe96ZKC+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HndPX2dK; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aHYJM4AI"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KJfchA1245764;
-	Mon, 20 Jul 2026 22:22:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=oMahkUsl8pWrYQrKksQp6/p03wgTU10psdAiIKZVn
-	N4=; b=aHYJM4AI2WAGbDi6sO5IrA2okWiOdjmZHzuG5NOqwa9dk+fM3D9z6vOF1
-	8mzHo41+t2QTaaYXCMVl/wBs+tBPRyt4+GKFSNTDzxx/KvXgXqeFrusaKvg0PDTi
-	GbdOR989efyx6a9a+P1by55LEdYBaC29+WRHH0Svd7qpkWa+I8RG8Uf4vcc0gUBA
-	urTvOZd9tcaBhRpqsDjan4LBnNxzT0g/uF1xNQoAPxDSAC1dkk2Z551Id1QT1SA6
-	WZIB4EfpcYMQOXseyoY7c4Kg+lw4f9QR+iNFjqexAIxo+duRS5YI2f0/hEhUQKnx
-	2rh4wN3DycpjhoZ+phpQAGq4EeEBQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77a9r7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 22:22:50 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66KMJa61022272;
-	Mon, 20 Jul 2026 22:22:49 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktpyrqf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 22:22:49 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66KMMmmP26804810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jul 2026 22:22:48 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D6915805A;
-	Mon, 20 Jul 2026 22:22:48 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5748058054;
-	Mon, 20 Jul 2026 22:22:47 +0000 (GMT)
-Received: from IBM-GLTZVH3.ibm.com (unknown [9.61.250.131])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jul 2026 22:22:47 +0000 (GMT)
-From: Jaehoon Kim <jhkim@linux.ibm.com>
-To: borntraeger@linux.ibm.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com
-Cc: david@kernel.org, svens@linux.ibm.com, mjrosato@linux.ibm.com,
-        freimuth@linux.ibm.com, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jaehoon Kim <jhkim@linux.ibm.com>
-Subject: [PATCH v1] KVM: s390: Fall back to short-term pinning in MAP ioctl
-Date: Mon, 20 Jul 2026 17:22:38 -0500
-Message-ID: <20260720222238.1576-1-jhkim@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HndPX2dK"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cceabd70f5so199920995ad.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:27:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784586467; x=1785191267; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=civ8YVfloZNtfpGATb0SeVYinnAw4hyl4f6AMPkBa2I=;
+        b=HndPX2dKfmMDzGGxJqtGN1+J4BvIywXSNNFOOfo5Y7vX9+4bgrZ85zdN7gdYbDj9uy
+         fTcaJixesqGnhBSIfFg4TyMQg0XmlTIPQZMVRrUKKwega8UJ84T9LgCraDkURRd8+mBz
+         2g3zhKcP3RpGttykDHGOZ3ZQDqpp2HQ+BV4rXXaCY7IpZdbr62qTNhIZsyGCfSidtig9
+         DvhogN/5CbGLT/4ThMgL/may+6/nW9HJXAZj8oPnZTCT8BxxUBIx+TjcSMwE3BbTHlHm
+         NFolAzZfxaeR4Vh5DoxPMeAE2H5JRJsqgtoFn8/ROJ7FRVrnylb5tcJH6m1mMOPPbS1N
+         JhXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784586467; x=1785191267;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=civ8YVfloZNtfpGATb0SeVYinnAw4hyl4f6AMPkBa2I=;
+        b=M0OKDa2/ZY8nMrEcsOdlD0wyLWuNU1HSqKlaeqnE3g4v6nTkUauzdw5potEyJXQrQK
+         XVu7Ofl2LxgFzLWr9kZLQVGSmCJ++1DohF1q/jJXTBrvOwDKKfgqGLUdYxAF3Kwg1/Y1
+         WbV5llWIxLGoy8v8st4FUFrUSiex8UW9fuSsBEXBT1q1WXVJkvZWgTiFMQ5xkxcAf3Im
+         7CnHg3NcG8I+rf9byOsnoZ2JbDdgsS+C7pyFYwu7lIutihJIPm9OYlEmglF5hdhSlvlX
+         XCoinU8fha0Xxf85W1vCgAcLUdWLq7/KbY7OlBy4dXZWsfK5MJyLc0NNAQYBVsEi+tYf
+         Amqg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqnsb3TMz4pwrPb+kjv5NQ/qs+mVRRXjrLYeAe9wNDOVT4DGpAFHXWaugoDWzoc7Deqcd0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhLJXlyVZEhRDx2cD+v3/v/sNPGP/LGljj8Kevda1+BJ3Zm6QY
+	lW8m8AlUywy78HTsNd4FMGsvlqPWunTjUuv/6cH2YdpwmiGWQcoPS1jQhgGjSQX3g4sbhXiN0Jl
+	okF1bZg==
+X-Received: from plcz4.prod.google.com ([2002:a17:903:4084:b0:2c0:a677:42a6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f705:b0:2c8:1c05:16bb
+ with SMTP id d9443c01a7336-2cf3494f91fmr169924915ad.24.1784586466619; Mon, 20
+ Jul 2026 15:27:46 -0700 (PDT)
+Date: Mon, 20 Jul 2026 15:27:45 -0700
+In-Reply-To: <20260720192221.72912-2-absandze@amazon.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: V62-ViBgAVPqFzhJUVuJ8Kjuhdk7SEAl
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDI0MSBTYWx0ZWRfX7ASOC1bUUXNF
- N0uUO9hOaFTcJ/9PIrkyCTQtQHxQEQaUWp8bbdv0XXVWeAUVEhI6eYFFHS3Hmn0/hDXAgsGTaND
- Nguwfgl+5gdJAJ8d4yh+Z+f5ZB+QP/8=
-X-Proofpoint-GUID: V62-ViBgAVPqFzhJUVuJ8Kjuhdk7SEAl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDI0MSBTYWx0ZWRfX7P75IT/w2VT5
- 4NAXljakq5rLGsiG2DtseWNtd8/1UtPSmTkFIJqA+L0ls3hfiGCn/5XBOurK0RFNnrzF3CghE2s
- +xYqFpSgoAsv7H1vzCZvUZ/Tfh7JqpmIyXveuNRBHKYlunYojKqFTIQIo8bglRIPmYv1X3m/n/R
- XmSkdGuMYBx9lTtsZGS3wwbab8VeXYxeusKRt6dD+Xg06wPAU3dG7GAcihVVjInBMEpkXgvx0a/
- usNSJAEB9PR9urIcJLukPyxd6jmhX5qDyk7Yt7kZBY/X4r5RjdqCyu8NJsNdywL4yHcdbnl7/4z
- hi/QFM4Lv71/E6a8FPzwwc9S/Ow+TWOoJlNCbcXufyqrFYfg1Oilho+RzWcTHKTtH/llVLBp1In
- H6R1ovKMCElePJ2DDwnfHSnoJ8xBE2CH5WaIiRcKpm9Mfb7PcCh5NlMoKLpG90xQNnE03MzWhZ9
- t05IifXlGpo6H3iBXXw==
-X-Authority-Analysis: v=2.4 cv=K7AS2SWI c=1 sm=1 tr=0 ts=6a5e9fba cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=DHE891H7Gske2VlohvUA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_05,2026-07-20_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1011
- priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607200241
+Mime-Version: 1.0
+References: <20260720192221.72912-1-absandze@amazon.de> <20260720192221.72912-2-absandze@amazon.de>
+Message-ID: <al6g4VA4l-ZIAr9Q@google.com>
+Subject: Re: [RFC PATCH 1/2] KVM: x86/pmu: Add CAP to disable SW accounting of
+ emulated instructions
+From: Sean Christopherson <seanjc@google.com>
+To: Luka Absandze <absandze@amazon.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Alexander Graf <graf@amazon.com>, 
+	David Woodhouse <dwmw@amazon.co.uk>
+Content-Type: text/plain; charset="us-ascii"
 
-FOLL_LONGTERM pinning fails for some memory types, such as file-backed
-guest memory. As a result, kvm_s390_adapter_map() returns -EINVAL and
-irqfd adapter registration fails even though interrupt delivery could
-still work via the existing non-atomic path.
+On Mon, Jul 20, 2026, Luka Absandze wrote:
+> The only functional change for an opted-in VM is reduced accuracy: a
+> guest counting instructions-retired or branches-retired undercounts by
+> the instructions KVM emulates in host context, i.e. the behavior that
+> predates the accounting cited above. Hardware-executed guest
+> instructions continue to be counted by the backing perf_event, and its
+> overflow/PMI path is unchanged.
 
-When FOLL_LONGTERM pinning fails, verify that the page is accessible
-using a short-term pin instead. If the short-term pin succeeds,
-immediately unpin the page and return success. The non-atomic irqfd
-path already performs short-term pinning for interrupt delivery, so
-this restores the previous behavior for memory that cannot be pinned
-long-term.
+Do you *need* per-VM control, or would a module param (or a magic value for
+enable_pmu) suffice?  While I mostly buy the "it used to work this way" argument
+(just "mostly", because that commit landed 4.5 years ago), I'm not exactly keen
+on adding uAPI that is effectively "re-introduce a bug to workaround fundamental
+design issues in KVM's emulated PMU implementation".
 
-Fixes: adcd5b3e758b ("KVM: s390: Add map/unmap ioctl and clean mappings post-guest")
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
----
- arch/s390/kvm/interrupt.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index 9e3e6b0d72ad..4b68e0cb51f6 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -2520,8 +2520,19 @@ static int kvm_s390_adapter_map(struct kvm *kvm, unsigned int id, __u64 addr)
- 	map->addr = host_addr;
- 	map->page = pin_map_page(kvm, host_addr, FOLL_LONGTERM);
- 	if (!map->page) {
--		ret = -EINVAL;
--		goto out;
-+		/*
-+		 * Long-term pinning may fail for memory types such as file-backed
-+		 * memory. Check whether short-term pinning is possible so that the
-+		 * non-atomic irqfd path can handle interrupt injection.
-+		 */
-+		map->page = pin_map_page(kvm, host_addr, 0);
-+		if (!map->page) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		unpin_user_page(map->page);
-+		kfree(map);
-+		return 0;
- 	}
- 	spin_lock_irqsave(&adapter->maps_lock, flags);
- 	if (adapter->nr_maps < MAX_S390_ADAPTER_MAPS) {
--- 
-2.43.0
-
+If we do add proper uAPI, we should extend KVM_CAP_PMU_CAPABILITY, not add a new
+CAP entirely.
