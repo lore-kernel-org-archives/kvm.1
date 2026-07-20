@@ -1,116 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4808472;
-	Mon, 20 Jul 2026 18:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AC3388392
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571184; cv=none; b=QToq7MgjtBRO1qQMGgvNOUyy3olwHo2b+UdKRxkya+u2wpmotwjGd+dEO7j00eUbvzworQ0R0z1vy71BHm8qh+mEWxIe8SKNDfIGQEe+7yJ64Wf0Ce3XMsI/yTtu2myU58FbUAo+w+7E8KDKwdmcRVCigRS9Rqz5ZNoQqj1iLnc=
+	t=1784571249; cv=none; b=dhR0YmTsQYaonaLjMtpb7+96NzhFQj3VDoLzKdAHMmPvQ0OXWe5nYlwuEdELWwxBPi0I9pGe8OtNMTr1smobuQU/ilCz5FF1CWo4tLRTDVp2YaWfI8VaRGma4Qk3JRnE98aTMKeuPNNvEIeiKoRnrQ57qdr//P6yagtXp4CbQ9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571184; c=relaxed/simple;
-	bh=OF1SvnidqQ0YB5YAg3PuOe7YLn56tuPId12MtsgE35E=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VdaImlw4P90ysh5TF/fKE0cIAURjcdCW8Ysd/Xa1mpxsKU58ZOPb/LdJhEAnVjrSs8dxTCa4f1uj+0F6xByQAFFSDMLZIQUSIbHWYRu3dgyUpsUXI5S9vvAWPyzyOGNBN/KZz2Ymj7yu9GXM7EUz72xWov0aOMaEHZ65kUZ3HGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWRq9K1t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784571249; c=relaxed/simple;
+	bh=+qvA1DAn3c4tmHb756vc3gqaw+6jkHIGpCUavjx6dPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oQRLG+a7AtxXI1PXfTKZzkifkPb2CnlZLvMBVdGQPh585ESbf09fsnG0m/Pc3JtH3yv5UfAjppNq4/w9Uzt57a6VQ+zDi+dCGBJteZD+pfgStxIYWm7e+veUkISu5ne1reh790f8gHYwuh96J0fCAWqrfUbiPa9Q9+QcftGsVFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ENhhZzYE; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWRq9K1t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A431F000E9;
-	Mon, 20 Jul 2026 18:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784571183;
-	bh=6r3qsa17RiH0tkeDBRF62993DvMIn8NN0DfTTMA0FNk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OWRq9K1tJu1it4XxWoSdgYJ8OdOoGzGQL0NEITMBHICAjJp6DRHKVrYM7PsfhpCju
-	 OV6FMKmrPJt2o5CXmzNqFbedE/LRLpQKdStn2LjXTVuPMMB0yD5fhGE/Ukv4lAPZw7
-	 NrepvNXkqZYrK25MpQnMdCQhEljOrBWrJHGIkYXzwlgeAi4VQbG2a0K/zhYpIB+92p
-	 5nTWkF/DLidYc7YoSm4veHsX5A+3VjCSORU5/zG0QHiTfdwC8alkqdnMVQSMbCmqvx
-	 bzxavDii60TVt8upR4u7nXJSFbjYbhJ3lZWmzIBOzuz8J7cbrD9FrRpTwNVc5HXQje
-	 dkomrSjTn+//w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/4] KVM: s390: pci: Fix missing error codes and
- memory unaccounting
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Farhan Ali" <alifm@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260720175819.1723-3-alifm@linux.ibm.com>
-References: <20260720175819.1723-1-alifm@linux.ibm.com>
- <20260720175819.1723-3-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 18:13:02 +0000
-Message-Id: <20260720181302.A4A431F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENhhZzYE"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cab97c86bdso424265ad.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 11:14:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784571247; x=1785176047; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2oSA8tKdyLlHK1z/E0CUcnY7QLdvcjeQOvJxYi4x9Gk=;
+        b=ENhhZzYE3QqezhlFaXObm2sUEJuhSHw5fOZEBXdbNRzlIE99/ubbLTF31FmN+fX5y4
+         TH9zoqmyKGRjahRM8VymrG8K5OWL73j9ErwaNbWRNQXjrGc/ic/8YqPFWw1MsOe6/JYo
+         drLnlwqnfYtFNkcY/NiFgrkpsKEEaYo2NDxCWcsXHRHdrc4iDtEyrhwXuIkVLlQv/5DM
+         B/nJuE6XXFwNmKJ3FQFpwp5M77sEXpia7usi0rgI36Rql1GisORNHk2j6xTUNMhP24G9
+         RTcdqJur51VOsMqs5gAymWQtnuL0afEcMNa2MpXLO5DJpBs6e0f+pzuu+jqDbfiZ4Um/
+         L9KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784571247; x=1785176047;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=2oSA8tKdyLlHK1z/E0CUcnY7QLdvcjeQOvJxYi4x9Gk=;
+        b=iA8KcLYlOpj3DGUo1Z9ekP6SOO/5WoOMCM/wxsG5EXpOfRySiK6RXjajriz7EiRnkB
+         IDAtKRc9PYD0vi8ZrI5TRNcxJGIwituTkJI4X/PXQEBL28vz2FgoeQgcoDsPJvHQEr3p
+         iEArQJIKFrYO03vzG6sGoe1Ph7CKVj/qNzD5VJfffToNUHxThpBmIAe3a9I9cSffkYjd
+         dKr/hlFF72PLd0zYXdbWLqZ05RE/4NLJIiMSBoie7uSxx3yZqgGYTj3aBVLkCcRk0lF2
+         cQ31DKdymg1JXVpu6bsSTxaLCLuB8es9V5hyTy6X/zAhMVS8359LlZ4/8wI7SyqhSfc2
+         I7dA==
+X-Gm-Message-State: AOJu0Yxncqwur8sAbM0IZ9Kzc+VDeZUxSxpMK6s0zVmlD+zs2PiPRnND
+	PUUBPXOzEGZcaleQIxn88wvZ6K0IC/wz+HyN3D9kMR9Hy4RgxDiIZ/FE8oaRZyYsIFdJrGW9ZED
+	v2qYjSfKtipE=
+X-Gm-Gg: AR+sD11owYciadcL8ZAQzmIawkIuGvodG1cpZ0zXQMHxrI3j/OF3HC/Jwn6A4KDgWrY
+	O72TL3gN4jKrgKjY/gqAFi9dP8/SC9wzAXSLOgiDBmIX4qoOoMwXW2xB+JI0aoAZoeppuUluvij
+	wFbL4x+gFJP3kH8bqmUgErqKJ/SdCL1jZEFPLrxaLeFa1W1IulczquJC+i3zVgjhuE0Gni7y3IX
+	7R5ANiBU9qYP7AMkeAGt8Kf3ZyWuseNXTdc0SJx0Q/HQATaH36uQ/pQBeCB0njnXIg3OVo6/rp7
+	Iw6m0q/5mwa1H2fsaliE50Mq4dOEv2r8sWQfVJKjvSYymtGHX2If2X1giB/AbjNyihq4HVWVxiJ
+	DUcKAKjIEVEBbnOnNEjSWXBRCIbhVhovVB4AXz9sWHJgfrCFqLe6Ioa2zVUtI5HJz4t0Aka+zEG
+	Oos9xr1TahWMIBtOqc+aBjePkt4kS2VyCTWa2md9Gx5f+LY+fVGEp1Yf0azA==
+X-Received: by 2002:a17:903:4084:b0:2cf:4353:f117 with SMTP id d9443c01a7336-2cf7b35e690mr1165405ad.0.1784571246672;
+        Mon, 20 Jul 2026 11:14:06 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e921f2e1esm169813a91.0.2026.07.20.11.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 11:14:05 -0700 (PDT)
+Date: Mon, 20 Jul 2026 11:14:02 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH v5 17/20] vfio: selftests: Add
+ vfio_pci_liveupdate_kexec_test
+Message-ID: <20260720181313.GF1381701.vipinsh@google.com>
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <20260714151505.3466855-18-vipinsh@google.com>
+ <20260714153527.2F8311F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260714153527.2F8311F000E9@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Tue, Jul 14, 2026 at 03:35:26PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] Missing header and Makefile dependencies for liveupdate library.
+> --
+> 
+> --- Patch [17]: [PATCH v5 17/20] vfio: selftests: Add vfio_pci_liveupdate_kexec_test ---
+> commit 5f1d9fcb84decd9a67e94d71a492e75ba0113c1b
+> Author: Vipin Sharma <vipinsh@google.com>
+> 
+> vfio: selftests: Add vfio_pci_liveupdate_kexec_test
+> 
+> This commit adds a new selftest to exercise preserving a vfio-pci device
+> across a Live Update. The test verifies that the device file can be
+> preserved before kexec and retrieved afterward.
+> 
+> > diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+> > new file mode 100644
+> > index 0000000000000..15b3e3af91d1e
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+> > @@ -0,0 +1,89 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +
+> > +#include <libliveupdate.h>
+> 
+> [Severity: Low]
+> Does this header file exist in the tree? It looks like this could cause a
+> build failure because libliveupdate.h cannot be found. The other liveupdate
+> selftests appear to rely on luo_test_utils.h or direct ioctl calls instead
+> of a libliveupdate library.
+> 
 
-Pre-existing issues:
-- [High] Calling KVM_S390_ZPCIOP_REG_AEN multiple times on the same device =
-causes severe, unbounded resource leaks and state corruption.
---
+This series is on top of in-progress PCI Live Update series.
+https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
 
---- Patch [2]: [PATCH v3 2/4] KVM: s390: pci: Fix missing error codes and m=
-emory unaccounting ---
-commit bb1306d6a0da97f9d5b884d1e67a7c8d12b6a908
-Author: Farhan Ali <alifm@linux.ibm.com>
+Same for the below issues.
 
-KVM: s390: pci: Fix missing error codes and memory unaccounting
-
-This commit fixes error paths in kvm_s390_pci_aif_enable() to properly
-propagate error codes on failure and rollback memory accounting.
-
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index dd17f8a7b4734..9fdb6e383b189 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-
-[ ... ]
-
-> @@ -293,14 +293,17 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev =
-*zdev, struct zpci_fib *fib,
->  	}
-> =20
->  	/* Account for pinned pages, roll back on failure */
-> -	if (account_mem(zdev->kzdev, pcount))
-> +	rc =3D account_mem(zdev->kzdev, pcount);
-
-[Severity: High]
-This is a pre-existing issue, but can calling the KVM_S390_ZPCIOP_REG_AEN i=
-octl
-multiple times on the same device cause resource leaks?
-
-Looking at kvm_s390_pci_aif_enable(), there doesn't appear to be a check to
-verify if Adapter Interruption Forwarding (AIF) is already enabled for the
-device. If it is called repeatedly, it seems account_mem() will blindly
-overwrite kzdev->user_account and kzdev->mm_account:
-
-arch/s390/kvm/pci.c:account_mem() {
-    ...
-    kzdev->user_account =3D user;
-    kzdev->mm_account =3D current->mm;
-
-    return 0;
-}
-
-Does this leave the previously allocated airq_iv and sbv bits leaked, along
-with the previous user_struct and mmgrab references? It also looks like this
-would permanently elevate the locked_vm and pinned_vm counts for those page=
-s,
-which could potentially lead to memory exhaustion on the host.
-
-> +	if (rc)
->  		goto unpin2;
-> =20
->  	/* AISB must be allocated before we can fill in GAITE */
->  	mutex_lock(&aift->aift_lock);
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720175819.1723=
--1-alifm@linux.ibm.com?part=3D2
+> [ ... ]
+> 
+> > +static void before_kexec(int luo_fd)
+> > +{
+> > +	struct vfio_pci_device *device;
+> 
+> [ ... ]
+> 
+> > +	printf("Preserving device in session\n");
+> > +	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
+> 
+> [Severity: Low]
+> Will this result in a linker error? It seems luo_session_preserve_fd is
+> undefined without the accompanying library implementation. Should this test
+> use direct ioctls or are there missing Makefile dependencies for a library?
+> 
+> [ ... ]
+> 
+> > +static void after_kexec(int luo_fd, int state_session_fd)
+> > +{
+> > +	struct vfio_pci_device *device;
+> 
+> [ ... ]
+> 
+> > +	printf("Retrieving the device FD from LUO\n");
+> > +	device_fd = luo_session_retrieve_fd(session_fd, DEVICE_TOKEN);
+> 
+> [Severity: Low]
+> Similarly here in after_kexec(), is luo_session_retrieve_fd implemented
+> elsewhere in the test suite? It looks like this will also fail to link.
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260714151505.3466855-1-vipinsh@google.com?part=17
