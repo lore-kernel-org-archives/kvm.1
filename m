@@ -1,159 +1,166 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76B4446838;
-	Mon, 20 Jul 2026 17:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B7247798E
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784570315; cv=none; b=tsRst/8W45o9UDrALOwkiAYP/jyDOqosJOvG3KLXDm9ikmBCJkzJriXP+DwyAs3Dzxk/b1xdMsAX0vkbkY1B4lk9zECFRQc9FgHQD0PCpPjViZyRkLS5Yj3DYKjvkpUZj5AkVUCCNrvb1UFeGXi4dfZewzXZj/YtPrqoi6dSM9A=
+	t=1784570911; cv=none; b=ME7kKLMpKUrZ93MeAvFKA63BVDJvLK97/SW/uPewsw1lNo/1CoCaoB5LPsYzR+stHE9I/aK8tkzj4k4uAgj1aWFe7ccb1nUAdtG5VV3d9Peusjz+/dkCxZ+eFIlLT/gfbFOiYWZpaxDrepVDp4zxggFrhEUtDr79KajQqsmH830=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784570315; c=relaxed/simple;
-	bh=PCH+qvGdDSv67AzlxVv2kdTSWEsSuRaxvtPqygKjd88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHgEFry3raJLghSm2uup8dOw1OfEdS9gs5XNqhuezLjq09zF2Wsqar2r5zUvEqhAS6iLjOrPApEHQ8nPqTKs1ixvYDwFs8xKiYKLMh5i+eIL0/4N/DGVzTjp6yTgB/lmACFfqwsuB17esU0vhWV3iQw0Udg87pWqwE3u4Wjlwpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XFTxx/u7; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784570911; c=relaxed/simple;
+	bh=BKTS748h10YeslajUmtgUZCdE2Ez8AKFfhO8iHDAxM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rwPEKZnuqQU3N7pGzuFeUc8etLFtuxAzeCr8yQgVSm1JIIzvjvlBflSB69X0yt3NVi2uAZqxry5kiFo/8xZIsFDjjRbtIWoNfyX+LMWEqLWb3mJ4EVq2S3EbkACnr9dPLM4y/e32YutebMyrAVde6LiygKbg7xqxkKLBVYau9Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FKzT2Tdx; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XFTxx/u7"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KHBqFJ2731093;
-	Mon, 20 Jul 2026 17:58:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=JB94kMHHnT3malLj/
-	EEXGKbkovRbQVu6ecUf0B1iHY4=; b=XFTxx/u7q2hUfsjaoa6qU4YCOC1GnABqr
-	DKIsxSt3qkTrnxa0puMQ5uP3umXrqNCI/aXRarr61jkgX/rteNFqgq2ajOWDwYGI
-	1y8jSceiC8qDyuWRmT5KPNl6JzUMR9weibE77RJs9QyxHrNmgfui1Z2jkD+lgp04
-	BwRRyr8Y19fFE9uif3RhGJpr5byUAk0CqrrcR7Kxn/ylWaQz32hBp6jzaCsh/pPS
-	7eqaKeqmqncs1cVeZsRlyOwYgSVCE5aumVXi/B0Vo3TFj5SBHCkmM1xdIX3IWCj3
-	+TaLDzp4jwSOI4gZ9F7+A8qznXA175clnvM8N6YzPsFGEtaloVSqQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77k0jeg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 17:58:28 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66KHnenJ004376;
-	Mon, 20 Jul 2026 17:58:27 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgpgy6fag-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 17:58:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66KHwPOS31130254
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jul 2026 17:58:25 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93CBA5805F;
-	Mon, 20 Jul 2026 17:58:25 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8BEC5805C;
-	Mon, 20 Jul 2026 17:58:24 +0000 (GMT)
-Received: from IBM-D32RQW3.ibm.com (unknown [9.61.254.89])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jul 2026 17:58:24 +0000 (GMT)
-From: Farhan Ali <alifm@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: alifm@linux.ibm.com, mjrosato@linux.ibm.com, borntraeger@linux.ibm.com,
-        farman@linux.ibm.com
-Subject: [PATCH v3 4/4] KVM: s390: pci: Fix resource leak on IRQ registration failure
-Date: Mon, 20 Jul 2026 10:58:19 -0700
-Message-ID: <20260720175819.1723-5-alifm@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260720175819.1723-1-alifm@linux.ibm.com>
-References: <20260720175819.1723-1-alifm@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FKzT2Tdx"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ccdf36f63dso404395ad.0
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 11:08:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784570907; x=1785175707; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=syF1vyyr65A59ORY+VELdLPaqren/tK44EXfZ8Gwpow=;
+        b=FKzT2TdxpAYiUGuo1IXPMwc/96ffytZC+VudzJLUSmvc1ePV3G0gfgcQuGmoBLxIxp
+         QAAN4Jc6tDnArd056h6huSJLTyfz5bgZD28YkNJoTVaVF0u+SdcmZFo8DcMXfkiipYiO
+         2XYUXqRjcuED3mMEmXDjbLuMQJ3Zp84e2KvAgAfRZIpWukldqZLR6xDgmlGbNg98EIBK
+         Oe54O0/CzSjJYp2Cz/TFhdQG/lp9iJuVuJKuSc0dtjw99Pg9cpuwI0iwLeFmjajZ5Rdw
+         u79XdbAc1EJfMOjIW9MKS4INK/zOkkGXYuaw9p0t9Zx1o/NhTtZRsSoz+Pp3jGyMUGmC
+         vx+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784570907; x=1785175707;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=syF1vyyr65A59ORY+VELdLPaqren/tK44EXfZ8Gwpow=;
+        b=BgelevGw92tFYmwC02Ed2sSXEDeegYhnwNjeitMDEAN/0oJE3bxcojnSGYhj2Gy4Gx
+         zhGC05xg8CIX+iSqANz8uH/g6K3XL0oizN+nffx9cte5RoA8ALyktFDPYMy+wQNOx34y
+         irGCLiFLJHqTGP50ZhNx2bwMPOux93QaybpTNkiKk/Vco5/JGL+g4AvLiUB8cr4kuIM+
+         328uKhrD3VqZej6ZZVSws5c1YPX3tdUDunH+mXH1gnIrdfjgsXC8faZvyaBs9I4XcKhM
+         XYB7y67g1bHCVLJDvbwfIVYCQCSij2NEt1GeqYf72rMZxwz/kxnDjbcy5Gg+lES/25gE
+         CiNQ==
+X-Gm-Message-State: AOJu0YwSPcWWDyjQQN3u8ZvoqqGG59tavKe/Bqi9zb0tfCPbK090vjWY
+	02OKqmzgrqwaHNN12qTQIQ8PI8xet1rBHb0Isel2jkO4ks0/P8yvK31ZDmOVtM08Dw==
+X-Gm-Gg: AR+sD13IVZN7FLRRodecdan+dhh7kYbrFYF3l5a4KAgz5JGtun0PD0mCfAcN+toKmS7
+	eJwqBPYg9ktUzST9jINLk6C2NGwLBIhpYVJilhy1h8c5Kz8SEcDWJtnKGuLUJs51LHDhCB6QG65
+	m7fqBs68VbVHY0dLggDsjEszRymUCOTVYTt+EXntQhSst6TGWTNz/PUiM8UHQLadnyifsR8xJ5K
+	vtVgoTBQaaWG1+kOgQt8JCdGOp5Jpk8LO95lNuaiyvmlgZnGHl9KSw/NmEo5b2MlIddYy05pAxY
+	piUOD2YQoy0rKmmMiiVuciW6bYPyMs+ulbcU/sIGdnxY16zwX6IDEjqBjXUhuyZLqaAUI6VsUoY
+	ULvUjGl9NeGF6VCY+83bTVpY2pyQ6PT4DOFVWgHusQnKLl/ATz4jHn9RPOMN1megTo8BnD6CY9q
+	MQ1jRv7WmypvRC/usbJ0qREQpgq4Hw6jd7I2/G
+X-Received: by 2002:a17:902:e5c9:b0:2b0:b0c9:96e2 with SMTP id d9443c01a7336-2cf7b6c4a23mr1916405ad.21.1784570906870;
+        Mon, 20 Jul 2026 11:08:26 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2ad8b879sm6016416b3a.7.2026.07.20.11.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 11:08:26 -0700 (PDT)
+Date: Mon, 20 Jul 2026 11:08:21 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH v5 06/20] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20260720175721.GB1381701.vipinsh@google.com>
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <20260714151505.3466855-7-vipinsh@google.com>
+ <20260714153628.CAADD1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a5e61c4 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=bWxaYIw3U7VPAN5xrwwA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDE5NCBTYWx0ZWRfX96JQHRPQiTrb
- bBEQPdzudV3T+NwV/tWJ8s9QZo1M/PtjxVzwG3/X5wGlIy7ORaBvo6dyPnEdhHFY3YBrp0jmVGT
- UtMyA5OXNP6v9HCf4g+gmZgmNsIfSsbnK5RMbLC0bjMGiO5TtpTyCZ1j6QqZk8iwImec6PVOIER
- iDuw0wj8C951R8h4vAqFl72O45QiPAhbBSS6jRDeUga5h2QliZkfzF+fPbl40uk7jLxiyX4hUKC
- FdnVNLKnP91Wr4pFnQ2T02NSHflLr00lv/yz5uPn0e6lRBZBW1jGKfKaGHze0IXHTtL/haTI60p
- /YxXtOh7DCo8JWHGHD8DskS2dtXE4VKc/px+RNc5OGWxij57q/NTsqOHYrD2sTbUAFrH0CJz3YC
- Eu5Fsi50HhGl3zRG2NCtzQgkfOnz5F18odvujOwnLjLPeQB9dmLPFrLcqn0U9sD1uynT7PiAKGF
- N1z/zfNRQBV7o2Up/tQ==
-X-Proofpoint-ORIG-GUID: Yx4calUQDy67hWPRLqB9TOqrVmQyFjVk
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDE5NCBTYWx0ZWRfX6RsIrN0t66h8
- O32gHaiBPZ1YkzSk78PlGNxG/ZgRHjz0diRSmwJMzfxBKK+sXS4LeTgj+ByVxz75KfuBzDV9Qfr
- O+/GdVAwSSP5V+I3kvlx10qo7VzjF6c=
-X-Proofpoint-GUID: Yx4calUQDy67hWPRLqB9TOqrVmQyFjVk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_04,2026-07-20_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607200194
+In-Reply-To: <20260714153628.CAADD1F000E9@smtp.kernel.org>
 
-Currently if kvm_zpci_set_airq() fails, kvm_s390_pci_aif_enable() returns
-the error code but doesn't do any resource cleanup thus leaking resources.
-Fix this by cleaning up all the resources such as the GAITE, AIBV, AISB and
-unpinning any pinned pages.
+On Tue, Jul 14, 2026 at 03:36:28PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] Lockless checks of `vfio_pci_dev_is_frozen()` in IOCTL and read/write handlers allow userspace to bypass the freeze state, breaking kexec handoff guarantees.
+> - [Medium] `vdev->liveupdate_frozen` is never cleared and `unfreeze` is unimplemented, permanently bricking the VFIO device if a kexec aborts.
+> --
+> 
+> --- Patch [6]: [PATCH v5 06/20] vfio/pci: Preserve vfio-pci device files across Live Update ---
+> commit 03e42ce3ade0f06aa286a1a8cacc4d3f5d2537c0
+> Author: Vipin Sharma <vipinsh@google.com>
+> vfio/pci: Preserve vfio-pci device files across Live Update
+> 
+> This commit implements the Live Update file handler callbacks to preserve a
+> vfio-pci device across a Live Update. It serializes device state into
+> vfio_pci_core_device_ser and resets the device during the freeze phase.
+> 
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> > index f31e59e5badb4..c312b0eaf7d00 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> [ ... ]
+> > @@ -1513,6 +1516,9 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
+> >  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> >  	void __user *uarg = (void __user *)arg;
+> >  
+> > +	if (vfio_pci_dev_is_frozen(vdev))
+> > +		return -EIO;
+> > +
+> 
+> [Severity: High]
+> Can a userspace thread race with the freeze operation here?
+> 
+> If a thread locklessly evaluates vfio_pci_dev_is_frozen() as false and then
+> blocks waiting for vdev->igate or vdev->memory_lock, couldn't
+> vfio_pci_liveupdate_freeze() concurrently acquire those locks, freeze the
+> device, set liveupdate_frozen to true, and release the locks?
+> 
+> The ioctl thread would then wake up, acquire the lock, and modify the frozen
+> device's state.
+> 
 
-Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
----
- arch/s390/kvm/pci.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+Userspace VM and hypervisor is expected to be stopped before initiating
+Live Update kexec. So, we should not see this issue. However, from
+correctness point of view this is a valid concern.
 
-diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-index 85f4fb5d36b3..d328bbd0dd99 100644
---- a/arch/s390/kvm/pci.c
-+++ b/arch/s390/kvm/pci.c
-@@ -337,19 +337,32 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
- 	aift->kzdev[zdev->aisb] = zdev->kzdev;
- 	spin_unlock_irq(&aift->gait_lock);
- 
--	/* Update guest FIB for re-issue */
--	fib->fmt0.aisbo = zdev->aisb & 63;
--	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
--	fib->fmt0.isc = gisc;
--
- 	/* Save some guest fib values in the host for later use */
--	zdev->kzdev->fib.fmt0.isc = fib->fmt0.isc;
-+	zdev->kzdev->fib.fmt0.isc = gisc;
- 	zdev->kzdev->fib.fmt0.aibv = fib->fmt0.aibv;
--	mutex_unlock(&aift->aift_lock);
- 
- 	/* Issue the clp to setup the irq now */
- 	rc = kvm_zpci_set_airq(zdev);
--	return rc;
-+	if (!rc) {
-+		mutex_unlock(&aift->aift_lock);
-+		return rc;
-+	}
-+
-+	/* Start cleanup */
-+	zdev->kzdev->fib.fmt0.isc = 0;
-+	zdev->kzdev->fib.fmt0.aibv = 0;
-+
-+	spin_lock_irq(&aift->gait_lock);
-+	gaite->count--;
-+	gaite->aisb = 0;
-+	gaite->gisc = 0;
-+	gaite->aisbo = 0;
-+	gaite->gisa = 0;
-+	aift->kzdev[zdev->aisb] = NULL;
-+	spin_unlock_irq(&aift->gait_lock);
-+
-+	airq_iv_release(zdev->aibv);
-+	zdev->aibv = NULL;
- 
- free_aisb:
- 	airq_iv_free_bit(aift->sbv, zdev->aisb);
--- 
-2.43.0
+Considering, this is a temporary code where device is reset during
+kexec freeze, I am more inclined to leave it as it is. Future versions
+will add support for not freezing the device and let it continue DMA, we
+will remove the restrictions added here.
 
+> > diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> > index 803528c9f1b27..e6eb7f6b53d7f 100644
+> > --- a/drivers/vfio/pci/vfio_pci_liveupdate.c
+> > +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
+> [ ... ]
+> > @@ -6,28 +6,221 @@
+> > +static int vfio_pci_liveupdate_freeze(struct liveupdate_file_op_args *args)
+> > +{
+> [ ... ]
+> > +	/*
+> > +	 * Userspace cannot use the FD correctly now irrespective of liveupdate
+> > +	 * freeze failing or succeeding. They will have to reinitialize the VFIO
+> > +	 * device to continue using it as reset might have loaded default PCI
+> > +	 * state. Disable ioctl, read, write and mmap access to the device.
+> > +	 */
+> > +	smp_store_release(&vdev->liveupdate_frozen, true);
+> > +	return 0;
+> > +}
+> 
+> [Severity: Medium]
+> Does this permanently brick the VFIO device if a kexec aborts?
+> 
+> The liveupdate_frozen flag is set to true here, but it looks like there is
+> no corresponding clear on device close/open or kexec abort.
+> 
+> Because the unfreeze operation callback in vfio_pci_liveupdate_file_ops is
+> unimplemented, the flag would remain set. Userspace attempting to recover
+> by closing and reopening the FD would continue to receive -EIO until the
+> driver is unbound.
+
+Yes, this should be fixed. We should reset the state in unfreeze and
+when device FD is closed/opened. I will add the fix in next version.
+
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260714151505.3466855-1-vipinsh@google.com?part=6
