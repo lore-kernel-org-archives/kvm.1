@@ -1,105 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919C9431A5C
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D3E3C5DDE
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571024; cv=none; b=sTA9n700IH3JnWq/IlXRSLb1JMR28jYjlrgY7RkJmW3t3CLBDGGcWvx/uSiAHhs8WO7DNJQU70xg2zEH2t68lPpaxL8X7BLdUplDMIYdBtl/e+w2tyg2QN99AiwEvz2F0lhB5nhotR5kb8SVskwrOOanqDJSc89WS009Tu3eNF4=
+	t=1784571055; cv=none; b=fLS4gihbuQXz+09wd+Z2VxwUQgFHx6xoltRDzVGbphsusODz0pHy6OEoNCuhtmv0rFAbHCsSCp9fZbmkQ8y2/46QHz8Wcq7uKf4KGkaTk5+6x4GqwsilkdcaGmJs+eRlgMHvQA0fHtdtz2T0phx/LEqM1t4vIe+Do/U7b5SgSdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571024; c=relaxed/simple;
-	bh=EHkA2v+AXhrQbSNriCf7XPkFWBbD/Z2/yEMVzHW0INk=;
+	s=arc-20240116; t=1784571055; c=relaxed/simple;
+	bh=LrdQsZ2PZJ8n44pel7gu30SxVBrS0O2YGID+CSbvg8U=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BHhXoZy3fECqJm1siPap5kSZjr10zxX/MYvtWooO7WWPYWVLkz7z+/B2aMmpQQPR/W0tEM+zQ4KACsBp2poHfkbDXy4Frt/WZ24MP4KnyyhgwjAH5lOiyY+CvpptWDj2J9uWxaK5rVP7M2wNUGFjy32WQyZQZTmVDdYVc1yW2mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9SAQ1yE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=N1MDBKR5bKHaW+gHw0lt5HCtrzV3ZeNY5/ofM5morcdyaSMmNJw8L6/UN0+og4TPv++Sf7zRwSP3yKz7939pJo2jQt5mjqswdIl09ey1Qach72WwYHnh7bFR4f4SZl1k5PCQRqmHw5i/Njpg9Fm3VLW90zcqQvUwk7N1CtspIbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/LSa9D9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9SAQ1yE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB96F1F00A3A;
-	Mon, 20 Jul 2026 18:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/LSa9D9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B653A1F000E9;
+	Mon, 20 Jul 2026 18:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784571023;
-	bh=4qy52e1Zy/dr9nw08VjAa2DSKTjmPkUGnjw/lRI9noo=;
+	s=k20260515; t=1784571053;
+	bh=QlNuAS0tkk+k+QkApSGYjXisNGbl1k6O8Q8d3vskfPY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j9SAQ1yEQovObkWX8S7/YLUvCWOuNx8+ATpmkY+R7hubHSSuCj8RZ3wnqPyLiHc6l
-	 sID9e49BPsB7yzk9okSTlSc8AItoOFcDrcidpGovn8vJD21Bt20S+kTWO08UESEBAY
-	 tPUPZ0HquyaL7pqJe67MlrfqKbX1Ux9r+JR6JcFrcLCVmYH0nssk7PFYS9u9RoNjcK
-	 iLHcJibvUFX5d13XYGqc/cCv9d87Wu9PVF1RlOx7+Zor6KWZ8ToIAMj26hb/WMOtQx
-	 sdR4jCuMchwbozD01J5tTV6N/Z3ZFPq6lxSDGNRmba9eCfexBRvaKfQ8gCyuqd7oEc
-	 y/m9YmXkbju1w==
+	b=a/LSa9D9tCSRetymgmWHmgr3P7+q7cxSjaqbB8wLLmjH4lRanQyoiiFr+BfHo8Xf3
+	 DdRTr/kKy/3YhFLuBeQodqLYemRJlxG3IRpD/Kpr+WZELLovO6eAMTWiEsOr9O3l9G
+	 hKmEEnLf0H7g3ERCp0QiGdrzk1nsclxzwjjbAYy1CHDOxCRFN+s3Jr2VQRJm+UvCJO
+	 nmzRJWYf4g8dntovNLFOpLcGmSZIOTzVkAjHR/MjK3oaNZLA9UNVjXSOivXe0kgo2U
+	 Rn5z0tyjc/p2G4DE/Eo8rBVx4M+5Rwve+Tywa6yhiILFgqnBVCEMRnd9HQRU+7cOU1
+	 N9uiZyqzWKMkg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 18/20] KVM: x86: Expose APX sub-features to userspace
+Subject: Re: [PATCH v5 09/20] KVM: nVMX: Propagate extended instruction
+ information
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260720171949.498680-19-chang.seok.bae@intel.com>
+In-Reply-To: <20260720171949.498680-10-chang.seok.bae@intel.com>
 References: <20260720171949.498680-1-chang.seok.bae@intel.com>
- <20260720171949.498680-19-chang.seok.bae@intel.com>
+ <20260720171949.498680-10-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 18:10:22 +0000
-Message-Id: <20260720181022.CB96F1F00A3A@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 18:10:53 +0000
+Message-Id: <20260720181053.B653A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] KVM fails to mask host CPUID values for leaf 0x29, silently exposi=
-ng raw, unvirtualized host features and unknown future APX sub-features to =
-userspace and the guest VM.
-- [Medium] CPUID leaf 0x29 is an indexed leaf but is missing from `cpuid_fu=
-nction_is_indexed()`, causing KVM to return sub-leaf 0's data for all reque=
-sted sub-leaves.
+- [Medium] The patch defines KVM_X86_FEATURE_APX but fails to initialize it=
+ in KVM's supported capabilities via kvm_cpu_cap_init(), causing the new ne=
+sted VMCS propagation to be dead code.
 --
 
---- Patch [18]: [PATCH v5 18/20] KVM: x86: Expose APX sub-features to users=
-pace ---
-commit 86716b3a350e45c75f1b5a6c88353188cae56ce0
+--- Patch [9]: [PATCH v5 09/20] KVM: nVMX: Propagate extended instruction i=
+nformation ---
+commit 2483dfe37a64f0e1963aeef4b3b32d649b5a5dda
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: x86: Expose APX sub-features to userspace
+KVM: nVMX: Propagate extended instruction information
 
-This commit adds CPUID leaf 0x29 sub-leaf 0 to expose APX sub-features
-(NCI, NDD, NF) to userspace if the APX foundation is available.
+Define the new extended_instruction_info field in struct vmcs12 and
+propagate it to nested VMX. Gate the propagation on the guest APX
+enumeration, which aligns with bare metal behavior.
 
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
+Link: https://lore.kernel.org/aRvOSnaUt1E+%2FpkC@intel.com
+
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 8e0523e40477d..1684f5d1dbf4d 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
 [ ... ]
-> @@ -1719,7 +1723,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_=
-array *array, u32 function)
->  	}
->  	/* APX sub-features */
->  	case 0x29:
-> -		entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
-> +		if (!kvm_cpu_cap_has(X86_FEATURE_APX))
-> +			entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
->  		break;
-
-[Severity: High]
-If kvm_cpu_cap_has(X86_FEATURE_APX) is true, does this bypass capability
-filtering and expose raw host CPUID values for leaf 0x29?
-
-Looking at other leaves in __do_cpuid_func(), they typically use
-cpuid_entry_override() or manually clear unused registers to apply the KVM
-masks. Without this masking, it appears a userspace VMM querying
-KVM_GET_SUPPORTED_CPUID for leaf 0x29 will receive unvirtualized hardware
-features, which could then leak into the guest.
+> @@ -4766,6 +4766,12 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, =
+struct vmcs12 *vmcs12,
+>  		vmcs12->vm_exit_intr_info =3D exit_intr_info;
+>  		vmcs12->vm_exit_instruction_len =3D exit_insn_len;
+>  		vmcs12->vmx_instruction_info =3D vmcs_read32(VMX_INSTRUCTION_INFO);
+> +		/*
+> +		 * The APX enumeration guarantees the presence of the extended
+> +		 * fields. This CPUID bit alone is sufficient to rely on it.
+> +		 */
+> +		if (guest_cpu_cap_has(vcpu, X86_FEATURE_APX))
+> +			vmcs12->extended_instruction_info =3D vmcs_read64(EXTENDED_INSTRUCTIO=
+N_INFO);
 
 [Severity: Medium]
-Does cpuid_function_is_indexed() in arch/x86/include/asm/cpuid/api.h also
-need to be updated to include 0x29?
+Will this condition ever evaluate to true without first initializing the APX
+capability in KVM's supported features?
 
-Since leaf 0x29 is an indexed leaf (as indicated by the newly added sub-leaf
-0), missing it in cpuid_function_is_indexed() means KVM will not set
-KVM_CPUID_FLAG_SIGNIFCANT_INDEX.=20
+When userspace sets the guest CPUID via KVM_SET_CPUID2, KVM masks off
+capabilities that are not explicitly initialized. It appears F(APX) is miss=
+ing
+from the CPUID_7_1_EDX capability mask in kvm_set_cpu_caps():
 
-As a result, if a guest queries an unsupported index like ECX=3D1,
-kvm_find_cpuid_entry2() might incorrectly return the data for sub-leaf 0
-instead of treating it as a distinct entry.
+arch/x86/kvm/cpuid.c:kvm_set_cpu_caps() {
+	...
+	kvm_cpu_cap_init(CPUID_7_1_EDX,
+		F(AVX_VNNI_INT8),
+		F(AVX_NE_CONVERT),
+		F(AMX_COMPLEX),
+		F(AVX_VNNI_INT16),
+		F(PREFETCHITI),
+		F(AVX10),
+	);
+	...
+}
+
+Does this omission cause the newly added nested VMX propagation for APX to =
+act
+as dead code, since the APX bit in vcpu->arch.cpu_caps would always remain =
+0?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720171949.4986=
-80-1-chang.seok.bae@intel.com?part=3D18
+80-1-chang.seok.bae@intel.com?part=3D9
