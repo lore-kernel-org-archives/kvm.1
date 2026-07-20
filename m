@@ -1,189 +1,236 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F74445AF5
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B5A3AF643
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571531; cv=none; b=FJf9j2hMmq+924clGM2JT/bv49ngyDVOAgLTLdyjAeyotwQdLBFnxIFNS5fjGAdoIUFZpiugv9hAML1S/JQXqsl4EX6kbppilQd4fnm7uV/HaF4X5OiohEDSmHHYsBopKsLSdWlHbsSeUwHwZgW54K21RBfEJq5tPEf7N9LeyuY=
+	t=1784571644; cv=none; b=G5OomBL0BgEugrHaFIL3CRq+7RUd2fRv7vxOCDsQb5ZOvEQLfKxub2K6+A30IVaSkS4b6gPTJLs6EolFrKm29vg5K1xLOaUyiY3CZ2pdDUCcxiTiXB7c/0NbgIk1QZ8C/tOxXzKzWRg1IlILloqJPeXNfpEOHwKFcI3pazta50A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571531; c=relaxed/simple;
-	bh=vWAV9OaXbx2XZzkgp3QK/Tcyd82gyhkCOU2VhOTidU4=;
+	s=arc-20240116; t=1784571644; c=relaxed/simple;
+	bh=JhKtvWMB9wGkWWwCvhqDI+5/UbU/83Z5I8kd8DGWnDA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=D9hAceqW8SFU3HgUQMktqtgb+Po5PyQ/DTy1P9+Q0qPKVEmd4f7ljflh12n4xcpfNXdgdXYrL/+tIXYCTr7PsIWYJKVnIg9MomBhsuXxSL/5eXrbICtnNMmYCAHBtvqAh8uDuA2YSn+iUPPek7uz+f8JxCgQwIdXfNrBqKPYNWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oifAlLjN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=JsjIU5jzLOWtILzF1hRbU7x0Wx9wEVv3xH0c68mRs1Hy4Y/XBh06+InHxN88Dn4vVmBGIAG0X8adUfYeiR9hqaRXwofndmJsM0vDY5qQeOaXyxFXJSXybj7oHApVVJt4F0Ja6TZ80ufvjpYTBxOvXDxJencHkiAKWCoUAO8RF4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAtb+XBw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oifAlLjN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9711F000E9;
-	Mon, 20 Jul 2026 18:18:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAtb+XBw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1731F000E9;
+	Mon, 20 Jul 2026 18:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784571529;
-	bh=csFtG7c9utCcznNhuIZR+4Edp7oU2YtSIsmSYb8FZg0=;
+	s=k20260515; t=1784571642;
+	bh=0LgvggfX32HjAcw+LW+wZ9x7dlkRwBCYJNMaEHSGwlY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oifAlLjNiD9/MFPVT0aeqQDvirAhZ4EPoTiQwUgcMPtjCX3U50uaRUaezpYcCh+ST
-	 kuP6nBXFRCeFUD6a7Zmezubskf7hSpTLNSMRkfzqoOAutB6kp8vcSYuvnD0dhwqQa/
-	 7HvGAdfVXFTE+8rHMHoMYgXSHC3NKgFWICo3FYlP5QJAjHBoq8TZAy5xEXBUzRxWjI
-	 /ivr1hWqJtBYta9qU85Mi5PX2VpdVX+gzOc7sW2azLkqgGKxveN0aUiU1gVxLWSSx3
-	 HKRU9F2jTSeoH/6ZOge5bFUh8pIoj16TPkyDxfvY6wwm3koPHsXG+VvXXCBBgATQG0
-	 H5vr4fMLNOARA==
+	b=bAtb+XBwAdyI7yygoQhO6kaB59D7hz+1INq+rvrXpjGhbpBuyUpLjXwp2Kfs3YEvv
+	 HDHa2gci5ek+iTPBByrHDwQtfsB3k5WOkaMK0keMp0qjBbDi6PFQQWg6GnTWPwl4Fk
+	 fGByjv0UTvePj2LqKvQbKni3uI5+NgAZRK3jsGhseZRgghPecuWpcwcDEelKOO5qFs
+	 TdEBgPeT1Hw/CC4aRieT8s4vtb6Lz2IgWPyMmg9CiMM/pFA8P29rvdC6KHGv83ViYy
+	 B7N8RDCX2+EuuYE/mTm15YFLw6udJZAS5B+WDdvUvJ+gzin8qDc9QbR2SHnKpl8uP6
+	 97zt1HoUZOsow==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 11/20] KVM: x86: Handle EGPR index and
- REX2-incompatible opcodes
+Subject: Re: [PATCH v5 02/20] KVM: VMX: Save guest EGPRs in VCPU cache
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260720171949.498680-12-chang.seok.bae@intel.com>
+In-Reply-To: <20260720171949.498680-3-chang.seok.bae@intel.com>
 References: <20260720171949.498680-1-chang.seok.bae@intel.com>
- <20260720171949.498680-12-chang.seok.bae@intel.com>
+ <20260720171949.498680-3-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 18:18:49 +0000
-Message-Id: <20260720181849.6E9711F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 18:20:42 +0000
+Message-Id: <20260720182042.9D1731F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
-
-New issues:
-- [Critical] Missing `NoRex2` flags on vector instructions combined with ex=
-tended register indices causes out-of-bounds access and host kernel panics =
-(`BUG()`).
-- [High] The `NoRex2` mechanism misses numerous REX2-incompatible legacy op=
-codes and is structurally flawed for instructions within groups, allowing g=
-uests to bypass `#UD` injection.
-
-Pre-existing issues:
-- [High] KVM calculates an incorrect effective address when a memory operan=
-d uses an SIB byte with index=3D4 (100b) and the REX.X (or REX2.X4) bit is =
-set.
+- [Critical] Guest EGPRs (R16-R31) are saved to `vcpu->arch.regs` on VM-exi=
+t but are never synchronized with the guest's XSTATE buffer (`vcpu->arch.gu=
+est_fpu`), resulting in complete state loss and data corruption during live=
+ migration.
+- [Critical] Running KVM C exit handlers with the guest's XCR0 will cause a=
+ host #UD panic if the host kernel uses APX instructions and the guest disa=
+bles APX.
+- [High] Guest EGPRs are left in physical registers during the VM-exit spec=
+ulation window, bypassing the existing mitigation that clears other GPRs.
+- [High] Leaving host values in EGPRs (r16-r31) on VM-entry when the guest =
+has not enabled APX creates a speculative information leak from host to gue=
+st.
+- [Medium] The patch loads guest EGPRs on VM-entry before restoring the gue=
+st's SPEC_CTRL, directly contradicting the commit message's safety rational=
+e and breaking the speculation barrier.
 --
 
---- Patch [11]: [PATCH v5 11/20] KVM: x86: Handle EGPR index and REX2-incom=
-patible opcodes ---
-commit 01ac33b49b5ac2e53b61a7aa1ed3d313429a8038
+--- Patch [2]: [PATCH v5 02/20] KVM: VMX: Save guest EGPRs in VCPU cache ---
+commit a925787d28df5e47adae8863318b050fa84c23f1
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: x86: Handle EGPR index and REX2-incompatible opcodes
+KVM: VMX: Save guest EGPRs in VCPU cache
 
-Prepare the emulator for REX2 handling by introducing the NoRex2 opcode
-flag and supporting extended register indices. For the latter, factor out
-common logic for calculating register IDs.
+This commit introduces support for saving and restoring guest EGPRs on
+VM exit and entry when the system supports Advanced Performance Extensions
+(APX). The registers are explicitly saved and loaded from the
+vcpu->arch.regs cache rather than relying on lazy FPU switching.
 
-Link: https://lore.kernel.org/1ebf3a23-5671-41c1-8daa-c83f2f105936@redhat.c=
-om
+Link: https://lore.kernel.org/adPRA4ZhnvbaXSn0@google.com
 
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index b566ab5c75156..12a822870d08e 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -1118,7 +1129,7 @@ static void decode_register_operand(struct x86_emul=
-ate_ctxt *ctxt,
->  	if (ctxt->d & ModRM)
->  		reg =3D ctxt->modrm_reg;
->  	else
-> -		reg =3D (ctxt->b & 7) | (ctxt->rex_bits & REX_B ? 8 : 0);
-> +		reg =3D (ctxt->b & 7) | rex_get_rxb(ctxt->rex_bits, REX_B);
+>     The register restore path is placed after SPEC_CTRL is restored, so as
+>     to avoid any mis-speculation into EGPR accesses when APX is disabled.
+
+[Severity: Medium]
+Does the placement in the code match this description?
+
+Looking at __vmx_vcpu_run() in arch/x86/kvm/vmx/vmenter.S, the EGPR load
+sequence is placed before RESTORE_GUEST_SPEC_CTRL_BODY, which contradicts
+this statement and could expose the host to speculative execution using
+guest EGPR values.
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
+> index 00d807505fc88..702d86ade6b1d 100644
+> --- a/arch/x86/kvm/vmx/vmenter.S
+> +++ b/arch/x86/kvm/vmx/vmenter.S
+[ ... ]
+> @@ -46,6 +47,16 @@ SYM_FUNC_START(__vmx_vcpu_run)
+>  	/* Reload @vmx, _ASM_ARG1 may be modified by vmx_update_host_rsp().  */
+>  	mov WORD_SIZE(%_ASM_SP), %_ASM_DI
 > =20
->  	__decode_register_operand(ctxt, op, reg);
+> +#ifdef CONFIG_KVM_APX
+> +	ALTERNATIVE "jmp .Lload_egprs_done", "", X86_FEATURE_APX
+> +	testl	$KVM_ENTER_EGPR_SWITCH, (%_ASM_SP)
+> +	jz	.Lload_egprs_done
+
+[Severity: High]
+Does taking this jump create a speculative information leak?
+
+If the guest disabled APX, we skip loading guest EGPRs but do not clear
+the host's values from the physical registers.
+
+While the guest architecturally cannot read these registers without
+triggering a #UD, could it execute an APX instruction speculatively before
+the #UD is recognized, potentially exfiltrating sensitive host kernel data?
+
+> +	LOAD_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
+> +		  %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
+> +		  %r24, %r25, %r26, %r27, %r28, %r29, %r30, %r31
+> +.Lload_egprs_done:
+> +#endif
+> +
+>  	/*
+>  	 * Unlike AMD there's no V_SPEC_CTRL here, so do not leave the body
+>  	 * out of line.  Clobbers RAX, RCX, RDX, RSI.
+[ ... ]
+> @@ -193,8 +204,24 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
+>  	mov %_ASM_BX, %_ASM_AX
+> =20
+>  	/* Pop our saved arguments from the stack */
+> -	pop %_ASM_BX
+> -	pop %_ASM_BX
+> +	pop %_ASM_BX	/* @flags */
+> +	pop %_ASM_DI	/* @vmx */
+> +
+> +#ifdef CONFIG_KVM_APX
+> +	ALTERNATIVE "jmp .Lclear_egprs_done", "", X86_FEATURE_APX
+> +	test	$KVM_ENTER_EGPR_SWITCH, %_ASM_BX
+> +	jz	.Lclear_egprs_done
+
+[Severity: High]
+Are guest EGPRs left in physical registers during the VM-Exit speculation
+window?
+
+In vmx_vmexit, KVM clears legacy GPRs at .Lclear_regs earlier in the exit p=
+ath
+to prevent their use in speculative execution.
+
+By deferring the save and clear of EGPRs until here, well after the
+speculation barriers (like lfence), are we leaving these 16 guest-controlled
+registers accessible during the mitigation execution window?
+
+> +	/*
+> +	 * Unlike legacy GPRs, saving could be conditional here on VM-Fail,
+> +	 * which however isn't in fastpath. Instead, simply saving EGPRs always.
+> +	 */
+> +	STORE_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
+> +		   %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
+> +		   %r24, %r25, %r26, %r27, %r28, %r29, %r30, %r31
+> +	CLEAR_REGS %r16d, %r17d, %r18d, %r19d, %r20d, %r21d, %r22d, %r23d, \
+> +		   %r24d, %r25d, %r26d, %r27d, %r28d, %r29d, %r30d, %r31d
 
 [Severity: Critical]
-Can this extended register index cause a host kernel panic?
+Will this cause data corruption of the EGPR state across live migration?
 
-With the newly introduced rex_get_rxb(), the register index can now reach 31
-if extended bits (e.g. from a REX2 payload) are set.
+Because hardware EGPRs are zeroed here, KVM's subsequent host XSAVES in
+fpu_swap_kvm_fpstate() will commit zeroes into the guest's FPU state buffer
+(vcpu->arch.guest_fpu).
 
-For SSE/AVX vector instructions, which lack the NoRex2 flag, this index
-is passed entirely unmasked to kvm_read_sse_reg() in
-__decode_register_operand().
+When userspace calls KVM_GET_XSAVE2 to migrate the state, it will copy the
+zeroed buffer via fpu_copy_guest_fpstate_to_uabi() since the actual active =
+APX
+state stored in vcpu->arch.regs is never synchronized.
 
-If an extended index > 15 reaches _kvm_read_sse_reg(), it triggers the
-default BUG() path:
+On the destination, userspace calls KVM_SET_XSAVE, but __vmx_vcpu_run()
+ignores the restored FPU buffer for EGPRs and unconditionally loads from the
+uninitialized vcpu->arch.regs, completely losing the state.
 
-arch/x86/kvm/fpu.h:_kvm_read_sse_reg() {
-    ...
-    switch (reg) {
-    case 0: *data =3D sse[0]; break;
-    ...
-    case 15: *data =3D sse[15]; break;
-    default: BUG();
-    }
-}
-
-Would an unprivileged guest be able to use a REX2 prefix on a vector
-instruction to intentionally panic the host?
-
-[ ... ]
-
-> @@ -1137,9 +1148,9 @@ static int decode_modrm(struct x86_emulate_ctxt *ct=
-xt,
->  	int rc =3D X86EMUL_CONTINUE;
->  	ulong modrm_ea =3D 0;
+> +.Lclear_egprs_done:
+> +#endif
 > =20
-> -	ctxt->modrm_reg =3D (ctxt->rex_bits & REX_R ? 8 : 0);
-> -	index_reg =3D (ctxt->rex_bits & REX_X ? 8 : 0);
-> -	base_reg =3D (ctxt->rex_bits & REX_B ? 8 : 0);
-> +	ctxt->modrm_reg =3D rex_get_rxb(ctxt->rex_bits, REX_R);
-> +	index_reg       =3D rex_get_rxb(ctxt->rex_bits, REX_X);
-> +	base_reg        =3D rex_get_rxb(ctxt->rex_bits, REX_B);
-
-[Severity: High]
-This is a pre-existing issue, but does this logic calculate an incorrect
-effective address when the SIB index is 4 and REX.X (or REX2.X4) is set?
-
-According to the Intel SDM (Vol 2A), when the SIB index field is 100b
-(indicating no index register), the REX.X bit must be ignored.
-
-However, KVM initializes index_reg with the REX.X bit (value 8, or up to 24
-with REX2). When OR'd with the SIB index of 4 later in decode_modrm(),
-index_reg becomes 12 (or 28).
-
-KVM then checks:
-    if (index_reg !=3D 4)
-        modrm_ea +=3D reg_read(ctxt, index_reg) << scale;
-
-Since 12 !=3D 4, wouldn't KVM mistakenly read r12 and add it to the effecti=
-ve
-address, causing it to read or write incorrect MMIO devices or memory?
-
+>  	/* ... and then the callee-save registers */
+>  	pop %_ASM_BX
 [ ... ]
-
-> @@ -4994,6 +5005,13 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt,=
- void *insn, int insn_len, int
->  		opcode =3D opcode_table[ctxt->b];
->  	}
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 3681d565f1778..1c86919d14d45 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+[ ... ]
+> @@ -991,6 +991,19 @@ unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx =
+*vmx)
+>  	    kvm_vcpu_can_access_host_mmio(&vmx->vcpu))
+>  		flags |=3D KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO;
 > =20
 > +	/*
-> +	 * Instructions marked with NoRex2 ignore a legacy REX prefix, but #UD
-> +	 * should be raised when prefixed with REX2.
+> +	 * KVM intercepts XSETBV and thus always tracks the guest XCR0. EGPR
+> +	 * save/restore is gated by this flag. The resulting behavior is:
+> +	 *
+> +	 *  - When the guest enables APX, KVM restores EGPRs (initially zeroed).
+> +	 *  - When the guest disables APX, EGPRs are preserved in the VCPU cach=
+e.
+> +	 *  - When APX is re-enabled, the saved state is restored, which matches
+> +	 *    architectural expectations.
 > +	 */
-> +	if (opcode.flags & NoRex2 && ctxt->rex_prefix =3D=3D REX2_PREFIX)
-> +		opcode.flags =3D Undefined;
+> +	if (IS_ENABLED(CONFIG_KVM_APX) && cpu_feature_enabled(X86_FEATURE_APX) =
+&&
+> +	    vmx->vcpu.arch.xcr0 & XFEATURE_MASK_APX)
+> +		flags |=3D KVM_ENTER_EGPR_SWITCH;
+> +
 
-[Severity: High]
-Does this check fail to inject #UD for numerous REX2-incompatible opcodes?
+[Severity: Critical]
+Can an unprivileged guest crash the host by clearing XCR0[APX]?
 
-This check evaluates the NoRex2 flag immediately after reading the first op=
-code
-byte, before the GroupMask evaluation loop.
+Host XCR0 is restored only after executing a significant amount of
+compiler-generated C code. For example, in arch/x86/kvm/x86.c:
 
-If the opcode is a group descriptor (e.g. group5 in opcode_table), it does
-not have the NoRex2 flag set. The group is resolved later, bypassing this #=
-UD
-check entirely. As a result, REX2-incompatible instructions inside groups l=
-ike
-far calls and far jumps cannot be properly trapped.
+vcpu_enter_guest() {
+    ...
+    exit_fastpath =3D kvm_x86_call(vcpu_run)(vcpu, run_flags);
+    ...
+    kvm_load_xfeatures(vcpu, false);
+    ...
+}
 
-Additionally, ModR/M-less implicit instructions like hlt, cli, and sti appe=
-ar
-to be missing the NoRex2 flag entirely in opcode_table.
+If the host kernel is compiled with APX support, the compiler may emit EGPR
+instructions in these generic C exit handlers (like vmx_vcpu_run).
 
-Will this structural flaw allow guests to bypass #UD injection for these
-instructions?
+If the guest disabled APX, the physical CPU will have APX disabled during
+VM-Exit. When the host executes these APX instructions before XCR0 is
+restored, won't the CPU immediately raise a #UD and panic the kernel?
+
+>  	return flags;
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720171949.4986=
-80-1-chang.seok.bae@intel.com?part=3D11
+80-1-chang.seok.bae@intel.com?part=3D2
