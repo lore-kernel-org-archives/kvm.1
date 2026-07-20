@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAE8446BF1;
-	Mon, 20 Jul 2026 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF48451076;
+	Mon, 20 Jul 2026 17:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784569591; cv=none; b=cG8DT+bJTg/fHFaY39Vp0Hf45Bs5Yd8eU9hAVelNmxqPcanoviTeqJhHXbMvdGP1k+NXgTbH7UoYAQ2hiWD6YN6hOtj3XMa0i5+7lNc4dlWKix04LhCXkKWz1nvxbyUYC6WNCq336ugD1gVshjPlOdjZ7t0oFuCnVrySyI4plpk=
+	t=1784569593; cv=none; b=nsvSUVpp3JCEr0laW5WMDvcy9o93+368uoDnbcQw/od2IYCRVkcji0swVsOVqT8Aw6bZyz8ea+Dn9/3oGk+tdKbAS3V1Fezq/o8irp4qI8neP5RxuDBtaMVGcML6fQcApAU0lQVhiGarUHp6k+aYZYAL1kMNr3Kej9pBZfFa+pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784569591; c=relaxed/simple;
-	bh=0GUmgwR1+KzxXTJz6iffTPJCSR7dd2qwxnZp+au4HrE=;
+	s=arc-20240116; t=1784569593; c=relaxed/simple;
+	bh=mf7PIUkmhPMkGVj3mk9Bxldu32ClxvFg/P+gC1ir4ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfj0XS2LWsqh8vXyOiVt5zCOOjlREU+3oI+gfhx80OGfEKoSH0UWWRv4ImuFeCtdyD8n3Jd67Ic4VkHpuZrHDCzQFp3BJcwoD0BQvf3t3lVfLgPU9vP/IDh9gxOSD2oo+fQXfqfvuXR3HSZOVAMHy+z9Oz/+WmP5+frdyPRQHYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nt85NjwY; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version:Content-Type; b=UkOKOGXuczbUl6OcjlZueQexkoL8xDJZB0Bp7KKFgY8VbmEs7WFzUs42VeiPOAFcb/4JQLKG/QkuCwjqsMgelLCwGvxYAROnuPJ1675Ekqwcubq4W6iyL702J/nQX3ApgpmQLadVDrTcUX5FxsaEdxIO2up++Q3XvMG39PjfaS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c1iGrdte; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nt85NjwY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c1iGrdte"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784569585; x=1816105585;
+  t=1784569589; x=1816105589;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0GUmgwR1+KzxXTJz6iffTPJCSR7dd2qwxnZp+au4HrE=;
-  b=Nt85NjwYju6dIMwNOyEVtACU31Ptaa2Ot4mZ2CgRykiXHwI5xfo0w022
-   5TM1B5lsmiEm5EhyPlQSf+rlicA04tMYZG9tgbxFma717LrnfLhxPUplj
-   jLQjDFwjrMDlpDMTML9fiYZl76QOlVsBaeRW8NyhbFY8DsrqqYYz9tYjG
-   Flvyc9MvIkHSAF0sYHYD7j+eNc3L7/JCPpCUOh8CX36JhwqxciQHuMTEA
-   MXVddvVFqY0kNGhmjzI397ATOc4J2Qshuv6RlGxEQScGtuaroZNLqvjlF
-   fzXp5FjzMa3Q1DU/rqOxDtICfFtAM7wpr6ThedHrymj6Nq17LK7nI2ZHM
+  bh=mf7PIUkmhPMkGVj3mk9Bxldu32ClxvFg/P+gC1ir4ZQ=;
+  b=c1iGrdteZbrPQyo1jIOh8joVeksSkkwjf6c726KFD7GDctX4PIxztJry
+   ZRnE2sGP3wULe2QmfVFaJ8yILdHtwFrj71foTt7ZC6ooY04fx7KLSauQf
+   OrBUtvmgnyHvgGRIs3f0ScH5XDWEHW9MXmD4XYOSceyxhtZgmra4mawHD
+   KIuzeiWfPosfTw7gzy9BMUZwdE+qOe6yl6mYm6yWf/KsqNONwK6IYZ6NQ
+   o8rYNkknuR+NmxNT526LX8kJqoOnrknW2DcaT3i/E+5QDOxkDFjb7gq+9
+   JDR4yX3CNIpNWwhb7gRhQp69adVDRbIOLGmVBXqkGXNfw/wBpEXTj5+aS
    w==;
-X-CSE-ConnectionGUID: yv3AXKCWSpeJLprxK2ugWQ==
-X-CSE-MsgGUID: iGjfPrYtTdGUSaKqYWahHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="72691676"
+X-CSE-ConnectionGUID: B4oUilUFQ92LqeSbhxmL9g==
+X-CSE-MsgGUID: DzF0rXPeTo6O1nP9H7nknw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="72691687"
 X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
-   d="scan'208";a="72691676"
+   d="scan'208";a="72691687"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 10:46:06 -0700
-X-CSE-ConnectionGUID: UGXY7/G+Q+a3KLdgPBPEPA==
-X-CSE-MsgGUID: +UmXK2smRq2JSc9TggSYwg==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 10:46:07 -0700
+X-CSE-ConnectionGUID: vLvn24NgSM2Fs9HiJ68piA==
+X-CSE-MsgGUID: j+xUcyjkQoG/Mqexn2jeLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
-   d="scan'208";a="257575373"
+   d="scan'208";a="257575380"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by orviesa007.jf.intel.com with ESMTP; 20 Jul 2026 10:46:05 -0700
+  by orviesa007.jf.intel.com with ESMTP; 20 Jul 2026 10:46:07 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -50,9 +50,9 @@ Cc: kvm@vger.kernel.org,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	chang.seok.bae@intel.com
-Subject: [PATCH v5 10/20] KVM: x86: Support EGPR accessing and tracking for emulator
-Date: Mon, 20 Jul 2026 17:19:39 +0000
-Message-ID: <20260720171949.498680-11-chang.seok.bae@intel.com>
+Subject: [PATCH v5 12/20] KVM: x86: Support REX2-prefixed opcode decode
+Date: Mon, 20 Jul 2026 17:19:41 +0000
+Message-ID: <20260720171949.498680-13-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260720171949.498680-1-chang.seok.bae@intel.com>
 References: <20260720171949.498680-1-chang.seok.bae@intel.com>
@@ -62,90 +62,127 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Extend the emulator context and GPR accessors to handle EGPRs before
-adding support for REX2-prefixed instructions. Like VCPU cache, the
-emulator can uniformly cache and track all GPRs.
+Extend the instruction decoder to recognize and handle the REX2 prefix,
+including validation of prefix sequences and correct opcode table
+selection.
 
-Also replace `1 << reg` with `BIT(reg)` in reg_read()/reg_write(). The
-former performs a signed 32-bit shift, which becomes undefined for R31.
-BIT() instead shifts an unsigned value that is suitable for all indices.
+REX2 is a terminal prefix: once 0xD5 is encountered, the following byte
+is the opcode. When REX.M=0, most prefix bytes are invalid after REX2,
+including REX, VEX, EVEX, and another REX2. Also, REX2-prefixed
+instructions are only valid in 64-bit mode.
 
+All of the invalid prefix combinations after REX2 coincide with opcodes
+that are architecturally invalid in 64-bit mode. Thus, marking such
+opcodes with No64 in opcode_table[] naturally disallows those illegal
+prefix sequences.
+
+The 0x40–0x4F opcode row was missing the No64 flag. While NoRex2 already
+invalidates REX2 for these opcodes, adding No64 makes opcode attributes
+explicit and complete.
+
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Link: https://lore.kernel.org/CABgObfYYGTvkYpeyqLSr9JgKMDA_STSff2hXBNchLZuKFU+MMA@mail.gmail.com
 ---
-V4 -> V5: Fix possible shift-out-of-bounds (review bot [*])
+ arch/x86/kvm/emulate.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-[*]: locally running Sashiko with gemini-3.1-pro-preview
----
- arch/x86/kvm/kvm_emulate.h | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
-
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 3e375af15c03..b1498f618c81 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -109,13 +109,13 @@ struct x86_instruction_info {
- struct x86_emulate_ops {
- 	void (*vm_bugged)(struct x86_emulate_ctxt *ctxt);
- 	/*
--	 * read_gpr: read a general purpose register (rax - r15)
-+	 * read_gpr: read a general purpose register (rax - r31)
- 	 *
- 	 * @reg: gpr number.
- 	 */
- 	ulong (*read_gpr)(struct x86_emulate_ctxt *ctxt, unsigned reg);
- 	/*
--	 * write_gpr: write a general purpose register (rax - r15)
-+	 * write_gpr: write a general purpose register (rax - r31)
- 	 *
- 	 * @reg: gpr number.
- 	 * @val: value to write.
-@@ -321,7 +321,9 @@ typedef void (*fastop_t)(struct fastop *);
-  * also uses _eip, RIP cannot be a register operand nor can it be an operand in
-  * a ModRM or SIB byte.
-  */
--#ifdef CONFIG_X86_64
-+#if defined(CONFIG_KVM_APX)
-+#define NR_EMULATOR_GPRS	32
-+#elif defined(CONFIG_X86_64)
- #define NR_EMULATOR_GPRS	16
- #else
- #define NR_EMULATOR_GPRS	8
-@@ -381,9 +383,9 @@ struct x86_emulate_ctxt {
- 	u8 lock_prefix;
- 	u8 rep_prefix;
- 	/* bitmaps of registers in _regs[] that can be read */
--	u16 regs_valid;
-+	u32 regs_valid;
- 	/* bitmaps of registers in _regs[] that have been written */
--	u16 regs_dirty;
-+	u32 regs_dirty;
- 	/* modrm */
- 	u8 modrm;
- 	u8 modrm_mod;
-@@ -547,8 +549,8 @@ static inline ulong reg_read(struct x86_emulate_ctxt *ctxt, unsigned nr)
- 	if (KVM_EMULATOR_BUG_ON(nr >= NR_EMULATOR_GPRS, ctxt))
- 		nr &= NR_EMULATOR_GPRS - 1;
- 
--	if (!(ctxt->regs_valid & (1 << nr))) {
--		ctxt->regs_valid |= 1 << nr;
-+	if (!(ctxt->regs_valid & BIT(nr))) {
-+		ctxt->regs_valid |= BIT(nr);
- 		ctxt->_regs[nr] = ctxt->ops->read_gpr(ctxt, nr);
- 	}
- 	return ctxt->_regs[nr];
-@@ -562,8 +564,8 @@ static inline ulong *reg_write(struct x86_emulate_ctxt *ctxt, unsigned nr)
- 	BUILD_BUG_ON(sizeof(ctxt->regs_dirty) * BITS_PER_BYTE < NR_EMULATOR_GPRS);
- 	BUILD_BUG_ON(sizeof(ctxt->regs_valid) * BITS_PER_BYTE < NR_EMULATOR_GPRS);
- 
--	ctxt->regs_valid |= 1 << nr;
--	ctxt->regs_dirty |= 1 << nr;
-+	ctxt->regs_valid |= BIT(nr);
-+	ctxt->regs_dirty |= BIT(nr);
- 	return &ctxt->_regs[nr];
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 12a822870d08..cb075bd74f76 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -4258,7 +4258,7 @@ static const struct opcode opcode_table[256] = {
+ 	/* 0x38 - 0x3F */
+ 	I6ALU(NoWrite, em_cmp), N, N,
+ 	/* 0x40 - 0x4F */
+-	X8(I(DstReg | NoRex2, em_inc)), X8(I(DstReg | NoRex2, em_dec)),
++	X8(I(DstReg | NoRex2 | No64, em_inc)), X8(I(DstReg | NoRex2 | No64, em_dec)),
+ 	/* 0x50 - 0x57 */
+ 	X8(I(SrcReg | Stack, em_push)),
+ 	/* 0x58 - 0x5F */
+@@ -4852,6 +4852,17 @@ static int x86_decode_avx(struct x86_emulate_ctxt *ctxt,
+ 	return rc;
  }
  
++static inline bool rex2_invalid(struct x86_emulate_ctxt *ctxt)
++{
++	const struct x86_emulate_ops *ops = ctxt->ops;
++	u64 xcr = 0;
++
++	return ctxt->rex_prefix == REX_PREFIX ||
++	       !(ops->get_cr(ctxt, 4) & X86_CR4_OSXSAVE) ||
++	       ops->get_xcr(ctxt, 0, &xcr) ||
++	       !(xcr & XFEATURE_MASK_APX);
++}
++
+ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int emulation_type)
+ {
+ 	int rc = X86EMUL_CONTINUE;
+@@ -4905,7 +4916,7 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	ctxt->op_bytes = def_op_bytes;
+ 	ctxt->ad_bytes = def_ad_bytes;
+ 
+-	/* Legacy prefixes. */
++	/* Legacy and REX/REX2 prefixes. */
+ 	for (;;) {
+ 		switch (ctxt->b = insn_fetch(u8, ctxt)) {
+ 		case 0x66:	/* operand-size override */
+@@ -4951,6 +4962,17 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 			ctxt->rex_prefix = REX_PREFIX;
+ 			ctxt->rex_bits   = ctxt->b & 0xf;
+ 			continue;
++		case 0xd5: /* REX2 */
++			if (mode != X86EMUL_MODE_PROT64)
++				goto done_prefixes;
++			if (rex2_invalid(ctxt)) {
++				opcode = ud;
++				goto done_modrm;
++			}
++			ctxt->rex_prefix = REX2_PREFIX;
++			ctxt->rex_bits   = insn_fetch(u8, ctxt);
++			ctxt->b          = insn_fetch(u8, ctxt);
++			goto done_prefixes;
+ 		case 0xf0:	/* LOCK */
+ 			ctxt->lock_prefix = 1;
+ 			break;
+@@ -4973,6 +4995,12 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	if (ctxt->rex_bits & REX_W)
+ 		ctxt->op_bytes = 8;
+ 
++	/* REX2 opcode is one byte unless M-bit selects the two-byte map */
++	if (ctxt->rex_bits & REX_M)
++		goto decode_twobytes;
++	else if (ctxt->rex_prefix == REX2_PREFIX)
++		goto decode_onebyte;
++
+ 	/* Opcode byte(s). */
+ 	if (ctxt->b == 0xc4 || ctxt->b == 0xc5) {
+ 		/* VEX or LDS/LES */
+@@ -4990,17 +5018,19 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 			goto done;
+ 	} else if (ctxt->b == 0x0f) {
+ 		/* Two- or three-byte opcode */
+-		ctxt->opcode_len = 2;
+ 		ctxt->b = insn_fetch(u8, ctxt);
++decode_twobytes:
++		ctxt->opcode_len = 2;
+ 		opcode = twobyte_table[ctxt->b];
+ 
+ 		/* 0F_38 opcode map */
+-		if (ctxt->b == 0x38) {
++		if (ctxt->b == 0x38 && ctxt->rex_prefix != REX2_PREFIX) {
+ 			ctxt->opcode_len = 3;
+ 			ctxt->b = insn_fetch(u8, ctxt);
+ 			opcode = opcode_map_0f_38[ctxt->b];
+ 		}
+ 	} else {
++decode_onebyte:
+ 		/* Opcode byte(s). */
+ 		opcode = opcode_table[ctxt->b];
+ 	}
 -- 
 2.53.0
 
