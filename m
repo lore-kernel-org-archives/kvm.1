@@ -1,161 +1,119 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8115B3F6612
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CCA41CB30;
+	Mon, 20 Jul 2026 12:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784549912; cv=none; b=d91fqXoCKDb+pjygbjoxwY/lZG875cNkgOMNdGx17xFg3st2szeOnmh0unJRJLVPwoVNtnB7cGkZLfbQCGSdgdYlSyjPT2nX1ElfuQu+yJaukefFrLhwTotlGbGjBDhRh/oS+xYt53wSyE/wuRjn1TgrGUeNjXryy+p16VGyPw4=
+	t=1784552304; cv=none; b=XBSH9ubRKepYXF2Eqv4sBpiI8biTI2XdtrWm2g4sIhuD1RiDz55u5xUbW0/mIbBiNpUBGIQkSOxeXqDsaOPUwoKcI0FffXZYOXiCflGrVOt39tRECoHWC0m9dEBz41DL15xgr5RijRO5Cu2wuBPMg+afutzQgtCutANRhTfVF3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784549912; c=relaxed/simple;
-	bh=qvIfzIzTzV1/mKMCsXvYpYfGy0s2Mi+smgNR1m/klIA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lbMlyvqzaHWp0G3fxcJNrxUKTdIMzAUJMIS+gJKPwL4t9CgHl1Q8rROYuheWapKgeYkk+X9TmOeprxVYmZ8/pcFwXn0udN1g4Nf5gboj5XVA8ZQmpUlmmugaNMH/XYQyNfTu2wPl6HXIWrwhKYTDay49ySvBnRLChU0RLo9080E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kwZVjaFg; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784552304; c=relaxed/simple;
+	bh=ZqPwJpCJATgTe20c3VTfaUAxSjzvzDGaSBrLCg2jYwE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=t03XEryXhSbda7U6qcwDoEQ8UJJQMv3tBlGtAe50OxID9AS9np0sPh1HqJGz+WU9DGHhe1iVLPZk06M84XqTaLlZcm8t9WXelC9Sw8tG2jfayfTkNPOTqv0urkg12l0jMnvgIeXoatOlv8JEE0auyGKQMzsHtQfYypXlOKE4PIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=hJ0ugiQO; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kwZVjaFg"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KBBqKW1935799;
-	Mon, 20 Jul 2026 12:18:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=bnL35J
-	g6vrtNts/Bi4vUTFv0Basw/EpWEeq/l6PHoUg=; b=kwZVjaFgjAu0bndTpFAurm
-	I4lGI/LqR+Fn+3k6jH4Jd9Pr9MxIP92FN+weCN7liC774UM3yAOsIEsQBV5QCcc3
-	qCgRPMw7ry0qYVa5b8hbgaNkhbxthjZwj9OOQnVus+SaXTfMGJthrV7/fsR98det
-	u90iZ1znFfx8O5QY3cw0pfygIklHnRMPpJP739psv7OE+ayvyf7XYmbeQ05JVrTy
-	dL4LpNgYoHf31YIly5mXkAd8+UEjNejjH6dvNfFSF02XFWADcVO3rXLyeLUKUDRv
-	sLQ8QBdZC1vicBLudcU3gz2z3lL10CFENDuc9Lg664Jej90C2lxJXNqAJfXnDIdA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78fy3c4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 12:18:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66KC4fdV023514;
-	Mon, 20 Jul 2026 12:18:24 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnagwfb7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 12:18:24 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66KCHmd125494020
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jul 2026 12:17:48 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 09C115805E;
-	Mon, 20 Jul 2026 12:18:24 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 532BC58051;
-	Mon, 20 Jul 2026 12:18:22 +0000 (GMT)
-Received: from [9.39.17.136] (unknown [9.39.17.136])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jul 2026 12:18:21 +0000 (GMT)
-Message-ID: <5901c7f4-9e5a-431d-9d6c-2818afe313ce@linux.ibm.com>
-Date: Mon, 20 Jul 2026 17:47:34 +0530
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="hJ0ugiQO"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8385A2B;
+	Mon, 20 Jul 2026 05:58:17 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 56FCB3F99C;
+	Mon, 20 Jul 2026 05:58:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784552301; bh=ZqPwJpCJATgTe20c3VTfaUAxSjzvzDGaSBrLCg2jYwE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hJ0ugiQO9nentJNGljJ4OzLltjO/3B7nfWwZAG6NQTFgaZ1zDbTIsgmgDLGDdVavX
+	 FrWPiAaVBlEHM+RGdQoGZCJEZxGKtwj5PK5ppgIMGf2I7ymo4svGpYHgXT8ik/uFcK
+	 VwAeILCBvAPDU3TkgoL0CJ855zNpp3sxTdgz6E3w=
+From: Leonardo Bras <leo.bras@arm.com>
+To: Tian Zheng <zhengtian10@huawei.com>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	maz@kernel.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	yuzenghui@huawei.com,
+	wangzhou1@hisilicon.com,
+	yangjinqian1@huawei.com,
+	caijian11@h-partners.com,
+	liuyonglong@huawei.com,
+	yezhenyu2@huawei.com,
+	yubihong@huawei.com,
+	linuxarm@huawei.com,
+	joey.gouly@arm.com,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	seiden@linux.ibm.com,
+	suzuki.poulose@arm.com
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware dirty tracking
+Date: Mon, 20 Jul 2026 13:58:09 +0100
+Message-ID: <al4bYajWE-v6wofu@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <alpIfIOFfrudBzD5@LeoBrasDK>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com> <20260709104026.2612599-4-zhengtian10@huawei.com> <aliKo7dTZzKcWHzI@kernel.org> <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com> <alpIfIOFfrudBzD5@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v2 0/6] powerpc improvements
-To: Thomas Huth <thuth@redhat.com>
-Cc: harshpb@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-References: <20260719130027.2347519-1-rathc@linux.ibm.com>
- <c53b1c7e-ee9b-4c45-95c6-6648f696cf11@redhat.com>
-Content-Language: en-US
-From: Chinmay Rath <rathc@linux.ibm.com>
-In-Reply-To: <c53b1c7e-ee9b-4c45-95c6-6648f696cf11@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDEzNiBTYWx0ZWRfX1ETWCond636j
- intH+a1iBs0xm/z+hNsC9K6Xxp/RH6tk7G7jNM4Z0Bgsdtboih45dnSKTvShFDaH6rDOlwGIGC2
- Nb0cAAy4X/loScbhOrmSHrtQ8uSn1Be1pR1N7WzRlQILY9+qLwyPbFLh+YNdymAoipuZI/OOmCK
- v1f+SOHERYCDq5XkhtIfQTjFxrsQTPMwk78jlgmUwmBp/EJzVCZFrUSQLU8ofaNBus6JHJpo++B
- FVMbhmQ08v2MQu+0z34Tto+hWBQr7eZRDu/Dnu8/aT7rMzg3d+MpzuEfkWoY37DIHL+iZuDPO7X
- dWXlBZXTOC9urHk0uzJtlvpKqSsMsJx7DqaOd4CtetGuEWhquiAEUfqD2M56mPU0KTSRuzf90X/
- 8GE8IKAKMuB3Aeo7QnmjP1cXpZwTERcdxSOEW8xTtGTPOn+gGpL0RjVRnvntsWt6sTSAo3Ap2Ko
- zN4M2T7gKymN1ZC6PdA==
-X-Proofpoint-GUID: b-CyH9Fynl5inhin1EA_OpMjYxCibEyi
-X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a5e1211 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=p0WdMEafAAAA:8 a=D1-8KnQKaU7tPh1uK-QA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDEzNiBTYWx0ZWRfX/Z7Gsu9LT25U
- rhjwJJCNmbU7S2sFCpB3Z4oa4dEj5usuPtqN94Kv/8cbIRTMa+MT6xdB7h65zmcDIJjWfetTfJ9
- mNf+I4bFcd8iTPhc7gunQ9J/xHyTS3c=
-X-Proofpoint-ORIG-GUID: b-CyH9Fynl5inhin1EA_OpMjYxCibEyi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_02,2026-07-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607200136
 
+On Fri, Jul 17, 2026 at 04:21:32PM +0100, Leonardo Bras wrote:
+> On Fri, Jul 17, 2026 at 11:58:06AM +0800, Tian Zheng wrote:
+> > 
+> > On 7/16/2026 3:39 PM, Oliver Upton wrote:
+> > > Hi Tian,
+> > > 
+> > > On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+> > > > -	if (prot & KVM_PGTABLE_PROT_W)
+> > > > +	if (prot & KVM_PGTABLE_PROT_W) {
+> > > >   		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> > > > 
+> > > > +		/*
+> > > > +		 * No DEVICE filter needed here: relax_perms is only called
+> > > > +		 * on FSC_PERM faults. Device pages always get full RW from
+> > > > +		 * initial mapping and are never write-protected during
+> > > > +		 * migration, so they never trigger a permission fault.
+> > > > +		 */
+> > > > +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
+> > > > +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+> > > > +	} else {
+> > > > +		/*
+> > > > +		 * Clear DBM on W→RO downgrade to prevent hardware from
+> > > > +		 * silently upgrading RO+DBM back to W+dirty, which would
+> > > > +		 * bypass KVM's write tracking and cause data corruption.
+> > > > +		 */
+> > > > +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+> > > > +	}
+> > > > +
+> > > This block makes it pretty evident that the DBM bit really *is* the
+> > > write permission bit. I'd much rather we introduce the concept of dirty
+> > > state to the page table library and migrate the abstract write
+> > > permission to the DBM field, even if we don't have FEAT_HAFDBS.
+> > >
+> 
+> Ohh, that's an amazing idea!
 
-On 7/20/26 15:00, Thomas Huth wrote:
-> On 19/07/2026 15.00, Chinmay Rath wrote:
->> This series aims to add a couple of new powerpc tests and improve the
->> powerpc build structure.
->>
->> This is originally Nick's work. The last version (v10) of which can 
->> be seen here :
->> https://lore.kernel.org/linuxppc-dev/20240612052322.218726-1-npiggin@gmail.com/ 
->>
->> Couple of patches from the series are already merged.
->>
->> Since it has been 2 years since this series was posted, I originally
->> posted this as a RFC. This v1 series has changes accomodating the 
->> review comments
->> received in the RFC :
->> https://lore.kernel.org/kvm/20260602064806.3101025-1-rathc@linux.ibm.com/ 
->>
->> v1:
->> https://lore.kernel.org/kvm/20260708105122.1177210-1-rathc@linux.ibm.com/ 
->>
->>
->> I have rebased the patches to the upstream state.
->> For the patches which did not require any changes in the existing 
->> upstream code,
->> I have retained the "Reviewed-by"s and "Acked-by" (patch 3,5 & 6) from
->> Nick's series. I have also added Andrew's "Reviewed-by" received on
->> patch 2 in the RFC. Nick had originally introduced powernv tests as 
->> well.
->> Removed it for now since it was causing CI failure in the current 
->> upstream.
->>
->> Link to Gitlab tree with patches :
->> https://gitlab.com/rathc/kvm-unit-tests/-/tree/ppc64
->> Link to Gitlab pipeline :
->> https://gitlab.com/rathc/kvm-unit-tests/-/pipelines/2688519679
->>
->> Change log from RFC to v1:
->> 1. Patch 2: Added Andrew's "Reviewed-by".
->> 2. Patch 4: Removed usage of gitlab-ci group to run test - Thomas
->>     It would be nice to make use of the gitlab-ci group, but doing the
->>     change of all archs would make sense in a separate series. I look
->>     forward to doing that.
->> 3. Patch 6: Removed addition of panic test in gitlab-ci group - Thomas
->>
->> There was a discussion on the build failing in Travis CI with Clang, 
->> in the
->> RFC, which I have addressed there.
->>
->> Change log from v1 to v2:
->> Patch 4: Addressed all comments by Thomas :
->> 1. Removed extra blank line.
->> 2. Removed accel=kvm test from gitlab-ci.
->> 3. smp = 2 preserved in atmoics test.
-> Thanks, looks fine now, so I pushed it to the repository.
->
->  Thomas
-Thank you Thomas !
+Thinking about that again...
+If we adopt the encoding with DBM being the write-permission bit, and all 
+PTEs have it since the start, how can we have lazy-splitting happening?
+
+Only way I think of is removing both DBM and S2_S2AP_W bit from writable 
+PTEs during dirty-track enable, and re-adding them during the first write 
+fault. If we don't remove the DBM bit, systems with HDBSS would just dirty 
+it by hardware, without causing a fault.
+
+DBM=0 would need to happen only in the first write-protect (only on 
+lazy-splitting). All other write-protecting would just clean the S2_S2AP_W 
+bit, as everything is already split.  
+
+Is that what was intended?
+
+Thanks!
+Leo
