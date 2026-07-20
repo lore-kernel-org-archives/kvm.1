@@ -1,185 +1,123 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD26477995
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 17:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FF0478859;
+	Mon, 20 Jul 2026 17:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784569596; cv=none; b=MJo4zF3EXGWf1VxWb3nxF3/1kPk8BG364GPnBfvL5MvoVeT8wnN99/BTdYHBoQurrPtVr+pyTQFB3LCa/8blSErzdc5R9bWBMaQvHy39cLtTvsOlyJYha/hQ81R3+gq14Xj0jCOUb1fMNef7OM4DfOH+8SWT7GomPvXlWlqGR6o=
+	t=1784569603; cv=none; b=TsOhtasPLr1NggmatI20icK4kL2tldG48ZL3Lg+5Ed9ncuIb7L0WUqRNPhBsyha9hjCOAhrt8bLzjNUqhPMUSy46uQ8/dzIUC+z5wGOLAFiVWM7NWnU7mRECiE/YwV8S7DxmChTlvIbYG63jSLySdvp5BPGrib7xlStTINjh5WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784569596; c=relaxed/simple;
-	bh=gOLamp6WhhZpTe5dHXwQKJ94j6OmlPwvAw33r+2AFLM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nEsCRfHtby64dERu/24lSjHnGQUPfAiaP/KLNCqUAllGYw6sHFqeB+GSmCTW0kPcplezCCEyyEu1TCD3WnRW+LZSgvsYz2cfM6MBwGR+VItlUAtflJGa30FLtZxcuoJruO0OMGV4NmFs4wtEFPNXJ29/UP/U9cItwkfpV6gzfFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eKNvAwu8; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784569603; c=relaxed/simple;
+	bh=6uCcnulSABEeTlE4lQI/MpQP8kkqc07y5hMWHwPijIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mbOlZ6ITPwzHPQ0hreuIeaHR6jESu/bRU4bqQqlzMATdP/ioP5MZtIfJemq7fVmrnPJQWIxIa7HQggBK5X3kY3mBdOCpu6c5Ek43mL7awRdJmb6oBSNvTptKMW6cL0nsv5ly4cwzXpNyv6+R7F2z7we+RjlHr3tmM+XjyhLvroI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kK0Ug1n2; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eKNvAwu8"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cede6375caso351025ad.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 10:46:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784569585; x=1785174385; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WSe3gsPdGWsi9VQkqamZmsXN0JAunSEo2DS5NUyoYNE=;
-        b=eKNvAwu8VYSfZuuC/Vk3kE52DGxf2MNU88kDbgdWEDyWR2TTEQbIMuHyc6RXJtC1B3
-         BamjktHk+bpYZC9CT6s2ZyXaeumtU9Hp8OorYtJm5hGegmY+vIU8w/UBYQWvaZg7lLAl
-         C1F0G1NV2S4EW776ex9Xd94nifX5HDROHJ3Q+OcW3a9o2FmnhYt0SUwRo6+9YgzU17qe
-         2U6cIcpjm/OcnS/2k+iKHr3+dy2VpUap4SYL2j1tPYEcB+GrlHGPboio/LIZBHzYy7tk
-         SRfKkdONbEt4ghOzpb0afuFtxFCcE7mSAPdeDRGNCayvH1OKBWKao2Mwflq9pZ4/pmJm
-         BdVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784569585; x=1785174385;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=WSe3gsPdGWsi9VQkqamZmsXN0JAunSEo2DS5NUyoYNE=;
-        b=FPU3Es0ZhPGYhqo7/vLNiKC7L/vG5ctOruwByUHmffnjKhYkf/9CkmG9aIBKJbD5/W
-         /2kwr4vtFimXu14o8Gkgju/Iaz5RbMaDdvFwF+ljLZ+6HklZlvT2vyQg8z5JHtt7XrtG
-         ZDS0Pvc/ifvPqFKrnxBTDsz/bg6AwGt9E1M7xBvg3NZvvz9dc5Hjwoq3dnLZ3dTpm0v2
-         uX8TiR85lXqWrgvk1Rc6Kgan+/otIlPD2wTJLBJvgZ/pMivdjXvZ6Vv2h6rstXWcG4aE
-         1qFkps9IQjNf0Oa96BcwgSdwHUNKm6ofJxLtDEHNJ5YkOR/SxRqOu5nVIBiLub+pVOuT
-         3TeQ==
-X-Gm-Message-State: AOJu0YykpkqwEHuc+fmuoSOZfYLbIgXzTpkR2zY5gnNBbQu1R5NM0XWg
-	Del5dV+nwaw/ZiEcFawaA5ajCaIHsC7/woJehEdYh3N0rKqhwkv/STB3tGRJFy6lHR5BXoGnlm/
-	DIqbNDXRP
-X-Gm-Gg: AR+sD10MRRdYAPhuNlWDV6FULS3XLxl8p9o9p6AxM5+WAt9FbEIr6gCuE+xRQ+fA+QF
-	6ADCG1aCpvyQef+cTkQPn3ln1t99iF5xCv9ZAkBai6+Jjtf9Xk9HQJTJ+75dZglObT0VX7KsJq2
-	SQkz7Phb08w8yTkbQQ/tcKsNSoGYg6YQhx3zbckQEJrkh/t+MGLacyuFJYtIhk+0VKSUTdtb8vM
-	vOqFoYHvzWdRXYxSqavZDgQQvCTPTAvmzZpkrM8MXrEek1yHG/nXiRLQ4zIEza1Bjg4F/FJPlUM
-	pv3lKmcUd7Rn2emKz60XdgUpWcqjiLx5RCQgD2dQhN7YdIYY+dc5tjlkg3eXqIQVb4seJW4OTh9
-	GFoDmq0fG97ZvXN4Vh8bDOkN+OegoUOjrGNXePoCZC95LiP+9f+N4dIAryDeJxLrMynYPnRGskC
-	eMwfasrQcghMFIh/tUDZefX5SO2AkbnByRbHSUxbI=
-X-Received: by 2002:a17:903:1984:b0:2ce:b436:272a with SMTP id d9443c01a7336-2cf7b500832mr1906865ad.3.1784569577823;
-        Mon, 20 Jul 2026 10:46:17 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e022d6e38sm103524b3a.11.2026.07.20.10.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:46:17 -0700 (PDT)
-Date: Mon, 20 Jul 2026 10:46:13 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v5 05/20] vfio/pci: Register a file handler with Live
- Update Orchestrator
-Message-ID: <20260720173305.GA1381701.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260714151505.3466855-6-vipinsh@google.com>
- <20260714152856.F239E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kK0Ug1n2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784569597; x=1816105597;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=6uCcnulSABEeTlE4lQI/MpQP8kkqc07y5hMWHwPijIQ=;
+  b=kK0Ug1n2Ul21Lj97rHr8LpJDvUBJyMljckeJN94Wl91Fmlw2KPuS1okh
+   gOrmyKmQ7xkrb49AVNEW/WQ+JkjTQkaS7WS6duKOC7rCb4vxBi1oe92gM
+   ofFNGxqrn4rE4mPHuZTzHVLw4hHgo97zOH2FkkpvKhTa6NrKdlAIOgYml
+   FgJgbWMGpAfCRT2CihTVlO1yQ3ES2LE4Qf2z3gnjcIzqDFyXygUQpNpK5
+   3XzwUOoHJbfjp+V3oBqkMSyWFeRdLAe+sglRHEUwps2LNGQOkumRGQDHX
+   0C64Xh2Eo9V6O2I1xTJZeu6CFf+mwhkOUVUCTP+rQ0Ca/SSdpm8mDPDd0
+   A==;
+X-CSE-ConnectionGUID: TqCMJLVISoSYXKHMujzk1A==
+X-CSE-MsgGUID: UqOFqop7QM+7jphUWEWlLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="72691700"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="72691700"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 10:46:10 -0700
+X-CSE-ConnectionGUID: B/ws+TGVT26LGmaBarRWEA==
+X-CSE-MsgGUID: hK7yXLCmReSbD8L3AgyZMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="257575389"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
+  by orviesa007.jf.intel.com with ESMTP; 20 Jul 2026 10:46:10 -0700
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	chang.seok.bae@intel.com
+Subject: [PATCH v5 15/20] KVM: x86: Guard valid XCR0.APX settings
+Date: Mon, 20 Jul 2026 17:19:44 +0000
+Message-ID: <20260720171949.498680-16-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260720171949.498680-1-chang.seok.bae@intel.com>
+References: <20260720171949.498680-1-chang.seok.bae@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260714152856.F239E1F000E9@smtp.kernel.org>
 
-On Tue, Jul 14, 2026 at 03:28:56PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] The Kconfig option VFIO_PCI_LIVEUPDATE depends on a non-existent configuration symbol PCI_LIVEUPDATE.
-> - [High] Calls to undeclared and undefined functions pci_liveupdate_register_flb() and pci_liveupdate_unregister_flb().
-> - [High] Masking -EOPNOTSUPP on FLB registration failure leads to a double unregistration of the file handler and potential kernel panic.
-> --
-> 
-> --- Patch [5]: [PATCH v5 05/20] vfio/pci: Register a file handler with Live Update Orchestrator ---
-> commit a3c1a8c69f4b2c27d2e063cca84eb003906e3bbf
-> Author: Vipin Sharma <vipinsh@google.com>
-> 
-> vfio/pci: Register a file handler with Live Update Orchestrator
-> 
-> This commit adds a live update file handler for vfio-pci device files
-> with stub implementations. It registers the handler with the live update
-> framework and PCI subsystem, gated behind a new VFIO_PCI_LIVEUPDATE option.
-> 
-> > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> > index 296bf01e185ec..c12d614fc6c4a 100644
-> > --- a/drivers/vfio/pci/Kconfig
-> > +++ b/drivers/vfio/pci/Kconfig
-> [ ... ]
-> > @@ -42,6 +42,18 @@ config VFIO_PCI_IGD
-> >  	  and LPC bridge config space.
-> >  
-> >  	  To enable Intel IGD assignment through vfio-pci, say Y.
-> > +
-> > +config VFIO_PCI_LIVEUPDATE
-> > +	bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> > +	depends on PCI_LIVEUPDATE
-> 
-> [Severity: High]
-> Does the PCI_LIVEUPDATE configuration symbol exist anywhere in the kernel
-> tree? It appears this dependency cannot be met, preventing the new
-> VFIO_PCI_LIVEUPDATE option from being selected.
+Prevent invalid XCR0.APX configurations in two cases: conflict with MPX
+and lack of SVM support.
 
-This series is built on top of an in-progress series as explained in
-the cover letter.
-https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
+In the non-compacted XSAVE format, APX and MPX conflict on the same
+offset. Although MPX is being deprecated in practice, KVM should
+explicitly reject such configurations that set both bits.
 
-> 
-> > +	help
-> > +	  Support for preserving devices bound to vfio-pci across a Live
-> [ ... ]
-> > diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> > new file mode 100644
-> > index 0000000000000..803528c9f1b27
-> > --- /dev/null
-> > +++ b/drivers/vfio/pci/vfio_pci_liveupdate.c
-> [ ... ]
-> > +int __init vfio_pci_liveupdate_init(void)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = liveupdate_register_file_handler(&vfio_pci_liveupdate_fh);
-> > +	if (ret)
-> > +		goto err_return;
-> > +
-> > +	ret = pci_liveupdate_register_flb(&vfio_pci_liveupdate_fh);
-> 
-> [Severity: High]
-> Are pci_liveupdate_register_flb() and pci_liveupdate_unregister_flb()
-> declared in any header or defined in any source file? Building with
-> this configuration enabled might result in implicit declaration compiler
-> errors and fatal linker errors.
-> 
+At this point, only VMX supports EGPRs. SVM will require corresponding
+extensions to handle EGPR indices.
 
-Available in the dependent series.
+Updating the supported XCR0 mask will be done separately.
 
-> > +	if (ret)
-> > +		goto err_unregister;
-> > +
-> > +	return 0;
-> > +
-> > +err_unregister:
-> > +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-> > +err_return:
-> > +	return (ret == -EOPNOTSUPP) ? 0 : ret;
-> 
-> [Severity: High]
-> If pci_liveupdate_register_flb() returns -EOPNOTSUPP, this error path
-> unregisters the file handler but returns 0. Could this lead to a double
-> unregistration when the module is unloaded and vfio_pci_liveupdate_cleanup()
-> is called?
-> 
-> Calling liveupdate_unregister_file_handler() a second time on the already
-> removed list node might cause list corruption and a kernel panic.
-> 
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Link: https://lore.kernel.org/ab3f4937-38f5-4354-8850-bf773c159bbe@redhat.com
+---
+ arch/x86/kvm/svm/svm.c | 7 ++++++-
+ arch/x86/kvm/x86.c     | 4 ++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-Yes, this is an issue. I will add the fix in next version. Separately, I
-will send a patch to make liveupdate_unregister_file_handler()
-idempotent.
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index ef69a51ab27f..eb1b2ba1261d 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5612,8 +5612,13 @@ static __init int svm_hardware_setup(void)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	/*
++	 * APX introduces EGPRs, which require additional VMCB support.
++	 * Disable APX until the necessary extensions are handled.
++	 */
+ 	kvm_caps.supported_xcr0 &= ~(XFEATURE_MASK_BNDREGS |
+-				     XFEATURE_MASK_BNDCSR);
++				     XFEATURE_MASK_BNDCSR  |
++				     XFEATURE_MASK_APX);
+ 
+ 	if (tsc_scaling) {
+ 		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 84b2dcfcb007..266d7a02855b 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -682,6 +682,10 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
+ 	    (!(xcr0 & XFEATURE_MASK_BNDCSR)))
+ 		return 1;
+ 
++	/* MPX and APX conflict in the non-compacted XSAVE format */
++	if (xcr0 & XFEATURE_MASK_BNDREGS && xcr0 & XFEATURE_MASK_APX)
++		return 1;
++
+ 	if (xcr0 & XFEATURE_MASK_AVX512) {
+ 		if (!(xcr0 & XFEATURE_MASK_YMM))
+ 			return 1;
+-- 
+2.53.0
 
-> > +}
-> > +
-> > +void vfio_pci_liveupdate_cleanup(void)
-> > +{
-> > +	pci_liveupdate_unregister_flb(&vfio_pci_liveupdate_fh);
-> > +	liveupdate_unregister_file_handler(&vfio_pci_liveupdate_fh);
-> > +}
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260714151505.3466855-1-vipinsh@google.com?part=5
