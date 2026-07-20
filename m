@@ -1,89 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAB842A14D;
-	Mon, 20 Jul 2026 14:24:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC39418A3F
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784557462; cv=none; b=GM3Bav+gi3FXzNFqr4sB6p9xHc9IDaPW0fxLa5sBabZT4qACdbe4aaypS6lQbeOsgV+zj9XL2xUxLqFJ5LpnVNTaJvBpnNlrx1oZCiuRi5AIsjwhRLH3j0x5ycqCZtYI+HtGRh7Xdf/YMHnB30ByMqzov9/Z8ZjTJfWFkE0auo4=
+	t=1784559796; cv=none; b=S44T53AFlW3KcX16vrZ/2qHjTYpfbeKD1v4koAwkYxqFniIyb7bewfyFdhOdI2xXPshPSMxDLO6/poYVbBawurkYxvnrg97eU75kfy/vwoBPfmLZyyZjUUlINbTbPNIvi1U2KPA0sukdbqZt41hpGxUnPW/ok6Z6GrL8U6JikWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784557462; c=relaxed/simple;
-	bh=qPtLQuvI61f+z64VhBdohmbC0tffn62+SOapkmMOlvA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vb4XtPEfRourdf24TgVUdulk+pzNGCjFXeSbutEC+jAMBW2cpL4BUuD9SCGtfRtekb5DJG/zt8vkljg316NZk9xQYHP0oLXNMHxheZUt0XPGrZsjjmEDI1WfPJqk1UBEZJuwrlA5U9SDqogbZJ7DylA1E18WSGXLgq4c+MEYLiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDZXe5nm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784559796; c=relaxed/simple;
+	bh=ecPphwYcfS/q9xG0DGZNMPggdMTPszdtVDUdQSiFCsU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=emyeqrk7G0QzFg+HLwj8L9CzR9zBLanmLuNAaZG0qVprPlL+WanolhtbQAwaICgGAcO5hSFzpOgZeQW3CQ4fpPc8kXEuw/+a5mpvOY8VfEjhgXpZwuMQGmjtgHVc4Y0zA1ReCcGX7ay9EKMaojlq4BkdH4m3LpP7bfVv/LP4NdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tcLaYrQh; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDZXe5nm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BB41F000E9;
-	Mon, 20 Jul 2026 14:24:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784557459;
-	bh=sNgZKDfLkxdCEoyuZ32JG/iZfFSZC4LOzIXGHcL9tJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SDZXe5nmoA0UIpHMbuORT76j+s20SLfp8umFAMnADrLWUVzKWpHL2iz7yNsNSBTwX
-	 /xLSmTj4wh3IZj4LCFz3eTWjIaxpP2eK6+Tk8RjzpriplQbTsPJRURtkw+oxKo+AKu
-	 EogSHfC//gmf3hrD4K7prHcC5847K+Hd8oDp4kVEDoxY/2wSwqYYLNwiTReZsflh0S
-	 fKCGHeg4vGdiduijATyfOdCedjzuCZMXrW0POsqxpoQT4ykCE2hh2euJbSP7dgcoT8
-	 hnyt97Qi3tz/a7KGrD/TlH7pA6CZJLd6qJPXd2GLElflqtudS26sqLtmFc0gFmSWL6
-	 leAL/+S5omQ8A==
-Date: Mon, 20 Jul 2026 19:48:00 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dmytro Maluka <dmaluka@chromium.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: VMX: Postpone IPIv setup after successful vCPU
- creation
-Message-ID: <al4rNqpBYy8FGKPw@blrnaveerao1>
-References: <20260716160801.3155582-1-dmaluka@chromium.org>
- <20260716162900.9D8131F000E9@smtp.kernel.org>
- <alkTuicE2ELcakS9@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tcLaYrQh"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 774EE143D;
+	Mon, 20 Jul 2026 08:03:09 -0700 (PDT)
+Received: from [10.57.85.41] (unknown [10.57.85.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 003F03F86F;
+	Mon, 20 Jul 2026 08:03:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784559793; bh=ecPphwYcfS/q9xG0DGZNMPggdMTPszdtVDUdQSiFCsU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tcLaYrQhKvN8Yc/TQ2ahVcIOzL1KArRBZfJQehK+OVeZMItiQh446Wp9ivSDlV7lQ
+	 aWjQlWvehMhUZHFZpvyWSII1cF4YDqhTuyZjoco4g1p8g0tQeia3g5T0mv2ldop1/i
+	 EjGNH1BFJmFrCg9cCDzgOQuO8ENAWIShOtG8MgRY=
+Message-ID: <f63c0275-1c26-49dd-a046-459728de6a39@arm.com>
+Date: Mon, 20 Jul 2026 16:03:11 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alkTuicE2ELcakS9@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] firmware: arm_rmm: Ensure the RMM has GPT entries for
+ memory
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev, Marc Zyngier <maz@kernel.org>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-7-steven.price@arm.com>
+ <20260715154738.5339F1F000E9@smtp.kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260715154738.5339F1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 16, 2026 at 07:24:10PM +0200, Dmytro Maluka wrote:
-> On Thu, Jul 16, 2026 at 04:29:00PM +0000, sashiko-bot@kernel.org wrote:
-> > [Severity: Critical]
-> > This isn't a bug introduced by this patch, but does this exact same
-> > vulnerability exist in the AMD SVM AVIC code?
-> > 
-> > It looks like the SVM code suffers from the same use-after-free pattern
-> > when userspace creates a duplicate vCPU ID.
+On 15/07/2026 16:47, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [Medium] Host-side memory allocation failures are incorrectly parsed as RMI firmware errors.
+> - [Low] Empty or sub-page memblock regions are expanded into 1GB GPT allocations.
+> - [Low] Missing trailing newline in success message.
+> --
 > 
-> Seems plausible. Can someone with AMD expertise look into this?
+> --- Patch [6]: [PATCH 6/6] firmware: arm_rmm: Ensure the RMM has GPT entries for memory ---
+> commit dfe33cca468028175b080bbcfc671eba1604716c
+> Author: Steven Price <steven.price@arm.com>
 > 
-> > In arch/x86/kvm/svm/avic.c:avic_init_backing_page(), the newly allocated
-> > APIC backing page address is written into the VM-wide hardware IPI table
-> > before the vCPU ID duplicate check:
-> > 
-> >     WRITE_ONCE(kvm_svm->avic_physical_id_table[id], new_entry);
+> firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+>     
+> This commit configures RMM memory tracking to ensure DRAM regions are 
+> tracked at FINE granularity. It statically allocates tracking granules and 
+> creates Level 1 GPT tables for these regions when needed.
+> 
+>> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+>> index 6a9f61760fd77..d0c083bdf251f 100644
+>> --- a/drivers/firmware/arm_rmm/rmi.c
+>> +++ b/drivers/firmware/arm_rmm/rmi.c
+> 
+> [ ... ]
+> 
+>> @@ -604,6 +606,89 @@ static int rmi_configure(void)
+>>  	return 0;
+>>  }
+>>  
+>> +/*
+>> + * Make sure the area is tracked by RMM at FINE granularity.
+>> + * We do not support changing the tracking yet.
+>> + */
+> 
+> [ ... ]
+> 
+>> +static int rmi_create_gpts(phys_addr_t start, phys_addr_t end)
+>> +{
+>> +	struct rmi_sro_state *sro;
+>> +	unsigned long l0gpt_sz;
+>> +
+>> +	sro = kmalloc_obj(*sro, GFP_KERNEL);
+>> +	if (!sro)
+>> +		return -ENOMEM;
+>> +
+>> +	l0gpt_sz = 1UL << (30 + FIELD_GET(RMI_FEATURE_REGISTER_1_L0GPTSZ,
+>> +					  rmi_feat_reg(1)));
+>> +	start = ALIGN_DOWN(start, l0gpt_sz);
+>> +	end = ALIGN(end, l0gpt_sz);
+> 
+> [Severity: Low]
+> If a memblock region is smaller than a page or misaligned, is it possible
+> for the initial start physical address to be greater than or equal to end?
 
-Yes, this write (or just setting AVIC_PHYSICAL_ID_ENTRY_VALID_MASK) will 
-need to be delayed to a post-create phase similar to VMX.
+I don't understand how start >= end would work. That seems like a very
+broken memblock.
 
-The alternative is to simply skip setting the entry valid during vCPU 
-creation and to instead do it unconditionally during vcpu_load(), where 
-we anyway have to update the entry.
+> If so, applying ALIGN_DOWN() to start and ALIGN() to end could force 
+> start < end to evaluate to true for an originally empty region. Could this
+> cause the loop to inadvertently execute and allocate an L1 GPT table for a
+> 1GB block that contains no full pages?
 
-> > 
-> > If the vCPU ID check later fails in kvm_vm_ioctl_create_vcpu(), the
-> > new vCPU is destroyed and kvm_free_lapic() frees the backing page:
-> > 
-> >     free_page((unsigned long)apic->regs);
-> > 
-> > However, the AVIC table is never updated to revert the overwrite.
-> > This leaves the physical address of the freed page in the hardware table,
-> > which could cause a hardware use-after-free if a guest subsequently sends
-> > an IPI to that ID.
-> > 
-> > Could we also implement vcpu_postcreate for SVM to postpone the AVIC
-> > table update, or do we need a separate fix for AMD?
+A misaligned/small memblock would be very weird. But we'd still want a
+L1 GPT table to cover it.
 
-Thanks,
-Naveen
+>> +
+>> +	while (start < end) {
+>> +		int ret = rmi_gpt_l1_create(start, sro, GFP_KERNEL);
+>> +
+>> +		/*
+>> +		 * Make sure the L1 GPT tables are created for the region.
+>> +		 * RMI_ERROR_GPT indicates the L1 table already exists.
+>> +		 */
+>> +		if (ret != RMI_SUCCESS && RMI_RETURN_STATUS(ret) != RMI_ERROR_GPT) {
+> 
+> [Severity: Medium]
+> Since rmi_gpt_l1_create() can return a standard negative POSIX error code
+> like -ENOMEM from a host page allocation failure, does passing it to
+> RMI_RETURN_STATUS(ret) misinterpret the error?
+
+Note that rmi_gpt_l1_create() only returns "a standard negative POSIX
+error code" in the WARN_ON path. In the more usual case of out-of-memory
+then the operation is cancelled and the results of the cancelled
+operation is returned.
+
+> For -ENOMEM (-12), the macro extracts the lower bits (244), which won't
+> match RMI_ERROR_GPT. Could this result in printing a misleading "GPT Level1
+> table missing" error when the real issue is an out-of-memory condition in
+> the host kernel?
+
+Yes, although this is only after the WARN. I'm not sure it's really
+worth fixing the error message for this corner case.
+
+>> +			pr_err("GPT Level1 table missing for %llx\n", start);
+>> +			kfree(sro);
+>> +			return -ENOMEM;
+>> +		}
+>> +		start += l0gpt_sz;
+>> +	}
+>> +
+>> +	kfree(sro);
+>> +	return 0;
+>> +}
+> 
+> [ ... ]
+> 
+>> @@ -621,6 +706,13 @@ static int __init arm64_init_rmi(void)
+>>  	if (ret)
+>>  		return ret;
+>>  
+>> +	ret = rmi_init_metadata();
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	arm64_rmi_is_available = true;
+>> +	pr_info("RMI configured");
+> 
+> [Severity: Low]
+> This isn't a bug, but should this include a trailing newline ("\n") to 
+> prevent subsequent kernel logs from being appended to the same line?
+
+This is actually a bug - yes that newline is missing.
+
+>> +
+>>  	return 0;
+>>  }
+>>
+> 
 
