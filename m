@@ -1,130 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32294432E8B
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1746614A619
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784560339; cv=none; b=SS9vTYTocluIUMas8RRnWFFdbLPF+SkUIGp6apvMh+MYSj3k5EcUTrU57bZL2QH53XZ5z35tyfujcgCBiobCe4LAxtDEtR/gCP8S5ypUlwm8fxVOhCHR/j3JhW5asfeoTgag+HO3izH94MJ/r8aCWMNI+8xD1xRp8i2zA7hiRmw=
+	t=1784560773; cv=none; b=fP10OHUX/B5CmDIkoZ0OieyA1O1lS91KgQhAcpoXvMfWkRvR01USAYKX2dW0IJ9QtUVNVkGfET0JZSUG7fDKawfHAHGbQZV7CtQquIvN899/WvgssCjmkPy4MwxWMiyrshpXe6V2uv0IU0kHEphibEeoZ862JJTmgsanQukwgrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784560339; c=relaxed/simple;
-	bh=k3h74G4NxiFjK9p2u2yaPPmUVEdETUoZeDAGJwaID7U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NBtrbOsO+7x+OYgGhT/G8PKKiKNg2HvsajCsgAWJKfa3jMAcIFx6ZHqi3kH+gnFacOhKFLov0mKs0cDvRNy2C19XjwmprYqsTZl5nGQvKdv4INoZgm26fRvt12eaq9fU6M7ZrCe5DKkciS+X8RGBMns+2APzIOykyXWpK3qUQvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HmTfVUnI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784560773; c=relaxed/simple;
+	bh=OcURofY2z1Fq7P1EoSJSb7+UF73+Qi4nme4BcFUst88=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BKsE+ZMHHVQ+RXFtVHpJC6GCQKo1twSDm+DHzlKYfQ8C7GeOzmLFLC1NCobYcm6PJpc6KlUaVZDoh+whyMCCj54QN1G7XGGbjdoiP+Nzpz+4UlvMvKMSXkWLqZ+IQWAaGKhUf5NrHi41Z8yFpn04PI9OS3DTRmLStFKq8/1e9XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vs2ldB8A; arc=none smtp.client-ip=209.85.216.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HmTfVUnI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784560337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xxjJY7kKZ8EKJOSC/o4iGEhT/zvaFpsJ7k5a5XOVqJA=;
-	b=HmTfVUnIR9OQzuFK/fyH7Mx4LyPdQmiz5fJyi/SpMIjs0kGublWF5Y1Ca/7Gd8WZERvdHJ
-	K90oJsu5/c78bASCGLAMLNGIygsmpvBARtSIGncM4mhhblFmgsxmCYwEQ1kheoHofBV0GC
-	EuUXBGi+L9SSPC+IImoWTLs+UCzjZik=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-126-Vz58Qow3NaG9WGqcJGAtIw-1; Mon,
- 20 Jul 2026 11:12:14 -0400
-X-MC-Unique: Vz58Qow3NaG9WGqcJGAtIw-1
-X-Mimecast-MFC-AGG-ID: Vz58Qow3NaG9WGqcJGAtIw_1784560329
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7B251955F03;
-	Mon, 20 Jul 2026 15:12:06 +0000 (UTC)
-Received: from [10.44.48.28] (unknown [10.44.48.28])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 83BB1300418F;
-	Mon, 20 Jul 2026 15:11:54 +0000 (UTC)
-Message-ID: <142d0538-83e4-4d63-a2f1-ed22110d73d2@redhat.com>
-Date: Mon, 20 Jul 2026 17:11:51 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vs2ldB8A"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-384419c6c74so13059308a91.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784560771; x=1785165571; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dmhhV/l6c7yy+KGLoVJm/3/iCcrnLm7hqjNCCMMwHLg=;
+        b=vs2ldB8AucOvbHguIRTPb1xy8t1tYc8drT4tHB7jfpV+ionqhsWE6wQKxsv6NE7agF
+         bmboNeyJ66GSdT7r1kxgR0eUVD2WqMJzJgbvVELSs+gWOmaFi+UzMSr7VCcIqPyDNkfR
+         IiRQK1zEm8zrojv7Ls18L/4o46wI9ksoOYZ9He2XTu8KsBWQ4glVCB2zTSOE+UtKOvkh
+         ebPHmZWh9tAARofrOFAO3N5WysyUssgFBasjuybUNW6BXjsAQVW4J/cGhVgCxC+r6EsJ
+         8Wd4+j1jGomtpEjicyDdAiY08rALUt7MeUuFXXuk3JZ6/4My2/4XmYmgpqCgIZ7xXett
+         8csA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784560771; x=1785165571;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dmhhV/l6c7yy+KGLoVJm/3/iCcrnLm7hqjNCCMMwHLg=;
+        b=ndWeP0qODxegUFZmUJIEGpsY/LNRp3FMmslryF0rSbi5+i+eJp1YD6UMLIVFQ34CQt
+         DBATu5zCa0+PUzd4JNgxtXt2jgWDQ3Gce4d5fm5qoTWTX76OpH5wLZ8UyYYQaE9erIUB
+         601HTRDhQ56XWB0bR0awUc8CabeI5SpVwsUb4uAWrTgxAuPoze5dWFZA8MDOVjPhHAVC
+         P11dqnTdPcTxPyswRTX+rjIHuVvJZiKRy1tHiwMSJw6C6HjRRpgpaPnqcwS/FW3qds0m
+         SoEzQRabzTlgm645n+B3ZOreMkDDBzamae9QYu1onPpC74f6R9W+HCZR/GRMTY7tyUvW
+         W/hQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoqT7mqZvx9CBqXKVLTETs/OySkXvI0inKvLYSp0MXULvys+4o0fiheF8ZBBUW3naOMgTo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytGKd22dEmUFKm8vz6nSQXaczTcq6kFMehCMJiT6Bw6OI51oBr
+	MJr1Cnj0Wi//2TM/C3mIW86NNizsUrBcaspHjHSh6miettqEmMZbPrZwsJXi8P+5IBxdNtC5ZuI
+	d2Gewag==
+X-Received: from pgj4.prod.google.com ([2002:a63:904:0:b0:ca1:3a05:d935])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cc0b:b0:3c3:ac5d:b6de
+ with SMTP id adf61e73a8af0-3c3ad7da25cmr16576815637.22.1784560771100; Mon, 20
+ Jul 2026 08:19:31 -0700 (PDT)
+Date: Mon, 20 Jul 2026 08:19:30 -0700
+In-Reply-To: <al3Qbq-jUYE-_72N@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 00/11] KVM: Allow alternative providers of
- guest_memfd backed by PFNMAP memory
-To: David Woodhouse <dwmw2@infradead.org>,
- Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Shuah Khan <shuah@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>,
- Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>,
- Connor Williamson <connordw@amazon.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Zhou Yuhang <zhouyuhang@kylinos.cn>, Zi Li <zi.li@linux.dev>,
- Dan Williams <djbw@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
- Colin Ian King <colin.i.king@gmail.com>, connordw@amazon.co.uk,
- graf@amazon.de, fgriffo@amazon.co.uk
-References: <20260720111259.122911-1-dwmw2@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260720111259.122911-1-dwmw2@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Mime-Version: 1.0
+References: <al3Qbq-jUYE-_72N@192.168.1.215>
+Message-ID: <al48gqBHiZgmVc0v@google.com>
+Subject: Re: [PATCH] KVM: VMX: Complete pending nested VM-Enter on
+ invalid-state failure
+From: Sean Christopherson <seanjc@google.com>
+To: Hao Zhang <hao_zhang_kdev@163.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 7/20/26 13:03, David Woodhouse wrote:
-> I'll continue to bikeshed it myself, but this is at least functional
-> enough to show the direction and solicit further opinions...
+On Mon, Jul 20, 2026, Hao Zhang wrote:
+> From: Hao Zhang <zhanghao1@kylinos.cn>
+> Date: Fri, 17 Jul 2026 09:18:31 +0800
 > 
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=gmem-provider-v2
+> Commit 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if
+> emulation_required") made KVM synthesize a failed VM-Entry with
+> EXIT_REASON_INVALID_STATE when L2 guest state requires invalid-state
+> emulation during nested VM-Enter.
+> 
+> That synthetic failure is generated in vmx_vcpu_run() before attempting
+> hardware VM-Enter.  As a result, it returns before the normal post-run
+> path that accounts and clears nested_run_pending after a real
+> VM-Enter/VM-Exit round trip.
+> 
+> If the synthetic invalid-state failure happens while a nested VM-Enter is
+> pending, __vmx_handle_exit() observes a trusted pending nested VM-Enter
+> and fires KVM_BUG_ON(), causing KVM_RUN to fail with -EIO instead of
+> reflecting the failed VM-Entry to L1.
 
-In the meanwhile, I have very ignorantly applied patches 1 and 2 as 
-testsuite fixes. :)
+This KVM_BUG_ON() is working as intended.  prepare_vmcs02() is supposed to guard
+against emulating VMLAUNCH/VMRESUME with invalid guest state.
 
-Paolo
+Ugh this appears to be reachable by clobbering SMRAM state prior to a RSM to L2.
+Is that how you triggered the KVM_BUG_ON()?  If so, I'd much figure out a way to
+fix the RSM flow.  Or maybe just treat those runs as untrusted?  Because for all
+intents and purposes, stuffing vCPU state via SMRAM is the same as stuffing vCPU
+state via KVM ioctls.
 
+diff --git arch/x86/kvm/svm/svm.c arch/x86/kvm/svm/svm.c
+index 8c5018c65dc5..1f4604a9ae58 100644
+--- arch/x86/kvm/svm/svm.c
++++ arch/x86/kvm/svm/svm.c
+@@ -5091,7 +5091,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+                goto unmap_save;
+ 
+        ret = 0;
+-       vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
++       vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
+ 
+ unmap_save:
+        kvm_vcpu_unmap(vcpu, &map_save);
+diff --git arch/x86/kvm/vmx/vmx.c arch/x86/kvm/vmx/vmx.c
+index e4b9ac7fed9f..5c410f68a716 100644
+--- arch/x86/kvm/vmx/vmx.c
++++ arch/x86/kvm/vmx/vmx.c
+@@ -8453,7 +8453,7 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+                if (ret != NVMX_VMENTRY_SUCCESS)
+                        return 1;
+ 
+-               vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
++               vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
+                vmx->nested.smm.guest_mode = false;
+        }
+        return 0;
