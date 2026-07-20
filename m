@@ -1,131 +1,139 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113CD446838
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 17:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784568709; cv=none; b=q2OporYAbKyqgfzyqk24O/iQMtA4UZhkz/KTYR4qdKVg6xy3MqqCqmkOr9KKMLsx4Kmov7bsDXOeWhE5bXgiaD2L/TTVpuiQrVguYtjRFZ/4MRvpba5Ha7L9ZMzLuG0xlEdVQWNjQYJ/fTUTP7LjrYE1tcQIRLOebnfKJ73ZL/I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784568709; c=relaxed/simple;
-	bh=qw4JPuFzFFBPT4iH1s9YU2BZkhtjNYvO5TG+CT6T0gA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fJbpNkYSm7Y12rkNACs08uGOYnn4pM6gCSnFbPWpYrC3Qsq3MQSspoVQX/LWXJcP9wieFnHon+jfafddcajsYKblHOUXWwKCAHxayXW2wMY2xQ2JDIi3XU47bAvmZbwP7xyUQmqdyQYAQhmZCDoidzIUe3U/g6PV7B6EnVnWzlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aLbZDCVr; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71044685F
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 17:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784568967; cv=pass; b=slZBB5dqwinSExDteAVk4I0LuiXfK7UIxDMrDY+fZWoT6OyUhyTaE15VeUBeTVsiX5kT1gsh9V288gSSi/IsgDR7HCXhSGw3b6yDAqPAZhRUjDg94vVlsWxTQFMnP4L92VRttMRDycLb+qLHDgHrVYWm2GF6rINnCyt5JT4AXZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784568967; c=relaxed/simple;
+	bh=SbURIGswwpg1ve/ffiCUfqs7mO6OoaXDqHyJ1zRKPlM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JgBQ518xPClpSEd2Gx//9D0dp8Pnc30HJsMdaXXyCrXNiDuuissCJj1srWg//ngt18Z7m6zM1x9FoZEFP8NfY4bHmcLxmKC7+Eqj+aL/q8e0WvjRTgWRfhDbfJZANIjaXFuIoIA8XNP8naI+3lSN2XtJ+fGC0j8H/4Q28RhPPww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j7RSir2Z; arc=pass smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aLbZDCVr"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ccdf36f63dso398475ad.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 10:31:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j7RSir2Z"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso35925a12.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 10:36:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784568959; cv=none;
+        d=google.com; s=arc-20260327;
+        b=djZZ7SUp9kMrWI/UVKCsq35HeZ0nAHVvAFwv12FCBvQWCQKdzRqCufr7Le3J+/C/kN
+         DOEeMFPtOzL/L2C/e1r2eptZpL03ufMma2XuYt90YD7XKCSSFNgEGahiEppTQmEOp/Nf
+         NzOnjgkpJHWk8jpVtrTq+UJRBwH1ddEl8RqChRxA9R/4PYVdD+foK271UY1ISq75vvDz
+         DNMbNePEyA3udBknXoSPWTmFPUBKPmxDuvQBYhaKPateFZECyRrRWD2mFSBe5k4MdIBE
+         /fKVe0DnaJb9UPbwkEEDEhrMaUtBJ8TmBYOQ0TzynjhUoCC7Zv5YGns9prLO/iz3Kfhq
+         EnZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tglODSxOYuHA74uGMCX7zLCGYvZDKP4CbFiPk4jTwzU=;
+        fh=gBLnTBofuGahBzG0ichmwFWHRhAMpAhOkmU981wgPaI=;
+        b=k2XFOu+gxYD5ghStHIaLoAmrhBrNUM8oUjK7dau66Jm/tSaiCOayW6/sQvNcCtKmcI
+         TRsf0JXlrdmttbqBg02OnjRzei8zHl1uBdAXzJOtK7BuTJS9P8TXAy5Irar+HiTfEhJk
+         FIzDDwlEuViSd6kHOGL0tFKIvl3P8L78Z3BVp5+wy6CsAjw9V79CtJt3gq+Ot1yUqTKI
+         yBSb6PZfMTvfdPEnkAOufI8Jiq0O5DFDvyOTANg0gXWV+s7N4PQcxKYIOUiDOxYBtbuL
+         P1t3pg7BrtvPdhcwciR7co+o7MvgBZSBr87qa0XF9AT9XR5uCcaaZpdEm+cMuA4OZjM5
+         /UBw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784568699; x=1785173499; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=354gFNaVuvmOpRh2GIKgIn4uIuwVXTK+d7q38SvtQbc=;
-        b=aLbZDCVr1g+cQ+xeb9Hgx89e9Au2lfi0EeVoMbmYGaxUb3l38v2UZjbtrMA1HO/nMP
-         bBMH7bKc1q0Aw3scPE+BIJ4g+p+/qguzNCeO6QyZslx0LiM1A8Q9cMbjWBze23c1gM0r
-         XLqtBkFGx2hCrnbbHO54fsz7j9gzKhGuM90U6wKfIzgY+Fm8R9AWvfz+qGLeArJuVRy8
-         oMztjIVdMRRoskhcKqBGe0+8+yJZEFOTGS42oIv3gn22SerrVzeuvvByNQ4c8NLa6OrL
-         D39j1tEIMiJM/4VGmxvRHr1RIlXU2QOpHwnKOvDyPQKyTR8Srz4VCSgUW9E12LLksDYw
-         B5Xw==
+        d=google.com; s=20251104; t=1784568959; x=1785173759; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tglODSxOYuHA74uGMCX7zLCGYvZDKP4CbFiPk4jTwzU=;
+        b=j7RSir2ZG5H7KhIZUbPoJCGdtZJqzIdelFMmwUrAA2kvtzUGcd05czBzET3l1KwBa3
+         z3oYidZZx/xXq1DfIIYIXtAYSnBfTZnru7uw1PRRTKoxgRDgQCKnCMafDmm9S4/zOGJx
+         OWQTacp8y1vz88h7BRYEW0QvvkXNUZQZmHl6f6jjDm6CG7dXhg93EAW7WdXt8It6llJ4
+         +AjsE0XVWjtBrH5WP2c939aSDQ1BTBCGgcoXgpnlB7seUj5GRmC7hclUDtkz9r8/DTFk
+         aNqkEf+TGXwtBfF+dlFB7xvGy79Mt8AzV8/Ov1dic+Azj/2clm3Yl7a/SdE9aOzFxKKi
+         v1Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784568699; x=1785173499;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=354gFNaVuvmOpRh2GIKgIn4uIuwVXTK+d7q38SvtQbc=;
-        b=UgCt92WRz16YKN5RoOdOmwSjZ00s6o4JBI3YBXwdIRpq+GZ358rlvdT94bxwBV+aqO
-         O0K83QjpSf+aO4LNyi3PLgu6L3vmDrG8Q2SUdzb4ys/2ZigRp/LenuXcYwSaT5meBbeQ
-         2xD7HUs0IZAsjw9KwUrgy4ceQm1EfxUyds2OaIs1b7jgbB9+6Dwy08OdqOaJtpW4vpcg
-         C2oj26Zg3ujppV/pOkdilQ1np+ih7LDfcYZL3e13DQsYmTR2HrIET4MMGemDCoViWumQ
-         5js0WJzhQLeqCrZjkwuRq44dZuKCi7XeDaWXvgdCwLGrduPQShxTY+PgdptsVyw0DUqX
-         70Nw==
-X-Gm-Message-State: AOJu0YwtGAkCc019YSKoGJ2QKHM42wApSCu+iSpWfa62pnUGtRhiElt+
-	GfUbEKKXYPxeWmgUmWzebc7iEgnvq/MjUWTECmt6QPZBK8P6wqTw5tjyyh35v3J8iotLHkkWt3Q
-	5Qii/aU1h
-X-Gm-Gg: AR+sD12J9y+Hs23jNOtb7kvA6srVTHM9fbHXsvaxUM/oMCJsa4kuAW8tNcPY2YoT34r
-	7WUGvnINrO2w/UDYv3+4HXd0le87yYIdTkDNhZiIWjawfPxY7Re0FclsSIImMNfITa+fgvjWliR
-	K9WDJF1m/QMSru1x2J2y4+AJDlorp719mqpVRsCBbTo3tFwJDVjToG84kR1doZB1KVT0mnEe7Dp
-	j8b4Gh4cObReekKQE3RhezryYteEdSpJ3zemEsaBYywhXWr2dGIvyGe0KSwhbZVJHZTSPASsBzu
-	Wa4LaJ9dCMAUMT4jIki8JxYObxKowqW5Jx4vbQPmwKiHbwnHtYeG+ju5onJjjAcwiBjbGfyZtBm
-	dr0fGK7yatzouIrhdAfgNhWrKrGgCfAUetRu6twVf5K7U3UQDioGyU8StKMUB34PD/n5NSIyult
-	ElINwIfZGw7/RF9NnUtpfovnoNaafFtSD0rJl3yAQ=
-X-Received: by 2002:a17:902:e349:b0:2c7:df7a:859a with SMTP id d9443c01a7336-2cf7b68e207mr1146615ad.15.1784568698588;
-        Mon, 20 Jul 2026 10:31:38 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e921f2e1esm116328a91.0.2026.07.20.10.31.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 10:31:37 -0700 (PDT)
-Date: Mon, 20 Jul 2026 10:31:34 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v5 02/20] vfio: Export various helpers from VFIO
-Message-ID: <20260720172344.GD1191959.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260714151505.3466855-3-vipinsh@google.com>
- <20260714153051.DDBCD1F00A3A@smtp.kernel.org>
+        d=1e100.net; s=20251104; t=1784568959; x=1785173759;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tglODSxOYuHA74uGMCX7zLCGYvZDKP4CbFiPk4jTwzU=;
+        b=HJh5dC2D4kKvO+1kzU+YM/agVkMyGgbkbh4AXL7dvxDqT0ijx/BqsArrK3QVpniz3H
+         DcgoNCXrMKScPOnEO+JRF0KggBwBOBFFyBHaGnvIUVx2B8cYSnKqKImVZN+GyBLSjRKF
+         qiO0vpF+MUWTAJouOZ8H0wKdmCRcVU1Dv0TeRQymoX/CMPf5dAsjvxJCPJdc6Dd5H0Q+
+         4nR+xZr62c6bYmWwSsaqkHlYzkrYHcdjQnU5JlbGwTQGEs09Nu6A8VKr84+xOwA02tip
+         25BRCqKt7wNrfpjwCjr1VN8uBON7LdgmaNuGdVJ4vamD6KFlpHNfw+EQ7gneygIhqGf0
+         H+yg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpeab1IHWjy7pOZmVCVQgQ06tYk/2Hi5XLZnvPpg6sIQ9zOSjn4maUVUbInT4LNnu9kDlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdoFpLDTmfe/c1+pqpg27XeJ4Xn9bbPNYISfv7mimp1CkaM9a3
+	vGgy0B9z5tet37g93avEMN+KvpXGQlC1YHInmDzjKlMnueKAVs1iOH2z8MPh/O1tnDTuy2T5Ppn
+	h8cqAHMeSk4f8Jt1gEGSm1a9PLgdK4W/qfjIIyo03
+X-Gm-Gg: AR+sD13F8mG2khnCW1E+LWWEwiJq+OAGbVxKGSwosEFxfWGyLEhI/6PdKDr/Q0B3c0U
+	x2H5bp65rLMWbC4E9VbHH5lV95ZG0dNtLUUylXeVPYuiujR9/EL39typbvXuv6+I2MyJ6x1aplx
+	PQr/3i/hBgpZ6AYRQ0/pIZcPRaNeg7Gx9H/o4cIwAEu5RIlz4mbEaTe8BJD4bMEYt6AigDTxXkA
+	oYEf0H3b8Vl1cTAmd2zrA5wgLGj5SUCGmuNFC2m1fGBnqpJu7FNkaKa8WWa/Q==
+X-Received: by 2002:a05:6402:b12:b0:69e:98c8:c71b with SMTP id
+ 4fb4d7f45d1cf-69ef500c0f1mr27194a12.6.1784568958581; Mon, 20 Jul 2026
+ 10:35:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260714153051.DDBCD1F00A3A@smtp.kernel.org>
+References: <agPUfzbMzTU1ebii@intel.com> <agY6JuEJRhwpwlRL@google.com>
+ <aga+jCVUW0d4GufQ@intel.com> <CALMp9eSqqsEzd5MSeO46EdC8aOwhyhU7e2bOW2LSdnDQGXEVpw@mail.gmail.com>
+ <aiHY8cWZYZNb-DED@google.com> <CALMp9eQ17UaAje1DQ7v24U7iKujvnOknY4itQjSqOaKSn_FqBw@mail.gmail.com>
+ <aiI6xge3Ev3PCpUV@intel.com> <CALMp9eTXLcDNAjjcsuo_nqjowk33yA58fjYZbz_Lqytn07RM-g@mail.gmail.com>
+ <aiJlAhqnU0lwOAcG@intel.com> <CALMp9eQYc0AGjuVqCHL-GGe2cLOCnYZhTso=50HihdxTmNShWw@mail.gmail.com>
+ <al3ygBbMHq2ltdYN@intel.com>
+In-Reply-To: <al3ygBbMHq2ltdYN@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Mon, 20 Jul 2026 10:35:46 -0700
+X-Gm-Features: AUfX_mxVpz9bi2E3BA8Zod9D7_JUyMFcogs__HW-AuzPuDVJKVgF7hVqBDojt3k
+Message-ID: <CALMp9eRpgpgbG+FH_+zGrgeDX_en9jKogZ9=BBHMKRY+_cz9rQ@mail.gmail.com>
+Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
+To: Chao Gao <chao.gao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	isaku.yamahata@intel.com, pbonzini@redhat.com, erdemaktas@google.com, 
+	vkuznets@redhat.com, vannapurve@google.com, mlevitsk@redhat.com, 
+	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, chenyi.qiang@intel.com, 
+	Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026 at 03:30:51PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] Missing EXPORT_SYMBOL_GPL for vfio_pci_ops, violating the stated intent to export the variable for other modules.
-> --
-> 
-> --- Patch [2]: [PATCH v5 02/20] vfio: Export various helpers from VFIO ---
-> commit fcee4889ab47813a22592eb00c453edea425e0f0
-> Author: Vipin Sharma <vipinsh@google.com>
-> 
-> vfio: Export various helpers from VFIO
-> 
-> This commit makes several vfio helpers and the vfio_pci_ops variable globally
-> visible by removing their static declarations and adding them to headers. The
-> stated intent is to export these symbols for use by other modules, such as
-> the upcoming live update feature.
-> 
-> > diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-> > index 0c771064c0b84..1fb4b276afe7c 100644
-> > --- a/drivers/vfio/pci/vfio_pci.c
-> > +++ b/drivers/vfio/pci/vfio_pci.c
-> > @@ -125,7 +125,7 @@ static int vfio_pci_open_device(struct vfio_device *core_vdev)
-> >  	return 0;
-> >  }
-> >  
-> > -static const struct vfio_device_ops vfio_pci_ops = {
-> > +const struct vfio_device_ops vfio_pci_ops = {
-> >  	.name		= "vfio-pci",
-> 
-> [Severity: Low]
-> The commit message states the intent is to "Export these functions and
-> variable for other modules to use them", but is there a missing
-> EXPORT_SYMBOL_GPL(vfio_pci_ops) here?
-> 
-> The other helpers modified in this patch received an EXPORT_SYMBOL_GPL() tag,
-> but vfio_pci_ops did not. Without it, external modules attempting to reference
-> vfio_pci_ops will fail with unresolved symbol errors during the build.
-> 
+On Mon, Jul 20, 2026 at 3:04=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
+:
+>
+> On Fri, Jun 12, 2026 at 03:51:56PM -0700, Jim Mattson wrote:
+> >On Thu, Jun 4, 2026 at 10:56=E2=80=AFPM Chao Gao <chao.gao@intel.com> wr=
+ote:
+> >>
+> >> On Thu, Jun 04, 2026 at 10:34:40PM -0700, Jim Mattson wrote:
+> >...
+> >> >With respect to EMR, you wrote previously, "A mitigation for this
+> >> >erratum is for software to program the VMX preemption timer for value=
+s
+> >> >below 2^25 * CPUID.15H:EBX[31:0] / CPUID.15H:EAX[31:0]."
+> >> >
+> >> >My question is whether the exponent, 25, is a fixed value for all
+> >> >CPUs, regardless of their IA32_VMX_MISC[4:0]. It sounds like you are
+> >> >saying that the exponent may depend on IA32_VMX_MISC[4:0].
+> >>
+> >> Let me double-check this with the internal team and get back to you.
+> >
+> >Have you discovered anything?
+>
+> I just got the final answer:
+>
+> 2^25*M/N is the max value of VMX preemption timer for _all_ affected
+> processors.  Our expectation is that for processors that have different
+> value it will have the issue fixed (VMX preemption timer will implement
+> full 32-bit). Use of 2^25*M/N will still be fine.
+>
+> where M is CPUID.15H:EBX[31:0] and N is CPUID.15H:EAX[31:0].
 
-We don't need EXPORT_SYMBOL_GPL() because it is accessed in
-vfio_pci_liveupdate.c which is compiled in the same module vfio-pci.ko
-which has the definition.
+Great!
 
-I could have done better job in the commit message log to explain this. I
-will fix it in the next version.
-
-> >  	.init		= vfio_pci_core_init_dev,
-> >  	.release	= vfio_pci_core_release_dev,
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260714151505.3466855-1-vipinsh@google.com?part=2
+How will software identify processors that have the issue fixed?
