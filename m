@@ -1,66 +1,66 @@
 Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE1D41930E
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE0E43803D
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562372; cv=none; b=NkoOEtZaBzZiZiORHuLkeJGOTmWqnPgs+GlMZRCcisnmwSBoiSUTow4wns3qP6qDdfKGBeJzKZfQMkcQFfMx0Sl9BhYO6z8JAZ0kWN8FbaiStptIlTcvLde4g0I+KyG5/2UZ4Ps2B1BwYA73A8scYMSXf8Bu+Kwl89IicODJLRs=
+	t=1784562751; cv=none; b=uIBg3ATLtw4kh1jqJm7HnzwxuveIJCzFwHQvPGcONcMeEns1LJFPvrSrYklaRqZFXBktwr27bzScezSM+2Df5dktewPfGu/T0p95bDQMVTdAjrkwHZzcaHCN3Q2AF01zkRbVbdrH9qyAaRMoaw6oVVCl70wkqvBt9lYDoFMBh7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562372; c=relaxed/simple;
-	bh=mysqL6+eCjNN4mNyfwg428lBDctaTeDZpDM0kmGaMi4=;
+	s=arc-20240116; t=1784562751; c=relaxed/simple;
+	bh=q8IKDZFN3XHBjNxs6JTdILHgbuEWdlYWC7sZBIHFoOI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mYJ61H+FSNAVnc909bWf7Yk003+43D6K/CwH09MTMDeW4+aaxoOJNkfIpgy5/crtZiZG1WEYT9iO6PwZoR7NFh312rAT7hwyWxpIx/PTB01snSyYwsAXDWLhvMQcoXsZfYb0kAPvX9tLtrWPFWb4+YrRYYAe+NA8GuMYNhQzCGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rSG/9Fn6; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=VLt8cMLVD9AF5RQQTsDGiXno55vQBZa4dEO4CssKh24E/v+pmbN8/2drQjBubuzr2TuE/woTgygb+EkazjA8vwWiD/vCJjvx1nyU4JVMFPWh7czIhHMMiuFp+oyUZDooVuYnf0I6+jUZyx26M/kjhcdBhFUhdflwoL5jzThdn1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pC5StrWK; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rSG/9Fn6"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc88e22f92so221012215ad.1
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:46:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pC5StrWK"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cee1ec30f2so94462375ad.3
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:52:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784562370; x=1785167170; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784562749; x=1785167549; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RdZ7BeoIHlBjqID5zacq6MvDALSaxCcCoW3uAv/+L5M=;
-        b=rSG/9Fn6lx545Zhat9Dvu+whzayzJAgMuoU0enel0UdwyJg3VrkBkR2LTtstsqSlJ0
-         294kgb1yNMpZNENkTBd+Sc2TTTZ0Frh3kuMKdMUNvZ1hcs+KS4OVEZUJyo0wchBWqLCA
-         oq6YcaA2j8RYNctr4/+E8n9FMxixv0lhDBlyiop5haCL8lJVwVT2v1e6rPYYVI5iC35T
-         FFVjf376dwGUbzQ02VigUhkusqOqemlqBAVsuFf5lRRoBslikZLuKqb6wZ2s6/5szYvJ
-         7lnzTsxIPyRdEA9p88vvFJwORaGEdTek2GpNuQQ7ZpyQ+B8tQ50q8QYCt1uHC9JmCZnA
-         38VA==
+        bh=yjFnn0IRKPkB9mfObc9RuyZNVxFyPF2whZGfyx26/w8=;
+        b=pC5StrWKVLEyyRRNIKNbm7+hhQqjhV0QCulJUm+fjJDEr20Ksvn0g0QqWH9HO3wAVy
+         QMqEpA+1z5QVjrHlZ6gFXiZg14N0O9kal6o+Uc71yx3c0bv37GPYVtsnjdHAHhjoV4vA
+         855wVyHOKuqcCfQOvRe1plDzumuAR7TxzfhTiemPS2fqzECxZUe5+gYm3aHchRbvDbvj
+         jkB9pcU9bVl4lBFvR093m/b3LGsP9Bz/O8t/rpGATAA3hKU8U0rCsxPMWYT6XVV72Q2b
+         d1kZu2OlxXqk8u51gZHwDh1mhzNIlAcaZP2wOn68opDdwgxKpqqptTqltmBrCXTPZW9M
+         uLvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784562370; x=1785167170;
+        d=1e100.net; s=20251104; t=1784562749; x=1785167549;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=RdZ7BeoIHlBjqID5zacq6MvDALSaxCcCoW3uAv/+L5M=;
-        b=kl45Vl6pTwFT03xpMu7WRceMFMaExHUkm4bp+LOUMK8Fn8eBSJrAw4/rW1zfmI5+Pj
-         YLNcK0hv1B/O0PD0a4syS4omN1qEnngD8JwoClgF+djL9MJBUcACaNFsy6+Zofs8FjxO
-         eLMl1+kXfH2itq1Nm3gHbikfu1g0L9/HilEPJVKb+01Be20fzYz8DDIWu4Qe5T9m4qVR
-         88qHSAIjm7YUJY6EnpadDWW19Nv+E42/S4QGNC4nQW0zTxK222jAfwfK6pD+ofds0WHY
-         oQj9Lx88vdinCr7FxaB86vvFbAIpnhBU99pnw+0ekricCl+rYNPGyoVKg0fh2kHIfLOF
-         8Vww==
-X-Forwarded-Encrypted: i=1; AHgh+RoaZH4B2LCREuCxdwXhWDLooNOAqH3UviMoF6hmqV2xro96MXB6SG+x1VMmNhE55mtT1fw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqvlNRFugJlQUndYdIem4R6NgudkjtpZsNg7F+ESYmyF1l+ldi
-	xkpUGcTPAe+WJWnDrlbAmzlg/vr3NgoxnvMVM7yWSsu6nwTWFmxKdmK67TmbeCEA+kJlnwqHyVK
-	x6MWuDw==
-X-Received: from plbkq12.prod.google.com ([2002:a17:903:284c:b0:2ca:ddbd:a19c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1248:b0:2c9:cf5d:d9bc
- with SMTP id d9443c01a7336-2cf349c979dmr157079325ad.35.1784562369848; Mon, 20
- Jul 2026 08:46:09 -0700 (PDT)
-Date: Mon, 20 Jul 2026 08:46:09 -0700
-In-Reply-To: <20260717230542.3555587-4-jmattson@google.com>
+        bh=yjFnn0IRKPkB9mfObc9RuyZNVxFyPF2whZGfyx26/w8=;
+        b=RKeV8pP/++vcf0B0478cp8rgv0M0somC8tHSxdShplniR7h6k5DHu79ba1a5BOmfJ0
+         eDSysnQlkVnmX1Y95rR3Bjjj2tA7ykoxPJvrSdGW/wZxIMkH5+/P3U/6JDcd8YgWcPy/
+         Qh6Qqg0oehNsAdylTLaNr+Bq/7FbZex+llt0Q9eux0IYJmPuYQ5iEyqqRWa2uVNd67ps
+         ZIG6wVkPidFeGOYfMrSN1hZ0H7L1NtuZAjayTwl7EVbaIpLg8iFec8FqsXxpxfDEEtJJ
+         uoXmTZlMoJlRI/ZFdO1J92x8ltUPP1pQnTuB+mC486jaU7xN+bJLQR486vQWxVTKfKri
+         0NSw==
+X-Forwarded-Encrypted: i=1; AHgh+RoZ9j6UaQKu0nBDTAz+xa6Q60Yz+atBfy5hDvF3E/J/asAj/1cVEr2D/ChxcxgxxRWuVNQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaRvrqKhD62nQrZu1rCopHKa/1omNHyrQo+/+Uf15LIe3k4Cu7
+	7hGKYFsYYoziC61Ef0F41uBRBgDCRZd3jZR8JNB3nEwA3XR/04J75dg0TxKWc/xQrTiJsV6yppD
+	SknRBRg==
+X-Received: from plda5.prod.google.com ([2002:a17:902:ee85:b0:2cb:97da:d8ed])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3550:b0:2c9:97a8:aff1
+ with SMTP id d9443c01a7336-2cf349f76b7mr152744045ad.42.1784562748691; Mon, 20
+ Jul 2026 08:52:28 -0700 (PDT)
+Date: Mon, 20 Jul 2026 08:52:28 -0700
+In-Reply-To: <20260717230542.3555587-2-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260717230542.3555587-1-jmattson@google.com> <20260717230542.3555587-4-jmattson@google.com>
-Message-ID: <al5CwRqMC48cdQSP@google.com>
-Subject: Re: [PATCH v2 3/3] KVM: x86: Flush guest TLB on MTRR MSR writes
+References: <20260717230542.3555587-1-jmattson@google.com> <20260717230542.3555587-2-jmattson@google.com>
+Message-ID: <al5EPBD0KQDpbNiA@google.com>
+Subject: Re: [PATCH v2 1/3] KVM: SVM: Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid()
 From: Sean Christopherson <seanjc@google.com>
 To: Jim Mattson <jmattson@google.com>
 Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com, 
@@ -68,82 +68,53 @@ Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com,
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Jul 17, 2026, Jim Mattson wrote:
-> Per both the AMD APM and the Intel SDM, writing to an MTRR with WRMSR is an
-> implicit TLB invalidation that invalidates all TLB entries (including
-> global entries). [The APM uses the word, "update," which could be construed
-> to mean "modify," but it is unclear.]
-
-Yeesh, the SDM isn't very helpful.  Under the description of WRMSR, it very clearly
-says:
-
-  When the WRMSR instruction is used to write to an MTRR, the TLBs are invalidated.
-
-But then in the recommended pseudocode, the SDM says software should flush TLBs:
-
-  pre_mtrr_change()
-    BEGIN
-      disable interrupts;
-      Save current value of CR4;
-      disable and flush caches;
-      flush TLBs;
-      disable MTRRs;
-      IF multiprocessing
-        THEN maintain consistency through IPIs;
-      FI;
-    END
-  
-  post_mtrr_change()
-    BEGIN
-      flush caches and TLBs;
-      enable MTRRs;
-      enable caches;
-      restore value of CR4;
-      enable interrupts;
-    END
-
-> Previously, kvm_mtrr_set_msr() stored the updated MTRR state without
-> requesting a TLB flush. This broke x86 architectural compliance by leaving
-> existing TLB entries in hardware. Additionally, on AMD CPUs supporting
-> ERAPS, omitting the TLB flush request meant VCPU_REG_ERAPS was never
-> dirtied on MTRR writes, leaving the Return Address Predictor (RAP/RSB)
-> uncleared.
-
-Heh, Andy Cooper even pointed out the implicit flushes on MTRR writes[1], and no
-one noticed KVM was missing that specific flush.  I mention that mostly because
-the context of that thread was asking AMD to drop the statement that the RAP is
-cleared on writes to "other model specific MSRs, see NDA docs", so that hypervisors
-wouldn't have to clear the RAP on every WRMSR.
-
-AMD updated their documentation[2] to say that clears on MSR writes are considered
-microarchitectural, but this patch and the above blurb are still accurate because
-MTRR writes are covered by the "implicit TLB flush" clause, not the generic WRMSR
-clause.
-
-[1] https://lore.kernel.org/all/1c76cb00-1fe1-4fd0-b7b9-86ddca6115ba@citrix.com
-[2] https://lore.kernel.org/all/08826b5879e2d9c354424279763d3ce5556f44cc.camel@amd.com
-
-> Issue a KVM_REQ_TLB_FLUSH_GUEST request on every MTRR MSR write to match
-> x86 architectural semantics.
+> On initial vCPU creation, init_vmcb() is called before userspace configures
+> guest CPUID via KVM_SET_CPUID2. Consequently, ERAP_CONTROL_ALLOW_LARGER_RAP
+> is never set during initial vCPU creation. If an AP later receives an INIT
+> signal after CPUID has been set, init_vmcb() would set the bit for that AP,
+> but the BSP would be left with ALLOW_LARGER_RAP clear.
 > 
-> Fixes: 9ba075a664df ("KVM: MTRR support")
+> Configure ALLOW_LARGER_RAP in svm_vcpu_after_set_cpuid() to handle the BSP.
+> 
+> Keep the code in init_vmcb() to restore ALLOW_LARGER_RAP after the VMCB has
+> been cleared on the VCPU triple-fault reset path.
+> 
+> Fixes: db5e82496492 ("KVM: SVM: Virtualize and advertise support for ERAPS")
 > Assisted-by: Gemini:Gemini-Next
 > Signed-off-by: Jim Mattson <jmattson@google.com>
 > ---
->  arch/x86/kvm/mtrr.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/x86/kvm/svm/svm.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/arch/x86/kvm/mtrr.c b/arch/x86/kvm/mtrr.c
-> index 6f74e2b27c1e..ca5e5c7f7022 100644
-> --- a/arch/x86/kvm/mtrr.c
-> +++ b/arch/x86/kvm/mtrr.c
-> @@ -105,6 +105,7 @@ int kvm_mtrr_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
->  		return 1;
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index 4d2bacd00ec4..bf868da14cd2 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+> @@ -4736,6 +4736,11 @@ static void svm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>  	if (guest_cpuid_is_intel_compatible(vcpu))
+>  		guest_cpu_cap_clear(vcpu, X86_FEATURE_V_VMSAVE_VMLOAD);
 >  
->  	*mtrr = data;
-> +	kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
->  	return 0;
+> +	if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
+> +		svm->vmcb01.ptr->control.erap_ctl |= ERAP_CONTROL_ALLOW_LARGER_RAP;
+> +	else
+> +		svm->vmcb01.ptr->control.erap_ctl &= ~ERAP_CONTROL_ALLOW_LARGER_RAP;
+
+If we handle ERAPS here, can't we drop the code in init_vmcb()?  In the context
+of PML enablement, AMD is updating the APM to clarify that the control area remains
+valid after shutdown, i.e. KVM doesn't need to re-initialize erap_ctl when
+synthesizing INIT from shutdown_interception().
+
+  "After an intercepted shutdown, the VMCB control area is valid (with the
+   exception of offsets 60h, 61h, and 68h) and the VMCB state save area is
+   undefined."
+
+https://lore.kernel.org/all/6688fe2e-c723-404a-80e1-3f4c5f5cc4c6@amd.com
+
+
+> +
+>  	if (is_sev_guest(vcpu))
+>  		sev_vcpu_after_set_cpuid(svm);
 >  }
->  
 > -- 
 > 2.55.0.229.g6434b31f56-goog
 > 
