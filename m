@@ -1,275 +1,167 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA1540DFA7
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 14:05:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F4C233920;
+	Mon, 20 Jul 2026 14:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784556347; cv=none; b=FAZfh7wewe2kEe7ZtXJypy04OZEhNfnAVg6GlictOOvAVM9r6dik0MQsCyJgG9PXeA0/WgtaX/jJKLRjGNcm+Y4DRLIlJCgpw035HfibhmVQ3h/ss9w+5YmbEbikeMcCVFVAMtMIhzf+mgjgfzN7Z+pwENZQrev6Jy0+9o1q2r4=
+	t=1784556691; cv=none; b=JMk5FBrjynhdPbuVO3oL/YqlLxZfCrtHILjjpSH41bJgoNeFVHL93EWuJokTZ167FqlT9Oxyb/gxgGUrNEZNSZXBA7QHQENaYtEYU/Vs2pg0vSGdZYrKy8LHijDujuaDqSqfWQeeDH9Bmz8q/vb7b1KbefKZn1T29B/3peHhaFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784556347; c=relaxed/simple;
-	bh=ZcFGrtkX0vh1ujvEeDK2D+Y7ZUijzeRV37GPHzSE4Vk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BsWrMlRCbKUfHLpFtEa9M36/XSCmVFIrjzdgQbwyxVpWULGDXs7sX9WvYWrvVDuoUGR90/0LZV50eo6a99egvn0tuoSg2Wa15ka9xR2yBY0yB9o1Pc/XWxfg9ZQiaGnetN9qAjDwJiW9hJJJ4NIsW01zHZRB7lHn/zmwhwBScns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pOq6Kd1O; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784556691; c=relaxed/simple;
+	bh=aKgk7WJQ2y6hkMjZ2T2pN9NhrkaaUZcdCyA14QVEjIQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tfROlnLFSibprFCcZudVDQ1MrOfvl/zKKyRtDuXIL5mzjen2ZZG3e1VfP4Wt69mnlg/T/pszmECJMGJduWpAAuOUqvqLH+NDbuZs2WfFAysXUz6RzG1HaqyByzyDtxgHynyiAeSzN4af+a+1GNuQPJYR8F05pJe4Lg3moJd5b0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=O1HV7DSG; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pOq6Kd1O"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38e63de75aaso3460088a91.3
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 07:05:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784556344; x=1785161144; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DiVRINB6TtTw5pZfFfTZi38dW8cdML3pRT51zfVadcU=;
-        b=pOq6Kd1OXdH6UZoQOc0XTd0MpRYuL3PLnqKDg78N7XKa2jciBYyBH3myOHBlTybLnb
-         NXavCezoKfqVNWSzURCreZYXjlAyLwf3COxmX7X2PIOeVhTbuBpqqwbJahcJNt0n6iOl
-         RZeifbhSca3tANxLzgyHD6xStvVGufb6TXbB5zee8u1PV/j+63MPnq9cnstaJFn28Uj2
-         iF2YMxxlBTvobW38g9YrcKPhR24OtZOtSFzep0O8A2SVc/7vScGmjP5l+IsoUT3TG3+I
-         LJmfTm0Si+jgs+LL4bUppPyvCmq2nqfG5rhozD2en26azR5wBqksAqM+oEVO2tcV8+Pg
-         0L1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784556344; x=1785161144;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DiVRINB6TtTw5pZfFfTZi38dW8cdML3pRT51zfVadcU=;
-        b=ZBKsL9RszPdOwVMzOx7bAWmkupzdTdNqIskZUJ7VrSBFGa7HWVWfvOX/SgIBcgZPHo
-         hYFxqHLcqN5vH2F6GlgPqlEEFfLVVWOdd8We5l9R8HcqkKPwWl+wnb8LsZjdWMit2fft
-         GcVhujNhr5tryMqIKvH58nLDig2g3UAcGUJbifP4OJ1ss5XoFba5aarI+jRK2flLbQHE
-         K2LbAznSk2SC1g0D82AEpUCucwsq59s42yuCyrI4ZDjk0EB3o+IdOeyFN/a03C4jcLDt
-         feJl4SGOkCKaqmjNIaGbuw4pAtZGsk3pYhP2uOJ5mQ/3gFcyKGEdNYPzDHI4VxzadAMy
-         Sgqw==
-X-Forwarded-Encrypted: i=1; AHgh+RrdrfAbgX9SPoX1P6seww0h6qLY0E+jgs8Soykjret7WdXsUFZ0WPJOuBCKjvp2e6oib4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+6LOS5wgynERURGZYl3IYxN3v0qr6PwsWJ/kvPtII30L6hcmf
-	rwc4QKFRwi6GRFlhNjY1oLOjvAmWHxCnfygAY6z0xFtFRWBTs4KUmZpIAnrS1xb8+OFQOAZmmkl
-	x17pxSA==
-X-Received: from pjee4.prod.google.com ([2002:a17:90b:5784:b0:384:e0b1:c3e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2dcc:b0:38d:e0c4:c955
- with SMTP id 98e67ed59e1d1-38e4b447015mr14955851a91.15.1784556344165; Mon, 20
- Jul 2026 07:05:44 -0700 (PDT)
-Date: Mon, 20 Jul 2026 07:05:43 -0700
-In-Reply-To: <20260719-rmap-age-elided-submit-v1-1-cb32f2390765@phil.gs>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="O1HV7DSG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=CO9Al5GPtC4ZgyEFmL+3ZuFzpk3dAPxBpTXH8Cw7El0=;
+	b=O1HV7DSG1m9bI5mUv2LKR3+Hn8M7/nSd+owcWqYg/oWQ2HCFeaXyEBSKpD/o0R
+	JrzyrsLQM6sBLXdCyVkkw7xwpJCx3qGgHz7UaTIzhk7yJeo5B0bzSz8anfEF54hm
+	wzUigODQItMi3+91HByBVWFBI1haarrp0IoOjUQ4P9onE=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgD3Xw9gLF5qWUvpIg--.12525S3;
+	Mon, 20 Jul 2026 22:10:43 +0800 (CST)
+From: "rom.wang" <r4o5m6e8o@163.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	stefanha@redhat.com
+Cc: virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	kvm@vger.kernel.org,
+	qemu-devel@nongnu.org,
+	Yufeng Wang <wangyufeng@kylinos.cn>
+Subject: [RFC PATCH 1/4] common: add UAPI for SQ/CQ doorbell polling
+Date: Mon, 20 Jul 2026 22:10:37 +0800
+Message-Id: <20260720141040.181946-2-r4o5m6e8o@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260720141040.181946-1-r4o5m6e8o@163.com>
+References: <20260720141040.181946-1-r4o5m6e8o@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260719-rmap-age-elided-submit-v1-1-cb32f2390765@phil.gs>
-Message-ID: <al4rNzlV2wS0jDw5@google.com>
-Subject: Re: [PATCH] KVM: x86/mmu: Skip rmap aging when the rmap lock was elided
-From: Sean Christopherson <seanjc@google.com>
-To: Phil Rosenthal <phil@phil.gs>, t@google.com
-Cc: Paolo Bonzini <pbonzini@redhat.com>, James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgD3Xw9gLF5qWUvpIg--.12525S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw43Gr4fCr1UCw48XrW7CFg_yoWrXFyUpF
+	WkCrW3Xr4UXa4xCrZ5G3WUtry3Xas3CF43G3yagw1j9F9IqFy8Zw4Dur4avay2vrWvyryx
+	Xrn2qryUC34DArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UNTmDUUUUU=
+X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbCzQNVympeLGONpgAA3B
 
-On Sun, Jul 19, 2026, Phil Rosenthal wrote:
-> __kvm_rmap_lock() deliberately elides the rmap lock when it observes an
-> empty rmap.  In that case kvm_rmap_lock_readonly() also re-enables
-> preemption and returns zero, so the caller holds neither the rmap lock
-> nor a preemption reference.  The elision documents the invariant it
-> relies on:
-> 
-> 	 * Elide the lock if the rmap is empty, as lockless walkers (read-only
-> 	 * mode) don't need to (and can't) walk an empty rmap, nor can they add
-> 	 * entries to the rmap.  I.e. the only paths that process empty rmaps
-> 	 * do so while holding mmu_lock for write, and are mutually exclusive.
-> 
-> kvm_rmap_age_gfn_range() ignores the returned value and unconditionally
-> enters for_each_rmap_spte_lockless().  The iterator starts with
-> rmap_get_first(), which re-reads rmap_head->val rather than using the
-> value returned by the lock.  If a writer populates the rmap between the
-> lock's read and the iterator's re-read, the aging path walks the newly
-> installed rmap without holding its lock.
+From: Yufeng Wang <wangyufeng@kylinos.cn>
 
-/facepalm
+Define VIRTIO_F_SQCQ_POLL (bit 42) and the associated SQ/CQ doorbell
+structures for split virtqueue polling mode.
 
-Well that's a blatantly stupid TOCTOU bug in hindsight.
+  - include/uapi/linux/virtio_config.h: feature bit 42
+  - include/uapi/linux/virtio_ring.h: struct vring_sq, struct vring_cq
+    (128-byte aligned for cache-line isolation on ARM Neoverse N2/V2)
+  - include/uapi/linux/virtio_pci.h: sqe/cqe_ring PCI config registers
+    at offsets 64-76
 
-> For a KVM_RMAP_MANY rmap this leaves the walker following a
-> pte_list_desc chain that it never locked.  A writer holding mmu_lock for
-> write may free that chain (e.g. kvm_zap_all_rmap_sptes() on the recycle
-> path, or any rmap zap) via kmem_cache_free() while the walk is in
-> progress, giving a slab use-after-free.  Nothing serialises the two: the
-> aging path runs without mmu_lock when CONFIG_KVM_MMU_LOCKLESS_AGING=y,
-> and the rmap lock that would otherwise exclude the writer was elided.
-> Because the empty path re-enables preemption, the interval between the
-> two reads can span an arbitrary scheduling delay.
-> 
-> Skip the walk when locking returned zero, as required by the
-> lock-elision invariant.  kvm_rmap_unlock_readonly() already treats zero
-> as requiring no unlock, so the early continue does not leak a lock or a
-> preemption reference.  Missing an SPTE installed after the empty
-> observation is harmless because aging is best-effort.
-> 
-> Fixes: af3b6a9eba48 ("KVM: x86/mmu: Walk rmaps (shadow MMU) without holding mmu_lock when aging gfns")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Phil Rosenthal <phil@phil.gs>
-> ---
-> This bug was identified and confirmed with AI assistance; per
-> Documentation/process/security-bugs.rst it is therefore reported in the
-> open rather than via the security list.
-> 
-> The static analysis and runtime evidence are described separately.
-> 
-> Static: the invariant quoted above is stated by __kvm_rmap_lock(), and
-> kvm_rmap_age_gfn_range() is the one caller that violates it by walking
-> after an elided (zero) lock.  This holds regardless of any runtime
-> result.
-> 
-> Runtime: I confirmed the use-after-free is reachable on a KASAN build
-> (CONFIG_KASAN_GENERIC=y, CONFIG_KVM_MMU_LOCKLESS_AGING=y, kvm.tdp_mmu=0,
-> kvm_intel.ept=0 so shared pages build multi-SPTE pte_list_desc rmaps).
-> This is not a natural reproducer: it is a test-only race amplifier.  A
-> test hook widens two windows (a delay after the zero-lock observation,
-> and a delay after the iterator has cached iter->desc) and schedules the
-> real lockless aging function onto recently recycled gfns.  The alloc and
-> free are unmodified production paths; only the scheduling of the aging
-> walk and the two delays are injected.  The test-only instrumentation is
-> available privately on request.  KASAN then reports a
-> slab-use-after-free, read in the rmap_get_next() step of
-> for_each_rmap_spte_lockless() (the symbol is
-> kvm_rmap_age_gfn_range.isra.0 in the instrumented build):
-> 
->   BUG: KASAN: slab-use-after-free in kvm_rmap_age_gfn_range.isra.0+0x7e4/0xa60 [kvm]
->   Read of size 8 at addr ffff88814690c6d8 by task kworker/12:2/81966
->   Workqueue: events age_race_workfn [kvm]     <- test hook: lockless aging, no mmu_lock
->    kvm_rmap_age_gfn_range.isra.0+0x7e4/0xa60 [kvm]
->    age_race_workfn+0x14b/0x1a0 [kvm]
->    process_one_work+0x6c8/0x1020
->   Allocated by task 94096:
->    kmem_cache_alloc_noprof+0x179/0x460
->    __kvm_mmu_topup_memory_cache+0x136/0x540 [kvm]
->    paging64_page_fault+0x2b6/0x1e70 [kvm]      <- one vCPU faults, allocs the desc
->   Freed by task 94095:
->    kmem_cache_free+0x11d/0x4a0
->    kvm_zap_all_rmap_sptes+0xe9/0x1a0 [kvm]
->    __rmap_add+0x2c4/0x5e0 [kvm]
->    mmu_set_spte+0x6d6/0x1060 [kvm]
->    paging64_page_fault+0x1385/0x1e70 [kvm]     <- another vCPU, under mmu_lock,
->                                                   recycles and frees the desc
->   The buggy address belongs to the object at ffff88814690c6c0
->    which belongs to the cache pte_list_desc of size 128
-> 
-> The three tasks are distinct (read 81966 / alloc 94096 / free 94095),
-> confirming genuine concurrency rather than a self-inflicted free.  With
-> the fix applied under the same injection load, the zero -> populated
-> window is still observed but the walk is skipped and no KASAN report is
-> produced.
-> 
-> Alternative fix: this patch fixes the only current caller that ignores
-> an empty return.  A class-wide alternative would pass the value returned
-> by kvm_rmap_lock_readonly() into the iterator instead of having
-> rmap_get_first() re-read the rmap, so no lockless walker could
-> reintroduce the bug.  I chose the smaller change for ease of
-> backporting, and can send the larger one if preferred.
+Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
+---
+ include/uapi/linux/virtio_config.h |  8 +++++++-
+ include/uapi/linux/virtio_pci.h    |  9 +++++++++
+ include/uapi/linux/virtio_ring.h   | 25 +++++++++++++++++++++++++
+ 3 files changed, 41 insertions(+), 1 deletion(-)
 
-Larger one please.  The backport only needs to go back to 6.18 kernels, and the
-below applies cleanly to 6.18.y.  This is specifically what I'm thinking:
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 7757f0ad65c6..ecf9e39aed5a 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1228,18 +1228,9 @@ struct rmap_iterator {
-        int pos;                        /* index of the sptep */
- };
+diff --git a/include/uapi/linux/virtio_config.h b/include/uapi/linux/virtio_config.h
+index 2445f365bce7..dbda23e44b62 100644
+--- a/include/uapi/linux/virtio_config.h
++++ b/include/uapi/linux/virtio_config.h
+@@ -52,7 +52,7 @@
+  * rest are per-device feature bits.
+  */
+ #define VIRTIO_TRANSPORT_F_START	28
+-#define VIRTIO_TRANSPORT_F_END		42
++#define VIRTIO_TRANSPORT_F_END		43
  
--/*
-- * Iteration must be started by this function.  This should also be used after
-- * removing/dropping sptes from the rmap link because in such cases the
-- * information in the iterator may not be valid.
-- *
-- * Returns sptep if found, NULL otherwise.
-- */
--static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
--                          struct rmap_iterator *iter)
-+static u64 *__rmap_get_first(unsigned long rmap_val,
-+                            struct rmap_iterator *iter)
- {
--       unsigned long rmap_val = kvm_rmap_get(rmap_head);
--
-        if (!rmap_val)
-                return NULL;
- 
-@@ -1253,6 +1244,19 @@ static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
-        return iter->desc->sptes[iter->pos];
- }
+ #ifndef VIRTIO_CONFIG_NO_LEGACY
+ /* Do we get callbacks when the ring is completely used, even if we've
+@@ -120,4 +120,10 @@
+  */
+ #define VIRTIO_F_ADMIN_VQ		41
  
 +/*
-+ * Iteration must be started by this function.  This should also be used after
-+ * removing/dropping sptes from the rmap link because in such cases the
-+ * information in the iterator may not be valid.
-+ *
-+ * Returns sptep if found, NULL otherwise.
++ * This feature indicates that both driver and device support
++ * SQ/CQ polling mode to replace interrupt-based notifications.
 + */
-+static u64 *rmap_get_first(struct kvm_rmap_head *rmap_head,
-+                          struct rmap_iterator *iter)
-+{
-+       return __rmap_get_first(kvm_rmap_get(rmap_head), iter);
-+}
++#define VIRTIO_F_SQCQ_POLL		42
++
+ #endif /* _UAPI_LINUX_VIRTIO_CONFIG_H */
+diff --git a/include/uapi/linux/virtio_pci.h b/include/uapi/linux/virtio_pci.h
+index e732e3456e27..f5058d1b4b16 100644
+--- a/include/uapi/linux/virtio_pci.h
++++ b/include/uapi/linux/virtio_pci.h
+@@ -193,6 +193,11 @@ struct virtio_pci_modern_common_cfg {
+ 
+ 	__le16 admin_queue_index;	/* read-only */
+ 	__le16 admin_queue_num;		/* read-only */
++
++	__le32 sqe_ring_lo;		/* read-write: SQ DMA addr low */
++	__le32 sqe_ring_hi;		/* read-write: SQ DMA addr high */
++	__le32 cqe_ring_lo;		/* read-write: CQ DMA addr low */
++	__le32 cqe_ring_hi;		/* read-write: CQ DMA addr high */
+ };
+ 
+ /* Fields in VIRTIO_PCI_CAP_PCI_CFG: */
+@@ -235,6 +240,10 @@ struct virtio_pci_cfg_cap {
+ #define VIRTIO_PCI_COMMON_Q_RESET	58
+ #define VIRTIO_PCI_COMMON_ADM_Q_IDX	60
+ #define VIRTIO_PCI_COMMON_ADM_Q_NUM	62
++#define VIRTIO_PCI_COMMON_SQE_LO	64
++#define VIRTIO_PCI_COMMON_SQE_HI	68
++#define VIRTIO_PCI_COMMON_CQE_LO	72
++#define VIRTIO_PCI_COMMON_CQE_HI	76
+ 
+ #endif /* VIRTIO_PCI_NO_MODERN */
+ 
+diff --git a/include/uapi/linux/virtio_ring.h b/include/uapi/linux/virtio_ring.h
+index 3c478582a3c2..d1f2b9584d7c 100644
+--- a/include/uapi/linux/virtio_ring.h
++++ b/include/uapi/linux/virtio_ring.h
+@@ -131,6 +131,31 @@ struct vring_used {
+ 	vring_used_elem_t ring[];
+ };
+ 
++/*
++ * SQ/CQ doorbell structures for polling mode (VIRTIO_F_SQCQ_POLL).
++ * These are allocated separately from the vring and their DMA addresses
++ * are communicated via PCI config space registers.
++ *
++ * Ownership:
++ *   SQ: Guest writes idx, Device reads it.
++ *   CQ: Device writes idx, Guest reads it.
++ *
++ * Flags (8-bit):
++ *   Set to 1 before sleeping, cleared to 0 after waking up.
++ *   Direct assignment — no read-modify-write.
++ */
++struct vring_sq {
++	__virtio64 idx;			/* Producer position (updated by guest) */
++	__u8 sq_need_wakeup;		/* 1 = device should be woken on next kick */
++	__u8 reserved[55];		/* Reserved for future use */
++} __attribute__((aligned(128)));
++
++struct vring_cq {
++	__virtio64 idx;			/* Producer position (updated by device) */
++	__u8 cq_need_wakeup;		/* 1 = guest should be woken on completion */
++	__u8 reserved[55];		/* Reserved for future use */
++} __attribute__((aligned(128)));
 +
  /*
-  * Must be used with a valid iterator: e.g. after rmap_get_first().
-  *
-@@ -1287,8 +1291,9 @@ static u64 *rmap_get_next(struct rmap_iterator *iter)
-        __for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)                      \
-                if (!WARN_ON_ONCE(!is_shadow_present_pte(*(_sptep_))))  \
- 
--#define for_each_rmap_spte_lockless(_rmap_head_, _iter_, _sptep_, _spte_)      \
--       __for_each_rmap_spte(_rmap_head_, _iter_, _sptep_)                      \
-+#define for_each_rmap_spte_lockless(_rmap_val_, _iter_, _sptep_, _spte_)       \
-+       for (_sptep_ = __rmap_get_first(_rmap_val_, _iter_);                    \
-+            _sptep_; _sptep_ = rmap_get_next(_iter_))                          \
-                if (is_shadow_present_pte(_spte_ = mmu_spte_get_lockless(sptep)))
- 
- static void drop_spte(struct kvm *kvm, u64 *sptep)
-@@ -1726,7 +1731,7 @@ static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
-                        rmap_head = gfn_to_rmap(gfn, level, range->slot);
-                        rmap_val = kvm_rmap_lock_readonly(rmap_head);
- 
--                       for_each_rmap_spte_lockless(rmap_head, &iter, sptep, spte) {
-+                       for_each_rmap_spte_lockless(rmap_val, &iter, sptep, spte) {
-                                if (!is_accessed_spte(spte))
-                                        continue;
+  * The ring element addresses are passed between components with different
+  * alignments assumptions. Thus, we might need to decrease the compiler-selected
+-- 
+2.34.1
 
-> ---
->  arch/x86/kvm/mmu/mmu.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 234d0a95abf534193e8285e61dfb7e0c56ba19ad..e57c4580f58564bbf984364b3563f6b00aee21a9 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -1723,6 +1723,9 @@ static bool kvm_rmap_age_gfn_range(struct kvm *kvm,
->  			rmap_head = gfn_to_rmap(gfn, level, range->slot);
->  			rmap_val = kvm_rmap_lock_readonly(rmap_head);
->  
-> +			if (!rmap_val)
-> +				continue;
-
-In addition to preventing future bugs with for_each_rmap_spte_lockless(), I want
-to go straight to the (ever so slightly) larger fix is to avoid adding another
-path with a lock() but no paired unlock().  kvm_zap_all_rmap_sptes() has such a
-case, but that really should be cleaned up.
-
-This is all internal MMU code, so bleeding the rmap locking details into the
-callers isn't the end of the world, but it _looks_ wrong.
-
-> +
->  			for_each_rmap_spte_lockless(rmap_head, &iter, sptep, spte) {
->  				if (!is_accessed_spte(spte))
->  					continue;
-> 
-> ---
-> base-commit: 25f744ffa0c8e799e06250ce2e618367b166b0d4
-> change-id: 20260719-rmap-age-elided-submit-98dbd451b9ba
-> 
-> Best regards,
-> -- 
-> Phil Rosenthal <phil@phil.gs>
-> 
