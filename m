@@ -1,143 +1,112 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAF73C109B;
-	Mon, 20 Jul 2026 21:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913743859F5;
+	Mon, 20 Jul 2026 21:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784582032; cv=none; b=J7SyhJ1eVWShLzh9NCCzyaO86KuhfrVZqmSSfRtZynBQDfBOD8jxumZV8RblKlRTv4Nb9YG1vVSCtgYlf8wOMUA7s+LAQ2YsBvn6YNNwGAjR1DaIAs3ny8CLbEYbqADjNsr3+Ibhj/dz1fC1IVXoqNAFfibPravp7ksbNdzxJNA=
+	t=1784582297; cv=none; b=nRQRloQR1m2+DEe/8q2G3earrPstq89POHxcFfIrbNFygQW4Dj/2wXOY+DKw3LUnpSWdk77FUHVMH+7TistPYZRk0xCspWu9vLNnzUYRwZ8ytm8jAjg5YAEdNBtERlJapmQh2KjJOkWML9SJFEt2EBhJcGAI9eGgjWRz/EAbr5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784582032; c=relaxed/simple;
-	bh=+7EsZQ8MDtE3n+BMw5DQDYJgHwNK5QFlPRkzuS7rRhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kuv5Iu2/ekm7tLZoqV7YwqPJr/smyat9xilXPgnHBmCrNVjb7Pn10gWVsNRjsba+TX9kuEuG346+WQq3tlhHSRBJuJRVyZzaFFNNHi0Ie9yN/4aG+xCw71VFFISQtIXp0OXgj8o5EWr20Q5GYxP7KjXvCBNaIMP3PPG3SjWrxLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Sb/ukags; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1784582297; c=relaxed/simple;
+	bh=2yfJp9DjgxEbuglj+KrflocPRFfWEuOdSx58mNXP0q8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CAIPzTaCcEHVW6iMhX1YHpqS2TTAxPShRbgKEA/Vo/ENnVwGM3I/k3jWYraMw6HqYU2dt/UI3bMg8oYYS6yudsJoEtixAXZj2feTZhX9CVi4NQseiJ98fq28Ea+kIPRux9m2Y+aSqweiDGksSOoBUOfYNfLCANM56+7FHvnJ6i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DcYi5wt1; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Sb/ukags"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E201F40E00DC;
-	Mon, 20 Jul 2026 21:13:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id a5T32fnu6LtK; Mon, 20 Jul 2026 21:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784582018; bh=FGhFoRLhMbDrReFu95uGs+7QWPhZ6jTH09K1AIvqN5k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Sb/ukagsUyi4GM2q6P/SrsLtdzWGAnGx1Lpl839b9tRGxuJjy7xu0DWWGEUqmgPZv
-	 WbAIB+ypFG8f8YTps9VTGwSQM/Nw5ktmDSv4xH4I+hKaBp7wv2sHxHaabQ8DtH4K+D
-	 6DzkazqOqnllfs4ohiAkP058hINWeUxFEPeOXacx0wgQLWW2v4CU5qsklXFEGrl+fA
-	 VQiPELYB3vlqtovK+p1DL1lKKHRMTeSAvbhyAAktO6yt/XKrDu9gQuMe7wxRhGR4E5
-	 2vpRy8jpF7BRRooCmTRBBhanLX/fyo2x5Sgzb/qHrdzxkREa//U3FeGn5z8mlBJN3Z
-	 apgHBLr3VWB7wqaQU004rjZysEniKDhQhkxcPwsqra4Ygig0vPS1vCrJnH3P8JZ/tB
-	 e/M1lqfx8cuGZxvhZy+Yvlr+UsOubCQDMGV4meiSxf7tRTZcLPTjZJBDgU6g7Zjarn
-	 YiNSpInFuNiVX27OnLN812ze9/gX+u2YZlJOwKivxBF+/xyC03LZMjmsVwvTV+DEZs
-	 qZwwD8G/3ZLwXQdvYqRADfY8Qrpaa/xU05UBWSq5x/MFUXJoqe/O8HGdVo6Nhu6rQ7
-	 XwqNvmaEUOfqTRvQmNywDyBsIYNSprXRknTjPg7Dgho5Q1gtgwmZDnrO9QJDT22p6S
-	 HrO8lI6jPlQtjYgKZ7tABZ6Q=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3EC9E40E00E6;
-	Mon, 20 Jul 2026 21:13:03 +0000 (UTC)
-Date: Mon, 20 Jul 2026 14:12:59 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 1/6] x86/cpufeatures: Add X86_FEATURE_RMPOPT feature
- flag
-Message-ID: <20260720211259.GCal6PW5aCGieR5j3W@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DcYi5wt1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784582295; x=1816118295;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2yfJp9DjgxEbuglj+KrflocPRFfWEuOdSx58mNXP0q8=;
+  b=DcYi5wt1oH/oCP1G7O1otd0W48yyZpXziTqpKZa3RTGhGFJbpl5RGm5D
+   MCjEqZyqBKSeKl48+QjG7KokiMNrxh2DFQ4jaWHLt3/LC6NXItSEygIyP
+   IUyyugZmwVDH5tZRdPzZypLyB57mH8US+4KQIfbBLi6rCPGLHJHO61hFa
+   CPizLesWYpot7qj+EfvMQN+zH7vBNklojkgRanD9kfwDi+HuXcpqpbjz+
+   GyU9pCgaP2LE0WtxNrleuLHOAuCrG7gI99Fvp3sa37kHXg1j1dfc/zus0
+   FQjj2zDyDcMQcYrzNkunQndG1x2ROc5n8SCYOYF4tBty5elZ4dZEQp5v2
+   Q==;
+X-CSE-ConnectionGUID: kHnte9STS4u1Ni6iz/5RxQ==
+X-CSE-MsgGUID: J7A3XBLEQpmUIruLKyUW5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="88850241"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="88850241"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 14:18:15 -0700
+X-CSE-ConnectionGUID: QBRMasMbStCDPgTEBGCWCQ==
+X-CSE-MsgGUID: yciFYR2fQ1O6y5BcFp3BQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="261359644"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
+  by orviesa004.jf.intel.com with ESMTP; 20 Jul 2026 14:18:15 -0700
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	pbonzini@redhat.com,
+	seanjc@google.com,
+	chang.seok.bae@intel.com,
+	stable@vger.kernel.org,
+	Zhao Liu <zhao1.liu@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>
+Subject: [PATCH v2] KVM: x86: Remove AMX-TF32 enumeration
+Date: Mon, 20 Jul 2026 20:52:08 +0000
+Message-ID: <20260720205208.519622-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 30, 2026 at 06:09:44PM +0000, Ashish Kalra wrote:
->  arch/x86/include/asm/cpufeatures.h       | 2 +-
->  arch/x86/kernel/cpu/scattered.c          | 1 +
->  tools/arch/x86/include/asm/cpufeatures.h | 2 +-
+AMX-TF32 enumeration was added based on the Intel documentation [1]. The
+recent update removed the feature, indicating that the feature is no
+longer planned for hardware implementation.
 
-Yeah, apparently we don't do the tools/ change anymore:
+[1] Intel Architecture Instruction Set Extensions and Future Features
 
-https://lore.kernel.org/r/0af5122c-20df-4aea-8ab4-cba63f71dc3b@amd.com
+Note: The feature first appeared in the September 2025 revision of the
+document and was removed in the June 2026 revision.
 
-Final version:
+Cc: stable@vger.kernel.org # v6.20+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+---
+V1 -> V2: Collect tags (Zhao, Binbin), put note (Binbu), and cc @stable
+---
+ arch/x86/kvm/cpuid.c         | 1 -
+ arch/x86/kvm/reverse_cpuid.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-Author: Ashish Kalra <ashish.kalra@amd.com>
-Date:   Tue Jun 30 18:09:44 2026 +0000
-
-    x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
-    
-    Add a flag indicating whether RMPOPT instruction is supported.
-    
-    RMPOPT is a new instruction that reduces the performance overhead of RMP
-    checks for the hypervisor and non-SNP guests by allowing those checks to be
-    skipped when 1-GB memory regions are known to contain no SEV-SNP guest memory.
-    
-    For more information on the RMPOPT instruction, see the AMD64 RMPOPT
-    technical documentation.
-    
-      [ bp: Zap respective tools/ change. ]
-    
-    Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
-    Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-    Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-    Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-    Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-    Link: https://patch.msgid.link/39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com
-
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 3d0940a3b9f3..dbccde9ee5cd 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -76,7 +76,7 @@
- #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
- #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
- #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
--/* Free                                 ( 3*32+ 7) */
-+#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
- #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
- /* free: was #define X86_FEATURE_UP	( 3*32+ 9) * "up" SMP kernel running on UP */
- #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
-diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
-index 937129ce6a96..021c0bf22de2 100644
---- a/arch/x86/kernel/cpu/scattered.c
-+++ b/arch/x86/kernel/cpu/scattered.c
-@@ -67,6 +67,7 @@ static const struct cpuid_bit cpuid_bits[] = {
- 	{ X86_FEATURE_PERFMON_V2,		CPUID_EAX,  0, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_V2,		CPUID_EAX,  1, 0x80000022, 0 },
- 	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
-+	{ X86_FEATURE_RMPOPT,			CPUID_EDX,  0, 0x80000025, 0 },
- 	{ X86_FEATURE_AMD_HTR_CORES,		CPUID_EAX, 30, 0x80000026, 0 },
- 	{ 0, 0, 0, 0, 0 }
- };
-
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 591d2294acd7..759a1c557080 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1082,7 +1082,6 @@ void kvm_initialize_cpu_caps(void)
+ 		F(AMX_COMPLEX_ALIAS),
+ 		F(AMX_FP16_ALIAS),
+ 		F(AMX_FP8),
+-		F(AMX_TF32),
+ 		F(AMX_AVX512),
+ 		F(AMX_MOVRS),
+ 	);
+diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
+index 2ad25781cefb..1bb13903c5b2 100644
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -56,7 +56,6 @@
+ #define X86_FEATURE_AMX_COMPLEX_ALIAS	KVM_X86_FEATURE(CPUID_1E_1_EAX, 2)
+ #define X86_FEATURE_AMX_FP16_ALIAS	KVM_X86_FEATURE(CPUID_1E_1_EAX, 3)
+ #define X86_FEATURE_AMX_FP8		KVM_X86_FEATURE(CPUID_1E_1_EAX, 4)
+-#define X86_FEATURE_AMX_TF32		KVM_X86_FEATURE(CPUID_1E_1_EAX, 6)
+ #define X86_FEATURE_AMX_AVX512		KVM_X86_FEATURE(CPUID_1E_1_EAX, 7)
+ #define X86_FEATURE_AMX_MOVRS		KVM_X86_FEATURE(CPUID_1E_1_EAX, 8)
+ 
 -- 
-Regards/Gruss,
-    Boris.
+2.53.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
