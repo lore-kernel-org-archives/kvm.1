@@ -1,347 +1,178 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD4F3CF217
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2A3C81B9
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784536788; cv=none; b=ugfRwBlBzfUYA7hF/22Vzzb7NsU92v6r1PTo0mtyTuDrVmIx5LPsg1h8SHH/Cp1NlN53aQdr9jYiugv4WSS2JNmF3rdyxkxmy0fqNmZymhmYVt+OQadx0h1BMN8L/rjtN1HK+uFUh2BugwDwv3Vbzsy4Ed/oJKTJOLoY3Xv6lCU=
+	t=1784537604; cv=none; b=CbKON5SLCdtdLeXvU8ZQ32WGhnOAh/q6gIFdYbq/DV+UfFIPM0lcDhXBdMbEO+Ier5bXT77Jdd4hBgSFbFpwtI6qvD2dNBWzUqXkslUtJvrHCTxn1GEN1rJK4bLNCVvxDFLYrp3RQOFwSNvi7nRCgkcSm9SFIv2dD2iRw4nQ5jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784536788; c=relaxed/simple;
-	bh=Q7+IJX68QjV8feATeOoFyhllZFT4t92bU6G47rqe348=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gG17JZWBUAUAvQID/E1FpdFXYOznVpi76OlJkpZw8DxIB/vLz7pFbYsoQrVU3L07BuSuNEj+GN+iMHh1RZeVOGlgDDtySxLKwmQ8rKKE4l4B8MWKzuePwKtUXDsJehUn/WiZ0O8rFwDhSW/KnzSpbfBadZvxYjVZLZH7n5Wrv4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PC3+B/Bu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NSx2+9Q9; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784537604; c=relaxed/simple;
+	bh=o6QS22hcefobTL4agDYyTXy5uvYvNFggHdA5faPCDDo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L5mPyTQxIGoy8ySrohH3CEsAIrnS0kboCCMQvCgkCm57neNwZ73nnvhqGSWtWn6j4LrIdXE6JHt6zPBl+Z9Bde0r4gCHNCqlhtVm4mY15qFppxKcgmpCDqF65Jins3Jk6eMpt3CxMwp3UmuUvPaR2g57rSWac6ZgjZFTF5MdwxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Va8swiqd; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PC3+B/Bu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NSx2+9Q9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784536785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
-	b=PC3+B/Buvyw0dgCHrYf336qcMtL138DdO19CuDhl3+wOO3Tl/WVyLfzmoEbWuLKqlbt5tt
-	lBcPzXJtf2ZKYkVeD5bZD/OqtAr2es6Zz7XOzCNdim6H5SHPnyjovbYG04fOLz4pHc6bmq
-	DZBTadJzPCzl7lTnhFCf15LkphhdpXQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-119-096_WTweP3STlwSZn_oMbA-1; Mon, 20 Jul 2026 04:39:43 -0400
-X-MC-Unique: 096_WTweP3STlwSZn_oMbA-1
-X-Mimecast-MFC-AGG-ID: 096_WTweP3STlwSZn_oMbA_1784536782
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49545071724so38317955e9.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 01:39:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Va8swiqd"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so4166605a91.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 01:53:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784536782; x=1785141582; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
-        b=NSx2+9Q9AvBzrmp+vKhQ1rK2qBJxwn2FnQpYPuAyiHO39rofxZDyiuAeY8Gm7jpO8V
-         L3Br3vCs2LqgwDoppg55e89947TM0VBuG9k5waAPCXA14Dyet0HW9J+n4f+lC9b0Rklb
-         YtC79S/fkrqXdRylSbVKc7dT3cVT1useqmeR1nbH5xEsSSC33ay6qjOmNDJ1PWL+RnBp
-         05iJGPzDUTbeCz9EJFrVjA+Ox5hnGOwmO61D9bHjMGRv7fGD+JihrA81jstFy75/LnT6
-         Idt3vQsQpEEh3hH2MX1Sr772ILRyQjzIphrVIC+mtM/qDKDFxuB86p6fSBJazBQ/lb+y
-         UhQw==
+        d=gmail.com; s=20251104; t=1784537603; x=1785142403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZyobmQNbF473X4YAV4bIq6NV92V1jhbfZhYiYWm1O2k=;
+        b=Va8swiqdVFiX+D7XVwMrLVd4zK/t/RDx3lEzr4Ka1merZH+AioaOuSx6h71mkZb5n1
+         sl/GFU2plnHtZ2CIjS2XNeId+pzpAHrFWSMx0MFLx9fyjfYuPir+7faWHhExa79UlubW
+         xJU0YSCFMb5457KUXwkIPWwAI7Why3j6gK9UhXdGIB0HW/O2jgCn765wON43vT5CYiYN
+         x1s9hbZoCMUsZlmRhMCK/gnytXxkDGcIxAcDNYdMZ9uhzGxh7PEzCmLLHYWwahCqsb2E
+         /BAta5YHU+Mc8LGFOkpthw45Bf/TPmbsYyohS2eho14nvbMHs+KGa8soD0/QUhkoTerr
+         ruEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784536782; x=1785141582;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZYv0JD6e9nQrV7B6V6a2cos4kkVgkS7qp+ggCOAYFgU=;
-        b=swJBeURb8DYLTXgWqer3RGLI9F4XPDu6VzdBDnSl+4q7GRt5JkGceFNgcP3VMxttID
-         E89foQK42xWgreFnDj+SwekWX8EtBHnC4am4FnLe5Ck0/q8Zi/R69fr3/vMxzmo4tbCQ
-         01FZj1DQB/2nAM05lpOXAp3HLgnrN+YVrdsHZ0M/MfHJyous2ywl40PPIMRP4ODb8kMX
-         Tc4hioP4lqo4JKjjAKh8FSDmOnRTn2iNEGo4u4VOFn0Fteaf1kF/g2JpnMtg6WYxHEac
-         e3Zw2Gpt8AKRbjxDwCltQjoORkUmFnMgCB93rx3P5GzEWzi5u1YnEZcSB71TH2Hy97a6
-         GGkQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpfJNU6Qz5oIThmksE0NUpXnirvhLRiw+Y0V6B0nHAiFzuha2BoAjt9dzODqtQGrZq9QSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlPWnN7ukT+QO7rS5t3eR4k9L5aMQ/ht3j+Yo0Pa+fKFT10bOt
-	F0axmIdvYMXInfAI6yUdG99PyYpxTVlJs/rUzqQ54ljNwft7u4YiU9Se5ZpuMKUHyOwRQcBFR9a
-	b+FTXawI5OVnPEyDtr+gng14PROVn5wGfavCBLUxo33E1HMFYAnwjqA==
-X-Gm-Gg: AfdE7ckmwHzDI6Ta6cj/bMgXeReuBGUArH/lnFECdFSVDxPRhlilGqY/mAg6+HWQG6B
-	6OY5aGpi/Bnf+jYyA083t6kT1/6SCl1Ik5VAmNOMRAxQaJjqRdNA0w//0ZAjJIeQuK6/c1LY0BI
-	wND3pWV1CHdDHM4ZlVilssn1RxQTWQms2EokEozsNlaIM93o7yjzxShi/7nSXLaMzEk9rTwuwaV
-	Nbygnv8H0uVhRxjneuvV/EgvA6bl/omrYzx55gU+Ae1bHOAJXr4VBy0v2FPXKgQW+Jpj4/lbR/9
-	VNgKwIk5lf7AhyzOnZdM479HEq7ZmUTcohKhgxcC9sFiDLwskIrHwH6Eo6RCW38AGw/kGza7HQP
-	MX+dxXlvj5jtvnirD8qs8FBIC8naq/fFyQQr5Jny/KULwA4fucg==
-X-Received: by 2002:a05:600c:4e94:b0:495:522f:d994 with SMTP id 5b1f17b1804b1-495522fda7amr90343235e9.0.1784536782005;
-        Mon, 20 Jul 2026 01:39:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e94:b0:495:522f:d994 with SMTP id 5b1f17b1804b1-495522fda7amr90342865e9.0.1784536781447;
-        Mon, 20 Jul 2026 01:39:41 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4954ba2abd0sm234410465e9.15.2026.07.20.01.39.40
+        d=1e100.net; s=20251104; t=1784537603; x=1785142403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZyobmQNbF473X4YAV4bIq6NV92V1jhbfZhYiYWm1O2k=;
+        b=epcpc9usZiBifUnpeS6Fli6PsyMoUXYc97Q04UrKYdJsldSlAA5aezIPz4MBdOEoG1
+         axyP8L3aCnbB7/g2RcN/Dz9N99s6dUAiv7AD4I5bD6ulj/JhL0G21lZX6VJnQttuuxyt
+         1S+LEnO6fbcpPHxP2xb4R30SiVxHDmjq/mpwL7HD8VHCEVTZ6bS97foPV6hDdplpc/HD
+         n64w33C9Bn9AvGPz5sjWAPNX2FEqNIpolCYsPYiPlPT2Rh48yocVBg+FsBfaXMuUBzAN
+         qXN/Yf0AkMPyg+0DlWTQOnz6hMxyoNOBJZBZkC7GBbiVBIoPr+ZfnXxvQ3xjYgBV7lts
+         J09Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rp1ImBPLKdfuj3Y8lyg1EvlXYlI4/zj7H5BWX4ELCEuDu7OsbSUi164RiiLlND5sGbmZQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpmXcwDnCuAYCfSSAICS5Fimh0masMFozbSjy8IK+c+HNQgQ8x
+	6c2jDNq6cYMx4Gg/1NHaH1R/Pp9IuL3KVkpiI46XU/4sBApjIPLqWG/H
+X-Gm-Gg: AfdE7cni6Kzg8aCPBgLZVXNRmTnz8bt9y5HX2427x7dfZ9kBV2knmJ876Um1vp6kJF4
+	dvNSOFqJQaliR0tvhJsF98kDjIAZZ71Lt25LgHCkWtljMQy0kCS8ZIBjo0uxagVdmwvVhs9Tc/C
+	aKLFeltqewAMGE5n9jWFu0rTR2SuRFgVvkXk6qf6dBF2bSxafGOLkJwXit3xwusugiKSE4DtdGX
+	yWweJ0f/458zdJYGo3t+1JuyOY/6oThBbPiiHvIDF/VWE8gxSH/Aw2QOAM0a/6H96mwuGciuWdD
+	9PkPwn5C74y2Kb8EG0RjaHxiGSSmtukQR1sbJql9iX5lroRuuZl8nZelgLwHe7vOZbchfGB+7nQ
+	n3LUjJbuiz93qm+o29/lJtCBvNxGgo2fotlFq/mjydFo1CsoIXvvOBsxrPKfo5sZwEGO++d9SxY
+	c+2ZAv
+X-Received: by 2002:a17:90a:d44e:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-38e4b3d0fdamr13257377a91.1.1784537602406;
+        Mon, 20 Jul 2026 01:53:22 -0700 (PDT)
+Received: from [127.0.1.1] ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb69bsm25224068c88.11.2026.07.20.01.53.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 01:39:40 -0700 (PDT)
-Date: Mon, 20 Jul 2026 10:39:36 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v4 4/5] vhost: synchronize with RCU readers when freeing
- workers
-Message-ID: <al3bcMk0ZxMGq7Pt@sgarzare-redhat>
-References: <20260714151638.143019-1-andrey.drobyshev@virtuozzo.com>
- <20260714151638.143019-5-andrey.drobyshev@virtuozzo.com>
- <alibLtcrC7o5r4Dh@sgarzare-redhat>
- <2f680236-f4c1-418b-8401-4dea1230caf0@virtuozzo.com>
- <alj_YKTitwqMjAez@sgarzare-redhat>
- <55d7c896-b871-4c50-a324-35f5c4a9d11a@virtuozzo.com>
+        Mon, 20 Jul 2026 01:53:22 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	michael.christie@oracle.com
+Cc: pbonzini@redhat.com,
+	stefanha@redhat.com,
+	eperezma@redhat.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject:
+ [RFC PATCH] vhost-scsi: Serialize completion notification with callfd updates
+Date: Mon, 20 Jul 2026 16:53:06 +0800
+Message-Id: <20260720085306.1519294-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <55d7c896-b871-4c50-a324-35f5c4a9d11a@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 16, 2026 at 09:01:22PM +0300, Andrey Drobyshev wrote:
->On 7/16/26 7:13 PM, Stefano Garzarella wrote:
->> On Thu, Jul 16, 2026 at 06:39:48PM +0300, Andrey Drobyshev wrote:
->>> On 7/16/26 11:57 AM, Stefano Garzarella wrote:
->>>> On Tue, Jul 14, 2026 at 06:16:37PM +0300, Andrey Drobyshev wrote:
->>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
->>>>> the vq->worker pointers and immediately frees the workers, without
->>>>> waiting for a grace period.  A caller that fetched the worker right
->>>>> before the pointer was cleared can therefore still be queueing work on
->>>>> it while it is freed.  And even when the queueing itself wins the race,
->>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->>>>> future attempts to queue it are silently skipped.
->>>>>
->>>>> None of the current callers can actually hit this: net and scsi stop
->>>>> their virtqueues before the workers are freed, and vsock unhashes the
->>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
->>>>> the lockless send/cancel paths become able to race with the teardown.
->>>>>
->>>>> Close this the way vhost_worker_killed() already does: clear the
->>>>> vq->worker pointers, wait for a grace period, run whatever the last
->>>>> readers may have queued, and only then free the workers.  The
->>>>> synchronize_rcu() is skipped if the device has no workers, so cleanup of
->>>>> devices which never got an owner stays cheap.
->>>>>
->>>>
->>>> Do we need a Fixes tag for this?
->>>>
->>>
->>> I'm guessing it should be:
->>>
->>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
->>>
->>>> Thanks for pointing out that the issue wasn't occurring, but I think we
->>>> should add it because it's a sneaky problem we discovered by chance.
->>>> IMO the code should already have `synchronize_rcu()` after
->>>> `rcu_assign_pointer()` loop.
->>>>
->>>> @Michael, what do you think?
->>>>
->>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->>>>> ---
->>>>> drivers/vhost/vhost.c | 15 +++++++++++++++
->>>>> 1 file changed, 15 insertions(+)
->>>>>
->>>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->>>>> index 4c525b3e16ea..0d1414d40f4e 100644
->>>>> --- a/drivers/vhost/vhost.c
->>>>> +++ b/drivers/vhost/vhost.c
->>>>> @@ -729,6 +729,21 @@ static void vhost_workers_free(struct vhost_dev *dev)
->>>>>
->>>>> 	for (i = 0; i < dev->nvqs; i++)
->>>>> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->>>>> +
->>>>> +	/*
->>>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
->>>>> +	 * caller that fetched a worker before we cleared the pointers above
->>>>> +	 * may still be about to queue work on it.  Wait for those RCU readers
->>>>> +	 * to finish before freeing the worker, then run whatever they queued
->>>>> +	 * so nothing is left with VHOST_WORK_QUEUED set.  Mirrors
->>>>> +	 * vhost_worker_killed().
->>>>> +	 */
->>>>> +	if (!xa_empty(&dev->worker_xa)) {
->>>>> +		synchronize_rcu();
->>>>> +		xa_for_each(&dev->worker_xa, i, worker)
->>>>> +			vhost_run_work_list(worker);
->>>>> +	}
->>>>> +
->>>>
->>>> Following sashiko review [1], I tried to undersand why we need this, but
->>>> TBH I'm really confused. That said, this seems wrong also because it
->>>> will work only with vhost_tasks, and not with kthreads.
->>>>
->>>> IIUC vhost_worker_killed() will be called anyway when calling
->>>> vhost_worker_destroy(). For vhost_tasks, it will call
->>>> vhost_task_do_stop() that calls vhost_task_stop(). This sets
->>>> VHOST_TASK_FLAGS_STOP and wait the worker on vtsk->exited before freeing
->>>> stuff. The worker breaks the loop and calls vtsk->handle_sigkill() that
->>>> is exactly vhost_worker_killed() you mentioned we are mirroring here.
->>>>
->>>
->>> Hmm, are we sure it's the case for our codepath?  Looking at the
->>> vhost_task loop function:
->>>
->>>> static int vhost_task_fn(void *data)
->>>> {
->>>>     for (;;) {
->>>>         if (signal_pending(current)) {
->>>>             if (get_signal(&ksig))
->>>>                 break;
->>>>         }
->>>>         ...
->>>>         if (test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
->>>>             __set_current_state(TASK_RUNNING);
->>>>             break;
->>>>         }
->>>>         did_work = vtsk->fn(vtsk->data);
->>>>         ...
->>>>     }
->>>>
->>>>     ...
->>>>
->>>>     if (!test_bit(VHOST_TASK_FLAGS_STOP, &vtsk->flags)) {
->>>>         set_bit(VHOST_TASK_FLAGS_KILLED, &vtsk->flags);
->>>>         vtsk->handle_sigkill(vtsk->data);
->>>>     }
->>>>     ...
->>>> }
->>>
->>> AFAICT, we exit the loop in 2 cases: signal delivery or STOP bit
->>> setting.  Like you said, STOP is set by vhost_task_stop.  E.g. for our
->>> RESET_OWNER case:
->>>
->>> vhost_vsock_reset_owner()
->>>  vhost_dev_reset_owner()
->>>    vhost_dev_cleanup()
->>>      vhost_workers_free()
->>>        vhost_worker_destroy()
->>>          vhost_task_stop()  // for vhost_task_ops backend
->>>            set_bit(VHOST_TASK_FLAGS_STOP)
->>>
->>> So, first of all, actual work by .fn() callback is done after the exit
->>> checks, therefore we skip it - no chance to drain there.
->>>
->>> Secondly, the handle_sigkill() callback is deliberately NOT called in
->>> the STOP case and only called on fatal signal delivery.  And for
->>> vhost_task backend the .handle_sigkill() callback is exactly
->>> vhost_worker_killed().
->>>
->>> So my understanding is: if we only call synchronize_rcu() here and leave
->>> this path undrained, then whatever work which was put by send_pkt() for
->>> the worker currently being freed - will be lost.  Please correct me if
->>> I'm wrong.
->>
->> Yep, your right. But what will be the issue of loosing them?
->>
->> IIUC we are not loosing any data, just avoiding some works that will be
->> handled later when/if will set a new owner.
->>
->
->But will it actually be handled?
->
->vhost_transport_send_pkt()  // called on every packet send
->  virtio_vsock_skb_queue_tail(&send_pkt_queue, skb) // add skb to list
->  vhost_vq_work_queue(&send_pkt_work) // try to arm the work
->    vhost_worker_queue()
->      if (!test_and_set_bit(VHOST_WORK_QUEUED, &work->flags)) {
->        llist_add(&worker->work_list)
->      }
->
->So send_pkt_queue is a list of skbs, it lives on the vhost_vsock device
->state, and survives RESET_OWNER.  In that sense you're probably right
->that we aren't loosing any data.
->
->There's also send_pkt_work object, also living on the vhost_vsock device
->state.  So we're accumulating skbs, and then send_pkg_work gets put in
->the worker task list - but only if it's NOT already armed in there, i.e.
->QUEUED bit is unset.  And the bit gets cleared by the workload callback
->- for vhost_task backend it's vhost_run_work_list().
->
->The most important thing is WHERE this piece of work is being put.  That
->is worker->work_list - this list does not survive RESET_OWNER, as we
->free the worker in vhost_workers_free().
->
->Now imagine we have RESET_OWNER racing with send_pkt.  In
->vhost_workers_free() we acquire ptr to a worker but not NULL'ify it yet.
-> Then on the send_pkt path we arm the send_pkt_work, set the QUEUED bit,
->and place it on the work_list of a DYING worker.  Then the worker gets
->freed.  Now we have send_pkt_work (a singleton struct) with QUEUED set
->in its flags, and with no worker to walk through this piece of work and
->clear this flag.  As a result - send_pkt_work can't be placed in the
->list of any other worker, because it doesn't pass the "if
->(!test_and_set_bit(QUEUED)" check.  Thus no new packets can be
->processed, and the connection is stalled.
->
->Does this make sense?
+During userspace stress testing on a KASAN-enabled host, a host-side
+callfd replacement concurrent with ordinary SCSI completions exposed an
+eventfd_ctx lifetime race. The test requires access to /dev/vhost-scsi and
+a host process that can issue VHOST_SET_VRING_CALL; on the default device
+permissions this normally means root or an explicitly delegated service.
 
-Honestly, I don't see the problem. The device is about to be stopped 
-because the VMM is resetting the owner, so the connection is going to 
-stall anyway, since I don't think the guest will never answer, isn't it?
+The test used TUR completions while closing the old callfd and binding a
+new one. The unbind form tends to produce a NULL pointer, while replacing
+the callfd after closing the old file makes the old eventfd_ctx eligible
+for release.
 
->>>
->>> That said, I agree that vhost_run_work_list() will only work with
->>> vhost_task backend, not with kthreads backend.  If we do
->>> vhost_worker_flush() instead - I guess it'll keep the drain here, yet
->>> become backend-agnostic. I.e.:
->>>
->>>> +       if (!xa_empty(&dev->worker_xa)) {
->>>> +               synchronize_rcu();
->>>> +               xa_for_each(&dev->worker_xa, i, worker)
->>>> +                       vhost_worker_flush(worker);
->>>> +       }
->>>
->>> With the last 2 lines being equivalent to just calling
->>> vhost_dev_flush(dev).  And once we become backend-agnostic here, I'm
->>> guessing the warning reported by Sashiko should be dealt with as well.
->>
->> I'd avoid `if !xa_empty(&dev->worker_xa)` at all, and call
->> synchronize_rcu() in any case.
->>
->
->Agreed.
->
->> About vhost_dev_flush(), we are calling it in several places, and maybe
->> we should re-check them. E.g. we call in vhost_vsock_flush(), but it's
->> also called by vhost_dev_stop(), maybe we can avoid to call
->> vhost_vsock_flush() if we call vhost_dev_stop().
->>
->> I'm not sure we really need another one here, but if you think some
->> other works can be queued between the vhost_dev_stop() and the
->> synchronize_rcu() we are adding here, then okay, it may have sense.
->>
->
->Note that in our particular case we're gonna do:
->
->vhost_workers_free()
->  vhost_dev_flush()  // the flush we're planning to add
->  xa_for_each(&dev->worker_xa, i, worker)
->    vhost_worker_destroy(dev, worker)
->  xa_destroy(&dev->worker_xa)
->
->So we walk through the XArray, destroy workers in it one by one, then
->destroy the XArray itself.  Then the next time we call
->vhost_dev_flush(), e.g. from vhost_dev_stop() or wherever else, it tries
->iterating over the XArray which no longer exists - which is gonna be a
->no-op.
->
->Now, we can reach vhost_workers_free() via (at least) 2 paths:
->RESET_OWNER and device release path.  On the former the flush is needed
->as I illustrated above.  On the latter it's indeed redundant but is
->cheap as it's a no-op.
+vhost_scsi_complete_cmd_work() drops vq->mutex before calling
+vhost_signal(). VHOST_SET_VRING_CALL updates call_ctx under the same mutex
+and puts the old eventfd_ctx before returning. vhost_signal() does not take
+the mutex or hold a reference to call_ctx.ctx:
 
-Again, I don't see the need for it TBH, but at the same time, I don't 
-think it's a problem to include it, so if you think it's necessary, go 
-ahead and add it.
+	if (vq->call_ctx.ctx && vhost_notify(dev, vq))
+		eventfd_signal(vq->call_ctx.ctx);
 
-Thanks,
-Stefano
+	CPU 0 (ioctl / callfd replace)		CPU 1 (vhost worker)
 
+						vhost_scsi_complete_cmd_work()
+						mutex_unlock(&vq->mutex)
+						vhost_signal()
+						  /* load old ctx */
+						  vhost_notify() ...
+
+	VHOST_SET_VRING_CALL
+	mutex_lock(&vq->mutex)
+	swap(vq->call_ctx.ctx, new)
+	eventfd_ctx_put(old)	/* free */
+	mutex_unlock(&vq->mutex)
+
+						eventfd_signal(old)
+						  /* use-after-free */
+
+On the reproducing run, the worker ran on CPU 1 and the callfd ioctl path
+ran on CPU 0. KASAN reported:
+
+	BUG: KASAN: slab-use-after-free in eventfd_signal_mask+0x6c/0x110
+
+The use stack was:
+
+	eventfd_signal_mask
+	vhost_signal
+	vhost_scsi_complete_cmd_work
+	vhost_run_work_list
+	vhost_task_fn
+
+The freeing stack was:
+
+	eventfd_ctx_put
+	vhost_vring_ioctl
+	vhost_scsi_ioctl
+	__x64_sys_ioctl
+
+Hold vq->mutex across vhost_signal() so SET_VRING_CALL cannot swap and
+release the context while the completion worker is notifying the guest.
+This gives the completion and callfd update a clear ordering without
+changing the vhost API or adding a new lock. Other vhost-scsi response
+paths already signal while holding the virtqueue mutex.
+
+A private eventfd reference taken under the mutex would allow signalling
+after unlock, but it needs additional reference-count plumbing. An RCU
+design would require broader vhost-core changes for all call_ctx readers
+and additional eventfd lifetime rules. Since callfd changes are a
+control-plane operation, extending the existing per-virtqueue critical
+section is the smaller complete fix.
+
+This is an RFC because keeping vhost_notify() and eventfd_signal() inside
+the virtqueue critical section extends the lock hold time slightly. I'd
+appreciate feedback on whether this is acceptable or whether a
+reference-pinning approach, taking the reference under the mutex and
+releasing it after unlock, would be preferable.
+
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+ drivers/vhost/scsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 9a1253b9d8c5..7f46bc0de3c2 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -735,10 +735,9 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
+ 		vhost_scsi_release_cmd_res(se_cmd);
+ 	}
+ 
+-	mutex_unlock(&svq->vq.mutex);
+-
+ 	if (signal)
+ 		vhost_signal(&svq->vs->dev, &svq->vq);
++	mutex_unlock(&svq->vq.mutex);
+ }
+ 
+ static struct vhost_scsi_cmd *
+-- 
+2.34.1
