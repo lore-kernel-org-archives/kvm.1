@@ -1,79 +1,100 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866433B38BE
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 20:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9993F3B2D0D
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 20:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784577739; cv=none; b=bi3SyHbMRghLMP9rnEuN5mP8nBpMDkUNGweqHRgjii/xNWJKOOytv0BwonOQyaUeKJ6xXzoXPj32MK6BdRvNh2WHhe7E08TCoamr29+FGh/i7KGHEa+u9v+a4PKpQ+es+A/ktqEDO+jYoCBffPN8P93sztzta/10gCe3TCKOwfo=
+	t=1784577920; cv=none; b=ewEfNNr5NZ8IQpK/cB2gTzH4Q6/yzFa7lRcOmDL8ZjODGXgbaujTOF4T/i5FEzUMvA7RfgF/P2rHj4BArgrctVhRPnlzYKggtlpk/LNmghbLvO7qoshedIlTo7x1kDxpc6bc9XGdm1fEss/4RGOAI7BukY1rfj8/TPGSRDZ9Lvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784577739; c=relaxed/simple;
-	bh=yUQPM6hzoMdbkZJj0Y4Je9Blrhtr7QGrgWuRgmJOAsI=;
+	s=arc-20240116; t=1784577920; c=relaxed/simple;
+	bh=1rjpSQ8mu+YON7kDziz+Eqqp4mTUxp3NIFQjmqIoKtU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TWEV+cj0Etqmq490MoU5hv2yuNSFCcznbieFQoRSTIDoueiY0PO6JZdlGMDAXFN3qKA5GrKVz45Ot8BBAScvrU1QERd3QmK0+AROQE6m0Rw+y+5zjxyk5GPCp3SGPS7JZQRChzPbFWD/HSg8XwcZatX1Kl7oqynC5lCYlqbTXJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S4RPd0lN; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=N+AUEk7wdmBlQU321N1SqIABNbXdvHh5KfYmsll84Z0yfUR+IEoZf37KXd/n45SXXCdMJTUvf6tl/Kt3+XtrjuZHtcSXjXFhoQEzcM1CbjX7KQh5Ask1SVbfbGiaGZmaQO98M5jdBj6NaGbcLSI4kK9zlXxaisFu60oJ13cneys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b=y/hmaDAe; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S4RPd0lN"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cf41bab353so41245455ad.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 13:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=osandov-com.20251104.gappssmtp.com header.i=@osandov-com.20251104.gappssmtp.com header.b="y/hmaDAe"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38096590070so1722278a91.3
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 13:05:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1784577737; x=1785182537; darn=vger.kernel.org;
+        d=osandov-com.20251104.gappssmtp.com; s=20251104; t=1784577918; x=1785182718; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=amB8DRIkab9kI0m0AGrWYRIFfBIRp35flDeBw4O7HsU=;
-        b=S4RPd0lN8rdWCSfauA4GBj3rKu5CgX50LYCvW5TSKwWc/93UQDuIFFrJGSVfpPdtGB
-         KI7d5aZaAZTFNQ8LkrGddUSHNVtPD79QX/3wvRqwnoOo4cCGX7Gp3oiiWBWzyx9m691d
-         KP5H8ErLWx6safbL+n6mHpSyZ2KA3vLxhrx24/LbThRDKk1JmsUugxRktC1lcuvHnix9
-         VF+uiojGjZ/RftCwnD500T6/8+rYCCAsx8KlaaH0z+9SOxi8vYOMViz5EApKwLm/wbL1
-         f6v5QNbPidmzcE+X+DMX9tFUIEH6YOUJ2tqfg/ku6JT0j92Zvt3B2Yjc8pojo+QnS2Lf
-         nWIA==
+        bh=KYywQuRzpuUyQQKl8IkB8b6aSBOL9lUxtR3YJXQirrU=;
+        b=y/hmaDAeo287ZSi2Hqtq0WnQlgMBAQhgOSVj+s3tc5ZjxqOOmicqwGB/dQt6EHM5tQ
+         u7WAFhqYOlMp6rArKN5et8mnjJhXta00Thb+RuO0hxIvP2+qTQCX94HyvX837wId/plx
+         bzHEUZxECCuVw16WaF4Wtdh6K2bfhLh1AzQRD+gzdn+/yg4FTY1LiZgW+XzP/OBVgRTb
+         4KwUHjela//meQQoOXljO+vosO9C43OGpcuYKbh6cxKjPfs8eNDoIsV1f99Kob5GxIdB
+         Py2XPwHoriXf+T5FxY1dQEn3IhmKtV03rPiKVSDCTcCX42bx7Ymjj0dA9Ex9IxaDvpZe
+         cSTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784577737; x=1785182537;
+        d=1e100.net; s=20251104; t=1784577918; x=1785182718;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=amB8DRIkab9kI0m0AGrWYRIFfBIRp35flDeBw4O7HsU=;
-        b=b7FMKCmRQnejZHsJsvB68gGAuPFCjp6QfnhNGUPYyjp1an6SO9fGxmO9iyrM1zyaF/
-         OEzMImE0Vpa2Srrv0p9so43cKRhZ+sHJSjE3zD8DbA8ucJt9r/WcA/J+8KiJ80Xa1vCs
-         CV79Nc3ms0QCb1jnlQCeAYFVXJJ9D7KklE03Z5ROVI3zC8eRA9LOGs2m6OwfAWpJLlKT
-         Zi//aUEdUrQSD5+dICyWKR0MAJwgBkwaZ3Or53QhrPtQm71AIGYwE9WWzXDYS3eoxAPw
-         oiCjwdPz7E65yXy6w+qhzHLRt/y4He3bEr47EYeKf6nBnPKaEFEhFeegUY0nShALVtMK
-         31Ew==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6EnXn3qRiJHpWzdpp+ZcsxeqPQ1Dj5f+W/04gmYCYpgu7l6VwRJqQ7YK1imU5bnnNbEk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5I9ePOiBSx3TF8vCMl9IdURzYCqkxsvAplUNkwIXUY3T6Htzy
-	mSi9hS8Ma2e3QiecAuKGdgRnn4sHiMm/PePQsprQ1S1V0+FnZjqaPPbBJdYQ7Swk/Mo=
-X-Gm-Gg: AR+sD10hVAdj8vEC0dIZuedDb7lG6nYptb6uEtuhCZAk7Gu5rmWbQxzER5ONxZcS+GV
-	GgcQZTmV30rTLMsmUYfRKSV1TE5LpVdIew1KhKPMUCNgE/V7L/t+oYA5sdLNzu1bEqZYou5/9dp
-	b1ny16/FBkN/GFX+zNByYi8hQuBuTnaovFC8Q7AAQBzZba5LwlGAZs23Fzq+PTGUMBNJG9muu16
-	52pyYVE2PjDQhoLdlMspbx8YgVmMAEnUyCZgQnFGTokDdx1lABiRTuwwXM5m8fDiO28CLaC1kV6
-	OE6cU0tuv15YTm9kYvQqJkFQAjEO+s4HjkWv+n9nPXyxUMeK15LxwTWPSSfHF9C2b0FBR1K5CzB
-	EQjgqbJY+0nhtbAvbrO8WGlDWB/cUpNvFzGb8XzCeB2g2/ShNm46KATxBdSaijuEOsYhFTeaTT5
-	Pc9U2E
-X-Received: by 2002:a17:902:d48f:b0:2cc:d807:369c with SMTP id d9443c01a7336-2cf34a3000cmr173069645ad.45.1784577736510;
-        Mon, 20 Jul 2026 13:02:16 -0700 (PDT)
-Received: from p14s ([2604:3d09:148c:c800:966a:e23:19e7:951a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476e491sm61808635ad.76.2026.07.20.13.02.14
+        bh=KYywQuRzpuUyQQKl8IkB8b6aSBOL9lUxtR3YJXQirrU=;
+        b=VSKJJzRu5ySrLcrEaAIIPbV2Vqppmzkr14HuzTnPY32BHo2id+R0XT5mcoUgmQrozM
+         rs3Nbi8bjJ4GXNL4D00oMxbG/Pk4vH5ER12or0FAaVDINuH9wRCt7N7xs0sAHA1/6fXI
+         zQNLCCKVytbFf9pDSKdJUAG2Vr3jebzX73J7D7GG5Nz6Pt060qJ8KphLvrDXj/rf99F3
+         pe0+6yvNJGb+pi9uO7jXmi2/TY45yiVpBkTFaHA+fBUIDWYvYlPUl4U9cpTZZU+Lopa2
+         whjG/KEfjjfFFCXaMCb+gFqj2mS+wZlUcOBZ38dPiRY/QubY5zpV4lJObSN1Kt4jrk9W
+         3jFQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrz90i5nw4Tw2BVe79vQRxutBKHAXLWmN6hvpGRz1OcihjvjuPB+oOZnN8qtptRvGEyhBU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuwkJf3ZO2RteLRiKrmK3daKEVPKM100+t37orSBT7qHtnRKK5
+	rPJPEwpsy8SnP5PDwwNdRMQYT+FyfoP1smoIrqdK3ZGzkCY4+WTbZfZOQftb6TLVBDs=
+X-Gm-Gg: AR+sD12Ttvw3y5VYqKfszfMzO+8pPbBrTrmJ4FeXB2V5Yvb6opyjFrBSGBojM/MtqJH
+	YD4sDFQsBem7Rj7YkNQ2iHdXJHbjceELI7pTXwPT2bNdJdGtFC9M32HXpqDA6EFVa+r2lZsgZ7H
+	/gCizkXRDtHS/wQNB2bCjcg8dqDGNqcm/QPwwMOhPG58j/ZsdEQnrBg0A4hGBh6zMb/cS3KxL6l
+	pXkhrivL1el4HhiQfIEUBaHT0J4SeMW4Rsge2YZf+vOI6xoiPUT++gwayIDcO4bvCU+cy75vcDI
+	1340kMYBoh4BJ03H4XPL+MlcOsFetPwKL2jFMPB3ZZosuPqsddG9RstB6iYP0vw5qEgSg0yJ6jv
+	787goU9P4NkmncLwfym2gwSjXaRd6B8gD+YYkbvfxU0CmQhhzySOaxCGeOSDVUj39JX4/cqgzbK
+	K7mncWLaqMvLpJAAtV
+X-Received: by 2002:a17:90b:58c5:b0:37f:eda5:516f with SMTP id 98e67ed59e1d1-38e9283cd0bmr318608a91.0.1784577917883;
+        Mon, 20 Jul 2026 13:05:17 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:500::5ee8])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce29e13a8sm33372118c88.4.2026.07.20.13.05.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 13:02:15 -0700 (PDT)
-Date: Mon, 20 Jul 2026 14:02:13 -0600
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Gavin Shan <gshan@redhat.com>
-Cc: berrange@redhat.com, kchamart@redhat.com,
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
-	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
-	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v1 12/25] target/arm/kvm-rme: Populate Realm with runtime
- images
-Message-ID: <al5-xc-kNZhCcN9p@p14s>
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-13-mathieu.poirier@linaro.org>
- <1bd09a58-a207-46ba-a470-f67cc8509f07@redhat.com>
+        Mon, 20 Jul 2026 13:05:17 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:05:11 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com,
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com,
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com,
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
+	vishal.l.verma@intel.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, jannh@google.com, pfalcato@suse.de,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+	weixugc@google.com, yury.norov@gmail.com, linux@rasmusvillemoes.dk,
+	longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org,
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com,
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev,
+	usama.arif@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev, muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org,
+	cgroups@vger.kernel.org, damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 21/36] proc/kcore: include private-node RAM in the
+ kcore RAM map
+Message-ID: <al5_d2XCbaRBhqdJ@telecaster>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-22-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,103 +103,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1bd09a58-a207-46ba-a470-f67cc8509f07@redhat.com>
+In-Reply-To: <20260720193431.3841992-22-gourry@gourry.net>
 
-On Tue, Jul 14, 2026 at 08:56:44PM +1000, Gavin Shan wrote:
-> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > Once the Realm descriptor has been created, tell KVM to transfer runtime
-> > images (kernel, DT, and rootfs) from guest memory to Realm memory.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > ---
-> >   target/arm/kvm-rme.c | 56 ++++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 56 insertions(+)
-> > 
-> > diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-> > index 97ec7c8934c9..58669f4a50f1 100644
-> > --- a/target/arm/kvm-rme.c
-> > +++ b/target/arm/kvm-rme.c
-> > @@ -44,12 +44,68 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-> >   static RmeGuest *rme_guest;
-> > +static int rme_populate_range(const RmeRamRegion *region, bool measure,
-> > +                              Error **errp)
-> > +{
-> > +    int ret;
-> > +    void *host_ua;
-> > +    hwaddr size = region->size;
-> > +    hwaddr base = region->base;
-> > +    hwaddr start = QEMU_ALIGN_DOWN(base, RME_PAGE_SIZE);
-> > +    hwaddr end = QEMU_ALIGN_UP(base + size, RME_PAGE_SIZE);
-> > +    struct kvm_arm_rmi_populate populate_args;
-> > +
-> > +    host_ua = address_space_map(region->as, base, &size, false,
-> > +                                MEMTXATTRS_UNSPECIFIED);
-> > +
-> > +    populate_args = (struct kvm_arm_rmi_populate) {
-> > +        .base = start,
-> > +        .size = end - start,
-> > +        .source_uaddr = (uintptr_t)host_ua,
-> > +        .flags = measure ? KVM_ARM_RMI_POPULATE_FLAGS_MEASURE : 0,
-> > +    };
-> > +
-> > +    while (populate_args.size > 0) {
-> > +        ret = kvm_vm_ioctl(kvm_state, KVM_ARM_RMI_POPULATE, &populate_args, 0);
-> > +        if (ret) {
-> > +            error_setg_errno(errp, -ret,
-> > +                "failed to populate realm [0x%"HWADDR_PRIx", 0x%"HWADDR_PRIx")",
-> > +                start, end);
-> > +            break;
-> > +        }
-> > +    }
-> > +
-> > +    address_space_unmap(region->as, host_ua, size, false, 0);
-> > +
-> > +    return ret;
-> > +}
-> > +
+On Mon, Jul 20, 2026 at 03:34:15PM -0400, Gregory Price wrote:
+> The kcore_ram_list bounds its scan at the highest pfn in N_MEMORY.
 > 
-> Nit: The argument @measure isn't needed as it's always true, passed
-> by its only caller rme_populate_range(). I guess it's leftover for
-> the earlier host series.
->
+> As a result, private nodes placed above the last N_MEMORY node, which is
+> the common case for device/CXL memory - is truncated out of /proc/kcore.
+> 
+> Include N_MEMORY_PRIVATE nodes in the scan boundary.  /proc/kcore is
+> root-only (CAP_SYS_RAWIO), so this exposes nothing new - it just lets
+> a debugger read private-node memory like any other RAM.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  fs/proc/kcore.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+> index 390547b992acd..f67194dc2a9b8 100644
+> --- a/fs/proc/kcore.c
+> +++ b/fs/proc/kcore.c
+> @@ -251,11 +251,14 @@ static int kcore_ram_list(struct list_head *list)
+>  {
+>  	int nid, ret;
+>  	unsigned long end_pfn;
+> +	nodemask_t mem;
+>  
+>  	/* Not initialized....update now */
+>  	/* find out "max pfn" */
+>  	end_pfn = 0;
+> -	for_each_node_state(nid, N_MEMORY) {
+> +	/* Include private node memory in the scan */
+> +	nodes_or(mem, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
+> +	for_each_node_mask(nid, mem) {
+>  		unsigned long node_end;
+>  		node_end = node_end_pfn(nid);
+>  		if (end_pfn < node_end)
+> -- 
+> 2.53.0-Meta
+> 
 
-I kept this one on purpose.  The KVM_ARM_RMI_POPULATE_FLAGS_MEASURE is used by
-the kernel and as such, it is a matter of time before we make that options
-available on the cmd line.  I can remove it now but it will come back soon
-enough...  
- 
-> 
-> > +static void rme_populate_ram_region(gpointer data, gpointer err)
-> > +{
-> > +    Error **errp = err;
-> > +    const RmeRamRegion *region = data;
-> > +
-> > +    if (*errp) {
-> > +        return;
-> > +    }
-> > +
-> > +    rme_populate_range(region, /* measure */ true, errp);
-> > +}
-> > +
-> >   static void rme_vm_state_change(void *opaque, bool running, RunState state)
-> >   {
-> > +    Error *errp = NULL;
-> > +
-> >       if (!running) {
-> >           return;
-> >       }
-> > +    g_slist_foreach(rme_guest->ram_regions, rme_populate_ram_region, &errp);
-> > +    g_slist_free_full(g_steal_pointer(&rme_guest->ram_regions), g_free);
-> > +    if (errp) {
-> > +        return;
-> > +    }
-> > +
-> >       kvm_mark_guest_state_protected();
-> >   }
-> 
-> Thanks,
-> Gavin
-> 
+I'm sure this is the least of your concern with this series, but FWIW:
+
+Acked-by: Omar Sandoval <osandov@osandov.com>
+
+If everything goes well, kcore.c is quiet enough that this can probably
+just be merged through whatever tree takes the rest of this work.
