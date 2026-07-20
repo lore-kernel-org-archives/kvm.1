@@ -1,180 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F248472
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4808472;
+	Mon, 20 Jul 2026 18:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571178; cv=none; b=Sc0U6NAiHdip+K6ejYpvee7bTEa8bv35SlUhsjssnQEtviuqolUOSVdzARfj01oE0x8OpLBeX54bXn/SzypVviMHhgAsAD95vBYAiGr1ajDDUBrTF2mHxPCf2IxPysHCClFP4GYKTF/UMLYxriHGiku9/Ym2sR0u1AedpO0PW5w=
+	t=1784571184; cv=none; b=QToq7MgjtBRO1qQMGgvNOUyy3olwHo2b+UdKRxkya+u2wpmotwjGd+dEO7j00eUbvzworQ0R0z1vy71BHm8qh+mEWxIe8SKNDfIGQEe+7yJ64Wf0Ce3XMsI/yTtu2myU58FbUAo+w+7E8KDKwdmcRVCigRS9Rqz5ZNoQqj1iLnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571178; c=relaxed/simple;
-	bh=9q8ixYWFkoRREC4o6a1Wy/pFV9jNZDuoL/kbLhlpOL8=;
+	s=arc-20240116; t=1784571184; c=relaxed/simple;
+	bh=OF1SvnidqQ0YB5YAg3PuOe7YLn56tuPId12MtsgE35E=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YJ2BpTgk6TcDb+Z7ShgcltEoHsul3hrk+cBeKXercMYA5Nsy2gRk+hwPQir8ByVOHOB0buKBorde7MpXIAuiPccDLmvX9vhfaVMPvmTNTM74kyeGtWwnCZUPtOvkDznzAvp1eQojUYOH90creHmQswB/ZuxUyklXyK1hVAk7hbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKC2jvWL; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=VdaImlw4P90ysh5TF/fKE0cIAURjcdCW8Ysd/Xa1mpxsKU58ZOPb/LdJhEAnVjrSs8dxTCa4f1uj+0F6xByQAFFSDMLZIQUSIbHWYRu3dgyUpsUXI5S9vvAWPyzyOGNBN/KZz2Ymj7yu9GXM7EUz72xWov0aOMaEHZ65kUZ3HGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWRq9K1t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKC2jvWL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5711F000E9;
-	Mon, 20 Jul 2026 18:12:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWRq9K1t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A431F000E9;
+	Mon, 20 Jul 2026 18:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784571177;
-	bh=sQ76jDTr0UN/ikPN1QZaYyN7SemUSPr9vS+2fZlTf5A=;
+	s=k20260515; t=1784571183;
+	bh=6r3qsa17RiH0tkeDBRF62993DvMIn8NN0DfTTMA0FNk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YKC2jvWLmepMhgltX2CmcdQAcwd+dwPDCKOCJuuWum9lXgBC0YPlpcjErnCUJI01z
-	 ig646sCSy4NL3J0bZ+wzOoZ0PelwgoW++PsgHScV9VMR6VumcW0PivnYnfkYJF9bhm
-	 XYmlcEfrG1ikrOc4sAvTbAtGuZ2m9zgkqOj6pS8M17aH5eicrS0h1m2yQXr4OBzhtX
-	 toxQzqDeg3bYzcWHCs+v8FQpv63BJGccOWKfdtoTSCTGrqtJLIZyQzfZPL09IovTXj
-	 mrL7j/iBtY+cJnKQuD49KI6WLopnDZ+mLne+EwLJ1j2nur0+vwnBCmdJHcvsG/mbld
-	 VIsZ/EdHUKxzA==
+	b=OWRq9K1tJu1it4XxWoSdgYJ8OdOoGzGQL0NEITMBHICAjJp6DRHKVrYM7PsfhpCju
+	 OV6FMKmrPJt2o5CXmzNqFbedE/LRLpQKdStn2LjXTVuPMMB0yD5fhGE/Ukv4lAPZw7
+	 NrepvNXkqZYrK25MpQnMdCQhEljOrBWrJHGIkYXzwlgeAi4VQbG2a0K/zhYpIB+92p
+	 5nTWkF/DLidYc7YoSm4veHsX5A+3VjCSORU5/zG0QHiTfdwC8alkqdnMVQSMbCmqvx
+	 bzxavDii60TVt8upR4u7nXJSFbjYbhJ3lZWmzIBOzuz8J7cbrD9FrRpTwNVc5HXQje
+	 dkomrSjTn+//w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 08/20] KVM: VMX: Support instruction information
- extension
+Subject: Re: [PATCH v3 2/4] KVM: s390: pci: Fix missing error codes and
+ memory unaccounting
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260720171949.498680-9-chang.seok.bae@intel.com>
-References: <20260720171949.498680-1-chang.seok.bae@intel.com>
- <20260720171949.498680-9-chang.seok.bae@intel.com>
+To: "Farhan Ali" <alifm@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260720175819.1723-3-alifm@linux.ibm.com>
+References: <20260720175819.1723-1-alifm@linux.ibm.com>
+ <20260720175819.1723-3-alifm@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 18:12:56 +0000
-Message-Id: <20260720181256.DA5711F000E9@smtp.kernel.org>
+Date: Mon, 20 Jul 2026 18:13:02 +0000
+Message-Id: <20260720181302.A4A431F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The new EXTENDED_INSTRUCTION_INFO VMCS field is omitted from neste=
-d VMX reflection (vmcs12), breaking APX instruction emulation for L1.
-- [High] Reading EXTENDED_INSTRUCTION_INFO unconditionally when Enlightened=
- VMCS (eVMCS) is enabled triggers a warning and returns 0, corrupting KVM's=
- instruction emulation on Hyper-V.
-- [High] Malicious guests can trigger a host WARN_ON_ONCE by executing APX =
-instructions when KVM is compiled without CONFIG_KVM_APX.
+
+Pre-existing issues:
+- [High] Calling KVM_S390_ZPCIOP_REG_AEN multiple times on the same device =
+causes severe, unbounded resource leaks and state corruption.
 --
 
---- Patch [8]: [PATCH v5 08/20] KVM: VMX: Support instruction information e=
-xtension ---
-commit 96831841dd3c831246d26ed4875bb970e11f9dce
-Author: Chang S. Bae <chang.seok.bae@intel.com>
+--- Patch [2]: [PATCH v3 2/4] KVM: s390: pci: Fix missing error codes and m=
+emory unaccounting ---
+commit bb1306d6a0da97f9d5b884d1e67a7c8d12b6a908
+Author: Farhan Ali <alifm@linux.ibm.com>
 
-KVM: VMX: Support instruction information extension
+KVM: s390: pci: Fix missing error codes and memory unaccounting
 
-This commit defines VMCS field offsets for extended instruction
-information and supports retrieving 5-bit register indices for the APX
-extension. It relies on the host CPUID APX enumeration for enabling this
-behavior.
+This commit fixes error paths in kvm_s390_pci_aif_enable() to properly
+propagate error codes on failure and rollback memory accounting.
 
-Link: https://lore.kernel.org/aakEsXJgO-3m2xca@google.com
-
-> diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-> index 5645a84f4fbc9..2334f52071f9f 100644
-> --- a/arch/x86/include/asm/vmx.h
-> +++ b/arch/x86/include/asm/vmx.h
-> @@ -276,6 +276,8 @@ enum vmcs_field {
->  	PID_POINTER_TABLE_HIGH		=3D 0x00002043,
->  	GUEST_PHYSICAL_ADDRESS          =3D 0x00002400,
->  	GUEST_PHYSICAL_ADDRESS_HIGH     =3D 0x00002401,
-> +	EXTENDED_INSTRUCTION_INFO       =3D 0x00002406,
-> +	EXTENDED_INSTRUCTION_INFO_HIGH  =3D 0x00002407,
-
-[Severity: High]
-Does this break nested VMX instruction parsing?
-
-It appears EXTENDED_INSTRUCTION_INFO is not mapped in
-kvm_supported_vmcs12_field_offsets in arch/x86/kvm/vmx/vmcs12.c, nor is
-it copied in prepare_vmcs12() in arch/x86/kvm/vmx/nested.c.
-
-If L2 executes an APX-extended instruction that exits to L1, and L1 attempts
-a VMREAD of EXTENDED_INSTRUCTION_INFO to parse the exit, will this fail with
-VMXERR_UNSUPPORTED_VMCS_COMPONENT and cause L1 emulation failures?
-
->  	VMCS_LINK_POINTER               =3D 0x00002800,
->  	VMCS_LINK_POINTER_HIGH          =3D 0x00002801,
->  	GUEST_IA32_DEBUGCTL             =3D 0x00002802,
+> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+> index dd17f8a7b4734..9fdb6e383b189 100644
+> --- a/arch/s390/kvm/pci.c
+> +++ b/arch/s390/kvm/pci.c
 
 [ ... ]
 
-> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-> index f3b0ec7ccb03a..2f53338f84f0b 100644
-> --- a/arch/x86/kvm/vmx/vmx.h
-> +++ b/arch/x86/kvm/vmx/vmx.h
-> @@ -323,9 +323,18 @@ static __always_inline unsigned long vmx_get_exit_qu=
-al(struct kvm_vcpu *vcpu)
->  	return vt->exit_qualification;
->  }
+> @@ -293,14 +293,17 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev =
+*zdev, struct zpci_fib *fib,
+>  	}
 > =20
-> +/*
-> + * The APX enumeration guarantees the presence of the extended fields.
-> + * The host CPUID bit alone is sufficient to rely on it.
-> + */
-> +static inline bool vmx_instr_info_extended(void)
-> +{
-> +	return static_cpu_has(X86_FEATURE_APX);
-> +}
+>  	/* Account for pinned pages, roll back on failure */
+> -	if (account_mem(zdev->kzdev, pcount))
+> +	rc =3D account_mem(zdev->kzdev, pcount);
 
 [Severity: High]
-Can a guest trigger a host-side WARN_ON_ONCE by executing an APX instruction
-when KVM is compiled without CONFIG_KVM_APX?
+This is a pre-existing issue, but can calling the KVM_S390_ZPCIOP_REG_AEN i=
+octl
+multiple times on the same device cause resource leaks?
 
-If KVM is built with NR_VCPU_GENERAL_PURPOSE_REGS =3D 16, but the host CPU
-supports APX, this check returns true. A guest could cause a VM-exit with
-a 5-bit register index 16 or greater.
+Looking at kvm_s390_pci_aif_enable(), there doesn't appear to be a check to
+verify if Adapter Interruption Forwarding (AIF) is already enabled for the
+device. If it is called repeatedly, it seems account_mem() will blindly
+overwrite kzdev->user_account and kzdev->mm_account:
 
-When KVM extracts this index from the instruction and passes it along, will=
- it
-hit this check in arch/x86/kvm/regs.h:kvm_register_read_raw():
+arch/s390/kvm/pci.c:account_mem() {
+    ...
+    kzdev->user_account =3D user;
+    kzdev->mm_account =3D current->mm;
 
-    if (WARN_ON_ONCE((unsigned int)reg >=3D NR_VCPU_GENERAL_PURPOSE_REGS))
-        return 0;
+    return 0;
+}
 
-This could panic the host if panic_on_warn is enabled.
+Does this leave the previously allocated airq_iv and sbv bits leaked, along
+with the previous user_struct and mmgrab references? It also looks like this
+would permanently elevate the locked_vm and pinned_vm counts for those page=
+s,
+which could potentially lead to memory exhaustion on the host.
 
+> +	if (rc)
+>  		goto unpin2;
 > =20
->  static inline int vmx_get_exit_qual_reg(unsigned long exit_qualification)
->  {
-> -	return (exit_qualification >> 8) & 0xf;
-> +	return (exit_qualification >> 8) & (vmx_instr_info_extended() ? 0x1f : =
-0xf);
->  }
+>  	/* AISB must be allocated before we can fill in GAITE */
+>  	mutex_lock(&aift->aift_lock);
 
 [ ... ]
-
-> @@ -707,20 +716,22 @@ static inline bool vmx_guest_state_valid(struct kvm=
-_vcpu *vcpu)
-> =20
->  void dump_vmcs(struct kvm_vcpu *vcpu);
-> =20
-> -/* A placeholder to smoothen 64-bit extension */
->  static inline u64 vmx_get_instr_info(void)
->  {
-> -	return vmcs_read32(VMX_INSTRUCTION_INFO);
-> +	return vmx_instr_info_extended() ? vmcs_read64(EXTENDED_INSTRUCTION_INF=
-O) :
-> +					   vmcs_read32(VMX_INSTRUCTION_INFO);
->  }
-
-[Severity: High]
-Will this corrupt KVM's instruction emulation when Enlightened VMCS (eVMCS)
-is enabled on Hyper-V?
-
-When vmx_instr_info_extended() is true, this calls:
-
-vmcs_read64(EXTENDED_INSTRUCTION_INFO)
-  evmcs_read64()
-    get_evmcs_offset()
-
-Since EXTENDED_INSTRUCTION_INFO doesn't seem to be added to the EVMCS1_FIELD
-mappings in arch/x86/kvm/vmx/hyperv_evmcs.c, get_evmcs_offset() will return
-a negative offset.
-
-Will this trigger a warning and cause the read to unconditionally return 0,
-leading to incorrect instruction decoding and silent data corruption in the
-guest?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720171949.4986=
-80-1-chang.seok.bae@intel.com?part=3D8
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720175819.1723=
+-1-alifm@linux.ibm.com?part=3D2
