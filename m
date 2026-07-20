@@ -1,93 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F952388392
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B3743711B
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 18:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571166; cv=none; b=E6AOxSK+f+ZjQCqMl4+8LnPZ60CiqwoOqhXL21HEuuYmbpm61XsfvzcRYh2goaEpAFsbu/5KFNK7p6yZBsXBv8cWwvsjALIRtn6ZVacG3XQsz9X7w5ZP0PABN3SY0oHUcQ9d1z/Ik4h9Lmnq81/mWRixJlncZTrqrMKLgjE7l0A=
+	t=1784571173; cv=none; b=mBnOhbba59YELm9QqycLuxbcpXyH6RDF/bF912HbfGVQ9IUQ5rLF1aIWEPrabJ3hTNcO/jOjKJygz524KOkAgMU6TzQDF1/qgmIqZg0h2tqrhqUlMu8S4yQaNVO4YPMWDeE8CufkgCITkB++5viflo2qdGw5zUdFAOG/fatwOsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571166; c=relaxed/simple;
-	bh=Dsf0J00nBbaqCkZJbvfNlWCDqudt2Md2SPXUyVR+1zE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=djfvGLqvNitD/v1ys7Qd3zPwkrcay6gKQgQWOwrrhyBzkJqIMv40kj34JUXSx/gUVKefigH8F8aaf8dyk7FYMwUJ45AYrAnqwCpNQnN9VWfnNVZsxpzgBNv/Q6wZA8jxWBKtvSL/Tg8nuWx80HnByc1AFvzOBycHRUkHhBzRprA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFRnhfH6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784571173; c=relaxed/simple;
+	bh=Ynfe6G02XWaPRrihbfperCWnlNOvk+Q31z7WR7ZtVF8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LMmdf9QBcHG7ZOlbJO+kB6IlN3xH8i/09JOPpO+WfeOiEDcENNhmdgsjadYFYeYffHNPHu1zhmbo+03P9GhKtUR38UKX/Gq6Ffb3OkoQBCsAiTiyRJQKf+RpnMZ5xcg0SYtkUnzxLaq6u/K8MbW9bqJ0+lMCcGNBzegx+4Uz88Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uJJkjLF8; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFRnhfH6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AA41F000E9;
-	Mon, 20 Jul 2026 18:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784571165;
-	bh=xovvLh4ejVu13dmbtAuIq9H6nAXxqu7rM9M6vX0rE6o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dFRnhfH6t0wtX0r2HN/fyUHVeWmAt2zq7GeWkLt+T86WSTRww6U2pk3T6QzuWRvjU
-	 XZCwlWKnQEXVVJzTqYv9z6TEgiIdypziu8oGfMuL1fEgsgcPEhH4CVzOQEaNo406IS
-	 SEEfsWDBun6gpI5g4bBqKT0AshCxcfujTWsNUtctJ9BuZQ1txGMWS+9ED31k1vaNad
-	 gdlbq4OdZaQRz1b/huyG83X0ZnXILnhwnE8RvpuZ0WAF0/1R6yVEzI47JxLinPUcuH
-	 D4Ua9M3B/MUA0pOzgNU7Awl17MEnTG9PlSYZSIA/nKdox/4XHtyDR5glZBlroZq/KQ
-	 18o6coeD7DsLA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 17/20] KVM: x86: Expose APX foundation feature to
- userspace
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uJJkjLF8"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cacef7d299so394355ad.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 11:12:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784571171; x=1785175971; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jQg5MSn5GIQMrrHb/N0B6MSuNfWqtdsH4Etxd7dMb2I=;
+        b=uJJkjLF8j4iWZD3/RJytyOhOqz2MAVuC8JcJS++RfkBrJtOADDMq+AoJWDnG0I465z
+         2wpbfEC/+OimWmxViO4Rh1VPo9x+8jS5fK7Qcs+HKo96wkD33QDkUQBJ2/r+zVcDOwR4
+         glDQ5qHiaOE/+3NP0Frh/xWg7mDrBDvGDnydyL96SLdYx7RH3+h/lA2XIQl43MOxMzgs
+         o+n1ZZhzNaxT0B6chD3fDt0vQ/In/ZMpmKaIGSPoeN08ImkwxPVuxEfhYBKwQGo8wMyA
+         yVG8NAC6KSMPN13ZaHKeG08jhiXRfrQiNEWwSUIhnKM9DsedNVfl0VKYFk+eRrFdEh6d
+         XCoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784571171; x=1785175971;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=jQg5MSn5GIQMrrHb/N0B6MSuNfWqtdsH4Etxd7dMb2I=;
+        b=PsiOWoO4z4vZqPpOM/JpjrbE3aAIwwFZbX5LFcXGwPWS345uxx3QDIQ050XHeopAr9
+         GxVTyw0I6aPUXcudg3T7YynXouqOPL/6L3tZKzALkSwPiaL2aBXSO4EN7pL8SKPRJTLv
+         rkrvwgenmPnJG5MRgwgiyZfu3QHKPT7WdpnP+9hX/8Z2XCW+61F6Phhv4m/J9wAs17z8
+         P6JOJDMZF09WjGBpheK45/GC8/fhipXD3RevnbhGAhQtY8iGSXuZRQqFVw7xUbHEDafQ
+         B2yNwyAFLhUbTQnOMbn0keCD7qsSGebxZrRdIM61wQZwjSCA2D9Sczp2tBwytCbGalb4
+         MUxw==
+X-Gm-Message-State: AOJu0Ywtt9A9uGpAtgQ0jqHWuVrp7VOUKTuBb0jWKGMjNbRbBmxlTAiD
+	bPs7daFCWxOC1IEcI2TIRRPMfoGvKluGREBbwYuQYYmB9slvwPH0ea+eVhfHAIBiEg==
+X-Gm-Gg: AR+sD11jSQbAH7uEsq3uo5+nl2GIsmQAElZkZxCMIDiIgx83jYefhRU2RaKioK1ivzL
+	a19r9r+TsCvcDUbLSpr0u6gNILQrOv3g4BWfWmhDiZMzLTs1f3MI5+11c/eJgSsdJVhL2C48vok
+	DXfvXkkXAHlzGnzeXu4NIBunyXMboEXijGtssFjFSstxiFXENQkud5eHt6CtMA0wPIoK8ytA6GT
+	bPDidFFE2p31nJzqfEcqKawZ498sl0We6BZxwW74SGnL37sOIWINQ7Dgfb3RHEAS6CdiChPugkD
+	Il5EPlYBqXoF4PNk237+Ss4Suodxrjy6Tj9qWCvkFP7yMUGD0nYjBgScZDPzjCeufuTccFsqO5V
+	roIpCt3e6zv9fogPhR466CaZq12y+lF4z2pWTyJFpOYdi7Z5VityFABgWAbbDpDdNht6tWpekaq
+	n8UGib4E8bt0L3OFn+lDo2avzqJL8aPOCG3txh
+X-Received: by 2002:a17:902:ec92:b0:2ce:f9e2:4646 with SMTP id d9443c01a7336-2cf7b71d50emr1730055ad.27.1784571170441;
+        Mon, 20 Jul 2026 11:12:50 -0700 (PDT)
+Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3448db72sm62309825ad.1.2026.07.20.11.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 11:12:49 -0700 (PDT)
+Date: Mon, 20 Jul 2026 11:12:45 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260720171949.498680-18-chang.seok.bae@intel.com>
-References: <20260720171949.498680-1-chang.seok.bae@intel.com>
- <20260720171949.498680-18-chang.seok.bae@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 18:12:44 +0000
-Message-Id: <20260720181244.E4AA41F000E9@smtp.kernel.org>
+Subject: Re: [PATCH v5 14/20] vfio: selftests: Add
+ vfio_pci_liveupdate_uapi_test
+Message-ID: <20260720181201.GE1381701.vipinsh@google.com>
+References: <20260714151505.3466855-1-vipinsh@google.com>
+ <20260714151505.3466855-15-vipinsh@google.com>
+ <20260714154402.D3C651F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260714154402.D3C651F000E9@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] CPUID leaf 0x29 is not added to cpuid_function_is_indexed(), pre=
-venting KVM from properly flagging it as a multi-subleaf CPUID.
---
+On Tue, Jul 14, 2026 at 03:44:02PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] The selftest `vfio_pci_liveupdate_uapi_test.c` fails to compile and link due to missing headers, libraries, and undefined functions.
+> --
+> 
+> --- Patch [14]: [PATCH v5 14/20] vfio: selftests: Add vfio_pci_liveupdate_uapi_test ---
+> commit 4ef2d85343eb23f4f743330b67aabe0e09e08f3d
+> Author: David Matlack <dmatlack@google.com>
+> 
+> vfio: selftests: Add vfio_pci_liveupdate_uapi_test
+> 
+> This commit adds a selftest to exercise preserving various VFIO files
+> through /dev/liveupdate. It verifies that VFIO cdev device files can be
+> preserved while group-based device files, group files, and container files
+> fail.
+> 
+> > diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
+> > new file mode 100644
+> > index 0000000000000..f81c8ab21db3f
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_uapi_test.c
+> > @@ -0,0 +1,97 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +
+> > +#include <libliveupdate.h>
+> 
+> [Severity: Low]
+> Does this header file exist in the tree? The build fails because
+> <libliveupdate.h> cannot be found. 
+> 
+> Additionally, is the Makefile missing an include for
+> ../liveupdate/lib/libliveupdate.mk to ensure the dependencies are properly
+> pulled in for the build?
 
---- Patch [17]: [PATCH v5 17/20] KVM: x86: Expose APX foundation feature to=
- userspace ---
-commit e317b8613a3aae9996b941415cb6b3fe55b0643f
-Author: Chang S. Bae <chang.seok.bae@intel.com>
+This series is built on top of in-progress Live Update series.
+https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
 
-KVM: x86: Expose APX foundation feature to userspace
+Same for the other issue below.
 
-This commit exposes the APX feature to userspace components and updates the
-maximum supported CPUID leaf to 0x29. It clears the APX feature on SVM
-environments since EGPR support is not yet implemented.
-
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-[ ... ]
-> @@ -1713,6 +1717,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid=
-_array *array, u32 function)
->  		}
->  		break;
->  	}
-> +	/* APX sub-features */
-> +	case 0x29:
-> +		entry->eax =3D entry->ebx =3D entry->ecx =3D entry->edx =3D 0;
-> +		break;
-
-[Severity: Medium]
-Should CPUID leaf 0x29 also be added to cpuid_function_is_indexed() in
-arch/x86/include/asm/cpuid/api.h?
-
-Without adding it there, KVM will not set KVM_CPUID_FLAG_SIGNIFCANT_INDEX
-for leaf 0x29. This causes kvm_find_cpuid_entry2() to ignore the
-guest-provided ECX sub-leaf index when resolving this leaf.
-
-If a VMM populates leaf 0x29 index 0 with APX features, a guest querying
-index 1 will incorrectly receive the features of index 0 instead of
-all-zeros.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720171949.4986=
-80-1-chang.seok.bae@intel.com?part=3D17
+> 
+> > +#include <libvfio.h>
+> > +#include <kselftest_harness.h>
+> 
+> [ ... ]
+> 
+> > +TEST_F(vfio_pci_liveupdate_uapi_test, preserve_device)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = luo_session_preserve_fd(self->session_fd, self->device->fd, 0);
+> 
+> [Severity: Low]
+> Is this calling a kernel-space function from a user-space selftest?
+> 
+> Looking at the code, luo_session_preserve_fd() appears to be defined in
+> kernel/liveupdate/luo_session.c. Since this is a user-space selftest,
+> calling it here results in an undefined reference during compilation. 
+> 
+> Should this be invoking an ioctl directly, or is there a user-space library
+> wrapper intended to be used instead?
+> 
+> > +
+> > +	/* Preservation should only be supported for VFIO cdev files. */
+> > +	ASSERT_EQ(ret, self->iommu->iommufd ? 0 : -ENOENT);
+> > +}
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260714151505.3466855-1-vipinsh@google.com?part=14
