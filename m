@@ -1,63 +1,63 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB694480DEC
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EFC3D6CCA
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784576126; cv=none; b=DTUcdhRW7EvP38iWL1qAaAplDh6VO4WE726qEitml0i5mrahpeJYZHdVOoXJvdEB1ImaBmxthiBd6MKD9p3JImiPCcrIBI2jm5p+YMU2gHE2GBe36BisDD6gFayGdj/FFgc510mEJ6Cn1srrrntT4omr2tI979k0wO16KGIvtXY=
+	t=1784576130; cv=none; b=lAjDE8Y6160Td4icwsjxy6wsYCLHf8kj147Tn3MZsF+KOwXqXl+2y6mmWo6eO+fN52kaTQ2hvs4WHuOo3Lxx3RDPkhjrQSsEBEtrodzCZzQrZpc6a2z7EEX5/AoKRhP4pmhXT8EBYlfw/rXkfQw0z7PV0zSvpsd14vFmebDyLXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784576126; c=relaxed/simple;
-	bh=rTGbsGvKQACnJtisxUC5ZLec44efZiXOSNd4OQNTaLE=;
+	s=arc-20240116; t=1784576130; c=relaxed/simple;
+	bh=di7fIfxF7ozb/zDn5Ysl3z+j036+4RO+ucFlAFRHfuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMVPR1AqagbPyFjrKVA9rKqIMfbeIYVNJp/QRLOje8TxasmE3T24kQ0r8VwU/gbOdn3vGe0E6Ah7cPBIJvItqAl+ja5v24Bx1KwUNovLp5bKucxfypJw1wvmRAFPT3w+MLzh9raCh4t92dO12BS4b9yBv4nA2RXLGG/NIbXzJSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=KNaHn0u5; arc=none smtp.client-ip=209.85.222.173
+	 MIME-Version; b=CUajEhwSvzjNhsIFOIqJHp+J3IV1kZbWSOe1VIH30JXd9p5aP6xePLgsqS7jC/FU+jZwOxzkTErnRmk4x4h+iQVLeTgOQVRve8wVRJvEkWTnUCEgr7Ucq76gAN8fymUdREYCVC3WlvWtKosO85dAarbsIkb4mdCd6VLtaNZbreQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=JSKEdj1s; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="KNaHn0u5"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e54f8c051so797915085a.3
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:35:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="JSKEdj1s"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e65e18969so422839485a.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:35:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784576120; x=1785180920; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1784576125; x=1785180925; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=t6FOiK4vob/RxKMxAQwNd3dgf0KAGjN7gNG/YIVjxjc=;
-        b=KNaHn0u5ops1R/lZeXIDAUO/x4K11AG1ePxAFRbUhd7TfbL1t9LgN4aTaaNKEmTtjs
-         nzppEVg1Q9PX8Y/szIAZHRhmAsCyhFpgETvciNAsYAr7YVRUqsFYcRkrJ1cA0BJYzfV0
-         5h3TZYJehbb6t4kBKpCI8ZB2jJZyseGHBoqYgwIuBjPkOZcyiIRzf/kcFdewtJpLa1/O
-         2fFQ4cCSeO51sw1iCLcCFiOoCVvSqtOi4L7NkYOIn9TUVDV6s0gfypiwDr5EKWb01FiR
-         oFb3+M5V2dmD9yoV/rPUoLqy4kniWwtmd/ATQkFdRXosc90P3z/b9WVijvCzfsZAgfXg
-         89tw==
+        bh=wWSndD15nfA3ulYoFeibVziNkAccxURrSPvFkTAURcI=;
+        b=JSKEdj1sd5bwDdBC10wiOM5dTGvPWr1yHnxMeDmOaJ+51wGUTpa3aapxVQ4uz1yTKq
+         WY7kUXcLpEqZ9FD88SFmyoDP43tH00wY3jy7/I9FqW3LpMRxnId9rFrdxo3T1ongr6d4
+         /AVrPVYNAbWx6uqxL0UcR72MsHkhc7vx7WA4svqIiMbjwlh07JQ5z+gNyNnS+YbWzjv3
+         lDeyRVPdHZPfBOgCw/Xay0rYURJAGp9c06A5Z7+NSiDbuWq6cXteYNMP0d9BrS1zEHPF
+         0O1PUWaQPd29TNUtzlrggsyXChoBqQsUgJZ74w89h85HNrN1ho+G2UTxY7qoIS4cHvUA
+         +I3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784576120; x=1785180920;
+        d=1e100.net; s=20251104; t=1784576125; x=1785180925;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t6FOiK4vob/RxKMxAQwNd3dgf0KAGjN7gNG/YIVjxjc=;
-        b=JfXwTLKRpSMGnh9vLlTvnOyfoJ+NCz/AkkU93aVy5fY2irb5L8O3N4+ExD7Mz8plj1
-         HtmnW+MI5qent9fSrM4c6tKvWMBU4Nxvrv28JiZUGHMcBvvVPvSuQjGm0AUr7P+g5ii1
-         tqpGhNueU2moFyAS6BzP3yK2JL6td96R9T99oF9eSoqoVaY0J72EiYGg17Ysf4pD4CGl
-         icxvaMB4swL4DrcgoDiiW8+ne4hDrcT4YQuwukSsrK68M/IWkWUDiZGWFGad/hEEyzgI
-         PqZ6byBaKGMGFaVfm7K1QoxJ7FDIrbyh8d26UXZ8dCHvIGr7erAHTGZQ22CeIXMFfaPc
-         Grdw==
-X-Forwarded-Encrypted: i=1; AHgh+RrptVn4AE3RNX5WS2qy/5uNxxnT6J7EOIRtDwiDZ6GyQrfmpvxblBm+38gj7OgU5Woktk0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrh8AJsK8nHSJmr3NuLjS/EmmBnBrcp8EgaZY2WtC0PElGL/C4
-	bSigGE+N6vLDenpwCTsjOhxtj6sgJpxXgypwttclmbUN9r9Ao6AtVf2hDYf2P/x9ISw=
-X-Gm-Gg: AfdE7clF2jrQjuw+AuOcpAHdert8BSEiHBR6ZE5U4XLgMjMjFSWbtoBlX+iLGF5KqB5
-	wWir0HpqP+qPoCc/e3Bu9KzCina1KX78z3/xMz5jEx9oR2oyG3Cc2CQaffKX+QfqA5h9otyzz0G
-	cSouZ83eXJPQQ9+ucIdELAuACBvVJP6dQEor+uJTpAyUaBb7fazHT1PLyVloY1Kamp7w0NW6dOj
-	QySm0m5Bwln8sFIPcSvSWtXAJAsic2Lg0Kiu1Dd48NSMNqDuOOSnPv341fV3DUO+vmFXRINhXIq
-	oZdf3IXLLtSHgH4g8m6kY/ryHgl4bmVxbosHAlJpTs9Mm+rbl42h+Rb15FdE/LNHNY7/qeden8h
-	GDPp6PqPDHGhmWEVZmc3qIOyk0xXMps6icYZa2iA0I+qUTCiOy4vMbS5Fr4rvnwX3mnv4Ede1iB
-	SPGkyLEJnw9RtRcN/TyEPkPGv3IkuT/jLy99lYbpS6YMv9IqpLLXqUMVKPIjVJlmY=
-X-Received: by 2002:a05:620a:290a:b0:92e:7745:9a3a with SMTP id af79cd13be357-930b3e4e1f3mr1582641285a.18.1784576120209;
-        Mon, 20 Jul 2026 12:35:20 -0700 (PDT)
+        bh=wWSndD15nfA3ulYoFeibVziNkAccxURrSPvFkTAURcI=;
+        b=bH1RpnBk8/PBuCHhJlaLjflb15NvMO2hsclN8gdoLGwsaxnKEg7hUplSJ1xGKEttgo
+         Dt4iuEzlBIK+8DOcrDpWmC6smeO17fO5bOo3XmrRlsSEG+LWJXDYf6ZSKi0kwiB74XYK
+         Kk7cYS5N1N7vvbfLBbqZdLQko/cbuAcJn4yl9FFPYxqmCjzAFB4P6yJteDbWvK0b/Hkm
+         6vhdy4cfffw+c1UmH6agyOpUbi9wXNDLzYdVTMCKN5ayuhWs6kXwRnsfbfs92shggcps
+         TqCkrS/gfHmij6WQWEnknj/Z4Qrz3SNuq75Us6EHSYu3JyiIh70Ag5wIbyy+FEbr72Ua
+         Jnkw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2+MQ/pDv5/aP/CTfToCc+nPEcImaETc14a3HtknqYZR3bVxjkAu81t4DCqXeNr73DnT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIxhafgArURUikbzllHdG4dITrngwPGSnFUeltefcWytwaqGjo
+	/O2QnQFYVex/Fe8wAXytINU1QXeXGAcwcO9oOv97mSKoWT13WjeSvW4JRK5gdFbWzAI=
+X-Gm-Gg: AfdE7clmVXjwKekC+cEPkMx0tkQZ4wu+pTccrg159+qPrqY8sEaGuI3l1s6FztpQZxb
+	B8ZouArrxUZYJ/tZj5Bb87GJUhst4gCLAlAhrfsDo8bcMow/U8H+AVAMmepydCsFrWD8rVhLVDU
+	rIEckW81R/2FZJDog6GI+OIZzDJf+NnZcmVJHbX4iW+1urfFbXJQ0twC4PEY6hC+d0O6EXVdU3N
+	Z2PEpqX2bNtSl1lRinlL3yjJEw6O5uifEJbT3GVhJFA4DnOOcjOlpsYBa7ZiyO8Epqq4lU3aCmn
+	zyypPaZQrxDv7aNBRrY8pMIP/lzB/VQq8WrEWIBV4LxvaZyT46nHgkbtIWpGsFu51ff8Vm96DDR
+	0yH9fb3NveO0Ah+GvhmgVd+vWVycHhKL1otuv3DHp2zBuv5OAHrzAFCqorA429AejeT0j4GvIQB
+	98emd1gKQAbtJ3J9MGgCSsxdrTNsiNVmN0wg1NalFNZUjQMh7WxOjcjq8mLvo0UDA=
+X-Received: by 2002:a05:620a:2913:b0:92e:f2cf:56f9 with SMTP id af79cd13be357-930b4830467mr1569223785a.9.1784576125333;
+        Mon, 20 Jul 2026 12:35:25 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.18
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 12:35:19 -0700 (PDT)
+        Mon, 20 Jul 2026 12:35:24 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: Zhigang.Luo@amd.com,
@@ -137,9 +137,9 @@ Cc: Zhigang.Luo@amd.com,
 	damon@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 16/36] mm/khugepaged: skip private node folios when trying to collapse.
-Date: Mon, 20 Jul 2026 15:34:10 -0400
-Message-ID: <20260720193431.3841992-17-gourry@gourry.net>
+Subject: [PATCH v5 18/36] mm/gup: disallow longterm pin of private node folios
+Date: Mon, 20 Jul 2026 15:34:12 -0400
+Message-ID: <20260720193431.3841992-19-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 References: <20260720193431.3841992-1-gourry@gourry.net>
@@ -151,47 +151,116 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A collapse operation causes new THP allocation to occur, and may
-migrate memory from one node to another.
+FOLL_LONGTERM on a N_MEMORY_PRIVATE node folio is wrong both ways the
+GUP longterm path resolves it:
 
-Handle this the same as zone_device for now (disallow collapse).
+   a ZONE_NORMAL folio would be pinned in place
+   a ZONE_MOVABLE folio would be migrated off first
+
+A private node folio should do neither - the pin should fail in place.
+
+Add folio_longterm_pin_forbidden() (true for any private node folio) and
+reject such a pin in check_and_migrate_movable_pages_or_folios() before
+any isolation, so nothing is migrated.
+
+The gup-fast path defers a private folio to the slow path via
+folio_allows_longterm_pin().
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/khugepaged.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/gup.c      | 27 +++++++++++++++++++++++++--
+ mm/internal.h | 25 +++++++++++++++++++++++++
+ 2 files changed, 50 insertions(+), 2 deletions(-)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 89ce6bcbc376b..fb4378cc17b10 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -700,7 +700,7 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			goto out;
- 		}
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(page_is_private_managed(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out;
- 		}
-@@ -1687,7 +1687,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 		}
+diff --git a/mm/gup.c b/mm/gup.c
+index 1d32e9a3dc79c..a7d4de223785c 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -547,10 +547,10 @@ static struct folio *try_grab_folio_fast(struct page *page, int refs,
+ 	/*
+ 	 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
+ 	 * right zone, so fail and let the caller fall back to the slow
+-	 * path.
++	 * path.  Fail for private-node folios here so slow path rejects.
+ 	 */
+ 	if (unlikely((flags & FOLL_LONGTERM) &&
+-		     !folio_is_longterm_pinnable(folio))) {
++		     !folio_allows_longterm_pin(folio))) {
+ 		folio_put_refs(folio, refs);
+ 		return NULL;
+ 	}
+@@ -2389,12 +2389,35 @@ migrate_longterm_unpinnable_folios(struct list_head *movable_folio_list,
+ 	return ret;
+ }
  
- 		page = vm_normal_page(vma, addr, pteval);
--		if (unlikely(!page) || unlikely(is_zone_device_page(page))) {
-+		if (unlikely(!page) || unlikely(page_is_private_managed(page))) {
- 			result = SCAN_PAGE_NULL;
- 			goto out_unmap;
- 		}
-@@ -1944,7 +1944,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 		}
++/*
++ * True if any folio sits on a private node whose folios may not be longterm
++ * pinned.  Such folios can neither be pinned nor migrated, so the whole pin
++ * must fail before migration.  Checked before any isolation occurs.
++ */
++static bool pofs_has_ltpin_forbidden(struct pages_or_folios *pofs)
++{
++	struct folio *folio;
++	long i = 0;
++
++	for (folio = pofs_get_folio(pofs, i); folio;
++	     folio = pofs_next_folio(folio, pofs, &i)) {
++		if (folio_longterm_pin_forbidden(folio))
++			return true;
++	}
++	return false;
++}
++
+ static long
+ check_and_migrate_movable_pages_or_folios(struct pages_or_folios *pofs)
+ {
+ 	LIST_HEAD(movable_folio_list);
+ 	unsigned long collected;
  
- 		page = vm_normal_page(vma, addr, ptent);
--		if (WARN_ON_ONCE(page && is_zone_device_page(page)))
-+		if (WARN_ON_ONCE(page && page_is_private_managed(page)))
- 			page = NULL;
- 		/*
- 		 * Note that uprobe, debugger, or MAP_PRIVATE may change the
++	if (pofs_has_ltpin_forbidden(pofs)) {
++		pofs_unpin(pofs);
++		return -EFAULT;
++	}
++
+ 	collected = collect_longterm_unpinnable_folios(&movable_folio_list,
+ 						       pofs);
+ 	if (!collected)
+diff --git a/mm/internal.h b/mm/internal.h
+index cb9f4a8342e32..85c460296cea1 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -110,6 +110,31 @@ static inline bool page_is_private_managed(struct page *page)
+ 	return folio_is_private_managed(page_folio(page));
+ }
+ 
++/*
++ * folio_allows_longterm_pin() - may this folio be long-term GUP-pinned?
++ *
++ * checks folio_is_longterm_pinnable() rules plus private node permissions.
++ * private node permission is checked here to resolve circular header
++ * dependencies in folio_is_longterm_pinnable.
++ */
++static inline bool folio_allows_longterm_pin(struct folio *folio)
++{
++	return folio_is_longterm_pinnable(folio) &&
++	       !folio_is_private_node(folio);
++}
++
++/*
++ * folio_longterm_pin_forbidden() - must a longterm pin of this folio fail
++ * outright (neither pinned in place nor migrated off the node)?
++ *
++ * True for any folio on a private node: such memory can be neither pinned
++ * nor migrated, so the pin must be rejected with the folio left in place.
++ */
++static inline bool folio_longterm_pin_forbidden(struct folio *folio)
++{
++	return folio_is_private_node(folio);
++}
++
+ /*
+  * Maintains state across a page table move. The operation assumes both source
+  * and destination VMAs already exist and are specified by the user.
 -- 
 2.53.0-Meta
 
