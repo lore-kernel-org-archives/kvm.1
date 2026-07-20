@@ -1,118 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C70242A80
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 21:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A561D449B0D
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 21:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784583393; cv=none; b=OY15GFVfzV/rp+6ZuPyn57PUf1ztvSi9Ma7iZeBl9hVqsz+ILtlNSVnX13Dl5sfm9bh3dOxFdqoX0rlQKdH1gqmRRy54YIcS2Sq/35SLimDQu48LW1o2bao7IOahZE+HisIgXsv7xuQhnny2Gl4lLmXsIiOQV5K+2Fg2GxZ5bCo=
+	t=1784583513; cv=none; b=HT94eYLcAMdj/c/0IdmhViU6svDzoZSOR/D9lVCidtNvKh3d9fvzm19RJAlErh0E/DeeEcz2DxXzV1mcusMAy2TSqb/WJpGmj2AhQBwq6Gm/edJVHEmXW+9pIAkcLg+9vndiuYywvgiogupU/+KoT1qrlGKRSiupxmDQn1p7Vng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784583393; c=relaxed/simple;
-	bh=nlpadB8mPjUEdDF/2Ws6h4BBV0j3TwXXp4YTcjZyGcw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=nDataVBV70GURrsx48hQDf7/uxF7tGO0Ahmb8ypdl14rxhE4Xq75b0C0HNfIdxTlrxnSsoFNuGKvaxY/RU5Ieoy8dInAHv2joCNcswB2PHHhedKbU39taGSOPetXnfIbiglWKdSIclrrmfq23UhIpkUmrUbcj4HPY+LIMn3vrgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CooYYnVX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784583513; c=relaxed/simple;
+	bh=fgqOdfqGehyPp39uBRzhkJKpjE04+TA6AHiAA/V8Uq4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EDkhetze07CDD6U/UWujrdzj3VVGALKF5mk4+Kx5/qiCWeC7g48UPpcKqVXRyG76w6Crs7FftYmjWK+51pz/Rr+inpI4pt23ebqQcnU1423yUJSzxLZdNTas/jRqcOviPQx5YBmuE8wavCLQdrD4NSTAGFIAyzFvXrpWOweyhMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QqjV8vZ9; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CooYYnVX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3271F000E9;
-	Mon, 20 Jul 2026 21:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784583392;
-	bh=Yvv2YVzD6Vl6nxDeScFFIyBV9FGFDSZXoMcoZkci1X0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CooYYnVXCRlZBSRJ/lzh30bW8RSU25KjYqguYBGiFyaWXY6ulkVItssC+aHmvgaii
-	 NTumHAJeG7HuZViwvLd06NHQB7+FdIeI7NCdn1QN1BGZbboAiqvmQFOlcH3noIMSlC
-	 Xhavs8CajrCWoFQNxp4BD2G2SjE/0weJV2lyHMgrGrtxVtIn8boxcPtial+mYTAc7X
-	 86RsTPqyaX4m7ap25w0QZkkHa3qJCDQuZJgCD+BwkM7Za/aOCnMQz98RTHoEae+7IL
-	 ecothl/V3RnZXo09PpOw/2JjhoGMAGA3W59J67AClFDQ9NAFXsZW1Ch4B92sGeMxAi
-	 89iq9zbXhRfDw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: VMX: Cap VMX preemption timer to work around Intel
- errata
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jim Mattson" <jmattson@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260720205230.1457146-1-jmattson@google.com>
-References: <20260720205230.1457146-1-jmattson@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 21:36:31 +0000
-Message-Id: <20260720213632.0F3271F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QqjV8vZ9"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ccb6f6a3f4so76775955ad.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 14:38:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784583512; x=1785188312; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Kb+H3gD1/z5LwqMW5Zz4TLwHZH22H10KWNrwvGv21eU=;
+        b=QqjV8vZ9oe+oLEVLk6dd871KaZwAmeg/vZ7X6PSRuSbDdH203Rjyxekz6W0hSfNoOB
+         Xn3aNWtDGkl+rFKtMO1sFY2jTuLBlDK8gPJikFwJhjmrnkiROeSHq4GmcyCNX9OqsrJ6
+         XMV2hlpnv+EZ0zCNmTfQ440JK6T5E24ssFNyMpaem5CMH9N0RSsjKGUwzR3zC+71DDZU
+         rWpZ1cElkrjPuzaZiVM3A5WFjp8S8BqhekvY2h4X6rmBrCfv+DqmTcfAqEZkirYqo4CE
+         mRdF+Cu/DsYZNahi8CGJuR8lIAwiP1Wml+W8Ni3o7XW1wFmmgSFb+XDmSD2A8Q7l+oo5
+         Wcjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784583512; x=1785188312;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Kb+H3gD1/z5LwqMW5Zz4TLwHZH22H10KWNrwvGv21eU=;
+        b=S6od6Uqo9oXlC++U7JzQPE16JMRt/h7pRwx50krnuQ/rjC/0CfqUmRdkRcbBVQobfT
+         JKBPlzzWfaluV50k423fD89aM0eaCIyjmqKqVUFD8FocAjMvwzMtmjp6uBz+HTf9/ysL
+         SGlSjYkDKLsvIKaN5+4Lolo5w/XfaNlHooZ7O/g4cpOT/IyzNrkYaEiqjuh0P43kJ43H
+         oGPZ0TlICRgXeIX2EsvUotm8JZaJevJpEDpy6gHk2Z6Pbo4OYAlBWJFCjy0ud1jM3AEy
+         us6HAfOg+MZjdQAIAd3xWm4U0733Xz4ln39LxtiZ6ISU6pSvG54NSYgEL6/QBao718UT
+         j8hA==
+X-Forwarded-Encrypted: i=1; AHgh+RrY9NU3IlEsBIK98sRHT3nurctJ/ll8v6yDapjZ+MBnXtVhnndh0FOrFCfIfvXS85sy+XY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKV0sDSgo+BjmRJyCSwQQPcnHj/BNrR/AlwaA332vQjRnzj7bY
+	EGotti8VaQjk7b007b4i5WprObb9HZDewoRs8MUrRIu3USJIX4xF60gvpgiaQ/GL+ZErvOIgY7K
+	WwTdTAA==
+X-Received: from plblq3.prod.google.com ([2002:a17:903:1443:b0:2cf:6c53:48ca])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d483:b0:2ca:f417:396b
+ with SMTP id d9443c01a7336-2cf1f25625cmr211823005ad.3.1784583511786; Mon, 20
+ Jul 2026 14:38:31 -0700 (PDT)
+Date: Mon, 20 Jul 2026 14:38:31 -0700
+In-Reply-To: <al4rNqpBYy8FGKPw@blrnaveerao1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260716160801.3155582-1-dmaluka@chromium.org>
+ <20260716162900.9D8131F000E9@smtp.kernel.org> <alkTuicE2ELcakS9@google.com> <al4rNqpBYy8FGKPw@blrnaveerao1>
+Message-ID: <al6VVx1rKn46ZCUl@google.com>
+Subject: Re: [PATCH] KVM: VMX: Postpone IPIv setup after successful vCPU creation
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Dmytro Maluka <dmaluka@chromium.org>, sashiko-reviews@lists.linux.dev, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The patch introduces a 64-bit division using the `/` operator whic=
-h will cause a link-time error (`undefined reference to __udivdi3`) on 32-b=
-it x86 builds.
---
+On Mon, Jul 20, 2026, Naveen N Rao wrote:
+> On Thu, Jul 16, 2026 at 07:24:10PM +0200, Dmytro Maluka wrote:
+> > On Thu, Jul 16, 2026 at 04:29:00PM +0000, sashiko-bot@kernel.org wrote:
+> > > [Severity: Critical]
+> > > This isn't a bug introduced by this patch, but does this exact same
+> > > vulnerability exist in the AMD SVM AVIC code?
+> > > 
+> > > It looks like the SVM code suffers from the same use-after-free pattern
+> > > when userspace creates a duplicate vCPU ID.
+> > 
+> > Seems plausible. Can someone with AMD expertise look into this?
+> > 
+> > > In arch/x86/kvm/svm/avic.c:avic_init_backing_page(), the newly allocated
+> > > APIC backing page address is written into the VM-wide hardware IPI table
+> > > before the vCPU ID duplicate check:
+> > > 
+> > >     WRITE_ONCE(kvm_svm->avic_physical_id_table[id], new_entry);
+> 
+> Yes, this write (or just setting AVIC_PHYSICAL_ID_ENTRY_VALID_MASK) will 
+> need to be delayed to a post-create phase similar to VMX.
+> 
+> The alternative is to simply skip setting the entry valid during vCPU 
+> creation and to instead do it unconditionally during vcpu_load(), where 
+> we anyway have to update the entry.
 
---- Patch [1]: [PATCH] KVM: VMX: Cap VMX preemption timer to work around In=
-tel errata ---
-commit 366ce3421414ba11b41c6d60e48e81bd155756a9
-Author: Jim Mattson <jmattson@google.com>
-
-KVM: VMX: Cap VMX preemption timer to work around Intel errata
-
-Due to a widespread Intel erratum (e.g. EMR158), programming the
-VMX-preemption timer with certain large values may cause the timer to expire
-earlier than expected. This patch calculates a limit based on CPUID 15H and
-returns -ERANGE in vmx_set_hv_timer() if the shifted delta_tsc reaches or
-exceeds this preemption timer limit.
-
-Link: https://lore.kernel.org/all/Zn9X0yFxZi_Mrlnt@google.com/
-
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 6b96f7aea20bd..9c540a50922a9 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-
-[ ... ]
-
-> @@ -8489,6 +8490,26 @@ static void __init vmx_setup_me_spte_mask(void)
->  	kvm_mmu_set_me_spte_mask(0, me_mask);
->  }
-> =20
-> +/*
-> + * Workaround for a widespread Intel erratum (e.g. EMR158) where the
-> + * VMX-preemption timer may expire earlier than expected when programmed
-> + * with large values. The workaround is to cap the timer value to strict=
-ly
-> + * less than 2^25 * CPUID.15H:EBX / CPUID.15H:EAX.
-> + */
-> +static __init u64 calc_preemption_timer_limit(void)
-> +{
-> +	u32 eax, ebx, ecx, edx;
-> +
-> +	if (cpuid_eax(0) < 0x15)
-> +		return 1ULL << 32;
-> +
-> +	cpuid(0x15, &eax, &ebx, &ecx, &edx);
-> +	if (!eax || !ebx)
-> +		return 1ULL << 32;
-> +
-> +	return min_t(u64, 1ULL << 32, ((u64)ebx << 25) / eax);
-                                                         ^^^^^
-
-[Severity: High]
-Will this 64-bit division using the / operator cause a link-time error on
-32-bit x86 builds?
-
-Since the Linux kernel does not export the __udivdi3 compiler intrinsic on
-32-bit x86, compiling with CONFIG_KVM_INTEL enabled on a 32-bit configurati=
-on
-might result in an undefined reference error during the build.
-
-Should this use div_u64() from include/linux/math64.h to perform the 64-bit
-by 32-bit division instead?
-
-> +}
-> +
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720205230.1457=
-146-1-jmattson@google.com?part=3D1
+Won't work, vcpu_load() is called during vCPU creation.  :-(
