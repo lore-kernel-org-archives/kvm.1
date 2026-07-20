@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01003F8881;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCB23F871C;
 	Mon, 20 Jul 2026 11:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784545997; cv=none; b=hj8Q1r3P0y+0ZAt7357/C4D3Q7PsXdBY+eSAIWJ0QV2ACCMC3mvXCqrBlu7KzWtNaolpYLvQ4CoNcHWnG4Sh+eUn4/apjIBBCVCVZzigzbhpbBzGWEXCEyzTZ6R38WI/OlbEsWAVHVKFtP7aoAes92dgOpwt9m9sD6d9XT1/Arw=
+	t=1784545999; cv=none; b=LyV8Sb/czVLy6the97w6OhlWsbTudP8I+LfhHEmWzSzReTwSgZMC3V2vv8u9c/YIkxPLRAaaFzuTdmFjBYPpVmGArf63215TSRpBPtUsW6wnKICFASCHosWHXzIfjNUwwa+yiJLMu1+dm++ZnCH2tz50gCFcQqY6Xf9iUzXCi9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784545997; c=relaxed/simple;
-	bh=6sf/xRaE1XHdR2CF7qy+bgh/g0LH4aT/y3f+9X0iA+4=;
+	s=arc-20240116; t=1784545999; c=relaxed/simple;
+	bh=qTvFsUfVfAJT5qTk/5mf/aRcNBeAx2mFUKO6I+OHYB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mx3lVI1qkHhKEEgtktckdixn9ylWcrbSxyeQMqAJwTcmmLM93qgnefKkYc7KQ10vq89c1W4jKyhLQq2f02vd0WqGWeffLJiVpN0FNbq+5or2b29g6nw9ZLTXCk9CXUaUU2zdBIK0WXLMVy8HDLV2+fGYOv4ONBfKjWCtrAbLMJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Rlx83ZFw; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=cRhtqJw/WfBUeek1TnCOwLpJ5LBNL0kmgGVwPV5gHhTNF/gcQq+UcvnIvGMCusT2LGJwpIRopoR6JPzRdmZ9gXel/4deGVgzfAaJ0RwhDtPML0fgv16283DxoQNrCQlOnTRXtE0M2Mf07aF9vTMpouyocXD/lUjAKRPjIbCuHMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cbkgXDcl; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Rlx83ZFw"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cbkgXDcl"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=rI5YR5D0Orl3/HuhuCexn32nS4jLlGrYxEeVvfDwBVE=; b=Rlx83ZFwGRFSzCjACRWKiYUr0j
-	j+SXj9xntGyh/JJKKIR+mkPgA7jonPG85/L0NYwfyODUhgssGpaQCST+xat32YNd4ZFrZYp8xwT1W
-	Zu+/SlWhwZczO6lMeANYXaXhkVwT29tFLXodvAKMi8f05dDDAt5IMaDFVk3FsF2aODKIwtTcFSyOS
-	rEwBwXul8pSZykk2C7dHTWzlbiEeTemJTUP54d1iXqgs634n5/smgpGdVesw5WSxZrLW6o60h5SAD
-	7hA9wAQd7tCAPfha0VkbYDL5rLr6r43qRukaqpWte9zKhqHYO8rhhn5gRAxnny1O2pqRbEN9xTjSm
-	4l5F4M2Q==;
+	bh=zGzjQyHuVcqPZBvP+3cG6Vz0Ke3LkZDrFTo2xuU4/JA=; b=cbkgXDcltWLhobeGshdyHgBXgz
+	MLmIk478H08vV7I7AMZcXXBh489GA2DHVHQqPTcyzjlJDiP7J7zbixxQuHzHZVnT/yzLUmG5Smv+f
+	nvrF7y57wWCnQXXXlCKicL1cGQRl7Mzl6uThPTRVJlax+VrWKX1rM2C+BT+08POe+jS2LhDm32qnh
+	qTl3ozOo2+uYw1FhKImJrNs6XwnuyMTdSWeYKq1dS3wtwI5U9nqOMJltX+DoDMP9m6ZvgTb7vq0/l
+	IerT3EilVqLV8ZiBvPaqjXG0TIhK5VVj8QXqZ0HfxOepLO5vlLzn+UWk+qPEaqQcv1P/0zCrA74HK
+	v2WGivcw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wllvj-0000000GWeF-0zZZ;
+	id 1wllvj-0000000GWe7-0vqI;
 	Mon, 20 Jul 2026 11:13:03 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wllvg-00000000W0j-3pij;
+	id 1wllvg-00000000W0S-2RFO;
 	Mon, 20 Jul 2026 12:13:00 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Sean Christopherson <seanjc@google.com>,
@@ -72,9 +72,9 @@ Cc: linux-kernel@vger.kernel.org,
 	graf@amazon.de,
 	fgriffo@amazon.co.uk,
 	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [RFC PATCH v2 06/11] iommufd: Plumb dma-buf memory-type (RAM vs MMIO) through the phys map
-Date: Mon, 20 Jul 2026 12:03:07 +0100
-Message-ID: <a7ca2d885903679dc63c85620bff72fea21f5c18.1784545391.git.dwmw@amazon.co.uk>
+Subject: [RFC PATCH v2 02/11] KVM: selftests: sev_init2_tests: Derive SEV availability from KVM
+Date: Mon, 20 Jul 2026 12:03:03 +0100
+Message-ID: <5d3c345113748f39b7982e365d241abaf3e11086.1784545391.git.dwmw@amazon.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <2b5e7a83d277134294199a455469bb436196b902.1784545391.git.dwmw@amazon.co.uk>
 References: <2b5e7a83d277134294199a455469bb436196b902.1784545391.git.dwmw@amazon.co.uk>
@@ -90,152 +90,50 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-iommufd's dma-buf import path programmed the IOMMU unconditionally with
-BATCH_MMIO (IOMMU_MMIO set, IOMMU_CACHE cleared).  This is correct for
-the VFIO PCI dma-buf exporter -- its phys is PCI BAR (MMIO) memory --
-but it is the wrong prot for a dma-buf whose phys is RAM: on AMD-Vi the
-device DMA silently misroutes (Identify Controller against a
-gmem-provider-backed target completes with status=0 but the target
-region is not written).
+The test asserted that the X86_FEATURE_SEV CPUID bit exactly matches
+whether KVM offers KVM_X86_SEV_VM.  That is not an invariant: when all
+SEV ASIDs are assigned to SEV-SNP, KVM does not offer the SEV VM type
+even though CPUID reports SEV, so the test aborts on an SNP-only host.
 
-Carry the exporter's memory type through to the fill routine:
+Derive SEV availability from KVM_CAP_VM_TYPES (as already done for SEV-ES
+and SNP), assert only the one-way implication that a type offered by KVM
+is also reported in CPUID, and TEST_REQUIRE() the SEV VM type so the test
+skips cleanly when it is unavailable.
 
-  - Add is_cpu_ram to iopt_pages_dmabuf and pfn_reader_dmabuf.
-  - Make sym_vfio_pci_dma_buf_iommufd_map() also fill *is_cpu_ram.
-    VFIO PCI's exporter is MMIO (false); the sample gmem provider's
-    exporter is CPU RAM (true).
-  - pfn_reader_fill_dmabuf() picks BATCH_CPU_MEMORY vs BATCH_MMIO based
-    on the captured kind.
-
-The eventual formal negotiated exporter op should return phys and
-memory type together in one call, replacing both symbol_get() lookups.
-
-Signed-off-by: David Woodhouse (Kiro) <dwmw@amazon.co.uk>
+Reviewed-by: Tycho Andersen (AMD) <tycho@kernel.org>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- drivers/iommu/iommufd/io_pagetable.h |  7 ++++++
- drivers/iommu/iommufd/pages.c        | 33 +++++++++++++++++++++++-----
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ .../testing/selftests/kvm/x86/sev_init2_tests.c  | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/io_pagetable.h b/drivers/iommu/iommufd/io_pagetable.h
-index 27e3e311d395..887ed94474c7 100644
---- a/drivers/iommu/iommufd/io_pagetable.h
-+++ b/drivers/iommu/iommufd/io_pagetable.h
-@@ -206,6 +206,13 @@ struct iopt_pages_dmabuf {
- 	/* Always PAGE_SIZE aligned */
- 	unsigned long start;
- 	struct list_head tracker;
+diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
+index 8db88c355f16..689390c10f7c 100644
+--- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
++++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
+@@ -130,12 +130,18 @@ int main(int argc, char *argv[])
+ 			    KVM_X86_SEV_VMSA_FEATURES,
+ 			    &supported_vmsa_features);
+ 
+-	have_sev = kvm_cpu_has(X86_FEATURE_SEV);
+-	TEST_ASSERT(have_sev == !!(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM)),
+-		    "sev: KVM_CAP_VM_TYPES (%x) does not match cpuid (checking %x)",
+-		    kvm_check_cap(KVM_CAP_VM_TYPES), 1 << KVM_X86_SEV_VM);
 +	/*
-+	 * true if the exporter's phys is CPU RAM (map with IOMMU_CACHE, no
-+	 * IOMMU_MMIO); false for MMIO/BAR memory (map with IOMMU_MMIO).  Set
-+	 * by the exporter dispatch at map time; consulted by
-+	 * pfn_reader_fill_dmabuf() to pick BATCH_CPU_MEMORY vs BATCH_MMIO.
++	 * Whether a VM type is available depends on KVM, not just CPUID: e.g.
++	 * when all SEV ASIDs are assigned to SEV-SNP, KVM does not offer the
++	 * SEV VM type even though X86_FEATURE_SEV is set.  Derive availability
++	 * from KVM_CAP_VM_TYPES and only assert the one-way implication that a
++	 * type offered by KVM must also be reported in CPUID.
 +	 */
-+	bool is_cpu_ram;
- };
++	have_sev = kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM);
++	TEST_ASSERT(!have_sev || kvm_cpu_has(X86_FEATURE_SEV),
++		    "sev: SEV_VM supported without SEV in CPUID");
  
- /*
-diff --git a/drivers/iommu/iommufd/pages.c b/drivers/iommu/iommufd/pages.c
-index 2d4ea41460fd..f9b2ae6d7e96 100644
---- a/drivers/iommu/iommufd/pages.c
-+++ b/drivers/iommu/iommufd/pages.c
-@@ -1080,6 +1080,7 @@ static int pfn_reader_user_update_pinned(struct pfn_reader_user *user,
- struct pfn_reader_dmabuf {
- 	struct phys_vec phys;
- 	unsigned long start_offset;
-+	bool is_cpu_ram;
- };
+-	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_VM));
++	TEST_REQUIRE(have_sev);
+ 	have_sev_es = kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SEV_ES_VM);
  
- static int pfn_reader_dmabuf_init(struct pfn_reader_dmabuf *dmabuf,
-@@ -1091,6 +1092,7 @@ static int pfn_reader_dmabuf_init(struct pfn_reader_dmabuf *dmabuf,
- 
- 	dmabuf->phys = pages->dmabuf.phys;
- 	dmabuf->start_offset = pages->dmabuf.start;
-+	dmabuf->is_cpu_ram = pages->dmabuf.is_cpu_ram;
- 	return 0;
- }
- 
-@@ -1106,9 +1108,15 @@ static int pfn_reader_fill_dmabuf(struct pfn_reader_dmabuf *dmabuf,
- 	 * always filled using page size aligned PFNs just like the other types.
- 	 * If the dmabuf has been sliced on a sub page offset then the common
- 	 * batch to domain code will adjust it before mapping to the domain.
-+	 *
-+	 * The exporter's memory type (CPU RAM vs MMIO/BAR) selects the batch
-+	 * kind so downstream iommu_map sets IOMMU_CACHE for cache-coherent RAM
-+	 * or IOMMU_MMIO for BAR memory.  The kind was captured at map time by
-+	 * the exporter dispatch.
- 	 */
- 	batch_add_pfn_num(batch, PHYS_PFN(dmabuf->phys.paddr + start),
--			  last_index - start_index + 1, BATCH_MMIO);
-+			  last_index - start_index + 1,
-+			  dmabuf->is_cpu_ram ? BATCH_CPU_MEMORY : BATCH_MMIO);
- 	return 0;
- }
- 
-@@ -1459,22 +1467,31 @@ static const struct dma_buf_attach_ops iopt_dmabuf_attach_revoke_ops = {
-  * iommufd and vfio have a circular dependency. Future work for a phys
-  * based private interconnect will remove this.
-  */
-+/*
-+ * Look up the exporter's phys accessor for iommufd's private-interconnect
-+ * path.  Also fills *is_cpu_ram: true if the exporter's memory is normal
-+ * cache-coherent RAM (needs BATCH_CPU_MEMORY / IOMMU_CACHE), false for MMIO
-+ * (needs BATCH_MMIO / IOMMU_MMIO).  This will be replaced by a formal
-+ * exporter op that returns phys + memory type together.
-+ */
- static int
- sym_vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
--				 struct phys_vec *phys)
-+				 struct phys_vec *phys, bool *is_cpu_ram)
- {
- 	typeof(&vfio_pci_dma_buf_iommufd_map) fn;
- 	int rc;
- 
- 	rc = iommufd_test_dma_buf_iommufd_map(attachment, phys);
--	if (rc != -EOPNOTSUPP)
-+	if (rc != -EOPNOTSUPP) {
-+		*is_cpu_ram = false;	/* test hook mimics VFIO MMIO */
- 		return rc;
-+	}
- 
- 	/*
- 	 * Prototype: try the sample gmem provider's dma-buf exporter.  This
- 	 * mirrors the vfio-pci private-interconnect hook, and (like it) is
- 	 * meant to be replaced by a formal negotiated exporter op returning
--	 * phys for iommufd.
-+	 * phys + memory type.  The provider serves RAM, so mark it CPU_RAM.
- 	 */
- 	{
- 		extern int gmem_provider_dma_buf_iommufd_map(
-@@ -1485,8 +1502,10 @@ sym_vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
- 		if (gfn) {
- 			rc = gfn(attachment, phys);
- 			symbol_put(gmem_provider_dma_buf_iommufd_map);
--			if (rc != -EOPNOTSUPP)
-+			if (rc != -EOPNOTSUPP) {
-+				*is_cpu_ram = true;
- 				return rc;
-+			}
- 		}
- 	}
- 
-@@ -1498,6 +1517,7 @@ sym_vfio_pci_dma_buf_iommufd_map(struct dma_buf_attachment *attachment,
- 		return -EOPNOTSUPP;
- 	rc = fn(attachment, phys);
- 	symbol_put(vfio_pci_dma_buf_iommufd_map);
-+	*is_cpu_ram = false;	/* VFIO PCI dma-buf carries BAR (MMIO) memory */
- 	return rc;
- }
- 
-@@ -1526,7 +1546,8 @@ static int iopt_map_dmabuf(struct iommufd_ctx *ictx, struct iopt_pages *pages,
- 	if (rc)
- 		goto err_detach;
- 
--	rc = sym_vfio_pci_dma_buf_iommufd_map(attach, &pages->dmabuf.phys);
-+	rc = sym_vfio_pci_dma_buf_iommufd_map(attach, &pages->dmabuf.phys,
-+					      &pages->dmabuf.is_cpu_ram);
- 	if (rc)
- 		goto err_unpin;
- 
+ 	TEST_ASSERT(!have_sev_es || kvm_cpu_has(X86_FEATURE_SEV_ES),
 -- 
 2.55.0
 
