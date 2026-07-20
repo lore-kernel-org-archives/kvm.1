@@ -1,241 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B513AC0CD
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 06:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECC738C2DE;
+	Mon, 20 Jul 2026 07:20:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784530088; cv=none; b=Rz7ar3sgndVVjHCLHu10YoXrTksjWeYxl6VUihlvtVGBKTR3ncTqbOcwvw9P71C1oX7E+9z4GckxmQg3QpPrBOpB4bOTQ2chowqoMb3r/p83GD0lmALkJOCuo0leb3ITL4TANgKVtvM3ydY1aItWPdruDTEQ8xSy4vq3LusM1NA=
+	t=1784532046; cv=none; b=NzLa9kO86PAE12Elqmpd2SqXz8QSQerOqRyqDhugtlLopyuiP+lbAzgg6MwwEhZzy8oJCTkhSw9kCfXieTs0d4U/Nrz5qasZKdrNu0Yr+t0W54y8TVcLfUF1VjYkU8YAElqUaBuAchDrgjNOjYEFNCaqRdQsnb77/2yfqs+M1uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784530088; c=relaxed/simple;
-	bh=6rHmY8WpNMTQcF+jbOCsMK+flJn82FGkW0JJdB/pKlk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A1Fc3lj9+OWTHqHEjcdca9B0243fhd303YSZXaZWlf2VBRxmFuGovy2MHyh8w8c+f3FjgRInXzP8ZgHs26mw2b6JIIVnydNtdZ9sn8KqchHclKQYk4Dyv8kKG60NoFYA781Ti6gj6GuSfgU8lYMhrZd0t7mgu5NCIR5R0U/JNCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eUACdewz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pBJe2lwC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784532046; c=relaxed/simple;
+	bh=wS3iOjal19hc48fA51Gyg+UKNxQ+naTpbmOlu9ZaCrs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HHDxSuwRopir4v3JHnTJLCxaZabmUPw6ZEu5/42/FWk7Ew97ur1fM5ioIJGEep+anuaSJcRBh/lEJ6ncgYVCVt5Aw3x3XaiZH74usYLOCJQs4CepesJWdz1QJmQ+uBn8fTgeEpasJ3Dd/0UqQkP/9/o4DGdReP7GepcOTP+/K48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4SQ5H7p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eUACdewz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pBJe2lwC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784530086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PO8Fm4mt0VLaoOLS1XjuTB7cdvLtsrhFUoulsYxdlGw=;
-	b=eUACdewzxB3ruN+wFywgs1f/lytgu9+rnfRxg6Hf+bM1Xj93OY4ngUB7wz4tdGcyJuD54u
-	WKNZhmG3QeW4ypOM4/YnaloR9hydB9ikIuuqQkoD5pFzQPX3tXbsstItxILurM71FBBnLu
-	WlAJ7F1lPlx5fHFGtxmPplAmCiuBQh0=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-oHNwOU8DN9-hH5fKkuuMeA-1; Mon, 20 Jul 2026 02:48:04 -0400
-X-MC-Unique: oHNwOU8DN9-hH5fKkuuMeA-1
-X-Mimecast-MFC-AGG-ID: oHNwOU8DN9-hH5fKkuuMeA_1784530083
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8484ba00601so7787159b3a.1
-        for <kvm@vger.kernel.org>; Sun, 19 Jul 2026 23:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784530083; x=1785134883; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PO8Fm4mt0VLaoOLS1XjuTB7cdvLtsrhFUoulsYxdlGw=;
-        b=pBJe2lwCtPr++KXKA3EMB6mAtV3t0mUjknXnDEU3qCrBKu7hGaU9i6BLIxtKPLDkD0
-         suLY9Iai0ok4N9gleB44otu3KZyg3kOJ4XM5ow7KGkVT28Vu2v7dnXJi/FIyz/bcmGW4
-         FWX4wgyLpJG1hg8UFXGFt4uCDhUkHRvtDx1QPu4Y8MGkHVjbIACeuNWAP1Mmv5vzmOap
-         bWNWYA31y6Rq09IWZBzDh2p/65No+xLD0vrnCswUuYlN/UQvF05hr5Wx3Z++iXRU4VLX
-         kfH3rnlYkJkjYlRbk9rbUP/K/PzIOuSd6Qeutf9/bQ5i9ew3dGq2/EGzM13h2lvSBY/Z
-         f6Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784530083; x=1785134883;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PO8Fm4mt0VLaoOLS1XjuTB7cdvLtsrhFUoulsYxdlGw=;
-        b=b5Y9tgtW+hEsn2X1J7ff5MIbENvGUVOBFb1IAe1ooM+HR05U4Gc0qZTkT3jjHmeepn
-         AZ2PLTzC3CJbwrwwWxS0f6VpWxRxlBaICHnMXvRWCD6+q3Jn58Emuyoet18wjsQvdV8P
-         wnay0xnVD6f03a8HdZSdGx7Pq8XJuQ0ynz8MdBqEv78oCsc4F8w9j+JTiXr7vc6ks+u8
-         bLoFSumPTJlt2qVofnIqjH0hD9UX6PLLqtGo81Jh92aJGIJPuipavUzVdFXLLkbBLdrf
-         rQLNvrXjM62h1G9XlCqxuYEyzjAPWFDXT54xA+Qe5Q1xidNfPGDe0Gy3Z4ng0MDGpnBT
-         kejA==
-X-Forwarded-Encrypted: i=1; AHgh+Rru4lxGOCoIq5YeWKNJ9bvan59E+V5l9A+Vajck6E8aHCyGjNYnguXKlEfFQqDamRg/8Xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwUJ2WsyfqK+3nrLQU7Xv4uyhPPfxVmTVn2xhu57KtBNaP7jlN
-	1qUrMfufPjx2Tt9IqWf8oLVLyCcKzuA+3Bk10zSwxbT+GBOKwob46RrVaE2jTAMoXWIKGzYFXhy
-	/vANUH6MvgxBsNzGoJpXemWIqkqh3HCttFa1sO27d3kaMrN5sVRnvRA==
-X-Gm-Gg: AfdE7cmpGdPd2p2gNstuZ97xgqglk0JeHFSzFJaOvJqjmwVVnenEnOJ4Qx6Dc6MVv9q
-	OSKGuR2CdUZbFIsY1vWOLm1JSu67Mx1EiU8Y6/mpHPMzoffnUXMV/P1+zhqRqyoljt8tkTPSONl
-	K3RAifDkbMky3bWOBqlsWOXlVE6Zj/Yor3WHHI80R1adVpt9nYSQX6mIxMKOR2+nQHo3Za7qzFf
-	H2GvKDQYPa64jIt1m1O62VjczOwZi7hgiw2KPQYwKMT0TaYVy2s4uHULXLyK3AQg/UmojT2U1QF
-	4FTVJDVaWB/xnYciHsCEGtjiwQ5jYQj89r8M0001Q2TvUx6PqjswZECrGac3/9v/JDkbNmfYsw+
-	ZhPSoSL+onioicVrFW9BdblMlGQEXth/J03f9qH3ZfAE=
-X-Received: by 2002:a05:6a00:391d:b0:848:65fa:542 with SMTP id d2e1a72fcca58-84c29494771mr11796844b3a.53.1784530083142;
-        Sun, 19 Jul 2026 23:48:03 -0700 (PDT)
-X-Received: by 2002:a05:6a00:391d:b0:848:65fa:542 with SMTP id d2e1a72fcca58-84c29494771mr11796824b3a.53.1784530082638;
-        Sun, 19 Jul 2026 23:48:02 -0700 (PDT)
-Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2adc7adasm5227178b3a.19.2026.07.19.23.47.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Jul 2026 23:48:01 -0700 (PDT)
-Message-ID: <2ad36e97-63d7-4464-b909-2a28d496e887@redhat.com>
-Date: Mon, 20 Jul 2026 16:47:53 +1000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4SQ5H7p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F055C1F00A3A;
+	Mon, 20 Jul 2026 07:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784532040;
+	bh=gANMU5sOivOjZzaedPM5r16YKmZ48cwI33ZQeohFkKI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q4SQ5H7pfr3jaDU2ZnnO+1hHIoXl1iFH5WSqv7jLKEoKzb1W8Q48EBE20IuNZFTUn
+	 ixKm0DVIy5OI2nLk58vf2Hjrg7we7B+X4V1GJxyPkSv0+C69K1TUoySPfe3BcFYtS/
+	 t7GufXN3+op+50lWLzds22S7AYYtVpeOlcrG/0bZfPer/n9WDDe8GhqIXCV0fWPGUD
+	 XmaJPMeyIJugU5z50bBvNZ+bv5B8MYe6yecmFyVa9TEs0150ohb7J9prH1nL+rHsFg
+	 Tpa/uQSSoq+PE+oR7BoJwZF5ntDZOzikcQrAbuelm4gJqA+MbVuFWtO9kyaJQf1xJj
+	 5Tno9QcBWPfNw==
+Date: Mon, 20 Jul 2026 08:20:01 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	SJ Park <sj@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Peter Xu <peterx@redhat.com>, 
+	Kees Cook <kees@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Clark <robin.clark@oss.qualcomm.com>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
+	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, 
+	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, iommu@lists.linux.dev, 
+	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	Russell King <linux+etnaviv@armlinux.org.uk>
+Subject: Re: [PATCH v2 08/33] mm/rmap: rename vma_interval_tree_*() to
+ mapping_rmap_tree_*()
+Message-ID: <al3LpROyiWEBL1wh@lucifer>
+References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
+ <20260710-b4-pre-scalable-cow-v2-8-2a5aa403d977@kernel.org>
+ <DK1CWBDK5J60.3VPRP45IS7L7E@nvidia.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v1 10/25] hw/core/loader: Add a ROM loader notifier
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: berrange@redhat.com, kchamart@redhat.com,
- pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org, mst@redhat.com,
- cohuck@redhat.com, pbonzini@redhat.com, eblake@redhat.com,
- armbru@redhat.com, jpb@kernel.org, lorenzo.pieralisi@linaro.org,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org
-References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
- <20260707224306.1202330-11-mathieu.poirier@linaro.org>
- <47136344-8e15-498a-a4fb-0dbbb0c71861@redhat.com> <allIviFWgoKgDob1@p14s>
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <allIviFWgoKgDob1@p14s>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DK1CWBDK5J60.3VPRP45IS7L7E@nvidia.com>
 
-On 7/17/26 7:10 AM, Mathieu Poirier wrote:
-> On Tue, Jul 14, 2026 at 08:52:43PM +1000, Gavin Shan wrote:
->> On 7/8/26 8:42 AM, Mathieu Poirier wrote:
->>> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>>
->>> Add a function to register a notifier that is invoked when ROMs get
->>> loaded into guest memory.
->>>
->>> It will be used by Arm confidential guest support, in order to register
->>> all blobs loaded into memory with KVM, so that their content is moved
->>> into Realm state and measured into the initial VM state.
->>>
->>> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>> Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
->>> ---
->>>    hw/core/loader.c         | 15 +++++++++++++++
->>>    include/hw/core/loader.h | 17 +++++++++++++++++
->>>    2 files changed, 32 insertions(+)
->>>
->>> diff --git a/hw/core/loader.c b/hw/core/loader.c
->>> index 5cbfba0a86d2..b3d769bec5cb 100644
->>> --- a/hw/core/loader.c
->>> +++ b/hw/core/loader.c
->>> @@ -74,6 +74,8 @@
->>>    #endif
->>
->> The (edk2) firmware for the realm guest can be specified by the legacy
->> '-drive if=pflash' or '-bios'. The memory region corresponding to the
->> firmware image specified by '-bios' is recorded by the newly added notifier
->> and populated to TF-RMM properly.
->>
->> I don't see how the memory region corresponding to (edk2) firmware image
->> specified by '-drive if=pflash' is recorded and populated to TF-RMM
->> accordingly in this series. So I guess '-drive if=pflash' isn't supported
->> yet?
-> 
-> Please give '-drive if=pflash' a try and let me know how you fare.  Edk2 is not
-> part of the bootstack I'm currently testing with but I know of configurations
-> where it does work.
-> 
-> I'll add it to my list of things to do if it doesn't work, though I may not
-> address it in this patchset.  We'll see how busy things get.
-> 
+On Fri, Jul 17, 2026 at 10:54:24PM -0400, Zi Yan wrote:
+> On Fri Jul 10, 2026 at 4:16 PM EDT, Lorenzo Stoakes wrote:
+> > The family of vma_interval_tree_() functions manipulate the
+> > address_space (which, of course, is generally referred to as 'mapping')
+> > reverse mapping, but are named the 'VMA' interval tree.
+> >
+> > VMAs may be mapped by an anon_vma, an address_space, or both. Therefore
+> > calling the mapping interval tree a 'VMA' interval tree is rather
+> > confusing.
+> >
+> > This is also inconsistent with the anon_vma_interval_tree_*() functions
+> > which explicitly reference the rmap object to which they pertain.
+> >
+> > Rename the vma_interval_tree_*() functions to mapping_rmap_tree_*() to
+> > correct this.
+> >
+> > We will rename the anon rmap functions similarly in a subsequent patch.
+> >
+> > No functional change intended.
+> >
+> > Reviewed-by: Gregory Price <gourry@gourry.net>
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  arch/arm/mm/fault-armv.c          |  2 +-
+> >  arch/arm/mm/flush.c               |  2 +-
+> >  arch/nios2/mm/cacheflush.c        |  2 +-
+> >  arch/parisc/kernel/cache.c        |  2 +-
+> >  fs/dax.c                          |  2 +-
+> >  fs/hugetlbfs/inode.c              |  4 ++--
+> >  include/linux/mm.h                | 16 ++++++++--------
+> >  kernel/events/uprobes.c           |  2 +-
+> >  mm/hugetlb.c                      |  4 ++--
+> >  mm/interval_tree.c                | 22 +++++++++++-----------
+> >  mm/khugepaged.c                   |  4 ++--
+> >  mm/memory-failure.c               |  6 +++---
+> >  mm/memory.c                       |  2 +-
+> >  mm/mmap.c                         |  2 +-
+> >  mm/nommu.c                        |  8 ++++----
+> >  mm/pagewalk.c                     |  2 +-
+> >  mm/rmap.c                         |  2 +-
+> >  mm/vma.c                          | 12 ++++++------
+> >  tools/testing/vma/include/stubs.h |  4 ++--
+> >  19 files changed, 50 insertions(+), 50 deletions(-)
+> >
+>
+> Just curious, why not file_rmap_tree_*()?
 
-Ok, I don't think '-driver if=pflash' or the 'pflash0' property of the virt machine
-aren't supported any more due to [RFC v1 21/25], where the 'pflash0' property has
-been removed.
+Just to avoid any confusion around address_space objects that are ostensibly
+'not files' like devices or whatnot, but moreso for consistency with the rest of
+the kernel in referring to this stuff as 'mapping'.
 
-   [RFC v1 21/25] hw/arm/virt: Use RAM instead of flash for confidential guest firmware
+Naming is hard IOW :)
 
-- Tried to boot the realm guest with '-driver if=pflash' and I was told it's not supported.
+>
+> One nice part of this renaming is that the length of each function does
+> not chagne. That makes the patch easy to review.
+>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-   qemu-system-aarch64: -drive if=pflash,format=raw,unit=0,file=/mnt/edk2/Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/QEMU_EFI.fd,readonly=on: machine type   does not support if=pflash,bus=0,unit=0
+Thanks!
 
-- Tried to use 'pflash0' property, and I was told it's not supported either.
+>
+> --
+> Best Regards,
+> Yan, Zi
+>
 
-   qemu-system-aarch64: Property 'virt-11.1-machine.pflash0' not found
-
-So the only option to specify the firmware image is '-bios', which worked for me.
-
-Thanks,
-Gavin
-
-
->>
->> Note that I didn't give '-drive if=pflash' a try yet.
->>
->>>    static int roms_loaded;
->>> +static NotifierList rom_loader_notifier =
->>> +    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
->>>    /* return the size or -1 if error */
->>>    int64_t get_image_size(const char *filename, Error **errp)
->>> @@ -1201,6 +1203,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
->>>        return mr;
->>>    }
->>> +void rom_add_load_notifier(Notifier *notifier)
->>> +{
->>> +    notifier_list_add(&rom_loader_notifier, notifier);
->>> +}
->>> +
->>>    /* This function is specific for elf program because we don't need to allocate
->>>     * all the rom. We just allocate the first part and the rest is just zeros. This
->>>     * is why romsize and datasize are different. Also, this function takes its own
->>> @@ -1242,6 +1249,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
->>>    static void rom_reset(void *unused)
->>>    {
->>>        Rom *rom;
->>> +    RomLoaderNotifyData notify;
->>>        QTAILQ_FOREACH(rom, &roms, next) {
->>>            if (rom->fw_file) {
->>> @@ -1290,6 +1298,13 @@ static void rom_reset(void *unused)
->>>            address_space_flush_icache_range(rom->as, rom->addr, rom->datasize);
->>>            trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
->>> +
->>> +        notify = (RomLoaderNotifyData) {
->>> +            .addr = rom->addr,
->>> +            .len = rom->datasize,
->>> +            .as = rom->as,
->>> +        };
->>> +        notifier_list_notify(&rom_loader_notifier, &notify);
->>>        }
->>>    }
->>> diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
->>> index d9431e8a8d12..94cf6ad2e26b 100644
->>> --- a/include/hw/core/loader.h
->>> +++ b/include/hw/core/loader.h
->>> @@ -342,6 +342,23 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr addr, size_t size);
->>>    ssize_t rom_add_vga(const char *file);
->>>    ssize_t rom_add_option(const char *file, int32_t bootindex);
->>> +typedef struct RomLoaderNotifyData {
->>> +    /* Address of the blob in guest memory */
->>> +    hwaddr addr;
->>> +    /* Length of the blob */
->>> +    size_t len;
->>> +    /* Address space of the blob */
->>> +    AddressSpace *as;
->>> +} RomLoaderNotifyData;
->>> +
->>> +/**
->>> + * rom_add_load_notifier - Add a notifier for loaded images
->>> + *
->>> + * Add a notifier that will be invoked with a RomLoaderNotifyData structure for
->>> + * each blob loaded into guest memory, after the blob is loaded.
->>> + */
->>> +void rom_add_load_notifier(Notifier *notifier);
->>> +
->>>    /* This is the usual maximum in uboot, so if a uImage overflows this, it would
->>>     * overflow on real hardware too. */
->>>    #define UBOOT_MAX_DECOMPRESSED_BYTES (64 << 20)
->>
->> Thanks,
->> Gavin
->>
-> 
-
+Cheers, Lorenzo
