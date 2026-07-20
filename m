@@ -1,63 +1,63 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06024D8D8E
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800624CA285
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784576166; cv=none; b=fPJpCEeMFxRsEqaO5Vohw+F8kf0bqbJ03wzHnxbEUqbe/XjW1rBdoApeMWzC+1DfcnQnNah2uNr+fyUM5l4uqyps670G7ffeuH+xU68ESd/QXPAwax21fV/vXSISGcZdXbrlaXzlpzTTXeOx1Ig4WQDeoTv1RH3fhwUmgmTCNFo=
+	t=1784576165; cv=none; b=YjLy/rIu/IMa5QmqwlVCSphpFuQGe8bETw489ApqELAbvWQ5F8z8ARCUYAc9z1jeN4cGafKwDDhmrTBBFO6HHUwGs+4iBXmA1h92X6dul81AydFP4pzAZTgohLFjSjPOdsRD50J2WRJxI+n1ENPNIBsRePaRSZzeXI2AFK8Em5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784576166; c=relaxed/simple;
-	bh=ykYAmhd68ENhZafgAWcDfavSm6U0Wnr9Pzc8SD5B8Ac=;
+	s=arc-20240116; t=1784576165; c=relaxed/simple;
+	bh=99pkAOPGtwB/BzPLgYWE1L+4EzvxcH4p7JFn3jZ80+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBAgoWheMiIQT8I73ZpeNnevOc32HNHhDu2BMEoxWdOUMypfEWPB9R+D6hyKT6Oe7UDAbOuw8X9ewkHuNqkVWPfq9HrHgZZc80h/Clzf+6PcpmJB0a8QqEnrIsAFT297b08i2nplYnLoHpycuNfs6TChMCxaeUnYo03Wxs2/CEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rAOSfph/; arc=none smtp.client-ip=209.85.222.179
+	 MIME-Version; b=uZzGrlE/xo7PV4QRVJSaFw8g8PbtDV82ZfAN4LkZfNQxE5N4pUXez/pknbSNfw1lmQxB9ScUeqm3qj6zgrHQH8psLfXB0PAfq0+ADhWG5M6cqoWYZsIVX6NPfkDG12AyLp7BWjTn1IHhL33dSJkwKmJZmvE/KovCrh+A5ko0Dig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=pBudzOTg; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rAOSfph/"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e7c6ec9dbso548920085a.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:36:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="pBudzOTg"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e50c5d14cso756433985a.2
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784576163; x=1785180963; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1784576157; x=1785180957; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=52AwKQKrQ6RLG5kuFGfqaKwjxS+9GOxT3lcLnMmQsKc=;
-        b=rAOSfph/ahSIqw2L+qZeihsZgSAQucH6rGci3GtyNWMlhhzkTa7aUnAMfVnL9o23BX
-         gbWkz6r2ggSqpU0DTeS8FvlDm011WvYB+jW2mU/489vFGCjQVYzPUUxnGea2t9r1PskR
-         VbJ61usdcsGXqnTwWzV0D8uBVGjWOitNBvEF+wc8VvGV6xxaxzxYT+tA67MJdazaArud
-         YH5V8AczkfYWPpHy8tOfSCvzlJCXEknMYlphuLxCGHxUxCfL4QBFJfqmdzL+y8XrlLlX
-         B6mCLyA7TONL7susiQZsOqFdHn+cY6IBHphc7yCaivkNo9Zj6rNN3vS0UL+fOwr0kFjU
-         i4mw==
+        bh=yyvPve12WhVPZzxgug/++OGUAj2qo04o06OFhCcQQmk=;
+        b=pBudzOTg3CQS7bU6aa2/3qCLPH06+plLdsnBfPa4htG/DFZuTcu0A4+CWaWMPirDgG
+         bn33DXYjMF44s/PkOZpbV+tUJgqPMzmcNA3pbkX1eXE96jV7KSwmYYTqFbzPQFL8Avl0
+         28rLcXH2cafiKbRSFus/ifFddlVgbssJBFdCH7iDJKzejdZMjzZywJKLroAlVCaCtPWc
+         36xHymoV+jWp5ncSipVMfKyPg2rfmAcqPZvLugfGi4y37TQYH2DCdF+FI8V5g2089JlF
+         teoPcfWmvE4q4UNNd/WZgXDLBgjhHm/PVW/bpGFMgnwms1VTaYzaqvAIqvg3EVKUGkNj
+         5O1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784576163; x=1785180963;
+        d=1e100.net; s=20251104; t=1784576157; x=1785180957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=52AwKQKrQ6RLG5kuFGfqaKwjxS+9GOxT3lcLnMmQsKc=;
-        b=ZdpuaC6OAjZR2eTvGGfKT1gbvPNCad0PUoD4hhGM1GsXw9oqPZUJHXhrlx+/L9IVBl
-         Z2F5X1RBNR00Qs9J0QGlOO2rwC4ge8IV4TpfgE8aSfnhZE8cRsvoRaeLPZlP6x0HdVIU
-         o3qqPekxIrc46SnYS8mJTIeSmNulHJNYZi7jqLkS4f4dmg8wsU30br/aLzwE5Qgl21yY
-         nlbMhDLWIB33Ur2HX3ifNNqNGgVE+Vwo1XoWDCFjQunbrFOZMN0xRnOIwQ4RpVF0yYaA
-         kUeT/HlL7XTkn9JLBtKlzqycBDzDqh4zKkjbKKEjrCK6NmuC3yqh553kKNZ/JTlWg2Ea
-         Jy+A==
-X-Forwarded-Encrypted: i=1; AHgh+RpNBvElgxKjFaeRW4OZsSBZIQ9L8U4aR1wbeqd5KYY+fb7/p1p3VJQzgBHLOFBD4q9gBwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV5TENVJXFjQ2Mr2NU7aHcsjOHQTwWnvOxTh7rQDD4u4vHMOyZ
-	JzZAud8mGnFlrOYLVRgKY2n3JrYD94brWZ/yBIHgxXVpVdq77a5OIV73S0EY4ENGIf4=
-X-Gm-Gg: AfdE7ckAIyu/aOONTr/PuKNpKklABlBQEvSvlPd3Qgs2wTo7Il4A8BJZyDc9sCwmeSA
-	X8kEI53M3CDZ9roCLcxk64GvD7OnPQg3Y/L5w9w3RS7BDw+i/qe1vya00N3oVNcyBZMPhlHE6Hx
-	BWWpkYgds3hAsaLqwQFAu8FD6m6839JXlTKGcd04DWSD5V4j8WXYaomCzseZU5gn30zz/4O9kgZ
-	g7XWrBrVEacQ68A5faSx5Tk+363xUmfak+DI42VWx/6vTUSm45v9yBDsxmOzNTct1V3VWe/3dXP
-	W0HMdEaKHbMfTucNQqnxZkT1NPrnjhzDjTHUQ0s9lP9x67sOJv00NHrA5CkTmtUjAxtDVNh4DIa
-	6RLKzXZgoVfrFX/pv9TEET3OI0HHKWKlv/eEDEVmHVA0ZKzyW46MG/U8xjgWmUt1b+ptU9z0aCo
-	+jzBFhJYGJCc39llOkMqatySOqSbr8xBDyoDFohjrUBKGmdViiKCuEHaz0ODVn2wc=
-X-Received: by 2002:a05:620a:4095:b0:92e:7467:fea0 with SMTP id af79cd13be357-930b3ed66d5mr1519423785a.34.1784576160054;
-        Mon, 20 Jul 2026 12:36:00 -0700 (PDT)
+        bh=yyvPve12WhVPZzxgug/++OGUAj2qo04o06OFhCcQQmk=;
+        b=Pkdjv0MfJSiJtOIt3PkION3vXXIjEFyVsHUnacsoW+wzcJ0DRG5t051xJ3T4qnFom8
+         A7TAg94Rnx0BbMYM4UnhMl22QONd6WVg49l6P4CkfxzDUuGJCYmX92jedrWT/5qwSRC+
+         jdvE7B4zMa7wB7tlSVNwFcijuvRzLAASi4s0R0c0JoHjcQqpmB+Bu3qU+pCoHMk/2N2l
+         Thw+uxLm/1LY7X0gJI4BVvys4t1B4cdA9WuXUcDIn1//aeDyUe6M+S3J+WTKhrUoHMBg
+         TZSdo4BbIQohgGWdr6GzX2Z0AfqSP99g2MZMFapRD5NTvIBOYAeZDRfB3yamLfYbC0+K
+         FGDw==
+X-Forwarded-Encrypted: i=1; AHgh+RoqoAoL733W1+R1sQYrG1FF1H1qgyXVZhqUtqK4UQnFE/ovo7MQPiR7R83X8s6be3rlh0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUYuF7fDM2wDSqrH42/hHIxdyAMmbDXB2nSH/bInVcqTdPIY7P
+	PL6JXqfx12c8bc3lBgSxLm+WvU5zGS0jr/M8bpaeo7Bvs8fgBGDo53pq/1FLNaYu/7E=
+X-Gm-Gg: AfdE7cmVbBN8kQFnKaEtlLWtsHJtxfohqTaj1fdulqUpcpHPhP1DffIUacyMcboHWiQ
+	eFw5J1UoLVUE4cjIun6O/OF13cWK1kv9EUU5byfKO4mvdrUnZkbof98VFfP/b+xY8s2NiCZG/gM
+	KIjEkZ4aFdOfD+Gnvl7KMgWh/zELBHyji9yeooYOT1rUe6NyN7tKt9+DMI3E5zOviARLvMKuSS5
+	d5Wh/6agiDfTTxT2ZVJbynohk0nXUwdXrqyJiKmBv59VeOwKp5hErMCTWQyh/kzgXznUUGBAsRl
+	+p2g9XGwJdQUO0TlLtf4b1eNNqeW5VJDnfFzGJ/9b0aKmW9HmElAtlUgCigucd+6MQ9RGz3lD8f
+	pL8X2qhbKEeTXuyxUjLKCXeo+J70MBL5LWfzccRRfllR89ZSeiUk/5UtT2Dd2S1Y2pvvSkZcNw7
+	0gdjV3e+nE0HBt9cLHHEyhbegKHOXCXxzxAKdC+i245ZCypNKc+BJKTEdyCeY+2eM=
+X-Received: by 2002:a05:620a:2855:b0:92e:c118:18e1 with SMTP id af79cd13be357-930b437e3afmr1539338685a.88.1784576157342;
+        Mon, 20 Jul 2026 12:35:57 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.58
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930b545e47bsm957792285a.35.2026.07.20.12.35.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 12:35:59 -0700 (PDT)
+        Mon, 20 Jul 2026 12:35:57 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: Zhigang.Luo@amd.com,
@@ -137,9 +137,9 @@ Cc: Zhigang.Luo@amd.com,
 	damon@lists.linux.dev,
 	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v5 31/36] mm: add NODE_PRIVATE_CAP_LTPIN for private node folio pinning
-Date: Mon, 20 Jul 2026 15:34:25 -0400
-Message-ID: <20260720193431.3841992-32-gourry@gourry.net>
+Subject: [PATCH v5 30/36] mm: add NODE_PRIVATE_CAP_NUMA_BALANCING for private-node NUMA balancing
+Date: Mon, 20 Jul 2026 15:34:24 -0400
+Message-ID: <20260720193431.3841992-31-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
 References: <20260720193431.3841992-1-gourry@gourry.net>
@@ -151,44 +151,50 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add NODE_PRIVATE_CAP_LTPIN so a node can opt back into gup pins.
+By default NUMA balancing does not scan or prot_none private-node
+folios, so the kernel never migrates them via access sampling.
 
-An opted-in node is then pinned exactly like ordinary memory, or
-migrated and pinned if in ZONE_MOVABLE.
+Add NODE_PRIVATE_CAP_NUMA_BALANCING to opt a private node in.
+
+Add folio_allows_numa_balance() to gate change_prot_numa() scans on
+node eligibility. Opted-in private node participate like normal.
+
+Unlike demotion, NUMA balancing is not reclaim-driven, so this
+capability stands alone and does not require CAP_RECLAIM.
 
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
  include/linux/node_private.h | 29 +++++++++++++++++++++++++++++
- mm/gup.c                     |  3 ++-
- mm/internal.h                |  9 +++++----
- 3 files changed, 36 insertions(+), 5 deletions(-)
+ mm/internal.h                | 13 +++++++++++++
+ mm/mempolicy.c               |  2 +-
+ 3 files changed, 43 insertions(+), 1 deletion(-)
 
 diff --git a/include/linux/node_private.h b/include/linux/node_private.h
-index 5c3e070ed0deb..6f568bc0d46c7 100644
+index 87b03444b2c97..5c3e070ed0deb 100644
 --- a/include/linux/node_private.h
 +++ b/include/linux/node_private.h
-@@ -17,6 +17,7 @@ struct page;
+@@ -16,6 +16,7 @@ struct page;
+ #define NODE_PRIVATE_CAP_USER_NUMA	(1UL << 1)	/* allow mempolicy */
  #define NODE_PRIVATE_CAP_HOTUNPLUG	(1UL << 2)	/* allow hot-unplug */
  #define NODE_PRIVATE_CAP_DEMOTION	(1UL << 3)	/* allow tiering demotion */
- #define NODE_PRIVATE_CAP_NUMA_BALANCING	(1UL << 4)	/* allow NUMA balancing */
-+#define NODE_PRIVATE_CAP_LTPIN		(1UL << 5)	/* allow GUP pins */
++#define NODE_PRIVATE_CAP_NUMA_BALANCING	(1UL << 4)	/* allow NUMA balancing */
  
  /**
   * struct node_private - Per-node container for N_MEMORY_PRIVATE nodes
-@@ -167,6 +168,29 @@ static inline bool node_allows_numa_balancing(int nid)
+@@ -143,6 +144,29 @@ static inline bool node_allows_demotion(int nid)
  	return ret;
  }
  
 +/**
-+ * node_allows_ltpin - may a folio on this node be long-term GUP-pinned?
++ * node_allows_numa_balancing - may NUMA balancing scan/migrate this node?
 + * @nid: the node to test
 + *
-+ * Opted-out private nodes cause longterm pins to outright fail regardless
-+ * of ZONE placement (NORMAL would allow, MOVABLE would migrate first).
++ * Access-based promotion/migration.  Unlike demotion this is not reclaim-driven,
++ * so CAP_NUMA_BALANCING stands alone (no CAP_RECLAIM dependency).
 + *
-+ * Opted-in private nodes allow longterm pins to operate normally.
++ * return: true for normal nodes and private nodes opted into CAP_NUMA_BALANCING.
 + */
-+static inline bool node_allows_ltpin(int nid)
++static inline bool node_allows_numa_balancing(int nid)
 +{
 +	struct node_private *np;
 +	bool ret;
@@ -197,7 +203,7 @@ index 5c3e070ed0deb..6f568bc0d46c7 100644
 +		return true;
 +	rcu_read_lock();
 +	np = rcu_dereference(NODE_DATA(nid)->node_private);
-+	ret = np && (np->caps & NODE_PRIVATE_CAP_LTPIN);
++	ret = np && (np->caps & NODE_PRIVATE_CAP_NUMA_BALANCING);
 +	rcu_read_unlock();
 +	return ret;
 +}
@@ -205,11 +211,11 @@ index 5c3e070ed0deb..6f568bc0d46c7 100644
  #else /* !CONFIG_NUMA */
  
  static inline bool folio_is_private_node(struct folio *folio)
-@@ -209,6 +233,11 @@ static inline bool node_allows_numa_balancing(int nid)
+@@ -180,6 +204,11 @@ static inline bool node_allows_demotion(int nid)
  	return true;
  }
  
-+static inline bool node_allows_ltpin(int nid)
++static inline bool node_allows_numa_balancing(int nid)
 +{
 +	return true;
 +}
@@ -217,49 +223,43 @@ index 5c3e070ed0deb..6f568bc0d46c7 100644
  #endif /* CONFIG_NUMA */
  
  #if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-diff --git a/mm/gup.c b/mm/gup.c
-index a7d4de223785c..1e313aa590bc1 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -547,7 +547,8 @@ static struct folio *try_grab_folio_fast(struct page *page, int refs,
- 	/*
- 	 * Can't do FOLL_LONGTERM + FOLL_PIN gup fast path if not in a
- 	 * right zone, so fail and let the caller fall back to the slow
--	 * path.  Fail for private-node folios here so slow path rejects.
-+	 * path.  Fail for non-opted-in private node folios here so the
-+	 * slow path can reject the pin entirely.
- 	 */
- 	if (unlikely((flags & FOLL_LONGTERM) &&
- 		     !folio_allows_longterm_pin(folio))) {
 diff --git a/mm/internal.h b/mm/internal.h
-index 01ab8b32b0bd8..9621eb127c28c 100644
+index 62e68acae08a3..01ab8b32b0bd8 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -146,19 +146,20 @@ static inline bool folio_allows_numa_balance(struct folio *folio)
- static inline bool folio_allows_longterm_pin(struct folio *folio)
- {
- 	return folio_is_longterm_pinnable(folio) &&
--	       !folio_is_private_node(folio);
-+	       node_allows_ltpin(folio_nid(folio));
+@@ -123,6 +123,19 @@ static inline bool folio_allows_madvise(struct folio *folio)
+ 	       node_allows_reclaim(folio_nid(folio));
  }
  
++/*
++ * folio_allows_numa_balance() - may NUMA balancing scan/migrate this folio?
++ *
++ * NUMA balancing is access-aware tiering migration, so it follows the tiering
++ * opt-in: false for ZONE_DEVICE and for N_MEMORY_PRIVATE nodes without
++ * CAP_NUMA_BALANCING, true for all other folios.
++ */
++static inline bool folio_allows_numa_balance(struct folio *folio)
++{
++	return !folio_is_zone_device(folio) &&
++	       node_allows_numa_balancing(folio_nid(folio));
++}
++
  /*
-  * folio_longterm_pin_forbidden() - must a longterm pin of this folio fail
-  * outright (neither pinned in place nor migrated off the node)?
+  * folio_allows_longterm_pin() - may this folio be long-term GUP-pinned?
   *
-- * True for any folio on a private node: such memory can be neither pinned
-- * nor migrated, so the pin must be rejected with the folio left in place.
-+ * True only for a folio on a private node that did not opt into longterm
-+ * pinning (NODE_PRIVATE_CAP_LTPIN); node_allows_ltpin() is true for ordinary
-+ * nodes and for opted-in private nodes, so this never trips them.
-  */
- static inline bool folio_longterm_pin_forbidden(struct folio *folio)
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index fe42a510590a2..4daba81fff7c7 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -874,7 +874,7 @@ bool folio_can_map_prot_numa(struct folio *folio, struct vm_area_struct *vma,
  {
--	return folio_is_private_node(folio);
-+	return !node_allows_ltpin(folio_nid(folio));
- }
+ 	int nid;
  
- /*
+-	if (!folio || folio_is_private_managed(folio) || folio_test_ksm(folio))
++	if (!folio || !folio_allows_numa_balance(folio) || folio_test_ksm(folio))
+ 		return false;
+ 
+ 	/* Also skip shared copy-on-write folios */
 -- 
 2.53.0-Meta
 
