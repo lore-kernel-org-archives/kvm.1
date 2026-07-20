@@ -1,117 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5973F3AE19B;
-	Mon, 20 Jul 2026 06:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AE43ACEF6;
+	Mon, 20 Jul 2026 06:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784527902; cv=none; b=oI4epxBu5eRCmLK1eQZXqqUTYhFxFPiSIsqHeWlBIp/pX7vqFiLhqikti1fw3nf+UM52kCuUt3e0/v/iYEPRGy7qG72yip4Gwc1H0rpqpqvVE8Q0pKlQJJ/L7dpPEEhU1CWnzqiAfwt0NL18v8Byts7mBrX/IyvbwTmOD8SqaIQ=
+	t=1784528276; cv=none; b=UJJNsDCHxcVryOxKoQ5qrHSfwaZazF42+iWmwmXPXW2jprohtAhmd8DbRh+8ge/vbxaDC6Q+Q6bCZP2DV0gXt5YalK4veUPZ+67X2PZB8Z/Xf04Z4RxvaALo70xLkNJeax+GuCQklUBNzbrOkrMWzIo032h6tYNP9qgTUoA93EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784527902; c=relaxed/simple;
-	bh=CEmBNjqeUV0F5PsRspBho0WN8S8xA8SWD6OU96fKsa8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QEoijQe+RSIBpx3pdJ3xanKbMmATrsIvT96kaTLxHy8d1tUTyr8laNllbZC8+eDvmsJxPyntwDad+fDBxD4aZA0ITP3oyFX6ZGiOZmFCXJOVcf/w3wOch376VHwL2f0Rnd4QepFIYNTE0JaS6Xs0QIHJngxB9lBX/1/NJx5HlnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jBqdQXbX; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1784528276; c=relaxed/simple;
+	bh=pflnMY2/S0a7j5lliNe2p/WCULVv2c+M2fZ52pTnogg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JKQv7gw6yjRiRspHAPltOUm7y7ahejOZ+J4725gZdLfc/KDAhNdWXI2jmDak1Tog6M3RpaK/CheGgu59PA2y3hqMMbWh8rlib/xRdaNO2LFhBgRtRlsEv0ra+VjxwTBlHlTzdjwY1X++JTADsWwNnF+G6NDzKFsAzohhasNqRSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDckIS2z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jBqdQXbX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784527891; x=1816063891;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CEmBNjqeUV0F5PsRspBho0WN8S8xA8SWD6OU96fKsa8=;
-  b=jBqdQXbXxPrvwTrh6zmv7UT0IefnFG4j3S8YI35qq1RIuf8TRgivRTqK
-   ESGs+c9PT57V8SlDlUq/RgmrRokbaKSK1na8j8Hi2gaBa7doe6uJXsamx
-   v04Uqz1RgdJ+Ak6OvlSGN2pM8RjbxKdWhEY7kZNd6a0Hnt4tFKSXUYH3f
-   IK9VYcaalvTQ6i/sjv7Z7IuBR4F7uKzmp3ohfkY2oqpoeuLExHx7ZsN7l
-   8K2qe0X+TYRXK594s6lThDmdpCF5bZqyplo/bm8dYcMu71KSgAvCCBqQ/
-   0ns+v80m6XR3VG5AUPj2YjSqWqqBYvWZsN58mR22q1ItBD8bXbnzaQseG
-   g==;
-X-CSE-ConnectionGUID: 1kSGtJG+TeOL9l8GUA6BSw==
-X-CSE-MsgGUID: f1vAUqnzTkiR5G7wjtb3zQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="84086891"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="84086891"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 23:11:24 -0700
-X-CSE-ConnectionGUID: e8D6Zv/lQ+WOc/Zi3nu0fw==
-X-CSE-MsgGUID: JVbo7JhjRgahpQxzXxgQRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="261651575"
-Received: from unknown (HELO [10.238.2.244]) ([10.238.2.244])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 23:11:22 -0700
-Message-ID: <c4343410-c5fc-4171-a120-a3786ea38a20@linux.intel.com>
-Date: Mon, 20 Jul 2026 14:11:19 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDckIS2z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86291F000E9;
+	Mon, 20 Jul 2026 06:17:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784528264;
+	bh=K0UynwdCv5WDm1BVlmikLW/Dj+dAPIIfg1V5Im2kFiU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iDckIS2zrx4DuvkuzGtu412bP5XfyM/S7yusMn1RyrdraIvl0lSYk1NZHprmt6lHi
+	 7Rqgdqx12NBFf0wbAO+qar2Pz6D2taRRlaRFXEiHjOcZCd47W09InPTs1N2vBDO4yx
+	 nUPQo6A3hF0pc02gFCwn/HrQfAbLXGmCt6LfNV/vwWeYNtEdoOuFQpTkkyafxwejtY
+	 /QAm1s0w1irGZ/AF6voSDjzerMAw28/elv9kzUkGlKGxPsoVsL+4rL8y8/soZqXpza
+	 fJfBG4W1Ya+fX2Oofz6tcJLKc4v8a7OUfYRsHwt0CHj89X6xAy7Hwq5u4ACdYDMB3t
+	 tepOey7ODA4AA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only
+ emulation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Akihiko Odaki" <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
+ Zyngier" <maz@kernel.org>
+In-Reply-To: <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 20 Jul 2026 06:17:43 +0000
+Message-Id: <20260720061743.E86291F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86: Remove AMX-TF32 enumeration
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, pbonzini@redhat.com,
- seanjc@google.com, Zhao Liu <zhao1.liu@intel.com>
-References: <20260708210118.402005-1-chang.seok.bae@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260708210118.402005-1-chang.seok.bae@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 7/9/2026 5:01 AM, Chang S. Bae wrote:
-> AMX-TF32 enumeration was added based on the Intel documentation [1]. The
-> recent update removed the feature, indicating that the feature is no
-> longer planned for hardware implementation.
-> 
-> [1] Intel Architecture Instruction Set Extensions and Future Features
-> 
-> Cc: Zhao Liu <zhao1.liu@intel.com>
-> Cc: Binbin Wu <binbin.wu@linux.intel.com>
-> Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] State desynchronization in PMU virtualization due to retained st=
+ale perf_event.
+--
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+--- Patch [14]: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-=
+only emulation ---
+commit 8eabffaec38175a063281e21d7253117967c6ca4
+Author: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-One nit below.
+KVM: arm64: PMU: Implement fixed-counters-only emulation
 
-> ---
-> Note: The feature first appeared in the September 2025 revision of the
-> document and was removed in the June 2026 revision.
+This patch adds internal state for emulating PMUv3 without programmable
+event counters. In fixed-counters-only mode, KVM tracks physical CPU
+migrations and requests PMU reloads so the host perf event for the cycle
+counter can be recreated on the new physical CPU's PMU. Uncovered CPUs are
+treated as unsupported and taint the kernel.
 
-IMHO, the note is informative.
-Is it better to move it to the body of the changelog?
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index 78611eaecca25..1ec09ef28467a 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+[ ... ]
+> @@ -785,6 +791,32 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc=
+ *pmc)
+>  	pmc->perf_event =3D event;
+>  }
+> =20
+> +/**
+> + * kvm_pmu_create_perf_event - create a perf event for a counter
+> + * @pmc: Counter context
+> + */
+> +static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
+> +{
+> +	struct kvm_vcpu *vcpu =3D kvm_pmc_to_vcpu(pmc);
+> +	struct arm_pmu *arm_pmu =3D vcpu->kvm->arch.arm_pmu;
+> +
+> +	if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
+> +		do {
+> +			arm_pmu =3D kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
+> +
+> +			if (!arm_pmu) {
+> +				pr_warn_once("kvm: Unsupported PMU variation detected.\n");
+> +				add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+> +				return;
 
-> ---
->  arch/x86/kvm/cpuid.c         | 1 -
->  arch/x86/kvm/reverse_cpuid.h | 1 -
->  2 files changed, 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 591d2294acd7..759a1c557080 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -1082,7 +1082,6 @@ void kvm_initialize_cpu_caps(void)
->  		F(AMX_COMPLEX_ALIAS),
->  		F(AMX_FP16_ALIAS),
->  		F(AMX_FP8),
-> -		F(AMX_TF32),
->  		F(AMX_AVX512),
->  		F(AMX_MOVRS),
->  	);
-> diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-> index 2ad25781cefb..1bb13903c5b2 100644
-> --- a/arch/x86/kvm/reverse_cpuid.h
-> +++ b/arch/x86/kvm/reverse_cpuid.h
-> @@ -56,7 +56,6 @@
->  #define X86_FEATURE_AMX_COMPLEX_ALIAS	KVM_X86_FEATURE(CPUID_1E_1_EAX, 2)
->  #define X86_FEATURE_AMX_FP16_ALIAS	KVM_X86_FEATURE(CPUID_1E_1_EAX, 3)
->  #define X86_FEATURE_AMX_FP8		KVM_X86_FEATURE(CPUID_1E_1_EAX, 4)
-> -#define X86_FEATURE_AMX_TF32		KVM_X86_FEATURE(CPUID_1E_1_EAX, 6)
->  #define X86_FEATURE_AMX_AVX512		KVM_X86_FEATURE(CPUID_1E_1_EAX, 7)
->  #define X86_FEATURE_AMX_MOVRS		KVM_X86_FEATURE(CPUID_1E_1_EAX, 8)
->  
+[Severity: Medium]
+Does this early return leave a stale perf_event attached to the PMC?
 
+If a vCPU in fixed-counters-only mode migrates to a physical CPU without a
+supported PMU, and the guest attempts to reprogram the cycle counter's
+filter, kvm_pmu_create_perf_event() will exit here without stopping the old
+counter or replacing it.
+
+If the vCPU later migrates back to a supported CPU, kvm_vcpu_load_pmu() will
+trigger a KVM_REQ_RELOAD_PMU. When kvm_pmc_enable_perf_event() checks the
+PMC, it will find the old perf_event. Since that old event is valid for the
+now-current supported CPU, it will be re-enabled without recreating it.
+
+Can this lead to KVM silently discarding the configuration updates the guest
+made while on the unsupported CPU, resulting in incorrect performance
+monitoring statistics?
+
+> +			}
+> +
+> +			kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
+> +		} while (!cpumask_test_cpu(READ_ONCE(vcpu->cpu), &arm_pmu->supported_c=
+pus));
+> +	} else {
+> +		kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
+> +	}
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-hybrid-v9-=
+0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp?part=3D14
