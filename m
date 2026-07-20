@@ -1,75 +1,72 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2A3C81B9
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB13306768;
+	Mon, 20 Jul 2026 08:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784537604; cv=none; b=CbKON5SLCdtdLeXvU8ZQ32WGhnOAh/q6gIFdYbq/DV+UfFIPM0lcDhXBdMbEO+Ier5bXT77Jdd4hBgSFbFpwtI6qvD2dNBWzUqXkslUtJvrHCTxn1GEN1rJK4bLNCVvxDFLYrp3RQOFwSNvi7nRCgkcSm9SFIv2dD2iRw4nQ5jQ=
+	t=1784537923; cv=none; b=n70AB3nY7MtbjV6piNDqUAEnblHmBUxFoe+kRfY+WS2o/6JsIt0pb54kDMDml3SiSn0KyzAV8OYDrrIkIfoXBTJWpj2sYEmhx1jjLrNx6QIJu/WQuW07bbJxP5/Sgk4oS2oLYrC+fF8v57VUxrZbyarOqOCZEepuXYvV/Nrcwjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784537604; c=relaxed/simple;
-	bh=o6QS22hcefobTL4agDYyTXy5uvYvNFggHdA5faPCDDo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L5mPyTQxIGoy8ySrohH3CEsAIrnS0kboCCMQvCgkCm57neNwZ73nnvhqGSWtWn6j4LrIdXE6JHt6zPBl+Z9Bde0r4gCHNCqlhtVm4mY15qFppxKcgmpCDqF65Jins3Jk6eMpt3CxMwp3UmuUvPaR2g57rSWac6ZgjZFTF5MdwxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Va8swiqd; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784537923; c=relaxed/simple;
+	bh=kt/IaOFVul557FqevKqMSkljaUYBNNzywr8px+IDhvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yn5DWcC+IP7DFyXNqisvQgW8gXAN0nIgkDCKTCsbmdWTSLvDgz58jZ+iYqz6Fe65KjMUOCFYypPGch4zRSj5UTecA6TIioVwUdLpdFOn7VyM0WqtFsra1U9nMTORFzyXhsGGsgbT6x3dVrRzs2BLtal2Vjj1gyrGdSeSZ/Dr70c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WmT/oAcE; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Va8swiqd"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so4166605a91.1
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 01:53:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784537603; x=1785142403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZyobmQNbF473X4YAV4bIq6NV92V1jhbfZhYiYWm1O2k=;
-        b=Va8swiqdVFiX+D7XVwMrLVd4zK/t/RDx3lEzr4Ka1merZH+AioaOuSx6h71mkZb5n1
-         sl/GFU2plnHtZ2CIjS2XNeId+pzpAHrFWSMx0MFLx9fyjfYuPir+7faWHhExa79UlubW
-         xJU0YSCFMb5457KUXwkIPWwAI7Why3j6gK9UhXdGIB0HW/O2jgCn765wON43vT5CYiYN
-         x1s9hbZoCMUsZlmRhMCK/gnytXxkDGcIxAcDNYdMZ9uhzGxh7PEzCmLLHYWwahCqsb2E
-         /BAta5YHU+Mc8LGFOkpthw45Bf/TPmbsYyohS2eho14nvbMHs+KGa8soD0/QUhkoTerr
-         ruEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784537603; x=1785142403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZyobmQNbF473X4YAV4bIq6NV92V1jhbfZhYiYWm1O2k=;
-        b=epcpc9usZiBifUnpeS6Fli6PsyMoUXYc97Q04UrKYdJsldSlAA5aezIPz4MBdOEoG1
-         axyP8L3aCnbB7/g2RcN/Dz9N99s6dUAiv7AD4I5bD6ulj/JhL0G21lZX6VJnQttuuxyt
-         1S+LEnO6fbcpPHxP2xb4R30SiVxHDmjq/mpwL7HD8VHCEVTZ6bS97foPV6hDdplpc/HD
-         n64w33C9Bn9AvGPz5sjWAPNX2FEqNIpolCYsPYiPlPT2Rh48yocVBg+FsBfaXMuUBzAN
-         qXN/Yf0AkMPyg+0DlWTQOnz6hMxyoNOBJZBZkC7GBbiVBIoPr+ZfnXxvQ3xjYgBV7lts
-         J09Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rp1ImBPLKdfuj3Y8lyg1EvlXYlI4/zj7H5BWX4ELCEuDu7OsbSUi164RiiLlND5sGbmZQw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpmXcwDnCuAYCfSSAICS5Fimh0masMFozbSjy8IK+c+HNQgQ8x
-	6c2jDNq6cYMx4Gg/1NHaH1R/Pp9IuL3KVkpiI46XU/4sBApjIPLqWG/H
-X-Gm-Gg: AfdE7cni6Kzg8aCPBgLZVXNRmTnz8bt9y5HX2427x7dfZ9kBV2knmJ876Um1vp6kJF4
-	dvNSOFqJQaliR0tvhJsF98kDjIAZZ71Lt25LgHCkWtljMQy0kCS8ZIBjo0uxagVdmwvVhs9Tc/C
-	aKLFeltqewAMGE5n9jWFu0rTR2SuRFgVvkXk6qf6dBF2bSxafGOLkJwXit3xwusugiKSE4DtdGX
-	yWweJ0f/458zdJYGo3t+1JuyOY/6oThBbPiiHvIDF/VWE8gxSH/Aw2QOAM0a/6H96mwuGciuWdD
-	9PkPwn5C74y2Kb8EG0RjaHxiGSSmtukQR1sbJql9iX5lroRuuZl8nZelgLwHe7vOZbchfGB+7nQ
-	n3LUjJbuiz93qm+o29/lJtCBvNxGgo2fotlFq/mjydFo1CsoIXvvOBsxrPKfo5sZwEGO++d9SxY
-	c+2ZAv
-X-Received: by 2002:a17:90a:d44e:b0:38d:ddc2:7ccb with SMTP id 98e67ed59e1d1-38e4b3d0fdamr13257377a91.1.1784537602406;
-        Mon, 20 Jul 2026 01:53:22 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13ce2cbb69bsm25224068c88.11.2026.07.20.01.53.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 01:53:22 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com,
-	jasowangio@gmail.com,
-	michael.christie@oracle.com
-Cc: pbonzini@redhat.com,
-	stefanha@redhat.com,
-	eperezma@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject:
- [RFC PATCH] vhost-scsi: Serialize completion notification with callfd updates
-Date: Mon, 20 Jul 2026 16:53:06 +0800
-Message-Id: <20260720085306.1519294-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WmT/oAcE"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K6fnlI3777390;
+	Mon, 20 Jul 2026 08:58:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=t4ZnftpYbbLC2ucKQ
+	zkh5yaupKRJNl/rZPqRGt4bVm0=; b=WmT/oAcEpJ80VfW4piAZ5uJYHeKWQOkkv
+	RBPOhmeTkFSJnDvmRkb+1OTXQhb1TtCk58ST58gBLOBJjUw/EBTGAOw8K8f4JCcI
+	ob68+ji3foN3Qy/nFLWlXw4MuF2Fb1WlE0bXJX3ldfhoSIpj62FlIqPy4CD1KYZo
+	Ooy1aTvj60fa2sIdup0tP3cAk6ynlRKPnm/sDku1Jm2170VC0VM/4FY2ICQAcwm/
+	/eyYpOz92xyYa74doEglfIC3DspEgoVTVUBadw2WAEDm+ypT3DaAkMDxOy2OTqSz
+	iCPzUJbSS7k3F5PiA0JFmd9e3Ucr8WbisdfTidIqXtVIAIWG3uOKA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77a6m83-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Jul 2026 08:58:40 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66K8Ygnn030004;
+	Mon, 20 Jul 2026 08:58:39 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktpw0h6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Jul 2026 08:58:39 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66K8wZpr42664428
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Jul 2026 08:58:36 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD83720040;
+	Mon, 20 Jul 2026 08:58:35 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BB7CF2005A;
+	Mon, 20 Jul 2026 08:58:35 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 20 Jul 2026 08:58:35 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 5/8] s390/mm: Remove folio handling for kernel faults in do_secure_storage_access()
+Date: Mon, 20 Jul 2026 10:58:31 +0200
+Message-ID: <20260720085834.898025-6-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260720085834.898025-1-hca@linux.ibm.com>
+References: <20260720085834.898025-1-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,102 +74,73 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IoJiaYt6Ppk79OyiKpVJiNY1eP2jEqPN
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDA5NiBTYWx0ZWRfX1AbA0DpWOZWV
+ okNoKHSSPIa/jNG6wkd9HWfGC+C+lDxeV097DB6SWtpb5dKYVKO/lJpN2z2SlnpN/rlHFRKvh8W
+ +J6M69PkTyDnS+8SVuT4ronHpeQaUmA=
+X-Proofpoint-GUID: IoJiaYt6Ppk79OyiKpVJiNY1eP2jEqPN
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDA5NiBTYWx0ZWRfX3PjVCAYStjig
+ 0fMou9BDPWrPoG66WlHscZXVDW4dmNZEIYPzQF1F641F0MKs1M7nOJjn9ND/Coxue7Oab/3+LUe
+ Sc9DeIX2g4PVUGDAc0VdnOzJXAUir15XEPZ1EjfLEIw1ls+1OUpA7DN6XNcwsrBCNcRZkyVjxqh
+ llSW397gdrHtPKe/JZmQ1U2dO8bxGmB0H5b9X8VgA0J3slSvLLnDvyiRuvWW1IGRM84WsgZLQLE
+ UDd+kylKXwf0jMr8Gh96pgpgibZXP4jD2QYfuWk9O4As9L1zovw1D28vhuRQMZ6bsD7RQkX+zvP
+ ZWMixLZ4v7/lT0UGTpFnAn27U1hAwLXAfcl40ZRPRenw6hcq7b84pMSZtUGnNgfiI0SERF3Ks8a
+ c+wFGYkYfvVGqIWhVjoOwqyIE/tOLgdb7k6eZhRfsMaojFOigPbdGiLwvMVd8u2gAXqQVbb7wpv
+ E3OH62+bkVTn4o3gCIg==
+X-Authority-Analysis: v=2.4 cv=K7AS2SWI c=1 sm=1 tr=0 ts=6a5de340 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=3bIF1FMAx5P9TMvWi0MA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-20_01,2026-07-17_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607200096
 
-During userspace stress testing on a KASAN-enabled host, a host-side
-callfd replacement concurrent with ordinary SCSI completions exposed an
-eventfd_ctx lifetime race. The test requires access to /dev/vhost-scsi and
-a host process that can issue VHOST_SET_VRING_CALL; on the default device
-permissions this normally means root or an explicitly delegated service.
+Remove folio handling for secure storage access exceptions that happen
+via the kernel mapping. Using folio_try_get() for exceptions via the
+kernel mapping is racy: for example such an exception may happen on one
+CPU, while a different CPU frees the corresponding page. Subsequently the
+page can be part of a folio of different size, before the faulting CPU
+executes folio_try_get(). This may lead to data corruption.
 
-The test used TUR completions while closing the old callfd and binding a
-new one. The unbind form tends to produce a NULL pointer, while replacing
-the callfd after closing the old file makes the old eventfd_ctx eligible
-for release.
+As of now this scenario does not seem to be possible, however with the
+upcoming load_unaligned_zeropad() this is possible.
 
-vhost_scsi_complete_cmd_work() drops vq->mutex before calling
-vhost_signal(). VHOST_SET_VRING_CALL updates call_ctx under the same mutex
-and puts the old eventfd_ctx before returning. vhost_signal() does not take
-the mutex or hold a reference to call_ctx.ctx:
+As a side effect PG_arch_1 is not cleared anymore for such faults via the
+kernel mapping. However given that this bit is over-indicating it
+shouldn't matter.
 
-	if (vq->call_ctx.ctx && vhost_notify(dev, vq))
-		eventfd_signal(vq->call_ctx.ctx);
-
-	CPU 0 (ioctl / callfd replace)		CPU 1 (vhost worker)
-
-						vhost_scsi_complete_cmd_work()
-						mutex_unlock(&vq->mutex)
-						vhost_signal()
-						  /* load old ctx */
-						  vhost_notify() ...
-
-	VHOST_SET_VRING_CALL
-	mutex_lock(&vq->mutex)
-	swap(vq->call_ctx.ctx, new)
-	eventfd_ctx_put(old)	/* free */
-	mutex_unlock(&vq->mutex)
-
-						eventfd_signal(old)
-						  /* use-after-free */
-
-On the reproducing run, the worker ran on CPU 1 and the callfd ioctl path
-ran on CPU 0. KASAN reported:
-
-	BUG: KASAN: slab-use-after-free in eventfd_signal_mask+0x6c/0x110
-
-The use stack was:
-
-	eventfd_signal_mask
-	vhost_signal
-	vhost_scsi_complete_cmd_work
-	vhost_run_work_list
-	vhost_task_fn
-
-The freeing stack was:
-
-	eventfd_ctx_put
-	vhost_vring_ioctl
-	vhost_scsi_ioctl
-	__x64_sys_ioctl
-
-Hold vq->mutex across vhost_signal() so SET_VRING_CALL cannot swap and
-release the context while the completion worker is notifying the guest.
-This gives the completion and callfd update a clear ordering without
-changing the vhost API or adding a new lock. Other vhost-scsi response
-paths already signal while holding the virtqueue mutex.
-
-A private eventfd reference taken under the mutex would allow signalling
-after unlock, but it needs additional reference-count plumbing. An RCU
-design would require broader vhost-core changes for all call_ctx readers
-and additional eventfd lifetime rules. Since callfd changes are a
-control-plane operation, extending the existing per-virtqueue critical
-section is the smaller complete fix.
-
-This is an RFC because keeping vhost_notify() and eventfd_signal() inside
-the virtqueue critical section extends the lock hold time slightly. I'd
-appreciate feedback on whether this is acceptable or whether a
-reference-pinning approach, taking the reference under the mutex and
-releasing it after unlock, would be preferable.
-
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- drivers/vhost/scsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/fault.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 9a1253b9d8c5..7f46bc0de3c2 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -735,10 +735,9 @@ static void vhost_scsi_complete_cmd_work(struct vhost_work *work)
- 		vhost_scsi_release_cmd_res(se_cmd);
- 	}
- 
--	mutex_unlock(&svq->vq.mutex);
--
- 	if (signal)
- 		vhost_signal(&svq->vs->dev, &svq->vq);
-+	mutex_unlock(&svq->vq.mutex);
- }
- 
- static struct vhost_scsi_cmd *
+diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+index e650cdfa2523..776549d55c94 100644
+--- a/arch/s390/mm/fault.c
++++ b/arch/s390/mm/fault.c
+@@ -440,13 +440,7 @@ void do_secure_storage_access(struct pt_regs *regs)
+ 	if (is_kernel_fault(regs)) {
+ 		if (is_vmalloc_addr((void *)addr))
+ 			return handle_fault_error_nolock(regs, 0);
+-		folio = virt_to_folio((void *)addr);
+-		if (unlikely(!folio_try_get(folio)))
+-			return;
+-		rc = uv_convert_from_secure(folio_to_phys(folio));
+-		if (!rc)
+-			clear_bit(PG_arch_1, &folio->flags.f);
+-		folio_put(folio);
++		rc = uv_convert_from_secure(__pa(addr));
+ 		/*
+ 		 * There are some valid fixup types for kernel
+ 		 * accesses to donated secure memory. zeropad is one
 -- 
-2.34.1
+2.53.0
+
