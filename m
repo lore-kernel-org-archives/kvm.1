@@ -1,191 +1,252 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0C4430CFD;
-	Mon, 20 Jul 2026 21:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784584114; cv=none; b=hPGx0yEB/uEQD5qKKWJ+ij9vyrnT2pe6wUbuZ1TupDK/aCuft5d0vhYxeq1bRdc2iCTkti1bMuVAyM5ACYLTABKQ4YD0ch928jYSaU9csNQ/BV+t+M7jmfi9EQbqx3f5vB8/c2OrZjGAopKYIfn0cILMQZsP5znt4hHr89tDEBw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784584114; c=relaxed/simple;
-	bh=T3ovAt55A22O1KjU1qY+ppGa+qpeOdFrnXEXhzSkMNE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KWDjpYEfca9ZZwAnFBomEHK4PQvMXJFzUVr/9J3dcksFRY8ad/AQqC4hlx8q+LmN15HTLZVSxQ3h2ERtNrmJZO0fXQtRPgu8+v/Rga8khJftWxxuFLxq+S+1y7dU1V/fjgaJcv6APT8b7T/QVU8Ue4jP7ejS7AFJS76h7MUvhQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gmgvIyFF; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2BB41166D
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 21:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784584271; cv=pass; b=oZ8ZYw8WVEJt5Oa+GChTrJdL5CDFHenlubqtyo+jDhmS6LSFJ/6qQm3Rrr14tyV6uiXm4AUx8tP4ifLESx9dBtqh0Ofn1h6OP/wbtg7O90o9IwGsKMoNqEpDrOm3ikpNocpb1vDv0HpYmpOzXQpyHF5U+M9kKHgWOyzEh8E1aBM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784584271; c=relaxed/simple;
+	bh=FWetYHTKU3plFs91yFZPvyCfOh01CzXliAvG6YxxB2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oa5ydVKSC0iuQ/xDrO1t0MwpXYoW7Yt/WH0+cLqxLrGwhiQSvbYJbyJb+AaEftUszXoZR5CwJk69pX/nmH5dYNP9+9aP8+Vr+hiEM4BE0vpviWahJ/FwXrNkXrwjwnh7o1L7bgYQvPgGgiSS9Vc0rlVUsaWo5Am9BxO2CP+ip+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WjawJNAd; arc=pass smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gmgvIyFF"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66KJg7bq3129666;
-	Mon, 20 Jul 2026 21:48:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VscOjs
-	kHbZzOYEiC+JC4a4/RAMVF0HubI1QgH+rs70k=; b=gmgvIyFFDO3dAHRG9aoDkt
-	q1Nse0/jiUAOOXfb5lsqbK9X+v6ncwdXaMbycszvWHH+OG0K7w2BShAz05nhfwzD
-	gUCouQs6J7+UWcqGVhm5B2tOgo4DQMfIvO0YToAIwIKAkRTvP7u08q4pe4NVdybu
-	fMt5VTyyWQtLIJsZk10kV/M1VJU2PDZvZwLwa8zRcpRpTJfufYUpVe4jddehmBKY
-	1uJYHnBVm2MRdg/A9vY5TtIlvLsMnOBGkAenxPXVXcrstyxQgO0zhyqjsMsECHQg
-	LJyijslvzSSdNkuYExp9lJt/GlFJXAUbV3yXl26fvfs/08reHzXT+RBkVEYy8BJQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ah1a5h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 21:48:28 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66KLYZE0012101;
-	Mon, 20 Jul 2026 21:48:27 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgpgy775c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 21:48:27 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66KLmPnc31523566
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jul 2026 21:48:26 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBEBD58065;
-	Mon, 20 Jul 2026 21:48:25 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D44ED58055;
-	Mon, 20 Jul 2026 21:48:24 +0000 (GMT)
-Received: from [9.61.255.134] (unknown [9.61.255.134])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jul 2026 21:48:24 +0000 (GMT)
-Message-ID: <74b5de0b-b52f-40a8-8fca-9876bb12ac48@linux.ibm.com>
-Date: Mon, 20 Jul 2026 14:48:24 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WjawJNAd"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-ca7c1176317so7759822a12.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 14:51:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784584269; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JpWRGGMWmoQ3vcDSrJsirrQ0+PeoIy0/cq0qnGqGLHqoOruF4Mo/uWpEueLVZX37wj
+         sibk1yrvVkrDOP6jFJ+Lcik1x8MHmpQzayaZOWcv855y88BTbltKxwX4Q/YPG2VFA1+D
+         /RQYTLznInsH/fT+WLsMOiMQHsu9XCd8B85STbqRdvTfr5ci/Bbx+RqlOlPyW3QjPCjN
+         5v5wDGNP3fhwpMsndfeY9q/AkX2b4wuVcdcKcErq4cvvrfogXxM3gBzL29aoBIZivook
+         jaQF0AJF99RRXt4w92TFVh2Hdc3UVoey+DHFtu1v3ZoSjNvZS9O62aUI9gYSM2cirDdI
+         Lpmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bdKI9817I2WeOtdz9Fsw1SXm2Wjzy1v2qUyVdVHNzDU=;
+        fh=QTiwxXkDP6/wPa0lsnlhCFh1gxukHYEwilg5P5fUZIY=;
+        b=eKUGQpFOMEnKIWiv5M8Ytz1NzSWrLCkGCriZ+Qm5llZLq0UM+PAKABxsaYYzPKipD7
+         sIXfgRV1RUY6lEAAdwyfAhK2NsSJ9JSlJBB8u4bDP2C/4Ok/iQht/pMHoE39P++rXUQz
+         SxezNjfJdGLRZ5uRLaqWjKKElmHmY9PL4D81CUtBGoZ91XSBs1cCDlfJC6x/gIX2aXFi
+         klYgxDZeLOrIDeBsxT7YB/sNCTY3IaiFsgXTA4Kms+HdOtioRz4JLvzRQb57gKHFiXyd
+         Lfs9dXJbS6TYXFYsE6cxxeW3fCeZMJi+Jv2GQxE5VEVA9spLdbhRwDfRs69HP4HUjeLy
+         JCSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784584269; x=1785189069; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bdKI9817I2WeOtdz9Fsw1SXm2Wjzy1v2qUyVdVHNzDU=;
+        b=WjawJNAdqcugnTKwxXUZ4ACIjQmP9/n0gIYP2U5eYHlWacJ6VaKb0aUxFhK/tGVaDQ
+         Y+H78c8sMN++nrKOAHjLUhrtUFaFmZEZ0MGuTI+oL2/Dsq7d3SFT77wWuXgc2rU2vrLL
+         ah05hnV9JF8EK8nSkI7ouqCVV1n1JbKWrsVh/U77bg0D+Px8row5+Oxd03HwB3XzHRkD
+         73FmukO26nC/8PiSMALnHzkWMRANUK1tZnalvla6czJSQPbbdftaIx+8jFwsxNt1vwtJ
+         mqGAFTykrGCDrPEwepdi6lE86WsLtmF6ygxQrG0f743qTlr+GyVbEu3YJ9/lKO4jpAP/
+         mhxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784584269; x=1785189069;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bdKI9817I2WeOtdz9Fsw1SXm2Wjzy1v2qUyVdVHNzDU=;
+        b=NLks5/IstkiQ3oIws2pYy401IqJrukq51rGwne1qk88RWRtas1wCwpK+8MW5K82VEd
+         BwsyKxWX3O7eFiqL+HKUfCqq1fDUCZ/pCfdC3+URygkVMGhhlNsUTkmm4xHWfWdKd2JM
+         2WLkVJMKIYh1jnd/wU8H2v8aCX9pI5E1Fd/uF2wXcOyk4EX3+Yww59HEO6Xy8tLm2dbd
+         VJg2FNmvU9Wy9wczPYBI+KoI1oQhRscqHgfo4dgg+d7CHChOAfeEhN946awNgF3htNfh
+         KXLoiQs6odbQnXGanCNqEp0x85cEgPoHk3xNSv2Ro1ZkKW4LDgiU8CG3FjRB4mu5lIUs
+         cLTw==
+X-Forwarded-Encrypted: i=1; AHgh+RqvmhjS154Q+Iwnap39ww+iQwIMV9/eheXZHqnMY1NebU/bTtS3sBcPTFiKJa+1T6ZiFBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGz5Pih5CgSqZRAnxytUEO2eSSOG71vMvhQsEg8Nubm809gURh
+	PddzroIsJDV6QFZQIOOrrkdKnGlUFPE9f0fVmH9eBG/m22gPWYUM6BVI+PvXEeYYsdk9u1EzzXO
+	73aLqiddTikUp0Qo6eEFNKimlA1/GlqmUVM/134Yo
+X-Gm-Gg: AfdE7cmgAgtQMkIua0Tgo93Bv9HRpNwctHDabyj4F6EtCKSKzP5HanHOeV04WZDZ9VO
+	N6rHQJ+Z065ELmOjVylJi0KvDLTCZULMKj5qNK2OgXCFOmlHGBdH3/cXBh1rYlWokJPSd7u7buS
+	MYpIuWsDuwaY0ff+t7qc1AkMjCmZ/I63t194elMLJ9tFh5epEuxwkpAEkS2uAm//7D39o+XZG2q
+	5Ve/gwjiTEjWCY91Gxy1FoQ047vUDIP2yiSObgXg/WHQkeM8p30R12v4FRlFdTS55VuDUkAFjvt
+	62OCSEc=
+X-Received: by 2002:a05:6a21:b94:b0:3bc:5284:5445 with SMTP id
+ adf61e73a8af0-3c3ad7d7fc8mr17622851637.21.1784584268526; Mon, 20 Jul 2026
+ 14:51:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] s390/vfio_ccw: free all memory if cp_init() fails
-To: Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>,
-        Halil Pasic
- <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        stable@vger.kernel.org
-References: <20260720201931.976660-1-farman@linux.ibm.com>
- <20260720201931.976660-2-farman@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260720201931.976660-2-farman@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xj5j8ABTRqGKgo5hDMGmx-NQytJnYyY8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDIzNSBTYWx0ZWRfXyh1cARZe9Rte
- Bbc791uQ1ynOHkpsXFb0+CKeZEXQ1CKS0cUbiHT5/0SPEueYy0xTrdULQxGC0Noo+0flbzdRcpL
- 92oKTV3KKjUES3Fu8KR5mXHNrLyJwlTHGIwNQ+ks0j79sBLOLY8yW0OrZVwwFkBORnQ5m8lDVyp
- neC7RyWpJunYrodAHac9ppkkjzEkqRiX+JFH9095IAoCTmSCtxUp7PMKKpnVGvCRRtU3v+OckIv
- F4mhVb666rafReCFcGGpzOl25/+9X5FPHXF5/0w+f9vYrH2M4Dx4/V4d+wGAyReF89TVTYc3rt9
- xA059NsqrQj/U001894cuy2xk2J0GWvFNqgTOGMuGRwrm5AWFnaKCeYwwDAW0JUj6JZbxlDaBXb
- pFbh87L2ZdIgopHq3rUK9zA7a5srN00/LHzJ/DOcCcTzi6nmnOyfjOMDtq2huAZYzc6p1PPgzOI
- z+5dCoaQw15lK+m0plw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDIzNSBTYWx0ZWRfX5KJcqoJo0kd6
- sKePsUN6PpayyxPdRm8k5sjWP19ylLmiGFjo3surkaBzioRzozaiQvtsNavZ9H3MwxRIsZXj0sj
- 9BlvBXnsz6yduc8AxxXA8u2X0NU09Es=
-X-Proofpoint-GUID: xj5j8ABTRqGKgo5hDMGmx-NQytJnYyY8
-X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a5e97ac cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=BGMVehrePew0uRRqv7kA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_05,2026-07-20_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607200235
+References: <20260715174737.15287-1-matt@ozlabs.org> <CALzav=fH7N+ionUnELqw5ZaGrPmgp_w6kxoCtoY8fMmZY_S4zw@mail.gmail.com>
+ <65ba06e7-4c54-437d-9fbd-632c0468f66d@ozlabs.org> <allLypOmtbnPrgbw@google.com>
+ <cc59a80f-afcc-4b2d-8e78-20f74c6b6871@ozlabs.org>
+In-Reply-To: <cc59a80f-afcc-4b2d-8e78-20f74c6b6871@ozlabs.org>
+From: David Matlack <dmatlack@google.com>
+Date: Mon, 20 Jul 2026 14:50:41 -0700
+X-Gm-Features: AUfX_mwkLBrmrzOblowqnnWuP3v7QICLsI9pjWJDYOH2ogP4CV4E0O_pKuQFz1Y
+Message-ID: <CALzav=cGtmkBBpfUA8nP7AQ3azB_Hn7_8jJL=J+E+h61CpOFrw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/9] vfio/pci: Add mmap() for DMABUFs
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>, 
+	Longfang Liu <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alistair Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 7/20/2026 1:19 PM, Eric Farman wrote:
-> The routine cp_free() is called to unpin/free any memory once an I/O
-> is completed successfully, or if cp_prefetch() fails. But if cp_init()
-> fails, and cp->initialized is not enabled, the same routine cannot be
-> used to free all the memory.
+On Fri, Jul 17, 2026 at 10:12=E2=80=AFAM Matt Evans <matt@ozlabs.org> wrote=
+:
 >
-> An attempt to address this exists in ccwchain_handle_ccw(), where a
-> single call to ccwchain_free() is made for the currently-processed
-> CCW segment. But this will leak other segments (created as a result
-> of a Transfer in Channel) that had been allocated as part of the same
-> channel program.
+> Hi David,
 >
-> Address this by performing the cleanup outside of the recursive
-> ccwchain_handle_ccw()/ccwchain_loop_tic() logic.
+> On 16/07/2026 22:23, David Matlack wrote:
+> > On 2026-07-16 03:51 PM, Matt Evans wrote:
+> >> Hi David,
+> >>
+> >> On 15/07/2026 19:12, David Matlack wrote:
+> >>> On Wed, Jul 15, 2026 at 10:47=E2=80=AFAM Matt Evans <matt@ozlabs.org>=
+ wrote:
+> >>>
+> >>>> This is based on v7.2-rc3.
+> >>>>
+> >>>> These commits are on GitHub for easier browsing, along with
+> >>>> "[RFC ONLY] selftests: vfio: Add standalone vfio_dmabuf_mmap_test":
+> >>>>
+> >>>> https://github.com/metamev/linux/compare/v7.2-rc3...dev/mev/vfio-dma=
+buf-mmap-v5
+> >>>
+> >>> It'd be great to have this test upstream. I'm happy to review it when
+> >>> you're ready. Looks like it just needs to be redone to use the VFIO
+> >>> selftests library and kselftests harness. AI could probably do the
+> >>> conversion pretty quick :)
+> >>
+> >> For sure, I'd intended to catch up with you on best approach here. :)
+> >>
+> >> Aside from the organic structure of the test (the open-coded VFIO
+> >> device/group setup/init needs to go), the main issue is that it relies
+> >> on a hacked/out of tree QEMU "EDU++" device with a second larger BAR
+> >> (containing freely read-writable memory).  A subset of tests run with
+> >> the in-tree EDU device, but coverage is too low.
+> >>
+> >> The desirable properties are:
+> >>
+> >>  - Having a BAR that is pure memory (all locations present, writable
+> >> without disruptive side-effects) so that mapping aliases can be
+> >> constructed and detected.  This is good to test things like non-zero
+> >> vm_pgoffs and VA space presentation of physically-discontiguous DMABUF=
+s.
+> >>
+> >>  - BAR >> hugepage size so we can eyeball huge mappings work (or bette=
+r,
+> >>  mechanically test for them).  At least 32MB would tick this box for 4=
+K,
+> >> 16K page systems.
+> >>
+> >>  - Something QEMU supports*, so one can run the test in a VM/TCG syste=
+m.
+> >>
+> >> There were some real device models in QEMU that could be used this way=
+,
+> >> but needed a fair bit of setup;  I didn't want to rathole
+> >> vfio_dmabuf_mmap_test on including a ton of device-specific code for
+> >> some video card or similar.
+> >>
+> >> I'll dig more for a simple target that provides these properties --
+> >> obviously it would be better to point this test at an off-the-shelf
+> >> device (including silicon!).  And, proposing EDU extensions to the QEM=
+U
+> >> folks may be useful (there're uses for a better EDU in other contexts =
+too).
+> >>
+> >> Since this test uses MMIO for a specific [class of] function, my first
+> >> thought is it should be another VFIO driver-type test sibling of
+> >> vfio_pci_driver_test.  For example, we could extend the driver-type
+> >> tests' backend struct vfio_pci_driver_ops for functions capable of
+> >> providing a Big Memory BAR, like QEMU EDU++.  EDU can also memcpy, so
+> >> could also support vfio_pci_driver_test.
+> >>
+> >> The spirit of the device backends hiding setup of a complex device is
+> >> handy, and it's plausible that several backends could provide this "bi=
+g
+> >> memory BAR" service.  What do you think, any concerns with extending
+> >> vfio_pci_driver_ops like that?
+> >
+> > I wouldn't recommend leveraging the driver framework unless absolutely
+> > necessary. It makes the test harder to run.
+> >
+> > The biggest issue I see with the proposed properties is being able to
+> > treat the BAR as memory. That obviously will depend on the device and
+> > may require device-specific setup. If we decide that treating the BAR a=
+s
+> > memory is truly required then using the driver framework is the way to
+> > go. But I'm hoping we can avoid that requirement.
+> >
+> > Instead, I think you can get pretty far by inspecting /proc/pid/pagemap
+> > to determine if the mmap() set things up correctly, without actually
+> > accessing the BAR. You can use /proc/pid/pagemap to look up the PFN and
+> > PAGEMAP_SCAN to detect huge pages.
 >
-> Fixes: 8b515be512a2 ("vfio-ccw: Fix memory leak and don't call cp_free in cp_init")
-> Cc: stable@vger.kernel.org
-> Cc: Farhan Ali <alifm@linux.ibm.com>
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
-> ---
->   drivers/s390/cio/vfio_ccw_cp.c | 22 ++++++++++++++++++----
->   1 file changed, 18 insertions(+), 4 deletions(-)
+> Hmm, possible, although that's quite a different test at that point.  I
+> agree never touching the device has advantages, but it's harder to test
+> certain things if we _never_ do MMIO.  The mitigation effort to get
+> coverage may not be the right tradeoff vs easier running.  I can think
+> of some "easy" VFIO bugs that would be challenging to properly verify in
+> userspace (e.g. PFNs all having some undesired offset).  The current
+> test method is harder to fool per unit effort in writing it.
 >
-> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_cp.c
-> index 7561aa7d3e01..086d1b54bdb0 100644
-> --- a/drivers/s390/cio/vfio_ccw_cp.c
-> +++ b/drivers/s390/cio/vfio_ccw_cp.c
-> @@ -455,9 +455,6 @@ static int ccwchain_handle_ccw(dma32_t cda, struct channel_program *cp)
->   	/* Loop for tics on this new chain. */
->   	ret = ccwchain_loop_tic(chain, cp);
->   
-> -	if (ret)
-> -		ccwchain_free(chain);
-> -
->   	return ret;
->   }
->   
-> @@ -486,6 +483,23 @@ static int ccwchain_loop_tic(struct ccwchain *chain, struct channel_program *cp)
->   	return 0;
->   }
->   
-> +static int ccwchain_build_ccws(dma32_t cda, struct channel_program *cp)
-> +{
-> +	struct ccwchain *chain, *temp;
-> +	int ret;
-> +
-> +	ret = ccwchain_handle_ccw(cda, cp);
-> +
-> +	if (ret) {
-> +		/* Cleanup if an error occurred */
-> +		list_for_each_entry_safe(chain, temp, &cp->ccwchain_list, next) {
-> +			ccwchain_free(chain);
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->   static int ccwchain_fetch_tic(struct ccw1 *ccw,
->   			      struct channel_program *cp)
->   {
-> @@ -735,7 +749,7 @@ int cp_init(struct channel_program *cp, union orb *orb)
->   	memcpy(&cp->orb, orb, sizeof(*orb));
->   
->   	/* Build a ccwchain for the first CCW segment */
-> -	ret = ccwchain_handle_ccw(orb->cmd.cpa, cp);
-> +	ret = ccwchain_build_ccws(orb->cmd.cpa, cp);
->   
->   	if (!ret)
->   		cp->initialized = true;
+> Though, I will have a think about this no-touch flavour of test.
+>
+> What were you picturing regarding populating the VMA PTEs in order to
+> inspect the result via /proc/pid/pagemap, whilst still upholding the
+> principle of not touching the device?  For example,
+> madvise(MADV_POPULATE_WRITE) won't work on the VFIO BAR regions because
+> they're VM_PFNMAP/VM_IO.
 
-The fix looks correct to me and I don't think Sashiko found any issues 
-with this patch (issues identified as pre-existing and i think something 
-this series is trying to fix).
+You're right it looks like it's not possible to fault in the VMA
+without reading or writing to the mapping. We could use reads, but I'm
+not sure that's safe for all devices.
 
-Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
+> > With that requirement gone, then all you really need is a device with a
+> > large enough BAR. And even that it not a hard requirement. I'm sure
+> > there are plenty of test cases that could work with smaller BARs. The
+> > few tests that want to exercise huge mappings can inspect the device BA=
+R
+> > sizes first, and if they're all too small, SKIP() the test.
+> >
+> > If you structure the test this way, then it's easy for the test to be
+> > used. It can be run against any device for the basic functional
+> > coverage, and can be run against a device with a larger BAR for full
+> > coverage of huge mappings.
+> >
+> > Does QEMU emulate any devices that have 32MB or larger BARs?
+>
+> Yep, looks like `-device pci-testdev,membar=3D64M,membar-backed=3Don` or
+> even `-device bochs-display,vgamem=3D64M` would be suitable.
+>
+> So I'll also try moving the existing test over to one of these to at
+> least remove the EDU++ device dependency.  (bochs-display has >1 BAR,
+> and some MMIO regs which are nice for a quick kick-the-tyres access test.=
+)
 
-Thanks
+This seems like a good compromise.
 
-Farhan
-
-
-
+I would suggest making the test as device-agnostic as possible so
+other devices can be more easily added in the future. For example, add
+a helper function to detect known "pure memory" BARs, so all
+device-specific detection and setup logic can live there. We can put
+that in the test .c file for now and move it to the library
+if-and-when another test wants to use it. It probably makes sense to
+merge this with the driver framework but I think I need to see more of
+what's involved to really make a call.
