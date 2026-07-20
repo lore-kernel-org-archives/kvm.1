@@ -1,170 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECC738C2DE;
-	Mon, 20 Jul 2026 07:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC5139B4A3
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 07:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784532046; cv=none; b=NzLa9kO86PAE12Elqmpd2SqXz8QSQerOqRyqDhugtlLopyuiP+lbAzgg6MwwEhZzy8oJCTkhSw9kCfXieTs0d4U/Nrz5qasZKdrNu0Yr+t0W54y8TVcLfUF1VjYkU8YAElqUaBuAchDrgjNOjYEFNCaqRdQsnb77/2yfqs+M1uA=
+	t=1784533121; cv=none; b=XIoGQXsjBPjqTk1MOIZWPIWPFp+vtcPfQBnacQK8zXiYdwlfggRAjsRHezjrDFZCgBAfplocvvxToAdeUe4zfDB0AiEXKejBK+K4u4GrDGU9ZDvX4wV+t9XS4CmBSxYTWUsyU9JI1MsfLVUBchuvAXVQ6N87tk85TuxtHQvhTnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784532046; c=relaxed/simple;
-	bh=wS3iOjal19hc48fA51Gyg+UKNxQ+naTpbmOlu9ZaCrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HHDxSuwRopir4v3JHnTJLCxaZabmUPw6ZEu5/42/FWk7Ew97ur1fM5ioIJGEep+anuaSJcRBh/lEJ6ncgYVCVt5Aw3x3XaiZH74usYLOCJQs4CepesJWdz1QJmQ+uBn8fTgeEpasJ3Dd/0UqQkP/9/o4DGdReP7GepcOTP+/K48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4SQ5H7p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784533121; c=relaxed/simple;
+	bh=qb1XqJIybEaoq6n+C2qyhvs3uuSXm0nwzO8WBCYO+uI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oqlICYTgqVFvx54h7lIpMQ1Jgi+crj0AJbAMT6AnwLoEs49nSI/VjTsgI1h7pU2YcAcHMN8yBXFGiD2c2f51lnsw0ADZo/oL1OvivRdqGz6m4uMV04nhwow1WS3sbP+cU4NDudEwhmL+zEmfsdB+dxujzSd9IXuF27mOnV22gdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JIsEVf0f; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4SQ5H7p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F055C1F00A3A;
-	Mon, 20 Jul 2026 07:20:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784532040;
-	bh=gANMU5sOivOjZzaedPM5r16YKmZ48cwI33ZQeohFkKI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q4SQ5H7pfr3jaDU2ZnnO+1hHIoXl1iFH5WSqv7jLKEoKzb1W8Q48EBE20IuNZFTUn
-	 ixKm0DVIy5OI2nLk58vf2Hjrg7we7B+X4V1GJxyPkSv0+C69K1TUoySPfe3BcFYtS/
-	 t7GufXN3+op+50lWLzds22S7AYYtVpeOlcrG/0bZfPer/n9WDDe8GhqIXCV0fWPGUD
-	 XmaJPMeyIJugU5z50bBvNZ+bv5B8MYe6yecmFyVa9TEs0150ohb7J9prH1nL+rHsFg
-	 Tpa/uQSSoq+PE+oR7BoJwZF5ntDZOzikcQrAbuelm4gJqA+MbVuFWtO9kyaJQf1xJj
-	 5Tno9QcBWPfNw==
-Date: Mon, 20 Jul 2026 08:20:01 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>, Russell King <linux@armlinux.org.uk>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Dan Williams <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	SJ Park <sj@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Peter Xu <peterx@redhat.com>, 
-	Kees Cook <kees@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Clark <robin.clark@oss.qualcomm.com>, 
-	Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar <abhinav.kumar@linux.dev>, 
-	Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas <yishaih@nvidia.com>, 
-	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev, iommu@lists.linux.dev, 
-	kasan-dev@googlegroups.com, linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 08/33] mm/rmap: rename vma_interval_tree_*() to
- mapping_rmap_tree_*()
-Message-ID: <al3LpROyiWEBL1wh@lucifer>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-8-2a5aa403d977@kernel.org>
- <DK1CWBDK5J60.3VPRP45IS7L7E@nvidia.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JIsEVf0f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=De05zIwDh+XYbWBduYitlYYxaE5X1RUhjhRC0aHpxn0=;
+	b=JIsEVf0fchq+4ZCeYZxFF8Txm9Gcka5mj62STtU/FLzNJBzAj4QVUNqwOGy1rJ
+	miSIMs4fLdvW6z+kUoAnVnym3hs8v1pwRQD6Syi4g9sflqzrvXk0i6m1msAWILOI
+	mr7T8Ibay39LNncIhVfHZo2ool5hjtkbQf/ewN477z9/s=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAn0+dv0F1q99TUKQ--.9654S2;
+	Mon, 20 Jul 2026 15:38:24 +0800 (CST)
+Date: Mon, 20 Jul 2026 15:38:22 +0800
+From: Hao Zhang <hao_zhang_kdev@163.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: [PATCH] KVM: VMX: Complete pending nested VM-Enter on invalid-state
+ failure
+Message-ID: <al3Qbq-jUYE-_72N@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DK1CWBDK5J60.3VPRP45IS7L7E@nvidia.com>
+X-CM-TRANSID:_____wAn0+dv0F1q99TUKQ--.9654S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr1DGw4fKr4rZw1UAr45GFg_yoWrXr4kpr
+	Z3trZayrWqqa47tr93JF4rXrZ29w4IgFy29rZxC34Syw1jgFn5Jr48Kw1jqFW5ur4Sgw17
+	XF1jgr4Uuay5J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrqXQUUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3hBCNWpd0HBrqgAA3v
 
-On Fri, Jul 17, 2026 at 10:54:24PM -0400, Zi Yan wrote:
-> On Fri Jul 10, 2026 at 4:16 PM EDT, Lorenzo Stoakes wrote:
-> > The family of vma_interval_tree_() functions manipulate the
-> > address_space (which, of course, is generally referred to as 'mapping')
-> > reverse mapping, but are named the 'VMA' interval tree.
-> >
-> > VMAs may be mapped by an anon_vma, an address_space, or both. Therefore
-> > calling the mapping interval tree a 'VMA' interval tree is rather
-> > confusing.
-> >
-> > This is also inconsistent with the anon_vma_interval_tree_*() functions
-> > which explicitly reference the rmap object to which they pertain.
-> >
-> > Rename the vma_interval_tree_*() functions to mapping_rmap_tree_*() to
-> > correct this.
-> >
-> > We will rename the anon rmap functions similarly in a subsequent patch.
-> >
-> > No functional change intended.
-> >
-> > Reviewed-by: Gregory Price <gourry@gourry.net>
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  arch/arm/mm/fault-armv.c          |  2 +-
-> >  arch/arm/mm/flush.c               |  2 +-
-> >  arch/nios2/mm/cacheflush.c        |  2 +-
-> >  arch/parisc/kernel/cache.c        |  2 +-
-> >  fs/dax.c                          |  2 +-
-> >  fs/hugetlbfs/inode.c              |  4 ++--
-> >  include/linux/mm.h                | 16 ++++++++--------
-> >  kernel/events/uprobes.c           |  2 +-
-> >  mm/hugetlb.c                      |  4 ++--
-> >  mm/interval_tree.c                | 22 +++++++++++-----------
-> >  mm/khugepaged.c                   |  4 ++--
-> >  mm/memory-failure.c               |  6 +++---
-> >  mm/memory.c                       |  2 +-
-> >  mm/mmap.c                         |  2 +-
-> >  mm/nommu.c                        |  8 ++++----
-> >  mm/pagewalk.c                     |  2 +-
-> >  mm/rmap.c                         |  2 +-
-> >  mm/vma.c                          | 12 ++++++------
-> >  tools/testing/vma/include/stubs.h |  4 ++--
-> >  19 files changed, 50 insertions(+), 50 deletions(-)
-> >
->
-> Just curious, why not file_rmap_tree_*()?
+From: Hao Zhang <zhanghao1@kylinos.cn>
+Date: Fri, 17 Jul 2026 09:18:31 +0800
 
-Just to avoid any confusion around address_space objects that are ostensibly
-'not files' like devices or whatnot, but moreso for consistency with the rest of
-the kernel in referring to this stuff as 'mapping'.
+Commit 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if
+emulation_required") made KVM synthesize a failed VM-Entry with
+EXIT_REASON_INVALID_STATE when L2 guest state requires invalid-state
+emulation during nested VM-Enter.
 
-Naming is hard IOW :)
+That synthetic failure is generated in vmx_vcpu_run() before attempting
+hardware VM-Enter.  As a result, it returns before the normal post-run
+path that accounts and clears nested_run_pending after a real
+VM-Enter/VM-Exit round trip.
 
->
-> One nice part of this renaming is that the length of each function does
-> not chagne. That makes the patch easy to review.
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+If the synthetic invalid-state failure happens while a nested VM-Enter is
+pending, __vmx_handle_exit() observes a trusted pending nested VM-Enter
+and fires KVM_BUG_ON(), causing KVM_RUN to fail with -EIO instead of
+reflecting the failed VM-Entry to L1.
 
-Thanks!
+Treat EXIT_REASON_INVALID_STATE with the failed VM-Entry bit set as
+completion of the pending nested VM-Enter.  Clear nested_run_pending, keep
+the existing BUG check for other trusted pending exits, and do not convert
+this synthetic failed VM-Entry into a triple fault for L2.
 
->
-> --
-> Best Regards,
-> Yan, Zi
->
+Fixes: 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if emulation_required")
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+ arch/x86/kvm/vmx/vmx.c | 33 +++++++++++++++++++++++++--------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
-Cheers, Lorenzo
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cc75feec05da..0ebd2e746ddd 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6699,6 +6699,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 	union vmx_exit_reason exit_reason = vmx_get_exit_reason(vcpu);
+ 	u32 vectoring_info = vmx->idt_vectoring_info;
+ 	u16 exit_handler_index;
++	bool failed_nested_vmentry = false;
+ 
+ 	/*
+ 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
+@@ -6715,13 +6716,29 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 		return 0;
+ 
+ 	/*
+-	 * KVM should never reach this point with a pending nested VM-Enter.
+-	 * More specifically, short-circuiting VM-Entry to emulate L2 due to
+-	 * invalid guest state should never happen as that means KVM knowingly
+-	 * allowed a nested VM-Enter with an invalid vmcs12.  More below.
+-	 */
+-	if (KVM_BUG_ON(vcpu->arch.nested_run_pending, vcpu->kvm))
+-		return -EIO;
++	 * vmx_vcpu_run() may synthesize EXIT_REASON_INVALID_STATE with the
++	 * failed VM-Entry bit set before attempting hardware VM-Enter, and thus
++	 * return before the normal post-run path clears nested_run_pending. Treat
++	 * that case as completion of the pending nested VM-Enter and reflect the
++	 * failed VM-Entry to L1.
++	 *
++	 * For all other exits, KVM should never reach this point with a trusted
++	 * pending nested VM-Enter. If userspace gained control while VM-Enter was
++	 * pending, the pending state is marked untrusted because userspace may
++	 * have modified vCPU state and induced an architecturally impossible
++	 * VM-Exit.
++	 */
++	if (unlikely(vcpu->arch.nested_run_pending)) {
++		if (exit_reason.basic == EXIT_REASON_INVALID_STATE &&
++		    exit_reason.failed_vmentry) {
++			failed_nested_vmentry = true;
++		} else if (KVM_BUG_ON(vcpu->arch.nested_run_pending ==
++				      KVM_NESTED_RUN_PENDING, vcpu->kvm)) {
++			return -EIO;
++		}
++
++		vcpu->arch.nested_run_pending = 0;
++	}
+ 
+ 	if (is_guest_mode(vcpu)) {
+ 		/*
+@@ -6755,7 +6772,7 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 		 * the least awful solution for the userspace case without
+ 		 * risking false positives.
+ 		 */
+-		if (vmx->vt.emulation_required) {
++		if (vmx->vt.emulation_required && !failed_nested_vmentry) {
+ 			nested_vmx_vmexit(vcpu, EXIT_REASON_TRIPLE_FAULT, 0, 0);
+ 			return 1;
+ 		}
+
+base-commit: 58717b2a1365d06c8c64b72aa948541b53fe31eb
+-- 
+2.15.0
+
