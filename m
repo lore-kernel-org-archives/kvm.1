@@ -1,110 +1,226 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AEB3502A5
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060392FB97D
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 19:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784577016; cv=none; b=AsLOo7oGAqSXZsLzSiIaZXVN+EMOxIcLwii3PvLvXy+lfSqIEHDmb7CnnQYZzHDotsk+e5aJNVEcmkIOeqgiJwyZFBJVLAJcw0Ia8DxWUe74D5ewXxObgr4D+Ww3vq7x/ypEHZxvAD8sUVd2fOHD3XrAuNOf5jhWb5dPZ/D2moM=
+	t=1784577385; cv=none; b=io45onQHtN+Y5Xdff5fw7F7MzAekOSLPsWiMzZei7JWeZHtxrJ+zkyf8t3PQWMUs+B0XNaxQKL+u4CznAStFga3vz7tCaEHGukDm/eg8AD943suKC88My0CMqPnJ3yg8JeX3+aWGc3K+n2h1TNAbnceZz1u1L5qJMifQLfwl7q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784577016; c=relaxed/simple;
-	bh=WTv88pS1piYHaZqCCTqHPSb1WOUAbqfeKICv2O/qElM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rXggrvrlYPnmydvOrm8xNm60JKFkWXpzdCZGxs1NU/r8F7S2dov7pO39Yth/4uKbbKEa4r1ytHvMUsfSfZWwCFuD4J6ftWD1n7YofsJzZJvDghOcBhIeeGTNk1dZf2jUBxQ29gqAoqUpDQ5nFjobyZqgxjd6Qfl9TRYK8ljYkWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r+05I01O; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784577385; c=relaxed/simple;
+	bh=F74iyZp6QYl3/VXl1PBvDURlvvQTMR3GO3IRl/0a06k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YBfGQZzFngqE5kSWG04uLYWnSkmuccXp+cO93YLz3u+KPkaBSoWnnqKlBLpYynK+D/MVidojFdhLDFqtXvkc0KnNAjjPad8xRWYwKe3lX12m99UH0BDfjpoYeXNuDA8vnSRHWBEKAFzyEt2FH9ADhuY8zptA/hUHtOaBPomBdeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uBUw8blV; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r+05I01O"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc86a9ef97so227779015ad.3
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:50:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uBUw8blV"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-385ea3ce80dso10636213a91.2
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 12:56:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784577015; x=1785181815; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ef1+IvZCLF8E/vl5kLc0HDclZmYX/lxxqgnA8GJxZ6w=;
-        b=r+05I01O7rm3xJZJ5zFj15GwmZUHfnS6ykPFIzh6P0kCRObitwaHAJoiF6FI58YfZb
-         mIC6LY4sWfzNgqfP9sAY5gB+tGiwkqTFolBM4sAyFFyNrVfo2rHP3wiWFeKJAVjvbyTb
-         uVi0DhzvPI2CnTV1o2J2KXRe0K2j2fTv3guW084Q2R+IJiauavxym0aZY0zoEDTbY6al
-         5M/8ihKRF9GP1QNNYT+NEOaqB3bqUrAftTbOfbaY128muZIYLvf+Sw4OzymsK8iAa+U+
-         KBl2MuXZ1zG/upnP3WBJWnuny5t5GZeN/OPUgUYp2G0wvZxufGA4cXfM9GnzVsoUp4YE
-         EXTw==
+        d=linaro.org; s=google; t=1784577383; x=1785182183; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qypg8MG/GYHcwh7ZOfCoQhkX/up+rVzHDtc/xpQiT9M=;
+        b=uBUw8blV2igZMlmORepLkU+kMzPSxIBhFoN3gInbTjoXjo2nCHgYwFEr3kuzG15gIB
+         NVH8SR6OysIvCCTAFTemg47udxtMRJvss4TyBE2Dt8IGF9UnvcQyjN47tYzFHLVuuQt3
+         1ZXGcEquekeG5nv6M23wsIfBJWLW5in+HKcVub2FtF4Q9cj6QBf7O5KBTmbWFuhW4sSo
+         dUP5mbrUX6rvM2TALxAUkXjty2/QcPX2Qmyoo2Tser529pVlvtZCW4WtkFlrqjfeIylQ
+         Lo8B9cnYQX7+Riqs4TVb+xJ1QQPUQdGxesSLXnXEiDVVUq6W6hBoyVpoUr4AMqJ54bqp
+         ZRjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784577015; x=1785181815;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ef1+IvZCLF8E/vl5kLc0HDclZmYX/lxxqgnA8GJxZ6w=;
-        b=QG1k4es4A0v1deqmNinDTgrV6oxYjkNGu8d65E7GRFw1CCwFS4cTKSxCoegvERmMTG
-         pYMa4aFbzplb3VHpVVra9OKHK+Fj2TlQ8G8vgFcE8bLpod2cXLNOTQw5yWKBaB4FYVG2
-         sPrzaOf/maGf1E5RgSwfmZOuCu/OtYft8G/cGkmFIxNlcyKtXJMtIcwsLVfkkjpRXnPT
-         X91yqAtIAgpTaIZnHQDsf4dMzLFRu96hXrwqftEgCTpTyAokc85EO+/4J5EriMUMWFsk
-         z/OE4gxaTazqDsGDLtZLw2dzMjNcSgc/9frUMLGMscR3m9icv3C9bJ3xqZqY9h+koM85
-         hYBA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+BRi6eihNM5wxn4QHcNlx91e9JMw6Sbrh3nYSmfojQgtE3YbuvW8dxNONxsuiUKUaD4s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5u3VMxj+BzUNdR7vT7HR/ZZJyk6y4pOrvr7VnTRoJvhOnO8Zp
-	1obsTr77wculIQDo6hgJYWkMTYfiAclN1mO+N06ozvFlK+fWVevIAVypG/0RXRBZkJjvVujfOun
-	141r9ig==
-X-Received: from plda5.prod.google.com ([2002:a17:902:ee85:b0:2cb:97da:d8ed])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce8a:b0:2cc:61e8:5fba
- with SMTP id d9443c01a7336-2cf349a2153mr164731445ad.32.1784577014659; Mon, 20
- Jul 2026 12:50:14 -0700 (PDT)
-Date: Mon, 20 Jul 2026 12:50:14 -0700
-In-Reply-To: <059088ac-81e7-48a9-b4e1-05dad48975f6@amd.com>
+        d=1e100.net; s=20251104; t=1784577383; x=1785182183;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qypg8MG/GYHcwh7ZOfCoQhkX/up+rVzHDtc/xpQiT9M=;
+        b=oKY3c1AgWJuwGhjJlgCcp2/s5AyUbB8RRHf4dWPYT6AL21fkudpdRmFah67SXW9SnP
+         s4nLuc5XJr3+4KKcQPL4eJvvxq2W4FgIXxHjS2onYG+RDdt1PDBoBOXf154NQyvAz/Sx
+         9o4WogLrfgSy3yk++WyiW8XiuOvGs9vE+hnV/ykvx2CAIcU+6O1afMcePErJJn6A7QHj
+         h/ynSsodB3n75v9ydf4lUTCLzKV1vOYDCuzwvky+uw/fbr2IrMcIlfceJsq4Bo4EtFn5
+         rZFRSsdz+VpYw0CZi37BAmltSJX7UJ7aP770y0T8m6RlKlSEUW1kSAsRl81OTPm6WxGl
+         i2rw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7OQgVYeDITjEzOompiYOB6ziJIOdX6Cp5lggNyOLb9ft/6FNTXZwuIAQEj/8l4RaAI/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT7mXB2gcE4McXtIjxBk7gvlKnJZ/C/sswdM+vVZQjvnkebJvz
+	cwHkGwQhUz8CKZr1T/Zndc/9BYTXMIgNf5SUFsnQfoxWLeFb4cNf8WxVkv63XCsaMaU=
+X-Gm-Gg: AR+sD13Lz0aYF58i5Yf8IGPjV8WElWkdMA859sc6ABMtnc4RLOO81l2z9njTW9XWZCe
+	VuPFDZa0LGaZi9k4JiRPbCEC9qU/ere9HuUW70cwD15/2k9rRQKyZ+wMo/VFyJ4jedJvN1V3fYm
+	ga2kBb7BTjiYcAxCMti4mYRdyJVo+wlxJhRMwqqzuML58r3gZOCzXGz836V6dbO7LWsLj1dtWp1
+	b0+o7UzSFZ+HGU3fhh2QLiNFSc932eWnCRIjAX58HJxSScO6iDcIJK8fXbHCjHabytIP/uJ+xa2
+	xja5RSci6s2qWMooBdSgWP/hVV8KQF4qFNnt7WR9v0SgfE1Mqm5NDM6gl15jVj4ASyfZoocIyAf
+	YNdHMQLrM191Uv+ShMRQTddzXZkw2vn1OKurQOfDfgbJXAf3J88tNyOu1uPW/ilX8swuL3bgRcK
+	H2LLk/
+X-Received: by 2002:a17:90b:1f88:b0:37f:9cdf:f0ac with SMTP id 98e67ed59e1d1-38e4b538984mr16982634a91.27.1784577383024;
+        Mon, 20 Jul 2026 12:56:23 -0700 (PDT)
+Received: from p14s ([2604:3d09:148c:c800:966a:e23:19e7:951a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e9237a26asm224764a91.14.2026.07.20.12.56.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 12:56:22 -0700 (PDT)
+Date: Mon, 20 Jul 2026 13:56:19 -0600
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Gavin Shan <gshan@redhat.com>
+Cc: berrange@redhat.com, kchamart@redhat.com,
+	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org,
+	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com,
+	eblake@redhat.com, armbru@redhat.com, jpb@kernel.org,
+	lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org,
+	qemu-arm@nongnu.org, kvm@vger.kernel.org
+Subject: Re: [RFC v1 10/25] hw/core/loader: Add a ROM loader notifier
+Message-ID: <al59Y0S_DLMbAESK@p14s>
+References: <20260707224306.1202330-1-mathieu.poirier@linaro.org>
+ <20260707224306.1202330-11-mathieu.poirier@linaro.org>
+ <47136344-8e15-498a-a4fb-0dbbb0c71861@redhat.com>
+ <allIviFWgoKgDob1@p14s>
+ <2ad36e97-63d7-4464-b909-2a28d496e887@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260715063626.65899-1-pankaj.gupta@amd.com> <abecb83f-aea8-403e-bc10-4d8d878c0d8c@kernel.org>
- <059088ac-81e7-48a9-b4e1-05dad48975f6@amd.com>
-Message-ID: <al579lcf0NnxhD3T@google.com>
-Subject: Re: [PATCH v2] KVM: SEV: drop FOLL_WRITE for encrypted region registration
-From: Sean Christopherson <seanjc@google.com>
-To: Pankaj Gupta <pankaj.gupta@amd.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, pbonzini@redhat.com, tglx@kernel.org, bp@alien8.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org, 
-	thomas.lendacky@amd.com, hpa@zytor.com, yangge1116@126.com, ljs@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ad36e97-63d7-4464-b909-2a28d496e887@redhat.com>
 
-On Wed, Jul 15, 2026, Pankaj Gupta wrote:
-> > > Commit 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering
-> > > encrypted memory regions") added FOLL_LONGTERM to
-> > > sev_mem_enc_register_region() so anonymous guest RAM is migrated out of
-> > > MIGRATE_CMA/ZONE_MOVABLE before a long term pin. It also kept
-> > > FOLL_WRITE on the pin.
+On Mon, Jul 20, 2026 at 04:47:53PM +1000, Gavin Shan wrote:
+> On 7/17/26 7:10 AM, Mathieu Poirier wrote:
+> > On Tue, Jul 14, 2026 at 08:52:43PM +1000, Gavin Shan wrote:
+> > > On 7/8/26 8:42 AM, Mathieu Poirier wrote:
+> > > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > 
+> > > > Add a function to register a notifier that is invoked when ROMs get
+> > > > loaded into guest memory.
+> > > > 
+> > > > It will be used by Arm confidential guest support, in order to register
+> > > > all blobs loaded into memory with KVM, so that their content is moved
+> > > > into Realm state and measured into the initial VM state.
+> > > > 
+> > > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+> > > > ---
+> > > >    hw/core/loader.c         | 15 +++++++++++++++
+> > > >    include/hw/core/loader.h | 17 +++++++++++++++++
+> > > >    2 files changed, 32 insertions(+)
+> > > > 
+> > > > diff --git a/hw/core/loader.c b/hw/core/loader.c
+> > > > index 5cbfba0a86d2..b3d769bec5cb 100644
+> > > > --- a/hw/core/loader.c
+> > > > +++ b/hw/core/loader.c
+> > > > @@ -74,6 +74,8 @@
+> > > >    #endif
 > > > 
-> > > Combining FOLL_WRITE with FOLL_LONGTERM breaks registration of file-backed
-> > > guest memory, such as virtio-pmem host memory-backend-file mappings
-> > > (MAP_SHARED). GUP rejects long-term writable pins on dirty tracked file
-> > > mappings since:
+> > > The (edk2) firmware for the realm guest can be specified by the legacy
+> > > '-drive if=pflash' or '-bios'. The memory region corresponding to the
+> > > firmware image specified by '-bios' is recorded by the newly added notifier
+> > > and populated to TF-RMM properly.
 > > > 
-> > > commit 8ac268436e6d ("mm/gup: disallow FOLL_LONGTERM GUP-nonfast writing to file-backed mappings")
-> > > commit a6e79df92e4a ("mm/gup: disallow FOLL_LONGTERM GUP-fast writing to file-backed mappings").
-> > > 
-> > > Region registration only requires long-term pin to prevent page migration and
-> > > does not write through this GUP pin.
-> > > 
-> > > Drop FOLL_WRITE and pin guest memory only with FOLL_LONGTERM.
-> > Worth mentioning here something like
+> > > I don't see how the memory region corresponding to (edk2) firmware image
+> > > specified by '-drive if=pflash' is recorded and populated to TF-RMM
+> > > accordingly in this series. So I guess '-drive if=pflash' isn't supported
+> > > yet?
 > > 
-> > "In the past, FOLL_WRITE was required to trigger CoW unsharing, making sure that
-> > we don't end up replacing the page in the page tables during a later write fault
-> > after already having pinned a (shared) page in MAP_PRIVATE mappings.
-> > FOLL_LONGTERM does that nowadays (see gup_must_unshare()) even without FOLL_WRITE.
-
-Heh, this was going to be my exact question about why it was safe to drop FOLL_WRITE :-)
-
-> > Given that SEV only pins RAM for XYZ and doesn't actually write to the pinned
-> > pages, we can just drop the FOLL_WRITE"
+> > Please give '-drive if=pflash' a try and let me know how you fare.  Edk2 is not
+> > part of the bootstack I'm currently testing with but I know of configurations
+> > where it does work.
 > > 
-> > Fill out XYZ :)
+> > I'll add it to my list of things to do if it doesn't work, though I may not
+> > address it in this patchset.  We'll see how busy things get.
+> > 
 > 
-> Sure :)
+> Ok, I don't think '-driver if=pflash' or the 'pflash0' property of the virt machine
+> aren't supported any more due to [RFC v1 21/25], where the 'pflash0' property has
+> been removed.
 > 
-> I will update the commit message in v3.
+>   [RFC v1 21/25] hw/arm/virt: Use RAM instead of flash for confidential guest firmware
+> 
+> - Tried to boot the realm guest with '-driver if=pflash' and I was told it's not supported.
+> 
+>   qemu-system-aarch64: -drive if=pflash,format=raw,unit=0,file=/mnt/edk2/Build/ArmVirtQemu-AARCH64/RELEASE_GCC5/FV/QEMU_EFI.fd,readonly=on: machine type   does not support if=pflash,bus=0,unit=0
+> 
+> - Tried to use 'pflash0' property, and I was told it's not supported either.
+> 
+>   qemu-system-aarch64: Property 'virt-11.1-machine.pflash0' not found
+> 
+> So the only option to specify the firmware image is '-bios', which worked for me.
 
-No need for a v3, I'll add a blurb when applying.
+Thanks for the follow-up.
+
+> 
+> Thanks,
+> Gavin
+> 
+> 
+> > > 
+> > > Note that I didn't give '-drive if=pflash' a try yet.
+> > > 
+> > > >    static int roms_loaded;
+> > > > +static NotifierList rom_loader_notifier =
+> > > > +    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
+> > > >    /* return the size or -1 if error */
+> > > >    int64_t get_image_size(const char *filename, Error **errp)
+> > > > @@ -1201,6 +1203,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
+> > > >        return mr;
+> > > >    }
+> > > > +void rom_add_load_notifier(Notifier *notifier)
+> > > > +{
+> > > > +    notifier_list_add(&rom_loader_notifier, notifier);
+> > > > +}
+> > > > +
+> > > >    /* This function is specific for elf program because we don't need to allocate
+> > > >     * all the rom. We just allocate the first part and the rest is just zeros. This
+> > > >     * is why romsize and datasize are different. Also, this function takes its own
+> > > > @@ -1242,6 +1249,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
+> > > >    static void rom_reset(void *unused)
+> > > >    {
+> > > >        Rom *rom;
+> > > > +    RomLoaderNotifyData notify;
+> > > >        QTAILQ_FOREACH(rom, &roms, next) {
+> > > >            if (rom->fw_file) {
+> > > > @@ -1290,6 +1298,13 @@ static void rom_reset(void *unused)
+> > > >            address_space_flush_icache_range(rom->as, rom->addr, rom->datasize);
+> > > >            trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
+> > > > +
+> > > > +        notify = (RomLoaderNotifyData) {
+> > > > +            .addr = rom->addr,
+> > > > +            .len = rom->datasize,
+> > > > +            .as = rom->as,
+> > > > +        };
+> > > > +        notifier_list_notify(&rom_loader_notifier, &notify);
+> > > >        }
+> > > >    }
+> > > > diff --git a/include/hw/core/loader.h b/include/hw/core/loader.h
+> > > > index d9431e8a8d12..94cf6ad2e26b 100644
+> > > > --- a/include/hw/core/loader.h
+> > > > +++ b/include/hw/core/loader.h
+> > > > @@ -342,6 +342,23 @@ void *rom_ptr_for_as(AddressSpace *as, hwaddr addr, size_t size);
+> > > >    ssize_t rom_add_vga(const char *file);
+> > > >    ssize_t rom_add_option(const char *file, int32_t bootindex);
+> > > > +typedef struct RomLoaderNotifyData {
+> > > > +    /* Address of the blob in guest memory */
+> > > > +    hwaddr addr;
+> > > > +    /* Length of the blob */
+> > > > +    size_t len;
+> > > > +    /* Address space of the blob */
+> > > > +    AddressSpace *as;
+> > > > +} RomLoaderNotifyData;
+> > > > +
+> > > > +/**
+> > > > + * rom_add_load_notifier - Add a notifier for loaded images
+> > > > + *
+> > > > + * Add a notifier that will be invoked with a RomLoaderNotifyData structure for
+> > > > + * each blob loaded into guest memory, after the blob is loaded.
+> > > > + */
+> > > > +void rom_add_load_notifier(Notifier *notifier);
+> > > > +
+> > > >    /* This is the usual maximum in uboot, so if a uImage overflows this, it would
+> > > >     * overflow on real hardware too. */
+> > > >    #define UBOOT_MAX_DECOMPRESSED_BYTES (64 << 20)
+> > > 
+> > > Thanks,
+> > > Gavin
+> > > 
+> > 
+> 
