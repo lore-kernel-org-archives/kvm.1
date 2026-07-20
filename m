@@ -1,125 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AE43ACEF6;
-	Mon, 20 Jul 2026 06:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784528276; cv=none; b=UJJNsDCHxcVryOxKoQ5qrHSfwaZazF42+iWmwmXPXW2jprohtAhmd8DbRh+8ge/vbxaDC6Q+Q6bCZP2DV0gXt5YalK4veUPZ+67X2PZB8Z/Xf04Z4RxvaALo70xLkNJeax+GuCQklUBNzbrOkrMWzIo032h6tYNP9qgTUoA93EY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784528276; c=relaxed/simple;
-	bh=pflnMY2/S0a7j5lliNe2p/WCULVv2c+M2fZ52pTnogg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JKQv7gw6yjRiRspHAPltOUm7y7ahejOZ+J4725gZdLfc/KDAhNdWXI2jmDak1Tog6M3RpaK/CheGgu59PA2y3hqMMbWh8rlib/xRdaNO2LFhBgRtRlsEv0ra+VjxwTBlHlTzdjwY1X++JTADsWwNnF+G6NDzKFsAzohhasNqRSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDckIS2z; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8771A6820;
+	Mon, 20 Jul 2026 06:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784529022; cv=fail; b=koNklN7UelH7re3k5UyIpyYnFRfdYa3Jwulor17T1M+LSHb1HUXPAlZsDfZdoBzIA5eURDkUuYjrpdHYgQxOZWfFEYHIBa4gLMHZfgkmMyg5Z+ocFI7QqeDaQhAqJkCorj5ShC6xTEckOBOn0K5CE+e4hoxbEk5/cTyckZebc4U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784529022; c=relaxed/simple;
+	bh=v5XqGbYgBPsTfXegCC/1COBd0VfeCuGRYJg1aJaI/j4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EpUnUiJKpXjfC1ZD52GJTjyqBfsPRMVqITJbm33hTbHEJ8nlxVIV/3PaDokIriKKynt5ZECVFsHdGgUd4LqDPAUR5J5A9qJpadA5DUObNkRh43oPPz9AVLiCxxHtfSF5MI0gj7zK8fAQcUIFZDLawR2G1nc7qaWic6LoEFsFhwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EdiXsXjp; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDckIS2z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86291F000E9;
-	Mon, 20 Jul 2026 06:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784528264;
-	bh=K0UynwdCv5WDm1BVlmikLW/Dj+dAPIIfg1V5Im2kFiU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iDckIS2zrx4DuvkuzGtu412bP5XfyM/S7yusMn1RyrdraIvl0lSYk1NZHprmt6lHi
-	 7Rqgdqx12NBFf0wbAO+qar2Pz6D2taRRlaRFXEiHjOcZCd47W09InPTs1N2vBDO4yx
-	 nUPQo6A3hF0pc02gFCwn/HrQfAbLXGmCt6LfNV/vwWeYNtEdoOuFQpTkkyafxwejtY
-	 /QAm1s0w1irGZ/AF6voSDjzerMAw28/elv9kzUkGlKGxPsoVsL+4rL8y8/soZqXpza
-	 fJfBG4W1Ya+fX2Oofz6tcJLKc4v8a7OUfYRsHwt0CHj89X6xAy7Hwq5u4ACdYDMB3t
-	 tepOey7ODA4AA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only
- emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Akihiko Odaki" <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
- <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 20 Jul 2026 06:17:43 +0000
-Message-Id: <20260720061743.E86291F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EdiXsXjp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784529019; x=1816065019;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=v5XqGbYgBPsTfXegCC/1COBd0VfeCuGRYJg1aJaI/j4=;
+  b=EdiXsXjpT29nY80e6NAc0b8B1vmKtdqXu3nvCtCTy0ajy2qMjQ4Uj0YB
+   pgtZt7VR0cwQw/pRTvwVcqpkxWMwQA8nGK4q+iSRfrRZ2X22bJfTHQyHp
+   7s3Yy04EX17jnMgcz7M+Wx6UvJPFjYLqd6lTdH4ygwKQjLzL8UqO1TMn+
+   k1cQahiin5CBB87vorDP1dfTNkOgPpd/xpF008jDDxfRBfLcaN9kyomb8
+   mgc774f7eHuXAKDeUpTgZh3XfKtgg/BdPDo2av8/NqFkvC3izxwENa8m5
+   swVA6iaiD16KUVwNQuradZXOuOSHqvrD+iAlyBJGihjGIcA2Ewxba2d4S
+   g==;
+X-CSE-ConnectionGUID: hivcQ4NiRO+ZukllULGTTA==
+X-CSE-MsgGUID: /YqkjjesT2ukWiTC9aBslQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="84981142"
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="84981142"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 23:30:17 -0700
+X-CSE-ConnectionGUID: J2uPJT02Q92jFMs9GWVCZw==
+X-CSE-MsgGUID: JqOS5PuVQESISjj+gGdwYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="253963498"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 23:30:17 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Sun, 19 Jul 2026 23:30:16 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Sun, 19 Jul 2026 23:30:16 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.2) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Sun, 19 Jul 2026 23:30:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EFivPi6fqqbbj5/tA6lCQihGUkaH3RLT+j2bS1vCCHF0s1Xt8/S2i26bPieCqS1YfVtTkO8+ndWreQgZesy5XQUQyg+nyswOJUtYygXyHPnhliIghlgB8rUZ9bvDwa3Q0662GYxuF4akPTQCmfCxX3axAebr/AC3YTZC8ZT8kvhh6ZSZ3GqM4+LrhnyCDQjdRgxTwytHcTIBztjiuQBAM6C7BhKMAH6aZpD4n23XIZhHWQc46isgGV6ux6yB4/yuGroVCehef8XKEWPm1lDLtRa3RDFXi7CQk+NrZa0uIJXtIgaR/baKhQJ9nGVrSq9Ptwkpj63LnVNDajgxKUTbSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rIegmsZg2X+PFZ74gR7o+XBwEc46RcFPZVNHTqVslPo=;
+ b=wyLQrCPpUBBudoZdQWHClA8ElPEz5COXjmnjdfhIxnjSbieVx0ZblF8OcVCDzfkuNYe5Pw0T+6csLtzjXlsWauHpA2T7hB3FgCmLDYb99YODbYRthbOgBp/RxY2RLt2/9HcsZ6z7d04sX9Z+BTmvkBz34Aw/dReCcQ/JtfXHPjtRzTRF2OKkzW9kZKBC0fmzGJSUU1lNdBeQA9H2B5vgtWq4vF9/xGMVLVZ6PpjW+o04X8XpuEfN2sJ3u9v2WdMyPYnrdE2BC2EcGsUaaBAw4vansUbOISdjn+b9+8vQ9oxLjShVq7a9J3K2JcI6GVBFNmwD6ZaExAm0S18g6qU5Iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BY5PR11MB4450.namprd11.prod.outlook.com (2603:10b6:a03:1be::20)
+ by SJ2PR11MB8370.namprd11.prod.outlook.com (2603:10b6:a03:540::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 06:30:09 +0000
+Received: from BY5PR11MB4450.namprd11.prod.outlook.com
+ ([fe80::741:ee9:97f1:e068]) by BY5PR11MB4450.namprd11.prod.outlook.com
+ ([fe80::741:ee9:97f1:e068%6]) with mapi id 15.21.0223.013; Mon, 20 Jul 2026
+ 06:30:09 +0000
+Date: Mon, 20 Jul 2026 14:29:57 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Dmytro Maluka <dmaluka@chromium.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Zeng Guang
+	<guang.zeng@intel.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Vineeth Pillai <vineeth@bitbyteword.org>,
+	Chuanxiao Dong <chuanxiao.dong@intel.com>, Aashish Sharma
+	<aashish@aashishsharma.net>, Grzegorz Jaszczyk <jaszczyk@chromium.org>
+Subject: Re: [PATCH] KVM: VMX: Postpone IPIv setup after successful vCPU
+ creation
+Message-ID: <al3AZSxl9aWR9YQh@intel.com>
+References: <20260716160801.3155582-1-dmaluka@chromium.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260716160801.3155582-1-dmaluka@chromium.org>
+X-ClientProxiedBy: TP0P295CA0043.TWNP295.PROD.OUTLOOK.COM
+ (2603:1096:910:4::18) To BY5PR11MB4450.namprd11.prod.outlook.com
+ (2603:10b6:a03:1be::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR11MB4450:EE_|SJ2PR11MB8370:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6e329cc-508f-46f7-7962-08dee62858a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|56012099006|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: ToUBhpgSgBLQZAw3sigcPr8Jl4eranaNVt1duJH+99ZzvwrTOMiCYBR+JzFuEqpmi5hg7trgnloELXXbAQHS5flL5O/vL66ZQJOiYSHvfYUaztkopQRAGzyfBbbAWm5IL/qIuJ7FmHkAY5FxlUXT524BzDNm6D2W7YV485LrTXtYv4UPlf6yUIIa/s8CkP8NBRoiVUGOnkVt/pL4oky3dRQyZckHTUo14dNzvvuDLhkl4EDwLaYT/vj2iCJy6cOHmh6+FMP7ZG0FwBtDm2lbIXf85BNyH7X/BtWptuR1dW28i2bHwVIZDgTBkA4akip1IXuH9iBPKOu6uhMkcmkiOQNvGA+rhw7V12CKEiCjSan1EW0NipYMHO+alZoIJ5SnjCv/OkpnNo6unv5rHLtUn6sTN639ZVGMNeA+o/kkhPQ8+HrwgTpGM/mIWbHaBY4buH6N8QgSccpKjh+JzWH+pN8Ehzbxys7qZW7T0xJWAs5Lmxyt8uWmSqF6tfgN13SCbvXndwL1cLgglJnubH2tn/s6RaKMdkDhHfJ8z77UH14SMOfxT59Kc1LvxgVl8Q7drxTzCLPkZ8Q4gwSOIGzKO7yAe2/r8Si2pLpUTmxrLP7P+bH2FXfs9mUvXlPqcBg66OVpVYYM2T2f6dwdeq2zJjjbQCRhI+t6ylKkUtgBiYU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR11MB4450.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?P+5fC4+K4uCzchwMM1ESTlq82TBqo8DCj1h0AaY6w2ZMEHshIU8+fuRRXbjh?=
+ =?us-ascii?Q?/amTJ1cfsZYT8e/gARXKx+7DtOJCEAciMGlGA4d1AzVYxK3ykSPH7ee/g9q4?=
+ =?us-ascii?Q?rK4k9nyIocs3VoXlkAEstV98aGziB5B1koNfUTXynAZ4kraF6zg/fCvxY845?=
+ =?us-ascii?Q?VU3OSzf4VRz+yxzXERFzhPWoQ9xOT48hWlAGHU8XUvQyuDf87EpyH//xYzCz?=
+ =?us-ascii?Q?GU/0k0bd4XDUSXnw10+Bsycg01i0+Sg1s+c0spk6nvNi01JIPiu/NVIdTLmu?=
+ =?us-ascii?Q?zdQD9Y/JLfYVsjQ7ypBaxK+58OcT7w4DwtZQNALJjcEOw2fuFz3F9jn1SzzN?=
+ =?us-ascii?Q?/76HdwTv5hxXFhXQ8mnljlB3q4D4gZgMk8TFA/qYvtkIf57GDBYTnZWaSuqi?=
+ =?us-ascii?Q?GiZa6HD5kPEFNTxgkk9PirruF9iq0MfHC4KiosxOvG+lHf8+6vpe5VuDRxIj?=
+ =?us-ascii?Q?6yVQX/KcQcqNy++cxcJPIavV1T8+zdPRBF5RfjGOd9rzPSgvNWSBHGXTlsY6?=
+ =?us-ascii?Q?Yrv1cQMqvflJtDTe7IEpYSWRhiriY8PzIWFMuL7Qy37YqIiWu9PXfRfS5H+J?=
+ =?us-ascii?Q?DnecIih2tYBsKlvxNJystp3DV+I0LZjM0BE+x1j/Yk8HebZsAZqcSKAkQm7G?=
+ =?us-ascii?Q?I3uKF539L5f+XzlDG4pSTY4tiAeH3Egz6W4UU16biv4rfIJ74Js56l59etCw?=
+ =?us-ascii?Q?vFS+pKs92KHfO0Mh2ssKLcB54px1MSGI5MGq98BlniWUIxX3Bik6ZA1Ifh5/?=
+ =?us-ascii?Q?bdPqR6ahrUts1yIWuM0BjcMWHS+WWQD54CD+LJbDcIz+Ky6tApMAerAO7g2G?=
+ =?us-ascii?Q?BczMNot94SX8rnaHd7HsgUtH8pVjzks/8G/7XRD77i2oUYQQyWtoGb2MIVxv?=
+ =?us-ascii?Q?9/OcPDHrB2kxaOVdZDFAjReJtUQzMhrT4eubkl/QSGBoyAZL6kePHcNlAjM4?=
+ =?us-ascii?Q?q5FSPi8iSqCXGB2zVcbtDaDGFQk4TmduuzByZlDMQ0iXx8pUGaB4stWUi7gI?=
+ =?us-ascii?Q?CFliI1Pj+IPaz4sL0bUHoKJP1BqlHwFqVZblVuAQntZdN8Sd37MK0joAAJcg?=
+ =?us-ascii?Q?oR2sXGWgnJ69u6fLxAI/pnNu+cGGye5vj4pL9FXROFCt1AZdfYjP5+lOo5bZ?=
+ =?us-ascii?Q?x6beO3fkwJOHkWBikpSS+mdMFLlI5qb2PhEPhR0A3CPhjjdTvYNpVFIOJ6oa?=
+ =?us-ascii?Q?7v4RdIWcMc4yZrobM2x73Pn+/Kr9yffbQa4FAJS20GCPZNTuhvRLV3MxI60/?=
+ =?us-ascii?Q?J4lfwvdhV5pmTrsmDVZOZU8m/7Yt6loNOxYVwy2kjzqerSNQFfVtJM+jpbRB?=
+ =?us-ascii?Q?hPar2MkagglD4Af5Md7Y28C2Q8oCNbhWqs1HBupMXQgvfVSkKfdWQqBCXguU?=
+ =?us-ascii?Q?v7rWCdDwSL4PSl2rbw6qp9v0Xr3cU6bI/UyhK96Tmj5QPIN6Dkeb7eFHhiHC?=
+ =?us-ascii?Q?0mMp+GnVvaFeSfdgzFe494LOeiL5ragFgkiC+yEDmgNFqXcyd6Ei6XdN8+j5?=
+ =?us-ascii?Q?CkQ47ioETWJgV93Eb6zV4P44LxBHNsPlGIJ2dj/l11mrbQfZqv6DF3600bfb?=
+ =?us-ascii?Q?RC+AcJx5vCid87Vx/ysH9ZVmKHZiuelL77pWPTm2g0+4LWj8680iu4gO40A7?=
+ =?us-ascii?Q?D5BbVCbWs6ZaZ3TuQbfj9JaCR5m8EKW3gpLvAndAhzyvNp4G9908o5zhT8Hj?=
+ =?us-ascii?Q?+/KzKaAxM+Xr5iO4L7yPKamhrbIBADMkjhSNfGzANmZNqyFnj90IutDS2Hz8?=
+ =?us-ascii?Q?swVnEy3c/g=3D=3D?=
+X-Exchange-RoutingPolicyChecked: ZFWSEyYVlc7f+e6wauW2/vWHsocv5DnC9YgtKT+FUv7fHt7NDLD3sDovR/eEp3T6ZvrUJWdmLrBpIN9bs+C4YL+RBEr8Ib0i3qZW45nH+qtFiTY/RRDvxgvdihNT/KFeV2ntbZpDkbO8XRfnNxOMsxYFmVS159sCWLNndywFXd11bUyrGQph6MnaYeaiq/0nLq7YC3uiQob7KNDd14EZ6chUsTGngKnXYIvP9DyNhyyyyAR+6tND6RNjV+nPAF0S56IoJx+iHjrG4/GBBjHUJC5tW0Rro6RXF7+g++JuqdVznWZb67dAlIYy5WP26ne6o2BmEvRr9xFvQAXKPOUAtQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6e329cc-508f-46f7-7962-08dee62858a7
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4450.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 06:30:09.4826
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vcLllFzRGtH7BNI/36RiN8dMJV5E5AulZujdlOb47EfMUs0K/Z4dSME5LK79Yxul/w9tuDGyTI9rg2dWOR84AA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8370
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] State desynchronization in PMU virtualization due to retained st=
-ale perf_event.
---
+On Thu, Jul 16, 2026 at 04:08:01PM +0000, Dmytro Maluka wrote:
+>vCPU creation in kvm_vm_ioctl_create_vcpu() may fail after
+>kvm_arch_vcpu_create() -> vmx_vcpu_create() already succeeded. In such
+>case kvm_vm_ioctl_create_vcpu() destroys the newly created vCPU in the
+>failure path. However, that leaves a side effect: the IPIv pid_table
+>entry remains configured with this vCPU's pi_desc address. As a result,
+>when another vCPU sends an IPI to the APIC ID of this failed-to-create
+>vCPU, it will cause HW to write to this (freed!) pi_desc memory. [*]
+>
+>An easy fix would be to clear the pid_table entry in vmx_vcpu_free().
+>However that would be still problematic, for the following reason:
+>userspace may try to create a vCPU with the same vcpu_id as an existing
+>one; vmx_vcpu_create() will succeed, and only after that
+>kvm_vm_ioctl_create_vcpu() will check for the duplicate vcpu_id and
+>fail with -EEXIST and then free the vCPU in the failure path. So in this
+>failure path, vmx_vcpu_free() would clear the pid_table entry for that
+>already existing good vCPU, i.e. effectively disable IPIv for that vCPU.
+>
+>So instead fix the issue by moving the pid_table entry setup from
+>.vcpu_create() to the newly introduced .vcpu_postcreate() callback
+>called at the end of kvm_vm_ioctl_create_vcpu(), when we are sure that
+>the vCPU creation succeeded.
+>
+>[*] Although, since this memory is freed into the kvm_vcpu_cache kmem
+>    cache which is only used for allocating kvm_vcpus, _maybe_ this
+>    memory will only be reused for pi_desc of another vCPU, not for
+>    anything else. So _maybe_ this will only result in delivering the
+>    IPI to a wrong vCPU (possibly of another VM) in the worst case, not
+>    in a random corruption of kernel memory.
+>
+>Fixes: d588bb9be1da ("KVM: VMX: enable IPI virtualization")
+>Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
 
---- Patch [14]: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-=
-only emulation ---
-commit 8eabffaec38175a063281e21d7253117967c6ca4
-Author: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-
-KVM: arm64: PMU: Implement fixed-counters-only emulation
-
-This patch adds internal state for emulating PMUv3 without programmable
-event counters. In fixed-counters-only mode, KVM tracks physical CPU
-migrations and requests PMU reloads so the host perf event for the cycle
-counter can be recreated on the new physical CPU's PMU. Uncovered CPUs are
-treated as unsupported and taint the kernel.
-
-> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-> index 78611eaecca25..1ec09ef28467a 100644
-> --- a/arch/arm64/kvm/pmu-emul.c
-> +++ b/arch/arm64/kvm/pmu-emul.c
-[ ... ]
-> @@ -785,6 +791,32 @@ static void kvm_pmu_create_perf_event(struct kvm_pmc=
- *pmc)
->  	pmc->perf_event =3D event;
->  }
-> =20
-> +/**
-> + * kvm_pmu_create_perf_event - create a perf event for a counter
-> + * @pmc: Counter context
-> + */
-> +static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
-> +{
-> +	struct kvm_vcpu *vcpu =3D kvm_pmc_to_vcpu(pmc);
-> +	struct arm_pmu *arm_pmu =3D vcpu->kvm->arch.arm_pmu;
-> +
-> +	if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
-> +		do {
-> +			arm_pmu =3D kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
-> +
-> +			if (!arm_pmu) {
-> +				pr_warn_once("kvm: Unsupported PMU variation detected.\n");
-> +				add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
-> +				return;
-
-[Severity: Medium]
-Does this early return leave a stale perf_event attached to the PMC?
-
-If a vCPU in fixed-counters-only mode migrates to a physical CPU without a
-supported PMU, and the guest attempts to reprogram the cycle counter's
-filter, kvm_pmu_create_perf_event() will exit here without stopping the old
-counter or replacing it.
-
-If the vCPU later migrates back to a supported CPU, kvm_vcpu_load_pmu() will
-trigger a KVM_REQ_RELOAD_PMU. When kvm_pmc_enable_perf_event() checks the
-PMC, it will find the old perf_event. Since that old event is valid for the
-now-current supported CPU, it will be re-enabled without recreating it.
-
-Can this lead to KVM silently discarding the configuration updates the guest
-made while on the unsupported CPU, resulting in incorrect performance
-monitoring statistics?
-
-> +			}
-> +
-> +			kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
-> +		} while (!cpumask_test_cpu(READ_ONCE(vcpu->cpu), &arm_pmu->supported_c=
-pus));
-> +	} else {
-> +		kvm_pmu_create_perf_event_with_pmu(pmc, arm_pmu);
-> +	}
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-hybrid-v9-=
-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp?part=3D14
+Reviewed-by: Chao Gao <chao.gao@intel.com>
