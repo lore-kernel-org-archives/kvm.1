@@ -1,243 +1,143 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4598B418A48
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 21:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784581924; cv=pass; b=KLf7MkwEWUGMl4k2rj1RjfPFn0Qa+aOQcAu6FFg6e1OTXO5xjoFEEVqJAo1fA1stp8P1kyqyqqL3+JfhQmwQefkciCdgzxKWIjpOxzzWXd2lDrXOavsg5hb06aSRIvPG1N0BS9ybCw+P9vsJmcYvSZ2fOGbU8DogZE09Q/kt5qU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784581924; c=relaxed/simple;
-	bh=lRocIA7DUpH9mZLq9zVZ9/zMYmsv5z7zJPYY+w3Jc7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iSqNfl930vzSES+Ey3ZWRkvnOPii7t817uVABktzWUi1TkZvKGhXOFI5RliRcNNwH0Y5TOhJMVGi62QUUP7ZIKvcacXOoCC4me8Qb3caG8FZG+TJESMC4sB9q/un0q8c7y6kR0FrUqx17CGjU9HdUOSpH7fGFbq5M2/L5lX3024=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AfibysRR; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAF73C109B;
+	Mon, 20 Jul 2026 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784582032; cv=none; b=J7SyhJ1eVWShLzh9NCCzyaO86KuhfrVZqmSSfRtZynBQDfBOD8jxumZV8RblKlRTv4Nb9YG1vVSCtgYlf8wOMUA7s+LAQ2YsBvn6YNNwGAjR1DaIAs3ny8CLbEYbqADjNsr3+Ibhj/dz1fC1IVXoqNAFfibPravp7ksbNdzxJNA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784582032; c=relaxed/simple;
+	bh=+7EsZQ8MDtE3n+BMw5DQDYJgHwNK5QFlPRkzuS7rRhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kuv5Iu2/ekm7tLZoqV7YwqPJr/smyat9xilXPgnHBmCrNVjb7Pn10gWVsNRjsba+TX9kuEuG346+WQq3tlhHSRBJuJRVyZzaFFNNHi0Ie9yN/4aG+xCw71VFFISQtIXp0OXgj8o5EWr20Q5GYxP7KjXvCBNaIMP3PPG3SjWrxLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Sb/ukags; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AfibysRR"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb6bdeaeaso33690e87.0
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 14:11:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784581915; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XCwx0hKgtU9fTVgjQe2Te6aOLlIFZutuuN41evE0jVDBO8C+vWHn2NWccZgmchdHnC
-         f9jbbgxC8nRogUqxO293DS2ex7jMmMLbtGN73IPTA5SyiUoIqaD0nsSfQ1Dgdo2Fl8eJ
-         iK2NOhNmoSHAo2xFfzIrcUDqG+6Y3I6h2YmjsXU5OiahYzpChdHM3h9xnUzIMXLJzXwT
-         HnuVz8NK4L5uYFcZhB4FVEOxAMZXuYACLVk7K34tv9wYU3RDM1OE3CBahIa6CIcINAVR
-         O+ga6o25aDZar3vs7gCLQ9uyj2gUznVtiGYVqF9wqlAR5lATIv+jenS3YZJk85zLkzNj
-         QDWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2NT7/9aVJQ0lE1aVT0nFHov8n+tz4I5xjcivzPKn3zU=;
-        fh=d01QbNwzqaSih/pzyx2m5I3zgPwaQbtOCqNOl9ej+AA=;
-        b=VSpJ9vEd6l6lKPy998wE/MaouZ1rUdXMyJIqJkjZIXHGv4zVMrB8GFNuVc/Or2gf/s
-         zWQy7guFXdVnL7WPKLb/seDuHQGAI+DtYt0jrknAnQe/8wHMuta7fCOzstVaCXov3qJU
-         qJB7EE74lEHL6meqjUD98zAE7eRAKxrgQqO2X7eY9gmgqYcwo0GbA1JJDnNirscgo0hR
-         W/I/kRagah5iuuT1fN6GC4SALyiYlbdP4CUelaGZEs822pfcOcagzHg/oNkPLf7gzIAB
-         VFtmNSlBLW8kIvOCMuWiZ6xkdNxeFSPVQK/5ItpYh6AAhTNvUVfLSRhzpfCB5KfoC74+
-         T5Yw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784581915; x=1785186715; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2NT7/9aVJQ0lE1aVT0nFHov8n+tz4I5xjcivzPKn3zU=;
-        b=AfibysRRaXnkdKLqgS+8deLHLoLlpUEzjiO09TCX8cfG8SyW3K7PYhCfmE7VyVyiUM
-         J2jX6blRKB/7PLNZvemyhUh4fAGQOdZ9YDr7g2Tf58hw9K0goXgQCF6AFAQLcIviuEwW
-         I53gecvUcNGIVEZ5EExjdxgs0mS0sBtbJ7X641VaeOvh9IlWJPIGYsem6cFd6hgfBr9a
-         glK9wq1il9fUiC3I5NBRRvUfHn9y+JREX+pKpPy9sdlxtPA4283WdmqajX6XLrs+DdI9
-         /EmdB9u+MbMj7QfwOMyE2/71aC3OEGnhmoGyuW80r7GjfoG66HCIs6Utp7lkhjaUQ3hQ
-         d4Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784581915; x=1785186715;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2NT7/9aVJQ0lE1aVT0nFHov8n+tz4I5xjcivzPKn3zU=;
-        b=CvQIw5cMjsYtbdaAnCqiZGbxcvuvSmrSnhJjVlF6Fkj2zYVkVSBT0meBAyVDCJPbAV
-         h4AzrmtNEwZ7vWKgFbRQVHENEb6twaKd5CjEpwT7Mb+fSxOipnKsS0AdC3Kh3TNepKoI
-         MDd2Fn08ILPBIjwZVeeClzO9oujfJcZ43zsBjdm5KV8hlQUDAXG/Ae4nihtncRUVs6O3
-         +y2N/4w5wb6WnqrPyj8y6yBgrJrCrvY8dB4TlpmTEpMX/fJ9GjPAGG5j1gfLwhj/fyl0
-         Y3R6u/K5FN4beAYNbOsaY2z5jIAmT5QKIBVm+7pbgweuUiG0Dsg7xc+NxOlPEVuWAIcV
-         b4Ug==
-X-Gm-Message-State: AOJu0Yzq13dBFEcXp3mHJGX/Jn74gYNGvTfnMy879LzxtZZnQ9djGGUE
-	1yLPbZ1MH8W2qC3gJoSBK2SDrdt0ThSKffkQnbckrQZU4bqrlPQw3BzuYcfCQe36RqXJeCfBvyK
-	zwC/j0kc3Fte1VUkDvkdKwAqphJhAX2aFceeXgX0=
-X-Gm-Gg: AfdE7clymGlcjRQUW0KiU0sYqcfpT6orh/1F4/mYOE8+cWDql8nC6g2YwdNdlc87fim
-	yhve8AnUzQVRMqfSW2+qVAeuwcum1xJCSlW53VpFGivxTi6g5R/RKJOrL+F8sLhpuP7tNb5rM4V
-	71ZEj8q4zUpM+xMdOzgeiLvGnVIthvE21Sn0X03ZhQ3LnPLNbMXnkw+k4KmQF8v4YKQ/OEblyc5
-	w7O71+8rEdAwdL1NHiIWxbNaQsQjP49TkkYX8m709gRiceVW06J33DyuxsWP3IgCx6ikxpO+hG+
-	hTM48ct4ONtP7jU=
-X-Received: by 2002:a05:6512:ba1:b0:5b1:5141:9156 with SMTP id
- 2adb3069b0e04-5b2a31c4862mr133848e87.9.1784581914945; Mon, 20 Jul 2026
- 14:11:54 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Sb/ukags"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E201F40E00DC;
+	Mon, 20 Jul 2026 21:13:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id a5T32fnu6LtK; Mon, 20 Jul 2026 21:13:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784582018; bh=FGhFoRLhMbDrReFu95uGs+7QWPhZ6jTH09K1AIvqN5k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sb/ukagsUyi4GM2q6P/SrsLtdzWGAnGx1Lpl839b9tRGxuJjy7xu0DWWGEUqmgPZv
+	 WbAIB+ypFG8f8YTps9VTGwSQM/Nw5ktmDSv4xH4I+hKaBp7wv2sHxHaabQ8DtH4K+D
+	 6DzkazqOqnllfs4ohiAkP058hINWeUxFEPeOXacx0wgQLWW2v4CU5qsklXFEGrl+fA
+	 VQiPELYB3vlqtovK+p1DL1lKKHRMTeSAvbhyAAktO6yt/XKrDu9gQuMe7wxRhGR4E5
+	 2vpRy8jpF7BRRooCmTRBBhanLX/fyo2x5Sgzb/qHrdzxkREa//U3FeGn5z8mlBJN3Z
+	 apgHBLr3VWB7wqaQU004rjZysEniKDhQhkxcPwsqra4Ygig0vPS1vCrJnH3P8JZ/tB
+	 e/M1lqfx8cuGZxvhZy+Yvlr+UsOubCQDMGV4meiSxf7tRTZcLPTjZJBDgU6g7Zjarn
+	 YiNSpInFuNiVX27OnLN812ze9/gX+u2YZlJOwKivxBF+/xyC03LZMjmsVwvTV+DEZs
+	 qZwwD8G/3ZLwXQdvYqRADfY8Qrpaa/xU05UBWSq5x/MFUXJoqe/O8HGdVo6Nhu6rQ7
+	 XwqNvmaEUOfqTRvQmNywDyBsIYNSprXRknTjPg7Dgho5Q1gtgwmZDnrO9QJDT22p6S
+	 HrO8lI6jPlQtjYgKZ7tABZ6Q=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3EC9E40E00E6;
+	Mon, 20 Jul 2026 21:13:03 +0000 (UTC)
+Date: Mon, 20 Jul 2026 14:12:59 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v10 1/6] x86/cpufeatures: Add X86_FEATURE_RMPOPT feature
+ flag
+Message-ID: <20260720211259.GCal6PW5aCGieR5j3W@fat_crate.local>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714-igb_v3_b4-v5-0-91503eddb98b@google.com>
- <20260714-igb_v3_b4-v5-1-91503eddb98b@google.com> <20260714212823.1EFEC1F000E9@smtp.kernel.org>
-In-Reply-To: <20260714212823.1EFEC1F000E9@smtp.kernel.org>
-From: Josh Hilke <jrhilke@google.com>
-Date: Mon, 20 Jul 2026 14:11:42 -0700
-X-Gm-Features: AUfX_myTZrVSaNYBmc6S1rniLUZmu_eudhCqnMA0Lt3-y_G8hz_4bY0LPvLAMdY
-Message-ID: <CAAdrzjvT7536ZQA5y+g1D5WNNVYqu0ioc6y+rHwhB25zqkynYQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/5] vfio: selftests: igb: Add driver for Intel 82576 device
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, David Matlack <dmatlack@google.com>, 
-	Alex Williamson <alex.williamson@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com>
 
-On Tue, Jul 14, 2026 at 2:28=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
-> - [Medium] The selftest relies on external PHY auto-negotiation, which wi=
-ll cause the test to fail on real hardware if no physical link (cable) is c=
-onnected.
-> - [Medium] MMIO registers are accessed before PCI memory space is enabled=
-, which can crash the test if memory space is disabled.
-> --
->
-> --- Patch [1]: [PATCH v5 1/5] vfio: selftests: igb: Add driver for Intel =
-82576 device ---
-> commit b66293558b628d9af7dfd3c68ff9a1e69b1cbb0b
-> Author: Josh Hilke <jrhilke@google.com>
->
-> vfio: selftests: igb: Add driver for Intel 82576 device
->
-> Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
-> (IGB), specifically targeting the 82576 device. IGB is fully
-> virtualized in QEMU which makes it easy to run VFIO selftests without
-> needing any specific hardware.
->
-> > diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools=
-/testing/selftests/vfio/lib/drivers/igb/igb.c
-> > new file mode 100644
-> > index 0000000000000..a59b953030925
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
->
-> [ ... ]
->
-> > +static void igb_phy_setup_autoneg(struct igb *igb)
-> > +{
-> > +     int timeout_ms =3D 1000;
-> > +     bool success =3D false;
-> > +     u16 phy_status;
-> > +     int ret;
-> > +     int i;
-> > +
-> > +     /* Trigger auto-negotiation */
-> > +     ret =3D igb_write_phy(igb, MII_BMCR,
-> > +                         BMCR_ANENABLE | BMCR_ANRESTART);
-> > +     VFIO_ASSERT_EQ(ret, 0, "Failed to write PHY control register");
-> > +
-> > +     for (i =3D 0; i < timeout_ms; i++) {
-> > +             if (igb_read_phy(igb, MII_BMSR, &phy_status) =3D=3D 0) {
-> > +                     success =3D !!(phy_status & BMSR_ANEGCOMPLETE);
-> > +                     if (success)
-> > +                             break;
-> > +             }
-> > +             usleep(1000);
-> > +     }
-> > +
-> > +     VFIO_ASSERT_TRUE(success, "Auto-negotiation did not complete in t=
-ime");
->
-> [Severity: Medium]
-> Will this cause the selftest to fail on real hardware if no physical cabl=
-e is
-> connected?
->
-> Since this relies on external PHY auto-negotiation, it looks like the
-> BMSR_ANEGCOMPLETE bit will never set without a physical link partner,
-> triggering this assertion failure.
+On Tue, Jun 30, 2026 at 06:09:44PM +0000, Ashish Kalra wrote:
+>  arch/x86/include/asm/cpufeatures.h       | 2 +-
+>  arch/x86/kernel/cpu/scattered.c          | 1 +
+>  tools/arch/x86/include/asm/cpufeatures.h | 2 +-
 
-This is addressed in patch 2, "vfio: selftests: igb: Use PHY internal
-loopback on 82576" by replacing the external auto-negotiation check
-with an internal PHY loopback configuration that does not depend on a
-physical link partner.
+Yeah, apparently we don't do the tools/ change anymore:
 
-> [ ... ]
->
-> > +static void igb_reset(struct igb *igb)
-> > +{
-> > +     igb_write32(igb, E1000_CTRL, igb_read32(igb, E1000_CTRL) | E1000_=
-CTRL_RST);
-> > +     /*
-> > +      * Must wait at least 1 millisecond after setting the reset bit b=
-efore
-> > +      * checking if this device is ready to be used (82576 datasheet s=
-ection
-> > +      * 4.2.1.6.1).
-> > +      */
-> > +     usleep(2000);
-> > +     VFIO_ASSERT_EQ(igb_read32(igb, E1000_CTRL) & E1000_CTRL_RST, 0);
->
-> [Severity: Medium]
-> Can this assertion fail due to igb_read32() returning 0xFFFFFFFF if PCI
-> memory space is disabled?
+https://lore.kernel.org/r/0af5122c-20df-4aea-8ab4-cba63f71dc3b@amd.com
 
-If PCI memory space is disabled, the test can't run. So we'd want this
-assertion to fail in that case.
+Final version:
 
-> [ ... ]
->
-> > +static void igb_init(struct vfio_pci_device *device)
-> > +{
-> > +     struct igb *igb =3D to_igb_state(device);
-> > +     u64 iova_tx, iova_rx;
-> > +     u32 ctrl, rctl;
-> > +     u16 cmd_reg;
-> > +     int retries;
-> > +
-> > +     VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
-> > +
-> > +     /* Set up rings and calculate IOVAs */
-> > +     igb->bar0 =3D device->bars[0].vaddr;
-> > +
-> > +     iova_tx =3D to_iova(device, igb->tx_ring);
-> > +     iova_rx =3D to_iova(device, igb->rx_ring);
-> > +
-> > +     igb_reset(igb);
->
-> [Severity: Medium]
-> Is it safe to perform MMIO accesses in igb_reset() before the PCI memory
-> space is enabled below?
->
-> If the device was recently reset or the system does not pre-enable memory
-> space, these early MMIO accesses might fail.
+Author: Ashish Kalra <ashish.kalra@amd.com>
+Date:   Tue Jun 30 18:09:44 2026 +0000
 
-We don't see this failure when running the tests, because the test
-fixture opens the VFIO device file which triggers a call to
-vfio_pci_core_enable() which eventually calls pci_enable_resources()
-which sets PCI_COMMAND_MEMORY. And this driver is only intended to run
-on a VFIO-bound device.
+    x86/cpufeatures: Add X86_FEATURE_RMPOPT feature flag
+    
+    Add a flag indicating whether RMPOPT instruction is supported.
+    
+    RMPOPT is a new instruction that reduces the performance overhead of RMP
+    checks for the hypervisor and non-SNP guests by allowing those checks to be
+    skipped when 1-GB memory regions are known to contain no SEV-SNP guest memory.
+    
+    For more information on the RMPOPT instruction, see the AMD64 RMPOPT
+    technical documentation.
+    
+      [ bp: Zap respective tools/ change. ]
+    
+    Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+    Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+    Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+    Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+    Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+    Link: https://patch.msgid.link/39e9ee269a572c516a3f4e937bfe12d00697d5e6.1782841284.git.ashish.kalra@amd.com
 
->
-> > +
-> > +     /* Signal that the driver is loaded */
-> > +     ctrl =3D igb_read32(igb, E1000_CTRL_EXT);
-> > +     ctrl |=3D E1000_CTRL_EXT_DRV_LOAD;
-> > +     ctrl &=3D ~E1000_CTRL_EXT_LINK_MODE_MASK;
-> > +     igb_write32(igb, E1000_CTRL_EXT, ctrl);
-> > +
-> > +     /* Enable PCI Bus Master. */
-> > +     cmd_reg =3D vfio_pci_config_readw(device, PCI_COMMAND);
-> > +     if ((cmd_reg & (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) !=3D
-> > +         (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) {
-> > +             cmd_reg |=3D (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-> > +             vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
-> > +     }
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260714-igb_v3_b=
-4-v5-0-91503eddb98b@google.com?part=3D1
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 3d0940a3b9f3..dbccde9ee5cd 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -76,7 +76,7 @@
+ #define X86_FEATURE_K8			( 3*32+ 4) /* Opteron, Athlon64 */
+ #define X86_FEATURE_ZEN5		( 3*32+ 5) /* CPU based on Zen5 microarchitecture */
+ #define X86_FEATURE_ZEN6		( 3*32+ 6) /* CPU based on Zen6 microarchitecture */
+-/* Free                                 ( 3*32+ 7) */
++#define X86_FEATURE_RMPOPT		( 3*32+ 7) /* Support for AMD RMPOPT instruction */
+ #define X86_FEATURE_CONSTANT_TSC	( 3*32+ 8) /* "constant_tsc" TSC ticks at a constant rate */
+ /* free: was #define X86_FEATURE_UP	( 3*32+ 9) * "up" SMP kernel running on UP */
+ #define X86_FEATURE_ART			( 3*32+10) /* "art" Always running timer (ART) */
+diff --git a/arch/x86/kernel/cpu/scattered.c b/arch/x86/kernel/cpu/scattered.c
+index 937129ce6a96..021c0bf22de2 100644
+--- a/arch/x86/kernel/cpu/scattered.c
++++ b/arch/x86/kernel/cpu/scattered.c
+@@ -67,6 +67,7 @@ static const struct cpuid_bit cpuid_bits[] = {
+ 	{ X86_FEATURE_PERFMON_V2,		CPUID_EAX,  0, 0x80000022, 0 },
+ 	{ X86_FEATURE_AMD_LBR_V2,		CPUID_EAX,  1, 0x80000022, 0 },
+ 	{ X86_FEATURE_AMD_LBR_PMC_FREEZE,	CPUID_EAX,  2, 0x80000022, 0 },
++	{ X86_FEATURE_RMPOPT,			CPUID_EDX,  0, 0x80000025, 0 },
+ 	{ X86_FEATURE_AMD_HTR_CORES,		CPUID_EAX, 30, 0x80000026, 0 },
+ 	{ 0, 0, 0, 0, 0 }
+ };
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
