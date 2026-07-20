@@ -1,66 +1,66 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7717B382368
-	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE1D41930E
+	for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 15:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784561586; cv=none; b=l9en7YmVvnhYh7U6dpkpb9X6xZk2XlZuiih3FrTUy4oDMq5GlkSVM9oyTTvt37uYbmXwx5hlNFv1pwmoACuOAh+wABvyULSGuwie+C7a7EWcBSv5jND3hU2utGvaryivakR2J73SIUljEDzX4xPCddmHMgc8iUA2C/2FXAE9mP4=
+	t=1784562372; cv=none; b=NkoOEtZaBzZiZiORHuLkeJGOTmWqnPgs+GlMZRCcisnmwSBoiSUTow4wns3qP6qDdfKGBeJzKZfQMkcQFfMx0Sl9BhYO6z8JAZ0kWN8FbaiStptIlTcvLde4g0I+KyG5/2UZ4Ps2B1BwYA73A8scYMSXf8Bu+Kwl89IicODJLRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784561586; c=relaxed/simple;
-	bh=bFOUZnCm03fwd67WJRycufHufPgOpFeItWIEg7e3pXg=;
+	s=arc-20240116; t=1784562372; c=relaxed/simple;
+	bh=mysqL6+eCjNN4mNyfwg428lBDctaTeDZpDM0kmGaMi4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jLgr6WlUWt8jfFXyv+rErtltdNeKf78OUdZccsSxsSZERTbc6K7LBZDZO3KCWkT8dMwa47ZI11inISrqS9JyWHKnQAtXbmEh+NG8y5gkJDZLhHrxWvaN35Yi8PogJkYo0JA4DDPHZeaD78d8BYFWWxRUPReYRoCBDVj8ev8rTbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lk2RXWfb; arc=none smtp.client-ip=209.85.216.71
+	 To:Cc:Content-Type; b=mYJ61H+FSNAVnc909bWf7Yk003+43D6K/CwH09MTMDeW4+aaxoOJNkfIpgy5/crtZiZG1WEYT9iO6PwZoR7NFh312rAT7hwyWxpIx/PTB01snSyYwsAXDWLhvMQcoXsZfYb0kAPvX9tLtrWPFWb4+YrRYYAe+NA8GuMYNhQzCGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rSG/9Fn6; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lk2RXWfb"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e7131849bso1491721a91.1
-        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:33:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rSG/9Fn6"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc88e22f92so221012215ad.1
+        for <kvm@vger.kernel.org>; Mon, 20 Jul 2026 08:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784561581; x=1785166381; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784562370; x=1785167170; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ITZsAz5ie9SECUr/bXc2ZJFsoMCPDFXbIaKO0hatsYs=;
-        b=Lk2RXWfbtspXS+gRq6ogkYCs3seHJ2DhdqPCm97pHjcSSiZY5OnJHtuHvSSbwhHyTX
-         d2cC/If0IqPoBnl7UGm09BshR/Ulpv9QihvLhZdpA723W6nbYI4xntgJyN6mn3J1IPVx
-         ekza5qDt1QIX67RR5arDmQBDJ8nWLrs0RkrXJVVNR/CT8QYc0FFLBa/pY+EI1swKfFcY
-         hjegiYsMJOW1IfmcgtcfogBYVlGy1XODqfdZax8LTiqHqr73P1PkfvnNj0TfU5HnQW8k
-         d/t6G30Md81rDbm9mvgd9LyYnYn9P1wwxFJUL9i3pzOX8m/MWInwJgxe3CVPROE214Zn
-         YDQA==
+        bh=RdZ7BeoIHlBjqID5zacq6MvDALSaxCcCoW3uAv/+L5M=;
+        b=rSG/9Fn6lx545Zhat9Dvu+whzayzJAgMuoU0enel0UdwyJg3VrkBkR2LTtstsqSlJ0
+         294kgb1yNMpZNENkTBd+Sc2TTTZ0Frh3kuMKdMUNvZ1hcs+KS4OVEZUJyo0wchBWqLCA
+         oq6YcaA2j8RYNctr4/+E8n9FMxixv0lhDBlyiop5haCL8lJVwVT2v1e6rPYYVI5iC35T
+         FFVjf376dwGUbzQ02VigUhkusqOqemlqBAVsuFf5lRRoBslikZLuKqb6wZ2s6/5szYvJ
+         7lnzTsxIPyRdEA9p88vvFJwORaGEdTek2GpNuQQ7ZpyQ+B8tQ50q8QYCt1uHC9JmCZnA
+         38VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784561581; x=1785166381;
+        d=1e100.net; s=20251104; t=1784562370; x=1785167170;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ITZsAz5ie9SECUr/bXc2ZJFsoMCPDFXbIaKO0hatsYs=;
-        b=qXvHoteuUhlyCKoqsC94FLZSM9dm2+dEwo+/+SYsyrsVqsmGVpQ+wdCITVE6apdY0X
-         LQouHN4eYoUx795HrsE0QSgSS5Rivk5Zt7qfiJdN/gElVmprZssBQXQ5xRzqk+hvm3VR
-         hDvEZst/lZeJFETfeVdeI63+XMEhp/752OLpeafoiteGggJkghoxg755MVT+LSN+kFEi
-         +YAs2XIuws40zlsUycfFbT1oCUooiRAzJ1FAcrzB9GBB6hPMnXjlmnRX+/pYybWTtQZ1
-         FE8ukKyAnlQGmjUQa6R7Yf7iVCwZuXiGo8Dg5hX/EhOQHpn9zh4KXjs1aiq4wQ9mAb3c
-         xX0w==
-X-Forwarded-Encrypted: i=1; AHgh+RpYmuD/Y+WIJbT9hWLs4gLpekbF/kVg+1kfuhFTn4aMmUsXyY84wVky8k5JPOdBlEjxQxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNDOgmI68XxyL/YacblLP1KyTZ4/oJHiIKkQqlFQlA/1nG8Nwk
-	PxtPfOZtKu+z6JfQLHb2wGQFJSM4BdFx1+6rBCCg3JMcUOtduQIgGXtEBSqZgWNnFoP5vW0QSVg
-	DkmiQNg==
-X-Received: from pjv3.prod.google.com ([2002:a17:90b:5643:b0:381:2958:c74a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d2cf:b0:38c:a59b:5189
- with SMTP id 98e67ed59e1d1-38e4b490278mr14922576a91.15.1784561580962; Mon, 20
- Jul 2026 08:33:00 -0700 (PDT)
-Date: Mon, 20 Jul 2026 08:33:00 -0700
-In-Reply-To: <20260717230542.3555587-3-jmattson@google.com>
+        bh=RdZ7BeoIHlBjqID5zacq6MvDALSaxCcCoW3uAv/+L5M=;
+        b=kl45Vl6pTwFT03xpMu7WRceMFMaExHUkm4bp+LOUMK8Fn8eBSJrAw4/rW1zfmI5+Pj
+         YLNcK0hv1B/O0PD0a4syS4omN1qEnngD8JwoClgF+djL9MJBUcACaNFsy6+Zofs8FjxO
+         eLMl1+kXfH2itq1Nm3gHbikfu1g0L9/HilEPJVKb+01Be20fzYz8DDIWu4Qe5T9m4qVR
+         88qHSAIjm7YUJY6EnpadDWW19Nv+E42/S4QGNC4nQW0zTxK222jAfwfK6pD+ofds0WHY
+         oQj9Lx88vdinCr7FxaB86vvFbAIpnhBU99pnw+0ekricCl+rYNPGyoVKg0fh2kHIfLOF
+         8Vww==
+X-Forwarded-Encrypted: i=1; AHgh+RoaZH4B2LCREuCxdwXhWDLooNOAqH3UviMoF6hmqV2xro96MXB6SG+x1VMmNhE55mtT1fw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqvlNRFugJlQUndYdIem4R6NgudkjtpZsNg7F+ESYmyF1l+ldi
+	xkpUGcTPAe+WJWnDrlbAmzlg/vr3NgoxnvMVM7yWSsu6nwTWFmxKdmK67TmbeCEA+kJlnwqHyVK
+	x6MWuDw==
+X-Received: from plbkq12.prod.google.com ([2002:a17:903:284c:b0:2ca:ddbd:a19c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1248:b0:2c9:cf5d:d9bc
+ with SMTP id d9443c01a7336-2cf349c979dmr157079325ad.35.1784562369848; Mon, 20
+ Jul 2026 08:46:09 -0700 (PDT)
+Date: Mon, 20 Jul 2026 08:46:09 -0700
+In-Reply-To: <20260717230542.3555587-4-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260717230542.3555587-1-jmattson@google.com> <20260717230542.3555587-3-jmattson@google.com>
-Message-ID: <al4_rFoM4RKoi-XN@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: SVM: Dirty ERAPS register on all ASID TLB flushes
+References: <20260717230542.3555587-1-jmattson@google.com> <20260717230542.3555587-4-jmattson@google.com>
+Message-ID: <al5CwRqMC48cdQSP@google.com>
+Subject: Re: [PATCH v2 3/3] KVM: x86: Flush guest TLB on MTRR MSR writes
 From: Sean Christopherson <seanjc@google.com>
 To: Jim Mattson <jmattson@google.com>
 Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com, 
@@ -68,116 +68,82 @@ Cc: amit.shah@amd.com, kvm@vger.kernel.org, pbonzini@redhat.com,
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, Jul 17, 2026, Jim Mattson wrote:
-> Per the AMD APM, ERAPS clears the Return Address Predictor (RAP/RSB) on all
-> implicit TLB invalidations (e.g. modifying certain CR[04] bits).
+> Per both the AMD APM and the Intel SDM, writing to an MTRR with WRMSR is an
+> implicit TLB invalidation that invalidates all TLB entries (including
+> global entries). [The APM uses the word, "update," which could be construed
+> to mean "modify," but it is unclear.]
+
+Yeesh, the SDM isn't very helpful.  Under the description of WRMSR, it very clearly
+says:
+
+  When the WRMSR instruction is used to write to an MTRR, the TLBs are invalidated.
+
+But then in the recommended pseudocode, the SDM says software should flush TLBs:
+
+  pre_mtrr_change()
+    BEGIN
+      disable interrupts;
+      Save current value of CR4;
+      disable and flush caches;
+      flush TLBs;
+      disable MTRRs;
+      IF multiprocessing
+        THEN maintain consistency through IPIs;
+      FI;
+    END
+  
+  post_mtrr_change()
+    BEGIN
+      flush caches and TLBs;
+      enable MTRRs;
+      enable caches;
+      restore value of CR4;
+      enable interrupts;
+    END
+
+> Previously, kvm_mtrr_set_msr() stored the updated MTRR state without
+> requesting a TLB flush. This broke x86 architectural compliance by leaving
+> existing TLB entries in hardware. Additionally, on AMD CPUs supporting
+> ERAPS, omitting the TLB flush request meant VCPU_REG_ERAPS was never
+> dirtied on MTRR writes, leaving the Return Address Predictor (RAP/RSB)
+> uncleared.
+
+Heh, Andy Cooper even pointed out the implicit flushes on MTRR writes[1], and no
+one noticed KVM was missing that specific flush.  I mention that mostly because
+the context of that thread was asking AMD to drop the statement that the RAP is
+cleared on writes to "other model specific MSRs, see NDA docs", so that hypervisors
+wouldn't have to clear the RAP on every WRMSR.
+
+AMD updated their documentation[2] to say that clears on MSR writes are considered
+microarchitectural, but this patch and the above blurb are still accurate because
+MTRR writes are covered by the "implicit TLB flush" clause, not the generic WRMSR
+clause.
+
+[1] https://lore.kernel.org/all/1c76cb00-1fe1-4fd0-b7b9-86ddca6115ba@citrix.com
+[2] https://lore.kernel.org/all/08826b5879e2d9c354424279763d3ce5556f44cc.camel@amd.com
+
+> Issue a KVM_REQ_TLB_FLUSH_GUEST request on every MTRR MSR write to match
+> x86 architectural semantics.
 > 
-> Move kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS) into
-> svm_flush_tlb_asid() so that any ASID-level TLB flush marks ERAPS dirty.
-
-NAK, the whole point of KVM_REQ_TLB_FLUSH_GUEST is emulate TLB invalidations in
-the guest's domain.  If we're missing KVM_REQ_TLB_FLUSH_GUEST requests, fix those.
-
-I think we're missing a clear on the MOV CR3 flush when TDP is disabled?  Beyond
-that, nothing jumps out.
-
-diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
-index 11017f49b94a..39b1e79df6c9 100644
---- arch/x86/kvm/x86.c
-+++ arch/x86/kvm/x86.c
-@@ -755,10 +755,16 @@ void kvm_invalidate_pcid(struct kvm_vcpu *vcpu, unsigned long pcid)
-         * also via the emulator.  KVM's TDP page tables are not in the scope of
-         * the invalidation, but the guest's TLB entries need to be flushed as
-         * the CPU may have cached entries in its TLB for the target PCID.
-+        *
-+        * When ERAPS is supported, invalidating a specific PCID clears the RAP
-+        * (Return Address Predicator).  KVM flushes the RAP when emulating a
-+        * full guest TLB flush, so only the !TDP case needs to be handled here.
-         */
-        if (unlikely(tdp_enabled)) {
-                kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-                return;
-+       } else if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS)) {
-+               kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
-        }
- 
-        /*
-@@ -10740,13 +10746,6 @@ int kvm_handle_invpcid(struct kvm_vcpu *vcpu, unsigned long type, gva_t gva)
-                        return 1;
-                }
- 
--               /*
--                * When ERAPS is supported, invalidating a specific PCID clears
--                * the RAP (Return Address Predicator).
--                */
--               if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
--                       kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
--
-                kvm_invalidate_pcid(vcpu, operand.pcid);
-                return kvm_skip_emulated_instruction(vcpu);
- 
-@@ -10760,11 +10759,6 @@ int kvm_handle_invpcid(struct kvm_vcpu *vcpu, unsigned long type, gva_t gva)
- 
-                fallthrough;
-        case INVPCID_TYPE_ALL_INCL_GLOBAL:
--               /*
--                * Don't bother marking VCPU_REG_ERAPS dirty, SVM will take
--                * care of doing so when emulating the full guest TLB flush
--                * (the RAP is cleared on all implicit TLB flushes).
--                */
-                kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
-                return kvm_skip_emulated_instruction(vcpu);
- 
-
-
-> Centralizing the ERAPS dirty call in svm_flush_tlb_asid() ensures that all
-> ASID flushes (flush_tlb_current, flush_tlb_all, flush_tlb_guest) properly
-> set ERAP_CONTROL_CLEAR_RAP on the next VMRUN.
-> 
-> Remove the now redundant svm_flush_tlb_guest() wrapper.
-> 
-> Fixes: db5e82496492 ("KVM: SVM: Virtualize and advertise support for ERAPS")
+> Fixes: 9ba075a664df ("KVM: MTRR support")
 > Assisted-by: Gemini:Gemini-Next
 > Signed-off-by: Jim Mattson <jmattson@google.com>
 > ---
->  arch/x86/kvm/svm/svm.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
+>  arch/x86/kvm/mtrr.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index bf868da14cd2..f2fdca341dac 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -4171,6 +4171,8 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm = to_svm(vcpu);
+> diff --git a/arch/x86/kvm/mtrr.c b/arch/x86/kvm/mtrr.c
+> index 6f74e2b27c1e..ca5e5c7f7022 100644
+> --- a/arch/x86/kvm/mtrr.c
+> +++ b/arch/x86/kvm/mtrr.c
+> @@ -105,6 +105,7 @@ int kvm_mtrr_set_msr(struct kvm_vcpu *vcpu, u32 msr, u64 data)
+>  		return 1;
 >  
-> +	kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
-> +
->  	/*
->  	 * Unlike VMX, SVM doesn't provide a way to flush only NPT TLB entries.
->  	 * A TLB flush for the current ASID flushes both "host" and "guest" TLB
-> @@ -4229,13 +4231,6 @@ static void svm_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
->  	invlpga(gva, svm->vmcb->control.asid);
+>  	*mtrr = data;
+> +	kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+>  	return 0;
 >  }
 >  
-> -static void svm_flush_tlb_guest(struct kvm_vcpu *vcpu)
-> -{
-> -	kvm_register_mark_dirty(vcpu, VCPU_REG_ERAPS);
-> -
-> -	svm_flush_tlb_asid(vcpu);
-> -}
-> -
->  static inline void sync_cr8_to_lapic(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm = to_svm(vcpu);
-> @@ -5383,7 +5378,7 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
->  	.flush_tlb_all = svm_flush_tlb_all,
->  	.flush_tlb_current = svm_flush_tlb_current,
->  	.flush_tlb_gva = svm_flush_tlb_gva,
-> -	.flush_tlb_guest = svm_flush_tlb_guest,
-> +	.flush_tlb_guest = svm_flush_tlb_asid,
->  
->  	.vcpu_pre_run = svm_vcpu_pre_run,
->  	.vcpu_run = svm_vcpu_run,
 > -- 
 > 2.55.0.229.g6434b31f56-goog
 > 
