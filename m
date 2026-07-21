@@ -1,113 +1,130 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9CA38910F
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 18:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8281D22B8DF
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 18:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784659933; cv=none; b=XlPolh7kD1YeOdVL/f/l6G/aOhVrpUmC9FRkw8Whr0PvV06wLdSWIOybfuiekwaOt3rQ1A3MuuRn6MJN95B7FbUmeYTG3Bo8pCyq+T5HsSCHdHQdgJV3shicPiAuxH3aeR/dgYyam8npxQPbUYyWFRY4evcPbh2yhcMCJ1RAXDo=
+	t=1784660136; cv=none; b=Z9lRYukY61j0cZz4/9MsDXpGgMlUaGGMbpoNR1eBzbgIkcE4BD2So9vCyPY4S3VTiv6HxBzD+vgjbVbFqxMdzgUM+WhmCeM+8rs4tMp3Yapk0CeLDh+pyCnmfpjQhJtZQXJ1ums/OJZ7TypFxCPtlFv1Wx94TTRli1QFzG3N4X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784659933; c=relaxed/simple;
-	bh=L0qB3IFmnDfyTis92ihHfuGUKra0om9ZS5RHMRyKwo8=;
+	s=arc-20240116; t=1784660136; c=relaxed/simple;
+	bh=tUhC96BFnwLQmo/0DBZEar2awuINLoGSmfdQ70wpFEg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dRTXge2cx1gFJoeQ5w80l3du/d1yTg+AyPEsTa09yEEfpgQsIQ+9jIIBBXuZmu8G0XopcTgxWOkVIhGo5pmq9m0OyWkVtZvTSpFDoQmz4AxLnsTwkVTSXhNLbuVeSlVHuC4SeouIL3tiujNrLg0+KFIrs95aS1co4Io0RQbJC4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S8FvNfNy; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=UGnX/1VRXoo6SfnZ8GRBhi900oRF8PWXND2XUWpKmnqdCdmLpSYPWycwly1J4G3bpm+BC/OztL50fDcLWMRjh1Q6+GKt1Wnn7ukNpbgWCs1DC+V9BmXHJdDNQ7nOdrlgM0W8vE6wfNE/3CI+/M3Mar55ZHq5NmHOt9Fc2JSJogM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zb7YAPxQ; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S8FvNfNy"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c856470fe9fso6851743a12.2
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 11:52:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zb7YAPxQ"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8482b95574dso15029497b3a.1
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 11:55:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784659931; x=1785264731; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=hf5aaU24ifgPTG58w53ijqOW3Lbc06evOzBclrAYeGo=;
-        b=S8FvNfNycrnF4tFt0Ulj/fXeUxfmm8JorBhcOT0Tk2CC4d38fQopdNaIHxQZJ2Mw9z
-         Mc7AyyY49eFHIw6xw+dTiD5fJn7PnhiioSp0O41Nga7N7JGVb8aYAPtO0TwZdPqjpK1N
-         VVEyhbFjxloVbqJuqdmUBkkvBz6YpCdWfgFpS2SuPUduQtOmGP+kfmbBbExaMrFWCTuT
-         T3+G6senRSExHVoyEzsvoZzO6NutGm4Lp2fEmUp2zeryOC0zoLsUitnFtsLtcfwqLpMG
-         CB6I6WrZmxZUsmad3I8VP/2F5bNx5mYn0vZFPt32Be9qXQKXqpHnsMdWv2Cw50Vwr3rv
-         0z5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784659931; x=1785264731;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784660135; x=1785264935; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hf5aaU24ifgPTG58w53ijqOW3Lbc06evOzBclrAYeGo=;
-        b=G8ib53csEonQDKO8iqWHRiGCLc0L2NzAMix/SidWhHbqHt0vBHtjRYIc9fbc7a1oKp
-         aOAwZtLqJ07wZ0YTplgspO+vsflwNyzanU10QXWY/2fNT8ExiTe/6kOJPEoGJ60zBLjz
-         LM0f9EcxX9ESwCViFVZ8hwGIWLULwTV2PFZwfrKV4G83LSKQ4x6D4+orzuBV1Hj/VpmA
-         dqjraOum7rrq3sB3WX3Ic8PLdVvZN2mYW8FdRjUfT4Asl7M+rNrzq+Z7AZXG9Qv/7b+f
-         dNGg3SooiEWsG+51muVNnDFVX8+BoKXAYz46GYxV183WPxy+ljtQ9Wxh+xLjbJg4AXV9
-         u1QQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrGMP1GTuqhwhCxFGKrTTwTk4aL083zjXPk8cv8Pmsj7u4Ow8ByutVgX5RVHO/8RuMss3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi6AIysmm3Byx14AD9iAmKZc4rmv6oiMKgX3w5mx7tV8vPEIm4
-	yfMfwLwhOj4l7QOE3jleR6D/DQQZutWkWGLi3ZDDwcxK4g5QOrBEBRn3E8k1+0lBwC6OUzizeeG
-	hxgVZsQ==
-X-Received: from pfbml22.prod.google.com ([2002:a05:6a00:3d96:b0:84c:2e88:693d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:84a:b0:848:53c7:b927
- with SMTP id d2e1a72fcca58-84c294d0c5fmr20734642b3a.76.1784659930711; Tue, 21
- Jul 2026 11:52:10 -0700 (PDT)
-Date: Tue, 21 Jul 2026 11:52:10 -0700
-In-Reply-To: <CALMp9eRqaxhmADqOOWW9h4yctg5MxfU9AdL5C8MpFNzKJm-Big@mail.gmail.com>
+        bh=sh6amH3RhL1WJsitDE/xgJZ/YM0Of6GEW8psxmjx5y8=;
+        b=Zb7YAPxQaPEaxG4TM5g63Ei7j7EIBQHbhAMX1T+9Y9r+pbriG92Rw4JBA36aFlkZM+
+         V3BB7Fyv4sTzx8kLb6TFP6CXhOstzy9ifoLX6XcxcxGt3LJElftQV8IhGx+6N97ukcUL
+         tapL35AQtUcTkt7ZYAhbn6iCCYrek8fQtg5EH+D6luUQhEhtqYcjWLHvQgaxUDMNTzpv
+         WOGucbd6NxIdQKyhoigHGB4E2AOBBdhew8lk/6jyqARtPCozMyv1owQ0TfAq/hJON126
+         Mi4IkZZhLpd2KaEIfVGg3T5iKmSR5uroUQNO8YMDrbhYfVpvO6ZfMAUjuGTZv0e2yFg4
+         /jMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784660135; x=1785264935;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sh6amH3RhL1WJsitDE/xgJZ/YM0Of6GEW8psxmjx5y8=;
+        b=g22VUrm8V8vj5T7qNZcnLXrr0NrRB+Zow7Bs6DDMk80sVK2m2Qyfb7YOmbNUuwJ9w/
+         dRIbjeCsKIDr6eeROYSMKczaNfMaFuxkmZAMWIUDgrJy2wvg2e7WL30vKHEPh1mcqba4
+         rrh6PyfedM22Oay50YFZ/pbpxGUxdIPwHms+BtKuGn3HRMCt5tDBapgrvvERMT/5ipKI
+         RlG90Vuz/ibDOfuWF+VrLytlv4PxvtfSu/vxbZfcGfeFXAZzaBVj7nFvocalG2Ha4ley
+         PQ3dnTLmV77ICPoJyNYBWKfCI7pEAtgpnCqPbkYqVTUgxq/gJD5nWtD4xgXNt8bA7A3u
+         URew==
+X-Forwarded-Encrypted: i=1; AHgh+RpxI+1s3wNye8iMdobsQ+hCElT2es8KC4Q9rJOnZOi0rViFlkuv7YFgMMEDBxsk6HbEKgk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOFOgwkp//qm1UpICXrSeLws1+ibqKEpX5QMcB/GkMQfmDeK1V
+	ZGsBPPj0IIRik+atuVlmWVRpa5q8ACYpJP3k27gx/kS3vnvzZHCYifmFoxfFQNLcCBd2MgoBEHc
+	4ilWjcQ==
+X-Received: from pfgv11.prod.google.com ([2002:a05:6a00:c4cb:b0:84b:62d1:9fe3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:430a:b0:848:7ea6:4b03
+ with SMTP id d2e1a72fcca58-84c295839dcmr19212884b3a.75.1784660134557; Tue, 21
+ Jul 2026 11:55:34 -0700 (PDT)
+Date: Tue, 21 Jul 2026 11:55:33 -0700
+In-Reply-To: <CAEvNRgHjLmQcUSDKKp6jpsEiCyn+Cxnr-m5jweb=ZLAT8eh2kg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251120050720.931449-1-zhao1.liu@intel.com> <20251120050720.931449-3-zhao1.liu@intel.com>
- <aXO1_kmDSu_H1BoL@google.com> <aXXLZ9nCzTmeaSS0@intel.com> <CALMp9eRqaxhmADqOOWW9h4yctg5MxfU9AdL5C8MpFNzKJm-Big@mail.gmail.com>
-Message-ID: <al-_2k1Zuw6N4cvj@google.com>
-Subject: Re: [PATCH 2/4] KVM: x86: Advertise AMX CPUIDs in subleaf 0x1E.0x1 to userspace
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-7-seanjc@google.com>
+ <CAEvNRgFFEfHZTZOi_anSJDhqPvncuRiXxJt9hcRnAW9FPdFY+Q@mail.gmail.com>
+ <al-aDRTbDOPT1UbM@google.com> <CAEvNRgHjLmQcUSDKKp6jpsEiCyn+Cxnr-m5jweb=ZLAT8eh2kg@mail.gmail.com>
+Message-ID: <al_Apf37f7z8wgT3@google.com>
+Subject: Re: [PATCH v5 6/7] KVM: x86: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
 From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Zhao Liu <zhao1.liu@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Chao Gao <chao.gao@intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 15, 2026, Jim Mattson wrote:
-> On Sat, Jan 24, 2026 at 11:25=E2=80=AFPM Zhao Liu <zhao1.liu@intel.com> w=
-rote:
-> >
-> > > Unless someone feels *very* strongly about the "mirror" terminology, =
-I'm going to
-> > > use ALIAS instead of MIRROR when applying, to match KVM's existing te=
-rminology for
-> > > the 8000_0001.EDX =3D> 1.EDX aliases.
-> > >
-> > > /*
-> > >  * Intel-defined sub-features, CPUID level 0x0000001E:1 (EAX).  Note,=
- several
-> > >  * of the bits are aliases to features of the same name that are enum=
-erated via
-> > >  * various CPUID.0x7 sub-leafs.
-> > >  */
-> > > #define X86_FEATURE_AMX_INT8_ALIAS    KVM_X86_FEATURE(CPUID_1E_1_EAX,=
- 0)
-> > > #define X86_FEATURE_AMX_BF16_ALIAS    KVM_X86_FEATURE(CPUID_1E_1_EAX,=
- 1)
-> > > #define X86_FEATURE_AMX_COMPLEX_ALIAS KVM_X86_FEATURE(CPUID_1E_1_EAX,=
- 2)
-> > > #define X86_FEATURE_AMX_FP16_ALIAS    KVM_X86_FEATURE(CPUID_1E_1_EAX,=
- 3)
-> >
-> > LGTM, yes, ALIAS sounds better than MIRROR.
->=20
-> Our friendly AI reviewer asks: given that these are aliases, shouldn't
-> they be hidden from the guest if the features they alias to are hidden
-> (e.g. clearcpuid=3Damx_int8).
+On Tue, Jul 21, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> I like Option B below better, which should also resolve my issue.
 
-Eh, clearcpuid taints the kernel and is quite firmly "experts only" functio=
-nality.
-And practically speaking, clearing things like amx_int8 can't work because =
-it won't
-hide the feature from host userspace doing raw CPUID.
+Roger that.  The more I stare at this, the more I like Option B, too.  I'll go
+with that.
+
+> > I'd be a-ok with providing
+> > separate kvm_arch_gmem_make_{private,shared}() under GMEM_CONVERT.
+> >
+> > I guess at that point I don't have a strong preference betwee having a single
+> > kvm_x86_ops hook versus also having kvm_x86_ops.gmem_make_{private,shared}().
+> >
+> > I.e. Option A:
+> >
+> > 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > 	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > 				kvm_pfn_t nr_pages, int max_order)
+> > 	{
+> > 		return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, true);
+> > 	}
+> > 	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+> > 				bool to_private)
+> > 	{
+> > 		return kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false);
+> > 	}
+> > 	#endif
+> >
+> > 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+> > 	void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
+> > 	{
+> > 		WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
+> > 	}
+> > 	#endif
+> >
+> >
+> > Or Option B:
+> >
+> > 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> > 	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > 				kvm_pfn_t nr_pages, int max_order)
+> > 	{
+> > 		return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages, max_order);
+> > 	}
+> > 	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+> > 				bool to_private)
+> > 	{
+> > 		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> > 		return 0;
+> > 	}
+> > 	#endif
+> >
+> > 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+> > 	void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
+> > 	{
+> > 		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> > 	}
+> > 	#endif
