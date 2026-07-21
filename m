@@ -1,393 +1,138 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7953C276F
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6E73CAA3C
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784625028; cv=pass; b=JN0fsPTqLgZ2RF6/Ipu2ETSdL7QmxmDVgVswS6TSaVcT4SLGtAWg1RxrumfoVRX1EtRbVTNdGKaOy9iA3oQoFMwIxi5sXQRxZVqHL94babUHWexpigGo+A8MxfhVR/+JfeXgu8cvCwKVKKjvhI86VcPWGQ3ukmbjn/5V6PZXGEk=
+	t=1784625372; cv=fail; b=Z7+Cakfptest/QOrZ2IoB9NlqazfdIddNG56c1+KQHQZjy1LwXky8ma4UXoGU4MctVj7qOPX6ceXhWYxtjE0eBaeseDglXPbJm3SWJZjabO4MUuP8U7Seempbof9LO2Dar6bIAijqE1K3tNmqdZ4bDtqDHp1+ZtyqRb6fqD9vCQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784625028; c=relaxed/simple;
-	bh=FO6kAcx02wAcP7yQ8pr7IPPuxHiVb6JN3TdWIN1pm7Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X+D6Xzgz4DvjGDROFWaDNbnHLD7xmm6pV/Cbe0M8is+/mijT0gM3BqVfTZoWAc6xcLzPPxBLKGRyNwNOKbJaK6vxmKpXQCyJf+w78gbvKXOlNXzXrdhzcmTQ7cwHj2CvwM34vPUG3h4Oxslz90RnFaJT10p0z0PiJb72pJTNIIE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=idMhzu7y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SghhmPfG; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784625372; c=relaxed/simple;
+	bh=fy4JprjR3XB/76D9ZSQxpwaUNbrIVjk6fpJS6d4hT90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tJzq0jkCLp8WeU7V5io0T4dEUtEQ/sbKhN9NmQ8FWutN5FU1KIpbGAYIc9ZxqjMSMShL2FhtrRWN8YasB81DRmIk3oteJW1sUqPYAiALOHTCKTkU9F51o0nXk+ZCbu/bFj0PDZFesq936jJpgcxBuC9a6s/YlFOaIhKo35yUvxg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=skzbQN7Z; arc=fail smtp.client-ip=52.101.52.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="idMhzu7y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SghhmPfG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784625025;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=slsU2Ayz2bb8lrdP9X/oYxa3SWjpysmpRrrI6Ee/Hrg=;
-	b=idMhzu7y6b1RD5jyE2Nskk2K3gKeMvU1zPrXTsA8xM6cmP9a8J/UPpxQr5/KgWdbWl2dkv
-	TKcyH4DIdL+ZgTfLyJSNegBUP9z6ihTOA4PQL11YgeTxonRAWivS0M/8M8ES908AIq3mZY
-	cSaL/l8VCldCSWnqGWURE9/tecuvBQU=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-31wgEzVIM2elPosePvKZ3Q-1; Tue, 21 Jul 2026 05:10:23 -0400
-X-MC-Unique: 31wgEzVIM2elPosePvKZ3Q-1
-X-Mimecast-MFC-AGG-ID: 31wgEzVIM2elPosePvKZ3Q_1784625023
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-81e8a76a273so101280937b3.1
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 02:10:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784625023; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sz76lGBzviQ6+K4QWjEcaB9Gp3kesjapSeopCXLdhSLRRilA/ft7JSZZRUmnWUwKLD
-         9QdMXNRdSiwmnY0gTrL+3O3QkjGWkH0fNxgIXHXvVUil+GG7PAooETTGzY8nmqBO0xgL
-         C3KStq7ntukxycowPwigLRyIchv33YQjI5SbrGA7eWlRhc5s2bhkxhlqR5Dzl3e3JpAu
-         Bgvek1l6ZapEkleFfdj5e5QhWPyrpP/sGOvvMPawRc8/e2kIEVUXxhdWXC0jDf/EZEMq
-         f8euVxYOFWES+qvZ0QEoeNHyJc2SoXMaP6fn3fyrpWT92ze9VgzQS5732WP/BfRxFFmo
-         KzoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=slsU2Ayz2bb8lrdP9X/oYxa3SWjpysmpRrrI6Ee/Hrg=;
-        fh=2Bqr+lNtMsiHJTqT/aT6JE05GJd2PVg7nfBRgwfO7yc=;
-        b=dCJNV7qnk/10d7U6DZ0YAAYI1etxal7mKzQg0UWmfqKGin5KoJDqerBNpwNUyDG2Cy
-         DYjESwZ7tYKtbvvRlW+0uFzYHQLAYluya00uffZGla9yvOtdEKlXzP9lap+QKheBkghn
-         V928g36ij4qcdFIs+Jqe7cNvdD6sRUw8ShwoF/VEYZv33riMKjk7NzMvekIs+FqtmsFy
-         CaGagEFoG5gK/WpPmrUZI8VRMsXD7Ue8mYwITOV/Bety9T+6OOWqbdGrGq3U07TpYj/p
-         KGHQ8KBGV4NVBKzh6HutC3ISepCWTxfq5i+RGEbx/5gYYSfZzpqY02ZUDN0loJEVu7i1
-         3soA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784625023; x=1785229823; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=slsU2Ayz2bb8lrdP9X/oYxa3SWjpysmpRrrI6Ee/Hrg=;
-        b=SghhmPfG8jAd8ULBgjcW72YVXVDOblM9/KjSrbIPVP5g+K5qh6UpZPQlm8jxLAkJLV
-         wNYANAwrx1J8gieVuuy6GwuhTwwduobi+lYlltNakR2uMNku6NSBmQfp/UKAXQeaRfFm
-         TZDsMSxixhIOh8kXNnTG7fq3XmUmZHsEjYCDQIt6xYn2Q0yJQMCTcBZon3ahV4aPRCwL
-         F0gG8aXQnFPPwFCyV9xFqY7SNrGW49OAJ5BcqGUfCDWaWTst7wVLvy0oL0TwAA6yP4qX
-         AmBTCG+VicWN+YYOg0ILQ2XThNOpF9+lKaQGfzWW1j4qI/uuZQ+BozwBB39SRS319q84
-         EFkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784625023; x=1785229823;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=slsU2Ayz2bb8lrdP9X/oYxa3SWjpysmpRrrI6Ee/Hrg=;
-        b=LkV+bORab/k1ZGdrMuo3ySXDIuRnf05TlHT8GelR3mISl/YaTbMoldj0CRvsWPv9fK
-         9+u35BdHWVhCb2sq4wQrfHX9+QKXd6Osfwwytq3+l8UAIMnOlB/Ght6eDTUDQecyq78j
-         dC6KV+LWqZdbpCKcASt/3cSflV1AlSyyBsk0EMZ3dvDDB7xHvf0FAVz9auTDf7m3zTc/
-         WmvLWy80JnJmEZ8htomt44/0ukv27WR65B3NdzfM/FlgGa7OQQ37CTMNeHGvQT+pnEYL
-         AG0vcgZTigQ6Ca1yjOGgbqLhEV6C6soDQ5KbXDInNbq3XzT39gTfBmCOwH9hwhVrmE9q
-         Gs5g==
-X-Forwarded-Encrypted: i=1; AHgh+RoDO+GcqkKYiq3QJO6xT5suoGvbPtDJmdac9Ua7hCKEOnTex40babqPQYqgCJJdLTWOl9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKOJJSmB4fwexCovSJjp7YGQMOtwi6Ly8Nmm/4i8Fk+I/WmR0b
-	0hwximXjDDA1eNgdMANpQmHTWAMsfjMxTqsHbzZtJqTG28QMYjTZLcSY9J7F62jC4mdPxOD1+9N
-	vT8KkzQOVyACJMSlWbOvsrVK8IYs6KR2rDUXS7JUlodSse9qxV0u3ElYRJsxVmy/ztRpquwvGRl
-	ZZkOw2+9DS6Bh1IY1TX/t/4YEz0mix
-X-Gm-Gg: AR+sD11zaeeem/qY0kjWlmHW0WY8jcYp6rVn1ioUJRP53Bxw/qvx9slmEyOWthINdoR
-	06WujHZDdBNwhlAzphQcpOCRvs5yLlbcfPv/UyDHTAHaBf7sTuAxtUDtxMhDp7PJjPcuedYDw/N
-	SEfOJw5mFsH1R7PKOcwidrYRdMKOISxqzns452WI34RSTaavuKhHonFQqYV7I7+I74GCcaTCHu6
-	9xDHup1XDlcy1STBKex4YbH2Rv2dmrNf/KUJI1QsyESqpIGgvtbuRd2xPg=
-X-Received: by 2002:a05:690c:dd0:b0:80d:5ddd:1989 with SMTP id 00721157ae682-81ef256b495mr59429967b3.10.1784625022827;
-        Tue, 21 Jul 2026 02:10:22 -0700 (PDT)
-X-Received: by 2002:a05:690c:dd0:b0:80d:5ddd:1989 with SMTP id
- 00721157ae682-81ef256b495mr59429897b3.10.1784625022303; Tue, 21 Jul 2026
- 02:10:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="skzbQN7Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FuiLsmMFSwKXBZiieCvhzo2Y3YfqP6k1MqH8tMjgpbkFKnw/loBU7sCaR46vDcu54D441lI2yt79rA5ehP1BhD64D0U17M7dOPHKobhlBTDfYqY1Ci57x56xOyfVpGwJwOqH9Gnhk2h1t0x+NAZg5ZJfyRuZfpxuc6iG6KG/OCgTNbzw2RKThQHDK3KBzatbiJS0CYtBaq7bhm7A2SyrUYHk/UT2kX3WqpomZzTWDYrmgMPJvnsFk2CMAR3pGV4+7qUsme10c2WImjMQUvwX5gp1RfN3fOvw2YE5/0a3SzDWyRKi/P0xmBVmrZsmBTPascuzGrgtwLa6DbYak8X1lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BtHNFZbjBuwJWnYBKZLgmkZ1S4G8l5PeQzuQTP3K1DI=;
+ b=ypsmv+qa+jJ5Wo6FKViTFyAefDUK4oVedtx4+s2wVGuDxcVmFfclYQ675BrFyDDz4pSRRdjZmwl6R7gurFzEmPg1+oU7x8oJYEFjLbB78PS4m3VC2Yhp9T8Fbeoyu/NlcCSuoQxpgfkzTj+MOjpaRFc/Us9cnq+0tymvGnD0EWlPB8yzo13t+IfavXCf3t4xVawfWGCGl+kzXRyT5uxAGroAmFFnL8YSHYRtB4zdVfcdklYE1UvBoRBnf+JIqM+t1D5UxE2xILVpXtxcEfyD6zoVLQaQZVTpOXVQLEQidjCOYp0a6cG5gGRC3US1ft7MN6K5auSYprhdx3PxkuJRwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BtHNFZbjBuwJWnYBKZLgmkZ1S4G8l5PeQzuQTP3K1DI=;
+ b=skzbQN7Z5kaEHjvQz26VFBrl64xkmvAPObDYFoHiB/x5Kc2Y8sn+Mn6jzUqycxUNqJrIgH99/gn0rKoML5zP4uLIX0wegbrhAGxDJHS+lMyY8goqVUxKWiY2cQ6DGHsp5nBwFoFzRLrBM0Vun4ApucG0FLZOUmDeuLAEEjqt3jk=
+Received: from BN0PR02CA0037.namprd02.prod.outlook.com (2603:10b6:408:e5::12)
+ by LV3PR12MB9165.namprd12.prod.outlook.com (2603:10b6:408:19f::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Tue, 21 Jul
+ 2026 09:16:08 +0000
+Received: from BN2PEPF000055DA.namprd21.prod.outlook.com
+ (2603:10b6:408:e5:cafe::4d) by BN0PR02CA0037.outlook.office365.com
+ (2603:10b6:408:e5::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Tue,
+ 21 Jul 2026 09:16:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN2PEPF000055DA.mail.protection.outlook.com (10.167.245.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.0 via Frontend Transport; Tue, 21 Jul 2026 09:16:07 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 21 Jul
+ 2026 04:16:07 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 21 Jul
+ 2026 04:16:06 -0500
+Received: from [10.136.45.190] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Tue, 21 Jul 2026 04:16:03 -0500
+Message-ID: <82df2284-462e-478b-b4d7-da7bc31b1115@amd.com>
+Date: Tue, 21 Jul 2026 14:46:02 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720141040.181946-1-r4o5m6e8o@163.com>
-In-Reply-To: <20260720141040.181946-1-r4o5m6e8o@163.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 21 Jul 2026 11:09:44 +0200
-X-Gm-Features: AUfX_mypA7oTxSucKfqGCkqmjhFuRqPhh_bDH2dF50m_ZTQcNCE2RIvdENtQTlY
-Message-ID: <CAJaqyWe_nhVOvfA03So_edVO_+1UeHCC6RGnHRQB9dq7CWS4LQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] virtio: SQ/CQ doorbell polling for vhost-scsi
-To: "rom.wang" <r4o5m6e8o@163.com>
-Cc: mst@redhat.com, jasowangio@gmail.com, stefanha@redhat.com, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, kvm@vger.kernel.org, qemu-devel@nongnu.org, 
-	Yufeng Wang <wangyufeng@kylinos.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] KVM: SVM: Refactor svm_update_lbrv()
+To: "Nikunj A. Dadhania" <nikunj@amd.com>
+CC: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>, <kvm@vger.kernel.org>, <x86@kernel.org>,
+	<yosry@kernel.org>, <jmattson@google.com>, <thomas.lendacky@amd.com>,
+	<nikunj.dadhania@amd.com>, <ravi.bangoria@amd.com>, <santosh.shukla@amd.com>,
+	Shivansh Dhiman <shivansh.dhiman@amd.com>
+References: <20260721050600.87268-1-shivansh.dhiman@amd.com>
+ <20260721050600.87268-2-shivansh.dhiman@amd.com>
+ <9dbf6e5d-c367-4caa-9506-95d9cbc74769@amd.com>
+Content-Language: en-US
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+In-Reply-To: <9dbf6e5d-c367-4caa-9506-95d9cbc74769@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DA:EE_|LV3PR12MB9165:EE_
+X-MS-Office365-Filtering-Correlation-Id: 006f17db-a737-4f07-0a85-08dee708b2c9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|36860700016|82310400026|1800799024|6133799003|11063799006|56012099006|10067099003|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	FbeAQn9TrumgrtnfdGK0zmypWNxZecnEtk51ci85tGES3WeqmhmeyH7prWXjhkvBaM8p69+vFh+QulTmbiEits9yw3LZfQNFL+xE3sqpHb+sVQmgW48fguUGfVdXT+jVICKnMkgqCCXGEeBFYj0IP0GLLd1cc0jHGTNPaQjZKfwenz9crycHMPOA9EOu4nEGSx3vUvgAkQTumO4ZIAl3nYkVoMglBkLCesliuxl1UMA1CrgV2LCbzUydwzRZTQfYJVI011j6YfXEkNKF/IIdwF8ztb5CCK+pUae5Tg2dUmET09BwS9TcP9pe2J2b28jzQ+0Q6y10EfUkPSBT/PB8RnI36WuHgozeA5SQcSPUMbCwe0v0Ytq9lv+brUl7qn5ZRWwbPvIbumijF0jJzBB4c2aC9I/3bzF1Ym12WhD33U0025CDlXuxrGHixK64UvgDstG9Nh33m8RDJR9WL4zHnF5nvNxqTq9bxKkS0hcmw3xzGUAm2Uwlndq6mLOcPvvtTvdiCIohqg+K2U4TbMjYTrt6Aw+g0ejYJyO6MDV9Tg8DAJ7+cr52dlYl99Ni9rjlBE6HdXoN/EQwSu2cT3ePZs0ITFuL2OztwiKn0iuTMVO1dFkcPreiBnIJSDMwyQZ0cI3W2pgSmaplm5BHTFalj7rwsmitAnvlbqzz4p10zeJfEl5UquQzgCHjHFvyaMu9sfVE5scw1FEnCqVxQTxL5Q==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(36860700016)(82310400026)(1800799024)(6133799003)(11063799006)(56012099006)(10067099003)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Ob45rRKTRTiMtKrrQzvQuJgYJA52OUBRx6F5EbBPQVjKhfO8qO8igpLVJiUcV1mFnHqQpwtEw/wBSMU9UsR7oeK7q9Wm2CkI/TnTZ70aezzj7esSlNfSK7zRQjaPwXfU6+ZB0hkOZJQYdiPLReCfvS8dVqwpqpKSXNl1Urud7x0pIa7Aw5xQxLqdAnSU4w+EMTRAhZnO6ydMrXIFDz+GwW/elpZxEDNz6famTjEfOb4k+21mIeqRZyKZaMqTkT3KFf3n46RVI1Lq5wnHzj1DeRRcqv7yWLYKLEL5s8G1DUnynwiKuezZEYlPubC6A1FIPVXAIK50J6hLVZ69PR9Gj3rDRJwG5Rh68sL++/CBbGGsSu4bYEctvl752xYz8Y7FEYXkJmN6u0RYON+94XKXBndx+Xls/Gjp1K3Av2rflJpwK58WbyQyEAntLfU9Bazi
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 09:16:07.8072
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 006f17db-a737-4f07-0a85-08dee708b2c9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DA.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9165
 
-On Mon, Jul 20, 2026 at 4:19=E2=80=AFPM rom.wang <r4o5m6e8o@163.com> wrote:
->
-> From: Yufeng Wang <wangyufeng@kylinos.cn>
->
-> This RFC proposes a new virtio transport feature, VIRTIO_F_SQCQ_POLL,
-> that eliminates VM exits on both submission and completion paths for
-> vhost-scsi by using shared-memory doorbells and kernel polling
-> threads, following the io_uring SQPOLL model.
->
-> This is an early RFC to gather design feedback. The implementation is
-> functional and has been tested on arm64 and x86_64. We are not
-> requesting merge at this time.
->
->
-> Problem
-> -------
->
-> vhost-scsi uses MMIO writes (Guest -> Host) and MSI-X interrupts
-> (Host -> Guest) for notification. Each notification involves a VM exit,
-> which becomes a bottleneck at high IOPS:
->
->   - 4K random read, QD32, 8 jobs: 341K IOPS baseline
->   - With ~340K VM exits/second, the exit overhead dominates
->
-> Existing mitigations (vhost-net's tx polling, blk-mq iopoll) only
-> address one direction or require the submitting task to poll. Neither
-> eliminates VM exits on both paths simultaneously.
->
->
-> Solution
-> --------
->
-> Introduce two cache-line-aligned doorbell structures, SQ (Submission
-> Queue) and CQ (Completion Queue), placed alongside the standard split
-> virtqueue:
->
->   - Guest writes sq->idx instead of MMIO kick; Host poll thread
->     detects the change and processes submissions.
->   - Host writes cq->idx instead of MSI-X interrupt; Guest poll
->     thread detects the change and invokes completion callbacks.
->
-> A NEED_WAKEUP protocol (mirroring io_uring's SQ_NEED_WAKEUP) allows
-> either side to sleep when idle, with the other side responsible for
-> waking it via eventfd.
->
-> Feature negotiation via VIRTIO_F_SQCQ_POLL (bit 42) ensures zero
-> overhead when not negotiated =E2=80=94 the driver falls back to tradition=
-al
-> MMIO kick + MSI-X interrupt.
->
->
-> Performance
-> -----------
->
-> Benchmark: fio, 4K random I/O
->
-> Test configuration:
->
->   arm64:
->     CPU:   Kunpeng 920 (2.6GHz), 8 vCPUs
->     Disk:  NVMe INTEL SSDPED1K375GA (375GB)
->
->   x86_64:
->     CPU:   Intel Xeon E5-2680 v4 @ 2.40GHz, 8 vCPUs
->     Disk:  NVMe SAMSUNG MZ1LB960HAJQ-000MV (960GB)
->
->   Backend: vhost-scsi with TCM loopback to NVMe device
->   QEMU:    vhost-scsi-pci with VIRTIO_F_SQCQ_POLL negotiated
->
-> arm64 results:
->
->   Test              Baseline     SQ/CQ Poll   Change
->   -----------       ----------   ----------   -------
->   randread QD1      22,427       28,289       +26%
->   randread QD32 NJ1 89,910       75,665       -16%
->   randread QD32 NJ4 186,763      379,549      +103%
->   randread QD32 NJ8 199,967      550,633      +175%
->   randwrite QD1     21,912       27,261       +24%
->   randwrite QD32 NJ1 85,349      81,389       -5%
->   randwrite QD32 NJ4 190,443     355,811      +87%
->   randwrite QD32 NJ8 196,552     566,640      +188%
->
-> x86_64 results:
->
->   Test              Baseline     SQ/CQ Poll   Change
->   -----------       ----------   ----------   -------
->   randread QD1      8,263        9,552        +16%
->   randread QD32 NJ1 127,412      162,805      +28%
->   randread QD32 NJ4 303,208      375,056      +24%
->   randread QD32 NJ8 341,625      371,193      +9%
->   randwrite QD1     20,773       30,332       +46%
->   randwrite QD32 NJ1 133,316      159,207      +19%
->   randwrite QD32 NJ4 233,373      229,224      -2%
->   randwrite QD32 NJ8 231,442      231,676      +0%
->
-> Multi-queue workloads (NJ4/NJ8) see significant improvement on arm64
-> (87-188%) and moderate improvement on x86_64 (9-24%). Single-VQ
-> high-queue-depth workloads show a minor regression on arm64 due to
-> polling overhead vs. VM-exit savings trade-off, while x86_64 shows
-> improvement across most configurations (16-46% for QD1, 19-28%
-> for QD32-NJ1) due to lower per-VM-exit cost on x86.
->
->
-> Why Not vDPA?
-> -------------
->
-> vhost-vDPA already provides doorbell mmap and polling. A reasonable
-> reviewer would ask: why not extend vhost-vDPA instead?
->
-> Three reasons:
->
-> 1. No vdpa-scsi device exists. The vDPA framework
->    (drivers/vdpa/) currently has hardware devices for net (mlx5,
->    ifcvf, etc.) and software devices for net and blk (vdpa_sim).
->    There is no virtio-scsi vDPA device, hardware or software.
->    Building one means re-implementing vhost-scsi's TCM integration
->    (SCSI CDB processing, ALUA, persistent reservations) under the
->    vDPA device abstraction =E2=80=94 3-5x the work of extending vhost-scs=
-i.
->
 
-I don't have a lot of experience in vhost-scsi, but maybe using
-generic vdpa device and ~passthrough all those calls to something
-similar to vhost-scsi helps? Live migration is still a challenge that
-way but you already mention that in Known Limitations, so maybe going
-to generic saves a significant amount of work.
 
-https://patchew.org/QEMU/20221215134944.2809-1-longpeng2@huawei.com/
+On 21-07-26 12:10, Nikunj A. Dadhania wrote:
+> 
+> 
+> On 7/21/2026 10:35 AM, Shivansh Dhiman wrote:
+>> Rewrite the enable_lbrv computation in svm_update_lbrv() as a series of
+>> 'if' statements. Rename nested_vmcb12_has_lbrv() to nested_lbrv_enabled(),
+>> expose it, and use it instead of open-coding the nested LBRV check.
+>>
+>> No functional change intended.
+>>
+>> Suggested-by: Yosry Ahmed <yosry@kernel.org>
+>> Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+>> Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+> 
+> Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+> 
 
-Also, I'm failing to see the advantage of the Send / Completion queues
-over a more agressive usage of event_idx, VIRTQ_USED_F_NO_NOTIFY /
-VIRTQ_AVAIL_F_NO_INTERRUPT or VIRTIO_F_NOTIFICATION_DATA combined. Can
-we explore what does these lacks compared with the send and completion
-queues?
+Thanks for reviewing my patch.
 
-> 2. vhost-scsi is a deployed interface. libvirt, QEMU, and
->    OpenStack have vhost-scsi configuration APIs and operational
->    tooling. Switching to vhost-vdpa requires a new backend, user
->    migration, and toolchain updates. SQ/CQ poll as a vhost-scsi
->    feature is fully backward-compatible =E2=80=94 no existing deployments
->    break.
->
-> 3. The protocol is transport-agnostic. The SQ/CQ doorbell design
->    (struct vring_sq, struct vring_cq, NEED_WAKEUP handshake) is
->    orthogonal to vhost vs. vDPA. The same UAPI can be consumed by
->    vhost-scsi today and a future vdpa-scsi device. Implementing in
->    vhost-scsi first does not block future vDPA integration.
->
-> We acknowledge that vDPA is the long-term direction for virtio
-> backends. If this SQ/CQ poll protocol is accepted, it can be ported
-> to the vDPA framework; a vdpa-scsi device is independent work.
->
->
-> Patch Structure
-> ---------------
->
->   Patch 1: UAPI definitions (virtio_config.h, virtio_ring.h,
->            virtio_pci.h) =E2=80=94 shared interface for all components
->   Patch 2: vhost kernel support (vhost.c, vhost.h, scsi.c,
->            vhost.h UAPI, vhost_types.h UAPI) =E2=80=94 Host poll thread
->   Patch 3: virtio guest driver (virtio_ring.c, virtio_sqcq_poll.c,
->            virtio_pci_modern.c, virtio.c, virtio_scsi.c) =E2=80=94 Guest
->            poll thread and submission path
->   Patch 4: QEMU support (virtio-pci.c, vhost.c) =E2=80=94 PCI config
->            forwarding and vhost ioctl bridge
->
-> Patches 1-3 apply to the Linux kernel tree. Patch 4 applies to
-> the QEMU tree separately.
->
->
-> Spec Status
-> -----------
->
-> A virtio-spec format document has been prepared and will be submitted
-> to the OASIS virtio TC as a proposal. This RFC stage seeks design
-> feedback before initiating the formal spec process.
->
->
-> Known Limitations (Future Work)
-> -------------------------------
->
->   - CPU hotplug: no notifier registered; poll thread may be
->     migrated when its CPU goes offline. Planned: kthread_park +
->     dynamic rebind.
->   - Live migration: no explicit stop/flush coordination during
->     migration. Planned: VHOST_BACKEND_F_SUSPEND/RESUME integration.
->   - SMAP overhead: Host uses get_user/put_user for doorbell access.
->     Future optimization: GUP + kmap to map pages into kernel space.
->   - Backpressure: no "slow down" signal from device to driver.
->     Future: CQ throttle flag or avail_event reuse.
->   - Packed ring: not supported; explicitly rejected at feature
->     negotiation. Future: add packed ring doorbell support.
->
->
-> RFC Goals
-> ---------
->
->   1. Validate the overall design direction (doorbell + polling
->      model, NEED_WAKEUP protocol)
->   2. Get feedback on the feature bit allocation (42) and UAPI
->      structure design
->   3. Understand whether vDPA concern is a blocker or can be
->      addressed with the transport-agnostic argument
->   4. Collect guidance on prioritizing future work items
->      (hotplug, migration, spec process)
->
-> We welcome all feedback, especially on:
->   - Whether the NEED_WAKEUP protocol design is sound
->   - Whether the per-device Guest poll thread model (vs per-VQ)
->     is acceptable
->   - Whether feature bit 42 is appropriate or if a different
->     allocation is needed
->   - Any concerns about the SMAP overhead in the Host poll path
->
->
-> How to Test
-> -----------
->
-> Patch usage:
->   Guest Kernel: apply patch 1 (UAPI) + patch 3 (guest driver)
->   Host Kernel:  apply patch 1 (UAPI) + patch 2 (vhost support)
->   QEMU:        apply patch 4 (vhost-scsi bridge)
->
-> 1. Set up vhost-scsi target on the host (see:
->    https://wiki.libvirt.org/Vhost-scsi_target.html#Host_Setup)
->    using targetcli to create a TCM loopback device, e.g.:
->    targetcli /backstores/loopback create dev=3D/dev/sda
->    targetcli /vhost create naa.5001405376e34400
->    targetcli /vhost/naa.5001405376e34400/lun create \
->      /backstores/loopback/dev,/dev/sda
->
-> 2. Boot VM with vhost-scsi using patched QEMU:
->    qemu-system-aarch64 ... \
->      -device vhost-scsi-pci,wwpn=3Dnaa.5001405376e34400
->
-> 3. Verify SQ/CQ poll mode is active on the host:
->    dmesg | grep "vhost-sqcq"
->    # Expected: "vhost-sqcq: vq[N] poll thread bound to cpuN"
->    # and 10s stats: "vhost-sqcq: vq[N] cq=3D... ema_lat=3D... interval=3D=
-..."
->
-> 4. Verify feature negotiated in guest:
->    dmesg | grep "VIRTIO_F_SQCQ_POLL"
->    # Expected: "VIRTIO_F_SQCQ_POLL negotiated, starting poll thread"
->    # and 10s stats: "io_stats: cq=3D... avg_lat=3D... interval=3D..."
->
-> 5. Run fio benchmark (compare with unpatched QEMU/kernel baseline):
->    fio --name=3Drandread --rw=3Drandread --bs=3D4k --iodepth=3D32 \
->        --numjobs=3D4 --runtime=3D60 --time_based --direct=3D1 \
->        --filename=3D/dev/sda
->
-> Test scripts (run-sqcq-compare.sh, compare-sqcq-results.sh) are
-> available and will be sent as a follow-up to this RFC.
->
->
-> Thank you for your time.
->
-> ---
-> Yufeng Wang (4):
->   common: add UAPI for SQ/CQ doorbell polling
->   vhost: host kernel support for SQ/CQ polling
->   virtio: guest driver support for SQ/CQ polling
->   qemu: add SQ/CQ polling mode support for vhost-scsi
->
-> Patch 1 (UAPI, 3 files): +41 -1
-> Patch 2 (vhost, 5 files): +794 -20
-> Patch 3 (virtio guest, 10 files): +840 -3
-> Patch 4 (QEMU, 14 files): +179 -3
->
-> Total: 32 files changed, 1854 insertions(+), 27 deletions(-)
->
-> --
-> 2.34.1
->
-
+Regards,
+Shivansh
