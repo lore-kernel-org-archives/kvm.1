@@ -1,139 +1,106 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBA44C9552
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763735AC17
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784630140; cv=none; b=tpMl+2CGrZBXubWQb68z/FV/VG0qA/nMVeqCQoQirllo7KBldePtjTG2jRqsgAqsjtCDs5gut9nC3Cb6Nib4fCa+fqNHxmE4bYWELQwA6KH1JOulg6rVue3j32KD0DkvJbjlSIcd8O/dlNdm9tvGJYennhVsQA4Cbcq/xVhLe4M=
+	t=1784630905; cv=none; b=ugNSQyOTWJiJB0uAvX4ivTcHAp1q3BOXYIzgdfy+4Oe+pWymEjmbwn6bB8khSLBjbiZ4gdRhhkN9LT+fJ2QsAia9HjH7T2zWQgQ77/7QODU9zOQmpSZytSRzuOfnkYZ5gjxP0ZOaofGZPYuhPhBVAPyMEJyaoDlGsg2hp4A6f+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784630140; c=relaxed/simple;
-	bh=nVrRFr7SXPIbywSEEfW3Ni8u2i1dZH0gp2i8DA7u3d0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFCbZct+F1jjcvLbfHrMHYFa8JRmMlcXuk74Zhw3xu0kO4QQK4mvxClN4JvaWUAZ4bwMZxnReI8VZxZuPam19ORRSinaPasLN1EkrbJNixJNepVQ50WRMANmQYKiW8Rbo3nYmCffa9v8ct2NuJzEjd9svcFWEQsGShc4RShU/WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JcYpCXqV; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784630905; c=relaxed/simple;
+	bh=r4o+KObdYXf1v88imr6WghCrQvA5zRKt88qbhclbR6g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=GbkxdfturupfMlO+WEE1wqEZVFQoIz+szsL+3ORpRLmOb368Jv+QojgHskzY4rcyNRSE8kV5BjIckynCmuPCh/Ok/IdYPFXzVYBJsxprrcPmw5FpIqpwPzD8ys2hDnCPnBj88EI8BKJydTkENO9dbaSaWuQvm2Sw80aOApVs2V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HH1rDbwv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JcYpCXqV"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so71893525ad.3
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:35:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784630139; x=1785234939; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xyu85tVI7qhkAhG73qiWVn5ZsmTezNl/fK8tiEf0dEU=;
-        b=JcYpCXqVhmbhUPRfEFlQsXu4Hr3UQ/x4hvcuX/9UoxgZ1N+INNc6Tq+i50P3gT+bxq
-         kMdDnZzrjL+tG8+2B8XbQG35Q8GRn1mQ3xDcMwWEKJR++Y93RfBNtBo32pan0xnUqrZu
-         Y2zEiYKLcxxFlHJITPf3s6iUwOrhroNMQH+m+FkqgYWKLf6RihrGlX+OniMmBiHG/jG5
-         9dlgCtAJh14fL8GUpHxCnjZiSpxG+ZXv/EqRZaJCS6Wb2XQKSlgF8UqUNJAjKV6A+SbH
-         HU9WAaLyortIctXTIHP+2q5e3XMjq5vs4jV/DuC6eTTv/EWzX16i/Tx0zOkKo6J/+LZz
-         DmVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784630139; x=1785234939;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xyu85tVI7qhkAhG73qiWVn5ZsmTezNl/fK8tiEf0dEU=;
-        b=kI1WJ99feY+dl7w2o9Ad4mthPP6nmclcDxO7ek4RrGBCCsFrK5ZMZcC1fX2P97iqbV
-         233jZU8r6D9D5jOdnEqUOxpZ7L8Orj1eVBBZUjjVQBGoQuozoJ6SkRsg+lsZEhh8prZP
-         UZqp+s/DNh3+cG+3+GArExmMbNAyv1NI5Ig9kzw3wJBf5xmbJDNwAFlLFWiiwWdza5U+
-         ++sazPX6axQ38pENMPkFKetCj2eqWJ5sF4cPUGV3XceDolMZ+0fChLHlGq4NTcsxlnEb
-         vTqxoiOZ7vQyVPIfmRRJen4rgNm2WiwAPx0EhywvgAOvueaoBCI5U12CEZMg5xmOswn+
-         mKGw==
-X-Forwarded-Encrypted: i=1; AHgh+RofMedtlgD7frheI+FvxwfRiNRL76q9XF9kNuLpfjv3mA4PlhDjlm2UREtE+WZzG19btTg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPG3t8Q1125sa+rBCgJ0Vwcif2ijv/7GaHkstbzaZNhOT/vR60
-	TPkVtZj0L6Y2HMKmMaNq5iuaBmoxvJ8Pfe5x2hVtpvGw95ijVg8tkGXE
-X-Gm-Gg: AR+sD11r1i/6k5KYXXDTujUbNilfP7Q739lt08MJ9fXHdOHuxiLgKJO9SOlH16ruyjq
-	QyVhb1pcixD11obeS7tkYt/6vHO18UuwGHiBTfw7YA6CQBppuXx2oj2DZygVttStqiQ6AoAIZTS
-	EhskK5/wT6pave2Mudzc2gFb47ojCfAq59BODWoyGl2hhr5I0BfJxYjlN/rCcr7ATOQNA/qor+r
-	4KE/lvTt7xuLBtGKClzvB7mqtuwmk3XF+jhzudSqjKvY6trvA2k6rzdbvmoDFYYVYGpN04SlbCf
-	a4yGCbPvoxP0uQHvAEDB/gOeJ2ay9ogY4+z2GUwirtJiYnsCSKg4FFUjDSRCXQUT+pgqYahMPmY
-	rxfxzdYZzA4sU/X7JmE4emXy1WQUFvGbbCsgaOSxgR5ULnD+CfXdRx8otIuHPLjyFMlLX2c+MgM
-	IBRyy98ZePIrXIrlr1rCgyOw==
-X-Received: by 2002:a17:903:2287:b0:2c9:c517:d070 with SMTP id d9443c01a7336-2cf348366bfmr182616715ad.3.1784630138721;
-        Tue, 21 Jul 2026 03:35:38 -0700 (PDT)
-Received: from localhost.localdomain ([124.194.218.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476ba24sm72240715ad.75.2026.07.21.03.35.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 03:35:38 -0700 (PDT)
-From: Jinu Kim <kimjw04271234@gmail.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] KVM: x86/mmu: Check all address spaces before skipping unsync
-Date: Tue, 21 Jul 2026 19:35:12 +0900
-Message-ID: <20260721103512.2136240-3-kimjw04271234@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260721103512.2136240-1-kimjw04271234@gmail.com>
-References: <20260721103512.2136240-1-kimjw04271234@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HH1rDbwv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A101F00A3E;
+	Tue, 21 Jul 2026 10:48:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784630899;
+	bh=nBntv6nZTJrOSMXmQYC4cvl3X4vCMjbTpJJVp0T+hck=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HH1rDbwve3XR7dtJ3V5jSCj1ocAFiVJPiZbpO22klQoRPe0JQ3V0FdaEnNArVE2HC
+	 Z25s9n/N4R2W02C30KK1+0gXZJMOeLRlKcieVp6l+Wwlg1OQ2BeYjhF7vRDoGMTNJW
+	 aBkz7vNIq9sdUbyIEFGe9NYt8tZnXASkG1Kdxf8zLBQ0b8m/JaG9ClGZ6DAEgK4ljF
+	 /Mb3DaaLogrym9Bu/PbGsCYi6CutD+0ycrXsCuBQpLAbS17MsCknMu2x+PoT3Nkkrz
+	 zs6Puzx6NLd1/GQ9GRvBDww+/Mf4Yz0F/Ul+C/50IpnWDfitX/H4/UU+KGxkhdcgOr
+	 dS8z/mcer+1Vw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: nVMX: Hide shadow VMCS right after VMCLEAR
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260721102827.313208-1-pbonzini@redhat.com>
+References: <20260721102827.313208-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 21 Jul 2026 10:48:18 +0000
+Message-Id: <20260721104819.B5A101F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-mmu_try_to_unsync_pages() skips the shadow-page lookup when the
-supplied memslot allows a hugepage, because a shadow page would disallow
-hugepages.  But hugepage metadata is per-address-space while shadow pages
-are shared across all address spaces.  With SMM, the other address space
-can therefore have a shadow page even when the supplied memslot allows a
-hugepage.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Missing compiler barrier allows pointer nullification to be reorde=
+red before VMCLEAR, recreating the UAF.
+--
 
-Check the corresponding memslot in the other address space before
-taking the fast path.  Skip the shadow-page lookup only when all address
-spaces allow a hugepage.
+--- Patch [1]: [PATCH] KVM: nVMX: Hide shadow VMCS right after VMCLEAR ---
+commit 002acbf68f96812492b255bf63d17f12b9b5b24a
+Author: Hyunwoo Kim <imv4bel@gmail.com>
 
-Fixes: b3ae3ceb5569 ("KVM: x86/mmu: KVM: x86/mmu: Skip unsync when large pages are allowed")
-Assisted-by: Codex:GPT-5
-Signed-off-by: Jinu Kim <kimjw04271234@gmail.com>
----
- arch/x86/kvm/mmu/mmu.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+KVM: nVMX: Hide shadow VMCS right after VMCLEAR
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 7757f0ad65c6f..1db6750992546 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -725,6 +725,25 @@ static struct kvm_lpage_info *lpage_info_slot(gfn_t gfn,
- 	return &slot->arch.lpage_info[level - 2][idx];
- }
- 
-+static bool kvm_gfn_is_lpage_allowed(struct kvm *kvm,
-+				     const struct kvm_memory_slot *slot,
-+				     gfn_t gfn, int level)
-+{
-+	const struct kvm_memory_slot *other_slot;
-+
-+	BUILD_BUG_ON(KVM_MAX_NR_ADDRESS_SPACES > 2);
-+
-+	if (lpage_info_slot(gfn, slot, level)->disallow_lpage)
-+		return false;
-+
-+	if (kvm_arch_nr_memslot_as_ids(kvm) == 1)
-+		return true;
-+
-+	other_slot = __gfn_to_memslot(__kvm_memslots(kvm, slot->as_id ^ 1), gfn);
-+	return !other_slot ||
-+	       !lpage_info_slot(gfn, other_slot, level)->disallow_lpage;
-+}
-+
- /*
-  * The most significant bit in disallow_lpage tracks whether or not memory
-  * attributes are mixed, i.e. not identical for all gfns at the current level.
-@@ -2972,7 +2991,7 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
- 	 * write-protected (see above), thus if the gfn can be mapped with a
- 	 * hugepage and isn't write-tracked, it can't have a shadow page.
- 	 */
--	if (!lpage_info_slot(gfn, slot, PG_LEVEL_2M)->disallow_lpage)
-+	if (kvm_gfn_is_lpage_allowed(kvm, slot, gfn, PG_LEVEL_2M))
- 		return 0;
- 
- 	/*
--- 
-2.43.0
+This commit updates free_nested() to keep the shadow VMCS pointer visible
+until after VMCLEAR has completed. This change is intended to ensure that
+if the vCPU migrates, the migration process can still clear an active shadow
+VMCS on the old CPU.
 
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 6137e5307d0f6..d63cfdc1740e1 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+[ ... ]
+> @@ -350,9 +351,15 @@ static void free_nested(struct kvm_vcpu *vcpu)
+>  	vmx->nested.current_vmptr =3D INVALID_GPA;
+>  	if (enable_shadow_vmcs) {
+>  		vmx_disable_shadow_vmcs(vmx);
+> -		vmcs_clear(vmx->vmcs01.shadow_vmcs);
+> -		free_vmcs(vmx->vmcs01.shadow_vmcs);
+> +
+> +		/*
+> +		 * Keep the pointer visible until after VMCLEAR, so migration
+> +		 * can clear an active shadow VMCS on the old CPU.
+> +		 */
+> +		shadow_vmcs =3D vmx->vmcs01.shadow_vmcs;
+> +		vmcs_clear(shadow_vmcs);
+>  		vmx->vmcs01.shadow_vmcs =3D NULL;
+
+[Severity: High]
+Does this sequence need a compiler barrier (such as barrier() or WRITE_ONCE=
+())
+to prevent the compiler from hoisting the NULL assignment above vmcs_clear(=
+)?
+
+Because vmcs_clear() relies on an inline assembly block without a "memory"
+clobber and has no direct data dependency with vmx->vmcs01.shadow_vmcs, the
+compiler could legally reorder the store.=20
+
+If a preemption occurs right between the hoisted assignment and the VMCLEAR,
+and the vCPU migrates, vcpu_load() on the new CPU would IPI the old CPU to
+clear the loaded VMCS. The old CPU would see the NULL pointer and skip
+flushing, potentially leaving an active pointer to freed memory in its
+hardware cache.
+
+> +		free_vmcs(shadow_vmcs);
+>  	}
+>  	kfree(vmx->nested.cached_vmcs12);
+>  	vmx->nested.cached_vmcs12 =3D NULL;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721102827.3132=
+08-1-pbonzini@redhat.com?part=3D1
