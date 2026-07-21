@@ -1,49 +1,50 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E0A3C9ED6;
-	Tue, 21 Jul 2026 07:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E2542F6FA;
+	Tue, 21 Jul 2026 07:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784619154; cv=none; b=tyWoeZIwzhmvf1fBca9s/hnDF20NI4fWweVGNQoTErMA1UyAyRBpGKmie4e6uwbq+Y3vd/4D8ZxYI+ZV4N92pwvwwcepEHS4u4kPF3//cDQ94wzeA5wT4n9GjCruBuQ5gqWasevr0jE2oKQBDwJeuqOCFI929KLpA8YdCiUczrw=
+	t=1784619239; cv=none; b=rhptKvhiAyNbzc3GXQQRPfmDV2w8YlBA4/yazKkHciyQePHJ5l4pj1PDOZYD9XxGJtgdGw/+GSGXzCfjadwXdehpHfSLeHDPRMKoRN0tZU+jEbXQw4UPRDI5lz9KTEhWio5Y4XwiQh5ZoLRMczw/OdUxZC0KwComV7J3lgT083w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784619154; c=relaxed/simple;
-	bh=nJC9W96cIng6d4/8XxXoyrkckU7fAQ2FstxZtvGoats=;
+	s=arc-20240116; t=1784619239; c=relaxed/simple;
+	bh=PznmX3DboxmkJhIzVCWhwNnJClpaG7ou4S1MIoF7Or4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ovwQabgsqfO2PUuuRToNlv5JOC7zhpQEjnDDuxt6XqT1c0+I0mvGbBhq2jBS+C2YUAE47DoZ0dJGOreQpz0MZfER3RXGUQrCWsm0x1xyypwhFKLe96jH+yUnE4A59GJJv84juKCIL+9l2D81ng0D84rYNTeGL1EPSu3nnCQ4za4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OtkzShjK; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=G4BHX2AFF0PDjEYAtqcbfwC2EROBJESUXAP8X84FFJyj3tjxVFHNRpHcuy2p3frgSKucmiInYnIceMUbDd0jCv50chrx+uUNlJ7eSZTanOsg+H5Zy9sGNIbOBmW1YxbsVQZ0yQJ/KCUm3CJlGiYGpXmpyDj/RoOQ4ALrC75XRn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=iRdpS1+y; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OtkzShjK"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="iRdpS1+y"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nJC9W96cIng6d4/8XxXoyrkckU7fAQ2FstxZtvGoats=; b=OtkzShjKq4txjd6aYTHi1YBVOy
-	iSscSmjPVlrpas/bSQik+yQSxOySBjMyecD3pL1TDmMOod/bKb0NhB8GNBawbWvrEm3NvLFiHOGCB
-	o9MsfkaFnQLewtx+Vgo3GjAzSVJi4Qmn8hVlfvPXsqHzmJRxcJVghGUJ6Th6/3tn/7Os+KysPEf+T
-	nqyVwhMhvVSBTnSEJC5p9ACTutmerF/Qt8fFj0fkSOvMJ8tHzEKA1zdZ6+OmiT+6CsdGB3VBOfOtu
-	6JkxZmFPDyh/1esuScM8g412aSyDngmHRKM98DCE2EjJBXylSDziNWKHGYcnh+UnSHTK4s7j6nR7E
-	pTC0e5qw==;
+	bh=PznmX3DboxmkJhIzVCWhwNnJClpaG7ou4S1MIoF7Or4=; b=iRdpS1+yMd6Dr51BhFrpuWTgr0
+	DTq8AHuyqRKnBUIhV7UZb9gYTDwfWXYhxTMmm851C+Zk0/N4EZgMOqDv4AGgHoySzpJzosx+guhO2
+	F37BWloTrXaK40RlAbCNqs4kR8eDxqDUhG+cA29JqAw43BnHJntNayj5HKX+Wf0lt3U0SZSuhXOZz
+	3yyQ18NFNzygyQiimXJV/2vZy8Vv8GYfYbTLwRUPOBjWHnXJu5agvcPZMGAl/DNPcHZjsfOIHZAJm
+	+o5FSzjjeKoGo9+/TEUwVekYUlr2TB4d/pPN/AV1MeMlUtmK1/BA8+61qXHsF/tho3o/fYICnf2EG
+	vkXX7tYQ==;
 Received: from [2001:8b0:10b:5:20bb:46f3:73c2:f4b2] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wm4xm-0000000ChaP-2EPz;
-	Tue, 21 Jul 2026 07:32:26 +0000
-Message-ID: <f5552576fc749b4b453514f52921332cc104c6a6.camel@infradead.org>
-Subject: Re: [RFC PATCH 0/2] KVM: x86/pmu: Let userspace disable SW
- accounting of emulated instructions
+	id 1wm4zA-0000000Chh8-2ERj;
+	Tue, 21 Jul 2026 07:33:53 +0000
+Message-ID: <d538bd8eba1058d52f8d32e311c12bf216ff4118.camel@infradead.org>
+Subject: Re: [RFC PATCH 1/2] KVM: x86/pmu: Add CAP to disable SW accounting
+ of emulated instructions
 From: David Woodhouse <dwmw2@infradead.org>
-To: Luka Absandze <absandze@amazon.de>, Sean Christopherson
- <seanjc@google.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Alexander Graf
+To: Sean Christopherson <seanjc@google.com>, Luka Absandze
+ <absandze@amazon.de>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Alexander Graf
 	 <graf@amazon.com>
-Date: Tue, 21 Jul 2026 08:32:22 +0100
-In-Reply-To: <20260720192221.72912-1-absandze@amazon.de>
+Date: Tue, 21 Jul 2026 08:33:46 +0100
+In-Reply-To: <al6g4VA4l-ZIAr9Q@google.com>
 References: <20260720192221.72912-1-absandze@amazon.de>
+	 <20260720192221.72912-2-absandze@amazon.de> <al6g4VA4l-ZIAr9Q@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-ErpfhURk4jDUnERs1Y/K"
+	boundary="=-MXsei1UVd9EYmV+W0ON0"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -54,27 +55,37 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-ErpfhURk4jDUnERs1Y/K
+--=-MXsei1UVd9EYmV+W0ON0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-07-20 at 19:22 +0000, Luka Absandze wrote:
-> On hosts that run guests with an *emulated* vPMU -- guest PMU MSR
-> accesses trap into KVM and each guest counter is backed by a host
-> perf_event -- the per-emulated-instruction PMU accounting added by commit
-> 9cd803d496e7 ("KVM: x86: Update vPMCs when retiring instructions") is
-> pathologically expensive.
+On Mon, 2026-07-20 at 15:27 -0700, Sean Christopherson wrote:
+> On Mon, Jul 20, 2026, Luka Absandze wrote:
+> > The only functional change for an opted-in VM is reduced accuracy: a
+> > guest counting instructions-retired or branches-retired undercounts by
+> > the instructions KVM emulates in host context, i.e. the behavior that
+> > predates the accounting cited above. Hardware-executed guest
+> > instructions continue to be counted by the backing perf_event, and its
+> > overflow/PMI path is unchanged.
+>=20
+> Do you *need* per-VM control, or would a module param (or a magic value f=
+or
+> enable_pmu) suffice?=C2=A0 While I mostly buy the "it used to work this w=
+ay" argument
+> (just "mostly", because that commit landed 4.5 years ago), I'm not exactl=
+y keen
+> on adding uAPI that is effectively "re-introduce a bug to workaround fund=
+amental
+> design issues in KVM's emulated PMU implementation".
 
-Given that the guest PMU MSR accesses are trapped... is there a reason
-we can't fold a *separate* count of emulated instructions into the
-value we return to the guest?
+Which is the bug? Some would argue that timer interrupts running 50
+times slower is also a bug. We just get to choose *which* bug we want
+the guest to experience :)
 
-I guess the overflow would come late... but isn't that tolerable? And
-we could probably impose a limit on how large the addend could be =E2=80=94
-even if we only reprogram the PMU once every 100 times, that's still a
-win?
+And I think that is a per-guest choice, if we can't find a way to do it
+with *sufficient* correctness *and* efficiency (qv).
 
---=-ErpfhURk4jDUnERs1Y/K
+--=-MXsei1UVd9EYmV+W0ON0
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -172,22 +183,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA3MjEwNzMyMjJaMC8GCSqGSIb3DQEJBDEiBCBKg3bc1tzc77ekPQxOQ0NDfwkCuHUl
-i4+cRo+0b/2t0TCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA3MjEwNzMzNDZaMC8GCSqGSIb3DQEJBDEiBCAIraG31AkriB7B9mhfAGLYE7i0zm3k
+EVElCp4Fn8Wi2zCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAyYPOs0xM3lY7o6qI2KaZjwdfqASg83ZPJQg0MITMDoNExrDMYon6
-hhS6/eAdaLFihrTyv6SGN/TRa6CuIiwG1U5PJ+sc7qix44YjG04t1zUMLabxYiam5p7pLWJgnWo4
-k20zkJZHW5rZ+ukF6cSs9UOvyPovj4CLLMHMk01GE3Sbe7YRMvefCFhyDwOyEoFY+LKUmAuz0uip
-8/ENbyF/xcGOXrkTTq0KnIVcWNe6lLV+ybUEBVWgdxEtZYNX1JqNnP/lZzMOqOqWY9lKnEc+sBAJ
-t99WU+QNk8rS/TgVewpWmPanFhB9Pbrm6Z4nGHsl18av2YDxUdlcDnoysTq+kckQL45Zi9wMPmSH
-UYg1iLjDmiER0RFuJo4p7NBE3sGBQKpKrOzrW1YHmiutQQH1sJpvfZU1pBRvjVY4/Fjpuvsg8GfO
-NXT0jn4yLBjDIc9Jl1czCfpKYhbHk4hdhFZnD8I3e07DG7KZ88Ji5800QuwWpEz6A8iS52FvKsO/
-PFSnynNtwWqHX5t5e2QcFEJ373YuSHO/4zVD71YSBqYgGXVjT0S65layzRpbuZLv5FbanrDW2BEY
-HEjtdjvj2HpDEceLNOHl204uL5nVnCA0eD2so/FfkTYga5iHuEacTRlRaweEQSrgsvJWwDTP+Dr1
-tFxCbyrjmOJfKln3g8D5yG4AAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAIOZVYUTCdg9jCNr0mNhfZgpBQGe9ZGxsJyPT6RQFu1uS87vHSFYr
+GDDuPcZ+PnH5OGT07qGAZldpdSrmTXCjs/EqrGAW8kA9KyKvGbbcXeu3kWBcpEe/yDjazbMAhMtK
+87s0V15XuWgNEXERT9zFEGCLvJK/ev8NNYWKxqb9qKPdNkzQ+qEb62MMZ9lEzc7GkJx6oGAPniy1
+COrWOL2lQgvBCn6pLAsf8L4Lbd9T3DmaXU+F6SlnA4Ui5ukKnjRNWk3Okw8nIt3MSB/QYIBR5QtV
+MtbQ8Mn0I/nTkYZ+a0dSqbUuiD18HPFwH1c1ghkP7h8lFcje2o20ocn2O50KxT9aLyMAbUPdbikb
+ZlpqMn/jTPk9U99/Hawj82fFYIt1mWHG/A0jQcqowhNKZ8NFVyoTjYLCdKksDUkA8Oy2FBHyEUo1
+GTDQ9LJNQsnd/egsS4GYinNG/5IX2vGtBHolbMXZS/gZo6JJncUCqUr+qMIQtTfOUsuEYUBRdtmS
+0Q21APmdXy1nf+E+RZDoh32OeH9DJ7uS2GCDdcxFHg02tuK1lp/wGFuL2ALAt8HIXHJJIx75e5WZ
+nSfDVkVIpmrV6wfizmTgZNnprPSW3oIo4cz1ByJr1aV5PA/a+0P9NIrSAmTlp8eCRxXIQeH/Q8UO
+47scHsJAc+6RJj61KzapMR8AAAAAAAA=
 
 
---=-ErpfhURk4jDUnERs1Y/K--
+--=-MXsei1UVd9EYmV+W0ON0--
