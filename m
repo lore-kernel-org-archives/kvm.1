@@ -1,71 +1,71 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6154148C8AA
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBA44C9552
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784630138; cv=none; b=SAlF3ESfPTU3dqViuaLFeZlnTeMazAV+KFKKyAnC1ndSS+fwrHk9gzS1rtytXxkjtjjmjyw3nYNP/HdgQiOi6nQU8imN/rD/VW4WUq+x27u8Kwhr4ankxA4PCFMhM7Zc6ao6iXRaAPO3Ptx03wYwv7LChbk58zqSF/oB39eslF4=
+	t=1784630140; cv=none; b=tpMl+2CGrZBXubWQb68z/FV/VG0qA/nMVeqCQoQirllo7KBldePtjTG2jRqsgAqsjtCDs5gut9nC3Cb6Nib4fCa+fqNHxmE4bYWELQwA6KH1JOulg6rVue3j32KD0DkvJbjlSIcd8O/dlNdm9tvGJYennhVsQA4Cbcq/xVhLe4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784630138; c=relaxed/simple;
-	bh=P4KaCyidpJ+KrhrI8crT36+kmGtOpJrHs7dj1bFXusI=;
+	s=arc-20240116; t=1784630140; c=relaxed/simple;
+	bh=nVrRFr7SXPIbywSEEfW3Ni8u2i1dZH0gp2i8DA7u3d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6rQiGPB4BmqsMrohQM6UToDiCoiBw6D2yIvTnh4YjTR+HL9AKbtNrfDi3oKsTIspJdFomINWJaezk0mpBSZ5uaqjiMmbxfk7Qe8A7Ns15gZFLTFDyV+hyNqT5VUQ3JhN/M5/o+aatilHsFr9nrRxEryXj9fLKRELG7c48bllzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qFYoxv2R; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=uFCbZct+F1jjcvLbfHrMHYFa8JRmMlcXuk74Zhw3xu0kO4QQK4mvxClN4JvaWUAZ4bwMZxnReI8VZxZuPam19ORRSinaPasLN1EkrbJNixJNepVQ50WRMANmQYKiW8Rbo3nYmCffa9v8ct2NuJzEjd9svcFWEQsGShc4RShU/WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JcYpCXqV; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qFYoxv2R"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so24199125ad.0
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:35:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JcYpCXqV"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so71893525ad.3
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:35:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784630137; x=1785234937; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784630139; x=1785234939; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XtZKBcBFnGPQ7JWiOze8zVf2sEShewULwmU/poxZWO8=;
-        b=qFYoxv2RRI43ewi8eobUt8BWLqLV8J6klMbcltJIccVLXJztHQJmIbXBSy8eohUR7a
-         wyjMoOEVwCXcOvgVxG7Ru6+MnhrfBwiFZCIaXQW7NMk4FtM6CxhZ9Q9K15w9lRNxQYMV
-         RXExbtdLwe4wmwVmLZuFCrOxeUkKv5/J/reLQSLlGQQebY0y3j8AK4k8tfDAvWX9He2p
-         TbJCBTguCcYvG99EFnr6YKI0m6Ha9igUw5nP52yPldde5TvCMNlwYd00k4qiqYdABYm+
-         wKLAOmWhCgd1QEWLXtXTgG1xMbfqBLpmDzTK/8YvKE/f+W9Q93FSomDdeJVipoor089a
-         fwJg==
+        bh=Xyu85tVI7qhkAhG73qiWVn5ZsmTezNl/fK8tiEf0dEU=;
+        b=JcYpCXqVhmbhUPRfEFlQsXu4Hr3UQ/x4hvcuX/9UoxgZ1N+INNc6Tq+i50P3gT+bxq
+         kMdDnZzrjL+tG8+2B8XbQG35Q8GRn1mQ3xDcMwWEKJR++Y93RfBNtBo32pan0xnUqrZu
+         Y2zEiYKLcxxFlHJITPf3s6iUwOrhroNMQH+m+FkqgYWKLf6RihrGlX+OniMmBiHG/jG5
+         9dlgCtAJh14fL8GUpHxCnjZiSpxG+ZXv/EqRZaJCS6Wb2XQKSlgF8UqUNJAjKV6A+SbH
+         HU9WAaLyortIctXTIHP+2q5e3XMjq5vs4jV/DuC6eTTv/EWzX16i/Tx0zOkKo6J/+LZz
+         DmVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784630137; x=1785234937;
+        d=1e100.net; s=20251104; t=1784630139; x=1785234939;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XtZKBcBFnGPQ7JWiOze8zVf2sEShewULwmU/poxZWO8=;
-        b=RnyO1cYvSaMrLwsK3MJZ5Bqd5qQzHm8Cm7Ggd7dcFQJfBRXiDcS6SAyPs5pMFShewM
-         Uehr2Rmv/18kVwXJj7POQ4WD7aZ+Iu1igASbz4mT+AMHakdd6mOf/tZ5g0d9brdRR/NH
-         vikW+D2c/4sT00v6/Lnt5JN34S5Jeug5UQ2kn1mANwNRN9udZkZ9/D4QGI1qLaFjp811
-         tfnR982R7cRXc5bkllbPMPve2c1L8dfvUJvmvMmRl862MMxLGD9GqWurpmxStOzW9pmJ
-         aJbuUMf1pbMVluyCuBE3CQu+NBQAC7KNJYodgTeTTcf1Sa7a6qBgR6nrdRyQSwYYyQ9L
-         sBeg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/hyfCqWaeKBJBOW/WFTsD6JMLRICBLcXRBgqDOW8VP9mTgCbUmZnxaWZPCZNQ4LhcXb4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR1aFdhr3M5EKgp7jlaMhZbhN7nsdDWvkd1c3PVLE5CJZGPGYy
-	6bex0W1SZaxMPwUJNCi2aN1GvyT7W9gFNoXwEf+MXu1UBVmlxlDsskji
-X-Gm-Gg: AR+sD13sNEH85Hqclm4vxmMehxp4aFOfYRacYgjahNZazMYU0dgoetkRwhKqDICkiz+
-	ch+Mbv/WTqRoIoEXXsf27ycDh6vMKAQI8BWAoNI0dtnLh65H1lpo4gkCl1ptg9xk6FQ7Y6xMqQY
-	yp/EVsjoAEoZ9b1VDJG4CnHj9YJfg6G/ubbnqWeQM9FubtL1esX3kakdUzwb8he/AZKYD1xsG5K
-	BKgIY2rN2AZYteDjaIB42/pluV1Z66IhOIgKmprN/k08d260Xt//deN5eEbtza2/oD9ci9qJO1S
-	b+sGQA3gAC+c4bLv3yPMEPSS7ERHBXCy5DCm3dePzoy6k7Fj9DQ/K/cW7ZKg55MGEsdPm/cWimx
-	tqUmpaHjZO8yGAcwo2sHbApd3XGexlPezZwY6yOHEbdAbKJwPVh/uNbOoIjuTMDdRY9sXoY1ZiF
-	WhbbbZ1AIDKv2XiPdtWaN9QA==
-X-Received: by 2002:a17:903:24f:b0:2c9:e9c4:82c1 with SMTP id d9443c01a7336-2cf3494af9fmr198445645ad.26.1784630136491;
-        Tue, 21 Jul 2026 03:35:36 -0700 (PDT)
+        bh=Xyu85tVI7qhkAhG73qiWVn5ZsmTezNl/fK8tiEf0dEU=;
+        b=kI1WJ99feY+dl7w2o9Ad4mthPP6nmclcDxO7ek4RrGBCCsFrK5ZMZcC1fX2P97iqbV
+         233jZU8r6D9D5jOdnEqUOxpZ7L8Orj1eVBBZUjjVQBGoQuozoJ6SkRsg+lsZEhh8prZP
+         UZqp+s/DNh3+cG+3+GArExmMbNAyv1NI5Ig9kzw3wJBf5xmbJDNwAFlLFWiiwWdza5U+
+         ++sazPX6axQ38pENMPkFKetCj2eqWJ5sF4cPUGV3XceDolMZ+0fChLHlGq4NTcsxlnEb
+         vTqxoiOZ7vQyVPIfmRRJen4rgNm2WiwAPx0EhywvgAOvueaoBCI5U12CEZMg5xmOswn+
+         mKGw==
+X-Forwarded-Encrypted: i=1; AHgh+RofMedtlgD7frheI+FvxwfRiNRL76q9XF9kNuLpfjv3mA4PlhDjlm2UREtE+WZzG19btTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPG3t8Q1125sa+rBCgJ0Vwcif2ijv/7GaHkstbzaZNhOT/vR60
+	TPkVtZj0L6Y2HMKmMaNq5iuaBmoxvJ8Pfe5x2hVtpvGw95ijVg8tkGXE
+X-Gm-Gg: AR+sD11r1i/6k5KYXXDTujUbNilfP7Q739lt08MJ9fXHdOHuxiLgKJO9SOlH16ruyjq
+	QyVhb1pcixD11obeS7tkYt/6vHO18UuwGHiBTfw7YA6CQBppuXx2oj2DZygVttStqiQ6AoAIZTS
+	EhskK5/wT6pave2Mudzc2gFb47ojCfAq59BODWoyGl2hhr5I0BfJxYjlN/rCcr7ATOQNA/qor+r
+	4KE/lvTt7xuLBtGKClzvB7mqtuwmk3XF+jhzudSqjKvY6trvA2k6rzdbvmoDFYYVYGpN04SlbCf
+	a4yGCbPvoxP0uQHvAEDB/gOeJ2ay9ogY4+z2GUwirtJiYnsCSKg4FFUjDSRCXQUT+pgqYahMPmY
+	rxfxzdYZzA4sU/X7JmE4emXy1WQUFvGbbCsgaOSxgR5ULnD+CfXdRx8otIuHPLjyFMlLX2c+MgM
+	IBRyy98ZePIrXIrlr1rCgyOw==
+X-Received: by 2002:a17:903:2287:b0:2c9:c517:d070 with SMTP id d9443c01a7336-2cf348366bfmr182616715ad.3.1784630138721;
+        Tue, 21 Jul 2026 03:35:38 -0700 (PDT)
 Received: from localhost.localdomain ([124.194.218.202])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476ba24sm72240715ad.75.2026.07.21.03.35.34
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476ba24sm72240715ad.75.2026.07.21.03.35.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 03:35:36 -0700 (PDT)
+        Tue, 21 Jul 2026 03:35:38 -0700 (PDT)
 From: Jinu Kim <kimjw04271234@gmail.com>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] KVM: x86/mmu: Check write tracking in all address spaces
-Date: Tue, 21 Jul 2026 19:35:11 +0900
-Message-ID: <20260721103512.2136240-2-kimjw04271234@gmail.com>
+Subject: [PATCH v2 2/2] KVM: x86/mmu: Check all address spaces before skipping unsync
+Date: Tue, 21 Jul 2026 19:35:12 +0900
+Message-ID: <20260721103512.2136240-3-kimjw04271234@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260721103512.2136240-1-kimjw04271234@gmail.com>
 References: <20260721103512.2136240-1-kimjw04271234@gmail.com>
@@ -77,73 +77,63 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-kvm_gfn_is_write_tracked() checks only the supplied memslot, but page
-tracking is per-address-space and shadow pages are shared across all
-address spaces.  With SMM, a GFN can therefore be write-tracked in one
-address space and appear untracked through the other.
+mmu_try_to_unsync_pages() skips the shadow-page lookup when the
+supplied memslot allows a hugepage, because a shadow page would disallow
+hugepages.  But hugepage metadata is per-address-space while shadow pages
+are shared across all address spaces.  With SMM, the other address space
+can therefore have a shadow page even when the supplied memslot allows a
+hugepage.
 
-Check the supplied slot first, then the slot for the other address space.
-This ensures all callers honor write tracking regardless of the active
-address space.  In particular, it prevents mmu_try_to_unsync_pages() from
-marking an upper-level shadow page unsync and eventually triggering the
-BUG in pte_list_remove().
+Check the corresponding memslot in the other address space before
+taking the fast path.  Skip the shadow-page lookup only when all address
+spaces allow a hugepage.
 
-Fixes: 699023e23965 ("KVM: x86: add SMM to the MMU role, support SMRAM address space")
+Fixes: b3ae3ceb5569 ("KVM: x86/mmu: KVM: x86/mmu: Skip unsync when large pages are allowed")
 Assisted-by: Codex:GPT-5
 Signed-off-by: Jinu Kim <kimjw04271234@gmail.com>
 ---
- arch/x86/kvm/mmu/page_track.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/page_track.c b/arch/x86/kvm/mmu/page_track.c
-index 1b17b12393a8c..ff93591be1adb 100644
---- a/arch/x86/kvm/mmu/page_track.c
-+++ b/arch/x86/kvm/mmu/page_track.c
-@@ -133,10 +133,22 @@ void __kvm_write_track_remove_gfn(struct kvm *kvm,
- /*
-  * check if the corresponding access on the specified guest page is tracked.
-  */
-+static bool __kvm_gfn_is_write_tracked(const struct kvm_memory_slot *slot,
-+				       gfn_t gfn)
-+{
-+	int index;
-+
-+	if (!slot)
-+		return false;
-+
-+	index = gfn_to_index(gfn, slot->base_gfn, PG_LEVEL_4K);
-+	return !!READ_ONCE(slot->arch.gfn_write_track[index]);
-+}
-+
- bool kvm_gfn_is_write_tracked(struct kvm *kvm,
- 			      const struct kvm_memory_slot *slot, gfn_t gfn)
- {
--	int index;
-+	const struct kvm_memory_slot *other_slot;
- 
- 	if (!slot)
- 		return false;
-@@ -144,8 +156,16 @@ bool kvm_gfn_is_write_tracked(struct kvm *kvm,
- 	if (!kvm_page_track_write_tracking_enabled(kvm))
- 		return false;
- 
--	index = gfn_to_index(gfn, slot->base_gfn, PG_LEVEL_4K);
--	return !!READ_ONCE(slot->arch.gfn_write_track[index]);
-+	BUILD_BUG_ON(KVM_MAX_NR_ADDRESS_SPACES > 2);
-+
-+	if (__kvm_gfn_is_write_tracked(slot, gfn))
-+		return true;
-+
-+	if (kvm_arch_nr_memslot_as_ids(kvm) == 1)
-+		return false;
-+
-+	other_slot = __gfn_to_memslot(__kvm_memslots(kvm, slot->as_id ^ 1), gfn);
-+	return __kvm_gfn_is_write_tracked(other_slot, gfn);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 7757f0ad65c6f..1db6750992546 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -725,6 +725,25 @@ static struct kvm_lpage_info *lpage_info_slot(gfn_t gfn,
+ 	return &slot->arch.lpage_info[level - 2][idx];
  }
  
- #ifdef CONFIG_KVM_EXTERNAL_WRITE_TRACKING
-
-base-commit: 6bc96b971766fbbbbdd9fb2642cedacaf02da957
++static bool kvm_gfn_is_lpage_allowed(struct kvm *kvm,
++				     const struct kvm_memory_slot *slot,
++				     gfn_t gfn, int level)
++{
++	const struct kvm_memory_slot *other_slot;
++
++	BUILD_BUG_ON(KVM_MAX_NR_ADDRESS_SPACES > 2);
++
++	if (lpage_info_slot(gfn, slot, level)->disallow_lpage)
++		return false;
++
++	if (kvm_arch_nr_memslot_as_ids(kvm) == 1)
++		return true;
++
++	other_slot = __gfn_to_memslot(__kvm_memslots(kvm, slot->as_id ^ 1), gfn);
++	return !other_slot ||
++	       !lpage_info_slot(gfn, other_slot, level)->disallow_lpage;
++}
++
+ /*
+  * The most significant bit in disallow_lpage tracks whether or not memory
+  * attributes are mixed, i.e. not identical for all gfns at the current level.
+@@ -2972,7 +2991,7 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
+ 	 * write-protected (see above), thus if the gfn can be mapped with a
+ 	 * hugepage and isn't write-tracked, it can't have a shadow page.
+ 	 */
+-	if (!lpage_info_slot(gfn, slot, PG_LEVEL_2M)->disallow_lpage)
++	if (kvm_gfn_is_lpage_allowed(kvm, slot, gfn, PG_LEVEL_2M))
+ 		return 0;
+ 
+ 	/*
 -- 
 2.43.0
 
