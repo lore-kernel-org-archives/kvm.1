@@ -1,45 +1,75 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BD8433055;
-	Tue, 21 Jul 2026 07:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01BB434409
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 07:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784619390; cv=none; b=hCoL2uW33r/RInqcyv0ZH7sDgvd/Sf3yL22bD8eEH6Ik4OxM9ZEKUXwffNY5YY3BEnhEluk9GvY7yCw26hQG/qhIBkn0D71YS0LOR3DWcRWNf9pVNiUCHPeB6ogvD5/6puj5JMGI86xEW7o8KwtvwxPKiww7LWn7+WY4cWMVmVg=
+	t=1784619426; cv=none; b=ZgdycpXdaJVYbmllo+KhMZ2anjhP/qSvUXZFp+db8lkfMaqDdvAs3PEkfcyGgeKxYZAks0RpnpBnUQESgwisAqJ1CItafnn0JlU+mar6DOEroVQKAA/R4M1DYrs7yyL2X5/k7QrDHbReEYyT6S6vyuUjVyOC9SG9jttNATo0ZwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784619390; c=relaxed/simple;
-	bh=Iv0AT2dhFmIxRsUgpYTSV9dCsy6ufgLF3smNBcHBA6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p9f7byBLDW5MsH2cAJPuDYBx/L6qQrWmCUY4zD5SQk/lYBkfUChswchT8GyFxXQyQcwvC8QBkqm/B+RYzqPtDcqrDXECmaQOyA57s/Irz56F9/8ryZ9N6CTnGKMRuZT6f/D/CSFZYvZwr9ZcEAMISKLFj/jKvy+VAjc95Bw6UPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=JPakA6HY; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1784619426; c=relaxed/simple;
+	bh=PBJgJTVktA6dk4pRBadGmyyYxpIPFy/6kLS3RcLYINk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C8JhihDO1kWLzUVKtjYda6NZHKiTiRPIUD9u6k7XdeFQCxEp63tq0jDbxT+dLv8z/zgqeNAZyVcUp/R0e6xgVKfVSMvHz8cg9hBm1WyWmJbbHSjQUly6agZg5btYA/kYdXKwEvSQGaD2bf4kaIgb9xHYNfnUAj+cxmYhKRnFpDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OwTAeriS; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="JPakA6HY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OwTAeriS"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dcbade417so9161482a91.1
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 00:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:MIME-Version:Content-Transfer-Encoding; bh=5x1rA2f2vH
-	eEloH8tmOOyMnyiRwuDQwFcjZOP1sZT1A=; b=JPakA6HY7ppl95cwipIyOPYLDe
-	IebksX2t7jlCYJ9d2mKL1+/yKNziHF6dqvRU2laHhFZqOH2E1ilkInpxv4ZfnTuJ
-	pEeyR3mCVU97vFjVx4kGHq/kS/6rz0lIavSVNJ/7e/jr84qtcwSmhLC6h4W+BZZq
-	Sujzmktxn9Sap37Dc=
-Received: from ur-dp1000 (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwAnYUKJIV9qSWgUAA--.17346S2;
-	Tue, 21 Jul 2026 15:36:41 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
+        d=gmail.com; s=20251104; t=1784619424; x=1785224224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=35d5h6tDV+eeR0qT67WDhTn7rqN/E2touheot1irCJc=;
+        b=OwTAeriSR0SXhCuEDSNWf5ABehzQEn9lCc8GVy43GCe6hFM2R9V2ncGsrN++bWpUwO
+         SWNCnlDguSyQZSuGqP7xi0v0l6N1HK2lqZysA75VAVBT/tdfX0BfGuC7z/xuylt6nCYL
+         0302ht3PRiruJRMXJfgQBOISOY9o0Hlhn/KTMQKgs1mExLYR9/fwSd2/1GUYXeR2Z34B
+         MuWE47wkKRAL7plDjFNwvbw5zCSVhldkCsazyzYl6VC+mawQfBL1dDqoASmHnVtKE/Sl
+         OVH9gW+zHOJexdpJHq/MTBSGkLdYg4bOvjva/q9aMve9jZ3xRjJtMUqttCc9pF6BkBcr
+         vf5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784619424; x=1785224224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=35d5h6tDV+eeR0qT67WDhTn7rqN/E2touheot1irCJc=;
+        b=TgWbl33RIRj9dWVG935Cu/x6ay4aoc6Bcd30MB6Dp6rwS8dXzKX2vQe0EARTJwk/lN
+         VuE0NvkHTl0uyAie2WyYoJKxM49nWcWK587js8ILVrU0pDgdRG/vErZI0uFP7r+svPqC
+         4kIwh/HWej5YjZ9e0bOPughae/0JHR6JY20JTmXCFIEqKDqzD0IhNfkHPxIfbwDuWVub
+         9gG5csQzo0me7KHGVuYU2xbRrxat6VxvCnXKTQhIHQkkrVJvZtzf0lcss6m1OkS5lbmK
+         qhyDlPH3QR0A6vMqdg0xJBl+rrwTW1P7S6LEeT5Ea9kgKlA7Y8LkLHg7/9kNVOlrZ0oe
+         7Hdg==
+X-Forwarded-Encrypted: i=1; AHgh+RpYYktUDqq5KY6sJx5tOhMVO4qwURBxhJMTwAnw1HJh94e8yuG74t4qulmbthzwDCealvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFkiHAMdAVOYPvXd6D4pG6Lm/t6LHuWU2zogBHdo9HMolbmg64
+	eUhBhzh4oaiOInh7blNrQKC/p+0BnBw1/uJgmLr7X+NjeYoK10+/unaN
+X-Gm-Gg: AR+sD13poyruZ3SsR2RyW702UARBnweORZgAI/NFevW0NiwhCC7DQ21SB7U71qdZ9gR
+	OrITFBhKNMcONAALaNuosEEWUA3E72IgJw5FgZ3y8P2A3U/eAzeUVRehYYezobv0c2PE3BVi2gx
+	DdJq2BFmeP3ZAGihbYgGlUXbJ8BOWEXwTLzRcLaUYKKqt+m5hQ0mJO5tKU8+Kn4NBL5FFd+pOuW
+	MSM64IIoCSf1/zsr1g4LA2qZQDJ2CRYPsqpVB/hwGVaJuj5wtdk7ACaM5GX98fdgYnDU9MmvEaP
+	DW65Bi5dk+mWsH9hV9RyeSrZxSZwCr44kkEW4TWK/ufnSkXngX3MuQS9yQ5uQuHTEfbEPt5nRMr
+	hcNARYlVWZVqpS8Ul1C5Nw8h4K+P/eHV+whXqMIpWp4wpMz/whuJxNhWd7ZLrobC3hkFJqg==
+X-Received: by 2002:a17:90a:c885:b0:380:83fc:4315 with SMTP id 98e67ed59e1d1-38e4b538938mr18875650a91.21.1784619423827;
+        Tue, 21 Jul 2026 00:37:03 -0700 (PDT)
+Received: from jia ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e92169cebsm1070482a91.11.2026.07.21.00.37.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 00:37:03 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>
+Cc: Paolo Bonzini <pbonzoni@redhat.com>,
+	Stefan Hajnoci <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
 	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Xie Bo <xb@ultrarisc.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
-Date: Tue, 21 Jul 2026 15:36:12 +0800
-Message-ID: <20260721073612.137259-1-xb@ultrarisc.com>
-X-Mailer: git-send-email 2.54.0
+	netdev@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH] vhost-scsi: flush backend after device ioctls
+Date: Tue, 21 Jul 2026 15:36:39 +0800
+Message-Id: <20260721073639.1532488-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,73 +77,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwAnYUKJIV9qSWgUAA--.17346S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7trW8uw4xAryxJF1DGFy3Arb_yoW8WFWrpF
-	4FkryFkryrAw1xZ39Fqw4kWayvkrnY93WYgr4Iga1fArs5JwnY9rn3urWjgF15GFykZFnF
-	yF1rCF9YkFWUXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAOB2pdm1EAHAAEst
 
-KVM device ioctls are not serialized against KVM_RUN. As a result,
-kvm_riscv_aia_imsic_rw_attr() can snapshot the physical CPU and HGEI of
-an IMSIC VS-file before a concurrent vCPU migration releases it.
+vhost-scsi translates guest response descriptors into userspace iovecs
+at command submission time and later completes those commands
+asynchronously through target-core. Device-wide control operations such
+as VHOST_SET_MEM_TABLE replace the memory table under the device and
+virtqueue mutexes, but historically returned without waiting for
+outstanding SCSI commands that still hold the pre-update response
+iovecs.
 
-The HGEI can then be allocated to another vCPU before imsic_vsfile_rw()
-uses the stale tuple. A GET or SET attribute may consequently access the
-new owner's interrupt file.
+After such a replacement, completion may write virtio_scsi_cmd_resp
+through the old host virtual addresses. If the owner has already
+remapped those addresses, the write lands on the wrong userspace object.
+The kernel tree has carried a TODO for this since the 2012 split of
+vhost_dev_ioctl() and vhost_vring_ioctl():
 
-Serialize the entire IMSIC attribute operation with the target vCPU
-mutex. This prevents the VS-file from being migrated and recycled until
-the attribute access completes.
+  /* TODO: flush backend after dev ioctl. */
 
-Fixes: db8b7e97d613 ("RISC-V: KVM: Add in-kernel virtualization of AIA IMSIC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xie Bo <xb@ultrarisc.com>
+A userspace test kept a READ(10) pending, replaced the memory table so
+the response GPA mapped to a new HVA, remapped the old response address
+as a victim page, and then let the command complete. The completion
+wrote the victim page (victim_changed=yes) and left the replacement
+page unchanged; a later TUR updated the new mapping instead. So the
+pending command retained the pre-update response address across
+VHOST_SET_MEM_TABLE.
+
+That same 2012 change deliberately avoided a second backend flush on the
+vring-ioctl path: vring updates already flush where appropriate, and an
+extra heavy flush would hurt when kick or call fds are reconfigured on
+the data path. This fix does not reintroduce that. The default branch
+still routes unknown commands through vhost_dev_ioctl() first; only a
+non-ENOIOCTLCMD result flushes. Vring ops such as SET_VRING_KICK/CALL,
+num, addr, and base return -ENOIOCTLCMD there and fall through to
+vhost_vring_ioctl() without this backend flush.
+
+What vhost_dev_ioctl() actually handles on this path is small:
+VHOST_SET_OWNER, VHOST_SET_MEM_TABLE, VHOST_SET_LOG_BASE,
+VHOST_SET_LOG_FD, and the optional fork-owner ioctls when enabled.
+Flushing after those is fine: they are rare device-wide control ops,
+and SET_OWNER normally runs before any inflight SCSI work. Call
+vhost_scsi_flush() so pre-update worker work and target-core inflight
+commands finish before the ioctl returns. As with the existing net
+pattern, any non-ENOIOCTLCMD result flushes, including failures that
+may have applied a partial update such as VHOST_SET_LOG_BASE.
+
+I later noticed vhost-net and vhost-vsock already use the same device
+versus vring split.
+
+This is a control-plane barrier only. Ordinary submission, completion,
+kick, and call paths are unchanged. The owner is expected to keep
+pre-update mappings valid until the device ioctl returns. Completion
+copies the response and signals from the vhost worker without needing
+further userspace progress, so waiting in this ioctl does not leave the
+owner process stuck on itself.
+
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 ---
- arch/riscv/kvm/aia_imsic.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/vhost/scsi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-index d38f5de08..2a4f88efe 100644
---- a/arch/riscv/kvm/aia_imsic.c
-+++ b/arch/riscv/kvm/aia_imsic.c
-@@ -969,9 +969,13 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 	if (!vcpu)
- 		return -ENODEV;
- 
-+	mutex_lock(&vcpu->mutex);
-+
- 	imsic = vcpu->arch.aia_context.imsic_state;
--	if (!imsic)
--		return -ENODEV;
-+	if (!imsic) {
-+		rc = -ENODEV;
-+		goto out_unlock;
-+	}
- 	isel = KVM_DEV_RISCV_AIA_IMSIC_GET_ISEL(type);
- 
- 	read_lock_irqsave(&imsic->vsfile_lock, flags);
-@@ -995,6 +999,8 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, unsigned long type,
- 		rc = imsic_vsfile_rw(vsfile_hgei, vsfile_cpu, imsic->nr_eix,
- 				     isel, write, val);
- 
-+out_unlock:
-+	mutex_unlock(&vcpu->mutex);
- 	return rc;
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 9a1253b9d8c5..c3e8f1a0b2d4 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -2424,10 +2424,11 @@ vhost_scsi_ioctl(struct file *f, unsigned int ioctl, unsigned long arg)
+ 	default:
+ 		mutex_lock(&vs->dev.mutex);
+ 		r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
+-		/* TODO: flush backend after dev ioctl. */
+ 		if (r == -ENOIOCTLCMD)
+ 			r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
++		else
++			vhost_scsi_flush(vs);
+ 		mutex_unlock(&vs->dev.mutex);
+ 		return r;
+ 	}
  }
- 
 -- 
-2.54.0
+2.43.0
 
