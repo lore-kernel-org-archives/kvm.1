@@ -1,184 +1,97 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A1143FD1E
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 23:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8099A224B05
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 23:07:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784675111; cv=none; b=mnFjnMck2V9xPf5jk9FzF0Hw+M0iCLOHPJWc9+Spxs+OT8ZyZpps+Eo51MRGmt2Cvf3JkTbPa6+7VHXHdp40c8+tdFkRdbuQBiXqmZtxux1DGoqzB5DPA3tlCAkExpsjJGSmxUrcxOpmtXmPu6RbvCTiMQ8FV0Jv6FPQDZ+2Fz8=
+	t=1784675255; cv=none; b=i3PCr+QgfVCTJwzc8FSr14o6vDzuaebdMS4WFo40oyIl7CkIIjuEBKqSNkiSIk2EDvOYTEBXFEExUHM7itTUsdp66vNJToN1isffh8Ol7X6cow6/C2cnnN8g69msg6UXfsQWm3zHvJ+1ZosMLVNKMWe9lx3Pm6xnRPIwlpbOkaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784675111; c=relaxed/simple;
-	bh=/d5+Ct9ll6b1HxibJ3keb46nwT+WlmFOnNHUX+rzbEg=;
+	s=arc-20240116; t=1784675255; c=relaxed/simple;
+	bh=1n3N+WI8h8PhUv3mfjqFCSH44YtN+KKWZYX3l8X+oWE=;
 	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=Y7vDCiwX0jTf0vCobIUNZ2HS3OqvyHeE7X7K1eQdB9T581nTgRpVaGAxAgCpn+1wDZxPTxMj+RZ5K5l5qUPO2ZroAlinPgwgDQTds4JH/Zclc7F0hoGN3aihdjV+9IcxPxAx16hHILXhNm/Tt1NNMaBkR032kX5+J48Hrtus1lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i5IQ0mI5; arc=none smtp.client-ip=209.85.167.200
+	 Content-Type; b=JsTFKFsRiykqgnmNbxsu3pwMheXg0r86TbB6flO+3rb+cB9/gWNwQMLAmBuMPDaArsk+njAzd4GC5UwG9qt1a3I8GFawIJ+aaTNROuBxo5FS+yCIrrVUjRgRcsjaU7WG/cO2JdiHugSXq2ucRNfTjNalaqgEUgMeopEjLcVv4Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h92qF3ir; arc=none smtp.client-ip=209.85.167.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i5IQ0mI5"
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-495f637105eso19222236b6e.2
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:05:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h92qF3ir"
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-49f3a97f1caso11002226b6e.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:07:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784675107; x=1785279907; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784675253; x=1785280053; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QYXaYDgqkJqtd2+svQngfiSlGiL9bXTJTobnSbO9Md4=;
-        b=i5IQ0mI5ow3rt/MdeDTWnA4Jx4dvXGk7jJGPB76OJ7HSEZW4Mfe0B/Df9RWAp/S07y
-         fz1hcFzcFyP/dupBfHHr0y0VYp9eUjZamCzE31wgD5UNMOiHrQNP+o9ocmD9sK1u6pJB
-         vC2mYinL1x5TIVDtctyIOOvozhJ2omAhZrnRZUEtw4sOhlFfOJ95JgU8hKJappQ7hvR8
-         9Cod5hXVLHmcaaU87et6NjC2nzd936rvkkcFZe9uIF+mkoLl82rxVyVIAvX5wsjxU5TZ
-         cVvzS5umgy9cEvNoAboaNDXfaUYkOxfUSTBlKi2GZiXxLT4RCp5zZ9WpHG2HY8j18NE4
-         RiAQ==
+        bh=QXklq3z1zPJM73DGXfVs9Rwe/LHFVQt6fqyhM9xa818=;
+        b=h92qF3irvIGdL/HJz0pxOFbuEi5fxZ1b21I306YJbjd3FzJC1Cg07sgJH6wCar7iCX
+         EGBdZ7cG3+rjPyogzEND2NXGyLlqhN5lmGSMbzVlqQQFjkTOnfaYa+M54BfclZ5soMNF
+         NUHFchgKVS8e4VAcqoFjfcurzrs6iJrTb27x/RlboFceVpveQoCs/kLOfygJNWmGlLhm
+         f876VTm6rDx9t5RXvPiWNUbeLRsxRH5YVHCVZgnPbCDuYjZxYzEGBGxP7shkIk8DSx+3
+         UExDEMPYKZTTNG2MP6fnwaxjMTWHrtbvzTIKaFBzLM1Z/U7KLc1TB6d2BS8CpE+kPImK
+         GGFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784675107; x=1785279907;
+        d=1e100.net; s=20251104; t=1784675253; x=1785280053;
         h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QYXaYDgqkJqtd2+svQngfiSlGiL9bXTJTobnSbO9Md4=;
-        b=Br7332LPXlxRAm3SXxkXBP90tegwULOW8jKishwtO1w632fx8JKkZ1h9kFK5ntxfqU
-         onjGq5JIB5ZoSU+2ChHP6uqYRjKTkbK0mv35YFlOzLGN8x64iVDZBvAECqmcX5k0tJ7Q
-         Qu/CLwJ4XOBsLS5iNiB1Nsj4kXWTRXtXbxamCLX2wMFRe7LUwkUsiFbAHLrTvtjO23PG
-         YPONA3kB5tOH6dBddcnOhybfKStM8yCo1wvaWReEfVmgzwKhlc13ZIBfrtjR3NQsBz0W
-         slhvRBAg1zdlmR9Fc4uZt/0uOa5KSRS9NpEQxmnkIizTSLSO7jvylgNpW0yfvD7KblkB
-         3zfQ==
-X-Gm-Message-State: AOJu0YxTH1eM8Qnr/Oat+VoaTDxVBXDSBmFvYB8W2bdmmvDgr/luWFge
-	u4WaNbt24rBBjYuQMhtYc3GFXkTg7TbOxdHWuywDLek5DYtgXHY8pG+5w9VkXlQSlu26yebyzOb
-	X2QDKrPVr2CIOB0iu5g2rJ8UX6g==
-X-Received: from iowx7.prod.google.com ([2002:a05:6602:1607:b0:9a8:4cf8:3078])
+        bh=QXklq3z1zPJM73DGXfVs9Rwe/LHFVQt6fqyhM9xa818=;
+        b=DgkywBKt7UuyXAN7qBY52eNWk6RiBBn0/mHPKBzYedN5a0aKJmPpbDPNlDtgxGQZm9
+         13bEmIMjWeRAMdZ5/Y8XKusyk1q9TiZJZ1V8Sv3kfZU8qZHUN5FD5awrsnr1ktQNIv7o
+         P5giTDf++PaSltUqdt4Cb023NasBh5RTNecApuFKABh9fwweMmD3lug2oOEqif7ScT82
+         lol1YaVvHrwF23fD5d2H3FhZueUComENX5hN8CxRsAQTek+9Xq5EhauMTyFBJfSVIgFE
+         10xgwewMgGP2Jl5HVfwXstJdd3fx83RS4knGdNxWkt3B9w7Qgq3wgzT+qszQXi18+u7m
+         pCCg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq+x5KRhGn873A0s8tAwuSWezL4ixU44vaOKp2iV8dV2SFOjkwesA0QfHnl9YimhNhyjqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDKFVl9Q9PKhwsfv+cb+LbuWcz1uIIhRL5tJUrqHpEPmtvqsey
+	AO0nO90pAc54OLZxhAi4RYPUMDfC483r3bo0+8H6BqCKmMvsKo+hFXqF/OLfuegJSh1Pxna7qxH
+	KPzk/ITKm4mNULaDDL9Xo/YJXcw==
+X-Received: from ilnt5.prod.google.com ([2002:a92:dc05:0:b0:503:9301:3c0f])
  (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:1719:b0:495:f230:a340 with SMTP id 5614622812f47-4a4d049ce3emr10719954b6e.28.1784675106606;
- Tue, 21 Jul 2026 16:05:06 -0700 (PDT)
-Date: Tue, 21 Jul 2026 23:05:06 +0000
-In-Reply-To: <3fc867c3-67a0-4fdd-b871-f2ba4d642f1f@linaro.org> (message from
- James Clark on Mon, 20 Jul 2026 17:46:37 +0100)
+ 2002:a05:6808:15a7:b0:4a4:25b4:a0be with SMTP id 5614622812f47-4a4d0344556mr13073948b6e.2.1784675253077;
+ Tue, 21 Jul 2026 16:07:33 -0700 (PDT)
+Date: Tue, 21 Jul 2026 23:07:32 +0000
+In-Reply-To: <lxhagolfvr6w5h5xujrhq33pzx7hb6db5ihga46z6qn3dba4nx@q5b2fdclitqs>
+ (message from Andrew Jones on Tue, 21 Jul 2026 10:58:08 +0200)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Message-ID: <gsnt8q7454gt.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH 11/21] KVM: arm64: Context swap Partitioned PMU guest registers
+Message-ID: <gsnt5x2854cr.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [kvm-unit-tests PATCH] Makefile: efi: preserve .dynstr section
+ for LLVM objcopy compatibility
 From: Colton Lewis <coltonlewis@google.com>
-To: James Clark <james.clark@linaro.org>
-Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
-	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: pbonzini@redhat.com, alexandru.elisei@arm.com, eric.auger@redhat.com, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-James Clark <james.clark@linaro.org> writes:
+Thanks Andrew!
 
-> On 12/06/2026 20:28, Colton Lewis wrote:
->> Save and restore newly untrapped registers that can be directly
->> accessed by the guest when the PMU is partitioned.
+Andrew Jones <andrew.jones@linux.dev> writes:
 
->> * PMEVCNTRn_EL0
->> * PMCCNTR_EL0
->> * PMSELR_EL0
->> * PMCR_EL0
->> * PMCNTEN_EL0
->> * PMINTEN_EL1
+> On Thu, Jul 16, 2026 at 05:33:15PM +0000, Colton Lewis wrote:
+>> When building EFI binaries with llvm-objcopy, keeping sections with
+>> '-j .dynamic -j .dynsym' without '-j .dynstr' fails with:
 
->> If we know we are not partitioned (that is, using the emulated vPMU),
->> then return immediately. A later patch will make this lazy so the
->> context swaps don't happen unless the guest has accessed the PMU.
+>>    llvm-objcopy: error: 'arm/spinlock-test.so': section '.dynstr'
+>>    cannot be removed because it is referenced by the section '.dynamic'
 
->> PMEVTYPER is handled in a following patch since we must apply the KVM
->> event filter before writing values to hardware.
+>> Include '.dynstr' in the list of preserved sections across
+>> arm/Makefile.common, riscv/Makefile, and x86/Makefile.common so that
+>> EFI binaries can be built cleanly using llvm-objcopy.
 
->> PMOVS guest counters are cleared to avoid the possibility of
->> generating spurious interrupts when PMINTEN is written. This is fine
->> because the virtual register for PMOVS is always the canonical value.
-
+>> Assisted-by: Gemini:gemini-next
 >> Signed-off-by: Colton Lewis <coltonlewis@google.com>
 >> ---
->>    arch/arm/include/asm/arm_pmuv3.h |   4 +
->>    arch/arm64/kvm/arm.c             |   2 +
->>    arch/arm64/kvm/pmu-direct.c      | 183 +++++++++++++++++++++++++++++++
->>    include/kvm/arm_pmu.h            |  16 +++
->>    4 files changed, 205 insertions(+)
+>>   arm/Makefile.common | 2 +-
+>>   riscv/Makefile      | 2 +-
+>>   x86/Makefile.common | 2 +-
+>>   3 files changed, 3 insertions(+), 3 deletions(-)
 
 
-> [...]
+> Pushed.
 
->> +
->> +/**
->> + * kvm_pmu_put() - Put untrapped PMU registers
->> + * @vcpu: Pointer to struct kvm_vcpu
->> + *
->> + * Put all untrapped PMU registers from the VCPU into the PCPU. Mask
->> + * to only bits belonging to guest-reserved counters and leave
->> + * host-reserved counters alone in bitmask registers.
->> + */
->> +void kvm_pmu_put(struct kvm_vcpu *vcpu)
->> +{
->> +	struct arm_pmu *pmu;
->> +	unsigned long guest_counters;
->> +	unsigned long flags;
->> +	u64 mask;
->> +	u8 i;
->> +	u64 val;
->> +
->> +	/*
->> +	 * If we aren't guest-owned then we know the guest is not
->> +	 * accessing the PMU anyway, so no need to bother with the
->> +	 * swap.
->> +	 */
->> +	if (!kvm_pmu_is_partitioned(vcpu->kvm))
->> +		return;
->> +
->> +	preempt_disable();
->> +
->> +	pmu = vcpu->kvm->arch.arm_pmu;
->> +	guest_counters = kvm_pmu_guest_counter_mask(pmu);
->> +
->> +	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
->> +		if (i == ARMV8_PMU_CYCLE_IDX)
->> +			val = read_pmccntr();
->> +		else
->> +			val = read_pmevcntrn(i);
->> +
->> +		__vcpu_assign_sys_reg(vcpu, PMEVCNTR0_EL0 + i, val);
->> +	}
->> +
->> +	val = read_sysreg(pmselr_el0);
->> +	__vcpu_assign_sys_reg(vcpu, PMSELR_EL0, val);
->> +
->> +	val = read_sysreg(pmcr_el0);
->> +	__vcpu_assign_sys_reg(vcpu, PMCR_EL0, val);
->> +
->> +	/* Mask these to only save the guest relevant bits. */
->> +	mask = kvm_pmu_guest_counter_mask(pmu);
->> +
->> +	val = read_sysreg(pmcntenset_el0);
->> +	__vcpu_assign_sys_reg(vcpu, PMCNTENSET_EL0, val & mask);
->> +
->> +	val = read_sysreg(pmintenset_el1);
->> +	__vcpu_assign_sys_reg(vcpu, PMINTENSET_EL1, val & mask);
->> +
->> +	/* Save pending guest hardware overflows. */
->> +	local_irq_save(flags);
->> +	val = read_sysreg(pmovsset_el0);
->> +	__vcpu_rmw_sys_reg(vcpu, PMOVSSET_EL0, |=, val & mask);
->> +	write_sysreg(val & mask, pmovsclr_el0);
->> +	local_irq_restore(flags);
->> +
->> +	/* Stop guest counters and disable interrupts in hardware. */
->> +	write_sysreg(mask, pmcntenclr_el0);
->> +	write_sysreg(mask, pmintenclr_el1);
->> +
->> +	kvm_pmu_set_guest_counters(pmu, 0);
-
-> Hi Colton,
-
-> This function doesn't get added until "KVM: arm64: Apply dynamic guest
-> counter reservations" a few commits later.
-
-> kvm_pmu_guest_counter_mask() is also used in a commit before it's added.
-
-My bad. I'll correct that.
+> Thanks,
+> drew
