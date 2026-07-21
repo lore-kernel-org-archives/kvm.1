@@ -1,159 +1,122 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D053F379C32
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C630A25392A
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784652481; cv=none; b=FnLAjCeQq+tEi49XbWMLXgmAbzw+oppRk5xep8XD7F2tQZMpoShXh+Mbdbb6aDoS6gXr8M5uFp1iCp0PuJ8zdN5tEhqgDlfePEZSaIbWbVgNt3zRHMiRY91Nven4LQVPzo/kk0++lFeZ0Ev+VFCKLOiw//LM402xO4Wc0Fb49yQ=
+	t=1784652783; cv=none; b=R+rqllWnUwFUjZo+6/MkTkPd94tweA9lhF3avKInFHlBjLGI3Vb7/iogUinXrpBWPrQ5BSbxKSkknEDRA17BxjU6oeCcY/WUavVp4+SLxStbtoQwqttDlf5KTQgnU8gidgXN6Svz/8G2pwhEmF+Fg+EKhiE/aX1RFU3rHpAl020=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784652481; c=relaxed/simple;
-	bh=6RwquLywhi0GBUCnzatAMSofcxVHNo0nZEB3gMhfyWc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Uiu1G09pRmL+GmECw5b8bUiiYWP3vvIUD7qJNDlWHLc2pMlyLS9qA/+Ky8onUGMUmWiWeFpHP+F6fKwfE2TiGL87XSygNqTkANcbMkdvC7+yEj1mnifCLxz+0MVo5yhyypacZi9vacxJs2HxSkVq0KQ25QRkz3krqGwT4m3wOnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SE0hcyIq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZmsO8l5P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784652783; c=relaxed/simple;
+	bh=aub4/Y/qId6fjPmNww3hbFWO0qc3XRYxHnOrlUCtVvQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UTI/Y5rUFfSpQ2gl6GT7poXq0zo2vrgkG6zvKd5ESY0aONRy3qdH1IWltSNx2MiPDha/Qt529Zg2aXwH365LLT+sHdXB88mFDI2oe+UXL/+zs4tzN0VLs0OsGhD3gcZovFoq5qEqiGeXntbllDQ//Tfqr8PbG97m9hWwj+pH64s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ba2sxT6v; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SE0hcyIq";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZmsO8l5P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784652476;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=be3+Li/Szx6t4rZokyI99j2GfhjzMsbkOxQWganE5Mw=;
-	b=SE0hcyIqWMCgka1EDYz9pH1WFgWoT8O1pRhFMq8BnvoZnU+qYJMMeXmH+cLCJ9TRdb4Qdh
-	FUPqzdUXbhFPTixWqpZLM/s3zLLfxbPsRi3tfa3eoBb8FjwIMvDi+yR3rwYSbVnYyVeVCk
-	W7emKxPniOt3LlDj3CajVJOgNlBorbY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-v8rj7O6XPG64I44Vsrd6dg-1; Tue, 21 Jul 2026 12:47:49 -0400
-X-MC-Unique: v8rj7O6XPG64I44Vsrd6dg-1
-X-Mimecast-MFC-AGG-ID: v8rj7O6XPG64I44Vsrd6dg_1784652468
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-473e18559b2so5476409f8f.0
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:47:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ba2sxT6v"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e086f8e0dso1248521b3a.2
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784652468; x=1785257268; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=be3+Li/Szx6t4rZokyI99j2GfhjzMsbkOxQWganE5Mw=;
-        b=ZmsO8l5PYnOuju9ndnj3ze3phK9B3AVkmjMwjgKTDrJi5nmBEyn/NaZv+vklTdaqy1
-         tVeJerjZV8/MNZOBMHqZmwJC2NPtf5u5P9oiJss9Tphm8SIbrB0adUeFMyDoN1+3lD47
-         N7lmDsirLxlK9skPt7rwz1cBt5T0imcjIvLflgQ49MHDsta26kVpz9Mby8aqmlwPYaGz
-         dY8nHnBzcfWERETKUIiN2ASsTw6GL08YnPtEkmnee6lfioy77tm8BV/ppThcHjxxG+zT
-         vRZ7+7koXSO2+/4bMJ5YAkZK6t6sUBVlSRck8DUiDzlJRFqRW656RKG4bqzXLCfq8dfJ
-         //Cw==
+        d=google.com; s=20251104; t=1784652781; x=1785257581; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=hZXQPMt2Tl+5btTT5R4lEmBtsDs0cFC3Selp5kclvuA=;
+        b=ba2sxT6v3ay/+1fQfDTpCvV7DZZ2vRnm0XBqThPr0OmfY/D/I7qSAAy0aKCel1TMpQ
+         cWEo4EU2c7vvzd8cGrtHaBD0PhLhLfCyJwlV1yjSYft4FEJ0E9otNWmKHuKazEErJ50N
+         ORYMToShS71oxaOOTVa37P71CGmhJoGm1GPPbAok6+xS2VSWipi1XqC2KXkeRjTkpCDP
+         5cvyOGgYcaZ/aII7R+LOn6Uam8nEEgSsyEj4Yd/n9Vum8pAubAIH7HoCk4uOZZ4imaRj
+         I6oJ/xG3sdUFMKbmaZsDkNP7GqrpebNhZXMJUNt1TpP7mI5PO7r2OGF2n8DWJhcqNb/1
+         6cPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784652468; x=1785257268;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=be3+Li/Szx6t4rZokyI99j2GfhjzMsbkOxQWganE5Mw=;
-        b=pqvrn2qf3VFQrwSFGMCKtY1OaAxMyvVy8gkhkjPTb/o/NdRfMAWFT5uwNc8O9hIwHp
-         xWmePbPFZHwbzShwD3sdn9VqE3Xigltrqrk3Glsi6dAwT3Tnd28fga6W9id/L2Di+Cpj
-         Yjur3eunHkGLEIf7BE+lRIqLkDo9AKwT0gHLtC00WJZENPe2oWpGyzCGzt0Ko9gkN8RS
-         NweIgQcAQvlEhSSeOYG1OntOXsFOUHGLS4e9YUhxYvQFlIBmPvpGxZp+N6qZXECfpq/+
-         L1rLm+UW8P5zHy66mI+YvMCL6seWJwIWjdaIue77GZFMdDI6oXy1nppCtfALceNhI1wa
-         oGdw==
-X-Forwarded-Encrypted: i=1; AHgh+RrOk3tpL4AsylM26FrP+XVuGJ2qmb76PfpO1QnvqjsuXjyRPMafMSad0f41MXZbFHNkyDM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwESneIE+GZLsNre9zTbrPNcPM66ZPZv0O8YPqpVgQgBA09H4/z
-	m5mZovrTvThz8tK8skre2ALqbl7ZGaI66E3LhglBFk6pJb8DznD90jeSuCPIAFBTESLiKqPZ0V0
-	TVnCtt5C20/2uiZ5Y3Q9KCuVJB7FWxHoKDPzl7L61ppjHdf77/VKLSiYCelOsUA==
-X-Gm-Gg: AR+sD12mPnCkArpeW1IYwYpmjTJdVwB3hXQk88ijGscOoum72y+koDhOj+cyV13q1G5
-	elVuZjMRGzLUYx84xBLRqoDocO2SK4Gz5OEGWgq0/7SW4u91WU2tzyzwNswg/XXKtxluEbF598z
-	ZI+FJg9aOCHrktVB3KsZfT7u4iZazwW8qhhPCx/P+4UdOhXeSYZuMwfo5Gai3iUS5WUmtlSgir8
-	j8GHNoxe/CPosl8CvAVLeftxpQ+CMUCnZfZ1p8SfjnOf0Qhl0gdDe13IYpvOuK8JVD6K0BsxfxU
-	wzEoXNjG2Qu1HKyabXvFQdZhgUBM9eEB4MaymvSc0aBlb3NWivHcqEXxtsY2XYmaAZJHW6cdVmD
-	ucn2eASQCtr2T9DeQpgjEAJDNi/KtwDPThMTOj19IaUfY8zZzT2ZDPz0OAnAH+mdwiP59ujbb47
-	apOw==
-X-Received: by 2002:a05:6000:400f:b0:47f:8152:e568 with SMTP id ffacd0b85a97d-47f8152e595mr4213983f8f.60.1784652468383;
-        Tue, 21 Jul 2026 09:47:48 -0700 (PDT)
-X-Received: by 2002:a05:6000:400f:b0:47f:8152:e568 with SMTP id ffacd0b85a97d-47f8152e595mr4213959f8f.60.1784652467986;
-        Tue, 21 Jul 2026 09:47:47 -0700 (PDT)
-Received: from [192.168.1.84] ([93.56.170.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63ec7c69sm43124153f8f.17.2026.07.21.09.47.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jul 2026 09:47:47 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: VMX: add memory clobber to asm for VMX instructions
-Date: Tue, 21 Jul 2026 18:47:46 +0200
-Message-ID: <20260721164746.376551-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20251104; t=1784652781; x=1785257581;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hZXQPMt2Tl+5btTT5R4lEmBtsDs0cFC3Selp5kclvuA=;
+        b=S+DmO8l9ZXvOrwR9HLMs0TmixbBvAEjiyOaK/cg7sqKdA72gRTrYdTkmjkYliEyfv0
+         OSzaIqAtqBzR2V0JXVK1wyFfYBq9K5bHVjvKP1dE+pqJz3+F37DMm0J6zlHakN+N/sbH
+         Kul4jeZMXCLrhidvoJnR6ElgeYxMVGE4lHbbx4psO0Y7cNpgkCNbSsV6h5IrU5nSFG4/
+         /tVTnkUFALmyXnO7DiAGhRO11W/xjIokD4RzSplbcfTIOJaZ3XypKHiUXv1AazwH0Apl
+         U0bwbsgrqV8zlzfMsEbShwnqq5wtkLClNvjsPz6vGn9QiD++yhqFZ6PhiwZj1OJ3wiO9
+         ea0Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rpas5GaCtYgnuSxsdO+vPTSgoADNK9e/ps8MfpGVbh4RnTt5j8uc3sOCLAyuecLUXijjho=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQxmAeIjqy1hKPULw1wEG3OapNwpEXhu78u2YWIvKa2Kk7pBjB
+	peyyhmrPOadBM8/TnKEtBLk/4F3y8P6qsaG47iZsJHlDUSMh4cXgBedWKIrzZhDmB8WAu4DH+0u
+	4cnerhA==
+X-Received: from pgbee5.prod.google.com ([2002:a05:6a02:4585:b0:cbb:8616:5536])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1748:b0:845:363e:12d9
+ with SMTP id d2e1a72fcca58-84c292a0e86mr18030207b3a.3.1784652780789; Tue, 21
+ Jul 2026 09:53:00 -0700 (PDT)
+Date: Tue, 21 Jul 2026 09:53:00 -0700
+In-Reply-To: <d538bd8eba1058d52f8d32e311c12bf216ff4118.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260720192221.72912-1-absandze@amazon.de> <20260720192221.72912-2-absandze@amazon.de>
+ <al6g4VA4l-ZIAr9Q@google.com> <d538bd8eba1058d52f8d32e311c12bf216ff4118.camel@infradead.org>
+Message-ID: <al-j7FTIRAECuhRt@google.com>
+Subject: Re: [RFC PATCH 1/2] KVM: x86/pmu: Add CAP to disable SW accounting of
+ emulated instructions
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Luka Absandze <absandze@amazon.de>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Alexander Graf <graf@amazon.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-VMCLEAR/VMREAD/VMWRITE/VMPTRLD access the internal VMCS cache, which
-is not visible to the compiler; without a memory clobber, the compiler
-can reorder them in troublesome ways because "asm volatile" and "asm goto"
-only protect against removal of the asm.  For example, placing a VMWRITE
-before the corresponding VMCS pointer is loaded can lead to corruption.
-While none of this has been observed, it is better to prevent than cure.
+On Tue, Jul 21, 2026, David Woodhouse wrote:
+> On Mon, 2026-07-20 at 15:27 -0700, Sean Christopherson wrote:
+> > On Mon, Jul 20, 2026, Luka Absandze wrote:
+> > > The only functional change for an opted-in VM is reduced accuracy: a
+> > > guest counting instructions-retired or branches-retired undercounts b=
+y
+> > > the instructions KVM emulates in host context, i.e. the behavior that
+> > > predates the accounting cited above. Hardware-executed guest
+> > > instructions continue to be counted by the backing perf_event, and it=
+s
+> > > overflow/PMI path is unchanged.
+> >=20
+> > Do you *need* per-VM control, or would a module param (or a magic value=
+ for
+> > enable_pmu) suffice?=C2=A0 While I mostly buy the "it used to work this=
+ way" argument
+> > (just "mostly", because that commit landed 4.5 years ago), I'm not exac=
+tly keen
+> > on adding uAPI that is effectively "re-introduce a bug to workaround fu=
+ndamental
+> > design issues in KVM's emulated PMU implementation".
+>=20
+> Which is the bug? Some would argue that timer interrupts running 50
+> times slower is also a bug. We just get to choose *which* bug we want
+> the guest to experience :)
+>=20
+> And I think that is a per-guest choice,
 
-Likewise, INVEPT and INVVPID access the TLB and, even though in their
-case the effect is only visible to the next VMLAUNCH/VMRESUME, it is
-technically correct to add the clobber there too.  So avoid any urge to
-special case them, and simply hardcode "memory" into the clobber list
-of vmx_asm1() and vmx_asm2().  __vmcs_readl() open-codes its own asm,
-so add the clobber there as well.
+Conceptually, I 100% agree.  But in practice, making a per-guest choice req=
+uires
+a priori knowledge of what the guest is doing and/or what the guest needs/w=
+ants.
 
-Link: https://lore.kernel.org/kvm/CABgObfbL3t21yVeSwiLSjjOUER+rTYDPHYAH9YU4TWGRjx6XHg@mail.gmail.com/
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/vmx/vmx_ops.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+And so I'm asking, do your use cases have that knowledge *and* will you run=
+ VMs
+with different requirements on a single host?  Because if you'll end up
+configuring all VMs on a given host the same way, then I'd strongly prefer =
+a
+module param to give us more flexibility for the future, e.g. if months/yea=
+rs
+from now we figure out a way to provide acceptable correctness and efficien=
+cy
+that would allows us to drop the param entirely.
 
-diff --git a/arch/x86/kvm/vmx/vmx_ops.h b/arch/x86/kvm/vmx/vmx_ops.h
-index 81784befaaf4..9ffe03a0c223 100644
---- a/arch/x86/kvm/vmx/vmx_ops.h
-+++ b/arch/x86/kvm/vmx/vmx_ops.h
-@@ -101,7 +101,7 @@ static __always_inline unsigned long __vmcs_readl(unsigned long field)
- 
- 			  : [output] "=r" (value)
- 			  : [field] "r" (field)
--			  : "cc"
-+			  : "cc", "memory"
- 			  : do_fail, do_exception);
- 
- 	return value;
-@@ -145,7 +145,7 @@ static __always_inline unsigned long __vmcs_readl(unsigned long field)
- 
- 		     : ASM_CALL_CONSTRAINT, [output] "=&r" (value)
- 		     : [field] "r" (field)
--		     : "cc");
-+		     : "cc", "memory");
- 	return value;
- 
- #endif /* CONFIG_CC_HAS_ASM_GOTO_OUTPUT */
-@@ -192,7 +192,7 @@ do {									\
- 	asm goto("1: " __stringify(insn) " %0\n\t"			\
- 			  "jna %l[error]\n\t"				\
- 			  _ASM_EXTABLE(1b, %l[fault])			\
--			  : : op1 : "cc" : error, fault);		\
-+			  : : op1 : "cc", "memory" : error, fault);	\
- 	return;								\
- error:									\
- 	instrumentation_begin();					\
-@@ -208,7 +208,7 @@ do {									\
- 	asm goto("1: "  __stringify(insn) " %1, %0\n\t"			\
- 			  "jna %l[error]\n\t"				\
- 			  _ASM_EXTABLE(1b, %l[fault])			\
--			  : : op1, op2 : "cc" : error, fault);		\
-+			  : : op1, op2 : "cc", "memory" : error, fault);\
- 	return;								\
- error:									\
- 	instrumentation_begin();					\
--- 
-2.55.0
+> if we can't find a way to do it with *sufficient* correctness *and*
+> efficiency (qv).
+
 
