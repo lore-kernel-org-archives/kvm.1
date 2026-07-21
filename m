@@ -1,143 +1,265 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A232B46C4C1
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784649773; cv=pass; b=IPk4d8km/hVB57DAxHtjw1LpRHnnMm5Uos6yufgBPXpTZ6baM50ZTQ/OzVuEiuHFG1HDrl4FuuaNw734TSsp0/I/PTrk5dyiBQfffZrV4JDS1Ekzhm5oKDMU0u6dLKRPVJN+bV9F9vM8UQnrE4WTaxo/4caKZbp71n6xWqixELI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784649773; c=relaxed/simple;
-	bh=feRZ4QKSvrkCWAWS59c5Jn+FQo1zqyY8SL/+SCIGU2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qeOTsrPKxHgB4a06MXcPsTTO0MowT2mdCGi2KQNQ/7serH5XnUCKy+kXZk8LnCAexkzd24fHOFDz3YIPhUqgUsRvBiT5KTBf3KHiamSeKt7I6GY6UyjvzoiI9hZ16nzvju668HC0FJg6ms4aq4RvVXFOF4Ji7P1h0Dxn+MTS23U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IK9Odsxu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1QvIWXx; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E68E3E49C3
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784650256; cv=none; b=VWrwp7P2Cq8ZI6Jc7fSE3JFM/2CUWaxnzRA/5w8C2ke86vzd2tV1lhC0y26KZF2Uur2Af4YIfeHlYHlgjN18Sc4ch6/yUBbAblb5HdoC4o/oNhMSrD/ClvnfQQzUAJK4IdGrSI2beGHk8jnvjDu4MZL16TprorvCYQZvpjMHRxI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784650256; c=relaxed/simple;
+	bh=cYUYwc7xExaylEbRReKR8WGgqDZ922BzHxOJkybE2jA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KcwCA5JGyFqLwrXEjGlK7KpsRjcMgxHSfS7P9k+snXlP0JP3FuwVyl1hr++5g1H1vqdM8OqoF7X9l5ZEGXkNaxouKbceluB+1NASfnWmVxCaMmyQaVf8cldEFL0VGs51+EIb+8iRnL3Mu7/MamGUpf9fUOZ044BMgtBKfdpsSqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=whWAtOT+; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IK9Odsxu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1QvIWXx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784649771;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
-	b=IK9Odsxu85JF7dWil66ypDSwLYDZm0Om4ZITBMA5V8hiOhwrRTrGqI62JUSLPK780KTSbR
-	XYRO/cRBvvrU8nNWU7JrjVa30v8yPORuiDbuID/P7e+kSzrsDGUjAFZaf+RRVCjSJYaBXs
-	y7jeGCk8BXy/Mt5F2dm5dLQN4J7gvpM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-360-E2L3mCF3O5G5bl5f6KItIg-1; Tue, 21 Jul 2026 12:02:49 -0400
-X-MC-Unique: E2L3mCF3O5G5bl5f6KItIg-1
-X-Mimecast-MFC-AGG-ID: E2L3mCF3O5G5bl5f6KItIg_1784649769
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso90539535e9.2
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:02:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784649768; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Y3hSKT6Ukv2+Wf5yFntFYWADdIbb5ZfxlgT/TvtDgdgOFDJfSb5cChoxTvxx5zP4+N
-         Hixqog41JHwLgjot/pEuOC7VTMAPcnNvmc/WmdETACYpBaNSutpPWQnZ8Eactwuc6/hN
-         9SqBrqCaByXBcQSET4w65wIFHBOH35Y6LsHasIvg2Nli4C+m/B71IZSmxIp6M/wGUVZy
-         1pu2T5J76MzJZNMKO1rgsv3RWk09wYltC8upphB4vcQP1aeoT+2EGyfO/WbupX+Z1RY2
-         FX2kNaZGCHuC4RG/MyQzapxmDqV7c0VkGKIZlaGXY35q315kUCLlRRyA9H3CNFbpzLCi
-         9lhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
-        fh=8yrak1Tp1Yavh400iospK+aLRJaE+dPrHYRk6PwrSBo=;
-        b=K3kX77AIgl/9JSZms26Q6NsHhatjYGaR33maxXltD6TViBhScMFyVhEWl26ZT9EZPf
-         pF2f9gAvkUdRdv1JUY9DPUU91inTYbX7G6ZAQU7I/DOuSNd2g57yRQw38IE6Yz4Dj8Qj
-         idj9hkyrL0FRKKdcfXY4sr2dyGbpqH51cUuQ2gd23p2/SFYcKLSHrXArj0IcQE+//1hI
-         JkTdsN8I7ChOFvkw2W86sTuB9Sebg40xCu/EuSX1vMgCkQ2078anvrmqYwR2cLq0uhyM
-         DuSC8T2VC9kvF+LSON7TDiCFeB3hCHWhcB9/lvb6RbdZwWaQRcZ0kLSK2Kx6UncaWURk
-         RC3w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="whWAtOT+"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-381250979d5so8697461a91.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784649768; x=1785254568; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
-        b=X1QvIWXxDZ+C8tGU1ThFpbnNXgx3z1ERwcEN9EJgDH3ppm6TZfbgdLML6nI1/HjjY8
-         H7f7Go6AloAjZ0MLnBe7KIMQzHmGIoCWHqzd2g4PJo1tdeRX6fv1wVXUnkXENFvblgao
-         JoIO2HtlTbyQ8nZDd0ngjXAlg0SShHkLKw19icYYPCLJrtOMy2SGd/rPiquhvldAVhZV
-         pODUAKcyM3zvJ04P0qQzHdtcE2NmgJy+lH9m3JnkZEG5sWhBF71lN5QLwo/YDEnQC0fk
-         ob4QY5VkRGWg9k7NHcmNXRMbNUV55It8/Xj8Q5EyFGEHTFoB9J2yI4zU7B5moeSIs5yi
-         s65w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784649768; x=1785254568;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784650255; x=1785255055; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
-        b=BL+Z1eDR+qVbXzNYcbmho4Vk7loN7u+pcrNIa2vL3VUAYorIC+CwGyXS8Tgw68EgEC
-         +XY54J2el7Au6LbnrdpvHC9OGBlUE5cDKJgkNE15ApnWO8wV0PqWF77fk9aNwB6hI4WU
-         /r49mYnenW4SoSvoloCXKdGuKOxcNez6UBwdBn+/9lzeoa03N7R2lZ1aRrn7i2N8ErF6
-         U49VJoIEEB1RCdkhHKFe4gi0smNQevpFeBSIE4z12ZmEZ4TF7pNBumhTrok/xY6gf+0Z
-         KBCXboTx1DHFaVKHjNUhmLO4/4Uj72HRPoUUaC5/WQ3/UycD0dWMJ49MCtRNHL9p10wi
-         gzvA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrl8AoM4O/tLOLQ9wb6xkpwBZ/KZTBhHaWyjOkH+RBWMnvNq6enxFL5gcDrfoyOSTXOPms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWr5H9HTgTMln3awwRIEmzlOwO6bmP0YXfZ1xelE9/Tdr+nobk
-	Onbtv46fPMONCClbXBw7EJSIUj7/fEuo1hrnC+NEG2sZR2wlxdPgNzQBQzqZ2uGHmehU7TtOmRM
-	nGwi+95AirUTNtifIv/nUF3w6WKQnpaZgbnbuiLoGPtyXptbcLX5rEditMSTzbU4tCGFDmeol/f
-	NYI/rodk5QRz1QnCCHi8Z8ayWMhqq5
-X-Gm-Gg: AfdE7ck+iqBHE7RzjTg91YnCMwhAXUiaPhGd9zD97Vbw8PIraz2IPtsjbgTP+wH+KW7
-	YA1k4YrisepgZoboSxoKJ7zCDiWujN/K5HxrvNNysLXPVAEZ00xjXiXHUoKO2xgkX4hQnf3IHV5
-	S8kdia5JgWSNf8UduEMWVVd/DQDRGCBw+QhGzK0a1S0HK3MMX/EPayPEa0SUTjvq0ByqsCQOB6l
-	s4/YTi4Kl85EP9bbcQKpyBJ3JqbH8iTA+2H7aCFe7sNl/c0w0EtiaMEaa4=
-X-Received: by 2002:a05:600c:4f14:b0:495:69c8:d9ab with SMTP id 5b1f17b1804b1-49569c8d9d3mr10999605e9.8.1784649768412;
-        Tue, 21 Jul 2026 09:02:48 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f14:b0:495:69c8:d9ab with SMTP id
- 5b1f17b1804b1-49569c8d9d3mr10999245e9.8.1784649767985; Tue, 21 Jul 2026
- 09:02:47 -0700 (PDT)
+        bh=qWcnFcVmJhLs/PJEHyp6/95iFzsPnruaaz9EWTtVRX8=;
+        b=whWAtOT+n/+HR8EUMmlPCICFLjzIOqU7owBuLlf9oGyuxCQpPrbZIcfs5cibgapqRm
+         bcMsJzdL5YqkUG43OzuCsLmDc+OlLjwwWo+vJiMRC9ysTCoDJmN9RV9VFCcxUBFIak5I
+         ScT4bGgDGNsCTQ0oci+3sMOhWu9JtHfOCYzf3NxbppzI3oSMKXrJOM9CE7MAEkeXBI1Q
+         gEc+4l7qsRhbdlCpIwpb2h3fOvRH40S9bcVGBLU+N6x2bMQBaCrIGKEWkO0/hUO8RYlA
+         XIG/W255EjYsM4w1jlek3++H/HP6k4X351Ow7IdQRHilRVyZUZKUV0ryWPMdQD1Fkfk5
+         WDRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784650255; x=1785255055;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qWcnFcVmJhLs/PJEHyp6/95iFzsPnruaaz9EWTtVRX8=;
+        b=nHJKGADXqTejNZ0MpHbRKsKRR7Yqw/PIiZjIwGdqWnD8fv0zPEkc9/RsXZhYuKBc5F
+         ikk4aINJsJPSS+2onQgFE0QeOxKO/Cs00EKkoZsrNiU0WXe2PBFPpBZ7vcSUUwiIWsJ/
+         yWJOk2dL8RNRTvhDwDqntswuEZV3PxsDRfyKhwuyAkfKddxA2+n8v1FolpH+GN3DPEds
+         a5UIx9P64CHN3HXYsBTcWL5HYQiOMR8WfOenZerMZavaUfLV+zIXwZot3FcLC+unw2zT
+         hRNEHYiJlAPfZ5tZgfJoMDanQhGPr8F6UqCqAejlZXSnnZLz5g3cOAQOb8sKTa39xWKX
+         ko2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqIlkwvqU8HsxOktMb2kHZYYmJkslfNcNPGQq/hSPf51AvRKkVMMYhmq+GCnzcAa2cUTmI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyrO4zqCCUV1GXJWQOS/tj0Z6m/A4PwCY9ibSGnTQVur+pehbv
+	cr80v3aMF5J3Up1ZmkvnG/xqGijgD2rIFTPzpFr3kli+dUTb54zVl0VnjAbu+wm9M7jYx+ixvCv
+	1UiZgTg==
+X-Received: from pjbbf5.prod.google.com ([2002:a17:90b:b05:b0:381:9084:d57a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1345:b0:38e:21da:9257
+ with SMTP id 98e67ed59e1d1-38e4b56ed6amr20955842a91.37.1784650254437; Tue, 21
+ Jul 2026 09:10:54 -0700 (PDT)
+Date: Tue, 21 Jul 2026 09:10:53 -0700
+In-Reply-To: <CAEvNRgFFEfHZTZOi_anSJDhqPvncuRiXxJt9hcRnAW9FPdFY+Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260721102827.313208-1-pbonzini@redhat.com> <20260721104819.B5A101F00A3E@smtp.kernel.org>
- <al-PSX0sOPdYdvIg@google.com>
-In-Reply-To: <al-PSX0sOPdYdvIg@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 21 Jul 2026 18:02:35 +0200
-X-Gm-Features: AUfX_mwiJzgrlxMZTOoAY1MJbpOdubq8Khyrmy2TCut5ao7x0eFSUWRMAnM8hb0
-Message-ID: <CABgObfbL3t21yVeSwiLSjjOUER+rTYDPHYAH9YU4TWGRjx6XHg@mail.gmail.com>
-Subject: Re: [PATCH] KVM: nVMX: Hide shadow VMCS right after VMCLEAR
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-7-seanjc@google.com>
+ <CAEvNRgFFEfHZTZOi_anSJDhqPvncuRiXxJt9hcRnAW9FPdFY+Q@mail.gmail.com>
+Message-ID: <al-aDRTbDOPT1UbM@google.com>
+Subject: Re: [PATCH v5 6/7] KVM: x86: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Jul 21, 2026 at 5:25=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
-> FWIW, I had a pretty strong preference for Paolo's off-list suggestion of
-> explicitly disabling preemption, even before seeing Sashiko's response.  =
-Every
-> other path the VMCLEARs the shadow VMCS runs with preemption disabled, IM=
-O it's
-> more intuitive to follow suit here.  And even with the comment, it took a=
- good
-> 5-10 minutes of staring to understand what exactly is going wrong, though=
- that's
-> probably a me problem.
+On Thu, Jul 16, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> 
+> > Smush x86's prepare() and invalidate() hooks into a common convert() flow,
+> > as they are effectively two sides of the same coin for SNP: they're invoked
+> > when private/shared memory is about to made accessible/visible to the guest
+> > or host.  I.e. prepare() is really "make private", and invalidate() is
+> > really "make shared".
+> >
+> > Using a single hook will yield more intuitive code when in-place conversion
+> > comes along.
+> >
+> > For all intents and purposes, no functional change intended.
+> >
+> >
+> > [...snip...]
+> >
+> 
+> I just tried this out with in-place conversion and I'm stuck trying to
+> make a call to kvm_arch_gmem_convert() in the conversions ioctl.
+> 
+> I think we wanted to have a single .gmem_convert callback rather than
+> .gmem_prepare and .gmem_reclaim, but it turns out that it's not quite
+> easy to just call convert, because I need to pass both gfn and pfn to
+> .gmem_convert().
+> 
+> The conversion is called on the inode:
+> 
+>    __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>  			     size_t nr_pages, uint64_t attrs,
+> 			     pgoff_t *err_index)
+> 
+> Then guest_memfd would call
+> 
+>    kvm_gmem_convert(inode, start, end, to_private);
+> 
+> It is easy to get the kvm pointer for .gmem_convert(), but then to
+> always pass something for gfn and pfn, I have to make sure that
 
-Well, it would be at least an us problem---but I thought I was in the
-minority... The only (IMO bad) reason to leave preemption enabled is
-to obscure the change, but that's a lost battle anyway these days so
-why bother.
+As I stated somewhere else, conversion to SHARED does NOT and *should* NOT require
+a valid GFN.  Conceptually, a SHARED page can't be strictly associated with a
+single GFN.
 
-That said, I am surprised that VMCLEAR/VMREAD/VMWRITE/VMPTRLD do not
-have a memory clobber, since they access internal processor registers
-and the compiler may reorder them without the clobber. Fixing that
-would also work around Sashiko's complaint, so I guess we should do it
-anyway? And disabling preemption can be done separately on top of this
-change, which is already on its way to Linus.
+> + the folio was allocated (to get a valid pfn)
+> + some binding exists for the index (to get a valid gfn)
+> 
+> So for each folio that exists, I would check if there is a valid
+> binding. If there is a valid binding, I compute the gfn, and if there's
+> no valid binding I pass -1ull for gfn.
+> 
+> I think this is a little complicated and not actually all that
+> intuitive...
+> 
+> Looking at KVM_AMD_SEV's Kconfig, it selects 4 gmem lifecycle callbacks:
+> 
+>     config KVM_AMD_SEV
+> 	bool "AMD Secure Encrypted Virtualization (SEV) support"
+> 	default y
+> 	depends on KVM_AMD && X86_64
+> 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+> 	select ARCH_HAS_CC_PLATFORM
+> 	select KVM_VM_MEMORY_ATTRIBUTES
+> 	select HAVE_KVM_ARCH_GMEM_CONVERT
+> 	select HAVE_KVM_ARCH_GMEM_RECLAIM
+> 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+> 	select HAVE_KVM_ARCH_GMEM_POPULATE
+> 	help
+> 	  Provides support for launching encrypted VMs which use Secure
+> 	  Encrypted Virtualization (SEV), Secure Encrypted Virtualization with
+> 	  Encrypted State (SEV-ES), and Secure Encrypted Virtualization with
+> 	  Secure Nested Paging (SEV-SNP) technologies on AMD processors.
+> 
+> So actually smushing .gmem_prepare and .gmem_reclaim doesn't really save
+> us CONFIG flags, and results in a kvm_gmem_convert() that needs to find
+> the intersection of folio and binding existing just so the .gmem_convert
+> call is valid for conversions in both directions.
 
-Paolo
+And I'm saying don't do that for the to_shared case.  If passing a NULL @kvm
+and -1ull for @gfn from guest_memfd is too ugly, I'd be a-ok with providing
+separate kvm_arch_gmem_make_{private,shared}() under GMEM_CONVERT.
 
+I guess at that point I don't have a strong preference betwee having a single
+kvm_x86_ops hook versus also having kvm_x86_ops.gmem_make_{private,shared}().
+
+I.e. Option A:
+
+	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+				kvm_pfn_t nr_pages, int max_order)
+	{
+		return kvm_x86_call(gmem_convert)(kvm, gfn, pfn, nr_pages, max_order, true);
+	}
+	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+				bool to_private)
+	{
+		return kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false);
+	}
+	#endif
+
+	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+	void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
+	{
+		WARN_ON_ONCE(kvm_x86_call(gmem_convert)(NULL, -1ull, pfn, nr_pages, max_order, false));
+	}
+	#endif
+
+
+Or Option B:
+
+	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+				kvm_pfn_t nr_pages, int max_order)
+	{
+		return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages, max_order);
+	}
+	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+				bool to_private)
+	{
+		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+		return 0;
+	}
+	#endif
+
+	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+	void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
+	{
+		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+	}
+	#endif
+
+Typing it out, option B does look prettier...
+
+> If we set kvm_gmem_convert() up to do handle make_private() and
+> make_shared() separately, then I don't think there's much value in
+> collapsing .gmem_prepare() and .gmem_reclaim() just so we mux on the
+> caller side and demux on the SNP side.
+> 
+> How about this:
+> 
+> 1. Retain .gmem_reclaim() for "host reclaim" aka "return to host" aka
+>    "make shared" for x86.
+>      + Rename the make shared function to sev_gmem_reclaim
+>          + .gmem_reclaim = sev_gmem_reclaim
+>      + pKVM will defined kvm_arch_gmem_reclaim() to do what it needs
+>      + TDX and ARM CCA don't use this callback.
+>      + From __kvm_gmem_set_attributes(),
+> 
+>          if (!to_private)
+>              kvm_arch_gmem_reclaim(pfn, nr_pages)
+
+NAK, pKVM doesn't want to "reclaim" on conversions to SHARED.  reclaim() and
+convert() are two similar but distinct operations.  Irrespective of pKVM, IMO
+it's also very useful to differentiate between "this page is being shared with
+the host, but KVM still owns the page" and "this page is being freed back to the
+host".  E.g. reclaim() *must* succeed or take evasive action, whereas convert()
+can gracefully return an error.
+
+>      + From .free_folio()
+>          kvm_arch_gmem_reclaim(folio_pfn(folio), folio_nr_pages(folio))
+> 
+> 2. Rename .gmem_prepare() to .gmem_grant(), or .gmem_assign(), something
+>    that is the opposite of "reclaim", that indicates the host
+>    granting/assigning/linking (other names welcome) the gfn <-> pfn
+>      + Only SNP will define this
+>      + .gmem_assign = sev_gmem_assign(kvm, gfn, pfn, nr_pages, order);
+>      + From kvm_gmem_get_pfn()
+> 
+>          if (kvm_gmem_is_private_mem(inode, index))
+>              kvm_arch_gmem_assign(kvm, gfn, pfn, nr_pages, order);
+> 
+> I think it is fair that "assign" or "grant" is only called for private
+> pages, since only private pages need to be "given" away.
+> 
+> On the reclaim side, it's also fair that only shared pages need to be
+> reclaimed.
+> 
+> And with this, we still have 4 CONFIGs just like above, except that it's
+> now
+> 
+> 	select HAVE_KVM_ARCH_GMEM_ASSIGN
+> 	select HAVE_KVM_ARCH_GMEM_RECLAIM
+> 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+> 	select HAVE_KVM_ARCH_GMEM_POPULATE
+> 
+> And I guess it's more straightforward that one CONFIG selects one
+> callback, avoiding having either of the CONFIGs select .gmem_convert():
+> 
+> > +#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
+> > +	int (*gmem_convert)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> > +			    kvm_pfn_t nr_pages, int max_order, bool to_private);
+> >  #endif
+> >
+> > [...snip...]
+> >
