@@ -1,296 +1,217 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59F219067C;
-	Tue, 21 Jul 2026 06:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784616556; cv=fail; b=VETy/PX4jzlamspsXCKxKFQPHmWARZXZA62A/EmFWMddPs7/lv4kDIjzTnVLRi5EEws2nbM7xtBYHNOy7lhQdzNqvGPNpDHcGJmhj9eH+L4YT+ZjxkIKLB+9OT2S69vHtOzrlQ9TqxopqY4CP26Ps4IYMhYt49qxN3lRuP//nOo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784616556; c=relaxed/simple;
-	bh=p2ZfysDj4tyuoWzmDoSaeyJ7I9ETm2pLsAhmncNAtY8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=i9ALN+3WadUi5OkhBGmKw+hjyJntFbjkA/StP4YF4xUHIQHPgVyhGFQ9BTZgTWDie8mLJelnU3opblG9kZdMONi7ELYWl8CJvg7HUJzxp8bRNeayHkFu5YAso4DL+vYRjCgWormaIyGDOhTPQ6Ac4vijpGMDBBZQhx7ssqBqCA8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nxX3UbwI; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5F23B9610
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 07:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784617784; cv=none; b=u6IfxSO8ShsMIo+Jxv8i/nuNC3/yMQAaSEoOJORJ08/lilSgo8+O66sIydndMxhM7DaIvia6Yn03+7ICRj/sWwHPGmMm94D77J4l5oq3f79CCh6087VE+MSu74D9sW0WzK7XbSf6LE9nv2gXiKnGQ90GOA6C7RjpZM5F3W9VnoE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784617784; c=relaxed/simple;
+	bh=FFvXeGHoAzgIZzjGObLtcQpi1gYIl90YePjT1VPpuMU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HYmdbfiaWg4mx6cwLvrj1WwBb5bIl2PFSx+anoT9/3aRkMfqlDtLWIAvUOtpfsDfAxZS84ZG6YfTx68alGEOeWHJCuYcwKu/AJJf9Fpq3TWvfNYNk+oi1HWjgyJxZnweBGIMsXGG6iWwHOK8WGifZOZvtmgMvvidZbJqRBBzC+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h9SS2nmI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nxX3UbwI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784616554; x=1816152554;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=p2ZfysDj4tyuoWzmDoSaeyJ7I9ETm2pLsAhmncNAtY8=;
-  b=nxX3UbwIWrbi4oFkkPLvTkjAtgAPxKvhxTLar7UEJP3Mer1AgJfbppKd
-   KUx98cHTBYDFa9eZwLTXDt9JfH76CFKksCQRrNg/orCPnPeJCdN+7sdHH
-   gx3UIZuR5f2eBB8cjzjOOMK61zayBBeG1jumyPo7vhfS1+yAA6gueRUAU
-   Z4vOWPUKExd+HoFLb2QbExhpSRgc6riztjXwuoDhxF53sxOep6kaysnsn
-   E8PDTef8MIa/298X3HIV9We2pmC6laeVID+5uQZEADefOyz/FiJK4c5KE
-   2Rkd1hmc7ymiVfc4Jg+3uxPiIi4PuurAmRRdDn3rTDIv/xAEZgKRBT086
-   A==;
-X-CSE-ConnectionGUID: YYeyAmuHTMa9/zoCAOdz5g==
-X-CSE-MsgGUID: 6PfKYNv2TXmOL1sIdgcNnQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85082730"
-X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
-   d="scan'208";a="85082730"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 23:49:13 -0700
-X-CSE-ConnectionGUID: 7krwV/g7S2qIcXwHgEkf2w==
-X-CSE-MsgGUID: wMoRoB4KTUCUf5Zv1NZygg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
-   d="scan'208";a="261226583"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 23:49:14 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 23:49:12 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Mon, 20 Jul 2026 23:49:12 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.69) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Mon, 20 Jul 2026 23:49:12 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=igqa5hi+bxqZyqLyGHpD8QBJ+WjYt1OFwRRLtdGNaoojF22/e6neYr43zVbVLc+D6kmF/0lsS5RfqRR2VJ5vsT7sdmtgV2I0AqCjg/cmTlnleW4SvOGXOpSgPKc/bkkykLDq0Erqs3lbDrw/dBKG1AKOh9cy3UfKddh2yFGoOeBH6iQ3ivl+XWDsLi0WSIWOjqbtr5ZbhQDmYI6wVRCyTIAyXZsqJB3LTN1lPt2P5eu9ArhXhp8ZYUZDboBlVDnqXzWbmxe49T1qXuN0nWotD0O3HMllF2Y08LQF4Cvf2Tp6aMnuT7sEJVqoHzc8o26aueWesKJbBNFL64m76NkIGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0JElUtLu+PY4qDMfdZL/RYeG6g4EiBodnm7yeaCqa24=;
- b=UXLzDiiIcukJo02Cm3vjzjZ8lhJyfY5mUhBl5hnVbwe/FksYUV9qsep9OyU474xzUz3IC9eN7ZtZE82eLxVS73Ymaz4sJ5vXm9cPOb5pz4cqxBqJREPbzR8Eh2OK3cZerzkX33IAUdOsOtf/5V7NdmWeeGRDZ/NKSVDZarzOUBj5PZPS4j3M6LOxM5heVdcHD8Srs9YRYL4+0e7W4zWZkT72BR1HIxo1vW47n+BMAxzP9csS5231bfKDm2MG1V9JAXNyzYDzG2FmiLuU9m/rLypMK8sWSfiIFu4r3gGDQ/HP2Ghvlc/CGL5gTDY6pvZUCJsee4/Qw0kGIxSpwY9C9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com (2603:10b6:a03:3b9::19)
- by SJ0PR11MB6814.namprd11.prod.outlook.com (2603:10b6:a03:483::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 21 Jul
- 2026 06:49:09 +0000
-Received: from SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e]) by SJ0PR11MB5645.namprd11.prod.outlook.com
- ([fe80::fb19:f933:8bb3:b42e%4]) with mapi id 15.21.0223.017; Tue, 21 Jul 2026
- 06:49:09 +0000
-Date: Mon, 20 Jul 2026 23:49:07 -0700
-From: Peter Fang <peter.fang@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau
-	<kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, "Kuppuswamy
- Sathyanarayanan" <sathyanarayanan.kuppuswamy@linux.intel.com>, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	<linux-kernel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<kvm@vger.kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu
-	<binbin.wu@linux.intel.com>
-Subject: Re: [PATCH v2 2/2] virt: tdx-guest: Allocate Quote buffer dynamically
-Message-ID: <20260721064907.GG3178326@pedri>
-References: <20260717214349.4075994-1-peter.fang@intel.com>
- <20260717214349.4075994-3-peter.fang@intel.com>
- <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <51059852-9a10-4735-a81d-003b4b1963a6@intel.com>
-X-ClientProxiedBy: SJ0PR03CA0062.namprd03.prod.outlook.com
- (2603:10b6:a03:331::7) To SJ0PR11MB5645.namprd11.prod.outlook.com
- (2603:10b6:a03:3b9::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h9SS2nmI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784617781;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2k15j2uyoPBnkrbn8zYdzF3/nFYutM13cpLNbhMpn8M=;
+	b=h9SS2nmIvYRRuKzHe/SvZBi5GLkALKGMG1t9C/p/dt6olI+p3laGJVN3lupoVrpPUj3FOe
+	oUw0V0RRT+9CsOdQRfmQ9RX5R66vkOYxfQSDJ2sf8sVV4Idsz70+0gg9c2kQa1OMKpPSbi
+	bd5Ezc67UdOEdUP9Gu9jsUng08CW3lI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-310-NfRY61_GMMOJqzVL93nbhw-1; Tue,
+ 21 Jul 2026 03:09:36 -0400
+X-MC-Unique: NfRY61_GMMOJqzVL93nbhw-1
+X-Mimecast-MFC-AGG-ID: NfRY61_GMMOJqzVL93nbhw_1784617775
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4E8101955F16;
+	Tue, 21 Jul 2026 07:09:35 +0000 (UTC)
+Received: from [10.44.48.28] (unknown [10.44.48.28])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9D48B300418D;
+	Tue, 21 Jul 2026 07:09:33 +0000 (UTC)
+Message-ID: <081e6523-04c8-439f-a251-37a5647054f8@redhat.com>
+Date: Tue, 21 Jul 2026 09:09:30 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB5645:EE_|SJ0PR11MB6814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63373d07-1462-41b7-fef4-08dee6f429f7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|18002099003|22082099003|4143699003|3023799007|10067099003|56012099006|5023799004|11063799006;
-X-Microsoft-Antispam-Message-Info: 7WbCCBkmaTWgFHos1GQj2mMIcBRDobTtKveGlKnYTvFl6cVz8XTKMLwnA/8NJKqtrSa+6dcC2zL6MBpQGkxxZzrCxxMo2w2r85Ak0WDd0kNsHUqW6+JCUveu5ZasKp1PraJf7OyBBSV8AMNi0IYx9p6LUIfUDix7EQC5WwEq23gKXt8HIN/LRW1eWckTtGjzjOlLDXS3AYwTFZFMrLOygk4BmXGmj5vkNkTA9QnAAnSga/aMUs2nZsd5M2A0qOonZPYYlXfhhWniarjQexWeEhAU1dYX+dGJZwA51/nOnEfn68+ajm2wtGhd/oPhpX3khERcKq+QDZD3K+u52UZHKLWjAopbe+KY+/+YvtJxiLdEzDbw78N3U2Io+6+drILVrc63FTzh7VMQK4k/9Ilgos1yoMB/pw9h+eb3MFXXJDFkxhgSLJhP9nWjfcCVgHdJZv12jodVgJMykG4qCVXhLhe6rRfCLN6F96RZDUwVxPG/LpMnqmk9O4/MaqfSDggyxsp+KJWR4zaP01ktNSQz7zxD/xYajgXRb+hOt2PejXrNG4dCFF7+yi4O8nfJ9nLstxTGiR+szwgqs9e4KU3y+DpJi70p7L0+4MHzTVuIO4g/TQslbCQOXvrX5vJdz07rEvVNmLGeTv5wWT3VU5hD/wJIKEIdpqSx6yP0G8aUCx8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB5645.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(18002099003)(22082099003)(4143699003)(3023799007)(10067099003)(56012099006)(5023799004)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3XxQlxFdtkZqLWmcbq4t2yGCaeGoT4S5DhkkMTLRXKR0MRodbtUcWdN6pg2o?=
- =?us-ascii?Q?6ipU+0nfzXxoh5fLPVVaahs9eQLC0f7j9hCTCxWyY56SdUYwainNahRGI/jP?=
- =?us-ascii?Q?JWmZlls2n/NLO46vn2PMeuxtWzx1IOYbzXoBS0b2Ir+OzprjZseUpvQUNVTA?=
- =?us-ascii?Q?P5j+w+gnde1qz1JAHToUt8clcI5eZXjs0SugrB4QmACxVa0eGAo2GkRgjnPX?=
- =?us-ascii?Q?NqY5QLkyL0l+BRrYBUa2Gm2qS0aiGsdfhnYzrxdT0yuPL7YPtP54DvGCGPQA?=
- =?us-ascii?Q?QrUJWIAAR4/VjxUrq75zBzVpAKqS2yMCoh5jHGCWOTSPiTNKhjVTZkat+cXF?=
- =?us-ascii?Q?lwR/vZSRiv7ByMcW1qwc6bH8iuGGetQOOGkU+dwszqdq+bT01X3qvx5KHwna?=
- =?us-ascii?Q?eTRtmAgWsmc9l1vl2FfBWHmLg5Qf41Ezz70lKg9JwpJMpm6lSTxRWRhcbu1n?=
- =?us-ascii?Q?1Xv9TfgGOM7FwG4P03gGMtZgXL91aiQySnJWRJnIm2cTSzpQHfuN85aHU30p?=
- =?us-ascii?Q?icFvm6AdaPtnHsc+5Oo4+FVJ4pUOsJ7Y71r9XLqXDLeHVPjPPY3C43ugoEle?=
- =?us-ascii?Q?dNT/DZbkPhKy1EaPk7cT/AtoOWsgoq9t9XrsaXwI1XvuP/F7zoj/Vx+l+WFa?=
- =?us-ascii?Q?h76WR2xpNWRrLeEXYBFKaiJtmAoJ5G3+4vsVpfWzsrDXGiTxpknUZDY9jgnX?=
- =?us-ascii?Q?6EoPhPIqd6OxfIHfGSuv8yHL6L+38sn55AK1Q2EL0QuY8x9IFRGhQ5XQjNrQ?=
- =?us-ascii?Q?pgBG1f4wdGGgjmX7PKb827u6OD/LLkwuk/srbqnFrIuoSiVv2SHRI76r0iYB?=
- =?us-ascii?Q?7TXZX8JaLd2CEEwrjKn51pPwzYhz8hVLlWq375piUy9x3TeeeLvpTsHVF2b4?=
- =?us-ascii?Q?ghdMirLLsgbJoPHe+fZEKoPbbI26eLw2gS55yb28BiIu/w3ftLG6+zzi8Ai+?=
- =?us-ascii?Q?nPFpEBoIBsXBz5U1JpoRY+iqobku+soLScx2gTWH1Z55bxl9w+1KFdK97fMy?=
- =?us-ascii?Q?XCMvvdLL0WegEYiWSu9DmQrDl5GRlODbi/PnNqedbAAw3pQ4I5PcSjBVHg/S?=
- =?us-ascii?Q?SQZvN7pXYCqXaTcdd0KqU5F0atnSySuncWozSSbDViX8vzg6BS+sRHRlWFXF?=
- =?us-ascii?Q?oLlhoG14wFbHnkh29vlxvnuWoMFmiDALgGge9KVSSFcYpTfpmkWRAVtGJgZQ?=
- =?us-ascii?Q?X4pxqT5ZR+OL4L9LIGbXySRp5Q/UqbY5a0SROn13X1B6HJoGArIHRPIw4g+x?=
- =?us-ascii?Q?DfjGF4h/AbOP0sjWs4uOwlT0pIOrHDRtuxwsXWdL6InQkUCVmfIVl4Zs1XDx?=
- =?us-ascii?Q?6UbMU7LaW8o2xaSYN73iDnt650oyng+JdmPXLkBYyicfp0AyqWh5IOAc9oNE?=
- =?us-ascii?Q?TkCb92NuDS39BcrH1rxQJPpe0XyBszO6o863VbFWLc7Van9rHuFRpC29+C3T?=
- =?us-ascii?Q?5AGOXUOd5PPIIYvXtp/PpWtMSquhNyI4dmYcw2iKSwxNHwRJDQQxF6ZHewPv?=
- =?us-ascii?Q?aqVvlKTdTpX6/05FUDlBa+k29F9qkT7hrIdOGmNQhK9iXw6KRj2R8bYFwci+?=
- =?us-ascii?Q?i2s14c+gonbBMV/eY3dH+b4S1k7gw9jeAtQKMFRmDxibmAkqaXtrdMov98m3?=
- =?us-ascii?Q?yEBhY3CUdQavJvRnsSnirn6fBDwzjC82h7UefkgDIZfSHTbtgFXMUp0HdrcY?=
- =?us-ascii?Q?ojYq/gzFD418u7EjTTZZdOGx8SHOg+hEbYdECt8nOA/egGZ+6AJ6ZGybpPRf?=
- =?us-ascii?Q?DWVkhM5eVA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: k9gaQ7p2PMQQJVXNREKolvjkmVSVY0e/h+5r7VOhxQC5q8UNUy0cmdFbfm3RhHIxMWsLe7I1a5njsg2xgEkomxpXtSY5hDJqLyqShrxaUF33XSUZkXWMndn0n9t87DNfLO8kgxjEZK67AIWTUW55FLm0Ud4/TZ+uCR60SOp9bAXn4qeHE8n9RX+6mwl4zA1jcIVSKUnmd1K3WGNAjLbZ1dSwFIi6OsqUT7C8ysaA02E+ldIBjgWDe5dapTCLTTep9qQwnt8WfZDstxPUaUJkt+TLJ0ZeFSE0eFtHNT15Swi6CCH9XXU0+2g5JFmyUdCbf8+oAlgNb2YUdgGEHKmh1g==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63373d07-1462-41b7-fef4-08dee6f429f7
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5645.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 06:49:09.3371
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0yEULEtxSfIgKCp51zpjdkZJZEC7A+tu13wNAGODkoLyAzWdRKn+YWl0IJm1O60fF0e2cczmQ8gcI5rd5uDSCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6814
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/20] KVM: x86: Enable APX for guests
+To: "Chang S. Bae" <chang.seok.bae@intel.com>, seanjc@google.com
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+References: <20260720171949.498680-1-chang.seok.bae@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260720171949.498680-1-chang.seok.bae@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Mon, Jul 20, 2026 at 06:35:29AM -0700, Dave Hansen wrote:
-> On 7/17/26 14:43, Peter Fang wrote:
-> > From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> > 
-> > The TDX attestation driver currently uses a fixed 128 KB Quote buffer
-> > shared with the host VMM. This may be too small for Quotes using schemes
-> > such as post-quantum cryptography (PQC), where larger certificate chains
-> > can increase the Quote size significantly.
-> > 
-> > Allocate the Quote buffer based on the size reported by the TDX module
-> > instead of always reserving a fixed-size buffer. This avoids wasting
-> > memory on platforms that do not require larger Quotes. Older platforms
-> > fall back to the default 128 KB buffer.
-> > 
-> > Because the Quote buffer must be physically contiguous, its size is
-> > bound by the buddy allocator's maximum page order (4 MB), which should
-> > be sufficient for current attestation needs.
+On 7/20/26 19:19, Chang S. Bae wrote:
+> Hi Paolo and Sean,
 > 
-> This is all talking about post-quantum-crypto and all that fancy stuff.
+> Here is another iteration for this enabling series.
 > 
-> Isn't the important part here that the old TDX module ABI had static
-> quote sizes and now they're dynamic? Now, the reason it changed is all
-> the fancy stuff.
+> One topic worth highlighting first is about how to handle userspace
+> writes to the APX state through the KVM XSAVE API, following the
+> discussion here:
 > 
-> But the ABI changed. Right?
+>    https://lore.kernel.org/CABgObfaocwfLdUBKJYYYEDH8X3n6iEbMsscbaCe_C=8JNnhDBA@mail.gmail.com
+> 
+> So what this revision ended up with is just to keep those copy paths from
+> userspace and acknowledge the redundant copy to VCPU cache / guest
+> fpstate. Patch3 has more context on that.
+> 
+> Besides that, this revision has several fixes and improvements. Sean
+> gave feedbacks. 0-day spotted on an issue. Also, since the preparatory
+> patches have been merged into the mainline, finally a review bot could
+> provide some feedbacks as well. The major changes are:
+> 
+>   1. VMX Instruction Information Extension
+> 
+>      During the time of V4, 0-day reported out an issue with patch7.
+>      Fixing that also revealed patch4 was missing another function.
+> 
+>      With a review bot's feeback, patch7 was also updated to ensure EGPR
+>      indices for handling debug-register accesses. Also looking at
+>      associated macros, patch6 was added for further cleanup.
+> 
+>   2. Emulator Register Tracking
+> 
+>      The review bot at hand also found a potential shift-out-bounds issue
+>      in the register tracking. Patch10 was fixed.
+> 
+>   3. APX Feature Exposure
+> 
+>      As per Sean's feedback, the APX XCR0 and userspace exposure were
+>      reworked a bit in patch14-18.
+> 
+> Along with the in-tree KVM x86 selftests, this time I ensured running the
+> x86 KVM-unit-test comparing between:
+> 
+>   * Baseline - Paolo's `queue` branch
+>   * This series on non-APX systems, and
+>   * This series on APX hardware
+> 
+> The full set is also available at:
+> 
+>    git://github.com/intel/apx.git apx-kvm_v5
 
-Ah yes... I should call out that the size of
-/sys/kernel/config/tsm/report/$name/outblob will no longer be fixed.
-I'll update this. Thanks.
+Thanks, will review.  Sashiko was a bit drunk when doing its thing, but 
+please give a read to its comments in case it found something important.
 
-> 
-> > -static void *alloc_quote_buf(void)
-> > +static size_t get_quote_buf_size(void)
-> >  {
-> > -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
-> > -	unsigned int count = len >> PAGE_SHIFT;
-> > +	size_t buf_size = GET_QUOTE_DEFAULT_BUF_SIZE;
-> > +	u32 quote_size;
-> > +
-> > +	quote_size = tdx_get_max_quote_size();
-> > +
-> > +	if (quote_size)
-> > +		/* Reported size does not include GetQuote header */
-> > +		buf_size = TDX_QUOTE_BUF_LEN(quote_size);
-> > +
-> > +	return PAGE_ALIGN(buf_size);
-> > +}
-> 
-> This code is almost nonsensical on the surface.
-> 
-> It _really_ needs some commenting. Things like:
-> 
-> 	/* Start with the default quote buffer size: */
-> 
-> ...
-> 
-> 	/* Override the default when ... */
-> 
-> 
-> You could even comment the function to say what it is trying to do overall.
-
-Got it. I'll improve this pattern and add more comments.
+Paolo
 
 > 
-> > +static void *alloc_quote_buf(size_t *buflen)
-> > +{
-> > +	unsigned int count;
-> > +	size_t len;
-> >  	void *addr;
-> >  
-> > -	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO);
-> > +	len = get_quote_buf_size();
-> > +
-> > +	/*
-> > +	 * This fails if the requested size exceeds the buddy allocator's
-> > +	 * maximum order. Use __GFP_NOWARN since the size comes from the host
-> > +	 * and should fail quietly rather than warn.
-> > +	 */
-> > +	addr = alloc_pages_exact(len, GFP_KERNEL | __GFP_ZERO | __GFP_NOWARN);
+> Thanks,
+> Chang
 > 
-> Bad Sashiko. Bad.
+> Relevant Posting
+>   * V4: https://lore.kernel.org/20260512011502.53072-1-chang.seok.bae@intel.com
+>   * KVM-unit-test patch: https://lore.kernel.org/20260420212355.507827-1-chang.seok.bae@intel.com
 > 
-> The host may be untrusted, but it's also a critical part of the system.
-> Are we sure we want to be completely quiet?
+> Chang S. Bae (19):
+>    KVM: x86: Extend VCPU registers for EGPRs
+>    KVM: VMX: Save guest EGPRs in VCPU cache
+>    KVM: x86: Support APX state for XSAVE ABI
+>    KVM: VMX: Refactor VMX instruction information access
+>    KVM: VMX: Refactor instruction information decoding
+>    KVM: VMX: Remove unused control-register access defines
+>    KVM: VMX: Refactor register index retrieval from exit qualification
+>    KVM: VMX: Support instruction information extension
+>    KVM: nVMX: Propagate extended instruction information
+>    KVM: x86: Support EGPR accessing and tracking for emulator
+>    KVM: x86: Handle EGPR index and REX2-incompatible opcodes
+>    KVM: x86: Support REX2-prefixed opcode decode
+>    KVM: x86: Reject EVEX-prefixed instructions
+>    KVM: x86: Guard valid XCR0.APX settings
+>    KVM: x86: Add APX in supported XCR0
+>    KVM: x86: Expose APX foundation feature to userspace
+>    KVM: x86: Expose APX sub-features to userspace
+>    KVM: x86: selftests: Add APX state and ABI test
+>    KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
 > 
-> I used to see little dmesg warnings about TCP window shenanigans from
-> random systems on the Internet. Maybe that's not how we do things today,
-> but if a random dude on the Internet can spew one line to dmesg, is it
-> that crazy that a bad VMM be able to spew a warning?
-
-That makes sense... I actually argued with AI about this but it kept
-saying this is kind of like DoSing the guest. But thinking about it
-more, tainting the guest is probably the right thing to do... At least
-the guest sees a big splat about why attestation is failing. I'll remove
-the __GFP_NOWARN. Thanks.
-
+> Sean Christopherson (1):
+>    KVM: x86: Move KVM_SUPPORTED_{XCR0,XSS} into kvm_x86_vendor_init()
 > 
-> >  	if (!addr)
-> >  		return NULL;
-> >  
-> > +	count = len >> PAGE_SHIFT;
-> > +
-> >  	if (set_memory_decrypted((unsigned long)addr, count))
-> >  		return NULL;
-> >  
-> > +	*buflen = len;
-> > +
-> >  	return addr;
-> >  }
+>   arch/x86/Kconfig.assembler                    |   5 +
+>   arch/x86/include/asm/kvm_host.h               |  19 ++
+>   arch/x86/include/asm/kvm_vcpu_regs.h          |  50 +++++
+>   arch/x86/include/asm/vmx.h                    |  22 +-
+>   arch/x86/kvm/Kconfig                          |   4 +
+>   arch/x86/kvm/cpuid.c                          |  27 ++-
+>   arch/x86/kvm/cpuid.h                          |   2 +
+>   arch/x86/kvm/emulate.c                        | 121 +++++++----
+>   arch/x86/kvm/kvm_emulate.h                    |  21 +-
+>   arch/x86/kvm/reverse_cpuid.h                  |   6 +
+>   arch/x86/kvm/svm/svm.c                        |   8 +-
+>   arch/x86/kvm/vmenter.h                        |   1 +
+>   arch/x86/kvm/vmx/nested.c                     |  75 +++----
+>   arch/x86/kvm/vmx/nested.h                     |   2 +-
+>   arch/x86/kvm/vmx/vmcs12.c                     |   1 +
+>   arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
+>   arch/x86/kvm/vmx/vmenter.S                    |  31 ++-
+>   arch/x86/kvm/vmx/vmx.c                        |  28 ++-
+>   arch/x86/kvm/vmx/vmx.h                        |  77 ++++++-
+>   arch/x86/kvm/x86.c                            |  92 +++++++--
+>   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>   .../selftests/kvm/include/x86/processor.h     | 120 +++++++++++
+>   tools/testing/selftests/kvm/x86/apx_test.c    | 191 ++++++++++++++++++
+>   tools/testing/selftests/kvm/x86/state_test.c  |   3 +
+>   .../selftests/kvm/x86/xcr0_cpuid_test.c       |  19 ++
+>   25 files changed, 801 insertions(+), 128 deletions(-)
+>   create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
 > 
-> This feels weird to me.
 > 
-> If the upper-layer function needs to know the size, why not have it just
-> call get_quote_buf_size()? Then there's no pass-by-address.
-
-Got it. I'll fix this.
-
-> 
-
-[ ... ]
-
-> 
-> So, yeah, this patch isn't gigantic. But it's also fundamentally not
-> doing a _nice_ refactoring the way we expect them to be done.
-> 
-> 1. Refactor old code to make it nice for adding features
-> 2. Add the feature
-> 
-> If this was doing it the nice way, we would *actually* have something
-> that's really close to s/GET_QUOTE_BUF_SIZE/quote_data_len/. But,
-> instead, this chose to cram the mechanical changes and the new feature
-> together.
-> 
-> Can we do it the right way, please? If for nothing else, for practice.
-
-Yes I'll separate out the refactoring so that the dynamic buffer thing
-is on its own. Thanks for the feedback.
+> base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
 
