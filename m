@@ -1,213 +1,138 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB004779B3
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:09:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784628592; cv=pass; b=iqVFXHgymswFNqy5CA7y6HCkf0qM4QepM2iAnoZT28cNVpHWdGaMV4uPtilMF4/NzFkWtQ7WA9asygszbBiYOoTigZIBXIa7iaSZyMFEWal30CDVqOKAL/T/+DjQaJRhrmmqTn8IgbaVePEcplToMBySb4SZFYz8lflpF124Yf8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784628592; c=relaxed/simple;
-	bh=RQEOUv8I8jho1fGK7SS8uVLJdmCgeFOBbwZ9fu8hVC4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s/DhinBwukLDuOKqczBpUAruQ1CEz/pxVOkE8XErZTK8w1EO14CCIfG1pHSNeFXEQ4qst+00s+g6WS1sQLoOlLHU3IyoJ+SIeJ6fNVIalQ2LCLghNnebaNqYNDb3w1zf6SdHq26O7em4Je2vyF9i4y0iuTudzrl0P37TQz/jbKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IXliC+v9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NCPVyLBX; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B8644CF2F
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784628657; cv=none; b=d1t4mTEu9T5i7P+bBQ+Hx4jkL8Y+964/xE4RqG6HgMCTCs0wLcu3G44vG8wwY51F4HVFnqO/3E5FPGUMuT5hP1qGQRjlC6ak+F2K/P7AtOigMMsa8WoebOKWGjojctL9Gw8zIw/k20o9tlFe53OKmSw6b3F/Vz6Hw8j7aL6zUlc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784628657; c=relaxed/simple;
+	bh=udnHtGFPyz7hbUEOMNqTB0aEs+NZ+BXBJ7nkeUP+vq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oJfVcJRMiZXcGuV8K1PDSzY3O9GUo/MQfdzoL5RH+UAxt/dnfgZLyArewtn0gJCoriFiS4LYeUAGXPFPdTzCbL0LU8J8qzyVW+DaKLD7snV5v5iRZP+mQB1fVJGJcgsdJADArusYdkrssk9uu/5cWdKhpiEM7Ka3DiXnPb9ewgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BPIhmaxv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eAhDoOwB; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXliC+v9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NCPVyLBX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BPIhmaxv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eAhDoOwB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784628587;
+	s=mimecast20190719; t=1784628649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X/LcZsIYEi/WvQwQWFUmWBxrZuJIg8BbyzJ3Kz0eMgA=;
-	b=IXliC+v94xNxulHrS/n1zW3ANivXNXwoyX9sge+ZzGFpwv2ssadCbb+IGRs3SH6UgMkU48
-	lRGQtSCNz0t2iNtQhQvD8TLFCMfIe5ou5wiYAtJk+Zq7+LIB6UqRne/Cst1ulrUH+QLMVm
-	HpYjSClaphujiDyqfZemjGvLOXj5/C8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=JIme4w5kHzDPPwLxsVuz+NEgaFpd3AeI3j9Me/sme3c=;
+	b=BPIhmaxvzL2I2dLpiYliZUi4Vl3ZZ4XlkVerlgwPOZPkJWi2Y1ISJd0cWs0YAnebMUBHLs
+	AswKT4SnUMMdZgdYH/G1aRIo3lrEiBGsh/jpaKC4OAwGV8QtszB8pErhOTs5TBMLnzlSFF
+	aIrhryRhmtKfKchb37pLzkWcxAxuFK0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-URq_2ZGiN8ayPaqbRrC42g-1; Tue, 21 Jul 2026 06:09:45 -0400
-X-MC-Unique: URq_2ZGiN8ayPaqbRrC42g-1
-X-Mimecast-MFC-AGG-ID: URq_2ZGiN8ayPaqbRrC42g_1784628584
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f6db77430so2064286f8f.0
-        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:09:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784628584; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cRuIN+dS6qzQUdUOLOyrL4PK9vvzmdt2v0ImPQGE9Z6vQcoZXG2kHB4ApbGI3/Y6zE
-         Q9J54S7DhR8/i2oV8WHuL+5aA0a7oFPuVHYHgJIuNZjSaO27E/HQ9/x+ILzjlF12xS/D
-         Q0kJvr4txZHHSgarSs1QVsVk3tGyVAojT1Payya49EGFUj3eIvXnld6w1Q9+57uEXr1B
-         Bqo/Gmt0oEEfTnMDp/eRThduyvAj2uSmpdOkbbdHwBACi7nHaqv3wKxNsFeDAmmaIszi
-         DgCmNWVZ6AzImlVL1thtJ1objpnvGUEaqBkYKJXnfLShTBcnkxs2S2Wd4anelg8U/Bb3
-         e1QA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X/LcZsIYEi/WvQwQWFUmWBxrZuJIg8BbyzJ3Kz0eMgA=;
-        fh=a9+0jTHs9k40hyzEDs8Mi4SNk1cxZKaoPdH3XrKY+Hg=;
-        b=jP10a5GA/ymReQA/xCj15AVwJzu7iEv6PFA5JzWxwNp4QPox/E3oNi3tOl4W8QAWlv
-         YJmYNn5/iod4ZrIFy/JY2vbS7PJdP3TsOy7Fbdioty1v3B+vZDrX4ylEC8Lt7GA9CEfj
-         cBr7lTzfOzL+E+IM9sUm2isLf4FKsyJ8mLRbAKRTEwY3vGiJpG1qEYkPec0StRcubCLT
-         r3JGo9aYCCeoFRsBE+NpSI0wtc8vKxH0gOqwmhVpnjBe01+I7R1m0fLON7c/6/rKrSgt
-         9EXJ1+AaZUFL/z9DJ7rnhECu04flSIt5/kM7lY0XejimkX4T9BnpzcpUbOormCi++2//
-         nRHQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ us-mta-390-v7ojfCddOyeT990kR39twg-1; Tue, 21 Jul 2026 06:10:48 -0400
+X-MC-Unique: v7ojfCddOyeT990kR39twg-1
+X-Mimecast-MFC-AGG-ID: v7ojfCddOyeT990kR39twg_1784628647
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4955d314945so13359785e9.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784628584; x=1785233384; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=X/LcZsIYEi/WvQwQWFUmWBxrZuJIg8BbyzJ3Kz0eMgA=;
-        b=NCPVyLBXyZ+syIXy+VJeeqAyRTTQqspaSZyscLnVPnzeIlcEfKsKutwHDGd05Od16w
-         T62QzrysTpurOcI8tFEvdyxo1t/QvJ5Po2b7Shrxm5K2oKTwwSqNVoxJAgQ36ZIRqF0k
-         /Yabicxh/f3Tr9nAy1+Vq1XriUYkUCK0YlbJ1Sf7/oUCSLMDrAXjUY3msWCCJ4V/EzIC
-         zTRF+1ff8BLOXRcT9DzRkqzAf/Ssect7uVbZwzWJYhvPuylydElEp6nHST4Q/I4ijijP
-         Hk8f6AE66ABL/5YJpujyB24Msvhf5JWAGtXAL/PZmIjgBDE8T7jDmuE+Nm3mB1D7j6hr
-         GJMQ==
+        d=redhat.com; s=google; t=1784628647; x=1785233447; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JIme4w5kHzDPPwLxsVuz+NEgaFpd3AeI3j9Me/sme3c=;
+        b=eAhDoOwBpbSC1emtGq975/cCLR7x86E2zo9S7vqWiYYwlBhKeW25dzYqQ1vDfrrisv
+         Y1o75H6ZYZBHL8nP1N4kxti/xvOd/aXRY7/r0E/12c1EL9+ISag7NJN1psWLzwy2gV+L
+         earKLORE7gWxf4Jz9s+wyskK7G7X3SI3XNVgMSUrOMd2hDlbXq8R0rdwCINrxUtl4DzQ
+         tE5HapoIGMGPME+EdC0gAQOdjK5s+VldFh1aXwZxCFcB/YaAIhBm4bv3iOhphAzvY2pn
+         vqVXXogsI1YrNZaT0Yz2Jds/Ye4AEdIcbwml8q1LMS8hjUhXC8kgROIhoU0Zv5dSHlzZ
+         eGNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784628584; x=1785233384;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X/LcZsIYEi/WvQwQWFUmWBxrZuJIg8BbyzJ3Kz0eMgA=;
-        b=iA2EvpNCQ7m+2gJF084dxXLrIZM44LyXkRmMCJhqGotmO/paJEC4szUL9G1LRcODHy
-         61DlaOmbQN/6NcYoNbqU+AYBYDFoZ2NZA9e7bOI++bx7SwDjvFZkLmJvs3sxiMzYhVJ3
-         ehqmolfBqrJ+t9lkW4vTbvhg4FSKneLGkJ321Bwa+Vd5SDjh5Oklrf4P8SUxi25JRdXB
-         H+FZD1kXHR+1XR6E2ZeYiZ6+p2Z9LCok/KwaNn6ZMRrse3SHaQpIswDFsU+IAWHBGqoQ
-         jU7sap+hu+5T5E8rAi4/w42XfOqsTYzcUHzG6ApX7kUccnSHFMgVdKekRkDxTf7sauj2
-         BX8A==
-X-Forwarded-Encrypted: i=1; AHgh+RrAdDedxUOe98vP4iv0gcfGBgeY/625Q5aKxVQON1opOl+QcwWbLbuHMjisBx44fKjycB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDyqGMceNEBiIjBXZUkbugcEQsy66yeU49vmtdJMmXkNF3Hq0e
-	PJ9ie1Iy8qqUBWkPDcuL8Jb86p0GtuPgoRz5wYaFPBsy9OPMxHa1pdrQD5SeE0nsdB6Ls8V1jpO
-	A/k0AIfw2CWxKoFdkXpASlkF6NELMVN38MQy24SB7UWYT23+GzIZesREbkiRE+9ps9rfCCWiQ9Q
-	QduZYM9zur1UGeMGpg2uqXb19PvcTf
-X-Gm-Gg: AfdE7cmKiYxbqHPC4n69tgP6uLBpkWhXWY5+J/WCcxRyH352MmNS+nhahsR8Eh5H71h
-	J8HHWYW3YVyC56avVxB8acHo/EpDCH127uOOjP2jn9F0sMNR/1Gvfn4/tYcbo/sv5k5hNK6CIHg
-	FNwMU+wQurtiRTs13I6GbLySxXKUqkptE/TvHfF43J0GOhnBRSN1XfLSVcS87AL9TZ1oFir07pZ
-	mzFNpI3P+napn9WEJuavNLZkgq+zs9NNaXO1koTOC1yTK7rgXumBUNtiYCU
-X-Received: by 2002:a05:600c:4ed0:b0:493:c634:952 with SMTP id 5b1f17b1804b1-4954a3d0872mr196477915e9.7.1784628583631;
-        Tue, 21 Jul 2026 03:09:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ed0:b0:493:c634:952 with SMTP id
- 5b1f17b1804b1-4954a3d0872mr196477225e9.7.1784628582637; Tue, 21 Jul 2026
- 03:09:42 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784628647; x=1785233447;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JIme4w5kHzDPPwLxsVuz+NEgaFpd3AeI3j9Me/sme3c=;
+        b=sl2CEjjHtqPubQP2h6zRE6Iwut5oqZWwbNdHQLM9ZsbEuhiop0t3TVfK2nIXI+/KnQ
+         QOfzQ7ZcXlXm4/KKo6vMaoEHTTepMFQFJqZQ4UdiA7iagSOZ8VJ9by28CwgEx2/nJW9V
+         Th6WI8nw19fWb4sf/2SlUBiAyh3yMD1HPPIG5NfnL5Sqj0+IKYfG6EJjagwGOmLjbu8J
+         kfPwdvbgZJOE06ww9p47E+KQy+jx7dOWEijSDyuvVbAB6JqUBZhuT9+rrUPxZ0Dj7Ww/
+         QspzwoUgSsHakDHSanFZ7Am1R1aAz1SentiCoo72xFAyqwoDz/FHTRheCcRptmjVi5Hz
+         rwKQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrxIO2xBUPEtmsh6ZfLJ08JFe6zBsWQQOXE8mAY9HqhegkEINkx2Sj4ZZknXPUv1bckTbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzO+QeYdHRixg3EgVGOkwTiPHsRh4VRBWSxbZDh0STrhxkm1eQg
+	j/f5I3A+Wn41xClfXSCpsZdwFDGXfZjjp5yNLEzVWAtJhMnlpqffiIdAyXXsx76k9qNdRadBb1R
+	Yo+oEfnJ/hmLUOnwN/IXrlbp12ygNkQHXdGEItIb66tRqfCC0MCYFIQ==
+X-Gm-Gg: AfdE7cm4zmjlsQ2FBiPh7VkhgWZZ9eFKu1iR0y5tNqIBoeR00AKd4w/B+FXcCq81dYS
+	eh7lum16mlKB2urDAWrmLLVADQo+ZZLeRgrvsyLYXRNh1A7GIFxEtuXq49QJx6fwiN7qR8qMBxX
+	2P6LTOeoViUfCYuTuh9qIkgcI5LVSPA7epCVJV7l4bJbuQgwlJSZElUgAAdIMAhmzigIxiAImr4
+	V/Yr51poi8BewUmt85lxXtsCOu5KvZWGaHcxSXsdQ2xoZ6Nj2BMBl9iR36dzefmn8mnxtK3rmSe
+	2drFbcxZbI5OOsX5Xa7OoPJLW0QcWPbjBKuu2+UrN68xB/rxRUi8knvGHOgvA6TcwJu4UChuaLV
+	rdOUceVDvSGDnXPI0B55IplepGDe16P7r79TWlvYfkOBm7+O4Abrg86LcePZsvAuL6GQ/FGdkmz
+	LDgQ==
+X-Received: by 2002:a05:600c:b96:b0:495:4b00:1bab with SMTP id 5b1f17b1804b1-4954b001c39mr194096995e9.21.1784628646810;
+        Tue, 21 Jul 2026 03:10:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:b96:b0:495:4b00:1bab with SMTP id 5b1f17b1804b1-4954b001c39mr194096515e9.21.1784628646245;
+        Tue, 21 Jul 2026 03:10:46 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:5521:6b10:58fd:68f:7756:389d? ([2a0d:3344:5521:6b10:58fd:68f:7756:389d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63eea8afsm39599963f8f.33.2026.07.21.03.10.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2026 03:10:45 -0700 (PDT)
+Message-ID: <68b5a2f9-53c7-4b28-ac8e-e61a39dde118@redhat.com>
+Date: Tue, 21 Jul 2026 12:10:44 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAAhSdy2iT3GmYz+n_jzbQ4V_5P7UdfFhmq=BSOgYCDEQ6PPuZA@mail.gmail.com>
-In-Reply-To: <CAAhSdy2iT3GmYz+n_jzbQ4V_5P7UdfFhmq=BSOgYCDEQ6PPuZA@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 21 Jul 2026 12:09:29 +0200
-X-Gm-Features: AUfX_mzqp4co9SVxJ6Oxz0wZJjADoZUw52gPjsL2VGGBD-drbZ_ihcWCOMvdB5w
-Message-ID: <CABgObfb5KVNVBj9bDbcW5Y0WFYvC0A33-GBoy_UKuWUMPCBQhQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/riscv fixes for 7.2 take #1
-To: Anup Patel <anup@brainfault.org>
-Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Atish Patra <atish.patra@linux.dev>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
-	KVM General <kvm@vger.kernel.org>, 
-	"KVM RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] vsock/test: add test for small packets under
+ pressure
+To: Stefano Garzarella <sgarzare@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>
+References: <20260708102904.50732-1-sgarzare@redhat.com>
+ <20260708102904.50732-3-sgarzare@redhat.com>
+ <20260708065853-mutt-send-email-mst@kernel.org>
+ <ak9h1kWcLmpP74PI@sgarzare-redhat>
+From: Paolo Abeni <pabeni@redhat.com>
+Content-Language: en-US
+In-Reply-To: <ak9h1kWcLmpP74PI@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jul 18, 2026 at 10:03=E2=80=AFAM Anup Patel <anup@brainfault.org> w=
-rote:
->
-> Hi Paolo,
->
-> We have the following fixes for the 7.2 kernel:
-> 1) Avoid redundant page-table allocations in ioremap pcache topup
-> 2) Apply SBI FWFT LOCK flag only on successful set
-> 3) Bound SBI PMU counter mask scan to BITS_PER_LONG
-> 4) Skip TLB flush when G-stage PTE becomes valid with Svvptc
-> 5) Zicbo[m|z|p] block sizes should be always present in ONE_REG
-> 6) Inject instruction access fault on unmapped guest fetch
-> 7) Serialize virtual interrupt pending state updates using a raw spinlock
-> 8) Fix Spectre-v1 in vector register access via ONE_REG
+On 7/9/26 11:17 AM, Stefano Garzarella wrote:
+> On Wed, Jul 08, 2026 at 06:59:41AM -0400, Michael S. Tsirkin wrote:
+>> On Wed, Jul 08, 2026 at 12:29:04PM +0200, Stefano Garzarella wrote:
+>>> From: Stefano Garzarella <sgarzare@redhat.com>
+>>>
+>>> Add a test that sends 2 MB of data using randomly sized small packets
+>>> (129-512 bytes) over a SOCK_STREAM connection. Packets above
+>>> GOOD_COPY_LEN (128) bypass the in-place coalescing in recv_enqueue(),
+>>> forcing each one into its own skb.
+>>>
+>>> Without receive queue collapsing, the per-skb overhead eventually
+>>> exceeds buf_alloc and the connection is reset. The test verifies
+>>> that all data arrives and that content integrity is preserved.
+>>>
+>>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>>
+>> maybe cut down SO_VM_SOCKETS_BUFFER_SIZE? will make it easier to
+>> trigger?
+> 
+> Currently, with the default value, the trigger is practically immediate 
+> for packets between 129 and 512 bytes, but yes, a smaller buffer size 
+> certainly makes this effect even more pronounced.
+Given that PW is quite in a sorrow status, I think a (net-next)
+follow-up is the better option here.
 
-Pulled, thanks.
-
-Paolo
-
->
-> Please pull.
->
-> Regards,
-> Anup
->
-> The following changes since commit a13c140cc289c0b7b3770bce5b3ad42ab35074=
-aa:
->
->   Linux 7.2-rc3 (2026-07-12 14:16:39 -0700)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.2-1
->
-> for you to fetch changes up to 8d9c9b135b5c23de9811a8426257cbd2fa024a99:
->
->   KVM: riscv: Fix Spectre-v1 in vector register access (2026-07-15
-> 18:06:16 +0530)
->
-> ----------------------------------------------------------------
-> KVM/riscv fixes for 7.2, take #1
->
-> - Avoid redundant page-table allocations in ioremap pcache topup
-> - Apply SBI FWFT LOCK flag only on successful set
-> - Bound SBI PMU counter mask scan to BITS_PER_LONG
-> - Skip TLB flush when G-stage PTE becomes valid with Svvptc
-> - Zicbo[m|z|p] block sizes should be always present in ONE_REG
-> - Inject instruction access fault on unmapped guest fetch
-> - Serialize virtual interrupt pending state updates using raw spinlock
-> - Fix Spectre-v1 in vector register access via ONE_REG
->
-> ----------------------------------------------------------------
-> Anup Patel (1):
->       RISC-V: KVM: Zicbo[m|z|p] block sizes should be always present in O=
-NE_REG
->
-> Dylan.Wu (1):
->       riscv: kvm: Skip TLB flush when G-stage PTE becomes valid with Svvp=
-tc
->
-> Fangyu Yu (1):
->       RISC-V: KVM: Avoid redundant page-table allocations in ioremap topu=
-p
->
-> Qingwei Hu (1):
->       RISC-V: KVM: Inject instruction access fault on unmapped guest fetc=
-h
->
-> SeungJu Cheon (1):
->       KVM: riscv: SBI FWFT: Apply LOCK flag only on successful set
->
-> Shengwen Cheng (1):
->       KVM: riscv: PMU: Bound counter mask scan to BITS_PER_LONG
->
-> Xie Bo (1):
->       RISC-V: KVM: Serialize virtual interrupt pending state updates
->
-> Zongmin Zhou (1):
->       KVM: riscv: Fix Spectre-v1 in vector register access
->
->  arch/riscv/include/asm/kvm_host.h | 10 +++---
->  arch/riscv/kvm/aia.c              | 35 ++++++++++++++++----
->  arch/riscv/kvm/gstage.c           |  6 +++-
->  arch/riscv/kvm/mmu.c              |  3 +-
->  arch/riscv/kvm/vcpu.c             | 68 +++++++++++++++++++++++++++------=
-------
->  arch/riscv/kvm/vcpu_exit.c        | 19 +++++++++++
->  arch/riscv/kvm/vcpu_onereg.c      | 46 +++++++-------------------
->  arch/riscv/kvm/vcpu_pmu.c         |  4 +--
->  arch/riscv/kvm/vcpu_sbi_fwft.c    |  6 ++--
->  arch/riscv/kvm/vcpu_vector.c      | 14 ++++++--
->  10 files changed, 137 insertions(+), 74 deletions(-)
->
+/P
 
