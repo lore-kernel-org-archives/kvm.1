@@ -1,145 +1,70 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8462D7393;
-	Tue, 21 Jul 2026 02:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6131C221F2F;
+	Tue, 21 Jul 2026 02:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784601785; cv=none; b=Yu5rPVwmJQsFaI7bTq0g9II5yC2Gis/YVpooiHdibsb0+7nlYb1Awgw5XliaqpdcMlAvUCZNvwSW4BbNd7pDYVWtVAgg4Gd4/4yz6nHotTHst9cse9W+SmEQoWjSyoEKM1ubFH/zhdCtx5od3GAd2ZDRY1eM5QvZWOK7xvp+KOM=
+	t=1784602712; cv=none; b=aw00VHt3KZ37P8xZD9nKlPtu46x1IOUw8ubmbA8IXg8GPpTljnJs0U/ytYKfg1OTal6Co8BACjs1bb/wZutoaVVcBZw36hRT7h5abM38VDKJbvWakX0bW6pn+CRQCLVHM7AdQ2VRphqPgHhAFKO9qxCgxlJll/wHOOCU5eWRGVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784601785; c=relaxed/simple;
-	bh=m7jHSw4SqwyF7lMCiErlAMUOJBlU7JCFx/9Ps9obcSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mwhZYgdJ6dQ6g6SZcA18js6LHVVwbFroUgUsKHjyX6upnlasbNAq9pkDiyV4klknk51j1zr6cqOzHFbK1Nql442tbfD37Z2OV8aQpaIKJqsViyK87DgjNszGVJ63PvCuAD/SlLTVN13j+H4ewSYD/iYM/w1QHr2bQN6UmrY50v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=Peg+rs5Q; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1784602712; c=relaxed/simple;
+	bh=zzgSUL2w2pJxmzWtm+3a9SPbUU/HksYkPEFYH1X66kY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=fG0jZnytR2yp/CLXkxWwWcCSCJZ9xgOKQWfHo2qe6HONeqFF+scCi9DhetHYEFbMwJ34JCkVb0I8tO5ynrTk5V7/kxIqm6gSa9h9yGVcoBjomRjyudJt+THtmf2Gwp2KQ2Mj/bDmHHB3p0cfxX5NPQ1HH48qHmiAVCGVBw27Bkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyERwKYT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="Peg+rs5Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:MIME-Version:Content-Transfer-Encoding; bh=m+8JTRBvx7
-	CawRlsSGYTxEAZAMVDmdikPetKF3KHcLA=; b=Peg+rs5QDQmMYlZ1v/lrV+5nKU
-	vuDPvGQps8AOAm3RSHgRzR7cM6fToQNI6Vb6FG67DllnG8v9fuVPyfKtM/K4XnTZ
-	4dtyakybTkrol/BuYAoSx+qiC851L9WRpYlTco4TtRIiMhaZ/bwLUKiq5sabwPkU
-	3H9dwpN4bcE6BAKmU=
-Received: from ur-dp1000 (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwA3cUK53F5qgV8UAA--.17631S2;
-	Tue, 21 Jul 2026 10:43:06 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	kvm-riscv@lists.infradead.org
-Cc: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Xie Bo <xb@ultrarisc.com>
-Subject: [PATCH] RISC-V: KVM: Add SBI DBTR extension forwarding
-Date: Tue, 21 Jul 2026 10:42:36 +0800
-Message-ID: <20260721024236.14761-1-xb@ultrarisc.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyERwKYT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB8A1F000E9;
+	Tue, 21 Jul 2026 02:58:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784602710;
+	bh=FL5CGqbLgWSEbS6kX734MNF4vL+ica3pHW37Hpl8AN0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=kyERwKYTLGFrgKgWOI9Srcy0pa69D+lYq4aGOgCb+o9EepqVCmYaAvZkH2plHKIaT
+	 HKX6X1FiajmP3qBoGVkcU1ZHDTq9ykYdyGObzrscFVBxKXk56t0R0kRAz0vNnhqIkH
+	 2aRNjb0y8aCCXvmll4XtUQ7CwUcgNMce2pQG7Fg/CwI7Gy86IwXdu+tfnzLrbAXjEE
+	 gTBepq6wImyG8lBkJrPRX+YGy+xPoANzxsymbytflXjPG/YXfeOwCZYBu13n8D6u+w
+	 XMB61aLfl32u/e3uQ5OeHZcQsjF7OsFbyPHK7za4tY7Ggh227SnUV6wjtBMmQs+R4P
+	 25Sqe0fQzgpRQ==
+Date: Mon, 20 Jul 2026 20:58:23 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: "Dylan.Wu" <fredwudi0305@gmail.com>
+cc: palmer@dabbelt.com, pjw@kernel.org, aou@eecs.berkeley.edu, 
+    anup@brainfault.org, alex@ghiti.fr, atish.patra@linux.dev, 
+    zhouquan@iscas.ac.cn, linux-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+    kvm-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] riscv: ptdump: Move pagetable definitions to common
+ header
+In-Reply-To: <20260701085030.124579-2-fredwudi0305@gmail.com>
+Message-ID: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
+References: <20260701085030.124579-1-fredwudi0305@gmail.com> <20260701085030.124579-2-fredwudi0305@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwA3cUK53F5qgV8UAA--.17631S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAry5Jry3Cw47KrWfWryrCrg_yoW5ZrW3pF
-	4DCF1qgrWrCr40g3s7Jrs8uw1Utw15Kwn5tryDWryFqr12vry5Jr4vkry2krn8XFWrXFyS
-	kr40gFn5uFs5J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUFg4SDUUUU
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAOB2pdm1EAHAABso
+Content-Type: text/plain; charset=US-ASCII
 
-The SBI headers define the Debug Triggers extension and its function IDs,
-but KVM does not currently allow a VMM to expose DBTR to a guest.
+Hi Dylan,
 
-Add DBTR to the KVM SBI extension list and forward its calls to userspace
-through the existing KVM_EXIT_RISCV_SBI path. Keep the extension disabled
-by default so that userspace must explicitly enable it through the SBI
-extension ONE_REG interface before running the VCPU.
+On Wed, 1 Jul 2026, Dylan.Wu wrote:
 
-Signed-off-by: Xie Bo <xb@ultrarisc.com>
----
- arch/riscv/include/asm/kvm_vcpu_sbi.h | 1 +
- arch/riscv/include/uapi/asm/kvm.h     | 1 +
- arch/riscv/kvm/vcpu_sbi.c             | 4 ++++
- arch/riscv/kvm/vcpu_sbi_forward.c     | 7 +++++++
- 4 files changed, 13 insertions(+)
+> Move the pagetable walking state and level definitions to a new
+> arch/riscv/include/asm/ptdump.h header. This allows other parts
+> of the kernel (like KVM) to reuse the ptdump attribute parsing
+> logic.
+> 
+> To support different pagetable types (like G-stage), the attribute
+> parsing logic in dump_prot() is updated to use attribute bits
+> defined within the pg_level structure rather than a global array.
 
-diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-index c1a7e3b40..53406b02f 100644
---- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-+++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-@@ -104,6 +104,7 @@ extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_rfence;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_srst;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_hsm;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_dbcn;
-+extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_dbtr;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_susp;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_sta;
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_fwft;
-diff --git a/arch/riscv/include/uapi/asm/kvm.h b/arch/riscv/include/uapi/asm/kvm.h
-index 504e73305..047d82f05 100644
---- a/arch/riscv/include/uapi/asm/kvm.h
-+++ b/arch/riscv/include/uapi/asm/kvm.h
-@@ -221,6 +221,7 @@ enum KVM_RISCV_SBI_EXT_ID {
- 	KVM_RISCV_SBI_EXT_SUSP,
- 	KVM_RISCV_SBI_EXT_FWFT,
- 	KVM_RISCV_SBI_EXT_MPXY,
-+	KVM_RISCV_SBI_EXT_DBTR,
- 	KVM_RISCV_SBI_EXT_MAX,
- };
- 
-diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-index 46ab7b989..ed21239c5 100644
---- a/arch/riscv/kvm/vcpu_sbi.c
-+++ b/arch/riscv/kvm/vcpu_sbi.c
-@@ -70,6 +70,10 @@ static const struct kvm_riscv_sbi_extension_entry sbi_ext[] = {
- 		.ext_idx = KVM_RISCV_SBI_EXT_DBCN,
- 		.ext_ptr = &vcpu_sbi_ext_dbcn,
- 	},
-+	{
-+		.ext_idx = KVM_RISCV_SBI_EXT_DBTR,
-+		.ext_ptr = &vcpu_sbi_ext_dbtr,
-+	},
- 	{
- 		.ext_idx = KVM_RISCV_SBI_EXT_SUSP,
- 		.ext_ptr = &vcpu_sbi_ext_susp,
-diff --git a/arch/riscv/kvm/vcpu_sbi_forward.c b/arch/riscv/kvm/vcpu_sbi_forward.c
-index 5a3c75eb2..8ac31b53f 100644
---- a/arch/riscv/kvm/vcpu_sbi_forward.c
-+++ b/arch/riscv/kvm/vcpu_sbi_forward.c
-@@ -26,6 +26,13 @@ const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_dbcn = {
- 	.handler = kvm_riscv_vcpu_sbi_forward_handler,
- };
- 
-+const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_dbtr = {
-+	.extid_start = SBI_EXT_DBTR,
-+	.extid_end = SBI_EXT_DBTR,
-+	.default_disabled = true,
-+	.handler = kvm_riscv_vcpu_sbi_forward_handler,
-+};
-+
- const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_mpxy = {
- 	.extid_start = SBI_EXT_MPXY,
- 	.extid_end = SBI_EXT_MPXY,
+Could you please split this into two patches: the first, to create 
+ptdump.h and move the declarations there and export note_page(); and the 
+second, to make the attribute parsing and structure changes?  That will 
+make the changes easier to review.  
 
-base-commit: b95f03f04d475aa6719d15a636ddf32222d55657
--- 
-2.54.0
 
+thanks 
+
+- Paul
