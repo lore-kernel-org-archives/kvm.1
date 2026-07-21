@@ -1,120 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE003414A1E
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 07:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB40D2D0C97
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 08:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620424; cv=none; b=vEOK5Ez4G2AoioFdHJ6qJTr/7/5iINcikakMK9U84URy6Apv4ls89d6jwcIf/BHSAu4O0e6lJJBr3UZeZACw5otnEmgNbyFRvxNWQflr/shZNEs9P7L2JGUvV4t/s93gBZUiH4lg/bhNgq4bmTpF11LLFUUyTWn/3bJdviFASjw=
+	t=1784623232; cv=none; b=p+O+zWiyKvDF6kSqpzo4uZU0KF3HHtEijt6aj02PrahAMBQzo5BcqvYxLIVDGMEjl7ZQBx+kjdCuXd4vLMpT8g/kXP4MxPZyLsLOpP+sePNvwvcfdTBTVM0xkSxYohlixCZXrUf7pynq9KwcyhcVjVl/X7atmc3D0enCMfK+iF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620424; c=relaxed/simple;
-	bh=3RwulrDbloP3GjEXKjhnZRdb/j3U0lMT2nyytojDJkw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GdcIWJrnNb4ppnPFXa1FMhfjYZhPBp/jE/h25IoBRZCzTGV28gYb3tNlUPx+VuD20s0uQTANMBJtAICtZexOGRT8ZJ1zuG5uXfffYEaeenS3EOb/rsihl5Ao5VAdEh6LBjPpvQlX8A6TcLqmn6NsYhbZGsVCxOK5HGUv6CTSwRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpSNJ8fb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784623232; c=relaxed/simple;
+	bh=6Tj834dZmAxzKUo0CdkNNi8Rz6FFYxLSEcBJzDRv/0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mD88DoY6jU0Y63+kypJ6sG/R2zUInM9lzRUzjwmiU7hd0Qtnmme3RN9v+jBEfX+9HdMyU8/IfRc7+3iLvinVcIlVXdxiY8CMmorP2gWV4Itu96JCPVkZSajswXOummMY9vpbuYVXnmNj7HrerDhsO/b+9cQVsN/CHGq9uqKdZKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oRQtvNwB; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpSNJ8fb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279D01F00A3A;
-	Tue, 21 Jul 2026 07:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784620422;
-	bh=rA1MGmHq2Ddpo+SDCMd4Xy7DfNYV/CK1Eb67xPMCT2s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lpSNJ8fbYPixX6wnV9T31OPtCrJFkXRW5lAMxBDQJDfFt6+XVHo8hrfAOYExgcKxg
-	 hNJ/GlAV90E+gokPMlI9ASADQWYflky/eA1uk45/jf/W4i+9Mesf6I2BlYIH3spH78
-	 IcYs0cy6uVr4scPE5S7odo2Ky0kAqsMJcDLlcjGulzM7eyWEnMuYFZEFN1JQ336udO
-	 0prF7xBzfr6D9j9IB/g1vaJTQ0tFXcGjvzWAA81/PFhccX9kQgtld0x6x7q3R+Rb30
-	 ZQMa6IQGU53+C3wq00x1pnQYHyqxM5D5bg5cobujrutv2p4+RMBnExM0HjgHr3/ds2
-	 bxa0WSncvYgDw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Serialize IMSIC attributes with vCPU
- migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xie Bo" <xb@ultrarisc.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260721073612.137259-1-xb@ultrarisc.com>
-References: <20260721073612.137259-1-xb@ultrarisc.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 07:53:41 +0000
-Message-Id: <20260721075342.279D01F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oRQtvNwB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=26GRvKE5WuLLUiNuEuWJiqzX+/qZrRuWelBWUSW0UJQ=;
+	b=oRQtvNwB11ogeOoqPXVNV5oFugERn5HjktwOyvF/DnJAUE0rGThCJ3v7ofyOYk
+	0IiRpwI7lwLfFvpNw1V4EtWgyrqOP+4MxY1vutL6jhfBAyApv1iA31+VQ6FwzVJq
+	TG9pxq1mykgzPeY9VeDkuunoCvDq/m/euEnsTmROETwhU=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD31YZmMF9qRz8YJg--.0S2;
+	Tue, 21 Jul 2026 16:40:10 +0800 (CST)
+Date: Tue, 21 Jul 2026 16:40:05 +0800
+From: Hao Zhang <hao_zhang_kdev@163.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Subject: [PATCH v3] KVM: x86: Mark nested RSM-created VM-Enter as untrusted
+Message-ID: <al8wZQwqC9IhlBZc@192.168.1.215>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+X-CM-TRANSID:_____wD31YZmMF9qRz8YJg--.0S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3XryfKw4rCw4DGFy8GrW8Crg_yoW7GFy3pa
+	9ayr4q9w4UGr9rJr97GF48Xry29rn5XF1jyrWkCa4rX3Wjgas7tr1xK3yqvay5CrWfu34S
+	vF1Uur4j9w1rJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrqXQUUUUU=
+X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3QqYi2pfMGo5lgAA3E
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+From: Hao Zhang <zhanghao1@kylinos.cn>
 
-New issues:
-- [High] Uninterruptible `mutex_lock` in device ioctl causes unkillable tas=
-k hang.
+RSM can restore state that indicates the vCPU was running L2 when SMI
+arrived.  KVM then re-enters nested guest mode and marks nested_run_pending
+so that the next KVM_RUN completes the pending nested transition.
 
-Pre-existing issues:
-- [High] Hardware state corruption due to missing CPU check in `kvm_riscv_v=
-cpu_aia_imsic_put()`.
---
+Unlike a normal nested VMLAUNCH/VMRESUME, the state restored by RSM comes
+from SMRAM.  Userspace can modify SMRAM before RSM.  The resulting L2 state
+may require invalid-guest-state emulation.  If KVM trusts that pending run,
+VMX can synthesize EXIT_REASON_INVALID_STATE before hardware VM-Entry
+completes the pending run and trip the nested_run_pending invariant.
 
---- Patch [1]: [PATCH] RISC-V: KVM: Serialize IMSIC attributes with vCPU mi=
-gration ---
-commit 477c5bd7ef196223bb86313755b20f69e286864b
-Author: Xie Bo <xb@ultrarisc.com>
-RISC-V: KVM: Serialize IMSIC attributes with vCPU migration
+Do not treat an RSM-created pending nested run as KVM-trusted state.  Mark
+the run as KVM_NESTED_RUN_PENDING_UNTRUSTED for both VMX and SVM, matching
+the existing userspace-modified-state handling in kvm_x86_vcpu_pre_run().
 
-KVM device ioctls are not serialized against KVM_RUN. This patch serializes
-the entire IMSIC attribute operation with the target vCPU mutex to prevent
-the VS-file from being migrated and recycled until the attribute access
-completes.
+Keep the VMX BUG check for trusted pending nested VM-Enters, but allow
+untrusted pending state to reach the existing invalid-L2-state handling.
+If that handling synthesizes a nested VM-Exit back to L1, retain the
+pending state while synchronizing VMCS02 to VMCS12, and consume it before
+restoring L1 state so that the flag does not leak into L1 and block event
+injection.
 
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index d38f5de0834c5..2a4f88efee17f 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-> @@ -969,9 +969,13 @@ int kvm_riscv_aia_imsic_rw_attr(struct kvm *kvm, uns=
-igned long type,
->  	if (!vcpu)
->  		return -ENODEV;
-> =20
-> +	mutex_lock(&vcpu->mutex);
+Fixes: 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if emulation_required")
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+---
+Changes in v3:
+ - Retain KVM_NESTED_RUN_PENDING_UNTRUSTED until after
+   sync_vmcs02_to_vmcs12(), to avoid saving VMCS12 fields that are valid
+   only after L2 has actually run.
+ - Clear the untrusted pending state before restoring L1 state to avoid
+   leaking nested_run_pending into L1 and blocking event injection.
+ - Clarify the VMX pending-run BUG comment and update the changelog.
+ - Tested with the syzkaller repro on the fixed kernel, no WARNING/KVM_BUG
+   in the repro log
 
-[Severity: High]
-Does this uninterruptible mutex_lock() cause an unkillable task hang if the
-target vCPU is currently executing a guest via KVM_RUN and holding its
-vcpu->mutex?
+Link to v2: https://lore.kernel.org/all/al8M4gCwsWXS_jMs@192.168.1.215/ 
 
-Since it is reachable by userspace via KVM_SET_DEVICE_ATTR or
-KVM_GET_DEVICE_ATTR, could a user program racing with KVM_RUN block
-indefinitely in D-state?
+ arch/x86/kvm/svm/svm.c    |  2 +-
+ arch/x86/kvm/vmx/nested.c |  8 ++++++++
+ arch/x86/kvm/vmx/vmx.c    | 16 +++++++++-------
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-Should this use mutex_lock_killable() instead to prevent a local denial
-of service that triggers the hung task watchdog?
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 4d2bacd00ec4..f54757bd8382 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5096,7 +5096,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+ 		goto unmap_save;
+ 
+ 	ret = 0;
+-	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
++	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
+ 
+ unmap_save:
+ 	kvm_vcpu_unmap(vcpu, &map_save);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 6957bb6f5cf7..e345b085a316 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -5142,6 +5142,14 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
+ 		WARN_ON_ONCE(warn_on_missed_cc);
+ 	}
+ 
++	/*
++	 * Untrusted pending VM-Enters may be canceled by untrusted state.  Keep
++	 * the flag set through sync_vmcs02_to_vmcs12() so that fields which are
++	 * updated only after L2 runs, e.g. the preemption timer, aren't saved.
++	 */
++	if (vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING_UNTRUSTED)
++		vcpu->arch.nested_run_pending = 0;
++
+ 	/*
+ 	 * Drop events/exceptions that were queued for re-injection to L2
+ 	 * (picked up via vmx_complete_interrupts()), as well as exceptions
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cc75feec05da..cf5c3f78ebfc 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6715,12 +6715,14 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
+ 		return 0;
+ 
+ 	/*
+-	 * KVM should never reach this point with a pending nested VM-Enter.
+-	 * More specifically, short-circuiting VM-Entry to emulate L2 due to
+-	 * invalid guest state should never happen as that means KVM knowingly
+-	 * allowed a nested VM-Enter with an invalid vmcs12.  More below.
+-	 */
+-	if (KVM_BUG_ON(vcpu->arch.nested_run_pending, vcpu->kvm))
++	 * KVM should never reach this point with a trusted pending nested
++	 * VM-Enter.  Short-circuiting VM-Entry to emulate L2 due to invalid
++	 * guest state after a normal nested VM-Enter would mean KVM knowingly
++	 * allowed an invalid vmcs12.  Pending VM-Enters restored from untrusted
++	 * state are handled below.
++	 */
++	if (KVM_BUG_ON(vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING,
++		       vcpu->kvm))
+ 		return -EIO;
+ 
+ 	if (is_guest_mode(vcpu)) {
+@@ -8436,7 +8438,7 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
+ 		if (ret != NVMX_VMENTRY_SUCCESS)
+ 			return 1;
+ 
+-		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
++		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
+ 		vmx->nested.smm.guest_mode = false;
+ 	}
+ 	return 0;
 
-[ ... ]
+base-commit: 58717b2a1365d06c8c64b72aa948541b53fe31eb
+-- 
+2.15.0
 
-[Severity: High]
-This isn't a bug introduced by this patch, but looking at
-kvm_riscv_vcpu_aia_imsic_put(), does it blindly set CSR_HGEIE on the local
-CPU without verifying that imsic->vsfile_cpu matches the current
-smp_processor_id()?
-
-arch/riscv/kvm/aia_imsic.c:kvm_riscv_vcpu_aia_imsic_put() {
-    ...
-    if (imsic->vsfile_cpu > -1)
-        csr_set(CSR_HGEIE, BIT(imsic->vsfile_hgei));
-    ...
-}
-
-If a vCPU blocks in kvm_vcpu_block(), it can be migrated to a different CPU
-upon wakeup. If it loops and sleeps again without returning to KVM_RUN
-(where imsic->vsfile_cpu is updated), kvm_sched_out() will be invoked on the
-new CPU.
-
-Could this call kvm_riscv_vcpu_aia_imsic_put() and write to CSR_HGEIE on the
-new CPU using imsic->vsfile_hgei allocated for the old CPU, resulting in
-cross-CPU hardware state corruption affecting interrupts of other KVM guest=
-s?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721073612.1372=
-59-1-xb@ultrarisc.com?part=3D1
