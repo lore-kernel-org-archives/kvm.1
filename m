@@ -1,82 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF152E401;
-	Tue, 21 Jul 2026 13:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF5E30BF6D;
+	Tue, 21 Jul 2026 13:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784640038; cv=none; b=CXrDVeeurYk30LgKCxKtu/QVY1BlwFt9ukSXU//hO5tQiXSRuEMUAUGbcNyn8cJH/9liQj6k1k/sfEfJWUuT2C5sRSDcys1TNKk6X9XK1MD/7Hvhr8AkQjIaaIg6vhHkudkTGMYwXZrwzkqiKOVAtstoTHb9+r4XklIC+M8t2mc=
+	t=1784640390; cv=none; b=ipoE0gGtEjJKuy2TvAGZLbNIVfVO2mPg43KNXEeuwJPs5dNCm9wCK27dxsb9WAQwVk8XkSnLnZC4T5fqzca6vrsxZuFwcG3/5NGzNe00rtuIkTXvECQ3AxcBbV9jYbE725Stz9/oTKXXdDMYOkGXWnxXhnJrtBzcUSl5BQzCg4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784640038; c=relaxed/simple;
-	bh=Z/uHeSbQnzDQWMaKbujY8RJncvzRTG5P6n9VoWX7wkY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ko7OeGn3hc7j4wFCyAecqkjfv95h4/QTvbOXqOyOeUeWuIdNN+qK0oscCWFnFTktr2Gh/CuUJIBaS9pkAcBnWpuMkMEpcUy4IjMH+yCXd/rdXqFzFTxRhHh1rMi8theqpnXblfAKHRerNXhTm6uhL2gb7xpISMv1BDDZTVDGONg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7phW2iQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784640390; c=relaxed/simple;
+	bh=Hc9kzoQ9rFyyW8XHyUKHR1d2Dsj44oWw597yXAQp+uc=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=S6qY3atJleIeiRt1c/1j6Bspp/lblM9kVDLGTGnkrV70y8vZeSQWSOC5sjHNYs32T4w9s/Zx1YoiYRttA64c/j3yTGNu7/DKJ7XfzTjMvTvM3nkFemGh4/hx3mTbf9EKVGJmPsiWAaBffG2a/6uaeoFw83HsaC70+F7o4HVXhcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Uj1oBLm2; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7phW2iQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2C31F000E9;
-	Tue, 21 Jul 2026 13:20:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784640037;
-	bh=Dm940Cf75lvvda7pO3DcsuCBsfGv/fBYpsSFhHMbOlQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=T7phW2iQ0enVI8jZxp1GbGdsa9lr/Bg4Y+srut0GkMA1BVlCR7VYa+duROfYuupox
-	 Jh10bUUjj3/+QTDuEC3zi5BvRa3xT5XfalyCvjhp/rYaruHZXfp8eLZ3G51EIh52Ee
-	 nn6fM47IlHGePNwnrsnu94/eTGwcaxOz3GMOvi3SfwU+gjKONfLwhhT0QJKMHoCqZa
-	 JWO7xVimK/A2GtqZJgS/dpB6ajbbW3IS6VfNJhyTlBkbMMTjhr5bvXfXtylfh1fy1A
-	 UXbMJZXLW88B6xDCq0YYI8nOxK/w8dnrOs0a7NuKbh5iLBMpTEx+l5unx44nm91fWK
-	 qO3vaidAtPBIA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A4C3924FDF;
-	Tue, 21 Jul 2026 13:20:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Uj1oBLm2"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9hgq2bOlQdWO8j42MpZzQv278XodO4khDw3hgg8g+EE=;
+	b=Uj1oBLm2piRS2jcNrVUUdAj64NR7QB2AifXV29XsiXtXTCt8/PmMpEq+nwr+s8iX+TO4SVXy8
+	IusYOu5A+t3ilK/5m8l2t6qY1s1aIGuzFz4Xh3ZFK7Gj4qZgTf2WIrFuLXxQw3LkIeDfDM4c4Ja
+	qOFsHfRNHFyUbXAQwQgO+MU=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4h4HwN5h1CzKmTp;
+	Tue, 21 Jul 2026 21:16:52 +0800 (CST)
+Received: from whupemo200006.china.huawei.com (unknown [7.152.185.252])
+	by mail.maildlp.com (Postfix) with ESMTPS id 668704056C;
+	Tue, 21 Jul 2026 21:26:17 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ whupemo200006.china.huawei.com (7.152.185.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 21 Jul 2026 21:26:10 +0800
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+To: Gregory Price <gourry@gourry.net>
+CC: <linux-mm@kvack.org>, <Zhigang.Luo@amd.com>, <arun.george@samsung.com>,
+	<balbirs@nvidia.com>, <brendan.jackman@linux.dev>, <apopple@nvidia.com>,
+	<alucerop@amd.com>, <matthew.brost@intel.com>, <akpm@linux-foundation.org>,
+	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
+	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<mhocko@suse.com>, <corbet@lwn.net>, <skhan@linuxfoundation.org>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<djbw@kernel.org>, <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <osandov@osandov.com>, <jannh@google.com>,
+	<pfalcato@suse.de>, <jackmanb@google.com>, <hannes@cmpxchg.org>,
+	<ziy@nvidia.com>, <pbonzini@redhat.com>, <osalvador@suse.de>,
+	<joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>, <byungchul@sk.com>,
+	<ying.huang@linux.alibaba.com>, <kasong@tencent.com>, <qi.zheng@linux.dev>,
+	<shakeel.butt@linux.dev>, <baohua@kernel.org>, <axelrasmussen@google.com>,
+	<yuanchu@google.com>, <weixugc@google.com>, <yury.norov@gmail.com>,
+	<linux@rasmusvillemoes.dk>, <longman@redhat.com>, <ridong.chen@linux.dev>,
+	<tj@kernel.org>, <mkoutny@suse.com>, <sj@kernel.org>, <jgg@ziepe.ca>,
+	<jhubbard@nvidia.com>, <peterx@redhat.com>, <baolin.wang@linux.alibaba.com>,
+	<npache@redhat.com>, <ryan.roberts@arm.com>, <dev.jain@arm.com>,
+	<lance.yang@linux.dev>, <usama.arif@linux.dev>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <roman.gushchin@linux.dev>,
+	<muchun.song@linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <driver-core@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-debuggers@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <cgroups@vger.kernel.org>, <damon@lists.linux.dev>,
+	<linux-kselftest@vger.kernel.org>, <kernel-team@meta.com>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <a9c52bb6-5e04-1d41-913a-685a7be3fad4@huawei.com>
+Date: Tue, 21 Jul 2026 21:26:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] vhost-net: fix TX stall when vhost owns virtio-net
- header
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178464000690.281806.12019184491759783883.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Jul 2026 13:20:06 +0000
-References: <20260708152242.2268848-1-enrico.zanda@arm.com>
-In-Reply-To: <20260708152242.2268848-1-enrico.zanda@arm.com>
-To:  <enrico.zanda@arm.com>
-Cc: jasowangio@gmail.com, virtualization@lists.linux.dev, mst@redhat.com,
- netdev@vger.kernel.org, kuba@kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, eperezma@redhat.com, nd@arm.com
+In-Reply-To: <20260720193431.3841992-1-gourry@gourry.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ whupemo200006.china.huawei.com (7.152.185.252)
 
-Hello:
+On 2026/7/21 3:33, Gregory Price wrote:
+>   KVM: guest_memfd: bind backing memory to a NUMA node at creation
+>   KVM: selftests: add a guest_memfd FLAG_BIND_NODE test
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+I can't find the last patch in my inbox or on the lore. Not sure what went
+wrong.
 
-On Wed, 8 Jul 2026 16:22:42 +0100 you wrote:
-> From: Enrico Zanda <enrico.zanda@arm.com>
-> 
-> When vhost owns the virtio-net header, i.e. when
-> VHOST_NET_F_VIRTIO_NET_HDR is negotiated, sock_hlen is 0,
-> meaning that no header will be forwarded to the TAP device.
-> 
-> In the current vhost_net_build_xdp() implementation,
-> when sock_hlen == 0, the gso pointer can point at the start of the
-> Ethernet frame instead of a virtio-net header.
-> This results in a wrong interpretation of the destination MAC address
-> bytes as struct virtio_net_hdr fields.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] vhost-net: fix TX stall when vhost owns virtio-net header
-    https://git.kernel.org/netdev/net/c/3c0d10f233f1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Zenghui
