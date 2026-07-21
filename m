@@ -1,198 +1,250 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1533FF1D0
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 11:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784634468; cv=fail; b=CzSDIHOILhB73eQpuZ/8NFcfbWUHN8owvYUuFospi9Z9PH6CGaX4Ou2DWQYdmyo18gjgSZRb6qmSJeWGQTzM4uSK2dhrYrxbYsZ1TNtVxz7N1d33gNTQuVhCCE46GznaX6cN6gJ+LiuAdt7a5DJwSCjFMPvUSz4fDE5ex0URvUE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784634468; c=relaxed/simple;
-	bh=ddhwyW0czLxPbRV1EiV8hmyj6CDMDFF0VtzElWRtDMA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZZxJWyYVKJ01lqxNrbCxofkEooIh7enTs6GwrplxQtBNsAJuVtI8Lfq2DXo8FqVps0ltjqyL3ZTgGnbGOEsL19wnx3d7DwYU12rDUmiEcF4zS7rbbHfyrb7XKBHJAnUtF4do2vkydcGwHGMRvKa+QhvoD34kY2O5dZV2h2dzUC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=boLT2xnr; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="boLT2xnr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784634466; x=1816170466;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ddhwyW0czLxPbRV1EiV8hmyj6CDMDFF0VtzElWRtDMA=;
-  b=boLT2xnrCJ6Nd2Md8OAqy//N8lofmsFZ6xaGAJiscRA9gv0xULJpMoR+
-   BXQfdH9GnInJInU8p3UgEyyOXqDyKtTzgEtqueyNvLo9MV36LHknU7cIA
-   hli+Pmm8X29K4SYcUMlIR4DCBx8WK0VYKPJJ0k80p51qpPXVeTiRsgjDf
-   lKqGtenc/dEx522Esx9JpwGYj98qXIlXHssmKLxT7eOYfqkHzQX/MHzxL
-   GL5lhl7nwvoypyovMxJbeWg6ZHv7QKyD676eJsNyULZeo659VNOpCmfFF
-   oWF/G16zbkrOj8qPHMbWQ/IZ47/NIFrCNvYwIR7kbWCMEINdVvPdepALQ
-   A==;
-X-CSE-ConnectionGUID: 5YesdtiPTDSohiup+R2bDA==
-X-CSE-MsgGUID: +619g6W7Ska+Nl4/8fd99A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85431809"
-X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
-   d="scan'208";a="85431809"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 04:47:46 -0700
-X-CSE-ConnectionGUID: GKb6hhZLQ/6e0Ctrp5tikw==
-X-CSE-MsgGUID: vInf7Kd5SkuizkV7zDpJ8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,176,1779174000"; 
-   d="scan'208";a="295951523"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 04:47:46 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 21 Jul 2026 04:47:45 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 21 Jul 2026 04:47:45 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.26)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 21 Jul 2026 04:47:44 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YZMfSiGxV+tJ8WjL/YgQ6a8mH21Ij5JtSFkhhivdCmLVMn411JucDaIxNUNU6mUCtgK/KpIXNSb+s2UE+L92tJXJiSBIfAqI4SvSnMsQkF9iGU7paGOxJASgUULxSg6jAsoXXIbBPZewmwvn10ds4Ys0MF2wR4jr34RXBeVDemi4dkWhP32oY0BGEKU3N/BRF4N2rx12XyESJoOyll/GChIUCUNhshVaGMiKkLn6gLVvjW80UOfCr05VcyCWDBj0gd4dKAeCOHhjp0GIJ0RXEbvlMOzkeO2AuTMc0MKuRVwg6qzBr2z+9TQspyJgL7X+xHyMb1eRmSIDguvHI8kOug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F3z2JkradJyw6tsFy293I7OUij3Kp/4BmqtIo4KWZCo=;
- b=WGCJFFQpN7fxNPN/3as4Q7Or2LcyqVTmfxh2hIZlqf8MguXJmMRdUF9QG9HAq0rzYHEwd7UnXcoOCtA/zZ8msuRmAr8zaNoVpQ4b5OdY5FC0lf5z9P/e//0maNMHkUxFuWe5ooGv9CF5R/36FQv0ztoFxTK+yWuODe/Hg4B0rN7c32Vkm1xdsbJXM3/WRDlcnv5XHDTppyGvAQciNf7ySOkfq08KCfHkcGNw3icBKt5OMA0Bokc37T3qkq5r87AU0RqnjCcX0Mc6tVVMNPx42z+ROFnGQqBAmUdZC0qpgWRwshORZAdVAlMTTjWqD5hnsXejIUTfyxQjYBXFgeHIIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY5PR11MB4450.namprd11.prod.outlook.com (2603:10b6:a03:1be::20)
- by DS0PR11MB7832.namprd11.prod.outlook.com (2603:10b6:8:f5::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 21 Jul
- 2026 11:47:42 +0000
-Received: from BY5PR11MB4450.namprd11.prod.outlook.com
- ([fe80::741:ee9:97f1:e068]) by BY5PR11MB4450.namprd11.prod.outlook.com
- ([fe80::741:ee9:97f1:e068%6]) with mapi id 15.21.0223.017; Tue, 21 Jul 2026
- 11:47:41 +0000
-Date: Tue, 21 Jul 2026 19:47:36 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Jim Mattson <jmattson@google.com>
-CC: <seanjc@google.com>, <pbonzini@redhat.com>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v2] KVM: VMX: Cap VMX preemption timer to work around
- Intel errata
-Message-ID: <al9cWDWvIK6RCrnN@intel.com>
-References: <20260720231639.1592848-1-jmattson@google.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260720231639.1592848-1-jmattson@google.com>
-X-ClientProxiedBy: TPYP295CA0039.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:7d0:7::10) To BY5PR11MB4450.namprd11.prod.outlook.com
- (2603:10b6:a03:1be::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C186D3451DA;
+	Tue, 21 Jul 2026 11:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784634977; cv=none; b=nN5DlTd3H6sv48ghAmMsf7MjuMO6/YbodPSOLoqrBFVPyiR8WjvzedagLK3ypcc6cDjJbVaPn332gAibhUXpaIq06MqEG0wqFez7Rg/xNG2vDx6g1e1iJcPkiziLnXh71VWE68n83bgl5cjnrAxpzcQI8agsFp5/Y6+fjd0yHn4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784634977; c=relaxed/simple;
+	bh=OiKYjHgs8yfl3D/5jJm7sEOb7graCNa31cNxuR7adJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=i2lEaGdpCd8VfCztZjnWzgoeA9tvr7M37boNPw9dw6mqzYwQu254Bzp+bOVoOpQmTYdMXAURlZwIuQJf18d/51/artyCXTDtOmwl3rq4zz26aqQ9GZJCwlLynL6Vdugu21Ji5YmkX88RU3iZwLVNnL4TW7sLb7p1/+IuZy9oINI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech; spf=pass smtp.mailfrom=haiwei.tech; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=haiwei.tech
+X-QQ-mid: zesmtpsz6t1784634963t6e8a6e90
+X-QQ-Originating-IP: 7UTGWJP3KrvUOqnlyru4WDx7yxHshRvG5L4FHHW3S5o=
+Received: from rsl ( [183.242.33.186])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 21 Jul 2026 19:56:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 18011628127360508405
+EX-QQ-RecipientCnt: 14
+From: JinRui <jinrui@haiwei.tech>
+To: Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jinrui <jinrui@haiwei.tech>
+Subject: [PATCH v4] KVM: selftests: riscv: Add lazy V extension enablement for guests
+Date: Tue, 21 Jul 2026 11:55:58 +0000
+Message-ID: <759A31C23819178D+20260721115558.341592-1-jinrui@haiwei.tech>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260721112454.330498-1-jinrui@haiwei.tech>
+References: <20260721112454.330498-1-jinrui@haiwei.tech>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR11MB4450:EE_|DS0PR11MB7832:EE_
-X-MS-Office365-Filtering-Correlation-Id: e631028a-a068-49db-8cfe-08dee71ddf12
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|18002099003|22082099003|6133799003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: NzZdhGtYx4zyrmeXLOMoiVY14YBPDAniqcAD4XREAf5nI/WoYl+cZT5vozq5uwum+f8sdpO6jQx+9iS8ArAz54dxR7I/0C65Vtt6gleBxBDgc6lBo9oYC1Na/TCQOhtLoxCivwWYEoZY/6IEbCoghBKP+TBnzdmY/Yib9VunFcB9TIBuKicnQwB8s0qhI1lgoAL6dGr3AcmqFCWNoMwvxT4X2B78C+4y5fWL8AfA77T7JbXZGYjOBDn4HxgcJXldMHqSAA8EeK/W3/pj/Jizm2N9GdPzJgbprKC9AJUVKnrzNMEfbOoFe3f1VJ8HIR7pdVa9y3UMspZXJUUkRktSK+irUCXKyGo1jpWlg4txAwrxONxGKd8WAaEK5HxPdWUvdwteYrEpBF3UyMZq1O3Gzwfv0UR2pDjjFOK0uEYMMV/AxRLOZIti9UsI5n/aI4oAE0n1lBn+OkeD8SCRtbIYYMGt1PldvSDyThDM1K+nw6pDOZ7NXiZ6GN8xIsz88agY9yxBw4/zX+QiBj5i128O5feUgWldzrGQulq7xmq6cjp56R+/6JO4ql2J59wHbxxLIho1eVNzNSu5b3w/L0yCpgIGK3aXjmHPNdK0Nh84PRejdvGmr2u2ujczP9rCi12e++136CXfC8+no07HyIj93+UPQZ5sOcKVxowjCjpxJ9E=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR11MB4450.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(6133799003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8XwMWOSq/G5/6GtOcjFSE0k4kyUEaVqKxfscWNKMZo6c5XtQQbalqQ6e9pHy?=
- =?us-ascii?Q?N3YsCiPzcNho+UwqSl/a5c0jLjxUaMYgrxVv+KAvGppAHtpOdjvUEpCzhE0b?=
- =?us-ascii?Q?LAzZLY3DvOdL5Kvww4LsQL5VMa4ebr/UycpXFKSatHnVtaZvvT6YUuC29psC?=
- =?us-ascii?Q?pPzhW8Z4RQRTObc6Ghqf8AbsSFYLxBVc2ZlfIOgv/11lhP/vE5BKpzXz3HPP?=
- =?us-ascii?Q?CFqMGwHD6hqFCBsb+4LpnqjvNKbpjIM3HLxmuxM4DjLatP6y6+xOnwD54+Ef?=
- =?us-ascii?Q?2j5z/OIAI8xdCRJPHK8xiVgOfENOFphhBk2JwkNba9x2UFeYO5tmu/GoHyzv?=
- =?us-ascii?Q?NQ0IYjOSYHCyJ9DZbapv77+17Cf5d6kWMnsby+tyz3b+BkQQOsf2jCtjO1uR?=
- =?us-ascii?Q?CYQcSWyDglVpEfrM7AoM0TvPP0y06oNfRa6QAr4CIRtf3ZwPx57HYm5Nemdv?=
- =?us-ascii?Q?8f52WcyISWYze+3mB5h3sbeMremfb0sLNtQLXqz2ywAkW9nZCqC3kNjbmS4u?=
- =?us-ascii?Q?JI6O4b9sWG6asG0y8BYGgPXJPOe2Z6iMPojkrc71Tf6DWxBtA4FoD6fw+5il?=
- =?us-ascii?Q?k1ovovI0ai9qnGIs4uoN9yLPG/B0F1rnyneKv+GWfOC2z6Y6JCPAxGFZ2kAq?=
- =?us-ascii?Q?9Po2RyacMQiOuetxEUQuQsYq619S0+z6uAqGkJ1AIkDtiLus+GMy/AeWMoj4?=
- =?us-ascii?Q?dvwz16xDLAt6f7zNKEiYrs1r4STCWOkMXeu+ZDWUxlF6OT4mm6cNEIayMCU8?=
- =?us-ascii?Q?YLuRdrFePvr2YRUhN+XxFpN7nbC5/0DEqEBLZidQ83LatcJLDA4uBzQVPSo4?=
- =?us-ascii?Q?A+SQBO8dsLhxQP8cFgq4YWE35CslJ1ykVMCWyxuCeiqF0pbtzFCEiZ9Se/oH?=
- =?us-ascii?Q?ZD59hti9BtMGtrsjJlkqsDlJm8YZLOI/6VUT1CN99bsB9P0rKcu/4JGH6edG?=
- =?us-ascii?Q?0S4kXAHRA4Ieiu0j39E2CBHys5rBehSxy/mDAVb4aFRTv5C3BVMe9I5tRvmC?=
- =?us-ascii?Q?KohEwPWt1wQKtiDIX0BWGCCCX5gampVlHK8rUxYXk+gBEanzvS5f8cbmBANp?=
- =?us-ascii?Q?fOASaf7/A2xIhj3dLLAZdYWO0cI7Qf/Ygu8JmgNGuqOENn5AHEjnDBmiu/g9?=
- =?us-ascii?Q?e98z+QBEErWf1ntPt9zI/gvvQLwvgq9/sqJ3CPGhrpaMhDZ8FyaePBDVNQG0?=
- =?us-ascii?Q?ewZcFvbTvrAmfJdKFAVRMq2ygpgkhmM/wLa44zbFSydfQfw+PM/DOtWTTL2W?=
- =?us-ascii?Q?LgQ1NKm3tXfJ12VDF9H3hr+tO5mdEU6/QQBkDM0wqsq0odmNnNQHgdbu6xvv?=
- =?us-ascii?Q?9JVMy3gaw0quze6f9d5lyKWqokdzcOf85lNKl/M0hX2ne36DwW+YVhlAyOlB?=
- =?us-ascii?Q?C5SPGOd8i0lwYn8R7gPQg2Zr2bGvdoZkIm9SdQp+WHvbTTRcClney7xn1P85?=
- =?us-ascii?Q?HNfdFJW9iCxM7g4i02+ny4a3NaiTAnwmVOj5bEymiVP4zbS/migrvWF8IXCi?=
- =?us-ascii?Q?w3Kmba5z/wpCyY76zJwrv5gS0EqjAMFiYo6h40+AXQyAds0l9xbsrSXJHeDy?=
- =?us-ascii?Q?yrOB6EnMnmPVPUYlOWEA6L+dFAqxTsY+CUaMzASKDj11MQYJNCvUvUNmVmFb?=
- =?us-ascii?Q?DQMaTa61eAklSTlwNgnoY+d322BxQkqBa2TcL62kpneX/6pG4e09dz+4K79B?=
- =?us-ascii?Q?vlw2LXmY0zBatxc+1pqveWcda6DCBT6E6mkBOwCmPjV7k2oBFQSWZoSDqVuq?=
- =?us-ascii?Q?ZRMPyz/PGg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: jdMVuvy0aKkCoaOP+v7sLWYIEjxO7ZhymcXs4klMxCAkgfMAv2HaOwUY+EPxsw5rJuD2IukwK2lrE65KTeLje2DMic1+5lQkBEViXuAml1JLtbl2sx3VJwZVHFEkYbdZD64gahx/akT1hnPjX6UvIgt4ZeVvXJlziajLoMsrY1gZKVKCQQCLm2k4KUgbUyDWvBBvik1s7Qnh4xzOhMeYvLCg1OdPE5HEkiZuP/X0ve5eLz07mdxXgkgswiIAMnHpHQqkWwGJjTrJxLEjIvTJ0ORKc1kfOM7MFqGqe++1PTtbmo9YdvX06dCOBryKk8a0qmP4MQEMulOLSOmJoQE59A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: e631028a-a068-49db-8cfe-08dee71ddf12
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR11MB4450.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 11:47:41.8379
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hFiGHVLdSEHs4X7Q9Zsx4aPZsH9LC6uAUjnwjcEAf/FBkYVZHmKVrjRjZI6AdcuPa5AG9pHkA5ggaiCl60NuEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7832
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:haiwei.tech:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NU1WQlQcW6dRJYxTTHGKZf+WGTLga1Es9GITG2SkkbjAr/a9F3XSzSGY
+	BlIoILboLIoBK1ndhh3Ea1Y5xfQXUcNsuQy6XQvWdBceZl6pRRRz020jYsDyepFEak3vHdu
+	K3ne9iRMRtdYEDi2zvRFuFmyIePydK+zPuOZ+D8V/MdlGnT0CcGVbtyw8yRUVacDJLdcN3x
+	7xadjVRKOMjd+PX5+Fx+0orK9PFSvScFH1GDAPwfUXBe75N/CGJxsTIDQp20fX+IeI8MkSQ
+	gQZsFf3BOWO+z5KdxnqxhW7H2Bg2TQREnx1QkVrt5k8LdurpwVxPdofC4SdnDLudkdzgPcy
+	j+XB3+PmR5X19BXloxDck4swc1f9J7l3vJQpR0MnEXDK22YEqivfzjB5xMwWkExwTezxk1N
+	9IViXG8kYEyibsg1wzJ/vz1cFstEOQPL1TMhRtvNa9M3c7OkhkPygeUlIceHAegwy5P/vFy
+	arI8RsmSXXsCT1BSWjfNVbX6l+uAPnwMOimKE4wy2/oE7HZZSBO4VJjv27njVYHVMcUowrw
+	6YltTD/WcACtCaLfgID2hPk+1oMvJM5Z3ZKShYGPVdXtmXS061QYJHkYKxmatgpC+q8Grjh
+	b6OjQemARTN8C4HCx7t7Ox/LlTWm0hcSQCDjDU3ni9xGZjbL0ZSNhpNfaMJGy84C1R30w9Z
+	bz9XTeu2yaJ7lDlVL6finqZNjuG1cLew4Lavr6otdk5wxId7S4RkG0SxmS86AiOcRTvQX7g
+	2UrXD7fqtNoTBomuUhr/u/9Rc+fZPas7Qk//KVjOKmQxY4zcHbLjsA9MGFTlAtlNc6ewN8K
+	S1uxuMGnW+ZJSqp0HiGGiGzgplBs5GfB2dFtrZjIQ8kOq7zI9v+MMcdPdDll/SFkUS6pqu4
+	Wb39DvBDdgolknX2sd7r5B5wvwCmi9L1k81IMPhkx2O/d05pTSUqi2uktL6KEiJwIFpBAw6
+	qMGUCBTxbDTfXQJ9LYHeRVOC8vHxKzflJNfCREq7EszxUALrnrmufXXh3sImJVJP9b4gkSp
+	s8H6GLHn12RAE0Ks5mNMpgvKFT2KWvm2vU23745SQpo4Y4cU8O6UiloUg4tHX9C4HL0r5S4
+	pPcn9RFw6J+dQRCGwSxgV8=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
 
-On Mon, Jul 20, 2026 at 04:16:39PM -0700, Jim Mattson wrote:
->Due to a widespread Intel erratum (e.g. EMR158), programming the
->VMX-preemption timer with certain large values may cause the timer to
->expire earlier than expected.  The recommended workaround is to cap the
->VMX-preemption timer value to strictly less than 2^25 * CPUID.15H:EBX[31:0]
->/ CPUID.15H:EAX[31:0].
->
->Calculate preemption_timer_limit during hardware setup based on CPUID 15H
->when available, and return -ERANGE in vmx_set_hv_timer() if the shifted
->delta_tsc reaches or exceeds preemption_timer_limit.
->
->Reported-by: Sean Christopherson <seanjc@google.com>
->Closes: https://lore.kernel.org/all/Zn9X0yFxZi_Mrlnt@google.com/
->Suggested-by: Chao Gao <chao.gao@intel.com>
->Assisted-by: Gemini:Gemini-Next
->Signed-off-by: Jim Mattson <jmattson@google.com>
->---
->v2:
-> - Use div_u64() instead of 64-bit division '/' operator to fix link-time
->   error (__udivdi3) on 32-bit x86 builds. [Sashiko]
->
->v1: https://lore.kernel.org/all/20260720205230.1457146-1-jmattson@google.com/
->
-> arch/x86/kvm/vmx/vmx.c | 29 ++++++++++++++++++++++++++---
-> 1 file changed, 26 insertions(+), 3 deletions(-)
->
->diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
->index cc75feec05da..e43ed863d5f9 100644
->--- a/arch/x86/kvm/vmx/vmx.c
->+++ b/arch/x86/kvm/vmx/vmx.c
->@@ -151,6 +151,7 @@ module_param(dump_invalid_vmcs, bool, 0644);
-> /* Guest_tsc -> host_tsc conversion requires 64-bit division.  */
-> static int __read_mostly cpu_preemption_timer_multi;
-> static bool __read_mostly enable_preemption_timer = 1;
->+static u64 __read_mostly preemption_timer_limit = 1ULL << 32;
+From: jinrui <jinrui@haiwei.tech>
 
-This is set once at init, so __ro_after_init may be better and no need
-to initialize it at declaration.
+When the cross-compiler defaults to an -march that includes the V
+(vector) extension, -O2 auto-vectorization generates vector
+instructions (e.g. vsetvli, vadd.vv) in Guest binary code. If the
+Guest executes a vector instruction while sstatus.VS is Off, an
+EXC_INST_ILLEGAL (scause=2) is raised. KVM's hedeleg delegates this
+exception to the Guest, but the selftest has no way to handle it as a
+bare-metal program, causing all Guest tests to fail.
 
-The rest looks good,
+In contrast, a real OS kernel handles this via riscv_v_first_use_handler(),
+which detects the vector instruction, sets sstatus.VS to Initial, and
+srets to re-execute.
 
-Reviewed-by: Chao Gao <chao.gao@intel.com>
+Fix this with four changes in processor.c:
 
+1. Delete the now-unused guest_unexp_trap() handler, which is replaced
+   by the full exception vector table.
 
-btw, KVM is using 0xffffffff as preemption timer's max value in a few
-places (the use_timer_freq sanity check in vmx_hardware_setup() and the
-soft-disable path in vmx_update_hv_timer()). I am not sure if those should
-use preemption_timer_limit - 1.
+2. In vm_arch_vcpu_add(), notify KVM that the Guest is allowed to use
+   the V extension via __vcpu_set_reg(V, 1) (best-effort, silently
+   ignores errors on hardware without V). Also replace the raw stvec
+   handler with the full exception vector table, which provides
+   save_context/restore_context for safe lazy enablement.
+
+3. In route_exception(), add a lazy V enablement check that runs
+   before any test-registered handler. When the cause is a non-IRQ
+   EXC_INST_ILLEGAL and sstatus.VS is Off, set VS to Initial and
+   return so the faulting instruction is re-executed via sret.
+
+4. Make vm_init_vector_tables() idempotent by checking vm->handlers
+   before allocation, so tests that manually call it (ebreak_test,
+   arch_timer, sbi_pmu_test) do not leak memory.
+
+The check runs before test-registered EXC_INST_ILLEGAL handlers
+(e.g. sbi_pmu_test) to ensure V enablement takes priority.
+
+Tested on a riscv64 host with KVM enabled: all 12 KVM selftest
+binaries pass.
+
+Signed-off-by: jinrui <jinrui@haiwei.tech>
+---
+Changes in v4:
+- Add vcpu_dump() call in assert_on_unhandled_exception() to restore
+  the register dump that was lost when guest_unexp_trap() was removed.
+Changes in v3:
+- Move v_available from a host-side static variable into struct
+  handlers (Guest memory), fixing synchronization issue between
+  host (writer) and Guest (reader).
+Changes in v2:
+- Add a v_available flag to prevent infinite exception loops on
+  hosts without the V extension.
+- Use regs->status instead of reading the live sstatus CSR.
+
+ .../selftests/kvm/lib/riscv/processor.c       | 69 ++++++++++++++++---
+ 1 file changed, 59 insertions(+), 10 deletions(-)
+
+diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+index ded5429f3448..bf0675cc86d6 100644
+--- a/tools/testing/selftests/kvm/lib/riscv/processor.c
++++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+@@ -297,14 +297,6 @@ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+ 		" T3: 0x%016lx   T4: 0x%016lx T5: 0x%016lx T6: 0x%016lx\n",
+ 		core.regs.t3, core.regs.t4, core.regs.t5, core.regs.t6);
+ }
+-
+-static void __aligned(16) guest_unexp_trap(void)
+-{
+-	sbi_ecall(KVM_RISCV_SELFTESTS_SBI_EXT,
+-		  KVM_RISCV_SELFTESTS_SBI_UNEXP,
+-		  0, 0, 0, 0, 0, 0);
+-}
+-
+ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
+ {
+ 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.pc), (unsigned long)guest_code);
+@@ -348,8 +340,33 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	/* Setup sscratch for guest_get_vcpuid() */
+ 	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(sscratch), vcpu_id);
+ 
+-	/* Setup default exception vector of guest */
+-	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(stvec), (unsigned long)guest_unexp_trap);
++	/*
++	 * Enable the V (vector) extension in KVM so that the compiler can
++	 * safely generate vector instructions (e.g. via -O2 auto-
++	 * vectorization). Silently ignore errors; the test will still work
++	 * without V.
++	 */
++	__vcpu_set_reg(vcpu, RISCV_ISA_EXT_REG(KVM_RISCV_ISA_EXT_V), 1);
++
++	/*
++	 * Use the full exception vector table (which provides lazy V
++	 * extension enablement for EXC_INST_ILLEGAL in route_exception)
++	 * as the default exception handler. vm_init_vector_tables() is
++	 * idempotent; tests that call it again will get a no-op.
++	 */
++	vm_init_vector_tables(vm);
++	vcpu_init_vector_tables(vcpu);
++
++	/*
++	 * Record V extension availability in the handlers struct so that
++	 * route_exception() (called from Guest context) can check it
++	 * without relying on a host-side global variable.
++	 */
++	{
++		struct handlers *h = addr_gva2hva(vm, vm->handlers);
++
++		h->v_available = __vcpu_has_isa_ext(vcpu, KVM_RISCV_ISA_EXT_V);
++	}
+ 
+ 	return vcpu;
+ }
+@@ -408,6 +425,7 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+ 	struct ucall uc;
+ 
+ 	if (get_ucall(vcpu, &uc) == UCALL_UNHANDLED) {
++		vcpu_dump(stderr, vcpu, 2);
+ 		TEST_FAIL("Unexpected exception (vector:0x%lx, ec:0x%lx)",
+ 			uc.args[0], uc.args[1]);
+ 	}
+@@ -415,6 +433,7 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+ 
+ struct handlers {
+ 	exception_handler_fn exception_handlers[NR_VECTORS][NR_EXCEPTIONS];
++	bool v_available;
+ };
+ 
+ void route_exception(struct pt_regs *regs)
+@@ -432,6 +451,33 @@ void route_exception(struct pt_regs *regs)
+ 		ec = 0;
+ 	}
+ 
++	/*
++	 * Handle V (vector) extension lazy enablement before any
++	 * registered handler. The compiler's default march may include
++	 * V, and auto-vectorization generates vector instructions that
++	 * trigger EXC_INST_ILLEGAL when VS (Vector Status) in sstatus
++	 * is Off. Enable VS to Initial and re-execute the faulting
++	 * instruction, mimicking what a real OS kernel does.
++	 *
++	 * This check runs before any test-registered handler, so tests
++	 * that install their own EXC_INST_ILLEGAL handler (e.g.
++	 * sbi_pmu_test) are not affected.
++	 */
++	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec == EXC_INST_ILLEGAL) {
++		/*
++		 * If KVM supports the V extension for this Guest and VS
++		 * (Vector Status) is Off in the saved sstatus, set it to
++		 * Initial and sret to re-execute the faulting instruction.
++		 * Use regs->status (saved at exception entry) rather than
++		 * reading the live CSR to avoid a TOCTOU race with nested
++		 * exceptions.
++		 */
++		if (handlers && handlers->v_available && !(regs->status & SR_VS)) {
++			regs->status |= SR_VS_INITIAL;
++			return;
++		}
++	}
++
+ 	if (handlers && handlers->exception_handlers[vector][ec])
+ 		return handlers->exception_handlers[vector][ec](regs);
+ 
+@@ -448,6 +494,9 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
+ 
+ void vm_init_vector_tables(struct kvm_vm *vm)
+ {
++	if (vm->handlers)
++		return;
++
+ 	vm->handlers = __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
+ 				  MEM_REGION_DATA);
+ 
+-- 
+2.43.0
+
