@@ -1,127 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5F846D549;
-	Tue, 21 Jul 2026 19:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB93132B132;
+	Tue, 21 Jul 2026 19:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784661469; cv=none; b=A4MJB//wAPC+1LQLejFfloY4hPNE7lsPoLvGPI0qxZPaAaTNUh3vsvTJPh8eqD31ah9hi+twNo64z87uVyJU4XbJH6NKAjsC5yQ3/V8P5xH+SPurFLVf42T07adjp7UMhIseTuoAozqEQ2ERLCYKYESs5E29A/vSmb2Pf57M+F8=
+	t=1784661993; cv=none; b=pkKEmGljDi5KNwsA/pa8qtOg2Npvj3A79rgDIKFpm/hEsIE+IWNVZkOfBEuEhdUKyvkqf8yYEPwTb/HIO6IVjkBPcsirLa9SfP17B4iWVXLsHEV1jTrKA+7f8WosvHjka8XBxSxoIFyZExjq261N9b42kcFz8FWEI8LvlX4ESGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784661469; c=relaxed/simple;
-	bh=o6NrqLq7PoomPolv0kARA4TXXjyHAmiShaureHTdrzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WGjike1DxW5g/ZGmCuCJC7GYbTkcFErfsaUlp+JyAUvtMC/i7PGicYqNge2RQlJqH5rQPKZi3TlunU564JIjjnk1XM0qVreAm9ON9egmDE2abbnA/TDu2nYgGIcZKnS+KGPp36lwuGjKgs2QEXYrnCf3QgN2MqMf0lPS//UpEI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L38n6ipE; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784661993; c=relaxed/simple;
+	bh=rWVhiBZsXUMiVFCFwywlXIzDB3vvPdHqa/ujVJ5MOgE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=orkYqDqH0/1Wsv8W3CkeyYcZDydRnG0Al4pjt8xTpUQzoJssiFSjiHISLv4fk23TKucE63jh5E+jhhwEkdLv2Fox7VfFCxTCn/MrgmIDC4XPpbhhiDALOvKY3PoQxKvzwRoCr3FKZc09sh3IoXq4nLWX9ffS8MVSjQO18ykJqJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1HrD+wd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L38n6ipE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784661468; x=1816197468;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=o6NrqLq7PoomPolv0kARA4TXXjyHAmiShaureHTdrzg=;
-  b=L38n6ipEoIRmnKiWt1QtN8kOjvaeWNvTGMfTD9dA8zEzGg1VAHPePO2L
-   m1RpgsdCmjSU81WErhUgP3dEftMg8kLeZpdFCjfsA2PYYxeeHh34sqri1
-   J0KzKPhEe1FK91Qp+rxIKNJ+Cv2SskQPqm6BO2tDSvWkoXFWIvOctuNdx
-   Rjmq1wK3fpaIKEZlVg4BLJvPsspu1BhYNb0EH5jR1kgz126CJoHfnGHMh
-   6tbAs9DpiqCjJdyXhE4tUS+F8GbTOkKCD60RJu5fBz6gp7p1WaOEYpc3I
-   RZ0GLqxtKTD4SyWdiFcAZD5PSNJfsQZtBa2P3EFzy26NIM0wb352eD/80
-   g==;
-X-CSE-ConnectionGUID: RQjsVcOfT5O1Q/Jsii6XTQ==
-X-CSE-MsgGUID: 8xaKOyGlRze76wVXR0OcxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="96791946"
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="96791946"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 12:17:47 -0700
-X-CSE-ConnectionGUID: iXQRnmF5RpOWlpnzSRiR1A==
-X-CSE-MsgGUID: mLseEXcVTR2/f0t0FVa5Kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="253946587"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 12:17:46 -0700
-Message-ID: <7fc29642-fba2-4752-9095-10c89cacb8d2@intel.com>
-Date: Tue, 21 Jul 2026 14:17:45 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1HrD+wd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E42F1F00A3A;
+	Tue, 21 Jul 2026 19:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784661991;
+	bh=x31rVBLuvsqZjkZXHvqDa5kI4uJVt9e3roo3ryzBeZQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=V1HrD+wdOYB1ZTZiCfvbYV3TEqcGDGnkJHgAJCGZO2zBm8ZfzdivF6jXViYcVWwkg
+	 Af3XZu6kzsUgEVgEGz1rgDioTlKT3rV3QcmXbXlCN9K5kjHgPH9EwcwM2roUPYdCRB
+	 P+ZZ1hon/Z9HXZhpcqFSAU4/3nhUgoq41facMmsoss/F8sjgL3RRmGe0o9hzWOMn6o
+	 dMNmhyvMEdv9HUIGOdQN2ryX/ord6xwgXlho3ayPKUDw410Okvf27p7YjrbIDRYPHl
+	 EPO/g6ZmUZtAPkOEt9h7Kjh+bcyx/p8RkboN+4wSlnw/xSPGZ022Bl8KHzI0/szXEA
+	 l9tThft64jNog==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
+ for folios dirtied behind btrfs' back
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, dsterba@suse.cz, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260721191152.101118-2-borntraeger@linux.ibm.com>
+References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
+ <20260721191152.101118-2-borntraeger@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 21 Jul 2026 19:26:31 +0000
+Message-Id: <20260721192631.6E42F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 8/8] KVM: selftests: Add PERF_METRICS and fixed counter
- 3 tests
-To: Jim Mattson <jmattson@google.com>, "Mi, Dapeng"
- <dapeng1.mi@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260629231938.15129-1-zide.chen@intel.com>
- <20260629231938.15129-9-zide.chen@intel.com>
- <32a1e1d2-c437-4cd1-8455-43fa9082cb50@linux.intel.com>
- <CALMp9eQR4rFTSDMrOSHsLXsKvTdm9BbhorMEK329RqRk5Rr7Og@mail.gmail.com>
- <5760cb18-739c-4907-b582-60933d11a72d@linux.intel.com>
- <CALMp9eTs1A73DUDQwO_mHDQF8UfJQG2B_GgJczdu2uxdazG+KQ@mail.gmail.com>
- <212b058b-5804-4a00-a95a-67f58546fd9a@linux.intel.com>
- <CALMp9eQGTde_nbCtHN5E4GiuBKrcKC+Sq_6O_JoyHZCaf+S=rw@mail.gmail.com>
- <dc8adc2b-ca9f-4ac6-9f15-e9e954e90b15@linux.intel.com>
- <CALMp9eR0yXVPqOUZzoBSmGTpONojSALS7X-Rrq8QkaivnNgt8w@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eR0yXVPqOUZzoBSmGTpONojSALS7X-Rrq8QkaivnNgt8w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
+> A folio can carry the folio-level dirty flag while its btrfs subpage
+> dirty bitmap is empty: btrfs data mappings use filemap_dirty_folio(),
+> so a generic folio_mark_dirty() call sets only the folio flag and the
+> xarray tag, without setting any subpage dirty bit and without a
+> delalloc reservation.  The typical source is set_page_dirty_lock() on
+> a GUP pin, e.g. the s390 KVM irq adapter path
+> (adapter_indicators_set()) which pins guest indicator pages living in
+> a file-backed guest RAM file, sets a bit and marks the page dirty.
+>=20
+> When writeback then picks up such a folio, writepage_delalloc()
+> copies the empty subpage dirty bitmap into
+> bio_ctrl->submit_bitmap, sets up no range locks (nr_locked stays 0),
+> finds no delalloc range, and finally hits
+>=20
+> 	if (bitmap_empty(bio_ctrl->submit_bitmap, blocks_per_folio)) {
+> [ ... ]
+> filesystem was not informed about.
+>=20
+> Fixes: bd610c0937aa ("btrfs: only unlock the to-be-submitted ranges insid=
+e a folio")
+> Assisted-by: Claude
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-On 7/14/2026 12:06 PM, Jim Mattson wrote:
-> On Mon, Jul 13, 2026 at 10:28 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>
->>
->> On 7/14/2026 1:11 PM, Jim Mattson wrote:
->>> On Mon, Jul 13, 2026 at 12:12 AM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>>
->>>> rdpmc is the preferable way to read PMU counters since the better
->>>> performance than rdmsr, and most of current code regardless of kernel or
->>>> user-space already use rdpmc to read PMC counters. If we set the rdpmc to
->>>> interception by default, then it may cause extra performance hit.
->>>>
->>>> Currently I didn't hear there is any plan to extend the rdpmc to support
->>>> more types for Intel platforms ...
->>> Is Intel willing to commit to that?
->>
->> I'm afraid not. :(
-> 
-> Then, KVM must always intercept RDPMC.
-> 
->> rdpmc is still possible to be extended to support more types in the future,
->> but recently we don't see such requirements.
-> 
-> That's no comfort.
-> 
-> An alternative would be for Intel to provide a way for KVM to query
-> which types of PMC are supported in ECX[31:16], before or concurrently
-> with any microarchitecture that supports more types than CPUs support
-> today.
-
-While I can't speak for future Intel architectures, we're not aware of
-any plans to extend RDPMC with additional resource types in the
-foreseeable future.
-
-Regarding the proposed enumeration mechanism, I'm not sure it changes
-the fundamental situation. Even if a future architecture provides an
-enumeration mechanism for new RDPMC resource types, RDPMC passthrough on
-an older KVM could still exist until KVM gains support for the new
-resource types.
-
-Given that, I'm not sure the possibility of a future RDPMC extension by
-itself is sufficient justification for intercepting RDPMC
-unconditionally today. RDPMC is the standard low-overhead interface for
-reading PMU data, and forcing every RDPMC through a VM-Exit would impose
-a significant performance penalty.
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260721191152.1011=
+18-2-borntraeger@linux.ibm.com?part=3D1
 
