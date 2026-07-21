@@ -1,36 +1,85 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB40D2D0C97
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 08:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC9A3C1099
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 08:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784623232; cv=none; b=p+O+zWiyKvDF6kSqpzo4uZU0KF3HHtEijt6aj02PrahAMBQzo5BcqvYxLIVDGMEjl7ZQBx+kjdCuXd4vLMpT8g/kXP4MxPZyLsLOpP+sePNvwvcfdTBTVM0xkSxYohlixCZXrUf7pynq9KwcyhcVjVl/X7atmc3D0enCMfK+iF8=
+	t=1784624052; cv=none; b=oJnEgml2smeLxCEeTjoOflm/PQ5gir4eaY6JBOw5sUqYAlKQcFI2nRLMNcTXTLhh2E34LGqf22k3F/WUmtNcKrakbuFaSpxSpapYcqGeOoYxIBG4maVrv6RAL386fPwFKjpHIs855v5UzWLzuKGWyB68Ircbi/wJwwpXp1kHcpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784623232; c=relaxed/simple;
-	bh=6Tj834dZmAxzKUo0CdkNNi8Rz6FFYxLSEcBJzDRv/0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mD88DoY6jU0Y63+kypJ6sG/R2zUInM9lzRUzjwmiU7hd0Qtnmme3RN9v+jBEfX+9HdMyU8/IfRc7+3iLvinVcIlVXdxiY8CMmorP2gWV4Itu96JCPVkZSajswXOummMY9vpbuYVXnmNj7HrerDhsO/b+9cQVsN/CHGq9uqKdZKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=oRQtvNwB; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784624052; c=relaxed/simple;
+	bh=nIH4MQBe9M8OOY9iX/bLHALNOYWH4Ir+n49HIaM77Dk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qpXo5C1ZzG82chqC42nKL5lJn3m/v1WpmANASzqj/qMvPRJTnB4DXOPMnxFVy4rsB+T6y3v9UCFHbZG8iJLwMxGVJR6CvMxQuLqGlTthLGKDR5PRtufUzefVJ+/u6mE5dZnhYWwCJywt44D2WFTSWWwC9gGEwTgpuLG1H10ssNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E5z2DsUM; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="oRQtvNwB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=26GRvKE5WuLLUiNuEuWJiqzX+/qZrRuWelBWUSW0UJQ=;
-	b=oRQtvNwB11ogeOoqPXVNV5oFugERn5HjktwOyvF/DnJAUE0rGThCJ3v7ofyOYk
-	0IiRpwI7lwLfFvpNw1V4EtWgyrqOP+4MxY1vutL6jhfBAyApv1iA31+VQ6FwzVJq
-	TG9pxq1mykgzPeY9VeDkuunoCvDq/m/euEnsTmROETwhU=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD31YZmMF9qRz8YJg--.0S2;
-	Tue, 21 Jul 2026 16:40:10 +0800 (CST)
-Date: Tue, 21 Jul 2026 16:40:05 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Subject: [PATCH v3] KVM: x86: Mark nested RSM-created VM-Enter as untrusted
-Message-ID: <al8wZQwqC9IhlBZc@192.168.1.215>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E5z2DsUM"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ce98cb8165so49300815ad.1
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 01:54:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784624046; x=1785228846; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4OeYd0Gbibz5fAUsd+Mr4BvJ/WpM3GNs0QGDm7c5YpE=;
+        b=E5z2DsUMhTgDkIzOXeLdmUQng3tQAuUQQF9dO22ufDBQNn4M6+VkUiqWxwFo/4A1oF
+         TL8r11S4U3Cdg4hJoOQ0GOfA3Yo8M3Slvqs5ICevPNgvYBj+KvekSDT06D8l0tIhypD/
+         fsZP49OcYzX44W9iYiPOeteEt6K0nb8Jlg2d5Ho1Bo4Vg94VfGVqZe18Um85p4HaroEg
+         zzeeKfDOM2lCKiYMucWEp0FO2/RICF5CyoNu7D8CERmCjzB1+DDhBfKwAzsoWCZHCfkL
+         1EqNXCo8ruWOVf5TvyPwosuBjxHxEz8O+sqdLhV7EciOb1/UbfAYMiS2u3s8uIqsUF5z
+         vxlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784624046; x=1785228846;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4OeYd0Gbibz5fAUsd+Mr4BvJ/WpM3GNs0QGDm7c5YpE=;
+        b=RIE56VCvnYft048fADBBsSLoQ0u6uYLPXQELMxWo7a1zbpMpJwsb3hv4YDKK0q6K5C
+         Nd/yn94ee8sJW/GloYHEu5YUx+kCTHS2WsfvxGZJwYn46WV33Eo/sGlEtBcoDfkZkQVi
+         ahABStXn/rPrNjJUcyYkWiiiCskOB5Sj47utV39BIcZ/QgEHuvmGRURX44UrUqN/0xRF
+         UpZb6rTkzXZ9WlE9QDYqgE6uniQYznbzkJeNVbPzJiRkUY1UjF3TKH7QsYc7xccSleUZ
+         kkluvq0y1/6fxe19xVTz3i7sEw4nZ94951r0lozNBjlnFgdkG18JXsYXZ6v/hNQA14AG
+         6MMg==
+X-Forwarded-Encrypted: i=1; AHgh+RrxVK8OuFBRfVDdeWynq64237bAGad2JTdLM9wiIQ3CqAiXslRSaXbAqEaSh0sSnh4ULFY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWDj8r6oOKqkugddWRRHWsPt3ZgPejzKbomR76Yic9djA55E+X
+	LBXB25KB3qo95+gCfLnzJJRvyVeQgMmmSYiXVD307T/hewQORXMMGQLe
+X-Gm-Gg: AR+sD11FYqmKGlgEz+y5c+rSBZIYZZMplX6EDHy+4S0+N9FzVxQzICjAuAZy/+oCDU9
+	bhPvjnR2RE5VXlSC7H6KaSDwRTXBy5YIaBdKdO2f6N1HYhnts9PcxS6olXD5jCCV6JRydNxuk3v
+	HGxtPRahg8BONPBUbMkrMel4QdWLqo9Mx0Cwl77V21QFhUpJvDdCd5Bhr8sPk/xheyFcJ2tXbMx
+	ZZhkXX+m7EsiiABzJanSXn/8Xf5GxBk5XqWYOKMCn4I5WA9dB4mMdbyDjAS5j9jAmtqLj6zE1mS
+	V0wew1+NJcwKqDpRwBschskbdvCE8qfEXgO9xXfmakwcLQZzXCm6xE/YUIt0cLPyaIalFCu9BdH
+	9um4AgkHLsIDz4SauErfZCk2dJJfgo7agpBK9XFtQQmGtOCXIEnTHe0X0GCuDJzjX
+X-Received: by 2002:a17:903:1249:b0:2c9:d277:2cdb with SMTP id d9443c01a7336-2cf3489529cmr174162115ad.9.1784624045533;
+        Tue, 21 Jul 2026 01:54:05 -0700 (PDT)
+Received: from localhost ([2001:da8:7001:11::cb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3476f70esm70963755ad.77.2026.07.21.01.54.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 01:54:05 -0700 (PDT)
+Date: Tue, 21 Jul 2026 16:53:08 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Leonardo Bras <leo.bras@arm.com>, Tian Zheng <zhengtian10@huawei.com>
+Cc: maz@kernel.org, oupton@kernel.org, catalin.marinas@arm.com, 
+	will@kernel.org, yuzenghui@huawei.com, wangzhou1@hisilicon.com, 
+	yangjinqian1@huawei.com, caijian11@h-partners.com, liuyonglong@huawei.com, 
+	yezhenyu2@huawei.com, yubihong@huawei.com, linuxarm@huawei.com, joey.gouly@arm.com, 
+	kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, seiden@linux.ibm.com, suzuki.poulose@arm.com, 
+	Inochi Amaoto <inochiama@gmail.com>
+Subject: Re: [PATCH v4 5/6] KVM: arm64: Add HDBSS fault handling and buffer
+ flush
+Message-ID: <al8xreH4_RoL5P83@inochi.infowork>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-6-zhengtian10@huawei.com>
+ <alTw0nwiBDWoFrjB@LeoBrasDK>
+ <9340fa94-6f26-4053-a4ca-0803af725936@huawei.com>
+ <alYUXkub43YxkeH1@LeoBrasDK>
+ <fa0839f9-7d83-4ad1-80e2-7e7dd0280222@huawei.com>
+ <alZFVPkS3lgGdruc@LeoBrasDK>
+ <3fb4b33e-4618-4523-b140-955e15fd9a8c@huawei.com>
+ <alpN16Q3MgVHJzsN@LeoBrasDK>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,125 +88,359 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-CM-TRANSID:_____wD31YZmMF9qRz8YJg--.0S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3XryfKw4rCw4DGFy8GrW8Crg_yoW7GFy3pa
-	9ayr4q9w4UGr9rJr97GF48Xry29rn5XF1jyrWkCa4rX3Wjgas7tr1xK3yqvay5CrWfu34S
-	vF1Uur4j9w1rJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jrqXQUUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC3QqYi2pfMGo5lgAA3E
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpN16Q3MgVHJzsN@LeoBrasDK>
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
+On Fri, Jul 17, 2026 at 04:44:24PM +0100, Leonardo Bras wrote:
+> On Fri, Jul 17, 2026 at 02:51:12PM +0800, Tian Zheng wrote:
+> > 
+> > On 7/14/2026 10:19 PM, Leonardo Bras wrote:
+> > > On Tue, Jul 14, 2026 at 09:27:15PM +0800, Tian Zheng wrote:
+> > > > On 7/14/2026 6:50 PM, Leonardo Bras wrote:
+> > > > > On Tue, Jul 14, 2026 at 03:38:39PM +0800, Tian Zheng wrote:
+> > > > > > On 7/13/2026 10:06 PM, Leonardo Bras wrote:
+> > > > > > > On Thu, Jul 09, 2026 at 06:40:25PM +0800, Tian Zheng wrote:
+> > > > > > > > From: eillon <yezhenyu2@huawei.com>
+> > > > > > > > 
+> > > > > > > > Add HDBSS fault handling for buffer full, external abort, and general
+> > > > > > > > protection fault (GPF) events. When the HDBSS buffer becomes full,
+> > > > > > > > the hardware traps to EL2 with an HDBSSF event, which is handled by
+> > > > > > > > setting a flush request.
+> > > > > > > > 
+> > > > > > > > Add kvm_flush_hdbss_buffer() to consume HDBSS buffer entries and
+> > > > > > > > propagate dirty information into the userspace-visible dirty bitmap.
+> > > > > > > > Flush is triggered on vcpu_put, check_vcpu_requests, and
+> > > > > > > > sync_dirty_log.
+> > > > > > > > 
+> > > > > > > > Add esr_iss2_is_hdbssf() helper for HDBSS fault detection in guest
+> > > > > > > > abort handling.
+> > > > > > > > 
+> > > > > > > > Signed-off-by: Eillon <yezhenyu2@huawei.com>
+> > > > > > > > Signed-off-by: Tian Zheng <zhengtian10@huawei.com>
+> > > > > > > > ---
+> > > > > > > >     arch/arm64/include/asm/esr.h           |  5 +++
+> > > > > > > >     arch/arm64/include/asm/kvm_dirty_bit.h | 11 +++++
+> > > > > > > >     arch/arm64/include/asm/kvm_host.h      |  1 +
+> > > > > > > >     arch/arm64/kvm/arm.c                   | 14 ++++++
+> > > > > > > >     arch/arm64/kvm/dirty_bit.c             | 62 ++++++++++++++++++++++++++
+> > > > > > > >     arch/arm64/kvm/mmu.c                   |  4 ++
+> > > > > > > >     6 files changed, 97 insertions(+)
+> > > > > > > > 
+> > > > > > > > diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+> > > > > > > > index 81c17320a588..2e6b679b5908 100644
+> > > > > > > > --- a/arch/arm64/include/asm/esr.h
+> > > > > > > > +++ b/arch/arm64/include/asm/esr.h
+> > > > > > > > @@ -437,6 +437,11 @@
+> > > > > > > >     #ifndef __ASSEMBLER__
+> > > > > > > >     #include <asm/types.h>
+> > > > > > > > 
+> > > > > > > > +static inline bool esr_iss2_is_hdbssf(unsigned long esr)
+> > > > > > > > +{
+> > > > > > > > +	return ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF;
+> > > > > > > This will return a long, which will be casted as bool.
+> > > > > > > In general, what I see in the kernel is something like:
+> > > > > > > 
+> > > > > > > 	return !!(ESR_ELx_ISS2(esr) & ESR_ELx_HDBSSF)
+> > > > > > ok!
+> > > > > > 
+> > > > > > 
+> > > > > > > > +}
+> > > > > > > > +
+> > > > > > > >     static inline unsigned long esr_brk_comment(unsigned long esr)
+> > > > > > > >     {
+> > > > > > > >     	return esr & ESR_ELx_BRK64_ISS_COMMENT_MASK;
+> > > > > > > > diff --git a/arch/arm64/include/asm/kvm_dirty_bit.h b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > > > > > index 84b12f0a10af..4b28000e972f 100644
+> > > > > > > > --- a/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > > > > > +++ b/arch/arm64/include/asm/kvm_dirty_bit.h
+> > > > > > > > @@ -10,7 +10,18 @@
+> > > > > > > >     #include <asm/kvm_pgtable.h>
+> > > > > > > >     #include <asm/sysreg.h>
+> > > > > > > > 
+> > > > > > > > +/* HDBSS entry field definitions */
+> > > > > > > > +#define HDBSS_ENTRY_VALID	BIT(0)
+> > > > > > > > +#define HDBSS_ENTRY_TTWL_SHIFT (1)
+> > > > > > > > +#define HDBSS_ENTRY_TTWL_MASK (GENMASK(3, 1))
+> > > > > > > > +#define HDBSS_ENTRY_TTWL(x) \
+> > > > > > > > +	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
+> > > > > > > > +#define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
+> > > > > > > > +#define HDBSS_ENTRY_IPA	GENMASK_ULL(55, 12)
+> > > > > > > > +
+> > > > > > > >     int kvm_arm_vcpu_alloc_hdbss(struct kvm_vcpu *vcpu, unsigned int order);
+> > > > > > > >     void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu);
+> > > > > > > > +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu);
+> > > > > > > > +int kvm_handle_hdbss_fault(struct kvm_vcpu *vcpu);
+> > > > > > > > 
+> > > > > > > >     #endif /* __ARM64_KVM_DIRTY_BIT_H__ */
+> > > > > > > > diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+> > > > > > > > index c41ec6d9c45a..cecfb884a64f 100644
+> > > > > > > > --- a/arch/arm64/include/asm/kvm_host.h
+> > > > > > > > +++ b/arch/arm64/include/asm/kvm_host.h
+> > > > > > > > @@ -55,6 +55,7 @@
+> > > > > > > >     #define KVM_REQ_GUEST_HYP_IRQ_PENDING	KVM_ARCH_REQ(9)
+> > > > > > > >     #define KVM_REQ_MAP_L1_VNCR_EL2		KVM_ARCH_REQ(10)
+> > > > > > > >     #define KVM_REQ_VGIC_PROCESS_UPDATE	KVM_ARCH_REQ(11)
+> > > > > > > > +#define KVM_REQ_FLUSH_HDBSS			KVM_ARCH_REQ(12)
+> > > > > > > > 
+> > > > > > > >     #define KVM_DIRTY_LOG_MANUAL_CAPS   (KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
+> > > > > > > >     				     KVM_DIRTY_LOG_INITIALLY_SET)
+> > > > > > > > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > > > > > > > index bf6688245d83..566953a4e23a 100644
+> > > > > > > > --- a/arch/arm64/kvm/arm.c
+> > > > > > > > +++ b/arch/arm64/kvm/arm.c
+> > > > > > > > @@ -755,6 +755,9 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+> > > > > > > >     		kvm_vcpu_put_hw_mmu(vcpu);
+> > > > > > > >     	kvm_arm_vmid_clear_active();
+> > > > > > > > 
+> > > > > > > > +	if (vcpu->kvm->arch.enable_hdbss)
+> > > > > > > > +		kvm_flush_hdbss_buffer(vcpu);
+> > > > > > > > +
+> > > > > > > >     	vcpu_clear_on_unsupported_cpu(vcpu);
+> > > > > > > >     	vcpu->cpu = -1;
+> > > > > > > >     }
+> > > > > > > > @@ -1157,6 +1160,9 @@ static int check_vcpu_requests(struct kvm_vcpu *vcpu)
+> > > > > > > >     		if (kvm_dirty_ring_check_request(vcpu))
+> > > > > > > >     			return 0;
+> > > > > > > > 
+> > > > > > > > +		if (kvm_check_request(KVM_REQ_FLUSH_HDBSS, vcpu))
+> > > > > > > > +			kvm_flush_hdbss_buffer(vcpu);
+> > > > > > > > +
+> > > > > > > >     		check_nested_vcpu_requests(vcpu);
+> > > > > > > >     	}
+> > > > > > > > 
+> > > > > > > > @@ -1971,7 +1977,15 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
+> > > > > > > > 
+> > > > > > > >     void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+> > > > > > > >     {
+> > > > > > > > +	/*
+> > > > > > > > +	 * Flush all CPUs' dirty log buffers to the dirty_bitmap.  Called
+> > > > > > > > +	 * before reporting dirty_bitmap to userspace. Send a request with
+> > > > > > > > +	 * KVM_REQUEST_WAIT to flush buffer synchronously.
+> > > > > > > > +	 */
+> > > > > > > > +	if (!kvm->arch.enable_hdbss)
+> > > > > > > > +		return;
+> > > > > > > > 
+> > > > > > > > +	kvm_make_all_cpus_request(kvm, KVM_REQ_FLUSH_HDBSS | KVM_REQUEST_WAIT);
+> > > > > > > >     }
+> > > > > > > > 
+> > > > > > > >     static int kvm_vm_ioctl_set_device_addr(struct kvm *kvm,
+> > > > > > > > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > > > > > > > index 6c7a6ef66b5a..002366337637 100644
+> > > > > > > > --- a/arch/arm64/kvm/dirty_bit.c
+> > > > > > > > +++ b/arch/arm64/kvm/dirty_bit.c
+> > > > > > > > @@ -50,3 +50,65 @@ void kvm_arm_vcpu_free_hdbss(struct kvm_vcpu *vcpu)
+> > > > > > > > 
+> > > > > > > >     	vcpu->arch.hdbss.hdbssbr_el2 = 0;
+> > > > > > > >     }
+> > > > > > > > +
+> > > > > > > > +void kvm_flush_hdbss_buffer(struct kvm_vcpu *vcpu)
+> > > > > > > > +{
+> > > > > > > > +	int idx, curr_idx;
+> > > > > > > > +	u64 *hdbss_buf;
+> > > > > > > > +	struct kvm *kvm = vcpu->kvm;
+> > > > > > > > +
+> > > > > > > > +	if (!kvm->arch.enable_hdbss)
+> > > > > > > > +		return;
+> > > > > > > > +
+> > > > > > > > +	curr_idx = HDBSSPROD_IDX(read_sysreg_s(SYS_HDBSSPROD_EL2));
+> > > > > > > > +
+> > > > > > > > +	/* Do nothing if HDBSS buffer is empty or br_el2 is NULL */
+> > > > > > > > +	if (curr_idx == 0 || vcpu->arch.hdbss.hdbssbr_el2 == 0)
+> > > > > > > > +		return;
+> > > > > > > > +
+> > > > > > > > +	hdbss_buf = page_address(phys_to_page(vcpu->arch.hdbss.base_phys));
+> > > > > > > > +	if (!hdbss_buf)
+> > > > > > > > +		return;
+> > > > > > > > +
+> > > > > > > > +	guard(write_lock_irqsave)(&vcpu->kvm->mmu_lock);
+> > > > > > > > +	for (idx = 0; idx < curr_idx; idx++) {
+> > > > > > > > +		u64 gpa;
+> > > > > > > > +
+> > > > > > > > +		gpa = hdbss_buf[idx];
+> > > > > > > > +		if (!(gpa & HDBSS_ENTRY_VALID))
+> > > > > > > > +			continue;
+> > > > > > > > +
+> > > > > > > > +		gpa &= HDBSS_ENTRY_IPA;
+> > > > > > > > +		kvm_vcpu_mark_page_dirty(vcpu, gpa >> PAGE_SHIFT);
+> > > > > > > You mention that it does not support dirty-ring, but above function will
+> > > > > > > mark the page as dirty in the dirty-ring :/
+> > > > > > > 
+> > > > > > In kvm_arm_enable_hdbss_global(), we explicitly check and reject HDBSS
+> > > > > > enablement if dirty-ring is active:
+> > > > > > 
+> > > > > > ```
+> > > > > > if (kvm->dirty_ring_size)
+> > > > > >       return 0;
+> > > > > > ```
+> > > > > > 
+> > > > > > So when kvm_flush_hdbss_buffer() runs (which requires enable_hdbss = true),
+> > > > > > we know for certain that
+> > > > > > 
+> > > > > > kvm->dirty_ring_size == 0. Therefore, kvm_vcpu_mark_page_dirty() will always
+> > > > > > take the dirty_bitmap path,
+> > > > > > 
+> > > > > > never the dirty-ring path.
+> > > > > > 
+> > > > > > That said, I'll add a comment in kvm_flush_hdbss_buffer() before dirty ring
+> > > > > > mode is supported, to make this explicit:
+> > > > > > 
+> > > > > > ```
+> > > > > > /*
+> > > > > >    * HDBSS is mutually exclusive with dirty-ring mode (see
+> > > > > >    * kvm_arm_enable_hdbss_global()), so kvm_vcpu_mark_page_dirty()
+> > > > > >    * will update the dirty_bitmap, not the dirty-ring.
+> > > > > >    */
+> > > > > > ```
+> > > > > > 
+> > > > > Got it :)
+> > > > > 
+> > > > > Out of curiosity: which issues have you found on supporting dirty-ring at
+> > > > > this point?
+> > > > > 
+> > > > > Thanks!
+> > > > > Leo
+> > > > 
+> > > > I haven't looked deeply into dirty-ring yet — my main concern is that if
+> > > > both the dirty
+> > > > 
+> > > > ring and HDBSS buffer fill up, the flush path might get blocked or
+> > > > complicated.
+> > > > 
+> > > > For now, I'm planning to match the HDBSS buffer size to the dirty ring size
+> > > > in v5 and test it.
+> > > > 
+> > > > Ideally, the two buffers would be the same size, and the entire dirty
+> > > > tracking path would use
+> > > > 
+> > > Ah, I see the point.
+> > > 
+> > > IIRC, when dirty-ring gets full, the kernel returns to userspace with
+> > > run->exit_reason == KVM_EXIT_DIRTY_RING_FULL, which will warn the VMM to
+> > > drain the dirty-ring, and that makes space for us draining HDBSS to the
+> > > dirty-ring again.
+> > > 
+> > > The best way to achieve that, as I remember, is to always drain
+> > > HDBSS as much as possible at guest_exitting. That will make more space to
+> > > newer HDBSS entries, and we can get userspace to drain the dirty-ring
+> > > earlier.
+> > > 
+> > > I would say to even make HDBSS buffer half (entries) the dirty-ring. Then
+> > > we can generally fully drain to the dirty-ring and even report ring full
+> > > if the ring is above a given threshold percentage full.
+> > > > HDBSS exclusively — no fallback to the legacy dirty bitmap path. If that
+> > > > works, I think this approach should be fine.
+> > > > 
+> > > > Let me know if you have any insights on dirty ring's full-buffer behavior —
+> > > > that would be helpful.
+> > > > 
+> > > > 
+> > > Will do!
+> > > 
+> > > Thanks!
+> > > Leo
+> > 
+> > 
+> > Thanks for the insights — reusing PML's reservation mechanism makes sense.
+> > 
+> > I think we can*keep the HDBSS buffer at 512 entries* (matching
+> 
+> I recommend using a PAGESIZE (512 in 4k, but bigger in other sizes)
+> 
+> > PML_LOG_NR_ENTRIES)
+> > 
+> > for now, and *not expose any ioctl for userspace to configure it*. Since the
+> > kernel
+> > 
+> > auto-enables HDBSS, a userspace size knob would be confusing.
+> > 
+> 
+> Humm, I am in favor of letting the user change it according to it's 
+> workload. Why would that be confusing?
+> 
+> (Having a default size is useful just for enabling it to work without any 
+> change in current VMs)
+> 
+> > 
+> > The reservation logic would be:
+> > 
+> > - Implement kvm_cpu_dirty_log_size() on arm64 to return the HDBSS buffer
+> > entry
+> > 
+> > count (512, or 0 if HDBSS is not enabled)
+> 
+> Why a get to log_size? does userspace need to know it's using HDBSS?
+> 
+> Just a set should do, as VMMs can just try to set a value, and if it fails 
+> (IOCTL does not exist, or invalid value), then it can just go forward. 
+> 
+> > 
+> > - Reuse kvm_dirty_ring_get_rsvd_entries() to reserve space for one full
+> > flush:
+> > 
+> > KVM_DIRTY_RING_RSVD_ENTRIES + hdbss_entries
+> > 
+> > - So soft_limit = dirty_ring_size - (KVM_DIRTY_RING_RSVD_ENTRIES +
+> > hdbss_entries),
+> > 
+> > guaranteeing a full flush always fits
+> > 
+> > kvm_flush_hdbss_buffer() at guest_exit pushes via mark_page_dirty_in_slot()
+> > ->
+> > 
+> 
+> I think I get the point here: since we can have sw dirtying as well as 
+> HDBSS tracking, we may get to the point that we don't have enough space to 
+> flush hdbss -> dirty-ring, right?
+> 
+> > kvm_dirty_ring_push() -> kvm_dirty_ring_soft_full, which triggers
+> > 
+> > KVM_EXIT_DIRTY_RING_FULL when needed.
+> > 
+> > If soft_limit is hit, KVM_REQ_DIRTY_RING_FULL is set and the next vcpu_run
+> > exits
+> > 
+> > to userspace for QEMU to drain the ring.
+> 
+> So the software dirtying routine would be affected by the soft limit, but 
+> HADBSS exit would not. It means the dirty-ring would be effectively smaller 
+> than specified if we are having mostly sw dirtying.
+> 
+> Did I get that right?
+> 
+> > 
+> > *One more thing: *when userspace sets the dirty ring size via
+> > 
+> > KVM_VM_IOCTL_ENABLE_DIRTY_LOG_RING, we already enforce that
+> > 
+> > size >= kvm_dirty_ring_get_rsvd_entries(kvm) * sizeof(struct kvm_dirty_gfn)
+> > 
+> > or size < PAGE_SIZE. With HDBSS, kvm_dirty_ring_get_rsvd_entries() will
+> > include the
+> > 
+> > HDBSS entries via kvm_cpu_dirty_log_size(), so the same check will
+> > automatically guarantee
+> > 
+> > the ring is large enough to accommodate the HDBSS buffer. No additional
+> > validation is needed.
+> > 
+> 
 
-RSM can restore state that indicates the vCPU was running L2 when SMI
-arrived.  KVM then re-enters nested guest mode and marks nested_run_pending
-so that the next KVM_RUN completes the pending nested transition.
+I have a small question on this, since HDBSS supports 2MiB buffer,
+it  will has more entries than the dirty ring. If we use 
+kvm_cpu_dirty_log_size() to reserve entries. It will always enter
+soft limit if the HDBSS buffer is huge. 
 
-Unlike a normal nested VMLAUNCH/VMRESUME, the state restored by RSM comes
-from SMRAM.  Userspace can modify SMRAM before RSM.  The resulting L2 state
-may require invalid-guest-state emulation.  If KVM trusts that pending run,
-VMX can synthesize EXIT_REASON_INVALID_STATE before hardware VM-Entry
-completes the pending run and trip the nested_run_pending invariant.
+Since I think users set large buffer expect less context switch.
+I think this may require some change on the dirty ring framework.
+At least I think the soft limit check should be adjusted.
 
-Do not treat an RSM-created pending nested run as KVM-trusted state.  Mark
-the run as KVM_NESTED_RUN_PENDING_UNTRUSTED for both VMX and SVM, matching
-the existing userspace-modified-state handling in kvm_x86_vcpu_pre_run().
+> An alternative is moving the remaining array entries to the beginning of 
+> the array, and setting the registers accordingly. The tradeoff is an 
+> overhead here vs having the full size of the array available later.
+> 
+> Thanks!
+> Leo
+> 
 
-Keep the VMX BUG check for trusted pending nested VM-Enters, but allow
-untrusted pending state to reach the existing invalid-L2-state handling.
-If that handling synthesizes a nested VM-Exit back to L1, retain the
-pending state while synchronizing VMCS02 to VMCS12, and consume it before
-restoring L1 state so that the flag does not leak into L1 and block event
-injection.
-
-Fixes: 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if emulation_required")
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
----
-Changes in v3:
- - Retain KVM_NESTED_RUN_PENDING_UNTRUSTED until after
-   sync_vmcs02_to_vmcs12(), to avoid saving VMCS12 fields that are valid
-   only after L2 has actually run.
- - Clear the untrusted pending state before restoring L1 state to avoid
-   leaking nested_run_pending into L1 and blocking event injection.
- - Clarify the VMX pending-run BUG comment and update the changelog.
- - Tested with the syzkaller repro on the fixed kernel, no WARNING/KVM_BUG
-   in the repro log
-
-Link to v2: https://lore.kernel.org/all/al8M4gCwsWXS_jMs@192.168.1.215/ 
-
- arch/x86/kvm/svm/svm.c    |  2 +-
- arch/x86/kvm/vmx/nested.c |  8 ++++++++
- arch/x86/kvm/vmx/vmx.c    | 16 +++++++++-------
- 3 files changed, 18 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 4d2bacd00ec4..f54757bd8382 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5096,7 +5096,7 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 		goto unmap_save;
- 
- 	ret = 0;
--	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
-+	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
- 
- unmap_save:
- 	kvm_vcpu_unmap(vcpu, &map_save);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 6957bb6f5cf7..e345b085a316 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -5142,6 +5142,14 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32 vm_exit_reason,
- 		WARN_ON_ONCE(warn_on_missed_cc);
- 	}
- 
-+	/*
-+	 * Untrusted pending VM-Enters may be canceled by untrusted state.  Keep
-+	 * the flag set through sync_vmcs02_to_vmcs12() so that fields which are
-+	 * updated only after L2 runs, e.g. the preemption timer, aren't saved.
-+	 */
-+	if (vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING_UNTRUSTED)
-+		vcpu->arch.nested_run_pending = 0;
-+
- 	/*
- 	 * Drop events/exceptions that were queued for re-injection to L2
- 	 * (picked up via vmx_complete_interrupts()), as well as exceptions
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index cc75feec05da..cf5c3f78ebfc 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6715,12 +6715,14 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- 		return 0;
- 
- 	/*
--	 * KVM should never reach this point with a pending nested VM-Enter.
--	 * More specifically, short-circuiting VM-Entry to emulate L2 due to
--	 * invalid guest state should never happen as that means KVM knowingly
--	 * allowed a nested VM-Enter with an invalid vmcs12.  More below.
--	 */
--	if (KVM_BUG_ON(vcpu->arch.nested_run_pending, vcpu->kvm))
-+	 * KVM should never reach this point with a trusted pending nested
-+	 * VM-Enter.  Short-circuiting VM-Entry to emulate L2 due to invalid
-+	 * guest state after a normal nested VM-Enter would mean KVM knowingly
-+	 * allowed an invalid vmcs12.  Pending VM-Enters restored from untrusted
-+	 * state are handled below.
-+	 */
-+	if (KVM_BUG_ON(vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING,
-+		       vcpu->kvm))
- 		return -EIO;
- 
- 	if (is_guest_mode(vcpu)) {
-@@ -8436,7 +8438,7 @@ int vmx_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 		if (ret != NVMX_VMENTRY_SUCCESS)
- 			return 1;
- 
--		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
-+		vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING_UNTRUSTED;
- 		vmx->nested.smm.guest_mode = false;
- 	}
- 	return 0;
-
-base-commit: 58717b2a1365d06c8c64b72aa948541b53fe31eb
--- 
-2.15.0
-
+Regards,
+Inochi
