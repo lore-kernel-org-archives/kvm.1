@@ -1,130 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B043BE175
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5172548AE20
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 10:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784629524; cv=none; b=eR7lUSoxRYQaZjMM4ZpNfvTpwbUPSiRpbusREnzZyKKpWYwd7rW/nzA3WJqlMf1YCEKuWcQSAP1f3bVOUUbIY7dRKzZ7j0yr5m4HuLfN6h3BEXeD/wVo9+5EWbS/wwFj5MG4QzbTpFQYaKDzov3xEhwG3xMxUu/1cn/DANytgDM=
+	t=1784629714; cv=none; b=aIRaBMazd98XNDlnfbVxYTA2188k1v6NwlAHg8fDarnw9+RDNk5ZSTucN0PUlEB6RHi7yWRBIo80h24YpQxCTFNup1oJ3D14oITp9+JlTIw9nC5VxRvcanD1fxVfyRSRatBNrQgvZkzFrqTttBXbANdNW4NH8875bwPS9p71P84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784629524; c=relaxed/simple;
-	bh=NB+WVKXRyaYGeWdVMk3DOw4pdqgaWqVyxQtQZDhfy7g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HSZ43DrDQA62f/l4UsOeDOCU04HEKB1/GUbwr1JQ9BCpapShne+FNw0gIY+FDb6kGV8CD5wdDOR5AAZrBymQ6IeMq+fOLjTo4+tOSUYIlUFAhrMU9/yGEiAGoO5x+Xm4K89WwpZNC/o0HMmwoJ3MYxsAPz5Uw6n/NeG9HKDlYng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbTwJc0x; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784629714; c=relaxed/simple;
+	bh=rxE672ury9tWTdjh2fA+6R5h3E2l5Y7B22DohOut5Hk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X5oCdcWyiErp+MvWoim/ehSB/BwwUn4MINhM0XvcW2fkDtWHAal2EcoGGa7VBwnqOus0WU6sUaGwfr094s5gIPwPlwdHDRVgZiZjUECNZYROraSC7HjEtBq7Sop7oQe0Dev2h/ELhF3j+z/ixWIPp2rGIACCGQgQoRNzFZqxaHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MYMXDmAH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SylRphOL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbTwJc0x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8081F000E9;
-	Tue, 21 Jul 2026 10:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784629522;
-	bh=iwwckfaxYsmxuMkLlTlXq8eZ3I3+sj/tiqHCypZJR88=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UbTwJc0xJiyoe/S+klmIzFlIYhhoQX0w/qQnMTLYJWlmdYr3GvTPQ6fVmg/94At40
-	 2aKDAHi6EYH/5S8gOEm+rahEfcqHDLGBDVpqAOj50E2gZfDqFNSIQ0hxwSm8cbrGDE
-	 jF7aJcBJxwyD+NwTH7rPy1JRWVFcaJ1VPbsr5cWkFLzTmitYTtSrZSlifpYKMHPlWn
-	 SpolBEy8owMfRMYWVdhbedMITJy6IPqtWJEcaFFWGhFtK3xJvZnTljl8YxTbEXzyrv
-	 zfetfRReMln5mQfJ/yD8QuID6Ex6aKFEl0/32KntPyTSI5ovJ/V42X/XhobDHUFzEL
-	 mfLIalaoXp0mA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: selftests: riscv: Add lazy V extension enablement
- for guests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: JinRui <jinrui@haiwei.tech>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <4FAAF34C966898C0+20260721101406.305108-1-jinrui@haiwei.tech>
-References: <4FAAF34C966898C0+20260721101406.305108-1-jinrui@haiwei.tech>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 21 Jul 2026 10:25:22 +0000
-Message-Id: <20260721102522.AF8081F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MYMXDmAH";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SylRphOL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784629712;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=E1MIb1SYEneoGIcT7yLYFlL1UIRAz+KVXytnxrYIFiM=;
+	b=MYMXDmAH+257Grln1H0GrimnrZCzj4PokVlqyvdmaOrj1ykX5/+Ujko0cQLJxdRTU8WOZw
+	GQSJ9wb/KmEhEt/1T3xkHOiJd4R6aOnq2P0U7FHcgIhr2e3A9hPzHzXyBa/2KBVxLaQHt5
+	WSUG8dY/AH7iaIiI8dBV2e44+RJnavs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-247-cW_zcH-yO1qQp6vHPi2xmg-1; Tue, 21 Jul 2026 06:28:30 -0400
+X-MC-Unique: cW_zcH-yO1qQp6vHPi2xmg-1
+X-Mimecast-MFC-AGG-ID: cW_zcH-yO1qQp6vHPi2xmg_1784629709
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49553d98911so21918145e9.0
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 03:28:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784629709; x=1785234509; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E1MIb1SYEneoGIcT7yLYFlL1UIRAz+KVXytnxrYIFiM=;
+        b=SylRphOLjQ5+xSK5K+oYgvB2qRZk5BjGY+fTW3t0gV4DrA4liifFo/68OgPsZJbwgX
+         TANllWDn0o4tGor6LuMesJDyPAFsLi85wLYJeC9AlbrBdtcg88rna5i/Ta0h+PLwS2GS
+         gtZGJguWi6lh8HXGlJNVQQTwF9ddWvLYgN4nkpy2dhWfKGSS3c5NKpf+2gAKL1UQLd5C
+         K5lHRKalrwFTL5R7QxN3CoEIC8H3qYH/O9HloPJfcbZ9rLqhEKBAeC+RrDZsu1e5hBGr
+         +lmN1MzdG5cErcspqVkQ6FEBHyogqefp3bHoWEevZ6OL4vpzw3SxWemYpPxDmNC4FVjr
+         h/Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784629709; x=1785234509;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E1MIb1SYEneoGIcT7yLYFlL1UIRAz+KVXytnxrYIFiM=;
+        b=djTr5N32Cf69QlOExRL7Y4gtfJ4b7wJZbravA5cWwrHAYBiFhkfYGm4vQD6bHE0F49
+         zvzNcbZRvWZOlxPOIdJfaF/MQVQZ8W0mD+s57Dc841/0qeHAatMuPjsA+iSQlB+SvXUy
+         N7eoLz4WLX6izIXE3HxSJbNb+KXs8UFhBastQYotguIWh0K6mgOXqgmC5mLwdlT2PHpV
+         qiwRPQu4Y02FIR6Y40orzHu0YldjU90NcDXdQs4k0InZOAtD9RNi0jkNebqAge8AmXdq
+         1xleM2Qiinek7llmCKuzxUIkERWzpP0fzgpvff+lyA5Vke2lXh5GWt0lOAuE6qXVyhxA
+         zjmQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrESUsXdF3AsvlT0stkONJ9BBtcdrKE0H7YWygoL4jCDlsl8NiAAbG7zJfzCkz+/BCs/8U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwauF5/ervTwUPSmTVVFkBbF0rykj9veWxblLGDq2ahVLJHW+P
+	F0ZqU3q2NfYdnfGkHX2WbE81NzRe4DBpIrItd8dZ/UPAlaWP2N/Jfi2uN5KRcWZQAaSpP8FQbwq
+	+XF4PfU8yeA1OY9ANeR3l1s3/KBBd7ByUZx9CHW8hI5HcopRfX1KmqA==
+X-Gm-Gg: AfdE7clQ7EJAQq5D71Wj4GgCIqxSa2MvwFXiB7PnjKdX7zm5zv/8OOAr/WBfbSvOOMO
+	Fs21JVmvWGd0pRpnzWelcg2J2NU+IIvdAgbkFvYAeMdrjz0YtVfNoW7dGWiKxTZR+lIdZ8tcJxe
+	h5oouq370oPgfrfN2YBWKC6mOYiGFbxXXA2Fki0J8uqTYtwH8CHK2H7kW5uVWCGm1pmQAcOENMK
+	+4tUU3Y2ta54EiCSlLquIe7b6ENECXXO7Uoy3UUeU4d4zerg/XS3va2J7qxXF2BQNM7wVaKeyN3
+	rBuHZ6RtBWmxzArztnotBHeLTSO2OqnIUEDt8wCakU4Ia5Zt5hWyzkHah/rmfeqJK3hXaVdtSNz
+	c9cTHeQDD82OIHoV42hS0MGH2GoA1VEFJpVYu1GU7omZkrNaE0KLZX29jzlQgG2f6XN8qlC/5G9
+	mags1G
+X-Received: by 2002:a05:600c:4f0e:b0:495:4f84:7280 with SMTP id 5b1f17b1804b1-4954f847354mr171614955e9.4.1784629709492;
+        Tue, 21 Jul 2026 03:28:29 -0700 (PDT)
+X-Received: by 2002:a05:600c:4f0e:b0:495:4f84:7280 with SMTP id 5b1f17b1804b1-4954f847354mr171614635e9.4.1784629709119;
+        Tue, 21 Jul 2026 03:28:29 -0700 (PDT)
+Received: from [192.168.10.48] ([151.49.94.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956537c7desm77013385e9.7.2026.07.21.03.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 03:28:28 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Hyunwoo Kim <imv4bel@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: nVMX: Hide shadow VMCS right after VMCLEAR
+Date: Tue, 21 Jul 2026 12:28:27 +0200
+Message-ID: <20260721102827.313208-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] Lazy V extension enablement causes an inescapable infinite excep=
-tion loop on hosts without the V extension when an illegal instruction is e=
-xecuted.
-- [Medium] Reading the live `sstatus` CSR instead of the preserved `regs->s=
-tatus` creates a TOCTOU vulnerability with nested exceptions.
---
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
---- Patch [1]: [PATCH] KVM: selftests: riscv: Add lazy V extension enableme=
-nt for guests ---
-commit 2d8f4dc253676991c8c0807d4dda2a90b9cca890
-Author: jinrui <jinrui@haiwei.tech>
+free_nested() frees the shadow VMCS while vmcs01 still points to it. But
+because it is asynchronous with respect to loaded_vmcs_clear(), the vCPU
+might migrate before the pointer is cleared and __loaded_vmcs_clear()
+may then execute VMCLEAR.
 
-KVM: selftests: riscv: Add lazy V extension enablement for guests
+The VMCS needs to stay attached until its explicit VMCLEAR completes, but
+then it can be hidden and the page safely freed.
 
-This commit introduces lazy V extension enablement for guests in RISC-V KVM
-selftests to handle compiler auto-vectorization. It replaces the default
-unexpected trap handler with the full exception vector table and adds a che=
-ck
-in route_exception() to enable V and retry the instruction.
+Fixes: 355f4fb1405e ("kvm: nVMX: VMCLEAR an active shadow VMCS after last use")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/vmx/nested.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
-sting/selftests/kvm/lib/riscv/processor.c
-> index ded5429f34483..68577b2f48f4e 100644
-> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
-[ ... ]
-> @@ -432,6 +438,28 @@ void route_exception(struct pt_regs *regs)
->  		ec =3D 0;
->  	}
-> =20
-> +	/*
-> +	 * Handle V (vector) extension lazy enablement before any
-> +	 * registered handler. The compiler's default march may include
-> +	 * V, and auto-vectorization generates vector instructions that
-> +	 * trigger EXC_INST_ILLEGAL when VS (Vector Status) in sstatus
-> +	 * is Off. Enable VS to Initial and re-execute the faulting
-> +	 * instruction, mimicking what a real OS kernel does.
-> +	 *
-> +	 * This check runs before any test-registered handler, so tests
-> +	 * that install their own EXC_INST_ILLEGAL handler (e.g.
-> +	 * sbi_pmu_test) are not affected.
-> +	 */
-> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL) {
-> +		unsigned long sstatus;
-> +
-> +		asm volatile("csrr %0, sstatus" : "=3Dr" (sstatus));
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 220d42ebc82e..ddf6df7bee93 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -336,6 +336,7 @@ static void nested_put_vmcs12_pages(struct kvm_vcpu *vcpu)
+ static void free_nested(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
++	struct vmcs *shadow_vmcs;
+ 
+ 	if (WARN_ON_ONCE(vmx->loaded_vmcs != &vmx->vmcs01))
+ 		vmx_switch_vmcs(vcpu, &vmx->vmcs01);
+@@ -353,9 +354,15 @@ static void free_nested(struct kvm_vcpu *vcpu)
+ 	vmx->nested.current_vmptr = INVALID_GPA;
+ 	if (enable_shadow_vmcs) {
+ 		vmx_disable_shadow_vmcs(vmx);
+-		vmcs_clear(vmx->vmcs01.shadow_vmcs);
+-		free_vmcs(vmx->vmcs01.shadow_vmcs);
++
++		/*
++		 * Keep the pointer visible until after VMCLEAR, so migration
++		 * can clear an active shadow VMCS on the old CPU.
++		 */
++		shadow_vmcs = vmx->vmcs01.shadow_vmcs;
++		vmcs_clear(shadow_vmcs);
+ 		vmx->vmcs01.shadow_vmcs = NULL;
++		free_vmcs(shadow_vmcs);
+ 	}
+ 	kfree(vmx->nested.cached_vmcs12);
+ 	vmx->nested.cached_vmcs12 = NULL;
+-- 
+2.55.0
 
-[Severity: Medium]
-Does reading the live sstatus CSR here instead of using the preserved
-regs->status create an issue with nested exceptions?
-
-If the prologue of route_exception() uses auto-vectorized instructions, it
-traps. The nested trap fixes sstatus and returns, leaving the live sstatus.=
-VS
-altered to Initial. The outer handler would then read the modified live
-sstatus instead of the original exception state in regs->status, skipping V
-enablement for the original fault.
-
-> +		if (!(sstatus & SR_VS)) {
-> +			regs->status |=3D SR_VS_INITIAL;
-> +			return;
-
-[Severity: Medium]
-Can this cause an infinite exception loop on hosts that don't support the V
-extension?
-
-If a test deliberately executes an illegal instruction (like sbi_pmu_test) =
-on
-hardware without V support, SR_VS is hardwired to 0. The code sets
-SR_VS_INITIAL and returns to re-execute, but the instruction faults again w=
-ith
-VS=3D0, repeating infinitely.
-
-> +		}
-> +	}
-> +
->  	if (handlers && handlers->exception_handlers[vector][ec])
->  		return handlers->exception_handlers[vector][ec](regs);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/4FAAF34C966898C0+20=
-260721101406.305108-1-jinrui@haiwei.tech?part=3D1
