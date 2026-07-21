@@ -1,134 +1,143 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E2446C4BF
-	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 15:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784648575; cv=none; b=e0oBcRpI/kWogUxiIsCBfVqG3l7o/guwkm8aNPioiau2/NFnhaqltgbXh9VnG/sDfLlyoj4sLtSpyqVYthkMovGrHxXG5dRgLDwBUYEzNdtfiyxX/8wwjLfEy52AMY2nIdqJvhzKjIUnKLNQmp+r8PPXDLm3Wz4FpV2JSLy0y8w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784648575; c=relaxed/simple;
-	bh=dEg/xk5pG1vBiItxvEEZyeqvpuox2nryklNQjghqD3M=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A232B46C4C1
+	for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 16:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784649773; cv=pass; b=IPk4d8km/hVB57DAxHtjw1LpRHnnMm5Uos6yufgBPXpTZ6baM50ZTQ/OzVuEiuHFG1HDrl4FuuaNw734TSsp0/I/PTrk5dyiBQfffZrV4JDS1Ekzhm5oKDMU0u6dLKRPVJN+bV9F9vM8UQnrE4WTaxo/4caKZbp71n6xWqixELI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784649773; c=relaxed/simple;
+	bh=feRZ4QKSvrkCWAWS59c5Jn+FQo1zqyY8SL/+SCIGU2k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g9hk84Fm0CajtWk4NvG/W+NZCVdu76alsnnmqBDoezwJ6pRQ1RTv+ycEUiqyzQUauLEilaXnXF/+DSYYpXA12UwNVn0nBu4qhuB1u4Hy/kTnjSvusNIeyGl7bklIufdKDavD1EkGo2v3yfyzu2mJ4pXaMzVg4qj8pLpm+DyrE28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X+FGAmC6; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 To:Cc:Content-Type; b=qeOTsrPKxHgB4a06MXcPsTTO0MowT2mdCGi2KQNQ/7serH5XnUCKy+kXZk8LnCAexkzd24fHOFDz3YIPhUqgUsRvBiT5KTBf3KHiamSeKt7I6GY6UyjvzoiI9hZ16nzvju668HC0FJg6ms4aq4RvVXFOF4Ji7P1h0Dxn+MTS23U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IK9Odsxu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1QvIWXx; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X+FGAmC6"
-X-Forwarded-Encrypted: i=1; AHgh+RqAYQoZS/vYpE2bZXwlBsG2JK/HWG+X1ezk/bSyrkifJjfZNH4JsFtgFPusmiGPP1mgVGc=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784648571;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IK9Odsxu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1QvIWXx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784649771;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fWBKtHpQs7Mjv5sBBU83pNN7Nd/6AUX8CaJlXFspUiY=;
-	b=X+FGAmC6yqnf3mO1sbJG0nXKFmo6OoCk7JSWLaoOFdfkZraQlQpOzI165glRGjz5okJCl6
-	3i2cQHhFiFRl9HHpatRNCNfN5cgowKzwCqtxvmUHVS9oXjxLhwlI8dnyGAsFE9kitwA4hL
-	1I1Ssa6mDEQGvwGJJLbzMFY1AJFPUzU=
-X-Gm-Message-State: AOJu0Yx3e0MfSKHjRlIVbonJ4UEiN49I6qAX1MPRfHyq6/HcXm2xnoxe
-	NCPNgcTZrahFY4ViE9T7PLHJ/DixA9993qfShC0XSc5qq0qu/mWIZn/mzjTEZc5NfHgOvT+Jivi
-	ucosI15d81uQGBcO2StMb2Kb89jUfxTxbC76rWipy
-X-Received: by 2002:a05:622a:d0e:b0:51c:ca9:3d17 with SMTP id
- d75a77b69052e-52601f03537mr16476711cf.12.1784648547786; Tue, 21 Jul 2026
- 08:42:27 -0700 (PDT)
+	bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
+	b=IK9Odsxu85JF7dWil66ypDSwLYDZm0Om4ZITBMA5V8hiOhwrRTrGqI62JUSLPK780KTSbR
+	XYRO/cRBvvrU8nNWU7JrjVa30v8yPORuiDbuID/P7e+kSzrsDGUjAFZaf+RRVCjSJYaBXs
+	y7jeGCk8BXy/Mt5F2dm5dLQN4J7gvpM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-360-E2L3mCF3O5G5bl5f6KItIg-1; Tue, 21 Jul 2026 12:02:49 -0400
+X-MC-Unique: E2L3mCF3O5G5bl5f6KItIg-1
+X-Mimecast-MFC-AGG-ID: E2L3mCF3O5G5bl5f6KItIg_1784649769
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso90539535e9.2
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 09:02:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784649768; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Y3hSKT6Ukv2+Wf5yFntFYWADdIbb5ZfxlgT/TvtDgdgOFDJfSb5cChoxTvxx5zP4+N
+         Hixqog41JHwLgjot/pEuOC7VTMAPcnNvmc/WmdETACYpBaNSutpPWQnZ8Eactwuc6/hN
+         9SqBrqCaByXBcQSET4w65wIFHBOH35Y6LsHasIvg2Nli4C+m/B71IZSmxIp6M/wGUVZy
+         1pu2T5J76MzJZNMKO1rgsv3RWk09wYltC8upphB4vcQP1aeoT+2EGyfO/WbupX+Z1RY2
+         FX2kNaZGCHuC4RG/MyQzapxmDqV7c0VkGKIZlaGXY35q315kUCLlRRyA9H3CNFbpzLCi
+         9lhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
+        fh=8yrak1Tp1Yavh400iospK+aLRJaE+dPrHYRk6PwrSBo=;
+        b=K3kX77AIgl/9JSZms26Q6NsHhatjYGaR33maxXltD6TViBhScMFyVhEWl26ZT9EZPf
+         pF2f9gAvkUdRdv1JUY9DPUU91inTYbX7G6ZAQU7I/DOuSNd2g57yRQw38IE6Yz4Dj8Qj
+         idj9hkyrL0FRKKdcfXY4sr2dyGbpqH51cUuQ2gd23p2/SFYcKLSHrXArj0IcQE+//1hI
+         JkTdsN8I7ChOFvkw2W86sTuB9Sebg40xCu/EuSX1vMgCkQ2078anvrmqYwR2cLq0uhyM
+         DuSC8T2VC9kvF+LSON7TDiCFeB3hCHWhcB9/lvb6RbdZwWaQRcZ0kLSK2Kx6UncaWURk
+         RC3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1784649768; x=1785254568; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
+        b=X1QvIWXxDZ+C8tGU1ThFpbnNXgx3z1ERwcEN9EJgDH3ppm6TZfbgdLML6nI1/HjjY8
+         H7f7Go6AloAjZ0MLnBe7KIMQzHmGIoCWHqzd2g4PJo1tdeRX6fv1wVXUnkXENFvblgao
+         JoIO2HtlTbyQ8nZDd0ngjXAlg0SShHkLKw19icYYPCLJrtOMy2SGd/rPiquhvldAVhZV
+         pODUAKcyM3zvJ04P0qQzHdtcE2NmgJy+lH9m3JnkZEG5sWhBF71lN5QLwo/YDEnQC0fk
+         ob4QY5VkRGWg9k7NHcmNXRMbNUV55It8/Xj8Q5EyFGEHTFoB9J2yI4zU7B5moeSIs5yi
+         s65w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784649768; x=1785254568;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=STnbg2Xg1zNCMraSp4HmfOF93WxrXN106QbVgR4DyVw=;
+        b=BL+Z1eDR+qVbXzNYcbmho4Vk7loN7u+pcrNIa2vL3VUAYorIC+CwGyXS8Tgw68EgEC
+         +XY54J2el7Au6LbnrdpvHC9OGBlUE5cDKJgkNE15ApnWO8wV0PqWF77fk9aNwB6hI4WU
+         /r49mYnenW4SoSvoloCXKdGuKOxcNez6UBwdBn+/9lzeoa03N7R2lZ1aRrn7i2N8ErF6
+         U49VJoIEEB1RCdkhHKFe4gi0smNQevpFeBSIE4z12ZmEZ4TF7pNBumhTrok/xY6gf+0Z
+         KBCXboTx1DHFaVKHjNUhmLO4/4Uj72HRPoUUaC5/WQ3/UycD0dWMJ49MCtRNHL9p10wi
+         gzvA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrl8AoM4O/tLOLQ9wb6xkpwBZ/KZTBhHaWyjOkH+RBWMnvNq6enxFL5gcDrfoyOSTXOPms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWr5H9HTgTMln3awwRIEmzlOwO6bmP0YXfZ1xelE9/Tdr+nobk
+	Onbtv46fPMONCClbXBw7EJSIUj7/fEuo1hrnC+NEG2sZR2wlxdPgNzQBQzqZ2uGHmehU7TtOmRM
+	nGwi+95AirUTNtifIv/nUF3w6WKQnpaZgbnbuiLoGPtyXptbcLX5rEditMSTzbU4tCGFDmeol/f
+	NYI/rodk5QRz1QnCCHi8Z8ayWMhqq5
+X-Gm-Gg: AfdE7ck+iqBHE7RzjTg91YnCMwhAXUiaPhGd9zD97Vbw8PIraz2IPtsjbgTP+wH+KW7
+	YA1k4YrisepgZoboSxoKJ7zCDiWujN/K5HxrvNNysLXPVAEZ00xjXiXHUoKO2xgkX4hQnf3IHV5
+	S8kdia5JgWSNf8UduEMWVVd/DQDRGCBw+QhGzK0a1S0HK3MMX/EPayPEa0SUTjvq0ByqsCQOB6l
+	s4/YTi4Kl85EP9bbcQKpyBJ3JqbH8iTA+2H7aCFe7sNl/c0w0EtiaMEaa4=
+X-Received: by 2002:a05:600c:4f14:b0:495:69c8:d9ab with SMTP id 5b1f17b1804b1-49569c8d9d3mr10999605e9.8.1784649768412;
+        Tue, 21 Jul 2026 09:02:48 -0700 (PDT)
+X-Received: by 2002:a05:600c:4f14:b0:495:69c8:d9ab with SMTP id
+ 5b1f17b1804b1-49569c8d9d3mr10999245e9.8.1784649767985; Tue, 21 Jul 2026
+ 09:02:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260703154811.3355680-1-sascha.bischoff@arm.com> <20260703154811.3355680-37-sascha.bischoff@arm.com>
-In-Reply-To: <20260703154811.3355680-37-sascha.bischoff@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Tue, 21 Jul 2026 16:42:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTybDSAgr44jXNFnssnYq_vVeuZ+1qORS8f4dtQgMzOZ5A@mail.gmail.com>
-X-Gm-Features: AUfX_mxjsFrqC8Gpjv6b_a6EYXug8lYIGCF5p9ytlWNhOuKnl9fC4c65x8uK9Mc
-Message-ID: <CA+EHjTybDSAgr44jXNFnssnYq_vVeuZ+1qORS8f4dtQgMzOZ5A@mail.gmail.com>
-Subject: Re: [PATCH v3 36/40] KVM: arm64: gic-v5: Implement save/restore
- mechanisms for ISTs
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, 
-	Suzuki Poulose <Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>, 
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	Timothy Hayes <Timothy.Hayes@arm.com>
+References: <20260721102827.313208-1-pbonzini@redhat.com> <20260721104819.B5A101F00A3E@smtp.kernel.org>
+ <al-PSX0sOPdYdvIg@google.com>
+In-Reply-To: <al-PSX0sOPdYdvIg@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 21 Jul 2026 18:02:35 +0200
+X-Gm-Features: AUfX_mwiJzgrlxMZTOoAY1MJbpOdubq8Khyrmy2TCut5ao7x0eFSUWRMAnM8hb0
+Message-ID: <CABgObfbL3t21yVeSwiLSjjOUER+rTYDPHYAH9YU4TWGRjx6XHg@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Hide shadow VMCS right after VMCLEAR
+To: Sean Christopherson <seanjc@google.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sascha,
+On Tue, Jul 21, 2026 at 5:25=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+> FWIW, I had a pretty strong preference for Paolo's off-list suggestion of
+> explicitly disabling preemption, even before seeing Sashiko's response.  =
+Every
+> other path the VMCLEARs the shadow VMCS runs with preemption disabled, IM=
+O it's
+> more intuitive to follow suit here.  And even with the comment, it took a=
+ good
+> 5-10 minutes of staring to understand what exactly is going wrong, though=
+ that's
+> probably a me problem.
 
-Two things about the new KVM_DEV_ARM_VGIC_GRP_IST interface. Both are
-about the userspace ABI rather than the mechanism.
+Well, it would be at least an us problem---but I thought I was in the
+minority... The only (IMO bad) reason to leave preemption enabled is
+to obscure the change, but that's a lost battle anyway these days so
+why bother.
 
-...
+That said, I am surprised that VMCLEAR/VMREAD/VMWRITE/VMPTRLD do not
+have a memory clobber, since they access internal processor registers
+and the compiler may reorder them without the clobber. Fixing that
+would also work around Sashiko's complaint, so I guess we should do it
+anyway? And disabling preemption can be done separately on top of this
+change, which is already on its way to Linus.
 
-> +int vgic_v5_save_spi_ist(struct kvm *kvm, struct kvm_device_attr *attr)
-> +{
-> +    u32 __user *uaddr = (u32 __user *)(unsigned long)attr->addr;
-...
-> +    for (unsigned int i = 0; i < kvm->arch.vgic.nr_spis; ++i) {
-...
-> +        __le32 *h_iste_addr = ist.base + i * ist.iste_size;
-> +
-> +        h_iste = READ_ONCE(*h_iste_addr);
-> +        ret = put_user(h_iste, uaddr);
-> +        if (ret)
-> +            return ret;
-> +
-> +        uaddr++;
-> +    }
+Paolo
 
-The kernel writes nr_spis * 4 bytes into attr->addr, but struct
-kvm_device_attr has no length field, so userspace has no way to
-declare how large its buffer is and the kernel has no way to check it.
-The size is implied by nr_spis, which userspace set earlier through
-KVM_DEV_ARM_VGIC_GRP_NR_IRQS, or never set, in which case it defaulted
-to 32.
-
-put_user() has no idea how large the caller's buffer is. It only fails
-if the address itself is not writable, so writes past the end of a
-short buffer land in whatever happens to be next, with no error
-reported. The documentation states the required size, but nothing
-enforces it.
-
-It is also the only variable length buffer in the VGICv5 interface.
-GRP_IRS_REGS is a __u64, USERSPACE_PPIS is a __u64[2], GRP_NR_IRQS is
-a __u32, and none of those can be got wrong.
-
-kvm_device_attr itself is fixed, so no length can be added there.
-Changing what addr points at is still possible while this is unmerged,
-but would not be afterwards. Would it make sense for addr to point at
-a small structure carrying an explicit size, so that the kernel can
-reject a mismatch?
-
-The second point is the LPI IST going into guest memory. I understand
-from the commit message that the shadowing is deliberate and that the
-guest has already allocated the storage, so this is about the
-interface rather than that decision.
-
-Saving the ISTs is a KVM_GET_DEVICE_ATTR, and it writes into guest
-memory. Several of the documented ordering constraints are enforced,
-with -EBUSY when the VGIC is not initialised or when a restore is
-attempted after the VM has run. This one cannot be, because it is
-about when the VMM serialises guest memory:
-
-> These two steps may be performed in either order. However, the guest memory
-> must be serialised after the ISTs have been saved, as saving the LPI IST writes
-> the IST state back into guest memory.
-
-A VMM that snapshots guest memory before saving the ISTs gets no
-error, and the IST contents simply never reach the destination. Live
-migration looks fine to me, since kvm_write_guest() marks the pages
-dirty and a later pass picks them up, but a stop and copy save done in
-the natural order would lose them silently.
-
-Was a userspace buffer considered for the LPI IST as well, the way the
-SPI IST already works? That would remove the ordering requirement
-entirely, and by my reading the worst case is 65536 entries at 32
-bits, so 256 KiB, given the 16 bit clamp on the guest's LPI ID bits.
-
-Cheers,
-/fuad
