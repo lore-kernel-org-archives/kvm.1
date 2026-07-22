@@ -1,119 +1,183 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6E543D508
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D973D566B
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784758175; cv=none; b=tDIzGosilqg8CVr/+pmVo3lzpxoYcEDHtgIW07GE1VjzH23pWRNeX4PNHQnFKcVZze4X3p0q0Fuwpw4ZwdhBev7/HEz8ets8W/EBheuHUA73ATG/Uz24vsyJ4GgHXiDxjhzd4C177SQIH5RBqTplhKE0zf8JMXO5AEQ03pITk/g=
+	t=1784758629; cv=none; b=rcIOFkLmLfvM8b9adfejckFNoV45g+t/fv6fsLZpZieTau9uPXqpQclS0btF03nV+okIkPdBJQ3UvX96ReOfuJFfSfALvJG/BtU3hEp+xNxMGo/i25BAOo+hK0+AMvU/JRjrodWocguww26CI7sfk7vsq8PHXMFj/0KC0/BS6zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784758175; c=relaxed/simple;
-	bh=BvrcAeGYxP6POw2jbXtWTig813bTQmdrgS1FdeG+l1o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=SKJvJfuOa/nvx+v1CjweAgUt1zX6Hewy3Jgb3NPlTP6i2nLAfcGbKMKG/dTKXoBblwKgAOLJ08GIYLXsnqXDaRNIfgLmY+X76bXFgxQV9C6FFekvBIXQbasCxR3oSDfghy45YFD/UffVIAWBrI9TMd9Qbk1vOe7QH4ws6njGHV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T751kGfg; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784758629; c=relaxed/simple;
+	bh=CS+5BodVT7fP2tqcuPhYMpWTqmb8m8g56WPBlCegP7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h/xlnJWK1C8j8wE/zwNxccBSE/4spEyi86oLU9GUm95Qd26+N1krbhJaBBnwkLYr/JwO3nJq5WKRxos+CoRvyrAHRt7pOj8mrj/jxd023aMd4EPomWg11S9W3FAbZ6Yjmin+tqC8igfxNArFUKC7ljADcZPYnPfAN160tVfqPEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AkAJbfiq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T751kGfg"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-847a00bcbd0so16370054b3a.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784758174; x=1785362974; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fAykqS9DtvWGSj58lKIuZXh9sJItsA/beqvkn+rWVtE=;
-        b=T751kGfgIqfkjnQuzRQfRn2cAdSQuQAfY0yrpYBGdL8DJZmGK2C/NXrMkVijbdoGB6
-         n2vL9XzfwH7BWrXYTOHm/0hbaN7kUnZY00WMFdpyATMyeM74QsbCA1765NkS9awcaU4b
-         JbfhmryJuH7DViCvUHOnp8ATJK3l2kNjPWZxsjM5FDzF1PuQgaL9GbkILH/VxE5ux7CF
-         zsfVsUEvUsCo9Hft/b9ClICzhLu8lK32gsgbjGAyeR0z11UVNArgUzg330beTfMr5A1T
-         74EkXcvYKbdI5MHfn28rdm4QOX0U+YfooGBdCpyDkCEYi1CEsp7K0SDknunNI7PFfIKd
-         TwGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784758174; x=1785362974;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fAykqS9DtvWGSj58lKIuZXh9sJItsA/beqvkn+rWVtE=;
-        b=TUTl2mw9aRdPIqkgEZ+ZpbW3RSNdZA1jATJvzaKygHwr3grlWAs9UyhblXumoJnoaS
-         D1IVq3t8MLNLagln/UJCpF9jMgfNAruh9BgUSm9Jec4EA6yY/cUu8tzCPxs6vuziUfkP
-         zRA8Xf7w3N7McFy7aiO2zIWtw67NrIfT0afY01mDJSEH7UsZyrxbvrY30+Rm4I/lMAGj
-         1lxxAQ8OrXqp8rK5MzeeF8gdz06WzrrJBIQ67/e2ucHD2UcA13CAA2OQzrwYOp1zYBMa
-         U+ng3pdqiQhQmotcVTyCQvRX1h2PpIoD+wICTr+sOUKxJj+8k02QvdFwNhdlbyfkbA4W
-         PUKQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq5dUJw8oqFjvSGPH8OhPFuJIZTzsMcvC9lujk8cop42/DkPvE+1/n1XAx56TE8zGdcihM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywcp2irTT0jxPq7vqfse/0QdUja+R8tjjTILshmivZKW3kNocIk
-	a5xfVUs7KoVLTvMNZ8DwoZRmFkEBLekfoUkw5DV7vVS7r6ktme58iWnbWuoOyIckhV84qEtRMn/
-	us/L3Fg==
-X-Received: from pfbfj32.prod.google.com ([2002:a05:6a00:3a20:b0:848:56a2:f6a9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ccf:b0:842:614e:cc94
- with SMTP id d2e1a72fcca58-84e2b8ab35amr818120b3a.26.1784758173554; Wed, 22
- Jul 2026 15:09:33 -0700 (PDT)
-Date: Wed, 22 Jul 2026 15:09:32 -0700
-In-Reply-To: <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AkAJbfiq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594C61F00A3A
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:17:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784758627;
+	bh=DG0VOfFeLsFqG6RzrNm7/kzVBCeGf739XJWpHdg2Aes=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=AkAJbfiqpO9BqebC2beqEit3hxt+u2swRpNr0j0v/goLdG+EviULf/I51c9Vn2qrl
+	 Ru2IXdlB+1yg7pmEqQCVu6YCQ8/3+izQ3fCJaROXCCIwYbFLGdP6ZNwk1QRBp9F9oB
+	 b00gHWAL5FzC+fvD6kzvsvuztPjr2ibyJwsdFEdsLLbpKBplWE8Xg6q3D35OJGNkDC
+	 7s8pEVjvBgSaUHUOJ7DxaxmHrQjYDLfooNnTHtVt5qF2P92vZcSbXo3NwjOwBapXhO
+	 zB2zBFJsCoTFfZvDYnwpXaHEZB62QVKm7Xor8ehXlZeQSq3q4tKwQ1cbL8nFlc4JRd
+	 0S3abjRBZWTSg==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-69e54d9c8c6so17142a12.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:17:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro6FvhkU6PW2pHuJF+TDYA+OpM/LIB9jPpYwBzkP82KPyizu1ZiSes4IL4fCT1Aov+L4jE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1f1It+UHCJmaoMnhJMuON33/3RG5IEUOf5q/Q/4ti4ZA3Xf5U
+	9pFIGZmSgprRU93jh/NaR9tMZqEZC/UZwuZgbwbwRji902ptQNzBwy8tz37iL7ChlptISbcvOVc
+	ei2fZ87n59yhJ89eyPESf6BZF+mL6D+o=
+X-Received: by 2002:a17:907:6d09:b0:c15:fc41:fda with SMTP id
+ a640c23a62f3a-c1c50b5efedmr22653066b.63.1784758626266; Wed, 22 Jul 2026
+ 15:17:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
- <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
- <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
- <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
- <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
-Message-ID: <amE_nPDem-imSfqF@google.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260717060505.2971514-1-yosry@kernel.org> <amE5DiLbq5PdYuNn@google.com>
+In-Reply-To: <amE5DiLbq5PdYuNn@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 22 Jul 2026 15:16:54 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zN5uGtYS-Y3qUNDmBh5X3zhjuHkbpEis8ti79977KkGwA@mail.gmail.com>
+X-Gm-Features: AUfX_mwrOEJcVTbY_B_2odzglFxj2w-CUV1PsWh-DY-aLEcy3aXSA3g5MHnPayk
+Message-ID: <CAO9r8zN5uGtYS-Y3qUNDmBh5X3zhjuHkbpEis8ti79977KkGwA@mail.gmail.com>
+Subject: Re: [PATCH] KVM: nVMX: Only update last_vpid on a successful nested VM-Enter
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026, Jim Mattson wrote:
-> On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
->=20
-> > What complications?  Advertise the lowest common feature set for the po=
-ol, just
-> > like userspace has to do for literally every other feature.
->=20
-> The problem with passing through the number of host ASIDs to the guest
-> is what to do when the combined host plus guest usage exceeds the
-> number of available ASIDs, particularly when FlushByASID is not
-> available.
+On Wed, Jul 22, 2026 at 2:41=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Fri, Jul 17, 2026, Yosry Ahmed wrote:
+> > ---
+> >  arch/x86/kvm/vmx/nested.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> > index b5460de4b1a72..0a4ea410b0483 100644
+> > --- a/arch/x86/kvm/vmx/nested.c
+> > +++ b/arch/x86/kvm/vmx/nested.c
+> > @@ -2818,8 +2818,6 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, =
+struct vmcs12 *vmcs12,
+> >       if (kvm_caps.has_tsc_control)
+> >               vmcs_write64(TSC_MULTIPLIER, vcpu->arch.tsc_scaling_ratio=
+);
+> >
+> > -     nested_vmx_transition_tlb_flush(vcpu, vmcs12, true);
+> > -
+> >       if (nested_cpu_has_ept(vmcs12))
+> >               nested_ept_init_mmu_context(vcpu);
+> >
+> > @@ -3739,6 +3737,8 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
+t_mode(struct kvm_vcpu *vcpu,
+> >               vmx_start_preemption_timer(vcpu, timer_value);
+> >       }
+> >
+> > +     nested_vmx_transition_tlb_flush(vcpu, vmcs12, true);
+>
+> Hmm, so the SDM doesn't explicitly say _when_ TLB flushes happen, but I s=
+uspect
+> this doesn't match how hardware behaves.  My guess is that any TLB flushe=
+s happen
+> once VM-Enter has gotten past the VM-Fail consistency checks, i.e. once a=
+ VM-Exit
+> is guaranteed.
+>
+> The SDM doesn't actually say anything about VM-Enter, so I don't think KV=
+M *must*
+> implement *that* specific behavior, but I do think we should leave the ca=
+ll to
+> nested_vmx_transition_tlb_flush() where it's at, and instead service the =
+local
+> pending flushes in the pseudo-VM-Exit path.
 
-But that doesn't have anything to do with the number of ASIDs that KVM enum=
-erates
-to L1.  As of this series, the number ASIDs KVM will consume in hardware is=
- a
-property of the total number of vCPUs in the system (one ASID per vCPU, plu=
-s one
-more for nested usage).  E.g. if KVM advertises 10000 ASIDs to L1, all 1000=
-0
-(10001, if ASID=3D0 counts?) of the those ASIDs will map to svm->nested.asi=
-d02.
+Well, technically, changing the VPID is not a TLB flush. KVM has to
+flush the TLB because under the hood it's using the same VPID, but
+from L1's perspective, it's using a new VPID so any TLB entries
+associated with the old VPID should not be used (for that VM entry). I
+guess you're referring to other architectural flushes, like a VM entry
+with VPID disabled.
 
-Of course, that completely undermines my statement about suboptimal perform=
-ance:
+The reason why I moved the call to nested_vmx_transition_tlb_flush()
+is that it only makes sense (semantically) to update last_vpid when we
+will actually use the VPID. Otherwise, if a VM entry fails, the CPU
+couldn't have cached any translations associated with the new VPID,
+and a flush is not needed if the VPID is changed again.
 
-  And potentially suboptimal for performance.  There might be a legitimate =
-reason
-  why a CPU generation advertises X instead of Y.
+IOW, the choice was purely based on semantics and code readability.
 
-My bogus assertion about performance notwithstanding, I still think adverti=
-sing
-what hardware supports is the simple, sane approach.  Because at the end of=
- the
-day it's just that: advertising.  Userspace can do whatever it wants, inclu=
-ding
-peeking at raw CPUID.  E.g. if we want to pull a stupid and emulate the beh=
-avior
-of ignoring "unsupported" ASIDs, then we'd need to do that based on userspa=
-ce's
-defined CPUID model, not KVM's advertised support.
+> Because the other way the TLB flushes
+> can be queued during VM-Enter is via the MSR load lists:
+>
+>   If any MSR is being loaded in such a way that would architecturally req=
+uire
+>   a TLB flush, the TLBs are updated so that, after VM entry, the logical
+>   processor will not use any translations that were cached before the tra=
+nsition.
+>
+> E.g. if L1 successfully loads one or more MTRRs on VM-Enter to L2[*], the=
+n fails
+> on a subsequent MSR, architecturally I believe L2 TLB entries are guarant=
+eed to
+> be flushed.
+
+Hmm that is an interesting case. I guess the right thing to do here
+depends on hardware, but yeah I think it makes sense in this case to
+service local flushes in the failure path. It still annoys me that we
+would update last_vpid even on failed nested VM entries, so part of me
+still wants to move the call to nested_vmx_transition_tlb_flush() just
+for that, but that may not make sense for the VPID disabled case.
+
+I guess the "right" thing to do is break the last_vpid tracking out of
+nested_vmx_transition_tlb_flush() and only update last_vpid on a
+successful VM entry, but it's probably not worth it in terms of code
+readability.
+
+> I'm speculatingly heavily on all of this, but even if I'm wrong (or it's =
+uarch-
+> specific behavior), explicitly servicing pending flushes in the VM-Exit(i=
+sh) path
+> feels safe in the long run:
+
+All that being said, yeah I am convinced it's probably better to do
+the below. I will send a v2 after testing it with my repro.
+
+>
+> diff --git arch/x86/kvm/vmx/nested.c arch/x86/kvm/vmx/nested.c
+> index 3266c63046ee..49aeecc2f093 100644
+> --- arch/x86/kvm/vmx/nested.c
+> +++ arch/x86/kvm/vmx/nested.c
+> @@ -3760,6 +3760,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root=
+_mode(struct kvm_vcpu *vcpu,
+>  vmentry_fail_vmexit_guest_mode:
+>         if (vmcs12->cpu_based_vm_exec_control & CPU_BASED_USE_TSC_OFFSETT=
+ING)
+>                 vcpu->arch.tsc_offset -=3D vmcs12->tsc_offset;
+> +
+> +       /*
+> +        * Handle any TLB flush requests that were queued for L2 if KVM m=
+ade it
+> +        * far enough along to switch to L2 context.  Note, loading host =
+state
+> +        * will generate any flushes for L1 required by VM-Exit.
+> +        */
+> +       kvm_service_local_tlb_flush_requests(vcpu);
+> +
+>         leave_guest_mode(vcpu);
+>
+>  vmentry_fail_vmexit:
+>
+>
+> [*] https://lore.kernel.org/all/20260717230542.3555587-4-jmattson@google.=
+com
