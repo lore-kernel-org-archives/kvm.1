@@ -1,135 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919683E3DBE
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9BD4921B7;
+	Wed, 22 Jul 2026 09:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711703; cv=none; b=IWkMIAj+NrCLcHBayMzw1yR63jNITRzCkaPRVOKmqcNrY0dRoDeoRTQk23I0uNIVe8im5kIrEhIva2UmQbIzQl5zDtVLH8cjfeh4NbAZ2Qi5ywyQpZ511VuO2Z1JL7H+ctNkm8kbmCpXVITiVcuIDyGaZvf+E77rwlOEHvFtt1Q=
+	t=1784711801; cv=none; b=nB5dqRqLEV5EbWZJEMN2yBJnHOVQH46ZCBrWLZ82FXcQvFvXYs9ap4/0T5qrFzQfZMDY40oMpgfaRCkjP1To7gVOYqHuN+r+I61tedwOfO4tFHCzyDNxmc4opvBea8uSAbUfPiVh7+HQhjr3EOo0b+KVg5dwrGIeEYP+hDHAOmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711703; c=relaxed/simple;
-	bh=ij0mEyGqqpAB+MTW4VTiY1ayxaymUfWl8B5riM+q6+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOKaSqIn1/oMKrbRpR7bx5Ora2kgWGFbCCpcRyE46Y0fPhXU5RVqAf/nxb5GnLQKgi+rC5/yl2VWhSRQVWzo07wavAqxVfUxAYDiYeTVW5ni+L45k832w5VgJZVNIf/1sISP2LRZTO2rTo5McK6TAemXJwziqyhWP7aRB1Jf5S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bDXmR97/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ju3Y1aLa; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784711801; c=relaxed/simple;
+	bh=hBL4JdiQ9da5VNIlhJdlyFaMLAM5SImr/4Dqi5RamP0=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H98DDLOG9H35CXcIiTft3LybnSpu1cxwSIJZjHPyQ41bU0XVQVgsxhfQLbCcM2V/TWTS/oYXmeNM9DgUA4eW2o4IWM8qqAiDw7mDk7NFKsP1NXWyd1t+R41mllsoXdl97uPs0JrR6cDjuFPfwIvaK/WcsxFNmBDYyFl1s9XjGCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQajkfa9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bDXmR97/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ju3Y1aLa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784711699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
-	b=bDXmR97/02T5m9tfQoKol8Ijy7/iXiPZPZd8sBTNeu/rkeyfr9MMw5YZvNu1mcaW+hDXnE
-	aDNGzg3v7A8Nkn7NMjPFkmzjW0DTmU0GOzQTAyH04hfA2BDtoi1um5BDp9aHe8/ODhTiJ1
-	/+oVJr/PSCgWzh+acSGsP84UW8grTEE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-KgHPbl-bNQG-iL4qL3GYVg-1; Wed, 22 Jul 2026 05:14:58 -0400
-X-MC-Unique: KgHPbl-bNQG-iL4qL3GYVg-1
-X-Mimecast-MFC-AGG-ID: KgHPbl-bNQG-iL4qL3GYVg_1784711697
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-473e18559b2so5988967f8f.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 02:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784711697; x=1785316497; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
-        b=ju3Y1aLawBaMMVfs/ZLzxOnwO0n1saNR4knTivWHhkgJYKxDWmNa/O2oltXez9JxzL
-         t0sZXTMd0CUz6f7Ok0o78sjY/251lEP2GcshHK3sXsnhxzaSy2UX98nGjZ/xHYsOgTtI
-         WU5PrZTpkyrldUw889vCpaBkG0madjYOGubeqNXoFjozVE2+V0MvJ8FJuXoEpCKaPP8Z
-         9o7oc68ZehDRRZKFsLqU9y8otG88Gj+azOJfllUi26Rsa4AJuKrMrYLqjxImCHdj0S+A
-         KxVEt189zOLN+W/pWFayYicB/sjzcZe0Xxpup9MFYEBgmjddfRsrUIwgY8fqKGrTC/ti
-         AkIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784711697; x=1785316497;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HIWmYsirlfTwtwLrg8PTuYInqgKC4lp7bGK8C3SZZwk=;
-        b=alW/W/r3sGJI0MluIXA4ZHC2HaIGLpuMIwj5pKfsIb65C19H4eWbktGLgHnXwdTsPh
-         LbdLOs9T2MQS3O7X8EeL+OL6alm1XTBtoF9CI1zcyyH6w/4WgL0MXW26goerRyvVN2lM
-         5vTp7C5x8+OrOvqWMhpjJVo7kMkdADUsLVnkgEJK0x3ZnUmLZj3JGZJzVcyUC5SKSfsW
-         eAo/lLU2th9PrDyHyeArSPMEO85Ia24YCMxHvMH/0cn03LFGXf4MhCg/KyB9F6mUCT8t
-         xdDJoet8DAyXcK53OxRWmBML20hqjs5WYktuocd/dNErDh7182dEtvKEujSZSKc5lrYQ
-         pQuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoDpj3SNDGUFH9n1pUIU3neSjATdPek1OxIXt23mWW4oorEW10ICQI0dcOs0R1WLaZu3d8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq9VE3TL6ZVHbnbbmqmTB5EAtosqpQ36AcRPSnta6+PmE4UhWG
-	xhDnmvEFwrWgq/0I4wJrQfEnhAcx9OvLzV1cmsp1K8Rr6jYzz6IEXiN2DgPuQkWggp2sou8Uvgx
-	9vlkT3PisQ3SSDDjt5Bm1pxoK5LxzIk01oHlkRz7W9j9K5kBXZ2xi4w==
-X-Gm-Gg: AR+sD13MLDwDnNLyeJ5NvOnuw6Nw5O74GTMnGRbbX/xidu1bLFKAvMJqYUF4wrOWRPi
-	AX2NREIGETnluvtVfoHM/iX7/b0+mHQbfV4UtxoszVUo+2Wvl4XOFtARFNDQVhLitGnZLKSq3lF
-	B0/8si9aZxa70PF62YjdVCyiZJ2M5Do9uasAyM/RUeqNWzLudlVP02NCLlVupbdXDB4kAXQ5fDz
-	PZWjQD9qIdnGCQjljwAqlF811fJbV/H1e331xQbbQj6yml+dIZXPtSNJhsCp513Tzs4+Ky4iNzs
-	smWXFOxzcKTlhQFR3+Sum6MpxvVUG5DDrdpUB/DFNzYfX/EjMzMcj02Qf1Mc2nkFyNBQ4AE+Woj
-	ydg+iTjd7RZvoaK2Er+hqps/EOraE8gExEsgz5yWkkRJlUeofmQ==
-X-Received: by 2002:a05:6000:178c:b0:47f:71dc:d848 with SMTP id ffacd0b85a97d-47f71dcd8d9mr16850980f8f.12.1784711696918;
-        Wed, 22 Jul 2026 02:14:56 -0700 (PDT)
-X-Received: by 2002:a05:6000:178c:b0:47f:71dc:d848 with SMTP id ffacd0b85a97d-47f71dcd8d9mr16850922f8f.12.1784711696414;
-        Wed, 22 Jul 2026 02:14:56 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85b9a5a2sm4619604f8f.7.2026.07.22.02.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 02:14:55 -0700 (PDT)
-Date: Wed, 22 Jul 2026 11:14:53 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 3/5] vhost/vsock: re-scan TX virtqueue on device start
-Message-ID: <amCKAp08S68JWXRf@sgarzare-redhat>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-4-andrey.drobyshev@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQajkfa9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A11D1F000E9;
+	Wed, 22 Jul 2026 09:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784711796;
+	bh=hEH7kKvqt1/KHUTe1tqWiXTLezrqII4VElE0IVB2D/I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YQajkfa9J6f4vm6T9dSUnt+jyEYWab07/JuzVrW21g3thiAdqJHipDNVNxlLVxzFP
+	 9+leosh8NuAupnv4wGq+PL6qA85lvFLa+NJ/Lehq6O1YktaiYU9WfO2VmfFYE0xdia
+	 SKP5tAXWI13AvGWHKaMMNUZ+O72aVaauJJfto/VDaTkDXmU42cAWEi/E8Qg+CaglOV
+	 dPEyv4Hg9BAZ+F9uF0lOiGYCEIGYs+YStr1m+7RKitJlf69PXzFzI5BnzKHWh9RNVq
+	 1TcaqJHIikSwlOLImttPqjBZEZAwooQY0GhcWPaz44n0ZV3ix9CQMxXOFJhgxxC7JU
+	 vWTW3vPQgeF7Q==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wmT46-00000007YV5-2Gq5;
+	Wed, 22 Jul 2026 09:16:34 +0000
+Date: Wed, 22 Jul 2026 10:16:34 +0100
+Message-ID: <86fr1be64t.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org,
+	"Oliver Upton" <oupton@kernel.org>,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3 24/28] KVM: arm64: Engage NV3 ERET trap elision
+In-Reply-To: <20260722085035.0FAB71F000E9@smtp.kernel.org>
+References: <20260722074234.3330999-1-maz@kernel.org>
+	<20260722074234.3330999-25-maz@kernel.org>
+	<20260722085035.0FAB71F000E9@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260720102241.371610-4-andrey.drobyshev@virtuozzo.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org, kvmarm@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Mon, Jul 20, 2026 at 01:22:39PM +0300, Andrey Drobyshev wrote:
->During QEMU CPR live-update (and VHOST_RESET_OWNER in general) the guest
->keeps running while the host drops and later re-attaches vhost backends.
->If the guest adds a buffer to the TX virtqueue (guest->host) and kicks
->while the backend is temporarily NULL (between vhost_vsock_drop_backends()
->and the next vhost_vsock_start()), then the kick is delivered to the
->vhost worker, handle_tx_kick() sees a NULL backend and returns, and the
->kick signal is consumed.  The buffer is then left in the ring.
->
->Then upon device start vhost_vsock_start() only re-kicks the RX send
->worker, never the TX VQ, so the buffer is processed only if the guest
->happens to kick again.  But if the guest itself is now waiting for data
->from the host, it will never kick TX VQ again, and we end up in a
->deadlock.
->
->The issue itself is pre-existing, but it only manifests during a device
->pause caused by VHOST_RESET_OWNER.  Namely, the deadlock is reproduced
->during active host->guest socat data transfer under multiple consecutive
->CPR live-update's.
->
->To fix this, in vhost_vsock_start(), after kicking the RX send worker, also
->queue the TX vq poll so any buffers the guest enqueued while we were paused
->get scanned.
->
->The VHOST_RESET_OWNER ioctl itself is implemented in the following
->patch, thus this patch is a preparation to support VHOST_RESET_OWNER.
->
->Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->Reviewed-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
->---
-> drivers/vhost/vsock.c | 7 +++++++
-> 1 file changed, 7 insertions(+)
+On Wed, 22 Jul 2026 09:50:34 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] NV3 ERET trap elision (HCRX_EL2_NVTGE) is evaluated statically at vCPU initialization, failing to reflect dynamic changes to HCR_EL2.E2H by the guest, resulting in a severe performance regression.
+> - [Low] Typographical error in the newly added comment for NV3.
+> --
+> 
+> --- Patch [24]: [PATCH v3 24/28] KVM: arm64: Engage NV3 ERET trap elision ---
+> commit c8d6c5654353c481c8b8e9e0a6741ae11cc31c69
+> Author: Marc Zyngier <maz@kernel.org>
+> 
+> KVM: arm64: Engage NV3 ERET trap elision
+> 
+> This patch enables ERET trap elision for L1 contexts on NV3 hardware by
+> setting HCRX_EL2.NVTGE, and adjusts the EL2 fast-path to bounce back to EL1
+> when NV3 and E2H are active, assuming the hardware handles the fast path.
+> 
+> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> > index c562d8171d5e1..b32870a5e1236 100644
+> > --- a/arch/arm64/include/asm/kvm_emulate.h
+> > +++ b/arch/arm64/include/asm/kvm_emulate.h
+> [ ... ]
+> > @@ -706,6 +706,16 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
+> >  
+> >  		if (kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_V))
+> >  			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
+> > +
+> > +		/*
+> > +		 * NV3 is a host-specific extension, and we always use it
+> > +		 * when present and that the guest uses NV. It may be be
+> 
+> [Severity: Low]
+> This isn't a bug, but there is a typo (be be) in this comment.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Fixed.
 
+> 
+> > +		 * hidden from the guest though.
+> > +		 */
+> > +		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
+> > +		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
+> > +			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
+> > +		}
+> 
+> [Severity: High]
+> Does evaluating the dynamic guest state vcpu_el2_e2h_is_set() here work correctly
+> given this populates the static vcpu->arch.hcrx_el2 cache?
+>
+> If the guest hypervisor (L1) initializes and dynamically enables HCR_EL2.E2H
+> after KVM has already initialized the vCPU via kvm_calculate_traps(), this
+> HCRX_EL2_NVTGE bit won't be set because vcpu_set_hcrx() is not refreshed
+> dynamically.
+
+vcpu_el2_e2h_is_set() is a fixed value. Always. It cannot change.
+
+> 
+> This causes the hardware to fail to engage trap elision, forcing the ERET
+> instruction to trap to EL2 where it encounters the new check below.
+> 
+> > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+> > index cbda9e087db39..4ed745bdde418 100644
+> > --- a/arch/arm64/kvm/hyp/vhe/switch.c
+> > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
+> > @@ -345,6 +345,10 @@ static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
+> >  	u64 esr = kvm_vcpu_get_esr(vcpu);
+> >  	u64 spsr, elr, mode;
+> >  
+> > +	/* With NV3, the fast path is handled in HW */
+> > +	if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
+> > +		return false;
+> > +
+> 
+> [Severity: High]
+> Will this unconditionally abort the fast path and force a severe performance
+> regression if the hardware trap elision wasn't engaged?
+
+As the comment says: we never get there if we're not *already* on the
+slow path. That's the spec. Read the spec.
+
+> 
+> Because the HCRX_EL2_NVTGE bit was evaluated statically in vcpu_set_hcrx()
+> and missed the guest's dynamic update, the ERET traps into this function.
+> 
+> kvm_hyp_handle_eret() evaluates the dynamic E2H state, correctly observes
+> that it is now set, and returns false under the incorrect assumption that
+> the hardware handled the fast path. This bounces the trap to the slow host
+> EL1 path, forcing a full, expensive context switch to emulate every L1 ERET.
+
+Yet another Artificial Idiot nonsense.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
