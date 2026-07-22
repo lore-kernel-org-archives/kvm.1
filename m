@@ -1,315 +1,170 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FEF3BE17D
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF5328CF5F
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784712945; cv=none; b=gDqlz279zJPUx6NVsxweVrtAph5dvyjOyVgEYAYz6y2ZKqaAtAGAWff+dYKWUmYySO0UL1cyuMQNtPM4Yl3BKcvKFOSoNqKlmf2NwRuLrM/QAsywcHyB2uz7Nj3SN2AU3Mf27Wqr/fzrArZrPlcOd2akfvFh31zU5OuPlwi8/Wk=
+	t=1784713424; cv=none; b=epb1jdEOfypiBV5hGoY5zl+ByDQvAZW/op1FnfDSkD7Qv0hjaXUsJ5QpVm6pP3y60Dy696ViZkwBNDGMDff2D0RHpowjYeI0S5rQhF4HS3rcTxhbKNXiBbm2OhjpSZqMid7SdkspBENzbPJuSxwKuDUZAc7rMRFZLQmcgtRF8g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784712945; c=relaxed/simple;
-	bh=GG2EOvrsApZCeL1C+Pb/We/gJRTuu4NFd+kjd4iSItM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r5YPw/R55a5LwwwwkoJhm0qnAllquszyuF9ojgssOapwv42kzNkLroBeOO4zG68TP+6TIyIDMzbqL89+YBA5SQSHvPBkQ7iJvF2z50ZumvlSVCXp4yIXg1e22MMxBnVJOTq/gO1hkj3Na+g7lf6o+sEx7FAmvMOEncm8BgRYHgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=agLrWkPh; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784713424; c=relaxed/simple;
+	bh=0Yu4rlSKE6ROlYI+xvQFCojN8cuCLeFtTpz/TZVKheI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xklh6O60DBvZabxiwYtS1kvc/2JzJ0AZ5xMatQEz9RVB/6wF1fvzX4SkzYYjgyxcfduSaP3CyyV9VaG0Hoa8yTGbmj0UoqdxjQFhbT5DaBDxdLyzjKj9rVNg5Z/IqalX5FUsiwC06FDt5sRgIlY6S6ZFARtQhQj7knxB9x5NNB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DlEBd4UO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=m4iGIw4f; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="agLrWkPh"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c15b1da6b82so960281566b.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 02:35:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DlEBd4UO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="m4iGIw4f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784713418;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+	b=DlEBd4UOWy1JooXFCICfErUOmkGX2kNPeWuWyvk6DC/XjhUK5Ed4o5wS148UP+xZW+oxZQ
+	gcxelNvAMDRSXNMnxWbfY+AIVNgzJ+gCe4LMwKOK5mopjszjOdZfo5d9QKMkVki+IV/0e+
+	GNJofbLDZ/pIsGqVyzK9RR5xJf9GY7I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-UPyGnqOnOUGmZBYk_cu8Cg-1; Wed, 22 Jul 2026 05:43:37 -0400
+X-MC-Unique: UPyGnqOnOUGmZBYk_cu8Cg-1
+X-Mimecast-MFC-AGG-ID: UPyGnqOnOUGmZBYk_cu8Cg_1784713416
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-492488f8583so163297055e9.2
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 02:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784712941; x=1785317741; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dFy4yNyzmo3UbOv6Xs2SIMr6v8Q5AhI2ZjktcOYD0w8=;
-        b=agLrWkPhHBIv5YF4CciQoQzc+Hf2Qc+YCv6KFnYLFc4cV5YAOyQuZ1AsM3DWqnLKhw
-         wZ76dwNftBiE1EqtJh95tPCMrFZTotHnEEu2jzXqn5MO453nE4KmwAzx0ne5e/M1FDlp
-         rtksDnCPGuFJUacOEWKQbpgQRlszBFYvgndYdITeqXDUEA4M+FoBxok0hu1QFG2lKWkW
-         LhmFnqFPUZ33jjlYPIx68VO1GwhzEoUncyIsa53J/hB3pb+evxYtSgpHRW4YQPtIrUhZ
-         On54WiemrUnFt9zd2soD10WplOhprKNLyDLdupND1j4yp/fgTI21NggxzkGH7uULeLLh
-         i99A==
+        d=redhat.com; s=google; t=1784713416; x=1785318216; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+        b=m4iGIw4fwMJ4eClSg4VQcJJ7nO0RUDgRRwOgdEklc68gUDuxiMNbBggNaIsUPuK8fR
+         8USwE3AvOROPdKhxhfDEgtIkOC0gpkcPqe9nABLTRuGbDjcqz9U7Tj8s+swjAlFSv8qX
+         uatAXgHpoe40T2A3OkRaWEsQNHZZrD+vhkXmAkY4bfZUqS/fYKAwcrlX4NNhDGssPpNc
+         LZSpGwzDfjNrFgwJzl/hhAspG1Gy14/J0Ynum6kSD3CQLi47dMqdiEszi5FNl9gJ4Qgm
+         FpjJI1i0t+8ctJnGxUtxfIYFGFePXmotNFCCZC1XYjWIY9X+UKXu9h8V0t4k3cXxie0P
+         1jEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784712941; x=1785317741;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dFy4yNyzmo3UbOv6Xs2SIMr6v8Q5AhI2ZjktcOYD0w8=;
-        b=IyNavCmyIjGTzmwVfkbeiph2XRUmK99sI/K9EDFHpGWL7GRCZrLuxuqGaJ4Hr71phT
-         yDzOh8KWJ4uthHEGiPB81fnUGtFJK0Rj5msaeo5jjFtcRgHAv+WzLbJr4gLF408rMcyw
-         PnZGgYrk6O16FfuxhwdfqiOSRAP+3NpIYOWxUbu9p0rD+aAnVZFazXzCWGNjNpSwD128
-         9BwAE4XrcQGO1jwD5z2NJL0IkI8gFMwmcGBw5jYdvREtDHAnyOlvLoMFI7luuUwxjsDe
-         9Z7MItcxkemIiNCdfkczqVxjdQGWsEzdGd8IlVRUxEDwWWTc0t2DcIBLMUWAt3nkg3tB
-         7xMQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqIvTCZWRTgC1LGdc1w1u1tzgR0PgQNUE6iyCHYVPG7gbD0rZQ0RvRFXbtWVzIjjXKfu2M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv9mzfsPQ+v3ifUz6i/tbvogOYnoVg2KdjT6eE5G+oJEtmfm6z
-	rNda1cjvNfpZ1I+YAbrnZM6IgcvUyxaeLYzKNpWDeUEH3lB3KuyQNA+MZ2XEtmU/rlw=
-X-Gm-Gg: AR+sD121F1ilD8rJElwBw4ibIax05UmPU1yeX/Pphkzxgpdi3wVh1TTRSCzeywpVBQD
-	GuU5wc3eLjuxfWVjgo/HQVYhrnG0SZ66y6FWrwh4LgFpyL0E5tGk0WSav73RkBvWZa3FGkUl8TE
-	UdtN4K4EoGqmuq075NjJku8L0NgIFOApcsJxxC14lpEU9305iK6AQCVVSSGbabIMm/DqpY/04Xr
-	8YWxbsvbFZGHbdRLfHQ8k0U3/xz35P/W+vP1erXK32MMjTEAH9mpplJFqxVCwQrjOICMY5hea8k
-	TIcseeho2sU9gXWljqeImbS938aqRRCgo6/Dsxezhgg6TZTHsvMqmBiDIhCv7gLn/qMt7n4NRq9
-	g5lip+8AItimy4Qe6HY4Tb4Ye/k8a6Ju3juYP0+NeOY3HfGWNGcRS0a5YeUxbMq8yPqW1mzY=
-X-Received: by 2002:a17:907:3f99:b0:c16:592b:ec4c with SMTP id a640c23a62f3a-c16b46990d8mr926168866b.1.1784712941118;
-        Wed, 22 Jul 2026 02:35:41 -0700 (PDT)
-Received: from [172.16.0.229] ([159.196.52.54])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f02e454sm882841a12.0.2026.07.22.02.35.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 02:35:40 -0700 (PDT)
-Message-ID: <8ef80fa7-6c93-40bc-8a49-bf6494104cb7@suse.com>
-Date: Wed, 22 Jul 2026 19:05:33 +0930
+        d=1e100.net; s=20251104; t=1784713416; x=1785318216;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1qKPjC4I/XXec2U4Xjf51wijAauyxem8KgFjfP+Lbs8=;
+        b=iOtAibFO9+7me6mJMv3vW722VmL3qAfhUuwwpCImt5sDkWQCfeeyTSoWKIiYywRikX
+         r7gHt6s7hVTDBotO8uk0S5ljg/OmMx4/eXsJMcRS6Y9SQNqCpK7+FrBQmFiMzZKvcvOk
+         HE0XZppj5STJ66oyBieM4QmlvX3UaxlJRJamCA3mGAryZ0Rfb4yCJ8YDGGvzYOS+FkES
+         tNZtTCiNBcjFyMiwENw+veAN+RSe7Yn95pvgEzKscNBcLv5aH2YwaI7TFmYSH9IPTkaY
+         r4J34aV+Dgx3jYIHPORValolkSLoUFJvUuM6Xai0LW7EQa2aK6GYx59Rln8QyNuRGwQ4
+         v59A==
+X-Forwarded-Encrypted: i=1; AHgh+RoNhX70LaEIhwo8j8ckHU7c9U/IrKGiifum2UGvCjkMGU+0B5gRQwqTRCXcTnUmHWj/8O0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7ebo5HOOtiHjKi7/Oh9Eczm2eOdBIogUyOK4HTMZUIqkGK09g
+	ALs/g7Awc40pgUWgBl8daD/NS7ITt28BtCjJWdvGur8hYJYeLJZTqEbUFoaOIInVlifGhGfuVUA
+	i3UOyVdE1C17AZkSt+UbAbTG820xnygtkWzzwgLA4J4sDXs7bvyOZrw==
+X-Gm-Gg: AR+sD13K7i9+GBVX1Ekn1ZkuzAovyqnu/QudxzLMhK69JJuPp5bNX4vWZBaksYHcH9I
+	3M/J2dNMQE1lUMrkavncJBFyFH1+VP28aMOFsll7TaA/ztm+77xYWn7bW82A6py5JzoReZOccB/
+	byEjsQ3iiLKN02KpyDxZo2lojGhOELSUvw5iA2i7FrOk/0As4A/Ke7jHyIwfvS2Y49DWMrjC22Q
+	dlw+wk0M5tz3m0SjlNC3tJU7JWHbQYLLARS9c+vZRUXJvvVz4I5nv/m5FpaXALov126IXYTR1Tn
+	tV4Vuh9EdrI9v0HXne0NQR5AdNj7wpLodsIomB9cfdq8jHYJcBLPfsZRy1Wx/IVO4xeuRMPEPYq
+	dPsxiexEV8dqg1nuk1Oszkka0Ozn44TmxNSQYaBmnmbmDCAan4A==
+X-Received: by 2002:a05:600c:42c6:b0:495:4182:4456 with SMTP id 5b1f17b1804b1-4954a4104e1mr155441665e9.29.1784713416072;
+        Wed, 22 Jul 2026 02:43:36 -0700 (PDT)
+X-Received: by 2002:a05:600c:42c6:b0:495:4182:4456 with SMTP id 5b1f17b1804b1-4954a4104e1mr155441405e9.29.1784713415638;
+        Wed, 22 Jul 2026 02:43:35 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bb81dcsm4825813f8f.12.2026.07.22.02.43.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 02:43:34 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:43:29 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
+	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+Message-ID: <amCPLOrnpYmr5n0p@sgarzare-redhat>
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
- Qu Wenruo <quwenruo.btrfs@gmx.com>, linux-btrfs@vger.kernel.org,
- Linux Memory Management List <linux-mm@kvack.org>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
-Cc: David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
 
+On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>vq->worker and queues work on it.  vhost_workers_free() however clears
+>the vq->worker pointers and immediately frees the workers, without
+>waiting for a grace period.  A caller that fetched the worker right
+>before the pointer was cleared can therefore still be queueing work on
+>it while it is freed.  And even when the queueing itself wins the race,
+>the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>future attempts to queue it are silently skipped.
+>
+>None of the current callers can actually hit this: net and scsi stop
+>their virtqueues before the workers are freed, and vsock unhashes the
+>device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>in vhost-vsock keeps the device hashed while its workers are freed, so
+>the lockless send/cancel paths become able to race with the teardown.
+>
+>Fix this by clearing the vq->worker pointers, waiting for a grace
+>period, and then flushing the workers so any work the last readers
+>queued runs before the workers are freed.
+>
+>Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>---
+> drivers/vhost/vhost.c | 11 +++++++++++
+> 1 file changed, 11 insertions(+)
 
+Sashiko reported some potential issues here:
+https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
 
-在 2026/7/22 18:59, Christian Borntraeger 写道:
-> Am 22.07.26 um 10:59 schrieb Qu Wenruo:
->>
->>
->> 在 2026/7/22 18:05, Christian Borntraeger 写道:
->>> Am 21.07.26 um 23:07 schrieb Qu Wenruo:
->>>
->>> First, thank you for taking the time to look into this and trying to 
->>> understand
->>> things and trying to explain things. this is highly appreciated.
->>> I am still trying to fully understand this myself. A question:
->>>
->>>> 在 2026/7/22 04:41, Christian Borntraeger 写道:
->>>>> A folio can carry the folio-level dirty flag while its btrfs subpage
->>>>> dirty bitmap is empty: btrfs data mappings use filemap_dirty_folio(),
->>>>> so a generic folio_mark_dirty() call sets only the folio flag and the
->>>>> xarray tag, without setting any subpage dirty bit and without a
->>>>> delalloc reservation.  The typical source is set_page_dirty_lock() on
->>>>> a GUP pin,
->>>>
->>>> Shouldn't such folio got its ->page_mkwrite() callback get called 
->>>> first?
->>>
->>> Isnt that called implicitely at pin time?
->>
->> I have to admit, I'm not an expert on the MM part, I'm mostly a simple 
->> user of the existing MM interfaces.
->>
->> AFAIK, the last time I brought this thing up, Christoph mentioned that 
->> dirtying-folio-without-notifying-fs is a bug, and fs should not and is 
->> not able to handle such situation anyway.
->>
->> And that idea makes a lot of sense to me.
->>
->> So adding MM list for more help.
-> So I now have an userspace O_DIRECT reproducer outside of KVM. 
-> (attached) which gave me (on an s390 system, though)
+IMO the first one is pre-existing, but not really sure it is a real 
+issue since happening when the worker/vmm is going to be killed.
 
-Thanks a lot, I can also reproduce it on arm64 (64K page size).
+The second one also not sure if it's an issue since the sender is not 
+lockless IIUC.
 
-This is super bad, as we have just removed a lot of folio ordered 
-related code to detect such problem.
-
-I'll also check if it's some recent btrfs changes making it worse.
+But, please can you double check them?
 
 Thanks,
-Qu
-> 
-> [  189.067731] sysrq: Show Blocked State
-> [  189.067872] task:kworker/u1665:5 state:D stack:0     pid:1363  
-> tgid:1363  ppid:2      task_flags:0x4208060 flags:0x00000000
-> [  189.067877] Workqueue: writeback wb_workfn (flush-btrfs-1)
-> [  189.067884] Call Trace:
-> [  189.067886]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.067891]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.067894]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.067896]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.067902]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.067907]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.067910]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.067915]  [<000003a8b2324590>] __writeback_single_inode+0x50/0x310
-> [  189.067917]  [<000003a8b2324b1a>] writeback_sb_inodes+0x2ca/0x690
-> [  189.067919]  [<000003a8b2324f36>] __writeback_inodes_wb+0x56/0x140
-> [  189.067921]  [<000003a8b2325498>] wb_writeback+0x368/0x460
-> [  189.067923]  [<000003a8b23258c6>] wb_do_writeback+0x336/0x3d0
-> [  189.067925]  [<000003a8b2325d2a>] wb_workfn+0x5a/0x1d0
-> [  189.067927]  [<000003a8b1f0cee2>] process_one_work+0x1d2/0x480
-> [  189.067932]  [<000003a8b1f0df30>] worker_thread+0x210/0x420
-> [  189.067935]  [<000003a8b1f190b8>] kthread+0x148/0x170
-> [  189.067939]  [<000003a8b1e90358>] __ret_from_fork+0x48/0x220
-> [  189.067941]  [<000003a8b2e2426a>] ret_from_fork+0xa/0x30
-> [  189.067994] task:oob-dirty-repro state:D stack:0     pid:8152  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000800
-> [  189.067997] Call Trace:
-> [  189.067998]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068050]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068052]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068054]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068057]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068061]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068063]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068066]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068069]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068072]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068074]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068079]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068084]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068086]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068088]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068090]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068094]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068098]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068101]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068106]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068108]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068109]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068112]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068114]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068117]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068120] task:oob-dirty-repro state:D stack:0     pid:8153  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068123] Call Trace:
-> [  189.068124]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068126]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068128]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068130]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068133]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068136]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068138]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068141]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068144]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068146]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068149]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068152]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068154]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068156]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068158]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068160]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068163]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068165]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068168]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068170]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068172]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068174]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068176]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068178]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068181]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068184] task:oob-dirty-repro state:D stack:0     pid:8154  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068187] Call Trace:
-> [  189.068188]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068190]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068192]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068193]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068196]  [<000003a8b26260fc>] btrfs_page_mkwrite+0x25c/0x8d0
-> [  189.068199]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068202]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068203]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068206]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068208]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068210]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068213]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068215]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068218]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068219]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068221]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068223]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068225]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068228]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068231] task:oob-dirty-repro state:D stack:0     pid:8155  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068234] Call Trace:
-> [  189.068235]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068237]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068239]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068241]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068244]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068246]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068249]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068252]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068255]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068257]  [<000003a8b2637d3c>] 
-> btrfs_start_ordered_extent_nowriteback+0x18c/0x1d0
-> [  189.068260]  [<000003a8b26260ce>] btrfs_page_mkwrite+0x22e/0x8d0
-> [  189.068263]  [<000003a8b21f89d0>] do_page_mkwrite+0x60/0xf0
-> [  189.068265]  [<000003a8b21ffa64>] do_wp_page+0x134/0x660
-> [  189.068267]  [<000003a8b2206584>] __handle_mm_fault+0x1c4/0x5a0
-> [  189.068269]  [<000003a8b22069f0>] handle_mm_fault+0x90/0x230
-> [  189.068271]  [<000003a8b1ebfbd0>] do_exception+0x190/0x560
-> [  189.068274]  [<000003a8b2e136c0>] __do_pgm_check+0x1b0/0x370
-> [  189.068277]  [<000003a8b2e243a4>] pgm_check_handler+0x114/0x160
-> [  189.068279]  [<000003a8b283135e>] _copy_to_iter+0x6e/0x870
-> [  189.068281]  [<000003a8b2831c4a>] copy_page_to_iter+0xea/0x160
-> [  189.068283]  [<000003a8b219ff8c>] filemap_read+0x1ec/0x400
-> [  189.068285]  [<000003a8b22d0a70>] vfs_read+0x210/0x370
-> [  189.068287]  [<000003a8b22d1694>] ksys_pread64+0xa4/0xd0
-> [  189.068289]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068292]  [<000003a8b2e24242>] system_call+0x72/0x90
-> [  189.068294] task:oob-dirty-repro state:D stack:0     pid:8156  
-> tgid:8151  ppid:7260   task_flags:0x400040 flags:0x00000000
-> [  189.068297] Call Trace:
-> [  189.068298]  [<000003a8b2e19284>] __schedule+0x374/0x900
-> [  189.068300]  [<000003a8b2e1984c>] schedule+0x3c/0xf0
-> [  189.068302]  [<000003a8b2e1996c>] io_schedule+0x2c/0x40
-> [  189.068304]  [<000003a8b219d158>] folio_wait_bit_common+0x198/0x3b0
-> [  189.068307]  [<000003a8b263e2e8>] extent_write_cache_pages+0x348/0x4d0
-> [  189.068310]  [<000003a8b263ea0a>] btrfs_writepages+0x6a/0xd0
-> [  189.068313]  [<000003a8b21ad444>] do_writepages+0xd4/0x190
-> [  189.068315]  [<000003a8b2199dec>] filemap_writeback+0xbc/0x100
-> [  189.068318]  [<000003a8b2199e5a>] filemap_fdatawrite_range+0x2a/0x40
-> [  189.068320]  [<000003a8b232bbf2>] sync_file_range+0x122/0x150
-> [  189.068323]  [<000003a8b232bc84>] ksys_sync_file_range+0x64/0xb0
-> [  189.068326]  [<000003a8b232bd0a>] __s390x_sys_sync_file_range+0x3a/0x50
-> [  189.068328]  [<000003a8b2e13b7e>] __do_syscall+0x14e/0x590
-> [  189.068331]  [<000003a8b2e24242>] system_call+0x72/0x90
+Stefano
+
+>
+>diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>index 4c525b3e16ea..d6e235c25254 100644
+>--- a/drivers/vhost/vhost.c
+>+++ b/drivers/vhost/vhost.c
+>@@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>
+> 	for (i = 0; i < dev->nvqs; i++)
+> 		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>+
+>+	/*
+>+	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>+	 * reader that fetched a worker before we cleared the pointers above
+>+	 * may still be queueing work on it.  Wait for those readers to
+>+	 * finish, then flush so any work they queued runs (clearing
+>+	 * VHOST_WORK_QUEUED) before the workers are freed.
+>+	 */
+>+	synchronize_rcu();
+>+	vhost_dev_flush(dev);
+>+
+> 	/*
+> 	 * Free the default worker we created and cleanup workers userspace
+> 	 * created but couldn't clean up (it forgot or crashed).
+>-- 
+>2.47.1
+>
 
