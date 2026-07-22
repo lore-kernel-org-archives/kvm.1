@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C18A470438;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90F947125B;
 	Wed, 22 Jul 2026 07:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706177; cv=none; b=lkRscMWN48j5vSmz5jzDRYVue4WhDhgvUUT1ru1M1zqzKhUuiyHU4iP7Hzhv3T8x1WQNg62uQ8ZhuGK5BNyI3FHex+dRx1JZR1L4kuMQ/rxNoMbOuUEPDDHlbmLFROn+Bjj8S6cpHDZqIrvSWwPO9GRjfia8WSkJoZtqgrMi4zc=
+	t=1784706178; cv=none; b=nssW7THuR9y8OBpZsTplUH6kLLXoAGqpcKPE0qhU6/HKP8cWSLd2T6fB44QMwD1UWDvOG66bMQEoToWg09eBT/l26Lq1F+I+ZqhHXTGjajqVun+BjP8Wj0ucu2YyghaPyPX5+PwAzF/xjVSfWX5RKqZAmG54yr4zuZ7pv/2Agp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706177; c=relaxed/simple;
-	bh=etB1t/Jsz/3VAMQWA59DJSYR3ZvZWtHnl2p9vlqiIB0=;
+	s=arc-20240116; t=1784706178; c=relaxed/simple;
+	bh=1oI0ojKzOYyrYr2Czs3TgbpYBucGl/eqJ0RhaXxMA7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PovQGLcHGMQGjFxXxftBPzu8RMwpqKN9arV2St9cvh2vlq21gfsLQuYlYAyHKnbzFTF8TEUQxCbNT35vgb5MIxfiAh+GJpjhBqLOTTIJNInAJC+vx7aWZwyGVxMMWaS3GVbD/G8f95kiPTB5CSQtZuwim+89kr180J93fYf6eao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WExykvXJ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MT8vGHJ6bnIPyOomHKByM2i/gTe63SZOdqxx67USy3qC75aEIOnLbnhThBtVAMZ2A2ShLktH+TvXgZr989960tK27DA/sHEVzoVKwoPzifd9vIJ30uUd6BZWKh8NeCUbE1rvxi05LceVAdwKNExHdnc48I/nzDyQ5jUqO/9834c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9ok6saI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WExykvXJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0A81F00AC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9ok6saI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7986A1F00A3D;
 	Wed, 22 Jul 2026 07:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784706176;
-	bh=AAaWVXp7htB6pd1cjG1QCcAG4F8gffJDPJKffSqmwRI=;
+	bh=L8kxiEOu8cCrGY0sX3QNEyS9vCZ9rmhBCDv3n6ZxaDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WExykvXJO/7dwIQyy+HhxJwZ9vCm77VxMR+nSLr6QZ5b12/UAkuNffJR/tO+9WJPx
-	 8dqvmeU1bdN3L4e2/6Gc3PC6It40MBJS47vrcUL5HqkM3Y79eUQWB+HVUIFATCiUP8
-	 9iE72x9UZJI1m7a1rU83sI3SSud2t6ppU7N1MdO7OzBLsoldk1HvzIesIM+4AhXT0s
-	 b1c8X+HtcIk+e2yErOUua668InnZ+RjlpAIw7fwJl1UNUJRKAF3LfdbBm4IYUVah38
-	 v1VEQOoJ6HKWKzEOcEx+gOBi4b0GME0hfmtFFF94ZRJ71VSSayxgLGUMfhrUntajaG
-	 iMuHSnkW4KNig==
+	b=O9ok6saIM6RQMpbWuXNyP6yv+g1cotflEOG4rZYyvN5JOwU+h7lZntUTtI79Paz6H
+	 JkTgUsnXMaiid551kLgy8Cbs4Y/cwibxfc9GaResKZEOyF9U0xexlZ0eSa8gJ0a07Y
+	 BiWpZWLR/1mEyRPG9fc2t3oH1tHCK0uWtESz2grBrAc8Z5CouR20Vx2wE8kNrff7VM
+	 IVHpJCMvZpVM5Lp8442l3kkKmbrRg5U+4plsEh4daGBqJ2sWghnCOr6TYx2CIviI42
+	 aBNyMyt5oNov4w9OAe+JXgdTjfXG6vIRuvgiW5jYj+0afFklslXvmNN1qRueaTr6xy
+	 AArhhssPzbNtg==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wmRbR-00000007VfN-3jpJ;
-	Wed, 22 Jul 2026 07:42:53 +0000
+	id 1wmRbS-00000007VfN-2WkB;
+	Wed, 22 Jul 2026 07:42:54 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v3 01/28] arm64: sysreg: Emit RESx/UNKN values for Mapping/Fields definitions
-Date: Wed, 22 Jul 2026 08:42:07 +0100
-Message-ID: <20260722074234.3330999-2-maz@kernel.org>
+Subject: [PATCH v3 02/28] arm64: Update ID_AA64MMFR4_EL1 description to 2026-03 JSON release
+Date: Wed, 22 Jul 2026 08:42:08 +0100
+Message-ID: <20260722074234.3330999-3-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722074234.3330999-1-maz@kernel.org>
 References: <20260722074234.3330999-1-maz@kernel.org>
@@ -61,50 +61,71 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The sysreg file is using the Mapping or Fields qualifiers to indicate
-that a given encoding is only a mapping to a particular register (or
-an instance of a more generic register definition).
-
-As a result, we don't output any definition, and instead expect
-the canonical definitions to be used.
-
-This works rather well for individual fields, but creates problems
-for macros that refer to more generic classes of bits such as RESx.
-
-Relax the above rule by emitting the RESx and UNKN values for Mapping
-and Fields qualifiers as well.
+ID_AA64MMFR4_EL1 has gained a few fields and enum values in the past
+few months, so resync its definition with the 2026-03 JSON release.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/tools/gen-sysreg.awk | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/tools/sysreg | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/tools/gen-sysreg.awk b/arch/arm64/tools/gen-sysreg.awk
-index 86860ab672dc7..e099f7d3b2833 100755
---- a/arch/arm64/tools/gen-sysreg.awk
-+++ b/arch/arm64/tools/gen-sysreg.awk
-@@ -228,7 +228,7 @@ $1 == "EndSysreg" && block_current() == "Sysreg" {
- }
+diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
+index 7cb61aca3797f..3171c87eb2447 100644
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -2386,17 +2386,40 @@ EndEnum
+ EndSysreg
  
- # Currently this is effectivey a comment, in future we may want to emit
--# defines for the fields.
-+# defines for the fields. "Mapping" does emit the RESx/UNKN definitions.
- ($1 == "Fields" || $1 == "Mapping") && block_current() == "Sysreg" {
- 	expect_fields(2)
- 
-@@ -239,9 +239,9 @@ $1 == "EndSysreg" && block_current() == "Sysreg" {
- 	print ""
- 
- 	next_bit = -1
--	res0 = null
--	res1 = null
--	unkn = null
-+	res0 = $2 "_RES0"
-+	res1 = $2 "_RES1"
-+	unkn = $2 "_UNKN"
- 
- 	next
- }
+ Sysreg	ID_AA64MMFR4_EL1	3	0	0	7	4
+-Res0	63:48
+-UnsignedEnum	47:44	SRMASK
++UnsignedEnum	63:60	MTEFGT
++	0b0000	NI
++	0b0001	IMP
++EndEnum
++UnsignedEnum	59:56	SCRX
++	0b0000	NI
++	0b0001	IMP
++EndEnum
++UnsignedEnum	55:52	TEV
++	0b0000	NI
++	0b0001	IMP
++EndEnum
++UnsignedEnum	51:48	TPS
++	0b0000	VAL_0000
++	0b0001	VAL_0001
++	0b0010	VAL_0010
++EndEnum
++UnsignedEnum	47:44	SRMASK
++	0b0000	NI
++	0b0001	IMP
++	0b0010	SRMASK2
++EndEnum
++UnsignedEnum	43:40	TLBID
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-Res0	43:40
+ UnsignedEnum	39:36	E3DSE
+ 	0b0000	NI
+ 	0b0001	IMP
+ EndEnum
+-Res0	35:32
++UnsignedEnum	35:32	EAESR
++	0b0000	NI
++	0b0001	IMP
++EndEnum
+ UnsignedEnum	31:28	RMEGDI
+ 	0b0000	NI
+ 	0b0001	IMP
+@@ -2410,6 +2433,7 @@ UnsignedEnum	23:20	NV_frac
+ 	0b0000	NV_NV2
+ 	0b0001	NV2_ONLY
+ 	0b0010	NV2P1
++	0b0011	NV3
+ EndEnum
+ UnsignedEnum	19:16	FGWTE3
+ 	0b0000	NI
 -- 
 2.47.3
 
