@@ -1,113 +1,99 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBF6345EC1;
-	Wed, 22 Jul 2026 20:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDF2352019
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 20:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784752854; cv=none; b=tKR4A/th9vqqYuQns2Mak8y+NqnzU2MstosqPVH3WLWk+S4+B15TJFwmlJnhGZcO+er1QyJiiyJoOe2y4fud7KNQwFyq1fSXYk11B2nuyd4ofdAEy6frAjy+iKcF4RJlGAYufkIWs+LfwxsQtuaDwoaEZU6xAN0k4wY7z1PznBI=
+	t=1784753161; cv=none; b=bGwAsJTjlZfMY7gMUPEcV+bi/rPnYh6+h2O6Tbu1kUn16qR3CPhHtDR3Gs9RvbiJEbeHirNCQcIdB9atxAKB6oLUBy+AWrsUB+ybiEWfnklr0vWv36onE0MKsRyasu4kTxuMHzCYfXquIFTE88yYYX+DgLcSlvxuo6g5V7JuTog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784752854; c=relaxed/simple;
-	bh=MW7m2jjynF2iry9O2w1L4Qc+wiQ9bjVZq6XG6lr4jCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BLnf8Ack8PuAfBG1rFlWWGCbX64DN82M/BfMUrHTXASjY/eyrfQpwU+HZNIIyuiYkeq+J+vPHeNFFEnBXI+LUHocYDowvfwUb0Fq+Al7nmmtFgqPHtPfjotOgxfFwK1PfOqGrJN3BxkmoX2IHBTojE12TDiTRih7N2YfWqS80lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=u905XyTg; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784753161; c=relaxed/simple;
+	bh=Jro+S1urwV9VgFmKgbhzrATwwOWCyi2FY/Wr2eFCpEY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tkR9aI5MlYtw7fZAWaqljwQdDhZD6Zg3FT6xjOjgBgT26q5M6/htmrPwT6mzflsT35HOKnt4mF3JjFTZY58Qh5rJEddWNx5FWJI1igLy25HzHOfCtWkJIWkK5YCBauvdwxi1kZ9zympoimXm8dzWjxxIvrMgZeY9DBhBe4ng9XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HcT3AwZJ; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="u905XyTg"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A41A51595;
-	Wed, 22 Jul 2026 13:40:47 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AED0A3F59E;
-	Wed, 22 Jul 2026 13:40:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784752851; bh=MW7m2jjynF2iry9O2w1L4Qc+wiQ9bjVZq6XG6lr4jCc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u905XyTg55ekAxzZmoFPwtPfxi5ZSTHzMYONIJRUH3y3Fm3Ceef193xeIS/KNVet8
-	 yxQtUrz5r9bnDKhbmP7Q6WsDlqh8n+se4+8VEFwxrwJi+9h/I/UO3XVjm15kHRCI43
-	 GxZw79GmfpaXJMh5WlC6vJc6NU4kBvXcntwV3zC8=
-Date: Wed, 22 Jul 2026 21:40:42 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Yeoreum Yun <yeoreum.yun@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
- compile-time folded pagetable
-Message-ID: <amEqyjdoUnD5lYev@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
- <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
- <amD7ab_KuJPdBQBh@e129823.arm.com>
- <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
- <amElnEbvRTjv2hyU@e129823.arm.com>
- <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
- <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HcT3AwZJ"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84842381150so22640414b3a.3
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:46:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784753159; x=1785357959; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=SisaSmmFXYUYWjETBTWlOGLFpT6OcQLzXOoQK4qPlWM=;
+        b=HcT3AwZJT9agiKrrLhKXzz93q0PYM6sSlChhP7vgm8/M9P+8lL8EkHd8bB6S1uA/eo
+         b6KCh4Mw2Tx4ca1YqTtBvvg2WmA62omMZ/bcyr0qARp99Btv+/dcJlf7hj8grI056WeH
+         RMnMWu4NzfPfygvUkhCc/Ooa8K9+mHdAPNrcsPhLM+iPEfbf495aJgINrJ6DsPEUAco6
+         Ew7Mw7+n5A7+SAPLopLdZoc/3gB+cb3J2I9af3Lh0s7UKl5rwAoFFRRX2NpXXY2C2ScO
+         bt7aH4ZdL/BKMUw+iPuP0/l0/wERTyjKgUnuBEtLUWu21g6bywxdUN4Gf820Jf7SXCWp
+         KRTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784753159; x=1785357959;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SisaSmmFXYUYWjETBTWlOGLFpT6OcQLzXOoQK4qPlWM=;
+        b=VCn2HWMevhkljNoHV+XGtHNrAUwmXz9iWstY1dhtv8fzHjh9cqNzk6GH6OnRi8zxBZ
+         6ACyhk4oyslCZHYDLjFUSyxtfWVpA42PJpEdiOJZJXhqXy5rcnXV4I2A8qTskwI5PR4k
+         70/JzXil2QgYwzPNcxz65YIFR8XzdvjxyWwbAUy7XqaSTiKRe74qxh1Kp/BU468tfzRk
+         Mm4eCA4WPkO4D3/veRnK/Qwq44WI3thM3RAT9W7wOWEuaK+uO2Gl3GGNPABScWqB7Z+Y
+         UP/Dk+DQvdeIPOoPgrQfHknTiEW37ce/7/ebRV2kGlVOik8eYREzY/XBrCI10Posaf/w
+         BYkA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq5YAIb0nl2oU2WtabRHv8FAmf0YSuri8bWt+v8EkQCwROROGZFkitL2QPZWA2btBQ60BE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQpBPKwDUCGwPCqdC3FtVgG/2ny+j4SmsjJ4uSYIwVDjR5agOC
+	YfMoGeQPpDYmq7qZZhw04mXUlC9fT4mo1uGupz0lw56qh6xU9wPRMPuxx3U308JJtLMPLpdjaon
+	jegiyZA==
+X-Received: from pfbfc30.prod.google.com ([2002:a05:6a00:2e1e:b0:845:f28c:430e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21c9:b0:848:60d5:9526
+ with SMTP id d2e1a72fcca58-84e2bb37304mr483794b3a.43.1784753159239; Wed, 22
+ Jul 2026 13:45:59 -0700 (PDT)
+Date: Wed, 22 Jul 2026 13:45:58 -0700
+In-Reply-To: <CAO9r8zPhmLNdVgyXib-P+Ge_KSp=a8gA3mLDcpjJ5br-eXpj8w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1064CF47-9371-4D9C-B2AD-1457CA41CDB2@zytor.com>
+Mime-Version: 1.0
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+ <CAO9r8zPhmLNdVgyXib-P+Ge_KSp=a8gA3mLDcpjJ5br-eXpj8w@mail.gmail.com>
+Message-ID: <amEsBpHgIM_H7lDm@google.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 01:28:40PM -0700, H. Peter Anvin wrote:
-> On July 22, 2026 1:22:04 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
-> >On 7/22/26 13:18, Yeoreum Yun wrote:
-> >> Sorry. But do you mean check with cpu_feature_enabled() not with
-> >> boot_cpu_has()?
-> >> IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
-> >> uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
-> >> an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
+On Mon, Jul 13, 2026, Yosry Ahmed wrote:
+> On Mon, Jul 13, 2026 at 11:02=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
+rote:
 > >
-> >Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
-> >would be great!
-> 
-> It is supposed to. That's the point of the required mask.
+> > When handling userspace SREGS writes, check the validity of EFER (i.e.
+> > allowed bits) before writing the new value of EFER through the
+> > per-vendor set_efer callbacks. This prevents userspace from writing
+> > bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+> >
+> > Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+> > caps, not guest caps, so it is possible to set EFER bits that are
+> > supported by KVM but not by the guest CPUID. Potentially allowing
+> > userspace to set msrs before CPUID.
+> >
+> > However, for KVM_SET_SREGS*, check the validity of the set bits against
+> > both KVM and guest caps. This is consistent with other validity checks
+> > (e.g. for CR4) that check validity against guest caps, which already
+> > imposes the need to set CPUID before SREGS.
+> >
+> > Cc: stable@vger.kernel.org
+> > Change-Id: I45701ec440e4fdd8f086eb70db0c0845fb0ed509
+>=20
+> Forgot to drop these, sorry :/
 
-Sorry, IIUC if the X86_DIRECT_GBPAGES is not enabled, it would fallback
-to test_cpu_cap() which wouldn't be optimised at compile time IIUC.
-So It would be better to use cpu_feature_enabled().
-
-Am I missing something?
-
--- 
-Sincerely,
-Yeoreum Yun
+By "these", I assume you mean the Change-Id here and in the next patch?  Bu=
+t keep
+the Cc: stable@?
