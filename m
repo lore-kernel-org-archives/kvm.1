@@ -1,172 +1,199 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC27D470133
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B1046EF9A
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 08:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784707167; cv=none; b=fBY7wbmIwgK+ZTs+2XTeM/a2fJc0c7PdHbXIHgcpWos9MHR+qrRVtFapTvkx+NmZl+KwccZsIFYpltW0aScD9CbVVjeDIh9iFer18oRBPilLtahCtq4IGHP3QsMzxpu4trsf5DxHvBWWshDm9cmn02l2uuDnQkSCZZz4QLKn1GE=
+	t=1784707415; cv=none; b=poF3x7b0+fXgFxqY6opHnGZxNN8ez012H49GpYJQmieXKbl9mpmNW7FdfNbbvMCpBC7ZoENZiVIrt801g1JnMnkv5A6o29IeJpyDd5pNJ3WbtikF5SRlhG7PvGb1R5RRPcWTCoHzy016C5kSIX3D2VoPKMZmANNw3acahHBnREI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784707167; c=relaxed/simple;
-	bh=L1ZlHTw+wfSWt/JfEcI4TxNzRMBbmHZ7QGPCEnXC6/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZAWjJBIM5KYd4+6/xuqocvsn0QYvSNruVyDJZ5c1JPgGPGk5LrjnHxhO1WXhnn7w43B/9FPG1tiLClXx3mZVanwE+Rk7rRgQjrU0giGZG0Agyx2ioSUExn/4t1uh5tiRjxihsvhDHxrA77GCT7hYZ56kj4IGs6KBqj7I4kRBmak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=P/DVsH1x; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784707415; c=relaxed/simple;
+	bh=ueQuY2k/YhmZTxmwvSq8RjHj8IW4s+2wuadO3pcxxxI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=u1plgFybxXMRuTN8Fq0RxY8zg9iC1QbEBYX5AgzFhP7Hw84V485snSjMwldZEO0rgOK8dsnDB/kIQ/xjAinibentQZuD4nB5QDr/00GjLnIdR1A0Zpj7brIsJj3ytLbwTttvUgz560pLV96H6yzLzyDMD/ZXg5xZcyet05wTYDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDgdVPbr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="P/DVsH1x"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954a9e8490so25168075e9.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 00:59:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784707164; x=1785311964; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Iq0O2sSgzi6ReiR/HqVVmK6buuu0zFra1jDt9JKJi0A=;
-        b=P/DVsH1xSDALZbVU8L6HpPkHM6zIV4Ct320HfDGwWBzGP1bii3aGRqXObKabGuNtdT
-         Zp4UbQO9tqwkJKOSYBNYL01rfqI7b3OFxIfG16bKuJWAUrhQIIETckDWhmUWBNCT74eV
-         cpUzrRFp9ZWzIYRV/OeUbs/2nB1MlejATlavnlwoNJHkfKMeGYEsqLOylTyUph9zzyeu
-         8a2Pl3zgx5lorkMz/MdOJB5Ygn4SmE8TNmBr8CoSWgkza1eZk72mZPEZ9VcYbEOxOapU
-         n4dZxCTQezhlTSjaelu/v9R6ns++OjeYCl2tXTOudeCTWuzTbRsEBOVV+cTfOT/hFV67
-         aavg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784707164; x=1785311964;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Iq0O2sSgzi6ReiR/HqVVmK6buuu0zFra1jDt9JKJi0A=;
-        b=RFtkLczt3Kc9eSszUfmtvebTSg92p07p21cg3ENQmIiNtN5Lhv8sb48WwyJBwiqEGP
-         Vsa3p3HDe2zEwx/RdZlqhv3lS3GQ2pIrMF4f0U1kUN9FRzZtwiHjrLybIcFSOEbd73Tt
-         MBJiJdlBOiGshLwEXE/I7ZvAkfQ5lfLRlZrc9Vd2jeH3diSfr7DqxqhH6WoGr1yfZnzT
-         nMufSAgAdzmvj27ubsojb2b+EkUlpiK12GG91XjDWgsKisGIMd9JcwVl4GTgquEbxOEl
-         uIXKIzMq4ob1m4bR+pAeBHE9drF4YWofkLEaKoTy0tlk7iJQl8Gn6tr/QEpFTZr+y/J6
-         nTZA==
-X-Forwarded-Encrypted: i=1; AHgh+Rph3Lc0tkv8BAzPUPb7iZDRV4R0fetwvqiUqio7eac7GzuJ+FTlICDlXRkehMGjXVSyoGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzimD1tYunqD2Oa5caItJ7siyqovIJVGQCuAA7u54spAoRSWmGg
-	bER+etiQ4Wba19CvpG/FjUOmaIj1PrlXR4QmjBavdmq4UCTT0KotE4XxrVbpONisBdU=
-X-Gm-Gg: AR+sD126X/hrtdHPLQisiuBNNva08KI49GGHqnuHsej8cZeWBIu0aR2HbR15kOzZY9/
-	h/xKdV1pw9evPH2Ey7eFtfABz+1ncBpZuCoeNcNlK9nM80DRahtuNU7kSbNwY1NmPVyduUkm+20
-	X25yIbCWh0NyW+HMFNvOhjmTq1DRzB25UTnp/16IPQf3roZA/C//ik8c8cynDW7roX32LUB5C3X
-	rUywoFIaVIwdB5KVJYDEJQ+PcMVjWyzkLQY7Xy2Gc25AI/Q0DrLgIXscvL4D0QdzvqC/3n6duXq
-	hYYaP6pRAGGDfX57qqsWbpY/g049u+W+5C0Sfq9ErF611qsAE6o0QsEs4TzQQQnWnoGiMC4VTYb
-	5vwL4Xw2/8K4/cPSmMqM9Ur0MJQj2xLpIQhu1cKjVBkH+1EoF3wx2oEAJNxOn4Lz6Kzp61XwboM
-	P7YoptGiHJ7nqIb2U=
-X-Received: by 2002:a05:600c:8010:b0:48f:e230:29f5 with SMTP id 5b1f17b1804b1-4956a519015mr28908465e9.16.1784707163859;
-        Wed, 22 Jul 2026 00:59:23 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a6354a3sm79090575e9.10.2026.07.22.00.59.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 00:59:23 -0700 (PDT)
-Message-ID: <9c7c170a-6438-454c-b96e-24aae0c27c9a@suse.com>
-Date: Wed, 22 Jul 2026 10:59:21 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDgdVPbr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF2D1F000E9;
+	Wed, 22 Jul 2026 08:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784707413;
+	bh=gNZZSZunjUBNADrxLeteZpb5koToirugJjkcnviRQ5M=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=kDgdVPbrjY+48Llb6I215W63loMjtK29HESvAo6IxmoMKh+rE7VCP3mREXYD2t5AE
+	 6U4t94uYCDlivqC/E2wnJKUEbPqDKXTN0cYWGaLeVNtmdh0DXwOY9ELDIR/YA1GzuJ
+	 Fyny9mvqhM6hXkRg89/OE6E7vQbdlXw3FNladDMfJ1bbyMDKV6j5Elu54t+YFUWNBH
+	 fCUTLL47nQXNuXvNmkxG4ccATwSsqDpfHZ3KlUXtNLHZVQzPkS1g5uef8NmVMKeRET
+	 Y5gD9V3YPAzjUfFO4saQVWXvR3xRri3TPWIU3CBTagRnklEBplVNBrNjK8gEGU5UTG
+	 ZbCAz+pgS7JMA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] LoongArch: KVM: Add KVM_LOONGARCH_GET/SET_CSR for
+ bulk CSR migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cui.tao@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260722074346.239507-1-cui.tao@linux.dev>
+References: <20260722074346.239507-1-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Jul 2026 08:03:33 +0000
+Message-Id: <20260722080333.AFF2D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 06/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
- control structures
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de,
- dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org,
- chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com,
- tony.lindgren@linux.intel.com, binbin.wu@intel.com
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-7-rick.p.edgecombe@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260718014500.2231262-7-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Critical] Missing bounds checking on the user-provided CSR index allows =
+arbitrary out-of-bounds kernel memory read and write vulnerabilities via in=
+teger signedness conversion.
+- [High] The new `KVM_LOONGARCH_GET_CSR` and `KVM_LOONGARCH_SET_CSR` ioctls=
+ violate KVM enumeration invariants because they are not discoverable via a=
+ KVM capability.
+- [Medium] Missing validation of `pad` and `reserved` fields in UAPI struct=
+ures prevents future extension.
+--
 
+--- Patch [1]: [PATCH v2] LoongArch: KVM: Add KVM_LOONGARCH_GET/SET_CSR for=
+ bulk CSR migration ---
+commit d9e42903e3c1617b11882f82d3b16f57b379c8ac
+Author: Tao Cui <cuitao@kylinos.cn>
 
-On 7/18/26 04:44, Rick Edgecombe wrote:
-> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> 
-> Use control page helpers for allocating and freeing TD control structures,
-> such that these operations can work for Dynamic PAMT.
-> 
-> The TDX module tracks some state for each page of physical memory that it
-> might use. It calls this state the PAMT. It includes separate state for
-> each page size a physical page could be utilized at within the TDX module
-> (1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
-> allocated dynamically. So the kernel must ensure PAMT backing is installed
-> for any 4KB page being gifted to the TDX module, and must tear down the
-> backing when all associated gifted pages are reclaimed.
-> 
-> TD scoped control pages (TDR, TDCS) and vCPU scoped control pages (TDVPR,
-> TDCX) are all handed to the TDX module at 4KB page size and are therefore
-> subject to this requirement. Replace the raw alloc_page()/__free_page()
-> calls for these pages with tdx_alloc/free_control_page().
-> 
-> Switching between special Dynamic PAMT operations or normal page
-> alloc/free operations is handled internally in
-> tdx_alloc/free_control_page(). So don't check for Dynamic PAMT around these
-> calls. Just call them unconditionally. Similarly, drop the NULL checks
-> before freeing, as tdx_free_control_page() handles NULL internally.
-> 
-> No functional change intended when Dynamic PAMT is not in use.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> [sean: handle alloc+free+reclaim in one patch]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [rick: enhance log, reviewing, rebase, with help from AI tooling]
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com> 
+LoongArch: KVM: Add KVM_LOONGARCH_GET/SET_CSR for bulk CSR migration
 
-Reviewed-by: Nikolay Borisov < nik.borisov@suse.com>
+This commit introduces bulk get and set ioctls for migrating CSR state in a
+single call, replacing the need for many KVM_GET/SET_ONE_REG calls. It adds
+the KVM_LOONGARCH_GET_CSR and KVM_LOONGARCH_SET_CSR ioctls and their
+associated data structures.
+
+> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/inclu=
+de/uapi/asm/kvm.h
+> index cd0b5c11ca9c2..59b3b7efa0397 100644
+> --- a/arch/loongarch/include/uapi/asm/kvm.h
+> +++ b/arch/loongarch/include/uapi/asm/kvm.h
+
+[ ... ]
+
+> @@ -127,6 +127,19 @@ struct kvm_sync_regs {
+>  struct kvm_sregs {
+>  };
+> =20
+> +/* bulk CSR entries for VM migration */
+> +struct kvm_loongarch_csr_entry {
+> +	__u32 index;
+> +	__u32 reserved;
+> +	__u64 data;
+> +};
+> +
+> +struct kvm_loongarch_csrs {
+> +	__u32 ncsrs;	/* number of csr entries */
+> +	__u32 pad;
+> +	__DECLARE_FLEX_ARRAY(struct kvm_loongarch_csr_entry, entries);
+> +};
+> +
+
+[Severity: Medium]
+Are the pad and reserved fields validated to be zero?
+
+Looking at the kvm_loongarch_csr_io() implementation, the structure is copi=
+ed
+from user space but the padding fields are not checked. If userspace leaves
+garbage data in these fields, could it prevent the kernel from safely
+repurposing them for future feature flags without breaking ABI compatibilit=
+y?
+
+>  struct kvm_iocsr_entry {
+>  	__u32 addr;
+>  	__u32 pad;
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 20c207d80e31a..9b411c694718c 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+
+[ ... ]
+
+> @@ -1009,6 +1009,73 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu =
+*vcpu, struct kvm_sregs *sregs
+
+[ ... ]
+
+> +	for (i =3D 0; i < csrs.ncsrs; i++) {
+> +		unsigned int id =3D entries[i].index;
+> +
+> +		if (get_gcsr_flag(id) & INVALID_GCSR) {
+
+[Severity: Critical]
+Could an attacker pass a value greater than or equal to 0x80000000 for
+entries[i].index?
+
+Since get_gcsr_flag() takes a signed int:
+
+arch/loongarch/kvm/main.c:get_gcsr_flag() {
+    if (csr < CSR_MAX_NUMS)
+        return gcsr_flag[csr];
+    ...
+}
+
+Would this unmasked 32-bit unsigned index be implicitly converted to a
+negative integer, bypassing the csr < CSR_MAX_NUMS signed comparison?
+
+If the out-of-bounds read of gcsr_flag happens to lack the INVALID_GCSR bit,
+could this negative ID be passed to _kvm_setcsr() and eventually to
+kvm_write_sw_gcsr(), leading to an arbitrary out-of-bounds 64-bit kernel
+memory write?
+
+> +			ret =3D -EINVAL;
+> +			break;
+> +		}
+> +
+
+[ ... ]
+
+> @@ -1266,6 +1333,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+>  			r =3D kvm_get_reg(vcpu, &reg);
+>  		break;
+>  	}
+> +	case KVM_LOONGARCH_GET_CSR:
+> +		r =3D kvm_loongarch_csr_io(vcpu, argp, false);
+> +		break;
+> +	case KVM_LOONGARCH_SET_CSR:
+> +		r =3D kvm_loongarch_csr_io(vcpu, argp, true);
+> +		break;
+
+[Severity: High]
+Does adding these ioctls without a corresponding KVM capability break KVM
+enumeration invariants?
+
+Since KVM_LOONGARCH_GET_CSR and KVM_LOONGARCH_SET_CSR are unconditionally
+enabled here without a corresponding KVM_CAP_* constant, userspace tools li=
+ke
+QEMU might not have a programmatic way to discover if the running kernel
+supports the new ioctls via KVM_CHECK_EXTENSION. Could this silently break
+live migration or capability negotiation?
+
+>  	case KVM_ENABLE_CAP: {
+>  		struct kvm_enable_cap cap;
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 419011097fa8e..aade65751721d 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+
+[ ... ]
+
+> @@ -1670,4 +1670,8 @@ struct kvm_pre_fault_memory {
+>  	__u64 padding[5];
+>  };
+> =20
+> +/* LoongArch: bulk CSR get/set for migration */
+> +#define KVM_LOONGARCH_GET_CSR	_IOWR(KVMIO, 0xd6, struct kvm_loongarch_cs=
+rs)
+> +#define KVM_LOONGARCH_SET_CSR	_IOW(KVMIO,  0xd7, struct kvm_loongarch_cs=
+rs)
+> +
+>  #endif /* __LINUX_KVM_H */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722074346.2395=
+07-1-cui.tao@linux.dev?part=3D1
