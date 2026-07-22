@@ -1,187 +1,253 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677CB1DED5C
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 10:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5572AD3C;
+	Wed, 22 Jul 2026 11:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784717438; cv=none; b=YWip2RTFpla+NwB6nHx/HlrMB2hR/24pmcekSaIfCHw1Zl0vEG2XwAHEAI92YWXuLMfNdQlzfWr10xgRIeC+sXRieelIQXyHw9stwxxx4oNVqD3pL2qmOec3OGZgdyu87Nb58vbOZ/ykWeYSCJxH4autSaEvUZE+mWpHt7UNzA8=
+	t=1784718064; cv=none; b=KaPx34KKTchNEdsBaDT7syaNIpdXnbL9yQooRuTIQMM3fs5Ly9aqWyX3TFRiXEf510caX15pARa/7rLerkj8Q9UgdHLebXVre+HTm/xRL2UKXWLL8dVVT/jbOhFTuT6yuoINoOm0Wb2b+fNOv4UeKjF6St/fFH5qC0obPVnVeQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784717438; c=relaxed/simple;
-	bh=cT26bkOTYpm3jtpcO4eFItyZdPCZz1fdM1MVN1Hdaxw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gJDctBct8/CIIMDFmc7jExtTN6nCYgEXpqRyOtdgTsJd7n5WqTRnWurWMYWyOtJ63lGXnMxvYN0rrqDMh2mcuuw1w2QMJgufrHUNF0M5O5ALlwejMDbCp04dL6oiziBAoi5WgNJ0P1qXqdSZtQ/XcvZ7tS7+EU2RoEbbTULQ4HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=W+VYNuCk; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784718064; c=relaxed/simple;
+	bh=J4//k8F4CKWCeCkVZTCfcqspAs0oy2D95UO839DycsU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I0yarx79WlMNsE35ANSTiLdCjsaXHtO076mHHI2aCj/Hg2fqcNh/i0+BWTjXp/R86NsqFcxFHYx9KE6RzJGoUqtg7wovb3iKH+8dR8Fc+sk+jciYRLqi/lPRq3Y7Ylyw9+NnI3hZZZJWia/goE4KRn69X0ZW4a5Q3qY7Lfo/0F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lM60eQgA; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="W+VYNuCk"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4956242332dso25669555e9.2
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 03:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784717435; x=1785322235; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=zXZVyY5wvEWXnofFGkPYwR4wB5dvlpWTyOutOPfcI/8=;
-        b=W+VYNuCkPhKtgOwgyPKrePXcvlgs3AKC4Pq+LNKCaOcQC4U/N+NdUBoZzzssTS9Rgn
-         VgMNWiYVxDj+XtaOLNMn4IyGkZtK30p1c/WwOJ3EA/2MT9+m0L2Wp+ZYyW7IjkPpI7vX
-         DFdnS0k2kGXNf+gn+r+wU6WcdRt9jTvzlldTDLOSrOgQNjF+3nTTvDOcqK/uTz+Lq4tl
-         mGHJFwAAtbxyhv2ieYLXm4QGYsXYOxw4V6COO4yYS9QvxzRJvfGTEzzAUF5HKl3yCDDr
-         rSiGuWbc2UESJOKXVido0X4ACWKdDYNot+XrqhN+Q3+2ddGRWBRq5vv7LjNxM3IR7XDs
-         G2gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784717435; x=1785322235;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zXZVyY5wvEWXnofFGkPYwR4wB5dvlpWTyOutOPfcI/8=;
-        b=Izs+b2cRuNnxFU8/zBqyAXXLWu0yb5FyxioaTKfGsnkI+qqJAPOPe3JBKekFPWam5c
-         cJ2IW48sdcgpHXTQl71QvuKy/DRCoyzteRCer91sj1KRRgMKx60MruKz96clMP428KKG
-         QleA5s8oV4A/ElT6op9+x8DL9VmBD7g7Fm63NGHFKqhuG1k6bz+JqLGBfqQTXDpX1ih1
-         ZnAR7NrdaBgzmCdlQQ1aNpyEfAq634oV3lMhbDHz7Qyr5RFNsWsWFUamsvVHVvL1VGfC
-         KX4rbIN67rYiTSDg45eXog4CHTdpAlhjpLK43g2Rricibtu8AaF/3g/Bfkt7nnK63MYW
-         mA6Q==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2griMMfOvlPI3tHRI8h+QfOlEkYNYhQrmsLSTMbsEZePfUDLTEdILz8m46hM9FATNNew=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsdL4Zg62SUKOQWZ7x3dPX3x0dJkT2Hq/n9+9uoKWIaDRoJ0w0
-	EUikwU1Yua/ya8gZpdVLADw9KOQ3RL7z0ZWQjxc2f82VHXpaZr/CwPqvYjLbeTLVqFM=
-X-Gm-Gg: AR+sD12J7hH/jIScJf3MITos9F1uHcqEjcUI8TaZdCjGoJrDJ/q08YtfZX5YX3rjJ1O
-	/QZpC1G+L4/eK22mLq2lxy+xxK9gtumFUWf1KOKsoQ7PapliPrTafdpGRd3W/mtbDPN5TleTvpk
-	BnIMilInZ+nwEJvSMVkGTa4nlCJcbOO+E09oP2h9dRbWkvbfWJE/IWB53jL2ILWFqh9syUBW0ka
-	735vjy7pjWgsnQ9+/rCtNxf4t9cSNoVYtHr0ioXX0KiZXalhsJIJik2EaqnupMWe0Dr9JyvzfpR
-	Uf4X7zrqmpYDFda92Ca3uWdDFOT1Mwot1R5Acy/gP1Qb8oSsrzPd+BG7ANdmVzZnfv7zVGFwAVB
-	6HAxpjx606rzkppp8jnPn6MkJxEHs2ViSyR/DS55u21mb8PqdvVz+SnZuaIJGH1oWZHRN8uKksa
-	gLN+qlREJcmUQDLXk=
-X-Received: by 2002:a05:600c:4584:b0:493:f5bf:4da4 with SMTP id 5b1f17b1804b1-4954a50e970mr252767515e9.28.1784717434661;
-        Wed, 22 Jul 2026 03:50:34 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956537c7desm198765855e9.7.2026.07.22.03.50.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Jul 2026 03:50:34 -0700 (PDT)
-Message-ID: <c16ef391-845a-40b1-a05c-245ddee6da51@suse.com>
-Date: Wed, 22 Jul 2026 13:50:31 +0300
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lM60eQgA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=XnmlT92hOs66o6RQdjF+BmjHjTM+urZmrZEBSz9w3VU=;
+	b=lM60eQgA9OzLcosbGfoVOBNJjLLdcO/CNP4fEp8BCqfmOIVKgVScs/UOduHNkv
+	aKdFzDH2nC5IkEgI4xP5EDMw3eb0mvBWKfDeO1ONqI4sdSN5Qdz11DVVKezKzmm1
+	WsJOXi9fMC0kX0X7/aGULSL3Z04YgWtnK3HExJ9z+ZuDk=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgCntOrNomBqcjHiIQ--.3460S2;
+	Wed, 22 Jul 2026 19:00:30 +0800 (CST)
+From: "rom.wang" <r4o5m6e8o@163.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com
+Cc: virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	kvm@vger.kernel.org,
+	Yufeng Wang <wangyufeng@kylinos.cn>
+Subject: Re: [RFC PATCH 0/4] virtio: SQ/CQ doorbell polling for vhost-scsi
+Date: Wed, 22 Jul 2026 19:00:29 +0800
+Message-Id: <20260722110029.88909-1-r4o5m6e8o@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAJaqyWe_nhVOvfA03So_edVO_+1UeHCC6RGnHRQB9dq7CWS4LQ@mail.gmail.com>
+References: <CAJaqyWe_nhVOvfA03So_edVO_+1UeHCC6RGnHRQB9dq7CWS4LQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/11] x86/tdx: Add APIs to support Dynamic PAMT ops
- from KVM's fault path
-To: Rick Edgecombe <rick.p.edgecombe@intel.com>, bp@alien8.de,
- dave.hansen@intel.com, hpa@zytor.com, kas@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, mingo@redhat.com, pbonzini@redhat.com,
- seanjc@google.com, tglx@kernel.org, vannapurve@google.com, x86@kernel.org,
- chao.gao@intel.com, yan.y.zhao@intel.com, kai.huang@intel.com,
- tony.lindgren@linux.intel.com, binbin.wu@intel.com
-Cc: Binbin Wu <binbin.wu@linux.intel.com>
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-8-rick.p.edgecombe@intel.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <20260718014500.2231262-8-rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgCntOrNomBqcjHiIQ--.3460S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GrW3tr48KF1ftw1DGF4rZrb_yoWfJryxpr
+	W3Gr1ayr1DAFykWw1UAr4UXw1xXrZ5Xanxtr18KrW8ua45Ar1jqF4UtF4rWrWUX398Kw47
+	Xr1jqF45uFWDA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3b15UUUUU=
+X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbC7w+OBGpgos9UOAAA3h
+
+From: Yufeng Wang <wangyufeng@kylinos.cn>
+
+Thank you for the detailed feedback. We've completed benchmark
+testing comparing the existing notification mechanisms against the
+proposed SQ/CQ polling. The results are informative.
 
 
+Test Modes Explained
+--------------------
 
-On 7/18/26 04:44, Rick Edgecombe wrote:
-> When handling an EPT violation, KVM holds a spinlock while manipulating
-> the EPT. Before entering the spinlock it doesn't know how many EPT page
-> tables will need to be installed or whether a huge page will be used. For
-> this reason it allocates a worst case number of page tables that it might
-> need as part of servicing the EPT violation.
-> 
-> Under Dynamic PAMT these pre-allocated pages will potentially need to have
-> Dynamic PAMT backing pages installed for them. KVM already has helpers to
-> manage topping up page caches before taking the MMU lock, but they cannot
-> be passed from KVM to arch/x86 code.
-> 
-> The problem of how and when to install the Dynamic PAMT backing pages for
-> the pages given to the TDX module during the fault path has had a lot of
-> design attempts.
->   - Extracting KVM's MMU caches requires too much inlined code added to
->     headers.
->   - A few varieties of installing Dynamic PAMT backing when allocating the
->     S-EPT page tables. (see links)
->   - Using mempool_t to transfer the pages between KVM and arch/x86 doesn't
->     work because the component is designed more around maintaining a pool
->     of pages, rather than topping up a continually drained cache.
-> 
-> So don't do these as they all had various problems. Instead just create a
-> small simple data structure to use for handing a pre-allocated list of
-> pages between KVM and arch/x86 code. Model this on KVM's existing MMU
-> memory caches.
-> 
-> Add a tdx_pamt_cache arg to tdx_pamt_get() so it can draw pages from a
-> cache when needed. Not all Dynamic PAMT page installations will happen
-> under spinlock, for example TD and vCPU scoped control pages. So have
-> tdx_pamt_get() maintain the existing behavior of allocating from the page
-> allocator when NULL is passed for the struct tdx_pamt_cache arg. This
-> prevents excess allocations for cases where it can be avoided.
-> 
-> Export the new helpers for KVM.
-> 
-> AI was used under supervision to review code and workshop logs.
-> 
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-> Reviewed-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
-> Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-> Link: https://lore.kernel.org/kvm/aXENNKjAKTM9UJNH@google.com/
-> Link: https://lore.kernel.org/kvm/20260129011517.3545883-20-seanjc@google.com/
-> Link: https://lore.kernel.org/kvm/aYW5CbUvZrLogsWF@yzhao56-desk.sh.intel.com/
-> ---
+To answer your second question with data, we tested four modes:
 
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+1. **baseline**: Default vhost-scsi with event_idx auto-negotiated.
+   I/O engine: libaio. Submission uses MMIO kick (VM exit), completion
+   uses MSI-X interrupt (VM exit). The guest driver dynamically toggles
+   NO_NOTIFY/NO_INTERRUPT during completion processing, but these are
+   short windows — most I/O still incurs VM exits on both paths.
+
+2. **poll-queue**: This mode combines the existing notification features
+   you mentioned:
+   - VIRTIO_RING_F_EVENT_IDX: auto-negotiated (same as baseline)
+   - VIRTQ_AVAIL_F_NO_INTERRUPT: effectively permanent — poll queue
+     VQs have callback=NULL and no MSI-X vector, so the guest never
+     receives completion interrupts regardless of the flag state
+   - VIRTQ_USED_F_NO_NOTIFY: vhost dynamically toggles this during
+     active processing (vhost_disable_notify/enable_notify)
+   - VIRTIO_F_NOTIFICATION_DATA: negotiated but vhost kernel does not
+     process notification data, so no practical effect
+   
+   Implemented via virtio-scsi poll queues (virtscsi_poll_queues=16,
+   callback=NULL, no MSI-X vector) + io_uring IOPOLL mode (--hipri).
+   blk-mq polls the used ring for completions via virtscsi_mq_poll().
+   This eliminates completion-side VM exits. However, submission still
+   uses MMIO kick (VM exit). Note: libaio cannot use this mode because
+   aio.c strips IOCB_HIPRI ("no one is going to poll for this I/O").
+
+3. **sqcq-poll**: The proposed SQ/CQ doorbell polling (this RFC) with
+   libaio. Guest writes sq->idx instead of MMIO kick (no VM exit).
+   Guest poll thread checks used ring via more_used() (no interrupt).
+   NEED_WAKEUP protocol enables adaptive sleep when idle. Eliminates
+   VM exits on BOTH submission and completion paths.
+
+4. **sqcq-uring**: Same SQ/CQ polling but with io_uring + --hipri.
+   Included to isolate the I/O engine variable from the polling
+   mechanism.
+
+
+Results
+-------
+
+Test configuration:
+  x86_64: Intel Xeon E5-2680 v4 @ 2.40GHz, 16 vCPUs
+          NVMe SAMSUNG MZ1LB960HAJQ-000MV (960GB)
+  arm64:  Kunpeng 920 (2.6GHz), 16 vCPUs
+          NVMe INTEL SSDPED1K375GA (375GB)
+  Backend: vhost-scsi with TCM loopback to NVMe
+
+arm64 IOPS (best of 3 runs, fio 4K random I/O):
+
+  Test              baseline   poll-queue    sqcq-poll   sqcq-uring
+  ─────────────     ────────   ──────────    ─────────   ──────────
+  randread QD1       23,751      29,892       29,680      26,427
+  randread QD32 NJ1  93,221     162,849 *     84,967      70,271
+  randread QD32 NJ4 184,939     186,859      340,780     235,310
+  randread QD32 NJ8 190,562     188,382      520,946     518,197
+  randwrite QD1      24,131          —        25,520      25,485
+  randwrite QD32 NJ1 84,725          —        70,652      68,518
+  randwrite QD32 NJ4 204,745          —       323,449     312,204
+  randwrite QD32 NJ8 193,802          —       522,322     516,448
+
+  * poll-queue NJ1 read shows high IOPS but hangs at NJ≥4 (see below)
+
+x86_64 IOPS (best of 3 runs):
+
+  Test              baseline   poll-queue    sqcq-poll   sqcq-uring
+  ─────────────     ────────   ──────────    ─────────   ──────────
+  randread QD1        8,316       9,022        9,533       9,489
+  randread QD32 NJ1 124,909     146,744      165,761     165,929
+  randread QD32 NJ4 305,951     332,139      378,305     379,546
+  randread QD32 NJ8 344,223     356,328      374,932     374,976
+  randwrite QD1      20,106      24,464       27,265      27,768
+  randwrite QD32 NJ1 131,836    153,203      162,145     161,402
+  randwrite QD32 NJ4 232,908    234,559      232,976     231,336
+  randwrite QD32 NJ8 231,242    229,858      231,828     231,465
+
+
+Key Findings
+------------
+
+1. **poll-queue excels at NJ=1 (arm64)**: On arm64 4K randread QD32
+   NJ1, poll-queue achieved 163K IOPS — significantly higher than
+   baseline (93K, +75%) and SQ/CQ polling (85K). io_uring IOPOLL
+   mode is very efficient for single-queue workloads because the
+   submitting task polls for completion directly, avoiding both
+   interrupt latency and poll thread scheduling overhead.
+
+2. **SQ/CQ dramatically outperforms poll-queue at NJ≥4 (arm64)**:
+   At 4K randread QD32, poll-queue and SQ/CQ diverge sharply:
+   - NJ4: poll-queue 187K vs SQ/CQ 341K (+82% over poll-queue)
+   - NJ8: poll-queue 188K vs SQ/CQ 521K (+177% over poll-queue)
+   SQ/CQ also outperforms baseline by +84% (NJ4) and +173% (NJ8).
+
+3. **libaio incompatibility**: The existing poll queue mechanism
+   requires io_uring IOPOLL mode. libaio explicitly strips IOCB_HIPRI
+   (fs/aio.c: "no one is going to poll for this I/O"), so poll queues
+   are inaccessible to libaio users. SQ/CQ works with any I/O engine
+   because the poll thread is independent of the submitting task.
+
+
+Development Insights
+--------------------
+
+Beyond eliminating VM exits, two engineering decisions were critical
+to achieving the performance shown above:
+
+1. **TCM completion CPU steering**: Our initial goal was 5-10% IOPS
+   improvement at 4K random I/O QD1 NJ1. After implementing the basic
+   polling and NEED_WAKEUP protocol, this target was not met. The
+   bottleneck was that TCM completions were being scheduled on the same
+   CPU as the busy poll thread, starving the completion workqueue. We
+   added vhost_sqcq_pick_completion_cpu() to steer TCM completions to
+   a free CPU (avoiding busy poll cores), with fallback to next-CPU
+   when all cores are occupied. This closed the gap and achieved the
+   QD1 target.
+
+2. **Adaptive idle policy with EMA**: After QD1 targets were met,
+   we tested higher concurrency (QD32 NJ4/NJ8) and found that
+   aggressive polling caused performance degradation under
+   multi-queue workloads — likely due to the poll thread consuming
+   excessive CPU cycles that competing vCPUs needed. We solved this
+   by implementing an EMA-based adaptive spin budget: the poll thread
+   spins within a time window derived from recent I/O latency, then
+   yields. Combined with the NEED_WAKEUP protocol, this allows the
+   poll thread to busy-spin when active but sleep when idle, avoiding
+   CPU contention with other vCPUs.
+
+
+On the vDPA Question
+--------------------
+
+The generic vDPA device approach you suggested is indeed a better
+direction. The QEMU-side zero-code advantage (leveraging existing
+vdpa-dev.c) is very attractive. Our concern is that vhost-scsi's
+TCM integration (SCSI CDB, ALUA, persistent reservations) would
+need to be wrapped as a vDPA backend. This feels like a 0-to-1
+engineering effort, and we're uncertain about the actual scope of
+work involved. If there are additional guidelines or examples
+available, we'd be very willing to explore this direction.
+
+
+One More Thing: SQ/CQ + poll-queue Combined
+--------------------------------------------
+
+During arm64 testing, we accidentally ran the poll-queue benchmark
+(--hipri, io_uring, virtscsi_poll_queues=16) on a kernel that also
+had VIRTIO_F_SQCQ_POLL negotiated. This "poll-sqcq" mode combines
+both mechanisms simultaneously:
+
+  - Submission: SQ/CQ doorbell (sq->idx write, no VM exit)
+  - Completion: both SQ/CQ poll thread AND blk-mq poll via io_uring
+
+The results were surprisingly strong (arm64, 4K random I/O):
+
+  Test              baseline   poll-queue   poll-sqcq   sqcq-poll
+  ─────────────     ────────   ──────────   ─────────   ─────────
+  randread QD1       23,751      29,892      41,683      29,680
+  randread QD32 NJ1  93,221     162,849     193,029      84,967
+  randread QD32 NJ4 184,939     186,859     585,445     340,780
+  randread QD32 NJ8 190,562     188,382     560,727     520,946
+  randwrite QD1      24,131          —       38,591      25,520
+  randwrite QD32 NJ1 84,725          —      187,421      70,652
+  randwrite QD32 NJ4 204,745          —      598,419     323,449
+  randwrite QD32 NJ8 193,802          —      569,890     522,322
+
+poll-sqcq outperforms both individual mechanisms across all test
+cases. We haven't fully analyzed why, but suspect the combination
+benefits from:
+  - SQ/CQ eliminating submission VM exits
+  - io_uring IOPOLL providing low-latency completion detection via
+    blk-mq (directly in submitting task context)
+  - SQ/CQ poll thread as a secondary completion poller covering VQs
+    that blk-mq doesn't reach
+
+This is preliminary and accidental data, but we think it's worth
+sharing as it suggests the two mechanisms are complementary rather
+than mutually exclusive.
+
+Benchmark scripts and raw fio JSON data are available and can be
+sent as a follow-up upon request.
+
+
+Best regards,
+Yufeng
+
+Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
+
