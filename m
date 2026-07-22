@@ -1,119 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F3C3F3263;
-	Wed, 22 Jul 2026 15:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA27841A4F3
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784735777; cv=none; b=S3TCOYsh4FheaPSrNvWViAc6QQbYYjlRq8jCekGuUudZT9GplKLd+EQl53R7EuQEFd46dEpGG4qZgPaGr9tRAdWZcSuqWA7BwkEAU3WuvHDUX+q79AbNjij/pDMRJ+89b8SbBLbRq2Hcl9ggs50xz33ESiU8T5XwC8MXi1QDIeg=
+	t=1784735783; cv=none; b=sPDKbfAWAVo1cethXqBx9tsXTKtJ0p9vckishPSLJ5QGAzqH8V8A/OntGGy8kdNza4dXlzo9S+jRCnYT9l2vrN8QVXQS2lEpN+44hggmf+TSClCk1nHxfExk7JcvdCBrwtZl+lP0biWfPchzPFCMZvSdOm600jf6N2dHGYCNkg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784735777; c=relaxed/simple;
-	bh=479t9wq5IMLoEe6LdnFCXLa4RGb56vh3sGFRDc2GXog=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VOokb2UA8a6pGAUuJDsCcJFWNnIVABM4VSL9qD3gd0qQLFNNrsYPBpxYkRDQxY+LUeuZKsnRyIuC/8U05SnVxOj030keBK1ETuvkOJfi/7ShrH6nmDCxhJUddYOpvINb/JCXco5YBGCrhy9oOJFFgqsgI6tvmRGk6NEPvW5RAqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luqgxHZg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784735783; c=relaxed/simple;
+	bh=Wj4USkUfIe1CZ9ZEG0b09aSNsMBekufMrYEELLIiS0w=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cE7rfl7+8KYTAHYP7ihkNUGewfd1yVYWMcAMHHZ5H/hJUBBIw7Dkj7yzNlbXIZ80xNEIsqmqC0cVhmb0q92wQQ1/djUjUx7OLTjg/KUJIf/clepI6YMFgMRpsb9PzsOTD/sdlZ+tihDeHs98AWAeFPOR3LicqqXRTYgQrEEVsZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLRQucAn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luqgxHZg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D547F1F000E9;
-	Wed, 22 Jul 2026 15:56:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLRQucAn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D071F00A3A;
+	Wed, 22 Jul 2026 15:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784735774;
-	bh=uuu1Tu0mavyGTKCTNlz/UMSHBAzx4FGHXBKIVOkO5m8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=luqgxHZgCLrxH35q8K0hoG5fURY3wUyTXsoWg0QnmpHM71Q4GfoEZnLFZ7E43AtXW
-	 R2csB6RpmM2d4Ky3zgHFJdkvuXaPl8zBu2PYmh5dA5DWe3lVLe8X13dG7V2JPIgUjI
-	 dCvvi8VdDxSA+cR943rwpFJT6PLWwnU7WTs6TEl9/r0J7RI2hA6T4cZywp+Oz77ijd
-	 6oX7iQyTXPEffMEIHWUpX/eNRbCJyRi757LlQJ0IgviZhqW6deQYHK61SS0xhOwwpp
-	 yDaypsknrwAz6NFmfQgRJgy6QQ9c7/q5RdiZH4Ea/ir9U307CP3EvbEkHDX6xHJm6h
-	 hZFLlsjKjNFYA==
-Date: Wed, 22 Jul 2026 18:56:07 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: kexec@lists.infradead.org
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Alexander Graf <graf@amazon.com>,
-	Steven Rostedt <rostedt@goodmis.org>, kvm@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [ANNOUNCE/CFP] LPC 2026 Live Update Microconference
-Message-ID: <amDoFzbQVdxjgqzH@kernel.org>
-References: <ahcc3Qyuy7Oy03Iq@plex>
+	s=k20260515; t=1784735779;
+	bh=CwPy9YJyT5uHmM+0cHZiIrL8nDDs8+BHrVP78xCRBzQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=MLRQucAnZZ0d2OrCzQKGYwG0352EKjBYWH522JOSLrbArw38Kzkd9FHp1zHgfeWtk
+	 rdWM4vtfFhMRAKkXKJB9Drj+sLzaKskVEfAEVO4MfohVudKZ3g09pKvY3Kmh8RtQIk
+	 gSbtVu2J596OX8tTfNLseDxwNV/wMFHMWi6nNxM7Uma1/mVg/190s/WvXucK5b/taU
+	 f4KAaeo+32dVZJlqq5GaGGyT/tPRmW5K03y4O4oVuB1AYnmGbYP5+7sdGlT69OMCUJ
+	 xHgH3J4XwalPgLGTsL3iADFriqAEAX7J25ouUysTBXbeyPk1gCs5NNaGvOD30UJfH7
+	 dUgOXDxSipoCw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RFC v2 08/20] mm: vmscan: remove stack copy address of
+ pud pass in wallk_pud_range()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yeoreum Yun" <yeoreum.yun@arm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260722-dummy_ptxp3-v2-8-d9e4bad31e0a@arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-8-d9e4bad31e0a@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Jul 2026 15:56:18 +0000
+Message-Id: <20260722155619.51D071F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ahcc3Qyuy7Oy03Iq@plex>
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-This is a reminder that the CFP for Live Update microconference at Linux
-Plumbers Conference is still open and even extended until August 7th.
+Pre-existing issues:
+- [High] The `pmd_same` concurrency check in `walk_pte_range` is bypassed b=
+ecause it receives a pointer to a stack variable (`&val`) instead of the ac=
+tual PMD entry.
+--
 
-On Wed, May 27, 2026 at 05:05:23PM +0000, Pasha Tatashin wrote:
-> Hi,
-> 
-> The Call for Proposals is now open for the Live Update Microconference 
-> [1], taking place at the Linux Plumbers Conference this October 5-7 in 
-> Prague [2].
-> 
-> As infrastructure scales, minimizing workload disruption during host 
-> updates has become a critical operational requirement. This 
-> microconference focuses on the evolving engineering challenges behind 
-> seamless software handovers, state preservation, and warm reboots that 
-> bypass traditional hardware reset cycles.
-> 
-> We are seeking technical presentations, and problem statements spanning 
-> the entire stack—including kexec optimizations, hypervisor integration, 
-> user-space checkpoint/restore, firmware coordination, and device state 
-> handovers.
-> 
-> ---
-> A few focus areas we hope to cover during this year's sessions include:
-> ---
->  * Orphaned Virtual Machine for zer-downtime upgrades.
->  * Live Update Orchestrator (LUO) enhancements and architecture
->  * Kexec HandOver (KHO) framework advancements
->  * Kexec reboot latencies to minimize guest/workload downtime
->  * Preserving guest states across live updates (guest_memfd, hugetlb)
->  * In-flight DMA, IOMMU tracking, and preservation
->  * VFIO device state preservation and live update migration mechanics
->  * PCI/PCIe device handovers, reset avoidance, and state restoration
->  * Live Update in Confidential Computing (TDX/SEV-SNP)
->  * Building robust testing, fuzzing, and validation frameworks for 
->    upgrade paths
-> 
-> ---
-> Submission Details & Deadlines:
-> ---
->  * CFP Portal: https://lpc.events/event/20/abstracts/
->  * Track Selection: "Live Update MC"
->  * Deadline: July 24th, 2026
-> 
-> Session Format Reminder:
-> LPC sessions are highly interactive working groups, not static lecture 
-> slots. Proposals should be designed to introduce a concrete technical 
-> challenge quickly and leave substantial time open for real-time debate, 
-> consensus-building, and problem-solving with the room. Keep slides 
-> focused on architecture and open issues rather than heavy text blocks.
-> 
-> We hope to see you in Prague to help push the live update ecosystem 
-> forward.
-> 
-> (Note: LPC attendance caps fill up exceptionally fast. We strongly 
-> advise booking your passes early, as track organizers cannot always 
-> guarantee speaker registration overrides once the event sells out.)
-> 
-> [1] https://lpc.events/event/20/contributions/2321/
-> [2] https://lpc.events/
-> 
-> Best regards,
-> Pasha
+--- Patch [8]: [PATCH RFC v2 08/20] mm: vmscan: remove stack copy address o=
+f pud pass in wallk_pud_range() ---
+commit 509a7a22f2cecb4a110a42ba30c39b2954f718fe
+Author: Yeoreum Yun <yeoreum.yun@arm.com>
 
--- 
-Sincerely yours,
-Mike.
+mm: vmscan: remove stack copy address of pud pass in wallk_pud_range()
+
+This commit replaces passing the address of a stack copy of a pXd to
+walk_pmd_range() with passing the pud pointer directly. This change prepares
+the codebase for generic compile-time folded page tables.
+
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3727,7 +3727,7 @@ static int walk_pud_range(p4d_t *p4d, unsigned long=
+ start, unsigned long end,
+>  		if (!pud_present(val) || WARN_ON_ONCE(pud_leaf(val)))
+>  			continue;
+> =20
+> -		walk_pmd_range(&val, addr, next, args);
+> +		walk_pmd_range(pud + i, addr, next, args);
+
+[Severity: High]
+This is a pre-existing issue, but should walk_pmd_range() in mm/vmscan.c
+also be updated to avoid passing a stack copy to walk_pte_range()?
+
+In walk_pmd_range(), a stack copy of the PMD entry is created and its
+address is passed to walk_pte_range():
+
+    if (!walk_pte_range(&val, addr, next, args))
+
+Inside walk_pte_range(), this pointer is used for a concurrency check:
+
+    if (unlikely(!pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
+
+Because pmd points to the unchanging stack variable, pmdp_get_lockless(pmd)
+reads the frozen value, causing the pmd_same() check to always succeed.
+
+Could this bypass allow the MGLRU walker to iterate over a detached or freed
+PTE page table if a concurrent operation like MADV_DONTNEED clears the PMD,
+potentially resulting in use-after-free or data corruption when
+walk_update_folio() modifies flags on reallocated folios?
+
+> =20
+>  		if (need_resched() || walk->batched >=3D MAX_LRU_BATCH) {
+>  			end =3D (addr | ~PUD_MASK) + 1;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722-dummy_ptxp=
+3-v2-0-d9e4bad31e0a@arm.com?part=3D8
