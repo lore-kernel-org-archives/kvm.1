@@ -1,127 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65820404BF6
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28C43C1091;
+	Wed, 22 Jul 2026 10:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784713443; cv=none; b=WCwea4hZvl6jsFTteRch3EOqoEjUQttGRHRuZBSR+gFgit91P/ftcQZwdbQCsrrwHYvKLm34BQ4fdZv0KVXyvvkXCn4de0Qt6vM4NlEoVBboVCxaBUXCsTsAkDhHYGEO+rddNCdc4CfLBQkCPU5occDMdOk+oU+mjaN+a9SweP0=
+	t=1784716844; cv=none; b=cnsfb5+cKXvgoe+EOtorQGHeucZyOeYCW9whZOzc6I35VfO5Na+7A4RAtOuDxGWRnWltPV99pGwbtlB0l3Lq9A95cVeGIktGHZRFaSsiO+P7o+qdNTXybqsd/lVnBRNNRgXg5M9S2DBExMPjeNKraGt/l35vQ1rqwzyKxqhFSmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784713443; c=relaxed/simple;
-	bh=lOwARzZKfPn8sQ+Z5RWIh2PjsWgxiRWHG5/38qBJEHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KW/uwzLFQhUvwCc1NpTYyw0lyciEx7TFHl+10UPDi3gNt6Ahvm75lo10wGg7rkf23xcNmiUvblp6EE09ffVIuS1XYnalOFOOkZIDWvmWS9UYfXM5ZcBTTLb75pNXFbHNQYMX+PkNnvbuL/x1G/Xy/FyoN0VKwydREFE6CYYUkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VJHzf7c6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lUaSeldw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784716844; c=relaxed/simple;
+	bh=BNPEuqYRWTnIVb0q9FhLHXQn5A1SqtfKLzwmta56V7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aqzkUYrc7lcXAyLcAAvZ1clXKWhO1jsKLj0/YgIH7svK2Q1slSztj3LCIaab8FNmmVtFb9O4zDzFfz11Io33ClAdrprYWLfIruSPXvP7V0PoaG9iAZ4mDigYgqP9ma5BJ1C1axtERK4KpuVv723fPKiePEA7tryfX6emS1NwrcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tJOlpvBX; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VJHzf7c6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lUaSeldw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784713441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P6FuAEzBLuYs8iPbKk5rWp3C26BiKFrVufL8wR17fYA=;
-	b=VJHzf7c6yekDNRsgQSSBWL4IjKMuoaMJNM7i5dHIC4tec5B/n51cThSGeBLLWVW9r9boIm
-	CJMC82+mUXASJtg0B50LzAhjzwwssJAhphqLNwpSm6rRkphlxTP2/2VjDqHTDbfd/U36ED
-	Ystvfnsr6o0z8HKltRO5mWOCQ0jBAJk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-210-_NvSvX4EOgGRwIZHJxymhA-1; Wed, 22 Jul 2026 05:43:59 -0400
-X-MC-Unique: _NvSvX4EOgGRwIZHJxymhA-1
-X-Mimecast-MFC-AGG-ID: _NvSvX4EOgGRwIZHJxymhA_1784713438
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f81362fb1so1087331f8f.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 02:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784713438; x=1785318238; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=P6FuAEzBLuYs8iPbKk5rWp3C26BiKFrVufL8wR17fYA=;
-        b=lUaSeldwe+nk3/7oJfPwFP1RUotiGuEBl2au7YaJ/wB5fAcRK6i8JlGzMd9TifetEt
-         1fDYb5bIKVQkHPe86k2QHbjZoqiTegLaCWFDBygQJspP35SuuW6ZF0nWhzFTSTWXEwk/
-         6l+23ZxbAWQSJNpE4NLN+z6AeewRHUMMUUWoHD8l4/+rkKicOzn+Q6toQ3MqapyeMUMI
-         GKJZljx/1Q8lJWqQVJ+OVbRtVV8FSyOI9rTOENnBqitSR0EP2HEHk/8AJ4DOca86ImQJ
-         Xhe41bFiJcPXm4QkoYdT/fVAyJxedMZ7G2Aa6acKNTlX2t+pcX5Rlo/a1H3xisnSQurH
-         /0sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784713438; x=1785318238;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=P6FuAEzBLuYs8iPbKk5rWp3C26BiKFrVufL8wR17fYA=;
-        b=L537osSVgKGANJMCStwHWw22KfTyfInKwTejDJmCwa9+NIQCU247TjBIWQc63rqmzq
-         h+aUcBmpH9Rugxa3GdBg4X7scf9ySyAOQfc+npCsdKDeVlZs6aBiY+Tii0tDM6Ld5dDb
-         3muBechGSLk2WXEtiAbr88dxQNgq8N/XWmYTaPF4xeAdxPvastuZOF2CLmqvrTkuo6R4
-         P0U3rEZXXF4nTb5oAxxiS5uQpNqQsN/EcvGgGF+/oFvl5dJv0tWFx8zBkv/o1w8K6TQT
-         xHvYXqM7z1CDd0uMU7YVqrlWFLRAny2040YME9n0ac2Bn/Q1bf2u0Wbqy0vHMrvfdCPS
-         uq+w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr2a0hOvROaZ5FOrOmLKBvInDvmzD28qo3t3Yx42d2EFJhRsiFtB0Z2Xov5U7Crb+kN38M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmdqQZNoBIkyxqyAkyc9J0nK3fiak+7OxoBQa6Q/Nhg86JrnEl
-	LZJryxw5DymiAprWaDWG5B5bmhrwVCVivxU7GWNnnsH69zn10GbLj0+51DCVHqmYI1Qh5UI9ElM
-	ZVXRzPPUf1Q5dS0ZhhIGSqQbwOYzNysECNHAvzDG80sOBVkpXIjTDQQ==
-X-Gm-Gg: AR+sD10YB7DOQJb0cDuCHL76+czXW6c58iQYFQLdZdUw1K406q4nuTzXtVugz5e3xpu
-	YUlkdlHFuXC0Pr0hZCUsCVxZuMAkSyistqNH5TVjm4gVhRfifoxHV7X5nBR3YRLnU7+mJ+Enn15
-	orMvcQpEtkJOh6k/tBOigPrY1HBsdhpIww/sFqMmd9RcYm/0bUUOXqtfPtp5g2e4jignJh1mIxl
-	RXFRoe6Yif9k3wgMUZMGLdZd6V5l1plI4dc5fU8K7qzfhSsJb84lHflTLEAqZlO0/WdMQAL6ekc
-	R5MwiauCxjCZrO/zv4UScANvc9x2k1LXEaUsawfY954tYY8dX6GAiEPFnxRoDfPTN+9zPxkBPWI
-	vaVAaKtc9McsovgPYEmuUFXe2SKP8LXDZWHreVRH6uJxwJGKGMg==
-X-Received: by 2002:a05:600c:d4:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-4954a3dc3admr173160675e9.14.1784713438312;
-        Wed, 22 Jul 2026 02:43:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:d4:b0:493:cc25:9c0e with SMTP id 5b1f17b1804b1-4954a3dc3admr173160315e9.14.1784713437719;
-        Wed, 22 Jul 2026 02:43:57 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956537c6besm124593995e9.8.2026.07.22.02.43.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 02:43:57 -0700 (PDT)
-Date: Wed, 22 Jul 2026 11:43:54 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 5/5] vhost/vsock: add VHOST_RESET_OWNER ioctl
-Message-ID: <amCQyzvUwdy9KLzj@sgarzare-redhat>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-6-andrey.drobyshev@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tJOlpvBX"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66M9Bu7u3566083;
+	Wed, 22 Jul 2026 10:40:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=b93K53
+	eKlZ1po0mSl+QcBTIqFf/Mkvs4qO36TMN2P0U=; b=tJOlpvBX6Gh7lX0uyxn6mI
+	xJZ4BmoqC7UTKVxPStzhjeyD5jLH8u1vaINm/FBpZeUIhrh+8PYQUWYRiYnLHX3p
+	zmia3/zoW5Gld6cotS+V4v14jwsCh9qfbH8Xe1UfNZBZEqxhU0uFK+U5hyy15LtE
+	be5IhXm9P4zj9PgIQuZ6wMJ2qjhc3AsKyBZXf+cGlC5/SM54fjFCdGk8ys+4ojWA
+	dh7k0eDqJPyjAQurueYBOICSqsmQ1lt6bhBAg609KZx6H9OK7KLE6Zm9TT/LJziB
+	ILTufiQNSB606dwlTzSDPKQUE6T04S6Me8A+qWCpzqFGXKTibDzINDJyEETSEBMQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78g96eu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 10:40:35 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66MAYda6010528;
+	Wed, 22 Jul 2026 10:40:34 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnah6uhc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 10:40:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66MAeWo411338094
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jul 2026 10:40:32 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 889DD20197;
+	Wed, 22 Jul 2026 10:40:32 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F9E320196;
+	Wed, 22 Jul 2026 10:40:32 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jul 2026 10:40:32 +0000 (GMT)
+Message-ID: <5e7579a8-73e6-49ac-b585-66198e35d87c@linux.ibm.com>
+Date: Wed, 22 Jul 2026 12:40:31 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260720102241.371610-6-andrey.drobyshev@virtuozzo.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
+ for folios dirtied behind btrfs' back
+To: Qu Wenruo <wqu@suse.com>, Qu Wenruo <quwenruo.btrfs@gmx.com>,
+        linux-btrfs@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Cc: David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
+        Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org
+References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
+ <20260721191152.101118-2-borntraeger@linux.ibm.com>
+ <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
+ <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
+ <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
+ <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
+ <8ef80fa7-6c93-40bc-8a49-bf6494104cb7@suse.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <8ef80fa7-6c93-40bc-8a49-bf6494104cb7@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDA5OCBTYWx0ZWRfX2IpQOJbu7RD8
+ 1L8FAWX/YlyI8vsjHfQ4Eu4lSVGEzY5BMh65hoezwlFAcbOMm+gj2EdOw0jtuMlPLLO7IvZNFS3
+ da+u313ZjpcpXs7tunn8AF2HiqBUpMafJma3q/O3VX6Zs5aAUsFfFBbngOYkkSFzNqqmIkbcee7
+ Tm5YDjpbBr1j+GsqF2fgpEnvlDOPGiZ2ns/C++gWBUXCkjxeSiVjRJTwhlCYU9C7HSTSY6fEqx6
+ E42kMSN0NxvF5NbFvp3rPk850BLzvDWzx9sryvDrRN9qYHFPUncq9mhO72iZItCUVdtvDVBcvk2
+ ir37MEoxDUedpmnKvKzb4O88+pKgvuk7FKjk/I9BjF5gzOE4J4AVsbZJehz9vTWLnNVKZHHzcv4
+ oKIAloRjQ/rvmR/ADIEdC9twlnoZbXInxmpB34FJwJqTh80OtBpN8ztM6bI2A58NoJ9qGIM8JsV
+ KDXyS3+pNHMT9FrYt4g==
+X-Proofpoint-GUID: MWYbKPM6OzY5Hi5p60U97JvoKtpbcVGq
+X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a609e23 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=2C_faDN_CL7dLDClzjwA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIyMDA5OCBTYWx0ZWRfX0/m4z3eZgsPJ
+ gr26WhTXLNYuPDIM7jV+CIeOsBD8Rhv4AvCeR5830Z55VwtONSNnFaLnuANZ36CaFNPxU3zBfOT
+ 4vGEbqO5pJliRLeI/4gC7zQW57N4ff8=
+X-Proofpoint-ORIG-GUID: mHPPX-rK_oh6efqEg3xxK0IkCcUAUaxr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-22_03,2026-07-21_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607220098
 
-On Mon, Jul 20, 2026 at 01:22:41PM +0300, Andrey Drobyshev wrote:
->From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
->
->This ioctl is needed for QEMU's CPR (checkpoint-restore) migration of
->the guest with vhost-vsock device.  For this to work, we need to reset
->the device ownership on the source side by calling RESET_OWNER, and then
->claim it on the dest side by calling SET_OWNER.  We expect not to lose any
->AF_VSOCK connection while this happens.
->
->To that end, unlike the release path, RESET_OWNER keeps the guest CID
->hashed: established connections survive, and host sends issued while
->the device is between owners simply stay on send_pkt_queue until the
->next device start drains them.
->
->Since the device stays reachable through the CID hash, the lockless
->send/cancel paths can race with the worker teardown in
->vhost_workers_free().  The previous commit ("vhost: synchronize with
->RCU readers when freeing workers") makes that safe.
->
->Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
->Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->---
-> drivers/vhost/vsock.c | 25 +++++++++++++++++++++++++
-> 1 file changed, 25 insertions(+)
+Am 22.07.26 um 11:35 schrieb Qu Wenruo:
+> 
+> 
+> 在 2026/7/22 18:59, Christian Borntraeger 写道:
+>> Am 22.07.26 um 10:59 schrieb Qu Wenruo:
+>>>
+>>>
+>>> 在 2026/7/22 18:05, Christian Borntraeger 写道:
+>>>> Am 21.07.26 um 23:07 schrieb Qu Wenruo:
+>>>>
+>>>> First, thank you for taking the time to look into this and trying to understand
+>>>> things and trying to explain things. this is highly appreciated.
+>>>> I am still trying to fully understand this myself. A question:
+>>>>
+>>>>> 在 2026/7/22 04:41, Christian Borntraeger 写道:
+>>>>>> A folio can carry the folio-level dirty flag while its btrfs subpage
+>>>>>> dirty bitmap is empty: btrfs data mappings use filemap_dirty_folio(),
+>>>>>> so a generic folio_mark_dirty() call sets only the folio flag and the
+>>>>>> xarray tag, without setting any subpage dirty bit and without a
+>>>>>> delalloc reservation.  The typical source is set_page_dirty_lock() on
+>>>>>> a GUP pin,
+>>>>>
+>>>>> Shouldn't such folio got its ->page_mkwrite() callback get called first?
+>>>>
+>>>> Isnt that called implicitely at pin time?
+>>>
+>>> I have to admit, I'm not an expert on the MM part, I'm mostly a simple user of the existing MM interfaces.
+>>>
+>>> AFAIK, the last time I brought this thing up, Christoph mentioned that dirtying-folio-without-notifying-fs is a bug, and fs should not and is not able to handle such situation anyway.
+>>>
+>>> And that idea makes a lot of sense to me.
+>>>
+>>> So adding MM list for more help.
+>> So I now have an userspace O_DIRECT reproducer outside of KVM. (attached) which gave me (on an s390 system, though)
+> 
+> Thanks a lot, I can also reproduce it on arm64 (64K page size).
+> 
+> This is super bad, as we have just removed a lot of folio ordered related code to detect such problem.
+> 
+> I'll also check if it's some recent btrfs changes making it worse.
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
+The RFC patch from yesterday seems to fix _THIS_ problem, but as you outlined, there might be other issues that break and are not handled by my patch.
