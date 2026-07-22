@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9527D4746A2;
-	Wed, 22 Jul 2026 07:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E240A476048;
+	Wed, 22 Jul 2026 07:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706183; cv=none; b=rkeQLUgHFJ/u3bSuPQAPyYBdWaG/goGiuKIuvWHy6yNueNoC72IljMXkm9QUfKLU7ffPJiTamZ6NN2ZlQg74z/WrICFW9NoYI04Q1Q3cjLJKs5jVhIiLdLx5uCt9WPh24uP2Zpo9gitc/rvdKu4xcHDzLLEYL6XFxLIZx2VaM70=
+	t=1784706184; cv=none; b=kII0y9+Neqh9JxqE10ojB789B+4tu+brasR/ozkdMS32VqusvB59Eh/M/BBah/rrpaDkpoDeuWBdxgPxA1rVMHaHhcTSIp9gFA/5MZOFlZ1Dvq+far1mmOCH/NYuIXbwHrwvnb5trxrMnGE4koXLp5+2oC6XwvggknvZm3pWgC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706183; c=relaxed/simple;
-	bh=1a6g0FUNYjctw5B94xyjRpZGAbx7YJm1TxMbIoRmB4Y=;
+	s=arc-20240116; t=1784706184; c=relaxed/simple;
+	bh=TI6EYGOCRgNk/ucDoE12A0BQnvQn+jC2XBs9+FkWCJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fcTLq9m8n5PpFYwOmZ0+uHaw3ZtrwjK4NWtQzVSjqgNLuO1WuIUzBxVt0D9ETfVAynXhiP3ZWtkBYgJFFcXr1Zg3JnZ39pDBHIun1YBb7gYU4KS9nluNqzi+Xg5QvP29JpKAPPGJOWyEIdDZhmP/uyITC/85o8q6T/htPaK+FNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PyfsmJiX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=kI47Aqyfta88wSrUWUzOaNjpHQZpxjEZYAqmOmqFxcnXIbXPUgM7r2cnEmS5BVNK/p28kmf3Iv6oRPk13s7OjuQHRcAekVjOTazL2MEkML2EiN3qUvp0uuG6bnb1rWwNMkhIPGvcC8VgFylC9AUL4ru9+W59oxHkdpKW2UJ9EQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SK/yO4cR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PyfsmJiX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E071F000E9;
-	Wed, 22 Jul 2026 07:43:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SK/yO4cR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CE51F00A3F;
+	Wed, 22 Jul 2026 07:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784706180;
-	bh=xvfRoiVVXMz5ozRg++qNQ5fER4Qs3LDX4/NpXBs7HWc=;
+	s=k20260515; t=1784706182;
+	bh=jlKRqeuAHeiHYifY33jkifn9qRcM+UmxYlbf8Yr05cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PyfsmJiXqK5QYaIox8z01Y3O4loGKP5br4n2s6FW9QPJVoqlSz9dWpUJh5jXi4w48
-	 FaUH/kgVY9eRAE7KklrjIavGow2cc5jNfDubUknEhdW7tVRmk38L3UWkimFMCAPGKT
-	 Yllsf2if0cpFy895uq/UjJQXmIyI1+AgwUGLhcRtAPvD5ZRjQqSiyYL9vf0/A4IbxD
-	 MLeJNAQudSf666YnmRdnKR6Cs0g3ZSEVLi7z4Bu2jOZgpcebQaowmtcXpOmFCpKdpO
-	 xXExTHExiZ4bSRk2S+M8r21zChwAYb4ZmbvoY7t8dv2HAAhpEX2zYLQV78ECV0+98M
-	 eKuG49/FyoaQw==
+	b=SK/yO4cR3IcxPfQi1e9RuOX2ub2lMbgpuMJceUIDspw3Wk1E3a3gqPlgTncKKVgJA
+	 giM11T33FBifr05yGGmTc0/uCTn4f1ioo2/aawKci/4KxrZ5iI3skThGQPQyohdZJd
+	 AX5zJKkIYWpfZuMqhN2/UY/XccHbAGz5xnIOxH/sf8KHeE4ArvYhnLuZgdE8SFOqPg
+	 X/KVSLPdr3aIK3jBxIEZgEw02696NZig4BlFs4FvnLeu8cToHPo1zyyili5UdygbPX
+	 4YBpRdnu0vdC72QM8CU9/THXbCmB1JM1+QjmIk/mT2btCpc5mCXvJazvwLTieFmq38
+	 dNpKXaw5lfp+w==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wmRbX-00000007VfN-0j8g;
-	Wed, 22 Jul 2026 07:42:59 +0000
+	id 1wmRbY-00000007VfN-2EL4;
+	Wed, 22 Jul 2026 07:43:00 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v3 22/28] KVM: arm64: Add routing for NVHCR_EL2 trap
-Date: Wed, 22 Jul 2026 08:42:28 +0100
-Message-ID: <20260722074234.3330999-23-maz@kernel.org>
+Subject: [PATCH v3 28/28] arm64: Add override for ID_AA64MMFR4_EL1.NV_frac
+Date: Wed, 22 Jul 2026 08:42:34 +0100
+Message-ID: <20260722074234.3330999-29-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722074234.3330999-1-maz@kernel.org>
 References: <20260722074234.3330999-1-maz@kernel.org>
@@ -61,59 +61,97 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-NVHCR_EL2 accesses from EL1 are taken to EL2 when HCRX_EL2.NVTGE==0
-and HCR_EL2.NV==1. Describe this in the exception routing tables.
+In a very unsurprising turn of events, there is a large class of
+firmware that is totally unable to deal with FEAT_NV3, and doesn't
+set the required SCR2_EL3.NV3En bit, leading to an UNDEF exception
+or an unhandled trap to EL3, depending on the implementation.
+
+Allow the unfortunate user to override ID_AA64MMFR4_EL1.NV_frac
+and get a working system. Hopefully firmware will be fixed before
+actually HW ships, but I have been there before... :-/
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kvm/emulate-nested.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm64/include/asm/cpufeature.h   |  1 +
+ arch/arm64/kernel/cpufeature.c        |  4 +++-
+ arch/arm64/kernel/image-vars.h        |  1 +
+ arch/arm64/kernel/pi/idreg-override.c | 10 ++++++++++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
-index b7f3d86a94031..625604019fb32 100644
---- a/arch/arm64/kvm/emulate-nested.c
-+++ b/arch/arm64/kvm/emulate-nested.c
-@@ -136,6 +136,8 @@ enum cgt_group_id {
- 	CGT_CPTR_TTA,
- 	CGT_MDCR_HPMN,
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index a57870fa96db5..a42683af79fb5 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -968,6 +968,7 @@ struct arm64_ftr_reg *get_arm64_ftr_reg(u32 sys_id);
+ extern struct arm64_ftr_override id_aa64mmfr0_override;
+ extern struct arm64_ftr_override id_aa64mmfr1_override;
+ extern struct arm64_ftr_override id_aa64mmfr2_override;
++extern struct arm64_ftr_override id_aa64mmfr4_override;
+ extern struct arm64_ftr_override id_aa64pfr0_override;
+ extern struct arm64_ftr_override id_aa64pfr1_override;
+ extern struct arm64_ftr_override id_aa64zfr0_override;
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 6ae1c816e2010..14fbfa8e6b7b5 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -785,6 +785,7 @@ static const struct arm64_ftr_bits ftr_raz[] = {
+ struct arm64_ftr_override __read_mostly id_aa64mmfr0_override;
+ struct arm64_ftr_override __read_mostly id_aa64mmfr1_override;
+ struct arm64_ftr_override __read_mostly id_aa64mmfr2_override;
++struct arm64_ftr_override __read_mostly id_aa64mmfr4_override;
+ struct arm64_ftr_override __read_mostly id_aa64pfr0_override;
+ struct arm64_ftr_override __read_mostly id_aa64pfr1_override;
+ struct arm64_ftr_override __read_mostly id_aa64zfr0_override;
+@@ -858,7 +859,8 @@ static const struct __ftr_reg_entry {
+ 	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2,
+ 			       &id_aa64mmfr2_override),
+ 	ARM64_FTR_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3),
+-	ARM64_FTR_REG(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4),
++	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4,
++			       &id_aa64mmfr4_override),
  
-+	CGT_HCR_NV_HCRX_nNVTGE,
-+
- 	/* Must be last */
- 	__NR_CGT_GROUP_IDS__
+ 	/* Op1 = 0, CRn = 10, CRm = 4 */
+ 	ARM64_FTR_REG(SYS_MPAMIDR_EL1, ftr_mpamidr),
+diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
+index d4c7d45ae6bc8..d15c2cb1b0f28 100644
+--- a/arch/arm64/kernel/image-vars.h
++++ b/arch/arm64/kernel/image-vars.h
+@@ -51,6 +51,7 @@ PI_EXPORT_SYM(id_aa64isar2_override);
+ PI_EXPORT_SYM(id_aa64mmfr0_override);
+ PI_EXPORT_SYM(id_aa64mmfr1_override);
+ PI_EXPORT_SYM(id_aa64mmfr2_override);
++PI_EXPORT_SYM(id_aa64mmfr4_override);
+ PI_EXPORT_SYM(id_aa64pfr0_override);
+ PI_EXPORT_SYM(id_aa64pfr1_override);
+ PI_EXPORT_SYM(id_aa64smfr0_override);
+diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
+index bc57b290e5e7b..4e47616bcac23 100644
+--- a/arch/arm64/kernel/pi/idreg-override.c
++++ b/arch/arm64/kernel/pi/idreg-override.c
+@@ -106,6 +106,15 @@ static const struct ftr_set_desc mmfr2 __prel64_initconst = {
+ 	},
  };
-@@ -588,6 +590,15 @@ static enum trap_behaviour check_mdcr_hpmn(struct kvm_vcpu *vcpu)
- 	return BEHAVE_HANDLE_LOCALLY;
- }
  
-+static enum trap_behaviour check_hcr_nv_hcrx_nnvtge(struct kvm_vcpu *vcpu)
-+{
-+	if ((__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV) &&
-+	    !(__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_NVTGE))
-+		return BEHAVE_FORWARD_RW;
++static const struct ftr_set_desc mmfr4 __prel64_initconst = {
++	.name		= "id_aa64mmfr4",
++	.override	= &id_aa64mmfr4_override,
++	.fields		= {
++		FIELD("nv_frac", ID_AA64MMFR4_EL1_NV_frac_SHIFT, NULL),
++		{}
++	},
++};
 +
-+	return BEHAVE_HANDLE_LOCALLY;
-+}
-+
- #define CCC(id, fn)				\
- 	[id - __COMPLEX_CONDITIONS__] = fn
- 
-@@ -598,6 +609,7 @@ static const complex_condition_check ccc[] = {
- 	CCC(CGT_CNTHCTL_EL1NVVCT, check_cnthctl_el1nvvct),
- 	CCC(CGT_CPTR_TTA, check_cptr_tta),
- 	CCC(CGT_MDCR_HPMN, check_mdcr_hpmn),
-+	CCC(CGT_HCR_NV_HCRX_nNVTGE, check_hcr_nv_hcrx_nnvtge),
- };
- 
- /*
-@@ -853,6 +865,7 @@ static const struct encoding_to_trap_config encoding_to_cgt[] __initconst = {
- 	SR_TRAP(SYS_SCTLR2_EL2,		CGT_HCR_NV),
- 	SR_RANGE_TRAP(SYS_HCR_EL2,
- 		      SYS_HCRX_EL2,	CGT_HCR_NV),
-+	SR_TRAP(SYS_NVHCR_EL2,		CGT_HCR_NV_HCRX_nNVTGE),
- 	SR_TRAP(SYS_SMPRIMAP_EL2,	CGT_HCR_NV),
- 	SR_TRAP(SYS_SMCR_EL2,		CGT_HCR_NV),
- 	SR_RANGE_TRAP(SYS_TTBR0_EL2,
+ static bool __init pfr0_sve_filter(u64 val)
+ {
+ 	/*
+@@ -220,6 +229,7 @@ PREL64(const struct ftr_set_desc, reg) regs[] __prel64_initconst = {
+ 	{ &mmfr0	},
+ 	{ &mmfr1	},
+ 	{ &mmfr2	},
++	{ &mmfr4	},
+ 	{ &pfr0 	},
+ 	{ &pfr1 	},
+ 	{ &isar1	},
 -- 
 2.47.3
 
