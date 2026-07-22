@@ -1,149 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9339F36B908;
-	Wed, 22 Jul 2026 20:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D27439908;
+	Wed, 22 Jul 2026 20:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.34.181.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784751731; cv=none; b=Kx0CyJUSPlo1nPbUlgoG88c/mYjAY3Z172kMslVJcAvGDGF3tDEzir2ceMxqpFa4Zis/KBCSSjHpwdJFN1v7P42G07buoZ+s79f2xdEUsEQhyNykVz6pLxmLuVBRcUfpufcF+ZSycyIQfM3zolpZZzrxJMIwZHMzm2Mg+lFfutI=
+	t=1784752044; cv=none; b=lj+IpWUPj9mo/VX3fBCR1f7r4LxSE7FtDMFn2AisL79U/kaBNp+UBd7AiIEG9K5CaIWx2r4Gzkt3DNzPdI09VusvR3l/0auCboWoJrp0FqLn/FG+gFr1oIZKFTFnJqhWLUR0Cq80VqbKCCNTiTEz0b4t7yUshZJzTK9gbnBktM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784751731; c=relaxed/simple;
-	bh=C07OTvTr7coVCVH6Y9d+rRwSbozP4VPBHbTE6ss77ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XAWAshYzSnqzy6jvIP59zrX9MODmxpRfg5oykEriuoA02hfcP8rNRPq1ztE3YpYgzpr3sNBZSahizeoKttPbFiou8pe8eNuO/QmkM0xUbOIDs47S/YE/8w5g7M4l38vBkIoXtaOjjh5lRTJsQPOqJ5DDnWOAiFxWIaZyvxhINck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kNdi5Sqs; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784752044; c=relaxed/simple;
+	bh=XpmnCyDIJBzMs6VGI8ZKugfCk3Um6Y22mdoXwUhpgjc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Cx5Ln+gy+ZGF2nxTElxWaMVmOwp0tL60GDhfvH1xiiKLHE9z9pVIfZSyO/tcBGDWC/GWms/L0FChdt4unC1XQdlSldqh2QEzgaTDvI8cQMXaA0Wky9b9bcUCqKbcapO/JV07/WlYl6+JngcIcxtpA6jiHRlyr6qQ54nOrFNzKLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=tBrkrIaW; arc=none smtp.client-ip=52.34.181.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kNdi5Sqs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784751729; x=1816287729;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=C07OTvTr7coVCVH6Y9d+rRwSbozP4VPBHbTE6ss77ds=;
-  b=kNdi5SqssyvZP0QxKwxYIfoH4n+87Wyh4WuT3puyWi9GHslh1ACPGZ97
-   J/U18MdRYpUT6jbpPh0/o8b1adLTQrSJLhw8SL2Y+kIIVGYB7UCyKXT0/
-   2TFrOnLrzfz1/exH4rOcRxM/9sgmzOF8rFXc+xeMwQsya98GIltabpja4
-   ltz6Dz8BSQQkvvaVK6nbYamYO7LD3R6a6o8IemTFRR/F2iH+8VjTILJd+
-   mqw5ystL30EvneUiwcq4JH4LbxkUKszNijjvdcDntXgU+jhLGIQGo7pQB
-   czX8bv2HnfV1hDAsGaBRD0W+dc4BOgSAlQf5qYeqGK/oe/6renvBu4Irn
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="tBrkrIaW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1784752043; x=1816288043;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wu1rvS/0NtqSzL/yTwSllD7b6h2XEg4CeDcgPIqUCJ8=;
+  b=tBrkrIaWJa2BbILajvg7jStgcNYb9g7hluDrixrmFw0sP+qRCYAu45Md
+   ZpN8X4LoyLoM70qxx0QlbBHMI0xlR3WrZ6lcb8eg3ueik+TZ4XSyc3wmc
+   QCT9JSvRGtGxZlSpLvt+mc5L7f7CICgKvq6VNbns12c6O7/X7f60OhIvm
+   LfnbylVZck/NVvHFPRYFOHRqn5I3r6D/8NBkCdFC+zKZrjyGYcMHT3qff
+   br/iN0SDEWIMHBWPlXccG5Y79d7u4c+iVNdtVsW2m7yKPVFGXWDwK+gdi
+   C+cjj0uZV/2TImmOFZwEf/9TTjLGiW8LAeJt6UIQpGZynoZkxNpjW1knZ
    g==;
-X-CSE-ConnectionGUID: /MZLRF6hRBGgfIbB4Vddng==
-X-CSE-MsgGUID: 9AlaMTbJS6i97izNyjlNUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85489097"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="85489097"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:22:08 -0700
-X-CSE-ConnectionGUID: j/27Y88ERYO041Pa3i8rxQ==
-X-CSE-MsgGUID: whhMVyXKTNOu5lad8draKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="296398206"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 13:22:07 -0700
-Message-ID: <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
-Date: Wed, 22 Jul 2026 13:22:04 -0700
+X-CSE-ConnectionGUID: /9kOpMd8QuKjjawR+ASmog==
+X-CSE-MsgGUID: Ix+wXZq9QRmXc4xYsHurFw==
+X-IronPort-AV: E=Sophos;i="6.25,179,1779148800"; 
+   d="scan'208";a="24168920"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 20:27:23 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:8212]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.115:2525] with esmtp (Farcaster)
+ id 98f78049-842d-4f6a-b8e7-386b30f86096; Wed, 22 Jul 2026 20:27:22 +0000 (UTC)
+X-Farcaster-Flow-ID: 98f78049-842d-4f6a-b8e7-386b30f86096
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Wed, 22 Jul 2026 20:27:22 +0000
+Received: from dev-dsk-congkai-2a-df9e8fab.us-west-2.amazon.com
+ (172.23.251.204) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Wed, 22 Jul 2026
+ 20:27:22 +0000
+From: Congkai Tan <congkai@amazon.com>
+To: Oliver Upton <oupton@kernel.org>, <kvmarm@lists.linux.dev>,
+	<linux-arm-kernel@lists.infradead.org>
+CC: Congkai Tan <congkai@amazon.com>, Marc Zyngier <maz@kernel.org>, "Joey
+ Gouly" <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, "Haris
+ Okanovic" <harisokn@amazon.com>, Geoff Blake <blakgeof@amazon.com>,
+	"Stanislav Spassov" <stanspas@amazon.de>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 0/4] KVM: arm64: Expose PMMIR_EL1.SLOTS to guests
+Date: Wed, 22 Jul 2026 20:26:58 +0000
+Message-ID: <20260722202702.4165917-1-congkai@amazon.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
- compile-time folded pagetable
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
- <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
- <amD7ab_KuJPdBQBh@e129823.arm.com>
- <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
- <amElnEbvRTjv2hyU@e129823.arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <amElnEbvRTjv2hyU@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWC001.ant.amazon.com (10.13.139.223) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On 7/22/26 13:18, Yeoreum Yun wrote:
-> Sorry. But do you mean check with cpu_feature_enabled() not with
-> boot_cpu_has()?
-> IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
-> uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
-> an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
+Today when the perf tool runs in a guest on cores with PMUv3p4, it fails
+to parse the default metrics with "Failure to read '#slots'", since perf
+can only read 0 from sysfs caps/slots, which is backed by PMMIR_EL1.SLOTS
+that KVM traps as RAZ/WI.
 
-Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
-would be great!
+Taking into account backward compatibility and heterogeneous systems, the
+exposure of PMMIR_EL1.SLOTS is gated behind a new vCPU feature flag:
+
+- Patch 1 exposes PMMIR_EL1.SLOTS of the selected PMU under the (as yet
+  unsettable) KVM_ARM_VCPU_PMU_V3_STRICT flag, and adds userspace get/set
+  for PMMIR_EL1 so that SLOTS can be reset to 0 for backward
+  compatibility.
+- Patch 2 stops masking STALL_SLOT* in PMCEID1 under the flag.
+- Patch 3 makes strict-mode userspace configure the number of event
+  counters via the KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS attribute rather
+  than PMCR_EL0.N, whose meaning is context-dependent under NV.
+- Patch 4 adds the KVM_ARM_VCPU_PMU_V3_STRICT flag itself: when set, KVM
+  does not create a default PMU during vCPU init, and the VMM must select
+  one explicitly via KVM_ARM_VCPU_PMU_V3_SET_PMU before the first
+  KVM_RUN. This flips the gate on and can serve as an umbrella flag for
+  future PMUv3 UAPI changes.
+
+When the flag is not set, behaviors are unchanged.
+
+v2: https://lore.kernel.org/r/20260702190421.420992-1-congkai@amazon.com
+v1: https://lore.kernel.org/r/20260601193954.2103455-1-congkai@amazon.com
+
+v2 -> v3 changes:
+ - Reordered so the KVM_ARM_VCPU_PMU_V3_STRICT flag / KVM_CAP exposure
+   comes last (now patch 4), after the flag-guarded behavior patches.
+ - Reworked on top of Oliver Upton's refinements (thanks!):
+   * Move the NULL-arm_pmu check into kvm_arm_pmu_v3_init() (returns
+     -ENXIO) instead of failing at the first KVM_RUN, and report zero
+     counters from kvm_arm_pmu_get_max_counters() before a PMU is set.
+   * Documentation and -ENXIO ordering notes for the PMU device
+     attributes (SET_PMU must precede INIT/FILTER).
+ - New patch (Oliver): ignore userspace writes to PMCR_EL0.N under the
+   strict flag and require the KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS
+   attribute, since PMCR_EL0.N is context-dependent under NV.
+ - Advertise the KVM_CAP_ARM_PMU_V3_STRICT capability.
+ - Documentation fixes in api.rst (the flag Requires KVM_ARM_VCPU_PMU_V3).
+
+Congkai Tan (3):
+  KVM: arm64: Expose PMMIR_EL1.SLOTS under strict PMUv3 UAPI
+  KVM: arm64: Advertise STALL_SLOT* in PMCEID1 under strict PMUv3 UAPI
+  KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_STRICT vCPU feature
+
+Oliver Upton (1):
+  KVM: arm64: Ignore writes to PMCR_EL0.N when using strict UAPI
+
+ Documentation/virt/kvm/api.rst                | 11 ++++
+ Documentation/virt/kvm/devices/vcpu.rst       | 11 +++-
+ arch/arm64/include/asm/kvm_host.h             |  5 +-
+ arch/arm64/include/uapi/asm/kvm.h             |  1 +
+ arch/arm64/kvm/arm.c                          | 19 ++++--
+ arch/arm64/kvm/pmu-emul.c                     | 54 ++++++++++++----
+ arch/arm64/kvm/sys_regs.c                     | 64 ++++++++++++++++++-
+ include/kvm/arm_pmu.h                         |  4 ++
+ include/uapi/linux/kvm.h                      |  1 +
+ .../selftests/kvm/arm64/get-reg-list.c        |  1 +
+ 10 files changed, 149 insertions(+), 22 deletions(-)
+
+
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+-- 
+2.50.1
+
