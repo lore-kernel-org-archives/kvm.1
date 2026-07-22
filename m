@@ -1,180 +1,406 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE5943BDAA;
-	Wed, 22 Jul 2026 15:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C4543BDC4
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784734385; cv=none; b=r79dO6fzY6K5xhPKPA7qW+Fv//WdDbHFGXEfPi97LGMbyzls18Udz9llQJmngLXcmneop4+UbW5DLm8ryNjdCC6iPDsKNSP7e9n7lBS2P0K21fabA2i4QEh4fdKny2Fct5CZOJYqEUy+D6oQ5K0ZWYgiAmregmhBfx9+AxWtRxk=
+	t=1784734817; cv=none; b=ETHR564pecO/0tYwU2HA+4oEmf64+6gdOkfLwBCBmIwo1l+IBfDDb7iye17zalk984fYoO/Dl+3OVsQjrKfwsjafn4/eoWemrhYaVAdRhljI7ptWvb5FNemzfJMJnekAdoWAnfHZbcpvY4hRp4kHv1+BziGgc/6fr41pSmDDYZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784734385; c=relaxed/simple;
-	bh=k+Ct6UKfsw6TgQhfFM/Z3zSeUfS2RWT0nIS47WctCoI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=btsGaWbH6fNC8eIwjS7cUknfJ+MugJG+ez4OX9AoCDgkU4aKPZ/tX8+mTZJZAUK1qFT+cIfyGFlgXLHf0aifB0+QYoGfV4fBlAJiDkVX2qxqnEpFWdxP6b/OkLs+57A4f8oS9gGHBa7RtpVJWHDQcw6nog54q04j/cgPo/q/F2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=g0nt6IZQ; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784734817; c=relaxed/simple;
+	bh=Yr9xb70jqiacZC5C3W2M/iYWSqCrqiufBDUWljNiIj8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pu8+dqpi3o6hieAukamsQj8k/1fmXqh/f6+fx3yIxgXtdhsTv7yf6TMMc2d32c/wbncjpb2m79wBCAzVhkB64K/Z8pFmu0qP4XvaPou01TAKdtwanFcgeqkpgGNjcNlSgkhd/x1/uzlDJVqQIkpTzTa5X59EXKQkDxHxfNhNqFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=rgU44hye; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="g0nt6IZQ"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BE34168F;
-	Wed, 22 Jul 2026 08:32:59 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 96B563F66F;
-	Wed, 22 Jul 2026 08:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784734383; bh=k+Ct6UKfsw6TgQhfFM/Z3zSeUfS2RWT0nIS47WctCoI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=g0nt6IZQyCvKgFZI60DRcC/GGffDPb2GQYIKllqDpAFm2g3BxA4jSQds3cRGSkeX+
-	 Tmrbtu+qVu7CkkGqnfFFoBLy5zASiJCTJuvf7Q9ZTGipqgz23ZCnK/giM7u1gcWK6V
-	 V0zdJQpZ9klZ7UIIQa1LjhJUG8roKpNnBr50gWEk=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Wed, 22 Jul 2026 16:30:28 +0100
-Subject: [PATCH RFC v2 20/20] arm64: pgtable: convert pte_present() from
- macro to static inline
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="rgU44hye"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92e6391b114so723502585a.3
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 08:40:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784734813; x=1785339613; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Z9WM+2MFVnedGDWLPttsIf94o07ITbEUNNq93LWWdyQ=;
+        b=rgU44hyee+ChcqRpfldBre6rcTWwtKVgYaOFCHuD1A8xCxiJEKm4zmi5cc6Ar2zMmo
+         /4W0TZef2gc00sZKROmEwUdfUeB0v75hD+BhpetJRtryFrpFYW5mGqqy79djPhVMDL+E
+         XnGgqI9N4vBZ4vI3vZ3I5ivuEVrepSBautzaYFqhV/MgNIhFUQpBiEECdqt0hot5OUmX
+         TUj5fwbMeicW77YCVkEgZWTzWi1FbIYLV5Pz7/Vg4U4/ELlPfd2ZIYatwHDxgp7Z3gLs
+         MNpAFJhrJiLl482RxojYERzp0hW0j7lmsyyQut9Bk4q1LrzjbWD0NCPpskuMXazud75n
+         7urg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784734813; x=1785339613;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Z9WM+2MFVnedGDWLPttsIf94o07ITbEUNNq93LWWdyQ=;
+        b=Agxke30fxRw+qUTdXB3CKvrv8rAN62XBZmz07E1r/qz7vJhg7gW30CoFh3rn+2vodd
+         hjAjllpvOi9+D9PiAQIJIGjMJTVtiOsORk3y2JWfFXnCL8ANkbzhWe1HY5ljCEqErDV7
+         RyTX8kjLOrZB1FiYduUwMCc9XplfX6JOw6q48kdKhYZ2mAjkRYBFj6pjkuDHioCVzAXG
+         Cug6SbsCHi5oGPX1zB1NwT6A86RDdRGRUh7DBNIxi5pELuqZxlHUMnwrfXM6LHe2q7Iv
+         uUMw6vwW3G/miUdk+7SW1QhQMDBm9uERTZQ1BBNniTGcbr8TXw0XrZ8CA6KPCk13WgC6
+         lqAw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpozn8EBhrLpArUbvkx/xyW35xf653RDsL3gKWjd4CKIemjNbyVO38TWA2dS97UX+uoWHc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlBZRoVpA/UNJEIBnIhghKtp4sILdtfu+SsG4Tn8o3XJKYTCxW
+	ulp7gvGKJ0ElKNOcndBBJxMDsuODkkVz9rp6wFirk+aNmvZQLNAaOq1HLIDn+p4K9cI=
+X-Gm-Gg: AR+sD10JkKfjhhX6Xu1XBod9Dx2+7wKUQ0qmNuvGV5NC/AU1qD9DI7l2Hk0EFOJHPPD
+	SA0phu2AVLtwXve9BEWpmbqDA2Ck6CHzoBTdzaK7DTiSsVrhS/QddsLF5vArLwgfVpUQz0+gFvL
+	awwzS1gB7ZFsdZ68MZclJv25ZEeJhp1b4wHsH0V+wWQ+AO1PIA/+rzeSR3/Aa0qzr/E48wNClBz
+	DDLZKhM9Lk7KdlWeggXssnkrpd79JEWVJhVploVnO8iyg9w+h8XYnauDfch8+jYmDmMUzCHm08I
+	RT1Rz7+scLQT2pa6gQ5w2JQvu2VnPggJNOGGwFlN7QI3CUR8VvnjBGztX/pZyiSyj1XD99UuqJt
+	zBltW/ZcWaPJu7CBmnevjQkuCHHH8zWSxIhS+id8/CXh5wPzFsUhqKacFEtljzqF0dxN8FrciSa
+	JjGemJhgT0HnksgEwSH+ZXiPyOMxtNmT4ltpng8SI1zPB0lUsUvUO4M1IAmw==
+X-Received: by 2002:a05:620a:371d:b0:92b:6805:9175 with SMTP id af79cd13be357-930b419d330mr2368159885a.61.1784734812726;
+        Wed, 22 Jul 2026 08:40:12 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f68a9c76sm190317885a.13.2026.07.22.08.40.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 08:40:12 -0700 (PDT)
+Date: Wed, 22 Jul 2026 11:40:06 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+Message-ID: <amDVQopyvolxfX8K@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <amDL80BSEP6u9XfE@MWDK4CY14F>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-dummy_ptxp3-v2-20-d9e4bad31e0a@arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
-In-Reply-To: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
-To: Russell King <linux@armlinux.org.uk>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>, 
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Jonas Bonn <jonas@southpole.se>, 
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
- Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
- linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3788; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=k+Ct6UKfsw6TgQhfFM/Z3zSeUfS2RWT0nIS47WctCoI=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqYOIZ28tsQPrNiVpXVTDwHe/CTrQCbHUFRJazg
- yJ2euBUl/WJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCamDiGQAKCRBt1cPRWsUx
- M0S9DADGM2RD+DFrHP2YJpZpPcTcyVH/TMAS0pwVsW1g4uxtvIdtn63hJRlaxQu5urXc+Lq/RBH
- m65O3NKvfrVe/lONng8d0oSO9qWVcb88cWdEc/UMikc0hRViojalruYvg/j9Whge9O6REkHj4ef
- MCBpDPKXxJQnITLIphQp/inT602yb0Mc9ysYANV1nwHgfOlC+OkN1zMNOMeR9xAf1fDaAenzXob
- LH+Yv5ZeXfazFPG7QMZdsxejPVcuI8MGbXHDgjKPJW3VMRjAik4WPeD9L/7oWOopkz38RUIjNdu
- BiEPWbt7ZEuo9CE3Sh1yvzdKeBP55+kDJzxEPHfsed+tWtYBkw7Mgrx3hy1MbbltZ/TJAbZUwgB
- AKOmwqNxTPy7ZL2XMNPiavDxP8JhogFcR0yI9RvWg0KswIjItJfbV50X72kJrZalSNSOtsjgpwi
- SSuYz91oqX04BKa5QahApperz7grEN93/1UeYbDnaCBVnMAVl57yy1+slrRnHZyOohJ88=
-X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
- fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amDL80BSEP6u9XfE@MWDK4CY14F>
 
-pte_present() is used as the basis for both pmd_present() and pud_present().
-It is currently implemented as a macro composed of pte_val() and
-pte_present_invalid().
+On Wed, Jul 22, 2026 at 10:20:00PM +0800, Richard Cheng wrote:
+> On Mon, Jul 20, 2026 at 03:33:54PM +0800, Gregory Price wrote:
+> Hi Gregory,
+> 
+> I applied your series on mm-next and give a quick review,
+> not thoroughly, still I have some questions below regarding the design.
+>  
 
-When pte_present() or its higher-level variants are used directly with
-ptep_get() or pXdp_get(), for example:
+Hi Richard,
 
-  pte_present(ptep_get(pte));
-  pmd_present(pmdp_get(pmd));
-  pud_present(pudp_get(pud));
+Thank you for the read.
 
-the macro expansion causes the compiler to evaluate the argument twice,
-resulting in redundant loads. For example, pte_present() expands to:
+Just a heads up, this was based on mm-new because of some recent work
+on Brendan's page_alloc.h cleanup, but if you managed to get it applied
+then maybe that's made its way forward already.
 
-  !pte_val(READ_ONCE(*pte) || pte_present_invalid(READ_ONCE(*pte))
+> > The goal here is to flip that dynamic, isolate by default and then
+> > opt-in to specific services that the device says is safe.
+> > 
+> > Isolation at the NUMA/Zonelist layer provides a powerful mechanism for
+> > memory hosted on accelerators - re-use of the kernel mm/ code.
+> > 
+> >  - Accelerators (GPUs) can use demotion, numactl, and reclaim.
+> >  - Special memory devices (Compressed RAM) with special access controls
+> >    (promote-on-write) can have generic services written for them.
+> >  - Network devices with large memory regions intended for ring buffers
+> >    can use the buddy and standard networking stack.
+> >  - Slow, disaggregated memory pools which aren't suitable as general
+> >    purpose memory get cleaner interfaces (no need to re-write the buddy
+> >    in userland, can use migration interface, etc).
+> >  - Per-workload dedicated memory nodes (disaggregated VM memory)
+> > 
+> 
+> For accelerator part, take CXL Type-2 as example, it has its own protocol
+> CXL.cache, CXL.mem which is the rule they need to obey during memory transaction,
+> Adding more rules for them since they are NUMA node confused me, I wonder the reason ?
+> 
 
-A typical example is pud_free_pmd_page(), where the expansion of
-pmd_present() generates:
-    ...
-    /* pmd_present() (x20 = pmdp) */
-    1b88: f9400288     ldr	x8, [x20]        // read pmdp.
-    1b8c: f9000fa8     str	x8, [x29, #0x18]
-    1b90: 3707fec8     tbnz	w8, #0x0, 0x1b68 <pud_free_pmd_page+0xd0>
-    1b94: f9400288     ldr	x8, [x20]        // redundant read of pmdp.
-    1b98: 8a170109     and	x9, x8, x23
-    1b9c: f9000fa8     str	x8, [x29, #0x18]
-    1ba0: f120013f     cmp	x9, #0x800
-    1ba4: 54fffe20     b.eq	0x1b68 <pud_free_pmd_page+0xd0>
-    1ba8: 17fffff4     b	0x1b78 <pud_free_pmd_page+0xe0>
-    ...
+CXL protocols simply state how to do the memory transaction at a
+physical / transport level.  It does not make any statement on how the
+operating systems are to make sense of these devices or what constructs
+/ abstractions to build to actually manage the devices themselves.
 
-Convert pte_present() to static inline function so that prevent the
-generation of redundant code and move pte_valid() and
-pte_present_invalid() further up so the inline function can use them.
+This series is not necessarily attached to CXL in particular, you could
+just as easily carve out memory from the general pool onto a private
+node to ensure it only gets used for a particular use.
 
-After this change, the generated code becomes:
-    ...
-    /* pmd_present() (x20 = pmdp) */
-    1a30: f9400288     ldr	x8, [x20]
-    1a34: 8a170109     and	x9, x8, x23
-    1a38: f9000fa8     str	x8, [x29, #0x18]
-    1a3c: f120013f     cmp	x9, #0x800
-    1a40: 54fffe80     b.eq	0x1a10 <pud_free_pmd_page+0xd0>
-    1a44: 3607fee8     tbz	w8, #0x0, 0x1a20 <pud_free_pmd_page+0xe0>
-    1a48: 17fffff2     b	0x1a10 <pud_free_pmd_page+0xd0>
-    ...
+In fact, that is how I have been testing this with dax/kmem:
+https://github.com/gourryinverse/linux/commit/f279e741d9c3643597525bfab916b29b95cb635b
 
-This eliminates the redundant load and also reduces code size at
-call sites using this pattern. For example, pud_free_pmd_page() shrinks
-from 7,500 bytes to 7,148 bytes, a reduction of approximately 4.7%.
+> Because NUMA node, at least for me, representing topology/locality rather than
+> something with ownership or capability or rules.
+> 
 
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+The NUMA abstraction representing topology/locality is a construct we
+(the OS developers) have decided on historically - but there's nothing
+that dictates we can never create new useful abstractions with it.
+
+Consider:
+    N_NORMAL_MEMORY,        /* The node has regular memory */
+    N_HIGH_MEMORY,          /* The node has regular or high memory */
+
+These have nothing to do with topology or locality, they are node states
+that only have meaning in the context of linux mm/.
+
+
+To make something clear - there is no *requirement* for any particular
+device to use this abstraction.  It simply enables a cleaner way for
+devices carrying memory to re-utilize mm/ services while ensuring their
+memory does not silently get used under system pressure (or some vagrant
+in userspace doing `numactl --interleave all`).
+
+Ignoring all the CAP bits entirely, if you just took the base series
+your driver could re-use the buddy allocator without any special logic
+AND have confidence that your driver is the only possible user of that
+memory (barring some truly obscene bug).
+
+> >  - isolation via a dedicated zonelist:
+> >      - private nodes are omitted from FALLBACK/NOFALLBACK
+> >      - added ZONELIST_PRIVATE(_NOFALLBACK)
+> 
+> I saw the reply in patch 5, so in fact there's not only one
+> dedicate zonelist, but numerous ?
+> I raise the question because zonelist was supposed to be a
+> global, unbypasssable thing in MM design, but now what you
+> are trying to do is to seperate the whole global list into several
+> parts ?
+> 
+> Can you explain why in current design you don't consider to support
+> something like ZONELIST_PRIVATE[n]={0, .. ,n-1} ? that's my imagination
+> of what a global zonelist should look like, no matter private or non.
+> 
+
+First let me say that there's nothing that prevents us from doing this,
+and we *could* make this the default case - but this decision was
+intentional by me.
+
+Having them all present in each-other's zonelists by default creates a
+number of implicit opt-ins that are unclear:
+
+  - any direct zonelist iterator now iterates all zones on all private
+    nodes, even those nodes do not opt into the same services
+
+    e.g. zonelist iteration in reclaim that targets Private Node A would
+    attempt to reclaim Private Node B as well.  That would require and
+    extra explicit filter.
+
+    I ask: Why do this? Just isolate in the zonelist, and if there is
+           a desire for intersections - make it explicit, not implicit.
+
+  - fallback allocations can now occur across private nodes, even
+    if those nodes are intended for different purposes.
+
+    Obviously you can use nodemask to tighten the allocation target, but
+    I use `numactl --interleave --all` as an example of a clear case
+    where intersected nodelists may not give you the behavior you want.
+
+
+So for consistency - everything including zonelists have full isolation.
+This way all interactions with a private node must be explicit - always.
+
+
+This is actually one of the problems with ZONE_DEVICE - and you can see
+it in this patch set.  Some of the hooks in mm/ for zone_device only
+apply to PTE cases, and are absent from PMD cases - only because PMD
+mappings in ZONE_DEVICE aren't supported.
+
+That kind of implicit behavior is quite bad.
+
+That said, future improvements could include something like:
+
+for_reclaimable_zone(ZONELIST_PRIVATE) {}
+
+where we loosen this isolation, and formalize a filter, but I would
+like to see the usecase for it first.  Loosening the isolation defeats
+the entire purpose of the series, so there should be a strong reason to
+do so.
+
+> > Allocation Isolation
+> > ====================
+> > page_alloc presently controls whether a node's memory can be allocated
+> > on a given call by 4 things (in order of authority)
+> > 
+> >   1) ZONELIST membership
+> >      If a node is not in the walked zonelist, it's unreachable.
+> >
+> 
+> So a device gets hotplugged in the system will get a dedicated zonelist here ?
+
+Yes.
+
+> And make sure it obeys the device's own protocol if it has one ?
+> 
+
+I'm not sure i follow this question, can you help me understand?
+
+If by protocol you mean the CAP bits (opting into reclaim, demotion,
+etc), then yes.  If you mean something else (CXL) then I think that's
+orthogonal and unrelated.
+
+> > Private nodes:
+> >   1) Never appear in any ZONELIST_FALLBACK
+> >   2) Have an empty ZONELIST_NOFALLBACK
+> >   3) Only appear in their own ZONELIST_PRIVATE(_NOFALLBACK)
+> > 
+> > 1 & 2 mean all existing in-tree callers to page_alloc can NEVER
+> > accidentally allocate from a private node.
+> > 
+> > An allocation must explicitly ask via a zonelist and a nodemask.
+> > 
+> >   alloc_flags |= ALLOC_ZONELIST_PRIVATE; /* use ZONELIST_PRIVATE */
+> >   __alloc_pages(..., nodemask);     /* with the private node set */
+> > 
+> 
+> As I stated above, NUMA concept was quite naive at first glance for my
+> limited knowledge.
+> 
+> This is quite alot to add for NUMA node concept, I'll want to see
+> more explanation in v6 and learn from it, thanks.
+> 
+
+Sure, I can expand on it.  I think it's not as much to add as you think
+though - it's simply adding the concept of isolation to a NUMA node.
+
+Some more explanation below, but if you think there is something i
+should explicit spell out in v6 cover, please let me know.
+
 ---
- arch/arm64/include/asm/pgtable.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6185fc291fd7..aaae3d14895f 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -140,10 +140,17 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
- #define pte_none(pte)		(!pte_val(pte))
- #define pte_page(pte)		(pfn_to_page(pte_pfn(pte)))
- 
-+#define pte_valid(pte)		(!!(pte_val(pte) & PTE_VALID))
-+#define pte_present_invalid(pte) \
-+	((pte_val(pte) & (PTE_VALID | PTE_PRESENT_INVALID)) == PTE_PRESENT_INVALID)
-+
- /*
-  * The following only work if pte_present(). Undefined behaviour otherwise.
-  */
--#define pte_present(pte)	(pte_valid(pte) || pte_present_invalid(pte))
-+static __always_inline bool pte_present(pte_t pte)
-+{
-+	return pte_valid(pte) || pte_present_invalid(pte);
-+}
- #define pte_young(pte)		(!!(pte_val(pte) & PTE_AF))
- #define pte_special(pte)	(!!(pte_val(pte) & PTE_SPECIAL))
- #define pte_write(pte)		(!!(pte_val(pte) & PTE_WRITE))
-@@ -168,9 +175,6 @@ static inline pteval_t __phys_to_pte_val(phys_addr_t phys)
- #define pte_sw_dirty(pte)	(!!(pte_val(pte) & PTE_DIRTY))
- #define pte_dirty(pte)		(pte_sw_dirty(pte) || pte_hw_dirty(pte))
- 
--#define pte_valid(pte)		(!!(pte_val(pte) & PTE_VALID))
--#define pte_present_invalid(pte) \
--	((pte_val(pte) & (PTE_VALID | PTE_PRESENT_INVALID)) == PTE_PRESENT_INVALID)
- /*
-  * Execute-only user mappings do not have the PTE_USER bit set. All valid
-  * kernel mappings have the PTE_UXN bit set.
+I agree that NUMA as a concept was best-effort for, comically enough,
+somewhat *Uniform* memory access - instead of *Non*-Uniform memory access.
 
--- 
-2.43.0
+The current abstraction quite nicely handles the case where all memory
+on the system is roughly of the same calibre (DDR4, DDR5, etc) and
+roughly for the same purpose (general system memory).
 
+But it is quite incapable of handling truly heterogeneous memory systems
+(precious HBM attached to the CPU, GPU's with HBM over a coherent link,
+hardware-compressed memory expansion, network devices w/ memory, etc).
+
+If you look at the history of ZONE_DEVICE, what it fundamentally does is
+slaps an isolation mechanism on top of NUMA nodes because the NUMA
+abstraction doesn't provide one. 
+
+The problem with that approach is now you have to reason about a node
+having both fungible and non-fungible memory.  It creates the need for
+something like migrate_device.c when a properly isolated NUMA node could
+just use migrate.c directly (with a coherent link).
+
+
+One example of what isolation on the node enables:
+
+A Private Node can hotplug memory in ZONE_NORMAL - which means it
+can be GUP pinned.  That means driver support for GPU direct storage
+is simply `alloc_pages_node() + pin()`. The driver doesn't have to
+worry about something like SLAB accidentally using that same memory.
+
+All without having to rewrite a bunch of mm/ in a driver, and with
+having to do some kind of heroics with ZONE_DEVICE that causes even
+more special mm/ interactions.
+
+That only comes from adding an isolation primitive to a NUMA node.
+
+
+> > Isolating private node folios from kernel services
+> > ==================================================
+> > We implement filter points in mm/ to prevent operations on
+> > private node memory.  Where possible, we even re-use existing
+> > filter points from ZONE_DEVICE.
+> > 
+> > Most filter points are one or two lines of code:
+> > 
+> > Combining ZONE_DEVICE and N_MEMORY_PRIVATE opt-out spots:
+> >   -     if (folio_is_zone_device(folio))
+> >   +     if (unlikely(folio_is_private_managed(folio)))
+> > 
+> > Disabling a service:
+> >   +  if (!node_is_private(nid)) {
+> >   +      kswapd_run(nid);
+> >   +      kcompactd_run(nid);
+> >   +  }
+> > 
+> > Disallowing a uapi interaction:
+> >   +  if (node_state(nid, N_MEMORY_PRIVATE))
+> >   +      return -EINVAL;
+> > 
+> 
+> I'm not sure of why do we re-implement more filter and basically
+> doing the same thing ? Any unavoidable scenario ?
+> 
+> re-using the exisintg filter would be nice if that's possible.
+> 
+
+We re-use (combine) existing filters where possible.
+
+We add new ones where ZONE_DEVICE did not implement filters due to some
+*implicit* filter already existing.
+
+Two clear examples:
+   - reclaim does not target ZONE_DEVICE
+   - ZONE_DEVICE does not support PMD
+
+Both cases result in private-node filters that otherwise would have to
+exist for ZONE_DEVICE (and if ZONE_DEVICE ever grows PMD support, those
+filters will have to be added).
+
+> > Bonus Configuration: HBM device memory tiering
+> > ==============================================
+> > echo 1 > dax0.0/private       # make the node private
+> > echo 0 > dax0.0/adistance     # highest tier
+> > echo 1 > dax0.0/reclaim       # reclaim active
+> > echo 1 > dax0.0/demotion      # may demote from the node
+> > echo 1 > dax0.0/user_numa     # mbind()
+> > echo online_movable > dax0.0/state
+> > echo 1 > numa/demotion_enabled
+> > 
+> > This is an HBM device which is treated as the top-tier in the
+> > system but for which memory can only enter via explicit mbind().
+> > 
+> > It can be overcommitted because it can be reclaimed (demotions
+> > go to CPU DRAM, and reclaim can swap from it).
+> > 
+> > If the HBM is managed by an accelerator (GPU), the mmu_notifier
+> > allows it to know when reclaim is moving memory out to do
+> > device-mmu invalidation prior to migration.
+> > 
+> > Prereqs, base commit, references
+> > ================================
+> > akpm/mm-new - for Brendan Jackman's mm/page_alloc.h work[3]
+> > 
+> 
+> Still thanks for the work, I learn alot from your work as well, thanks.
+> 
+
+Of course, and thank you for reading.
+
+If nothing else I hope this series helps folks understand the page
+allocator better (it certainly has helped me).  If there is anything
+you think I can improve or better explain, I am happy to discuss.
+
+I am planning a larger publication of all my research sometime in the
+future, but I think code is more impactful and useful - so I am
+prioritizing that for now :].
+
+~Gregory
