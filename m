@@ -1,118 +1,274 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B4A30D402
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 21:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B383B1EFC
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 21:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784757120; cv=pass; b=TEJ7LA3ElUD3xKxB7/N/nI0bMFZCV4WH0OxQHKUjOYZL0GniPL0I+ZpVCFdF72GqQ7DGCqGf+PPLXdr2jnGxTxsdHK/nvrFlmBGcuy+kZ3OGwOVYfXvDfDzsQCqde/bj7U/H0jJwuIvtDzhdNLy1R/BJWzjKYfOgUxE2UfjKUIc=
+	t=1784757294; cv=fail; b=qcS5w5xeDp9niQSyr33Th9Jc4Zq/ZtGskCUy/HX7P5ZNu3MQoKi2Td5e9dQTUjHGxgMYUIFSh7AudlsDXQrV0tj5OTCLQ+oA+IsDHKsVHC5f0EH2zGJIMez2EB6TwxWMKN4OK4m90Z04c79JzSeECVK6qT+Q1yIg41CQl86Eoek=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784757120; c=relaxed/simple;
-	bh=NKp6qthR25lw2wP4nRCDYKfxmAg68xyizXu9csd9zNg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aqr9ALGF28ilhLTHg5GF/N9mZ+83Li1/eg/rsFDa8K0ZYaxUU6Mt0pMWUY0AkwXtJUvYx9n4Ip0rl+NTjzA70kWCrDvFtPA1A30QEEx1ECZEdU1bI1pHKmD7CtO1hoTyjBvFzvpKBa+ZnML8qOOILeV9lj5zyqd/RYHNLfDRiR8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G72sSjPU; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784757294; c=relaxed/simple;
+	bh=JRtI1UjrAiyVtu5kOl4YOA3WP6fhi4u8bVs3y2T4lHE=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FAEGuTafcF+AhT6lGnYylK0C6rXtrwGYD/MWcn8pdcVAd/B5MYSktP9i/q1BTDpurGHIqga98Xx27N4rajOKV04Uo5edIfjsZOq0ZHXSu+YCm3HmmuiM0K5WpCLaadg/Aj1gKGKSpLY1lFK/EgJ0gsN/l2fez2sPKAEwOW5cv1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=anq73eMr; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G72sSjPU"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so712a12.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 14:51:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784757117; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kzeH1cEmNT9qwVGk+aoUfU8k+DanE9qI3Len0nbRcZHcVylgjjDDfiZhG4yEsosKU9
-         v1SFwGRQDRBalcc0ZTebVWu/XOPisZvBJ9QB9b8iscfJgClevmwQAr6+jU+z+PU1SuTT
-         wCNkmNQMAc0w5RfCTRMFR7ZkiV/pRKCN/g8RrjJRrcRGijreIcFpjMl1yQvkiDqzAFbJ
-         GTg/j1OgeORkjbRoVoFcQX4feut2sVE1AWruo2esUdOED8hgQLKHTH16Kkl46KMuIJ9b
-         pItSMkrcFpH+Z8v8voyweSmAbPz5vmZjG4y7Rt2qv1J66S1eZh69FeJEd/NkCJJzTyP5
-         wA8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DYaVDwWuGPsEj2qeZBp6ESCvdbq5qbXm9q2GPaQNGDs=;
-        fh=YPPvphbLAxbSyxe2xCayRo6GFT5Fy+cZeuf9eFz5nA4=;
-        b=K1d1hqz0+Y43l4w2I1d1sq9QIPBf5/ZkzQsx6BbsmL3fgmEI0HFUlNNdNGBNvj8H7X
-         BLb9NamO+d9EZU+9xmyRjRlxtbgspYFm61cbi4S1eUAwcE6L5Dttcp0IG+2/nACzBu3Q
-         SjRLYLzXCxThqWLf2xe0G9pPQ8ZQkzLRGNkyMOaC4YTCzSg3RvH1ug9kY3il6MxOshEK
-         8ny+ndS+q3VmT2A9b/sKJfIJe6HaEmeXwq+6HQsIY2Yd17SOKxMcH5q1rtDS2nolxPNR
-         XeP2On6S2Hd8FdYzmfddYtZG04gRktizqNWPfrJQ70MfYY6D1fhkv5y6GKHKtF14q2/0
-         x0kg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784757117; x=1785361917; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DYaVDwWuGPsEj2qeZBp6ESCvdbq5qbXm9q2GPaQNGDs=;
-        b=G72sSjPUG1LLNFqQmHtog24TlWP6pAaNBYGon5lXH3BEMmxMJudLhzA/4MrW0sWDTv
-         7gfwbt10r8M6hNV+nQAYrQ/Q5ygHoCncJpuBpyaQX1OVPSjlKHewNza++c1y0d/qsuut
-         usgwRti7eNdbzunmD+pAkWTTe1TWOOPqoavW9A5PR8ZZ6WGSJcdvyPuBhbRoEudKl+D+
-         uBjkTh5StLz7ZQDCdkUupvQtZH3ZsnbgmE5s1a7VSlG4BNv0CvtmPPYr032GceSS+FqN
-         6l5U4Uyr2j2c2ssR4MeXjVQkbfUkBhGIktiyCedD/KpS3MlocSmBfegcn+S0JxwJaoKr
-         Uarg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784757117; x=1785361917;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DYaVDwWuGPsEj2qeZBp6ESCvdbq5qbXm9q2GPaQNGDs=;
-        b=a/xZQHtGF/8a6kiT1ODODfhrQQA8qM2ui3Hk3LyRU34L5E+ujtuMSHdvc7UOcgvx3M
-         QZTWjy5kIsU4TzJvlPVLJmbybx2pbCywhnHDmVVAWDc/R96uEuq89dCelZoz+XJ+TdT1
-         nbk+vxiV6du0oO4ONA6+5wIdBmpYVWD59ZI9TfLb02p7x46da0NKNH7L2MZQBw0K3dcL
-         HVxu8sSUlscLrHlbRycpkJhJ0TwhdJ0aUG8R6OA5AK/sO41wZHyEaUnbOGe+R4wbv1bQ
-         41w0D7ddHYiKeV6vR1JbuVnqO54UNxxdUVhrPTTeUj0c3APjQ/Vj+/FMTZBFAi69lKrJ
-         XT5g==
-X-Forwarded-Encrypted: i=1; AHgh+RrTZcRiPhisCmoleL7g4kQbSJi0R6UAygUtxkLRrPBh2qz8PmCR7nVY6Bib5rXtVbmQRVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcnzgRkOVBl9Jeq7RQ0P4b2J4AUogLiOuGyww8WhhDCXdFZjMh
-	7NzUTAJEKKhpbw8IU64sSY9wvDTvrZzAZqsxqGy/AoMIazVC4OojfYIs7QgMh24nA18CCE+JSsD
-	0B35AkyW8i6D3D+ZvC2KUD/i/zjaIZKnheyTHIaB+
-X-Gm-Gg: AR+sD138yBoAYyi6oP7jFUrAt59eeQqz1iaVH9SmKw+ZkO7nBlXUM1jos64b6oU3T8M
-	R96GiZ9QKs2fEvGwCVBHJnc+D22Q4JAaDBIeadwyvFeQTek7ononBac6AAgywZAr90IfTdHXmQO
-	PvTWfB2WxCPFKj/aump+r4wXsDtmfn3ZKT7DgCd7Dk5N9hVbcMu/37IcM9PkAizZhSt4K5oKNqL
-	K/+j0L+Gsqqbs7oRFpp9U0Eq2R+HhzeA49e9Pc7mpUa6NoQvxPV4DwiGIaGDA==
-X-Received: by 2002:a05:6402:22f4:b0:697:df76:63f8 with SMTP id
- 4fb4d7f45d1cf-69f6c60e86amr6151a12.3.1784757116373; Wed, 22 Jul 2026 14:51:56
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="anq73eMr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784757291; x=1816293291;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=JRtI1UjrAiyVtu5kOl4YOA3WP6fhi4u8bVs3y2T4lHE=;
+  b=anq73eMrvUgucUbLMDKaC03mf3wi3cvwNO+/tWIKno05oGuaIy3yYBCF
+   CYbpotdIuIxTepFZx7cXpSHIWVMRFJynsY+3UFt2Gc66cxnCZDjODS6LU
+   dx6lKKEK4+J5dj3Utcak4npJ2JvEzv2iH+Y8aS5SM9IwoAJ9uppr4GU09
+   2dju1NjNObiknctnwAbaFEXDE4wcFN/27Brla/EFA0s0a6aBnLe8dR27M
+   HiyNJ5Olgm1fSWHuWsFnJIw2IOw6MY7gcRS951T47tHJqqtDPcRrOpuOm
+   dlNGIRyTouKoSecomvZFhMEdxb7cjD9H17l9uiayc46+daQMxLRoxICeN
+   Q==;
+X-CSE-ConnectionGUID: IPBhxw/NQimzbrMfgX2DNQ==
+X-CSE-MsgGUID: 86uiPjrbQVyl/nLqaFAkaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="110949065"
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="110949065"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 14:54:50 -0700
+X-CSE-ConnectionGUID: eSGDZagSQWmXefmKiKtM3Q==
+X-CSE-MsgGUID: T9k5+YZiRjOx0Cm9kEAz1w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="288212967"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 14:54:50 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 22 Jul 2026 14:54:49 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 22 Jul 2026 14:54:49 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.6) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 22 Jul 2026 14:54:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lX1jgBm984CkNm8JGrSdr7j9xCQ9qjxcY8laRk+PlD/1gtYPUTTtlOhHZJs1ZGPiR8MTroaK22+GlBqNV34NLP/BqmysFt77IJ7C+ob4PU7QWOsAzWTWRl8fX3gX2cXgPQ1Sz/kY/wcAvxQLZzcjxbwxamljPITojAX3sZI/qErSEqnDVvFWBcAJtOkTUOCDHgYjAb2GLeUl4uYJwz3ZrR6ccKhdBjj5ZUc49/FJURx5KkG5Hr5INlWEebpSraI8qgzZM1rZM+fgQ6yBPg4yjYt/FJL8BbAh4wkhD8z6TD4TRG2+8amcifE+7oqFPswi/sZ8WEdWdz8hmZge2ygFvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d+ec8osqvGpiVhsEMTdMNQv/eIXPNz5vDq705bcGKAI=;
+ b=JCrDxwW6RlwAJMWaUSA8psnWJ6i67yozIjMD7aFKk1ZE38F/SOaP0Bf8P6WUXbBEpVU3Gz6FDPLQ6AXb/Bix6EEA9L/bNLx5+Z/r5yw+El2Xv1UDkEQxlnc+GLy28a6uhhtpvLz6tHdH39dzNEOePHLI60H9RtZkgiBUcYhLm59N389I8Zo0Uqrmc6ogaxhHxZXp4952da8s3dXD19omxPok0K2YdsPPstNGMJcC8JYyMlEUAigHWGwzCY+l6yse0lVNKp2xS8K6HM7fL12WrqNiFznoJp6FSwZMzZp5N09bQgqnLNRpsWEinFC04z2cb13QQl3Va+ga52wMWMAEUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
+ DM6PR11MB4724.namprd11.prod.outlook.com (2603:10b6:5:2ad::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.245.10; Wed, 22 Jul 2026 21:54:47 +0000
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84%3]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 21:54:47 +0000
+Message-ID: <36b8ed8d-7e44-4e8b-9d2e-e46c8db51c5d@intel.com>
+Date: Wed, 22 Jul 2026 14:54:45 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 02/20] KVM: VMX: Save guest EGPRs in VCPU cache
+To: <sashiko-reviews@lists.linux.dev>
+CC: <kvm@vger.kernel.org>
+References: <20260720171949.498680-1-chang.seok.bae@intel.com>
+ <20260720171949.498680-3-chang.seok.bae@intel.com>
+ <20260720182042.9D1731F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+In-Reply-To: <20260720182042.9D1731F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0072.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::17) To DS0PR11MB7925.namprd11.prod.outlook.com
+ (2603:10b6:8:f8::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-2-zide.chen@intel.com>
-In-Reply-To: <20260629231938.15129-2-zide.chen@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 22 Jul 2026 14:51:44 -0700
-X-Gm-Features: AUfX_mzILLh46VncVVk2gxJ7QYlYUgNM4QqYadnjizYw1qX29tb-mfYBtG3_qoY
-Message-ID: <CALMp9eQpn_MbGJU1dsyq-uVeFNZdHkjEPJ88uVzR0jao=phkZA@mail.gmail.com>
-Subject: Re: [PATCH v6 1/8] KVM: x86/pmu: Do not map fixed counters >= 3 to
- generic perf events
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|DM6PR11MB4724:EE_
+X-MS-Office365-Filtering-Correlation-Id: 081c0e34-3f89-47e0-9a37-08dee83bd8a5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|3023799007|4143699003|56012099006|11063799006|5023799004|10067099003|8076099006|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: mS+JwOmoChUr0fr2kEWUcRExDaKAoaoYA5bW/QmhTKUpU+1Tlo5zqyLtxWCG0CsnwQxrdicDmz4d0XhcdaEAEBF7qxI62GhKSMzdcePIXCTsXqnKknmxk4uzXVJw8nNN+Mw4VmVXKvMv5dfLXjHyQkHteojcBqKijm7ilHbMKU3mzZQlpgvkThdkeLWqxiZi4aRsYrKBUxs48qseh0fOMhBNt9IeTZ8Sd/WF5OfzFpxs1JsUNFyZABtvpSDEkR4ONayqSBtDN5TC/hoOZeZAg74TN2EPi45ksxueePyYsisVrWDkR9inW+K/Nxk2x9nw6AxnAtWzC+tPIDimEfWi3t62Fffx2kxIzALOdB/5kWASTuBiu4lYgM54/oifbOcm1pnv9TZVLskShXlb17YJEux60TGJq3o2/c21jy2A7bmcCMRD+fWEIurhHJZCOu/e4wsdKOJsEXnOH+YjrxtRmiU7JvdKC4W6KlRsZChjpVKct2+o7XxqnYzcsy7LtK4ozIhp3ov1x97n9vdw+4zs2B+8+KiIl4Zi2O0rQFJiXYxC/1rGstN2XH7y4iJf90M7uwMomDFiOyMOGYszvyvw5TirBP4siKuMcFxQrjzeBo7C0KXA7ZWBao7dH5buXF8vyu13zq8eD/tzcgC/+vFlnb+HHA8eq4KEX5dMf9dyoSk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(3023799007)(4143699003)(56012099006)(11063799006)(5023799004)(10067099003)(8076099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NHhMSW53TmlFd25UbjYvVlJkZlVtK2pqS1hqaXBjdndNcDlqeHFEL1RqWkVr?=
+ =?utf-8?B?bkhBbDdUalVzUHI1d1hmT2xxRFZOYWl2REx0d0dWWTU4L01tWXRhcFdvSlZ5?=
+ =?utf-8?B?QUN5TjFDeUdxalZmTWN5YnpsZ3BqRGlMYXprR3RxR1NrTXczL0RZTU1jTHVu?=
+ =?utf-8?B?Sm01SkZCTnhCakg4MWtLUXdOd1NDbmFwcGhiZmtuRzBWOFU4TEwxWGJaVWda?=
+ =?utf-8?B?UEczSmVwWHl5eERTMzMyNUw0T3h4eTZJZnNCN054RjgzRU9QTUxVOTYrYXFG?=
+ =?utf-8?B?SVdIZzlJMWZZZCs5NXV4Y2syV0d4Z3luZXZoUU1ZTWY1ZlR1b3lKcU5NVGFJ?=
+ =?utf-8?B?MnlMNS8ranB4d2lWMEJGRTBMMXVxWVMrMFNBNEdGbGF4dGVFRmhnK1N1MUtL?=
+ =?utf-8?B?ZDBVVStqYnhZcE41dDBqZVFoUXJVdEFMVWQ5am5EbXJGNkRJcGhVSVcvbVZh?=
+ =?utf-8?B?YzhOSmhQV0RWYjlLYm5RN3VORi9PSVBMZWRRczVOSjMxbm53MVVxa2x4a3NE?=
+ =?utf-8?B?UEw3RDJhVkg2NnN1LzRwY2VaNnN1VUxuaEJMdWljWHFuVXZTTmIxRjZpNnll?=
+ =?utf-8?B?eUNPUmN0aG84aGdSY3FxYzN1c1ZPVHNpWjdIcXMreW0yVXM3VnN0cUlEeXdX?=
+ =?utf-8?B?M09GVitpYldmS1FmUjZwalFpN0V4MXR0cTJlR292Ry9vU1FUVWZETWZlVWVy?=
+ =?utf-8?B?dzdqOGpKTWV0MWQ0eG5ZQm4vQkp0bllvUThSejZGenVrNjFOQ0lyOEdiUnJG?=
+ =?utf-8?B?akRMUDVhZGlXK2NTVWdkNTZ4Mk9lQkRKNThCYkQ0djhrRXhMSnNmRHp2cjNJ?=
+ =?utf-8?B?SFQrelN3QWdJemtEN3N1SjFBa1pGQlo0QzRucmdwMGl6aHVic2tGcTA3T211?=
+ =?utf-8?B?d2lFS3RjQWxwb0phWUEray9IdVR1TVV0Q0J6WmQxWGhHNXZlbEo0Y3Mxbk0z?=
+ =?utf-8?B?b1hhNjdaY3pBZkVPYXVyUjNMSVhRUDBNQWRjZjFtMEdtOUo0QTZ4NElLdlIy?=
+ =?utf-8?B?YzFnWjJxTjVzeVZMcWo2eTVrK2hDN1BGVFlac3Q3eXphSW9XYXBNbkRZRUZD?=
+ =?utf-8?B?V1pnQit5d2lSU0UxTndvR2s3QytXbmZZT0NLcUpuZVZpVlloUzFUTkZVNThD?=
+ =?utf-8?B?RzhvcDhJajlwNGRDelh4NzJjTUFuT1grUUdmMDYrTzBoZ0t5bHZ6UmFCR2ZH?=
+ =?utf-8?B?aE5sUWttcE8xeDdJbFE4b1NERTIzaFMvVitwdWNLNUQrc2dFSkZscG40VE9x?=
+ =?utf-8?B?UWhqdFBRMzBlVVJYZ0k4TFJkNHpRYUNSWVE3NGpGOUFXT2NXTko2cU0zdSs5?=
+ =?utf-8?B?QjcwTVBLeXB6OStQQ204aHl1SHpIL004aTVvMUE0ZXRSVWZOZVExUFI0VXNk?=
+ =?utf-8?B?MG5wOU1VdENab0J1cjg3MnNBRHJaTDR4NG9IMlVOaFo1alJBeDdEbGRMdkNX?=
+ =?utf-8?B?bzNWeXdJUkNGL2F5N2ZHRmZYZDlKTmY5MWlIWXZheDhlS2RGV2tNSm1LVmN5?=
+ =?utf-8?B?TnMrMjVMc3lSVTVvYW5udWp1eWxtK1lNSzFqS0pOL2F2cHV5VkZaOUluOWoy?=
+ =?utf-8?B?anc5MFduZ1FtektiTUY4L0lWSEt6K05JYTZIcEoxQ1NKbnZJOGhMc0xOUE1s?=
+ =?utf-8?B?aVhSQ2xEMUdjTG1iSk9SSHBKeVl5MWtDOW1zRXJGL09zZGdhSURGa2RLSXJM?=
+ =?utf-8?B?Vm4wWFpmS2MzNDk4WHpxZWxJbHFXTjc4Vmw3bmlkQ1dNV1BCazJtZWM0TmJq?=
+ =?utf-8?B?RHZ0WVRKYkw3Q3JML05oWFovSnc1aGpxa2FmTHF3OTM2M2J5UU02TzNKTExX?=
+ =?utf-8?B?dFNrVGNldnJ2aEtVN21PN2ZMbERqbTQ3YUlQbFF6bkFvcjdnbFg2NGVtRWda?=
+ =?utf-8?B?TlhJN1NuSDZDV1lYenNOYTZvbDA1UmNIbUIrQ2RBeThjaWMyUzF6ekF5ZTQ0?=
+ =?utf-8?B?VDEvUVp2S1piTFEwNlRaWTNLQk9LaWd1Z0J1TFZwT1dDU3ZEd0N1N2ZMSitv?=
+ =?utf-8?B?M29LRDNTVVoxWnRTcWM1ZG9vQWg1QXdzWDNQNURXTkNLei93Y0dkSWltMHho?=
+ =?utf-8?B?RkMxK2w2WWRSS2pIV3FKSG55WVlXTjNxbk9MOTkvZHNIenBmUkNDSzlneEFE?=
+ =?utf-8?B?WGs2OVJYUmNqYUpIdk9ZRUp5RkRqOEtpMXVPMmtsdWpidVJndUQvUVkwRzJ1?=
+ =?utf-8?B?L3Vtb3ZrUTBTTENONnRtdUZCb3VPSTdUeHNYMlFqNStTY2oweUpPa2ZWZnZN?=
+ =?utf-8?B?OGxXYytTZSt2dTN3QzZWdE9wZDVKYlF5R2x1bk9aNDJabDI4SlJ2TnFWREFN?=
+ =?utf-8?B?dSthREZGMmFTYkQ1M0hWVFBqSTMrS1N0SWRUcEtGUDdscG1qKy9XUT09?=
+X-Exchange-RoutingPolicyChecked: ISbh9plQcSlQoB3qaRhPhrYzRlDXXUO/LQPItshvqGTws295Q9VfIDuyHusPkqJD5HBGb7u+Wz/kjH7KOYVoMS3Jj0S3uylxcWPSA4AuHTOv2nxgWS5w7bh8iOd0VEFsmUveWDt76PWgCBT4i87NwfQt8YxjaL9DuhmDzl5cQqfzELXbycY8o9xIGNe40UXaRsWREsyxiyLwAshORHfummro/QIdgWIKMN+4gb9Vy4/m80pZbtSBOgAhR4tgHzzQ0lIY+DGnUng3+G+/n62UAKvPnzjXFbKuoI0EJfEqh8OwzoecR3nbMleaVDwwp7rfDZ2t5/pZOMv2AltqKvMC1w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 081c0e34-3f89-47e0-9a37-08dee83bd8a5
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 21:54:47.1749
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TvQM2S8KQhk4RT0nMbmELbrKby6Uf4dGQZe6r6nrnnSe+V8dLqwuDn4OqBXstVw25MzUHJStRItir0xSKRpxu0oU4fnz7aMZntMZXRwHelU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4724
+X-OriginatorOrg: intel.com
 
-On Mon, Jun 29, 2026 at 4:28=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
-te:
->
-> Only fixed counters 0..2 have matching generic cross-platform
-> hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
-> Therefore, perf_get_hw_event_config() is only applicable to these
-> counters.
->
-> KVM does not intend to emulate fixed counters >=3D 3 on legacy
-> (non-mediated) vPMU, while for mediated vPMU, KVM does not care what
-> the fixed counter event mappings are.  Therefore, return 0 for their
-> eventsel.
->
-> The two BUILD_BUG_ON() checks are no longer needed, so drop them along
-> with __always_inline.
->
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
+On 7/20/2026 11:20 AM, sashiko-bot@kernel.org wrote:
+> 
+>>      The register restore path is placed after SPEC_CTRL is restored, so as
+>>      to avoid any mis-speculation into EGPR accesses when APX is disabled.
+> 
+> [Severity: Medium]
+> Does the placement in the code match this description?
+> 
+> Looking at __vmx_vcpu_run() in arch/x86/kvm/vmx/vmenter.S, the EGPR load
+> sequence is placed before RESTORE_GUEST_SPEC_CTRL_BODY, which contradicts
+> this statement and could expose the host to speculative execution using
+> guest EGPR values.
+
+"Register restore" could be imprecise. While the point may stand here 
+along with the code change, rewording to "register saving" can help for 
+the clarity.
+
+>> +#ifdef CONFIG_KVM_APX
+>> +	ALTERNATIVE "jmp .Lload_egprs_done", "", X86_FEATURE_APX
+>> +	testl	$KVM_ENTER_EGPR_SWITCH, (%_ASM_SP)
+>> +	jz	.Lload_egprs_done
+> 
+> [Severity: High]
+> Does taking this jump create a speculative information leak?
+> 
+> If the guest disabled APX, we skip loading guest EGPRs but do not clear
+> the host's values from the physical registers.
+> 
+> While the guest architecturally cannot read these registers without
+> triggering a #UD, could it execute an APX instruction speculatively before
+> the #UD is recognized, potentially exfiltrating sensitive host kernel data?
+
+Today the host kernel does not use APX internally, so there is no host 
+EGPR state to leak. If in-kernel APX usage is introduced in the future, 
+the point may need to be revisited.
+
+>> +#ifdef CONFIG_KVM_APX
+>> +	ALTERNATIVE "jmp .Lclear_egprs_done", "", X86_FEATURE_APX
+>> +	test	$KVM_ENTER_EGPR_SWITCH, %_ASM_BX
+>> +	jz	.Lclear_egprs_done
+> 
+> [Severity: High]
+> Are guest EGPRs left in physical registers during the VM-Exit speculation
+> window?
+
+I think this code still follows the same entry/exit assumptions as the 
+existing GPR handling -- clearing after the guest state saved before the 
+return.
+
+>> +	/*
+>> +	 * Unlike legacy GPRs, saving could be conditional here on VM-Fail,
+>> +	 * which however isn't in fastpath. Instead, simply saving EGPRs always.
+>> +	 */
+>> +	STORE_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
+>> +		   %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
+>> +		   %r24, %r25, %r26, %r27, %r28, %r29, %r30, %r31
+>> +	CLEAR_REGS %r16d, %r17d, %r18d, %r19d, %r20d, %r21d, %r22d, %r23d, \
+>> +		   %r24d, %r25d, %r26d, %r27d, %r28d, %r29d, %r30d, %r31d
+> 
+> [Severity: Critical]
+> Will this cause data corruption of the EGPR state across live migration?
+> 
+> Because hardware EGPRs are zeroed here, KVM's subsequent host XSAVES in
+> fpu_swap_kvm_fpstate() will commit zeroes into the guest's FPU state buffer
+> (vcpu->arch.guest_fpu).
+
+No. The VCPU register cache is the authoritative copy of the guest EGPR 
+state. Clearing the hardware registers after saving them does not affect 
+migration state.
+
+>> @@ -991,6 +991,19 @@ unsigned int __vmx_vcpu_enter_flags(struct vcpu_vmx *vmx)
+>>   	    kvm_vcpu_can_access_host_mmio(&vmx->vcpu))
+>>   		flags |= KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO;
+>>   
+>> +	/*
+>> +	 * KVM intercepts XSETBV and thus always tracks the guest XCR0. EGPR
+>> +	 * save/restore is gated by this flag. The resulting behavior is:
+>> +	 *
+>> +	 *  - When the guest enables APX, KVM restores EGPRs (initially zeroed).
+>> +	 *  - When the guest disables APX, EGPRs are preserved in the VCPU cache.
+>> +	 *  - When APX is re-enabled, the saved state is restored, which matches
+>> +	 *    architectural expectations.
+>> +	 */
+>> +	if (IS_ENABLED(CONFIG_KVM_APX) && cpu_feature_enabled(X86_FEATURE_APX) &&
+>> +	    vmx->vcpu.arch.xcr0 & XFEATURE_MASK_APX)
+>> +		flags |= KVM_ENTER_EGPR_SWITCH;
+>> +
+> 
+> [Severity: Critical]
+> Can an unprivileged guest crash the host by clearing XCR0[APX]?
+> 
+> Host XCR0 is restored only after executing a significant amount of
+> compiler-generated C code. For example, in arch/x86/kvm/x86.c:
+> 
+> vcpu_enter_guest() {
+>      ...
+>      exit_fastpath = kvm_x86_call(vcpu_run)(vcpu, run_flags);
+>      ...
+>      kvm_load_xfeatures(vcpu, false);
+>      ...
+> }
+> 
+> If the host kernel is compiled with APX support, the compiler may emit EGPR
+> instructions in these generic C exit handlers (like vmx_vcpu_run).
+
+Not with the current kernel build assumptions. Unless the kernel itself 
+is compiled with -mapxf (or -march=native on an APX-capable build host 
+[*]), the compiler will not emit APX instructions in these paths.
+
+[*] this fix is work-in-progress right now.
+
+Thanks,
+Chang
