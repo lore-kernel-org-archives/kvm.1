@@ -1,183 +1,233 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D973D566B
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784758629; cv=none; b=rcIOFkLmLfvM8b9adfejckFNoV45g+t/fv6fsLZpZieTau9uPXqpQclS0btF03nV+okIkPdBJQ3UvX96ReOfuJFfSfALvJG/BtU3hEp+xNxMGo/i25BAOo+hK0+AMvU/JRjrodWocguww26CI7sfk7vsq8PHXMFj/0KC0/BS6zU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784758629; c=relaxed/simple;
-	bh=CS+5BodVT7fP2tqcuPhYMpWTqmb8m8g56WPBlCegP7o=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B733A3D9DBA
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784758639; cv=pass; b=jDXcDQ+rOivO0gpLraulxmHAcUQA6gqJ0MtuqxpuzAKOCKb5ui8vwlcBLfK3K8azuL7G2oVlxqNVeAsUmKbeI6WviFMYh6glyN5189USFCs0WF57LalhxDgwrBUPL6RK2Wlvgyki/z/vqmd/x6MCfUPLrkcNQSLaRnhWEiODwq0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784758639; c=relaxed/simple;
+	bh=4ToVA20FSGMvo/phv3ifi9KkkXDHnBrCgQOq6C7eok4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h/xlnJWK1C8j8wE/zwNxccBSE/4spEyi86oLU9GUm95Qd26+N1krbhJaBBnwkLYr/JwO3nJq5WKRxos+CoRvyrAHRt7pOj8mrj/jxd023aMd4EPomWg11S9W3FAbZ6Yjmin+tqC8igfxNArFUKC7ljADcZPYnPfAN160tVfqPEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AkAJbfiq; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=YXPs73k+1uNpQc94eKgLnqs45zQNTsvlT0Te4S6KjuSRinzWL1lYyVCirOKtjxRqRo0jyI7Wx8GMRuO+SlXXdazi9VMWONSmR5jA60a+FChLHjrzX5P9w9Ls3mDJNeC86AljGnMIFEUsFkiarfV99Lve07eYAIx41/y+2aOlaSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FsCDZwEZ; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AkAJbfiq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594C61F00A3A
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784758627;
-	bh=DG0VOfFeLsFqG6RzrNm7/kzVBCeGf739XJWpHdg2Aes=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AkAJbfiqpO9BqebC2beqEit3hxt+u2swRpNr0j0v/goLdG+EviULf/I51c9Vn2qrl
-	 Ru2IXdlB+1yg7pmEqQCVu6YCQ8/3+izQ3fCJaROXCCIwYbFLGdP6ZNwk1QRBp9F9oB
-	 b00gHWAL5FzC+fvD6kzvsvuztPjr2ibyJwsdFEdsLLbpKBplWE8Xg6q3D35OJGNkDC
-	 7s8pEVjvBgSaUHUOJ7DxaxmHrQjYDLfooNnTHtVt5qF2P92vZcSbXo3NwjOwBapXhO
-	 zB2zBFJsCoTFfZvDYnwpXaHEZB62QVKm7Xor8ehXlZeQSq3q4tKwQ1cbL8nFlc4JRd
-	 0S3abjRBZWTSg==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-69e54d9c8c6so17142a12.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:17:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ro6FvhkU6PW2pHuJF+TDYA+OpM/LIB9jPpYwBzkP82KPyizu1ZiSes4IL4fCT1Aov+L4jE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1f1It+UHCJmaoMnhJMuON33/3RG5IEUOf5q/Q/4ti4ZA3Xf5U
-	9pFIGZmSgprRU93jh/NaR9tMZqEZC/UZwuZgbwbwRji902ptQNzBwy8tz37iL7ChlptISbcvOVc
-	ei2fZ87n59yhJ89eyPESf6BZF+mL6D+o=
-X-Received: by 2002:a17:907:6d09:b0:c15:fc41:fda with SMTP id
- a640c23a62f3a-c1c50b5efedmr22653066b.63.1784758626266; Wed, 22 Jul 2026
- 15:17:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FsCDZwEZ"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-51c01c79467so89621cf.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:17:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784758636; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Du9STKEUk0unFbKsl/ktuQfjEX5zc8MaeBpKR5NIyhNxUMffLo8wZz7WJ90ymgqYkH
+         RdoEkJwFxehKk4u4mednInj+V7F/9m163/wu3ZIQKU3SQ5l2ySyWkzEcaCoARrFKLtkp
+         WMPNrBbkK4W4yM2lDuBUrHmC2HPkx5An3Q4TRr1YdegfsHDWjjkpjssnE5/0bpWFrq24
+         jOKbCm/CFOAN5Gz6rX1uRdeedEyZY76z/Ps9K+F6xqt/ut0YCRCB/arxeqbNH1F2E+Ke
+         kHb38Vw85IKnKUqKVLua4B0w7BAUunAkwNp0/kJG0m6TQloWgFXpJvyTi/MPjjdQr6Kw
+         bVsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d22CEwn150DL9jjuujDZfyRJhB3qURoF29Y1nbP4I8s=;
+        fh=lEccua3YvbNm18ClMpp7QLdhiL+BqmPW5RuX7C8VaD0=;
+        b=JSRZlzBoXZWEu/xlEk+xAuaQS6eWCTsH9EBAU5M3VNMMHaxIqh2BEihawTbYFP0s9f
+         KvEEtwSo/+lnJbmkOKj0lolAHuXr0XSLr6XQPDhhpjBUj+AceS5u7UJWKz7Qjfx6W3jn
+         7VYGkbHauoFnAJ6xJ29G57IjK7ul0E0RDnv2pL/P+gZRGHYJK6gzbgpNlVGZczRsFBHt
+         lU4Uv8ESSiMaMRr+KrAmbDl4T+1Ei2g5fJhwp6eWqfYSF7ZVRIywY9cZgrnzHX4/7Rtx
+         9qEdEXOmMIDO4kYGE9wa6Jzr4F9aizHA2NbwP8szoRHFrbZWLODM+oR1ucbVPGkhYsMT
+         QVmA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784758636; x=1785363436; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=d22CEwn150DL9jjuujDZfyRJhB3qURoF29Y1nbP4I8s=;
+        b=FsCDZwEZ8n6SwqHhZmtq/vLk2AqkadIGlz3IzOPn68fQvP04tI8zJkZRewk5p0s9rQ
+         8MVlaf4tN7MGR/wIYooWlRKbvHH7n1xnHP+SC97pgypx+a6r3KM0Wd4lu2XCC5gtdqwO
+         7xoOJDIm4wAmGVYZHAM2346UI4hzUB3tdVHerZkOx+YEAvalwRKaC4eWeFyECYe+LeOc
+         yoTEVp2TFjJ/w7aT1MH2fVkb6pJs6N5pxtza5XwCgRZcAl+Db/vIWMe1LrS9he7sXN1V
+         RXBhJBlymMb3Grck1lVXCXufBujBjqLNGvjKGAeymDDxU6KZthCqXbM8FbXsL/7GHbWT
+         5ESA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784758636; x=1785363436;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d22CEwn150DL9jjuujDZfyRJhB3qURoF29Y1nbP4I8s=;
+        b=LqoF6aWPKUTQFdG+HuA4f9JV8MjBy6RtVQiZIE6SvZ43odx3DGruuuEEBUkvrl8RSm
+         FCf6fJHf7wG4y6MvPNUjwzK8uPuA7EYkgZx3LujYtM5/Sa9VyNRah34BI+njWmHTMgkE
+         Bxq/Ugp9vhiNO4eLfXn4V+182VyFFRzcZ8yoqXkh3YtB/nRhtj3e4pm+MWYxhdeSoxJt
+         NAbboqa6CLgVHPRqTM2iHlJ0gHUB+8UBgm/5MDRRJUr8NxNru+rAVN4aTHie6qjXXSFX
+         YaPvxAsppstoMcQiCQqy4sfCvwsw9X8pqQ36jGBWuoNNWHu4bm1Kh/ev3BP6PNh4s35J
+         d1xw==
+X-Forwarded-Encrypted: i=1; AHgh+RqNZ/dyzqQWmnAXyKLaRsMDrGr2KQxYMa77gNvsoqfpI20uaDMW/WdAv7HK9apwfQoKp1I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx35d8yPlxqhLApO4xG2HdcWjEH7KLSKgZX/hZeO5Ak24ODbOQ8
+	dh8XTftSaGL0oF8+tbfEYBDUq17WQN7zVq3fYqSov7uzoZLg7a48BxB5avSFEjqDecz9br0cTe+
+	iO60khxa1idqisO5WpfBKMNz8wY1tVVbmuTeVHbxm
+X-Gm-Gg: AR+sD12SdL2IScblC1b1x+28WsBL2S18rI5Hi4qNPFAiVo2iZFrs1sc/9xGYXaDYSXn
+	oJdhnfJ1DBe/TxQOLMbzcf8phTVADsif7ez9WJmYoTt2XJge+uDI5AJgUwCymxPw/fFo5PeX6Dx
+	914ByBLzqrqvZeXOCqjIE4Q3bX5rzF31iqC/QTW66zQLrinj1zAlGN7YqMrbJeJ/HH05BOzb/ad
+	LqUMfjdGLVzJgFLI0oXwMZirdkhTrBT0/Eg19x4dDCxgvux6vdRuMVh8duflg==
+X-Received: by 2002:a05:622a:1b07:b0:510:f9b:fb5f with SMTP id
+ d75a77b69052e-5283bbeaf9amr3579581cf.16.1784758635771; Wed, 22 Jul 2026
+ 15:17:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717060505.2971514-1-yosry@kernel.org> <amE5DiLbq5PdYuNn@google.com>
-In-Reply-To: <amE5DiLbq5PdYuNn@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 22 Jul 2026 15:16:54 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN5uGtYS-Y3qUNDmBh5X3zhjuHkbpEis8ti79977KkGwA@mail.gmail.com>
-X-Gm-Features: AUfX_mwrOEJcVTbY_B_2odzglFxj2w-CUV1PsWh-DY-aLEcy3aXSA3g5MHnPayk
-Message-ID: <CAO9r8zN5uGtYS-Y3qUNDmBh5X3zhjuHkbpEis8ti79977KkGwA@mail.gmail.com>
-Subject: Re: [PATCH] KVM: nVMX: Only update last_vpid on a successful nested VM-Enter
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
+References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-3-zide.chen@intel.com>
+In-Reply-To: <20260629231938.15129-3-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 22 Jul 2026 15:17:01 -0700
+X-Gm-Features: AUfX_myire5_saEJy6KGv-uCCOKllE6qlVMfHNvGIJQoAWM2IV7m6BxO0BUaE0c
+Message-ID: <CALMp9eQoHnj2QYBtOZisjB4oTaAUeoWbk3Hoj4+CdTGD2EJB3Q@mail.gmail.com>
+Subject: Re: [PATCH v6 2/8] KVM: x86/pmu: Support Intel fixed counter 3 on
+ mediated vPMU
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 2:41=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Mon, Jun 29, 2026 at 4:28=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
 >
-> On Fri, Jul 17, 2026, Yosry Ahmed wrote:
-> > ---
-> >  arch/x86/kvm/vmx/nested.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> > index b5460de4b1a72..0a4ea410b0483 100644
-> > --- a/arch/x86/kvm/vmx/nested.c
-> > +++ b/arch/x86/kvm/vmx/nested.c
-> > @@ -2818,8 +2818,6 @@ static int prepare_vmcs02(struct kvm_vcpu *vcpu, =
-struct vmcs12 *vmcs12,
-> >       if (kvm_caps.has_tsc_control)
-> >               vmcs_write64(TSC_MULTIPLIER, vcpu->arch.tsc_scaling_ratio=
-);
-> >
-> > -     nested_vmx_transition_tlb_flush(vcpu, vmcs12, true);
-> > -
-> >       if (nested_cpu_has_ept(vmcs12))
-> >               nested_ept_init_mmu_context(vcpu);
-> >
-> > @@ -3739,6 +3737,8 @@ enum nvmx_vmentry_status nested_vmx_enter_non_roo=
-t_mode(struct kvm_vcpu *vcpu,
-> >               vmx_start_preemption_timer(vcpu, timer_value);
-> >       }
-> >
-> > +     nested_vmx_transition_tlb_flush(vcpu, vmcs12, true);
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 >
-> Hmm, so the SDM doesn't explicitly say _when_ TLB flushes happen, but I s=
-uspect
-> this doesn't match how hardware behaves.  My guess is that any TLB flushe=
-s happen
-> once VM-Enter has gotten past the VM-Fail consistency checks, i.e. once a=
- VM-Exit
-> is guaranteed.
+> Starting with Ice Lake, Intel introduced fixed counter 3, which counts
+> TOPDOWN.SLOTS - the number of available slots for an unhalted logical
+> processor.  It serves as the denominator for top-level metrics in the
+> Top-down Microarchitecture Analysis method.
 >
-> The SDM doesn't actually say anything about VM-Enter, so I don't think KV=
-M *must*
-> implement *that* specific behavior, but I do think we should leave the ca=
-ll to
-> nested_vmx_transition_tlb_flush() where it's at, and instead service the =
-local
-> pending flushes in the pseudo-VM-Exit path.
-
-Well, technically, changing the VPID is not a TLB flush. KVM has to
-flush the TLB because under the hood it's using the same VPID, but
-from L1's perspective, it's using a new VPID so any TLB entries
-associated with the old VPID should not be used (for that VM entry). I
-guess you're referring to other architectural flushes, like a VM entry
-with VPID disabled.
-
-The reason why I moved the call to nested_vmx_transition_tlb_flush()
-is that it only makes sense (semantically) to update last_vpid when we
-will actually use the VPID. Otherwise, if a VM entry fails, the CPU
-couldn't have cached any translations associated with the new VPID,
-and a flush is not needed if the VPID is changed again.
-
-IOW, the choice was purely based on semantics and code readability.
-
-> Because the other way the TLB flushes
-> can be queued during VM-Enter is via the MSR load lists:
+> Emulating this counter on legacy vPMU would require introducing a new
+> generic perf encoding for the Intel-specific TOPDOWN.SLOTS event in
+> order to call perf_get_hw_event_config().  This is undesirable as it
+> would pollute the generic perf event encoding.
 >
->   If any MSR is being loaded in such a way that would architecturally req=
-uire
->   a TLB flush, the TLBs are updated so that, after VM entry, the logical
->   processor will not use any translations that were cached before the tra=
-nsition.
+> Moreover, KVM does not intend to emulate IA32_PERF_METRICS in the
+> legacy vPMU model, and without IA32_PERF_METRICS, emulating this
+> counter has little practical value.  Therefore, expose fixed counter
+> 3 to guests only when mediated vPMU is enabled.
 >
-> E.g. if L1 successfully loads one or more MTRRs on VM-Enter to L2[*], the=
-n fails
-> on a subsequent MSR, architecturally I believe L2 TLB entries are guarant=
-eed to
-> be flushed.
-
-Hmm that is an interesting case. I guess the right thing to do here
-depends on hardware, but yeah I think it makes sense in this case to
-service local flushes in the failure path. It still annoys me that we
-would update last_vpid even on failed nested VM entries, so part of me
-still wants to move the call to nested_vmx_transition_tlb_flush() just
-for that, but that may not make sense for the VPID disabled case.
-
-I guess the "right" thing to do is break the last_vpid tracking out of
-nested_vmx_transition_tlb_flush() and only update last_vpid on a
-successful VM entry, but it's probably not worth it in terms of code
-readability.
-
-> I'm speculatingly heavily on all of this, but even if I'm wrong (or it's =
-uarch-
-> specific behavior), explicitly servicing pending flushes in the VM-Exit(i=
-sh) path
-> feels safe in the long run:
-
-All that being said, yeah I am convinced it's probably better to do
-the below. I will send a v2 after testing it with my repro.
-
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Co-developed-by: Zide Chen <zide.chen@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v6:
+> - Update comments to replace 2 with KVM_MAX_NR_INTEL_FIXED_COUNTERS - 1.
+> v3:
+> - Move the non-contiguous counter filter code to pmu.c
+> v2:
+> - Don't advertise fixed counter 3 to userspace if the host doesn't
+>   support it.
+> ---
+>  arch/x86/include/asm/kvm_host.h |  2 +-
+>  arch/x86/kvm/msrs.c             |  4 ++--
+>  arch/x86/kvm/pmu.c              | 18 +++++++++++++++++-
+>  3 files changed, 20 insertions(+), 4 deletions(-)
 >
-> diff --git arch/x86/kvm/vmx/nested.c arch/x86/kvm/vmx/nested.c
-> index 3266c63046ee..49aeecc2f093 100644
-> --- arch/x86/kvm/vmx/nested.c
-> +++ arch/x86/kvm/vmx/nested.c
-> @@ -3760,6 +3760,14 @@ enum nvmx_vmentry_status nested_vmx_enter_non_root=
-_mode(struct kvm_vcpu *vcpu,
->  vmentry_fail_vmexit_guest_mode:
->         if (vmcs12->cpu_based_vm_exec_control & CPU_BASED_USE_TSC_OFFSETT=
-ING)
->                 vcpu->arch.tsc_offset -=3D vmcs12->tsc_offset;
-> +
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index d8700eb848b4..dc9e4e8bfc07 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -609,7 +609,7 @@ struct kvm_pmc {
+>  #define KVM_MAX_NR_GP_COUNTERS         KVM_MAX(KVM_MAX_NR_INTEL_GP_COUNT=
+ERS, \
+>                                                 KVM_MAX_NR_AMD_GP_COUNTER=
+S)
+>
+> -#define KVM_MAX_NR_INTEL_FIXED_COUNTERS        3
+> +#define KVM_MAX_NR_INTEL_FIXED_COUNTERS        4
+>  #define KVM_MAX_NR_AMD_FIXED_COUNTERS  0
+>  #define KVM_MAX_NR_FIXED_COUNTERS      KVM_MAX(KVM_MAX_NR_INTEL_FIXED_CO=
+UNTERS, \
+>                                                 KVM_MAX_NR_AMD_FIXED_COUN=
+TERS)
+> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
+> index c230b18d87e3..3bf42d90ad14 100644
+> --- a/arch/x86/kvm/msrs.c
+> +++ b/arch/x86/kvm/msrs.c
+> @@ -228,7 +228,7 @@ static const u32 msrs_to_save_base[] =3D {
+>
+>  static const u32 msrs_to_save_pmu[] =3D {
+>         MSR_ARCH_PERFMON_FIXED_CTR0, MSR_ARCH_PERFMON_FIXED_CTR1,
+> -       MSR_ARCH_PERFMON_FIXED_CTR0 + 2,
+> +       MSR_ARCH_PERFMON_FIXED_CTR2, MSR_ARCH_PERFMON_FIXED_CTR3,
+>         MSR_CORE_PERF_FIXED_CTR_CTRL, MSR_CORE_PERF_GLOBAL_STATUS,
+>         MSR_CORE_PERF_GLOBAL_CTRL,
+>         MSR_IA32_PEBS_ENABLE, MSR_IA32_DS_AREA, MSR_PEBS_DATA_CFG,
+> @@ -2688,7 +2688,7 @@ void kvm_init_msr_lists(void)
+>  {
+>         unsigned i;
+>
+> -       BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS !=3D 3,
+> +       BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS !=3D 4,
+>                          "Please update the fixed PMCs in msrs_to_save_pm=
+u[]");
+>
+>         num_msrs_to_save =3D 0;
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index 62d0ed99ebe9..f82ba63767d0 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -99,7 +99,8 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] =3D=
+ {
+>   *        all perf counters (both gp and fixed). The mapping relationshi=
+p
+>   *        between pmc and perf counters is as the following:
+>   *        * Intel: [0 .. KVM_MAX_NR_INTEL_GP_COUNTERS-1] <=3D> gp counte=
+rs
+> - *                 [KVM_FIXED_PMC_BASE_IDX .. KVM_FIXED_PMC_BASE_IDX + 2=
+] <=3D> fixed
+> + *                 [KVM_FIXED_PMC_BASE_IDX .. KVM_FIXED_PMC_BASE_IDX +
+> + *                  KVM_MAX_NR_INTEL_FIXED_COUNTERS - 1] <=3D> fixed
+>   *        * AMD:   [0 .. AMD64_NUM_COUNTERS-1] and, for families 15H
+>   *          and later, [0 .. AMD64_NUM_COUNTERS_CORE-1] <=3D> gp counter=
+s
+>   */
+> @@ -134,6 +135,8 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_=
+ops)
+>  {
+>         bool is_intel =3D boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_INTE=
+L;
+>         int min_nr_gp_ctrs =3D pmu_ops->MIN_NR_GP_COUNTERS;
+> +       union cpuid10_edx edx;
+> +       u32 eax, ebx, ecx;
+>
+>         /*
+>          * Hybrid PMUs don't play nice with virtualization without carefu=
+l
+> @@ -181,6 +184,19 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu=
+_ops)
+>         kvm_pmu_cap.num_counters_fixed =3D min(kvm_pmu_cap.num_counters_f=
+ixed,
+>                                              KVM_MAX_NR_FIXED_COUNTERS);
+>
 > +       /*
-> +        * Handle any TLB flush requests that were queued for L2 if KVM m=
-ade it
-> +        * far enough along to switch to L2 context.  Note, loading host =
-state
-> +        * will generate any flushes for L1 required by VM-Exit.
+> +        * Currently, KVM doesn't support non-contiguous fixed counters; =
+make
+> +        * sure only contiguous ones are retained in kvm_pmu_cap.
 > +        */
-> +       kvm_service_local_tlb_flush_requests(vcpu);
-> +
->         leave_guest_mode(vcpu);
->
->  vmentry_fail_vmexit:
->
->
-> [*] https://lore.kernel.org/all/20260717230542.3555587-4-jmattson@google.=
-com
+> +       if (kvm_host_pmu.version >=3D 5) {
+> +               cpuid(0xa, &eax, &ebx, &ecx, &edx.full);
+> +               if (kvm_pmu_cap.num_counters_fixed > edx.split.num_counte=
+rs_fixed)
+> +                       kvm_pmu_cap.num_counters_fixed =3D edx.split.num_=
+counters_fixed;
+> +       }
+
+Nit: Should this CPUID.0AH decoding be left to perf? Perhaps struct
+x86_pmu_capability should include an additional field:
+num_contiguous_counters_fixed?
+
+Reviewed-by: Jim Mattson <jmattson@google.com>
