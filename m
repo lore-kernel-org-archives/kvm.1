@@ -1,181 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA31A45A2A7;
-	Tue, 21 Jul 2026 23:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784677612; cv=none; b=jLRcGi0pCFUJbiOFsXKA8xBg40v3ll8I/z4Bm9tsTyyP7Iv25erGImf5N6dHvnXHujfM7lQh7xa9R/THnLgZ/gVjLY4Y85QIDiH2zDdYL6lAMBdjy+P4bHkSXhHnlnDgn6Njw5uJyo08DZd8t/JvkDmGD6o8IsuP4pZ1Nji0xl0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784677612; c=relaxed/simple;
-	bh=USHYKM2tLy4Y2ztkLZF6f9FmqFRcbaq9wg7QuwUAQTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tC4xp5/aVjCSZPCXMKUOrh81eeHWljJYoFknvutngFgcdALNLN4aqH7kK6aSMyPYh3hFr+EcKpgSaaarGxm8vUnH0fZJ+XjgSBKQhciKByJ+7pa22cVc/4TwleDT/Ok5/IEJJEyJEtpL9X2Pg9M9/Fipl33E9o4ZWnYPgkbStwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mf7XqWOi; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFBD233704
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 00:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784679057; cv=pass; b=QeXslzQCR5jHk3gBM+9yvf1Zy4A0fsChTAstBbqITWHGiLsAQ7f9aZHDzPWLx7n9p5iViTXsFrzLaZznUNBbWJiSL2tgcyc0+wLEHOxVDns8S+JXFPpMTkrFy2Q6p/c3RBMkdyy71fENAQjAqxHFMAWS5H4SE9AqvaCJ2FhSagg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784679057; c=relaxed/simple;
+	bh=4L9xDls0N49Nt36slBKsrAdIWjUYYuvqIwnq8Vxi99M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GHsFUsXo4EmJvTa1ok1jLBBhOpQopAyY4uHgQFwnfLy+aine/EOVW2eibRMo5/m0rNCAAh0h+l3NrmurgNwfv5gSHXboKLBPhwTSKa48bSS7IzZFWLhWawDeggWH4jU7pkuhhTIQvnwQbI27XNNCGyXCoGW5s5UhydrkUEQZ6hU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M1UIVgsq; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mf7XqWOi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028631F000E9;
-	Tue, 21 Jul 2026 23:46:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784677610;
-	bh=+0XfbMYAs+xVo8YgwGz2IArIgBM63GjQWpuSMnFC4C4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mf7XqWOi1rUqf2k7ey1aDXqzOKACKpcmAuKsBfr2jWONF2TMjeSDzMxVpjORRSRLo
-	 tJLrP4Ev455HyaiuyA6vyf+G3mnH2UZZhuBZY5goVpKoGAXG741JRTws0gCCVCRoyI
-	 iDsWfQ2T3xzfofEqGm4FFR1PI4AjbF6RuFR8pySoZwfx2gMG3Vh9pp2pwpXntxb7bE
-	 X1TK5weGK4xyqJJ6Zjr0lnMzVsQ5o3Y2X+mdOu2HU0hX9kVQ5ylnFUDQy9TC37hUH9
-	 cDRlgmF4QgxgkeN3r4i6WBCGdvrju3BwhQHkK2ItQ/gb2/mIWodaTaAr89dmjRF4Wt
-	 CX+3VUR36PjOg==
-From: SJ Park <sj@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: SJ Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	arun.george@samsung.com,
-	balbirs@nvidia.com,
-	brendan.jackman@linux.dev,
-	yuzenghui@huawei.com,
-	apopple@nvidia.com,
-	alucerop@amd.com,
-	matthew.brost@intel.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	osandov@osandov.com,
-	jannh@google.com,
-	pfalcato@suse.de,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	pbonzini@redhat.com,
-	osalvador@suse.de,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk,
-	longman@redhat.com,
-	ridong.chen@linux.dev,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON migration and pageout
-Date: Tue, 21 Jul 2026 16:46:43 -0700
-Message-ID: <20260721234644.149401-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260720193431.3841992-15-gourry@gourry.net>
-References: 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M1UIVgsq"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso13524a12.1
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 17:10:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784679053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r73nLzYLR2ra90p5bxBfFKEgz49z8yp8zExvdgQq9hSTxHIHJmQeAs1e/cUCu1Jocf
+         7rH50thhW11pzsU8125NoHwtOpOMw4fsuxP+AqTVQwehJmnJFXcNRYmHDjff0tv1gSVg
+         qYLFDp4R6daxqiaEhTpx2k+7GCgXMN9mx1ZB69RSMWr/PHTcTEZYnyQ36dNLouhHZcW5
+         NY4aPXbWE1ssnag66NT/l8UEUPz+9AF0VRxlmKfEEnH/XthqywJdbPVXGUmRSBitIucy
+         VG+P162jvER9nKscDHskyH1S9c79akuiIL5uEoiR1Nis8zh+wqDqSpXS8dJ6gOEhmpWF
+         m4SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IGjwl2vvPVoFGeq1ISztqF77IOKjCvKq1HjXvy8DQTk=;
+        fh=XHpDkK5Gosth1PWLcCgKONZrbRdBXOdiClY7gsXH5VM=;
+        b=QLz6UF6Kkf9wBGbUASyiC9bxPOnMu218pRe8B1YOaTuov3RlM/nKo2b2TIZToS+jBw
+         j9cpYDo9JRsvZ1B3VC0e9pB+ebk0wO3ofucynUAiMVWQsphtiNTIFUY8n0otXajGCawo
+         VwE35jRJGzb0C3Dy36q06/mBZjGH8/YZdka6T4VxdzzZY2VcbL00FExFHUlMlow6+GGG
+         5cc+cmTtRGluORNUO9cXHvoYgSCgHbbH00FLqpzI8CPiGau4w54T5CSyWSWPXG2aQZ91
+         uR2IXyTCZGuy2h5nIYYsOB9yDcrwxmsxmpOxNoiXf1zYGT8C1NHed/jkXPAXSOKk+esJ
+         Pr6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784679053; x=1785283853; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IGjwl2vvPVoFGeq1ISztqF77IOKjCvKq1HjXvy8DQTk=;
+        b=M1UIVgsqn9HhDTgo0fYzI+vAln1sZTXRPoH56EYyiYhH3LFlY1XbZUIk1lcO1yy9c6
+         UC6YZ8OH9oka7Mq4tHcKGK2+Q8xKI05KvBPCBWCaPYWtQYiBLmR8qacHedXF5JbFhZXH
+         mFrelQdTn2cm6tAzcy+0L9swIH5kRJP5Im3LtuCAvmXsyvo2X++foY/HZU8eeUeLypvz
+         kpISCSg2wivOBtcDmHFeLSOrA1ZSGdEMh6w8T3ItQClqe8Bgu2hZhLIjE2GKtvoTxFZm
+         w5QIEwLNWJ+kQ3IDUiYod4KHnhLKPwGaTyiw0ep/aW8jMsej/pZniWf8oR3XxYFx4VRn
+         bK0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784679053; x=1785283853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IGjwl2vvPVoFGeq1ISztqF77IOKjCvKq1HjXvy8DQTk=;
+        b=B8WQVYiT5pN9roT+vAlFLcF4HcPbw+0o3ORuz/DSZtQMhov/2VYrc3Ksm2gEu1d3yI
+         iB5k4M9bVMDw8HYAEdSs6Xd49bRQUaPi5d2X7v8iSNoAEZQcHYMzxGHg86idyuTMDrpN
+         cmVbxF7zB0aXXNqK2xfE5K5LH2JTVkf7qx8Oq3hK5sigxC/khUQHsBg/TtSNlcWBSocK
+         VC/4AhAGqADXJ4wMDUlnhedl1R0E0mK+MUZmqq/IdKamkYSxf9O+YIfgZ38JjB5xzAd3
+         n8iTEKwFcOXL0xLRuh4MIrkntjHbEyBztpNuWnGYt6vWTKyM3GxDNIvjHoodrELMHXz9
+         5n4Q==
+X-Forwarded-Encrypted: i=1; AHgh+Roj2HFYnEIyz5tpkG7VqUEZGZvjpjnpbEtlj3N7r8f3jNkl+881GIDYa/UsYtAm5m5EOwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeH1zkIilGo/db/l5FqPwgXIV71OhUASXEokARD8jmqDFBuaNi
+	m/DgRBxPeEHejj/EGSkUAduxHL/EatpG9hob9huF2l7Tezm9O6IRrISaAOQaTJTZUJ8aaiMPYc3
+	aFSVwP7WfFSg7qLY2XEQpjKEZ1/ONJGyZqe6XIzfkE9z/J+iWACmPtpQ0mfE=
+X-Gm-Gg: AR+sD10Bxvq6hOI2T0lwdanI/VAZpf8MbXWfDg31YRGa0VqWETKqQnYpDxXblgoT0mw
+	faFTBV944WVy1raxXIrh8VoiYWQI/FNKHubvzKGFcSKwj3RdrpAOYSE5oiW+m+DLX1ZsCySTmW7
+	xASF3/MS0Sb8cwgAYGwS67ov5Hm3yI1bS0rAmEWlh90j7rirDzdakeSRPy+QjvPnGcCEiYOVwUn
+	OCCVGwPT9VHg3FaFBOZoehecUglG3qi5HJRhswnT84Pr1mCK9j+WNItZEjYwA==
+X-Received: by 2002:a05:6402:888:b0:68a:e1ba:9cc0 with SMTP id
+ 4fb4d7f45d1cf-69f35fcfd90mr23494a12.8.1784679053005; Tue, 21 Jul 2026
+ 17:10:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720231639.1592848-1-jmattson@google.com> <al9cWDWvIK6RCrnN@intel.com>
+In-Reply-To: <al9cWDWvIK6RCrnN@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 21 Jul 2026 17:10:40 -0700
+X-Gm-Features: AUfX_mwPSWJfCk_1jhbt5K2CQSQOOc6GawpDEowApq0OAePBpvfrAf1WpWyAp7E
+Message-ID: <CALMp9eQN_UDhd7RVP8v4wBTaEbq0GXmbAiay+uXgzSEV7T1uQw@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: VMX: Cap VMX preemption timer to work around
+ Intel errata
+To: Chao Gao <chao.gao@intel.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 20 Jul 2026 15:34:08 -0400 Gregory Price <gourry@gourry.net> wrote:
+On Tue, Jul 21, 2026 at 4:47=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
+:
+>
+> On Mon, Jul 20, 2026 at 04:16:39PM -0700, Jim Mattson wrote:
+> >Due to a widespread Intel erratum (e.g. EMR158), programming the
+> >VMX-preemption timer with certain large values may cause the timer to
+> >expire earlier than expected.  The recommended workaround is to cap the
+> >VMX-preemption timer value to strictly less than 2^25 * CPUID.15H:EBX[31=
+:0]
+> >/ CPUID.15H:EAX[31:0].
+> >
+> >Calculate preemption_timer_limit during hardware setup based on CPUID 15=
+H
+> >when available, and return -ERANGE in vmx_set_hv_timer() if the shifted
+> >delta_tsc reaches or exceeds preemption_timer_limit.
+> >
+> >Reported-by: Sean Christopherson <seanjc@google.com>
+> >Closes: https://lore.kernel.org/all/Zn9X0yFxZi_Mrlnt@google.com/
+> >Suggested-by: Chao Gao <chao.gao@intel.com>
+> >Assisted-by: Gemini:Gemini-Next
+> >Signed-off-by: Jim Mattson <jmattson@google.com>
+> >---
+> >v2:
+> > - Use div_u64() instead of 64-bit division '/' operator to fix link-tim=
+e
+> >   error (__udivdi3) on 32-bit x86 builds. [Sashiko]
+> >
+> >v1: https://lore.kernel.org/all/20260720205230.1457146-1-jmattson@google=
+.com/
+> >
+> > arch/x86/kvm/vmx/vmx.c | 29 ++++++++++++++++++++++++++---
+> > 1 file changed, 26 insertions(+), 3 deletions(-)
+> >
+> >diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> >index cc75feec05da..e43ed863d5f9 100644
+> >--- a/arch/x86/kvm/vmx/vmx.c
+> >+++ b/arch/x86/kvm/vmx/vmx.c
+> >@@ -151,6 +151,7 @@ module_param(dump_invalid_vmcs, bool, 0644);
+> > /* Guest_tsc -> host_tsc conversion requires 64-bit division.  */
+> > static int __read_mostly cpu_preemption_timer_multi;
+> > static bool __read_mostly enable_preemption_timer =3D 1;
+> >+static u64 __read_mostly preemption_timer_limit =3D 1ULL << 32;
+>
+> This is set once at init, so __ro_after_init may be better and no need
+> to initialize it at declaration.
+>
+> The rest looks good,
+>
+> Reviewed-by: Chao Gao <chao.gao@intel.com>
+>
+>
+> btw, KVM is using 0xffffffff as preemption timer's max value in a few
+> places (the use_timer_freq sanity check in vmx_hardware_setup() and the
+> soft-disable path in vmx_update_hv_timer()). I am not sure if those shoul=
+d
+> use preemption_timer_limit - 1.
 
-> DAMON operates on physical address ranges, which can cover private
-> node memory. Skip private-node folios in both DAMON's migration
-> and reclaim paths.
-> 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  mm/damon/paddr.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index e4f98d67461f5..c741a94319750 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -12,6 +12,7 @@
->  #include <linux/swap.h>
->  #include <linux/memory-tiers.h>
->  #include <linux/mm_inline.h>
-> +#include <linux/node_private.h>
->  
->  #include "../internal.h"
->  #include "ops-common.h"
-> @@ -250,6 +251,10 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
->  			continue;
->  		}
->  
-> +		/* private node memory is not reclaimable by default */
-> +		if (folio_is_private_node(folio))
-> +			goto put_folio;
-> +
+Thanks! I'll address both points in V3.
 
-"by default".  Does that mean it could be reclaimable in some situations?  If
-so, could we check if it is reclaimable?
+Do we want to keep the hv_timer 64-bit only? AFAICT, this was only
+done out of convenience.
+See https://lore.kernel.org/kvm/1465000951-13343-3-git-send-email-yunhong.j=
+iang@linux.intel.com/.
 
-Also, what happens if we just try paging out the private node memory?  Will it
-simply fail?  Or, make some problems?
+I think something like this should work for 32- and 64- bit kernels (untest=
+ed):
 
->  		if (damos_pa_filter_out(s, folio))
->  			goto put_folio;
->  		else
-> @@ -344,6 +349,10 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
->  		else
->  			*sz_filter_passed += folio_size(folio) / addr_unit;
->  
-> +		/* private nodes do not support migration by default */
-> +		if (folio_is_private_node(folio))
-> +			goto put_folio;
-> +
+ /* (a << shift) / divisor, return 1 if overflow otherwise 0 */
+ static inline int u64_shl_div_u64(u64 a, unsigned int shift,
+                                  u64 divisor, u64 *result)
+ {
+-       u64 low =3D a << shift, high =3D a >> (64 - shift);
++       u64 high =3D shift ? (a >> (64 - shift)) : 0;
 
-Same questions.
+-       /* To avoid the overflow on divq */
+-       if (high >=3D divisor)
++       if (high >=3D divisor || !divisor)
+                return 1;
 
->  		if (!folio_isolate_lru(folio))
->  			goto put_folio;
->  		list_add(&folio->lru, &folio_list);
-> -- 
-> 2.53.0-Meta
+-       /* Low hold the result, high hold rem which is discarded */
+-       asm("divq %2\n\t" : "=3Da" (low), "=3Dd" (high) :
+-           "rm" (divisor), "0" (low), "1" (high));
+-       *result =3D low;
+-
++       *result =3D mul_u64_u64_div_u64(a, 1ULL << shift, divisor);
+        return 0;
+ }
 
+But I don't want to open up a can of worms.
 
-Thanks,
-SJ
+Sean? Thoughts?
