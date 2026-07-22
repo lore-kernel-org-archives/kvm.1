@@ -1,123 +1,176 @@
-Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF65478F3A
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 12:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E15D2E7378
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 12:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784722571; cv=none; b=XaySCPTI4hCWkMb3oQkXxAieX6/05YfnGPklcZDdub/+JYqnM9bbLrbdPapKI3lECOo8CnVxH7EtTLxUn1TYOuCs5jWAcJO1q1ohz7rFCWXZyRaYMHVOaz9UL8tw1PrRdsMyfYsCwErnpmbqZR7l26tEFzq4WWJgPeFiOKkzQww=
+	t=1784722625; cv=none; b=HAu7dGGo2VKyVbFE1fuDjQppM8PW1JzPu80PTdLo440MxGCz4q1Fw7+09lVFcOAVjEQQCaaapsJi+eH3ramZ5Qfa0I45YsmkW0/Oh5djWtkApnUJPnko/Vmj3HU2YnqG9396bupijkJuRPvdJjImEOOTI36/nsBjReXJcmN3+Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784722571; c=relaxed/simple;
-	bh=7Rt2KNu4EGwKYDHcGyOiecX/igjF+qZ8cyDPtADbBhw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Gml6e3O3GvvnzOUXHZZwR7W5/AvmwKQS7TqBVdf0RLU14FpUkD1MTU3HedI3ubTmx6MlsZ3JssK8N6cgeOhECgSb3+wmGEvfhhVIg7Q8nL4+wUxzhVn+05QxHupVc9CilzUn/kZ3qUBxeQeE1xQO/eRPqJ/5VCL9YaA4ZXZgEDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07438458|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00192932-6.01843e-05-0.998011;FP=7181970613962591499|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032053168;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---.iS5c.XV_1784722236;
-Received: from 192.168.124.3(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iS5c.XV_1784722236 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 22 Jul 2026 20:10:37 +0800
-Message-ID: <ed76e6e5-27c8-42c0-b9ef-0275f2fe4221@open-hieco.net>
-Date: Wed, 22 Jul 2026 20:10:34 +0800
+	s=arc-20240116; t=1784722625; c=relaxed/simple;
+	bh=EUT6xo+7c4fR9AjpRdk73GGw88Txx/5nWXpuxkERzDs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C7lQHwHqHwkK869OkhcP9HZFUALduUJBXSRfgrExju3vUjsBG59jyRFMv+4FKgoUZ/Q2fuXZk8XhPeGBZJimow1Fi4PQ0qNF0C5ftYqulJm6hvLNVE7A19awjnlmZCSKi+C+S/4Bu+FhCUk0sdtrHXX9eZfh2ZyNQd72ilWpOTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=J4e8ehjd; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="J4e8ehjd"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-930f618435cso70502485a.3
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 05:17:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784722622; x=1785327422; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5mNAYCNl+PvzQVOY++arp3TkG6k570KzmUdhkjTUZ24=;
+        b=J4e8ehjdkG8PhCbD4a9R5pp1+Yj6H7EkvNahqfwFzKS41ukJAzqr7cuep2PE/pBg9p
+         l7+KsUyXNAbTuqZjbm6yToeKKtTWYFESilmqxJ3Qjigw1wlmK2G1kYo+iwgyMcSvr1/o
+         YoI65CN0MFyy4DiF9b3jxFmRy9N6maeTA8HAIzh1jPILs0FPUlV5h4Ffaf/hxA3VmdnI
+         oX1vZaMZ4sIo2eYIW1aSLaDFZ/LzKO3se+eV5cYlkYsMPIeqa4Zz0x6q86VRVXPjPua+
+         q41JmadsIb7Oml+N56HtrVTAGdVOkxa4DXokMkBhx3N1yz/hobYgQJFJyBPkn3W3iLtZ
+         4dkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784722622; x=1785327422;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5mNAYCNl+PvzQVOY++arp3TkG6k570KzmUdhkjTUZ24=;
+        b=C+gfYjtF5gT/6KbsgXhv81IW/dKJKDGQttNkrhm8/e6CGvA6TCDSE8YfcJl6TJ2tXL
+         EsRllePjVdWS9EtcRZDNXGRSmmZ9E09KFy70p+Rae0IkDfveMZPsBiumEZW2udtr36cg
+         gHJHCM5XsCtkPSO5AtIuv5TjFn3iBKBHpgskvJw13rR1ypKmSTouaTJZROXvq03GlGvU
+         8SyT5GOihve1hXqmqavp8++9YmB5rc9hc2BnTFHAQZg+mTSg7F5Nt6xKMp1i1pc5oucj
+         JUpkcJz0Amlr9TYWnKb0IQte71WgxOuL0BL1LhRFsJ+BfzKvtkmz9pmyJR6XH2QRuZdU
+         gZxA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqe970w7ZzSjqlt3lkSgR60zDOsHuEhIQJa62MMYEh+C5yMDrVlzXMwh62GXigV8nKHRRc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxB/x7twxr76b7GZl+oJxbozxazfxXf5HFp6i0i56EpztSoztr3
+	CM/cv/bJLJ4RXPMOCa9hcQr8DXwv9l3pHV7rzHEybjp0ZxssA4BBEXr7VdcVZiXbOUQ=
+X-Gm-Gg: AR+sD12rhkpnIs28KahIrGwd/hJ6k5MbYY0DE+BVJLrYGbS1eqXBcm5jmbtu1M4FS4r
+	HIxTj+nTtP+3eBqaBnADZ66tyQBGun0aAY3jcdInne7hOPMOImiDUSHa90sKhaf0eg8ycBcoVCM
+	L2EcswkHnOxwSx3JozcLVWDMPZ1choRHKq9Zru98/O9ge5EQEMmHxMYsQEW0SFxF7FFnqvb1qw0
+	Fyg8v06X5taREpNI6KV5GHbxQCeLf0fZjDQ7iLz8akLxNswPcZeHxM0xBKGBSUXunXwLVuMccZg
+	AL53JTSao6FMNRQMrgR/jebFrgnM4FgMKVWk1CHVg57HW83mnd4GBPZYDDDi588gvNd3YzuwN6A
+	GH5dOqNEQpbIo7OUwI9VZAzx70ZrcrJnw/9l+Y5nLGV2zPSvrUJVB/ThFw028HghApyDj2TqMns
+	/dYuO6/+7yyKQ3vdOVkszXib3I/pepWrhC6ZK9zcX8C6b2bH+1ZcccKfeILg==
+X-Received: by 2002:a05:620a:700a:b0:92e:72c4:152b with SMTP id af79cd13be357-930b43155bcmr2298496985a.71.1784722622381;
+        Wed, 22 Jul 2026 05:17:02 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f6a03834sm149477885a.30.2026.07.22.05.17.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 05:17:01 -0700 (PDT)
+Date: Wed, 22 Jul 2026 08:16:56 -0400
+From: Gregory Price <gourry@gourry.net>
+To: SJ Park <sj@kernel.org>
+Cc: linux-mm@kvack.org, arun.george@samsung.com, balbirs@nvidia.com, 
+	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
+	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, driver-core@lists.linux.dev, 
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON
+ migration and pageout
+Message-ID: <amCzmkdOr6AFv_kQ@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-15-gourry@gourry.net>
+ <20260721234644.149401-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/9] target/i386: Fix Hygon vendor-specific CPU
- behavior
-From: Tina Zhang <zhang_wei@open-hieco.net>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- Tina Zhang <zhang_wei@hygon.cn>, Yongwei Xu <xuyongwei@hygon.cn>
-References: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
-Content-Language: en-US
-In-Reply-To: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260721234644.149401-1-sj@kernel.org>
 
-Hi,
-
-Just a gentle ping on this series.
-
-This series fixes several Hygon Dhyana vendor-specific CPU behavior gaps 
-where QEMU currently keys AMD-compatible paths only on AuthenticAMD.
-
-The guest-visible changes are gated by x-hygon-vendor-abi-fixes and kept 
-off for pc-11.0 and older machine types.  The KVM runtime changes do not 
-change guest CPU model ABI.
-
-Any comments would be appreciated.
-
-Thanks,
-Tina
-
-On 7/6/2026 1:55 PM, zhang_wei@open-hieco.net wrote:
-> From: Tina Zhang <zhang_wei@hygon.cn>
+On Tue, Jul 21, 2026 at 04:46:43PM -0700, SJ Park wrote:
+> On Mon, 20 Jul 2026 15:34:08 -0400 Gregory Price <gourry@gourry.net> wrote:
 > 
-> Hygon Dhyana uses the HygonGenuine vendor string, but a number of
-> guest-visible and KVM-facing interfaces follow AMD-compatible behavior.
-> QEMU currently keys several of these paths only on AuthenticAMD, so Hygon
-> guests can see vendor-inconsistent CPUID/MSR state or use the wrong KVM
-> PMU/MCE handling paths.
+> > DAMON operates on physical address ranges, which can cover private
+> > node memory. Skip private-node folios in both DAMON's migration
+> > and reclaim paths.
+> > 
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > ---
+> >  mm/damon/paddr.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> > 
+> > diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> > index e4f98d67461f5..c741a94319750 100644
+> > --- a/mm/damon/paddr.c
+> > +++ b/mm/damon/paddr.c
+> > @@ -12,6 +12,7 @@
+> >  #include <linux/swap.h>
+> >  #include <linux/memory-tiers.h>
+> >  #include <linux/mm_inline.h>
+> > +#include <linux/node_private.h>
+> >  
+> >  #include "../internal.h"
+> >  #include "ops-common.h"
+> > @@ -250,6 +251,10 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
+> >  			continue;
+> >  		}
+> >  
+> > +		/* private node memory is not reclaimable by default */
+> > +		if (folio_is_private_node(folio))
+> > +			goto put_folio;
+> > +
 > 
-> This series makes those checks explicit for Hygon where appropriate.
-> 
-> Guest-visible CPU ABI changes are gated by the new
-> x-hygon-vendor-abi-fixes property.  The property defaults to true for new
-> machine types and is disabled for pc-11.0 and older, so existing machine
-> types keep their previous Hygon ABI for migration compatibility.
-> 
-> The KVM injected-MCE and PMU path changes are not CPUID model table
-> changes.  They make QEMU use the AMD-compatible runtime handling that
-> Linux/KVM already uses for Hygon.
-> 
-> The series covers:
-> 
->    * AMD CPUID[0x80000001].EDX aliases for Hygon
->    * hiding Intel cache CPUID leaves 2 and 4 for Hygon
->    * hiding IA32_ARCH_CAPABILITIES for Hygon unless old ABI requires it
->    * AMD MCE status encoding for Hygon memory-failure injection
->    * AMD PMU MSR setup/save/restore paths for Hygon
->    * disabling Intel-style MCA broadcast for Hygon injected MCEs
->    * AMD IOMMU HT GPA hole layout for Hygon on new machine types
->    * AMD legacy cache fallback for Hygon when legacy-cache=on
->    * AMD-shaped default ucode-rev value for Hygon
-> 
-> Tests were added for the Dhyana CPUID/ucode compatibility behavior and
-> for the Hygon HT GPA hole memory-layout case.
-> 
-> Tested with:
-> 
->    ninja -C build
-> 
->    build/pyvenv/bin/meson test -C build --print-errorlogs \
->        qemu:qtest-i386/test-x86-cpuid-compat \
->        qemu:qtest-x86_64/test-x86-cpuid-compat \
->        qemu:func-x86_64-mem_addr_space
-> 
-> Tina Zhang (9):
->    target/i386: Sync AMD CPUID aliases for Hygon
->    target/i386: Hide Intel cache CPUID leaves for Hygon
->    target/i386: Hide ARCH_CAPABILITIES for Hygon
->    target/i386/kvm: Use AMD MCE status encoding for Hygon
->    target/i386/kvm: Use AMD PMU MSR paths for Hygon
->    target/i386: Do not broadcast injected MCEs for Hygon
->    hw/i386: Apply AMD IOMMU HT GPA hole to Hygon
->    target/i386: Use AMD legacy cache fallback for Hygon
->    target/i386: Use AMD ucode-rev default for Hygon
-> 
->   hw/i386/pc.c                                  | 22 +++--
->   target/i386/cpu.c                             | 86 +++++++++++++----
->   target/i386/cpu.h                             | 12 +++
->   target/i386/helper.c                          |  6 +-
->   target/i386/kvm/kvm.c                         | 36 +++++--
->   .../functional/x86_64/test_mem_addr_space.py  | 36 +++++++
->   tests/qtest/test-x86-cpuid-compat.c           | 95 +++++++++++++++++++
->   7 files changed, 263 insertions(+), 30 deletions(-)
+> "by default".  Does that mean it could be reclaimable in some situations?  If
+> so, could we check if it is reclaimable?
 > 
 
+See the damon changes in:
+
+https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
+
+> Also, what happens if we just try paging out the private node memory?  Will it
+> simply fail?  Or, make some problems?
+> 
+
+user controls for MADV_ commands that affect private node folios would
+skip those folios - exactly same as ZONE_DEVICE folios.
+
+Which I'm not sure damon actually handles correctly presently (zone
+device).  I remember looking around damon and thinking to myself "what
+if this is a zone device page?" and not being able to find a satisfying
+answer.
+
+> >  		if (damos_pa_filter_out(s, folio))
+> >  			goto put_folio;
+> >  		else
+> > @@ -344,6 +349,10 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
+> >  		else
+> >  			*sz_filter_passed += folio_size(folio) / addr_unit;
+> >  
+> > +		/* private nodes do not support migration by default */
+> > +		if (folio_is_private_node(folio))
+> > +			goto put_folio;
+> > +
+> 
+> Same questions.
+> 
+
+Technically there is nothing in migration core to prevent migration
+operations, it's done on a service basis - hotunplug, reclaim/demotion,
+user numa (mbind, migrate/move_pages) etc.
+
+Operations on private nodes/private node folioes are refused if the
+capability bit is not set.
+
+~Gregory
