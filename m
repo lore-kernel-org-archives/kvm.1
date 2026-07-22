@@ -1,245 +1,310 @@
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8913353A6C
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D476035E1D4
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784733061; cv=none; b=QM86GxYRYTjC4krFIM5ZlydU+qfGiODpkmQvsDm+T5JIqDkKadkdx3AwQRW+itPMmyDvZdRlh/CLB7aX8EG6b7Xq+91qYa1GS5sXV1uIoMPV50a7L39EA/VlbLiViv6R3tycA7XuQi/9Q2dsAqMm47Rwr18DixKg6W5sEBNUIUY=
+	t=1784733145; cv=none; b=F538XVheQnv/OPTsXWJbnZtYfqitfxU753T5SIgEQTYEBCQudsNb8vrvs5sUsK/DtW+XzhaiNhJui6EUJAKgqYMlWD5gs4fxEMjS4hoeeu0BBP51X6B8UQ8z+6tVxEChPQqVwaJSLg6IyzYXvopQlYD0Pz1PX4fnRmFaapMUGJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784733061; c=relaxed/simple;
-	bh=joPBJZIeeEoyn3WY5PVmXu/ldAZK1UP8QHTwkGX4oqI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bn85Y2wk2UDBjFLofLpMhveaE5RtsXOENmgY54tv5iFQpnrlyjFp9bO0W1zNZJ48m0ce4+yDkrmrAFAMNbmEewAC3lBmD0yrzGo9JEbAyRadMqe0Iv2N/SOS3ClK8MQe/UcnJnH4bojMBxPdVBIggyYM2a13J67M9RoTL0VkyJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=opxfgIIH; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784733145; c=relaxed/simple;
+	bh=gwL+7pw1dy+OP01p49q/MyWPmKcKJMcpY7Nwq/eqxik=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EBPJ012FoDEXBHjT7ZviLBOgzEniTLuZRU8V1IvypXn25ElCHgbEe5MJEQN+g0Rib6/MQdrKjILQaNx3KoU2m948OfmceMeZD+S/v6vvRhEYf92lhS76tE1gnS19PXatEcJxJbDBfUKM4M0lfBv3nxFWBf89m34U9poOPZ3Ws0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=blRAz5rb; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="opxfgIIH"
-X-Forwarded-Encrypted: i=1; AHgh+Rps/ABrDQNPP5+2PgVZ+lqapqfaGJM+AAzcQJIz7QMr18NFxKRrTkiIK53/X7uWj4aH7pM=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784733056;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+eXziWrVe6iq+ExZQ6O6xmITHayaDdJsXK4xTLpyju8=;
-	b=opxfgIIHaL4Iv/SUq0lEMg9qRhHPJj76ZCYie8kcslJuyR1djH8KyZDPr5J3WHr5k/6Zft
-	CI353TRPo4w6sMSbcEKPGNf6vMOvnnizNPJhM0jlLEL6396EAdjVi4QgGdZvzgBzXcpySL
-	Ye8UpML37q/BALZsebvzJeLASyWfoD4=
-X-Gm-Message-State: AOJu0YzYZL6xThb9Mb/ItYeTWVOiuO9OvB5nf2upcJfblIdYyc2vxBWK
-	Yn4QILC1kw1GHKD0FOc+p6JmyEGesW308VMYQENO18qVyWCo37vbf0+w36vKQNB3/5FF5LCyN9P
-	v/FsjlJ5s3CTg9yiiZAmjywCHDToaqTrI10BX1v5D
-X-Received: by 2002:a05:622a:1819:b0:50d:edb1:6bd1 with SMTP id
- d75a77b69052e-527ef056bdcmr9238801cf.13.1784733045941; Wed, 22 Jul 2026
- 08:10:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="blRAz5rb"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8484f26852dso9003414b3a.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 08:12:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784733141; x=1785337941; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I7f9lZbSdhEgbSxr67hS2Jrj3sXRGAdvMtjr5VpXokM=;
+        b=blRAz5rbL1xRd7VlxqoabdLCGlT41+NgeRYtQbyJOJedBTfwuLTArKwSxgXZfnLUPd
+         GVYaPzHiSYal+DIFHzgmVh1jzxxI2SNVATrP3W0FtNtO0SGE4q/LYWvMqZUaRLKKNB0H
+         g6ghV2Wc8DQxAsUqo3EtIHduXZ7uWuoiKObyYnCK0HJ11SEzY5YWO48KNGDdO8n+2Tjo
+         woMAMYB3B8AMJP2kLmAPKwZfSkg35tLjYieD90lm5XToZ1Gy5ErAffLJg4SYJV2oSjaz
+         41jurqQ8CLWVFe/DxfCPd6fQ2VdHahhDhEvDt3v/mUDph9yms7T6YOI1MGwOJYqbfTkT
+         jirw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784733141; x=1785337941;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I7f9lZbSdhEgbSxr67hS2Jrj3sXRGAdvMtjr5VpXokM=;
+        b=bVa0cmVizh9AJoraMafAh5TT6C1BJIVQ2kSsxfIXY/GNB8TGKfI/x8ho8HEwKq2o9C
+         9I4MUy44bCNu6Vu7apfmiRiM4vKVRNU3kq/74XB126WtAC2gFaO4DMjL46MD8sqaXcMA
+         V8ZsCwvS542+1lumJDoYNE2/kwEwJ8CzCvOKjGbTWBAuIxFiysLPGf3Vbcabs6KpuApq
+         CSM8mZb+dLZjIzDPWDpyAtx9eDIP8UxdYntqwJ/NWBDMN3MakGlWs/oerrwqLXXL6/LE
+         U7QQxqIOd/iV6EHaVSOIZUfW0sQspXISWwGjdWmzYOAJyU2dpPkaxRevCTTR/veMvS5M
+         GLBw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1K/MPi7g05oKM/MghIdvvacW/0dGk1oSM6hnJzWHBZLlUdZLh4JnQRF2a1Plq+2vDafQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxqb2tJR2ZObWORtogdJxxNJKED63x1bjUNiHODUZIM7dO2I+O8
+	panYV/gO4B3rWXgeX0tStdQMGZgSzbYA1fhLOEfdGD9bj92OC1p4t41h5KJSF1GCghDlNPIz2Sm
+	xReo9BA==
+X-Received: from pfkm8.prod.google.com ([2002:a05:6a00:808:b0:848:48a0:41e6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14d5:b0:848:6ef9:f5ca
+ with SMTP id d2e1a72fcca58-84c2954e130mr23069474b3a.63.1784733140595; Wed, 22
+ Jul 2026 08:12:20 -0700 (PDT)
+Date: Wed, 22 Jul 2026 08:12:20 -0700
+In-Reply-To: <1417841720b8435f8fb95ac0bd95be6e0e9390d4.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260703154811.3355680-1-sascha.bischoff@arm.com>
- <CA+EHjTx4RHdZEnkLwF=ptKiONYzG+roaoKA+pN3K8xZQB2ohGA@mail.gmail.com> <f84f1481f0a0fe0abe9c8b7b044c9987368005d2.camel@arm.com>
-In-Reply-To: <f84f1481f0a0fe0abe9c8b7b044c9987368005d2.camel@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 22 Jul 2026 16:10:09 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTz5oM=5CtTqWJ5W0svZXTH5TaAyr9fceFNHsd7T=Yq67Q@mail.gmail.com>
-X-Gm-Features: AUfX_mw9L8L6cSBsUGZVddvjS8Pti3Yc-w-b5bisisvngAzfQGu0uw0y7hIVvCQ
-Message-ID: <CA+EHjTz5oM=5CtTqWJ5W0svZXTH5TaAyr9fceFNHsd7T=Yq67Q@mail.gmail.com>
-Subject: Re: [PATCH v3 00/40] KVM: arm64: Add GICv5 IRS support
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "yuzenghui@huawei.com" <yuzenghui@huawei.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	Timothy Hayes <Timothy.Hayes@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>, nd <nd@arm.com>, 
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Joey Gouly <Joey.Gouly@arm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
+ <20260718014500.2231262-9-rick.p.edgecombe@intel.com> <20260718061050.E17B01F000E9@smtp.kernel.org>
+ <1417841720b8435f8fb95ac0bd95be6e0e9390d4.camel@intel.com>
+Message-ID: <amDd1Ip3XTvKSTcb@google.com>
+Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, Yan Y Zhao <yan.y.zhao@intel.com>, 
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
+	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Sascha,
+On Mon, Jul 20, 2026, Rick P Edgecombe wrote:
+> On Sat, 2026-07-18 at 06:10 +0000, sashiko-bot@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > - [High] Infinite kernel loop in `kvm_tdp_mmu_map_private_pfn` due to permanent PAMT cache depletion on transient TDX module contention.
+> > --
+> 
+> Our internal Sashiko found this too. It's a false positive as a real bug.
+> 
+> Today kvm_tdp_mmu_map_private_pfn() is only called tdx_gmem_post_populate()
+> during TD setup. It holds the heavyweight tdx_vm_state_guard which grabs vm-
+> >lock, kvm->slots_lock, and all vcpu->mutex. So there should be no contention
+> possible.
+> 
+> Any potential confusion is not new either, because a similar thing could happen
+> with the external page tables.
+> 
+> But Yan and I were discussing that it would be a good cleanup to fix this anyway
+> because the reason it is not a functional issue is not clear from the code. For
+> improved readability (and quieter sashiko reports) the topup can happen inside
+> the retry loop. Either by moving the retry loop or moving the topup.
 
-On Wed, 22 Jul 2026 at 15:40, Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-...
-> > I have started working through this series and will send per-patch
-> > comments as I go, starting with the userspace interface since that's
-> > trickier to change later. I am still coming up to speed on GICv5, so
-> > please take these with that in mind. A couple of series level things
-> > first, while v4 is still open.
->
-> Thanks a lot for taking the time and for any and all comments.
+Hmm, yeah, I think I agree.  Super duper technically, that's a fix for an existing
+flaw.  Because very, very, VERY theoretically, the cache of page table pages could
+be exhausted.  E.g. if some other task managed to free non-leaf page tables while
+mmu_lock was dropped, thus forcing kvm_tdp_mmu_map_private_pfn() to allocate from
+its cache over and over.  In practice, that's likely impossible thanks to holding
+slots_lock, but given that (a) retry should be rare and (b) kvm_mmu_topup_memory_cache()
+is basically free if no work needs to be done, I don't see any reason to do topup
+outside of the retry loop.
 
-Thanks, that answers most of what I was after.
+The other thing we should address is the call to kvm_mmu_reload().  Like cache
+exhaustion, it *should* be impossible for the root to be invalidated/obsoleted,
+thanks to holding slots lock.  But as evidenced by the rash of recent shadow MMU
+bugs, we don't always get things perfect, and lack of defense-in-depth can be
+*extremely* painful.
 
-...
+I don't think I want to just move kvm_mmu_reload() into the loop, because KVM
+should provide stronger guarantees with respect to the validity of the loop,
+versus the population of the caches.  I.e. I want to WARN if the root becomes
+obsolete after the initial reload.  And more importantly, KVM really should
+check the validity of the root after acquiring mmu_lock.
 
-> I have a set of tests that look at the various "components" that we
-> have in the GICv5 KVM implementation, including the IST save/restore.
-> This latter test does also save/restore the IRS MMIO regs as part of
-> testing the IST save/restore.
+We can't simply call is_page_fault_stale(), because mmu_invalidate_retry_gfn()
+is inherently fuzzy, i.e. could get false positives, even though the pfn provided
+by guest_memfd is guaranteed to be valid.  E.g. if shared gfns surrounding the
+to-be-mapped gfn are concurrently invalidated.
 
-Good that the round trip already exists, that was really the question.
-One thing I could not tell from the output: does the test compare the
-restored state against the saved state field by field, so that a
-dropped field fails it, rather than just a save and restore within one
-VM? That is what would give the confidence you asked for on omitted
-state. If it already does, worth a line in the cover letter.
+So, this?
 
-> These do add a further ~2k lines to review across 9 commits, which is
-> why I'd not included them in the series posting. The git diff --stat
-> for the local series with these included is currently:
+	r = kvm_mmu_reload(vcpu);
+	if (r)
+		return r;
 
-I would still land them in tree rather than point at them: out-of-tree
-tests give reviewers nothing to run and no regression cover, which is
-where the ordering constraints most need it. The test code is not the
-expensive part of the review, the ~6000 lines of IRS and table code
-are, so the selftests help more than they cost. If nine commits is too
-much at once, the IST save/restore one is the piece I would most want
-alongside the save/restore code, the rest can follow.
+	do {
+		if (signal_pending(current))
+			return -EINTR;
 
-...
+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+			return -EIO;
 
-> Noted - I should have been clearer here. The intent was that the
-> save/restore functionality was bundled together with the IRS, SPI, and
-> LPI support. With this series it becomes possible to run something real
-> with KVM on a GICv5 system. Prior to this series, we only had PPI
-> support which also meant a single VPE, and no ability to run anything
-> particularly meaningful.
->
-> Personally, I'm quite happy to do whatever is best for the reviewers to
-> make things as easy to review as possible. I can either extend the
-> series with the set of selftests, or I can drop the save/restore
-> support for the time being. Happy to hear your thoughts. FWIW, I
-> believe that Marc preferred them to land together for the reason above.
+		r = mmu_topup_memory_caches(vcpu, false);
+		if (r)
+			return r;
 
-Makes sense, no objection to keeping them together. Worth putting in
-the v4 cover letter so the next reader does not have to ask. One thing
-on the reasoning: "run something real" argues for SPI and LPI landing
-together, since a guest boots without save/restore. Bundling
-save/restore itself reads more like not shipping a feature userspace
-can create but not migrate, then retrofitting the ABI later. If that
-is the reason, worth saying so.
+		cond_resched();
+	
+		guard(read_lock)(&kvm->mmu_lock);
 
-Cheers,
-/fuad
+		if (WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu)))
+			return -EIO;
+
+		r = kvm_tdp_mmu_map(vcpu, &fault);
+	} while (r == RET_PF_RETRY);
+
+The other option would be to gracefully handle an obsolete root instead of WARNing,
+but as above, I think I prefer to WARN.
+
+	do {
+		if (signal_pending(current))
+			return -EINTR;
+
+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+			return -EIO;
+
+		r = kvm_mmu_reload(vcpu);
+		if (r)
+			return r;
+
+		r = mmu_topup_memory_caches(vcpu, false);
+		if (r)
+			return r;
+
+		cond_resched();
+	
+		guard(read_lock)(&kvm->mmu_lock);
+
+		fault.mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+		if (is_page_fault_stale(vcpu, &fault))
+			continue;
+
+		r = kvm_tdp_mmu_map(vcpu, &fault);
+	} while (r == RET_PF_RETRY);
+
+My only hesitation with manually checking KVM_REQ_MMU_FREE_OBSOLETE_ROOTS is that
+if more checks/functionality were added to is_page_fault_stale() in the future,
+then we could end up missing kvm_tdp_mmu_map_private_pfn() and introduce a bug.
+
+Maybe we can have it both ways?  WARN if roots are unexpectedly made obsolete,
+but fully check is_page_fault_stale() and gracefully handle an obsolete root
+instead of effectively terminating the guest.
+
+	do {
+		if (signal_pending(current))
+			return -EINTR;
+
+		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+			return -EIO;
+
+		r = kvm_mmu_reload(vcpu);
+		if (r)
+			return r;
+
+		r = mmu_topup_memory_caches(vcpu, false);
+		if (r)
+			return r;
+
+		cond_resched();
+	
+		guard(read_lock)(&kvm->mmu_lock);
+
+		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
+
+		/*
+		 * Snapshot the invalidation sequence counter after acquiring
+		 * mmu_lock, as guest_memfd guarantees the validity of the pfn,
+		 * i.e. any concurrent invalidations are guaranteed to be
+		 * irrelevant.
+		 */
+		fault.mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+		if (is_page_fault_stale(vcpu, &fault))
+			continue;
+
+		r = kvm_tdp_mmu_map(vcpu, &fault);
+	} while (r == RET_PF_RETRY);
 
 
->
-> Thanks again for your input.
-> Sascha
->
-> >
-> > Cheers,
-> > /fuad
-> >
-> >
-> >
-> > >
-> > > Thanks,
-> > > Sascha
-> > >
-> > > [1]
-> > > https://lore.kernel.org/all/20260319154937.3619520-1-sascha.bischoff@arm.com/
-> > > [2] https://developer.arm.com/documentation/aes0070/latest
-> > > [3] https://developer.arm.com/documentation/108086/latest
-> > > [4] https://linaro.atlassian.net/wiki/x/CQAF-wY
-> > > [5]
-> > > https://lore.kernel.org/all/20260116182606.61856-1-sascha.bischoff@arm.com/
-> > > [6]
-> > > https://gitlab.arm.com/linux-arm/linux-sb/-/tree/gicv5_kvm_irs_support_v3
-> > > [7]
-> > > https://lore.kernel.org/all/20260427160547.3129448-1-sascha.bischoff@arm.com/
-> > > [8]
-> > > https://lore.kernel.org/all/20260521144846.1899475-1-sascha.bischoff@arm.com/
-> > >
-> > > Sascha Bischoff (40):
-> > >   irqchip/gic-v5: Allow KVM setup without a maintenance IRQ
-> > >   irqchip/gic-v5: Provide OF IRS config frame attrs to KVM
-> > >   irqchip/gic-v5: Set up gic_kvm_info on ACPI hosts
-> > >   KVM: arm64: gic-v5: Define remaining IRS MMIO registers
-> > >   arm64/sysreg: Add GICv5 GIC VDPEND and VDRCFG encodings
-> > >   arm64/sysreg: Update ICC_CR0_EL1 with LINK and LINK_IDLE fields
-> > >   KVM: arm64: gic-v5: Extract host IRS caps from IRS config frame
-> > >   KVM: arm64: gic-v5: Add VPE doorbell domain
-> > >   KVM: arm64: gic-v5: Create and manage VM and VPE tables
-> > >   KVM: arm64: gic-v5: Introduce guest IST alloc and management
-> > >   KVM: arm64: gic-v5: Implement VMT/vIST IRS MMIO Ops
-> > >   KVM: arm64: gic-v5: Keep GICv5 vCPU limit model-specific
-> > >   KVM: arm64: gic-v5: Implement VPE IRS MMIO Ops
-> > >   KVM: arm64: gic-v5: Set up VMTEs and VPE doorbells
-> > >   KVM: arm64: gic-v5: Add resident/non-resident hyp calls
-> > >   KVM: arm64: gic-v5: Request doorbells when VPEs enter WFI
-> > >   KVM: arm64: gic-v5: Introduce struct vgic_v5_irs and IRS base
-> > > address
-> > >   KVM: arm64: gic-v5: Add IRS IODEV support to MMIO handlers
-> > >   KVM: arm64: gic-v5: Add KVM_VGIC_V5_ADDR_TYPE_IRS to UAPI
-> > >   KVM: arm64: gic-v5: Add GICv5 IRS IODEV and MMIO emulation
-> > >   KVM: arm64: gic-v5: Initialise per-VM IRS state
-> > >   KVM: arm64: gic-v5: Register the IRS IODEV
-> > >   KVM: arm64: gic-v5: Set IRICHPPIDIS based on IRS enable state
-> > >   KVM: arm64: selftests: Update vGICv5 selftest to set IRS address
-> > >   KVM: arm64: gic-v5: Introduce SPI AP list
-> > >   KVM: arm64: gic-v5: Add GIC VDPEND and GIC VDRCFG hyp calls
-> > >   KVM: arm64: gic-v5: Track SPI state for in-flight SPIs
-> > >   KVM: arm64: gic: Introduce set_pending_state() to irq_op
-> > >   KVM: arm64: gic-v5: Support SPI injection
-> > >   Documentation: KVM: Extend VGICv5 docs for
-> > > KVM_VGIC_V5_ADDR_TYPE_IRS
-> > >   KVM: arm64: gic-v5: Add GICv5 SPI injection to irqfd
-> > >   KVM: arm64: gic-v5: Mask per-vcpu PPI state in
-> > >     vgic_v5_finalize_ppi_state()
-> > >   KVM: arm64: gic-v5: Add GICv5 EL1 sysreg userspace accessors
-> > >   KVM: arm64: gic-v5: Handle userspace accesses to IRS MMIO region
-> > >   KVM: arm64: gic-v5: Add CoreSight MMIO regs to IRS
-> > >   KVM: arm64: gic-v5: Implement save/restore mechanisms for ISTs
-> > >   Documentation: KVM: Document KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS for
-> > >     VGICv5
-> > >   Documentation: KVM: Add KVM_DEV_ARM_VGIC_GRP_IRS_REGS to VGICv5
-> > > docs
-> > >   Documentation: KVM: Add docs for KVM_DEV_ARM_VGIC_GRP_IST
-> > >   Documentation: KVM: Add the VGICv5 IRS save/restore sequences
-> > >
-> > >  .../virt/kvm/devices/arm-vgic-v5.rst          |  237 ++-
-> > >  arch/arm64/include/asm/kvm_asm.h              |    4 +
-> > >  arch/arm64/include/asm/kvm_hyp.h              |    4 +
-> > >  arch/arm64/include/asm/sysreg.h               |   18 +-
-> > >  arch/arm64/include/uapi/asm/kvm.h             |    7 +
-> > >  arch/arm64/kvm/Makefile                       |    3 +-
-> > >  arch/arm64/kvm/arm.c                          |    2 +-
-> > >  arch/arm64/kvm/hyp/nvhe/hyp-main.c            |   34 +
-> > >  arch/arm64/kvm/hyp/vgic-v5-sr.c               |   55 +
-> > >  arch/arm64/kvm/sys_regs.c                     |    6 +-
-> > >  arch/arm64/kvm/vgic-sys-reg-v5.c              |  519 +++++
-> > >  arch/arm64/kvm/vgic/vgic-init.c               |  111 +-
-> > >  arch/arm64/kvm/vgic/vgic-irqfd.c              |   17 +-
-> > >  arch/arm64/kvm/vgic/vgic-irs-v5.c             | 1138 ++++++++++
-> > >  arch/arm64/kvm/vgic/vgic-kvm-device.c         |  252 ++-
-> > >  arch/arm64/kvm/vgic/vgic-mmio.c               |    6 +
-> > >  arch/arm64/kvm/vgic/vgic-mmio.h               |    2 +
-> > >  arch/arm64/kvm/vgic/vgic-v5-tables.c          | 1855
-> > > +++++++++++++++++
-> > >  arch/arm64/kvm/vgic/vgic-v5-tables.h          |  112 +
-> > >  arch/arm64/kvm/vgic/vgic-v5.c                 | 1220 ++++++++++-
-> > >  arch/arm64/kvm/vgic/vgic.c                    |   39 +-
-> > >  arch/arm64/kvm/vgic/vgic.h                    |   21 +-
-> > >  arch/arm64/tools/sysreg                       |    4 +-
-> > >  drivers/irqchip/irq-gic-v5-irs.c              |   19 +-
-> > >  drivers/irqchip/irq-gic-v5.c                  |  117 +-
-> > >  include/kvm/arm_vgic.h                        |  165 +-
-> > >  include/linux/irqchip/arm-gic-v5.h            |  256 ++-
-> > >  include/linux/irqchip/arm-vgic-info.h         |    5 +
-> > >  tools/arch/arm64/include/uapi/asm/kvm.h       |    7 +
-> > >  tools/testing/selftests/kvm/arm64/vgic_v5.c   |    6 +
-> > >  .../selftests/kvm/include/arm64/gic_v5.h      |    3 +
-> > >  31 files changed, 6093 insertions(+), 151 deletions(-)
-> > >  create mode 100644 arch/arm64/kvm/vgic-sys-reg-v5.c
-> > >  create mode 100644 arch/arm64/kvm/vgic/vgic-irs-v5.c
-> > >  create mode 100644 arch/arm64/kvm/vgic/vgic-v5-tables.c
-> > >  create mode 100644 arch/arm64/kvm/vgic/vgic-v5-tables.h
-> > >
-> > > --
-> > > 2.34.1
-> > >
->
+> > --- Patch [8]: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping private memory ---
+> > commit 3474807f1c1bc4dedc75e2a756b65254c986a41d
+> > Author: Kiryl Shutsemau <kas@kernel.org>
+> > 
+> > KVM: TDX: Get/put PAMT pages when (un)mapping private memory
+> >     
+> > Add Dynamic PAMT support to KVM's S-EPT MMU by "getting" a PAMT page when
+> > adding guest memory (PAGE.ADD or PAGE.AUG), and "putting" the page when
+> > removing guest memory (PAGE.REMOVE).
+> > 
+> > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> > > index 528ebb3cb0389..049da8559882b 100644
+> > > --- a/arch/x86/kvm/vmx/tdx.c
+> > > +++ b/arch/x86/kvm/vmx/tdx.c
+> > > @@ -1679,16 +1693,28 @@ static struct page *tdx_spte_to_sept_pt(struct kvm *kvm, gfn_t gfn,
+> > >  static int tdx_sept_map_nonleaf_spte(struct kvm *kvm, gfn_t gfn,
+> > >  				     enum pg_level level, u64 new_spte)
+> > >  {
+> > > +	struct kvm_vcpu *vcpu = kvm_get_running_vcpu();
+> > >  	gpa_t gpa = gfn_to_gpa(gfn);
+> > >  	u64 err, entry, level_state;
+> > >  	struct page *sept_pt;
+> > > +	int ret;
+> > > +
+> > > +	if (KVM_BUG_ON(!vcpu, kvm))
+> > > +		return -EIO;
+> > >  
+> > >  	sept_pt = tdx_spte_to_sept_pt(kvm, gfn, new_spte, level);
+> > >  	if (!sept_pt)
+> > >  		return -EIO;
+> > >  
+> > > +	ret = tdx_pamt_get(page_to_pfn(sept_pt), &to_tdx(vcpu)->pamt_cache);
+> > > +	if (ret)
+
+Shouldn't this be a KVM_BUG_ON()?  To Sashiko's point about this creating an
+infinite fault loop, that simply shouldn't happen.  The whole point of using
+caches for the paging assets is to guarantee success.
+
+> > > +		return ret;
+> > > +
+> > >  	err = tdh_mem_sept_add(&to_kvm_tdx(kvm)->td, gpa, level, sept_pt,
+> > >  			       &entry, &level_state);
+> > > +	if (err)
+> > > +		tdx_pamt_put(page_to_pfn(sept_pt));
+> > > +
+> > >  	if (unlikely(tdx_operand_busy(err)))
+> > >  		return -EBUSY;
+> > 
+> > [Severity: High]
+> > Does this error path risk causing an infinite loop if the TDX module
+> > contention leads to TDX_OPERAND_BUSY?
+> > 
+> > When tdh_mem_sept_add() returns TDX_OPERAND_BUSY, tdx_pamt_put() frees the
+> > PAMT pages directly back to the buddy allocator, not back into the vCPU's
+> > PAMT cache.
+> > 
+> > If this happens during VM initialization in a retry loop like
+> > kvm_tdp_mmu_map_private_pfn(), the vCPU memory caches are topped up outside
+> > of the loop:
+> > 
+> >     r = mmu_topup_memory_caches(vcpu, false);
+> >     if (r)
+> >         return r;
+> > 
+> >     do {
+> >         ...
+> >         r = kvm_tdp_mmu_map(vcpu, &fault);
+> >     } while (r == RET_PF_RETRY);
+> > 
+> > Since the PAMT pages are discarded rather than returned to the cache, a few
+> > busy retries will completely empty the vCPU's PAMT cache.
+> > 
+> > On the next retry, tdx_pamt_get() will return -ENOMEM because the cache is
+> > empty and it does not fall back to alloc_page() when a cache is provided.
+> > 
+> > The TDP MMU handles -ENOMEM by returning RET_PF_RETRY, but because the cache
+> > is never replenished inside the loop, the loop will infinitely fail and retry.
+> > 
+> > Could the PAMT pages be returned to the vCPU cache instead of the buddy
+> > allocator during transient failures, or should the cache top-up be moved
+> > inside the retry loop?
+> > 
+> 
