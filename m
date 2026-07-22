@@ -1,208 +1,478 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67211242D89;
-	Wed, 22 Jul 2026 01:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784684600; cv=none; b=NVdw9AaEpZ5ue1ue6TtAo9O9Ru5zzgH12zXL3dv2Cr7sjJ3/tIlLRxxUAK292vzOzE06nsyjN6swN1edEvWWLkR6Qjyv6hS7mx3Ef/3NRJJFQaLRwNG6ytS04FPhA5+PdoP30tM4C82cLkIXPNIIeHw4G1p8ONZY0E3JM4CvDvk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784684600; c=relaxed/simple;
-	bh=HDKnuZB020B1NFw5Aks/rAa/Gx9BkOkDO5X/X00aR7g=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=CwLjUSWwnt36+soLewSHBFQ4xjdjt/0xYP48XB6e7ZZno2uY3sWWtkwzUaCQkM4x20tr/Qd0kgZg0wvambYYeJaDTprMsd9iCTPKAOL4WKqlPeMkGicYwJH3+J8+HZJ4mfpDw3OCUEvrOYH9tC4mDbS6ziJXlOf/4XqM8u7JMvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxJOoyIGBq0NgFAA--.21801S3;
-	Wed, 22 Jul 2026 09:43:14 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxq8QpIGBqpZ0UAA--.56319S2;
-	Wed, 22 Jul 2026 09:43:05 +0800 (CST)
-Subject: Re: [PATCH] LoongArch: KVM: Implement KVM_GET/SET_SREGS for bulk CSR
- migration
-To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn
-Cc: chenhuacai@kernel.org, kernel@xen0n.name, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, cuitao@kylinos.cn
-References: <20260721121842.156025-1-cui.tao@linux.dev>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <63410558-e04d-7cbf-4acb-e85619d22236@loongson.cn>
-Date: Wed, 22 Jul 2026 09:42:54 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E9238C2A5;
+	Wed, 22 Jul 2026 02:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784686754; cv=fail; b=szZ4oOrmFIoK9sKCqdJkyw+ZgsghDLFUahBgUuh8UV7wixrfnf5EDJV1wCHA9hMUNrdRbdbMFBhOrwxAB8+7Mx26GPiBEGm77swHZtA87n2h6TgCnT+o78S/jc+1L6tSpx/2daccFxlqT8mqfHvPa2HCNWLVoDEx+It4QXTNGcY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784686754; c=relaxed/simple;
+	bh=NY/CITKxcVn3C9jDPxAW1JjQlDzhgUoDf50exK8646s=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GmqKRb83GtcI6v6fQM9F9gIfc/G0GqgesVJP2UMQp9MODNPwMH1Qw9I4DiWWfuly3hcAUGCRty2mdOTnPhbf6UwSv3Ca2QcWSOsPU2nSfHCLuOUB5uKi4YyTb34MxYzd/ODU+6hGwQ1nAP3Brs5amFpDQTVNxYXecg2hkQPNyi8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ObF2toJ3; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ObF2toJ3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784686751; x=1816222751;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=NY/CITKxcVn3C9jDPxAW1JjQlDzhgUoDf50exK8646s=;
+  b=ObF2toJ3Bcp6WX7j2P1FdXKnm/zd8LPaEifLu4g5RQx7S8V3XZi3LRhI
+   4sKVL8yElGjmxEivII0ROgzWCup9PZa5Br/CccOaTfn4gPRjVe1xiEJc8
+   Elvk4hw3QIBwGky5nIlP1Aeodp5/M8gnGmWHXh5qLbX5Pym4TSZsomFtt
+   AsU8Aa4BSG2n+wBYKkfATDUl9Vxz5QELw3zuc5kTaib7Wj7t5DB8v8ywb
+   ubUYckLGrXUWzJS6recpxtDKYlrw7XSvBUX2W3KDzc6LVnts/nHB0phI9
+   HdCJl6UEwcepRqsav+XOufPZCdltHfumRowWzHUbk6Omk6xNWxS8ofwrN
+   g==;
+X-CSE-ConnectionGUID: YfTjlOG+RFCDy0/PXzpZvQ==
+X-CSE-MsgGUID: u9KDlkKVQA6pW5EHd8dbHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="72847625"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="72847625"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 19:19:10 -0700
+X-CSE-ConnectionGUID: f670skVpSRCmxZWS7XPkrw==
+X-CSE-MsgGUID: da5Lm4poTqWX2YzdVxzLmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
+   d="scan'208";a="258015562"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 19:19:11 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 19:19:09 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 21 Jul 2026 19:19:09 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.53) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 19:19:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DWc46XE+TELYYcCxK2QbKDIUb+J2ty2sTYsoEHRTvRoiR/9N1T7X6DIVWsdiW2BxOXSypCo2Oye1YNTHbwU7j1TGYHrH8TIkJRRwOdxUbTZMDhrrNVoF2QcgHhUuD1pGQFZ/mlpxR4YIXjliuftyZUjtZ2stJBZxrXQZhk4FikkFVQLfZSalTinDH+9Mv9zU+o6Zjawax3tBMsSJHAOE9xFgKAwqAMgjURLE1QYUDVf3gwal5eF1PJfZogCj+rvqVsO/hEZkboFYiOa3Z4KX688D2j/EquPk0lUMZn15Y7dKD+6TLkWu35bDfarm3mnX2CnFa6WnP4uWB7YbBVHhKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0/WqY9HEjaCbneMnK0HGCXja4xQJ+FTgeOI/myf7gMM=;
+ b=bmz/xrJG4mbplrAuqUSS0/yGdhcsI77e/ENOF/soGKiDzppAFdJ0hHwBDduyky9zn8PE1nf2Cn5blmG/0XJTXCaQnPdaMf4GqNbtzqwxh4ZRLo8OmlG+CThlRCPrQ6NBtRO3F64TBjHkelQAvSp4//Y36rayljfeDFTXcCZg2TKV+JTe1mYGHPZJcCeXb8TqGQ23uAPmQNt/+lPrKAxFIMo2dM1R4Ho797Mxu/j4ZgnhukdPITN+DRQfnQDeDk8vH89Nvmf1EcZn2a+cfiNrBMAtdjfRnHSHCQjVuZJQVZOp7KGTZ6t5uAGfhtL+sSNvZAEuixuDYR12YIFX7wCz/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by SA1PR11MB9851.namprd11.prod.outlook.com (2603:10b6:806:4d8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
+ 2026 02:19:01 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
+ 02:19:01 +0000
+Date: Wed, 22 Jul 2026 10:18:50 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Michael Roth <michael.roth@amd.com>, "Hyunwoo
+ Kim" <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+	=?iso-8859-1?Q?J=F6rg_R=F6del?= <joro@8bytes.org>, Fuad Tabba
+	<tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine
+ .gmem_prepare()+.gmem_invalidate() into .gmem_convert()
+Message-ID: <amAoijqis2Gn/K2Z@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260709204948.1988414-1-seanjc@google.com>
+ <20260709204948.1988414-19-seanjc@google.com>
+ <alc8Vi9yNIFR/yGE@yzhao56-desk.sh.intel.com>
+ <al_BAjCNRQUvuX2c@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <al_BAjCNRQUvuX2c@google.com>
+X-ClientProxiedBy: SA0PR11CA0020.namprd11.prod.outlook.com
+ (2603:10b6:806:d3::25) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260721121842.156025-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxq8QpIGBqpZ0UAA--.56319S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3XFyxWFy8tF1UGr4furyUJwc_yoW7Wry3pF
-	WUAFZ8WrWrWrn7C34SqFn8ur1Y9397Grs3ua47WrWYyFnFvr15JF18KrWDuFy5uw40gF4I
-	9F1Ykw4rCa1qywbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWU
-	AwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jepB-UUUUU=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|SA1PR11MB9851:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad2634f2-4eed-4bed-ef62-08dee7979824
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|10067099003|4143699003|5023799004|11063799006|6133799003|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: 3IPbYhNEizw6u/kzZj1QmhCjBnpD9AWrKpIED2/xKTurxkPMlXfNzOqlF0sRDjmFk1mnP49yGP0Zu7FwJeL+EKz5K8KCNNfuJvucuE2cfdMQ0fBr6pi9CwXEJXNjJiFq7TBb1/HhH7tipBdDVerHW73260DIR/U7dFn+L0ilApND61HQQBqwVKnxjVa49KPoDp2gASaEFuATzYULaE1MV8aAaerFue7VNLD+1jFNcwN7v005IbvvRmJQeA+siKFgTOWr7wAgej8K8iHTsN6wF1jYinqClcBd84hq6A/XgwUbf2FW0gQ7LLHAcsT6kc/ci99/EGcxtRBlaSlH1wf/LT0bxKPHFhs/ffnt02fG4J6S72167bwHPIbITjgYN0F/PNPYuKMx7EpjYVxwbmq3PyH7oeRI98mnfddMp389DO+s3D7HmcqTEbMNyUmVKrxm7uchIeaYrZ3eR9QrPa00Ujm0f4uPMEiMH5ZbhmBRK9fVwfbfTEhYQVc7xJPAx+FKFDkbcycjuzO90A3lWSqr9OYe3mDxlXXhoXI0kaZdJge5KXUj9Avg3JBWQDkYzKYSOBTI2C/gQMIFE9syFlWjtB1ySoZ9pZlqF3vhgpmTxP0+7vY3/UeL7cK8EByBtD48qiNZo6CsfL/+auD/kG81OA2uVveK2xYgEBWjmW+3PFo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(10067099003)(4143699003)(5023799004)(11063799006)(6133799003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XcKDuI5Hb04Oxkgg4TovdXFpdL7YfznEBOWK9kU2Ts4aLMJT7jeGg9B4XmoO?=
+ =?us-ascii?Q?M3+PYsw2DCMhHimZcHi463qayNmGewd0ubQOb+k1e+Wqkbo+sXJzTTVfkiW1?=
+ =?us-ascii?Q?7rrvrXFCX1JhGQ1R2ip5dLug9huYFfX96sqiwomitTRcKa2/YMALtspja5GJ?=
+ =?us-ascii?Q?mKOmDyO9TlO95m9jBro03FnxTcz7s5Evgo7/t906BbQCydN/y7xw10z6eqAS?=
+ =?us-ascii?Q?9f6u0ykTMahB03OXkdUI5DltN0uIUJbgrPSSxXFj1YPSu+23KLIL8QfGxsio?=
+ =?us-ascii?Q?H0ubBjXESLsLw6QjdAbkA7qPZklJhcXAXQNlaRSj48AD+7TJlHzhn6IdbW8l?=
+ =?us-ascii?Q?AUM4dGukISggp04QfF1qHKpMuB91zEgxMR3DDhRROYdKtMiiAl+TIbKpNQPA?=
+ =?us-ascii?Q?NUV9eDCj4Dx+/t3yKsq0gE1U2gUl4aCk/Eg+MLjVDD0IROhYgLEHuJcZxCqD?=
+ =?us-ascii?Q?5b32R9VFiUos/WCqsMUzzt72I2G2WNBdX06RSSsCr/SOdl13ku3iOcaTruZr?=
+ =?us-ascii?Q?UxONJCuCgREMrr2eDS1o2/KdMPYy/4QwdtnJjSy1DbcTn/iQCy61Pg/QnCZe?=
+ =?us-ascii?Q?pxbX7ngzGy/y+oGOyuScmx92xrGmaXWC5FNS+xmTQ/KI4+yfeZtRE7zUIHRl?=
+ =?us-ascii?Q?a0sobMcB/wkYEs3U8rT4Zpok4ME9lB5pWpo2FKM796LOo/SxueQCRjHVUrLq?=
+ =?us-ascii?Q?HoLXpkMRD/X4El1hJhkE2sbQBnGbDMxjoXxDQdpF0zTqZnJYPltzk9A+ikbG?=
+ =?us-ascii?Q?n/Kq9ld/In1Q5AZGLegHcpzGJAxL2rKqjHf8E4mkDdQti+wZuNaK3VD1xbg+?=
+ =?us-ascii?Q?SdMK0+x62zsESUP1wI69YyBrQzTY9GfVloOY+RKJKOzgHasQzllPrWn+Aml8?=
+ =?us-ascii?Q?EiytWnEPFjXYzeqCA22W+KJhIcDWoI74iha+0KAX4mewmK93fc7u3KIi5pCT?=
+ =?us-ascii?Q?hFIGiomcTMXuT/EMWOujvsZ/t0ipB3Rt8bZsjYVLdoBWksqOoKzoUFyv/cCy?=
+ =?us-ascii?Q?D7yURh+xPf0nuS87582YHU+n1gLWwdMQf4UQxXtqsDqMv772Hjigfs/OW4TI?=
+ =?us-ascii?Q?HPcpQmPYrWMdAWgNWrvSWdiMmEM6xibRBtY2onk9SVhlRlucNAuuA0ChlDpd?=
+ =?us-ascii?Q?6CjWpJiijzScZddPmhXCHjWABM8MdhHnRjWc714jMl92sApet/3v0s6p7bKo?=
+ =?us-ascii?Q?6ZM3E7/mqUuVCZV8PiH0f51VzGuXL4ZheJNhsJQM4jmS7qyflmNkpPjQRP9i?=
+ =?us-ascii?Q?sAkzBdtycfixVAHTiIOWGT37Bfen1R3ruwWoy/4V6LHMsGfw4oaBt+/YYyFP?=
+ =?us-ascii?Q?JxHZ+geZ6NZhUD5aCsGQx/DKfXsNUtO5i2YUF/W8sym5xKBDheKHm6xiU7sL?=
+ =?us-ascii?Q?LHNsDCPm6i4BMC/ltZbLg2YStSQxlpeOtsfEUKqf+yw3gdDCY7ApEaB3d8LG?=
+ =?us-ascii?Q?GnZVytGww9rI+2MojKKJ9PFiI/q20c2Lp+11W/GidCcmS67Re5q6JmY6Gtm2?=
+ =?us-ascii?Q?NEtSFdaOrznuTNBypIeBdDu/s/gKSmRa8eaMtaMj2OWKlWIiUiBwBx3p8l3n?=
+ =?us-ascii?Q?fuFyeO65lZwuxqa8hbtR3ldEtC7UQ2M/zey0U9mLmXZBZYtBuxb/V4pcRiWI?=
+ =?us-ascii?Q?ahSpn3uBPMsXcSD+hUXnljm9S3MbInwVQsOfnQnzh3Y03U1/0umTCRWVeIj5?=
+ =?us-ascii?Q?SYlHBY8mUFpjk7wvWX37ff2fDvS5lkRMrKX0zjIvGux8gLqYpDmdmU2YNsA9?=
+ =?us-ascii?Q?hiG1/MXRvA=3D=3D?=
+X-Exchange-RoutingPolicyChecked: p4gIfqLEeUg5roQe1gDCe/s+u4MFAaZrtJ9fgAgIJIwQR2o1GoEi6CKXqA8EH1OE021SbtB98ba+iSCgK1K0++vc8WORiNNT/2P5fKk3LNEWjgyDgV4t3klwlMMKH8ywc81RF+TA99cl0AiAYEU5oXO3B7JnPCa8LsGHvsxL038s5PqH1yHyDhyl2I86I5NLW+LR+QTrJN9E3lehS9JCILR2yN6fS3cCgNDdt9CDdImMMuuHZV58TRxO+L3cWuMxfWyBXHRTJKBkVT5Dj+e1OGWde0esUdKqivhFt+ZFsPln3wWXgdH9uFbX7nf0+1htA/ouVC0qLWrxR2NJr8sqIQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2634f2-4eed-4bed-ef62-08dee7979824
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 02:19:01.3361
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XXAjHxT8yyHMI6uRk1GXa53tp7gl6Fm0DrIwQQEt54Ye/q1eJEe+ihRcLHGlkq1CUSSn1TSFYJcNXjwsdfUcjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9851
+X-OriginatorOrg: intel.com
 
-
-
-On 2026/7/21 下午8:18, Tao Cui wrote:
-> From: Tao Cui <cuitao@kylinos.cn>
+On Tue, Jul 21, 2026 at 11:57:06AM -0700, Sean Christopherson wrote:
+> On Wed, Jul 15, 2026, Yan Zhao wrote:
+> > > @@ -802,7 +801,7 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > >  		folio_mark_uptodate(folio);
+> > >  	}
+> > >  
+> > > -	r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
+> > > +	r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+> > What puzzles me is that kvm_gmem_get_pfn() can be invoked to fault in pages for
+> > gmem-only slots in normal VMs, where kvm_arch_has_private_mem() == false.
+> > 
+> > Would it be odd to invoke .gmem_convert() with to_private being true in such
+> > VMs? Or do you plan to add something similar to the following in the future?
+> >         if (kvm_gmem_is_private_mem(inode, index))
+> > 	     r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+> > 	else
+> > 	     r = kvm_gmem_make_shared(kvm, slot, gfn, folio);
+> > 
+> > Otherwise, would it look asymmetric with just:
+> >         if (kvm_gmem_is_private_mem(inode, index))
+> > 	     r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+> > in kvm_gmem_get_pfn()?
 > 
-> KVM_GET/SET_SREGS has so far returned -ENOIOCTLCMD with an empty
-> struct kvm_sregs, so migrating a vCPU's CSR state takes one
-> KVM_GET/SET_ONE_REG ioctl per register -- thousands of syscalls for a
-> large VM.
+> Heh, I should have read this sooner.  With help from Xiaoyao and Ackerley, I
+> eventually got to the same place.
 > 
-> Define struct kvm_sregs as a flat array of 0x184 entries (the core CSR
-> range 0x0-0x183, up to DMWIN3) and implement the two ioctls:
+> https://lore.kernel.org/all/al-aDRTbDOPT1UbM@google.com
+Thanks for the link.
+Let me just reply here for easier follow-up of the concern regarding TDX huge
+pages, which I think is not addressed by the code below.
+
+> > Asking this also because there is a .gmem_convert() for TDX huge pages [1].
+> > In [1], .gmem_convert() is invoked to emulate a to-shared conversion in
+> > kvm_gmem_punch_hole(). However, the per-gmem memory attribute for the range to
+> > convert may not be shared after the punch hole. Is it acceptable?
+> > (To me, the .gmem_convert() in [1] behaves more like .gmem_prezap()).
 > 
-> - get_sregs does a single vcpu_load/put, which also pulls pending
->    interrupts into ESTAT, avoiding the per-register load/put side-effect
->    that made ONE_REG snapshots of ESTAT order-sensitive.
-> - set_sregs writes all CSRs via _kvm_setcsr in one pass, propagates
->    _kvm_setcsr errors, and clears KVM_LARCH_HWCSR_USABLE up front so a
->    mid-loop failure still forces the next vcpu_load() to reload from SW,
->    matching KVM_SET_ONE_REG.
+> Ya, these concerns got raised by others.  pKVM on arm64 in particular wants to
+> hook reclaim but not conversion.  The plan is to keep the reclaim and end up with
+> this implementation for x86:
 > 
-> CSRs above 0x183 (debug, breakpoint, PMU) stay on KVM_GET/SET_ONE_REG.
-> struct kvm_sregs was empty, so enlarging it -- and the _IOWR-derived
-> ioctl number -- breaks no userspace; userspace built against the updated
-> UAPI header can adopt the bulk ioctl.
+> 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> 	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> 				kvm_pfn_t nr_pages, int max_order)
+> 	{
+> 		return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages, max_order);
+> 	}
+> 	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+> 				bool to_private)
+> 	{
+> 		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> 		return 0;
+> 	}
+For TDX huge pages, if we want to trigger private huge page splitting before
+converting to shared, should we invoke the hooks like this?
+
+__kvm_gmem_set_attributes(to shared)
+	|->kvm_arch_gmem_make_shared
+		|->kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+
+But TDX needs kvm pointer, and splitting pages may fail.
+
+> 	#endif
 > 
-> On a Loongson 3A6000, snapshotting one vCPU's core CSR range drops from
-> 388 KVM_GET_ONE_REG calls (~2 ms) to a single KVM_GET_SREGS ioctl
-> (~5 us).
-Great, I think getting register with bulk method is good.
-> 
-> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> ---
->   arch/loongarch/include/uapi/asm/kvm.h |  3 ++
->   arch/loongarch/kvm/vcpu.c             | 43 +++++++++++++++++++++++++--
->   2 files changed, 44 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
-> index cd0b5c11ca9c..dc091f29963d 100644
-> --- a/arch/loongarch/include/uapi/asm/kvm.h
-> +++ b/arch/loongarch/include/uapi/asm/kvm.h
-> @@ -124,7 +124,10 @@ struct kvm_sync_regs {
->   };
->   
->   /* dummy definition */
-> +#define KVM_LOONGARCH_NR_SREGS	0x184
-> +
->   struct kvm_sregs {
-> +	__u64 csr[KVM_LOONGARCH_NR_SREGS];
+> 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+> 	void kvm_arch_gmem_reclaim(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order)
+> 	{
+> 		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> 	}
+> 	#endif
+Is this kvm_arch_gmem_reclaim() invoked by kvm_gmem_free_folio(), and should TDX
+not define CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM?
 
-I think that get/set registers one by one is not so better. There are 
-two possible potential problems with this method:
-   1. With hard-code size 0x184, there may be compatible issue, in 
-future there may be CSR register with index larger than 0x184
-   2. There may be order dependency with CSR get or set, such 
-timer,interrupt, or feature ctrl registers. Only that there is SW CSR 
-shadow CSR register in KVM, so dependency relation disappears with this 
-method.
+As in [1], for TDX huge pages, you suggested pretending a to-shared conversion
+in kvm_gmem_punch_hole(). In that case, should we provide a new CONFIG_xxx to
+prevent it from being invoked by SNP?
 
-In generic, I think KVM_GET_MSRS/KVM_SET_MSRS is a better method, VMM 
-needs know the index and dependency at first, this API can be changed as 
-generic and not relative with detailed architecture.
+@@ -253,13 +294,18 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
 
-When we submit KVM to community in the beginning, this method was used, 
-however the community suggests that new API 
-KVM_GET_ONE_REG/KVM_SET_ONE_REG is added, it should be used. Maybe mixed 
-of KVM_GET_BULK_REGS/KVM_GET_ONE_REG can be used :)
+ 	kvm_gmem_invalidate_begin(inode, start, end);
 
-There is piece of UAPI with KVM_GET_MSRS/KVM_SET_MSRS.
-struct kvm_msr_entry {
-         __u32 index;
-         __u32 reserved;
-         __u64 data;
-};
+-	truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
++	/*
++	 * For demonstration purposes, pretend this is a private=>shared conversion.
++	 */
++	r = kvm_gmem_convert(inode, start, end, false);
++	if (!r)
++		truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
 
-/* for KVM_GET_MSRS and KVM_SET_MSRS */
-struct kvm_msrs {
-         __u32 nmsrs; /* number of msrs in entries */
-         __u32 pad;
+ 	kvm_gmem_invalidate_end(inode, start, end);
 
-         __DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
-};
+ 	filemap_invalidate_unlock(inode->i_mapping);
 
-Regards
-Bibo Mao
->   };
->   
->   struct kvm_iocsr_entry {
-> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-> index 20c207d80e31..0890b68efa2a 100644
-> --- a/arch/loongarch/kvm/vcpu.c
-> +++ b/arch/loongarch/kvm/vcpu.c
-> @@ -1001,12 +1001,51 @@ static int kvm_set_reg(struct kvm_vcpu *vcpu, const struct kvm_one_reg *reg)
->   
->   int kvm_arch_vcpu_ioctl_get_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
->   {
-> -	return -ENOIOCTLCMD;
-> +	int i;
-> +	unsigned long estat, gintc;
-> +	struct loongarch_csrs *csr = vcpu->arch.csr;
-> +
-> +	/*
-> +	 * Pull pending interrupts into ESTAT with a single vcpu_load/put so
-> +	 * the ESTAT value read below matches the current interrupt state.
-> +	 * This also avoids the per-register load/put side-effect that makes
-> +	 * the ONE_REG path's ESTAT snapshot order-sensitive.  The SW CSR
-> +	 * reads run under vcpu->mutex, which serialises this ioctl.
-> +	 */
-> +	preempt_disable();
-> +	vcpu_load(vcpu);
-> +	kvm_deliver_intr(vcpu);
-> +	vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
-> +	vcpu_put(vcpu);
-> +	preempt_enable();
-> +
-> +	for (i = 0; i < KVM_LOONGARCH_NR_SREGS; i++) {
-> +		if (i == LOONGARCH_CSR_ESTAT) {
-> +			gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & KVM_GINTC_IRQ_MASK;
-> +			estat = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) & ~KVM_ESTAT_EXTI_MASK;
-> +			sregs->csr[i] = estat | (gintc << VIP_DELTA);
-> +		} else {
-> +			sregs->csr[i] = kvm_read_sw_gcsr(csr, i); > +		}
-> +	}
-> +
-> +	return 0;
->   }
->   
->   int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs)
->   {
-> -	return -ENOIOCTLCMD;
-> +	int i, ret;
-> +
-> +	/* Clear first so a failing _kvm_setcsr still forces a HW reload. */
-> +	vcpu->arch.aux_inuse &= ~KVM_LARCH_HWCSR_USABLE;
-> +
-> +	for (i = 0; i < KVM_LOONGARCH_NR_SREGS; i++) {
-> +		ret = _kvm_setcsr(vcpu, i, sregs->csr[i]);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
->   }
->   
->   int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
-> 
+-	return 0;
++	return r;
+ }
+[1] https://lore.kernel.org/all/20260129011517.3545883-44-seanjc@google.com/
+
+
+Or would the following approach acceptable to you ? It renames .gmem_convert()
+to .gmem_prezap() and invokes it before each kvm_gmem_zap(), so TDX can hook it
+to perform page splitting before the actual zaps on private pages.
+Per my understanding, this op servers a different purpose from
+.gmem_make_private()/.gmem_make_shared() in this patch.
+
+commit 96bf42273e12297fb2192d16add160b169d76157
+Author: Sean Christopherson <seanjc@google.com>
+Date:   Fri Jun 26 15:41:24 2026 +0800
+
+    KVM: guest_memfd: Add pre-zap arch hook
+
+    Add a gmem "pre-zap" hook to allow arch code to take action before a zap,
+    e.g., for shared<=>private conversion, and just as importantly, to let arch
+    code reject/fail a zap, e.g. if the conversion requires new page tables and
+    KVM hits in OOM situation.
+
+    The arch code will be used by TDX to split hugepages as necessary to avoid
+    overzapping PTEs, which for all intents and purposes corrupts guest data
+    for TDX VMs (memory is wiped when private PTEs are removed).
+
+    Signed-off-by: Sean Christopherson <seanjc@google.com>
+    [Yan: Renamed to prezap(), used attr_filter to specify root private info ]
+    Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+    ---
+    rebased to gmem in-place conversion v8
+
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index 588563dfe88d..f3228419437f 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -149,6 +149,7 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
+ KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
+ KVM_X86_OP_OPTIONAL_RET0(gmem_max_mapping_level)
+ KVM_X86_OP_OPTIONAL(gmem_invalidate)
++KVM_X86_OP_OPTIONAL_RET0(gmem_prezap)
+ #endif
+
+ #undef KVM_X86_OP
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 382a1db48a3d..f762e51dcd31 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2010,6 +2010,8 @@ struct kvm_x86_ops {
+        gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+        void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+        int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
++       int (*gmem_prezap)(struct kvm *kvm, gfn_t start, gfn_t end,
++                          enum kvm_gfn_range_filter attr_filter);
+        void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+        int (*gmem_max_mapping_level)(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+ };
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index a3c189d76515..331951e50eac 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -147,6 +147,7 @@ config KVM_INTEL_TDX
+        default y
+        depends on INTEL_TDX_HOST
+        select HAVE_KVM_ARCH_GMEM_POPULATE
++       select HAVE_KVM_ARCH_GMEM_PREZAP
+        help
+          Provides support for launching Intel Trust Domain Extensions (TDX)
+          confidential VMs on Intel processors.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 414b1a2b4317..d5bb7fe43328 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14176,6 +14176,13 @@ void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+        kvm_x86_call(gmem_invalidate)(start, end);
+ }
+ #endif
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREZAP
++int kvm_arch_gmem_prezap(struct kvm *kvm, gfn_t start, gfn_t end,
++                        enum kvm_gfn_range_filter attr_filter)
++{
++       return kvm_x86_call(gmem_prezap)(kvm, start, end, attr_filter);
++}
++#endif
+ #endif
+
+ int kvm_spec_ctrl_test_value(u64 value)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 9c1cf1a6559e..95350f6cec0b 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2624,6 +2624,11 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+                       kvm_gmem_populate_cb post_populate, void *opaque);
+ #endif
+
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREZAP
++int kvm_arch_gmem_prezap(struct kvm *kvm, gfn_t start, gfn_t end,
++                        enum kvm_gfn_range_filter attr_filter);
++#endif
++
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+ void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
+ #endif
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..4e4d40e13177 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -49,7 +49,7 @@ struct kvm_vcpu_init;
+ struct kvm_memslots;
+
+ enum kvm_mr_change;
+-
++enum kvm_gfn_range_filter;
+ /*
+  * Address types:
+  *
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index cfa2c78ba5fb..ea43bac4e51e 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -116,3 +116,7 @@ config HAVE_KVM_ARCH_GMEM_INVALIDATE
+ config HAVE_KVM_ARCH_GMEM_POPULATE
+        bool
+        depends on KVM_GUEST_MEMFD
++
++config HAVE_KVM_ARCH_GMEM_PREZAP
++       bool
++       depends on KVM_GUEST_MEMFD
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index ef331500569b..d0a61a130bb1 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -247,6 +247,46 @@ static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(
+        return filter;
+ }
+
++#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREZAP
++static int __kvm_gmem_prezap(struct gmem_file *f, pgoff_t start, pgoff_t end,
++                            enum kvm_gfn_range_filter attr_filter)
++{
++       struct kvm_memory_slot *slot;
++       unsigned long index;
++       int r;
++
++       xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
++               r = kvm_arch_gmem_prezap(f->kvm,
++                                        kvm_gmem_get_start_gfn(slot, start),
++                                        kvm_gmem_get_end_gfn(slot, end),
++                                        attr_filter);
++               if (r)
++                       return r;
++       }
++       return 0;
++}
++
++static int kvm_gmem_prezap(struct inode *inode, pgoff_t start, pgoff_t end)
++{
++       enum kvm_gfn_range_filter attr_filter;
++       struct gmem_file *f;
++       int r;
++
++       attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
++       kvm_gmem_for_each_file(f, inode) {
++               r = __kvm_gmem_prezap(f, start, end, attr_filter);
++               if (r)
++                       return r;
++       }
++       return 0;
++}
++#else
++static int kvm_gmem_prezap(struct inode *inode, pgoff_t start, pgoff_t end)
++{
++       return 0;
++}
++#endif
++
+ static void __kvm_gmem_zap(struct gmem_file *f, pgoff_t start, pgoff_t end,
+                           enum kvm_gfn_range_filter attr_filter)
+ {
+@@ -351,6 +391,7 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+        pgoff_t start = offset >> PAGE_SHIFT;
+        pgoff_t end = (offset + len) >> PAGE_SHIFT;
+        struct gmem_inode *gi = GMEM_I(inode);
++       int r;
+
+        /*
+         * gi->page_order is 0 by default and is set to PMD order only when the
+@@ -368,14 +409,19 @@ static long kvm_gmem_punch_hole(struct inode *inode, loff_t offset, loff_t len)
+
+        kvm_gmem_invalidate_start(inode, start, end);
+
++       r = kvm_gmem_prezap(inode, start, end);
++       if (!r)
++               goto out;
++
+        kvm_gmem_zap(inode, start, end);
+        truncate_inode_pages_range(inode->i_mapping, offset, offset + len - 1);
+
++out:
+        kvm_gmem_invalidate_end(inode, start, end);
+
+        filemap_invalidate_unlock(inode->i_mapping);
+
+-       return 0;
++       return r;
+ }
+
+ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+@@ -802,6 +848,13 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+
+        kvm_gmem_invalidate_start(inode, start, end);
+
++       r = kvm_gmem_prezap(inode, start, end);
++       if (r) {
++               mas_destroy(&mas);
++               kvm_gmem_invalidate_end(inode, start, end);
++               goto out;
++       }
++
+        kvm_gmem_zap(inode, start, end);
+        if (!to_private)
+                kvm_gmem_invalidate(inode, start, end);
+
+
+
 
