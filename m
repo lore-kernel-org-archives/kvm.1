@@ -1,100 +1,174 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCD047125B;
-	Wed, 22 Jul 2026 07:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB833470130
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706185; cv=none; b=VYUcFf9FdCHixEazAC2kyxvrM/kmwsbtY2yRgXQlnXePD7O0ECT+gU2IJ0gNDy1FYmcNiDS8AeDMrlnGEvgRyNBAj3w9Hk0bFnEKEG+NeR6eDEcPEMNj3lBh/v/Nr49FVw/MInGGfnMRs3tklBx6496vZ3lUICCpR9zLyi7phXc=
+	t=1784706246; cv=none; b=FmhMxXo5VuwBDi0XVVisYTX2ar/XXFCrO9AZSukIMPWGH5wC0qXk8Wp5rn8h1GA77EEVsLTNcVRG/TaM/t3p4p+Qq/X/I+kO7fPC8RoMfgdrtnQa7AVZbyLgLNPdNlxL3+aQWLBVukrmqM3E1zwMCXtOJ30mQ3/BKz1rpc6KGZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706185; c=relaxed/simple;
-	bh=Bmarv9ETkOy+ocdGoVkqlZ5fWXWVdV9HYNdiftnMr4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDCWsOc+W7yJkenwP9Ld8u2NMnu8H+A7hMgQk1tfBcpGi5LbYGDwYaQ9wIobumWwibsBcU9Kl45nJOaEOoojlZrVUcdOGpJuXjEnu89LxyFYxUu7wsqQfiXY7jWHrHRNMCArUhn4spi/9/po/fF9k5GZFWWtNks1VhvxHL8zOqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVO1H1z2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784706246; c=relaxed/simple;
+	bh=z7hRmFx6Q/cKialkK+h+Uh2CuKM7Kat59hPecQV0BsQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=bkII8Jzdi2ExX14QND+SAkPGqlhIrUkbsdXEGMeD0ym4WbyCIYbiavUJk+Xhr5CkxOd7uwXKWdVmcj28NNuE6j5h1sVgm2jrkYEpuqIU1z+mP3oLvgSLELLBHK8g/fabZNkJnwW2P5GFGTywfZqoTKerclAV4EHcQza0bwlwfgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Te1CbY9y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVO1H1z2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977591F00A3E;
-	Wed, 22 Jul 2026 07:43:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Te1CbY9y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5401F000E9;
+	Wed, 22 Jul 2026 07:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784706181;
-	bh=8jaHFCEviRnbCdixdpD0GtuLBAdju+GKxQE6UGfkIoQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bVO1H1z2lqLOb6HDjKUF7YUegGd21j85fCsJanfqN9nKAjbsmHTV+Y22NaBt6hZCf
-	 Rd5vrGgcZ1CNEqyFazDA48gtutAc0PqGQp543lFmYwLZ6wtyYF621eLEkQMLezBcIa
-	 Fb5qFn8ipRaDdysiVkJWAi7oBT6JS7wrC4H+b7w7HnOfutNabx86mVt87WtgvwXcJv
-	 hlxFkQ3m3K1PLCYjbheJDyotBLG6yuxBNGBp+Qi84YVRER4BjCd5PIHFz+2MIQWNZk
-	 PnDqql8gShYWuESay83ihBEr2sAooIbYm5VBmj79/P8VMAmuuCjmhLGThBf9u+ps6S
-	 J3090VHX+RzzA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wmRbX-00000007VfN-3jDV;
-	Wed, 22 Jul 2026 07:42:59 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Cc: Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Yao Yuan <yaoyuan@linux.alibaba.com>,
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v3 25/28] KVM: arm64: Engage NV3 TLBI trap elision
-Date: Wed, 22 Jul 2026 08:42:31 +0100
-Message-ID: <20260722074234.3330999-26-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260722074234.3330999-1-maz@kernel.org>
-References: <20260722074234.3330999-1-maz@kernel.org>
+	s=k20260515; t=1784706245;
+	bh=/NXYMk8gABnHL1dU/KQJEFSyreY3+dVw7DhD5lUr0Zg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Te1CbY9yFXweeBneGhFffPpOlAnKzXqhTFJXKiK3CtUNuY76B+946vyOMU9iSnyS/
+	 AUth89Cswplic2QCP/RezPsjVySoxS89PWvIID2MVknLgefn8ipq9Bfk6l+am4OP/6
+	 FRSY/paL/EvTuaEg5pgctJcccfuAiWpCIgQYWN37oKWo+Je8fn4gj9LNpNrcdGdwX0
+	 Zj+xMxdN4hTpFQRLXsSWKwlWv4sUZ6CJUdsDiWHav7py8WGWtJeCx9PfXeI8jBrXlz
+	 IdGGxw+Gm6Bxt1CViEJXoWe8HzaQNCsusaTSRzpYKShJ39oRVt1H0QJMUy78blYYtb
+	 ztLRE8yJMv5JA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8] KVM: selftests: riscv: Add lazy V extension
+ enablement for guests
+Reply-To: sashiko-reviews@lists.linux.dev
+To: JinRui <jinrui@haiwei.tech>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <33AEC00DC78613A1+20260722073344.771230-1-jinrui@haiwei.tech>
+References: <20260722062804.738428-1-jinrui@haiwei.tech>
+ <33AEC00DC78613A1+20260722073344.771230-1-jinrui@haiwei.tech>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Jul 2026 07:44:05 +0000
+Message-Id: <20260722074405.8D5401F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, yaoyuan@linux.alibaba.com, weilin.chang@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Similarly to the ERET elision mechanism, FEAT_NV3 can elide TLBIs
-that only affects the guest's S1 translation. Enable this, with the
-express condition that the guest isn't NV2 aware, as we otherwise
-need to trap these TLBIs to deal with VNCR mappings.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] The `v_epc` array for tracking vector extension enablement is si=
+zed using `KVM_CAP_MAX_VCPUS` but indexed by `vcpu_id`. Since KVM allows `v=
+cpu_id` up to `KVM_CAP_MAX_VCPU_ID` (which can be significantly larger than=
+ `KVM_CAP_MAX_VCPUS` for sparse topologies), tests using large vCPU IDs wil=
+l silently bypass the lazy V extension enablement and fail with an unhandle=
+d exception.
+--
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/include/asm/kvm_emulate.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+--- Patch [1]: [PATCH v8] KVM: selftests: riscv: Add lazy V extension enabl=
+ement for guests ---
+commit fc8045a6835b1383f4809674a40465f3a99bc4f0
+Author: jinrui <jinrui@haiwei.tech>
 
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index b32870a5e1236..d17b161d4ba3a 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -715,6 +715,19 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
- 		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
- 		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
- 			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
-+
-+			/*
-+			 * If the guest is NV2-capable, then we need to see
-+			 * all the TLBIs, as configured in HCR_EL2.
-+			 * Otherwise, relax the TLBI traps to only TGE=0.
-+			 */
-+			if (!kvm_has_nv2(vcpu->kvm)) {
-+				vcpu->arch.hcrx_el2 |= (HCRX_EL2_NVnTTLB   |
-+							HCRX_EL2_NVnTTLBIS);
-+
-+				if (kvm_has_feat(kvm, ID_AA64ISAR0_EL1, TLB, OS))
-+					vcpu->arch.hcrx_el2 |= HCRX_EL2_NVnTTLBOS;;
-+			}
- 		}
- 	}
- }
--- 
-2.47.3
+KVM: selftests: riscv: Add lazy V extension enablement for guests
 
+This commit introduces lazy V extension enablement for RISC-V KVM selftests.
+It replaces the default guest exception handler with the full vector table
+and adds a check in route_exception() to lazily enable the V extension if
+an EXC_INST_ILLEGAL is triggered by auto-vectorized instructions.
+
+> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
+sting/selftests/kvm/lib/riscv/processor.c
+> index ded5429f34483..624f20f0f4766 100644
+> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+
+[ ... ]
+
+> @@ -432,6 +454,46 @@ void route_exception(struct pt_regs *regs)
+>  		ec =3D 0;
+>  	}
+> =20
+> +	/*
+> +	 * Handle V (vector) extension lazy enablement before any
+> +	 * registered handler. The compiler's default march may include
+> +	 * V, and auto-vectorization generates vector instructions that
+> +	 * trigger EXC_INST_ILLEGAL when VS (Vector Status) in sstatus
+> +	 * is Off. Enable VS to Initial and re-execute the faulting
+> +	 * instruction, mimicking what a real OS kernel does.
+> +	 *
+> +	 * This check runs before any test-registered handler, so tests
+> +	 * that install their own EXC_INST_ILLEGAL handler (e.g.
+> +	 * sbi_pmu_test) are not affected.
+> +	 */
+> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL) {
+> +		/*
+> +		 * If KVM supports the V extension for this Guest and VS
+> +		 * (Vector Status) is Off in the saved sstatus, set it to
+> +		 * Initial and re-execute the faulting instruction.
+> +		 *
+> +		 * Use regs->status (saved at exception entry) rather than
+> +		 * reading the live CSR to avoid a TOCTOU race.
+> +		 *
+> +		 * Track the epc per-vCPU to avoid an infinite loop when
+> +		 * V is disabled or the hardware rejects the VS change.
+> +		 * Using a per-vCPU array avoids races between concurrent
+> +		 * vCPUs that would occur with a single shared (epc, vcpu)
+> +		 * pair.
+> +		 */
+> +		if (handlers && handlers->v_available && !(regs->status & SR_VS)) {
+> +			unsigned int vcpu_id;
+> +
+> +			asm volatile("csrr %0, sscratch" : "=3Dr" (vcpu_id));
+> +			if (vcpu_id < handlers->v_epc_capacity &&
+> +			    handlers->v_epc[vcpu_id] !=3D regs->epc) {
+> +				handlers->v_epc[vcpu_id] =3D regs->epc;
+> +				regs->status |=3D SR_VS_INITIAL;
+> +				return;
+> +			}
+> +		}
+> +	}
+> +
+
+[ ... ]
+
+> @@ -448,9 +510,26 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
+> =20
+>  void vm_init_vector_tables(struct kvm_vm *vm)
+>  {
+> -	vm->handlers =3D __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
+> +	unsigned int max_vcpus;
+> +	size_t size;
+> +
+> +	if (vm->handlers)
+> +		return;
+> +
+> +	max_vcpus =3D kvm_check_cap(KVM_CAP_MAX_VCPUS);
+> +	if (max_vcpus =3D=3D 0)
+> +		max_vcpus =3D 512;
+> +
+> +	size =3D sizeof(struct handlers) + max_vcpus * sizeof(unsigned long);
+
+[Severity: Medium]
+Should this allocation use KVM_CAP_MAX_VCPU_ID instead of KVM_CAP_MAX_VCPUS?
+
+The v_epc array is sized here using max_vcpus, but it is indexed by vcpu_id
+when accessed in route_exception():
+
+			asm volatile("csrr %0, sscratch" : "=3Dr" (vcpu_id));
+			if (vcpu_id < handlers->v_epc_capacity &&
+			    handlers->v_epc[vcpu_id] !=3D regs->epc) {
+				handlers->v_epc[vcpu_id] =3D regs->epc;
+
+Since KVM allows vcpu_id to go up to KVM_CAP_MAX_VCPU_ID, which can be
+significantly larger than KVM_CAP_MAX_VCPUS for sparse topologies, tests
+using large vCPU IDs might exceed this capacity. This would cause the bounds
+check in route_exception() to fail, silently bypassing the lazy V extension
+enablement and resulting in an unhandled exception for those tests.
+
+> +	vm->handlers =3D __vm_alloc(vm, size, vm->page_size,
+>  				  MEM_REGION_DATA);
+> =20
+> +	{
+> +		struct handlers *h =3D addr_gva2hva(vm, vm->handlers);
+> +
+> +		h->v_epc_capacity =3D max_vcpus;
+> +	}
+> +
+>  	*(gva_t *)addr_gva2hva(vm, (gva_t)(&exception_handlers)) =3D vm->handle=
+rs;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/33AEC00DC78613A1+20=
+260722073344.771230-1-jinrui@haiwei.tech?part=3D1
