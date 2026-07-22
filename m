@@ -1,87 +1,124 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86133546D0
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6771C353A87
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 14:04:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784728298; cv=none; b=qD6b+kIfAF2msibtovRqh41ocOXVjEPusQpQwsa5qx+5sVkCXIbf5/NUMs/moi1XKxtT8GykJMHKYkG83dwl29mNQ2EO7RdbS4L6Q32Q0ma2eIDbzqHkbzgVTs54RUQJyjQnsxAthXHvCV0cI9jOmb22XCNSIKrTeXxfmGbmed8=
+	t=1784729100; cv=none; b=mTH9osVcox9MGZohzwoUPOIY/VzNFNp6o2273h2awsfvuzChYFq6bdRBrx2KldvpU4KE5/S1RfcM3SesvT7RlfO4jcWCXUD1ajp5t+5uCwMre7r1DmcNlGmBKct7lsMXWtjugxI9yIaG9eGHL9+r6VyhQiF6W9COws0ezj7beJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784728298; c=relaxed/simple;
-	bh=KmSl14NpFhGZYOOrvu51YFsVjduSR/GNutNROJn9pR0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fCei1cgEjgYmC5YrjLefxkGuN9YcrLD+xNnrRBMhWaO7KNM3J6u024ygujPtW+VuuVkSStp+anAWG2uVGy8oNlrsHdkJeuYR9mhasUAIFwNayuNFnv2B4hESu4G7x4Oye8vbb8idJbsXyewk3aM/Joc6MOvlNFw6EgokLcFze5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jc8C5MiX; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784729100; c=relaxed/simple;
+	bh=BiKsszl+35xq/ewMPZzGz30tgw5kvnsmDpEO+3lG0vE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCori883h7Wo0tgNYqUHXArHw2vHrVMp0V58FYyNIdbVK/EYACEIFpofdg3JMFr6f9UYb56jScOAMK3rL0Kl+wzyaXLYsO5fY4qZ3mwA8T/ll+rFyGm0KAQ6ZFEdbUjDw/MKY7HUFyswpzgEShEzKtYjfJdOjHuB5+8D8m1jzHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=mrvhPX8T; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jc8C5MiX"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84865f326efso13187051b3a.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 06:51:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="mrvhPX8T"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8edda5d56a5so137406416d6.3
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:04:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784728296; x=1785333096; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ustquxVgfDp5qCDg5lIpkZtKikJ9TiRt9YA3YVBdNj0=;
-        b=jc8C5MiXtGnPEAwj/FOATCcKe5wjjFp2mFTHNHbWlHgM5YeGzusZUQehOMf2x4w8lp
-         qNdaaNfERSwdUdJqp/XgFzbyd+xvrv2FK5pGn8GbNfrXHuiEJEr18VxA0Eli0lfI7BhJ
-         sVvHAZaLht3a+PlI6FaOz614PXT47vNJ9Xounswc2JMdYbuChNyDgE+sD6FIoBNDZq+4
-         +xDYSS9b6hyGyIkNLeVWF+HW9LZ+gRsj6n5btZkxkCTrMwjfo0h01PTozA5B8iQauTnq
-         5gydnkm1irsCS6Li4NI6EPcIQSfy+1NCsBlAQBeC0tNWOiw8Tyi5+tVbQ2OS7LI4AE+O
-         j6kw==
+        d=gourry.net; s=google; t=1784729097; x=1785333897; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wzTopji7Zl+MAyFivVnXiZLO5KABEpd5UV02S/KHUTw=;
+        b=mrvhPX8TYaW6OdLHwE1oVXsMQJLltg7gssKp5utqf/LuYMMymUzUMHKiHysM64pTuL
+         L8ZJEzSGtBUdGHqeoUS/ZfnQohfr5G/UrhC/wRUH3KEFfdFHNSA50wlsbw2D2YHpykae
+         ihCSsUC5m6IS7Fmjzsof4Ps0QyK2W/EjkS+7y09grIz4VVqpiGjn7sXKLdzKT/vQfG/B
+         FoUnOSa9uvT9rWH0HIZMJpxdrLvtqqPMzscmxRRoeGPXyeBHamY6dRkeIHPPOFi2zbom
+         3sQoKh5VsE/T35TkORWJZ7BdBRwCVaEy85AwnwuwDRQCD5ybGnugX0rapf/PmeW7sZkw
+         vl+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784728296; x=1785333096;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ustquxVgfDp5qCDg5lIpkZtKikJ9TiRt9YA3YVBdNj0=;
-        b=R9Dm4mb7BKZIiPSyAp7z+A8C4JKpHueIF6OQ7s6Oizpo4KnDCRsEYiJKRe8ZgH+9HF
-         mhtj91AaenRDhsQogC78uZkmFJNAln54qKDj+U+u5/PrzlHSEODNeG8hESNBHvVopoHS
-         eAM9ua3jJ6LsZmKU35s3rbaVoCJ8Suh0fVHAhiVmAYVI/B7RFdxm/Dnp8UEIuEsSpnQO
-         bLaK5shvZ/tDcIqXExBXgroL9ZVi83Fm8NVND3E/r+042evcenLSTgvrO1NvKn+NKK7d
-         s1ahm8jy8TvkA5J94IABbpn8WDdOIeYIcaXWZz2vB7hxjQk5XXgk1uwXzKzRpQljoJFx
-         616g==
-X-Gm-Message-State: AOJu0YyVEfLcylgqhLqWQ9vRgjRrSG1d2PJwT3ICRX9Gm0BeDfxPg9hq
-	fnQ3bNQm1xA1JD+NtCElh8QQA9ERgcsutjp8BwL+xa8Hacy2Bq0CvFIk8upu355MZDe1sI2Tefj
-	b1Sjt/w==
-X-Received: from pfux40.prod.google.com ([2002:a05:6a00:be8:b0:84c:2e32:7f79])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8c13:b0:845:d286:1fb4
- with SMTP id d2e1a72fcca58-84c29505d88mr23892907b3a.50.1784728295928; Wed, 22
- Jul 2026 06:51:35 -0700 (PDT)
-Date: Wed, 22 Jul 2026 06:51:35 -0700
-In-Reply-To: <20260722084702.1028983-2-amirmohammad.eftekhar@cispa.de>
+        d=1e100.net; s=20251104; t=1784729097; x=1785333897;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wzTopji7Zl+MAyFivVnXiZLO5KABEpd5UV02S/KHUTw=;
+        b=fNoyyzZHFkibIhSSJUtzZjKEuiYxpjPRJoksSBQCxF8cyLgjClpIye0o+3qadFjoTw
+         7CI3NxmJeLbC1QtpUeFO59CLWqovJJ5Q9Q+GEzHS9/L27d1nH5CHaWNMtZ6r9WOkvNMr
+         5sEpKolZKcCFgt8vgOEuGjjzVHWtP/tpDVJbpSBET7Y7lYtk4rL5n5vgtkfSGg1yqxtQ
+         UcdUpkcGUX2erPioRELqQnM2TRBLgEddFHbhGSLaioLuRNupX/ACpQqEx600wdU6+5F5
+         VjUzJQ0JlqrgkyFJtMl0hPmZ4S5JFThIAzimU+0tIUrCEns2abTu3EHj/7hizwamYZ+w
+         cI7w==
+X-Forwarded-Encrypted: i=1; AHgh+Rqm996wV+hCRlgJMi2bc3F/3p5ouap5jGsMjyBdYMCGXaYibOKm0Tn6TFGUYqF1igmIbk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfyz8z0522fTclUbRTi79VZyJvZtveuFsHmE5umrCmUnh3ngAX
+	W/ft8pm/pyG/cJKSqr8WXzXv7VzQtxup7MLdUff01tPcRPgZ/m8i7r++98gJ9UloWwg=
+X-Gm-Gg: AR+sD10SlOum3TaeJgpjPyclHk51yZARzZSJ+XCWp8eJcgCYZtiDm4U5fET395CZ04b
+	LmO4C6nVBqKfLvttq3ltvSuHoLNeZCNUo7oSjXGvkF2zqcEnhbi93jqYxBEzkuygZ8jWW0BVnXY
+	NTILqttt0Gllfotv3ZOJXUZNjZG6O1/tHaY8/ZUrzwUqBbVNI97NP7TcZk4E/qUwAUKg6mzYRNN
+	OgUHJrgB5Sq3Q9Jc98DBnOEA9LcEKMyVBrQtdBRvtvXH9CYlJo9HjNZoWFVkYhrD8nK7PK+JpRL
+	91nPDLck90sHnvMxbTlpLMMFr0yIFhrzdEXQySl5aYMjz5gwrec1r28NJICAteT+pHc1/iV3IOE
+	JlqAqaHkmnKNgodp59erPVASs2pgyEh3Z8dLOKgCaxcEO0+nQx7FXdAZGXGPWJbJ9JgOCKYxUyb
+	yucRlWHw0PW4a+Z2Z0ftqS8OJn2diYJtijRR3Qg5A0Vges5e/06uLCZrAiqg==
+X-Received: by 2002:a05:620a:1992:b0:930:f7ee:2cf5 with SMTP id af79cd13be357-930f7ee3792mr215753585a.66.1784729095553;
+        Wed, 22 Jul 2026 07:04:55 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f68d5d6dsm171863585a.20.2026.07.22.07.04.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 07:04:55 -0700 (PDT)
+Date: Wed, 22 Jul 2026 10:04:49 -0400
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: Zhigang.Luo@amd.com, arun.george@samsung.com, balbirs@nvidia.com, 
+	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
+	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 28/36] mm: add NODE_PRIVATE_CAP_HOTUNPLUG for opted-in
+ private nodes
+Message-ID: <amDNMmbdE_ZhUgl1@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <20260720193431.3841992-29-gourry@gourry.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de> <20260722084702.1028983-2-amirmohammad.eftekhar@cispa.de>
-Message-ID: <amDK50Z9WhMQZwYD@google.com>
-Subject: Re: [PATCH] KVM: SVM: use wrmsrq_safe() when writing the nested TSC
- ratio MSR
-From: Sean Christopherson <seanjc@google.com>
-To: amirmohammad.eftekhar@cispa.de
-Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, rossow@cispa.de
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260720193431.3841992-29-gourry@gourry.net>
 
-On Wed, Jul 22, 2026, amirmohammad.eftekhar@cispa.de wrote:
-> From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+On Mon, Jul 20, 2026 at 03:34:22PM -0400, Gregory Price wrote:
+> Add CAP_HOTUNPLUG, which allows memory_hotplug to migrate a private
+> node's folios for the purpose of hotunplugging memory.
 > 
-> __svm_write_tsc_multiplier() writes vcpu->arch.tsc_scaling_ratio to the
-> physical MSR_AMD64_TSC_RATIO with a plain wrmsrq().  Under nested TSC
-> scaling the ratio is a composed value (see the companion x86.c change),
-> and a composed value can set bits above the MSR's 40-bit width; those
-> are reserved bits that architecturally fault (#GP) the WRMSR.  Today
-> only the EX_TYPE_WRMSR extable stands between a guest-influenced ratio
-> and a host #GP oops in ring 0 -- on a build or path without it the host
-> faults.
+> Without this, hotunplug fails if any folio on the node is allocated.
 > 
-> Do not depend on the extable for a guest-influenced MSR write: use
-> wrmsrq_safe(), and on failure keep the previous ratio (don't update the
-> current_tsc_ratio cache) and warn.  Defense in depth alongside bounding
-> the composed ratio at its source.
+> Add node_allows_hotunplug() - which returns true for any normal node
+> and private nodes with CAP_HOTUNPLUG.
+> 
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-NAK.  As I said off-list, the EX_TYPE_WRMSR exception fixup _is_ the defense in
-depth we want.  If KVM does have a bug, I want a WARN.
+after this question:
+https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#m5b8166212a276fece2380f2dd03d6864375a576b
+
+and some off-list feedback about limiting initial cap bits to active
+use cases, I realized that this CAP bit can be entirely eliminated.
+
+hotplug notifier callbacks already allow a driver to prevent memory
+block state transitions - so that control already exists.
+
+v6 will remove both the filtering here and the cap bit.
+
+~Gregory
