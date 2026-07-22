@@ -1,190 +1,91 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9488343897
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104FC2F6596;
+	Wed, 22 Jul 2026 13:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784726374; cv=none; b=lH1vNzo4kmUNM6zaNymCtTqwj/Pqd4OvLtK2hiAFpvL0DXnZ/wOxTOjDAsgzkriGARBTA0Euem3PP2or0vpkYnbfRoBVvHuEYUNxCHsicukdYXZUkmnEhLPJG0auQA7EOuGZCOjrpPSdVWUDdyFeRGCcf/SfpXkC8zQvVwqce8E=
+	t=1784726480; cv=none; b=f6kP6dsfiG4ncgFHcTqghTUkMiHxxuKsl4CIpQfF2fPfhwLLE6sxv/NbK6n8yyMr242qn4GGXNF0GLoOMz6yZjgCqz+wM4tsEp3tQ49buNQ466Ebbl1bYYQJ+1kRf00ZzMBKX0CPa/H5F5tdyz87ww0INtItVjslAbWgIORvQxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784726374; c=relaxed/simple;
-	bh=epK4LVDwm2+auSTveDZ6GGKifGGGfqh7hgaFGF+EvAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JUJzYMCimvLfodIvjIws9sEezXvalHrPP9dNf7LWko7XwbZE+16vhqWWbeqzrKJZl4EbC/1KoYllMR508IiZjnrjHvJcgGBD70nwQzQfpeLByCd0K7hhXh4Jny8/UfbuomY+jW38Dnn0ejj5d2OJH2k9fpDO7LNk87tInO+iCMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=hnFAnD8B; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1784726480; c=relaxed/simple;
+	bh=4z6T7VvT75AOvFroyjHsOTgDhzLDj3O5IC7NlpWb58Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EXQBvzqH5+4ehjCizlkMTX/xA0lYWSgN3zbkQPiTo3mY+4ZrXmnPqhab2xpkzssz9KMTRibPzUhj6b3bl9ljuQuZ3PTfYnXOxAq0CB15yJIJwWpMAuJgC2s25nfjTOd7bDS1MDFKib/8Y4Dof3gODpG4fFT8alsaPNhfy2gPmT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=avl2nUTq; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="hnFAnD8B"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e53581361so971840485a.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 06:19:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784726369; x=1785331169; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uPPBH/hmuBagyTMjawpVpFd8RmJZZP/xfXgbpwvebxM=;
-        b=hnFAnD8B6yb746lM1dDg1iy3zz4nVeGNoA0PUX2SqMQ0ccOjs4l68Z5mAmqD/V2fey
-         2m3DMIiZdnE5jVP6n5bDRNS4xg2G64CdgAZX3IjXkqcm/WdANu7ich8foaJHOlAsixzy
-         TlD3GKsCrfIa3N077RdxGvBvK+73UWGGSbzo/z7y8gA1ZHwVGGpcCbQi9ThD8wkUXb2v
-         6l4BvYxtquoMM33zGBqpotOPa26jM86mPxxyA8dYjnSvPvc4FmxA4Ru8mls6N1mqvMEa
-         oSUGkJS7S5VPYG51sn6svBcXZCP4kBHFPj2Z1U2cNZnLN9+JGqZ8DwoO6D396ccjDJ1D
-         PDZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784726369; x=1785331169;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uPPBH/hmuBagyTMjawpVpFd8RmJZZP/xfXgbpwvebxM=;
-        b=VxzVvT0/8becLh/F+gnh5ML4z8JzkeBz4PhHMvb9PcW2FBvxZLfRO5J5BXu5ATOdEu
-         INK0kTuo77MlV1CMgPu8aj7c0dRP/n3qNx9kPNRHrGDQS/HmxI/aBZ+s2fzQl5N1U6Je
-         mNb+J9uhu6XC3bfFk7NJV4eq2tfEg4+/CsHGgjcHsXnQ98QSi+63pusmtqRrKl3u6TTz
-         6WU4LQrtQPdIqBGGX7Huo190DTfSx0uxu6nlCvjhYjRILYIeZ8QssqjWgSx09umEWrnf
-         /uY8SB+J27ch+C8isoHwwYKE5m2ZRTYY/f3ahwslmuloZLOGUquzO3aLUmXbkWDkHe/X
-         vFqg==
-X-Forwarded-Encrypted: i=1; AHgh+RqgCw2EIsZDrAgD3LNTAxguoKzFYmYWP97CUr8q+GHhpap8D3Hckjy1p4HjfKfr2udlZxA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7l1sx/16BVIDUCjWMlOt+gHXDI87iPcBlrqhO3DEjrMoTg87a
-	6xMsrD0YcqbXkasUBx6cScR0nabeY6qQl9X+x1WGjWv3vQOskFKrsGkaCHFDWyMRa5M=
-X-Gm-Gg: AR+sD10JBmars7FA+ox6GAvDwwZPexuBnEGNztHl67EnszK1Krp+ctwYSLTKDU7W44v
-	cyChZufToG5J7LycFnolheWuR3Wh9mgGQcrYnxw1dqM3+G/++45l+tRk+nyx8ApOn9FUYWr7E4r
-	jpsdZcxG8xDhy3e34IQEiq0ooHj1LqkZ+2eGykidA/xSkr4SFQ2IQoUyNVN4vbP2A0BU0OoKfP8
-	Z39Yj35I7GHJL7X4XhX68A+qNaWEbmIoiASgrMR9waCnMQCeDbljffwrFUBmpYh6TPE+6GAHma8
-	/HAXJgE3uPxOA3v9MuHIPldn2GsmrcvQJfGlpC5GVx02VbY/YJwi8MrPrtYEOyFtkA1dHEBzMk5
-	YdFfJAoc6DEwUTtyj8qL2o52LRJt0kMuD+hx2068D/CZHgzcnylXj8phGthYgJs0qtdwIA9jPHm
-	Hfsb5C6gC9HhdqDtAaUUeQMl5A94EySkWT7kkAglzHh8RD+UF2gBU+2UK+Tw==
-X-Received: by 2002:a05:620a:460f:b0:92e:8734:b721 with SMTP id af79cd13be357-930b3ee6fa3mr2273972385a.29.1784726369355;
-        Wed, 22 Jul 2026 06:19:29 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f6a6c1efsm160195685a.38.2026.07.22.06.19.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 06:19:28 -0700 (PDT)
-Date: Wed, 22 Jul 2026 09:19:23 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Richard Cheng <icheng@nvidia.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
-	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
-	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 05/36] mm: add ZONELIST_PRIVATE(_NOFALLBACK) for
- N_MEMORY_PRIVATE nodes.
-Message-ID: <amDAjb7PpWDnIQcF@gourry-fedora-PF4VCD3F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <20260720193431.3841992-6-gourry@gourry.net>
- <amC-b5SIkxUCKQ7H@MWDK4CY14F>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="avl2nUTq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784726478; x=1816262478;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4z6T7VvT75AOvFroyjHsOTgDhzLDj3O5IC7NlpWb58Q=;
+  b=avl2nUTq6+gg/yx2umxHM1Q0jMVv8DOcdWakC6i4zZdPM1XgD8VDoxxe
+   ShFziK1HAyJhUcxfGdNfqon3TITmcjfa2mKqBNbO6hp4DgUitckx+FFwO
+   lv9xGMMDGbW4hAME3KITwjYU3v/8VQBTDCa9mbjbIRYJ5TEspBqp45D8e
+   9zxij9lxZSGQUdpmrr9HCIr6SGmuhgnVI6B13buhT9pINTxEyx+0sVvUw
+   VTMM22hbXTQr/joOSFhUPPIza2UvOE33lJafy+/5+3ycU/bv0NSbKUlYd
+   qaZg/kpSpsBN/gpNojvLxbRkUxhPQs1q0W4Y74GVoAjH35e6maz+ENR/+
+   Q==;
+X-CSE-ConnectionGUID: ThYeGYSFTRanr0GlCEUcEw==
+X-CSE-MsgGUID: uc/G4Am7TLiFQpoAQdbh2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95719646"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="95719646"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 06:21:17 -0700
+X-CSE-ConnectionGUID: q5Ls1xuRS+y8gOVqlmp24Q==
+X-CSE-MsgGUID: 41/u9uPTQPKMTB3ENmbpWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
+   d="scan'208";a="281377839"
+Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.241.120]) ([10.124.241.120])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 06:21:14 -0700
+Message-ID: <e083f203-684f-4ae2-81c5-39d9ff24629e@linux.intel.com>
+Date: Wed, 22 Jul 2026 21:21:12 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amC-b5SIkxUCKQ7H@MWDK4CY14F>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] x86/tdx: Add helper to query maximum TD Quote size
+To: Peter Fang <peter.fang@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>
+References: <20260717214349.4075994-1-peter.fang@intel.com>
+ <20260717214349.4075994-2-peter.fang@intel.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260717214349.4075994-2-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 22, 2026 at 09:00:51PM +0800, Richard Cheng wrote:
-> On Mon, Jul 20, 2026 at 03:33:59PM +0800, Gregory Price wrote:
-> >  static void build_zonelists(pg_data_t *pgdat)
-> >  {
-> >  	static int node_order[MAX_NUMNODES];
-> > +	nodemask_t tier_nodes;
-> >  	int local_node = pgdat->node_id;
-> >  	int node, nr_nodes = 0;
-> >  
-> >  	memset(node_order, 0, sizeof(node_order));
-> >  
-> > +	/*
-> > +	 * Zonelists: FALLBACK, NOFALLBACK, PRIVATE
-> > +	 *
-> > +	 * FALLBACK:   Allocation order for all nodes.  Private nodes have lists
-> > +	 *             but never appear as an entry in any list. Allocations
-> > +	 *             targeting a private node w/ FALLBACK land on N_MEMORY.
-> > +	 *
-> > +	 * NOFALLBACK: A list for each node containing only itself.
-> > +	 *             Allocations targeting a private node w/ NOFALLBACK
-> > +	 *             will always fail (their NOFALLBACK is empty)
-> > +	 *
-> > +	 * PRIVATE:    (N_MEMORY | N_MEMORY_PRIVATE) - allows access to
-> > +	 *             private nodes, and falls back to normal memory unless
-> > +	 *             __GFP_THISNODE otherwise constrains it.
-> > +	 */
-> > +
-> >  	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK,
-> >  			    true, node_order, &nr_nodes);
-> >  	build_thisnode_zonelists(pgdat);
-> > @@ -5912,6 +5957,10 @@ static void build_zonelists(pg_data_t *pgdat)
-> >  	for (node = 0; node < nr_nodes; node++)
-> >  		pr_cont("%d ", node_order[node]);
-> >  	pr_cont("\n");
-> > +
-> > +	nodes_or(tier_nodes, node_states[N_MEMORY], node_states[N_MEMORY_PRIVATE]);
+On 7/18/2026 5:43 AM, Peter Fang wrote:
+> TDX attestation report ("Quote") sizes can grow with newer cryptographic
+> schemes, so guests can no longer rely on a fixed-size buffer for the
+> Quote.
 > 
-> Hi Gregory,
+> Newer TDX modules report the maximum Quote size via a TD-scope metadata
+> field. Add a helper to query the size instead of exposing tdg_vm_rd()
+> directly, as it can read arbitrary metadata fields.
 > 
-> A question about this part, if my understanding is right,
-> ZONELIST_PRIVATE contains all private nodes, should we use some explicit target
-> nodemask here to make sure only the targeting owner's private node can be touched?
+> Thanks to Xu Yilun for suggesting this in an off-list discussion.
 > 
-> Otherwise it might fall back into a different owner's private node.
-> 
-> --Richard
-> 
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
 
-Zonelists and the constructors here is a bit difficult to understand,
-and I see I actually did a poor job of explaining what's going on in
-the comments here.  I will fix that up in v6.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Lets say we have the following nodes:
-   N_MEMORY :  0 1
-   N_MEMORY_PRIVATE : 2 3
-
-The following zonelists would exist:
-
-ZONELIST_FALLBACK[0]   = {0,1}
-ZONELIST_FALLBACK[1]   = {1,0}
-ZONELIST_FALLBACK[2]   = {0,1}
-ZONELIST_FALLBACK[3]   = {0,1}
-ZONELIST_NOFALLBACK[0] = {0}
-ZONELIST_NOFALLBACK[1] = {1}
-ZONELIST_NOFALLBACK[2] = {}
-ZONELIST_NOFALLBACK[3] = {}
-ZONELIST_PRIVATE[0]    = {0,1}
-ZONELIST_PRIVATE[1]    = {1,0}
-ZONELIST_PRIVATE[2]    = {2,0,1}  <- no fallback to 3
-ZONELIST_PRIVATE[3]    = {3,0,1}  <- no fallback to 2
-ZONELIST_PRIVATE_NOFALLBACK[0] = {0}
-ZONELIST_PRIVATE_NOFALLBACK[1] = {1}
-ZONELIST_PRIVATE_NOFALLBACK[2] = {2} <- __GFP_THISNODE
-ZONELIST_PRIVATE_NOFALLBACK[3] = {3} <- __GFP_THISNODE
-
-In the current design, we actually can never fallback to another private
-node, and instead if you wanted to - for example - interleave across
-said nodes you'd have to do so manually.
-
-I think it's reasonable to later extend zonelist construction to support
-such a think like:
-
-ZONELIST_PRIVATE[2] = {2,0,1,3}
-
-Later if such a need arises, but I would say wait for the use case.
-
-~Gregory
