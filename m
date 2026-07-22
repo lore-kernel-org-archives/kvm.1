@@ -1,108 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0BD27F017;
-	Wed, 22 Jul 2026 17:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1528B345EA6;
+	Wed, 22 Jul 2026 17:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784741215; cv=none; b=l68bOUHURoO+U68+eY5aJtOAfkK3sKSLJxve+mTUWYbysdU8goy1+wiFnv+GR81dfa8+qmxNd4jfSH4sADbduQvYaHUleci77WOLop8EVzslXPv+LRaOprEHlO+NZ/ooTmxi/fCcXinrVZc5D7bP3fiH2g4D56KTSBbJxNSr0rY=
+	t=1784741272; cv=none; b=JVg+KO0Pp8xbD1F9rbU+t5xQzAskAp4JGzWG9rl34H4VnC2Qbe8C4PRfJND2Nwf95PoMaaGGKr4fv/7i666OGYtvQkX3W6O4R3QqiETU+QWH8wD+tKn7jl/Wz2589FV2HxW1O0PVUkRQiWPpSOFjEGRXi+Ej6kL/RT6/PMxqjYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784741215; c=relaxed/simple;
-	bh=riMmJuRNJMpDxdhz97Gb5/uRSMVjIulfiLv8wpnxE0U=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Y65Tp6zpz9HP03SedE/vfArrFGPa5pjUqLSFhmxaOwNel4Ch+YXBPCWCwXu9GCuRsYmE+UeN4Oyr4fcphaL+PiNBdjDUROqRB83IyErznDGBz0sGcFiWhDGevxsMLnjE87iZoSn1KsN5ECirGs3Lk8dEGH54Ltqv/pQThg4BUTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRxRZ8Qo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784741272; c=relaxed/simple;
+	bh=UJJJ6gDdFfQhPAspitY0ExVcYQKJakkmR/X3IOo4bZM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ILQJsubn1TrusxHcTLsOiyqePhYNZilyQFl1f7Z18+bZm0j71SiKTighZBIrX0vQUxAtYdwRxHfyIWt6JguUIYxg4+WDzlnJzut9LWUMlCukR8naFTt2RMJ2VSdQLfON0pL002lDCQ90YSqpArpv1jWH8yTHqJDc1tGz8mdFygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SoeZpZp+; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRxRZ8Qo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848261F000E9;
-	Wed, 22 Jul 2026 17:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784741211;
-	bh=b/VDB3QqOd3N1C5/4R/O1Io4qFYuaqxVNSqacJ/Q1aA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RRxRZ8Qo7cPKkAUH+h9sWKJ+rXheqWYkszwRhM3gjkIMnnJ8nG8yBdczDFpR9Mtv8
-	 HLlCDw3TPImsyYqc4f2gfUxNVTDf2JxxX6QlfW4MOMSzN2rz8hZhCyiqjP5YpGxrVa
-	 tkeQHhXBpnNUm+WniEkshW+nwEFj8AF5+jnpQfVGQw4X7FWatTZmDHEVZujfx8me/X
-	 5xW/jBKhlglIanQJVBjR0w95uEW+RmRQfkuStpK6HSi7MGKkKNkyYxy4GOzZ/KOHhF
-	 OX2nkp4LfyVIShVbuqdhipxShJAtQJdk4NNYDxF2wrmrrzkFMCzoj7Vk7U0oyv9/1D
-	 ZVQvBFoDblh1g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 6/6] KVM: s390: pci: Validate AIBV and AISB before
- pinning guest pages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Farhan Ali" <alifm@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260722170621.1686-7-alifm@linux.ibm.com>
-References: <20260722170621.1686-1-alifm@linux.ibm.com>
- <20260722170621.1686-7-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 17:26:51 +0000
-Message-Id: <20260722172651.848261F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SoeZpZp+"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2D7B1595;
+	Wed, 22 Jul 2026 10:27:41 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B55B63F66F;
+	Wed, 22 Jul 2026 10:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784741265; bh=UJJJ6gDdFfQhPAspitY0ExVcYQKJakkmR/X3IOo4bZM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SoeZpZp+wsxHy2IPoBPIESiHfIlciJelBcAUO0h9BaNgywgcLRKe59vGZr1KsfOtU
+	 zXqwnNHi8fnyFJ4Z4tV45RCq4+uQHINF4Mo8FApJ3gK1YQgEZ3tQYqJ6ysDA6eAPD+
+	 h3LKbzFF1zV5s5ibd/Q5KVSGVirnUpwJnXEtiFKM=
+Date: Wed, 22 Jul 2026 18:27:36 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags()
+ when CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
+Message-ID: <amD9iD7rjmU__9b6@e129823.arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
+ <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The AIBV size calculation systematically overestimates the require=
-d memory size, leading to false rejection of valid AIBV configurations loca=
-ted near page boundaries.
---
+Hi Dave,
 
---- Patch [6]: [PATCH v4 6/6] KVM: s390: pci: Validate AIBV and AISB before=
- pinning guest pages ---
-commit 4b6ef516a235f953d1559a623689c91ffb836199
-Author: Farhan Ali <alifm@linux.ibm.com>
+> > diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+> > index f32facdb3035..edad847a2ecd 100644
+> > --- a/arch/x86/mm/pgtable.c
+> > +++ b/arch/x86/mm/pgtable.c
+> > @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
+> >  	return changed;
+> >  }
+> >  
+> > +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> >  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >  			  pud_t *pudp, pud_t entry, int dirty)
+> >  {
+> > @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
+> >  
+> >  	return changed;
+> >  }
+> > +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+> >  #endif
+> >  
+> >  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+> 
+> #ifdefs in .c files are evil.
+> 
+> The changelog doesn't make a strong enough case for why this evil should
+> be tolerated.
+> 
+> These are also _precisely_ the kind of #ifdefs that cause compilation
+> problems. This one is:
+> 
+> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> /// function here
+> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+> /// another function here
+> #endif
+> #endif
+> 
+> So there end up being a couple of dependent config options in play. If
+> there are compile problems, this makes them harder to find.
+> 
+> What is the _actual_ goal here? Saving 50 bytes of kernel text?
 
-KVM: s390: pci: Validate AIBV and AISB before pinning guest pages
+TBH, this came from for v1's change of behavior set_pud() where
+triggered compiliation problem with v2 this change wouldn't require.
 
-This commit adds validation checks for the guest-provided AIBV and AISB=20
-addresses before pinning them. It ensures the AIBV does not exceed a single=
-=20
-page boundary and that the AISB is aligned properly to 8 bytes.
+However, wrappering pudp_set_access_flags() with
+CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD seems reasonable for not only
+saving a kernel text but also keeping consistency with the other pattern
+like pudp_invalidate(), pudp_establish() and etc.
 
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index d76b2c5484aca..e55e75b81b516 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
+Am I mising something?
 
-[ ... ]
-
-> @@ -268,6 +268,14 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *=
-zdev, struct zpci_fib *fib,
->  		return gisc;
-> =20
->  	/* Replace AIBV address */
-> +	size =3D BITS_TO_LONGS(msi_vecs) * sizeof(unsigned long);
-> +	size +=3D (fib->fmt0.aibvo / 8) + 1;
-> +	npages =3D DIV_ROUND_UP((fib->fmt0.aibv & ~PAGE_MASK) + size, PAGE_SIZE=
-);
-> +	if (npages > 1) {
-> +		rc =3D -EINVAL;
-> +		goto out;
-> +	}
-> +
-
-[Severity: High]
-Does this size calculation artificially inflate the required AIBV memory sp=
-ace=20
-and falsely reject valid guest configurations?
-
-If a guest places a 1-MSI vector AIBV near the end of a physical page, such=
-=20
-as at page offset 4088, the size formula calculates at least 9 bytes (8=20
-bytes from BITS_TO_LONGS(1) plus 1 arbitrary byte).=20
-
-This inflated size (4088 + 9 =3D 4097) crosses the page boundary, causing K=
-VM=20
-to mistakenly reject a perfectly valid, 8-byte aligned memory placement wit=
-h=20
--EINVAL. Can this formula be adjusted to calculate the exact size required?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722170621.1686=
--1-alifm@linux.ibm.com?part=3D6
+-- 
+Sincerely,
+Yeoreum Yun
