@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769F047043A;
-	Wed, 22 Jul 2026 07:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE76472F6E;
+	Wed, 22 Jul 2026 07:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706181; cv=none; b=ejyo3GoZvmPvW2IPp5RByQ1tsU7aR4xso9pb3AGx3239vfzI0r463oUSejQRw7GlhxbO9+3L4LM16HD+oR16q83N9d1GVAOWbKxZp3GWL4e/nv3YLM1jdsX6jbkv6cCA0/DRXyhiJ8mTfTEkaezstULUt3D1ZpbLZfm99//5YpQ=
+	t=1784706182; cv=none; b=LK5vYg39Lva1/ILdfcsKi9RHC5vLtclAwxECwKw/XMlOogfo2oSB48dckTmRV3txni4QJmQ2FU+m1Zj4lXHVUDnvLbNT7Mu29gRT/NnVC2PtUwRKNF1K9MSLckPFhdJSfc1cp1qX4PlIVwfegqRNobHZM0aDYh/0US++FGD6Y/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706181; c=relaxed/simple;
-	bh=JKWpO2aGs6TofEB7lS/zufW/A4iGavXEIGzsMdT1zsQ=;
+	s=arc-20240116; t=1784706182; c=relaxed/simple;
+	bh=0oA5e6BH9RbYPuD7HYpZuzByUqXOlKrAGOCKImp2DqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kErilhJok2eT5zL/qGGnWyzsnpX3P7xoMQ49REzirLOZpXRa/2jwj2VvsA92uoomxAkfD6g1fiLPtOyXudx2CBbHezNjbMorWbZphzoaT5OYAqzx35s3Fw3wqid/B1cDBZhyRhQvApYP9ftng7t+davJ7o1S4NmfMUbsO3bSrA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VaBIkWag; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=FGTjGUXmrq6Uczuw35nEdXH0gxo+1uuQqRZsrHulYepls6vBKiMLTJSAlSpEM2ZmyyzLwQ0SpVruCMxO1otET7OJCnkjx9M0ImlJqMgyTkqVZ8C4lnqMjdnnz81AUatrJPIJzPMVkl89UW+ehfgWLg+apHjGekEDmXyUxS06c28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUS8dFaW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VaBIkWag"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA701F01559;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUS8dFaW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F621F01558;
 	Wed, 22 Jul 2026 07:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784706179;
-	bh=iSyY+XJ+vex+b5WS1ha+pHt3rgbtzPLgz50hKTgc/ws=;
+	bh=nvPddLwq+3E5BpZogpvn3U5ADhW+cJYX5/jH9oxoba8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VaBIkWagdi9jUKBkDpd3H+YV6GJ8iKY9o2YYPK0Wb+/Anedfmte6kjvi6TKpeQUhB
-	 M2E/M5v2DOJkwiwsi2VkqgTa91SCl0k8GLLBgNuVbJ9NZ9gaT6/MBRaXZ7LjEYvSRa
-	 8NnepteZpbCXCufJXpzrFHgbqTC/5Maw0CXaChfKf/8/OgP6kBI6RNmSpPymsE9qWD
-	 T3r5eVZpWiX+hVsgzVCpCq/4qAHTQu+RaWo3rF9Eui/zNr0n4lKg/rgJCZhD5lzry5
-	 Nxbdzga5SYSSCJ2/IdpSNhC8MAkex9QfUC47EYrOMzAkJupXKTlatKwMWAiopL1Bon
-	 09Jw+oSs0itEg==
+	b=fUS8dFaWapkl2GmY1GKbEVvw9mOTvLaIv9BN3zhNOrM94Ij+Q43Lhaxtr1tGuWNoz
+	 AduxNOuBWF+ofP7Xu49HCi0cPHAN6wmbJKYWhbUzgUvHPYSn/Yh+aAJZq3ZXiZqZoQ
+	 cP9/ay5XZe1ycN55vMtISdgd97JPaU8pr/z/cqda829XUq2haIuOLyTABJAeSxJF24
+	 u81TZdimBGeshoedxz9ifxMLgzHpuVnqmq1RI+8I6kz/plUcF9kqBDS/sOTyTondm1
+	 WH3A8+4e5+HW6FvfLFsXh6EmgCNLTR2dmTQ+2/x9mnwdwptsdhGe+A58syYTatZJ/V
+	 XaWHglDssb0aA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wmRbV-00000007VfN-1Z42;
-	Wed, 22 Jul 2026 07:42:57 +0000
+	id 1wmRbW-00000007VfN-0F6R;
+	Wed, 22 Jul 2026 07:42:58 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v3 14/28] arm64: sysreg: Add HCRX_EL2 bits related to FEAT_NV3
-Date: Wed, 22 Jul 2026 08:42:20 +0100
-Message-ID: <20260722074234.3330999-15-maz@kernel.org>
+Subject: [PATCH v3 17/28] KVM: arm64: Add NV3 control bits to HCRX_EL2 sanitisation
+Date: Wed, 22 Jul 2026 08:42:23 +0100
+Message-ID: <20260722074234.3330999-18-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722074234.3330999-1-maz@kernel.org>
 References: <20260722074234.3330999-1-maz@kernel.org>
@@ -61,32 +61,38 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-FEAT_NV3 introduces 4 new HCRX_EL2 control bits. Describe them
-in the sysreg file.
+Expose the FEAT_NV3 control bits to the sanitisation code so that
+KVM stops moaning about the unattributed bits.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/tools/sysreg | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/config.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-index 42839d2b15ae4..67d013b376a3c 100644
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -4548,7 +4548,12 @@ Fields	ZCR_ELx
- EndSysreg
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index c61d62b796023..467f57eb8e6bb 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -225,6 +225,7 @@ struct reg_feat_map_desc {
+ #define FEAT_HCX		ID_AA64MMFR1_EL1, HCX, IMP
+ #define FEAT_S2PIE		ID_AA64MMFR3_EL1, S2PIE, IMP
+ #define FEAT_GCIE		ID_AA64PFR2_EL1, GCIE, IMP
++#define FEAT_NV3		ID_AA64MMFR4_EL1, NV_frac, NV3
  
- Sysreg	HCRX_EL2	3	4	1	2	2
--Res0	63:27
-+Res0	63:35
-+Field	34	NVnTTLBOS
-+Field	33	NVnTTLBIS
-+Field	32	NVnTTLB
-+Res0	31:28
-+Field	27	NVTGE
- Field	26	SRMASKEn
- Res0	25
- Field	24	PACMEn
+ static bool not_feat_aa64el3(struct kvm *kvm)
+ {
+@@ -904,6 +905,11 @@ static const DECLARE_FEAT_MAP_FGT(hdfgwtr2_desc, hdfgwtr2_masks,
+ 
+ 
+ static const struct reg_bits_to_feat_map hcrx_feat_map[] = {
++	NEEDS_FEAT(HCRX_EL2_NVTGE		|
++		   HCRX_EL2_NVnTTLB		|
++		   HCRX_EL2_NVnTTLBIS		|
++		   HCRX_EL2_NVnTTLBOS,
++		   FEAT_NV3),
+ 	NEEDS_FEAT(HCRX_EL2_SRMASKEn, FEAT_SRMASK),
+ 	NEEDS_FEAT(HCRX_EL2_PACMEn, feat_pauth_lr),
+ 	NEEDS_FEAT(HCRX_EL2_EnFPM, FEAT_FPMR),
 -- 
 2.47.3
 
