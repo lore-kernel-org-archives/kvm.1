@@ -1,174 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB833470130
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175EA476058
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706246; cv=none; b=FmhMxXo5VuwBDi0XVVisYTX2ar/XXFCrO9AZSukIMPWGH5wC0qXk8Wp5rn8h1GA77EEVsLTNcVRG/TaM/t3p4p+Qq/X/I+kO7fPC8RoMfgdrtnQa7AVZbyLgLNPdNlxL3+aQWLBVukrmqM3E1zwMCXtOJ30mQ3/BKz1rpc6KGZk=
+	t=1784706256; cv=none; b=saPCXmmHFr68GOYJ2G1L0imASR9qSIyQe4fTiAap/qMZkMcRWC3cz9i1VA86P4kHdb5vSsMJEWEFr8xKQOrV+ISoIhsU1vM4tM6T2XWIgjCZYJiF6X29OpUnOvc+ou4sOZKda7AkEdHgxKNYjXV+OEWT0APeAmRl3LUD0EgC60o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706246; c=relaxed/simple;
-	bh=z7hRmFx6Q/cKialkK+h+Uh2CuKM7Kat59hPecQV0BsQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bkII8Jzdi2ExX14QND+SAkPGqlhIrUkbsdXEGMeD0ym4WbyCIYbiavUJk+Xhr5CkxOd7uwXKWdVmcj28NNuE6j5h1sVgm2jrkYEpuqIU1z+mP3oLvgSLELLBHK8g/fabZNkJnwW2P5GFGTywfZqoTKerclAV4EHcQza0bwlwfgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Te1CbY9y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784706256; c=relaxed/simple;
+	bh=FPrvqleZZkxly92bR/CLY5uc81tEF64gprLeaxY5lPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UbvNeE35FGneZeG2ghf3BG4d09U9ukBwWRrZlPx7MKQUP7n/qhvvpOSaHJsxTk4Z2HaldwyddtWcSmnYmH4ZO1EjDA9FsBCqmVNVpKgkQGo3fVfep81JwqSLKTarLmF+pJD2VQTXul5lqLRJOBUraLisa+/1gX7lRlI2qlX9nsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sb+Rxirg; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Te1CbY9y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5401F000E9;
-	Wed, 22 Jul 2026 07:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784706245;
-	bh=/NXYMk8gABnHL1dU/KQJEFSyreY3+dVw7DhD5lUr0Zg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Te1CbY9yFXweeBneGhFffPpOlAnKzXqhTFJXKiK3CtUNuY76B+946vyOMU9iSnyS/
-	 AUth89Cswplic2QCP/RezPsjVySoxS89PWvIID2MVknLgefn8ipq9Bfk6l+am4OP/6
-	 FRSY/paL/EvTuaEg5pgctJcccfuAiWpCIgQYWN37oKWo+Je8fn4gj9LNpNrcdGdwX0
-	 Zj+xMxdN4hTpFQRLXsSWKwlWv4sUZ6CJUdsDiWHav7py8WGWtJeCx9PfXeI8jBrXlz
-	 IdGGxw+Gm6Bxt1CViEJXoWe8HzaQNCsusaTSRzpYKShJ39oRVt1H0QJMUy78blYYtb
-	 ztLRE8yJMv5JA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8] KVM: selftests: riscv: Add lazy V extension
- enablement for guests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: JinRui <jinrui@haiwei.tech>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <33AEC00DC78613A1+20260722073344.771230-1-jinrui@haiwei.tech>
-References: <20260722062804.738428-1-jinrui@haiwei.tech>
- <33AEC00DC78613A1+20260722073344.771230-1-jinrui@haiwei.tech>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 07:44:05 +0000
-Message-Id: <20260722074405.8D5401F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sb+Rxirg"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784706249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=sG2NOsOTZ2REpCl2D4kAYmK3b1M/9AA8FLqbpmvwIek=;
+	b=sb+RxirgFN/teVJcTc5OMKD1ZKz8l6zXaic1PhVwBC8hgdoZiOUeenHQf+nWhBI9ezgTBL
+	2U88JqJ/d9h7WRqVu/liHNVF6w2C8qCB1GxXT68rjgjg3Pe+XMJgeSt2FcNisdaADL93ij
+	56y8QY2deor8dlGB0aft/o1rrfnum0Y=
+From: Tao Cui <cui.tao@linux.dev>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn
+Cc: chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	cui.tao@linux.dev,
+	cuitao@kylinos.cn
+Subject: [PATCH v2] LoongArch: KVM: Add KVM_LOONGARCH_GET/SET_CSR for bulk CSR migration
+Date: Wed, 22 Jul 2026 15:43:46 +0800
+Message-ID: <20260722074346.239507-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `v_epc` array for tracking vector extension enablement is si=
-zed using `KVM_CAP_MAX_VCPUS` but indexed by `vcpu_id`. Since KVM allows `v=
-cpu_id` up to `KVM_CAP_MAX_VCPU_ID` (which can be significantly larger than=
- `KVM_CAP_MAX_VCPUS` for sparse topologies), tests using large vCPU IDs wil=
-l silently bypass the lazy V extension enablement and fail with an unhandle=
-d exception.
---
+From: Tao Cui <cuitao@kylinos.cn>
 
---- Patch [1]: [PATCH v8] KVM: selftests: riscv: Add lazy V extension enabl=
-ement for guests ---
-commit fc8045a6835b1383f4809674a40465f3a99bc4f0
-Author: jinrui <jinrui@haiwei.tech>
+Migrating a vCPU's CSR state takes one KVM_GET/SET_ONE_REG ioctl per
+register, thousands of syscalls for a large VM.
 
-KVM: selftests: riscv: Add lazy V extension enablement for guests
+Add a bulk pair, KVM_LOONGARCH_GET_CSR / KVM_SET_CSR.  Userspace passes
+an array of {index, data} entries; the kernel fills entries[].data on
+GET and applies them on SET, both in a single call:
 
-This commit introduces lazy V extension enablement for RISC-V KVM selftests.
-It replaces the default guest exception handler with the full vector table
-and adds a check in route_exception() to lazily enable the V extension if
-an EXC_INST_ILLEGAL is triggered by auto-vectorized instructions.
+- KVM_LOONGARCH_GET_CSR does a single vcpu_load/put with
+  kvm_deliver_intr(), which pulls pending interrupts into ESTAT,
+  avoiding the per-register load/put side-effect that made ONE_REG
+  snapshots of ESTAT order-sensitive.
+- KVM_LOONGARCH_SET_CSR writes all CSRs via _kvm_setcsr in one pass,
+  propagates _kvm_setcsr errors, and clears KVM_LARCH_HWCSR_USABLE up
+  front so a mid-loop failure still forces the next vcpu_load() to
+  reload from SW, matching KVM_SET_ONE_REG.
 
-> diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/te=
-sting/selftests/kvm/lib/riscv/processor.c
-> index ded5429f34483..624f20f0f4766 100644
-> --- a/tools/testing/selftests/kvm/lib/riscv/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+Entries are {index, data} rather than a positional array, so future CSRs
+can be added without resizing the struct or changing the ioctl number.
+CSRs above the core range (debug, breakpoint, PMU) stay on
+KVM_GET/SET_ONE_REG; struct kvm_sregs is left empty, so the new ioctls
+break no userspace.
 
-[ ... ]
+On a Loongson 3A6000, snapshotting one vCPU's core CSR range (0x0-0x183)
+drops from 388 KVM_GET_ONE_REG calls (~2 ms) to a single
+KVM_LOONGARCH_GET_CSR ioctl (~6 us).
 
-> @@ -432,6 +454,46 @@ void route_exception(struct pt_regs *regs)
->  		ec =3D 0;
->  	}
-> =20
-> +	/*
-> +	 * Handle V (vector) extension lazy enablement before any
-> +	 * registered handler. The compiler's default march may include
-> +	 * V, and auto-vectorization generates vector instructions that
-> +	 * trigger EXC_INST_ILLEGAL when VS (Vector Status) in sstatus
-> +	 * is Off. Enable VS to Initial and re-execute the faulting
-> +	 * instruction, mimicking what a real OS kernel does.
-> +	 *
-> +	 * This check runs before any test-registered handler, so tests
-> +	 * that install their own EXC_INST_ILLEGAL handler (e.g.
-> +	 * sbi_pmu_test) are not affected.
-> +	 */
-> +	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec =3D=3D EXC_INST_ILLEGAL) {
-> +		/*
-> +		 * If KVM supports the V extension for this Guest and VS
-> +		 * (Vector Status) is Off in the saved sstatus, set it to
-> +		 * Initial and re-execute the faulting instruction.
-> +		 *
-> +		 * Use regs->status (saved at exception entry) rather than
-> +		 * reading the live CSR to avoid a TOCTOU race.
-> +		 *
-> +		 * Track the epc per-vCPU to avoid an infinite loop when
-> +		 * V is disabled or the hardware rejects the VS change.
-> +		 * Using a per-vCPU array avoids races between concurrent
-> +		 * vCPUs that would occur with a single shared (epc, vcpu)
-> +		 * pair.
-> +		 */
-> +		if (handlers && handlers->v_available && !(regs->status & SR_VS)) {
-> +			unsigned int vcpu_id;
-> +
-> +			asm volatile("csrr %0, sscratch" : "=3Dr" (vcpu_id));
-> +			if (vcpu_id < handlers->v_epc_capacity &&
-> +			    handlers->v_epc[vcpu_id] !=3D regs->epc) {
-> +				handlers->v_epc[vcpu_id] =3D regs->epc;
-> +				regs->status |=3D SR_VS_INITIAL;
-> +				return;
-> +			}
-> +		}
-> +	}
-> +
+Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+---
+ arch/loongarch/include/uapi/asm/kvm.h | 13 +++++
+ arch/loongarch/kvm/vcpu.c             | 73 +++++++++++++++++++++++++++
+ include/uapi/linux/kvm.h              |  4 ++
+ 3 files changed, 90 insertions(+)
 
-[ ... ]
+diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
+index cd0b5c11ca9c..59b3b7efa039 100644
+--- a/arch/loongarch/include/uapi/asm/kvm.h
++++ b/arch/loongarch/include/uapi/asm/kvm.h
+@@ -127,6 +127,19 @@ struct kvm_sync_regs {
+ struct kvm_sregs {
+ };
+ 
++/* bulk CSR entries for VM migration */
++struct kvm_loongarch_csr_entry {
++	__u32 index;
++	__u32 reserved;
++	__u64 data;
++};
++
++struct kvm_loongarch_csrs {
++	__u32 ncsrs;	/* number of csr entries */
++	__u32 pad;
++	__DECLARE_FLEX_ARRAY(struct kvm_loongarch_csr_entry, entries);
++};
++
+ struct kvm_iocsr_entry {
+ 	__u32 addr;
+ 	__u32 pad;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 20c207d80e31..9b411c694718 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1009,6 +1009,73 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs
+ 	return -ENOIOCTLCMD;
+ }
+ 
++/* max CSR entries handled per ioctl */
++#define KVM_LOONGARCH_MAX_CSR_REGS	0x400
++
++/* Bulk get/set of CSR state for VM migration. */
++static int kvm_loongarch_csr_io(struct kvm_vcpu *vcpu,
++				struct kvm_loongarch_csrs __user *ucsrs,
++				bool write)
++{
++	int i, ret = 0;
++	unsigned long size;
++	struct kvm_loongarch_csrs csrs;
++	struct kvm_loongarch_csr_entry *entries;
++	struct loongarch_csrs *csr = vcpu->arch.csr;
++
++	if (copy_from_user(&csrs, ucsrs, sizeof(csrs)))
++		return -EFAULT;
++
++	if (csrs.ncsrs > KVM_LOONGARCH_MAX_CSR_REGS)
++		return -E2BIG;
++
++	size = array_size(csrs.ncsrs, sizeof(*entries));
++	entries = memdup_user(ucsrs->entries, size);
++	if (IS_ERR(entries))
++		return PTR_ERR(entries);
++
++	if (write) {
++		vcpu->arch.aux_inuse &= ~KVM_LARCH_HWCSR_USABLE;
++	} else {
++		preempt_disable();
++		vcpu_load(vcpu);
++		kvm_deliver_intr(vcpu);
++		vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
++		vcpu_put(vcpu);
++		preempt_enable();
++	}
++
++	for (i = 0; i < csrs.ncsrs; i++) {
++		unsigned int id = entries[i].index;
++
++		if (get_gcsr_flag(id) & INVALID_GCSR) {
++			ret = -EINVAL;
++			break;
++		}
++
++		if (write) {
++			ret = _kvm_setcsr(vcpu, id, entries[i].data);
++			if (ret)
++				break;
++		} else if (id == LOONGARCH_CSR_ESTAT) {
++			unsigned long estat, gintc;
++
++			/* ESTAT IP0~IP7 come from GINTC */
++			gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & KVM_GINTC_IRQ_MASK;
++			estat = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) & ~KVM_ESTAT_EXTI_MASK;
++			entries[i].data = estat | (gintc << VIP_DELTA);
++		} else {
++			entries[i].data = kvm_read_sw_gcsr(csr, id);
++		}
++	}
++
++	if (!write && copy_to_user(ucsrs->entries, entries, size))
++		ret = -EFAULT;
++
++	kfree(entries);
++	return ret;
++}
++
+ int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ {
+ 	int i;
+@@ -1266,6 +1333,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 			r = kvm_get_reg(vcpu, &reg);
+ 		break;
+ 	}
++	case KVM_LOONGARCH_GET_CSR:
++		r = kvm_loongarch_csr_io(vcpu, argp, false);
++		break;
++	case KVM_LOONGARCH_SET_CSR:
++		r = kvm_loongarch_csr_io(vcpu, argp, true);
++		break;
+ 	case KVM_ENABLE_CAP: {
+ 		struct kvm_enable_cap cap;
+ 
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 419011097fa8..aade65751721 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1670,4 +1670,8 @@ struct kvm_pre_fault_memory {
+ 	__u64 padding[5];
+ };
+ 
++/* LoongArch: bulk CSR get/set for migration */
++#define KVM_LOONGARCH_GET_CSR	_IOWR(KVMIO, 0xd6, struct kvm_loongarch_csrs)
++#define KVM_LOONGARCH_SET_CSR	_IOW(KVMIO,  0xd7, struct kvm_loongarch_csrs)
++
+ #endif /* __LINUX_KVM_H */
+-- 
+2.43.0
 
-> @@ -448,9 +510,26 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
-> =20
->  void vm_init_vector_tables(struct kvm_vm *vm)
->  {
-> -	vm->handlers =3D __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
-> +	unsigned int max_vcpus;
-> +	size_t size;
-> +
-> +	if (vm->handlers)
-> +		return;
-> +
-> +	max_vcpus =3D kvm_check_cap(KVM_CAP_MAX_VCPUS);
-> +	if (max_vcpus =3D=3D 0)
-> +		max_vcpus =3D 512;
-> +
-> +	size =3D sizeof(struct handlers) + max_vcpus * sizeof(unsigned long);
-
-[Severity: Medium]
-Should this allocation use KVM_CAP_MAX_VCPU_ID instead of KVM_CAP_MAX_VCPUS?
-
-The v_epc array is sized here using max_vcpus, but it is indexed by vcpu_id
-when accessed in route_exception():
-
-			asm volatile("csrr %0, sscratch" : "=3Dr" (vcpu_id));
-			if (vcpu_id < handlers->v_epc_capacity &&
-			    handlers->v_epc[vcpu_id] !=3D regs->epc) {
-				handlers->v_epc[vcpu_id] =3D regs->epc;
-
-Since KVM allows vcpu_id to go up to KVM_CAP_MAX_VCPU_ID, which can be
-significantly larger than KVM_CAP_MAX_VCPUS for sparse topologies, tests
-using large vCPU IDs might exceed this capacity. This would cause the bounds
-check in route_exception() to fail, silently bypassing the lazy V extension
-enablement and resulting in an unhandled exception for those tests.
-
-> +	vm->handlers =3D __vm_alloc(vm, size, vm->page_size,
->  				  MEM_REGION_DATA);
-> =20
-> +	{
-> +		struct handlers *h =3D addr_gva2hva(vm, vm->handlers);
-> +
-> +		h->v_epc_capacity =3D max_vcpus;
-> +	}
-> +
->  	*(gva_t *)addr_gva2hva(vm, (gva_t)(&exception_handlers)) =3D vm->handle=
-rs;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/33AEC00DC78613A1+20=
-260722073344.771230-1-jinrui@haiwei.tech?part=3D1
