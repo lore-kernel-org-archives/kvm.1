@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C17D3BF694;
-	Wed, 22 Jul 2026 09:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D1847B438;
+	Wed, 22 Jul 2026 09:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711051; cv=none; b=p4YnuJNxZBSnZu9qujnpogVhJejUngalA5L2cwfSke0PB1nyFu3VwNw2ow/Fi+fi/b3ix7/M+99vn5QYTeUP6aWNaPYWY1tebkCz/Bur9Pm705rEP7rGVQ7ennh8gO5BAJtMKL0r4/cdJMwv3GYJYCGG7n3/Z499mDf4NW9ZSyA=
+	t=1784711086; cv=none; b=TZ5X7EIl/cCkq3OM21HUe4Qn/7Kse1oZ1tc4yui/BD3itNYtFpaAFp6tYG7jIsgd75IHsWKAoC+SbdZEq+MZQ79udTWN/95nGQRflhX5rmrpXVcnm/nFEW6KtIyOnXAKNTtwZQbEwyumfly2jLeZHy1Rpiq07bNC4WicfbDJRyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711051; c=relaxed/simple;
-	bh=z4AiPrQLjqWpyNXTYyZVEuuViwLpF4jn/odKF2+PCIY=;
+	s=arc-20240116; t=1784711086; c=relaxed/simple;
+	bh=M0MedXmo5XLq3Y1vqC9m8XeVLV+jSzmWfRARfzTmi+M=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fWC7RCSCyqCJ66CXXyyiP6dXBWx/ZauXD5w5mle5J2ZuWRAOU2N9+H0evFSVO00L7EW4hMhvRJ+dGB1zDStEc4Otg807CXdRot9lqCxAtjKc+7GFh0kXKypg6RUJa6wI1EtwZ1ScSJJEUDdeKYdsNsUEHrBu3vdu+KSvw5Vkkpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4OITOtI; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=r0st6OCGZQS9MYiSehZfUqupQQR1BLyLFViiMFrYoFw8V1fPjoR10gKHEVXZPZwMsYnhg4iayZYTCW0xWdA7MBhCFeeoNcJiocOs0f7M0mqN+AiRUMGOGhbcIbm3GU0H3g7r6F+E5AC1rYjnf7WdGiMIaiRYnt2bQLUS0gZTumg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g49M4ahT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4OITOtI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36671F000E9;
-	Wed, 22 Jul 2026 09:04:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g49M4ahT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0B11F00A3E;
+	Wed, 22 Jul 2026 09:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784711050;
-	bh=/sfMPRZ+tYiBY43HG7e6IFEmMKJcuI9WPwzczkmDk2g=;
+	s=k20260515; t=1784711081;
+	bh=E6jdNeVFcYqqrD/Yp97Y4szgxYMU3Mj/TzqdOhncQmE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N4OITOtIbnkS75txVPTxqd3EmJAFkUWJeVw1h0hnCNmcmZ7p7tEXrG2yAquzpCkAs
-	 X9B4bWs959kGR9SElzCCwZr6tBcYmrmdG6bipfWN+5BaA3tWl3vBMEKh3Ps3vObmH9
-	 hG5/cJ9ENET2jgTNgHhvUzqpr0humyUJTrfok4q4VTrdcCF9VQ9oZMRTjJ8ieS8GKI
-	 B7wPZzgRB6heh8ZShMWmitW7Ti2gNo3JwEJcP0SItSXrfhg0WpJ6fqOAABoHoeGauv
-	 YGHzLb0mZtxZe3fu3puubGz8WSzSkzvPoXR1kbfK84Qa3MpkyQqLTzK2fHKYs4uBiK
-	 6SuFU8x76UCLg==
+	b=g49M4ahTqnfII4hfZI3+SrQaoRecyhu5eccd39flhYbsWnfYqx+zhHVWM9+MVnY9l
+	 DPtDoCNpbr4uMF9DM9In7zX9PFMw7OoCXvgLHAwwrWxJGYkMAPqpiU78L1H0t1SHgK
+	 Oua1rTNzS1aACISiuQCeGXqcL318TwiefzEETmpqiZRRft812iFETh3ylHmg9/vdKp
+	 g0yczRYkjWEWOKFph5JS+nC6E+PfdAABxIRA0Ezf9P2kkLdo+jI1ZRDS65EU5Xyjsk
+	 Dt4E4M8+VxvfdmO5b9r6ETO8HBlDvxVzno5Hxrt3uCG005ci5/Zue+JYRdtEuD55vw
+	 ZIs0zZylRSlPA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wmSs4-00000007Y4l-17Lq;
-	Wed, 22 Jul 2026 09:04:08 +0000
-Date: Wed, 22 Jul 2026 10:04:07 +0100
-Message-ID: <86mrvje6pk.wl-maz@kernel.org>
+	id 1wmSsZ-00000007Y5f-3Qf6;
+	Wed, 22 Jul 2026 09:04:39 +0000
+Date: Wed, 22 Jul 2026 10:04:39 +0100
+Message-ID: <86ldb3e6oo.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: kvmarm@lists.linux.dev,
 	"Oliver Upton" <oupton@kernel.org>,
 	kvm@vger.kernel.org
-Subject: Re: [PATCH v3 26/28] KVM: arm64: Add FEAT_NV3 detection
-In-Reply-To: <20260722085331.E34C61F000E9@smtp.kernel.org>
+Subject: Re: [PATCH v3 25/28] KVM: arm64: Engage NV3 TLBI trap elision
+In-Reply-To: <20260722085745.911F01F000E9@smtp.kernel.org>
 References: <20260722074234.3330999-1-maz@kernel.org>
-	<20260722074234.3330999-27-maz@kernel.org>
-	<20260722085331.E34C61F000E9@smtp.kernel.org>
+	<20260722074234.3330999-26-maz@kernel.org>
+	<20260722085745.911F01F000E9@smtp.kernel.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -59,101 +59,42 @@ X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, oupt
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 22 Jul 2026 09:53:31 +0100,
+On Wed, 22 Jul 2026 09:57:45 +0100,
 sashiko-bot@kernel.org wrote:
 > 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] KVM's FEAT_NV3 fast-path evaluates to false for all guests, causing stale SYS_NVHCR_EL2 state during L2 nested entry.
-> - [High] Writes to SYS_NVHCR_EL2 lack required immediate Context Synchronization Event (ISB).
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Low] Stray double semicolon creates an empty statement.
 > --
 > 
-> --- Patch [26]: [PATCH v3 26/28] KVM: arm64: Add FEAT_NV3 detection ---
-> commit e5daceb215a787136ab61f9dafcd9ffe40f4346c
+> --- Patch [25]: [PATCH v3 25/28] KVM: arm64: Engage NV3 TLBI trap elision ---
+> commit dabbb189ece66c0128f9610303e005d9bdd94252
 > Author: Marc Zyngier <maz@kernel.org>
->     
->     KVM: arm64: Add FEAT_NV3 detection
 > 
-> This commit adds the FEAT_NV3 detection code to cpufeature.c by introducing
-> the ARM64_HAS_NV3 capability. It engages the FEAT_NV3 fast-path in KVM now
-> that the infrastructure is in place.
+> KVM: arm64: Engage NV3 TLBI trap elision
 > 
-> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> > index c9c124b0ccc8e..6ae1c816e2010 100644
-> > --- a/arch/arm64/kernel/cpufeature.c
-> > +++ b/arch/arm64/kernel/cpufeature.c
-> > @@ -2627,6 +2627,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
-> >  		.matches = has_cpuid_feature,
-> >  		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2P1)
-> >  	},
-> > +	{
-> > +		.desc = "FEAT_NV3",
-> > +		.capability = ARM64_HAS_NV3,
+> This commit enables NV3 TLBI trap elision for guests that are not NV2 aware,
+> relaxing the TLBI traps when only the guest's S1 translation is affected.
 > 
-> [Severity: High]
-> Could engaging this capability break nested virtualization on NV3 hardware?
+> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+> > --- a/arch/arm64/include/asm/kvm_emulate.h
+> > +++ b/arch/arm64/include/asm/kvm_emulate.h
+> [ ... ]
+> > @@ -715,6 +715,19 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
+> [ ... ]
+> > +			if (!kvm_has_nv2(vcpu->kvm)) {
+> > +				vcpu->arch.hcrx_el2 |= (HCRX_EL2_NVnTTLB   |
+> > +							HCRX_EL2_NVnTTLBIS);
+> > +
+> > +				if (kvm_has_feat(kvm, ID_AA64ISAR0_EL1, TLB, OS))
+> > +					vcpu->arch.hcrx_el2 |= HCRX_EL2_NVnTTLBOS;;
 > 
-> By enabling ARM64_HAS_NV3, the fast-path checks now depend on kvm_has_nv3(),
-> which appears to require the guest to advertise NV3:
-> 
-> arch/arm64/include/asm/kvm_emulate.h:kvm_has_nv3() {
->     return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
->             cpus_have_final_cap(ARM64_HAS_NV3) &&
->             kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV3));
-> }
-> 
-> Since NV3 is explicitly hidden from guests (ID_AA64MMFR4_EL1.NV_frac is capped
-> at NV2P1), won't kvm_has_feat() always evaluate to false?
+> [Severity: Low]
+> This isn't a bug, but there's a stray double semicolon at the end of this
+> statement.
 
-Yes. The enablement is in the following patch.
+I'll fix that.
 
-> 
-> This would cause is_nested_nv3_ctxt() to always return false, skipping the
-> SYS_NVHCR_EL2 restore in L2 nested entry:
-> 
-> arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h:__sysreg_restore_el1_state() {
->     ...
->     if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
->         write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
->     ...
-> }
-> 
-> Will the physical CPU execute the L2 guest using an uninitialized or stale
-> SYS_NVHCR_EL2 value?
-
-No. This simply results in the NV2 behaviour.
-
-> 
-> [Severity: High]
-> Are there missing context synchronization events in this new fast-path?
-> 
-> When ARM64_HAS_NV3 is enabled, the code writes to the control-plane system
-> register SYS_NVHCR_EL2 without an immediate isb():
-> 
-> arch/arm64/kvm/hyp/vhe/switch.c:__compute_hcr() {
->     if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
->         write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
->     else
->         __vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
-> 
->     /* No ISB here */
->     guest_hcr = kvm_vcpu_apply_reg_masks(vcpu, HCR_EL2, 0);
->     ...
-> }
-> 
-> It also happens during state restore before returning:
-> 
-> arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h:__sysreg_restore_el1_state() {
->     ...
->     if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
->         write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
-> }
-> /* No ISB before return */
-> 
-> Since SYS_NVHCR_EL2 is a control-plane register, doesn't it require an isb()
-> as the very next instruction to prevent the CPU from executing subsequent
-> instructions with undefined pipeline state?
-
-Nonsense.
+Thanks,
 
 	M.
 
