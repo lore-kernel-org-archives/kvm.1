@@ -1,104 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894544457A2
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784759827; cv=none; b=PTmc7EfZ6n0pCLrYKcdrLA3hIDCqif4FL2j2FiHe/epmRrWUneYARy41JY1Y2Y6YEU2hNAyiQ+UfbhROCGLUGvDJCOvjdXPKRA9DXOtpgicBxnLJ5/uNa/+q2MeJ/Z7lluR+JZxbuYCSsPlO93d3/8nC1Yc07fEY+1o1ODZTjPw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784759827; c=relaxed/simple;
-	bh=s3JKsHKGIsrpDnQdhuAr/074k7lAmdznQBqtLplhEKk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5D443F4B9
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784759992; cv=pass; b=VTsKhIMoJNiV4/PKzF6QjDQ72Hxjd9iIISN1A4X/z9wl7dK9gFMaGMJ1ltKmPpsfNQsPf6t6REfzg+kpqULqTkcXjeIOihWZ/uH6+ScSO0IkLf+oQTKeAdxK1peu6csaIWY2DgjKS6gY6rMbK2bTWfpHyy2xlhy/wOdJBa3Qj20=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784759992; c=relaxed/simple;
+	bh=NUVtR6oLiqbMv011PJGxsr7p8RuOHEkFhONN8rzhZFc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WSu10HZwwgjcGZZm+NtgCZTt2hSYyAPZR+EtciuOQnicoD8UFh0A4alaWClXgllgKtgbwMnPzUgwEz57QdQaXU3fuLT3vPogzV459Dr45I852aMcToiqh9V6gtPXROo1Mokfn/zmBXPWa5/QeBMhX5WYnDvRXp558Yx6puKAySM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QcP5pl64; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=d4xCyJIhxcnZFCsVDk9jnIuVr7LAl6TS1iOd/Vay7qCjRx1SNofTd5aGO2YlSSDZqKpPO1a1uAKyASec2MX7L8sb5Y7u+WD/DuLkpMqR0giZYYVTUR1jOEaR9g/L5hSJMrrfowgbEDQ0qFl2gt1mM+5zJjJ4KjmUqR6zmdvn7nc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y7fntrTs; arc=pass smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QcP5pl64"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3885C1F00ACF
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784759825;
-	bh=2YyESR4ahS9/r9dLQjl3Q7ag7pvJGSQ/7mpTOXscFlk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QcP5pl640NDSvBZ3EcqOY88laU+v8MrgVDuq25G3NQOURHYCYdEXNnWDaMhMUOAaw
-	 Aj2S8tONFBxZ5JNgCK0URwCLizLgb6c0ocFJOU3VexPVrUKz1x5A1ksK6Fp+MK/aAi
-	 aw/WkrFsQYV9z0W8U/F56xRmaM1wA2NaTv+Sk9WUO+XMMo+33hQpXcO7zS0vG47kiF
-	 MpclwIgw3f7hbhYAYHh3vNtrSY/PUMAcPRj7u9+/uMXoV199XJyak0/JEt83JkXWtG
-	 gnZnz4+08iFzecFVU2ibNkyCX3+CBcSNnoJaBzIwLjcub4mR/Bf/oexJwk0zyRTiX0
-	 M9hq2+sQDutXA==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso9593419a12.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:37:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RouT4UB77u1Ntlf3+MfwPD5CLcUJHf0bVlFOhml45K5u1O3IWP67vpmzfE+iupZViDbUlU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7z/Wjuv+9t1XIRcfQ3KgjfxQHhwJpY0MYRH/qfn97pQQeptAh
-	3uUZBUfAgemLIOIkmXBEopm2qxuKXFMflCVb6M4BbK78sBJ0+17qCz1lWlGbubSWQgrbnauSz6E
-	PZ34PkOQK8RsDAhH7wuq9BDwYR4F4pEo=
-X-Received: by 2002:a17:907:70a:b0:c15:c323:36e5 with SMTP id
- a640c23a62f3a-c1c536b9134mr6297866b.10.1784759824012; Wed, 22 Jul 2026
- 15:37:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y7fntrTs"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-698411099d6so3688a12.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:39:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784759989; cv=none;
+        d=google.com; s=arc-20260327;
+        b=aLvI70yGA0KPIrJ/ZgaVoCIrNJh/NrB0C5w5Hgktpz16Gi1A/li00LwHbG3I7l09Iq
+         KM1hlv8x95tpLYnweM19YR0CBJuEzbSJhdlMDKSQMO4rOzlCAsFAfzDueLgGbMdwAGRv
+         BPHy6wMv4UR7Y/24NDu/AtfR2raAHIPcUeBw4g2LGbfx0EL50sFEXg4CIXC3/Qyi0+pd
+         lH4H+QsqIUJx8DSAPfsnBw9IVp55/TOUBK9JDEvW8L04TKkrpaT8KkwSfpuvdVjHMd1H
+         8Rw67OK8UIEX6I36Q3crqWd1gmZq/sBZbWXbdkEJI2tvE0srNlBXpBx9mkGTH1YWOj7d
+         3KvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
+        fh=qcbMT4joAdFN9KEqqJg2rlBc8O7Z5R3zpuO0fF00hRA=;
+        b=MAcm0rIi8TL8rQWeb+SD6mLrZON1W70GxzbQPxAL8lqrCMg44+bJChFSJGIMbPWl0A
+         E4sbdBpE/b6ojzVxqqJgHCzp9hqzQ3tlgOLCTXTfyfgzobKqDPdqRcCsFw098sYcCxvh
+         2X5losS2seuYKh5DiMiHiPNIa+8B+Mb46kZF8xzZlL996BaiGo/HV8d9rpDrSa232Cnt
+         +TmhM6TllmQPCo9C3Nx8+ChGOeKBD7XKcr2P2uV6lkYonJLcseeLiPMiArnlhJiWR3cx
+         mU0as93WwLPP3y4GtB2WEDPH1zLSx9u8E4YXy2cr6s0TXzKqsqgBOa9a6mw/0yotY45l
+         dLKw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784759989; x=1785364789; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
+        b=Y7fntrTseggu4KQlhRX5hBu1987v6J10Gf46k++7m856V0S+s6Acgw8d3TFjISi36W
+         3l5BjNBiDSLBcKtIY3aRmK4G/Nc6s2DUU/AksY+AyS2WLuTJm1ZChFyj4+ryJiA/nUV6
+         YgCNPB6LCyh29FUYFykoLL0myV4Y5zMUgMZGfdA9leiYJpQfJA76p1EmXZ2jIMZeOGLb
+         sx+r80CJTfqU/vcfgnDC1gfsOKp4WCq+wlxykjVw5WAex+pvFe0EM75kj6RHaogkFo4z
+         LbvvIILXONs6bXQVcxTjy+RooCB8V9BZsRXJ+cP/U3xDlOHAIrqgrJv/y+flQR5jtiTz
+         PukA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784759989; x=1785364789;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
+        b=UVp7UjZK6uhccx9ofOE/78/zX8Q5FUy1lCyg0SausEKt7u4Ifut8A9DpuAfak3ya1R
+         kfyXLg8sskQguLj/dur+ZeUlJpvt3Ed1O3NPX2lAzgqDgoonuqevUvZFEfxYrlQNjIya
+         SFWZHPBGMXeP84rgqZvrMt85tGZ4ticUD1tMi8vBucewvwK9v8TklFaddcz4N9MgGWMr
+         I0fIk6D3UoJnyDdqH/J4QjSxzH5woGh9F5QueJtDL5zB0Rj+VSp9NLh98qRmAw+ymrSr
+         xadY2YkApE4m5/r9DaPcPRI2ewAnztienEQ8wqZ2VWi15AqmcACg32W75wsRlQkbCYvp
+         Eelw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpxr3qcqeFIabmU34kTxOsZPHCkbyvRnY6zuB318dIdprdXcZTEzuk433rhN6jz5/z8TnI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySSplRCzT73mzHuo/8FxHoKA7CeE9Rapc6ukqVqLHUxs3+H1XL
+	Sr31r+qVD4uS1h0Q6LXALnimKnadvQydaj7sDupdh2UncWZygRQSI6bGuXeoCTkZ29GHmAJ3++b
+	Nzr13qH5ZDpkNmxw9Ijei52aCfwiz9MrAv43jy+Ou
+X-Gm-Gg: AR+sD10ZxNDQTJVfFthjdCEvxbm6BHpPnkpRiyMTLcBvS4Al/QJU32k8PsZPMS1UntX
+	ULV+j9J5sIsRcME7TkMkE/nci9snVYHxGV1qm73xfSzkC044Moenrj3yAz4P6OIEVmkZ2ClXThO
+	yQSDI/+EKiLzA7Y1EltaKRnz06C8tiRBmoFdlfva/fQhSk8CU0FAHg9YJBPmZzC/Qlx45IqpKI1
+	LX0ZJkhNw35fEiRS/xDKhkklGtzCQ8SFM/xvZwQksNL9x4gBsu7tKo+mqrpbg==
+X-Received: by 2002:aa7:d552:0:b0:697:7f69:48e3 with SMTP id
+ 4fb4d7f45d1cf-69f60efc2bemr19773a12.10.1784759988897; Wed, 22 Jul 2026
+ 15:39:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-4-yosry@kernel.org>
- <amFDk2aenQTZUHs-@google.com>
-In-Reply-To: <amFDk2aenQTZUHs-@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 22 Jul 2026 15:36:52 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMjh0gJkAFKioX3Ed_oQY+UiH7WYJjPt-MyJODeGUd=vg@mail.gmail.com>
-X-Gm-Features: AUfX_mzxSJixYfVRoImIMU9jl0r_40QkOzGd706PbsvIjpA6ZpND0D4TWNhwgfQ
-Message-ID: <CAO9r8zMjh0gJkAFKioX3Ed_oQY+UiH7WYJjPt-MyJODeGUd=vg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 03/25] KVM: VMX: Generalize VPID allocation to be vendor-neutral
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
+ <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+ <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+ <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
+ <amE_nPDem-imSfqF@google.com>
+In-Reply-To: <amE_nPDem-imSfqF@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 22 Jul 2026 15:39:36 -0700
+X-Gm-Features: AUfX_mw2448vDanCp0JpGtZzAoOCYEK2pjcZPynQtAfGrdDwjCakoF3WFSKCnB0
+Message-ID: <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
 To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 3:26=E2=80=AFPM Sean Christopherson <seanjc@google.=
+On Wed, Jul 22, 2026 at 3:09=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index 9368a71336fe4..e021ed562502f 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -8192,4 +8192,68 @@ void kvm_mmu_init_memslot_memory_attributes(stru=
-ct kvm *kvm,
-> >               }
-> >       }
-> >  }
-> > +
-> > +static struct {
-> > +     spinlock_t      lock;
-> > +     unsigned long   *bitmap;
-> > +     unsigned int    nr;
-> > +} tlb_tags;
-> > +
-> > +int kvm_init_tlb_tags(unsigned int nr)
-> > +{
-> > +     if (WARN_ON_ONCE(!nr))
+> On Tue, Jul 14, 2026, Jim Mattson wrote:
+> > On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> >
+> > > What complications?  Advertise the lowest common feature set for the =
+pool, just
+> > > like userspace has to do for literally every other feature.
+> >
+> > The problem with passing through the number of host ASIDs to the guest
+> > is what to do when the combined host plus guest usage exceeds the
+> > number of available ASIDs, particularly when FlushByASID is not
+> > available.
 >
-> I think we should cap @nr at 0xffff, i.e. at VMX_NR_VPIDS -1.  If we end =
-up on
+> But that doesn't have anything to do with the number of ASIDs that KVM en=
+umerates
+> to L1.  As of this series, the number ASIDs KVM will consume in hardware =
+is a
+> property of the total number of vCPUs in the system (one ASID per vCPU, p=
+lus one
+> more for nested usage).  E.g. if KVM advertises 10000 ASIDs to L1, all 10=
+000
+> (10001, if ASID=3D0 counts?) of the those ASIDs will map to svm->nested.a=
+sid02.
 
-Why not VMX_NR_VPIDS (i.e. 0x10000) like the current implementation?
-Is it to avoid allocating an extra long just for one 1 bit? It would
-be a change of behavior for VMX tho, not that anyone would care.
+That's not the only conceivable implementation. KVM could advertise 64
+ASIDs to L1 and reserve the corresponding non-zero ASIDs for L2 VMs
+(i.e. the first L1 ASID is 64). Then, vmcb02.asid =3D vmcb12.asid &
+0x3f.
 
-If we do this, I'd rather replace VMX_NR_VPIDS with a generic
-MAX_NR_TLB_TAGS, and just have the VMX code use that. WDYT?
-
-> a system (e.g. in a VM) that supports 4 billion ASIDs, KVM will burn 64Mi=
-B for
-> the bitmap, without any reasonable hope of actually consuming anywhere ne=
-ar that
-> many ASIDs.  Burning at most 1024 bytes is far more reasonable.
+> Of course, that completely undermines my statement about suboptimal perfo=
+rmance:
 >
-> To provide some defence against future systems, maybe pr_warn() or someth=
-ing if
-> the number of ASIDs is capped?
+>   And potentially suboptimal for performance.  There might be a legitimat=
+e reason
+>   why a CPU generation advertises X instead of Y.
+>
+> My bogus assertion about performance notwithstanding, I still think adver=
+tising
+> what hardware supports is the simple, sane approach.  Because at the end =
+of the
+> day it's just that: advertising.  Userspace can do whatever it wants, inc=
+luding
+> peeking at raw CPUID.  E.g. if we want to pull a stupid and emulate the b=
+ehavior
+> of ignoring "unsupported" ASIDs, then we'd need to do that based on users=
+pace's
+> defined CPUID model, not KVM's advertised support.
 
-Sounds good.
+But you could refuse a userspace CPUID model that claims more ASIDs
+than KVM supports.
+
+And __nested_copy_vmcb_control_to_cache() already ignores a bunch of
+unsupported bits. I don't see how this is any different. That's how
+the hardware is implemented. Intel likes to fail VM-entry. AMD prefers
+to just ignore hypervisor stupidity and move on.
