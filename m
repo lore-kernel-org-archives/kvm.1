@@ -1,161 +1,114 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5D443F4B9
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54257215075
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 22:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784759992; cv=pass; b=VTsKhIMoJNiV4/PKzF6QjDQ72Hxjd9iIISN1A4X/z9wl7dK9gFMaGMJ1ltKmPpsfNQsPf6t6REfzg+kpqULqTkcXjeIOihWZ/uH6+ScSO0IkLf+oQTKeAdxK1peu6csaIWY2DgjKS6gY6rMbK2bTWfpHyy2xlhy/wOdJBa3Qj20=
+	t=1784760466; cv=pass; b=K5VYEuP5Obf9L9nPaoN5OT3J6nwkFmpngv12JykHPtO+BBQWArRZNTUpkdKDzjx0bScu69rkOn4iNZqZtoVCdQhdy0LCpRiSmuSsihHE2z9JLbVx726CtlNAEXLR1SHVbZe385sxWivD1laetimQtwk4atsxs5T5dMOq5CWulWg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784759992; c=relaxed/simple;
-	bh=NUVtR6oLiqbMv011PJGxsr7p8RuOHEkFhONN8rzhZFc=;
+	s=arc-20240116; t=1784760466; c=relaxed/simple;
+	bh=pRtzImDlruyh8fdPLiaDvJbyRN8Voc0nNsK55T/akoo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d4xCyJIhxcnZFCsVDk9jnIuVr7LAl6TS1iOd/Vay7qCjRx1SNofTd5aGO2YlSSDZqKpPO1a1uAKyASec2MX7L8sb5Y7u+WD/DuLkpMqR0giZYYVTUR1jOEaR9g/L5hSJMrrfowgbEDQ0qFl2gt1mM+5zJjJ4KjmUqR6zmdvn7nc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y7fntrTs; arc=pass smtp.client-ip=209.85.208.44
+	 To:Cc:Content-Type; b=N5UAPye0mk7coerMwmy4E4vJwbVGqgJ4pqXJqN6NnxcotZe2ZGSG3T2KPPQPMp64/aXc2Al5seX4kiEueEya7+sLFxSnQOktsTS9a+g13GxPzEQ6gpCnlbjrCh9RYh31yC5O91uyaqudke0254g8C6gldvc0j2q7IwoH8GiEn1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XUrSlAZZ; arc=pass smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y7fntrTs"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-698411099d6so3688a12.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:39:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784759989; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XUrSlAZZ"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso1325a12.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 15:47:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784760464; cv=none;
         d=google.com; s=arc-20260327;
-        b=aLvI70yGA0KPIrJ/ZgaVoCIrNJh/NrB0C5w5Hgktpz16Gi1A/li00LwHbG3I7l09Iq
-         KM1hlv8x95tpLYnweM19YR0CBJuEzbSJhdlMDKSQMO4rOzlCAsFAfzDueLgGbMdwAGRv
-         BPHy6wMv4UR7Y/24NDu/AtfR2raAHIPcUeBw4g2LGbfx0EL50sFEXg4CIXC3/Qyi0+pd
-         lH4H+QsqIUJx8DSAPfsnBw9IVp55/TOUBK9JDEvW8L04TKkrpaT8KkwSfpuvdVjHMd1H
-         8Rw67OK8UIEX6I36Q3crqWd1gmZq/sBZbWXbdkEJI2tvE0srNlBXpBx9mkGTH1YWOj7d
-         3KvA==
+        b=JMXVFyjXeySzK57wBJPHQ9U63THp0b8DrxsSPA4TeS4QV/OqXl2roD9JSRhoSdZiIa
+         qBDBS8R0l/V0c+XDEGndYMltAgZ0LnVwMaWjkE68O2r45xTgk7jeUUrmLYfrU/oWnRUZ
+         CID9VNGvpAF3gsbN8/UYmzlGSeFk8XAp6GjDH0mpNdKwIC+Y5a2gm1anLebKVFLtKtiw
+         uYa9TcFNVaA9dtXpAjI9Xt49PgpAM0nbZY/jg9vPI+CTnut4jME3y7wwmttuo2pmYUfm
+         VoqNqQJK4fWWfGc5sGsSnwx5RYjr34V1SJghVoVqkGNqOQDV8Vkwmxle5fGjOCtQBmqo
+         M/ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
-        fh=qcbMT4joAdFN9KEqqJg2rlBc8O7Z5R3zpuO0fF00hRA=;
-        b=MAcm0rIi8TL8rQWeb+SD6mLrZON1W70GxzbQPxAL8lqrCMg44+bJChFSJGIMbPWl0A
-         E4sbdBpE/b6ojzVxqqJgHCzp9hqzQ3tlgOLCTXTfyfgzobKqDPdqRcCsFw098sYcCxvh
-         2X5losS2seuYKh5DiMiHiPNIa+8B+Mb46kZF8xzZlL996BaiGo/HV8d9rpDrSa232Cnt
-         +TmhM6TllmQPCo9C3Nx8+ChGOeKBD7XKcr2P2uV6lkYonJLcseeLiPMiArnlhJiWR3cx
-         mU0as93WwLPP3y4GtB2WEDPH1zLSx9u8E4YXy2cr6s0TXzKqsqgBOa9a6mw/0yotY45l
-         dLKw==;
+        bh=pRtzImDlruyh8fdPLiaDvJbyRN8Voc0nNsK55T/akoo=;
+        fh=cDV+asD0F9CPZny5O8nBFMTR20bPAx6niQA82ozmKKw=;
+        b=aaCzmbXfdyheXBlFYOp+SzG6Udp1FXrvljAf+JlxwlAD3NTYX5a3UhD94/NpKpD4ti
+         7TXrIvkHmiprCo4W8TOxdMbBdBBJLm+ZzNg7vLms2yU4hsY3Cf7RLZMW6ofvBI4Z1JVj
+         BZHIaSt7lOwLwImq+2a4JPFNuvqW9h5gU6O4efFd2lFSaT3twXS2tAjGfl4MamKWlrJF
+         tjQCCSZkzBADi5Cm4mVmFmkqhmOw3yFeCHOhjjGZfZpnDrEUHf2nN2MJ3lmgo59r/A9s
+         TEWf4vmZWL6fIF2XSPuduGNF7PGjFujBKB6N9/k/Y6NxpdpKs/+BJJj78IzTreRiihWZ
+         FOtA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784759989; x=1785364789; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784760464; x=1785365264; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
-        b=Y7fntrTseggu4KQlhRX5hBu1987v6J10Gf46k++7m856V0S+s6Acgw8d3TFjISi36W
-         3l5BjNBiDSLBcKtIY3aRmK4G/Nc6s2DUU/AksY+AyS2WLuTJm1ZChFyj4+ryJiA/nUV6
-         YgCNPB6LCyh29FUYFykoLL0myV4Y5zMUgMZGfdA9leiYJpQfJA76p1EmXZ2jIMZeOGLb
-         sx+r80CJTfqU/vcfgnDC1gfsOKp4WCq+wlxykjVw5WAex+pvFe0EM75kj6RHaogkFo4z
-         LbvvIILXONs6bXQVcxTjy+RooCB8V9BZsRXJ+cP/U3xDlOHAIrqgrJv/y+flQR5jtiTz
-         PukA==
+        bh=pRtzImDlruyh8fdPLiaDvJbyRN8Voc0nNsK55T/akoo=;
+        b=XUrSlAZZh+nWcBUuONMsF0W5KFeWEFcn2nobVpjyLbMFzEgiekTQgpX1kLCe5DqYvr
+         dpKwnTUTxzlklCyJJv8Tqgn71AxOpDcE4s1kbu4vW2P6YKRSAqzyFKhLnrKUgd+x6ene
+         dv5EoJKymMFCMkOwOt17drxfZYVVlmo93yR6c+8qbiWH/Bp8jRCzE6vPXvabSmS/vNMb
+         +behUir8Njv39IPvxL+5QUFz5XzYhWuJTKbnRM0yR0z8h7C9VeRFBxkGteLVTWIkfc1O
+         4ob37YstuS2HTjc1r+H0sSI9NPEV86ip7TZ5n99Mjdr4+ZHpDaVy6jahiPf2OFY1WPk4
+         wXPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784759989; x=1785364789;
+        d=1e100.net; s=20251104; t=1784760464; x=1785365264;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=67VankUU07L+hYpL8u5F7hoQyz9z0B3ePv3ZojbcAGs=;
-        b=UVp7UjZK6uhccx9ofOE/78/zX8Q5FUy1lCyg0SausEKt7u4Ifut8A9DpuAfak3ya1R
-         kfyXLg8sskQguLj/dur+ZeUlJpvt3Ed1O3NPX2lAzgqDgoonuqevUvZFEfxYrlQNjIya
-         SFWZHPBGMXeP84rgqZvrMt85tGZ4ticUD1tMi8vBucewvwK9v8TklFaddcz4N9MgGWMr
-         I0fIk6D3UoJnyDdqH/J4QjSxzH5woGh9F5QueJtDL5zB0Rj+VSp9NLh98qRmAw+ymrSr
-         xadY2YkApE4m5/r9DaPcPRI2ewAnztienEQ8wqZ2VWi15AqmcACg32W75wsRlQkbCYvp
-         Eelw==
-X-Forwarded-Encrypted: i=1; AHgh+Rpxr3qcqeFIabmU34kTxOsZPHCkbyvRnY6zuB318dIdprdXcZTEzuk433rhN6jz5/z8TnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySSplRCzT73mzHuo/8FxHoKA7CeE9Rapc6ukqVqLHUxs3+H1XL
-	Sr31r+qVD4uS1h0Q6LXALnimKnadvQydaj7sDupdh2UncWZygRQSI6bGuXeoCTkZ29GHmAJ3++b
-	Nzr13qH5ZDpkNmxw9Ijei52aCfwiz9MrAv43jy+Ou
-X-Gm-Gg: AR+sD10ZxNDQTJVfFthjdCEvxbm6BHpPnkpRiyMTLcBvS4Al/QJU32k8PsZPMS1UntX
-	ULV+j9J5sIsRcME7TkMkE/nci9snVYHxGV1qm73xfSzkC044Moenrj3yAz4P6OIEVmkZ2ClXThO
-	yQSDI/+EKiLzA7Y1EltaKRnz06C8tiRBmoFdlfva/fQhSk8CU0FAHg9YJBPmZzC/Qlx45IqpKI1
-	LX0ZJkhNw35fEiRS/xDKhkklGtzCQ8SFM/xvZwQksNL9x4gBsu7tKo+mqrpbg==
-X-Received: by 2002:aa7:d552:0:b0:697:7f69:48e3 with SMTP id
- 4fb4d7f45d1cf-69f60efc2bemr19773a12.10.1784759988897; Wed, 22 Jul 2026
- 15:39:48 -0700 (PDT)
+        bh=pRtzImDlruyh8fdPLiaDvJbyRN8Voc0nNsK55T/akoo=;
+        b=MARB3ake3vPfQtmys/fPyPGkptFfKlLvxcVVjcNzJRxNGAV4GIMpipIt6I/8Q4C3W+
+         D0LuJl5Bd6eT30G5eIQiKNfulWUIiOPds5UpT13SVsIHmcTXaMMW5vRqjDwaB0v6Jn5a
+         qR2VzI6gBy7LgQ53meq/Hk5MtRinVIH2zsGq5MxjftHLThLOoWG2jasR2yscPGG6MH7S
+         NEJ7kH04QjjHLhUKtRgkuKANJh8+cy8qo/a0Az2J+yOAbcxFhdH08QSiPgFZMnrUql0Y
+         lEsQGgAq/wKzlcAh9FQYrzLOmlqvZ3UY8hWdCMQT07YU0YlQSCvtVr0FHhF19CjwbR7L
+         bElw==
+X-Forwarded-Encrypted: i=1; AHgh+Rojc1N7cfFvmh2FfgIdE8iW9RyxtYZvMFZZGUrPMqN5Hqb6x9FOCcgoabB0GQLBCDam7VU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOtXVeTEMkuaarY+sqDtGrtzyr7nH/zfIBXRFFF/yuNgeVtK/I
+	mWBWTXwqj2askTcwY41l5LCSc9HQdfdlTzim72+nYRm2Nz8Pz79S22ZFOLFkyvKcbmODQBxsN+E
+	wzhFvHIzbZtojcHJv+LqfmdVLCDvWbXe8EPHWQCGS
+X-Gm-Gg: AR+sD12/zMWF+QUR+OTgfRTn3OBCUIHbdxUMojkDGgCJoESW4LiAF5ynrM8tQkXpopg
+	u8nKjpdJOCJIFglLKDR+oYHsr8fCSXmRgDcJ9WW2XyAAlL0e0LmLb0sjDKF+h6niiKMfXaTdnm6
+	o7quMSGy9vFVoipoHLVoEaYxkjeU8zNyaEhCz8DWlmq1Jult9qY9ph2CF/8t2a9gdG8Hf2LRZhq
+	P/otVRTiamgfzA7WTdNV2VPjmXmIZOYk3UcHoDTrVoiGsDUKDR1pbi9i0LSNCDAy+uYWgyW
+X-Received: by 2002:a05:6402:4407:b0:69f:7546:7563 with SMTP id
+ 4fb4d7f45d1cf-69f75468289mr119a12.3.1784760463094; Wed, 22 Jul 2026 15:47:43
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
- <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
- <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
- <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
- <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
- <amE_nPDem-imSfqF@google.com>
-In-Reply-To: <amE_nPDem-imSfqF@google.com>
+References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-4-zide.chen@intel.com>
+In-Reply-To: <20260629231938.15129-4-zide.chen@intel.com>
 From: Jim Mattson <jmattson@google.com>
-Date: Wed, 22 Jul 2026 15:39:36 -0700
-X-Gm-Features: AUfX_mw2448vDanCp0JpGtZzAoOCYEK2pjcZPynQtAfGrdDwjCakoF3WFSKCnB0
-Message-ID: <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 22 Jul 2026 15:47:30 -0700
+X-Gm-Features: AUfX_mwsKRrItuub7mqDliu5nM9vDpJlbCwcoW3JxcK-saJ3lI7y8ioUokIfKyQ
+Message-ID: <CALMp9eR=UfzHqCt2P2ROpNP8eb681QHLQwJF3JGxGS9x4yx8Aw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/8] KVM: x86/pmu: Rename and move vcpu_get_perf_capabilities()
+ to pmu.h
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 3:09=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Mon, Jun 29, 2026 at 4:28=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
 >
-> On Tue, Jul 14, 2026, Jim Mattson wrote:
-> > On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> >
-> > > What complications?  Advertise the lowest common feature set for the =
-pool, just
-> > > like userspace has to do for literally every other feature.
-> >
-> > The problem with passing through the number of host ASIDs to the guest
-> > is what to do when the combined host plus guest usage exceeds the
-> > number of available ASIDs, particularly when FlushByASID is not
-> > available.
+> This is in preparation for it to be called from common x86 code, for
+> example kvm_need_rdpmc_intercept(), to check the guest's PERF_METRICS
+> capability.
 >
-> But that doesn't have anything to do with the number of ASIDs that KVM en=
-umerates
-> to L1.  As of this series, the number ASIDs KVM will consume in hardware =
-is a
-> property of the total number of vCPUs in the system (one ASID per vCPU, p=
-lus one
-> more for nested usage).  E.g. if KVM advertises 10000 ASIDs to L1, all 10=
-000
-> (10001, if ASID=3D0 counts?) of the those ASIDs will map to svm->nested.a=
-sid02.
-
-That's not the only conceivable implementation. KVM could advertise 64
-ASIDs to L1 and reserve the corresponding non-zero ASIDs for L2 VMs
-(i.e. the first L1 ASID is 64). Then, vmcb02.asid =3D vmcb12.asid &
-0x3f.
-
-> Of course, that completely undermines my statement about suboptimal perfo=
-rmance:
+> Rename it to kvm_vcpu_get_perf_caps() to indicate that it's part of
+> the common API, and shorten _capabilities to _caps.
 >
->   And potentially suboptimal for performance.  There might be a legitimat=
-e reason
->   why a CPU generation advertises X instead of Y.
+> No functional change intended.
 >
-> My bogus assertion about performance notwithstanding, I still think adver=
-tising
-> what hardware supports is the simple, sane approach.  Because at the end =
-of the
-> day it's just that: advertising.  Userspace can do whatever it wants, inc=
-luding
-> peeking at raw CPUID.  E.g. if we want to pull a stupid and emulate the b=
-ehavior
-> of ignoring "unsupported" ASIDs, then we'd need to do that based on users=
-pace's
-> defined CPUID model, not KVM's advertised support.
-
-But you could refuse a userspace CPUID model that claims more ASIDs
-than KVM supports.
-
-And __nested_copy_vmcb_control_to_cache() already ignores a bunch of
-unsupported bits. I don't see how this is any different. That's how
-the hardware is implemented. Intel likes to fail VM-entry. AMD prefers
-to just ignore hypervisor stupidity and move on.
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
