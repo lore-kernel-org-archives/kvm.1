@@ -1,117 +1,161 @@
-Received: from mx-2023-1.gwdg.de (mx-2023-1.gwdg.de [134.76.10.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD4C42FCC9
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.76.10.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C17D3BF694;
+	Wed, 22 Jul 2026 09:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784710952; cv=none; b=LtjwHPLMnxdJXlXLaqpSr/nDRQ5maGk1m+7C1xmCW+Is1g6MzNACz4ixWZQZiu8xTRDSfswBnow/zADj2pRhqM4PjpO5og1jQ+GXGkgUwWyqGrAyQxY1eNAuWZy1YE1460vRu/DrrgJ/N3qz/CRwIkTBIoPdQ/r7pcLwAkYPRyg=
+	t=1784711051; cv=none; b=p4YnuJNxZBSnZu9qujnpogVhJejUngalA5L2cwfSke0PB1nyFu3VwNw2ow/Fi+fi/b3ix7/M+99vn5QYTeUP6aWNaPYWY1tebkCz/Bur9Pm705rEP7rGVQ7ennh8gO5BAJtMKL0r4/cdJMwv3GYJYCGG7n3/Z499mDf4NW9ZSyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784710952; c=relaxed/simple;
-	bh=saTFwzZvLCE4/uXSR0koNnODP53mQ0MBMHx7YYN6M2Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qny+AJIVaw5vu7wZO7OmQvfyPHSOwM1FmJVwli6TXakObeD6Bc49tpuYfV4ob9iAvdchhkoD02qm+YUk570Y2tqu+GKWiBsfD1sKvFXK5zHIgajhrlHZzZjZcnu6CkG/PhnQ+wbEoFcsUOKIHTBP1s3uezzJ5TThv80gSp+U2cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cispa.de; spf=pass smtp.mailfrom=cispa.de; dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b=LDbdr3rh; arc=none smtp.client-ip=134.76.10.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cispa.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cispa.de
+	s=arc-20240116; t=1784711051; c=relaxed/simple;
+	bh=z4AiPrQLjqWpyNXTYyZVEuuViwLpF4jn/odKF2+PCIY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fWC7RCSCyqCJ66CXXyyiP6dXBWx/ZauXD5w5mle5J2ZuWRAOU2N9+H0evFSVO00L7EW4hMhvRJ+dGB1zDStEc4Otg807CXdRot9lqCxAtjKc+7GFh0kXKypg6RUJa6wI1EtwZ1ScSJJEUDdeKYdsNsUEHrBu3vdu+KSvw5Vkkpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4OITOtI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cispa.de header.i=@cispa.de header.b="LDbdr3rh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cispa.de;
-	s=2023-rsa; h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:CC:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=VvcHkFUOc73uwG/vA8ptfkg/bY1UZNlRLMt5NHLH7zo=; b=LDbdr3rhACDAV1qWSpMakpBNqI
-	RR6an53k6huEgEUdpR/ZsmUCZGSbx8gDs+W54pH7VT3OMcOsxrOYR7hdlTrn4mu1I+Op+mCs6seem
-	UdnoKwZfGcag1EO/X6XrJWbosBd7nxm2AfB5BBbFjaVBjzwOfYi0miLn0RJAhuh6mNkxdsiOSll0r
-	ITiACkURu9pPQ6WwSXM8baYThGSGlIOCXmtaB1n9yVjthsqRExtxb9byUqzUO9HKjWn2jSTiZ8cTl
-	Z0qMvh0YH6ZAnDJzLgLqTJDlQQr2jO2MQrr0ZeM6bZR5ecc+0f8nBw0ko+fJD64AODMVWHCrS9Wwo
-	lvQ1BzHw==;
-Received: from mailer.gwdg.de ([134.76.10.26]:54020)
-	by mailer.gwdg.de with esmtp (GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1wmSbk-00D6yZ-26;
-	Wed, 22 Jul 2026 10:47:16 +0200
-Received: from mbx19-gwd-01.um.gwdg.de ([10.108.142.50] helo=email.gwdg.de)
-	by mailer.gwdg.de with esmtps (TLS1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-	(GWDG Mailer)
-	(envelope-from <amirmohammad.eftekhar@cispa.de>)
-	id 1wmSbk-0004cj-1x;
-	Wed, 22 Jul 2026 10:47:16 +0200
-Received: from eftekhar-ubuntu.tu-dortmund.de (10.250.9.199) by
- mbx19-gwd-01.um.gwdg.de (10.108.142.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Wed, 22 Jul 2026 10:47:16 +0200
-From: <amirmohammad.eftekhar@cispa.de>
-To: <kvm@vger.kernel.org>
-CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
-	<pbonzini@redhat.com>, <rossow@cispa.de>, Amirmohammad Eftekhar
-	<amirmohammad.eftekhar@cispa.de>
-Subject: [PATCH] KVM: SVM: use wrmsrq_safe() when writing the nested TSC ratio MSR
-Date: Wed, 22 Jul 2026 10:47:02 +0200
-Message-ID: <20260722084702.1028983-2-amirmohammad.eftekhar@cispa.de>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
-References: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4OITOtI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36671F000E9;
+	Wed, 22 Jul 2026 09:04:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784711050;
+	bh=/sfMPRZ+tYiBY43HG7e6IFEmMKJcuI9WPwzczkmDk2g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=N4OITOtIbnkS75txVPTxqd3EmJAFkUWJeVw1h0hnCNmcmZ7p7tEXrG2yAquzpCkAs
+	 X9B4bWs959kGR9SElzCCwZr6tBcYmrmdG6bipfWN+5BaA3tWl3vBMEKh3Ps3vObmH9
+	 hG5/cJ9ENET2jgTNgHhvUzqpr0humyUJTrfok4q4VTrdcCF9VQ9oZMRTjJ8ieS8GKI
+	 B7wPZzgRB6heh8ZShMWmitW7Ti2gNo3JwEJcP0SItSXrfhg0WpJ6fqOAABoHoeGauv
+	 YGHzLb0mZtxZe3fu3puubGz8WSzSkzvPoXR1kbfK84Qa3MpkyQqLTzK2fHKYs4uBiK
+	 6SuFU8x76UCLg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wmSs4-00000007Y4l-17Lq;
+	Wed, 22 Jul 2026 09:04:08 +0000
+Date: Wed, 22 Jul 2026 10:04:07 +0100
+Message-ID: <86mrvje6pk.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvmarm@lists.linux.dev,
+	"Oliver Upton" <oupton@kernel.org>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v3 26/28] KVM: arm64: Add FEAT_NV3 detection
+In-Reply-To: <20260722085331.E34C61F000E9@smtp.kernel.org>
+References: <20260722074234.3330999-1-maz@kernel.org>
+	<20260722074234.3330999-27-maz@kernel.org>
+	<20260722085331.E34C61F000E9@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MBX19-SUB-07.um.gwdg.de (10.108.142.72) To
- mbx19-gwd-01.um.gwdg.de (10.108.142.50)
-X-Virus-Scanned: (clean) by clamav
-X-Spam-Level: -
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvmarm@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+On Wed, 22 Jul 2026 09:53:31 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] KVM's FEAT_NV3 fast-path evaluates to false for all guests, causing stale SYS_NVHCR_EL2 state during L2 nested entry.
+> - [High] Writes to SYS_NVHCR_EL2 lack required immediate Context Synchronization Event (ISB).
+> --
+> 
+> --- Patch [26]: [PATCH v3 26/28] KVM: arm64: Add FEAT_NV3 detection ---
+> commit e5daceb215a787136ab61f9dafcd9ffe40f4346c
+> Author: Marc Zyngier <maz@kernel.org>
+>     
+>     KVM: arm64: Add FEAT_NV3 detection
+> 
+> This commit adds the FEAT_NV3 detection code to cpufeature.c by introducing
+> the ARM64_HAS_NV3 capability. It engages the FEAT_NV3 fast-path in KVM now
+> that the infrastructure is in place.
+> 
+> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > index c9c124b0ccc8e..6ae1c816e2010 100644
+> > --- a/arch/arm64/kernel/cpufeature.c
+> > +++ b/arch/arm64/kernel/cpufeature.c
+> > @@ -2627,6 +2627,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+> >  		.matches = has_cpuid_feature,
+> >  		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2P1)
+> >  	},
+> > +	{
+> > +		.desc = "FEAT_NV3",
+> > +		.capability = ARM64_HAS_NV3,
+> 
+> [Severity: High]
+> Could engaging this capability break nested virtualization on NV3 hardware?
+> 
+> By enabling ARM64_HAS_NV3, the fast-path checks now depend on kvm_has_nv3(),
+> which appears to require the guest to advertise NV3:
+> 
+> arch/arm64/include/asm/kvm_emulate.h:kvm_has_nv3() {
+>     return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
+>             cpus_have_final_cap(ARM64_HAS_NV3) &&
+>             kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV3));
+> }
+> 
+> Since NV3 is explicitly hidden from guests (ID_AA64MMFR4_EL1.NV_frac is capped
+> at NV2P1), won't kvm_has_feat() always evaluate to false?
 
-__svm_write_tsc_multiplier() writes vcpu->arch.tsc_scaling_ratio to the
-physical MSR_AMD64_TSC_RATIO with a plain wrmsrq().  Under nested TSC
-scaling the ratio is a composed value (see the companion x86.c change),
-and a composed value can set bits above the MSR's 40-bit width; those
-are reserved bits that architecturally fault (#GP) the WRMSR.  Today
-only the EX_TYPE_WRMSR extable stands between a guest-influenced ratio
-and a host #GP oops in ring 0 -- on a build or path without it the host
-faults.
+Yes. The enablement is in the following patch.
 
-Do not depend on the extable for a guest-influenced MSR write: use
-wrmsrq_safe(), and on failure keep the previous ratio (don't update the
-current_tsc_ratio cache) and warn.  Defense in depth alongside bounding
-the composed ratio at its source.
+> 
+> This would cause is_nested_nv3_ctxt() to always return false, skipping the
+> SYS_NVHCR_EL2 restore in L2 nested entry:
+> 
+> arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h:__sysreg_restore_el1_state() {
+>     ...
+>     if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
+>         write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
+>     ...
+> }
+> 
+> Will the physical CPU execute the L2 guest using an uninitialized or stale
+> SYS_NVHCR_EL2 value?
 
-Signed-off-by: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
----
- arch/x86/kvm/svm/svm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+No. This simply results in the NV2 behaviour.
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 4d2bacd00ec4..d7f2202b7c45 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -533,7 +533,18 @@ static void __svm_write_tsc_multiplier(u64 multiplier)
- 	if (multiplier == __this_cpu_read(current_tsc_ratio))
- 		return;
- 
--	wrmsrq(MSR_AMD64_TSC_RATIO, multiplier);
-+	/*
-+	 * multiplier is derived from the guest-influenced nested TSC scaling
-+	 * ratio and can, on a composed nested value, set bits above the 40-bit
-+	 * MSR_AMD64_TSC_RATIO field.  A plain wrmsrq() would #GP in host ring 0
-+	 * (caught only by the WRMSR extable); never let a guest-influenced
-+	 * value fault the host MSR write regardless of the compose bound.
-+	 */
-+	if (wrmsrq_safe(MSR_AMD64_TSC_RATIO, multiplier)) {
-+		pr_warn_ratelimited("SVM: rejected out-of-range TSC ratio %#llx\n",
-+				    multiplier);
-+		return;
-+	}
- 	__this_cpu_write(current_tsc_ratio, multiplier);
- }
- 
+> 
+> [Severity: High]
+> Are there missing context synchronization events in this new fast-path?
+> 
+> When ARM64_HAS_NV3 is enabled, the code writes to the control-plane system
+> register SYS_NVHCR_EL2 without an immediate isb():
+> 
+> arch/arm64/kvm/hyp/vhe/switch.c:__compute_hcr() {
+>     if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
+>         write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
+>     else
+>         __vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
+> 
+>     /* No ISB here */
+>     guest_hcr = kvm_vcpu_apply_reg_masks(vcpu, HCR_EL2, 0);
+>     ...
+> }
+> 
+> It also happens during state restore before returning:
+> 
+> arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h:__sysreg_restore_el1_state() {
+>     ...
+>     if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
+>         write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
+> }
+> /* No ISB before return */
+> 
+> Since SYS_NVHCR_EL2 is a control-plane register, doesn't it require an isb()
+> as the very next instruction to prevent the CPU from executing subsequent
+> instructions with undefined pipeline state?
+
+Nonsense.
+
+	M.
+
 -- 
-2.34.1
-
+Without deviation from the norm, progress is not possible.
