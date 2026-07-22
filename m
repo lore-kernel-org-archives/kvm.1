@@ -1,393 +1,324 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7722135AD;
-	Wed, 22 Jul 2026 07:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BDD46EC76;
+	Wed, 22 Jul 2026 07:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784704926; cv=none; b=fxJmCvAu52XGmVes2KR8rWyv1708XU7lFX1eoSrOUrvv+C+UzQL1u1YojnfygW61/D6ZaICXnRQyBQSFmlbfd1NGnl6OeCt6Dh+yg3alm1Pw6fm8qPB5yOS7l3XyEUbi+XvMWe666wG94O8v1PqexlEGyi3hoejUmrCPSHq71J0=
+	t=1784705650; cv=none; b=Ja5lcfm34jevdAw0tbikE2vn1iiYbBdSWNwwicprIecDuN2YY/eFsh8ISa89+31XJ15ZxX/d+czbh6+9r1rExZOxWH0lnkF7FI2BFirm3Gzk6Q7xNVSGfS2byK4yt3YdhGcWGZJABTqY4U+Ho8YJxkK+Kc8ry6Ppzoy6p8j8onA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784704926; c=relaxed/simple;
-	bh=Rbgk3KRg98turYTv6dBDrOhY+2L1Yt5jg1Gvb1wvz40=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NyvQwXaWrQmEwmyQ7RNaUtTP5+6fm4HNQRLbeoDQHUSMPrWTXbMQTvoGUcPy+Zoequ18DW7yAZxOp4SXyAelRgJZWPO7lPTZKl0njrF3NAjU9mqHnfgpJkFjAbG//iG1LyqNlvarujrirTWGDy5u69Ss7uwyMZ2vOD3cMs+/1Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=Z+zUDdXr; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="Z+zUDdXr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1784704914; x=1785309714; i=quwenruo.btrfs@gmx.com;
-	bh=l41LH8Rx4hAje2YIlzm853zPiNBm0v93I0bg53wXMR8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Z+zUDdXrnAOxYibFBOBtDGqaKKTm/y6JgVf74zziSc83GtdvwTcKK5x7TySYh+bQ
-	 tdg1ydxQUiE1juaP8i92aRL68Q+LtXHHCPUkb2JjuFn7QYGqaHqCPdTvD4dJuB2rv
-	 n7tuNUsc7U7mcnIXcM3P1LnBGjXSlZBy7fmjzDoRUevHgbc651u3BZQsVYYtdQxAH
-	 Dilg/OvNDpIywNF8GzGeUY8YDMKn8LPgPCZ8y4DU+5WYYTUfJeuXkCUn/YbCwBnFt
-	 qxW13Jd/THFZxLE5kamHKPkkmXEsQW3mOqE90ZITQlnt2h4sociXLdVnG+GSaPpvR
-	 ewaMicWhDtsEJYweZg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MysW2-1x94SZ3GyY-00sgOF; Wed, 22
- Jul 2026 09:21:54 +0200
-Message-ID: <79b9b1b2-0455-4a7c-85fd-929f4103f198@gmx.com>
-Date: Wed, 22 Jul 2026 16:51:49 +0930
+	s=arc-20240116; t=1784705650; c=relaxed/simple;
+	bh=uFDfsjU0MQs2Eg+ze/m4oyeOgcK8qX2sxR4x8aX1Neo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SzTUtQFMej+RPMr8PaqRM9q1uBFU4x0MpLF5rYZlbTomKfIyR+nFN/u7wjKvYoRMhHgQSckUYPmOW0hpdvQSpjgvHlZfx9Mf2sjaS5eVTBeorwuKyh/63U65lZgpcA3MzCOH+/jO/BMclsGUAcrptE/DcuXv/OhatuMW+3QnMU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech; spf=pass smtp.mailfrom=haiwei.tech; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=haiwei.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=haiwei.tech
+X-QQ-mid: zesmtpsz5t1784705630tb859c73b
+X-QQ-Originating-IP: qoiGpSmq/wVHuR9h8at8YO36cWRH2WORRlrkXCG+RvA=
+Received: from rsl ( [183.242.33.186])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 22 Jul 2026 15:33:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 10989275502336654131
+EX-QQ-RecipientCnt: 14
+From: JinRui <jinrui@haiwei.tech>
+To: Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jinrui <jinrui@haiwei.tech>
+Subject: [PATCH v8] KVM: selftests: riscv: Add lazy V extension enablement for guests
+Date: Wed, 22 Jul 2026 07:33:44 +0000
+Message-ID: <33AEC00DC78613A1+20260722073344.771230-1-jinrui@haiwei.tech>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260722062804.738428-1-jinrui@haiwei.tech>
+References: <20260722062804.738428-1-jinrui@haiwei.tech>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: 7.2-rc1 regression Folio lock leak in writepage_delalloc()
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
- linux-btrfs@vger.kernel.org, Qu Wenruo <wqu@suse.com>
-Cc: David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <20260721191152.101118-1-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3c24Va3/BGdIWjPY8MAJ1WpMPEKt3KgWW5OyCWKcOZt+eZxHFid
- GZMNfwUYpykAZg5GFZ5mXaWU4618YL9pDaAQn7RJlbhc3KuWGEJ0g4AI4YCcX5gwR8OyoRx
- YKGDtOIbrf/0fG2nwPxY/oy4NdCtDAwjp9dlh0bIeGGhHn4Jdo3+1kvIxlafs5ZT2uK8SXJ
- F8TO+Uda2cWEiLm4Ehzog==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:W5r62/q36e8=;wA59sZ8/kcnNcmJQ0exT+I5Pnxm
- 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
- mzCOht/udSd34epZamByW
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:haiwei.tech:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MO1HcJ6CTmFsdpa4k33r2vL5PWbEEr4TJRQx0miX+yr9PR6MtMUuIwAR
+	vhbmNkBNFvVxqtetvwyOb1Bndo5HxsHl+l2nGAaqG6GZuXyryJwyXEwV3a64iaL7cjKn/Ww
+	E+BWp37kVnsmMgYmPJIMpMvzBujh3/xvUU1IMverRq63EHl3VprFfQ1Br/hS8Og+aRrOblI
+	j9MFyJkKS9XKY4AC/hIod21GLCZ+8UXW3E9RS3OeF259LYH31hHWEjkyyVzObI7VTx/Igaz
+	U3qWOqsk0cKe0rB3rk8g6XhKurUIZEMmZCyhwDwux6J2VNqQbNxH7GmpOgD3pCQbqcXP6FB
+	e9nihwYJf2GI+fgin/x2UT0oDoO4bbrs2QncEEWKDMbaNsFRiqt6SBBrLguEDtfiYKIpC/5
+	PzEnLDOerUN61NOyCxsNEhQA3xZCnRCU4ZAsXUAbCCzpt2Qboz5bHHMB9uGkk2l6xQCnnqU
+	tUW7Ia18QF8Yx2rfSNMcoZR/jDG2uw6jytV97dFKii1K22JzhM1vCvIvh+ybiKi+qV1o88l
+	Mit+wzbzeU3eRqyKe6SBS2oGrt/D0olZ4Nbyn5DdS09GxBKB2n2oWjVPJYYL8hNwoRDD9ZT
+	33IK08m/WWUTrwzi+ATjSZVIqKMD2zI5TFj0nObuAMW6ztMOyckRBH5YYDbnoS+OHM4K33H
+	0g0FDPIpVqmeTRzI1pwQIgiE/ppi8kezfjKyGILNF3RSP41g0asYrKd5X33tI9oyBmOl037
+	Lh5TDaFBFOuYa3JKf/sOPM2mL7KYlZduTsfoJibQQlI3hY+h4l4rTJYkXQFPhr1ROGpgiWj
+	xK8N7prdkbuuBnXMqlbCCAnwVL78bCsr0iijxn3dPmcGAawMapMREBipCmIkuHaqqs1kMzX
+	m4AslL2ihnIb+pOMBybYD6WNxsD3y/T6rkJU3E0SKhRhtBXgrzp2ZygmWDOhG9SzuDQa043
+	somzIyz10vjhdBPqlgkV1QbOt7FISL8NSuZgJ4AeQDPAPscdjJzg4spGO3O+Vjsooyp2KRE
+	xXM5ab+eAnoxdUHrxOOMWvXHW6pAXxLE09uYGXJtKpYkyrklCU
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
+From: jinrui <jinrui@haiwei.tech>
 
+When the cross-compiler defaults to an -march that includes the V
+(vector) extension, -O2 auto-vectorization generates vector
+instructions (e.g. vsetvli, vadd.vv) in Guest binary code. If the
+Guest executes a vector instruction while sstatus.VS is Off, an
+EXC_INST_ILLEGAL (scause=2) is raised. KVM's hedeleg delegates this
+exception to the Guest, but the selftest has no way to handle it as a
+bare-metal program, causing all Guest tests to fail.
 
-=E5=9C=A8 2026/7/22 04:41, Christian Borntraeger =E5=86=99=E9=81=93:
-> We have seen random hangs in our daily CI run where qemu/KVM
-> processes  deadlocks guests with file-backed RAM on btrfs (large data fo=
-lios)
->=20
-> With the help of claude I think we found the/one problem on an s390
-> KVM host running 7.2.0-rc3 (KASAN test kernel, but the issue is not
-> KASAN related). And to be honest here, most of the writeup was created
-> by claude and I added things where appropriate. Also the patch was
-> mostly done with the help of claude.
->=20
-> A KVM guest with its RAM backed by a file on btrfs (zstd compression
-> enabled) locked up together with the host's writeback: two vCPU
-> threads, an irqfd worker, two flusher workers, khugepaged and a
-> syncfs caller (dnf) were all stuck in D state for hours.  Analysis
-> of the crash dump shows a leaked folio lock in btrfs'
-> writepage_delalloc(); a proposed fix is in the reply mail.
->=20
-> I still need to verify that this patches fixes the deadlock in our
-> CI but wanted some feedback first.
->=20
-> Dump analysis (shortened)
-> -------------------------
-> All blocked tasks funnel into one 64-page (256K) large data folio of
-> the guest RAM file:
->=20
->    folio 0x800083fb000, inode 1881035 (the 1.25G s390.ram file)
->    flags: PG_locked | PG_waiters | PG_dirty | PG_private | PG_uptodate
->           (PG_writeback NOT set)
->    btrfs_folio_state: nr_locked =3D=3D 0, subpage dirty bitmap empty
->    still mapped (63/64 PTEs) and on the LRU, no outstanding block I/O
->=20
-> Waiters on that folio lock:
->    - 2 vCPU threads + 1 irqfd kworker, all in
->      btrfs_page_mkwrite() -> folio_lock, holding mmap_lock (read)
-> crash> bt 66448
-> PID: 66448    TASK: 9e934a00          CPU: 9    COMMAND: "CPU 1/KVM"
->   #0 [b8b25dbe7d8] __schedule at c0b186d5e78
->   #1 [b8b25dbe908] schedule at c0b186d7040
->   #2 [b8b25dbe948] io_schedule at c0b186d723c
->   #3 [b8b25dbe978] folio_wait_bit_common at c0b167e719c
->   #4 [b8b25dbeaf0] btrfs_page_mkwrite at c0b172816fc
->   #5 [b8b25dbec98] do_page_mkwrite at c0b168a4ada
->   #6 [b8b25dbecf0] do_wp_page at c0b168b2350
->   #7 [b8b25dbed70] handle_pte_fault at c0b168bfaf4
->   #8 [b8b25dbee58] __handle_mm_fault at c0b168c003e
->   #9 [b8b25dbefc0] handle_mm_fault at c0b168c09b6
-> #10 [b8b25dbf020] __get_user_pages at c0b16899cfc
-> #11 [b8b25dbf148] get_user_pages_unlocked at c0b1689af1c
-> #12 [b8b25dbf248] hva_to_pfn at c0a9711e20e [kvm]
-> #13 [b8b25dbf3f0] __kvm_faultin_pfn at c0a9711ea26 [kvm]
-> #14 [b8b25dbf4e8] kvm_s390_faultin_gfn at c0a971c092c [kvm]
-> #15 [b8b25dbf5f8] vcpu_post_run_handle_fault at c0a97148b5e [kvm]
-> #16 [b8b25dbf6f0] __vcpu_run at c0a9715c1f2 [kvm]
-> #17 [b8b25dbf808] kvm_arch_vcpu_ioctl_run at c0a9715d3e4 [kvm]
-> #18 [b8b25dbfbb8] kvm_vcpu_ioctl at c0a97117bd8 [kvm]
-> #19 [b8b25dbfdd8] __s390x_sys_ioctl at c0b16aa3614
-> #20 [b8b25dbfe40] __do_syscall at c0b186cdaee
-> #21 [b8b25dbfe98] system_call at c0b186ebd42
->   USER-MODE INTERRUPT FRAME; pt_regs at b8b25dbff38:
->   PSW:  0705000180000000 000003ff8a92662c (user space)
->   GPRS: 000003ff627faf50 0000000000000036 ffffffffffffffda 000000000000a=
-e80
->         0000000000000000 000003ff627fc8c0 000002aa1f8a7880 000003ff8a8ad=
-310
->         000002aa1e1f3c60 0000000000000000 000000000000ae80 000002aa1f8a2=
-f60
->         000003ff8d3adfa8 000003ff627fc8c0 000003ff627faff0 000003ff627fa=
-e88
->=20
->=20
->    - flusher: extent_write_cache_pages() -> folio_lock
->    - delalloc space reclaim worker: same, while holding
->      fs_info->delalloc_root_mutex (which in turn blocks
->      btrfs_async_reclaim_metadata_space on the mutex)
-> Behind those: khugepaged in down_write(mmap_lock), and syncfs.
->=20
-> No task in the system owns the folio lock; nothing references the
-> folio except the six waiters.  The lock was leaked.
->=20
-> Root cause
-> ----------
-> A folio can carry the folio-level dirty flag with an EMPTY btrfs
-> subpage dirty bitmap.  btrfs data mappings use filemap_dirty_folio(),
-> so a generic folio_mark_dirty() sets only the folio flag and xarray
-> tag - no subpage dirty bits, no delalloc reservation.  On s390 this
-> happens all the time: the KVM irq adapter path
-> (arch/s390/kvm/interrupt.c, adapter_indicators_set()) pins the guest
-> interrupt indicator page with pin_user_pages_remote(FOLL_WRITE),
-> sets the indicator bit and calls set_page_dirty_lock().  Once a
-> previously written folio has gone through one complete writeback
-> cycle (subpage dirty bitmap empty again), the next adapter interrupt
-> re-dirties it with only the folio flag.
+In contrast, a real OS kernel handles this via riscv_v_first_use_handler(),
+which detects the vector instruction, sets sstatus.VS to Initial, and
+srets to re-execute.
 
-No, that's not how things should work.
+Fix this with four changes in processor.c:
 
-I have explained the problem in the RFC patch. I am only going to add=20
-some extra explanation inlined below.
+1. Delete the now-unused guest_unexp_trap() handler, which is replaced
+   by the full exception vector table.
 
->=20
-> Writeback then does:
->=20
->    extent_write_cache_pages(): folio_lock(), folio is dirty -> proceed
->    extent_writepage() -> writepage_delalloc():
->      - btrfs_copy_subpage_dirty_bitmap() -> submit_bitmap is EMPTY
->      - the btrfs_folio_set_lock() loop sets nothing (nr_locked stays 0)
->      - find_lock_delalloc_range() finds nothing -> goto out
->      - out: bitmap_empty(submit_bitmap) is true -> return 1
->=20
-> The "return 1" path means "all dirty ranges were submitted
-> asynchronously, the async submission owns the folio unlock" - but
-> nothing was submitted, so extent_writepage() returns and the folio
-> stays locked forever.  This matches every flag of the dump folio
-> (locked, dirty, nr_locked =3D=3D 0, no writeback, still mapped/LRU).
->=20
-> Verifying this in the dump:
->=20
-> - uptodate =3D 0xffffffffffffffff =E2=80=94 all 64 blocks uptodate (cons=
-istent with PG_uptodate)
-> - dirty =3D 0x0 =E2=80=94 the subpage dirty bitmap is EMPTY, exactly as =
-the root cause predicts
-> - writeback =3D 0x0 =E2=80=94 no writeback in flight (consistent with PG=
-_writeback clear)
->=20
->=20
-> Exposure
-> --------
-> - Single-block folios are immune: btrfs_copy_subpage_dirty_bitmap()
->    unconditionally reports bit 0 for blocks_per_folio =3D=3D 1.
+2. In vm_arch_vcpu_add(), notify KVM that the Guest is allowed to use
+   the V extension via __vcpu_set_reg(V, 1) (best-effort, silently
+   ignores errors on hardware without V). Also replace the raw stvec
+   handler with the full exception vector table, which provides
+   save_context/restore_context for safe lazy enablement.
 
-Unfortunately no.
+3. In route_exception(), add a lazy V enablement check that runs
+   before any test-registered handler. When the cause is a non-IRQ
+   EXC_INST_ILLEGAL and sstatus.VS is Off, set VS to Initial and
+   return so the faulting instruction is re-executed via sret.
+   Track the epc per-vCPU via a flexible array member to avoid
+   infinite loops on hardware without V and eliminate races between
+   concurrent vCPUs.
 
-One of the biggest problem is, all the other things, from extent map to=20
-ordered extent are not properly prepared.
+4. Make vm_init_vector_tables() idempotent by checking vm->handlers
+   before allocation, so tests that manually call it (ebreak_test,
+   arch_timer, sbi_pmu_test) do not leak memory.
 
-E.g. even if btrfs_copy_subpage_dirty_bitmap() returns bit 0 set, later=20
-EXTENT_DELALLOC is not set.
+The check runs before test-registered EXC_INST_ILLEGAL handlers
+(e.g. sbi_pmu_test) to ensure V enablement takes priority.
 
-So find_lock_delalloc_range() will return false, and since we found no=20
-delalloc range, @last_delalloc_end is still zero, we goto out label,=20
-without creating any ordered extent/extent map.
+Tested on a riscv64 host with KVM enabled: all 20 KVM selftest
+binaries pass (arch_timer, ebreak_test, steal_time, get-reg-list,
+sbi_pmu_test, etc.).
 
-Then we go into extent_writepage_io(), which will rely on the extent_map=
-=20
-created by run_delalloc_range() for IO submission.
+Signed-off-by: jinrui <jinrui@haiwei.tech>
+---
+Changes in v8:
+- Change 'ec' in route_exception() from int to unsigned long to
+  match regs->cause (unsigned long), preventing signed truncation
+  from bypassing the ec >= NR_EXCEPTIONS bounds check.
 
-But since we have no OE/EM created, we will grab one from on-disk=20
-metadata, and if the original on-disk metadata shows there is a hole, we=
-=20
-will trigger the ASSERT() inside submit_one_sector(), about the EM is a=20
-hole.
+Changes in v7:
+- Use unsigned int for vcpu_id, v_epc_capacity, and max_vcpus to
+  prevent negative-value out-of-bounds array access on v_epc[].
 
-Before v7.2-rc1, we have a lot of extra handling (folio ordered flag) to=
-=20
-exactly catch such situation.
-But since we haven't really hit such case anymore for a while, in=20
-v7.2-rc we also remove the that flag, otherwise it should catch such=20
-problem much earilier.
+Changes in v6:
+- Move struct handlers definition to the top of the file, before its
+  first use in vm_arch_vcpu_add().
 
-> - Subpage setups (e.g. 64K page size with 4K sectorsize) have been
->    exposed since the submission bitmap rework in v6.12
->    (bd610c0937aa "btrfs: only unlock the to-be-submitted ranges
->    inside a folio").
-> - 4K page size systems became exposed with large data folio support
->    in v7.2-rc1, which routes every large folio through the subpage
->    machinery.  That is why we only started seeing this now.
->=20
-> Any GUP-style dirtier can trigger it (KVM adapter interrupts on
-> s390, vfio, RDMA, io_uring fixed buffers, ...) as long as the target
-> is a multi-block folio of a btrfs data mapping that was clean at the
-> time of set_page_dirty_lock().
->=20
-> Reproducer outline: KVM guest on s390 with memory-backend-file on
-> btrfs + virtio devices using irqfd adapter indicators;
+Changes in v5:
+- Allocate the per-vCPU epc table dynamically via a flexible array
+  member sized by KVM_CAP_MAX_VCPUS rather than a hardcoded constant,
+  making the concurrency fix safe for any vCPU count.
 
-I strongly doubt if it's a specific S390 feature breaking the assumption.
+Changes in v4:
+- Add vcpu_dump() in assert_on_unhandled_exception() to restore the
+  register dump lost when guest_unexp_trap() was removed.
 
-As io uring is also heavily tested, and IIRC there is already a huge GUP=
-=20
-work to address the long existing unexpected dirty page behavior in v5.15.
+Changes in v3:
+- Move v_available from a host-side static variable into struct
+  handlers (Guest memory), fixing host-to-Guest synchronization.
 
-So I strongly doubt if it's some S390x feature not properly following=20
-the existing scheme.
+Changes in v2:
+- Add a v_available flag to prevent infinite exception loops on
+  hosts without the V extension.
+- Use regs->status instead of reading the live sstatus CSR.
+---
+ .../selftests/kvm/lib/riscv/processor.c       | 111 +++++++++++++++---
+ 1 file changed, 95 insertions(+), 16 deletions(-)
 
-At least on both x86_64 and arm64 (64K page size), since the=20
-introduction of experimental large folios, I haven't seen something=20
-similar like this.
-
-If it's S390X specific, then I do not think it's something we can handle=
-=20
-by ourselves.
-
-Thanks,
-Qu
-
-> hangs within
-> ~25 minutes of guest uptime in our setup.  A targeted reproducer
-> should also work on x86: mmap a file on btrfs, write it, fsync, let
-> writeback finish, then pin_user_pages(FOLL_WRITE) +
-> set_page_dirty_lock() on a page of a large folio and trigger sync.
->=20
-> Proposed fix
-> ------------
-> Detect the empty-at-entry bitmap right after it has been copied,
-> before any range lock is set up, clear the stale folio dirty flag
-> (nothing can ever be written back for it; all dirty flag setters
-> serialize on the folio lock we hold) and unlock the folio.  Patch
-> attached below; it survives our compile test and we are preparing a
-> test run on the affected machine.  Comments welcome - especially on
-> whether clearing the folio dirty flag is the desired semantic here,
-> versus e.g. routing such folios through the cow fixup worker to
-> actually persist GUP-written data.
->=20
-> Thanks
->=20
-> Christian
->=20
->=20
->=20
->=20
->=20
+diff --git a/tools/testing/selftests/kvm/lib/riscv/processor.c b/tools/testing/selftests/kvm/lib/riscv/processor.c
+index ded5429f3448..624f20f0f476 100644
+--- a/tools/testing/selftests/kvm/lib/riscv/processor.c
++++ b/tools/testing/selftests/kvm/lib/riscv/processor.c
+@@ -17,6 +17,13 @@
+ 
+ static gva_t exception_handlers;
+ 
++struct handlers {
++	exception_handler_fn exception_handlers[NR_VECTORS][NR_EXCEPTIONS];
++	bool v_available;
++	unsigned int v_epc_capacity;
++	unsigned long v_epc[];
++};
++
+ bool __vcpu_has_ext(struct kvm_vcpu *vcpu, u64 ext)
+ {
+ 	unsigned long value = 0;
+@@ -297,14 +304,6 @@ void vcpu_arch_dump(FILE *stream, struct kvm_vcpu *vcpu, u8 indent)
+ 		" T3: 0x%016lx   T4: 0x%016lx T5: 0x%016lx T6: 0x%016lx\n",
+ 		core.regs.t3, core.regs.t4, core.regs.t5, core.regs.t6);
+ }
+-
+-static void __aligned(16) guest_unexp_trap(void)
+-{
+-	sbi_ecall(KVM_RISCV_SELFTESTS_SBI_EXT,
+-		  KVM_RISCV_SELFTESTS_SBI_UNEXP,
+-		  0, 0, 0, 0, 0, 0);
+-}
+-
+ void vcpu_arch_set_entry_point(struct kvm_vcpu *vcpu, void *guest_code)
+ {
+ 	vcpu_set_reg(vcpu, RISCV_CORE_REG(regs.pc), (unsigned long)guest_code);
+@@ -348,8 +347,33 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	/* Setup sscratch for guest_get_vcpuid() */
+ 	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(sscratch), vcpu_id);
+ 
+-	/* Setup default exception vector of guest */
+-	vcpu_set_reg(vcpu, RISCV_GENERAL_CSR_REG(stvec), (unsigned long)guest_unexp_trap);
++	/*
++	 * Enable the V (vector) extension in KVM so that the compiler can
++	 * safely generate vector instructions (e.g. via -O2 auto-
++	 * vectorization). Silently ignore errors; the test will still work
++	 * without V.
++	 */
++	__vcpu_set_reg(vcpu, RISCV_ISA_EXT_REG(KVM_RISCV_ISA_EXT_V), 1);
++
++	/*
++	 * Use the full exception vector table (which provides lazy V
++	 * extension enablement for EXC_INST_ILLEGAL in route_exception)
++	 * as the default exception handler. vm_init_vector_tables() is
++	 * idempotent; tests that call it again will get a no-op.
++	 */
++	vm_init_vector_tables(vm);
++	vcpu_init_vector_tables(vcpu);
++
++	/*
++	 * Record V extension availability in the handlers struct so that
++	 * route_exception() (called from Guest context) can check it
++	 * without relying on a host-side global variable.
++	 */
++	{
++		struct handlers *h = addr_gva2hva(vm, vm->handlers);
++
++		h->v_available = __vcpu_has_isa_ext(vcpu, KVM_RISCV_ISA_EXT_V);
++	}
+ 
+ 	return vcpu;
+ }
+@@ -408,19 +432,17 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+ 	struct ucall uc;
+ 
+ 	if (get_ucall(vcpu, &uc) == UCALL_UNHANDLED) {
++		vcpu_dump(stderr, vcpu, 2);
+ 		TEST_FAIL("Unexpected exception (vector:0x%lx, ec:0x%lx)",
+ 			uc.args[0], uc.args[1]);
+ 	}
+ }
+ 
+-struct handlers {
+-	exception_handler_fn exception_handlers[NR_VECTORS][NR_EXCEPTIONS];
+-};
+-
+ void route_exception(struct pt_regs *regs)
+ {
+ 	struct handlers *handlers = (struct handlers *)exception_handlers;
+-	int vector = 0, ec;
++	int vector = 0;
++	unsigned long ec;
+ 
+ 	ec = regs->cause & ~CAUSE_IRQ_FLAG;
+ 	if (ec >= NR_EXCEPTIONS)
+@@ -432,6 +454,46 @@ void route_exception(struct pt_regs *regs)
+ 		ec = 0;
+ 	}
+ 
++	/*
++	 * Handle V (vector) extension lazy enablement before any
++	 * registered handler. The compiler's default march may include
++	 * V, and auto-vectorization generates vector instructions that
++	 * trigger EXC_INST_ILLEGAL when VS (Vector Status) in sstatus
++	 * is Off. Enable VS to Initial and re-execute the faulting
++	 * instruction, mimicking what a real OS kernel does.
++	 *
++	 * This check runs before any test-registered handler, so tests
++	 * that install their own EXC_INST_ILLEGAL handler (e.g.
++	 * sbi_pmu_test) are not affected.
++	 */
++	if (!(regs->cause & CAUSE_IRQ_FLAG) && ec == EXC_INST_ILLEGAL) {
++		/*
++		 * If KVM supports the V extension for this Guest and VS
++		 * (Vector Status) is Off in the saved sstatus, set it to
++		 * Initial and re-execute the faulting instruction.
++		 *
++		 * Use regs->status (saved at exception entry) rather than
++		 * reading the live CSR to avoid a TOCTOU race.
++		 *
++		 * Track the epc per-vCPU to avoid an infinite loop when
++		 * V is disabled or the hardware rejects the VS change.
++		 * Using a per-vCPU array avoids races between concurrent
++		 * vCPUs that would occur with a single shared (epc, vcpu)
++		 * pair.
++		 */
++		if (handlers && handlers->v_available && !(regs->status & SR_VS)) {
++			unsigned int vcpu_id;
++
++			asm volatile("csrr %0, sscratch" : "=r" (vcpu_id));
++			if (vcpu_id < handlers->v_epc_capacity &&
++			    handlers->v_epc[vcpu_id] != regs->epc) {
++				handlers->v_epc[vcpu_id] = regs->epc;
++				regs->status |= SR_VS_INITIAL;
++				return;
++			}
++		}
++	}
++
+ 	if (handlers && handlers->exception_handlers[vector][ec])
+ 		return handlers->exception_handlers[vector][ec](regs);
+ 
+@@ -448,9 +510,26 @@ void vcpu_init_vector_tables(struct kvm_vcpu *vcpu)
+ 
+ void vm_init_vector_tables(struct kvm_vm *vm)
+ {
+-	vm->handlers = __vm_alloc(vm, sizeof(struct handlers), vm->page_size,
++	unsigned int max_vcpus;
++	size_t size;
++
++	if (vm->handlers)
++		return;
++
++	max_vcpus = kvm_check_cap(KVM_CAP_MAX_VCPUS);
++	if (max_vcpus == 0)
++		max_vcpus = 512;
++
++	size = sizeof(struct handlers) + max_vcpus * sizeof(unsigned long);
++	vm->handlers = __vm_alloc(vm, size, vm->page_size,
+ 				  MEM_REGION_DATA);
+ 
++	{
++		struct handlers *h = addr_gva2hva(vm, vm->handlers);
++
++		h->v_epc_capacity = max_vcpus;
++	}
++
+ 	*(gva_t *)addr_gva2hva(vm, (gva_t)(&exception_handlers)) = vm->handlers;
+ }
+ 
+-- 
+2.43.0
 
