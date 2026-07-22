@@ -1,299 +1,182 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94683546DF
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 14:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6F7311C36
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 14:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784730504; cv=none; b=XzaK98A1Xre2dP1fyrAj//d6RYmjp8wZg9famnRzfEEmKDCepDvVgcAj91Zd5Odp7DGERRUA7mNEc0S32FieNL3fy9K2JbEnhJG+Xvr4EtR5m6PtFRxz/Hw1OoEsWmlwnSfE4V6jDgDY9q9yJRQISfYY54kGuh5U5FUdvSzSrKc=
+	t=1784730630; cv=none; b=MFGrguhyO9RvP70T4R4tliGMKXbJIuQcJ+kLDuGVIANmQKC7bnUi+xQya/Zyq4xi3gWYCLNDpsNNh/j60lxXJvQHarbpEqJXmDkOrMiPNsFotoZqHOsYak+0j5shsWE2SBD2f7/b1eN4DISbb1CBkCTND3VOr6euD5OP0F5ASoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784730504; c=relaxed/simple;
-	bh=ixMwHZ47HGXENRxXri6xY/LEinEZSkTYaah0z6PePds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EhO1/+QXJSK9qJz5vNbJqR+IWRSuFhogA92akmtnWe6JkU0JqGhXZSpTOksYKTnyP7RoXhVhj1vFUDFSUUX9xzdr/UGSo1rQ3AC3GgQsaa7YDpfvILG8csC7G8O95zg8XMs5A7EUUvE45qiuNrD/VCSx/NvxbQKVqQ/9547eyYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tZKqehc8; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784730630; c=relaxed/simple;
+	bh=JWRJd60AQQbjcgrMl+fFUY8DSPqlgDcQKyHTlvM84WM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=t6kzW4wdNJKSgmxumB/mihEcWkMbLUwlOJGh6MlkiP5jbuvORqdTGbi83mxOQjZ1YsIqi44XzLDjN46wlFxvcbUT9RaWa+1GUu/KeiDOM0QgVGOaCyu3dFjBEvThxNy2Sp92SSqxP3OsBXUhpFUAPtAfQSTTVHTxqbPSGNK5k9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pokOhyNS; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tZKqehc8"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784730499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=P8Ix8reVveZHfHEhLYG0PtOZEEt7xDip8rzqk215UCI=;
-	b=tZKqehc8ZHeJjhVcmYIcju3EV5MnhUqSy0ih9G+gtBUast/ZCkvfQ4F0387BKDiA4MItKy
-	d2LxPdPCt26JSVW0F0FkZjts4pJAd4L88U4ZpEyl5HLiGyPWcGfJkPrQnihuJW7DW4Dz60
-	JXGv2oyrkh09DoogmBtbYzP+EenCLFE=
-From: Tao Cui <cui.tao@linux.dev>
-To: zhaotianrui@loongson.cn,
-	maobibo@loongson.cn
-Cc: chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	cui.tao@linux.dev,
-	cuitao@kylinos.cn
-Subject: [PATCH v3] LoongArch: KVM: Add KVM_LOONGARCH_GET/SET_CSR for bulk CSR migration
-Date: Wed, 22 Jul 2026 22:28:05 +0800
-Message-ID: <20260722142805.278325-1-cui.tao@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pokOhyNS"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84859a64079so10922286b3a.3
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 07:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784730629; x=1785335429; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=A3+xMvoLTytXA+BYL89pFMN+Ws4RLZyCA0Rg/ymRWsM=;
+        b=pokOhyNSJxVg+uAhiotNdAYo8af9AkRr2HOFujJnEW93MutN+tGqmh49P6U+9OKTEi
+         SSko50cPj+VAcL+zdnGfbVC8HdMSBoQGa3jhrgc5ps8dd2eF0xi1PS/I8f6COD4xeb8k
+         7wkpn86bVyXgyzcvxm39TkgXA9j+0B7lFR/G8wuz81iwNZ45XQ7AzgOT0wkE8hKISzFK
+         oWG5Tepo0CYHZ7YBUYJ4ki5wGtA0DXKMokFIOECqQEKUYYKIAgbf/H722pr6Ne6f+ZB7
+         Oq9quQGVFNup7l4LEL7iV77f0E3RCcbRfudrXTIESyPDKRSi+gcEYdQwV8Fr2vgBX5xw
+         GiLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784730629; x=1785335429;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=A3+xMvoLTytXA+BYL89pFMN+Ws4RLZyCA0Rg/ymRWsM=;
+        b=JMoCtnn2BeozvYP1jD7ZMmcNQoArF0styugpHDr/XETSnUSOSjWt9Ii16O6HViSC/h
+         1Ycz268JFBbFYnUZB6oNaf8II1waXIn9C44SUSnpPxA5qIzpQaeuuYtKDYwXT4pe7M+7
+         +p97rguy/999CZksOtR4gMq2M2/X8TYmOXOsG3W19nl071X19fiNodklt4U+Mx1Jds02
+         2byXO8kb+D/P+NuqIhe+XPq7PELIhrPANsDG/znoR8CpmCaQWF49gKb0YyNSaXoVnifs
+         JCZAx94tLOAIrOUSwPWWwzXRETvWiJeg8nnQrSUEbBMbKvtAJRHzwEpNBpkzY1ZFhLJt
+         qUTw==
+X-Forwarded-Encrypted: i=1; AHgh+Rq9rxhzFvwgAKAJq1g41jjERTiJMqW/CaNMdGjq0yVuiKDeeZWEWUhjcDCXFncQP2e1oAE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaX7t2Eam7W17W4B/fRKVs0HeVTlWdGhPrdWBEwA75LPX2um8C
+	rznFkIoG0jBgRID34Tte7PzV6WhZdvz/IkdmQUQZ7mf8811zFJicHerhMOnA+Yv1w7G5z9fHPM8
+	TD2QjlQZgDUZ33w==
+X-Received: from pfbih8.prod.google.com ([2002:a05:6a00:8c08:b0:84b:50b5:d431])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:400f:b0:848:6ba2:4139 with SMTP id d2e1a72fcca58-84c29487c9amr23809675b3a.36.1784730628447;
+ Wed, 22 Jul 2026 07:30:28 -0700 (PDT)
+Date: Wed, 22 Jul 2026 07:30:24 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260722143024.3938899-1-jmattson@google.com>
+Subject: [PATCH v4] KVM: VMX: Cap VMX preemption timer to work around Intel erratum
+From: Jim Mattson <jmattson@google.com>
+To: seanjc@google.com, pbonzini@redhat.com
+Cc: chao.gao@intel.com, kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Tao Cui <cuitao@kylinos.cn>
+Due to a widespread Intel erratum (e.g. EMR158), programming the
+VMX-preemption timer with certain large values may cause the timer to
+expire earlier than expected.  The recommended workaround is to cap the
+VMX-preemption timer value to strictly less than 2^25 * CPUID.15H:EBX[31:0]
+/ CPUID.15H:EAX[31:0].
 
-Migrating a vCPU's CSR state takes one KVM_GET/SET_ONE_REG ioctl per
-register, thousands of syscalls for a large VM.
+Calculate preemption_timer_limit during hardware setup based on CPUID 15H
+when available, and return -ERANGE in vmx_set_hv_timer() if the shifted
+delta_tsc reaches or exceeds preemption_timer_limit.
 
-Add a bulk pair, KVM_LOONGARCH_GET_CSR / KVM_SET_CSR.  Userspace passes
-an array of {index, data} entries; the kernel fills entries[].data on
-GET and applies them on SET, both in a single call:
+Use preemption_timer_limit - 1 instead of 0xffffffff when soft-disabling
+the timer and when checking the timer frequency limit in hardware setup.
 
-- KVM_LOONGARCH_GET_CSR does a single vcpu_load/put with
-  kvm_deliver_intr(), which pulls pending interrupts into ESTAT,
-  avoiding the per-register load/put side-effect that made ONE_REG
-  snapshots of ESTAT order-sensitive.
-- KVM_LOONGARCH_SET_CSR writes all CSRs via _kvm_setcsr in one pass,
-  propagates _kvm_setcsr errors, and clears KVM_LARCH_HWCSR_USABLE up
-  front so a mid-loop failure still forces the next vcpu_load() to
-  reload from SW, matching KVM_SET_ONE_REG.
-
-Entries are {index, data} rather than a positional array, so future CSRs
-can be added without resizing the struct or changing the ioctl number.
-CSRs above the core range (debug, breakpoint, PMU) stay on
-KVM_GET/SET_ONE_REG; struct kvm_sregs is left empty, so the new ioctls
-break no userspace, and userspace probes them via KVM_CAP_LOONGARCH_CSR.
-
-The ioctl hands get_gcsr_flag() a user-controlled index, so switch that
-helper (and the set_gcsr_sw_flag/set_gcsr_hw_flag init helpers) to an
-unsigned index; the csr < CSR_MAX_NUMS bound check is then robust against
-a sign-extended value regardless of the caller.
-
-On a Loongson 3A6000, snapshotting one vCPU's core CSR range (0x0-0x183)
-drops from 388 KVM_GET_ONE_REG calls (~2 ms) to a single
-KVM_LOONGARCH_GET_CSR ioctl (~6 us).
-
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
+Reported-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/all/Zn9X0yFxZi_Mrlnt@google.com/
+Suggested-by: Chao Gao <chao.gao@intel.com>
+Assisted-by: Gemini:Gemini-Next
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Signed-off-by: Jim Mattson <jmattson@google.com>
 ---
+v4: Disable preemption timer if preemption_timer_limit is 0 [Sashiko]
 
-Changes since v2:
-  - Bound-check the CSR index (< CSR_MAX_NUMS) and make
-    get_gcsr_flag()/set_gcsr_*_flag() take an unsigned index.  An index
-    with bit 31 set was implicitly converted to a negative signed int,
-    bypassing the csr < CSR_MAX_NUMS check and causing an out-of-bounds
-    read/write into the SW CSR shadow.
-  - Reject non-zero pad/reserved fields with -EINVAL so they stay reserved.
-  - Add KVM_CAP_LOONGARCH_CSR for userspace feature detection.
+v3: https://lore.kernel.org/all/20260722040311.3369898-1-jmattson@google.com/
 
- arch/loongarch/include/asm/kvm_host.h |  2 +-
- arch/loongarch/include/uapi/asm/kvm.h | 13 +++++
- arch/loongarch/kvm/main.c             |  6 +--
- arch/loongarch/kvm/vcpu.c             | 77 +++++++++++++++++++++++++++
- arch/loongarch/kvm/vm.c               |  1 +
- include/uapi/linux/kvm.h              |  5 ++
- 6 files changed, 100 insertions(+), 4 deletions(-)
+v2: https://lore.kernel.org/all/20260720231639.1592848-1-jmattson@google.com/
 
-diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-index 23cfbecebbd7..aacf5d84217f 100644
---- a/arch/loongarch/include/asm/kvm_host.h
-+++ b/arch/loongarch/include/asm/kvm_host.h
-@@ -362,7 +362,7 @@ extern struct kvm_world_switch *kvm_loongarch_ops;
- #define HW_GCSR		(1 << 1)
- #define INVALID_GCSR	(1 << 2)
+v1: https://lore.kernel.org/all/20260720205230.1457146-1-jmattson@google.com/
+
+ arch/x86/kvm/vmx/vmx.c | 34 +++++++++++++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index cc75feec05da..61017f759d61 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -151,6 +151,7 @@ module_param(dump_invalid_vmcs, bool, 0644);
+ /* Guest_tsc -> host_tsc conversion requires 64-bit division.  */
+ static int __read_mostly cpu_preemption_timer_multi;
+ static bool __read_mostly enable_preemption_timer = 1;
++static u64 __ro_after_init preemption_timer_limit;
+ #ifdef CONFIG_X86_64
+ module_param_named(preemption_timer, enable_preemption_timer, bool, S_IRUGO);
+ #endif
+@@ -7412,7 +7413,7 @@ static void vmx_update_hv_timer(struct kvm_vcpu *vcpu, bool force_immediate_exit
+ 		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, delta_tsc);
+ 		vmx->loaded_vmcs->hv_timer_soft_disabled = false;
+ 	} else if (!vmx->loaded_vmcs->hv_timer_soft_disabled) {
+-		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, -1);
++		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, preemption_timer_limit - 1);
+ 		vmx->loaded_vmcs->hv_timer_soft_disabled = true;
+ 	}
+ }
+@@ -8338,12 +8339,12 @@ int vmx_set_hv_timer(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
+ 		return -ERANGE;
  
--int get_gcsr_flag(int csr);
-+int get_gcsr_flag(unsigned int csr);
- void set_hw_gcsr(int csr_id, unsigned long val);
+ 	/*
+-	 * If the delta tsc can't fit in the 32 bit after the multi shift,
+-	 * we can't use the preemption timer.
++	 * If the delta tsc exceeds the preemption timer limit after the
++	 * multi shift, we can't use the preemption timer.
+ 	 * It's possible that it fits on later vmentries, but checking
+ 	 * on every vmentry is costly so we just use an hrtimer.
+ 	 */
+-	if (delta_tsc >> (cpu_preemption_timer_multi + 32))
++	if ((delta_tsc >> cpu_preemption_timer_multi) >= preemption_timer_limit)
+ 		return -ERANGE;
  
- #endif /* __ASM_LOONGARCH_KVM_HOST_H__ */
-diff --git a/arch/loongarch/include/uapi/asm/kvm.h b/arch/loongarch/include/uapi/asm/kvm.h
-index cd0b5c11ca9c..59b3b7efa039 100644
---- a/arch/loongarch/include/uapi/asm/kvm.h
-+++ b/arch/loongarch/include/uapi/asm/kvm.h
-@@ -127,6 +127,19 @@ struct kvm_sync_regs {
- struct kvm_sregs {
- };
- 
-+/* bulk CSR entries for VM migration */
-+struct kvm_loongarch_csr_entry {
-+	__u32 index;
-+	__u32 reserved;
-+	__u64 data;
-+};
-+
-+struct kvm_loongarch_csrs {
-+	__u32 ncsrs;	/* number of csr entries */
-+	__u32 pad;
-+	__DECLARE_FLEX_ARRAY(struct kvm_loongarch_csr_entry, entries);
-+};
-+
- struct kvm_iocsr_entry {
- 	__u32 addr;
- 	__u32 pad;
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index 3e1005526f4b..d802d393cd44 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -19,7 +19,7 @@ struct kvm_world_switch *kvm_loongarch_ops;
- static int gcsr_flag[CSR_MAX_NUMS];
- static struct kvm_context __percpu *vmcs;
- 
--int get_gcsr_flag(int csr)
-+int get_gcsr_flag(unsigned int csr)
- {
- 	if (csr < CSR_MAX_NUMS)
- 		return gcsr_flag[csr];
-@@ -27,13 +27,13 @@ int get_gcsr_flag(int csr)
- 	return INVALID_GCSR;
+ 	vmx->hv_deadline_tsc = tscl + delta_tsc;
+@@ -8585,6 +8586,26 @@ static void __init vmx_setup_me_spte_mask(void)
+ 	kvm_mmu_set_me_spte_mask(0, me_mask);
  }
  
--static inline void set_gcsr_sw_flag(int csr)
-+static inline void set_gcsr_sw_flag(unsigned int csr)
- {
- 	if (csr < CSR_MAX_NUMS)
- 		gcsr_flag[csr] |= SW_GCSR;
- }
- 
--static inline void set_gcsr_hw_flag(int csr)
-+static inline void set_gcsr_hw_flag(unsigned int csr)
- {
- 	if (csr < CSR_MAX_NUMS)
- 		gcsr_flag[csr] |= HW_GCSR;
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 20c207d80e31..2bb6a7e0ea87 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -1009,6 +1009,77 @@ int kvm_arch_vcpu_ioctl_set_sregs(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs
- 	return -ENOIOCTLCMD;
- }
- 
-+/* max CSR entries handled per ioctl */
-+#define KVM_LOONGARCH_MAX_CSR_REGS	0x400
-+
-+/* Bulk get/set of CSR state for VM migration. */
-+static int kvm_loongarch_csr_io(struct kvm_vcpu *vcpu,
-+				struct kvm_loongarch_csrs __user *ucsrs,
-+				bool write)
++/*
++ * Workaround for a widespread Intel erratum (e.g. EMR158) where the
++ * VMX-preemption timer may expire earlier than expected when programmed
++ * with large values. The workaround is to cap the timer value to strictly
++ * less than 2^25 * CPUID.15H:EBX / CPUID.15H:EAX.
++ */
++static __init u64 calc_preemption_timer_limit(void)
 +{
-+	int i, ret = 0;
-+	unsigned long size;
-+	struct kvm_loongarch_csrs csrs;
-+	struct kvm_loongarch_csr_entry *entries;
-+	struct loongarch_csrs *csr = vcpu->arch.csr;
++	u32 eax, ebx, ecx, edx;
 +
-+	if (copy_from_user(&csrs, ucsrs, sizeof(csrs)))
-+		return -EFAULT;
++	if (cpuid_eax(0) < 0x15)
++		return 1ULL << 32;
 +
-+	if (csrs.pad)
-+		return -EINVAL;
++	cpuid(0x15, &eax, &ebx, &ecx, &edx);
++	if (!eax || !ebx)
++		return 1ULL << 32;
 +
-+	if (csrs.ncsrs > KVM_LOONGARCH_MAX_CSR_REGS)
-+		return -E2BIG;
-+
-+	size = array_size(csrs.ncsrs, sizeof(*entries));
-+	entries = memdup_user(ucsrs->entries, size);
-+	if (IS_ERR(entries))
-+		return PTR_ERR(entries);
-+
-+	if (write) {
-+		vcpu->arch.aux_inuse &= ~KVM_LARCH_HWCSR_USABLE;
-+	} else {
-+		preempt_disable();
-+		vcpu_load(vcpu);
-+		kvm_deliver_intr(vcpu);
-+		vcpu->arch.aux_inuse &= ~KVM_LARCH_SWCSR_LATEST;
-+		vcpu_put(vcpu);
-+		preempt_enable();
-+	}
-+
-+	for (i = 0; i < csrs.ncsrs; i++) {
-+		unsigned int id = entries[i].index;
-+
-+		if (entries[i].reserved || id >= CSR_MAX_NUMS ||
-+		    (get_gcsr_flag(id) & INVALID_GCSR)) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		if (write) {
-+			ret = _kvm_setcsr(vcpu, id, entries[i].data);
-+			if (ret)
-+				break;
-+		} else if (id == LOONGARCH_CSR_ESTAT) {
-+			unsigned long estat, gintc;
-+
-+			/* ESTAT IP0~IP7 come from GINTC */
-+			gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & KVM_GINTC_IRQ_MASK;
-+			estat = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) & ~KVM_ESTAT_EXTI_MASK;
-+			entries[i].data = estat | (gintc << VIP_DELTA);
-+		} else {
-+			entries[i].data = kvm_read_sw_gcsr(csr, id);
-+		}
-+	}
-+
-+	if (!write && copy_to_user(ucsrs->entries, entries, size))
-+		ret = -EFAULT;
-+
-+	kfree(entries);
-+	return ret;
++	return min_t(u64, 1ULL << 32, div_u64((u64)ebx << 25, eax));
 +}
 +
- int kvm_arch_vcpu_ioctl_get_regs(struct kvm_vcpu *vcpu, struct kvm_regs *regs)
+ __init int vmx_hardware_setup(void)
  {
- 	int i;
-@@ -1266,6 +1337,12 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
- 			r = kvm_get_reg(vcpu, &reg);
- 		break;
- 	}
-+	case KVM_LOONGARCH_GET_CSR:
-+		r = kvm_loongarch_csr_io(vcpu, argp, false);
-+		break;
-+	case KVM_LOONGARCH_SET_CSR:
-+		r = kvm_loongarch_csr_io(vcpu, argp, true);
-+		break;
- 	case KVM_ENABLE_CAP: {
- 		struct kvm_enable_cap cap;
+ 	unsigned long host_bndcfgs;
+@@ -8726,6 +8747,8 @@ __init int vmx_hardware_setup(void)
+ 		cpu_preemption_timer_multi =
+ 			vmx_misc_preemption_timer_rate(vmcs_config.misc);
  
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index 1317c718f896..785f2fa0d164 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_IOEVENTFD:
- 	case KVM_CAP_MP_STATE:
- 	case KVM_CAP_SET_GUEST_DEBUG:
-+	case KVM_CAP_LOONGARCH_CSR:
- 		r = 1;
- 		break;
- 	case KVM_CAP_NR_VCPUS:
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 419011097fa8..45d9eb06cb8a 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -997,6 +997,7 @@ struct kvm_enable_cap {
- #define KVM_CAP_S390_KEYOP 247
- #define KVM_CAP_S390_VSIE_ESAMODE 248
- #define KVM_CAP_S390_HPAGE_2G 249
-+#define KVM_CAP_LOONGARCH_CSR	250
- 
- struct kvm_irq_routing_irqchip {
- 	__u32 irqchip;
-@@ -1670,4 +1671,8 @@ struct kvm_pre_fault_memory {
- 	__u64 padding[5];
- };
- 
-+/* LoongArch: bulk CSR get/set for migration */
-+#define KVM_LOONGARCH_GET_CSR	_IOWR(KVMIO, 0xd6, struct kvm_loongarch_csrs)
-+#define KVM_LOONGARCH_SET_CSR	_IOW(KVMIO,  0xd7, struct kvm_loongarch_csrs)
++		preemption_timer_limit = calc_preemption_timer_limit();
 +
- #endif /* __LINUX_KVM_H */
+ 		if (tsc_khz)
+ 			use_timer_freq = (u64)tsc_khz * 1000;
+ 		use_timer_freq >>= cpu_preemption_timer_multi;
+@@ -8735,7 +8758,8 @@ __init int vmx_hardware_setup(void)
+ 		 * value.  Don't use the timer if it might cause spurious exits
+ 		 * at a rate faster than 0.1 Hz (of uninterrupted guest time).
+ 		 */
+-		if (use_timer_freq > 0xffffffffu / 10)
++		if (!preemption_timer_limit ||
++		    use_timer_freq > (preemption_timer_limit - 1) / 10)
+ 			enable_preemption_timer = false;
+ 	}
+ 
 -- 
-2.43.0
+2.55.0.229.g6434b31f56-goog
 
