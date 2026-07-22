@@ -1,156 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9BD4921B7;
-	Wed, 22 Jul 2026 09:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BEB492532
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711801; cv=none; b=nB5dqRqLEV5EbWZJEMN2yBJnHOVQH46ZCBrWLZ82FXcQvFvXYs9ap4/0T5qrFzQfZMDY40oMpgfaRCkjP1To7gVOYqHuN+r+I61tedwOfO4tFHCzyDNxmc4opvBea8uSAbUfPiVh7+HQhjr3EOo0b+KVg5dwrGIeEYP+hDHAOmI=
+	t=1784711813; cv=none; b=tI0TvXCwuSUvEQzxjpPQZLwFst8+3ib0pw/R5Yrf+aLkpF5sdXHoM3HifrC1CzRaRlwdkImSgVZze1fdIG1zl31X5ELusoOaGKKL6DWT3m8Vfz7J5DvIcqc1Tf6GNieQ66VK0C+ryZ+0o9gBLKziBCMgBCfIpx1MLHO41i7+e4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711801; c=relaxed/simple;
-	bh=hBL4JdiQ9da5VNIlhJdlyFaMLAM5SImr/4Dqi5RamP0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H98DDLOG9H35CXcIiTft3LybnSpu1cxwSIJZjHPyQ41bU0XVQVgsxhfQLbCcM2V/TWTS/oYXmeNM9DgUA4eW2o4IWM8qqAiDw7mDk7NFKsP1NXWyd1t+R41mllsoXdl97uPs0JrR6cDjuFPfwIvaK/WcsxFNmBDYyFl1s9XjGCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQajkfa9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784711813; c=relaxed/simple;
+	bh=dxNfyEKRiRFwyQqRe6lndMsY6Unz13+C61p8/6Ex0g0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=d18k4rue3fLaLYMnbpFBXHNLE2N9pLz6kOMXpkMyCWC1SLkNRSEFREKY/2VJ9yFaCTvusnpNdV5kOR17SidN++3rJ83WDGNkjy05rc3ZG0GnBpOcGZWniPOKLiG51VZd6ARczxsIg3q0rdJK9YrqfKGQ0bJ0TxI3GgUCEeLtiXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt5HJBue; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQajkfa9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A11D1F000E9;
-	Wed, 22 Jul 2026 09:16:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt5HJBue"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FC51F000E9;
+	Wed, 22 Jul 2026 09:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784711796;
-	bh=hEH7kKvqt1/KHUTe1tqWiXTLezrqII4VElE0IVB2D/I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=YQajkfa9J6f4vm6T9dSUnt+jyEYWab07/JuzVrW21g3thiAdqJHipDNVNxlLVxzFP
-	 9+leosh8NuAupnv4wGq+PL6qA85lvFLa+NJ/Lehq6O1YktaiYU9WfO2VmfFYE0xdia
-	 SKP5tAXWI13AvGWHKaMMNUZ+O72aVaauJJfto/VDaTkDXmU42cAWEi/E8Qg+CaglOV
-	 dPEyv4Hg9BAZ+F9uF0lOiGYCEIGYs+YStr1m+7RKitJlf69PXzFzI5BnzKHWh9RNVq
-	 1TcaqJHIikSwlOLImttPqjBZEZAwooQY0GhcWPaz44n0ZV3ix9CQMxXOFJhgxxC7JU
-	 vWTW3vPQgeF7Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wmT46-00000007YV5-2Gq5;
-	Wed, 22 Jul 2026 09:16:34 +0000
-Date: Wed, 22 Jul 2026 10:16:34 +0100
-Message-ID: <86fr1be64t.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	"Oliver Upton" <oupton@kernel.org>,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH v3 24/28] KVM: arm64: Engage NV3 ERET trap elision
-In-Reply-To: <20260722085035.0FAB71F000E9@smtp.kernel.org>
-References: <20260722074234.3330999-1-maz@kernel.org>
-	<20260722074234.3330999-25-maz@kernel.org>
-	<20260722085035.0FAB71F000E9@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1784711809;
+	bh=Qj4bo9yMxBNl6pUC1191fy5Zl48h1/FJ7+7zb3yn1VM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Mt5HJBue2zqPoS+1sosPO1oJGChElo/a3haZB7knmsnzsae+MRQaUpt/mOHiveu6o
+	 bYkJRw3uAuk4bk4uiX9tseau0oY48SdVbtW1Tr6FpkZzZcWv+L+REacCuX0qOtWNmi
+	 CPAHpX4n9lmyOSudQpDqdkDe09iWkob+HnSk8ppZrSaopfNFU87NlDOjVpeGGwQg0o
+	 JBC55ezvJ6bTfUFQR3M7gQ1/pzvjSQvfSPro+0lxxu4qglQfTQHWarzy+N1hIp4tdt
+	 oGVTQzQiO40TvcmQfVNwEE3hzY/pIspuhEibgz8N056G7dovfygcuSUmnKTfKNFSOB
+	 rkwRxP5Vbw1gw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] KVM: x86: bound the composed nested TSC multiplier to
+ the max ratio
+Reply-To: sashiko-reviews@lists.linux.dev
+To: amirmohammad.eftekhar@cispa.de
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
+References: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 22 Jul 2026 09:16:48 +0000
+Message-Id: <20260722091649.40FC51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, oupton@kernel.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 22 Jul 2026 09:50:34 +0100,
-sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] NV3 ERET trap elision (HCRX_EL2_NVTGE) is evaluated statically at vCPU initialization, failing to reflect dynamic changes to HCR_EL2.E2H by the guest, resulting in a severe performance regression.
-> - [Low] Typographical error in the newly added comment for NV3.
-> --
-> 
-> --- Patch [24]: [PATCH v3 24/28] KVM: arm64: Engage NV3 ERET trap elision ---
-> commit c8d6c5654353c481c8b8e9e0a6741ae11cc31c69
-> Author: Marc Zyngier <maz@kernel.org>
-> 
-> KVM: arm64: Engage NV3 ERET trap elision
-> 
-> This patch enables ERET trap elision for L1 contexts on NV3 hardware by
-> setting HCRX_EL2.NVTGE, and adjusts the EL2 fast-path to bounce back to EL1
-> when NV3 and E2H are active, assuming the hardware handles the fast path.
-> 
-> > diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> > index c562d8171d5e1..b32870a5e1236 100644
-> > --- a/arch/arm64/include/asm/kvm_emulate.h
-> > +++ b/arch/arm64/include/asm/kvm_emulate.h
-> [ ... ]
-> > @@ -706,6 +706,16 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
-> >  
-> >  		if (kvm_has_feat(kvm, ID_AA64ISAR1_EL1, LS64, LS64_V))
-> >  			vcpu->arch.hcrx_el2 |= HCRX_EL2_EnASR;
-> > +
-> > +		/*
-> > +		 * NV3 is a host-specific extension, and we always use it
-> > +		 * when present and that the guest uses NV. It may be be
-> 
-> [Severity: Low]
-> This isn't a bug, but there is a typo (be be) in this comment.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Fixed.
+Pre-existing issues:
+- [High] kvm_calc_nested_tsc_multiplier prevents overflow truncations but f=
+ails to prevent the composed multiplier from underflowing to 0, which leads=
+ to hardware VM-entry failures or unhandled host #GPs.
+--
 
-> 
-> > +		 * hidden from the guest though.
-> > +		 */
-> > +		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
-> > +		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
-> > +			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
-> > +		}
-> 
-> [Severity: High]
-> Does evaluating the dynamic guest state vcpu_el2_e2h_is_set() here work correctly
-> given this populates the static vcpu->arch.hcrx_el2 cache?
->
-> If the guest hypervisor (L1) initializes and dynamically enables HCR_EL2.E2H
-> after KVM has already initialized the vCPU via kvm_calculate_traps(), this
-> HCRX_EL2_NVTGE bit won't be set because vcpu_set_hcrx() is not refreshed
-> dynamically.
+--- Patch [1]: [PATCH] KVM: x86: bound the composed nested TSC multiplier t=
+o the max ratio ---
+commit d48c3d3ad18139611ae5e395e3b21cd0a088ff37
+Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 
-vcpu_el2_e2h_is_set() is a fixed value. Always. It cannot change.
+KVM: x86: bound the composed nested TSC multiplier to the max ratio
 
-> 
-> This causes the hardware to fail to engage trap elision, forcing the ERET
-> instruction to trap to EL2 where it encounters the new check below.
-> 
-> > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-> > index cbda9e087db39..4ed745bdde418 100644
-> > --- a/arch/arm64/kvm/hyp/vhe/switch.c
-> > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> > @@ -345,6 +345,10 @@ static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
-> >  	u64 esr = kvm_vcpu_get_esr(vcpu);
-> >  	u64 spsr, elr, mode;
-> >  
-> > +	/* With NV3, the fast path is handled in HW */
-> > +	if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
-> > +		return false;
-> > +
-> 
-> [Severity: High]
-> Will this unconditionally abort the fast path and force a severe performance
-> regression if the hardware trap elision wasn't engaged?
+This patch limits the composed nested TSC multiplier to the hardware maximum
+ratio to prevent truncation or reserved bit exceptions. It calculates the
+product of L1 and L2 multipliers as a 128-bit value and saturates it to the
+advertised maximum if it overflows. This ensures the guest remains alive at=
+ a
+representable ratio rather than failing.
 
-As the comment says: we never get there if we're not *already* on the
-slow path. That's the spec. Read the spec.
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ff8812f3a1293..ad9372e6f55df 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+[ ... ]
+> @@ -2684,11 +2684,31 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_calc_nested_ts=
+c_offset);
+> =20
+>  u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier)
+>  {
+[ ... ]
+> +	nested_multiplier =3D mul_u64_u64_shr(l1_multiplier, l2_multiplier, fra=
+c);
+> +	if (nested_multiplier > kvm_caps.max_tsc_scaling_ratio)
+> +		return kvm_caps.max_tsc_scaling_ratio;
+> +
+> +	return nested_multiplier;
+>  }
 
-> 
-> Because the HCRX_EL2_NVTGE bit was evaluated statically in vcpu_set_hcrx()
-> and missed the guest's dynamic update, the ERET traps into this function.
-> 
-> kvm_hyp_handle_eret() evaluates the dynamic E2H state, correctly observes
-> that it is now set, and returns false under the incorrect assumption that
-> the hardware handled the fast path. This bounces the trap to the slow host
-> EL1 path, forcing a full, expensive context switch to emulate every L1 ERET.
+[Severity: High]
+This isn't a bug introduced by this patch, but does this composed multiplier
+need to be clamped to prevent underflowing to 0?
 
-Yet another Artificial Idiot nonsense.
+While this patch successfully caps the multiplier at
+kvm_caps.max_tsc_scaling_ratio, if the L0 guest runs significantly slower t=
+han
+the host (M1 < 2^frac) and L1 configures a valid L2 multiplier (e.g., M2=3D=
+1),
+the product (M1 * 1) >> frac naturally evaluates to 0.
 
-	M.
+When the multiplier evaluates to 0, it can lead to a hardware VM-entry
+failure on VMX, destroying L1.
 
--- 
-Without deviation from the norm, progress is not possible.
+Additionally, looking at svm_set_msr() in arch/x86/kvm/svm/svm.c:
+
+	case MSR_AMD64_TSC_RATIO:
+		if (data & SVM_TSC_RATIO_RSVD)
+			return 1;
+
+		svm->tsc_ratio_msr =3D data;
+
+Since 0 & SVM_TSC_RATIO_RSVD evaluates to 0, this check fails to reject
+data =3D=3D 0. This allows L1 to directly trigger the zero-multiplier path =
+on
+SVM without KVM injecting the architecturally required #GP, which can result
+in an unhandled host #GP.
+
+Could the result be clamped to a valid minimum (such as 1) to prevent the
+composed multiplier from evaluating to 0?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722084702.1028=
+983-1-amirmohammad.eftekhar@cispa.de?part=3D1
