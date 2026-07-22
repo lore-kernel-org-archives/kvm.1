@@ -1,152 +1,191 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9221F405C38
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9890F1DF27F;
+	Wed, 22 Jul 2026 18:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784743077; cv=none; b=Z9+2X72x3RctiP/8vC8evI5CD+Zr44fzHog2NRB/6a49gDm75Ldr0vw3UinID1sd0c7I7gdbI5SdVxN06g5GUXead8yIghzFx//hu5hG5WcS2lLFrrjRFc0/MCk8vniLp1pGEDN/uEe8w0AUQFNjKa+vKrsNxz+N6S+FJpH86aI=
+	t=1784743547; cv=none; b=h8sWY5IwWkXViYGLXJYGrD8upQkbPwR1XI0NxLPd5ovrtIhZzkE8BNG+YI7xACil335ymo4ZPPzl8wVmeQGSmetQUzUt9HrqoRvwWzUa3W8Bsat5YUkvrskfLbb6NQG5asGbFfh07JQ5Fi3+OlaH6CaYMVswMzpzeGf5/lE/IkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784743077; c=relaxed/simple;
-	bh=h5cZsGKWrMXzmekoRAj8WHyaGhT9z6Pr5c9d04J22pw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QO2FhWo0sgnDnON+b9/rjAoidNsxOq+ZRYBlnZ/FYrSmmaXi1I/6VhoLVEkRB52WHQh7GeASOPwSwvVAUdMb6lTegu2KrdB8GvArvGQrUgDCOL4Mf7lgBWyCZBw1nagLXswXmx3AY5chq3UKtwMA5hgIZlKyAJ0nnfl8EFfOo4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=s6mvtHvM; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1784743547; c=relaxed/simple;
+	bh=QPRP6F7yqsqPGfrJlwmcArGH3IE9n0TowFrshLG6sJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ovGjvtd8zKS4ghdugwN9fF+z/fveDQdJZvkzSTkql9g7MGTGh5xplYOBuyCSj7mWByzoSfbzzCXmVaoIW5HtDxPtlZmrlV5CLJEP5ewd9OJjk03F01qC8oVcNYIFcWJ6RP27K7LaYeWE++720qQ7YzEyr8JHo2+coKlnTgDjuno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Q7Vzk7/7; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="s6mvtHvM"
-X-Forwarded-Encrypted: i=1; AHgh+RopILXX/qAO/Ys1j162OQNLbXCBj2ooREGe1xRiV4BN5lWWPMgboRg0ztTxAiOfnIiaCgs=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1784743073;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RNf+StBq+Xe+3jbYQBIhdsx2jh5oqIZIvT85TkHHRhA=;
-	b=s6mvtHvMvkRbEwsAe0JyLahl3z+Ayr+UBew4wiDusaOrableoT/09ETeL6AAbmjNQLAd2K
-	F2xB1jNPpnqo3HOF+P8Avm7eyIuhKk8LjeB9v0Vw5iV8MvbOipzGmtEntWLLdylqqt4Gzz
-	tNwJsrMlUEb3i5hFzt1gtUvyXmu0xHw=
-X-Gm-Message-State: AOJu0YwjcXiMQZB8TM0jJvXTcNykDof7N3gzKntKH1NLwV+DXmjfzB8F
-	uImV/CZtw2M32dzIgIwMAZawf8IpNj6jdNhEVS8p2KJjWBKwTUBu6rzIU/divX91zjIH5gTkJLr
-	EuCA4wgPetY+QlJJCTvlue+xyeSOJDkPVJDT/6SSf
-X-Received: by 2002:a05:622a:a981:10b0:517:6dc0:698d with SMTP id
- d75a77b69052e-5283b8641f5mr863721cf.0.1784743059542; Wed, 22 Jul 2026
- 10:57:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Q7Vzk7/7"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66MFffdr383628;
+	Wed, 22 Jul 2026 18:05:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=9Db4hm
+	QOTDATjO8uTSnyqr2auNQcaCMhg0xqxQmQZkY=; b=Q7Vzk7/7cMmqJ4RhvakvQB
+	klXyAZaCM86GdecDBPFhbTk8/Qz7TUy+qZzrE6AeOGtdmqJeUKZz+PBAgQ8OGNyq
+	0wmoV7MEKhi4TcQ+defQKIj4rHv3EmrLz6ufzhh8nwQ2fieoDe7vNEZNKfoabPXW
+	26e1cDgBl+5mh6+RReuZ7obvot9YQb0qK31I4o/cp8yR7AcGFwfKYn7/hIiXs5VC
+	31lKMk/n1cAEP8+v0tt3kpu80+tbSAr7WR3D5VzZqKZwOBH6JQ8kfHWLhO5ghHue
+	G4xny71SaTfMvVxFbtMwtWduwbjmEXyX1MwD+Vr8ZsQPedsfXQpnPJuKvVgc+H9A
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ahb4vc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 18:05:43 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66MI4kBV003313;
+	Wed, 22 Jul 2026 18:05:43 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtk0hpx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jul 2026 18:05:42 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66MI5ft659834796
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jul 2026 18:05:41 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6562058061;
+	Wed, 22 Jul 2026 18:05:41 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1B6F95803F;
+	Wed, 22 Jul 2026 18:05:41 +0000 (GMT)
+Received: from [9.16.36.179] (unknown [9.16.36.179])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jul 2026 18:05:41 +0000 (GMT)
+Message-ID: <ed15f41a-d2c3-45b9-a5f6-2e86bcdf290a@linux.ibm.com>
+Date: Wed, 22 Jul 2026 13:05:40 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260703154811.3355680-1-sascha.bischoff@arm.com>
- <20260703154811.3355680-37-sascha.bischoff@arm.com> <CA+EHjTybDSAgr44jXNFnssnYq_vVeuZ+1qORS8f4dtQgMzOZ5A@mail.gmail.com>
- <71dc44828b55c848ca7bc842cb13b34681617ac7.camel@arm.com>
-In-Reply-To: <71dc44828b55c848ca7bc842cb13b34681617ac7.camel@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 22 Jul 2026 18:57:02 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTwMHxwpRLi0BEx5ykH+Nc1Oxja=6DYmdeS=3A3yzYYRzg@mail.gmail.com>
-X-Gm-Features: AUfX_mxTwAstkGjzWOdnvL1hFBOCWR33UqAdcJvL9E7YW2li2DEVUoBMCGBfKY8
-Message-ID: <CA+EHjTwMHxwpRLi0BEx5ykH+Nc1Oxja=6DYmdeS=3A3yzYYRzg@mail.gmail.com>
-Subject: Re: [PATCH v3 36/40] KVM: arm64: gic-v5: Implement save/restore
- mechanisms for ISTs
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "yuzenghui@huawei.com" <yuzenghui@huawei.com>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	Timothy Hayes <Timothy.Hayes@arm.com>, Suzuki Poulose <Suzuki.Poulose@arm.com>, nd <nd@arm.com>, 
-	"peter.maydell@linaro.org" <peter.maydell@linaro.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Joey Gouly <Joey.Gouly@arm.com>, 
-	"maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] KVM: s390: Fall back to short-term pinning in MAP
+ ioctl
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com
+Cc: david@kernel.org, svens@linux.ibm.com, freimuth@linux.ibm.com,
+        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260720222238.1576-1-jhkim@linux.ibm.com>
+ <1f64ec8b-2e22-42c7-b823-74d2bc30f3aa@linux.ibm.com>
+ <2a080b3b-1a2f-489d-9d66-492e00c57f72@linux.ibm.com>
+Content-Language: en-US
+From: JAEHOON KIM <jhkim@linux.ibm.com>
+In-Reply-To: <2a080b3b-1a2f-489d-9d66-492e00c57f72@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: k3wMPvXNPmaJ84Df8VJjC94Y8NBtuoku
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIyMDE3NCBTYWx0ZWRfX6wGfpP1B17RE
+ svtMZb0ZKVG7ye7kW4WfUrwOB0B/OuBrXbjh/Rf36lv9YmFFa4VYRrDh9OjpyNfzTspf6wNuO3+
+ NmvselvDRCLYba261aIyq5ZV1Hv2bju4IVn65SaY4CR1mDSFl68SUhyIfm2MNlaiWCq3LqBlvza
+ vfdSABflnScFg6IG3k8cUvA+8B763TsL6F/EdNvddMijOwsk/Z7TFACUwXOlWdMiaZz7qLwJPZ8
+ hlkFZktnOZRzLEi+50jy50GfbUux2XH8ALPwMFDEJyTjeW4kyzD5OYWvPuOvj1YgHFRe0/UnBPG
+ 5BGtc2RGtPDj9/ZNXRORfy/hpyrdUCZA7rpvuWVoxYVrTaflXKqjqzg8IXAA3Dn+F4TjQT1i2bN
+ cxjte3fbdjqHbNd4y94YGfEInaQF3SUcPyvjaDv20hD1UNgwUNIJuNvKDnZI20P6QsVPfuniczi
+ 6b6LiQuhGRmeLFWIhaw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIyMDE3NCBTYWx0ZWRfX6Fn+1cm4Cp2c
+ nZ4wCLmXiT/YIBUuJ1kH9sSXE0SAV//ROGVQf2KGVwH+O+O0/gLxKB7wO5OkcNW8moi8skYB/81
+ ClK3JEzuhfqXP1RAAMM7mLL/vYyczeE=
+X-Proofpoint-GUID: k3wMPvXNPmaJ84Df8VJjC94Y8NBtuoku
+X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a610677 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=jlelUyAgpgk8ZDXLglcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-22_04,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607220174
 
-Hi Sascha,
+On 7/22/2026 12:07 PM, Christian Borntraeger wrote:
+>
+>
+> Am 22.07.26 um 17:51 schrieb Matthew Rosato:
+>> On 7/20/26 6:22 PM, Jaehoon Kim wrote:
+>>> FOLL_LONGTERM pinning fails for some memory types, such as file-backed
+>>> guest memory. As a result, kvm_s390_adapter_map() returns -EINVAL and
+>>> irqfd adapter registration fails even though interrupt delivery could
+>>> still work via the existing non-atomic path.
+>>>
+>>> When FOLL_LONGTERM pinning fails, verify that the page is accessible
+>>> using a short-term pin instead. If the short-term pin succeeds,
+>>> immediately unpin the page and return success. The non-atomic irqfd
+>>> path already performs short-term pinning for interrupt delivery, so
+>>> this restores the previous behavior for memory that cannot be pinned
+>>> long-term.
+>>>
+>>> Fixes: adcd5b3e758b ("KVM: s390: Add map/unmap ioctl and clean 
+>>> mappings post-guest")
+>>> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
+>>> ---
+>>>   arch/s390/kvm/interrupt.c | 15 +++++++++++++--
+>>>   1 file changed, 13 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+>>> index 9e3e6b0d72ad..4b68e0cb51f6 100644
+>>> --- a/arch/s390/kvm/interrupt.c
+>>> +++ b/arch/s390/kvm/interrupt.c
+>>> @@ -2520,8 +2520,19 @@ static int kvm_s390_adapter_map(struct kvm 
+>>> *kvm, unsigned int id, __u64 addr)
+>>>       map->addr = host_addr;
+>>>       map->page = pin_map_page(kvm, host_addr, FOLL_LONGTERM);
+>>>       if (!map->page) {
+>>> -        ret = -EINVAL;
+>>> -        goto out;
+>>> +        /*
+>>> +         * Long-term pinning may fail for memory types such as 
+>>> file-backed
+>>> +         * memory. Check whether short-term pinning is possible so 
+>>> that the
+>>> +         * non-atomic irqfd path can handle interrupt injection.
+>>> +         */
+>>> +        map->page = pin_map_page(kvm, host_addr, 0);
+>>> +        if (!map->page) {
+>>> +            ret = -EINVAL;
+>>> +            goto out;
+>>> +        }
+>>> +        unpin_user_page(map->page);
+>>> +        kfree(map);
+>>> +        return 0;
+>>
+>> This makes sense, but what happens later on the kvm_s390_adapter_unmap?
+>>
+>> Won't we return -ENOENT because nothing was in the list?
+>>
+>> Is it worth detecting/recognizing this case?  I could think of 2 ways...
+>>
+>> 1) re-doing the above test during unmap
+>>
+>> 2) stashing an entry in adapter->maps but with a new flag that indicates
+>> it was approved for short-term pinning only (e.g. return NULL
+>> immediately if a match is found during get_map_info() with this flag
+>> set), and during kvm_s390_adapter_unmap() and
+>> kvm_s390_unmap_all_adapters() just remove it from the list without doing
+>> any unpin/page dirtying.
+>>
+>> #2 might be a little more code but sounds cleaner?
+>>
+>
+> When we are at it, can we also fix 
+> Documentation/virt/kvm/devices/s390_flic.rst ?
+>
+> To me it looks like qemu does not check the error for unmapping, but 
+> yes, maybe 2 is
+> the right thing to do.
 
-...
+I agree that option #2 is the cleaner approach as well. I'll also update the
+documentation.
 
-> I think that this is a great idea. It makes a lot more sense than
-> blindly trusting that the VMM has done the correct thing. With this,
-> KVM can validate that the VMM at least claims to have done what we'd
-> expect.
->
-> I guess you had something like this in mind?
->
->     struct kvm_vgic_v5_ist {
->         __u64 spi_ist_addr;
->         __u64 spi_ist_size;
->     };
->
-> Which then means that we can do:
->
->     struct kvm_vgic_v5_ist ist_attr;
->     size_t expected = kvm->arch.vgic.nr_spis * sizeof(__u32);
->
->     if (copy_from_user(&ist_attr, uaddr, sizeof(ist_attr)))
->         return -EFAULT;
->
->     if (ist_attr.spi_ist_size != expected)
->         return -EINVAL;
->
->     if (!ist_attr.spi_ist_addr)
->         return -EINVAL;
-...
+Thanks,
+Jaehoon.
 
-> When I originally designed this API, I was keen to re-use the guest
-> memory here so had quickly dismissed this approach. However, looking at
-> it again now, I think it makes a lot of sense, especially as we are
-> limiting the guest to 16-bits of ID space - this wasn't the case
-> originally which allowed the size of the ISTs to balloon significantly,
-> and hence it made more sense to re-use the guest's memory.
->
-> > That would remove the ordering requirement
-> > entirely, and by my reading the worst case is 65536 entries at 32
-> > bits, so 256 KiB, given the 16 bit clamp on the guest's LPI ID bits.
->
-> I am actually in favour of this approach. It removes the asymmetry
-> between the LPI and SPI ISTs on the save/restore path, and avoids the
-> explicit iteration over guest memory to save or restore the LPI IST.
->
-> With this, the proposed struct would become the following.
->
->     struct kvm_vgic_v5_ist {
->         __u64 spi_ist_addr;
->         __u64 spi_ist_size;
->         __u64 lpi_ist_addr;
->         __u64 lpi_ist_size;
->     };
->
-> The VMM would need to read the guest's IRS_IST_CFGR and IST_IST_BASER
-> to determine if the guest is using LPIs or not, and how many it needs
-> to provide storage for. If no LPIs are in use, then allow
-> lpi_ist_addr/lpi_ist_size to be 0, but otherwise the size must match.
->
-> Does this align with what you had in mind?
-
-Pretty much, yes. Folding the LPI IST in the same way is better than I
-expected. All __u64 also avoids implicit padding.
-
-The LPI size is the one that matters. The SPI size is nr_spis * 4, and
-nr_spis is something the VMM set itself through GRP_NR_IRQS, so the
-two sides cannot disagree. The LPI size is derived from IST_CFGR
-instead, so that is the buffer where the kernel computing the expected
-size and rejecting a mismatch earns its keep. The entry is a fixed 4
-bytes either way, since only the architected 32-bit ISTE is exposed,
-so sizeof(__u32) is right.
-
-The main thing I would ask is that the checks be strict both ways,
-since turning silent acceptance into -EINVAL is really the point of
-the size field. Two cases: reject a non-zero lpi_ist_addr when the
-kernel has no LPI IST, not just allow 0 when it does; and on restore,
-reject rather than silently skip when the LPI IST is not configured
-yet, which as far as I can see makes an out-of-order restore, the IST
-buffer before IST_CFGR and IST_BASER, a no-op.
-
-Another thing your proposal cleanly resolves is the ordering point
-from my earlier mail. Once the LPI IST save writes the userspace
-buffer instead of guest memory, the requirement to serialise guest
-memory after saving the ISTs goes away, since the save no longer
-touches guest memory.
-
-Cheers,
-/fuad
