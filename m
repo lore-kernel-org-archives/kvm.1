@@ -1,162 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A651733031C;
-	Wed, 22 Jul 2026 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251933A9DA;
+	Wed, 22 Jul 2026 14:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784730133; cv=none; b=FJe6x9Sf+Rt4tUai/8KyGKDrLUkF/bd4yqehY8guyPuJZgONkF04RTW4FYAnPa1e73bH9cjozd0OKoGx28yOWiO/dqsS2Xpr+zic4pSXR0Tb50CzVaFI/HEoUq7MhdGMKETu2hSM5hgQqntviJjmCMaVT24jGtAof3tbed5D4v4=
+	t=1784730215; cv=none; b=UhyKkbZSy2oHQLoLuCX07G7V7xh47oLA2G3m+kzfRdZcVu6HJqD0EyWGBufXXK+kMFmFtoYov5UaWTW5DS7/XAo1yg/Ad7PTkM/PPKZ4FBlsnu8A1dTSej2GH9ZomNY0mEBXhy1M7NIKmCrRPFu+ZGp/eAerfUzvDcBUqj5B+s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784730133; c=relaxed/simple;
-	bh=gGw1E3ghHHezOp91vY3ase7DrVUSqGB3oj3AKDRxkUA=;
+	s=arc-20240116; t=1784730215; c=relaxed/simple;
+	bh=5vcSvTfAYWyeK8d6AFXQkBCSTNADsEqKidNRYQSBSfM=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=rR0XYc37lhxpmhGDpMH96syBBmyzDDdUK9tBdLc0F9kSQP23zakZ/g5ovYoG7DqKvI1TRlp1URT/VZIk4bowEmNe2FcBsHqvZ4aTOYPTdE781vYjl9FLOs11040Mvt/q7ckOAU0pIsVZIEUTxN1LPzLckQOZSm5jkVwpSATX9ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmB6ej5b; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=J7h4Rb3AkeLhUbeZ/xU68egIOrFf+GkQJnpT1uizm2bC+gqKBjpZh1SL5ypTtZ99sxBB2ReNCG/Me6AQ2ibojkerpXUVv1RB1u4dEJzlCWC7y6bXv6bsgcGsIXpLAbMv77fvdNTJV0vCYoY4/N91L+id7W5QYilp/GqU0LkwmiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZ9f8uoh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmB6ej5b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CF51F000E9;
-	Wed, 22 Jul 2026 14:22:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZ9f8uoh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC8B1F000E9;
+	Wed, 22 Jul 2026 14:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784730131;
-	bh=gGw1E3ghHHezOp91vY3ase7DrVUSqGB3oj3AKDRxkUA=;
+	s=k20260515; t=1784730214;
+	bh=VlZ2RnDEUi2LxGL6CxdbTbnCKyM/iXSLFAMMrkxeYIA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=hmB6ej5bv6mX78s8tM5+NvtOphFLolmZ6pixq2Hrxnfie54uyZzx98xsyL2uEQJIr
-	 u2DZy8zndfFJFwBRr4Rrw1E0fOPptjBzD7hOzjkX1ZemIJViJAots9VemtQ7Qo2oW+
-	 fYG6lLWjZ4ruZplBVxd//8/obi1fpU+PSS6uAyDZalXPSm43N1QUolSnFBX75IolSI
-	 ELsbTcFVr2P1vFnM02HlezrQBtuuXtaHQga95QJ/D2MMyRoWwZlMLVo9J10T04I0cq
-	 14ZUoH4mWusASjL7L0NfNjkddtSWRN1+5iqWFSEQ1MPd3X8znQSAF9ec587N3C3e3Y
-	 L81821VekclFw==
+	b=FZ9f8uoh/Netc7ev7ej6/jbEHi9HSj6dGxJjjGzqGiVqcJjv23yid1E0PSnRWx+KY
+	 kms9KVtwxt6/Vbmop8jOr7vrVDiM0mvMocUlWyIYoetk/FrX7wWaXQLjsfaXwy3aDv
+	 pahO5/R4nA8mG+gH/23mfpcPGl2Lg6cC9dsI5D0dxotdzEeZ3+IA/sUq3kaw8911v+
+	 gYsqoxTJujDTepbQUsrB9kJvH79f/Xh1goK7q8wjL2tIF29qODOCQFrQpDeNB2Ltc3
+	 LrnxUkX3b7f93hEGvtwqJ4AUClTdJMAUCXj5U6llYhanm5UOQ7S7GMKLDXxZ8YIQWL
+	 JgwqfRt/4ZVqA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] mm/mmu_notifier: Add async OOM cleanup via
- call_srcu()
+Subject: Re: [PATCH] s390/vfio-ap: fix stale pqap_hook pointer on error in
+ vfio_ap_mdev_set_kvm()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: shaikh.kamal <shaikhkamal2012@gmail.com>
-Cc: kvm@vger.kernel.org, linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20260722140803.11421-1-shaikhkamal2012@gmail.com>
-References: <20260722140803.11421-1-shaikhkamal2012@gmail.com>
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260722140927.892342-1-akrowiak@linux.ibm.com>
+References: <20260722140927.892342-1-akrowiak@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 14:22:10 +0000
-Message-Id: <20260722142210.D1CF51F000E9@smtp.kernel.org>
+Date: Wed, 22 Jul 2026 14:23:34 +0000
+Message-Id: <20260722142334.5BC8B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 7 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Reusing an RCU-protected hlist node for a stack-local list ove=
-rwrites the RCU pointer, corrupting concurrent SRCU readers.
-- [Critical] Disconnecting KVM from the MMU notifier during OOM breaks the =
-KVM retry protocol, allowing guests to access freed host memory.
-- [High] The patch synchronously invokes the release callback from the OOM =
-reaper, reintroducing the PREEMPT_RT deadlock it intended to fix.
-- [High] Skipping mmu_notifier_unregister on GFP_ATOMIC failure bypasses SR=
-CU synchronization, leading to a Use-After-Free of KVM by active readers.
-- [High] Concurrent unregistration races with mmu_notifier_oom_enter's lock=
-less iteration over the local oom_list, causing stack corruption.
-- [High] A TOCTOU race exists between kvm_destroy_vm() checking hlist_unhas=
-hed() and mmu_notifier_oom_enter() scheduling the SRCU callback, leading to=
- a Use-After-Free.
-- [Medium] Duplicated cleanup logic in kvm_destroy_vm triggers a false posi=
-tive WARN_ON after an OOM event.
+- [Critical] Restoring `kvm->arch.crypto.pqap_hook` to `&m->pqap_hook` afte=
+r releasing update locks creates a TOCTOU race condition leading to an expl=
+oitable Use-After-Free.
 --
 
---- Patch [1]: [PATCH v3] mm/mmu_notifier: Add async OOM cleanup via call_s=
-rcu() ---
-Note: The format of this review has been altered to use a free-form summary
-rather than inline patch quoting due to recitation restrictions.
+--- Patch [1]: [PATCH] s390/vfio-ap: fix stale pqap_hook pointer on error i=
+n vfio_ap_mdev_set_kvm() ---
+commit 3eedf7c518752f33e7b7b7758dc2098b54d797b9
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-commit 3eae3d8df937f01d0f1b5da1f0f3daf339692174
-Author: shaikh.kamal <shaikhkamal2012@gmail.com>
-mm/mmu_notifier: Add async OOM cleanup via call_srcu()
+s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
 
-This commit implements asynchronous cleanup of MMU notifiers during OOM kil=
-ls
-to prevent deadlocks on PREEMPT_RT kernels. It uses call_srcu to defer
-after_oom_unregister callbacks until after the SRCU grace period.
+This commit addresses an issue where the pqap_hook pointer is left pointing
+at a failing matrix_mdev when a conflicting assignment is detected. It fixes
+this by restoring the hook to the legitimately attached mdev discovered
+during the error path.
 
-Link: https://lore.kernel.org/all/CABgObfZQM0Eq1=3Dvzm812D+CAcjOaE1f1QAUqGo=
-5rTzXgLnR9cQ@mail.gmail.com/
+Cc: stable@vger.kernel.org
+
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 44b3a1dcc1b36..e18540fd6dc75 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+
+[ ... ]
+
+> @@ -1833,6 +1839,10 @@ static int vfio_ap_mdev_set_kvm(struct ap_matrix_m=
+dev *matrix_mdev,
+>  		list_for_each_entry(m, &matrix_dev->mdev_list, node) {
+>  			if (m !=3D matrix_mdev && m->kvm =3D=3D kvm) {
+>  				release_update_locks_for_kvm(kvm);
+> +				/* Undo the hook installation since we're failing */
+> +				down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+> +				kvm->arch.crypto.pqap_hook =3D &m->pqap_hook;
 
 [Severity: Critical]
-In mmu_notifier_oom_enter(), the code uses hlist_add_head() to move the
-subscription to a stack-local list immediately after calling
-hlist_del_init_rcu(). Does this overwrite the next pointer of the
-RCU-protected node before the grace period elapses?
+Is there a race condition introduced here since the update locks are releas=
+ed
+right before restoring the hook pointer?
 
-Concurrent SRCU readers traversing the global list might follow the
-overwritten pointer into the stack-allocated list and read garbage data,
-potentially causing a panic.
+Looking at vfio_ap_mdev_set_kvm() in drivers/s390/crypto/vfio_ap_ops.c,=20
+release_update_locks_for_kvm() drops the mutexes that protect the mdev
+list. Once those locks are dropped, could another thread concurrently remove
+and free the existing mdev (m)?
 
-[Severity: Critical]
-By removing KVM from the subscriptions list during mmu_notifier_oom_enter(),
-does this break the KVM retry protocol?
+If m is freed while we are waiting to acquire the pqap_hook_rwsem, this code
+would then assign a dangling pointer to kvm->arch.crypto.pqap_hook. Later,
+when the guest executes a PQAP instruction, it might dereference this freed
+memory, resulting in a use-after-free.
 
-The OOM reaper will unmap pages while holding mmap_lock for read, but KVM
-will miss the invalidate_range_start callbacks. This means mmu_invalidate_s=
-eq
-won't be incremented. If a concurrent KVM page fault resolves a PFN, it will
-pass the sequence retry check and could install a shadow mapping just before
-the OOM reaper frees the physical page, which might allow a guest to access
-host memory reallocated to other processes.
+Would it be safer to restore the hook pointer before calling
+release_update_locks_for_kvm() to ensure m remains valid?
 
-[Severity: High]
-The code iterates over the local list in mmu_notifier_oom_enter() and
-synchronously calls the release callback. For KVM,
-kvm_mmu_notifier_release() acquires the KVM mmu_lock.
-
-Since the OOM reaper holds the mmap_lock and calls this release callback,
-could this recreate the exact AB-BA deadlock between mmap_lock and mmu_lock
-on PREEMPT_RT that this patch was intended to fix?
-
-[Severity: High]
-If the GFP_ATOMIC allocation fails in mmu_notifier_oom_enter(), the code
-continues without scheduling a call_srcu() callback, leaving the node
-unhashed.
-
-In kvm_destroy_vm(), if hlist_unhashed() is true, it calls
-mmu_notifier_barrier() and then mmdrop(kvm->mm). Because no callback was
-queued, srcu_barrier() returns immediately. Could this lead to a
-use-after-free of KVM structures by concurrent SRCU readers that are still
-traversing the unhashed node?
-
-[Severity: High]
-There appears to be a race condition when iterating over the stack-allocated
-list in mmu_notifier_oom_enter().
-
-Concurrently, mmu_notifier_unregister() checks if the node is hashed,
-acquires the subscriptions lock, and calls hlist_del_init_rcu(). Because the
-stack list is iterated locklessly, won't this concurrent deletion modify the
-stack-local list pointers, causing data races and potential stack corruptio=
-n?
-
-[Severity: High]
-Is there a time-of-check to time-of-use race between kvm_destroy_vm() and
-mmu_notifier_oom_enter()?
-
-The code in mmu_notifier_oom_enter() unhashes the node before calling
-call_srcu(). If kvm_destroy_vm() runs in this small window, it will observe
-the unhashed state, call the barrier which won't wait since no callback is
-queued yet, and then free the KVM structure.
-
-The OOM reaper thread would then queue the callback pointing to the freed
-subscription, leading to a use-after-free when the deferred callback
-executes.
-
-[Severity: Medium]
-In kvm_destroy_vm(), the cleanup logic checks if mn_active_invalidate_count
-is non-zero, and if not, triggers a WARN_ON if mmu_invalidate_in_progress is
-set.
-
-However, kvm_mmu_notifier_after_oom_unregister() already zeroes
-mn_active_invalidate_count. Since the OOM event detached KVM during an
-active invalidation, the in-progress count remains positive. Will this
-duplicated cleanup logic consistently trigger a false positive WARN_ON duri=
-ng
-VM teardown after an OOM event?
+> +				up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+>  				return -EPERM;
+>  			}
+>  		}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722140803.1142=
-1-1-shaikhkamal2012@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722140927.8923=
+42-1-akrowiak@linux.ibm.com?part=3D1
