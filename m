@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E187147143F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCD047125B;
 	Wed, 22 Jul 2026 07:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784706183; cv=none; b=ux+zfmf3r4NiiRdVweyaUvauBoFmuTvUQIN5pGTI0eFfOgZvW77Nt6+nwcq+PJ4BcwdM58ICqaeu8nD9buowUH0DIZAmjeG1lJSKysfSQ3xZPiFyaYolNg0qRLi9WL3IWBxrZMS9Up5Ghw3HjnmWHMKQszF1zrX9l6LieAsAfSE=
+	t=1784706185; cv=none; b=VYUcFf9FdCHixEazAC2kyxvrM/kmwsbtY2yRgXQlnXePD7O0ECT+gU2IJ0gNDy1FYmcNiDS8AeDMrlnGEvgRyNBAj3w9Hk0bFnEKEG+NeR6eDEcPEMNj3lBh/v/Nr49FVw/MInGGfnMRs3tklBx6496vZ3lUICCpR9zLyi7phXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784706183; c=relaxed/simple;
-	bh=I+50Lsc4CfIsNb/Gr6JuNAVEajtxVGGWW+qdCUg7RfE=;
+	s=arc-20240116; t=1784706185; c=relaxed/simple;
+	bh=Bmarv9ETkOy+ocdGoVkqlZ5fWXWVdV9HYNdiftnMr4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdRXpeFG8HW/W1/I+aP695Xvb/j9IbxUReuM2brLr6cL6H5rgYhq/DFe+dCE0dNJYqxzmdlh1Oa+wK0tOF6jdxli4i2mkAaDKQ8uQBTp09h43nYCBmkiyyELGauQALZSos3tESWNmk3enT3hGfnl5rvlzVlyea67+xtvh7zJmyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1ZoXlDy; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ZDCWsOc+W7yJkenwP9Ld8u2NMnu8H+A7hMgQk1tfBcpGi5LbYGDwYaQ9wIobumWwibsBcU9Kl45nJOaEOoojlZrVUcdOGpJuXjEnu89LxyFYxUu7wsqQfiXY7jWHrHRNMCArUhn4spi/9/po/fF9k5GZFWWtNks1VhvxHL8zOqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVO1H1z2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1ZoXlDy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61B91F01559;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVO1H1z2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977591F00A3E;
 	Wed, 22 Jul 2026 07:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1784706181;
-	bh=whHpJ36OI1bAClZaUTHR3b4xJe/NWRnqvq/wOSxIZAM=;
+	bh=8jaHFCEviRnbCdixdpD0GtuLBAdju+GKxQE6UGfkIoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S1ZoXlDyNva2/c8afoX2lQD+4zVgg2utFnbauV56l6yl5VkoDoPbcikWsd+tSHSDT
-	 TmH/e0qFsNapNdtYjWX/6bFhIXdoIE4ZMzaxE2KSeNCBSihRV/wipxiQ4t0BMAnPe3
-	 w97NlrZYSEWO8stidDyRK2SnMhngG+dOAhwzTsdZ2+XYTK1DH95W0Cf4z4fwAh5hgG
-	 K5GPwmMWIwdyv8Kl1+JWZfxZt4us+kj6Gaane8EWOIFC9Pb8qAPt9eW3WMSbwN+nA8
-	 0SGjYYHHr4oZJrx4DQgGKpm32hNvC3mZaGteTSSUfo7Rgrnjp3aorkowRds7OlgKqt
-	 Gt0sQQ9XXRB1w==
+	b=bVO1H1z2lqLOb6HDjKUF7YUegGd21j85fCsJanfqN9nKAjbsmHTV+Y22NaBt6hZCf
+	 Rd5vrGgcZ1CNEqyFazDA48gtutAc0PqGQp543lFmYwLZ6wtyYF621eLEkQMLezBcIa
+	 Fb5qFn8ipRaDdysiVkJWAi7oBT6JS7wrC4H+b7w7HnOfutNabx86mVt87WtgvwXcJv
+	 hlxFkQ3m3K1PLCYjbheJDyotBLG6yuxBNGBp+Qi84YVRER4BjCd5PIHFz+2MIQWNZk
+	 PnDqql8gShYWuESay83ihBEr2sAooIbYm5VBmj79/P8VMAmuuCjmhLGThBf9u+ps6S
+	 J3090VHX+RzzA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wmRbY-00000007VfN-0ZEf;
-	Wed, 22 Jul 2026 07:43:00 +0000
+	id 1wmRbX-00000007VfN-3jDV;
+	Wed, 22 Jul 2026 07:42:59 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -43,9 +43,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: [PATCH v3 26/28] KVM: arm64: Add FEAT_NV3 detection
-Date: Wed, 22 Jul 2026 08:42:32 +0100
-Message-ID: <20260722074234.3330999-27-maz@kernel.org>
+Subject: [PATCH v3 25/28] KVM: arm64: Engage NV3 TLBI trap elision
+Date: Wed, 22 Jul 2026 08:42:31 +0100
+Message-ID: <20260722074234.3330999-26-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260722074234.3330999-1-maz@kernel.org>
 References: <20260722074234.3330999-1-maz@kernel.org>
@@ -61,32 +61,40 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Now that everything is in place to engage the FEAT_NV3 fast-path,
-add the detection code to cpufeature.c.
+Similarly to the ERET elision mechanism, FEAT_NV3 can elide TLBIs
+that only affects the guest's S1 translation. Enable this, with the
+express condition that the guest isn't NV2 aware, as we otherwise
+need to trap these TLBIs to deal with VNCR mappings.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/kernel/cpufeature.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/include/asm/kvm_emulate.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index c9c124b0ccc8e..6ae1c816e2010 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -2627,6 +2627,13 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
- 		.matches = has_cpuid_feature,
- 		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV2P1)
- 	},
-+	{
-+		.desc = "FEAT_NV3",
-+		.capability = ARM64_HAS_NV3,
-+		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
-+		.matches = has_cpuid_feature,
-+		ARM64_CPUID_FIELDS(ID_AA64MMFR4_EL1, NV_frac, NV3)
-+	},
- 	{
- 		.capability = ARM64_HAS_32BIT_EL0_DO_NOT_USE,
- 		.type = ARM64_CPUCAP_SYSTEM_FEATURE,
+diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
+index b32870a5e1236..d17b161d4ba3a 100644
+--- a/arch/arm64/include/asm/kvm_emulate.h
++++ b/arch/arm64/include/asm/kvm_emulate.h
+@@ -715,6 +715,19 @@ static inline void vcpu_set_hcrx(struct kvm_vcpu *vcpu)
+ 		if (cpus_have_final_cap(ARM64_HAS_NV3) &&
+ 		    vcpu_has_nv(vcpu) && vcpu_el2_e2h_is_set(vcpu)) {
+ 			vcpu->arch.hcrx_el2 |= HCRX_EL2_NVTGE;
++
++			/*
++			 * If the guest is NV2-capable, then we need to see
++			 * all the TLBIs, as configured in HCR_EL2.
++			 * Otherwise, relax the TLBI traps to only TGE=0.
++			 */
++			if (!kvm_has_nv2(vcpu->kvm)) {
++				vcpu->arch.hcrx_el2 |= (HCRX_EL2_NVnTTLB   |
++							HCRX_EL2_NVnTTLBIS);
++
++				if (kvm_has_feat(kvm, ID_AA64ISAR0_EL1, TLB, OS))
++					vcpu->arch.hcrx_el2 |= HCRX_EL2_NVnTTLBOS;;
++			}
+ 		}
+ 	}
+ }
 -- 
 2.47.3
 
