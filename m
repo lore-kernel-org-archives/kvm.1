@@ -1,122 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BEB492532
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10953BF694;
+	Wed, 22 Jul 2026 09:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784711813; cv=none; b=tI0TvXCwuSUvEQzxjpPQZLwFst8+3ib0pw/R5Yrf+aLkpF5sdXHoM3HifrC1CzRaRlwdkImSgVZze1fdIG1zl31X5ELusoOaGKKL6DWT3m8Vfz7J5DvIcqc1Tf6GNieQ66VK0C+ryZ+0o9gBLKziBCMgBCfIpx1MLHO41i7+e4Y=
+	t=1784711930; cv=none; b=I/SLu6/y9w77Cm8fRTwXGCFzAvTWej39O0aHVL8MrJ6FyEfm21MGhLRVlrDk3hnTYRJdwNw9B4QJsKSLikglJBWFsgroWVd4POoxtTuQYW0wynSX87328N9Ks+BKNtqNEoqJBax2jFKIO2RmfF0g8YSNTGCtV8iySK2UYueof9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784711813; c=relaxed/simple;
-	bh=dxNfyEKRiRFwyQqRe6lndMsY6Unz13+C61p8/6Ex0g0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=d18k4rue3fLaLYMnbpFBXHNLE2N9pLz6kOMXpkMyCWC1SLkNRSEFREKY/2VJ9yFaCTvusnpNdV5kOR17SidN++3rJ83WDGNkjy05rc3ZG0GnBpOcGZWniPOKLiG51VZd6ARczxsIg3q0rdJK9YrqfKGQ0bJ0TxI3GgUCEeLtiXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mt5HJBue; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784711930; c=relaxed/simple;
+	bh=wQSwZqpHyrpu5MybR5oext09tkbEDJ6MQWKdPzYQsto=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o31ETuhiuDDuyTDCdjWLrGbfj2gV1DRPEb3R6hfdsUC9X2435yoXZkjtNqt7ge8i/ZE36lgChzJJGpNIIKmO0DU89QdlRjgPA1RudVkBPRu/tAejZFqdVG6aNgAFdaVP/mnlGuYCJIntuqc+p907iHwf4rXmhhGOHU/upccqOcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPK4s+Su; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mt5HJBue"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FC51F000E9;
-	Wed, 22 Jul 2026 09:16:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPK4s+Su"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DD81F000E9;
+	Wed, 22 Jul 2026 09:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784711809;
-	bh=Qj4bo9yMxBNl6pUC1191fy5Zl48h1/FJ7+7zb3yn1VM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Mt5HJBue2zqPoS+1sosPO1oJGChElo/a3haZB7knmsnzsae+MRQaUpt/mOHiveu6o
-	 bYkJRw3uAuk4bk4uiX9tseau0oY48SdVbtW1Tr6FpkZzZcWv+L+REacCuX0qOtWNmi
-	 CPAHpX4n9lmyOSudQpDqdkDe09iWkob+HnSk8ppZrSaopfNFU87NlDOjVpeGGwQg0o
-	 JBC55ezvJ6bTfUFQR3M7gQ1/pzvjSQvfSPro+0lxxu4qglQfTQHWarzy+N1hIp4tdt
-	 oGVTQzQiO40TvcmQfVNwEE3hzY/pIspuhEibgz8N056G7dovfygcuSUmnKTfKNFSOB
-	 rkwRxP5Vbw1gw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: x86: bound the composed nested TSC multiplier to
- the max ratio
-Reply-To: sashiko-reviews@lists.linux.dev
-To: amirmohammad.eftekhar@cispa.de
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
-References: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 09:16:48 +0000
-Message-Id: <20260722091649.40FC51F000E9@smtp.kernel.org>
+	s=k20260515; t=1784711929;
+	bh=JBQTTtSRC2ADxXNRwnGaARyBfLtPLZZFJXE5zDyD1uE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PPK4s+SuvTohTm7D6J3oGUFOn4dqOLZ/uwGnmE9dTt2Dle2780Uo6DU03WmZ06pp1
+	 aufPkU4a3gwnetKj1yq+D5upViJXwD3ThzjOlJJoD7v9fhb/Rzzbl0lfX46zT4MgUQ
+	 gqi0BSnxB+XbJrgH/7/eOvDrzGQuRshpWZ0xD62E+YWa5b+8eN5JX0FW1QwSHMOA4U
+	 Kh0GjEsJmdsqFq+8Hkjc+45li/Co6vOs1Fm0lSiQZy3WvxT2ZIHDiZI5LbRmuSQmdw
+	 js6kkFqjYtqQ27E35rBMrNOYBjpjQOK3ao5l+2cHFkrzijkWlMrHJHoB1auSN8oBRo
+	 nLnW1ZFrXeUug==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wmT6F-00000007YbY-2k59;
+	Wed, 22 Jul 2026 09:18:47 +0000
+Date: Wed, 22 Jul 2026 10:18:47 +0100
+Message-ID: <86ecgve614.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: "Oliver Upton" <oupton@kernel.org>,
+	kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3 27/28] KVM: arm64: Expose FEAT_NV3 to guests
+In-Reply-To: <20260722090617.A14F51F000E9@smtp.kernel.org>
+References: <20260722074234.3330999-1-maz@kernel.org>
+	<20260722074234.3330999-28-maz@kernel.org>
+	<20260722090617.A14F51F000E9@smtp.kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, 22 Jul 2026 10:06:17 +0100,
+sashiko-bot@kernel.org wrote:
+> 
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] The new system register NVHCR_EL2, which is exposed to userspace when FEAT_NV3 is enabled, is not registered in the get-reg-list selftest.
+> --
+> 
+> --- Patch [27]: [PATCH v3 27/28] KVM: arm64: Expose FEAT_NV3 to guests ---
+> commit 736b25683999a8114fb8bc21450f4b90835ba889
+> Author: Marc Zyngier <maz@kernel.org>
+> 
+> KVM: arm64: Expose FEAT_NV3 to guests
+> 
+> This commit further enables FEAT_NV3 by making it visible to NV guests.
+> 
+> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > --- a/arch/arm64/kvm/nested.c
+> > +++ b/arch/arm64/kvm/nested.c
+> > @@ -1739,7 +1739,9 @@ u64 limit_nv_id_reg(struct kvm *kvm, u32 reg, u64 val)
+> >  			val = 0;
+> >  		} else {
+> >  			val &= ID_AA64MMFR4_EL1_NV_frac;
+> > -			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> > +			if (cpus_have_final_cap(ARM64_HAS_NV3))
+> > +				val = ID_REG_LIMIT_FIELD_ENUM(val, ID_AA64MMFR4_EL1, NV_frac, NV3);
+> 
+> [Severity: Medium]
+> By exposing FEAT_NV3 here, will new system registers like NVHCR_EL2 become
+> visible to userspace on NV3-capable hardware? If so, does the get-reg-list
+> selftest in tools/testing/selftests/kvm/arm64/get-reg-list.c need to be
+> updated (e.g., adding them to el2_regs or using REG_FEAT) to prevent the
+> test suite from failing when it discovers unaccounted registers?
 
-Pre-existing issues:
-- [High] kvm_calc_nested_tsc_multiplier prevents overflow truncations but f=
-ails to prevent the composed multiplier from underflowing to 0, which leads=
- to hardware VM-entry failures or unhandled host #GPs.
---
+Indeed. And this only proves that this test is utterly pointless. It
+should compute the visibility of registers on its own, from first
+principles, instead of relying on someone updating it for one reason
+or another...
 
---- Patch [1]: [PATCH] KVM: x86: bound the composed nested TSC multiplier t=
-o the max ratio ---
-commit d48c3d3ad18139611ae5e395e3b21cd0a088ff37
-Author: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
+	M.
 
-KVM: x86: bound the composed nested TSC multiplier to the max ratio
-
-This patch limits the composed nested TSC multiplier to the hardware maximum
-ratio to prevent truncation or reserved bit exceptions. It calculates the
-product of L1 and L2 multipliers as a 128-bit value and saturates it to the
-advertised maximum if it overflows. This ensures the guest remains alive at=
- a
-representable ratio rather than failing.
-
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index ff8812f3a1293..ad9372e6f55df 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-[ ... ]
-> @@ -2684,11 +2684,31 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_calc_nested_ts=
-c_offset);
-> =20
->  u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier)
->  {
-[ ... ]
-> +	nested_multiplier =3D mul_u64_u64_shr(l1_multiplier, l2_multiplier, fra=
-c);
-> +	if (nested_multiplier > kvm_caps.max_tsc_scaling_ratio)
-> +		return kvm_caps.max_tsc_scaling_ratio;
-> +
-> +	return nested_multiplier;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this composed multiplier
-need to be clamped to prevent underflowing to 0?
-
-While this patch successfully caps the multiplier at
-kvm_caps.max_tsc_scaling_ratio, if the L0 guest runs significantly slower t=
-han
-the host (M1 < 2^frac) and L1 configures a valid L2 multiplier (e.g., M2=3D=
-1),
-the product (M1 * 1) >> frac naturally evaluates to 0.
-
-When the multiplier evaluates to 0, it can lead to a hardware VM-entry
-failure on VMX, destroying L1.
-
-Additionally, looking at svm_set_msr() in arch/x86/kvm/svm/svm.c:
-
-	case MSR_AMD64_TSC_RATIO:
-		if (data & SVM_TSC_RATIO_RSVD)
-			return 1;
-
-		svm->tsc_ratio_msr =3D data;
-
-Since 0 & SVM_TSC_RATIO_RSVD evaluates to 0, this check fails to reject
-data =3D=3D 0. This allows L1 to directly trigger the zero-multiplier path =
-on
-SVM without KVM injecting the architecturally required #GP, which can result
-in an unhandled host #GP.
-
-Could the result be clamped to a valid minimum (such as 1) to prevent the
-composed multiplier from evaluating to 0?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722084702.1028=
-983-1-amirmohammad.eftekhar@cispa.de?part=3D1
+-- 
+Without deviation from the norm, progress is not possible.
