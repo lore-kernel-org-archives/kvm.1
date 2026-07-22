@@ -1,162 +1,182 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73A352C4F
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 01:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E31379974
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 01:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784683604; cv=none; b=oLa2K8zpWKsMVfMf7BSAH+quM1zpJLX18tAYsKEUIMGEJ2DVEXEXRnFbHZPk9aICmdbyDaZnPdASFgsEo1zLX03XtLrdTSw1p77DBsWpLsp3Z6s8hZRwIhqm2mU0UCt9a742bAYViCZ2Dl4O6D7oBpGAxV0+ku+oEM7He4uKhZw=
+	t=1784683820; cv=none; b=ZRRixIKR5S2ZbQPWdGSJTH4MH7EP2RHWDryBzXmAa0CvyU/ov99GLHVBQutTNOaIqgfVHPHGzTEGs0wEQGbYZJBuBU0VhrS97sghLHj19LPA5M7ITWgXsGh7Lb6nHdpRz6s6d0Cec9lmbGZqeebaBDQOE8Kz/M0UB4f7i3wXqUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784683604; c=relaxed/simple;
-	bh=kQ3dV7FMIc12TN162fMRDc04PuIlvUYzuO79ZYptJ8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LBXRDS+pWG6LXgPAOmh4lKj3KiGD4YnrmHeDktHEEIJt/xE/DLbGNNLHMmhMKZm1hAT+sClR1ZawIdgtDD+ScEXgtF5mmas11NNwFY5lDpeOqahonGauYVHN22S49e3q2CrjDS8XrVeg0dcnMNc1YI42Bc8JCEQE3Sz8/b1iiaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=LWYoVxIi; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1784683820; c=relaxed/simple;
+	bh=ZQFPrQrCxysvjQVtLwFLKAxzSgAmkgic3BAOc3Lg+Z0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FSpIUlJYmV/hRuY3CDrQ8AAxGX5k/uHsEuO+48DICc8uaUaJRXQYZl1wRbn38Ku8ROOvVnUAvv0XmbdHypBUQblUMetddyqDy7LB9pahgK2FhwzvFYJnrNMqM3DE3CJzcG9R43kMS48NrobDsgwDBNhOaektFk0HFKSb6Ci3SYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NGEZnmjX; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="LWYoVxIi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=ZDeG3Pa9K+/Fl/S5AX9eRyV/HueefFNcPnhWOe87tic=;
-	b=LWYoVxIix5Z7dM0UOK0xxAtiqJQvZGVIdoxaQ6TgvgBtTT8/sM2EWyhTXPbzpT
-	xxcP2E/BoGTGgxg5Z5xpzA4hPtruSszy/BDs3Y/q8xM8nXw6ke807Zv9HHX5LErB
-	ogZXz4XRnowjgPVU0iJoa7hpBuvkIpIJSYUnZinzNlWow=
-Received: from localhost (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgDnkyA5HGBqypXSIQ--.58947S2;
-	Wed, 22 Jul 2026 09:26:17 +0800 (CST)
-Date: Wed, 22 Jul 2026 09:26:17 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Hao Zhang <hao_zhang_kdev@163.com>, Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: x86: Mark nested RSM-created VM-Enter as
- untrusted
-Message-ID: <amAcObySFW2LOtXH@192.168.1.215>
-References: <al8wZQwqC9IhlBZc@192.168.1.215>
- <al-SKXoha-dqz047@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NGEZnmjX"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ca5d2474c7so221111095ad.2
+        for <kvm@vger.kernel.org>; Tue, 21 Jul 2026 18:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784683818; x=1785288618; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mLP8oC9He5bG0lE1LOVDS9P9kGEAQw/gp9CI2IaEXuE=;
+        b=NGEZnmjXbpCYp2yhEPhgQda6pBn+J92+y9JOspCcYXhL7fHVzJhSDX6k+2rvY6ah3X
+         SiGr+F+2B0xXrW+RaBgaNG27B1yzweN6uOeMOKLdJMUJ3/hQPv3C3kXAL7zsct6k64Uv
+         tYtUY2CND9iXsu+2hrzk5+aQJarYqAKyvfREckjopsGFHYAFBzmY3YHGcLYzxiKqFluX
+         OIkyeb2l2DOr/u4MIa6SvF+mf+O5HsopqriyLossM+ClMQ1NxeHr9YJCP8UC5FV1oAch
+         DL2X7MtxyNlm0pAI32VebJ1nck1GHaim7sCKEeQQVeTtH/T5uQV9rKxft57056uxF4eP
+         VOpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784683818; x=1785288618;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mLP8oC9He5bG0lE1LOVDS9P9kGEAQw/gp9CI2IaEXuE=;
+        b=jgHlAllmXRNYakP6L2If4qT2xMPQMESoP2MfEwRPfWst+09csaZcBW3UFu8y3C4zJx
+         swW86R7Mhcfj4wZVPvcwuN0Vz7ok1YNfF5tyrY/aOKLcP36+ij3Sfc/9VrwiFQM6g0/T
+         5OZ9/HjWe9yiC8qw2aWuOSjuChuwMzxE1I8VEluUnEnASGAE7enD8aRP+ew7/A1VH7CQ
+         jivZroJzMXEq+x0Cdq01j5UXZ42S3hiaMGwn+rIPZaQU1hnldHa4ovk8Avh6iSUI1KxW
+         qj3XoPC56eS+AzGNjTkXqfEyI5Yb8K03g74jnHRVhRccM06fg11tvdkMb/hpoQwpS895
+         cNxg==
+X-Forwarded-Encrypted: i=1; AHgh+RrVqgirFNw22oO+kn7WGonGqZXpHcyYe2FbbzlESbhLYt6kwQ9ZO9LNa8Q6jx0I7jBFidU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjK1/e4Cv4+Im87FOOJuN67+kDeAOKu3BKV7LF40drTiC1EggI
+	Li0TPxbgFk9fvecV7SY4M113g4+7vGuYN4IwAuIo8HmIiNPP7UN3XPotISpGyX133sDS/VG29hM
+	68o7BeA==
+X-Received: from plbla4.prod.google.com ([2002:a17:902:fa04:b0:2cf:37e1:f2a3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f705:b0:2c8:1c05:16bb
+ with SMTP id d9443c01a7336-2cf3494f91fmr222986455ad.24.1784683818304; Tue, 21
+ Jul 2026 18:30:18 -0700 (PDT)
+Date: Tue, 21 Jul 2026 18:30:17 -0700
+In-Reply-To: <al-gx47Cc33uCJra@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <al-SKXoha-dqz047@google.com>
-X-CM-TRANSID:PygvCgDnkyA5HGBqypXSIQ--.58947S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtr4fJFW5Gry8Xr4ktrW5Wrg_yoWxAFy5p3
-	43trZ0kr4kJFyxZFyxJr48tFyS9r4Iv3WUX39xGryrZFyUGFn3JF18K3y5A398KrWrWryI
-	vF4DurWUKw45Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pReWl9UUUUU=
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+hrHumpgHDqXMQAA3X
+Mime-Version: 1.0
+References: <20260714231015.3337831-1-seanjc@google.com> <20260714231015.3337831-5-seanjc@google.com>
+ <CAEvNRgEuTG3k_iKFMLtqGXXQ5tW6X6+8BsCB=Z1WGgqOcPV5Vg@mail.gmail.com> <al-gx47Cc33uCJra@google.com>
+Message-ID: <amAdKUo35OwcLxCy@google.com>
+Subject: Re: [PATCH v5 4/7] KVM: guest_memfd: Fold __kvm_gmem_prepare_folio()
+ into its sole caller
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <tabba@google.com>, Michael Roth <michael.roth@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+
++Mike
 
 On Tue, Jul 21, 2026, Sean Christopherson wrote:
-> On Tue, Jul 21, 2026, Hao Zhang wrote:
-> > From: Hao Zhang <zhanghao1@kylinos.cn>
+> On Tue, Jul 14, 2026, Ackerley Tng wrote:
+> > Sean Christopherson <seanjc@google.com> writes:
 > > 
-> > RSM can restore state that indicates the vCPU was running L2 when SMI
-> > arrived.  KVM then re-enters nested guest mode and marks nested_run_pending
-> > so that the next KVM_RUN completes the pending nested transition.
+> > >
+> > > [...snip...]
+> > >
+> > > @@ -97,11 +85,15 @@ static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+> > >  	 * The order will be passed when creating the guest_memfd, and
+> > >  	 * checked when creating memslots.
+> > >  	 */
+> > > -	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
+> > > +	WARN_ON_ONCE(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
+> > > +	gfn = ALIGN_DOWN(gfn, folio_nr_pages(folio));
+> > >  	index = kvm_gmem_get_index(slot, gfn);
+> > > -	index = ALIGN_DOWN(index, folio_nr_pages(folio));
+> > >
+> > > -	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
+> > > +	return kvm_arch_gmem_prepare(kvm, gfn, folio_file_pfn(folio, index),
 > > 
-> > Unlike a normal nested VMLAUNCH/VMRESUME, the state restored by RSM comes
-> > from SMRAM.  Userspace can modify SMRAM before RSM.  The resulting L2 state
-> > may require invalid-guest-state emulation.  If KVM trusts that pending run,
-> > VMX can synthesize EXIT_REASON_INVALID_STATE before hardware VM-Entry
-> > completes the pending run and trip the nested_run_pending invariant.
-> > 
-> > Do not treat an RSM-created pending nested run as KVM-trusted state.  Mark
-> > the run as KVM_NESTED_RUN_PENDING_UNTRUSTED for both VMX and SVM, matching
-> > the existing userspace-modified-state handling in kvm_x86_vcpu_pre_run().
-> > 
-> > Keep the VMX BUG check for trusted pending nested VM-Enters, but allow
-> > untrusted pending state to reach the existing invalid-L2-state handling.
-> > If that handling synthesizes a nested VM-Exit back to L1, retain the
-> > pending state while synchronizing VMCS02 to VMCS12, and consume it before
-> > restoring L1 state so that the flag does not leak into L1 and block event
-> > injection.
-> > 
-> > Fixes: 2bb8cafea80b ("KVM: vVMX: signal failure for nested VMEntry if emulation_required")
-> > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
-> > ---
-> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> > index cc75feec05da..cf5c3f78ebfc 100644
-> > --- a/arch/x86/kvm/vmx/vmx.c
-> > +++ b/arch/x86/kvm/vmx/vmx.c
-> > @@ -6715,12 +6715,14 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
-> >  		return 0;
-> >  
-> >  	/*
-> > -	 * KVM should never reach this point with a pending nested VM-Enter.
-> > -	 * More specifically, short-circuiting VM-Entry to emulate L2 due to
-> > -	 * invalid guest state should never happen as that means KVM knowingly
-> > -	 * allowed a nested VM-Enter with an invalid vmcs12.  More below.
-> > -	 */
-> > -	if (KVM_BUG_ON(vcpu->arch.nested_run_pending, vcpu->kvm))
-> > +	 * KVM should never reach this point with a trusted pending nested
-> > +	 * VM-Enter.  Short-circuiting VM-Entry to emulate L2 due to invalid
-> > +	 * guest state after a normal nested VM-Enter would mean KVM knowingly
-> > +	 * allowed an invalid vmcs12.  Pending VM-Enters restored from untrusted
-> > +	 * state are handled below.
-> > +	 */
-> > +	if (KVM_BUG_ON(vcpu->arch.nested_run_pending == KVM_NESTED_RUN_PENDING,
-> > +		       vcpu->kvm))
+> > Could this just be folio_pfn(folio) since this function is
+> > kvm_gmem_prepare_folio() and guest_memfd will always try to prepare the
+> > entire folio?
 > 
-> Ugh, I missed that my suggestion would require adjusting this KVM_BUG_ON().
-> That's not the end of the world, but it's not great either because it further
-> degrades the sanity checks provided by nested_run_pending.
-> 
-> And while Sashiko was hallucinating wildly with respect to a "mailicious L2
-> modifying SMRAM", Sashiko did have a point about leaving nested_run_pending set
-> beyond the emulated RSM.  KVM really should check for the impossible state after
-> loading vCPU state from SMRAM in emulator_leave_smm(), so that forcibly leaving
-> nested mode to synthesize TRIPLE_FAULT into L1 naturally Just Works.
-> 
-> The only reason I didn't suggest that is because I didn't want to add another
-> SMM-specific kvm_x86_ops hook, but I think we can avoid that and (arguably)
-> improve other paths at the same time.
-> 
-> Rather than provide a generic .vcpu_pre_run() hook, which is somewhat confusing
-> because SVM has it's own pre_svm_run(), what if we provide separate hooks for
-> unhandleable_emulation_required() and vcpu_needs_initialization()?  That bleeds
-> some vendor specific details into common x86, but in many ways, that's a _good_
-> thing in this case because I think it's helpful to highlight the need for
-> additional initialization for CoCo vCPUs.
-> 
-> Do you happen to have a reproducer I can test?  Either way, I'll try to add a
-> testcase to tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c to
-> cover the SMRAM => RSM path.
-> 
+> No?  Maybe?  For this patch, I'm just trying to shuffle code araound.  Even for
+> this series, I'd prefer not to make any more semantic changes than are needed to
+> get to a sane state, and to prepare for in-place conversion.  If there's a need
+> and/or a good reason to use folio_pfn(), by all means, send a patch.
 
-I don't have a standalone C reproducer, but I do have the syzkaller program
-that hit the original WARNING.  It uses syz_kvm_setup_cpu$x86 and includes the
-RSM path; I used it via syz-repro against the original crash bucket.
+I take that back.  After far too much staring and digging into the history (and
+future) of this code, I finally see what you were getting at.  Because KVM
+"prepares" entire folios, grabbing a specific page in the folio is nonsensical,
+just grab the base pfn and be done with it.
 
-The repro seed is below.  It is not yet converted into a KVM selftest, but it
-should be useful as a starting point for the SMRAM => RSM coverage in
-vmx_invalid_nested_guest_state.c.
+However, I'm not convinced to committing harder to per-folio "preparation" is the
+way to go.  The pre-folio prepation was added when guest_memfd actually tracked
+preparedness.  At the time, it made sense, because tracking per-folio meant we
+didn't need to add a separate data structure to track that information, and doing
+per-folio tracking only works if the entire folio is prepared (or not).
 
-r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x2, 0x0)
-r1 = ioctl$KVM_CREATE_VM(r0, 0xae01, 0x0)
-r2 = ioctl$KVM_CREATE_VCPU(r1, 0xae41, 0x1)
-syz_kvm_setup_cpu$x86(r1, r2, &(0x7f0000000000/0x18000)=nil, &(0x7f0000000080)=[@text64={0x40, 0x0}], 0x1, 0x54, 0x0, 0x0)
-madvise(&(0x7f000010c000/0xe000)=nil, 0xe000, 0x66)
-ioctl$KVM_RUN(r2, 0xae80, 0x0)
-r3 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x2, 0x0)
-r4 = ioctl$KVM_CREATE_VM(r3, 0xae01, 0x0)
-r5 = ioctl$KVM_CREATE_VCPU(r4, 0xae41, 0x0)
-syz_kvm_setup_cpu$x86(r4, r5, &(0x7f0000000000/0x18000)=nil, &(0x7f0000000080)=[@text32={0x20, &(0x7f0000000180)="6526f30f09660faade7e07b805000000b9ce8400000f01c1dd5d140f00d4ea000000008600440f20c03504000000440f22c0360f01d10f07", 0x38}], 0x1, 0x20, 0x0, 0x0)
-syz_kvm_setup_cpu$x86(r1, r2, &(0x7f0000d9e000/0x18000)=nil, &(0x7f00000001c0)=[@text32={0x20, &(0x7f0000000240)="66ba4000edb8cd0000000f23d00f21f835100000020f23f8b99f0b00000f32dd1f66ba6100ec670f00d3b9800000c00f3235000100000f30c4e2e19274b900b9800000c00f3235008000000f3026650fc76c5589", 0x54}], 0x1, 0x8, &(0x7f0000000200)=[@cstype0={0x4, 0x8}], 0x1)
-r6 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000080), 0x0, 0x0)
-r7 = ioctl$KVM_CREATE_VM(r6, 0xae01, 0x0)
-r8 = ioctl$KVM_CREATE_VCPU(r7, 0xae41, 0x0)
-syz_kvm_setup_cpu$x86(r7, r8, &(0x7f0000fe1000/0x18000)=nil, &(0x7f0000000040)=[@text64={0x40, &(0x7f00000000c0)="0f6f2848b802000000000000000f23d80f21f835c00000b00f23f8470f220240a6dae9643644a5410f01c80f0fb500800000aeb9cb020000b851320000ba000000000f300f006b00", 0x48}], 0x1, 0x51, 0x0, 0x0)
-ioctl$KVM_RUN(r8, 0xae80, 0x0)
-syz_kvm_setup_cpu$x86(r1, r2, &(0x7f0000fe5000/0x18000)=nil, &(0x7f00000002c0)=[@textreal={0x8, 0x0}], 0x1, 0x22, 0x0, 0x0)
-ioctl$KVM_RUN(r2, 0xae80, 0x0)
+Now that we dropped that code in favor having SNP query the RMP, per-folio
+preparation, i.e. per-folio conversions to private, doesn't make as much sense.
+There is still technically an argument for per-folio conversion, *if* what I
+described below is even allowed by SNP.
 
---
-Thanks,
-Hao
+If SNP allows the RMP size to be greater than the NPT size, then per-folio
+conversion would allow KVM to assign a hugepage in the RMP even if it can only
+be mapped into the NPT with a smaller page, e.g. because of memslot alignment.
+The documentation of that reasoning would be something like this:
 
+	/* 
+	 * If the memory is private from KVM's perspective, and hardware tracks
+	 * VM-assigned private memory in a dedicated data structure, i.e. not
+	 * in the stage-2 page tables, then call into arch code to assign the
+	 * entire folio to the guest.  Assigning the entire folio, e.g. instead
+	 * of only the memory being mapped into the guest, allows KVM to assign
+	 * an entire hugepage of memory in the out-of-band structure even if
+	 * KVM can only map a smaller page size into the MMU, e.g. because the
+	 * gmem hugepage is spread across multiple memslots.
+	 */
+	if (kvm_gmem_is_private_mem(file_inode(file), index))
+		r = kvm_gmem_make_private(kvm, slot, gfn, folio);
+
+But it's not clear to me that SNP even supports mismatched page sizes, because
+several of the flows in the APM explicitly state that triggers an #NPF, and this
+comment in KVM's sev_handle_rmp_fault() also suggests that's not allow.
+
+	 * 2) Guest access via NPT can trigger an #NPF if the NPT mapping is
+	 *    smaller than what is indicated by the 2MB RMP entry for the PFN
+	 *    that backs the GPA.
+
+And even *if* that's allowed by SNP, I'm not at all convinced it's worth doing
+in KVM, because it should be a rare situation.  E.g. maybe for memory at the top
+of TOLUD that has holes for non-RAM crud or something?
+
+So instead of using folio_pfn(), I'm leaning strongly towards entirely dropping
+what is currently kvm_gmem_prepare_folio(), and instead converting exactly what
+is being mapped into the guest.  Because I've messed up the gfn and index handling
+twice now, I'm still struggling to wrap my head around the math, *and* I really
+don't want to have two separate flows computing "how much memory can be assigned
+and at what size" once hugepage support comes along.
+
+I.e. do this:
+
+	pgoff_t index = kvm_gmem_get_index(slot, gfn);
+	struct folio *folio;
+	int r = 0, __order;
+
+	max_order = max_order ?: &__order;
+
+	CLASS(gmem_get_file, file)(slot);
+	if (!file)
+		return -EFAULT;
+
+	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+	if (IS_ERR(folio))
+		return PTR_ERR(folio);
+
+	if (!folio_test_uptodate(folio)) {
+		clear_highpage(folio_page(folio, 0));
+		folio_mark_uptodate(folio);
+	}
+
+	if (kvm_gmem_is_private_mem(file_inode(file), index))
+		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn, *max_order);
+
+
+Am I missing something?  Anyone feel strongly about keeping per-folio converions
+for when SNP supports hugepages?
