@@ -1,140 +1,87 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDE234B1AD
-	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86133546D0
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784728139; cv=none; b=h2AAs6QW96TKQsqYGs1gW1iZ58lQNt1ACBp7zaPSFP3HyHNoBaP26+tV4E0crfpb1e6kGKok6FG8ycJFdOB5UPf4x89ZkuXhrKiDYd8NKWpBLPvkWv0pn7SLDyGCBQWAOQc7Hg007qft/5ebBSn577Bbsbnkizkn4nFfSos9PhQ=
+	t=1784728298; cv=none; b=qD6b+kIfAF2msibtovRqh41ocOXVjEPusQpQwsa5qx+5sVkCXIbf5/NUMs/moi1XKxtT8GykJMHKYkG83dwl29mNQ2EO7RdbS4L6Q32Q0ma2eIDbzqHkbzgVTs54RUQJyjQnsxAthXHvCV0cI9jOmb22XCNSIKrTeXxfmGbmed8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784728139; c=relaxed/simple;
-	bh=JAIqzpQM3gUx7M+gDSziic1KcB43W58VAXiVvJF0/Hk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gqVhgSwIExyLCiTjCF32KcYb52Abm6+pjuur7KvXjnSH/LdLPbh0SJTKQpqCGsXll0zKy2JHaWglK5NGBpVIIz4ohY+0iujwvi0P7JIRAOj/Ky/HjzLvayg9uPVZqwNDP0+TRta3i4rtYI0Ltrb+tcchltwVlVmP/KPb9O8Mx3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=GfLa6fHj; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	s=arc-20240116; t=1784728298; c=relaxed/simple;
+	bh=KmSl14NpFhGZYOOrvu51YFsVjduSR/GNutNROJn9pR0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fCei1cgEjgYmC5YrjLefxkGuN9YcrLD+xNnrRBMhWaO7KNM3J6u024ygujPtW+VuuVkSStp+anAWG2uVGy8oNlrsHdkJeuYR9mhasUAIFwNayuNFnv2B4hESu4G7x4Oye8vbb8idJbsXyewk3aM/Joc6MOvlNFw6EgokLcFze5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jc8C5MiX; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="GfLa6fHj"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c01089e8aso66365531cf.2
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 06:48:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jc8C5MiX"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84865f326efso13187051b3a.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 06:51:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784728136; x=1785332936; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LI4otu0+1hHJyrtu/tBxz3iTtloCysub9k9iNgYv1gk=;
-        b=GfLa6fHjBw5k5Cgmz1whJ5nETVeelFxMT26tNktv/o76lhNb8g352TR5NSgzxj0xK/
-         l99ZU3otNIqIWf5NPRZOUByX/rsuPiQ11f/76fJZU6VdndYf/hECk1QXXGmtm6zxg/D+
-         Jp3L7vWik0zmayA89l50HzOSWyCZrphTG1lt1EZnBbJQbWY5rLr8WS00j1qAY7moV6C6
-         lTJ7XSZYNDD8dlO/MPxVy2EEZD8SCjSLPMCaZCsQD7e37hasV8TP4a+NhorAAbZ0Ohhs
-         6nlqtYbIICyZZQkN6OqTZwVx6r17L7v2FbkjPkZ0Eqhsumnot7b9+N7Dj0SpPbVDkztD
-         g8YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784728136; x=1785332936;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784728296; x=1785333096; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LI4otu0+1hHJyrtu/tBxz3iTtloCysub9k9iNgYv1gk=;
-        b=b+DgI6u/dseVBQeYBfoZ5JEriizPgJuz2PfRFAS74A3/Ler58BFL4jBioR6zqLWrxb
-         aZZZ1EEsQrbiuZTqMY00KX4IArzqmMTi2aUUMMGcI3lncK+kAFoBbE7lAvIpPAjcNeNT
-         wOj8FAcZ3Z7037HoNHDTE3SMdviT4qKT0pd9TjNB0QAmCEgn0BwbKptt6McKNydvyuq9
-         jgHcOKQ/I22m0flYnLdhFPKs+z0ywA45wqj/GQL2C034X78d1fPwj45LcdB+EwxD7Bmv
-         iJCGtbjlegKXaH1moux2og9LZiQ1A46zwNpFn4/eJZbbCRRtjNe2Vu0YaxsBvTz/RtnJ
-         r6jg==
-X-Forwarded-Encrypted: i=1; AHgh+RqwnT5BJGmficrWwUEF3a5xHGHkaaQg3yK5To74uIHEmHKCGxKp4Sle+SbDxAJpPCyekp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZx5w05nsi9LfRW2Ek/vb+jrPr1uLm+gG0jtoMrMZ8Et2lVdr9
-	SODZa8w601wjnRXX6Aj9aph06lrUxuWbtzRqqUYxpf/tJLvzZzVbgf87Q7WN0otawH4=
-X-Gm-Gg: AR+sD10FMwbCZkbY3/QbDFfSy6O7ptqVaKFKSwngMb/9hWPdcOALo6qYHT6z9VfOPkD
-	e12b0ZyBXF5ffTEr9akHQImE/PJe3PhaPa48UlO3x+LkhG8fZfqLYy6tNLKOxnu2lyO6uu6ngHW
-	lfeZifsodeZkkgeWhqEc0QpxxwP0evkwOu3hAfLIjVxXwH/TKtVCJ/BR2hnjSswYoqZzzoQcgdP
-	DmD6KoLjyCwe0CA+OADy5oBzkIc3VeKYLtPTDuasUCrDVxzJL7jPiPMlf+gdwoDrajTr2p3TPlj
-	D1zaMclchnT82kT50wzn+HxwmPy8fKLcgiKMaPWKslQdp3NMaokCNaSFYKFPtCXBqtBeM3L4OUx
-	LCE3KO+TwI0hhAwcIRzTs/0LvCfgUgVjTvKQ8rRa9PWsoFmsFu34uPynQEHBxSa3B44unEU2JB0
-	GcBDQQSAeMBeqJrHb7fl7YXlm0s+dNpt9EjC6d3YmwTnN4N/hiIq49xgOaDg==
-X-Received: by 2002:a05:622a:350:b0:51c:555:7dea with SMTP id d75a77b69052e-5213cbd667cmr215415981cf.30.1784728136109;
-        Wed, 22 Jul 2026 06:48:56 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8e2581sm21393266d6.19.2026.07.22.06.48.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 06:48:55 -0700 (PDT)
-Date: Wed, 22 Jul 2026 09:48:50 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Richard Cheng <icheng@nvidia.com>
-Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
-	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
-	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
-	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
-	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 26/36] mm: add NODE_PRIVATE_CAP_RECLAIM for opted-in
- private node reclaim
-Message-ID: <amDJEbu3aQO8J8f4@gourry-fedora-PF4VCD3F>
-References: <20260720193431.3841992-1-gourry@gourry.net>
- <20260720193431.3841992-27-gourry@gourry.net>
- <amDGXU94trqlXUgR@MWDK4CY14F>
+        bh=ustquxVgfDp5qCDg5lIpkZtKikJ9TiRt9YA3YVBdNj0=;
+        b=jc8C5MiXtGnPEAwj/FOATCcKe5wjjFp2mFTHNHbWlHgM5YeGzusZUQehOMf2x4w8lp
+         qNdaaNfERSwdUdJqp/XgFzbyd+xvrv2FK5pGn8GbNfrXHuiEJEr18VxA0Eli0lfI7BhJ
+         sVvHAZaLht3a+PlI6FaOz614PXT47vNJ9Xounswc2JMdYbuChNyDgE+sD6FIoBNDZq+4
+         +xDYSS9b6hyGyIkNLeVWF+HW9LZ+gRsj6n5btZkxkCTrMwjfo0h01PTozA5B8iQauTnq
+         5gydnkm1irsCS6Li4NI6EPcIQSfy+1NCsBlAQBeC0tNWOiw8Tyi5+tVbQ2OS7LI4AE+O
+         j6kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784728296; x=1785333096;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ustquxVgfDp5qCDg5lIpkZtKikJ9TiRt9YA3YVBdNj0=;
+        b=R9Dm4mb7BKZIiPSyAp7z+A8C4JKpHueIF6OQ7s6Oizpo4KnDCRsEYiJKRe8ZgH+9HF
+         mhtj91AaenRDhsQogC78uZkmFJNAln54qKDj+U+u5/PrzlHSEODNeG8hESNBHvVopoHS
+         eAM9ua3jJ6LsZmKU35s3rbaVoCJ8Suh0fVHAhiVmAYVI/B7RFdxm/Dnp8UEIuEsSpnQO
+         bLaK5shvZ/tDcIqXExBXgroL9ZVi83Fm8NVND3E/r+042evcenLSTgvrO1NvKn+NKK7d
+         s1ahm8jy8TvkA5J94IABbpn8WDdOIeYIcaXWZz2vB7hxjQk5XXgk1uwXzKzRpQljoJFx
+         616g==
+X-Gm-Message-State: AOJu0YyVEfLcylgqhLqWQ9vRgjRrSG1d2PJwT3ICRX9Gm0BeDfxPg9hq
+	fnQ3bNQm1xA1JD+NtCElh8QQA9ERgcsutjp8BwL+xa8Hacy2Bq0CvFIk8upu355MZDe1sI2Tefj
+	b1Sjt/w==
+X-Received: from pfux40.prod.google.com ([2002:a05:6a00:be8:b0:84c:2e32:7f79])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8c13:b0:845:d286:1fb4
+ with SMTP id d2e1a72fcca58-84c29505d88mr23892907b3a.50.1784728295928; Wed, 22
+ Jul 2026 06:51:35 -0700 (PDT)
+Date: Wed, 22 Jul 2026 06:51:35 -0700
+In-Reply-To: <20260722084702.1028983-2-amirmohammad.eftekhar@cispa.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amDGXU94trqlXUgR@MWDK4CY14F>
+Mime-Version: 1.0
+References: <20260722084702.1028983-1-amirmohammad.eftekhar@cispa.de> <20260722084702.1028983-2-amirmohammad.eftekhar@cispa.de>
+Message-ID: <amDK50Z9WhMQZwYD@google.com>
+Subject: Re: [PATCH] KVM: SVM: use wrmsrq_safe() when writing the nested TSC
+ ratio MSR
+From: Sean Christopherson <seanjc@google.com>
+To: amirmohammad.eftekhar@cispa.de
+Cc: kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, rossow@cispa.de
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Jul 22, 2026 at 09:36:14PM +0800, Richard Cheng wrote:
-> On Mon, Jul 20, 2026 at 03:34:20PM +0800, Gregory Price wrote:
-> > +static struct zonelist *memcg_reclaim_zonelist(int nid, gfp_t gfp_mask)
-> > +{
-> > +	unsigned int aflags = ALLOC_DEFAULT;
-> > +
-> > +	if (unlikely(!nodes_empty(node_states[N_MEMORY_PRIVATE])))
-> > +		aflags = ALLOC_ZONELIST_PRIVATE;
-> > +
-> > +	return select_zonelist(nid, gfp_mask, aflags);
-> > +}
+On Wed, Jul 22, 2026, amirmohammad.eftekhar@cispa.de wrote:
+> From: Amirmohammad Eftekhar <amirmohammad.eftekhar@cispa.de>
 > 
+> __svm_write_tsc_multiplier() writes vcpu->arch.tsc_scaling_ratio to the
+> physical MSR_AMD64_TSC_RATIO with a plain wrmsrq().  Under nested TSC
+> scaling the ratio is a composed value (see the companion x86.c change),
+> and a composed value can set bits above the MSR's 40-bit width; those
+> are reserved bits that architecturally fault (#GP) the WRMSR.  Today
+> only the EX_TYPE_WRMSR extable stands between a guest-influenced ratio
+> and a host #GP oops in ring 0 -- on a build or path without it the host
+> faults.
 > 
-> I applied this code change and notice in mem_cgroup_shrink_node(), it calls
-> shrink_lruvec() directly and never passes through shrink_node().
-> 
-> This patch makes private nodes reachable through memcg reclaim zonelist, but
-> what prevents the direct per-node memcg path from reclaiming a private node
-> that has not set NODE_PRIVATE_CAP_RECLAIM ?
-> 
+> Do not depend on the extable for a guest-influenced MSR write: use
+> wrmsrq_safe(), and on failure keep the previous ratio (don't update the
+> current_tsc_ratio cache) and warn.  Defense in depth alongside bounding
+> the composed ratio at its source.
 
-I legitimately missed this.
-
-Sashiko also picked it up on the filter patch:
-https://sashiko.dev/#/message/20260721183528.B4B9C1F00A3A%40smtp.kernel.org
-
-If nothing else - implementing this feature has taught me some
-sub-components of mm/ have very well centralized logic, and others (like
-vmscan.c) have 3 or 4 different paths in with a lot of strange quirks
-carved out.
-
-I think some of the vmscan paths can be improved to simplify this
-interaction, but i will fix this particular miss in v6 and come back
-around to see whether we can clean up these different paths as a general
-improvement.
-
-~Gregory
+NAK.  As I said off-list, the EX_TYPE_WRMSR exception fixup _is_ the defense in
+depth we want.  If KVM does have a bug, I want a WARN.
