@@ -1,110 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F451C5D7D;
-	Wed, 22 Jul 2026 20:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878D9426EBB
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 20:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784753280; cv=none; b=cJDLco0pEPswykplG5YGpTAE7xEqEESeFwEPustmqVVSb9DMUXYGtolnsDRpRG1nO/EtPD2dYi3J+TW0L8b0PkmuvxeJt1SeQIMlqcgkaubOyEYVCadSUufgz25OCKfCUG8qgkCuaFY7+PCW+iwHcD+bw8E3YjpVOTL1feJY7f8=
+	t=1784753814; cv=none; b=ocBtvaoBAQWRlyMjWymSJHJevg/SwZ0IRixTOcQuyxwgx7n0P+q8hgoqk+oZ9WB9rDV84YyrxU8KCFnAoi6QwEAWhxZ+PVIQg2HVzHX2hkWY5kPr8HwLKkm5bv3bfIZjk1g0nUjvP725jQEQwiPr9fQTX81TVXNmKCHqqUPWRbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784753280; c=relaxed/simple;
-	bh=mSbmySZA2UdLNjWAFBB5hbfBN74YYzC2hAeAAVvlIsE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=eZanDPey9QyS+D2JOJyV9bygKDKB3BxWvgIc9lJASMSw9Vw99k/07rAW3hqIWjklGea0dq4WSQJvqoZKR/tJXdL8JWb5Wpvdzt/VDVbm6J9eejljjHLGLoOG8YKLtAPcSaSoBl01xwaNgg2Zvn+rvNcGSvCuJoO9oityGPeQ5j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LePc2PUI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784753814; c=relaxed/simple;
+	bh=s8/wCDafUQ7pmN88abnD2Ydl0D4cpNmsjgZZBVN4G00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I3G5a3i5D5MjoadszVbJdbS3p/xM/vf6rAeNGaUrYpvqiJK66SLPOSsceDEDHiV/FZrnpDOi659yvxr1+ngsxBMguz6YweI9UjTddvtTVLOoAPGtZ8HpSqeUIgQUSqUrHGuwvC/o1JW8CIBF402w+h81x6b064QQuOj34Fz8Xjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=BmbxhrHw; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LePc2PUI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1582A1F000E9;
-	Wed, 22 Jul 2026 20:47:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784753279;
-	bh=Pv4OQhNBWKt8Rr5QVZJ/xO6KR1dueDn1Minq4iiHVu8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LePc2PUIewbbIhSYR6ztGqq0QJNM5y7jpwvM0ljJX71P975ZLLTVB/hk4TXBBJRG7
-	 fdbN9ahdKAW/7KR6oXB48MyDP/gn4yN1b7bEqGLOAaF2Z3j+qwiJj8XeVIq5IaGJ76
-	 L9kNLy/Mwp4J5uiyUp7TyuU2p7zuuQG8qLg3B1qT0QZeithyjZ79EoR/ydG2fGn3fR
-	 tDSpjCCZNI5SDpiAqCzflQLNEPYUE+n44eDRSjcQrvAJVFHrVlS02SXRxxzzIrvDdq
-	 T3wXOLe4e2SvHu+oNgtjISpOFlTbqEE52Ms4GQ2gYMraBP8DheI3pO9/qeKc+/xhw1
-	 zYwcVtHaYskKw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/4] KVM: arm64: Expose PMMIR_EL1.SLOTS under strict
- PMUv3 UAPI
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Congkai Tan" <congkai@amazon.com>
-Cc: kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260722202702.4165917-2-congkai@amazon.com>
-References: <20260722202702.4165917-1-congkai@amazon.com>
- <20260722202702.4165917-2-congkai@amazon.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 22 Jul 2026 20:47:58 +0000
-Message-Id: <20260722204759.1582A1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="BmbxhrHw"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-52192509869so42557151cf.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 13:56:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784753811; x=1785358611; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DrWtospFmR1X6Ml2Vs8JTWDG5C2VdzRczI8oq8UdJr8=;
+        b=BmbxhrHwS6SGD+DstaxN9aum0F+qVmFaCCLRCAesmHXK1x1tbM8o4VXAY3bTRgTam9
+         XN/lXuukJ8njiId9TQhkCaRPDHdLvVG/UbqfgTdVJ7GSf/bhXuLy1McqVIhavwwBnm+u
+         eH9ysztsnbb3Y0hPkS5OJzKx0qvgsrYFdGfqtYdAbumPyibsoupEOFlrVRXIIl2k70T3
+         EAOge8mNby2tH4tbCTbQnpGhXvpzaKnk8AB4lrEjLDfvD+NmiYvFPPRjv4XfQeD4YzrJ
+         ldCwOWXJsoNHETHoVs0VPJZNiN+TJ5HMUYIlSh7Q19XCK5ykMuHxhknCy8215sucxrl2
+         8/jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784753811; x=1785358611;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DrWtospFmR1X6Ml2Vs8JTWDG5C2VdzRczI8oq8UdJr8=;
+        b=pZKpvSTLRLbc3nirE9CAKXpybAo+DRuTnhn3KlIeObYwwUGJsRD1AczTBXzaBzYi1B
+         6hQVY6khaFe/E9RoN5tiNOMB3a+Uhlkf1MR0dsw2FvcSWbPo/n9mDcC4o7+WjeEz77ub
+         hd76t1egVt8hv6jb1kt/Q2dAunFCE4KbX044WkbESxISX6fT6FDGR1B8IRQ0QUURRpsM
+         iOKDrQ6VwCcyMV8VRNGIjzpHqO3Tli8ftIfV1RkEWsnpsYtAt6LeVJDc+7/T3iOXCJdA
+         7Q8ezgSE4IFB9qMloX3sCYz8WXKzLIKX7Xx9FVmLIKxb+kp/S9B3Nssr6l+m+ppAL3RN
+         ms+Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoE7HAKzlXkzaV8TUT+209q84c8UKkgL1R0ZpUYMJ0rTAgC7MkyOgLfDJmT/ZC1QRwUHtA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzloNKMUrOyqVrDULj3q2UuNa+mc23mva/4ic8Izf3i7SACv49Q
+	faPJ5BkmI2jPsBvYKLzoaj7VPXyqzCutNefuACI/uPuIxBIhHZPyGJyNBYZlImke29M=
+X-Gm-Gg: AR+sD12gOXd7Tv2pQOCeQoam98nH+FYQH6V1/al6u4kVii3GCHs3SmVB5vfp9nZ73un
+	90h73V+uSD6qm+caTKniPnidnKRKlvdxmbJigv4/aD98EYRdLo6WzIRsExWi7izPSA/E69G3D7C
+	VPytkoDVXyHdT2UEe/acDzqm5wa9CVFej8Wx9jwNOiTYUtq/xxBtzg6m5az73eWA4ElBO7PT4Gb
+	mGX9lJul8lhHL/J118QvjZChuP0nnOy2/36Wu6ccdA0W9IbzzJKo0QJKESBwcyBPPfPBRYUCl/j
+	q4jLSLKT9hulRVqzcTkL3geSX8A4dmbg/ZtA7DUaz5ugILSGp+MW1GKAUj49nh0ttcMTpShl9b9
+	0GaOIs5o9FZ4srjhe3g1i0T+mXm0DB3YXq1i0IHr4W7ANz7yMVeQPEX29Rok58CgJflLvXAigQm
+	r1StGDkD+qCWf62jGkOsHtsY493sFRU4VCHl6wZgV94xJpwO7j7dcSpTnJNaAaBhq6m4j8
+X-Received: by 2002:a05:622a:997:b0:519:5680:1b5 with SMTP id d75a77b69052e-5283de4650emr1484841cf.21.1784753811471;
+        Wed, 22 Jul 2026 13:56:51 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba672806sm29772246d6.0.2026.07.22.13.56.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 13:56:51 -0700 (PDT)
+Date: Wed, 22 Jul 2026 16:56:45 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Richard Cheng <icheng@nvidia.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, arun.george@samsung.com, 
+	balbirs@nvidia.com, brendan.jackman@linux.dev, yuzenghui@huawei.com, 
+	apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+Message-ID: <amEpR83RtiqstjNs@gourry-fedora-PF4VCD3F>
+References: <20260720193431.3841992-1-gourry@gourry.net>
+ <amDL80BSEP6u9XfE@MWDK4CY14F>
+ <amDVQopyvolxfX8K@gourry-fedora-PF4VCD3F>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amDVQopyvolxfX8K@gourry-fedora-PF4VCD3F>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The implementation of `KVM_ARM_VCPU_PMU_V3_STRICT` introduces two =
-logic errors that completely break the new feature and its API contract:
-1. `KVM_VCPU_MAX_FEATURES` was not increased from 9 to 10 to accommodate th=
-e new flag (which is defined as 9). As a result, `KVM_VCPU_VALID_FEATURES` =
-excludes bit 9, causing `kvm_vcpu_init_check_features()` to unconditionally=
- reject `KVM_ARM_VCPU_INIT` ioctls with `-ENOENT` when this feature is requ=
-ested.
-2. Even if the feature validation were fixed, the code fails to enforce the=
- documented 'No default PMU creation' behavior. `kvm_setup_vcpu()` uncondit=
-ionally calls `kvm_arm_set_default_pmu()` if `kvm_vcpu_has_pmu()` is true, =
-without checking if the strict flag is set. Thus, KVM will always assign a =
-default PMU on initialization, defeating the stated purpose of the flag.
---
+On Wed, Jul 22, 2026 at 11:40:06AM -0400, Gregory Price wrote:
+> On Wed, Jul 22, 2026 at 10:20:00PM +0800, Richard Cheng wrote:
+> > 
+> > I saw the reply in patch 5, so in fact there's not only one
+> > dedicate zonelist, but numerous ?
+> > I raise the question because zonelist was supposed to be a
+> > global, unbypasssable thing in MM design, but now what you
+> > are trying to do is to seperate the whole global list into several
+> > parts ?
+> > 
+> > Can you explain why in current design you don't consider to support
+> > something like ZONELIST_PRIVATE[n]={0, .. ,n-1} ? that's my imagination
+> > of what a global zonelist should look like, no matter private or non.
+> > 
+> 
+> First let me say that there's nothing that prevents us from doing this,
+> and we *could* make this the default case - but this decision was
+> intentional by me.
+> 
 
---- Patch [1]: [PATCH v3 1/4] KVM: arm64: Expose PMMIR_EL1.SLOTS under stri=
-ct PMUv3 UAPI ---
-commit 5883b44965f93aed147ca4ed5fb390ae481daa37
-Author: Congkai Tan <congkai@amazon.com>
+You caught me on something here - I am wrong about my own code.
 
-KVM: arm64: Expose PMMIR_EL1.SLOTS under strict PMUv3 UAPI
+I described to you how I originally implemented zonelist isolation,
+which I walked back when I was testing mempolicy and demotion.
 
-This commit introduces a new VCPU feature flag KVM_ARM_VCPU_PMU_V3_STRICT
-to prevent KVM from automatically creating a default PMU, and exposes
-the PMMIR_EL1.SLOTS value to the guest when a PMU is explicitly selected.
+The current code and the comments in the code are correct, we get
+the following zonelists.
 
-> diff --git a/arch/arm64/include/uapi/asm/kvm.h b/arch/arm64/include/uapi/=
-asm/kvm.h
-> index 1c13bfa2d38aa..019e5e3d892e6 100644
-> --- a/arch/arm64/include/uapi/asm/kvm.h
-> +++ b/arch/arm64/include/uapi/asm/kvm.h
-> @@ -106,6 +106,7 @@ struct kvm_regs {
->  #define KVM_ARM_VCPU_PTRAUTH_GENERIC	6 /* VCPU uses generic authenticati=
-on */
->  #define KVM_ARM_VCPU_HAS_EL2		7 /* Support nested virtualization */
->  #define KVM_ARM_VCPU_HAS_EL2_E2H0	8 /* Limit NV support to E2H RES0 */
-> +#define KVM_ARM_VCPU_PMU_V3_STRICT	9 /* No default PMU creation */
+N_MEMORY : 0,1
+N_MEMORY_PRIVATE: 2,3
 
-[Severity: High]
-Does KVM_VCPU_MAX_FEATURES need to be updated to 10 to support this new fla=
-g?
+ZONELIST_PRIVATE[0]     = {0,1,2,3}
+ZONELIST_PRIVATE[1]     = {1,0,2,3}
+ZONELIST_PRIVATE[2]     = {2,0,1,3}
+ZONELIST_PRIVATE[3]     = {3,0,1,2}
 
-Currently, KVM_VCPU_MAX_FEATURES in arch/arm64/include/asm/kvm_host.h is 9,
-so KVM_VCPU_VALID_FEATURES (BIT(KVM_VCPU_MAX_FEATURES) - 1) only covers bits
-0 through 8. When userspace attempts to use this new flag (bit 9),
-kvm_vcpu_init_check_features() will reject it with -ENOENT.
+Meaning everything except for MPOL_F_RELATIVE_NODES works (because
+of cpuset isolation, but more on this in a moment).
 
-Additionally, does this patch actually prevent default PMU creation?=20
 
-Looking at kvm_setup_vcpu() in arch/arm64/kvm/arm.c:
+So what I shipped here is what you are describing.
 
-	if (kvm_vcpu_has_pmu(vcpu) && !kvm->arch.arm_pmu)
-		ret =3D kvm_arm_set_default_pmu(kvm);
+Looking back at my notes - I realized a few things that lead me to
+walk back that isolation:
 
-It appears that kvm_arm_set_default_pmu() will still be called on
-initialization even if the strict flag is set, since there is no check for
-kvm_vcpu_has_pmuv3_strict(vcpu) here.
+1) mempolicy makes more sense this way.
+2) reclaim/demotion is easier to implement without isolation.
+3) The individual service checks and nodelists handle the rest.
+4) It overally just makes more sense.  If something breaks isolation
+   it's because there's a bug, not because of a structural issue.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260722202702.4165=
-917-1-congkai@amazon.com?part=3D1
+For example in demotion we do this:
+
+demote_folio_list():
+    /* Get demotion targets, find the best one, and demote */
+    node_get_allowed_targets(pgdat, &allowed_mask);
+    target_nid = next_demotion_node(pgdat->node_id, &allowed_mask);
+    migrate_pages(demote_folios, alloc_demote_folio, ...);
+
+Where the first step already filters on CAP_DEMOTION.
+The result is still clean - no special iterators needed.
+
+What I realized from your questions here is that since i walked back the
+zonelist isolation, I think i can actually include any CAP_USER_NUMA
+node in cpuset.mems and allow parititioning fairly trivially.
+
+I think this might be the last majority complexity falling out.
+
+Thank you for the questions - this has helped.
+
+~Gregory
