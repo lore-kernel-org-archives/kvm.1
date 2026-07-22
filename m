@@ -1,148 +1,178 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B93B466AFD;
-	Wed, 22 Jul 2026 16:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C4B224B1E
+	for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 16:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784738417; cv=none; b=ukD/tqJb057lLx38hp6ih0kf+ww4f0Nc7MwBOndRRbxVAR5nioVTbMaSPrzL3TlfE/Sj8wpzYQ6W7mMi7blUZOhYWXlDrLHziBudQgjLIoJIt4A4OHUsgMzulOr9Nz5aYrHKffu3x/Vmz5rs8b1phceAWhhtQIao5uD8H2za7zA=
+	t=1784739234; cv=none; b=fmxt0uAHA3P/aPwKFc+mu9Gse9hFMhnmo+Ad+cW4zzha2k/3iRPtz9Fu+6+qWpbp/56Nxdjs/AqmhWL+hQOQOUs2mg81pjgrzTHVYpmqlSdgzlsP0yMmwFR5UNBPUCj5RbaY5+g5TXg56dQxiBDU6wqam2r72SKUUfm0NlEFg68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784738417; c=relaxed/simple;
-	bh=/98dYKgaEjXUHmhDXcXS0PG8tx66UbdoKo0v/OS5kvQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Buq5NgKzaOqD+HmNkG6Ddbn3O32/FIwjaIGcVwizpR7sj4fbqHu5y1at1yvgtNWV0yBT2XfKCqRbewBk9bVy21Y2qB/962XWEtTTVR+1Tb+LLa/ayU6YcP0UxT3KpL/ZziPKnwQfi13MdkdG2LLh3TFyJdIS2szV+745+eP1xM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DUYLpQk1; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784739234; c=relaxed/simple;
+	bh=1ZqVBNhg5WQfTjkuBkPMOP1GU8RElSDI3UK5WrhkV+0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NWhlnGIjzG+3dZK+oWS60hpLmzlDAzFagaYX3Ikzn99qvjTdIE4lkLfxJ1e5u8STk7d2kgsg4gbN+jSGNrjlNUix1JsZjLIkyvzxWVyPeYCnxXEFn+ELnoHniDLX/z4P6o+03cnLX9Rn4eriR9acrelmrJSwtE/3uIKEKP8IemY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qd7UihJh; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DUYLpQk1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784738413; x=1816274413;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/98dYKgaEjXUHmhDXcXS0PG8tx66UbdoKo0v/OS5kvQ=;
-  b=DUYLpQk1LjjfMVfB0DDlGd98aECFVLMC7l7uI4/O9NVjzQ6CXr/Ir5pj
-   gUH9gIuDMz7k/I0YJdjuzpC/SNgrNZBQsPkky0Vn1xEbLZbN3G0hF1ixu
-   qxTJhvgZb9O1GAgNFz7EU4fumlj1Cu2cQaqmxP/yfcEoP3aRy7lkIw63k
-   1pYHC6Hu5zxpWVGOUYypiyuVeXlEah7rygfi/Xa5PeEeL2FmsPJ07R6Fw
-   jFmQxW8oQQtzbw+vdw6tdGlTb3hpePYE9N4QhCLUUfE8Zsl4Qdb8yHS0p
-   VMAdi4R841f4/YhSHzPJcD0Y7HsO9CLj7m87FqgIHY266Pmp5Bpef75mv
-   w==;
-X-CSE-ConnectionGUID: jHN0rPtERBGO4YI4lW8YlQ==
-X-CSE-MsgGUID: M8CkmyfwT02TodHullbMwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85499616"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="85499616"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:40:07 -0700
-X-CSE-ConnectionGUID: QDZCp4urSb2T9DOMvZJ/wQ==
-X-CSE-MsgGUID: b4+1UeHkQWiP7OyD9JmXeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; 
-   d="scan'208";a="253773856"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.110.58]) ([10.125.110.58])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 09:40:04 -0700
-Message-ID: <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
-Date: Wed, 22 Jul 2026 09:40:03 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qd7UihJh"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb7d6ba548eso4848322a12.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 09:53:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784739233; x=1785344033; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VQLu5QnUcXf+4BhkcE4GqLXFJ62tKt5T9PIxsjrPEWY=;
+        b=Qd7UihJhyQDLzrnYNxCvY2TcVg7YGxgtjX8uU1ZtaDqvKFxTm/SxiyyrTBkvp2MFbu
+         e9asx5IeSxjxF1h7dp4FrBiyyqmjVJ0OFKQDSOZg5NwIfLMXn446EbRsGg06wbTTkDpO
+         IgOAE54TQBivsIt7pYWAypHsy5JBucWTQDuSwCXP3j6r2TRg4rWY3PspkRV+33jjModd
+         SjCoL2W0dKsttYJyzEIa7H5XQFGujks9xG6vZiyVtFiCB+mmVSkOJtkpthhPrydvdBdg
+         RPKyp/6lR3BPoy8TaQFsZbCp1CLNODEEMHsb5EmmeSCES/OSdKqaIb5A7fQAxAxpHsOF
+         cCzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784739233; x=1785344033;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VQLu5QnUcXf+4BhkcE4GqLXFJ62tKt5T9PIxsjrPEWY=;
+        b=Behy+vC3ZIF1DTlXGz6IJaHTDYPPvjdE2CjrdkNqowlN19Cw443oLzqxctsCTbyPnm
+         z4ndp4MNlaY/NqbiQ5nQbebknKbLxDGhjBiOEoW+Q2CVHSkXryrxUEJyojr9beAiaX5q
+         u4HYK0XW+LegfA5/lbkVNcuOPX0T8/4OVAfW2H9CMQZmpblISAVP3cmxP5rZ2zdC2CKQ
+         5a89T3ZLMoyiRXseLDb13DB5ihSSC5IR2GWNQZEP0LCFUh+ggJhV5rW7sx4NJZdGt+Mk
+         AdwTRAXHZ5h2JT3sZyi/XJLPcpyg3kliC2A/peYOCHtvf5tnD6Ifh0Apn881ddSCQmf8
+         gjlQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpEtIo8m0yAV0MqF3BepE6Rfzv9VWWkY1zM9k+XkxYQFqNHI09wt8IrWIwNVhvWVCoxsKA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6opugvC8wp0/1nhdot9GpHLgoPbqmIy49WdjoVwuV8djtc3DY
+	2E2yHUMf1Phvvq3BGiIqvOwDmvryNub60RRG1FyNPe/kBzoZjcG19J5sYa+H+7IYU5uMEwm3GED
+	ORi4FSA==
+X-Received: from pfll21.prod.google.com ([2002:a05:6a00:1595:b0:84e:4f2:22c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cce:b0:848:4d4f:d477
+ with SMTP id d2e1a72fcca58-84c29310889mr23855075b3a.18.1784739232066; Wed, 22
+ Jul 2026 09:53:52 -0700 (PDT)
+Date: Wed, 22 Jul 2026 09:53:51 -0700
+In-Reply-To: <4a4a2c45452d5b08e90c1357592fb286592e0984.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 00/20] mm: optimize unnecessary loads due to
- ptep_get() and friends out
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
- Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>
-Cc: linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260720192221.72912-1-absandze@amazon.de> <20260720192221.72912-2-absandze@amazon.de>
+ <al6g4VA4l-ZIAr9Q@google.com> <d538bd8eba1058d52f8d32e311c12bf216ff4118.camel@infradead.org>
+ <al-j7FTIRAECuhRt@google.com> <4a4a2c45452d5b08e90c1357592fb286592e0984.camel@infradead.org>
+Message-ID: <amD1n1JRlaD0sJwW@google.com>
+Subject: Re: [RFC PATCH 1/2] KVM: x86/pmu: Add CAP to disable SW accounting of
+ emulated instructions
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Luka Absandze <absandze@amazon.de>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Alexander Graf <graf@amazon.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-One of my nits about v1 was that it didn't really frame the series
-precisely. It talks about "optimization" instead of fundamentally
-changing the way that the kernel deals with folded page table levels.
+On Tue, Jul 21, 2026, David Woodhouse wrote:
+> On Tue, 2026-07-21 at 09:53 -0700, Sean Christopherson wrote:
+> > =C2=A0
+> > > Which is the bug? Some would argue that timer interrupts running 50
+> > > times slower is also a bug. We just get to choose *which* bug we want
+> > > the guest to experience :)
+> > >=20
+> > > And I think that is a per-guest choice,
+> >=20
+> > Conceptually, I 100% agree.=C2=A0 But in practice, making a per-guest c=
+hoice requires
+> > a priori knowledge of what the guest is doing and/or what the guest nee=
+ds/wants.
+> >=20
+> > And so I'm asking, do your use cases have that knowledge *and* will you=
+ run VMs
+> > with different requirements on a single host?=C2=A0 Because if you'll e=
+nd up
+> > configuring all VMs on a given host the same way, then I'd strongly pre=
+fer a
+> > module param to give us more flexibility for the future, e.g. if months=
+/years
+> > from now we figure out a way to provide acceptable correctness and effi=
+ciency
+> > that would allows us to drop the param entirely.
+>=20
+> Normally, the way we'd roll any guest-visible behavioural change out is
+> to preserve the existing behaviour for existing running guests. So when
+> we kexec to the new kernel underneath them (or when they resume from
+> hibernation), they get the old behaviour, and only *new* launches get
+> the new behaviour. Very much a per-guest thing, not a module option.
 
-The optimization that this *wants* to talk about kinda falls out of that
-refactoring. It's not really the core of the series, IMNHO.
+Conceptually, I am 100% aligned.  My only hesitation/concern is the impact =
+on
+the upstream uAPI.  For cases where a new feature (or whatever) is explicit=
+ly
+enumerated to the guest, I have zero concerns, because any uAPI related to =
+feature
+enumeration will need to exist in perpetuity.
 
-This series effectively changes the rules about where and how folded
-page table levels can be manipulated. In doing that, the door is opened
-to optimizing out the unnecessary loads.
+But for wonky things like this, where a KVM change is guest visible, but on=
+ly as
+a side effect and not actually enumerated in any way, and for which the goa=
+l is
+really only to provide roll-out control, I don't like the idea of adding uA=
+PI
+*in upstream*.  Because long-term, after many months/years, the change woul=
+d
+become rollback-safe, and thus the need for per-VM control would become obs=
+olete.
 
-Oh, and I'm pulling linux-arm-kernel@lists.infradead.org off cc. If
-anyone has the juju, please fix it so it stops spamming replies with
-"Your message to linux-arm-kernel awaits moderator approval".
+In addition to having to carry uAPI (and associated functionality) in perpe=
+tuity,
+I'm also concerned about having to reach agreement on what exactly is consi=
+dered
+a guest-visible change.  For feature enumeration, outside of trolls, I don'=
+t think
+anyone seriously thinks it's ok for a kernel upgrade (or rollback) to chang=
+e what
+set of features are enumerated to the guest.
+
+But for side-effects / "microarchitectural" behavioral changes, what's cons=
+idered
+a guest-visible change will vary by use case / provider.  Or rather, what's
+considered a big enough change to warrant a per-VM control will vary.  E.g.=
+ whether
+or not to provide a per-VM control often comes down to balancing overall co=
+mplexity
+versus risk, and that equation will inevitably be different as the total co=
+mplexity
+and risk tolerance will vary by use case.
+
+So I'm very sympathetic to the need to provide per-VM controls for things l=
+ike
+this, but with my upstream hat on, no small part of me thinks that's a prob=
+lem
+that's best handled out-of-tree, by the companies that are running bespoke =
+kernels
+anyways and are can feasibly drop such uAPI when it's no longer need.
+
+> Even for things like this where we want it to reach *all* guests in the
+> end, that gives a relatively controllable rollout of the change =E2=80=94=
+ so
+> *if* we get complaints we can fairly quickly flip the switch so that
+> new launches *stop* getting the changed behaviour. Then we can think
+> about per-customer/per-guest opt-in/opt-out (if we really have to).
+>=20
+> Very rarely does a module option make sense for us. Systems are largely
+> immutable at this scale because all else is madness. If a change like
+> that *is* going to be system-wide and fleet-wide, we'd be more likely
+> to make a one line code change to set the behaviour we want, and kexec
+> them all into that version.
+>=20
+> But changing visible behaviour underneath millions of running guests
+> is... not good. I drink enough as it is, thank you very much...
+>=20
+> In *this* case though, I do think we can find a middle ground that
+> works well enough by batching the actual updates up to a threshold.
+> It's not like the overflow NMI is cycle-accurate anyway; by the time
+> the guest has *handled* it and read the counter, it's *always* going to
+> be somewhat past the point at which it actually triggered, surely?
+
+
