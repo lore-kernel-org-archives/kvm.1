@@ -1,177 +1,141 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1421F3B8BB6
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784803336; cv=none; b=tR+MdjpV66rXDcN6AANJcTNy39kkll6dkyMi8f153tv1DLL7l3vSTLi/+DRd/S8pa1DOC8Svd0wdBTfFkDFPNeVvJAj9b3MNsKXDSsJgR1xk9uTpJYIS0z3MW9Zk8E957Ff9ogdgkB5FtKKbXy0/jhZtXUQIjEG8P9NUtWvLKxg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784803336; c=relaxed/simple;
-	bh=7YYmCp1dn/aLPj9FzMYgNxEn06YdMvXMQM909PaYx2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BJ6V72jZv3eG/PA6xyrPVUzxpDNGSNX89mMhoamBpPcJXlII4bcKQ8QdFjgjR84LYR3e2pq5TgELX11s8n+scU8DGUBsKZ1Zq+73pYIZjcnMxTChfHDU4q+2HO8D+KZdiEHdyvFBFQ+V6hRJpwYI4oCnZbxt09smKLgAOLMP8MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VIhOJVFc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kGVfVgKq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9843CEF7
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784803563; cv=pass; b=VNkMzXGzpxr4prcn6b7yPaQ1mdEcKrl7yMAASv9qb5T6ASWj5CO4x58V1WesLKIiUSohOgYAf3NJhFNwb1XaVKLhNBw+jiYJiEnsrcxxbR+qyzOQGSA/AFwNYbilKwunggGxD0h0l7M6wmfqB4vyx+GVo6RIQzo4ZVC2EbPRiTw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784803563; c=relaxed/simple;
+	bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KZBms2v7H349O1QkaIOM8Fi1rqaPJf6ONaLFKFeO6AHdT74bFbohKdP1FIBEOQ/BquMwv79WZ8Gm58Jzh0o1KbGiFwRFG9e8c+etF2ebDOt5QnRSBExiRmXacpILovRo0MnYDx2vx9tMLRvLBnW7DQqDBTUVl5oQbduE6wSRGmU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LuEIcVnH; arc=pass smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VIhOJVFc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kGVfVgKq"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66N8qkfq3642784
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=; b=VIhOJVFcJplmZD8Y
-	xzfmJxRfRWiilxy1Xqe2jmuHksd4oGh6qhq6hI6iiXEzPCGCmUMqDhSIgVe/lTma
-	g1e+9xGoB3yhB3fo5tLvfRdVsq+RVOMBpu7CEUAf4DpMDAJjtR1Nm/1zY782veg5
-	HcX2Vxo/ZBVXPiRUQ5mxSrmndGYJiQItxOuc8T/hqRTkNdBriZOdzlsWQFJC46NK
-	RW5AMZeWdQpjkZlXdCLLeGLVQwCow0fi8hlK7gv8tOsEMpZjjDmZ6e6NFeSSbxdn
-	JfLf/hNnNM5QyuGO4A8uPwNUfBBkBDzZSa0ohkIFycoMCPqrrjR0nidJBiUdVBgZ
-	lnOLeA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fkayh9mdv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:13 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c1c7f135bso8606221cf.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:42:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LuEIcVnH"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81ed2a06b9eso4058827b3.3
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:46:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784803560; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TwwVOHhx8cbye4XHu3f/lRLpBDIbZpnlDpCxsLpO3cKhgEI7xBafd8E4rRKOjzHoal
+         nm5YIDwHGQL9F1K6GSBNZ1rAOxNOzj1AGkywyoUbBjBWazza4+RtXANt/FX9CrftjVzp
+         /ht6ECj2mG6G9tt5ZvqLyIhKX9XJu+YST3hUQVOhfT/POkXVviyTjZ2lQ3F0st9AVtfQ
+         umWKvzO3tPg6VZ4JDTPnOq4l+/UC+QBYXAebFRsPCqWtK6obMNp7IwpBUYDHQdAH67gl
+         5FD+ncvt3HUQlrvoqSBFbnzXN3Ck4nYyA0kMLyiBVbOxCZrhjt0LVOaJUCUiDFLNicuX
+         Lz0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
+        fh=XCY7Vbp4cy2elZbzjLL/vKgBAYyUGlZ4fKwF1xAfUU0=;
+        b=mZHgIM2u3OjEXgIgJpI2y3yiCIR5AoaDQUPMiDxIVpmL0f4wGdkOGWkboyS1veyMMQ
+         /mRgXeZuA1rXoVyfyXekZBber/Es+p4l9do89O1SWdUaqsg7Wak0Emuuvd9VbWAizUFI
+         jXxoq7p/wD1MJQ/KItU/pDhpMssR59B7ExT08khheswV5Jka6UPTsO5B0wGBWNQ6G0IS
+         o8KkASifFptD4Iqr3WSLfdhf2lw1m1bdx2wHSj3KC3aENw2At0istdILtkeZ0bb30BlH
+         USiXMJySoGgeq2R4xIBk3Gu1eeKYZxWXH3BSmD5ll6Z0tOPOHJ4keNH9TkiEKju0t4ma
+         zNNg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784803333; x=1785408133; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=;
-        b=kGVfVgKqbYXLPGJEEl6unqrfWgzKeboLisTmu8AdNIwhMDcvDyNvhSpxRY4N2E43xv
-         VeQnHkFYX598by7MK7hZ8x9YN+bmWAxPkusyV/g4MpPmPiD847egCd6m8bLSrAaygfFc
-         Y7yDm955bSVZ/YWTnICP/DMujzlZ0w5VmQqR4c9Lcs8wxf74ZP9T+8GWrSLU4FzQPbXG
-         M5eNQYsmszyHNs4gsQ6LpfnFNKQws6SGSY3veS+w/FXjltD939H9iliTuvJeQ7IjsS9i
-         6Lrl4eiLOG3ASbucmBdjh0mYSOLzLi1vHqKX3mkD2Krwlp09J1Fg2vGQQyZ5xso65CT+
-         mL+g==
+        d=linaro.org; s=google; t=1784803560; x=1785408360; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
+        b=LuEIcVnHGkTl3qkGq8yFmSnpzpKYaDdJXP4deUE7HXTRB00RCxiZu20FnDGmjO0Jjb
+         XwgtmAOY+uxSdjdU4hLqs/TdOsp8HNR8NbQk/xmKr/7FGS1apOlUfaG2j/2vaXz/m57K
+         W7pveIz89gtYdzkKqbL4wdfr7EFaoPNba+yArKiCnlLztKT1zFyuu+0z6zCxCaWVebLd
+         0KR4FfEuPtPjtmIWx7e26kIWd9g1OI3pCiMmeSUGwkQYUETYYB66NWRkWkaU6CyXaeuH
+         egCvZaOjzvUt3SXggvn/G8mYaqQNHjReLzu0k2KzxlK0hJy0No0huG+bDoH26lv0wKyy
+         MBZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784803333; x=1785408133;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=;
-        b=P8MS6hHcMNkGuqPBPBP7c6c2HYK1YWHqeMrOyFvby9m5kgPdAPM0PWnQkcwGgMU0aN
-         9XqdeniEwdniz6inbmPxnJTbV1LvS9ASjZWYpxthnrdpFZwJWy0nrAHsnoYQgbXvm2C2
-         6IsYrZiOrvmszzDwS7uFfVHSJPIlk/iWE9F0/p1PqAzT4EA9tTIye7VxQoD8svsM83LX
-         W5aNdMwXR5zSR4wpoZ79559W3PEzKWFMwwzCT4giwKfiNIIF10BHDKuqbeUK4HBBbsIa
-         auQVgn07vKFy6QkGe3N+VrCinkogRaQDOccq+8IEg1Unx409hwDTJNzaRpRbJxiTqXZQ
-         zR5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rq775EvuJKgCYFTyZD0k2YvX49cpUcnEaDd7/+w3g8BalUaDOqP4ZDAjNidQB0mrS1O8rw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/2JeJRrh19BdE2zMILp1duA/MXh8Dw3RyMzJ41uwYQeCV4bAL
-	kNjxHWKXEry7zqI9ZCigUFdjNzSusQGooEZNn0epufHQ5Wf0vsiZYGpZcpQHrFQ5+suiEMUcKJe
-	H54w+LmGmIsdrMd6+r4I/qKc6md4vqmwzTdjzLHOcB2P4yf0Bd1qHf68=
-X-Gm-Gg: AR+sD13Qf4srl2PUwhhsNPGXB80L13GkH+J0fSlxFblgWYNpO/SnCsgpX9JOd9IUjyZ
-	Z1WNIX6PwF2+P3l6j4BNibl/5cf70WyrAcFYeG2sfWneahwfxfbv18JOb1R6ZNrraa9rvh7ROUG
-	Pq8jiug5rY20DATFOcForuXBtQrjeTGzZ9vzmGF1yWLBxIIOtUPlO9n5Rqe+i1R32DS88kBtXA5
-	2zwmax58dZJd9V0XxuauVUJYr8pp9sED/J8NLpWJGXNDzwSZhd5h4sDgWGAfcGnoI4k28r5sSsb
-	mwbHUf01mAF/nFuW+w/a50oI/B73IEr/6c1LR9U5CySpjrUtoSVS9fsGL9BH4MtcZQxSRc6mXh+
-	TNWj0pV/m58Dq93LD19Mdj4FV92m8FjFVjKOCDi7A/qBCAkBddJU=
-X-Received: by 2002:ac8:5cd0:0:b0:528:972:f597 with SMTP id d75a77b69052e-5283dfa12a0mr20960071cf.60.1784803333273;
-        Thu, 23 Jul 2026 03:42:13 -0700 (PDT)
-X-Received: by 2002:ac8:5cd0:0:b0:528:972:f597 with SMTP id d75a77b69052e-5283dfa12a0mr20959911cf.60.1784803332892;
-        Thu, 23 Jul 2026 03:42:12 -0700 (PDT)
-Received: from [192.168.69.212] (88-187-86-199.subs.proxad.net. [88.187.86.199])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653bffefsm194425625e9.9.2026.07.23.03.42.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 03:42:12 -0700 (PDT)
-Message-ID: <be427830-c5df-447d-9ef0-bf921ac1797d@oss.qualcomm.com>
-Date: Thu, 23 Jul 2026 12:42:11 +0200
+        d=1e100.net; s=20251104; t=1784803560; x=1785408360;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
+        b=QBI08qwt8nckA06dqxJl9VnIGeZruOXaRuJJjyi3+vRc4SZM8I5FGOUQby/8yUNJJu
+         x4ELkm6Bcd+JW2WYzEchNFZoxcutvgDBU4/iwrnJE49dCL6nnlrgycelk+VOyvP3V9fY
+         rfsXT6LhjzcF3v4jwsYWDq18dfcUp2IlzSKcIFZt14N8Q7V6nnjgm0E7AQIsUZ2G1103
+         NQrGF6uxvAuiyULp9H+fRJ0kYx2XSBnswFuyWHOHVVHCM5EBiMUko5yEIxEzk/JuR7OY
+         viv7/VbsgQN4l27z/BsqZk/h81HVi1r4W+Vl7XCI95PFfpY1cZz0vriitaKHnqhdKS3L
+         Tfkg==
+X-Forwarded-Encrypted: i=1; AHgh+RojmgayY4W8PWr/i8/hKThKA1gM/5xYzPXWBS8Wt1Z0z2fTkSTYQLGhF8uorGpxx8/yWdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yynfzai2/4wQE+sWWkRXVLXnTWPAtvZFqrE2RLtiqP/FsX3Y1Fx
+	QLb29EyoYPPBaPup1PhkVzCjKW+iI5Wv4hP7w44MePidjo1J7peadgyRDD6QV/K8xVQ+0+NGNCn
+	5tZMRTaDERWRRgMkCkhagZfQrFnNqgzR2tjxq3whDHQ==
+X-Gm-Gg: AR+sD12DN9Lvn4ro7D20PI5me+g/2JaQBZ/jZXzTxU+91AR+8oy7YCJKHCqVcOJ6Qe7
+	aNzfXuaXWJDJ9ZnODxykL//WrAh65SqRnQrV0+evo8H4P1xqXMNMY3FZA2uy7Lz+DlB4+I/OCSW
+	IsHngm2xPeQDbxy1AZTL4+douMbPn756FJ6gcwos90rsz0upvo+EjmAFMBuvn5W94Rqea29ydAi
+	WKgCrUf9yvavWV3wR2f0gghN4hQB6gWjVWb2JzfVW5+a7L2Q5pli6WLUGV3VSQ+X3HW+TfqJPSw
+	p9fuHkIUFQeWHvAtPddr50ILoFE9qQbdVGyIYOOPQlf6og==
+X-Received: by 2002:a05:690c:9986:b0:81e:2b86:d75a with SMTP id
+ 00721157ae682-81f4c2fd99emr7042797b3.55.1784803559620; Thu, 23 Jul 2026
+ 03:45:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
+ <e7d3e9dc-be97-40f3-b426-3e93a242410a@oss.qualcomm.com> <87mrvightj.fsf@pond.sub.org>
+In-Reply-To: <87mrvightj.fsf@pond.sub.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 23 Jul 2026 11:45:47 +0100
+X-Gm-Features: AUfX_my1yVwqDYBFri7PHqiSbZZksCRSQ7Qda_pMQK4AnsOEZwerOgkNdV0ZEE4
+Message-ID: <CAFEAcA-Upx9uacBZ8nq3Co5csNqi-nHaTOVX7t9kUzDW-CL5Bg@mail.gmail.com>
 Subject: Re: [PATCH] target/i386/sev: fix MemoryRegion reference leaks in
  gpa2hva callers
-Content-Language: en-US
 To: Markus Armbruster <armbru@redhat.com>
-Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
-        "Dr. David Alan Gilbert" <dave@treblig.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>,
-        "open list:X86 KVM CPUs" <kvm@vger.kernel.org>
-References: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
- <e7d3e9dc-be97-40f3-b426-3e93a242410a@oss.qualcomm.com>
- <87mrvightj.fsf@pond.sub.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
-In-Reply-To: <87mrvightj.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=HZgkiCE8 c=1 sm=1 tr=0 ts=6a61f005 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=20KFwNOVAAAA:8 a=8HBRM8kc7f_oyWAv4U8A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
-X-Proofpoint-ORIG-GUID: 6getKLDbVhVKp8-Bn1k5CydlEIvDJKX7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDEwNCBTYWx0ZWRfXzRvfxLuZlLd7
- ZyKjlKnqPdT3DJHJIuX2TPGVLORnbjvbU5vYzhHKJdv7819q+w80lQXO2SF+r0aIrTht/BppbZX
- dKkVsTRmkq61vDY6xntWaMCdBaK0OKSDB0oiBTRxnPcFyL4IW9zteIpscU+7bNGcgiXS1zy/TJ4
- RuhnwHE3lNuEoiKSMjKe0SkWJNChP1CpWIDy36PTo/NdnsLBBLS5TpByQT1AuuCMiEmeevFfSLp
- 6mspCsW7Seb9BvBy3xSg+wzpWQMHvmqhIi3RL2aKx84v4Zbx8EWl6x+RezWxhLW+wqXLyZ6VvQ2
- Xw0XuZViE+8+vQ3VIbhi5TJfoasGKdQJPmzE1L0Udk1ygtYnV4A7YLxjmrnDVeymXpGrWHIa7fL
- UWbL7MOR5oj6UXFLnwZT+kYx8/BbwEWe/DLXYPj1itcIdsGq8MhEhsCmslGqm3rvL8a+7mz7uSR
- Q9T2quobN45t5n+S14A==
-X-Proofpoint-GUID: 6getKLDbVhVKp8-Bn1k5CydlEIvDJKX7
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDEwNCBTYWx0ZWRfX9bUtHzOnQgT4
- xSm9e0fKrdfLM8y7uTbnEIhmaGZCHnYYn7/ceBdJ1nwK1rWrwlhVtOuU3GD3hrHWEyvjQEuPUwW
- xgQqgooZxH/CY0aYNVJ/E2Z2u2hy3lk=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_03,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
- priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607230104
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
+	marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
+	"Dr. David Alan Gilbert" <dave@treblig.org>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+	"open list:X86 KVM CPUs" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 23/7/26 11:45, Markus Armbruster wrote:
-> Philippe Mathieu-Daudé <philmd@oss.qualcomm.com> writes:
-> 
->> Hi,
->>
->> On 21/5/26 16:54, marcandre.lureau@redhat.com wrote:
->>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
->>> gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
->>> (inherited from memory_region_find()), but both SEV callers were failing
->>> to release it.
->>
->> Comment orthogonal to your fix; odd to have a non-monitor code
->> call an undocumented monitor method.
-> 
+On Thu, 23 Jul 2026 at 10:46, Markus Armbruster <armbru@redhat.com> wrote:
+>
+> Philippe Mathieu-Daud=C3=A9 <philmd@oss.qualcomm.com> writes:
+>
+> > Hi,
+> >
+> > On 21/5/26 16:54, marcandre.lureau@redhat.com wrote:
+> >> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >> gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
+> >> (inherited from memory_region_find()), but both SEV callers were faili=
+ng
+> >> to release it.
+> >
+> > Comment orthogonal to your fix; odd to have a non-monitor code
+> > call an undocumented monitor method.
+>
 > Which one?
 
-$ git grep -w gpa2hva
-hmp-commands.hx:538:        .name       = "gpa2hva",
-hmp-commands.hx:546:``gpa2hva`` *addr*
-include/monitor/monitor.h:57:void *gpa2hva(MemoryRegion **p_mr, hwaddr 
-addr, uint64_t size, Error **errp);
-monitor/hmp-cmds.c:715:void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, 
-uint64_t size, Error **errp)
-monitor/hmp-cmds.c:753:    ptr = gpa2hva(&mr, addr, 1, &local_err);
-monitor/hmp-cmds.c:827:    ptr = gpa2hva(&mr, addr, 1, &local_err);
-target/i386/sev.c:1579:        hva = gpa2hva(&mr, desc->base, desc->len, 
-NULL);
-target/i386/sev.c:2093:    hva = gpa2hva(&mr, gpa, data_sz, errp);
-$
+The gpa2hva() function, presumably. It does seem a bit odd to
+have the target/i386 code directly calling this. The function
+in monitor.c works on the system memory AddressSpace and
+assumes that there is only one kind of "guest physical address",
+because that's the implicit "everything is an old i386 PC"
+kind of assumption that got backed into the human monitor
+command. But it's not really something we should be doing
+more widely.
 
-> 
->>                                       Should the method be moved
->> out of monitor/hmp-cmds.c somewhere into system/ and documented
->> (likely in system/physmem.c, also moving the declaration to
->> "system/memory.h")? Besides some day we should be able to build
->> without monitor.
->>
->>> Fixes: c7f7e6970d3b ("sev: add sev-inject-launch-secret")
->>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> 
-> 
+The i386/sev code looks rather odd to me. It seems to be
+using gpa2hva as a way to get at the host memory that is
+backing the guest memory. Why can't it use the usual
+address_space_map() etc APIs for this? Worse, it looks like
+it keeps that host pointer around in a SevLaunchUpdateData
+struct, and it's not immediately obvious to me that it won't
+go wrong if the memory map later gets moved around and that
+pointer becomes invalid. And it looks like it writes into
+guest memory in a way that will bypass the dirty-tracking.
 
+thanks
+-- PMM
