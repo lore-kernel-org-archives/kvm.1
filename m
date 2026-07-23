@@ -1,170 +1,199 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023125.outbound.protection.outlook.com [52.101.83.125])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CF0439F73;
-	Thu, 23 Jul 2026 15:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.125
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820805; cv=fail; b=nqUrCbFiYKt35vFQMWescdlUk8DQ+8iIFLIls9svkrfR+pxm0On4UQoXSqpyVeoJs7Msr8QT4CeP2fGg5hqQ/umc2tvIISP3Txni7fzotjYFYJKvBZL42hIHT60yZjYt/jvjCxfCa6BQmdT1aI1CR0ieZejxakawZp8i8yVH/bs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820805; c=relaxed/simple;
-	bh=x61YAUgtgy1qQUFZ9p4/3qcV4aW3a8WzWzDLvqvQDV8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=FiOXgqz7IOSQ17BFWIGM3tSbPT9uY5DeilW/SpQZk4eNiRjqnNMIfv2mpNzt2dGRrIT57IHMiVIwCnceYAXtNXPvpFhARacjMSHt2JhojNkNPna6YO5nHBwXWlvbLQX0OstnISUO8CD/5v/2gfHRn4vvB6T+Qx0/X/5rTvAex3I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=HfUfQBUP; arc=fail smtp.client-ip=52.101.83.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396E4968E8
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784820864; cv=none; b=Tz5HLUWbTSVfMcgnCFCFF8F1JZzwNwIgfmpVRmaDR3KBjQghmcu7hZURGSdaA5WktgmlSgHa0D64wR1tiBINb0oBGCsw4EqaQtrrg+BvnIooga2/4syMSxj72s1P9H6ARjQiriT8R+QXIi2m96i3qox8bGqQeWJreSrSs9XbPpo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784820864; c=relaxed/simple;
+	bh=YI4hWPAbOT7YNSJ2UWdM5AZsQqEJ5zOz1vYHoT320k0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TPg9fpAk6UyG1+rKWFgTJXhFRzKvB9Nrri70bcCCtvpB/agk/aE9WVBSECTwZi5RHV1I/7bLRQGNxP3A2/GEI59+wlUFzuH/rXIOkyPX9ksmV5pqEtkD8MIfwkgZmR6MHj7GMhSsR9YAlb9moAZlNwHhPWlno/BzwKiecOTioZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nP/yTOl2; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="HfUfQBUP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iLWdWmtJ6nUwL+yi3aws65gRvL3cb7bfJGaKl1dpP17zF/ELjSfuVR9tTJyf9HpHDY6KyuKP+e9vupHbMPBZ9GdvWL+IuNJNopa9YEeYIL9j65LlMsBoGFTnqPqizYFcCQwi/qjRFSyXJkiAy+/Yd5SPFN4cvrQwJipSdvQ2VJ+3c29u6kYUXubhse2uFy7+IRGvwQAhNes5OgTWDQdD9PVYTf+gS5qdSUbLUIbyIMrSQ3VXag9dg8ub/K2zPeA8Hz8GAsMCKxhQG47KTX9GFRhNHnUYnrfMdofIf3ehoOw52c47GBPGyUG6JjEnRh8CzJUxq196Ud7/da6kaIFcXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qg81drHMS1r5fyWHTv6/E/7ab5a6CD0XWjPb9KFPpsA=;
- b=FL4jYgn3XnsuDQF4fxT6GbG5gbEppw9RsXPTkQU8lLmF5rp7VrP+N0FuGfMCcHMhRliWfKo0Eu7aQsm16nMm0IXZk1FCpScBTjqvjpGOqt5k9CnZngTEdq4UjRd7fewtPluPsp6CWqw0mmuevHfNS6PizTh0i3w7sLMoo4oXsrfnjqmHVw/noAVnFHWG/tjYKeDIq3zADXoVVGgBifjsuCPn1R0oVbkOpbfEpQe6DOG3ra2xN4OaEaVmosoi0+npTpqMEZ5julr/1iXdJlV/6tmfO/jWfgNpm2cAhz5PbSszco6m3DizmagcA5mXfJcW1sB0+/9wfwn6/DSCPiW0dQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qg81drHMS1r5fyWHTv6/E/7ab5a6CD0XWjPb9KFPpsA=;
- b=HfUfQBUPOT9UasFzgEc3PamnWGbZN0M++y3Fiv0zGFecsw8Z664tAps48bjUi9lkNVZWH4wuBwV2tzZ3cz3IO1Oa1f7sxJbfdWCNYw9CAFIu8Iwqk6eyHfUVgUXvwYXvgm7CDjFZzrg2TDvrjohgLA1BKLcr9GNeGcF1RY7V2xIV/99fI1LgKSdIIZdehcvbmqIgLZz0IX/u1IQE057R1ZZBKg2N9h0ZKO7aBu1ULomYQDXH4Dd9T6w99FjxWKlojwo3VpXsAIGOVEe5Q9IZxoTNFdnDetcE40lURhrycnrKmHWiklD6lcKocyOeIZqb74AQO5bjnEX7zUDKoQC3qA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by AM0PR08MB11702.eurprd08.prod.outlook.com
- (2603:10a6:20b:740::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
- 2026 15:33:19 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 15:33:19 +0000
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	sgarzare@redhat.com,
-	mst@redhat.com,
-	stefanha@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	andrey.drobyshev@virtuozzo.com
-Subject: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
-Date: Thu, 23 Jul 2026 18:33:10 +0300
-Message-ID: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.47.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VIUP296CA0078.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:349::16) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nP/yTOl2"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc88e22f92so19661595ad.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784820858; x=1785425658; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8jXOS2yBFB2hrfcZtfpqLJLsuAeRSevvHeZliLjBRJk=;
+        b=nP/yTOl2MtXY57THejskkZ6/xvXFNn0LefsW2bFtUcMgIJhm29byIw3AdUs6PXCPaL
+         fuNnM7gUQCJsAi8bfby4e4yNZFkYcFI5VLws38kgpN8oT+xeb+Y6vk0tAM4hCm8FMfcl
+         eOMLCWruJFrC38tS/V4gFpw9MHhX1dBbdzdcu7lRUs5HmJoV1H6LDDTBCRctIikmzMO3
+         e5YaiKMicoY1bK6jt0xJLOtXUOriUB69cPeihRdxUNm/03LB00/FHP+vAbnIuP5NKa0u
+         MEYeTyTW///npeP0sE0Y7dmIuDWjxus25Ogpdh0Q8yGCu9ok8zEDlPMdlQun6wg1jJxB
+         COhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784820858; x=1785425658;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8jXOS2yBFB2hrfcZtfpqLJLsuAeRSevvHeZliLjBRJk=;
+        b=Cq8mWgpvXbCDf9h1D9FWl07AYBmJ3ebVtR0RWC6LyY2DZ02fCOFJ1Eebg9pqHScgOf
+         +f0SZuZ+vGLWWA8tfs7BGrx7KZU2PLUiYWlGXR5mjb7f6EPPGP+zNokkYlGnH4VkIe9U
+         iS9ImCE5mPHGsRAitwmQbrcEP0u8N2+kyBgYQFFY/GzhTETcdWUCHCgVLOIKRtPZKub1
+         8tyrSEyf4u2ITeAnOB6a4zP4GAfh7dT1PdGNVwBYBZVd443TmfZwjO/y8xersGC1GP3P
+         YhRHW727p09vwJGLNqZu4MwOEKgBsyJjO7Tps1LNU5yu2v8mkGDd8WzcfchU/Mo6QeT1
+         qW0Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrWtmEJJQJ89aU4zXE26U1bgvm4tzww8PHm+eCv1yEqtI2mG8jyBBOpBwh7hA6ahKCXvzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYwjGEIi8rMfzWqc9S/E5Zr9Z5WNa6GueFETbk1bwXioP+6Kg8
+	r5JwXFsuQJBAeVTiEXEwAgrAZQgoRVglVOCQpBu9AxsL7rDovkX6AhkaDuDT0Nl5j2MeAQQJ5fm
+	DB95OpQ==
+X-Received: from pgcv17.prod.google.com ([2002:a05:6a02:5311:b0:c93:59ff:8d6d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a04:b0:3c4:3321:5009
+ with SMTP id adf61e73a8af0-3c44b044febmr4264727637.29.1784820858096; Thu, 23
+ Jul 2026 08:34:18 -0700 (PDT)
+Date: Thu, 23 Jul 2026 08:34:17 -0700
+In-Reply-To: <amG2rkuE5WqldZxM@yzhao56-desk.sh.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AM0PR08MB11702:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4507207-4e2b-4b26-a50e-08dee8cfb8b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|52116014|376014|10067099003|56012099006|38350700014|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	xKiN4JDIDY+CPVDXPMxaBE02OmkyjexFQ1QaXHb35da+Bp5wmhvLUDUImII6ut8NcDjsac+TiGZ2CqLuAyNuDQHuM7wsw0fxXXiyga/tisqvFWlHLNluzhtOYDiStjFZFxYvjt0qo4amaGdhWwHPnl1GlLPHgou3zgHvLnEzxCBnIDbF03Iwmi1SVvIKMEM/QZOyCVxu5wHh9DnV7O7bd84Zbeh4Q28YMktIes9HDU/K1mFhOjvxYuCEvSQxBa50Ml/M+7+aHDPyMzjGXRIs+lfxLJgPiNR1Ine8bpFFEpy7tLGYZQIj+qWdfOSaIidTLbumY3eg7R6uRKiY+7ZbkueFQVIxPK6Mq25mIO0unSYOJ2JWyQPsqMmRqDx44wbdWoNzqNcCKW+JRq1w8ExegGXD/NPcbTBDtF2/nFiCWeimf43yOIK4gyqkLuc7bvQG0ZYEne74CPaki/YBsFA1qzZMvgYGfUf1qnRvc6MLgSnzQjspfIrvBYvRgKjeCAiYyNhN/bvh3Zs/rgpU86ZV36C+KVm6e2xVJYPQYNkEMSk6NImXz+4VbzboiSfepM1aiosBDGVIBVj/BPmWiIfxciZXOmxxbS9d3Corkxo0XJ6hxrl7ya/efPAJ2B20ZpOFo0GDRplc9fDxTTZnnJyJUIxXHUjtusts+yrMaQI6DjnYqlqpeh2upXf5qaG8LVRJnAtjWGOV8w2JFTBY1jJPgGvh1Q6gEA92SraAB4AH6hA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(52116014)(376014)(10067099003)(56012099006)(38350700014)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GWDgtmP9Wi95Mup8MoQfsil0Uk8NWig1qWZsEAOJEb19lSGTBd4qkl7uD5yN?=
- =?us-ascii?Q?d4laNtdLeTGXyEZMrzN/7MbiBzbpKKguzq5fNCJXUS6WSBCm2ndHKSQnb501?=
- =?us-ascii?Q?tNI3KBOfsIIHO3SCldq+U7tjMh3964cBVA04fSi25OI/l6+yoBIRqLH3BMOQ?=
- =?us-ascii?Q?pGTIaqrMx30NrPVJBkL/Yz5hfkjJGkMKNUuYumS+TfGD8k9hOOmeeL/ixtLo?=
- =?us-ascii?Q?WJD3C2t0kEH6vFvwyCruRMdWY/8LniUoRUrT1wn3F4wWjUOhb/ur73dZF6P1?=
- =?us-ascii?Q?D3NW4PwqoG6AgFUimyolosC4vcCXMjzufrFHTqo5hPsVIMJ34//iTDZa7au4?=
- =?us-ascii?Q?FRnkg9sjrkDC8pFbV9SzZH+Nj/Z4JqLJqABkvXenPh5NJNMYuQwvaLdaWuJN?=
- =?us-ascii?Q?OoU2htmfBX7QzYe0B1n4ohxgVmR7DxbmE0Qu822oaTS5G+1QQlZiQjibBQbv?=
- =?us-ascii?Q?pk3bGTAj0nHWZljYXdPrS42BTRHH4JVJhLpqypFhtknlUIT+gnLfdyuE0g6y?=
- =?us-ascii?Q?kwzklUX9FqT4CKGSjQw/uUb3D9g1c+65VH5l2FZt1blyh9O2Og19IuZgaHra?=
- =?us-ascii?Q?e/7CdbUr1Sq54jdideMn47AtNL4eljNhdEBly+BAUub/g2vRBv30rySzyQHW?=
- =?us-ascii?Q?kytRB2hjzZD9N2P0wucwApLopDVXvW5LtnHwCf2bUCGGPnhCtIM6d/iEgQi4?=
- =?us-ascii?Q?FtNvB7+v3vmbyohqObBGcWGOXv0FwqZ4TPorCsGmMbof0SmzYqco5Pe2UaXf?=
- =?us-ascii?Q?EUyDUywCSlpQrUPrXMgxwwQ05lke8v2KMvf/u/o9+OKkokdLIQG50Ui5FWy8?=
- =?us-ascii?Q?apuZluEQv6V5IN1ZF9nikdhdfl6OsFY882ctslgf/bC8gKy1dlWq0ucA8jNG?=
- =?us-ascii?Q?HLxenparFDeDGn46UxmKZYFtFZwx6JiE/g/SQxY5l4BliHnADKIi2yj1k4Ch?=
- =?us-ascii?Q?69FtD2AwoTbT8WX4RjFSTmd/jYGl7lLlEQCGAcQw8mH/XQ/EA5mnSFxBKtXC?=
- =?us-ascii?Q?kmow5QrapKokYm0pDmsOSti58Ic03fIVEi5ddk6qgOtxKOGQFZHGzm3in8Qw?=
- =?us-ascii?Q?3F+OJb+dvU42Oy+szSW9t9u3RLRhqOm8Sj8C+y373Sd17Y8c8ZIOa0DVs9aH?=
- =?us-ascii?Q?8y4dvXOa+Vz3qWu5/kmxpiZ9PweVSGInI4twl3lMgyrE417TOg5ju5xxaIjo?=
- =?us-ascii?Q?evm8cEMgr4BdeOxKlXkNhouN9PjbhJmHfIJBnYeRWxes31ujEQs4G9HfNlFZ?=
- =?us-ascii?Q?96v4Z+CTKSER4ppcfBk1860pgR4LiJA8JHj0PXb4SEoWzH6xrDSUMOoyzKE0?=
- =?us-ascii?Q?2uG/mNXQAghAhFKn6AYwfS3BGYXX/OmJNKJRgJhs1UZgxstSGxPNc5uWU0F8?=
- =?us-ascii?Q?1fgGEVVdEaxmAzpM2EQL3JUL9grIRRCz9DY6+/y+Lq6E4SGmJVCQA/nhhmdW?=
- =?us-ascii?Q?iU58RAM21dXYrZ1xOo9Q7E9EePoCMU+MwC3K5vpauRhNmqnQq3hMBaCf79bd?=
- =?us-ascii?Q?jRnzHCQvb8EolZo30akclkx3MjplFFhDeum1p9YQ2/ZtaoqqHYe86OHzbXvs?=
- =?us-ascii?Q?rA+lpCwa7D/f7EhN8LP8MRRXswzljRP+GURZXBUalfoxzweULVOQ7P3T1LOn?=
- =?us-ascii?Q?mtQJpihyjhrKRJ7HNyb9UPXAjEkWN7mtrkNF0gAgDPBIKBPc9DJoABGVijV6?=
- =?us-ascii?Q?RbSBI12dBb9j9X/nyIUOuUIrLyGS1lyI6Vrj+jaizzktyz3TLg3CsnZPeaol?=
- =?us-ascii?Q?qYO2g7xtarWdURgdH81bv52G9WuNFOM=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4507207-4e2b-4b26-a50e-08dee8cfb8b9
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 15:33:18.9559
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9a6AvPthaRJt46E8DcJWm66CzthsbbtaWEfdvSV2Yc9MraUTN0gGHhB+X7xRrJiMOxgxFy4fTyDwSWPx/PslvP/NruTV2+F4ArJmM7DWZN8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB11702
+Mime-Version: 1.0
+References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
+ <20260718014500.2231262-9-rick.p.edgecombe@intel.com> <20260718061050.E17B01F000E9@smtp.kernel.org>
+ <1417841720b8435f8fb95ac0bd95be6e0e9390d4.camel@intel.com>
+ <amDd1Ip3XTvKSTcb@google.com> <amG2rkuE5WqldZxM@yzhao56-desk.sh.intel.com>
+Message-ID: <amI0eRK2Jq6HOroD@google.com>
+Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
+ private memory
+From: Sean Christopherson <seanjc@google.com>
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@intel.com>, 
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>, Binbin Wu <binbin.wu@intel.com>, 
+	"kas@kernel.org" <kas@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"nik.borisov@suse.com" <nik.borisov@suse.com>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>, 
+	Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-Every other update of vq->worker is done under vq->mutex - the worker
-attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
-the sole exception: it clears vq->worker without holding the lock.
+On Thu, Jul 23, 2026, Yan Zhao wrote:
+> On Wed, Jul 22, 2026 at 08:12:20AM -0700, Sean Christopherson wrote:
+> > On Mon, Jul 20, 2026, Rick P Edgecombe wrote:
+> > > On Sat, 2026-07-18 at 06:10 +0000, sashiko-bot@kernel.org wrote:
+> > > > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > > > - [High] Infinite kernel loop in `kvm_tdp_mmu_map_private_pfn` due to permanent PAMT cache depletion on transient TDX module contention.
+> > > > --
+> > > 
+> > > Our internal Sashiko found this too. It's a false positive as a real bug.
+> > > 
+> > > Today kvm_tdp_mmu_map_private_pfn() is only called tdx_gmem_post_populate()
+> > > during TD setup. It holds the heavyweight tdx_vm_state_guard which grabs vm-
+> > > >lock, kvm->slots_lock, and all vcpu->mutex. So there should be no contention
+> > > possible.
+> > > 
+> > > Any potential confusion is not new either, because a similar thing could happen
+> > > with the external page tables.
+> > > 
+> > > But Yan and I were discussing that it would be a good cleanup to fix this anyway
+> > > because the reason it is not a functional issue is not clear from the code. For
+> > > improved readability (and quieter sashiko reports) the topup can happen inside
+> > > the retry loop. Either by moving the retry loop or moving the topup.
+> > 
+> > Hmm, yeah, I think I agree.  Super duper technically, that's a fix for an existing
+> > flaw.  Because very, very, VERY theoretically, the cache of page table pages could
+> > be exhausted.  E.g. if some other task managed to free non-leaf page tables while
+> > mmu_lock was dropped, thus forcing kvm_tdp_mmu_map_private_pfn() to allocate from
+> > its cache over and over.  In practice, that's likely impossible thanks to holding
+> > slots_lock, but given that (a) retry should be rare and (b) kvm_mmu_topup_memory_cache()
+> > is basically free if no work needs to be done, I don't see any reason to do topup
+> > outside of the retry loop.
+> > 
+> > The other thing we should address is the call to kvm_mmu_reload().  Like cache
+> > exhaustion, it *should* be impossible for the root to be invalidated/obsoleted,
+> > thanks to holding slots lock.  But as evidenced by the rash of recent shadow MMU
+> > bugs, we don't always get things perfect, and lack of defense-in-depth can be
+> > *extremely* painful.
+> > 
+> > I don't think I want to just move kvm_mmu_reload() into the loop, because KVM
+> > should provide stronger guarantees with respect to the validity of the loop,
+> > versus the population of the caches.  I.e. I want to WARN if the root becomes
+> > obsolete after the initial reload.  And more importantly, KVM really should
+> > check the validity of the root after acquiring mmu_lock.
+> > 
+> > We can't simply call is_page_fault_stale(), because mmu_invalidate_retry_gfn()
+> > is inherently fuzzy, i.e. could get false positives, even though the pfn provided
+> > by guest_memfd is guaranteed to be valid.  E.g. if shared gfns surrounding the
+> > to-be-mapped gfn are concurrently invalidated.
+> Past you said "No" to checking is_page_fault_stale() [*] :)
+> [*] https://lore.kernel.org/all/aPken0s-0MfdSd5o@google.com/
 
-The effect is harmless in practice, as this only happens while the
-owning process (and thus the whole device) is dying, but the lockless
-write is inconsistent with the rest of the code.  Clear vq->worker under
-vq->mutex, like everyone else, so that all writers of vq->worker follow
-the same locking rule.
+And my reasoning there still stands: there will be false positives, and avoiding
+constant false positives requries a weird mmu_seq snapshot.  To be very clear, I
+still find the code to be gross, but unfortunately, the onslaught of recent bugs
+in scenarios we _thought_ were impossible has made it abundantly clear that, at
+least when it's not completely insane, KVM needs to effectively "fail close"
+when the impossible happens.  I.e. take action to ensure a bad assumption in KVM
+can't be abused to esclate into a DoS or UAF.
 
-This issue was found by Sashiko AI review.
+> > My only hesitation with manually checking KVM_REQ_MMU_FREE_OBSOLETE_ROOTS is that
+> > if more checks/functionality were added to is_page_fault_stale() in the future,
+> > then we could end up missing kvm_tdp_mmu_map_private_pfn() and introduce a bug.
+> > 
+> > Maybe we can have it both ways?  WARN if roots are unexpectedly made obsolete,
+> > but fully check is_page_fault_stale() and gracefully handle an obsolete root
+> > instead of effectively terminating the guest.
+> > 
+> > 	do {
+> > 		if (signal_pending(current))
+> > 			return -EINTR;
+> > 
+> > 		if (kvm_test_request(KVM_REQ_VM_DEAD, vcpu))
+> > 			return -EIO;
+> > 
+> > 		r = kvm_mmu_reload(vcpu);
+> > 		if (r)
+> > 			return r;
+> > 
+> > 		r = mmu_topup_memory_caches(vcpu, false);
+> > 		if (r)
+> > 			return r;
+> > 
+> > 		cond_resched();
+> > 	
+> > 		guard(read_lock)(&kvm->mmu_lock);
+> > 
+> > 		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
+> > 
+> > 		/*
+> > 		 * Snapshot the invalidation sequence counter after acquiring
+> > 		 * mmu_lock, as guest_memfd guarantees the validity of the pfn,
+> > 		 * i.e. any concurrent invalidations are guaranteed to be
+> > 		 * irrelevant.
+> > 		 */
+> > 		fault.mmu_seq = vcpu->kvm->mmu_invalidate_seq;
+> > 		if (is_page_fault_stale(vcpu, &fault))
+> > 			continue;
+> > 
+> > 		r = kvm_tdp_mmu_map(vcpu, &fault);
+> > 	} while (r == RET_PF_RETRY);
+> > 
+> BTW, since kvm_tdp_mmu_map_private_pfn() is currently solely invoked by TDX
+> during the TD built phase, and was introduced to avoid redundant
+> kvm_gmem_get_pfn() calls in the gmem population path, are there any foreseeable
+> future users of kvm_tdp_mmu_map_private_pfn()?
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- drivers/vhost/vhost.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Nope, not that I know of.
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 4c525b3e16ea..dbb6cb5eccea 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
- static void vhost_workers_free(struct vhost_dev *dev)
- {
- 	struct vhost_worker *worker;
-+	struct vhost_virtqueue *vq;
- 	unsigned long i;
- 
- 	if (!dev->use_worker)
- 		return;
- 
--	for (i = 0; i < dev->nvqs; i++)
--		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
-+	for (i = 0; i < dev->nvqs; i++) {
-+		vq = dev->vqs[i];
-+
-+		mutex_lock(&vq->mutex);
-+		rcu_assign_pointer(vq->worker, NULL);
-+		mutex_unlock(&vq->mutex);
-+	}
- 	/*
- 	 * Free the default worker we created and cleanup workers userspace
- 	 * created but couldn't clean up (it forgot or crashed).
--- 
-2.47.1
+> If not, could we simply drop the RETRY loop, given that the locks in the TDX
+> path already guarantee that a RETRY error will never occur?"
 
+We could, but I don't think that buys us much, because we still need the
+is_page_fault_stale() check, or an equivalent.  At that point, removing the
+retry loop is probably a net negative, because it could be the difference between
+a race resulting in a WARN but an otherwise usable VM, and an unintentional guest
+DoS.
