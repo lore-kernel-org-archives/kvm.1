@@ -1,199 +1,133 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014F830F924;
-	Thu, 23 Jul 2026 15:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820990; cv=none; b=CSOh4d87MIH3eiHPh7154+FvRiCE2enhRXUP7nQQ5Ftn5eTNy8WO7SwgAZxrBxN7JLexzdih3J1Rk1AW7IYfP4QgzsoIiwPW3nZGsteWJgsVsCzWPGMVsS6eu8BycAL4XWUSfJjTbBOYNUjGnPMcCIs+TILBSawttZITJhWsYUo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820990; c=relaxed/simple;
-	bh=x4Pebje9omfpIctF+qw24hh/+WNM6ldoy14ojAuBjIE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OXEEHrstNYsC8icjMEpgoFcSXqvopN6GGe0vRvXNJ4BRr8nr+pk0DuXK2miCxgcwwdhHbBq7N3kkYD2wQZHaR9x1BFdJ+L6yiwdItue361wsUW0z2NiIQA1GYmb7MF9HWT3XZx8NLINBusr2wzWd3NlJdkBXRgaIcaeuQHQe4V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mN4PruLs; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A1B37F329
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784822271; cv=pass; b=r7zEGLwbc0QQhqBlHYzSuOSRL0SZi0BWaWqnQoKbhQrffmE6M7H6uuJCRrDsRyg6JsusCuamddjNkYfLmJixhXoTCBKtXrKOv/TSjkLJdSUhWmfzCh2M8pCm5vW60T/TnQYthe5mVNx7mv9omdYOgDVfeEecYXNqRf+VKMAgVPY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784822271; c=relaxed/simple;
+	bh=4ZmdLRAwRhVA3ItwNfEmhlTcL+6V4/NZawCrqGpdiAs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sQ4pzSeZ1p3gsBLPgjwfGxwiAJoXy1U/mqH1yNwmPVmCyjcyKbSkOIxVRF6bQ3cvcpdbQMdyWUiGHD/0oPOsRnWIIs/6BzL5K0QyYuWV5JrWgdhYbTULQmh14RFsNIe/N+JQ0NIYj+3hpJRGpdQiprxPLTAF78KhaSB9G1PVmMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LbyhNCL6; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mN4PruLs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784820988; x=1816356988;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=x4Pebje9omfpIctF+qw24hh/+WNM6ldoy14ojAuBjIE=;
-  b=mN4PruLsbx5d3UNWf1CyLA8e5VcbRStO06LJDKAUuPL1YlpTfxYGvwDf
-   aR8o0H72N0vX0zbM7v1f58mlNOhTeCJS3X+w4+0pCFEq11WbgS+VNV5Cu
-   CgCfgSduI5/badIG2U7vjE84HsBj0QxfLmAbCCFh+F7KzEUt4ZsIG4fZb
-   8awbhyBiYKJR5onVPW3BJshyF7u4I1EGeiQ6VgO0QUV+EAE1BWRQWEA/T
-   dEs7TOV3XQLpSWBPcybw8G3/IH/mndLSbRVHkZNlEcl8suH65bLRdYGbc
-   VHgCoQyEN3hpPprqyki0/aGEqVrJuYMunQIbm9LSFpKpB+BsL90fHdxrF
-   A==;
-X-CSE-ConnectionGUID: gIvdqCMFRfy99np+7i8uRw==
-X-CSE-MsgGUID: WFURrcOSS0idE9jX/ztzvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85570611"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="85570611"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 08:36:28 -0700
-X-CSE-ConnectionGUID: Io+e283bSY+ycLgM0mgO5Q==
-X-CSE-MsgGUID: icegZvHQRfiyJvppqmErxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="258511755"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 08:36:26 -0700
-Message-ID: <3a9a40e9-da98-4650-af12-6de2174c5898@intel.com>
-Date: Thu, 23 Jul 2026 10:36:19 -0500
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LbyhNCL6"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso11216a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:57:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784822268; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IZ8s8PIdAuwohIOZDLJyiLVJGhmciNgxFpDSIhAw9I4D3kFC7zswI/XqE9553Jdzg0
+         PIY5o/CdbxeA1t4cUOqOlQdZU6x2Jw2in64lmM/lG2vEW7bU3wleDGqz/Ts1mP3aYunm
+         J+RYTvLXPyZnoJbFoAhoZryStwxGBfFVSolgOtfVP2BTGw+bgx2oruNS1txU1+IV6Qk2
+         5s5ckU4xwtCP43FrURfZTwBTCQP/yFzRXTzUIoHNBv1pculiafHYcronpZfvnlp90DZc
+         8hs1TG+Qa4854gXfJRh2XRiB3Vng2CTzb6XpeUm4mKTMGoAooJ6P00cOkdmAmrHSmorL
+         wl3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9neiLWUPMueZ0VDmhCVTuptxRjCKWXnkm12Yzd60Guo=;
+        fh=smwrDf2GnEXKPf1LqCG04ByhUIhMWXwQfkNuqRIpHgM=;
+        b=r2y2ZN/EZcWrjhZdQfkUgI7ouAcLBLmagTf/MSWftOTwZR2vHyTGJcAK9/Oo1nfPKb
+         ajLrryyqAm4/bs9sBUh/uB6CwcsHXkBZlP7aEDZbBl6DMXeZo+fwG6z/hjoCU4PJZ6Kh
+         gkLK/fgpYuyJSxRKJ6F2ABXoBJQRCiBuaKjTIekJCMdSdtvQc2Lej9/6/oupTV9amSfB
+         GFuthW69K0MwcB2zI0HahMv4VQRlccxP9wbMYNBn26iax0yRPtooMdPJIxeByoPAXUqw
+         ySNweuAkKNqSiMb8i74P419L6CJp4N1qyqvHajslmexioejDP0izs051mThhjULAqFv1
+         ClSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784822268; x=1785427068; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9neiLWUPMueZ0VDmhCVTuptxRjCKWXnkm12Yzd60Guo=;
+        b=LbyhNCL6sCpFB2uBLM9Jtp559lRAY2IHJL+zZlBGwVPIv9oq78G2mfReMpMaWduHwD
+         Cn/WGVJN5zLZ/m5mi1NJxtRgA6AsEBZan50bhLlUx25IQzeDJuCXgdtEQgs7aHjokw4q
+         /aKGZWqfwbEmId9DfTvsvSE60GQ/HeZ3AvJDXJLutfHhrqlAFt/znnz7jfLJverPfajZ
+         d37d3e9UWYdUn0DX6F0uJ1X3m31VIraGbTBfD6af2NvvNnQFytQdvzlE6grF/QDFULzX
+         wV+0yuaqm5VqcUrzJBGIF1xai1yt6eFbdziCvT/4onjeqjRDwPpGlKIoyGzt0RVGVigb
+         EL6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784822268; x=1785427068;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9neiLWUPMueZ0VDmhCVTuptxRjCKWXnkm12Yzd60Guo=;
+        b=GV3ySB3gmQw03OH0nGaoVWMdSB8mJsCZGiAD/XrNH3RyUJXYlaMOQ/RAkKEKK2kCEq
+         T8t3hQDMdRYbGtrsdhYeVScJ9aRGVoRrVl1XrxRkOV1qEGMI+lluTPavs3r0lTmsh5NK
+         hXs2Q2W8XlWJwbu+hYYLNcTnQFD5Vy5NNXr+YnSajqMT1KcVnUAXZBMomuEhdfqtMYab
+         fqDxB2kpDS7Z1aEtJVk8VA/mUlhaAe6yGx+bPzNIUnuZjHe/2zETpPvDWgxJZG84nk1M
+         fNrmm/nvSPDtYfvRo/kAb9o0JgWEOWspG7cvBepr1bIc/i3giQxWAg54lWXE4mRX0Wu3
+         nkcA==
+X-Forwarded-Encrypted: i=1; AHgh+RpClMQdTnx8t3Qlgqlqbt5xltAOvyPkcLkBAu1RnNm0rcIZQ5WKQXfrba9v7GMxx87uDvc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNd7zm8dswRTq1wUvdNVik6TA6OTSSZ9El8x5S4PJhOo43qd5/
+	O7vtwr+VvrzH9tDZigQYywLC75entWqYJHEroF4mDexk6St/4ikBLAccA84BoSkP2FzeybhYaDB
+	GlXe6LRcKJvCSdWv6wg9rpBsy+sWv4tRVfHY2+sLC
+X-Gm-Gg: AR+sD11Rk1jCFfBUBe0kIsLBFKUfwxzZWXvMxvhUuB5duZTXnaLFuVipYMNGrApeVkt
+	FP/hvrVXn7tWUuPDMqd8lS2FmlpDDGf/ChhpPTMFNA+yY/3EZtmELjff0GoL50L7J2Brpfj6S4T
+	6muRK4YrSwzyWp1OeuA8pDWiFiNQjQmOVV+XsO7yWFpEv1v7rLKC1rNTUdDyfNZvbpwzbPzMnmt
+	y+fOi2QZUeBIgH5N/SyLqIk29UFHT53JraTUP93pIEq04lnVlx8ZqrRNXMhgQ==
+X-Received: by 2002:a05:6402:a584:20b0:67b:7d05:60b8 with SMTP id
+ 4fb4d7f45d1cf-69f60f176d6mr68653a12.10.1784822267892; Thu, 23 Jul 2026
+ 08:57:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/8] KVM: x86/pmu: Support Intel fixed counter 3 on
- mediated vPMU
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260629231938.15129-1-zide.chen@intel.com>
- <20260629231938.15129-3-zide.chen@intel.com>
- <CALMp9eQoHnj2QYBtOZisjB4oTaAUeoWbk3Hoj4+CdTGD2EJB3Q@mail.gmail.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eQoHnj2QYBtOZisjB4oTaAUeoWbk3Hoj4+CdTGD2EJB3Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+ <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+ <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
+ <amE_nPDem-imSfqF@google.com> <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
+ <amFf5MAhc8sUqeYV@google.com> <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
+ <CALMp9eQi=604LVn=ZMnzoUy55LVb1qorKzPKm5HVK_ACsPuP_A@mail.gmail.com> <amIgLeMCAH2vB4ot@google.com>
+In-Reply-To: <amIgLeMCAH2vB4ot@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 23 Jul 2026 08:57:34 -0700
+X-Gm-Features: AUfX_mxX6mX8j3LGYEsZzVKrTJdHB5_M9HWyEB4jy4wsexAM7oWFTT-fi8Y06-s
+Message-ID: <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+To: Sean Christopherson <seanjc@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jul 23, 2026 at 7:07=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, Jul 23, 2026, Jim Mattson wrote:
+> > However, since KVM completely ignores NASID, it would be sad if
+> > migration were blocked because the target has a lower NASID value than
+> > the source.
+> >
+> > That's an argument against changing it without some kind of userspace
+> > opt-in. Increasing it seems safe, but if userspace just reflects the
+> > value into KVM_SET_CPUID2, then an increase would block kernel
+> > rollback.
+> >
+> > In any case, I think the new value should be a constant so it doesn't
+> > imply a migration constraint. Perhaps we should adopt the highest
+> > value reported on a physical CPU to date? I think that would be
+> > Bulldozer's 0x10000.
+>
+> Or keep KVM's enumeration at 8, then find somewhere in KVM's documentatio=
+n to
+> describe KVM's behavior and provide guidance for userspace, but otherwise=
+ make
+> it userspace's problem to solve?  I'd be a-ok with that.
 
-
-On 7/22/2026 5:17 PM, Jim Mattson wrote:
-> On Mon, Jun 29, 2026 at 4:28 PM Zide Chen <zide.chen@intel.com> wrote:
->>
->> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>
->> Starting with Ice Lake, Intel introduced fixed counter 3, which counts
->> TOPDOWN.SLOTS - the number of available slots for an unhalted logical
->> processor.  It serves as the denominator for top-level metrics in the
->> Top-down Microarchitecture Analysis method.
->>
->> Emulating this counter on legacy vPMU would require introducing a new
->> generic perf encoding for the Intel-specific TOPDOWN.SLOTS event in
->> order to call perf_get_hw_event_config().  This is undesirable as it
->> would pollute the generic perf event encoding.
->>
->> Moreover, KVM does not intend to emulate IA32_PERF_METRICS in the
->> legacy vPMU model, and without IA32_PERF_METRICS, emulating this
->> counter has little practical value.  Therefore, expose fixed counter
->> 3 to guests only when mediated vPMU is enabled.
->>
->> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->> Co-developed-by: Zide Chen <zide.chen@intel.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v6:
->> - Update comments to replace 2 with KVM_MAX_NR_INTEL_FIXED_COUNTERS - 1.
->> v3:
->> - Move the non-contiguous counter filter code to pmu.c
->> v2:
->> - Don't advertise fixed counter 3 to userspace if the host doesn't
->>   support it.
->> ---
->>  arch/x86/include/asm/kvm_host.h |  2 +-
->>  arch/x86/kvm/msrs.c             |  4 ++--
->>  arch/x86/kvm/pmu.c              | 18 +++++++++++++++++-
->>  3 files changed, 20 insertions(+), 4 deletions(-)
->>
->> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
->> index d8700eb848b4..dc9e4e8bfc07 100644
->> --- a/arch/x86/include/asm/kvm_host.h
->> +++ b/arch/x86/include/asm/kvm_host.h
->> @@ -609,7 +609,7 @@ struct kvm_pmc {
->>  #define KVM_MAX_NR_GP_COUNTERS         KVM_MAX(KVM_MAX_NR_INTEL_GP_COUNTERS, \
->>                                                 KVM_MAX_NR_AMD_GP_COUNTERS)
->>
->> -#define KVM_MAX_NR_INTEL_FIXED_COUNTERS        3
->> +#define KVM_MAX_NR_INTEL_FIXED_COUNTERS        4
->>  #define KVM_MAX_NR_AMD_FIXED_COUNTERS  0
->>  #define KVM_MAX_NR_FIXED_COUNTERS      KVM_MAX(KVM_MAX_NR_INTEL_FIXED_COUNTERS, \
->>                                                 KVM_MAX_NR_AMD_FIXED_COUNTERS)
->> diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
->> index c230b18d87e3..3bf42d90ad14 100644
->> --- a/arch/x86/kvm/msrs.c
->> +++ b/arch/x86/kvm/msrs.c
->> @@ -228,7 +228,7 @@ static const u32 msrs_to_save_base[] = {
->>
->>  static const u32 msrs_to_save_pmu[] = {
->>         MSR_ARCH_PERFMON_FIXED_CTR0, MSR_ARCH_PERFMON_FIXED_CTR1,
->> -       MSR_ARCH_PERFMON_FIXED_CTR0 + 2,
->> +       MSR_ARCH_PERFMON_FIXED_CTR2, MSR_ARCH_PERFMON_FIXED_CTR3,
->>         MSR_CORE_PERF_FIXED_CTR_CTRL, MSR_CORE_PERF_GLOBAL_STATUS,
->>         MSR_CORE_PERF_GLOBAL_CTRL,
->>         MSR_IA32_PEBS_ENABLE, MSR_IA32_DS_AREA, MSR_PEBS_DATA_CFG,
->> @@ -2688,7 +2688,7 @@ void kvm_init_msr_lists(void)
->>  {
->>         unsigned i;
->>
->> -       BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 3,
->> +       BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 4,
->>                          "Please update the fixed PMCs in msrs_to_save_pmu[]");
->>
->>         num_msrs_to_save = 0;
->> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->> index 62d0ed99ebe9..f82ba63767d0 100644
->> --- a/arch/x86/kvm/pmu.c
->> +++ b/arch/x86/kvm/pmu.c
->> @@ -99,7 +99,8 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] = {
->>   *        all perf counters (both gp and fixed). The mapping relationship
->>   *        between pmc and perf counters is as the following:
->>   *        * Intel: [0 .. KVM_MAX_NR_INTEL_GP_COUNTERS-1] <=> gp counters
->> - *                 [KVM_FIXED_PMC_BASE_IDX .. KVM_FIXED_PMC_BASE_IDX + 2] <=> fixed
->> + *                 [KVM_FIXED_PMC_BASE_IDX .. KVM_FIXED_PMC_BASE_IDX +
->> + *                  KVM_MAX_NR_INTEL_FIXED_COUNTERS - 1] <=> fixed
->>   *        * AMD:   [0 .. AMD64_NUM_COUNTERS-1] and, for families 15H
->>   *          and later, [0 .. AMD64_NUM_COUNTERS_CORE-1] <=> gp counters
->>   */
->> @@ -134,6 +135,8 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
->>  {
->>         bool is_intel = boot_cpu_data.x86_vendor == X86_VENDOR_INTEL;
->>         int min_nr_gp_ctrs = pmu_ops->MIN_NR_GP_COUNTERS;
->> +       union cpuid10_edx edx;
->> +       u32 eax, ebx, ecx;
->>
->>         /*
->>          * Hybrid PMUs don't play nice with virtualization without careful
->> @@ -181,6 +184,19 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
->>         kvm_pmu_cap.num_counters_fixed = min(kvm_pmu_cap.num_counters_fixed,
->>                                              KVM_MAX_NR_FIXED_COUNTERS);
->>
->> +       /*
->> +        * Currently, KVM doesn't support non-contiguous fixed counters; make
->> +        * sure only contiguous ones are retained in kvm_pmu_cap.
->> +        */
->> +       if (kvm_host_pmu.version >= 5) {
->> +               cpuid(0xa, &eax, &ebx, &ecx, &edx.full);
->> +               if (kvm_pmu_cap.num_counters_fixed > edx.split.num_counters_fixed)
->> +                       kvm_pmu_cap.num_counters_fixed = edx.split.num_counters_fixed;
->> +       }
-> 
-> Nit: Should this CPUID.0AH decoding be left to perf? Perhaps struct
-> x86_pmu_capability should include an additional field:
-> num_contiguous_counters_fixed?
-
-This is a temporary workaround that will be removed once non-contiguous
-fixed counter support is added in the vPMU v5 series:
-
-https://lore.kernel.org/kvm/20260707183405.15571-9-zide.chen@intel.com/
-
-BTW, the vPMU v5 series is based on top of this Topdown series, so it
-cannot be merged to the Sashiko branch for review. I will post a
-kvm-x86/next based v2 shortly with a new cleanup patch and minor
-changelog/comment fixes.
-
-> Reviewed-by: Jim Mattson <jmattson@google.com>
-
+That sounds best to me. Document that KVM ignores the guest NASID and
+commits to always supporting 2^32 ASIDs. Advise userspace to populate
+NASID with a power of 2, and perhaps mention that hardware has only
+reported three different values over the last 20 years: 0x40, 0x10000,
+and 0x8000.
