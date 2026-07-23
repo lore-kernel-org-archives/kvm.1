@@ -1,129 +1,148 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2343D2BB13
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382981C3F0C;
+	Thu, 23 Jul 2026 01:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784768182; cv=none; b=q3nCUCmaZYEP6AgnsF/92w/7AYq6+Lq2t0vfT//5jyqzykcDlZJ+iINIBUheJAnpylusA7T+mZEIhj8KiS7HJHykLZYLZE8WDT2T6k8pvK5O0z0NAcDjVZ9eF62No/juI91OkyvnCTwQC/a/fFvlxCRAUDvXzbPTxPAyanc/Mms=
+	t=1784769084; cv=none; b=G/478rB4Z+BEX5xpr8kURRxYb+3c3194XFAVSlYvK6X1o0ILw1nsUXxz4BXsTkCGf89MiiccjH6rAPlDdRNP4oC6Lb28OXJfGBDq7u8bFuJtsN1Q0K00oeeYeow3eLd34wABqByUXIU0tnrkpC1YlKKXHDoxhIIfeVgvO9US1MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784768182; c=relaxed/simple;
-	bh=LHdVCehwG3HvJYaxZhqKZcT5rZZsELkJdogfR1KfAMY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tZFRZQuAsQXNYARLAyVsuoUdB6wHudg4Q/unZDCGQwTHF6DHdXRDXAgop/6C9Zs8cnoEkDkzZAMJKe5p4A6wIOTiZiE1oMfjXUdVyo7cT3rBLqNzLxAb3+O74IJ0FLprUZPoEDTZpDJ5ExqZuVlxmGTAqmxxwXdKAUeg3dOyDLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l4Fm7ZY4; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784769084; c=relaxed/simple;
+	bh=X2ALP+IO9Gdtx5HPiU4kXqe9YUWZzsw0FY5BQ3fpDmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vBd5CDafMBJ2kUSVQuDYqrffkXa0PKSXPekEFQZouqf2yhfgIHfeqIYg4qEB282sGGRGAQH6CrV+Q9no/mSp+Ej2uZt8SwjoKxlgPioPLUAKODE4v5+de+iU8I08678ibcP2gNSqrqlL1Vt2loY4Px2Y4hOTlqhDXNUl/IOGEIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=grsXsM8g; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l4Fm7ZY4"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e058ff6cfso183502b3a.3
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784768180; x=1785372980; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yBVSNQ6EdYayMHw9yILA6H3pFc9jV95YBn1yRdp33VE=;
-        b=l4Fm7ZY4kCH2/D+4/oWNWMMt5gNuIJ13+OV/zUm0ZNwPJJYm1zf6z72MzUL3O38gje
-         1io2aX20RPPzP7npUbtvCKBG/HO2q/mNItSNQPJt2qyk6WkbyBTo9USPsAjTqzDYykzJ
-         6iY6cuqsRmFdSHNtK5EieR3gDMoih1ZhuLTzBctzVilQhlFMMA9AO9dEABHl5L7Z7v+O
-         QslAxUBQemNuzPzPvuYnYYCY0qwbIb2lAc2nZMajrF2sfAyzeS9UlQScYHhMrGcOZHYS
-         sLW3fKiT6HyB/T3itm19SJAhYtJ64rzm1MR/gXglwwHK6MMC19UwWWOeKbzP9Ro8zNJk
-         GK3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784768180; x=1785372980;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yBVSNQ6EdYayMHw9yILA6H3pFc9jV95YBn1yRdp33VE=;
-        b=JWz5lZhHqFo5zjsHF7arh77fTTa8c/5s2zpqXlMRk1YMb03JkjZ8Wnv8OPR5VrqphB
-         Mdbduv93xi4wyeqnXjZLZMgqFkPZpxuJ4qbIlUm7IBoELfb5BHrdRtKIkCytH9g/E32F
-         Mb4BSNTldyB2n7z/H7vEetN8YB9+tz3+dXoxguMaTd9U0N429nI/4u2w2N7fgSWLOKyj
-         liCbk7VMLuQ5bcuHQ8qqDP498pr7jrBSYTiZgaQWOnqPlSHVOe7gxlGPtj9XPOhwxpVa
-         2W/32YRm54D1/CjMMt7dj31v1r9u24eXHQxKV51i8pVh8lFIkeTDHRWthrfP72QtDu/V
-         jcqg==
-X-Forwarded-Encrypted: i=1; AHgh+RpM+5JmU9AtGHkTPKl8GICKiMXBRvz6Ypes7v69DD9qNx9gbP4ulbqYDtbftJVHAuIkfKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLzextHiBkvRlH1hxafcc+QtMOnasnR5anCSBm4u1G9Fyz98Vu
-	c8dddWm8IKcxaOuUO8JAwvIWjcD7HbH4Aelfap6mXOI/hKJK7hUbjkeXBniwDyKHsLyyke1gvAW
-	AycON8g==
-X-Received: from pfbhj14.prod.google.com ([2002:a05:6a00:870e:b0:845:e683:1287])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:181c:b0:82f:50cd:e586
- with SMTP id d2e1a72fcca58-84e2bbeceabmr1218273b3a.13.1784768180132; Wed, 22
- Jul 2026 17:56:20 -0700 (PDT)
-Date: Wed, 22 Jul 2026 17:56:19 -0700
-In-Reply-To: <amFl89ch5Iej63L3@google.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="grsXsM8g"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BAF3940E00DC;
+	Thu, 23 Jul 2026 01:11:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id DAEo3anjhXux; Thu, 23 Jul 2026 01:11:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784769069; bh=qinsba83m4ZuhFLz/hcxdtDrgPlvk3cvWxiheYUpLFw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=grsXsM8g88YCbT1HPIPJV1UL1JKl1fLf0bgMuaCjKk0O3mhglITFzhZclWYqCc2SB
+	 QWSl4vh6XgRBCnLuRTF2iG4JR7vtShOURpCD2AAfa30iZyqwynkN+OiQDVZee47VgM
+	 Rk31lXCSo6q9+bnglFKidP04B/dYbPDn4C47qciToyljXlPeyWcgfVzuaC+tMob+FT
+	 Td6lVuE1AuX2B5qLAjPwA0Wa5DXA25/rE+c7YpsJy9oQQUoxkjm8rSHA+BZFI/RM2a
+	 MrO5q9+0kB/bT4Efmv+1O4uvljx7mQR+0SPOIPezomBeZ+16LggJBLV1/9dJbRW4Zc
+	 c38xBLBoEUNp9JPdelc1TjmyLCAUchZO7hJsG9zUyk5kh2eRWBYfKjH6Co2eh5jnjV
+	 pBrG7ExCUNIgb+xNQkG4ohy94dFQrjLKcAhrrrqznzmYW1QslJH/tN0TV6H4ibn5Vv
+	 M/vOxGlmgHKEB81Lj+uWRqgt8Dm+zmIRtfsEIQagZdYPG0v28/Re5IDGILpNNbfKS8
+	 /giQs4u5GpLbQrf1WNEHpUBSR8QDXdg0yQSksyymxAxGeR+YqnvWK7yRLzimY/kqzR
+	 tQuH54qNxitg3QAXlErtWgVzrdo8z0KMXpf3h6naU0hKULx25XRXCSeylkHV6nKKOX
+	 Q8nBXcklcjRytXsV9LQ+ewLA=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id D062E40E014C;
+	Thu, 23 Jul 2026 01:10:34 +0000 (UTC)
+Date: Wed, 22 Jul 2026 18:10:31 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+Message-ID: <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
- <amFl89ch5Iej63L3@google.com>
-Message-ID: <amFms2CnzhDUuRCk@google.com>
-Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
- allow skipping the gva flush
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
 
-On Wed, Jul 22, 2026, Sean Christopherson wrote:
-> On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> > Refactor helpers out of kvm_mmu_invalidate_addr() and kvm_mmu_invlpg()
-> > that take in an extra argument to skip the GVA flush.
-> > 
-> > This will be used when invalidating GVAs in a different context than the
-> > correct one (i.e.  invalidating an L2 GVA from L1), so flushing the
-> > current context would flush the wrong TLB entries.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > ---
-> >  arch/x86/kvm/mmu/mmu.c | 23 +++++++++++++++++------
-> >  1 file changed, 17 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > index 65c35ed8f4a01..3feb75732f7b4 100644
-> > --- a/arch/x86/kvm/mmu/mmu.c
-> > +++ b/arch/x86/kvm/mmu/mmu.c
-> > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
-> >  	write_unlock(&vcpu->kvm->mmu_lock);
-> >  }
-> >  
-> > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > -			     u64 addr, unsigned long roots)
-> > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > +				      u64 addr, unsigned long roots, bool flush_gva)
-> >  {
-> >  	int i;
-> >  
-> >  	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
-> >  
-> >  	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
-> > -	if (mmu != &vcpu->arch.guest_mmu) {
-> > +	if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
-> >  		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
-> >  		if (is_noncanonical_invlpg_address(addr, vcpu))
-> >  			return;
-> > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> >  			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
-> >  	}
-> >  }
-> > +
-> > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > +			       u64 addr, unsigned long roots)
-> 
-> Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
-> kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
-> to have the "in_root" version to a quad-underscores helper, and IMO it's more
-> obvious what's different between the one-line wrappers and the inner helpers.
+On Tue, Jun 30, 2026 at 06:10:13PM +0000, Ashish Kalra wrote:
+> +static void rmpopt_cleanup(void)
+> +{
+> +	int cpu;
+> +
+> +	scoped_guard(cpus_read_lock) {
+> +		for_each_cpu(cpu, rmpopt_cpumask)
+> +			wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+> +	}
+> +
+> +	free_cpumask_var(rmpopt_cpumask);
 
-Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
-was assuming you were using it to differentiate between GVA and GPA, but IIUC,
-it's literally skipping the flush for the current context, which just so happens
-to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
-all possible.
+The counterpart function which allocates this cpumask is called
+snp_setup_rmpopt(). I'm guessing then this one should be called
+snp_cleanup_rmpopt(). For balance...
+
+...
+
+> +void snp_setup_rmpopt(void)
+> +{
+> +	u64 rmpopt_base;
+> +	int cpu;
+> +
+> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT) || !rmpopt_capable)
+> +		return;
+> +
+> +	if (!zalloc_cpumask_var(&rmpopt_cpumask, GFP_KERNEL)) {
+> +		pr_err("Failed to allocate RMPOPT cpumask\n");
+> +		return;
+> +	}
+> +
+> +	/*
+> +	 * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+> +	 * to set up the RMPOPT_BASE MSR.
+> +	 *
+> +	 * Note: only online primary threads are included.  If a core's
+> +	 * primary thread is offline, that core is not covered.  CPU hotplug
+
+So what happens if not all cores are online?
+
+This should check that and fail if that is the case instead of blindly
+continuing here.
+
+> +	 * is not currently supported with SNP enabled.
+> +	 */
+> +	scoped_guard(cpus_read_lock) {
+> +		for_each_online_cpu(cpu)
+> +			if (topology_is_primary_thread(cpu))
+> +				cpumask_set_cpu(cpu, rmpopt_cpumask);
+> +
+> +		rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+> +		rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+> +
+> +		/*
+> +		 * Per-CPU RMPOPT tables support at most 2 TB of addressable memory
+> +		 * for RMP optimizations. Initialize the per-CPU RMPOPT table base
+> +		 * to the starting physical address to enable RMP optimizations for
+> +		 * up to 2 TB of system RAM on all CPUs.
+> +		 */
+
+Simplify this comment.
+
+> +		for_each_cpu(cpu, rmpopt_cpumask)
+> +			wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+> +	}
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
