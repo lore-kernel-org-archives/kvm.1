@@ -1,95 +1,133 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A014239C657;
-	Thu, 23 Jul 2026 20:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2381F3EDAD9;
+	Thu, 23 Jul 2026 20:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784836855; cv=none; b=OUJwcmw14dgbO1EwYzMr1FaUnfQ4ZAl+xYIasS/nSY3DX+VVNjGAOWoglFXHAJDPFkyHs6aCY8eM6LPn/iYoPpVrO2N9TWhpEISa5PVvwOiYfMZPTMHTiDLDkD/DBLCDu+//sL3CK6xUFLd0OjaLZzJcfdTDoc0h0/jNUzB704c=
+	t=1784837657; cv=none; b=RI/dGg1V/kSKq7bhPz0+ub4Xt0KXq9+6pqx0SvNUBA2YebOzpfG7O7s/41dHXTOz2cKsKZKlpUA5Yv0IFV2DtWZpLNZwjWwYf43ARaRsth0kARn7nuvNvj2P2UIhxGUCHP0egu7RSZhgPzLuJIbKARy2L52+aIJnRSi6T0ah5C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784836855; c=relaxed/simple;
-	bh=5WiNnBZv1bPiBoOtpCmuhxQ77Pd5nAEKktR7I531XB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fe0lEWGesUUzHCe+ywTk2nXpvWwrXtAcfYZEFBKn94O3X9lJ59PeQlfCocUJJ2NgHMOVC+ulSDHfNmbriYLe9/wXVFYuV8Hr20c4v+4gBbpY6X4BbHSLMtorwvX0cKYid8CUipM64ZGLh/tQ2Z/XZo2vGck5g2y1770K0ICZ8gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=WFDfGci/; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1784837657; c=relaxed/simple;
+	bh=YjD5tcK/AKd042i0S7aTl//08XkTI6Mwe3CJgFU3Bdc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pk/rCpx18G/Tc95QIp4zUOjECPyIGTn4Ne5qbdNaoTda6Acb4NMTKKG0jqszEr1lc9vtOE79z2oc3yHW60tg7t910alUDkpWG8ow5yH37zJq5Ys/QRZbHnueeRrHB7H4tBhqIdNIPiQyva3JIO56tYEuYZXO7oQuh+wRXQSrEws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=R90hZABc; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="WFDfGci/"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5D6AC40E014C;
-	Thu, 23 Jul 2026 20:00:51 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2V9d21iM5GBS; Thu, 23 Jul 2026 20:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784836841; bh=+GBkzJeT/6irLf2HN5o90x/DBsvXycEcqjo5v+va92U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WFDfGci/43cmXnIiUNpnYg2v0s/3yH1bX/OZicsJsBKcDPfjjYz2gyQ3YnzVxM8W5
-	 FUY43UUnz9Z1JAtlDC3xhYYDo2z4o2zN/8IfU0qj2lFWwBm4VZpxpKpdLz1VvxSu71
-	 8wEyMzJuf+PjwMrqzhwp8l8OAfBnmgMhepNbi8PCa++XKBKC8ZbNX/x2TY6mKFT16r
-	 lF0/DeEFYCkRGEmFl1E3hz0Odi7eqdpfom1Gp7TN7pS7+b298MUbs8r84WqWyd++bn
-	 tCWuWTI/WuYdD0AfbryLKYjOIBBu6ICyZQ30oOXLPdHkMaStvZ1UcFHeiAe0uvoK/a
-	 ilJRDaBU8u+mdadS6FozCZMgfknNa3su6Nwubv8qDWDXQvxwDEEpGDVGO+6lKc/5BA
-	 xHbMitpBeX/2g30g2kiMtTTUdrRKhQ4TqdnO4zJOEkuCuAnnvbswjPVsI/QtZ+kOso
-	 5AqXe/vgmtlW98nGa957sVIJbCk0H65BLLQmN1H/l6kWUji1XlDInNLzAhnD9XTRlx
-	 Q6DggFTHo9ovu/JSUnpvp2OhAnfapU3AKVGJuTwqTJ6p6u1KV/N2wWP4MvypNqOKzg
-	 DOCADrS8s8cowOknNB4arv+OE8K8oHhkQLUna4KQTw24DLMhh9ff1x7Ur2hUZjM5Ug
-	 PGOztsgLgYHAJ1Z9Ng06WeE4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9D01640E00DC;
-	Thu, 23 Jul 2026 20:00:06 +0000 (UTC)
-Date: Thu, 23 Jul 2026 13:00:03 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 3/6] x86/sev: Disable CPU hotplug while SNP is active
-Message-ID: <20260723200003.GEamJyw2W1nMPAUdHc@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
- <20260723185323.GAamJjI2HoM1gZmExw@fat_crate.local>
- <404433af-b908-4849-a8b6-1c1ee9d33d8e@amd.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="R90hZABc"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NJBu3Z3874166;
+	Thu, 23 Jul 2026 20:14:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IDJhTb
+	UOBWUD9EcFeaBpX4mgUxAIEg2xyd28Sp2tcXA=; b=R90hZABcA2dQEv8OSiyhY4
+	/+8Bk561Ph5k0d+1AjEXv4YN7yedIpZQCNL+COoaTBjRzciCo0I4Ypg3Q4aUy1J8
+	cU1T932O2E3bwEYSj3XvAOQdG7bqFsndqprq8yWyqYbhdiMrnqDvZBPAhCEZWVwQ
+	AA5pUvnojybEgLMMZx5++oK364O0oFas80mSrxL1x0OplQPZJCrqvEuaBOOgN3/q
+	shxQu5uqeGr/tdgr+MOIklg57cxqn5yAgzdvs4bv9DT6SqePcKbDrUG3gvJs23Dh
+	kyn/WkCrmBOpkaZ3hsyy93AjJe4yU2ePAZxuRCqngK8wncv3amixDo8SKPa9+5aQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7absg84-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 20:14:12 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NK4eq2017582;
+	Thu, 23 Jul 2026 20:14:11 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqe2fb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 20:14:11 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NKDYmw23134870
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 20:13:34 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E83C758053;
+	Thu, 23 Jul 2026 20:14:09 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D20D058043;
+	Thu, 23 Jul 2026 20:14:08 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 20:14:08 +0000 (GMT)
+Message-ID: <0dae69e7-8161-46e7-bef2-edabefd93fea@linux.ibm.com>
+Date: Thu, 23 Jul 2026 16:14:08 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <404433af-b908-4849-a8b6-1c1ee9d33d8e@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/6] KVM: s390: pci: Validate AIBV and AISB before
+ pinning guest pages
+To: Farhan Ali <alifm@linux.ibm.com>, sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, Christian Borntraeger <borntraeger@linux.ibm.com>
+References: <20260723183440.3271-1-alifm@linux.ibm.com>
+ <20260723183440.3271-7-alifm@linux.ibm.com>
+ <20260723184802.816BE1F000E9@smtp.kernel.org>
+ <fea9882a-b41f-42a3-b30b-37d6a40af127@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <fea9882a-b41f-42a3-b30b-37d6a40af127@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE5NiBTYWx0ZWRfX/6er4hjRenYA
+ lsOWceQqDL6ZWvc/RJ6pYnPy75JcJGnWs/1y/V1OhlFm2/Qtp/dw91JpcvIHYJTv1AJSi1vScVP
+ fZT2Ftr8UsJKw+cxF0BSDz8pNS/oUJJ1VFjEd3rAG+xBxyNDhbfibsD7+Erx/g9r6RaOvryHDja
+ DLx2evIgNEd7oQJeXeQVWYF3BE0JT2+yKNvYU9zqOj/ASnQzmOjAAnBZigiZ286y2+LQha5gF5J
+ APDAeBjgpg0Wqzx3Q1es6Wo1uFzuh05SZtyJMyLgKMf2mQXpvgLGoFuNhYsc/H/iJM6NqbG4DQZ
+ CBb9xHW02eaLBeVwCuTd4y1zEsBaDK9tA07DppBjT9UIWItdCZE9i5rE5gTE/u8cmVM+NDRUgbi
+ 41O0v9IyOnDZWyvL9+VxogZ2tq4G2I4KVuGqcQsowuJP/luTd8xkah2/3V+IhRFuJJBWEEZXquf
+ NIhWfQlMajvfKd4qo0g==
+X-Authority-Analysis: v=2.4 cv=F7ZnsKhN c=1 sm=1 tr=0 ts=6a627614 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=s2hAA0MTUvO56OCXh08A:9
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: 51X4vgbx5dHs6aMcJZj0Sj_fdjr6YsV4
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE5NiBTYWx0ZWRfX0qKSzKOJSI2e
+ 2dSDXBqJijhCst3U2waq/SPvXma3KP458x7J0WmjVCqSMRh8kGwN7aP8Ylh5TjZ4nz+WNVvu55W
+ PVrMLEwMn3GsN9XWQqDTR0tQiYkVXp4=
+X-Proofpoint-GUID: 51X4vgbx5dHs6aMcJZj0Sj_fdjr6YsV4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_06,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1011 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230196
 
-On Thu, Jul 23, 2026 at 02:44:47PM -0500, Kalra, Ashish wrote:
-> Actually, i will have to remove cpus_read_lock()/unlock() across the whole
-> patch series and also in the original code.
 
-You need to do that in the same patch which adds the hotplug disable so that
-there's no hole in hotplug handling when bisecting.
-
-Make sure to explain why you're doing that in the commit message.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>> [Severity: Critical]
+>> Does this calculation underestimate the true byte footprint of the bit
+>> vector
+>> when aibvo is non-zero?
+>>
+>> If a guest provides msi_vecs = 64, aibvo = 63, and an aibv GPA with a
+>> page
+>> offset of 4081, the calculated size is 15 bytes instead of 16. The npages
+>> calculation yields DIV_ROUND_UP(4081 + 15, 4096) = 1, which incorrectly
+>> passes the npages > 1 boundary check.
+>>
+>> This would result in KVM pinning only one page, but the hardware could
+>> access
+>> the 16th byte, writing to the first byte of the next unpinned host
+>> physical
+>> page, which could lead to host memory corruption.
+> 
+> I think Sashiko does have a valid point here (sigh...). The right fix
+> would be to correctly round up both msi_vecs and aibvo bits so:
+> 
+> size = BITS_TO_LONGS(msi_vecs + fib->fmt0.aibvo) * sizeof(unsigned long);
+> 
+> and remove size += (fib->fmt0.aibvo / 8);
+>
+Yeah, that sounds right to me.
