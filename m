@@ -1,166 +1,148 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9862833374F
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 23:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71873BED61;
+	Thu, 23 Jul 2026 23:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784847700; cv=none; b=J9JbT0hnMZVATiEazHTHBOyC9t41eJCycjimK0zf67KfTKrAz0RGA38wdRicNLPnuMQF56g1/crZOptkaZ+z/Qdc36Nk60pqLUv2U1mVgzA0YwgeuXzNbjRvINPRJUl3kGSfr/bx7I/H8pY+jJAaxuzN3DomHOZUzuhl3SAPPHc=
+	t=1784849113; cv=none; b=ljR0mZgWZqHHjsTu5uyA1KJT0hO1q/bVVrgFsE/sKyuQeFJi2cs+pcuXVT3aEHoZFjZTg+xANTaEkRaMqG6ZxPvHO+qUBd4PPONq+Cmg3Y81MOvj2k8ZsJ/QovDCC1e4R3GJbcfPjXDuxFlsXs777K/FdpNJv/gpgoOtBAf/S+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784847700; c=relaxed/simple;
-	bh=YQmY4vjJG753/gpjkNKmDPwhu3EZ6zY1miOKlUbxQnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mSJDNq+zor55cj3Ip8gO0Rm358U2H91Hr4uS6bIV+BKhHVjYLZe0t/rCpB5GAMTf02u570PbIEQdi6L+WTk4+Ga08I11mNvq7Q6Q8ruFBMwow36snFdZ/gH8bpDdoVIYbiGR7TYxrAI5r6+1A5acelq/aHFQk2KoEiLASXn3El0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s/mfXA06; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784849113; c=relaxed/simple;
+	bh=lTIUYXMK6wNGlxlf06XlaoczPhBoBm/Ryt1jGVb6pog=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B0Xp8KQdwoNFpnppaL58Yl1oyVcxeJKtwjLoO/fRBoc4ygfVYG7BTZt2aFxYYdKl2CJ0JIBGsIafb7B4uVNr2wwQfxFQjgfYhQNvIkfKHjTdlGBvJyDXO3UaoQxolYby3zPTGRMH7U8wd/XY7R8dEZmiWRiYFn8lMKIx7OrDtOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bnFifDMJ; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s/mfXA06"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2cacef7d299so3575ad.1
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 16:01:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784847698; x=1785452498; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6FoDnuIQXevfuc8nCvkdqJumo9L7Gv87izvbO8ewc4c=;
-        b=s/mfXA06twbXNFjVcPaD3yldwp/7N024tvIxayWl47Fkgl84v2WbyTHBVNDvOAJrEF
-         pI7w8Ve+D7yw+l9ARQ5VuQpiJMjxM55IaQ/G5v6QEIigmrGrqgyiNouhNXMTE/LXeq8r
-         zVlO3xLB76KikNjmUF6wryzYKFcoBdwiS+rsUSBdHrQrFMXFsATDvjS6zaP4FlsN+JEV
-         SZQESqHwo6HXw+Eb2E3Yk+up4l5eeer09BjIGrhioRIlp3W9YZewQDr8rjWlva8aBUe9
-         SUS/s5TtTTYFFYoOoIxnUQeDX6gehp8Cigx2sl1pP4khpv8iu8BDlMTGTkkaKFJV/QO+
-         0YyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784847698; x=1785452498;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=6FoDnuIQXevfuc8nCvkdqJumo9L7Gv87izvbO8ewc4c=;
-        b=Pd3gZtNqQhk5mk6Rr//ZDGHhsq7p6iZbHkTth/YKq+SnUiPOZe4ZK1eOz8BqiB/Qp3
-         W1vw3RHnQ/qLewKaTaft1VLHV+xqjPXH+GkSzRk/UbXjIsrYhUoIadBNwBPzi3O4M++c
-         NvYYjOXKXdBMiKYMfVZnr29xGxu0UAA/U+j9M+oQz6xMz0tSrbAyKso7wzVCRBWKBePW
-         tGGRnPBFVX+k5SHVuNqulXOWAn0G9yV+/yhez8qC0d0vzafdnAbmmEYe7KIDyyJPWOfj
-         jive0FtrQz7onLYJlQIdO4yGO2isrluFRdl4SuyeoyRMvEexCPSzh58idi+ulMfee8pQ
-         tCMg==
-X-Forwarded-Encrypted: i=1; AHgh+RrK0ggwUwDEcFzMbP8pNWxvVstEgKmKZ10A6O97BjHkAGWmjPAaunUGLo5MkDGaQM/+A2g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzth0B1L1p4gtp/T8SNNcXFrTrnqK+lCPDke3u4CcNZbYm4cD8z
-	5u689TSxyAl6IRbjus1TkDo64IMbQj/V9ufyKYt93sE08V662nAA48Djb+/AetTA3g==
-X-Gm-Gg: AR+sD12z7LEOe2/3pccLeelMo8tnP2bAyi+aCyYBnl19VNaFJIsbAAh9TtxfuvrUJdd
-	JlGUospCzfjr/b+ePTxE8QteLXCTswOABUdPEEcGUB/n9T/iA3f+qNu1FqjzFfTThfMuys1/SYS
-	FHjVRHowjRidziCSTDHDPBzrfQDY+YpATW64aJg2y6tOgaH575NUjFRWmg1IYHzCngTV/B2ELVP
-	TZvn1p/zCH7+1fIOP1LakinNsLjp6CITD5t/AukQo49XiPh6ODYa4ESkwjdODWHyJO3c4SehE43
-	9jh9nsGpdlNe1IryqyER+NQI8pPeDTw5qo4AwDd4OIh0ozT5GXS1Xl/h1+dgI6l/TPteoDYm5tM
-	ZYD+2zNg1nXooA6zeFvf+q9ijX25bOp8Blcy9IGJLLWSo2ZP86UBk9pB36btpXe1i8iOUCgLzyx
-	7BnM8T1KIdC7RVo96L5He3mag+7Nsrb8LwbyDq
-X-Received: by 2002:a17:902:f687:b0:2b9:e831:5e5c with SMTP id d9443c01a7336-2cfc01915f2mr1772685ad.4.1784847697393;
-        Thu, 23 Jul 2026 16:01:37 -0700 (PDT)
-Received: from google.com (60.89.247.35.bc.googleusercontent.com. [35.247.89.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf8f310644sm40753485ad.55.2026.07.23.16.01.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 16:01:35 -0700 (PDT)
-Date: Thu, 23 Jul 2026 16:01:31 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, 
-	christian.koenig@amd.com, corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, 
-	rananta@google.com, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yi.l.liu@intel.com
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-Message-ID: <20260723225943.GE260824.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <2c03ac97-60a6-4352-a942-27dcebae8d22@linux.dev>
- <8fd94fad-e457-4839-9e41-ae257a138bee@linux.dev>
- <20260720163452.GC1191959.vipinsh@google.com>
- <cebd1045-5dd7-4f35-8750-9c39790ceae9@linux.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bnFifDMJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784849112; x=1816385112;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lTIUYXMK6wNGlxlf06XlaoczPhBoBm/Ryt1jGVb6pog=;
+  b=bnFifDMJf4Kgy+JV86ajOZgXQgAuryHtA9Y61t/gdyOpDXiYUAQ2U4bY
+   qtVUR8Ov7+pibB8JWGZOIk4eBPGHsH5rGBPfTSs7Tiv3aj6BH7zwXN+rS
+   rhPCih/I3KdVbMZxuOFGlovy54/6/eeUvDdwwWoYO2n1njCHgo9bdb/42
+   SVo7VuETlS8NfF4xZP/fq0r9AJKm8x73NUqz1lY/PtRB8j8lbod261M/I
+   AhKbxMNNkIo6jXEJPZCzDMx9hxt6Z3ALWbtPUR1hn9rtAeu8OIvElW2p/
+   XrdxXWsjJEotMDXqh9vzuWnPuPleed0wcumVBB5ymgv7aCejtDy75us7n
+   A==;
+X-CSE-ConnectionGUID: G/4g3epFSaSKo5ux5LkkCA==
+X-CSE-MsgGUID: LWXncTLCT22TdQr1Iwxpgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85387666"
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
+   d="scan'208";a="85387666"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 16:25:11 -0700
+X-CSE-ConnectionGUID: o55pV26lQbeO/vQJge/HfA==
+X-CSE-MsgGUID: nQHG9UtzQ4CEWeqkyrb7XQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; 
+   d="scan'208";a="258622373"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 16:25:10 -0700
+Message-ID: <e7dd989d-c83f-45b0-9501-7e7a5bdd9fff@intel.com>
+Date: Thu, 23 Jul 2026 18:25:09 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/15] KVM: x86/pmu: Advertise PerfMon version 5 on Intel
+ hosts
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260707183405.15571-1-zide.chen@intel.com>
+ <20260707183405.15571-15-zide.chen@intel.com>
+ <CALMp9eRWo+FA-qGiB3Bf-UQOK7hV4-pN62SjFgR5JYLkaMEcmQ@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eRWo+FA-qGiB3Bf-UQOK7hV4-pN62SjFgR5JYLkaMEcmQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cebd1045-5dd7-4f35-8750-9c39790ceae9@linux.dev>
 
-On Thu, Jul 23, 2026 at 03:18:55PM -0700, Yanjun.Zhu wrote:
+
+
+On 7/23/2026 4:53 PM, Jim Mattson wrote:
+> On Tue, Jul 7, 2026 at 11:44â€¯AM Zide Chen <zide.chen@intel.com> wrote:
+>>
+>> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>>
+>> KVM currently caps the guest PerfMon version at 2 for all Intel
+>> platforms. Now that KVM emulates the basic architectural PMU features
+>> introduced in PerfMon versions 3 through 5, raise the guest PerfMon
+>> version to 5.  Features that require additional emulation support, e.g.
+>> architectural LBR will be enabled separately.
+>>
+>> When enable_mediated_pmu is disabled or in the non-Intel paths, KVM
+>> retains the existing cap of version 2.
+>>
+>> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>> ---
+>>  arch/x86/kvm/pmu.c | 13 ++++++++++++-
+>>  1 file changed, 12 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>> index 7d58f7a2a2db..83332e8ed1e0 100644
+>> --- a/arch/x86/kvm/pmu.c
+>> +++ b/arch/x86/kvm/pmu.c
+>> @@ -176,7 +176,18 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
+>>         }
+>>
+>>         memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
+>> -       kvm_pmu_cap.version = min(kvm_pmu_cap.version, 2);
+>> +
+>> +       /*
+>> +        * AnyThread counting is not supported by KVM due to cross-VM
+>> +        * information leakage concerns on SMT cores. Therefore, AnyThread
+>> +        * remains unavailable for PerfMon v3/v4 guests, where AnyThread
+>> +        * deprecation is not enumerated.
+>> +        */
+>> +       if (is_intel && enable_mediated_pmu)
+>> +               kvm_pmu_cap.version = min(kvm_pmu_cap.version, 5);
 > 
-> On 7/20/26 10:08 AM, Vipin Sharma wrote:
-> > On Thu, Jul 16, 2026 at 06:22:07PM -0700, Yanjun.Zhu wrote:
-> > > On 7/16/26 4:24 PM, Yanjun.Zhu wrote:
-> > > > 
-> > > > On 7/14/26 8:14 AM, Vipin Sharma wrote:
-> > > > > Testing
-> > > > > -------
-> > > > > 
-> > > > > Tested using VFIO Live Update selftests in both QEMU and bare-metal
-> > > > > environment (Intel DSA PCIe device).
-> > > > I want to make tests VFIO Live Update selftests in QEMU. But how to
-> > > > select a PCIe device?
-> > > > 
-> > > > what device do the PCI ID 0000:00:04.0 and 0000:6a:01.0 mean in the
-> > > > following testcase?
-> > Sorry, this was my copy-paste mistake when combining things from both
-> > qemu and baremetal. You only need one device not two separate ones.
-> > 
-> > For testing using QEMU, you can use QEMU PCI test device.
-> > 
-> >    -device pci-testdev
-> > 
-> > In VM, use `lspci` command to find the BDF of the PCI device. It will show
-> > output like:
-> > 
-> >    00:04.0 Unclassified device [00ff]: Red Hat, Inc. QEMU PCI Test Device
-> > 
-> > Then prefix the domain (generally, 0000) to the BDF and use the testing
-> > commands.
-> > 
-> > `0000:6a:01.0` was the BDF of the Intel DSA device on my host. I
-> > incorrectly mixed two devices during my copy-paste.
-> > 
-> > Limitation of qemu pci-testdev is that it does not have the DMA
-> > capability. I used physical host with Intel DSA to verify that the
-> > device performing DMA during live update gets reset.
-> > 
-> > > In my qemu,
-> > > 
-> > > 00:04.0 System peripheral: InnoTek Systemberatung GmbH VirtualBox Guest
-> > > Service
-> > >      Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr-
-> > > Stepping- SERR- FastB2B- DisINTx-
-> > >      Status: Cap- 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort-
-> > > <MAbort- >SERR- <PERR- INTx-
-> > >      Interrupt: pin A routed to IRQ 20
-> > >      Region 0: I/O ports at d040 [size=32]
-> > >      Region 1: Memory at f0400000 (32-bit, non-prefetchable) [size=4M]
-> > >      Region 2: Memory at f0800000 (32-bit, prefetchable) [size=16K]
-> > >      Kernel driver in use: vboxguest
-> > >      Kernel modules: vboxguest
-> > > 
-> > > I am wondering if the above pci device can work well with this patch set or
-> > > not.
-> > I think you should be able to test Live Update with any PCI device which
-> > can be attached vfio-pci driver.
-> > 
-> > `vfio_pci_liveupdate_kexec_test` will initiate DMA if the VFIO selftest
-> > framework has the driver for the passed device (Intel DSA) otherwise it
-> > will just skip over the DMA flow and do the remaining things.
+> Our internal Sashiko says:
 > 
-> Thanks a lot. I'll run some tests with QEMU's `pci-testdev`.
-> 
-> If I understand correctly, when using `pci-testdev`, only the DMA test case
-> is expected not to work, while all the other test cases should work
-> correctly.
+> Does raising the version cap here expose guests with PMU versions 3 or 4 to
+> a #GP-induced panic when they attempt to use the AnyThread feature?
+> Since AnyThread is architecturally valid in PMU v3 and v4, a guest kernel
+> detecting version 3 or 4 will enable AnyThread support. When the guest
+> writes to MSR_P6_EVNTSELx with the AnyThread bit (bit 21) set, KVM
+> intercepts it.
+> Looking at arch/x86/kvm/vmx/pmu_intel.c:intel_pmu_refresh(), KVM includes
+> the AnyThread bit in pmu->eventsel_rsvd, only clearing it for version >= 5:
+>     if (pmu->version >= 5 && edx.split.anythread_deprecated)
+>         pmu->eventsel_rsvd &= ~ARCH_PERFMON_EVENTSEL_ANY;
+> Then, in intel_pmu_set_msr(), KVM injects a #GP because the eventsel_rsvd
+> check triggers before any silent discard logic:
+>     if (data & eventsel_rsvd)
+>         return 1;
+> Because the guest Linux kernel wrmsr path might lack exception handling for
+> this MSR write, could this injected #GP cause an unhandled kernel exception
+> and an immediate guest kernel panic?
 > 
 
-Yes, other test cases should work.
+Currently KVM always injects #GP when the AnyThread bit is set.
+
+kvm_pmu_refresh(): pmu->reserved_bits = 0xffffffff00200000ull;
+
+I understand the concern, but I'm not aware of a better solution for
+PMUv3/4. Silently ignoring AnyThread would deviate from the
+architectural behavior and, more importantly, may give the guest the
+false impression that AnyThread is supported. Supporting AnyThread, on
+the other hand, has cross-VM information leakage concerns.
+
+BTW, the comment seems a bit out of place here. It might fit better in
+patch 13/15 which is specifically handling AnyThread .
 
