@@ -1,132 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C06474247;
-	Thu, 23 Jul 2026 18:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C224766B0;
+	Thu, 23 Jul 2026 18:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784831555; cv=none; b=LKEJBmgWa1rr+KG2dbLAcXCFfBfAoW4LJJRNRV0Xuh4/023hvC0/iHoN061hgGe75pgjdpqs6m5yf3fXGqhFsEr4RMOCkTsgRjAF5BKDtyyf/3DIdkEj1+GoMMQ7fLjOPGJbwkfO+TSSa6JcCin5Vi0nofJjiW8WD+zyTVkCLvQ=
+	t=1784831589; cv=none; b=gIVdhMED/AbBOnXZbkscuQbzl15clrstvKNzZFxC5Y+XJmkSE0crh95Zizdc/F437J6BU91aQ96zhVSYBoFoci5vxySRMlUCIg4gLs4GH6KUGmBjlGQ6R69W9aWj8c1eGUqMvh9c/69kdkIlPK6P3Tsz28dBGTxca0rVvh7+LsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784831555; c=relaxed/simple;
-	bh=PGk/c80td/LId8hehi3OvhdCApBEbNORC3ZoNXs5MO0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lx662sG8XYMULEJVkQWfxMGn03gl3vl2yyQqbTWXQ497sPv/pq15nncw5F2k2honVvXKxsEBkD5U8se6Trb7tCI5dD2Hkmp61jPS/OO1d183ekWjEeBRzg6HnvAX9TWh/enMG72WwFxvyzLqqWDEO6zXNmOJpGxTI0I7tMjnnoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F1D1F00A3D;
-	Thu, 23 Jul 2026 18:32:24 +0000 (UTC)
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 7/8] s390/vfio_ccw: implement a channel program mutex
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Eric Farman" <farman@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260723174751.1180334-8-farman@linux.ibm.com>
-References: <20260723174751.1180334-1-farman@linux.ibm.com>
- <20260723174751.1180334-8-farman@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 18:32:23 +0000
-Message-Id: <20260723183224.47F1D1F00A3D@smtp.kernel.org>
+	s=arc-20240116; t=1784831589; c=relaxed/simple;
+	bh=KxB6Bf7QrgKpd89cxkInbDnCN4cFE5gwG52mQN8vsVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r94vjQvyV134uTEQiCVrLdmHStetvWl+jmktIc9AFN7z/u4IInuWZX3CySCjGkksM2MhY67A7HOjY3UD7udu2LzhbS3VVu/GgpMYNZMTP1rUHCGdE/Zg/AoCX4a7OiHBI1HdbVrphr/lXKnV5dpae4cfiMlTrGpjrIZ6TcUfrHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=agcbuZkP; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="agcbuZkP"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B7FB140E027F;
+	Thu, 23 Jul 2026 18:32:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 6DrCDV76w-Oe; Thu, 23 Jul 2026 18:32:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784831560; bh=qIGv8+++s5mjyrTvC7H+RqdRK5QUD/XRD6y9Qzv7ozU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=agcbuZkP+wJ1RYNio1jtpT6SL6H6OPPwG5tFRDveNd7ndNXYW47xGk3uekXf1trni
+	 YYF7MOQQqm3eS+dt+UaJQH4w9YCONlol45UkjsVCH1aJBmRrJ2OPCslXmC+sysxWtd
+	 RVgDodIui4SWL3TQSN4cQIG8u2fiUawRMmKZNk2t4oDvu9K+Km8M4M5VrwKsWVWobA
+	 z7MCqUd9IB1iEBcUfo9ll43edYDXztjLbewb8ICSfwYj/choZs2sRIuxy8RMjqaG5q
+	 wCI6iSDekhpiGdFzA5YFWsdvONoaU2t8rOsyikx271wZHbn9wEOX3/Xy6SXO8gQ1At
+	 z50g4BYNNQUVVQlSqEDpJnbu+iLxGlRTV6OYJyljMPeM6ysp1ZsZgGdt5oW+rr51KR
+	 /NxzjmLSQweq9+JN9UZ0wjKH5CHHDEp8JvW9bHJySQQ01WqdSzS6R4YlkaxaZm0qeC
+	 PjbWazze1JAjO7s4wawy2rXA2FUxlwrjfs6b3QrGVQtIOv1nYht2oaaqwRxYLvWycw
+	 9f2NokNRZb7CXwxSBT749bsrFuXR1u/ll2/RZNYP5OZLUxbFtOvHfIfk5CT7pYaG8e
+	 zLdBx3N/N1Aj7nvQfdIOyjNIfnYHAKCR639tjHsvGd8SFECNCP9y0cqmqVTscnaYuc
+	 5Kew0l3GS9numLrYV5749rBI=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BF57540E00E6;
+	Thu, 23 Jul 2026 18:32:05 +0000 (UTC)
+Date: Thu, 23 Jul 2026 11:32:02 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+	thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com,
+	aik@amd.com, Michael.Roth@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+Message-ID: <20260723183202.GAamJeIr1Cey5clsfE@fat_crate.local>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
+ <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+ <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+ <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
+ <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Thu, Jul 23, 2026 at 01:50:48AM -0500, Kalra, Ashish wrote:
+> > What happens if you boot with a subset of cores, the boot flow enables RMPOPT
+> > and then you online the rest?
+> > 
+> > Have we tried that?
+> > 
+>  It can't happen here. snp_prepare() does the following, in order:
 
-New issues:
-- [High] Dropping `sch->lock` in `vfio_ccw_sch_event` before dispatching th=
-e FSM event causes `css_sched_sch_todo` to be called locklessly, leading to=
- lost unregister events.
+Then the comment in the code is greatly misleading:
 
-Pre-existing issues:
-- [High] Missing locking in `vfio_ccw_mdev_reset` allows concurrent `VFIO_D=
-EVICE_RESET` ioctls to trigger physical subchannel unregistration.
---
+        /*
+         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+         * to set up the RMPOPT_BASE MSR.
+         * 
+         * Note: only online primary threads are included.  If a core's
+         * primary thread is offline, that core is not covered.  CPU hotplug
+         * is not currently supported with SNP enabled.
+         */     
+        scoped_guard(cpus_read_lock) {
+                for_each_online_cpu(cpu)
+                        if (topology_is_primary_thread(cpu))
 
---- Patch [7]: [PATCH v3 7/8] s390/vfio_ccw: implement a channel program mu=
-tex ---
-commit 7b4b6e7c580cf97b697d04eaf47e890ff6d29bb0
-Author: Eric Farman <farman@linux.ibm.com>
+I'd expect to read there:
 
-s390/vfio_ccw: implement a channel program mutex
-   =20
-The channel_program struct is manipulated without a serialization
-mechanism to ensure consistent behavior. Take a broad stroke of
-putting the entire structure behind a mutex, and ensure everything
-that needs private->cp holds this mutex.
-   =20
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
+        /*
+         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+         * to set up the RMPOPT_BASE MSR. All primary threads are online,
+	 * otherwise SNP would not have been enabled.
+         */
 
-> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
-drv.c
-> --- a/drivers/s390/cio/vfio_ccw_drv.c
-> +++ b/drivers/s390/cio/vfio_ccw_drv.c
-> @@ -259,12 +263,16 @@ static int vfio_ccw_sch_event(struct subchannel *sc=
-h, int process)
->  	rc =3D 0;
-> =20
->  	if (cio_update_schib(sch)) {
-> -		if (private)
-> +		if (private) {
-> +			spin_unlock_irqrestore(&sch->lock, flags);
->  			vfio_ccw_fsm_event(private, VFIO_CCW_EVENT_NOT_OPER);
-> +			goto out;
-> +		}
->  	}
+-- 
+Regards/Gruss,
+    Boris.
 
-[Severity: High]
-Since sch->lock is dropped here, does this allow css_sched_sch_todo() to be
-called locklessly?
-
-If vfio_ccw_fsm_event() routes to fsm_notoper(), we have:
-
-vfio_ccw_sch_event()
-  spin_unlock_irqrestore(&sch->lock, flags);
-  vfio_ccw_fsm_event() -> fsm_notoper()
-    css_sched_sch_todo(sch, SCH_TODO_UNREG);
-
-Could this lead to a race on sch->todo, allowing other events to overwrite
-SCH_TODO_UNREG and leaving the kernel state out of sync with hardware?
-
-> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_=
-ops.c
-> --- a/drivers/s390/cio/vfio_ccw_ops.c
-> +++ b/drivers/s390/cio/vfio_ccw_ops.c
-> @@ -38,8 +38,13 @@ static void vfio_ccw_dma_unmap(struct vfio_device *vde=
-v, u64 iova, u64 length)
->  		container_of(vdev, struct vfio_ccw_private, vdev);
-> =20
->  	/* Drivers MUST unpin pages in response to an invalidation. */
-> -	if (!cp_iova_pinned(&private->cp, iova, length))
-> +	mutex_lock(&private->cp_mutex);
-> +	if (!cp_iova_pinned(&private->cp, iova, length)) {
-> +		mutex_unlock(&private->cp_mutex);
->  		return;
-> +	}
-> +
-> +	mutex_unlock(&private->cp_mutex);
-> =20
->  	vfio_ccw_mdev_reset(private);
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does vfio_ccw_mdev_reset() lack locking
-protection against concurrent invocations?
-
-If two threads concurrently trigger vfio_ccw_mdev_reset() (e.g. via the
-VFIO_DEVICE_RESET ioctl), they could interleave:
-
-Thread A issues VFIO_CCW_EVENT_CLOSE, transitioning to STANDBY.
-Before Thread A issues OPEN, Thread B issues VFIO_CCW_EVENT_CLOSE.
-
-The FSM receives CLOSE while in STANDBY state, which routes to fsm_notoper()
-and schedules SCH_TODO_UNREG. Could this cause the physical subchannel to be
-permanently unregistered, acting as a host denial of service?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723174751.1180=
-334-1-farman@linux.ibm.com?part=3D7
+https://people.kernel.org/tglx/notes-about-netiquette
