@@ -1,221 +1,165 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F177131283E
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784776225; cv=pass; b=DAQJuWkRlFKcjsGl84r1O23S0t0Tz2m3WDiJLK1y5qgUYy/59uvegXfIjY7w7cT+3cgYi/2uIYWlQujyOAwARe3gdjxGa5YCXWjvgTIY8Lp9MteAtfC95MGL7asjc8a31t3i/841LSyEvr2/HRaxLLoXEwgjJab1Fc39NHWfX+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784776225; c=relaxed/simple;
-	bh=OTtPdODXkYAcHOmh2ZAx8zqavTVFtt9cmndMZdifpPo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yz66lpNS1F35RTnpnXp/fjH/dw1b1zr5FijxtdgYLE294jlVXvjMrCrxplHBhbDZUITcpPTTz3fdb/HuT9kewT71UVKKo2ZXvQtwyKWb/xXYvRSYWGaWayZi17RfvI+Ixmx2JJXnZrVeM7CWa5ta2yz9R10/eWA7oVvfdOPx2I4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QVR+HLkp; arc=pass smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6B0363096
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:25:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784777125; cv=none; b=bfHhwK3SdUsnSqJddI+vdQpeoKSJNU7Sc1Z5ciFaOVE8Pruhm7B5+7+y9feE+JvTpopTW1yoIvlwkLEB3bNTBNWg9c3H313QGzTwZEEG0md/+ZszqPha1ROvM2jL3cFD93oHzvBnzAoBhDACQSvauhKhLzm6PBuHx1rZpPwae04=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784777125; c=relaxed/simple;
+	bh=gfT0G2h32Mgahppc0W5ji5WK8maIODJ9zFl+mqtZVuU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aBLmhHtTdGqyFhWTwTF63TWSso+9RLUzo/VVkBJUE/ElVPs+16owzEmf7J+B2XH0VnCjV/+0IugtzzGsIGOBPvVWcH0jNa+Ax58quo0/hoXHR3dpRDBhZBpU3XUoBPwVQTawUfheIwJ0DHCkyWgzp4/r9llLTY8kppVujlKUe5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=S5k+/km/; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QVR+HLkp"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso3060a12.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 20:10:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784776221; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZUoyyr5jjOdTQ7Z+mKbA/0q/b7ZUHIKcfPRPPO7hFTTZWgmNk+LgohtUir9gyVlGof
-         Yx2/uH+Vo72haXXX2a5PqvYBeIbXF9hD+jiXMIww++z/9NXRNVbWvBT25xJ4iKIfF8FX
-         raVEz54VVX9cdXyxR3/ho77MtevWKTnzRQx7z+KPTVrvlzGt9+FPk6Shmuw9NxFuqSAU
-         EJQv3ShjcO43Kd4pWoJwnzRIdvL0CT9beU41m3N/wKwqAJh3D4RdGAXbQxL3UsF5HvHG
-         WDRs7qOFyrPfQIwKg4n11mUwIv8fHSmB+pkad0zkm6jiwiUYZzL+q+MChNyxDSpGHI8u
-         /BKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LbLnq6v8Q/claMZ0r3UT7Ku3TaaAf3P6/lFlwBQj1fo=;
-        fh=dqFcqxu2iqV3XhPeQ/Wa1ndKe6PQZxV3O3zptdqUDYo=;
-        b=Ns/CLcVdPzOSJvZI9StZ2oq1Q/wrCU9YRJMDgkqlj4UiyaX1mp/n+gbsyyb97/TJ2x
-         CTYaLTJWuM0F7Wws5Mhm1DoRXC9gOfLhhxn5Gs6Fc1b2JARlPEjKlUzr+vUyiutRYI2K
-         YirhTleB5lON3DoI3EeqjGnAVZnS5Cd3KcBJUJFnd1tHrtU39/r2FNvT/uZgpNBeSB+l
-         v3PuiX6vQvJOFqvRvg2kCIPrEEu6g8IG1UIfBTfXftVrns+mWgRvriGbD+MBTqojDDpV
-         GXUNLL6tUxiuYt0f70/82xXpO6P1LT27R8YaH8S03Tg3dTO1Dv/LyFL79KRQLz928K3Z
-         RHBw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="S5k+/km/"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e65e18969so14278685a.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 20:25:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784776221; x=1785381021; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gourry.net; s=google; t=1784777122; x=1785381922; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=LbLnq6v8Q/claMZ0r3UT7Ku3TaaAf3P6/lFlwBQj1fo=;
-        b=QVR+HLkprO763Oq8HkxdwxolEE0B7SYefs+U+ahdqGW/lEonU7Sr1OC2wJfeWrjN2W
-         oDzyet+ctOxhgLgyz8bQVhQ+qs41r6O/xcYfQ+9yPxmej44xcdkoIvoiEB14h09+f8pf
-         XaJStmMxxZLL5645/VkJOt6kabS/H5L+oV207OxzPRn11nDSzjWFy9hbg1wDkw2uRfn4
-         9jxxWY06TcpX0cUFyDDiaJmRTOLanYDimDTwnv/xH43k7z3dcYiEnkIqBm2JMVdQnBte
-         mjNMrNE054ke01+y7grZ9PwXABCvYGKzbzYj3revzAKA/8bYSmnMD7CmXu9/5+E34KJ/
-         m8kA==
+        bh=Kd13UizLWaDa1rNXvY/PJ0N43yZ3Vd9IZn7XTlTXtfM=;
+        b=S5k+/km/W3hDbRibPNpOoB80+fMcI4MbaVCKgEaeGawR+FQWl9kNV2iUGzMuP5o587
+         /iaVfV9Jd+R4VNTdxnjkkgdz20NTR/Eu8b80hXADBRflMrWslncYyJ3SvD3gwvv5ngtC
+         ziCEhyqOck9EWcwsKAG1K0Fzc1bP7k6aIwfto2hePcg8FFQ5b1ILjIFtAueuSZJkiFL5
+         nYdguJXw90nDowVcfKGttiFdnF1n59L9sXbcemc/huQrcwmkhJfTVLcf0o+RBBzMGJDB
+         vgBWGT12txaO7gCP8wM5mTntpmBdTwxcjXyxbZfzrXl9J3a1TwC6EBaOEEphMqOrCOjK
+         FmPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784776221; x=1785381021;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784777122; x=1785381922;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LbLnq6v8Q/claMZ0r3UT7Ku3TaaAf3P6/lFlwBQj1fo=;
-        b=bijFsDBioiNWopcpmDDQmPAPw7+z56x+mHjqXH/EPf4JAo9ySaIXBkxAoj86DZXp/x
-         ivVxFn3VMhuiG9hREAC2O8wq0AvR6R2ZM1VL36xGRql0yRWR1hy04un5k+qDJtaLMCxB
-         nlGNQiAasH88PcACg+I34lAvicK0Ta8Hp8jNbkY9f2O8hcu0Yo1mblnkdVq/XAppfsMS
-         5L+287+HYU++hBif4y/ulEiX7Dqq4k5UlIvRyxOFOXFgYhOVazvqAhZd/zl9GOJbQrb1
-         OHMfuF3LLkmvHmNehI0h2Qcm4g/eOeav2ZuzOIp1iHOvkJFlTPBKG0Y8j8iKIG/dsCZr
-         UaJA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq3FVlWe54XQTDaNMtwQhvh9e+WjkNuW4mZYC85kuN90lz3Ill0wgvY+YBgmiPvxuBQYP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzvvakdPGKi9cskromHv8/9XnpCccJVMVSeq+YhnUvGGZ+m1bC
-	Z+9M6wzWc/tdVUXHf1pSqJnGPt6GHO11xLdRIuF9KfsqZEb/Z/2rL093HWrwQ5STmRBvvCjaOuy
-	NchjYIh9zYE2AWzqtKJLsq9RCDDAXzI3t+SMwj/kG
-X-Gm-Gg: AR+sD12E3zwX3OUkBC3/XqdNpDWpPvIL3pmDahz6ks0h7V4CzqWlc8PI/VKVBwaPmF3
-	RX1ge5Z9k+TfP9Ms8Ld4Jislh98NOT2MciRvqlZFz58bY19VKrrkocdhgO35doD4OuYMHZewuxv
-	Ldr+O+Z6vTVCbQxyz/fbBaNZu859g3Q/Q6jj+3tqY/O10xQhHsZV2XMHXCsL08ycLwqae2UH3zl
-	UD3OYoBjvGNs0angNQqZSc1RILQ5ShnupmocF5zuUKUzmM23/Cg/C8qJJxvtQ==
-X-Received: by 2002:a05:6402:a6c9:20b0:697:5678:bc77 with SMTP id
- 4fb4d7f45d1cf-69f6cd0cdb9mr17539a12.9.1784776220652; Wed, 22 Jul 2026
- 20:10:20 -0700 (PDT)
+        bh=Kd13UizLWaDa1rNXvY/PJ0N43yZ3Vd9IZn7XTlTXtfM=;
+        b=YKGbScdXo/65b11Qioq4JPNtPe4jF71M3nebkDylqVIWrkpwmORbH598/yyOY2WOEF
+         yC3WGc5bcvriHuHv8gTcI6I7ORwvbYo6fJdqPvVmCEasSQKfMNXXKwHWEgnMj8zxCKTZ
+         A1l8fcqzkIRJcpWBf79i70HT776p+rgZj50TkX58MxQoDyVw/8CFZqW9JbLG/crogSGV
+         vK6fv8yH0jBBZI1fjvYAiIovkYjkUXzvs+pt7euFAdzG0OO6/h+E02pGeuvZ2yqAN8zB
+         voWhoT791Y4J+6vXi4FEOmX9urVRxUXdWSX8PnW8eFph4xKV+KdsF56rrYysYyuVYHi3
+         UNLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp+gA7keQffRoznZJVeO8o+ffsZLpq+KsGo1NgkyCSHgpfTUAKc/xEz2kiqZxiTv9LSW+Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6AYsN+SDOwJzfYnYQkFpDMgj6q20xZNHzxdwQ4r2UzI4nCKdI
+	gNCip79q/m6+ulSG37+OVzsuLpDh+ojZYEAaQWimfmR7xlNFLflnJWSbMMnavYS+foo=
+X-Gm-Gg: AR+sD13wp64I7nhovnMtn1M2Sfk7CRvUYsLa3RiQRfVxGQUZGksERbuZ6mA7uvG2/mu
+	sG8Wna4sr5CI9WRuGvTyaN6YmmfNm4AYPWtMevkYsEvuZwchrgA7anOhLQgnFTmJ6+0qSKmEY8r
+	xwhm9XNjS/FXQU6FnB8xKgw+OVXMrvEr29lTh61WDJ0m5bnLQv62RZg+225/k18bo67Q76uBC/k
+	liHb7GW3GMzEBkGUL3Z9SsI/PvkXJiOUxsxnV+dpvRsRnJnPhajYtBx5jPpR7VqmcU8iwDiQ3Gs
+	/NW/4Vhq5sSeE4m/mS6/COcK/zStT9/pVlMaQ18zkI8rsHJn9PUl2O0XiKtUnJkc9rpD3Q20Pre
+	fzGbTwZ21GeO53xmcCz1W7wSZG8YZ28vv7AGi2w8mTqGJHgZgUsl7BYdZWd2GAvI+FZJksJTNW8
+	fSLqs2wE3ouh3nEcIha/tc6z9p3T8ruaZTsZZT7gNF5n6awQLL0pjk7Bgufu9vZF84uqRO
+X-Received: by 2002:a05:620a:808c:b0:92b:67e6:4b79 with SMTP id af79cd13be357-931048880c8mr90170685a.35.1784777122066;
+        Wed, 22 Jul 2026 20:25:22 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-931062c4ea8sm34465885a.28.2026.07.22.20.25.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 20:25:21 -0700 (PDT)
+Date: Wed, 22 Jul 2026 23:25:15 -0400
+From: Gregory Price <gourry@gourry.net>
+To: SJ Park <sj@kernel.org>
+Cc: arun.george@samsung.com, balbirs@nvidia.com, brendan.jackman@linux.dev, 
+	yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
+	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn, 
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, driver-core@lists.linux.dev, 
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org, 
+	damon@lists.linux.dev, linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON
+ migration and pageout
+Message-ID: <amGHuputMNCFZ9CV@gourry-fedora-PF4VCD3F>
+References: <amCzmkdOr6AFv_kQ@gourry-fedora-PF4VCD3F>
+ <20260723001943.95854-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-8-zide.chen@intel.com>
- <CALMp9eQyMe6MfYPkvYAZPm+6A+FK6ZYpGv5Wx+nVvi9GtumA+g@mail.gmail.com>
- <f16aea7f-6b5a-4980-91b4-a41931b797ec@linux.intel.com> <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
- <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
-In-Reply-To: <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 22 Jul 2026 20:10:07 -0700
-X-Gm-Features: AUfX_my7q19_NdMuTKOOJHH3aNM69JPdNAfB0-4ZPzRnGkX0YR__KlReqDC5mdU
-Message-ID: <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
-Subject: Re: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Cc: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Falcon Thomas <thomas.falcon@intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723001943.95854-1-sj@kernel.org>
 
-On Wed, Jul 22, 2026 at 7:53=E2=80=AFPM Mi, Dapeng <dapeng1.mi@linux.intel.=
-com> wrote:
->
->
-> On 7/23/2026 10:25 AM, Jim Mattson wrote:
-> > On Wed, Jul 22, 2026 at 6:44=E2=80=AFPM Mi, Dapeng <dapeng1.mi@linux.in=
-tel.com> wrote:
-> >>
-> >> On 7/23/2026 8:02 AM, Jim Mattson wrote:
-> >>> On Mon, Jun 29, 2026 at 4:29=E2=80=AFPM Zide Chen <zide.chen@intel.co=
-m> wrote:
-> >>>> If the host has the PERF_METRICS capability but it's not present on
-> >>>> the guest, RDPMC interception must be enabled and KVM should inject
-> >>>> an #GP when the guest attempts a PERF_METRICS RDPMC.
-> >>>>
-> >>>> If the guest has PERF_METRICS but RDPMC interception is enabled for
-> >>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
-> >>>>
-> >>>> For simplicity, Metrics Clear Mode is not supported.
-> >>>>
-> >>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> >>>> ---
-> >>>> v6:
-> >>>> - Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
-> >>>> - Reject non-zero index.
-> >>>> v5:
-> >>>> - new patch.
-> >>>> ---
-> >>>>  arch/x86/kvm/pmu.c           |  7 +++++++
-> >>>>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
-> >>>>  2 files changed, 21 insertions(+)
-> >>>>
-> >>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> >>>> index 8ef2d4761790..04b9c840f218 100644
-> >>>> --- a/arch/x86/kvm/pmu.c
-> >>>> +++ b/arch/x86/kvm/pmu.c
-> >>>> @@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct=
- kvm_vcpu *vcpu)
-> >>>>  }
-> >>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept)=
-;
-> >>>>
-> >>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
-> >>>> +{
-> >>>> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) =
-&&
-> >>>> +               !kvm_vcpu_has_perf_metrics(vcpu);
-> >>>> +}
-> >>>> +
-> >>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
-> >>>>  {
-> >>>>         struct kvm_pmu *pmu =3D vcpu_to_pmu(vcpu);
-> >>>> @@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *v=
-cpu)
-> >>>>                 return true;
-> >>> I know we have a strong disagreement here, but I really feel that thi=
-s
-> >>> must be secure and future-proof out of the box.
-> >>> What if we added a module parameter, enable_rdpmc_passthrough, which
-> >>> defaults to false?
-> >>>
-> >>> Then:
-> >>>
-> >>> if (!enable_rdpmc_passthrough)
-> >>>         return true;
-> >>>
-> >>> Is that a reasonable compromise?
-> >> Yes, this is an option. Another option is to add a helper to explicitl=
-y
-> >> tell which platforms are secure and can pass-through rdpmc. Maybe like=
- this,
-> >>
-> >> static bool intel_pmu_can_passthrough_rdpmc()
-> >> {
-> >>     switch (boot_cpu_data.x86_vfm) {
-> >>     case INTEL_ICELAKE_X:
-> >>     case INTEL_SAPPHIRERAPIDS_X:
-> >>     case INTEL_EMERALDRAPIDS_X:
-> >>     case INTEL_GRANITERAPIDS_X:
-> >>     ... ...
-> >>         return true;
-> >>     default:
-> >>         return false;
-> >>     }
-> >>
-> >>     return false;
-> >> }
-> >>
-> >> Then rdpmc can be passed through by default on these known secure
-> >> platforms. For any new platforms, the rdpmc would be intercepted out o=
-f
-> >> box until we confirm it's secured and explicitly support them.
-> >>
-> >> How about this? At least for me, it looks like an overkill to disable =
-rdpmc
-> >> passthrough unconditionally on these known secure platforms.
-> > The F/M match would only apply on bare metal, since you can't trust F/M=
- in a VM.
-> >
-> > What if we combine this with the module parameter, but now the module
-> > parameter defaults to true? Somewhere in module load, we have:
-> >
-> > if (boot_cpu_has(X86_FEATURE_HYPERVISOR) || !intel_pmu_can_passthrough_=
-rdpmc())
-> >         enable_rdpmc_passthrough =3D false;
->
-> It looks good to me. :)
+On Wed, Jul 22, 2026 at 05:19:42PM -0700, SJ Park wrote:
+> On Wed, 22 Jul 2026 08:16:56 -0400 Gregory Price <gourry@gourry.net> wrote:
+> 
+> > > "by default".  Does that mean it could be reclaimable in some situations?  If
+> > > so, could we check if it is reclaimable?
+> > > 
+> > 
+> > See the damon changes in:
+> > 
+> > https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
+> 
+> Summarizing what you want to say, quoting something from the patch, or at least
+> calling it "26th patch of this series" would have made reviewing much easier.
+> Cc-ing damon@ for only patches that toucing DAMON source files and the cover
+> letter of the series could also be helpful.  Please consider doing some of
+> these for future replies.
+> 
 
-On second thought, it doesn't really matter if L0 has lied to L1 about
-F/M. If the hardware supports more RDPMC types than the L1 virtual CPU
-does, L0 must intercept and emulate RDPMC for vmcs01. Even if L1
-decides to pass through RDPMC to L2, L0 will still intercept and
-emulate RDPMC for vmcs02.
+I have been very much discouraged from this kind of trimming because it
+removes the context of the series from the individual patches - making it
+even more confusing.
 
-So, we can drop the module parameter and just use
-intel_pmu_can_passthrough_rdpmc().
+But I understand, I will try to remember to do this for you.
 
-To keep the list short, I assume that any CPU with only three fixed
-counters will return true.
+> So, I understand later patches will make it optionally reclaimable and update
+> this restriction by the 26th patch?  That sounds fair.  But, could we drop "by
+> default" from the above comment for reducing the confusion?
+
+Yes, but you bring up a good point - I think this two-step process is
+actually poor form and that I need to redo it.
+
+Maybe this can be redone as node states (features?) such as:
+
+   N_MEMORY_RECLAIMABLE
+   N_MEMORY_DEMOTABLE
+   N_MEMORY_TIERABLE
+
+so these damon changes will forego this confusing intermediate step of:
+
+   if (folio_is_private_node(folio))
+
+and go straight to
+
+   if (node_is_reclaimable(folio_nid(folio)))
+
+In the first patch - without ever having to revisit damon again.
+
+> > 
+> > Technically there is nothing in migration core to prevent migration
+> > operations, it's done on a service basis - hotunplug, reclaim/demotion,
+> > user numa (mbind, migrate/move_pages) etc.
+> > 
+> > Operations on private nodes/private node folioes are refused if the
+> > capability bit is not set.
+> 
+> I haven't had a chance to read the entire series, sorry about that.  So, do you
+> mean the above blocking is not really needed, or that will conditionally be
+> allowed by another later patch?
+> 
+
+I will reduce this all to a single patch in v6, I see where things can
+be improved now based on a few pieces of feedback.
+
+Thanks SJ!
+~Gregory
