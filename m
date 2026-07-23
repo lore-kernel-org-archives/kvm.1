@@ -1,114 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338173403F8
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 16:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D99536B91C;
+	Thu, 23 Jul 2026 16:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784824366; cv=none; b=V5Giqp6jhOpeeockv3mABDwKiCnDscgjXTBfQdNT7qPf9fFvhzU87UrO5fArueWu3ARHGMEYVBUtCShvWoigtz9JbgzAjF/Rayi+WSgWLBji+i7WNCFwFd5G7mTa0nazat9aLJTyzwP75+tzlpyHnY8Ew9pPxzF9LtW7JHMkayw=
+	t=1784824431; cv=none; b=oTb9lEEzdZSggljVeIEl6QiEDoBQVTWhL1TrYrj+B5q+hdq/AOqhN/GybgzSq4DxbBNI1497qmMkZmaBfzsPUXSYJjFiCIFGZ8r3rYapftE/RHwq/lmphYa926OKcmz+0qfnU34esoYpQhvKTHEEc7cpnZnZ2ugTT/xFcwTg1Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784824366; c=relaxed/simple;
-	bh=PbNwBUnboC588bqU1f5TRjLvM8apMwFuKNk55kTBxc8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MWKOkTUgmf88NPPC3Henx/A55rqrpLnNBQErLKRajcMhA9c2+/MhNrX6Z0w8MirBZ/Rz7YL2gUfrOTpbLG5xg9U+7j6ozcMszviGhY4H71gtJwv+3GPuwlAtWu0jFUeGXk6pk7MHDezygb4xTmJfZk9dUsIPJH3X1muZdybUq/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RqnZwtkY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784824431; c=relaxed/simple;
+	bh=6FXoQBSP9DlYlAkmJoAfryG/NfI8m5TCRyOtSYrKACI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uG27ODGTtGIFR6wi2PgoTnakOC+I3YFG0eTb2YnjksWdVrX8iwTY6xI5sDzIljRbWy3CxsKVI5+v7ejhByLowNwuRC2bNgaeC6jbxVDHQih92+8lZl63kMam+xuST33dd6QvTlJeswfSHl7YIwivifiA6gzVO46dBA2gekvcNuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eZqu5yJm; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RqnZwtkY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181EC1F00A3D
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 16:32:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784824365;
-	bh=1xkZZ3v4DeEq2DpP9IHH3755SskzAylJM3I1S2S5Jvw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=RqnZwtkYQcRrpNmuAfMm5iPKez0XtqPPbyuR2TaMU0ocKDsdn+fJEabESRbu1OBT9
-	 a3NT2rs8KT/pYgCtRp+Ps5sSuLoIwyU40n8czvO8SueMmd6vdsDRN8xMVQH7ggabI7
-	 u/TGlhbqelgbFaio0fVQgWCdYJNHgwphMUGS6ozel5tzRqmy01QbIT1NsPQJoKSGb/
-	 Kx/TFQetb6ytKvmzO3qp21IEx07Z5WVa4ma2y6vHKyGV22gjqOsVPVtM55lKH5oZbB
-	 jTAfSRU7G1EEA/ui8mnUoF8Amb9vlY7uMEkhq2Zf2ot/Csx9Qg8FRrVKbYr5PMqFCl
-	 jSyZRXd7T2eSQ==
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c1c52d920b8so123482766b.2
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 09:32:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrSpG1oOzBT06DpX2Sjq/h3u0r6K88FhdeDGtuM5n++ObGS5lrf1vUQCfAB9/6DMd1fAPc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyB/F4Jy+8AWaDCO8AH9FVQW3Az5hjltFd8deWJJt7Mnhvuz7Gp
-	lkoXDbsGVtS3MeHwI6VDqTwPVpLKulNwevBP5nhFI+LRGe7r/toFw8yz7LQzQlt5VwFKd9oyWEQ
-	JauiZOeWHXCFnlevZmIg+nC+m06RfLm4=
-X-Received: by 2002:a17:907:98d:b0:c15:bea2:d209 with SMTP id
- a640c23a62f3a-c1c506e8a4cmr146769566b.4.1784824357187; Thu, 23 Jul 2026
- 09:32:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eZqu5yJm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784824425; x=1816360425;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=6FXoQBSP9DlYlAkmJoAfryG/NfI8m5TCRyOtSYrKACI=;
+  b=eZqu5yJmgdpgcei3ckOfC625L1XTViEIMJxcNbMjByFhHiNEOU0gETrC
+   zKj9aMEqDYrKE4viIfOvwrHSZ1aPi4V9tQbyg2aGdFAoRyHr2nCU/aY2L
+   RyfzAOdZ5vsWVU9CmQSJmhBjrW/lPKuNkY2SLQsBxwwF7NI5qkGx3jnlh
+   D92aVlfXxr4eu69mCB/G4gAJvqnwenWxKYh4iuAbCN7E9GFUjcZ6Tc2rq
+   zm+pujRfUAmy3FjtWjbguGz9DD7Ya1eaGg/yk2znyWFCkAArmQsP0XIKD
+   APMIwwTtyjXsEwx6O9gvxQEqTs1qhdLgihfs1yDxpRZJkh+g4mMh6TNRw
+   g==;
+X-CSE-ConnectionGUID: rFFPIMNURXisqe/82/LKFg==
+X-CSE-MsgGUID: yd1vCKXISu24dBkQkbY9Ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="89381242"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="89381242"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 09:33:43 -0700
+X-CSE-ConnectionGUID: 2D2Rrtp1TEORQUTtkHLvgg==
+X-CSE-MsgGUID: 2SfGEq5WRq2gT1A+4QNYWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
+   d="scan'208";a="263428618"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 09:33:42 -0700
+Message-ID: <93d6d476-ed63-4c4f-9bf6-666101708eb6@intel.com>
+Date: Thu, 23 Jul 2026 11:33:41 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
- <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
- <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
- <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
- <amE_nPDem-imSfqF@google.com> <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
- <amFf5MAhc8sUqeYV@google.com> <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
- <CALMp9eQi=604LVn=ZMnzoUy55LVb1qorKzPKm5HVK_ACsPuP_A@mail.gmail.com>
- <amIgLeMCAH2vB4ot@google.com> <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
-In-Reply-To: <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 23 Jul 2026 09:32:25 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMukfW2b5tjYarpkpPH0osA_+QEEMRq8k5R8B_WFG_yYQ@mail.gmail.com>
-X-Gm-Features: AUfX_mwW9ptVR62kKAb0tkoTMOunH4r-B6V6pNyKerJK91cII2PzUl-muFMlqco
-Message-ID: <CAO9r8zMukfW2b5tjYarpkpPH0osA_+QEEMRq8k5R8B_WFG_yYQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
+To: Jim Mattson <jmattson@google.com>, "Mi, Dapeng"
+ <dapeng1.mi@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260629231938.15129-1-zide.chen@intel.com>
+ <20260629231938.15129-8-zide.chen@intel.com>
+ <CALMp9eQyMe6MfYPkvYAZPm+6A+FK6ZYpGv5Wx+nVvi9GtumA+g@mail.gmail.com>
+ <f16aea7f-6b5a-4980-91b4-a41931b797ec@linux.intel.com>
+ <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
+ <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
+ <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 23, 2026 at 8:57=E2=80=AFAM Jim Mattson <jmattson@google.com> w=
-rote:
->
-> On Thu, Jul 23, 2026 at 7:07=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Thu, Jul 23, 2026, Jim Mattson wrote:
-> > > However, since KVM completely ignores NASID, it would be sad if
-> > > migration were blocked because the target has a lower NASID value tha=
-n
-> > > the source.
-> > >
-> > > That's an argument against changing it without some kind of userspace
-> > > opt-in. Increasing it seems safe, but if userspace just reflects the
-> > > value into KVM_SET_CPUID2, then an increase would block kernel
-> > > rollback.
-> > >
-> > > In any case, I think the new value should be a constant so it doesn't
-> > > imply a migration constraint. Perhaps we should adopt the highest
-> > > value reported on a physical CPU to date? I think that would be
-> > > Bulldozer's 0x10000.
-> >
-> > Or keep KVM's enumeration at 8, then find somewhere in KVM's documentat=
-ion to
-> > describe KVM's behavior and provide guidance for userspace, but otherwi=
-se make
-> > it userspace's problem to solve?  I'd be a-ok with that.
->
-> That sounds best to me. Document that KVM ignores the guest NASID and
-> commits to always supporting 2^32 ASIDs. Advise userspace to populate
-> NASID with a power of 2, and perhaps mention that hardware has only
-> reported three different values over the last 20 years: 0x40, 0x10000,
-> and 0x8000.
 
-I agree that documenting that KVM supports any NASID value from
-userspace is needed here, so that VMMs can set reasonable values and
-migration pools are sane.
 
-That being said, I still think KVM's enumeration should be increased
-from 8. If KVM's enumeration is just a hint, then it should be a good
-one imo. Current L1 KVM will flush everything (L1 + L2) every time it
-runs out of ASIDs and pumps the generation, so advertising a small
-number of ASIDs leads to L1 unnecessarily hurting its performance.
-Newer KVM (with this series) won't suffer as much.
+On 7/22/2026 10:10 PM, Jim Mattson wrote:
+> On Wed, Jul 22, 2026 at 7:53 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
+>>
+>>
+>> On 7/23/2026 10:25 AM, Jim Mattson wrote:
+>>> On Wed, Jul 22, 2026 at 6:44 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
+>>>>
+>>>> On 7/23/2026 8:02 AM, Jim Mattson wrote:
+>>>>> On Mon, Jun 29, 2026 at 4:29 PM Zide Chen <zide.chen@intel.com> wrote:
+>>>>>> If the host has the PERF_METRICS capability but it's not present on
+>>>>>> the guest, RDPMC interception must be enabled and KVM should inject
+>>>>>> an #GP when the guest attempts a PERF_METRICS RDPMC.
+>>>>>>
+>>>>>> If the guest has PERF_METRICS but RDPMC interception is enabled for
+>>>>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
+>>>>>>
+>>>>>> For simplicity, Metrics Clear Mode is not supported.
+>>>>>>
+>>>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>>>>> ---
+>>>>>> v6:
+>>>>>> - Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
+>>>>>> - Reject non-zero index.
+>>>>>> v5:
+>>>>>> - new patch.
+>>>>>> ---
+>>>>>>  arch/x86/kvm/pmu.c           |  7 +++++++
+>>>>>>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
+>>>>>>  2 files changed, 21 insertions(+)
+>>>>>>
+>>>>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>>>>>> index 8ef2d4761790..04b9c840f218 100644
+>>>>>> --- a/arch/x86/kvm/pmu.c
+>>>>>> +++ b/arch/x86/kvm/pmu.c
+>>>>>> @@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>>>>>>  }
+>>>>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+>>>>>>
+>>>>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
+>>>>>> +{
+>>>>>> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
+>>>>>> +               !kvm_vcpu_has_perf_metrics(vcpu);
+>>>>>> +}
+>>>>>> +
+>>>>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>>>  {
+>>>>>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>>>>>> @@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>>>                 return true;
+>>>>> I know we have a strong disagreement here, but I really feel that this
+>>>>> must be secure and future-proof out of the box.
+>>>>> What if we added a module parameter, enable_rdpmc_passthrough, which
+>>>>> defaults to false?
+>>>>>
+>>>>> Then:
+>>>>>
+>>>>> if (!enable_rdpmc_passthrough)
+>>>>>         return true;
+>>>>>
+>>>>> Is that a reasonable compromise?
+>>>> Yes, this is an option. Another option is to add a helper to explicitly
+>>>> tell which platforms are secure and can pass-through rdpmc. Maybe like this,
+>>>>
+>>>> static bool intel_pmu_can_passthrough_rdpmc()
+>>>> {
+>>>>     switch (boot_cpu_data.x86_vfm) {
+>>>>     case INTEL_ICELAKE_X:
+>>>>     case INTEL_SAPPHIRERAPIDS_X:
+>>>>     case INTEL_EMERALDRAPIDS_X:
+>>>>     case INTEL_GRANITERAPIDS_X:
+>>>>     ... ...
+>>>>         return true;
+>>>>     default:
+>>>>         return false;
+>>>>     }
+>>>>
+>>>>     return false;
+>>>> }
+>>>>
+>>>> Then rdpmc can be passed through by default on these known secure
+>>>> platforms. For any new platforms, the rdpmc would be intercepted out of
+>>>> box until we confirm it's secured and explicitly support them.
+>>>>
+>>>> How about this? At least for me, it looks like an overkill to disable rdpmc
+>>>> passthrough unconditionally on these known secure platforms.
+>>> The F/M match would only apply on bare metal, since you can't trust F/M in a VM.
+>>>
+>>> What if we combine this with the module parameter, but now the module
+>>> parameter defaults to true? Somewhere in module load, we have:
+>>>
+>>> if (boot_cpu_has(X86_FEATURE_HYPERVISOR) || !intel_pmu_can_passthrough_rdpmc())
+>>>         enable_rdpmc_passthrough = false;
+>>
+>> It looks good to me. :)
+> 
+> On second thought, it doesn't really matter if L0 has lied to L1 about
+> F/M. If the hardware supports more RDPMC types than the L1 virtual CPU
+> does, L0 must intercept and emulate RDPMC for vmcs01. Even if L1
+> decides to pass through RDPMC to L2, L0 will still intercept and
+> emulate RDPMC for vmcs02.
+> 
+> So, we can drop the module parameter and just use
+> intel_pmu_can_passthrough_rdpmc().
 
-I think we probably want to pump KVM enumeration (e.g. to 0x8000 or
-even 0x40) *and* document that it's just a hint and KVM effectively
-allows any value.
+Thanks, will post a new version based on this.
+> To keep the list short, I assume that any CPU with only three fixed
+> counters will return true.
+
+Will do some study on the available CPUs.
