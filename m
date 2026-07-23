@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3D3EDAD9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97113F329B
 	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784840918; cv=none; b=K49lTfpdLIaUuE1E3JxlHRA5uyDk9Eg3INCkPWdXDfPGczDKGe4CtwdthFvCHGAImxJFjzxuK2G0EMFh8C86H/lSoUIJlGovmdXJXpC30RV0Ufa884aicahdWTw+5K33zDB+tF5kYYd32xz1rc058o0EEva4dews2ndzGj4YDMQ=
+	t=1784840917; cv=none; b=Ehg4QtaxYRwdgkgFY1PKxYnkldKGT8+r8unExkTh0TbKhoa74xEq8JsdHs49M/YfAhv986d3hu4l3Ni/0tX/W8rAS2Jc9Nbk2yrnsQdUWJl364cAXn9StRZVzZYOYp6OVD6oujwPORAzufshIYC1c+SLKEt1KujK+ofqmEfQg8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784840918; c=relaxed/simple;
-	bh=Oe1WJ5+lIknvXuN76Ycbl24v1fU74BoK1ZMumedRoYY=;
+	s=arc-20240116; t=1784840917; c=relaxed/simple;
+	bh=C4UzjAkeQgNz3jhX9X1p1bArt+15GMFelgLpMLC9Vqw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FxZv03aCMULTi1poZd+XPOW2n61Leqx96XTWI511yCQki0FvB5Lo1PgcE0IRyNB/cLFhAmrFjglajB0eSdEhI1vYJ6qAvMl6W1q4TCL6PEIiejAjUSXrkwNRyqmz+/rwq2G3n78yElV+qxe+eccS/DVOlqB9BdTSNL3huPzzOuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RQ4SYHHy; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=q4YKyZe2TIax94tlXNh7O3rmZW8R/ZB4LcogT6s9O9p2JtLz7WRFjfQNfT30VSYU/+oz2AjFsVR0AYdHvfp/UDA634rDlbCBltRklfsx6CpfKY9G0j/cffEs/OHA6dYq8vjIStvHpw0yH8WHWIs3Ot35FUv3zJdqJfRK3fDg93Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LyjDxNtf; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RQ4SYHHy"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-848568a6f62so1794493b3a.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LyjDxNtf"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb5cc1e139bso755983a12.3
         for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:08:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784840903; x=1785445703; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784840901; x=1785445701; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=RCq5ylNViQZe7QiR/An1zWgvOhWD8/7z9Gv+AFo257c=;
-        b=RQ4SYHHyqWE06N5qe2DU/NPcUxoAzKmFlg+yb/LsyplM1/B6UhC4yVRghMyasHOlpU
-         oJjzwjeAa2KQfQRk2fOOeKJJ7JgSJDZ2+aQCES3NumKv2JS/dGE4tZhRJ50I9KLYntDJ
-         NSww/Duj+dS9iwpf6CoVH6kPwcF5ju4x0HQz6c+Bwaf0Kmevp1PWYIFJzdkIhOUQ85DS
-         D7JUMvyWcDBWBd1sGfmYCZBn2+wxycFjyAeYxnsB7TQeouCJBqvxw5G3+p6NqCwPkl57
-         eVWlVLGcGJGBnXYj400ZiDbD38WEK22uSX8h85GzalKLfXpoqWmAZG3M1EnvUGJb1uIw
-         UiHA==
+        bh=IDpiaOiDWkuaIgELS/orYZEj+Bt7gPfIn1c9ArEgIYg=;
+        b=LyjDxNtfMdgPl74Et9LyFEUi8Cqazmtf1aZwaEaQ6EVp9QEi2wKZ0TZ7zfEKr3DsVP
+         gphbZ9J71VI3KL4NePpJxJl59y4I/WmnzQlLL3BlF78+WJEg9pzTbEvjXaao/08f4Pf3
+         fjvcXOy5GsG+O0voMenUm8u6a106Lgk3eHqO4YSmqgBB2+xCL+wSzLwbwYbV/WZZ1J1c
+         9CLnIj+GY4Uvi74qYlQEVM3s3NOgG3LHqESPJLKqpHXb6ukaKg9zNLuuf0+0SBSWjUKL
+         /pNnPT7TGYxysdFXPxNPKylAKdNeNC6tgWNjmjTSv7SEpc/osNFWalNcclqbSAw5ZjiV
+         K34A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784840903; x=1785445703;
+        d=1e100.net; s=20251104; t=1784840901; x=1785445701;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=RCq5ylNViQZe7QiR/An1zWgvOhWD8/7z9Gv+AFo257c=;
-        b=cu9rgMRImEgzUq/EKCSguppvKCiHu8izGfd+nvPehvJQ2UYrSv0EOm7y2/QmyVvXst
-         WOvQTAi9II5soijCDzhbfwrK/B5yFOFMtJCiz3LbBrFv4GEbjclA8lNIX7R/MoaaLMQ5
-         3w1TF4Sl05+3/GpbiI0rtOB/BGYmWvj/HxgZ5iqx7RSwhDz1hrjc302YU9ifs5L16vAV
-         qRCNEL4qwbkcbLz4Xhaic+L2ymw5Z1lNMWiSNVJF8l9CdB+2VALCxS/30iOuIjHiR3gM
-         cdBNZA3uOJ7c3iJhpLiuUoK9zLNswkRY0sgq4KlPwz5jzsaGyjJIVQG4OcXAsRkPWWtg
-         CrVw==
-X-Gm-Message-State: AOJu0Yw23LvlNvNIijqxgheI9OAc7AItX096J9dx2nK+pjf4ifYhj6hg
-	Rw4qlzSIJbX4TViDM5HyOr9D++fNzLcdMxF7tHYk7K2ZdP37dWUAz7C6ZQgyqvyDBNIi19wEGw+
-	94QSnPA==
-X-Received: from pfbhm24.prod.google.com ([2002:a05:6a00:6718:b0:847:9805:8254])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:390f:b0:845:d274:bf88
- with SMTP id d2e1a72fcca58-84e2bb37181mr5398153b3a.49.1784840902783; Thu, 23
- Jul 2026 14:08:22 -0700 (PDT)
+        bh=IDpiaOiDWkuaIgELS/orYZEj+Bt7gPfIn1c9ArEgIYg=;
+        b=MGBBS6BK2OholtraqjQQM8+L6oj+byqw31WipjcsLnRSt2L+EbgQINzkVJrv0YGZZ5
+         j6zXvSy/uF5mGWzul7kFJ4DJQIcBPDeodSAe6pfxHW407Pspeaxxx084nNwnPtkl4OSI
+         7nzIo1z+n4M/24XVZAXu5JIG5o0nF4mHzyVXmzwEVeKk3V01+esXdRdR+1OASklz3a8f
+         hc5owhb1Ld0UO5G9QLv0FMEj+64z5XgEUwppRFekDD6o4WoMPP80jbx5kSoJvxKrlNch
+         LjeoFENzwdgri08OlaIKalZGPdFju9kt4C+upmUhU9fLGMRoGbqgyD9/6LyV/tGRo+Cn
+         VRXw==
+X-Gm-Message-State: AOJu0YwdCvOnVybjMZk/QogHWn4JbFuA7IaaNvKHrzzwSxiaFbdvrS0b
+	e9iA8ypugwF+UPcHyXinBwmhRBS+N6IEWEMaaH2d/21R5gXQYP3SW9AyBjQSR313azSYSdmd1c+
+	RdfyIJw==
+X-Received: from pguo10.prod.google.com ([2002:a65:6a4a:0:b0:c9a:c533:831a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a8d:b0:3c3:af85:85e7
+ with SMTP id adf61e73a8af0-3c44b078667mr5071012637.34.1784840901194; Thu, 23
+ Jul 2026 14:08:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 23 Jul 2026 14:08:11 -0700
+Date: Thu, 23 Jul 2026 14:08:10 -0700
 In-Reply-To: <20260723210811.72720-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260723210811.72720-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260723210811.72720-10-seanjc@google.com>
-Subject: [PATCH v6 9/9] KVM: guest_memfd: Make private exactly what can be
- mapped on page fault
+Message-ID: <20260723210811.72720-9-seanjc@google.com>
+Subject: [PATCH v6 8/9] KVM: guest_memfd: Explicitly pass number of pages to
+ make_private() hook
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -71,140 +71,184 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When calling into arch code to make the underlying memory private, i.e. to
-assign memory to the VM in SNP's RMP table, assign/convert *exactly* the
-range of memory that can be mapped into the guest for the current page
-fault, instead of aggressively converting/assigning the entire folio.  For
-SNP, the mapping size in the stage-2 page tables (Nested Page Tables, NPT)
-must be at least the size of the corresponding RMP entry, e.g. assigning a
-2MiB mapping in the RMP when it can only be mapped at 4KiB granualarity
-will ultimate result in another page fault (#NPF for SNP) to "smash" the
-RMP down to the correct mapping size.
+Tweak the guest_memfd make_private() hook to explicitly pass the number of
+pages to align with the signature of the make_shared() hook, and because
+the existing code is outright broken if a guest_memfd folio is comprised of
+more than one page (which can't happen, yet).  The SNP code *tries* to
+create a corresponding huge entry, but if the RMP must use 4KiB entries for
+whatever reason, KVM will only convert the first pfn, and not the entire
+range of pfns that will be mapped into the guest.
 
-Assigning the entire folio was necessary back when guest_memfd tracked
-preparedness, which was done on a per-folio basis.  At the time, it made
-sense to do per-folio tracking/preparation, because tracking per-folio
-meant guest_memfd didn't need to add a separate data structure to track
-that information, and doing per-folio tracking only works if the entire
-folio is prepared (or not).
+Alternatively, @max_order could simply be repurposed as _the_ @order, but
+that will fall apart when in-place conversion comes along, at which point
+KVM will need to deal with conversions that aren't bound 1:1 to a folio.
+I.e. the number of pages to convert may not be exactly be a power-of-2 (and
+folios don't strictly guarantee power-of-2 pages anyways).
 
-Now that guest_memfd no longer does preparation tracking (see commit
-8622ef05709f ("KVM: guest_memfd: Remove preparation tracking")), in favor
-having SNP query the RMP, per-folio preparation, i.e. per-folio conversions
-to private, doesn't make any sense.
+WARN in the SNP code if the number of pages to prepare is anything other
+than '1', i.e. if guest_memfd is trying to prepare/convert more than a
+single 4KiB page, as sev_gmem_prepare() doesn't actually handle conversion
+greater than order-0 folios.
 
-*If* SNP allowed the RMP size to be greater than the NPT size, then
-per-folio conversion could theoretically provide marginal value, as it
-would allow KVM to assign a hugepage in the RMP even if it can only be
-mapped into the NPT with a smaller page, e.g. because of memslot alignment.
-The documentation of that reasoning would be something like this:
+Opportunistically swap the ordering of @pfn and @gfn params for
+kvm_x86_ops.gmem_make_private() to match kvm_arch_gmem_make_private().
 
-  /*
-   * If the memory is private from KVM's perspective, and hardware tracks
-   * VM-assigned private memory in a dedicated data structure, i.e. not
-   * in the stage-2 page tables, then call into arch code to assign the
-   * entire folio to the guest.  Assigning the entire folio, e.g. instead
-   * of only the memory being mapped into the guest, allows KVM to assign
-   * an entire hugepage of memory in the out-of-band structure even if
-   * KVM can only map a smaller page size into the MMU, e.g. because the
-   * gmem hugepage is spread across multiple memslots.
-   */
-
-But even *if* a future SNP implementation supported that behavior, the
-value added would be dubious, as having a huge folio that is fully private,
-but can only be mapped at a smaller granularity, would be rare.  E.g. maybe
-for memory at the top of lower DRAM that has holes for non-RAM assets?
-
-So, convert/assign exactly what guest_memfd allows the caller to map to
-simplify the guest_memfd code and provide a (super) minor performance
-optimization for SNP.  E.g. once hugepage support comes along, guest_memfd
-will only need a single flow to compute "how much memory can be assigned
-and at what size".
-
+Fixes: b85524314a3d ("KVM: guest_memfd: delay kvm_gmem_prepare_folio() until the memory is passed to the guest")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- virt/kvm/guest_memfd.c | 53 ++++++------------------------------------
- 1 file changed, 7 insertions(+), 46 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 ++-
+ arch/x86/kvm/svm/sev.c          | 27 +++++++++++----------------
+ arch/x86/kvm/svm/svm.h          |  2 +-
+ arch/x86/kvm/x86.c              |  5 +++--
+ include/linux/kvm_host.h        |  2 +-
+ virt/kvm/guest_memfd.c          |  2 +-
+ 6 files changed, 19 insertions(+), 22 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 255860c472ee..0bca42a0b346 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -70,50 +70,6 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
- 	return !kvm_gmem_is_private_mem(inode, index);
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 4be57157136b..230267b2203b 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1725,7 +1725,8 @@ struct kvm_x86_ops {
+ 	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+ 	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+-	int (*gmem_make_private)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
++	int (*gmem_make_private)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
++				 kvm_pfn_t nr_pages);
+ #endif
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+ 	void (*gmem_make_shared)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 0ecba768c153..bf7f94d1d7f9 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -5090,15 +5090,7 @@ static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+ 	return true;
  }
  
--static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
--				    pgoff_t index, struct folio *folio)
+-static u8 max_level_for_order(int order)
 -{
--#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
--	kvm_pfn_t pfn = folio_file_pfn(folio, index);
--	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
+-	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
+-		return PG_LEVEL_2M;
 -
--	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_nr_pages(folio));
--#else
--	return 0;
--#endif
+-	return PG_LEVEL_4K;
 -}
 -
--/*
-- * Process @folio, which contains @gfn, so that the guest can use it.
-- * The folio must be locked and the gfn must be contained in @slot.
-- * On successful return the guest sees a zero page so as to avoid
-- * leaking host data and the up-to-date flag is set.
-- */
--static int kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
--				  gfn_t gfn, struct folio *folio)
--{
--	pgoff_t index;
--
--	/*
--	 * Preparing huge folios should always be safe, since it should
--	 * be possible to split them later if needed.
--	 *
--	 * Right now the folio order is always going to be zero, but the
--	 * code is ready for huge folios.  The only assumption is that
--	 * the base pgoff of memslots is naturally aligned with the
--	 * requested page order, ensuring that huge folios can also use
--	 * huge page table entries for GPA->HPA mapping.
--	 *
--	 * The order will be passed when creating the guest_memfd, and
--	 * checked when creating memslots.
--	 */
--	WARN_ON(!IS_ALIGNED(slot->gmem.pgoff, folio_nr_pages(folio)));
--	index = kvm_gmem_get_index(slot, gfn);
--	index = ALIGN_DOWN(index, folio_nr_pages(folio));
--
--	return __kvm_gmem_prepare_folio(kvm, slot, index, folio);
--}
--
- /*
-  * Returns a locked folio on success.  The caller is responsible for
-  * setting the up-to-date flag before the memory is mapped into the guest.
-@@ -799,7 +755,9 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+-static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
++static bool is_large_rmp_possible(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
  {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
- 	struct folio *folio;
--	int r = 0;
-+	int r = 0, __order;
-+
-+	max_order = max_order ?: &__order;
+ 	kvm_pfn_t pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
  
- 	CLASS(gmem_get_file, file)(slot);
- 	if (!file)
-@@ -814,8 +772,11 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		folio_mark_uptodate(folio);
+@@ -5107,14 +5099,14 @@ static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
+ 	 * PFN is currently shared, then the entire 2M-aligned range can be
+ 	 * set to private via a single 2M RMP entry.
+ 	 */
+-	if (max_level_for_order(order) > PG_LEVEL_4K &&
++	if (nr_pages >= KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) &&
+ 	    is_pfn_range_shared(pfn_aligned, pfn_aligned + PTRS_PER_PMD))
+ 		return true;
+ 
+ 	return false;
+ }
+ 
+-int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
++int sev_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+ {
+ 	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+ 	kvm_pfn_t pfn_aligned;
+@@ -5125,6 +5117,9 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
+ 	if (!sev_snp_guest(kvm))
+ 		return 0;
+ 
++	if (WARN_ON_ONCE(nr_pages != 1))
++		return -EIO;
++
+ 	rc = snp_lookup_rmpentry(pfn, &assigned, &level);
+ 	if (rc) {
+ 		pr_err_ratelimited("SEV: Failed to look up RMP entry: GFN %llx PFN %llx error %d\n",
+@@ -5133,12 +5128,12 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
  	}
  
-+#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
- 	if (kvm_gmem_is_private_mem(file_inode(file), index))
--		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-+		r = kvm_arch_gmem_make_private(kvm, gfn, *pfn,
-+					       (kvm_pfn_t)1 << *max_order);
-+#endif
+ 	if (assigned) {
+-		pr_debug("%s: already assigned: gfn %llx pfn %llx max_order %d level %d\n",
+-			 __func__, gfn, pfn, max_order, level);
++		pr_debug("%s: already assigned: gfn %llx pfn %llx nr_pages %llx level %d\n",
++			 __func__, gfn, pfn, nr_pages, level);
+ 		return 0;
+ 	}
  
- 	folio_unlock(folio);
+-	if (is_large_rmp_possible(kvm, pfn, max_order)) {
++	if (is_large_rmp_possible(pfn, nr_pages)) {
+ 		level = PG_LEVEL_2M;
+ 		pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+ 		gfn_aligned = ALIGN_DOWN(gfn, PTRS_PER_PMD);
+@@ -5155,8 +5150,8 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
+ 		return -EINVAL;
+ 	}
  
+-	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx max_order %d level %d\n",
+-		 __func__, gfn, pfn, pfn_aligned, max_order, level);
++	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx nr_pages %llx level %d\n",
++		 __func__, gfn, pfn, pfn_aligned, nr_pages, level);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index ad849edcacc7..a327bf751ecd 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -1009,7 +1009,7 @@ int sev_cpu_init(struct svm_cpu_data *sd);
+ int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
+ extern unsigned int max_sev_asid;
+ void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
+-int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
++int sev_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+ void sev_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+ void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+ int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index e7865b28d37b..511830d1b6f3 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10620,9 +10620,10 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+ }
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+-int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
++int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
++			       kvm_pfn_t nr_pages)
+ {
+-	return kvm_x86_call(gmem_make_private)(kvm, pfn, gfn, max_order);
++	return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages);
+ }
+ #endif
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 9cf01429281b..97cedf8b89c5 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2581,7 +2581,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+ int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+-			       int max_order);
++			       kvm_pfn_t nr_pages);
+ #endif
+ 
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 466f611ad4b7..255860c472ee 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -77,7 +77,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+ 	kvm_pfn_t pfn = folio_file_pfn(folio, index);
+ 	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
+ 
+-	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_order(folio));
++	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_nr_pages(folio));
+ #else
+ 	return 0;
+ #endif
 -- 
 2.55.0.229.g6434b31f56-goog
 
