@@ -1,150 +1,259 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023083.outbound.protection.outlook.com [40.107.159.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0628626A0A7;
-	Thu, 23 Jul 2026 14:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784816451; cv=none; b=uzlechXk0phIAiCtHLrG9FbKBDnECVPMIrRDbQ0lTh/QIXmsd2nbd2h+Wa4fM9uWcEHyhTZZTe8QO6JKEFkQ0SrNRq0UxcX/sjagevhAS1Me6kZZyJ8b03rdmdO0+62VtvKHiGtBTUOA2URap0N+ZVNTS83fS4n1fok7fl52eOg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784816451; c=relaxed/simple;
-	bh=WTkX9YCsopdjX51a0UPZUm9WdPr8OVzsVHgxPpVtSkc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YQuR1CCtJnO1dllHcwsQ9TC6xsTMVHkhABc6dW+7Evnp/dt1TPOQu9826GVisVIcCNqMDu4/rk4pDAH2M4Vy67W/f6KOTkOTt1lQiupSJzwYfw3bwItDX9ks5gms1FqqSqPBUZzYFaKcLr+2aSaNTXARotWrT/un0az13rs1rj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OkCo6+EU; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0D941D239;
+	Thu, 23 Jul 2026 14:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784816960; cv=fail; b=LS97nEpZo7uHJ1YyhI7tOW5zzOu4wlGuW9is6lSOaPeD6CD3gMEW8yZvFdTj359aAuJk906UXqgBq/chM20ylwdCIF7q6NjdLWyB3A1WCkJS9e9xwmSlPDJVA5WvOawvfTU6jw4mizLjAWQ8plgz3Sn2Be7jUaS6W6unTQKYjXo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784816960; c=relaxed/simple;
+	bh=EYR1JB401I3Njy3zkoaR+XRHtvH5k2sUHTUVZBgbBNk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=GpdShUb8TCGJa3s40IPLgkQkdx4zhSA0resbE1sHx+2XuuHTd6UN6NmpLNkN08chhe6GWYnrjgU7trMRz6Oi6R80MjKvm5/DeMi8DdXP+hJpTrpxfbWVhojN+NOfK3chMRiAgX2+l+H4i0oHvdP4aCYZKbvGZoe0OcD5gak+AT0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=XtPy0F/x; arc=fail smtp.client-ip=40.107.159.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OkCo6+EU"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDBtWQ3090105;
-	Thu, 23 Jul 2026 14:20:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JwT6Sw
-	7ZZecd3S9A5MiOyrIjeSUfviSSoRMT0HS6pfo=; b=OkCo6+EUiYCd+ANr2hYty6
-	O6m+5RHPvp3TFbUpmUoRjX+0MNrWXuVp1NmU51Kow2ZkgJLGJiqEga+/N2bdLa/m
-	kvAA/gqJarQJY+Qs7QFZ7yZQn+yhgYq1wYe572sHN9rcBNhDThPQJKCevxwhWA8e
-	rZbIzuTom5UuUJWDnHWuhqE++5kRhx/nst/DXiAWXNh2FCQEc94fkNmKJs0q/EBb
-	sj8ONEE8m5pPJ+VfmkgFxczaGUdpOMFNEtKPy7c0f6HM3NAqH7RdaecKXAjrmaJ/
-	iWEfzM+5HOt9TGA+8HE2+IRrv2VECHVz/0x81S3PtWmKqQAJHUr+d6EJEKJ5cchA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7abr19b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 14:20:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NEJZ69016478;
-	Thu, 23 Jul 2026 14:20:47 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6wcne8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 14:20:47 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NEKkEF26673890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jul 2026 14:20:46 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9402A58053;
-	Thu, 23 Jul 2026 14:20:46 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8EDB358043;
-	Thu, 23 Jul 2026 14:20:45 +0000 (GMT)
-Received: from [9.61.177.4] (unknown [9.61.177.4])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jul 2026 14:20:45 +0000 (GMT)
-Message-ID: <56e107e2-ce4b-4215-9e8f-152cedc4a6f9@linux.ibm.com>
-Date: Thu, 23 Jul 2026 10:20:44 -0400
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="XtPy0F/x"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vBx0mgdYAsrvKsIWR5cQvE1BlXBnlntjgpVZQcLs0gcMfpv4l/tD8C28YM3VMv1TpjoI2Sdi6JqqGnsq+fcjYkZ/5CHOEvDvEpDNvIxg+KxW4n8jx7jCOdsllY8owqWLqXW4AxLB9YDptzG0H/6eURzGof0gPVPu5LYR8LdKDb7HrOSoPbpJ/QK16+HJg1K/L/bICMFetzOcYibTV8DfKlXsXQQi9/ceaaFenJNZkqUc4HNjpqkm3e/cTBwbHy9u7oUsxSO4t62K0rbCfmYj5ZiFITAsEMmk2RyXEZroyZlHTS9tC3NTrNMvSMW4ThjQZ3DyUlaYadiLPMXs2x/loQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=689DCyxtc2qcJULCPCNBv9P/zNrIUmyoug2aIt9GJzI=;
+ b=SUkd8D/5GRXVgIxxtROqMb1ePZ1IQG7rKKa833WxCxmi74xMtR6iZJF3QVqj+AQ3X9N5q/6zur6Ie6eTDDgoDKEwLOlUSyOcubadxdBwM9kBDBeCRYkCL8fqQT+kaxDbk4/C/txdXCNTtXgCUSrPk7e6PEw2+eIYb7/7UnBLJoi05tSIx0gDiP19t9N0LvPx/jR3//2UjXvIQPjR/nX6EfuCDChJFrNjPpbPdcF3oZghBbZ1l1LRfn09E6aoBE0Ti/GY9iMCzrkWlFCp0qfbRCY/zIYMM50dvMFtG64bmkaHcbUjaWVlyiA3JQOCcsqIFZs8k54YXdTZL56PfVxV1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=689DCyxtc2qcJULCPCNBv9P/zNrIUmyoug2aIt9GJzI=;
+ b=XtPy0F/xC3n2UX+gs/fZ2WjiJ/lUniBJhsuWfPS2+CvlBrg8bxhgDjewx+92m9nhojvwRVRAtKw4je/GllbuXt4ITgjR8h/hJUAjbI22OCGFkYQH2NCI7uynZHV9e6wlqgdfl3dL3b/E4M+cN727bZWe05p/NSuWooUuRP44Z9hUXKWI95gNlITNn7z5XeANXCngpuwYNDpZtcixWBy/VWXrADSzNvLBvqO+WY/JnhakPkNyEESjxLeVdnHm4BinNHL7ypv7h+vHyRyblUQ1zG5a/Vzz4SdLCKKYzzps2c9PH0aD8+5fUNYdcnTjURFZ9bPWIrZHBFNGdUc+1yJwYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by VE1PR08MB5725.eurprd08.prod.outlook.com
+ (2603:10a6:800:1b0::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 14:29:14 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 14:29:13 +0000
+Message-ID: <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com>
+Date: Thu, 23 Jul 2026 17:29:12 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com,
+ stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
+ bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
+ den@openvz.org
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <amCPLOrnpYmr5n0p@sgarzare-redhat>
+ <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com>
+ <amIe79X3j7GxDBdO@sgarzare-redhat>
+Content-Language: en-US
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <amIe79X3j7GxDBdO@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0110.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::7) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] KVM: s390: pci: Fix NULL dereference on AIBV
- allocation failure
-To: Farhan Ali <alifm@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@linux.ibm.com, farman@linux.ibm.com
-References: <20260722170621.1686-1-alifm@linux.ibm.com>
- <20260722170621.1686-5-alifm@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260722170621.1686-5-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE0MCBTYWx0ZWRfX1cFLcLor4lZl
- Gykg0RfgUdStstFlkNLRfNPm4yRvJh6vtE1tyMz0ntdoRtpXct/e3Q46cRo/k/ryy+46fM+ZcHd
- 1JZzwEY4Udclo29toxvbDmz1Gq2SAGjMJ2sX2X3tM0MXOx6S79VzxcisD7uP5Nw2iOlMhYCXZrT
- jbog9eDbe1Vdj52mOFCD1/PtgwnfC9ImGmdEJIn9tFGOqnHaKjYMu37QgHrt/2Gpejny5vY+yVt
- 6zwYtm5IzygqV0ffbrk8Ko2WTGXVTAGiLUEchPLj1rv+J9qp3slWKWY2UsNVR4FsgPmKYM6UhZK
- MzeZupDqj4oDaf+PjU2umYV8Z9UsuOTx7Rk8NJ0yoDBBES+YagzZlMgdnkJqMu10R9MMGE6OzIz
- U69etrpiOjfVQFGihe6m7oU4jo7ZqyLaiGUnoVoiMl5pIyuahClkf9CezvXLQR8XvcruAMPaw4e
- Xb8WyqkeogSbL53/rog==
-X-Authority-Analysis: v=2.4 cv=F7ZnsKhN c=1 sm=1 tr=0 ts=6a622341 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=0uN4P6T7698b68kMdxsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: De3dfhHHJMMatxJ8q9o3GBAEmEaj-ASe
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE0MCBTYWx0ZWRfX6z7JfQWPlp+I
- Y9J89OAQn01brjMJelf208Isar0AbHOgqoAEym9NeoVoswhk7VzJtU4fMiipVQX5fdY/x2/xyYN
- eMNwTV/uKwkkAXFFRrkDQ8iuVCEhsyg=
-X-Proofpoint-GUID: De3dfhHHJMMatxJ8q9o3GBAEmEaj-ASe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230140
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|VE1PR08MB5725:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67a2bc38-a71a-4166-153a-08dee8c6c4bf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|6133799003|56012099006|10067099003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	4cjD38QhH4P3TFChU22Z/3u9Quaeb21KptjxEneEy8CG9DmojmwoHHPZT5mmL0CO0DnkYyrBep29+JYFodVmc7vvLrDpBGxNfkEeT5w3CnT8FwNBEoXD3o2/RszX8o2G+PV1onlMgDgYHDogWRRZwvQy34Zez2IThlVCePc4iCvhVzeEDBpbpgAaae5nFkvudEZwpcTCVLvhw0SxLC45rF5P4lwJCPI0V+PGao+qNp8SG/UfInyQss6KDfEPjaykBUFbpLNtPCCKPqjCjvh4ItRWileJ3XjMANaaYxgZkb4j0aVplzBO2FLXnSKJ+zS200dwiTNVdLWVE2HcUD4q89Qa55u6M/2de79qSJtgH4s4uMa1Z/nYXD4+DSFMxes9W/CwxTx8IKt7hGgIQskexb7rOl7gGgs3U/9Lba8DHSdj9vaIlH64o4uLaiiodf0NpUoROjr+qBvF70UtNl6x1AvFo+7KLI2++cZ81v83SiCVhfyV8ZV75YGk8unYG/DLGFsDaNeuGT/qvbe9V5/Gl6mph32Z5yA/45GWSTEk6gVvg64CUbX7j1iwxeteFkMDvoEkQ3P68qaR6AlVcTfgJJ6IlmNi7CjME20kaJFK3mE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(6133799003)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZVJNT3RIZGhIY1hpWDcwb2NUWGtsQWo3Qlk1SThaMVVnNDdSRFVUR0lob1RN?=
+ =?utf-8?B?UmJlVFdqYW5TTHV5b2dJOTVxYjg4OWlUTERROTJ2TUdUQkE2Vy9sT1B2Q05l?=
+ =?utf-8?B?aGo0UExDZkpGbFpzM1BTREN4aVliaHdPR1EwVkExdlRNOGxGNitabGhNVExY?=
+ =?utf-8?B?MldjcmR5ZXhMZ2ZpMzdoT1Nmem80L0JnRGlDdHQveGZGMlIwYkYwN0tmK3kz?=
+ =?utf-8?B?YlhGUDNiSDdmZVplZWFuU0JjbGFBNEYxVjZJeWJLS0lLRGs0UjROY21wNjJs?=
+ =?utf-8?B?SVJKWEFnbzArWWorUjFWbWlzeWNNSUU4L3VWNE5GNnJ5UXhTRWdadGNBZEdj?=
+ =?utf-8?B?MEU0MExoQmxJTVc2ZHpwV3lsdjB1U3JLRytidDg4VDM2WVF4SlYwQStYd3lO?=
+ =?utf-8?B?SXMzYkxCWHhTc0dPWUl4c3hXUG9Gb3lxVUVMWVc4VG5hTmNKOTBVR290ekps?=
+ =?utf-8?B?cWtvcEZZSGZBMTJJSlM4V0ZsQVJMcGFiVWhweExYcHhWWnBRRGdMY3JYaDdO?=
+ =?utf-8?B?bmJXajY2cGpmbGg1NVd5N1BTdjlKb2g4L2d3OWtnQW1sdjhKU0o2RldvYy91?=
+ =?utf-8?B?OE4zRVdSdkw1Z3FyU2ZObXpvQ0dxR2FIdWYyZHlIYWh1aVdRZ25pY3pERHJ1?=
+ =?utf-8?B?cWxkcGtkcXF3N0xpWVMwc0toSzhHRElvK0Nsc0I1VmRnc2NSY01yZGRZVXIx?=
+ =?utf-8?B?MnBzZWpHckhZMDBONG1NS25NTzJ5RWU1SENHdmo5bFo3MHFtSE81NzYyTS9X?=
+ =?utf-8?B?N2RrT3NSY1JPakl6ZWpJWGo2ckY5REhMbGtIeUgzTngwOEtTbTdSWU9WYjJU?=
+ =?utf-8?B?ajB1Z2NyN2pZVkFCZlE4MTJCdkFRNVdMRFBmNG9OKzM2OENybDBXTmFFTEJU?=
+ =?utf-8?B?VURNdERQUy9VbHhBVlcvUGdUb3lkSXhSVUZRN2RYOXhmaE9ITUloK0ladnFT?=
+ =?utf-8?B?bUZSNW55c1dCRkM3QTAzODJTajdiZjBzKytITzhOd2cyMFFUYmRYZU40L25U?=
+ =?utf-8?B?M3VyZzFIRGhBUU5IMEx4VjBRNkp6RUNuU0Q4SHRHRWt3b3YvaVFodFhHUEFR?=
+ =?utf-8?B?aGcwTmgwblBud3FRcTBzeHYxenE4enp2WGtpZnpFUi9jU3NHUU50N3hoeVI2?=
+ =?utf-8?B?N3BaeS9US3lFU0hzNGc1MnZXckl5aFc0RkhidVJrQnJiVkl0Q1VWUU91K25j?=
+ =?utf-8?B?d2l2WW8vdzMzVjUzL0luTmNpT3djTm1BUVgzTlJpVGdKUkRhT3lQbVFyWHJz?=
+ =?utf-8?B?bjBQaitLcUJlRy8xcXFpaDUwTWF5UDdTQzNCZjVZcW5NNGQyeEVwTjQ0a1pJ?=
+ =?utf-8?B?WGdqSWpCWDk2RExaZ1RacmFHQXRIQVZwNmRLV05wd3I3Y0lBVUhmU2NhM0VG?=
+ =?utf-8?B?VTdUTk5DR3QzQ2Q0RThuNUVPYmorWDFXcWNKNFZkTkdoc2FzcFBJSVRoM3BY?=
+ =?utf-8?B?ZHJwc1ZyYXFDaTZSWUlqNGlRbTdhUytLb2RkRUdnWWo4SzFac0ZqeGlrNDZ2?=
+ =?utf-8?B?bXUzdHRWUnZwM3JVd3diM0FBSlltM1cvZHdzelJoMkhGay9uUy96VitMWVpx?=
+ =?utf-8?B?bE40WUxWZHFGMURzTWFYb3JBYjdDVURXaE5sc0lYUGdONzI5dHlVbFg5djdx?=
+ =?utf-8?B?dVV1WVliY3FYVUppV3RvOUdCSFpsa25QNG5tajlDbHN2WGM2Tkl3WTR4b3Bl?=
+ =?utf-8?B?a2U4bi9aT0h1c2g3T0VrbFo0YloxYjlGQmUydVdkaEllZ2FscTJJRnBQMzBM?=
+ =?utf-8?B?LzhLOE1aY2VqL0dEWHlXc2hFVm9JVEhqUk1uWXNBc21sQ2g5MFplVTl5a3BS?=
+ =?utf-8?B?WnZETm1UYkR0WERONUNVODg2TFRGbUFiaWRvc0hCa3NNMDlidldsc1pMYi9Z?=
+ =?utf-8?B?b0ZxNTA1SGZ6RVA4RGNLVTdSZG03bFFCUnZXQWpFMU5DRzkxS1VVUXlvZGRX?=
+ =?utf-8?B?aW44QktlbjNBcEtsVXdLSys1Vi9RODlJaEJMN2xORmsvZ2Z2b3Mxa2VqaFdw?=
+ =?utf-8?B?a25yQU1INGxiZXg5NFN4SlZDTnNTa0JVeVExLzRnZzBCM1E4VmNMV1FJUjU1?=
+ =?utf-8?B?NVlEYXpBWnAvTGlxK1R4NVRqL1RwQkN2NWpZTmdjVTNkZHExQ09PdlpoZ2xx?=
+ =?utf-8?B?T1hRbDlqbU1RRm9sUnJaWU5LNVNGWjhYc2toS0tUZ2oyQlVqV3dPRERBM3BV?=
+ =?utf-8?B?MzM4a3RLeWNPUWpPcWN5MkFWYTRUQ3ZEM3hKbDJqeHd3azA0YVZsbnl0cDdN?=
+ =?utf-8?B?dVc3Mjg4a25yMnlpSzFSQ1NReUZPbENlak1sVlJlcXlPd0pHMUpiZmRLY3RW?=
+ =?utf-8?B?RXlDdnpjaEhMWXpNbmhoS09jbnorc2M2TjNjQW1xS2ljVXNQZUd2WitOZHZu?=
+ =?utf-8?Q?0440AaAnbrSEAyzo=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67a2bc38-a71a-4166-153a-08dee8c6c4bf
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 14:29:13.6658
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XNOs1YKL63Cn1B7MdPRR7zujbErWsgCvhi2yuOfY0WWYhKA8s0Qf1XIFMusHv18cK5Kw7bTEf6lGIbJzgqYx8zfy36y6md+E6UR6HsGqzx8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB5725
 
-On 7/22/26 1:06 PM, Farhan Ali wrote:
-> The airq_iv_create() can return NULL on failure, but the return value was
-> never checked. If it fails, zdev->aibv will be NULL and fail when
-> derefenced in kvm_zpci_set_airq(). Add a NULL check and free the previously
-
-Nit: s/derefenced/dereferenced/
-
-
-> allocated AISB bit and zdev->aisb on failure.
+On 7/23/26 5:03 PM, Stefano Garzarella wrote:
+> On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
+>> On 7/22/26 12:43 PM, Stefano Garzarella wrote:
+>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>>> the vq->worker pointers and immediately frees the workers, without
+>>>> waiting for a grace period.  A caller that fetched the worker right
+>>>> before the pointer was cleared can therefore still be queueing work on
+>>>> it while it is freed.  And even when the queueing itself wins the race,
+>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>>> future attempts to queue it are silently skipped.
+>>>>
+>>>> None of the current callers can actually hit this: net and scsi stop
+>>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>>> the lockless send/cancel paths become able to race with the teardown.
+>>>>
+>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+>>>> period, and then flushing the workers so any work the last readers
+>>>> queued runs before the workers are freed.
+>>>>
+>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>>> ---
+>>>> drivers/vhost/vhost.c | 11 +++++++++++
+>>>> 1 file changed, 11 insertions(+)
+>>>
+>>> Sashiko reported some potential issues here:
+>>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
+>>>
+>>> IMO the first one is pre-existing, but not really sure it is a real
+>>> issue since happening when the worker/vmm is going to be killed.
+>>>
+>>
+>> Sashiko claims:
+>>
+>>> Will this leave the queued work unexecuted and permanently break the
+>> virtqueue by leaving VHOST_WORK_QUEUED set?
+>>
+>> I agree this issue is pre-existing and doesn't have much to do with our
+>> series here.  It looks real, but in reality should be harmless since we
+>> may only hit it while the device already dying.  Means there's no VQ
+>> state to be saved.  The only potentially observable artifact I guess is
+>> a warning here:
+>>
+>> vhost_workers_free()
+>>  vhost_worker_destroy()
+>>    WARN_ON(!llist_empty())
+>>
+>> So more of a cosmetic noise on a dying device.  Again, not relevant to
+>> this series.  But one optional way to make it go away would be to clear
+>> vq->worker under vq->mutex in vhost_workers_free() (mirroring
+>> vhost_worker_killed()).
+>>> The second one also not sure if it's an issue since the sender is not
+>>> lockless IIUC.
+>>>
+>>
+>> The term 'sender' is confusing here:
+>>
+>> * vhost_transport_send_pkt() is the .send_pkt() method of struct
+>> virtio_transport.  It only stores skbs into the queue, doesn't process
+>> them. It indeed is lockless as it doesn't take vq->mutex.
+>>
+>> * vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
+>> It's called by the worker thread to process skbs in the queue, calls
+>> vhost_transport_do_send_pkt() which does in turn take vq->mutex.
+>>
+>> I think sashiko points out to the former.  Still, I don't think it's an
+>> actual bug.  Look:
+>>
+>> 1) By invoking flush, we wake the worker thread:
+>> vhost_dev_flush()
+>>  __vhost_worker_flush()
+>>    vhost_worker_queue(flush.work)
+>>      worker->ops->wakeup()
+>>
+>> 2) Then woken worker does:
+>> vhost_run_work_list()
+>>  llist_for_each_entry_safe(work) {
+>>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
+>>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
+>>  }
+>>
+>> 3) And then in work->fn() (vhost_transport_send_pkt_work):
+>> vhost_transport_send_pkt_work()
+>>  vhost_transport_do_send_pkt()
+>>    if (!vhost_vq_get_backend(vq))
+>>      goto out;
+>>
+>> As you can see, we return early in case backend was unset.
+>>
+>> So after doing this flush, we have: 1) QUEUED bit is unset; that makes
+>> send_pkt_work re-queueable. 2) But the queue doesn't actually get
+>> processed, and VQ state isn't actually touched here - so I guess
+>> Sashiko's conclusion is incorrect and there's no actual bug.
+>>
+>>> But, please can you double check them?
+>>>
+>>
+>> In general I'd leave this patch as-is as Sashiko's complaints aren't
+>> very convincing so far.  If you want I can add another patch which wraps
+>> NULLifying workers in vhost_workers_free() in vq->mutex.
+>>
+>> WDYT?
 > 
-> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-
-> ---
->  arch/s390/kvm/pci.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> Yeah, I agree, about the other patch, up to you, but I'll eventually 
+> send it separately.
 > 
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index 33abc15aa685..231a4236fc3c 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-> @@ -314,6 +314,11 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->  				    AIRQ_IV_GUESTVEC,
->  				    phys_to_virt(fib->fmt0.aibv));
->  
-> +	if (!zdev->aibv) {
-> +		rc = -ENOMEM;
-> +		goto free_aisb;
-> +	}
-> +
->  	spin_lock_irq(&aift->gait_lock);
->  	gaite = aift->gait + zdev->aisb;
->  
-> @@ -350,6 +355,9 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->  	rc = kvm_zpci_set_airq(zdev);
->  	return rc;
->  
-> +free_aisb:
-> +	airq_iv_free_bit(aift->sbv, zdev->aisb);
-> +	zdev->aisb = 0;
->  unlock:
->  	if (pcount > 0)
->  		unaccount_mem(zdev->kzdev, pcount);
+> Thanks,
+> Stefano
+> 
 
+Alright, then let me resend it once more along with this 6th patch, so
+that we don't have it uncovered.
+
+Andrey
