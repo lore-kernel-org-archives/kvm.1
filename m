@@ -1,97 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B51C388393
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 16:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1A638E8C9
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 16:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784825448; cv=none; b=FI6Oja9h/PRbEsnsJEX7K5DXr4wsXyviPALl/m319FMKRY80y0dFsuzaWBTcZCCf94uPTKq90wJZrZVeL1wJVsaXWnxTvI/RF3qSxiftiB3tH4PQ6/1zouLQGJGzU1y4dmS5Vm1DLRnyMBb/u24PBQMY4/Cl1yCtgaRk50elu0k=
+	t=1784825596; cv=none; b=KUx0cTfTkqmiigK7ufOcI58UQhLANuUOwfsWcoZ0bxupyBnOFkWlSVXCPDzPocV3hc5VDxQhQSEAiH4ua4ZV2R1LzZ56NmNcoNNW2aiQI2jhqJWL1j3TQj4uAaZaYcc80ddtfSNy2XNqgD1uheo/A58EaoHs6ZzF9Kv+MA4br/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784825448; c=relaxed/simple;
-	bh=HVzEoDIUOtKuu1wfn87SZ/HEqRdQyUU7D8rY8b4wr/U=;
+	s=arc-20240116; t=1784825596; c=relaxed/simple;
+	bh=z+HoEvmWYKtMfBygtPBl68CeMD6wWsLW69JzvhhpR/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LH07A2MTwFeD/Ey2GmpSv3716T0pv9nIaV5BvJEHV7a9WXTq1MQ0C0v8hWQrYBMqYhJa7EBwHeF4mXyB8JnNWNPschAVBBcNy5Cmgyi1lqxnx78X64Z++sWE/oNcqtVuMKz72SlFTnsBzZVoWxNw18oUieZ9P5up1cN8RmZ8ZtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TjSfeZ6p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PmlQH47i; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nOIoKGDVTa27kxhrWotAS8RfT7YFvqFXPwVAalvL+6jZ7S4rxPW6QqGZUdQK9gNF99s8P8Fdqn/qLmqJ4GE1+OYm8VqqL080FJQKZB6URPzOsX/vqv4+9bTeSf8ONSPyyTg1T43Whjb4mFIiMO95HHNohPOJuyrPWhMD/1GlEMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=Gk6jW8du; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TjSfeZ6p";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PmlQH47i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784825446;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
-	b=TjSfeZ6pu5R8DPjQuuTY4xDpXprvKssADW8j7hARr9DqlmkCzOHyBZ55ey0Axw2CicRtGP
-	XW9+Z8D6ofDT6Wv+2wuUjdHo1gad7BUUtqI85ngb6eGT+nghtrP7JwPjaoLTZ0L4EhFz11
-	OPf31VtPVILbv9cAt40a615RnshLfh0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-3keJVfTANLOfLhRePfJwJg-1; Thu, 23 Jul 2026 12:50:45 -0400
-X-MC-Unique: 3keJVfTANLOfLhRePfJwJg-1
-X-Mimecast-MFC-AGG-ID: 3keJVfTANLOfLhRePfJwJg_1784825444
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-490a767b782so7191355e9.2
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 09:50:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="Gk6jW8du"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-902e4af2d9dso7929016d6.0
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 09:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784825444; x=1785430244; darn=vger.kernel.org;
+        d=gourry.net; s=google; t=1784825593; x=1785430393; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
-        b=PmlQH47iXzx8Dp+yvaKQPhyPR03ooN4skoNw+INVlu+jl7dP3mSWuzh+ZUyLMDqYJh
-         3WP2xFjDptuTn0Z0WctOYFtaZZvpw8iJwV8VUDDdRDMc+8W6hl0zYgGqEejQNzmsQrld
-         xw+ru70kgD9/iuzhCWGBfrmh4QxRv5icMomCc3rQh6kg1XmzLBpGUe8HtziHOXp1ozuW
-         sNU2bKf7VWN+CtEb8NkFCgxHTVI9ti2jb6LGYpZTOEe1o25+cl/TNE2RSBMfxQyijasf
-         vb96pNuBH0RfYeOrs5b2e2KfIZHr/2GHvgIZrbC7J6wHa39Cw2uW/yICfGlBVgvY2Wqa
-         vYbw==
+        bh=bqVE/c/eX9E/Cy6wFBhLLV7HBSbIhrEkmRJZ6Osn4Tc=;
+        b=Gk6jW8duMorFxZCKOTImKK/cthkQTePo/7XXo0yOSe8t/4ZafB2e38eaAzmr6WeMVE
+         EUihxK/INqSSpq0j/FYQG3btxjT4+3qwY9q9QVjDr3h3KhUX0Sm6ty0CUZU4HhzHfM5A
+         KT4fWPdgBq718p0P0aWwUR2I9rNE5zu3guFZOhTjdlFGmNGcrLapR1HxQahETeYLGwiO
+         nOL+GnNGC1gOuxE8VjXSq6vIYbcYfq+JmU4geK+aeg6Mxms1DsVn7HVD6K4nJXOp0dM1
+         GlFRjxDBTSyJltmU9fOYCpkQu6/iK0v99poJz+5FONYUVksgFUwse+RD/2/BXvoh0feM
+         zZng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784825444; x=1785430244;
+        d=1e100.net; s=20251104; t=1784825593; x=1785430393;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=skv50H0aRdZe1+yzOYqLWkWcMMVGnxgMC07zr3GCyxM=;
-        b=O+P6+F0fDVKo5ySyTIf7fGOCNGPwWSijGYQsoU45N1UIGNA7ZuXcez7cTXMDv0+Zq8
-         lnQrKZsi4V6qukubVhvB1qyA7HrWvms+gqqzlCpZyJQ7r9lUfMO0/13HV4xdpzJmL4OI
-         l0Ks0dxB4hWnrf9D6rXuLvDmNKNeyoDp540gHJUc7BsNOniV6IGUWi7zRSq9zXgY3HL9
-         W/TOR/cLiZjHyTDobOsWajjfENVUkmKrxvIkxpiExAoh+3fZINIRmMCNGRb0+PAO8E5Z
-         RNsTl2e3r9VcPVSVXXl75WysExj22lR9jlgAHfx7u+iw+fwF6oNC6qvldvsrHb49vG7V
-         OcPw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/JrvCLjT/m1CJrOq4LIjjHzjjjjcREsibuIdZ4M1EG3WD6lZk/9fylyL9wKpDAUfv3Ks=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5x1N9DypyXK/hiweRIy62/m+Q3cdGnELHZcNqSTn8MoaFx2F8
-	vgiYuA9GVK9Mlsbvcd2phAyeNJe7xunmZcAYZd1vVznVKyegZZDKibDPS5tHbZPFeqjWe1jv2oZ
-	HwHPgxrAUlm/s/Er0GJywM/J6nu03ByBBGxdjanyrhgmhUNBNPl0uvg==
-X-Gm-Gg: AR+sD11dOILZB3ktD9CIcV4muKferNAIP33B7MCXwj34wseO83tzyKe0zbjTJrshS4g
-	7Zv4azNQ1hDKZEc2QQFAvTEgv+gqJHXc0mg3VTgQ/S7N5MCaLV6nSzGx+JPsMtuTttaqfWTz2Lw
-	gUpKozQbc3Wz0Vc5ymLQOniRBEOYj3Xd5pPOTFDePbF5AOLsbX8x5El0i6NgkJBYOjOgqjdAboN
-	gD354pb62rq1VXy3jEZ6QdM6CH7e3c+USKZNYtmg7t28RRQUTO6tO/QnJ2wO8c/B14hKEw9Mfu4
-	58XbpmRvgeufSyQHcCHiZeQ1HCW15SnzSbf8gNj0j70UYgsHVWGiNmrp6oLPgfyppgEPKuz4x+m
-	vSdoiB2HqJSgKMANfvfBIAA==
-X-Received: by 2002:a05:600c:350a:b0:495:441a:39d2 with SMTP id 5b1f17b1804b1-49573cd8932mr43271905e9.21.1784825443872;
-        Thu, 23 Jul 2026 09:50:43 -0700 (PDT)
-X-Received: by 2002:a05:600c:350a:b0:495:441a:39d2 with SMTP id 5b1f17b1804b1-49573cd8932mr43270805e9.21.1784825442214;
-        Thu, 23 Jul 2026 09:50:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957af5d910sm6009915e9.3.2026.07.23.09.50.39
+        bh=bqVE/c/eX9E/Cy6wFBhLLV7HBSbIhrEkmRJZ6Osn4Tc=;
+        b=Umnw+ntxqN1G94PxtVh+85v3KpaWQxIBkocGRIbdoqPEMa6CJ2omE9pY+OLp0dlttx
+         hwGywy1ZGVmqE4rhGd0X3ORlGzivwr8y+811yQ9F41wziwhTOQoAJ3X1Q5QbxJwiTc4c
+         eJn7Zsum518GgQ8lqAlJu+v8qlxa/5/roOoyW6C5YWIwpkiRW1luopJK1/SGSyeBehDS
+         WzZIdqfNSHLWrC+ws9KnhqdKV6n+KUIIQEGAql2jqKAclRvj/HJnk+aGhSWlbbEidmDl
+         86cf4PewBgsSBB22cj+aCeb/5g9QRIXcrk6UlVuHcHtMPVzX1dt2NcgR9Y3qnGvJv6Qb
+         m+Kw==
+X-Forwarded-Encrypted: i=1; AHgh+RoJYCuUPJSx6sVqpv4tG/2+VBaoh4EDjkwehJdiceQGN9E1wsT7R0EcarAJ24OAu760GrE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4JSaZjDuqgXU2gM5B3j5sPw6M/ilLKo5tWVAeO9hy58CaMSDC
+	Oc2cdmcKO3HIedi+OzQ4wBz9O5vo+nnK/vEKpX9rZ/HSe7T/21JgSoGY8nUugPwbSVM=
+X-Gm-Gg: AR+sD12b7/cCHWVKr39BDTV4rQ8RAJAWXqhqOnB6wvE8mJrpsR/NAMfMheI+JFtfR0T
+	L637vJlOH/erHvK42I2PWscdCkHPv7/8/PTSF1MhypKpR+WqkXe5dt3qqvH5PJo9tf1+zsti6pw
+	09MWKB45XsdoYkmOPSB2hY/hXpAwgjw73hnwAv7qIWv752cNNtsFsETYXieyxorEKP8B9Qz0J8F
+	mPxDuAEq8D/uSJFoZKZ46QaRxSUeo9EAJo9dVfvfJxrR67gMkNcx90vla07Ew9NWcbhbLdmsygz
+	3EA4keFa0rEx6kRCdHw7p/4gSJ7w1tGvJQKIrxB9SiEfMBO3lSkfV4oJXWQu0auZxYgJ4dC2Txy
+	dF+L3pih6Lq+c5rRonVAxpgWFmJDJY8gV6fv6Ot6gVEEwUq+9nxtid4Zpx0d8tzjiHPo1u8FPJF
+	MbDkmJvG9D4z4so/OJz6DMTOUxV8Topa3btKcD/FB3+4C6rwlCrWlA+5FWRQ==
+X-Received: by 2002:a05:620a:1729:b0:930:9533:5e32 with SMTP id af79cd13be357-9310468af9emr366578785a.7.1784825593202;
+        Thu, 23 Jul 2026 09:53:13 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba9e18d4sm48785446d6.23.2026.07.23.09.53.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 09:50:41 -0700 (PDT)
-Date: Thu, 23 Jul 2026 12:50:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	sgarzare@redhat.com, stefanha@redhat.com, dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com, bchaney@akamai.com,
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-Message-ID: <20260723124908-mutt-send-email-mst@kernel.org>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
- <20260723111557-mutt-send-email-mst@kernel.org>
- <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
+        Thu, 23 Jul 2026 09:53:12 -0700 (PDT)
+Date: Thu, 23 Jul 2026 12:53:06 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Arun George/Arun George <arun.george@samsung.com>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, balbirs@nvidia.com, 
+	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, 
+	matthew.brost@intel.com, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, alison.schofield@intel.com, 
+	osandov@osandov.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
+	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
+	mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca, jhubbard@nvidia.com, 
+	peterx@redhat.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, usama.arif@linux.dev, 
+	xu.xin16@zte.com.cn, chengming.zhou@linux.dev, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-debuggers@vger.kernel.org, linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com, cpgs@samsung.com
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+Message-ID: <amJGUuBZ2857QjDB@gourry-fedora-PF4VCD3F>
+References: <CGME20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f@epcas5p1.samsung.com>
+ <20260720193431.3841992-1-gourry@gourry.net>
+ <963815509.21784796303385.JavaMail.epsvc@epcpadp1new>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -100,90 +97,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
+In-Reply-To: <963815509.21784796303385.JavaMail.epsvc@epcpadp1new>
 
-On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
-> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
-> > On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
-> >> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
-> >> vq->worker and queues work on it.  vhost_workers_free() however clears
-> >> the vq->worker pointers and immediately frees the workers, without
-> >> waiting for a grace period.  A caller that fetched the worker right
-> >> before the pointer was cleared can therefore still be queueing work on
-> >> it while it is freed.  And even when the queueing itself wins the race,
-> >> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
-> >> future attempts to queue it are silently skipped.
-> >>
-> >> None of the current callers can actually hit this: net and scsi stop
-> >> their virtqueues before the workers are freed, and vsock unhashes the
-> >> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
-> >> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
-> >> in vhost-vsock keeps the device hashed while its workers are freed, so
-> >> the lockless send/cancel paths become able to race with the teardown.
-> >>
-> >> Fix this by clearing the vq->worker pointers, waiting for a grace
-> >> period, and then flushing the workers so any work the last readers
-> >> queued runs before the workers are freed.
-> > 
-> > 
-> > 
-> > 
-> >> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
-> >> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> >> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> >> ---
-> >>  drivers/vhost/vhost.c | 11 +++++++++++
-> >>  1 file changed, 11 insertions(+)
-> >>
-> >> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> >> index 4c525b3e16ea..d6e235c25254 100644
-> >> --- a/drivers/vhost/vhost.c
-> >> +++ b/drivers/vhost/vhost.c
-> >> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
-> >>  
-> >>  	for (i = 0; i < dev->nvqs; i++)
-> >>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
-> >> +
-> >> +	/*
-> >> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
-> >> +	 * reader that fetched a worker before we cleared the pointers above
-> >> +	 * may still be queueing work on it.  Wait for those readers to
-> >> +	 * finish, then flush so any work they queued runs (clearing
-> >> +	 * VHOST_WORK_QUEUED) before the workers are freed.
-> >> +	 */
-> >> +	synchronize_rcu();
-> > 
-> > 
-> > 
-> > Any way not to add this for all devices that don't need it?
-> > Or preferably, even for vsock in absense of the new ioctl?
-> >
+On Thu, Jul 23, 2026 at 02:08:31PM +0530, Arun George/Arun George wrote:
+> On 21-07-2026 01:03 am, Gregory Price wrote:
+> > Changes Since V4
+> > ================
+> >   - dropped compressed ram example from series
+> >       - will submit separately if this moves forward
 > 
-> This code was initially local to vsock, and was moved here in v3->v4
-> after we discussed with Stefano that the issue looks more generic and
-> should probably be fixed in vhost.c (see
-> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
+> We intend to test this series on a compression capable CXL expander 
+> hardware. Since compressed ram example (cram) is not part of this 
+> series, how do you suggest to do that? Do you have a version of cram 
+> module compatible with this series?
 > 
-> As a compromise, we can keep this code here, but only call it
-> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
-> is always false, only set it to true on RESET_OWNER, and only call this
-> code once it's set.  Clumsy, but this way no other code path would have
-> to wait the full grace period.
-> 
-> What are your thoughts on that?
-> 
-> Thanks,
-> Andrey
+> ~Arun
 
-Or just thread a bool parameter to it?
+Hi Arun,
 
-> > 
-> >> +	vhost_dev_flush(dev);
-> >> +
-> >>  	/*
-> >>  	 * Free the default worker we created and cleanup workers userspace
-> >>  	 * created but couldn't clean up (it forgot or crashed).
-> >> -- 
-> >> 2.47.1
-> > 
+I dropped it from the base series because i want to try to move forward
+with this without RFC.  The compressed service itself will be a separate
+submission after I get decent signal on whether this will be accepted.
 
+I plan to RFC the new setup for compressed ram this a bit later, but I
+will share my working branch with you for testing.
+
+~Gregory
