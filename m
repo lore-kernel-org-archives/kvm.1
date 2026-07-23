@@ -1,180 +1,170 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023125.outbound.protection.outlook.com [52.101.83.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A352F83B5
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820226; cv=none; b=Os2k6xaU/bJNnqKee8OTECoI08CpSppODrGnxn0NDjVX9AV8WwsRMsKWX6xwUCsrVXCtvkm3fykP1G/GEwT07gocN6lc7mIzbmbyqhKw5T/ZT0ecYwlSnZfr/x90rzz6ETWy7PNKITeMmg65Snm2kAnazrhaAI4utKJPCWX6tb8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820226; c=relaxed/simple;
-	bh=wc58FnJvNGRmZB8MOWPGgiFR6U7xAj4iaYYZUVMc3vg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=q4NGjiOiN8Ewxg0sHr2+hw6qkmFQ/GB21p5MqnOS0zYKCAaHUPaWBaLT1hpu2GIxayTQ28YCU+iHJ8W1edfiOSlpH2kYhncl3N6mvkJXgXyvKoiU8D3Klk0r/B/+eQ3UVIXvH1Jk3W/mUG0e0cqvgcp5pzgfHP4pDMx7Joe9/Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wToSXlrY; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CF0439F73;
+	Thu, 23 Jul 2026 15:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.125
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784820805; cv=fail; b=nqUrCbFiYKt35vFQMWescdlUk8DQ+8iIFLIls9svkrfR+pxm0On4UQoXSqpyVeoJs7Msr8QT4CeP2fGg5hqQ/umc2tvIISP3Txni7fzotjYFYJKvBZL42hIHT60yZjYt/jvjCxfCa6BQmdT1aI1CR0ieZejxakawZp8i8yVH/bs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784820805; c=relaxed/simple;
+	bh=x61YAUgtgy1qQUFZ9p4/3qcV4aW3a8WzWzDLvqvQDV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=FiOXgqz7IOSQ17BFWIGM3tSbPT9uY5DeilW/SpQZk4eNiRjqnNMIfv2mpNzt2dGRrIT57IHMiVIwCnceYAXtNXPvpFhARacjMSHt2JhojNkNPna6YO5nHBwXWlvbLQX0OstnISUO8CD/5v/2gfHRn4vvB6T+Qx0/X/5rTvAex3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=HfUfQBUP; arc=fail smtp.client-ip=52.101.83.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wToSXlrY"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c7f385887bso15730935ad.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784820220; x=1785425020; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CNT1RM/ZdipYTEsicJnYvAxIeXZSfUPW+JDMKIP8+oY=;
-        b=wToSXlrYoHJVXi9YMKF9yN1LDuc0z7Bz2lzwogFsN04Gbet0zy6J6PFX9N1QDSlTWj
-         lHbzH8b5TvDVIimt9oP8OXBot5u5vhsi6xdAT7sg4VNREini5SNtxyaD6a3CJgkicMox
-         vyPR3xG39YbHA5Jacx6T69xOhdgqIirsKavYJAcSH787DDPFqr8IhuqgGKZV467RoCFo
-         RGRNlaqVVuyk69Kt/NpGHLQhSkuSW9kCljEVOau1SPAfAOvx7LACTDHjFbwGTcTTLkxj
-         /ejvSMKqY6dTJdfC/z7p6ujBDt5M6B9LZXxGaZ++iEn61YLMP/Pmg+mP0KKfuKqBxTyl
-         XPIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784820220; x=1785425020;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CNT1RM/ZdipYTEsicJnYvAxIeXZSfUPW+JDMKIP8+oY=;
-        b=MxM+unLZ5JKCRpXZ6JU29wPj5HJlgsGdQj1vrogsf9hTZilWsJDJMDMXENuA7tcijV
-         ReQiPpE+9bHPlQubivPKqHMfY/jxSqScg/i5+GFlPA6qHWpeEgj11VmrRBCTXszYhEka
-         +2LvHU6MaxqowHjT7rhj5orpK0HhuZb5lCGRmvMydRqHf6ctQNYRkuYOYLTT9r3nMSaR
-         4LJ208QkI4pielUT1l0aldo+8/Gv8wE0OQuq0qDjOUQrvjrEbqPouXP3oI88Nf57np+e
-         m1uUZ5KtXYHOZxy7NCxgI3Cp8V12Ck6td7HSqNgZ1jWq2fdJplrlS1RcE8hO4p3LR4HS
-         eR5Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rq7XzQZB47zSWKlizhp7vvTcGXwazsq8m+sJ734lEHSaH1cpthajqWxpzInUofxkay6034=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxlg60k4vpgds16eLjt2l2jiVtb5/JLY+xGnC1mntGKjPFNZ7gm
-	XP6SBt/nNC78iMiq9BlaWP1LaEkgHRqArniwtZLPjyhHHg76bYW252GMoAJzCSy47nELkyTw2/U
-	b40keKg==
-X-Received: from plpd6.prod.google.com ([2002:a17:903:1b66:b0:2ca:5a0f:d0c4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:17c6:b0:2cc:8ad3:423d
- with SMTP id d9443c01a7336-2cfa6c5e3f2mr45130805ad.29.1784820219479; Thu, 23
- Jul 2026 08:23:39 -0700 (PDT)
-Date: Thu, 23 Jul 2026 08:23:32 -0700
-In-Reply-To: <amGiAKsC3XrF6DyA@google.com>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="HfUfQBUP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iLWdWmtJ6nUwL+yi3aws65gRvL3cb7bfJGaKl1dpP17zF/ELjSfuVR9tTJyf9HpHDY6KyuKP+e9vupHbMPBZ9GdvWL+IuNJNopa9YEeYIL9j65LlMsBoGFTnqPqizYFcCQwi/qjRFSyXJkiAy+/Yd5SPFN4cvrQwJipSdvQ2VJ+3c29u6kYUXubhse2uFy7+IRGvwQAhNes5OgTWDQdD9PVYTf+gS5qdSUbLUIbyIMrSQ3VXag9dg8ub/K2zPeA8Hz8GAsMCKxhQG47KTX9GFRhNHnUYnrfMdofIf3ehoOw52c47GBPGyUG6JjEnRh8CzJUxq196Ud7/da6kaIFcXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qg81drHMS1r5fyWHTv6/E/7ab5a6CD0XWjPb9KFPpsA=;
+ b=FL4jYgn3XnsuDQF4fxT6GbG5gbEppw9RsXPTkQU8lLmF5rp7VrP+N0FuGfMCcHMhRliWfKo0Eu7aQsm16nMm0IXZk1FCpScBTjqvjpGOqt5k9CnZngTEdq4UjRd7fewtPluPsp6CWqw0mmuevHfNS6PizTh0i3w7sLMoo4oXsrfnjqmHVw/noAVnFHWG/tjYKeDIq3zADXoVVGgBifjsuCPn1R0oVbkOpbfEpQe6DOG3ra2xN4OaEaVmosoi0+npTpqMEZ5julr/1iXdJlV/6tmfO/jWfgNpm2cAhz5PbSszco6m3DizmagcA5mXfJcW1sB0+/9wfwn6/DSCPiW0dQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qg81drHMS1r5fyWHTv6/E/7ab5a6CD0XWjPb9KFPpsA=;
+ b=HfUfQBUPOT9UasFzgEc3PamnWGbZN0M++y3Fiv0zGFecsw8Z664tAps48bjUi9lkNVZWH4wuBwV2tzZ3cz3IO1Oa1f7sxJbfdWCNYw9CAFIu8Iwqk6eyHfUVgUXvwYXvgm7CDjFZzrg2TDvrjohgLA1BKLcr9GNeGcF1RY7V2xIV/99fI1LgKSdIIZdehcvbmqIgLZz0IX/u1IQE057R1ZZBKg2N9h0ZKO7aBu1ULomYQDXH4Dd9T6w99FjxWKlojwo3VpXsAIGOVEe5Q9IZxoTNFdnDetcE40lURhrycnrKmHWiklD6lcKocyOeIZqb74AQO5bjnEX7zUDKoQC3qA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AM0PR08MB11702.eurprd08.prod.outlook.com
+ (2603:10a6:20b:740::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 15:33:19 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 15:33:19 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
+Date: Thu, 23 Jul 2026 18:33:10 +0300
+Message-ID: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VIUP296CA0078.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:349::16) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
- <amFl89ch5Iej63L3@google.com> <amFms2CnzhDUuRCk@google.com> <amGiAKsC3XrF6DyA@google.com>
-Message-ID: <amIx9Ki6gv-wgBnX@google.com>
-Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
- allow skipping the gva flush
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AM0PR08MB11702:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4507207-4e2b-4b26-a50e-08dee8cfb8b9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|52116014|376014|10067099003|56012099006|38350700014|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	xKiN4JDIDY+CPVDXPMxaBE02OmkyjexFQ1QaXHb35da+Bp5wmhvLUDUImII6ut8NcDjsac+TiGZ2CqLuAyNuDQHuM7wsw0fxXXiyga/tisqvFWlHLNluzhtOYDiStjFZFxYvjt0qo4amaGdhWwHPnl1GlLPHgou3zgHvLnEzxCBnIDbF03Iwmi1SVvIKMEM/QZOyCVxu5wHh9DnV7O7bd84Zbeh4Q28YMktIes9HDU/K1mFhOjvxYuCEvSQxBa50Ml/M+7+aHDPyMzjGXRIs+lfxLJgPiNR1Ine8bpFFEpy7tLGYZQIj+qWdfOSaIidTLbumY3eg7R6uRKiY+7ZbkueFQVIxPK6Mq25mIO0unSYOJ2JWyQPsqMmRqDx44wbdWoNzqNcCKW+JRq1w8ExegGXD/NPcbTBDtF2/nFiCWeimf43yOIK4gyqkLuc7bvQG0ZYEne74CPaki/YBsFA1qzZMvgYGfUf1qnRvc6MLgSnzQjspfIrvBYvRgKjeCAiYyNhN/bvh3Zs/rgpU86ZV36C+KVm6e2xVJYPQYNkEMSk6NImXz+4VbzboiSfepM1aiosBDGVIBVj/BPmWiIfxciZXOmxxbS9d3Corkxo0XJ6hxrl7ya/efPAJ2B20ZpOFo0GDRplc9fDxTTZnnJyJUIxXHUjtusts+yrMaQI6DjnYqlqpeh2upXf5qaG8LVRJnAtjWGOV8w2JFTBY1jJPgGvh1Q6gEA92SraAB4AH6hA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(52116014)(376014)(10067099003)(56012099006)(38350700014)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GWDgtmP9Wi95Mup8MoQfsil0Uk8NWig1qWZsEAOJEb19lSGTBd4qkl7uD5yN?=
+ =?us-ascii?Q?d4laNtdLeTGXyEZMrzN/7MbiBzbpKKguzq5fNCJXUS6WSBCm2ndHKSQnb501?=
+ =?us-ascii?Q?tNI3KBOfsIIHO3SCldq+U7tjMh3964cBVA04fSi25OI/l6+yoBIRqLH3BMOQ?=
+ =?us-ascii?Q?pGTIaqrMx30NrPVJBkL/Yz5hfkjJGkMKNUuYumS+TfGD8k9hOOmeeL/ixtLo?=
+ =?us-ascii?Q?WJD3C2t0kEH6vFvwyCruRMdWY/8LniUoRUrT1wn3F4wWjUOhb/ur73dZF6P1?=
+ =?us-ascii?Q?D3NW4PwqoG6AgFUimyolosC4vcCXMjzufrFHTqo5hPsVIMJ34//iTDZa7au4?=
+ =?us-ascii?Q?FRnkg9sjrkDC8pFbV9SzZH+Nj/Z4JqLJqABkvXenPh5NJNMYuQwvaLdaWuJN?=
+ =?us-ascii?Q?OoU2htmfBX7QzYe0B1n4ohxgVmR7DxbmE0Qu822oaTS5G+1QQlZiQjibBQbv?=
+ =?us-ascii?Q?pk3bGTAj0nHWZljYXdPrS42BTRHH4JVJhLpqypFhtknlUIT+gnLfdyuE0g6y?=
+ =?us-ascii?Q?kwzklUX9FqT4CKGSjQw/uUb3D9g1c+65VH5l2FZt1blyh9O2Og19IuZgaHra?=
+ =?us-ascii?Q?e/7CdbUr1Sq54jdideMn47AtNL4eljNhdEBly+BAUub/g2vRBv30rySzyQHW?=
+ =?us-ascii?Q?kytRB2hjzZD9N2P0wucwApLopDVXvW5LtnHwCf2bUCGGPnhCtIM6d/iEgQi4?=
+ =?us-ascii?Q?FtNvB7+v3vmbyohqObBGcWGOXv0FwqZ4TPorCsGmMbof0SmzYqco5Pe2UaXf?=
+ =?us-ascii?Q?EUyDUywCSlpQrUPrXMgxwwQ05lke8v2KMvf/u/o9+OKkokdLIQG50Ui5FWy8?=
+ =?us-ascii?Q?apuZluEQv6V5IN1ZF9nikdhdfl6OsFY882ctslgf/bC8gKy1dlWq0ucA8jNG?=
+ =?us-ascii?Q?HLxenparFDeDGn46UxmKZYFtFZwx6JiE/g/SQxY5l4BliHnADKIi2yj1k4Ch?=
+ =?us-ascii?Q?69FtD2AwoTbT8WX4RjFSTmd/jYGl7lLlEQCGAcQw8mH/XQ/EA5mnSFxBKtXC?=
+ =?us-ascii?Q?kmow5QrapKokYm0pDmsOSti58Ic03fIVEi5ddk6qgOtxKOGQFZHGzm3in8Qw?=
+ =?us-ascii?Q?3F+OJb+dvU42Oy+szSW9t9u3RLRhqOm8Sj8C+y373Sd17Y8c8ZIOa0DVs9aH?=
+ =?us-ascii?Q?8y4dvXOa+Vz3qWu5/kmxpiZ9PweVSGInI4twl3lMgyrE417TOg5ju5xxaIjo?=
+ =?us-ascii?Q?evm8cEMgr4BdeOxKlXkNhouN9PjbhJmHfIJBnYeRWxes31ujEQs4G9HfNlFZ?=
+ =?us-ascii?Q?96v4Z+CTKSER4ppcfBk1860pgR4LiJA8JHj0PXb4SEoWzH6xrDSUMOoyzKE0?=
+ =?us-ascii?Q?2uG/mNXQAghAhFKn6AYwfS3BGYXX/OmJNKJRgJhs1UZgxstSGxPNc5uWU0F8?=
+ =?us-ascii?Q?1fgGEVVdEaxmAzpM2EQL3JUL9grIRRCz9DY6+/y+Lq6E4SGmJVCQA/nhhmdW?=
+ =?us-ascii?Q?iU58RAM21dXYrZ1xOo9Q7E9EePoCMU+MwC3K5vpauRhNmqnQq3hMBaCf79bd?=
+ =?us-ascii?Q?jRnzHCQvb8EolZo30akclkx3MjplFFhDeum1p9YQ2/ZtaoqqHYe86OHzbXvs?=
+ =?us-ascii?Q?rA+lpCwa7D/f7EhN8LP8MRRXswzljRP+GURZXBUalfoxzweULVOQ7P3T1LOn?=
+ =?us-ascii?Q?mtQJpihyjhrKRJ7HNyb9UPXAjEkWN7mtrkNF0gAgDPBIKBPc9DJoABGVijV6?=
+ =?us-ascii?Q?RbSBI12dBb9j9X/nyIUOuUIrLyGS1lyI6Vrj+jaizzktyz3TLg3CsnZPeaol?=
+ =?us-ascii?Q?qYO2g7xtarWdURgdH81bv52G9WuNFOM=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4507207-4e2b-4b26-a50e-08dee8cfb8b9
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 15:33:18.9559
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9a6AvPthaRJt46E8DcJWm66CzthsbbtaWEfdvSV2Yc9MraUTN0gGHhB+X7xRrJiMOxgxFy4fTyDwSWPx/PslvP/NruTV2+F4ArJmM7DWZN8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR08MB11702
 
-On Thu, Jul 23, 2026, Yosry Ahmed wrote:
-> On Wed, Jul 22, 2026 at 05:56:19PM -0700, Sean Christopherson wrote:
-> > On Wed, Jul 22, 2026, Sean Christopherson wrote:
-> > > On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> > > > Refactor helpers out of kvm_mmu_invalidate_addr() and kvm_mmu_invlpg()
-> > > > that take in an extra argument to skip the GVA flush.
-> > > > 
-> > > > This will be used when invalidating GVAs in a different context than the
-> > > > correct one (i.e.  invalidating an L2 GVA from L1), so flushing the
-> > > > current context would flush the wrong TLB entries.
-> > > > 
-> > > > No functional change intended.
-> > > > 
-> > > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > > > ---
-> > > >  arch/x86/kvm/mmu/mmu.c | 23 +++++++++++++++++------
-> > > >  1 file changed, 17 insertions(+), 6 deletions(-)
-> > > > 
-> > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > > index 65c35ed8f4a01..3feb75732f7b4 100644
-> > > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
-> > > >  	write_unlock(&vcpu->kvm->mmu_lock);
-> > > >  }
-> > > >  
-> > > > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > -			     u64 addr, unsigned long roots)
-> > > > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > +				      u64 addr, unsigned long roots, bool flush_gva)
-> > > >  {
-> > > >  	int i;
-> > > >  
-> > > >  	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
-> > > >  
-> > > >  	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
-> > > > -	if (mmu != &vcpu->arch.guest_mmu) {
-> > > > +	if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
-> > > >  		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
-> > > >  		if (is_noncanonical_invlpg_address(addr, vcpu))
-> > > >  			return;
-> > > > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > >  			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
-> > > >  	}
-> > > >  }
-> > > > +
-> > > > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > +			       u64 addr, unsigned long roots)
-> > > 
-> > > Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
-> > > kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
-> > > to have the "in_root" version to a quad-underscores helper, and IMO it's more
-> > > obvious what's different between the one-line wrappers and the inner helpers.
-> > 
-> > Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
-> > was assuming you were using it to differentiate between GVA and GPA, but IIUC,
-> > it's literally skipping the flush for the current context, which just so happens
-> > to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
-> > all possible.
-> 
-> Yes, it's skipping the TLB flush that is only needed for GVAs. The
-> alternative I had in mind (but thought was worse) was to refactor the
-> TLB flush part out of kvm_mmu_invalidate_addr() (or
-> __kvm_mmu_invalidate_addr()) in this patch instead of adding a boolean,
-> but this still requires adding a wrapper and the possibility of a
-> quad-underscore helper.
-> 
-> What's the main objection to kvm_mmu_invalidate_addr_in_root()?
+Every other update of vq->worker is done under vq->mutex - the worker
+attach/swap ioctls and vhost_worker_killed().  vhost_workers_free() is
+the sole exception: it clears vq->worker without holding the lock.
 
-I don't love the __kvm_mmu_invalidate_addr() => kvm_mmu_invalidate_addr_in_root()
-callchain.  It's not at all obvious that the in_root() helper shouldn't be called
-directly.  I don't hate it, but I do think we need better clarity on what all this
-is doing.
+The effect is harmless in practice, as this only happens while the
+owning process (and thus the whole device) is dying, but the lockless
+write is inconsistent with the rest of the code.  Clear vq->worker under
+vq->mutex, like everyone else, so that all writers of vq->worker follow
+the same locking rule.
 
-E.g. when looking at __kvm_inject_emulated_page_fault(), since it hardcodes a
-single root, it's a bit headscratching to use kvm_mmu_invalidate_addr() instead
-of kvm_mmu_invalidate_addr_in_root.
+This issue was found by Sashiko AI review.
 
-Hmm, and arguably, the way invlpga_interception() handles the ASID is flat out
-wrong.  KVM doesn't need to flush *all* roots, rather it needs to flush L1 roots
-for ASID=0, and L2 roots for ASID!=0.  If we can figure out an elegant way to
-express and handle that, it should naturally handle the "flush GVA" aspect.
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+---
+ drivers/vhost/vhost.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Actually, isn't there a pre-existing over-flush when handling kvm_mmu_invpcid_gva()?
-Oof, and a missed flush?
-
-To fix the over-flush, I think we want this?
-
-diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-index 6c13da942bfc..7f3e0eb33b29 100644
---- arch/x86/kvm/mmu/mmu.c
-+++ arch/x86/kvm/mmu/mmu.c
-@@ -6672,7 +6672,8 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
-                if (is_noncanonical_invlpg_address(addr, vcpu))
-                        return;
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 4c525b3e16ea..dbb6cb5eccea 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -722,13 +722,19 @@ static void vhost_worker_destroy(struct vhost_dev *dev,
+ static void vhost_workers_free(struct vhost_dev *dev)
+ {
+ 	struct vhost_worker *worker;
++	struct vhost_virtqueue *vq;
+ 	unsigned long i;
  
--               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
-+               if (roots & KVM_MMU_ROOT_CURRENT)
-+                       kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+ 	if (!dev->use_worker)
+ 		return;
  
-                if (tdp_enabled)
-                        return;
+-	for (i = 0; i < dev->nvqs; i++)
+-		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
++	for (i = 0; i < dev->nvqs; i++) {
++		vq = dev->vqs[i];
++
++		mutex_lock(&vq->mutex);
++		rcu_assign_pointer(vq->worker, NULL);
++		mutex_unlock(&vq->mutex);
++	}
+ 	/*
+ 	 * Free the default worker we created and cleanup workers userspace
+ 	 * created but couldn't clean up (it forgot or crashed).
+-- 
+2.47.1
 
-
-And that highlights the missed flush: if the PCID isn't the current PCID, then
-flush_tlb_gva() neglects to flush the hardware TLB for the target PCID, which
-could leave a stale entry in the TLB if the guest switches to the new PCID with
-MOV CR3 + X86_CR3_PCID_NOFLUSH.
