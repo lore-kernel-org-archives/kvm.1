@@ -1,50 +1,65 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38B839479C;
-	Thu, 23 Jul 2026 05:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784785670; cv=none; b=HeXMEnEswhYMeKCjtx3hFEBWEnDsgbBDSbf6RdeREoUweIeEd+n0ZQqU3+G73ls6k+W1stygy0yy0fxHLQG+IZT001k3iCQP7vZNkN+xrol34pOh8j/RwQc0CcREIJKS0YuH41wVUBGV2l77oGkJioxg1ghuE9RhX89SgVeb3e0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784785670; c=relaxed/simple;
-	bh=l2ZkHA9K0pykDCYMOEn+FOl80yQxYBui8RoslvajFQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E3O+TY7Lu25o1zFXZrLgH1+revELUYAJrCuPOYCzMvi+UU0n3Jl8bSCu/pUIcjpdBH8G57pEBu5kfOjpatLsmKSJiSWk0vojQbyaonZn0fJ6nST1P9qtKaxuPnKjS6Mr5jce2+J/LrJSyFQcIH7fBhKECwFFBDVKL+BTEPf3kzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SP8teTeg; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3643BB9F4;
+	Thu, 23 Jul 2026 05:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784786355; cv=fail; b=SQkoyyUpE5ZyzLe5Wcw8TeDPOlLhTu5zgnTsurACedCRs8ONUZnewa2NZ9A2tb8PoFYGnvDpuJCpXCqU4fgz0gGEIDZx7fgVxmm0DNPPtYyQQcGTOH27USNg89jImI2CStxQI5pKeT6KJJX0f5BYv6wiAcqYRbu/5+Iibofz3ns=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784786355; c=relaxed/simple;
+	bh=7UDuZZ+n2Xny17MWEa0hcAg2AQQD7WCDKBxGQF1I43Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qdfxb9z7Y5POb8vgZJzW1gFa7y9jZw9B+TXR68pbI6ndjmmK9d3aABxPkjEh6cOC7Ffx1TcdtRVY7hxc0bh19rLlkAMuKaSGknYP8fSJAgUaQc2Wu1misAG0qU6RQ/ntHQWhyjXOhC7AqX4bb9N1tRLpzTY6DAx3mUq4pFxs65U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UZndAlKs; arc=fail smtp.client-ip=40.93.201.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SP8teTeg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784785669; x=1816321669;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=l2ZkHA9K0pykDCYMOEn+FOl80yQxYBui8RoslvajFQc=;
-  b=SP8teTegHZVc/oYdEho7x0mdGhJEByeaECSp8KeM0Rf9mE9Mn85LyDRB
-   2tg3rGnd5uiFxKa30yhXX85u/4YUGsxIsvPAWUv7zDY2ixEoC8IaOTCm4
-   6UqsbmP23Q0drR4mEKFrItTuYn1XLSTXDj9RLwbx+9TEF0wzi9aH7Hqsu
-   q9S4KkBQT6qsVlbd7VgjRBRRyFLPof7LEPvdB4PLKmaXbsvJ8rgQfpS8D
-   IfeYMHb52W38nK8uFALJce4PDqpTJOKjjLPy6SOkdbzyehpHKZsxe/M8j
-   RWktfvLYaPA5PEr8rZakliXMhMGr0EQ4MYXmYeIvN9dwKw8YNSMBshT1M
-   w==;
-X-CSE-ConnectionGUID: WDMLCYPUTfadj8SlT7gvqA==
-X-CSE-MsgGUID: 942RNFgbRHuEGVQLna5BHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95785629"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="95785629"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 22:47:49 -0700
-X-CSE-ConnectionGUID: ni3/acuxREq28QRkPjDhZg==
-X-CSE-MsgGUID: UL+AY/51RGerLsYxyzoYEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
-   d="scan'208";a="256508031"
-Received: from jiahezha-mobl1.ccr.corp.intel.com (HELO [10.124.241.178]) ([10.124.241.178])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 22:47:46 -0700
-Message-ID: <8d35ab5f-f88a-401d-a431-1531755068b4@linux.intel.com>
-Date: Thu, 23 Jul 2026 13:47:43 +0800
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UZndAlKs"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uN2gB0ucjTSZkGz8b6MYXExzd/dHBT+tFG3LRMHF0A/YSj2Jp91tUi8Mg0rpKKM+h6hdeZm4kF2j5V5vLqUUr/QdJXTflquT3Aq19EJCU1bOFOjvA2sw5F9pK+mwAxqIHVunb3mxEgMt4gHdvs3PxpfZ/qnmtIBpAeyoNh7sx16mH1y+lmNGdLiq8XQuAkr4EbfMSoSND6XU/B3qlwi9luqpU0EQeuBwerrkbuWQ18PnjmyFMk5SAkr+vtBnfay5ZJgGlEiYWbfuILf6LsY1mxxfGu4Z4xvq0+A5JCZW2hkCRd7TkmArMHdY9j/dtSHrzeBKUW6gNcADw1va1e6+Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
+ b=SmA1B0fDNUrkwT9ErkOL5BOq1z9prRb/pWuME0Lxbrejg5XjhkH5Sh2/hvUGgYXCEP2Tq/6GqDbS4uF1FmUgP2UYXzaLA1opdiFkbai3cAZLPsMNMk1FHPcuM+j62N5bp2eM7yQyE0gLK4agOu6ZlyRge7VOO7IkMzT9gmfEKuOw94nnKqf2Xk1xo9T3kxgm2AyU6TP4UIYkPy83HH2d5Ge2F8bhPlU7zpX4cGZK16jyO4JCEY9ERprQgFqWC9AE+kGW68WG/oEDX7WDcLDw5IC42Sp2ylczc2RyRHNLSLNEgF7z9hiQmA50IYrTKB4Z7vdj0esjz7LYlqOopOj3sA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
+ b=UZndAlKsSpdM4DoSMyLm5Rg2gpyKB28J2yBY8Kk4bP+fyJ32p/1rxvvwrJtEEIGiJ+lDQB8Y7bGDqbz9NpaXxVasBIT5ZX0mTIKV3Y2uE3xdtqbYBHm1gwwUENc6XxOZywucMd+wCfqY97QfsnT/AZP7RZplckV6uILOH/iBgx8=
+Received: from MW4PR04CA0225.namprd04.prod.outlook.com (2603:10b6:303:87::20)
+ by SJ2PR12MB8717.namprd12.prod.outlook.com (2603:10b6:a03:53d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 05:59:07 +0000
+Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
+ (2603:10b6:303:87:cafe::61) by MW4PR04CA0225.outlook.office365.com
+ (2603:10b6:303:87::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
+ 23 Jul 2026 05:59:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 05:59:07 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
+ 2026 00:59:03 -0500
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Thu, 23 Jul 2026 00:58:53 -0500
+Message-ID: <70580cfc-8625-4f35-a77b-7154a52e10a5@amd.com>
+Date: Thu, 23 Jul 2026 11:28:47 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,131 +67,82 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-To: Jim Mattson <jmattson@google.com>
-Cc: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260629231938.15129-1-zide.chen@intel.com>
- <20260629231938.15129-8-zide.chen@intel.com>
- <CALMp9eQyMe6MfYPkvYAZPm+6A+FK6ZYpGv5Wx+nVvi9GtumA+g@mail.gmail.com>
- <f16aea7f-6b5a-4980-91b4-a41931b797ec@linux.intel.com>
- <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
- <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
- <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+To: Borislav Petkov <bp@alien8.de>
+CC: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
+	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	<hpa@zytor.com>, <seanjc@google.com>, <peterz@infradead.org>,
+	<thomas.lendacky@amd.com>, <herbert@gondor.apana.org.au>,
+	<davem@davemloft.net>, <ardb@kernel.org>, <pbonzini@redhat.com>,
+	<aik@amd.com>, <Michael.Roth@amd.com>, <Tycho.Andersen@amd.com>,
+	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
+	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
+	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
+ <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+ <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+ <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
 Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SJ2PR12MB8717:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9913147-35b1-4cda-62b3-08dee87f820b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|23010399003|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	HR7uTfLoh/LrkGJkftX+qolxkKWth8b4v4HLy/sMakKULfuTNRbLegUtF+pvz6XIG58ux2RXeO9jEdmTt+W6kzyjIxWeZejxCwgR++OLnGuMyHkliWPO/ebILGB4Gloq5qS5AjjDO9avtiNjDQksAaR0w8i1J5c/ReoA/7f9bhA8JdD2RJhBccCXY37n0M+mjCroUmj9BLNF7SOFqfJV4SU96tbEsVciHeaIa+GScDG4eQydmtkN6JNAMr/L7NLkyqE7c9uTLRbjbPgHo2RdFbDhsKtBAdq9JT7TcC5wI3UYuK4lMDjenhwt5ejTdalPtRtBQ7HGP7qYblAzkRUC5yMw/ZN1rtFAWdCE3bs/tu8umnjx5aRh4oFnJbLWkzgP8E8uEBHROmB0iY7L0UpdjQP622JeGumuxZL8TCiBNNhlejKjjY3mYQ1xnig2qSZkvvfIwuXkxBNF1h3haRi4ZGiMjeTtBhPLcBd641IPUDKhdO2ASukh33oxPCSwyNNzq35bIrxXEcJbYSGccB6OSlLo4wtmyLpdkMwpLybplmbRr3F4rclEhD3PySyX1tql/35jHyL/do3lVEurhABN64yVLSBI6uohKGs6I1Gt0xw3Flh/9GNpZCkzkeyXuKUArdtG4OPyXCGPZlNHmRVtjZM3QG4DphZcM98yLJPmx5oNdmwQ63xfMui6Q9q+jx32+/DZld5a8cWECI0B9jCZJw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	eRJVf0Ixcc4gR0rTZejdQEThRVArvBCqqT3bjzEsOGHgxhRnMThsKd9D73AZmOtO3/cpwQqMN/ggdR7mZtgnwNFWL7zJhc08ZmPDmDJXCsE225Wlsn0KxibI669qoXdHy+AWtwfhX2RWyS8/xAvKnyJoo8tlMCbbUQYI5NcSEdjTvQUNkQna6Ma6jgSgApMXVD5hAVXDLzaGhiMHGsX321NUPSP11rydRwfbO5SQnBJE6pGOvSnVbqH1UsvX69R2vvoFo0a0lTyxrP6YNJw2EPzd2fRIov4B6kLH6E54k5nA42GGLg+cv1NW3SmuQbJL6oVPXZhNKdQlwhbKPUyHMey28RYNxzmGt9zlH3AV9kxZ/FarOnXDSnDdR4/dhS/RMGEd/BXhp1l0ViA6Zq1VgpdnjW6TpICe6F89mlKik/VP78sKyUDPcGvP5NF3lgk0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 05:59:07.2739
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9913147-35b1-4cda-62b3-08dee87f820b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002312.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8717
 
+Hello Boris,
 
-On 7/23/2026 11:10 AM, Jim Mattson wrote:
-> On Wed, Jul 22, 2026 at 7:53 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>
->> On 7/23/2026 10:25 AM, Jim Mattson wrote:
->>> On Wed, Jul 22, 2026 at 6:44 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>>> On 7/23/2026 8:02 AM, Jim Mattson wrote:
->>>>> On Mon, Jun 29, 2026 at 4:29 PM Zide Chen <zide.chen@intel.com> wrote:
->>>>>> If the host has the PERF_METRICS capability but it's not present on
->>>>>> the guest, RDPMC interception must be enabled and KVM should inject
->>>>>> an #GP when the guest attempts a PERF_METRICS RDPMC.
->>>>>>
->>>>>> If the guest has PERF_METRICS but RDPMC interception is enabled for
->>>>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
->>>>>>
->>>>>> For simplicity, Metrics Clear Mode is not supported.
->>>>>>
->>>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>>>>> ---
->>>>>> v6:
->>>>>> - Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
->>>>>> - Reject non-zero index.
->>>>>> v5:
->>>>>> - new patch.
->>>>>> ---
->>>>>>  arch/x86/kvm/pmu.c           |  7 +++++++
->>>>>>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
->>>>>>  2 files changed, 21 insertions(+)
->>>>>>
->>>>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->>>>>> index 8ef2d4761790..04b9c840f218 100644
->>>>>> --- a/arch/x86/kvm/pmu.c
->>>>>> +++ b/arch/x86/kvm/pmu.c
->>>>>> @@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
->>>>>>  }
->>>>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
->>>>>>
->>>>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
->>>>>> +{
->>>>>> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
->>>>>> +               !kvm_vcpu_has_perf_metrics(vcpu);
->>>>>> +}
->>>>>> +
->>>>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>>>>  {
->>>>>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
->>>>>> @@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>>>>                 return true;
->>>>> I know we have a strong disagreement here, but I really feel that this
->>>>> must be secure and future-proof out of the box.
->>>>> What if we added a module parameter, enable_rdpmc_passthrough, which
->>>>> defaults to false?
->>>>>
->>>>> Then:
->>>>>
->>>>> if (!enable_rdpmc_passthrough)
->>>>>         return true;
->>>>>
->>>>> Is that a reasonable compromise?
->>>> Yes, this is an option. Another option is to add a helper to explicitly
->>>> tell which platforms are secure and can pass-through rdpmc. Maybe like this,
->>>>
->>>> static bool intel_pmu_can_passthrough_rdpmc()
->>>> {
->>>>     switch (boot_cpu_data.x86_vfm) {
->>>>     case INTEL_ICELAKE_X:
->>>>     case INTEL_SAPPHIRERAPIDS_X:
->>>>     case INTEL_EMERALDRAPIDS_X:
->>>>     case INTEL_GRANITERAPIDS_X:
->>>>     ... ...
->>>>         return true;
->>>>     default:
->>>>         return false;
->>>>     }
->>>>
->>>>     return false;
->>>> }
->>>>
->>>> Then rdpmc can be passed through by default on these known secure
->>>> platforms. For any new platforms, the rdpmc would be intercepted out of
->>>> box until we confirm it's secured and explicitly support them.
->>>>
->>>> How about this? At least for me, it looks like an overkill to disable rdpmc
->>>> passthrough unconditionally on these known secure platforms.
->>> The F/M match would only apply on bare metal, since you can't trust F/M in a VM.
->>>
->>> What if we combine this with the module parameter, but now the module
->>> parameter defaults to true? Somewhere in module load, we have:
->>>
->>> if (boot_cpu_has(X86_FEATURE_HYPERVISOR) || !intel_pmu_can_passthrough_rdpmc())
->>>         enable_rdpmc_passthrough = false;
->> It looks good to me. :)
-> On second thought, it doesn't really matter if L0 has lied to L1 about
-> F/M. If the hardware supports more RDPMC types than the L1 virtual CPU
-> does, L0 must intercept and emulate RDPMC for vmcs01. Even if L1
-> decides to pass through RDPMC to L2, L0 will still intercept and
-> emulate RDPMC for vmcs02.
->
-> So, we can drop the module parameter and just use
-> intel_pmu_can_passthrough_rdpmc().
->
-> To keep the list short, I assume that any CPU with only three fixed
-> counters will return true.
+On 7/23/2026 10:44 AM, Borislav Petkov wrote:
+> On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
+>> The offline cores will remain offline since hotplug is disabled. RMPOPT
+>> is simply a performance optimization for RMP checks and leaving the
+>> offline cores (that will never exit idle) unoptimized should be
+>> acceptable.
+> 
+> What happens if you boot with a subset of cores, the boot flow enables RMPOPT
+> and then you online the rest?
 
-Sounds good. 
+RMPOPT happens at __sev_snp_init_locked() for all online cores. Until
+then, SnpEn is still 0 and we don't need RMPOPT because RMP checks
+haven't been enabled yet.
 
+> 
+> Have we tried that?
 
->
+That said, Ashish, should snp_rmptable_init() do a
+snp_rmpopt_all_physmem() (or something equivalent) when it finds SNP_EN
+set in MSR_AMD64_SYSCFG after a kexec?
+
+-- 
+Thanks and Regards,
+Prateek
+
