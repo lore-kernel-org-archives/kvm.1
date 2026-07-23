@@ -1,186 +1,272 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313E37C925
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AA82F8E90;
+	Thu, 23 Jul 2026 17:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827597; cv=none; b=IzGOyC3sWjDqEU3OQuCu5isFF64vm4hiF1cubxSCyswJZmVEke5BNu9b+COJpaS28FPPdNjjaYheytjKDy1SzdwaAXSlfA5pGJRZQRysCy1iEz0oshgLYOTxl5VpgtUXw6qHj6xjRJj3BEPZRWB4zNa2EgNMxW0CleGZnKwuriI=
+	t=1784827907; cv=none; b=letLxa4ycaU1SrPs+sZOIf+9EXTl/kSMQFCYSJf0mlDDIJe9OGV714EfDsnoauU7waSZnqjnBslKcD8AKWS/OJDx51xqIWqRB0QVNEh68STsEehZ1jU2lv/hSTNo3zHM2ZKsHcqrDal2YOM3xT7KJQ8Iyv+z6pTs6m76TYSIe34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827597; c=relaxed/simple;
-	bh=cd/ZRwiipOV+bQstkRLvKcE/iZkXqPrrTq6Rfr4R/oU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=m7Q4gRwdGowKFUm4Tv91lotpLs4xO4tqyS/t1SUQwZ80DeddVkWxpVWQIjXVtOwdtvkefno3o82VfWiofqabddxj/dgstUTeUVnxvIDzwZ5TV1XS1FKKzSy8/Ok6Uyr5RV2iY6zxz9sPAj5Ji0tJx2pnTZyZTQiMLhclP7gOV2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vowAHAii; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784827907; c=relaxed/simple;
+	bh=6LOcYfOJGh0+ldrtmPFlWLuW+Zjp77rXM/MRmp1qTHc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L3r9UmfkrnFyv6OOv3CgF0qFNneN189xvia6kdbbjuIZkNLiOFDzAfctXG0qCrhlja7ykMI2Lo/20FX5GlpeugZ5Dln+F1aFws9AvvoV47XV6INOA0rh7uJDd0FzlNlgzuhQi6c1Xqey9lE0QlMf+rLtY193n+D9K5oTyaUcYAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WLR1C39q; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vowAHAii"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c9fe4c5eb39so750846a12.1
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:26:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784827594; x=1785432394; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yNQpsQ8GyeYtZEElIeEiEJAJInLo2UxIW3TpNd+CGQU=;
-        b=vowAHAiie8UNbVP06YJ1ZSXvIP2dFHGgJFX/0BTN9KRfvQi9DMd+PLUcjfGfFeE3wL
-         LeZHG7vrA1kA+NjvLSStg5gQm1xRMk4S7oS/D2eU9SKn7Gj6lY7JzhYfjIvoBM0jkY2r
-         IzrgASxCM8uhjpuZMuc/oiZGIqPyKuJzyerfhVntXm1C/TLGgi10QUHAr9mZyA6RVqIP
-         Q01V1LpD10Cw+7hSVSZs+2xXKvByd8wp5ZIj7SYClDinXuvoioRX39ujHORsjAK9qtD8
-         EleoVBvxhRj28HwwVkw7lvsSv8aXbo516GAek5OHh+hdscqEUjKmtKnM3a5u4K2lHv+H
-         r6Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784827594; x=1785432394;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yNQpsQ8GyeYtZEElIeEiEJAJInLo2UxIW3TpNd+CGQU=;
-        b=hxnCkcIB1VLKn6fyXA9kOY+ylMVs/bojcEMGJJatv5OjIqJMYgD9T3LQCIpgm7QsyL
-         5UYGudsWlLDQCtfkE2vuDAZEKyFDXaqLHSXcJoVXeotdbrSpbrDNnYdLpqXA2o6HVwa4
-         BKgLwMObViCbX07K4S/4KrVRXc1uJgOpMKevDWmTfle/GXvFQj9kN3vopWvriG3+5ncl
-         SPpEgDyPI+tDrbOKJm9iB6QgA5y7yPxVRO292Z2Xedk9rPlbsEvMlC2mGlGJ8pgWZNTz
-         qyOt7lLxcnKT+6FYppgtlE5D6F4G66XSG2MH9wWTKbqDa/Wk4B88vNV+NDZzRiLv7X5S
-         B6DA==
-X-Forwarded-Encrypted: i=1; AHgh+RoN5M2tW9ByFsUu6qWsxcp4uCQaIeTK9u05KZ+HItMCRb3oGyP8o2AqF1GotvNZWNxiXcc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylO9z1HbW/1lO5MGjQTtRtVObb5JwGj3WPWdG7bsT2PNuwAThA
-	dqYAAHeHZAQK5Ka5wv2lF88FxF9KD47F8UoozEYzrFdUucZKMaJUUWUJekg01LvI1JnH1fw2aFf
-	MkmNcJg==
-X-Received: from plbjz14.prod.google.com ([2002:a17:903:430e:b0:2ce:fc5f:e782])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e541:b0:2c9:b48c:fdec
- with SMTP id d9443c01a7336-2cfa6b740c2mr50181305ad.12.1784827593463; Thu, 23
- Jul 2026 10:26:33 -0700 (PDT)
-Date: Thu, 23 Jul 2026 10:26:32 -0700
-In-Reply-To: <CALMp9eR2XffG3pQL_pjGphSqMGfpJ9vRJi45Hd9RuCSd5EwU6g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WLR1C39q"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDBp8N3094842;
+	Thu, 23 Jul 2026 17:31:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kkPa/x
+	oJfiOxFkHrZA7tstgC7v4/EyIKAP1hZ4Yi9xU=; b=WLR1C39qB3Cwzv909DoL2o
+	chlGQYsGx8QnpyGaBhK07AbX1Vg4eSK0OhTXk7l4b/UZFCNseh7+nCpuU7HzVApt
+	KZO4GOpfxnSy5t3mi6BnYmIc6zkmHDd6cNGvCnAcI2ziHun24YDbR1STJwTjSvXl
+	xPTYq0iz2xGm2Zi9vKPqaun2OjKVBRMJm9KxlC56f12Nd4ThrHrDp57hBHFFC+6V
+	YV8Ga99Ab7y9sbDY8bjYLkqSXm6hAIQnYBPk9Hsy3Zbzqn8ogEKmJO0MdDZpWqph
+	Bbmom91yp9jsnXuN9FtlZiJBOul++Zm/IyDe3//139CHU2dOESK5KoLTxGLOIDhA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ahg6xe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 17:31:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NH4jEW022204;
+	Thu, 23 Jul 2026 17:31:43 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtk59gx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 17:31:43 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NHVgY629164274
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 17:31:42 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4796258059;
+	Thu, 23 Jul 2026 17:31:42 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 85EB95805D;
+	Thu, 23 Jul 2026 17:31:41 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 17:31:41 +0000 (GMT)
+Message-ID: <66a15560-87ba-4167-934d-cf43916c37e3@linux.ibm.com>
+Date: Thu, 23 Jul 2026 13:31:41 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
- <amFf5MAhc8sUqeYV@google.com> <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
- <CALMp9eQi=604LVn=ZMnzoUy55LVb1qorKzPKm5HVK_ACsPuP_A@mail.gmail.com>
- <amIgLeMCAH2vB4ot@google.com> <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
- <CAO9r8zMukfW2b5tjYarpkpPH0osA_+QEEMRq8k5R8B_WFG_yYQ@mail.gmail.com>
- <CALMp9eRsJeByu4U8NZQhnKM7BaKziyLUix6J3XGCEMZyiar=vA@mail.gmail.com>
- <CAO9r8zOtzSscMx_PFuABkXzZ=xgGOcioegKzgYscXa9WiobySg@mail.gmail.com> <CALMp9eR2XffG3pQL_pjGphSqMGfpJ9vRJi45Hd9RuCSd5EwU6g@mail.gmail.com>
-Message-ID: <amJOyIOzsJx8dWa-@google.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/6] KVM: s390: pci: Fix memory accounting for
+ pinned/unpinned pages
+To: Farhan Ali <alifm@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@linux.ibm.com, farman@linux.ibm.com
+References: <20260722170621.1686-1-alifm@linux.ibm.com>
+ <20260722170621.1686-3-alifm@linux.ibm.com>
+ <6f87bda7-8a8a-4f93-907c-6e0a442c8ceb@linux.ibm.com>
+ <3950a0e4-3074-44af-a1d1-d38ee3391c0f@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <3950a0e4-3074-44af-a1d1-d38ee3391c0f@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qltQratDnYiXzd5j9Qf4B4KzOisGmctP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE2OCBTYWx0ZWRfXxv8jICA3nGLi
+ he3h/ghKd2X9EZYgVuCIGrxDyBp5OO0HqNMzY7DKWyGCaZom08Rx4ZTQucrxQqDyx7MvGVQrG7h
+ hMl/zy2xwsLD1KoGY+giutpSqv0/uoYz9bXlU30To8qomPnlGu3661VR2GT8bCrQHKQfJM6P5F8
+ a3+NC2gCpCxbz7e3U1ydcJYfVgvfwZ6NOl5b+zzs51BMZRaZuvGEW5NsumGmnZBEP64shKnBzRK
+ yocTRzBdRC2qVQqdCCrIoGhYhebT1jcw9RjoLadIBhDyoKsVv8Y2frGdFVGM6KjwzUUVFUXz49Q
+ t33wYnm5UHH0z994UMfgF4if16VE/Kjpqg62qqQ8lfAoPb3tZE6PW/7etiFF0ty7p/KmCulkkvc
+ /a77p2bWKTiMEz15chkYTukS6kolkyCEiq6NRhx9WEt3PoHhO9k9FoMchmySmG+T8nd5U6S8vhm
+ ILxg569nygdclSzbk4g==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE2OCBTYWx0ZWRfX1yIEsMB3JBH6
+ QE32zXk7knj4ojecaKKvHrAZvSEhXj93Vl3fG32jU6la3tR9FGDcglu4x/K6WfbYfdf+V/+XEIJ
+ 3MhKnbvT6D0uJeCp7lcDPofK4eTGys0=
+X-Proofpoint-GUID: qltQratDnYiXzd5j9Qf4B4KzOisGmctP
+X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a625000 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
+ a=P-IC7800AAAA:8 a=VnNF1IyMAAAA:8 a=jbpgf7bDCpGlyQxb25MA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230168
 
-On Thu, Jul 23, 2026, Jim Mattson wrote:
-> On Thu, Jul 23, 2026 at 9:57=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Thu, Jul 23, 2026 at 9:54=E2=80=AFAM Jim Mattson <jmattson@google.co=
-m> wrote:
-> > >
-> > > On Thu, Jul 23, 2026 at 9:32=E2=80=AFAM Yosry Ahmed <yosry@kernel.org=
-> wrote:
-> > > >
-> > > > On Thu, Jul 23, 2026 at 8:57=E2=80=AFAM Jim Mattson <jmattson@googl=
-e.com> wrote:
-> > > > >
-> > > > > On Thu, Jul 23, 2026 at 7:07=E2=80=AFAM Sean Christopherson <sean=
-jc@google.com> wrote:
-> > > > > >
-> > > > > > On Thu, Jul 23, 2026, Jim Mattson wrote:
-> > > > > > > However, since KVM completely ignores NASID, it would be sad =
-if
-> > > > > > > migration were blocked because the target has a lower NASID v=
-alue than
-> > > > > > > the source.
-> > > > > > >
-> > > > > > > That's an argument against changing it without some kind of u=
-serspace
-> > > > > > > opt-in. Increasing it seems safe, but if userspace just refle=
-cts the
-> > > > > > > value into KVM_SET_CPUID2, then an increase would block kerne=
-l
-> > > > > > > rollback.
-> > > > > > >
-> > > > > > > In any case, I think the new value should be a constant so it=
- doesn't
-> > > > > > > imply a migration constraint. Perhaps we should adopt the hig=
-hest
-> > > > > > > value reported on a physical CPU to date? I think that would =
-be
-> > > > > > > Bulldozer's 0x10000.
-> > > > > >
-> > > > > > Or keep KVM's enumeration at 8, then find somewhere in KVM's do=
-cumentation to
-> > > > > > describe KVM's behavior and provide guidance for userspace, but=
- otherwise make
-> > > > > > it userspace's problem to solve?  I'd be a-ok with that.
-> > > > >
-> > > > > That sounds best to me. Document that KVM ignores the guest NASID=
- and
-> > > > > commits to always supporting 2^32 ASIDs. Advise userspace to popu=
-late
-> > > > > NASID with a power of 2, and perhaps mention that hardware has on=
-ly
-> > > > > reported three different values over the last 20 years: 0x40, 0x1=
-0000,
-> > > > > and 0x8000.
-> > > >
-> > > > I agree that documenting that KVM supports any NASID value from
-> > > > userspace is needed here, so that VMMs can set reasonable values an=
-d
-> > > > migration pools are sane.
-> > > >
-> > > > That being said, I still think KVM's enumeration should be increase=
-d
-> > > > from 8. If KVM's enumeration is just a hint, then it should be a go=
-od
-> > > > one imo. Current L1 KVM will flush everything (L1 + L2) every time =
-it
-> > > > runs out of ASIDs and pumps the generation, so advertising a small
-> > > > number of ASIDs leads to L1 unnecessarily hurting its performance.
-> > > > Newer KVM (with this series) won't suffer as much.
-> > > >
-> > > > I think we probably want to pump KVM enumeration (e.g. to 0x8000 or
-> > > > even 0x40) *and* document that it's just a hint and KVM effectively
-> > > > allows any value.
-> > >
-> > > How do you do that without breaking rollback?
-> >
-> > KVM's enumeration is just a hint :)
->=20
-> Yes, but existing userspace VMMs do not know that.
->=20
-> > Also, in practice, even if you rollback the CPUID presented to an
-> > existing VM by userspace should never change, right?
->=20
-> Today's KVM claims support for only 8 ASIDs. If tomorrow's KVM
-> supports 0x8000 ASIDS, and we start a VM on tomorrow's KVM with a
-> userspace that copies NASID from KVM_GET_SUPPORTED_CPUID, that VM will
-> look like it can't be supported on the old KVM if we have to roll
-> back.
->=20
-> Hence, until you get an ACK from *all* userspace VMMs that they
-> understand that KVM's reported NASID is just a hint,=20
+On 7/23/26 1:08 PM, Farhan Ali wrote:
+> 
+> On 7/23/2026 7:12 AM, Matthew Rosato wrote:
+>> On 7/22/26 1:06 PM, Farhan Ali wrote:
+>>> The account_mem() and unaccount_mem() functions call get_uid() which
+>>> increments the reference count of struct user_struct on every
+>>> invocation.
+>>> But we don't decrement the count by calling free_uid(). It also
+>>> accounted/unaccounted the pages against the current->mm. But its
+>>> possible
+>>> the unaccount_mem() can be called from a different process context
+>>> than the
+>>> one that originally pinned the pages.
+>>>
+>>> Let's fix this by storing the pinning process user_struct and mm_struct
+>>> when accounting for pinned pages, and subsequently free these resources
+>>> when the pages are unpinned.
+>>>
+>>> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/
+>>> disabling interrupt forwarding")
+>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>>> ---
+>>>   arch/s390/kvm/pci.c | 38 ++++++++++++++++++++++++++++----------
+>>>   arch/s390/kvm/pci.h |  2 ++
+>>>   2 files changed, 30 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+>>> index d2a11cdf6941..1b3114c7cfbb 100644
+>>> --- a/arch/s390/kvm/pci.c
+>>> +++ b/arch/s390/kvm/pci.c
+>>> @@ -190,33 +190,51 @@ static int kvm_zpci_clear_airq(struct zpci_dev
+>>> *zdev)
+>>>       return cc ? -EIO : 0;
+>>>   }
+>>>   -static inline void unaccount_mem(unsigned long nr_pages)
+>>> +static inline void unaccount_mem(struct kvm_zdev *kzdev, unsigned
+>>> long nr_pages)
+>>>   {
+>>> -    struct user_struct *user = get_uid(current_user());
+>>> +    struct user_struct *user = kzdev->user_account;
+>>> +    struct mm_struct *mm_account = kzdev->mm_account;
+>>>   -    if (user)
+>>> +    if (user) {
+>>>           atomic_long_sub(nr_pages, &user->locked_vm);
+>>> -    if (current->mm)
+>>> -        atomic64_sub(nr_pages, &current->mm->pinned_vm);
+>> Previous code handled the case where current->mm could be NULL...
+>>
+>>> +        free_uid(user);
+>>> +        kzdev->user_account = NULL;
+>>> +    }
+>>> +
+>>> +    if (mm_account) {
+>> ... And you check for kzdev->mm_account being NULL here...
+>>
+>>> +        atomic64_sub(nr_pages, &mm_account->pinned_vm);
+>>> +        mmdrop(mm_account);
+>>> +        kzdev->mm_account = NULL;
+>>> +    }
+>>>   }
+>>>   -static inline int account_mem(unsigned long nr_pages)
+>>> +static inline int account_mem(struct kvm_zdev *kzdev, unsigned long
+>>> nr_pages)
+>>>   {
+>>>       struct user_struct *user = get_uid(current_user());
+>>>       unsigned long page_limit, cur_pages, new_pages;
+>>> +    int rc = 0;
+>>>         page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+>>>         cur_pages = atomic_long_read(&user->locked_vm);
+>>>       do {
+>>>           new_pages = cur_pages + nr_pages;
+>>> -        if (new_pages > page_limit)
+>>> -            return -ENOMEM;
+>>> +        if (new_pages > page_limit) {
+>>> +            rc =  -ENOMEM;
+>>> +            goto out;
+>>> +        }
+>>>       } while (!atomic_long_try_cmpxchg(&user->locked_vm, &cur_pages,
+>>> new_pages));
+>>>   +    mmgrab(current->mm);
+>> ... But here you do not check if current->mm is NULL.  I'm not sure if
+>> it will happen in practice, but we did guard against it before this
+>> patch.  Just add if (!current->mm) around this mmgrab?
+> 
+> But wouldn't the atomic64_add just below this also need to be in the
+> check? FWIW looking at some of the other references to mmgrab, I didn't
 
-Way off topic, I keep reading NASID as NSAID and can't help but wonder if y=
-ou've
-found another way to imply that KVM is diseased and needs drugs ;-)
+Yep good point - my intent was to not mess with a structure pointing at
+address 0, so you'd want to skip that too.
 
-> you can't change the reported ASID=E2=80=94unless, of course, you make th=
-at change an
-> opt-in.  But any VMM that opts in already knows that the value is just a
-> hint, that it can set any NASID value it wants in the guest CPUID, and th=
-at
-> all values are actually supported by all versions of KVM that report any
-> non-zero value. So, then, what's the point of the opt-in? What's the poin=
-t of
-> changing the hint at all? Documentation solves the problem completely.
+As for other references to mmgrab, I don't know, but
+https://www.kernel.org/doc/Documentation/mm/active_mm.rst
+Specifically says to check
+if (!current->mm)
+to ensure we have user context.
 
-+1000
+Now, here's the thing:  I believe in practice today all of our calls to
+account_mem will have a user context because they are done in response
+to an ioctl.  And it is likely that the examples you looked at are also
+guaranteed to be in user context.
+
+The problem would be if we were to ever call this accounting function
+later from a kernel thread where current->mm was indeed NULL.  I suspect
+it was either a review comment on the initial implementation or a case
+of 'easy enough to protect against it'
+
+> see explicit checks for the current->mm [1] [2]
+> 
+> [1] https://elixir.bootlin.com/linux/v7.2-rc4/source/io_uring/
+> io_uring.c#L3047
+> 
+> [2] https://elixir.bootlin.com/linux/v7.2-rc4/source/drivers/vfio/
+> vfio_iommu_type1.c#L1675
+> 
+> Thanks
+> 
+> Farhan
+> 
+> 
+>>
+>>>       atomic64_add(nr_pages, &current->mm->pinned_vm);
+>>> +    kzdev->user_account = user;
+>>> +    kzdev->mm_account = current->mm;
+>> Then if it IS NULL, we will stash a NULL into kzdev->mm_account here and
+>> handle it above as before with the if (mm_account) check.
+>>
+>>>         return 0;
+>>> +
+>>> +out:
+>>> +    free_uid(user);
+>>> +    return rc;
+>>>   }
+>>>     static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct
+>>> zpci_fib *fib,
+>>> @@ -279,7 +297,7 @@ static int kvm_s390_pci_aif_enable(struct
+>>> zpci_dev *zdev, struct zpci_fib *fib,
+>>>       }
+>>>         /* Account for pinned pages, roll back on failure */
+>>> -    if (account_mem(pcount))
+>>> +    if (account_mem(zdev->kzdev, pcount))
+>>>           goto unpin2;
+>>>         /* AISB must be allocated before we can fill in GAITE */
+>>> @@ -400,7 +418,7 @@ static int kvm_s390_pci_aif_disable(struct
+>>> zpci_dev *zdev, bool force)
+>>>           pcount++;
+>>>       }
+>>>       if (pcount > 0)
+>>> -        unaccount_mem(pcount);
+>>> +        unaccount_mem(kzdev, pcount);
+>>>   out:
+>>>       mutex_unlock(&aift->aift_lock);
+>>>   diff --git a/arch/s390/kvm/pci.h b/arch/s390/kvm/pci.h
+>>> index ff0972dd5e71..544e6aa75e38 100644
+>>> --- a/arch/s390/kvm/pci.h
+>>> +++ b/arch/s390/kvm/pci.h
+>>> @@ -21,6 +21,8 @@ struct kvm_zdev {
+>>>       struct zpci_dev *zdev;
+>>>       struct kvm *kvm;
+>>>       struct zpci_fib fib;
+>>> +    struct user_struct *user_account;
+>>> +    struct mm_struct *mm_account;
+>>>       struct list_head entry;
+>>>   };
+>>>   
+
