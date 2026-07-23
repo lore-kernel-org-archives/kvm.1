@@ -1,148 +1,216 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346663C1F
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1651D555;
+	Thu, 23 Jul 2026 00:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784765245; cv=none; b=c3DJwVZ36fU4ZBJZRwIhbjLSUGu8I4xFhR7YDqKlehilggBBBkYJmVXApSNwXtz9oH+uJ95KV+xAIxfFmEIrE1MWU7ZUvtkPi9XpXhW3f0g9Prh167FCxp0kwyRbTkjfOd/tkdp0UFZuyCh4mOSw5vVWqfzTrMFvnAQMCQwxSpk=
+	t=1784765996; cv=none; b=ieUHiaZVSddwJnQb/0FxLi+ToTXwhgVtVqqDTdGNa1+PzM+4bVS+mXH9FPmStMavj9/9119/soGFWNlBzBSfXqmzrzv3EolYMRC8HaAUV+CfGndvtH7KNnHza8ThRhyPG2fN340BlR5sGqGPM0Nf7FoNzKV8QZ5Tbhjbm8lcLz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784765245; c=relaxed/simple;
-	bh=w/QQ2EgdS+kkbSJ5WMln5SmFQH3uOap/K3wH9l6o4Ro=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GgAt0N2Yc2xFjrD/U5hPjuV1q0Fq1toiqR280HySljBNYgTmmCVV6TV3Y7PyQRpmUnto7CFPsOwnanwyuFRB/YHcrp/Rwzg64xMTAOQiQye6xKgAtoaxmGaZhnNaas8mbv0HvpIdlmts+jpzZhicZ3YrMJmIWhebzuIp6Psxtks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e6BlNkyJ; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784765996; c=relaxed/simple;
+	bh=LJrwMBFzEJfWlcNe+u3Em2s3k7Xc8/tdxZKRwTN6sgU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MDI8rZSaSoy2a1MI2eL9qWQhAyYxkiULZfZUpW2PtIUP8lsYR075zwHvFdQ5IbEqllXh2domy4T92813E0I8cq6kkBP3mA93I7GkLZBTlMjhYkKAaMAVNPEycFBNhWpO6Dxde9yZ3M8fn/wLHx0G/XwKUUegyumIY1vvjCfJjJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCF74EeS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e6BlNkyJ"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso2047515ad.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784765243; x=1785370043; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MMi+Oay8WsD73HvcDpt08WjuOhmqdSMQdHZX29sq964=;
-        b=e6BlNkyJ/Fh4q/xBkZTl1U0UhoWKmL/v0d+ECYEW0PkHNOo9AlB5PMaM/qI/b4WehU
-         qKPV+v1ykjRzEvNdhn7fEUOfcH+c6zjKrBqQiGbezZo/QHWmGuJgBN0zGQ4HEzl0szas
-         u8LS8pXrGmvdPQOsOcrz94b9xyhhBxquANAKwsMDrqPhKoP39rQVGGDecaVscbCjK9bv
-         dLgSYnc0xWys08bu8u5gmhGbRtl3Ty5GvRmIfuA2X0DFQBFOCIj0+eCKQYDFF9xIbk20
-         WNgS8Sd2Gb2zI/rfOthNCNSBrJwvZYe8O5n8yAe1vtcST1wZyjRM4+uawdLR/a9B3+Et
-         HlJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784765243; x=1785370043;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=MMi+Oay8WsD73HvcDpt08WjuOhmqdSMQdHZX29sq964=;
-        b=rstkw2aMJKpMZ1GMl670QdPTfOIZfvnpVx15J2i1PFe8pF43L3i9gm9hWmMM/2M/sw
-         V8HGtCWW0xkl6on+10jxGyoZu8ktne8/ivsmWz8Vd6qMk6CgCEtS9J9nIHjtPFFB4/An
-         KZq1DGF1z6q4mZcIWkjetiOlMGGYub9Y76RRnddSt6jkmB00V8FKc8Eqf/J+wWyCLoMs
-         sYRz9XSriWSoDS7o7F9UuuzDPXASSbW66O04/K0jyn5XlJi1H4SXRW6EQjju5UBlFv/u
-         ElMDmnqJ89wt6dIBB35OueAK5OSoKvPXjcI6b9CwJZ7CjJyIYEtzDF3DAZ6bi+tuqKf1
-         /pyQ==
-X-Gm-Message-State: AOJu0Yz3z13ch2Itx+kPCSe8xU3meFgffTj9Y0hJGK0WulxKT4pP/Kbj
-	68KmMNjPd0sNkZbQRgcowNTqukGrMO6DwEwBqTOB3FeZeeFeA8icISUk5Orq7QKgubX8Oahwoqx
-	4t8YBcg==
-X-Received: from plnw13.prod.google.com ([2002:a17:902:da4d:b0:2c7:ebed:f6e8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a6f:b0:2cc:9a86:9c42
- with SMTP id d9443c01a7336-2cfa753472fmr9933695ad.45.1784765243190; Wed, 22
- Jul 2026 17:07:23 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Wed, 22 Jul 2026 17:07:15 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCF74EeS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0F61F000E9;
+	Thu, 23 Jul 2026 00:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784765994;
+	bh=etGADT3O07IS+YgXI7BAorrClTolrXpqV0QzB1dZpWA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BCF74EeStolbb2W/TP1soDHuWZ51DJgYsnp0HoXIhY2LV8FES9MkZRqdbEzajNcq+
+	 FdLD6IqAG7VkemQlxBlzfSPOaZ9GNCpfftJx+0klLFu5BE2mkb7lN3baGG6RJOA/f+
+	 OTbXbg6YqfXU+lWGMVnTAd3AXQwctqtKShgO3nYG2UgswjKxrd3j5RbvY6xNG9gaXM
+	 fPUG9Bt2NyDXhqYg6+KA0IHV+/ZVkHI4krzjxQIX39zaRdwO1taH2ix1ZIoapD4CwO
+	 y+KvoVgLfc1T4Hs6ON+9+dwzzQyWXFuwLTkfAhh3M+nzbYJObaTnWnCcSzHNgOzf46
+	 0VqiGCD9JgaHg==
+From: SJ Park <sj@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: SJ Park <sj@kernel.org>,
+	arun.george@samsung.com,
+	balbirs@nvidia.com,
+	brendan.jackman@linux.dev,
+	yuzenghui@huawei.com,
+	apopple@nvidia.com,
+	alucerop@amd.com,
+	matthew.brost@intel.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	osandov@osandov.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	pbonzini@redhat.com,
+	osalvador@suse.de,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk,
+	longman@redhat.com,
+	ridong.chen@linux.dev,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON migration and pageout
+Date: Wed, 22 Jul 2026 17:19:42 -0700
+Message-ID: <20260723001943.95854-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <amCzmkdOr6AFv_kQ@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260723000715.1235773-1-seanjc@google.com>
-Subject: [PATCH] KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on
- SNP-enabled hosts
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-When {de,en}crypting memory of an SEV or SEV-ES guest on an SNP-enabled
-host via a temporary buffer, allocate a full 4KiB page for the buffer to
-ensure the page containing the buffer is wholly owned by KVM, i.e. won't
-be concurrently allocated and accessed by other kernel code while KVM is
-using the buffer to {de,en}crypt memory.  On SNP-enabled platforms, when
-sending SEV/SEV-ES commands that trigger firmware writes to memory, the
-to-be-written page(s) must be (temporarily) assigned to Firmware (as
-required by the SNP architecture, to guard against using such commands as
-gadgets to attack SNP guests).  See snp_map_cmd_buf_desc() and friends.
+On Wed, 22 Jul 2026 08:16:56 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-Unfortunately, transferring ownership of a page to Firmware makes the page
-inaccessible to software, and thus writes generate RMP #PF violations.  If
-KVM uses a sub-page allocation for its temporary buffer, some other actor
-in the kernel can allocate and use the other portions of the page, and thus
-trigger unexpected (and seemingly spurious) RMP #PF violations due to
-software attempting to access a Firmware-owned page.
+> On Tue, Jul 21, 2026 at 04:46:43PM -0700, SJ Park wrote:
+> > On Mon, 20 Jul 2026 15:34:08 -0400 Gregory Price <gourry@gourry.net> wrote:
+> > 
+> > > DAMON operates on physical address ranges, which can cover private
+> > > node memory. Skip private-node folios in both DAMON's migration
+> > > and reclaim paths.
+> > > 
+> > > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > > ---
+> > >  mm/damon/paddr.c | 9 +++++++++
+> > >  1 file changed, 9 insertions(+)
+> > > 
+> > > diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+> > > index e4f98d67461f5..c741a94319750 100644
+> > > --- a/mm/damon/paddr.c
+> > > +++ b/mm/damon/paddr.c
+> > > @@ -12,6 +12,7 @@
+> > >  #include <linux/swap.h>
+> > >  #include <linux/memory-tiers.h>
+> > >  #include <linux/mm_inline.h>
+> > > +#include <linux/node_private.h>
+> > >  
+> > >  #include "../internal.h"
+> > >  #include "ops-common.h"
+> > > @@ -250,6 +251,10 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
+> > >  			continue;
+> > >  		}
+> > >  
+> > > +		/* private node memory is not reclaimable by default */
+> > > +		if (folio_is_private_node(folio))
+> > > +			goto put_folio;
+> > > +
+> > 
+> > "by default".  Does that mean it could be reclaimable in some situations?  If
+> > so, could we check if it is reclaimable?
+> > 
+> 
+> See the damon changes in:
+> 
+> https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
 
-  BUG: unable to handle page fault for address: ffff906ae30f0300
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x80000003) - RMP violation
-  PGD 6b1b80d067 P4D 6b1b80d067 PUD 100231e2063 PMD 10055a88063 PTE 80000100630f0163
-  SEV-SNP: PFN 0x100630f0 unassigned, dumping non-zero entries in 2M PFN region: [0x10063000 - 0x10063200]
-  Oops: Oops: 0003 [#1] SMP
-  CPU: 70 UID: 0 PID: 10658 Comm: svw_WaiterThrea Tainted: G     U  W  O        7.1.0-smp--c22293789940-seanjc-next #1 PREEMPTLAZY
-  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
-  Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
-  RIP: 0010:memset+0xf/0x20
-  Call Trace:
-   <TASK>
-   __kvmalloc_node_noprof+0x2a4/0x710
-   do_getxattr+0x4e/0x130
-   path_getxattrat+0x125/0x1b0
-   do_syscall_64+0x10a/0x480
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f3a22cb6daa
-   </TASK>
-  Modules linked in: kvm_amd kvm irqbypass vfat fat ccp k10temp sha3 libsha3 i2c_piix4 gq(O) cdc_acm xhci_pci xhci_hcd
-  gsmi: Log Shutdown Reason 0x03
-  CR2: ffff906ae30f0300
-  ---[ end trace 0000000000000000 ]---
-  RIP: 0010:memset+0xf/0x20
-  Kernel panic - not syncing: Fatal exception
-  Kernel Offset: 0x39e00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-  gsmi: Log Shutdown Reason 0x02
+Summarizing what you want to say, quoting something from the patch, or at least
+calling it "26th patch of this series" would have made reviewing much easier.
+Cc-ing damon@ for only patches that toucing DAMON source files and the cover
+letter of the series could also be helpful.  Please consider doing some of
+these for future replies.
 
-Fixes: 4c735bf1bc22 ("KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers")
-Cc: stable@vger.kernel.org
-Cc: Michael Roth <michael.roth@amd.com>
-Debugged-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/sev.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+So, I understand later patches will make it optionally reclaimable and update
+this restriction by the 26th patch?  That sounds fair.  But, could we drop "by
+default" from the above comment for reducing the confusion?
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74fb15551e83..e3733ed9d588 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1280,6 +1280,17 @@ static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
- 	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
- 		return NULL;
- 
-+	/*
-+	 * If SNP is enabled, i.e. the RMP is active, allocate a full page to
-+	 * prevent concurrent accesses to the page.  As required by firmware,
-+	 * the PSP driver updates the RMP to temporarily transfer ownership of
-+	 * the page to Firmware while the {DE,EN}CRYPT operation is in-progress,
-+	 * and so concurrent software accesses to the page will encounter
-+	 * seemingly spurious RMP #PF violations
-+	 */
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+		return kmalloc(PAGE_SIZE, GFP_KERNEL);
-+
- 	return kmalloc(*nr_bytes, GFP_KERNEL);
- }
- 
+> 
+> > Also, what happens if we just try paging out the private node memory?  Will it
+> > simply fail?  Or, make some problems?
+> > 
+> 
+> user controls for MADV_ commands that affect private node folios would
+> skip those folios - exactly same as ZONE_DEVICE folios.
+> 
+> Which I'm not sure damon actually handles correctly presently (zone
+> device).  I remember looking around damon and thinking to myself "what
+> if this is a zone device page?" and not being able to find a satisfying
+> answer.
+> 
+> > >  		if (damos_pa_filter_out(s, folio))
+> > >  			goto put_folio;
+> > >  		else
+> > > @@ -344,6 +349,10 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
+> > >  		else
+> > >  			*sz_filter_passed += folio_size(folio) / addr_unit;
+> > >  
+> > > +		/* private nodes do not support migration by default */
+> > > +		if (folio_is_private_node(folio))
+> > > +			goto put_folio;
+> > > +
+> > 
+> > Same questions.
+> > 
+> 
+> Technically there is nothing in migration core to prevent migration
+> operations, it's done on a service basis - hotunplug, reclaim/demotion,
+> user numa (mbind, migrate/move_pages) etc.
+> 
+> Operations on private nodes/private node folioes are refused if the
+> capability bit is not set.
 
-base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
--- 
-2.55.0.229.g6434b31f56-goog
+I haven't had a chance to read the entire series, sorry about that.  So, do you
+mean the above blocking is not really needed, or that will conditionally be
+allowed by another later patch?
 
+
+Thanks,
+SJ
+
+[...]
