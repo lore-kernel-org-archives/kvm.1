@@ -1,165 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F3829D260
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9934756A5;
+	Thu, 23 Jul 2026 15:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784819902; cv=none; b=f3nuUzLr86A1ZngOX2CKfRYHvh6ziaUtx5qMn6FSS29TL1lt+dBNZDZ/V+JZKq9RDG7pjXyscuSth5HIvb2Bns9LB0f2N6qigLYdKoMFHyDP/+ShZvE2U8uvk0qUvJJbkcyKIFC7UGTXTqBrGItoMyuJJLvrZj72wP7Mb9ks8ME=
+	t=1784819972; cv=none; b=Gj+7veGxUH/vLEB68k7Em8h+slOjLZwoAT5GTYTQT5d8E7PWsPxKwMyD1plAZstnTuymBzEHeMCrkB1Qgf5PtDhoh/d0UU85RB0TC7jfCFuqwdfD614KOxikTrp0pYRcJLA0ysVxhmri1s8RjI9HkR44rAR1O3E2hjd76d2lKR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784819902; c=relaxed/simple;
-	bh=rSe9HD907K8IRLWvdPwE7ouRnZKLSw9p6mExkMka2to=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SPIKTHLRpEhYrMxrI2Cxkh8xAu31LZz464670ccrkLtP4owxccfxQp1v/K55aFLaFKExWRPbSWhEjWmxPoll7raqGbQ4d4h5NXv1buK/uyCbYPocgeIDazne6hGNNDTqGUFhO3kFIcmWOi1h6HtA5HbaYEV7MHyEfn/ar5cyC+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LzENcHB1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gkg1nX1Y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784819972; c=relaxed/simple;
+	bh=wwZcu/zyt1FAUeYi6erRrQC4mUbB9NUuNtVmKwQw0As=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pJeJM+bzcupqamU21qgrKhf06CEm9yCh1QIpB6irfkDZC/jyG5qDqQRfTelUuE5WIhyB6hsAmILhYKy+GUkuE976RcDXJvGtZphJn0ztDvy6EJ33ug8HVVLyMsN89zW03zAKwaUF482eYrBPTXjMD4IpVTD2h5kJaRQIxVV6HdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JIPPXqJp; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LzENcHB1";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gkg1nX1Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784819892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9OUorP8L7Hv+mWbQVnXQe/Nap+PNXLSDh1VLwTpZtYE=;
-	b=LzENcHB1cpLjBEdZ9cuFWNVyohdTFmqAa5uS1Qe12rANZDve9zhxVseFElVf7pXst9gXQl
-	RDr2tHAWamFHBsAgkwbkUq6vtPq+yuMrpPPXY77n4VvCCFAdCwm3Rh7b0pUYOQIASf0a7H
-	Vl8cTZaFt8CghHIzzF8VvfxLetY4OfA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-16nyCpu2MPqKuaNKnLEOsg-1; Thu, 23 Jul 2026 11:18:11 -0400
-X-MC-Unique: 16nyCpu2MPqKuaNKnLEOsg-1
-X-Mimecast-MFC-AGG-ID: 16nyCpu2MPqKuaNKnLEOsg_1784819890
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f90dbaf84so649373f8f.1
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:18:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784819890; x=1785424690; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9OUorP8L7Hv+mWbQVnXQe/Nap+PNXLSDh1VLwTpZtYE=;
-        b=gkg1nX1YT69VX0y5vDJvJlU5Ajwm54l9OrTPblcGsl7N/P5Q64J5ADGi3YYcK3keQd
-         aPeOK8yxFJxjvp4sVV1AdSpW/VpQPV3d6YTctd6h4js2uObCoQBrJ0Dy8AnTOcm4EpIt
-         kBe1hhAI+STkwIjJ5ccgisfMHwVaQrSjfcjqQYW1tNS0pXzOA4KJezqQ58RqlnqyizdX
-         4Z7tkrjKNXmU4DSWLeKHZ5G6jqViE5mJJhe/OwgYis7okSKb4tkzaNy2kaDTlk5uUu0J
-         lOsYmjp12snxs/7ILSF6h8QKQxAuNtEUdsmbe2NCvnoPPneEd16TgzT1hCml928Yn41q
-         ty3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784819890; x=1785424690;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9OUorP8L7Hv+mWbQVnXQe/Nap+PNXLSDh1VLwTpZtYE=;
-        b=Ykt5B41WAAl3E3Dz7+xo8OMV7S/f6bzjWy7g/OZgI8gAVFoNOAttKDuD0tf5OT0mLm
-         cXusD1r08o4jBhBaKIgFxrtn+h/Heqbh+MR2Dgmufe6VuM5S6+foKIscFYDZ/bMKZ+h2
-         lvsw6oHzOkKziW4UBZJ69qcUliM9z9ZhuEXT76oftwQ4OsPIl59geargW5V9wYByR4ta
-         p75NrDSzgs5ruCFz8pRXRC0Uc28RWSTcbsPtAHR8qLCdsaWIdMDUEckB6IBdinDfTWb4
-         wKAmrxEozYFMkZ6+xVJ42H/18oJ18p/g9Vg7btHcjmA2jXJ0X5E0WVNkUBrmi4pLH5Qb
-         Msbw==
-X-Forwarded-Encrypted: i=1; AHgh+RopEKM6oc9tGv4JKmbyJzDiA5Dnc0qUtWH5KWakNEQOnEnDZIxhyx7jEE8c73GWCuZl4yY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoVTHFvWy7FozTkF9/JPhtzOTGJKLaQbuGj3/ND9s6JFK12E60
-	1G+R9TRtG0d5Qtd7U7DajzGv1ZvM69ctDQDQhm7frAGSeREMGqYX1ukwzDbvI/b9qnh9JF2h2CA
-	OvrnjJ1+cyMW6NgUGQO90/TNDeR7gxc8HmBapJ7d0mUibw2B+i+sxVg==
-X-Gm-Gg: AR+sD12X5j4EdQOcpOGc5gRK329XCwNhy3gxmH+tuoC9DVKYtfHLsk8qYfZZvUjJ3n+
-	fmgoypbiY2g/R+npAgKpbTcrh29VfFi+8ybQks9h6fHYtNvdX9n8gbygWQix8YXRG0aDactzUkM
-	Y02whSY5ekScDCJoB/f39hSIlj/wEEu3NKWkttCbEOL0HKAjqSNUMUha5IhOmCzcGD5wi25IH9a
-	NYN+g2bS7vfwvmAHtkGNvktNGuXg2RIjbdQh6UL9nZF56odx4vwLbBLrfqw/T03Qvx20Y+HHQZ3
-	xOsBLjPl/ww6HNPXoSBn+WKHxnjps6PuAFEhKNAS82zDE5Kq1EAatQkGA+k0JuJS9lU9UsbY90Z
-	22angURYL1QvqQeDhDCrpNA==
-X-Received: by 2002:a05:6000:4386:b0:474:13ac:a91b with SMTP id ffacd0b85a97d-47f8d7564edmr4641360f8f.32.1784819889716;
-        Thu, 23 Jul 2026 08:18:09 -0700 (PDT)
-X-Received: by 2002:a05:6000:4386:b0:474:13ac:a91b with SMTP id ffacd0b85a97d-47f8d7564edmr4641303f8f.32.1784819889120;
-        Thu, 23 Jul 2026 08:18:09 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-37-66.inter.net.il. [80.230.37.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85bc62basm16346454f8f.13.2026.07.23.08.18.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 08:18:08 -0700 (PDT)
-Date: Thu, 23 Jul 2026 11:18:05 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	sgarzare@redhat.com, stefanha@redhat.com, dongli.zhang@oracle.com,
-	maciej.szmigiero@oracle.com, bchaney@akamai.com,
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-Message-ID: <20260723111557-mutt-send-email-mst@kernel.org>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JIPPXqJp"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDBoik3089974;
+	Thu, 23 Jul 2026 15:19:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=KeG7aM
+	7dexqwCNO18X2lTA3Zcl+djh0q2tQmqOsl5z4=; b=JIPPXqJpsxV5NYqWFVvBEQ
+	i00P7qa5cXnmp9488C2aeVawCw3PLA1oSFCpnPAOmRFCgY4zg/IZlHPUdpIWtm6Z
+	1cQIECMcFQSoYWVe7rlwbxaEJ+POh7h6LdBWGM8STKwKTfCm1YunnHsKsMeTKD9w
+	yVETHY2v21Wa0avbTmizPck8jmmL0+dwm/h0/zWuwvdDKPglY05BOwt/JGNapxob
+	9hSxteHIn3NRKplxO0e0/WD1gt4PNdEEV598LdwzeYmAfcWKzMLtjvN2s2ALs4DJ
+	1sQLYdZhv+C+7vnW7kTqwEtyDlPojGrxeRvs/LtY19rhIg9aidjfWR6FPJIx8ldA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7abr9pv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 15:19:25 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NF4Z1J002233;
+	Thu, 23 Jul 2026 15:19:24 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahcqsg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 15:19:24 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NFJNTY8519996
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 15:19:23 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1076658059;
+	Thu, 23 Jul 2026 15:19:23 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 43ECC58053;
+	Thu, 23 Jul 2026 15:19:22 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 15:19:22 +0000 (GMT)
+Message-ID: <a0044314-5d84-413b-8912-b50907fa0964@linux.ibm.com>
+Date: Thu, 23 Jul 2026 11:19:21 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 5/6] KVM: s390: pci: Fix resource leak on IRQ
+ registration failure
+To: Farhan Ali <alifm@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@linux.ibm.com, farman@linux.ibm.com
+References: <20260722170621.1686-1-alifm@linux.ibm.com>
+ <20260722170621.1686-6-alifm@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260722170621.1686-6-alifm@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE0OSBTYWx0ZWRfXy/e1B7YxiBBV
+ ZWCb1uJdRmsoT0bmhmJdlgr/m11PTdp56U7PoK4TWnnkii9IbKvQVxeyHfeX1nwII4MRsNAYHr9
+ TYbMjE5AjEvQTOc+iwPsX7sZJeBIYGI+7EAJRJjITZQBa/G30C1mLLE9jsNGvxLkBVYJCFkJdEA
+ SzLaiMndftGq56bRDfGfrZpxbO2cfFuVsEX5GZf3q9idnAPFQGLLfB7RKWOe/k0EMoNOyj3hgr5
+ SbnufJByXeK8gCvQWX7hZCNqAOPbtGB9WpJYXsO0dAcc0EBNGUC1wx468msc4DrHMAMACWu9Sxc
+ G8W7URjL+9bPKe40Ni61McGW9grMwyLfENHbAajvqnMF3yuO8DHt01IIHOO5lQ41yRtIOBQZokp
+ IfgnU3xHra4cPLsJMZr2TyxZaCTCFSA0OeTJQzKK/B+ETBqRQU8MfN1sFAscbCtjMlMP3AWOFFb
+ S7e4T4sYfXcipprVjWw==
+X-Authority-Analysis: v=2.4 cv=F7ZnsKhN c=1 sm=1 tr=0 ts=6a6230fd cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=W6YiH1k79j17DU6STyAA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: NFAJtneAhPM9XYsCLdKev7GL0hvtV6av
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE0OSBTYWx0ZWRfX1AN8zaoHlNQ6
+ Ut1Xgkb96+b2pbsUYo967pMMLeR4iJjFSo9elOs2ZyCAIRCP/W6zcSz0m+MTQ0uKoRssbArVsDI
+ urTltAy29RuXIba4isiM95p0VyRBet8=
+X-Proofpoint-GUID: NFAJtneAhPM9XYsCLdKev7GL0hvtV6av
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230149
 
-On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
-> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
-> vq->worker and queues work on it.  vhost_workers_free() however clears
-> the vq->worker pointers and immediately frees the workers, without
-> waiting for a grace period.  A caller that fetched the worker right
-> before the pointer was cleared can therefore still be queueing work on
-> it while it is freed.  And even when the queueing itself wins the race,
-> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
-> future attempts to queue it are silently skipped.
+On 7/22/26 1:06 PM, Farhan Ali wrote:
+> Currently if kvm_zpci_set_airq() fails, kvm_s390_pci_aif_enable() returns
+> the error code but doesn't do any resource cleanup thus leaking resources.
+
+Nits: s/the/an/  ....  and 'resource cleanup, thus leaking' (add a comma)
+
+> Fix this by cleaning up all the resources such as the GAITE, AIBV, AISB and
+> unpinning any pinned pages.
 > 
-> None of the current callers can actually hit this: net and scsi stop
-> their virtqueues before the workers are freed, and vsock unhashes the
-> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
-> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
-> in vhost-vsock keeps the device hashed while its workers are freed, so
-> the lockless send/cancel paths become able to race with the teardown.
-> 
-> Fix this by clearing the vq->worker pointers, waiting for a grace
-> period, and then flushing the workers so any work the last readers
-> queued runs before the workers are freed.
-
-
-
-
-> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
-> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 > ---
->  drivers/vhost/vhost.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  arch/s390/kvm/pci.c | 29 +++++++++++++++++++++--------
+>  1 file changed, 21 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 4c525b3e16ea..d6e235c25254 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+> index 231a4236fc3c..d76b2c5484ac 100644
+> --- a/arch/s390/kvm/pci.c
+> +++ b/arch/s390/kvm/pci.c
+> @@ -341,19 +341,32 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>  	aift->kzdev[zdev->aisb] = zdev->kzdev;
+>  	spin_unlock_irq(&aift->gait_lock);
 >  
->  	for (i = 0; i < dev->nvqs; i++)
->  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+> -	/* Update guest FIB for re-issue */
+> -	fib->fmt0.aisbo = zdev->aisb & 63;
+> -	fib->fmt0.aisb = virt_to_phys(aift->sbv->vector) + (zdev->aisb / 64) * 8;
+> -	fib->fmt0.isc = gisc;
+> -
+
+OK, I had the same problem as Christian here.
+
+This is dead code because we don't re-use the fib, we make a new one in
+kvm_zpci_set_airq() and fill it with values from the kzdev.  Right?
+
+I agree adding something to the commit message to that effect would be
+good, even something like 'While at it, remove dead code that stored FIB
+values that were never referenced.'
+
+>  	/* Save some guest fib values in the host for later use */
+> -	zdev->kzdev->fib.fmt0.isc = fib->fmt0.isc;
+> +	zdev->kzdev->fib.fmt0.isc = gisc;
+>  	zdev->kzdev->fib.fmt0.aibv = fib->fmt0.aibv;
+> -	mutex_unlock(&aift->aift_lock);
+>  
+>  	/* Issue the clp to setup the irq now */
+>  	rc = kvm_zpci_set_airq(zdev);
+> -	return rc;
+> +	if (!rc) {
+> +		mutex_unlock(&aift->aift_lock);
+
+This is subtle; we are now holding the aift_lock a bit longer now (over
+the MPCIFC re-issue) which I don't think is strictly necessary since we
+aren't messing with any of the zpci_aift fields during that timeframe,
+but I think is fine to do.  Maybe also worth a mention in the commit
+message that the lock is held a bit longer in order to handle the error
+case vs drop/re-acquire.
+
+For the code itself:
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
+> +		return rc;
+> +	}
 > +
-> +	/*
-> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
-> +	 * reader that fetched a worker before we cleared the pointers above
-> +	 * may still be queueing work on it.  Wait for those readers to
-> +	 * finish, then flush so any work they queued runs (clearing
-> +	 * VHOST_WORK_QUEUED) before the workers are freed.
-> +	 */
-> +	synchronize_rcu();
-
-
-
-Any way not to add this for all devices that don't need it?
-Or preferably, even for vsock in absense of the new ioctl?
-
-
-> +	vhost_dev_flush(dev);
+> +	/* Start cleanup */
+> +	zdev->kzdev->fib.fmt0.isc = 0;
+> +	zdev->kzdev->fib.fmt0.aibv = 0;
 > +
->  	/*
->  	 * Free the default worker we created and cleanup workers userspace
->  	 * created but couldn't clean up (it forgot or crashed).
-> -- 
-> 2.47.1
+> +	spin_lock_irq(&aift->gait_lock);
+> +	gaite->count--;
+> +	gaite->aisb = 0;
+> +	gaite->gisc = 0;
+> +	gaite->aisbo = 0;
+> +	gaite->gisa = 0;
+> +	aift->kzdev[zdev->aisb] = NULL;
+> +	spin_unlock_irq(&aift->gait_lock);
+> +
+> +	airq_iv_release(zdev->aibv);
+> +	zdev->aibv = NULL;
+>  
+>  free_aisb:
+>  	airq_iv_free_bit(aift->sbv, zdev->aisb);
 
