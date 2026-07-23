@@ -1,134 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256EA466AF7;
-	Thu, 23 Jul 2026 13:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E8F466AF7
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 13:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784813387; cv=none; b=EQBIKTZxrTXolym/Q1b7Y8O2sF8VGHSeR6Cn9e8LQUHYckMDa5EoIK9Xx2Rw1x5TbXoutWKpurUyGI1Au2+CJS55TgHrQCxb3hxKATMBzcArDsA5+zon9yHAsSAc3oz5cIE+NOEMsnVjrPWkz7J3nGMYpSBzntmKMFRW43Fpkrg=
+	t=1784813659; cv=none; b=q4Vm1Q/+bZkCYRcWFPd/L7yuBVfCUPZ1kUFNczoxmn+/PRYAhVpkttzKhCL6Booxo6czio1HvwHi7gRuV4+ka8oSZ6Gv6DyJptkaN+dfXLMTmdOiSpAI2Y+qh+Ss1YKF0ZAhLKL7fPOQ4AjB0p8fBlaP5wWJ9XVlbzG+SG38Ye8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784813387; c=relaxed/simple;
-	bh=huc3yG83fdTvCa219S/GL5mOlr601CiWURl4kKI0ycE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nelE2Cn+G/cIpP8RVgwMlNR9JbH5eJCB06PUDIt9QiUtcrHZTDSuaCTDrFYZnviMW4fhEDuWlrJNqYXqCEO3a12/T097GMeQimF4C+yAKuXJCXbZZ8RFCWbsh8hU/bipgFKpfr0dhpO+mKX3mfYENiXnBOurFxxAvZRw1g+WzlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R84+BwvH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784813659; c=relaxed/simple;
+	bh=++YBs9wp6CI7gyM/wrBl8SMkwdnQIkxPBDPZiQgE/g4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jLpI6pN5rpTGQWDfhL/elSTNTqSOvLFxUblZiSCO6r6ruKTdBmO5m9tSxIo98Of09iNov110U0N6kI77IWdSv2DiQoMXcg+iT9gGOOkCCXlwYKVzwfY4Vfe5JKoLthQzZuJADoXxxy1fEs1hTi93QjPk99cSKvd+4K7AqzIGwZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sP2eOTDh; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R84+BwvH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140501F00A3A;
-	Thu, 23 Jul 2026 13:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784813386;
-	bh=Z2KgZbO4TpspWzJ5rnBgNBsTAdx+AtGXW5ucqQ0n40k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R84+BwvHQdJrGxAXuCFEMD/ibO/8LHDMJtfIsL0TwN+2c2On+rU1v46Q43MVqh+hw
-	 TeqYLTGpaF7k/cfe+XpEux1Hnt/4KY5H7y5dNqS8OI7vUkwT++LbWijvO6+PWbC1Kx
-	 6H6zzVwx8LPZJqYyEKifO+i6S3frFTbf+7qxCrI3IQZkIAjcuTPAxtcBGqC3sKBo0c
-	 NdvjTNWL07CUd+Un3nWQKHebOeSBmvQsY7W0Ha2vnhCJ6PgVvxzLDjWsYoXElS+o+b
-	 y7eoSHf2iJfy1HdK37+BDiUOLj1MfzZovughDLkVcytwZ6t4oGODVvk8AerdCOfjwW
-	 Ae7HuAtdxQ4Pg==
-Date: Thu, 23 Jul 2026 14:29:38 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Fuad Tabba <fuad.tabba@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	Jean-Philippe Brucker <jpb@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v12 02/29] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <49b06fd7-3cfa-4320-8e24-9ac88c91fb8f@sirena.org.uk>
-References: <20260709-kvm-arm64-sme-v12-0-d0301d79ef58@kernel.org>
- <20260709-kvm-arm64-sme-v12-2-d0301d79ef58@kernel.org>
- <ali39DG6qie7XTuD@J2N7QTR9R3.cambridge.arm.com>
- <15a9ae14-395d-472a-a5be-9e46524fb493@sirena.org.uk>
- <3c76650f-ddda-47ae-a676-86016d8e39a6@sirena.org.uk>
- <CA+EHjTw9rGvQyev-4i7zkO5bPPZKGYn858485dCs8iHmCi0t3w@mail.gmail.com>
- <43f21c65-c5ba-44a3-9741-548390df369b@sirena.org.uk>
- <87a4rnqsuu.wl-maz@kernel.org>
- <18229974-b26d-4eed-82f7-7af7e1c26634@sirena.org.uk>
- <amINV-ZyUDXQW3Xg@J2N7QTR9R3.cambridge.arm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sP2eOTDh"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cab041eced3so1098316a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 06:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784813657; x=1785418457; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=P9w3oZFu/DbnCQZ5YZF6ebjs1fSL024dBaof78/i83o=;
+        b=sP2eOTDh8Is8Pkj8QU4wS7RjoGAOK8jUtV6sF47caskenceIXdaIoc0pPiKGpguunQ
+         2CtPkK8d5eyrmzCzfKCHrbA7/v87fPss5kJEw8x6xzkPKseXVkefBGwoMznVf5lpjMZZ
+         DEq9+3ji3sKzaA3+hs6z2HIZHSeu1NWMA7D9MKsizt9EwQNfZxEBy6odamomQxfASkFX
+         /P+LUmV2WRpKRv8pIyGKuSozMcNttZ4dSEACsaNl5nf1td7B4oyYi73VfvkQHVH+PXPd
+         FKYevBI0w4kZaoFeb6EkP8vDxB6acgM2KfSCc8khoTf6DeEDaZa9Qgo/8sI+hMW6Wnp/
+         6fYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784813657; x=1785418457;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=P9w3oZFu/DbnCQZ5YZF6ebjs1fSL024dBaof78/i83o=;
+        b=rDjeolv6RwykwD1vYCg+PS4PKq/agt5PMdbo6V39IMsxOAAKZceJBvPULnyrPHqBV+
+         1sj7UX3IO5fJmeLy+/ec54qcUjBXUWiO/hD5tnZ3rQThGERUmqek5BU8m0edLbwjpLaH
+         KndcX/2X4AklTSbuG+Inm8nipGrQM2MAcmScZX3AXFpsinDD1StxSP++TiMpwoGF34PQ
+         9czw4kaVdV2o+VlNAyqQw3Dh3G9gTJ6HP/zA/5Iv4+vmuiQaZLCa42xKhFJdWx5tSD59
+         6j1PW7sKSK5kfX6d5tLaapKDDfud6EsiQa/NTcnnGAiBQAdjjgh0hUk66EbpV2s3VBaX
+         rD0A==
+X-Forwarded-Encrypted: i=1; AHgh+RrXOwI6BvShXzXz3cyrWYf/x4CEg0fiYywJrXTFXJwtjQYKyLCCC2R+XdBdJ8uVLD5Jwxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5cQ9KAPJPrqlVURgSl4JXL0ho4e8vIsUkTXR52J/pFFMwwnnz
+	bBCQxWQJNC4ZW2P7QlKf1Q468Simb7YWEPgAMmrR1f3BsoC/NOPN25DEG9AzHmsbwF8biEVthp1
+	1b1F4mg==
+X-Received: from pgax6.prod.google.com ([2002:a05:6a02:2e46:b0:c9e:2db2:a2d1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d38f:b0:3c3:64cc:311a
+ with SMTP id adf61e73a8af0-3c44aff9b7cmr3490887637.22.1784813657250; Thu, 23
+ Jul 2026 06:34:17 -0700 (PDT)
+Date: Thu, 23 Jul 2026 06:34:16 -0700
+In-Reply-To: <amGg6WjP7P-xjpLQ@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4A0YswpY+SjfO+B2"
-Content-Disposition: inline
-In-Reply-To: <amINV-ZyUDXQW3Xg@J2N7QTR9R3.cambridge.arm.com>
-X-Cookie: (null cookie
-
-
---4A0YswpY+SjfO+B2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20260616004155.1435766-18-yosry@kernel.org> <20260616012056.669B91F000E9@smtp.kernel.org>
+ <CAO9r8zPRmcwKAtHch995Gm5EKxv07-3f90+H71g+w=iZ+VZfiQ@mail.gmail.com>
+ <CAO9r8zPSEw0snypASanWEdaaTnqf-ZvzRgZpEc=M+sPjELQbSA@mail.gmail.com>
+ <amFkZwsaoPvuNWDA@google.com> <amGg6WjP7P-xjpLQ@google.com>
+Message-ID: <amIYWOgQw9z3zedA@google.com>
+Subject: Re: [RFC PATCH v2 17/25] KVM: nSVM: Service local TLB flushes before
+ nested transitions
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 23, 2026 at 01:47:19PM +0100, Mark Rutland wrote:
+On Thu, Jul 23, 2026, Yosry Ahmed wrote:
+> On Wed, Jul 22, 2026 at 05:46:31PM -0700, Sean Christopherson wrote:
+> > On Tue, Jun 16, 2026, Yosry Ahmed wrote:
+> > > On Tue, Jun 16, 2026 at 11:06=E2=80=AFAM Yosry Ahmed <yosry@kernel.or=
+g> wrote:
+> > > > > > diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/neste=
+d.c
+> > > > > > index 234724d8b4c54..7b19191e0e43f 100644
+> > > > > > --- a/arch/x86/kvm/svm/nested.c
+> > > > > > +++ b/arch/x86/kvm/svm/nested.c
+> > > > > > @@ -717,9 +717,16 @@ static void svm_switch_vmcb(struct vcpu_sv=
+m *svm, struct kvm_vmcb_info *target_v
+> > > > > >  {
+> > > > > >       struct kvm_vcpu *vcpu =3D &svm->vcpu;
+> > > > > >
+> > > > > > +     /*
+> > > > > > +      * TLB flushes are applied to the VMCB, so apply any pend=
+ing TLB flushes
+> > > > > > +      * on the current VMCB before switching to a new one..
+> > > > > > +      */
+> > > > > > +     kvm_service_local_tlb_flush_requests(vcpu);
+> > > > >
+> > > > > [Severity: High]
+> > > > > Does this clear global TLB flush requests (like KVM_REQ_TLB_FLUSH=
+_GUEST)
+> > > > > while applying them only to the outgoing VMCB?
+> > > > >
+> > > > > If a host-initiated flush occurs (e.g., from page reclaim), the r=
+equest
+> > > > > bit will be consumed and applied to the outgoing VMCB, leaving th=
+e incoming
+> > > > > VMCB to miss the flush and run with a stale TLB.
+> > > >
+> > > > Yeah it is intentional to apply the flushes to the
+> > > > current/old/outgoing context. If there are flushes needed in the ne=
+w
+> > > > context, they are queued by nested_svm_{entry/exit}_tlb_flush().
+> > > > That's similar to what VMX does.
+> > > >
+> > > > >
+> > > > > Also, is there a context mismatch here during nested VM-Exit?
+> > > > >
+> > > > > In nested_svm_vmexit(), leave_guest_mode(vcpu) is called before
+> > > > > svm_switch_vmcb(svm, &svm->vmcb01).
+> > > > >
+> > > > > Because of this, kvm_service_local_tlb_flush_requests() will see
+> > > > > is_guest_mode(vcpu) as false. If Hyper-V is enabled, this means
+> > > > > kvm_hv_purge_tlb_flush_fifo() will incorrectly target L1's FIFO w=
+hile the
+> > > > > hardware flushes are actually being applied to L2's vmcb02.
+> > > >
+> > > > Ugh.. yes. This is annoying. kvm_service_local_tlb_flush_requests()
+> > > > needs to be called on both the current/old/outgoing VMCB *and* gues=
+t
+> > > > mode. So we'll need to open-code the call in a bunch of places befo=
+re
+> > > > svm_switch_vmcb() and {enter/leave}_guest_mode(). I really liked
+> > > > putting it in svm_switch_vmcb() together with
+> > > > nested_svm_{entry/exit}_tlb_flush() so that all the TLB flushing lo=
+gic
+> > > > for nested transitions live in one place and the ordering needs to =
+be
+> > > > handled in one place.
+> > >=20
+> > > Maybe we can just re-order the code to always call svm_switch_vmcb()
+> > > before {enter/leave}_guest_mode(). We already do that on the entry
+> > > side, and seems to be straightforward on the exit side.
+> >=20
+> > As stated earlier, I'd prefer to explicitly do flushing stuff where it =
+fits from
+> > an architectural perspective.
+>=20
+> I did it this way because (as you also stated) it's more robust, and it
+> also documents the ordering requirements:
+> - We need to service local flushes before switching to the new VMCB.
 
-> FWIW, my view is:
+No, that's not the requirement.  The requirement is that KVM faithlyfully e=
+mulates
+the SVM architecture.  For KVM's implementation, that _mostly_ aligns with
+switching between vmcb01 and vmcb02, but that's not a hard guarantee.  Unli=
+ke VMX,
+SVM doesn't force KVM doesn't need to switch the active VMCB in order to ma=
+ke
+changes to a VMCB, so nSVM may never end up with as many switches as nVMX t=
+hat
+don't need to trigger a TLB flush, but conceptually it's still inaccurate.
 
-> (1) We shouldn't make speculative optimizations. Removing unnecessary
->     code is fine, within reason, but we shouldn't be adding conditional
->     logic.
+And regarding robustness, the flaw Sashiko pointed out regarding servicing =
+pending
+flushes after leave_guest_mode(vcpu) highlights that burying architectural =
+behaviors
+in what are effectively utility functions can be dangerous.  The counter-ar=
+gument is
+that we ended up with a similar bug in nVMX where KVM straight up forgot to=
+ service
+the flushes, but my point is that handling this in svm_switch_vmcb() isn't =
+a silver
+bullet.  And I really don't like adding an arbitrary constraint that the "n=
+ew" VMCB
+needs to "match" the current L1 vs. L2 mode.
 
->     To that end, I'd be happier with an unconditional ISB here.
+> - We need to queue new flushes after servicing local flushes.
+>=20
+> I like that it's all in one place. All that being said, I did go
+> back-and-forth on this so I am not opposed to open-coding it. Let me know=
+ if
+> the above argument swayed you or if you still prefer open-coding.
 
-> (2) Optimizations should be benchmarked to some extent, such that we can
->     decide whether the trade-off is worthwhile.
-
-> (3) In this path specifically, if adding an ISB is a problem, then it
->     calls the wider approach into question.
-
-> Is there anyone in particular that you expect feecback from w.r.t.
-> barriers in this path?
-
-I think you mainly in this instance, given the sysreg_cond_update()
-stuff.  TBH I did actually write the unconditional isb() version but it
-just looked obviously silly next to the sysreg_cond_update_s() for the
-register and I couldn't imagine nobody would raise it as a review
-concern, perhaps the best thing here is to expand that into:
-
-	if (new_smcr !=3D old_smcr) {
-		write_sysreg_s(new_smcr, SMCR_EL1);
-		/* EZT0 and FA64 are not self synchronizing */
-		isb();
-	}
-
-instead of using sysreg_cond_update_s(), not suppressing the write would
-make using sysreg_cond_update_s() for ZCR_EL1 look strange. =20
-
-An alternative would be to just drop sysreg_cond_update_s() and it's
-usage for both ZCR_EL1 and SMCR_EL1 but given the existing code
-suppresses the no change write that seems like something we ought to
-benchmark and I'm not sure that's proportionate effort for something so
-straightforward and localised.  If we didn't have the existing write
-suppression or it was very new I'd not worry about it but it's been
-there since forever.
-
---4A0YswpY+SjfO+B2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpiF0EACgkQJNaLcl1U
-h9AS0Af9F+UeoG7xUnYhO3VjqKx1wGlsL/qur89XzqOiKlo36Jx4iNNK4x0mzUzX
-zFdcttRmzRHvtbtiztojx5d5WkKmknKrlPz7b4WUfTrejFqVWWJJ4pR4p4Wsmuh1
-xv47DGyCtC7FXetqftu44vOVYhmRLTL41AC3cNn6deMNZWojSfpvjgKW3oYphKh4
-fRn6bi8U9onLSGndPYBg99kqw3jTbSsurPsERinrsrILC+FlPMsWHe8aApuCzOxo
-LiMbcoWarmyxdT6fb20mmxA7ghZVphb9eOLu3Nkne+t7A8WcDjRhrcq0n3YXkwwI
-d8KAj6UwK4lsj65nBS3mkdLxt6miPw==
-=/mQp
------END PGP SIGNATURE-----
-
---4A0YswpY+SjfO+B2--
+I still prefer open-coding the calls to perform/request/serivce flushes.
