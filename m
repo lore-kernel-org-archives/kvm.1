@@ -1,118 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C9470EB2;
-	Thu, 23 Jul 2026 05:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4139E37DEB5;
+	Thu, 23 Jul 2026 05:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784783516; cv=none; b=oJDT+B4loEwh03N+GkeDsciicQqhlJ9ZnwkV+ZY9pSYO3YftNpT6nHCTXeICXltbd2mVT2P1ljz2cFcLpSjjLV6X5E92Rd874UitDP9617kxWWf0tZess1bQw5vu+EW3w0dOUnSWKDaFRXKLadubzM0WRrBFWvCk19EzfIW4I+Y=
+	t=1784783719; cv=none; b=LfZlkywZYEN1HTTEwiWlqoB30Pfgmr2UTkGDdL6Gf/8XTOWe90KHkBSWUQAmmpLd3qdZEJwQKgIfbUvHEAnk3TQp41F9Kw5CMMisgaB8ceIETlrOQVSyoSCX3zxaBkolQ0BthktDmSL52iR7/NCp2eO6K2BrduGXd0ZMLEtLxRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784783516; c=relaxed/simple;
-	bh=Ay8l7c88XfpSbFdV5zDduDc2iQSHOh9dyJnN4dzjXhc=;
+	s=arc-20240116; t=1784783719; c=relaxed/simple;
+	bh=nUFIhy23wPIvcdXKNXP7uW/tn5Gq+I2t9wo+ptAuegg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u7tkoX3jcMZgs1E1G0Y5ytGgj6HxV+gt49eXgJaDWiLw638AUyyfY6h5M8ebvMwVHOo7ay8G4LP1ZgAZETaiSPqsarMVS10nn/b7VdPP5Ss1wl+xukHOj8YogdFUQ+2WucSisz0zf/jv/VLFh5D4uAKIEmkuj+V61/O2gFIMr30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4olgVFU; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=ml68Lnsw9ag1wuH8N7bJpM9CpKYGc3cI394Ja/330EspYqgL3bAUC/fxgCXS+WtBeSHKJK4n+euM8yazgQiRiC3OnAyM07lUQSMNkNERzcGHe5HexMxj4lSVJkVECmU/CbhmLqQcm+SmeoxWjJXqlMLpfd3hA3PBge0BtENjmuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=B/NZ0b/J; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4olgVFU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F3A1F000E9;
-	Thu, 23 Jul 2026 05:11:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784783515;
-	bh=2RGGvdAxJ6bnF1ZM1cCgbtV9A5lKwAlQwY3M5zH8qCc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l4olgVFUONyKj/yXqA+pn0qf7V2zDy45zQUPXm8fYVz0I5bCqIzpxz8t6E+d11j+f
-	 4tBceRKL53XlQP/lWnG+XzjxCBjJs16M0noZEKdvt1Isf7gMaPB5vFD9inU1Qojy6I
-	 JZ/fzsoz3BaMhFX+XNA3xZ0RXZlznR20kkFiRKewPzqByzqqLtyHsZlm9AFVUU9E8v
-	 VjHEVgfTAn1P1yMPRROTZHlIaW3BemL/KUw7/g28TW27LyIsmewWlQ9OQdHUDhXx/U
-	 r0x28wsuNznWMjIIcM08ECscCfV8UmF1wod7UEQxlKcxJlcOl2M8avIr9YDoHvlmrn
-	 inEYPV03FuiCQ==
-Date: Thu, 23 Jul 2026 05:11:53 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
- allow skipping the gva flush
-Message-ID: <amGiAKsC3XrF6DyA@google.com>
-References: <20260616004155.1435766-1-yosry@kernel.org>
- <20260616004155.1435766-23-yosry@kernel.org>
- <amFl89ch5Iej63L3@google.com>
- <amFms2CnzhDUuRCk@google.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B/NZ0b/J"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D94DE40E027F;
+	Thu, 23 Jul 2026 05:15:14 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id etzROib32P5O; Thu, 23 Jul 2026 05:15:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784783701; bh=OQRjjaSbk43bvPbDeB6pyF9tcyG0794hJa78bgjEmrs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B/NZ0b/J0iSmUCpooQTeluxRCzi6OhX3sY1QLGSnPb3eUlfgE/GJlLTEiKZckMeW+
+	 qp/on+sCkiPmDQbKCLxaoPPVXSRA5jjFB7CKPigZV8Mb14rGGP79fQJ4tALydOT6KR
+	 YBKL+bg96Sd9lbpWwbhm/IprgMYE94P9mNwYZIJ9jtAlINda+Ys3f6/BvIMqErXSdu
+	 6hkxTxytEXPWDb/qZgGOUBi3kggv4RybfPqIUizam/QPE5RstodpZn1NmQj9BdtpY9
+	 mDOyL8rLRaw7dDS31EICtKtbY2cQKKlAfdzi8ToUv1nBvV8z7cSAG7X+AStCTxvv3/
+	 LbSNKJOyL+ezJ9KrXza07EteOdzeiKY2HMjNYuspAVxlDHbph5AMCpH8hdGEzqPndV
+	 SHjb8BM1VkNIPj2zbSy97SsUHbtLKtobxSGkmsSyXLSDI3h+hZ5lF408HIBAkwGmw3
+	 LsD82LdzAZr46UAlpZr9KOCeEIUa8jkS2FVnnFw3VLVzTFBcQwdNWFYCYNJNy4ZxOb
+	 7CNzgoTCWt3DkZirO3LD2qt1X2lvneN1KKIH+6d1GRhhI+Y0URmA+hudUWq5PiKg7q
+	 kFJXq4Uh4O6FxAAtV+zgPZmTGNUVTrIp2phvUFKjwZ/n83HIe17i250w7sWBFmfwiY
+	 Qdg36mppiK+O550Ps9Stxumc=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::2b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0800840E00DC;
+	Thu, 23 Jul 2026 05:14:27 +0000 (UTC)
+Date: Wed, 22 Jul 2026 22:14:22 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Ashish Kalra <Ashish.Kalra@amd.com>, tglx@kernel.org, mingo@redhat.com,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+	ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
+	dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+	darwi@linutronix.de, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+Message-ID: <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
+ <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+ <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <amFms2CnzhDUuRCk@google.com>
+In-Reply-To: <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
 
-On Wed, Jul 22, 2026 at 05:56:19PM -0700, Sean Christopherson wrote:
-> On Wed, Jul 22, 2026, Sean Christopherson wrote:
-> > On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> > > Refactor helpers out of kvm_mmu_invalidate_addr() and kvm_mmu_invlpg()
-> > > that take in an extra argument to skip the GVA flush.
-> > > 
-> > > This will be used when invalidating GVAs in a different context than the
-> > > correct one (i.e.  invalidating an L2 GVA from L1), so flushing the
-> > > current context would flush the wrong TLB entries.
-> > > 
-> > > No functional change intended.
-> > > 
-> > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > > ---
-> > >  arch/x86/kvm/mmu/mmu.c | 23 +++++++++++++++++------
-> > >  1 file changed, 17 insertions(+), 6 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > index 65c35ed8f4a01..3feb75732f7b4 100644
-> > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
-> > >  	write_unlock(&vcpu->kvm->mmu_lock);
-> > >  }
-> > >  
-> > > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > -			     u64 addr, unsigned long roots)
-> > > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > +				      u64 addr, unsigned long roots, bool flush_gva)
-> > >  {
-> > >  	int i;
-> > >  
-> > >  	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
-> > >  
-> > >  	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
-> > > -	if (mmu != &vcpu->arch.guest_mmu) {
-> > > +	if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
-> > >  		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
-> > >  		if (is_noncanonical_invlpg_address(addr, vcpu))
-> > >  			return;
-> > > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > >  			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
-> > >  	}
-> > >  }
-> > > +
-> > > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > +			       u64 addr, unsigned long roots)
-> > 
-> > Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
-> > kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
-> > to have the "in_root" version to a quad-underscores helper, and IMO it's more
-> > obvious what's different between the one-line wrappers and the inner helpers.
-> 
-> Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
-> was assuming you were using it to differentiate between GVA and GPA, but IIUC,
-> it's literally skipping the flush for the current context, which just so happens
-> to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
-> all possible.
+On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
+> The offline cores will remain offline since hotplug is disabled. RMPOPT
+> is simply a performance optimization for RMP checks and leaving the
+> offline cores (that will never exit idle) unoptimized should be
+> acceptable.
 
-Yes, it's skipping the TLB flush that is only needed for GVAs. The
-alternative I had in mind (but thought was worse) was to refactor the
-TLB flush part out of kvm_mmu_invalidate_addr() (or
-__kvm_mmu_invalidate_addr()) in this patch instead of adding a boolean,
-but this still requires adding a wrapper and the possibility of a
-quad-underscore helper.
+What happens if you boot with a subset of cores, the boot flow enables RMPOPT
+and then you online the rest?
 
-What's the main objection to kvm_mmu_invalidate_addr_in_root()?
+Have we tried that?
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
