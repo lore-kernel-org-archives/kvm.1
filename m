@@ -1,179 +1,169 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB67384CCB
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 07:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5006D3ED11B;
+	Thu, 23 Jul 2026 07:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784791054; cv=none; b=r6TbHf3GQSIcd+zl2xKlrYe4oP8gMsM2Ih/txKzt0/92Rofdst4/vtoqIwEGsGdNQfjElE2y7jINUFmACcMHOt5shka7iiStvxug/29FkvHsnTbEzrj7c2j5jy2Nuig2r8DdSJ4N/+ik2jm4H8SBZB1cW2UvRl9OP6eO6RsfIkU=
+	t=1784792018; cv=none; b=TTqhOLSm3dx5oxSWKHLTIPqpKuk9bZikO73aK/RWvD8CcoarwSm7FOFubPDBfPh5WZWPZbvQNYa8x3olzpniWh1lAuQAblo56yN52hpNfn6o/jD7MrEcju9vE71ywUr4441zc8EuZ9DAkOyOdv3WZiLiT5DPzHnrdeN3JsM2jx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784791054; c=relaxed/simple;
-	bh=teeyNIv/JEiwwT3fkLQ0kmcbVKriraNmcjYMJ0UUajQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mJn+qNsaLneCWodMumRxflfqGdMy4gifX5LlFCfUf8VQufEfUfYgrQcCsXHB5TtVazEzj2OOzchWeAiDXYGQ8gu7g7FrpJtQ4Nlc9g/D7TbNhAhOZu/ZVqyNwGO+EJzroRNyIxH0XZVMevkH55J0/INkVJKZaJAKxUaIWGk8UzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dq3WktuS; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784792018; c=relaxed/simple;
+	bh=oC7sbdUgNMV8QTYtSsP43klCwlgDf7B5XZJkVhlnl7g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:To:Subject:
+	 References:In-Reply-To; b=kO7RJXFVMHcSsn1DJCg2O6g/hh/r5Qphhq8vQjg4PIQ4Yf9PF6NYmyOr59jZFnfr+gdRTu3nkxzPygeskj8uvD8Jb3T9Nb94VTpzh10G+I0RVw/SqTZ4LJqo7OXxivNHzVsm5sK1krRfMBdoMrLD/U0eKROxrf+DpLYEjm9dYdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=saIVXHy9; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dq3WktuS"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954f5e8020so1168805e9.2
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:17:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784791046; x=1785395846; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gTMcinR+9LxGJXRCG8QBuGeJK9HPvbs8Aj0hNum62ZE=;
-        b=dq3WktuSm8Ce7e9EZxcw96yPGIa8Bn54vSfrlHVoeETU4aqyp0LEcQ92eaqZiPNkWs
-         CduCAZvlbAE6XmF0tSrM62tD6lsYPTaoQ9RYt5J1djZvHE5qUdylVhF6jcXDGDvtgfmt
-         xlje4EpfzwCEZRdliaxpz86OSBu6iMGdYarejmK0ZhT1VOwTiwvS/QpfJgW46zfbWr6g
-         hvc6Z3ruHuIP4JgyX6DR00AIdP0vSmGZJcqW89usApcZfVSNOLAlK5CQ1fOr+jUSpWKN
-         59dVRO/04CJO57LVhlT+UJjThvoI7G8uircfQdQkubAx7MQNPJFnxtgWWJPp8F5rMjVV
-         81ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784791046; x=1785395846;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gTMcinR+9LxGJXRCG8QBuGeJK9HPvbs8Aj0hNum62ZE=;
-        b=H7/M7+NgnCeXvuhq7qWMGMk6riLDdKXTGJWD/+uYjevCraO2dfsaxijDtdn4qoBfrm
-         DbSDqRJXtFLkxXRuwk6ihHw6h81Ec06OaEY01GUHCr1BOF4bcPjRrHIazPdAMNQWg3wh
-         KBBNtKQv0zMUlJ95y8y/fg6TCy9ZEaMo9v0NoJ7A2aoSiCHG6jPWGkDUKOH2qQ5ViNDj
-         UuVS6kyuYnlEEcy+3zFB6YjeZv3HpDjKOj1IwEmDfAbPlrC54CD9M7L1t28ICu8DCV1t
-         /JrvVkWwdGHCHnZeGrEwWvSbYnVfw2wviCmXpY0dUA77ok13oAKX8pm2/lz4G/z9XyM2
-         DCkg==
-X-Gm-Message-State: AOJu0Yyz7rW43OZDFhBPkJ1p5s80JoJk3JAEXdjF84vaZsFg0CLk51PU
-	krXTZQ71APOkvmwPn0+tFiD4Iu/WPm5iLW4BkH3ofny4Zp95fvEE4xV1bFd1lazRCeo=
-X-Gm-Gg: AR+sD10t4WNxjrySxczuuSkaAuPsndL3HVWXydU3V40YeQGwv0djSfpphl2fZrjROqP
-	Q6RaRgnKXKWnYJeeL42zvtHH5WvgL3PPW0Dv/g03s+EywiXTclHFa7J0ZcMwtBBF/G6CigLrKji
-	HzbPgqa9I/5U70ZFgJO7bUObtlZTEgEDRTVdfchX9SSYporGKV++yAdAHkj9CwuYsRWLxDhTI+I
-	KfppLUGsKwTgl84QbVdFbbz7tqO/+D7WnXIRFCypMt9XcEsTmkArfmwdaoLWyV9xcu5mG0zh55V
-	5JGUBcFPC1dOGaRChNrfvA97/1WJujZX3VwFRiZr0A77IzrV629uiRySgsOO1VLt4XwOe1GjGyF
-	HELj2xUFZ5tL2FpAe6tbIdhX95SvLqzqkgER+YlSTn3uXDzc+4C+zeMFA1Kt6MNBXUMSu6UbcXK
-	5HDCMuDQnixBpXj/A=
-X-Received: by 2002:a05:600c:6a07:b0:493:a613:56b2 with SMTP id 5b1f17b1804b1-49573c8d700mr12326795e9.8.1784791045710;
-        Thu, 23 Jul 2026 00:17:25 -0700 (PDT)
-Received: from [10.20.4.146] ([149.62.206.101])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4956a508aa6sm130774115e9.7.2026.07.23.00.17.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jul 2026 00:17:25 -0700 (PDT)
-Message-ID: <3114b501-158f-46f5-b999-68b5896aa3f8@suse.com>
-Date: Thu, 23 Jul 2026 10:17:22 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="saIVXHy9"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66N5CjK82084695;
+	Thu, 23 Jul 2026 07:33:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mt3U42
+	aN626+U6dkCBBEqQUPL9hveoK+KDmxcgBTv6Y=; b=saIVXHy9fBGHE5U+39KXLY
+	lSQPMMlZ2MpHhRYUcMJhpSRW0CuiFHxzWDT7cSJwAifq+qmJQDcdzI8DewwcwImY
+	K+qBqC5sZha3ywdqe43l8WwFkYT5og8ik9WB1PKbsnw1bQQgzDwYlrx0ccrQVVrJ
+	qJKiq8YRiKZ+gq+RXIHHsFbQQadlNcuFRN78vCxoN4OXQJt8yNsFPmJhBIRhrlYL
+	40cNPc2EiPkI1exp9cptaCIjxqqxWb0TeInKjoCVzCw3IO05496msfHbCDq+qFdm
+	sQlHnl62NtANVwVBBP5Uu6CrzuICgLTQFq6eQ0wo+AlxnWBsO/nbrLf3QpTFoZhg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7916b90-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 07:33:36 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66N7JdB9011886;
+	Thu, 23 Jul 2026 07:33:35 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1gjvwv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 07:33:35 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66N7XVpv41681216
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 07:33:31 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 80E8120075;
+	Thu, 23 Jul 2026 07:33:31 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C77E20071;
+	Thu, 23 Jul 2026 07:33:31 +0000 (GMT)
+Received: from darkmoore (unknown [9.224.78.25])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 07:33:31 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 08/11] KVM: TDX: Get/put PAMT pages when (un)mapping
- private memory
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@intel.com>,
- Yan Y Zhao <yan.y.zhao@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- Binbin Wu <binbin.wu@intel.com>, "kas@kernel.org" <kas@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "hpa@zytor.com" <hpa@zytor.com>, "tglx@kernel.org" <tglx@kernel.org>,
- Vishal Annapurve <vannapurve@google.com>, "bp@alien8.de" <bp@alien8.de>,
- Chao Gao <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>
-References: <20260718014500.2231262-1-rick.p.edgecombe@intel.com>
- <20260718014500.2231262-9-rick.p.edgecombe@intel.com>
- <20900cd6-6d05-4a20-a21d-2a1d4a6ef5e5@suse.com>
- <4ad035a82ee10dc4645e26a4bd1daf40786a743a.camel@intel.com>
- <amEbS6WDEyrvW72Q@google.com>
-From: Nikolay Borisov <nik.borisov@suse.com>
-Content-Language: en-US
-Autocrypt: addr=nik.borisov@suse.com; keydata=
- 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
-In-Reply-To: <amEbS6WDEyrvW72Q@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jul 2026 09:33:26 +0200
+Message-Id: <DK5RYOJDRPYK.1UBAUE8G7YG75@linux.ibm.com>
+From: "Christoph Schlameuss" <schlameuss@linux.ibm.com>
+Cc: <linux-s390@vger.kernel.org>, "Heiko Carstens" <hca@linux.ibm.com>,
+        <kvm@vger.kernel.org>, "Vasily Gorbik" <gor@linux.ibm.com>,
+        "Alexander
+ Gordeev" <agordeev@linux.ibm.com>
+To: "Janosch Frank" <frankja@linux.ibm.com>, <sashiko-reviews@lists.linux.dev>,
+        "Christoph Schlameuss"
+ <schlameuss@linux.ibm.com>
+Subject: Re: [PATCH 13/21] KVM: s390: vsie: Add helper to pin multiple guest
+ pages
+X-Mailer: aerc 0.21.0
+References: <20260709-vsie-sigpi-v1-0-ea9f12066408@linux.ibm.com>
+ <20260709-vsie-sigpi-v1-13-ea9f12066408@linux.ibm.com>
+ <20260709152820.BA50D1F000E9@smtp.kernel.org>
+ <869ceed8-1c04-46ff-aa0d-c1ae5e01badb@linux.ibm.com>
+In-Reply-To: <869ceed8-1c04-46ff-aa0d-c1ae5e01badb@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: cjnaU2pdzk-Yat43uaq2L_Tn5IgmLLwg
+X-Authority-Analysis: v=2.4 cv=V6RNF+ni c=1 sm=1 tr=0 ts=6a61c3d0 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=HN2Bi1S7tktRAlzQxmMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDA3MSBTYWx0ZWRfX0+knXjz2XtQ8
+ 0VSncqCVKFMb031ipOI1zA2MgEoynTSyRb+phrgZYPAWL5wta5uIcwT+c3LgXaIgVO1TTGZYNm0
+ eXwDINfS/an/ZFuvuKaEGuVFyrRYtOQ=
+X-Proofpoint-GUID: cjnaU2pdzk-Yat43uaq2L_Tn5IgmLLwg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDA3MSBTYWx0ZWRfX5q1dYRe+EomK
+ zFG9sOTDP9WGnwl07x9sk/j6yigy2FhI9iWGfPUgHQbtchvVd328JmcYLvPiVzcZckBheiEMp2+
+ A2DVOXxY9MRCv6Ha8ZjbYSS5k6YLmfV11uHfWDz2TTcyU7qtLjAPNFjG6C6vF+rJ/YATynZ4c2n
+ j7rK4NQblxugtYhI4daHojFfONXx1UK9ZiHUmwSZRwwc4hOWgCLgcew5RiiWC2omLDbhp5i1T8e
+ C8Ec5owaR2qmtC6keQuEh4nNgYwH+7CZU+08uqSVAKPXMHipYEN25DMqTv7dVIPgnda1aAUScZ8
+ VSY1ahu/xfYieg6DcosPZdiHhjNfFQyChe+iUqRHZQDKlJAHE8OWBRR2g+4KmslakbNkOjtPmw7
+ qLJYAd+wmYhcqyx5xMM1H0UIRBdao4l/b+teHXGhkfQm9FuEAKuzyiEFfSdoZIXVJlzi5AMza/4
+ i+A8BJ+cC6u61wmCaLA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_02,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1011
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230071
+
+On Wed Jul 15, 2026 at 11:19 AM CEST, Janosch Frank wrote:
+> On 7/9/26 17:28, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential iss=
+ue(s) to consider:
+>> - [Medium] Incorrect address calculation for unaligned GPAs in `pin_gues=
+t_pages`, leading to data corruption for multi-page contiguous buffers.
+>> --
+>
+> [...]
+>
+>>=20
+>> [Severity: Medium]
+>> Could this address calculation cause issues if the initial gpa is unalig=
+ned?
+>>=20
+>> If a caller passes an unaligned gpa to pin_guest_pages() (for example, 0=
+x1010),
+>> adding PAGE_SIZE * i propagates this initial page offset to every subseq=
+uent
+>> page. This would mean the calculation requests 0x2010, 0x3010, and so on=
+,
+>> skipping the guest memory between 0x2000 and 0x200F.
+>>=20
+>> Would it be safer to align the gpa calculation for the subsequent pages =
+to
+>> ensure a truly contiguous buffer is correctly pinned?
+>>=20
+>>> +		if (rc)
+>>> +			goto err;
+>>> +		addr[i].gpa =3D gpa + PAGE_SIZE * i;
+>>> +		addr[i].hpa =3D hpa;
+>>> +	}
+> When unpinning that shouldn't matter since gpa_to_gfn() removes those=20
+> remaining bits. Are you ever using a hpa other than the index 0 one?
+>
+> But yeah, there shouldn't be any offsets for follow on pages.
+
+I am not too happy with that. While agree that it is confusing to have the =
+array
+named sca_o_pages, I still do need the in page offset of
+vsie_sca->sca_o_pages[0].hpa.
+
+ATM only vsie_sca->sca_o_pages[0].hpa is used to store the original sca ori=
+gin.
+
+If we would want to store page adressess here all of them should be. Meanin=
+g we
+need to reconstruct the actual sca_o_hpa from something like
+
+  vsie_sca->sca_o_pages[0].hpa | (vsie_sca->sca_gpa & ~PAGE_MASK)
+
+Its only needed in two places in the end though. Other places do a recalcul=
+ation
+of the offset anyway.
+
+Putting the recalculation in a little helper method and having sca_o_pages
+entries all masked to the page addresses somewhat works for me.
 
 
-
-On 7/22/26 22:34, Sean Christopherson wrote:
-> On Wed, Jul 22, 2026, Rick P Edgecombe wrote:
->> On Wed, 2026-07-22 at 16:46 +0300, Nikolay Borisov wrote:
->>>> +static int tdx_topup_external_pamt_cache(struct kvm_vcpu *vcpu, int
->>>> min_nr_spts)
->>>> +{
->>>> +	/*
->>>> +	 * Don't cover the root SPT, but cover a possible 4KB private
->>>> +	 * page in addition to the SPTs. So -1 to exclude the root
->>>> +	 * SPT, and +1 for the guest page cancel out.
->>>> +	 */
->>>
->>> That comment here doesn't seem to correspond to the code in anyway.
->>> There are no +-1 adjustments.
->>
->> The +1 and -1 cancel each other out. Hmm, how about:
->> 	/*
->> 	 * Don't cover the root SPT, but cover a possible 4KB private
->> 	 * page in addition to the SPTs. The -1 to exclude the root
->> 	 * SPT and +1 for the guest page cancel each other out. So
->> 	 * make no adjustments.
->> 	 */
-> 
-> Maybe put it in code?  E.g.
-> 
-> 	/*
-> 	 * Minus one page to exclude the root SPT, but plus one page for a
-> 	 * possible 4KiB private mapping.
-> 	 */
-> 	min_nr_spts += -1 + 1;
-
-Makes sense
-> 
-> 	return tdx_topup_pamt_cache(&to_tdx(vcpu)->pamt_cache, min_nr_spts);
 
