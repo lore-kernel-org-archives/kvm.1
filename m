@@ -1,165 +1,155 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010000.outbound.protection.outlook.com [52.101.61.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6B0363096
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784777125; cv=none; b=bfHhwK3SdUsnSqJddI+vdQpeoKSJNU7Sc1Z5ciFaOVE8Pruhm7B5+7+y9feE+JvTpopTW1yoIvlwkLEB3bNTBNWg9c3H313QGzTwZEEG0md/+ZszqPha1ROvM2jL3cFD93oHzvBnzAoBhDACQSvauhKhLzm6PBuHx1rZpPwae04=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784777125; c=relaxed/simple;
-	bh=gfT0G2h32Mgahppc0W5ji5WK8maIODJ9zFl+mqtZVuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aBLmhHtTdGqyFhWTwTF63TWSso+9RLUzo/VVkBJUE/ElVPs+16owzEmf7J+B2XH0VnCjV/+0IugtzzGsIGOBPvVWcH0jNa+Ax58quo0/hoXHR3dpRDBhZBpU3XUoBPwVQTawUfheIwJ0DHCkyWgzp4/r9llLTY8kppVujlKUe5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=S5k+/km/; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871AC39061D;
+	Thu, 23 Jul 2026 04:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784782463; cv=fail; b=fD8qKG/1F8aqglBzGYIqlIrIFqRg1DuRdusCdx/T8Fz+bnTUfbQyhIiq+YQir3waKB9M3Zl9OI3v5evlBZ7JHL3WburEc7kaHxEQfNw3c5yQHVqBAz8Aus6l2cpnTo/wO53w9HjuKGC+ugLvyLAV7qV/YTenkid6Jcf4KOZwuow=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784782463; c=relaxed/simple;
+	bh=1FKUvkKBznms7LD+Hp37VVsjAjXAZtib/mms8C61t0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=svaJULD6zcMDK8sX0I90AmmecOAuoBHDWmodmXMqBDG2e+nzIFGYvE2t88z1Jli18sXKe6fupMxDZn754KgtP68xKIgMcKXEiPAYNT2Mar+ViYSS67wISW5Ehwiv5amPznL3qgpfaiISvYq/ltNrWwe371+ZltOfONoKUgN7+k8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iGwc63KU; arc=fail smtp.client-ip=52.101.61.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="S5k+/km/"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e65e18969so14278685a.1
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 20:25:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1784777122; x=1785381922; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Kd13UizLWaDa1rNXvY/PJ0N43yZ3Vd9IZn7XTlTXtfM=;
-        b=S5k+/km/W3hDbRibPNpOoB80+fMcI4MbaVCKgEaeGawR+FQWl9kNV2iUGzMuP5o587
-         /iaVfV9Jd+R4VNTdxnjkkgdz20NTR/Eu8b80hXADBRflMrWslncYyJ3SvD3gwvv5ngtC
-         ziCEhyqOck9EWcwsKAG1K0Fzc1bP7k6aIwfto2hePcg8FFQ5b1ILjIFtAueuSZJkiFL5
-         nYdguJXw90nDowVcfKGttiFdnF1n59L9sXbcemc/huQrcwmkhJfTVLcf0o+RBBzMGJDB
-         vgBWGT12txaO7gCP8wM5mTntpmBdTwxcjXyxbZfzrXl9J3a1TwC6EBaOEEphMqOrCOjK
-         FmPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784777122; x=1785381922;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Kd13UizLWaDa1rNXvY/PJ0N43yZ3Vd9IZn7XTlTXtfM=;
-        b=YKGbScdXo/65b11Qioq4JPNtPe4jF71M3nebkDylqVIWrkpwmORbH598/yyOY2WOEF
-         yC3WGc5bcvriHuHv8gTcI6I7ORwvbYo6fJdqPvVmCEasSQKfMNXXKwHWEgnMj8zxCKTZ
-         A1l8fcqzkIRJcpWBf79i70HT776p+rgZj50TkX58MxQoDyVw/8CFZqW9JbLG/crogSGV
-         vK6fv8yH0jBBZI1fjvYAiIovkYjkUXzvs+pt7euFAdzG0OO6/h+E02pGeuvZ2yqAN8zB
-         voWhoT791Y4J+6vXi4FEOmX9urVRxUXdWSX8PnW8eFph4xKV+KdsF56rrYysYyuVYHi3
-         UNLA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp+gA7keQffRoznZJVeO8o+ffsZLpq+KsGo1NgkyCSHgpfTUAKc/xEz2kiqZxiTv9LSW+Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6AYsN+SDOwJzfYnYQkFpDMgj6q20xZNHzxdwQ4r2UzI4nCKdI
-	gNCip79q/m6+ulSG37+OVzsuLpDh+ojZYEAaQWimfmR7xlNFLflnJWSbMMnavYS+foo=
-X-Gm-Gg: AR+sD13wp64I7nhovnMtn1M2Sfk7CRvUYsLa3RiQRfVxGQUZGksERbuZ6mA7uvG2/mu
-	sG8Wna4sr5CI9WRuGvTyaN6YmmfNm4AYPWtMevkYsEvuZwchrgA7anOhLQgnFTmJ6+0qSKmEY8r
-	xwhm9XNjS/FXQU6FnB8xKgw+OVXMrvEr29lTh61WDJ0m5bnLQv62RZg+225/k18bo67Q76uBC/k
-	liHb7GW3GMzEBkGUL3Z9SsI/PvkXJiOUxsxnV+dpvRsRnJnPhajYtBx5jPpR7VqmcU8iwDiQ3Gs
-	/NW/4Vhq5sSeE4m/mS6/COcK/zStT9/pVlMaQ18zkI8rsHJn9PUl2O0XiKtUnJkc9rpD3Q20Pre
-	fzGbTwZ21GeO53xmcCz1W7wSZG8YZ28vv7AGi2w8mTqGJHgZgUsl7BYdZWd2GAvI+FZJksJTNW8
-	fSLqs2wE3ouh3nEcIha/tc6z9p3T8ruaZTsZZT7gNF5n6awQLL0pjk7Bgufu9vZF84uqRO
-X-Received: by 2002:a05:620a:808c:b0:92b:67e6:4b79 with SMTP id af79cd13be357-931048880c8mr90170685a.35.1784777122066;
-        Wed, 22 Jul 2026 20:25:22 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-931062c4ea8sm34465885a.28.2026.07.22.20.25.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 20:25:21 -0700 (PDT)
-Date: Wed, 22 Jul 2026 23:25:15 -0400
-From: Gregory Price <gourry@gourry.net>
-To: SJ Park <sj@kernel.org>
-Cc: arun.george@samsung.com, balbirs@nvidia.com, brendan.jackman@linux.dev, 
-	yuzenghui@huawei.com, apopple@nvidia.com, alucerop@amd.com, matthew.brost@intel.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com, 
-	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	kasong@tencent.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com, 
-	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev, tj@kernel.org, 
-	mkoutny@suse.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
-	baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn, 
-	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, driver-core@lists.linux.dev, 
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org, 
-	damon@lists.linux.dev, linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON
- migration and pageout
-Message-ID: <amGHuputMNCFZ9CV@gourry-fedora-PF4VCD3F>
-References: <amCzmkdOr6AFv_kQ@gourry-fedora-PF4VCD3F>
- <20260723001943.95854-1-sj@kernel.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iGwc63KU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iz4wMsZHqtzf4YgFgs4XsmOg//4VpSgVJj3+jDBKr2wL3nVnMufOAYjyX+GY1vYC+EzJ6I9KmV6Jq6ulJVkUg33+Nvuy8OZ80WOaEeBn6cqkYmvCLzkP5Nxv9vdxFulWSWwXca4I6FPh+bK83oX4/lRX0tAqcWcuvCoCGQoioAYmYCDYhAKMqRsLxYcoT/1eQeNW74mNmp8RZ0G9QTsR44qBOdS+Vvpj5+U41fEgwq1/bhN2XAqlV8hizacoU7ud7IWIr89SMUPa+IrATzDma1kh0B+16O/B/7B5N1OmVWbbenE08KEWqxWjuUMvSL4p7VCjD+i/75yvWlFBIytvag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dEQjkmkp1pUfWcG1r0F8LJDCqu9cwomtc0IGyPePMO0=;
+ b=Gy2xGd4wFqBWCXDJe08ejywQOnKO7vTF2LbWrY9BMoTz24QFa9/ZTHpUmMXNDj/ntglgIt6evbPdETSrUTIiZRuS5rgA5/CmCHX/E6PaqOIxEM70YlnmK3eQBP9xKzdLzsCjiBixch56b30qw6m/3Gs+QbPUoMPBa5oR+N0C8AN33Rlo3l0KGeEwrV90yCIKxS8yS6V/n2uhVR4GR8naY+dDMYAaAyCUkLlr16ZirtV8FDYoH2ixkLuofZZIX5uR7xu+Wq/AJNZ8GppJY8xCB7vhLVG8imhu36u99FAdfWNyXi5SBFt5e9tzDLZvJZTCzFU+mHYKq8c1X4V0FjvcbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dEQjkmkp1pUfWcG1r0F8LJDCqu9cwomtc0IGyPePMO0=;
+ b=iGwc63KUbnXkTrPysxFSPhRw8fBDRNYbmltWz2gfnonHaWj/WkCGsu/4PXizlFBYy0B9r/iezL07lhoc11SCqnYND0xrAEMPjth9mHO4cv47c85KGFzzEgBdforhzo3a7wiLEkKHuXQzO0DVVS/nDRaZTTdrdEzoa9uLoTpFl5s=
+Received: from CH0PR08CA0022.namprd08.prod.outlook.com (2603:10b6:610:33::27)
+ by CY1PR12MB9558.namprd12.prod.outlook.com (2603:10b6:930:fe::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 04:54:09 +0000
+Received: from CH2PEPF00000147.namprd02.prod.outlook.com
+ (2603:10b6:610:33:cafe::7b) by CH0PR08CA0022.outlook.office365.com
+ (2603:10b6:610:33::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
+ 23 Jul 2026 04:54:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH2PEPF00000147.mail.protection.outlook.com (10.167.244.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.245.5 via Frontend Transport; Thu, 23 Jul 2026 04:54:08 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 22 Jul
+ 2026 23:54:08 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 22 Jul
+ 2026 21:54:08 -0700
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Wed, 22 Jul 2026 23:53:57 -0500
+Message-ID: <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
+Date: Thu, 23 Jul 2026 10:23:56 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723001943.95854-1-sj@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
+To: Borislav Petkov <bp@alien8.de>, Ashish Kalra <Ashish.Kalra@amd.com>
+CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
+	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
+	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
+	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
+	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
+	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
+	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
+	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
+	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
+ <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000147:EE_|CY1PR12MB9558:EE_
+X-MS-Office365-Filtering-Correlation-Id: d16bc83f-f2c7-4b39-1b3d-08dee8766e63
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|23010399003|7416014|376014|22082099003|18002099003|4143699003|11063799006|10067099003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	YiqF2WhhllvKzoObLd7o8xwCbZegzmhuA6GWxiPwXYs8vPf5d9PtIuVeJO3+SyVknXLyesDAuRqsbt1SI//cTbPRBhtMAqAYcFQrxOiU5OEDFLIaQ0QelAMTXr2psAzhRq0Lqzgty7Tlxk9wsZmpuWUgfgg6MyWz6Egrmf+fxeQe8//Q1GEMmvxlnWtzs67wE863CgbeUp8eQG+vYUNjxnTiqK48nJek2tEO92iGUbaPirSYlENDKQEVNU/78UaIspTxINnqeCS4TaQWgYtm4jhVdFUzkOMFR5C6Jx1H6h8wsSTkn7DlS2UHQG4oPPi7mEkn8DAf8VFFdWDkKe7wg9gCkDtzX2nRgpvQM5O13dbAfjkESw/LTLrqUJJ1b5cLOUBllGuDrKJqyBidg/e1aFDKtHHXNUNFltCDnZNlTrxk2e8NG5jRl90dxB1J2PcFLSEh3B81DgmU5m5jzhn4ulveXwhYn8mlC8rS+YrIT/wvE87tQcK+j5VPbj+/oYljww6cR5pZUx4OhjcEm2Bkd6d7sbqG3GfGZk2cfu92KcXM4tQ0NN0xQCQVRx6kxzudK4NhRWTZ43iR0M4faUA6H+eiNgdgTUCY8BfmrdLEYlIXXCgY1i35nHG9vefUklMg90Xksi2gMZOSQQfblpifWLRv+F3UkyHfW+w7/w/Gfr6WHs1OK13fQGEwSJCf275d
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(7416014)(376014)(22082099003)(18002099003)(4143699003)(11063799006)(10067099003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	yjeWiZJEr20h4LUWwM2YNwu087FBo5W/C+rDuiRpxw+Fx0Wsne6IqUwbVFfgpTaJ25QnfqPztOHO1Ac4lj+ed7VdqJLU8ZR+x5blqWdBoanhuMew5f7T+oOsdkJsrxy6aJoN24YzV9HN5vJe2pDb9tTDhprKOjIVVrL3GPMgA31vuZamQWijPKxv0HAaMAE0kTg0xKVYbsIKi6cuQTEd16724nyTXKjAAdYIg+CGFC3bNL1nfQGEJfAszcMb7rlMYSQkoAe3jkJt3c8sP2lOFYMIgF5Ft+PZPhN9KbPcPfBZcPLdUV2yQUq2hY+6/DaMmonU22iniS8Nff59O5DDw9YVNkJ2KLhVjtUGiau91xi2dBydMK9ofmQT3u9eVP1kOeJxSMCSDrSoUzg837HFw+0akrfLUbOFri/h3KgDWkpKs1Cyi1g+5c3CSMCF4Dk2
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 04:54:08.8419
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d16bc83f-f2c7-4b39-1b3d-08dee8766e63
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000147.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9558
 
-On Wed, Jul 22, 2026 at 05:19:42PM -0700, SJ Park wrote:
-> On Wed, 22 Jul 2026 08:16:56 -0400 Gregory Price <gourry@gourry.net> wrote:
+Hello Boris,
+
+On 7/23/2026 6:40 AM, Borislav Petkov wrote:
+>> +	/*
+>> +	 * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
+>> +	 * to set up the RMPOPT_BASE MSR.
+>> +	 *
+>> +	 * Note: only online primary threads are included.  If a core's
+>> +	 * primary thread is offline, that core is not covered.  CPU hotplug
 > 
-> > > "by default".  Does that mean it could be reclaimable in some situations?  If
-> > > so, could we check if it is reclaimable?
-> > > 
-> > 
-> > See the damon changes in:
-> > 
-> > https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
+> So what happens if not all cores are online?
 > 
-> Summarizing what you want to say, quoting something from the patch, or at least
-> calling it "26th patch of this series" would have made reviewing much easier.
-> Cc-ing damon@ for only patches that toucing DAMON source files and the cover
-> letter of the series could also be helpful.  Please consider doing some of
-> these for future replies.
+> This should check that and fail if that is the case instead of blindly
+> continuing here.
+
+The offline cores will remain offline since hotplug is disabled. RMPOPT
+is simply a performance optimization for RMP checks and leaving the
+offline cores (that will never exit idle) unoptimized should be
+acceptable.
+
+When hotplug is enabled again, the platform would have already executed
+SNP_SHUTDOWN and SnpEn would go back to 0 and RMP checks are disabled
+entirely by then.
+
 > 
+>> +	 * is not currently supported with SNP enabled.
+>> +	 */
 
-I have been very much discouraged from this kind of trimming because it
-removes the context of the series from the individual patches - making it
-even more confusing.
+-- 
+Thanks and Regards,
+Prateek
 
-But I understand, I will try to remember to do this for you.
-
-> So, I understand later patches will make it optionally reclaimable and update
-> this restriction by the 26th patch?  That sounds fair.  But, could we drop "by
-> default" from the above comment for reducing the confusion?
-
-Yes, but you bring up a good point - I think this two-step process is
-actually poor form and that I need to redo it.
-
-Maybe this can be redone as node states (features?) such as:
-
-   N_MEMORY_RECLAIMABLE
-   N_MEMORY_DEMOTABLE
-   N_MEMORY_TIERABLE
-
-so these damon changes will forego this confusing intermediate step of:
-
-   if (folio_is_private_node(folio))
-
-and go straight to
-
-   if (node_is_reclaimable(folio_nid(folio)))
-
-In the first patch - without ever having to revisit damon again.
-
-> > 
-> > Technically there is nothing in migration core to prevent migration
-> > operations, it's done on a service basis - hotunplug, reclaim/demotion,
-> > user numa (mbind, migrate/move_pages) etc.
-> > 
-> > Operations on private nodes/private node folioes are refused if the
-> > capability bit is not set.
-> 
-> I haven't had a chance to read the entire series, sorry about that.  So, do you
-> mean the above blocking is not really needed, or that will conditionally be
-> allowed by another later patch?
-> 
-
-I will reduce this all to a single patch in v6, I see where things can
-be improved now based on a few pieces of feedback.
-
-Thanks SJ!
-~Gregory
