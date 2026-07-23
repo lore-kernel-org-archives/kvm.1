@@ -1,182 +1,170 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2212931D2
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6583F7877
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784841194; cv=none; b=bVglogc0dL5IUJbNS1fXW2kfYwOT4+GwaPF6JeCrIyEwb/nJDtHPipuhYmWlJYoJ84wxLs3kwUCrt3CoSpMkEWYEit8bsnoChmNaVlCjBkkfF1A3mSvHGwc/IRjNr9f+RM+m5rMX8cy8rYj22PPiWpBJCkPTE+Ol1sutkcWm/4g=
+	t=1784842195; cv=none; b=uBC/LoTAk7tF9/9CgaiuNtrwIqVYlP4kUNqVQd+HR3dBowqBq1geMLqNasMvQz1W2r3k/iDxAf/7iPvsDAG5b53eHCRe6+6/bMtW4p1JPHSyUdDR8KcPFuTsxenN8d7QvUyQFV/15qLfNnUIlSerJFZyc+YnagPPWR93gaC3bGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784841194; c=relaxed/simple;
-	bh=1hWFHI4JRAs2hc0cg9v1/a4IQrHF/pLOqVLIAa8AbXE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tOroM5RVgxkiZUVI/1Shk3DqngYA69Vujwv8htpLGaIYl/4iF0BzQl5VReJsYQ4Yz3Cqhsaquk3W7DHR982FLpChlGS0/iEd6vhlPDp9hUAfxbBCTb29dQ3jts6iMcnUJ5yug1LA9xfik/j2aPEaNqdxaD3OMzz7NRo5UHc+9nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gkfNJMKE; arc=none smtp.client-ip=209.85.210.198
+	s=arc-20240116; t=1784842195; c=relaxed/simple;
+	bh=e6IZKxUEbVEBK1Pw8ModRySJJQgk6Sw+j+2PnssWMCA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sfATHoySzb47vx4XWYiVLf9uD6fRu+fF/8YNJW8CG/uqyVbVgO1xt+pXVtggOm1dri4jkugvXR5Ah94E7lkuW1rL/ZGP2xOIeuZGAraxLmPpjpMh1Z4su6GZpO+ivvgQEOE1VPiYaxZbawvCCqWVc5zXVfeb9HNi8BPdUWELE3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RKxQEdxP; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gkfNJMKE"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e04598adeso954149b3a.2
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:13:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RKxQEdxP"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cfca8558d2so93305ad.2
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784841188; x=1785445988; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xHl5tfP5m5/e8XYPelSgAqtF3SsvtJLfy9mGWsHBD80=;
-        b=gkfNJMKEo6uJiRdWYBz8f0aBrOFCFY42yuxSMiCuik5Sx+3eeylsbShPPCd9YQGEfC
-         LqqWw7QZ3lKiVsZVDNOiDmMPjJ0w4hxW4AFl5FoxUaHEJ59lCQg4X+vPcGG3ECM3r/6b
-         zXFSbsWtvhB0SwXmh41wsaJCLzMzTT7uCslx0MJ1LfKGfQzaAjuARdoDvXRZlZ2r2dET
-         xCc9eKOmI2UTiMk+XIXkYwrdTN34Np9u9ptkZeaCEJqSwr/4SL91eYfzTCojqUXALZjo
-         zMkj1dn0LGZQR6Izx6mOyZvuDp0kMOCkZelRV73iu/1VR+p8tClns4kImLQ9j2wHDRgj
-         bwRg==
+        d=google.com; s=20251104; t=1784842193; x=1785446993; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YK/O6RuCYEF9evxzm6qmAAEvfpjWfPoAD75w9yRXmBI=;
+        b=RKxQEdxPOOVII8UiHkWofHALwiZIwjA/ehLkj//OOZ9+M/QqrqDx/ab/8APvzMFXo/
+         aJexGpMnHiqh/lB0cSjRliQQEIK/moWKa9V8F6UIviprjAOmyCPD1MJyQk0VEMm8SS2U
+         wRvDhunaxCN1nP+i+icVTyzbrJU2OlRVRIqloFC2w1ayL4S8gFuWJPUpWHL0cA7Hhr8b
+         1czMK+lknR2kPQLzyZ61pWavagNEeKytLZcnAYY9IqAL25rcMsBM56dap/wLhsrXPSaQ
+         wWAppp2ZVh6Ddv4VGqnf2F4Oa0qRCRQsq8e4VUVp3b+6T/oNh6CRMF8dRNNP7Bka/l6h
+         oGew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784841188; x=1785445988;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xHl5tfP5m5/e8XYPelSgAqtF3SsvtJLfy9mGWsHBD80=;
-        b=J7Mu7MwU3vvq8399ap0cFY1HgwQs8S4AwNVfwuB/sfYKdQAxrB3Qv3S+JxKtjU/7AP
-         LcQtFNJYwonJqyHN0HkrWmL7yIQF4G2xO7ZivGKFTB9TkEqG39ewFQrmfrJ4OKU66k9g
-         65oBHr+gEBtZZMTxzQ6ZhRD/NnqnJFZSnTOfPvxbowrVfdEQ3djoZGJi/+uxrJB+0jo1
-         accbI9B4GDLuuKoakbBmMyPoCawZFUYylTFf6FclPHejHNm+g4iI6bL7bydvw2pD9sEw
-         gpVbX5ZJuiAl4OSz41szu7/1wolUTJwW/YKOqh0eGmPArVV/JEyjwgYnHJhJmMWpDqJK
-         1BzQ==
-X-Gm-Message-State: AOJu0YxHc673t6yY65mLAQp+Rq8XvUAI/X7Pa5NE2gauoAyxpuZ1Z7Fw
-	6Z2LnJsu0mI3PbHBtuJXKh/HFp82SY0UuunK//A2G1tAI0Or32q+L6Nblrh/tkkcvPVvdw2iNcx
-	TN372sQ==
-X-Received: from pfwz7.prod.google.com ([2002:a05:6a00:1d87:b0:847:87ec:2a9f])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d82:b0:848:5935:2e11
- with SMTP id d2e1a72fcca58-84e2bb1e85amr5266272b3a.48.1784841187864; Thu, 23
- Jul 2026 14:13:07 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 23 Jul 2026 14:13:06 -0700
+        d=1e100.net; s=20251104; t=1784842193; x=1785446993;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YK/O6RuCYEF9evxzm6qmAAEvfpjWfPoAD75w9yRXmBI=;
+        b=YvFzimBrXehQORPdZIkXLDrIPkJu9+LEQDBax7ro3p+n5Uzh5JONMJVr12E+Kq9HSE
+         Cfy+v0u9mbL/23X9uqhKo0yIeOM4VGt/YYUuL7dq1Dg2I5SZVRVAQVYj8dpNJSFNxSop
+         gwffxC4SpDJLkYna5XSGGIMyhEMBDvSx8IFYar60N1PZ9zwxUs1JxL7jLrM2zdmkK92E
+         Do3GXNcvzGR+iCPmfc9Bdzj77Dna6k68G0NidMBGweQ5k5P2jQjYyWDJ/C3l1PKhiRJI
+         4spIELjrfB3nj824CWvQdNr5XMI9cmBoKKtZ2xk+nhkfaHKR9ghi+rCdbeaIsyticklh
+         76nw==
+X-Forwarded-Encrypted: i=1; AHgh+RpzJFBVDcsO59BIdWncmPX2jWW2sgXqWuVsxNO4JCn0AetA+5JlYMm75uJY51hzXN2Hxuc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybkDtrnXymj6mCmzsywU96YZmXJw3GopLIf3Yg/OI1+iyOHHXI
+	I6vucIsMj7HWBAQanwhLrEK2mQk41evI6ZI2W+kQoi48fjpVpBiqh6JUOmBMJQXcUyGPFU9pVCT
+	Jt+KANg==
+X-Received: from ploh9.prod.google.com ([2002:a17:902:f709:b0:2ca:ceab:34ae])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:9ce:b0:2cf:83bf:6b05
+ with SMTP id d9443c01a7336-2cfa6f82203mr53916385ad.41.1784842192750; Thu, 23
+ Jul 2026 14:29:52 -0700 (PDT)
+Date: Thu, 23 Jul 2026 14:29:52 -0700
+In-Reply-To: <7rg4rrbyecgoy32qzrye2r2wdy7bbalgl73anx6gd3qfndc2ar@7auj6hyujjg3>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260723211306.75397-1-seanjc@google.com>
-Subject: [PATCH v2] KVM: SEV: Allocate full pages for {DE,EN}CRYPT ops on
- SNP-enabled hosts
+References: <tx3hcnrhfbcz2p7e7umc5o2zrw74pluzuzgtlqt4dz5cc5nhxx@6tzzorc25nqw>
+ <s7jfbw3tnfgmp6blfqlfoi7yhq6f5n6xl62zzty5up45cqtsty@ljpjlvqw2gyy>
+ <ajrkryMxHZtsMvga@google.com> <6xyh7xa53k2s7bytlkcys4pyq4756rwoly5q7swrifv3td6dey@3h5e2e67lkvj>
+ <ajsjQtpZb-h2BdPh@google.com> <ajxLCMgLQe-JiRfq@google.com>
+ <45ixyum4upln4b2yvasovm2bmsfxyfezsi23vsr75r4fklelef@utxv4mymvfcd>
+ <ajx1Y93iX2oV-DLa@google.com> <2b4d5faf-1568-4080-92b3-1e525a11b194@redhat.com>
+ <7rg4rrbyecgoy32qzrye2r2wdy7bbalgl73anx6gd3qfndc2ar@7auj6hyujjg3>
+Message-ID: <amKH0E_VKOR5wyEG@google.com>
+Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV
+ {en,de}crypt debug ioctls
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Michael Roth <michael.roth@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+To: Michael Roth <michael.roth@amd.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-When {de,en}crypting memory of an SEV or SEV-ES guest on an SNP-enabled
-host via a temporary buffer, allocate a full 4KiB page for the buffer to
-ensure the page containing the buffer is wholly owned by KVM, i.e. won't
-be concurrently allocated and accessed by other kernel code while KVM is
-using the buffer to {de,en}crypt memory.  On SNP-enabled platforms, when
-sending SEV/SEV-ES commands that trigger firmware writes to memory, the
-to-be-written page(s) must be (temporarily) assigned to Firmware (as
-required by the SNP architecture, to guard against using such commands as
-gadgets to attack SNP guests).  See snp_map_cmd_buf_desc() and friends.
+On Thu, Jul 23, 2026, Michael Roth wrote:
+> On Thu, Jul 23, 2026 at 05:17:26PM +0200, Paolo Bonzini wrote:
+> > > > > I don't see a way to salvage SEV/SEV-ES on SNP systems, short of requiring
+> > > > > CAP_SYS_BOOT or some other elevated permission to do *anything*.  Or redo SEV/SEV-ES
+> > > > > support to require guest_memfd for operations that require putting pages into
+> > > > > Firmware state.
+> > > > 
+> > > > Yah, short of maybe the above approach, I don't see any way around it atm :(
+> > > > If you think it's worth pursuing though I can give that a shot on my
+> > > > end.
+> > 
+> > The unavoidable ones include, if I understand correctly, not just
+> > DBG_ENCRYPT but also LAUNCH_UPDATE_DATA?
+> 
+> That was my understanding, e.g. a user could try to use the HVA to
+> trigger the copy_file_range() path right after
+> snp_map_cmd_buf_desc()->rmp_mark_pages_firmware() is performed as
+> part of servicing the KVM_SEV_LAUNCH_UPDATE_DATA request, and it seems
+> like that would trigger the same issue. And bounce buffers wouldn't work
+> for that one either.
+> 
+> and it's kinda important =/
+> 
+> > For encrypt the destination is the guest memory, so how would adding
+> > guest_memfd support for SEV/SEV-ES work?  The guest doesn't have a
+> > page-state-change call and neither does it have RMP nested page faults, so
+> > how would you communicate the private<->shared switch to userspace?
 
-Unfortunately, transferring ownership of a page to Firmware makes the page
-inaccessible to software, and thus writes generate RMP #PF violations.  If
-KVM uses a sub-page allocation for its temporary buffer, some other actor
-in the kernel can allocate and use the other portions of the page, and thus
-trigger unexpected (and seemingly spurious) RMP #PF violations due to
-software attempting to access a Firmware-owned page.
+Yeah, I was spitballing, I don't think guest_memfd has a viable path forward.  
 
-  BUG: unable to handle page fault for address: ffff906ae30f0300
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x80000003) - RMP violation
-  PGD 6b1b80d067 P4D 6b1b80d067 PUD 100231e2063 PMD 10055a88063 PTE 80000100630f0163
-  SEV-SNP: PFN 0x100630f0 unassigned, dumping non-zero entries in 2M PFN region: [0x10063000 - 0x10063200]
-  Oops: Oops: 0003 [#1] SMP
-  CPU: 70 UID: 0 PID: 10658 Comm: svw_WaiterThrea Tainted: G     U  W  O        7.1.0-smp--c22293789940-seanjc-next #1 PREEMPTLAZY
-  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
-  Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.86.0-102 01/25/2026
-  RIP: 0010:memset+0xf/0x20
-  Call Trace:
-   <TASK>
-   __kvmalloc_node_noprof+0x2a4/0x710
-   do_getxattr+0x4e/0x130
-   path_getxattrat+0x125/0x1b0
-   do_syscall_64+0x10a/0x480
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f3a22cb6daa
-   </TASK>
-  Modules linked in: kvm_amd kvm irqbypass vfat fat ccp k10temp sha3 libsha3 i2c_piix4 gq(O) cdc_acm xhci_pci xhci_hcd
-  gsmi: Log Shutdown Reason 0x03
-  CR2: ffff906ae30f0300
-  ---[ end trace 0000000000000000 ]---
-  RIP: 0010:memset+0xf/0x20
-  Kernel panic - not syncing: Fatal exception
-  Kernel Offset: 0x39e00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-  gsmi: Log Shutdown Reason 0x02
+> During early SNP hypervisor development (when guest_memfd was called
+> "restricted_mem"), the patches were actually based on top of some patches
+> from Nikunj that added guest_memfd/restricted_mem support for SEV-ES.
+> One nice thing about that is it brought about support for lazy page
+> allocation instead of relying on KVM_MEMORY_ENCRYPT_REG_REGION.
+> 
+> The support piggybacks off the KVM_HC_MAP_GPA RANGE hypercall that was
+> added on the guest side to enable SEV live migration so the VMM could
+> distinguish between shared/private (and punt private page handling to
+> something else). By coincedence, that's also what SNP/TDX ended up using
+> to forward conversion requests to userspace.
+> 
+> However, since SEV live migration never became a thing upstream there's
+> potential that the KVM_HC_MAP_GPA_RANGE handling might miss some of the
+> newer cases, which would lead to silent corruption (though with SNP
+> enabled we might still get an indicator of whether or not the guest had
+> the C-bit set, so we could detect a mismatch that way and maybe even
+> be able to handle implicit conversion requests).
+> 
+> The big issue with this approach though is hugepages: we'd be dropping
+> existing SEV support for both hugetlb/THP unless we implemented in-place
+> conversion support for SEV-ES so it could eventually benefit from the
+> hugetlb patches at least, but if in the meantime it's 4K-only I'm not
+> sure anyone is going to get much use out of that, or still care about
+> this support when gmem+hugepages is eventually enabled.
+> 
+> > 
+> > > I say we wait for Paolo to get back from holiday (in a few weeks) before doing
+> > > anything drastic.  I'll send a patch to fix the existing selftest though, no
+> > > reason to leave that hole open.
+> > 
+> > Well, everything is drastic.  "Fortunately" AMD helped us with the firmware
+> > update that already hides SEV-ES on SNP machines (CVE-2025-48514), so at
+> > least there's a precedent.
+> > 
+> > Could we say CAP_SYS_BOOT is only be required to create the VM, after which
+> > it's up to userspace to not screw up?  Probably not, because userspace can
+> > then drop privileges and operate on the file descriptor; which is the actual
+> > dangerous part.
 
-Fixes: 4c735bf1bc22 ("KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers")
-Cc: stable@vger.kernel.org
-Cc: Michael Roth <michael.roth@amd.com>
-Debugged-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
+Hmm, but there may be a path forward with CAP_SYS_BOOT.  It might require some
+heavy lifting in userspace, but IIRC, LAUNCH_FINISH is typically called before
+doing KVM_RUN on any vCPU.  So while it's not simply KVM_CREATE_VM, I do think
+that "users" that care deeply enough about security/stability could implement a
+VM builder that runs with elevated privileges, and then drops priveleges (or hands
+off the VM) to actually run the guest.
 
-v2: Use __get_free_page() to ensure it really is a full page. [Sashiko]
+> > The only not-horrible alternative would be a default-disabled module
+> > parameter that allows SEV/SEV-ES on SNP systems but adds TAINT_USER when you
+> > create one.  And downstreams that don't like the idea can just rip out the
+> > taint.
 
-v1: https://lore.kernel.org/all/20260723002547.7BF971F000E9@smtp.kernel.org
+What if we have the module param require CAP_SYS_BOOT for the affected iotcls?
+Then TAINT_USER if it's disabled.  That way, if someone is sufficiently motivated
+to harden their runtime-VMM, they can implement the builder without having to
+manually remove the taint, and without having to completely trust the VMM (because
+it's more than just a potential DoS; I wouldn't be at all surprised if someone
+can turn this in a local privilege escalation).
 
- arch/x86/kvm/svm/sev.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 74fb15551e83..803bd39695fd 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1280,9 +1280,28 @@ static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
- 	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
- 		return NULL;
- 
-+	/*
-+	 * If SNP is enabled, i.e. the RMP is active, allocate a full page to
-+	 * prevent concurrent accesses to the page.  As required by firmware,
-+	 * the PSP driver updates the RMP to temporarily transfer ownership of
-+	 * the page to Firmware while the {DE,EN}CRYPT operation is in-progress,
-+	 * and so concurrent software accesses to the page will encounter
-+	 * seemingly spurious RMP #PF violations
-+	 */
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+		return (void *)__get_free_page(GFP_KERNEL);
-+
- 	return kmalloc(*nr_bytes, GFP_KERNEL);
- }
- 
-+static void sev_dbg_crypt_slow_free(void *buf)
-+{
-+	if (cc_platform_has(CC_ATTR_HOST_SEV_SNP))
-+		free_page((unsigned long)buf);
-+	else
-+		kfree(buf);
-+}
-+
- static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
- 				struct page *src_p, unsigned long dst,
- 				unsigned int len, int *err)
-@@ -1304,7 +1323,7 @@ static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
- 	if (copy_to_user((void __user *)dst, buf + (src & 15), len))
- 		r = -EFAULT;
- out:
--	kfree(buf);
-+	sev_dbg_crypt_slow_free(buf);
- 	return r;
- }
- 
-@@ -1337,7 +1356,7 @@ static int sev_dbg_encrypt_slow(struct kvm *kvm, unsigned long src,
- 		r = sev_issue_dbg_cmd(kvm, __sme_set(__pa(buf)), dst_pa,
- 				      nr_bytes, KVM_SEV_DBG_ENCRYPT, err);
- out:
--	kfree(buf);
-+	sev_dbg_crypt_slow_free(buf);
- 	return r;
- }
- 
-
-base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
--- 
-2.55.0.229.g6434b31f56-goog
-
+> It might not be as elegant, but either of these seems more useful as a means
+> to allow users to continue to be able to run existing workloads if they
+> trust their userspace/VMMs. I'm worried the guest_memfd support would end up
+> being mostly-wasted effort at this point since it's not a
+> straightforward/drop-in replacement.
