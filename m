@@ -1,152 +1,91 @@
-Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABF83451C1;
-	Thu, 23 Jul 2026 06:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE23356A0D
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 06:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784788716; cv=none; b=dLFVeEBfnJ4kn4ShgqsTVrqehk+Da7WgJEntU6YO4fiGd0RREuG5kOpCy8WAkRmcBKVdYhfrd92nT4O2VIkUQjTa1AUQY5eTm0SUk3A5M5/EJkniXv3Obf1dBwPMW55Zfm1V/DB3d1gfnX3hi1BiyjjnaVrxomlsd+3nmppRKWM=
+	t=1784788760; cv=none; b=uIl2r6sUwj0L6zcwo9ASuwKuFq3NwtIUkDS82zrXGB4FodXd4PBmi8EYX+Ml5HKtWX8lAM4bU2Q7kQMzL6F1B9HdTw3tom8yZAMV+gwGALz+lO3UDdJrZOPrQ4WNKAhZQf93YlAGAeIzLVxSVzWQoA5y1HnUXjs2GT29Y/OXO8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784788716; c=relaxed/simple;
-	bh=payJ3POf8Eo8bsLxE8/JrwlXF6UVj18G9W8zHieXETk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XdGzycnMUtxl8iPbRkwnyHG6S9u4rFyIvAE8J3OFH52o+EoQYKCCVxrYyH2xv22FfPEKzLBvZpHVY2o1eFaWjDiOeiqunpB6iQxLuxHQWr+sLltM2SL/6gr1wOmHkHP4fR2gv6nWksVkb7uvdZp2ouHmmN9M2am5nyj0c8/sdvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=Vv4olmNj; arc=none smtp.client-ip=139.138.61.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784788760; c=relaxed/simple;
+	bh=ZYFZixZOPs2wnUXFfo2fKzeNQImuiBllWcqh+tEw9GU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=D4xoNq74XR6Pf+HVd7UPLQ2uVzpEkSv1JOw/xGSXFyv+f6fZffCPxs1tx4635ojQYBCs9TZsjh4VcgffW57fLxZpvMlSo8eJY66qBiGh6lNXAezByn+GRd9FVy+YqGdjt+34VPJLQM7+kD8oMltqiKAx6jC//4kB+EWu915ynhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UM+gxFh6; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="Vv4olmNj"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784788714; x=1816324714;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=payJ3POf8Eo8bsLxE8/JrwlXF6UVj18G9W8zHieXETk=;
-  b=Vv4olmNjsSegtYTd4WIcthTMRth+CUgVnAijGbSUU/iM/6eLEhnMMRBW
-   fd6DxfZ6IVHqW4RoTbcUvVO5FNeCrEcbwTbSgSaRIfgWq1DY/+tnI6Ze2
-   x93Tlxa1imsxoO1UulhqkPFQQ2ysIxy6/H8IhnDlj6vL2wE+a7dPAuRM3
-   NTS9LmkYWjHKv/RLe+BDvxJKcmSXw8C5MdDpRp8ZE3VbA2rllkEQ3lHRm
-   mWcYvTvGqZqRO/LQLV4i4lR5r8ATQw6zbSmGNXE/f53Fet+tmhH6pib20
-   KHIDLcKwy+YhIo1I5M53BLNDIWmIyZXtBov90p3Ls1su2C1zDlsRPvnVW
-   w==;
-X-CSE-ConnectionGUID: rRA2fjdTSdas9/NoDW5bHg==
-X-CSE-MsgGUID: AnJSEFJlTkmQgK6hRQ2qiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="227212355"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779116400"; 
-   d="scan'208";a="227212355"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 15:38:32 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id A9CA0100037F;
-	Thu, 23 Jul 2026 06:38:32 +0000 (UTC)
-Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id 5E0B5100153F;
-	Thu, 23 Jul 2026 06:38:32 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.10.80.137])
-	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id C57BB1802ED6;
-	Thu, 23 Jul 2026 06:38:23 +0000 (UTC)
-Date: Thu, 23 Jul 2026 15:38:16 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-Message-ID: <amGwgAfHWX2P9pZx@FCCLS0092175.localdomain>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
- <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
- <86cxwfe5m8.wl-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UM+gxFh6"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84a2c90e383so79157b3a.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 23:39:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1784788758; x=1785393558; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=r46MXPNPzCsTmVT3q7BLWnTz4bE7Z62X/8s/DZiQF8k=;
+        b=UM+gxFh63+qlL/DMHQbm/WHA9DV5EmiH9yDfiZtP5tRJ0FROQ5lcuI1mzrw2xjDH3A
+         qgtbTQsXxeBHeGIpN8GJR1TSSmaOtaELr+8bQEN3s5nPuB1JhHDspmzQClPDLUkkTKLa
+         742JJ4u0DHvhJeUVQ/dXrnO3Kav+9lr+W6fqg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784788758; x=1785393558;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r46MXPNPzCsTmVT3q7BLWnTz4bE7Z62X/8s/DZiQF8k=;
+        b=sqHbnlCJhPHnyOVRhZnKAUIdMvun+ziNAoRcDGZl+uaL6bZyMx5oE+gINuzrwA0dwO
+         y0zXFZO4BRX7aUyl2TqWXltws0wdIy7deh4emQIE3R8Xf36eyC0gl707nDZpFM1AYIVR
+         ZitdanpcEi5kY4PtH4OCHKK1OEhQ1ei3ViRxSRLfvgvOeLbGnqlHIgsZs9h4QlpUyvPN
+         +ml/HAicQStHMpikP/gIF/KybrvlLNLbbo2/6QbNX+m+6/ho2d/2n2cW3g5Qy0rnN2At
+         r78Fi0ch8mmuC17xoxonWS9aDEeLOQM2xj07VYca4bb/ixbz31wbHyNpPP/Jgb1g+bHU
+         H/CA==
+X-Forwarded-Encrypted: i=1; AHgh+RrxXcb643H776A0/k8BTPPWwrI1gsdKzld8Hs2XZa8MIR+OoGk2Mk6IL59n0oPJFGnwREQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1bFyDDUI82kEWK2tphTmZv8+eJNAS7dDHFSvAVWt0Ip7kNpT3
+	vah2gz0vpk+an6SkYW0v+juwTsE5fqdL602PUSF9VaASAzOE++9ACUUvYYSGgEPz6w==
+X-Gm-Gg: AR+sD13l4oLGPZhBtfERfbFSlnjr9PojPZOq8QnsIzHqQLeETYOxEzk4QPxIYHC/eV7
+	JGsEL9b+7vnV7+KOFGL4uWfdL7f+7tBGnKqIDOuAG26KM/8mVJdS4L+N3Zz9sKb9X6gfMPAj7KB
+	Ty2NL7t9Gdi9dG/d2r/A/pYSa/NKAzHIpbzfOy8Mj5kqsom5OqDrCYr1sDGvQUmFev1rGLp0TzX
+	YKmHv5dsAlZnL4owZ6zU9Cl2q4s55HgwKlLgKNjP+iBF52dDqntGCt6arjtr9MfQaiN/Whf6X4T
+	aXEmvlnjEiRt3K3IhUKlhcvp6302dFid6ZAxmkzp5a9nRotcjACZ0oe9ssGzsP8iKN4sFD4p2yz
+	/0Dbhs7TwAJK9xEgBpVEG7+5ysrlXZVKHgaCZQ1oaxnhgN3uOpaykx02atOO/5m8yS/Ya51OjIm
+	kyoJ8eKaDsWOrEjJ/uyxvbF9HyAN5jZgUc8LRxtI9MYA==
+X-Received: by 2002:a05:6a00:e13:b0:845:eb00:ecbd with SMTP id d2e1a72fcca58-84e2e92a730mr1546905b3a.21.1784788758183;
+        Wed, 22 Jul 2026 23:39:18 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:2d0e:cfe6:a39f:d530])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e175d4133sm2478570b3a.50.2026.07.22.23.39.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 23:39:17 -0700 (PDT)
+Date: Thu, 23 Jul 2026 15:39:15 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related
+ issues
+Message-ID: <amG2jCgWugrVroyZ@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86cxwfe5m8.wl-maz@kernel.org>
+In-Reply-To: <20260626112634.1778506-1-pbonzini@redhat.com>
 
-On 07/22 10:27, Marc Zyngier wrote:
-> On Wed, 22 Jul 2026 09:27:29 +0100,
-> Kohei Enju <enju.kohei@fujitsu.com> wrote:
+On (26/07/23 15:36), Sergey Senozhatsky wrote:
+> > Sasha, Greg,
 > > 
-> > On 07/15 15:28, Steven Price wrote:
-> > > The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
-> > > the registers are passed in the system registers so this works similar
-> > > to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
-> > > and realm guests don't support GICv2 even if the host does.
-> > > 
-> > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > this is the backport to 5.15 for the above CVE.  The fix was relatively
+> > simple upstream but only due to years of refactoring and cleaning up
+> > of the code; fixing from scratch is not really feasible so start by
+> > applying the patches that are needed.
 > > 
-> > Hi Steven,
-> > 
-> > I've been testing this series and found that when the host CPU doesn't have
-> > ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
+> > Please apply this instead of v1, due to a missing line in the last
+> > patch.  Sorry about that.
 > 
-> What modern CPU doesn't support TDIR? The only CPUs I know of that are
-> stuck in this mode are old ARMv8.0 CPUs, and anything else was fixed.
+> Sorry for the noise, has this series stuck?
 
-Hi Marc, thank you for the response.
+Sorry, forgot to set proper In-Reply-To [1]
 
-I'm afraid I can't share the details due to my company's policy, but at
-least I happen to be testing on such a system.
-
-> 
-> > 
-> > Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
-> > of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
-> > traps all GIC sysreg accesses in the common group. However, currently trap
-> > handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
-> > guests try to access those registers, KVM traps them but just emits the warning
-> > shown in [1], and Realm guests fail to boot.
-> 
-> This isn't missing. This is handled by the early emulation in
-> vgic-v3-sr.c, which of course CCA completely bypasses. Too bad.
-
-That makes sense.
-
-> 
-> > 
-> > As far as I can tell, the CCA requirements don't require the
-> > ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
-> > problem. Is there any workaround for this issue, or should we implement trap
-> > handlers for those registers?
-> 
-> No. Either you support TDIR, like any modern CPU, or you don't run
-> CCA. I'm not adding yet another level of emulation for this.
-
-However, I'm still not aware of any requirement in the CCA architecture,
-or in Armv8-A/Armv9-A, that mandates TDIR support.
-
-When you say "you don't run CCA", is that because the architecture
-requires it, or because that's the current KVM policy? If it's the
-latter, we'd be interested in adding the required emulation to make it
-work.
-
-Thanks,
-Kohei
-
-> 
-> Thanks,
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
-> 
+https://lore.kernel.org/stable/20260626174620.1819772-1-pbonzini@redhat.com/
