@@ -1,328 +1,276 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B5F3358B9;
-	Thu, 23 Jul 2026 14:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784818029; cv=none; b=JUUWuQ7s+1NSWY4hzdG+awaW75cwgZ8sbxzYZbKxtFEzkTgGpHg/30STTKTDeJYSVSSJ7wc2/dZH9aSs+vH5SNDi6U2h4rPkh9kabIpwjOULA+dVwg5yZ7XfQ6Dc3MedD1Ua50I0KlK3cWUGdXg1H4ITak7MUzyP81d5WYF0K9s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784818029; c=relaxed/simple;
-	bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tw/9IEvKxgpNH6KqDpBWYy8Ni5zn+aWHaZgXSJl1GiiFZuS+fFGXEYxs1CruSbklnmsM0s5wHxOp2j227ClkBVojmH0GgrwO9XXmberRgvaJbbyLEYreuUn95nJ6GlokezwEGC5fCD5B0QZEhhkk+MBw+39bqfzYuoFg6oyINAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LxFG8WRR; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022110.outbound.protection.outlook.com [52.101.66.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B72E43712D;
+	Thu, 23 Jul 2026 14:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.110
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784818203; cv=fail; b=vB1wSZNAMHRAhSIXQCbcewiLZTqHdnDCpcc/xbTqXA2+JT/KHni76EVTfp444c7WdGJwZYnuENd2fR4NSywxFg0BfD1J6BdIWQXYpKNAAWY8Rstv7c4PfqFfKb0HM1NBY547+gatg5pZdjcEDqvs3RSKGN8Rh6fRGXDfMnhFhww=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784818203; c=relaxed/simple;
+	bh=ZTDHEbW4gHj+C4Tdfp4dbQxhOCrF9LJ5/amxqvDmq3k=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=M3v9+FzgL4P0MKpjrZNVkJlvhCXwIavAelcPi2ABtWpHe9iUWthSPEwA2ixJ3BXQWaERha20PR3caADfkBG3pfFYEAjlcJY/1+J9lrcFNfnrSjKD2qQpHFpL2EKJS7xS6h4mfTcbiBUl0edm+iG4rcEXhjHe2140HTdtnXVtwCE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=k+Xqk6t1; arc=fail smtp.client-ip=52.101.66.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LxFG8WRR"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D49B01477;
-	Thu, 23 Jul 2026 07:47:01 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B40FC3F59E;
-	Thu, 23 Jul 2026 07:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784818026; bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LxFG8WRRK7c9iE7bu37AjLxt1a2HZyFcz184U5VNfybyqKKs4NJEuApklUjnLfzdO
-	 Abo+IkO4lwS7PIRGBwYDDYCIp0Q/0dVX6cc2WGgGTWfp8AQriPZBtjYyNvWg0bqpzA
-	 7KTe8igVy3yHQmAEl8oR5DcTVjve1JJmeqaINrr4=
-Message-ID: <1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com>
-Date: Thu, 23 Jul 2026 15:46:58 +0100
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="k+Xqk6t1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hJTGcF6wdjffcZLFEnBxWHRUcFXxXmYrtfpbXcPSIV6SdrchaJE+2t6sgJN+dANeL0o+fdbaI6nfOSJZu4mhNyrHYavIlnnvbx9dpmvKTLOZT0xrCRrT4jAKwWUOca+UqPlLl1R4m5nmypLQwa4drKeWJS6QmkwTN8JbxfLUIDLKmc+4kOBZy6ItzzsYNG2byNOl8uPp4Xj6A/4bCCXkoCVUtzZqcZGzQSD1MsMCSkDqhwzull5ErXQyEpUE6EEiCSM3eeJbYUtLRqWeqSG/o9Fh9Lrec2ReczYqUK7FqzgAgLXtuvL8NbvPPjzIz4wUfFX08fvGd3BXZ5kpNzWQ2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6MnyGQHvEHMWdO0SqhZ49gJI90vHAob457AtvejnptI=;
+ b=q2H/uH6XzEkyiAXCNLKouBAkfWiv3qgT0Hg0nUiCgfdq0j11KSBCp+HW/ByUBWaLOlF048SNsuZFdK8p0BsA2O1Co+UE6Xi4SsACkG9XC8t13VSEU6uAncvZNsNq161JaSrUOXgbryXoaGRUksGWirexsmUfBvvZplXvhYf1+wD9Q37jZxLKpd229h8htmPxoMcmR0DB65a75Dbe/GHZJRqIhb+hPCIsqii/FF5fblWwZy46gb2hWbb0n3OwyM8aubaE0q6FppdsvHvONeXJ0E5zaXT5wJeAnn/jZarSXxMNEiulkm56YivtwP9t1PTpDz+wwuv3RvqbCXnIaJ5cDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6MnyGQHvEHMWdO0SqhZ49gJI90vHAob457AtvejnptI=;
+ b=k+Xqk6t1kV0qaXTy+igFAiGoKH6/mEYvGEMs/ZVnI0IW10yuyND/q2yhKmUUHi2VqMLfVvFJk9SNhLbn1lSdkMmmg6TGCqEC1waICVAyGs6xk5fO67y8XNraddR1zFJw+BAuiAlLVvbk3cbdjMIsCvebh0tOUU/sarQKQ3FO2GI3ewZvo8AmvJV8o5oz3PM2diVUScwNVUltAfbGcctkAPvRdPZXX5sbC6kdd4MdzYKpDeMvmMSN7qyTDZkgu4OlAC2YTSdRkNbsp71g7J9yCsKt7vOat7bKqWS+DteKJY5+/AV/mhKsTS5KTHBCo6qwgzlKno23lPRIQMX0+TfXwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by AM8PR08MB5825.eurprd08.prod.outlook.com
+ (2603:10a6:20b:1d6::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Thu, 23 Jul
+ 2026 14:49:55 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 14:49:55 +0000
+Message-ID: <c631dabe-ebde-4b4d-b930-d78db4cbabc4@virtuozzo.com>
+Date: Thu, 23 Jul 2026 17:49:54 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com,
+ stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
+ bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
+ den@openvz.org
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <amCPLOrnpYmr5n0p@sgarzare-redhat>
+ <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com>
+ <amIe79X3j7GxDBdO@sgarzare-redhat>
+ <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com>
+ <amInL2hPEG9ejUd0@sgarzare-redhat>
+Content-Language: en-US
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <amInL2hPEG9ejUd0@sgarzare-redhat>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0079.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9a::19) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
- <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
- <b71e81ee-372c-4963-a1f7-bd301aee89cb@arm.com>
- <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|AM8PR08MB5825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6bd95441-1394-416b-7b08-08dee8c9a8e9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|56012099006|10067099003|4143699003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	4cuYbM//dEbDYR5ENJdSXu68yPetIs9OFKJ73uqDEhrAc0iNKAKMSj8bF4gd7L5GYtPPqvNI7ipd0ytkZYAjCRpBr9qbpSH6TMNqBCw7RV08zGwEB1UAHJAiwrJpmTgEDjkXXSauTGfm9w2TGC7n8r2afask1I7mKkyMsW46dw5fQBeEw7EJxpU2Ro8hfNoVBDE3+JV6F80gb9++GJ5MRxvQmNQVh7PtPeqDJ9qAp5IFAre5CHOs6OTevUgL3ZDkaX9TBfjHwsFJQI4dwG3T9HbcVHDFVmZc/NrapUOSUTaQggqEfiZ2juJByVlft29jqjdtmguAakCiE8A59nXI0R6mKUjssRmXyE2QwX2HXmYGo1WHXaFES5+MfpGAEFsc8aaCkU+lXtO6Q+KCgI467JN+JS2KsEqlL/XOYKeZeAuVnscCjHppjMJ68hsI/d1mAZCUVQ4zDSB+YjynX/koIqT5cRKkGfkXe9tQPLuCofzGwYqkzIZR/R2EltKYYt7Y/o2k6Dionp2JiOdb+/l7F6YpPIW/im0phdD7aoEsFZ3u9xcgvqZEiX88tvLiXsHnXxPPOf97vvqA0HHlPJdiQ6pTpocIuMgvGNVZBSNLZIU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(56012099006)(10067099003)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TlBVZzhsZVd3d0J1SEJCcWFkTStRdml1cHV2WUc4M2x0N3c3Vkd2K0swdTVT?=
+ =?utf-8?B?SkxIQWplZldBQzF3ZW1Xc2lUMVg3S24yOGhHK3E4MVhBc1FYSER3b1diam1C?=
+ =?utf-8?B?cDFBN0k0RzhoMFdBK0dVckhCUTNGREszaWYwdCttSjZQR3FDZ2RwbXpvWUFU?=
+ =?utf-8?B?ZFVTdlE4T05lOU0xTEh2aWUyMEZqOFE0ZW9jTnFNd1cwME1GNGV0SURtWEtX?=
+ =?utf-8?B?cDdsY094SmtxT2xMbWdZeGNmUERTRVJJOXNIUmU0YWpNaGhIQXo4aktxNzFP?=
+ =?utf-8?B?WktLQUtpLzBZbGhlb25jWCtTb1E5ZzZBRzdvWWhNZmNlTGg4c3hGSFQvekJL?=
+ =?utf-8?B?ZFN3R1c5STlGbFN1Q2s1QmJ4by9VOE4wSXVZVm12bmZEWVFkWFlLRTdWRkhw?=
+ =?utf-8?B?aEo0VWxycnZPMGNYempaekxDbzlSOGF4ZXhycnFPeFgvUllhMkVVeTlETXhP?=
+ =?utf-8?B?V0NFNmJtNEYrcGtIS0pHek03WTNPc1dEOEMyQ0hWb1BMRXJXQmxQMzcwUUlN?=
+ =?utf-8?B?UUh5SHM0UnU1dWY4TU5RK21BTXcxajVFL2NlWnNHY2swL2lmZzM0clExWWZS?=
+ =?utf-8?B?WUp5VGVYL0ExWFlaY2NrbktMZ20rZVl0V1JwWEhkdlhUVGxEUDVIZ05XL2Nw?=
+ =?utf-8?B?d1c0ZnVvbWhpN3c3aTNxWGkxQ1ZQdHVDQ0tQUVc3dVREYktMTHhXMCtaK0pm?=
+ =?utf-8?B?UlZabkFZUTEzcXRvWFRGZExKNnZlYWZEUmh6dWlvcTUxTjVxNVhRSkIxL1VB?=
+ =?utf-8?B?bW1qZ083b2k0c3d5SjBTZldjMitoRVVzalBjWk5EdkI0SnM2eVpjOHpVODVD?=
+ =?utf-8?B?NXk1elBqcjQ3Y3VvTkNEZjF5cTBVZVhUVzg2d0pDS3MzU3dZWWgzcUdENnlX?=
+ =?utf-8?B?OWpBME9hU0s4MFFmNUR3MXRHWTN6bjZPNk1NOVQ1Njc4c013L3pmNm9xR0tw?=
+ =?utf-8?B?cUVHWUI2V3VDclM5SnRLVWN1eXRJZFhpT0VJTDNyVnlhbThFb2NoQmR5M3J0?=
+ =?utf-8?B?MDUwK21JV3VLUG4rWTBpYmtRNGFINXcvZEtVblRsNTNESmNHTlV5ZnliVXhZ?=
+ =?utf-8?B?YXJsdE45aFlrcUNiKzVwNFZ1R3VFeHlOeVhRRGp6OVI4NUV5TUcvU0Z5U0Jr?=
+ =?utf-8?B?eHMrb2NlWlk0Z0Zyd2x1bk9zWGhiVUlyaXhzNzBPenRVRmQ3M1JoeGRpb3Zl?=
+ =?utf-8?B?RGcwVXVOMjc0NVdjRmNjcVpVQ1NkdU1rTVUvZldkNnZtMGUvRTB4L3N0b0wv?=
+ =?utf-8?B?cUNWdllRSmhWU2Z5VTM0YlBHU0pXNW8xM2lYSVRQVkcwVXVTMmhnK3BPTWU3?=
+ =?utf-8?B?UzdSMDUya2duYTVDaU1CRzlWcHJqL3MwdVFpc0hDNGxpQ0hTYkhDdG1udjNR?=
+ =?utf-8?B?TTQzdlhlQURGNnRLdmpFQXdmdlZzZmd0WkhxaVUwUGJSSGRMK1NvMVB1NllJ?=
+ =?utf-8?B?ZlJ6eXdEWDZLcE9PK2pFZXJtMWRLMzRhTFEzK0hCY21CS0ptU29KakpnTDRT?=
+ =?utf-8?B?VFRYMm9sZmQ0cmFodUY2R0xrVmNsa0F4SWFmNmFrZjFFdDhidzNUSEt1cXZn?=
+ =?utf-8?B?UnUzMnVRdVRsVDZxWmtGV3QwVGQzNE5SWUpSUGcxK1EzNlRKVU9XSS8wYTMr?=
+ =?utf-8?B?TVQ2YlI2MVVPOGpxZ2xvYjZpZ1dnOWNaYVJCWXpsMmhqaUlWUFlUby9MZnZi?=
+ =?utf-8?B?L0tpdXRSMTJQUUJFNTlHMjFwcW52cGU1WUtXSmdZUHdmQUNqZjdZdFp0Mm9R?=
+ =?utf-8?B?QjNkSHZHUlpLeEZ4UXVuaUpoUFFiU0FsWitIc2cyUnYybG42QjQxbnNwdjR5?=
+ =?utf-8?B?ZlZ4V2pLTkg5bE01UkpSWXdYK2MxQlJpSG1GcU9DVnlmZXR4cUJpc3hZTnFL?=
+ =?utf-8?B?OU13SlRrdWxhNkpHVzNHcTNFZ1pJNGV3YVk5NWdZenRsMWtkbkFIdmFNRmI0?=
+ =?utf-8?B?T1c1SjEvMldHQXF2T0dMYVJGWHV0Ui9LUGwyZ1JKY1hXMDZJRzVxRjJ4eWF5?=
+ =?utf-8?B?eEtTM2c2dGVJTnVmNlVYYklpN2plWVVmZTFObUNNZGVGSytldzF6eGFYNC9o?=
+ =?utf-8?B?eEY0YUhvVHlYek5WMDNzT04wYjZWZ1hhTmVaTUFHU0NzQllsL0kvRzRDM05G?=
+ =?utf-8?B?QVJNZzEvV0VRbXlNWitiQ0czVFFBRWF0S1ZwUmtkWXVZSW5JcUNIK0pXK2Q1?=
+ =?utf-8?B?K2dvckszb1VwUG4xd1BNeDlKSWpBU1p1WmYrQ3RFN25jNkcwN1g5ZVlyTHJ3?=
+ =?utf-8?B?dmxBbVd3bUJOVWFBSUhxdTRwbzJHWVFCY05MZ0lpSmtselVSekxlSGZDU2k3?=
+ =?utf-8?B?eFd3QTZQVDdPUE16b0lvaVd6Vk9zYmN2TDQ4S05YRWlwODJBS2dIanhySCtQ?=
+ =?utf-8?Q?ozBPHxlPgbrkV3lg=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6bd95441-1394-416b-7b08-08dee8c9a8e9
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 14:49:55.4473
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /VsaLlWYKvW4zJbqYkD4O3LChKyJfTfc8n0EwusHJUz4X3Og6zLR1AM3SsXGcXnAHY9EjCxHpcMc2CcRkq1bx3UBMbp4LDt/s3dnoRrhWBI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5825
 
-On 23/07/2026 07:56, Kohei Enju wrote:
-> On 07/22 14:31, Steven Price wrote:
->> On 22/07/2026 09:27, Kohei Enju wrote:
->>> On 07/15 15:28, Steven Price wrote:
->>>> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
->>>> the registers are passed in the system registers so this works similar
->>>> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
->>>> and realm guests don't support GICv2 even if the host does.
+On 7/23/26 5:39 PM, Stefano Garzarella wrote:
+> On Thu, Jul 23, 2026 at 05:29:12PM +0300, Andrey Drobyshev wrote:
+>> On 7/23/26 5:03 PM, Stefano Garzarella wrote:
+>>> On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
+>>>> On 7/22/26 12:43 PM, Stefano Garzarella wrote:
+>>>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>>>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>>>>> the vq->worker pointers and immediately frees the workers, without
+>>>>>> waiting for a grace period.  A caller that fetched the worker right
+>>>>>> before the pointer was cleared can therefore still be queueing work on
+>>>>>> it while it is freed.  And even when the queueing itself wins the race,
+>>>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>>>>> future attempts to queue it are silently skipped.
+>>>>>>
+>>>>>> None of the current callers can actually hit this: net and scsi stop
+>>>>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>>>>> the lockless send/cancel paths become able to race with the teardown.
+>>>>>>
+>>>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+>>>>>> period, and then flushing the workers so any work the last readers
+>>>>>> queued runs before the workers are freed.
+>>>>>>
+>>>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>>>>> ---
+>>>>>> drivers/vhost/vhost.c | 11 +++++++++++
+>>>>>> 1 file changed, 11 insertions(+)
+>>>>>
+>>>>> Sashiko reported some potential issues here:
+>>>>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
+>>>>>
+>>>>> IMO the first one is pre-existing, but not really sure it is a real
+>>>>> issue since happening when the worker/vmm is going to be killed.
+>>>>>
 >>>>
->>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> Sashiko claims:
+>>>>
+>>>>> Will this leave the queued work unexecuted and permanently break the
+>>>> virtqueue by leaving VHOST_WORK_QUEUED set?
+>>>>
+>>>> I agree this issue is pre-existing and doesn't have much to do with our
+>>>> series here.  It looks real, but in reality should be harmless since we
+>>>> may only hit it while the device already dying.  Means there's no VQ
+>>>> state to be saved.  The only potentially observable artifact I guess is
+>>>> a warning here:
+>>>>
+>>>> vhost_workers_free()
+>>>>  vhost_worker_destroy()
+>>>>    WARN_ON(!llist_empty())
+>>>>
+>>>> So more of a cosmetic noise on a dying device.  Again, not relevant to
+>>>> this series.  But one optional way to make it go away would be to clear
+>>>> vq->worker under vq->mutex in vhost_workers_free() (mirroring
+>>>> vhost_worker_killed()).
+>>>>> The second one also not sure if it's an issue since the sender is not
+>>>>> lockless IIUC.
+>>>>>
+>>>>
+>>>> The term 'sender' is confusing here:
+>>>>
+>>>> * vhost_transport_send_pkt() is the .send_pkt() method of struct
+>>>> virtio_transport.  It only stores skbs into the queue, doesn't process
+>>>> them. It indeed is lockless as it doesn't take vq->mutex.
+>>>>
+>>>> * vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
+>>>> It's called by the worker thread to process skbs in the queue, calls
+>>>> vhost_transport_do_send_pkt() which does in turn take vq->mutex.
+>>>>
+>>>> I think sashiko points out to the former.  Still, I don't think it's an
+>>>> actual bug.  Look:
+>>>>
+>>>> 1) By invoking flush, we wake the worker thread:
+>>>> vhost_dev_flush()
+>>>>  __vhost_worker_flush()
+>>>>    vhost_worker_queue(flush.work)
+>>>>      worker->ops->wakeup()
+>>>>
+>>>> 2) Then woken worker does:
+>>>> vhost_run_work_list()
+>>>>  llist_for_each_entry_safe(work) {
+>>>>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
+>>>>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
+>>>>  }
+>>>>
+>>>> 3) And then in work->fn() (vhost_transport_send_pkt_work):
+>>>> vhost_transport_send_pkt_work()
+>>>>  vhost_transport_do_send_pkt()
+>>>>    if (!vhost_vq_get_backend(vq))
+>>>>      goto out;
+>>>>
+>>>> As you can see, we return early in case backend was unset.
+>>>>
+>>>> So after doing this flush, we have: 1) QUEUED bit is unset; that makes
+>>>> send_pkt_work re-queueable. 2) But the queue doesn't actually get
+>>>> processed, and VQ state isn't actually touched here - so I guess
+>>>> Sashiko's conclusion is incorrect and there's no actual bug.
+>>>>
+>>>>> But, please can you double check them?
+>>>>>
+>>>>
+>>>> In general I'd leave this patch as-is as Sashiko's complaints aren't
+>>>> very convincing so far.  If you want I can add another patch which wraps
+>>>> NULLifying workers in vhost_workers_free() in vq->mutex.
+>>>>
+>>>> WDYT?
 >>>
->>> Hi Steven,
->>
->> Hi Kohei,
->>
->>> I've been testing this series and found that when the host CPU doesn't have
->>> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
->>
->> Thanks for testing!
->>
->>> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
->>> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
->>> traps all GIC sysreg accesses in the common group. However, currently trap
->>> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
->>> guests try to access those registers, KVM traps them but just emits the warning
->>> shown in [1], and Realm guests fail to boot.
+>>> Yeah, I agree, about the other patch, up to you, but I'll eventually
+>>> send it separately.
 >>>
->>> As far as I can tell, the CCA requirements don't require the
->>> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
->>> problem. Is there any workaround for this issue, or should we implement trap
->>> handlers for those registers?
+>>> Thanks,
+>>> Stefano
+>>>
 >>
->> As Marc has already said in his reply, I'm really surprised you have a
->> CPU which implements CCA but doesn't have ARM64_HAS_ICH_HCR_EL2_TDIR.
->> Can you give some more details about the platform you are testing on?
+>> Alright, then let me resend it once more along with this 6th patch, so
+>> that we don't have it uncovered.
 > 
-> Thank you for taking a look, Steve.
+> But why it should be part of this series?
 > 
-> Unfortunately, due to the company's policy, I can't share any details
-> about the platform I'm currently testing on. When the time is right,
-> I'll be happy to do so.
+> If there is no strong reason, I'd send it as a separate patch.
 > 
->>
->> Ultimately there are two options here - either don't support CCA (so
->> detect the lack of ARM64_HAS_ICH_HCR_EL2_TDIR and bail out early), or
->> plumb in the trap handlers - as commit 2a28810cbb8b points out this
->> isn't something we really want to support if we can avoid it.
+> E.g. even this patch in theory may be a separate one, but this is 
+> related to this series, so makes sense to have this included.
 > 
-> Yes, the former makes perfect sense if there would be no systems that
-> supports CCA without TDIR. However, if such systems do exist, I'd be
-> interested in exploring the latter approach.
-> 
->>
->> Hence I'm interested to know where this sits between "hacked up test
->> system" and "production hardware". E.g. if this is an emulator it might
->> be possible to just enable the CPU feature.
-> 
-> Again, I can't share that right now, but I'd like to share more when the
-> time comes.
 
-Given Marc's response for now I'm not going to add support for this. 
-"When the time comes" we can revisit whether it makes sense to have 
-upstream support and what that might look like.
-
-However, I did ask an AI tool to have a go at implementing this, and it 
-came up with the (very lightly tested) patch below. That might at least 
-give you something you can test. It doesn't meet Marc's request that it
-reuses the existing implementation, and it took the AI a few goes at
-getting something that "works" so I suspect it might have bugs - I
-haven't reviewed the code myself.
+No particular reason, just while we're at it.  Alright, no respin, will
+send it separately.  Then I'll consider this series reviewed - unless,
+maybe, Michael will want to take a look as well?
 
 Thanks,
-Steve
-
-----8<----
-From 7aaaa5089c05f19bf00df2b651fa4bd7d738384c Mon Sep 17 00:00:00 2001
-From: Steven Price <steven.price@arm.com>
-Date: Thu, 23 Jul 2026 11:49:36 +0100
-Subject: [PATCH] KVM: arm64: CCA: Handle GICv3 CPU interface traps for realms
-
-On CPUs that lack ICH_HCR_EL2.TDIR, KVM works around the missing DIR
-trap by setting ICH_HCR_EL2.TC and trapping the GICv3 common CPU
-interface registers. Normal guests handle these traps in hyp via the
-VGIC CPU interface emulation, but realm guests exit through the RMM and
-reach KVM's host-side sysreg emulation instead.
-
-That path only handles ICC_DIR_EL1 and treats the rest of the trapped
-common group as undefined. A realm guest can therefore take an
-unexpected UNDEF when accessing registers such as ICC_PMR_EL1 or
-ICC_CTLR_EL1 on systems that require the TC workaround.
-
-Handle the GICv3 common CPU interface registers directly from the realm
-sysreg exit path. Reads are satisfied from the saved VGIC state and
-writes update the VGIC shadow state. For PMR and CTLR writes, also
-restore the VMCR/APR state to the live GIC CPU interface before
-re-entering the REC, matching the effect a direct guest sysreg write
-would have had.
-
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/rmi-exit.c | 119 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 119 insertions(+)
-
-diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
-index 78d9189fd5ca..0fad8e68d920 100644
---- a/arch/arm64/kvm/rmi-exit.c
-+++ b/arch/arm64/kvm/rmi-exit.c
-@@ -3,17 +3,25 @@
-  * Copyright (C) 2023-2026 ARM Ltd.
-  */
- 
-+#include <linux/bitfield.h>
-+#include <linux/irqchip/arm-gic-v3.h>
- #include <linux/kvm_host.h>
- #include <kvm/arm_hypercalls.h>
- #include <kvm/arm_psci.h>
- 
- #include <linux/arm-smccc-rmi.h>
- #include <asm/kvm_emulate.h>
-+#include <asm/kvm_hyp.h>
- #include <asm/kvm_rmi.h>
- #include <asm/kvm_mmu.h>
-+#include <asm/sysreg.h>
-+
-+#include "vgic/vgic.h"
- 
- typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
- 
-+#define GICV3_IDLE_PRIORITY	0xff
-+
- static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
- {
- 	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
-@@ -48,6 +56,114 @@ static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
- 	return -ENXIO;
- }
- 
-+static int rec_get_gicv3_bpr_min(void)
-+{
-+	return 8 - (FIELD_GET(ICH_VTR_EL2_PREbits,
-+			      kvm_vgic_global_state.ich_vtr_el2) + 1);
-+}
-+
-+static u8 rec_get_gicv3_active_priority(struct kvm_vcpu *vcpu)
-+{
-+	struct vgic_v3_cpu_if *cpuif = &vcpu->arch.vgic_cpu.vgic_v3;
-+	u8 prio = 0;
-+
-+	for (int i = 0; i <= vgic_v3_max_apr_idx(vcpu); i++) {
-+		u32 val = cpuif->vgic_ap0r[i] | cpuif->vgic_ap1r[i];
-+
-+		if (!val) {
-+			prio += 32;
-+			continue;
-+		}
-+
-+		return (prio + __ffs(val)) << rec_get_gicv3_bpr_min();
-+	}
-+
-+	return GICV3_IDLE_PRIORITY;
-+}
-+
-+static void rec_restore_gicv3_vmcr_aprs(struct kvm_vcpu *vcpu)
-+{
-+	preempt_disable();
-+	kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
-+		     &vcpu->arch.vgic_cpu.vgic_v3);
-+	preempt_enable();
-+}
-+
-+/*
-+ * Realm exits are handled after the RMM has returned to the host, so use the
-+ * saved VGIC shadow state instead of the hyp-side live sysreg helpers.
-+ */
-+static bool rec_exit_gicv3_sys_reg(struct kvm_vcpu *vcpu, bool is_write)
-+{
-+	struct realm_rec *rec = &vcpu->arch.rec;
-+	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
-+	struct vgic_vmcr vmcr;
-+	unsigned long esr = kvm_vcpu_get_esr(vcpu);
-+	int rt = kvm_vcpu_sys_get_rt(vcpu);
-+	u32 sysreg = esr_sys64_to_sysreg(esr);
-+	u64 val;
-+
-+	if (!kvm_has_gicv3(vcpu->kvm))
-+		return false;
-+
-+	vgic_get_vmcr(vcpu, &vmcr);
-+
-+	switch (sysreg) {
-+	case SYS_ICC_DIR_EL1:
-+		if (!is_write)
-+			return false;
-+
-+		vgic_v3_deactivate(vcpu, rec->run->exit.gprs[rt]);
-+		return true;
-+	case SYS_ICC_PMR_EL1:
-+		if (is_write) {
-+			vmcr.pmr = FIELD_GET(ICC_PMR_EL1_MASK,
-+					     rec->run->exit.gprs[rt]);
-+			vgic_set_vmcr(vcpu, &vmcr);
-+			rec_restore_gicv3_vmcr_aprs(vcpu);
-+		} else {
-+			rec->run->enter.gprs[rt] = FIELD_PREP(ICC_PMR_EL1_MASK,
-+							      vmcr.pmr);
-+		}
-+
-+		return true;
-+	case SYS_ICC_CTLR_EL1:
-+		if (is_write) {
-+			val = rec->run->exit.gprs[rt];
-+			vmcr.cbpr = FIELD_GET(ICC_CTLR_EL1_CBPR_MASK, val);
-+			vmcr.eoim = FIELD_GET(ICC_CTLR_EL1_EOImode_MASK, val);
-+			vgic_set_vmcr(vcpu, &vmcr);
-+			rec_restore_gicv3_vmcr_aprs(vcpu);
-+		} else {
-+			val  = FIELD_PREP(ICC_CTLR_EL1_PRI_BITS_MASK,
-+					  vgic_cpu->num_pri_bits - 1);
-+			val |= FIELD_PREP(ICC_CTLR_EL1_ID_BITS_MASK,
-+					  vgic_cpu->num_id_bits);
-+			val |= FIELD_PREP(ICC_CTLR_EL1_SEIS_MASK,
-+					  FIELD_GET(ICH_VTR_EL2_SEIS,
-+						    kvm_vgic_global_state.ich_vtr_el2));
-+			val |= FIELD_PREP(ICC_CTLR_EL1_A3V_MASK,
-+					  FIELD_GET(ICH_VTR_EL2_A3V,
-+						    kvm_vgic_global_state.ich_vtr_el2));
-+			val |= FIELD_PREP(ICC_CTLR_EL1_CBPR_MASK,
-+					  vmcr.cbpr);
-+			val |= FIELD_PREP(ICC_CTLR_EL1_EOImode_MASK,
-+					  vmcr.eoim);
-+			rec->run->enter.gprs[rt] = val;
-+		}
-+
-+		return true;
-+	case SYS_ICC_RPR_EL1:
-+		if (is_write)
-+			return false;
-+
-+		rec->run->enter.gprs[rt] = rec_get_gicv3_active_priority(vcpu);
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
- {
- 	struct realm_rec *rec = &vcpu->arch.rec;
-@@ -59,6 +175,9 @@ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
- 	if (is_write)
- 		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
- 
-+	if (rec_exit_gicv3_sys_reg(vcpu, is_write))
-+		return 1;
-+
- 	ret = kvm_handle_sys_reg(vcpu);
- 	if (!is_write)
- 		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
--- 
-2.43.0
-
-
+Andrey
