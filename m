@@ -1,134 +1,197 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2D34734D9
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784826441; cv=none; b=nsZeNJvVbuxCTM85i+hYn8O+AxmcpDDEhCnUrOkZuLaSmwKCGbYJgOK7d2EYCID7MOrlUFOgpOZRychJD6EjXOzWy3LTYWJQ3OWC/IxVek52X9wV0s5cnjUOneoJwRQBnTfdr2LWR1yyWXJDjAX86zBIVn1sW1vZriGEJ0gIwSk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784826441; c=relaxed/simple;
-	bh=vaGPFqyOPtGK/NPyUdkbXxLgCQ/ZxcDp8ygzXnQM2sM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LwfnD5mIxzFdYIetpMzSp1pa+PCsfa2FnYDDRbJ7YRHUEQhoPZ15DekmlBJeU00JxMo73nlLLKMGujF8/wbuiHwpbrJa5Bq111KoJ3fqd1LwOXJtC3AO6tWZ6sn3wo39o1Ek3mPr1iRa9Ax08WX8mFOKmZYNkH4V+TZoYx8oFJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b=dr6D71pd; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81384734C5
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784826484; cv=pass; b=UVd48ICy9iU7hPA6SHpGEqfcU2PMxD/0lGb2QWVrMQF5v3pUBsGcqxRXZshFCnH4gt7DRoA1tE5ImKVZ0c8WSYt9/vLobP8PFkd4Gzxqortj8jbClYMZipEV8oo8bkR/pE3L4B15f0oass6gz67ScgTwwZZttzMuoJW+0WBhlbc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784826484; c=relaxed/simple;
+	bh=EE3EaiwrmI51Lgbrcpazt9QraHinVDFsRM3RHTUOla4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j+iudk12+rGVW9RgUs+1A7vNPkZlyYQ/ffyIpYoPXXHpfx45ue0yWLy5qWZDRdeCg81ylbF00DxpDO+96HDxJadeEOTXqs76LdNa/18mMhspZxsqEqR1P8NZL8VN7QjKQ1JHv5AQcsY+m++ScphSXV6UlBVfRztQSUewepoOgyc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hycyCmaa; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg.org header.i=@cmpxchg.org header.b="dr6D71pd"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8f256eaedf8so11481906d6.2
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:07:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hycyCmaa"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-69f21b7f6cdso271a12.0
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:07:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784826477; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qKd1hSGhKEH9+9lOTyzAY936e2kZsv72OZN4uRYpqKvJKKj+Tbn9C96Yjsc9lQsRUR
+         c/Z0yJjrZZGl7OXwfy7rDW9mhRY86H8JkRrcDHSBPaCo5BTepaBNWCR3qr3DCWawuO0B
+         lcxeSwnX2GtsWoeMAMFUc00Wzz7Mrn42Zw3xIG2O6NvbX/2Cp7fHb+HdNp860XMSHUg+
+         i4IYaHcEHLZzfhBBGue2vdLZ1ylsngmiE3qPM75bocyknqjb82gIfHzg6W2Lh8mOshF2
+         Y4NmAKT3DFPQAhINqagEjGOHJTr2qB5VOtoqPqHV31EP8tsfj78Z7nvE/o1S+CnOt19q
+         IV9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=h7HcIvVxXuyHdKd5y8FV8u9F1vFmQ9UmRDFA/SFyfQ8=;
+        fh=rQPSiWWhUVfbt4iy4A9xWav7+yCpcrMosw4asug5u80=;
+        b=qpdtL9VG8JReN5NCjhcZM9zwxQumkEe4VhqzGPP9Ykx/DwvqFGE5351NhZk4QvDwy/
+         +PCabBRA81qQN8s3ps1Mkz2cSCZfrdHwDo2EtOllK8dI5op64pnBP7ZOmVUWHlko1K3H
+         hYv/U1J25Yj8iKOf0HQ8AaSwT2tx+K/HkkdRwHXsol1ul1xq6GM3ukMoT8A2kAfcNiq4
+         XKqxtNdfzLVLZWRBVVBFxlpl5TzdITXsr2vJnV2NnS4vUUKjgHbxTFO9MeMCizwABb0X
+         7tZS5bls50zp/ROOvGcIRqTH6DSrAxUFzX4+MVn64jn4NGqEVhwIP7M49o3YtSXP57gO
+         G3Dg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1784826429; x=1785431229; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1784826477; x=1785431277; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=6nTISuiCBMBC/x5bhGnScXYmL0t1DEe+uFhjm9NEqZI=;
-        b=dr6D71pdkJzaZoA573EzcDPgqkVMwCs3l8007MpPJFj7mfhGF6RJEvvKxfz1m+LkAE
-         CKoD0fn9fNVo1SP3g4Y6r0cNLMq9QiDWI40Z0PnfE9C+r+IUrpVhHMv9p4nUnKEKTV9Z
-         ur31PPNSrT4tDcWJZ1/rZdcXFfbdt3AbdSdsed43OMTuS8lWzwSaSwAhJNO3NrmoVbOY
-         bYwfm0RmlI8++YaRCim0HcKSyJzcTtAT1wQsml1yNcjf8i27hIKmotoFZg2LQIzoZjZC
-         6do0lsviqsAh4q8xGfLOYx03whDjuiQ7HXyeS7sT03UQwYjausl6QYeuzZFmU38BI8us
-         9O6A==
+        bh=h7HcIvVxXuyHdKd5y8FV8u9F1vFmQ9UmRDFA/SFyfQ8=;
+        b=hycyCmaaKmqrm8pUAH/LMdH2gSzwtf4zGcI9q9MLxNKGck/Yab0dI8cLlMp0MCUwnX
+         XoKx0XkLh0I/7SaNQcULGc2xYFM0WMLVb1vGD9pQWB9sXVBP48styz5NtRnIaZtEYXZb
+         zvN240pfKe3jCef75AbChPKC2AyBHd/E8uSo3PEkJgJFfwY9k6dCopW/6KFf+JbheMmM
+         jKqEtMzQ7aLYb6Ffkeyzrlp2eSrowNoMEFetDCU+OVJjr1XcuX3phzx2h17Hv4WZJW/t
+         LKJgZXU2C+XZzN8NaUUgoo/rTc3YvCThcx/h+9FvA1EJtIu3GdHC3dWguOP0uRaJGbB5
+         TdEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784826429; x=1785431229;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784826477; x=1785431277;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6nTISuiCBMBC/x5bhGnScXYmL0t1DEe+uFhjm9NEqZI=;
-        b=m94K2VeP4HH9uZ7V6H8hEHWkHSphSAVIC0irhtFo3xR25UStcVPs1fMK2XqW5D5PXS
-         vxFAJwPEN79ufQ8EeFe+H0fVKxDs98ZWvDu+3aaQZqtCVzglE0VJN6LaLrS5LbRdjArY
-         cqIS10s3cgG8bKDsEkbJaB0dzITTYAHN8fnAnL52oX9nnOApMBTp2fb+aUeUZJpFdQt2
-         Mdb70ceAjMCCS6DAi3o0Yn1+OWy5nFvj90khQBvM7CVl9fXUm3qh46CAK4ezHow8QBxM
-         SrIIpDzmxaZBw0oD4pDG33V65ffkTRHkLV6k2wjQKiGlH7p+bjk37w7AXBbSTIlRYYE0
-         TncA==
-X-Forwarded-Encrypted: i=1; AHgh+RqhBlaGWpBWUyxYJTtfYUmV9I1Hh+gxlN0OjbDA5C5DcP9f7DTcoUJZSuoOeLkAeUEWfVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb/KGnAIjOguSXzWXOCEVwmtIDLMQx5r37NDlX3O1R0BQS8L0y
-	LcHHeBwXEC9w9cpIbuzPwvG4yWhWKKcHCvPqm+kg39fIQX+cUK2XdVoAWuBGIB/gQaM=
-X-Gm-Gg: AR+sD10EkjfdchT42ofd2m/RP16cCxnIZK2zf1LTj/deSpBGKe6YcN4iEt48oX1YK57
-	IFh/ZYv0jU448F2uRlgbAkdyaaTy1dG5Duo+2Tzc9dy2DhFlkxYjgfBfeT0LuTBSFja/9cGE4RT
-	vhtk7IdQBoNs2HbVrWTD0uSa3AhynwOds7DwAIw2iibX9JootjoloVzwqfzXDfjSAWCflQ8K4Ur
-	0+ssU0HFxHEhnOqzzOiOstvLqMvSISmnstDNxKSWLw1qhy0/ea3Gi/eQ3L4iqPNTXFAB9SaVN4L
-	xKYWWHPVELTjMfT/pQ8N5/29c9o6v3xgR7AcJOAYbemaf4HPsjP91G79xcZfC8bXlx5uGxV42ou
-	YAqDlzN/IF+8EQCHsVyo4ryiqbs5r+SbiE9zb1+xmFYcvPamc3u0zW9+zg7YhS8088gvN8mWPWb
-	XT
-X-Received: by 2002:a05:6214:5d0a:b0:8f1:579e:a41b with SMTP id 6a1803df08f44-907ca295150mr42984396d6.24.1784826429087;
-        Thu, 23 Jul 2026 10:07:09 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907ba8f2a8bsm48949526d6.20.2026.07.23.10.07.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 10:07:07 -0700 (PDT)
-Date: Thu, 23 Jul 2026 13:07:04 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>,
-	kvm@vger.kernel.org, rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <amJKOPczNMb96NJv@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
- <amIcXrS7nGX-adpG@google.com>
- <amIrDncrL4K-JRBO@cmpxchg.org>
- <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+        bh=h7HcIvVxXuyHdKd5y8FV8u9F1vFmQ9UmRDFA/SFyfQ8=;
+        b=MhabX+CwHFkLmub1if35NyE6x26axOGei8N3JCK2oJH589zINZt40OGUbtRX7o14vR
+         mgXa19rgpbWrHMWbCbiFLMR/mtIFhV4+NK7QvGA/5cfk26ICawO3NV8zX1UIs5QnpMFC
+         r3cFPTHTSNZHLgoYdKFiAjsViCIaQl936Xq+ajBslF4tMzjbBvF0P5iDGcvWBorigtHY
+         qYJBHCYlX6X1n2wpQKXbm61Vil7Byxbnk/KKru7BMMyKhG+i2A9GWMjHy3KYyIRN6JyV
+         v1Ss+6hBK8P9vVikQuPmBH3DtbddO/Mb3dLnLLbLdqS0gmy0bcxK17NhteFimJJIGFCn
+         Lyog==
+X-Forwarded-Encrypted: i=1; AHgh+Rq8Z3MbYHjeWEmechhGkcLg1poxljmJEFZ3/2RznUnqZpBIRZyba8LrGkUHxq7V12XaDto=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywa2Qpv7fSPumEPjdcLhViCwSIfLzMgzmnUzl9JP4vM3OSJyooJ
+	JtmSKCoewrup/RUMbK35QJiLkEq4DLptlZ78lerg5ST+TbAFnRDFARvKVE4MwkM7Wip1Ftrp2C4
+	bq7uNbwhSfWRCqtRDlPEH/dnhzLIiCO4AtfA8Ktai
+X-Gm-Gg: AR+sD11IirC5nkYp6yE1/+wpIDBdCI1BdBSb+BZqhPfjKeRWXlemaOTszQC5KMcvysF
+	wfc+6jYcbO8CGdArDIImOoKgv+K+7x7YY6VbPkyhyvdXp8nh/1txGvpQhOSUriS8bewsBRINFg6
+	TR0/IqLWXiUwyFgwSSLwJqsc+/pe9vqrjo4p1sqf2tazCFLdeJQAC74YKOtHi3AwDQ1I1VfoXaq
+	Nq6wQMOZ9F/JZTdNoXDKcCFb7uYEJLrasTv7R5eE3DuXE9OGEbVWPMjmoGmTQ==
+X-Received: by 2002:aa7:c795:0:b0:69c:39f5:7e36 with SMTP id
+ 4fb4d7f45d1cf-69f8ec1a904mr2915a12.0.1784826476144; Thu, 23 Jul 2026 10:07:56
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+References: <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
+ <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
+ <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
+ <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
+ <amE_nPDem-imSfqF@google.com> <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
+ <amFf5MAhc8sUqeYV@google.com> <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
+ <CALMp9eQi=604LVn=ZMnzoUy55LVb1qorKzPKm5HVK_ACsPuP_A@mail.gmail.com>
+ <amIgLeMCAH2vB4ot@google.com> <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
+ <CAO9r8zMukfW2b5tjYarpkpPH0osA_+QEEMRq8k5R8B_WFG_yYQ@mail.gmail.com>
+ <CALMp9eRsJeByu4U8NZQhnKM7BaKziyLUix6J3XGCEMZyiar=vA@mail.gmail.com> <CAO9r8zOtzSscMx_PFuABkXzZ=xgGOcioegKzgYscXa9WiobySg@mail.gmail.com>
+In-Reply-To: <CAO9r8zOtzSscMx_PFuABkXzZ=xgGOcioegKzgYscXa9WiobySg@mail.gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 23 Jul 2026 10:07:43 -0700
+X-Gm-Features: AUfX_mz5yGWzO0PPFIkPfr5J3GTVbVTyfxQBFqnr-SvmEY14sV_q5eQRndDbSCI
+Message-ID: <CALMp9eR2XffG3pQL_pjGphSqMGfpJ9vRJi45Hd9RuCSd5EwU6g@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 23, 2026 at 11:58:27AM -0400, Gregory Price wrote:
-> On Thu, Jul 23, 2026 at 10:54:06AM -0400, Johannes Weiner wrote:
-> > > 
-> > > My stance is that using NUMA balancing with KVM guests is a terrible idea, and
-> > > that anyone that insists on using such a setup gets to suffer the consequences.
-> > 
-> > I agree. Surely we cannot leave shmem balancing broken due to
-> > that. It's also not clear to me how many people even enable numa
-> > balancing.
-> > 
-> 
-> I lean towards Johannes' stance here that consistency is better, and if
-> KVM has a known-poor interaction with numa balancing, maybe KVM should
-> simply set a default policy (when none are present) to avoid this.
-> 
-> That said, this is painful because MPOL_F_MOF / MPOL_F_MORON are already
-> a silently inherited policy on boot (added during init).  This will be
-> confusing for users.
-> 
-> This is not documented anywhere.  Maybe this change should come with a
-> docs addition that says the default global policy is ACTUALLY:
-> 
->    MPOL_LOCAL + (MPOL_F_MOF | MPOL_F_MORON)
-> 
-> Instead of just MPOL_LOCAL and letting that silent implementation
-> detail bite people.
+On Thu, Jul 23, 2026 at 9:57=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Thu, Jul 23, 2026 at 9:54=E2=80=AFAM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > On Thu, Jul 23, 2026 at 9:32=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Thu, Jul 23, 2026 at 8:57=E2=80=AFAM Jim Mattson <jmattson@google.=
+com> wrote:
+> > > >
+> > > > On Thu, Jul 23, 2026 at 7:07=E2=80=AFAM Sean Christopherson <seanjc=
+@google.com> wrote:
+> > > > >
+> > > > > On Thu, Jul 23, 2026, Jim Mattson wrote:
+> > > > > > However, since KVM completely ignores NASID, it would be sad if
+> > > > > > migration were blocked because the target has a lower NASID val=
+ue than
+> > > > > > the source.
+> > > > > >
+> > > > > > That's an argument against changing it without some kind of use=
+rspace
+> > > > > > opt-in. Increasing it seems safe, but if userspace just reflect=
+s the
+> > > > > > value into KVM_SET_CPUID2, then an increase would block kernel
+> > > > > > rollback.
+> > > > > >
+> > > > > > In any case, I think the new value should be a constant so it d=
+oesn't
+> > > > > > imply a migration constraint. Perhaps we should adopt the highe=
+st
+> > > > > > value reported on a physical CPU to date? I think that would be
+> > > > > > Bulldozer's 0x10000.
+> > > > >
+> > > > > Or keep KVM's enumeration at 8, then find somewhere in KVM's docu=
+mentation to
+> > > > > describe KVM's behavior and provide guidance for userspace, but o=
+therwise make
+> > > > > it userspace's problem to solve?  I'd be a-ok with that.
+> > > >
+> > > > That sounds best to me. Document that KVM ignores the guest NASID a=
+nd
+> > > > commits to always supporting 2^32 ASIDs. Advise userspace to popula=
+te
+> > > > NASID with a power of 2, and perhaps mention that hardware has only
+> > > > reported three different values over the last 20 years: 0x40, 0x100=
+00,
+> > > > and 0x8000.
+> > >
+> > > I agree that documenting that KVM supports any NASID value from
+> > > userspace is needed here, so that VMMs can set reasonable values and
+> > > migration pools are sane.
+> > >
+> > > That being said, I still think KVM's enumeration should be increased
+> > > from 8. If KVM's enumeration is just a hint, then it should be a good
+> > > one imo. Current L1 KVM will flush everything (L1 + L2) every time it
+> > > runs out of ASIDs and pumps the generation, so advertising a small
+> > > number of ASIDs leads to L1 unnecessarily hurting its performance.
+> > > Newer KVM (with this series) won't suffer as much.
+> > >
+> > > I think we probably want to pump KVM enumeration (e.g. to 0x8000 or
+> > > even 0x40) *and* document that it's just a hint and KVM effectively
+> > > allows any value.
+> >
+> > How do you do that without breaking rollback?
+>
+> KVM's enumeration is just a hint :)
 
-Hm, where do you see "Instead of just MPOL_LOCAL"?
+Yes, but existing userspace VMMs do not know that.
 
-Documentation/filesystems/tmpfs.rst says it defaults to "default" and
-points me to set_mempolicy(2). That in turn in general makes little
-mention of numa balancing and doesn't mention MPOL_F_MOF/MPOL_F_MORON.
-In fact these are documented as internal flags.
+> Also, in practice, even if you rollback the CPUID presented to an
+> existing VM by userspace should never change, right?
 
-The numa_balancing entry in
-Documentation/admin-guide/sysctl/kernel.rst however DOES say plainly
-that enabling this feature will sample and migrate mapped process
-memory to where it's used, and that this has a performance penalty.
+Today's KVM claims support for only 8 ASIDs. If tomorrow's KVM
+supports 0x8000 ASIDS, and we start a VM on tomorrow's KVM with a
+userspace that copies NASID from KVM_GET_SUPPORTED_CPUID, that VM will
+look like it can't be supported on the old KVM if we have to roll
+back.
 
-It seems there is a general lack of documented interactions between
-user-requested policies and the system-wide numa-balancing behavior.
+Hence, until you get an ACK from *all* userspace VMMs that they
+understand that KVM's reported NASID is just a hint, you can't change
+the reported ASID=E2=80=94unless, of course, you make that change an opt-in=
+.
+But any VMM that opts in already knows that the value is just a hint,
+that it can set any NASID value it wants in the guest CPUID, and that
+all values are actually supported by all versions of KVM that report
+any non-zero value. So, then, what's the point of the opt-in? What's
+the point of changing the hint at all? Documentation solves the
+problem completely.
