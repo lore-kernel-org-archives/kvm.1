@@ -1,191 +1,180 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6D9476CE2
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A352F83B5
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 15:23:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784820059; cv=none; b=hIJ4/4thbyTbsL+9B9HnB7H3NxFSh+YvUXKWCMEtS9ru/OdpEvsljNYEoza8w0yL4NsoujqotCsCcOT9ysR1n7fyxHCXOwyBbMWXB73EGbjnklCjjsTtGj8sEDMdWSXAhsL2fLGEvYcybJpLa/WdreNmOWMX2FT615RLhIUysuU=
+	t=1784820226; cv=none; b=Os2k6xaU/bJNnqKee8OTECoI08CpSppODrGnxn0NDjVX9AV8WwsRMsKWX6xwUCsrVXCtvkm3fykP1G/GEwT07gocN6lc7mIzbmbyqhKw5T/ZT0ecYwlSnZfr/x90rzz6ETWy7PNKITeMmg65Snm2kAnazrhaAI4utKJPCWX6tb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784820059; c=relaxed/simple;
-	bh=zn/gEMJJ1XMBLv9DV6RgUFJFogpvhK95ma5l8xlhpQo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WddcNgVX50xNEy4Bkkr4TcHYK7wyBLYCo2bHncp8G5aJEUDfFjXZC/eeymDtm8xUwGzrt22UQ7Q8GHCtRxcbCbLISI8EFR4+wMEcyCML8qWSRUn8tgWexobGdlu+1ioUwTdXNmjvlqnXU9UnPTfNFTNzLne8K+YYJpzflJG23eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HlZjdPuv; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784820226; c=relaxed/simple;
+	bh=wc58FnJvNGRmZB8MOWPGgiFR6U7xAj4iaYYZUVMc3vg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=q4NGjiOiN8Ewxg0sHr2+hw6qkmFQ/GB21p5MqnOS0zYKCAaHUPaWBaLT1hpu2GIxayTQ28YCU+iHJ8W1edfiOSlpH2kYhncl3N6mvkJXgXyvKoiU8D3Klk0r/B/+eQ3UVIXvH1Jk3W/mUG0e0cqvgcp5pzgfHP4pDMx7Joe9/Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wToSXlrY; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlZjdPuv"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c166f1bbeaeso135290566b.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:20:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wToSXlrY"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c7f385887bso15730935ad.0
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 08:23:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784820050; x=1785424850; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TMp8M4J+xWVDBcklJvtTyv42HtG/Fh5aORRxNq6D7qM=;
-        b=HlZjdPuv5HoIcnqsUu+9OBP+bSptMg9pG+KEd6GLvzg1RX9aHvXFQndunidCcTad/E
-         P3wG1oa5f/9rjDrcE/8EObMwO2yu2xtyUg2UOkR3u/vlTYPfxInZubqge71/ik1NuruJ
-         aum3WQUhz+/XP8bN5qlLpRR4nCyjZotyaBDYFwVbbKnbUSTuZgkt+cMEJB8/U874jKXN
-         o/1UsdO7KFj+QwN33eo1sQlrOCISJaP/PyBwJqRWbHsv29UqYa4Y5RNWxHP0JDIq63Aa
-         Iew6ZLSBtqnd6BrBOLcuEdN79Jj/bADnl6Wwmeaa/qoGnSbs0kh66itxvOOP65lEantC
-         hPtA==
+        d=google.com; s=20251104; t=1784820220; x=1785425020; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CNT1RM/ZdipYTEsicJnYvAxIeXZSfUPW+JDMKIP8+oY=;
+        b=wToSXlrYoHJVXi9YMKF9yN1LDuc0z7Bz2lzwogFsN04Gbet0zy6J6PFX9N1QDSlTWj
+         lHbzH8b5TvDVIimt9oP8OXBot5u5vhsi6xdAT7sg4VNREini5SNtxyaD6a3CJgkicMox
+         vyPR3xG39YbHA5Jacx6T69xOhdgqIirsKavYJAcSH787DDPFqr8IhuqgGKZV467RoCFo
+         RGRNlaqVVuyk69Kt/NpGHLQhSkuSW9kCljEVOau1SPAfAOvx7LACTDHjFbwGTcTTLkxj
+         /ejvSMKqY6dTJdfC/z7p6ujBDt5M6B9LZXxGaZ++iEn61YLMP/Pmg+mP0KKfuKqBxTyl
+         XPIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784820050; x=1785424850;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=TMp8M4J+xWVDBcklJvtTyv42HtG/Fh5aORRxNq6D7qM=;
-        b=PcPGhHd5yuCQjw9slLOPEL7496nMcw9blcqkXZ5z9iWmlyA3Z2zXoFgisDtkbC3qP2
-         S6JQE84O75Dn3TphZXYQoNiNyB6ZWKTXfPm5s5gkvszaAB3AjJV4gqav4FlNYuRbOEbm
-         vYdfFy2ARD8kSaJvS1ntJBbGbnOjAZ9CJOhmwqJUUMWLJnjNtBcdzhxOTISaPvi0ecj0
-         tbaWxfwI5ho+cfBfwLKTIghvJj+94siLgRv6W1Y5kq7bHTEfcMiSdmBYQoWyzHBhX+wQ
-         VdD10sTV+BQUpap6OOXtwUYkkXC3XILXVoGpR2EEizs+m3dDYgt/HoySZxBNI/CS2p1P
-         g3Kg==
-X-Gm-Message-State: AOJu0Yzd/K+9w/63oZ1VpTgm+FXLKcZRFnYdDrUkPJ6k9ADNxFk3yzFh
-	mIkkiVeSOvD3IJwyEKqCNb+dyc6zF3Qim3egG4eyeM5D0Xc68V7zTlaDtQL7Uug2
-X-Gm-Gg: AR+sD10mfsooBK56b8tOXNY9J4J1aHAkmunlRjsbMyckwEyUaMhi4Cegt/8S42ehLVe
-	8YHE5Wx/1qtOrMJqbxYYb3bIqfeE41FfBcjqU/rW6JA3yI8YIVT0yvDM9Iet8ztIIGgXEdPhfK1
-	sZziDw2HPN2PunGseUG8rw7/KBXTFl0avBUJj7u1ImSLjMpeLk6eXakvxBQ2jykLSW/KutGm1HJ
-	h0KooOXjNd/bOqvDoIOsOJPf7IRXhMZ3Ymn8Acd5BhzeEQ6IFsertsmBBNCVYHkW1wXaCac8u2v
-	GkVzYHlFTuVlvzcwNetKG8GnjMuVEsBaLltQ5xKlqc0imQI/kzAL1Kup0m2HI0N9S8DU3E4G7k2
-	QdTqzFn3nZ98fPTQfYBgux1b4+la7/8klGigZ1ZUXUUMb2Ykiin8kr5+hDUCDHOMsxJSF0VZrig
-	==
-X-Received: by 2002:a17:907:7b97:b0:c12:713b:e199 with SMTP id a640c23a62f3a-c1c50c27ddcmr193498566b.25.1784820049631;
-        Thu, 23 Jul 2026 08:20:49 -0700 (PDT)
-Received: from localhost ([2a03:2880:32ff::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c492f451bsm166730666b.50.2026.07.23.08.20.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 08:20:49 -0700 (PDT)
-From: Samuel Crossley <samuelcrossley@gmail.com>
-Date: Thu, 23 Jul 2026 08:20:00 -0700
-Subject: [PATCH] vfio/type1: conditional rescheduling while unpinning
+        d=1e100.net; s=20251104; t=1784820220; x=1785425020;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CNT1RM/ZdipYTEsicJnYvAxIeXZSfUPW+JDMKIP8+oY=;
+        b=MxM+unLZ5JKCRpXZ6JU29wPj5HJlgsGdQj1vrogsf9hTZilWsJDJMDMXENuA7tcijV
+         ReQiPpE+9bHPlQubivPKqHMfY/jxSqScg/i5+GFlPA6qHWpeEgj11VmrRBCTXszYhEka
+         +2LvHU6MaxqowHjT7rhj5orpK0HhuZb5lCGRmvMydRqHf6ctQNYRkuYOYLTT9r3nMSaR
+         4LJ208QkI4pielUT1l0aldo+8/Gv8wE0OQuq0qDjOUQrvjrEbqPouXP3oI88Nf57np+e
+         m1uUZ5KtXYHOZxy7NCxgI3Cp8V12Ck6td7HSqNgZ1jWq2fdJplrlS1RcE8hO4p3LR4HS
+         eR5Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7XzQZB47zSWKlizhp7vvTcGXwazsq8m+sJ734lEHSaH1cpthajqWxpzInUofxkay6034=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlg60k4vpgds16eLjt2l2jiVtb5/JLY+xGnC1mntGKjPFNZ7gm
+	XP6SBt/nNC78iMiq9BlaWP1LaEkgHRqArniwtZLPjyhHHg76bYW252GMoAJzCSy47nELkyTw2/U
+	b40keKg==
+X-Received: from plpd6.prod.google.com ([2002:a17:903:1b66:b0:2ca:5a0f:d0c4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:17c6:b0:2cc:8ad3:423d
+ with SMTP id d9443c01a7336-2cfa6c5e3f2mr45130805ad.29.1784820219479; Thu, 23
+ Jul 2026 08:23:39 -0700 (PDT)
+Date: Thu, 23 Jul 2026 08:23:32 -0700
+In-Reply-To: <amGiAKsC3XrF6DyA@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-vfio-v1-1-3b59579916c6@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAB8xYmoC/yXMQQ5AMBBG4atM/rUmVFLSq4gF7ZSxQFpEIu4uW
- L7F9y4kjsIJli5EPiTJMsNSkRHc2M0DK/GwBJ1rk1e6VEeQRXl2vjZ9KF0wyAhr5CDnt2nav9P
- eT+y21+K+H6qbyRFoAAAA
-X-Change-ID: 20260723-vfio-decd86bf3cf6
-To: Alex Williamson <alex@shazbot.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Samuel Crossley <samuelcrossley@gmail.com>, 
- Sam Crossley <samuelcrossley@gmail.com>
-X-Mailer: b4 0.16-dev
+Mime-Version: 1.0
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
+ <amFl89ch5Iej63L3@google.com> <amFms2CnzhDUuRCk@google.com> <amGiAKsC3XrF6DyA@google.com>
+Message-ID: <amIx9Ki6gv-wgBnX@google.com>
+Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
+ allow skipping the gva flush
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Tearing down a large device-passthrough DMA mapping can unpin tens to
-hundreds of millions of pages in a single VFIO_IOMMU_UNMAP_DMA.
-vfio_unpin_pages_remote() walks the whole contiguous range in one
-uninterrupted pass with no reschedule point:
+On Thu, Jul 23, 2026, Yosry Ahmed wrote:
+> On Wed, Jul 22, 2026 at 05:56:19PM -0700, Sean Christopherson wrote:
+> > On Wed, Jul 22, 2026, Sean Christopherson wrote:
+> > > On Tue, Jun 16, 2026, Yosry Ahmed wrote:
+> > > > Refactor helpers out of kvm_mmu_invalidate_addr() and kvm_mmu_invlpg()
+> > > > that take in an extra argument to skip the GVA flush.
+> > > > 
+> > > > This will be used when invalidating GVAs in a different context than the
+> > > > correct one (i.e.  invalidating an L2 GVA from L1), so flushing the
+> > > > current context would flush the wrong TLB entries.
+> > > > 
+> > > > No functional change intended.
+> > > > 
+> > > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> > > > ---
+> > > >  arch/x86/kvm/mmu/mmu.c | 23 +++++++++++++++++------
+> > > >  1 file changed, 17 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > > > index 65c35ed8f4a01..3feb75732f7b4 100644
+> > > > --- a/arch/x86/kvm/mmu/mmu.c
+> > > > +++ b/arch/x86/kvm/mmu/mmu.c
+> > > > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
+> > > >  	write_unlock(&vcpu->kvm->mmu_lock);
+> > > >  }
+> > > >  
+> > > > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > -			     u64 addr, unsigned long roots)
+> > > > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > +				      u64 addr, unsigned long roots, bool flush_gva)
+> > > >  {
+> > > >  	int i;
+> > > >  
+> > > >  	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
+> > > >  
+> > > >  	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
+> > > > -	if (mmu != &vcpu->arch.guest_mmu) {
+> > > > +	if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
+> > > >  		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
+> > > >  		if (is_noncanonical_invlpg_address(addr, vcpu))
+> > > >  			return;
+> > > > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > >  			kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
+> > > >  	}
+> > > >  }
+> > > > +
+> > > > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > +			       u64 addr, unsigned long roots)
+> > > 
+> > > Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
+> > > kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
+> > > to have the "in_root" version to a quad-underscores helper, and IMO it's more
+> > > obvious what's different between the one-line wrappers and the inner helpers.
+> > 
+> > Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
+> > was assuming you were using it to differentiate between GVA and GPA, but IIUC,
+> > it's literally skipping the flush for the current context, which just so happens
+> > to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
+> > all possible.
+> 
+> Yes, it's skipping the TLB flush that is only needed for GVAs. The
+> alternative I had in mind (but thought was worse) was to refactor the
+> TLB flush part out of kvm_mmu_invalidate_addr() (or
+> __kvm_mmu_invalidate_addr()) in this patch instead of adding a boolean,
+> but this still requires adding a wrapper and the possibility of a
+> quad-underscore helper.
+> 
+> What's the main objection to kvm_mmu_invalidate_addr_in_root()?
 
-  - has_rsvd (reserved / device-memory mappings, e.g. GPU HBM/BAR mapped
-    for peer DMA): a per-page put_pfn() loop, each doing a
-    pfn_valid()/is_invalid_reserved_pfn() section lookup;
-  - otherwise: the batched unpin_user_page_range_dirty_lock() folio walk.
+I don't love the __kvm_mmu_invalidate_addr() => kvm_mmu_invalidate_addr_in_root()
+callchain.  It's not at all obvious that the in_root() helper shouldn't be called
+directly.  I don't hate it, but I do think we need better clarity on what all this
+is doing.
 
-The existing cond_resched() calls in the unmap path only run between
-regions/chunks, so they cannot break up one giant call.
+E.g. when looking at __kvm_inject_emulated_page_fault(), since it hardcodes a
+single root, it's a bit headscratching to use kvm_mmu_invalidate_addr() instead
+of kvm_mmu_invalidate_addr_in_root.
 
-Observed on a GPU-passthrough host: unmapping a 128 GiB device-memory
-region (~33.6M reserved 4K pages, has_rsvd) held a CPU 22s in the per-page
-loop and tripped the soft-lockup watchdog, panicking the host:
+Hmm, and arguably, the way invlpga_interception() handles the ASID is flat out
+wrong.  KVM doesn't need to flush *all* roots, rather it needs to flush L1 roots
+for ASID=0, and L2 roots for ASID!=0.  If we can figure out an elegant way to
+express and handle that, it should naturally handle the "flush GVA" aspect.
 
-  watchdog: BUG: soft lockup - CPU#74 stuck for 22s! [qemu-system-x86]
-   put_pfn / is_invalid_reserved_pfn / pfn_valid
-   vfio_unpin_pages_remote / vfio_sync_unpin / vfio_unmap_unpin
-   vfio_remove_dma / vfio_iommu_type1_ioctl (VFIO_IOMMU_UNMAP_DMA)
+Actually, isn't there a pre-existing over-flush when handling kvm_mmu_invpcid_gva()?
+Oof, and a missed flush?
 
-The v6.18 batching series (d10872050ffe, d14de5b92578) optimized only the
-non-reserved folio path, so it does not help this has_rsvd loop. Bound the
-work per iteration and cond_resched() between chunks, mirroring the
-pin-side fix in commit b1779e4f209c ("vfio/type1: conditional
-rescheduling while pinning").
+To fix the over-flush, I think we want this?
 
-cond_resched() is safe on this path: the only lock held across
-vfio_unpin_pages_remote() is iommu->lock, a mutex, so sleeping is allowed,
-and it is taken in vfio_dma_do_unmap() and held continuously through
-vfio_remove_dma() without being dropped on this path. No spinlock,
-preempt-disabled, IRQ-disabled or RCU read-side section is held anywhere in
-the type1 unmap path. The loop's callees (put_pfn(),
-unpin_user_page_range_dirty_lock()) drop any transient folio reference and
-folio lock before returning, so only the mutex is held at the reschedule
-point. The path is already demonstrably sleepable: the same unmap chain
-already calls cond_resched() at the region/chunk level, and the
-non-reserved dirty path already takes folio_lock().
-
-Signed-off-by: Samuel Crossley <samuelcrossley@gmail.com>
----
-Signed-off-by: Sam Crossley <samuelcrossley@gmail.com>
----
- drivers/vfio/vfio_iommu_type1.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index c8151ba54de3..ce7f6051f799 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -814,22 +814,42 @@ static inline void put_valid_unreserved_pfns(unsigned long start_pfn,
- 					 prot & IOMMU_WRITE);
- }
+diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+index 6c13da942bfc..7f3e0eb33b29 100644
+--- arch/x86/kvm/mmu/mmu.c
++++ arch/x86/kvm/mmu/mmu.c
+@@ -6672,7 +6672,8 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+                if (is_noncanonical_invlpg_address(addr, vcpu))
+                        return;
  
-+/* Pages to unpin per cond_resched() when tearing down a large mapping. */
-+#define VFIO_UNPIN_RESCHED_PAGES	(16UL * 1024)	/* 64MB @ 4K pages */
-+
- static long vfio_unpin_pages_remote(struct vfio_dma *dma, dma_addr_t iova,
- 				    unsigned long pfn, unsigned long npage,
- 				    bool do_accounting)
- {
- 	long unlocked = 0, locked = vpfn_pages(dma, iova, npage);
-+	unsigned long remaining = npage;
+-               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
++               if (roots & KVM_MMU_ROOT_CURRENT)
++                       kvm_x86_call(flush_tlb_gva)(vcpu, addr);
  
--	if (dma->has_rsvd) {
--		unsigned long i;
-+	/*
-+	 * A single unmap of a very large device-passthrough mapping can unpin
-+	 * hundreds of millions of pages here.  Bound the work per iteration and
-+	 * cond_resched() so one VFIO_IOMMU_UNMAP_DMA cannot hold a CPU past the
-+	 * soft-lockup watchdog.  Mirrors the pin-side reschedule in commit
-+	 * edeca59cb88d2 ("vfio/type1: conditional rescheduling while pinning").
-+	 */
-+	while (remaining) {
-+		unsigned long batch = min(remaining, VFIO_UNPIN_RESCHED_PAGES);
- 
--		for (i = 0; i < npage; i++)
--			if (put_pfn(pfn++, dma->prot))
--				unlocked++;
--	} else {
--		put_valid_unreserved_pfns(pfn, npage, dma->prot);
--		unlocked = npage;
-+		if (dma->has_rsvd) {
-+			unsigned long i;
-+
-+			for (i = 0; i < batch; i++)
-+				if (put_pfn(pfn++, dma->prot))
-+					unlocked++;
-+		} else {
-+			put_valid_unreserved_pfns(pfn, batch, dma->prot);
-+			unlocked += batch;
-+			pfn += batch;
-+		}
-+
-+		remaining -= batch;
-+		cond_resched();
- 	}
-+
- 	if (do_accounting)
- 		vfio_lock_acct(dma, locked - unlocked, true);
- 
+                if (tdp_enabled)
+                        return;
 
----
-base-commit: dc77acfeb979dded39b247b60fef0399536bfa77
-change-id: 20260723-vfio-decd86bf3cf6
 
-Best regards,
---  
-Sam Crossley <samuelcrossley@gmail.com>
-
+And that highlights the missed flush: if the PCID isn't the current PCID, then
+flush_tlb_gva() neglects to flush the hardware TLB for the target PCID, which
+could leave a stale entry in the TLB if the guest switches to the new PCID with
+MOV CR3 + X86_CR3_PCID_NOFLUSH.
