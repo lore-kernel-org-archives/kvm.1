@@ -1,146 +1,104 @@
-Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABF32EB856;
-	Thu, 23 Jul 2026 09:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180EE3EDE77
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 09:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784797378; cv=none; b=Aa9dGyfM6L6ICvq3WR5t9QBQskh6rk80HKqra063lJUUkglb5lmwBovn58WGE2SjKA0Xf2a/+2sTJNOaeVQfRnlRbdDbkZppMHq7ybSniDhHzay7it2BNVkgCX1yEz3OQgQUPlRYoW0jhv4E1gJGJEv9cbGkirjISM9sdkRvbIE=
+	t=1784797480; cv=none; b=N5JonewKepv9AXCQdlGyKWVEOx4ht/RtUwrcN7DZi/Av3JUllFVbPXMlelxPxN42/gA5O8vQ6mYCZSMvq1ZEyz2xps0otzjI2DiFM5UyLNnOvq3+/ZzMiCTtaMzyCqIWETmpoj5DP2h+Poambsfyy3SMUKEWQR7/VgjWgA8DqrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784797378; c=relaxed/simple;
-	bh=QlInud9zY6Zj2WAQdHZwDimVEk6ix99BMpZJ6uDFG4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZkptbfMV76wGgXdR50WIJoGCDRlZFCbl274aZkYAvX8U8Vb34Bgx2kCiaYgx5H0uQhlS5mRIqqE4MXeFKU6K7I0gGEWQDDnnYUHUkGzBWoQsZ9+ibLjF0KY+THucghoN2mpZ8pyHGOTjs8xAoRgWx9PQUsnKvkHR8cH0Bbk9HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=G6tRcHrH; arc=none smtp.client-ip=139.138.36.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784797480; c=relaxed/simple;
+	bh=UlkPFryWaWNqF51ABjxm3hBsSBTolNTJ0VW80GvjZjM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uPeV5LErJoJ43KuSujSK8cDarCxM1y1RKU5/yN0pEt3FPXp7916lUdYjSPcj9riDQdfrmRdyJUZ8FMyJEy65JhCDcQxHXCI+7yeIhafHcBWPGA0GnHtd8YSyjU2sfRHo1z7bKm0fU+pkHGWsy78c1H4nh/p4MF/oSQ2/cQYlNRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=aouCmOdP; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="G6tRcHrH"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784797376; x=1816333376;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QlInud9zY6Zj2WAQdHZwDimVEk6ix99BMpZJ6uDFG4c=;
-  b=G6tRcHrHByIOVXo4lCtKQcsIzrG+IUMTfS8/OOrrrp0dpl9OOHn7dI+m
-   gl9E4IYtJW5ohw1Z3GbSoKZsKxPm1LJY0wAkSJ9GU5zU9IVooWQ8Gp2Cs
-   uT3DLNdATJwCVSi9PtWwSadMJXxM9cKujxSAgwrpIjffZZYvZuI6Xl77F
-   15jx+a84S4gnqRCPoWCESOSz5dEAyyIL16yeK9dk1leayMNILCBH9K6LC
-   rJhN1hgD5QgNDY/0L+MZgaBa4ZK2rGT/VW9UIYZTCQ6T7ud2HByQDp9qS
-   oN7FpVElzicMzpV5I1UCjl79VBWsYL+9lD9tFZW2mS/cpi/Vhg9t8y8DV
-   w==;
-X-CSE-ConnectionGUID: ryjHRmm/SBy4J6WcCu+joQ==
-X-CSE-MsgGUID: l4O+uCr9QZyED3Clyu+v6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="235787159"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779116400"; 
-   d="scan'208";a="235787159"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 18:02:49 +0900
-Received: from az2nlsmgm2.o.css.fujitsu.com (unknown [10.150.26.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 5C4FD42A308;
-	Thu, 23 Jul 2026 09:02:49 +0000 (UTC)
-Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 030591C0CAE8;
-	Thu, 23 Jul 2026 09:02:49 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.10.80.137])
-	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id B285540267C;
-	Thu, 23 Jul 2026 09:02:40 +0000 (UTC)
-Date: Thu, 23 Jul 2026 18:02:33 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
-Message-ID: <amHYWxZJsXzIu_7c@FCCLS0092175.localdomain>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-13-steven.price@arm.com>
- <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
- <86cxwfe5m8.wl-maz@kernel.org>
- <amGwgAfHWX2P9pZx@FCCLS0092175.localdomain>
- <868q72dt8o.wl-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="aouCmOdP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=V8
+	9j4LGxjqHI3vxHmNv8NV5BZhOiv873NGJEqyiiQvY=; b=aouCmOdPeRsK6sgDKa
+	0zPV4/AA0gSHteRkmekDGPcMavArrJahqPK+oV/H98Xo/rS4W95SFPpRcwy/CEvS
+	sXW4h4ld/VoUwAx8O68mGdwQmVhqrt2G8zJ6nW8ABY8p80csukwNqoKApol5yVW0
+	rzOS6q712xmqE/IAXBJlR/yrA=
+Received: from thinkpadx13gen2i.. (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgB3KQEU2WFqy2vpJA--.52286S2;
+	Thu, 23 Jul 2026 17:04:21 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: kvm@vger.kernel.org,
+	will@kernel.org,
+	julien.thierry.kdev@gmail.com
+Cc: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH kvmtool] arm64: Fix resource leaks in find_pmu_cpumask()
+Date: Thu, 23 Jul 2026 17:04:13 +0800
+Message-Id: <20260723090413.52218-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <868q72dt8o.wl-maz@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgB3KQEU2WFqy2vpJA--.52286S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Gw1xKw15AF1fGFW7ZFyrZwb_yoW8Jr1UpF
+	srJrWkKrWFgw10kasYq3WDGr15Xa93Aa95ZFWUJw18Ar9xCw4v9FyFvF1rCa1fGrWkCry7
+	Gas8t3y5GasIkFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UNeOXUUUUU=
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbC0hVuGmph2RUcvgAA3W
 
-On 07/23 09:07, Marc Zyngier wrote:
-> On Thu, 23 Jul 2026 07:38:16 +0100,
-> Kohei Enju <enju.kohei@fujitsu.com> wrote:
-> > 
-> > On 07/22 10:27, Marc Zyngier wrote:
-> > > >
-> > > > As far as I can tell, the CCA requirements don't require the
-> > > > ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
-> > > > problem. Is there any workaround for this issue, or should we implement trap
-> > > > handlers for those registers?
-> > > 
-> > > No. Either you support TDIR, like any modern CPU, or you don't run
-> > > CCA. I'm not adding yet another level of emulation for this.
-> > 
-> > However, I'm still not aware of any requirement in the CCA architecture,
-> > or in Armv8-A/Armv9-A, that mandates TDIR support.
-> 
-> The GICv3 architecture has deprecated the lack of TDIR support since
-> the very first release of the specification in 2015, because it was
-> quickly identified as an architecture bug. CCA mandates GICv3 support
-> as written in the spec, and relying on deprecated features 11 years
-> later is not acceptable.
-> 
-> By any definition, this is buggy hardware, and I don't feel a strong
-> urge to support it.
-> 
-> > 
-> > When you say "you don't run CCA", is that because the architecture
-> > requires it,
-> 
-> See above.
-> 
-> > or because that's the current KVM policy? If it's the
-> > latter, we'd be interested in adding the required emulation to make it
-> > work.
-> 
-> And I say no to this. Enough. This isn't a "policy*. This is a hard
-> red line. "Do Not Cross".
-> 
-> We already have the most complicated interrupt architecture ever, and
-> I have zero desire to add even more complexity to it. Because I'm the
-> idiot who ends-up maintaining this horror, and not you.
-> 
-> So no, no more emulation code. CCA in KVM won't handle systems that do
-> not support TDIR, unless you rewrite the CCA support so that it can
-> use the *existing* emulation code without any change.
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-Understood. Thanks for the clarification.
+Close file descriptors on read_file() failure and close the directory
+stream before returning from the function.
 
-Thanks,
-Kohei
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+---
+ arm64/pmu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-> 
-> Thanks,
-> 
-> 	M.
-> 
-> -- 
-> Without deviation from the norm, progress is not possible.
-> 
+diff --git a/arm64/pmu.c b/arm64/pmu.c
+index 78c15f1..b4d7605 100644
+--- a/arm64/pmu.c
++++ b/arm64/pmu.c
+@@ -75,7 +75,7 @@ static int find_pmu_cpumask(struct kvm *kvm, cpumask_t *cpumask)
+ 	unsigned long val;
+ 	ssize_t fd_sz;
+ 	int fd, ret;
+-	DIR *dir;
++	DIR *dir = NULL;
+ 
+ 	memset(buf, 0, sizeof(buf));
+ 
+@@ -109,6 +109,7 @@ static int find_pmu_cpumask(struct kvm *kvm, cpumask_t *cpumask)
+ 		fd_sz = read_file(fd, cpulist, PAGE_SIZE);
+ 		if (fd_sz < 0) {
+ 			pmu_id = -errno;
++			close(fd);
+ 			goto out_free;
+ 		}
+ 		close(fd);
+@@ -142,6 +143,7 @@ static int find_pmu_cpumask(struct kvm *kvm, cpumask_t *cpumask)
+ 		fd_sz = read_file(fd, buf, PMU_ID_MAXLEN - 1);
+ 		if (fd_sz < 0) {
+ 			pmu_id = -errno;
++			close(fd);
+ 			goto out_free;
+ 		}
+ 		close(fd);
+@@ -162,6 +164,8 @@ next_dir:
+ 	}
+ 
+ out_free:
++	if (dir)
++		closedir(dir);
+ 	free(path);
+ 	free(cpulist);
+ 	return pmu_id;
+-- 
+2.34.1
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
