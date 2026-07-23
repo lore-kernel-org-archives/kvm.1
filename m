@@ -1,185 +1,183 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED033A71AD;
-	Thu, 23 Jul 2026 17:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23F638F951
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784828893; cv=none; b=jUCpee4DerR4stn0EimvF9SYEyJIjnDOnMpP424y6wTU0QUCGhdKamz4KUPX9mJKDSzOXCwj7lyUBk+747Jtmhupxpi9oeIe6W8YcX65GcXio55c53CIM5eUXNN0fwpboIt3+wdcSgRHMJc9UEbShc9AMUl48fqY09cIYmm7FAM=
+	t=1784828915; cv=none; b=QZqpc/LFzeDNw/8WCKa/HCflBm4f4XCUUvWhB2cpk7p4t2M6/sQg/aAJKfKuoYWZImnQFkGnZgOuDp/jaK6dsNCXvkkJnZplBcXVOivbpPk3p7CdLsh1gfrm95lg1/9Fv6An2mjtv0BiUwk5xxcwXUJ4mk8e992+Y5OadbZqro0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784828893; c=relaxed/simple;
-	bh=ec2oww5BN7ivg/qfTAU1hWALj/cNhDxZsl2WqkIg+Nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTjxLI4VaZoNYo4ADuyH1RUqSL8E8oi/RYd55bvxNesiFYNcuhbdehuPXCchNKkh08EBwtx0XN88/ayVUtyXQ9EKdBR1rN7nrKuVx9p9kBYWh3UixuWk/TGMTMW+pqLATjCy1Q2+2CvEXxQdN7yF+Za5KSZDLCem3Mmd79xgW4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pOxJ5fCC; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784828915; c=relaxed/simple;
+	bh=vOfWiDHu8KJHXpLZNL4rujIBCQsIEp/ffLVBXHg7tac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pPSbgymoBDdWiBEPDSGdVmiqhh4n+6uAn4iai8EX/s+w2Jxsxvgh8Oqb68sVk4nFIBC3eGFCclH1qIfClHnyAyFHp0pegoGRGQJBNEz6T+7rq3kH7t9Qrwu0XuXw+RfOwzNPC3c7Q2dVphmuOqRHaT9wmgnKtWrIqfo9TTg8gH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=b2OV5hok; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pOxJ5fCC"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NHg4OD1805118;
-	Thu, 23 Jul 2026 17:48:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=lhisNdJOInteX2ba+
-	csgHxKOXloCxio/f8qCLRUnpa8=; b=pOxJ5fCC+PJKnJ1GokWYEsKsE4Dif5cJV
-	dX869evLvuPGnDrrcnzydG21KkLGis+YEpMuoNpg5Jv/sGK3Shq93sfsS+klt830
-	4txLAc5dKMOE0pnfEUcukkT+lhuozGyNi+tvJS+DXyQ0UGhjEs6ba4Klq4Tj+/7c
-	nm0VxD0Sq+/3grMAEmOXyOuOkQMTDJUJINPzDK3qpyZXz1vu2gxKduSVzX4aYdj/
-	XMd3WfEiWf0ZN3mjvJwRXm8EmfviJlOsueodFiFU5Ha6WJ+Yhz3VR78Esp/VG/EK
-	gAqY+4wZ2WudJApJzELICUqkxzU+v+GgDv/Fa0MzBtHMHUoL0z8WA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77arw5n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 17:48:10 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NHZD5I027793;
-	Thu, 23 Jul 2026 17:48:09 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtk5bq8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 17:48:08 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NHm5qG41484566
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jul 2026 17:48:05 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E42DD2009B;
-	Thu, 23 Jul 2026 17:47:54 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC22A20099;
-	Thu, 23 Jul 2026 17:47:54 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 23 Jul 2026 17:47:54 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id A115F1627F1; Thu, 23 Jul 2026 19:47:54 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v3 2/8] s390/vfio_ccw: limit the number of channel program segments
-Date: Thu, 23 Jul 2026 19:47:45 +0200
-Message-ID: <20260723174751.1180334-3-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260723174751.1180334-1-farman@linux.ibm.com>
-References: <20260723174751.1180334-1-farman@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="b2OV5hok"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8efbafa1bacso8089906d6.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1784828913; x=1785433713; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G2+4/YWWiPL/NjZ7kD3wcGqD98ci6jBKaqWoskADH3c=;
+        b=b2OV5hoke2MYSUVGR7eJfxpU04wj6HOd+SItWjZfaAG2dAzzbFS85HNdqgmhQXR3F9
+         Qn+HRwBJORjSFYm6qHCX99MaLHKwcADPb13ecOV+tMUNnB/bAPGTbngm5//z+YC2pL7A
+         B2GDaCZilCefNv9Mr981OcQD1psk3owdpsF3Rjnz69KmBj5EfuZJI70fSD5CPbHImz9a
+         8GARXEw9CR0PiFjKoWIUQQOLOqtS6VyOYGWBFlD/j2Me2zv/LlIVWhFf02v/ARk86ZBe
+         xZ0PBU2zEEaV+RQeT/fsqXYbz6y1uSye8KIfOPUDypfBT6SLPh8M7gx2rXtA7IkSAZwC
+         Dp2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784828913; x=1785433713;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G2+4/YWWiPL/NjZ7kD3wcGqD98ci6jBKaqWoskADH3c=;
+        b=V61um7FacG5oEjXi7rSma4OVQMrMbPaJZRiHz4DERVIFj86fTUOrQuWj4/2glsU61T
+         umPRD/pY0GaVmKhhzaps7LecDtFtpdbqrCDDHcnsRWQBHGOoXhdMWOb/cB1FaMNidztR
+         pRgW8xKBrfuRcdXink0NRZWsmKMj9465sOacqg9KgqgBBuh9Fqye8FUeiH83537DwIFK
+         Sgt3w/RQOzJrvtFvjawvX5vCemsMF4Qrd9ksiA4oFYK4bEWVoI2vXK06Y7qlCaoxqfEQ
+         jNw+JQ6ZS/dzx6biqvEJFWl2tKBBJQacqRZgrEEjDQJw7XvTtxcBzIRzH/G5unmQd0s0
+         awWA==
+X-Forwarded-Encrypted: i=1; AHgh+Rol/n3JVXxyRw9BbLrYVVuO0HTqo3Cz1RRE1SpvSGDFwsdhxVuq50LNz57K6tgclsqwo0U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaR3ZPCsIZNuoZE9aiydTdYmlJeHfYz4g/0kbIgVLMUywPmjeO
+	3NMu/26UnJn3PoWGt7jOmoC2ymvUG+RK/zMHf3DDsbaadsHagPVZdKL7lGrPsrxan4s=
+X-Gm-Gg: AR+sD12+TrbUND4PmFuXn81pzP/hS65M2sFRy6rxEqTiMs1pbRbTa9uEb+7lST7ytuy
+	AEjXS35cuGIeVFZFXQlEEksO/RRHU6LSioJQ8+nxv+xKWbBMAc0LWMrqQcpN4Ljf5B7I3bYUr/V
+	Po1G5zTXn/2O2jdb6pLS4VXH2u8i9b/Y7pSrqCNkBLKBxlQ5QkymuBJrQaAhLAY5y7DV5KEB1ok
+	Pm2UzBLnSrMFVFceNsWzHWVyEtcxK1deGXXNNOxaIjm0B110oQ58B4PBFY08yKrlEp8m2H9O/4/
+	eB8mgzSOYcbiGWq9VszCb6Xtbn2rGKhjSSD/QUR/rXXlziEY+2Ub1RpxCmp3/DvVBZbvC2uwRGs
+	iByZONJJlWta5HdHXI/goibMvqpDY+DHd1Qxnz9tUHzo6BfiiwwQ96PWS1ZFeNo5wMcg8CxGZzd
+	YnI8YbIWgNMFUsGSjktc6+VHmY8JDKhAF/SOBE78dvns3p/A5uHDIpn8roNw==
+X-Received: by 2002:a05:6214:3b87:b0:907:75b9:b101 with SMTP id 6a1803df08f44-907ca3506dbmr49693546d6.32.1784828912139;
+        Thu, 23 Jul 2026 10:48:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-907baa09dbcsm50354966d6.34.2026.07.23.10.48.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 10:48:31 -0700 (PDT)
+Date: Thu, 23 Jul 2026 13:48:27 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sean Christopherson <seanjc@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <amJQAs3Bm99ZR_sF@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com>
+ <amIrDncrL4K-JRBO@cmpxchg.org>
+ <amIxyy4Vg_TTE8Y4@gourry-fedora-PF4VCD3F>
+ <amJKOPczNMb96NJv@cmpxchg.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7SYeU6ua9KnjWBWDf7ra16TjX2UnaduK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE3MyBTYWx0ZWRfX2Od7T0wA61z5
- fzDxT0U7oNSNHTnpE8qWlqMYSrk0xhxp0euaD6sSms0EqrNEBNszUcm1qvZog+037PmnimWyB1L
- jp+J7IbhCWGY2tkSjeOQOUOnyZGjN4E=
-X-Proofpoint-GUID: 7SYeU6ua9KnjWBWDf7ra16TjX2UnaduK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE3MyBTYWx0ZWRfX2ufT6oYZcUV3
- JIjXkOGHHY1WaJ5WSsOFrzRhiq+W5odOhFYLROZFLkQZTMUEDfQnF0K1e9Rt8FUo6iMB0Lo7N4D
- kN68hgX810EM1BNfCj2jB1yZWvErQ9E+KK0s+96rDgDr95lQSYvQ6398vrFR+8SoIhxuuGcZi+Q
- h3yA/DEWJXbSESQ86i5CXwG5k8elQxu78HTy327qQxX3HhJb8OTRebYLNizpMrHsTlT6QVs5Rj3
- KGYbKkQNwGyTIV7kEuR/d8OJmXQ77mUeybGsYmcbi8VYCMW9XkY7Wb+2UlnzEM9bSBEnnMhZQrM
- V4ztyUQYigTBVkPoP5P/Rdox8+nS8fM2eVPUGW0b3i4VlglHXgfo2VoPy7MxLUqBv1zBNVaRgQF
- Ly52jsu32OfWdmtYNhTLn2m2XF+jrjnk27yDKQ2L6db1VtmNHcpPA6o4KkjHkt0Fw1OS1WlmjLI
- W343YgRZxPVovJCcFBg==
-X-Authority-Analysis: v=2.4 cv=K7AS2SWI c=1 sm=1 tr=0 ts=6a6253da cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=sBi1HX8ECoo2m5KYV-oA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_05,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607230173
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amJKOPczNMb96NJv@cmpxchg.org>
 
-The processing of channel programs, and the CCWs within them, is done
-recursively. As such, there is an arbitrary (but not architectural)
-limit to the number of CCWs that can exist in a single channel program.
+On Thu, Jul 23, 2026 at 01:07:04PM -0400, Johannes Weiner wrote:
+> On Thu, Jul 23, 2026 at 11:58:27AM -0400, Gregory Price wrote:
+> > 
+> > I lean towards Johannes' stance here that consistency is better, and if
+> > KVM has a known-poor interaction with numa balancing, maybe KVM should
+> > simply set a default policy (when none are present) to avoid this.
+> > 
+> > That said, this is painful because MPOL_F_MOF / MPOL_F_MORON are already
+> > a silently inherited policy on boot (added during init).  This will be
+> > confusing for users.
+> > 
+> > This is not documented anywhere.  Maybe this change should come with a
+> > docs addition that says the default global policy is ACTUALLY:
+> > 
+> >    MPOL_LOCAL + (MPOL_F_MOF | MPOL_F_MORON)
+> > 
+> > Instead of just MPOL_LOCAL and letting that silent implementation
+> > detail bite people.
+> 
+> Hm, where do you see "Instead of just MPOL_LOCAL"?
+> 
 
-The vfio-ccw logic breaks these channel programs into segments whenever
-it encounters a Transfer-In-Channel (TIC) CCW, and the combined number
-of segments count towards the global limit. Impose an equivalent limit
-to the number of segments until such logic can be made non-recursive.
+MPOL_LOCAL is effectively the default, that's what most people expect.
 
-Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
----
- drivers/s390/cio/vfio_ccw_cp.c | 6 ++++++
- drivers/s390/cio/vfio_ccw_cp.h | 6 ++++++
- 2 files changed, 12 insertions(+)
+> Documentation/filesystems/tmpfs.rst says it defaults to "default" and
+> points me to set_mempolicy(2). That in turn in general makes little
+> mention of numa balancing and doesn't mention MPOL_F_MOF/MPOL_F_MORON.
+> In fact these are documented as internal flags.
+> 
 
-diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
-p.c
-index 086d1b54bdb0..1c2890d139c6 100644
---- a/drivers/s390/cio/vfio_ccw_cp.c
-+++ b/drivers/s390/cio/vfio_ccw_cp.c
-@@ -332,6 +332,7 @@ static struct ccwchain *ccwchain_alloc(struct channel=
-_program *cp, int len)
- 		goto out_err;
-=20
- 	list_add_tail(&chain->next, &cp->ccwchain_list);
-+	cp->ccwchain_count++;
-=20
- 	return chain;
-=20
-@@ -441,6 +442,10 @@ static int ccwchain_handle_ccw(dma32_t cda, struct c=
-hannel_program *cp)
- 	if (len < 0)
- 		return len;
-=20
-+	/* Limit number of chains in a single channel program */
-+	if (cp->ccwchain_count >=3D CCWCHAIN_COUNT_MAX)
-+		return -EINVAL;
-+
- 	/* Need alloc a new chain for this one. */
- 	chain =3D ccwchain_alloc(cp, len);
- 	if (!chain)
-@@ -745,6 +750,7 @@ int cp_init(struct channel_program *cp, union orb *or=
-b)
- 			vdev->dev,
- 			"Prefetching channel program even though prefetch not specified in OR=
-B");
-=20
-+	cp->ccwchain_count =3D 0;
- 	INIT_LIST_HEAD(&cp->ccwchain_list);
- 	memcpy(&cp->orb, orb, sizeof(*orb));
-=20
-diff --git a/drivers/s390/cio/vfio_ccw_cp.h b/drivers/s390/cio/vfio_ccw_c=
-p.h
-index fc31eb699807..dc91a317ef19 100644
---- a/drivers/s390/cio/vfio_ccw_cp.h
-+++ b/drivers/s390/cio/vfio_ccw_cp.h
-@@ -23,6 +23,11 @@
-  */
- #define CCWCHAIN_LEN_MAX	256
-=20
-+/*
-+ * Maximum number of chains
-+ */
-+#define CCWCHAIN_COUNT_MAX	16
-+
- /**
-  * struct channel_program - manage information for channel program
-  * @ccwchain_list: list head of ccwchains
-@@ -38,6 +43,7 @@ struct channel_program {
- 	union orb orb;
- 	bool initialized;
- 	struct ccw1 *guest_cp;
-+	int ccwchain_count;
- };
-=20
- int cp_init(struct channel_program *cp, union orb *orb);
---=20
-2.53.0
+They're "internal" and generated by passing MPOL_F_NUMA_BALANCING...
+which is basically shorthand for "use (F_MOF | F_MORON)".  There is
+no other user of MPOL_F_NUMA_BALANCING.
 
+The internal/external state of uapi/linux/mempolicy.h is frustrating
+to say the last.
+
+
+> The numa_balancing entry in
+> Documentation/admin-guide/sysctl/kernel.rst however DOES say plainly
+> that enabling this feature will sample and migrate mapped process
+> memory to where it's used, and that this has a performance penalty.
+> 
+> It seems there is a general lack of documented interactions between
+> user-requested policies and the system-wide numa-balancing behavior.
+
+Agreed, that's basically what i'm pointing out.
+
+This is what most think they're getting:
+
+    static struct mempolicy default_policy = {
+        .refcnt = ATOMIC_INIT(1), /* never free it */
+        .mode = MPOL_LOCAL,
+    };
+
+This is what they're actually getting:
+
+    struct mempolicy *get_task_policy(struct task_struct *p)
+    {
+        ...
+                pol = &preferred_node_policy[node];
+                /* preferred_node_policy is not initialised early in boot */
+                if (pol->mode)
+                        return pol;
+    }
+
+    void __init numa_policy_init(void)
+    {
+    ...
+            for_each_node(nid) {
+                preferred_node_policy[nid] = (struct mempolicy) {
+                    .refcnt = ATOMIC_INIT(1),
+                    .mode = MPOL_PREFERRED,
+                    .flags = MPOL_F_MOF | MPOL_F_MORON,
+                    .nodes = nodemask_of_node(nid),
+            };
+        }
+    }
+
+So the default global mempolicy is effectively:
+
+    (MPOL_PREFERRED | (MPOL_F_MOF | MPOL_F_MORON)
+
+which is just MPOL_F_NUMA_BALANCING without MPOL_F_NUMA_BALANCING.
+
+The user can't actually see that - because the MOF/MORON flags get
+stripped out when it's queried (because they're internal only).
+
+Maybe we should just set MPOL_F_NUMA_BALANCING in the default/preferred
+policies and document that the global preferred policy default-enables
+MPOL_F_NUMA_BALANCING - and that if a user (KVM) doesn't want to be
+affected by numa balancing it needs to set a policy to disable it.
+
+~Gregory
