@@ -1,141 +1,182 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9843CEF7
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784803563; cv=pass; b=VNkMzXGzpxr4prcn6b7yPaQ1mdEcKrl7yMAASv9qb5T6ASWj5CO4x58V1WesLKIiUSohOgYAf3NJhFNwb1XaVKLhNBw+jiYJiEnsrcxxbR+qyzOQGSA/AFwNYbilKwunggGxD0h0l7M6wmfqB4vyx+GVo6RIQzo4ZVC2EbPRiTw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784803563; c=relaxed/simple;
-	bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KZBms2v7H349O1QkaIOM8Fi1rqaPJf6ONaLFKFeO6AHdT74bFbohKdP1FIBEOQ/BquMwv79WZ8Gm58Jzh0o1KbGiFwRFG9e8c+etF2ebDOt5QnRSBExiRmXacpILovRo0MnYDx2vx9tMLRvLBnW7DQqDBTUVl5oQbduE6wSRGmU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LuEIcVnH; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BD0439F6E;
+	Thu, 23 Jul 2026 10:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784804020; cv=none; b=bfMH8rEbbIe1Fw5TE7oCaMdoaNv7XPlCRjsDRsjBZGkr3jg3nBEftlhI3U3kf45+HSdGEYVOz7WlysQM5XxLxiRP7bGC9jO1MRbxmvSJsAvTu8cfyc3h92xCwSxZ/X0LATvGRdo0/X+m/jGCcYqJspIdF6656i4WPg9KHW6iDDk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784804020; c=relaxed/simple;
+	bh=vJzQ7GKwTtr+b0ookNAGxunyYySDkMFDOGJJiC2ZfGY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R9gf+2bPF7w53L1CafHwKAx0M/PjP/6e8Tr9dk3lzh8GMfePj5SOCTun2Tnkgd2rFN6tvT02JjnDQoBeAouClxb7Is4ZNl8Q2CA61p5QEbNJD2nCIphV2WKHPutD0hM0LPVap5YYoRb9BkUZkdTYXBxtC9Ie6ViiT0VEVmALx+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=LEYPMffZ; arc=none smtp.client-ip=34.218.115.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LuEIcVnH"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-81ed2a06b9eso4058827b3.3
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:46:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784803560; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TwwVOHhx8cbye4XHu3f/lRLpBDIbZpnlDpCxsLpO3cKhgEI7xBafd8E4rRKOjzHoal
-         nm5YIDwHGQL9F1K6GSBNZ1rAOxNOzj1AGkywyoUbBjBWazza4+RtXANt/FX9CrftjVzp
-         /ht6ECj2mG6G9tt5ZvqLyIhKX9XJu+YST3hUQVOhfT/POkXVviyTjZ2lQ3F0st9AVtfQ
-         umWKvzO3tPg6VZ4JDTPnOq4l+/UC+QBYXAebFRsPCqWtK6obMNp7IwpBUYDHQdAH67gl
-         5FD+ncvt3HUQlrvoqSBFbnzXN3Ck4nYyA0kMLyiBVbOxCZrhjt0LVOaJUCUiDFLNicuX
-         Lz0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
-        fh=XCY7Vbp4cy2elZbzjLL/vKgBAYyUGlZ4fKwF1xAfUU0=;
-        b=mZHgIM2u3OjEXgIgJpI2y3yiCIR5AoaDQUPMiDxIVpmL0f4wGdkOGWkboyS1veyMMQ
-         /mRgXeZuA1rXoVyfyXekZBber/Es+p4l9do89O1SWdUaqsg7Wak0Emuuvd9VbWAizUFI
-         jXxoq7p/wD1MJQ/KItU/pDhpMssR59B7ExT08khheswV5Jka6UPTsO5B0wGBWNQ6G0IS
-         o8KkASifFptD4Iqr3WSLfdhf2lw1m1bdx2wHSj3KC3aENw2At0istdILtkeZ0bb30BlH
-         USiXMJySoGgeq2R4xIBk3Gu1eeKYZxWXH3BSmD5ll6Z0tOPOHJ4keNH9TkiEKju0t4ma
-         zNNg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="LEYPMffZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1784803560; x=1785408360; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
-        b=LuEIcVnHGkTl3qkGq8yFmSnpzpKYaDdJXP4deUE7HXTRB00RCxiZu20FnDGmjO0Jjb
-         XwgtmAOY+uxSdjdU4hLqs/TdOsp8HNR8NbQk/xmKr/7FGS1apOlUfaG2j/2vaXz/m57K
-         W7pveIz89gtYdzkKqbL4wdfr7EFaoPNba+yArKiCnlLztKT1zFyuu+0z6zCxCaWVebLd
-         0KR4FfEuPtPjtmIWx7e26kIWd9g1OI3pCiMmeSUGwkQYUETYYB66NWRkWkaU6CyXaeuH
-         egCvZaOjzvUt3SXggvn/G8mYaqQNHjReLzu0k2KzxlK0hJy0No0huG+bDoH26lv0wKyy
-         MBZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784803560; x=1785408360;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fKQIqvFI+qnPLn66kWfRVJq/EdEMbY7GUmyED5BG8ZI=;
-        b=QBI08qwt8nckA06dqxJl9VnIGeZruOXaRuJJjyi3+vRc4SZM8I5FGOUQby/8yUNJJu
-         x4ELkm6Bcd+JW2WYzEchNFZoxcutvgDBU4/iwrnJE49dCL6nnlrgycelk+VOyvP3V9fY
-         rfsXT6LhjzcF3v4jwsYWDq18dfcUp2IlzSKcIFZt14N8Q7V6nnjgm0E7AQIsUZ2G1103
-         NQrGF6uxvAuiyULp9H+fRJ0kYx2XSBnswFuyWHOHVVHCM5EBiMUko5yEIxEzk/JuR7OY
-         viv7/VbsgQN4l27z/BsqZk/h81HVi1r4W+Vl7XCI95PFfpY1cZz0vriitaKHnqhdKS3L
-         Tfkg==
-X-Forwarded-Encrypted: i=1; AHgh+RojmgayY4W8PWr/i8/hKThKA1gM/5xYzPXWBS8Wt1Z0z2fTkSTYQLGhF8uorGpxx8/yWdA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yynfzai2/4wQE+sWWkRXVLXnTWPAtvZFqrE2RLtiqP/FsX3Y1Fx
-	QLb29EyoYPPBaPup1PhkVzCjKW+iI5Wv4hP7w44MePidjo1J7peadgyRDD6QV/K8xVQ+0+NGNCn
-	5tZMRTaDERWRRgMkCkhagZfQrFnNqgzR2tjxq3whDHQ==
-X-Gm-Gg: AR+sD12DN9Lvn4ro7D20PI5me+g/2JaQBZ/jZXzTxU+91AR+8oy7YCJKHCqVcOJ6Qe7
-	aNzfXuaXWJDJ9ZnODxykL//WrAh65SqRnQrV0+evo8H4P1xqXMNMY3FZA2uy7Lz+DlB4+I/OCSW
-	IsHngm2xPeQDbxy1AZTL4+douMbPn756FJ6gcwos90rsz0upvo+EjmAFMBuvn5W94Rqea29ydAi
-	WKgCrUf9yvavWV3wR2f0gghN4hQB6gWjVWb2JzfVW5+a7L2Q5pli6WLUGV3VSQ+X3HW+TfqJPSw
-	p9fuHkIUFQeWHvAtPddr50ILoFE9qQbdVGyIYOOPQlf6og==
-X-Received: by 2002:a05:690c:9986:b0:81e:2b86:d75a with SMTP id
- 00721157ae682-81f4c2fd99emr7042797b3.55.1784803559620; Thu, 23 Jul 2026
- 03:45:59 -0700 (PDT)
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1784804019; x=1816340019;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MaoXwGo7f4P7szeSw5C8Wc8hpbKQPPnQlD4Vd1DZzkM=;
+  b=LEYPMffZSuaZzNf0i21l/9y+tmeEV3qrhgepxloylhLFNFulhynUaG+R
+   DajXQaMjrUjVm5z/215rrIm2ojBGwKQudNQcdKYPz+JhVoUo8nNCCD7GI
+   r41OK7NOd/guvE9doJQLXsagBsZiiOm4HEdkgo8gbBgqQsePVx///6hmq
+   ZkEWjw9JtJxQSWBWxPXQ9pgaABMNggBKVWIuyvqmRNSEQp0VQi2AYgxxE
+   DmD7qzjZBkzAy860HyyKfgVTWxl4IxnIdemTLlOeDGNL4n5Agv83ih7fi
+   JZkUH1RZukidhQ9i9aX2vNo0MXDWev9FApMh79fPlyD2W7ZGe+4ZK/P2b
+   w==;
+X-CSE-ConnectionGUID: FyI6F7EUTyW39zvRebV3lg==
+X-CSE-MsgGUID: 1bSdZPXLQ7+qFy21MivF8A==
+X-IronPort-AV: E=Sophos;i="6.25,180,1779148800"; 
+   d="scan'208";a="24022123"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 10:53:36 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:10225]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.176:2525] with esmtp (Farcaster)
+ id 3f8a3acd-3529-42d3-b83c-91a8e4997de9; Thu, 23 Jul 2026 10:53:36 +0000 (UTC)
+X-Farcaster-Flow-ID: 3f8a3acd-3529-42d3-b83c-91a8e4997de9
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 23 Jul 2026 10:53:35 +0000
+Received: from dev-dsk-absandze-1c-663c31a8.eu-west-1.amazon.com
+ (172.19.91.26) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 23 Jul 2026
+ 10:53:34 +0000
+From: Luka Absandze <absandze@amazon.de>
+To: Sean Christopherson <seanjc@google.com>, <kvm@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, Alexander Graf <graf@amazon.com>, "David
+ Woodhouse" <dwmw2@infradead.org>, Luka Absandze <absandze@amazon.de>
+Subject: [PATCH v2] KVM: x86/pmu: Add module param to batch emulated-instruction reprograms
+Date: Thu, 23 Jul 2026 10:53:09 +0000
+Message-ID: <20260723105309.12145-1-absandze@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
- <e7d3e9dc-be97-40f3-b426-3e93a242410a@oss.qualcomm.com> <87mrvightj.fsf@pond.sub.org>
-In-Reply-To: <87mrvightj.fsf@pond.sub.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 23 Jul 2026 11:45:47 +0100
-X-Gm-Features: AUfX_my1yVwqDYBFri7PHqiSbZZksCRSQ7Qda_pMQK4AnsOEZwerOgkNdV0ZEE4
-Message-ID: <CAFEAcA-Upx9uacBZ8nq3Co5csNqi-nHaTOVX7t9kUzDW-CL5Bg@mail.gmail.com>
-Subject: Re: [PATCH] target/i386/sev: fix MemoryRegion reference leaks in
- gpa2hva callers
-To: Markus Armbruster <armbru@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@oss.qualcomm.com>, 
-	marcandre.lureau@redhat.com, qemu-devel@nongnu.org, 
-	"Dr. David Alan Gilbert" <dave@treblig.org>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
-	Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
-	"open list:X86 KVM CPUs" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D046UWA004.ant.amazon.com (10.13.139.76) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Thu, 23 Jul 2026 at 10:46, Markus Armbruster <armbru@redhat.com> wrote:
->
-> Philippe Mathieu-Daud=C3=A9 <philmd@oss.qualcomm.com> writes:
->
-> > Hi,
-> >
-> > On 21/5/26 16:54, marcandre.lureau@redhat.com wrote:
-> >> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >> gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
-> >> (inherited from memory_region_find()), but both SEV callers were faili=
-ng
-> >> to release it.
-> >
-> > Comment orthogonal to your fix; odd to have a non-monitor code
-> > call an undocumented monitor method.
->
-> Which one?
+On a host with an emulated vPMU (guest PMU MSR accesses trap and each
+guest counter is backed by a host perf_event), the per-emulated-
+instruction PMU accounting added by commit 9cd803d496e7 ("KVM: x86:
+Update vPMCs when retiring instructions") is pathologically expensive.
 
-The gpa2hva() function, presumably. It does seem a bit odd to
-have the target/i386 code directly calling this. The function
-in monitor.c works on the system memory AddressSpace and
-assumes that there is only one kind of "guest physical address",
-because that's the implicit "everything is an old i386 PC"
-kind of assumption that got backed into the human monitor
-command. But it's not really something we should be doing
-more widely.
+kvm_pmu_incr_counter() requests a counter reprogram (KVM_REQ_PMU) on
+every emulated instruction that matches a programmed counter. The
+reprogram is drained on the vCPU's next VM-entry, where
+reprogram_counter() runs the full pmc_pause_counter() +
+perf_event_period() + perf_event_enable() sequence: ctx->mutex, a
+ctx_resched() of the PMU context, and a burst of serialized PMU-MSR
+writes. Because the batched reprogram is serviced on the next VM-entry
+regardless of which exit preceded it, ordinary exits -- notably the
+guest's 1kHz timer tick -- absorb the cost, inflating timer interrupts
+into the hundreds of microseconds and, under some workloads, escalating
+to a guest CSD lockup.
 
-The i386/sev code looks rather odd to me. It seems to be
-using gpa2hva as a way to get at the host memory that is
-backing the guest memory. Why can't it use the usual
-address_space_map() etc APIs for this? Worse, it looks like
-it keeps that host pointer around in a SevLaunchUpdateData
-struct, and it's not immediately obvious to me that it won't
-go wrong if the memory map later gets moved around and that
-pointer becomes invalid. And it looks like it writes into
-guest memory in a way that will bypass the dirty-tracking.
+Add emulated_counter_reprogram_tolerance, a module parameter bounding
+how many emulated instructions may accumulate on a counter before KVM
+forces a reprogram. 0 (default) preserves today's behavior of
+reprogramming on every emulated instruction. A larger value batches the
+reprograms.
 
-thanks
--- PMM
+Batching does not lose counts: pmc_read_counter() and
+reprogram_counter() already fold pmc->emulated_counter into the value
+observed on guest counter reads, so RDPMC/RDMSR remain accurate. The
+only effect is that an overflow-driven PMI may be delivered up to
+"tolerance" instructions late -- acceptable given the overflow PMI is
+not cycle-accurate to begin with. The knob only affects the emulated
+vPMU; a mediated vPMU increments its counter directly and is unchanged.
+
+Suggested-by: David Woodhouse <dwmw2@infradead.org>
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Luka Absandze <absandze@amazon.de>
+---
+v1 (RFC): https://lore.kernel.org/kvm/20260720192221.72912-1-absandze@amazon.de/
+
+Changes since v1:
+ - Drop the new KVM_CAP_X86_DISABLE_PMU_SW_ACCOUNTING capability and its
+   Documentation, i.e. add no new uAPI.
+ - Instead of disabling emulated-instruction accounting outright, batch the
+   counter reprograms behind a tolerance threshold, per David's suggestion
+   to bound the reprogram rate rather than skip accounting [1]. This keeps
+   guest counter reads accurate and only bounds how late an overflow PMI is
+   delivered.
+ - Expose the threshold as the emulated_counter_reprogram_tolerance module
+   param (uint, 0644); 0 preserves current behavior.
+
+[1] https://lore.kernel.org/kvm/f5552576fc749b4b453514f52921332cc104c6a6.camel@infradead.org/
+
+Results (single run, not averaged over multiple runs):
+
+Host: AMD EPYC 7R13 (Milan), emulated vPMU. Guest: 8 vCPUs under an
+8-thread busy load, running a binary that toggles a PMU counter group
+cross-vCPU once per second while an instructions-retired counter is
+resident. Latency is the duration of the guest's local-APIC timer
+interrupt handler (__sysvec_apic_timer_interrupt), measured in-guest with
+ftrace function_graph over 30s (~160k ticks per pass). The module param
+was changed live on one running guest between passes.
+
+  tolerance      mean      p50      p99    p99.9      max
+  ----------  --------  -------  -------  -------  --------
+  0 (default)  148.973   11.080  464.200  469.569  919.690   (us)
+  1000           3.194    2.950    7.251    9.831  470.100
+  100000         2.974    2.940    3.869    4.400    8.060
+  10000000       3.054    2.940    7.129    9.211  209.880
+
+These are numbers from a single run and are meant only to show
+the order of magnitude, not to be precise.
+
+ arch/x86/kvm/pmu.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index dd1c57593f48..33a73271186a 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -39,6 +39,14 @@ bool __read_mostly enable_pmu = true;
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
+ module_param(enable_pmu, bool, 0444);
+ 
++/*
++ * Number of KVM-emulated instructions that may accumulate on an emulated
++ * (perf-based) vPMU counter before KVM forces a counter reprogram to fold the
++ * emulated count into the backing perf_event
++ */
++static uint __read_mostly emulated_counter_reprogram_tolerance;
++module_param(emulated_counter_reprogram_tolerance, uint, 0644);
++
+ /* Enable/disabled mediated PMU virtualization. */
+ bool __read_mostly enable_mediated_pmu;
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
+@@ -1072,7 +1080,15 @@ static void kvm_pmu_incr_counter(struct kvm_pmc *pmc)
+ 	 */
+ 	if (!kvm_vcpu_has_mediated_pmu(vcpu)) {
+ 		pmc->emulated_counter++;
+-		kvm_pmu_request_counter_reprogram(pmc);
++
++		/*
++		 * Batch reprograms: only force one once the accumulated
++		 * emulated count exceeds the tolerance. The count is still
++		 * reflected in guest counter reads via pmc->emulated_counter;
++		 * this only bounds how late an overflow-driven PMI arrives.
++		 */
++		if (pmc->emulated_counter > emulated_counter_reprogram_tolerance)
++			kvm_pmu_request_counter_reprogram(pmc);
+ 		return;
+ 	}
+ 
+
+base-commit: 1590cf0329716306e948a8fc29f1d3ee87d3989f
+-- 
+2.47.3
+
