@@ -1,143 +1,162 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD12241A504
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E809231F9A6;
+	Thu, 23 Jul 2026 14:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784816136; cv=none; b=KLfTwcaZdpdTqDxzD4u3ndaK94kfxOqgC5mn9cxvxPZmho+IfN2USFZR0hF36s7qCGcw8h1whvWuFzXk0cqAPNT4r7sv9cHcExOsZxN95H4JGYCGRgh+xMDoGTpsFUbnLYyZb6lUbPkxWvgBfMfPeWGQsJ/dP3fkFHRLE+K6xaM=
+	t=1784816162; cv=none; b=hcFe8sSeKN00YkdBXSU3RSPwkebQTTVMJ7BL1bblTste46lzcG7H5Gn5eMdtEMzeXmpUsrQfUKZ+CWgOwtVAe61eVS9LwSjhLcrNX+fzUDAcs7MSaJlqvrIi15mcdz9jM0ZBePcD3iTDwfvjCf4gTlBPTzR/t/aiAN04qpWPJzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784816136; c=relaxed/simple;
-	bh=LwlnfmryNLUiq/trLBK3d+00bns2hRhlmS87KJfHxfU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sMqcaRzD3PG2bxWdNoXUFpsuleQHnOFiBwDWRiqeYdmYgx8SHClBn5h4sdvRL6UfIQfItJjM+mBsxte+iE+UBhcPoovD8wcWkkxsNR/XZObI04D7QVm8nZ2uwGGAUfQLEcVlWKfSyC1Ze5PreMZtFjlHJEpaZmN1PGgWmY/Alg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yk4Gorhs; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784816162; c=relaxed/simple;
+	bh=ycHTgRnfodxFntTWRr09mNJua/CWHEwh0Yr2uEr5sNw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ymc/wuL4IH4g572bRfCOVI1PAySgW7eNJAKriMs0Wy9O1dnBMBguucSc91tPP8J5rebHJ04nSpWgEDh3Xq4y7wAGW+kr9tmnEZQhoY+G3fUKWUBLG1I7l67Sh5YpvMwmCf3VrBUW1p+PF+ax1jDJtgRUMjQPdrFQ1CSNDzf3j4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TnkNVOux; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yk4Gorhs"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb4bd11ddf8so932575a12.3
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 07:15:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784816132; x=1785420932; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IdKLpdhf7OEu5IcSAmfJueDGfqCP8A2L66+eqcZ3JVs=;
-        b=Yk4GorhsMkBX+Mp4KUOZdTZtCk/9bzuPtXVTKC7WCBlaD+owhTt9JWyP5GlMHPvnob
-         0SY1xNshVfU92fRvtbp824A9JTyyRPQC2LpO5A7sebhbecC1msXnD0JcMepW7n10D/gh
-         Tjvqq2rIM1iJOCJYkuPYQRc6eHXY/omtzIJBn2DQS6snLYnplq9jX0v/w0JyFr+WAeh9
-         gSEZONh0HF+XuxkSvXd20Q1/J61yVUzRqtn3xecIiLW87Y9xKDCn33p4nhaF0otPSlBa
-         Wezt8GUWKrtQovxueErCvznkAlFl2cC/B0pgLsKnB09u4Wk+0V08UZ20h92IYmwaBIzv
-         HL0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784816132; x=1785420932;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IdKLpdhf7OEu5IcSAmfJueDGfqCP8A2L66+eqcZ3JVs=;
-        b=ZCp77x2Y0EGFsspt622EpkkSduZYiIIqd9ik+KAZekstQMkOrradoXEI0CVRCWLdBR
-         /aGVTBUBNveoTWfQqPe1cDJEaFrN41fAzv0vt5xBOgKFjdMop6MGPFHyFlTnKc/BYk6i
-         PbdsvP7U+S+wPDWQmKmKeU1CPFMY+YsOERFnrvp7LOffmj6t+JXsrsufkIUc23mEsitW
-         L5e9YczclOeUKQMVojuNZvDDYgVS1xyLZtK26l3rMUiz1zUHYZSN/Qc++rPXPIlTuDVS
-         suseZBGaQ5jYvnXqBAi+CsdwxGGqMfoSpLLN5hO97+CO6eU28Z5SK3ktDkBWBPrhMhAG
-         qRCA==
-X-Forwarded-Encrypted: i=1; AHgh+RrM6/UQWMdIVwq6ItPdNnHLJD7FkKYunVw5LibXgiMQ9YAFLh6/Ok8qklu+B6sxhy+OX5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl0cMhdtQW/PHUoubmcwwrmP3MODZiFdDniuZwk2rEGX3jpHw7
-	ZVvKbo/iEkt180/nlIE3bHmbe3ui6c6b4vkhU0RRuZSBqBGLZsjH6bnhO7bzZmSr6xho/Fk/QKT
-	xIDw0aQ==
-X-Received: from pgah7.prod.google.com ([2002:a05:6a02:4e87:b0:c94:9604:c8da])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a89:b0:3c0:b766:74f4
- with SMTP id adf61e73a8af0-3c44b04cc2dmr3887971637.31.1784816131736; Thu, 23
- Jul 2026 07:15:31 -0700 (PDT)
-Date: Thu, 23 Jul 2026 07:15:31 -0700
-In-Reply-To: <amGfcbuCuWpd_D9c@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TnkNVOux"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDCLwh1211946;
+	Thu, 23 Jul 2026 14:15:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=X1zevz
+	Cmk3qRGwiAzvhfy5r7dUFHGzz6Dwan2wco76k=; b=TnkNVOuxFMlbt9JnCQQrcF
+	8oIb+bMzgFh2fXtNHQNcT3RUzjk2QBwPmECkuLvQWnRdpC6OYuGVjHLWKwVzPDb+
+	Qet3hA3p399xeS5oe4qajSpjL5wW/na7Mfy3ibuU9J1epth6UgNC2JmvFtvRhuQF
+	ta3HYcni/HYuCAyswM8mwvxFmJxLpaWlSizamGXhPO6//7nJb77y2z86/tUzhQY3
+	Bo6c0BJjjbrnDqFYpw6qEr83rcz2Tc7LyKF9wpxmuZY8Tkqk41s0QONl6vgu4cUj
+	6m0VV5RMYt9sLkl12c9jvMTTj3UCgXLEn9H4Gy4QCxqAyVqOC6uPESXaGZMAVGQw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77aqy2f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 14:15:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NE4cSe025116;
+	Thu, 23 Jul 2026 14:15:47 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahcg24-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 14:15:47 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NEFjZA31392324
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 14:15:46 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE6545805D;
+	Thu, 23 Jul 2026 14:15:45 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 184BC58053;
+	Thu, 23 Jul 2026 14:15:45 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 14:15:44 +0000 (GMT)
+Message-ID: <4a3d08fb-c3cc-433b-b44c-c2f2e51468f7@linux.ibm.com>
+Date: Thu, 23 Jul 2026 10:15:44 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-5-yosry@kernel.org>
- <amFgEO8NnEql1MmC@google.com> <amGfcbuCuWpd_D9c@google.com>
-Message-ID: <amIiAxXkbNKV9BDn@google.com>
-Subject: Re: [RFC PATCH v2 04/25] KVM: x86/mmu: Support specifying a minimum
- TLB tag
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: s390: pci: Fix missing error codes and memory
+ unaccounting
+To: Farhan Ali <alifm@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@linux.ibm.com, farman@linux.ibm.com
+References: <20260722170621.1686-1-alifm@linux.ibm.com>
+ <20260722170621.1686-4-alifm@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260722170621.1686-4-alifm@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pVRAoVjiYr-v7c0mzokWALFmHBkYtdKC
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE0MCBTYWx0ZWRfX3ZND8VzifsW7
+ tWwqyyTAMYBNHJ4LYJ7E+eaYDqo+ZoTya8IHiPM4t3XQxHQs/sU9/cVQL2ajY22VCLn36UApx53
+ /4uqyxF4lVhHrQn6iGnX/LNpoJzSMgU=
+X-Proofpoint-GUID: pVRAoVjiYr-v7c0mzokWALFmHBkYtdKC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE0MCBTYWx0ZWRfXxW8K53PulVGF
+ 1LTb5EhGVye+QUA5wHqrzyozUcVWZkM23okZgDt0rnf9arRh4OeKSDnN1DbzGazxri+lbqfBfIg
+ wb1QADliU0hS7PiUUV/jVu8BlaeiQK//CoLoQsm/0NoYoX+sBsLoK3Zb3yotBNI8f4ciYYrg/7m
+ iAHUljM3KDFyokHjlpMMtmcyQiI1wqtKjrOjod6b1RJ8XizgDWLHWgTFyImm4IuEmgbk5czNutE
+ /GQoqIKSNKt7deg782cOlzNfU6gxS6LUgDp7bL1QIURnveJzyzh7FUTbcVURyJCncvn5Pc3d02h
+ mK5uH232jBHhrAQG/a72SbhxQFpX+CHEJKXBegGXwODsQcDiAgrSt3wPd4hPEL8rin1Fc7DnqS2
+ QBVQb1iMZwvnG7OrOrrTVLnluWOGZdfYaIyF9jOtd9SoknyCjGLy9r39+wWA5esGuni0MY3IB2l
+ WZuFvs/lnxCHLpFXatQ==
+X-Authority-Analysis: v=2.4 cv=K7AS2SWI c=1 sm=1 tr=0 ts=6a622214 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=AJ4VnbqJACYr0d-LWtUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0 adultscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607230140
 
-On Thu, Jul 23, 2026, Yosry Ahmed wrote:
-> On Wed, Jul 22, 2026 at 05:28:00PM -0700, Sean Christopherson wrote:
-> > On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> > > In preparation for using the TLB tags allocator for SVM, which has a
-> > > range of ASIDs allocated for SEV/SNP, pass in a minimum TLB tag when
-> > > initializing the TLB tags allocator. The bitmap is conceptually shifted
-> > > such that bit=0 corresponds to tag=min.
-> > > 
-> > > Specifying the minimum value during initialization also makes the API
-> > > clearer, as the passed number of tags becomes the actual number of
-> > > *usable* tags, and tag=0 is explicitly excluded by the caller.
-> > > 
-> > > No functional change intended for VMX as VPID=0 is not used anyway.
-> > > 
-> > > Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> > > ---
-> > >  arch/x86/kvm/mmu.h     |  2 +-
-> > >  arch/x86/kvm/mmu/mmu.c | 38 +++++++++++++++++++++++---------------
-> > >  arch/x86/kvm/vmx/vmx.h |  3 ++-
-> > >  3 files changed, 26 insertions(+), 17 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-> > > index 9a2916012cbff..cfffee92b8b71 100644
-> > > --- a/arch/x86/kvm/mmu.h
-> > > +++ b/arch/x86/kvm/mmu.h
-> > > @@ -337,7 +337,7 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, gfn_t gfn)
-> > >  
-> > >  typedef unsigned int kvm_tlb_tag_t;
-> > >  
-> > > -int kvm_init_tlb_tags(unsigned int nr);
-> > > +int kvm_init_tlb_tags(kvm_tlb_tag_t min, unsigned int nr);
-> > >  void kvm_destroy_tlb_tags(void);
-> > >  kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
-> > >  void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
-> > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > index e021ed562502f..bf2e0c2205631 100644
-> > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > @@ -8197,24 +8197,26 @@ static struct {
-> > >  	spinlock_t	lock;
-> > >  	unsigned long	*bitmap;
-> > >  	unsigned int	nr;
-> > > +	kvm_tlb_tag_t	min;
-> > >  } tlb_tags;
-> > >  
-> > > -int kvm_init_tlb_tags(unsigned int nr)
-> > > +int kvm_init_tlb_tags(kvm_tlb_tag_t min, unsigned int nr)
-> > 
-> > Hmm, I think this code should handle "nr - min" instead of requiring the caller
-> > to do so.  Because people that know how SEV+ works, but aren't familiar with this
-> > code (like I am right now), will probably find it confusing that nothing in here
-> > appears to account for the "reserved" ASIDs.
-> > 
-> > Maybe this?  With documentation that reserved ASIDs start at 0, inclusive, and
-> > are contiguous.
-> > 
-> >   int kvm_init_tlb_tags(unsigned int nr, unsigned nr_reserved)
-> >   {
-> > 
-> >   }
+On 7/22/26 1:06 PM, Farhan Ali wrote:
+> In kvm_s390_pci_aif_enable() two error paths failed to set error code,
+
+nit: set 'an' error code
+
+> causing the function to return 0 on failure. It also failed to rollback
+> memory accounting on failure. Fix both by propagating error code on
+
+'an' error code
+
+> failure and calling unaccount_mem() in the cleanup path.
+
+With or without those changes:
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
 > 
-> So essentially make the reserved tags included in 'nr', and min becomes
-> nr_reserved. I wanted to keep it generic by not factoring in the assumptions
-> about the reserved tags, 
+> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  arch/s390/kvm/pci.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+> index 1b3114c7cfbb..33abc15aa685 100644
+> --- a/arch/s390/kvm/pci.c
+> +++ b/arch/s390/kvm/pci.c
+> @@ -297,14 +297,17 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>  	}
+>  
+>  	/* Account for pinned pages, roll back on failure */
+> -	if (account_mem(zdev->kzdev, pcount))
+> +	rc = account_mem(zdev->kzdev, pcount);
+> +	if (rc)
+>  		goto unpin2;
+>  
+>  	/* AISB must be allocated before we can fill in GAITE */
+>  	mutex_lock(&aift->aift_lock);
+>  	bit = airq_iv_alloc_bit(aift->sbv);
+> -	if (bit == -1UL)
+> +	if (bit == -1UL) {
+> +		rc = -ENOMEM;
+>  		goto unlock;
+> +	}
+>  	zdev->aisb = bit; /* store the summary bit number */
+>  	zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA |
+>  				    AIRQ_IV_BITLOCK |
+> @@ -348,6 +351,8 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>  	return rc;
+>  
+>  unlock:
+> +	if (pcount > 0)
+> +		unaccount_mem(zdev->kzdev, pcount);
+>  	mutex_unlock(&aift->aift_lock);
+>  unpin2:
+>  	if (fib->fmt0.sum == 1)
 
-Eh, by having a @min you've already lost that battle though.  It's only "generic"
-in the sense that it obfuscates why there is a minimum in the first place.  E.g.
-if SEV+ used ASIDs starting that the top and counting backwards, taking only the
-min wouldn't suffice.
-
-> but we can revisit later if ever needed (very unlikely).
