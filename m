@@ -1,116 +1,148 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C224766B0;
-	Thu, 23 Jul 2026 18:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546447A867;
+	Thu, 23 Jul 2026 18:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784831589; cv=none; b=gIVdhMED/AbBOnXZbkscuQbzl15clrstvKNzZFxC5Y+XJmkSE0crh95Zizdc/F437J6BU91aQ96zhVSYBoFoci5vxySRMlUCIg4gLs4GH6KUGmBjlGQ6R69W9aWj8c1eGUqMvh9c/69kdkIlPK6P3Tsz28dBGTxca0rVvh7+LsU=
+	t=1784831676; cv=none; b=uwd72kXo8mLG1UGs7ZFRaZ5glUqFFiCg1Zku47O6fFl1eoBy43M7E8b43CZAWaC8RpO/K44LJempgP++t+dw3/oyXpwX17SlH6cd5kb0xnSXDqTozmc0/uJk1kuybujZO342L7Spq1RdGZShYjD+jWJ866Xa8uv2wkJ32HA1wLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784831589; c=relaxed/simple;
-	bh=KxB6Bf7QrgKpd89cxkInbDnCN4cFE5gwG52mQN8vsVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r94vjQvyV134uTEQiCVrLdmHStetvWl+jmktIc9AFN7z/u4IInuWZX3CySCjGkksM2MhY67A7HOjY3UD7udu2LzhbS3VVu/GgpMYNZMTP1rUHCGdE/Zg/AoCX4a7OiHBI1HdbVrphr/lXKnV5dpae4cfiMlTrGpjrIZ6TcUfrHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=agcbuZkP; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1784831676; c=relaxed/simple;
+	bh=SowO0K8L9bw2ZcCRFwDmHQFqzl//emRA88WQ9DY6/rA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=l3pgtpURlXVj+/qNqToI/s57g0c9xA/OfhmJX/q8mq4d+/1DxPDkcmMykj/zhnje7UXl2i+7U0xdC5QHohqvz3VfiVWY/QUSonoQgcu82ZsBr8WjcisysjMqNG6ql4NdcGht8vo4lOO9O5CCWpG5pyYJcFW2QFaQa1oIT4PpdXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6kQtpBa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="agcbuZkP"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B7FB140E027F;
-	Thu, 23 Jul 2026 18:32:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6DrCDV76w-Oe; Thu, 23 Jul 2026 18:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1784831560; bh=qIGv8+++s5mjyrTvC7H+RqdRK5QUD/XRD6y9Qzv7ozU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=agcbuZkP+wJ1RYNio1jtpT6SL6H6OPPwG5tFRDveNd7ndNXYW47xGk3uekXf1trni
-	 YYF7MOQQqm3eS+dt+UaJQH4w9YCONlol45UkjsVCH1aJBmRrJ2OPCslXmC+sysxWtd
-	 RVgDodIui4SWL3TQSN4cQIG8u2fiUawRMmKZNk2t4oDvu9K+Km8M4M5VrwKsWVWobA
-	 z7MCqUd9IB1iEBcUfo9ll43edYDXztjLbewb8ICSfwYj/choZs2sRIuxy8RMjqaG5q
-	 wCI6iSDekhpiGdFzA5YFWsdvONoaU2t8rOsyikx271wZHbn9wEOX3/Xy6SXO8gQ1At
-	 z50g4BYNNQUVVQlSqEDpJnbu+iLxGlRTV6OYJyljMPeM6ysp1ZsZgGdt5oW+rr51KR
-	 /NxzjmLSQweq9+JN9UZ0wjKH5CHHDEp8JvW9bHJySQQ01WqdSzS6R4YlkaxaZm0qeC
-	 PjbWazze1JAjO7s4wawy2rXA2FUxlwrjfs6b3QrGVQtIOv1nYht2oaaqwRxYLvWycw
-	 9f2NokNRZb7CXwxSBT749bsrFuXR1u/ll2/RZNYP5OZLUxbFtOvHfIfk5CT7pYaG8e
-	 zLdBx3N/N1Aj7nvQfdIOyjNIfnYHAKCR639tjHsvGd8SFECNCP9y0cqmqVTscnaYuc
-	 5Kew0l3GS9numLrYV5749rBI=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BF57540E00E6;
-	Thu, 23 Jul 2026 18:32:05 +0000 (UTC)
-Date: Thu, 23 Jul 2026 11:32:02 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>, tglx@kernel.org,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
-	thomas.lendacky@amd.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, ardb@kernel.org, pbonzini@redhat.com,
-	aik@amd.com, Michael.Roth@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-Message-ID: <20260723183202.GAamJeIr1Cey5clsfE@fat_crate.local>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
- <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
- <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
- <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M6kQtpBa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7AE1F000E9;
+	Thu, 23 Jul 2026 18:34:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784831671;
+	bh=xPDcGjyGykqKroUuX5ffgXMzDsp98MslLygMD3mNRPY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=M6kQtpBaEw0M4bMbwpNRvP45eNEBjfN74ckMGawNMEDXUFRly1VsIVkE0SJg8lUjS
+	 9bqkeCAt9JN150sUaWaHLG6IjGZ7q6dwu47m2JG2yUBE68k5uLSU4Ge9QsAzn3pWzw
+	 JbI5FlYPRNDOLWKyX80eXhXkXTiEFop3OgJrd9IHwnMyrmTMGf+gtAx+8XVKSHvhrD
+	 6H+htR4EaCsXcsY7GCkvKlQqZv/etYQC3wFrGj37BJ270euJD2SAod/BHPmMAIEDmq
+	 ysr4wOhIECFFTHUaUpn2CvbMsUViQT85VoJpJ3hFYPxKjfBvDYNWim+mgnSDnm3EIY
+	 Bigu21Pc/0v2g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 8/8] s390/vfio_ccw: implement a crw lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Eric Farman" <farman@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260723174751.1180334-9-farman@linux.ibm.com>
+References: <20260723174751.1180334-1-farman@linux.ibm.com>
+ <20260723174751.1180334-9-farman@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 23 Jul 2026 18:34:30 +0000
+Message-Id: <20260723183431.2D7AE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5460b946-b511-4060-8951-264d17a2b21b@amd.com>
 
-On Thu, Jul 23, 2026 at 01:50:48AM -0500, Kalra, Ashish wrote:
-> > What happens if you boot with a subset of cores, the boot flow enables RMPOPT
-> > and then you online the rest?
-> > 
-> > Have we tried that?
-> > 
->  It can't happen here. snp_prepare() does the following, in order:
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Then the comment in the code is greatly misleading:
+Pre-existing issues:
+- [High] Missing cancellation of work items (`crw_work` and `io_work`) duri=
+ng device release leads to a Use-After-Free vulnerability.
+- [High] Concurrent updates to eventfd contexts (`crw_trigger`, `io_trigger=
+`) in `vfio_ccw_mdev_set_irqs()` lack synchronization, leading to a Use-Aft=
+er-Free of the `eventfd_ctx`.
+--
 
-        /*
-         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
-         * to set up the RMPOPT_BASE MSR.
-         * 
-         * Note: only online primary threads are included.  If a core's
-         * primary thread is offline, that core is not covered.  CPU hotplug
-         * is not currently supported with SNP enabled.
-         */     
-        scoped_guard(cpus_read_lock) {
-                for_each_online_cpu(cpu)
-                        if (topology_is_primary_thread(cpu))
+--- Patch [8]: [PATCH v3 8/8] s390/vfio_ccw: implement a crw lock ---
+commit 9d63fadad88983453bdf16e8b5f5b2ddd01df2c8
+Author: Eric Farman <farman@linux.ibm.com>
 
-I'd expect to read there:
+s390/vfio_ccw: implement a crw lock
 
-        /*
-         * The RMPOPT_BASE MSR is per-core, so only one thread per core needs
-         * to set up the RMPOPT_BASE MSR. All primary threads are online,
-	 * otherwise SNP would not have been enabled.
-         */
+Unlike the channel_program struct, which covers synchronous I/O
+submissions and asynchronous interrupts, the CRW region relies
+exclusively on asynchronous events coming from hardware.
 
--- 
-Regards/Gruss,
-    Boris.
+Implement a lock to manage the list of those payloads, to ensure
+they are read cohesively.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Fixes: 3f02cb2fd9d2 ("vfio-ccw: Wire up the CRW irq and CRW region")
+Cc: stable@vger.kernel.org
+Cc: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+
+> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
+drv.c
+> index 1d8c2ed9da509..2c0a27851342c 100644
+> --- a/drivers/s390/cio/vfio_ccw_drv.c
+> +++ b/drivers/s390/cio/vfio_ccw_drv.c
+> @@ -125,8 +125,10 @@ void vfio_ccw_crw_todo(struct work_struct *work)
+> =20
+>  	private =3D container_of(work, struct vfio_ccw_private, crw_work);
+> =20
+> +	spin_lock(&private->crw_lock);
+>  	if (!list_empty(&private->crw) && private->crw_trigger)
+>  		eventfd_signal(private->crw_trigger);
+> +	spin_unlock(&private->crw_lock);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is it possible for this work=
+er
+thread to race with the VFIO_DEVICE_SET_IRQS ioctl handler?
+
+Looking at vfio_ccw_mdev_set_irqs(), it updates the eventfd pointers and
+releases old contexts via eventfd_ctx_put() without holding crw_lock.
+
+Could a worker thread read a non-null crw_trigger here, but before
+eventfd_signal() executes, the ioctl frees the eventfd context, resulting i=
+n a
+use-after-free of the eventfd_ctx?
+
+>  }
+> =20
+
+[ ... ]
+
+> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_=
+ops.c
+> index 04800cfa779b6..277138f14b251 100644
+> --- a/drivers/s390/cio/vfio_ccw_ops.c
+> +++ b/drivers/s390/cio/vfio_ccw_ops.c
+
+[ ... ]
+
+> @@ -138,10 +139,12 @@ static void vfio_ccw_mdev_release_dev(struct vfio_d=
+evice *vdev)
+>  		container_of(vdev, struct vfio_ccw_private, vdev);
+>  	struct vfio_ccw_crw *crw, *temp;
+> =20
+> +	spin_lock(&private->crw_lock);
+>  	list_for_each_entry_safe(crw, temp, &private->crw, next) {
+>  		list_del(&crw->next);
+>  		kfree(crw);
+>  	}
+> +	spin_unlock(&private->crw_lock);
+
+[Severity: High]
+This is a pre-existing issue, but does this function need to call
+cancel_work_sync() for private->crw_work and private->io_work before the
+private structure is torn down and freed?
+
+If a work item was asynchronously queued (e.g., via vfio_ccw_chp_event()),
+could it execute after the device is released and dereference the freed
+memory?
+
+The flush_workqueue() in vfio_ccw_sch_quiesce() doesn't appear to be
+guaranteed to run on all paths, and might not prevent new works from being
+queued before the structure is freed.
+
+> =20
+>  	kmem_cache_free(vfio_ccw_crw_region, private->crw_region);
+>  	kmem_cache_free(vfio_ccw_schib_region, private->schib_region);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723174751.1180=
+334-1-farman@linux.ibm.com?part=3D8
