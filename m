@@ -1,247 +1,186 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021123.outbound.protection.outlook.com [52.101.65.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE9A486B95;
-	Thu, 23 Jul 2026 17:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784827052; cv=fail; b=rVAlYquWgVFAtQy+HLbpX4z4lU8QdAGKeqLUgJSaEl4ovmbcHWaDe5rSE5znNiq2N5rTSOluU6sXlO0lEQt9Ani8D1U+q+EGEcP4JCjRWLy17PSKAONej04oZ0kUZcOix+B4zootMYt9W7ihcqYYLYNgnlqPJsrRVvwRemT1uQE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784827052; c=relaxed/simple;
-	bh=R52vt49SM0lAR2+iE2+RguLJvcVojGNTU5cbK7MjDb4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SS4bVoGNnMIA02Plw0gMZ6ThjM642NFO/2CDCVT2yvmpsFEyCDpIUtXpaPFuE6OG+1ECd+WxJf1EDp6klFRiB6omVjusuQavlm1oF0jSu/Xar4g65QjpA+bJZQiiHWV2ksLr+SCYz/juPyHEhsToowDrDoGWBjzJ/wA0KRT9PQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=X0+NaVxW; arc=fail smtp.client-ip=52.101.65.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313E37C925
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784827597; cv=none; b=IzGOyC3sWjDqEU3OQuCu5isFF64vm4hiF1cubxSCyswJZmVEke5BNu9b+COJpaS28FPPdNjjaYheytjKDy1SzdwaAXSlfA5pGJRZQRysCy1iEz0oshgLYOTxl5VpgtUXw6qHj6xjRJj3BEPZRWB4zNa2EgNMxW0CleGZnKwuriI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784827597; c=relaxed/simple;
+	bh=cd/ZRwiipOV+bQstkRLvKcE/iZkXqPrrTq6Rfr4R/oU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=m7Q4gRwdGowKFUm4Tv91lotpLs4xO4tqyS/t1SUQwZ80DeddVkWxpVWQIjXVtOwdtvkefno3o82VfWiofqabddxj/dgstUTeUVnxvIDzwZ5TV1XS1FKKzSy8/Ok6Uyr5RV2iY6zxz9sPAj5Ji0tJx2pnTZyZTQiMLhclP7gOV2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vowAHAii; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="X0+NaVxW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rt1VOuqmp8E/TY/uFobqPwDx+7xQkhRQ+15+SLr5NksHHtUzlSMmhXTKu2d49/EnOZ9fMa+dzb9wNP4rWL43teoFRPtRpMIe4esjbJlEguEe7nI/Ol+PiIh93MN68tSJ5hFK8Mtkutw/RHCU7JzfIX+VAjR/3kL/5ofDGll2rhDzcwji1zk7gsJN/dTivNowyWMOr6HwmmMbWjLLfPx6LgKq6zvQIdhOQ539OE8X3/xP9WXOOUxD8+8ZQVRrJO08nZ28hsvyp3rqEjG9RX62CABPNZYp1kVObZy5uDiy9tuPFEfmVBMeuab8enAYsUGxKcahklCMyxDY8oVxE6GpIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
- b=FvkqkHg2GyWyZe3DqlYPWKxKfn4qN6DOQPdevZWmnhnn3QyQdN1uEpRhR+cpiOC5+DhoTjhTaU3fuAuQkgC/8hngyZZg0CtyIl3ut16IySRxQEMgXsE+34G+Xied5naXGZ/dl8KTmkM+l4b7oUQKY5T5e4mZVgpmQZ6C4awrDmL4jUlF2yijeKDxsz5k9XpN7hudzIeOnAU7dor0aDsUmOgR5WGLs3sQqGcLsDHmy5QOo4TjOqcMGr//anOAjlWHSVxJP7MuT6qst9Z/SF6oKoiRm50CCmm7govJBYcrcWKgBzhiy6MWfMRhlh5lna5ZmcAfelGRU0euniPLE99LtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
- b=X0+NaVxWFKmmEaF6vXsOkTRdPDmCnsMQK7H6GqmZknDHM1XuFAqZUpIAR/yY69MpX8KNDJmrpIyRvqELXLMJIATFXdZ8kcctULOaCrXHbQN0BYtB6xfP4gJkLWwtxi8z9VaNc5bYHn9KqUk/bjDfO3w1J5yyZ74UZiEeAtkKlO9E9mH5oRZpcAv9+pfAA9BaucJKHefC2tuqA7d7uQlz1LE0cPzQMr6EB9on1zmKSVR7monw0ykOmQGg0c04w6T1UfPUp8sGcgHdwnD2rMlJ2r9dl6O/oJQi90iveKLQU9vXkc91tUFoNimli4li3Yo/zHbWo53+yZi7+d52J4GifQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12) by PAVPR08MB8942.eurprd08.prod.outlook.com
- (2603:10a6:102:320::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 17:17:23 +0000
-Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
- ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
- 17:17:23 +0000
-Message-ID: <b324f558-e46a-47e5-b75c-b66938379c2f@virtuozzo.com>
-Date: Thu, 23 Jul 2026 20:17:21 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
- stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
- bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
- den@openvz.org
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
- <20260723111557-mutt-send-email-mst@kernel.org>
- <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
- <20260723124908-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20260723124908-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0225.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ac::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
- (2603:10a6:800:20a::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vowAHAii"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c9fe4c5eb39so750846a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:26:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784827594; x=1785432394; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=yNQpsQ8GyeYtZEElIeEiEJAJInLo2UxIW3TpNd+CGQU=;
+        b=vowAHAiie8UNbVP06YJ1ZSXvIP2dFHGgJFX/0BTN9KRfvQi9DMd+PLUcjfGfFeE3wL
+         LeZHG7vrA1kA+NjvLSStg5gQm1xRMk4S7oS/D2eU9SKn7Gj6lY7JzhYfjIvoBM0jkY2r
+         IzrgASxCM8uhjpuZMuc/oiZGIqPyKuJzyerfhVntXm1C/TLGgi10QUHAr9mZyA6RVqIP
+         Q01V1LpD10Cw+7hSVSZs+2xXKvByd8wp5ZIj7SYClDinXuvoioRX39ujHORsjAK9qtD8
+         EleoVBvxhRj28HwwVkw7lvsSv8aXbo516GAek5OHh+hdscqEUjKmtKnM3a5u4K2lHv+H
+         r6Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784827594; x=1785432394;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yNQpsQ8GyeYtZEElIeEiEJAJInLo2UxIW3TpNd+CGQU=;
+        b=hxnCkcIB1VLKn6fyXA9kOY+ylMVs/bojcEMGJJatv5OjIqJMYgD9T3LQCIpgm7QsyL
+         5UYGudsWlLDQCtfkE2vuDAZEKyFDXaqLHSXcJoVXeotdbrSpbrDNnYdLpqXA2o6HVwa4
+         BKgLwMObViCbX07K4S/4KrVRXc1uJgOpMKevDWmTfle/GXvFQj9kN3vopWvriG3+5ncl
+         SPpEgDyPI+tDrbOKJm9iB6QgA5y7yPxVRO292Z2Xedk9rPlbsEvMlC2mGlGJ8pgWZNTz
+         qyOt7lLxcnKT+6FYppgtlE5D6F4G66XSG2MH9wWTKbqDa/Wk4B88vNV+NDZzRiLv7X5S
+         B6DA==
+X-Forwarded-Encrypted: i=1; AHgh+RoN5M2tW9ByFsUu6qWsxcp4uCQaIeTK9u05KZ+HItMCRb3oGyP8o2AqF1GotvNZWNxiXcc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylO9z1HbW/1lO5MGjQTtRtVObb5JwGj3WPWdG7bsT2PNuwAThA
+	dqYAAHeHZAQK5Ka5wv2lF88FxF9KD47F8UoozEYzrFdUucZKMaJUUWUJekg01LvI1JnH1fw2aFf
+	MkmNcJg==
+X-Received: from plbjz14.prod.google.com ([2002:a17:903:430e:b0:2ce:fc5f:e782])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e541:b0:2c9:b48c:fdec
+ with SMTP id d9443c01a7336-2cfa6b740c2mr50181305ad.12.1784827593463; Thu, 23
+ Jul 2026 10:26:33 -0700 (PDT)
+Date: Thu, 23 Jul 2026 10:26:32 -0700
+In-Reply-To: <CALMp9eR2XffG3pQL_pjGphSqMGfpJ9vRJi45Hd9RuCSd5EwU6g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PAVPR08MB8942:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|56012099006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	gYgNlL+fhZNbS8qtfhvmvf2zamIFqE+O4tRE62ajQlDKZ1iIdx9YnxLKeak2Cqmu4FSyC4h1rq6IA07ILa2ehaOlpNu8+RVdOiWGb1yyFI0T27YElSFq31dY47QgID7Gnw3gwDXT7m93CcTi8L5I6tobG/R3cfhSRVtz3iSjmebQM55GGAy+J9anDbx29OEnrfV6F5NKxxh3nOl2ZSZtLp28LB56pv224vYXYI0WzRrIUKZZKmpZJJON2Y6nBwB+X0qo62TZjH0WnngUHpqOV6yP2zMHjhg6I08XivnIln0BTtd9wqwT+mPIsomIFY6KB2kcVhpa698JVmCZTpliGvaeU2UQcFBvhgL+/WZvkst+REUIH77HMB2dUcz/EfFjkXOPMwbr0Jxr46+wS0nxrx7WA6BkpLkdL5JSzgDQi9+Ujn72at/gG9Yd5cKWm5GgK9krA1LqcKmNK+fyppaqYpWlyW2YOkqql/oq53VLVw/QoB4WRRIjSeV0mOhOy+dZciH+3JDmiKGKksOcrdWBZIy3yv30TCMNJ5QVQz7Og8xN+3TBYW4s58U9HteyG244x4HkYNWH0eOMfAU+6j7RmviqVIDgiCfIVoLxLzGIOcD33+RxhN8tCXAUuOpiFAJF5vDcLMPOspI3xzvZBcVLIvEkkkB9jLAPpjeN5EJlHMg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzMzcUNyUlBUMzZWdzI2WDVubFEvb0U0UTdFd2JVUmVscndSMlhSN2RwTjVJ?=
- =?utf-8?B?c0duZVpnS2tjS2M2ZkdqNExzdloySDVIQzN2UXZQeTVOVk9meU5xckV4bnp3?=
- =?utf-8?B?T0hsVG9UcFlOa25RQnJldVJOVDl6Sk84cC9VTVVDU3VqNCtlOVBweDlSak1y?=
- =?utf-8?B?ajYzSVBmbmpic1QvZ3B5WTN4azdlQ3c4ZmNvKytPVW5LcXdySnkvdGR2RXYx?=
- =?utf-8?B?M0F4N2ZqbjJDTUVJZXRuMjdGVkpMemlYalRveGdQYWt4RDZEazNmWUhHcGx0?=
- =?utf-8?B?c0tpeE5vYlJKejVMeDdRWG9tcWV6aFloRkdaaHQ1RHBYZXRZcTgwa2dySWVw?=
- =?utf-8?B?Uk12SnRNUndjVDJJUERVdnBRSXhjMnVtOThoREJTeVRXT2tJYUlhQ25sb203?=
- =?utf-8?B?Qmp3enhTUUtFdENDanhHaWlULzNHM1l5QnRBbEtiZGF4a2dmdURPd0xBV3BJ?=
- =?utf-8?B?c0JTTTNTVHhiU3ZlaW1hamRuSGdyaW0zOVZmNjNrQUlyZjFIR2F1MXo5cW5o?=
- =?utf-8?B?TjlxOUpWMGxaWkVGNGVDamNRR2RRcXhDOFJWV3JDeHorT0VUeDc1ZG1NVTBD?=
- =?utf-8?B?cnZlZ2FBMFFhaXFKSTVTaU83Q1ZrT0dMSlF0eW9LbUd6eGhuaThFVlU0Nndm?=
- =?utf-8?B?SGNRSENNU2lmNnFoc0N6b2Z6dVgrd2JrTjF5dTdQMG1JTjlzTEw2Q21kSWhn?=
- =?utf-8?B?U2Y3eERab0syWXNscm5FOEhvOHQzajhnTlpxb1ZEQUhmTUdiZVN0TkhjMFNy?=
- =?utf-8?B?OGtwRHIzcEs3YVBVekZ4UG9aUTY5YUZxS1ZpMjVUMEVTNTlObWdVQ1J0MDFn?=
- =?utf-8?B?cjlZS3AwN3VDK0JadjE2ZWtadFJ5b3Bhc1FmUHlySGhSdG5EazZaZkRaWlNK?=
- =?utf-8?B?TWJKeEpJMWlVWm44SjgzNkR2MldaUFZNdnBjTVhOMU5kZGZ4WnpVK1h2bGJQ?=
- =?utf-8?B?WGJOOEt0UXp6RURUcjl2YURrNzFtVkRFTDRoeUcyVFZGZklDMVFjVThOTVV1?=
- =?utf-8?B?TlZuc05zbGpiazZhTUhSVUJjd2ZDdkFGd1d6Ukc1d2cvU2dONi9BYmdEc2Jn?=
- =?utf-8?B?b09HTkNaazBFOWFTR1d1eEllTzJ0NEZIKzBnK05nTVFVd0NtRi9JbCs5Nkd6?=
- =?utf-8?B?SElFbHllbjRzNG9SMGlmMlIrSHFHbko5Mi9yOUdTTFhQMTlOak5OV0ZOK011?=
- =?utf-8?B?aDRZTERrTC9aR3VzSGlIa0loOVZCN2puT1pEOG4vcTRzWXM5NHYwOGxjUE05?=
- =?utf-8?B?dlJnR2lrZjJFU2pMbXFqUFUrVUJia1hqQ01sRlgxQm1RK0VDSUVVV0ZFM1ZD?=
- =?utf-8?B?RG4xOWlqK1dLbmFFOTM2WDM1WkxadzB5OG5KZHRsaGxMQk0vMTFaYUZyZ0Qx?=
- =?utf-8?B?RHhDbHlJeU5zRHIwNWxUN21lRVJBTWtuWWxRcUEzQ2VhUnAyc2FXeGlkSWJq?=
- =?utf-8?B?WEl1MHdwckNLMTlSUVhpSVZ0NlJkMnNrNUVyOVozdFE0ZXVHVzN0WWI2SWF2?=
- =?utf-8?B?SmhiZHNYcmxQUjlVL0tpQ3FCWFNjeU9GN3VHbWlJdjZjelFnWFJ6d1BBSDBZ?=
- =?utf-8?B?NnBxczVndDlYelVWVjcxeHZ6b1g5d2JOYjRoQU1kMDc2Z0ltWFNVakNzZHlx?=
- =?utf-8?B?MkkxcWtuclRLaVhnSmh1VDNtNXFZZTA1ZUN1UkFFZHFWSitvQU1nYUlocDMy?=
- =?utf-8?B?aWMyNEdBWkovQlFaSGgvUDE0U2tKT28vRnNHaEpJMitqNHZVNy95RVFuNTZk?=
- =?utf-8?B?di9xcGFSSHNXZE1NWDhaOWtxVURGMUl4TzNvNFd3L1p1VHQzZ3BRNks0dkZk?=
- =?utf-8?B?NTVDTE9sODR1ZTVMRCt3T2NWZnpBNklxWmsyNmxWKytaRHNOUWVEZTBGMVdH?=
- =?utf-8?B?T253Y0d3N1NBS1dQeVgwUHNRSFR6KzNPVHloNCtnd0l0MmtJUWdNNjNxeWhZ?=
- =?utf-8?B?eXF0cFppcllDZGdSTk1LenQ3MEhwWTFqd1B4bzVEc01oMWpZZ3NWdC9QVXFS?=
- =?utf-8?B?ZlZYZmJEdjF6bWhET2FXbzNaTVdIdE1Hbk9ZKy9TczVpejFaTExpTFpRZGp6?=
- =?utf-8?B?eGozYkVEMCtkM1VGYVNLV2Y2UEp1cExKRVF3TVJIVmY0eDMyUlUxZlNHaTli?=
- =?utf-8?B?dFFjTEh3RkVUenZvZ2xkaU9zekhOVisyWnBIT1Jac3Rud1dHWDNjNFZSMHhB?=
- =?utf-8?B?S3FyK0tCbWpoenhQSmpXOXh3Zm5HdmRBQUE3Wk5telo5M2xIcU9sM2hCcVdo?=
- =?utf-8?B?NFUwd2J3WmNJLzkydTBCMk1RamZTZEl0ZllqdFVucjlPQTd0QnFoQSt4d0ZZ?=
- =?utf-8?B?YW9mOGFRakExWFdUQWdZMks5aDlUdmNtOG8vTnBHK0tYb0E5cWpBK1dGWFcz?=
- =?utf-8?Q?GzJJADSHQRAenLpo=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
-X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:17:23.0749
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nuXCrao0DEauVUlWpSRSFDTcV9twjahSY9kc96Xi1yc1HsBuJM/mSq2xUmM5G9XeIKISWH+QNohBPDzY4IxdO1696yzNqN90m2QSIDODUrQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8942
+Mime-Version: 1.0
+References: <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
+ <amFf5MAhc8sUqeYV@google.com> <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
+ <CALMp9eQi=604LVn=ZMnzoUy55LVb1qorKzPKm5HVK_ACsPuP_A@mail.gmail.com>
+ <amIgLeMCAH2vB4ot@google.com> <CALMp9eSgfL8C7SU+j6+c5s64end-n4uHh=uXtTpDVJ7RcvLQgw@mail.gmail.com>
+ <CAO9r8zMukfW2b5tjYarpkpPH0osA_+QEEMRq8k5R8B_WFG_yYQ@mail.gmail.com>
+ <CALMp9eRsJeByu4U8NZQhnKM7BaKziyLUix6J3XGCEMZyiar=vA@mail.gmail.com>
+ <CAO9r8zOtzSscMx_PFuABkXzZ=xgGOcioegKzgYscXa9WiobySg@mail.gmail.com> <CALMp9eR2XffG3pQL_pjGphSqMGfpJ9vRJi45Hd9RuCSd5EwU6g@mail.gmail.com>
+Message-ID: <amJOyIOzsJx8dWa-@google.com>
+Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
+ supported ASIDs
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/23/26 7:50 PM, Michael S. Tsirkin wrote:
-> On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
->> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
->>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
->>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->>>> vq->worker and queues work on it.  vhost_workers_free() however clears
->>>> the vq->worker pointers and immediately frees the workers, without
->>>> waiting for a grace period.  A caller that fetched the worker right
->>>> before the pointer was cleared can therefore still be queueing work on
->>>> it while it is freed.  And even when the queueing itself wins the race,
->>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->>>> future attempts to queue it are silently skipped.
->>>>
->>>> None of the current callers can actually hit this: net and scsi stop
->>>> their virtqueues before the workers are freed, and vsock unhashes the
->>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->>>> in vhost-vsock keeps the device hashed while its workers are freed, so
->>>> the lockless send/cancel paths become able to race with the teardown.
->>>>
->>>> Fix this by clearing the vq->worker pointers, waiting for a grace
->>>> period, and then flushing the workers so any work the last readers
->>>> queued runs before the workers are freed.
->>>
->>>
->>>
->>>
->>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
->>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->>>> ---
->>>>  drivers/vhost/vhost.c | 11 +++++++++++
->>>>  1 file changed, 11 insertions(+)
->>>>
->>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
->>>> index 4c525b3e16ea..d6e235c25254 100644
->>>> --- a/drivers/vhost/vhost.c
->>>> +++ b/drivers/vhost/vhost.c
->>>> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
->>>>  
->>>>  	for (i = 0; i < dev->nvqs; i++)
->>>>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
->>>> +
->>>> +	/*
->>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
->>>> +	 * reader that fetched a worker before we cleared the pointers above
->>>> +	 * may still be queueing work on it.  Wait for those readers to
->>>> +	 * finish, then flush so any work they queued runs (clearing
->>>> +	 * VHOST_WORK_QUEUED) before the workers are freed.
->>>> +	 */
->>>> +	synchronize_rcu();
->>>
->>>
->>>
->>> Any way not to add this for all devices that don't need it?
->>> Or preferably, even for vsock in absense of the new ioctl?
->>>
->>
->> This code was initially local to vsock, and was moved here in v3->v4
->> after we discussed with Stefano that the issue looks more generic and
->> should probably be fixed in vhost.c (see
->> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
->>
->> As a compromise, we can keep this code here, but only call it
->> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
->> is always false, only set it to true on RESET_OWNER, and only call this
->> code once it's set.  Clumsy, but this way no other code path would have
->> to wait the full grace period.
->>
->> What are your thoughts on that?
->>
->> Thanks,
->> Andrey
-> 
-> Or just thread a bool parameter to it?
->
+On Thu, Jul 23, 2026, Jim Mattson wrote:
+> On Thu, Jul 23, 2026 at 9:57=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Thu, Jul 23, 2026 at 9:54=E2=80=AFAM Jim Mattson <jmattson@google.co=
+m> wrote:
+> > >
+> > > On Thu, Jul 23, 2026 at 9:32=E2=80=AFAM Yosry Ahmed <yosry@kernel.org=
+> wrote:
+> > > >
+> > > > On Thu, Jul 23, 2026 at 8:57=E2=80=AFAM Jim Mattson <jmattson@googl=
+e.com> wrote:
+> > > > >
+> > > > > On Thu, Jul 23, 2026 at 7:07=E2=80=AFAM Sean Christopherson <sean=
+jc@google.com> wrote:
+> > > > > >
+> > > > > > On Thu, Jul 23, 2026, Jim Mattson wrote:
+> > > > > > > However, since KVM completely ignores NASID, it would be sad =
+if
+> > > > > > > migration were blocked because the target has a lower NASID v=
+alue than
+> > > > > > > the source.
+> > > > > > >
+> > > > > > > That's an argument against changing it without some kind of u=
+serspace
+> > > > > > > opt-in. Increasing it seems safe, but if userspace just refle=
+cts the
+> > > > > > > value into KVM_SET_CPUID2, then an increase would block kerne=
+l
+> > > > > > > rollback.
+> > > > > > >
+> > > > > > > In any case, I think the new value should be a constant so it=
+ doesn't
+> > > > > > > imply a migration constraint. Perhaps we should adopt the hig=
+hest
+> > > > > > > value reported on a physical CPU to date? I think that would =
+be
+> > > > > > > Bulldozer's 0x10000.
+> > > > > >
+> > > > > > Or keep KVM's enumeration at 8, then find somewhere in KVM's do=
+cumentation to
+> > > > > > describe KVM's behavior and provide guidance for userspace, but=
+ otherwise make
+> > > > > > it userspace's problem to solve?  I'd be a-ok with that.
+> > > > >
+> > > > > That sounds best to me. Document that KVM ignores the guest NASID=
+ and
+> > > > > commits to always supporting 2^32 ASIDs. Advise userspace to popu=
+late
+> > > > > NASID with a power of 2, and perhaps mention that hardware has on=
+ly
+> > > > > reported three different values over the last 20 years: 0x40, 0x1=
+0000,
+> > > > > and 0x8000.
+> > > >
+> > > > I agree that documenting that KVM supports any NASID value from
+> > > > userspace is needed here, so that VMMs can set reasonable values an=
+d
+> > > > migration pools are sane.
+> > > >
+> > > > That being said, I still think KVM's enumeration should be increase=
+d
+> > > > from 8. If KVM's enumeration is just a hint, then it should be a go=
+od
+> > > > one imo. Current L1 KVM will flush everything (L1 + L2) every time =
+it
+> > > > runs out of ASIDs and pumps the generation, so advertising a small
+> > > > number of ASIDs leads to L1 unnecessarily hurting its performance.
+> > > > Newer KVM (with this series) won't suffer as much.
+> > > >
+> > > > I think we probably want to pump KVM enumeration (e.g. to 0x8000 or
+> > > > even 0x40) *and* document that it's just a hint and KVM effectively
+> > > > allows any value.
+> > >
+> > > How do you do that without breaking rollback?
+> >
+> > KVM's enumeration is just a hint :)
+>=20
+> Yes, but existing userspace VMMs do not know that.
+>=20
+> > Also, in practice, even if you rollback the CPUID presented to an
+> > existing VM by userspace should never change, right?
+>=20
+> Today's KVM claims support for only 8 ASIDs. If tomorrow's KVM
+> supports 0x8000 ASIDS, and we start a VM on tomorrow's KVM with a
+> userspace that copies NASID from KVM_GET_SUPPORTED_CPUID, that VM will
+> look like it can't be supported on the old KVM if we have to roll
+> back.
+>=20
+> Hence, until you get an ACK from *all* userspace VMMs that they
+> understand that KVM's reported NASID is just a hint,=20
 
-Yep, that should work as well.  So we'll have to do:
+Way off topic, I keep reading NASID as NSAID and can't help but wonder if y=
+ou've
+found another way to imply that KVM is diseased and needs drugs ;-)
 
-vhost_dev_cleanup(struct vhost_dev *dev, bool sync)
-  vhost_workers_free(struct vhost_dev *dev, bool sync)
-    if (sync) {
-      synchronize_rcu();
-      vhost_dev_flush(dev);
-    }
+> you can't change the reported ASID=E2=80=94unless, of course, you make th=
+at change an
+> opt-in.  But any VMM that opts in already knows that the value is just a
+> hint, that it can set any NASID value it wants in the guest CPUID, and th=
+at
+> all values are actually supported by all versions of KVM that report any
+> non-zero value. So, then, what's the point of the opt-in? What's the poin=
+t of
+> changing the hint at all? Documentation solves the problem completely.
 
-And then vhost_dev_reset_owner() will call vhost_dev_cleanup() with
-sync=true, while everybody else (net_release, scsi_release, even
-vhost_vsock_dev_release) will call it with sync=false.
-
-I'll squash it all into the same 4th commit and resend, unless you have
-any objections.
-
-Thanks,
-Andrey
-
-
->>>
->>>> +	vhost_dev_flush(dev);
->>>> +
->>>>  	/*
->>>>  	 * Free the default worker we created and cleanup workers userspace
->>>>  	 * created but couldn't clean up (it forgot or crashed).
->>>> -- 
->>>> 2.47.1
->>>
-> 
-
++1000
