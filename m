@@ -1,105 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88BF3E6DCF
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784843325; cv=none; b=oBKcMgkGqpvVVhWE2wy0FBNemIr9ogy9OYZc56lKXLvnzbMoEuCV7pJugtLfjYbaUzxrATSs2Y5pRvpPJLxpTBXHpjLQGtkPAu6aJqXJGWwTW2ear1Ii1hSvNxtBNPhyX5t4weR3fQGDh2bUR6ixkBDV6TZWWq/RVloQN8I8GPg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784843325; c=relaxed/simple;
-	bh=l5rpXvvcDbPs1Q+ZU8sWjiTUODQJThHga+knzNf1840=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EF53DE441
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784843394; cv=pass; b=q2a57L8hQQMME35oYLRm5o4Zk3S5cLszTc3zBY92wdBGPjpnqHmi2pSJ0ZkBUBuDyj6Cuaf2F/DifKmqLvvjrNw67E5SYsiG2cYaTeMWmIIQd5lrbLjcwwMZzMI/eDB9kxZxR6xxsAkmyuKlIN3xzTIOxCSe/YC92I9e+6QQqfQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784843394; c=relaxed/simple;
+	bh=NXntaWlH3vQ/ae0QsdX6wpm4Mc9Mf7XyJq5cUmeC/4k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c4b1atO4+dQwR0sG/9wAPA1H0BOtcPwds9NPekFFEtwXtFQdH8vbBgf6JN0d6wDO8mKA3Oadu+LKmwmYMaIV/xl582Xhj6WU58fBssgddWXhhd1PcBtUWgSYyTJz7tnBI0UxxYKJDq5Nr9XnNdqlAU5i9OXai60cpRCh/fj8r3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLFZJSFR; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=tuOnM0ZvaRXGTBW2E/QnNktoKMaorfr/9YH4CqrEajDkprXMAhJGKL/n/RIi96muBDXHDgAxTeetv1oEvVOsINTTjzDKs8QBVNq5xgevXN1CV4f2nqxtniXhmi0DVO5tP35bcYDRKprJP4UtSOYbGVLsAzfJ+nwduWpfDTsZwrg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h8PDrN8Q; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLFZJSFR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391541F00A3F
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 21:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784843323;
-	bh=BWV9EPSmzHQjtMOMlGqqeSoxgvQ2kqwrbCDgXGAvomU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=gLFZJSFRPAs76FF5fFenEj1Qoo8trEPuphOGjX5NNSy95lZXRtS7Qj6lcvjAdF2Mv
-	 Ef8/lDp3mnuVSnrJ1pibnAqBNVyinCTrpjdAPHbN0zy+FQ8qOYPxur2ZOtdrwnjfww
-	 0KaIYcWeIqucvi3qqBMQffho9DKF6FEgx9IpEaQWtMvydVnjyld64MZD39djDINcDd
-	 pwh0q+nNRV+jPmdtLrL4MzfPSKnvvqQ7GCMkxqHI1iAqbO0rLAHT3SPDY4rmuqfMdM
-	 hxz3NSRg7Nze5kXIPnnAZpILykqp11RRnzhboNWrsAfLH8YC0u2MsXzfF1d0m+YJ5P
-	 kEijV1eQIqN1Q==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c15ca7a7ca9so119539066b.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:48:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrNK3ufQoMO+2TWiI8uo7VtMfmfrvqCACCQasbudwDPOlF73DJ62Ql0mOG3kRjTG+0wHqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP8KpNMwi8jTCN2eni7zwUKO+H+ZD2eDBLQBNxxo0iJHZB+6AH
-	ZXfanaRoRGLnefF5ulQ4NPl9Ju8D34oQoI7nVCB2CfSMGN3rrCualTD/BdBVtmxei3UaO/UR4h2
-	+5NPGnM7muua21HZOypq/rEDDbYAvdY8=
-X-Received: by 2002:a17:906:f595:b0:c15:e07a:eb4b with SMTP id
- a640c23a62f3a-c1c506e8a83mr215495766b.3.1784843321987; Thu, 23 Jul 2026
- 14:48:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h8PDrN8Q"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so1569a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:49:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784843391; cv=none;
+        d=google.com; s=arc-20260327;
+        b=h+vWCu4YpFym62bYdLcC4BOuNCckjiSR2Tva6/nOHf12XQT8X42HQuMvMampAKh961
+         X8tx47fG7llqCKhMZYe5BisvTyANQ1lvnmv2j6/8fF51A2bNq4XcIjBgWl90rgShKX2l
+         i81EusmiBEhT146ulB+KoXXAeO9jsBBLj4x/QAv4bpEPtke0PQpqwAmTZneM+wothYX3
+         CY642HNL0Y6mJFZYOjFHZO3MrhDQXqxjgLLzAqNvEaw3Wd8brzT9qtrgQti3zL/S2cV3
+         6Sxg82FIyG7kpd9tslFqHtNZXzI0ayOKfFYe5qLbSRserDd1o6wB5ZhOl9KnNWPXo46O
+         WgIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n7z1EdKdDB71dQapwr73BM4UoNv/fqbfRBSOIHSsrCI=;
+        fh=847QlwD+JWVJnAikpHGFKx8umB6o+QBneBGwempXW5Q=;
+        b=jvJOZ4JNJy5FECVrhJwRAKIguayR4XFiIJqoMlt/hsNRktTy2vSOtCoFVBeXFDTmeM
+         Reo437sQxHxV6Qi/9R8GgS6x9pUAC42T2i7bx8aHpJUVlaM2xh6FWbYpZl7v5uHyw+KF
+         qBrcbRQVgY2ZMzr18WOHNkIboLwcNdlFNUWnkCxS2AdPSbtdlMW4iTu+z38uPboY+dnq
+         DDm9NXSueT8lH6ciNA8bP2z4XQ1b6BIlCVa5/BQFoTFoLfaSh6LfIDz3yE1qCJK+EEm4
+         ZNcgjCJ3YMQK901LdUw9hjON3qZhGVQ1Im1gw+HfcQKpHyfIu/+khGw1V2wYmwI+ShTX
+         tXpg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784843391; x=1785448191; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=n7z1EdKdDB71dQapwr73BM4UoNv/fqbfRBSOIHSsrCI=;
+        b=h8PDrN8QGZg2GED8zjmF4Av37pO1v4YkE6TzrgVEZw4tq706rI33erMKMtJYKA+KI0
+         bfNf/NLwVutKkDz+3Ed6Go/WFsrorjL4i2PrxYS9QnadqqZY3+52a92lDUDhRLmtTvg7
+         PqfC8ajc7n1NtLWirvfVv1KVuGmBH3F+7IYdUwZWcONzxcqNCz1UMlgRSdtItTl5wHi8
+         yRpVIx3n4gEf90FkRubfHbBPOOXIitSnrQjYlJD6BOi3vL6og/+keoM8WSJ+Bf8DnxM3
+         nCkWc7v/kIhVvrOCGuM//b+31IJ2Tn5w4/tMaU4jZe2/Of6o3IxNBCuUVl5qAD2SKtfD
+         J53A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784843391; x=1785448191;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n7z1EdKdDB71dQapwr73BM4UoNv/fqbfRBSOIHSsrCI=;
+        b=OpotgyDNdGBSFJW7nf0trg54q9/7OoYNXV0YkV5QadnZuqhuzDy8D7Tl03WMqDd7xQ
+         dVFO/6syvgf8KLxTVY/c28PJl84BESPN2qCRgokKNOZx8s7G3pf0GWQrXiFrp5e2n+66
+         mrUfjP3cJfUB0oHFS/VBxp8z6yIT2/fj3BXwtyH3MSRURdH0HVivQ78/oNuMZdRclR11
+         HIBB4tFMp3880TJI52HC70J51ANGl64J2TaXCwxnErGcSWAOhRHGkJ2cCKTiptMloAoh
+         DqaIgwFIiEtHhT5fmIeR9hoSPTPsAl+I0yRUobkgJMjsRrDDd5lAea7a5zIPgAAbGX+q
+         1zIg==
+X-Forwarded-Encrypted: i=1; AHgh+RqDevNbKj766qxloSkHqE4BSaKXWxrq1uKz+ymVBIJBo/0umsKRHPDgm42gxP3PnlU9yeg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlafsC4YG263KZcWqemYl8I5mD694ctlUVVfmWqKdUw9o3MMsV
+	MtlNx08iwUdUL7Xb4zBy+NCuDeXHoKHyCm7RRtzLmPBAI1g3KBObECVDcgJLxuC9Pac/ZVNlZcM
+	oSQXrpVAMbLvJfO+SmtoyYjF+l5uM2NOrZKuGVlN0
+X-Gm-Gg: AR+sD12oAa/9VJGuXXtsMm2hmb2yyzUZQinm9NJrPIsg3/aa3wMgnHRlpqBF9w1qDe8
+	Wp/QI7O4wYrq0aFpfUu6B7T1Up5zPoMJz68Knn0FHjqQJvkHG9dGvO8XFPPeVTd9XbMAZBilugo
+	jf5X8wDpwW6uAHpIZsEM9JYFy4hzHftu8tHm2PBYa/4ngBkst6yx/z1B/P0m1Sv3MC1ECYMBZZw
+	eZFenpzy1znEsX36pGJo5jqCWZ3gVMq9TnWMcC54BdXbNg2p/YekgEhM1ih4A==
+X-Received: by 2002:a05:6402:2153:b0:697:9254:a66b with SMTP id
+ 4fb4d7f45d1cf-69f8eeaf7camr18393a12.6.1784843390183; Thu, 23 Jul 2026
+ 14:49:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
- <amFl89ch5Iej63L3@google.com> <amFms2CnzhDUuRCk@google.com>
- <amGiAKsC3XrF6DyA@google.com> <amIx9Ki6gv-wgBnX@google.com>
-In-Reply-To: <amIx9Ki6gv-wgBnX@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 23 Jul 2026 14:48:27 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOd6vLA+rYwQx9n86Hc+4wZUZNO+0EPeDry-GDhG8OLTw@mail.gmail.com>
-X-Gm-Features: AUfX_mw6z34ldVF9V-91bWuB2izy0OSrLLXGBT86_j0aIMVg7co5Wdkshk4nTMk
-Message-ID: <CAO9r8zOd6vLA+rYwQx9n86Hc+4wZUZNO+0EPeDry-GDhG8OLTw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
- allow skipping the gva flush
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260707183405.15571-1-zide.chen@intel.com> <20260707183405.15571-10-zide.chen@intel.com>
+In-Reply-To: <20260707183405.15571-10-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 23 Jul 2026 14:49:37 -0700
+X-Gm-Features: AUfX_mxhUpw4tknODIt7xHU4KQrggRWgOaJJolkeP-1QL1-J6t0_kriq-ZHYrDg
+Message-ID: <CALMp9eQ7QwV_bmgCCwQuEMu64Qqi0oMAyoH=p=gkt8Z9RLYVTQ@mail.gmail.com>
+Subject: Re: [PATCH 09/15] perf/x86: Remove num_counters_{gp,fixed} from x86_pmu_capability
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
+	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Actually, isn't there a pre-existing over-flush when handling kvm_mmu_invpcid_gva()?
-> Oof, and a missed flush?
+On Tue, Jul 7, 2026 at 11:44=E2=80=AFAM Zide Chen <zide.chen@intel.com> wro=
+te:
 >
-> To fix the over-flush, I think we want this?
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 >
-> diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
-> index 6c13da942bfc..7f3e0eb33b29 100644
-> --- arch/x86/kvm/mmu/mmu.c
-> +++ arch/x86/kvm/mmu/mmu.c
-> @@ -6672,7 +6672,8 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
->                 if (is_noncanonical_invlpg_address(addr, vcpu))
->                         return;
+> Now that KVM has switched to bitmap-based PMU capabilities,
+> num_counters_{gp,fixed} can be removed from x86_pmu_capability.
 >
-> -               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
-> +               if (roots & KVM_MMU_ROOT_CURRENT)
-> +                       kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+>  arch/x86/events/core.c            | 2 --
+>  arch/x86/include/asm/perf_event.h | 2 --
+>  2 files changed, 4 deletions(-)
+>
+> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+> index 65349819ba43..5bcd2a48d2b3 100644
+> --- a/arch/x86/events/core.c
+> +++ b/arch/x86/events/core.c
+> @@ -3132,8 +3132,6 @@ void perf_get_x86_pmu_capability(struct x86_pmu_cap=
+ability *cap)
+>          * base PMU holds the correct number of counters for P-cores.
+>          */
+>         cap->version            =3D x86_pmu.version;
+> -       cap->num_counters_gp    =3D x86_pmu_num_counters(NULL);
+> -       cap->num_counters_fixed =3D x86_pmu_num_counters_fixed(NULL);
+>         cap->cntr_mask64        =3D x86_pmu.cntr_mask64;
+>         cap->fixed_cntr_mask64  =3D x86_pmu.fixed_cntr_mask64;
+>         cap->bit_width_gp       =3D cap->cntr_mask64 ? x86_pmu.cntval_bit=
+s : 0;
+Our internal Sashiko says:
 
-Hmmm why?
-
-AFAICT, if the gva has a shadow mapping, then the rest of
-kvm_mmu_invalidate_addr() will make sure the shadow mapping is
-up-to-date and do any necessary TLB flushes in the process. So I am
-assuming the flush here is intended to cover some cases where the gva
-does not have a shadow mapping. Not sure how this could happen, I
-assume we always flush the TLB when a shadow PTE is freed.
-
-If there are cases where we can have TLB entries but no shadow
-mappings, then shouldn't we flush regardless of which cached roots
-match the target PCID? I assume if none of the cached roots match the
-PCID it's not an issue because KVM will create a new root and flush
-the TLB before switching into the new PCID.
-
->
->                 if (tdp_enabled)
->                         return;
->
->
-> And that highlights the missed flush: if the PCID isn't the current PCID, then
-> flush_tlb_gva() neglects to flush the hardware TLB for the target PCID, which
-> could leave a stale entry in the TLB if the guest switches to the new PCID with
-> MOV CR3 + X86_CR3_PCID_NOFLUSH.
-
-I also don't follow this part flush_tlb_gva() ends up executing
-INVVPID or INVLPGA. In both cases, all PCIDs for the VPID/ASID are
-flushed, right?
+This isn't a bug introduced by this patch, but since KVM is switching
+to bitmap-based PMU capabilities here, I noticed an issue with how legacy
+AMD PMU intercepts are calculated in
+arch/x86/kvm/svm/svm.c:svm_recalc_pmu_msr_intercepts():
+/* Legacy counters are always available for AMD CPUs with a PMU. */
+for_each_set_bit(i, &gp_mask, AMD64_NUM_COUNTERS)
+svm_set_intercept_for_msr(vcpu, MSR_K7_PERFCTR0 + i,
+  MSR_TYPE_RW, intercept);
+Does this fail to re-enable intercepts for counters in ~gp_mask up to
+AMD64_NUM_COUNTERS?
+If a guest's CPUID dynamically disables previously enabled legacy counters
+while mediated PMU is active, the intercepts for these counters are skipped=
+.
+Could this leave the guest with unauthorized, direct read/write passthrough
+access to host performance counters?
+The code just below this handles the ~gp_mask case correctly for
+MSR_F15H_PERF_CTR by iterating over host_only_gp_mask:
+host_only_gp_mask =3D kvm_pmu_cap.cntr_mask64 & ~gp_mask;
+kvm_for_each_set_pmc_idx(i, host_only_gp_mask, AMD_GP)
+svm_enable_intercept_for_msr(vcpu, MSR_F15H_PERF_CTR + 2 * i,
+     MSR_TYPE_RW);
+Would the legacy MSR_K7_PERFCTR0 handling allow a guest-to-host privilege
+escalation and information leak without a similar fix?
