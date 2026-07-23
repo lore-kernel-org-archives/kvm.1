@@ -1,216 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1651D555;
-	Thu, 23 Jul 2026 00:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784765996; cv=none; b=ieUHiaZVSddwJnQb/0FxLi+ToTXwhgVtVqqDTdGNa1+PzM+4bVS+mXH9FPmStMavj9/9119/soGFWNlBzBSfXqmzrzv3EolYMRC8HaAUV+CfGndvtH7KNnHza8ThRhyPG2fN340BlR5sGqGPM0Nf7FoNzKV8QZ5Tbhjbm8lcLz0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784765996; c=relaxed/simple;
-	bh=LJrwMBFzEJfWlcNe+u3Em2s3k7Xc8/tdxZKRwTN6sgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDI8rZSaSoy2a1MI2eL9qWQhAyYxkiULZfZUpW2PtIUP8lsYR075zwHvFdQ5IbEqllXh2domy4T92813E0I8cq6kkBP3mA93I7GkLZBTlMjhYkKAaMAVNPEycFBNhWpO6Dxde9yZ3M8fn/wLHx0G/XwKUUegyumIY1vvjCfJjJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BCF74EeS; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9865C20459A
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784766302; cv=pass; b=hqewkD7ggM2QExt0RVdvPjueqX5c363NbMApijXyblh0Brl8vRVlCVgZEqvWTfYCAiRtBiPXHYTslr5wZeG8wilDPz8Jc1dSN/UEA8ZCBtrmyfOtD623qSQDF21pIvKMigsWbayNjfQ6/GYvnKjFwTRCeaFTh9oY875Kr25sttE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784766302; c=relaxed/simple;
+	bh=kWEc23GO5qIxiQrzPxnHHaclfVo15f3n3UsjCeW8qhI=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BLAwmyxDWD4FVboC5gPHDxUfm34qyHfs5uYSE5fOhf96nOLbTL2Ie8m6JkhFap+2aIDkY4KEz3GDEMZ8VaqgxAFsLJhU5I7NYj3Tn7JLzkNJ+LuqlWJqAz4LIDbpFUVCq9FqwXR0g/RbORvO1DJSjESCRFRnxBIr/yTEPN5jN2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oun6Zcv5; arc=pass smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BCF74EeS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0F61F000E9;
-	Thu, 23 Jul 2026 00:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784765994;
-	bh=etGADT3O07IS+YgXI7BAorrClTolrXpqV0QzB1dZpWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BCF74EeStolbb2W/TP1soDHuWZ51DJgYsnp0HoXIhY2LV8FES9MkZRqdbEzajNcq+
-	 FdLD6IqAG7VkemQlxBlzfSPOaZ9GNCpfftJx+0klLFu5BE2mkb7lN3baGG6RJOA/f+
-	 OTbXbg6YqfXU+lWGMVnTAd3AXQwctqtKShgO3nYG2UgswjKxrd3j5RbvY6xNG9gaXM
-	 fPUG9Bt2NyDXhqYg6+KA0IHV+/ZVkHI4krzjxQIX39zaRdwO1taH2ix1ZIoapD4CwO
-	 y+KvoVgLfc1T4Hs6ON+9+dwzzQyWXFuwLTkfAhh3M+nzbYJObaTnWnCcSzHNgOzf46
-	 0VqiGCD9JgaHg==
-From: SJ Park <sj@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: SJ Park <sj@kernel.org>,
-	arun.george@samsung.com,
-	balbirs@nvidia.com,
-	brendan.jackman@linux.dev,
-	yuzenghui@huawei.com,
-	apopple@nvidia.com,
-	alucerop@amd.com,
-	matthew.brost@intel.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	osandov@osandov.com,
-	jannh@google.com,
-	pfalcato@suse.de,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	pbonzini@redhat.com,
-	osalvador@suse.de,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	ying.huang@linux.alibaba.com,
-	kasong@tencent.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	yury.norov@gmail.com,
-	linux@rasmusvillemoes.dk,
-	longman@redhat.com,
-	ridong.chen@linux.dev,
-	tj@kernel.org,
-	mkoutny@suse.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	nvdimm@lists.linux.dev,
-	linux-cxl@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	damon@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON migration and pageout
-Date: Wed, 22 Jul 2026 17:19:42 -0700
-Message-ID: <20260723001943.95854-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <amCzmkdOr6AFv_kQ@gourry-fedora-PF4VCD3F>
-References: 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oun6Zcv5"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-382ef647e20so54051a91.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:25:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784766300; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jbCrNyAoAhh2hS2019r5Eozjnz1AHDvmtZPhMNsU+xQKWybK1XGa0nNBlP3IRIkJ5k
+         pHlZWTGRn17vmZh+bV8/cSvBPDgpFhoHtdP9TMtZf0I4LbEGtAvDm6IZ6/WtQZ+AQCi8
+         4M6ciOk3BEqcwaagmbvlApVpsRsBZuZ+SLWUEMhkafX7lNF5cWAQ9vNKXbDMmEaatCAw
+         Cfvj7bCPWKYZ3URUKXODsaHgwMFxtb621HOYjOY8/jxdX00XT3/ed1iZfto5Cfp6eVbL
+         trPf+MHSqSlYAh8q4ulrkTBIebfyD5Ej7u9tAiaEpu9F5j9UqkFTbdOKie32+JFDWwHA
+         TT5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:dkim-signature;
+        bh=QK6NTIZ7U7u2uxukmeUbpT6BYUSoQRmwBsUnN+HFDzo=;
+        fh=XtYsH8P5WKIbfNVV5HBlPtryF6qxkeGzHzzP6mEq8WI=;
+        b=Lh658kAtAJHY4Gke9MAqybt2tCm9kdpt0QvDovl/xe7LHCXdenfLfXpnOokpSuEWIZ
+         dnW4neKhHRJ1xyvgoG/IJjk2FaRbk2cic+NveRa7GuMDy1kzfK1GdIFRgIucXzSZbwTm
+         g8LLWHCbccte5dKIbMRA+JpRYwoFhL8PW0oMBYqP1sd8Yidt0pfdLytm1FiEZ3ixUTwn
+         TKCSuAFICXPhsSYvjukrage47KlvTPv3Io4rozOnq1ea+dqEB+iunVlkIyJupADVEAhi
+         x04UuvujjR3shMjoo/h/bCQT8ezd8//wxwIHcbtOvMGI/q95Vvixr8i/4t+ntkZHD2eN
+         w/lg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784766300; x=1785371100; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QK6NTIZ7U7u2uxukmeUbpT6BYUSoQRmwBsUnN+HFDzo=;
+        b=oun6Zcv5grp7EeniF7UUhMaLICNreZo8CbbWa0CsCUwKl8jahpOtGKIgiV7SzXWrHj
+         OzMH0pckHuVqYSWq+ZTWV7nKkLUWQ/Gve+KmJYzR6tN3vJ2R6vqsL8slfTjqNANjNeUl
+         hZzVlqN6I3nAlA6X/FMj+EYZL4GxAbqtPTiaUNcUYz32FaL7b18c8axc/iY4erLE80cC
+         1iDhg62fKxdnGrwaQvazPXx10enxBUyBjJYiME4GVSVgcgnx3t7sjwaZHcZ7pe/7Yip+
+         xSi5Br9ABIhH+4fFObiEiLfXP8q8xklfqqpY5zh7Ha+Y2mvdvOs/Lu8Dax6bngiSDYwP
+         qMXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784766300; x=1785371100;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QK6NTIZ7U7u2uxukmeUbpT6BYUSoQRmwBsUnN+HFDzo=;
+        b=WDwS7yuoNy/Cd0S1xO6FmTHYtZqEZLPRfsOrTctuQHz4TyMiqyNWE5ExHp4Vp7ryss
+         CLE2w4l5BBRnm7f1odIL9JVZy5ktyxju2+xX5hQuWPvmV4B1KJ2nmK2+XdV5sl8tRzcD
+         pDp7QFwuo7Zl5+NaBm/H24k0zu3CnpYCxC98QWLYWoyU6obqQ9ErzfJtUlrMIzGgo5XS
+         snsG9KtRoqdO8boc0A59pZBsBWGuCNWvx1ON5YnjLXIOakWzuuAL3nM/uPC6JvbfUqut
+         nRl5+3qr05VQcIXm73dtTs2lc2t3RadMTivLvjsyMq0hgy0GlEUj6rDKzY+g+xWz4iI5
+         9pZQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqkNQf8YihvcxAeen6ArmZ+hOQsDMq54YrTKLokGrDHbg39xieiFZS2RqwDy1HyIwPj1uk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf62rGIyVgeys7rj6Af5tW0hjAW19h1ivr2Xzy/YZAgLJCypkU
+	o+8g7RPtr0eeqMAxvot6Z9JT98pbEUduMnAdZM3K9kUgixGDArzV2vZWVlvpgcCOUCC0BP/cB/A
+	F9whKQBF8IZHZ0OF0Y+qSUiTgi21MvO5uo5On98/D
+X-Gm-Gg: AR+sD12SRhjMpfVSb8RI8Rz9xmm0TcBGGuHbPPYc21NWbqfeaBtxNcrOcUdtDqgji+4
+	ev+jVUMBDssRJ+5f72KNmOe4DnTPUonUyyEAjBAGmChcJw0FCOFk92VklayRciDexztkLqW4CCD
+	5+E9JwFqB2MYtFcR9ktnzlYYSYvmHGiVPYZlbnF5WX+qumvCz0OqfAUwsaqYB+1ue6oM4u0Q/G6
+	KRzxTynMikYCGcvtinPQ227VNekH2mtMnPDh9GBLqSyB++mKv4JQDjZExUp7XDcdzDdMkJPJMWf
+	cVSj2D6ndwndGjXoAil+8QGOjp4jiS36U0Y0YuSRlywvEtp1
+X-Received: by 2002:a17:90b:4c10:b0:381:5bd6:eb19 with SMTP id
+ 98e67ed59e1d1-38ec652509dmr815476a91.18.1784766299151; Wed, 22 Jul 2026
+ 17:24:59 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 Jul 2026 17:24:58 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 Jul 2026 17:24:58 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260720111259.122911-1-dwmw2@infradead.org>
+References: <20260720111259.122911-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Wed, 22 Jul 2026 17:24:58 -0700
+X-Gm-Features: AUfX_mwUpcRZcR396JGdaH8WFVBtAEhVFxsR1fJihR2mu_ygz-fygFCraN7fXhg
+Message-ID: <CAEvNRgG-K2HOJoMmdMSH0gEuLNhgX2tqUAakoRqEx6noNyU3vg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 00/11] KVM: Allow alternative providers of
+ guest_memfd backed by PFNMAP memory
+To: David Woodhouse <dwmw2@infradead.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Tycho Andersen <tycho@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Ashish Kalra <ashish.kalra@amd.com>, Connor Williamson <connordw@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Zhou Yuhang <zhouyuhang@kylinos.cn>, 
+	Zi Li <zi.li@linux.dev>, Dan Williams <djbw@kernel.org>, Eric Biggers <ebiggers@kernel.org>, 
+	Colin Ian King <colin.i.king@gmail.com>, connordw@amazon.co.uk, graf@amazon.de, 
+	fgriffo@amazon.co.uk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 22 Jul 2026 08:16:56 -0400 Gregory Price <gourry@gourry.net> wrote:
+David Woodhouse <dwmw2@infradead.org> writes:
 
-> On Tue, Jul 21, 2026 at 04:46:43PM -0700, SJ Park wrote:
-> > On Mon, 20 Jul 2026 15:34:08 -0400 Gregory Price <gourry@gourry.net> wrote:
-> > 
-> > > DAMON operates on physical address ranges, which can cover private
-> > > node memory. Skip private-node folios in both DAMON's migration
-> > > and reclaim paths.
-> > > 
-> > > Signed-off-by: Gregory Price <gourry@gourry.net>
-> > > ---
-> > >  mm/damon/paddr.c | 9 +++++++++
-> > >  1 file changed, 9 insertions(+)
-> > > 
-> > > diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> > > index e4f98d67461f5..c741a94319750 100644
-> > > --- a/mm/damon/paddr.c
-> > > +++ b/mm/damon/paddr.c
-> > > @@ -12,6 +12,7 @@
-> > >  #include <linux/swap.h>
-> > >  #include <linux/memory-tiers.h>
-> > >  #include <linux/mm_inline.h>
-> > > +#include <linux/node_private.h>
-> > >  
-> > >  #include "../internal.h"
-> > >  #include "ops-common.h"
-> > > @@ -250,6 +251,10 @@ static unsigned long damon_pa_pageout(struct damon_region *r,
-> > >  			continue;
-> > >  		}
-> > >  
-> > > +		/* private node memory is not reclaimable by default */
-> > > +		if (folio_is_private_node(folio))
-> > > +			goto put_folio;
-> > > +
-> > 
-> > "by default".  Does that mean it could be reclaimable in some situations?  If
-> > so, could we check if it is reclaimable?
-> > 
-> 
-> See the damon changes in:
-> 
-> https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
+> For dedicated hosting environments, there are a few reasons to prefer
+> using external PFNMAP memory for guests, rather than kernel-managed
+> memory:
+>
+>  =E2=80=A2 No struct page overheads
+>
+>  =E2=80=A2 Easily managed in 1GiB pages (or larger chunks); no fragmentat=
+ion/THP
+>
+>  =E2=80=A2 Faster kexec/KHO live update (every millisecond spent faffing =
+around
+>    with memory management is an extra millisecond of steal time taken
+>    from guests)
+>
 
-Summarizing what you want to say, quoting something from the patch, or at least
-calling it "26th patch of this series" would have made reviewing much easier.
-Cc-ing damon@ for only patches that toucing DAMON source files and the cover
-letter of the series could also be helpful.  Please consider doing some of
-these for future replies.
+Also, no need to split/merge pages when converting from private to
+shared if the host mappings can't depend on the refcounts in struct
+pages :).
 
-So, I understand later patches will make it optionally reclaimable and update
-this restriction by the 26th patch?  That sounds fair.  But, could we drop "by
-default" from the above comment for reducing the confusion?
+> Today, there is only one implementation of guest_memfd: the internal
+> shmem-based page cache in virt/kvm/guest_memfd.c. This series allows
+> for other code to provide "a guest_memfd". This is an early path-
+> finding proof of concept tested with AMD SEV-SNP as well as non-CoCo
+> guests on x86 and arm64. I'm planning to build a memory-based file
+> system which gives files for both guest_memfd as well as memory-based
+> storage to allow things like userspace VM and orchestrator state
+> to be passed over KHO/kexec.
+>
 
-> 
-> > Also, what happens if we just try paging out the private node memory?  Will it
-> > simply fail?  Or, make some problems?
-> > 
-> 
-> user controls for MADV_ commands that affect private node folios would
-> skip those folios - exactly same as ZONE_DEVICE folios.
-> 
-> Which I'm not sure damon actually handles correctly presently (zone
-> device).  I remember looking around damon and thinking to myself "what
-> if this is a zone device page?" and not being able to find a satisfying
-> answer.
-> 
-> > >  		if (damos_pa_filter_out(s, folio))
-> > >  			goto put_folio;
-> > >  		else
-> > > @@ -344,6 +349,10 @@ static unsigned long damon_pa_migrate(struct damon_region *r,
-> > >  		else
-> > >  			*sz_filter_passed += folio_size(folio) / addr_unit;
-> > >  
-> > > +		/* private nodes do not support migration by default */
-> > > +		if (folio_is_private_node(folio))
-> > > +			goto put_folio;
-> > > +
-> > 
-> > Same questions.
-> > 
-> 
-> Technically there is nothing in migration core to prevent migration
-> operations, it's done on a service basis - hotunplug, reclaim/demotion,
-> user numa (mbind, migrate/move_pages) etc.
-> 
-> Operations on private nodes/private node folioes are refused if the
-> capability bit is not set.
+Thanks for raising this, good to know that there is more interest!
 
-I haven't had a chance to read the entire series, sorry about that.  So, do you
-mean the above blocking is not really needed, or that will conditionally be
-allowed by another later patch?
+Vishal and I have been working on guest_memfd with HugeTLB for a while
+now. I'll be restarting upstream work on HugeTLB after the conversions
+series merges.
 
+Vishal, Frank and I brought up having guest_memfd with HugeTLB with
+VM_PFNMAP mappings at a guest_memfd biweekly meeting a while ago. The
+consensus was that guest_memfd HugeTLB must support GUP and so VM_PFNMAP
+can't be the only way that guest_memfd supports HugeTLB.
 
-Thanks,
-SJ
+Your proposal is true non-page-struct memory, which has been on the
+discussion guest_memfd biweekly discussion backlog for a while
+now. Google is definitely also interested in this.
 
-[...]
+Frank also described some use cases [1] other than HugeTLB and the
+regular PAGE_SIZE pages from the buddy that is currently supported.
+
+I submitted a proposal for LPC 2026 to discuss the interface. What I had
+in mind was to have the KVM_GUEST_MEMFD_CREATE ioctl take a "template"
+fd. guest_memfd will then read off what it needs from the "template" fd
+(ops, like you have here), and the "template" fd could be VFIO [2] or
+HugeTLB.
+
+You have a provider_fd =3D open("/dev/gmem_provider"), how about passing
+that provider_fd to guest_memfd, where /dev/gmem_provider could
+represent the page-less memory, like:
+
+  ioctl(kvm_fd, KVM_GUEST_MEMFD_CREATE, provider_fd);
+
+It would be cool if the fallback could be set up flexibly, like:
+
+  ioctl(kvm_fd, KVM_GUEST_MEMFD_CREATE,
+        [provider_fd, fallback_provider_fd, ...]);
+
+I think guest_memfd should be the wrapper around other memory providers
+because then the CoCo shared/private logic and special page table
+handling for both host and stage 2 page tables is centralized in
+guest_memfd, and also, KVM doesn't have to understand other, different
+kinds of fds other than guest_memfd.
+
+[1] https://lore.kernel.org/all/CAPTztWajm_JLpp9BjRcX=3Dh72r25ELrXeGkOXVach=
+ybBxLJGS=3Dg@mail.gmail.com/
+[2] https://lore.kernel.org/all/CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=3D=
+D8ky94SCsw@mail.gmail.com/
+
+> This series lifts guest_memfd's operations into a small ops struct and
+> converts KVM's own gmem to use it, so it becomes one implementation
+> among peers rather than the only game in town.  It also adapts the
+> SEV-SNP fast paths to page-less operation, plumbs iommufd to map a
+> guest_memfd-backing dma-buf as CPU RAM (not MMIO), and adds the
+> provider->KVM revocation primitive that makes overcommit-style reclaim
+> possible.
+>
+> It's largely AI-built at the moment. My main design concerns are around
+> how we tell that a given file is "a guest_memfd", and how we plug into
+> IOMMUFD. Presenting a dma-buf was the less intrusive choice because that
+> path already has support for taking pages away, but I'm less convinced
+> that it's the cleaner choice in the long term.
+>
+
+IIUC from this series, you're creating a dmabuf fd out of a guest_memfd,
+what does "taking pages away" mean, in this case, from where/who?
+
+>
+> [...snip...]
+>
