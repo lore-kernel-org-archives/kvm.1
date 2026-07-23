@@ -1,121 +1,107 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0221A212F89
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7131280035
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 00:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784767051; cv=none; b=ij1N7O9zy/9IaqrgM+2kQ4ow+SW+pzHHs/kAGqZq1gn98ghodvXwym+wZ2YhRa71FcZbmWYrra3WxJWG7xG2oRhdi4VqOlOI8bXD9AdW3lREaa+A4aFNAXgvP2Y09vam/at+IUIDtNSxiJhVb09XkCci+pwAqSdEyhzRyQWjpDA=
+	t=1784767353; cv=none; b=ZfKagDxLR0hFYcliy33riR8evSmPxOw2tAnlDRir44suk9VEnGHv3R8pvqjaAjjrguyZML66BbLib5tHqc3pkDH5Y3yKEkKnP92BrriTmgILoH9oVyt6PeVKVb5K1X5Wkh82ap8b4djeOr/7yYzvROglxe8+yfQQShL3dAJjN9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784767051; c=relaxed/simple;
-	bh=Yt5hbkRC9PjOkXytqszGtz6pUpPWAwfKd2toK8ODUDE=;
+	s=arc-20240116; t=1784767353; c=relaxed/simple;
+	bh=Bx/O6lIWL20XhaxWVmlBMU7Qc4gBrIph7d0QGpoP5hU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X+fyIbFT/AX8lWZz2lmK8XcUDfNDb9aa3laXyhUpeDBQIDGBFti50W6yoN/vKNujJcyThCqzk9I3lOdZsXA4f4wzfaNT4/wWIjXR9+BfFx/sWw1PLmd82FcdfpSlz2pfTKq7umbx/YOZ41htpGojKaoebGJwoECiw71ew+JY8xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Iv/EOv7w; arc=none smtp.client-ip=209.85.214.200
+	 To:Cc:Content-Type; b=qzeplsZPkuGt0BN53XzMn9lKAjE3j3JAK5QhxXo2N66190lDHrmWHaJFxRKk4jC5UbK0Zl1yEpnSpGyHrtCeFhJh/JoYCmNyCJGLb7uDjTiXXI96vE1E2L1X1A4iObcgkg6gtaCLhMCDB5PQsJs3ijq+W3lKlsBWjZJ8yIVn7XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VG62FFl8; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Iv/EOv7w"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cccfa32670so1309975ad.2
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:37:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VG62FFl8"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cce14a21faso896725ad.0
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 17:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784767049; x=1785371849; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BHbGiVuZLUHACML0nqP9iDubHlU79isIZOnCNGhwIGA=;
-        b=Iv/EOv7wOtDP+HSB+xzKGvINPAChBoMLQ8eapwAE/Dsa+6IW/PuKyLLAatonnNB7pM
-         NPyhKibNqUHtHuFQJjew34vx0swWIV3zzBG32X/nATajmppfcyOdpCWtGkjZFs8YwJhc
-         wdJTCx8kD1OSQmY2J62jZ1EIid1TZjijYQ7mgOIO7OduzisB8f4itJmvbnzjmj6l7o32
-         lsOfKRvwzzaA3jwTYECwZotCrCZn4YrrOdX9gNBKbGcpnYKv3isGAFQ4CYWoVSBtDTSx
-         JviExFv9+Gyijfejq4NrwuCKWJpjcU2so2XUInpnOdeekTGIzcfexYMjxZwOQlHgLSLs
-         4bzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784767049; x=1785371849;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784767351; x=1785372151; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BHbGiVuZLUHACML0nqP9iDubHlU79isIZOnCNGhwIGA=;
-        b=sdBdvb9UMFnqSzObwxebCU17G6p7BTUvcGYyvBxSrrFE+1nz6fObuQ6ksgpBSme4nv
-         FM5GwP3ixLPFT0B1DqWvrmaHqsbf02Zp8+S+xMpGhk7TyEjlazXNurqVsBmnc4cEjZzF
-         za9ShMNrK4ht9in3I1IuYaw/YCszqQrBcvn8LU/EOgapspcjrk6HgBgt9YB5clbS8Wrt
-         rrobbRXHPD8I2rzaxmg3gIoODEJ+ScWZczukolk4CRY8wCjlvOp7rZZJG0pjuZLg3tbm
-         zn0UxtVvtvi3tXY8ZtZNEy5JowrhjPfMeIC8lPkrQbLwWv648kZrMhiVxI7XNCyKv/KY
-         97/w==
-X-Forwarded-Encrypted: i=1; AHgh+RrzpmVmXrmo1tP/FOW23Xxczy0VKn4dEboWN+m+2FlInYQ66jiUObyGBNRhRszb8tfG96M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg8OAYUsFRzqlCeF51n4wiX83MQEe6r89o+F8RK+n/noLMBKnV
-	xDSouraV8Ple4f1gF2hcGKhIwC4YaI4P9Vm7hD82oGVFW48SehqTxVs64m3GBQbjuRjyv33Uykk
-	ilku4Dg==
-X-Received: from plhi3.prod.google.com ([2002:a17:903:2ec3:b0:2cf:3e66:d26c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:dac7:b0:2c7:ebfb:618f
- with SMTP id d9443c01a7336-2cfa6b73a76mr12595425ad.14.1784767049125; Wed, 22
- Jul 2026 17:37:29 -0700 (PDT)
-Date: Wed, 22 Jul 2026 17:37:28 -0700
-In-Reply-To: <CAO9r8zNVPAeeiporS5aYFxdRUciaGwZGbnSg7Dr2XVpNFCvOmw@mail.gmail.com>
+        bh=pYT880AolYzsmucK5/M0IhhR2VakKdt11GAhNv55PqY=;
+        b=VG62FFl8leMsVK7e76rzc+OBbrCcjus4mVw5FtwAENowMVee7vWJDfJV2XE3p+lpfA
+         cBx/mLOyWWC0GaVtlkMXVnH4Hzx5NNHV/ejzwdmXMXDSRc2UVbUVtNsVAl4fMHuEANbu
+         710gDWeyMgiJBxm1+IcJy/YZp9eseDW5lI0+LQtJkBftjGXD8mTST1v1JnUF7yYCaYlF
+         8IPRaY6I3qpAqJL6DJOIiZNWg+FjFoeUPCV7P1JVFspxAxpCFOmwBnMDDv0+inbW0h3B
+         v+QSlIXAaKbmk/SKKU3MAy0I7Gge4LMi/Wc66i4h4ZQYaCVUTVrGJsD7VvWmBTz38awq
+         uPQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784767351; x=1785372151;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pYT880AolYzsmucK5/M0IhhR2VakKdt11GAhNv55PqY=;
+        b=jeO4raDBzi8qPx1rEQajel4qM+LpVce9XvfMQqYkoLZhxlMBpSUUoxgNTVN4hEL9ET
+         LWwPlOb0rhblOUxF0i3eqo3ixQSl0uhaou0Lzp8KAQKbkOgzqcaVAoWrrjRQcr9ePR2r
+         ldZOXWnNUG7j4judYQH3+lhEpY9wuuY1HQ7dGJJaf7wBhXk5j4Z7Cfz6sTGTr1jnWC7k
+         E4WgHhKwcoi9hQnduwcBP+7O2p/95no1UKUy2sUiamSKAC/dbPMmATHech33rpHgNksQ
+         pwl1EFisZmZ9KepnmpFPSIqM7QjOB2M0h6wAFtJhzQ0h+bKjrsXygxFCmhS8LaS2OkaO
+         JNtA==
+X-Forwarded-Encrypted: i=1; AHgh+RoAYXku1NofyeHBKMAlSM7yQZXAF1rMrxa4CKm2NbelK++RQgW1ayVXTUdCu0lIdfSpo/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbhWX8P18Zcn/XsV6VSVbjrUQRvLETCm3YBkkGGzM6mwUxGk6T
+	YcfLlrw3oxn0BY+dvCNpK98t66RKEtZRRcRpciMjEs+2kOfgl7FkjwCbuH7EZYFl+R/S37ZKnnb
+	kFjJdlA==
+X-Received: from plbji11.prod.google.com ([2002:a17:903:324b:b0:2cc:b904:3254])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fa10:b0:2cc:92ae:b36
+ with SMTP id d9443c01a7336-2cfa9551320mr3558095ad.24.1784767350952; Wed, 22
+ Jul 2026 17:42:30 -0700 (PDT)
+Date: Wed, 22 Jul 2026 17:42:30 -0700
+In-Reply-To: <20260616004155.1435766-16-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260616004155.1435766-14-yosry@kernel.org> <20260616010534.2C8511F000E9@smtp.kernel.org>
- <CAO9r8zNVPAeeiporS5aYFxdRUciaGwZGbnSg7Dr2XVpNFCvOmw@mail.gmail.com>
-Message-ID: <amFiSICO8Hqit7SY@google.com>
-Subject: Re: [RFC PATCH v2 13/25] KVM: nSVM: Flush both L1 and L2 ASIDs on KVM_REQ_TLB_FLUSH
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-16-yosry@kernel.org>
+Message-ID: <amFjdi84r-tPgKqk@google.com>
+Subject: Re: [RFC PATCH v2 15/25] KVM: nSVM: Call nested_svm_transition_tlb_flush()
+ on every VMCB switch
 From: Sean Christopherson <seanjc@google.com>
 To: Yosry Ahmed <yosry@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Jun 16, 2026, Yosry Ahmed wrote:
-> On Mon, Jun 15, 2026 at 6:05=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
-> > > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > > index dac3d0098bb77..4f13c3456a5d7 100644
-> > > --- a/arch/x86/kvm/svm/svm.c
-> > > +++ b/arch/x86/kvm/svm/svm.c
-> > [ ... ]
-> > > @@ -4213,7 +4215,11 @@ static void svm_flush_tlb_all(struct kvm_vcpu =
-*vcpu)
-> > >       if (WARN_ON_ONCE(svm_hv_is_enlightened_tlb_enabled(vcpu)))
-> > >               hv_flush_remote_tlbs(vcpu->kvm);
-> > >
-> > > -     svm_flush_tlb_asid(vcpu);
-> > > +     kvm_hv_purge_all_tlb_flush_fifos(vcpu);
-> > > +
-> > > +     vmcb_set_flush_asid(svm->vmcb01.ptr);
-> > > +     if (svm->nested.vmcb02.ptr)
-> > > +             vmcb_set_flush_asid(svm->nested.vmcb02.ptr);
-> >
-> > [Severity: High]
-> > Could this dereference of svm->nested.vmcb02.ptr cause a use-after-free=
-?
-> >
-> > If svm_allocate_nested() successfully allocates vmcb02_page and assigns=
- it
-> > to svm->nested.vmcb02.ptr, but a subsequent allocation (such as msrpm)
-> > fails, the error path frees the page but does not clear the pointer:
-> >
-> > arch/x86/kvm/svm/nested.c:svm_allocate_nested() {
-> >     ...
-> > err_free_vmcb02:
-> >     __free_page(vmcb02_page);
-> >     return -ENOMEM;
-> > }
-> >
-> > If a TLB flush is later triggered and calls svm_flush_tlb_all(), the ch=
-eck
-> > for if (svm->nested.vmcb02.ptr) would evaluate to true on the dangling
-> > pointer, and vmcb_set_flush_asid() would write to freed memory.
-> >
-> > Would it be safer to check svm->nested.initialized here instead, to ens=
-ure
-> > the nested state is fully allocated and valid?
->=20
-> Yes. But if no one objects, I'd rather add a patch to drop
-> svm->nested.initialized completely, and properly NULLify
-> svm->nested.vmcb02.ptr in the destruction paths. Keying off the
-> pointer makes more sense semantically imo.
+> Move the calls to nested_svm_transition_tlb_flush() in different
+> transition code paths to svm_switch_vmcb(). This ensures that TLB
+> flushes are not missed during switches, and makes it clearer that the
+> TLB flushes are directly related to the active VMCB.
+> 
+> The ordering currently doesn't matter, but as more TLB handling is added
+> for nested, requesting the TLB flushes *after* the VMCB switch will
+> become a requirement.
+> 
+> No functional change intended (for now).
+> 
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  arch/x86/kvm/svm/nested.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 24a52aefe94ee..9a917d057aa8e 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -707,8 +707,12 @@ static void nested_svm_transition_tlb_flush(struct kvm_vcpu *vcpu)
+>  
+>  static void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_vmcb)
+>  {
+> +	struct kvm_vcpu *vcpu = &svm->vcpu;
+> +
+>  	svm->current_vmcb = target_vmcb;
+>  	svm->vmcb = target_vmcb->ptr;
+> +
+> +	nested_svm_transition_tlb_flush(vcpu);
 
-+1
+I'm not convinced this is the right place to do the flushing.  Yes, manually
+doing the flushes requires more code, and arguably makes KVM less robust, but
+IMO there's value in mimicking architectural flows because it's the architecture
+that dictates the flushing.
