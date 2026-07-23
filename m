@@ -1,205 +1,338 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90E2326D55
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 02:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784774807; cv=pass; b=T0a3XDlBl2lGDv7ITUdgzDV1o/jyqevFKtv2z9sgfE+ldQ+LEiLL2Gkp4wijzM5JQ4QkmNC+YoEr7txh+5FCqbfgBaMMVI4YyI4epzqdEdCY7goy6sr9B3QpDG635M/j4L+qpbDw47dZnVbX99AhxxI2o2f4Z9TA0dJ83nWGg9M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784774807; c=relaxed/simple;
-	bh=kdmk4lR7uTcEm9/XUMkQ5VZciR6/aQPrwVQLu6B5iek=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F7y1Nxqqi8z2v/XtfGVgv+6YGDCc0EAS0JyFWpiZXLA2oFOMUEQR77pmUd2yONmRqRk0LRER8GpOi1Rm7pMwhM++kGC2W70s7uk+by/m+cTLxH5B1dro3LSEyUX2KyGMQWFOqEAsCxWHZgtQ/M2L5w7uN4Xr+t9M23o3iBOn7r8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L+/3A6rT; arc=pass smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB7935C1B7;
+	Thu, 23 Jul 2026 02:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.252
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784774918; cv=none; b=n6y210EdVXvcjNF1C538+44w+rw4lzpk9W7+8FIQchCGB+2iSWhOTrsgbzVw5A3E3LFnVf/FZpuYIXkoufdtLLr5j8Xa1kVaejefxLHByEJCpgQsSt3kv///AyG3Ubl2dORrstQLBz+Jvzdvs0y/3FuyOaOdCwNXhTSA/7I+t/w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784774918; c=relaxed/simple;
+	bh=xO4Xsg6WMoznKKLCX2VF4Rxpd9VvTwSKgFTxYveIfGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PBczSLYPzbDbk5qnSkOds3XkOYlYCa6E/9B/6jyMvnBvETpZLXwCfV73SXskzjwbXhpprj6VWGxSI7emDZUcZOyGvxygM2tJvGrkiXqR2Lzp/zPv0A1BJFMtOx+YPLfOILNT4yqiI2XqOG0HB5bzoemqM/d5p4196FURqSKsH5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=neDX52RF; arc=none smtp.client-ip=139.138.61.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L+/3A6rT"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-69f21b7f6cdso4903a12.0
-        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 19:46:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784774802; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G+jG86dvty2/4mTZB1zPvhrZhWri/cbHNGCkECV6w9f5I3ApykAfX8ivxnaxuAivQF
-         GMizg7MadWbUpz+bqL212cO659rt2Xzyk/BmW6N9OEejKNQV48h+BSR523bXYiBdh+o+
-         f2L4cwUnL+HN1aNoNWM++w1pr9cxgvT1Dpdo0qIhGKrNxucMSavzGx8aN2W1brvd5RIL
-         p9WiEgzRPxfpwHjSLpxCCBGMOnkev+Wu9dQ0zTevPMewWai5gs37jn7VbFir0wb7vJpN
-         zrYjQKWveNUi5bWBdw80enAq/KBRVVh9pI5i++qjuDj27lmFdwWlH/nx8bXe1ItbCEy3
-         UwtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/TQ7+fJH2pBPjOPJfLKTre5jNB0iNHmYrL07T2lCWks=;
-        fh=eRYoSqe65mpp2UBdgHctAIN7g1Jujn9Y0U4d21zGBog=;
-        b=T1EOTIg1QJnp9cdq2Dtad/3ENaNXLj8+3TNJD2NlGtBD7l4YEHyqSRSJKYvT9b2qZA
-         sk0xmIlA0XPWg2RPFdt2t7DW/QYdDXDY23r1KwoESYF59k6AqqZsain8f0RVEC+LIZzC
-         8wbwfTQhEodwFRYqqjHKA9GRvD6aIGrzVHisYIQSKUHswzL5rVVc8nq765w++kkmKzEo
-         hnEQCOofAMfYnfci3jGnFi3fo4zZTYdELV2W2ydtcS59RVeePbDyUYJrci3FlNP8aO1g
-         Gpj7KPdMUurW12WLDCuGk5H3Sqf5TzURcrjzTNhEOLvQ+LE49NQn9SRHbhMSKLi1X4MX
-         1lQw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784774802; x=1785379602; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/TQ7+fJH2pBPjOPJfLKTre5jNB0iNHmYrL07T2lCWks=;
-        b=L+/3A6rTlRefuf6fd6gtHk/Rqhsd0FujUSIWyXqoHZ/lRLqGw5Odo4d6p5mMlOpXo+
-         1EaSomqMtkrRGaqPYWpZA/uWvRqOTI5DdtfojYpRMqetDrlwbGwNROPECyWc/HFKUiE0
-         f9S10Ws/x7sscjude6uPVtyRs4CAIl2kQH9sat1TCGPM1H5spSNvB2g0YFc5xlIXPMz8
-         yX2QLaO/7P+bCAoOEhMZrztEdyzwhwJ5g6IP1fQqZiJypCFSrn/w7bYMMZH2gbV6nESx
-         LTxM6WHxU5/pacM4VgdYpWTVMxQwoP0JvEUofp1BFLDp7Wy4xxy/nvDHaGWrxX8jM9/Z
-         dV0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784774802; x=1785379602;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/TQ7+fJH2pBPjOPJfLKTre5jNB0iNHmYrL07T2lCWks=;
-        b=bvRBi97zpbuba9J1l1Z/kPW1cvaHVFdyLEx4tDoDaiDDQ/pCI91s1uZwBLw/27RxK6
-         ToPAIsMV8RVJl0ZrAn92NIwjIngUaIxJUnraDTvQHi63TOKjFrf2FsjO4ttYBTztxs59
-         hhsKY6eEUsClUxvK+O+2mMLI9wp5Z8zfqhbfPdUkWsmdtd0ZvAIckpNr6rInIMIzJPK4
-         VY8Rg+Ie7PdsBy5RVfXNA4mQiiAIrbJypqZkgVwNVFiCsSlxQYK2tDLPBVl7PNg5xZfp
-         DNqUE7L21+vHpTJTIBFMvZXr/i2WGuIyrj/ZNJDLPsl5lVe4McOfAbVciEEEVPKpMbef
-         bIwg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr7JRzZ7p9pIjMqLxea6zlPXmnvppB4mU8btqOeqf8fcxkd78iOSRQq0ThyYDi+T20VxDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/xJn8CyQ4XIhuiUAL89TkYMsD0+pFFZWTwX8uqcR2oDIukOQb
-	C1Qs4FZx6v5hOApp+N9/uWxrsBHHWAmiAc5WCUYyiVVR/qIGkHKVZXRg+fVdyYIOkwJdplghoRy
-	Ciu2Lelbr01NFZ47oSw/wG0gD0JocJ5dM5DglwCRS
-X-Gm-Gg: AR+sD10KPcRiaFxhJB++gCERrAWeXWJ0iMSdH9Nj+oeTMuN0WRkZGUx3RsUZx4Vf83S
-	JwhVOWkrzJxoK1ntMTW4cGY9FylAdmH+hCPqscq06jZhFV5K/7XmjusllAfqORqQlxWvAiix6PF
-	ks3yAkFxZl3l8wFU/ZUAjDTJBwtunCl9HfOJuyGQ8Ch3N6HM85pw5pbmRqZiMnDMyvG+CR7s3un
-	AJmVT7BThJLtXn+r1CeRt55VVDE1amVnZcDVLJdZNBCH1JhJeGMPePlRgG1kg==
-X-Received: by 2002:a05:6402:a6c9:20b0:697:5678:bc77 with SMTP id
- 4fb4d7f45d1cf-69f6cd0cdb9mr17090a12.9.1784774801335; Wed, 22 Jul 2026
- 19:46:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="neDX52RF"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1784774916; x=1816310916;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xO4Xsg6WMoznKKLCX2VF4Rxpd9VvTwSKgFTxYveIfGI=;
+  b=neDX52RFF9nhLLcjcGpGCQmv8NfaZkEIaIo8vOfLiH187FdbflX3bt2L
+   /F7MBgMQwIEq4zHRzvQ3PGF38Z4s6NH3NghwOgXkNp8ldcI893yMS9e1Q
+   jZuSKPsL/bGVZ9uRVums7t1ZjKFKFPoXB3onB+HW7Cu+wXOZ1q3LibIMK
+   bAnPHyA8qoWE5JWihz/zkuNXzxJSGNY43gnmLDOjJjMN4xGdUbTf9IWQV
+   GJY2Uoi7qycgC3eVv9o+3J0ZYbkXVRGsTRK10hopetM/5TeSsc0HzP6ej
+   mDqk4Cz0KhWTGn+BFCuaLA1EUdGo96he77chLt1cRx0t2AfJ3P6rPGVO/
+   w==;
+X-CSE-ConnectionGUID: DpLDW5xeT6Km+opSv0AMNw==
+X-CSE-MsgGUID: WEA4ANOiTUOF9EM2LHGFkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="227181184"
+X-IronPort-AV: E=Sophos;i="6.25,179,1779116400"; 
+   d="scan'208";a="227181184"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 11:47:25 +0900
+Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id ADAB31000342;
+	Thu, 23 Jul 2026 02:47:25 +0000 (UTC)
+Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 583C2C03F7A;
+	Thu, 23 Jul 2026 02:47:25 +0000 (UTC)
+Received: from sm-arm-grace07 (unknown [10.124.178.20])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmom3.fujitsu.com (Postfix) with ESMTPS id CECEC10001D0;
+	Thu, 23 Jul 2026 02:47:19 +0000 (UTC)
+Date: Thu, 23 Jul 2026 11:47:16 +0900
+From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v3 8/9] KVM: arm64: selftests: Add infrastructure for
+ using stage-2 in guest
+Message-ID: <amGAtKiTirVSHUky@sm-arm-grace07>
+References: <20260516183003.799058-1-weilin.chang@arm.com>
+ <20260516183003.799058-9-weilin.chang@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-3-yosry@kernel.org>
- <CAO9r8zPnXM1rypG8=YVsb7bir3J084Sza-0onnNX3s=uPK-JWg@mail.gmail.com>
- <CALMp9eT2W-oPtMpFdHZi1=F5MwVpx1YWKTh4n+O=STz7N=F_qg@mail.gmail.com>
- <CAO9r8zNso+8iKgiHc_VnCnTLKor-mGsFEV1U1N=RVLdn=FPNUQ@mail.gmail.com>
- <albJNb-akQJ97Yor@google.com> <CALMp9eRGx=K+UBp76A=dZ=bD_Txonq7j8pSn9HVczdtyyuAs3Q@mail.gmail.com>
- <amE_nPDem-imSfqF@google.com> <CALMp9eQL7y5chFEDCrqMR9CbJgiJxXN1hVzxVzojsr92AWnqrA@mail.gmail.com>
- <amFf5MAhc8sUqeYV@google.com>
-In-Reply-To: <amFf5MAhc8sUqeYV@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 22 Jul 2026 19:46:29 -0700
-X-Gm-Features: AUfX_mzfC-Wq0TWGAUjv7qQke6ZO51sJQ6gahjnxmjyb81f9kl2ta1H4oktn76Q
-Message-ID: <CALMp9eSssBCuTTWdr1qT2c4Nto2PQO-QOBnobcx2kTnuQaOB1g@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 02/25] KVM: SVM: Passthrough the number of
- supported ASIDs
-To: Sean Christopherson <seanjc@google.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260516183003.799058-9-weilin.chang@arm.com>
 
-On Wed, Jul 22, 2026 at 5:27=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, Jul 22, 2026, Jim Mattson wrote:
-> > On Wed, Jul 22, 2026 at 3:09=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > On Tue, Jul 14, 2026, Jim Mattson wrote:
-> > > > On Tue, Jul 14, 2026 at 4:41=E2=80=AFPM Sean Christopherson <seanjc=
-@google.com> wrote:
-> > > >
-> > > > > What complications?  Advertise the lowest common feature set for =
-the pool, just
-> > > > > like userspace has to do for literally every other feature.
-> > > >
-> > > > The problem with passing through the number of host ASIDs to the gu=
-est
-> > > > is what to do when the combined host plus guest usage exceeds the
-> > > > number of available ASIDs, particularly when FlushByASID is not
-> > > > available.
-> > >
-> > > But that doesn't have anything to do with the number of ASIDs that KV=
-M enumerates
-> > > to L1.  As of this series, the number ASIDs KVM will consume in hardw=
-are is a
-> > > property of the total number of vCPUs in the system (one ASID per vCP=
-U, plus one
-> > > more for nested usage).  E.g. if KVM advertises 10000 ASIDs to L1, al=
-l 10000
-> > > (10001, if ASID=3D0 counts?) of the those ASIDs will map to svm->nest=
-ed.asid02.
-> >
-> > That's not the only conceivable implementation.
->
-> But it is what is proposed in this series.
->
-> > KVM could advertise 64 ASIDs to L1 and reserve the corresponding non-ze=
-ro
-> > ASIDs for L2 VMs (i.e. the first L1 ASID is 64). Then, vmcb02.asid =3D
-> > vmcb12.asid & 0x3f.
-> >
-> > > Of course, that completely undermines my statement about suboptimal p=
-erformance:
-> > >
-> > >   And potentially suboptimal for performance.  There might be a legit=
-imate reason
-> > >   why a CPU generation advertises X instead of Y.
-> > >
-> > > My bogus assertion about performance notwithstanding, I still think a=
-dvertising
-> > > what hardware supports is the simple, sane approach.  Because at the =
-end of the
-> > > day it's just that: advertising.  Userspace can do whatever it wants,=
- including
-> > > peeking at raw CPUID.  E.g. if we want to pull a stupid and emulate t=
-he behavior
-> > > of ignoring "unsupported" ASIDs, then we'd need to do that based on u=
-serspace's
-> > > defined CPUID model, not KVM's advertised support.
-> >
-> > But you could refuse a userspace CPUID model that claims more ASIDs
-> > than KVM supports.
->
-> Nah, that's not the KVM way.  For this one in particular, there's zero re=
-ason to
-> enforce anything.  Practically speaking, *if* we want KVM to act like har=
-dware
-> and ignore unsupported ASIDs, then KVM *must* allow userspace to define a=
- max ASID
-> other than exactly what's reported by KVM_GET_SUPPORTED_CPUID, otherwise =
-migration
-> pools become impossible.  And at that point, disallowing a larger max ASI=
-D adds
-> zero value.
->
-> If KVM claiming support for an explicit number of ASIDs is a sticking poi=
-nt, then
-> I vote to zero the output in KVM_GET_SUPPORTED_CPUID, but I'd prefer not =
-to do
-> that because it will break reflecting KVM_GET_SUPPORTED_CPUID directly ba=
-ck into
-> KVM_SET_CPUID2.
+On Sat, May 16, 2026 at 07:30:02PM +0100, Wei-Lin Chang wrote:
+> Add a stage-2 page table generator, the s2_mmu structure, and vEL2
+> stage-2 preparation code for a guest hypervisor to turn on stage-2
+> translation for its nested guest.
+> 
+> Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
+> ---
+>  .../selftests/kvm/arm64/hello_nested.c        |   2 +-
+>  .../selftests/kvm/arm64/shadow_stage2.c       |   2 +-
+>  .../selftests/kvm/include/arm64/nested.h      |  15 +-
+>  .../testing/selftests/kvm/lib/arm64/nested.c  | 145 +++++++++++++++++-
+>  4 files changed, 160 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> index 9ed5285f5f2d..b57e41c73214 100644
+> --- a/tools/testing/selftests/kvm/arm64/hello_nested.c
+> +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
+> @@ -62,7 +62,7 @@ static void guest_code(void)
+>  	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
+>  
+>  	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> -	prepare_hyp();
+> +	prepare_hyp_no_s2();
+>  
+>  	ret = run_l2(&vcpu, &hyp_data);
+>  	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
+> diff --git a/tools/testing/selftests/kvm/arm64/shadow_stage2.c b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> index c5332b8b5683..2b274b810dcf 100644
+> --- a/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> +++ b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
+> @@ -72,7 +72,7 @@ static void guest_code(void)
+>  	l2_pc = ucall_translate_to_gpa(l2_guest_code);
+>  
+>  	init_vcpu(&vcpu, l2_pc, l2_stack_top);
+> -	prepare_hyp();
+> +	prepare_hyp_no_s2();
+>  
+>  	while (true) {
+>  		GUEST_PRINTF("L2 enter\n");
+> diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
+> index fc59fabff12d..1bcbb31b8d67 100644
+> --- a/tools/testing/selftests/kvm/include/arm64/nested.h
+> +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
+> @@ -38,6 +38,14 @@ struct vcpu {
+>  	struct cpu_context context;
+>  };
+>  
+> +struct s2_mmu {
+> +	gpa_t pgd;
+> +	unsigned int vmid;
+> +	unsigned int page_size_shift;
+> +	u64 vtcr;
+> +	u64 ipa_bits;
+> +};
+> +
+>  /*
+>   * KVM has host_data and hyp_context, combine them because we're only doing
+>   * hyp context.
+> @@ -56,8 +64,13 @@ struct page_pool {
+>  size_t get_page_size(void);
+>  gpa_t alloc_page(struct page_pool *pp);
+>  bool has_tgran_2(u64 mmfr0, size_t size);
+> -void prepare_hyp(void);
+> +void prepare_hyp_no_s2(void);
+> +void prepare_hyp(struct s2_mmu *mmu);
+>  void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top);
+> +void create_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa, size_t size,
+> +		       struct page_pool *pp);
+> +void init_s2_mmu(struct s2_mmu *mmu, unsigned int vmid, gpa_t pgd,
+> +		 size_t page_size, u64 ipa_bits);
+>  int run_l2(struct vcpu *vcpu, struct hyp_data *hyp_data);
+>  
+>  u64 do_hvc(u64 action, u64 arg1, u64 arg2);
+> diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> index cda41f355263..9848d607ef64 100644
+> --- a/tools/testing/selftests/kvm/lib/arm64/nested.c
+> +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
+> @@ -71,13 +71,22 @@ gpa_t alloc_page(struct page_pool *pp)
+>  	}
+>  }
+>  
+> -void prepare_hyp(void)
+> +void prepare_hyp_no_s2(void)
+>  {
+>  	write_sysreg(HCR_EL2_E2H | HCR_EL2_RW, hcr_el2);
+>  	write_sysreg(hyp_vectors, vbar_el2);
+>  	isb();
+>  }
+>  
+> +void prepare_hyp(struct s2_mmu *mmu)
+> +{
+> +	write_sysreg(mmu->vtcr, vtcr_el2);
+> +	write_sysreg(mmu->pgd | ((u64)mmu->vmid << 48), vttbr_el2);
+> +	write_sysreg(HCR_EL2_E2H | HCR_EL2_RW | HCR_EL2_VM, hcr_el2);
+> +	write_sysreg(hyp_vectors, vbar_el2);
+> +	isb();
+> +}
+> +
+>  void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top)
+>  {
+>  	memset(vcpu, 0, sizeof(*vcpu));
+> @@ -86,6 +95,140 @@ void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top)
+>  	vcpu->context.sys_regs[SP_EL1] = l2_stack_top;
+>  }
+>  
+> +static int stage2_levels(unsigned int page_size_shift, u64 ipa_bits)
+> +{
+> +	/* taken from ARM64_HW_PGTABLE_LEVELS(ipa) in KVM */
+> +	return (ipa_bits - 4) / (page_size_shift - 3);
+> +}
+> +
+> +static u64 get_index(struct s2_mmu *mmu, u64 ipa, int level)
+> +{
+> +	int width = mmu->page_size_shift - 3;
+> +	int shift_amount = mmu->page_size_shift + (3 - level) * width;
+> +
+> +	return (ipa >> shift_amount) & GENMASK_ULL(width - 1, 0);
+> +}
+> +
+> +static u64 pte_gpa_to_gva(u64 gpa)
+> +{
+> +	/*
+> +	 * This depends on how the memory used for s2pt is mapped in GVA,
+> +	 * currently it is assumed they are idmapped.
+> +	 */
+> +	return gpa;
+> +}
+> +
+> +static u64 pte_to_pt_base(u64 pte)
+> +{
+> +	return pte & GENMASK_ULL(47, 12);
+> +}
+> +
+> +#define S2_PTE_AF		(1ULL << 10)
+> +#define S2_PTE_SH_INNER		(3ULL << 8)
+> +#define S2_PTE_S2AP_RW		(3ULL << 6)
+> +#define S2_PTE_ATTR_NORMAL_WB	(0xfULL << 2)
+> +#define S2_PTE_TYPE_TABLE	(1ULL << 1)
+> +#define S2_PTE_TYPE_PAGE	(1ULL << 1)
+> +#define S2_PTE_VALID		1ULL
+> +
+> +/* No block mappings for now. */
+> +static void create_one_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa,
+> +				  struct page_pool *pp)
+> +{
+> +	int levels = stage2_levels(mmu->page_size_shift, mmu->ipa_bits);
+> +	u64 index, pte, pte_new, table_attr, page_attr;
+> +	gpa_t pte_addr, pt_base = mmu->pgd;
+> +
+> +	table_attr = S2_PTE_TYPE_TABLE | S2_PTE_VALID;
+> +	page_attr = S2_PTE_AF | S2_PTE_SH_INNER | S2_PTE_S2AP_RW |
+> +		    S2_PTE_ATTR_NORMAL_WB | S2_PTE_TYPE_PAGE | S2_PTE_VALID;
+> +
+> +	for (int level = 4 - levels; level <= 3; level++) {
+> +		index = get_index(mmu, ipa, level);
+> +		pte_addr = pt_base + index * 8;
+> +		pte = *((u64 *)pte_gpa_to_gva(pte_addr));
+> +
+> +		if (level == 3) {
+> +			/* Last level, install leaf entry. */
+> +			pte_new = pa & ~GENMASK_ULL(mmu->page_size_shift - 1, 0);
+> +			pte_new |= page_attr;
+> +			*((u64 *)pte_gpa_to_gva(pte_addr)) = pte_new;
+> +		} else if (!(pte & S2_PTE_VALID)) {
+> +			/* Empty next level table, allocate and install. */
+> +			pte_new = alloc_page(pp);
+> +			pte_new |= table_attr;
+> +			*((u64 *)pte_gpa_to_gva(pte_addr)) = pte_new;
+> +			pt_base = pte_to_pt_base(pte_new);
+> +		} else {
+> +			/* Next level table found, descend into it. */
+> +			pt_base = pte_to_pt_base(pte);
+> +		}
+> +	}
+> +}
+> +
+> +void create_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa, size_t size,
+> +		       struct page_pool *pp)
+> +{
+> +	u64 ipa_end;
+> +	u64 mask = pp->page_size - 1;
+> +
+> +	ipa_end = (ipa + size + mask) & ~mask;
+> +	ipa &= ~mask;
+> +	pa &= ~mask;
+> +
+> +	while (ipa < ipa_end) {
+> +		create_one_s2_mapping(mmu, ipa, pa, pp);
+> +		pa += pp->page_size;
+> +		ipa += pp->page_size;
+> +	}
+> +	dsb(ishst);
+> +}
+> +
+> +void init_s2_mmu(struct s2_mmu *mmu, unsigned int vmid, gpa_t pgd,
+> +		 size_t page_size, u64 ipa_bits)
+> +{
+> +	u64 ps, tg0, sl0_base, mmfr0 = read_sysreg(id_aa64mmfr0_el1);
+> +	int levels;
+> +
+> +	mmu->vmid = vmid;
+> +	mmu->pgd = pgd;
+> +	mmu->ipa_bits = ipa_bits;
+> +	mmu->vtcr = 0;
+> +
+> +	switch (page_size) {
+> +	case SZ_4K:
+> +		tg0 = VTCR_EL2_TG0_4K;
+> +		mmu->page_size_shift = 12;
+> +		sl0_base = 2;
+> +		break;
+> +	case SZ_16K:
+> +		tg0 = VTCR_EL2_TG0_16K;
+> +		mmu->page_size_shift = 14;
+> +		sl0_base = 3;
+> +		break;
+> +	case SZ_64K:
+> +	default:
+> +		tg0 = VTCR_EL2_TG0_64K;
+> +		mmu->page_size_shift = 16;
+> +		sl0_base = 3;
+> +		break;
+> +	}
+> +
+> +	levels = stage2_levels(mmu->page_size_shift, mmu->ipa_bits);
+> +	mmu->vtcr |= FIELD_PREP(VTCR_EL2_SL0, (sl0_base - (4 - levels)));
+> +
+> +	ps = SYS_FIELD_GET(ID_AA64MMFR0_EL1, PARANGE, mmfr0);
+> +	/* cap ps to 48-bit */
+> +	ps = ps > 0b0101 ? 0b0101 : ps;
+> +	mmu->vtcr |= VTCR_EL2_RES1 | SYS_FIELD_PREP(VTCR_EL2, PS, ps)           |
+> +				    SYS_FIELD_PREP(VTCR_EL2, TG0, tg0)         |
+> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, SH0, INNER)  |
+> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, ORGN0, WBWA) |
+> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, IRGN0, WBWA);
+> +
+> +	mmu->vtcr |= FIELD_PREP(VTCR_EL2_T0SZ, 64 - ipa_bits);
+> +}
 
-If KVM supports any userspace-provided value for NASIDS, then
-shouldn't KVM_GET_SUPPORTED_CPUID return 0xffffffff?
+I understand that the selftest intentionally passes 40 as ipa_bits to init_s2_mmu().
+However, with a 16KB granule and DS=0, a 48-bit IPA requires two
+concatenated level 1 root tables, which this implementation does not
+appear to support.
 
-> > And __nested_copy_vmcb_control_to_cache() already ignores a bunch of
-> > unsupported bits. I don't see how this is any different. That's how
-> > the hardware is implemented. Intel likes to fail VM-entry. AMD prefers
-> > to just ignore hypervisor stupidity and move on.
->
-> The issue is that KVM has played nice with unsupported ASIDs for years.  =
-If we
-> want to change that, it needs to be quirked.  And I just don't see the po=
-int,
-> because KVM's behavior isn't outright wrong: the APM doesn't say what wil=
-l happen
-> if the hypervisor is being stupid.
+Thanks,
+Itaru.
 
-The APM doesn't say that an out-of-bounds ASID causes VM-entry
-failure. What other possibilities remain?
+> +
+>  void __sysreg_save_el1_state(struct cpu_context *ctxt)
+>  {
+>  	ctxt->sys_regs[SP_EL1] = read_sysreg(sp_el1);
+> -- 
+> 2.43.0
+> 
