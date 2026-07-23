@@ -1,50 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6980C43BDB7;
-	Thu, 23 Jul 2026 10:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1421F3B8BB6
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784802865; cv=none; b=G1p0aIzQ4U8W9Uio8yHYw9Jl2ur90NyOiq2/erUsIAvMzqTKkCKRC/QSrdnik8Qx6FLjhs+/Tm9ZFBlU6EmVtiLVlLZXqAL0YslHpnZ/Uc3hy31mbETmOFWCxyIMMq1Eizy69zMIeqBpVIuCaQfnToJdns1AgYc+JQqx/7oIkes=
+	t=1784803336; cv=none; b=tR+MdjpV66rXDcN6AANJcTNy39kkll6dkyMi8f153tv1DLL7l3vSTLi/+DRd/S8pa1DOC8Svd0wdBTfFkDFPNeVvJAj9b3MNsKXDSsJgR1xk9uTpJYIS0z3MW9Zk8E957Ff9ogdgkB5FtKKbXy0/jhZtXUQIjEG8P9NUtWvLKxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784802865; c=relaxed/simple;
-	bh=RMA4tV9p0V/8Gxal5K9/hem0Nn5mK4vvXB0MihGP3Nc=;
+	s=arc-20240116; t=1784803336; c=relaxed/simple;
+	bh=7YYmCp1dn/aLPj9FzMYgNxEn06YdMvXMQM909PaYx2E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UJo2PBtd9SCspfo6xPXeZi7sNMcfbHrA+a3faXsM4ehViBDELeH4qNSgDnHaxMDvi5vey0ZgSkailfYbcNvgwwPQlyqbfxH3DnGWLFAUPRy/37nsgTbHnxJjTAUb1sTZUyovX2aNcBrN757t8vYbuo7RYQXgGO/PJwdP+VaTwUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E23Jb6ZY; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=BJ6V72jZv3eG/PA6xyrPVUzxpDNGSNX89mMhoamBpPcJXlII4bcKQ8QdFjgjR84LYR3e2pq5TgELX11s8n+scU8DGUBsKZ1Zq+73pYIZjcnMxTChfHDU4q+2HO8D+KZdiEHdyvFBFQ+V6hRJpwYI4oCnZbxt09smKLgAOLMP8MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VIhOJVFc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=kGVfVgKq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E23Jb6ZY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784802863; x=1816338863;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=RMA4tV9p0V/8Gxal5K9/hem0Nn5mK4vvXB0MihGP3Nc=;
-  b=E23Jb6ZYn9hCs/JveUG56ihwP7sNjig/DYk15XkNd74qZ7ztOAzzrT0S
-   Rhs1lppAufGaaRb4+DboIJ5Ou/ZTQbcRJ645BJYPFMTvikMML6hWEFH6y
-   Zj/le7bardHnJ/NY4sRbWRRQCyyfg9r8Y4PdjvyCvdh2MfvIovwW3qYov
-   2E/ZL0pTideML4dowfncXR0QPEDR3+z4zR+7HhZGaNVoGGEpdkA0KFvix
-   YObZL/GLt8TSl+OO+nlnedMkqcAjoXzR3+UzxaFz6t+DXo6fcpfm0abTk
-   4sNvDARodBFKU0TXpgHfMGZe4w/uqBrH5tHG/jSaIm2dzCmgdrTXoDy85
-   Q==;
-X-CSE-ConnectionGUID: y/qFAhTwQ06L2yFmcafV8w==
-X-CSE-MsgGUID: EP3shEpJShuWp7wlPxZ9ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95809801"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="95809801"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:34:23 -0700
-X-CSE-ConnectionGUID: JbyboA1uShmP3vD0rSR6Sg==
-X-CSE-MsgGUID: vwjRAvsvQKq/mdszpXrimg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="263344516"
-Received: from unknown (HELO [10.238.208.132]) ([10.238.208.132])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 03:34:17 -0700
-Message-ID: <992e7da9-15da-4ee2-9954-63ea74ca44e8@intel.com>
-Date: Thu, 23 Jul 2026 18:34:14 +0800
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VIhOJVFc";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="kGVfVgKq"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66N8qkfq3642784
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=; b=VIhOJVFcJplmZD8Y
+	xzfmJxRfRWiilxy1Xqe2jmuHksd4oGh6qhq6hI6iiXEzPCGCmUMqDhSIgVe/lTma
+	g1e+9xGoB3yhB3fo5tLvfRdVsq+RVOMBpu7CEUAf4DpMDAJjtR1Nm/1zY782veg5
+	HcX2Vxo/ZBVXPiRUQ5mxSrmndGYJiQItxOuc8T/hqRTkNdBriZOdzlsWQFJC46NK
+	RW5AMZeWdQpjkZlXdCLLeGLVQwCow0fi8hlK7gv8tOsEMpZjjDmZ6e6NFeSSbxdn
+	JfLf/hNnNM5QyuGO4A8uPwNUfBBkBDzZSa0ohkIFycoMCPqrrjR0nidJBiUdVBgZ
+	lnOLeA==
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fkayh9mdv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 10:42:13 +0000 (GMT)
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-51c1c7f135bso8606221cf.0
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 03:42:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1784803333; x=1785408133; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=;
+        b=kGVfVgKqbYXLPGJEEl6unqrfWgzKeboLisTmu8AdNIwhMDcvDyNvhSpxRY4N2E43xv
+         VeQnHkFYX598by7MK7hZ8x9YN+bmWAxPkusyV/g4MpPmPiD847egCd6m8bLSrAaygfFc
+         Y7yDm955bSVZ/YWTnICP/DMujzlZ0w5VmQqR4c9Lcs8wxf74ZP9T+8GWrSLU4FzQPbXG
+         M5eNQYsmszyHNs4gsQ6LpfnFNKQws6SGSY3veS+w/FXjltD939H9iliTuvJeQ7IjsS9i
+         6Lrl4eiLOG3ASbucmBdjh0mYSOLzLi1vHqKX3mkD2Krwlp09J1Fg2vGQQyZ5xso65CT+
+         mL+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784803333; x=1785408133;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=N9cujVT+57YtBztmVSqn/dI7dbXsu7Rs9Z6S/SDBy0A=;
+        b=P8MS6hHcMNkGuqPBPBP7c6c2HYK1YWHqeMrOyFvby9m5kgPdAPM0PWnQkcwGgMU0aN
+         9XqdeniEwdniz6inbmPxnJTbV1LvS9ASjZWYpxthnrdpFZwJWy0nrAHsnoYQgbXvm2C2
+         6IsYrZiOrvmszzDwS7uFfVHSJPIlk/iWE9F0/p1PqAzT4EA9tTIye7VxQoD8svsM83LX
+         W5aNdMwXR5zSR4wpoZ79559W3PEzKWFMwwzCT4giwKfiNIIF10BHDKuqbeUK4HBBbsIa
+         auQVgn07vKFy6QkGe3N+VrCinkogRaQDOccq+8IEg1Unx409hwDTJNzaRpRbJxiTqXZQ
+         zR5Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rq775EvuJKgCYFTyZD0k2YvX49cpUcnEaDd7/+w3g8BalUaDOqP4ZDAjNidQB0mrS1O8rw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/2JeJRrh19BdE2zMILp1duA/MXh8Dw3RyMzJ41uwYQeCV4bAL
+	kNjxHWKXEry7zqI9ZCigUFdjNzSusQGooEZNn0epufHQ5Wf0vsiZYGpZcpQHrFQ5+suiEMUcKJe
+	H54w+LmGmIsdrMd6+r4I/qKc6md4vqmwzTdjzLHOcB2P4yf0Bd1qHf68=
+X-Gm-Gg: AR+sD13Qf4srl2PUwhhsNPGXB80L13GkH+J0fSlxFblgWYNpO/SnCsgpX9JOd9IUjyZ
+	Z1WNIX6PwF2+P3l6j4BNibl/5cf70WyrAcFYeG2sfWneahwfxfbv18JOb1R6ZNrraa9rvh7ROUG
+	Pq8jiug5rY20DATFOcForuXBtQrjeTGzZ9vzmGF1yWLBxIIOtUPlO9n5Rqe+i1R32DS88kBtXA5
+	2zwmax58dZJd9V0XxuauVUJYr8pp9sED/J8NLpWJGXNDzwSZhd5h4sDgWGAfcGnoI4k28r5sSsb
+	mwbHUf01mAF/nFuW+w/a50oI/B73IEr/6c1LR9U5CySpjrUtoSVS9fsGL9BH4MtcZQxSRc6mXh+
+	TNWj0pV/m58Dq93LD19Mdj4FV92m8FjFVjKOCDi7A/qBCAkBddJU=
+X-Received: by 2002:ac8:5cd0:0:b0:528:972:f597 with SMTP id d75a77b69052e-5283dfa12a0mr20960071cf.60.1784803333273;
+        Thu, 23 Jul 2026 03:42:13 -0700 (PDT)
+X-Received: by 2002:ac8:5cd0:0:b0:528:972:f597 with SMTP id d75a77b69052e-5283dfa12a0mr20959911cf.60.1784803332892;
+        Thu, 23 Jul 2026 03:42:12 -0700 (PDT)
+Received: from [192.168.69.212] (88-187-86-199.subs.proxad.net. [88.187.86.199])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-495653bffefsm194425625e9.9.2026.07.23.03.42.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Jul 2026 03:42:12 -0700 (PDT)
+Message-ID: <be427830-c5df-447d-9ef0-bf921ac1797d@oss.qualcomm.com>
+Date: Thu, 23 Jul 2026 12:42:11 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,154 +88,90 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 11/22] KVM: selftests: Set up TDX boot parameters
- region
-To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>,
- Ackerley Tng <ackerleytng@google.com>, Binbin Wu
- <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
- Chenyi Qiang <chenyi.qiang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>,
- Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- "Pratik R. Sampat" <pratikrajesh.sampat@amd.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Roger Wang <runanwang@google.com>, Ryan Afranji <afranji@google.com>,
- Sagi Shahar <sagis@google.com>, Sean Christopherson <seanjc@google.com>,
- Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
-Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com>
- <20260722-tdx-selftests-v14-11-15ad654a50db@google.com>
+Subject: Re: [PATCH] target/i386/sev: fix MemoryRegion reference leaks in
+ gpa2hva callers
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260722-tdx-selftests-v14-11-15ad654a50db@google.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: marcandre.lureau@redhat.com, qemu-devel@nongnu.org,
+        "Dr. David Alan Gilbert" <dave@treblig.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+        Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+        "open list:X86 KVM CPUs" <kvm@vger.kernel.org>
+References: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
+ <e7d3e9dc-be97-40f3-b426-3e93a242410a@oss.qualcomm.com>
+ <87mrvightj.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@oss.qualcomm.com>
+In-Reply-To: <87mrvightj.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=HZgkiCE8 c=1 sm=1 tr=0 ts=6a61f005 cx=c_pps
+ a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=4s3hRJSeHn4rkQlkrse1kQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=M51BFTxLslgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=20KFwNOVAAAA:8 a=8HBRM8kc7f_oyWAv4U8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=dawVfQjAaf238kedN5IG:22
+X-Proofpoint-ORIG-GUID: 6getKLDbVhVKp8-Bn1k5CydlEIvDJKX7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDEwNCBTYWx0ZWRfXzRvfxLuZlLd7
+ ZyKjlKnqPdT3DJHJIuX2TPGVLORnbjvbU5vYzhHKJdv7819q+w80lQXO2SF+r0aIrTht/BppbZX
+ dKkVsTRmkq61vDY6xntWaMCdBaK0OKSDB0oiBTRxnPcFyL4IW9zteIpscU+7bNGcgiXS1zy/TJ4
+ RuhnwHE3lNuEoiKSMjKe0SkWJNChP1CpWIDy36PTo/NdnsLBBLS5TpByQT1AuuCMiEmeevFfSLp
+ 6mspCsW7Seb9BvBy3xSg+wzpWQMHvmqhIi3RL2aKx84v4Zbx8EWl6x+RezWxhLW+wqXLyZ6VvQ2
+ Xw0XuZViE+8+vQ3VIbhi5TJfoasGKdQJPmzE1L0Udk1ygtYnV4A7YLxjmrnDVeymXpGrWHIa7fL
+ UWbL7MOR5oj6UXFLnwZT+kYx8/BbwEWe/DLXYPj1itcIdsGq8MhEhsCmslGqm3rvL8a+7mz7uSR
+ Q9T2quobN45t5n+S14A==
+X-Proofpoint-GUID: 6getKLDbVhVKp8-Bn1k5CydlEIvDJKX7
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDEwNCBTYWx0ZWRfX9bUtHzOnQgT4
+ xSm9e0fKrdfLM8y7uTbnEIhmaGZCHnYYn7/ceBdJ1nwK1rWrwlhVtOuU3GD3hrHWEyvjQEuPUwW
+ xgQqgooZxH/CY0aYNVJ/E2Z2u2hy3lk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_03,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 phishscore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607230104
 
-On 7/23/2026 7:13 AM, Lisa Wang wrote:
-> From: Sagi Shahar <sagis@google.com>
+On 23/7/26 11:45, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@oss.qualcomm.com> writes:
 > 
-> Allocate memory for TDX boot parameters and define the utility functions
-> necessary to fill this memory with the boot parameters.
+>> Hi,
+>>
+>> On 21/5/26 16:54, marcandre.lureau@redhat.com wrote:
+>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>> gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
+>>> (inherited from memory_region_find()), but both SEV callers were failing
+>>> to release it.
+>>
+>> Comment orthogonal to your fix; odd to have a non-monitor code
+>> call an undocumented monitor method.
 > 
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Sagi Shahar <sagis@google.com>
-> Signed-off-by: Lisa Wang <wyihan@google.com>
+> Which one?
 
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+$ git grep -w gpa2hva
+hmp-commands.hx:538:        .name       = "gpa2hva",
+hmp-commands.hx:546:``gpa2hva`` *addr*
+include/monitor/monitor.h:57:void *gpa2hva(MemoryRegion **p_mr, hwaddr 
+addr, uint64_t size, Error **errp);
+monitor/hmp-cmds.c:715:void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, 
+uint64_t size, Error **errp)
+monitor/hmp-cmds.c:753:    ptr = gpa2hva(&mr, addr, 1, &local_err);
+monitor/hmp-cmds.c:827:    ptr = gpa2hva(&mr, addr, 1, &local_err);
+target/i386/sev.c:1579:        hva = gpa2hva(&mr, desc->base, desc->len, 
+NULL);
+target/i386/sev.c:2093:    hva = gpa2hva(&mr, gpa, data_sz, errp);
+$
 
-2 nits below. I think you can keep the code as-is unless maintainers ask 
-you to change.
-
-> ---
->   .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
->   tools/testing/selftests/kvm/lib/x86/processor.c    |  2 +
->   tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 51 ++++++++++++++++++++++
->   3 files changed, 55 insertions(+)
 > 
-> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> index 642ffa010da3..f5003cbaa106 100644
-> --- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-> @@ -46,5 +46,7 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
->   
->   void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
->   void tdx_vm_setup_boot_code_region(struct kvm_vm *vm);
-> +void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus);
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm);
->   
->   #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-> index f93953777ca1..748c6041f8bf 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-> @@ -794,6 +794,8 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
->   	if (is_tdx_vm(vm)) {
->   		tdx_init_vm(vm, 0);
->   		tdx_vm_setup_boot_code_region(vm);
-> +		tdx_vm_setup_boot_parameters_region(vm, nr_vcpus);
-> +		tdx_vm_load_common_boot_parameters(vm);
->   	}
->   
->   	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
-> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> index d64d153d19e2..2ce8c297f7ed 100644
-> --- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-> @@ -6,6 +6,7 @@
->   
->   /* Arbitrarily selected to avoid overlaps with anything else */
->   #define TD_BOOT_CODE_SLOT	20
-> +#define TD_BOOT_PARAMETERS_SLOT	21
->   
->   #define X86_RESET_VECTOR	0xfffffff0ul
->   #define X86_RESET_VECTOR_SIZE	16
-> @@ -49,6 +50,56 @@ void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
->   	hva[2] = 0xcc;
->   }
->   
-> +void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus)
-> +{
-> +	size_t boot_params_size =
-> +		sizeof(struct td_boot_parameters) +
-> +		nr_runnable_vcpus * sizeof(struct td_per_vcpu_parameters);
-
-Nit: I'm not sure if the style is acceptable to selftest or not. From 
-KVM coding style, it's not common.
-
-> +	int npages = DIV_ROUND_UP(boot_params_size, PAGE_SIZE);
-> +	const u64 gmem_flags = 0;
-> +	gpa_t gpa;
-> +
-> +	vm_mem_add(vm, VM_MEM_SRC_SHMEM, TD_BOOT_PARAMETERS_GPA,
-> +		   TD_BOOT_PARAMETERS_SLOT, npages,
-> +		   KVM_MEM_GUEST_MEMFD, -1, 0, gmem_flags);
-> +	gpa = vm_phy_pages_alloc(vm, npages, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_SLOT);
-> +	TEST_ASSERT(gpa == TD_BOOT_PARAMETERS_GPA, "Failed vm_phy_pages_alloc\n");
-> +
-> +	virt_map(vm, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_GPA, npages);
-> +}
-> +
-> +void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
-> +{
-> +	struct td_boot_parameters *params =
-> +		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-
-Nit: I think it's OK to make it just one line.
-
-> +	u32 cr4;
-> +
-> +	cr4 = kvm_get_default_cr4(vm->mmu.pgtable_levels);
-> +
-> +	/* TDX spec 11.6.2: CR4 bit MCE is fixed to 1 */
-> +	cr4 |= X86_CR4_MCE;
-> +
-> +	/* TDX spec 11.6.2: CR4 bit VMXE and SMXE are fixed to 0 */
-> +	cr4 &= ~(X86_CR4_VMXE | X86_CR4_SMXE);
-> +
-> +	/* Set parameters! */
-> +	params->cr0 = kvm_get_default_cr0();
-> +	TEST_ASSERT(vm->mmu.pgd < (1ULL << 32),
-> +		    "PGD must be within 32-bit address space for 32-bit boot code");
-> +	params->cr3 = vm->mmu.pgd;
-> +	params->cr4 = cr4;
-> +	params->idtr.base = vm->arch.idt;
-> +	params->idtr.limit = kvm_get_default_idt_limit();
-> +	params->gdtr.base = vm->arch.gdt;
-> +	params->gdtr.limit = kvm_get_default_gdt_limit();
-> +
-> +	TEST_ASSERT(params->cr0 != 0, "cr0 should not be 0");
-> +	TEST_ASSERT(params->cr3 != 0, "cr3 should not be 0");
-> +	TEST_ASSERT(params->cr4 != 0, "cr4 should not be 0");
-> +	TEST_ASSERT(params->gdtr.base != 0, "gdt base address should not be 0");
-> +	TEST_ASSERT(params->idtr.base != 0, "idt base address should not be 0");
-> +}
-> +
->   static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
->   {
->   	static struct kvm_tdx_capabilities *tdx_cap;
+>>                                       Should the method be moved
+>> out of monitor/hmp-cmds.c somewhere into system/ and documented
+>> (likely in system/physmem.c, also moving the declaration to
+>> "system/memory.h")? Besides some day we should be able to build
+>> without monitor.
+>>
+>>> Fixes: c7f7e6970d3b ("sev: add sev-inject-launch-secret")
+>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
 > 
 
