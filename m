@@ -1,250 +1,247 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11021123.outbound.protection.outlook.com [52.101.65.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF304734C5;
-	Thu, 23 Jul 2026 17:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784826516; cv=none; b=Qb/Ict+tOyOssI5pXJzD8g9H/D4FTeISTlQbP5bzyKrHjNiaP/OFxVJ6gZVUpUCDiPqEWILzSVylU6lHc6ZEehKkM2mb3edH3BvQRpJFaJ2W3ne9jCO+cA/NFAvMtRj0TmrIF5obTERcBcT5gpg4X3scwGjEgurujMiiG83rKpU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784826516; c=relaxed/simple;
-	bh=dUEaW8W/I6lFsqVbQooA22UoSHplbQ/G39DHIHvLzT0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0V14++PWXyI/MCyY5F5sXg97t7cWn36dOsXf1PzRe09jSaB97gGSZjVdHJ4U86IwzctPqIX9Nvcy6Xb8+af/D3gg6bVTiWxsjdE2CFU6Z3kry54kTcWI2gyY1TKLF9LOSl0HRWAHp7yuU1aPaMq5nqPM7Z5sCKB7VJgU1isAZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Yna/pYh+; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE9A486B95;
+	Thu, 23 Jul 2026 17:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.123
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784827052; cv=fail; b=rVAlYquWgVFAtQy+HLbpX4z4lU8QdAGKeqLUgJSaEl4ovmbcHWaDe5rSE5znNiq2N5rTSOluU6sXlO0lEQt9Ani8D1U+q+EGEcP4JCjRWLy17PSKAONej04oZ0kUZcOix+B4zootMYt9W7ihcqYYLYNgnlqPJsrRVvwRemT1uQE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784827052; c=relaxed/simple;
+	bh=R52vt49SM0lAR2+iE2+RguLJvcVojGNTU5cbK7MjDb4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=SS4bVoGNnMIA02Plw0gMZ6ThjM642NFO/2CDCVT2yvmpsFEyCDpIUtXpaPFuE6OG+1ECd+WxJf1EDp6klFRiB6omVjusuQavlm1oF0jSu/Xar4g65QjpA+bJZQiiHWV2ksLr+SCYz/juPyHEhsToowDrDoGWBjzJ/wA0KRT9PQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=X0+NaVxW; arc=fail smtp.client-ip=52.101.65.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Yna/pYh+"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDC2S33015582;
-	Thu, 23 Jul 2026 17:08:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2NfAV/
-	u4b+IoWFkn7yKzWuRr4MkBW+pOP6m5YwXO/7Q=; b=Yna/pYh+OBnIqlUrcNR3Q7
-	GigkqUxc+pn0LDyOmB/SacsmCUF3pkuqFSpPVgd2i/M6vAC9HG5Zzfrn1u1LB/6I
-	Aow2RPGu5tQhAfKqtOUmfathbN0qj4bCQJ5gvvWo3W1oMYyVqmgnR5Qw1VhWzPSd
-	h7s9kpH1txkeztG28XnZzco+Gbc3LpqTXLvxvKQjR6pZx1M+SBYtOu45tI8DAxEf
-	CJHS3x7xx8Anvjjf/wwoiN3tNLe1Ma4/ES32RkOdX2vXtBgOxhSpuoWv+m4PrtDq
-	4/szw+6r3JtrYp2yLxd5IMqP6BuuwWDvedSV9upKMQm7VCoGtIBC/oc282VwOhjQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77kg5b9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 17:08:33 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NH4bVO022369;
-	Thu, 23 Jul 2026 17:08:32 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqdbta-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jul 2026 17:08:32 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NH8Wnq64553322
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jul 2026 17:08:32 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 097F258055;
-	Thu, 23 Jul 2026 17:08:32 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F66A58043;
-	Thu, 23 Jul 2026 17:08:31 +0000 (GMT)
-Received: from [9.61.254.118] (unknown [9.61.254.118])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jul 2026 17:08:31 +0000 (GMT)
-Message-ID: <3950a0e4-3074-44af-a1d1-d38ee3391c0f@linux.ibm.com>
-Date: Thu, 23 Jul 2026 10:08:31 -0700
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="X0+NaVxW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rt1VOuqmp8E/TY/uFobqPwDx+7xQkhRQ+15+SLr5NksHHtUzlSMmhXTKu2d49/EnOZ9fMa+dzb9wNP4rWL43teoFRPtRpMIe4esjbJlEguEe7nI/Ol+PiIh93MN68tSJ5hFK8Mtkutw/RHCU7JzfIX+VAjR/3kL/5ofDGll2rhDzcwji1zk7gsJN/dTivNowyWMOr6HwmmMbWjLLfPx6LgKq6zvQIdhOQ539OE8X3/xP9WXOOUxD8+8ZQVRrJO08nZ28hsvyp3rqEjG9RX62CABPNZYp1kVObZy5uDiy9tuPFEfmVBMeuab8enAYsUGxKcahklCMyxDY8oVxE6GpIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
+ b=FvkqkHg2GyWyZe3DqlYPWKxKfn4qN6DOQPdevZWmnhnn3QyQdN1uEpRhR+cpiOC5+DhoTjhTaU3fuAuQkgC/8hngyZZg0CtyIl3ut16IySRxQEMgXsE+34G+Xied5naXGZ/dl8KTmkM+l4b7oUQKY5T5e4mZVgpmQZ6C4awrDmL4jUlF2yijeKDxsz5k9XpN7hudzIeOnAU7dor0aDsUmOgR5WGLs3sQqGcLsDHmy5QOo4TjOqcMGr//anOAjlWHSVxJP7MuT6qst9Z/SF6oKoiRm50CCmm7govJBYcrcWKgBzhiy6MWfMRhlh5lna5ZmcAfelGRU0euniPLE99LtQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2jfA84R4ekF6sH9S3Dqm6RnMeaeqT4vB3sTbDbTdQyI=;
+ b=X0+NaVxWFKmmEaF6vXsOkTRdPDmCnsMQK7H6GqmZknDHM1XuFAqZUpIAR/yY69MpX8KNDJmrpIyRvqELXLMJIATFXdZ8kcctULOaCrXHbQN0BYtB6xfP4gJkLWwtxi8z9VaNc5bYHn9KqUk/bjDfO3w1J5yyZ74UZiEeAtkKlO9E9mH5oRZpcAv9+pfAA9BaucJKHefC2tuqA7d7uQlz1LE0cPzQMr6EB9on1zmKSVR7monw0ykOmQGg0c04w6T1UfPUp8sGcgHdwnD2rMlJ2r9dl6O/oJQi90iveKLQU9vXkc91tUFoNimli4li3Yo/zHbWo53+yZi7+d52J4GifQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by PAVPR08MB8942.eurprd08.prod.outlook.com
+ (2603:10a6:102:320::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
+ 2026 17:17:23 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.009; Thu, 23 Jul 2026
+ 17:17:23 +0000
+Message-ID: <b324f558-e46a-47e5-b75c-b66938379c2f@virtuozzo.com>
+Date: Thu, 23 Jul 2026 20:17:21 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
+ workers
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
+ stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
+ bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
+ den@openvz.org
+References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
+ <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
+ <20260723111557-mutt-send-email-mst@kernel.org>
+ <0c7172c4-0dc4-4d7e-9310-4f045e27efb9@virtuozzo.com>
+ <20260723124908-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20260723124908-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0225.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ac::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/6] KVM: s390: pci: Fix memory accounting for
- pinned/unpinned pages
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org
-Cc: borntraeger@linux.ibm.com, farman@linux.ibm.com
-References: <20260722170621.1686-1-alifm@linux.ibm.com>
- <20260722170621.1686-3-alifm@linux.ibm.com>
- <6f87bda7-8a8a-4f93-907c-6e0a442c8ceb@linux.ibm.com>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <6f87bda7-8a8a-4f93-907c-6e0a442c8ceb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a624a91 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=P-IC7800AAAA:8
- a=VnNF1IyMAAAA:8 a=s7El_Fc1KRag8uzhLH4A:9 a=QEXdDO2ut3YA:10
- a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE2NCBTYWx0ZWRfX8HpV4aw/3yqc
- ys0AurZsmfsDJ9Sdi8d9BBHRcuh8kjpHXmafeCDJITfQBTeM18MGXVqn7ydhYZkUnjg66D166b+
- 0N0Hre47x4b3ZJJ5O9kXYTjY1Psjhh6Pc85jv1EsMQ3jkBin9lkDnvOAkeIX0IJfCReYA7Nj3Dm
- UtdmIPyEWh62uq+UtrOIgjynBu45YCaAoh1nYYHLSBBm1RFTUKUKYktBKdSRHYZ+2v5Cw0V/1dP
- L7aBEtqCKpSD0Ru8Ni1Da1c0ny5HVNDG0/8cdYyQtFY0KJrTkVG0UH4xuD12xg+VTadCZ6mpdeF
- rD4W7ctspzZmJ4wuTgH1VPdXAXcRON8BITHPP6gyrxz/tAfOfmayln/g64xo42gfzBH2RROmVF3
- FC1fKJcXxxRTY0P0bQZVr8/f/wTR+cSC2W2uur8oSQjCTyp4I9t3XsIzdR1hJ1sBCHGaP9GljJ2
- iVnpstkCKMpVxsAELTQ==
-X-Proofpoint-ORIG-GUID: mYzJOf2jTR9g3O65q95fapnacYBRzPFH
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE2NCBTYWx0ZWRfX0d1hCameuqLD
- +nq/d8/efL0c8BweO4aN0ytiwM/DVDsYSNJV1gN4lEVEhBLO++YgPIL7rv2m0CYNMT4EYGYYkWx
- 4PczJayX6ArbYhnCmtZsUyUuwN9sCng=
-X-Proofpoint-GUID: mYzJOf2jTR9g3O65q95fapnacYBRzPFH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607230164
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|PAVPR08MB8942:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|56012099006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	gYgNlL+fhZNbS8qtfhvmvf2zamIFqE+O4tRE62ajQlDKZ1iIdx9YnxLKeak2Cqmu4FSyC4h1rq6IA07ILa2ehaOlpNu8+RVdOiWGb1yyFI0T27YElSFq31dY47QgID7Gnw3gwDXT7m93CcTi8L5I6tobG/R3cfhSRVtz3iSjmebQM55GGAy+J9anDbx29OEnrfV6F5NKxxh3nOl2ZSZtLp28LB56pv224vYXYI0WzRrIUKZZKmpZJJON2Y6nBwB+X0qo62TZjH0WnngUHpqOV6yP2zMHjhg6I08XivnIln0BTtd9wqwT+mPIsomIFY6KB2kcVhpa698JVmCZTpliGvaeU2UQcFBvhgL+/WZvkst+REUIH77HMB2dUcz/EfFjkXOPMwbr0Jxr46+wS0nxrx7WA6BkpLkdL5JSzgDQi9+Ujn72at/gG9Yd5cKWm5GgK9krA1LqcKmNK+fyppaqYpWlyW2YOkqql/oq53VLVw/QoB4WRRIjSeV0mOhOy+dZciH+3JDmiKGKksOcrdWBZIy3yv30TCMNJ5QVQz7Og8xN+3TBYW4s58U9HteyG244x4HkYNWH0eOMfAU+6j7RmviqVIDgiCfIVoLxLzGIOcD33+RxhN8tCXAUuOpiFAJF5vDcLMPOspI3xzvZBcVLIvEkkkB9jLAPpjeN5EJlHMg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?LzMzcUNyUlBUMzZWdzI2WDVubFEvb0U0UTdFd2JVUmVscndSMlhSN2RwTjVJ?=
+ =?utf-8?B?c0duZVpnS2tjS2M2ZkdqNExzdloySDVIQzN2UXZQeTVOVk9meU5xckV4bnp3?=
+ =?utf-8?B?T0hsVG9UcFlOa25RQnJldVJOVDl6Sk84cC9VTVVDU3VqNCtlOVBweDlSak1y?=
+ =?utf-8?B?ajYzSVBmbmpic1QvZ3B5WTN4azdlQ3c4ZmNvKytPVW5LcXdySnkvdGR2RXYx?=
+ =?utf-8?B?M0F4N2ZqbjJDTUVJZXRuMjdGVkpMemlYalRveGdQYWt4RDZEazNmWUhHcGx0?=
+ =?utf-8?B?c0tpeE5vYlJKejVMeDdRWG9tcWV6aFloRkdaaHQ1RHBYZXRZcTgwa2dySWVw?=
+ =?utf-8?B?Uk12SnRNUndjVDJJUERVdnBRSXhjMnVtOThoREJTeVRXT2tJYUlhQ25sb203?=
+ =?utf-8?B?Qmp3enhTUUtFdENDanhHaWlULzNHM1l5QnRBbEtiZGF4a2dmdURPd0xBV3BJ?=
+ =?utf-8?B?c0JTTTNTVHhiU3ZlaW1hamRuSGdyaW0zOVZmNjNrQUlyZjFIR2F1MXo5cW5o?=
+ =?utf-8?B?TjlxOUpWMGxaWkVGNGVDamNRR2RRcXhDOFJWV3JDeHorT0VUeDc1ZG1NVTBD?=
+ =?utf-8?B?cnZlZ2FBMFFhaXFKSTVTaU83Q1ZrT0dMSlF0eW9LbUd6eGhuaThFVlU0Nndm?=
+ =?utf-8?B?SGNRSENNU2lmNnFoc0N6b2Z6dVgrd2JrTjF5dTdQMG1JTjlzTEw2Q21kSWhn?=
+ =?utf-8?B?U2Y3eERab0syWXNscm5FOEhvOHQzajhnTlpxb1ZEQUhmTUdiZVN0TkhjMFNy?=
+ =?utf-8?B?OGtwRHIzcEs3YVBVekZ4UG9aUTY5YUZxS1ZpMjVUMEVTNTlObWdVQ1J0MDFn?=
+ =?utf-8?B?cjlZS3AwN3VDK0JadjE2ZWtadFJ5b3Bhc1FmUHlySGhSdG5EazZaZkRaWlNK?=
+ =?utf-8?B?TWJKeEpJMWlVWm44SjgzNkR2MldaUFZNdnBjTVhOMU5kZGZ4WnpVK1h2bGJQ?=
+ =?utf-8?B?WGJOOEt0UXp6RURUcjl2YURrNzFtVkRFTDRoeUcyVFZGZklDMVFjVThOTVV1?=
+ =?utf-8?B?TlZuc05zbGpiazZhTUhSVUJjd2ZDdkFGd1d6Ukc1d2cvU2dONi9BYmdEc2Jn?=
+ =?utf-8?B?b09HTkNaazBFOWFTR1d1eEllTzJ0NEZIKzBnK05nTVFVd0NtRi9JbCs5Nkd6?=
+ =?utf-8?B?SElFbHllbjRzNG9SMGlmMlIrSHFHbko5Mi9yOUdTTFhQMTlOak5OV0ZOK011?=
+ =?utf-8?B?aDRZTERrTC9aR3VzSGlIa0loOVZCN2puT1pEOG4vcTRzWXM5NHYwOGxjUE05?=
+ =?utf-8?B?dlJnR2lrZjJFU2pMbXFqUFUrVUJia1hqQ01sRlgxQm1RK0VDSUVVV0ZFM1ZD?=
+ =?utf-8?B?RG4xOWlqK1dLbmFFOTM2WDM1WkxadzB5OG5KZHRsaGxMQk0vMTFaYUZyZ0Qx?=
+ =?utf-8?B?RHhDbHlJeU5zRHIwNWxUN21lRVJBTWtuWWxRcUEzQ2VhUnAyc2FXeGlkSWJq?=
+ =?utf-8?B?WEl1MHdwckNLMTlSUVhpSVZ0NlJkMnNrNUVyOVozdFE0ZXVHVzN0WWI2SWF2?=
+ =?utf-8?B?SmhiZHNYcmxQUjlVL0tpQ3FCWFNjeU9GN3VHbWlJdjZjelFnWFJ6d1BBSDBZ?=
+ =?utf-8?B?NnBxczVndDlYelVWVjcxeHZ6b1g5d2JOYjRoQU1kMDc2Z0ltWFNVakNzZHlx?=
+ =?utf-8?B?MkkxcWtuclRLaVhnSmh1VDNtNXFZZTA1ZUN1UkFFZHFWSitvQU1nYUlocDMy?=
+ =?utf-8?B?aWMyNEdBWkovQlFaSGgvUDE0U2tKT28vRnNHaEpJMitqNHZVNy95RVFuNTZk?=
+ =?utf-8?B?di9xcGFSSHNXZE1NWDhaOWtxVURGMUl4TzNvNFd3L1p1VHQzZ3BRNks0dkZk?=
+ =?utf-8?B?NTVDTE9sODR1ZTVMRCt3T2NWZnpBNklxWmsyNmxWKytaRHNOUWVEZTBGMVdH?=
+ =?utf-8?B?T253Y0d3N1NBS1dQeVgwUHNRSFR6KzNPVHloNCtnd0l0MmtJUWdNNjNxeWhZ?=
+ =?utf-8?B?eXF0cFppcllDZGdSTk1LenQ3MEhwWTFqd1B4bzVEc01oMWpZZ3NWdC9QVXFS?=
+ =?utf-8?B?ZlZYZmJEdjF6bWhET2FXbzNaTVdIdE1Hbk9ZKy9TczVpejFaTExpTFpRZGp6?=
+ =?utf-8?B?eGozYkVEMCtkM1VGYVNLV2Y2UEp1cExKRVF3TVJIVmY0eDMyUlUxZlNHaTli?=
+ =?utf-8?B?dFFjTEh3RkVUenZvZ2xkaU9zekhOVisyWnBIT1Jac3Rud1dHWDNjNFZSMHhB?=
+ =?utf-8?B?S3FyK0tCbWpoenhQSmpXOXh3Zm5HdmRBQUE3Wk5telo5M2xIcU9sM2hCcVdo?=
+ =?utf-8?B?NFUwd2J3WmNJLzkydTBCMk1RamZTZEl0ZllqdFVucjlPQTd0QnFoQSt4d0ZZ?=
+ =?utf-8?B?YW9mOGFRakExWFdUQWdZMks5aDlUdmNtOG8vTnBHK0tYb0E5cWpBK1dGWFcz?=
+ =?utf-8?Q?GzJJADSHQRAenLpo=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4052b760-50b7-4420-8fb6-08dee8de4285
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 17:17:23.0749
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nuXCrao0DEauVUlWpSRSFDTcV9twjahSY9kc96Xi1yc1HsBuJM/mSq2xUmM5G9XeIKISWH+QNohBPDzY4IxdO1696yzNqN90m2QSIDODUrQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB8942
 
-
-On 7/23/2026 7:12 AM, Matthew Rosato wrote:
-> On 7/22/26 1:06 PM, Farhan Ali wrote:
->> The account_mem() and unaccount_mem() functions call get_uid() which
->> increments the reference count of struct user_struct on every invocation.
->> But we don't decrement the count by calling free_uid(). It also
->> accounted/unaccounted the pages against the current->mm. But its possible
->> the unaccount_mem() can be called from a different process context than the
->> one that originally pinned the pages.
+On 7/23/26 7:50 PM, Michael S. Tsirkin wrote:
+> On Thu, Jul 23, 2026 at 07:46:58PM +0300, Andrey Drobyshev wrote:
+>> On 7/23/26 6:18 PM, Michael S. Tsirkin wrote:
+>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
+>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
+>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
+>>>> the vq->worker pointers and immediately frees the workers, without
+>>>> waiting for a grace period.  A caller that fetched the worker right
+>>>> before the pointer was cleared can therefore still be queueing work on
+>>>> it while it is freed.  And even when the queueing itself wins the race,
+>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
+>>>> future attempts to queue it are silently skipped.
+>>>>
+>>>> None of the current callers can actually hit this: net and scsi stop
+>>>> their virtqueues before the workers are freed, and vsock unhashes the
+>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
+>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
+>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
+>>>> the lockless send/cancel paths become able to race with the teardown.
+>>>>
+>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
+>>>> period, and then flushing the workers so any work the last readers
+>>>> queued runs before the workers are freed.
+>>>
+>>>
+>>>
+>>>
+>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
+>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>>>> ---
+>>>>  drivers/vhost/vhost.c | 11 +++++++++++
+>>>>  1 file changed, 11 insertions(+)
+>>>>
+>>>> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+>>>> index 4c525b3e16ea..d6e235c25254 100644
+>>>> --- a/drivers/vhost/vhost.c
+>>>> +++ b/drivers/vhost/vhost.c
+>>>> @@ -729,6 +729,17 @@ static void vhost_workers_free(struct vhost_dev *dev)
+>>>>  
+>>>>  	for (i = 0; i < dev->nvqs; i++)
+>>>>  		rcu_assign_pointer(dev->vqs[i]->worker, NULL);
+>>>> +
+>>>> +	/*
+>>>> +	 * vhost_vq_work_queue() reads vq->worker under rcu_read_lock(), so a
+>>>> +	 * reader that fetched a worker before we cleared the pointers above
+>>>> +	 * may still be queueing work on it.  Wait for those readers to
+>>>> +	 * finish, then flush so any work they queued runs (clearing
+>>>> +	 * VHOST_WORK_QUEUED) before the workers are freed.
+>>>> +	 */
+>>>> +	synchronize_rcu();
+>>>
+>>>
+>>>
+>>> Any way not to add this for all devices that don't need it?
+>>> Or preferably, even for vsock in absense of the new ioctl?
+>>>
 >>
->> Let's fix this by storing the pinning process user_struct and mm_struct
->> when accounting for pinned pages, and subsequently free these resources
->> when the pages are unpinned.
+>> This code was initially local to vsock, and was moved here in v3->v4
+>> after we discussed with Stefano that the issue looks more generic and
+>> should probably be fixed in vhost.c (see
+>> https://lore.kernel.org/virtualization/akO6tps94iFxCAWv@sgarzare-redhat).
 >>
->> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
->> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
->> ---
->>   arch/s390/kvm/pci.c | 38 ++++++++++++++++++++++++++++----------
->>   arch/s390/kvm/pci.h |  2 ++
->>   2 files changed, 30 insertions(+), 10 deletions(-)
+>> As a compromise, we can keep this code here, but only call it
+>> conditionally.  Namely, create a bool flag on 'struct vhost_dev' which
+>> is always false, only set it to true on RESET_OWNER, and only call this
+>> code once it's set.  Clumsy, but this way no other code path would have
+>> to wait the full grace period.
 >>
->> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
->> index d2a11cdf6941..1b3114c7cfbb 100644
->> --- a/arch/s390/kvm/pci.c
->> +++ b/arch/s390/kvm/pci.c
->> @@ -190,33 +190,51 @@ static int kvm_zpci_clear_airq(struct zpci_dev *zdev)
->>   	return cc ? -EIO : 0;
->>   }
->>   
->> -static inline void unaccount_mem(unsigned long nr_pages)
->> +static inline void unaccount_mem(struct kvm_zdev *kzdev, unsigned long nr_pages)
->>   {
->> -	struct user_struct *user = get_uid(current_user());
->> +	struct user_struct *user = kzdev->user_account;
->> +	struct mm_struct *mm_account = kzdev->mm_account;
->>   
->> -	if (user)
->> +	if (user) {
->>   		atomic_long_sub(nr_pages, &user->locked_vm);
->> -	if (current->mm)
->> -		atomic64_sub(nr_pages, &current->mm->pinned_vm);
-> Previous code handled the case where current->mm could be NULL...
+>> What are your thoughts on that?
+>>
+>> Thanks,
+>> Andrey
+> 
+> Or just thread a bool parameter to it?
 >
->> +		free_uid(user);
->> +		kzdev->user_account = NULL;
->> +	}
->> +
->> +	if (mm_account) {
-> ... And you check for kzdev->mm_account being NULL here...
->
->> +		atomic64_sub(nr_pages, &mm_account->pinned_vm);
->> +		mmdrop(mm_account);
->> +		kzdev->mm_account = NULL;
->> +	}
->>   }
->>   
->> -static inline int account_mem(unsigned long nr_pages)
->> +static inline int account_mem(struct kvm_zdev *kzdev, unsigned long nr_pages)
->>   {
->>   	struct user_struct *user = get_uid(current_user());
->>   	unsigned long page_limit, cur_pages, new_pages;
->> +	int rc = 0;
->>   
->>   	page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
->>   
->>   	cur_pages = atomic_long_read(&user->locked_vm);
->>   	do {
->>   		new_pages = cur_pages + nr_pages;
->> -		if (new_pages > page_limit)
->> -			return -ENOMEM;
->> +		if (new_pages > page_limit) {
->> +			rc =  -ENOMEM;
->> +			goto out;
->> +		}
->>   	} while (!atomic_long_try_cmpxchg(&user->locked_vm, &cur_pages, new_pages));
->>   
->> +	mmgrab(current->mm);
-> ... But here you do not check if current->mm is NULL.  I'm not sure if
-> it will happen in practice, but we did guard against it before this
-> patch.  Just add if (!current->mm) around this mmgrab?
 
-But wouldn't the atomic64_add just below this also need to be in the 
-check? FWIW looking at some of the other references to mmgrab, I didn't 
-see explicit checks for the current->mm [1] [2]
+Yep, that should work as well.  So we'll have to do:
 
-[1] 
-https://elixir.bootlin.com/linux/v7.2-rc4/source/io_uring/io_uring.c#L3047
+vhost_dev_cleanup(struct vhost_dev *dev, bool sync)
+  vhost_workers_free(struct vhost_dev *dev, bool sync)
+    if (sync) {
+      synchronize_rcu();
+      vhost_dev_flush(dev);
+    }
 
-[2] 
-https://elixir.bootlin.com/linux/v7.2-rc4/source/drivers/vfio/vfio_iommu_type1.c#L1675
+And then vhost_dev_reset_owner() will call vhost_dev_cleanup() with
+sync=true, while everybody else (net_release, scsi_release, even
+vhost_vsock_dev_release) will call it with sync=false.
 
-Thanks
+I'll squash it all into the same 4th commit and resend, unless you have
+any objections.
 
-Farhan
+Thanks,
+Andrey
 
 
->
->>   	atomic64_add(nr_pages, &current->mm->pinned_vm);
->> +	kzdev->user_account = user;
->> +	kzdev->mm_account = current->mm;
-> Then if it IS NULL, we will stash a NULL into kzdev->mm_account here and
-> handle it above as before with the if (mm_account) check.
->
->>   
->>   	return 0;
->> +
->> +out:
->> +	free_uid(user);
->> +	return rc;
->>   }
->>   
->>   static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->> @@ -279,7 +297,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->>   	}
->>   
->>   	/* Account for pinned pages, roll back on failure */
->> -	if (account_mem(pcount))
->> +	if (account_mem(zdev->kzdev, pcount))
->>   		goto unpin2;
->>   
->>   	/* AISB must be allocated before we can fill in GAITE */
->> @@ -400,7 +418,7 @@ static int kvm_s390_pci_aif_disable(struct zpci_dev *zdev, bool force)
->>   		pcount++;
->>   	}
->>   	if (pcount > 0)
->> -		unaccount_mem(pcount);
->> +		unaccount_mem(kzdev, pcount);
->>   out:
->>   	mutex_unlock(&aift->aift_lock);
->>   
->> diff --git a/arch/s390/kvm/pci.h b/arch/s390/kvm/pci.h
->> index ff0972dd5e71..544e6aa75e38 100644
->> --- a/arch/s390/kvm/pci.h
->> +++ b/arch/s390/kvm/pci.h
->> @@ -21,6 +21,8 @@ struct kvm_zdev {
->>   	struct zpci_dev *zdev;
->>   	struct kvm *kvm;
->>   	struct zpci_fib fib;
->> +	struct user_struct *user_account;
->> +	struct mm_struct *mm_account;
->>   	struct list_head entry;
->>   };
->>   
+>>>
+>>>> +	vhost_dev_flush(dev);
+>>>> +
+>>>>  	/*
+>>>>  	 * Free the default worker we created and cleanup workers userspace
+>>>>  	 * created but couldn't clean up (it forgot or crashed).
+>>>> -- 
+>>>> 2.47.1
+>>>
+> 
+
