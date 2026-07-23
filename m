@@ -1,162 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9554143B49B
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 11:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04304582E2
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 11:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784805520; cv=none; b=jXrGEB1w9WSWxZAKqhqK3PuTk8qGCCP4scUiN1ZuwOf+hdhTCF+8wACajbQq1zcN8tGSpB6Al2WsakuyO/cB+hF1PAaNPaWHC56EtmMRJ+yx3LKtYnjQiFy+DpK4xVxTizReGqfJxiMUXqFKJGEDwwyFEWpYQHeAqikj8goIf/A=
+	t=1784807117; cv=none; b=EJHrLtEF60hdtHYx2Y1sT+piHta1owHFK+oML+mhI/+/8tEmmDfFYxOG353ohkYCu68aw2o2BY+OGx8UW0oVm0wgMwyzrRRDZN2q97HvKFuv3G9E+QA1ePfTDW0NI36pwLRKkFO1dZVgLwT5X0anocoDrtxKlr1RQxghE+L63tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784805520; c=relaxed/simple;
-	bh=fdOfMdGREXKmB3BEGnQZXqUymrYIW/o3IFgdwgpH8UI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=j0V85aXd7Qam/HQyOwFrh8fVc27XTTzFHTSqr827n5RIa5MYkifoqf4sgwdEXRTNrcDXDzn4EYLiCJhXZC3QsxphSGJJh3u/a4m08UmUN3l8VmKG0PYiR6CZP4KQefKO7GiHh0JdIxlyCFHQtBAypd3JjkJP2vntcQ1xRPB0n98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TH2wvvez; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TH2wvvez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1385D1F000E9;
-	Thu, 23 Jul 2026 11:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784805519;
-	bh=XU+BzbAbUADrIM+5VwjG6+HJKlMuBo/6LPjA1Ce1G8k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TH2wvvezPgQ6VotKIosRzZA9Y9uSMj4CUF8u1/K3FmGrDkYeez+Gbge7pyWAW0/6v
-	 eL8wwuzC56H+uQI0DTca9wBHHtLc/N/DoVaAxmF+/uIgLw9C1QvoYujwTCM+9lUt1y
-	 DAu7Pr9WQNVaBHh47eIemFT6U6yrrkTFhm1QD853tfsc7DG7pCg+zCzetbsywlwkhB
-	 c5rzS2gbPiz6sTeku4VjtsYgEhyRrQjuUk97d8g/iTFm8bxNbOKVw5fBSNmNxnj9Q9
-	 0+zTr2A1NrKVo6U5rogf0YU3N+h4qiYchVKNvz4kI1Y9miRbXaFtoeyGRsiwzdHKxj
-	 ULFfTWZ1Oy6GQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] KVM: x86/pmu: Add module param to batch
- emulated-instruction reprograms
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luka Absandze" <absandze@amazon.de>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260723105309.12145-1-absandze@amazon.de>
-References: <20260723105309.12145-1-absandze@amazon.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 11:18:34 +0000
-Message-Id: <20260723111839.1385D1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1784807117; c=relaxed/simple;
+	bh=8jXbHd4sO/iQSrOaTy8kF5yBMr1eJ9W8RsJ6Bqm4O9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ao/YF/bIVJascSLHI3EWJGcnLOSXlWoJiqG0aOhIMzipYgL4r+4adeKMP9Vn1Vf5Pi5kcX9XFjull6U0zfxzbzMSuuuhGve6y/D6XDo26ZdEf/LeviL9tR/hb3DpfDyZNZkjdDhP2BKBVpxYubwYykgfaJVypIDbSLlaDSTGsZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07439835|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00457515-0.000449034-0.994976;FP=1074476955468378043|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037031241;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=2;RT=2;SR=0;TI=SMTPD_---.iTBLTwZ_1784807107;
+Received: from 172.19.20.218(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.iTBLTwZ_1784807107 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Jul 2026 19:45:08 +0800
+Message-ID: <052181bc-372d-4ad1-8636-ed6b59eebbf2@open-hieco.net>
+Date: Thu, 23 Jul 2026 19:45:06 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/8] KVM: nSVM: Track fresh VMCB02 DecodeAssist bytes
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <cover.1783999988.git.zhang_wei@open-hieco.net>
+ <e07b2a62d7dedf6bcddc16076cf2892e83db977b.1783999988.git.zhang_wei@open-hieco.net>
+ <20260714053040.6264F1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Tina Zhang <zhang_wei@open-hieco.net>
+In-Reply-To: <20260714053040.6264F1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Batching emulated counter reprograms delays or permanently loses o=
-verflow PMIs and corrupts GLOBAL_STATUS across live migration.
-- [Medium] Single-wrap overflow detection in pmc_pause_counter() silently f=
-ails if the batched emulated counts exceed the counter's bitmask.
-- [Low] Unprotected concurrent read of the `emulated_counter_reprogram_tole=
-rance` module parameter.
---
+Both concerns look valid.
 
---- Patch [1]: [PATCH v2] KVM: x86/pmu: Add module param to batch emulated-=
-instruction reprograms ---
-commit 85f50daf9aa2d9bd44f19438d6b61d03c98f6c16
-Author: Luka Absandze <absandze@amazon.de>
+I will rework the tracking to preserve the provenance of the VM-Exit
+and instruction bytes explicitly in the next version.
 
-KVM: x86/pmu: Add module param to batch emulated-instruction reprograms
 
-This patch introduces a module parameter to batch PMU counter reprograms=20
-triggered by emulated instructions. It defers the reprogramming until the
-accumulated emulated count exceeds the specified tolerance, which reduces
-the overhead on VM-entry.
+Thanks,
+Tina
 
-Link: https://lore.kernel.org/kvm/20260720192221.72912-1-absandze@amazon.de/
 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index dd1c57593f48b..33a73271186a5 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-[ ... ]
-> @@ -39,6 +39,14 @@ bool __read_mostly enable_pmu =3D true;
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
->  module_param(enable_pmu, bool, 0444);
-> =20
-> +/*
-> + * Number of KVM-emulated instructions that may accumulate on an emulated
-> + * (perf-based) vPMU counter before KVM forces a counter reprogram to fo=
-ld the
-> + * emulated count into the backing perf_event
-> + */
-> +static uint __read_mostly emulated_counter_reprogram_tolerance;
-> +module_param(emulated_counter_reprogram_tolerance, uint, 0644);
+On 7/14/2026 1:30 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> 
+> New issues:
+> - [High] The patch fails to set `vmcb02_insn_bytes_fresh` to `true` when reflecting a host-intercepted Guest Page Fault (`#PF`) to L1, discarding hardware-provided DecodeAssist bytes.
+> 
+> Pre-existing issues:
+> - [High] KVM incorrectly identifies synthesized nested page faults (NPFs) as hardware-generated if they occur during emulation of an original hardware NPF, passing a stale `exit_info_2` (GPA) to L1.
+> --
+> 
+> --- Patch [3]: [PATCH v2 3/8] KVM: nSVM: Track fresh VMCB02 DecodeAssist bytes ---
+> commit 1b65a65904c11af4f22d9f6d0ea2c488ec16575d
+> Author: Tina Zhang <zhang_wei@open-hieco.net>
+> 
+> KVM: nSVM: Track fresh VMCB02 DecodeAssist bytes
+> 
+> Track whether VMCB02 contains DecodeAssist instruction bytes from the
+> hardware VM-Exit currently being reflected to L1. Clear the fields before
+> each nested run so stale bytes cannot be mistaken for fresh hardware state.
+> 
+>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+>> index b340dc9991adb..70e2ee3af78b2 100644
+>> --- a/arch/x86/kvm/svm/nested.c
+>> +++ b/arch/x86/kvm/svm/nested.c
+>> @@ -33,13 +33,21 @@
+>>   
+>>   #define CC KVM_NESTED_VMENTER_CONSISTENCY_CHECK
+>>   
+>> +static void nested_svm_clear_insn_bytes(struct vmcb *vmcb)
+>> +{
+>> +	vmcb->control.insn_len = 0;
+>> +	memset(vmcb->control.insn_bytes, 0,
+>> +	       sizeof(vmcb->control.insn_bytes));
+>> +}
+>> +
+>>   static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
+>>   				       struct x86_exception *fault)
+>>   {
+>>   	struct vcpu_svm *svm = to_svm(vcpu);
+>>   	struct vmcb *vmcb = svm->vmcb;
+>> +	bool from_hardware = vmcb->control.exit_code == SVM_EXIT_NPF;
+>>   
+>> -	if (vmcb->control.exit_code != SVM_EXIT_NPF) {
+>> +	if (!from_hardware) {
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does evaluating the original
+> hardware exit code correctly identify emulator-synthesized nested page faults?
+> 
+> If an L2 guest accesses an unmapped MMIO region, it causes a hardware NPF.
+> L0 intercepts it and starts emulation. If the emulator then performs a guest
+> page table walk or instruction fetch which faults in the nested NPT, the
+> emulator injects a new NPF to L1 by calling nested_svm_inject_npf_exit().
+> 
+> Because the VMCB exit code still contains the original hardware NPF exit code,
+> this check evaluates to true. This causes KVM to skip updating the faulting
+> GPA with the new faulting address, misleading the L1 hypervisor with the
+> original MMIO GPA and incorrectly marking stale instruction bytes as fresh.
+> 
+> [ ... ]
+>> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+>> index 5137416be593d..fa65f6a1a59ba 100644
+>> --- a/arch/x86/kvm/svm/svm.h
+>> +++ b/arch/x86/kvm/svm/svm.h
+>> @@ -238,6 +238,13 @@ struct svm_nested_state {
+>>   	 * on its side.
+>>   	 */
+>>   	bool force_msr_bitmap_recalc;
+>> +
+>> +	/*
+>> +	 * True if VMCB02's DecodeAssist instruction bytes belong to the hardware
+>> +	 * VM-Exit currently being reflected to L1.  KVM-synthesized exits leave
+>> +	 * it clear.
+>> +	 */
+>> +	bool vmcb02_insn_bytes_fresh;
+> 
+> [Severity: High]
+> Does KVM need to set vmcb02_insn_bytes_fresh to true when reflecting a
+> host-intercepted Guest Page Fault (#PF) to L1?
+> 
+> If L0 KVM intercepts a #PF from L2 (e.g., for shadow paging or async PF),
+> it processes the fault and later queues it for reflection to L1 if L1 also
+> intercepts it. KVM synthesizes the exit via
+> nested_svm_inject_exception_vmexit():
+> 
+> arch/x86/kvm/svm/nested.c:nested_svm_inject_exception_vmexit() {
+> 	...
+> 	vmcb->control.exit_code = SVM_EXIT_EXCP_BASE + ex->vector;
+> 	...
+> }
+> 
+> However, this path fails to set vmcb02_insn_bytes_fresh to true. Since the
+> flag defaults to false when entering L2, it remains false, and any
+> hardware-provided DecodeAssist bytes for the #PF are discarded. This could
+> break instruction decoding and emulation logic in the L1 hypervisor.
+> 
+>>   };
+>>   
+>>   struct vcpu_sev_es_state {
+> 
 
-[Severity: Low]
-Since the module parameter is exposed via sysfs with 0644 permissions, the
-host administrator can modify it dynamically.=20
-
-Could the unprotected concurrent read of emulated_counter_reprogram_toleran=
-ce
-in kvm_pmu_incr_counter() lead to inconsistent reads?=20
-
-Using READ_ONCE() when accessing this shared mutable state might prevent
-potential compiler optimization issues.
-
-[ ... ]
-> @@ -1072,7 +1080,15 @@ static void kvm_pmu_incr_counter(struct kvm_pmc *p=
-mc)
->  	 */
->  	if (!kvm_vcpu_has_mediated_pmu(vcpu)) {
->  		pmc->emulated_counter++;
-> -		kvm_pmu_request_counter_reprogram(pmc);
-> +
-> +		/*
-> +		 * Batch reprograms: only force one once the accumulated
-> +		 * emulated count exceeds the tolerance. The count is still
-> +		 * reflected in guest counter reads via pmc->emulated_counter;
-> +		 * this only bounds how late an overflow-driven PMI arrives.
-> +		 */
-> +		if (pmc->emulated_counter > emulated_counter_reprogram_tolerance)
-> +			kvm_pmu_request_counter_reprogram(pmc);
-
-[Severity: High]
-Does this batching logic risk permanently delaying or dropping overflow
-detection and PMI injection?
-
-KVM relies on pmc_pause_counter() during a requested reprogram to detect
-overflows and inject PMIs. By deferring the reprogram until the accumulated
-emulated count exceeds the tolerance, the logical counter value becomes
-decoupled from its overflow state.=20
-
-If the guest stops executing the specific instruction before the tolerance
-is reached, the reprogram is never requested and the PMI might be permanent=
-ly
-lost.
-
-Additionally, during live migration, KVM_GET_MSRS saves the combined counter
-value but the unmodified GLOBAL_STATUS. Could the target VM restore the
-counter with emulated_counter implicitly zeroed, completely losing the
-pending overflow?
-
-[Severity: Medium]
-Can deferring the reprogram create an issue with the single-wrap overflow
-detection?
-
-If a host administrator sets emulated_counter_reprogram_tolerance to a
-pathologically high value like UINT_MAX, pmc->emulated_counter can exceed
-the counter's bitmask.=20
-
-Looking at pmc_pause_counter() in arch/x86/kvm/pmu.c:
-
-counter +=3D pmc->emulated_counter;
-pmc->counter =3D counter & pmc_bitmask(pmc);
-...
-return pmc->counter < prev_counter;
-
-If emulated_counter reaches exactly 2^32, adding it to a 32-bit counter
-wraps the value exactly once, resulting in pmc->counter =3D=3D prev_counter.
-Will the less-than check evaluate to false, causing KVM to miss the overflo=
-w?
-
->  		return;
->  	}
->
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723105309.1214=
-5-1-absandze@amazon.de?part=3D1
