@@ -1,133 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80E71D89EF;
-	Thu, 23 Jul 2026 18:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5DA488767;
+	Thu, 23 Jul 2026 18:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784832600; cv=none; b=uR8AbL0YlFH1hbsUfJ5CoOi7N5Plj/npsQrB3S+c3Z4GwTT86v68zDJF0PoQ3T/zMXiZwKmmIZ8p/6DtuOk9hFp8hjKhCvtS3IsF0/1Q+DYsXIf5komPzS87xonwt7BaRBCYH7cKGYZgGm60RzAIAD3PSzJUWzfbmwRe/QAqlw8=
+	t=1784832863; cv=none; b=B7p2WYV66rvr+Ouwmex8MTaBTTG9lOdsPQXjVsxHg5wY75ROzYMraof1Sp/amvpCCiN3MTKA5eAhuDz2t0zXgZ9dk8oMg4YVlVy9bqCYKT1EJCJH8etrm7HQHpRujw+txwnOqo6XD4hMemnJDpL6qyNqfldY2GpihRq9hEw9TgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784832600; c=relaxed/simple;
-	bh=uZFHDBNkQ4zsrVHk2Bc62OMUA73+VL7FItfPXuZ0KuM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ZemTvKNtdUoXh9L20EuAnZq9EqtbISFgD+hKN1G0wPG6Xm5tgK/s+2vdCWo022xLjjLGvPVqM5LCOfd6qMpbQzI00MatBEn3Cj7kuWmhSdjsXr4F6i8mxVCUpxzita2Socm2+SO1CNIXz03R9FHb61kqtwTz1ZRCqf42gyYxYlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKzjESZf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784832863; c=relaxed/simple;
+	bh=h9OtEV4qVHAlX9KQYjihbUFKtfO6sstnIeiFiDgoNVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hPmeFl/G4FQrsNDPsFmkmi1xCh6yQAarAriW66oDzDt8Ksv1WK1Zs271Ecuzw6a4u5EAJgpzANEYgzZFIN9kqPh5CliX4OHJvdbsMSHl9A4nSd+mprXQ7x/LgNKs/8Q8j+hfnzh69P4dAjaT6UbqeDWqQwLK67q4QD6Vj4cmkXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JsGnJrZ2; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKzjESZf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0AA1F000E9;
-	Thu, 23 Jul 2026 18:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784832592;
-	bh=eVuGWarSRd9qR8Q/DSOsgH97wxfYnNaZpx41i1ZMKuk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PKzjESZf8xwyw2m6Um17hnb8poVNlvghBcdiknpiOSsoGrKlLrX14mx6gDqZqFQpF
-	 9hOZ2c0HGv1V0j3qSAcHCMpUc2W+A9K8hryvM0mJYzpEiCHIPTaKTkjTBqSZxMTlCH
-	 FFVVKT6cvvU69KffHgNsr992i20Gf05gMEJ9qdMKtpNscCKH/tMBcoBMqQkvv4MWNS
-	 UTX8fhF/R7CSPyAvU1v+t/vNvM/vLhsvYQn/VIlQp/lQ8jrVafuQBY7j85IBBty2cb
-	 tvmIHscsOIgfmf+mUh64liRO8pPrVDh7HIJwLNUGZNULNqO5c2PpjuNf0M/MF7HJFw
-	 yzpnWkpZje/wA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 2/6] KVM: s390: pci: Fix memory accounting for
- pinned/unpinned pages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Farhan Ali" <alifm@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260723183440.3271-3-alifm@linux.ibm.com>
-References: <20260723183440.3271-1-alifm@linux.ibm.com>
- <20260723183440.3271-3-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 23 Jul 2026 18:49:52 +0000
-Message-Id: <20260723184952.6E0AA1F000E9@smtp.kernel.org>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JsGnJrZ2"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C153C40E00DC;
+	Thu, 23 Jul 2026 18:54:12 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 4AZIU2mSZdwn; Thu, 23 Jul 2026 18:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1784832841; bh=VjYfDXADIh0xhQ+fjHF1Jv01qoDx2xMCSHhEriUi0Hs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JsGnJrZ2/7sUYiUCIv2KOCQj1PrDOJvK4e83jLp7okg4LGN5J/RmmLUesfD5fr5I3
+	 Mt5JYFHoNNWR4EzQNU127WyWMP2BGomGxaXMiPzEevVfpeDPrAwp9uZZo/gp12pc4X
+	 wcdpHCT4jZ3XmCmFhpMgl4vTQwwxYyLMrTPTJwArefHleMRep1JN2t0zagEz8SOZDa
+	 78XL3vCkRXRAD6zQPAMPRyS6bvF6/HPAHteaLDXrkojsKYDNbuHQd/0nHVSNHujasT
+	 b3tbg+39biHsy66Q/XN1eHd2/5e7JweFSypSONu5Wt6+SIxcmfigN1xs2SsiyYl6kV
+	 QTqEqq7lAqamE+mWduGefQ326mSlIqq1rToAd+6VDpmivnmtZOwaaEc6H8oCidIKsv
+	 rhbkKvnV3zU+tMT1nFv8OJYnZQX/I2UIUmNL6rEfGLl6hjBsGw68Gf+s7yT/QkCrhf
+	 mhQ/3JZXcGoqWN7FbqGvm5danDFL68OzlDKcHlYQd/rc5QWmqZ80NXwnBGsnRYClza
+	 Wx/jQ9cBJEk+ecJEutmM+DDtRKNNQCu8gM/kMgFndV7N0ibCvRG7rzF+BhhBX1uJbR
+	 QZpcjgYT94C8+FgnhdKdFiRnz+zN7v6Y3YbXOiNk85yBn3lQsA7gVCkLK49M5zjFgY
+	 mOxi5lQM5Gy6jwIH2wOuJJ1M=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DE7A340E00E6;
+	Thu, 23 Jul 2026 18:53:26 +0000 (UTC)
+Date: Thu, 23 Jul 2026 11:53:23 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v10 3/6] x86/sev: Disable CPU hotplug while SNP is active
+Message-ID: <20260723185323.GAamJjI2HoM1gZmExw@fat_crate.local>
+References: <cover.1782841284.git.ashish.kalra@amd.com>
+ <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <205a5259f9fd353dc0ca6b00565c8175a96768c7.1782841284.git.ashish.kalra@amd.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Tue, Jun 30, 2026 at 06:11:03PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> While SNP is active, every memory write is checked against the RMP to
+> protect SEV-SNP guest memory.  A core performs these RMP checks only once
+> ...
 
-New issues:
-- [High] Missing `unaccount_mem()` on the `airq_iv_alloc_bit` error path in=
- `kvm_s390_pci_aif_enable()` leaks `mm_struct` and `user_struct` references.
+Use this commit message for your next revision. The idea is to split it into
+smaller paragraphs for easier parsing, do simple formulations and not talk
+about future patches because git history is not always linear:
 
-Pre-existing issues:
-- [High] `kvm_s390_pci_aif_enable()` silently swallows error codes on failu=
-re paths, returning success to userspace.
---
+"While SNP is active, every memory write is checked against the RMP to
+protect SEV-SNP guest memory.  A core performs these RMP checks only once SNP
+has been initialized via SNP_INIT and the SNP-enable bit in SYSCFG is set on
+that core; the firmware requires the SNP-enable bit to be set on every present
+CPU before SNP initialization.
 
---- Patch [2]: [PATCH v5 2/6] KVM: s390: pci: Fix memory accounting for pin=
-ned/unpinned pages ---
-commit a95fdbf06d99bb2d6418c3a7ae08bdd93d3f75d9
-Author: Farhan Ali <alifm@linux.ibm.com>
+A core that is not SNP-enabled and not SNP-initialized performs no RMP checks
+at all, so there is no valid configuration with SNP active and any CPU exempt
+from RMP checks.
 
-KVM: s390: pci: Fix memory accounting for pinned/unpinned pages
+The firmware determines which CPUs are present from the processor and the
+BIOS/UEFI configuration (e.g. SMT disabled in the BIOS) and enumerates them at
+SNP init; it is not aware of the OS bringing CPUs online or offline
+afterwards.
 
-The account_mem() and unaccount_mem() functions leak struct user_struct
-references by not calling free_uid(). They also incorrectly accounted pages
-against current->mm, which might not be the original context during unpinni=
-ng.
-This patch stores the pinning process user_struct and mm_struct to properly
-free these resources.
+SNP_INIT fails unless SnpEn is set on all CPUs, so a CPU that is offline when
+SNP_INIT is issued, does not have SnpEn set, SNP_INIT fails, and there can be
+no SNP guest memory.  OS CPU hotplug can thus diverge from the firmware's
+expectations and break SNP.
 
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index d2a11cdf6941d..44c00e5e32c57 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-[ ... ]
-> @@ -279,7 +300,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *z=
-dev, struct zpci_fib *fib,
->  	}
-> =20
->  	/* Account for pinned pages, roll back on failure */
-> -	if (account_mem(pcount))
-> +	if (account_mem(zdev->kzdev, pcount))
->  		goto unpin2;
+Tie CPU hotplug to the SNP-enable bit: disable it in snp_prepare() before
+SNP is enabled, and re-enable it in snp_shutdown() once the firmware has
+disabled SNP.
 
-[Severity: High]
-This is a pre-existing issue, but does this silently swallow the error code
-if account_mem() fails?
+If snp_prepare() fails before enabling SNP it re-enables hotplug itself; once
+SNP is enabled hotplug stays disabled, including across a failed SNP_INIT and
+across the legacy SNP_SHUTDOWN_EX path, both of which leave SNP enabled.
 
-If account_mem() returns an error like -ENOMEM, we jump to unpin2, but the
-return value isn't assigned to the local rc variable.
+A kexec target that boots with SNP already enabled, disables hotplug once in
+snp_rmptable_init(), since snp_prepare() bails when SNP is already enabled."
 
-Does this also happen if airq_iv_alloc_bit() fails later in the function? If
-the error code isn't assigned to rc before jumping to unlock,
-kvm_s390_pci_aif_enable() would return 0 (success) to userspace even though
-interrupt forwarding failed to initialize. Could this leave the guest hangi=
-ng
-while waiting for interrupts?
+> 
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> ---
+>  arch/x86/virt/svm/sev.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index dab6e1c290bc..04a58ac4339c 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -535,6 +535,15 @@ int snp_prepare(void)
+>  
+>  	clear_rmp();
+>  
+> +	/*
+> +	 * Disable CPU hotplug before enabling SNP, so no CPU can come online
+> +	 * without SnpEn while SNP is enabled; it is re-enabled in snp_shutdown()
+> +	 * once SNP is disabled.  Must be before cpus_read_lock():
+> +	 * cpu_hotplug_disable() takes cpu_add_remove_lock, which nests above
+> +	 * cpu_hotplug_lock.
+> +	 */
+> +	cpu_hotplug_disable();
+> +
+>  	cpus_read_lock();
 
-[Severity: High]
-Does this error path leak the mm_struct and user_struct references?
+What's the point of grabbing the hotplug lock if you just disabled hotplug?
 
-When account_mem() succeeds, it takes references via mmgrab() and get_uid(),
-and stores them in kzdev. If a subsequent operation fails later in
-kvm_s390_pci_aif_enable() (such as airq_iv_alloc_bit() failing), the error
-path jumps to unlock:
+>  	if (!cpumask_equal(cpu_online_mask, cpu_present_mask)) {
+> @@ -560,6 +569,10 @@ int snp_prepare(void)
+>  unlock:
+>  	cpus_read_unlock();
 
-	bit =3D airq_iv_alloc_bit(aift->sbv);
-	if (bit =3D=3D -1UL)
-		goto unlock;
-...
-unlock:
-	mutex_unlock(&aift->aift_lock);
-unpin2:
+ditto.
 
-This skips calling unaccount_mem(), which would drop the references and mem=
-ory
-accounting limits. Since kzdev->fib.fmt0.aibv remains 0, the device teardown
-path will also skip unaccounting this memory.
+>  
+> +	/* Re-enable CPU hotplug; SnpEn was never set. */
 
-Could this be repeatedly triggered (e.g. by exhausting airq_iv bits) to
-reliably leak references on each attempt, eventually overflowing the 32-bit
-counters and causing a use-after-free?
 
-> =20
->  	/* AISB must be allocated before we can fill in GAITE */
+^ Superfluous comment.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260723183440.3271=
--1-alifm@linux.ibm.com?part=3D2
+> +	if (ret)
+> +		cpu_hotplug_enable();
+> +
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
+> @@ -587,6 +600,13 @@ void snp_shutdown(void)
+>  
+>  	rmpopt_cleanup();
+>  
+> +	/*
+> +	 * Re-enable CPU hotplug now that the firmware has disabled SNP; CPU
+> +	 * hotplug is not re-enabled for a legacy SNP shutdown.  After
+> +	 * rmpopt_cleanup() so RMPOPT_BASE is cleared with hotplug still disabled.
+> +	 */
+
+I can't parse that comment.
+
+> +	cpu_hotplug_enable();
+> +
+>  	clear_rmp();
+>  	on_each_cpu(mfd_reconfigure, NULL, 1);
+>  }
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
