@@ -1,50 +1,60 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D99536B91C;
-	Thu, 23 Jul 2026 16:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEA934107F;
+	Thu, 23 Jul 2026 16:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784824431; cv=none; b=oTb9lEEzdZSggljVeIEl6QiEDoBQVTWhL1TrYrj+B5q+hdq/AOqhN/GybgzSq4DxbBNI1497qmMkZmaBfzsPUXSYJjFiCIFGZ8r3rYapftE/RHwq/lmphYa926OKcmz+0qfnU34esoYpQhvKTHEEc7cpnZnZ2ugTT/xFcwTg1Nk=
+	t=1784824720; cv=none; b=pbS6F+aVH9b+JE0dXl+OTSygRz5ZfmKPQM0drR84awIdGPJc27fQsrSP1ihk/mCfl5vNUZpyIFQrRrlvvBkDdxUosRa5cVFrGGW1L5AccbfzJzzvo51ULKtqumXB9TFfSgmGk8ZvfFNik+DhOd7Rmxc9wWrsE1GDu7KZS3bWI3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784824431; c=relaxed/simple;
-	bh=6FXoQBSP9DlYlAkmJoAfryG/NfI8m5TCRyOtSYrKACI=;
+	s=arc-20240116; t=1784824720; c=relaxed/simple;
+	bh=8QFfivOq3dFgFtl1JZbFBFdSPNvH+WRBg82oFKzDfHU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uG27ODGTtGIFR6wi2PgoTnakOC+I3YFG0eTb2YnjksWdVrX8iwTY6xI5sDzIljRbWy3CxsKVI5+v7ejhByLowNwuRC2bNgaeC6jbxVDHQih92+8lZl63kMam+xuST33dd6QvTlJeswfSHl7YIwivifiA6gzVO46dBA2gekvcNuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eZqu5yJm; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 In-Reply-To:Content-Type; b=c4clnNS8H8mCVxTtmF7P3+afVZCrgigHbfe1VRHy1O0HuEVIWAxjA73ZN9JLtf2/2rkUy0rQfaXp7YlpKbR8tVPaO+5RibK4fvfdi3BvymYr5Ydn4f4dYAKHB3KfYhQf9CyVV8ja1Wyv1k5moPpMnPGlAiWRx1iaitgcIjXv79U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eAmyerQ2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eZqu5yJm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784824425; x=1816360425;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6FXoQBSP9DlYlAkmJoAfryG/NfI8m5TCRyOtSYrKACI=;
-  b=eZqu5yJmgdpgcei3ckOfC625L1XTViEIMJxcNbMjByFhHiNEOU0gETrC
-   zKj9aMEqDYrKE4viIfOvwrHSZ1aPi4V9tQbyg2aGdFAoRyHr2nCU/aY2L
-   RyfzAOdZ5vsWVU9CmQSJmhBjrW/lPKuNkY2SLQsBxwwF7NI5qkGx3jnlh
-   D92aVlfXxr4eu69mCB/G4gAJvqnwenWxKYh4iuAbCN7E9GFUjcZ6Tc2rq
-   zm+pujRfUAmy3FjtWjbguGz9DD7Ya1eaGg/yk2znyWFCkAArmQsP0XIKD
-   APMIwwTtyjXsEwx6O9gvxQEqTs1qhdLgihfs1yDxpRZJkh+g4mMh6TNRw
-   g==;
-X-CSE-ConnectionGUID: rFFPIMNURXisqe/82/LKFg==
-X-CSE-MsgGUID: yd1vCKXISu24dBkQkbY9Ew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="89381242"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="89381242"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 09:33:43 -0700
-X-CSE-ConnectionGUID: 2D2Rrtp1TEORQUTtkHLvgg==
-X-CSE-MsgGUID: 2SfGEq5WRq2gT1A+4QNYWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; 
-   d="scan'208";a="263428618"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 09:33:42 -0700
-Message-ID: <93d6d476-ed63-4c4f-9bf6-666101708eb6@intel.com>
-Date: Thu, 23 Jul 2026 11:33:41 -0500
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eAmyerQ2"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66NDBih93094728;
+	Thu, 23 Jul 2026 16:38:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=94TQvF
+	Fvj8zVmSSSoqgjcJLHCeffNFWX7lxB9/2yAwQ=; b=eAmyerQ2H6KpE5iZv4II1Q
+	CGMu//IhlkkL/Cclat3LMxryIcLjpC6A6Az5I839966jyGnkMey58/e9JlrJn/F8
+	kU1hlBMziCfmQORfHnhkX7gglUaVTmJq4l0x7GSD1rSGvde65YDm4FGODJ7F1heE
+	kb4RLqQ5qQ6Zj3kCEin0lKCiFOItzTMJen9QCZ49aSF8dALrwXjgZ+M0XT2ON8cP
+	2mwd1TB5RwKpgZFkPPGfxd8uXymZLzrxLOW6z6mD08yhxXRmWP8q8NSyklXEpsHH
+	7lqQFF0HVM+5Dtn96C+q0gCAcwIgOELVGT3IZk53Vy7UtaxQ9AOOOWJ9UslBot4A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ahfyr2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 16:38:38 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66NGYbru017258;
+	Thu, 23 Jul 2026 16:38:37 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqd7pv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 16:38:37 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66NGcakn64946438
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 16:38:36 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 04DD058054;
+	Thu, 23 Jul 2026 16:38:36 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 340345805A;
+	Thu, 23 Jul 2026 16:38:35 +0000 (GMT)
+Received: from [9.61.254.118] (unknown [9.61.254.118])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 16:38:35 +0000 (GMT)
+Message-ID: <df4102bc-c834-4782-ab33-c275fa5614fc@linux.ibm.com>
+Date: Thu, 23 Jul 2026 09:38:34 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,135 +62,72 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
-To: Jim Mattson <jmattson@google.com>, "Mi, Dapeng"
- <dapeng1.mi@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260629231938.15129-1-zide.chen@intel.com>
- <20260629231938.15129-8-zide.chen@intel.com>
- <CALMp9eQyMe6MfYPkvYAZPm+6A+FK6ZYpGv5Wx+nVvi9GtumA+g@mail.gmail.com>
- <f16aea7f-6b5a-4980-91b4-a41931b797ec@linux.intel.com>
- <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
- <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
- <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] KVM s390x PCI fixes
+To: Matthew Rosato <mjrosato@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: farman@linux.ibm.com
+References: <20260722170621.1686-1-alifm@linux.ibm.com>
+ <6cefe506-b36c-472a-8ab7-ca2483dcc0a9@linux.ibm.com>
+ <695f10af-317b-4de0-a66a-4257d40d8cc9@linux.ibm.com>
+ <a5dee982-6958-4328-89bd-b7d69df730f7@linux.ibm.com>
 Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <CALMp9eTOQJ1_QMazU3v_TAXupNfZTLsYta9wi7iRBy37P8WqTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <a5dee982-6958-4328-89bd-b7d69df730f7@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: veaRIRkB8pmfZSpJli7R-k9p_fy4Uka6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDE1OSBTYWx0ZWRfX2qbezqleAG7y
+ hUPQao+AQ4o7GASET0JEupGCmyr3yFO3zTT0pzprQxWaNW5qOi92eLCeFd4GSPEUD2yioZNdLl1
+ panmFQOLM+emQPdbHcQvZVZWzaLHkIggYGmHAOj+px2ctHMCXVJpmuGcoGpisULYWYg/VJ/jQ2t
+ /ulLH8cHVs/yUFfYXkIk2tApklZpkdq0pk++09WiwsN14XegcNYuKkQqVqVTfaUWFrZxvP8oGsH
+ jWFO/PKdYSMD+4biFsFMrE5je+QMRV4Hf02nuJpsC4rMLn4K2t6nOl4UMHMr12WQ4vPv71Uay0S
+ 8HO1XdkY4Zbega3J5FYkzhZiIEF4NdL17oXH+1Hvvc0OFB0T/b8dNa7wJwN9uXlNE2LUeBS4THy
+ T7xKdg0y4azAjT2U6SfuG4wwUhwRbGq3WhkPPX9Lck+Vepb0/xTtN0B/KLUu/kqMYzkMJH79Qke
+ gsXfVO9BnSw9j1I254w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDE1OSBTYWx0ZWRfXx8ZyAgt+jaM6
+ 7aZhRbFdGF2qOibWnmgSSWNNOJmrRTt3EkkZ2/zAg+4g9eTb7+BoNk9P5l7o/dUo+hFoooefFtM
+ 9vx9kRjePTYTFSujbinCVmUXIC4pxjg=
+X-Proofpoint-GUID: veaRIRkB8pmfZSpJli7R-k9p_fy4Uka6
+X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a62438e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=x10Zz5tqN_DblOGAQIUA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_04,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230159
 
 
-
-On 7/22/2026 10:10 PM, Jim Mattson wrote:
-> On Wed, Jul 22, 2026 at 7:53 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>
->>
->> On 7/23/2026 10:25 AM, Jim Mattson wrote:
->>> On Wed, Jul 22, 2026 at 6:44 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
->>>>
->>>> On 7/23/2026 8:02 AM, Jim Mattson wrote:
->>>>> On Mon, Jun 29, 2026 at 4:29 PM Zide Chen <zide.chen@intel.com> wrote:
->>>>>> If the host has the PERF_METRICS capability but it's not present on
->>>>>> the guest, RDPMC interception must be enabled and KVM should inject
->>>>>> an #GP when the guest attempts a PERF_METRICS RDPMC.
->>>>>>
->>>>>> If the guest has PERF_METRICS but RDPMC interception is enabled for
->>>>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
->>>>>>
->>>>>> For simplicity, Metrics Clear Mode is not supported.
->>>>>>
->>>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>>>>> ---
->>>>>> v6:
->>>>>> - Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
->>>>>> - Reject non-zero index.
->>>>>> v5:
->>>>>> - new patch.
->>>>>> ---
->>>>>>  arch/x86/kvm/pmu.c           |  7 +++++++
->>>>>>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
->>>>>>  2 files changed, 21 insertions(+)
->>>>>>
->>>>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->>>>>> index 8ef2d4761790..04b9c840f218 100644
->>>>>> --- a/arch/x86/kvm/pmu.c
->>>>>> +++ b/arch/x86/kvm/pmu.c
->>>>>> @@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
->>>>>>  }
->>>>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
->>>>>>
->>>>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
->>>>>> +{
->>>>>> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
->>>>>> +               !kvm_vcpu_has_perf_metrics(vcpu);
->>>>>> +}
->>>>>> +
->>>>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>>>>  {
->>>>>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
->>>>>> @@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>>>>                 return true;
->>>>> I know we have a strong disagreement here, but I really feel that this
->>>>> must be secure and future-proof out of the box.
->>>>> What if we added a module parameter, enable_rdpmc_passthrough, which
->>>>> defaults to false?
->>>>>
->>>>> Then:
->>>>>
->>>>> if (!enable_rdpmc_passthrough)
->>>>>         return true;
->>>>>
->>>>> Is that a reasonable compromise?
->>>> Yes, this is an option. Another option is to add a helper to explicitly
->>>> tell which platforms are secure and can pass-through rdpmc. Maybe like this,
->>>>
->>>> static bool intel_pmu_can_passthrough_rdpmc()
->>>> {
->>>>     switch (boot_cpu_data.x86_vfm) {
->>>>     case INTEL_ICELAKE_X:
->>>>     case INTEL_SAPPHIRERAPIDS_X:
->>>>     case INTEL_EMERALDRAPIDS_X:
->>>>     case INTEL_GRANITERAPIDS_X:
->>>>     ... ...
->>>>         return true;
->>>>     default:
->>>>         return false;
->>>>     }
->>>>
->>>>     return false;
->>>> }
->>>>
->>>> Then rdpmc can be passed through by default on these known secure
->>>> platforms. For any new platforms, the rdpmc would be intercepted out of
->>>> box until we confirm it's secured and explicitly support them.
->>>>
->>>> How about this? At least for me, it looks like an overkill to disable rdpmc
->>>> passthrough unconditionally on these known secure platforms.
->>> The F/M match would only apply on bare metal, since you can't trust F/M in a VM.
+On 7/23/2026 8:35 AM, Matthew Rosato wrote:
+> On 7/23/26 9:00 AM, Matthew Rosato wrote:
+>>> I would take this series and do small fixups where necessary. Just tell
+>>> me if the change for patch 6 is fine. Or provide a v5.
 >>>
->>> What if we combine this with the module parameter, but now the module
->>> parameter defaults to true? Somewhere in module load, we have:
->>>
->>> if (boot_cpu_has(X86_FEATURE_HYPERVISOR) || !intel_pmu_can_passthrough_rdpmc())
->>>         enable_rdpmc_passthrough = false;
+>> I am reviewing and testing this today, please give me a few more hours.
 >>
->> It looks good to me. :)
-> 
-> On second thought, it doesn't really matter if L0 has lied to L1 about
-> F/M. If the hardware supports more RDPMC types than the L1 virtual CPU
-> does, L0 must intercept and emulate RDPMC for vmcs01. Even if L1
-> decides to pass through RDPMC to L2, L0 will still intercept and
-> emulate RDPMC for vmcs02.
-> 
-> So, we can drop the module parameter and just use
-> intel_pmu_can_passthrough_rdpmc().
+> Farhan, could you do a v5 with comments addressed?
+>
+> I am willing to also tag patch 2 if you either make the change I asked
+> for there (or explain to me why it's not necessary).
 
-Thanks, will post a new version based on this.
-> To keep the list short, I assume that any CPU with only three fixed
-> counters will return true.
+Yes I can spin a v5, I think we have enough reviews to warrant a v5. 
+Thanks all for reviewing.
 
-Will do some study on the available CPUs.
+Thanks
+
+Farhan
+
+>
+> I've also done a variety of testing, so I'd be happy to also give my
+> Tested-by to the series.  But would be good to do this on a v5.
+>
+>>> I suggest to add cc stable to all patches.
+>> Agree
