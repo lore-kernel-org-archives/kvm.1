@@ -1,338 +1,165 @@
-Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB7935C1B7;
-	Thu, 23 Jul 2026 02:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B838470EAB;
+	Thu, 23 Jul 2026 02:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784774918; cv=none; b=n6y210EdVXvcjNF1C538+44w+rw4lzpk9W7+8FIQchCGB+2iSWhOTrsgbzVw5A3E3LFnVf/FZpuYIXkoufdtLLr5j8Xa1kVaejefxLHByEJCpgQsSt3kv///AyG3Ubl2dORrstQLBz+Jvzdvs0y/3FuyOaOdCwNXhTSA/7I+t/w=
+	t=1784775186; cv=none; b=SHNSi4GLdfrXSiunsOfrgO2Ktu26AlO4m6gumsy8GBIcEAhmSOp8FftlTmt6tOG8hpcNUEoTUOt3rAm0mTyAdHPrvSEOAo9PaAuhbLLGOKqN0afDpzrdMUXdaVw/9dWC0NofaJZKn4EjvLDjKfoTDCix3arPYijw2006GJlhjiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784774918; c=relaxed/simple;
-	bh=xO4Xsg6WMoznKKLCX2VF4Rxpd9VvTwSKgFTxYveIfGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PBczSLYPzbDbk5qnSkOds3XkOYlYCa6E/9B/6jyMvnBvETpZLXwCfV73SXskzjwbXhpprj6VWGxSI7emDZUcZOyGvxygM2tJvGrkiXqR2Lzp/zPv0A1BJFMtOx+YPLfOILNT4yqiI2XqOG0HB5bzoemqM/d5p4196FURqSKsH5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=neDX52RF; arc=none smtp.client-ip=139.138.61.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1784775186; c=relaxed/simple;
+	bh=X93DBtzbe0r79BeyJEl/qv0pwnSRNILYe3losLv7daY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M+etxJ1DOc5eGdUzdC9ofX8nXei4odM29/z56By8iILJbjRzcIUfMY1JJp0eoJiIg0U7egCu7Lh8CphdS2zB1E+2TwH5Pr8eNOkyp70c1NeEkAKhRkXUgTq0hqzZewmKNDq+Ue6Eb3bxIZ+JVkxkg0iElpn4MPKaagSf2i2FwNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lANBe3Yz; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="neDX52RF"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1784774916; x=1816310916;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xO4Xsg6WMoznKKLCX2VF4Rxpd9VvTwSKgFTxYveIfGI=;
-  b=neDX52RFF9nhLLcjcGpGCQmv8NfaZkEIaIo8vOfLiH187FdbflX3bt2L
-   /F7MBgMQwIEq4zHRzvQ3PGF38Z4s6NH3NghwOgXkNp8ldcI893yMS9e1Q
-   jZuSKPsL/bGVZ9uRVums7t1ZjKFKFPoXB3onB+HW7Cu+wXOZ1q3LibIMK
-   bAnPHyA8qoWE5JWihz/zkuNXzxJSGNY43gnmLDOjJjMN4xGdUbTf9IWQV
-   GJY2Uoi7qycgC3eVv9o+3J0ZYbkXVRGsTRK10hopetM/5TeSsc0HzP6ej
-   mDqk4Cz0KhWTGn+BFCuaLA1EUdGo96he77chLt1cRx0t2AfJ3P6rPGVO/
-   w==;
-X-CSE-ConnectionGUID: DpLDW5xeT6Km+opSv0AMNw==
-X-CSE-MsgGUID: WEA4ANOiTUOF9EM2LHGFkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="227181184"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779116400"; 
-   d="scan'208";a="227181184"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 11:47:25 +0900
-Received: from az2nlsmgm1.o.css.fujitsu.com (unknown [10.150.26.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id ADAB31000342;
-	Thu, 23 Jul 2026 02:47:25 +0000 (UTC)
-Received: from az2nlsmom3.fujitsu.com (unknown [10.150.26.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm1.o.css.fujitsu.com (Postfix) with ESMTPS id 583C2C03F7A;
-	Thu, 23 Jul 2026 02:47:25 +0000 (UTC)
-Received: from sm-arm-grace07 (unknown [10.124.178.20])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmom3.fujitsu.com (Postfix) with ESMTPS id CECEC10001D0;
-	Thu, 23 Jul 2026 02:47:19 +0000 (UTC)
-Date: Thu, 23 Jul 2026 11:47:16 +0900
-From: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-To: Wei-Lin Chang <weilin.chang@arm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 8/9] KVM: arm64: selftests: Add infrastructure for
- using stage-2 in guest
-Message-ID: <amGAtKiTirVSHUky@sm-arm-grace07>
-References: <20260516183003.799058-1-weilin.chang@arm.com>
- <20260516183003.799058-9-weilin.chang@arm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lANBe3Yz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784775184; x=1816311184;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=X93DBtzbe0r79BeyJEl/qv0pwnSRNILYe3losLv7daY=;
+  b=lANBe3YzdGsiHXKssdiBRAhOwq61ds5kXZVFgEo7AJ+iOkgbqgAc5VXk
+   VPjMIJU3Svu7lKaiDWKKJmak8aYQqJQe20DqZCrkXF0FsRj+nbZzZ/tMh
+   kt2A6mx8tEVAs7CJjRm5hV7AJuk87YEUjIBMmznokaUWv01q3ap+x+Wbd
+   R11SpMsrnE/vGOARbZylm2TyarMfds1QoUwydk1t0KQdOGpNYU7iHroiQ
+   VQlWIRc6qjlxIzrvk6QQzAP+l3SiqLHCLxeRuz3RYSufO+1+4tMaWyLgC
+   9+vu0UvR23o85Dn/WsP/nvZT6+Yd3SyHFVZugypFiWgxZjTJRD2U5Tlvy
+   g==;
+X-CSE-ConnectionGUID: yED5euVwQMWpxmJ7mQMXHw==
+X-CSE-MsgGUID: xNQuF9l6QU2kykGaFCYw5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85543073"
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="85543073"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 19:53:03 -0700
+X-CSE-ConnectionGUID: n47tkPmFQiyRzxc3m6j9XQ==
+X-CSE-MsgGUID: XxKZ+/00TNuRl7FdPsV/Tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; 
+   d="scan'208";a="257724956"
+Received: from unknown (HELO [10.238.1.243]) ([10.238.1.243])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 19:53:01 -0700
+Message-ID: <1a21ba1c-a195-43aa-9a9f-c0326a78c0a5@linux.intel.com>
+Date: Thu, 23 Jul 2026 10:52:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260516183003.799058-9-weilin.chang@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 7/8] KVM: x86/pmu: Emulate RDPMC on performance metrics
+To: Jim Mattson <jmattson@google.com>
+Cc: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260629231938.15129-1-zide.chen@intel.com>
+ <20260629231938.15129-8-zide.chen@intel.com>
+ <CALMp9eQyMe6MfYPkvYAZPm+6A+FK6ZYpGv5Wx+nVvi9GtumA+g@mail.gmail.com>
+ <f16aea7f-6b5a-4980-91b4-a41931b797ec@linux.intel.com>
+ <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <CALMp9eQapUpDBd5iwvw7OVkm8oUaVcD9KQwdgyA57mNiWe9jgw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 16, 2026 at 07:30:02PM +0100, Wei-Lin Chang wrote:
-> Add a stage-2 page table generator, the s2_mmu structure, and vEL2
-> stage-2 preparation code for a guest hypervisor to turn on stage-2
-> translation for its nested guest.
-> 
-> Signed-off-by: Wei-Lin Chang <weilin.chang@arm.com>
-> ---
->  .../selftests/kvm/arm64/hello_nested.c        |   2 +-
->  .../selftests/kvm/arm64/shadow_stage2.c       |   2 +-
->  .../selftests/kvm/include/arm64/nested.h      |  15 +-
->  .../testing/selftests/kvm/lib/arm64/nested.c  | 145 +++++++++++++++++-
->  4 files changed, 160 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/arm64/hello_nested.c b/tools/testing/selftests/kvm/arm64/hello_nested.c
-> index 9ed5285f5f2d..b57e41c73214 100644
-> --- a/tools/testing/selftests/kvm/arm64/hello_nested.c
-> +++ b/tools/testing/selftests/kvm/arm64/hello_nested.c
-> @@ -62,7 +62,7 @@ static void guest_code(void)
->  	l2_stack_top = ucall_translate_to_gpa(&l2_stack[L2STACKSZ]);
->  
->  	init_vcpu(&vcpu, l2_pc, l2_stack_top);
-> -	prepare_hyp();
-> +	prepare_hyp_no_s2();
->  
->  	ret = run_l2(&vcpu, &hyp_data);
->  	GUEST_ASSERT_EQ(ret, ARM_EXCEPTION_TRAP);
-> diff --git a/tools/testing/selftests/kvm/arm64/shadow_stage2.c b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-> index c5332b8b5683..2b274b810dcf 100644
-> --- a/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-> +++ b/tools/testing/selftests/kvm/arm64/shadow_stage2.c
-> @@ -72,7 +72,7 @@ static void guest_code(void)
->  	l2_pc = ucall_translate_to_gpa(l2_guest_code);
->  
->  	init_vcpu(&vcpu, l2_pc, l2_stack_top);
-> -	prepare_hyp();
-> +	prepare_hyp_no_s2();
->  
->  	while (true) {
->  		GUEST_PRINTF("L2 enter\n");
-> diff --git a/tools/testing/selftests/kvm/include/arm64/nested.h b/tools/testing/selftests/kvm/include/arm64/nested.h
-> index fc59fabff12d..1bcbb31b8d67 100644
-> --- a/tools/testing/selftests/kvm/include/arm64/nested.h
-> +++ b/tools/testing/selftests/kvm/include/arm64/nested.h
-> @@ -38,6 +38,14 @@ struct vcpu {
->  	struct cpu_context context;
->  };
->  
-> +struct s2_mmu {
-> +	gpa_t pgd;
-> +	unsigned int vmid;
-> +	unsigned int page_size_shift;
-> +	u64 vtcr;
-> +	u64 ipa_bits;
-> +};
-> +
->  /*
->   * KVM has host_data and hyp_context, combine them because we're only doing
->   * hyp context.
-> @@ -56,8 +64,13 @@ struct page_pool {
->  size_t get_page_size(void);
->  gpa_t alloc_page(struct page_pool *pp);
->  bool has_tgran_2(u64 mmfr0, size_t size);
-> -void prepare_hyp(void);
-> +void prepare_hyp_no_s2(void);
-> +void prepare_hyp(struct s2_mmu *mmu);
->  void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top);
-> +void create_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa, size_t size,
-> +		       struct page_pool *pp);
-> +void init_s2_mmu(struct s2_mmu *mmu, unsigned int vmid, gpa_t pgd,
-> +		 size_t page_size, u64 ipa_bits);
->  int run_l2(struct vcpu *vcpu, struct hyp_data *hyp_data);
->  
->  u64 do_hvc(u64 action, u64 arg1, u64 arg2);
-> diff --git a/tools/testing/selftests/kvm/lib/arm64/nested.c b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> index cda41f355263..9848d607ef64 100644
-> --- a/tools/testing/selftests/kvm/lib/arm64/nested.c
-> +++ b/tools/testing/selftests/kvm/lib/arm64/nested.c
-> @@ -71,13 +71,22 @@ gpa_t alloc_page(struct page_pool *pp)
->  	}
->  }
->  
-> -void prepare_hyp(void)
-> +void prepare_hyp_no_s2(void)
->  {
->  	write_sysreg(HCR_EL2_E2H | HCR_EL2_RW, hcr_el2);
->  	write_sysreg(hyp_vectors, vbar_el2);
->  	isb();
->  }
->  
-> +void prepare_hyp(struct s2_mmu *mmu)
-> +{
-> +	write_sysreg(mmu->vtcr, vtcr_el2);
-> +	write_sysreg(mmu->pgd | ((u64)mmu->vmid << 48), vttbr_el2);
-> +	write_sysreg(HCR_EL2_E2H | HCR_EL2_RW | HCR_EL2_VM, hcr_el2);
-> +	write_sysreg(hyp_vectors, vbar_el2);
-> +	isb();
-> +}
-> +
->  void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top)
->  {
->  	memset(vcpu, 0, sizeof(*vcpu));
-> @@ -86,6 +95,140 @@ void init_vcpu(struct vcpu *vcpu, gpa_t l2_pc, gpa_t l2_stack_top)
->  	vcpu->context.sys_regs[SP_EL1] = l2_stack_top;
->  }
->  
-> +static int stage2_levels(unsigned int page_size_shift, u64 ipa_bits)
-> +{
-> +	/* taken from ARM64_HW_PGTABLE_LEVELS(ipa) in KVM */
-> +	return (ipa_bits - 4) / (page_size_shift - 3);
-> +}
-> +
-> +static u64 get_index(struct s2_mmu *mmu, u64 ipa, int level)
-> +{
-> +	int width = mmu->page_size_shift - 3;
-> +	int shift_amount = mmu->page_size_shift + (3 - level) * width;
-> +
-> +	return (ipa >> shift_amount) & GENMASK_ULL(width - 1, 0);
-> +}
-> +
-> +static u64 pte_gpa_to_gva(u64 gpa)
-> +{
-> +	/*
-> +	 * This depends on how the memory used for s2pt is mapped in GVA,
-> +	 * currently it is assumed they are idmapped.
-> +	 */
-> +	return gpa;
-> +}
-> +
-> +static u64 pte_to_pt_base(u64 pte)
-> +{
-> +	return pte & GENMASK_ULL(47, 12);
-> +}
-> +
-> +#define S2_PTE_AF		(1ULL << 10)
-> +#define S2_PTE_SH_INNER		(3ULL << 8)
-> +#define S2_PTE_S2AP_RW		(3ULL << 6)
-> +#define S2_PTE_ATTR_NORMAL_WB	(0xfULL << 2)
-> +#define S2_PTE_TYPE_TABLE	(1ULL << 1)
-> +#define S2_PTE_TYPE_PAGE	(1ULL << 1)
-> +#define S2_PTE_VALID		1ULL
-> +
-> +/* No block mappings for now. */
-> +static void create_one_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa,
-> +				  struct page_pool *pp)
-> +{
-> +	int levels = stage2_levels(mmu->page_size_shift, mmu->ipa_bits);
-> +	u64 index, pte, pte_new, table_attr, page_attr;
-> +	gpa_t pte_addr, pt_base = mmu->pgd;
-> +
-> +	table_attr = S2_PTE_TYPE_TABLE | S2_PTE_VALID;
-> +	page_attr = S2_PTE_AF | S2_PTE_SH_INNER | S2_PTE_S2AP_RW |
-> +		    S2_PTE_ATTR_NORMAL_WB | S2_PTE_TYPE_PAGE | S2_PTE_VALID;
-> +
-> +	for (int level = 4 - levels; level <= 3; level++) {
-> +		index = get_index(mmu, ipa, level);
-> +		pte_addr = pt_base + index * 8;
-> +		pte = *((u64 *)pte_gpa_to_gva(pte_addr));
-> +
-> +		if (level == 3) {
-> +			/* Last level, install leaf entry. */
-> +			pte_new = pa & ~GENMASK_ULL(mmu->page_size_shift - 1, 0);
-> +			pte_new |= page_attr;
-> +			*((u64 *)pte_gpa_to_gva(pte_addr)) = pte_new;
-> +		} else if (!(pte & S2_PTE_VALID)) {
-> +			/* Empty next level table, allocate and install. */
-> +			pte_new = alloc_page(pp);
-> +			pte_new |= table_attr;
-> +			*((u64 *)pte_gpa_to_gva(pte_addr)) = pte_new;
-> +			pt_base = pte_to_pt_base(pte_new);
-> +		} else {
-> +			/* Next level table found, descend into it. */
-> +			pt_base = pte_to_pt_base(pte);
-> +		}
-> +	}
-> +}
-> +
-> +void create_s2_mapping(struct s2_mmu *mmu, u64 ipa, u64 pa, size_t size,
-> +		       struct page_pool *pp)
-> +{
-> +	u64 ipa_end;
-> +	u64 mask = pp->page_size - 1;
-> +
-> +	ipa_end = (ipa + size + mask) & ~mask;
-> +	ipa &= ~mask;
-> +	pa &= ~mask;
-> +
-> +	while (ipa < ipa_end) {
-> +		create_one_s2_mapping(mmu, ipa, pa, pp);
-> +		pa += pp->page_size;
-> +		ipa += pp->page_size;
-> +	}
-> +	dsb(ishst);
-> +}
-> +
-> +void init_s2_mmu(struct s2_mmu *mmu, unsigned int vmid, gpa_t pgd,
-> +		 size_t page_size, u64 ipa_bits)
-> +{
-> +	u64 ps, tg0, sl0_base, mmfr0 = read_sysreg(id_aa64mmfr0_el1);
-> +	int levels;
-> +
-> +	mmu->vmid = vmid;
-> +	mmu->pgd = pgd;
-> +	mmu->ipa_bits = ipa_bits;
-> +	mmu->vtcr = 0;
-> +
-> +	switch (page_size) {
-> +	case SZ_4K:
-> +		tg0 = VTCR_EL2_TG0_4K;
-> +		mmu->page_size_shift = 12;
-> +		sl0_base = 2;
-> +		break;
-> +	case SZ_16K:
-> +		tg0 = VTCR_EL2_TG0_16K;
-> +		mmu->page_size_shift = 14;
-> +		sl0_base = 3;
-> +		break;
-> +	case SZ_64K:
-> +	default:
-> +		tg0 = VTCR_EL2_TG0_64K;
-> +		mmu->page_size_shift = 16;
-> +		sl0_base = 3;
-> +		break;
-> +	}
-> +
-> +	levels = stage2_levels(mmu->page_size_shift, mmu->ipa_bits);
-> +	mmu->vtcr |= FIELD_PREP(VTCR_EL2_SL0, (sl0_base - (4 - levels)));
-> +
-> +	ps = SYS_FIELD_GET(ID_AA64MMFR0_EL1, PARANGE, mmfr0);
-> +	/* cap ps to 48-bit */
-> +	ps = ps > 0b0101 ? 0b0101 : ps;
-> +	mmu->vtcr |= VTCR_EL2_RES1 | SYS_FIELD_PREP(VTCR_EL2, PS, ps)           |
-> +				    SYS_FIELD_PREP(VTCR_EL2, TG0, tg0)         |
-> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, SH0, INNER)  |
-> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, ORGN0, WBWA) |
-> +				    SYS_FIELD_PREP_ENUM(VTCR_EL2, IRGN0, WBWA);
-> +
-> +	mmu->vtcr |= FIELD_PREP(VTCR_EL2_T0SZ, 64 - ipa_bits);
-> +}
 
-I understand that the selftest intentionally passes 40 as ipa_bits to init_s2_mmu().
-However, with a 16KB granule and DS=0, a 48-bit IPA requires two
-concatenated level 1 root tables, which this implementation does not
-appear to support.
+On 7/23/2026 10:25 AM, Jim Mattson wrote:
+> On Wed, Jul 22, 2026 at 6:44 PM Mi, Dapeng <dapeng1.mi@linux.intel.com> wrote:
+>>
+>> On 7/23/2026 8:02 AM, Jim Mattson wrote:
+>>> On Mon, Jun 29, 2026 at 4:29 PM Zide Chen <zide.chen@intel.com> wrote:
+>>>> If the host has the PERF_METRICS capability but it's not present on
+>>>> the guest, RDPMC interception must be enabled and KVM should inject
+>>>> an #GP when the guest attempts a PERF_METRICS RDPMC.
+>>>>
+>>>> If the guest has PERF_METRICS but RDPMC interception is enabled for
+>>>> other reasons, KVM needs to emulate RDPMC with type 2000H.
+>>>>
+>>>> For simplicity, Metrics Clear Mode is not supported.
+>>>>
+>>>> Signed-off-by: Zide Chen <zide.chen@intel.com>
+>>>> ---
+>>>> v6:
+>>>> - Merge kvm_pmu_rdpmc_metrics() into intel_emulate_rdpmc().
+>>>> - Reject non-zero index.
+>>>> v5:
+>>>> - new patch.
+>>>> ---
+>>>>  arch/x86/kvm/pmu.c           |  7 +++++++
+>>>>  arch/x86/kvm/vmx/pmu_intel.c | 14 ++++++++++++++
+>>>>  2 files changed, 21 insertions(+)
+>>>>
+>>>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+>>>> index 8ef2d4761790..04b9c840f218 100644
+>>>> --- a/arch/x86/kvm/pmu.c
+>>>> +++ b/arch/x86/kvm/pmu.c
+>>>> @@ -806,6 +806,12 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>>>>  }
+>>>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+>>>>
+>>>> +static bool kvm_need_perf_metrics_intercept(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +       return (kvm_host.perf_capabilities & PERF_CAP_PERF_METRICS) &&
+>>>> +               !kvm_vcpu_has_perf_metrics(vcpu);
+>>>> +}
+>>>> +
+>>>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>  {
+>>>>         struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+>>>> @@ -818,6 +824,7 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>>>>                 return true;
+>>> I know we have a strong disagreement here, but I really feel that this
+>>> must be secure and future-proof out of the box.
+>>> What if we added a module parameter, enable_rdpmc_passthrough, which
+>>> defaults to false?
+>>>
+>>> Then:
+>>>
+>>> if (!enable_rdpmc_passthrough)
+>>>         return true;
+>>>
+>>> Is that a reasonable compromise?
+>> Yes, this is an option. Another option is to add a helper to explicitly
+>> tell which platforms are secure and can pass-through rdpmc. Maybe like this,
+>>
+>> static bool intel_pmu_can_passthrough_rdpmc()
+>> {
+>>     switch (boot_cpu_data.x86_vfm) {
+>>     case INTEL_ICELAKE_X:
+>>     case INTEL_SAPPHIRERAPIDS_X:
+>>     case INTEL_EMERALDRAPIDS_X:
+>>     case INTEL_GRANITERAPIDS_X:
+>>     ... ...
+>>         return true;
+>>     default:
+>>         return false;
+>>     }
+>>
+>>     return false;
+>> }
+>>
+>> Then rdpmc can be passed through by default on these known secure
+>> platforms. For any new platforms, the rdpmc would be intercepted out of
+>> box until we confirm it's secured and explicitly support them.
+>>
+>> How about this? At least for me, it looks like an overkill to disable rdpmc
+>> passthrough unconditionally on these known secure platforms.
+> The F/M match would only apply on bare metal, since you can't trust F/M in a VM.
+>
+> What if we combine this with the module parameter, but now the module
+> parameter defaults to true? Somewhere in module load, we have:
+>
+> if (boot_cpu_has(X86_FEATURE_HYPERVISOR) || !intel_pmu_can_passthrough_rdpmc())
+>         enable_rdpmc_passthrough = false;
 
-Thanks,
-Itaru.
+It looks good to me. :)
 
-> +
->  void __sysreg_save_el1_state(struct cpu_context *ctxt)
->  {
->  	ctxt->sys_regs[SP_EL1] = read_sysreg(sp_el1);
-> -- 
-> 2.43.0
-> 
+
