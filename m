@@ -1,266 +1,149 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CFE233938;
-	Thu, 23 Jul 2026 08:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8890355F46;
+	Thu, 23 Jul 2026 08:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784794246; cv=none; b=E6qfBaaRc9IX9hZH20RuL4kMMSUGWpFygPq8+utDTvsDFOZU2jngZjchs6QTR7IDkaUdWqrtTwCtA/R6W3flLD4SqDl0WuMW8F6t6/Wtpb0BnD+Ez1wAh6fAFLLWcLB8ocRBAnZZxeV3v6TQ+5VGhJZrv+hyTH/HQAciBqGOPmI=
+	t=1784794730; cv=none; b=OKhviRj8fxBQcDQi81gRvdT4E49lGRt6bIhDHN/v7L8FAxXUPxSlTSLDf9l/x82bkH6aYU4lS2F2WMOieGmnxccMDr/tBJQ3BTRUfa1M8yInrtOFj0rp8HpeTyzTDZ+71eVl5L6+vIyqeybyhO2ieyzq40KxV5/GOZWL4nExGpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784794246; c=relaxed/simple;
-	bh=VwswH8JhWrZQe5Rh/s4NWY+0YHgxDEZK0fxwcE3tmC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZHE5TfqbCSul5iJlAl0wpe0j3Jzfk5Xkyq0Z6hhStfcNLb/p3rqrr95X56NceMlyRISWxLzV1Mgq1L9FhtwHa2+9wG2wiTM8NHAb/jamHVVYK0A1JUDRcRRGoLXjbTvLmCMf1bN9A+1cbxZQBzN2Wm8K3o1zyHIF6oQv1KtwWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZsKSCke4; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784794730; c=relaxed/simple;
+	bh=esGUJ1Prcbq4ifDiOBfNsGn1RecFqTL3u3/WyqgWi8c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jLgcfJh+eTSLxkISr4u/i5qkymZ+TORzQuXTcICAdW0Nyg+ezMMfCAg7YVY2NsyM7K1uLTnhE3gzm/btiQQqSNpo3JW1OW/znKmVgIWKpHiPKz8BunUndJA9guhT+kq2oh1W+NIcwl45xx7SVI/Y3Kg7lehwoQKUBW8S2eVUMrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H7To+J6a; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZsKSCke4"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD4851477;
-	Thu, 23 Jul 2026 01:10:38 -0700 (PDT)
-Received: from e129823.cambridge.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E3A113F86F;
-	Thu, 23 Jul 2026 01:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784794242; bh=VwswH8JhWrZQe5Rh/s4NWY+0YHgxDEZK0fxwcE3tmC4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsKSCke41l+piIezCdsjVMCTycpwyBxBfv7cVpgUUcClGAM9ujUfUEk2EpanfRxZJ
-	 acXhRw1TtHmQygGi/rOp++vlaGKB/odW5HbrUODJQ29zMZJuEBsamNuoJFYZmPvDIo
-	 2Cs26OmAVBZMccc0uflFY2F7f+U0rPR2u2lp9iGQ=
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: David.Hildenbrand@arm.com,
-	david@kernel.rog
-Cc: yeoruem.yun@arm.com,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-mm@kvack.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: [INTERNAL REVIEW] [RFC PATCH v3 01/20] mm: change behavior of pXdp_get()/pXd_page() in compile-time folded pgtable
-Date: Thu, 23 Jul 2026 09:10:16 +0100
-Message-ID: <20260723081036.1461495-2-yeoreum.yun@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260723081036.1461495-1-yeoreum.yun@arm.com>
-References: <20260723081036.1461495-1-yeoreum.yun@arm.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H7To+J6a"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66N5BdcP2082163;
+	Thu, 23 Jul 2026 08:18:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1fF2TS
+	BiDI/mW13E75Rb6zTUpRGEDsILSgcjbEtx4tU=; b=H7To+J6aDmieeyjWHMK357
+	2uiX+wbJ6yzK83dZZkjdOQeeFu9nnUDrhec4rI0C+hS+Mcp2CnIa0Vkc+1vCfyMk
+	cDaksCF3yyqpMEV2y8VzJxDldVrAtABrUG6zZyE4gbpZNekFmTZsql6+k6ByTI2C
+	GjuEJItRsl8gluUbrP6UPAInkaEd2oq+wvtnzWmx9kS6Y2kKRtGtHxDRqCxWPJxq
+	/V7xN9y7jQhU6d3RQY+N3uc7nWwJUTKiVGA07AtIM8sToS1AYTlo0UhEojSay55c
+	WVWvCgRrcXciyJHUIJcK20sEMz7YZmx6CrrQTe9lR82o08x+3AOsnSfyJFWN7HWw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7916hbq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 08:18:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66N84ipQ014058;
+	Thu, 23 Jul 2026 08:18:46 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgnahb6ux-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jul 2026 08:18:46 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66N8IgUu48234850
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jul 2026 08:18:42 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E91C20101;
+	Thu, 23 Jul 2026 08:18:42 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4DC6F200FF;
+	Thu, 23 Jul 2026 08:18:42 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jul 2026 08:18:42 +0000 (GMT)
+Message-ID: <08e3312d-1f84-47ce-8e97-c151646f7a73@linux.ibm.com>
+Date: Thu, 23 Jul 2026 10:18:41 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/6] KVM: s390: pci: Fix NULL dereference on AIBV
+ allocation failure
+To: Farhan Ali <alifm@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, kvm@vger.kernel.org
+Cc: mjrosato@linux.ibm.com, farman@linux.ibm.com
+References: <20260722170621.1686-1-alifm@linux.ibm.com>
+ <20260722170621.1686-5-alifm@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260722170621.1686-5-alifm@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: NgPUObI6mqahPT27UaP42u-4A2uHc9U3
+X-Authority-Analysis: v=2.4 cv=V6RNF+ni c=1 sm=1 tr=0 ts=6a61ce68 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=wahUZReCXgIwzAPQiRMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIzMDA4MSBTYWx0ZWRfXyffymXaVFuFC
+ rzj2A/Fkyfg7ap4yrRpW7AOGJRhLzjcLv+fFBOheJWnQCcIWNxlUtPleUv7LtPVOCHqwMS81Z0E
+ aTk8zRdMlp2IJyf2jWudv5TDwAN2r5M=
+X-Proofpoint-GUID: NgPUObI6mqahPT27UaP42u-4A2uHc9U3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIzMDA4MSBTYWx0ZWRfXyvQPQoDj2Qhe
+ SwajE4NWDRRLrzvfnTP1k17xMb+17ZG7Arbc4LgacQ/I6DYVeKNQB9eBJqy64RtkNSz4Q5KFFnS
+ 1I/1egMPuT7Dh4AYf2+05cZapgVuJRz2O8CAj0Kv/GcZZqTzFONjM8y8K8x0sYHrzYyTe5sDJDB
+ aH297htJBqB6rDtjB6ljdKawuL6v46jCeqfbuRbnhCusMPsXhXz6gZAlB8SLhmA/87chMaswY9x
+ U5dg5bapbFFNwNrLd1z2kDmJMyiRxpcm50/L7KekkOaDDHvV/UvEeeL5xcWeAh5XCh55WHTppfU
+ jiID06HnPcabpPZK6W4fl7/Up86aE92oTvOcQgguDBxTkxVwwFcZ6nvjg+T2uQMTSGT+pT5F5BK
+ 9NaSG1vSm3BbNmLhS6QvDIltlQXBu4u/RRvz8upp6UaLokJNRWCp7pllVfbpXVG8j1LyD8i/yaK
+ BwGNIQOOcnELHh5ugZA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-23_02,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607230081
 
-Using ptep_get() and its counterparts in common code is suboptimal on
-kernel configurations with generic compile-time folded page tables.
-By default, ptep_get() and its friends expands to READ_ONCE(),
-forcing the compiler to emit a load even when the value is not used afterwards.
 
-This issue was recently reported by Christophe Leroy [1] for ppc32
-preventing futher code conversion to ptep_get()/pmdp_get()/... helper
-and the same behavior can also be observed on arm64 when built with
-2- or 3-level page tables
 
-e.g) perf_get_page_size() in arm64 with CONFIG_PGTABLE_LEVEL=3:
+Am 22.07.26 um 19:06 schrieb Farhan Ali:
+> The airq_iv_create() can return NULL on failure, but the return value was
+> never checked. If it fails, zdev->aibv will be NULL and fail when
+> derefenced in kvm_zpci_set_airq(). Add a NULL check and free the previously
+> allocated AISB bit and zdev->aisb on failure.
+> 
+> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 
-00000000000052a0 <perf_get_page_size>:
-    ...
-    52dc: d53b4234     	mrs	x20, DAIF
-    52e0: d50343df     	msr	DAIFSet, #0x3
-    ...
-    52fc: d35e9a69     	ubfx	x9, x19, #30, #9        /* pud_offset_lockless() */
-    5300: f9403508     	ldr	x8, [x8, #0x68]
-    5304: f869790a     	ldr	x10, [x8, x9, lsl #3]   /* pudp_get() */
-    5308: f90007ea     	str	x10, [sp, #0x8]
-    530c: f8697908     	ldr	x8, [x8, x9, lsl #3]    /* pudp_get() */
-    ...
-    5360: 90000009     	adrp	x9, 0x5000 <perf_prepare_sample+0x548>
-    5364: 92746908     	and	x8, x8, #0x7ffffff000
-    5368: d3557675     	ubfx	x21, x19, #21, #9       /* pmd_offset_lockless() */
-    ...
-    5394: f8757ac8     	ldr	x8, [x22, x21, lsl #3]  /* pmdp_get() */
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Though PGTABLE_LEVEL=3, since the pudp_get() still remain with
-READ_ONCE(), there's redundant load for the pud which is folded.
 
-To prevent generating suboptimal code, make pXdp_get() return a dummy
-entry for compile-time folded page tables and prohibit calls to
-pXd_page() in pgtable-nopXd.h.
-
-Also make the helpers in pgtable-nopXd.h, such as pXd_offset_lockless(),
-validate dummy entries at compile time to catch the wrong usage.
-
-As the pXdp_get() can return *dummy* entry, some of code using
-the stack value where saves the pXdp_get() could be a problematic:
-
-  1. Passing address of stack value where saves the pXdp_get() result
-     to pXd_offset() for example:
-
-       pud_t *pudp, pud;
-       pmd_t *pmdp;
-
-       pud = pudp_get(pudp, address);
-       pmdp = pmd_offset(&pud, pud, address);
-
-     (e.g. host_pfn_mapping_level() in loongarch).
-
-  2. Using the pXdp_get() result to use as argument of pXd_val() and
-     to check prot without checking pgtable is folded.
-     for example, x86's effective_prot().
-
-  3. Using set_pXd() with pXdp_get() will set problematic dummy entry
-     in folded page table like:
-
-       set_pXd(pxdp, pXdp_get(pxdp_k));
-
-  4. Using pgd_page_vaddr() to get the first-level pgtable.
-     passing dummy pxdp_get() for pgd_page_vaddr() will return wrong
-     address. Therefore, make pgd_page_vaddr() and pXd_pgtable() to
-     trigger the error for improper usage with folded dummy entry in the
-     generic compile-time folded pgtable.
-
-Thanksfully, above cases are rare since (1) most of usage using
-pXd_offset() with result of upper pXd_offset(), (2) it's extreamely
-rare to use pXd_val() for non-leaf entry in the kernel,
-(3) is to handle the vmalloc_fault or set the first level of page table
-and (4) to setup early page table and etc.
-
-Therefore, convert this kind of problematic rare pattern properly.
-
-Furthermore, passing the ptep_get() (or its counterparts) as argument
-directly to pte_present() and related helpers can generate suboptimal code,
-in arm64 as the current macro implementation may evaluate its argument
-more than once like:
-
-  !pte_val(READ_ONCE(*pte) || pte_present_invalid(READ_ONCE(*pte))
-
-resulting in redundant loads.
-
-A typical example is pud_free_pmd_page(), where the expansion of
-pmd_present() generates:
-    ...
-    /* pmd_present() (x20 = pmdp) */
-    1b88: f9400288     ldr	x8, [x20]        // read pmdp.
-    1b8c: f9000fa8     str	x8, [x29, #0x18]
-    1b90: 3707fec8     tbnz	w8, #0x0, 0x1b68 <pud_free_pmd_page+0xd0>
-    1b94: f9400288     ldr	x8, [x20]        // redundant read of pmdp.
-    1b98: 8a170109     and	x9, x8, x23
-    1b9c: f9000fa8     str	x8, [x29, #0x18]
-    1ba0: f120013f     cmp	x9, #0x800
-    1ba4: 54fffe20     b.eq	0x1b68 <pud_free_pmd_page+0xd0>
-    1ba8: 17fffff4     b	0x1b78 <pud_free_pmd_page+0xe0>
-    ...
-
-To address this in arm64, convert pte_present() macro and its friends
-to static inline function.
-
-This patch is based on mm-unstable.
-
-Future work
-===========
- - print_bad_page_map() and show_pte() still prints dummy values
-   instead of printing the same content for all generic compile-time
-   folded page tables. We might want to skip printing dummy values later.
-
- - We currently catch abuse of dummy values on the stack at compile-time by
-   relying on constant propagation by the compiler. Usama's work [3] on using
-   distinct types for sw vs. hw PTEs could help here as well."
-
-Patch History
-=============
-from v2 to v3:
-  - repasre commit message
-  - move ptdump_pgtable_first_level() into pgalloc.h
-  - skip the huge pud operation when CONFIG_X86_DIRECT_GBPAGES is
-    disabled
-  - https://lore.kernel.org/all/20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com/
-
-from v1 to v2:
-  - Restore slient fallback to next pXd in set_pXd() and pXd_pgtable()
-    and add check whether they're called with dummy entry.
-  - Add some comment for returning first entry of pgd in arm with
-    2 pgtable-level
-  - https://lore.kernel.org/all/20260713135614.1618183-1-yeoreum.yun@arm.com/
-
-To: Russell King <linux@armlinux.org.uk>
-To: Huacai Chen <chenhuacai@kernel.org>
-To: WANG Xuerui <kernel@xen0n.name>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Kairui Song <kasong@tencent.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-To: Barry Song <baohua@kernel.org>
-To: Axel Rasmussen <axelrasmussen@google.com>
-To: Yuanchu Xie <yuanchu@google.com>
-To: Wei Xu <weixugc@google.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: David Hildenbrand <david@kernel.org>
-To: Michal Hocko <mhocko@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: Tianrui Zhao <zhaotianrui@loongson.cn>
-To: Bibo Mao <maobibo@loongson.cn>
-To: Anup Patel <anup@brainfault.org>
-To: Atish Patra <atish.patra@linux.dev>
-To: Paul Walmsley <pjw@kernel.org>
-To: Palmer Dabbelt <palmer@dabbelt.com>
-To: Albert Ou <aou@eecs.berkeley.edu>
-To: Alexandre Ghiti <alex@ghiti.fr>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-To: Andy Lutomirski <luto@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-To: Thomas Gleixner <tglx@kernel.org>
-To: Ingo Molnar <mingo@redhat.com>
-To: Borislav Petkov <bp@alien8.de>
-To: x86@kernel.org
-To: H. Peter Anvin <hpa@zytor.com>
-To: Liam R. Howlett <liam@infradead.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: Jonas Bonn <jonas@southpole.se>
-To: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-To: Stafford Horne <shorne@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: loongarch@lists.linux.dev
-Cc: linux-mips@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: kvm@vger.kernel.org
-Cc: kvm-riscv@lists.infradead.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-openrisc@vger.kernel.org
-Link: [1] https://lore.kernel.org/all/0019d675-ce3d-4a5c-89ed-f126c45145c9@kernel.org/
-Link: [2] https://lore.kernel.org/all/20251113014656.2605447-1-samuel.holland@sifive.com/
-Link: [3] https://lore.kernel.org/r/74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com
-
---- b4-submit-tracking ---
-# This section is used internally by b4 prep for tracking purposes.
-{
-  "series": {
-    "revision": 3,
-    "change-id": "20260722-dummy_ptxp3-3741d78cc70f",
-    "prefixes": [
-      "RFC"
-    ],
-    "history": {
-      "v2": [
-        "20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com"
-      ]
-    }
-  }
-}
-
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
--- 
-LEVI:{C3F47F37-75D8-414A-A8BA-3980EC8A46D7}
+> ---
+>   arch/s390/kvm/pci.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+> index 33abc15aa685..231a4236fc3c 100644
+> --- a/arch/s390/kvm/pci.c
+> +++ b/arch/s390/kvm/pci.c
+> @@ -314,6 +314,11 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>   				    AIRQ_IV_GUESTVEC,
+>   				    phys_to_virt(fib->fmt0.aibv));
+>   
+> +	if (!zdev->aibv) {
+> +		rc = -ENOMEM;
+> +		goto free_aisb;
+> +	}
+> +
+>   	spin_lock_irq(&aift->gait_lock);
+>   	gaite = aift->gait + zdev->aisb;
+>   
+> @@ -350,6 +355,9 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>   	rc = kvm_zpci_set_airq(zdev);
+>   	return rc;
+>   
+> +free_aisb:
+> +	airq_iv_free_bit(aift->sbv, zdev->aisb);
+> +	zdev->aisb = 0;
+>   unlock:
+>   	if (pcount > 0)
+>   		unaccount_mem(zdev->kzdev, pcount);
 
