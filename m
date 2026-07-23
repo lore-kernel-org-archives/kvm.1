@@ -1,148 +1,84 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3643BB9F4;
-	Thu, 23 Jul 2026 05:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784786355; cv=fail; b=SQkoyyUpE5ZyzLe5Wcw8TeDPOlLhTu5zgnTsurACedCRs8ONUZnewa2NZ9A2tb8PoFYGnvDpuJCpXCqU4fgz0gGEIDZx7fgVxmm0DNPPtYyQQcGTOH27USNg89jImI2CStxQI5pKeT6KJJX0f5BYv6wiAcqYRbu/5+Iibofz3ns=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784786355; c=relaxed/simple;
-	bh=7UDuZZ+n2Xny17MWEa0hcAg2AQQD7WCDKBxGQF1I43Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qdfxb9z7Y5POb8vgZJzW1gFa7y9jZw9B+TXR68pbI6ndjmmK9d3aABxPkjEh6cOC7Ffx1TcdtRVY7hxc0bh19rLlkAMuKaSGknYP8fSJAgUaQc2Wu1misAG0qU6RQ/ntHQWhyjXOhC7AqX4bb9N1tRLpzTY6DAx3mUq4pFxs65U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UZndAlKs; arc=fail smtp.client-ip=40.93.201.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F863CAA55
+	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 06:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784788602; cv=none; b=Bt94yI6MA9+Tn+hDjUem/El+1uHCg7HwLz/ksfYf0dejczIAVdMacjVyrBkoWTu9KDXtdsvBYPb8fPhNjt+oi+ZkU9Yq4xqkpeEfCiKmHfcmv9dDZtb8nGLou+XSqWS0tS/yUsUMKK0w9a91isMEq2tgV/jUVDjblAN6VvlskwQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784788602; c=relaxed/simple;
+	bh=HncrykrRemgI5fAPmsexCTMiB2KmCqX9lrGam/r48AI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=jpQJnV5jarBjOWAtwsLWHzqzT3WgtAW3IKSdzZxMKXhC0moU+yTEgpNmPrFgnAgmZ8qf9lkPUsaEQBRMjHoVF5H5RhQRkhmRo6cwnmQKASzkllpzXcMdnGGpAoIECNllDZQJkxfR0caGUM1P+P4Sdt6NwOiCAV++TKUjhdrw/4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=L/FlX3PA; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UZndAlKs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uN2gB0ucjTSZkGz8b6MYXExzd/dHBT+tFG3LRMHF0A/YSj2Jp91tUi8Mg0rpKKM+h6hdeZm4kF2j5V5vLqUUr/QdJXTflquT3Aq19EJCU1bOFOjvA2sw5F9pK+mwAxqIHVunb3mxEgMt4gHdvs3PxpfZ/qnmtIBpAeyoNh7sx16mH1y+lmNGdLiq8XQuAkr4EbfMSoSND6XU/B3qlwi9luqpU0EQeuBwerrkbuWQ18PnjmyFMk5SAkr+vtBnfay5ZJgGlEiYWbfuILf6LsY1mxxfGu4Z4xvq0+A5JCZW2hkCRd7TkmArMHdY9j/dtSHrzeBKUW6gNcADw1va1e6+Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
- b=SmA1B0fDNUrkwT9ErkOL5BOq1z9prRb/pWuME0Lxbrejg5XjhkH5Sh2/hvUGgYXCEP2Tq/6GqDbS4uF1FmUgP2UYXzaLA1opdiFkbai3cAZLPsMNMk1FHPcuM+j62N5bp2eM7yQyE0gLK4agOu6ZlyRge7VOO7IkMzT9gmfEKuOw94nnKqf2Xk1xo9T3kxgm2AyU6TP4UIYkPy83HH2d5Ge2F8bhPlU7zpX4cGZK16jyO4JCEY9ERprQgFqWC9AE+kGW68WG/oEDX7WDcLDw5IC42Sp2ylczc2RyRHNLSLNEgF7z9hiQmA50IYrTKB4Z7vdj0esjz7LYlqOopOj3sA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9HWhA9nR0K2i3FG7wORrUp4Fol+ryPrkPKYBXXd9lZI=;
- b=UZndAlKsSpdM4DoSMyLm5Rg2gpyKB28J2yBY8Kk4bP+fyJ32p/1rxvvwrJtEEIGiJ+lDQB8Y7bGDqbz9NpaXxVasBIT5ZX0mTIKV3Y2uE3xdtqbYBHm1gwwUENc6XxOZywucMd+wCfqY97QfsnT/AZP7RZplckV6uILOH/iBgx8=
-Received: from MW4PR04CA0225.namprd04.prod.outlook.com (2603:10b6:303:87::20)
- by SJ2PR12MB8717.namprd12.prod.outlook.com (2603:10b6:a03:53d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 23 Jul
- 2026 05:59:07 +0000
-Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
- (2603:10b6:303:87:cafe::61) by MW4PR04CA0225.outlook.office365.com
- (2603:10b6:303:87::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Thu,
- 23 Jul 2026 05:59:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Thu, 23 Jul 2026 05:59:07 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 23 Jul
- 2026 00:59:03 -0500
-Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Thu, 23 Jul 2026 00:58:53 -0500
-Message-ID: <70580cfc-8625-4f35-a77b-7154a52e10a5@amd.com>
-Date: Thu, 23 Jul 2026 11:28:47 +0530
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="L/FlX3PA"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8423f236418so191596b3a.1
+        for <kvm@vger.kernel.org>; Wed, 22 Jul 2026 23:36:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1784788596; x=1785393396; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AXO1TEMJyOs3biZ4fK22mPvqvMv5jSJi6mC/UFO7sc4=;
+        b=L/FlX3PARni/LiS8zMQgpMJXIyRWuU3TVrn6kio/qBhJo2gc6XLbp2SAwD0oI1c+xA
+         qgcJxB4Ushw0m75gBAQCZmRHXysJKXIofV8S7HWKrxOLrXTVRDPdo8PFJ0AxWikL9FeU
+         dy96KzV93Pdb3gNc9cTofczTW5dLQ9ZF/78fo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784788596; x=1785393396;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AXO1TEMJyOs3biZ4fK22mPvqvMv5jSJi6mC/UFO7sc4=;
+        b=DwzNvmGC3yVxWD1X5cAM26hhbz+dVc+4C/9wbT7ZWJOFL+n3JVZY0SnJJi0awE1N/1
+         1ojBfQobmo/ON+QAKGVDYs7MuTwf0c5oErdojCsZ71kF7KSnJ1agMv2YKgnvIB1PX1wQ
+         A2gX4lRQWBV1O0ILHHf6Pc7tM6xbvFQWGl4RimNpq/CYSUNNKZibn2YjjyMhPv1lcGia
+         CrE+JmpqsP6ajoeWCh/ARjcYZjzUSIaE1MJXPjn4jq65OcnO5TF1/5jH6Z4FsmekEUYf
+         iKNE7UzcyQMoC4lOKeoobPUpaNaoElKZpDWbWzKdOFf4vpkOMGyvMKejVpunhoVzZIwv
+         Pv/A==
+X-Gm-Message-State: AOJu0YwRX1tcv0nMZYJebWcHOKe5CErkQ04zdWhTSlkCGUadoOmcTab2
+	3ZxssUwlRLVQyWySPdpO3AUtgjPDsCIPKso/o9xPlXfV+mktXWdohZYBsEnCI1+lsA==
+X-Gm-Gg: AR+sD12V5O7ZVy4k2ks8B296R/S1uFFGeK2nhHWotgqFF7Yx83pnHURbVKxrp3kSc+f
+	jKdH/Q3OgY9v3CTytK9urBfV+VmcH9gZwm8LPbxPdavpinaFfVWvzSlI0q8uifv2NLHRPP5ZuGS
+	ZbDyxXIpeIs2UIxhCLaAd8mDgVL3AvDxEBvG4XD9BVlEv42Inbbo2KYrYOKpFHpOXtyWSYPRT0R
+	fQYph0B7nyFbmTm0CIPO68BCuS+ZmkPu7/8tVFdhYaC+KAAu52dhZOBw3+Ozn2KJTPN9ktwBcWn
+	Qn+uQkJoNEac5awzXFVNiQ9L/Y2yUdQR8s86v+TakvNQ/+udHae6ii0ABLp5KAQFX9KZhIlIPMt
+	fBsOilrdwz45+sJPPUO2ulw7PCOEADMol5JiHUoHA3JVxQH57WmPaF7wcwgBll8cDNeWFF7h945
+	wlclt5+cWMAiEdicjR8DwMqrKxm68XdYzDH+AOUdpwwwxZcJjYpNqd
+X-Received: by 2002:a05:6a00:3d0c:b0:847:8b11:596d with SMTP id d2e1a72fcca58-84e2bb1c7efmr2182263b3a.41.1784788596566;
+        Wed, 22 Jul 2026 23:36:36 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:2d0e:cfe6:a39f:d530])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17266107sm2512248b3a.17.2026.07.22.23.36.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 23:36:36 -0700 (PDT)
+Date: Thu, 23 Jul 2026 15:36:31 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, senozhatsky@chromium.org
+Subject: Re: [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related
+ issues
+Message-ID: <amG2CyrA-yEUmHqV@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/6] x86/sev: Initialize RMPOPT configuration MSRs
-To: Borislav Petkov <bp@alien8.de>
-CC: Ashish Kalra <Ashish.Kalra@amd.com>, <tglx@kernel.org>,
-	<mingo@redhat.com>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-	<hpa@zytor.com>, <seanjc@google.com>, <peterz@infradead.org>,
-	<thomas.lendacky@amd.com>, <herbert@gondor.apana.org.au>,
-	<davem@davemloft.net>, <ardb@kernel.org>, <pbonzini@redhat.com>,
-	<aik@amd.com>, <Michael.Roth@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
-	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
-	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1782841284.git.ashish.kalra@amd.com>
- <8518e02c46d6edf1f37a180569c708a3cfa7c413.1782841284.git.ashish.kalra@amd.com>
- <20260723011031.GGamFqB1i4zt4Zlsx6@fat_crate.local>
- <9cfe76f4-8e16-4b21-a414-126a06859489@amd.com>
- <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20260723051422.GGamGjLhlTqRDcFlee@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SJ2PR12MB8717:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9913147-35b1-4cda-62b3-08dee87f820b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|23010399003|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	HR7uTfLoh/LrkGJkftX+qolxkKWth8b4v4HLy/sMakKULfuTNRbLegUtF+pvz6XIG58ux2RXeO9jEdmTt+W6kzyjIxWeZejxCwgR++OLnGuMyHkliWPO/ebILGB4Gloq5qS5AjjDO9avtiNjDQksAaR0w8i1J5c/ReoA/7f9bhA8JdD2RJhBccCXY37n0M+mjCroUmj9BLNF7SOFqfJV4SU96tbEsVciHeaIa+GScDG4eQydmtkN6JNAMr/L7NLkyqE7c9uTLRbjbPgHo2RdFbDhsKtBAdq9JT7TcC5wI3UYuK4lMDjenhwt5ejTdalPtRtBQ7HGP7qYblAzkRUC5yMw/ZN1rtFAWdCE3bs/tu8umnjx5aRh4oFnJbLWkzgP8E8uEBHROmB0iY7L0UpdjQP622JeGumuxZL8TCiBNNhlejKjjY3mYQ1xnig2qSZkvvfIwuXkxBNF1h3haRi4ZGiMjeTtBhPLcBd641IPUDKhdO2ASukh33oxPCSwyNNzq35bIrxXEcJbYSGccB6OSlLo4wtmyLpdkMwpLybplmbRr3F4rclEhD3PySyX1tql/35jHyL/do3lVEurhABN64yVLSBI6uohKGs6I1Gt0xw3Flh/9GNpZCkzkeyXuKUArdtG4OPyXCGPZlNHmRVtjZM3QG4DphZcM98yLJPmx5oNdmwQ63xfMui6Q9q+jx32+/DZld5a8cWECI0B9jCZJw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	eRJVf0Ixcc4gR0rTZejdQEThRVArvBCqqT3bjzEsOGHgxhRnMThsKd9D73AZmOtO3/cpwQqMN/ggdR7mZtgnwNFWL7zJhc08ZmPDmDJXCsE225Wlsn0KxibI669qoXdHy+AWtwfhX2RWyS8/xAvKnyJoo8tlMCbbUQYI5NcSEdjTvQUNkQna6Ma6jgSgApMXVD5hAVXDLzaGhiMHGsX321NUPSP11rydRwfbO5SQnBJE6pGOvSnVbqH1UsvX69R2vvoFo0a0lTyxrP6YNJw2EPzd2fRIov4B6kLH6E54k5nA42GGLg+cv1NW3SmuQbJL6oVPXZhNKdQlwhbKPUyHMey28RYNxzmGt9zlH3AV9kxZ/FarOnXDSnDdR4/dhS/RMGEd/BXhp1l0ViA6Zq1VgpdnjW6TpICe6F89mlKik/VP78sKyUDPcGvP5NF3lgk0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2026 05:59:07.2739
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9913147-35b1-4cda-62b3-08dee87f820b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002312.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8717
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello Boris,
-
-On 7/23/2026 10:44 AM, Borislav Petkov wrote:
-> On Thu, Jul 23, 2026 at 10:23:56AM +0530, K Prateek Nayak wrote:
->> The offline cores will remain offline since hotplug is disabled. RMPOPT
->> is simply a performance optimization for RMP checks and leaving the
->> offline cores (that will never exit idle) unoptimized should be
->> acceptable.
+> Sasha, Greg,
 > 
-> What happens if you boot with a subset of cores, the boot flow enables RMPOPT
-> and then you online the rest?
-
-RMPOPT happens at __sev_snp_init_locked() for all online cores. Until
-then, SnpEn is still 0 and we don't need RMPOPT because RMP checks
-haven't been enabled yet.
-
+> this is the backport to 5.15 for the above CVE.  The fix was relatively
+> simple upstream but only due to years of refactoring and cleaning up
+> of the code; fixing from scratch is not really feasible so start by
+> applying the patches that are needed.
 > 
-> Have we tried that?
+> Please apply this instead of v1, due to a missing line in the last
+> patch.  Sorry about that.
 
-That said, Ashish, should snp_rmptable_init() do a
-snp_rmpopt_all_physmem() (or something equivalent) when it finds SNP_EN
-set in MSR_AMD64_SYSCFG after a kexec?
-
--- 
-Thanks and Regards,
-Prateek
-
+Sorry for the noise, has this series stuck?
