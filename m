@@ -1,139 +1,204 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3652B43BDD9
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 13:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC67D4DB557;
+	Thu, 23 Jul 2026 13:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784813820; cv=none; b=lybQ7O4YNXTkNt5RxZQihWvQMUosWor3t8FFMs8mpbA3dPoqZXRsH6rVSsO48KMF0YJ7T4ErBPmRAO3SyPaPsdGSEVVZljvVHcRGfdCBQUgFatTPX9XjcDjUF7QvZ07n4OYuHzkYBPhlwWvupDQ9jbwAw5pigWL2fyH57Em2Am8=
+	t=1784813839; cv=none; b=n/7zlLZTHjy/ghz3QIZZH+Ipf93Oh7DLARZwSsPrvm6wK1y2A0B3zECmyTKeXVv20N4DGBO3/I0dCoVIECaJ7FfPHj7mIGgA/DjNVb8joS0vv2NzOuqSHkTPlcN0WIt5eHwq0Yy0fqohTB1F+1SyDM3rfs17FDaQJ4cqC8rs7e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784813820; c=relaxed/simple;
-	bh=29BZMFYxJxEBnag9PWccpTVSEvNkVtgU/UvgtelvoMs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CT6faTMn/tu8cqC0JjBjZMQJc4bBMIaAwnI7ulAh1AEmdc8ZAjXxhidDesispYujcmFqT0aNHZoCAv0EZkRVTJbndb2UrDEdXbaF5TB4kBZ3tu+ARA9dDJ4IRZ24bj0F71bimWCxz2QkPHGKyx5cV1v7UPy3lNWFOTadBp7MFbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PDPYtUwe; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784813839; c=relaxed/simple;
+	bh=eO9vT5YPysqOukd+jY+035D0z/zLeO1w4vN1NwNe2Qc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LYuwM562Fx4Cd0dk8jozvP6yRGrmEDu1z8Gpq3bIjg4+FkA+n4htgAwdYENx/B+vI4QJMPm/0QPDQFmjHyXvNJK0lFs4DN2l8gCAP7Nw9iEz+QfB6u86Xvkxv8Zio/0ifppV1+hpi3kVS371/yDWQ92G6ANI9249AJJ334ORHEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXwPqfU5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PDPYtUwe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784813814;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nrDUCR1aSLVdfTl0cLA1tRI19BPlCylemYQJWCulj8Q=;
-	b=PDPYtUwevxzJ5+Qm53yin3Qy+vE+ZsF9hjpHJfRyJ3WnQR+YBZ+XJAHIPKgM50PKYIhPoL
-	11A456E1sWxBjtL53IMzJCzX0BCImQkVGgqHDHFMJj7wdyu01ANFfLAyWCNUQxBxjk42h1
-	pBydhwaCzFkTL5o4crdy2Ayl/jIHJV8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-ZAnTzYlDMnWBzpP1h8q3Ew-1; Thu,
- 23 Jul 2026 09:36:50 -0400
-X-MC-Unique: ZAnTzYlDMnWBzpP1h8q3Ew-1
-X-Mimecast-MFC-AGG-ID: ZAnTzYlDMnWBzpP1h8q3Ew_1784813808
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C06B3183031B;
-	Thu, 23 Jul 2026 13:36:47 +0000 (UTC)
-Received: from [10.44.50.182] (unknown [10.44.50.182])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E12F51587;
-	Thu, 23 Jul 2026 13:36:45 +0000 (UTC)
-Message-ID: <066fa1c9-8b2e-47ed-8b0b-6b0ff0663aed@redhat.com>
-Date: Thu, 23 Jul 2026 15:36:44 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXwPqfU5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16401F000E9;
+	Thu, 23 Jul 2026 13:37:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784813825;
+	bh=tqvVeERBLT6ROkppBN4MEGfSa50o0lpYhxpdXTdGfSM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=eXwPqfU5+dyGmmARtvY9crMVwvGOsCAZ2Ru0lYpoOfgXEOQb2mMyZcg1q6u92yB0Z
+	 eZMN9cLTZ+yubZjVJ3wy4M7XG7fZikCsbl6f1040nSPNfNyH4meZZBsET+2pf6T6qH
+	 qq5izJpow7RoIotkR8UYgW6x+l2czIIn3yNVRVjPMN17oPO831Axfy1Rymb/HnXcNb
+	 XY24eVkU+jFNiKTi8CRFsGG3DyaUFKembWWsN5r8eTzYpjL4efTFMbO0xnASQRTvpI
+	 YnaQfcVtFoK4C7nDN/JU0FZvuMbAzBAbv7MBIkBFZsTw/0q7oFhQitlB8lVT412AvD
+	 YKt/asR4pMeRw==
+From: SJ Park <sj@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: SJ Park <sj@kernel.org>,
+	balbirs@nvidia.com,
+	brendan.jackman@linux.dev,
+	yuzenghui@huawei.com,
+	apopple@nvidia.com,
+	alucerop@amd.com,
+	matthew.brost@intel.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	djbw@kernel.org,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	osandov@osandov.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	pbonzini@redhat.com,
+	osalvador@suse.de,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	ying.huang@linux.alibaba.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk,
+	longman@redhat.com,
+	ridong.chen@linux.dev,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v5 14/36] mm/damon: skip private node memory in DAMON migration and pageout
+Date: Thu, 23 Jul 2026 06:36:53 -0700
+Message-ID: <20260723133654.86752-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <amGHuputMNCFZ9CV@gourry-fedora-PF4VCD3F>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related
- issues
-To: Greg KH <gregkh@linuxfoundation.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260626112634.1778506-1-pbonzini@redhat.com>
- <amG2jCgWugrVroyZ@google.com> <2026072336-stout-tartar-f586@gregkh>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <2026072336-stout-tartar-f586@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Transfer-Encoding: 8bit
 
-On 7/23/26 09:43, Greg KH wrote:
-> On Thu, Jul 23, 2026 at 03:39:15PM +0900, Sergey Senozhatsky wrote:
->> On (26/07/23 15:36), Sergey Senozhatsky wrote:
->>>> Sasha, Greg,
->>>>
->>>> this is the backport to 5.15 for the above CVE.  The fix was relatively
->>>> simple upstream but only due to years of refactoring and cleaning up
->>>> of the code; fixing from scratch is not really feasible so start by
->>>> applying the patches that are needed.
->>>>
->>>> Please apply this instead of v1, due to a missing line in the last
->>>> patch.  Sorry about that.
->>>
->>> Sorry for the noise, has this series stuck?
->>
->> Sorry, forgot to set proper In-Reply-To [1]
->>
->> https://lore.kernel.org/stable/20260626174620.1819772-1-pbonzini@redhat.com/
->>
+On Wed, 22 Jul 2026 23:25:15 -0400 Gregory Price <gourry@gourry.net> wrote:
+
+> On Wed, Jul 22, 2026 at 05:19:42PM -0700, SJ Park wrote:
+> > On Wed, 22 Jul 2026 08:16:56 -0400 Gregory Price <gourry@gourry.net> wrote:
+> > 
+> > > > "by default".  Does that mean it could be reclaimable in some situations?  If
+> > > > so, could we check if it is reclaimable?
+> > > > 
+> > > 
+> > > See the damon changes in:
+> > > 
+> > > https://lore.kernel.org/linux-mm/al-pkvmgIxGu3LzM@gourry-fedora-PF4VCD3F/T/#mfb99303c85dd9d4c3f58832dc28fc55583a7217a
+> > 
+> > Summarizing what you want to say, quoting something from the patch, or at least
+> > calling it "26th patch of this series" would have made reviewing much easier.
+> > Cc-ing damon@ for only patches that toucing DAMON source files and the cover
+> > letter of the series could also be helpful.  Please consider doing some of
+> > these for future replies.
+> > 
 > 
-> It needs backports for newer kernels first, right?
+> I have been very much discouraged from this kind of trimming because it
+> removes the context of the series from the individual patches - making it
+> even more confusing.
 
-Backports up to 6.1 are trivial, if anyone posts them I'll ack them in a 
-second.
+That's fair and making sense.
 
-Paolo
-
-> These seem to have
-> gotten stuck somewhere, they are gone from our review queues and so need
-> to be fixed up based on the review and resent if anyone wants them
-> applied.
 > 
-> thanks,
-> 
-> greg k-h
-> 
+> But I understand, I will try to remember to do this for you.
 
+Thank you, Gregory.  Nonetheless, I wouldn't insist selective Cc-ing.  I agree
+your point, and I expect doing that would be tedious if you don't have a script
+or tool (I use a tool).  It is just one of my suggestion to help reviewing in
+this context, insted of only lore link.  Just one among the other three
+suggestions (summarizing your thought, quoting, or simply calling it "26th
+patch of this series") should also suffice.
+
+> 
+> > So, I understand later patches will make it optionally reclaimable and update
+> > this restriction by the 26th patch?  That sounds fair.  But, could we drop "by
+> > default" from the above comment for reducing the confusion?
+> 
+> Yes, but you bring up a good point - I think this two-step process is
+> actually poor form and that I need to redo it.
+> 
+> Maybe this can be redone as node states (features?) such as:
+> 
+>    N_MEMORY_RECLAIMABLE
+>    N_MEMORY_DEMOTABLE
+>    N_MEMORY_TIERABLE
+> 
+> so these damon changes will forego this confusing intermediate step of:
+> 
+>    if (folio_is_private_node(folio))
+> 
+> and go straight to
+> 
+>    if (node_is_reclaimable(folio_nid(folio)))
+> 
+> In the first patch - without ever having to revisit damon again.
+
+Indeed that sounds better than my suggestion.
+
+> 
+> > > 
+> > > Technically there is nothing in migration core to prevent migration
+> > > operations, it's done on a service basis - hotunplug, reclaim/demotion,
+> > > user numa (mbind, migrate/move_pages) etc.
+> > > 
+> > > Operations on private nodes/private node folioes are refused if the
+> > > capability bit is not set.
+> > 
+> > I haven't had a chance to read the entire series, sorry about that.  So, do you
+> > mean the above blocking is not really needed, or that will conditionally be
+> > allowed by another later patch?
+> > 
+> 
+> I will reduce this all to a single patch in v6, I see where things can
+> be improved now based on a few pieces of feedback.
+
+Sounds good, thank you Gregory.  Looking forward to the next version!
+
+
+Thanks,
+SJ
+
+[...]
