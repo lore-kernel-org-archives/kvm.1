@@ -1,235 +1,328 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D654A13BF
-	for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 14:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B5F3358B9;
+	Thu, 23 Jul 2026 14:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784817568; cv=none; b=RGXCDotCvFuW14diXOXMgg3DZxw6sqsc1WfUAIJEG+OBWKO4usik37qEiYq4EAzEjtQoW4MuIB1E/xE1RgGL4MrwygrRc72AsbBeI5RYt1rhdUgNT0o0faWZp3VJ53LAZJQe+wx9mKdT1Iag+LsJHX77t6smIM/V3Y3Vr555tzM=
+	t=1784818029; cv=none; b=JUUWuQ7s+1NSWY4hzdG+awaW75cwgZ8sbxzYZbKxtFEzkTgGpHg/30STTKTDeJYSVSSJ7wc2/dZH9aSs+vH5SNDi6U2h4rPkh9kabIpwjOULA+dVwg5yZ7XfQ6Dc3MedD1Ua50I0KlK3cWUGdXg1H4ITak7MUzyP81d5WYF0K9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784817568; c=relaxed/simple;
-	bh=epZHNJdb1jvaOZ4O6cy2hUvP2FOzogSGFkn2SNuLRcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hgeFvfNTG4E6ihB+gnOf6wmsPtwFV9M94dQ+MpMb50MuKuNl/HTZyfikeEFWouA6RDNBj4+rOaBtmOkrxpcLMcKOUzlEtKdNCaNopaxW5hS7AvUMcw4G22r5TuTVUUBZ3RfNWhl6jfDnjPktSfsRM2jkqnjaxLG1vHnTwJoApm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MP8n1E3w; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gKY6oDxr; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784818029; c=relaxed/simple;
+	bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tw/9IEvKxgpNH6KqDpBWYy8Ni5zn+aWHaZgXSJl1GiiFZuS+fFGXEYxs1CruSbklnmsM0s5wHxOp2j227ClkBVojmH0GgrwO9XXmberRgvaJbbyLEYreuUn95nJ6GlokezwEGC5fCD5B0QZEhhkk+MBw+39bqfzYuoFg6oyINAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=LxFG8WRR; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MP8n1E3w";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gKY6oDxr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784817560;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gqFSWQaMTz+T5mXHuwtGx1/VHZD0uStv1s9M8jprGVg=;
-	b=MP8n1E3wkpjQpj98nIEC11pHyU6OaUVvEILOWuYB/HQtvbZ/UgsLwaasA8ovyi8Hy9zFEt
-	B4dOYSnt1Hh0SZuHKNFGIum4DlfQX8Kv1nN0CQJSix+cGa05+Cyi0QnxLUUXyMQ/PWfDVR
-	Ci1QsCkvfoj6egblcfKV8TocKqtehFg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-fzzWprWENduYS9E3Er1m3w-1; Thu, 23 Jul 2026 10:39:18 -0400
-X-MC-Unique: fzzWprWENduYS9E3Er1m3w-1
-X-Mimecast-MFC-AGG-ID: fzzWprWENduYS9E3Er1m3w_1784817558
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f83999cceso654783f8f.3
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 07:39:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784817557; x=1785422357; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gqFSWQaMTz+T5mXHuwtGx1/VHZD0uStv1s9M8jprGVg=;
-        b=gKY6oDxrAy2Obu8I1vVxtX6n7bSkViclVpzfFw7u7g0FzrYd2GliCIHqIv01WbBkjR
-         KAvMetW8vZyh2KhV0997Go81hYSe6aQe5akaFg35/mUVqWaToBb3gDY2E0Ize2fFIZCQ
-         yLeA/5DVLvJjXA/R1s2tkD0WSiz46YNNtgKXXwsx4aOg2HDruxqtjHlnwTacda4DoxKs
-         3yqUR3hvkIL9ZCtIpj4weO/urH1X9Irt2sjB5tbtjRpagb1Nc7szpwlnzjzL8p/fdEkE
-         ks1iapW/EmILr1UOoQe2HlfqhauJ3k8qbZ/WJBQsSYpa5cHKXMsOBHjr0lvoMnjiV8Bs
-         kR9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784817557; x=1785422357;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gqFSWQaMTz+T5mXHuwtGx1/VHZD0uStv1s9M8jprGVg=;
-        b=jaLmNmXH40KM5LRDZw8GEtdbM+ci6haN7OulEKPpmMdFfwCr766qvyu+H1WdOWLV74
-         mQPopzGztCE7F13ZD3tZA8NUJp20H1y17xgFzUowuIn5+WP/Q2B5sGGHehotkdsmndTT
-         EWB/gm3n1IImVrPbEqJ+4SF5BcEXWssHUAx5/mx3p4d7HRcK+4trPAzD2NMkU5FkR83w
-         7YRSBCIPJdOtmF5cH3+wNctuDGHSRJZ6b8rDIA93ZTIqX/bg1eJy2OkOWF95UBwy2RcL
-         B8udpAECuyAMtyWPcrLNKSLWv/W6nZMntXdOvPbvyURom4C+DETA+zSH+VQ99MqTA8td
-         a2bQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAPqHhiXl/iHA23j9E3jvqK/BNSw8lQ8XOUTzQtUbehiygF0KbGUtG+JiDDKZ5gxD55E4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/bv6KOMQGkr62x5wjOULE1fg1nLQkXp0YQLXEkIbRrKW+S6Jm
-	3UI+DiriLbtNBME5gf6tT44YeZx2Wt8631mNHc4oL6DkYr7xDgUS0N21k1ErBm++levI/NeNruN
-	SDcVFM42ArZzi9WgVXCN2W1FkFMYkU4nk9RAgAqWIL9TxBbrBlWw8Og==
-X-Gm-Gg: AR+sD10ohFjlahRdm85jWdL4DFM1uWVXES6DbPJJS/wec13uP6llalGQToiTay02LSf
-	J82LnAH69ZSzPz2HOgom6P5tSDaFj2yLtqW4l+GIK4uB4/j6VB0dEvifTVqmOfz464F2o0yxU6q
-	ni/dByr4a/loOVVS/mHNBj/QOvmQ6OYgCstwJULBJh/lvl1sAZ2wdJxUYpOZVwe5cE6EkONDjbz
-	0E9wXi/MA3PW1hlm0mlX35P5pd6xSWX0B7Y0uHVfealy6+ggpwMPgmLC3xLIA1MqYZmMntUF9SN
-	qI9pHIDRCt5nrjk51SsPxzc2NyTX844z2lUn9ypJOnL8W+fn5/+9mtDDcaHCGYJTgPqFI/YYM+/
-	dxgmZOgjvcJQZ7pKkHlsJZdw5ZhN6o60En11wxIMp8xBUOs96uw==
-X-Received: by 2002:a5d:5e87:0:b0:47f:6d9a:d7a6 with SMTP id ffacd0b85a97d-47f8d72996fmr4387773f8f.25.1784817557341;
-        Thu, 23 Jul 2026 07:39:17 -0700 (PDT)
-X-Received: by 2002:a5d:5e87:0:b0:47f:6d9a:d7a6 with SMTP id ffacd0b85a97d-47f8d72996fmr4387716f8f.25.1784817556761;
-        Thu, 23 Jul 2026 07:39:16 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c531basm15770037f8f.19.2026.07.23.07.39.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 07:39:15 -0700 (PDT)
-Date: Thu, 23 Jul 2026 16:39:11 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, mst@redhat.com, stefanha@redhat.com, 
-	dongli.zhang@oracle.com, maciej.szmigiero@oracle.com, bchaney@akamai.com, 
-	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
-Subject: Re: [PATCH v5 4/5] vhost: synchronize with RCU readers when freeing
- workers
-Message-ID: <amInL2hPEG9ejUd0@sgarzare-redhat>
-References: <20260720102241.371610-1-andrey.drobyshev@virtuozzo.com>
- <20260720102241.371610-5-andrey.drobyshev@virtuozzo.com>
- <amCPLOrnpYmr5n0p@sgarzare-redhat>
- <82066fcb-150f-47ef-86a7-0df0f9eb41c5@virtuozzo.com>
- <amIe79X3j7GxDBdO@sgarzare-redhat>
- <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="LxFG8WRR"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D49B01477;
+	Thu, 23 Jul 2026 07:47:01 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B40FC3F59E;
+	Thu, 23 Jul 2026 07:47:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784818026; bh=6Th78kG6gwLHh+IRkhYaCODZh+oGtao36ZDP9dLMl3Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LxFG8WRRK7c9iE7bu37AjLxt1a2HZyFcz184U5VNfybyqKKs4NJEuApklUjnLfzdO
+	 Abo+IkO4lwS7PIRGBwYDDYCIp0Q/0dVX6cc2WGgGTWfp8AQriPZBtjYyNvWg0bqpzA
+	 7KTe8igVy3yHQmAEl8oR5DcTVjve1JJmeqaINrr4=
+Message-ID: <1cd3327c-1eab-4022-9ab1-625ca8641e81@arm.com>
+Date: Thu, 23 Jul 2026 15:46:58 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <f21667c3-64f1-40c6-9941-9453af173eda@virtuozzo.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 12/37] KVM: arm64: CCA: Support the VGIC in realms
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-13-steven.price@arm.com>
+ <amB-opawGgF6jNHB@FCCLS0092175.localdomain>
+ <b71e81ee-372c-4963-a1f7-bd301aee89cb@arm.com>
+ <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <amG3KHE4Tdd_Nvuz@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 23, 2026 at 05:29:12PM +0300, Andrey Drobyshev wrote:
->On 7/23/26 5:03 PM, Stefano Garzarella wrote:
->> On Thu, Jul 23, 2026 at 04:57:47PM +0300, Andrey Drobyshev wrote:
->>> On 7/22/26 12:43 PM, Stefano Garzarella wrote:
->>>> On Mon, Jul 20, 2026 at 01:22:40PM +0300, Andrey Drobyshev wrote:
->>>>> vhost_vq_work_queue() only holds the RCU read lock while it dereferences
->>>>> vq->worker and queues work on it.  vhost_workers_free() however clears
->>>>> the vq->worker pointers and immediately frees the workers, without
->>>>> waiting for a grace period.  A caller that fetched the worker right
->>>>> before the pointer was cleared can therefore still be queueing work on
->>>>> it while it is freed.  And even when the queueing itself wins the race,
->>>>> the work is never run, so its VHOST_WORK_QUEUED bit stays set and all
->>>>> future attempts to queue it are silently skipped.
->>>>>
->>>>> None of the current callers can actually hit this: net and scsi stop
->>>>> their virtqueues before the workers are freed, and vsock unhashes the
->>>>> device and does synchronize_rcu() of its own in vhost_vsock_dev_release()
->>>>> before the workers go away.  But the upcoming VHOST_RESET_OWNER support
->>>>> in vhost-vsock keeps the device hashed while its workers are freed, so
->>>>> the lockless send/cancel paths become able to race with the teardown.
->>>>>
->>>>> Fix this by clearing the vq->worker pointers, waiting for a grace
->>>>> period, and then flushing the workers so any work the last readers
->>>>> queued runs before the workers are freed.
->>>>>
->>>>> Fixes: 228a27cf78af ("vhost: Allow worker switching while work is queueing")
->>>>> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->>>>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->>>>> ---
->>>>> drivers/vhost/vhost.c | 11 +++++++++++
->>>>> 1 file changed, 11 insertions(+)
+On 23/07/2026 07:56, Kohei Enju wrote:
+> On 07/22 14:31, Steven Price wrote:
+>> On 22/07/2026 09:27, Kohei Enju wrote:
+>>> On 07/15 15:28, Steven Price wrote:
+>>>> The RMM provides emulation of a VGIC to the realm guest. With RMM v2.0
+>>>> the registers are passed in the system registers so this works similar
+>>>> to a normal guest, but kvm_arch_vcpu_put() need reordering to early out,
+>>>> and realm guests don't support GICv2 even if the host does.
 >>>>
->>>> Sashiko reported some potential issues here:
->>>> https://sashiko.dev/#/patchset/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com?part=4
->>>>
->>>> IMO the first one is pre-existing, but not really sure it is a real
->>>> issue since happening when the worker/vmm is going to be killed.
->>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
 >>>
->>> Sashiko claims:
->>>
->>>> Will this leave the queued work unexecuted and permanently break the
->>> virtqueue by leaving VHOST_WORK_QUEUED set?
->>>
->>> I agree this issue is pre-existing and doesn't have much to do with our
->>> series here.  It looks real, but in reality should be harmless since we
->>> may only hit it while the device already dying.  Means there's no VQ
->>> state to be saved.  The only potentially observable artifact I guess is
->>> a warning here:
->>>
->>> vhost_workers_free()
->>>  vhost_worker_destroy()
->>>    WARN_ON(!llist_empty())
->>>
->>> So more of a cosmetic noise on a dying device.  Again, not relevant to
->>> this series.  But one optional way to make it go away would be to clear
->>> vq->worker under vq->mutex in vhost_workers_free() (mirroring
->>> vhost_worker_killed()).
->>>> The second one also not sure if it's an issue since the sender is not
->>>> lockless IIUC.
->>>>
->>>
->>> The term 'sender' is confusing here:
->>>
->>> * vhost_transport_send_pkt() is the .send_pkt() method of struct
->>> virtio_transport.  It only stores skbs into the queue, doesn't process
->>> them. It indeed is lockless as it doesn't take vq->mutex.
->>>
->>> * vhost_transport_send_pkt_work() is the .fn() method of send_pkt_work.
->>> It's called by the worker thread to process skbs in the queue, calls
->>> vhost_transport_do_send_pkt() which does in turn take vq->mutex.
->>>
->>> I think sashiko points out to the former.  Still, I don't think it's an
->>> actual bug.  Look:
->>>
->>> 1) By invoking flush, we wake the worker thread:
->>> vhost_dev_flush()
->>>  __vhost_worker_flush()
->>>    vhost_worker_queue(flush.work)
->>>      worker->ops->wakeup()
->>>
->>> 2) Then woken worker does:
->>> vhost_run_work_list()
->>>  llist_for_each_entry_safe(work) {
->>>    clear_bit(VHOST_WORK_QUEUED, &work->flags)
->>>    work->fn(work) // for send_pkt_work = vhost_transport_send_pkt_work
->>>  }
->>>
->>> 3) And then in work->fn() (vhost_transport_send_pkt_work):
->>> vhost_transport_send_pkt_work()
->>>  vhost_transport_do_send_pkt()
->>>    if (!vhost_vq_get_backend(vq))
->>>      goto out;
->>>
->>> As you can see, we return early in case backend was unset.
->>>
->>> So after doing this flush, we have: 1) QUEUED bit is unset; that makes
->>> send_pkt_work re-queueable. 2) But the queue doesn't actually get
->>> processed, and VQ state isn't actually touched here - so I guess
->>> Sashiko's conclusion is incorrect and there's no actual bug.
->>>
->>>> But, please can you double check them?
->>>>
->>>
->>> In general I'd leave this patch as-is as Sashiko's complaints aren't
->>> very convincing so far.  If you want I can add another patch which wraps
->>> NULLifying workers in vhost_workers_free() in vq->mutex.
->>>
->>> WDYT?
+>>> Hi Steven,
 >>
->> Yeah, I agree, about the other patch, up to you, but I'll eventually
->> send it separately.
+>> Hi Kohei,
 >>
->> Thanks,
->> Stefano
+>>> I've been testing this series and found that when the host CPU doesn't have
+>>> ARM64_HAS_ICH_HCR_EL2_TDIR this series doesn't work as expected.
 >>
->
->Alright, then let me resend it once more along with this 6th patch, so
->that we don't have it uncovered.
+>> Thanks for testing!
+>>
+>>> Since commit 2a28810cbb8b ("KVM: arm64: GICv3: Detect and work around the lack
+>>> of ICV_DIR_EL1 trapping"), when the host CPU doesn't support this feature, KVM
+>>> traps all GIC sysreg accesses in the common group. However, currently trap
+>>> handlers for ICC_{PMR,RPR,CTLR}_EL1 registers are missing [0]. So when Realm
+>>> guests try to access those registers, KVM traps them but just emits the warning
+>>> shown in [1], and Realm guests fail to boot.
+>>>
+>>> As far as I can tell, the CCA requirements don't require the
+>>> ARM64_HAS_ICH_HCR_EL2_TDIR feature. If that's the case, this seems to be a
+>>> problem. Is there any workaround for this issue, or should we implement trap
+>>> handlers for those registers?
+>>
+>> As Marc has already said in his reply, I'm really surprised you have a
+>> CPU which implements CCA but doesn't have ARM64_HAS_ICH_HCR_EL2_TDIR.
+>> Can you give some more details about the platform you are testing on?
+> 
+> Thank you for taking a look, Steve.
+> 
+> Unfortunately, due to the company's policy, I can't share any details
+> about the platform I'm currently testing on. When the time is right,
+> I'll be happy to do so.
+> 
+>>
+>> Ultimately there are two options here - either don't support CCA (so
+>> detect the lack of ARM64_HAS_ICH_HCR_EL2_TDIR and bail out early), or
+>> plumb in the trap handlers - as commit 2a28810cbb8b points out this
+>> isn't something we really want to support if we can avoid it.
+> 
+> Yes, the former makes perfect sense if there would be no systems that
+> supports CCA without TDIR. However, if such systems do exist, I'd be
+> interested in exploring the latter approach.
+> 
+>>
+>> Hence I'm interested to know where this sits between "hacked up test
+>> system" and "production hardware". E.g. if this is an emulator it might
+>> be possible to just enable the CPU feature.
+> 
+> Again, I can't share that right now, but I'd like to share more when the
+> time comes.
 
-But why it should be part of this series?
+Given Marc's response for now I'm not going to add support for this. 
+"When the time comes" we can revisit whether it makes sense to have 
+upstream support and what that might look like.
 
-If there is no strong reason, I'd send it as a separate patch.
-
-E.g. even this patch in theory may be a separate one, but this is 
-related to this series, so makes sense to have this included.
+However, I did ask an AI tool to have a go at implementing this, and it 
+came up with the (very lightly tested) patch below. That might at least 
+give you something you can test. It doesn't meet Marc's request that it
+reuses the existing implementation, and it took the AI a few goes at
+getting something that "works" so I suspect it might have bugs - I
+haven't reviewed the code myself.
 
 Thanks,
-Stefano
+Steve
+
+----8<----
+From 7aaaa5089c05f19bf00df2b651fa4bd7d738384c Mon Sep 17 00:00:00 2001
+From: Steven Price <steven.price@arm.com>
+Date: Thu, 23 Jul 2026 11:49:36 +0100
+Subject: [PATCH] KVM: arm64: CCA: Handle GICv3 CPU interface traps for realms
+
+On CPUs that lack ICH_HCR_EL2.TDIR, KVM works around the missing DIR
+trap by setting ICH_HCR_EL2.TC and trapping the GICv3 common CPU
+interface registers. Normal guests handle these traps in hyp via the
+VGIC CPU interface emulation, but realm guests exit through the RMM and
+reach KVM's host-side sysreg emulation instead.
+
+That path only handles ICC_DIR_EL1 and treats the rest of the trapped
+common group as undefined. A realm guest can therefore take an
+unexpected UNDEF when accessing registers such as ICC_PMR_EL1 or
+ICC_CTLR_EL1 on systems that require the TC workaround.
+
+Handle the GICv3 common CPU interface registers directly from the realm
+sysreg exit path. Reads are satisfied from the saved VGIC state and
+writes update the VGIC shadow state. For PMR and CTLR writes, also
+restore the VMCR/APR state to the live GIC CPU interface before
+re-entering the REC, matching the effect a direct guest sysreg write
+would have had.
+
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
+ arch/arm64/kvm/rmi-exit.c | 119 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
+
+diff --git a/arch/arm64/kvm/rmi-exit.c b/arch/arm64/kvm/rmi-exit.c
+index 78d9189fd5ca..0fad8e68d920 100644
+--- a/arch/arm64/kvm/rmi-exit.c
++++ b/arch/arm64/kvm/rmi-exit.c
+@@ -3,17 +3,25 @@
+  * Copyright (C) 2023-2026 ARM Ltd.
+  */
+ 
++#include <linux/bitfield.h>
++#include <linux/irqchip/arm-gic-v3.h>
+ #include <linux/kvm_host.h>
+ #include <kvm/arm_hypercalls.h>
+ #include <kvm/arm_psci.h>
+ 
+ #include <linux/arm-smccc-rmi.h>
+ #include <asm/kvm_emulate.h>
++#include <asm/kvm_hyp.h>
+ #include <asm/kvm_rmi.h>
+ #include <asm/kvm_mmu.h>
++#include <asm/sysreg.h>
++
++#include "vgic/vgic.h"
+ 
+ typedef int (*exit_handler_fn)(struct kvm_vcpu *vcpu);
+ 
++#define GICV3_IDLE_PRIORITY	0xff
++
+ static int rec_exit_reason_notimpl(struct kvm_vcpu *vcpu)
+ {
+ 	vcpu_err(vcpu, "Unhandled exit reason from realm (ESR: %#llx)\n",
+@@ -48,6 +56,114 @@ static int rec_exit_sync_iabt(struct kvm_vcpu *vcpu)
+ 	return -ENXIO;
+ }
+ 
++static int rec_get_gicv3_bpr_min(void)
++{
++	return 8 - (FIELD_GET(ICH_VTR_EL2_PREbits,
++			      kvm_vgic_global_state.ich_vtr_el2) + 1);
++}
++
++static u8 rec_get_gicv3_active_priority(struct kvm_vcpu *vcpu)
++{
++	struct vgic_v3_cpu_if *cpuif = &vcpu->arch.vgic_cpu.vgic_v3;
++	u8 prio = 0;
++
++	for (int i = 0; i <= vgic_v3_max_apr_idx(vcpu); i++) {
++		u32 val = cpuif->vgic_ap0r[i] | cpuif->vgic_ap1r[i];
++
++		if (!val) {
++			prio += 32;
++			continue;
++		}
++
++		return (prio + __ffs(val)) << rec_get_gicv3_bpr_min();
++	}
++
++	return GICV3_IDLE_PRIORITY;
++}
++
++static void rec_restore_gicv3_vmcr_aprs(struct kvm_vcpu *vcpu)
++{
++	preempt_disable();
++	kvm_call_hyp(__vgic_v3_restore_vmcr_aprs,
++		     &vcpu->arch.vgic_cpu.vgic_v3);
++	preempt_enable();
++}
++
++/*
++ * Realm exits are handled after the RMM has returned to the host, so use the
++ * saved VGIC shadow state instead of the hyp-side live sysreg helpers.
++ */
++static bool rec_exit_gicv3_sys_reg(struct kvm_vcpu *vcpu, bool is_write)
++{
++	struct realm_rec *rec = &vcpu->arch.rec;
++	struct vgic_cpu *vgic_cpu = &vcpu->arch.vgic_cpu;
++	struct vgic_vmcr vmcr;
++	unsigned long esr = kvm_vcpu_get_esr(vcpu);
++	int rt = kvm_vcpu_sys_get_rt(vcpu);
++	u32 sysreg = esr_sys64_to_sysreg(esr);
++	u64 val;
++
++	if (!kvm_has_gicv3(vcpu->kvm))
++		return false;
++
++	vgic_get_vmcr(vcpu, &vmcr);
++
++	switch (sysreg) {
++	case SYS_ICC_DIR_EL1:
++		if (!is_write)
++			return false;
++
++		vgic_v3_deactivate(vcpu, rec->run->exit.gprs[rt]);
++		return true;
++	case SYS_ICC_PMR_EL1:
++		if (is_write) {
++			vmcr.pmr = FIELD_GET(ICC_PMR_EL1_MASK,
++					     rec->run->exit.gprs[rt]);
++			vgic_set_vmcr(vcpu, &vmcr);
++			rec_restore_gicv3_vmcr_aprs(vcpu);
++		} else {
++			rec->run->enter.gprs[rt] = FIELD_PREP(ICC_PMR_EL1_MASK,
++							      vmcr.pmr);
++		}
++
++		return true;
++	case SYS_ICC_CTLR_EL1:
++		if (is_write) {
++			val = rec->run->exit.gprs[rt];
++			vmcr.cbpr = FIELD_GET(ICC_CTLR_EL1_CBPR_MASK, val);
++			vmcr.eoim = FIELD_GET(ICC_CTLR_EL1_EOImode_MASK, val);
++			vgic_set_vmcr(vcpu, &vmcr);
++			rec_restore_gicv3_vmcr_aprs(vcpu);
++		} else {
++			val  = FIELD_PREP(ICC_CTLR_EL1_PRI_BITS_MASK,
++					  vgic_cpu->num_pri_bits - 1);
++			val |= FIELD_PREP(ICC_CTLR_EL1_ID_BITS_MASK,
++					  vgic_cpu->num_id_bits);
++			val |= FIELD_PREP(ICC_CTLR_EL1_SEIS_MASK,
++					  FIELD_GET(ICH_VTR_EL2_SEIS,
++						    kvm_vgic_global_state.ich_vtr_el2));
++			val |= FIELD_PREP(ICC_CTLR_EL1_A3V_MASK,
++					  FIELD_GET(ICH_VTR_EL2_A3V,
++						    kvm_vgic_global_state.ich_vtr_el2));
++			val |= FIELD_PREP(ICC_CTLR_EL1_CBPR_MASK,
++					  vmcr.cbpr);
++			val |= FIELD_PREP(ICC_CTLR_EL1_EOImode_MASK,
++					  vmcr.eoim);
++			rec->run->enter.gprs[rt] = val;
++		}
++
++		return true;
++	case SYS_ICC_RPR_EL1:
++		if (is_write)
++			return false;
++
++		rec->run->enter.gprs[rt] = rec_get_gicv3_active_priority(vcpu);
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+ {
+ 	struct realm_rec *rec = &vcpu->arch.rec;
+@@ -59,6 +175,9 @@ static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+ 	if (is_write)
+ 		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+ 
++	if (rec_exit_gicv3_sys_reg(vcpu, is_write))
++		return 1;
++
+ 	ret = kvm_handle_sys_reg(vcpu);
+ 	if (!is_write)
+ 		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+-- 
+2.43.0
+
 
