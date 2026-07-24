@@ -1,63 +1,68 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824E629AB05
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955C62E7386
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784914468; cv=none; b=OfHa0i8J4Zxu667aF31MBPCNssvHRQlGhH2feMkb58/7Qqk9prvpL2uGI5XhCtJOKMvErj+3jgWC819yqCvHQ7eFaplVmoH1e9DaxFpbe7oMz0pp4HQ9GOeIB51DAZf6HwTYzQhbOFiMJ4NwGSygsov2X0laA45vdE2mEiwIK9w=
+	t=1784914469; cv=none; b=h6Qa0W4/Qa1FFNLzPN1ArL3J2UQpQHjubNH2mCLhcJ2QE+YYPaTdjtEan/DAS3S+gWRft6LAMOU4HwcnQLI4XrRqVQouDTc5t1HzZNAcLvGQLa4W0rxUyU+V+EOtp5aUNkk1wy8l0vi+Ig5zaK5+AozYAVSl+DYIKTs4t3dzvCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784914468; c=relaxed/simple;
-	bh=Tttx+GfGd7bzQIHLrqeohaZPjOr0yLAMIQMVWIGp5BE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hceBndnjjuEGUQ4PvcKmZ5IzgMp8kGc6JsEPnLR0rinDUqfdzU2q9QFo6m3tQy5stSJFd8+exkietZ7lEIxbdDzIPBlZeS+K6hsTvjyp2yZd9aDoZTnJftJNF3HCDrj7WAOEMx4hYKL/j14IBNi9pl8CQw1GNuEjO8UqCbtUAcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qpPvEXOW; arc=none smtp.client-ip=209.85.214.200
+	s=arc-20240116; t=1784914469; c=relaxed/simple;
+	bh=P/vz4YlFPpQWKS/Iy2gHb9O7M5CQuGY/6CWVmMfyjQs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=S5eHbo1Fdn0nURVich4EuApL01WTjkL2bj8+AkPiv10dp9iYL/a3f8ElJK82KqfcpCnyoUWYN8Tu7foUOamd/ru4yFuFCWWMKpoO/EA0S+Nko9vs+2nf/xcgS4ebe5DqOznrr3nNJZ5F5DwA05XN426QaEQtCtrtBFVii4tBmjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pzbu6oEH; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qpPvEXOW"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ccbb61893fso13929535ad.0
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:34:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pzbu6oEH"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbb6433e9d4so853527a12.3
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:34:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784914467; x=1785519267; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hTYhN6rGaAVoioSpjICR0A/T+42KOSJuXY48zbzHypU=;
-        b=qpPvEXOWpIgSZPstfy35mg2Kelh8Rw8J/xGPq0vstA6TZoD6eEX0vchLki2zR06RHO
-         fWWrhkmlMalx/sp/GNUttfifMkDJlM0MAUDAL1FXvlvc1xtyyMAP6UwRXLEPE2jm+qR9
-         lwwl841SRDfaKvvSKlatcGt81NiN3t6AJyvXaAJGJ1qqvP0J2x5nLqKZhDvHM9KNJXzh
-         TTRYWlOl0qCCSjim4EAg0iuIoG9fyrNxEsgTC5PaVaPtPvYbFGbH+ZoTYXcM2Nl0fFIQ
-         XywlE+yTnFr+rK1J/Mi3qXlxI6jQJb0O8U4KlBFS6KOnTTyT5xmJnEK+qvwWeFny6QYR
-         /3aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784914467; x=1785519267;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=google.com; s=20251104; t=1784914468; x=1785519268; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=hTYhN6rGaAVoioSpjICR0A/T+42KOSJuXY48zbzHypU=;
-        b=Ny9HZYfDOQLt2NCK4+dFVtqA47nTYsqNMROMJ4nHaME9As/5QquOQeN4rNIQv5oLta
-         lR65960HyK6n/086VTnYRRWVFfeg0tHGNTaz74t4NsVsCVUt4e2RW3FE1dA52TScHZ1D
-         dpDRJuMn1n+DDSQB7a+vNEuRaIaFcjKU40UP6ox/11MEfQuedeyFGpebMjf2zD9y325B
-         UInWZBqzbsd/n+iJMY1+hHPehAq4+YapN46ZutqczAIw8XVRS58LfdKjMCXzzlw9ETli
-         PxOQmCGRRDEhaqzREOt4zy5hGzTV9HFxwgrZERvT75aNyRxC9TUT8frLcANb6a0JFxtY
-         mGWA==
-X-Gm-Message-State: AOJu0YwaUMeAdxDBmRlbrQ2F8XjST7BC9uBSfmZ3yOel5N/bJGi8R3de
-	61iPyrssHoaXRdpMLAzOBa+APzm9YAyVwdB+TWqoKAl0upJwaiThN9GwKanFhqeb0F+yus/DZ4/
-	9ysk7SA==
-X-Received: from pllb9.prod.google.com ([2002:a17:902:e949:b0:2ca:d246:c7c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1aeb:b0:2ca:53e9:1277
- with SMTP id d9443c01a7336-2cfa6a43e63mr90982215ad.1.1784914466539; Fri, 24
- Jul 2026 10:34:26 -0700 (PDT)
+        bh=wLT7gNHgdr1B3mxcznzuNraCWdUDx8twv8dXwpur9iw=;
+        b=Pzbu6oEHP5xIGrx+MIXSmcpciV8eylKCRJLfTFxYqiPa6UvGcouWYuKrYiET55Uuc7
+         UetiRycqtmZRGsG6PvqIc9OHgz6utR06lu+yyd7uR++YY2dnOyxW839cdZlYdDPo8qir
+         oD31Ps+QA1cUMTSrPUS1o9K5MlFdoJz46xvhmJzoVuBPvNpLjVu8L8S5ktFwrQALADn5
+         PtGDNRwonP/6NSocdwj69nxay5h3liBmCbky4DiijCOdN1iJEocAJWdUKIBxQy6n9tly
+         AOkLgWyFbubN972tNVhbMgWkIEKq3obN8RnXaW+gd8Ecoha/pagzUxtLkUCkXMSa0F6a
+         bm+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784914468; x=1785519268;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wLT7gNHgdr1B3mxcznzuNraCWdUDx8twv8dXwpur9iw=;
+        b=rtGUu4aRITjMpTVvhr6X2cUhOtVIb8Z/Gcbq17YCxBINhAa+qxZyl3ZMLFzckKIqp/
+         3F9uHbgiCeHjflHQ3748w3neg65/WW2DkZ/Bu0saXtJafirabKne+pZz15bvWiJzLcj+
+         2EW3Wo5QQ1GJMBw/oCBkAwPwOHLXIzvRcNHDhRhsACYpotUnNTy3473XmXh/9Mt9zSZx
+         g2D745KMuCBrpU/EpUfKfxULlvIirl8MEUpn0gOLsQjTXldMYyZ4dLO402/cjTkV0B3O
+         GIyUo3WJjzwEb9OUrfMzNxVBeCTi61zaNhl1KGtqASlNPyYbEEx8BJ9llPwj/kSAFEz2
+         hIKw==
+X-Gm-Message-State: AOJu0YxHbmX7jp1P4xKL3aeSMh8YE7AimGYjfaewqzyQviKJx1ry4NR/
+	hpRzdgj1J7MDIilVvLx+XcK9/tLSylfSj0UuL73GVnNMv73qd2TdsrjrASYHgcfh+daXXG55YqZ
+	KjiYjWw==
+X-Received: from pgbcr2.prod.google.com ([2002:a05:6a02:4102:b0:c8a:8cda:bd59])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:610f:b0:3c3:ac9c:9a6e
+ with SMTP id adf61e73a8af0-3c44b2ae3bemr9304061637.68.1784914467661; Fri, 24
+ Jul 2026 10:34:27 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 24 Jul 2026 10:34:23 -0700
+Date: Fri, 24 Jul 2026 10:34:24 -0700
+In-Reply-To: <20260724173425.278753-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260724173425.278753-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260724173425.278753-1-seanjc@google.com>
-Subject: [PATCH v3 0/2] KVM: x86: Suppress false positives on "lost" IRQs
+Message-ID: <20260724173425.278753-2-seanjc@google.com>
+Subject: [PATCH v3 1/2] KVM: x86: Don't WARN if IRQ disappears because it was
+ cleared from the PIC
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -65,36 +70,90 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Sashiko Bot <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Don't WARN on "lost" IRQs if the VM has an in-kernel PIC or Xen emulation is
-enabled, as vPIC and Xen emulation have guest-controllable and/or VM-wide IRQs
-that can legitimately be consumed/deasserted without holding the vCPU's mutex.
+When getting a to-be-injected IRQ, don't WARN if the IRQ disappeared and
+the VM has an in-kernel PIC, as the ExtINT handling that's routed through
+KVM's virtual PIC is tracked per-VM, not per-vCPU.  If another vCPU grabs
+the IRQ, or deasserts the interrupt (which is level-triggered), then it's
+both expected and "fine" for a
 
-v3:
- - Add a helper to weed out the problematic cases.
- - WARN in the "else" path so that there's only a single conditional branch
-   in the happy path.
- - Exempt Xen. [Sashiko]
+Keep the assert for split IRQCHIP VMs to help detect KVM bugs, as userspace
+is responsible for routing ExtINT to the intended vCPU, i.e. once an ExtINT
+is pending, it can't be cleared without holding the vCPU's mutex, and thus
+false positives are impossible.
 
-v2:
- - https://lore.kernel.org/all/86078441-92eb-4461-b823-7d3539ac5859@mail.kernel.org
- - Restrict the warning exemption to the in-kernel PIC case.
- - Remove the pr_err_ratelimited() logging.
- - Preserve the WARN_ON_ONCE() for non-PIC interrupt sources.
-
-v1: https://lore.kernel.org/all/345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.kernel.org
-
-Sean Christopherson (2):
-  KVM: x86: Don't WARN if IRQ disappears because it was cleared from the
-    PIC
-  KVM: x86: Don't WARN if IRQ disappears when Xen emulation is enabled.
-
- arch/x86/kvm/irq.h        | 20 ++++++++++++++++++++
+Fixes: bf672720e83c ("KVM: x86: check the kvm_cpu_get_interrupt result before using it")
+Debugged-by: Alexander Potapenko <glider@google.com>
+Reported-by: syzbot+dd769db18693736eee89@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dd769db18693736eee89
+Closes: https://lore.kernel.org/all/6a360fdf.871e809a.2d6dda.0000.GAE@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/irq.h        | 16 ++++++++++++++++
  arch/x86/kvm/vmx/nested.c |  4 +++-
  arch/x86/kvm/x86.c        |  4 +++-
- 3 files changed, 26 insertions(+), 2 deletions(-)
+ 3 files changed, 22 insertions(+), 2 deletions(-)
 
-
-base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+diff --git a/arch/x86/kvm/irq.h b/arch/x86/kvm/irq.h
+index 1a84ea31e7fd..eeaf527cecc4 100644
+--- a/arch/x86/kvm/irq.h
++++ b/arch/x86/kvm/irq.h
+@@ -118,6 +118,22 @@ int kvm_cpu_has_extint(struct kvm_vcpu *v);
+ int kvm_cpu_get_extint(struct kvm_vcpu *v);
+ int kvm_cpu_get_interrupt(struct kvm_vcpu *v);
+ 
++static inline void kvm_warn_on_lost_irq(struct kvm_vcpu *vcpu)
++{
++	/*
++	 * WARN if an IRQ was lost between detecting the IRQ and grabbing the
++	 * IRQ for injection, unless it's possible the lost IRQ was due to one
++	 * of the exceptional cases below.
++	 *
++	 * If the VM has an in-kernel PIC, the ExtINT handling that's routed
++	 * through KVM's virtual PIC is tracked per-VM, not per-vCPU.  If
++	 * another vCPU grabs the IRQ, or deasserts the interrupt (which is
++	 * level-triggered), then it's both expected and "fine" for an IRQ
++	 * seemingly be "lost" from this vCPU's perspective.
++	 */
++	WARN_ON_ONCE(!pic_in_kernel(vcpu->kvm));
++}
++
+ void kvm_inject_pending_timer_irqs(struct kvm_vcpu *vcpu);
+ void kvm_inject_apic_timer_irqs(struct kvm_vcpu *vcpu);
+ void kvm_apic_nmi_wd_deliver(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 0635e92471c8..c28a3ec4e4b7 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4464,8 +4464,10 @@ static int vmx_check_nested_events(struct kvm_vcpu *vcpu)
+ 		}
+ 
+ 		irq = kvm_apic_has_interrupt(vcpu);
+-		if (WARN_ON_ONCE(irq < 0))
++		if (unlikely(irq < 0)) {
++			kvm_warn_on_lost_irq(vcpu);
+ 			goto no_vmexit;
++		}
+ 
+ 		/*
+ 		 * If the IRQ is L2's PI notification vector, process posted
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0626e835e9eb..e97b76b7794f 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7686,10 +7686,12 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
+ 		if (r) {
+ 			int irq = kvm_cpu_get_interrupt(vcpu);
+ 
+-			if (!WARN_ON_ONCE(irq == -1)) {
++			if (likely(irq != -1)) {
+ 				kvm_queue_interrupt(vcpu, irq, false);
+ 				kvm_x86_call(inject_irq)(vcpu, false);
+ 				WARN_ON(kvm_x86_call(interrupt_allowed)(vcpu, true) < 0);
++			} else {
++				kvm_warn_on_lost_irq(vcpu);
+ 			}
+ 		}
+ 		if (kvm_cpu_has_injectable_intr(vcpu))
 -- 
 2.55.0.229.g6434b31f56-goog
 
