@@ -1,109 +1,137 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F046433A6E2
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 15:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784907493; cv=pass; b=hTApcV+8wL26jTnuRgreOnA+UXwPfbwELZtZQn0EGy/oNw2hHlhji2NYLDTsLBzP2AQzYPcR3cJcGwXsCHM5xnGBDEmSbGFWCkbazV8aTsQ/GkDOxh6UhbNdGZPUXuf5byZ6EKfpWkPtwfVYwM2V+scvr4LttFxeyjIcoamt9mQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784907493; c=relaxed/simple;
-	bh=9uqLTYQBiMlGLOFgwOhVylnBn05Ou+bOr0LFGUys/sw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=uSAzKtz32ZauaYxEKGqDoqQXysqpnc6cKT+yOk8uk5LPq0CIQqn8X3QG4i82/Lh3KPIPQPEnzBtvq8BdpkMW5ta6UZ+2AuJDi3y62xv0IV5AXyKZHI6cpAEgyvWvQZacVMAg33mJZHrfLRaKtoD1DKLk7mkiTwj4HtZJBXqVJ74=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ven2Bbg0; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4DF3242CA;
+	Fri, 24 Jul 2026 15:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784907507; cv=none; b=g+IdXAwGz+Xh6PSl1dqtOC6PveyMw+euZHd+3Zf2Vm09cFIVCAaFZUBi4WpZW5LS011+VKAvH/Y9q5kgRJtQIK4cq7ObFiVnzKVx0MIQ66MqlgmCrUu5BonS/dhM4rPp8pyFK5rh1LidqLvGWepPI+tlfhHsgffRnpQvUOvCegQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784907507; c=relaxed/simple;
+	bh=STe3l81ZzYWmrYt3MRzUBujSbUlThRL6gf8a/dbofg4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljdg0EYSWHJuZ9A26uSlirO4op3jYcWPZKS/DcD/v3ZHgcb38IXuD5+9Y2gOrlQcr5xX4+tTIo/IGV4LzgU7ADRDExevjm3CPqU0wV8Z1RzOidRj4Ekd8ZU2Ss5frUSSiccO2+C+vn90IaoRjVtAZtBpEZGbMjU/qsIO3T8LGB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=IhwMsAli; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ven2Bbg0"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-69c1220bd51so827181a12.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 08:38:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784907490; cv=none;
-        d=google.com; s=arc-20260327;
-        b=W97Yfs/15PvppUVY5+4WxlN85CLyOzx9Yc8Jy2f5R4V75ekr6iyNV4ecL9i5quNyi+
-         jDLZSzDVZkadR12q8DOv7gQi/jvHAkQPzL4rultLHxpIdveIRIcgtTSplKz3Qptp8onY
-         zxW5J+QDLH2T3yPzkvisbAmVUWfnDaI2ruR/WcoZTKd/K477xmJy7heeF8/pLq14l285
-         NWiVCiqHnsJ78ZBojwPiHUp6e8fvSP+nueOgv24MMCRNRSG5UrI19Kt8GuBUlpcvTutE
-         QfCjNa2wa7EFkbHFrH9EI04VLaPnJLYtzX202yW8V5mpjC4kM3l28DFzBc5qAL67dIyC
-         pMGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version
-         :dkim-signature;
-        bh=9uqLTYQBiMlGLOFgwOhVylnBn05Ou+bOr0LFGUys/sw=;
-        fh=7cptIeBM74jerFPw1uant+n5p/IuUCUTkwRiyfDXJOw=;
-        b=M+jMbZMKIwbMYyZ299+nQtSBZOVp3R68EvgXkTvYPJmMU3So+asmedfknaUsHJorH2
-         OphkgTjmSJ3bX+uoYpv7g1oRzov3890zPqxWZL0MTd3Sv9I90l+3mGAERZOaa+X9n0OS
-         J0YhStT8UmQd2OWcCtGM0rn5+HiBNeZ6Ge8+2I0B2OQv1n/SQ7exE/S+VAl8rNkzV7kb
-         FN5/4NkTSmx4JzK4h6YwJqKInNA9DQj76noJGIwtzeEzLVPCkjaGD8h8d4SBDtd+YjnR
-         Bi6rvekpZ2n4ZXZe9iAW+km12w0tTGZKoGZ00YtsGXg/g3uMOLfZAle1ScM9+VCXedF3
-         iH3g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784907490; x=1785512290; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9uqLTYQBiMlGLOFgwOhVylnBn05Ou+bOr0LFGUys/sw=;
-        b=Ven2Bbg0WIHLL/mhuqbj2hWmLIoyL6ZpmjrDCc0DkMO7uCkfQlvtQmAO8O/PUc4T0F
-         Y+7ILgFjHvLbm74JYM5Hvgp8X8ULJ7iUH/VsU9lK6UnzPTWtD7xoIX0ukDC4Ykv/JL1o
-         eqTDbGl22tfgv1f8BIfVFsOSH6u8n0l1hapXQtP9rQ60We0u5KpmJ+NCoywObcYmffnU
-         pMCjmgcE+hBByOuM9C1nozbTnuXqcSnPM7ErLsRHzx9p9qcgjpAoPNQmNt2JvKqkgT7r
-         WHIl47EyRK5WbvilW97rjjzGHYkccLKRXoJzZ1lztozTvR+dG80uXeDo6Y+V62fmc+jJ
-         ztcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784907490; x=1785512290;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9uqLTYQBiMlGLOFgwOhVylnBn05Ou+bOr0LFGUys/sw=;
-        b=lJa2oG3KtJyqM4VcNGCbzOa2dWv6O1Ex8uGhsrXb0REF4xqi8cgRQ6o+kvGBX/L5rg
-         uKMNXHviVK85KvG4a7ATiAYqG0AKhtA13CTLAu07ZsK353DTlwtcJhbF9Dw6lwPi0oL2
-         CRP121O0MTKJqArSvSNL3+Mz8aTtci1Q2lqX/m/yvvFb4nCyWrB7j6+3OOEYGGklDhC0
-         o67PSB+zES5+CWS31ENnBSuvkzXANNXuMajbQkefZxy+pJrmAJ54ndU4igN83gp00/IW
-         nexwPEDcWM2o1dMXKnqfgMwF/j9K7P2n11jwH9pLMZnyfpbJFAhQzQ5BAMQWrtgAEnFC
-         QRzw==
-X-Forwarded-Encrypted: i=1; AHgh+RqkT41pab5UkOJ6/49rW4T4QXpkuoGi5KH4GFi5ceUDUtBlLrGJLJ8a38PwgGAcS2i+sgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymSdT6Hs2nn/Bt8nGL9BsXj3rpxudlsZjgRs/lHf/DY1o7aSu9
-	RnhlCVxjNLu2Nj0X6GpVyuIbJyNNSwftAs+Vn3MmAHMAHnqJSFoNxh94/8W9XT4zdfJo1rWf6Ro
-	YLtto1+bpSRcwCShy2sO2Iw8G9hPONac=
-X-Gm-Gg: AR+sD13U30MIFzor/9SOyxmZkAkRw0ae3X0NZ45hlNgQ5QYq2ubYI8HrKed7GsTQvZU
-	l5cT1R4Km4InkIjSgNNGyBm/7yLnVS2ryC2Lzd7xvpSC+yyOyoJanB1MrmZgUdIfKQGR5wdiIWM
-	S+wFdcp3UDWL7Xm1uxQw3q9Xg/wA0A+ONzSkfaBSES/tSL8TF5sZW9rEq6F9yINBYaHpFtuP8Wg
-	jpc4w38sflUrnrHfRYHoNIVyJzxiVz+KhU+STLSNRLlmRNFg4q70FqDCtxs/n1QixaWTf8sJOFf
-	RIuUEkaJhbZRuElyU+A=
-X-Received: by 2002:a05:6402:847:b0:698:ac05:5b2f with SMTP id
- 4fb4d7f45d1cf-69f6b143145mr3254860a12.4.1784907489864; Fri, 24 Jul 2026
- 08:38:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="IhwMsAli"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1784907506; x=1816443506;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=STe3l81ZzYWmrYt3MRzUBujSbUlThRL6gf8a/dbofg4=;
+  b=IhwMsAliPWNkBv4am9J0SJXzwg1TEARSu2SEtgr2Sn8jRrXBNk5G4+4Z
+   oz7luQrotNTSC+aNcunjnAQOpdNW1gvOULHNoYDVOwOKbVrKQQvMA13ia
+   4heFPSseNPhj3NxLyGRD+U6ZOhyhflyVLjZVVrkLr4QxYIzeKeTYe/37o
+   UckIkYZulbqFqLKjUBjAXCzRr9ygwiJSqaAcHTKW7hWdPNtZXZ4HmwaPv
+   Or4K4TlYLZRsb9Z1y1IHgHY3nJhqAGeNexX1ZjdcfzUloC/M3unGVcpH4
+   yxSj4G/iixyC3vZcBXQfYNHGFo96Jrx9Z7xeNfvyS93Gs35gR3SRmbJkb
+   Q==;
+X-CSE-ConnectionGUID: Ove6RwPDSImRmaAF5Lvkbw==
+X-CSE-MsgGUID: nKgjo4rOSLacBnrdnlIqcA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="252038932"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779116400"; 
+   d="scan'208";a="252038932"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2026 00:38:24 +0900
+Received: from az2uksmgm2.o.css.fujitsu.com (unknown [10.151.22.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id E030E1C01693;
+	Fri, 24 Jul 2026 15:38:23 +0000 (UTC)
+Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm2.o.css.fujitsu.com (Postfix) with ESMTPS id 9AB2C1858DD2;
+	Fri, 24 Jul 2026 15:38:23 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.54.178])
+	by az2uksmom2.o.css.fujitsu.com (Postfix) with ESMTP id CCF811400248;
+	Fri, 24 Jul 2026 15:38:17 +0000 (UTC)
+Date: Sat, 25 Jul 2026 00:38:10 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Steven Price <steven.price@arm.com>
+Subject: Re: [RFC PATCH v1 2/2] cgroup/misc: Add support for Arm CCA MECIDs
+Message-ID: <amOCt4r72ge-Iw5h@FCCLS0092175.localdomain>
+References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
+ <20260724094120.166536-3-enju.kohei@fujitsu.com>
+ <amNfGkkI5OIBqpmZ@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: ludloff@gmail.com
-From: Christian Ludloff <ludloff@gmail.com>
-Date: Fri, 24 Jul 2026 08:37:58 -0700
-X-Gm-Features: AUfX_mzU7u5uNdXumU_vcZlVt2HDSLvNSuujJoCvOQwTQn5iM4qD_F0D9lRlIvU
-Message-ID: <CAKSQd8V=wfVrUxeU+fDRgKJBLdiyCkkY2SRY+OoRBNE68LFnCg@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: x86: Remove AMX-TF32 enumeration
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	pbonzini@redhat.com, stable@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>, 
-	Binbin Wu <binbin.wu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <amNfGkkI5OIBqpmZ@localhost.localdomain>
 
-> My understanding is that the revert was considered because TF32 never
-> reached any implementation. If that's incorrect, I'd certainly welcome a
-> correction.
+On 07/24 14:52, Michal Koutný wrote:
+> Hello Kohei.
+> 
+> On Fri, Jul 24, 2026 at 06:40:56PM +0900, Kohei Enju <enju.kohei@fujitsu.com> wrote:
+> > Arm CCA MECIDs are limited platform resources. Add a misc cgroup
+> > resource to allow the system administrator to account for and limit
+> > their use.
+> > 
+> > The cca_mec resource represents the number of Realm VMs using the
+> > private MEC policy. Each such Realm consumes one MECID. Charge the
+> > resource when the Realm is created, and uncharge it when the Realm is
+> > successfully destroyed.
+> > 
+> > Realms using the shared MEC policy don't consume this resource.
+> > 
+> > Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+> > ---
+> >  arch/arm64/include/asm/kvm_rmi.h |  2 ++
+> >  arch/arm64/kvm/rmi.c             | 44 +++++++++++++++++++++++++++++++-
+> >  drivers/firmware/arm_rmm/rmi.c   |  4 +++
+> 
+> (mainly for this)
+> >  include/linux/misc_cgroup.h      |  4 +++
+> >  kernel/cgroup/misc.c             |  4 +++
+> >  5 files changed, 57 insertions(+), 1 deletion(-)
+> 
+> Conditional
+> Acked-by: Michal Koutný <mkoutny@suse.com>
+> (it makes sense along the other arches' miscresurces)
 
-Both TF32 and TRANSPOSE made it into a product that shipped.
+Hi Michal,
+Thank you for taking a look.
 
-Not from Intel... but.
+> 
+> Why? I see this [1] (or followup) needs to be added first.
 
-So their CPUID feature flags and their opcodes aren't reclaimable
-and efforts to rip out their software support are counterproductive.
+Yes, [1] should be added first.
+As also stated in the coverletter, the following series is anothor
+dependency, because this RFC series is on top of those other series.
+https://lore.kernel.org/all/20260715142841.80544-1-steven.price@arm.com/
 
-That is all I can say.
+The [1] series is a dependency of the one above, and I didn't mention it
+explicitly in the cover letter. My bad.
 
---
-C.
+My intention was to get feedback on this RFC series about the
+architecture and the basic design until those dependent series are
+merged, after which I will send this series as non-RFC.
+
+Thanks,
+Kohei
+
+> 
+> Thanks,
+> Michal
+> 
+> [1] https://lore.kernel.org/r/20260715142739.80398-4-steven.price@arm.com/
+
+
