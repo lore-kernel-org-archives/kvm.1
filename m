@@ -1,70 +1,54 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF042B326;
-	Fri, 24 Jul 2026 12:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F083D41B8C8;
+	Fri, 24 Jul 2026 12:44:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784896142; cv=none; b=XvNwEXZJ3pLPoT5+V/sJTHfHP38XO5klWomOSfk2hVzab5JeXPrmU2a5sdXkG3kt05/w4sHUGjhgGcKLL+IrfIgn+4L6q7lrDdRsjMJDFSJCbBc58fT/0lKZaNrQ+N4sK9P9YyxD153Q2fZ+U2oV8NIpmScsCwluq5Sgd+Ccqzs=
+	t=1784897073; cv=none; b=Fha8AsCzebTh7oCWD4QpeUB1Q1j9rstDoBd9VCPEWqD1fZgy4sk26cs2Td8JcU+KkxoYzEmI/CtfbiGxq1T2KbUyTKs2BOp7lzw3cnen4FpGZpIVo45P+D+YT3QsBUPJLNxE+2IxegCYcPKCd+B4BRiDjfqHuGTQ27edAJ9MO1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784896142; c=relaxed/simple;
-	bh=HInUqhRZnz6YbDuhfsJTq5qhNsYtH104RAsxn4iSmB8=;
+	s=arc-20240116; t=1784897073; c=relaxed/simple;
+	bh=E8b1cLfxhhl3y9SIMMeI3i2n5qq9nPCgqz0DlTEoEJU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cEAK1zqEtvH6Es7RwIn8vdWHaIjW0wrgY+RmqtgPrAF7QbXU/ho35MLpZaOnleFWq8YdV97ZEExDhbgowdroFUNT+UgGVOHrBGkpQjxUEklOdtV900aKuwXODsesdqxAClUI+HbBWs6uVAT99ia5MKMB6S4vhchOynkKAsh1jug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KZDSYTyx; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=CsVbyxEyEp98SN4utJ1kt5CtmSprsWb5LgZfw4itLnMsuPJHhBUYqRE++kcnvh1TnxSFeGkgqG7hasA8AtfCWGVFuiFgca3fJJTfpUsx/0B5gxMoykK/6X27ZxdSOMID6IPrWcqewt7xMfXpEQkcUfjw109cthvvKkaGaRIHr9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gJBYNxC2; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KZDSYTyx"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OCCjuP1675635;
-	Fri, 24 Jul 2026 12:28:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=DOelgf/YdTj+9W1MazLSPqj9mZwbsA
-	TbSM0uzDeUgN8=; b=KZDSYTyxxnBPn7g+MNP39ATEvAhZeyqS4mWIu3x5cCfFUJ
-	V13r53mco8t8ootv0mL1BiGptHMabCs1fZLbelMVWHoiKSAz+OcbzvQh5PUzqfCS
-	otoctr1clHHVVlbj6eSGyr54B6LXzD7A7RFQmsm3QXNDuWdGhdD/iBY/Vrh+vUpZ
-	6VowpOvJVzFB4uvV1TU/Z/739hMY8vsGTNXHpPC+9VsiRFuplX+xQCPZomkN3EV4
-	2jC7eUzplqp+xX4lC4jI9OK7TZBUFrfSR+aITTU7iONhtnlxgcMlLQvFK+IiQwFP
-	t+HihEKAi5/e0np9lN7UECKen06xPacTWeZs2Zlg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78gkx1d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 12:28:55 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OCJhXg017426;
-	Fri, 24 Jul 2026 12:28:55 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtk8u71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 12:28:54 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OCSpvv53608736
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jul 2026 12:28:51 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 48F1A2011F;
-	Fri, 24 Jul 2026 12:09:34 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC84A20119;
-	Fri, 24 Jul 2026 12:09:33 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.82.156])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 24 Jul 2026 12:09:33 +0000 (GMT)
-Date: Fri, 24 Jul 2026 14:09:32 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] s390/mm: Add missing vm_start <= addr check to
- do_secure_storage_access()
-Message-ID: <d7022700-114e-4aa7-ac56-5b805f700daf-agordeev@linux.ibm.com>
-References: <20260717131407.855327-1-hca@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gJBYNxC2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lVEMUgfEWnX7KrIQBwc2fvPxeAGABcJWMxwU3Czcuzc=; b=gJBYNxC2k60KiJX6NJdA6zCvdh
+	YaJNuoVQX6bSez7pvpgatwKNZs7h2/inypvRWSLFVWXwRv48qS+qxyZmJkV2xokyvrP7hXdnVI0HL
+	LDhjviRXJ1Xlt3N9wNfdHdKiIACBNeQmC28r9RVILwR5kTyeWp4n0+vHdjyiu2kpzEfoV9eIzG5XA
+	WNaKlL1XdRuFhY2AToIjmLBXIg4aZzr7lRef7SE54cE8ZY5t8nj15KcbgD0UBnKGT5c1u348fin6L
+	rQoaMtuzc31gulokYa7zFpKC/3YwQ3+JaQhyjG/yY8/hSCfjA0E50Wihq5AZW425J4NEJIkuwTyEi
+	EmoLjwDQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnFGL-00000003TqB-1EmP;
+	Fri, 24 Jul 2026 12:44:25 +0000
+Date: Fri, 24 Jul 2026 13:44:25 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Michael Roth <michael.roth@amd.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v4 05/14] guest_memfd: Use folio_has_hwpoisoned_page()
+Message-ID: <amNeKcDZ66VrQ5PL@casper.infradead.org>
+References: <20260723143034.175661-1-willy@infradead.org>
+ <20260723143034.175661-6-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,68 +57,57 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260717131407.855327-1-hca@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDExMSBTYWx0ZWRfX59VfqMp7/9DT
- CU2HuLTQLLUlciDsmZenDGwHkRyVCFx5kZiGIr7Pu97v8PjydTf4vsnXPKJmWgXyxNMhW/QeDUy
- XHnOIZIU11DRTvz68MecMBYZ7ua1XP35i6Ixcwq6ehtI9waXX9i7Ea3p07IPqRYu4QZ0rKkLJsH
- rgfyl+lT2g1XmlpXYHhZoOEmBUdfJnJkBwVd9HIGdUUqvMeMWwuDnQiIO1+w3XlopoIDa/0Z3KA
- cEU2SfgMVgMJlrYELOayeMQnkzNN4ZmD26lSZLJwnvPjlUS7eFdefZ06ra+B0+7dCG0uItxZYxA
- N5v9DbDnDX1tNfGguoSRTPkfSjECkYwdgyDz9jetUFCUtomalOon+rCP++eLKGpK8kFb6Zi/Vuw
- tyl6IYPjhqhrmm6K+LJwOJdbFx2WKpQY6Mu2YbmIZKeeDw7vNaHKFRLT4Q5fwnIgZyka6dLrwRG
- T/KPGGF7L/ErndR3pOQ==
-X-Proofpoint-GUID: yVGRFIHnq-16nK-DS-Zqz6tPznwOmfnB
-X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a635a87 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=hfyX7dS27Qm1KjPdzpkA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDExMSBTYWx0ZWRfX2Kejb1Mo/jJn
- n9Iv1AKTUS1g3I3C1/pwMftrHcPJzk25AnfFliaXVY6+00Ekql1HwejJfPWORj2oOXfMy7xrbag
- J3KxL2rJUneExqty6HXmDeO0yHLJgl4=
-X-Proofpoint-ORIG-GUID: yVGRFIHnq-16nK-DS-Zqz6tPznwOmfnB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_02,2026-07-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240111
+In-Reply-To: <20260723143034.175661-6-willy@infradead.org>
 
-On Fri, Jul 17, 2026 at 03:14:07PM +0200, Heiko Carstens wrote:
-> do_secure_storage_access() uses find_vma() without verifying that the
-> faulting address is within the returned vma. Add this missing check by
-> converting to lock_mm_and_find_vma().
+Sashiko review:
+> --- Patch [5]: [PATCH v4 05/14] guest_memfd: Use folio_has_hwpoisoned_page() ---
+> commit b4db4098463261fdf87a2e92b28ce2b4c9445e74
+> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
+> guest_memfd: Use folio_has_hwpoisoned_page()
 > 
-> This is not a critical fix, since the worst that could happen is
-> WARN_ON_ONCE() in folio_walk_start().
+> This commit changes guest_memfd to use folio_has_hwpoisoned_page() instead of
+> folio_test_hwpoison() to correctly detect poisoned pages on all large folios,
+> not just hugetlb folios.
 > 
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/all/20260717093904.E4A421F00A3E@smtp.kernel.org/
-> Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-> ---
->  arch/s390/mm/fault.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index db57c5766ab60..94eedcc7f1a9e 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -774,7 +774,7 @@ static struct folio *__kvm_gmem_get_pfn(struct file *file,
+> >  	if (IS_ERR(folio))
+> >  		return folio;
+> >
+> > -	if (folio_test_hwpoison(folio)) {
+> > +	if (folio_has_hwpoisoned_page(folio)) {
+> >  		folio_unlock(folio);
+> >  		folio_put(folio);
+> >  		return ERR_PTR(-EHWPOISON);
 > 
-> diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> index 028aeb9c48d6..d6c58d78edc5 100644
-> --- a/arch/s390/mm/fault.c
-> +++ b/arch/s390/mm/fault.c
-> @@ -456,10 +456,9 @@ void do_secure_storage_access(struct pt_regs *regs)
->  		if (faulthandler_disabled())
->  			return handle_fault_error_nolock(regs, 0);
->  		mm = current->mm;
-> -		mmap_read_lock(mm);
-> -		vma = find_vma(mm, addr);
-> +		vma = lock_mm_and_find_vma(mm, addr, regs);
->  		if (!vma)
-> -			return handle_fault_error(regs, SEGV_MAPERR);
-> +			return handle_fault_error_nolock(regs, SEGV_MAPERR);
->  		folio = folio_walk_start(&fw, vma, addr, 0);
->  		if (!folio) {
->  			mmap_read_unlock(mm);
+> This is a pre-existing issue, but while looking at hwpoison
+> checks in guest_memfd.c, I noticed a missing check in
+> kvm_gmem_fault_user_mapping() that might trigger a host kernel MCE panic.
+> 
+> If a guest_memfd folio is allocated (e.g. via fallocate) but not zeroed, it
+> remains in the page cache without the uptodate flag. If a memory failure
+> occurs on this page, it is marked hwpoisoned.
+> 
+> Later, a fault could trigger kvm_gmem_fault_user_mapping() which executes:
+> 
+>     folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+>     ...
+>     if (!folio_test_uptodate(folio)) {
+>         clear_highpage(folio_page(folio, 0));
+>         folio_mark_uptodate(folio);
+>     }
+> 
+> Because there is no folio_has_hwpoisoned_page() check before clearing the
+> page, could the kernel-mode write in clear_highpage() to the uninitialized,
+> poisoned page trigger an unrecoverable MCE panic?
+> 
+> Should kvm_gmem_fault_user_mapping() include the same HWPoison check as
+> __kvm_gmem_get_pfn() and return VM_FAULT_HWPOISON if the page is poisoned?
 
-The Sashiko feedback looks like a false positive to me.
-
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+I have no idea, but the purpose of this patch is to stop kvm from using
+the wrong API.  This is definitely scope creep beyond my level of interest
+and the aims of this patch series.  I've added the KVM people to the cc
+here, but I'm not going to do anything more with this review.
