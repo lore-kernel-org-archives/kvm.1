@@ -1,92 +1,145 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCAB3C3F60
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 20:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAEF3D34B6
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 21:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784926614; cv=none; b=UyU2jFpbVCopJrQ04D09T0Us0iFt2cr6d2vZ4aDhP2PUH63T0uOJJ45qurgQPFtdPgIpjgs/XKu/vW9FpZegoggjT3+VDetXtseE9SgTLehTHnwCo3Ud7Vxr75iUiKf6cJg0jkmhBnBZQRIkdLNx9wCYTK/jb2Z2tRcjBJqOAVw=
+	t=1784927263; cv=none; b=g/PXMQ6thFTkUSptbkhF8kDN3B7NAPCNNXRY/OiXUzFIU0n52Uz+lS6PZK+B6Lu+uWuNPrLq+5p3eUaIl3vxNJrBmlDGEhG1blC9VORAYaphW+G0+S8YjTdIEN9/1QurociWusEw9UfZIrSjKM2gNG1p4vnn9nUP1VBelYZyPQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784926614; c=relaxed/simple;
-	bh=vlJRBPYBgIP3/SyhsiDNWaVnmbYtEvUuOhYiO4XYFb8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IZq7cyxdq5/Tdskd1elEKA7fJafO55Npqv/yeopvESXkSbUqNChRggALTCC5y+06jJHxihbdhQVEHP8dR0/LPy7H6TEULzotmhP1Nq3Gfk9JZGqZtdlVO6mNMzmNHJ6XLB0caDRHHLABANrbKFAqQGb+Y02LinnSE3Zyeq5oXQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XJs55RTG; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784927263; c=relaxed/simple;
+	bh=Pw2tqvos94mI7QGPy3m2a/zY5Z2tGHFm3BFgYMdBLOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mg7Jg+jt/as8GdpxmYODItq5VB0jDBmkHaaRgZnOmqer7TxMQM3XTuhYqHXgvszV653U2rxd0DgHRabq+FbDZSohzfsDDKPEaZMuV2xxWwcTSNdFdJh4/sWNNbFVSGOadUa0s5bn1UtkVaiMaXBEzO3cJVjbd/AOceBTXPABsIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1aq4PvS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pDgxh27u; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XJs55RTG"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cc86a9ef97so14934645ad.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 13:56:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1aq4PvS";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pDgxh27u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784927257;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
+	b=c1aq4PvSPV2FsJPHeBPb61ZEe2tzWlqz9/2jX7L2cEpDZJIVZ7+3WRjgFjhCtnr0rfmz/6
+	8jkiBpKVD5xKj2qeRlDkzZt3ajurSgeLTLnR9WJ/G0V93P2fM5H3HneoUQajuNqZWsrofq
+	xgpDvwCOl+j2bsj84otijcZL5q10Ji0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-y6uv41hdMWet8KAz7nPBcA-1; Fri, 24 Jul 2026 17:07:36 -0400
+X-MC-Unique: y6uv41hdMWet8KAz7nPBcA-1
+X-Mimecast-MFC-AGG-ID: y6uv41hdMWet8KAz7nPBcA_1784927255
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-495569acf8dso5678445e9.1
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 14:07:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784926612; x=1785531412; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=X1df79W09/y4avz4t7gCCDelvBPsQH0Sq/MegXpdKLs=;
-        b=XJs55RTG19em3n3u+MKgLcIRLgpfxfJYLwjS+xqZk6S11a/9ccTy/v8jcSP3YOBmpD
-         K2A5N9zeAm9/aqbzuY9sr648rRpr+rxARj5ojuc7c+swrualSP0+pdUf3DNRVG05H0Zt
-         HvIKswaj93t4OlnYiBWNKAgdT8jAxTK6B1szLRX+qYnjxw38wdGyFasuTvHAQRzrAag/
-         zByQmleFKeX6FtKM+qN5rTQcdTnXGi1a+XcIzL2umYUs11eHEqX7PNMzXvKsjh5SfoFs
-         Qjq7pDB4pOt2ekw3kaMuGennUjjvZy/ZnC4CNow1ZTRZVZ63ATVV3bCVOjtEvaejpuM3
-         VenA==
+        d=redhat.com; s=google; t=1784927255; x=1785532055; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
+        b=pDgxh27uec8OcWm0AW4Prb77q+U+jZqzCIQoBBWBZQEu6ux18XlBTWt9kPHyEinlNX
+         UDi6KXJRXcdHm+YqNpQRqelmZBKYIJrrC2PW3lRTdCXzXsnFsulzNthwMslNIcNpbgqf
+         HbhjWiPacYs/DithsriKXqUSKRyftgqnLPWO35GrSJH8dlNFHIbvqmoTNpZE+mE1aVOm
+         B1Z0lWbWTexmxeGH3qPLCEIdCND3XP//eH42NJQDxVGpEGqbFdw0/U0Ni7vy4ERZKkPL
+         Q90L3VXVxte+0pFxNM8K8aMlIh3BXPCf6WtbR1VlK8zHuKM8UwNFszpI5zaOkzi0Havz
+         iJ2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784926612; x=1785531412;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=X1df79W09/y4avz4t7gCCDelvBPsQH0Sq/MegXpdKLs=;
-        b=imguBtmJi7XsGp29ACfZnhZhGwafxBjrzKMDN5z8VMQyoq22f+4LnakIViXKXx5uu5
-         qSM7F1+thCPAi6C77i0Kxv32XJsyRokCb5FT2drw9ZQHvlL4wI7Yv0y8NLsj3n1G3MMg
-         WmHptPG1ZoLEFcQd/V2hMQpPsnpW9DpclXrhKTmWXv04Qa68AUpP8eNehTEq3PWpPtIn
-         wd2Tx9oIZL3r6Sv9MzZfbwZGyNgdT2Lx1xaVkVxGSoTzX6nNtlBxYG+xj+b3r083jDfq
-         I2xEwtlh8R1PgeUtpKAzCp4omtEoVTcFTD74E0+7TF2slZ6v4UWoJn/1pDG/i0BkEAXq
-         C8EQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoywinIg/dvHsz9ID22hmhVBdeEfgqXfYyWaWUjT5eubXq5KxSewrNDvPGVUkLfuuvtaDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzrd+wLNNkknuz44z8G5xJD0jeHhhC8P7mjJjOlg6zR7WRTvwhH
-	+ZeJPXaEbkH3uO2C3QmaC0lVXRiO9dzYe26C9ar5iWlLCamc20kHZlPuE+c10n4YreiSM/8jsqo
-	TSy6jgw==
-X-Received: from plkb6.prod.google.com ([2002:a17:903:fa6:b0:2cf:7a5b:f7ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e541:b0:2cf:1536:3d41
- with SMTP id d9443c01a7336-2cfde84b893mr430755ad.28.1784926611994; Fri, 24
- Jul 2026 13:56:51 -0700 (PDT)
-Date: Fri, 24 Jul 2026 13:56:51 -0700
-In-Reply-To: <20260722143024.3938899-1-jmattson@google.com>
+        d=1e100.net; s=20251104; t=1784927255; x=1785532055;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3+l6zQ2UyUka+UgzsNomoD+GF98S9wcKfqgbKY9mofg=;
+        b=MZ01clQzYuUYLXfrtPVQnaeILFUsySLeo0KcdcuEF7VZSTjxSKtuwjljWaP8rR3hzJ
+         2tmuTy8HuC0jh/He0ZUUFlSkf5nHAMNpJGIcXdH3fAInjnIJQOb3o+c7VZEQTv87dlFM
+         vVN5qzz4AoIZPyGyHBqdyjqJ1Iz/I7jSXJ/RsoxVVeAroo+xQVvXBA2uDx8kWef9zCur
+         L/v5I+sk0P9sB6xHnzAFlb6kyC7PIxy1cKguRz6O5yY+dzweq8QXAIgHklbGtuZ69KBR
+         W/DJc77deBoP6RQ4oJugnpefdSw6LCaA3TLmUyzlwFrMTGRLkmPVdlKVbMJXDKl6jX2y
+         pJZQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqDLBQfH2PcFtWYzY8ejrm3Mo1pIxKO00C+94JglPOoiOz3D1u2G4CoS/X+ngGBCs3LaH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywBUQyXBL2/CMdFFUsvUSyCwxJ3TxYB09HS5j4IwGoiMPlchVR
+	H1DvIb+Y1y1T9Q1uPBDm4L2q46+8fW3nzPFmGMJWdL0q2TgyEt/XdAmX30jInq1fdlXwj/gRYVX
+	rHB8e2vIT2ER9hWcJv2tV+nb1CFluYaAHyl4egryAiJi7SR9GQX+SxQ==
+X-Gm-Gg: AR+sD13eeGFKR5tg4iUsaVNoKAZeukjwPPOAkYUsCUMKvgTdYHRVBSwd3JB2YOSDsZa
+	uQN1glbdv1BoDhEKiqoRSG9MnNXKe8A0T/r1ofwHy+py8yzzGdVXHyWSw/wKRf0NTGtOd+LPgWt
+	BPxjdz5jBxq3ixKjgbpPih+A4f8IowQzlvs1OnmEzGHb+hoeNJBE6uW7rU6N9vE1sFJUSBmERrb
+	9Q2SVOPMV/Z3yzoPHbgoTmB6ByWfbzairZl5dCo38kr7tBX8s7ZJvVFdYSuHl3i0vNgP8QuxofU
+	qJuyH1uUxrb+zf+08UFCA4idLxdhGDeb/pIUiNboJN3HyZCyoNFsm1wfT4tJHEYN8LMkMtVQFAM
+	kI5KPgXy5RW4pLXkScUXRAv0qKc3UxWw=
+X-Received: by 2002:a05:600c:4d06:b0:495:7a23:1eee with SMTP id 5b1f17b1804b1-496b56f39d0mr18925e9.12.1784927254850;
+        Fri, 24 Jul 2026 14:07:34 -0700 (PDT)
+X-Received: by 2002:a05:600c:4d06:b0:495:7a23:1eee with SMTP id 5b1f17b1804b1-496b56f39d0mr18715e9.12.1784927254347;
+        Fri, 24 Jul 2026 14:07:34 -0700 (PDT)
+Received: from redhat.com (bzq-79-177-145-168.red.bezeqint.net. [79.177.145.168])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4ee4504sm11539515e9.6.2026.07.24.14.07.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 14:07:33 -0700 (PDT)
+Date: Fri, 24 Jul 2026 17:07:30 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>
+Subject: Re: [PATCH v4 05/14] guest_memfd: Use folio_has_hwpoisoned_page()
+Message-ID: <20260724170606-mutt-send-email-mst@kernel.org>
+References: <20260723143034.175661-1-willy@infradead.org>
+ <20260723143034.175661-6-willy@infradead.org>
+ <amNeKcDZ66VrQ5PL@casper.infradead.org>
+ <amOByZH4oWzmO3Zj@google.com>
+ <amOpRMpkyFGm0j9c@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260722143024.3938899-1-jmattson@google.com>
-Message-ID: <amPRk0SfBJLQpt9X@google.com>
-Subject: Re: [PATCH v4] KVM: VMX: Cap VMX preemption timer to work around
- Intel erratum
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: pbonzini@redhat.com, chao.gao@intel.com, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amOpRMpkyFGm0j9c@casper.infradead.org>
 
-On Wed, Jul 22, 2026, Jim Mattson wrote:
-> @@ -8735,7 +8758,8 @@ __init int vmx_hardware_setup(void)
->  		 * value.  Don't use the timer if it might cause spurious exits
->  		 * at a rate faster than 0.1 Hz (of uninterrupted guest time).
->  		 */
-> -		if (use_timer_freq > 0xffffffffu / 10)
-> +		if (!preemption_timer_limit ||
-> +		    use_timer_freq > (preemption_timer_limit - 1) / 10)
-
-There's still a 64-bit DIV in here, I'm guessing it's this one.
-
-   ERROR: modpost: "__udivdi3" [arch/x86/kvm/kvm-intel.ko] undefined!
-
-I'm not interested in playing whack-a-mole, please base v5 on my patch to make
-this code 64-bit-only.  It's small enough that I'm comfortable sending it to LTS
-kernels if we want to tag this for stable@.
-
->  			enable_preemption_timer = false;
->  	}
->  
-> -- 
-> 2.55.0.229.g6434b31f56-goog
+On Fri, Jul 24, 2026 at 07:04:52PM +0100, Matthew Wilcox wrote:
+> On Fri, Jul 24, 2026 at 08:16:25AM -0700, Sean Christopherson wrote:
+> > Heh, you don't want to sign up for a week or two of onion peeling?
 > 
+> Oh, you have no idea!
+> 
+> Here's my onion so far ...
+> 
+> 1. I want to simplify filemap_fault()
+> 2. That requires changing all the architecture fault handlers
+> 3. So let's push some of that down to the MM with a new wrapper around
+>    handle_mm_fault()
+> 4. This would be easier if we could hoist the creation of struct
+>    vm_fault from __handle_mm_fault() to handle_mm_fault()
+> 5. Which would be possible if Jane's series to fix hugetlb use of pgoff
+>    had landed
+> 6. Oh, hang on, handling hwpoison on hugetlb is actually broken in a
+>    few different ways (some pointed out by Sashiko, some I noticed
+>    myself)
+> 
+> I honestly thought I was just going to rearrange Jane's patch series
+> a bit and resubmit it, but fixing the hugetlb hwpoison handling has
+> consumed me for the past couple of weeks.
+
+
+Last time I tried to fix hwpoison, i wasted untold hours on it, only
+to decide that it was always racy and does not seem to be worth fixing.
+At least yours isn't a race.
+
+-- 
+MST
+
