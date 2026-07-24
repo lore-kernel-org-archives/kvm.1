@@ -1,73 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C051F09AD;
-	Fri, 24 Jul 2026 00:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B30A1BF33
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 00:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784852118; cv=none; b=SE334VeqIE9BTmMFx/3ja0qxksWK+YjiHTu7K/nppmiHz76f1JSL9thSq/K5MWdcv8CtcMqoUR9Cxb23T1TP+uwomAMmMSunxBWxAWIrInGwbSEmf9jvl4sXJY+xcy1gnJnJxjUNs9XOfENuBr8CsqGlrSVspy2YV/Y69cpaYk8=
+	t=1784854082; cv=none; b=Fr1yncOioAzmq2LXZ6DNw62kb7kgS7KI4jy5R17uLzvh/0Gn3PJEPiYw756cIzry6rn4y+eq41ZccZW8ocZED7lyw+59jnv/Jhh75rBKxm36eNJU0wlu9oKGE7ME8pZ1/LH6BByFKFWdwgTAagrmpqQ7FX2/bEJ66qQe7MoCePw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784852118; c=relaxed/simple;
-	bh=1g06K9gyGtl1lv/yuZaA3HQ3R/lwVsoKMcItrriBILg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kxsiU95AWK9WgbinBDF+Zv1b0ZbZ9BUKyPoyiQHCbFYEgaMne2/CD7OcZIQiTZCStN3zTb860ClSriU4suigDixh6tEhQlvQAXmeD9NCARx6QNnsQ1Fzwaz8o3xHCNwtlchXXUdaR53uQDnb0GyA202+pFlllgwn/xa5pMetCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QZDSnRYo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784854082; c=relaxed/simple;
+	bh=upeoNjGANARKcbXzTfGCfmDFSpjdc66uF2LXohGIzMo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AsViPVdvnYHtqEWHG09Htkp6Z57bA4m1g3F2u3Mmpz9lL0ieDohuUjvcaS1SUh259v7OBDSorrF6ZAKXO5vbgVgAg6ESq5l+SJZ5CmodOVxbb+L6JZbFnV6cUny9f9mRzc2M7IFx3Qgnl+/I6nPDFxQozT+oRKImkazJ27iuMPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iY2LxLFu; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QZDSnRYo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9171F000E9;
-	Fri, 24 Jul 2026 00:15:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iY2LxLFu"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cee1ec30f2so16754725ad.3
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1784852117;
-	bh=Y5aYK3g7NYOnUMQLXgxW5eDWWXLVLMQ0qcKu8Hb6xp0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QZDSnRYopXKAJMRYUmq5QTkslx6Kh9jmh3HWibjIAp+ME/RfgEQBlX9t25t75zs0k
-	 0F2rSaC1mFzk4YlMjOSHAJ6mC1v/YxZ6J6YUTP/SNlMo7E9J/gWzbDhDwoeoSzEkn8
-	 xwxRkzO1dZQfsB92x8fYnXHh6cOrQ8glU21g9Z+4=
-Date: Thu, 23 Jul 2026 17:15:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sean Christopherson <seanjc@google.com>, Yan Zhao
- <yan.y.zhao@intel.com>, pbonzini@redhat.com, David Hildenbrand
- <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>,
- kvm@vger.kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-Id: <20260723171515.b5ddbc59c5c36ad01ef8f7fb@linux-foundation.org>
-In-Reply-To: <amIrDncrL4K-JRBO@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
-	<amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
-	<amIcXrS7nGX-adpG@google.com>
-	<amIrDncrL4K-JRBO@cmpxchg.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        d=google.com; s=20251104; t=1784854081; x=1785458881; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oC8miNtsbOCSUDu5oKXYgZACbFsZ70Mvq4+HrBNxgtc=;
+        b=iY2LxLFuY2T3pzGGcUpd4yya0UCAQULNEEYkPXJOC/Rczr0c+47s3q9PK7xoWKKIpe
+         elWYyfbptnGmBcHEk9mRCP0k0W7InvXYxMC/t/t9KZqLoEwZrykX0Uqf5AyVe5ClPRHW
+         g5/LMrNbPIHFru9vY4/gO/xxWzAtWepi8vTf7styImMgpNZ8V11lGd+tV6CkppPYLbpV
+         fkSz3DUaUTPNUbXPwJrSHWuCdU5/Pn3VzK86G9N6K8kKG+8oK3NvV1be9FM5OgLe7EkT
+         bSACzrLH9BdgzQlUxP5qAgBQH3Kbx0x/dMOQKSvwlgN7Sm+oJE0i44oc5x5mwPNcUZ+1
+         4K1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784854081; x=1785458881;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=oC8miNtsbOCSUDu5oKXYgZACbFsZ70Mvq4+HrBNxgtc=;
+        b=pHfX4XEmtTK2glg0Ff89di9yJyc5jkl4i+D4jj00eymGiT//ToSjbKyXVB5vwjaUN/
+         Rbl0oxUUyNtzNgxUhstygcDEinTrgf8qwI0kBODKQVGaeHB28Y0b8EkypgU9YUQ16apI
+         OOxTei7ubTl4phEUT9W1do2Tpya88TuPCgiLcoswrccTHQqq6duxCN5LPFP+CZDO0hhP
+         1zYmCXxPxgjsQgWQs3uQPopOKMbP+zKt0/TJWEg+YECWT+f/gZ3kWqxla9Qf7nUK81HT
+         XNbTRuIcNOqtq4vRf2bLImCGE2i2ChiW/8DJFd5vER4yFZ7feq4FBIlS5NEhglc8gLzt
+         C5uw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8VBHPcoe91A383FT2wCw66LdU0kpLeo/NyGs485xLkBTfzLtnJ0IM19JzuszHmraCnk0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhAmSm1ZN5pdiSf8NyJgY5F9yCfY88izSCvp49OFCgf++QHht1
+	XRr5Jv/cXkC0K1cU2z4+zeHLw44MCA9GKErZGs0ulI97ByP1mqROvnZQ1UyQncnJRK+EuRZIsze
+	H8nApcw==
+X-Received: from plte12.prod.google.com ([2002:a17:902:744c:b0:2cc:6815:446c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22c7:b0:2c9:97a8:aff1
+ with SMTP id d9443c01a7336-2cfa6f871abmr60493245ad.42.1784854080601; Thu, 23
+ Jul 2026 17:48:00 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 23 Jul 2026 17:47:51 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260724004757.131420-1-seanjc@google.com>
+Subject: [PATCH 0/6] KVM: Harden kvm_vcpu_map() usage against memory leaks
+From: Sean Christopherson <seanjc@google.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 23 Jul 2026 10:54:06 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+Harden kvm_vcpu_map() usage against memory leaks by yelling if there's already
+a valid mapping, and then unmapping the existing mapping before establishing a
+new one.  To get there, add a CLASS() for local, on-stack usage, to guarantee
+the map metadata is zero-initialized (well, so long as the CLASS() is used).
 
-> > But in this case, IIUC, this change will "silently" enable NUMA balancing for
-> > shmem-based KVM setups where it was previously disabled (albeit unintentionally).
-> > 
-> > I'm not fundamentally opposed to the change, but I do worry that downstream KVM
-> > users could be in for a nasty surprise.
+Prompted by 2f2312c422fd ("KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails
+due to invalid guest state").
 
-It is a bit concerning.
+Patch 1 is related in that it's needed to avoid tripping the new WARN.
 
-> This should be very visible in early kernel validation after an
-> upgrade. VM hosts tend to not do much else, with VM memory dominating
-> the host. You'd expect a significant uptick in numa_pte_updates,
-> numa_hint_faults, and a change in per-node nr_shmem stats. And the
-> patch subject makes it trivial to find in a commit delta scan.
+The PPC change is compile-tested only.
 
-Is there anything we can do to make this process less painful? 
-Documentation of course, but what about detecting the situation and
-emitting a once-off warning?
+Sean Christopherson (6):
+  KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES is cleared on VM-Exit
+  KVM: nSVM: Add CLASS()es for automagically handling local
+    kvm_vcpu_map() usage
+  KVM: nSVM: Use CLASS(kvm_vcpu_map_local) for SMM VMCB mappings
+  KVM: nVMX: Use CLASS(kvm_vcpu_map_local_readonly) for MSR bitmap
+    merging
+  KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly) for patching dcbz
+  KVM: Harden kvm_vcpu_map() against double-mapping and thus leaking
+    references
+
+ arch/powerpc/kvm/book3s_pr.c |  9 +++----
+ arch/x86/kvm/svm/nested.c    | 18 ++++++--------
+ arch/x86/kvm/svm/svm.c       | 46 +++++++++++++-----------------------
+ arch/x86/kvm/vmx/nested.c    | 13 +++++-----
+ include/linux/kvm_host.h     | 19 +++++++++++++++
+ virt/kvm/kvm_main.c          |  3 +++
+ 6 files changed, 55 insertions(+), 53 deletions(-)
+
+
+base-commit: 6bc96b971766fbbbbdd9fb2642cedacaf02da957
+-- 
+2.55.0.229.g6434b31f56-goog
+
