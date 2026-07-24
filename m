@@ -1,237 +1,140 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744A733F59D
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 18:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2CB3DAAB5
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 18:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784916749; cv=none; b=ttjRqB04kS+R0lic9vhVicxvWP35v3pHxZRwHQzmwiE+CJZnTd9HZJC/NxUzC5QqQlqVRene7Iw7kKqUFGkU7Oc8XKqH983Z8Dt4J5afae3qv1xu/ix4JG08nN17HcungvBtxIoZFyPSEirpRqKg1QZAphTXPcn8YtJyK4DmV18=
+	t=1784916930; cv=none; b=n67EeR/np0flTAjjRbyDLzAGRKbdBYvUiVa826it5C6UONGq1Pjg2/NbGybYl2zS4JnAZH2YeCQCf3E3pHG5PQyB5jbD5Dae1pw2GkPk/2imJ5FNOnJtQu8A9XMnoYHgua1eapK/7BhGrxfsc1EauSzI1kzT8ZAbHLkvcNbnPxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784916749; c=relaxed/simple;
-	bh=dJKpphxH3KSZe9w2Jp3qO7dh+/MedRZT+Md7c56ANK8=;
+	s=arc-20240116; t=1784916930; c=relaxed/simple;
+	bh=Jbkq6IUB3XRiIRYESGpIET3fntf8Ju1FestoHD4q2uQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=D2jyxzheJXtjYvfa7kR1ZMflgjJHyL7wYDdwAhdNzmgwlhlo5yURA7GlJkcK/HNKmjne3CffrAbZ9ZaI4K9f49uSVhYI9TxE28Diac7ga0mL/ytXpwr8LqBhkOWCOnCU2mCndCVe0axdopv6h2VcXvkUI6JBvWvdG4al3D8Izbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ItnCdlp3; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=o5v/4heSAU/UxD80kmd66yZgHnMGhuVUXIicioc6lspk80zhbJJmwZJMdMJBkTdhNT5SMGaQjWPuw8BR9ZHt3mI5A1sQNcZhGSLueLjmv6Y5pPVVe+tXnP9M16s5v7wh77MMp0XkLsvOeVedxo9hmQazgsHaZX2FoBDEaNlq918=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bI+kOdN9; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ItnCdlp3"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb4cdf95b5aso1167169a12.1
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 11:12:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bI+kOdN9"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc6dd43737so13304905ad.2
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 11:15:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784916748; x=1785521548; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7oVFIBDsM6fsMl/ijVaOPlE36PygbD5WDcrnvpAxH1o=;
-        b=ItnCdlp3ZiQV+bMk80iJMPEZQFsfD9zrXhyabhYrZ0YAO6/T8EuXR7bvIMXSTDFCfd
-         G8ojDW0UlwpcGfVI872ybzJZvUXaB3bse2tzrUGlb7ERsjqJDuH1wiDHKO2XpseLPPmK
-         rChli1OQMLPAGREORIjoqJOL1KASKZHxiehOnJBbzvAbG3tbLFiODgx0hinTO3cQMORW
-         tVv1qs707Mf2lYNqU9EAN9H4abVQ1PGfFtpbm0Hf7S07t0vH/0Fw7wy8nZpE7H1nRZEy
-         MApJS+0yNr9B3bf4X4IqnoJ99hrMY9IBbpVois+Mqebw2G7uANwpWhfEydqTPxllonsS
-         8dLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784916748; x=1785521548;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784916928; x=1785521728; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7oVFIBDsM6fsMl/ijVaOPlE36PygbD5WDcrnvpAxH1o=;
-        b=OPfoQ/N9yY6Ubqw5VB6YyUspW6C+ZKszskM42kHT8TUHHoS9B04+NFFlUHn1UQIGDE
-         uj8j2M6eQ4kY0VMzp3zE8x60G6APwjNJNO1QwMukHRxmnRiZb2l54fa3UC4hdZV4hYOk
-         zQq8LEHa/TadqPtNvOuwGnGFpjeBXmbHZV32gVpBfkHIuMoy3a9+FgENSxaLdUbpClA8
-         YUtS3ItONUvCG1mmOx4Nf3CMS27jPwuKsd8JCHn5mrhLFjgmD3+Ae/r5yMEZCiPjP5/S
-         GNgntgwTWAwDsbgTWLBpipMTmvPGpBVtX9qb4NMyTH1K35FNVEDkGhIcbRoGleI2Bdt4
-         UbMg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9UCtyMRDSzE8J24pfWJ4cH1SE21SM6oszdwwNIavdD9ilEoyUGij5BmBHyZkNa1pUW5c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaTtY9XP1dUPbjwW/2eX51zzTZTc8LWeIGtsbWY6HjQMvLZuWW
-	XmvfqB+gU+vLtxyepPP6K3R0IGPYo6ZabZ+LgLODHwvvr0WBQA5CG3L1+rT+hq/rFiIfHrNC96a
-	r7wgnrg==
-X-Received: from pgqs24.prod.google.com ([2002:a65:6918:0:b0:cbb:676d:ab19])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:1eb0:b0:3c3:9557:3b56
- with SMTP id adf61e73a8af0-3c44b246ef1mr9773220637.72.1784916747612; Fri, 24
- Jul 2026 11:12:27 -0700 (PDT)
-Date: Fri, 24 Jul 2026 11:12:26 -0700
-In-Reply-To: <CAO9r8zN7ditPSQMPpRsWtPXXXoV0iNW5mhGLPb7A356Kd==RLg@mail.gmail.com>
+        bh=X27LjpKO4ftZNWNG1RaZsHwa9Yt3DydhUzCU4IEwxJ4=;
+        b=bI+kOdN9Rj6GMF9RylEwYemKYoYCEw9ouei8CwwCCoynGS/5BAyV7AEp7OMIFh55mY
+         rEvdRrf1iPb/xQ9+n/YX3IOSSfh3R3fnVBviJ5wqkarmrQslb963jWcJ9/iCkfyDcFFx
+         /ELjIOaTicY67bvKDJm8gwWmdU/cez8gImhenpYwxNpaVa0u8aLbxpCni9/mhlJMqbEY
+         AsBrBZq6J0uYXoyFfIi6Kkv5fqFQgr0JvQtT8oJmhbuD7CmiqNRZPeTbyLj2kO59YQLs
+         /GQwdSknBHdeawu33VP3LTzbYbeK2NFk9bLdhRkKOfDQ556NSgUn6mCFaSOpS+paPkg6
+         E81Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784916928; x=1785521728;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X27LjpKO4ftZNWNG1RaZsHwa9Yt3DydhUzCU4IEwxJ4=;
+        b=SBSOLovqLgMxG2vACUXw7jQaUNs7q+w7b3FItjl5NfizOUVdByyT5XqCg/+RPi49Vl
+         W4FsXXXCKH5ru2YfoMVLB1AkJl8zphIsWOY2vhkVD7PzOH7ZkVz0eTmpPFSLyI4JxZFU
+         OUYpyy4uFZVnGvv8FnktDRqJOJwb7evirxuw5inyxf2P0u+JdKZCSIOrdkY1RN0x3oRc
+         HhVUMyoWjZJXdBpX3S/acBisPZxBsrq0LwifnsPbvIdPrMW8ZbjPoD0t4Ghkto9cPVRQ
+         PM8T39djKpB/KlIYTZPF+6cTX6ojfWoolEq5ULcXJwn2g+RDECsyvQEwfSwqYTN8y0xM
+         a8MQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpAGXt1CJUGHlOOVEfcZ2E9Z8bIBdcrRtxndadVpmLKrDCfQNDfjm8x3+49bBYgRHyU7D8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEDHO0aFZHOG0lhoH+g+SydzTRTgZXAX9MsOVGNzHhEIHxVPwM
+	oHYRcz8CnmocQiy5BSA5TJO2NF7SlHAcgk3amuGNomtSiGRzm0t8VBa+rwNmgTpa3jiY/CSkSwg
+	Y7xGTVw==
+X-Received: from plhn12.prod.google.com ([2002:a17:903:110c:b0:2cc:79e3:95e8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e885:b0:2cc:f5aa:9513
+ with SMTP id d9443c01a7336-2cfa730e9a1mr88122085ad.10.1784916928061; Fri, 24
+ Jul 2026 11:15:28 -0700 (PDT)
+Date: Fri, 24 Jul 2026 11:15:27 -0700
+In-Reply-To: <CAEvNRgGhzjA07-0jwJNLbg6tBN9EJYXpSeGJsfBvs8Hc1Sv3GA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260629183746.699840-1-yosry@kernel.org> <20260629183746.699840-8-yosry@kernel.org>
- <amOWvrZqRXxxHT1k@google.com> <CAO9r8zN7ditPSQMPpRsWtPXXXoV0iNW5mhGLPb7A356Kd==RLg@mail.gmail.com>
-Message-ID: <amOrCk0KAuq6GtRI@google.com>
-Subject: Re: [PATCH v3 07/10] KVM: selftests: Add basic stress test for
- save+restore and #PF handling
+References: <20260709204948.1988414-1-seanjc@google.com> <20260709204948.1988414-19-seanjc@google.com>
+ <alc8Vi9yNIFR/yGE@yzhao56-desk.sh.intel.com> <al_BAjCNRQUvuX2c@google.com>
+ <amAoijqis2Gn/K2Z@yzhao56-desk.sh.intel.com> <amJhzgyQMVNVD1S3@google.com>
+ <amLLoRkCCaK1EHuM@yzhao56-desk.sh.intel.com> <CAEvNRgGhzjA07-0jwJNLbg6tBN9EJYXpSeGJsfBvs8Hc1Sv3GA@mail.gmail.com>
+Message-ID: <amOrvxQQd5D17F9-@google.com>
+Subject: Re: [PATCH v4 18/18] KVM: guest_memfd: Combine .gmem_prepare()+.gmem_invalidate()
+ into .gmem_convert()
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Michael Roth <michael.roth@amd.com>, 
+	Hyunwoo Kim <imv4bel@gmail.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
+	"=?utf-8?B?SsO2cmcgUsO2ZGVs?=" <joro@8bytes.org>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jul 24, 2026, Yosry Ahmed wrote:
-> On Fri, Jul 24, 2026 at 9:45=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > > --- /dev/null
-> > > +++ b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> > > @@ -0,0 +1,182 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > +#include <stdio.h>
-> > > +#include <stdlib.h>
-> > > +#include <string.h>
-> > > +#include <errno.h>
-> > > +#include <sys/types.h>
-> > > +#include <time.h>
-> > > +#include <unistd.h>
-> > > +
-> > > +#include "test_util.h"
-> > > +#include "kvm_util.h"
-> > > +#include "processor.h"
-> > > +
-> > > +#define NR_ITERATIONS                500
-> > > +
-> > > +#define GOTO_PREV_LINE               "\033[A\r"
-> > > +#define PRINT_ITER(s, x)                                     \
-> > > +do {                                                         \
-> > > +     if (x =3D=3D 1)                                             \
-> > > +             printf(s "%d\n", x);                            \
-> > > +     else                                                    \
-> > > +             printf(GOTO_PREV_LINE s "%d\n", x);             \
+On Fri, Jul 24, 2026, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
+> 
+> > On Thu, Jul 23, 2026 at 11:47:42AM -0700, Sean Christopherson wrote:
+> >> On Wed, Jul 22, 2026, Yan Zhao wrote:
+> >> > On Tue, Jul 21, 2026 at 11:57:06AM -0700, Sean Christopherson wrote:
+> >> > > > Asking this also because there is a .gmem_convert() for TDX huge pages [1].
+> >> > > > In [1], .gmem_convert() is invoked to emulate a to-shared conversion in
+> >> > > > kvm_gmem_punch_hole(). However, the per-gmem memory attribute for the range to
+> >> > > > convert may not be shared after the punch hole. Is it acceptable?
+> >> > > > (To me, the .gmem_convert() in [1] behaves more like .gmem_prezap()).
+> >> > >
+> >> > > Ya, these concerns got raised by others.  pKVM on arm64 in particular wants to
+> >> > > hook reclaim but not conversion.  The plan is to keep the reclaim and end up with
+> >> > > this implementation for x86:
+> >> > >
+> >> > > 	#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> >> > > 	int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >> > > 				kvm_pfn_t nr_pages, int max_order)
+> >> > > 	{
+> >> > > 		return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages, max_order);
+> >> > > 	}
+> >> > > 	int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages, int max_order,
+> >> > > 				bool to_private)
+> >> > > 	{
+> >> > > 		kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> >> > > 		return 0;
+> >> > > 	}
+> >> > For TDX huge pages, if we want to trigger private huge page splitting before
+> >> > converting to shared, should we invoke the hooks like this?
+> >> >
+> >> > __kvm_gmem_set_attributes(to shared)
+> >> > 	|->kvm_arch_gmem_make_shared
+> >> > 		|->kvm_x86_call(gmem_make_shared)(pfn, nr_pages, max_order);
+> >> >
+> >> > But TDX needs kvm pointer, and splitting pages may fail.
+> >>
+> >> Ya, but those are very solvable problems.  They just don't need to be addressed
+> >> today, because SNP is the only user of the conversion APIs.
+> > Ok. I'm ok with the change for today's usages. My concern is regarding future
+> > TDX huge page support, as I am currently preparing TDX huge page v4. :)
 > >
-> > Oh c'mon.  I had to Google the escape sequence you're (heh, "you"), usi=
-ng to
-> > understand this.
->=20
-> I named it GOTO_PREV_LINE specifically so that people don't have to
-> Google it. AI wanted to call it something like ESC_SEQ, this is a big
-> improvement :P
->=20
-> > Use a little creativity, and then the only magic escape sequence
-> > is the much more familiar carriage return.
+> > Sorry for the confusion -- I should have stated my intention more clearly.
 > >
+> > Previously, for TDX huge pages, you suggested introducing .gmem_convert() to
+> > trigger splitting before zapping S-EPT.
+> > With this new direction, should TDX huge pages instead leverage the
+> > .gmem_make_shared() op for that purpose?
 > >
-> >                 pr_info("\rSave+restore iterations: %d", count);
-> >         }
-> >         pr_info("\n");
->=20
-> I had something like this initially and I changed it, but I can't
-> remember exactly why. I *think* when there is a test failure the log
-> is messed up because we didn't print a line break after the last
-> "Save+restore.." message.
+> > If so, should we introduce a CONFIG_HAVE_KVM_ARCH_GMEM_PREZAP guard around the
+> > .gmem_make_shared() invocation to serve TDX's splitting purpose, in order to
+> > keep the two use cases (SNP and TDX) clearly separated?
+> >
+> 
+> Another thing we need to figure out is the ordering... You mentioned
+> that the S-EPT splitting can fail, and I remember you were suggesting
+> that we merge the S-EPTs back on error, something like that?
+> 
+> We'd have to figure out either a point-of-no-return, or some rollback
+> mechanism anyway, so that kind of depends on conversions and the
+> guest_memfd hugepage series. Probably good to defer this discussion to
+> later, when we have more certainty of how it looks like. :)
 
-Ah, if an assert fires before the loop terminates.  Hrm.  This feels like
-something that should be a generic utility, but using any helper like this =
-would
-require extreme care (the caller needs to know that *nothing* got printed b=
-etween
-iterations).
-
-What if we simply add a newline before printing an assertion?
-
-diff --git tools/testing/selftests/kvm/lib/assert.c tools/testing/selftests=
-/kvm/lib/assert.c
-index 1d72dcdfce3b..3e353ac39eeb 100644
---- tools/testing/selftests/kvm/lib/assert.c
-+++ tools/testing/selftests/kvm/lib/assert.c
-@@ -74,7 +74,7 @@ test_assert(bool exp, const char *exp_str,
-        if (!(exp)) {
-                va_start(ap, fmt);
-=20
--               fprintf(stderr, "=3D=3D=3D=3D Test Assertion Failure =3D=3D=
-=3D=3D\n"
-+               fprintf(stderr, "\n=3D=3D=3D=3D Test Assertion Failure =3D=
-=3D=3D=3D\n"
-                        "  %s:%u: %s\n"
-                        "  pid=3D%d tid=3D%d errno=3D%d - %s\n",
-                        file, line, exp_str, getpid(), kvm_gettid(),
-
-
-IMO, that's desirable even when there's a preceding newline, e.g. I find th=
-is
-ever so slightly easier to parse:
-
-$ ./x86/stress_save_restore_pf_test=20
-Random seed: 0x65f90564
-Save+restore iterations: 500
-
-=3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
-  x86/stress_save_restore_pf_test.c:310: guest_faults =3D=3D 0
-  pid=3D4077 tid=3D4077 errno=3D25 - Inappropriate ioctl for device
-     1	0x0000000000403de6: main at stress_save_restore_pf_test.c:310
-     2	0x00007f8ead829d8f: ?? ??:0
-     3	0x00007f8ead829e3f: ?? ??:0
-     4	0x0000000000403fd4: _start at ??:?
-  No guest page faults triggered
-
-
-versus:
-
-$ ./x86/stress_save_restore_pf_test=20
-Random seed: 0xbc3c1a3
-Save+restore iterations: 500
-=3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
-  x86/stress_save_restore_pf_test.c:310: guest_faults =3D=3D 0
-  pid=3D6077 tid=3D6077 errno=3D25 - Inappropriate ioctl for device
-     1	0x0000000000403de6: main at stress_save_restore_pf_test.c:310
-     2	0x00007f4750829d8f: ?? ??:0
-     3	0x00007f4750829e3f: ?? ??:0
-     4	0x0000000000403fd4: _start at ??:?
-  No guest page faults triggered
-
-
-
-> > Hmm, I think we should put this helper in tools/testing/selftests/kvm/l=
-ib/x86/processor.c,
-> > and then provide a "struct kvm_mmu *guest_mmu;" that is automatically s=
-ynchronized
-> > to the guest during kvm_arch_vm_post_create().  I think vm->mmu is full=
-y populated
-> > at that point?
->=20
-> Hmm yes, It is initialized in virt_pgd_alloc(), which is called in
-> ____vm_alloc() on the first allocation, which I think will be in
-> kvm_vm_elf_load(). We can probably add an assertion to make sure that
-> holds true.
->=20
-> However, I think we can't really provide a full kvm_mmu. We can
-> synchronize the PTE masks, which I assume is what you mean here, but
-> then provide a 'pgd' which isn't really usable because guest PTEs
-> created by virt_map() (and friends) are not automatically sync'd to
-> the guest. I thought about doing that, but it isn't straightforward
-> because we cannot use direct mappings (see
-
-Nit, s/direct/identity.  That's a fairly important distinction for this cod=
-e.
-
-> https://lore.kernel.org/all/CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5Y-=
-F=3DD-WA@mail.gmail.com/).
-
-Wait, what?  Me confused.  The PTEs themselves must be "sync'd" to the gues=
-t,
-otherwise installing a new mapping would be useless.
-
-IIUC, the problem is that the guest isn't guaranteed to have valid *mapping=
-s*
-to its own PTEs, which is not the same as the actual PTEs being stale.
-
-IMO, that's totally fine, we just need to document the caveats.  The guest =
-can
-get at its PGD via MOV CR3 anyways.  I.e. all we'd be doing is loading the =
-gun
-for the guest to make it easier to put a hole in its foot.
-
-> > Then this test should be able to use the PTE macros from x86/processor.=
-h, and
-> > future tests don't need to reinvent the wheel.
->=20
-> Maybe provide a kvm_mmu with pgd=3DNULL just a placeholder to use the PTE=
- masks?
-
-pgd is a GPA.
-
-Oooh, and this test relies on the page tables being identity mapped.  In th=
-at
-case, it's probably best to keep guest_get_pte() in this test until we can
-broadly guarantee gPTEs are reachable.  But I still think it makes sense to
-sync the MMU to the guest.
++1.  Even with my series, I'm getting a wee bit too far into trying to predict
+the future.
