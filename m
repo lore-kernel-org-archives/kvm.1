@@ -1,142 +1,144 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f2.google.com (mail-wr2-f2.google.com [74.125.225.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147EF292B4B;
-	Fri, 24 Jul 2026 12:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746F239CCEF
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 12:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784897324; cv=none; b=K3EFJR7jTGA0TSRaEJGxZ001blPKkKRaHfMW2eP0cuLka7nBKb6y/Q9y0ZGzqfkXVcVGYr0xYmTRty12r5b8oYvKPGQR1ILFIIvAT9m33nEmSCPo8JzNAT+lqcD8OScHKqQaduRm8/ZMEU7GA0LfI1pC5Sw3iTBQD/Gg8DR5xo4=
+	t=1784897545; cv=none; b=rEA+WXq3v2XoCYb0PlCMndxwpnvCpKgnS24P7BtZeb8B4doYhBfd8XB0Zof4YPWw0hBEtI9V0v+JY/AsmVSlTSSCr5PElhxXsh9injoy+3WzDCPiXWhLht5qW4C7Zava4MMKuwEyDMSxaiaJ7pcPi32GmAJSoerrLSmvPeTdmYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784897324; c=relaxed/simple;
-	bh=hxeuMxwIIDiWpWhmU6f+zVfB6MOfOaAQSIHJk5Px21s=;
+	s=arc-20240116; t=1784897545; c=relaxed/simple;
+	bh=mk1BQnZGtudR7XDj42PbREbR3Ki5M0tr3oqDAtI6TZQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cp0/jlDrDmvcRgvertBfzRvyxMVmuLe6f9GtaKVW2ksggZQELvClatwhrbx05v24TBuNUF5bqKHAoDOKIlToV9MENETwJZKuAgo63sp/3XcIzj3S8u+VB+FHZFU7PCcZk/2j4dIlSCT84NFK6uBWQBhCvJvmODjndWuL6FinnJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KK059qn7; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=sMkK7xsyjLlRa8zJzNrkykxctFS+y5Wq/rpbGQq5R+BWEjS/CxIF9NjQnVppwonQGsdcbzleJn6paiBl9B7MoBXz1crSjvilb/G0n8vYxxDNvM01wELck9vH6xq/5IiJwbx7RABP5GEjUyv0uBLSYDD5Y7OPqP36P4uhg3TlTfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=b/NgON33; arc=none smtp.client-ip=74.125.225.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KK059qn7"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OCgqVD1770754;
-	Fri, 24 Jul 2026 12:48:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=ghPKTiG4PYb4t7QNoPwRfoDvIg1nWi
-	/OdckbvOVdpfY=; b=KK059qn7GrQpr+Vnv9J+EnUy0aJsxCdiFMr8S1/29PjGUM
-	17v3HWHU/JDB4DV7Bn+27KJpFD6NcFd60a6mgnxkPcsvWjxTR+9p9xAXIkfZd4Wc
-	AhfRiGVrN4e8lUQEqciO/o0DhB6SdKeVyBX8CGQG5CH9bMJVA+EnKoH/ic3xzDo5
-	hW7ZBSdcUvOg8/227SrIFMXQHmH92nOq5y7CMSliKMq53TxM3rO8ITXfLMZRJhkk
-	oZELkg9HJCn2C4HqxgRcAUMAvrKnypfiMTacxtiDPIaCyx/48TBC7CIzj636vVqP
-	0fDTvCd2zNV0BfI9M86s1Ac+uCgvDLvylAkFK8lQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77km36e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 12:48:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OCYc29002544;
-	Fri, 24 Jul 2026 12:48:35 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgm6wh0gs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jul 2026 12:48:35 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OCmUPh31457952
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jul 2026 12:48:31 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D6E4020043;
-	Fri, 24 Jul 2026 12:48:30 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7755B20040;
-	Fri, 24 Jul 2026 12:48:30 +0000 (GMT)
-Received: from osiris (unknown [9.111.14.151])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 24 Jul 2026 12:48:30 +0000 (GMT)
-Date: Fri, 24 Jul 2026 14:48:29 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] s390/mm: Add missing vm_start <= addr check to
- do_secure_storage_access()
-Message-ID: <20260724124829.220718A2a-hca@linux.ibm.com>
-References: <20260717131407.855327-1-hca@linux.ibm.com>
- <d7022700-114e-4aa7-ac56-5b805f700daf-agordeev@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="b/NgON33"
+Received: by mail-wr2-f2.google.com with SMTP id ffacd0b85a97d-4730b8edae6so134284f8f.0
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 05:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1784897542; x=1785502342; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Mv5tWqGLGkHnf04eMqxVT5ugoOpACtQyu5RJWX4G6Hs=;
+        b=b/NgON33ojALkqd+RvRGUC8ybuq8FxJ9pcBWde0o3YNprY0w8v8IOCXiMLE8hOXvz+
+         I1S5Ex4xQl7ZbpHfJHl0LOZ7j0JeSakFMXOlOD2+BZ2tz14sd+pNgZwPkrGSkGZD9VxA
+         ftrhAdEd6dT8/flfEX+rDwYYid9+M0pf9/lwqV6b3upPEMoVO9cgUhd7/su+i5aFN+06
+         lzBMWjVAUC9OofKg7ajWfbdhhyCs72u+YsiUQzvn6JffT9W45/O9DVFHJZnkeVv6yOtc
+         B2eaAGYoOijr2ouDTpLHtctgUuXWMae5wtIy2MSEn2UZtD5YC6qT5oM/y33dMLraCD7U
+         UEBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784897542; x=1785502342;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mv5tWqGLGkHnf04eMqxVT5ugoOpACtQyu5RJWX4G6Hs=;
+        b=HVg4URup3XPl0MvPupRoHtOapZLcx4mqn0RAfpgnfNjjcW/ANISqPPoVVtDPTjNIMH
+         XX0G01p28RDSN6OFb9Ll+xKgevM26QZpCWN+wEmOz7nkmjV9qozDdC+eHD98RDoKJe5G
+         VCbT5XlWOsC8EBCcBMjhVBEAifb+DSihy7P1PcYzALd3mmtElrjfUD+wOT2nlZKKgqPJ
+         Gv8rXDb6HZGXxMh/+3MhGeNyf0dbjk3Y54pgVOYAczyNZyUPHqewB72jqHgV7Tm2Khhe
+         l+paNy2JDKdbjCaQD6k/7wpSH625gbEX+4DAFi9f/BJCiUoLmwnqCtAE5rnNPSH0IydI
+         Kwpw==
+X-Forwarded-Encrypted: i=1; AHgh+RpmPmEbbkc7A5t22LlTOJopuxxxckpbj44uXzFdKdqXoBgrx9aFIG6iehDyTU5KmLvPfEw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIWjEZ9HUwJzE5D8EfCR9YoKZ/lPsQ98aX4nt6rwOgltYkWeae
+	rbFg3GmpU4TwCZHcRcHffm+3EmUccsd0z3JXkVI7b1ewjZpJ/yZDj19dxgxqTR31A38=
+X-Gm-Gg: AR+sD13pK6ViT6HuRlsEnjjlVEuSntiBjxMAoZrB8wt2/92DruVmQOQ4fbLS85cOpyo
+	MUU3+F94thsFkIep6+gDBFvH0JkOVpSNeIMvBx1Pu9zL9wyVi4xrp4/E54Rb/76pPW9JWRZE72C
+	tUkAthvA9cbzMc2N2c+BnTOSOtxSUkYa/PLN9QvAfG7DEG0W9HaO8oYsoi2ij2ZFng8+VEEHAsg
+	Ke7l2XuZCXKIn6fQfnHZxsMFeQrvnZj6wLyhGxbjUTd6nDJuFRT2xO44jL94sIiLKNDceHPAaoJ
+	fstMW/nJmj+KohXPob0XV3mgQVDf6bggIbPKsDAnUu+L6tnTJue8lTX1CWevCR3Yx/KzuAqvuZf
+	RMf2Ef85Jp7lKO7lXmKStYYGbU1HJnUydzp96xcFXIJvNuDCYGjK8F8s6Fu3gTwgnWTWn/+SdRn
+	c69SOD0w==
+X-Received: by 2002:a05:6000:2287:b0:477:3986:9b54 with SMTP id ffacd0b85a97d-47f8d77c2dbmr9048250f8f.20.1784897541667;
+        Fri, 24 Jul 2026 05:52:21 -0700 (PDT)
+Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c631fdsm23383475f8f.28.2026.07.24.05.52.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 05:52:21 -0700 (PDT)
+Date: Fri, 24 Jul 2026 14:52:19 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Steven Price <steven.price@arm.com>
+Subject: Re: [RFC PATCH v1 2/2] cgroup/misc: Add support for Arm CCA MECIDs
+Message-ID: <amNfGkkI5OIBqpmZ@localhost.localdomain>
+References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
+ <20260724094120.166536-3-enju.kohei@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ax7rchmwlrf277f6"
 Content-Disposition: inline
-In-Reply-To: <d7022700-114e-4aa7-ac56-5b805f700daf-agordeev@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a635f23 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=QMJIu_iufyu0FRhpi0sA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDExNSBTYWx0ZWRfX2QBHBMz9MlQx
- xJliobP7AIdu5BQNbcG+Be8xW1eGoxswUUI3ObkY7LzgeZU45Q+RIbcxBuO9AqNOEuTeAHrVBVq
- b5g/CDCoH3BP4M9aWTvOEJM0niwMJvIz+8W/0vRu+TdF9dzfQMaD2xV5ApA49toNBy579WHEbQ9
- dv7ItXq0VrYT0yVOlP6lRwbksCnZKiRbeXnf3sjbJhlQk6dcRe7v2e7DsJHa9EM5lkaiV04Y8sP
- n9Y0i14cDhSSf0lY7dQAweRgQBodvrp+6im+Q7l8eWs5/7smtt9Wbu8pFe3fOdtiBvncxJgzB4M
- f9q/S1QpU8R/qlzMOcVG3RR97kd5ImBVhKR0Xzabp2fTi4ZU1ea/D1XdaugVwKtXnPI1R8MddKB
- BlDyKPyguYWXyX1BFFAtCfi7JVOe93kIA3UEEPZ7LTc6+nl6Yewnd7/bqVH/F1SDtybvfN1wuE1
- 9c/UP9g27/jYMYXpBpQ==
-X-Proofpoint-ORIG-GUID: m9viTt_TS8-edsulY9CePCgU6DIlsaJ9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDExNSBTYWx0ZWRfX8QP490vBZRtd
- aSeRknyqZQHwc2yQsCJTRa1beqARO24LFgaVYEgN5+okSXCmi2YcVjoJ7ZDWVC6Ayjwtu4nQz47
- ADMehqL8u9MuD2lR0wxOcDdssEmZa2k=
-X-Proofpoint-GUID: m9viTt_TS8-edsulY9CePCgU6DIlsaJ9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-24_02,2026-07-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607240115
+In-Reply-To: <20260724094120.166536-3-enju.kohei@fujitsu.com>
 
-On Fri, Jul 24, 2026 at 02:09:32PM +0200, Alexander Gordeev wrote:
-> On Fri, Jul 17, 2026 at 03:14:07PM +0200, Heiko Carstens wrote:
-> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> > index 028aeb9c48d6..d6c58d78edc5 100644
-> > --- a/arch/s390/mm/fault.c
-> > +++ b/arch/s390/mm/fault.c
-> > @@ -456,10 +456,9 @@ void do_secure_storage_access(struct pt_regs *regs)
-> >  		if (faulthandler_disabled())
-> >  			return handle_fault_error_nolock(regs, 0);
-> >  		mm = current->mm;
-> > -		mmap_read_lock(mm);
-> > -		vma = find_vma(mm, addr);
-> > +		vma = lock_mm_and_find_vma(mm, addr, regs);
-> >  		if (!vma)
-> > -			return handle_fault_error(regs, SEGV_MAPERR);
-> > +			return handle_fault_error_nolock(regs, SEGV_MAPERR);
-> >  		folio = folio_walk_start(&fw, vma, addr, 0);
-> >  		if (!folio) {
-> >  			mmap_read_unlock(mm);
-> 
-> The Sashiko feedback looks like a false positive to me.
-> 
-> Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-This has been integrated into the "[PATCH v4 0/8] s390: Reintroduce
-support for DCACHE_WORD_ACCESS" series. First I thought of keeping
-things separate, but decided then to address all of Sashiko reports
-and make the code look quite similar to do_exception().
+--ax7rchmwlrf277f6
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [RFC PATCH v1 2/2] cgroup/misc: Add support for Arm CCA MECIDs
+MIME-Version: 1.0
 
-So v4 is the only series that matters, everything else can be ignored.
+Hello Kohei.
 
-What is still missing is kmemleak handling for which Christian posted
-a patch, but that appears to be incomplete. Or least my thinking is
-that there will be a subsequent patch.
+On Fri, Jul 24, 2026 at 06:40:56PM +0900, Kohei Enju <enju.kohei@fujitsu.co=
+m> wrote:
+> Arm CCA MECIDs are limited platform resources. Add a misc cgroup
+> resource to allow the system administrator to account for and limit
+> their use.
+>=20
+> The cca_mec resource represents the number of Realm VMs using the
+> private MEC policy. Each such Realm consumes one MECID. Charge the
+> resource when the Realm is created, and uncharge it when the Realm is
+> successfully destroyed.
+>=20
+> Realms using the shared MEC policy don't consume this resource.
+>=20
+> Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |  2 ++
+>  arch/arm64/kvm/rmi.c             | 44 +++++++++++++++++++++++++++++++-
+>  drivers/firmware/arm_rmm/rmi.c   |  4 +++
 
-Christian?
+(mainly for this)
+>  include/linux/misc_cgroup.h      |  4 +++
+>  kernel/cgroup/misc.c             |  4 +++
+>  5 files changed, 57 insertions(+), 1 deletion(-)
+
+Conditional
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+(it makes sense along the other arches' miscresurces)
+
+Why? I see this [1] (or followup) needs to be added first.
+
+Thanks,
+Michal
+
+[1] https://lore.kernel.org/r/20260715142739.80398-4-steven.price@arm.com/
+
+--ax7rchmwlrf277f6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCamNf+xsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AhXYAD/aF4cHB3u4Ztw+Epfxt6r
+owvtGiLz50NxCjHVwV+x/xAA/jW6M8nVIZ5COXi3AcXAaZ9Jg4Hbfex1q/uwG0FV
+VjUH
+=szup
+-----END PGP SIGNATURE-----
+
+--ax7rchmwlrf277f6--
