@@ -1,220 +1,168 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80A93CF670;
-	Fri, 24 Jul 2026 08:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3583A9D8F;
+	Fri, 24 Jul 2026 08:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784880965; cv=none; b=gftESfHB4wWRHE0XVN0nA1ZcIPlQETrVJogi9mpjwCfvlT0JKQ0jGBJaSBN5uPE7x6JSHx1xdxYqeirXg7chPiwMY33oJ3s5H9KAuGV4HUxm8OFO3XqEMgMDKIfwtFYtNLmAhu7FarlfOyy+zwaLgn0zyTMh+uBveoGuenf62FU=
+	t=1784881064; cv=none; b=EIPiNpaQcwQVndHAFhBAQjp98RPHOdpXMcwFcDyJdy0hmgLz0La8u+UrwhRJz88kSwkp7tYxd2Hq2M8pZGWnSUByeqfWDIKAfuq8713cJb3ZApRuZKKc01jw86YtxzB/PRogdEyHgmPWw9pE6uRH0Z4kqZ+C/sqHRi2yKOWmlsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784880965; c=relaxed/simple;
-	bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OHQD4Awgc2Rkx/sWE/ncFVbxzZ9rz2+x1KY0mZNJJ7mIVARG1Ury4YE8KKqVnAIuMBvxWuFtxMAuVGFv6yb4LhKTIPGkdVNF6PMSN7zHEy5F8UtCXIfsqybhOyBKrA8OH01B3tpSD+qf8eDhe1EpV2/r72slQ4vWPNIuKDH3OjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c9UTapOx; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784881064; c=relaxed/simple;
+	bh=vg6yhHy+ypGFxAdIdnzyO0TJEKjh+TrkcBPxm//0m+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MYEVMYE4mO/n3LVcm71Pi7bvbMCHSTZBznysSE7n5xCcEqObGVkwOB2AENUh4/8+5rUgMMQ11/+ml0xGOKab/t352rcf34QqvbZiXNAXgnHRy5KypmDDNKucYpVPydMf5jOUe1D5QJdJ1uACjSE3gpbOJS40yW+j7yvwsm+C1cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IhxJthy9; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c9UTapOx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784880956; x=1816416956;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
-  b=c9UTapOxijw/1AmAJvRJCzeWXXfyhYjPinn/S9gTiFHeZv9yJmj++aNJ
-   3Wi2MAae6GmkWo0m35rZnyNg2Y6uj3HtFhTvB5sF9t/f/fgJsmSIWjMuw
-   6lQ1I+rX5lvHHqc8rp0AzEtgk3DxhI4WilbinSjwOem6xAI5fxxEjPgzk
-   jvuO30RvQ1OqOW+Mm+5Tl3zUHWcgdQXHJWZrnJ+dmkOmIS5aiyQz9VdVA
-   0SEu9Qr03IRULMSHPzVx6Z5oG77Ms/Yggu52CeOHUEoTQF+sR/ULPjzed
-   d4yxGcSZCsMAo9yxahW6AgytkTkKuer94NoIWD+wpuJjGCtqjhWwwzsLr
-   Q==;
-X-CSE-ConnectionGUID: kLDxn8MQQeuKygEHTGRb+g==
-X-CSE-MsgGUID: yK+4oN0HT26nGlQR0hT9mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96692975"
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="96692975"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:29 -0700
-X-CSE-ConnectionGUID: hhFMJjWTS2a2Nmzaw6vN5A==
-X-CSE-MsgGUID: O0d9viwGSrKH5CQS1aVXqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="256001656"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:24 -0700
-Message-ID: <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
-Date: Fri, 24 Jul 2026 16:15:21 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IhxJthy9"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66O5Brxn914123;
+	Fri, 24 Jul 2026 08:17:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UOWJ+X
+	4sg0ZAtnuuIkLy8Iu6I9hZeKpd9NgEjLm3/R0=; b=IhxJthy99aARPxa7Tp4pr6
+	y82sBDkk74SE7Pz+lphiCHlIXKniZH6NwuVb6n6aGY65v6LcP8cU87ghmlpe1ZIP
+	jqAf1MI/C5W9L4ZoGADnq4aXmCAgR/RjagUm6g1dp0bDeTThJyByPMikTN5vxVes
+	ftT3FsVltugMls6UODDhO8yLt4LaU79wYjC6DKxLkyzrQozZYG/qoxXbUgR2c6xS
+	F5SWFaBmZDwOllHB6q3FmCGaWBpd6BJ1KV4J45Mr2ggFOa4h8A/ruAFu61xKum6i
+	EoBIUAhLztGWpecm9HHifLlY8hFCgBV327qWpuAEpqt4riwmvG1rpe07RdEn5zJA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg7ahk2kv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 08:17:38 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66O84dLR012293;
+	Fri, 24 Jul 2026 08:17:37 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqg7xf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 08:17:37 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66O8HYsv30278388
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 08:17:34 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E24C20067;
+	Fri, 24 Jul 2026 08:17:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B88020063;
+	Fri, 24 Jul 2026 08:17:25 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.224.75.30])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri, 24 Jul 2026 08:17:25 +0000 (GMT)
+Date: Fri, 24 Jul 2026 10:17:22 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Vasily
+ Gorbik <gor@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David
+ Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/8] s390/mm: Remove folio handling for kernel faults
+ in do_secure_storage_access()
+Message-ID: <20260724101722.363655e5@p-imbrenda>
+In-Reply-To: <da93640f-4fd4-4cae-bedf-921916dd4682@linux.ibm.com>
+References: <20260720085834.898025-1-hca@linux.ibm.com>
+	<20260720085834.898025-6-hca@linux.ibm.com>
+	<da93640f-4fd4-4cae-bedf-921916dd4682@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
- yilun.xu@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
- kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
- peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
- dave.hansen@intel.com, dave.hansen@linux.intel.com, seanjc@google.com
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qupa1iDYGK9lhvlWto5MfvPZqI0CLsfT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDA3MyBTYWx0ZWRfX6KEt9X41m3bN
+ QnQENmb2/CMNOkUZRioOI34vxD+IDZDAn7JsxQBhrd878Ju96h3OA+EFPjkJVMkoF4uTNKAUS8w
+ 4yGUjEYsQ2ZPNXzec0Tj6y4VYqt4uM/RRIOP3+8fpQOi1wbQyuog1Evlsu2/CdBibWme2wXGT/y
+ 1jH4t89/d3xEfD+gKRql18LGgoEBo37Fmp27wHNZiiSm6tpsmaTIOCnK12T1amAPjH5zQyLBHAS
+ CF5jkCQ3wcDOGXDIbI3g1r1Fz/tbsE20re1yNOkFsIlZHLpaXtMe8yPq/KXA231vgILlm+q/y4s
+ 2vrmSm+rsWbLHNnrIM0hOEITr6jNM70TWGxkB2ogNTAeJcStRRj19IkhT8/82U5zm12d/KcAH41
+ QO26Yz5ztKvSTnUAyrhaugGDYl/7UjecBaMGdp8sKuJIVxTCNAgCoObI/Po/Cc4dKP3qfvdnuLy
+ uRTHKePGyFX+gDmAmzQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDA3MyBTYWx0ZWRfXySChLbt9kEdD
+ 2f9Ct0UNC2s3mlS50H84wZNLDd8c7922JPBqBQKjC55Ol/GY+bTonYCorEio3LXwRlFGJDhc3Ef
+ ye6Qx+L0Slcd4KRZG+aVdFLnRnggdD0=
+X-Proofpoint-GUID: qupa1iDYGK9lhvlWto5MfvPZqI0CLsfT
+X-Authority-Analysis: v=2.4 cv=SM5ykuvH c=1 sm=1 tr=0 ts=6a631fa2 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=uVMGJkIZJPMhafez8PoA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_01,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 malwarescore=0 priorityscore=1501 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240073
 
-On 6/18/2026 4:13 PM, Xu Yilun wrote:
-> In addition to basic TDX functionalities, TDX module provides add-on
-> features that can be progressively enabled as the kernel supports them.
+On Mon, 20 Jul 2026 12:53:29 +0200
+Christian Borntraeger <borntraeger@linux.ibm.com> wrote:
 
-"add-on features" looks like a new term introduced by this sereis for 
-TDX. So what is add-on features? all the features defined in 
-TDX_FEATURE0/1? Or only the features needs to be explicitly enabled by 
-R9 and R10 of TDH.SYS.CONFIG? ...
-
-> The kernel should explicitly configure these features at boot or
-> post-update initialization time. 
-
-... So the answer is the latter. Then why only these bits are add-on 
-features while the rest in TDX_FEATURES01 are not?
-
-btw, s/should/needs/ is better?
-
-> Configuring an add-on feature, such as
-> TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
-> initializing TDX module extensions. 
-
-Though the statement is right, it leads to the impression that the 
-reason we are configuring the add-on feature is to initialize the TDX 
-module extensions.
-
-However, the truth is kenrel wants to enable/use an add-on feature and 
-the add-on feature requires the functionalities provided by some TDX 
-module extension. So kernel needs to enable the TDX module extensions.
-
-> TDX Quoting is the target feature to
-> enable but defer it for now until full kernel support is in place.
+> Am 20.07.26 um 10:58 schrieb Heiko Carstens:
+> > Remove folio handling for secure storage access exceptions that happen
+> > via the kernel mapping. Using folio_try_get() for exceptions via the
+> > kernel mapping is racy: for example such an exception may happen on one
+> > CPU, while a different CPU frees the corresponding page. Subsequently the
+> > page can be part of a folio of different size, before the faulting CPU
+> > executes folio_try_get(). This may lead to data corruption.
+> > 
+> > As of now this scenario does not seem to be possible, however with the
+> > upcoming load_unaligned_zeropad() this is possible.
+> > 
+> > As a side effect PG_arch_1 is not cleared anymore for such faults via the
+> > kernel mapping. However given that this bit is over-indicating it
+> > shouldn't matter.
+> > 
+> > Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> > Signed-off-by: Heiko Carstens <hca@linux.ibm.com>  
 > 
-> TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
-> input parameters to specify which add-on features to configure. The
-> bitmap uses the same definitions as TDX_FEATURES0.
-> 
-> For runtime update, Linux applies a policy that no newer features should
-> be added after update to avoid disrupting live TDX operations. To adhere
-> to this, TDH.SYS.UPDATE must configure the same features as the
-> TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
-> global var so that both phases can use it.
-> 
-> TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
-> the change, so use the latest version (v1) for add-on feature enabling.
-> But supporting existing modules which only support v0 is still necessary
-> until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
-> ever needs to change again and the code would stay in v1. So there is
-> little value in worrying about deprecating v0 to save a couple lines of
-> code in 5-7 years when these original TDX platforms sunset.
-> 
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> ---
->   arch/x86/virt/vmx/tdx/tdx.h |  6 ++++--
->   arch/x86/virt/vmx/tdx/tdx.c | 28 ++++++++++++++++++++++++++--
->   2 files changed, 30 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index fbb520704662..a47e872480c7 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -58,9 +58,11 @@
->   #define TDH_PHYMEM_CACHE_WB		40
->   #define TDH_PHYMEM_PAGE_WBINVD		41
->   #define TDH_VP_WR			43
-> -#define TDH_SYS_CONFIG			45
-> +#define TDH_SYS_CONFIG_V0		45
-> +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
->   #define TDH_SYS_SHUTDOWN		52
-> -#define TDH_SYS_UPDATE			53
-> +#define TDH_SYS_UPDATE_V0		53
-> +#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
->   #define TDH_SYS_DISABLE			69
->   
->   /* TDX page types */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index 2a03152796e6..92305b5ea90d 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -57,6 +57,7 @@ static struct tdx_module_state tdx_module_state;
->   static u32 tdx_global_keyid __ro_after_init;
->   static u32 tdx_guest_keyid_start __ro_after_init;
->   static u32 tdx_nr_guest_keyids __ro_after_init;
-> +static u64 tdx_addon_feature0 __ro_after_init;
->   
->   static DEFINE_IDA(tdx_guest_keyid_pool);
->   
-> @@ -1004,9 +1005,18 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
->   	return ret;
->   }
->   
-> +static __init void set_tdx_addon_features(void)
-> +{
-> +	/*
-> +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0 when
-> +	 * kernel is ready.
-> +	 */
-> +}
-> +
->   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->   				    u64 global_keyid)
->   {
-> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
->   	struct tdx_module_args args = {};
->   	u64 *tdmr_pa_array;
->   	size_t array_sz;
-> @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->   	args.rcx = __pa(tdmr_pa_array);
->   	args.rdx = tdmr_list->nr_consumed_tdmrs;
->   	args.r8 = global_keyid;
-> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
-> +
-> +	set_tdx_addon_features();
+> Ideally Claudio should confirm that PG_arch_1 is over-indicating.
 
-Maybe move the set_tdx_addon_features() out of config_tdx_module()? how 
-about putting it after check_features(). config_tdx_module() looks like 
-just a wrapper to invoke TDH.SYS.CONFIG, while the params of it are 
-determined outside of it.
+PG_arch_1 is over-indicating.
 
-Just my feeling.
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-> +
-> +	if (tdx_addon_feature0) {
-> +		args.r9 = tdx_addon_feature0;
-> +		seamcall_fn = TDH_SYS_CONFIG;
-> +	}
-> +
-> +	ret = seamcall_prerr(seamcall_fn, &args);
->   
->   	/* Free the array as it is not required anymore. */
->   	kfree(tdmr_pa_array);
-> @@ -1314,10 +1332,16 @@ int tdx_module_shutdown(void)
->   
->   int tdx_module_run_update(void)
->   {
-> +	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
->   	struct tdx_module_args args = {};
->   	int ret;
->   
-> -	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
-> +	if (tdx_addon_feature0) {
-> +		args.r9 = tdx_addon_feature0;
-> +		seamcall_fn = TDH_SYS_UPDATE;
-> +	}
-> +
-> +	ret = seamcall_prerr(seamcall_fn, &args);
->   	if (ret)
->   		return ret;
->   
+> 
+> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> 
+> > ---
+> >   arch/s390/mm/fault.c | 8 +-------
+> >   1 file changed, 1 insertion(+), 7 deletions(-)
+> > 
+> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> > index e650cdfa2523..776549d55c94 100644
+> > --- a/arch/s390/mm/fault.c
+> > +++ b/arch/s390/mm/fault.c
+> > @@ -440,13 +440,7 @@ void do_secure_storage_access(struct pt_regs *regs)
+> >   	if (is_kernel_fault(regs)) {
+> >   		if (is_vmalloc_addr((void *)addr))
+> >   			return handle_fault_error_nolock(regs, 0);
+> > -		folio = virt_to_folio((void *)addr);
+> > -		if (unlikely(!folio_try_get(folio)))
+> > -			return;
+> > -		rc = uv_convert_from_secure(folio_to_phys(folio));
+> > -		if (!rc)
+> > -			clear_bit(PG_arch_1, &folio->flags.f);
+> > -		folio_put(folio);
+> > +		rc = uv_convert_from_secure(__pa(addr));
+> >   		/*
+> >   		 * There are some valid fixup types for kernel
+> >   		 * accesses to donated secure memory. zeropad is one  
+> 
 
