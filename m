@@ -1,115 +1,115 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D632EEE63
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 03:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784863227; cv=pass; b=cv9zLkoc/XLmnyfiUxZjnPhfRNoLY8IKhQBkXw8ENccM+eQ9I80KmDMpYYE1ZuII7CsOXxd+/RIXirg5cZPXIXkSInbj0fQxU8IhYlWamaMjOhQsjiYDvG0wGZo93K3E0ePsc8yMhN2HkJOuQvgEotrmNq959XzW4zwfIm8TXfs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784863227; c=relaxed/simple;
-	bh=NUKCclM9gW7rPSXi+ZOtkKzWRi9iX5BK1OHjePrgPx4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oT7OBIK0MhXl96McJIgsndIPdKNuHB9UcQ3qAAhcKXVXwey/H9XOc9yV6zTUGJq6DfcKs2gXaRVlJHB0+aa5hQ1/quqEXMLJeTLpt99vN36hYRXNWGF797l36JZZTxiuAw80YR3GIQg4dV0kNU+LZBogzFQC9WmsgXJ9TQTD5K4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MhagAyCL; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747BC35E943
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 03:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784865355; cv=none; b=PkUdaJZyTLj28S9qdZD30AHrOSeoU5Hz5jOiH+Wh1s41tc0+oJ6LJoJB3wHzwdrvDXRbGiqXWg7PCdMYDfGpMKOxzDC1o3KJWMUbMWoxu115Wk6a8y2wns9kB6bFK7OzFBDBBZWshypn5pbgrEHvoMSuShvNMkBEustFuuKTtuc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784865355; c=relaxed/simple;
+	bh=bY/WEK9yistReSta5XbgiXuBn1CFgZr4/J9CBfX8O9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eiW5fkW8U+oC16K3KbTvt6LawqHS2qk+7uG0ojr2eWBLlD6R2jDRrrh7Df1I+mIVLraDUldbz16djZZ6CMzGaSlUgXoQfO4yu5/Y5G7zjUgH2Ca3HXEz7XUMAXdq+AYCOpLHnWXF2U834bCTI3wMsCkc2Xqu9eyzwkbE6Hrh85s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=TxvTHEFT; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MhagAyCL"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69f21b7f6cdso1682a12.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 20:20:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784863225; cv=none;
-        d=google.com; s=arc-20260327;
-        b=B/BC5KkVMVZIB3gP+/q8ofn0N4RpqXZ2TNRE4SWqjWlmKR+AtN85oU8UEF+l0UsKPO
-         M1bFqmRcsvsaY8BpL5U5hcwCkGdzgSHDkLMXcWfJJY1v++aOGxN18KBRlIcNk9+8evCL
-         PRGvrvAtmUtVPqzawqMbNaX/uq0PcuYgf068/iiC/Knlf8z3I02ypt2dIWVeebtz2udE
-         0zNaZkBHYu8g2AeCV0F0TIMCXjZFKw7J4ZHdQEbU96xWlAj2dEAQLf9fvdTwEh4FSkoc
-         3WOfqcVIaphETnmERDOVmnL/o6Mn1112f6nYfsjeiJia/tkDCG+o4cxBC3vFlicJ0AC/
-         L6fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NUKCclM9gW7rPSXi+ZOtkKzWRi9iX5BK1OHjePrgPx4=;
-        fh=HmsVknbhUUvN2nw8rR193tqOKx1UJkhWamnxnqZ+xw0=;
-        b=GRCmdxxJJHocbiKXCsJhfZ8kEp8KUyunmygJj6wtDay8vBYhwJZ1rE1hRHna+HtcrL
-         Re+L/68z5YFwDik1SLrcGKjGHHQMiOIUB2XvvevEkvJFbBY4qQW3avs28DpuznQt15V/
-         /HjEb5l/Qi2t5orXysKGxa7WM3EwZ1e45x3soCvtGlLXfbAcBWS9KY+/mSqMZq+klMC7
-         3J58TZyhxe6Epmyj+jFbZgMKUWwZpvZO2jog37X2V9o5oxvDb0K02boCls5UtmHpVL61
-         pCXGPEgNBI5QsyiFZyZNGqFh/iu10WrpqAWnHW2EdYZUDsOTaQrQpFnByX0EvLb2tVNh
-         lDUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="TxvTHEFT"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e53581361so107564885a.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 20:55:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784863225; x=1785468025; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gourry.net; s=google; t=1784865352; x=1785470152; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NUKCclM9gW7rPSXi+ZOtkKzWRi9iX5BK1OHjePrgPx4=;
-        b=MhagAyCL9z7Mp+BdjPJI/S3232HOE66TNf7oTDaNPC2mgVUPLJ0XFmWo8pZoWp6Za1
-         ek3BGKvD7lfIS+ue9+dEruiPeQig2hDJ8huYx41WJMjE3aldTkgKFsLEiC2rS2lwzhID
-         1hqezN2K03Dl05hSPTZIDd/bEM/7hc/v1FMJpi7wvy9KOC/9Tv2MNJNM7Q45li2f3pMr
-         ERSj6U5rNVdHj9/FHuMluXBpYJ6sqKKHpHHFi9mUchEGC88HFDBe/wvixw1f9UhP6HFL
-         fQijSmD51RlcsAp8XDmkiLwftHHrXEmf1wOUqS1OftDxn/wCi/Y8hhqQuKI5UBhYeXJL
-         pWcw==
+        bh=HNJfcC8jn5sdQ+MVI+mQj0PijBIpCe3BsXMVP5pD+So=;
+        b=TxvTHEFTSPb6PFzdctuA3AIUO4n3oOxPakjyWcXxp2evIBuserE60WS4iDZkVf6mbr
+         ek9Kgltwj7vrv41L0+gNvFnVRtj1Q32UL467lTUmu7eiu9BUBxA8E1CIvAAizXK1DBgd
+         24dLCxhOkmQwgdfP/DTRoh1nIc1RLvQ7RH231/Si7st0gkbgG3qlbAxZ20aKuzB7CrMO
+         cvBQJTGAQzHTBDC32q8qnyMd5zK3AlxA5RuIlHXzTPShxKfV/6VtVFSocKtIO5Q9m1kJ
+         Hxcq1sB9EUgeeyMLG+nrY41fcBnGuwi3FEAMv9HBBq0vT/B9TpJ9mSRvKJwCaHmSBWx0
+         Dceg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784863225; x=1785468025;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784865352; x=1785470152;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NUKCclM9gW7rPSXi+ZOtkKzWRi9iX5BK1OHjePrgPx4=;
-        b=gzgMwHDof+gXFyAZZ618p5jD8q8edSPa6d3abVdqt99op10IciqoypH39tLhgNi1Fq
-         pYtIx8ndXuwJ1XMqlmZR9Puh7ISj3HolVAcNZVCjnYtdGAuWKW9cXiookj3KAYwiH2vi
-         mypGst2cOv/6lgrt1oERdY6JjVmoYIGTz59Cfc1wqakrv6OW5ucb5OUKMfSegAmHxSDk
-         Bxu646mhgOLis0iXRGafc+75BTTVXCXi+U5KDTcPvE0dRbWNmuamZIaLVzOcHCB/RBan
-         7DqUvjDQoKCjNQ4WKOoGnXbULc1hrJwEguvA179uygKPRIChV8uOifimmioBr4Avp75i
-         k9bw==
-X-Forwarded-Encrypted: i=1; AHgh+RqTaKPfcQXxZpsR6Z9TanfGRFkCHpoqgPozOo8K/hj0Ebz+8dWQBXz7u0w7PQ2xVhUF1nE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfuUBdtA4mZOVuU4+C1Tkpb8ygApadGOzRrCxm/a44WvXkitEK
-	YkoyadRBZ+z6Ucq2gi8Zo1HupG8RbSvStTslFaX08I92b82YClZWlf878i0qwuL9er0GV9gvxRO
-	suSEAeOCaGXPB7V6GTBZmonulAnwHzAENtz6El+Oy
-X-Gm-Gg: AR+sD12HuPqO0AfFjVFIa728KBv245hG1vaSA4DrP4TqE5g0bPtqV6yv+ra10GSJh24
-	4pgpGNEA82m4Tjt6ODmtBCJqPPfaQs9+ow7wtEICVzdQz3Tk2zs70OpEksifegpfZ7cL25qpR0V
-	Pxf8HVacASqCMG57jwdSJrpLLkwR8qiSKoJ2GeIEHvsrlEAzMbPGLLjJsbeMWl8EKUdDZWUq8DZ
-	Zgpa0YOdkr+99sQpg9WjSni90zFuhViNnz7HCDj2lsHf0pTAjgxQRh2Mr9oB1vX8F+zNu7t
-X-Received: by 2002:aa7:d759:0:b0:69e:98c8:c71b with SMTP id
- 4fb4d7f45d1cf-69f8ee93564mr41648a12.6.1784863224210; Thu, 23 Jul 2026
- 20:20:24 -0700 (PDT)
+        bh=HNJfcC8jn5sdQ+MVI+mQj0PijBIpCe3BsXMVP5pD+So=;
+        b=hWr3BgYDFOB1GfwTYZ/UzwWTg6y6vosDZzFfgxVpLUdsATOn3/EbYZCU/UijHdRklf
+         meF5vdHlFaDYImEY7caUn5Pr5YiVDG38ly21O96eYnbwCz2PlJbbT0bwAgAcFESw1nQ1
+         7qk4LkJLuVheroDTZ3f9rCgC7FciQYYx53de+ZR7hiXbZwj8LDq5D3Af0HWeb4bxUDDp
+         Ic5ql69xEetGXPWw1CidmEYPJB/wwJfjkLfT5Tzy+lBu+IFCMX3IdhNMpqXT6e8nYrRR
+         YM8TX7/He9l1dhm0m9UsBZ9VHKci3jIwIi3zR/ONBRoXwKRbJEwpA8rI65uHDHN1i7Nl
+         ilqQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rrze5Q5cURfrvNHXwwPmxKxjuqKRbwC/I0njqMWHtj4UPEySk9TZSTPjHWoGZM6qhYrnZI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyw2ZDSGt14sh2eLu19VJ1XfyTMVIxy+OPJS3UUUMmuLhXbvXyW
+	EUP1xLgaxhyGP0W1BWDE/WQzKMDBJT0fL51+5C23VRz+mXPWwEMcrwf58Yazm7mk+zY=
+X-Gm-Gg: AR+sD11/zgjYvD9b9sl22QKf3XTkWyEy6Eqy0034bANBhe1raDXZo0G994hlfHLhcPe
+	eRbtCPHjDfFLPO8ke/4m55eeexAly62jwi5nJsWs9M3CGMRVHuzCmov8Veak+B7UszPxwAqT5VT
+	sz7nyNSSFZC4er1GbBuF0Ez0J22M1WH1+qp72KpUMLmVeYO35EclYMOQbH0hBELoryOw/Q2O9q8
+	GiiHsEoBIJSN+hAuAoCIrZ/QWuKl+bMpv/MqGSbKyNxMEaSA16woDrNEgQ/zAfhSy7YdJ86Hj3A
+	u7SWISYUP2TcnGfL2VhTLP7B+be1L6xNI/5D7IL7oMjvZGfWbJZApkv/5I4MlU0OaTZlXVKXY82
+	yfuFj7L/trhmcolUuS5uYJgbNjDuNC/mhIum4XvmAn24LfYrr+An0GtQWd2Jx4U/Va/c9Bf5sOC
+	kaCDvFt//kjgf8F3JDOP0DKcu6pcj5Tpa2EsFqEPkdodiu40qf7Oa+BWytR9QAn1Eap/iF
+X-Received: by 2002:a05:620a:4509:b0:931:7b8:eb8a with SMTP id af79cd13be357-93107b8ec3amr455545085a.15.1784865352170;
+        Thu, 23 Jul 2026 20:55:52 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-930f687466esm570122185a.4.2026.07.23.20.55.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 20:55:51 -0700 (PDT)
+Date: Thu, 23 Jul 2026 23:55:46 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>, pbonzini@redhat.com, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>, kvm@vger.kernel.org, 
+	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <amLhu07IpWfBbWC0@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <amGpEEqxoLq/Y7ZO@yzhao56-desk.sh.intel.com>
+ <amIcXrS7nGX-adpG@google.com>
+ <amIrDncrL4K-JRBO@cmpxchg.org>
+ <20260723171515.b5ddbc59c5c36ad01ef8f7fb@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260707183405.15571-1-zide.chen@intel.com> <20260707183405.15571-15-zide.chen@intel.com>
- <CALMp9eRWo+FA-qGiB3Bf-UQOK7hV4-pN62SjFgR5JYLkaMEcmQ@mail.gmail.com> <e7dd989d-c83f-45b0-9501-7e7a5bdd9fff@intel.com>
-In-Reply-To: <e7dd989d-c83f-45b0-9501-7e7a5bdd9fff@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 23 Jul 2026 20:20:12 -0700
-X-Gm-Features: AUfX_mxYipMC42T52j3IAJObRAvrB4I0EqQDNFd3Dszf-U3McMDonZQ_rEfuVcw
-Message-ID: <CALMp9eSd2TBixRrRTqfam8LFVG4__fy_H6XVa9Q_-kEdXoxe6w@mail.gmail.com>
-Subject: Re: [PATCH 14/15] KVM: x86/pmu: Advertise PerfMon version 5 on Intel hosts
-To: "Chen, Zide" <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>, 
-	Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
-	Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260723171515.b5ddbc59c5c36ad01ef8f7fb@linux-foundation.org>
 
-On Thu, Jul 23, 2026 at 4:25=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wr=
-ote:
->
-> Currently KVM always injects #GP when the AnyThread bit is set.
->
-> kvm_pmu_refresh(): pmu->reserved_bits =3D 0xffffffff00200000ull;
->
-> I understand the concern, but I'm not aware of a better solution for
-> PMUv3/4. Silently ignoring AnyThread would deviate from the
-> architectural behavior and, more importantly, may give the guest the
-> false impression that AnyThread is supported. Supporting AnyThread, on
-> the other hand, has cross-VM information leakage concerns.
+On Thu, Jul 23, 2026 at 05:15:15PM -0700, Andrew Morton wrote:
+> On Thu, 23 Jul 2026 10:54:06 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+> 
+> > > But in this case, IIUC, this change will "silently" enable NUMA balancing for
+> > > shmem-based KVM setups where it was previously disabled (albeit unintentionally).
+> > > 
+> > > I'm not fundamentally opposed to the change, but I do worry that downstream KVM
+> > > users could be in for a nasty surprise.
+> 
+> It is a bit concerning.
+> 
+> > This should be very visible in early kernel validation after an
+> > upgrade. VM hosts tend to not do much else, with VM memory dominating
+> > the host. You'd expect a significant uptick in numa_pte_updates,
+> > numa_hint_faults, and a change in per-node nr_shmem stats. And the
+> > patch subject makes it trivial to find in a commit delta scan.
+> 
+> Is there anything we can do to make this process less painful? 
+> Documentation of course, but what about detecting the situation and
+> emitting a once-off warning?
 
-Don't support versions 3 or 4; they aren't virtualizable. Hosts with
-PMU versions 3 or 4 just get vPMU version 2.
+Maybe a rate-limited or one-time pr_info/warn on the first PROT_NONE
+fault affecting KVM in the painful zap path?
+
+Non-invasive, targeted, and helpful.
+
+~Gregory
