@@ -1,254 +1,212 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB3944E640
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 18:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB6D30674B;
+	Fri, 24 Jul 2026 18:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784917524; cv=none; b=TkDc/zJ0vuT8PN1qDMcCDsfzcFepDZPGjMqs0Bn9Mw7XSnNOBUnGvBMLj8smGe7jWw0CRvkzb+yBm1rSHeZ+Zz+hdHe4QE8Sap5IZila2oRxFxEpPAdA4uw7hBuSaJWRfvw9DJew2pC6J3gxvmYwiFX0/qHwHlmEbruNdy0XnDU=
+	t=1784917574; cv=none; b=sj1eTrz+p6DeOBUG4CPtza3LvanNnib5j5hS8PWelH7IQHvH2eRTG6ciFZ0Xx180lxjvpSKfums7TEzdLYPmIS59xntdRtMbGZpDGRPSZOxq7vrmsPT5+G8wHbjPpvOBdYzNscKNxdGLd/Tvblfi4WOBwP89lRE0bzidQc30fKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784917524; c=relaxed/simple;
-	bh=XtTm+pGwswLn5k3c3NvhEmOPMGq1Jl+X2NXZxY2uBas=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oiPxLdX+2xpLal9OcBbn/Z6tkLdRGtE3QRvIg3epQEPdvgiJgvucrgSanEwz3hskVeCxSvsYKy/RcRvqDb1J4BOJG44QL2ErbJ182hR5sMEssM7uHmuSuC/6g9c2cVUpVqouYbfngvYxIJn15MX7ws2memQMCbonOSVRs0/9KbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKcRkIxF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784917574; c=relaxed/simple;
+	bh=X2P1ekneIlD9ihVjTz4lHANBznJNOoyFjz2tt/EO/rg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=tVOmIZgvjEMozEIs0BjazdPXlw4RAILHaInVTggD/6FYL3lT7swyBxO7E8o35kAd6u3lIxmp+nkIYjB8YquMxiDDRSuqs23QpvSRd9XuYT+Gcd8nKMpoy7wf3VJquWPS8l/PYCN7fh+HFpQriIae3sYniTtdY1KQA/yRDSoqbZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m799F+Cs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKcRkIxF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52FE1F00A3D
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 18:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m799F+Cs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6479E1F000E9;
+	Fri, 24 Jul 2026 18:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784917522;
-	bh=EOOm0A/7blxany8fRDeM1goCeMN0cgCQQs8WvTcUjXk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YKcRkIxF+3I4eOYBQsppsvYmsVxE0SfGLN+xEaEpyrrlNkrGkzvxJhb4uBleM3ctB
-	 jjQSpD2nVQ5Gpxjzpr2AdfWwcyvuUXuKHvSBQVRMYE1WQJZ5srcB5L1NYqdIagGGLp
-	 +mFDj2oFUbT1nS6+z+xguMrON1ers3z0hiG9Azy/qIx+A0d6DJF0JtS8ke3yKShHFI
-	 1qNawYObgK0LdxOnHnFHrpQBBzcFF4yp2H2DJzMtZ0qRk03tdO+avjlg5mm1UqscIq
-	 rDCF9XVjzTCNBRPLfflmYZgQ33UFpohwfaA3jIBmAwFd1XVxzrQThuKBZQTnyfyR6k
-	 P7ocXtJv6QiLg==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-698ab9aae16so1118511a12.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 11:25:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoD5+HXQ0juxtfiOe+tjkugUMUBwRXV0TG9JN9J72zrRlFBE0KiPp0IGYYl/UTUWtujv7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNwLNairGKBB3NMa9u9TEz4xRLj0KPWO2zRa6v3bTpEWCK5o9M
-	E3UScK/tVMI8rol/qkd64SFZ+1TOn1XVjELJPnRMiWkutpn7+aYZihRgifk92igvoxZsZtfMjW6
-	2c1yg9RbOYTxx/LGbvXCv3bxACcbUL+M=
-X-Received: by 2002:a17:907:3e19:b0:c16:242a:472f with SMTP id
- a640c23a62f3a-c1c509c495emr419089166b.23.1784917521757; Fri, 24 Jul 2026
- 11:25:21 -0700 (PDT)
+	s=k20260515; t=1784917572;
+	bh=LJcCt1hGGpWcxxoe06Dx+uOlq09BQn53GaGVAJls7fI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m799F+CsgjTjsUBeD4eppIbXQ2tNfkN8c0RBOpZXXtzKHbmo/jqw5qrD7RDz2aVNX
+	 zfmdb/clgdmTRY32bSWecXBl2Cb7lyWVxEpo9zH4cFCC4tUA00xcIP2KZvhAbP8vDu
+	 5wzJoU8H1/y1GLWSSg75GsozWY5J+8Pfn1hjugzpAtdNP0UY0gMybFT9SZrLOmA7dz
+	 TRQnRFgWDOZ/p8HI2yHOGaxdWu7ge/W4Oik6yG3m+PnRO9FNqSusaQ8n1g7j2l3ncW
+	 G4Derxj502EL+Eb8MP5DKgzHqok6GyN122PcH8Qe62wE8NGngl7wxlimDuawIG3rkh
+	 z6A49HN9cevPw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 11/15] s390/vfio-ap: Transition device migration
+ state to STOP
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260724161351.1802644-12-akrowiak@linux.ibm.com>
+References: <20260724161351.1802644-1-akrowiak@linux.ibm.com>
+ <20260724161351.1802644-12-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 18:26:11 +0000
+Message-Id: <20260724182612.6479E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260629183746.699840-1-yosry@kernel.org> <20260629183746.699840-8-yosry@kernel.org>
- <amOWvrZqRXxxHT1k@google.com> <CAO9r8zN7ditPSQMPpRsWtPXXXoV0iNW5mhGLPb7A356Kd==RLg@mail.gmail.com>
- <amOrCk0KAuq6GtRI@google.com>
-In-Reply-To: <amOrCk0KAuq6GtRI@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 24 Jul 2026 11:25:10 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOCB+hMtGib4EkXPuFdNTqWNRenJx3+TiMxuwEZxXzo+w@mail.gmail.com>
-X-Gm-Features: AUfX_mwTiZaFlwN_6txATj_zQJt3W7a6Eu91uS-qhsDOUMEp5ri7_1RNWvSHEQg
-Message-ID: <CAO9r8zOCB+hMtGib4EkXPuFdNTqWNRenJx3+TiMxuwEZxXzo+w@mail.gmail.com>
-Subject: Re: [PATCH v3 07/10] KVM: selftests: Add basic stress test for
- save+restore and #PF handling
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 24, 2026 at 11:12=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Fri, Jul 24, 2026, Yosry Ahmed wrote:
-> > On Fri, Jul 24, 2026 at 9:45=E2=80=AFAM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > > > --- /dev/null
-> > > > +++ b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> > > > @@ -0,0 +1,182 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > +#include <stdio.h>
-> > > > +#include <stdlib.h>
-> > > > +#include <string.h>
-> > > > +#include <errno.h>
-> > > > +#include <sys/types.h>
-> > > > +#include <time.h>
-> > > > +#include <unistd.h>
-> > > > +
-> > > > +#include "test_util.h"
-> > > > +#include "kvm_util.h"
-> > > > +#include "processor.h"
-> > > > +
-> > > > +#define NR_ITERATIONS                500
-> > > > +
-> > > > +#define GOTO_PREV_LINE               "\033[A\r"
-> > > > +#define PRINT_ITER(s, x)                                     \
-> > > > +do {                                                         \
-> > > > +     if (x =3D=3D 1)                                             \
-> > > > +             printf(s "%d\n", x);                            \
-> > > > +     else                                                    \
-> > > > +             printf(GOTO_PREV_LINE s "%d\n", x);             \
-> > >
-> > > Oh c'mon.  I had to Google the escape sequence you're (heh, "you"), u=
-sing to
-> > > understand this.
-> >
-> > I named it GOTO_PREV_LINE specifically so that people don't have to
-> > Google it. AI wanted to call it something like ESC_SEQ, this is a big
-> > improvement :P
-> >
-> > > Use a little creativity, and then the only magic escape sequence
-> > > is the much more familiar carriage return.
-> > >
-> > >
-> > >                 pr_info("\rSave+restore iterations: %d", count);
-> > >         }
-> > >         pr_info("\n");
-> >
-> > I had something like this initially and I changed it, but I can't
-> > remember exactly why. I *think* when there is a test failure the log
-> > is messed up because we didn't print a line break after the last
-> > "Save+restore.." message.
->
-> Ah, if an assert fires before the loop terminates.  Hrm.  This feels like
-> something that should be a generic utility, but using any helper like thi=
-s would
-> require extreme care (the caller needs to know that *nothing* got printed=
- between
-> iterations).
->
-> What if we simply add a newline before printing an assertion?
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-I like that. I will add a separate patch to do this (which will help
-other tests using carriage returns), then just use a carriage return
-here. Although..
+New issues:
+- [High] Transitioning out of data transfer states (STOP_COPY -> STOP or RE=
+SUMING -> STOP) returns NULL without cleaning up the active migration file =
+state, causing stale data reuse and memory leaks.
 
->
-> diff --git tools/testing/selftests/kvm/lib/assert.c tools/testing/selftes=
-ts/kvm/lib/assert.c
-> index 1d72dcdfce3b..3e353ac39eeb 100644
-> --- tools/testing/selftests/kvm/lib/assert.c
-> +++ tools/testing/selftests/kvm/lib/assert.c
-> @@ -74,7 +74,7 @@ test_assert(bool exp, const char *exp_str,
->         if (!(exp)) {
->                 va_start(ap, fmt);
->
-> -               fprintf(stderr, "=3D=3D=3D=3D Test Assertion Failure =3D=
-=3D=3D=3D\n"
-> +               fprintf(stderr, "\n=3D=3D=3D=3D Test Assertion Failure =
-=3D=3D=3D=3D\n"
->                         "  %s:%u: %s\n"
->                         "  pid=3D%d tid=3D%d errno=3D%d - %s\n",
->                         file, line, exp_str, getpid(), kvm_gettid(),
->
->
-> IMO, that's desirable even when there's a preceding newline, e.g. I find =
-this
-> ever so slightly easier to parse:
+Pre-existing issues:
+- [Critical] Migration file descriptors lack a reference count to `matrix_m=
+dev`, allowing a Use-After-Free if the device is unbound while the file is =
+open.
+- [Critical] Calling `fput()` on a migration file stream without holding an=
+ additional reference causes a structural Use-After-Free of the file object.
+- [Critical] Writing fewer than `sizeof(struct vfio_ap_config)` bytes to th=
+e resuming FD bypasses validation and causes an Out-Of-Bounds Read kernel p=
+anic.
+--
 
-..in this very specific case, you still won't get the extra newline
-because of the carriage return :P
+--- Patch [11]: [PATCH v5 11/15] s390/vfio-ap: Transition device migration =
+state to STOP ---
+commit 6eb426fca5901497387e866972eaf6e2157cc2bb
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+s390/vfio-ap: Transition device migration state to STOP
 
->
-> $ ./x86/stress_save_restore_pf_test
-> Random seed: 0x65f90564
-> Save+restore iterations: 500
->
-> =3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
->   x86/stress_save_restore_pf_test.c:310: guest_faults =3D=3D 0
->   pid=3D4077 tid=3D4077 errno=3D25 - Inappropriate ioctl for device
->      1  0x0000000000403de6: main at stress_save_restore_pf_test.c:310
->      2  0x00007f8ead829d8f: ?? ??:0
->      3  0x00007f8ead829e3f: ?? ??:0
->      4  0x0000000000403fd4: _start at ??:?
->   No guest page faults triggered
->
->
-> versus:
->
-> $ ./x86/stress_save_restore_pf_test
-> Random seed: 0xbc3c1a3
-> Save+restore iterations: 500
-> =3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
->   x86/stress_save_restore_pf_test.c:310: guest_faults =3D=3D 0
->   pid=3D6077 tid=3D6077 errno=3D25 - Inappropriate ioctl for device
->      1  0x0000000000403de6: main at stress_save_restore_pf_test.c:310
->      2  0x00007f4750829d8f: ?? ??:0
->      3  0x00007f4750829e3f: ?? ??:0
->      4  0x0000000000403fd4: _start at ??:?
->   No guest page faults triggered
->
->
->
-> > > Hmm, I think we should put this helper in tools/testing/selftests/kvm=
-/lib/x86/processor.c,
-> > > and then provide a "struct kvm_mmu *guest_mmu;" that is automatically=
- synchronized
-> > > to the guest during kvm_arch_vm_post_create().  I think vm->mmu is fu=
-lly populated
-> > > at that point?
-> >
-> > Hmm yes, It is initialized in virt_pgd_alloc(), which is called in
-> > ____vm_alloc() on the first allocation, which I think will be in
-> > kvm_vm_elf_load(). We can probably add an assertion to make sure that
-> > holds true.
-> >
-> > However, I think we can't really provide a full kvm_mmu. We can
-> > synchronize the PTE masks, which I assume is what you mean here, but
-> > then provide a 'pgd' which isn't really usable because guest PTEs
-> > created by virt_map() (and friends) are not automatically sync'd to
-> > the guest. I thought about doing that, but it isn't straightforward
-> > because we cannot use direct mappings (see
->
-> Nit, s/direct/identity.  That's a fairly important distinction for this c=
-ode.
->
-> > https://lore.kernel.org/all/CAO9r8zNqYA6CACeGTVLcyj4bJ2XPAzEXL+y9tLuCU5=
-Y-F=3DD-WA@mail.gmail.com/).
->
-> Wait, what?  Me confused.  The PTEs themselves must be "sync'd" to the gu=
-est,
-> otherwise installing a new mapping would be useless.
->
-> IIUC, the problem is that the guest isn't guaranteed to have valid *mappi=
-ngs*
-> to its own PTEs, which is not the same as the actual PTEs being stale.
+This commit modifies the vfio-ap driver to support transitioning to the STOP
+state during migration. It updates the state machine to return NULL instead
+of -EOPNOTSUPP when transitioning out of the STOP_COPY or RESUMING states.
 
-Yes, sorry, bad wording.
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> index 7a9a8f63a76d3..21cd9810a18c4 100644
+> --- a/drivers/s390/crypto/vfio_ap_migration.c
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -1304,12 +1304,17 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev=
+ *matrix_mdev,
+>  		return filp;
+>  	}
+> =20
+> +	/*
+> +	 * Terminates the data transfer session of the vfio-ap device state
+> +	 * between the source and target hosts. Since the vfio-ap device does
+> +	 * not virtualize a DMA device, there is no internal device state to
+> +	 * incorporate into the vfio-ap device on the target.
+> +	 */
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_RESUMING &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP) ||
+>  	    (cur_state =3D=3D VFIO_DEVICE_STATE_STOP_COPY &&
+>  	     new_state =3D=3D VFIO_DEVICE_STATE_STOP)) {
+> -		/* TODO */
+> -		return ERR_PTR(-EOPNOTSUPP);
+> +		return NULL;
 
-> IMO, that's totally fine, we just need to document the caveats.  The gues=
-t can
-> get at its PGD via MOV CR3 anyways.  I.e. all we'd be doing is loading th=
-e gun
-> for the guest to make it easier to put a hole in its foot.
+[Severity: High]
+Does returning NULL here without calling vfio_ap_release_mig_files() leak t=
+he
+active migration file state?
 
-Right, which is why I think writing pgd=3DNULL (or pgd=3D0 because it's a
-GPA) makes it easier (I think) to see the gun?
+If the migration is aborted and a new one starts before userspace closes the
+old file descriptor, the new session overwrites the filp pointer but does n=
+ot
+free ap_config. Will the new read operation then see a non-NULL ap_config a=
+nd
+silently reuse the stale configuration snapshot from the aborted migration?
 
->
-> > > Then this test should be able to use the PTE macros from x86/processo=
-r.h, and
-> > > future tests don't need to reinvent the wheel.
-> >
-> > Maybe provide a kvm_mmu with pgd=3DNULL just a placeholder to use the P=
-TE masks?
->
-> pgd is a GPA.
->
-> Oooh, and this test relies on the page tables being identity mapped.
+>  	}
+> =20
+>  	if ((cur_state =3D=3D VFIO_DEVICE_STATE_STOP &&
 
-They are actually *not* identity mapped, they couldn't (see above).
-They are mapped at a magic VA (i.e. TEST_PGTABLE_GVA_OFFSET).
+[Severity: Critical]
+This is a pre-existing issue, but does creating the migration file descript=
+or
+without incrementing the VFIO device's reference count allow a use-after-fr=
+ee?
 
-> In that
-> case, it's probably best to keep guest_get_pte() in this test until we ca=
-n
-> broadly guarantee gPTEs are reachable.  But I still think it makes sense =
-to
-> sync the MMU to the guest.
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_open_file_stream() {
+    ...
+	filp =3D anon_inode_getfile("vfio_ap_mig_file", fops, matrix_mdev, flags);
+    ...
+}
 
-We can make the PTEs GVA offset a parameter to guest_get_pte(), but I
-think that's not a good API. At least we shouldn't proactively expose
-it before we have other users. So yes, I think we should keep
-guest_get_pte() in the test, and just expose the placeholder MMU for
-the pte masks.
+If a user holds the migration file descriptor open and unbinds the device v=
+ia
+sysfs, vfio_unregister_group_dev() can complete because the migration file
+descriptor holds no reference to the device. Any future read, write, or clo=
+se
+on the file descriptor will dereference the freed matrix_mdev:
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_release_mig_file() {
+    ...
+	matrix_mdev =3D filp->private_data;
+	if (!matrix_mdev || !matrix_mdev->mig_data) {
+    ...
+}
+
+[Severity: Critical]
+This is a pre-existing issue, but does calling fput() here cause a structur=
+al
+use-after-free of the file object?
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_release_mig_files() {
+    ...
+	if (mig_data->stop_copy_mig_file.filp) {
+		fput(mig_data->stop_copy_mig_file.filp);
+		mig_data->stop_copy_mig_file.filp =3D NULL;
+	}
+    ...
+}
+
+Since vfio_ap_open_file_stream() allocates the file using anon_inode_getfil=
+e()
+with a refcount of 1, and this single reference is consumed by the VFIO core
+when it installs the file into the userspace file descriptor table, the dri=
+ver
+does not own a reference to the file.
+
+If the device state is reset and fput() is called, it artificially drops the
+refcount to 0, freeing the struct file while userspace still holds the file
+descriptor open.
+
+[Severity: Critical]
+This is a pre-existing issue, but can writing fewer than
+sizeof(struct vfio_ap_config) bytes to the resuming file descriptor bypass
+validation and cause an out-of-bounds read?
+
+If userspace writes a small payload (e.g., 4 bytes), allocate_ap_config()
+allocates those 4 bytes directly:
+
+drivers/s390/crypto/vfio_ap_migration.c:allocate_ap_config() {
+    ...
+	} else {
+		config_size =3D len;
+	}
+
+	*ap_config =3D kzalloc(config_size, GFP_KERNEL_ACCOUNT);
+    ...
+}
+
+This allows the write handler's completion check to instantly pass:
+
+drivers/s390/crypto/vfio_ap_migration.c:vfio_ap_resuming_write() {
+    ...
+	/* Check if we've completed writing the entire configuration */
+	if (*pos + len =3D=3D cfg_sz) {
+		/* Acquire locks required to update the guest's AP config */
+		...
+		ret =3D do_post_copy_validation(mdev_name, ap_config);
+    ...
+}
+
+The validation will then read a user-controlled num_queues value from the
+undersized buffer and loop over the qinfo array, reading heap memory
+drastically out of bounds:
+
+drivers/s390/crypto/vfio_ap_migration.c:queues_available() {
+    ...
+	for (int i =3D 0; i < source_config->num_queues; i++) {
+		apqn =3D source_config->qinfo[i].apqn;
+    ...
+}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724161351.1802=
+644-1-akrowiak@linux.ibm.com?part=3D11
