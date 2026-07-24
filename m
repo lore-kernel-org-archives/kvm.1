@@ -1,81 +1,106 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A451E8003D
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 01:15:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58DE4908C9;
+	Fri, 24 Jul 2026 01:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784855720; cv=none; b=H2JyfKCodUH52yZ3PTuwnaf0H5lHYSyAsoTxplzO69Yypr+7aSKnD4Z+wjiN7KkHLOcL+6M1iMaLfLbLCxkarQmo63H0WUaOXH5NUI5bms3tvvFTBTzXYGra4HpHEqCpSGEl54l6Udj4bJn5bYZ41BBIZ77thtj1+Dp37ULCHQs=
+	t=1784856241; cv=none; b=pjcvgnR+5VvXaRl+Onnp/5aegTmrQoCqeeSYZSlf0x+2AJ9Du58VC4psQqIAbVklJBbfQTA33CsQJ4YeLAPEQ+fPyJVVXjd0dx8KPeiGKWmFlo2933gwlTVJ0K64iuSySmu9UaB3fKwl17Fte3Se1aUugACntXwGasMr8NJOzaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784855720; c=relaxed/simple;
-	bh=gukJnQ/fidrxu6I2IMO9Xl5r2VkEX+ATv+e1LpUZl1g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q26aaft6pFgAOkOstpphFfVgrAiS2lR8SWyaBCDcEIIvghCiIuFd00W+tN8x/0UWzSgixGQ6iiYhiLt9xyxtdrRe7ChqiwA2sN/+3biuMRk4Dy5TWuoQ6K0QRRAQmW3wjAf22efsItvpf8Z6yRsJaRT96EtAs27YJ+qsR29v1pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lmgfRgyP; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lmgfRgyP"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cfbf3e4a63so11486845ad.0
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 18:15:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784855718; x=1785460518; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DTzG3eWbWHLelTuypq5zycVXMDqGngOZQFBOY8+dasM=;
-        b=lmgfRgyPcxQH9LeBClt8iMOplMgZcG77F9ZdND1ZD8Ohu2p2AFsW7FSyv/W9S26FsN
-         ty/W80d3EqI6qergbq07VRi9lqWLmNqoPrdYX1yb/TykiE51XuW8uIBwxwwi96mw4afG
-         aQNEHolPmKEZRDfyKTUu8n/OrHvCiWc3VSgXfgel9+7xE0wL1fB8YB0gyROAn2vRnFtP
-         Bl8VeYIBZAENASonfFEwrTUZ/dfH2kd6BdNJXvkG7XLspF3qc0110qK4s2gGvPCeN0ny
-         cdR6S7et7aoRMxAaVYtFnLU07DCVeUArX1TvQGLYpNnT++9ajNFru1rACLJuHc7wrFZB
-         4iuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784855718; x=1785460518;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DTzG3eWbWHLelTuypq5zycVXMDqGngOZQFBOY8+dasM=;
-        b=SV07MdhR2j5jxEX4TEh4r/uGwm9jdsJeCefGxvrL6sUgnj7976dNSlow+xthQZ3AFj
-         GfnxsMa34BOfYbiq0PeV7rEbYvViU5xW4sSi1Jjlz3ELflShB1CfygpIJayNrLuOL+yL
-         +4u+MfeAPIN/iVC0N/DP16uC3ro036XSgF8VYw2G4slQgCudVCx6Yoobe7x/a132swVy
-         2FGnydzixLZDoBwR5M7hsOFdaJyiAAriqe8gw1pM4rchWchs6gn02oW7HljpKVMMDIos
-         v4D1vWYvEBJEe7QaGj0aQz2+pP4243B7Gi86SR3VZsmbhf1BYLUGyf2BzLXal+jNRXHL
-         N2wg==
-X-Gm-Message-State: AOJu0YxXVuU2j5pn+87d1XUksmoAU14tYeBOGCs3LE57OpmDEQ8Aw6VJ
-	B0Zw2qj7hCmMyMxZEg/5dr5T6aW62VolWJ249BfOz9fteBO1MZohj1qeTNfQM2853p6e8AfAB5P
-	o5buRnw==
-X-Received: from plhe2.prod.google.com ([2002:a17:903:1c2:b0:2c9:a5a0:a677])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3508:b0:2ca:61bc:317c
- with SMTP id d9443c01a7336-2cfa71d8e4amr64163005ad.13.1784855717861; Thu, 23
- Jul 2026 18:15:17 -0700 (PDT)
-Date: Thu, 23 Jul 2026 18:15:17 -0700
-In-Reply-To: <20260724010336.16FCF1F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1784856241; c=relaxed/simple;
+	bh=taN91dFcLCpwpbFxf+d9rzxKsaivBEyRJUX8U5ebtpc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=RBlKOQlYjgxExIvifI4dpHzfa2TaRbz7zodGeTNCvZ4t+a8LC6C0ge8cVdvwIQ3FgH9vsmJ+LSlNzXsZLKkDF1gK86xUidMfXbqdujKgHykmLNDTikFmp5w78fA163C6WacVeJNY83hcuR2Y47c3ZomteJLwGagUwWBnOIZ0G9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxKfCpvmJqycQGAA--.25239S3;
+	Fri, 24 Jul 2026 09:23:53 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxq8ShvmJq__MWAA--.3360S2;
+	Fri, 24 Jul 2026 09:23:47 +0800 (CST)
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Fix PC double advance in kernel MMIO
+ read fast path
+To: Zeng Chi <zeng_chi911@163.com>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, kernel@xen0n.name
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, zengchi@kylinos.cn, stable@vger.kernel.org
+References: <20260723111552.1623996-1-zeng_chi911@163.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <c7d6c9ab-9df2-89fc-0a2e-1389b6f5d3ed@loongson.cn>
+Date: Fri, 24 Jul 2026 09:23:33 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260724004757.131420-1-seanjc@google.com> <20260724004757.131420-6-seanjc@google.com>
- <20260724010336.16FCF1F000E9@smtp.kernel.org>
-Message-ID: <amK8pbPT4i4GswBk@google.com>
-Subject: Re: [PATCH 5/6] KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly) for
- patching dcbz
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+In-Reply-To: <20260723111552.1623996-1-zeng_chi911@163.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxq8ShvmJq__MWAA--.3360S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Kry7GF4kAFW7tFy5XFyfKrX_yoW8Wr15p3
+	45Z34rCF48Jr47ZwnrJ393Aw42v3yrKr17WF13tFsaqr4qqFn5WFyFkF4DuFy3KwsYkw1I
+	q3Wktas0ka1UAacCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4AhLUUUUU
 
-On Fri, Jul 24, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] The commit title claims to use
-> `CLASS(kvm_vcpu_map_local_readonly)`, but the code uses the writable variant
-> `CLASS(kvm_vcpu_map_local)`.
 
-Gah, copy+paste fail.
 
-> - [Low] The local variable `r` is declared but never used after the refactoring.
+On 2026/7/23 下午7:15, Zeng Chi wrote:
+> From: Zeng Chi <zengchi@kylinos.cn>
+> 
+> In the in-kernel MMIO read fast path of kvm_emu_mmio_read(),
+> kvm_complete_mmio_read() already advances the guest PC via update_pc().
+> The explicit update_pc() call right after it advances the PC a second
+> time, so PC moves forward by 8 instead of 4 and the instruction
+> following the MMIO read is silently skipped.
+> 
+> The user space MMIO read completion path in kvm_arch_vcpu_ioctl_run()
+> calls kvm_complete_mmio_read() only once, and the MMIO write fast path
+> advances the PC exactly once as well.
+> 
+> Remove the redundant update_pc() so the kernel MMIO read fast path
+> advances the PC by a single instruction.
+> 
+> Fixes: 80edf90831a2 ("LoongArch: KVM: Add sign extension with kernel MMIO read emulation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> ---
+>   arch/loongarch/kvm/exit.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
+> index 8572b63478bb..482ba17bcd3d 100644
+> --- a/arch/loongarch/kvm/exit.c
+> +++ b/arch/loongarch/kvm/exit.c
+> @@ -481,7 +481,6 @@ int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_inst inst)
+>   		srcu_read_unlock(&vcpu->kvm->srcu, idx);
+>   		if (!ret) {
+>   			kvm_complete_mmio_read(vcpu, run);
+> -			update_pc(&vcpu->arch);
+>   			vcpu->mmio_needed = 0;
+>   			return EMULATE_DONE;
+>   		}
+> 
+Hi Zeng,
 
-I'll fixup both of these when applying, assuming nothing else needs to be fixed
-in the series.  Otherwise I'll address them in v2.
+Thanks for finding this problem, it is a big critical potential issue :(
+
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+
