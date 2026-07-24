@@ -1,139 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69C541A569;
-	Fri, 24 Jul 2026 17:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824E629AB05
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784914113; cv=none; b=S3bcG+yAGnZyKlUaut+mAnGyhtE2wrYUbGxVK9CGEl4mRhYMZO8syrFOYRVFaXrWPL5RoXCg59AcCpFat0ieYzkfzFYWImm8vzw4uoZz9SsnHgcQFo+XS/lDEuhJlCtZnBVOETkez2UeT/0eXg0gdKQzN9trhLlEkv+ILNl8BaM=
+	t=1784914468; cv=none; b=OfHa0i8J4Zxu667aF31MBPCNssvHRQlGhH2feMkb58/7Qqk9prvpL2uGI5XhCtJOKMvErj+3jgWC819yqCvHQ7eFaplVmoH1e9DaxFpbe7oMz0pp4HQ9GOeIB51DAZf6HwTYzQhbOFiMJ4NwGSygsov2X0laA45vdE2mEiwIK9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784914113; c=relaxed/simple;
-	bh=LATGk1Mpopu7i+mX8N/0zdj3wbMrDrQ1cgcaTJT2WzY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JkmJVbbjrg0SxQbDoiQ6AZvmcyMrTNKQPOKFfCHSbaUMzRSPXluA5ihbG0/7rxX1v5aEOXgxF5MotQOkJl6IILy86uSs+7Xd4m7WuV6HFS/tqQdUM3MHNbxo/ycUhn2MGGYrdpXBdrZtY+6u+DLUY7Oqm2h6nxiPUx4RroGS6a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3dd6ZOp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784914468; c=relaxed/simple;
+	bh=Tttx+GfGd7bzQIHLrqeohaZPjOr0yLAMIQMVWIGp5BE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hceBndnjjuEGUQ4PvcKmZ5IzgMp8kGc6JsEPnLR0rinDUqfdzU2q9QFo6m3tQy5stSJFd8+exkietZ7lEIxbdDzIPBlZeS+K6hsTvjyp2yZd9aDoZTnJftJNF3HCDrj7WAOEMx4hYKL/j14IBNi9pl8CQw1GNuEjO8UqCbtUAcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qpPvEXOW; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3dd6ZOp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467581F000E9;
-	Fri, 24 Jul 2026 17:28:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784914108;
-	bh=ZUdeq4pw0b/ouxPAuL3nC9+/zktWW0SmAdpQcFnGbAY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e3dd6ZOp2nV7j52oOohEzBuEzRdm52rK/JGrNpJx0Bz+VEaZyrwGQK2q4niFR1nBu
-	 HNX4CvkdWCHlGBbX5pcTI/X6c+J7Pi+TimDjzILCN5++aMeKCeqrFp3uIz3rKLJht4
-	 VJc4bLWDEuMdoeLHMz1/CHiIH3CLt61FwzB25SJI863LDujjO2ojNQiRg2zo50ewaJ
-	 6YB6ng9rucfP+EjMCqLHHpIGvvZsl9/zSo5BeTiqvxX1UsDZZmCoCf5dAm/BOAKZxu
-	 Ok9q9Wc18cycrED4WO+amxAFMb6bVItgTWTmrXJXIknjmqG9+bCI2T2KBSmRlt85tl
-	 2xcv5XapxioEg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 02/15] s390/vfio-ap: Data structures for facilitating
- vfio device migration
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org
-In-Reply-To: <20260724161351.1802644-3-akrowiak@linux.ibm.com>
-References: <20260724161351.1802644-1-akrowiak@linux.ibm.com>
- <20260724161351.1802644-3-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 17:28:27 +0000
-Message-Id: <20260724172828.467581F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qpPvEXOW"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ccbb61893fso13929535ad.0
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:34:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784914467; x=1785519267; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hTYhN6rGaAVoioSpjICR0A/T+42KOSJuXY48zbzHypU=;
+        b=qpPvEXOWpIgSZPstfy35mg2Kelh8Rw8J/xGPq0vstA6TZoD6eEX0vchLki2zR06RHO
+         fWWrhkmlMalx/sp/GNUttfifMkDJlM0MAUDAL1FXvlvc1xtyyMAP6UwRXLEPE2jm+qR9
+         lwwl841SRDfaKvvSKlatcGt81NiN3t6AJyvXaAJGJ1qqvP0J2x5nLqKZhDvHM9KNJXzh
+         TTRYWlOl0qCCSjim4EAg0iuIoG9fyrNxEsgTC5PaVaPtPvYbFGbH+ZoTYXcM2Nl0fFIQ
+         XywlE+yTnFr+rK1J/Mi3qXlxI6jQJb0O8U4KlBFS6KOnTTyT5xmJnEK+qvwWeFny6QYR
+         /3aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784914467; x=1785519267;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=hTYhN6rGaAVoioSpjICR0A/T+42KOSJuXY48zbzHypU=;
+        b=Ny9HZYfDOQLt2NCK4+dFVtqA47nTYsqNMROMJ4nHaME9As/5QquOQeN4rNIQv5oLta
+         lR65960HyK6n/086VTnYRRWVFfeg0tHGNTaz74t4NsVsCVUt4e2RW3FE1dA52TScHZ1D
+         dpDRJuMn1n+DDSQB7a+vNEuRaIaFcjKU40UP6ox/11MEfQuedeyFGpebMjf2zD9y325B
+         UInWZBqzbsd/n+iJMY1+hHPehAq4+YapN46ZutqczAIw8XVRS58LfdKjMCXzzlw9ETli
+         PxOQmCGRRDEhaqzREOt4zy5hGzTV9HFxwgrZERvT75aNyRxC9TUT8frLcANb6a0JFxtY
+         mGWA==
+X-Gm-Message-State: AOJu0YwaUMeAdxDBmRlbrQ2F8XjST7BC9uBSfmZ3yOel5N/bJGi8R3de
+	61iPyrssHoaXRdpMLAzOBa+APzm9YAyVwdB+TWqoKAl0upJwaiThN9GwKanFhqeb0F+yus/DZ4/
+	9ysk7SA==
+X-Received: from pllb9.prod.google.com ([2002:a17:902:e949:b0:2ca:d246:c7c8])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1aeb:b0:2ca:53e9:1277
+ with SMTP id d9443c01a7336-2cfa6a43e63mr90982215ad.1.1784914466539; Fri, 24
+ Jul 2026 10:34:26 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 24 Jul 2026 10:34:23 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+Message-ID: <20260724173425.278753-1-seanjc@google.com>
+Subject: [PATCH v3 0/2] KVM: x86: Suppress false positives on "lost" IRQs
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+dd769db18693736eee89@syzkaller.appspotmail.com, 
+	Sashiko Bot <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] Incorrect kernel-doc formatting and field name mismatches will caus=
-e documentation build warnings.
---
+Don't WARN on "lost" IRQs if the VM has an in-kernel PIC or Xen emulation is
+enabled, as vPIC and Xen emulation have guest-controllable and/or VM-wide IRQs
+that can legitimately be consumed/deasserted without holding the vCPU's mutex.
 
---- Patch [2]: [PATCH v5 02/15] s390/vfio-ap: Data structures for facilitat=
-ing vfio device migration ---
-commit c31e0e68ee7918227073261c8d3c179cdb56d4da
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+v3:
+ - Add a helper to weed out the problematic cases.
+ - WARN in the "else" path so that there's only a single conditional branch
+   in the happy path.
+ - Exempt Xen. [Sashiko]
 
-s390/vfio-ap: Data structures for facilitating vfio device migration
+v2:
+ - https://lore.kernel.org/all/86078441-92eb-4461-b823-7d3539ac5859@mail.kernel.org
+ - Restrict the warning exemption to the in-kernel PIC case.
+ - Remove the pr_err_ratelimited() logging.
+ - Preserve the WARN_ON_ONCE() for non-PIC interrupt sources.
 
-Creates the data structures used to facilitate state transitions during
-vfio device migration.
+v1: https://lore.kernel.org/all/345e9d6c-d7d9-4bab-adb3-d6a7bd27599f@mail.kernel.org
 
-> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
-o/vfio_ap_migration.c
-> new file mode 100644
-> index 0000000000000..1b0856aacb697
-> --- /dev/null
-> +++ b/drivers/s390/crypto/vfio_ap_migration.c
-> @@ -0,0 +1,72 @@
-[ ... ]
-> +/**
-> + * vfio_ap_migration_file
-       ^^^^^^^^^^^^^^^^^^^^^^^^
+Sean Christopherson (2):
+  KVM: x86: Don't WARN if IRQ disappears because it was cleared from the
+    PIC
+  KVM: x86: Don't WARN if IRQ disappears when Xen emulation is enabled.
 
-[Severity: Low]
-Is this missing the "struct " keyword and a short description for
-struct vfio_ap_migration_file?
+ arch/x86/kvm/irq.h        | 20 ++++++++++++++++++++
+ arch/x86/kvm/vmx/nested.c |  4 +++-
+ arch/x86/kvm/x86.c        |  4 +++-
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
-Building the documentation might trigger a kernel-doc warning here.
 
-> + *
-> + * This object is used for chunk processing of multiple reads and writes=
- of
-> + * AP configuration information.
-[ ... ]
-> +struct vfio_ap_migration_file {
-> +	struct file		*filp;
-> +	struct vfio_ap_config	*ap_config;
-> +	unsigned long		config_sz;
-> +};
-> +
-> +/**
-> + * vfio_ap_migration_data
-       ^^^^^^^^^^^^^^^^^^^^^^^^
+base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+-- 
+2.55.0.229.g6434b31f56-goog
 
-[Severity: Low]
-Could this kernel-doc block for struct vfio_ap_migration_data also be
-missing the "struct " keyword?
-
-> + *
-> + * Manages the migration state for the VFIO device that maintains the AP
-> + * configuration of the guest being migrated.
-[ ... ]
-> +struct vfio_ap_migration_data {
-> +	enum vfio_device_mig_state	mig_state;
-> +	struct vfio_ap_migration_file	resuming_mig_file;
-> +	struct vfio_ap_migration_file	stop_copy_mig_file;
-> +};
-[ ... ]
-> +/**
-> + * vfio_ap_config - the guest's AP configuration
-> + *
-> + * @num_queues:	the number of queues passed through to the guest
-> + * @reserved:	padding to ensure proper alignment of @cntl_domains
-                                                              ^^^^^^^^^^^^^
-
-[Severity: Low]
-Does this documentation for @reserved incorrectly reference a nonexistent
-cntl_domains field in struct vfio_ap_config?
-
-The struct defines the field as adm, so this might result in a field name
-mismatch warning during documentation build.
-
-> + * @adm:	bitmap specifying the control domains in the AP configuration
-> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
-> + *		queue information for a queue passed through to the guest
-> + */
-> +struct vfio_ap_config {
-> +	u32				num_queues;
-> +	u8				reserved[4];
-> +	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
-> +	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
-> +};
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724161351.1802=
-644-1-akrowiak@linux.ibm.com?part=3D2
