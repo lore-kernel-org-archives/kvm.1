@@ -1,164 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EE9445AF4
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 16:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB3B34388E;
+	Fri, 24 Jul 2026 16:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784911563; cv=none; b=ev0KZhrONV5lAvveeQNJGLzN3FBXyFWpnaRhn7cg/14h/8LXuzFCca31bxlaO9WOFhahuVgwXSqRkojNTv6OV/AdjR+5qbl+xZXUPP7AmmChavCKPISbjcGv6VpdjCbwmutyp9XPiX7DL/3vsgqL3u3lzykllmSph8vmVeK0ijU=
+	t=1784911754; cv=none; b=iSow81n5pABR3GefgDutzQXPUjzzpyIYVMtVi+jPft8ZaIwSci2Zk+UdRutUV0qT5V8wbSnhVF+1TChOGU9Cw8JL4Hw4yS2wG3rTnzKTLSTIDuKYfCSm9jIcC/wYKgPvlgi6qUt4IEVii783oeFO0hTJszKETQQTfsGy72F42As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784911563; c=relaxed/simple;
-	bh=5R6/AuE8HeovNM6gdcOrRkEF/mm9M/GJdke5wLsvJoQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JmSToT0xZupGN+essSASWh8+CJ2UA8L2OtfSpeYsoOR+DoHz6CXSOadxeUhfTes7laSUo7WpJfQLPXt5BZRmUv8WE8wdE/0yQNq8BcgJBe88NEAKM1oOnjjJpWhbGHfa8rMJBhz23/ZEysNx5XnqpfXU1y5XrUT9iK4F1CogCBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8l4F1lX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784911754; c=relaxed/simple;
+	bh=1UGAnJFLF7EN8foSpj24V4L8dSBOlVeYIVN/VKmKTh4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sLkgCe8TxDet5914c5KksDa6YCuqMF+dEygOg8vpZwTxKkgJUdRY2rB21DbLo5oDryHK1tDpM/c2Df6V2mdlX5/3q9D5N2V50EXPegEpDCtw0VxjoU8EG2nu5b7UU6mAkKVq/lLOYdhdyuZZr1L+FOutzEWBUYZ7muIXD979vnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PZGSIm4x; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8l4F1lX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCD91F00ACA
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 16:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784911562;
-	bh=lwrZMckZBDFDJgN3mP5MnYzwZQdNSOM0fUVfJrhLDdc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=m8l4F1lXoIIG4ZGE0J1MGbpmiS7O1DWEyFWj8QxZThwlFIo/7gF71D3nPlxa0eo9S
-	 ULIwErqnMvUxHy7b0B7WuV7n4jRbLyUbC3AAODb3mmom3HYP+yuF52JbPa0mTijcEJ
-	 Y8kNgc4RimC950SNup13uM4VHjk0IoCZeFxlLt2TeRcxoiMhCNpk8i+6g1AX9upFNc
-	 VX8dt7jBdVDbYnB5pZq2VcPY4q8+vMnBjFoQDnU1XdEqTRfPld6g4S5RcpMdxJF+kW
-	 S5BsZ+4/B5Lo3Waac7Zve1O53ocG3VqWGhmQjg5CQyB4cuUmIfpao/9bQD4usCSgrw
-	 /7dIhUxrlCEdQ==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-698ae09e356so767917a12.2
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 09:46:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpGM2UB+cObTSpGakVJVdtfY2DL9GlcqppJfDcJBupkS0DLLCA9ETmsWcdrM0yu12NnjNw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0jaFy05gbeCTY//iNdaI9ZUGUgomnPm/juhUdPGG+5UQIYvFB
-	6nh6xVon+aJ0tQBRYr2CNBeTUIwpiC24OtMzdceBpLKtLg5f5zl1pT9DLVCl8DheA6zt1XXfRq2
-	qH/WJnyBznXDip8UCGEm+8kzsWlVZZLM=
-X-Received: by 2002:a17:907:3f09:b0:c15:d068:9160 with SMTP id
- a640c23a62f3a-c1c50d1c8bfmr361405466b.31.1784911561073; Fri, 24 Jul 2026
- 09:46:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PZGSIm4x"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66ODfdQ21973583;
+	Fri, 24 Jul 2026 16:49:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=C/cmAd
+	GxZvTtalFereQsryrThdIi/K7671oYeDwhwRA=; b=PZGSIm4xDV7cWkzbuHXfos
+	LJJjWXHJRHRMOqWKuVdmwFZRsOdB+g6TOgY13icod40LsNyOzb9n819jj+w1Uek9
+	Zu7NEpA4fQd6IO9ca07fNUj2NNfpEBJ5tKQst9iPnzvYdxu3RKuTHsfmJwqCCj/w
+	KquFhUEoDUlkJixPjDWVUL4eFcxa0l4QHQ9nRzkaSlqk6B7UUzSqkNUwG1Tr0ylX
+	K8G3ZTreNfZB7IvrPf/zKiDq+Opx+jMB+mr5OZKDG7E9pyKTXWbkpSY6UflDJskN
+	2gxqOvnZ8KSpGbfm7a5U3kTpFFFAFg5B7ls3aqhBXRUlLd/HXXkwzq3Q+LvzWWEA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fm8h50yfk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 16:49:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OGYbk3016284;
+	Fri, 24 Jul 2026 16:49:11 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1gsjw4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 16:49:11 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OGnAqM24117978
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 16:49:10 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 493F658054;
+	Fri, 24 Jul 2026 16:49:10 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6694358045;
+	Fri, 24 Jul 2026 16:49:09 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jul 2026 16:49:09 +0000 (GMT)
+Message-ID: <924a8e11-f042-46d3-a559-407dbdc76d99@linux.ibm.com>
+Date: Fri, 24 Jul 2026 12:49:08 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
- <amFl89ch5Iej63L3@google.com> <amFms2CnzhDUuRCk@google.com>
- <amGiAKsC3XrF6DyA@google.com> <amIx9Ki6gv-wgBnX@google.com>
-In-Reply-To: <amIx9Ki6gv-wgBnX@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 24 Jul 2026 09:45:47 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMzV=DqR9NZdACzF1NF84GvPnUwP0p-0CypE-3vARxuWQ@mail.gmail.com>
-X-Gm-Features: AUfX_myAjVEFqUMfYEQem3GUZw9uIvGsdTwoxnHAujhl6B1ZnMtmwkBdddzOVjw
-Message-ID: <CAO9r8zMzV=DqR9NZdACzF1NF84GvPnUwP0p-0CypE-3vARxuWQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
- allow skipping the gva flush
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] s390/vfio_ccw: fix out of bounds check on CCW
+ array
+To: Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        stable@vger.kernel.org
+References: <20260723174751.1180334-1-farman@linux.ibm.com>
+ <20260723174751.1180334-4-farman@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260723174751.1180334-4-farman@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDE1MCBTYWx0ZWRfX4A2gSO0EFvb1
+ sp7a1dLf3knKsQYadAi8pGRsjGWysgR6yJcQCPEdBYuSXxUjq6igvezaLtcMqbW7Kng58DynYdQ
+ pP0rPZhqccJMXpMFWk1doCoBX3rhaEk=
+X-Proofpoint-ORIG-GUID: ZWiJZejKBwLvOhw8cnd0aTHhj0r_Dvv8
+X-Proofpoint-GUID: ZWiJZejKBwLvOhw8cnd0aTHhj0r_Dvv8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDE1MCBTYWx0ZWRfX+UOloMLrJaC5
+ RpVKh1jUwvXVncKcgQfLXTrb3moBmz8G+Earyh7ZBCS270ETmtyWJEuInI5Xod1WiysdXc9uDe7
+ g/G0rRlOoPt2G62o/3xLPQNkrEtW+DWB5dFf5IPA+XAt63eGWlfoshbDVTT8EdFieWUk6TE/tp3
+ 6sVQqbxNryDwTjHQfoOgTVL245QILd6PJ5B8NZIk7ajo8K+j+fcb4L3gKe+XB+JIkiHQrWSQ+9N
+ GXlnrqS8IuKBOBbsA1Ta0Trz4hNEiDwWV4K042VRikZBmDxiqqd+BFP/O+nQuBNWDZZXnw79Q7+
+ VSUOq8GkSkDs5vgJhjDkNuauasvWmtrcno/+HRzTEUPVv5Fq8bbps4/H+OqOuLeK0U9VZ0taghd
+ 6YkPPMKo0d8S6KD1TGGMpNuLioAfflBm0+Br4IxhoHgN3qRVW8dzdcznU/WWvp7OYOTQ59atmbG
+ p78gcNPwOhY4xipKMYA==
+X-Authority-Analysis: v=2.4 cv=du3rzVg4 c=1 sm=1 tr=0 ts=6a639788 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=FdF3VCsun6y3n0bO8WkA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 malwarescore=0 spamscore=0 impostorscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240150
 
-> > > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > > > index 65c35ed8f4a01..3feb75732f7b4 100644
-> > > > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > > > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
-> > > > >         write_unlock(&vcpu->kvm->mmu_lock);
-> > > > >  }
-> > > > >
-> > > > > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > > -                            u64 addr, unsigned long roots)
-> > > > > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > > +                                     u64 addr, unsigned long roots, bool flush_gva)
-> > > > >  {
-> > > > >         int i;
-> > > > >
-> > > > >         WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
-> > > > >
-> > > > >         /* It's actually a GPA for vcpu->arch.guest_mmu.  */
-> > > > > -       if (mmu != &vcpu->arch.guest_mmu) {
-> > > > > +       if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
-> > > > >                 /* INVLPG on a non-canonical address is a NOP according to the SDM.  */
-> > > > >                 if (is_noncanonical_invlpg_address(addr, vcpu))
-> > > > >                         return;
-> > > > > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > >                         kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
-> > > > >         }
-> > > > >  }
-> > > > > +
-> > > > > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
-> > > > > +                              u64 addr, unsigned long roots)
-> > > >
-> > > > Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
-> > > > kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
-> > > > to have the "in_root" version to a quad-underscores helper, and IMO it's more
-> > > > obvious what's different between the one-line wrappers and the inner helpers.
-> > >
-> > > Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
-> > > was assuming you were using it to differentiate between GVA and GPA, but IIUC,
-> > > it's literally skipping the flush for the current context, which just so happens
-> > > to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
-> > > all possible.
-> >
-> > Yes, it's skipping the TLB flush that is only needed for GVAs. The
-> > alternative I had in mind (but thought was worse) was to refactor the
-> > TLB flush part out of kvm_mmu_invalidate_addr() (or
-> > __kvm_mmu_invalidate_addr()) in this patch instead of adding a boolean,
-> > but this still requires adding a wrapper and the possibility of a
-> > quad-underscore helper.
-> >
-> > What's the main objection to kvm_mmu_invalidate_addr_in_root()?
->
-> I don't love the __kvm_mmu_invalidate_addr() => kvm_mmu_invalidate_addr_in_root()
-> callchain.  It's not at all obvious that the in_root() helper shouldn't be called
-> directly.  I don't hate it, but I do think we need better clarity on what all this
-> is doing.
->
-> E.g. when looking at __kvm_inject_emulated_page_fault(), since it hardcodes a
-> single root, it's a bit headscratching to use kvm_mmu_invalidate_addr() instead
-> of kvm_mmu_invalidate_addr_in_root.
+On 7/23/26 1:47 PM, Eric Farman wrote:
+> The routine ccwchain_calc_length() counts the number of channel
+> command words (CCWs) that are chained together in a single channel
+> program, and rejects anything larger than CCWCHAIN_LEN_MAX (256) CCWs.
+> 
+> The loop itself is "do..while (count < 257)", and while the logic in
+> is_cpa_within_range() correctly adjusts between the 0-index array of
+> CCWs and the count of CCWs starting at 1, this means it would look
+> at a possible 257th CCW before ending the loop and (correctly)
+> returning an error.
+> 
+> Fix this by restructuring the loop to break as soon as 256 CCWs
+> (thus indexes 0-255) are examined, without looking at memory
+> outside the range.
+> 
+> Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+> ---
+>  drivers/s390/cio/vfio_ccw_cp.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
 
-Coming back to this, I agree it's confusing. I think this can be fixed
-with a better name though. Looking at
-kvm_mmu_invalidate_addr_in_root() (or __kvm_mmu_invalidate_addr() in
-current code), seems like what it does is find SPTEs for that address,
-sync them, and flush the TLB if needed.
+So, I think your approach is correct, but I tried for a bit to come up
+with a more concise solution because the while(1) was bothering me.
+The best I've managed to cook up is something like:
 
-So maybe mmu_sync_addr_sptes() or mmu_sync_and_flush_addr_sptes()?
+static int ccwchain_calc_length(u64 iova, struct channel_program *cp)
+{
+	struct ccw1 *ccw = cp->guest_cp;
+	int cnt;
 
-I think this would make it obvious it is not a direct alternative to
-kvm_mmu_invalidate_addr() that just operates on a single root.
+	for (cnt = 1; cnt <= CCWCHAIN_LEN_MAX; cnt++, ccw++) {
+		if (!ccw_is_chain(ccw) && !is_tic_within_range(ccw, iova, cnt))
+			return cnt;
+	}
 
-> Hmm, and arguably, the way invlpga_interception() handles the ASID is flat out
-> wrong.  KVM doesn't need to flush *all* roots, rather it needs to flush L1 roots
-> for ASID=0, and L2 roots for ASID!=0.
+	return -EINVAL;
+}
 
-I wouldn't say it's wrong. It syncs more roots than needed, yes, and I
-did document that in the comment. I didn't want to spend time
-optimizing this because it only matters if NPT=0 in the host (and
-probably L1 will only use INVLPGA if it also has NPT=0).
+Assume CCWCHAIN_LEN_MAX=2
+We enter with cnt=1, ccw=guest_cp[0], and 1 <=2 so we enter loop
+either return 1 or loop, assume loop so we increment
+now cnt=2, ccw=guest_cp[1], 2 <= 2 so we enter loop
+either return 2 or loop, assume loop so we increment
+now cnt=3, ccw=guest_cp[2]*, 3 <= 2 so we break out of loop and return -EINVAL
 
-I think KVM generally over-syncs in multiple cases. For example,
-emulating INVVPID on a single address flushes the entire root (see
-handle_invvpid()), and I don't think anyone cared enough to fix that.
-Also, emulating INVLPG and INVPCID syncs all roots, arguably it should
-only sync the ones' matching the vCPUs current guest_mode?
+*So the only catch is that we will increment ccw past the end, but unlike the
+original implementation we will break out of the loop before ever attempting to
+use that ccw pointer at that point.
 
-> If we can figure out an elegant way to
-> express and handle that, it should naturally handle the "flush GVA" aspect.
+What do you think?
 
-Hmm how? I think the way to properly do this is to filter roots based
-on role.guest_mode, like kvm_mmu_free_guest_mode_roots(). I'd probably
-refactor that logic out of kvm_mmu_free_guest_mode_roots() and reuse
-it if we go this route. But this doesn't really help with the "flush
-GVA" aspect.
+> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_cp.c
+> index 1c2890d139c6..258a99930c6a 100644
+> --- a/drivers/s390/cio/vfio_ccw_cp.c
+> +++ b/drivers/s390/cio/vfio_ccw_cp.c
+> @@ -393,11 +393,14 @@ static int ccwchain_calc_length(u64 iova, struct channel_program *cp)
+>  		if (!ccw_is_chain(ccw) && !is_tic_within_range(ccw, iova, cnt))
+>  			break;
+>  
+> -		ccw++;
+> -	} while (cnt < CCWCHAIN_LEN_MAX + 1);
+> +		/* Exit the loop when we reach the maximum */
+> +		if (cnt >= CCWCHAIN_LEN_MAX) {
+> +			cnt = -EINVAL;
+> +			break;
+> +		}
+>  
+> -	if (cnt == CCWCHAIN_LEN_MAX + 1)
+> -		cnt = -EINVAL;
+> +		ccw++;
+> +	} while (1);
+>  
+>  	return cnt;
+>  }
 
-One way to actually tackle both is to pass "guest_mode" to
-kvm_invalidate_mmu_addr() as a boolean (yuck). Then, it can do the
-root filtering inside kvm_invalidate_mmu_addr(). We can then plump
-guest_mode into flush_tlb_gva, and handle flushing L1's ASID vs L2's
-ASID completely within flush_tlb_gva.
-
-But then we'll have to figure out what's the right value of that
-boolean to pass from all callers of kvm_invalidate_mmu_addr() and
-there's more things we can get wrong.
