@@ -1,57 +1,57 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FC72F6188
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 00:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB832EEE8C
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 00:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784854087; cv=none; b=AQqgGyuD3UiAkdlW/fk84dcPe4BwXKlLkghlB6o6eZ95M1qWL0qUNIsiL4WxqMuM2dXde6tcsuGS6h8NaXa98sCEnLoxnL+rFrTYDH/2GWDzQq5OpORpbnnyCszw3NueSajTr+2cBqTUKs5p91iAzaBe2sPNgpylrIGTjCcNUY4=
+	t=1784854090; cv=none; b=ZOXprvRctvZ//Qcud3uvp2FNId3cjZuMlMph2QdIIwzdV3AZ/pQomiYjDLps416UNFTDjpU0PMUoVr75v5u4OTpmlln4sf53hjw28jopB+I7VG+ZrAlH1bIeRPOdo7/i5BRF8xLcw7bZ/jiOWile0Sjs3m7BRso01Hmg66jGjQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784854087; c=relaxed/simple;
-	bh=KqdXVd09tHO6MxPI+hf6b4RatXWpu869ZuWrzl3QiuA=;
+	s=arc-20240116; t=1784854090; c=relaxed/simple;
+	bh=Ax8Tp1KrZPx5xlSkcBsdWogHprGxL+uJksJ1bVSVzas=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VsRDfuAL1TV26ZLmsW/up8V3LOtYuMVS52j6LUOhPVKSvldWt9fQz5Axbf7zSGxMjqxLnaqmg0Ew6nm11KYD5NGFF65mYbYp/U6W+n+sQI0iNsSqultvqVpSMnKwFKWNjJAjAs7KoNZ2xEP035yfCJY/vZ7xTHSoyUxTfVtYJYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CmhCXFIS; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=fIk2lKexgq99gzX8fjxsFkguyXlurOUKhdSHrWWP4oFnMWcfDrZBBIcHrD6LEEdWjb9UDiNJsfFNLv1GlfFg795B2NGWh/VmX8nDbxK03JMC2ckMxPWF5pPOW0YpT8RMllbZKbvizWoH6Ade4VF3h1F+bdWseZnT1owTQRJqf2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ory6sm0k; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CmhCXFIS"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so2213629a12.3
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:48:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ory6sm0k"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cae455cf6dso19763145ad.2
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 17:48:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784854084; x=1785458884; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1784854089; x=1785458889; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=Alx5+6ajemwcdZLjQENBxyMOBgE6MWN8o6tlzzoEhF8=;
-        b=CmhCXFISOwLqQb+eLKbL4dVrWuacYFUD9c9M08yIarR9xCGt5SBT2tdXdFrr/kbGeo
-         0p1JLXOAPLnkquWXuZDckECrXf1SBbxn3L/8b5YXatyMWlpciN0pR2b2nJNErlZf48WQ
-         Cn4sZRjrenIWPZsGSa3vcktxV0/+lgocOjTPgomKmjUkWSouhKly4mtU8O4jrJAi1mv3
-         cAYKEq38Q/veQAP7KchS7Ay/d+nWBIsvsrksJu89gwgTMsmk49lVNg5LMeN6mr1lgmGm
-         VLDpRzgr0YE1uY5cpLR9toYpL708Z2F5GvSkwtXQICafKjLbQiXE/Ru+Q/Z/bG/TLb5/
-         66Kg==
+        bh=iizTcAPrS3gcyVAqe3yTm9VHs8JAlHzgO7yvRefWb4w=;
+        b=ory6sm0kvkUIlO3JoXGwEe1osEkqVF6PulzMo+lDhWQdKoSKEvuryz9va0ksth9Y+/
+         LzYm9Q55o26TG4RIqaaUUpvmFi8L6dZCgA1OdVr+Kt5UKoHSbydeAM7QeVz63s6fwF64
+         cpBo6DqSWcSoOAsuFtcGx/S6e40QC8uD/zFAdE9vqA7IqrlHhxXORS/v6W0QDgU8+94V
+         +sw/LRetlgvOvnEZZZjMWC5yqQlzNcB4W23zC7G6GLxS+dMT+TG1C/IIjRGpdYWrTywR
+         +tJS+a2ZL8+2oRDHGoEchD7eiGSI2lpG8kA3E2rFiuBNNAe7my7DJc3zzvFdJhC65nc4
+         3ysw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784854084; x=1785458884;
+        d=1e100.net; s=20251104; t=1784854089; x=1785458889;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Alx5+6ajemwcdZLjQENBxyMOBgE6MWN8o6tlzzoEhF8=;
-        b=jtd0CywnZ8z7MBdbljiQhCQZmRiwRuQZTmgP8ow4DpJS19k3IjN0ssbhv/CpUU+3z2
-         qS7zIP6g+6Pq4iGhOlFOf+abi5TJ66kgqtHm7tYoXz9Jwx8C523nhUNkYMO/hRVjKjjP
-         Xq3QJ8JIj9WcE6ZNVdeo+UvhhKtZ2z+7DFei/xg5Kdwj3gpd8YjEjTycdDCEXrfGusbc
-         30ftShcyEx8Ti3jWJLwJKRJPYvCmkneUWqwBInsW0N1Y+3/sG6Eo6TOqJcgs3az056OE
-         WBNoeYRLeNuJtvqbNDKtkWSt7Z7EX56iYrsCflpxpcBPuX1arE5mNxTG29L1RkIDiAYb
-         wQ2w==
-X-Forwarded-Encrypted: i=1; AHgh+RoUgsKrVm2yWarU3H2q26NpZOmDaolEfZPcdc0NEKcInKb9Nh5zO1wM+5ZzzQNDbC80TTk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtXOrxHTCzbcRZ+7KtChcwxrV2uiycwQP7XY/ORRzwsLuVctq/
-	19cZEXjMrwVaXcFRpMIH5k1Gi/FWMc3MA66tiOzna1GkSqT3Z9LjI49VeT/dozj4GRlOPabHYKa
-	HvhIUTQ==
-X-Received: from pgbee3.prod.google.com ([2002:a05:6a02:4583:b0:c99:d21a:f6b1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:e292:b0:3c3:b226:f165
- with SMTP id adf61e73a8af0-3c44b18d6cbmr6214167637.35.1784854084080; Thu, 23
- Jul 2026 17:48:04 -0700 (PDT)
+        bh=iizTcAPrS3gcyVAqe3yTm9VHs8JAlHzgO7yvRefWb4w=;
+        b=LFatC9rVYWiokHZMab7a7D2ojfOh6MkYLmESFm3syFYGxyZep0jXMxrrXVDJQq8fzF
+         6E7d4VBn60MMgr5/q3r9hh9iq6SWksokzDDieXwMbKsb4VdLkTjEXKgX+0PDy3rqI9Su
+         JLlJ/ERRPqx87gOMz7sJBsx/LLRK2TSTQv9Hbq92PIM0WHVWyQuqCNx1Tbo2Wkl2N9vm
+         VbBqRk5osgoeJVd70HUTbM9he29Oy8VSz8fof5B4wZLfZ7aASXODkVtXk1JlmzbZwdEx
+         jqmlgU6VbHpmZhj7rlmgSoYi/ULyFQuK6wEyEO7MfGWiHwAjkxV0HhenyV1vt1YhteKx
+         qJCg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrlyr7X48KL4QPzhn25zOiW5e0/kVkzTRUmX5zxlnmpAWHEt08N6hEYxAx1Wk3bjvchPAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHJga0XRo2K9xJbbENQu02KRKVDQOkBlr6OOiCJE6dFlWwr9vq
+	E9pLrbwTI1wx2G3Vx2Y87YGNtaTbEDuxMkr6dtzEQkAN5bgTMHTu8gvWlGcLmwDboBIFtRryw1I
+	f26QVmA==
+X-Received: from plblm14.prod.google.com ([2002:a17:903:298e:b0:2bc:838b:f23e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f681:b0:2c9:cf5d:d9bc
+ with SMTP id d9443c01a7336-2cfa74b13famr65141725ad.35.1784854088680; Thu, 23
+ Jul 2026 17:48:08 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 23 Jul 2026 17:47:54 -0700
+Date: Thu, 23 Jul 2026 17:47:57 -0700
 In-Reply-To: <20260724004757.131420-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,8 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260724004757.131420-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260724004757.131420-4-seanjc@google.com>
-Subject: [PATCH 3/6] KVM: nSVM: Use CLASS(kvm_vcpu_map_local) for SMM VMCB mappings
+Message-ID: <20260724004757.131420-7-seanjc@google.com>
+Subject: [PATCH 6/6] KVM: Harden kvm_vcpu_map() against double-mapping and
+ thus leaking references
 From: Sean Christopherson <seanjc@google.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
 	Paolo Bonzini <pbonzini@redhat.com>
@@ -70,117 +71,32 @@ Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger
 	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Convert the kvm_vcpu_map() usage in the enter/leave SMM flows to the new
-CLASS(kvm_vcpu_map_local) implementations, to eliminate the need to
-manually do unmap() in error paths, and more importantly to eliminate more
-of the open-coded on-stack "struct kvm_host_map" declarations.
+Now that all on-stack maps use CLASS(kvm_vcpu_map_local), i.e. now that all
+maps are zero-allocated, explicitly put any existing mappings/references
+when establishing a new mapping to harden against KVM bugs leaking memory,
+but yell loudly as the owner of the map is still ultimately responsible for
+the lifecycle of the mapping.
 
-No functional change intended.
-
+Suggested-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/svm.c | 38 ++++++++++++++------------------------
- 1 file changed, 14 insertions(+), 24 deletions(-)
+ virt/kvm/kvm_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index bf10483c0e8a..7a417e717fd9 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4987,7 +4987,6 @@ static int svm_smi_allowed(struct kvm_vcpu *vcpu, bool for_injection)
- static int svm_enter_smm(struct kvm_vcpu *vcpu, union kvm_smram *smram)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	struct kvm_host_map map_save;
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 2df8ee9ecf6c..e9e32686e41b 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3118,6 +3118,9 @@ int __kvm_vcpu_map(struct kvm_vcpu *vcpu, gfn_t gfn, struct kvm_host_map *map,
+ 		.pin = true,
+ 	};
  
- 	if (!is_guest_mode(vcpu))
- 		return 0;
-@@ -5021,24 +5020,20 @@ static int svm_enter_smm(struct kvm_vcpu *vcpu, union kvm_smram *smram)
- 	 * that, see svm_prepare_switch_to_guest()) which must be
- 	 * preserved.
- 	 */
--	if (kvm_vcpu_map(vcpu, gpa_to_gfn(svm->nested.hsave_msr), &map_save))
-+	CLASS(kvm_vcpu_map_local, m_save)(vcpu, gpa_to_gfn(svm->nested.hsave_msr));
-+	if (m_save.ret)
- 		return 1;
- 
- 	BUILD_BUG_ON(offsetof(struct vmcb, save) != 0x400);
- 
--	svm_copy_vmrun_state(map_save.hva + 0x400,
--			     &svm->vmcb01.ptr->save);
--
--	kvm_vcpu_unmap(vcpu, &map_save);
-+	svm_copy_vmrun_state(m_save.map.hva + 0x400, &svm->vmcb01.ptr->save);
- 	return 0;
- }
- 
- static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	struct kvm_host_map map, map_save;
- 	struct vmcb *vmcb12;
--	int ret;
- 
- 	const struct kvm_smram_state_64 *smram64 = &smram->smram64;
- 
-@@ -5055,22 +5050,23 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 	if (!(smram64->efer & EFER_SVME))
- 		return 1;
- 
--	if (kvm_vcpu_map(vcpu, gpa_to_gfn(smram64->svm_guest_vmcb_gpa), &map))
-+	CLASS(kvm_vcpu_map_local, m)(vcpu, gpa_to_gfn(smram64->svm_guest_vmcb_gpa));
-+	if (m.ret)
- 		return 1;
- 
--	ret = 1;
--	if (kvm_vcpu_map(vcpu, gpa_to_gfn(svm->nested.hsave_msr), &map_save))
--		goto unmap_map;
-+	CLASS(kvm_vcpu_map_local, m_save)(vcpu, gpa_to_gfn(svm->nested.hsave_msr));
-+	if (m_save.ret)
-+		return 1;
- 
- 	if (svm_allocate_nested(svm))
--		goto unmap_save;
-+		return 1;
- 
- 	/*
- 	 * Restore L1 host state from L1 HSAVE area as VMCB01 was
- 	 * used during SMM (see svm_enter_smm())
- 	 */
- 
--	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, map_save.hva + 0x400);
-+	svm_copy_vmrun_state(&svm->vmcb01.ptr->save, m_save.map.hva + 0x400);
- 
- 	/*
- 	 * Enter the nested guest now
-@@ -5078,24 +5074,18 @@ static int svm_leave_smm(struct kvm_vcpu *vcpu, const union kvm_smram *smram)
- 
- 	vmcb_mark_all_dirty(svm->vmcb01.ptr);
- 
--	vmcb12 = map.hva;
-+	vmcb12 = m.map.hva;
- 	nested_copy_vmcb_control_to_cache(svm, &vmcb12->control);
- 	nested_copy_vmcb_save_to_cache(svm, &vmcb12->save);
- 
- 	if (nested_svm_check_cached_vmcb12(vcpu) < 0)
--		goto unmap_save;
-+		return 1;
- 
- 	if (enter_svm_guest_mode(vcpu, smram64->svm_guest_vmcb_gpa, false) != 0)
--		goto unmap_save;
-+		return 1;
- 
--	ret = 0;
- 	vcpu->arch.nested_run_pending = KVM_NESTED_RUN_PENDING;
--
--unmap_save:
--	kvm_vcpu_unmap(vcpu, &map_save);
--unmap_map:
--	kvm_vcpu_unmap(vcpu, &map);
--	return ret;
-+	return 0;
- }
- 
- static void svm_enable_smi_window(struct kvm_vcpu *vcpu)
++	if (WARN_ON_ONCE(map->hva))
++		kvm_vcpu_unmap(vcpu, map);
++
+ 	map->pinned_page = NULL;
+ 	map->page = NULL;
+ 	map->hva = NULL;
 -- 
 2.55.0.229.g6434b31f56-goog
 
