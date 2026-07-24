@@ -1,178 +1,139 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0173A6B82
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784914049; cv=pass; b=iMeXjjtEQ5niyFeNnpIU0PsGrwUDfOXEOxE6kd7xMrzADpUGc/MwlukV6RW4s8os4LsJws4oeE8nXSeZGBS2HmD+b3hi6tNGEJqNkrNZogJOcqN6vMIE1MrTgx2XQgd0EkCTU0NxxE98sTg74MGqnapTPt1/HNdCV+Qae0gIWMI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784914049; c=relaxed/simple;
-	bh=JdY+nYpi6ys5MsewwaA1hEzziJ9Shq6jtmhApeNh1s4=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DXFDp6yz5p9/VZfGQadwPOj/KptzzIEBSl3rO78TEM3nQzKFSPKRPwWBoA9vk4LOGkcsapj48by3oUMdKbTNvElhC3dxzvdkdW18+V6fe6goyDcDGkb901ynDVHEPOsAO8ivwadmQbfiG6VoDTMWTj6yjPTppb1idLxJR8ZAako=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UT6zIby+; arc=pass smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69C541A569;
+	Fri, 24 Jul 2026 17:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784914113; cv=none; b=S3bcG+yAGnZyKlUaut+mAnGyhtE2wrYUbGxVK9CGEl4mRhYMZO8syrFOYRVFaXrWPL5RoXCg59AcCpFat0ieYzkfzFYWImm8vzw4uoZz9SsnHgcQFo+XS/lDEuhJlCtZnBVOETkez2UeT/0eXg0gdKQzN9trhLlEkv+ILNl8BaM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784914113; c=relaxed/simple;
+	bh=LATGk1Mpopu7i+mX8N/0zdj3wbMrDrQ1cgcaTJT2WzY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JkmJVbbjrg0SxQbDoiQ6AZvmcyMrTNKQPOKFfCHSbaUMzRSPXluA5ihbG0/7rxX1v5aEOXgxF5MotQOkJl6IILy86uSs+7Xd4m7WuV6HFS/tqQdUM3MHNbxo/ycUhn2MGGYrdpXBdrZtY+6u+DLUY7Oqm2h6nxiPUx4RroGS6a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3dd6ZOp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UT6zIby+"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1600d040e4so93066766b.1
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:27:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784914043; cv=none;
-        d=google.com; s=arc-20260327;
-        b=l8lVfobUQxeGj2C3dRNeuq9I/FCbYknemYyelF3uEsGavwRZz/W6EfldVWk3HNJcev
-         CxuPYh02B0dutb/ltPcrmbFGZObFbH5ejZUHHnmXuXFbrjUCxAP/PF00kSxApWzz9hwL
-         BFVFm7IjjIIPlU+bmm7EEfwBOClZIRFn6KtyTvxlhMJhIjfZRnKueX1gUVG5Ont8h6VD
-         AfFixk5PYqhwwSvIE4fwRp0yeLCqKrmcT4xsTelR0Jf/4dVYwkKx/DhLstsR1ju7QOcK
-         3PSSnkPSJjiabqLwqFNKEoTryCv4JYJuE8uq2adyRqJ9Gv6l8Yet2i4UxHboqCrqyOc2
-         2g2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=d5AhwjwYukV9mT3Xe6Qftz4sVEeZ8cM9ZQqM9u/iG/Q=;
-        fh=7SN3e5ugeAz/7JT2NybV2giSTabVlfmXLVH9k1v4pJg=;
-        b=hEUf40CtcfLu9itFKJrHx4FlfnU+2wflQVneghI6LCPOQJPPaYmDj278sihKwbOccs
-         7yi1+ZrRslbZlDYuPEau54j2e4F4QlVTh5kchmBMw9EG8ZoKqW3w0oYObBqkMcVNrBP+
-         /hyYFdmqp6AG28nvSirxbwkZ5cJtZndUlr8gQThrT8SkBmiqnohevBJaxuMR0FvsSUvB
-         tgkibkx7sDtV+Hhi7IyOZakuBO4wST5OhR8TpNldTf6AF+6QDhoP4+mDmXI15uK/PFVu
-         OvWBeHrWO9XcYvZJtMYq2JkeKKCSdLM5XfGw1g6eLGe13EkzW64JKkpLUWVFV4ARr4iw
-         4xYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784914043; x=1785518843; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d5AhwjwYukV9mT3Xe6Qftz4sVEeZ8cM9ZQqM9u/iG/Q=;
-        b=UT6zIby+vjl270QiNVns0GzcSacVd0D52J6/r6tRu+tYYlBEp5iPqhrBDFgRBzTWWG
-         Wwaoa2QCB+TOCZQqAx9PTKQTff5tWXe3HFR6EsU3e/YsAsEWAa+Rcb4RZT4hwmj0GNkW
-         kz5r4z8282302/D9A1WBeiqm2KhDsM+6FWKz97UrJ0vx/Cbu+8uL4katSpKTGEPboIhZ
-         XlqFZtWxIkTCo5r/cupWhGTk3HkDVaWhr3avFQTEWzbn6eHN5wg4nuhDC3gbNI09Zh9u
-         RlkiKarJSQsZVJeLyyHehY6EjYPxWkUX95pLLyB7U7Hdni3+nIT6VI0L+mkDEz4bWMHP
-         /pHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784914043; x=1785518843;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=d5AhwjwYukV9mT3Xe6Qftz4sVEeZ8cM9ZQqM9u/iG/Q=;
-        b=e0ir9+G4ZF/krC3LI4JcTiXsFeo6Ru6HZSNKROE6jq4rreEiAvJMVldu3jDEF0U9o3
-         wuvJa5fTlccWklNfe55fxEGl7mxchmTqmR3yPUlhkafVQmKiXfz80FMn4LujODHBTbWN
-         ozzdiFoUGhuYg0XluwJFtcTgF1I5sK5uKssL5Wf79rx75jx8zpeTqCw7f6UH1MdttwyA
-         aR/MxxQtcXtmF6eu/iW1QtIUJzzvpRtQRZKLYaB8rj9d1fwLCjm0cmo0nBRikV361vTV
-         ZbMD3+9HYhpZn5lssdLyBnMZ3frEAie1R3mrZ+9bcsaVLqJxXc1SnZYmUmdq297Ka4h1
-         psXw==
-X-Forwarded-Encrypted: i=1; AHgh+RofBhD6bCRNgfs4yQZFw6K7dIo9xwIjx8GXIJSpm+HpzG8XW3naxt7BwgnHxlLFzCfBbW4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmVxGUBNG3dOiJR5abm9RVQ3RP4XQSK3Lja/rE3cDJUb+I0sNw
-	LSnO+VHi4+4pdnp/PF6xrzqiGpMWBuaBN2c2GKAbfgvT2aJRtHmPDJyxGSwIP3BBOI7YowyAVoI
-	bJS2dtcl3d+zK1j1a5ZgQoJhUuLjBiRwJjAqOdWyEnw42Mu8pOYUBXSaz
-X-Gm-Gg: AR+sD12t7kLJ7019XKhWB74zz20LBWh0Mj0inr5gu5t5EK1KxZWzvbv3yySSwSk3VO8
-	4b5cSXW0ou1pexDDj65GHE6NtqY/IwCK9Q6BhUHXPuhOaxTN7r7RcOgBysYMjfnl7A+Xx+L5OMs
-	hzNHHvy5l9LDDcCI3kKGnkSus4D/ZlJBZKxC1XGiRjKmHUp/KUz0WU+lrDJfVULVXXK0uVqxD+E
-	xOCmRT6sUiAcz2HgSO+koXMnMmJx3+v9cHUb2X8X6XHCLKn04breRdtCbbp6K7uJWKqUIvMc+q1
-	qZVW03rn3lA7Lj02QASyODfNU9dV8cng/GtSpfFnAHxvmGwL
-X-Received: by 2002:a17:907:3e24:b0:c12:8ede:77 with SMTP id
- a640c23a62f3a-c1f139fc1fbmr68967566b.22.1784914042761; Fri, 24 Jul 2026
- 10:27:22 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 24 Jul 2026 10:27:20 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 24 Jul 2026 10:27:20 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <amN6VptoRxbZJE2y@google.com>
-References: <tencent_7DA064CAC9B463EB9B651801011E2CE4230A@qq.com> <amN6VptoRxbZJE2y@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3dd6ZOp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467581F000E9;
+	Fri, 24 Jul 2026 17:28:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784914108;
+	bh=ZUdeq4pw0b/ouxPAuL3nC9+/zktWW0SmAdpQcFnGbAY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=e3dd6ZOp2nV7j52oOohEzBuEzRdm52rK/JGrNpJx0Bz+VEaZyrwGQK2q4niFR1nBu
+	 HNX4CvkdWCHlGBbX5pcTI/X6c+J7Pi+TimDjzILCN5++aMeKCeqrFp3uIz3rKLJht4
+	 VJc4bLWDEuMdoeLHMz1/CHiIH3CLt61FwzB25SJI863LDujjO2ojNQiRg2zo50ewaJ
+	 6YB6ng9rucfP+EjMCqLHHpIGvvZsl9/zSo5BeTiqvxX1UsDZZmCoCf5dAm/BOAKZxu
+	 Ok9q9Wc18cycrED4WO+amxAFMb6bVItgTWTmrXJXIknjmqG9+bCI2T2KBSmRlt85tl
+	 2xcv5XapxioEg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 02/15] s390/vfio-ap: Data structures for facilitating
+ vfio device migration
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org
+In-Reply-To: <20260724161351.1802644-3-akrowiak@linux.ibm.com>
+References: <20260724161351.1802644-1-akrowiak@linux.ibm.com>
+ <20260724161351.1802644-3-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 17:28:27 +0000
+Message-Id: <20260724172828.467581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Fri, 24 Jul 2026 10:27:20 -0700
-X-Gm-Features: AUfX_myujysoy-q0RE8ijQGrElo0RZfIbuFKRTq9XjjZiWqF4W-rxv71cx9e6Jw
-Message-ID: <CAEvNRgFTz7LETUpNeuR1sBXPFJ9N1e3ZYyPRg7R_HWARKmPcJA@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: guest_memfd: Fix ABBA deadlock in error_remove_folio
-To: Sean Christopherson <seanjc@google.com>, zhanghao <76824143@qq.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Lisa Wang <wyihan@google.com>, 
-	David Hildenbrand <david@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Sean Christopherson <seanjc@google.com> writes:
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Incorrect kernel-doc formatting and field name mismatches will caus=
+e documentation build warnings.
+--
 
-> On Mon, Jun 15, 2026, zhanghao wrote:
->> >From e7f25639c05eac51b4ac8add3dd3e3a76f6f7340 Mon Sep 17 00:00:00 2001
->> From: Hao Zhang <zhanghao1@kylinos.cn>
->> Date: Thu, 11 Jun 2026 15:27:27 +0800
->>
->> memory_failure() calls ->error_remove_folio() while holding the poisoned
->> folio lock.  guest_memfd's implementation takes mapping.invalidate_lock for
->> read before zapping KVM mappings.
->>
->> That lock ordering can deadlock against paths that hold
->> mapping.invalidate_lock for write and then try to lock the same folio, e.g.
->> guest_memfd punch-hole via truncate_inode_pages_range().
->>
->> The invalidate lock is needed for page-cache invalidation, but
->> ->error_remove_folio() only needs stable guest_memfd bindings while walking
->> them to zap KVM mappings.  Add a guest_memfd-private rwsem to protect
->> established gmem file entries and their bindings during invalidation and
->> removal, and use it in ->error_remove_folio() instead of
->> mapping.invalidate_lock.  Update bind, unbind, and release paths to take
->> the new lock when modifying bindings or removing a gmem file entry.
->>
->> Keep taking mapping.invalidate_lock before the bindings lock in paths that
->> need both locks, so writers cannot queue on the bindings lock while a
->> punch-hole operation is blocked on a folio lock.
->>
->> Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
->> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
->> ---
->> Changes in v2:
->> - add a guest_memfd-private rwsem to protect the
->>   gmem_file_list and each gmem_file's bindings
->>
->> Link to v1: https://lore.kernel.org/all/tencent_4B051B84CDCC0D1964EC00337AA32E40DC07@qq.com/
->>
->>  virt/kvm/guest_memfd.c | 38 ++++++++++++++++++++++++++++++--------
->>  1 file changed, 30 insertions(+), 8 deletions(-)
->
-> Well shoot. I know I suggested this approach, but oof is it uglier than I was
-> expecting.  I forgot that it's not just the bindings that need to be protected,
-> the list of files also needs to be protected.
->
-> And thinking about this more, I'm not convinced a separate bindings lock is
-> sufficient, as a concurrent __kvm_gmem_populate() could establish mappings after
-> kvm_gmem_error_folio() completes, if kvm_gmem_error_folio() runs between
-> folio_unlock() and post_populate().
->
-> So for a stopgap, I'm leaning very strongly towards going with the trylock
-> approach you proposed in v1.
+--- Patch [2]: [PATCH v5 02/15] s390/vfio-ap: Data structures for facilitat=
+ing vfio device migration ---
+commit c31e0e68ee7918227073261c8d3c179cdb56d4da
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-I think we can go with the stopgap for now, with guest_memfd
-conversions, the filemap_invalidate_lock() is relied on for even more.
+s390/vfio-ap: Data structures for facilitating vfio device migration
 
-> Longer term (or maybe even as an immediate fix?),
-> I think the ideal solution would be to rework truncate_error_folio() flows to
-> allow .error_remove_folio() hooks to unlock the folio.
->
+Creates the data structures used to facilitate state transitions during
+vfio device migration.
 
-Actually it seems like having the folio locked is part of the contract
-of removing it from the filemap. IIUC filemap lookup relies on folio
-locking too. If that's correct, then it kind of makes sense that
-the .error_remove_folio() callback, which is meant to let filesystems
-take folios out of the filemap, is called under the folio lock. Or
-perhaps that's an assumption that all filesystems use a filemap?
+> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypt=
+o/vfio_ap_migration.c
+> new file mode 100644
+> index 0000000000000..1b0856aacb697
+> --- /dev/null
+> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> @@ -0,0 +1,72 @@
+[ ... ]
+> +/**
+> + * vfio_ap_migration_file
+       ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The folio lock also prevents concurrent faults from happening. At the
-point of calling truncate_error_folio() the folio is supposed to already
-be unmapped. If we drop the folio lock for a short while, then
-truncation can't rely on the folio already being unmapped.
+[Severity: Low]
+Is this missing the "struct " keyword and a short description for
+struct vfio_ap_migration_file?
 
-Since guest_memfd kind of monopolizes the folios it owns (on behalf of
-the guest), and with the restructuring that will probably come with huge
-page support, maybe memory failure for guest_memfd should be specially
-handled?
+Building the documentation might trigger a kernel-doc warning here.
 
->>
->> [...snip...]
->>
+> + *
+> + * This object is used for chunk processing of multiple reads and writes=
+ of
+> + * AP configuration information.
+[ ... ]
+> +struct vfio_ap_migration_file {
+> +	struct file		*filp;
+> +	struct vfio_ap_config	*ap_config;
+> +	unsigned long		config_sz;
+> +};
+> +
+> +/**
+> + * vfio_ap_migration_data
+       ^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Low]
+Could this kernel-doc block for struct vfio_ap_migration_data also be
+missing the "struct " keyword?
+
+> + *
+> + * Manages the migration state for the VFIO device that maintains the AP
+> + * configuration of the guest being migrated.
+[ ... ]
+> +struct vfio_ap_migration_data {
+> +	enum vfio_device_mig_state	mig_state;
+> +	struct vfio_ap_migration_file	resuming_mig_file;
+> +	struct vfio_ap_migration_file	stop_copy_mig_file;
+> +};
+[ ... ]
+> +/**
+> + * vfio_ap_config - the guest's AP configuration
+> + *
+> + * @num_queues:	the number of queues passed through to the guest
+> + * @reserved:	padding to ensure proper alignment of @cntl_domains
+                                                              ^^^^^^^^^^^^^
+
+[Severity: Low]
+Does this documentation for @reserved incorrectly reference a nonexistent
+cntl_domains field in struct vfio_ap_config?
+
+The struct defines the field as adm, so this might result in a field name
+mismatch warning during documentation build.
+
+> + * @adm:	bitmap specifying the control domains in the AP configuration
+> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
+> + *		queue information for a queue passed through to the guest
+> + */
+> +struct vfio_ap_config {
+> +	u32				num_queues;
+> +	u8				reserved[4];
+> +	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
+> +	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+> +};
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724161351.1802=
+644-1-akrowiak@linux.ibm.com?part=3D2
