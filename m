@@ -1,133 +1,220 @@
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEAE3CB552
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 08:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80A93CF670;
+	Fri, 24 Jul 2026 08:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784880618; cv=none; b=OVyIeWmIEU31eUrWqun0D//ZS1PSdGGyqAYbhKapaisTnWFtpqLw+oOaZUjiICdEBjPZkVuE5q/3dcyX/AhQTl08uOdn+iW9liajns+dr/c7eiERBqP5chAVN4k3CSwSyXv2KOcSL+6TomZWnHD9EW3aaaAJ/pXD2NRLEqgFDGQ=
+	t=1784880965; cv=none; b=gftESfHB4wWRHE0XVN0nA1ZcIPlQETrVJogi9mpjwCfvlT0JKQ0jGBJaSBN5uPE7x6JSHx1xdxYqeirXg7chPiwMY33oJ3s5H9KAuGV4HUxm8OFO3XqEMgMDKIfwtFYtNLmAhu7FarlfOyy+zwaLgn0zyTMh+uBveoGuenf62FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784880618; c=relaxed/simple;
-	bh=W61NpeYtZobY8CWcAeg2oKDy3dzF6J40+e5P3y7D1CQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nE6UF34IYJ7g0zxfjy8X5IzrsEzLEn7oVG3flbUMRkpymXw7SpQLLNST51heka/ET2wD7P/NZN8lNrWxaxT9QC+8B62uPenpzLZfpgVN6QfvboTglFyFj2xlS8f/khVqyb0Lv0prhgoH2PfKOsfQ61atNYBx4ilWobkv67DM3Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vQR+Sv0P; arc=none smtp.client-ip=115.124.30.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1784880965; c=relaxed/simple;
+	bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OHQD4Awgc2Rkx/sWE/ncFVbxzZ9rz2+x1KY0mZNJJ7mIVARG1Ury4YE8KKqVnAIuMBvxWuFtxMAuVGFv6yb4LhKTIPGkdVNF6PMSN7zHEy5F8UtCXIfsqybhOyBKrA8OH01B3tpSD+qf8eDhe1EpV2/r72slQ4vWPNIuKDH3OjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c9UTapOx; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vQR+Sv0P"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784880612; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=tc2VYYqrq42W/5SGTHQcpL32EmlWmR6pet5QVyrl61U=;
-	b=vQR+Sv0Ps7CCX8dstyyNC+jwg4yqwiSmbt6PWsV1U5w6ne1cl4Zgk2wQdZkjip/VG6YWpnRJ77+Qu8dbNPcN4KEIANFGwNUazX2EHOZdgB0qtaExVTUVHYHET8IVCYr+csNVBB9WrkUiMD33CUNb8pfcwSSp+iZXJ4sQ8BlL6PE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X7iVo7m_1784880611;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X7iVo7m_1784880611 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Jul 2026 16:10:11 +0800
-Date: Fri, 24 Jul 2026 16:10:10 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v3 23/28] KVM: arm64: Add NVHCR_EL2 context switching
-Message-ID: <yxrqmwrf5uwsf7a7g2rtdpamrl7m2tjfpuo4kqizqocmi4c3rf@cfcvhsur23jj>
-References: <20260722074234.3330999-1-maz@kernel.org>
- <20260722074234.3330999-24-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c9UTapOx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784880956; x=1816416956;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eg0RbmSqnpanchs9JmzO0r+GsNFi5NOA/CLbL3kiJeo=;
+  b=c9UTapOxijw/1AmAJvRJCzeWXXfyhYjPinn/S9gTiFHeZv9yJmj++aNJ
+   3Wi2MAae6GmkWo0m35rZnyNg2Y6uj3HtFhTvB5sF9t/f/fgJsmSIWjMuw
+   6lQ1I+rX5lvHHqc8rp0AzEtgk3DxhI4WilbinSjwOem6xAI5fxxEjPgzk
+   jvuO30RvQ1OqOW+Mm+5Tl3zUHWcgdQXHJWZrnJ+dmkOmIS5aiyQz9VdVA
+   0SEu9Qr03IRULMSHPzVx6Z5oG77Ms/Yggu52CeOHUEoTQF+sR/ULPjzed
+   d4yxGcSZCsMAo9yxahW6AgytkTkKuer94NoIWD+wpuJjGCtqjhWwwzsLr
+   Q==;
+X-CSE-ConnectionGUID: kLDxn8MQQeuKygEHTGRb+g==
+X-CSE-MsgGUID: yK+4oN0HT26nGlQR0hT9mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96692975"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="96692975"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:29 -0700
+X-CSE-ConnectionGUID: hhFMJjWTS2a2Nmzaw6vN5A==
+X-CSE-MsgGUID: O0d9viwGSrKH5CQS1aVXqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="256001656"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:15:24 -0700
+Message-ID: <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
+Date: Fri, 24 Jul 2026 16:15:21 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722074234.3330999-24-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+To: Xu Yilun <yilun.xu@linux.intel.com>, x86@kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
+ yilun.xu@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+ kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+ peter.fang@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, seanjc@google.com
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 22, 2026 at 08:42:29AM +0800, Marc Zyngier wrote:
-> Since NVHCR_EL2 represents the HCR_EL2 state of the EL1 guest, it
-> must be dealt with in some particular way:
->
-> - for a guest in hyp context (an L1 by definition), NVHCR_EL2 directly
->   reflects HCR_EL2 as read and written by the guest itself. It must
->   therefore be eagerly synced back with the emulation code which only
->   knows about HCR_EL2. This is unconditional if NV3 is available on
->   the host.
->
-> - For an L2 guest, NVHCR_EL2 is controlled by the L1 guest, and we
->   just context switch it like any other EL1 register. Yes, EL1, as
->   that's where this thing runs from the PoV of L1. This is conditioned
->   on the guest using NV3.
->
-> Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+On 6/18/2026 4:13 PM, Xu Yilun wrote:
+> In addition to basic TDX functionalities, TDX module provides add-on
+> features that can be progressively enabled as the kernel supports them.
+
+"add-on features" looks like a new term introduced by this sereis for 
+TDX. So what is add-on features? all the features defined in 
+TDX_FEATURE0/1? Or only the features needs to be explicitly enabled by 
+R9 and R10 of TDH.SYS.CONFIG? ...
+
+> The kernel should explicitly configure these features at boot or
+> post-update initialization time. 
+
+... So the answer is the latter. Then why only these bits are add-on 
+features while the rest in TDX_FEATURES01 are not?
+
+btw, s/should/needs/ is better?
+
+> Configuring an add-on feature, such as
+> TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
+> initializing TDX module extensions. 
+
+Though the statement is right, it leads to the impression that the 
+reason we are configuring the add-on feature is to initialize the TDX 
+module extensions.
+
+However, the truth is kenrel wants to enable/use an add-on feature and 
+the add-on feature requires the functionalities provided by some TDX 
+module extension. So kernel needs to enable the TDX module extensions.
+
+> TDX Quoting is the target feature to
+> enable but defer it for now until full kernel support is in place.
+> 
+> TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+> input parameters to specify which add-on features to configure. The
+> bitmap uses the same definitions as TDX_FEATURES0.
+> 
+> For runtime update, Linux applies a policy that no newer features should
+> be added after update to avoid disrupting live TDX operations. To adhere
+> to this, TDH.SYS.UPDATE must configure the same features as the
+> TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+> global var so that both phases can use it.
+> 
+> TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
+> the change, so use the latest version (v1) for add-on feature enabling.
+> But supporting existing modules which only support v0 is still necessary
+> until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
+> ever needs to change again and the code would stay in v1. So there is
+> little value in worrying about deprecating v0 to save a couple lines of
+> code in 5-7 years when these original TDX platforms sunset.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 > ---
->  arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h | 11 +++++++++++
->  arch/arm64/kvm/hyp/vhe/switch.c            | 10 ++++++++--
->  2 files changed, 19 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> index a17cbe7582de9..c382848d31947 100644
-> --- a/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> +++ b/arch/arm64/kvm/hyp/include/hyp/sysreg-sr.h
-> @@ -172,6 +172,10 @@ static inline void __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
->
->  	if (ctxt_has_sctlr2(ctxt))
->  		ctxt_sys_reg(ctxt, SCTLR2_EL1) = read_sysreg_el1(SYS_SCTLR2);
-> +
-> +	/* Retrieve L2's HCR_EL2, and save it for future use */
-> +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-> +		ctxt_sys_reg(ctxt, NVHCR_EL2) = read_sysreg_s(SYS_NVHCR_EL2);
->  }
->
->  static inline void __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
-> @@ -285,6 +289,13 @@ static inline void __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt,
->
->  	if (ctxt_has_sctlr2(ctxt))
->  		write_sysreg_el1(ctxt_sys_reg(ctxt, SCTLR2_EL1), SYS_SCTLR2);
-> +
+>   arch/x86/virt/vmx/tdx/tdx.h |  6 ++++--
+>   arch/x86/virt/vmx/tdx/tdx.c | 28 ++++++++++++++++++++++++++--
+>   2 files changed, 30 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index fbb520704662..a47e872480c7 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -58,9 +58,11 @@
+>   #define TDH_PHYMEM_CACHE_WB		40
+>   #define TDH_PHYMEM_PAGE_WBINVD		41
+>   #define TDH_VP_WR			43
+> -#define TDH_SYS_CONFIG			45
+> +#define TDH_SYS_CONFIG_V0		45
+> +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+>   #define TDH_SYS_SHUTDOWN		52
+> -#define TDH_SYS_UPDATE			53
+> +#define TDH_SYS_UPDATE_V0		53
+> +#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
+>   #define TDH_SYS_DISABLE			69
+>   
+>   /* TDX page types */
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 2a03152796e6..92305b5ea90d 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -57,6 +57,7 @@ static struct tdx_module_state tdx_module_state;
+>   static u32 tdx_global_keyid __ro_after_init;
+>   static u32 tdx_guest_keyid_start __ro_after_init;
+>   static u32 tdx_nr_guest_keyids __ro_after_init;
+> +static u64 tdx_addon_feature0 __ro_after_init;
+>   
+>   static DEFINE_IDA(tdx_guest_keyid_pool);
+>   
+> @@ -1004,9 +1005,18 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>   	return ret;
+>   }
+>   
+> +static __init void set_tdx_addon_features(void)
+> +{
 > +	/*
-> +	 * Publish the L2 view of HCR_EL2 to the HW if L1 is using NV3.
-> +	 * Otherwise, the data is already in place in the L1's own VNCR.
+> +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0 when
+> +	 * kernel is ready.
 > +	 */
-> +	if (is_nested_nv3_ctxt(ctxt_to_vcpu(ctxt)))
-> +		write_sysreg_s(ctxt_sys_reg(ctxt, NVHCR_EL2), SYS_NVHCR_EL2);
->  }
->
->  /* Read the VCPU state's PSTATE, but translate (v)EL2 to EL1. */
-> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-> index e5a51dc3cbe5e..cbda9e087db39 100644
-> --- a/arch/arm64/kvm/hyp/vhe/switch.c
-> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> @@ -71,7 +71,10 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
->  			hcr |= HCR_NV1;
->
->  		/* Publish the guest's view of HCR_EL2 to the HW */
-> -		__vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
-> +		if (cpus_have_final_cap(ARM64_HAS_NV3) && vcpu_el2_e2h_is_set(vcpu))
-> +			write_sysreg_s(__vcpu_sys_reg(vcpu, HCR_EL2), SYS_NVHCR_EL2);
-> +		else
-> +			__vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
->
->  		/*
->  		 * Nothing in HCR_EL2 should impact running in hypervisor
-> @@ -567,7 +570,10 @@ static void fixup_nv_guest_exit(struct kvm_vcpu *vcpu)
->  		*vcpu_cpsr(vcpu) |= mode;
->
->  		/* Publish the latest HCR_EL2 to the emulation */
-> -		hcr = __vcpu_sys_reg(vcpu, NVHCR_EL2);
-> +		hcr = (cpus_have_final_cap(ARM64_HAS_NV3) &&
-> +		       vcpu_el2_e2h_is_set(vcpu)) ?
-> +			read_sysreg_s(SYS_NVHCR_EL2) :
-> +			__vcpu_sys_reg(vcpu, NVHCR_EL2);
+> +}
+> +
+>   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>   				    u64 global_keyid)
+>   {
+> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+>   	struct tdx_module_args args = {};
+>   	u64 *tdmr_pa_array;
+>   	size_t array_sz;
+> @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>   	args.rcx = __pa(tdmr_pa_array);
+>   	args.rdx = tdmr_list->nr_consumed_tdmrs;
+>   	args.r8 = global_keyid;
+> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> +
+> +	set_tdx_addon_features();
 
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Maybe move the set_tdx_addon_features() out of config_tdx_module()? how 
+about putting it after check_features(). config_tdx_module() looks like 
+just a wrapper to invoke TDH.SYS.CONFIG, while the params of it are 
+determined outside of it.
 
->
->  		__vcpu_assign_sys_reg(vcpu, HCR_EL2, hcr);
->  	}
-> --
-> 2.47.3
+Just my feeling.
+
+> +
+> +	if (tdx_addon_feature0) {
+> +		args.r9 = tdx_addon_feature0;
+> +		seamcall_fn = TDH_SYS_CONFIG;
+> +	}
+> +
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+>   
+>   	/* Free the array as it is not required anymore. */
+>   	kfree(tdmr_pa_array);
+> @@ -1314,10 +1332,16 @@ int tdx_module_shutdown(void)
+>   
+>   int tdx_module_run_update(void)
+>   {
+> +	u64 seamcall_fn = TDH_SYS_UPDATE_V0;
+>   	struct tdx_module_args args = {};
+>   	int ret;
+>   
+> -	ret = seamcall_prerr(TDH_SYS_UPDATE, &args);
+> +	if (tdx_addon_feature0) {
+> +		args.r9 = tdx_addon_feature0;
+> +		seamcall_fn = TDH_SYS_UPDATE;
+> +	}
+> +
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+>   	if (ret)
+>   		return ret;
+>   
+
