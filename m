@@ -1,96 +1,165 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011001.outbound.protection.outlook.com [52.101.57.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961F421FF25
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 19:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784922742; cv=none; b=twC9az7FbtOZdm5oDO54Z/01pnzuY3cUyJFDIDk1aE/ZBcD5/OeU6/Eg4L/SmnfzyfquPMIUkk5E1RhuS1PrqrSeGSTiOd0VurgxEipyo71L4LBDZoChJo0TczeJmP5WXnJCgZ1Oz/XQ8teQzLi+mjEtZVY9omRxgE0yAD8CFr0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784922742; c=relaxed/simple;
-	bh=A7EEfHCXDQhZbZc+7PwL7H/hPx0GPYjU++n5dKG0w1g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sQnUDhkfw7MPDniTspW/zCeKKBKNa3Mo43YkP16uIavZVVIINTVaoG21Os4oVaSqDjVBvxYFm8dLyPWulom4ZKKJsSe0s9zWH3/lBGRhlCZFcR4VSNQ8Y45FMlR714I4V2mxO30ViagMIWdL8Pqf792p5Ack1rXZuD8gV8Xmv/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QLKArikg; arc=none smtp.client-ip=209.85.215.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8034345D19F
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 19:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784922756; cv=fail; b=oqlW2ZkbQnq4705Z9X59nJxikWHW1A8YNEF+E3boiAdmBboIZoskgdi340uSWZorTjP/3GCldssGJJ3YINQowurtohRTC6/Njo5tuua0arZL34lhNCgQIMUDTY7l7Zk+y2aAaHp9ieez+nlQKXQyKvZZQo49t5ZFhEYzsVbpr6Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784922756; c=relaxed/simple;
+	bh=bQ7Hne+iApIuh3Lb7Cswqbbi8up7risrGkg1zHJHToc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WAuRX7E2wF0gHn/6fT5xxcwLgEmk4yizlQ5Pt6aJLmu+C+mo9AW0yhm1uA2BTG8qYuJMRtA/6xKdJ4ofueMAXHP+smhag0CGQ7gDKiM2UBf83+A67IJfDvwS3Zv+x5ZEYlQPTGxm2wVHZtWbgzNVWrIkaUln5RTbSpkfpEiJq3c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VFIDaEFF; arc=fail smtp.client-ip=52.101.57.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QLKArikg"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-ca6bd8a190cso1023685a12.0
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 12:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784922741; x=1785527541; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UIrEUXeMwkKPn3AMJe5EPVmRwSj/wiphCk2WS28J/Pk=;
-        b=QLKArikgRCDtGcVe/3QMi03hm6MkTBR/N6R4UWh52oICYYEgNWMM+hZcmpsSNGW2ut
-         sxAwHZkqk3/XwI7u8WIds9o8DC0NLJnUnmtNpCNTTLXk5oGnc8USQwTS2bTeo5lUBZ12
-         KIzbrf6Zc4vXShnFVBk2R8Ft2I+jLWhw8fgdFJmsA1mCgMyVz2uKGC4I6jkE8Ulv4EgJ
-         Oe6htBCpLVl64lzwtGlaejF4Z+0NSD+BFtJGfwicxhaxUOndAUiKynLLzpMUQSpxhor4
-         LjYpErM9akRao87gXRqrfoc37UjuRZfRubAaz1nDQKCHSZYNRv6iYgs8fhSZh7qNGFVF
-         6Bcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784922741; x=1785527541;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UIrEUXeMwkKPn3AMJe5EPVmRwSj/wiphCk2WS28J/Pk=;
-        b=WNNKI8mp3zac9kTh7FUDhjYSDFhmZoUebVPaAxjm+WSpAl9CDbqYBfJDoacsv+z5/K
-         TDqXnXpVDf/s4VN2pqN1QLQSt1mnKZXMd/QbSJap1pj0RUBbLs8BRiXPg9/No5Bj5C9Y
-         R9am1o2teP/1f08V42KFVqb4WCmRi/oNL7H1Vv2jFGYy4XlWLMfhYPWSvzC4Vjedb500
-         D1pybc75s6/kvvXDTuz2YTsC1rX86GEx0Y1sfdq22BLOARMNtBVBqv624JFvjCk+jALj
-         RI4djJ+G0goNxoo2tNWOKweB71Ab1Uzo9Ql34qni8Un61C1VT6t9SUrB7OZuffMyaMSS
-         MMwA==
-X-Forwarded-Encrypted: i=1; AHgh+RrbnAthDgdnCKjZs9VaRvB3ftYQYEulmS7RM9TnsXxhbTazwuMOa3LnBqDBoCHPrBdnyqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyEoDyY1sBCnck/6vqa3l3MyPCiSMZ4PuXjYm97H9lpqNOf+9x
-	ncITu9/r/ObuqwJivFEgRXb+0o4h+oGHnhMUNHIFPchZX+H5oZepzSwXersTrzdm1VOIoBgbtKq
-	eCNMdUQ==
-X-Received: from pgvf24.prod.google.com ([2002:a65:6298:0:b0:cbb:9724:6775])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e0a2:b0:3bf:e2dc:bc85
- with SMTP id adf61e73a8af0-3c44b1ca809mr9783772637.40.1784922740833; Fri, 24
- Jul 2026 12:52:20 -0700 (PDT)
-Date: Fri, 24 Jul 2026 12:52:20 -0700
-In-Reply-To: <20260714160411.302386-1-alexandru.elisei@arm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VFIDaEFF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=crO8l1Mr2b1Zm4Z41Y7BG14+vJ2+csLBIvvVZxexySaoluiDELODWdW9qauGOGDcdukSRxXi0Qg+S89VF+ms5rjTYNXOpxB0FZAxMskq3+A5pdk2mdle8Yc+vPKag2frv6jCCLBHPWe7BbDuJrkrpXP5jra2K7LTy18nfJWhkj/SrIB4+RCMOyGS1Efhuph5YXyzGa2+ZSrBvqx4QmjXfllOSeNYbsNr/1sq9D+qwkaSAPMV8o43rnStBxBUgNRB5X/a9p3Z92WUz4oDshWySNLNw5Fwo4J2npY1PQf+KNpdU6YSSQR3wMdA4Nohy7JOmCddzLqdjjPOA0pbJndzXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r6iFdscwt8liu/y9ONASlFqxPXgflGQy5NTZ/hjDSlA=;
+ b=ixw6wVFOywMEf0xc6H45WRHOlzhE+uSGTcUYozDGQFQn6TLdXkNNS7zU8+wD3kfH0UbUmGsmV6y5jOdneGlJPxzlc9qUm367RY8V17q2A5UfUsH2Pohd0Ib7rcsTKaDgKH98Bc4MMSKwmRqMFFDsOqC9/lkxxMAOBSG7ZnfcmcGzsbOaylLEp04flfGnqensiIfKYn3ZVF4J/h9ZY+4QslC+EcC74HZn+910eXdBPd9Rm091ggcHW11CSGnaHuQE+FOmS7oJWzKQ9aUODrfaiKFwsYV/pkwuJe45m++DUGgxhWwKIb0t1MyJJ6krtEL2hi4od7tFEhaQLXaTH/GEAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r6iFdscwt8liu/y9ONASlFqxPXgflGQy5NTZ/hjDSlA=;
+ b=VFIDaEFF1eVXRe+6FVIW2gmDAzzN7UWtPQ58qzsw9dsR04a9waHMLO66uUCG6Tq2mnegEQL+7QqlZGp3w6JXmQ6Fjx28nfboXEXWb4tEWwlS+rqTjgGXYBVzdh3ww9fsxHEii+22jemx1FYdMndCGu+w2sII4ih88udN5uP3CWk=
+Received: from SJ0PR05CA0040.namprd05.prod.outlook.com (2603:10b6:a03:33f::15)
+ by SA1PR12MB8945.namprd12.prod.outlook.com (2603:10b6:806:375::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 19:52:28 +0000
+Received: from CO1PEPF00012E7F.namprd03.prod.outlook.com
+ (2603:10b6:a03:33f:cafe::8e) by SJ0PR05CA0040.outlook.office365.com
+ (2603:10b6:a03:33f::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.9 via Frontend Transport; Fri, 24
+ Jul 2026 19:52:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF00012E7F.mail.protection.outlook.com (10.167.249.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 19:52:28 +0000
+Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 24 Jul
+ 2026 14:52:24 -0500
+From: Shivansh Dhiman <shivansh.dhiman@amd.com>
+To: <seanjc@google.com>, <pbonzini@redhat.com>, <tglx@linutronix.de>,
+	<mingo@redhat.com>
+CC: <kvm@vger.kernel.org>, <x86@kernel.org>, <yosry@kernel.org>,
+	<jmattson@google.com>, <thomas.lendacky@amd.com>, <nikunj.dadhania@amd.com>,
+	<sandipan.das@amd.com>, <santosh.shukla@amd.com>, <shivansh.dhiman@amd.com>
+Subject: [PATCH 1/7] KVM: SVM: Add VMCB fields for LBR v2 virtualization
+Date: Fri, 24 Jul 2026 19:50:34 +0000
+Message-ID: <20260724195040.630468-2-shivansh.dhiman@amd.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260724195040.630468-1-shivansh.dhiman@amd.com>
+References: <20260724195040.630468-1-shivansh.dhiman@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260714160411.302386-1-alexandru.elisei@arm.com>
-Message-ID: <amPCdAswlk24Xilf@google.com>
-Subject: Re: [PATCH v2] KVM: Ignore MMU notifiers for guest_memfd-only memslots
-From: Sean Christopherson <seanjc@google.com>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	maz@kernel.org, oupton@kernel.org, suzuki.poulose@arm.com, 
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	david.hildenbrand@arm.com, mark.rutland@arm.com, ackerleytng@google.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E7F:EE_|SA1PR12MB8945:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96d605c9-9d45-4d9b-c650-08dee9bd1754
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|23010399003|10067099003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	5IIfjjCWC8yDdrXZx1+B/Be4tYUL9CPKzFNDz7AkHdt9pB9byuOfvT8K0jVR6W9mn/GzeB0hoTzCyqdYF31aZ14ErEESvWpUgWv4G9aqWJaW3MUupTWIuj77bwLA0UKFWQD1PmZ3yA8ddWxARcdQ2ysjE5MJHjXaSMVRqxIqSHujAeD+s3mub2XAL2huqWFUX3CUq2cmEkGIpdtuNPGp5Pum/ym6PEipy40+Roym0+KrLJQtU6Q3lXKu+JwvCAiJ4yW0EH+x30Hy8hxPRxmhgekY+DOeRQIGzJiK0DKPMe+WKXyIbo+7cewi+up5b+WaT/kdPJKOqhPNpTnnBKz5FL+EkvxBz/uBTsTz1tAh9dMTTtqh8rPmwEWRQVXBLcmtyogQmZCpnBS5XUD7rmIc0bxtgeJuG4a8GQC9PVCs0i3SLk7Q5gNoX3ecLA2p+zg/JtxsSlOfQI53ceUAZYyKcIdkzoe29Ue8glt9z7FBMJZhN4M4APKiA9Q6AC/k8uEPvaSkNgLBKDLcDcPEsDvv6vttncSyA7RTTMio0TMEv/evggCgHkzsAT/loIm+koHr1tBYP0GcF2PGsFF1bzQV9LupZ0IBxqDqg1GRm7wtGu/T4iZo4zxK+r2pq9BnLHRm3YGiW+zSXh464aW2yCZgK6a5sNa0wKxyxCR2nfd8gGqvesqpxKQNOunQ27Z4cnrGUH/ABELU429Tkfhsg2oSaw==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	dVg0Vu/CsveMcpIB5soLqtk3Cc6LO+A3z7wzOkceWDO8UhM/+lkF3QUjVUvVFCooduINxwwZAe8z0n8yXD9JNfqv0iLOQHVdbkjl1voIW/60F3ozAnW/Ya8pk40o2VwevV2JlM1Z7P2X1BB+g/ajr9CVLcXNiyuhkKnmekwRbbmYS6gm4X45XQ0XZramnA7yonGVRDTFOLo3lms0pT7GrBy8qVYJAaInzj3uwHdZfOYMSC3wOTrz+mYjxu+RPJdeezou3phR9cetX8mL608cKbE+YjKE2ZeMPp7Ddk8OWebsHB6RH8wWdTZUYTlwTwArIFta3xtP2R/PF3hOquhkPorUystUy1WgIxH+Uiw2ttmwiV2rebTSL4D5dJ5a7cmcURDsaFGHbI/L1QcLC3WrGIjq2wKOVw5wxtXxLYHKmoN4k3dA/sfQ1PSSv4n2D0lc
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 19:52:28.1370
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96d605c9-9d45-4d9b-c650-08dee9bd1754
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E7F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8945
 
-On Tue, Jul 14, 2026, Alexandru Elisei wrote:
-> +	 * TODO: Skip gmem-only memslots on mmu_notifier events entirely, once
-> +	 * gfn_to_pfn_cache is also wired up to directly pull from guest_memfd.
+From: Sandipan Das <sandipan.das@amd.com>
 
-So it turns out we need to solve a very related problem[*], thanks to commit
-b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA"),
-which as it says, allows populating gfn_to_pfn_cache directly with an HVA, i.e.
-without a memslot.
+Define the new VMCB fields that will be used to save and restore the
+state of the following Last Branch Record Extension Version 2 (LbrExtV2)
+related MSRs.
+  * Last Branch Stack Select (MSR 0xc000010e)
+  * Debug Extension Control (MSR 0xc000010f)
+  * LBR v2 Branch FROM (MSRs 0xc0010300..0xc001031e)
+  * LBR v2 Branch To (MSRs 0xc0010301..0xc001031f)
 
-My not-yet-tested solution for that mess is to give gfn_to_pfn_cache its own
-invalidation sequence, at which point there shouldn't be a need to process
-gmem-only memslots just for gfn_to_pfn_cache, because it will already be equipped
-to handle memslot-less invalidation.
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+---
+ arch/x86/include/asm/svm.h | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Given how simple this change *should* be, I'm going to put this patch on the
-backburner for now, and then assuming my proposed change actually works, I'll
-grab your original change (or more likely, re-post it as the last patch in the
-series weans gfn_to_pfn_cache off mmu_invalidate_seq).
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index aa63431ba92c..fbcf6c4dbb92 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -368,8 +368,15 @@ struct vmcb_save_area {
+ 	u64 br_to;
+ 	u64 last_excp_from;
+ 	u64 last_excp_to;
+-	u8 reserved_0x298[72];
++	u64 dbg_extn_cfg;
++	u8 reserved_0x2a0[64];
+ 	u64 spec_ctrl;		/* Guest version of SPEC_CTRL at 0x2E0 */
++	u8 reserved_0x2e8[904];
++	struct {
++		u64 lbr_stack_from;
++		u64 lbr_stack_to;
++	} __packed lbr[16];
++	u64 lbr_select;
+ } __packed;
+ 
+ /* Save area definition for SEV-ES and SEV-SNP guests */
+@@ -552,7 +559,7 @@ struct vmcb {
+ 	};
+ } __packed;
+ 
+-#define EXPECTED_VMCB_SAVE_AREA_SIZE		744
++#define EXPECTED_VMCB_SAVE_AREA_SIZE		1912
+ #define EXPECTED_GHCB_SAVE_AREA_SIZE		1032
+ #define EXPECTED_SEV_ES_SAVE_AREA_SIZE		1648
+ #define EXPECTED_VMCB_CONTROL_AREA_SIZE		1024
+@@ -577,7 +584,8 @@ static inline void __unused_size_checks(void)
+ 	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0xd8);
+ 	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0x180);
+ 	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0x248);
+-	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0x298);
++	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0x2a0);
++	BUILD_BUG_RESERVED_OFFSET(vmcb_save_area, 0x2e8);
+ 
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0xc8);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0xcc);
+-- 
+2.43.0
 
-It'll probably take me a few weeks to circle back to this, as I finally crawled
-out from underneath a pile of urgent and am just now getting back into review
-mode, but this is fairly high on my todo list, so with luck we might still squeeze
-this into 7.3.
-
-[*] https://lore.kernel.org/all/aj2hi-NcqUUCaoQF@google.com
