@@ -1,107 +1,146 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ADB23C516
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 01:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFA11E9906
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 01:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784855017; cv=none; b=Z4UTDPWFJPFyMwWIjVxUU+8HzdzIL+9l+dLRjEDGkwIJyIxTipy4QleMUvcyf4nIN5PRv2GdXFcs2ManHGuxKb40WB+0BUWDI/WxL7tliphnl9gvPIJ7sh15mVhJ4MwAgJ+zVuKHZmkgwiSGa4qMMqvU/kKFbmTpqbBdL5j5w9s=
+	t=1784855229; cv=none; b=Cb0K5f3RYb8SVMkOsbA9JLG8Ows45o5TzEJlPtk/1dGvZVwIWKPyCIfcN9G0MA30JlEc38O9Tu67ediTOOvqPOWOW7X5WLLKZ+tDAkrnLicZ35yqixb4lflqP4x89mdfNPmnwYU1xDwAb/vCTxifuSYBwCwskF+XW7CHjanxmUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784855017; c=relaxed/simple;
-	bh=oecGHFI+ANd5JWO5gLb58XyWMcfYgyNy5vg3/R7OvQE=;
+	s=arc-20240116; t=1784855229; c=relaxed/simple;
+	bh=uYj4ZWUzKGoDpE7u2oScZ/b4Yz1NBFqtgzd88nl4Dyg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hKPv7vZtCPynGmTLK20kdau1oIBwxhbEpntZAlIejkbnMev0t3Zibqm93uOBTWEBJJ5a/BHXJ3z7G6td5hpg2x7kAmklJCVaY+4BswHqWDe0YVoEhtYkA8V40/raBuTPEKsSk7FG+YWeYshPIpaM5kSk5o9JVB2JCeViXcir/w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mcz6St5Y; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=iedAOT7HS4vZHGLzmdW7xhH/DJ0hejIb1O7OUaPUEUHJRry/dMpNX+YiEk6deRT5vWcEQ++XWY0mpwl45JfjD8EcgBNW0JKxpTEGBc8R1YRAPrSfn+17Ju/aCooBp7UizL/8YLPFJ5nMHBXO0WzlWkx+lot/mn+kTI+/5Qi7yFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNAo7rA6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mcz6St5Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FCF1F000E9;
-	Fri, 24 Jul 2026 01:03:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNAo7rA6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD3C1F000E9;
+	Fri, 24 Jul 2026 01:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784855016;
-	bh=4KoxvuxQ2EWaCIbL8n3TqZrHC4iwPQuHce+vA9f2KOU=;
+	s=k20260515; t=1784855227;
+	bh=cwTB7yRY5CnZHqMgRJSOEDGah7rgOt8ZutE9N2oy12s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mcz6St5YgsgcxR+YMMnh5+Y6GdsRMPaxga9zrspc5uorVNqBUnzuxkAuP5StuvMhX
-	 h8PsFfk14YlorFmAFm35RLFhmQtJ8gpEsyZOtnHonR4vmQYFBLIT9nmAce+R+g5gnH
-	 81xE8+TqoyNvyRUpaQCRodfSN5kOKH7yA80uvGkTtbcoLBbaLrbvArd+GumFulaOfx
-	 5nQlTKFf7giO/Z+Q6xt8uW0iTjtt8PVOlXW3bRIKOSugdidDE3KU0aVix+6blIn0og
-	 JtPev6DgGjNjD3fZwU0PJWK5izETAioJtL8bCqV+7D+AFVS4KJ++BgPQ+NvmyRR7oX
-	 gPY6vjgJN7qyw==
+	b=UNAo7rA6Vcoq19JeUW8puTHbM+uM5rwlYQwaHlrhozIlS2ZOEZVq6RqCglBF1Sl+o
+	 jGEZxej3PIst5DBzF6n6r0MUw5xjU3YqAKGH90Q3IGTPgsly4+jbQyTnVh8ZHO8Gwy
+	 TGWV3Ei3lTZkgyRVC8pqfVAS42m7FFZvOokw14Y9QnrGHo5GgdwTXg9sqmGzcyWmZq
+	 lxckFdiFXPfpRmfSDW464vQIyDgiUcF5gG7iRG0JQRyNj3dKYLyWdBfC4blVb08zbC
+	 aJ5qTKrYoaUbtmO0ClpDMyd7L3kTh+ULwHhYI9jDF0uuHWiBjPkm8tIgW7fA89YX+i
+	 tqlOpAOhWkX9g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 5/6] KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly)
- for patching dcbz
+Subject: Re: [PATCH 1/6] KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES is
+ cleared on VM-Exit
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260724004757.131420-6-seanjc@google.com>
+In-Reply-To: <20260724004757.131420-2-seanjc@google.com>
 References: <20260724004757.131420-1-seanjc@google.com>
- <20260724004757.131420-6-seanjc@google.com>
+ <20260724004757.131420-2-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 01:03:34 +0000
-Message-Id: <20260724010336.16FCF1F000E9@smtp.kernel.org>
+Date: Fri, 24 Jul 2026 01:07:07 +0000
+Message-Id: <20260724010707.8CD3C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The commit title claims to use `CLASS(kvm_vcpu_map_local_readonl=
-y)`, but the code uses the writable variant `CLASS(kvm_vcpu_map_local)`.
-- [Low] The local variable `r` is declared but never used after the refacto=
-ring.
+
+Pre-existing issues:
+- [High] An L1 guest can trigger a silent host memory leak (pinned pages an=
+d kmap space) by repeatedly executing VMLAUNCH with an invalid guest state.
 --
 
---- Patch [5]: [PATCH 5/6] KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly)=
- for patching dcbz ---
-commit 85b6110c0b5859c4a10a2a8a3cab84580d924a43
+--- Patch [1]: [PATCH 1/6] KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES=
+ is cleared on VM-Exit ---
+commit 529c03d57fc94827c8dfbb4372dfae1313c5dd93
 Author: Sean Christopherson <seanjc@google.com>
 
-KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly) for patching dcbz
+KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES is cleared on VM-Exit
 
-This commit converts the dcbz patching implementation in KVM PPC to use
-the new scope-based CLASS(kvm_vcpu_map_local) infrastructure. It eliminates
-the open-coded on-stack struct kvm_host_map to help harden the API against
-memory leaks.
+This patch ensures KVM_REQ_GET_NESTED_STATE_PAGES is always checked and=20
+cleared when emulating a nested VM-Exit. This prevents double-mapping=20
+vmcs12 pages if KVM manages to bail from VM-Enter without processing the=20
+request and then emulates VMLAUNCH or VMRESUME.
 
-> KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly) for patching dcbz
+Cc: stable@vger.kernel.org
 
-[Severity: Medium]
-The commit title mentions using CLASS(kvm_vcpu_map_local_readonly), but the
-code below correctly uses the writable variant CLASS(kvm_vcpu_map_local)
-since it needs to modify the memory. Should the title be updated to match
-the implementation?
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index b5460de4b1a72..f2518d67e7de5 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -5066,8 +5066,9 @@ void __nested_vmx_vmexit(struct kvm_vcpu *vcpu, u32=
+ vm_exit_reason,
+>  	/* trying to cancel vmlaunch/vmresume is a bug */
+>  	kvm_warn_on_nested_run_pending(vcpu);
+> =20
+> -#ifdef CONFIG_KVM_HYPERV
+> +	/* Note, "checking" the request also clears the request. */
+>  	if (kvm_check_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu)) {
+> +#ifdef CONFIG_KVM_HYPERV
 
-> diff --git a/arch/powerpc/kvm/book3s_pr.c b/arch/powerpc/kvm/book3s_pr.c
-> --- a/arch/powerpc/kvm/book3s_pr.c
-> +++ b/arch/powerpc/kvm/book3s_pr.c
+[Severity: High]
+This isn't a bug introduced by this patch, but I noticed a potential memory
+leak related to how nested VM-Entry failures handle mapped pages.
+
+If an L1 guest prepares a VMCS12 with valid addresses for mapped pages (like
+virtual_apic_page_addr) but intentionally configures an invalid guest state=
+=20
+(e.g., an invalid CR0 value), nested_vmx_enter_non_root_mode() maps the=20
+pages before validating the guest state:
+
+arch/x86/kvm/vmx/nested.c:nested_vmx_enter_non_root_mode() {
+    ...
+    if (nested_vmx_check_guest_state(vcpu, vmcs12,
+                                     &entry_failure_code)) {
+        exit_reason.basic =3D EXIT_REASON_INVALID_STATE;
+        vmcs12->exit_qualification =3D entry_failure_code;
+        goto vmentry_fail_vmexit;
+    }
+    ...
+}
+
+The error path in vmentry_fail_vmexit synthesizes a VM-Exit back to L1 but=
+=20
+returns without calling nested_put_vmcs12_pages() to unmap the resources:
+
+arch/x86/kvm/vmx/nested.c:vmentry_fail_vmexit() {
+    ...
+    if (!from_vmentry)
+        return NVMX_VMENTRY_VMEXIT;
+
+    load_vmcs12_host_state(vcpu, vmcs12);
+    vmcs12->vm_exit_reason =3D exit_reason.full;
+    ...
+    return NVMX_VMENTRY_VMEXIT;
+}
+
+If the L1 guest resumes and executes VMLAUNCH again, KVM calls
+kvm_vcpu_map() on the already populated map structures:
+
+virt/kvm/kvm_main.c:__kvm_vcpu_map() {
+    ...
+    map->pinned_page =3D NULL;
+    map->page =3D NULL;
+    map->hva =3D NULL;
+    ...
+}
+
+This unconditionally clears the pointers without unmapping or verifying the
+previous state, dropping the only KVM reference to the previously pinned
+host page and kmap address.
+
+Could a malicious L1 guest repeatedly trigger this in a tight loop to
+exhaust host memory and kmap virtual space?
+
+>  		/*
+>  		 * KVM_REQ_GET_NESTED_STATE_PAGES is also used to map
+>  		 * Enlightened VMCS after migration and we still need to
 
 [ ... ]
 
->  static void kvmppc_patch_dcbz(struct kvm_vcpu *vcpu, struct kvmppc_pte *=
-pte)
->  {
-> -	struct kvm_host_map map;
->  	u64 hpage_offset;
->  	u32 *page;
->  	int i, r;
-
-[Severity: Low]
-Does this leave the variable r unused in kvmppc_patch_dcbz()?
-
-It looks like the original call to kvm_vcpu_map() was replaced, and nothing
-else assigns or reads r. This might cause a compiler warning for configurat=
-ions
-that check for unused variables.
-
->=20
-> -	r =3D kvm_vcpu_map(vcpu, pte->raddr >> PAGE_SHIFT, &map);
-> -	if (r)
-> +	CLASS(kvm_vcpu_map_local, m)(vcpu, pte->raddr >> PAGE_SHIFT);
-> +	if (m.ret)
->  		return;
-
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724004757.1314=
-20-1-seanjc@google.com?part=3D5
+20-1-seanjc@google.com?part=3D1
