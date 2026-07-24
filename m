@@ -1,103 +1,123 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24EE30F533
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 02:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784861615; cv=none; b=sYRxuFFbPhaKfLzrNJt9XMbcvbedd7MXCSMwoAAfSTW31aXJy4ghRL56E61yn4OWlUjnk+WbuOPWdItzpLk6FpUYRupWUWIVpeljM/g7Oo6nw6lii6Hp6TUF4pjUPZML8uh+uHoxPOHBpXp2DugsPesyW7th02QnovegTVjWowo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784861615; c=relaxed/simple;
-	bh=JY1OIkGk8Yi9oDgZ1f0ilcLme849K7C//r+Lciqa1RQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHAEtOtnXKoPMqlQEpU2D1ESTUbKyPvr8ykbsQmVif/ebEB+FJrR38qMtbAqG9Z9YQ0BL2h9N6yvCsIDPc9qbUn4jP9aMtSlrLtofW29ALe/dE6Scd13EQ04rj77YAipGs6M4ZSXrMDPwnOx4oHxpnh6dk1gdU4sTrbyippkSQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=U3aQmLnL; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC00C2D9EDC
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 03:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784862972; cv=pass; b=rvUGSP06bvazi4aiWBe8NFjeQFVWcWw//FjeTA543exvIMBhTbvY0p0aSZOxtyglSxo5gWWx9IaeEAolY/zDKW7mBzt++rUe45B0DLux8W/4E02YLexZLc+ReROqWVOEo1MseO5WhoSZLIXffc8Jxm6zZ2cyE0K9OQ9VCjRnVQg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784862972; c=relaxed/simple;
+	bh=v/sc0XsZC038Vuii3xonWYoG3iLN4hTxE3JZFsfOJQQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IalH7rTp1fd08OuwN/kVYklLRf9oLwS2IHShfDKMs1HwzjWljRXUbDEKHeEHP55atraAO2vZas+HF2Ueici5pSn10oShdWw8vS7oC8mQUKU1jYiBxKwwKkLbEB9L4PlJY+xlAf5+wxt1kzauj1VHoan8THS81iNWpu8D6j/nQgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iZWhy84+; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="U3aQmLnL"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cbb7926836eso951036a12.3
-        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 19:53:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iZWhy84+"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69a19eb2e6dso1758a12.1
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 20:16:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784862969; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ddKqm4aLAALw+vT/N6Pzvb86MVGi9heoEsgoTbp+gsCNXw2HSNFjGp4ifOkkaNvXmR
+         /hPdcRQJbZliTxOgy/tqH65qIqEgd9U9cFXLswLkF5G12PAHirvTg3YlntQFkx+bNYgA
+         FmO4WMEKko7VxyYSisfRtT3eEQpq1GU6HBUfgZoZTxm95r5qAPwJdvCsli910Fn1mmm5
+         XLQlcNYiAdgKhDyBnNec8QrpxjS2h61G8Na45PymGgs72+/G/X1VV24FtP4UGONLtdzD
+         kkJlb0Gt7t3nWdSZKrF7jbC36OOcImDWXiTG1UieimGpzurZldRRFh7WrUDRR2XXAb+m
+         S57w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=v/sc0XsZC038Vuii3xonWYoG3iLN4hTxE3JZFsfOJQQ=;
+        fh=KRFwJxprR9Pj3tlpnsfUsTzB8+HhRpRlMVlAdvHf5mQ=;
+        b=jvnkp96tXxR2UJGPP/ToncDlaY7NryIEBDhuLJBfx8F61xv3DBWi4BZAzu0j1OPtW5
+         rDrC3FVnd+yGJMZw1OOc07mx3/bAPsjjOqHAXRzXoIYMtKxtDTGT6ScFYWfI+3smgz6F
+         Kp9/VdXQUoNsZuhq07+rnULNvzmYVbtEn7tj2TVFcWupd1Gs8ShZ/JrMg/w2X30PIUZW
+         ginJDTqxEO5gYQTKDrkh6HGuVaPWSluDdJciaAZ/3yxse7wdFrKsfMkzrVCEogeILXYs
+         xEAsunMN+xcKBXJxyRx3fqZVpH/B1APeRDL1Jv+n1gbFKcHfWUKZmnagrLjnaovZjTZj
+         ucig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1784861608; x=1785466408; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1784862969; x=1785467769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=wH+cMQQWqrOS/PY9xKNIJ0VT0As7nJ3tkEO/JFQ2Nco=;
-        b=U3aQmLnLiWB9FGwoXOlMUHcALqH965jB7QEfYJoDwd4O97UrvjivmBWmhjRG41Rwdf
-         o25HTUi1wtkOhQHgtsgzicVsUXC0L0mImo3J2iTjsHT1kYqbhpB1U6Lxzua0696CpU6/
-         QD1uLPqrhfr3nyyie6PSZWm4oiqiNlAG0pDZQ=
+        bh=v/sc0XsZC038Vuii3xonWYoG3iLN4hTxE3JZFsfOJQQ=;
+        b=iZWhy84+FyHzawgzbJO9gdb8trAkFRV7YYDOipY6r6wpt0/y7zLZZLb9LUOOidiOkf
+         Htq3XgZAHEa6c18e7woTwyCjr7SwzqB0Ji8uyWgxpfYfG3X1imSF4tdPxTY/k0schNkA
+         /vy+raUWl+NBQfistu1f3+TYomXR+UxkLgg97Z6L59LolNaTUjeEzWEx8pWWO1EdFLK1
+         fiQhJ6k/SUAJCn13iYiw2x+bL3tvNWL3io83zIqANIxxeq0YD5/+U6CpoPDMwyg77rQt
+         vbkVvANqAigOUAJPvV6yRm9ZLs3KVWtv1JmeH7fxuEY5VXn5l+fLLSdTE2XSWAz5qV0J
+         F5BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784861608; x=1785466408;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784862969; x=1785467769;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=wH+cMQQWqrOS/PY9xKNIJ0VT0As7nJ3tkEO/JFQ2Nco=;
-        b=Do12dZZOT67KLcmKhBwZa/3HiqfSYHR74z5ncOh6pmuZmNupUGF4B1nnduqQzL82ci
-         AxtJ/ZLgdMJ1MPCMPE7ntZJ79s/1uhjgT4wMiOY9uIebTMVnIp80viz+yjm3Pi4Ov1df
-         SuM+g9lSfJ5QbKYAOYFwdwElUXo5YNt3L/8HMub0l0TfQO/f7MfafDXwD1gtRZ5s+tb2
-         bXERaSil9+dwr+2rOYAHchOMLyNn6yv5JeELpKOkyAPe8M64UQmMV4InEgTs67nnDMwp
-         Iei2TiKwOoYst9VyOEHH6dxGSCmducS5CZbHYywrAkRepFvlvBfX8IFiseQResAWyMGK
-         0oGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpMaHCVHUQRt/hUMnUCczk4Uh0yzGYNDNDxQ9yBDP05GegO1v5BCFGFfisMSRJ+x5wXks4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpINf9BT8p5sbGcsMoDsld42hNUtFtQlo2auA1LNZMKvfwTAuW
-	c833fLh9HfEZMu7PbB4CGjw5BFqgeE/R1d4h6p1NejQ5JlnL2QFi/cNCIH/LKqOa7g==
-X-Gm-Gg: AR+sD124be1cTDauY59HSeUK2YVy92VggoUAyJ5jLBNICxtmT4srVlKx3t4epa0TSkg
-	xQr2tD6iGktDAzd8B5Zw/ld4+YdLRvNO85ysxkhS42rUnf2NOXdPLcvpoesBqNxAN8neNeQwVwq
-	7f7EwziWrm6CzJOk7O6cL71P2FBV/IqiOdmneCb6G/HBsuaiXLJ1pbBrCAINvQAyE8hxruUtSIm
-	ZPXtMJB7Lz0RJ3phZTt/ZRNx6yXtZT0AHS8/fS654+dzadCJRUaTFaTlGOELBKUIkT2gRXC5X+5
-	5xsYqw9VXv0rV5pHDva9TLWI1CPIbQ5DbnnAWnwUftHLKqlcNRLmgE6R24qcXd9DUOq/Es6U4/+
-	xhWRD1OS0+ZHzEGn7mqIliXXd2qDf6nDD3CmmS7uD0HN6BU0SJpaTY5bzjtDRL+lFQyUTMoZ3s+
-	n0Acn2pPr8m6/QSrzAXdw5vKhqD9I8Akyxj7BD+PWPxw==
-X-Received: by 2002:a05:6a21:3489:b0:3c3:2e2b:29ee with SMTP id adf61e73a8af0-3c44b204eddmr6323311637.55.1784861607702;
-        Thu, 23 Jul 2026 19:53:27 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:c102:f12d:5168:6be5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbb8f18ae0esm3618236a12.16.2026.07.23.19.53.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 19:53:27 -0700 (PDT)
-Date: Fri, 24 Jul 2026 11:53:24 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	kvm <kvm@vger.kernel.org>, "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, 
-	stable <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.15.y v2 0/8] KVM: fixes for CVE-2026-46113 and related
- issues
-Message-ID: <amLPUt59eFu1n25z@google.com>
-References: <amG2CyrA-yEUmHqV@google.com>
- <CABgObfaKqT0gMUB_XRP5DW5HmpgaoTgmD-A8_zQVG2Vp5xZE4g@mail.gmail.com>
+        bh=v/sc0XsZC038Vuii3xonWYoG3iLN4hTxE3JZFsfOJQQ=;
+        b=oDHEn0V40MLTw8U+PoRuc52uVWVcAR8t3gi533d0iiDHmTd9c8O5eJrraje8Gs6S5R
+         0AaX1gU1DpoDW6xbDsYZAKx8pqfKHAIwqb9qybsWysoeWvD/u3sGrhcE/5Mc2nqDWoca
+         3fDkYXrzvzOR+uSnNeMJb6iY39HtkFANHOtYPbWKtAxaJmXZVKjYuqMPAtXR4fIQcKY0
+         Z5YZw7RR4sJ0Rx81pGMnC1UtTAVjZtlV35u7OcaaywNNT0PqGZpXQmYf1T2/t/KMwqo1
+         aRSfsTX99i3GO0o2833FC9ZAtFP+87XdkDDIKe6s/io2MGEvJzaUJs8vBcetM2udgr/t
+         87yw==
+X-Forwarded-Encrypted: i=1; AHgh+RrdlYFkzLfj/6iMQwiCHb5JNZXRb6m3VqvxKc5BeLRmQJNKLon2xLKz9uuYP8zvZpS4/As=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPcfFXpKK4Dkwb9JzY4sJMlHFjScpBJSVK3t+5mhmWzxG80ufv
+	YJxvs4DUvY2JuDwZ7RLCsOIUmSxYYvnZTtyND5Wv9pswHxJrGyiM+i1hAZXFSGuDMslx4ZG9fOt
+	8TCICYrQ9yS7IEVDzru9lGmtbVx07jRD8N6XdicNp
+X-Gm-Gg: AR+sD13absEPPVZTLi7XOXD3hmTbRvuL3Rx8Lf35vf2gB2zOD2eqM1nNrzO7bqc/1kd
+	VhRezluJxcwtStzB4bM+FowpRFeD7zs7HL4BUvx6zsmj8DeRkX6YYxxXRNdCQG2dT6Xl1LXmtSa
+	yVAUrVezz7rnKxzERCdIzTf8VtQwFlOgwlB/89i4BhOWcqcmMytjQsnVWCG/Rq2Cjquld4VzF8r
+	5rSxwUjL0M6onbYP+hVmOGE79c0gqf3PpfCWzQUk+IhKlBC+Xx7pPnOggRi5hvVQGf8a2+Y
+X-Received: by 2002:aa7:d759:0:b0:69e:98c8:c71b with SMTP id
+ 4fb4d7f45d1cf-69f8ee93564mr41477a12.6.1784862968443; Thu, 23 Jul 2026
+ 20:16:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfaKqT0gMUB_XRP5DW5HmpgaoTgmD-A8_zQVG2Vp5xZE4g@mail.gmail.com>
+References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-6-zide.chen@intel.com>
+ <CALMp9eQv3Z8w2UoxDFMyb-zpSAD7RpL6Bzc9kfk=oGpDF7VySA@mail.gmail.com> <6fa18abe-4cb0-42e5-88f6-880a9ecaf769@intel.com>
+In-Reply-To: <6fa18abe-4cb0-42e5-88f6-880a9ecaf769@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 23 Jul 2026 20:15:56 -0700
+X-Gm-Features: AUfX_mw_MRUm546pWvq3POwaQW2qZz8fmc0TuhqAa9xpaVpzheRFPpUH1rfaENw
+Message-ID: <CALMp9eSYcAoKR+ZiSe2R1-Oq1SAEfHJrHSXKzSvvyzcZUMTdHQ@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
+To: "Chen, Zide" <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Thu, Jul 23, 2026 at 4:44=E2=80=AFPM Chen, Zide <zide.chen@intel.com> wr=
+ote:
+> The SDM guidance that "fixed counter 3 must be restored before
+> PERF_METRICS" appears to apply only to a running PMU, which is not the
+> case here.
 
-On (26/07/23 11:36), Paolo Bonzini wrote:
-> Il gio 23 lug 2026, 08:36 Sergey Senozhatsky
-> <senozhatsky@chromium.org> ha scritto:
-> >
-> > > Sasha, Greg,
-> > >
-> > > this is the backport to 5.15 for the above CVE.  The fix was relatively
-> > > simple upstream but only due to years of refactoring and cleaning up
-> > > of the code; fixing from scratch is not really feasible so start by
-> > > applying the patches that are needed.
-> > >
-> > > Please apply this instead of v1, due to a missing line in the last
-> > > patch.  Sorry about that.
-> >
-> > Sorry for the noise, has this series stuck?
-> 
-> It had a regression and while there was a suggestion about how to fix
-> it, nobody had time to verify it.
-> (https://lore.kernel.org/kvm/20260630223723.83727-1-zcgao@amazon.com/)
+That's not my reading of the SDM. There are three bullet points about
+save/restore at the end of volume 3, section 22.3.9.3:
 
-I guess I can try helping with that.  Will require some time and
-help tho.
+* PERF_METRICS and fixed-function performance-monitoring counter 3
+should be saved and restored together.
+* To ensure that PERF_METRICS and fixed-function
+performance-monitoring counter 3 remain synchronized,
+both should be disabled during both save and restore. Software should
+enable/disable them atomically, with a
+single write to IA32_PERF_GLOBAL_CTRL to set/clear both
+EN_PERF_METRICS[bit 48] and
+EN_FIXED_CTR3[bit 35].
+* On state restore, fixed-function performance-monitoring counter 3
+must be restored before PERF_METRICS,
+otherwise undefined results may be observed.
+
+The second bullet contradicts your claim above.
