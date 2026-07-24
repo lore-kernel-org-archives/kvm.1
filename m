@@ -1,223 +1,238 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806FF8003D
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CA131618C;
+	Fri, 24 Jul 2026 17:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784915446; cv=none; b=auMFpcXP3WZT6qs2BkeYddf2eq12FpAkyr8/RAmn7jy3xVAhJwNyE2XS5TBloa6yvzDMVTDJfnr1HL7SJ9ULv+E55m0lhJsuxBz3tMD99ZS8DkaD0CiJ7rZKJwqzQmPvIkAj26tp5FqJURgvgxoHO970GItVmp6zOE8XQ/Ljo1c=
+	t=1784915487; cv=none; b=bp/gSoixW2mpF1/zmMUunlZ3YsVTmr59kwplbzlfBfZXzzDPPa2CQJ3u91aTLjKG0su8sV3faaj+irxksJuIs13vdurWDrg4EYY0PPJeFzTI8MjReajvy/tRsfKMmoA68FpfW+sDEPo2IEXCEsIKsZFeOZ5u96iHcGG+vJEO96w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784915446; c=relaxed/simple;
-	bh=QchfmaTVXdC50jNqvGL7CrJL2rwzeGHlbZzlBCY6kPo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FevSmOGIkQas0Ire5IEVN6qDIlxxLMokuCtcrSGvykA10N4SRSQfbg8FHGom9N8BIDOHgUjUZs1S27YtXK4RHBN8jWz+vo/hlftyXM+PYQvWZpdy0vmI9GvrdbdLK4V8rTFEzJddHVZ+jAKjDmTq+pvm8ubjClO/8Cyp2b9zMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Avpvqxbp; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784915487; c=relaxed/simple;
+	bh=nWnbTi8pvw8DLc79ebFvMEdjRzgQl2qSWxMboDg000s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A3t2Y93Sw5tR61vR8JQ/P+pU+dwMEXC4jYQbU6Ol65SqTWzMYJKdsojO5tvuAfikhVdwF25WBYO9Pt/DZODL4ocSfCxjIXg+M52a8u06d23ddnNkb5q6HlE7IMoniQnPVJgDoINqtMQfrbHraBO+xswVJBy1tKBjM++HzsJsv/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gimToVP6; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Avpvqxbp"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84885a4fcabso787200b3a.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784915443; x=1785520243; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/yqary+PkV5n2O/DTXg0SkNxkbMXNBJXW8l7I5tT7bM=;
-        b=AvpvqxbpsRhoBjtu0rD1Bhv3ILqcre14hWnv8kuuqGvcEBcC2xKy4tQy/LF5REeW46
-         np6FiRmgn7bn6YZPbgrgoJoHF+fW77lGoBAf2gKKZQjD/OeEmx6+MUSrRRqX7FbL++9E
-         RXmvwpZExIIy/EU4Yig7c4sk7rdT40LBCH6Q81IvLt8pQx8ljgw4xSYXri18P+1yzCP1
-         iMRbM6pRFb12YGgZUpsZdLKQvL26IvJ8A+mQdk8g4ftf120XQy5+3Y8JZw9xg4GeSfww
-         xKFvynx5KTc7qAaHLuAR5bf7nw9dv6vlV5YvuuAQnTfrzls7WSKvxFv8927yTPcKZNT+
-         IyPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784915443; x=1785520243;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/yqary+PkV5n2O/DTXg0SkNxkbMXNBJXW8l7I5tT7bM=;
-        b=n5+emkvbuzKUWSFFlMtw45cmtn9y8AxkY53pIp5U3PunOee51zWzKvpjCaJ502ZFGh
-         vKhl/z1qa+4C0SUAHu4s4/4MGx2H6nz/Sl04mLlSe4/WqkssDSbwY5eO1CHrrdYg2akk
-         Bm2doWsFFaIjosPmuNpAe+07M00SR2ZEy++fIayBBzBeX/mC2QNcEaATx4Em0XD9nuP3
-         /UcJs8hDUL2aBvZrxuCpVCvepEJN/Efwu+1v1HuDFgWHiW1hHRXETJklPdIV2qhq9Bbn
-         KozdstvkyOaZwt7+//mwru/zNmSLerUbSc5sr+GyIZ4tIonUrDsSkdVuhv6faq5y7+IC
-         AwuQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/9Pf6RqnovpIVQried04gd4czY9AKMuGu6Eqgp+vrcnIqsxWkFjC5wmgrmqCwUagefMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBTlhUorNZSAstqug6HlH51EfXBIZamiutgbn2gVLqwjJwVDLK
-	74wavhcCpbpt8RXb4jpgnWZGHBH4QFA+ieaH44G3SNZRBNcvjszjMZEeuEGxA1PWJpw2mX8DOVh
-	uMUkL9w==
-X-Received: from pfes19.prod.google.com ([2002:aa7:8d53:0:b0:848:40f5:a538])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3cd6:b0:846:2f3d:6259
- with SMTP id d2e1a72fcca58-84e2bbaba40mr9116959b3a.57.1784915443113; Fri, 24
- Jul 2026 10:50:43 -0700 (PDT)
-Date: Fri, 24 Jul 2026 10:50:42 -0700
-In-Reply-To: <20260629183746.699840-11-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gimToVP6"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OHBv7X2352942;
+	Fri, 24 Jul 2026 17:51:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=qpPWGO
+	Ste8aUhnSh8xL3B8s1k3NcCGnPZ5/+NhtQx3I=; b=gimToVP6yvqg9Dh2i0DtnZ
+	COYUeeVPnwaWzPzeSuugNTXiwfzaF77HDmpmFxEJW5qFO3q+giXWXcq+6uzEbIZX
+	rpEHzwEf+EIJfG7HtW4xONRRVO0hr02Is7KUMQpb9vPY7Ily1NDxodtbqYrB0bOF
+	EJvaz2nBRjLrhHWMhunqtW4xGR/8yUHvUhx15dgCjSIzR4QZgJPOB5Jv0DqJuMyw
+	IUCtP2Oj1vhF3r4ujtYOjnZ7w4ZWyMecVHyZlHzBUrPirY2paLUhZl141/kotUFg
+	0hMlJRI+1CHtOkdX4hdat6y2H1ZYt1j5CIHsSN0FnhKxw6dkARcojZwQjvUoEKfA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg77knatu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 17:51:24 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OHniNs026353;
+	Fri, 24 Jul 2026 17:51:24 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgktqj5w0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 17:51:24 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OHpMG328639868
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 17:51:22 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DBD258045;
+	Fri, 24 Jul 2026 17:51:22 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8BB3E58050;
+	Fri, 24 Jul 2026 17:51:21 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jul 2026 17:51:21 +0000 (GMT)
+Message-ID: <c234577c-c27d-4460-8dd5-7d8b48e0094b@linux.ibm.com>
+Date: Fri, 24 Jul 2026 13:51:21 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629183746.699840-1-yosry@kernel.org> <20260629183746.699840-11-yosry@kernel.org>
-Message-ID: <amOl8kczWlZP_ftH@google.com>
-Subject: Re: [PATCH v3 10/10] KVM: selftests: Trigger L2->L1 exits stress
- save+restore and #PF test
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/8] s390/vfio_ccw: ensure first IDAW remains constant
+To: Eric Farman <farman@linux.ibm.com>, sashiko-reviews@lists.linux.dev
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>, kvm@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>
+References: <20260723174751.1180334-1-farman@linux.ibm.com>
+ <20260723174751.1180334-5-farman@linux.ibm.com>
+ <20260723182956.2AF2F1F000E9@smtp.kernel.org>
+ <b21d6e76-27ba-4215-949d-30c8e77e5b3d@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <b21d6e76-27ba-4215-949d-30c8e77e5b3d@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=HJXz0Itv c=1 sm=1 tr=0 ts=6a63a61c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=A5oUufH1SNi9yJRP6tIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDE1OSBTYWx0ZWRfX4Cm8JiYjT6tI
+ QX5Ed+H9l0WABJc3g1Tx64fuWyYgrmrHq5ueBGkzMMKUfKTcAqGfIq0ff+d85uydnaWT1V+PS8H
+ v7/hiR91x8xGjtqMu/xZjaAyyko0FWzWLtlSKEktQKFrlkKTztY9R/pm2dl89U/oLBA/+Pfpm0X
+ UJxM1+/Fo0PKqYv/qEP9OwXinw5S6HUFaiisrnE3wkC4jfTaH4aE+z/TgzogC6VDssIjQLwBo0+
+ nyOj4iESfM8yLbxFDSozpssPRDSa1bs5rcIKCS9ifip8SS5DBgI2G21gBwWJgzi+irQ9mGf68t4
+ z6ypdANOOLrc2yuW2/FjiGTpXSJEFmEc+thnpYU5ct2qgD5wCSlKbIcv4DfYefwNPddoHiiFqMM
+ mMFxxu6mM2VSw25X+r/hjbMIHkpKXgmttm41DxlhnJkv/ykgpPD+dqOl2fjbZaj5eiHXZzYtUiJ
+ ULo9/3+Vj+wYDre3A0w==
+X-Proofpoint-ORIG-GUID: P0nSI3DxMi7Xn7rHw-jTPPjNinI28Uhu
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDE1OSBTYWx0ZWRfX/1wj220Wt915
+ zTu/jtGTVRB8vSavWgeZSAMgNizOhTWrlE+gxrsjUyZmn1+BBdBDIy4AjqlxmpCm2U5loZ/rDnq
+ eKwsGYOHLSOPmJvA/Q0awaT1W+sugEo=
+X-Proofpoint-GUID: P0nSI3DxMi7Xn7rHw-jTPPjNinI28Uhu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_04,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 clxscore=1015 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607240159
 
-On Mon, Jun 29, 2026, Yosry Ahmed wrote:
-> Extend the testing coverage in L2 by injecting a #UD into the vCPU every
-> other iteration during restore, and intercepting #UD from L1,
-> essentially forcing an L2 -> L1 VM-Exit directly after save+restore.
-
-Assuming the #UD is a means to an end, make that the focus of the intro blurb.
-I read this changelog without looking at the shortlog, and was about to ask why
-injecting a #UD is interesting, and then I saw the comment.  It'd be helpful
-to add a bit more context too, as it took me a few seconds to piece together
-that the goal is to force the exit while L0 has control, i.e. a more obvious
-hypercall from L2 wouldn't suffice.
-
-> With this change, the test reliably reproduces the CR2 bug fixed by
-> commit 5c247d08bc81 ("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12
-> on nested #VMEXIT") -- at least on Milan, Genoa, and Turin CPUs.
+On 7/23/26 4:38 PM, Eric Farman wrote:
 > 
-> Assisted-by: Gemini:gemini-3.1-pro
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> ---
->  .../kvm/x86/stress_save_restore_pf_test.c     | 47 +++++++++++++++++--
->  1 file changed, 42 insertions(+), 5 deletions(-)
 > 
-> diff --git a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> index 9ab52d27a61d9..2b76e56f744e7 100644
-> --- a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> +++ b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> @@ -105,8 +105,12 @@ static void guest_access_memory(void *arg)
->  static void l1_svm_code(struct svm_test_data *svm)
->  {
->  	generic_svm_setup(svm, guest_access_memory);
-> -	run_guest(svm->vmcb, svm->vmcb_gpa);
-> -	GUEST_ASSERT(false);
-> +	svm->vmcb->control.intercept_exceptions |= BIT(UD_VECTOR);
-> +
-> +	while (1) {
-> +		run_guest(svm->vmcb, svm->vmcb_gpa);
-> +		GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, (SVM_EXIT_EXCP_BASE + UD_VECTOR));
-
-Please wrap this one, it's so long that I find it genuinely difficult to parse.
-
-		GUEST_ASSERT_EQ(svm->vmcb->control.exit_code,
-				(SVM_EXIT_EXCP_BASE + UD_VECTOR));
-
-> +	}
->  }
->  
->  static void l1_vmx_code(struct vmx_pages *vmx)
-> @@ -115,13 +119,17 @@ static void l1_vmx_code(struct vmx_pages *vmx)
->  	GUEST_ASSERT(load_vmcs(vmx));
->  	prepare_vmcs(vmx, guest_access_memory);
->  
-> -	/* Ignore any #PF */
-> -	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(PF_VECTOR)));
-> +	/* Intercept UD, ignore any #PF */
-> +	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(UD_VECTOR) | BIT(PF_VECTOR)));
->  	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MASK, 0));
->  	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, -1));
->  
->  	GUEST_ASSERT(!vmlaunch());
-> -	GUEST_ASSERT(false);
-> +	while (1) {
-> +		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
-> +		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_INTR_INFO) & 0xff, UD_VECTOR);
-> +		GUEST_ASSERT(!vmresume());
-> +	}
->  }
->  
->  static void l1_guest_code(void *test_data)
-> @@ -159,6 +167,24 @@ static void vcpu_sigusr_ignore(void)
->  	sigaction(SIGUSR1, &sa, NULL);
->  }
->  
-> +static bool vcpu_state_is_guest_mode(struct kvm_x86_state *state)
-> +{
-> +	return !!(state->nested.flags & KVM_STATE_NESTED_GUEST_MODE);
-> +}
-> +
-> +static void vcpu_state_inject_ud(struct kvm_x86_state *state)
-> +{
-> +	if (state->events.exception.pending || state->events.exception.injected)
-> +		return;
-> +
-> +	state->events.flags |= KVM_VCPUEVENT_VALID_PAYLOAD;
-> +	state->events.exception.pending = true;
-> +	state->events.exception.injected = false;
-> +	state->events.exception.nr = UD_VECTOR;
-> +	state->events.exception.has_error_code = false;
-> +	state->events.exception_has_payload = false;
-> +}
-> +
->  static bool parse_args_nested(int argc, char *argv[])
->  {
->  	bool nested = false;
-> @@ -192,10 +218,13 @@ int main(int argc, char *argv[])
->  	gva_t gva;
->  	u64 pte;
->  
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_EXCEPTION_PAYLOAD));
-
-But KVM_CAP_EXCEPTION_PAYLOAD _isn't_ required, it's an optional feature.  Actually,
-this is ridiculous.  The test is injecting a #UD, it doesn't have a payload.
-Bad AI, bad.
-
-> +
->  	nested = parse_args_nested(argc, argv);
->  
->  	vm = vm_create_with_one_vcpu(&vcpu, nested ? l1_guest_code : guest_access_memory);
->  	vm_install_exception_handler(vm, PF_VECTOR, guest_pf_handler);
-> +	vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
-
--2ul?
-
->  	if (nested) {
->  		TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM) || kvm_cpu_has(X86_FEATURE_VMX));
-> @@ -270,8 +299,16 @@ int main(int argc, char *argv[])
->  
->  		state = vcpu_save_state(vcpu);
->  
-> +		/*
-> +		 * If the vCPU is in guest mode, inject a #UD to trigger an
-> +		 * L2->L1 VM-Exit every other iteration.
-> +		 */
-> +		if (nested && vcpu_state_is_guest_mode(state) && count % 2 == 0)
-
-Checking "nested" here is unnecessary.
-
-> +			vcpu_state_inject_ud(state);
-
-Honestly, I'd rather open code this whole thing, because this doesn't actually
-inject a #UD.  It _prepares_ state, but doesn't send that into KVM.  E.g.
-
-		/*
-		 * If the vCPU is in guest mode, inject a #UD to trigger an
-		 * L2->L1 VM-Exit every other iteration, unless the vCPU has.  Take care not to
-		 * clobber any exceptions
-		 */
-		if ((i & 1) && (state.nested.flags & KVM_STATE_NESTED_GUEST_MODE) &&
-		    !state.events.exception.pending && !state.events.exception.injected) {
-			state->events.exception.pending = true;
-			state->events.exception.injected = false;
-			state->events.exception.nr = UD_VECTOR;
-			state->events.exception.has_error_code = false;
-		}			
-
-> +
->  		kvm_vm_release(vm);
->  		vcpu = vm_recreate_with_one_vcpu(vm);
-> +		vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
->  		vcpu_load_state(vcpu, state);
->  		kvm_x86_state_cleanup(state);
->  
-> -- 
-> 2.55.0.rc0.799.gd6f94ed593-goog
+> On 7/23/26 2:29 PM, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 2 potential
+>> issue(s) to consider:
+>>
+>> New issues:
+>> - [Low] Applying a bitwise shift directly to a restricted `__bitwise`
+>> type (`dma64_t`) and implicitly casting it strips type annotations,
+>> triggering sparse warnings.
+>>
+>> Pre-existing issues:
+>> - [High] `get_guest_idal` reads too many bytes for Format-1 IDALs,
+>> potentially causing spurious failures for valid channel programs.
+>> -- 
+>>
+>> --- Patch [4]: [PATCH v3 4/8] s390/vfio_ccw: ensure first IDAW remains
+>> constant ---
+>> commit e8a4291c688f39a3fdc915242b5bb6676e357ac5
+>> Author: Eric Farman <farman@linux.ibm.com>
+>>
+>> s390/vfio_ccw: ensure first IDAW remains constant
+>>
+>> This commit ensures the first IDAW in a list is read separately to
+>> accurately
+>> calculate the buffer size needed. It verifies that the address found
+>> in the
+>> first IDAW is unchanged between reads to maintain consistency.
+>>
+>>> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/
+>>> vfio_ccw_cp.c
+>>> index 258a99930c6a0..06b6bc6142a0f 100644
+>>> --- a/drivers/s390/cio/vfio_ccw_cp.c
+>>> +++ b/drivers/s390/cio/vfio_ccw_cp.c
+>>> @@ -533,6 +533,7 @@ static dma64_t *get_guest_idal(struct ccw1 *ccw,
+>>> struct channel_program *cp, int
+>>>           &container_of(cp, struct vfio_ccw_private, cp)->vdev;
+>>>       dma64_t *idaws;
+>>>       dma32_t *idaws_f1;
+>>> +    u64 first_idaw;
+>>>       int idal_len = idaw_nr * sizeof(*idaws);
+>>
+>> [Severity: High]
+>> This is a pre-existing issue, but does get_guest_idal() read too many
+>> bytes
+>> for Format-1 IDALs here?
+>>
+>> Because idal_len is calculated using sizeof(*idaws) which evaluates to 8
+>> bytes, instead of the actual 4 byte IDAW size for Format-1 IDALs,
+>> vfio_dma_rw() will attempt to read idaw_nr * 8 bytes.
+>>
+>> If a guest VM submits an I/O request with a Format-1 IDAL that fits
+>> exactly
+>> at the end of a mapped page, this could cross the page boundary into an
+>> unmapped page and cause the DMA read to fail, spuriously rejecting a
+>> valid
+>> request.
+>>
+>> [ ... ]
+>>
+>>> @@ -549,6 +550,17 @@ static dma64_t *get_guest_idal(struct ccw1 *ccw,
+>>> struct channel_program *cp, int
+>>>               kfree(idaws);
+>>>               return ERR_PTR(ret);
+>>>           }
+>>> +
+>>> +        if (cp->orb.cmd.c64)
+>>> +            first_idaw = dma64_to_u64(idaws[0]);
+>>> +        else
+>>> +            first_idaw = dma32_to_u32(idaws[0] >> 32);
+>>
+>> [Severity: Low]
+>> Does applying a bitwise shift directly to a restricted __bitwise type
+>> like
+>> dma64_t and passing it to dma32_to_u32() trigger sparse warnings?
+>>
+>> Since idaws[0] is of type dma64_t (__bitwise u64) and dma32_to_u32()
+>> expects
+>> a dma32_t (__bitwise u32), this implicitly strips type annotations.
+>>
+>> Should this be explicitly cast using (__force u64) before shifting to
+>> avoid
+>> violating sparse type rules?
 > 
+> Probably a better solution to this is:
+
+Oh, I missed this reply.  Yep, that makes sense.
+
+So with the change below:
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
+
+
+> 
+> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/
+> vfio_ccw_cp.c
+> index 06b6bc6142a0..08be6d5a99f3 100644
+> --- a/drivers/s390/cio/vfio_ccw_cp.c
+> +++ b/drivers/s390/cio/vfio_ccw_cp.c
+> @@ -551,10 +551,11 @@ static dma64_t *get_guest_idal(struct ccw1 *ccw,
+> struct channel_program *cp, int
+>                         return ERR_PTR(ret);
+>                 }
+> 
+> +               idaws_f1 = (dma32_t *)idaws;
+>                 if (cp->orb.cmd.c64)
+>                         first_idaw = dma64_to_u64(idaws[0]);
+>                 else
+> -                       first_idaw = dma32_to_u32(idaws[0] >> 32);
+> +                       first_idaw = dma32_to_u32(idaws_f1[0]);
+> 
+>                 /* Unexpected mismatch from earlier read */
+>                 if (first_idaw != cp->guest_iova) {
+> 
+> 
+>>
+>>> +
+>>> +        /* Unexpected mismatch from earlier read */
+>>> +        if (first_idaw != cp->guest_iova) {
+>>> +            kfree(idaws);
+>>> +            return ERR_PTR(-EINVAL);
+>>> +        }
+>>>       } else {
+>>>           /* Fabricate an IDAL based off CCW data address */
+>>>           if (cp->orb.cmd.c64) {
+>>
+> 
+
