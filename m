@@ -1,113 +1,164 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1C53F3277;
-	Fri, 24 Jul 2026 11:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E4E35A3A4;
+	Fri, 24 Jul 2026 11:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784893808; cv=none; b=MslVczY+4KM3zt9llfr7AoC0PTWpxlIfUYc0tnAG0W16OuvNwhhL08sOL4AT1oIIxCbY6Ra8iC9pq4fx20atRY4Xc3M+BZh498IBAXzKT2n4TlPNzXlJn/4+v+P960rQXPHezXfwRRa+HWolGtXMudA3Ku/vT1O3NcBu3Ab5yC8=
+	t=1784893931; cv=none; b=LPLTF+miibmawCGFTrAb3h/KGzc7u4eBx7xU/om9xYSuAO8qnqjbNnSeou7O8C83lLWYtYeHj9jPfW33rBdS71vjxQcYpCZgNwo0Upg7gF/W1IrUGXVTyzOnSVbj83+glfPJJxwsN4BxbmIyYdwnO6+wYmVkubizGr9nVd7BMYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784893808; c=relaxed/simple;
-	bh=lSGi/T62Qz3zkTtfJoxDSfari9OyrmBQakjPywG4Wwg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iCYlX3jhN2tXei4LOb9g58TxuMs4F/4UptLpIxXsGuIqYW/fpdiePygVNfbtKONTT+WVTEHA8aaMz9Oa7IsPwYARnpGelN6Dq22QqPeIumZHYxC8JMgx0pWs5VrDKCBxs21JqLoL4jZ0srQ49SqEwUtFxrvTgJCESsGxISa947s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=onlJqJS2; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1784893931; c=relaxed/simple;
+	bh=H3KgN6U6g+7LL7Wvv7j2oIvyuHB06Ln2L3iwRGXREvE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=MvJv35fEHrKXdDAKE2qrqcj6ZNIfosVyb2OakICgyUAsbBf7Sidw05rrTj0opRh1bU/e0DOB4wCm97/E1IRxF8T0RzXIe5tIpAX7A1iEVyyDJNVTx3MnjY1KSbPFZrA1DPMBYcI1KHwvAM9Pt9gETatFhW5CUpQXpO9cCsTU0y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDCYSPbZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="onlJqJS2"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BA1941477;
-	Fri, 24 Jul 2026 04:49:55 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0F2463F59E;
-	Fri, 24 Jul 2026 04:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1784893799; bh=lSGi/T62Qz3zkTtfJoxDSfari9OyrmBQakjPywG4Wwg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=onlJqJS22YoDsKaG6SiKSkuKsNv+WmGR0K4ecfdNyqZf1u/+3JEGvSxKfGGrvm5nJ
-	 MXCh4HNavE1AO8qDTOoQLnL6W10waJKQJvwWm9dJxKiy7ypA0biilE7i0COMFUcgAZ
-	 cBx7VbhxE8imKHXZsbg7suIUPJzdyNKYFStD+n4k=
-Date: Fri, 24 Jul 2026 12:49:45 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 14/20] x86: mm: skip pud setup when using generic
- compile-time folded pagetable
-Message-ID: <amNRWR-8BCBNU0sR@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-14-d9e4bad31e0a@arm.com>
- <0ea931f1-4801-4d32-b6ce-4787a8d3daa9@intel.com>
- <amD7ab_KuJPdBQBh@e129823.arm.com>
- <6f5060a7-0a64-49fc-81a3-ae88729ef794@intel.com>
- <amElnEbvRTjv2hyU@e129823.arm.com>
- <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDCYSPbZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AFE1F000E9;
+	Fri, 24 Jul 2026 11:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784893930;
+	bh=rQQG4umk+eRm/+94WpkDS0mhUy5z5julxZeCbc61ZgU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eDCYSPbZ2/cIKSp42gz1U0d3HrXDKx6a2HJ9JM8tmhmZl3DVsiUz7eR1FNduFTrNX
+	 cBmA2r4iiRat+S7wwTwOHASGF8ZNtyoxGgl3y3xL0Jpsy+ZRWsLPqxfoBop8oKU6DA
+	 aTrOWiWjVkR7UmPsx/MJ3S/5MQA4MINI2cY6cfpwScIgIyqGNV+W3aPopGY2x5i+DO
+	 XP4R0wRd8HK7p72ikL4DUQwM9H55g/2zsr9BPfA+tG+DcIMVL2xz3SG1EnOEsrGF78
+	 qeCpwc7wQx5d/KREpIlmFIo8XZsHO5NnVnYP5YqNsT3S4kaw5go46C25ecIAJPFiOk
+	 nSvKZZslNHZ1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 30/48] KVM: arm64: gic-v5: Mask per-vcpu PPI state in
+ vgic_v5_finalize_ppi_state()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
+Cc: kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev
+In-Reply-To: <20260724104819.1296803-31-sascha.bischoff@arm.com>
+References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
+ <20260724104819.1296803-31-sascha.bischoff@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 11:52:09 +0000
+Message-Id: <20260724115209.F0AFE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3620750c-54d7-45a0-b067-bc813dd3cd9b@intel.com>
 
-On Wed, Jul 22, 2026 at 01:22:04PM -0700, Dave Hansen wrote:
-> On 7/22/26 13:18, Yeoreum Yun wrote:
-> > Sorry. But do you mean check with cpu_feature_enabled() not with
-> > boot_cpu_has()?
-> > IIRC, the boot_cpu_has() doesn't use the DISABLE_MASK_BIT_SET() but
-> > uses REQUIRED_MASK_BIT_SET() and I don't expect it wouldn't make
-> > an optimisation to constant check which is contrast to DISABLE_MASK_BIT_SET().
-> 
-> Ahh, yes. I forgot about that nuance! Moving to cpu_feature_enabled()
-> would be great!
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-When I see again, using cpu_feature_enabled(), this would give a chance
-to optimisation when the feature disabled and there would be no harm for
-when feature enabled since cpu_feature_enabbled() also fallback to
-boot_cpu_has().
+New issues:
+- [High] Restored active software-managed PPIs are not queued to the ap_lis=
+t, leading to lost interrupts on VM restore.
 
-So, it might be good to change with cpu_feature_enabled() as we
-discussed.
+Pre-existing issues:
+- [High] Data race on the global `vgic_ppi_mask` when `SW_PPI` is not imple=
+mented in hardware, leading to guest state corruption.
+--
 
-@Dave, Should I send above change separately or include it in this patch?
+--- Patch [30]: [PATCH v4 30/48] KVM: arm64: gic-v5: Mask per-vcpu PPI stat=
+e in vgic_v5_finalize_ppi_state() ---
+commit 04a9407ed3605cc393d7dce45456f17c9e1fc2c3
+Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
 
--- 
-Sincerely,
-Yeoreum Yun
+KVM: arm64: gic-v5: Mask per-vcpu PPI state in vgic_v5_finalize_ppi_state()
+
+This commit reworks vgic_v5_finalize_ppi_state() to discover exposed PPIs a=
+nd
+mask non-exposed PPI state when VCPUs are first run. It clears state for
+non-exposed PPIs to ensure only the intended state is exposed to the guest
+after userspace restores the state.
+
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+> index 04392b686c2e2..6af1264ed2371 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+[ ... ]
+> @@ -795,35 +796,65 @@ int vgic_v5_finalize_ppi_state(struct kvm *kvm)
+>  	guard(mutex)(&kvm->arch.config_lock);
+> =20
+>  	/*
+> -	 * If SW_PPI has been advertised, then we know we already
+> -	 * initialised the whole thing, and we can return early. Yes,
+> -	 * this is pretty hackish as far as state tracking goes...
+> +	 * Discover the set of PPIs that are exposed to the guest once per VM.
+> +	 * Once known, apply that mask to each VCPU's restored PPI state as the
+> +	 * VCPUs are first run.
+>  	 */
+> -	if (test_bit(GICV5_ARCH_PPI_SW_PPI, kvm->arch.vgic.gicv5_vm.vgic_ppi_ma=
+sk))
+> -		return 0;
+> -
+> -	/* The PPI state for all VCPUs should be the same. Pick the first. */
+> -	vcpu0 =3D kvm_get_vcpu(kvm, 0);
+> +	if (!test_bit(GICV5_ARCH_PPI_SW_PPI, kvm->arch.vgic.gicv5_vm.vgic_ppi_m=
+ask)) {
+> +		bitmap_zero(kvm->arch.vgic.gicv5_vm.vgic_ppi_mask,
+> +			    VGIC_V5_NR_PRIVATE_IRQS);
+> +		bitmap_zero(kvm->arch.vgic.gicv5_vm.vgic_ppi_hmr,
+> +			    VGIC_V5_NR_PRIVATE_IRQS);
+
+[Severity: High]
+This is a pre-existing issue, but does this conditional in
+vgic_v5_finalize_ppi_state() create a data race on the global vgic_ppi_mask
+if the SW_PPI feature is not implemented in hardware?
+
+In a multi-VCPU VM booting on GICv5 hardware without the optional SW_PPI
+feature, when a subsequent VCPU runs for the first time, this test will
+evaluate to false because the bit was never set.
+
+This seems to cause the global mask to be cleared via bitmap_zero() while
+earlier VCPUs might already be running in the guest. Could this lead to a
+transiently zeroed vgic_ppi_mask during sysreg accesses and silently dropped
+interrupts for emulated devices like timers?
+
+> +
+> +		for_each_set_bit(i, ppi_caps.impl_ppi_mask, VGIC_V5_NR_PRIVATE_IRQS) {
+[ ... ]
+> +	/* Also update the vgic_irqs */
+> +	for (i =3D 0; i < VGIC_V5_NR_PRIVATE_IRQS; i++) {
+> +		bool visible =3D test_bit(i, kvm->arch.vgic.gicv5_vm.vgic_ppi_mask);
+>  		const u32 intid =3D vgic_v5_make_ppi(i);
+>  		struct vgic_irq *irq;
+> =20
+> -		irq =3D vgic_get_vcpu_irq(vcpu0, intid);
+> +		irq =3D vgic_get_vcpu_irq(vcpu, intid);
+> =20
+> -		/* Expose PPIs with an owner or the SW_PPI, only */
+>  		scoped_guard(raw_spinlock_irqsave, &irq->irq_lock) {
+> -			if (irq->owner || i =3D=3D GICV5_ARCH_PPI_SW_PPI) {
+> -				__set_bit(i, kvm->arch.vgic.gicv5_vm.vgic_ppi_mask);
+> -				__assign_bit(i, kvm->arch.vgic.gicv5_vm.vgic_ppi_hmr,
+> -					     irq->config =3D=3D VGIC_CONFIG_LEVEL);
+> +			if (!visible) {
+> +				irq->enabled =3D false;
+> +				irq->active =3D false;
+> +				irq->pending_latch =3D false;
+> +				irq->line_level =3D false;
+> +			} else {
+> +				irq->enabled =3D test_bit(i, cpu_if->vgic_ppi_enabler);
+> +				irq->active =3D test_bit(i, cpu_if->vgic_ppi_activer);
+>  			}
+>  		}
+
+[Severity: High]
+Is it safe to directly set irq->active here without queueing the interrupt?
+
+When restoring a VM with active software-managed PPIs (like the PMU or time=
+rs),
+we mutate irq->active inside the lock in vgic_v5_finalize_ppi_state(), but =
+we
+don't seem to invoke the corresponding queueing machinery.
+
+Without enqueuing the IRQ onto the VCPU's ap_list, won't this cause the
+interrupt to be invisible to the injection path and get lost on VM restore?
+
+> =20
+> -		vgic_put_irq(vcpu0->kvm, irq);
+> +		vgic_put_irq(kvm, irq);
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724104819.1296=
+803-1-sascha.bischoff@arm.com?part=3D30
