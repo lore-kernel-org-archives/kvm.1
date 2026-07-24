@@ -1,102 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A350F3DAAA0;
-	Fri, 24 Jul 2026 08:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791523D669B;
+	Fri, 24 Jul 2026 08:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784882667; cv=none; b=LCEORYpd++FcdLpTMb4sx170Ji6VsxefvxCNp23ROVO0xVRz9h4toYgUODrgzY0BIOlwmnkHVdFJ2aFcC3et7TE6qRZcLGVroiuDZBDvfg5MT62cVag3m6oerf8/oM0kyTAFfjBHM+U0JCEf9hybH1dWxj6zTGLH50Mz7RGyBP4=
+	t=1784882871; cv=none; b=hdorVdVrgAt7nHoUNlOfa0yzIQmmU9QsheSC8JscPmR2kuadMJ+sJhwq62REMRTcwDX6sTtpicjt6rzY18E+931LsSlfIY+eHbKSzKNnzIxTjmIQiX+9N0npsGzfgISbY+JzjecwxVORemWCUBLgJEVN6Mj2gCDZVwcC0+jfLxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784882667; c=relaxed/simple;
-	bh=wc9s1C+qaNFSR4zC+G4oIK97Itt9CbrRtqB9k5JLszE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k77NL79w7Gvd9fejL36dnrzhkOQ/vmeK11Vt4jI+Om/4wYS9CubyCrjtSJANJD8I8TdtKl3kdtRWkFYoeXAxGFE7pFLldn2zY0LcATqTkxwbAk3M37nE7oDfyBk9FAU76WwbPBujwgV8aYYf01LbVDm3NXCTPXDNg83VCnXJB7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3fiHLCr; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784882871; c=relaxed/simple;
+	bh=pgLSBPsuW94uYqkQE0iqKvJSbBjiXY5JOe0Yc4s8dvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SDwPkh4ijW2CqIUYPVbeLNJB9Eb3Fhj0TT6MB4C99FtUc5KRmXmKVH0LmcIYkQFIDu14MfvpyfSyNNoK17vzgrdSA3z9qyf21lk6a3MiypEpl4KGq0fPk7HmyjxRZQr8Komd2m0yCl2a7uIx8CK8f+QaVhnzRNWioIoemaqcCcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6pDOTAW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3fiHLCr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784882666; x=1816418666;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wc9s1C+qaNFSR4zC+G4oIK97Itt9CbrRtqB9k5JLszE=;
-  b=R3fiHLCr+EUFBlNQQNY8LnTZgWbfyGDWAH71zzUakLl+WELvfTtTMDa0
-   HTj4dGaHg9bXNXvN8qoBjd7uMNwYGSw8yujuX7oQYbhPdRo8u+49OOcsm
-   5XPwNtD7IvFab4LtZOOkSBKD2zngF8oAlmXLl2vUlcMKO44pAupnpV6B8
-   UOCYL1mP0MBQeThxuipR5OABqsu57MiIxN6ZjotkyX0GJc9IA6aLRQRQI
-   4H+tw6j6oJg5SAnbRe4BjDEqTqBJIs3bfl5cBEYcHDzjEW5pKhzLLY3HX
-   nFaEkucRHFjCELTIk8mLxFpQ8QRxJg8xJ/nc0NapbSpFDyt6b+eH5n2Z+
-   g==;
-X-CSE-ConnectionGUID: cq4oOh9GQYaQ2qvmpBu1kg==
-X-CSE-MsgGUID: mUsMP4VFQeST94CsYB9K3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96139882"
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="96139882"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:44:25 -0700
-X-CSE-ConnectionGUID: xiuuO3u8Tj+CU7UTGG3iDA==
-X-CSE-MsgGUID: wX7Ic+cGQTGFRfSpkh7+8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
-   d="scan'208";a="263629517"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.232]) ([10.124.240.232])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 01:44:19 -0700
-Message-ID: <907d28d7-6355-43a8-b5bc-d61d5c640141@intel.com>
-Date: Fri, 24 Jul 2026 16:44:15 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6pDOTAW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B6B1F00A3A;
+	Fri, 24 Jul 2026 08:47:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784882868;
+	bh=uKLIfBLG1tq0sn4tnF1BsPaKM61vke1+Ik5sqk+B9hs=;
+	h=From:To:Cc:Subject:Date;
+	b=I6pDOTAWnXXAN8/KovxZG8z6DUDCbvAnAiMK/YYX3Bt5PnRAAMo1du8PdgwKMHYGJ
+	 anPwADR6ZPYd1ZARervT+mqWCI/eUVva3zJVyMFl7K98e3ZpxXikvHER5kFP1w06va
+	 eVcRX7nnGsEs+EjCOrzyHQ/CrdbtJwazbGbPx3C7kj+Gvy7mUa+g7A0vQWK6aUK8hr
+	 UBdTNqbNMLLQfMNoCVfdZbnlWnQE6vBEaPurmu7XnCgxpqZXHizvQqrKhXnPEyx4g2
+	 y1X+B9G1lbtw8gebYPDQFHdAxoQh0NjQK9HKprWnChN3lEgmwVbig1jBGUwWyOxHNM
+	 78Go6NLNOH4xQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wnBZK-00000008Ls6-1roU;
+	Fri, 24 Jul 2026 08:47:46 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	D Scott Phillips <scott@os.amperecomputing.com>,
+	Fuad Tabba <fuad.tabba@linux.dev>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.2, take #3
+Date: Fri, 24 Jul 2026 09:47:42 +0100
+Message-ID: <20260724084742.3358321-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
- initialization is required
-To: Xu Yilun <yilun.xu@linux.intel.com>, Chao Gao <chao.gao@intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
- rick.p.edgecombe@intel.com, yilun.xu@intel.com, sohil.mehta@intel.com,
- adrian.hunter@intel.com, kishen.maloor@intel.com,
- tony.lindgren@linux.intel.com, peter.fang@intel.com,
- baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, dave.hansen@intel.com,
- dave.hansen@linux.intel.com, seanjc@google.com
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-4-yilun.xu@linux.intel.com>
- <akIR1ClnTs1bRsD9@intel.com> <akOkGqH6RQEs/RWN@yilunxu-OptiPlex-7050>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <akOkGqH6RQEs/RWN@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, alexandru.elisei@arm.com, clopez@suse.de, scott@os.amperecomputing.com, fuad.tabba@linux.dev, vdonnefort@google.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 6/30/2026 7:10 PM, Xu Yilun wrote:
-> On Mon, Jun 29, 2026 at 02:33:56PM +0800, Chao Gao wrote:
->>> +static __init int init_tdx_module_extensions(void)
->>> +{
->>> +	struct tdx_sys_info_ext sysinfo_ext;
->>> +	int ret;
->>> +
->>> +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
->>> +		return 0;
->>> +
->>> +	ret = get_tdx_sys_info_ext(&sysinfo_ext);
->>> +	if (ret)
->>> +		return ret;
->>> +
->>> +	/* Skip if no feature requires TDX module extensions. */
->>> +	if (!sysinfo_ext.ext_required)
->>> +		return 0;
->>
->> What would happen if the kernel doesn't do this 'ext_required' check
->> and always does the extension initialization?
->>
->> If TDH.EXT.INIT returns success when no extension is configured, we
-> 
-> No, TDH.EXT.INIT fails when ext_required==false
+Paolo,
 
-What is the SEAMCALL return code in this case?
+Here's another set of KVM/arm64 fixes for 7.2. A bunch of fixes for
+AI-discovered issues, with two main areas of activity:
 
->> could drop this 'ext_required' from this series entirely.
+- plugging annoying LPI mapping races
 
+- fixing corner cases in the EL2 tracing management
+
+The rest is a heady mix of CPU errata workaround, API tidy up and low
+impact fixes.
+
+Please pull,
+
+	M.
+
+The following changes since commit 1590cf0329716306e948a8fc29f1d3ee87d3989f:
+
+  Linux 7.2-rc4 (2026-07-19 13:54:41 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kvmarm-fixes-7.2-3
+
+for you to fetch changes up to 679d7201c1f09e37fa1c12ce28d84079c17fc87f:
+
+  KVM: arm64: Reject guest_memfd memslots when the VM has MTE (2026-07-23 09:57:06 +0100)
+
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.2, take #3
+
+- Fix a tiny buglet when propagating the deactivation of an interrupt
+  from a nested guest, which happened to trigger a gold plated CPU bug
+  on a particular implementation
+
+- Fix a race between LPI unmapping and mapping, resulting in leaked
+  LPIs
+
+- Make LPI mapping more robust on memory allocation failure
+
+- Fix the handling of the EL2 tracing clock being disabled
+
+- A couple of Sashiko-driven fixes for corner cases in the EL2 tracing
+  code
+
+- Add missing sysreg tracepoint for the EL2 code
+
+- Tidy-up the mutual exclusion of guest-memfd and MTE
+
+- Update Fuad's email address to point to @linux.dev
+
+----------------------------------------------------------------
+Alexandru Elisei (1):
+      KVM: arm64: Reject guest_memfd memslots when the VM has MTE
+
+Carlos López (2):
+      KVM: arm64: vgic: Fix race between LPI release and re-registration
+      KVM: arm64: vgic: Mitigate potential LPI registration failure
+
+D Scott Phillips (1):
+      KVM: arm64: vgic: Avoid double-deactivate of IRQs in the nested context
+
+Fuad Tabba (1):
+      KVM: arm64: Update Fuad Tabba's email address
+
+Vincent Donnefort (4):
+      KVM: arm64: Fix hyp_trace clock disabling
+      KVM: arm64: Fix potential leak in hyp_trace_buffer_alloc_bpages_backing
+      KVM: arm64: Fix hyp_trace_desc allocation size in hyp_trace_load()
+      KVM: arm64: Add missing hyp_enter when trapping sysreg
+
+ .mailmap                                    |  1 +
+ Documentation/arch/arm64/silicon-errata.rst |  4 ++++
+ Documentation/virt/kvm/api.rst              |  6 +++++
+ MAINTAINERS                                 |  2 +-
+ arch/arm64/include/asm/kvm_hypevents.h      |  1 +
+ arch/arm64/kvm/arm.c                        | 25 +++++++++++++++-----
+ arch/arm64/kvm/hyp/nvhe/hyp-main.c          |  1 +
+ arch/arm64/kvm/hyp_trace.c                  | 36 +++++++++++++++++++----------
+ arch/arm64/kvm/mmu.c                        |  4 ++++
+ arch/arm64/kvm/vgic/vgic-its.c              | 25 +++++++++++++-------
+ arch/arm64/kvm/vgic/vgic-v3.c               |  8 ++++++-
+ arch/arm64/kvm/vgic/vgic.c                  | 18 +++++++--------
+ include/kvm/arm_vgic.h                      |  3 ---
+ 13 files changed, 93 insertions(+), 41 deletions(-)
