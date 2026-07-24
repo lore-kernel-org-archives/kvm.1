@@ -1,83 +1,123 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431D73806C6
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 06:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95E1381EBC
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 06:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784873338; cv=none; b=Zv3VsuanRyptA6WlZ0tthN64MG3oVWOom3mYN2Gkl8aCDZsikq7Q0k8pG9fNTdasf0FEDJZNK6gDyZgjNhgL1lp2M9ky2KONBzrfDgn/a9RK48qqQQp+4Mp2xXon5VgDo8Br5LBb9zLEr2GZcdsQV4FQLoJHeggjaKVJtJhzAjQ=
+	t=1784873371; cv=none; b=etAn+deGK+rrzzYr5CiVan3Sgo8Nm4NmoTtbivLb0/Fan8+eKTEfn91FeM1iSVOzcfoIV2z8Dp9o+nmTayjB/VbFQIbOkeg72mGP3n6tXo6yXWCvnIM0H5ora8R0y4NJXpNDLcYtmL0xzBvV/UKkNeOhKbNp1KG/usmlx7dWacE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784873338; c=relaxed/simple;
-	bh=Hw04bIfEXoXTWpyFkxflns81CCKMz2nggQEOefHSpPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bqoPvgd1NGAM5IJJejmzrELapAQyoYMb+caW+wOuDL2CtC22Yq69EWj62rxF1ea7iRnpNDxqSy5/9eM4bi+uSpf1gFKagr+bHcPtjIB+2tvPRHMUZCh23nHY8JtTVY2QlVt0/A2aQ2VU8r2cQiuK/8Fb5/RWmnG9acihFwITfII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=HPttsuoG; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1784873371; c=relaxed/simple;
+	bh=Yv76Uc6eNIRwoHRE5OWMEIz+p5C5RfrnI2mMnfhCH1o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FnwYtNaBZD4E908yrKqmkMkjJoMHt9K2cJdysjjvY9i9H81cOIU45MDXlB5+2kYXItq1VSmgfjVNFPSuoJieRU8GoPpFg2mtPX6s7NpRpNqcnBtnrJfvgO+SGK4OoQzy7R/Hyg30n7/VRZcL43PjStUonQzSSaScS4Zuc464Jy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q2T7Kbof; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="HPttsuoG"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1784873332; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=hVYebm7zqhPMZpfjWSWykRmUcK/0WDHp7LsTyzYba7M=;
-	b=HPttsuoGSA+agt532O81NNT9hGjHxv2xifP7sAiWTIltUTwSkegSR4QCFVlyVk86IuFUQQ/z7FleU/XB7+I1Q6xLqXh+Gj6bbs9RTdMlpQzo6qhYyBOXLUjncDFKgGYGD50eL4duRQuE7bOw5rInAV6m2XHAmCmnSw76jWaXQz8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R471e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X7iAqQz_1784873331;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X7iAqQz_1784873331 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Jul 2026 14:08:52 +0800
-Date: Fri, 24 Jul 2026 14:08:51 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v3 13/28] arm64: sysreg: Add NVHCR_EL2 description as a
- mirror of HCR_EL2
-Message-ID: <ymjztstct52bfytetjtuen5rkmmqtghgdrcioysap4udfcwevr@5wptbt56mgv3>
-References: <20260722074234.3330999-1-maz@kernel.org>
- <20260722074234.3330999-14-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q2T7Kbof"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8485b358552so45497b3a.2
+        for <kvm@vger.kernel.org>; Thu, 23 Jul 2026 23:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784873369; x=1785478169; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0SdJQwjXICAfEV1ZszzabJCCVlp1hRyGFUjJs/6dLPw=;
+        b=q2T7KbofyhGeHoGdsQSjwRswiqqGoG5Lukr1ewBz4eBPhC76ssUOHZclIda7uWb6q5
+         fNDXQAiJ65/WDKaQbsR4oG2sItbtFb+hirPVN4LZk2xxuu2Oz3EILPUcgAN5WWWIHBJK
+         iqldQDgaRz1eTJ5rkq1r1lykgUICB4yv7XI/jnif9o5ZPXj5kYfLe9knK5vbsl3DvPUA
+         elRVKiURKKPVF5eJLbyznvyAnaqZ0c7LZX/qaJiysbeQz8+oLQpZuYQvfaZ5gDYqepXu
+         AdU4xMiXpBa9p5zP5Auu0dVLPO6LNj3nm8ccHOD3SRnhBm4MAjonrl64OviiNdx406j1
+         aMyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784873369; x=1785478169;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0SdJQwjXICAfEV1ZszzabJCCVlp1hRyGFUjJs/6dLPw=;
+        b=SHBNwraELCvnM5rLY9ZmLvYmLMDweHB84ZkVvO/QwJq0EoiBdTiRJ9jT98VmK5g7Ad
+         3bLfMTss//Yux7rVRnhtGlugj5ji/J79euZliR5LvupZZaniss+2XA92tmAxPLvTA/Zk
+         FopNetnYznFuU1ZM7UpQEIqQDhhoIBgYEmkSDGATkyjda6Ub7TfBUQXV8yYmF2aH+CMq
+         GIRh0wEG/zg5YpN/rG2jX5hqXp+XCQp5hm/oJHq/AiL1I+vp5Lldv5Ap4JKuBLyCcFck
+         7TddRhupO8GX+tWTFbu68pRZ3cVIcHR+vumpNzWSUU6LxJzLARrQVw5lT6zsxmq2afob
+         vomg==
+X-Forwarded-Encrypted: i=1; AHgh+Rob+ASHkWS52r+icBsZ2GKrOIjrWZW/TVGmU9nW1E0FmRbdH3x3fM628LFpRpGWQIoneVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIdycWsTQHKkhEu85iTmolJX9zduCJPHG09wIMXzCzF4DaGgS8
+	SgnjGwpfMbei6Sn2b0t754VhEobTQ1Q3Xzdp+Z2s/Pk1nXC7Gsvvl0BN
+X-Gm-Gg: AR+sD103DZUDbpvzWZL164y0PbKJk4mdbBGFGp691fmhV62qvfav3ns0JQrBIoP7o2J
+	a/stqs+3e93PfmfjFp1N7RLmxS3hnH/QET1jrf/3rF5Q5oCbe94S8vlHWQALY8HCNPC/ozyaR+p
+	sHqHYDf2Ew0Ko/Bd9Z5ahTkWRRbuNbQhTOBRsoYKQdR3cwNzfuXK5Tr5YPDf7861lBrWNRIYzA+
+	hNIDZ+bsqgEpQVeo5pcv+sn/neL2iZmYPBDW+DjUTqrHfxnvNmbg/F0+Oz7nJ/GYOwO4xThjPTC
+	fzP4mUX8JluBHykoDd1J2B6czONl2Dn2b6CMMywvt69nYbCo4Z+quoc8TXURCMxPCz4uhxliweG
+	Liq7BxIhYrb7ET15ffsXJEi8jap9Z6qZtUDFqDsq/CB3CzHM5rDZCQv6pX2Pepdq8Jp662pQV48
+	AKvvjP
+X-Received: by 2002:a05:6a00:2d2a:b0:848:63fb:fda5 with SMTP id d2e1a72fcca58-84e2c1b9f89mr6544139b3a.41.1784873368593;
+        Thu, 23 Jul 2026 23:09:28 -0700 (PDT)
+Received: from jia ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e172984b0sm4133451b3a.27.2026.07.23.23.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jul 2026 23:09:28 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: michael.christie@oracle.com,
+	mst@redhat.com,
+	jasowangio@gmail.com
+Cc: pbonzini@redhat.com,
+	stefanha@redhat.com,
+	eperezma@redhat.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: [PATCH v2] vhost-scsi: flush backend after device ioctls
+Date: Fri, 24 Jul 2026 14:09:19 +0800
+Message-Id: <20260724060919.1569170-1-physicalmtea@gmail.com>
+In-Reply-To: <20260721073639.1532488-1-physicalmtea@gmail.com>
+References: <20260721073639.1532488-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722074234.3330999-14-maz@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 22, 2026 at 08:42:19AM +0800, Marc Zyngier wrote:
-> FEAT_NV3 introduces a new register that contains the HCR_EL2 value
-> exposed to a NV guest. As such, it has the exact same layout as
-> HCR_EL2.
->
-> Describe NVHCR_EL2 as a mapping to HCR_EL2.
->
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/tools/sysreg | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-> index 28755f70f0bf0..42839d2b15ae4 100644
-> --- a/arch/arm64/tools/sysreg
-> +++ b/arch/arm64/tools/sysreg
-> @@ -4266,6 +4266,9 @@ Field	1	E2TRE
->  Field	0	E0HTRE
->  EndSysreg
->
-> +Sysreg	NVHCR_EL2	3	4	1	5	0
+vhost-scsi translates guest response descriptors into userspace iovecs
+when commands are submitted.  Target-core completes those commands
+asynchronously, so VHOST_SET_MEM_TABLE can replace the memory table while
+an in-flight command still retains response iovecs translated through the
+old table.
 
-3 4 1 5 0, right.
+If the old mapping is reused after VHOST_SET_MEM_TABLE returns, command
+completion can write the response to an unrelated userspace object.
 
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+Flush the vhost-scsi backend after vhost_dev_ioctl() handles a device
+ioctl.  This waits for in-flight commands that can still use the old
+response iovecs before the ioctl returns.
 
-> +Mapping	HCR_EL2
-> +EndSysreg
->
->  Sysreg HDFGRTR2_EL2	3	4	3	1	0
->  Res0	63:25
-> --
-> 2.47.3
+Changes in v2:
+- Shorten the changelog and remove investigation details.
+
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+ drivers/vhost/scsi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 9a1253b9d8c5..c3e8f1a0b2d4 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -2424,10 +2424,11 @@ vhost_scsi_ioctl(struct file *f, unsigned int ioctl, unsigned long arg)
+ 	default:
+ 		mutex_lock(&vs->dev.mutex);
+ 		r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
+-		/* TODO: flush backend after dev ioctl. */
+ 		if (r == -ENOIOCTLCMD)
+ 			r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
++		else
++			vhost_scsi_flush(vs);
+ 		mutex_unlock(&vs->dev.mutex);
+ 		return r;
+ 	}
+ }
+-- 
+2.43.0
+
