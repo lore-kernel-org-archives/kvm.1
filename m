@@ -1,117 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8782D43846D;
-	Fri, 24 Jul 2026 13:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A4C432E85;
+	Fri, 24 Jul 2026 14:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784901253; cv=none; b=Fhabuca5IYkEbcjK326JGKAkA+W+OG6BPJ2zbp5ZYXBZ/owAcv5+bC4GX8CFbhPNSMSe0QSZmLqfAB8kNA/A/4/zHuAMbYRb01ORU2elfWOHygVDMwL68SMFO6eugWOTnIcA6TH3UZjslpw4yuInL/POZnbI7Ka/yUPdKP5oky0=
+	t=1784902763; cv=none; b=dX4kIgcFyrs3C/UjcMtqc8nhsn6nXaLOEogpPYpP6AC0h7pJXCKykhLgbioHNAWukzC37jozUKN840XRatHfIEjl65kKTB3aToeiAAUVnpZhXq5UkIuHp2hKJSmrbO1hQaOzTZdyYDU1eS1m0cpp3Ck9i8NSYc6+UDWoi3/SWpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784901253; c=relaxed/simple;
-	bh=ubJ0PsHE52aO5JChqvOjs6jRdgyo/l2UTy1gtG0sGWU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Z7csCysCiCju311X2SDP+JGK2q6KLX0nbT3+GNDl5N1MnwwXlDWJs2rnAmxzGMe7ukDNltb19gr4N6z8GNfaLYm81R83j/ckElMANZrz0dABWBXFJCsM/0+IiQhwlkOo8qrl/3xBO96YNmy1Z2hhauVGX0unnh3hezwqPE36sZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZdr6e1t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784902763; c=relaxed/simple;
+	bh=10i5EvWAKrIKZG/5TYABM+/91AVrSm1aivuorzMif/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L9N/pRnVDJec1G4ugRLXruoiP9Ru/2XVP8tKNDnvv8JtXwnysn7ANY4XGtRgVwTE8fRAAe/fjxDLt3EE/Kk3gLdMIvaO/1OI2xqg+/frnLk5/bvUavdba1+UiuZEbbZefbnmUgyYo0GiBvUBpkFuV0YjxN7Vp0UWlLzygMcofdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iJgULsDP; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZdr6e1t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937751F000E9;
-	Fri, 24 Jul 2026 13:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784901244;
-	bh=g5UP9IuYS/FDM9ySbyJ2tXFrVO8cOk5tKhKS3xTCRGA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lZdr6e1tb6U1oporF7LF/byAB8jN7Qr+E/df3LjWRIDFJnEFnw/uU4l25haKC7ZeM
-	 Sy+esu/jQ2oQjhVjtXDHOXRbD+JHMTxqDEo4Ndxch8NlYjUgQ5dAp1GuRUrvb2uZe/
-	 SFdhRjXSEzgOZ/irRdnIurOgWD5DGhlfmquwQ8Mc2p1nSELeyBIAl98q9NRIOSE9+0
-	 w81nPCcoqCmOgmvhSEvUf4K3cA7mL6G3NmUVCitEQ5oF0lYfPqM+3+RRlkorK4Vj5o
-	 VgCMwQZbUGAuSv3v/vIMK8DYtEVNLGCDCG31flr6pQk7kYsx4USMLXbVHOoJTxfkEV
-	 g+nP3JIEl2+BQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] KVM: s390: Fall back to short-term pinning in MAP
- ioctl
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jaehoon Kim" <jhkim@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260724133943.1664961-1-jhkim@linux.ibm.com>
-References: <20260724133943.1664961-1-jhkim@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 13:54:03 +0000
-Message-Id: <20260724135403.937751F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iJgULsDP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784902761; x=1816438761;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=10i5EvWAKrIKZG/5TYABM+/91AVrSm1aivuorzMif/c=;
+  b=iJgULsDPW4bq13Cxqc6EcWJtAxQiMvuDeI5gGBzs2rfo5el791tCiMRK
+   CcDAz1uW+K/kVafwDEWSLB3t7W46NKUODrVOK++m3EtgEwjYJAEzE5buw
+   Qp2LyC16salg2a58HFH7FQNhiYks7GxDCnlAaMVLy8W6qR/qSu2O6RS49
+   GcbdwVl+P86cf/3BWovaW8jtY2iSckcPy8DT66wQ81Ccbu2nia1y8MsjU
+   oTxDskqJ/DFWCfclvTHsBt7aWodWm7UqU78QmX+U/RmKwT3UibXxftL2v
+   vnfXkiSxOxtybBesqX/q943FM/VFzPCa3VGTPzBFNQnQrf0no8Z9udx+l
+   A==;
+X-CSE-ConnectionGUID: +c7xx0PNQYCimNCCpVxHjw==
+X-CSE-MsgGUID: YQKfjd1lStK7Rme/GRChOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96718653"
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="96718653"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 07:19:20 -0700
+X-CSE-ConnectionGUID: EboXq4bNRHSFQ3hOcpjATQ==
+X-CSE-MsgGUID: eqlqtQLSRNijLAQLRB3Zyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,182,1779174000"; 
+   d="scan'208";a="282027002"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 07:19:19 -0700
+Message-ID: <a852a4ef-719f-4a4e-aae7-83d365189494@intel.com>
+Date: Fri, 24 Jul 2026 09:19:19 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 14/15] KVM: x86/pmu: Advertise PerfMon version 5 on Intel
+ hosts
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>, Dapeng Mi
+ <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
+ Xudong Hao <xudong.hao@intel.com>
+References: <20260707183405.15571-1-zide.chen@intel.com>
+ <20260707183405.15571-15-zide.chen@intel.com>
+ <CALMp9eRWo+FA-qGiB3Bf-UQOK7hV4-pN62SjFgR5JYLkaMEcmQ@mail.gmail.com>
+ <e7dd989d-c83f-45b0-9501-7e7a5bdd9fff@intel.com>
+ <CALMp9eSd2TBixRrRTqfam8LFVG4__fy_H6XVa9Q_-kEdXoxe6w@mail.gmail.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <CALMp9eSd2TBixRrRTqfam8LFVG4__fy_H6XVa9Q_-kEdXoxe6w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [High] Guest-triggerable WARN_ON_ONCE in adapter_indicators_set leads to =
-host DoS.
---
 
---- Patch [1]: [PATCH v3] KVM: s390: Fall back to short-term pinning in MAP=
- ioctl ---
-commit 07b3642c0ab06a5f6b361f58b4393eb785c7021c
-Author: Jaehoon Kim <jhkim@linux.ibm.com>
+On 7/23/2026 10:20 PM, Jim Mattson wrote:
+> On Thu, Jul 23, 2026 at 4:25 PM Chen, Zide <zide.chen@intel.com> wrote:
+>>
+>> Currently KVM always injects #GP when the AnyThread bit is set.
+>>
+>> kvm_pmu_refresh(): pmu->reserved_bits = 0xffffffff00200000ull;
+>>
+>> I understand the concern, but I'm not aware of a better solution for
+>> PMUv3/4. Silently ignoring AnyThread would deviate from the
+>> architectural behavior and, more importantly, may give the guest the
+>> false impression that AnyThread is supported. Supporting AnyThread, on
+>> the other hand, has cross-VM information leakage concerns.
+> 
+> Don't support versions 3 or 4; they aren't virtualizable. Hosts with
+> PMU versions 3 or 4 just get vPMU version 2.
 
-KVM: s390: Fall back to short-term pinning in MAP ioctl
+Yes, that sounds reasonable.
 
-This commit modifies the KVM s390 MAP ioctl to support memory types that ca=
-nnot
-be long-term pinned, such as file-backed memory. It falls back to verifying
-access with a short-term pin, preserving a map entry with a new pinned flag
-set to false. Accesses in the interrupt fast path are updated to skip these
-unpinned entries, causing them to fall back to the non-atomic path.
+PMUv3/v4 platforms (Nehalem, Westmere, Sandy Bridge, and Ivy Bridge) are
+quite old. In addition, the impact of exposing PMUv2 instead of PMUv3/v4
+should be minimal.
 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-[ ... ]
-> @@ -2929,8 +2954,11 @@ static struct s390_map_info *get_map_info(struct s=
-390_io_adapter *adapter,
->  		return NULL;
-> =20
->  	list_for_each_entry(map, &adapter->maps, list) {
-> -		if (map->addr =3D=3D addr)
-> +		if (map->addr =3D=3D addr) {
-> +			if (!map->pinned)
-> +				return NULL;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but returning NULL here forces
-the caller to fall back to the non-atomic path in adapter_indicators_set().
-
-If a malicious guest or untrusted userspace configures an IRQ routing entry
-with an unmapped host virtual address for summary_addr, the short-term pin
-will fail:
-
-arch/s390/kvm/interrupt.c:adapter_indicators_set() {
-    ...
-    summary_info =3D get_map_info(adapter, adapter_int->summary_addr);
-    if (!summary_info) {
-        ...
-        summary_page =3D pin_map_page(kvm, adapter_int->summary_addr, 0);
-        if (WARN_ON_ONCE(!summary_page))
-            return -1;
-    ...
-}
-
-Could this guest-triggerable WARN_ON_ONCE lead to a host denial of service
-if panic_on_warn is enabled on the host?
-
-Should this WARN_ON_ONCE be downgraded to a normal error return so that it
-safely handles unmapped addresses?
-
->  			return map;
-> +		}
->  	}
->  	return NULL;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724133943.1664=
-961-1-jhkim@linux.ibm.com?part=3D1
