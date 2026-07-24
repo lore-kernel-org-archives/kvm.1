@@ -1,31 +1,31 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885C835F165
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 06:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF8F381AE3
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 06:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784873109; cv=none; b=Bwobm2PnDycUsQKagoiHszIvHGpbLhUkwmFpeh5ZOm+UeHvtmwLBSxbT62ZAhOsCIC6PjNawsEieUkPC3dzLsmOIkcAZ2RfTmqjAem+PMGmlEkVEkTK5B6RmGRPjXoxHXueUEprM/RqJo2Tlc1WZH3b1IFo7bnd4/uULq7sMmgc=
+	t=1784873221; cv=none; b=H12XpVw7NWNIdXE4N+nzXwSP+ShdSxbjj56UFD3YvkVQYPdqp+zhZZ316bcQGlIGwglLgYLsxggJNh00gzGBHzihM9e88PyD1Gjy7zPRmWVii6mTEqtCbvws8ARIjw6SZt54dQfXT0T0YVwX464/ZyQ55RD7KsVUFIuTR7FkVzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784873109; c=relaxed/simple;
-	bh=zZueFxGVHgitf5Wcs7bnMi8GO7HQLQPPp88NO0QH4AE=;
+	s=arc-20240116; t=1784873221; c=relaxed/simple;
+	bh=zB4Ja/fTNI+vcdJUlEPJI6rcF4URLJQvE9A8oqDdva8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LelCct/qb/w0f1crX4Ncx+ij2QS9X9I7ZlTpfR0sbxB+xLelwNLq47KabisrO1VNO6+nLIc293aqiNUzfHhRn3NPYcjpspVSinHPzaKkPVwPNmZ7RSeQmqLa0CDsKZ68MryC0Aw2eZJuSC3hhW0IpUTJMO5gHBf6XH+UCHqrknU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Veli/8jx; arc=none smtp.client-ip=115.124.30.118
+	 Content-Type:Content-Disposition:In-Reply-To; b=h7RbvIp7edtMizQC2qRm5rEAWx7PVtSC5Mv6rofd9AvC26jtWxoZN7nuKBQIB9eiaMxnxPyu8XmlLQq3IRsjHNup2p8W6Hdke/9QSJur2G7t+QRT88de0XLtLB3FqfB+D6AVaQwOqcBb7oVPJ38Yy6W31mtDYSLqi2u9EntTlP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lgewS5ny; arc=none smtp.client-ip=115.124.30.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Veli/8jx"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lgewS5ny"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1784873099; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=SnV5QCYs96+b5L9vYPvdSR5j/BEGUkoqeIIiwjVfNWA=;
-	b=Veli/8jx3x06PPKIa9tYka9J9/b79sgybHob5wMZnYiWSllcL5BboYh7mofSNNnDfJXnYcntyjDd4vnIlLUAyufqq+5q1CYuTWCgWPKw7FMbdaLWRm/k810sLKsUS6Xktofo06QLdgwM+vme2PNBcbarMdQ13JrxVk1m1Cxp7cM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X7i9h0p_1784873098;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X7i9h0p_1784873098 cluster:ay36)
+	t=1784873209; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=nBJPCq06j/mROJ1z/tUYXDZdGERXJLKDUkBXfllJZzs=;
+	b=lgewS5nyOHVfZruHtWK4HbLzba4MlPl6RIs8hRCHxykUUKh+fgQaVOPpx9gs2weR6mKBVwFio1EUPhfwYcBDe5dXD5zEH3bPMEzW5ZL7WcFQXI1JPtMg/UZa4ds2TGdulMNjw7ao30FLrsi6YoJFj+uf4HlfIIo9YjwKKX4eLDM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X7i9haS_1784873208;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X7i9haS_1784873208 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 24 Jul 2026 14:04:58 +0800
-Date: Fri, 24 Jul 2026 14:04:57 +0800
+          Fri, 24 Jul 2026 14:06:48 +0800
+Date: Fri, 24 Jul 2026 14:06:48 +0800
 From: Yao Yuan <yaoyuan@linux.alibaba.com>
 To: Marc Zyngier <maz@kernel.org>
 Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
@@ -33,11 +33,11 @@ Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
 	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
 	Wei-Lin Chang <weilin.chang@arm.com>
-Subject: Re: [PATCH v3 07/28] KVM: arm64: Don't evaluate HCR_EL2.NV nor
- HFGITR_EL2.ERET on ERET fast path
-Message-ID: <syytdlctsuj4ixszpy76bjdovdr4bxgfofgpfzjvo3hotwmjti@qfnfzngfuxcy>
+Subject: Re: [PATCH v3 09/28] KVM: arm64: Relax CPTR_EL2 handling when
+ FEAT_NV2p1 is present
+Message-ID: <itfuntllavrtihse3vgrrmiamhiduyegqxh6i5mhwg65m5rcmn@a4465gauamq2>
 References: <20260722074234.3330999-1-maz@kernel.org>
- <20260722074234.3330999-8-maz@kernel.org>
+ <20260722074234.3330999-10-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,54 +46,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260722074234.3330999-8-maz@kernel.org>
+In-Reply-To: <20260722074234.3330999-10-maz@kernel.org>
 
-On Wed, Jul 22, 2026 at 08:42:13AM +0800, Marc Zyngier wrote:
-> We currently avoid using the ERET fast path if the guest has HCR_EL2.NV
-> set. This is an odd check, as NV doesn't mean much if HCR_EL2.TGE==1.
+On Wed, Jul 22, 2026 at 08:42:15AM +0800, Marc Zyngier wrote:
+> With FEAT_NV2P1, it is no longer necessary to trap CPTR_EL2 accesses
+> via CPACR_EL1, as CPACR_EL1.TCPAC is guaranteed to be stateful.
 >
-> Similarly, evaluating HFGITR_EL2.ERET makes little sense, as
-> this only applies to the nested context, while the ERET fast-path
-> is purely for the benefit of L1.
+> Prevent such trapping and context switch CPACTR_EL1 in NV contexts
+> when NV2P1 is present.
 >
-> Replace these bizarre checks with is_nested_ctxt() which makes a lot
-> more sense: if we are running an L2, the ERET trap must go to L1.
->
-> Fixes: dd0717a998f77 ("KVM: arm64: nv: Fast-track 'InHost' exception returns")
+> Reviewed-by: Joey Gouly <joey.gouly@arm.com>
 > Signed-off-by: Marc Zyngier <maz@kernel.org>
 > ---
->  arch/arm64/kvm/hyp/vhe/switch.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 5 +++--
+>  arch/arm64/kvm/hyp/vhe/switch.c         | 3 +++
+>  arch/arm64/kvm/hyp/vhe/sysreg-sr.c      | 8 +++++---
+>  arch/arm64/kvm/sys_regs.c               | 5 ++++-
+>  4 files changed, 15 insertions(+), 6 deletions(-)
 >
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> index 8e5f492f39086..7b27296c94607 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> @@ -108,9 +108,10 @@ static inline void __activate_cptr_traps_vhe(struct kvm_vcpu *vcpu)
+>  	 * The architecture is a bit crap (what a surprise): an EL2 guest
+>  	 * writing to CPTR_EL2 via CPACR_EL1 can't set any of TCPAC or TTA,
+>  	 * as they are RES0 in the guest's view. To work around it, trap the
+> -	 * sucker using the very same bit it can't set...
+> +	 * sucker using the very same bit it can't set. FEAT_NV2p1 fixes it.
+>  	 */
+> -	if (vcpu_el2_e2h_is_set(vcpu) && is_hyp_ctxt(vcpu))
+> +	if (!cpus_have_final_cap(ARM64_HAS_NV2P1) &&
+> +	    vcpu_el2_e2h_is_set(vcpu) && is_hyp_ctxt(vcpu))
+>  		val |= CPTR_EL2_TCPAC;
+>
+>  	/*
 > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-> index bbe9cebd3d9d5..684cebf23aa0e 100644
+> index 684cebf23aa0e..a8da40568a048 100644
 > --- a/arch/arm64/kvm/hyp/vhe/switch.c
 > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> @@ -344,13 +344,15 @@ static bool kvm_hyp_handle_eret(struct kvm_vcpu *vcpu, u64 *exit_code)
->  	 * if this is a VHE guest hypervisor returning to its own
->  	 * userspace, or the hypervisor performing a local exception
->  	 * return. No need to save/restore registers, no need to
-> -	 * switch S2 MMU. Just do the canonical ERET.
-> +	 * switch S2 MMU. Just do the canonical ERET unless we are in
-> +	 * nested context.
->  	 *
-> -	 * Unless the trap has to be forwarded further down the line,
-> -	 * of course...
-> +	 * Note that this is made possible because KVM itself never traps
-> +	 * ERET when running an L2. The consequence is that any ERET trap is
-> +	 * the result of HCR_EL2 or HFGITR_EL2 programming by L1 for its own
-> +	 * guest, and the exception must be forwarded to L1.
-
-Yes, right.
+> @@ -443,6 +443,9 @@ static bool kvm_hyp_handle_cpacr_el1(struct kvm_vcpu *vcpu, u64 *exit_code)
+>  	u64 esr = kvm_vcpu_get_esr(vcpu);
+>  	int rt;
+>
+> +	if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> +		return false;
+> +
+>  	if (!is_hyp_ctxt(vcpu) || esr_sys64_to_sysreg(esr) != SYS_CPACR_EL1)
+>  		return false;
+>
+> diff --git a/arch/arm64/kvm/hyp/vhe/sysreg-sr.c b/arch/arm64/kvm/hyp/vhe/sysreg-sr.c
+> index be685b63e8cf2..6f0f046e4ca4e 100644
+> --- a/arch/arm64/kvm/hyp/vhe/sysreg-sr.c
+> +++ b/arch/arm64/kvm/hyp/vhe/sysreg-sr.c
+> @@ -42,10 +42,12 @@ static void __sysreg_save_vel2_state(struct kvm_vcpu *vcpu)
+>  		u64 val;
+>
+>  		/*
+> -		 * We don't save CPTR_EL2, as accesses to CPACR_EL1
+> -		 * are always trapped, ensuring that the in-memory
+> -		 * copy is always up-to-date. A small blessing...
+> +		 * Without FEAT_NV2p1, we don't save CPTR_EL2, as accesses
+> +		 * to CPACR_EL1 are always trapped, ensuring that the
+> +		 * in-memory copy is always up-to-date. A small blessing...
+>  		 */
+> +		if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> +			__vcpu_assign_sys_reg(vcpu, CPTR_EL2, read_sysreg_el1(SYS_CPACR));
+>  		__vcpu_assign_sys_reg(vcpu, SCTLR_EL2,	 read_sysreg_el1(SYS_SCTLR));
+>  		__vcpu_assign_sys_reg(vcpu, TTBR0_EL2,	 read_sysreg_el1(SYS_TTBR0));
+>  		__vcpu_assign_sys_reg(vcpu, TTBR1_EL2,	 read_sysreg_el1(SYS_TTBR1));
+> diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+> index 6b47d936efb32..1dfc1f88bec82 100644
+> --- a/arch/arm64/kvm/sys_regs.c
+> +++ b/arch/arm64/kvm/sys_regs.c
+> @@ -326,7 +326,10 @@ u64 vcpu_read_sys_reg(const struct kvm_vcpu *vcpu, enum vcpu_sysreg reg)
+>  			val |= __vcpu_sys_reg(vcpu, reg) & ~CNTKCTL_VALID_BITS;
+>  			return val;
+>  		case CPTR_EL2:
+> -			return __vcpu_sys_reg(vcpu, reg);
+> +			if (cpus_have_final_cap(ARM64_HAS_NV2P1))
+> +				return read_sysreg_el1(SYS_CPACR);
+> +			else
+> +				return __vcpu_sys_reg(vcpu, reg);
 
 Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 
->  	 */
-> -	if ((__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_NV) ||
-> -	    (__vcpu_sys_reg(vcpu, HFGITR_EL2) & HFGITR_EL2_ERET))
-> +	if (is_nested_ctxt(vcpu))
->  		return false;
->
->  	spsr = read_sysreg_el1(SYS_SPSR);
+>  		default:
+>  			WARN_ON_ONCE(1);
+>  		}
 > --
 > 2.47.3
