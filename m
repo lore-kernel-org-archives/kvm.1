@@ -1,269 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023073.outbound.protection.outlook.com [52.101.72.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4033EDAAE;
-	Fri, 24 Jul 2026 11:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784893561; cv=none; b=MFgKXSvUMly2gG9MHGm/4g3/+dmETGDnA0rdf/k71naPyMJ9Wwyv4E+8S9/QASDx9lb1v0F4a4Qb9FjwCx1Kfp3WtV2AfIf7KJk8K6wyilLBIE/crohWNX7EendK+TDdJoTI0Wm9iKmnetpybVWHoEnpla5dzF9FwiRi8rq4cQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784893561; c=relaxed/simple;
-	bh=iVNzNZDkG4vQFhcCBX6DnxEUCZe1q8BK0lwWfSfNcGE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Qq/rI3vnt53/duUcKs/3IL5MfqmiFpmJMg0siNi82c/jpm7nd5eJSp9RJW0RwqYrfCqNvoKkH47JNPuwXev3Y/5ps/Q6erzwoZqUUPfZlJ/pdfJjmtJ5fkoU6Eptpfa2biyG+JDOb3Y8NEINTyXoQ/pNlj466bbW2RUIwwkmu+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iS2dl50C; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C093FB7EB;
+	Fri, 24 Jul 2026 11:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784893562; cv=fail; b=uOSCUF8TfduF5k2qIUnD9jYsrS2Zv9RPiy8/AClYxBqRvfr2aytioDZg3+NE9423OLeG+YP7rBkVmYLwZ0wZYs6j1YJxm9LRHjme364U1snybbYVX1VL54xw7u7Mo+xgwx3pobsMuBjK1YVRjRviEomQFiyYRCJncrMZHXqx57E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784893562; c=relaxed/simple;
+	bh=5tWMT/eHwstytUBwaJkIBU9kWzMznSeLsDDMxWaY04o=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UdEhcNYZpGj0iSHwBrRYmBgo2gB9YZ3kUmEgZCV7lgrLhD/Z5ZFUicK3eM/OHZgA+UoatpMWsbac0JkiBOOJkO9ujkwzHhRz5hQLFc/wMm+cU58fMXe0mQnO4OAGj9KMskSTzDlV5ib1QURXZimCeWftQfzeXAAlIlcJmVLcHGM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=iBKD0hp8; arc=fail smtp.client-ip=52.101.72.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iS2dl50C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C961F000E9;
-	Fri, 24 Jul 2026 11:45:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784893559;
-	bh=c3StroRQtNe+X/+kYFdvJWZ4hdY+JVMXb9IqClhuvF8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iS2dl50CZPj0pbQ17yCbpBKQ6bj45pZ9f++8CNjDJt4UmZKYPIkgMI1IMu4hgA9rA
-	 D/0c/IrTvFMRQrPX2CkBc226xjFKyElmdkP253OuGg8OClVezph4vF/Yj4H/5GugI2
-	 UC73Qg2Sg/bUmV/jGYMkExlCFZBFe58lsoWREpJVosYkDn6QnXc3QK+ojFRud0/NGb
-	 efaK712kMGyVS5lyRenH6RbiRCDHYV4ximDadbohem1aKTRYnvTb2Z8Lo1dFfXLw/R
-	 nty3zkpIuQRN+/kI8ZxJ0NE/rFplMiytSsfqhpEgm5daG61lFrL6gdVBAfyMGX2e7L
-	 ZWo7mvuQ9tmdA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 20/48] KVM: arm64: gic-v5: Add GICv5 IRS IODEV and
- MMIO emulation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260724104819.1296803-21-sascha.bischoff@arm.com>
-References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
- <20260724104819.1296803-21-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 11:45:58 +0000
-Message-Id: <20260724114559.17C961F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="iBKD0hp8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aKQg403LrF8oa1iVpmhTeXNLIq/8VcO09rsY+j7Kq6l8HKvYsaRZk077sAiMOpYNQ88/4eLOqE8PDGR/no9Wn01HUtRihiYy15x2Teqq2B+uU955zfSf9N5Got5VxRwotZmfEMJBccIny70Mv2/xlSbxfbgSOswzJasn4PcXzEhxNSY3gI13cbkV8iDoBr5kxl/50DIDKc44kxgSJuryaNNYseeRlJJPwB6nBQFL+oiwN+n8PFKMv9CzsDPYv/VhMQEucfR23OzjG0iUAuhtMmgWoZwxhiKSWEUssYAInzn/YmyRhicNt5xB+yFsbruhESZIKVdLEROJJ2i4WI80pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I99/fXRTh6PBsfikJse4Vli9N6zT8wmzzFmscsAgmVA=;
+ b=tbcXjwN9HIxEgSAe8K3KUH63PVS6vmAE/FyJF6pT0q4XA2KTVbkx1MdAHXq/3cmXS4SLBGqQzBZVNc7SYpA6GtzomWEbO1la/DCLIESHHFPjpV4OSDaURudqZmzTwwn+dA39MpzSi4mjmk0hrE/w4KoCCgWyrEYoBvD4svRP9CxpzATdlzhWrNOiYPadbxnfsx6y3NrmqzB1uPcB6Kz5fs2O2dFFIfXYl08kk0XThxwZVibfsOs9R9gHTKoqwOLXs0FwSToO+DVi83OJEEecTlGQPPX7wsgv0qJ7pPJOXxRHbfrQOq4a675DwQZbCijzM+yQHW8GFgiW/TmSDufxxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I99/fXRTh6PBsfikJse4Vli9N6zT8wmzzFmscsAgmVA=;
+ b=iBKD0hp8jwZzH2PGCsXtJ3L7oTGjZivA3liwKezTyel9xMncFcW5K4s7J4NTyfBUBPMp0NdK591RZO9sPrXF4Nz2RemHhY0rLKRq+SlTwLJhu9MXhRTqzO8/L7Y1xavYhFtaN5cVSvwhbbT3B4iu9fdJ8meHIiJBIqyz7UD7ZFZbXejtElx3h3TEHfhLGZGY8rTGOq5iYR6lPWsEmGbKV+9N9nuqBot+G3Fbtc70479YbEul0xxFN65wOsH70431gIf4W0qCZg4nA7FXw5O7osvPkXhIfUnkiBG+bEB7NnzLD+7hw/dttDi5K4SzWn7tFESwRc4UIYwRVw5ntOihww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by VI0PR08MB11775.eurprd08.prod.outlook.com
+ (2603:10a6:800:311::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
+ 2026 11:45:51 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
+ 11:45:51 +0000
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	stefanha@redhat.com,
+	dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com,
+	bchaney@akamai.com,
+	mark.kanda@oracle.com,
+	ptikhomirov@virtuozzo.com,
+	den@openvz.org,
+	andrey.drobyshev@virtuozzo.com
+Subject: [PATCH v6 0/5] vhost/vsock: add support for VHOST_RESET_OWNER and CPR migration
+Date: Fri, 24 Jul 2026 14:45:37 +0300
+Message-ID: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.47.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1P190CA0001.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:802:2b::14) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|VI0PR08MB11775:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47babc9a-28d3-45a0-b9fc-08dee9791c87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|52116014|1800799024|366016|56012099006|10067099003|18002099003|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	t2e9AUGNjNgkj/YHKYtTnS9U6bSMW4gPFLWhndpwx3zWB8tGI0LSZHO8fhvW5i5P7lizV+5gQcWdYcviuOdKueNpXQgNj0m+GI8k37rqjyhwzXlKLMr8dx43ci9g9Fa58zfcdTCFdsdXVCIE2bGHNp4w3Dcwa+HK4xVnRLG4N6KZbpUfHDd0pkPca4wQNGku+Aw+If9YxA/yDXN2rSgCw5K67o/K/ciSBCtEEcPmQb6wOf7wv7SW6BLY5bNQiyTbLndzaVD9lttFZ/dqPyyyR+gyISEimzNsut6rWkf/ntIrlvB8C3+HiF+4YrUweoGqeRAGGlYYePaD57TiRcqyM83wTtyJ0+W1tj5YnX8HqgTv/CRM6w5m3dIfeKtsC4b2fbZclLr9OgZEXh0tLcijwLWyh+mSbjabjm79aLmcDAj/R7LPCUXCihVyePyCzcNH5aLehcwgRdZi92wtRTAX/BtbpXCVEByITk0SEIcrySrsNgoZtCQY+UMyfbhhxwHSDMp9oLs+VNL+Lx3/xbzCiu47xgtJrMbPzvxYTQ4pZ+l67GXak1qe39NQoEWkGqaikdzCyQF44G+8fmvxRag7goQt1AokF9HEGJ058qjS4WGYLppxkoIi9uTTF81KuCd6GRUvFxzP/HfzwlItYrWACP0gErgsxSMzwx8b9tmDevM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(52116014)(1800799024)(366016)(56012099006)(10067099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?A5RqXO2zNDBHlCyDCvv0zqPzqOxQp8QanIDdz/shNfK2h087zMagu95hvVbI?=
+ =?us-ascii?Q?HLpPrF8L2qM2k6uHeYLwhMjUvFzFEwhabPgAmN1DC/vXV+n6xuBWEZv4iT+U?=
+ =?us-ascii?Q?sSWKwcJR9A1O0phBnC8PJFBWmKgJKOhnAIc5M6us5JmKgqp5l7HEmDWVYL9K?=
+ =?us-ascii?Q?+3UdbVyIdUCZ85EoP1pQ69Nt2qUwlNlgzaho+asNy5XY+hKWHVB+QITEk/x3?=
+ =?us-ascii?Q?5n/HQXEV/m0SK8qbyCnduZA3LGsKEorU0FNl1D04qwJ47bEoxNwZ95fzy6LQ?=
+ =?us-ascii?Q?HLATNhvyZbi453CYE/R8caceUmn44gNn655he9DRuHCcHFMhvfBL7fgOVGEc?=
+ =?us-ascii?Q?EG9zREIZU+JDd9Hl05Cy/zqGSQgIzAf7rJgCyWI3q4XX5aKHIDYOT8hVlvrQ?=
+ =?us-ascii?Q?DFRfZL01ZfovZdFN+G0Fmvgn2aGFrRgtontvq5fk0AWn6BzdyE/lf/B7v9zU?=
+ =?us-ascii?Q?GhFpUaBod+9K3nVAQ57BnQr/HJ/d/CNkl5h2pbgo66JplTdH/usw6IfI7rWv?=
+ =?us-ascii?Q?bhJ85GBZj7NspNaVq1OQIbZjKTM/lE9okt9uGQ98O18JKGNqUv6E+Z2IFsDg?=
+ =?us-ascii?Q?0pB25wBhGGBqRItM/Vk6lbB3wo/A+hfxnHqpDejqMplxWi4eHqcYVVy3fs04?=
+ =?us-ascii?Q?saUomRmcHehItsCl3hVig9HVyjGvY4Eo23cIhvWz3rlhGLdlv0UByjM0Dfwl?=
+ =?us-ascii?Q?yJV2/WITejpKuwkpgY5gjngB9cAjks3H3Fj3o1DJJzC23KgbeuGfdLYqmVDp?=
+ =?us-ascii?Q?PscsqGK8vMkq3hAQManUKn6V+mLNxAhEey2RDvrplCGmErLCFlGxgL4Un2ov?=
+ =?us-ascii?Q?FUm10Q8bWao/UPGWXCCJ5aN0UhH01XckV+vfAM2/yLQZGr1FNgZO3SRjCtyP?=
+ =?us-ascii?Q?DTgJT9sYRBhIhM4Z92yRoBD333DvwHwtiTTY/19E+osV5+5slaReHdqO+LPA?=
+ =?us-ascii?Q?bgMxh7pbqHfhnS4tONtHP8onVkcjfGvkCiiXM8+SmwaNtKo0rEKq3f1N7nc5?=
+ =?us-ascii?Q?0DviFgPQOzQtwj6AHaMM1aPVjMy2JHPevOqkmczevRyrzZiiqKnNGLkdUCYG?=
+ =?us-ascii?Q?C7IEeRmF26j5ErWL1scgYFryooZQiPDiEF0NUC6LT9SZmO59V5hKlZ2s8SVz?=
+ =?us-ascii?Q?dxf0Xf7jCxhvVOpbzIQRZIx1HnWyzumP3udPnk3JlazFNfgNnxucqHrYcjwb?=
+ =?us-ascii?Q?PfBSB0D+bxZjshQh/aRZzG76oSoLpyposNiGLUPMSRyz5OW7Rbt6+GDPYcGt?=
+ =?us-ascii?Q?w+VbBWOwNTqtfi3jryAJDOOQhrIDOV70oftFHmGuhXWShgShouExZYIz5ZlA?=
+ =?us-ascii?Q?DtJoSziT5FLEYn0zRYZn8AAsosUq1GRNntq4Sz+p5+tk44CIVGmVU/0tHgXi?=
+ =?us-ascii?Q?1b7k9SHB1K7+MFqwNmIV0zYNiqbnmOltVJto5jROHiQDAiOA1ZhcLJDAeUvw?=
+ =?us-ascii?Q?ESEVHZnezIq0bBZkX280c6ytSsDQtKqaSYZb9SBQRJPGY34IRRMZo3s5/Anv?=
+ =?us-ascii?Q?rPzAnBfL/36A4hvBte/BnVnHG5Dl5FRpaIG9IrR7sjU30gewCtyxbTNFoI0H?=
+ =?us-ascii?Q?kXe/Acnq7xKOEqpay+C7s2VbPvj9GuK1GS0VIMSBsiKayqxENrHbyynZUJmY?=
+ =?us-ascii?Q?q5SNNJlMjZNko+Y1bShZUXj+VTL0tdSlg2dFZlC5EcaPwLNNAENqC7Jm//pt?=
+ =?us-ascii?Q?9pt5SJxcfUUQNo7TtCUL9j4o48+Hxi6LFz+VdBSTPhUFqn+SgVkm4hJGCVXn?=
+ =?us-ascii?Q?Y3nYSWapZNr2FeDXjgBopcA0Phhw9vo=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47babc9a-28d3-45a0-b9fc-08dee9791c87
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 11:45:51.4117
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5pCceeWix1CC+arFh+W0Yn+hKYdK01bqA3HGehrRQxKcpR5iA39SH8oOHGfKWjoGyi1Gu09aBLG3SlBOLmut0dd9/WlmpaoHBgTcqYyduZM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11775
 
-Thank you for your contribution! Sashiko AI review found 9 potential issue(=
-s) to consider:
-- [High] Unallocated `vgic_v5_irs_data` leads to a NULL pointer dereference=
- on initialization.
-- [High] Bumping `nr_spis` locally in `kvm_vgic_v5_irs_init()` without upda=
-ting `kvm->arch.vgic.nr_spis` leads to inaccessible SPIs.
-- [High] Missing RCU read lock around `xa_load` in `vgic_v5_vmte_vpe_id_bit=
-s()`.
-- [High] Unconditional IPI storm triggered by guest writes to GICV5_IRS_CR0.
-- [High] 64-bit IRS registers cannot be accessed via 32-bit UAPI or guest M=
-MIO.
-- [Medium] Unratelimited host kernel log spam via invalid IRS_IST_CFGR allo=
-ws a malicious guest to flood the host log.
-- [Medium] Data races and torn reads on shared VM-wide IRS MMIO registers (=
-`ist_baser`, `ist_cfgr`, `cr1`, `pe_selr.iaffid`).
-- [Medium] Underflow in `IAFFID_BITS` calculation exposes bogus IDR1 values=
- before first vCPU run.
-- [Medium] IST valid state desynchronizes from hardware on free failure.
---
+v5 -> v6:
 
---- Patch [20]: [PATCH v4 20/48] KVM: arm64: gic-v5: Add GICv5 IRS IODEV an=
-d MMIO emulation ---
-commit 89cd01e35340acb046b6ed1ef9d6c28883308945
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
+  * Patch 4:
+    - make sync+flush conditional by adding a bool 'sync' param to the
+      chain, as suggested by Michael:
+        vhost_dev_reset_owner()
+          vhost_dev_cleanup()
+            vhost_workers_free()
 
-KVM: arm64: gic-v5: Add GICv5 IRS IODEV and MMIO emulation
+    - reword commit message and comment;
+    - drop Fixes;
 
-This commit introduces an IODEV for the GICv5 IRS and an associated
-initialization function to set up SPIs and initial state. The MMIO emulation
-tracks selector state and configures LPI ISTs on behalf of the guest.
+  * Patch 5:
+    - add 'sync' param to vhost_dev_reset_owner() call.
 
-> diff --git a/arch/arm64/kvm/vgic/vgic-irs-v5.c b/arch/arm64/kvm/vgic/vgic=
--irs-v5.c
-> new file mode 100644
-> index 0000000000000..da8914dd682fc
-> --- /dev/null
-> +++ b/arch/arm64/kvm/vgic/vgic-irs-v5.c
-> @@ -62,4 +62,5 @@ static unsigned long vgic_v5_mmio_read_irs_misc(struct =
-kvm_vcpu *vcpu,
-> +		/*
-> +		 * IRS_IDR1 encodes IAFFID_BITS as N - 1.
-> +		 */
-> +		vpe_id_bits =3D vgic_v5_vmte_vpe_id_bits(vcpu);
-> +		value |=3D FIELD_PREP(GICV5_IRS_IDR1_IAFFID_BITS, vpe_id_bits - 1);
+v5: https://lore.kernel.org/virtualization/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com
 
-[Severity: Medium]
-If userspace reads GICV5_IRS_IDR1 before the VM runs,
-vgic_v5_vmte_vpe_id_bits() returns 0 because the VMTE is not yet allocated.
+Andrey Drobyshev (3):
+  vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+  vhost/vsock: re-scan TX virtqueue on device start
+  vhost: synchronize with RCU readers when freeing workers
 
-Does vpe_id_bits - 1 underflow here, exposing an incorrect IAFFID_BITS
-value before it is properly initialized?
+Pavel Tikhomirov (2):
+  vhost/vsock: split out vhost_vsock_drop_backends helper
+  vhost/vsock: add VHOST_RESET_OWNER ioctl
 
-[ ... ]
-> @@ -174,4 +174,5 @@ static void vgic_v5_mmio_write_irs_misc(struct kvm_vc=
-pu *vcpu, gpa_t addr,
-> +	case GICV5_IRS_CR0:
-> +		mutex_lock(&vcpu->kvm->arch.config_lock);
-> +		WRITE_ONCE(vgic->enabled, !!(val & GICV5_IRS_CR0_IRSEN));
-> +		kvm_make_all_cpus_request(vcpu->kvm, KVM_REQ_RELOAD_GICv5);
+ drivers/vhost/net.c   |  4 +-
+ drivers/vhost/scsi.c  |  2 +-
+ drivers/vhost/test.c  |  4 +-
+ drivers/vhost/vdpa.c  |  4 +-
+ drivers/vhost/vhost.c | 26 ++++++++++---
+ drivers/vhost/vhost.h |  5 ++-
+ drivers/vhost/vsock.c | 89 +++++++++++++++++++++++++++++++++----------
+ 7 files changed, 100 insertions(+), 34 deletions(-)
 
-[Severity: High]
-Does this unconditional kick allow a guest to overload physical CPUs with
-IPIs?=20
+-- 
+2.47.1
 
-Should this verify if the IRSEN bit actually changed before making
-the all-cpus request?
-
-> +		mutex_unlock(&vcpu->kvm->arch.config_lock);
-> +
-> +		return;
-[ ... ]
-> +	case GICV5_IRS_PE_SELR:
-> +		irs->pe_selr.iaffid =3D FIELD_GET(GICV5_IRS_PE_SELR_IAFFID, val);
-
-[Severity: Medium]
-Are atomic primitives or locks required when accessing this VM-wide state?
-
-If multiple vCPUs concurrently write irs->pe_selr.iaffid locklessly, can it
-lead to torn writes and corrupted hardware emulation state?
-
-> +		return;
-[ ... ]
-> @@ -367,5 +367,6 @@ static unsigned long vgic_v5_mmio_read_irs_ist(struct=
- kvm_vcpu *vcpu,
-> +	case GICV5_IRS_IST_BASER:
-> +		value =3D FIELD_PREP(GICV5_IRS_IST_BASER_ADDR_MASK,
-> +				   irs->ist_baser.addr >> GICV5_IRS_IST_BASER_ADDR_SHIFT);
-> +		if (irs->ist_baser.valid)
-> +			value |=3D GICV5_IRS_IST_BASER_VALID;
-
-[Severity: Medium]
-Similarly to pe_selr, does reading the 64-bit ist_baser locklessly risk
-torn reads if another vCPU is concurrently modifying it?
-
-> +		break;
-[ ... ]
-> @@ -414,3 +414,4 @@ static void vgic_v5_mmio_write_irs_ist(struct kvm_vcp=
-u *vcpu, gpa_t addr,
-> +	switch (offset) {
-> +	case GICV5_IRS_IST_CFGR:
-
-[Severity: High]
-The switch statement checks the base offset, but lacks handling for the
-upper 32-bit offset (offset + 4) for 64-bit registers like
-GICV5_IRS_IST_BASER.=20
-
-Will 32-bit guest writes to the upper half hit the default case and be
-ignored?
-
-> +		scoped_guard(mutex, &vcpu->kvm->arch.config_lock) {
-> +			if (irs->ist_baser.valid)
-[ ... ]
-> +		/* Valid -> Invalid */
-> +		if (irs->ist_baser.valid && !valid) {
-> +			/* Make the LPI IST invalid and then ... */
-> +			if (irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu), &cmd))
-> +				break;
-> +
-> +			/*
-> +			 * ... free the host IST if we successfully marked the
-> +			 * IST as invalid. Frankly, if we failed to make the
-> +			 * guest's IST as invalid, we're cooked because it means
-> +			 * that the IRS may still be using the memory that we
-> +			 * want to free. Hence, we leave it allocated and skip
-> +			 * the clearing of valid bit in the baser.
-> +			 */
-> +			if (vgic_v5_lpi_ist_free(vcpu->kvm))
-> +				break;
-
-[Severity: Medium]
-If vgic_v5_lpi_ist_free() fails after successfully issuing
-LPI_VIST_MAKE_INVALID, the code breaks out of the switch statement early.
-
-Does this leave the guest-visible irs->ist_baser.valid bit out of sync with
-the actual hardware state?
-
-> +		} else if (!irs->ist_baser.valid && valid) { /* Invalid -> Valid */
-> +			if (!vgic_v5_ist_cfgr_valid(irs)) {
-> +				kvm_err("Guest programmed invalid IRS_IST_CFGR\n");
-
-[Severity: Medium]
-Can a malicious guest flood the host kernel log by repeatedly writing an
-invalid configuration to GICV5_IRS_IST_BASER?=20
-
-Should this use a ratelimited printk to prevent a denial of service?
-
-> +				break;
-> +			}
-[ ... ]
-> @@ -490,4 +490,5 @@ static const struct vgic_register_region vgic_v5_irs_=
-registers[] =3D {
-> +	REGISTER_DESC_WITH_LENGTH(GICV5_IRS_IST_BASER, vgic_v5_mmio_read_irs_is=
-t,
-> +				  vgic_v5_mmio_write_irs_ist, 8,
-> +				  VGIC_ACCESS_64bit),
-
-[Severity: High]
-Since GICV5_IRS_IST_BASER is defined exclusively with VGIC_ACCESS_64bit,
-how does the 32-bit KVM UAPI access it during VM save and restore?=20
-
-Will those accesses be rejected?
-
-> +	REGISTER_DESC_WITH_LENGTH(GICV5_IRS_IST_CFGR, vgic_v5_mmio_read_irs_ist,
-[ ... ]
-> @@ -603,3 +603,4 @@ int vgic_v5_register_irs_iodev(struct kvm *kvm, gpa_t=
- irs_base_address)
-> +{
-> +	struct vgic_io_device *io_device =3D &kvm->arch.vgic.vgic_v5_irs_data->=
-iodev;
-
-[Severity: High]
-Is vgic_v5_irs_data allocated anywhere before it is dereferenced here?
-
-Since it doesn't appear to be allocated via kzalloc or kcalloc in this
-patch, does this lead to a NULL pointer dereference when accessed?
-
-The same dereference appears to occur in kvm_vgic_v5_irs_init() as well:
-
-kvm_vgic_v5_irs_init() {
-	struct vgic_v5_irs *irs =3D dist->vgic_v5_irs_data;
-    ...
-    irs->idr0.domain =3D GICV5_IRS_IDR0_INT_DOM_NON_SECURE;
-
-> +	unsigned int len;
-[ ... ]
-> @@ -642,4 +642,4 @@ int kvm_vgic_v5_irs_init(struct kvm *kvm, unsigned in=
-t nr_spis)
-> +	if (nr_spis && nr_spis < VGIC_V5_DEFAULT_NR_SPIS)
-> +		nr_spis =3D VGIC_V5_DEFAULT_NR_SPIS;
-
-[Severity: High]
-If the requested nr_spis is bumped locally to VGIC_V5_DEFAULT_NR_SPIS here,
-how does core KVM know about the updated count?=20
-
-Could this prevent the guest from accessing the newly padded SPIs since
-kvm->arch.vgic.nr_spis remains un-bumped?
-
-> +
-> +	if (nr_spis) {
-
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/v=
-gic-v5-tables.c
-> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> @@ -656,3 +656,4 @@ u8 vgic_v5_vmte_vpe_id_bits(struct kvm_vcpu *vcpu)
-> +
-> +	vmi =3D xa_load(&vm_info, vm_id);
-
-[Severity: High]
-Does this XArray lookup need RCU protection?=20
-
-Since this is called from the MMIO read handler which runs under kvm->srcu
-but not rcu_read_lock(), could this violate the XArray API contracts and
-cause a use-after-free?
-
-> +	if (!vmi)
-> +		return 0;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724104819.1296=
-803-1-sascha.bischoff@arm.com?part=3D20
