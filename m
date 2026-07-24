@@ -1,170 +1,162 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010021.outbound.protection.outlook.com [52.101.61.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FDE46D0B9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8195C46C4A1
 	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 20:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784924011; cv=fail; b=sS0a5l8u+dq5nVDWtNNp/c4GoF3WBrzgSlhN0BjX8d2GCcHUPiPPrgIU6YnkxvX7sWr9i/ILrcfB4vre7ppIkmAY/PKj2bbcotDvViXbn0PONQgG2FpeaNg48SAJeyahVaRUgk+msCkbkLRydvPz/YJ2ZOn04IbDwDj99BCGH5s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784924011; c=relaxed/simple;
-	bh=UI3D4DmoESTdbQUPDjJjtzx+OX1SJ8VxXEOgwr4n41I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DrvfJ2G0zwxZrrJkmgNrpIpaiyuvI67k+r7LWPxgbgbh2vSHeHcgU8gW65uwU5Ng18tMNRz3o2EdL9IYL+vobNHgew1RH8jGD/7WznOVGpcBP+BBMzBOBqAggUQnpDgAFse/DJ5cmaalSUTisAdUrty1SAPw0f4mbbkKCuIbLQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=J233jayc; arc=fail smtp.client-ip=52.101.61.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784924017; cv=none; b=hAFv69xvWTFOXV8AmOklJJ5VQXwh5ZI2gf43U6rwISj8YstN7pU1v0ZUwAYTkMN7v4okkimbfq7RcvEjk6yrwAUnzVvK4UWMLYBazARdQ65fYQauurSOc4jS7XpKyp9rW8Ez9n5o9wlCTu6jmlWxJO+FJu0mhoVKOY+5WFQI2oM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784924017; c=relaxed/simple;
+	bh=5TCgqk1F9jIbI06nTdZXZbikejN7aJHVBla8knFF/bg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=XBbnGU4ir8E8wBf7UDaukJs/kh7W4brJdwyh9pXK4HsN7YSJqPmR/rG4L9L3KtOUUA0dpV+6veXo1zWLN0QZCLSQGXjuS+zHBi6PQ2gMvgbTUbUj7BVdsclO5ws9nUzzulSqy0u57Awh3zH3LakhWwPfO1WQvylzF4foWE/Eu1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WejnO+dv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="J233jayc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nx1ENXLSJcJ3s3c3osIFNSJxoEdq1BAZIl4fGlGKeczx7iwt/gmsDdfeu7AjmqRWhusSrBUE23aJSf6rc4ixZ2GVvHRxg/KGbOMmx8ZvNLLtOjR16dTj+HgV4E1x0WaWrU5GJM9kp3fmTllEkpNqZed79rb6/hQC03MOpweSAzBwEkSAoOuUudPFGK7r/Smy0GLMzkI2ORbpRxJYBWvl2Llh4XeE+ZENyr5HbjaPRdp4iUm7lwR0mh+H+ijLu64qsAj4I/IBa/OGn+sJGodkOUcwJtYC1zrTs7S3z1sX+8pq+npqeJKfXpvVWGX2mn8zZeHryGUlEczgk9wG+DNThw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ltAtG+kIPpJyr+pC50fsSx4NKfpPC0CWvc8R93Av2VM=;
- b=lTyxGSTZvVcoe3YZ8ipIsn9k9UhHy6o+0UC/rxj/hppi1jcJ8KT+SrvDEV5Qwv+K7lLa4j5+bNnJBxbC7kgqHbCi/cxB/d5kYwypDriOVfNgxJphywnLK0FKeKSgmkCq4N0FOBiFLreWqxe0pC8WVTTRhUpx0ydZbqHu4ETXISnNs69uw1z+cpnu48j5KlMu3glHfv1v05dp7TnFqMMyYImTb2lHBiBZ3U2O7tQ7jQSn7s02PX6waSxNr1K/I0Ym1XwnLC1yithVrP9q130/t+rusY/fbMLWoPLaUNJr04BGi8ldUxekdJ1NUPus+aaLOO54iwTxUeA9GfDsblRasQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ltAtG+kIPpJyr+pC50fsSx4NKfpPC0CWvc8R93Av2VM=;
- b=J233jayc+eOvx0NQ3EXpu31K7bkpQ2Jn5Vuqucc8Ytc/9JmJ83LtM7g8e4BgDS7NGgFF/XykKhbc5xVoPebYhrQdbzJgL7u+5zyC4PgjxngezMbTRoM0rG257//1XWhNylGhpZzbYoewJP4mtuIMyMok4bFpVxmcJcIFydjBuk4=
-Received: from PH3PEPF0000409E.namprd05.prod.outlook.com (2603:10b6:518:1::4e)
- by CH3PR12MB8258.namprd12.prod.outlook.com (2603:10b6:610:128::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Fri, 24 Jul
- 2026 20:13:09 +0000
-Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
- (2a01:111:f403:f90f::2) by PH3PEPF0000409E.outlook.office365.com
- (2603:1036:903:49::3) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.7 via Frontend Transport; Fri, 24
- Jul 2026 20:13:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Fri, 24 Jul 2026 20:13:08 +0000
-Received: from purico-abeahost.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 24 Jul
- 2026 15:13:04 -0500
-From: Shivansh Dhiman <shivansh.dhiman@amd.com>
-To: <pbonzini@redhat.com>, <mtosatti@redhat.com>
-CC: <zhao1.liu@intel.com>, <seanjc@google.com>, <kvm@vger.kernel.org>,
-	<qemu-devel@nongnu.org>, <yosry@kernel.org>, <thomas.lendacky@amd.com>,
-	<nikunj.dadhania@amd.com>, <sandipan.das@amd.com>, <santosh.shukla@amd.com>,
-	<shivansh.dhiman@amd.com>
-Subject: [PATCH 2/2] target/i386: Add support for AMD LBR/PMC freeze
-Date: Fri, 24 Jul 2026 20:12:03 +0000
-Message-ID: <20260724201203.633799-3-shivansh.dhiman@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260724201203.633799-1-shivansh.dhiman@amd.com>
-References: <20260724201203.633799-1-shivansh.dhiman@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WejnO+dv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4231F000E9;
+	Fri, 24 Jul 2026 20:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784923998;
+	bh=XtVB03nmcIY4EoAr//5MJFlFAngUTXra7cK9iiUzy7o=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WejnO+dvqM6ikBco9t9H0GJyIFRVdJ1pvlc7JJv/7EHvekFQS8IGmjC1rw3jRv8+t
+	 al4u78EjgIEr0rtI9fPB9WZhLoMbMmCxfMvAx1eMKm6gY9YROseghPVuFMY9Nb7ggj
+	 sZZyKu05txWudANx7EnKHiJcIMJazTADpoCMSrdjLuUyP7ZZ/KvvzAzbjAqbfGSURy
+	 IYl4ybCrnfDXMZAD+gW6XVi5ljr4wet4v8fR0xuDbXLp/ovTFvsEFmp+GNgE0/aN6n
+	 /4eYuCZ/nP/KagVFyZHEtUuD9wTSsA/dC506wHfOirgLl0qCaC8jUc+cnSBORDzjPk
+	 mJWDTh+kUKs4Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/7] KVM: SVM: Emulate guest accesses to LBR v2 MSRs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shivansh Dhiman" <shivansh.dhiman@amd.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260724195040.630468-4-shivansh.dhiman@amd.com>
+References: <20260724195040.630468-1-shivansh.dhiman@amd.com>
+ <20260724195040.630468-4-shivansh.dhiman@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 20:13:18 +0000
+Message-Id: <20260724201318.8A4231F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|CH3PR12MB8258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52b9bb8b-6359-44cb-1d37-08dee9bffa87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	1AODY5NMZWuJDHY3An+8nHl/Zpkaz+eR+0p9i7pCCxbwDhBbr6lqXKEYIf05N8dCBCcYem5xlP5XugqB7CsWv4b1himouBPuo55JvF1jBN5QLTPgWkBl7tfO1Xe4Cx4Z2BJ5vcROSacRXfH2id/VTAAKSB106tAJNgsuBbzdFfjfI9Db5THLO6okOZIp2fdQv/i67rdDg8U6stGvOgFG9C5ku6Pg+kC563ZFhHRUnsNxtndAfKO40y2LuVFuL5tVwB5brNqDC477ph/d3WSTLC1W003pi9PW69JfTyLGBXeeHFbdrP4fgt+AqKtEryiUNUoPDiGO5BTEfzTiEBYSQcykGUVdSyUojtbENfGUE8RCTpPiZU+NXqBN9iPFX6NBSBPajDnA3rmXyxU2V77ELleO0L8udI9CRKxQWWlfRcj+ZjlyRJKpS4Vj1uPUm3UHl7LIAxnQQi4N+FwYiVFw7SO7dW8Vsi5kCZVt00ijSxWf9p9wY67B8GHRwP3IkpP7R0kRG95Z2JEbG8LGFh9X924Z2jy4L7mO6E0kLs80XT3ywOuAgSPJgthxg1ATeBmXNP7TBW1cBqfonkB0MI2f89nMRkHprHHlveUbRPVWEX0b5P/e42yygeenabI1/zxVt3n0Q2Nx9MGqML3BXVbr9JJW1/4CI6shsShGFPffx4JF4P3LiSPDkSNafgAGrEdyxSRpDdwP/Aq9oK+zcTd5SA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	SZadiJD+SpCcmRx76a3FImpsIn4LLeAoUzmyAi90odwijjIGxWmqFGDxpPYJcW7RxqJZ0KzvuwbpeBlJJo8Bcf5M1nqcmDi+TIx9ZY0aalOsIdSHBOY5VaJDzO9EY/9yi87W7tgecRQapPj2AfdNCxaY0mpq5CDftB9L57RM65iavKnqWb/yh2pwiUgaIdvH6VfmSxX+gJacMFnbDoVV7/NdysAEIseMBpe8Q1ZgINQQB/ZzyzQAwmMeV6oHeLPHB65GCf/T4MED86PqNXz7wHCBiTb2ilowxHkkuTVBQw4h0wF5RqvD20Sa4162FaKCgbYs5IYmYXGbHrcuwDvGyNvTcEneyMw1hFk07B+2UHvDu8PWB0rYk0Pa/K6BEXaS3td1Qr2zvnH5r0mgo3u9kkqRRYQkX8hPTUyYtekHXqDV2TB81AQvt3WsVtVQl+Nk
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 20:13:08.3876
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52b9bb8b-6359-44cb-1d37-08dee9bffa87
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F3F.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8258
 
-Add the "lbr-pmc-freeze" CPU feature (CPUID 0x80000022.EAX[2]), which lets
-a guest freeze the LBR stack and performance counters on a PMI. As it
-operates on the LBR v2 stack, make it depend on lbrext-v2.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] LBRv2 emulation ignores the `lbrv` module parameter, allowing gues=
+t LBRv2 usage even when LBR Virtualization is globally disabled.
+- [High] The newly added LBR v2 MSRs are missing from KVM's list of saveabl=
+e MSRs, causing them to be silently dropped during live migration.
+- [High] Missing nested SVM state synchronization for LBRv2 fields causes s=
+tate corruption and cross-tenant information leaks between L2 guests.
+--
 
-Signed-off-by: Shivansh Dhiman <shivansh.dhiman@amd.com>
+--- Patch [3]: [PATCH 3/7] KVM: SVM: Emulate guest accesses to LBR v2 MSRs =
 ---
- target/i386/cpu.c | 10 +++++++++-
- target/i386/cpu.h |  5 +++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+commit ea17366da9bcd5ccfa5c4c9307a6f68cda7d1255
+Author: Shivansh Dhiman <shivansh.dhiman@amd.com>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 678863de68d5..b22a2a9314ac 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1464,7 +1464,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_8000_0022_EAX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
--            "perfmon-v2", "lbrext-v2", NULL, NULL,
-+            "perfmon-v2", "lbrext-v2", "lbr-pmc-freeze", NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-             NULL, NULL, NULL, NULL,
-@@ -2048,6 +2048,10 @@ static FeatureDep feature_dependencies[] = {
-         .from = { FEAT_8000_0022_EAX,       CPUID_8000_0022_EAX_PERFMON_V2 },
-         .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_LBREXT_V2 },
-     },
-+    {
-+        .from = { FEAT_8000_0022_EAX,       CPUID_8000_0022_EAX_LBREXT_V2 },
-+        .to = { FEAT_8000_0022_EAX,         CPUID_8000_0022_EAX_LBR_PMC_FREEZE },
-+    },
- };
- 
- typedef struct X86RegisterInfo32 {
-@@ -9156,6 +9160,10 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *ebx |= kvm_arch_get_supported_cpuid(cs->kvm_state, index, count,
-                                                  R_EBX) & 0x3f0; /* EBX[9:4] */
-         }
-+        /* Dependency LBREXT_V2 => LBRPMC_FREEZE enforced via feature_dependencies[] */
-+        if (env->features[FEAT_8000_0022_EAX] & CPUID_8000_0022_EAX_LBR_PMC_FREEZE) {
-+            *eax |= CPUID_8000_0022_EAX_LBR_PMC_FREEZE;
-+        }
-         break;
-     case 0xC0000000:
-         *eax = env->cpuid_xlevel2;
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 64e40a654260..c8f51531ba85 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1220,8 +1220,9 @@ uint64_t x86_cpu_get_supported_feature_word(X86CPU *cpu, FeatureWord w);
- #define CPUID_8000_0021_ECX_TSA_L1_NO  (1U << 2)
- 
- /* Performance Monitoring Version 2 */
--#define CPUID_8000_0022_EAX_PERFMON_V2  (1U << 0)
--#define CPUID_8000_0022_EAX_LBREXT_V2   (1U << 1)
-+#define CPUID_8000_0022_EAX_PERFMON_V2      (1U << 0)
-+#define CPUID_8000_0022_EAX_LBREXT_V2       (1U << 1)
-+#define CPUID_8000_0022_EAX_LBR_PMC_FREEZE  (1U << 2)
- 
- #define CPUID_XSAVE_XSAVEOPT   (1U << 0)
- #define CPUID_XSAVE_XSAVEC     (1U << 1)
--- 
-2.43.0
+KVM: SVM: Emulate guest accesses to LBR v2 MSRs
+   =20
+Back the LBR v2 MSRs with their VMCB save-area fields in
+svm_{get,set}_msr(). This is required when guest accesses to these
+MSRs are intercepted. This allows the guest to retain the values
+of these MSRs on VMRUN/#VMEXIT cycle when vLBR is disabled.
 
+> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> index ef69a51ab27f9..13ac62604ca05 100644
+> --- a/arch/x86/kvm/svm/svm.c
+> +++ b/arch/x86/kvm/svm/svm.c
+
+[ ... ]
+
+> @@ -744,6 +744,12 @@ static void svm_recalc_lbr_msr_intercepts(struct kvm=
+_vcpu *vcpu)
+>  	svm->lbr_msrs_intercepted =3D intercept;
+>  }
+> =20
+> +static bool svm_lbrv2_supported(struct kvm_vcpu *vcpu)
+> +{
+> +	return guest_cpu_cap_has(vcpu, X86_FEATURE_AMD_LBR_V2) &&
+> +	       kvm_vcpu_has_mediated_pmu(vcpu);
+> +}
+
+[Severity: High]
+Does this capability check need to respect the global lbrv module parameter?
+
+Unlike the legacy LBR logic which explicitly checks lbrv, this function only
+checks the X86_FEATURE_AMD_LBR_V2 capability.=20
+
+Could this allow a local guest to bypass the host administrator's explicit
+disablement of LBR Virtualization (when loaded with lbrv=3D0) by directly
+accessing LBRv2 MSRs?
+
+[ ... ]
+
+> @@ -2882,6 +2901,21 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, stru=
+ct msr_data *msr_info)
+>  	case MSR_IA32_LASTINTTOIP:
+>  		msr_info->data =3D lbrv ? *svm_vmcb_lbr(svm, msr_info->index) : 0;
+>  		break;
+> +	case MSR_AMD_DBG_EXTN_CFG:
+> +		if (!svm_lbrv2_supported(vcpu))
+> +			return KVM_MSR_RET_UNSUPPORTED;
+> +		msr_info->data =3D svm->vmcb->save.dbg_extn_cfg;
+> +		break;
+
+[Severity: High]
+Are these new LBR v2 MSRs missing from KVM's list of saveable MSRs?
+
+Because the new LBRv2 MSRs (MSR_AMD_DBG_EXTN_CFG, MSR_AMD64_LBR_SELECT, and
+the MSR_AMD_SAMP_BR_FROM array) are omitted from msrs_to_save_base in
+arch/x86/kvm/msrs.c, they won't be returned to the VMM by
+KVM_GET_MSR_INDEX_LIST.
+
+Will this cause the LBRv2 state to be silently dropped during live migratio=
+n?
+
+[ ... ]
+
+> @@ -3181,6 +3215,40 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, stru=
+ct msr_data *msr)
+>  		*svm_vmcb_lbr(svm, ecx) =3D data;
+>  		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+>  		break;
+> +	case MSR_AMD_DBG_EXTN_CFG:
+> +		if (!svm_lbrv2_supported(vcpu))
+> +			return KVM_MSR_RET_UNSUPPORTED;
+> +
+> +		if (data & DBG_EXTN_CFG_RESERVED_BITS)
+> +			return 1;
+> +
+> +		if (svm->vmcb->save.dbg_extn_cfg =3D=3D data)
+> +			break;
+> +
+> +		svm->vmcb->save.dbg_extn_cfg =3D data;
+> +		vmcb_mark_dirty(svm->vmcb, VMCB_LBR);
+> +		svm_update_lbrv(vcpu);
+> +		break;
+
+[Severity: High]
+Does nested SVM state synchronization need to be updated for these new LBRv2
+fields?
+
+Looking at nested virtualization, L2 guest state is synchronized using
+svm_copy_lbrs() in arch/x86/kvm/svm/svm.h, which is called during
+nested_vmcb02_prepare_save().
+
+Because svm_copy_lbrs() was not updated to copy the new dbg_extn_cfg,
+lbr_select, and lbr array fields, vmcb02 can retain a previous L2 guest's
+branch records. When a new L2 guest reads its MSRs, it could observe the pr=
+ior
+L2 guest's execution trace.
+
+Additionally, upon nested_svm_vmexit(), wouldn't L2 modifications be dropped
+because they aren't copied back to L1's vmcb12?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724195040.6304=
+68-1-shivansh.dhiman@amd.com?part=3D3
