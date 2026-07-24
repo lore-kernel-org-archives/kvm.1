@@ -1,112 +1,178 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB122325706
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 17:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D2E2E7F2C;
+	Fri, 24 Jul 2026 17:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784914471; cv=none; b=OSExCHtIbjiARV9+Jcbz7Ytl5nrCtc5IsmGXbufjCyY8wxRvKSOxYisg+jFr9b3INdHKTXfN5Gv/xFsMzr62hDVOm05NZ9MioNLayvNc5G9vKlxxaqFRzZplm2hy7xTXx3uKcTrGdACOr/viy4TPp7MgyCdbMG12ZB3Ha4JmEqw=
+	t=1784914510; cv=none; b=fduWQ1AhJxhHe+u/WwbEEKy1PkOta5HqL8+Sph1+o/3gRIHUX1sG5wsizGsSaCxY9LeWk6YQhJlVymYjuT0S0UAQU0FLuGVgXNPfp2GrccXuI8eVFK42DUTTBMYBQjiBiDQkz6u2YsbmtHfg3U6Wn9jab+sSyvS219+9fgsvGxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784914471; c=relaxed/simple;
-	bh=rLkMc5AOpVKMTLuxHjDhFbknUJV0WEQRy7oPL6tNQKE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eLLT+Z8DGIzrtoJsMxZ/016qCsay/G+m09UCIXqt6XB+IZE344XwWj/5gprtiDcFlnHlddxqZJD6AlW2c3tMFIOOdgabH1eTZPOnGcncfOI9e8HggZPgORN8KWd/V/sFLILh0dH4aMs5zt0HP91WfXK77dE7yH0zQeckT77YPJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Crk8PD5a; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784914510; c=relaxed/simple;
+	bh=eTBXV4cXfp0haLEnyQYyYwugSrrwDPcFFEYrLB1Tc3g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=R6ZoG3qh2KmUPyI6Mmp5NLjiKtWG+cnwlyo3ktcPznbg6JbHfkkxKeg/KCrBKgWWh+6jLOg/tK+ODgofNawCAV7xLAFnHn0hmB94VwBHMUCY9+Ip5YQHZYLRe94yb4PX6qqIBBeKt4X61G48Bu2zKyInc6zaW77ITz9nmaD8sZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLRxljyi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Crk8PD5a"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cec4226c70so11532435ad.1
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 10:34:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784914469; x=1785519269; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=o72EGRo2pvQ3WbX6SzXXg6Q1ixoc9GAPCSAe802AzLg=;
-        b=Crk8PD5auDoxf/+KWPpYZUIrMltPh9A5H+eeFhbaRG79SympiQC2ho13OsX9xLNZ6i
-         /hCtmfEyMjZcO/bWRqjHAhSJU2XXdt9dD4pg3V0CAnPnqQ6hIW8FMO+gL7UvLz+7pqnl
-         QjsGzWgWktYljz2wup/tC7os0K9Pqf5Hnd59lJwrnT4Kl17WWiwD8b3Wp8rrnj/8ylGz
-         S4T7KSLlC88zG7vZlgLdbYRJSj0yTIHTdodL9Nlgv3+AmWNfKPBmKJw2G2YXej2LKAEX
-         diRT0p85RPKfTWWkfKE/f2RtNqmwSQzUcgOCu9dW6AxLTQS+RaIj1vfZWpb+7uw5bgMd
-         rh3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784914469; x=1785519269;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o72EGRo2pvQ3WbX6SzXXg6Q1ixoc9GAPCSAe802AzLg=;
-        b=TDmuAutBUe9B9otCeqe3MfZNCeFQWUdSJG63v0KriD9/AkUpufv3iKyTNYA4VFSapx
-         Vynf/MbHcZS0HoRYo/iZCN4xDX+kKfPchwJt0AfcKNpytdivUK4BkFtARIbhys+Tjujr
-         tn/zKBJFWLtVMtWDYMGkqQcHD+2nr/9XjKXNFjG2+Y1QcUTq0sSMo+GuBqxDCdKam6am
-         DAr69OVMSJYYoyHqT9QHmcExrks8ADCQyD+0DwRJpE2Mkhuj7uiny5Su/h0pITq6tlF5
-         GetaP8cyoztlyM6BtKt5aSzRl432NWEkVE31dTCijPhc6ECkEbYiHJ/PGWckKLaq2Itr
-         rqRw==
-X-Gm-Message-State: AOJu0YzcrGyP3kZGUp8k+JH0OcUOwdk1DRlU3otJ6Pnu0SO52TYMHK04
-	C7/AEIYZEIF4JQHaNuxBnUbjaZeSTSkIMZaKoWy0ZZsklJPjJR+jCplYp6TIE9V2nt7A+ox0Y1x
-	gM2H8xQ==
-X-Received: from plv5.prod.google.com ([2002:a17:903:bc5:b0:2ce:fc90:1592])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2f43:b0:2ce:8551:318c
- with SMTP id d9443c01a7336-2cfa6d879b6mr98306685ad.40.1784914468877; Fri, 24
- Jul 2026 10:34:28 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 24 Jul 2026 10:34:25 -0700
-In-Reply-To: <20260724173425.278753-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLRxljyi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7F11F000E9;
+	Fri, 24 Jul 2026 17:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784914508;
+	bh=BC5bxp3bkyH9p+5b04W6vW0JNX48QrQbyUwRJ2M3VPs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GLRxljyiCE3TX5OXOWwbvNCHkLIYKRcA6wMtfffSB51+5WhNMfVFtHuc9mjShs8Y5
+	 pSN8gKHdIxiRoofOaUgAcpJ9lvqy6nsf7x8+Ob0x6HdTycx5hqa4v+q8/lTCbnENLv
+	 YZMTlZVjX6/mstXOnb4dDAAYxwHJfoiNJdO9K7QO1uezwMkD7FF1qlJS1p2vpcO01M
+	 x4GFSWpwBdh4cmnUCsCBgtqkVfQ+dtK3sDBVc0pK6kp0GrxD/Kvx84g/yTyOMj7ovC
+	 2CMXx5bCCXNsyjdmt1vuRLdgsy5MvvnLJnszLsaypeoeCwq6C7OZoJAvnvCv0IDuLG
+	 D7N6edg12lWPQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 03/15] s390/vfio-ap: Functions to initialize/release
+ vfio device migration data
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260724161351.1802644-4-akrowiak@linux.ibm.com>
+References: <20260724161351.1802644-1-akrowiak@linux.ibm.com>
+ <20260724161351.1802644-4-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Jul 2026 17:35:07 +0000
+Message-Id: <20260724173508.5E7F11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260724173425.278753-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260724173425.278753-3-seanjc@google.com>
-Subject: [PATCH v3 2/2] KVM: x86: Don't WARN if IRQ disappears when Xen
- emulation is enabled.
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzbot+dd769db18693736eee89@syzkaller.appspotmail.com, 
-	Sashiko Bot <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-When getting a to-be-injected IRQ, don't WARN if the IRQ disappeared and
-Xen emulation is supported, as a guest could concurrently toggle its
-evtchn_upcall_pending flag in shared memory and deassert the IRQ.  Even
-more annoyingly, userspace could disable Xen emulation for the entire VM
-KVM_XEN_HVM_CONFIG.  So, suppress WARNs on lost IRQs if Xen emulation is
-supported to prevent false positives.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Alternatively, KVM could track if the VM has ever used Xen emulation, but
-the added complexity isn't worth carrying given that the vast majority of
-deployments can and should disable Xen emulation.
+New issues:
+- [High] ABBA deadlock (circular locking dependency) between `matrix_dev->m=
+devs_lock` and the VFIO core's `dev_set->lock`.
 
-Fixes: bf672720e83c ("KVM: x86: check the kvm_cpu_get_interrupt result before using it")
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260625212001.3B6561F000E9@smtp.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/irq.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Pre-existing issues:
+- [Critical] Failing to attach a second mdev to a KVM instance corrupts `kv=
+m->arch.crypto.pqap_hook`, leading to a Use-After-Free.
+--
 
-diff --git a/arch/x86/kvm/irq.h b/arch/x86/kvm/irq.h
-index eeaf527cecc4..a74f03858004 100644
---- a/arch/x86/kvm/irq.h
-+++ b/arch/x86/kvm/irq.h
-@@ -130,8 +130,12 @@ static inline void kvm_warn_on_lost_irq(struct kvm_vcpu *vcpu)
- 	 * another vCPU grabs the IRQ, or deasserts the interrupt (which is
- 	 * level-triggered), then it's both expected and "fine" for an IRQ
- 	 * seemingly be "lost" from this vCPU's perspective.
-+	 *
-+	 * Similarly, Xen's event channel isn't entirely within KVM's control,
-+	 * e.g. Xen emulation can be disabled entirely per-VM, or the guest
-+	 * can desassert an IRQ by writing to shared memory.
- 	 */
--	WARN_ON_ONCE(!pic_in_kernel(vcpu->kvm));
-+	WARN_ON_ONCE(!pic_in_kernel(vcpu->kvm) && !IS_ENABLED(CONFIG_KVM_XEN));
- }
- 
- void kvm_inject_pending_timer_irqs(struct kvm_vcpu *vcpu);
--- 
-2.55.0.229.g6434b31f56-goog
+--- Patch [3]: [PATCH v5 03/15] s390/vfio-ap: Functions to initialize/relea=
+se vfio device migration data ---
+commit ab0b2af7d9f1c49f7cea7a7d2157bcc5a0bb9b7a
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
 
+s390/vfio-ap: Functions to initialize/release vfio device migration data
+
+Provides the functions that initialize and release the data structures
+used during live guest migration:
+
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 71d3e2c2e07c6..47aca908701d1 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+[ ... ]
+> @@ -797,18 +809,29 @@ static int vfio_ap_mdev_probe(struct mdev_device *m=
+dev)
+>  	if (IS_ERR(matrix_mdev))
+>  		return PTR_ERR(matrix_mdev);
+> =20
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +
+> +	/*
+> +	 * Migration capabilities must be initialized before calling
+> +	 * vfio_register_emulated_iommu_dev; otherwise, the VFIO core
+> +	 * will see mig_ops as NULL during the registration. This could
+> +	 * prevent the VFIO core from properly setting up migration
+> +	 * infrastructure like debugfs entries.
+> +	 */
+> +	vfio_ap_init_migration_capabilities(matrix_mdev);
+> +
+>  	ret =3D vfio_register_emulated_iommu_dev(&matrix_mdev->vdev);
+
+[Severity: High]
+Does taking mdevs_lock before calling vfio_register_emulated_iommu_dev()
+introduce an ABBA deadlock?
+
+In vfio_ap_mdev_probe(), we now hold mdevs_lock when calling
+vfio_register_emulated_iommu_dev(), which takes dev_set->lock inside the VF=
+IO
+core via vfio_assign_device_set().
+
+However, in vfio_ap_mdev_open_device() below, which is called by the VFIO c=
+ore
+with dev_set->lock already held, we now acquire mdevs_lock.
+
+Will this reverse lock ordering trigger a lockdep circular dependency splat
+when userspace probes and opens the device?
+
+[ ... ]
+> @@ -2052,19 +2075,39 @@ static int vfio_ap_mdev_reset_qlist(struct list_h=
+ead *qlist)
+> =20
+>  static int vfio_ap_mdev_open_device(struct vfio_device *vdev)
+>  {
+> -	struct ap_matrix_mdev *matrix_mdev =3D
+> -		container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	struct ap_matrix_mdev *matrix_mdev;
+> +	int ret;
+> =20
+>  	if (!vdev->kvm)
+>  		return -EINVAL;
+> =20
+> -	return vfio_ap_mdev_set_kvm(matrix_mdev, vdev->kvm);
+> +	mutex_lock(&matrix_dev->mdevs_lock);
+> +	matrix_mdev =3D container_of(vdev, struct ap_matrix_mdev, vdev);
+> +	ret =3D vfio_ap_init_migration_data(matrix_mdev);
+> +	mutex_unlock(&matrix_dev->mdevs_lock);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D vfio_ap_mdev_set_kvm(matrix_mdev, vdev->kvm);
+
+[Severity: Critical]
+This is a pre-existing issue, but I noticed that if vfio_ap_mdev_set_kvm()
+fails (for instance, returning -EPERM because another mdev is already attac=
+hed
+to this KVM), does it leave kvm->arch.crypto.pqap_hook pointing to the new
+mdev's pqap_hook?
+
+Looking at vfio_ap_mdev_set_kvm() in drivers/s390/crypto/vfio_ap_ops.c, it
+unconditionally overwrites KVM's pqap_hook before checking if another mdev =
+is
+already attached:
+
+	down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+	kvm->arch.crypto.pqap_hook =3D &matrix_mdev->pqap_hook;
+	up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+=09
+	get_update_locks_for_kvm(kvm);
+=09
+	list_for_each_entry(m, &matrix_dev->mdev_list, node) {
+		if (m !=3D matrix_mdev && m->kvm =3D=3D kvm) {
+			release_update_locks_for_kvm(kvm);
+			return -EPERM;
+		}
+	}
+
+If this fails with -EPERM, the pointer is not restored. If this new mdev is
+subsequently closed and freed, could a malicious guest executing a PQAP
+instruction trigger a use-after-free in the host when handle_pqap()
+dereferences this freed pointer?
+
+> +	if (ret) {
+> +		/* Clean up migration data on failure */
+> +		mutex_lock(&matrix_dev->mdevs_lock);
+> +		vfio_ap_release_migration_data(matrix_mdev);
+> +		mutex_unlock(&matrix_dev->mdevs_lock);
+> +	}
+> +
+> +	return ret;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724161351.1802=
+644-1-akrowiak@linux.ibm.com?part=3D3
