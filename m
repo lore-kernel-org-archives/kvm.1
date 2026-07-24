@@ -1,255 +1,180 @@
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A2C246782
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 14:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2348B43F8DE;
+	Fri, 24 Jul 2026 15:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784904281; cv=none; b=EaiTT/lAjSWWhNwnJsPLgsmyXcCS2i5sc1Xp0R6Tdz0peHp/+21LVEQEGJrDscqcmaYAhL+E8a7m//tFf67YVKD5TGQMbNczDf3ZbE6AjiSxwz+W/TinI5lMNPi9nSo3CwJfbQWCKp4J/yTE5Pu9JoIL85dZHpRCqBGLnQ8SQz4=
+	t=1784905335; cv=none; b=itvJoYRQRLr7B3uN9ltC3NCrI2hT2O5U9ojkMjzwMRWEDDzRGFwfw5YmA27YDiT/o8uw1B6KAzk7Xs7bEacdW7qpGKM5wizALNFwoR5iJOY5Km+JPV963dizqvVik09t+IhD02kjYLoFmiWHwjDnSCC8153JC3dMgP7PERyaong=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784904281; c=relaxed/simple;
-	bh=Px0mbSVK3f84DUHRwBK4SbylpWFImo5RRjKPyLBbpwc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bP7wKORLjNQXFtImzIHFF59eUbq31JNKaxu9K+GKKlD+uajb0SbqksH49agUZZfhk5XQEZ1UNElX3ie3O/qSN0iICVlBhRbnuq27jFVjxup6orhjWi3mW7d+16uuz/m/BD+KgNNb3r66JhdyNmITZbW/DrHuA7OQeonA2SEsGRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K11KP101; arc=none smtp.client-ip=209.85.214.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1784905335; c=relaxed/simple;
+	bh=OJiLo8KUofVnesGqHQ+0LLZtGLzRBUwTeJX+s6uo2iU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=thmJ++f/cCjf7qOJVHRMCrL6FYbu27Gw/0GkiF8juGZYZTsbiWvR0Ymt6gNdAkWJoN3qh0fmWgCzSiWPwOCfko2yZMoUorzynoMf3EJdZQgOL1+dGocgFMOXrx/GqEvuhHI8S/wDTL9r4SPboUnC3z5GMeN5AzOhEoXt6dbe53U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TijDT81p; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K11KP101"
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so9185355ad.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 07:44:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784904279; x=1785509079; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dATu33QjRGacKv2Zn7YNnuz8c9qvutY53GJNQjK1x6E=;
-        b=K11KP101dvPe6jfMMLY9K0KzBTZO/9K5WF1RcyFkwbrXj+OwhzkxOfc90TxmTHG6Ta
-         PMzPumXbmXx9MBIUAaeeo2Vmcn0U3k+nXuPkm3cTZ4Cl4JcXXvYfhRYjQNN4rzMApRdT
-         1dNQfJYgR6Lb0ruE5P6Tkb/qlf5rzlvEWStmWrDM9KPRBiXrMeMYN+FBe16Zyt1Y90Xl
-         GRXlLco2QF+wdeW7VlLjhhZXOMgsAyT2ULMJifxf+zxaLouu7Eszx5R6EmABRYnZ1tC3
-         HkcAWlwJRefH4hseBt9njOpXc0EucY50kKz21sTyhg3BJboe83yGjCpKa87UKzM091CU
-         7zVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784904279; x=1785509079;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dATu33QjRGacKv2Zn7YNnuz8c9qvutY53GJNQjK1x6E=;
-        b=GSLjS5f8N5Eysx0QP4YO+JtEg2sAxBS4NAlGDjZreQw9Ymk3cs7goGZA+c5yM6GPPM
-         zHqdtBpai8BsqulnQxrTQk9gklLeWMnn/z+TKekRlriv7/lqCvSytdngRW2B+92E7AqI
-         gP20wUcIJ0edLXgTui2GTR9uPsk82wR39aj08DCQSnOzjwQuXmx2gBV7wBElBqi+Z1f4
-         MqhzQ8XEK57/gUiHYyfALJGSlu9j+YhoVJC8dfx3M2j1hrQA5ERKUkPllszerZB1//O3
-         jvHthriTBAXqP/umuvsaEJPPP0lFSgmUTqQiAJAco2TWSkHbSiwHKftWMM7pg3YCdYx4
-         BQYw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqjpwdaij2Hsv8OZCIbshC0o+dwby/V3nmH5NE8lfWQ2YQIhdHojQPiQg8I2rteVP93o5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw67NixuMKdCttg9NtYdyxx8p+E6paY06ax7q4qeS3hpzQeJfPV
-	fMMbbKcrV4xxX4JucCz4HrYF3CADpnQJb/yBDCf6RiudHHgvgwSjFH4aaVMXSIzWwKxe+NUPZEa
-	ynQ1S1g==
-X-Received: from plmm17.prod.google.com ([2002:a17:902:c451:b0:2ca:f412:48ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3bc7:b0:2cf:4c0f:5116
- with SMTP id d9443c01a7336-2cfa6c5e50bmr91832765ad.28.1784904278789; Fri, 24
- Jul 2026 07:44:38 -0700 (PDT)
-Date: Fri, 24 Jul 2026 07:44:38 -0700
-In-Reply-To: <tencent_7DA064CAC9B463EB9B651801011E2CE4230A@qq.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TijDT81p"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66ODfuGv100791;
+	Fri, 24 Jul 2026 15:02:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=b1Hl13
+	guGSSod1qmSNLL+sRpowvnUV/R7Ar6aN+Ocvw=; b=TijDT81pQ4WJ62dK0QbTVl
+	B6w+MntJ2qSHJCSzzAQonoojkvIC8FMqtAOwCc2dt7rHtQRMr6SfIRB5RqG4MawO
+	LlFdb0uIxKN9pJmCESlsRNuj1V0HbDL6FD0hyr2rygXrod4cZIfv8nH//g1oQ+GB
+	NpFQaVLHBr5f0/9MA7TewBESsQOvhsbVHYl2EhkZ93XokMcgFlgz//T91crZh936
+	AYnGW4LOgVaT3Vp7RdCEHitrWRCmM2go/zPFf0b+1mx57jP0SN946KgDaTcxjVLS
+	XjZ7QG8gFwrCVEa1AiOmB6Ns5kcko2tVE6p+JIsCsisarCLQGjUAFF0jLk75/oTQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fm8gs8hhd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 15:02:13 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OEnk5j018544;
+	Fri, 24 Jul 2026 15:02:12 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fgp1gs76g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 15:02:12 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OF2BLr23462614
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 15:02:11 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF6E258050;
+	Fri, 24 Jul 2026 15:02:10 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F4BB58052;
+	Fri, 24 Jul 2026 15:02:10 +0000 (GMT)
+Received: from [9.61.177.4] (unknown [9.61.177.4])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jul 2026 15:02:09 +0000 (GMT)
+Message-ID: <70ec8cd3-d3c8-4eed-b204-0197de819691@linux.ibm.com>
+Date: Fri, 24 Jul 2026 11:02:09 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <tencent_7DA064CAC9B463EB9B651801011E2CE4230A@qq.com>
-Message-ID: <amN6VptoRxbZJE2y@google.com>
-Subject: Re: [PATCH v2] KVM: guest_memfd: Fix ABBA deadlock in error_remove_folio
-From: Sean Christopherson <seanjc@google.com>
-To: zhanghao <76824143@qq.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Ackerley Tng <ackerleytng@google.com>, Lisa Wang <wyihan@google.com>, 
-	David Hildenbrand <david@kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/8] s390/vfio_ccw: free all memory if cp_init() fails
+To: Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        stable@vger.kernel.org, Farhan Ali <alifm@linux.ibm.com>
+References: <20260723174751.1180334-1-farman@linux.ibm.com>
+ <20260723174751.1180334-2-farman@linux.ibm.com>
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20260723174751.1180334-2-farman@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDEzMyBTYWx0ZWRfX3BDYFw9t2dhw
+ eN1TrMSB1v0uoXQNcPXR0QCkgY/22XPFjMstKzomTViwiLIaMFRRI0Hve+cL7yllGcklHuXF3Q7
+ n4YKcTwpmzRmNSI5h20GupBPBH8i/S8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDEzMyBTYWx0ZWRfX86SDz8oU9qCS
+ rN+3ZYoMSTCN4HdpiMIq9A7q5H8GbHVEfDAk0Y73CSkiJgG8snE0pznCIaZRIT3puvK0YVNm+VD
+ eHnyYKqyfaq5S+anwqxU58KeCKcRprqlcN7ZzBNoOUQmHM1CxPcDUonzHGww9X2FDYSfCku3/ac
+ Q2KIOWpyK57U9/ts4zE64jOSM7h3l4TLSeFb8/obS8vf9t3E33SXJKZShCoHA2jnpHhtyjIMcF3
+ 9TxoZ6tdGTmraMlpftallwMjE6Lk1a9OTtFd9KYB1i8y+9c+Qibp/T1NUfssFnxrjxAoGOmSIIS
+ ead2tKIT2FjQS3knmQNDIcve0fSC0ikpcoESghiKZ1ZpAalzTJJXNZQMHmYCqapKajDZsp4Z0ef
+ giFAXUtbYofy//1cf0tlVbUv/pGaU+b6Je3FqEsSLaus6j8vDm/ePlTCoptr095grWbE3X6BoNQ
+ mJj2+Ne/4NuX4fsLIKA==
+X-Authority-Analysis: v=2.4 cv=Q9LiJY2a c=1 sm=1 tr=0 ts=6a637e75 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=BGMVehrePew0uRRqv7kA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: EJ50ingGunx0emQ16Zdb9vLNyn_NG4Hc
+X-Proofpoint-GUID: EJ50ingGunx0emQ16Zdb9vLNyn_NG4Hc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 adultscore=0 phishscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607240133
 
-On Mon, Jun 15, 2026, zhanghao wrote:
-> >From e7f25639c05eac51b4ac8add3dd3e3a76f6f7340 Mon Sep 17 00:00:00 2001
-> From: Hao Zhang <zhanghao1@kylinos.cn>
-> Date: Thu, 11 Jun 2026 15:27:27 +0800
+On 7/23/26 1:47 PM, Eric Farman wrote:
+> The routine cp_free() is called to unpin/free any memory once an I/O
+> is completed successfully, or if cp_prefetch() fails. But if cp_init()
+> fails, and cp->initialized is not enabled, the same routine cannot be
+> used to free all the memory.
 > 
-> memory_failure() calls ->error_remove_folio() while holding the poisoned
-> folio lock.  guest_memfd's implementation takes mapping.invalidate_lock for
-> read before zapping KVM mappings.
+> An attempt to address this exists in ccwchain_handle_ccw(), where a
+> single call to ccwchain_free() is made for the currently-processed
+> CCW segment. But this will leak other segments (created as a result
+> of a Transfer in Channel) that had been allocated as part of the same
+> channel program.
 > 
-> That lock ordering can deadlock against paths that hold
-> mapping.invalidate_lock for write and then try to lock the same folio, e.g.
-> guest_memfd punch-hole via truncate_inode_pages_range().
+> Address this by performing the cleanup outside of the recursive
+> ccwchain_handle_ccw()/ccwchain_loop_tic() logic.
 > 
-> The invalidate lock is needed for page-cache invalidation, but
-> ->error_remove_folio() only needs stable guest_memfd bindings while walking
-> them to zap KVM mappings.  Add a guest_memfd-private rwsem to protect
-> established gmem file entries and their bindings during invalidation and
-> removal, and use it in ->error_remove_folio() instead of
-> mapping.invalidate_lock.  Update bind, unbind, and release paths to take
-> the new lock when modifying bindings or removing a gmem file entry.
-> 
-> Keep taking mapping.invalidate_lock before the bindings lock in paths that
-> need both locks, so writers cannot queue on the bindings lock while a
-> punch-hole operation is blocked on a folio lock.
-> 
-> Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-> Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
+> Fixes: 8b515be512a2 ("vfio-ccw: Fix memory leak and don't call cp_free in cp_init")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
+> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
 > ---
-> Changes in v2:
-> - add a guest_memfd-private rwsem to protect the
->   gmem_file_list and each gmem_file's bindings
+>  drivers/s390/cio/vfio_ccw_cp.c | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 > 
-> Link to v1: https://lore.kernel.org/all/tencent_4B051B84CDCC0D1964EC00337AA32E40DC07@qq.com/
-> 
->  virt/kvm/guest_memfd.c | 38 ++++++++++++++++++++++++++++++--------
->  1 file changed, 30 insertions(+), 8 deletions(-)
-
-Well shoot. I know I suggested this approach, but oof is it uglier than I was
-expecting.  I forgot that it's not just the bindings that need to be protected,
-the list of files also needs to be protected.
-
-And thinking about this more, I'm not convinced a separate bindings lock is
-sufficient, as a concurrent __kvm_gmem_populate() could establish mappings after
-kvm_gmem_error_folio() completes, if kvm_gmem_error_folio() runs between
-folio_unlock() and post_populate().
-
-So for a stopgap, I'm leaning very strongly towards going with the trylock
-approach you proposed in v1.  Longer term (or maybe even as an immediate fix?),
-I think the ideal solution would be to rework truncate_error_folio() flows to
-allow .error_remove_folio() hooks to unlock the folio.
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 69c9d6d546b2..2ca68d09e2d3 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -6,6 +6,7 @@
->  #include <linux/kvm_host.h>
->  #include <linux/mempolicy.h>
->  #include <linux/pseudo_fs.h>
-> +#include <linux/rwsem.h>
->  #include <linux/pagemap.h>
+> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_cp.c
+> index 7561aa7d3e01..086d1b54bdb0 100644
+> --- a/drivers/s390/cio/vfio_ccw_cp.c
+> +++ b/drivers/s390/cio/vfio_ccw_cp.c
+> @@ -455,9 +455,6 @@ static int ccwchain_handle_ccw(dma32_t cda, struct channel_program *cp)
+>  	/* Loop for tics on this new chain. */
+>  	ret = ccwchain_loop_tic(chain, cp);
 >  
->  #include "kvm_mm.h"
-> @@ -32,6 +33,13 @@ struct gmem_inode {
->  	struct inode vfs_inode;
->  	struct list_head gmem_file_list;
+> -	if (ret)
+> -		ccwchain_free(chain);
+> -
+>  	return ret;
+>  }
 >  
-> +	/*
-> +	 * Serializes established gmem_file entries and bindings with
-> +	 * invalidations that don't hold mapping->invalidate_lock, e.g.
-> +	 * ->error_remove_folio().
-> +	 */
-> +	struct rw_semaphore bindings_lock;
+> @@ -486,6 +483,23 @@ static int ccwchain_loop_tic(struct ccwchain *chain, struct channel_program *cp)
+>  	return 0;
+>  }
+>  
+> +static int ccwchain_build_ccws(dma32_t cda, struct channel_program *cp)
+> +{
+> +	struct ccwchain *chain, *temp;
+> +	int ret;
 > +
->  	u64 flags;
->  };
->  
-> @@ -344,6 +352,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->  
->  	filemap_invalidate_lock(inode->i_mapping);
->  
-> +	down_write(&GMEM_I(inode)->bindings_lock);
->  	xa_for_each(&f->bindings, index, slot)
->  		WRITE_ONCE(slot->gmem.file, NULL);
->  
-> @@ -357,6 +366,7 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
->  	__kvm_gmem_invalidate_end(f, 0, -1ul);
->  
->  	list_del(&f->entry);
-> +	up_write(&GMEM_I(inode)->bindings_lock);
->  
->  	filemap_invalidate_unlock(inode->i_mapping);
->  
-> @@ -499,11 +509,10 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+> +	ret = ccwchain_handle_ccw(cda, cp);
+> +
+> +	if (ret) {
+> +		/* Cleanup if an error occurred */
+> +		list_for_each_entry_safe(chain, temp, &cp->ccwchain_list, next) {
+> +			ccwchain_free(chain);
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  static int ccwchain_fetch_tic(struct ccw1 *ccw,
+>  			      struct channel_program *cp)
 >  {
->  	pgoff_t start, end;
+> @@ -735,7 +749,7 @@ int cp_init(struct channel_program *cp, union orb *orb)
+>  	memcpy(&cp->orb, orb, sizeof(*orb));
 >  
-> -	filemap_invalidate_lock_shared(mapping);
-> -
->  	start = folio->index;
->  	end = start + folio_nr_pages(folio);
+>  	/* Build a ccwchain for the first CCW segment */
+> -	ret = ccwchain_handle_ccw(orb->cmd.cpa, cp);
+> +	ret = ccwchain_build_ccws(orb->cmd.cpa, cp);
 >  
-> +	down_read(&GMEM_I(mapping->host)->bindings_lock);
->  	kvm_gmem_invalidate_begin(mapping->host, start, end);
->  
->  	/*
-> @@ -516,8 +525,7 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
->  	 */
->  
->  	kvm_gmem_invalidate_end(mapping->host, start, end);
-> -
-> -	filemap_invalidate_unlock_shared(mapping);
-> +	up_read(&GMEM_I(mapping->host)->bindings_lock);
->  
->  	return MF_DELAYED;
->  }
-> @@ -673,10 +681,11 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	start = offset >> PAGE_SHIFT;
->  	end = start + slot->npages;
->  
-> +	down_write(&GMEM_I(inode)->bindings_lock);
->  	if (!xa_empty(&f->bindings) &&
->  	    xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
-> -		filemap_invalidate_unlock(inode->i_mapping);
-> -		goto err;
-> +		r = -EINVAL;
-> +		goto err_unlock;
->  	}
->  
->  	/*
-> @@ -690,6 +699,10 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
->  
->  	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +	r = 0;
-> +
-> +err_unlock:
-> +	up_write(&GMEM_I(inode)->bindings_lock);
->  	filemap_invalidate_unlock(inode->i_mapping);
->  
->  	/*
-> @@ -697,7 +710,6 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	 * not the other way 'round.  Active bindings are invalidated if the
->  	 * file is closed before memslots are destroyed.
->  	 */
-> -	r = 0;
->  err:
->  	fput(file);
->  	return r;
-> @@ -739,12 +751,21 @@ void kvm_gmem_unbind(struct kvm_memory_slot *slot)
->  	 * until the caller drops slots_lock.
->  	 */
->  	if (!file) {
-> -		__kvm_gmem_unbind(slot, slot->gmem.file->private_data);
-> +		struct file *slot_file = slot->gmem.file;
-> +		struct inode *inode = file_inode(slot_file);
-> +
-> +		filemap_invalidate_lock(inode->i_mapping);
-> +		down_write(&GMEM_I(inode)->bindings_lock);
-> +		__kvm_gmem_unbind(slot, slot_file->private_data);
-> +		up_write(&GMEM_I(inode)->bindings_lock);
-> +		filemap_invalidate_unlock(inode->i_mapping);
->  		return;
->  	}
->  
->  	filemap_invalidate_lock(file->f_mapping);
-> +	down_write(&GMEM_I(file_inode(file))->bindings_lock);
->  	__kvm_gmem_unbind(slot, file->private_data);
-> +	up_write(&GMEM_I(file_inode(file))->bindings_lock);
->  	filemap_invalidate_unlock(file->f_mapping);
->  }
->  
-> @@ -946,6 +967,7 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
->  
->  	gi->flags = 0;
->  	INIT_LIST_HEAD(&gi->gmem_file_list);
-> +	init_rwsem(&gi->bindings_lock);
->  	return &gi->vfs_inode;
->  }
->  
-> 
-> base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
-> -- 
-> 2.15.0
-> 
+>  	if (!ret)
+>  		cp->initialized = true;
+
