@@ -1,179 +1,90 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61908484228
-	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 23:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A5348381E
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 23:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784936963; cv=none; b=tey9F4OAhH16CsF8RnV8me54D654x9s2BDsSIaklmm8wI8DVL82NzE217BKd7Mu7BvPhZncwuuvBQJq67GCOobaWlbgm+sngZ71ei/lqU/+whGhd7OD2BZ3agBp4kLu5IKK/vn1vCZOMu1Wk+iB+mhAEddTLBDsfcARCSm4YOKU=
+	t=1784937062; cv=none; b=mph4w2LBRyQ9PslkjOmeLDHDond5w7HVJ5aWfRXEve0F2otg6I3wjDRao/hNLkqug1cQ2G07Rgml+4MYJa33ANrX6G41KRJTdCPQYjlDtQgyMkcVRnWdRnQCTXwJdoznSITsIUXyRvkffkqrE+B6B1e0Teq/FNJ+oImbSWNJnVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784936963; c=relaxed/simple;
-	bh=bHvBedjZ6Cqkr3QabtYPtLUKypmvcPwYnrzucQpTKRg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Rwn6aZZrsiuuMjb5lY0Vw/qsAtq66k50EG5sMpb2W9XKje2mEQsOrfSYZIfb0AS7R3coAmOYeMR+iVhJ5KaE5U1fHPANOuNA0EyH+Py4VI7JWiL0doqLvGnTF6/+GMruKuIKN9wW6wmtcNgtwdTzdi7pm+UgiwyCnkakSYWqtZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FX0PM88x; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	s=arc-20240116; t=1784937062; c=relaxed/simple;
+	bh=0yhKEvcABImILaML5hPpaUlXQ/XTg6t0VugpVVscyzM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=czsnfZiAbTsX1oXvxOesLcVpIE/WMvksOpF/F+rng3j/f2Rd6v4AzRH1Kh0qnNcJL+BLIBRCSut5mQoOJJ7E8sXfrFevYqt3tlUyMmdip7XL/q4fFMB4Z6I6owEGp1YAsYNdAZHAJgdmV0Ueq5S2TJdIAVL995GMqot2OxsbLBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsRMiknv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FX0PM88x"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ca7c1e22995so1474109a12.3
-        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 16:49:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784936959; x=1785541759; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dRDWG5LJfTsM4rsEH3kaNCcnI3Fztx/5Il0r4lt6YMo=;
-        b=FX0PM88xvtcpXTz8uRn/YZn1dZRQgWt0e5hL2t6ztPEEXuHhWzkcq6/u8+4mA/nEfX
-         CMkwuHK57ZrBpdn6a6V2aLFUtLTrIGZ/kmTlsoJL8e//HptrVAOqh7xJEInzSjrqKL0D
-         5d4ru+ZdijRvSnJr1QL2E2G2+8LqTNnL0GWXao3LglNXSFfHNbgqmHT943K+m7QxO8Li
-         lUssNPfgyfP2J6xsXcIbuvI1J80t+luhUskQpJmS+t3d3VlLg+DcJdGG9mOwInObSssJ
-         U2QbnX5P2yL5R5d0JOjXz2gOOymabif1UUJHAVdmy3CWYGJQtlWsRXhviWvI7CX9dgml
-         bzGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784936959; x=1785541759;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dRDWG5LJfTsM4rsEH3kaNCcnI3Fztx/5Il0r4lt6YMo=;
-        b=OzncimQrhPyPwaoIHAgvH5WPVJHNjQkbVaF2ta2UNU63/+ViRHcPiQbJsTEs+eiLol
-         XTRqeDc9Q9SAaP6fLZbUmifF6ga9h4h0u6jy/iRenmOY3+qkVHRUQeEX1ILAHVIDj/5k
-         VrqdiD1NObiAMDUOHm/Wf87bhCBvM0PY7+meqbVubSl+QclxENw1sBmGOyk5BZcBE0LH
-         OxjQD9W64x1i0Dbu+97qoBgFbHETqqeXYTKqO2BZXCbtHA2Vi3QlUJYAT9UcEC3HY2zs
-         81DNotVKXkczqm5iwapcwHIuJ68AMUChGqFHiD5XQ+KPNyFys7MYIqfWPEu11MhigE6L
-         veWg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8cU6Qays/gq/pksgpOFrEY5aqausDt7uaywCv5eXjxdIlc9II9yoObrcR+0EkDxP4Mps=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNF4xedxsaDZ5NnpI4UT8IFk3N8Irt+gD3V4EUW6BigpDkxRNq
-	ocpyk3LB/Qqip4sabr18rDx8IhBScO2TqForbCWri7eoPnwKkpLbzATe0xp+QseVFkRhpnSpeXp
-	ehdmZD1AOfbpelg==
-X-Received: from pfwy11.prod.google.com ([2002:a05:6a00:1c8b:b0:848:4460:aed3])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:1f1a:b0:847:982e:cca0 with SMTP id d2e1a72fcca58-84e594439c8mr308378b3a.19.1784936959292;
- Fri, 24 Jul 2026 16:49:19 -0700 (PDT)
-Date: Fri, 24 Jul 2026 16:49:14 -0700
-In-Reply-To: <20260724234914.987987-1-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsRMiknv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4621F000E9
+	for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 23:51:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784937060;
+	bh=KtE9VLSNvuEREWRPqv7QEz3fPBljpV8zGdiVoL1JcRY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JsRMiknvC+8CuFaQVl2Pq/LK2OCOPFfxHbe/PRNq2NZEnh8DENKOOW/oKtvrSDwzh
+	 dWtN/xF6lQ7n1JeKy9ZUhVITH5wGlHJGUEqF8jLdhkKVzGPuiDwAFgGFlwQcbsuXIq
+	 M8UI297SSmY4OX1Zi8PQh+BXB0toamYDRwLhuby8Vc5CgERr8RU84TR+nsroQjnsHq
+	 UXckslVuzBFXn+1p78AWEkbkJDPdQfamKdjNHDE3EWYDL7DOsa8+oFQ3Ne8ApKFw8o
+	 mC+s+KwSbTzBB9FQ/CZ6B92kewqL1lx5i4WBIBPkjRO5Gv4OMuILyGxnmNozIXs6SU
+	 I3iyKC3mV0kcg==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c1c50c1e29bso146031166b.3
+        for <kvm@vger.kernel.org>; Fri, 24 Jul 2026 16:51:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrmbP3j9DmUZkgaWjVXCPcyiuN3p4aYS/5hrr2vKvT9ieQn1XOo9I+bAiSzQqjss9fLSZA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxG8PnaHGpKMek5lGY4258PQd6xGYsTdgzDSXU5OEXBLhrl/9zW
+	mF/duuKdTbYH7+n1WydZdxihSQKGhSKz3gVfZweJ9fvDVF8cl6Q7n5EVXTqTl9ff27mqnd1HIXe
+	wFuVJ/fxfMFkFesdyyCqWB99fVwtKCRk=
+X-Received: by 2002:a17:907:72cb:b0:c16:26c7:6ba8 with SMTP id
+ a640c23a62f3a-c1f1ea08253mr14987666b.6.1784937059431; Fri, 24 Jul 2026
+ 16:50:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260724234914.987987-1-jmattson@google.com>
-X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
-Message-ID: <20260724234914.987987-3-jmattson@google.com>
-Subject: [PATCH v5 2/2] KVM: VMX: Cap VMX preemption timer to work around
- Intel erratum
-From: Jim Mattson <jmattson@google.com>
-To: seanjc@google.com, pbonzini@redhat.com
-Cc: chao.gao@intel.com, kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>
+MIME-Version: 1.0
+References: <20260723094419.630204-1-pbonzini@redhat.com> <CAO9r8zM=Mb=eTEFGF0G-POvwwbSr7e8SN6zcDp=GstzKtBKcow@mail.gmail.com>
+In-Reply-To: <CAO9r8zM=Mb=eTEFGF0G-POvwwbSr7e8SN6zcDp=GstzKtBKcow@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 24 Jul 2026 16:50:48 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zODKgCcjTBK=P6BuXBBZRoOAFMeRJU8BmkWL-BCX2LoBw@mail.gmail.com>
+X-Gm-Features: AUfX_mzwlgwnPAYJMS2YqXH5qth-U64mcL7WzQZMw4IPiz8nbuZyfHH-hwxbfU8
+Message-ID: <CAO9r8zODKgCcjTBK=P6BuXBBZRoOAFMeRJU8BmkWL-BCX2LoBw@mail.gmail.com>
+Subject: Re: [PATCH] KVM: SVM: make svm_flush_tlb_gva do a full asid flush if
+ NPT enabled
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Alexander Lougovski <alougovsk@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Due to a widespread Intel erratum (e.g. EMR158), programming the
-VMX-preemption timer with certain large values may cause the timer to
-expire earlier than expected.  The recommended workaround is to cap the
-VMX-preemption timer value to strictly less than 2^25 * CPUID.15H:EBX[31:0]
-/ CPUID.15H:EAX[31:0].
+> I also love Sean's idea, I think it's good to harden against this by
+> nullifying flush_tlb_gva, and maybe add a helper that does the
+> fallback:
+>
+> static void kvm_vcpu_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
+> {
+>        if (kvm_x86_ops.flush_tlb_gva)
+>               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+>        else
+>               kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+> }
+>
+> Hmm actually we check KVM_REQ_TLB_FLUSH_GUEST before
+> KVM_REQ_HV_TLB_FLUSH, so maybe just call kvm_vcpu_flush_tlb_guest()
+> directly for the fallback:
+>
+> static void kvm_vcpu_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
+> {
+>        if (kvm_x86_ops.flush_tlb_gva)
+>               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
+>        else
+>               kvm_vcpu_flush_tlb_guest(vcpu);
+> }
+>
+> And if we go this route, I think we can key off the presence of
+> flush_tlb_gva in kvm_hv_vcpu_flush_tlb() instead of checking for an
+> AMD CPU. We can probably break it down into a stable-friendly fix that
+> just jumps to out_flush_all on AMD CPUs, then the hardening on top.
 
-Calculate preemption_timer_limit during hardware setup based on CPUID 15H
-when available, and return -ERANGE in vmx_set_hv_timer() if the shifted
-delta_tsc reaches or exceeds preemption_timer_limit.
-
-Use preemption_timer_limit - 1 instead of 0xffffffff when soft-disabling
-the timer and when checking the timer frequency limit in hardware setup.
-
-Reported-by: Sean Christopherson <seanjc@google.com>
-Closes: https://lore.kernel.org/all/Zn9X0yFxZi_Mrlnt@google.com/
-Suggested-by: Chao Gao <chao.gao@intel.com>
-Assisted-by: Gemini:Gemini-Next
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
- arch/x86/kvm/vmx/vmx.c | 34 +++++++++++++++++++++++++++++-----
- 1 file changed, 29 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index a07faa066ef0..ebe83a641473 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -153,6 +153,7 @@ module_param(dump_invalid_vmcs, bool, 0644);
- #ifdef CONFIG_X86_64
- static int __read_mostly cpu_preemption_timer_multi;
- static bool __read_mostly enable_preemption_timer = 1;
-+static u64 __ro_after_init preemption_timer_limit;
- module_param_named(preemption_timer, enable_preemption_timer, bool, S_IRUGO);
- #else
- #define enable_preemption_timer false
-@@ -8306,6 +8307,26 @@ static inline int u64_shl_div_u64(u64 a, unsigned int shift,
- 	return 0;
- }
- 
-+/*
-+ * Workaround for a widespread Intel erratum (e.g. EMR158) where the
-+ * VMX-preemption timer may expire earlier than expected when programmed
-+ * with large values. The workaround is to cap the timer value to strictly
-+ * less than 2^25 * CPUID.15H:EBX / CPUID.15H:EAX.
-+ */
-+static __init u64 calc_preemption_timer_limit(void)
-+{
-+	u32 eax, ebx, ecx, edx;
-+
-+	if (cpuid_eax(0) < 0x15)
-+		return 1ULL << 32;
-+
-+	cpuid(0x15, &eax, &ebx, &ecx, &edx);
-+	if (!eax || !ebx)
-+		return 1ULL << 32;
-+
-+	return min_t(u64, 1ULL << 32, ((u64)ebx << 25) / eax);
-+}
-+
- static __init void vmx_setup_preemption_timer(void)
- {
- 	if (!cpu_has_vmx_preemption_timer())
-@@ -8317,6 +8338,8 @@ static __init void vmx_setup_preemption_timer(void)
- 		cpu_preemption_timer_multi =
- 			vmx_misc_preemption_timer_rate(vmcs_config.misc);
- 
-+		preemption_timer_limit = calc_preemption_timer_limit();
-+
- 		if (tsc_khz)
- 			use_timer_freq = (u64)tsc_khz * 1000;
- 		use_timer_freq >>= cpu_preemption_timer_multi;
-@@ -8326,7 +8349,8 @@ static __init void vmx_setup_preemption_timer(void)
- 		 * value.  Don't use the timer if it might cause spurious exits
- 		 * at a rate faster than 0.1 Hz (of uninterrupted guest time).
- 		 */
--		if (use_timer_freq > 0xffffffffu / 10)
-+		if (!preemption_timer_limit ||
-+		    use_timer_freq > (preemption_timer_limit - 1) / 10)
- 			enable_preemption_timer = false;
- 	}
- 
-@@ -8363,12 +8387,12 @@ int vmx_set_hv_timer(struct kvm_vcpu *vcpu, u64 guest_deadline_tsc,
- 		return -ERANGE;
- 
- 	/*
--	 * If the delta tsc can't fit in the 32 bit after the multi shift,
--	 * we can't use the preemption timer.
-+	 * If the delta tsc exceeds the preemption timer limit after the
-+	 * multi shift, we can't use the preemption timer.
- 	 * It's possible that it fits on later vmentries, but checking
- 	 * on every vmentry is costly so we just use an hrtimer.
- 	 */
--	if (delta_tsc >> (cpu_preemption_timer_multi + 32))
-+	if ((delta_tsc >> cpu_preemption_timer_multi) >= preemption_timer_limit)
- 		return -ERANGE;
- 
- 	vmx->hv_deadline_tsc = tscl + delta_tsc;
-@@ -8402,7 +8426,7 @@ static void vmx_update_hv_timer(struct kvm_vcpu *vcpu, bool force_immediate_exit
- 		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, delta_tsc);
- 		vmx->loaded_vmcs->hv_timer_soft_disabled = false;
- 	} else if (!vmx->loaded_vmcs->hv_timer_soft_disabled) {
--		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, -1);
-+		vmcs_write32(VMX_PREEMPTION_TIMER_VALUE, preemption_timer_limit - 1);
- 		vmx->loaded_vmcs->hv_timer_soft_disabled = true;
- 	}
- }
--- 
-2.55.0.229.g6434b31f56-goog
-
+Although it could be less crud if we just made svm_flush_tlb_gva() do
+the fallback. kvm_hv_vcpu_flush_tlb() would need to key-off AMD CPU
+though instead of the presence of flush_tlb_gva. Pick your poison, I
+guess.
