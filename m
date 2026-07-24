@@ -1,115 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73201355055;
-	Fri, 24 Jul 2026 12:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDF042B326;
+	Fri, 24 Jul 2026 12:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784895559; cv=none; b=iqPAKRVecpSxiMbVXbXnfJb4dPeaTGLaT6wEWlE8fWFdPSQiUi4Qtnq5xsNtgaJlt6fQrEHEoUORh5xLXM757wIabkVhHtLSeNLnukCIG35k6G3z2eLInuf82QPtqw7ItekX8m/a3o6KzvlGxODRigX4npnvoZBF1dPKA3d6Qks=
+	t=1784896142; cv=none; b=XvNwEXZJ3pLPoT5+V/sJTHfHP38XO5klWomOSfk2hVzab5JeXPrmU2a5sdXkG3kt05/w4sHUGjhgGcKLL+IrfIgn+4L6q7lrDdRsjMJDFSJCbBc58fT/0lKZaNrQ+N4sK9P9YyxD153Q2fZ+U2oV8NIpmScsCwluq5Sgd+Ccqzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784895559; c=relaxed/simple;
-	bh=IwA2hn0lcj/wifJQHt3WaaLAlTWt9eYsOfuO8hHzqgI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iuR9PhiylLL0MObE7RO6+kALetsfPdEJlaNpewWnWnXoRkcs1MKRXm29BOXiTBYmtBAe8+Ldd4Ui6Tckwl0imEGlXKRBKsJ4EdmFpAhjzv9sjRb4zY3CicDFDCehhKdpmeD707c25UzEioz59VRqox7cslpQ8lr4uKTgHBkhEu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BOA4Xhjt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784896142; c=relaxed/simple;
+	bh=HInUqhRZnz6YbDuhfsJTq5qhNsYtH104RAsxn4iSmB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cEAK1zqEtvH6Es7RwIn8vdWHaIjW0wrgY+RmqtgPrAF7QbXU/ho35MLpZaOnleFWq8YdV97ZEExDhbgowdroFUNT+UgGVOHrBGkpQjxUEklOdtV900aKuwXODsesdqxAClUI+HbBWs6uVAT99ia5MKMB6S4vhchOynkKAsh1jug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KZDSYTyx; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BOA4Xhjt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C241F000E9;
-	Fri, 24 Jul 2026 12:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784895558;
-	bh=wYi7Vdq3p+6Mwlt+PiWZy4MBrY6UMiI8c14pgvw4Mtw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BOA4XhjtBNwnCRmIfHWEAm+6/QAB4EzUrLN9PHRJUzy0eVmSjm5DFKItpJVBPTFnx
-	 n6vbL74S/D6mfxSeZVKHS81K0q9yTQe+5+eeoBkYSfNzAQatPvJU05PO4kxYMn1BpV
-	 WCdTbuSE2jE3ysjsXKq7U9P1xM+lCPXKTiWCvGwp4kVkeyhO+7xDdbxoZU+ptJ778B
-	 qxvt3PoyKuIjhC1U7sln0xSDBvdK+FLg/cuy7GY0jFpa3FMhs52yecpkGVixe/OKsJ
-	 ji3jzeGfa7nmWV5TO75Hu4sj+9G8X+4xl7+mzhqsCKm55FYuZaHVmoBSoioA5F+c/d
-	 Ch9rxQ62FV/FA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 29/48] KVM: arm64: gic-v5: Add GICv5 SPI injection to
- irqfd
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sascha Bischoff" <Sascha.Bischoff@arm.com>
-Cc: kvm@vger.kernel.org, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, "Marc
- Zyngier" <maz@kernel.org>
-In-Reply-To: <20260724104819.1296803-30-sascha.bischoff@arm.com>
-References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
- <20260724104819.1296803-30-sascha.bischoff@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 24 Jul 2026 12:19:17 +0000
-Message-Id: <20260724121917.A6C241F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KZDSYTyx"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66OCCjuP1675635;
+	Fri, 24 Jul 2026 12:28:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=DOelgf/YdTj+9W1MazLSPqj9mZwbsA
+	TbSM0uzDeUgN8=; b=KZDSYTyxxnBPn7g+MNP39ATEvAhZeyqS4mWIu3x5cCfFUJ
+	V13r53mco8t8ootv0mL1BiGptHMabCs1fZLbelMVWHoiKSAz+OcbzvQh5PUzqfCS
+	otoctr1clHHVVlbj6eSGyr54B6LXzD7A7RFQmsm3QXNDuWdGhdD/iBY/Vrh+vUpZ
+	6VowpOvJVzFB4uvV1TU/Z/739hMY8vsGTNXHpPC+9VsiRFuplX+xQCPZomkN3EV4
+	2jC7eUzplqp+xX4lC4jI9OK7TZBUFrfSR+aITTU7iONhtnlxgcMlLQvFK+IiQwFP
+	t+HihEKAi5/e0np9lN7UECKen06xPacTWeZs2Zlg==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fg78gkx1d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 12:28:55 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66OCJhXg017426;
+	Fri, 24 Jul 2026 12:28:55 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fgmtk8u71-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jul 2026 12:28:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66OCSpvv53608736
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jul 2026 12:28:51 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 48F1A2011F;
+	Fri, 24 Jul 2026 12:09:34 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC84A20119;
+	Fri, 24 Jul 2026 12:09:33 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.82.156])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 24 Jul 2026 12:09:33 +0000 (GMT)
+Date: Fri, 24 Jul 2026 14:09:32 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] s390/mm: Add missing vm_start <= addr check to
+ do_secure_storage_access()
+Message-ID: <d7022700-114e-4aa7-ac56-5b805f700daf-agordeev@linux.ibm.com>
+References: <20260717131407.855327-1-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260717131407.855327-1-hca@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI0MDExMSBTYWx0ZWRfX59VfqMp7/9DT
+ CU2HuLTQLLUlciDsmZenDGwHkRyVCFx5kZiGIr7Pu97v8PjydTf4vsnXPKJmWgXyxNMhW/QeDUy
+ XHnOIZIU11DRTvz68MecMBYZ7ua1XP35i6Ixcwq6ehtI9waXX9i7Ea3p07IPqRYu4QZ0rKkLJsH
+ rgfyl+lT2g1XmlpXYHhZoOEmBUdfJnJkBwVd9HIGdUUqvMeMWwuDnQiIO1+w3XlopoIDa/0Z3KA
+ cEU2SfgMVgMJlrYELOayeMQnkzNN4ZmD26lSZLJwnvPjlUS7eFdefZ06ra+B0+7dCG0uItxZYxA
+ N5v9DbDnDX1tNfGguoSRTPkfSjECkYwdgyDz9jetUFCUtomalOon+rCP++eLKGpK8kFb6Zi/Vuw
+ tyl6IYPjhqhrmm6K+LJwOJdbFx2WKpQY6Mu2YbmIZKeeDw7vNaHKFRLT4Q5fwnIgZyka6dLrwRG
+ T/KPGGF7L/ErndR3pOQ==
+X-Proofpoint-GUID: yVGRFIHnq-16nK-DS-Zqz6tPznwOmfnB
+X-Authority-Analysis: v=2.4 cv=MelcfZ/f c=1 sm=1 tr=0 ts=6a635a87 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=hfyX7dS27Qm1KjPdzpkA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI0MDExMSBTYWx0ZWRfX2Kejb1Mo/jJn
+ n9Iv1AKTUS1g3I3C1/pwMftrHcPJzk25AnfFliaXVY6+00Ekql1HwejJfPWORj2oOXfMy7xrbag
+ J3KxL2rJUneExqty6HXmDeO0yHLJgl4=
+X-Proofpoint-ORIG-GUID: yVGRFIHnq-16nK-DS-Zqz6tPznwOmfnB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-24_02,2026-07-22_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 bulkscore=0 spamscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607240111
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, Jul 17, 2026 at 03:14:07PM +0200, Heiko Carstens wrote:
+> do_secure_storage_access() uses find_vma() without verifying that the
+> faulting address is within the returned vma. Add this missing check by
+> converting to lock_mm_and_find_vma().
+> 
+> This is not a critical fix, since the worst that could happen is
+> WARN_ON_ONCE() in folio_walk_start().
+> 
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/20260717093904.E4A421F00A3E@smtp.kernel.org/
+> Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+> ---
+>  arch/s390/mm/fault.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> index 028aeb9c48d6..d6c58d78edc5 100644
+> --- a/arch/s390/mm/fault.c
+> +++ b/arch/s390/mm/fault.c
+> @@ -456,10 +456,9 @@ void do_secure_storage_access(struct pt_regs *regs)
+>  		if (faulthandler_disabled())
+>  			return handle_fault_error_nolock(regs, 0);
+>  		mm = current->mm;
+> -		mmap_read_lock(mm);
+> -		vma = find_vma(mm, addr);
+> +		vma = lock_mm_and_find_vma(mm, addr, regs);
+>  		if (!vma)
+> -			return handle_fault_error(regs, SEGV_MAPERR);
+> +			return handle_fault_error_nolock(regs, SEGV_MAPERR);
+>  		folio = folio_walk_start(&fw, vma, addr, 0);
+>  		if (!folio) {
+>  			mmap_read_unlock(mm);
 
-Pre-existing issues:
-- [High] GICv5 VMs configured with more than 988 SPIs will unconditionally =
-fail to initialize because the default IRQ routing setup generates routing =
-entries that exceed KVM_IRQCHIP_NUM_PINS.
---
+The Sashiko feedback looks like a false positive to me.
 
---- Patch [29]: [PATCH v4 29/48] KVM: arm64: gic-v5: Add GICv5 SPI injectio=
-n to irqfd ---
-commit a9da966fc7b449adaa92917185e2770d6d012f6f
-Author: Sascha Bischoff <Sascha.Bischoff@arm.com>
-
-KVM: arm64: gic-v5: Add GICv5 SPI injection to irqfd
-   =20
-Now that there is support for GICv5 SPIs in KVM, update
-vgic_irqfd_set_irq() to translate irqchip pins into GICv5 SPI IntIDs
-before injecting them.
-
-> diff --git a/arch/arm64/kvm/vgic/vgic-irqfd.c b/arch/arm64/kvm/vgic/vgic-=
-irqfd.c
-> index 19a1094536e6a..83e84151d7aa2 100644
-> --- a/arch/arm64/kvm/vgic/vgic-irqfd.c
-> +++ b/arch/arm64/kvm/vgic/vgic-irqfd.c
-
-[ ... ]
-
-> @@ -52,8 +57,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
->  		e->set =3D vgic_irqfd_set_irq;
->  		e->irqchip.irqchip =3D ue->u.irqchip.irqchip;
->  		e->irqchip.pin =3D ue->u.irqchip.pin;
-> -		if ((e->irqchip.pin >=3D KVM_IRQCHIP_NUM_PINS) ||
-> -		    (e->irqchip.irqchip >=3D KVM_NR_IRQCHIPS))
-> +		if (e->irqchip.pin >=3D KVM_IRQCHIP_NUM_PINS ||
-> +		    e->irqchip.irqchip >=3D KVM_NR_IRQCHIPS)
-[Severity: High]
-This isn't a bug introduced by this patch, but does this check cause VM
-initialization to fail if a GICv5 VM is configured with more than 988 SPIs?
-
-When userspace configures a VM with nr_spis > 988,
-kvm_vgic_setup_default_irq_routing() attempts to set up a 1:1 default routi=
-ng
-for all SPIs:
-
-arch/arm64/kvm/vgic/vgic-irqfd.c:kvm_vgic_setup_default_irq_routing() {
-	for (i =3D 0; i < nr; i++) {
-		entries[i].gsi =3D i;
-		entries[i].type =3D KVM_IRQ_ROUTING_IRQCHIP;
-		entries[i].u.irqchip.irqchip =3D 0;
-		entries[i].u.irqchip.pin =3D i;
-	}
-	ret =3D kvm_set_irq_routing(kvm, entries, nr, 0);
-	...
-}
-
-Because kvm_set_routing_entry() caps e->irqchip.pin at KVM_IRQCHIP_NUM_PINS
-(which is 988), any entries beyond 988 will be rejected here with -EINVAL,
-causing VM initialization to abort.
-
->  			goto out;
->  		break;
->  	case KVM_IRQ_ROUTING_MSI:
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260724104819.1296=
-803-1-sascha.bischoff@arm.com?part=3D29
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
