@@ -1,183 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A81494A8
-	for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 13:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701AB3033FE
+	for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 14:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784986664; cv=pass; b=aYaGQUDttXphJfeSY8lkR/RLL7WCBcxlMFvl9+HNq1r/e8I9gREOozjwOMQRXUt1mv/8fklxoq6ChboMF+A9ZZV/mplALsJ6wK9dUbhCftaQLDIHHmgTExpgquglQomIWB+o5w3u+4muks1SFnV/WHxIjcaUb5IZsUUoc1sMJrA=
+	t=1784990964; cv=pass; b=lq6N7rt1r+j89i7S0nxLit8fyvITKAIzl2I8cw/6nxvBfMROYtpth+p5OBSBKX8NKFKa9eRSbtWc3Kr8qa+Ga9l3JClxwhBozlwV3CaOo5g2aZJH1YKXDlC8mTZ5PavtH/i7RrCI3hvf+sSqovQml1x0Uf0+4EUuW/GuNkr2LUI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784986664; c=relaxed/simple;
-	bh=BsvhhqxL5vhvqwqZmxlvoAQzeJIJK90cfeH3mS23/es=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bR7QX6P6B/9fOjdyjr0M2P3Nol+BHeeHART3Nf6WBMuc4BKtb/mPi0f0QNqq+fegTRTpU3ckdcv0fBiJA5zpMsYMCif1MiWafbpiErQiJw2li+gJfTY118Yf93SpLHo9KcTiMK28yk043L1XY0g+WfpfUSq7PsFZjDCkttrTUEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YpWHg7KQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dR7TS/1c; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784990964; c=relaxed/simple;
+	bh=PJlzbYoU2Zu/ilJaZBW+itq6d70puCUStjY33RaR0YI=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XP7Lt636dnG8VwgmIbmWleH9P0+yZPoZLaBUpaMeZxvsBeoWUeVn5MfeEl1h/ogKojXLxtDBHVWhPEmV2u+rNfcl9R8SK0tlCpFiBf+QeaYpB6BLSIDabVoE8YryEVjAYJ1W0FCCFskVJbGm26xiIxFCFwcEA/Jq3FWncsbPdw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=riuDPU0D; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YpWHg7KQ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dR7TS/1c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784986661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PfROqW7ENHj0xbZUvDclv4I/zlzBXp0mv08uNl2cYq4=;
-	b=YpWHg7KQPb8xyLS0z20Cxd7mlTaE28/g9XCZzn3y1mA7f8jfZza7RvdQ2+7/P4lqJ0MvNT
-	eNKTquz8Bi+gnuJNJX54TjyUhumrAGFmF3LkZAdoOu4vBUJ9zJ+AasTMNySWdr1VPs1p5r
-	aihu3TL0xuxGdIZFoOZy3rRfzhK5ECg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-vHz5vhbjN0uBSEALS7_VIA-1; Sat, 25 Jul 2026 09:37:40 -0400
-X-MC-Unique: vHz5vhbjN0uBSEALS7_VIA-1
-X-Mimecast-MFC-AGG-ID: vHz5vhbjN0uBSEALS7_VIA_1784986659
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f83a59e5aso1221695f8f.0
-        for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 06:37:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784986659; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="riuDPU0D"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso1030299a91.1
+        for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 07:49:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784990962; cv=none;
         d=google.com; s=arc-20260327;
-        b=Amm2rzPi/JoDdKDHHeBjA5Noc6FddN7M/L7cWLfKKVXwTVKfJbU9IpKXuNaRe26LCR
-         MInXfYuTG90NO2+wrFqr/nlsCxgG//Z7f61/d3wGFtofjI00VyO8Y2xK3WMt4WZfGA/9
-         bnOeRYhltSuNz3OesVEa/WHmDV5taPr6ZoSvGvskq4BH8Z2j4cEQhJUdNUgT7M1ulYU/
-         /Hf2rTOW7LlRpxbcGseCBDhhY8UxvkGx79LvOjT4KmhIaJ5a55WHfH1lR+MduY+qNw0H
-         vKK0YtnwRpcqU7jf/IijR4dK2wOuTPnwXA72O0ZEUhA9RBe0Ecp0HO0UpN3TmNnJVIyK
-         Q7dw==
+        b=AlaQokRdjm8lFp+USsCJkUMmgGePGCHBu7QCoDsyiBt6a1gD/TGdJKp+warU+dnwnx
+         FvhrilJYYtXTQtH3uOjnSh+r64vJEGQu+GYm3iwNe++WAnmjiVc8p8cwvRAGKphS2zAF
+         XOjapx4scvEHEHR3yNgemYhPo+MrArabelQibhLjA+GcBmkRGo2wfjqSQXIjbEV/Q/m2
+         jpu/OAOX4mWUYnvuUTBRqCenFLj/g1d60aeo9/4u8Z73S1kKk2kZRKaRZxKZcoDjyZhp
+         XP8z4FHBfJFJ1u3OAn8ESKYf6bY5PQ1N6EWSXxUR1FIUncMag47VKzMqS71Xezh1nOpL
+         Rgjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=PfROqW7ENHj0xbZUvDclv4I/zlzBXp0mv08uNl2cYq4=;
-        fh=id16H15gTmnUM0dqTlW8wnbejglnqFdx2/37xV/6jHU=;
-        b=BUQ4rKESxsigcRfPivQALL2G4cEJhUc8JTWbDcKlp7OKXMaivHCpIM7SPyV01c2ngR
-         keFpVlSHdJI9g4kVPZsWEetnrWS8k0R1JUXde9QncDqqpp/3DNjFdRnqUANk6J2Lea0+
-         zvOuFWg1BuuSVNxwxSguvXYjGZkk1AfgsOnQZeIyDx5Rj+2p2n3m2Q7w3NuJW/IpG9OR
-         a1IfkoSvDlyj8GAGy021xI6S48GcW44rvOdgrAdsPBcNlAFvquqTIdSBHEBO9vCGdQds
-         zfpbjiiZgtZ2k4m3jKhy47kBvFhES1qnlOoM57gTrWMs28p8oWNivBqIt8rkfz+P4Dle
-         eUrA==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=EkD2W3YasFcCtvmMTHZ2R5s2b3BtOhhVBv8y/Tn1MIw=;
+        fh=rwrYbFwf24hPID3nkl5yfZOxQTZWd//7Gp7H1M5VNFc=;
+        b=QTkLvkGSBnYhTqr4kcs49DsVdM2QBKQa06JmfjngWRrlC0gtR60istOgD/9biGvpGT
+         zKTt7JT5LM8Jw3nA4ZIcPGgG+Tp+u/KFQeeX5nXJh1XmqmPFZbzOAtW4xUl+FhA4V6f9
+         pInF9j2y1lTGPWgaSnyUxrDcm2vpChU9TT2/L00evSAYTSd3sVJRYas5nOIsnf/L4xCJ
+         jCO//Gl1+wWp0Q3UGA+5CtIJkW/owiTsrexYS7RjM+llyZL7fKLZxdmQNTwVefO7wEiS
+         DyLDkizVqmsePBO1hpBrTys9g1Ki5HWQxyey7wOGjtwStLw/asJDYkFxUvZ2LmQlz7YS
+         y25Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1784986659; x=1785591459; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784990962; x=1785595762; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=PfROqW7ENHj0xbZUvDclv4I/zlzBXp0mv08uNl2cYq4=;
-        b=dR7TS/1cR6MEhtJsEFjypxTD8EqgioEIny1iSoqSe+RoUkHdXOKpqgHdJMtHjt37iG
-         2jmmq+wNpSNyj4nxpgqguOLZssu+9CNEmJ2B/ZxSMR9S1gaY3IGpO2FKWRYHWLz+FtOB
-         kChY3xC4ICja710pS7D4rTuaA7OsiARUCb20eSzl/47tvwj1hY2gkMR5s48x/wlvEbqW
-         UlD11kYWWe6SeKOhmP1UqlX7SGHUiwN6EYYLFJtPnRyPPg7NTRnNmLFBHji1sbgcf0fw
-         4EToUnJzX8jtf3BU+97yZ9dnjYfKEZFL7/hYNmVxyJN2Hjy0Vw7Y5m0c6s9zjLPQ+LzS
-         6Tsw==
+        bh=EkD2W3YasFcCtvmMTHZ2R5s2b3BtOhhVBv8y/Tn1MIw=;
+        b=riuDPU0DIL7Q1JZETo5UmGi5ewJqXpEHTLRf4SlpoOQVvhZo2EPa3Pz7DHIGrccoZq
+         oPQGQ26QA9GjeZ9xB6+ofVef6BYVmvWs2IKnFTe0hj0A4Pg2ZN76uPt2fVwQWZb7eYdQ
+         A+ctSKBCJpFgfPMOLZhFfwssylIrD1fhRK/Z0YJtBDo/8XWKJC6DVld5z64c7wuvEPbz
+         MxhGttMS0e6VZ4LKJygeolPSYtJ2s65B8UYdNifgQAgqTsqKdzdmnbKQHtW0GepBUncf
+         t8iG1NDgbQj+OhqWQNDndXbKkldqwfBrI6Kx6D5VAUEEiG+Q7iAb+DL69WPovaDeLMh+
+         Qepg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784986659; x=1785591459;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PfROqW7ENHj0xbZUvDclv4I/zlzBXp0mv08uNl2cYq4=;
-        b=DviNZYYGQpT+P39xvB3h6DYTmCwnqkhGpDq/sZyzNQSVGUP0RdQKlb5VXTHSgzyyls
-         FgWGkVgBt0ZZwm68pWYNH9O+CaKJjQt/Ssp0JuXDAfcvOlrPIrDE7wFHsMfDdksCHhaa
-         B3Nqa59MQLmtOusOzmNUijyDNThguU9HjdvnHwzjTriPP2iEGc9s9PcyVtpd7z4XcuTZ
-         iN9vYAf3LV9g1cQFYXCER3WW/dZNoR9Rk4qk4SMUXkHQo/NgbDxu9kA0QvUL6xCbTiCf
-         ydKRMyHDZEXqdYSMev/tCWYDCTqpJdfJ0VsLkw/YCW1QrAo1SEEXXMSk02mCyRsmwdVX
-         Mygw==
-X-Forwarded-Encrypted: i=1; AHgh+RqF5bwPpFEFmciO+SCOtUNkbeifKDiiIE242MSiFVCbg1YhqkxufqXLObGpb/NisxqXpH4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJlF8Qlz2gJGz6gqNSWTePe/ghGT6Ei966QIC6ilylX7msg1vT
-	gAtDEben3tqUGAl+LIEEGrD1SXzQKUaYIMhMpt3kxINsZMnWW6Ux0qqg2iOOg7mxL+x0mrJDJPf
-	b0NnQCROTcEuCNutzdK2sI6XFITpQw5OzinRqkQU8MPNzG3l2FWU+nN00kXzXD5snnqJlF14cIM
-	Nu0jt8metWRfOfFHIuCXmjzwIXxTOR
-X-Gm-Gg: AR+sD12fMdBmB4iMJmOBFS+fggOkWJpnm8oSnbFcmz4hUCobTspxacxLR5NYsmrDuUD
-	av4Mk1Paxu9uIKCM8YfVhHrtDuJEnClF2ceA7XdO+3PoXDZCYjLmUMBjbdNzaBDehS9xm6hlc8y
-	7Ab8/FoNNySpzEDGutdoFS+8Y+BxnDugsFJObrVf9sztwdggKXChjqL0EMAA+499omHCya55Dxe
-	3BPsfshr312HMjYuR+M05uI+Oeo1YZv/7WNhys7g4bKLXYPfmj4lo7hz7KS
-X-Received: by 2002:a05:6000:2313:b0:47f:91eb:342 with SMTP id ffacd0b85a97d-47f9fc8840bmr2740144f8f.13.1784986658736;
-        Sat, 25 Jul 2026 06:37:38 -0700 (PDT)
-X-Received: by 2002:a05:6000:2313:b0:47f:91eb:342 with SMTP id
- ffacd0b85a97d-47f9fc8840bmr2740125f8f.13.1784986658320; Sat, 25 Jul 2026
- 06:37:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784990962; x=1785595762;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EkD2W3YasFcCtvmMTHZ2R5s2b3BtOhhVBv8y/Tn1MIw=;
+        b=EyTdCQ1Su0z68LZVVslbfpoVOuS89z3/L+doVEENrL6B3zQ/V+nGZO+CkzfCZ/HfAR
+         YfPH+oTVYLjPAtw1pd8ikMswcfewJBGkvlKAvnTm+jjQOfuKjFMyq1Izk9cqtFmnuQbb
+         gF6BkrQ2Aiz9uRDfo9Ph+NGEXHK0TNDs3a5KTon2JPtf48qMIuoZKw8trU2NuWgBr/ny
+         JTZLcZmI4VKpveLcNfsPs9GZbzGOESUeCrTOj3aYu6sCwzjCKJOFQ/oCSVQXo+e0qlLf
+         UrlYzI44l0cIG0WjCwE+J6acSZPasHDKn1UstniAFtsdUuUCE/nbFKqWKtvht9aODTiZ
+         ssgQ==
+X-Gm-Message-State: AOJu0Yxge5rmyM/cu7rxv10RuTys0o2u64mW/kg+MrYHLutuQv+0xR7X
+	jtHPpBCFQ6fHY47ZxFncBcIPKiIkLEG5QksEHuKf9r6PQYvfmoX3El0EYajCi3HojV4bq/wfGSq
+	Ld5D84WCMt0M4Ubii5a2Mu7h9Z18cX7jTRzeLyHHOz2e6kU7IthTtpAdHffs=
+X-Gm-Gg: AR+sD127dIk8r3sf/Xys4h12O+oYawKeNTQrBSSly9m+te6svU3JyWh6iJMYa7XG3Rd
+	2UcxmB4KXPv82hlUQyL6mFSLDY5cMcT9ankl/OuXvLLp9r1j5a2JPUDQFcfdvMkd68WP4kspt72
+	cvHcdcH8e0TrgyXP8ZPcK8TerwdfjgfxQR9Qwhz4h/9PyWje8wtXYcmR7G4sdrIp2+p96L4Almz
+	G6gcEZk2p1Asm3zYCFv+sFg79kbN9n/SHCUKi8MEJhdVEnSLjjX2TJ5w2ZqNoYXTKlOtZOSDWxb
+	jeJvBQqlYDj8lVRWnw==
+X-Received: by 2002:a17:90b:1e46:b0:387:e0bb:57f4 with SMTP id
+ 98e67ed59e1d1-38f2978d427mr2706602a91.37.1784990960757; Sat, 25 Jul 2026
+ 07:49:20 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 Jul 2026 07:49:19 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 25 Jul 2026 07:49:19 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260723210811.72720-2-seanjc@google.com>
+References: <20260723210811.72720-1-seanjc@google.com> <20260723210811.72720-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260723094419.630204-1-pbonzini@redhat.com> <amPo-XdhFGIZquES@google.com>
-In-Reply-To: <amPo-XdhFGIZquES@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 25 Jul 2026 15:37:26 +0200
-X-Gm-Features: AUfX_mxAO7Xcg9OR8xi2P6xj-sPsYTW9O02p3OhaCy5nVilXjhWsFJdX137nDr4
-Message-ID: <CABgObfbDE+=ir_phPC+9sVYnNXur6dFx6oAfEGSnCbrOqFoyVA@mail.gmail.com>
-Subject: Re: [PATCH] KVM: SVM: make svm_flush_tlb_gva do a full asid flush if
- NPT enabled
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Alexander Lougovski <alougovsk@redhat.com>, 
-	Yosry Ahmed <yosry@kernel.org>
+Date: Sat, 25 Jul 2026 07:49:19 -0700
+X-Gm-Features: AUfX_mwBSeCkUM9wWoNV5ZeeQQQG3i7iwxC1MZDdtkzF_AAYe1Xe_USTALvzDPk
+Message-ID: <CAEvNRgEeFxa38irBgpufU5Meou28psoeCd9yxwgpiODDBvnzcA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/9] KVM: guest_memfd: Pass the number of pages instead
+ of the end pfn into .invalidate()
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Michael Roth <michael.roth@amd.com>, Fuad Tabba <tabba@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Il sab 25 lug 2026, 00:36 Sean Christopherson <seanjc@google.com> ha scritto:
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > index b517257a6315..eca04d4b974e 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -1751,7 +1751,7 @@ struct kvm_x86_ops {
-> >        * Can potentially get non-canonical addresses through INVLPGs, which
-> >        * the implementation may choose to ignore if appropriate.
-> >        */
-> > -     void (*flush_tlb_gva)(struct kvm_vcpu *vcpu, gva_t addr);
-> > +     void (*flush_tlb_gva)(struct kvm_vcpu *vcpu, gva_t addr, bool *full);
+Sean Christopherson <seanjc@google.com> writes:
+
+> Pass the number of pages to "invalidate", i.e. reclaim, instead of the end
+> pfn, as a first step towards aligning the function prototypes between the
+> de facto "to private" and "to shared" arch hooks.  Eventually, the goal
+> is to end up with kvm_gmem_arch_make_{private,shared}(), and in both cases,
+> providing the number of pages makes the call sites slightly nicer, and also
+> avoids any confusion over whether the end pfn is inclusive or exclusive.
 >
-> LOL, why on earth are you using an out-param?  If we do this at runtime, just
-> return a bool, at least that way we don't have to churn every call-site.
-
-To be precise the churn is only one call site out of two, and in fact
-it's the one which is mangled even more by your proposal below. :)
-More seriously, I used an out parameter because returning 0/1 or
-false/true is impenetrable for the Hyper-V call site, while
-0/-EOPNOTSUPP (i.e. do not flush at all on NPT) would force changes in
-kvm_mmu_invalidate_addr().
-
-So, instead of making things good for one call site at the expense of
-the other, the optional out param is more self documenting in svm.c
-and is either good or bearable for the callers: Hyper-V doesn't care
-either way (it doesn't e.g. need the return value within an "if" or
-"while"), and kvm_mmu_invalidate_addr() just gets an extra NULL
-argument.
-
-Overall it's a matter of taste, I understand if you're not convinced
-but I can say it wasn't out of a whim. In your defense maybe I should
-have put this argument in the commit message somewhere? AI also
-complained, but I shelved it because "Sean surely has better taste
-than the AI"... :)
-
-> But I would much rather handle this by nuking .flush_tlb_gva at setup, e.g.
+> Opportunistically rename "start" to "pfn", again to align with the expected
+> signature of make_private() (which needs to pass a starting gfn as well, at
+> which point the "start" becomes noise).
 >
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index f0144ae8d891..bf16119640dc 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -6555,7 +6555,10 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
->                 if (is_noncanonical_invlpg_address(addr, vcpu))
->                         return;
+
+I like ranges being defined as "start" and "nr_pages" because it removes
+the ambiguity of whether "end" is inclusive or exclusive :)
+
 >
-> -               kvm_x86_call(flush_tlb_gva)(vcpu, addr);
-> +               if (kvm_x86_ops.flush_tlb_gva)
-> +                       kvm_x86_call(flush_tlb_gva)(vcpu, addr);
-> +               else
-> +                       kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
->         }
+> [...snip...]
 >
->         if (!mmu->sync_spte)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 171a9da1b685..ca1d93fb2495 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -530,11 +530,7 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>  static void kvm_gmem_free_folio(struct folio *folio)
+>  {
+> -	struct page *page = folio_page(folio, 0);
+> -	kvm_pfn_t pfn = page_to_pfn(page);
+> -	int order = folio_order(folio);
+> -
+> -	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> +	kvm_arch_gmem_invalidate(folio_file_pfn(folio, 0), folio_nr_pages(folio));
 
-This is a variation on the -EOPNOTSUPP convention, for which I didn't
-like having this "else" in the caller that doesn't already have a
-full-flush fallback. If you insist, I guess I would be fine with
-adding a kvm_flush_tlb_gva() wrapper, use it in mmu.c, and check for
-NULL in hyperv.c... but in the end is it really better than the out
-param version?
+This could be just folio_pfn(folio) instead of having to pass the 0
+index. The name of this function is free_folio() after all, so we'd be
+invalidating (or later, reclaiming) the entire folio.
 
-In fact I am not even sure it is better than returning -EOPNOTSUPP.
-From the svm.c point of view it certainly is very clean, but for
-everyone else it's super easy to forget about checking the callback;
-and you don't even have __must_check to save you.
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
 
-Paolo
-
+>  }
+>  #endif
+>
+> --
+> 2.55.0.229.g6434b31f56-goog
