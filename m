@@ -1,170 +1,277 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402F92BD0B;
-	Sat, 25 Jul 2026 06:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4890C27703;
+	Sat, 25 Jul 2026 07:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784960791; cv=none; b=oFgLG8iLfP7T4rZ1o+Qx1YWNM8O10hMAsFdt1r80zzEmmQB1VoFH7hhMXKEqmrp1bq2/P/GTd8RwL1C6Ch3hCX4PqadEebYy9C2+aQOcEs7aZA8kF354HHpjCKeSwHojJc47Br4oFgk9AhZ56wc+uCOSERbkqfdAvSJEQwS6Q/U=
+	t=1784965689; cv=none; b=Kk4PfjMQNv83zS9ecW/yeMxua5Ip9IO50CqiS6AN8pZMZIFIBPHikotalk+I5BUWJfpUrW2pH1dE7Dy+zDtdRz4deU9bs40RzunCZpjSWOsgE0BJddozy4F4XeaZiD1dfLdN1q6em//u7WfCLCDqMtglxT41Up21pH33tnY1qIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784960791; c=relaxed/simple;
-	bh=ThzLVPkyAqRzoZ/BYPEukuwlSKEt3wbFqQF9K7lEP+I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MJytN8LPtqDzMVD1hSk3WrWmN8c6zg6NcDagrJcdAJOqu69kVNNdpcoTM784eD/68kPdovnJSs1yZps+j5pBEaPVE3De8Ua66pHLYJHuospIn1KmJGNiDlmZZ3khQeq1au7GD7p04wpErFf9eea9kfuTpHq/XK22e7LVq7Ie/TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=G+mFIm8e; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bpbAKQmc; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
+	s=arc-20240116; t=1784965689; c=relaxed/simple;
+	bh=QXkK/9Px96JKbHfq/UN3bBzmYtF2w6Ep+yDY5BATFc4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=esf0Vr5jC7n6osRCqwPD0wqCveQwcgL80nYiJeDv4Y4c383UXeYxAHTx7B9qYYwwPAR/EaGkTSTF67cEz1Fch1cxTTb3dQQROCPnMMSz5093Fkn/9AivCefMCTbQD0pl2gj+pE1oPsclfsCgROZ/iCJx8lMUv/WOAdog5XwUsMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NHzOuIGo; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="G+mFIm8e";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bpbAKQmc"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 3CCC97A011F;
-	Sat, 25 Jul 2026 02:26:29 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sat, 25 Jul 2026 02:26:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1784960789;
-	 x=1785047189; bh=+fEzNHdT81nG+FD6y5g3w6OiXhQitOnL0cq79oUPrH0=; b=
-	G+mFIm8eeRJJJQH+OPn4mkczWnbar7bJUS7AKAUl4PL/V5FDCwo+XNmTpCBPgc/z
-	3KHtLrbr6MAKumC+Em+deHhD2r4b6Y+AOYhjv6zQeB7vhalD/U/8oV2tn5G9vYUS
-	eviQtsACIAYkPFIx1OmuaDrax9fGCiV7xu2BTTw4PIkW+6E5QAaj8k9inAp/r16f
-	H+cCOjcSfZuWULYekuMIgT3g3NEaXBSRrTMCTgoDsgMqGu7M3TIceTj3E4xk265S
-	CtoEkKQ3pcEViab+JLiBZ/Z10snIw4rSCthzV2v8D58y/GqqDVjdSbrxBV4P4TrW
-	bHwA2L6PZfwTMu6xhtbrFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784960789; x=
-	1785047189; bh=+fEzNHdT81nG+FD6y5g3w6OiXhQitOnL0cq79oUPrH0=; b=b
-	pbAKQmcgggbwX8VKy5zNLlJ5RgexCNSbBNixh0ZN11eMNoR6qJiHZgbjV5UDf4TC
-	+TUoZotcO5GjMIPjmFfvG2h2yx5JBlAmA0X4n6kd2U5sQxzl/GVKFgN8SQFnTkNa
-	BXdHLwsrVRQphKOLaJQcD7KHuTuWO1j6m05h4Mb7ETBX2N5j9KHQyCNPv5zJhPD/
-	rRseCZcPngIirNKrPk5dIQ82GT8v5TwZvz6CDEdYGerz9wXLLUfVx0coxMCio4tP
-	kulYDcUeKCWokqmVDW4N/7RFP2wnoA8HRKx+Hn2gm2kTGp2NFNK0gv2b/ptsKk70
-	vfB6Un9BZDHEFAp7lXspg==
-X-ME-Sender: <xms:FFdkaoBsceelMrkoB7jAR7IbAFCYdYS2onj2E7HSLkU_Rgfd7pBXYA>
-    <xme:FFdkaqFx5BbuOzedQcx_SKJw5VkaZyf0vcso3YPRb0eXq6o40lIt1YYONtcJEUW7_
-    PAnD36dh2cbaa7fAsnqBWqpPZZRctUvshKVVrdT2if6bpVqA6qfQyQ>
-X-ME-Received: <xmr:FFdkav6aQj4vf-tkOSP5wPgorfb5jpmnF8QMj3KIBOGTBfn6t6A4ZNdYx7-flMjPx4rdbt8k6C7UmLAuAMgfYtwjy6A>
-X-ME-Proxy-Cause: dmFkZTE8yrcjtnQH/jhzrzda23ac5bU0bQYcxjJuKgWbVXlvRh3mIDt1sFwNj+VixV9UGv
-    ZnG3WPL/BwuSab3UyYWdofQEa69n1FU9ktgikvh0yECfeyOxzbdNN9OeaaH7MtFdUOF2YO
-    kDARzmfgJE+DlMlTiciRPcJPBIYvjrawciVgoqL1LDUNW2XLl8b/NZNNFFuX3eGJcNYN+Y
-    Tb76ZP2aEz6vlX2wyfC+eHATQP5GJBZR6G+d+tp4GeOX2YkQRkKvfQbiswI+2ZoBt666KF
-    YxGgUMUXNrIE6D2ryrjILlc6JZNgUpj3zwd6TYd+AmfDBye3FBO6RTBvYkAWsjDS02vBA7
-    49/9NgTycaQORwnHMKkaV7HstnXpeZtCq1NxsdAxgynDilbyyOD0a2wyDKmukHcCvxXMcD
-    dSaj8B5W5xCi+i0NBZ+K2YXaVHk9KqYhuwvXFeVdmBJAzPn70m85az9B2ClT7LZGmSYWeW
-    nu/Q+Hs7Cv9yYpMw8+nvylBtiofiIhWZxvFaJ+N/nHL3KASxzKNbBjUKcpsw2Xu4fzYdeI
-    ziwBDKIofA1RKg42tqIJWhuy9vfRcjMhDdBSWsIp3l1fgf/bMwRKp2FVna1ikQjvGJBJvK
-    IrKMSUaRG7YIbpNiLQE7R7e7g86xzTgrps+ZYBKcNm74PReTGPwLGBvjmV1Q
-X-ME-Proxy: <xmx:FFdkahSypMBe6riODKTib_JJgX2dM3R2HyPV6NPmlYcAc0ry1farrQ>
-    <xmx:FFdkaq5bScPKG0IpAOWFYwSlmIQP5DVc9fuS-zvApYnMEdQshaakDw>
-    <xmx:FFdkauRxN_7DBdlrfQppQmGf1l3UiLTl1fJma8V_IXx8dm69c-WEPw>
-    <xmx:FFdkavn15HBFGl2I9YFzhbuvLsyOf35Cdo1PfHyzyMUy66-RbXHw1g>
-    <xmx:FVdkahdoxsaXwRDBWTLp1u4v9O01as_SwHDOsG9hZ5jgiqpaninKazsj>
-Feedback-ID: i083147f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 25 Jul 2026 02:26:27 -0400 (EDT)
-Date: Fri, 24 Jul 2026 23:26:14 -0700
-From: Boris Burkov <boris@bur.io>
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	linux-btrfs@vger.kernel.org, Qu Wenruo <wqu@suse.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-	Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-Message-ID: <20260725062614.GA2792359@zen.localdomain>
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
- <amC-J7yzwk4Z5tHW@casper.infradead.org>
- <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
- <amICQYTK9Xu4KLtH@casper.infradead.org>
- <d948c88b-dec5-4e29-b30a-3ea368997ceb@gmx.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NHzOuIGo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QXkK/9Px96JKbHfq/UN3bBzmYtF2w6Ep+yDY5BATFc4=; b=NHzOuIGof+pE+Q7lMzP4z9Uvaq
+	W2Wx1WNA62tXxqzuUoLI5xA5nCsBqoryYhBDMwxMOIR0y9MuZYI6OVU79Cy998y5+9Z6NITu0+5wm
+	MoI0vCH4FwMy6zpPkKRNdxIGZWlfVge2jQheGsHd3bExYuXpcFWhyY7yC+Ez7YJPU2sVU9xqBM9fh
+	t+zm7rwNdTDfkxu6HeoRTdDQCL8K0Mdqi2G1xJ4Ei06pbyxuMED9g77+4G1lLnRA32pkIi9WrpJa4
+	HwrX7ouoH3cwxSLjsoFRi6Sg/scaMOAsDTRuIazlNHo3xMoepMK6gq426Zh3QKhCCpwl2YrftYkds
+	Kb/wH3ew==;
+Received: from [2001:8b0:10b:5:5b17:8d34:712e:739e] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnX6j-00000005lYS-2DkA;
+	Sat, 25 Jul 2026 07:47:41 +0000
+Message-ID: <e8e7554debef481d13265f0870e847e2fa37f7c2.camel@infradead.org>
+Subject: Re: [PATCH v6 05/36] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Sat, 25 Jul 2026 08:47:40 +0100
+In-Reply-To: <amPWX8lKXw2KS_kZ@google.com>
+References: <20260703212145.343527-1-dwmw2@infradead.org>
+	 <20260703212145.343527-6-dwmw2@infradead.org> <amPWX8lKXw2KS_kZ@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-rBtXsowMEivQPp4CPNL1"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d948c88b-dec5-4e29-b30a-3ea368997ceb@gmx.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Fri, Jul 24, 2026 at 08:10:36AM +0930, Qu Wenruo wrote:
-> 
-> 
-> 在 2026/7/23 21:30, Matthew Wilcox 写道:
-> > On Thu, Jul 23, 2026 at 10:12:27AM +0930, Qu Wenruo wrote:
-> > > 
-> > > 
-> > > 在 2026/7/22 22:27, Matthew Wilcox 写道:
-> > > > On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
-> > > > >    *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target file.
-> > > > >    *      Whenever a full clean cycle (clear_page_dirty_for_io(),
-> > > > >    *      writeback, bits cleared) completes inside thread A's
-> > > > >    *      submission->completion window, the completion-time
-> > > > >    *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_folio()
-> > > > >    *      sets only the folio flag and the xarray tag - no btrfs subpage
-> > > > >    *      dirty bit, no delalloc reservation.  See the 20-year-old comment
-> > > > >    *      above bio_set_pages_dirty() in block/bio.c describing exactly
-> > > > >    *      this ("other code (eg, flusher threads) could clean the pages").
-> > > > 
-> > > > There's your problem.  filemap_dirty_folio() documents that btrfs is
-> > > > doing it wrongly:
-> > > > 
-> > > >    * Filesystems which do not use buffer heads should call this function
-> > > >    * from their dirty_folio address space operation.  It ignores the
-> > > >    * contents of folio_get_private(), so if the filesystem marks individual
-> > > >    * blocks as dirty, the filesystem should handle that itself.
-> > > > 
-> > > > fs/btrfs/inode.c:       .dirty_folio    = filemap_dirty_folio,
-> > > > 
-> > > > so btrfs should have its own btrfs_dirty_folio() which does whatever
-> > > > metadata updates it needs to and then call filemap_dirty_folio() to
-> > > > take care of the page cache business.  See iomap_dirty_folio() as
-> > > > an example, but many other filesystems also do this.
-> > > 
-> > > Thanks a lot for the advice.
-> > > 
-> > > However it looks like the sub-folio dirty block tracking is a little
-> > > different between iomap and btrfs.
-> > 
-> > My point is not that "you should do it the exact same way as iomap".
-> > Rather "the dirty_folio op is the entry point to tell the filesystem
-> > that a folio is being dirtied".
-> And since dirty_folio() is not allowed to sleep, we should introduce some
-> extra mechanism, e.g. page private 2/checked, to notify the fs that the
-> folio is marked dirty without proper preparation.
-> 
-> Then during writeback, detect such folio and do needed preparation for it
-> since at writeback we're allowed to sleep.
-> 
-> That sounds feasible, but I haven't seen anyone doing that (including the
-> older btrfs cow fixup).
-> 
-> Will explore that path. Thanks a lot again for the dirty_folio() help.
-> 
-> Thanks,
-> Qu
 
-Here is my proposal for a candidate fix. It passes the reproducer in
-this thread as well as several more intense reproducers (alluded to but
-not yet included)
+--=-rBtXsowMEivQPp4CPNL1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-https://lore.kernel.org/linux-btrfs/6758d4f27be0bbdb865cee7dd5adc435c969f4a3.1784960646.git.boris@bur.io/T/#u
+On Fri, 2026-07-24 at 14:17 -0700, Sean Christopherson wrote:
+> On Fri, Jul 03, 2026, David Woodhouse wrote:
+> > From: Jack Allister <jalliste@amazon.com>
+> >=20
+> > In the common case (where kvm->arch.use_master_clock is true), the KVM
+> > clock is defined as a simple arithmetic function of the guest TSC, base=
+d
+> > on a reference point stored in kvm->arch.master_kernel_ns and
+> > kvm->arch.master_cycle_now.
+> >=20
+> > The existing KVM_[GS]ET_CLOCK functionality does not allow for this
+> > relationship to be precisely saved and restored by userspace. All it ca=
+n
+> > currently do is set the KVM clock at a given UTC reference time, which
+> > is necessarily imprecise.
+> >=20
+> > So on live update, the guest TSC can remain cycle accurate at precisely
+> > the same offset from the host TSC, but there is no way for userspace to
+> > restore the KVM clock accurately.
+> >=20
+> > Even on live migration to a new host, where the accuracy of the guest
+> > time-keeping is fundamentally limited by the accuracy of wallclock
+> > synchronization between the source and destination hosts, the clock jum=
+p
+> > experienced by the guest's TSC and its KVM clock should at least be
+> > *consistent*. Even when the guest TSC suffers a discontinuity, its KVM
+> > clock should still remain the *same* arithmetic function of the guest
+> > TSC, and not suffer an *additional* discontinuity.
+> >=20
+> > To allow for accurate migration of the KVM clock, add per-vCPU ioctls
+> > which save and restore the actual PV clock info in
+> > pvclock_vcpu_time_info.
+> >=20
+> > The restoration in KVM_SET_CLOCK_GUEST works by creating a new referenc=
+e
+> > point in time just as kvm_update_masterclock() does, and calculating th=
+e
+> > corresponding guest TSC value. This guest TSC value is then passed
+> > through the user-provided pvclock structure to generate the *intended*
+> > KVM clock value at that point in time, and through the *actual* KVM
+> > clock calculation. Then kvm->arch.kvmclock_offset is adjusted to
+> > eliminate the difference.
+> >=20
+> > Where kvm->arch.use_master_clock is false (because the host TSC is
+> > unreliable, or the guest TSCs are configured strangely), the KVM clock
+> > is *not* defined as a function of the guest TSC so KVM_GET_CLOCK_GUEST
+> > returns an error. In this case, as documented, userspace shall use the
+> > legacy KVM_GET_CLOCK ioctl. The loss of precision is acceptable in this
+> > case since the clocks are imprecise in this mode anyway.
+> >=20
+> > On *restoration*, if kvm->arch.use_master_clock is false, an error is
+> > returned for similar reasons and userspace shall fall back to using
+> > KVM_SET_CLOCK. This does mean that, as documented, userspace needs to
+> > use *both* KVM_GET_CLOCK_GUEST and KVM_GET_CLOCK and send both results
+> > with the migration data (unless the intent is to refuse to resume on a
+> > host with bad TSC).
+>=20
+> Please post this as a standalone mini-series.=C2=A0 AFAICT, the only depe=
+ndency of
+> any kind is a minor conflict with the s/hw_tsc_khz/hw_tsc_hz change, and =
+that's
+> trivial to sort out later on.
 
-Thanks,
-Boris
+Hm? The calculations in kvm_vcpu_ioctl_set_clock_guest() are all Hz-
+based, not kHz. This *was* the start of the series (Jack posted it on
+its own in 2024), and I thought I'd moved the khz/hz thing to live
+before it on purpose?
+
+The kvm_xen_shared_info_init() one could be later, I guess. But is also
+trivial (and its commit message sets the stage for a bunch of the
+cleanups by analysing the various *different* ways that kvmclock gets
+derived).=20
+
+I confess I'm not stunningly keen on breaking the series up. How about
+we just do it in stages? Merge patch 1 as it's fairly trivial, and then
+I can use its commit ID when I refer to its taxonomy later. Then we can
+do patches 2-6 which are the KVM_[GS]ET_CLOCK_GUEST support. And I can
+repost the remainder on top of that?
+
+> > +4.145 KVM_GET_CLOCK_GUEST
+> > +----------------------------
+> > +
+> > +:Capability: none
+>=20
+> Why not add a CAP?=C2=A0 The check in the subsequent selftest is quite gr=
+oss.
+
+Because nobody would ever use it in practice anyway. Even if the ioctl
+is present, you *still* have to try it and fall back to the old method
+because there are ways that a *guest* can force master clock mode off.
+
+--=-rBtXsowMEivQPp4CPNL1
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+NETRPWeq9/DoMPhEtzriRH0AAAAAAAA=
+
+
+--=-rBtXsowMEivQPp4CPNL1--
