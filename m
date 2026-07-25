@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECF023AE62
-	for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 00:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48C32D3727
+	for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 00:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784939726; cv=none; b=JOWG8bRtxTnOoiDrWdkCfyzfN0iAuZWKLV7Qml60FIv/aPsF7uFVW8w0qwPem5RVfGdBqLtAzgWKhft9g7/9nrOwsbnNM4VlbeOY3bmcQFL9BZ6fSA87UVAgd9VqZhLXEtH1Mw7Ytf6kSEZHxKOnda2UPKxl4RAX4M+P5+ty6yw=
+	t=1784939726; cv=none; b=eJ1ESnX0DH+U6PSGZRDLmJFuXPC3nKCV5XbEXWRE428TJEBIFfCS2WIihIaQnf27aOOr4rotR+BjganN2lKVLZHqmXXmoUBeR24BIBMe7kSOIsJOpr/QTtBfz/5YN/o1or8L/xfqDx8HlCDA4Em1o0roOZrgiyusDqktpQLPK/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784939726; c=relaxed/simple;
-	bh=pl4nw30+YLe817A0jeg0uBIG+NmB5/hCOFHbj0FwjGo=;
+	bh=i8QQiEPepJGoxdvThp35XL1j3m4P0DuqwhLUBbtFpls=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hlvyUSh8HZJ+dz6H8YH6fqqZpIBEhFVE0oS2q6foKJqcSscisNQnP5iApgbhsfyQo5vD7jOaeCY31tElKaGmChKtsa6Iss+wnIqtvlxFSaWXn6DktFTaz6wJslhDtlgS3A4PBvIL2hXLkN3CSLXHx8FnQJ3o18UMWzCO7fY5tvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZA8Iaql; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=PY8/PpS27f/QReRdt2qAd+D0gEjHoH0nmJ+ApSzjMe54XaIXwAIVVFZAuVCuPdCd6QPqpcqZAV6uRNox2TXrsoCZRR0OZfKQpp8TQkTIoXPlkPsgP9aQ+XmQ/yo/CuHjTGe8aUxBJldvpbTmU3sdcyjewGEGLsUgaVCvs/wuBOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQOChG3h; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZA8Iaql"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EFF1F000E9;
-	Sat, 25 Jul 2026 00:35:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQOChG3h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A10B1F00A3A;
+	Sat, 25 Jul 2026 00:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784939724;
-	bh=gMfWSHB693nhsnz3AUr/zIbkz3FBDU65oiFD+Fd4sjE=;
+	s=k20260515; t=1784939725;
+	bh=FTK+uZcWZX/9pv0uc8wIwkhEFtHI2noOObn/xJ11HQk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oZA8IaqlqGO5Nbd3di7pOpxkpIC9RMgWbVACotzkA5rdVPs0fXVn+OTsSmXWbzQBz
-	 vfeKS55NiQT7THEcmAwIn2A/f8XiGyPCk5o4/zbwFbid3NjpIFlIN2CuJw9LeEs07X
-	 o4PYBgNn4JMqQa6z8dkdpmKlz8KP3YPDJGzw0T20Q0ebLcGjF6j71OxHj6Q1vnTnBa
-	 tbIP5YSVfHqliCA13W4NJ8ypWe4sc3k67kuRNS17JYW/rNnad4uIGNCT5x81wZRS7a
-	 SbLjNQS8cN9UgTLrUFXTV1WPNagSVeawi91DZGRFvMSavGvqdthA+p6/lBTKFaOe4n
-	 KIJ/VufS9PmaQ==
+	b=aQOChG3hRR8284BEalxF8ipa/p1GrOCshqcvEkzoySJm8w66Lpw5sWezFZhy70iy/
+	 tP+JlwQBspTQZ7DfS5UgroUV7rFwga+yVdieqWzTRqwiTEt62la+7fD5B3Voun+Agz
+	 sUZyJKA19+kt2iS74/T4gOeWxCo1aRk3bsQlS+S/f4tbD7Nf6u5KVJa9G4rfJZBO+R
+	 i5VKIkZZrPx6tDvUcfg6x+2f2r3n6WaCTDKVMRRfq+nfO2mTSk85prjhsPxa9z95sv
+	 gc7zq6dgtwMBTHCkIpDsHbvrXkgbN+2QiLxTE/h96CKGd4DpAfNoi163y3UVfiSM36
+	 dTY1RcxdYL34w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 03/11] x86/virt/tdx: Add
- tdx_alloc/free_control_page() helpers
+Subject: Re: [PATCH v8 06/11] KVM: TDX: Allocate PAMT memory for TD and vCPU
+ control structures
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Rick Edgecombe" <rick.p.edgecombe@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260725002302.3337017-4-rick.p.edgecombe@intel.com>
+In-Reply-To: <20260725002302.3337017-7-rick.p.edgecombe@intel.com>
 References: <20260725002302.3337017-1-rick.p.edgecombe@intel.com>
- <20260725002302.3337017-4-rick.p.edgecombe@intel.com>
+ <20260725002302.3337017-7-rick.p.edgecombe@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Sat, 25 Jul 2026 00:35:24 +0000
-Message-Id: <20260725003524.91EFF1F000E9@smtp.kernel.org>
+Message-Id: <20260725003525.5A10B1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,106 +47,70 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] Missing PAMT refcounting per 2MB region causes sequential control =
-page allocations to fail, breaking TDX VM creation.
+
+Pre-existing issues:
+- [High] Acquiring `cpus_read_lock()` after holding `kvm->lock` and `kvm->s=
+lots_lock` creates an ABBA deadlock risk.
 --
 
---- Patch [3]: [PATCH v8 03/11] x86/virt/tdx: Add tdx_alloc/free_control_pa=
-ge() helpers ---
-commit faccfee65087eb8fde3e33bcf0d4f16f5bd1d870
+--- Patch [6]: [PATCH v8 06/11] KVM: TDX: Allocate PAMT memory for TD and v=
+CPU control structures ---
+commit 777b107da8496af75d46b0c5bfc966aabe90a027
 Author: Kiryl Shutsemau <kas@kernel.org>
-Subject: x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
 
-Adds helpers to allocate and free control/S-EPT pages handed to the TDX
-module, and handles Dynamic PAMT adjustments for these 4KB pages.
+KVM: TDX: Allocate PAMT memory for TD and vCPU control structures
 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+This commit replaces raw page allocation and free functions with TDX control
+page helpers for TD and vCPU control structures. This allows the operations
+to properly handle Dynamic PAMT backing.
+
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index d1af0a752e97e..528ebb3cb0389 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
 
 [ ... ]
 
-> +/* Allocate PAMT memory for the given page */
-> +static int tdx_pamt_get(kvm_pfn_t pfn)
-> +{
-> +	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
-> +	u64 tdx_status;
-> +	int ret;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return 0;
-> +
-> +	ret =3D alloc_pamt_array(pamt_pages);
-> +	if (ret)
-> +		return ret;
-> +
-> +	tdx_status =3D tdh_phymem_pamt_add(pfn, pamt_pages);
-> +	if (tdx_status !=3D TDX_SUCCESS) {
-> +		ret =3D -EIO;
-> +		goto out_free;
-> +	}
+> @@ -2472,7 +2472,7 @@ static int __tdx_td_init(struct kvm *kvm, struct td=
+_params *td_params,
+>  		goto free_tdr;
+> =20
+>  	for (i =3D 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+> -		tdcs_pages[i] =3D alloc_page(GFP_KERNEL_ACCOUNT);
+> +		tdcs_pages[i] =3D tdx_alloc_control_page();
+>  		if (!tdcs_pages[i])
+>  			goto free_tdcs;
+>  	}
 
 [Severity: High]
-Will sequential allocations in the same 2MB region fail here?
+This is a pre-existing issue, but does taking cpus_read_lock() inside this
+function create an ABBA deadlock risk?
 
-When allocating multiple control pages sequentially, the buddy allocator
-often returns pages in the same 2MB physical region. Since the TDX module
-tracks Dynamic PAMT at a 2MB granularity, the first allocation will
-successfully add the PAMT, but the second allocation will attempt to add
-it again in tdx_pamt_get() in arch/x86/virt/vmx/tdx/tdx.c.
+Looking at __tdx_td_init(), just a few lines below this allocation loop, the
+code calls cpus_read_lock():
 
-Because there is no refcounting to check if the 2MB region already has
-PAMT added, tdh_phymem_pamt_add() will return an error on the second page,
-causing the control page allocation to fail and breaking TDX VM creation.
+	for (i =3D 0; i < kvm_tdx->td.tdcs_nr_pages; i++) {
+		tdcs_pages[i] =3D tdx_alloc_control_page();
+		if (!tdcs_pages[i])
+			goto free_tdcs;
+	}
 
-The commit message mentions leaving concurrency issues for future
-changes, but could this break even single-threaded sequential allocations?
+	if (!zalloc_cpumask_var(&packages, GFP_KERNEL))
+		goto free_tdcs;
 
-> +
-> +	return 0;
-> +
-> +out_free:
-> +	free_pamt_array(pamt_pages);
-> +
-> +	return ret;
-> +}
-> +
-> +/* Free PAMT memory for the given page */
-> +static void tdx_pamt_put(kvm_pfn_t pfn)
-> +{
-> +	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] =3D {};
-> +	u64 tdx_status;
-> +
-> +	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-> +		return;
-> +
-> +	tdx_status =3D tdh_phymem_pamt_remove(pfn, pamt_pages);
-> +
-> +	/*
-> +	 * Don't free pamt_pages as it could hold garbage when
-> +	 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-> +	 * there is no risk of data corruption, but do yell loudly as
-> +	 * failure indicates a kernel bug, memory is being leaked, and
-> +	 * the dangling PAMT entry may cause future operations to fail.
-> +	 */
-> +	if (WARN_ON_ONCE(tdx_status !=3D TDX_SUCCESS))
-> +		return;
+	cpus_read_lock();
 
-[Severity: High]
-Is it safe to unconditionally remove the PAMT for a 2MB region in
-tdx_pamt_put()?
+This function is reached via a KVM_TDX_INIT_VM ioctl, which triggers
+tdx_vm_ioctl(). That ioctl handler acquires the VM state locks using
+CLASS(tdx_vm_state_guard, guard)(kvm) before calling __tdx_td_init().
 
-Similar to the allocation side, if multiple 4KB pages from the same
-2MB region are in use by the TDX module, freeing just one of them will
-call tdh_phymem_pamt_remove() unconditionally.
+Is it safe to acquire cpus_read_lock() while kvm->lock and kvm->slots_lock
+are already held, or does this violate the KVM locking hierarchy where
+cpus_read_lock() should be the outermost lock to prevent deadlocks against
+CPU hotplug operations?
 
-This removes the PAMT for the entire 2MB region while other pages might
-still be relying on it.
-
-> +
-> +	free_pamt_array(pamt_pages);
-> +}
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260725002302.3337=
-017-1-rick.p.edgecombe@intel.com?part=3D3
+017-1-rick.p.edgecombe@intel.com?part=3D6
