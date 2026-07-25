@@ -1,380 +1,224 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970924908B1;
-	Sat, 25 Jul 2026 10:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66402379C43;
+	Sat, 25 Jul 2026 11:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784976934; cv=none; b=aX2k0OP2IjNSI2nSXJ1UCFd+6fC904t0y82SWuN45m2sHA/REv3LU2l3aOtJ5j/5EJz8OEI4bUWO+ennZStOMArkO0LjB0yuBfg/FhwUq9D9NQew64RcnJZuVW6Nv0k26wMjwjo5s2ZWfXiJgjWBhXB/3zu3gJfTvV+Ck2DO0kE=
+	t=1784978525; cv=none; b=D43oJNYiUnVgJf5Jrcd4UV5hBmNjf+4gUl/TS3bvl8OSRbo8ByrwTGVK3arNHdKIv0/HvM/ba215RDUM4gGJb+WRYvPzPVnU8pfwFLhU48ozFiBim9WVbHSk/VP7VWvh8IDsAADYWZIyxi7M61hUPbO7O+BQEflegnZ2HvQ2YIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784976934; c=relaxed/simple;
-	bh=D26oi3f/PENUvQVwKnp8I0Rv5V3lL1BEy8AMDXaeIyM=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rPruzeVQ3ZuM/o0spZjok0+q7U5bwjHn3ZeohIQx3SqZ8ACH9ZZOkKy6jcGiJUnqh1iTXk1UBgk5DSVo/HEdozwhfCDF6cHbM2dreilFNdoegH8YOuiq330CWImRYs+Nm9+Xw+tT4vVobpjHqk0UMOu7p4KUrLUpa6LlPRDzqpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlaGZ0u8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784978525; c=relaxed/simple;
+	bh=5apGCNr6xg4UvUdmHVWYhCgOTPgzd0UlrUWtHwQKonY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aI0f2x2eqyqFTqPnRUFtIHO9CIvbMZK1ie2lcnyRrY7UL8v5ZK4m5L1V5CvMNWSpbzdv+9KKsM/DbtCZAfZDfK6WqfUcZ2ZRF1UeA4XVkYLDRQOe+RXt06uSSYqtOYGlW70VFPn2NqwetXHWiRiB3cUCgi5ag3KGJ8Do32weqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RKrtspra; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlaGZ0u8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5011F000E9;
-	Sat, 25 Jul 2026 10:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784976933;
-	bh=WT1zS4IkkV1ijgz/+8b1+SlrW2TMfyxdIz/8ijsRm9o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KlaGZ0u89b/QfBpNORtzDvU5HO20q22lYAUfdROITHbWIIVEYFq41JJAg/dwm59ua
-	 0zq6n9bOHmyf96LTHgBgUE9EBo5BO4U/ANEZS3tiI5YO5mwKnaoF+UshdoJTbeVDO8
-	 /6+9v+rKz7Mc0jjUq6fwK0h0DZzAEQMFXBajsAzx5emPkEHPfLKQGMCK4S9eCVTm0X
-	 XotJ7/zYw+GNQ3U+lYzjVXR1VYNme0ZPi1W1q/eEW+EptzsNYFP2qmMFnYg727/loY
-	 /LHC9dhfRe1UYNLfNa6L/8v9ANjsg/onW+8G9LCfqIqiuMLnjq/M3NJGn0djhNQCvV
-	 CNBGuN3vyb8OQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wna2U-00000008ji7-3GYw;
-	Sat, 25 Jul 2026 10:55:30 +0000
-Date: Sat, 25 Jul 2026 11:56:54 +0100
-Message-ID: <87y0ezpcax.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>,
-	"fuad.tabba@linux.dev"
-	<fuad.tabba@linux.dev>
-Subject: Re: [PATCH v4 08/48] KVM: arm64: gic-v5: Add VPE doorbell domain
-In-Reply-To: <20260724104819.1296803-9-sascha.bischoff@arm.com>
-References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
-	<20260724104819.1296803-9-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RKrtspra"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66PB5pTV400905;
+	Sat, 25 Jul 2026 11:22:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=AUtaFW
+	kaoob0mqvHh/spX4F/r/hTOOhRTaekiDehmfM=; b=RKrtspraJ8YUIbSPPTHfA6
+	V/M2idMwSttHXvGdSF4vcpGkpkcNRQ+KR7uOMn/81IBfS4U6PfK9USQ6AWnViXBX
+	s8oWfE1ZGfBxMhzN5sg1uF6Zi+kTBriuRv2/Qp6BPPp9yr6aqnGds9UCpsho1VUk
+	+tME4VASOABBL8xMxPJhd98mJ+CzgHQMcAL04l/Dyzg5bPkyZWrc9P/MwUtimfVp
+	4rk4UUI8kYLHsrfDRdHJb3XvGVI/q9hO829VR70sBZBBODuEEWuqkh5eMv5tdXpp
+	Eb4k8QdGneM0dwcTpoTO/Infq52H42aQfrYuKFZdpaHH+Ef8oxJIKqxEnCP/G88A
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyhr0xs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 11:22:02 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66PBBFVk008860;
+	Sat, 25 Jul 2026 11:22:02 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fmn12h452-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 25 Jul 2026 11:22:02 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66PBM0dS38732132
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 25 Jul 2026 11:22:01 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE9FC58055;
+	Sat, 25 Jul 2026 11:22:00 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA44A5804B;
+	Sat, 25 Jul 2026 11:21:59 +0000 (GMT)
+Received: from [9.61.19.212] (unknown [9.61.19.212])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 25 Jul 2026 11:21:59 +0000 (GMT)
+Message-ID: <51955778-de09-4d1d-88d3-23d067b9f051@linux.ibm.com>
+Date: Sat, 25 Jul 2026 07:21:59 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com, fuad.tabba@linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/8] s390/vfio_ccw: implement a crw lock
+To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        stable@vger.kernel.org, Farhan Ali <alifm@linux.ibm.com>
+References: <20260723174751.1180334-1-farman@linux.ibm.com>
+ <20260723174751.1180334-9-farman@linux.ibm.com>
+ <bebb434e-4923-4e39-b754-72d608a457a0@linux.ibm.com>
+Content-Language: en-US
+From: Eric Farman <farman@linux.ibm.com>
+Autocrypt: addr=farman@linux.ibm.com; keydata=
+ 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
+ y8m0x6unNti2MZIUMy0m2gcE
+In-Reply-To: <bebb434e-4923-4e39-b754-72d608a457a0@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI1MDEwNiBTYWx0ZWRfXxWZrPKOy3zN/
+ tSyv5nsUXj/ATcZPS+JkhqTxCYR+4KtdJK09MC85Jpm1lz+/aAj4cpFhTy2iHhHNkTqb7RUpgji
+ 9HpFg/2K7ugewrLMlKwHtWxk0zP/b5U=
+X-Proofpoint-GUID: DeWSjaMXnJzELSIqpWCWrlwXhtOoscow
+X-Proofpoint-ORIG-GUID: DeWSjaMXnJzELSIqpWCWrlwXhtOoscow
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI1MDEwNiBTYWx0ZWRfXxKUBZLcvlsYg
+ H8r6JMm+vKvUdmcQzZZ1qVENmJ26Xik+XXDz3jWZFGbmfq3YAVlb7EEFo3PV/zKGSaw+YVwLSNh
+ B7WzZHKjOH3RCYyVVCpe5VDzayvIhhpl61y66wFPBnFMiPRSo4x7ojqZ4SkffwFJpl3DKEM/lpJ
+ /kqZQ9HsYPEZ0HV/zL640nj5HpJo24ytxQkeHrUXsFK/m5mSV88OFy14QflKBcN1/u4zmi4vbVL
+ YgXsq+qJjAvm+e1LVwQCUS/M3nd1uCfo0dY4GyDERGNZtdGy2yUlpv1vxZKT07og5rN4c5kE+eg
+ L/6RxI8dYBCQJyoN/tuXyKlIVkgJayoLt0GvUubmXRP+kwD8nB2L/OH8kMVXp1IiHJYFUbR1ayy
+ 2/LhhAyKByFbuixVk3h0MVOfyqBR0K26B+AtEkW/tInFc1DUEOQpDcWyowgpm2t56BV8O4kC7S2
+ t5rz+q2TIv/PMReY/lQ==
+X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a649c5a cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=M55gZVjYqC4F6Pnyi9kA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-25_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607250106
 
-On Fri, 24 Jul 2026 11:50:28 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+
+
+On 7/24/26 4:44 PM, Matthew Rosato wrote:
+> On 7/23/26 1:47 PM, Eric Farman wrote:
+>> Unlike the channel_program struct, which covers synchronous I/O
+>> submissions and asynchronous interrupts, the CRW region relies
+>> exclusively on asynchronous events coming from hardware.
+>>
+>> Implement a lock to manage the list of those payloads, to ensure
+>> they are read cohesively.
+>>
+>> Fixes: 3f02cb2fd9d2 ("vfio-ccw: Wire up the CRW irq and CRW region")
+>> Cc: stable@vger.kernel.org
+>> Cc: Farhan Ali <alifm@linux.ibm.com>
+>> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+>> ---
+>>   drivers/s390/cio/vfio_ccw_chp.c     | 17 +++++++++++------
+>>   drivers/s390/cio/vfio_ccw_drv.c     |  4 ++++
+>>   drivers/s390/cio/vfio_ccw_ops.c     |  3 +++
+>>   drivers/s390/cio/vfio_ccw_private.h |  2 ++
+>>   4 files changed, 20 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/s390/cio/vfio_ccw_chp.c b/drivers/s390/cio/vfio_ccw_chp.c
+>> index bf678270c457..3d05aaf790fa 100644
+>> --- a/drivers/s390/cio/vfio_ccw_chp.c
+>> +++ b/drivers/s390/cio/vfio_ccw_chp.c
+>> @@ -93,15 +93,19 @@ static ssize_t vfio_ccw_crw_region_read(struct vfio_ccw_private *private,
+>>   	if (pos + count > sizeof(*region))
+>>   		return -EINVAL;
+>>   
+>> +	mutex_lock(&private->io_mutex);
+>> +	i = array_index_nospec(i, private->num_regions);
 > 
-> VPE doorbells allow the GICv5 hardware to notify KVM when an SPI or LPI
-> can be signalled to a non-resident VPE. This provides the mechanism used
-> to wake blocked vcpus once the hardware determines that the interrupt is
-> eligible to be delivered.
+> Same comment as patch 6 wrt to array_index_nospec
 > 
-> Add support for a per-VM VPE doorbell irq domain. The domain is created
-> under the GICv5 LPI domain, with one doorbell allocated per VPE. Store
-> the allocated doorbell base in the VM's GICv5 state so that later
-> patches can request per-vcpu doorbell IRQs and use them for IRS
-> commands and wakeups.
+> ...
 > 
-> Add the per-VPE doorbell state to the GICv5 CPU interface state. The
-> doorbell IRQ number is populated when the IRQs are requested, and the
-> db_fired state is used by later patches once doorbell delivery is wired
-> up.
+>> index ac5aaa78a74b..2562679b5ef5 100644
+>> --- a/drivers/s390/cio/vfio_ccw_private.h
+>> +++ b/drivers/s390/cio/vfio_ccw_private.h
+>> @@ -121,6 +121,8 @@ struct vfio_ccw_private {
+>>   
+>>   	struct irb		irb;
+>>   	union scsw		scsw;
+>> +
+>> +	spinlock_t		crw_lock;
 > 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-init.c    |  18 ++--
->  arch/arm64/kvm/vgic/vgic-v5.c      | 139 +++++++++++++++++++++++++++++
->  arch/arm64/kvm/vgic/vgic.h         |   1 +
->  include/kvm/arm_vgic.h             |   4 +
->  include/linux/irqchip/arm-gic-v5.h |   2 +
->  5 files changed, 158 insertions(+), 6 deletions(-)
+> This should have a comment either here or, in keeping with the rest of
+> the struct, in the comment block above.
+
+Thanks, missed that. The crw field itself was never added to the comment 
+block, so I'll add that as well.
+
+Similarly, I didn't add definitions for the new fields in struct 
+channel_program earlier in this series, so I've gone back and done those.
+
 > 
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index 907057881b26a..625d352756fcf 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -492,16 +492,22 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
->  	dist->nr_spis = 0;
->  	dist->vgic_dist_base = VGIC_ADDR_UNDEF;
->  
-> -	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
-> +	switch (dist->vgic_model) {
-> +	case KVM_DEV_TYPE_ARM_VGIC_V2:
-> +		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
-> +		break;
-> +	case KVM_DEV_TYPE_ARM_VGIC_V3:
->  		list_for_each_entry_safe(rdreg, next, &dist->rd_regions, list)
->  			vgic_v3_free_redist_region(kvm, rdreg);
->  		INIT_LIST_HEAD(&dist->rd_regions);
-> -	} else {
-> -		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
-> -	}
->  
-> -	if (vgic_supports_direct_irqs(kvm))
-> -		vgic_v4_teardown(kvm);
-> +		if (vgic_supports_direct_irqs(kvm))
-> +			vgic_v4_teardown(kvm);
-> +		break;
-> +	case KVM_DEV_TYPE_ARM_VGIC_V5:
-> +		vgic_v5_teardown(kvm);
-> +		break;
-> +	}
->  
->  	xa_destroy(&dist->lpi_xa);
->  }
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 3f7b132110114..ebd7c3ede975f 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -7,6 +7,7 @@
->  
->  #include <linux/bitops.h>
->  #include <linux/irqchip/arm-vgic-info.h>
-> +#include <linux/irqdomain.h>
->  
->  #include "vgic.h"
->  
-> @@ -152,6 +153,134 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	return 0;
->  }
->  
-> +/*
-> + * This set of irq_chip functions is specific for doorbells.
-> + */
-> +static const struct irq_chip vgic_v5_db_irq_chip = {
-> +	.name = "GICv5-DB",
-> +	.irq_mask = irq_chip_mask_parent,
-> +	.irq_unmask = irq_chip_unmask_parent,
-> +	.irq_eoi = irq_chip_eoi_parent,
-> +	.irq_set_affinity = irq_chip_set_affinity_parent,
-> +	.irq_get_irqchip_state = irq_chip_get_parent_state,
-> +	.irq_set_irqchip_state = irq_chip_set_parent_state,
-> +	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE |
-> +		 IRQCHIP_MASK_ON_SUSPEND,
-> +};
-> +
-> +static void vgic_v5_irq_db_domain_free(struct irq_domain *domain,
-> +				       unsigned int virq, unsigned int nr_irqs)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr_irqs; i++) {
-> +		struct irq_data *d = irq_domain_get_irq_data(domain, virq + i);
-> +
-> +		irq_set_handler(virq + i, NULL);
-> +		irq_domain_reset_irq_data(d);
-> +	}
-> +
-> +	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-> +}
-> +
-> +static int vgic_v5_irq_db_domain_alloc(struct irq_domain *domain,
-> +				       unsigned int virq, unsigned int nr_irqs,
-> +				       void *arg)
-> +{
-> +	const struct irq_chip *chip = &vgic_v5_db_irq_chip;
-> +	struct vgic_v5_vm *vm = arg;
-> +	struct irq_data *irqd;
-> +	int ret;
-> +
-> +	if (!vm) {
-> +		kvm_err("invalid parameter for doorbell irq allocation\n");
-> +		return -EINVAL;
-> +	}
+> This looks good if you're trying to protect private->crw list, I don't
+> think it's complete if you're also trying to protect
+> private->crw_trigger - it looks to me like you hold the new lock over
+> most accesses to crw_trigger but at least not vfio_ccw_mdev_set_irqs
+> where you set/clear it.
 
-How can this happen?
+I suspect you're right that crw_trigger needs some love and be moved 
+under this umbrella, but I'm drawing the line at private->crw for the now.
 
-> +
-> +	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for (int i = 0; i < nr_irqs; i++) {
-> +		irq_domain_set_hwirq_and_chip(domain, virq + i, i, chip,
-> +					      domain->host_data);
-> +		irqd = irq_desc_get_irq_data(irq_to_desc(virq + i));
-> +		irqd_set_single_target(irqd);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops vgic_v5_irq_db_domain_ops = {
-> +	.alloc = vgic_v5_irq_db_domain_alloc,
-> +	.free = vgic_v5_irq_db_domain_free,
-> +};
-> +
-> +static int vgic_v5_create_per_vm_domain(struct kvm *kvm)
-> +{
-> +	struct vgic_v5_vm *vm = &kvm->arch.vgic.gicv5_vm;
-> +	int nr_vcpus = atomic_read(&kvm->online_vcpus);
-> +	int id = task_pid_nr(current);
-> +	int ret, db_virq = 0;
-> +
-> +	if (!gicv5_global_data.lpi_domain) {
-> +		kvm_err("LPI domain uninitialized, can't set up KVM Doorbells\n");
-> +		return -ENODEV;
-> +	}
+> 
+> 
+>>   	struct list_head	crw;
+>>   
+>>   	struct eventfd_ctx	*io_trigger;
+> 
 
-Surely we should fail KVM's initialisation if we don't have the LPI
-domain, rather than checking this at the point of creating the
-doorbells. I can't imagine how we'd run on GICv5 without LPIs
-anyway...
-
-> +
-> +	vm->fwnode = irq_domain_alloc_named_id_fwnode("GICv5-vpe-db", id);
-> +	if (!vm->fwnode)
-> +		return -ENOMEM;
-> +
-> +	/*
-> +	 * KVM per-VM VPE DB domain; child of LPI domain; only ever handles
-> +	 * doorbells. We know how many doorbells we have, and therefore we
-> +	 * create a linear domain.
-
-The linear domain thing is an irqdomain implementation detail. We
-don't need to capture this here.
-
-> +	 */
-> +	vm->domain = irq_domain_create_hierarchy(gicv5_global_data.lpi_domain,
-> +						 0, nr_vcpus, vm->fwnode,
-> +						 &vgic_v5_irq_db_domain_ops, vm);
-> +	if (!vm->domain) {
-> +		ret = -ENOMEM;
-> +		goto err;
-> +	}
-> +
-> +	db_virq = irq_domain_alloc_irqs(vm->domain, nr_vcpus, NUMA_NO_NODE, vm);
-> +	if (db_virq <= 0) {
-> +		ret = db_virq;
-> +		goto err;
-> +	}
-> +
-> +	kvm->arch.vgic.gicv5_vm.vpe_db_base = db_virq;
-> +
-> +	return 0;
-> +
-> +err:
-> +	if (db_virq > 0)
-> +		irq_domain_free_irqs(db_virq, nr_vcpus);
-> +	if (vm->domain)
-> +		irq_domain_remove(vm->domain);
-> +	if (vm->fwnode)
-> +		irq_domain_free_fwnode(vm->fwnode);
-> +
-> +	kvm->arch.vgic.gicv5_vm.vpe_db_base = 0;
-> +	vm->domain = NULL;
-> +	vm->fwnode = NULL;
-> +
-> +	return ret;
-> +}
-> +
-> +static void vgic_v5_teardown_per_vm_domain(struct vgic_v5_vm *vm)
-> +{
-> +	if (!vm->domain)
-> +		return;
-> +
-> +	irq_domain_remove(vm->domain);
-> +	irq_domain_free_fwnode(vm->fwnode);
-> +	vm->domain = NULL;
-> +	vm->fwnode = NULL;
-> +}
-> +
->  void vgic_v5_reset(struct kvm_vcpu *vcpu)
->  {
->  	/*
-> @@ -167,10 +296,16 @@ void vgic_v5_reset(struct kvm_vcpu *vcpu)
->  	vcpu->arch.vgic_cpu.num_pri_bits = 5;
->  }
->  
-> +void vgic_v5_teardown(struct kvm *kvm)
-> +{
-> +	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> +}
-
-Since this is a global symbol, I'd like to make sure this is never
-called concurrently with anything related. Could you please add
-
-	lockdep_assert_held(&kvm->arch.config_lock);
-
-here?
-
-> +
->  int vgic_v5_init(struct kvm *kvm)
->  {
->  	struct kvm_vcpu *vcpu;
->  	unsigned long idx;
-> +	int ret;
-
-and here?
-
->  
->  	if (vgic_initialized(kvm))
->  		return 0;
-> @@ -182,6 +317,10 @@ int vgic_v5_init(struct kvm *kvm)
->  		}
->  	}
->  
-> +	ret = vgic_v5_create_per_vm_domain(kvm);
-> +	if (ret)
-> +		return ret;
-> +
->  	/* We only allow userspace to drive the SW_PPI, if it is implemented. */
->  	bitmap_zero(kvm->arch.vgic.gicv5_vm.userspace_ppis,
->  		    VGIC_V5_NR_PRIVATE_IRQS);
-> diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-> index f45f7e3ec4d6e..f2f5fdc3211d7 100644
-> --- a/arch/arm64/kvm/vgic/vgic.h
-> +++ b/arch/arm64/kvm/vgic/vgic.h
-> @@ -366,6 +366,7 @@ void vgic_debug_destroy(struct kvm *kvm);
->  int vgic_v5_probe(const struct gic_kvm_info *info);
->  void vgic_v5_reset(struct kvm_vcpu *vcpu);
->  int vgic_v5_init(struct kvm *kvm);
-> +void vgic_v5_teardown(struct kvm *kvm);
->  int vgic_v5_map_resources(struct kvm *kvm);
->  void vgic_v5_set_ppi_ops(struct kvm_vcpu *vcpu, u32 vintid);
->  bool vgic_v5_has_pending_ppi(struct kvm_vcpu *vcpu);
-> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-> index 8d65a18fefb80..bff2b7c896d55 100644
-> --- a/include/kvm/arm_vgic.h
-> +++ b/include/kvm/arm_vgic.h
-> @@ -392,6 +392,10 @@ struct vgic_v5_vm {
->  	 * convenient way to do that).
->  	 */
->  	DECLARE_BITMAP(vgic_ppi_hmr, VGIC_V5_NR_PRIVATE_IRQS);
-> +
-> +	struct fwnode_handle	*fwnode;
-> +	struct irq_domain	*domain;
-> +	int			vpe_db_base;
->  };
->  
->  struct vgic_dist {
-> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm-gic-v5.h
-> index 83cfcd056b250..21c8a69f99bb6 100644
-> --- a/include/linux/irqchip/arm-gic-v5.h
-> +++ b/include/linux/irqchip/arm-gic-v5.h
-> @@ -613,6 +613,8 @@ void gicv5_irs_syncr(void);
->  
->  /* Embedded in kvm.arch */
->  struct gicv5_vpe {
-> +	int			db;
-> +	bool			db_fired;
->  	bool			resident;
->  };
-
-Thanks,
-
-	M.
-
--- 
-Jazz isn't dead. It just smells funny.
