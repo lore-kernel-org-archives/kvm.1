@@ -1,233 +1,189 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C09A31E821;
-	Sat, 25 Jul 2026 07:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6824136B928
+	for <kvm@vger.kernel.org>; Sat, 25 Jul 2026 08:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784966368; cv=none; b=FMVRdHTY3B0gKFSgptNpxuAv2P8v9p34WxJvdw4tXCQ5YZYDxfoRfWdvHi4GUddy3uI50EhIM3siUUR1At7r5dlS7lQImCJnz5V5ZAyr/TQ42Zv9LyGYCNg/SsHqmV2KsgP4Bl8jb+f8XZNu2hKGgDZp55uH5TKGPE9YFQ8txbs=
+	t=1784966568; cv=none; b=GUT4sZmRxU8tNrcanbnHeOopA5oucgGu1/+7mfaKBd3R1aTCBdgq0OFzg2ulTpYtXlvylp0ttZJ/PuKRm1uTQfa0K5mN7vztQoF1qhNzM5Q8g92TYYTirA4WsijJlZY3OtT68zIqa8rT0bTNmhCxUB2zaw6yEvXj55GIf3sD5ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784966368; c=relaxed/simple;
-	bh=ubwGHzF+gLZmS0neyhJq/vKK+Ra9a+3YJzKRKCUlEMI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jbUNQzGs4c7EG9QEq3xsT7TirsIPZNqEcKcuMW9CwWi1ZCL+nqMoH+zLU9N2kAmoDDFBw0NYN8S0Csz4dAKbtnakWE+ObhhponnKoTuIqCUuCciCZsQxZkS2G5f1JA7gOHRIUh0xCz8RU6ECx5SwWYli/+wEW/3RJ7bmNpwX644=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Yp4SEYJu; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1784966568; c=relaxed/simple;
+	bh=zx74btcFYXVZwC7ignGvcn2p4eiPQL9ccC8MOGndyG0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OWuYvN+ngYG2knPxIR7eSV+G+iA0B+HSN4Vzs4ckEBl9yqIherE5ePB8QjQ7vfGp6p2t8zZM6d/DhwbCqnckcpf/WjmEM6YJNc7LH60hcqUsbz7STmdjmfv0/ZRxGW+oQ6pjA4dNcrh+NytOZr6fQZypj/dDEpabAdCtg+U0JD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LCermjLP; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Yp4SEYJu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KVS+cBKDEZ+wwitTdlfGoa4B397OdlVymNENj5yyKtc=; b=Yp4SEYJumtDtSNIfr+5CsWf+FC
-	N9wIoiptsLGzg13WofG8ABkX2Jqas1ohSmGfldyeeGE2x3xVTvJ7NzwdTaJtQ00hTAlmwwpy8FRX1
-	zw9XHfbJRAtQV8OnN/LaMz2NxaJpObMFUa6oB7RGV1uGlmZcJI/+YZu3dDscnwVzZnqiykR/+zu04
-	AZO3bETZgJhle6vjl2a1uoskiv5yERmbjvKaj/b5qELnrR/Sc8AlWGcrrUPByizXoz0zKwB277fPL
-	Lvb/O1webdd/Zay5GtLfNhPgECMyL+edGMB89QMEHr3MO4erM//ezMW7tWEVnyyuCM0pBjAMhd7Nk
-	bQDG8J5A==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnXHu-00000005maH-3WEH;
-	Sat, 25 Jul 2026 07:59:15 +0000
-Message-ID: <06561667eee52c40ef4587fcc11f6bf964ce40bf.camel@infradead.org>
-Subject: Re: [PATCH v6 08/36] KVM: x86: Activate master clock immediately on
- vCPU creation
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
- <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
- Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
- Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
- Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
- Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Date: Sat, 25 Jul 2026 08:59:13 +0100
-In-Reply-To: <amPW1eAPpUuxLoj_@google.com>
-References: <20260703212145.343527-1-dwmw2@infradead.org>
-	 <20260703212145.343527-9-dwmw2@infradead.org> <amPW1eAPpUuxLoj_@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-CgYaxXwPNfSHyCXn6DUp"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LCermjLP"
+X-Forwarded-Encrypted: i=1; AHgh+RoUjFw5QWCz5X5w2smhgcKRoIeylhorNauSNyUmMCzoM/CMUA/072u2wJ+DezF/VP5GfdQ=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1784966564;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qwee9KUj78E7wvIWOD1dfBhb3BCPCtR9hPhrKxdDkcI=;
+	b=LCermjLP8omnNzvv/x4cQW+SQKZewXJCDe+eOfDcUvqYa92/w4DZED8STqiWbS/jrOy+Io
+	SK9+IarIR+ZTraFXCG0PDW6vnMfwRUuKSUxwMJUm/sRNLknnKtw9aKlBP0d1HW0nTCifNI
+	LT2jUv3kaAMji9jhkfejJC0r164wTb4=
+X-Gm-Message-State: AOJu0YxSiFLMh4tn9HqO9SRihr72HEvJLhTvW77Rl1tjD8gFVTT3P3Jc
+	K+JYHMhEQMTWvsSD6IMrwJTCo0OIgMSNbwTeO2GaWVodoDNTnNzBTqzi0TDwchkkuA3ZDs6Do2j
+	qHamBGoMJG4bSHAf+8ZR/a2rQ3HoEZ5OHAyz9BTvK
+X-Received: by 2002:a05:622a:1308:b0:528:38d6:71b4 with SMTP id
+ d75a77b69052e-529a7705cb6mr8811091cf.11.1784966560810; Sat, 25 Jul 2026
+ 01:02:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-CgYaxXwPNfSHyCXn6DUp
+References: <20260723210811.72720-1-seanjc@google.com> <20260723210811.72720-2-seanjc@google.com>
+In-Reply-To: <20260723210811.72720-2-seanjc@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Sat, 25 Jul 2026 09:01:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTy85zZdDnvKFzkDq+Uu5bcYQyny=7GdUDYCjZk9iK9V1w@mail.gmail.com>
+X-Gm-Features: AUfX_mxVrXN5L5Xw9vyyEDnbp7ehJNejs1DjTkAzV8kPFMVhm3oudKg67fWgmKc
+Message-ID: <CA+EHjTy85zZdDnvKFzkDq+Uu5bcYQyny=7GdUDYCjZk9iK9V1w@mail.gmail.com>
+Subject: Re: [PATCH v6 1/9] KVM: guest_memfd: Pass the number of pages instead
+ of the end pfn into .invalidate()
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ackerley Tng <ackerleytng@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Michael Roth <michael.roth@amd.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, 2026-07-24 at 14:19 -0700, Sean Christopherson wrote:
-> On Fri, Jul 03, 2026, David Woodhouse wrote:
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >=20
-> > Previously, the master clock was only activated when the first vCPU
-> > processed KVM_REQ_MASTERCLOCK_UPDATE during KVM_RUN. This meant that
-> > KVM_GET_CLOCK could not return the host_tsc field until after the
-> > first KVM_RUN, making it impossible for userspace to follow the
-> > documented TSC migration procedure without a dummy vCPU run.
-> >=20
-> > Fix this by calling kvm_update_masterclock() directly from
-> > kvm_arch_vcpu_postcreate(), after kvm_synchronize_tsc() has already
-> > set all_vcpus_matched_freq. This ensures the master clock is active
-> > immediately, and KVM_GET_CLOCK returns a valid {host_tsc, realtime}
-> > pair as soon as a vCPU exists.
-> >=20
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> > ---
-> > =C2=A0 arch/x86/kvm/x86.c | 2 ++
-> > =C2=A0 1 file changed, 2 insertions(+)
-> >=20
-> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index ff45577ed90c..2039bd8518fb 100644
-> > --- a/arch/x86/kvm/x86.c
-> > +++ b/arch/x86/kvm/x86.c
-> > @@ -13110,6 +13110,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *=
-vcpu)
-> > =C2=A0=C2=A0		return;
-> > =C2=A0=C2=A0	vcpu_load(vcpu);
-> > =C2=A0=C2=A0	kvm_synchronize_tsc(vcpu, NULL);
-> > +	if (!vcpu->kvm->arch.use_master_clock)
->=20
-> Any reason this can't be?
->=20
-> 	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
-> 		kvm_update_masterclock(vcpu->kvm);
->=20
-> > +		kvm_update_masterclock(vcpu->kvm);
->=20
-> I don't love doing work outside of KVM_RUN that is typically handled by K=
-VM_RUN,
-> but this seems fine?
+On Thu, 23 Jul 2026 at 22:08, Sean Christopherson <seanjc@google.com> wrote:
+>
+> Pass the number of pages to "invalidate", i.e. reclaim, instead of the end
+> pfn, as a first step towards aligning the function prototypes between the
+> de facto "to private" and "to shared" arch hooks.  Eventually, the goal
+> is to end up with kvm_gmem_arch_make_{private,shared}(), and in both cases,
+> providing the number of pages makes the call sites slightly nicer, and also
+> avoids any confusion over whether the end pfn is inclusive or exclusive.
+>
+> Opportunistically rename "start" to "pfn", again to align with the expected
+> signature of make_private() (which needs to pass a starting gfn as well, at
+> which point the "start" becomes noise).
+>
+> No functional change intended.
+>
+> Cc: Fuad Tabba <fuad.tabba@linux.dev>
+> Cc: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-I think I tried that first and it didn't work because
-KVM_REQ_MASTERCLOCK_UPDATE wasn't actually set yet. I remember going
-round in circles a few times here. I'll take another look.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
---=-CgYaxXwPNfSHyCXn6DUp
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-NDA5NlNIQTM4NDIwMjRDQTEuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQChxpuuHVw93mze9jmueUFV
-BJNzvOzZlazrt0AiW1H7TlYQutgKVXPNSEyz8s4k+WsRSjjlQMOiZerfwPEV6lo9336I0uNd+ffc
-Rf8gbjiPTiVT+gX9GD1V5AguRgtsJn/H3A6M0dlzhI3J1jsOG9/+xPloHPzy7sPn5rNkntB/VTnv
-Bix4IfUy3ScOu2vnLX0gnwP3EknfdEUvq9+kdkEEBDz7dGqQo3EuhXZoW9CHF2GM0sOpO/cuNQh2
-JzA+to3smTES7sJXYuRrt5GomCRYvtIrRiYGMalFp+z6Jw/843lEIIpNNvpWVfx5Mbawkl+wWG8k
-0IK3rF7FtbNa0it8/s288G/AEHvfsDIQYFmRLlo2LNMxxREkZO/1Qq8GHUsX/602Fi0u88I3uh5w
-bOEIeG32NzBKTKBOjdjpiUrdCA676dyaIFt967CUtnUvFti8bqGA2pe/u7pjIANthqMBAlcnY5B6
-ff2mbdD8BBLItgb4HyUOCVawzy1hc+UR2tglySwYroWeohfoG6afjesGigsl2JmnhaZ9Z0vanF74
-vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
-9ALHQXda/c4TJvAylfHQ6wqArzAuV1pfWldwy7IOBMtKqzQBXQ4dSDGCBCAwggQcAgEBMHYwYjEL
-MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
-c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
-MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA3MjUwNzU5MTNaMC8GCSqGSIb3DQEJBDEiBCB8t4ZszhrGAIHlyWrb/G/y7JngkfnA
-FP+TFLvOnPOmsDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
-aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
-SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
-CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
-c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAyTHJMROIOLLF9gAXhw+KaaechdLTWFoQ3FWsMiO0plVK2mmNcCbG
-m5MQ+obRH0Z3duJsOnYk7ju8JjGgEmHzv01ur7B7SdWeJ+s6PWgdhXBjObKX+4yl4IOJ34RsG3F2
-PbsTfm4vobmNqpvl4hYxe4Niv881aE/U8Ah3cRsKqMPdchCJwT75ysyY/01sruvPq8fVsyJh2hF4
-s+jXEpEqJPOzkS2DotZcDRepVA6e5aV1JPn26YtjJQ2O1mY8ow336QO0/YzRVcSBZk96ICd5ITGb
-Tu2uH3OFz1cSWtMSOJXt3+uHCp3Gixq4rPIew3gFRbpslf6JTI7zY2stFPaUjkbDYOpY0WPlVcOo
-cD9/UKyj03YtMYRTeyWhLDtSeAIqYoHbYbgIxmFbAT82ZyRdtSRDx86nwlwfw19bGvvz5Al0RyeC
-7N/oyznMbuDgxLKM8tZCxXNG+o00p6jrvzTk0JjKjTSf61yuWuII8jVMAAPKA8VzsfEsHggifuxq
-6Ec9JgDViD9q4T004uqpR7P+kCa3aCZHAcFO4Vt6+ZpDYvh2pEkd4MX8mHAc/aLgcjfL1/WpC8mF
-mu02sZ1SM3UPhbwmDi6nt2zCpA0LlCDc06oth7xRGKwI4NhWukgE6ZrR2rJsqHD5ahkdKw+rCluM
-peQNSnpALLlkZlng8Uc0Rq8AAAAAAAA=
-
-
---=-CgYaxXwPNfSHyCXn6DUp--
+Cheers,
+/fuad
+> ---
+>  arch/x86/include/asm/kvm_host.h | 2 +-
+>  arch/x86/kvm/svm/sev.c          | 8 ++++----
+>  arch/x86/kvm/svm/svm.h          | 2 +-
+>  arch/x86/kvm/x86.c              | 4 ++--
+>  include/linux/kvm_host.h        | 2 +-
+>  virt/kvm/guest_memfd.c          | 6 +-----
+>  6 files changed, 10 insertions(+), 14 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 58f156ae31e7..8c96999f49a0 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1727,7 +1727,7 @@ struct kvm_x86_ops {
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
+>         int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+>  #endif
+> -       void (*gmem_invalidate)(kvm_pfn_t start, kvm_pfn_t end);
+> +       void (*gmem_invalidate)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>         void (*gmem_invalidate_range)(struct kvm *kvm, struct kvm_gfn_range *range);
+>  #endif
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 82b983484af2..e6987351dc04 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5161,16 +5161,16 @@ int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
+>         return 0;
+>  }
+>
+> -void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> +void sev_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+>  {
+> -       kvm_pfn_t pfn;
+> +       kvm_pfn_t end = pfn + nr_pages;
+>
+>         if (!cc_platform_has(CC_ATTR_HOST_SEV_SNP))
+>                 return;
+>
+> -       pr_debug("%s: PFN start 0x%llx PFN end 0x%llx\n", __func__, start, end);
+> +       pr_debug("%s: PFN start 0x%llx PFN end 0x%llx\n", __func__, pfn, end);
+>
+> -       for (pfn = start; pfn < end;) {
+> +       while (pfn < end) {
+>                 bool use_2m_update = false;
+>                 int rc, rmp_level;
+>                 bool assigned;
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index af25e4b56212..cf8fb3d6a100 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -1010,7 +1010,7 @@ int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
+>  extern unsigned int max_sev_asid;
+>  void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
+>  int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> -void sev_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
+> +void sev_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+>  void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+>  int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+>  struct vmcb_save_area *sev_decrypt_vmsa(struct kvm_vcpu *vcpu);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 1f5dc685f049..65bcad3d0264 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10627,9 +10627,9 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+>  #endif
+>
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+> +void kvm_arch_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+>  {
+> -       kvm_x86_call(gmem_invalidate)(start, end);
+> +       kvm_x86_call(gmem_invalidate)(pfn, nr_pages);
+>  }
+>  void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range)
+>  {
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 9db6eb4023c4..911c3f08b3a2 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2614,7 +2614,7 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+>  #endif
+>
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> -void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end);
+> +void kvm_arch_gmem_invalidate(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+>  void kvm_arch_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+>  #endif
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 171a9da1b685..ca1d93fb2495 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -530,11 +530,7 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>  static void kvm_gmem_free_folio(struct folio *folio)
+>  {
+> -       struct page *page = folio_page(folio, 0);
+> -       kvm_pfn_t pfn = page_to_pfn(page);
+> -       int order = folio_order(folio);
+> -
+> -       kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> +       kvm_arch_gmem_invalidate(folio_file_pfn(folio, 0), folio_nr_pages(folio));
+>  }
+>  #endif
+>
+> --
+> 2.55.0.229.g6434b31f56-goog
+>
