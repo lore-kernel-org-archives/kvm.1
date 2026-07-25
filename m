@@ -1,37 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B82E6CB3;
-	Sat, 25 Jul 2026 07:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1641131E821;
+	Sat, 25 Jul 2026 07:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784966006; cv=none; b=GrXnqOJ7xWHDEhmCoF5Vn20o0IK2eu4KU/x0x6VS1LcTLI1TpQWrr9pJA+iiMLC1eTwUblQ6wIdY0FgNKsqEZNz/lZN/tnMDllfesL70AAVa0tsYmQw4SC9PDlO3jUvU5DaUK1UQvdalVbLY4i5ssEepuW5z5HQt4/oqR99Myc4=
+	t=1784966220; cv=none; b=duiNxM0J0lCoyHCzR671attNV5EdZMPLd8fLbuR5G7VuT1lf5rP18Tty1wQ8PB44CrbYhhp3MFOzOxLfvYEBVNOl3dzDhYHsPILiG3ZZ4OQMNAbJ8/Mz7xGAzKe+voa2wZDOfjwwotJFXbSVjkKHOgdapcTgD0RKs0IN2MEHNY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784966006; c=relaxed/simple;
-	bh=M7/WPeZBsoSxpSBfBI8WVo8T/ypKP3M2wrzRNig2VKw=;
+	s=arc-20240116; t=1784966220; c=relaxed/simple;
+	bh=1qABX9vINQPftk3vF3d3lgoPe1oYQvcL3sVi03wzJpo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lqx0+i7m/0VDgNomgj4QrxGWLwSYDl02cV+y318oVt4UYka1blFfL40Jq2Pp810tReQzDfCJkCv7XzcFbwVQXNoTZz0w2q9rs0lbAUHNs/He5j6MPqkp9/2bRRqcN1xd6fYZYaWj4dVTMV3R6chXX4euWY/xJCAgdV2NvjccueI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jQJzK/k5; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=dTBCo3lGbxqdFGY7Q9DzbduQlo7Ntytk00WT66c0Wgn6fR4cLEyH8l6bGFPxMM+LwFKqUB2/AHptKKI9kMn1laZFbUHDYAS0UR5F/Nt0B1M8oYPQWop5AGtb4VDKetsx8/ji5VJ3/4GXi+hHGNb4MshPa0DqrhJN0rcbkiDbJJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=sOORCWKM; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jQJzK/k5"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="sOORCWKM"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7/WPeZBsoSxpSBfBI8WVo8T/ypKP3M2wrzRNig2VKw=; b=jQJzK/k5mkE0L75BzBmn3dFEas
-	yUHKOFQQg+oCysnYyYZqERqQbVSo66xWrv/uIxZxBBrMZ0qOaCVZiHXxSgtc/8QKzvuRsJ6HHSWhv
-	EXJvwQYXikZaWdqjk1sOXOoYCltxxBUvm/QoXIaqds2ywS8XT0odgoI+tWbcQzhIEZ/7vkK0nmZ2V
-	BguA+Kn21kLNKexp/kXAFklWhT/nu5jADnNpAuaDS9bhbpf8NqweOm1pRE8DrKOqmUQkwZ+91tuM9
-	4IDG3+TsbTP7HG+4zUK1OzYRyAxMcgQwMmBkw3E2REVopAsHF9c27R4o9K6h+iH2cIcjb+pLPKXvY
-	6ZgPq7xw==;
+	bh=1qABX9vINQPftk3vF3d3lgoPe1oYQvcL3sVi03wzJpo=; b=sOORCWKM8W+VUb/S1Zus69/eCu
+	Die6st5bOthOpDs1R7JJYD1M3Rcm2I5+gnoalPrcGdtjvts8zG1mxP22sl3x8wI+RfMxRWT4vAGJB
+	EC5NcPx7oMw7veoVWncvG69X3UskoD0/I5e3oc0i1wZUW70DjWVN/Izi/43xOnA8rnvxe0C9e9lCW
+	td9t0p3kus3nLuqpwVMAxa3k6S+cvyhqTTm08kChwwBATVCXoVXyV7/edvYKtL/GKI8giUKYOKeo9
+	hiCb+57+QeUPFv7egNaOqGzHab83DgrCNAoP7Hy7bKlPOG/LpnCNAoZ6r1Qn4LAu+Krce87ORCJnC
+	g8/2rQuQ==;
 Received: from [2001:8b0:10b:5:5b17:8d34:712e:739e] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wnXC2-00000005m2Y-0C0t;
-	Sat, 25 Jul 2026 07:53:10 +0000
-Message-ID: <19ec3f984a494a0d5e97b8d2fa843668b953a212.camel@infradead.org>
-Subject: Re: [PATCH v6 12/36] KVM: x86: Restructure get_kvmclock()
+	id 1wnXFW-00000005mS3-31BS;
+	Sat, 25 Jul 2026 07:56:46 +0000
+Message-ID: <b38f67187d3312c4bf2c9eddf89e14e8b10573d6.camel@infradead.org>
+Subject: Re: [PATCH v6 15/36] KVM: x86: Fix compute_guest_tsc() to handle
+ negative time deltas
 From: David Woodhouse <dwmw2@infradead.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -46,13 +47,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
  Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Date: Sat, 25 Jul 2026 08:53:09 +0100
-In-Reply-To: <amPZRkxTLE-rZcJf@google.com>
+Date: Sat, 25 Jul 2026 08:56:45 +0100
+In-Reply-To: <amPYq48J9TPbmFNl@google.com>
 References: <20260703212145.343527-1-dwmw2@infradead.org>
-	 <20260703212145.343527-13-dwmw2@infradead.org>
-	 <amPZRkxTLE-rZcJf@google.com>
+	 <20260703212145.343527-16-dwmw2@infradead.org>
+	 <amPYq48J9TPbmFNl@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Y6nBW7nV6dQqWGAjG/7v"
+	boundary="=-7lSfI0le9i6p711gUU0E"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -63,41 +64,41 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-Y6nBW7nV6dQqWGAjG/7v
+--=-7lSfI0le9i6p711gUU0E
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-07-24 at 14:29 -0700, Sean Christopherson wrote:
-> =C2=A0
-> > Given that, the get_cpu()/put_cpu() pinning is not needed either: both
-> > the TSC read and get_cpu_tsc_khz() are CPU-independent when the master
-> > clock is in use, so drop them.
+On Fri, 2026-07-24 at 14:27 -0700, Sean Christopherson wrote:
+> On Fri, Jul 03, 2026, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
 > >=20
-> > Wrap the entire use_master_clock block in #ifdef CONFIG_X86_64, since
-> > use_master_clock is never true on 32-bit (host_tsc_clocksource is only
-> > set under CONFIG_X86_64), and declare hv_clock inside the block so it i=
-s
-> > not left as an unused variable on 32-bit.
+> > The compute_guest_tsc() function computes the guest TSC at a given
+> > kernel_ns timestamp. When the master clock reference point
+> > (master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
+> > is negative. Since pvclock_scale_delta() takes a u64, the negative
+> > value wraps to a huge positive number, producing a wildly wrong result.
 > >=20
-> > Use 'continue' on the master-clock success path so the non-master-clock
-> > computation becomes the common tail, avoiding a goto and label. When th=
-e
-> > clock read fails (e.g. clocksource transitioning away from TSC), fall
-> > back to that path rather than proceeding with uninitialised data or
-> > spinning in the seqcount loop.
+> > Handle negative deltas explicitly by negating the delta, scaling it,
+> > and subtracting from this_tsc_write.
 >=20
-> Please split this up.=C2=A0 The changelog suggests there are at least thr=
-ee logical
-> changes here.=C2=A0 Yeah, the series is big, but smaller patches helps wi=
-th review,
-> even if it results in more total patches.
+> Does this need=20
+>=20
+> =C2=A0 Cc: stable@vger.kernel.org
+>=20
+> or is this a "technically a bug fix, but can't happen in practice" sort o=
+f thing?
 
-I don't think the latter two are separable; the refactoring of the
-ifdef and the loop and the way it breaks out to the tail are all
-intertwined. I may be able to pull the get_cpu()/get_cpu_tsc_khz() part
-out into a preliminary commit though. I'll take a look.
+Honestly, there's so much hosed in kvmclock that we could debate a
+cc:stable for half of this series. I'm not doing *any* of this to
+actually add new features. For this one I'm not sure it's reachable in
+practice; I think I did it mostly to shut Sashiko up.
 
---=-Y6nBW7nV6dQqWGAjG/7v
+I think even in the KVM_SET_CLOCK_GUEST it can't trigger, although I
+have fantasies about changing the way KVM_SET_CLOCK_GUEST works to fix
+that final =C2=B11ns imprecision (which requires separate work on the
+timekeeping core), that *might* trigger the negative delta here...
+
+--=-7lSfI0le9i6p711gUU0E
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -195,22 +196,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA3MjUwNzUzMDlaMC8GCSqGSIb3DQEJBDEiBCA/Lvd03+VjutTZijYiDyp7uPZDrs5U
-qwQRbqImitYbUTCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA3MjUwNzU2NDVaMC8GCSqGSIb3DQEJBDEiBCCv0MGVIX3LmMPVrA6IBAP2+JkXzOvM
+R86cLENyIPfBfDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAPmmHGnIj4nkqf3KDfUVZ6Jaqm5xm7CYAsNLdI51GHWIwZUYVTcfK
-I3N6WUA4JK2yncQNPVvMBp1bfLbtK5ukEyZUURqBwOCMA/Ku9Uj2ommEiOlWryHjTBbNUPRq6vWn
-hnQv/Q9GsiYl/8Nd4Zw3dLIL/74s3le6uJCnI3ppG+76MCo8RDkQOljemngBTz0elKSYTI5JGjeD
-2N/SyMi3VvHfWAtwPsifhA7eyTlgt7CZGQhI17NiMwcj/0KQeO3wJxDbRUH2+0kTBUXOOfBWSQ3i
-Cq79eG6qsCSFYfKKKkWkpnJu/lMpZBMxiNxWtVW573rCWkf36/5uzOfhvyi8IQOOu4N2QU7LTN+N
-U6uu0vLUxEUQ0QZ5bb430lAS8GLmnJd5KA/FNLFkmy6Ney6xRZ9g0vprOekhTpJWuXup65COg+mQ
-IdMq6hUu4/t2W/yXywlKOPxuGE/1pE5LUFryAcniGLhPepLPmC8C1AHlhpfBmIBu+/BfRIpof/OP
-8IsmzE7MfZJ9nerVdhiP7vhqo7tpNKyL5L37i2WglvBCOwhDSxvEc3RX3iw2tsH4wQlzcYl2Y7pZ
-MBvGCYvhh9UDBIl7FAa2h/rboOoKMoybeztbwC5Oq3a3Y/ywJ3WGWil2r/Ci91F7nGfhQWGf7dfP
-FBSXqUX4XQapnr3n3/NQ3KkAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIACI4bk1lRlvW99l30vTHxWt4m6LYi0+uxnCy92fFNZpr7NJrefB1o
+4DamaWpaalMJNOJCOOAcqOyDluJ9Pq2abezA5ScGGH4GoLYpQ20N1G5GTdccZVEPmvgvDOlSVoD8
+wmjD5XWBM+U8WRg9iAtel/RTR8Ug3dNYW+jRNFJSHQfkt3oYdD9pAwQWXGRW0nlmymbpFgSxyTXN
+m1Fzonf1mWhou60ztz5L4auqzNE/CvDnqGstnF0svZSJcRhUQQO5Pmxw8z4jxMA1OcHT9JeZujdg
+DPmjlf81KGwtmvf3T6wgnKQYk2dkQQ0VcQ2m4YndrbCDEDZ36xL1r56EEBNhznbGG2Jo2aI1cUDo
+jtnL1BG3Wo6RZrHRDtmxPydJTEVUemwj1sLmvuCPmNoehT1GsjRCjc2K882vAE2IxyrLvwZljzIp
+syHzUSuMD/bBEvE2WOaTxztuCmHrOq/itsieTTCehnP4MzPW0mZFo1cnbJ5eWKfSFGv96sGs7VKk
+r7SF0AcsvVVD2erjr+z/TW7Op8CttVbn9YrL+xYas46yZHWUhibg3UK2UcdoKpNFg5a5FGUmXEeu
+ZvNq6lr//X1byU9Sw97ZzhFxFj2HzmQxuxuV1tBSllT4vcF2EpTAp6pOBxx/mTtjnG3sJVQDGzYi
+BkglX3ezIgYHcS1sKsiat+YAAAAAAAA=
 
 
---=-Y6nBW7nV6dQqWGAjG/7v--
+--=-7lSfI0le9i6p711gUU0E--
