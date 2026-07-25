@@ -1,397 +1,214 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BE43C0610;
-	Sat, 25 Jul 2026 11:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916B742A9D;
+	Sat, 25 Jul 2026 12:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784979007; cv=none; b=ASd08lsOLTW24eu4C4Kgr0RwAN8zP0Jg/La70xZYHbCCrZCcse9jWrFlWJAygw6Db/1qNDCZqMi8/dR8csHGNNABzYbLYMXlkqqZWJaVP4bRERNSo3nLo32t6GEL8axSkifky/n6TBcFeppj1idBoqNsfCrRAauADl4jzD4D1U4=
+	t=1784983541; cv=none; b=CAwAExI4GxEwn8b5e+DqgTx7U5aA0LJHGMR5S1rE5FydmW3IWEGtd8+ZpAJk39SeXLs+o4axFoSTf5fYZaJFrHAY+gCbWTIfnclS/K7M9hgcbC4VQnHfPQiA55npC4T9ajUBnkR+KTwyTJKwFW1ZAlU346V25O6Bykr/AJPwtjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784979007; c=relaxed/simple;
-	bh=DaWia+yI74PcH99eyLCzP2mPH23/69bwv+HTLMru3UE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BUwy0LoaTEJRgUL5HNBKEWLI4oHlRuP0HUDNnk52YHNoZPvqLCtHK8i4BfcMMSDgtgOhq5XyDqrkWNRIUApoZ9nAl6fire4g224KbJbnhsmpVFX+VzWJ9rz1EU1FL27KyoDwAmA6aDi1fYyD6HURaKFIlmrfOtuu6htEyyi2DNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cUAe8zfx; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1784983541; c=relaxed/simple;
+	bh=BDhgFjks1rCSdNlVHsz/7D6l2Z2HxASJMBuAspLM46g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HF0cuqjU1Ld7K0/HneHvlWsizbT5Dkf0tLgOOP0daopksHxH5D6+9WUf2n4jjaJmViIRLC/zHH8xXskgskah9Vem9+1zhLmGss8CotGHfBSTHll9sn4vDZzv9/nOnVNA2KAgufIa8LN7cFssm7zxYjKiw6O9YKXNBiX1TaTErTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kjm0Xt9f; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cUAe8zfx"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66PB1aci504090;
-	Sat, 25 Jul 2026 11:30:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=UK9mAP
-	FlrCrGlN6FIAJfn2V4Rha6+9C0AgX3RQCRbTs=; b=cUAe8zfxyMS+y7PIDFi2xw
-	gJP6/2z9S0gAV6QZMj7NtXvMWs+wBTMUULfah4yNXAHlaQ1qxT9NUjosyMFCsCbD
-	OtRr7ST92h4MbGfcc8deBAyUfqR66jVBqwD198KoyOA3Xh2Z44es7bFMmtnaVfjC
-	kbn2C74U/yJaSWdY1FyUi6DMibbABIeFGCo3Frled07vwiXFH5vTWMjCgmAa2e0i
-	7CkftD1CndLMbVYu+bvS/EbYcJocbm+Lh+1IOn+LCpgX2/pNe+jQ4psyeVRv6iha
-	NxGB18ZWm7VJGMtsI6jSwJ+N2UQO2Q26+5UXoplRn/LbfDnYBs94A8GZ+mJ1n+dQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwcg1r4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jul 2026 11:30:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66PBQNVh025261;
-	Sat, 25 Jul 2026 11:30:01 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fmn12h4mt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jul 2026 11:30:01 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66PBU0nn4457212
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 25 Jul 2026 11:30:00 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5190458055;
-	Sat, 25 Jul 2026 11:30:00 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 575565804B;
-	Sat, 25 Jul 2026 11:29:59 +0000 (GMT)
-Received: from [9.61.19.212] (unknown [9.61.19.212])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 25 Jul 2026 11:29:59 +0000 (GMT)
-Message-ID: <28371b29-4ec3-4162-bcd3-033925238771@linux.ibm.com>
-Date: Sat, 25 Jul 2026 07:29:58 -0400
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kjm0Xt9f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RwxggY9gc4GcZC2isiDohJMCFxWLehVGr+89zjMBUrI=; b=kjm0Xt9fUmW5uRkGi3EtVs6lug
+	ZwKZMp9rAtnGaL5ahc4W8og938J1F1zxNf+DJ/caiUSPQ4aq7OhllcAE6+1wq81lPNuBigi1Ymdbc
+	jWsQjsUZMnJC2IyVmGGSi6Ze1S5M7ARR1xPmJOjRdGpESlNH1GXPiBQkEsFbsuu04ZkAuS/JVAf2I
+	5HDqKWOPGHSHYeKoZZmmshnWg046Hh20cQ3Nm+haCrMfTnRk+CLcoqBY7tA3Y4BaAjoMgKUE7slz3
+	NP8uHoUy6gfj+H2IMJeVls4i/B9Zvc3YAlPUwfTI0MUeFuDrTtEUCvVZ5oo6Q8cigapXWyiVNlQWY
+	9Zcji1JA==;
+Received: from [2001:8b0:10b:5:5b17:8d34:712e:739e] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wnbkb-00000006Ehn-48CJ;
+	Sat, 25 Jul 2026 12:45:10 +0000
+Message-ID: <fd367b54511b52d891d8a50883ac05731150885e.camel@infradead.org>
+Subject: Re: [PATCH v6 08/36] KVM: x86: Activate master clock immediately on
+ vCPU creation
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Sat, 25 Jul 2026 13:45:08 +0100
+In-Reply-To: <06561667eee52c40ef4587fcc11f6bf964ce40bf.camel@infradead.org>
+References: <20260703212145.343527-1-dwmw2@infradead.org>
+		 <20260703212145.343527-9-dwmw2@infradead.org>
+	 <amPW1eAPpUuxLoj_@google.com>
+	 <06561667eee52c40ef4587fcc11f6bf964ce40bf.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-9FZybFZZ3b5dnuxm+p2R"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/8] s390/vfio_ccw: implement a channel program mutex
-To: Matthew Rosato <mjrosato@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        stable@vger.kernel.org
-References: <20260723174751.1180334-1-farman@linux.ibm.com>
- <20260723174751.1180334-8-farman@linux.ibm.com>
- <fa86ee74-1d36-4e14-a015-91599d4d0fa4@linux.ibm.com>
-Content-Language: en-US
-From: Eric Farman <farman@linux.ibm.com>
-Autocrypt: addr=farman@linux.ibm.com; keydata=
- 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
- y8m0x6unNti2MZIUMy0m2gcE
-In-Reply-To: <fa86ee74-1d36-4e14-a015-91599d4d0fa4@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MEt7EZIlynfU_8V01Mvaf0jsjZ95xcHf
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI1MDEwNiBTYWx0ZWRfX5SSRZD3RzhKr
- eg7LujlosFchSd3dEAc2zLughDxYNar3WG+bI5Ct3YAuVd+Igp71+GERJ/3IMWEOn1ynEf/SHIn
- mCw7C5l1HG9L40bq/F9RvO/MBCO4d0o=
-X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a649e3a cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=XC0bjJr9udf0u12S4PsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI1MDEwNiBTYWx0ZWRfXwgTLg7+3xefm
- vMBHu7g+BuEaUb4uOSmZVp4ZMJr+4jivmCli/dXCI9UbTYfE/+IVl1XQygH3RLnGLAZTXcIwgA/
- Zhh+EN+Zl5ZphgoOjq9O8E1RnY91gOYYg717fYrayAV8UMQaR2ObVBu4WkCuGqb31Q9QpN7dp0q
- Y6SbDc6Dc+jacsz0kSyDKbTge45Vcmkbevn3I2o6ldJJ3VzIBvPJjb25EqJY7XSpelfXvVbM8Cl
- 4xBy9GLGxEmeiwvsIEupIzsHleB9ceNvHYhq7GjjFNNlwPgzNAKfqqZ0IY+J86vWIpK3SB5Owv5
- qPL476UEMdRmHWmMUjL5XFTTqHZ+VPsbxYr5LkBonykiwr6WCeug6eFTmUjAl7eoUer23OwoB2A
- TEUY06XFKAP+uRIhrHnQ6TCiLC4oreL39idSi88Ln4gX+XaGnvDmQX3k7qhjX7dECAjWxPb9QFc
- u+dBpMVSkoi2sOzkfHg==
-X-Proofpoint-GUID: MEt7EZIlynfU_8V01Mvaf0jsjZ95xcHf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-25_03,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607250106
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
+--=-9FZybFZZ3b5dnuxm+p2R
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/24/26 4:18 PM, Matthew Rosato wrote:
-> On 7/23/26 1:47 PM, Eric Farman wrote:
->> The channel_program struct is manipulated without a serialization
->> mechanism to ensure consistent behavior. Take a broad stroke of
->> putting the entire structure behind a mutex, and ensure everything
->> that needs private->cp holds this mutex.
->>
->> There are a couple where the cio layer's subchannel->lock performs
->> this role in this code, which isn't correct (it should only be used
->> when touching the actual subchannel, like cio_enable_subchannel()),
->> so adjust the locations where that spinlock is acquired/released
->> to correctly coexist with this new mutex.
->>
->> Fixes: 0a19e61e6d4c ("vfio: ccw: introduce channel program interfaces")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Eric Farman <farman@linux.ibm.com>
->> ---
->>   drivers/s390/cio/vfio_ccw_drv.c     | 10 +++++++++-
->>   drivers/s390/cio/vfio_ccw_fsm.c     | 22 +++++++++++++++-------
->>   drivers/s390/cio/vfio_ccw_ops.c     | 10 +++++++++-
->>   drivers/s390/cio/vfio_ccw_private.h |  3 +++
->>   4 files changed, 36 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_drv.c
->> index 1a095085bc72..1d8c2ed9da50 100644
->> --- a/drivers/s390/cio/vfio_ccw_drv.c
->> +++ b/drivers/s390/cio/vfio_ccw_drv.c
->> @@ -91,6 +91,8 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
->>   
->>   	is_final = !(scsw_actl(&irb->scsw) &
->>   		     (SCSW_ACTL_DEVACT | SCSW_ACTL_SCHACT));
->> +
->> +	mutex_lock(&private->cp_mutex);
->>   	if (scsw_is_solicited(&irb->scsw)) {
->>   		cp_update_scsw(&private->cp, &irb->scsw);
->>   		if (is_final && private->state == VFIO_CCW_STATE_CP_PENDING) {
->> @@ -98,6 +100,8 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
->>   			cp_is_finished = true;
->>   		}
->>   	}
->> +	mutex_unlock(&private->cp_mutex);
->> +
->>   	mutex_lock(&private->io_mutex);
->>   	memcpy(private->io_region->irb_area, irb, sizeof(*irb));
->>   	mutex_unlock(&private->io_mutex);
->> @@ -259,12 +263,16 @@ static int vfio_ccw_sch_event(struct subchannel *sch, int process)
->>   	rc = 0;
->>   
->>   	if (cio_update_schib(sch)) {
->> -		if (private)
->> +		if (private) {
->> +			spin_unlock_irqrestore(&sch->lock, flags);
->>   			vfio_ccw_fsm_event(private, VFIO_CCW_EVENT_NOT_OPER);
->> +			goto out;
->> +		}
->>   	}
->>   
->>   out_unlock:
->>   	spin_unlock_irqrestore(&sch->lock, flags);
->> +out:
->>   
->>   	return rc;
->>   }
->> diff --git a/drivers/s390/cio/vfio_ccw_fsm.c b/drivers/s390/cio/vfio_ccw_fsm.c
->> index 4d7988ea47ef..9fbe97bd23f9 100644
->> --- a/drivers/s390/cio/vfio_ccw_fsm.c
->> +++ b/drivers/s390/cio/vfio_ccw_fsm.c
->> @@ -25,17 +25,15 @@ static int fsm_io_helper(struct vfio_ccw_private *private)
->>   	unsigned long flags;
->>   	int ret;
->>   
->> -	spin_lock_irqsave(&sch->lock, flags);
->> -
->>   	orb = cp_get_orb(&private->cp, sch);
-> 
-> Can you extend the documentation for cp_get_orb to indicate that
-> cp_mutex must be held on entry?
-> 
-> Actually, better yet, can you use lockdep_assert_held()?
+On Sat, 2026-07-25 at 08:59 +0100, David Woodhouse wrote:
+>=20
+> > Any reason this can't be?
+> >=20
+> > =C2=A0	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
+> > =C2=A0		kvm_update_masterclock(vcpu->kvm);
+> >=20
+> > > +		kvm_update_masterclock(vcpu->kvm);
+> >=20
+> > I don't love doing work outside of KVM_RUN that is typically handled by=
+ KVM_RUN,
+> > but this seems fine?
+>=20
+> I think I tried that first and it didn't work because
+> KVM_REQ_MASTERCLOCK_UPDATE wasn't actually set yet. I remember going
+> round in circles a few times here. I'll take another look.
+>=20
 
-Of course; should've added that in the first place.
+On the other hand... I rip it out in patch 36 anyway, in favour of the
+cleaner answer that is available once I've cleaned up the rest of the
+masterclock stuff.
 
-> 
-> Would be a good idea to put these also in other functions that have now
-> an implicit expectation that the mutex will be held, here's the list I
-> came up with?
-> 
-> cp_get_orb
-> cp_init
-> cp_prefetch
-> cp_free
-> fsm_io_helper
-> cp_iova_pinned	
-> cp_update_scsw
+But I wanted this to be earlier in the series as it does fix things for
+the selftests which get introduced along the way. Otherwise we have to
+run the vCPU once to set the clocks up.
 
-I'm going to add them to cp_* functions, which means no fsm_io_helper. 
-It's only interaction is for calling cp_get_orb anyway (and is the only 
-one to do so), so it'll get covered in that path.
+--=-9FZybFZZ3b5dnuxm+p2R
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> 
-> In some cases (like cp_get_orb) you'd have to do something like:
->      struct vfio_ccw_private *private = container_of(cp, struct vfio_ccw_private, cp);
->      lockdep_assert_held(&private->cp_mutex);
-> 
-> Then this lets us also use lockdep to make sure the mutex is OK now
-> and in the future.
-> 
->> -	if (!orb) {
->> -		ret = -EIO;
->> -		goto out;
->> -	}
->> +	if (!orb)
->> +		return -EIO;
->>   
->>   	VFIO_CCW_TRACE_EVENT(5, "stIO");
->>   	VFIO_CCW_TRACE_EVENT(5, dev_name(&sch->dev));
->>   
->> +	spin_lock_irqsave(&sch->lock, flags);
->> +
->>   	/* Issue "Start Subchannel" */
->>   	ccode = ssch(sch->schid, orb);
->>   
->> @@ -71,7 +69,6 @@ static int fsm_io_helper(struct vfio_ccw_private *private)
->>   	default:
->>   		ret = ccode;
->>   	}
->> -out:
->>   	spin_unlock_irqrestore(&sch->lock, flags);
->>   	return ret;
->>   }
->> @@ -171,7 +168,9 @@ static void fsm_notoper(struct vfio_ccw_private *private,
->>   	private->state = VFIO_CCW_STATE_NOT_OPER;
->>   
->>   	/* This is usually handled during CLOSE event */
->> +	mutex_lock(&private->cp_mutex);
->>   	cp_free(&private->cp);
->> +	mutex_unlock(&private->cp_mutex);
->>   }
->>   
->>   /*
->> @@ -252,6 +251,8 @@ static void fsm_io_request(struct vfio_ccw_private *private,
->>   	private->state = VFIO_CCW_STATE_CP_PROCESSING;
->>   	memcpy(scsw, io_region->scsw_area, sizeof(*scsw));
->>   
->> +	mutex_lock(&private->cp_mutex);
->> +
->>   	if (scsw->cmd.fctl & SCSW_FCTL_START_FUNC) {
->>   		orb = (union orb *)io_region->orb_area;
->>   
->> @@ -300,6 +301,8 @@ static void fsm_io_request(struct vfio_ccw_private *private,
->>   			cp_free(&private->cp);
->>   			goto err_out;
->>   		}
->> +
->> +		mutex_unlock(&private->cp_mutex);
->>   		return;
->>   	} else if (scsw->cmd.fctl & SCSW_FCTL_HALT_FUNC) {
->>   		VFIO_CCW_MSG_EVENT(2,
->> @@ -320,6 +323,7 @@ static void fsm_io_request(struct vfio_ccw_private *private,
->>   	}
->>   
->>   err_out:
->> +	mutex_unlock(&private->cp_mutex);
->>   	private->state = VFIO_CCW_STATE_IDLE;
->>   	trace_vfio_ccw_fsm_io_request(scsw->cmd.fctl, schid,
->>   				      io_region->ret_code, errstr);
->> @@ -410,7 +414,11 @@ static void fsm_close(struct vfio_ccw_private *private,
->>   
->>   	private->state = VFIO_CCW_STATE_STANDBY;
->>   	spin_unlock_irq(&sch->lock);
->> +
->> +	mutex_lock(&private->cp_mutex);
->>   	cp_free(&private->cp);
->> +	mutex_unlock(&private->cp_mutex);
->> +
->>   	return;
->>   
->>   err_unlock:
->> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_ops.c
->> index 032a1cdf4df7..04800cfa779b 100644
->> --- a/drivers/s390/cio/vfio_ccw_ops.c
->> +++ b/drivers/s390/cio/vfio_ccw_ops.c
->> @@ -38,8 +38,13 @@ static void vfio_ccw_dma_unmap(struct vfio_device *vdev, u64 iova, u64 length)
->>   		container_of(vdev, struct vfio_ccw_private, vdev);
->>   
->>   	/* Drivers MUST unpin pages in response to an invalidation. */
->> -	if (!cp_iova_pinned(&private->cp, iova, length))
->> +	mutex_lock(&private->cp_mutex);
->> +	if (!cp_iova_pinned(&private->cp, iova, length)) {
->> +		mutex_unlock(&private->cp_mutex);
->>   		return;
->> +	}
->> +
->> +	mutex_unlock(&private->cp_mutex);
->>   
->>   	vfio_ccw_mdev_reset(private);
->>   }
->> @@ -50,6 +55,7 @@ static int vfio_ccw_mdev_init_dev(struct vfio_device *vdev)
->>   		container_of(vdev, struct vfio_ccw_private, vdev);
->>   
->>   	mutex_init(&private->io_mutex);
->> +	mutex_init(&private->cp_mutex);
->>   	private->state = VFIO_CCW_STATE_STANDBY;
->>   	INIT_LIST_HEAD(&private->crw);
->>   	INIT_WORK(&private->io_work, vfio_ccw_sch_io_todo);
->> @@ -90,6 +96,7 @@ static int vfio_ccw_mdev_init_dev(struct vfio_device *vdev)
->>   out_free_cp:
->>   	kfree(private->cp.guest_cp);
->>   out_free_private:
->> +	mutex_destroy(&private->cp_mutex);
->>   	mutex_destroy(&private->io_mutex);
->>   	return -ENOMEM;
->>   }
->> @@ -141,6 +148,7 @@ static void vfio_ccw_mdev_release_dev(struct vfio_device *vdev)
->>   	kmem_cache_free(vfio_ccw_cmd_region, private->cmd_region);
->>   	kmem_cache_free(vfio_ccw_io_region, private->io_region);
->>   	kfree(private->cp.guest_cp);
->> +	mutex_destroy(&private->cp_mutex);
->>   	mutex_destroy(&private->io_mutex);
->>   }
->>   
->> diff --git a/drivers/s390/cio/vfio_ccw_private.h b/drivers/s390/cio/vfio_ccw_private.h
->> index 0501d4bbcdbd..ac5aaa78a74b 100644
->> --- a/drivers/s390/cio/vfio_ccw_private.h
->> +++ b/drivers/s390/cio/vfio_ccw_private.h
->> @@ -94,6 +94,7 @@ struct vfio_ccw_parent {
->>    * @schib_region: MMIO region for SCHIB information
->>    * @crw_region: MMIO region for getting channel report words
->>    * @num_regions: number of additional regions
->> + * @cp_mutex: protect against concurrent update of CP resources
->>    * @cp: channel program for the current I/O operation
->>    * @irb: irb info received from interrupt
->>    * @scsw: scsw info
->> @@ -115,7 +116,9 @@ struct vfio_ccw_private {
->>   	struct ccw_crw_region	*crw_region;
->>   	int num_regions;
->>   
->> +	struct mutex		cp_mutex;
->>   	struct channel_program	cp;
->> +
->>   	struct irb		irb;
->>   	union scsw		scsw;
->>   	struct list_head	crw;
-> 
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+btdgw38cu3x5LYEcNp9WZk8AAAAAAAA=
 
+
+--=-9FZybFZZ3b5dnuxm+p2R--
