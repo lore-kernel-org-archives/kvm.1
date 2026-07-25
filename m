@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7104230E0F8;
-	Sat, 25 Jul 2026 00:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CB23126B9;
+	Sat, 25 Jul 2026 00:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784938995; cv=none; b=QyQve4zl826Ym/d9P7URGWsIfeXsIzEbBdb/6ukiGGbITYjpO1h0gg07ua73sjaRYDmmkV+gB/adVtRvkR4biPmd/iRknO5BrOyeWfTPV1YDYctRzHnEUGrRf8DGT7lCY1oAYeywD46dV2McLOUXrd2ZJnZxBv0ER/Fb10PCTlc=
+	t=1784938999; cv=none; b=FHUHXiTYlqEBL4I8usoewoHgdFvfIhvDNjDdWQZwMLkJye8k9N40b22QQRNrTBN9cgldsZcT6v4htKKzuVuufyRaPXdvVPsqYQTi5zxQrGAF98uarT+plM5cRG1BSWzLCmRBMU+bK7vXbe5n9ON9KFFKOWIQA1O0LiYE5JZwTiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784938995; c=relaxed/simple;
-	bh=vBO097akwbLm8o2cZJLEHjCtAv5SUrqmQGANNGhzjjM=;
+	s=arc-20240116; t=1784938999; c=relaxed/simple;
+	bh=fKK1buH5etXgIhWe8UlmdLstculZgbsfwR/TMeBFV5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioVFRdH6UGT76xO3cmjcDqqsVF+rRmQE3hI5FD81Z7vhY0qqLnSJQI0Gtvok7V3A0NnkZmZBCBC1dUtQB1LYdmWmnFeGx+5jCTORvspnv1xSe4bXhBkyjVxp2EdOAcUf3oGzEQZ1Gdd43SGTGXdWFvVbz3jnErXKu5MASK6jSaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kpobpnFw; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=rjktasFcVXbL2w0E2nr4jC2W8f04skCE0aA9UPKYbI+jsDE7rJzgxHoLqiKirVyAMooVlV3jIuxMN0ozIKCz+dji+UqExPr7GETkJoEF5aCqtQYn3BWTumLaLY8AhCVvWLW9THBAkzu7F/ZzjSoQ7j8nJjoMM+gzuSeHngKcZs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k6+IHxD3; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kpobpnFw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k6+IHxD3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784938993; x=1816474993;
+  t=1784938995; x=1816474995;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=vBO097akwbLm8o2cZJLEHjCtAv5SUrqmQGANNGhzjjM=;
-  b=kpobpnFwcPLRtx5Ukncpyz98qydSs8lB+IOgMT+h8deocj3lKQtvysq5
-   TkBRUj8bVd/pq5VBxzETQyylBN3uQngvI/dsl/qjJtbLtUXNBwwb0BBpH
-   LnJgKiUPfau9WHKXWcDJ98ln2WT5Xd/KyUih1AqBzz4mtrI4n66tDW08Y
-   nIUQBzkDkkz/2Ga3sNCqoFyfFFlG6yCBC5jq+2MgvTVyQ+1Tfnj6VhysG
-   8d84gQAFthFTCbd+koDwNrbqwdtVnawpgpjmw4RcU5mXwG7MmvF2EdRsl
-   wwtjCPZVuJju3+n9wwtrfi8EJaUAsMam9H3IiLSEb124iZdP6+tDs4vFC
-   Q==;
-X-CSE-ConnectionGUID: 7ZIuXNlTRk6qlMAmMhp0iQ==
-X-CSE-MsgGUID: YIxCHcLMS/y/cOAhqOnHaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11855"; a="85726125"
+  bh=fKK1buH5etXgIhWe8UlmdLstculZgbsfwR/TMeBFV5k=;
+  b=k6+IHxD39WXxoeP8FJm/h5BQZ+FaYE8eE5VH0AF+Ib4/0cP216k8ldtY
+   bLyNP+viCgj32Gws0FR7fXY5F6TwM3S0FyVrbljIAWdBN/jZbsS1J2IM9
+   L0/QthSYPTvD68LabcqpAbr2LX21LuBzL5CWfsXGypAROZS0KFQ8oB518
+   3EBP1OacfTdIYMYms6nhjbbYxYX25iZa0sz2qycevaJURSOZUyVAfXGex
+   vjdyxKZi37WZFk46Y016BmvEQrJ6UgA/rU1Ed0JfUNCSbPOR4toJ7LPj1
+   HuWQG599beRy211myYA7JTNbgy9tslzMeZCU8T6g5W6bg982N2yik3W1Z
+   A==;
+X-CSE-ConnectionGUID: 8hQoapINRyyz4I8kyy2ntw==
+X-CSE-MsgGUID: uinIoC5jS7qv3Ew/yodBwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11855"; a="85726147"
 X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
-   d="scan'208";a="85726125"
+   d="scan'208";a="85726147"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:10 -0700
-X-CSE-ConnectionGUID: M4Ylmo2pTymzxA+h9shy2w==
-X-CSE-MsgGUID: dbJ80gBJQqayouTIwgB2IA==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:11 -0700
+X-CSE-ConnectionGUID: T6QpTNHtQFecLdXx2mRJQA==
+X-CSE-MsgGUID: XTSvXiIQQASiyqBvPaiTbQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,183,1779174000"; 
-   d="scan'208";a="262359256"
+   d="scan'208";a="262359262"
 Received: from rpedgeco-desk.jf.intel.com ([10.88.27.135])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:10 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2026 17:23:11 -0700
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 To: bp@alien8.de,
 	dave.hansen@intel.com,
@@ -68,9 +68,9 @@ To: bp@alien8.de,
 Cc: rick.p.edgecombe@intel.com,
 	Hongyu Ning <hongyu.ning@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
-Subject: [PATCH v8 03/11] x86/virt/tdx: Add tdx_alloc/free_control_page() helpers
-Date: Fri, 24 Jul 2026 17:22:53 -0700
-Message-ID: <20260725002302.3337017-4-rick.p.edgecombe@intel.com>
+Subject: [PATCH v8 05/11] x86/virt/tdx: Handle multiple callers in tdx_pamt_get/put()
+Date: Fri, 24 Jul 2026 17:22:55 -0700
+Message-ID: <20260725002302.3337017-6-rick.p.edgecombe@intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260725002302.3337017-1-rick.p.edgecombe@intel.com>
 References: <20260725002302.3337017-1-rick.p.edgecombe@intel.com>
@@ -84,300 +84,162 @@ Content-Transfer-Encoding: 8bit
 
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 
-Add helpers to use when allocating or preparing pages that are handed to
-the TDX module for use as control/S-EPT pages, and thus need Dynamic PAMT
-adjustments.
+tdx_pamt_get()/tdx_pamt_put() unconditionally add or remove Dynamic PAMT
+backing for the 2MB region covering the passed page. However, multiple
+callers can add or remove 4KB pages that fall within the same 2MB region
+and in that scenario only a single PAMT entry is required.
 
-The TDX module tracks some state for each page of physical memory that it
-might use. It calls this state the PAMT. It includes separate state for
-each page size a physical page could be utilized at within the TDX module
-(1GB, 2MB, 4KB). In Dynamic PAMT, only the 4KB page size state is
-allocated dynamically.
+Make the helpers handle only adding/removing Dynamic PAMT backing when
+required, by refcounting each 2MB range. Gate the actual Dynamic PAMT add
+and remove on refcount transitions (0->1 and 1->0). Serialize the refcount
+check and SEAMCALL with a global spinlock so the read-decide-act sequence
+is atomic. This also avoids TDX module BUSY errors, as the Dynamic PAMT add
+and remove SEAMCALLs take internal TDX module locks for the 2MB ranges of
+the specified PFN and the PAMT page pair PFNs. So simultaneous attempts on
+the same 2MB ranges of the PFNs would otherwise encounter an error, which
+would not be handleable in the put case.
 
-KVM will need to hand pages to the TDX module that it will use at 4KB
-granularity. So these pages will need Dynamic PAMT backing added before
-they are used by the TDX module, and removed afterwards.
+The lock is global and heavyweight. Use simple conditional logic to keep
+correctness obvious. This will be optimized in a later change.
 
-Add tdx_alloc_control_page() and tdx_free_control_page() to handle both
-page allocation and Dynamic PAMT installation. Make them behave like
-normal alloc/free functions where allocation can fail in the case of no
-memory, but free (with any necessary Dynamic PAMT release) always
-succeeds. Do this so they can support the existing TDX flows that require
-teardowns to succeed.
-
-Also create tdx_pamt_get/put() to handle installing Dynamic PAMT 4KB
-backing for pages that are already allocated (such as KVM's use of S-EPT
-page tables or guest private memory). Have them take a pfn instead of a
-struct page, as future changes will want to use these helpers for guest
-pages which are tracked by PFN.
-
-Don't CLFLUSH the Dynamic PAMT pages handed to the TDX module, as is done
-for some other SEAMCALLs, as the TDX docs specify that this is only
-needed on "TD private memory or TD control structure page".
-
-Since these allocations will be easily user triggerable, account the
-memory.
-
-Leave logic to handle concurrency issues for future changes.
+The pamt_refcounts[] are atomic_t's. They do not strictly need to be
+because all access is protected by pamt_lock. The overhead of an atomic_t
+in this situation is minuscule compared to the global lock. Leave the
+atomic_t in place to enable future optimization with minimal churn.
 
 AI was used under supervision to collect/apply feedback, split patches,
 review code and workshop logs.
 
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Tested-by: Hongyu Ning <hongyu.ning@linux.intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
 Acked-by: Sohil Mehta <sohil.mehta@intel.com>
 ---
+v8:
+ - Fix PAMT capitalization in comment (Sohil)
+
 v7:
- - Comment improvements (Chao)
- - Drop unneeded addition of mm.h header include (Binbin)
- - Log clarity, code style nits (Sohil)
+ - Convert scoped_guard() blocks to use normal spin_un/lock() for the
+   sake of making next patches diff cleaner
+ - Drop __maybe_unused from tdx_find_pamt_refcount() (Binbin)
+ - Switch to atomic_inc_not_zero() (Dave)
+ - Justify use of atomic_t in log (Sohil)
+ - Log/comments (Yan)
  - Drop Assisted-by tag and cover AI use in log (Dave)
-
-v6:
-The major change was to split out the concurrency stuff into a future
-patch. It makes it easier to explain in the log. This one is the basic
-functionality. Then the simple version of the concurrency and why in the
-next patch. Also, to get rid of the dynamically sized DPAMT backing
-support which was not based on a formal spec.
-
-Details:
- - Split out concurrency stuff into next patch because the log was too long
- - Switch to fixed size pamt page arrays (Nikolay)
- - Rename tdx_alloc_page()/tdx_free_page() to tdx_alloc_control_page()/
-   tdx_free_control_page() to reflect control/S-EPT purpose (Sean)
- - Take gfp from the caller in tdx_alloc_control_page() (Sean)
- - Narrow external API: make tdx_pamt_get()/tdx_pamt_put() static and
-   export only tdx_alloc_control_page()/tdx_free_control_page() (note:
-   dropped inline helpers since the discussion on Sean's series resulted
-   in them not being needed)
- - Switch EXPORT_SYMBOL_GPL to EXPORT_SYMBOL_FOR_KVM (Sean)
- - Use WARN_ON_ONCE() instead of pr_err() for TDX module failures (Sean)
- - Fold alloc_pamt_array()/free_pamt_array() helpers back in and fix the
-   error-unwind index bug (dpamt_pages[i] -> [j])
- - Adjustments after struct page->pfn
- - Adjustments from dropping error helper patches
- - Make the free error paths more normal
- - Drop gfp_t arg in tdx_alloc_control_page(). In the Sean mega v5, it
-   was really needed because the kvm_mmu_memory_cache had a gfp_t it
-   needed something to do with. But this was still weird because that
-   version didn't handle allocating the DPAMT pages as the gfp_t. And in
-   the end all the callers pass GFP_KERNEL_ACCOUNT. So just drop the arg.
- - Log tweaks
 ---
- arch/x86/include/asm/tdx.h  |   6 ++
- arch/x86/virt/vmx/tdx/tdx.c | 163 ++++++++++++++++++++++++++++++++++++
- arch/x86/virt/vmx/tdx/tdx.h |   2 +
- 3 files changed, 171 insertions(+)
+ arch/x86/virt/vmx/tdx/tdx.c | 48 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index d414064436221..86bf37b15c705 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -126,6 +126,12 @@ void tdx_guest_keyid_free(unsigned int keyid);
- 
- void tdx_quirk_reset_paddr(unsigned long base, unsigned long size);
- 
-+/* Number of PAMT pages to be provided to TDX module per 2MB region of PA */
-+#define TDX_DPAMT_ENTRY_PAGE_CNT 2
-+
-+struct page *tdx_alloc_control_page(void);
-+void tdx_free_control_page(struct page *page);
-+
- struct tdx_td {
- 	/* TD root structure: */
- 	struct page *tdr_page;
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 9edad6440080e..4d3427b8a5b71 100644
+index b0ebd74a69fe2..0e6063c1405bc 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1994,6 +1994,169 @@ bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- 	return false;
+@@ -289,7 +289,7 @@ static __init void free_pamt_refcounts(void)
+ 	pamt_refcounts = NULL;
  }
  
-+static int alloc_pamt_array(struct page **pamt_pages)
-+{
-+	int i, j;
+-static atomic_t * __maybe_unused tdx_find_pamt_refcount(unsigned long pfn)
++static atomic_t *tdx_find_pamt_refcount(unsigned long pfn)
+ {
+ 	/* Find which PMD a PFN is in. */
+ 	unsigned long index = pfn >> (PMD_SHIFT - PAGE_SHIFT);
+@@ -2120,10 +2120,14 @@ static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
+ 	return 0;
+ }
+ 
+-/* Allocate PAMT memory for the given page */
++/* Serializes adding/removing PAMT memory */
++static DEFINE_SPINLOCK(pamt_lock);
 +
-+	for (i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
-+		pamt_pages[i] = alloc_page(GFP_KERNEL_ACCOUNT);
-+		if (!pamt_pages[i])
-+			goto err;
-+	}
++/* Bump PAMT refcount for the given pfn and allocate PAMT backing if needed. */
+ static int tdx_pamt_get(kvm_pfn_t pfn)
+ {
+ 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
++	atomic_t *pamt_refcount;
+ 	u64 tdx_status;
+ 	int ret;
+ 
+@@ -2134,29 +2138,58 @@ static int tdx_pamt_get(kvm_pfn_t pfn)
+ 	if (ret)
+ 		return ret;
+ 
++	pamt_refcount = tdx_find_pamt_refcount(pfn);
 +
-+	return 0;
-+
-+err:
-+	for (j = 0; j < i; j++)
-+		__free_page(pamt_pages[j]);
-+
-+	return -ENOMEM;
-+}
-+
-+static void free_pamt_array(struct page **pamt_pages)
-+{
-+	for (int i = 0; i < TDX_DPAMT_ENTRY_PAGE_CNT; i++) {
-+		/*
-+		 * Reset pages unconditionally to cover cases
-+		 * where they were passed to the TDX module.
-+		 */
-+		tdx_quirk_reset_paddr(page_to_phys(pamt_pages[i]), PAGE_SIZE);
-+
-+		__free_page(pamt_pages[i]);
-+	}
-+}
-+
-+/*
-+ * Calculate the arg needed for operating on the DPAMT backing for
-+ * a given 4KB page.
-+ */
-+static u64 pamt_2mb_arg(kvm_pfn_t pfn)
-+{
-+	/* Arg value will specify a 2MB region of physical address space. */
-+	unsigned long hpa_2mb = ALIGN_DOWN(pfn << PAGE_SHIFT, PMD_SIZE);
-+
-+	return hpa_2mb | TDX_PS_2M;
-+}
-+
-+/* Add PAMT backing for the 2MB region surrounding the given pfn. */
-+static u64 tdh_phymem_pamt_add(kvm_pfn_t pfn, struct page **pamt_pages)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = pamt_2mb_arg(pfn),
-+		.rdx = page_to_phys(pamt_pages[0]),
-+		.r8 = page_to_phys(pamt_pages[1]),
-+	};
-+
-+	return seamcall(TDH_PHYMEM_PAMT_ADD, &args);
-+}
-+
-+/* Remove PAMT backing for the 2MB region surrounding the given pfn. */
-+static u64 tdh_phymem_pamt_remove(kvm_pfn_t pfn, struct page **pamt_pages)
-+{
-+	struct tdx_module_args args = {
-+		.rcx = pamt_2mb_arg(pfn),
-+	};
-+	u64 ret;
-+
-+	ret = seamcall_ret(TDH_PHYMEM_PAMT_REMOVE, &args);
-+	if (ret)
-+		return ret;
-+
-+	/* Copy PAMT pages out of the struct per the TDX ABI */
-+	pamt_pages[0] = phys_to_page(args.rdx);
-+	pamt_pages[1] = phys_to_page(args.r8);
-+
-+	return 0;
-+}
-+
-+/* Allocate PAMT memory for the given page */
-+static int tdx_pamt_get(kvm_pfn_t pfn)
-+{
-+	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT];
-+	u64 tdx_status;
-+	int ret;
-+
-+	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-+		return 0;
-+
-+	ret = alloc_pamt_array(pamt_pages);
-+	if (ret)
-+		return ret;
-+
-+	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
-+	if (tdx_status != TDX_SUCCESS) {
-+		ret = -EIO;
-+		goto out_free;
-+	}
-+
-+	return 0;
-+
-+out_free:
-+	free_pamt_array(pamt_pages);
-+
-+	return ret;
-+}
-+
-+/* Free PAMT memory for the given page */
-+static void tdx_pamt_put(kvm_pfn_t pfn)
-+{
-+	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
-+	u64 tdx_status;
-+
-+	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
-+		return;
-+
-+	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
++	spin_lock(&pamt_lock);
 +
 +	/*
-+	 * Don't free pamt_pages as it could hold garbage when
-+	 * tdh_phymem_pamt_remove() fails.  Don't panic/BUG_ON(), as
-+	 * there is no risk of data corruption, but do yell loudly as
-+	 * failure indicates a kernel bug, memory is being leaked, and
-+	 * the dangling PAMT entry may cause future operations to fail.
++	 * If the pamt page is already added (i.e. refcount >= 1),
++	 * then just increment the refcount.
 +	 */
-+	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
-+		return;
++	if (atomic_inc_not_zero(pamt_refcount))
++		goto out_free;
 +
-+	free_pamt_array(pamt_pages);
-+}
++	/* Try to add the PAMT page and take the refcount 0->1. */
+ 	tdx_status = tdh_phymem_pamt_add(pfn, pamt_pages);
+-	if (tdx_status != TDX_SUCCESS) {
++	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS)) {
+ 		ret = -EIO;
+ 		goto out_free;
+ 	}
+ 
++	atomic_set(pamt_refcount, 1);
++	spin_unlock(&pamt_lock);
+ 	return 0;
+ 
+ out_free:
++	spin_unlock(&pamt_lock);
+ 	free_pamt_array(pamt_pages);
+ 
+ 	return ret;
+ }
+ 
+-/* Free PAMT memory for the given page */
++/* Drop PAMT refcount for the given pfn and free PAMT backing if needed. */
+ static void tdx_pamt_put(kvm_pfn_t pfn)
+ {
+ 	struct page *pamt_pages[TDX_DPAMT_ENTRY_PAGE_CNT] = {};
++	atomic_t *pamt_refcount;
+ 	u64 tdx_status;
+ 
+ 	if (!tdx_supports_dynamic_pamt(&tdx_sysinfo))
+ 		return;
+ 
++	pamt_refcount = tdx_find_pamt_refcount(pfn);
 +
-+/*
-+ * Return a page that can be gifted to the TDX-Module for use as a "control"
-+ * page, i.e. pages that are used for control structures for a given TDX
-+ * guest, and thus obtain TDX protections, including PAMT tracking.
-+ */
-+struct page *tdx_alloc_control_page(void)
-+{
-+	struct page *page;
-+
-+	page = alloc_page(GFP_KERNEL_ACCOUNT);
-+	if (!page)
-+		return NULL;
-+
-+	if (tdx_pamt_get(page_to_pfn(page))) {
-+		__free_page(page);
-+		return NULL;
++	spin_lock(&pamt_lock);
++	/*
++	 * If there is more than 1 reference on the pamt page, don't
++	 * remove it yet. Just decrement the refcount.
++	 */
++	if (atomic_read(pamt_refcount) > 1) {
++		atomic_dec(pamt_refcount);
++		goto out_unlock;
 +	}
 +
-+	return page;
-+}
-+EXPORT_SYMBOL_FOR_KVM(tdx_alloc_control_page);
-+
-+/*
-+ * Free a page that was gifted to the TDX-Module for use as a control
-+ * page. After this, the page is no longer protected by TDX.
-+ */
-+void tdx_free_control_page(struct page *page)
-+{
-+	if (!page)
-+		return;
-+
-+	tdx_pamt_put(page_to_pfn(page));
-+	__free_page(page);
-+}
-+EXPORT_SYMBOL_FOR_KVM(tdx_free_control_page);
-+
- void tdx_sys_disable(void)
- {
- 	struct tdx_module_args args = {};
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index bdfd0e1e337ac..a886c54decaad 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -48,6 +48,8 @@
- #define TDH_SYS_CONFIG			45
- #define TDH_SYS_SHUTDOWN		52
- #define TDH_SYS_UPDATE			53
-+#define TDH_PHYMEM_PAMT_ADD		58
-+#define TDH_PHYMEM_PAMT_REMOVE		59
- #define TDH_SYS_DISABLE			69
++	/* Try to remove the pamt page and take the refcount 1->0. */
+ 	tdx_status = tdh_phymem_pamt_remove(pfn, pamt_pages);
+ 
+ 	/*
+@@ -2167,9 +2200,14 @@ static void tdx_pamt_put(kvm_pfn_t pfn)
+ 	 * the dangling PAMT entry may cause future operations to fail.
+ 	 */
+ 	if (WARN_ON_ONCE(tdx_status != TDX_SUCCESS))
+-		return;
++		goto out_unlock;
+ 
++	atomic_set(pamt_refcount, 0);
++	spin_unlock(&pamt_lock);
+ 	free_pamt_array(pamt_pages);
++	return;
++out_unlock:
++	spin_unlock(&pamt_lock);
+ }
  
  /*
 -- 
