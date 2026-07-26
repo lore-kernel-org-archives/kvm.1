@@ -1,216 +1,160 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B1936A344
-	for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 14:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785075146; cv=none; b=tulnKzZUw1TNJNzavJfm8143ggrCb+WciWEvS96N4JPzfvA6LEXD+8dCiA/S/v4VrlBChwy/tyHlfou+owlv9rJ07S6FguNwrOJX4wNH+eaIqm/qYTxsQVu3FkuX8BXg8OPYTtECByvE9z6jO9UIu/30RjfrCea/JY6gvBq7WXo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785075146; c=relaxed/simple;
-	bh=hAzGSzba1NEi7B4ecRdbiFHQv/Op0Tbx9G5qrGuEuC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g6c9/j7pgGQBXcBFWG8PfG5tiX+tffJjuqs1UcalCvljDpE6oAjAZ6fLRtEtpdYlqjbPDbMEVGt7Y8p8FVvYmV9Pp+4G9dA3Q5Fw7ix2KCSUEGKnhkQ2Dq+4wnxiUTxd9pME9Xh9GAV4JDYd9pnePf/nO9lJMlsbjCe/56+YUqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsEBRNEz; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6003BB139
+	for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 15:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785081012; cv=pass; b=F82GGE28o9ILfgAG+00/fPXdlxsUWz/CucK34CAvnx6c3YVTACw9XYBGoYkVgxJ/gPAj1YQtw+jk3XEYdfRnVtaa+GDjtoA24+HXomo7hGtrkaz+oE4wCJYWZQ9ZiEEbGtuJI6p+EgJbl8qI66jiMkCGjz1RLKhxBuYaCxc/Ghw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785081012; c=relaxed/simple;
+	bh=fwqaXddFfzDaa59dX04PdbthmTsWFxVG37Kq9r4fErc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NMdCYHR9UL8EDSnxH4gqZQl4af8RfuZRNxNDpKtYpZF5Vj6NKnVY9sDYPG7fwjNRdjnpsZ3GiMdYC73Bce72Is5W9yF7pPymDSDpDmL/w3muzgzvY+jYGOKMOHnbKtXcllW2b1lruH1WEwDl15de0KruJ5nn8pywYc6FYialtpM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L492wOyl; arc=pass smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsEBRNEz"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38e07ebd263so1255981a91.1
-        for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 07:12:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L492wOyl"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so6201a12.1
+        for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 08:50:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785081009; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gsLq95+nI0EMVwScF8k4wAn8r2um1kz2e2wbJO81ujQyxfpxHQK2nUzD/Mlvar4WbO
+         BFxcFRSS005n6FPixjpQqoah1+dYqXPyXVZyU77jtXt84aPqqTB+YCFTvcgYK83z1DAQ
+         FFrCOiRDofFQqvNnVBtWDPt0tQ/zFPEqf2kQOu7/quUYdpwkxiBhOt4B7NDz33WombBv
+         1Ha7NHe+WXTHyrsiFk0dUlradgFGoLL6uvt4sUoxbxw25nEeAEKyCCxnGQQkOf8ZJEvB
+         LzYq5GYLw8efNOe5/oirmSJTVWKg/vXUp6dk2QsrEkA36NKAY09bDjVzpBCRci+Xc5GV
+         40Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
+        fh=YPmiW02JnqNv/CMJAqkx79R10ynW5SeE1xfuMMwxgPM=;
+        b=sSqNAQ8naXh9dmN4fYj3fJhgMa1BkZSJ1xJbqwwXJdhuu6Sr2NBZDu4EBKqXeQL4vv
+         ADkCoK3lKWhA+M2f+YN5iOJ5yrYUI6/SINa0CEVWB5ntekXp8V9efRSIqbvJgju0OMgO
+         OoBjezgVljDn92M17AsN8XTHzGSpG7pIE1nzzO4/IRueI3TW+lyeD7EsrWXE/G+dfH2W
+         ofTXjxeGtxUoTllPN5kVqOoUQQSleerz4UVchlF5TwxCNEyiFGj0xMJ8iJL4rmFfd8Hc
+         9zAShqotEMfle5b/BTSZ2xAScy2n1KX6a4e5vb1ncKcpB37T5gCUUnhUivc7p1/tu+N9
+         LUkw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785075144; x=1785679944; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QKBVDCs0y9smsIpgENM3SuWaNy6SuXbVP3tPSuphxHk=;
-        b=WsEBRNEzKhzBvgyVEuLowpGAGYlrQWOOaJeQNE16aDOjX0lg6qMOx8rpX82PVb9r+p
-         2Reykz6bOkbaXbl8H7sJ9gjxgynI3vjAeqFpARpIATWkd93a6aR/k0C/41nTSRGvI/tX
-         nEIrr70U13LiIR76UsIh8R4bKRuamFj+WKsj3tadLSwi5luGBfCxZY78N1CMAPXWFyyL
-         0FD8Xk7iVKGmLYLyvme8Kauf/dp0sW2B94jRONY0MCzJspaeh9GtvQhzOrlJM7Yc+NcV
-         kT9JokBVXE43jxWLOGo8KZJTRa3fF+AyDmgtrQfuSbxlew/TnJzmxUvYtRZ8hRdWwwnZ
-         NYHA==
+        d=google.com; s=20251104; t=1785081009; x=1785685809; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
+        b=L492wOyllxb5XUpRugcnuKvD3KgqL/l5PkkLhnevSfSxPeOT8oHgRuJlOAEZIbp51d
+         GF62mLUcHbl/G+VXYn5PmTeCVaMOaXcPddXm+oc874qYAKCcYSk+zuLRwkM56OgnkNQH
+         QeLQXjhmeOa/12w1qzzLNENVZZsOxQF6PzWVx0KmNk6pu1BgMlJknxJBoyOdmSCCQILS
+         FXwt1YCF/C7DB8fjmn6BdKYP1FkoBcD5cx2fv814LgZT1MUsQODHAXSp8JVdAToLo3W2
+         mlT1HNqivhf3PWLYcrNDyfiGpwYOPH3baMMkO4x2ccZnYHL4b3uJy6NUBtVfzq4kAeoR
+         W+SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785075144; x=1785679944;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QKBVDCs0y9smsIpgENM3SuWaNy6SuXbVP3tPSuphxHk=;
-        b=SiagLLfF5KT6/EXWCHqc5YTj6CpCFCS9UY7vz4QCnouL78q0n/M0D5VF1QsDmZcQAo
-         y6/zxvV8lLZcW710R4qDgvEYS4kLx3ZkIEq09UcyMOaj3bbWbYDg/UOKCUn65McF3zi8
-         NJ4YOk9C/E0slsUzRnuJoPngw2g6tPjgXpCRzxGEFVbYty7L97JIg1Qcs58QcbsX1ICx
-         ZiBCrsZjFBFYZSAk+Tcpo0wHAghOe5teE0vDU9tSlYzcv671SiN07Tm540rsm88pV6e2
-         TO/VjnXbzzv8ZOArNVszoxHXllot864ppl5TUD3LSk5AYXAQuYFP36/DYKQFbVKXzjJH
-         fR8Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrukCbFBtmMV/feWvLCErUOe9mOeK1Z3H6C6Guh6GJTAi5FyFByN99LlOjbt/PUpdKPm2A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv5tUP1Xj6ZIp+kaeelQqLXYVZhia35bG7nawXo+eiRjIqET/O
-	pIcTWXUj40NvRRZnrOa/BubI8FEu8WwAR9ONXzlGG9EX7Uk7paCYn0Km
-X-Gm-Gg: AR+sD120Q6hi2URseEbCfDAAYhMeOhDEh4k0oTi3cX47CHaS3xOnEq/img8E306q/YL
-	9PMs8T4Z1CpJkQ/jUUBSuKJODm2luDDNRXuVopPYkYo/jeOqLjWFbux6m79THjLIbRktxCzIvjs
-	6c3ruzZSlhRoyhyxUSYH/Rg9708t79Bn4bNVdu6BEebYickdPG3kRRO8xNUsSkiTfWWDrJFgMxV
-	d1rgq9rKzF4ngB+ZoemK79TaAfgNwSKbswPR6ZJH2hCCH2gFFGO6ADcetItdbE9vJrseKapJGWw
-	qUxuOksI8A2C2581RkeCVds+Oqqs5lqhH3gFSqU3llcZHjpZFJwMRzTz5n5jGtbEigL0qWwp/s8
-	FRKwvup77qlPiEUiDCOtbgw69egEhvCUsANJXOSoMl1b0RCZkpbvP1ppCLKMCXz9TqWifyKhmmq
-	dbMQ==
-X-Received: by 2002:a17:90b:4b8e:b0:38e:2a4:cffc with SMTP id 98e67ed59e1d1-38f2961561dmr5471035a91.25.1785075143784;
-        Sun, 26 Jul 2026 07:12:23 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e0f4a039asm17136083c88.9.2026.07.26.07.12.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 07:12:23 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Cc: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	physicalmtea@gmail.com
-Subject: [PATCH] vhost_net: reject unsafe feature changes after activation
-Date: Sun, 26 Jul 2026 22:11:58 +0800
-Message-Id: <20260726141158.1652386-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1785081009; x=1785685809;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
+        b=lleYfA45HBkULnsbhBZR5y/UPXhAGru+fEcckpEJzX2YxwB1TCsoT+Fm3G4WizK/Pw
+         KEc/Hr+50YIWuU942VTnM/PU4xsv8gdHchEcTJOWenwKD9Vif9lvB3lpB2hKNw4j5YSk
+         CYgFnP/N/6vb76ZGslbDtzxXtrBd+hfMktFtUdeXJVQdpUOI/eeCeYK0WiX4SGN4H9Po
+         vva9dY4n7Ifdf0ZdZprVW1FoqLT5aCv0vXwgQ3VRPlCOhw4yL9+PkRK6BF3d5LhS51V5
+         P+7/60Km03C8TYTKENbzuddRtggtMCl/rPhl1XWyoNwSLplPSD6xregJqJbb2Rlqssp0
+         j0VQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrlgT/C/SenDXuIHvO7MqP5RgYBQZW/mfracE1DpnVawsR0e6R/1x6gidox+wVKytO/1EU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH7zTzGWY4cX/RF7dThFt1Muao8tuJ4wmtDewperdBSvq6H8O1
+	b6vua/fBe3coRj/go71ksnU33MUB47RyfY33+5U4fAea9V3fTeJEiIze1pr3fLWO9OcGZ67aJC4
+	oW+S2r6zdA1GaeO73PwuW6J/JruAVEpHyNqFAUVlL
+X-Gm-Gg: AR+sD13fNpzPx67yRTW2VFmQ7xSvDwpexhZWZOS0naGM3jP60y2Ww5jALMxdcNnm7po
+	qsOT63ar1w8Aq/YhSrW/OsAjoGAEdiCr7BiVtEUtdfw+21VX7n92wJ/qmglAWj+3wMPpI4W8jSL
+	6Uaqfe1E7FgRJcm0Ypz1uJgdICSAW/yVxoG2ybOT0bLjQEgT8ARlvyUI8V4heM/99BsRaIRmSIk
+	3wkwLI/kX9Fayct6avbyJVQnl0dXiTqx44Di5qn5fW/uMbJV3LYzj5yVqf+5zzPIbi06drb
+X-Received: by 2002:a05:6402:404f:10b0:69f:2c93:b7cc with SMTP id
+ 4fb4d7f45d1cf-69fbf2e10cbmr41695a12.9.1785081008916; Sun, 26 Jul 2026
+ 08:50:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-6-zide.chen@intel.com>
+In-Reply-To: <20260629231938.15129-6-zide.chen@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Sun, 26 Jul 2026 08:49:56 -0700
+X-Gm-Features: AUfX_myvy8bJu1T17aLa-MpG9HY22Cq_6KV1dHwgg7ExXOxvyl9lSYa6fm1bmnI
+Message-ID: <CALMp9eTy+aO9LE7UrbgxSqbwUq=NKXVEhTNmmAA5mtnqHevepA@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
+To: Zide Chen <zide.chen@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
+	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
+	Xudong Hao <xudong.hao@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-vhost_net_set_features() is reachable through VHOST_SET_FEATURES and
-VHOST_SET_FEATURES_ARRAY. A successful VHOST_NET_SET_BACKEND with a
-socket backend invokes vhost_net_set_backend() and enables a virtqueue;
-a later VHOST_SET_FEATURES can still change feature-dependent state.
+On Mon, Jun 29, 2026 at 4:28=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
+te:
+>
+> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+>
+> Bit 15 in IA32_PERF_CAPABILITIES indicates that the CPU provides
+> built-in support for Topdown Microarchitecture Analysis (TMA) L1
+> metrics via the IA32_PERF_METRICS MSR.
+>
+> Expose this capability only when mediated vPMU is enabled, as emulating
+> IA32_PERF_METRICS in the legacy vPMU model is impractical.
+>
+> Pass IA32_PERF_METRICS through to the guest only when mediated vPMU is
+> enabled and bit 15 is set in guest IA32_PERF_CAPABILITIES.  Allow
+> kvm_pmu_{get,set}_msr() to handle this MSR for host accesses.
+>
+> Save and restore this MSR on host/guest PMU context switches so that
+> host PMU activity does not clobber the guest value, and guest state
+> is not leaked into the host.
+>
+> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v5:
+> - Remove host_initiated check in set/get MSR handlers.
+> v4:
+> - Remove WARN_ON_ONCE() and simply reject the guest accesses by checking
+>   host_initiated. (Sashiko)
+> - Passthru MSR_PERF_METRICS only if has_mediated_pmu is true. (Sashiko)
+> - Remove the redundant !! in vcpu_has_perf_metrics().
+> v3:
+> - Replace WARN_ON() with WARN_ON_ONCE(). (Dapeng)
+> - Add comments to explain why we don't validate writes on PERF_METRICS.
+> ---
+>  arch/x86/include/asm/kvm_host.h   |  1 +
+>  arch/x86/include/asm/msr-index.h  |  1 +
+>  arch/x86/include/asm/perf_event.h |  1 +
+>  arch/x86/kvm/msrs.c               |  6 +++++-
+>  arch/x86/kvm/pmu.h                |  5 +++++
+>  arch/x86/kvm/vmx/pmu_intel.c      | 31 +++++++++++++++++++++++++++++++
+>  arch/x86/kvm/vmx/vmx.c            |  7 +++++++
+>  7 files changed, 51 insertions(+), 1 deletion(-)
+>
+> ...
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index b736b9ff965b..21eb4b339fa6 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -4273,6 +4273,10 @@ static void vmx_recalc_pmu_msr_intercepts(struct k=
+vm_vcpu *vcpu)
+>                                   MSR_TYPE_RW, intercept);
+>         vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
+>                                   MSR_TYPE_RW, intercept);
+> +
+> +       intercept =3D !has_mediated_pmu || !kvm_vcpu_has_perf_metrics(vcp=
+u);
+> +       vmx_set_intercept_for_msr(vcpu, MSR_PERF_METRICS,
+> +                                 MSR_TYPE_RW, intercept);
+>  }
 
-When ACCESS_PLATFORM is first enabled, vhost_net_set_features() calls
-vhost_init_device_iotlb(). vhost_get_vq_desc() calls translate_desc(),
-which prefers dev->iotlb over dev->umem. Clearing ACCESS_PLATFORM
-updates acked_features but does not clear dev->iotlb, so the old IOTLB
-and its HVA entries remain in the descriptor path.
-
-With IN_ORDER disabled, vhost_get_vq_desc() reads the next head from
-the guest's avail ring but still advances vq->next_avail_head after a
-successful consume. Enabling IN_ORDER later makes vhost use that
-existing cursor without resetting it, so the next descriptor may not
-be the one from the guest's avail ring.
-
-Keep feature negotiation fixed after the first successful backend
-activation, except for VHOST_F_LOG_ALL. Reject clearing
-ACCESS_PLATFORM while a device IOTLB exists, and avoid rebuilding an
-existing IOTLB for a log-only update. Use VHOST_RESET_OWNER before
-starting a new feature negotiation.
-
-Fixes: 6b1e6cc7855b ("vhost: new device IOTLB API")
-Fixes: 45347e79b544 ("vhost_net: basic in_order support")
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/net.c | 42 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 6edac0c1ba9b..df357142461a 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -144,6 +144,8 @@ struct vhost_net {
- 	unsigned tx_zcopy_err;
- 	/* Flush in progress. Protected by tx vq lock. */
- 	bool tx_flush;
-+	/* Feature negotiation is fixed after a backend has been started. */
-+	bool features_locked;
- 	/* Private page frag cache */
- 	struct page_frag_cache pf_cache;
- };
-@@ -318,6 +320,24 @@ static void vhost_net_vq_reset(struct vhost_net *n)
- 
- }
- 
-+/* Caller must hold n->dev.mutex. */
-+static bool vhost_net_features_changed(struct vhost_net *n, const u64 *features)
-+{
-+	const u64 *acked = n->vqs[VHOST_NET_VQ_TX].vq.acked_features_array;
-+	int i;
-+
-+	for (i = 0; i < VIRTIO_FEATURES_DWORDS; i++) {
-+		u64 changed = features[i] ^ acked[i];
-+
-+		if (i == VIRTIO_DWORD(VHOST_F_LOG_ALL))
-+			changed &= ~VIRTIO_BIT(VHOST_F_LOG_ALL);
-+		if (changed)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static void vhost_net_tx_packet(struct vhost_net *net)
- {
- 	++net->tx_packets;
-@@ -1321,6 +1341,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 	n = kvmalloc(sizeof *n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
- 	if (!n)
- 		return -ENOMEM;
-+	n->features_locked = false;
- 	vqs = kmalloc_array(VHOST_NET_VQ_MAX, sizeof(*vqs), GFP_KERNEL);
- 	if (!vqs) {
- 		kvfree(n);
-@@ -1597,6 +1618,8 @@ static long vhost_net_set_backend(struct vhost_net *n, unsigned index, int fd)
- 		vhost_dev_flush(&n->dev);
- 		sockfd_put(oldsock);
- 	}
-+	if (sock)
-+		n->features_locked = true;
- 
- 	mutex_unlock(&n->dev.mutex);
- 	return 0;
-@@ -1637,6 +1660,7 @@ static long vhost_net_reset_owner(struct vhost_net *n)
- 	vhost_dev_stop(&n->dev);
- 	vhost_dev_reset_owner(&n->dev, umem);
- 	vhost_net_vq_reset(n);
-+	n->features_locked = false;
- done:
- 	mutex_unlock(&n->dev.mutex);
- 	if (tx_sock)
-@@ -1649,6 +1673,8 @@ static long vhost_net_reset_owner(struct vhost_net *n)
- static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
- {
- 	size_t vhost_hlen, sock_hlen, hdr_len;
-+	bool access_platform;
-+	int r = -EFAULT;
- 	int i;
- 
- 	hdr_len = virtio_features_test_bit(features, VIRTIO_NET_F_MRG_RXBUF) ||
-@@ -1672,11 +1698,23 @@ static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
- 		sock_hlen = hdr_len;
- 	}
- 	mutex_lock(&n->dev.mutex);
-+	if (n->features_locked && vhost_net_features_changed(n, features)) {
-+		r = -EBUSY;
-+		goto out_unlock;
-+	}
-+
- 	if (virtio_features_test_bit(features, VHOST_F_LOG_ALL) &&
- 	    !vhost_log_access_ok(&n->dev))
- 		goto out_unlock;
- 
--	if (virtio_features_test_bit(features, VIRTIO_F_ACCESS_PLATFORM)) {
-+	access_platform =
-+		virtio_features_test_bit(features, VIRTIO_F_ACCESS_PLATFORM);
-+	if (!access_platform && n->dev.iotlb) {
-+		r = -EBUSY;
-+		goto out_unlock;
-+	}
-+
-+	if (access_platform && !n->dev.iotlb) {
- 		if (vhost_init_device_iotlb(&n->dev))
- 			goto out_unlock;
- 	}
-@@ -1694,7 +1732,7 @@ static int vhost_net_set_features(struct vhost_net *n, const u64 *features)
- 
- out_unlock:
- 	mutex_unlock(&n->dev.mutex);
--	return -EFAULT;
-+	return r;
- }
- 
- static long vhost_net_set_owner(struct vhost_net *n)
--- 
-2.34.1
-
+Should we also update nested_vmx_merge_pmu_msr_bitmaps()?
