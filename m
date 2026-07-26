@@ -1,160 +1,139 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from isrv.corpit.ru (isrv.corpit.ru [212.248.84.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6003BB139
-	for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 15:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785081012; cv=pass; b=F82GGE28o9ILfgAG+00/fPXdlxsUWz/CucK34CAvnx6c3YVTACw9XYBGoYkVgxJ/gPAj1YQtw+jk3XEYdfRnVtaa+GDjtoA24+HXomo7hGtrkaz+oE4wCJYWZQ9ZiEEbGtuJI6p+EgJbl8qI66jiMkCGjz1RLKhxBuYaCxc/Ghw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785081012; c=relaxed/simple;
-	bh=fwqaXddFfzDaa59dX04PdbthmTsWFxVG37Kq9r4fErc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NMdCYHR9UL8EDSnxH4gqZQl4af8RfuZRNxNDpKtYpZF5Vj6NKnVY9sDYPG7fwjNRdjnpsZ3GiMdYC73Bce72Is5W9yF7pPymDSDpDmL/w3muzgzvY+jYGOKMOHnbKtXcllW2b1lruH1WEwDl15de0KruJ5nn8pywYc6FYialtpM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L492wOyl; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC6F37755C
+	for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 17:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.248.84.144
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785085405; cv=none; b=OBzKMZjlyVH11FUm9chYYRjTHrEKb6lEYdlJylG3b/MIUuM6eiWkFEf1tYC12Z1ReYLFLOaIJ3VqjHxbmEhcXo3E5T5b67xtjQy85eX2xNmKCt2CQUSixr+TeAmlcdaRYvTn/qKNRJqxmGcT/rihFxyZZBagXJUp5vUYjmEmWR4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785085405; c=relaxed/simple;
+	bh=dd26KHGRumg4Z8iN1g6o1QhUtU2UzjLh4Q+nianAlXk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hgvqLZMyBgJ/hCC8TxA+vIxVcilm5P6cAg1B1Nu+C0NdADoqC+/pPSQUIrNpdiVn31R+qjtxt1C6Q6v0rrijeN+7nAzTHlOK5yZw676KkRLVI6iWFp9eHgYf9BlHRPdhbnM4/trKDS61vjnzYGWjr6PuTJDyXq2OIF+q4fqrniA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru; spf=pass smtp.mailfrom=tls.msk.ru; dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b=CLVPurm6; arc=none smtp.client-ip=212.248.84.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tls.msk.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tls.msk.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L492wOyl"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so6201a12.1
-        for <kvm@vger.kernel.org>; Sun, 26 Jul 2026 08:50:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785081009; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gsLq95+nI0EMVwScF8k4wAn8r2um1kz2e2wbJO81ujQyxfpxHQK2nUzD/Mlvar4WbO
-         BFxcFRSS005n6FPixjpQqoah1+dYqXPyXVZyU77jtXt84aPqqTB+YCFTvcgYK83z1DAQ
-         FFrCOiRDofFQqvNnVBtWDPt0tQ/zFPEqf2kQOu7/quUYdpwkxiBhOt4B7NDz33WombBv
-         1Ha7NHe+WXTHyrsiFk0dUlradgFGoLL6uvt4sUoxbxw25nEeAEKyCCxnGQQkOf8ZJEvB
-         LzYq5GYLw8efNOe5/oirmSJTVWKg/vXUp6dk2QsrEkA36NKAY09bDjVzpBCRci+Xc5GV
-         40Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
-        fh=YPmiW02JnqNv/CMJAqkx79R10ynW5SeE1xfuMMwxgPM=;
-        b=sSqNAQ8naXh9dmN4fYj3fJhgMa1BkZSJ1xJbqwwXJdhuu6Sr2NBZDu4EBKqXeQL4vv
-         ADkCoK3lKWhA+M2f+YN5iOJ5yrYUI6/SINa0CEVWB5ntekXp8V9efRSIqbvJgju0OMgO
-         OoBjezgVljDn92M17AsN8XTHzGSpG7pIE1nzzO4/IRueI3TW+lyeD7EsrWXE/G+dfH2W
-         ofTXjxeGtxUoTllPN5kVqOoUQQSleerz4UVchlF5TwxCNEyiFGj0xMJ8iJL4rmFfd8Hc
-         9zAShqotEMfle5b/BTSZ2xAScy2n1KX6a4e5vb1ncKcpB37T5gCUUnhUivc7p1/tu+N9
-         LUkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785081009; x=1785685809; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
-        b=L492wOyllxb5XUpRugcnuKvD3KgqL/l5PkkLhnevSfSxPeOT8oHgRuJlOAEZIbp51d
-         GF62mLUcHbl/G+VXYn5PmTeCVaMOaXcPddXm+oc874qYAKCcYSk+zuLRwkM56OgnkNQH
-         QeLQXjhmeOa/12w1qzzLNENVZZsOxQF6PzWVx0KmNk6pu1BgMlJknxJBoyOdmSCCQILS
-         FXwt1YCF/C7DB8fjmn6BdKYP1FkoBcD5cx2fv814LgZT1MUsQODHAXSp8JVdAToLo3W2
-         mlT1HNqivhf3PWLYcrNDyfiGpwYOPH3baMMkO4x2ccZnYHL4b3uJy6NUBtVfzq4kAeoR
-         W+SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785081009; x=1785685809;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3WGK+a49LrgP6TayOL1R8ZxA+4Adtde1sOvgZdiu3Rk=;
-        b=lleYfA45HBkULnsbhBZR5y/UPXhAGru+fEcckpEJzX2YxwB1TCsoT+Fm3G4WizK/Pw
-         KEc/Hr+50YIWuU942VTnM/PU4xsv8gdHchEcTJOWenwKD9Vif9lvB3lpB2hKNw4j5YSk
-         CYgFnP/N/6vb76ZGslbDtzxXtrBd+hfMktFtUdeXJVQdpUOI/eeCeYK0WiX4SGN4H9Po
-         vva9dY4n7Ifdf0ZdZprVW1FoqLT5aCv0vXwgQ3VRPlCOhw4yL9+PkRK6BF3d5LhS51V5
-         P+7/60Km03C8TYTKENbzuddRtggtMCl/rPhl1XWyoNwSLplPSD6xregJqJbb2Rlqssp0
-         j0VQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrlgT/C/SenDXuIHvO7MqP5RgYBQZW/mfracE1DpnVawsR0e6R/1x6gidox+wVKytO/1EU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH7zTzGWY4cX/RF7dThFt1Muao8tuJ4wmtDewperdBSvq6H8O1
-	b6vua/fBe3coRj/go71ksnU33MUB47RyfY33+5U4fAea9V3fTeJEiIze1pr3fLWO9OcGZ67aJC4
-	oW+S2r6zdA1GaeO73PwuW6J/JruAVEpHyNqFAUVlL
-X-Gm-Gg: AR+sD13fNpzPx67yRTW2VFmQ7xSvDwpexhZWZOS0naGM3jP60y2Ww5jALMxdcNnm7po
-	qsOT63ar1w8Aq/YhSrW/OsAjoGAEdiCr7BiVtEUtdfw+21VX7n92wJ/qmglAWj+3wMPpI4W8jSL
-	6Uaqfe1E7FgRJcm0Ypz1uJgdICSAW/yVxoG2ybOT0bLjQEgT8ARlvyUI8V4heM/99BsRaIRmSIk
-	3wkwLI/kX9Fayct6avbyJVQnl0dXiTqx44Di5qn5fW/uMbJV3LYzj5yVqf+5zzPIbi06drb
-X-Received: by 2002:a05:6402:404f:10b0:69f:2c93:b7cc with SMTP id
- 4fb4d7f45d1cf-69fbf2e10cbmr41695a12.9.1785081008916; Sun, 26 Jul 2026
- 08:50:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tls.msk.ru header.i=@tls.msk.ru header.b="CLVPurm6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tls.msk.ru; s=202602;
+	t=1785084840; bh=dd26KHGRumg4Z8iN1g6o1QhUtU2UzjLh4Q+nianAlXk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CLVPurm6lF+sbR1BLHNf+9VDLeAM+AhxO9xwwMIi5fEF+q/WXu4n07ZQU2o/SzV6j
+	 dwZGXTQLICnecoIDO/8pBLstJMG1+J+fvIH6Kr/dDbDo/o0JIJPEovUjdivt9LzdZN
+	 XjgvmZhW2qL/i027j6rvd6XXk8B+hW0AFkjB91xc4N5KmKN0bi7ruPMCxJp90mpp5a
+	 /lu4DOwKqLCwosfegZX0Nwq7rQ5kng+ly/P+A0yNy3CdEZWXF3qX/vhIUzR2ALBwd8
+	 1O5waEhmhztjn+vuljGFAqt7t13D567GzBoBSOF+Wmng6QKSmP1CWrR8iZKgJh4fu6
+	 DMNdkANMGqBcQ==
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+	by isrv.corpit.ru (Postfix) with ESMTP id 672631C4E05;
+	Sun, 26 Jul 2026 19:54:00 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+	by tsrv.corpit.ru (Postfix) with ESMTP id 6BE9F3F6A8E;
+	Sun, 26 Jul 2026 19:54:00 +0300 (MSK)
+Message-ID: <f83491f5-6ef7-45ba-bb84-26341835cb25@tls.msk.ru>
+Date: Sun, 26 Jul 2026 19:53:44 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629231938.15129-1-zide.chen@intel.com> <20260629231938.15129-6-zide.chen@intel.com>
-In-Reply-To: <20260629231938.15129-6-zide.chen@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Sun, 26 Jul 2026 08:49:56 -0700
-X-Gm-Features: AUfX_myvy8bJu1T17aLa-MpG9HY22Cq_6KV1dHwgg7ExXOxvyl9lSYa6fm1bmnI
-Message-ID: <CALMp9eTy+aO9LE7UrbgxSqbwUq=NKXVEhTNmmAA5mtnqHevepA@mail.gmail.com>
-Subject: Re: [PATCH v6 5/8] KVM: x86/pmu: Support PERF_METRICS MSR in mediated vPMU
-To: Zide Chen <zide.chen@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Mingwei Zhang <mizhang@google.com>, 
-	Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Falcon Thomas <thomas.falcon@intel.com>, 
-	Xudong Hao <xudong.hao@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] ui/vnc: fix OOB write in vnc_refresh_lossy_rect
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20260706-fix-v1-0-4b83a70e9f3b@redhat.com>
+ <20260706-fix-v1-2-4b83a70e9f3b@redhat.com>
+Content-Language: en-US, ru-RU
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ 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
+In-Reply-To: <20260706-fix-v1-2-4b83a70e9f3b@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 29, 2026 at 4:28=E2=80=AFPM Zide Chen <zide.chen@intel.com> wro=
-te:
->
-> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->
-> Bit 15 in IA32_PERF_CAPABILITIES indicates that the CPU provides
-> built-in support for Topdown Microarchitecture Analysis (TMA) L1
-> metrics via the IA32_PERF_METRICS MSR.
->
-> Expose this capability only when mediated vPMU is enabled, as emulating
-> IA32_PERF_METRICS in the legacy vPMU model is impractical.
->
-> Pass IA32_PERF_METRICS through to the guest only when mediated vPMU is
-> enabled and bit 15 is set in guest IA32_PERF_CAPABILITIES.  Allow
-> kvm_pmu_{get,set}_msr() to handle this MSR for host accesses.
->
-> Save and restore this MSR on host/guest PMU context switches so that
-> host PMU activity does not clobber the guest value, and guest state
-> is not leaked into the host.
->
-> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> v5:
-> - Remove host_initiated check in set/get MSR handlers.
-> v4:
-> - Remove WARN_ON_ONCE() and simply reject the guest accesses by checking
->   host_initiated. (Sashiko)
-> - Passthru MSR_PERF_METRICS only if has_mediated_pmu is true. (Sashiko)
-> - Remove the redundant !! in vcpu_has_perf_metrics().
-> v3:
-> - Replace WARN_ON() with WARN_ON_ONCE(). (Dapeng)
-> - Add comments to explain why we don't validate writes on PERF_METRICS.
-> ---
->  arch/x86/include/asm/kvm_host.h   |  1 +
->  arch/x86/include/asm/msr-index.h  |  1 +
->  arch/x86/include/asm/perf_event.h |  1 +
->  arch/x86/kvm/msrs.c               |  6 +++++-
->  arch/x86/kvm/pmu.h                |  5 +++++
->  arch/x86/kvm/vmx/pmu_intel.c      | 31 +++++++++++++++++++++++++++++++
->  arch/x86/kvm/vmx/vmx.c            |  7 +++++++
->  7 files changed, 51 insertions(+), 1 deletion(-)
->
-> ...
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index b736b9ff965b..21eb4b339fa6 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -4273,6 +4273,10 @@ static void vmx_recalc_pmu_msr_intercepts(struct k=
-vm_vcpu *vcpu)
->                                   MSR_TYPE_RW, intercept);
->         vmx_set_intercept_for_msr(vcpu, MSR_CORE_PERF_GLOBAL_OVF_CTRL,
->                                   MSR_TYPE_RW, intercept);
-> +
-> +       intercept =3D !has_mediated_pmu || !kvm_vcpu_has_perf_metrics(vcp=
-u);
-> +       vmx_set_intercept_for_msr(vcpu, MSR_PERF_METRICS,
-> +                                 MSR_TYPE_RW, intercept);
->  }
+On 7/6/26 15:53, Marc-André Lureau wrote:
+> vnc_refresh_lossy_rect() always marks a full VNC_STAT_RECT (64) rows
+> as dirty when refreshing a lossy tile. When the display height is not
+> a multiple of VNC_STAT_RECT (e.g. VNC_MAX_HEIGHT = 2160), the bottom
+> tile is partial -- the last tile at y=2112 has only 48 valid rows.
+> The unclamped loop writes to vs->dirty[2160..2175], past the end of
+> the VNC_MAX_HEIGHT-sized array.
+> 
+> Clamp the row count to the actual surface height so partial bottom
+> tiles only mark valid dirty bitmap entries.
+> 
+> Fixes: CVE-2026-48002
+> Fixes: 7d964c9d2fc6 ("vnc: refresh lossy rect after a given timeout")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/work_items/3950
+> Reported-by: huntr bubble
+> Signed-off-by: Marc-Andre Lureau <marcandre.lureau@redhat.com>
 
-Should we also update nested_vmx_merge_pmu_msr_bitmaps()?
+This patch has already been merged to the qemu master branch
+(as commit 3543c2b855c), but it seems it's important to mention
+still.
+
+There already was a fix for CVE-2026-48002 earlier:
+
+commit 46ee49034d26d04d95ba8f3183d4fbfa9d2b89b4
+Author: Daniel P. Berrangé <berrange@redhat.com>
+Date:   Thu May 21 11:33:52 2026 +0100
+
+     ui/vnc: fix OOB write in lossy rect worker code
+
+which touched the same code.  Now this one, with a
+very similar subject.
+
+Unfortunately this (additional) fix does not mention the
+previous fix, so there's some confusion about which commit
+actually fixed this issue.  It looks like the first fix was
+incomplete and this additional fix were needed.
+
+Thanks,
+
+/mjt
