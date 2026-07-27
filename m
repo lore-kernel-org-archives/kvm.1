@@ -1,103 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1F33688A;
-	Mon, 27 Jul 2026 18:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785177963; cv=none; b=ar+pWXVqID2K7WL/wEFUp3229wUe5MiKd1OTA2ivmlAfuEqxre5k2nC0p+Lw2Z1oFiyWA/b5rIDTv0vPISufEAN6OI3AyxIEUpFxNH3Eg7CgkQ90GHG67oZejUiM/69QOriJMxxzPee3rSPDm+b1ybUaH3hXZRTsXNFcUkQ94yc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785177963; c=relaxed/simple;
-	bh=RYsECdzIg+Pq0Uaugm1zDZ77tCYTthSqhO68PYAPdvE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KEO6zd+ba7gZ85ejETnepFXc4DjDItMzgSBI8E4FnlpEIHTgPqGcECOhAoPgdZsFFeln3SGVg6G+V4JR89YtlM66Nw6i906hiam2PgP4NlIWFPljh0QABxSrVS0IRPyP2KhbIWXwOh6H5VLmtVp2jiHmbXzcimD0gYU45U8I3to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsp+Vtis; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71283C1414
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 18:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785178439; cv=pass; b=LwPPxRX1jmqfbT3e4fDKnmq5esk1/1R+/M74DhnltdWUYwlAJz9JWKC2gNU7F6F4+8obH2Kc0QK9o7+lO5Lhp8PG5otZVZcTttli7QuJZrTKc3GzkCAzjFIfGjLc9osID8nqCUKzfKD+R6+gCUxor/UCvihvs3mkwPQmECHha6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785178439; c=relaxed/simple;
+	bh=jBGj3vq73TpQNUHtZ8hP8T9s3Rn/i9PzV5LYqBYc5Jk=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N/OmDLyreEyUpjvxQ883sqoZbQl3mHm4kxZa6dbLG3tLOT7Lppuc7eHyJ5f1t2CuYf7g7adnwiBmlgH+kof2nSd9JdkXKLn7a19qXGmkrkJxEfdj3yDk/hW3v4piMxqRmnmygTVTwIg/PD3Tt6+C3kQZXvmMrxU4/EbAWx+I8wA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UJFxwML0; arc=pass smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsp+Vtis"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845101F000E9;
-	Mon, 27 Jul 2026 18:46:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785177962;
-	bh=G62ARkKmlTg0xKHtLRN+2pxVd016EyrDeymzgbmm1qg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bsp+VtisYoNYECBzfsGITNDhCnos5nQqBl1wvlauXD5G183Rmb/Gkv5SXHoCDPaMI
-	 iLl5A48HDNAR5es8DgZcnJOqrJZMfhBXp+aJbpKswp6cp3wIzKUZhBK0RDbbllccZ2
-	 AKdCRHm1PfEwixHZvSMl60PEfyn5EdFnbbCN0/tt/xC8Py/kUCcR/s+a51v6xFDi0o
-	 fWL2A7qQJ/inyJCSyKxWyyBhvG4K2A95ukYeKzPemHX+gsgODyASo98KIAlYxotxbL
-	 AYZ1edUJhw9AbYFfjKrgFJLNMNpXOXQBKO7MM/N604Qlah9IGOa6ja965aS6FkcwaS
-	 YW++8OeDWqNLA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 14/15] s390/vfio-ap: Add 'migratable' feature to
- sysfs 'features' attribute
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260727173239.2420754-15-akrowiak@linux.ibm.com>
-References: <20260727173239.2420754-1-akrowiak@linux.ibm.com>
- <20260727173239.2420754-15-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 18:45:59 +0000
-Message-Id: <20260727184600.845101F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UJFxwML0"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cfff5f88dbso11812935ad.3
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 11:53:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785178437; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OytKeMaVWYbqpJzEe5aqASqDZ/MNYtVIj6SeQ9mDbKQtfVN9XZ8DT2nH9dItt7sd4F
+         6bSZV4LxUaBVCSznklU4xr8qACSS0oLyJHlRy5f6dv0RX8amuSZi6OCQRvKcxJQgkYg8
+         rby04njVVJE4xvESJN4sgWHWOWxcN9l0lARFcGz469LeGWBgb5kRMniKmVdjRQpo/7GU
+         NLzdmlpFdcWzsiNYF8pmdeExpUttrJHCgvoYPU0BTmzD8L5JANlf78R+zfkqn6gWcGI3
+         jkscDwX1f5KqdFYFeRGk9Ub6JyJRLl2Bt3zDb4SSWGNcJjhq0qATwKPUNDJGZrDHj1O/
+         wH/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Ezc2drTNkvx/EGjvXJcxB1ItRYJScaQpIm5JRHoUsx4=;
+        fh=Jr3f1qJmWchqQWNfhJhpiJzfo6QmlsWDNw15BTVFrK8=;
+        b=m06u5XDZ6Xb+7GbTkhF7Mg0sZddK/kFELpMLHxBy1u9ErBok5sjNCoF3kEkToCy556
+         qOMnCpvVbbUc50rF26JWxxutEaS9zZnn+LblQ20cIjMT80OMCNShAoC7j3fcq/b5HgGH
+         T89VriUeFURpgutUsA9aNiAxH1grH7vsYQlNdpiNSG5skuKCTS7zobL1IJhOmTaCKlLp
+         KY+cncvGij3Ja7LnkK9nVscot46ORWl4PsGViO5QRtZpDoXovPazYTzisoBeeD8pEL3w
+         G3/v0R+h/3sX5orvymTrpA3fTu9vLhE7Eb5d1yVx7o4bUTrUIrhje1iEuPqbenrOFBbu
+         CYYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785178437; x=1785783237; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ezc2drTNkvx/EGjvXJcxB1ItRYJScaQpIm5JRHoUsx4=;
+        b=UJFxwML01OyWDhhGzt5oP/vgee+QKm+snjmmmpDfkX2aopwCujH8dPQQ97ZHKh3mPo
+         wSIyJgJm8M004RUsHokQRSTdo6NznNTwTkLQLxPtuxukI7+oeEQ1IAwr4QcBf/thLFNs
+         QPn3NSWX2WGIX3Vh/6+MxlWfe+NPvmmR9Gu/mF6iRZwy6vKhYiQezuXx6LAcPikzD+AS
+         5tstckADxD/CnHSEThTvm0xQoz7Yk9C//l/boH0tSu4gvLVQMJxSZuJHUllpT42ehOYD
+         Lt6qqmz5ilUxbPtbFCIFH8dUHm0pytWZ+sHqFPF5Zvy9Mc7C2ow1sDgxaXWLYsnV5ApX
+         SSVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785178437; x=1785783237;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ezc2drTNkvx/EGjvXJcxB1ItRYJScaQpIm5JRHoUsx4=;
+        b=DKUuzBMvvsj5JMdkNhv2pI1vLdI7Znpbno54gic2gxkJYnO4AyyY90W+bjju6Vsd9k
+         +YnOEqbbhiODQWgIoRAgIUCKuATX/qrh5IYiSdfciTKFeIvGP+Hw6U6D1VWdmr1WuSec
+         to/gfIkZudHs20TCoK7UK1H5qqzv5eam1lSbrD6qxb9rKuVyUWiEb2Gzzli27b2Wg+kq
+         wRINo+cuzF842k+DFOhYeSsGCLZIBtL+5Ukqi1FFf2FA/lkz0CNdGIN1MdklzEEPLd5l
+         St46NgmXCFBQ1n/iQraBeFf0BcS9RwJEEZtU2XIAhS360n2B0UNuQjGq1uS8Is2Bmr2I
+         dx/g==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2Z6emIjbBkMjE3qVY/8h9R+hWU+HNyzio01HZckwkDr8DuTf9jYtulB5p56q0/lWB9xo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc1HFQd/NQdjOD11QXPbuU7I1HKLhz/k4wwnEL3njdh6QSMijW
+	dGZPpQzFNKPBZgqL8gn1NdpBddkDXeEUAwqDb6DtgxotyfT1luEdEaXNkMlO/9cVzWFKErQ7gyr
+	lR//OmCS4+6QAYT+WrVKgsARYBow4TfBTXUsGu8H3
+X-Gm-Gg: AR+sD10uhidn/UpKmPSw+QAvr6Njvq8/om36kzF92DPyadLamSlaXtzppf7f2yFEB/i
+	rPElfh5RygMAvSMdlGHRqvEhCqyg6uINBL1cOV750isG2ogtP9VJRKo7oFi2NWwbZXxF+eDoZSr
+	0OSQGAzh4/PMd5SPsrepBeZ9aQ6QgKuIlNJ+19GixpVzT9eKa0yL4CPNecWQ4pGtp7ivXY+pYRo
+	wz9i/9fLMWFkFLUeF6XnvqoBpNY6CG/ZM4SZdilHYQGoWroMWB8DI0yjJhIg6q9A2CqDMCeVwT2
+	dvCq16OoPDMqtrCfPUmr2DVbKT5GxbaSMM7V8ESyCZrope3p
+X-Received: by 2002:a05:6a20:6a05:b0:3c3:7a0a:18a7 with SMTP id
+ adf61e73a8af0-3c6c7fb20d4mr796670637.55.1785178436210; Mon, 27 Jul 2026
+ 11:53:56 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 27 Jul 2026 11:53:55 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 27 Jul 2026 11:53:55 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
+ <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
+ <20260712221934.GF674038@nvidia.com> <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
+ <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Mon, 27 Jul 2026 11:53:55 -0700
+X-Gm-Features: AUfX_mylYj_x8eQp0BvgfyW8gHfhB_jFskLbUbWzV0Fgf00qZT4Qn9h3hPlqeKo
+Message-ID: <CAEvNRgGYc0B1YyhDhS0Khfm3N85hbkYGMTfDLiXYn+WHTLF2EQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org, sumit.semwal@linaro.org, 
+	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com, 
+	alex.williamson@redhat.com, dan.j.williams@intel.com, aik@amd.com, 
+	linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
+	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
+	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The 'migratable' feature is unconditionally advertised in sysfs,=
- even when migration is unsupported and explicitly disabled.
---
+Xu Yilun <yilun.xu@linux.intel.com> writes:
 
---- Patch [14]: [PATCH v6 14/15] s390/vfio-ap: Add 'migratable' feature to =
-sysfs 'features' attribute ---
-commit 4ed92108ce1d93cfce3f8740cc391bfad091179c
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>> > If VFIO can create one
+>
+> It is an interesting idea to let VFIO create a guest_memfd instance, if
+> DMABUF doesn't work. But to achieve this goal, I think we still need to
+> refactor guest_memfd to allow for different memory/MMIO resource
+> exporters/creators, and different resource importers/users like KVM MMU
+> & IOMMUFD.
+>
 
-s390/vfio-ap: Add 'migratable' feature to sysfs 'features' attribute
+Yup I think both ways we'd need some level of integration from both
+sides :)
 
-This commit adds the 'migratable' feature to the sysfs features attribute=20
-to indicate that migration of vfio devices is supported.
+>>
+>> At guest_memfd creation time, guest_memfd is always created for a
+>> KVM. This is the first place where it is bound to a kvm instance. This
+>> is one place where it helps Yilun with Confidential VMs, so KVM can be
+>> sure that the memory was meant for a specific CoCo kvm and not any VM.
+>>
+>> I think it might be weird to have VFIO take a kvm fd to create a
+>> guest_memfd?
+>
+> I think having VFIO create a guest_memfd is better than having KVM
+> create a guest_memfd on behalf of VFIO.
+>
+> The lifecycle of the MMIO resources should be managed by VFIO, cause
+> the availability of these MMIO resouces are impacted by device
+> operations, e.g., device reset, PCI Memory Space Enable (MSE) ...
+> You can't export MMIO resources to KVM MMU without VFIO's awareness.
+>
 
-> diff --git a/drivers/s390/crypto/vfio_ap_drv.c b/drivers/s390/crypto/vfio=
-_ap_drv.c
-> index 8e69ed286bb9c..4e973736522bc 100644
-> --- a/drivers/s390/crypto/vfio_ap_drv.c
-> +++ b/drivers/s390/crypto/vfio_ap_drv.c
-> @@ -26,9 +26,11 @@ MODULE_LICENSE("GPL v2");
->  struct ap_matrix_dev *matrix_dev;
->  debug_info_t *vfio_ap_dbf_info;
-> =20
-> +#define FEATURES "guest_matrix hotplug ap_config migratable"
-> +
->  static ssize_t features_show(struct device *dev, struct device_attribute=
- *attr, char *buf)
->  {
-> -	return sysfs_emit(buf, "guest_matrix hotplug ap_config\n");
-> +	return sysfs_emit(buf, "%s\n", FEATURES);
+Thanks for explaining the above!
 
-[Severity: Medium]
-Will this unconditionally advertise the migratable feature even when the
-environment does not support it?
+Do you mean that as long as VFIO knows that some addresses are not
+usable, those addressses have to be removed from the stage 2 page tables
+that KVM manages?
 
-If the system is running as a Secure Execution (SE) guest, migration is
-typically disabled. By hardcoding "migratable" into the FEATURES string,
-management tools like libvirt querying the features sysfs attribute might
-incorrectly assume migration is supported.=20
+> And VFIO doesn't have to take a kvm fd paramter to create a guest_memfd,
+> VFIO has got the kvm instance via KVM_DEV_VFIO_FILE_ADD.
+>
 
-This could lead orchestrators to make incorrect VM placement decisions,
-followed by unexpected migration failures when QEMU rejects the migration
-because the VFIO mdev lacks the capability.
+I'm new to this - looks to me KVM_DEV_VFIO_FILE_ADD is for linking VFIO
+to KVM but some mmap-ing is also required (pre-CoCo) to set up memslots?
 
-Should features_show() check environmental constraints, such as
-ap_is_se_guest(), before including the migratable flag in the output?
+With CoCo, setting up memslots would use some fd (guest_memfd wrapping
+VFIO or the VFIO-created guest_memfd like you were suggesting) and I'd
+think there will still be some notifiers between KVM and VFIO for the
+mapping.
 
->  }
->  static DEVICE_ATTR_RO(features);
+Btw is it right to say that KVM_DEV_VFIO_FILE_ADD is only in the case of
+setting up irqchip? Is irqchip a requirement for Confidential IO?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727173239.2420=
-754-1-akrowiak@linux.ibm.com?part=3D14
+
+Hope you also had a chance to look at [1] that David Woodhouse is
+working on :)
+
+[1] https://lore.kernel.org/all/1dc299af6b795a40c8887b3d84f915024f6446a9.camel@infradead.org/
+
+>>
+>> I was thinking that the userspace VMM could do something like:
+>>
+>>   int vfio_fd = open("/dev/vfio/devices/vfio0");
+>>   int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
