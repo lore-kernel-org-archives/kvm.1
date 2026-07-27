@@ -1,188 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1420C37A847
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 19:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02BE3CFF73;
+	Mon, 27 Jul 2026 19:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785180152; cv=none; b=PdTl+/SC2r+pYM8inkRiWRE5ApQa1+dhQ6MMTnTdQ1ItTP4p2Jonj3PbeF4L7FdTO7T0AxHvN8V1rbtOsAxOxRm7Hlisst/xODTvRYSI+uW3LTxfgLuCHtgDM+oQ0UeMm+zIAuiObPF21sD2f5WWITHWWyWTKNOJ9hHxwtDVvZk=
+	t=1785180164; cv=none; b=R/1IHBvobbhiB1wAkvAXvdpvJSDXMDkZH2ZaDwYJ1DojfxBgdzUxbJjOcbhrPwoZ8xt26G2EE6+Y/MSbSrXFKAY0UrHI/ocjFx+Gp1FH6nDpN0tkuzbG6nBG9Yt2Eruahdfd/bOyHhTKsP2pbYKfrgBGzPB2pCyjxuT8WNKxFKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785180152; c=relaxed/simple;
-	bh=2KfP/duPmwGscXLTndTdGCghsA08Jvo5RUX2o0nmN9M=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=C24x2tD3XnO4538znyFtWdd041Z0OQolOkcBEsyon6b+ItuNowWWIGzoiGsYDBtVDhlQT+encU/FR+2fhNp9Ku/xC0nm6rzNnLtH3DmXvdnVvQnoWDMAjNWl5/eqi/QoNUw5/qAiMrjeJ6YsTSeHp/6uu61NO051G7NnQ84Gzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCVm9ai9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785180164; c=relaxed/simple;
+	bh=p+PbP0myv75st5mwvzBTsdFK7aSDgUKdeNFvumRPnck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oJCgVQa7AHXUDcgStHXd5JR0P0OyXL0Gtb1qQsdnMIuqaejsmKyb4kG9cJBrwFozvyXjBJVZvYdQvfE0EqPIbXPjZ2TdbEAXkyG/tZug1pPsOQK2YS3IvKbwwyOmqrq41jn2q799VEU1ZQRvL1fAG1VZc/SqcSTd7z+6dwEqhQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bE5SxsM3; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCVm9ai9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADC91F000E9;
-	Mon, 27 Jul 2026 19:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785180150;
-	bh=uh0VAMssvl1cbDVCWHmR6r2Z5+Uf9j5cTeZ/oRCKvSA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YCVm9ai9wZ7GY+PyJR43bPs+3Y3il2PA/fBeEM9IKdaPVrGHV57emjmc9rrKOmboB
-	 PrN6c8E8O3AmrFccjAye5K6L5NguUQgOLM8AE5PaNxD57fXg5us22UF6yqXuuWwTWQ
-	 BsQkTubOgoB0PZ/mqRKaffb57XyNuu//zNIzLS/6R2rtewvLaxe7Je1ZX/sSPV2EtN
-	 KSBKrb/9yaW4nxc5D2PIeu3UdmdEUAjFJbEt8yRJwwohRhs1oo8ecm4lOgsKYuZz4r
-	 HvXfN5nDQCF/q8/ONUhtEBxYwtCX5shVQuyz4EDy6Z8qy/Pqq6p+QUJdbi16clM0+M
-	 5s4eyfDAEmkFg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ashish Kalra" <Ashish.Kalra@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 19:22:30 +0000
-Message-Id: <20260727192230.9ADC91F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bE5SxsM3"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RIHYoh2875524;
+	Mon, 27 Jul 2026 19:22:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=WRGNLeV0oXr2M/BZ+
+	sfXha8JHIJWYlAk6/V1XSPYaiM=; b=bE5SxsM3L22liu+dSajHiT1Gm9yo1GfMI
+	uussQQ2xhr8hA2aJ/IZen5Yyr3J9spyFKVQ2+6TgnvrNLDvCkCgRCewFn6PJUzmb
+	+zTG+YpV1id/LzXW+1N3hC6jPKzSbfGfKStZqvbstknQGHtuZPhYhx0jpNm2cnLB
+	UElLmtZB4A8QGBFst0eEKgbE3ZJHvlPJyROJwRWw6k81RzF64oop5WbB5SHTg1SP
+	ZfXB3YEnV3T0B+ncX9YjK/mX8ltaobV184ESjyjoZGZKVpOllWKdLBKejCAbgAR/
+	ZV9XlQCsAq9S/6reEwzD4fOqT9FiH0Y7quevYoNvXiIHzjHL5HKDA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0nh84m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 19:22:41 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66RJBHHT019296;
+	Mon, 27 Jul 2026 19:22:40 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5xxegh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 19:22:40 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RJMber31064744
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jul 2026 19:22:37 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A2A120076;
+	Mon, 27 Jul 2026 19:22:37 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D2D9620071;
+	Mon, 27 Jul 2026 19:22:36 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 27 Jul 2026 19:22:36 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id B66DD1627E5; Mon, 27 Jul 2026 21:22:36 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org,
+        Farhan Ali <alifm@linux.ibm.com>
+Subject: [PATCH v7 01/10] s390/vfio_ccw: free all memory if cp_init() fails
+Date: Mon, 27 Jul 2026 21:22:21 +0200
+Message-ID: <20260727192230.2715207-2-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260727192230.2715207-1-farman@linux.ibm.com>
+References: <20260727192230.2715207-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDE3NyBTYWx0ZWRfXxfEVgpXCEPUx
+ RVFwtY+tDKPSAS6rmOPayD9enijujrcEs0KG0ugjx11ik0L4G3Kg4M8miq9JZkt1kGZ3Q/rzrJ4
+ bsGgaTxdW0sLsQXJNYeeO615qyxtjiA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDE3NyBTYWx0ZWRfX3HuVI8WZqlts
+ 3hoSLUiCjFVxMU5OZ7ono1FwuENR+SV7ovwmr14iHXvqDDWP0RgAZ3F816tQlkJC4KRfYfp6B+K
+ jL5rVBQ7MUlxoT3uKPy3qA490c3zr409yM2Nu+lr0sLBlvirW5+I7VkE1/iXpoOkDLnggdFKFn6
+ YwQjOCcOqmGRckM9sWhvDyAPZDmm1BiVU52HCGw/yvvC/LJ/dLb8hjZZjeegQ/ykQtM1pjjfJYE
+ JyMs84TkaCLQj8pTGZUoEakZw4IBnCDaqNVgn7RvtMzXjbuHDwRWFVNqDmvauZwlK9GzLEW61Er
+ b38xc05Dv8oPNvT+ouSDbjjBwiLXm0E+n+0rP61iXO487PRi0I7N8Kr//R8s8p4+bs19W8oS1hU
+ +2Z1/I60eY+3bupjnyYoK231UGUUFLpqwVQHMAIpXnUiaI6IOA6zppXIjBw1EUG92R+NfPbAdgg
+ 1L4rJAG/jdjwbUypVfw==
+X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a67b001 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=WEmllObKAWPfCt-5-jUA:9
+X-Proofpoint-GUID: shkMlN9bpIdQGZ7hJJ5ND0Xk6d9nFuZJ
+X-Proofpoint-ORIG-GUID: shkMlN9bpIdQGZ7hJJ5ND0Xk6d9nFuZJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_05,2026-07-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270177
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] `snp_cleanup_rmpopt()` unconditionally dereferences `rmpopt_cpumas=
-k`, causing a deterministic kernel panic on shutdown if the mask was never =
-allocated (e.g., on CPUs without RMPOPT support or if allocation fails).
-- [High] If SEV-SNP firmware initialization fails, the error path returns d=
-irectly without cleaning up the state set by `snp_prepare()`, leaving CPU h=
-otplug permanently disabled.
-- [Medium] Re-initializing SEV-SNP after a legacy shutdown leaks the `rmpop=
-t_cpumask` allocation because the old pointer is overwritten without being =
-freed.
---
+The routine cp_free() is called to unpin/free any memory once an I/O
+is completed successfully, or if cp_prefetch() fails. But if cp_init()
+fails, and cp->initialized is not enabled, the same routine cannot be
+used to free all the memory.
 
---- Patch [3]: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSR=
-s ---
-commit e4623d49ab6201adc5b609f5a6043ed6dfb7f55c
-Author: Ashish Kalra <ashish.kalra@amd.com>
-Subject: x86/sev: Initialize RMPOPT configuration MSRs
+An attempt to address this exists in ccwchain_handle_ccw(), where a
+single call to ccwchain_free() is made for the currently-processed
+CCW segment. But this will leak other segments (created as a result
+of a Transfer in Channel) that had been allocated as part of the same
+channel program.
 
-The new RMPOPT instruction helps manage per-CPU RMP optimization
-structures inside the CPU. This commit initializes the per-CPU RMPOPT
-table base to enable RMP optimization for up to 2 TB of system RAM.
+Address this by performing the cleanup outside of the recursive
+ccwchain_handle_ccw()/ccwchain_loop_tic() logic.
 
-> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-> index e2f69fba09389..8bfd802848361 100644
-> --- a/arch/x86/virt/svm/sev.c
-> +++ b/arch/x86/virt/svm/sev.c
-[ ... ]
-> @@ -558,6 +561,17 @@ int snp_prepare(void)
->  }
->  EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
-> =20
-> +static void snp_cleanup_rmpopt(void)
-> +{
-> +	int cpu;
-> +
-> +	for_each_cpu(cpu, rmpopt_cpumask)
+Fixes: 8b515be512a2 ("vfio-ccw: Fix memory leak and don't call cp_free in=
+ cp_init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+---
+ drivers/s390/cio/vfio_ccw_cp.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-[Severity: High]
-If rmpopt_cpumask was never allocated, does this macro dereference a NULL
-pointer?
-
-In snp_setup_rmpopt(), if rmpopt_capable() is false, the mask remains
-unallocated. When snp_shutdown() subsequently calls snp_cleanup_rmpopt(),
-it iterates over the mask without checking if it is available.
-
-Can this cause a kernel panic on system shutdown or module unload for
-systems without RMPOPT support?
-
-> +		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
-> +
-> +	free_cpumask_var(rmpopt_cpumask);
-> +	rmpopt_pa_start =3D 0;
-> +}
-[ ... ]
-> @@ -578,6 +593,46 @@ void snp_shutdown(void)
->  }
->  EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
-> =20
-> +static bool rmpopt_capable(void)
-> +{
-> +	return cpu_feature_enabled(X86_FEATURE_RMPOPT) &&
-> +	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
-> +}
-> +
-> +void snp_setup_rmpopt(void)
-> +{
-> +	u64 rmpopt_base;
-> +	int cpu;
-> +
-> +	if (!rmpopt_capable())
-> +		return;
-> +
-> +	if (!zalloc_cpumask_var(&rmpopt_cpumask, GFP_KERNEL)) {
-
-[Severity: Medium]
-Does this unconditional allocation leak the previously allocated cpumask
-when SEV-SNP is re-initialized?
-
-During a legacy shutdown, snp_shutdown() returns early when the SnpEn
-firmware bit is still set, skipping snp_cleanup_rmpopt():
-
-arch/x86/virt/svm/sev.c:snp_shutdown() {
-...
-	rdmsrq(MSR_AMD64_SYSCFG, syscfg);
-	if (syscfg & MSR_AMD64_SYSCFG_SNP_EN)
-		return;
-...
-}
-
-A subsequent call to __sev_snp_init_locked() will invoke snp_setup_rmpopt()
-again and overwrite the old pointer without freeing it.
-
-> +		pr_err("Failed to allocate RMPOPT cpumask\n");
-> +		return;
-> +	}
-[ ... ]
-> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
-> index f833cb7e4da36..0b40d23a26b45 100644
-> --- a/drivers/crypto/ccp/sev-dev.c
-> +++ b/drivers/crypto/ccp/sev-dev.c
-> @@ -1630,6 +1630,9 @@ static int __sev_snp_init_locked(int *error, unsign=
-ed int max_snp_asid)
->  	}
-> =20
->  	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
-> +
-> +	snp_setup_rmpopt();
-> +
-
-[Severity: High]
-If the SEV-SNP firmware initialization fails, does this leave CPU hotplug
-permanently disabled?
-
-A global cpu_hotplug_disable() call is made inside snp_prepare() right befo=
-re
-we reach this code. If the subsequent firmware command fails in
-__sev_snp_init_locked(), it returns the error directly without cleaning up:
-
-drivers/crypto/ccp/sev-dev.c:__sev_snp_init_locked() {
-...
-	rc =3D __sev_do_cmd_locked(cmd, arg, error);
-	if (rc) {
-		dev_err(sev->dev, "SEV-SNP: %s failed rc %d, error %#x\n",
-			cmd =3D=3D SEV_CMD_SNP_INIT_EX ? "SNP_INIT_EX" : "SNP_INIT",
-			rc, *error);
-		return rc;
-	}
-...
-}
-
-Since sev->snp_initialized remains false on this error path, snp_shutdown()
-is never executed on teardown, meaning cpu_hotplug_enable() is never invoked
-to release the lock.
-
->  	sev->snp_initialized =3D true;
->  	dev_dbg(sev->dev, "SEV-SNP firmware initialized, SEV-TIO is %s\n",
->  		data.tio_en ? "enabled" : "disabled");
-
+diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
+p.c
+index 7561aa7d3e01..086d1b54bdb0 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.c
++++ b/drivers/s390/cio/vfio_ccw_cp.c
+@@ -455,9 +455,6 @@ static int ccwchain_handle_ccw(dma32_t cda, struct ch=
+annel_program *cp)
+ 	/* Loop for tics on this new chain. */
+ 	ret =3D ccwchain_loop_tic(chain, cp);
+=20
+-	if (ret)
+-		ccwchain_free(chain);
+-
+ 	return ret;
+ }
+=20
+@@ -486,6 +483,23 @@ static int ccwchain_loop_tic(struct ccwchain *chain,=
+ struct channel_program *cp)
+ 	return 0;
+ }
+=20
++static int ccwchain_build_ccws(dma32_t cda, struct channel_program *cp)
++{
++	struct ccwchain *chain, *temp;
++	int ret;
++
++	ret =3D ccwchain_handle_ccw(cda, cp);
++
++	if (ret) {
++		/* Cleanup if an error occurred */
++		list_for_each_entry_safe(chain, temp, &cp->ccwchain_list, next) {
++			ccwchain_free(chain);
++		}
++	}
++
++	return ret;
++}
++
+ static int ccwchain_fetch_tic(struct ccw1 *ccw,
+ 			      struct channel_program *cp)
+ {
+@@ -735,7 +749,7 @@ int cp_init(struct channel_program *cp, union orb *or=
+b)
+ 	memcpy(&cp->orb, orb, sizeof(*orb));
+=20
+ 	/* Build a ccwchain for the first CCW segment */
+-	ret =3D ccwchain_handle_ccw(orb->cmd.cpa, cp);
++	ret =3D ccwchain_build_ccws(orb->cmd.cpa, cp);
+=20
+ 	if (!ret)
+ 		cp->initialized =3D true;
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1784844080.gi=
-t.ashish.kalra@amd.com?part=3D3
+2.53.0
+
