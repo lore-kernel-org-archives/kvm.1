@@ -1,213 +1,144 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187303B14A7;
-	Mon, 27 Jul 2026 15:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A363F3B27DA
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 15:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785166596; cv=none; b=XloiL+GIgnMu+ngk4CNATo5ixgBdFWAcWg1Hi7tslYShfrCh60oUorKKOar4cg15iTMxj0doDtfdadAdtubac47YFzrgPGbtZA+jMKw2VvkMW4eB6WParoAvJixeF53SL+asviUhHorXOmd0zWiaVPrWTKUnQgn8A6GWf93U2nA=
+	t=1785166710; cv=none; b=rnCs6WGhRgwXLQYtFtK+RaXOuUChytZPOW0y+hMBBLaYZOpmnMP7qYrBkcUFRTezFvmsAeJa6+xg6Aj+H0RMCN+USVDyfJrXybIgCYrhgG5vjMLYb0t+4dUFhMIeBV9LDsdC3D69B3c6h0bweOBQBTi4b1COf+HAx8iOhK2oqUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785166596; c=relaxed/simple;
-	bh=VxwcTpU1zkLTiWJHJFd1+dPEfdXN9pkdJizROxnSPx8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XnSfIAQM5WPB4OInEwfkZbZERtIk05oOPx0plntIBgIfyDQRys0WaTei8KNCDOuJjcJ+uGhY9o3tm1uDEzKHUbahJO9MJ+J5XBwDmBJtyVDx0EYKShNKMmUFf/VOkTKOZ2yYmu2cVZ+t7mDoXHj4z5AXbEs1cr9X1R5mAbr7Fr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=umQaGad5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785166710; c=relaxed/simple;
+	bh=G5Fwl6ud9evOZIYHGQkeNauVJz12mLkmiRAJ68t7i+c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ALxHzUnR5TKKbdtfQmRujfGTWoZvjW0bkqO3zHgZNhU2wKY9QqDfr/UvTvI3lQmXPOlzlTBVpauJ1igOII3Sr0u+JtWdIweabGKCbH3ccLAwj6ljjxcRhVXfHd7q57rT8ngBeULNRe6i+HEO6XrHOy8+HnW12VGwywCZmsyclOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ebfynwDj; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="umQaGad5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4556B15A1;
-	Mon, 27 Jul 2026 08:36:29 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 545F83F763;
-	Mon, 27 Jul 2026 08:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785166593; bh=VxwcTpU1zkLTiWJHJFd1+dPEfdXN9pkdJizROxnSPx8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=umQaGad50YqGP9/hpR0vblKavVaO/yfzmd6WpBrSu3X1qxzwvAqth8D98RKBUpnRl
-	 YBkPW2SI9qXrZ/dhG0U16YoQWNEaqdp7BQq231JeMnCBE+q/DgI9MewD6hJ98T6X/b
-	 l61b8+i7MvjGE4JRrEUAFuCexvu/jxEyxkuWD4XU=
-Date: Mon, 27 Jul 2026 16:36:23 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	linux-openrisc@vger.kernel.org
-Subject: Re: [PATCH RFC v2 13/20] x86: mm: carve out the generic compile-time
- folded pgtable case in effective_prot()
-Message-ID: <amd69-dELYw4qlKC@e129823.arm.com>
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-13-d9e4bad31e0a@arm.com>
- <d16a8412-acee-4c21-a126-f570d6306983@intel.com>
- <amD_5r04mzMoZ0-r@e129823.arm.com>
- <33c774f6-2750-4831-8eee-e43dc471da32@intel.com>
- <amEvYRs7CjhQdQWT@e129823.arm.com>
- <a1df631b-9854-497b-b7fd-831288fca81e@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ebfynwDj"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8484f26852dso3028448b3a.1
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 08:38:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785166708; x=1785771508; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gHRhqfLK6c/QdmdMnR944OptUWndEHMP2Gs3FISc6B4=;
+        b=ebfynwDjwLQVJV0lTeUJOh4p1bQr0mtlGy4MsCP8VmSSZ/bV7PkI7AjLae+DG8X6eO
+         /g/lr3E64MnUXo9DiKyQYyZvSRClDcOK+zxcqRVnvgRKK/Xs55xSW0Do+4w4eahbgTYl
+         EAq1jX+S1Buv3GFRxWNiBeLFRsLs/tOKvLiyjCHyiI40bcdjP52bY9Q4h19Z39yKLlhL
+         xXfMt/Mcv5PeZoGhgqhAarD+8uSOe1A/SrgEcZul1a8q9nlAhoxTmrY1mw3H+ytLBR9Z
+         XkcdGoJ/t71araQHJqM5XqzdM2FmYChhp7Dt+/98OkLSXdBIGAoT3vPdhAftVt//CLnj
+         iCZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785166708; x=1785771508;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gHRhqfLK6c/QdmdMnR944OptUWndEHMP2Gs3FISc6B4=;
+        b=aH7j3OlxTPV+8hiubMOHIkhNjgtYox5oWaQVfEMsYVaWiZRv/SbJHVTF0QKSD2qugv
+         5VmJOJ1ygwBBc4T5nZjH2mjhCJPV+GvEQkau31Frr6T7WTFWDfrnpYz9vzX4sMUY7n1Q
+         +gaOt3tOXvY5JSal2vTOR3fdipcO90MRR2hBPAwMQ7aZdjHAS/zCVG4Wrw5dGgNWg/X5
+         OZqF/BsHuHQuY9eIbp5utJPouji7JfW70POepPnyRz3fH5+byW2aakH6bRU2JPCWCbtF
+         9Kd3dsBDE3+bA97/yQ0cEuf2+fpHDUPzi+kBZwojqWTTXPl/+mmuAkm9KaUkUHUIMvRP
+         CaGA==
+X-Forwarded-Encrypted: i=1; AHgh+RpL6L2jk9ovF7Vd0LsZcPvtaRAMQZ5gjT+K4Uf04KIYGzzv9RTCqOwWlxSLd8uGT9MjgXo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNskoHDPwN8vUQXdPY9tHB2UOmn1wcGcFhcdGmPLKvLc9xGlC8
+	zMrBExv5ELEsGCgbEO0gC26c7tAlB9wTUUMF/T3CTPzmD+tvxXhs6bSo6r++taoQ0AlJ8wggdZ+
+	JN+6nIw==
+X-Received: from pfwp23.prod.google.com ([2002:a05:6a00:26d7:b0:845:e386:e036])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94f9:b0:848:6447:e0a6
+ with SMTP id d2e1a72fcca58-84e5942da59mr6622547b3a.9.1785166707621; Mon, 27
+ Jul 2026 08:38:27 -0700 (PDT)
+Date: Mon, 27 Jul 2026 08:38:27 -0700
+In-Reply-To: <CAO9r8zMzV=DqR9NZdACzF1NF84GvPnUwP0p-0CypE-3vARxuWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a1df631b-9854-497b-b7fd-831288fca81e@kernel.org>
+Mime-Version: 1.0
+References: <20260616004155.1435766-1-yosry@kernel.org> <20260616004155.1435766-23-yosry@kernel.org>
+ <amFl89ch5Iej63L3@google.com> <amFms2CnzhDUuRCk@google.com>
+ <amGiAKsC3XrF6DyA@google.com> <amIx9Ki6gv-wgBnX@google.com> <CAO9r8zMzV=DqR9NZdACzF1NF84GvPnUwP0p-0CypE-3vARxuWQ@mail.gmail.com>
+Message-ID: <amd7c9Dznv1XM0kj@google.com>
+Subject: Re: [RFC PATCH v2 22/25] KVM: x86/mmu: Refactor kvm_mmu_invlpg() to
+ allow skipping the gva flush
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-> On 7/22/26 23:00, Yeoreum Yun wrote:
-> > On Wed, Jul 22, 2026 at 01:20:39PM -0700, Dave Hansen wrote:
-> >> On 7/22/26 10:37, Yeoreum Yun wrote:
-> >>> However, mm_pXd_folded() requires to mm for other architecture like
-> >>> s390. might save the mm instead of first_level and calls the
-> >>> ptdump_pt_level_first() with static inline version would make the
-> >>> constant comparison. So it requires to save *mm* structure in here.
-> >>
-> >> I'm having a really hard time parsing that.
-> >>
-> >> I think you're trying to say that the effective_prot_p*() functions need
-> >> to know the first level but they don't (today) need the mm_struct. If
-> >> they don't get the (calculated) first_level passed in, they need the
-> >> mm_struct instead.
-> >>
-> >> I think you're arguing 'pg_state' needs a ->first_level or a ->mm.
-> >> Having a pg_state->mm doesn't seem bad to me at all.
-> >>
-> >> But, it's also a little bit silly. It would not be rocket science to
-> >> pass an mm_struct down to the effective_prot_p*() functions. It makes a
-> >> whole lot of sense to me for a page table walking function to need
-> >> metadata from the mm_struct to walk correctly.
-> > 
-> > Yes. I mean to add pg_state->mm like:
-> > 
-> > diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-> > index 2afa7a23340e..aaf00f0c6624 100644
-> > --- a/arch/x86/mm/dump_pagetables.c
-> > +++ b/arch/x86/mm/dump_pagetables.c
-> > @@ -38,6 +38,7 @@ struct pg_state {
-> >         bool check_wx;
-> >         unsigned long wx_pages;
-> >         struct seq_file *seq;
-> > +       struct mm_struct *mm;
-> >  };
-> > 
-> >  struct addr_marker {
-> > @@ -254,7 +255,7 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
-> >         pgprotval_t prot = val & PTE_FLAGS_MASK;
-> >         pgprotval_t effective;
-> > 
-> > -       if (level > 0) {
-> > +       if (level > pgtable_first_level(st->mm)) {
-> >                 pgprotval_t higher_prot = st->prot_levels[level - 1];
-> > 
-> >                 effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
-> > @@ -452,7 +453,8 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
-> >                 .level = -1,
-> >                 .to_dmesg       = dmesg,
-> >                 .check_wx       = checkwx,
-> > -               .seq            = m
-> > +               .seq            = m,
-> > +               .mm             = mm,
-> >         };
-> > 
-> >         ptdump_walk_pgd(&st.ptdump, mm, pgd);
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index 8c093c119e5a..6e7d0580db99 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -2490,4 +2490,15 @@ pgprot_t vm_get_page_prot(vm_flags_t vm_flags)                           \
-> >  }                                                                      \
-> >  EXPORT_SYMBOL(vm_get_page_prot);
-> > 
-> > +static inline int pgtable_first_level(struct mm_struct *mm)
-> > +{
-> > +       if (mm_pmd_folded(mm))
-> > +               return 3;
-> > +       if (mm_pud_folded(mm))
-> > +               return 2;
-> > +       if (mm_p4d_folded(mm))
-> > +               return 1;
-> > +       return 0;
-> > +}
+On Fri, Jul 24, 2026, Yosry Ahmed wrote:
+> > > > > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> > > > > > index 65c35ed8f4a01..3feb75732f7b4 100644
+> > > > > > --- a/arch/x86/kvm/mmu/mmu.c
+> > > > > > +++ b/arch/x86/kvm/mmu/mmu.c
+> > > > > > @@ -6615,15 +6615,15 @@ static void kvm_mmu_invalidate_addr_in_root(struct kvm_vcpu *vcpu,
+> > > > > >         write_unlock(&vcpu->kvm->mmu_lock);
+> > > > > >  }
+> > > > > >
+> > > > > > -void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > > > -                            u64 addr, unsigned long roots)
+> > > > > > +static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > > > +                                     u64 addr, unsigned long roots, bool flush_gva)
+> > > > > >  {
+> > > > > >         int i;
+> > > > > >
+> > > > > >         WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
+> > > > > >
+> > > > > >         /* It's actually a GPA for vcpu->arch.guest_mmu.  */
+> > > > > > -       if (mmu != &vcpu->arch.guest_mmu) {
+> > > > > > +       if (flush_gva && mmu != &vcpu->arch.guest_mmu) {
+> > > > > >                 /* INVLPG on a non-canonical address is a NOP according to the SDM.  */
+> > > > > >                 if (is_noncanonical_invlpg_address(addr, vcpu))
+> > > > > >                         return;
+> > > > > > @@ -6642,9 +6642,15 @@ void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > > >                         kvm_mmu_invalidate_addr_in_root(vcpu, mmu, addr, mmu->prev_roots[i].hpa);
+> > > > > >         }
+> > > > > >  }
+> > > > > > +
+> > > > > > +void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
+> > > > > > +                              u64 addr, unsigned long roots)
+> > > > >
+> > > > > Rather than kvm_mmu_invalidate_addr() for the wrapper, what if we call this
+> > > > > kvm_mmu_invalidate_gva()?  And then kvm_mmu_invlpg_gva().  Then we don't need
+> > > > > to have the "in_root" version to a quad-underscores helper, and IMO it's more
+> > > > > obvious what's different between the one-line wrappers and the inner helpers.
+> > > >
+> > > > Hrm, or maybe I'm not understanding what "flush_gva" means.  At first glance, I
+> > > > was assuming you were using it to differentiate between GVA and GPA, but IIUC,
+> > > > it's literally skipping the flush for the current context, which just so happens
+> > > > to be done only for GVAs.  I'd still like to avoid the "in_root" helper, if at
+> > > > all possible.
+> > >
+> > > Yes, it's skipping the TLB flush that is only needed for GVAs. The
+> > > alternative I had in mind (but thought was worse) was to refactor the
+> > > TLB flush part out of kvm_mmu_invalidate_addr() (or
+> > > __kvm_mmu_invalidate_addr()) in this patch instead of adding a boolean,
+> > > but this still requires adding a wrapper and the possibility of a
+> > > quad-underscore helper.
+> > >
+> > > What's the main objection to kvm_mmu_invalidate_addr_in_root()?
+> >
+> > I don't love the __kvm_mmu_invalidate_addr() => kvm_mmu_invalidate_addr_in_root()
+> > callchain.  It's not at all obvious that the in_root() helper shouldn't be called
+> > directly.  I don't hate it, but I do think we need better clarity on what all this
+> > is doing.
+> >
+> > E.g. when looking at __kvm_inject_emulated_page_fault(), since it hardcodes a
+> > single root, it's a bit headscratching to use kvm_mmu_invalidate_addr() instead
+> > of kvm_mmu_invalidate_addr_in_root.
 > 
-> In that case the function should probably be called
+> Coming back to this, I agree it's confusing. I think this can be fixed
+> with a better name though. Looking at
+> kvm_mmu_invalidate_addr_in_root() (or __kvm_mmu_invalidate_addr() in
+> current code), seems like what it does is find SPTEs for that address,
+> sync them, and flush the TLB if needed.
 > 
-> "mm_first_pgtable_level"
-> 
-> But now it gets confusing, because we have
-> 
-> enum pgtable_level {
-> 	PGTABLE_LEVEL_PTE = 0,
-> 	PGTABLE_LEVEL_PMD,
-> 	PGTABLE_LEVEL_PUD,
-> 	PGTABLE_LEVEL_P4D,
-> 	PGTABLE_LEVEL_PGD,
-> };
-> 
-> 
-> But maybe we can make sense of it and do
-> 
-> /*
->  * The enum values correspond to the numerical page table level,
->  * starting with the highest level being level 0.
->  */
-> enum pgtable_level {
-> 	PGTABLE_LEVEL_PGD = 0,
-> 	PGTABLE_LEVEL_P4D,
-> 	PGTABLE_LEVEL_PUD,
-> 	PGTABLE_LEVEL_PMD,
-> 	PGTABLE_LEVEL_PTE,
-> };
-> 
-> static inline enum pgtable_level mm_first_pgtable_level(struct mm_struct *mm)
-> {
-> 	if (mm_pmd_folded(mm))
-> 		return PGTABLE_LEVEL_PMD;
-> 	if (mm_pud_folded(mm))
-> 		return PGTABLE_LEVEL_PUD;
-> 	if (mm_p4d_folded(mm))
-> 		return PGTABLE_LEVEL_P4D;
-> 	return PGTABLE_LEVEL_PGD;
-> }
-> 
-> 
-> We could even teach effective_prot() and friends to consume enum pgtable_level
-> now and have it all be a bit cleaner?
+> So maybe mmu_sync_addr_sptes() or mmu_sync_and_flush_addr_sptes()?
 
-Yes. That would be good for me unless others comment.
-
-
--- 
-Sincerely,
-Yeoreum Yun
+kvm_mmu_sync_addr()?  The "sptes" part is implied in things like kvm_sync_page()
+and mmu_sync_children().
