@@ -1,135 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395953FFF82
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 12:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C60A377EA2;
+	Mon, 27 Jul 2026 12:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785156063; cv=none; b=gpyqGjhZROqV1I8NEtaqBjlIyIqTfFtC5OBMfOQ8nR4tVJhNJr9JxZdRSqn83i+qcaQeAU/cCmEtygEYS9FlggPPsHmQdfbzw+67W47BEW/sqZO+yT0rl7UZ8I67vSxbSFpXiYo8FlQ+yqpT8XyXd2DnxkekoCdb2GdNW/dKi9U=
+	t=1785156188; cv=none; b=RPz9iNWqZiaY9tmwG0S9pERutRWggZqsvieqPV9IR2aPV9jV0ALQGP2A/005Q33MHTKQB0RAgGu4aDugwqxB5HBhCsIx2zwuhn/LYDrPBWcu0QPceNA7wI1WmXDxeZiDmEShYD2jI3zxBqO+PLEABp2lkolgoaRZ2tAb9RUGvDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785156063; c=relaxed/simple;
-	bh=vT5ibV5Ktvla8qTpOkxrOfAkUaDF6rbpoB9Rcr1iOD0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=N7bQcCTIBE6zSXv74BO3g5NI9hQxjbrDkX6ewR90Y0AIJSdvfAO0J/fLpXn5dvKxC48GY4XaPI1yJ0vYfi8odT/uOrUuthD6kRk/U0oBlvi9aayU3tXANKrC1DGBs3u6oN8ymtf+2eoTBCZCSwe4YOuED4PHNKePJRf/lrQUulM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMLYlk4T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785156188; c=relaxed/simple;
+	bh=kydFL+J2UCBGONfxOuHpVAhlPfO4ATIRdGb+0FS0EoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oe+lHmLEGeojNqqnIliPiYiXsUQ6GtQErFihzUoyV47Iw2fZO4KCcxofMq7pQuBmKdb/WBq17Cis1urunF8KCsCFdPoh3f3spUrUghTQaQVXUPbkqxpbBsN87QY4Z5YAnuRhNCFx6D0zruShIRTychDfHsASbcj5oinsFhuSwxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iYWxzosX; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMLYlk4T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FB11F000E9;
-	Mon, 27 Jul 2026 12:41:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785156061;
-	bh=SBrcx1QyN1sj//hsQYmrecyZur6ecE3DlJ920/FY9D0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PMLYlk4T8tu0FI9rTOibXplPvjiL2JIPPL8mQDWOMnNPWEJ2flQ3m5/jzFdC6PN+L
-	 Q+bkftfbbr/8zyQ/8HwJNMtz5YR9VrLDdeTvK7zkbZxwQcicpq9d4m75RpVkWSGyep
-	 8GTIW2wossuR+yXaDF/VTYvpSfa1LiPEew9VE9mT0oYhpieIW35yEI7JNK0KSeF5je
-	 l8o0fhzBNx7q28h1kvaI1lvEpLG+LE65jVhUmHMxwCm5jXacnPTr2gw+/moL91H32c
-	 osj2HXV+UUsO3GbYlRyN/uw3ovgugYk4H+3KTbtM+MybbucA122TsI3Od+CdwKdf2R
-	 rq6nvHD1t9hNQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] riscv: ptdump: Create ptdump.h and move
- declarations
-Reply-To: sashiko-reviews@lists.linux.dev
-To: Dylan.Wu <fredwudi0305@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260727123013.118984-2-fredwudi0305@gmail.com>
-References: <20260727123013.118984-1-fredwudi0305@gmail.com>
- <20260727123013.118984-2-fredwudi0305@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 12:41:01 +0000
-Message-Id: <20260727124101.A5FB11F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iYWxzosX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785156187; x=1816692187;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kydFL+J2UCBGONfxOuHpVAhlPfO4ATIRdGb+0FS0EoI=;
+  b=iYWxzosXZbtDqsRLVjWeMmDJJqVFT0/JzYhb78yqJQxqLYc2seGukMQW
+   ln9FhqYd+pFW1sbFvwW3o6WCPxXabh4JEiMWAjrD0nW0RhstvCHadCb+n
+   qoTJa1lgX7WL35B8wFPozmgc9PfAyJiV5JVZUga3nGnj70Oj4FDY2uikG
+   eyjdp8mG8I1Ib1Fl4+U/pZeyIGGGB2iQZSZwXR8keB/qaw6sk8S4nkGPN
+   y5mQrmq2PF4ywEqo5ofIgeqDEicwSx4qr0jkoglZMwWp9tERTLO06fp2f
+   pyEWtsV1vmBHVhtlIwYyAtVJiXs3ohIOrOzU5Vnb0lYk/D9gAVkE+o/XK
+   g==;
+X-CSE-ConnectionGUID: lvDbeEE+RRiazcoOKjnlGQ==
+X-CSE-MsgGUID: fSgARC00Rmec++NlPA2ggA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85573100"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="85573100"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 05:43:06 -0700
+X-CSE-ConnectionGUID: FeOBN8S5QduQZGtL2sd9zg==
+X-CSE-MsgGUID: L6WXOtp0TB2RkS/X7Kx4Jw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="253070638"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa009.fm.intel.com with ESMTP; 27 Jul 2026 05:43:02 -0700
+Date: Mon, 27 Jul 2026 20:43:01 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Chao Gao <chao.gao@intel.com>, x86@kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	djbw@kernel.org, kas@kernel.org, rick.p.edgecombe@intel.com,
+	yilun.xu@intel.com, sohil.mehta@intel.com, adrian.hunter@intel.com,
+	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
+	peter.fang@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, dave.hansen@intel.com,
+	dave.hansen@linux.intel.com, seanjc@google.com
+Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
+ initialization is required
+Message-ID: <amdSVcIL4AyMK1RA@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-4-yilun.xu@linux.intel.com>
+ <akIR1ClnTs1bRsD9@intel.com>
+ <akOkGqH6RQEs/RWN@yilunxu-OptiPlex-7050>
+ <907d28d7-6355-43a8-b5bc-d61d5c640141@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <907d28d7-6355-43a8-b5bc-d61d5c640141@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The refactoring to make ptdump reusable by other components (lik=
-e KVM) is incomplete. The newly added fields `bits` and `num` in `struct pt=
-dump_pg_level` are dead code, and `note_page()` hardcodes access to file-lo=
-cal static arrays.
-- [Low] The function `note_page` is exported globally with a highly generic=
- name, polluting the global namespace.
---
+On Fri, Jul 24, 2026 at 04:44:15PM +0800, Xiaoyao Li wrote:
+> On 6/30/2026 7:10 PM, Xu Yilun wrote:
+> > On Mon, Jun 29, 2026 at 02:33:56PM +0800, Chao Gao wrote:
+> > > > +static __init int init_tdx_module_extensions(void)
+> > > > +{
+> > > > +	struct tdx_sys_info_ext sysinfo_ext;
+> > > > +	int ret;
+> > > > +
+> > > > +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+> > > > +		return 0;
+> > > > +
+> > > > +	ret = get_tdx_sys_info_ext(&sysinfo_ext);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	/* Skip if no feature requires TDX module extensions. */
+> > > > +	if (!sysinfo_ext.ext_required)
+> > > > +		return 0;
+> > > 
+> > > What would happen if the kernel doesn't do this 'ext_required' check
+> > > and always does the extension initialization?
+> > > 
+> > > If TDH.EXT.INIT returns success when no extension is configured, we
+> > 
+> > No, TDH.EXT.INIT fails when ext_required==false
+> 
+> What is the SEAMCALL return code in this case?
 
---- Patch [1]: [PATCH v2 1/3] riscv: ptdump: Create ptdump.h and move decla=
-rations ---
-commit 7ec3e13f790f5980858ebc9e23a4405735f7e6cf
-Author: Dylan.Wu <fredwudi0305@gmail.com>
+It will return TDX_EXT_MEMORY_POOL_NOT_READY, because TDX module's internal
+state machine stays at the first step of extensions' initialization.
 
-riscv: ptdump: Create ptdump.h and move declarations
-
-Create a new arch/riscv/include/asm/ptdump.h header file and move the
-pagetable walking state structures and level definitions there. This
-allows other parts of the kernel (like KVM) to reuse the ptdump data
-structures.
-
-Also export the note_page() symbol so it can be used by other kernel
-components.
-
-> diff --git a/arch/riscv/include/asm/ptdump.h b/arch/riscv/include/asm/ptd=
-ump.h
-> new file mode 100644
-> index 0000000000000..eb9d11dab6098
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/ptdump.h
-> @@ -0,0 +1,41 @@
-[ ... ]
-> +struct ptdump_pg_level {
-> +	const struct ptdump_prot_bits *bits;
-> +	const char *name;
-> +	u64 mask;
-> +	int num;
-> +};
-
-[Severity: Medium]
-Are the newly added fields bits and num essentially dead code?
-
-The commit message indicates this refactoring allows other parts of the ker=
-nel
-(like KVM) to reuse the ptdump data structures. However, these new fields
-appear to be unused.
-
-For instance, dump_prot() in arch/riscv/mm/ptdump.c still unconditionally
-iterates over the file-local pte_bits array rather than utilizing the
-caller-provided bits. Additionally, note_page() continues to hardcode access
-to the file-local pg_level array.
-
-Does this incomplete refactoring prevent external components from dumping
-page tables with custom layouts?
-
-[ ... ]
-> diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-> index f4b4a9fcbbd88..63655a9c8df3e 100644
-> --- a/arch/riscv/mm/ptdump.c
-> +++ b/arch/riscv/mm/ptdump.c
-[ ... ]
-> -static void note_page(struct ptdump_state *pt_st, unsigned long addr,
-> -		      int level, u64 val)
-> +void note_page(struct ptdump_state *pt_st, unsigned long addr,
-> +	       int level, u64 val)
->  {
-[ ... ]
-> @@ -317,6 +280,7 @@ static void note_page(struct ptdump_state *pt_st, uns=
-igned long addr,
->  		st->last_pa =3D pa;
->  	}
->  }
-> +EXPORT_SYMBOL_GPL(note_page);
-
-[Severity: Low]
-Does exporting this generically named function pollute the global kernel sy=
-mbol
-table?
-
-Using a generic name like note_page() (instead of something specific like
-riscv_ptdump_note_page) could increase the risk of linker collisions if ano=
-ther
-subsystem uses the same name.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727123013.1189=
-84-1-fredwudi0305@gmail.com?part=3D1
+> 
+> > > could drop this 'ext_required' from this series entirely.
+> 
