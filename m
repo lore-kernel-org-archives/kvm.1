@@ -1,146 +1,137 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696F13F8ECA;
-	Mon, 27 Jul 2026 11:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DCB2F9D89
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 11:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785151464; cv=none; b=SP8zRFmjyTAGUg164fDYLdVRV9ZWvkDLakndjwzXytGlj2eT04qukAD45vwKjcoXMBY3gypMsAl8Fm6Wjvu0eQOEA1spNzA+8HrCEGk9369zfevk0FhNWfyNwa9dWaW92VK7ZLQNLHkGjCYERe4+azYREG/4PNJwhrse3aBlkCg=
+	t=1785153131; cv=none; b=i0aFjI+S3xkmvNkLhk3DC6NtAi4XuD2LckweAF0vuDq7edzWRDYD+yAKUxCwdU6WEd5eDO9QQzm0S+yi/r55psXq8zdayaEoZvwdnhbBfIHPcJ/jnSftsRHr/e3GOdmw20/ZbiHqs6LADqsdP4GQy7+AOuVLl8n08tx9oh7G6hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785151464; c=relaxed/simple;
-	bh=4OURNIba8Yjg7BD9H67l+rRpHYyi8jFKXhKmyG9deBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UUUZBw+cHxST3rxMidO02c45W435WZJQeMVIBw9KF4IT2HFsLynbms3aEXt5BYPqhkI9UL+P+SfudDRQPYkU+cQCEMc/zG8f8qJUJbmKpqXh54BMied7vi8tSmBBiS/6B0G1+lr+BlUSjkz6iX2KHd4PXbuHzCOMSJ+svUFWN6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nBSnmFCp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785153131; c=relaxed/simple;
+	bh=Mhhc24sMg3/r/S38Qe+3S85s7KlVq/EDYB1GAklx+k4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CNwXUsaRtQKZWduJV2Z8uoZPtDbeynNaw2dXWLD/qdWZP0oCBzK3JulinJqY8xbltpYz1v6HHEgsHtIsxFKNLbWKDDirZ+9KQyiSlqQNnKco+RtqT/rFfoCsu9cumkjC/7+FVSydIkOmag6Mr7rcJP4kKaZVwqTJjHTjwGYYYTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ay5w1NNW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nBSnmFCp"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RAIm5Q1844840;
-	Mon, 27 Jul 2026 11:24:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pgUX+B
-	U9uxf9IsFVaHXQxADSnUjajZehO2WigF6woqI=; b=nBSnmFCpW7DseAUrWgBF2/
-	3B9RzdZTIgTA+fFbvJwDe2r7N5mdPsxYW1UO9GDu3nNij33ydGJGucWevkfsUB9v
-	ECkW0+NaZX3bJvpbXTaM2gubAIByx7hgU0ZCQnAF3qh4kMAjSV9WS+4IxV3i8uYg
-	Q9t7P/MOJplJCBM/++zCR92GXBbuLNBQ3F+bBCG1L/PpFZsBZocwrS/dRWvhhZ3M
-	mpEnTZ9xsX07HpoxPxdT4GIw6waRW74F9N/M1+8ULuY30IrfPzNg5xgj8bZ9PU2g
-	eVR64vOiZkTLRuDhAEnYzety/h+wGfMYjwUi/K1GBoY3EfswEL+AMhHPdSKl31WA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyhy9hb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 11:24:20 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66RBBPgE013685;
-	Mon, 27 Jul 2026 11:24:20 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn9pg4xcw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 11:24:19 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RBOGDG51314994
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 11:24:16 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 287E020091;
-	Mon, 27 Jul 2026 11:24:16 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED37C20090;
-	Mon, 27 Jul 2026 11:24:15 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jul 2026 11:24:15 +0000 (GMT)
-Message-ID: <a534a0a4-5223-4e65-acf6-c2af29cfcbcb@linux.ibm.com>
-Date: Mon, 27 Jul 2026 13:24:15 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ay5w1NNW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785153129;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i5UQGqeTaYi2kaAkB+026BcAjPwRZW9Yj5wzH4u9ATk=;
+	b=Ay5w1NNWz0ldO5sKLdLM3GsQuWZ045hj2FggvAX99fXiD1MAWh2LMheMP7oiOIoWuhZwxH
+	p8pl1SCFuW5BhSkQbVrqUqlS6+V15kbXQSAHAkRizkr75eo8bcm0PH3mpf4qFvCt3LY0c7
+	kY6wrEpkjN0qi12n0BHpqiIuffxZGYU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-BLrv8nnUN0q04OGhaR7ezw-1; Mon,
+ 27 Jul 2026 07:52:07 -0400
+X-MC-Unique: BLrv8nnUN0q04OGhaR7ezw-1
+X-Mimecast-MFC-AGG-ID: BLrv8nnUN0q04OGhaR7ezw_1785153126
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EACF8180264B;
+	Mon, 27 Jul 2026 11:52:05 +0000 (UTC)
+Received: from localhost (unknown [10.44.24.5])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B732429;
+	Mon, 27 Jul 2026 11:52:03 +0000 (UTC)
+From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Date: Mon, 27 Jul 2026 15:51:15 +0400
+Subject: [GIT PULL 06/23] target/i386/sev: fix MemoryRegion reference leaks
+ in gpa2hva callers
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL 0/7] KVM: s390: Fixes for 7.2
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        linux-s390
- <linux-s390@vger.kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Jaehoon Kim <jhkim@linux.ibm.com>,
-        Douglas Freimuth <freimuth@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>
-References: <20260727095720.9150-1-borntraeger@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260727095720.9150-1-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDExMSBTYWx0ZWRfX27xBdIqlO2mP
- 2E8ZJAii6sH0SBJRBaBGzOiGYQeatqdDKjgSSHLPLhOoRaC9wi38H6IdT6aQcqE9JX0OaTpHK6w
- FA6nK5HQDv208fy5FlgnQxc7ncAFfRg=
-X-Proofpoint-GUID: B_fpLqcdJPxcu0eFC3Ip9IpeIPCX29U-
-X-Proofpoint-ORIG-GUID: B_fpLqcdJPxcu0eFC3Ip9IpeIPCX29U-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDExMSBTYWx0ZWRfX7yO8h0gVjLSh
- /5dHj4LR0MwxbsecQoe8Zz8ApVUU+yYjo/T3EqPkU8I9S1blnf2Kal0N6AeyH7xWPyhmN5Av0ZH
- TnlsHxF2XqS20aJV7dS0/rar/DB9kFMTYxYDHJ4tDPUYIyeDcLPs1ZowKiggg5jWuQhB6eu+Cyj
- JPhKiKAvqw1HEoCN5g7u6zByPSwKlq/4EeVTxLsON4eb46nU5hEoz4JR3Ro+UO1vVx6TDY2laL+
- oumEC4MMhrnLsl3yAipAWq8bVkwat2O76AamcqKWtBvqqUW6SE8/8mQvixbD3W1drE7Q0xyuNdn
- coNDYMJdB4XQzpKEF16HkSOEHHgHzpNoriLL1ZMq2wQTtWtX+PwD2WgCrhZnscABVZuJZHY6IGZ
- gqJ4OFvQm0gDrr/oz95j7gSwBUf1VGqWxBnsMdCoD7BcJn3h4uAaZ4GMxXQdM3j0TLWJD/Y8gxe
- nsh/vZ/AGvv128AaelQ==
-X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a673fe4 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VLg6qVD3L6MNdXo3GXYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_03,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607270111
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260727-fix-v1-6-ca3fa3851347@redhat.com>
+References: <20260727-fix-v1-0-ca3fa3851347@redhat.com>
+In-Reply-To: <20260727-fix-v1-0-ca3fa3851347@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
+ Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
+ kvm@vger.kernel.org
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1828;
+ i=marcandre.lureau@redhat.com; h=from:subject:message-id;
+ bh=Mhhc24sMg3/r/S38Qe+3S85s7KlVq/EDYB1GAklx+k4=;
+ b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqZ0Y+fGj1ciGYg3/G6BtXKbg01aMqoGrpUPrq6
+ 0Eq0DGF1/WJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCamdGPgAKCRDa6OEJdZac
+ 5RgqEACKwy8dkLIU6JwSGzDKMtVXkr7DEfaFR3siAcCWRK56vUVxeOAjrGtp7g6AGSeQusDHnTK
+ JRF379tFVLKYhql12Y2sMGF9OFA+0ttIeSgzujJhqZvpcL5Tpf6EE9UUE0aEjZooDJNCsw8/dik
+ DnKcpLzXSHueyJCVcbtOQDzX+TxV3hwGaRu5NOykg1xIvJZdF0ydMrtgltiSAnpSanHNbIJ5mdQ
+ ydwHv/QXaoEVbn9qGHsdRdXs4P9fAHUvkZtJ44zXps3+MPsFsXoz6r767J17oEcpyoBjBnwQ8bA
+ y1BaM4Owwm/QPRRmlUa6DjdDrGphJ3QTfGkedTmfSuoK4vrXpK6EMeKwNs/sN/Mk6WAYGXCqkhq
+ I15cWgKFMR35c2Ye/czw9wlQK26TSRXvjmSVG8YWcM0Pwt5ZWLqQnJFaG3Cl3G9r8rJuAJPRR1d
+ 0xfD+G+RUzGAqWtn4Zd/koJjhgwN2IrYcdIe9P1Umw1IdOzVjhIKoGodZpKLQWmMQCE0q/2RIpV
+ de1L2pYHHjY+x/s9SGuqXnSHF7CrZ0udwZRsaItFM1RPaiFb3fkWnsmOCZBbcnnPKuF4tnLYZM9
+ R2rJO7r8VbuZvKGo0un507lqwc6Ob7XeUeiCqcq1kx9wND0tUae5GEY2yB5L3XvBavWFaERtzie
+ U01/X2mJUzRjcqw==
+X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
+ fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-Am 27.07.26 um 11:57 schrieb Christian Borntraeger:
-> Paolo,
-> 
-> some more fixes triggered by AI bug reports or testing.
-> Mostly for PCI support.
-> This also has a regression fix that we introduced in 7.2-rc1
-> 
-> The following changes since commit 3e3aa6da87d30a0064a17b836685cd43c90a3572:
-> 
->    KVM: s390: pci: Fix handling of AIF enable without AISB (2026-07-09 16:23:10 +0200)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/kvm-s390-master-7.2-2
-> 
-> for you to fetch changes up to 9972befc3e34ff8b6847198c84f11bfc312dde40:
-> 
->    KVM: s390: Fall back to short-term pinning in MAP ioctl (2026-07-27 09:23:53 +0200)
+gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
+(inherited from memory_region_find()), but both SEV callers were failing
+to release it.
 
+Fixes: c7f7e6970d3b ("sev: add sev-inject-launch-secret")
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
+---
+ include/system/memory.h | 2 ++
+ target/i386/sev.c       | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-> 
-> 
-> All fixes had no new sashiko findings, just pre-existing issues or
-> finding that are being fixed by other patches of the series.
+diff --git a/include/system/memory.h b/include/system/memory.h
+index 47a0e06fbf8a..2192fc9bdc5b 100644
+--- a/include/system/memory.h
++++ b/include/system/memory.h
+@@ -1085,6 +1085,8 @@ void memory_region_ref(MemoryRegion *mr);
+  */
+ void memory_region_unref(MemoryRegion *mr);
+ 
++G_DEFINE_AUTOPTR_CLEANUP_FUNC(MemoryRegion, memory_region_unref)
++
+ /**
+  * memory_region_init_io: Initialize an I/O memory region.
+  *
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index debe6344ab4d..d7dcefc8ecf5 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -1569,7 +1569,7 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
+     OvmfSevMetadataDesc *desc;
+     int type, ret, i;
+     void *hva;
+-    MemoryRegion *mr = NULL;
++    g_autoptr(MemoryRegion) mr = NULL;
+ 
+     for (i = 0; i < metadata->num_desc; i++) {
+         desc = &metadata->descs[i];
+@@ -2063,7 +2063,7 @@ int sev_inject_launch_secret(const char *packet_hdr, const char *secret,
+     int error, ret = 1;
+     void *hva;
+     gsize hdr_sz = 0, data_sz = 0;
+-    MemoryRegion *mr = NULL;
++    g_autoptr(MemoryRegion) mr = NULL;
+     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+ 
+     if (!sev_common) {
 
-Paolo,
-
-Sashiko failed to apply some patches. Dont know why, it applies cleanly to v7.2-rc5
-and also kvm/master.
-
-This resulted in several false positives as later fixes have not been considered.
+-- 
+2.55.0
 
