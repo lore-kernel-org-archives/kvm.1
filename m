@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF53F1ADC;
-	Mon, 27 Jul 2026 23:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0674742DA20;
+	Mon, 27 Jul 2026 23:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785196367; cv=none; b=QLXoIEIua3y5v5d/oqaUh/mVcPMLtV5SuFFEVWyI5c2g+q8l8CrFkkhiUtyuAWWMWi8di1Al0M2fWOAw8aZvADTn7jbrCAvlvpt0kQHCUn2OBKObq6Kh+gK29X99JstBriGEDh0hBaZTJ06ku1V+BUw5J02Pl9rb9Ehp6K4pTEc=
+	t=1785196368; cv=none; b=kJr9ZkzccPEP2ZruOR5x5giaaZhRwutY5bz6aJIfVRbtJzZJJ/hLejGcdsfgbYbGsM7H435a1tVWRPaxk88bIxqG9eOIpDrEAKghdV1m/1rDBPkNUiE40liivOUXRKMFt7n7H9dZKYUoo88kB0N6Ldc86gQAUtTbE6iWV8j0pmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785196367; c=relaxed/simple;
-	bh=5XVsruwghF/6D0VeeWoWyJYafarUlRZ2r1nc4YFF8x4=;
+	s=arc-20240116; t=1785196368; c=relaxed/simple;
+	bh=zaW8MrZ7ZTbGdYtjolHn0IifNS4wKWy0X43nhag4uoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKvQuCISEfZBjmHVHVkKakF9QQOktpKPMDFm9SspbIY/UM1SL+NN4roHi8rlm2f5A9EiZA9srCRXqol3WmtujGM4JX/jh5NtVsgphBgAMn7HovV5/LymZxDxZKbXkGxDRkZCMFzYZRGJMuNWIbEIWG1NS9BrlrrGwkJtdnYnj14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F165x+F8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=E4WzTLwAcstfsjDT/vajx+dGRrdEeTQk4Yw9uWNAoGhuqgPO7Qvr0hTD4eT+X0I+SmBZCFoxSkmGeSKDUXmhpw7tIvf3JYB4XDMsWDq/ozj2JwcuhGHBatcctPKDX9hk7EF2lb5on+cblxs80bO14QSJ2Pz6+o1aMeywzzfL+jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgKN+0V+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F165x+F8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D621F00AC4;
-	Mon, 27 Jul 2026 23:52:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgKN+0V+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E5E1F00A3D;
+	Mon, 27 Jul 2026 23:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785196366;
-	bh=V9s8Li3UO1aEDiRJI0QPeqgaP6w6OYl37uTTpA5uKNY=;
+	bh=jkFcTcyucc1l4jqF3NXUnvch/avIWMIXgmm1/WlHlyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F165x+F8I7UvJgXxxr4Wora9JtKM82lBWLjCbZEX7bSvJ9Hq+7l5e6zgYFstOaGw7
-	 boqHVptwUgqnbxqGoahSZI7FeNY0H5XXH/0VhgvBmGceIjEIu1nIKZww26ViFhZAFU
-	 w1E6vmeM1ZSLBKzAsTscelP+HbLtqvEKIF1pvyXYVY8Sw1nUJyYO4mBNAIAG46bL/v
-	 FYUATIC0QqEfcXDUiBzkSsq8pTr3MsEXPPDOwDCFrJUd8/EtMYs6wMqtc9ARX8WS9J
-	 EvHE69y20KsdEzRPG4O9C62MHKPf/gmtGLLAcjgZp0CaI4l9tE91dDCVBE9ljVowPL
-	 7JIADlSuMIyhQ==
+	b=BgKN+0V+smVlq/vZU+jJ3f8bHF1FxixesLjIlEOrHeGQpjxV2zKIcR6QYWX7jSWvq
+	 AXv9vTbeATUNJBZCGc/t65A5FwGOsEHHvkxSzPfUc+r2Dhpxt7zJyDPSdJqX5lw1kE
+	 T8pdmJEYnGwFRIABV8OCyZocSlh8ZvdY92A+O7o0tMaUmR6izWGgymrTxiW+BWZFrQ
+	 9GpdMsp3k6Y0cNmn34EMEhfa1c+DQUXMu84Godc9lRhPjd/RwReQtScFx8CjXbcn8A
+	 1elDmhaLemySYVWE4wl2QRhFByH+I+xpF7aAhYqjPwx38JgCKpU+Lmos5pVsMpGn7L
+	 k8QHQwzRAgAOA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 03/12] KVM: selftests: Rework GPR registers switching for SVM (and fix offsets)
-Date: Mon, 27 Jul 2026 23:52:19 +0000
-Message-ID: <20260727235228.1007324-4-yosry@kernel.org>
+Subject: [PATCH v4 05/12] KVM: selftests: Reuse GPR switching logic for nVMX
+Date: Mon, 27 Jul 2026 23:52:21 +0000
+Message-ID: <20260727235228.1007324-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260727235228.1007324-1-yosry@kernel.org>
 References: <20260727235228.1007324-1-yosry@kernel.org>
@@ -46,128 +46,134 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The assembly code defined by SAVE_GPR_C uses the wrong offsets for some
-registers in guest_regs. For example, the offset of RCX should be 0x08
-not 0x10. Also, the last offset in the struct (R15) is 0x78, not 0x80,
-so the code actually saves and restore beyond the end of gpr64_regs.
+Reuse the GPR switching logic for nVMX by defining VMX_SWITCH_GPRS_ASM,
+which is essentially the same as SVM_SWITCH_GPRS_ASM but also switches
+RAX and doesn't switch RFLAGS, replacing the push/pop of a subset of the
+registers.
 
-Eliminate hardcoded offsets by dynamically generating offsets using
-offset_of() and using macros to pass the offsets to assembly as asm
-constraints.
+The long clobber list of registers is no longer needed as registers are
+saved and restored appropriately (and not clobbered by L2).
 
-To avoid register conflicts in inline assembly (since almost all GPRs are
-context-switched), access guest_regs via absolute symbol addressing
-(guest_regs + offset) rather than using a base register which could
-get overwritten mid-assembly.
+Define VMX_SWITCH_GPRS_ASM before including evmcs.h, such that it can be
+used by evmcs_vmlaunch() and evmcs_vmresume().
 
-While at it, rename SAVE_GPR_C and LOAD_GPR_C to a single macro,
-SVM_SWITCH_GPRS_ASM, rename gpr64_regs to guest_regs, and expose it in
-processor.h (in preparation for reusing it for VMX).
+This replaces the apparently thread-safe push/pop sequence with the
+global GPR switching logic used by SVM, which isn't thread-safe at all.
 
-Assisted-by: Gemini:Gemini-Next
+However this is still an improvement because:
+- The VMX logic is half-baked and prompts the UCALL clobber hack as it
+  doesn't properly save/restore everything. Reusing the GPR switching
+  logic used by SVM allows for dropping that hack.
+
+- Hitting a problem due to half-baked GPR save/restore logic is arguably
+  more likely than thread-safety. Evidently, adding more involved stress
+  tests fails on VMX with the existing push/pop sequence. OTOH, there
+  are no known failures on SVM due to lack of thread-safety fo
+  save/restore. Only one test currently uses more than one vCPU with
+  nested (the memstress test).
+
+The logical next step is to move the guest_regs to be per-vCPU,
+making it thread-safe for both VMX and SVM in a proper way.
+
+Assisted-by: Gemini:gemini-3.1-pro
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- .../selftests/kvm/include/x86/processor.h     | 31 +++++++++++-
- .../testing/selftests/kvm/lib/x86/processor.c |  2 +
- tools/testing/selftests/kvm/lib/x86/svm.c     | 49 +++++++++----------
- 3 files changed, 54 insertions(+), 28 deletions(-)
+ .../testing/selftests/kvm/include/x86/evmcs.h | 46 +++++--------
+ tools/testing/selftests/kvm/include/x86/vmx.h | 69 +++++++++----------
+ 2 files changed, 49 insertions(+), 66 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index b161174ece453..d7f1acaddd4ee 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -398,8 +398,7 @@ static inline unsigned int x86_model(unsigned int eax)
- #define PTE_GET_PA(pte)		((pte) & PHYSICAL_PAGE_MASK)
- #define PTE_GET_PFN(pte)        (PTE_GET_PA(pte) >> PAGE_SHIFT)
+diff --git a/tools/testing/selftests/kvm/include/x86/evmcs.h b/tools/testing/selftests/kvm/include/x86/evmcs.h
+index be79bda024bf1..82a8ea6b661f0 100644
+--- a/tools/testing/selftests/kvm/include/x86/evmcs.h
++++ b/tools/testing/selftests/kvm/include/x86/evmcs.h
+@@ -1207,30 +1207,23 @@ static inline int evmcs_vmlaunch(void)
  
--/* General Registers in 64-Bit Mode */
--struct gpr64_regs {
-+struct guest_regs {
- 	u64 rax;
- 	u64 rcx;
- 	u64 rdx;
-@@ -418,6 +417,34 @@ struct gpr64_regs {
- 	u64 r15;
- };
+ 	current_evmcs->hv_clean_fields = 0;
  
-+extern struct guest_regs guest_regs;
-+
-+#define GUEST_REG_OFFSET(name) \
-+	[off_##name] "i" (offsetof(struct guest_regs, name))
-+
-+#define GUEST_REGS_OFFSETS	\
-+	GUEST_REG_OFFSET(rax),	\
-+	GUEST_REG_OFFSET(rcx),	\
-+	GUEST_REG_OFFSET(rdx),	\
-+	GUEST_REG_OFFSET(rbx),	\
-+	GUEST_REG_OFFSET(rsp),	\
-+	GUEST_REG_OFFSET(rbp),	\
-+	GUEST_REG_OFFSET(rsi),	\
-+	GUEST_REG_OFFSET(rdi),	\
-+	GUEST_REG_OFFSET(r8),	\
-+	GUEST_REG_OFFSET(r9),	\
-+	GUEST_REG_OFFSET(r10),	\
-+	GUEST_REG_OFFSET(r11),	\
-+	GUEST_REG_OFFSET(r12),	\
-+	GUEST_REG_OFFSET(r13),	\
-+	GUEST_REG_OFFSET(r14),	\
-+	GUEST_REG_OFFSET(r15)
-+
-+#define GUEST_REG(name) "guest_regs + %c[off_" #name "]"
-+
-+#define GUEST_SWITCH_GPR_ASM(name) \
-+	"xchg %%" #name ", " GUEST_REG(name) "\n\t"
-+
- struct desc64 {
- 	u16 limit0;
- 	u16 base0;
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index ef56dcefe0119..1f9201590f5b3 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -29,6 +29,8 @@ bool host_cpu_is_amd_compatible;
- bool is_forced_emulation_enabled;
- u64 guest_tsc_khz;
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "mov %%rsp, (%[host_rsp]);"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "mov %%rax, (%[host_rip]);"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmlaunch;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"
+ 			       ((u64)&current_evmcs->host_rsp),
+ 			       [host_rip]"r"
+-			       ((u64)&current_evmcs->host_rip)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			       ((u64)&current_evmcs->host_rip),
++			       GUEST_REGS_OFFSETS
++			     : "memory", "cc");
+ 	return ret;
+ }
  
-+struct guest_regs guest_regs;
-+
- const char *ex_str(int vector)
- {
- 	switch (vector) {
-diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 766d15f1d534a..7db38faded89e 100644
---- a/tools/testing/selftests/kvm/lib/x86/svm.c
-+++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -13,7 +13,6 @@
+@@ -1246,30 +1239,23 @@ static inline int evmcs_vmresume(void)
+ 	/* HOST_RSP */
+ 	current_evmcs->hv_clean_fields &= ~HV_VMX_ENLIGHTENED_CLEAN_FIELD_HOST_POINTER;
  
- #define SEV_DEV_PATH "/dev/sev"
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "mov %%rsp, (%[host_rsp]);"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "mov %%rax, (%[host_rip]);"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmresume;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"
+ 			       ((u64)&current_evmcs->host_rsp),
+ 			       [host_rip]"r"
+-			       ((u64)&current_evmcs->host_rip)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			       ((u64)&current_evmcs->host_rip),
++			       GUEST_REGS_OFFSETS
++			     : "memory", "cc");
+ 	return ret;
+ }
  
--struct gpr64_regs guest_regs;
- u64 rflags;
+diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
+index 4bcfd60e3aecb..04f5e34dea3ae 100644
+--- a/tools/testing/selftests/kvm/include/x86/vmx.h
++++ b/tools/testing/selftests/kvm/include/x86/vmx.h
+@@ -290,6 +290,23 @@ struct vmx_msr_entry {
+ 	u64 value;
+ } __attribute__ ((aligned(16)));
  
- /* Allocate memory regions for nested SVM tests.
-@@ -137,27 +136,25 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip)
-  * save/restore 64-bit general registers except rax, rip, rsp
-  * which are directly handed through the VMCB guest processor state
-  */
--#define SAVE_GPR_C				\
--	"xchg %%rbx, guest_regs+0x20\n\t"	\
--	"xchg %%rcx, guest_regs+0x10\n\t"	\
--	"xchg %%rdx, guest_regs+0x18\n\t"	\
--	"xchg %%rbp, guest_regs+0x30\n\t"	\
--	"xchg %%rsi, guest_regs+0x38\n\t"	\
--	"xchg %%rdi, guest_regs+0x40\n\t"	\
--	"xchg %%r8,  guest_regs+0x48\n\t"	\
--	"xchg %%r9,  guest_regs+0x50\n\t"	\
--	"xchg %%r10, guest_regs+0x58\n\t"	\
--	"xchg %%r11, guest_regs+0x60\n\t"	\
--	"xchg %%r12, guest_regs+0x68\n\t"	\
--	"xchg %%r13, guest_regs+0x70\n\t"	\
--	"xchg %%r14, guest_regs+0x78\n\t"	\
--	"xchg %%r15, guest_regs+0x80\n\t"
--
--#define LOAD_GPR_C      SAVE_GPR_C
-+#define SVM_SWITCH_GPRS_ASM \
++#define VMX_SWITCH_GPRS_ASM \
++	GUEST_SWITCH_GPR_ASM(rax) \
 +	GUEST_SWITCH_GPR_ASM(rbx) \
 +	GUEST_SWITCH_GPR_ASM(rcx) \
 +	GUEST_SWITCH_GPR_ASM(rdx) \
@@ -182,40 +188,98 @@ index 766d15f1d534a..7db38faded89e 100644
 +	GUEST_SWITCH_GPR_ASM(r13) \
 +	GUEST_SWITCH_GPR_ASM(r14) \
 +	GUEST_SWITCH_GPR_ASM(r15)
++
+ #include "evmcs.h"
  
- /*
-  * selftests do not use interrupts so we dropped clgi/sti/cli/stgi
-- * for now. registers involved in LOAD/SAVE_GPR_C are eventually
-+ * for now. Registers involved in SVM_SWITCH_GPRS_ASM are eventually
-  * unmodified so they do not need to be in the clobber list.
-  */
- void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
-@@ -166,20 +163,20 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
- 		"vmload %[vmcb_gpa]\n\t"
- 		"mov rflags, %%r15\n\t"
- 		"mov %%r15, %[vmcb_rflags]\n\t"
--		"mov %[guest_regs_rax], %%r15\n\t"
-+		"mov " GUEST_REG(rax) ", %%r15\n\t"
- 		"mov %%r15, %[vmcb_rax]\n\t"
--		LOAD_GPR_C
-+		SVM_SWITCH_GPRS_ASM
- 		"vmrun %[vmcb_gpa]\n\t"
--		SAVE_GPR_C
-+		SVM_SWITCH_GPRS_ASM
- 		"mov %[vmcb_rflags], %%r15\n\t"
- 		"mov %%r15, rflags\n\t"
- 		"mov %[vmcb_rax], %%r15\n\t"	// rax
--		"mov %%r15, %[guest_regs_rax]\n\t"
-+		"mov %%r15, " GUEST_REG(rax) "\n\t"
- 		"vmsave %[vmcb_gpa]\n\t"
- 		: [vmcb_rflags] "+m" (vmcb->save.rflags),
--		  [vmcb_rax] "+m" (vmcb->save.rax),
--		  [guest_regs_rax] "+rm" (guest_regs.rax)
--		: [vmcb_gpa] "a" (vmcb_gpa)
-+		  [vmcb_rax] "+m" (vmcb->save.rax)
-+		: [vmcb_gpa] "a" (vmcb_gpa),
-+		  GUEST_REGS_OFFSETS
- 		: "r15", "memory");
+ static inline int vmxon(u64 phys)
+@@ -363,9 +380,6 @@ static inline u64 vmptrstz(void)
+ 	return value;
+ }
+ 
+-/*
+- * No guest state (e.g. GPRs) is established by this vmlaunch.
+- */
+ static inline int vmlaunch(void)
+ {
+ 	int ret;
+@@ -373,34 +387,24 @@ static inline int vmlaunch(void)
+ 	if (enable_evmcs)
+ 		return evmcs_vmlaunch();
+ 
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "vmwrite %%rsp, %[host_rsp];"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "vmwrite %%rax, %[host_rip];"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmlaunch;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"((u64)HOST_RSP),
+-			       [host_rip]"r"((u64)HOST_RIP)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			       [host_rip]"r"((u64)HOST_RIP),
++			       GUEST_REGS_OFFSETS
++			     : "memory", "cc");
+ 	return ret;
+ }
+ 
+-/*
+- * No guest state (e.g. GPRs) is established by this vmresume.
+- */
+ static inline int vmresume(void)
+ {
+ 	int ret;
+@@ -408,28 +412,21 @@ static inline int vmresume(void)
+ 	if (enable_evmcs)
+ 		return evmcs_vmresume();
+ 
+-	__asm__ __volatile__("push %%rbp;"
+-			     "push %%rcx;"
+-			     "push %%rdx;"
+-			     "push %%rsi;"
+-			     "push %%rdi;"
+-			     "push $0;"
++	__asm__ __volatile__("push $0;"
+ 			     "vmwrite %%rsp, %[host_rsp];"
+ 			     "lea 1f(%%rip), %%rax;"
+ 			     "vmwrite %%rax, %[host_rip];"
++			     VMX_SWITCH_GPRS_ASM
+ 			     "vmresume;"
+ 			     "incq (%%rsp);"
+-			     "1: pop %%rax;"
+-			     "pop %%rdi;"
+-			     "pop %%rsi;"
+-			     "pop %%rdx;"
+-			     "pop %%rcx;"
+-			     "pop %%rbp;"
++			     "1: ;"
++			     VMX_SWITCH_GPRS_ASM
++			     "pop %%rax;"
+ 			     : [ret]"=&a"(ret)
+ 			     : [host_rsp]"r"((u64)HOST_RSP),
+-			       [host_rip]"r"((u64)HOST_RIP)
+-			     : "memory", "cc", "rbx", "r8", "r9", "r10",
+-			       "r11", "r12", "r13", "r14", "r15");
++			       [host_rip]"r"((u64)HOST_RIP),
++			       GUEST_REGS_OFFSETS
++			     : "memory", "cc");
+ 	return ret;
  }
  
 -- 
