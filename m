@@ -1,298 +1,255 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3A1282F13;
-	Mon, 27 Jul 2026 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCA43603EF;
+	Mon, 27 Jul 2026 09:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785146268; cv=none; b=K3kttM7e9BoJcvXgXhdwGu4E+0E8Q6TpZ5a0zwJnpSMdOVcHvsG53HMrOEPs0BuVExXmWt/ZL5fByTel8AnMxNm1HdX5+fDZl4waz5mkdmvScbY40578PBVdjFt4Ux183tSkRmArozeNm0MeiogMUa8RWMgiGis5S22cItYGrho=
+	t=1785146358; cv=none; b=bEzDq97qEiInD/+WLgyajI9sHKh0XCVb49q/QGdnOy6cmZYuKu+s6/j9FNnvufD/+C9U1ULjHa6iOnH0BM/gTMHhbzm2l6XOisH2OE34pRe1p/4GUdxy4LJqZmM5UxHuVlEvbuqId7c8Z81Yy9q6qAX3anbRhEPdWBq2TTsfF8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785146268; c=relaxed/simple;
-	bh=Afvv7uPuaQ87jL5LeANQFpB0okeZwhP5qIDt9ROl8mk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAjDyResXDFGByss4vtQWbzCmCkKmkQKVb2dsCqrH7Yz7vKkCZfP1SBwPuttkq4N642ggVI8KKkfydp1rJ3ZxKpyQ/KaCXuGq8xIJFh5DsR3np2zxrLG4rkLpv4Ayp5R0dGiFP++a2SKII3VJw+5z5joXf0U1yOh5zxv2b9CxmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FRkmwL5+; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785146358; c=relaxed/simple;
+	bh=s4ZX8G5ffJDZ2BHUWtggHuMFJCFa58hAWbdwTq2dB6A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fd1fPgY2HPlKOD+R+TvVMkNN+Ea7OQfzW9cw0SUEFQKRE1CC0m+sGFQzkjoQDsywgPgwYp3muE0BbXVEJsuHga1G3Jl3VMQk7ZnfzGv7pJAGqKB39ulX3BrXIAeG1xZzlu+2mmMORqwnbv9IM3gceFISZ4estpeEZYc9bjmLJhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OPKSx9yL; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FRkmwL5+"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R9UcuH1821162;
-	Mon, 27 Jul 2026 09:57:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=CTKvmeLiUaZTQyWWc
-	IQR2srXN2A8tVcnckWnu9EOyUs=; b=FRkmwL5+P9PPNNP7f0+hMXDO9g3/brcD+
-	TMyJzJcHu2y5RJFWjAlKhmppx9bq4yGy1sJkli60NjEYqhs/bGhcncZ5C/+Rvrsv
-	FE9lMnjvmzHd8FKvpvctFpYGZpbOy8GLx/mhTy2455db7bk32NJ9SXdBC+kDFIWk
-	gLbm9+j2durTe30q7k52w0pmgx1BSS+GcVHR6JJQwtSaCiSyBzPNvMhCIwsVrcO4
-	zBM0F1OnU0YJF3eTEnvP1NPJLcQH6Ll1HhM8nqmKB4LMcDGAXHsStrifSFEjq02+
-	vohFcQTLE2ynVblpbr7vasDU0+8C5JSm3JxvxYWd54dFewQRcWJ2g==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuw77c79-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 09:57:44 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66R9uOws023294;
-	Mon, 27 Jul 2026 09:57:43 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn9pg4nf1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 09:57:43 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66R9vfCJ3277714
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 09:57:42 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB96F5805C;
-	Mon, 27 Jul 2026 09:57:41 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6912F58051;
-	Mon, 27 Jul 2026 09:57:39 +0000 (GMT)
-Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jul 2026 09:57:39 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: KVM <kvm@vger.kernel.org>, Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Jaehoon Kim <jhkim@linux.ibm.com>,
-        Douglas Freimuth <freimuth@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>
-Subject: [GIT PULL 7/7] KVM: s390: Fall back to short-term pinning in MAP ioctl
-Date: Mon, 27 Jul 2026 11:57:20 +0200
-Message-ID: <20260727095720.9150-8-borntraeger@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260727095720.9150-1-borntraeger@linux.ibm.com>
-References: <20260727095720.9150-1-borntraeger@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OPKSx9yL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785146356; x=1816682356;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=s4ZX8G5ffJDZ2BHUWtggHuMFJCFa58hAWbdwTq2dB6A=;
+  b=OPKSx9yLvUlyZrbrJakBuvq9HxtFs/yvOlgWCmQ6I1M33XzWsyQ+u2l7
+   gq/vlUIDL8MuxBOpkKsYm0pNVlqPNoSbrDdsBdXoreQhWVh3V9pYj1Sae
+   dzD1GixWXjApGwNkrKwFl+Ic0/C1ECOPVWLeaI0AyI7BnpNDo2GK6YGgw
+   zNTuYFxN+eaQWQtID5HjcVRFZwgZ2DyZTYS+VxoVRCdnuKxzz0o72C/Mf
+   seGM6civmQAlEnPRJU85P6jJgctLvtrXb5xqwgtSQ1XQbI/jXUsjES2L5
+   R9/+VzI/OMbW7/G/xxbcVYGBqhLlnEy8W2Fna4G9fpGnasfTLef+2HJCG
+   g==;
+X-CSE-ConnectionGUID: N7OCEQKzTlu1atLTQymEsQ==
+X-CSE-MsgGUID: KAH738mWTAeiznRSZUMeMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="103122402"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="103122402"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:59:16 -0700
+X-CSE-ConnectionGUID: xEq+1seuQfaKHsVJ9Fbl9Q==
+X-CSE-MsgGUID: DA8s/r6xT6mClbOipl8APQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="260014714"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:59:14 -0700
+Message-ID: <927f1c20-440a-42cf-b26f-c0fa8280e068@intel.com>
+Date: Mon, 27 Jul 2026 17:59:10 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: e4Bq_qggQczEkFxIkE0WWIpZaxGuC3BU
-X-Proofpoint-ORIG-GUID: e4Bq_qggQczEkFxIkE0WWIpZaxGuC3BU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDA5NiBTYWx0ZWRfX/XNA7xPxB0fu
- 9MoeyBSmk4yjFlKLc9yPzHp2FuNv7gDOuYQEP4xZ/LC8ZMcnG48XxFSCRCxWnbyfU/Vuezw7XCE
- zxiSg6wnDkIh7WAiwa9l3STdAojBvCVZdpXSHa7eJE6MffVkiOTaCdPB699jMS7BOmKeJf5RcPg
- urkMAcdBdPGgQSFg65vSxOEOyr9HVXNb3pyCHnnTIWE2RUfH7GjHwtUQSWK0/yRjpwvh/EfXVeP
- caE3x/ZlLkqJcV5lIGdJoYRePSnZlWlY1e18H/20vDdUi6XFGVZWu91OQ7jt7qIeViyPO491YB0
- frCHxSrclvVGeWuaUjRG2GQUsmbk9iAblW+wXnEr6oha7UVAK8wExS/EKWnNKi2yhXqT2Tsl1E/
- PX0X95BnxziW46yvPPxnmxKgBi1K4uPp74El3sYBZ9sckS/rxGRVZo3Vb+7f3HjgDEaFyV018wV
- +QlWopChAMzm1CIBFBQ==
-X-Authority-Analysis: v=2.4 cv=SKFykuvH c=1 sm=1 tr=0 ts=6a672b98 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=rQUY9zMWWlwLR9XeW8oA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDA5NiBTYWx0ZWRfXzJyezW4pFPg0
- 8YRg/NxNdACDN7igqZmXYmU5PCtDzi7oKlBbphcSlwB8at3Fw2tfSTQaBxhMiGqNdQq2T7Urc77
- QwjJrj40cs1eKwib/6R7E/KPEjeLBkQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607270096
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 8/9] KVM: guest_memfd: Explicitly pass number of pages
+ to make_private() hook
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Fuad Tabba <fuad.tabba@linux.dev>, Ackerley Tng <ackerleytng@google.com>,
+ Michael Roth <michael.roth@amd.com>, Fuad Tabba <tabba@google.com>
+References: <20260723210811.72720-1-seanjc@google.com>
+ <20260723210811.72720-9-seanjc@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260723210811.72720-9-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Jaehoon Kim <jhkim@linux.ibm.com>
+On 7/24/2026 5:08 AM, Sean Christopherson wrote:
+> Tweak the guest_memfd make_private() hook to explicitly pass the number of
+> pages to align with the signature of the make_shared() hook, and because
+> the existing code is outright broken if a guest_memfd folio is comprised of
+> more than one page (which can't happen, yet).  The SNP code *tries* to
+> create a corresponding huge entry, but if the RMP must use 4KiB entries for
+> whatever reason, KVM will only convert the first pfn, and not the entire
+> range of pfns that will be mapped into the guest.
+> 
+> Alternatively, @max_order could simply be repurposed as _the_ @order, but
+> that will fall apart when in-place conversion comes along, at which point
+> KVM will need to deal with conversions that aren't bound 1:1 to a folio.
+> I.e. the number of pages to convert may not be exactly be a power-of-2 (and
 
-FOLL_LONGTERM pinning fails for some memory types, such as file-backed
-guest memory. As a result, kvm_s390_adapter_map() returns -EINVAL and
-irqfd adapter registration fails even though interrupt delivery could
-still work via the existing non-atomic path.
+one redundant 'be'
 
-When FOLL_LONGTERM pinning fails, verify that the page is accessible
-using a short-term pin instead. If the short-term pin succeeds, unpin
-the page and add a map entry with pinned=false to preserve MAP/UNMAP
-symmetry. The non-atomic irqfd path already performs short-term pinning
-for interrupt delivery, so this restores the previous behavior for
-memory that cannot be pinned long-term.
+> folios don't strictly guarantee power-of-2 pages anyways).
+> 
+> WARN in the SNP code if the number of pages to prepare is anything other
+> than '1', i.e. if guest_memfd is trying to prepare/convert more than a
+> single 4KiB page, as sev_gmem_prepare() doesn't actually handle conversion
+> greater than order-0 folios.
+> 
+> Opportunistically swap the ordering of @pfn and @gfn params for
+> kvm_x86_ops.gmem_make_private() to match kvm_arch_gmem_make_private().
+> 
+> Fixes: b85524314a3d ("KVM: guest_memfd: delay kvm_gmem_prepare_folio() until the memory is passed to the guest")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-get_map_info() is updated to return NULL for unpinned entries so that
-the atomic irqfd fast path falls back to the non-atomic path.
-kvm_s390_adapter_unmap() and kvm_s390_unmap_all_adapters() skip dirty
-marking and unpin for unpinned entries.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Update Documentation/virt/kvm/devices/s390_flic.rst to reflect the
-new MAP/UNMAP behavior.
-
-Fixes: c9a568838086 ("KVM: s390: Add map/unmap ioctl and clean mappings post-guest")
-Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
-Reviewed-by: Douglas Freimuth <freimuth@linux.ibm.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
----
- Documentation/virt/kvm/devices/s390_flic.rst | 15 +++++-
- arch/s390/include/asm/kvm_host.h             |  5 ++
- arch/s390/kvm/interrupt.c                    | 56 +++++++++++++++-----
- 3 files changed, 60 insertions(+), 16 deletions(-)
-
-diff --git a/Documentation/virt/kvm/devices/s390_flic.rst b/Documentation/virt/kvm/devices/s390_flic.rst
-index b784f8016748..983c858b444a 100644
---- a/Documentation/virt/kvm/devices/s390_flic.rst
-+++ b/Documentation/virt/kvm/devices/s390_flic.rst
-@@ -112,9 +112,20 @@ Groups:
-       mask or unmask the adapter, as specified in mask
- 
-     KVM_S390_IO_ADAPTER_MAP
--      This is now a no-op. The mapping is purely done by the irq route.
-+      Map an adapter indicator or summary page for long-term pinning so that
-+      interrupt injection can be performed in atomic context. If long-term
-+      pinning is not possible (e.g. file-backed memory), the page is verified
-+      via a short-term pin and the ioctl returns success; interrupt injection
-+      will use the non-atomic irqfd path with short-term pinning on each
-+      interrupt. In Secure Execution mode this is a no-op and the ioctl
-+      returns success.
-+
-     KVM_S390_IO_ADAPTER_UNMAP
--      This is now a no-op. The mapping is purely done by the irq route.
-+      Unmap a previously mapped adapter indicator or summary page and release
-+      the long-term pin. If the page was not long-term pinned (e.g. file-backed
-+      memory), the map entry is removed and success is returned; if no prior
-+      map entry exists, -ENOENT is returned. In Secure Execution mode this is
-+      a no-op and the ioctl returns success.
- 
-   KVM_DEV_FLIC_AISM
-     modify the adapter-interruption-suppression mode for a given isc if the
-diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
-index eaa34c5bd3c1..c172f9b212d1 100644
---- a/arch/s390/include/asm/kvm_host.h
-+++ b/arch/s390/include/asm/kvm_host.h
-@@ -476,6 +476,11 @@ struct s390_map_info {
- 	__u64 guest_addr;
- 	__u64 addr;
- 	struct page *page;
-+	/*
-+	 * True if the page is long-term pinned. False if long-term pinning
-+	 * failed and this entry exists only to preserve MAP/UNMAP symmetry.
-+	 */
-+	bool pinned;
- };
- 
- struct s390_io_adapter {
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index 9e3e6b0d72ad..7514d9e2403c 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -2520,8 +2520,22 @@ static int kvm_s390_adapter_map(struct kvm *kvm, unsigned int id, __u64 addr)
- 	map->addr = host_addr;
- 	map->page = pin_map_page(kvm, host_addr, FOLL_LONGTERM);
- 	if (!map->page) {
--		ret = -EINVAL;
--		goto out;
-+		/*
-+		 * Long-term pinning may fail for memory types such as file-backed
-+		 * memory. Verify that short-term pinning succeeds so that the
-+		 * non-atomic irqfd path can handle interrupt injection.
-+		 */
-+		map->page = pin_map_page(kvm, host_addr, 0);
-+		if (!map->page) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		unpin_user_page(map->page);
-+		map->page = NULL;
-+		map->pinned = false;
-+		/* Add an entry to preserve MAP/UNMAP symmetry. */
-+	} else {
-+		map->pinned = true;
- 	}
- 	spin_lock_irqsave(&adapter->maps_lock, flags);
- 	if (adapter->nr_maps < MAX_S390_ADAPTER_MAPS) {
-@@ -2532,7 +2546,7 @@ static int kvm_s390_adapter_map(struct kvm *kvm, unsigned int id, __u64 addr)
- 		ret = -EINVAL;
- 	}
- 	spin_unlock_irqrestore(&adapter->maps_lock, flags);
--	if (ret)
-+	if (ret && map->page)
- 		unpin_user_page(map->page);
- out:
- 	if (ret)
-@@ -2546,6 +2560,7 @@ static int kvm_s390_adapter_unmap(struct kvm *kvm, unsigned int id, __u64 addr)
- 	struct s390_map_info *map, *tmp, *map_to_free;
- 	struct page *map_page_to_put = NULL;
- 	u64 map_addr_to_mark = 0;
-+	bool map_pinned = false;
- 	unsigned long flags;
- 	int found = 0, idx;
- 
-@@ -2560,6 +2575,7 @@ static int kvm_s390_adapter_unmap(struct kvm *kvm, unsigned int id, __u64 addr)
- 			list_del(&map->list);
- 			map_page_to_put = map->page;
- 			map_addr_to_mark = map->guest_addr;
-+			map_pinned = map->pinned;
- 			map_to_free = map;
- 			break;
- 		}
-@@ -2568,11 +2584,18 @@ static int kvm_s390_adapter_unmap(struct kvm *kvm, unsigned int id, __u64 addr)
- 
- 	if (found) {
- 		kfree(map_to_free);
--		idx = srcu_read_lock(&kvm->srcu);
--		mark_page_dirty(kvm, map_addr_to_mark >> PAGE_SHIFT);
--		set_page_dirty_lock(map_page_to_put);
--		srcu_read_unlock(&kvm->srcu, idx);
--		unpin_user_page(map_page_to_put);
-+		if (map_pinned) {
-+			/*
-+			 * Only long-term pinned pages need to be marked dirty
-+			 * and released. Fallback entries exist only for
-+			 * MAP/UNMAP symmetry.
-+			 */
-+			idx = srcu_read_lock(&kvm->srcu);
-+			mark_page_dirty(kvm, map_addr_to_mark >> PAGE_SHIFT);
-+			set_page_dirty_lock(map_page_to_put);
-+			srcu_read_unlock(&kvm->srcu, idx);
-+			unpin_user_page(map_page_to_put);
-+		}
- 	}
- 
- 	return found ? 0 : -ENOENT;
-@@ -2598,11 +2621,13 @@ void kvm_s390_unmap_all_adapters(struct kvm *kvm)
- 
- 		list_for_each_entry_safe(map, tmp, &local_list, list) {
- 			list_del(&map->list);
--			idx = srcu_read_lock(&kvm->srcu);
--			mark_page_dirty(kvm, map->guest_addr >> PAGE_SHIFT);
--			set_page_dirty_lock(map->page);
--			srcu_read_unlock(&kvm->srcu, idx);
--			unpin_user_page(map->page);
-+			if (map->pinned) {
-+				idx = srcu_read_lock(&kvm->srcu);
-+				mark_page_dirty(kvm, map->guest_addr >> PAGE_SHIFT);
-+				set_page_dirty_lock(map->page);
-+				srcu_read_unlock(&kvm->srcu, idx);
-+				unpin_user_page(map->page);
-+			}
- 			kfree(map);
- 		}
- 	}
-@@ -2929,8 +2954,11 @@ static struct s390_map_info *get_map_info(struct s390_io_adapter *adapter,
- 		return NULL;
- 
- 	list_for_each_entry(map, &adapter->maps, list) {
--		if (map->addr == addr)
-+		if (map->addr == addr) {
-+			if (!map->pinned)
-+				return NULL;
- 			return map;
-+		}
- 	}
- 	return NULL;
- }
--- 
-2.53.0
+> ---
+>   arch/x86/include/asm/kvm_host.h |  3 ++-
+>   arch/x86/kvm/svm/sev.c          | 27 +++++++++++----------------
+>   arch/x86/kvm/svm/svm.h          |  2 +-
+>   arch/x86/kvm/x86.c              |  5 +++--
+>   include/linux/kvm_host.h        |  2 +-
+>   virt/kvm/guest_memfd.c          |  2 +-
+>   6 files changed, 19 insertions(+), 22 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 4be57157136b..230267b2203b 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1725,7 +1725,8 @@ struct kvm_x86_ops {
+>   	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
+>   	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> -	int (*gmem_make_private)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> +	int (*gmem_make_private)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> +				 kvm_pfn_t nr_pages);
+>   #endif
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
+>   	void (*gmem_make_shared)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index 0ecba768c153..bf7f94d1d7f9 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -5090,15 +5090,7 @@ static bool is_pfn_range_shared(kvm_pfn_t start, kvm_pfn_t end)
+>   	return true;
+>   }
+>   
+> -static u8 max_level_for_order(int order)
+> -{
+> -	if (order >= KVM_HPAGE_GFN_SHIFT(PG_LEVEL_2M))
+> -		return PG_LEVEL_2M;
+> -
+> -	return PG_LEVEL_4K;
+> -}
+> -
+> -static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
+> +static bool is_large_rmp_possible(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+>   {
+>   	kvm_pfn_t pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+>   
+> @@ -5107,14 +5099,14 @@ static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
+>   	 * PFN is currently shared, then the entire 2M-aligned range can be
+>   	 * set to private via a single 2M RMP entry.
+>   	 */
+> -	if (max_level_for_order(order) > PG_LEVEL_4K &&
+> +	if (nr_pages >= KVM_PAGES_PER_HPAGE(PG_LEVEL_2M) &&
+>   	    is_pfn_range_shared(pfn_aligned, pfn_aligned + PTRS_PER_PMD))
+>   		return true;
+>   
+>   	return false;
+>   }
+>   
+> -int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
+> +int sev_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+>   {
+>   	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
+>   	kvm_pfn_t pfn_aligned;
+> @@ -5125,6 +5117,9 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
+>   	if (!sev_snp_guest(kvm))
+>   		return 0;
+>   
+> +	if (WARN_ON_ONCE(nr_pages != 1))
+> +		return -EIO;
+> +
+>   	rc = snp_lookup_rmpentry(pfn, &assigned, &level);
+>   	if (rc) {
+>   		pr_err_ratelimited("SEV: Failed to look up RMP entry: GFN %llx PFN %llx error %d\n",
+> @@ -5133,12 +5128,12 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
+>   	}
+>   
+>   	if (assigned) {
+> -		pr_debug("%s: already assigned: gfn %llx pfn %llx max_order %d level %d\n",
+> -			 __func__, gfn, pfn, max_order, level);
+> +		pr_debug("%s: already assigned: gfn %llx pfn %llx nr_pages %llx level %d\n",
+> +			 __func__, gfn, pfn, nr_pages, level);
+>   		return 0;
+>   	}
+>   
+> -	if (is_large_rmp_possible(kvm, pfn, max_order)) {
+> +	if (is_large_rmp_possible(pfn, nr_pages)) {
+>   		level = PG_LEVEL_2M;
+>   		pfn_aligned = ALIGN_DOWN(pfn, PTRS_PER_PMD);
+>   		gfn_aligned = ALIGN_DOWN(gfn, PTRS_PER_PMD);
+> @@ -5155,8 +5150,8 @@ int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_ord
+>   		return -EINVAL;
+>   	}
+>   
+> -	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx max_order %d level %d\n",
+> -		 __func__, gfn, pfn, pfn_aligned, max_order, level);
+> +	pr_debug("%s: updated: gfn %llx pfn %llx pfn_aligned %llx nr_pages %llx level %d\n",
+> +		 __func__, gfn, pfn, pfn_aligned, nr_pages, level);
+>   
+>   	return 0;
+>   }
+> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+> index ad849edcacc7..a327bf751ecd 100644
+> --- a/arch/x86/kvm/svm/svm.h
+> +++ b/arch/x86/kvm/svm/svm.h
+> @@ -1009,7 +1009,7 @@ int sev_cpu_init(struct svm_cpu_data *sd);
+>   int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
+>   extern unsigned int max_sev_asid;
+>   void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
+> -int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
+> +int sev_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+>   void sev_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
+>   void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
+>   int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index e7865b28d37b..511830d1b6f3 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10620,9 +10620,10 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+>   }
+>   
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+> -int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
+> +int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> +			       kvm_pfn_t nr_pages)
+>   {
+> -	return kvm_x86_call(gmem_make_private)(kvm, pfn, gfn, max_order);
+> +	return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages);
+>   }
+>   #endif
+>   
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 9cf01429281b..97cedf8b89c5 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2581,7 +2581,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
+>   
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>   int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> -			       int max_order);
+> +			       kvm_pfn_t nr_pages);
+>   #endif
+>   
+>   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 466f611ad4b7..255860c472ee 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -77,7 +77,7 @@ static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slo
+>   	kvm_pfn_t pfn = folio_file_pfn(folio, index);
+>   	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
+>   
+> -	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_order(folio));
+> +	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_nr_pages(folio));
+>   #else
+>   	return 0;
+>   #endif
 
