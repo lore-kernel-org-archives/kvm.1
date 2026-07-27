@@ -1,258 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB763EEACF;
-	Mon, 27 Jul 2026 09:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDE43EF650;
+	Mon, 27 Jul 2026 09:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785145932; cv=none; b=V7xA1xR/ZhGedHN6fRTs/k/BPxd+YEmxEsHwHSDgmKgwmZbLq9jJk3pipbyFp+ocnVq6t3Gkc2U5AFxrwqkiBpI6QdTMM60jcRgFMK3IaZ2h06f2Q32cfeCmPa46h0XEnbRIiiji+BfzsdP905pQQyYNVLjO7wzx7teKX8a36WM=
+	t=1785146061; cv=none; b=oi4jDCdQ/rd2GTDRysqE+EhWqnzAHsTr0Q+wJ1H+n9Ey6L6x+Q/IZqNAvC6sy8YJ9af+bI2wh/EnjltGKjxnPva6K3D+YhIXKuq96EQzdYFG27ypMK1ym4H2LL1ms0p1zaDrVa5ewsKzMbnPeh8rWyNvl9UMScQlvxzVayzfd8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785145932; c=relaxed/simple;
-	bh=lSXdY3uxqJ2DyifYj1oNP27UKmO6OiF1OleiIjgYXeA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VWpkfZsT5rRYnPt8GDiLJs4ubmjS5uR5+r3DLSA4GSlzaepEbRhSlPT7Bbh4V7NKNz/cNROHu/7f9/y3Y4xUU3deef7as/cfyervNNtUrubR11ciagiIX0OWlAEh4N8bl/VxX5K+4GazwJBxXOGdDtLGBhTPoxJJrFePiF8SAuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cGQdeQ1L; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785146061; c=relaxed/simple;
+	bh=70hka3mRMi1I3N1R+mXxU3jLbnTvik5yIwxZTt0gLLw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sQyasvlCbq5Proaw1bx2pcPhKByxmnzF8ApvWvAoMxV05+hhBiHKt7WkitqxT2o47Z0nq7mXv3Ncd4E4oDFbXKMA/wZy7RdnEtrtzuiF3uS1nHrtAbkpfHArk9KmRA0HIqjHI3yHy+HNvWwDoOmLlbfT6e/E/0IaclUq49BJsnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oWT96vIl; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cGQdeQ1L"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785145929; x=1816681929;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lSXdY3uxqJ2DyifYj1oNP27UKmO6OiF1OleiIjgYXeA=;
-  b=cGQdeQ1Lgl040+GEldDS1ZjwyKnxvHGw5iQ2cTqI+nKWSVxqXD/9+Iqq
-   3D5G2oBBhqcP9LcI5BqWSdH+7ZKmVxNSKf9e690yPCDU8tqqozr2AAcdU
-   8crGmRy1Wch3FuynOWeSkAiiGKafn1xxq/m9Exa235HaandxUYHazLv/O
-   evrYAjDgTXfLySknYgMHkWlPSn2hfn7f7RYalzkHlwGyRzp+SESoSzncQ
-   pwQb46nop5z4BeXMIlnYlI3XTdDhiwbIB/4aaXO/M+Ncx0/wcSR524Mx1
-   06lg0GioQovPOuDwdqj1+EHCpjAVUpKZGv6Z80w2wAJ+XwY0ujeFztU11
-   Q==;
-X-CSE-ConnectionGUID: JsrHORlpSuyZA9dP9u2QhA==
-X-CSE-MsgGUID: bLLQC61dQYak6Un+Z3OSaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="103121995"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="103121995"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:52:04 -0700
-X-CSE-ConnectionGUID: ripdlDjITuGWf6+dAsfeUg==
-X-CSE-MsgGUID: 2Npk8i5bQbCgYsK9CYnLFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="260012677"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 02:52:02 -0700
-Message-ID: <627eda4b-c084-4cd8-ad3a-3b3793feae0d@intel.com>
-Date: Mon, 27 Jul 2026 17:51:59 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oWT96vIl"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R9Uc5k4154296;
+	Mon, 27 Jul 2026 09:54:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=qcA4SBAVWL7eknTizSaMZVJT6B8G52Ntmj3Ny2lyj
+	MY=; b=oWT96vIlwMepqlfqQLarXfAPYi+etviRcI+bZkvbyHyCYpCn/L+sOQ9cw
+	W1J1riYGl+YF8T79FL4hgjkkbYsJQp8syRFauRHbnwWeQie9Nkl5/SbIJIhQflmO
+	oAlwfpioPq+W3OW+gliOOC+K6JPbtbdvmYpJWr9mf4vo/XEJEzZjOnIMOYSSJReC
+	RAXmPg/2jrBDDW0+9xZxepLZq/zuS1IvFr2USjHfwoTPXWz2yZ4xBBAc4ik3gFbO
+	OtPeKze5pWdGlwnavc1grJDkDE0yX/Vkq8Ege7jQKbhrfF3oT009GFpAzsqOYcoz
+	elCAwowAAPkJZHxR/5CBCCikDwDZw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyc7b2v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 09:54:05 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66R9fJFW016776;
+	Mon, 27 Jul 2026 09:54:04 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fjvu9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 09:54:04 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66R9s3kn17367650
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jul 2026 09:54:03 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63E0358065;
+	Mon, 27 Jul 2026 09:54:03 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2013158051;
+	Mon, 27 Jul 2026 09:54:00 +0000 (GMT)
+Received: from li-d98989cc-2c66-11b2-a85c-93ab83b7dd53.ehn-de.ibm.com (unknown [9.224.77.173])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Jul 2026 09:53:59 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: KVM <kvm@vger.kernel.org>, Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Jaehoon Kim <jhkim@linux.ibm.com>,
+        Douglas Freimuth <freimuth@linux.ibm.com>
+Subject: [GIT PULL 0/5] KVM: s390: Fixes for 7.2
+Date: Mon, 27 Jul 2026 11:53:54 +0200
+Message-ID: <20260727095359.107671-1-borntraeger@de.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 7/9] KVM: guest_memfd: Rename prepare() hook and
- Kconfig to make_private() / CONVERT
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Fuad Tabba <fuad.tabba@linux.dev>, Ackerley Tng <ackerleytng@google.com>,
- Michael Roth <michael.roth@amd.com>, Fuad Tabba <tabba@google.com>
-References: <20260723210811.72720-1-seanjc@google.com>
- <20260723210811.72720-8-seanjc@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260723210811.72720-8-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EBV_SOlC79ccKAoccEpA060mmW-JTfnM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDA5NiBTYWx0ZWRfX4mOXgw+Zv/tA
+ jmyuoFvEzLDQI4EBPA/yzMvy3Vtoo3VMl6JyK9o2rajLvLwjCuDsLpWSsjESA6odjzDCsw5xxBS
+ VIwGM83hYeXTa1JI3Im/S3Lu0fw2Pq/pSRYlzlfdgVU07viFAGbEEUR6goRYiboF+xDRIiFhMBP
+ gBfEBwlJYCRHttEBx/SgQNC/dq8BNBgxobczIOmB483kECq24HrQWM3XD4G0zxpH60Tqyzrh9dz
+ NDPjtQr8ojAlOEj08E7ZRW/ldNK+rNcaDfz2U6hHyGiBoM2/z6+GM8oqN2SmPTbYI7VUTwYC0uq
+ JZcH6XTWWPiNLbiBZe3QyWaWDovahQU+/ypUOYtrUEtEvON+zlKCZXHAvwWWs4qB73PGAFoB4e8
+ 1feY5de+qtcM06K4RAf/dWG6NtZCnSdQYsXDWvdMCoEKfwB/VG0RCPXXHYahkKOrVXg1Pt0yAla
+ TvN38mpzIHEuXDPObaQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDA5NiBTYWx0ZWRfX9V/E+eopYXqN
+ amFXG9K5jO0rbq+0Ozd6V46HZ+ymu+mtGULxoOgMAG/Inpq8bOA01oja2lwnHfioBryUOjXVNCi
+ etFgvgkGH39MU0pldIR2yjS1vP6amlk=
+X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a672abd cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=n2cOJxejGmWVGDEj5nwA:9
+X-Proofpoint-GUID: EBV_SOlC79ccKAoccEpA060mmW-JTfnM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270096
 
-On 7/24/2026 5:08 AM, Sean Christopherson wrote:
-> Rework guest_memfd's prepare() hook into a more accurate make_private(),
-> and rework its Kconfig from PREPARE to a more generic CONVERT.  
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-> This will
-> allow x86 to share (pun intended) a kvm_x86_ops.gmem_make_shared() hook
-> between the "convert to shared" and "reclaim" flows, which are one and the
-> same for SNP.
+Paolo,
 
-Does it mean in the future we will introduce something like below?
+please pull the following changes since commit 8cdeaa50eae8dad34885515f62559ee83e7e8dda:
 
-#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t 
-pfn, int max_order)
-{
-	return kvm_x86_call(gmem_make_private)(kvm, pfn, gfn, max_order);
-}
+  Linux 7.2-rc2 (2026-07-05 14:44:06 -1000)
 
-+int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
-+{
-+	return kvm_x86_call(gmem_make_private)(pfn, nr_pages);
-+}
-#endif
+from the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git  tags/kvm-s390-master-7.2-1
 
-> No functional change intended.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/include/asm/kvm-x86-ops.h | 4 ++--
->   arch/x86/include/asm/kvm_host.h    | 4 ++--
->   arch/x86/kvm/Kconfig               | 2 +-
->   arch/x86/kvm/svm/sev.c             | 2 +-
->   arch/x86/kvm/svm/svm.c             | 2 +-
->   arch/x86/kvm/svm/svm.h             | 2 +-
->   arch/x86/kvm/x86.c                 | 6 +++---
->   include/linux/kvm_host.h           | 5 +++--
->   virt/kvm/Kconfig                   | 2 +-
->   virt/kvm/guest_memfd.c             | 4 ++--
->   10 files changed, 17 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-> index 210cb95d0a0b..a4d872ddef9d 100644
-> --- a/arch/x86/include/asm/kvm-x86-ops.h
-> +++ b/arch/x86/include/asm/kvm-x86-ops.h
-> @@ -146,8 +146,8 @@ KVM_X86_OP(vcpu_deliver_sipi_vector)
->   KVM_X86_OP_OPTIONAL_RET0(vcpu_get_apicv_inhibit_reasons);
->   KVM_X86_OP_OPTIONAL(get_untagged_addr)
->   KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> -KVM_X86_OP_OPTIONAL_RET0(gmem_prepare)
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +KVM_X86_OP_OPTIONAL_RET0(gmem_make_private)
->   #endif
->   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
->   KVM_X86_OP_OPTIONAL(gmem_make_shared)
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 4dc8a03c829a..4be57157136b 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1724,8 +1724,8 @@ struct kvm_x86_ops {
->   
->   	gva_t (*get_untagged_addr)(struct kvm_vcpu *vcpu, gva_t gva, unsigned int flags);
->   	void *(*alloc_apic_backing_page)(struct kvm_vcpu *vcpu);
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> -	int (*gmem_prepare)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +	int (*gmem_make_private)(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
->   #endif
->   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
->   	void (*gmem_make_shared)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index e0e7ad015839..538ed1e80332 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -160,7 +160,7 @@ config KVM_AMD_SEV
->   	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
->   	select ARCH_HAS_CC_PLATFORM
->   	select KVM_GENERIC_MEMORY_ATTRIBUTES
-> -	select HAVE_KVM_ARCH_GMEM_PREPARE
-> +	select HAVE_KVM_ARCH_GMEM_CONVERT
->   	select HAVE_KVM_ARCH_GMEM_RECLAIM
->   	select HAVE_KVM_ARCH_GMEM_INVALIDATE
->   	select HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 4aa8330d5b2d..0ecba768c153 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -5114,7 +5114,7 @@ static bool is_large_rmp_possible(struct kvm *kvm, kvm_pfn_t pfn, int order)
->   	return false;
->   }
->   
-> -int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
-> +int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order)
->   {
->   	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
->   	kvm_pfn_t pfn_aligned;
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index b8c9967dd0de..d5a08f1db84b 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -5438,7 +5438,7 @@ struct kvm_x86_ops svm_x86_ops __initdata = {
->   	.vm_copy_enc_context_from = sev_vm_copy_enc_context_from,
->   	.vm_move_enc_context_from = sev_vm_move_enc_context_from,
->   
-> -	.gmem_prepare = sev_gmem_prepare,
-> +	.gmem_make_private = sev_gmem_make_private,
->   	.gmem_make_shared = sev_gmem_make_shared,
->   	.gmem_invalidate_range = sev_gmem_invalidate_range,
->   	.gmem_max_mapping_level = sev_gmem_max_mapping_level,
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index b2acb5ab7c26..ad849edcacc7 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -1009,7 +1009,7 @@ int sev_cpu_init(struct svm_cpu_data *sd);
->   int sev_dev_get_attr(u32 group, u64 attr, u64 *val);
->   extern unsigned int max_sev_asid;
->   void sev_handle_rmp_fault(struct kvm_vcpu *vcpu, gpa_t gpa, u64 error_code);
-> -int sev_gmem_prepare(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
-> +int sev_gmem_make_private(struct kvm *kvm, kvm_pfn_t pfn, gfn_t gfn, int max_order);
->   void sev_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
->   void sev_gmem_invalidate_range(struct kvm *kvm, struct kvm_gfn_range *range);
->   int sev_gmem_max_mapping_level(struct kvm *kvm, kvm_pfn_t pfn, bool is_private);
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 249267ed2a9d..e7865b28d37b 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10619,10 +10619,10 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
->   	return !kvm_arch_has_private_mem(kvm);
->   }
->   
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> -int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
->   {
-> -	return kvm_x86_call(gmem_prepare)(kvm, pfn, gfn, max_order);
-> +	return kvm_x86_call(gmem_make_private)(kvm, pfn, gfn, max_order);
->   }
->   #endif
->   
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 0b5b9cb022ba..9cf01429281b 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2579,8 +2579,9 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
->   }
->   #endif /* CONFIG_KVM_GUEST_MEMFD */
->   
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> -int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order);
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
-> +			       int max_order);
->   #endif
->   
->   #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 617876993225..c3c0ee253fc7 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -107,7 +107,7 @@ config KVM_GUEST_MEMFD
->          select XARRAY_MULTI
->          bool
->   
-> -config HAVE_KVM_ARCH_GMEM_PREPARE
-> +config HAVE_KVM_ARCH_GMEM_CONVERT
->          bool
->          depends on KVM_GUEST_MEMFD
->   
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index f64cd87ec8b0..466f611ad4b7 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -73,11 +73,11 @@ static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
->   static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->   				    pgoff_t index, struct folio *folio)
->   {
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->   	kvm_pfn_t pfn = folio_file_pfn(folio, index);
->   	gfn_t gfn = slot->base_gfn + index - slot->gmem.pgoff;
->   
-> -	return kvm_arch_gmem_prepare(kvm, gfn, pfn, folio_order(folio));
-> +	return kvm_arch_gmem_make_private(kvm, gfn, pfn, folio_order(folio));
->   #else
->   	return 0;
->   #endif
+for you to fetch changes up to 3e3aa6da87d30a0064a17b836685cd43c90a3572:
 
+  KVM: s390: pci: Fix handling of AIF enable without AISB (2026-07-09 16:23:10 +0200)
+
+----------------------------------------------------------------
+KVM: s390: Fixes for 7.2
+
+- more gmap KVM memory management fixes
+- PCI passthru fixes
+
+----------------------------------------------------------------
+Claudio Imbrenda (3):
+      KVM: s390: vsie: Avoid potential deadlock with real spaces
+      KVM: s390: Fix dat_crste_walk_range() early return
+      KVM: s390: Improve kvm_s390_vm_stop_migration()
+
+Haoxiang Li (1):
+      KVM: s390: pci: Fix GISC refcount leak on AIF enable failure
+
+Matthew Rosato (1):
+      KVM: s390: pci: Fix handling of AIF enable without AISB
+
+ arch/s390/kvm/dat.c      |  2 ++
+ arch/s390/kvm/gmap.c     |  7 ++++++-
+ arch/s390/kvm/kvm-s390.c |  6 ++++--
+ arch/s390/kvm/pci.c      | 12 +++++++++---
+ 4 files changed, 21 insertions(+), 6 deletions(-)
