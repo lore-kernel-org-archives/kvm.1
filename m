@@ -1,137 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DCB2F9D89
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 11:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2432334CFC7
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 12:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785153131; cv=none; b=i0aFjI+S3xkmvNkLhk3DC6NtAi4XuD2LckweAF0vuDq7edzWRDYD+yAKUxCwdU6WEd5eDO9QQzm0S+yi/r55psXq8zdayaEoZvwdnhbBfIHPcJ/jnSftsRHr/e3GOdmw20/ZbiHqs6LADqsdP4GQy7+AOuVLl8n08tx9oh7G6hY=
+	t=1785155425; cv=none; b=CJXUUGzarIuECOjS4NdGSsrUwToyv/CIJq5PqEhHfAmC4ZV3k6KTN7bKOI/Fmp3kPj3LNrlNKkSJSaPSkNY+woXBoe+UbUzE2AuoBVyAiP+150lHmmlIbdlC9BCVCVGhNUESq4TcGXnYwdsmPzjgi1aS2vKh7gsXbpl0L6N37E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785153131; c=relaxed/simple;
-	bh=Mhhc24sMg3/r/S38Qe+3S85s7KlVq/EDYB1GAklx+k4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CNwXUsaRtQKZWduJV2Z8uoZPtDbeynNaw2dXWLD/qdWZP0oCBzK3JulinJqY8xbltpYz1v6HHEgsHtIsxFKNLbWKDDirZ+9KQyiSlqQNnKco+RtqT/rFfoCsu9cumkjC/7+FVSydIkOmag6Mr7rcJP4kKaZVwqTJjHTjwGYYYTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ay5w1NNW; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785155425; c=relaxed/simple;
+	bh=jaiXBz+l1lRYFhGsZ3IGwEjlvJMaeM8u111+F3RTF3Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EbPXWPgTQDVdxALPyDN2ppQEubYuRA2k7UTnmdKpBjbqx0i1uZ6DkP2dJlRPTFqKz0B9UgyJyEkxTc2RO8mdJpHG8GanZdlRBRiNjPBjzrLkY+rwtVZAKz30Q7XaZdB2VbR5Q4G412D56cr4CVAxKM5jFJza1N0eeFKpLR/5Wvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U81BXpq0; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ay5w1NNW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785153129;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i5UQGqeTaYi2kaAkB+026BcAjPwRZW9Yj5wzH4u9ATk=;
-	b=Ay5w1NNWz0ldO5sKLdLM3GsQuWZ045hj2FggvAX99fXiD1MAWh2LMheMP7oiOIoWuhZwxH
-	p8pl1SCFuW5BhSkQbVrqUqlS6+V15kbXQSAHAkRizkr75eo8bcm0PH3mpf4qFvCt3LY0c7
-	kY6wrEpkjN0qi12n0BHpqiIuffxZGYU=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-355-BLrv8nnUN0q04OGhaR7ezw-1; Mon,
- 27 Jul 2026 07:52:07 -0400
-X-MC-Unique: BLrv8nnUN0q04OGhaR7ezw-1
-X-Mimecast-MFC-AGG-ID: BLrv8nnUN0q04OGhaR7ezw_1785153126
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EACF8180264B;
-	Mon, 27 Jul 2026 11:52:05 +0000 (UTC)
-Received: from localhost (unknown [10.44.24.5])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B732429;
-	Mon, 27 Jul 2026 11:52:03 +0000 (UTC)
-From: =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Date: Mon, 27 Jul 2026 15:51:15 +0400
-Subject: [GIT PULL 06/23] target/i386/sev: fix MemoryRegion reference leaks
- in gpa2hva callers
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U81BXpq0"
+Received: by mail-pj2-f11.google.com with SMTP id d9443c01a7336-2ceb5a39c48so9234455ad.1
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 05:30:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785155423; x=1785760223; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zZDUuhSz6sxGN/m5AK+s00UCMOMQBfNugawXzRdDcys=;
+        b=U81BXpq0dWzYDTh8SrOwmly5GYFoCG2XeTNlqQrpA18vvJjwoBG+izLTkxCkiag1Da
+         qz0K+xXkUZqLYJ1UvfLmpbExBgr3r68PhIxmv5iaAhIp/rY0rImozmjgX1FWkx5zshDm
+         XjTM87hUY3m0XUOedccAao9gxE/ZHL0ic33lkl4CPy3K1iB1TleSCVrZ+dHiiCgypsJ4
+         aNvJCKFmsHutze65Odx8VaUxXdLPoOYM4n8BI75wRpjvnV9Po/1Vo90XCIidN6Gu7YcK
+         fTXBKJyjmgxwsapOEwYtHgm02lVetfUj58D1Q0c4LCzDuW7wslgf74VcaXzfYmyRyKzj
+         OeJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785155423; x=1785760223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zZDUuhSz6sxGN/m5AK+s00UCMOMQBfNugawXzRdDcys=;
+        b=KFv++Lh8RCauvhQtbwPN3svtuuYQ92BLF1Y5FMUj1FlVrj9hycUo4IqX3DsYdnvdvd
+         fc7rh1KdWl6H2LehwSypwRtWWcrlzIkRE8w0sLCpf/NWy8zobxlUC5dlqO7TfQ9btGH7
+         YdaThhJwtn1C2Wd1tFewQhBJcVc9ReZrLjQ21mgrW405TVunfT3ra826Z+z9X8rcEdiR
+         6Xt/CsNAQtsd/6gkJNG03moxiowkMEEyWl4qlNGGIQrHGRVOJJ2TB+zH11++fs3Ulo3a
+         v3SNOnexNgxyFBcdFogk5GYmLjXBXpHeog99TXnsvS6KJPpzdQfCRZI9pFGQygThvrGx
+         VlJQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0w3ihQdSUBkbVm5gbRCP1U9n2oAc+teb9S3/kwdDhBedcOqhx9c8gWj7IoW8BfvUwicI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzcj+VWKUJbdwsInJ/GGjeQfYxFAVc8fqXwOcU/pbBohmU+eaOc
+	b9YsqfQk6sFI7IZPnpKOY/iUwrG1sl/QvoE8M43sm4/V3/4tt2gCc628
+X-Gm-Gg: AR+sD12mv7CgaY+kjDEJWGfhzoh44ySnYgTSKkOzHo4N6pu/6FJEgVTJSaxd3FAs6vI
+	Hh1cUx/On6J/tWB/XtLKK+QwGn4QZyyLW3SPWovrKYeilCMScXB5V0jg/UjBd1teioOUFCFV0TA
+	zvY41H63trCQg2DLIZlWxKaupFNbE0kg5ug+h3K/isFfCtQnnGnxxbPbnUWrFJG0OuQrNc5Mtmg
+	WUsCjIR4WQJyDGv2lOgmQhxiiDpilx0TEZyhOAIYhLLNaTUuvqONuFISQBkzW757Z41IrlfKFjR
+	xjIOGJGonzB9PfKhX55b1rJ88a3ejymYwjhu+w9gEhwgTtBS8SsjSn9bh1rf1k19SN7DPxlmAKO
+	paVXEBoepjW626hVlPb3mVUpk90s4lRKk+KOOF9Y66bc02domnzLfF69cw+FnMPKGT7xaJ5IzPT
+	qERzOb7Q==
+X-Received: by 2002:a17:903:2446:b0:2c9:97a8:afef with SMTP id d9443c01a7336-2cfde8673a4mr76943665ad.40.1785155422902;
+        Mon, 27 Jul 2026 05:30:22 -0700 (PDT)
+Received: from wud.. ([218.194.32.52])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfe1ab9c71sm30679775ad.73.2026.07.27.05.30.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 05:30:22 -0700 (PDT)
+From: "Dylan.Wu" <fredwudi0305@gmail.com>
+To: palmer@dabbelt.com,
+	pjw@kernel.org,
+	aou@eecs.berkeley.edu,
+	anup@brainfault.org
+Cc: alex@ghiti.fr,
+	atish.patra@linux.dev,
+	zhouquan@iscas.ac.cn,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"Dylan.Wu" <fredwudi0305@gmail.com>
+Subject: [PATCH v2 0/3] riscv: ptdump: Refactor for KVM gstage ptdump support
+Date: Mon, 27 Jul 2026 08:30:10 -0400
+Message-Id: <20260727123013.118984-1-fredwudi0305@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260727-fix-v1-6-ca3fa3851347@redhat.com>
-References: <20260727-fix-v1-0-ca3fa3851347@redhat.com>
-In-Reply-To: <20260727-fix-v1-0-ca3fa3851347@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@mailo.com>, 
- Zhao Liu <zhao1.liu@intel.com>, Marcelo Tosatti <mtosatti@redhat.com>, 
- kvm@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1828;
- i=marcandre.lureau@redhat.com; h=from:subject:message-id;
- bh=Mhhc24sMg3/r/S38Qe+3S85s7KlVq/EDYB1GAklx+k4=;
- b=owEBbQKS/ZANAwAKAdro4Ql1lpzlAcsmYgBqZ0Y+fGj1ciGYg3/G6BtXKbg01aMqoGrpUPrq6
- 0Eq0DGF1/WJAjMEAAEKAB0WIQSHqb2TP4fGBtJ29i3a6OEJdZac5QUCamdGPgAKCRDa6OEJdZac
- 5RgqEACKwy8dkLIU6JwSGzDKMtVXkr7DEfaFR3siAcCWRK56vUVxeOAjrGtp7g6AGSeQusDHnTK
- JRF379tFVLKYhql12Y2sMGF9OFA+0ttIeSgzujJhqZvpcL5Tpf6EE9UUE0aEjZooDJNCsw8/dik
- DnKcpLzXSHueyJCVcbtOQDzX+TxV3hwGaRu5NOykg1xIvJZdF0ydMrtgltiSAnpSanHNbIJ5mdQ
- ydwHv/QXaoEVbn9qGHsdRdXs4P9fAHUvkZtJ44zXps3+MPsFsXoz6r767J17oEcpyoBjBnwQ8bA
- y1BaM4Owwm/QPRRmlUa6DjdDrGphJ3QTfGkedTmfSuoK4vrXpK6EMeKwNs/sN/Mk6WAYGXCqkhq
- I15cWgKFMR35c2Ye/czw9wlQK26TSRXvjmSVG8YWcM0Pwt5ZWLqQnJFaG3Cl3G9r8rJuAJPRR1d
- 0xfD+G+RUzGAqWtn4Zd/koJjhgwN2IrYcdIe9P1Umw1IdOzVjhIKoGodZpKLQWmMQCE0q/2RIpV
- de1L2pYHHjY+x/s9SGuqXnSHF7CrZ0udwZRsaItFM1RPaiFb3fkWnsmOCZBbcnnPKuF4tnLYZM9
- R2rJO7r8VbuZvKGo0un507lqwc6Ob7XeUeiCqcq1kx9wND0tUae5GEY2yB5L3XvBavWFaERtzie
- U01/X2mJUzRjcqw==
-X-Developer-Key: i=marcandre.lureau@redhat.com; a=openpgp;
- fpr=87A9BD933F87C606D276F62DDAE8E10975969CE5
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-gpa2hva() returns a referenced MemoryRegion via its p_mr out-parameter
-(inherited from memory_region_find()), but both SEV callers were failing
-to release it.
+This is v2 of the series to add KVM gstage ptdump support for RISC-V.
 
-Fixes: c7f7e6970d3b ("sev: add sev-inject-launch-secret")
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20260521145451.1831984-1-marcandre.lureau@redhat.com>
----
- include/system/memory.h | 2 ++
- target/i386/sev.c       | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Changes from v1 (https://lore.kernel.org/linux-riscv/20260701085030.124579-1-fredwudi0305@gmail.com/):
+  - Split patch 1 into two patches as requested by Paul Walmsley:
+    * Patch 1/3: Create ptdump.h header, move declarations there,
+                 and export note_page()
+    * Patch 2/3: Make attribute parsing use per-level bits configuration,
+                 and rename local pg_level[] to kernel_pg_levels[]
+  - Added CONFIG_PTDUMP_GSTAGE_DEBUGFS Kconfig option
+  - Replaced custom walk logic with ptdump_walk_pgd() reuse
+  - Removed incorrect copyright headers from arch/riscv/kvm/ptdump.c
+  - Fixed Makefile ordering (alphabetical, under conditional Kconfig)
 
-diff --git a/include/system/memory.h b/include/system/memory.h
-index 47a0e06fbf8a..2192fc9bdc5b 100644
---- a/include/system/memory.h
-+++ b/include/system/memory.h
-@@ -1085,6 +1085,8 @@ void memory_region_ref(MemoryRegion *mr);
-  */
- void memory_region_unref(MemoryRegion *mr);
- 
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(MemoryRegion, memory_region_unref)
-+
- /**
-  * memory_region_init_io: Initialize an I/O memory region.
-  *
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index debe6344ab4d..d7dcefc8ecf5 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -1569,7 +1569,7 @@ snp_populate_metadata_pages(SevSnpGuestState *sev_snp,
-     OvmfSevMetadataDesc *desc;
-     int type, ret, i;
-     void *hva;
--    MemoryRegion *mr = NULL;
-+    g_autoptr(MemoryRegion) mr = NULL;
- 
-     for (i = 0; i < metadata->num_desc; i++) {
-         desc = &metadata->descs[i];
-@@ -2063,7 +2063,7 @@ int sev_inject_launch_secret(const char *packet_hdr, const char *secret,
-     int error, ret = 1;
-     void *hva;
-     gsize hdr_sz = 0, data_sz = 0;
--    MemoryRegion *mr = NULL;
-+    g_autoptr(MemoryRegion) mr = NULL;
-     SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
- 
-     if (!sev_common) {
+Dylan.Wu (3):
+  riscv: ptdump: Create ptdump.h and move declarations
+  riscv: ptdump: Use per-level attribute bits for parsing
+  KVM: riscv: Register ptdump with debugfs on guest creation
+
+ arch/riscv/include/asm/ptdump.h |  42 +++++
+ arch/riscv/kvm/Kconfig          |  15 ++
+ arch/riscv/kvm/Makefile         |   1 +
+ arch/riscv/kvm/ptdump.c         | 276 ++++++++++++++++++++++++++++++++
+ arch/riscv/mm/ptdump.c          | 106 +++++-------
+ 5 files changed, 376 insertions(+), 64 deletions(-)
+ create mode 100644 arch/riscv/include/asm/ptdump.h
+ create mode 100644 arch/riscv/kvm/ptdump.c
 
 -- 
-2.55.0
+2.34.1
 
