@@ -1,142 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5610A37A847
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 23:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9DF3CB55D;
+	Mon, 27 Jul 2026 23:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785194214; cv=none; b=uT7CmF51zxyonGg1NoKPkuxBPgueM4woCAfmB399hprZ6+vLLkjj8RldtQ/Rj9W7VOKR76fYbS2UsZymS1f7nkU4+66ePK+R1Yl9hUMOhnKg0f+1jYNdqLBQyKgmdY2Nx4+sP6jLuD93znMpi0JJtn++VYSLMyaWEK+1oQM2ewk=
+	t=1785196366; cv=none; b=LjBcKLsMzQHDraSW755imXhNqkjLqWX5e5ahhTnHWrAmJIgo/KJtn+l4jWJNu4xfLnb/WtOKAs52pK/wTUGTGckpn6bp2vv/nii7T0i3Mls3zqCO9bxIkjzc9iCoVhZCEcA0preJ1AqYIfX89ewe+ZOUMcjTZAbK56XtHHAtskw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785194214; c=relaxed/simple;
-	bh=C85A++KuUYqiv6lPWfg2CoF8YvF8NaICP8JNtTWmuVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YvNwoyyfQ4c2edd8TqeYGLrIP7VVGA7QyVeMm3tmoYmTEvNQxIIush/TXVE9L5Kz4OCAyUrD6wTpZnztwGUQ3YQ5q1h6TuCnzSEGuhAYUGnY3mSkD1m+5yF2KhcPzN3Hy21W+nj6nFKetC9W+jB8p2kaEqX6SgQ0TL439N2kgHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YcLbNGfW; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785196366; c=relaxed/simple;
+	bh=6rPDuMXHnodQi/OJ6oaeAakLQY4TMAkHcsPeBHUBtU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tPnexH4Su8y8+/RLZAk5Ib01qboSY6RohooqWlSoZIK9E5u2cTCnPQ+9R0dNUPjx9ixssFLYgZVBX/Y3QDy8sozFQsMKqX1V+Rw3gMH/ae8yYuh6qVQKIcmLEbZySIh3F3PTZ2kWiIFMBe8JDpgPw1wx9Ya/lgFsC9M9vOtJ7SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KODcGCzb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YcLbNGfW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785194211; x=1816730211;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=C85A++KuUYqiv6lPWfg2CoF8YvF8NaICP8JNtTWmuVM=;
-  b=YcLbNGfWNDTRIuJm//6JIcxqITXrF9wk0TJ3F7dk4X3YMsSV0L3B3Mq7
-   1inAKiv/4Aq1oJd83p9wW/aGwe7ZbV1gLcqK/GGI0chzRgisb4783xmhs
-   RV3Sno/nESSPufy4eOIk05zj0LiUuDcDBYKWh+qWTLmnAwwTanzDa4YqC
-   EVPnlFdcH4DC+J7LPViWwyLawc7CLUNgiW7xQ5EnNjdLENxFEw9Cwii+p
-   G9o417vQkKxQuGYKCKpsGGEdJGhOn5nMkP7V5MMsmd7Z0UByV9of3RgeT
-   K50gQaksIZuMBDBfy9wig0NbL7/gcIWoV+y4mKKV87PJIywUAuT0vD8zJ
-   A==;
-X-CSE-ConnectionGUID: jytMKw8VRfK3LDjaBcX3Yw==
-X-CSE-MsgGUID: ESevfFNOSoOXtH2wXwFPdQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="89662452"
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="89662452"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 16:16:51 -0700
-X-CSE-ConnectionGUID: bjJGES+LQPOuK5wS7KufLg==
-X-CSE-MsgGUID: YgvBlmFaSEqo+FTJ75SsHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,189,1779174000"; 
-   d="scan'208";a="259598215"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 16:16:51 -0700
-Message-ID: <f2a2588e-b198-4895-98f3-e907071a243a@intel.com>
-Date: Mon, 27 Jul 2026 18:16:49 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KODcGCzb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EF51F00A3D;
+	Mon, 27 Jul 2026 23:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785196365;
+	bh=Sv1DYiOhBzdJCe0hu/ca1fwHWgfDZ+1S79F0QDcLsrs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KODcGCzbRaUzs4DENIA1pCe9MtMio8eGglbg56bv7i2vaKvtI2xKnqHWhcygGy0C7
+	 Z5oECMiP3u5XTbKVowTArkq8f7FGDmCW+ysYTgPRsakiQ4Su6JT5DZSUvsOXxFcSDn
+	 bNu2FXgtQT86S4+VvEuEg5ui+o1bZjEIp7m9G84ZMDTvi59Uvu1+tLzOqZffTNvOvF
+	 UKDq8xWTp9vTfYtQ6pE6AK/0p3ttLZk5mEX9x1Ci6oPnObFGW9b9HVihx9pgVkSOVS
+	 Pv60VZhdlziBfLGGl0Il9c48W4uex3u+6ll8lzWm0wh/dw8SkddUpjhiafCQuQSDjh
+	 1oWPYWDXSKaRQ==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v4 01/12] KVM: selftests: Use __stringify() instead of custom XSTR() macros
+Date: Mon, 27 Jul 2026 23:52:17 +0000
+Message-ID: <20260727235228.1007324-2-yosry@kernel.org>
+X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
+In-Reply-To: <20260727235228.1007324-1-yosry@kernel.org>
+References: <20260727235228.1007324-1-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/9] KVM: x86/pmu: Snapshot host IA32_PERF_CAPABILITIES
- in kvm_host
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260727192131.582105-1-zide.chen@intel.com>
- <20260727192131.582105-5-zide.chen@intel.com>
- <20260727194448.CD47F1F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20260727194448.CD47F1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Drop the custom defined XSTR() macros in KVM selftests and use
+__stringify() instead. Include stringify.h in test_util.h to make it
+available for all tests instead of including it in all the tests that
+need it, as more tests will start using it.
 
+No functional change intended.
 
-On 7/27/2026 2:44 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [High] Incomplete replacement of raw MSR_IA32_PERF_CAPABILITIES read leaves KVM vulnerable to kernel panics during module initialization.
-> --
-> 
-> --- Patch [4]: [PATCH v7 4/9] KVM: x86/pmu: Snapshot host IA32_PERF_CAPABILITIES in kvm_host ---
-> commit 6a6d946c1225761f83ef8a8498aa4ccab5425b72
-> Author: Mingwei Zhang <mizhang@google.com>
-> 
-> KVM: x86/pmu: Snapshot host IA32_PERF_CAPABILITIES in kvm_host
->     
-> Cache the unadulterated snapshot of perf_capabilities so that KVM can
-> compare guest vPMU capabilities against raw hardware capabilities.
-> 
->> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->> index 0626e835e9eb7..e0114f248a9ef 100644
->> --- a/arch/x86/kvm/x86.c
->> +++ b/arch/x86/kvm/x86.c
-> [ ... ]
->> @@ -7033,6 +7033,10 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
->>  	if (boot_cpu_has(X86_FEATURE_ARCH_CAPABILITIES))
->>  		rdmsrq(MSR_IA32_ARCH_CAPABILITIES, kvm_host.arch_capabilities);
->>  
->> +	if (boot_cpu_has(X86_FEATURE_PDCM))
->> +		rdmsrq_safe(MSR_IA32_PERF_CAPABILITIES,
->> +			    &kvm_host.perf_capabilities);
->> +
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but there is an incomplete
-> replacement of a raw MSR_IA32_PERF_CAPABILITIES read elsewhere that leaves
-> KVM vulnerable to kernel panics during module initialization.
-> 
-> If a nested hypervisor exposes CPUID.PDCM but faults on the MSR access, the
-> raw rdmsrq() in intel_pmu_is_mediated_pmu_supported() can trigger a #GP and
-> panic the kernel:
+Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+---
+ tools/testing/selftests/kvm/include/test_util.h           | 1 +
+ tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c | 5 +----
+ tools/testing/selftests/kvm/x86/fix_hypercall_test.c      | 1 -
+ tools/testing/selftests/kvm/x86/smm_test.c                | 5 +----
+ 4 files changed, 3 insertions(+), 9 deletions(-)
 
-I don't think KVM needs to handle that case. In
-intel_pmu_is_mediated_pmu_supported(), If CPUID.1:ECX.PDCM is advertised
-in an Intel platform but reading IA32_PERF_CAPABILITIES causes a #GP,
-that's a bug in the underlying hypervisor.
-
-The reason I used rdmsrq_safe() here is that this code lives in common
-x86 code. In theory, a non-Intel architecture could potentially
-implement CPUID.1:ECX[15] without supporting IA32_PERF_CAPABILITIES.
-
-rdmsrq_safe() is a defensive safeguard.
-
-> arch/x86/kvm/vmx/pmu_intel.c:intel_pmu_is_mediated_pmu_supported() {
->     ...
->     rdmsrq(MSR_IA32_PERF_CAPABILITIES, host_perf_cap);
->     ...
-> }
-> 
-> While this patch safely caches the MSR using rdmsrq_safe() here in
-> kvm_x86_vendor_init(), this snapshot is populated after
-> kvm_init_pmu_capability() has already run.
-> 
-> Because of this ordering, intel_pmu_is_mediated_pmu_supported() cannot
-> currently use this safely cached value, as it would incorrectly read 0.
-> 
-> Would it make sense to reorder the initialization so the snapshot is
-> populated before kvm_init_pmu_capability() runs, and then update
-> intel_pmu_is_mediated_pmu_supported() to use kvm_host.perf_capabilities
-> to avoid the #GP risk?
-> 
->>  	WARN_ON_ONCE(kvm_nr_uret_msrs);
->>  
->>  	r = ops->hardware_setup();
-> 
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index d64c8a228207a..e8356ee54d7b9 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -23,6 +23,7 @@
+ 
+ #include <linux/mman.h>
+ #include <linux/types.h>
++#include <linux/stringify.h>
+ 
+ #define msecs_to_usecs(msec)    ((msec) * 1000ULL)
+ 
+diff --git a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
+index 77ce87c41a868..aa7f3b405fd32 100644
+--- a/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
++++ b/tools/testing/selftests/kvm/x86/evmcs_smm_controls_test.c
+@@ -22,9 +22,6 @@
+ 
+ #define SYNC_PORT	0xe
+ 
+-#define STR(x) #x
+-#define XSTR(s) STR(s)
+-
+ /*
+  * SMI handler: runs in real-address mode.
+  * Reports SMRAM_STAGE via port IO, then does RSM.
+@@ -37,7 +34,7 @@ static u8 smi_handler[] = {
+ 
+ static inline void sync_with_host(u64 phase)
+ {
+-	asm volatile("in $" XSTR(SYNC_PORT) ", %%al \n"
++	asm volatile("in $" __stringify(SYNC_PORT) ", %%al \n"
+ 		     : "+a" (phase));
+ }
+ 
+diff --git a/tools/testing/selftests/kvm/x86/fix_hypercall_test.c b/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
+index 753a0e730ea8d..4931ec22768ee 100644
+--- a/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
++++ b/tools/testing/selftests/kvm/x86/fix_hypercall_test.c
+@@ -6,7 +6,6 @@
+  */
+ #include <asm/kvm_para.h>
+ #include <linux/kvm_para.h>
+-#include <linux/stringify.h>
+ #include <stdint.h>
+ 
+ #include "kvm_test_harness.h"
+diff --git a/tools/testing/selftests/kvm/x86/smm_test.c b/tools/testing/selftests/kvm/x86/smm_test.c
+index e2542f4ced605..d1edafd5af755 100644
+--- a/tools/testing/selftests/kvm/x86/smm_test.c
++++ b/tools/testing/selftests/kvm/x86/smm_test.c
+@@ -22,9 +22,6 @@
+ #define SMRAM_GPA 0x1000000
+ #define SMRAM_STAGE 0xfe
+ 
+-#define STR(x) #x
+-#define XSTR(s) STR(s)
+-
+ #define SYNC_PORT 0xe
+ #define DONE 0xff
+ 
+@@ -42,7 +39,7 @@ u8 smi_handler[] = {
+ 
+ static inline void sync_with_host(u64 phase)
+ {
+-	asm volatile("in $" XSTR(SYNC_PORT)", %%al \n"
++	asm volatile("in $" __stringify(SYNC_PORT)", %%al \n"
+ 		     : "+a" (phase));
+ }
+ 
+-- 
+2.55.0.229.g6434b31f56-goog
 
