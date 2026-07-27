@@ -1,106 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B173B42D2
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 15:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA793374721;
+	Mon, 27 Jul 2026 15:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785167402; cv=none; b=rdxPnIsAaBRdkZxiD6YHQmmttp/aZo5CbF2LYFLDnJ6pncwQE9D3yG0N4spDRfN67Oc7+a03p8Z1aykifMjWXXi7bHPOKeycelPCHDRhefAJ9YrwFCHVk9IArPI1QGUPHR7IEYmifzEWPMGymWEgtjheePT9HWBRK4oi+gHvqOg=
+	t=1785167463; cv=none; b=GGN2ExAHh8It8wIn7d9auBEcuB6NsTk6mcgIdbtxvu31Xy2dhYP79dN84zHb5JIQaHAMxGV3JnNa1urPwNtYOahmPCBCiFMYn4JUt2CC79x53JG8erZ7phAt03Rvh7929WGwWFsdLV2E9l4C3NwwmCVCvW25ACEGde7GQIvqPOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785167402; c=relaxed/simple;
-	bh=kjXqeOW0+gdSc+ye8otJxNKTTrfR6JbKkIR0UBM34l8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kAcjWEMqjssO+q5YPctn8HKUR8hXmGiKoyUxib8OyIxGiyZcg4y53ie+HQdW5y+HojgM6Slwd7CGUDIa00OmPCZeN7gORsBLluzpquL8qRv2bqg8tZvgFRx+PXUrxk5txZx6h/gR34//wRgODaD6t5VJAUTDy1VbQpGdEyIM2Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JjXMTM6Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785167463; c=relaxed/simple;
+	bh=ppKyIilh92SxJAUCgXnn55E0Ht4c4utSVo8m2JGUl6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uZlV7skzLiXzxi8R37CKXrZQx3DC8sb24hUqk79OnyJAlPWV5QiOSkLNJd46QzWl07z48TUpK8O91ZDeii/OM7vtMtfdgFqQZ6l71byV7VgBEFEe+eKFAFG7ULCw7weVgY/0DsMidjIIUmyGPfSYZs1xXlWEzWBlIH8F+NHoSG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=CAzb1J3R; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JjXMTM6Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02591F00A3D
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 15:50:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785167400;
-	bh=ikkAM54BZ9Eb2as204ramsxMIUmDlrBa5j3pKGObtp4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JjXMTM6YcrFpJKOnAbKy4ns7MBItYRV7uovrhBIEy+e2QkffvwuizDhQtzfZrHsC6
-	 UNhrqRqMjoP4h5M7/DIS3Hde24TRYPcAKoanGV07z255vb9Rujnl688Q6sqfutH/Y4
-	 iCgVpwUpFBPqWChDoVRaIDJGl3gKXkA+HDVJrafFcO60EDYYBKzwHM6C9n6m+EEvnW
-	 iPR8FIiG2Xlh1LYMcOkolrJEF0KFVfn7VG66KC4yO6BwXAMYV9Ku7eA0hLbfqFFVpt
-	 l67R2c+N9hzqm9fHVESLvsv6QZkDZpv8ZdQro5AxdLYAAMAZuKt+vb36Wqtw69XYrG
-	 /ZsC9Mj8qbFOg==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a01b8959e7so704012a12.1
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 08:50:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoGVnNrOX35rko3SEX2jcb+88ACU+4+L8NHnwP7A19OZuXofXzvuLy+6RE2iQGaRYuiErM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH1XkzRwmHbyqV52sB3Z1RPrPi4iFC9CB/YgYkfhWu+QbIMhkm
-	icPRIGu5eAUR8KR4pPrAo1YVv5YJqQC2GMhqgebQvuV/gTaErn3+2j/MvmrOiFS/S+bFlqWPwFr
-	bowLjvoIxyaPoulWUpyMtaHldW5RsYik=
-X-Received: by 2002:a17:907:961f:b0:c12:6f47:1d30 with SMTP id
- a640c23a62f3a-c1f1f19837fmr402289466b.65.1785167399181; Mon, 27 Jul 2026
- 08:49:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="CAzb1J3R"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08E9B15A1;
+	Mon, 27 Jul 2026 08:50:57 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D0923F763;
+	Mon, 27 Jul 2026 08:50:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785167461; bh=ppKyIilh92SxJAUCgXnn55E0Ht4c4utSVo8m2JGUl6g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CAzb1J3RvS7dAaxGpiUZMcpmhuOLyE3H5eHiBiE2m0YEkDO6qDZ7Lqich6Vv5OhX1
+	 EK7wUBI9x0E+2OspOWwN0sF+iBLiRBIV6786feaJHGbBxX4bSwgutgvX/z9p1LCWyl
+	 f7iWW8NaSn6UkJF8qxCrYmgmdiKe80Y7r+WCd/TU=
+Date: Mon, 27 Jul 2026 16:50:52 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-openrisc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 00/20] mm: optimize unnecessary loads due to
+ ptep_get() and friends out
+Message-ID: <amd-XDcvRZJzkLRX@e129823.arm.com>
+References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
+ <0143b927-08c5-4e94-ae6e-2a0d7bfe950f@intel.com>
+ <amD-TLGWGdMK2ItC@e129823.arm.com>
+ <2a2923e4-6166-4ed6-97ba-2e544a1a2f9d@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260629183746.699840-1-yosry@kernel.org> <20260629183746.699840-11-yosry@kernel.org>
- <amOl8kczWlZP_ftH@google.com> <CAO9r8zOy3qyW11ByE4o+VWn92rZJN_kbF3XJTt7qf3TnqXXuWg@mail.gmail.com>
- <amOuALTiqI9u4tFh@google.com> <CAO9r8zO15oLHXVhyE8rR7bOMM4Ks+qzRAsz=5W8kXMwKU5gbnA@mail.gmail.com>
- <amPL4b7x3cBxA_y_@google.com>
-In-Reply-To: <amPL4b7x3cBxA_y_@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 27 Jul 2026 08:49:47 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN9O=0cgO-ia1FtDQ-JvOau7fGUZ27wKP-WY7HmmKs9dw@mail.gmail.com>
-X-Gm-Features: AUfX_mxG0Z_iUMNktd9_IxANmVr1PH-hdg1r3udW9OdcnmU6t2G7Y3mY8Vtawe4
-Message-ID: <CAO9r8zN9O=0cgO-ia1FtDQ-JvOau7fGUZ27wKP-WY7HmmKs9dw@mail.gmail.com>
-Subject: Re: [PATCH v3 10/10] KVM: selftests: Trigger L2->L1 exits stress
- save+restore and #PF test
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2a2923e4-6166-4ed6-97ba-2e544a1a2f9d@kernel.org>
 
-> > As I mentioned above, I prefer taking a dependency on
-> > KVM_CAP_EXCEPTION_PAYLOAD rather than varying coverage. At least for
-> > the nested case, I think I can move the TEST_REQUIRE() into the
-> > 'nested' case, but then it's probably better to leave it as an arg to
-> > allow for meaningfully running the test in L0.
->
-> The problem is that TEST_REQUIRE() skips the whole test, regardless of when it's
-> called.  I.e. if you go that route, passes for the non-nested case will show up
-> as skips.  TEST_REQUIRE() really is intended to be used when something is a hard
-> requirement.
->
-> > Actually, what if we just skip the nested case completely if
-> > KVM_CAP_EXCEPTION_PAYLOAD isn't available?
->
-> Can you use KVM_NMI instead of KVM_SET_VCPU_EVENTS to effect the nested #VMEXIT?
-> That ioctl is so ancient that I'm a-ok skipping any CAP check for it.
+On Mon, Jul 27, 2026 at 05:18:00PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/22/26 19:30, Yeoreum Yun wrote:
+> >> One of my nits about v1 was that it didn't really frame the series
+> >> precisely. It talks about "optimization" instead of fundamentally
+> >> changing the way that the kernel deals with folded page table levels.
+> >>
+> >> The optimization that this *wants* to talk about kinda falls out of that
+> >> refactoring. It's not really the core of the series, IMNHO.
+> >>
+> >> This series effectively changes the rules about where and how folded
+> >> page table levels can be manipulated. In doing that, the door is opened
+> >> to optimizing out the unnecessary loads.
+> > 
+> > I see. might the title and the cover letter should be reparsed.
+> > Thanks to remind it again :)
+> 
+> While v1 changed "where and how folded page table levels can be manipulated"
+> more drastically, v2 leaves most of set_pgd/... working for now, and really only
+> changes how pgd_get() operates.
+> 
+> With v2, there is mostly only a change for page table walkers that use
+> pgd_get(): while the existing model already made all these levels be skipped in
+> most places except in ptdump code, we now also have to skip them in ptdump code.
+> 
+> So yes, that should be clearly spelled out: as long as pgd_get() is not
+> involved, set_pgd()/pgd_page_vaddr()... will keep working as is.
+> 
+> The moment someone switches to pgd_get() with folded page tables (like riscv
+> already does), set_pgd() is disallowed, and modifications on the actual level
+> must be performed. As discussed, a common helper for vmalloc faults would
+> already minimize the pain quite a lot in that scenario.
+> 
+> While we should make that clearer in the patch description, I am wondering
+> whether we should also add some basic MM documentation for folded page tables,
+> where we at least explain the current state-of-the-art (what's ignored when
+> traversing, why does "no_p4d" actually mean "pgd helpers are dummies and p4d
+> helpers implement the real logic").
 
-Hmm actually I just realized I missed a CAP check for
-KVM_CAP_NESTED_STATE here. I don't think it's worth looking into
-dropping KVM_CAP_EXCEPTION_PAYLOAD, because we will need a CAP check
-anyway, and both of these were introduced very close in time (4.19 and
-4.20, both 8 years ago).
+I see, while I'm trying to spell out those, let me see the MM doc
+to check whether we need to explain more about this.
 
-So I think the simplest thing to do here is just run the nested test
-cases if both CAPs are available and skip it otherwise. Practically, I
-doubt there will be a lot of people running upstream selftests on
-<4.20 kernels for this to actually matter.
-
->
-> > >         int inject_ud;
-> > >
-> > >         /*
-> > >          * Big comment here, explaining both the CAP dependency and the need to
-> > >          * check for nested before querying guest state.
-> > >          */
-> > >         inject_ud = nested && kvm_has_cap(KVM_CAP_EXCEPTION_PAYLOAD);
-> >
-> > Either way yeah I think we should document why checking 'nested' is needed.
-> >
-> > Or.. what if we just check state->nested.size inside
-> > kvm_x86_state_is_guest_mode()? or explicitly clear state->nested in
-> > vcpu_save_state() if nested_size == 0?
->
-> I like both of those ideas.  If you do the former, definitely make
-> kvm_x86_state_is_guest_mode() a "public" API.
-
-Will do that.
+-- 
+Sincerely,
+Yeoreum Yun
