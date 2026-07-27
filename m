@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3FD3E47B
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 19:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899D93D646B
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 19:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785181265; cv=none; b=svVvno/2cw0tEHE4hSpix9P06a016BjBUiK4TKY6j8d4t8S77az8N6yA3mjjH2TI9ABcEOzL12YQ6qPif5TKZjLp9JsX0DxzjUrdvmC8OU4e45I7apbULgFcX5UbB41skjdxQhJLt9PvXDzaSKM8veKAFo+u1KnYz7fssYcWHTM=
+	t=1785181370; cv=none; b=VoCILWPsYvbEOEKL5SrfKwL+MG5aX+Nz2G7y2FvXWE5nRbUUEWlbn9adLtZr9lhhArSazDK/53vnyg4n8yQo3nPcii4MLnHG2KRWxNh4c8gQ4HcyTwEwl8J1OnBLM4BK//AnXc/1KENTr4GaXW0QYQHAK/gLNEhnV2QSeiPvxBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785181265; c=relaxed/simple;
-	bh=VX0YrHBbLoqok5PR0RRjUBQwXjTxPG3Hz0nSr6cRcHw=;
+	s=arc-20240116; t=1785181370; c=relaxed/simple;
+	bh=S8+vq4C7No8RdCKXtCPXGcGqwFaTIj4YDbtEl4T8ijU=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NCRZjzd6L+qc6hM+mxKmFmji/eGBRQdMR3ufmvdPoo3rBrKq/rrV/Mw4jVVtYmvZxq4rjnJ1Efv5Z3RJBhEiAnFazhAgZfpv1eBC9LGArXxlDMhx4InBoloq/fk/7kWpkVBMIrFNVWL+VtSLLDesXSS4iFYTWw9nrX7vuoxltzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n49jJ3Hm; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=IaqpVhIsFC9xdDoIXCtgMFYWCLvg37y2zeB26w+tN3gI0d6yJ0scCmNbGjC39QtgzOjM8x3nU4bz5dIEe3sOslB/V0RKwRGhZdCq7QCKemSrl0VjX/wv7SXH/t7x5Ht1Xge2OjFNGbDj0MdZZxUkks1mFgcClx1EZOWtj7xSvlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yn73bqLM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n49jJ3Hm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BB81F000E9;
-	Mon, 27 Jul 2026 19:41:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yn73bqLM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159341F000E9;
+	Mon, 27 Jul 2026 19:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785181264;
-	bh=gTdWVn0R8GFWH2qsR62NxA2DPa5QveqWWAe46BFb4Jo=;
+	s=k20260515; t=1785181366;
+	bh=FMZAKo24RCuNigb5rQXZMUr23nLPHRCHh8/ZB3FaHLs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n49jJ3HmYa9LdDc8gT4Og8TSEHkxNt+RywKOwb/hxM/g4tZhLMBlT2JeZiEq7S2Rw
-	 EtOwl8McmFYUEunBWSGm6UWTw+cThNFxrNnPjUumndlMunPbpehdwjvSk9sHCIcgO6
-	 1x2y8feaD/aOOgWcvR4OTkcmBURgnapUlYvGCfQyrlqmCHyT7cuNz1S917AD9s3WjF
-	 fVnwOfevEX37/P3sxBzDC1MqK8ZbRhR88yTeVvxlPmU2M+8CkFTN8vUlXK3bM7CjDe
-	 seJqSjicYQDO974APcM30+XsSyehrXnBrMeaUfSw0oVrH/SWkE/r7glrMCNNLHhO45
-	 jIhkS3b4lgCJg==
+	b=Yn73bqLMxYcHlcFu+7hqgfJEp7XHLQcN3bAR+fXKPj4I4GkXi3bajVnhMf92b8QVm
+	 8Py/oS5dCF37+OCFZ883po5udLXAvv/s6WpUrgJmrh7UxmG/1my/KYN/Lw//ZaX+JE
+	 mJZj7ChezvpXMQQHfSjEhB7Pnjc3+ioQH5fUFlvqjMKGabltkdPDWJgUcbG0V5GN3+
+	 DMW6zkdSHQdQ15Gmpuemx50uZ/JtBgXY4mzB9WanTLPkTLsJxGuS3sQA6OciWT11wz
+	 YqpGILw7DyTvefX38v55RM0Cfe6RQm3Kvs2dr5Qr5EBUCs2jw/mX5UJIOSBE/Y1Of8
+	 LV70LRmKBB/pQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to
- known CPUs
+Subject: Re: [PATCH v7 3/9] KVM: x86/pmu: Rename and move
+ vcpu_get_perf_capabilities() to pmu.h
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Zide Chen" <zide.chen@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260727192131.582105-8-zide.chen@intel.com>
+In-Reply-To: <20260727192131.582105-4-zide.chen@intel.com>
 References: <20260727192131.582105-1-zide.chen@intel.com>
- <20260727192131.582105-8-zide.chen@intel.com>
+ <20260727192131.582105-4-zide.chen@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 19:41:03 +0000
-Message-Id: <20260727194104.16BB81F000E9@smtp.kernel.org>
+Date: Mon, 27 Jul 2026 19:42:45 +0000
+Message-Id: <20260727194246.159341F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,53 +47,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Compilation failure due to undeclared identifier `INTEL_PANTHERLAKE=
-_R`.
+- [Low] Missing explicit header inclusions after refactoring.
 --
 
---- Patch [7]: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to k=
-nown CPUs ---
-commit 4eba5efe34005f159dabad1f08138db5ccbe910e
+--- Patch [3]: [PATCH v7 3/9] KVM: x86/pmu: Rename and move vcpu_get_perf_c=
+apabilities() to pmu.h ---
+commit fb5ce8bc24fb7de4e71c57bef960ab9beca9bc0b
 Author: Zide Chen <zide.chen@intel.com>
 
-KVM: x86/pmu: Restrict RDPMC passthrough to known CPUs
+KVM: x86/pmu: Rename and move vcpu_get_perf_capabilities() to pmu.h
 
-This commit restricts KVM RDPMC passthrough to a known list of CPUs with
-audited RDPMC encodings to prevent host PMU information leaks to the guest.
-It explicitly requires RDPMC interception for unknown CPUs.
+This commit renames vcpu_get_perf_capabilities() to kvm_vcpu_get_perf_caps()
+and moves it from pmu_intel.h to pmu.h to make it accessible to common x86
+code.
 
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index b983030fb910e..444a66ca33240 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -77,6 +77,21 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] =
-=3D {
->  	{}
->  };
+> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+> index a5821d7c87f93..1b2f66a2e9153 100644
+> --- a/arch/x86/kvm/pmu.h
+> +++ b/arch/x86/kvm/pmu.h
+> @@ -271,6 +271,14 @@ static inline bool kvm_pmu_is_fastpath_emulation_all=
+owed(struct kvm_vcpu *vcpu)
+>  				  X86_PMC_IDX_MAX);
+>  }
 > =20
-> +/*
-> + * CPUs whose RDPMC encodings have been audited for KVM RDPMC
-> + * passthrough support.
-> + */
-> +static const struct x86_cpu_id kvm_rdpmc_known_cpus[] =3D {
-> +	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, NULL),
-> +	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
-> +	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
-> +	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
-> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
-> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_R, NULL),
+> +static inline u64 kvm_vcpu_get_perf_caps(struct kvm_vcpu *vcpu)
+> +{
+> +	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_PDCM))
+> +		return 0;
 
 [Severity: Low]
-Does this code build correctly on x86? It appears that INTEL_PANTHERLAKE_R
-is an undeclared macro, which could cause a compilation failure when buildi=
-ng
-arch/x86/kvm/pmu.c.
+Does this file need an explicit include for cpuid.h?
 
-> +	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
-> +	{}
-> +};
+Since kvm_vcpu_get_perf_caps() relies on guest_cpu_cap_has() defined in=20
+cpuid.h, it seems like pmu.h should now explicitly include cpuid.h to remain
+self-contained, even if it happens to compile due to implicit includes in
+the compilation units.
+
 > +
+> +	return vcpu->arch.perf_capabilities;
+> +}
+> +
+
+[ ... ]
+
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.h b/arch/x86/kvm/vmx/pmu_intel.h
+> index 5d9357640aa18..afdbbc9991d6d 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.h
+> +++ b/arch/x86/kvm/vmx/pmu_intel.h
+> @@ -6,17 +6,9 @@
+> =20
+>  #include "cpuid.h"
+> =20
+> -static inline u64 vcpu_get_perf_capabilities(struct kvm_vcpu *vcpu)
+> -{
+> -	if (!guest_cpu_cap_has(vcpu, X86_FEATURE_PDCM))
+> -		return 0;
+> -
+> -	return vcpu->arch.perf_capabilities;
+> -}
+> -
+>  static inline bool fw_writes_is_enabled(struct kvm_vcpu *vcpu)
+>  {
+> -	return (vcpu_get_perf_capabilities(vcpu) & PERF_CAP_FW_WRITES) !=3D 0;
+> +	return (kvm_vcpu_get_perf_caps(vcpu) & PERF_CAP_FW_WRITES) !=3D 0;
+>  }
+
+[Severity: Low]
+Is the include for cpuid.h at the top of this snippet still needed now that
+the function relying on it has moved out of pmu_intel.h?
+
+Also, since fw_writes_is_enabled() now calls kvm_vcpu_get_perf_caps(), would
+it be better to add an explicit include for pmu.h here to ensure header
+dependencies are fully self-contained?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727192131.5821=
-05-1-zide.chen@intel.com?part=3D7
+05-1-zide.chen@intel.com?part=3D3
