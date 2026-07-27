@@ -1,153 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637AF3A1A3F
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 02:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0413909AB;
+	Mon, 27 Jul 2026 03:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785120632; cv=none; b=OP3uIaeo3QunXEJiLGW/5jffaC//zPh7heQxiMiy6rhnoxrbXNdOmxwvkEfO6OPNS05kqeq35zIYYJEZZglKTmtVSdQmdegb8hCYXGK5hE/MiYWgF3p2detYHOx9kNUshY32jC2sVCxGmMWyH1kHtQMSrhODZpotR3dtcmBOaPA=
+	t=1785121760; cv=none; b=SRVu/qGymjtnSVFHnirGQMO2GAavtITZjiOTMb+8urcsP6vZ05ndj1rFIKA0fmCdzpDiXQ+KBMxBg9t1zPej8Fqxd/5LucsEjF6S6y3EYDGVsLHWx+I1vaG4zZjnmx7iuBN4DnjFy427BDKujvwy7qkQoD4Ar3VTYQt/9i6ic0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785120632; c=relaxed/simple;
-	bh=ZuuCXjsHaBodXWqWv5s5nFSCp2sf2WRvBSWLRRdGs1g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MD0xbRqkL59nKAhUjj3Qi9GDJNk6drEBzh9ES1LyocR5AtQghCgb2t1xzjvHaTsSO2r4uW4WwNsloGrY8BWCHQNzY8wLV/Fe3PV9SU5LTLMd/m/1FnCXJYbSHtFrequul3ihBwFCgGi4ysFshzS9bRq1hL5hq7lI8KqINlKFnnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frZKkQmz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785121760; c=relaxed/simple;
+	bh=b6peQMSiurmoiNLndl06Vz73KKA/6HQd6iVauTfi7pA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SwBWgjmv2jJX49qtfVbLEU9iW1QK7nV4GGqieEqIM1OzrcuLPJRpOpnh6iStajJhnWPHOnayou6JmwqYKmzccNrBfIKTdpdHpoFO8G86rLKlNnV1YcxIcttMdRvmwBtPqBzeZLjuxz6LCsEXO9LTzRlZXtwGdurhPoUt3qc6dS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lDCm1qih; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frZKkQmz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACF41F000E9;
-	Mon, 27 Jul 2026 02:50:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785120629;
-	bh=cTvuHVmKdGJzpRiRS6DLA6ZukYdmDnOZwgPQCswm+ig=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=frZKkQmzTgpnbYeHncrioYpuL/USo2nUOJmIitxx0Dm9apq0XsvloxU0Gh4a2Lvbw
-	 SXCmre/paJct81eHvtyyd/+chG+aCjuyLQ/N7QFqhtIeeJQ76htK9GYKq0Qo+DC8bK
-	 o23t4VzaMJSJQXpE9nu5/gzvbdWg8VEvxVdojVlueGN4v6XIoY/bKhWa2mkhsKqYWw
-	 MizjxRnjUJctfnIIlLkli3A69UbbfYfyhFgpXOeAFpVArRPu/LjiAdaeu5mk+hmPKo
-	 gTvlqS90N/7S4puoWL4xKZlSR+qST/E8q+qIlOm09jJXr0wHuxBwtKWVmqyCxah5Vj
-	 8cA442yha94DQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] KVM: guest_memfd: Avoid deadlock in
- error_remove_folio()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Hao Zhang" <hao_zhang_kdev@163.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <ambEdSPjerZIVN0b@192.168.1.215>
-References: <ambEdSPjerZIVN0b@192.168.1.215>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 02:50:28 +0000
-Message-Id: <20260727025029.6ACF41F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lDCm1qih"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785121760; x=1816657760;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=b6peQMSiurmoiNLndl06Vz73KKA/6HQd6iVauTfi7pA=;
+  b=lDCm1qihsjqhHjiOpfV08ZNMoV8SlgtuL9HmYM4PVoRq1wLXuneBVMPL
+   rS4tpEVHQtYZfZio9VJil3ZAzEpCzYR8BcS6pu559AH3IrHt0EZonk3Mn
+   C7DxQZdWTZ2olc3+qVu3h7O9sszb1bxOQkK/MCBj94k6nRInShIFZSOuj
+   JlNLh3EBzKrpNnwcXaCTNz7BzQWPYqJ0zJfkuQlIXCGGDI8pqXXlEO10W
+   unsFS55+Jd75IP/DUQhnv7Feeqgbcd0OeKWGWGXrkri8F8M86Z8UwsmfV
+   YQV4TzsdMDUpGyqqsTSgUAC/iB8zGEJmwGr6XIx16cdG2mFdRBC2Afqgo
+   Q==;
+X-CSE-ConnectionGUID: 3tpnwPRzQpyq7hGLAoBtlQ==
+X-CSE-MsgGUID: demeO3yrQSuAys4FXs/FYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="108480192"
+X-IronPort-AV: E=Sophos;i="6.25,187,1779174000"; 
+   d="scan'208";a="108480192"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2026 20:09:19 -0700
+X-CSE-ConnectionGUID: PgLAahf2TzSFkcNuGwmpmA==
+X-CSE-MsgGUID: OdMfD7XwTlKgVyFD/apLmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,187,1779174000"; 
+   d="scan'208";a="282624002"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2026 20:09:15 -0700
+Message-ID: <11f3f3e3-4fc0-4760-a7e2-d2e6acee6499@linux.intel.com>
+Date: Mon, 27 Jul 2026 11:07:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 18/31] iommu/vt-d: Cache max domain ID to avoid
+ redundant calculation
+To: Xu Yilun <yilun.xu@linux.intel.com>, linux-coco@lists.linux.dev,
+ linux-pci@vger.kernel.org, dan.j.williams@intel.com, x86@kernel.org
+Cc: chao.gao@intel.com, dave.jiang@intel.com, yilun.xu@intel.com,
+ zhenzhong.duan@intel.com, kvm@vger.kernel.org, rick.p.edgecombe@intel.com,
+ dave.hansen@linux.intel.com, kas@kernel.org, xiaoyao.li@intel.com,
+ vishal.l.verma@intel.com, linux-kernel@vger.kernel.org
+References: <20260327160132.2946114-1-yilun.xu@linux.intel.com>
+ <20260327160132.2946114-19-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260327160132.2946114-19-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On 3/28/26 00:01, Xu Yilun wrote:
+> From: Lu Baolu<baolu.lu@linux.intel.com>
+> 
+> The cap_ndoms() helper calculates the maximum available domain ID from
+> the value of capability register, which can be inefficient if called
+> repeatedly. Cache the maximum supported domain ID in max_domain_id field
+> during initialization to avoid redundant calls to cap_ndoms() throughout
+> the IOMMU driver.
+> 
+> No functionality change.
+> 
+> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
+> Signed-off-by: Xu Yilun<yilun.xu@linux.intel.com>
+> ---
+>   drivers/iommu/intel/iommu.h |  1 +
+>   drivers/iommu/intel/dmar.c  |  1 +
+>   drivers/iommu/intel/iommu.c | 10 +++++-----
+>   3 files changed, 7 insertions(+), 5 deletions(-)
 
-Pre-existing issues:
-- [High] Asynchronous memslot unbinding can leak kvm->mmu_invalidate_in_pro=
-gress when racing with kvm_gmem_error_folio(), causing a permanent KVM page=
- fault hang.
---
-
---- Patch [1]: [PATCH v3] KVM: guest_memfd: Avoid deadlock in error_remove_=
-folio() ---
-commit db14f829c7993aef911f52935c9113e37c1a49ea
-Author: Hao Zhang <zhanghao1@kylinos.cn>
-
-KVM: guest_memfd: Avoid deadlock in error_remove_folio()
-
-memory_failure() invokes ->error_remove_folio() while holding the
-poisoned folio lock. KVM's guest_memfd callback then takes
-mapping->invalidate_lock for read before invalidating guest mappings.
-This can deadlock with paths that hold mapping->invalidate_lock for write.
-
-Link: https://lore.kernel.org/all/tencent_7DA064CAC9B463EB9B651801011E2CE42=
-30A@qq.com/
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index db57c5766ab60..6476ab4a2be79 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -500,7 +500,17 @@ static int kvm_gmem_error_folio(struct address_space=
- *mapping, struct folio *fol
->  {
->  	pgoff_t start, end;
-> =20
-> -	filemap_invalidate_lock_shared(mapping);
-> +	/*
-> +	 * memory_failure() invokes ->error_remove_folio() while holding the
-> +	 * poisoned folio lock.  Do not block on mapping->invalidate_lock, as
-> +	 * a writer that already holds the invalidate lock can be waiting for
-> +	 * the same folio, e.g. truncation from MADV_REMOVE/FALLOC_FL_PUNCH_HOL=
-E.
-> +	 *
-> +	 * If the invalidate lock is contended, fail the recovery instead of
-> +	 * risking a deadlock in the memory-failure path.
-> +	 */
-> +	if (!filemap_invalidate_trylock_shared(mapping))
-> +		return -EBUSY;
-> =20
->  	start =3D folio->index;
->  	end =3D start + folio_nr_pages(folio);
-
-[Severity: High]
-This is a pre-existing issue, but can this function race with memslot
-unbinding and permanently leak kvm->mmu_invalidate_in_progress, causing a
-KVM page fault hang?
-
-If userspace closes the guest_memfd file descriptor, dropping its refcount
-to 0, and concurrently deletes the memslot, kvm_gmem_unbind() gets called.
-Because the file refcount is 0, it takes the lockless path and modifies
-f->bindings without holding mapping->invalidate_lock:
-
-virt/kvm/guest_memfd.c:kvm_gmem_unbind() {
-    ...
-	if (!file) {
-		__kvm_gmem_unbind(slot, slot->gmem.file->private_data);
-		return;
-	}
-    ...
-}
-
-Concurrently, if a hardware memory failure triggers kvm_gmem_error_folio(),
-it acquires the invalidate_lock via filemap_invalidate_trylock_shared().
-It then calls kvm_gmem_invalidate_start(), which finds the memslot and
-increments the invalidation counter:
-
-virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_start() {
-    ...
-		if (!found_memslot) {
-			found_memslot =3D true;
-
-			KVM_MMU_LOCK(kvm);
-			kvm_mmu_invalidate_start(kvm);
-		}
-    ...
-}
-
-But because __kvm_gmem_unbind() concurrently removes the binding from
-f->bindings without synchronization against invalidate_lock readers,
-__kvm_gmem_invalidate_end() then fails to find the binding and skips the
-decrement:
-
-virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_end() {
-    ...
-	if (xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
-		KVM_MMU_LOCK(kvm);
-		kvm_mmu_invalidate_end(kvm);
-		KVM_MMU_UNLOCK(kvm);
-	}
-    ...
-}
-
-Could this permanent leak cause the KVM page fault retry protocol to
-unconditionally return true, throwing the vCPU into an infinite page fault
-loop?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/ambEdSPjerZIVN0b@19=
-2.168.1.215?part=3D1
+This patch has been queued for iommu/next. Thanks!
