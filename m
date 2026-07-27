@@ -1,210 +1,401 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABDD3F8EB9;
-	Mon, 27 Jul 2026 10:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5433F8717
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 11:04:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785149325; cv=none; b=cWZMHflUSxhlCMziWnJt1ubzmrCZVTTXtb2VKhNNHGCLuwmhRQA6v4a3MkXWCn1hxRfJNw/asmhG5xBHTq8bvoqNeWzj1RmnytKDbtSa9+nbAbj1ia14FzkEywIFkmrUGAPKvvnC8I6cvlHuDeeNZfp8tBxmQDsjjVh2GyMZsWA=
+	t=1785150263; cv=none; b=oSF7yTN3uWk0e4Yzu8QXg2hlIWJk/amQ/gINoKsn9FtM4Ki15R5CZrLgFRLAKLamSdle0XbQPHi5ZJT882KRjd0gVqywEs+qdEEe0rlLwN9jg1Z9tzQWDU3TzhnZixnHEnDNeu+sFAqLI+tCtCj9XERAcR0J+tJ6C7feAVzE824=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785149325; c=relaxed/simple;
-	bh=FL8PEeJ6vnuU/NVIWM6q9AZv1YhvI5xh7/FEsDbvS1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WrUS0Fkf67ME2jqJqJ3Z80VeHVUhwfSM+O+wFsxYmcx51bfFmoRDhWvVl5YQf0DtF5sOtPLecZ8XM6pZOBiyXunKoXKliyMy1IZVFRB1VJ0knKEW6JtNdiVCNut3dfYmCPp0HHvlQSZkMhXOVSWaEnZZy7E3c1hv7S7PA1+rSOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iOYLpySU; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785150263; c=relaxed/simple;
+	bh=zatUq8xJHUqH++J1UZPNwFpyaWEJMdbBJNxH4Uzd7BQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lV/7CcHc+KJLbemI/7bWB5xlW+UqcFJPPOULJ/6QevXaxU1kT/oGCdxuBWruCwSeqBIqkcOMC0q8vDb/2l3Q7E3YSbeU6WAWT2uCpe49cZ2RXKvB7kvv0Gs3Qy3OQGQgf0btuBQBu0HafgL+nOYEGBtCldZBmW6lI5+IG5BViDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ObudIpib; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iOYLpySU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785149324; x=1816685324;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FL8PEeJ6vnuU/NVIWM6q9AZv1YhvI5xh7/FEsDbvS1k=;
-  b=iOYLpySUIZmXdzLLg1YPCjL3A9r21+IJG+Hr+ThUBKGv8FyGpRLTKLw0
-   W9mEqSow+Kl4B/I3dgX5YpxUe7BHRgY7q7RY3JmTrkax0Q1L4WPOMmjKR
-   TKajP1o1xLGzcSlhUd10VE8a914rqB0vx/V+ob7hm9XiHM14reHn3VJ3/
-   KfeVwsye6X7TU6PMOxtUWD3O2iIKbJEkB0Ja1OMtFHIlwlwi8Hg9yjavb
-   cJdeoGSUYtFojXdLjtq3Lz2dlj4IzFch4ksgRqck8Qdc9LR6ijFABOXO3
-   0DCCaiTFG5/zFshNRGlNFqyvJegKrV4x/lGY9ksYgjpJCf97Gk7UM24W0
-   w==;
-X-CSE-ConnectionGUID: es4kg08hRzCWQsajqL8kdw==
-X-CSE-MsgGUID: vpslP7SLTwqbdOfKEzP/+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="73253834"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="73253834"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 03:48:43 -0700
-X-CSE-ConnectionGUID: eZpc649kQau/7g/exXZJsQ==
-X-CSE-MsgGUID: duayf3k6Qeue9hgC8Wsj9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="264377032"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 27 Jul 2026 03:48:39 -0700
-Date: Mon, 27 Jul 2026 18:48:38 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	sohil.mehta@intel.com, adrian.hunter@intel.com,
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, seanjc@google.com
-Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
- module init and update
-Message-ID: <amc3hgkK0LzJ3i4N@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-3-yilun.xu@linux.intel.com>
- <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ObudIpib"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so17755155e9.0
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 04:04:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1785150259; x=1785755059; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7nC3HrqDGZF7AOgHUOZz0pFaqYcIiLme0buP14VJS2k=;
+        b=ObudIpibwWwYXv6KqHwUBeF9Hij2W+1dp3zYQz2b5eMiblwuCYNy1hAfWf9TGResvb
+         jR+z+jHqPeWb/tWXNRuX9D+CZX9nYcT6zmMM/zAQjSOpfLLBQAxaYItxj6fc9+GC1hl0
+         Lz6+wL4qAg8RvFvF5sq2M2AQC7GspJogSL5YtMgdi/vLdrwJArqKcwNofHsogXoT2VWr
+         ejzXmB/xyhbx1QyP14uy2XeG7qX5gIzQVqgdxZUwzG55gxs9OBQsF8KWTEO+e10ddWMc
+         5ib7U+9r3kebehOznpasqj4qc1BU66LTGZZngoZJUT8cdizrJhn1XLGrk7q5XltFRkpd
+         /IqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785150259; x=1785755059;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7nC3HrqDGZF7AOgHUOZz0pFaqYcIiLme0buP14VJS2k=;
+        b=aLzOutg/GKD6X3Gqeyphns97hHXOxkXqp8awGDxJHr3umUi7xBZ1EJZUIIjFOB4vBe
+         cZD0UXKToCU0+kBvfWATF1VjQ73q97iiNFtOI4zl4wa5fkefoE6W9mP5jb5uBBtS7RV8
+         PSDy5VBhutaeYwbjzp0+/6shTriZa8bmpUVyPMOIdt2jTknITRCFiqtWWy3edWaYwI+6
+         u+NUPoLTbTQBZOQhxErmby9PocaJDxDHXL/2tLNz04ByWUp+wOdwN21LX49bGKpJDjSt
+         A4SiMEmG31a2Dk1KG393r13SvNtWVWPYK5GQtHYjl714TswSMtEr61nR8+N8iIkzoPxt
+         zQ8g==
+X-Gm-Message-State: AOJu0YzVt5TCWc5goRZSJrSgrDQoTQe/iR07SA/MHYKoLYoDtdjlLPs1
+	JWyvo8g1D8apvDgLM7RYYynOqrh1+ZGa5Hbg1RSLWtxECBEyS4uHX7wOu7zCC3jJ3ao=
+X-Gm-Gg: AR+sD12yymhnwLhV0nQ/nMYk6vClaBF81nSBwL6EuTdaacGHBXe9ScSMfISZzkRRmsO
+	+0yMNlJmCJR77YH4+8vamWmoXcc3da5hd51umpBF5kUjuetlqa9kUc209GbXlhMtxsjclOrsT0B
+	CIePJQR9SbutfFPKEc2o4Fx1/1Lmtw4Kq3XRP5SqeatE9f0HaBqoMIkUS8ITflzHhxaod8Rs9jD
+	R2KqQttNwHtGnZJXTvJ5qvKrkFwK9pysPVSU9si+ZfOgFnGsFIMBKF+UYziF6A659TG7T6cCHru
+	j7YyjhVx13hQm5jw5AvdleJpRdNNUgyyZlIOfR1E3RIp66SLAcqwA3F8cPxSIKXmNuZ4neofAuo
+	Se/4vLfxWOHJfKkj6hvwQFLKqmVhqYTAyB4L1aX7iWphK9f5wCzUOteKKGZnAgqB912vpeq32Cs
+	NzsU7cSffUYKgl2L3IBQ==
+X-Received: by 2002:a05:600c:3113:b0:493:c8f7:3631 with SMTP id 5b1f17b1804b1-496b570dacdmr94916415e9.22.1785150259287;
+        Mon, 27 Jul 2026 04:04:19 -0700 (PDT)
+Received: from [192.168.1.3] ([37.18.141.193])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b4f5f9f8sm212127145e9.9.2026.07.27.04.04.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jul 2026 04:04:18 -0700 (PDT)
+Message-ID: <2941da1a-b0b4-47a6-b57c-b28703dc0454@linaro.org>
+Date: Mon, 27 Jul 2026 12:04:17 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <823bf577-51a1-4a8a-b240-ef4a0d5573be@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 00/21] ARM64 PMU Partitioning
+To: Colton Lewis <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com,
+ corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com,
+ will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com,
+ joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
+ mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <gsnt33x95sra.fsf@coltonlewis-kvm.c.googlers.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <gsnt33x95sra.fsf@coltonlewis-kvm.c.googlers.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 24, 2026 at 04:15:21PM +0800, Xiaoyao Li wrote:
-> On 6/18/2026 4:13 PM, Xu Yilun wrote:
-> > In addition to basic TDX functionalities, TDX module provides add-on
-> > features that can be progressively enabled as the kernel supports them.
-> 
-> "add-on features" looks like a new term introduced by this sereis for TDX.
-> So what is add-on features? all the features defined in TDX_FEATURE0/1? Or
-> only the features needs to be explicitly enabled by R9 and R10 of
-> TDH.SYS.CONFIG? ...
-> 
-> > The kernel should explicitly configure these features at boot or
-> > post-update initialization time.
-> 
-> ... So the answer is the latter. Then why only these bits are add-on
-> features while the rest in TDX_FEATURES01 are not?
 
-I think from TDX arch POV they impact the existing TDX system in some
-ways, either changes the behaviors of the existing features, or impact
-the performance.
 
+On 23/07/2026 9:57 pm, Colton Lewis wrote:
+> James Clark <james.clark@linaro.org> writes:
 > 
-> btw, s/should/needs/ is better?
+>> On 22/07/2026 12:03 am, Colton Lewis wrote:
+>>> Hi James, thanks for the review.
 > 
-> > Configuring an add-on feature, such as
-> > TDX Quoting, that uses extension SEAMCALLs is the prerequisite for
-> > initializing TDX module extensions.
+>>> James Clark <james.clark@linaro.org> writes:
+>>>> Hi Colton,
 > 
-> Though the statement is right, it leads to the impression that the reason we
-> are configuring the add-on feature is to initialize the TDX module
-> extensions.
+>>>> The existence of the parameter makes sense, but can't the default be
+>>>> arm_pmuv3.reserved_host_counters=0 instead of -1 (partition disabled)?
 > 
-> However, the truth is kenrel wants to enable/use an add-on feature and the
-
-mm... yes it is somewhat misleading. Is it better we only talk about the
-add-on features' enabling in the first paragraph, then in next paragraph
-explain why we put the patch at the first one for TDX module Extension
-enabling?
-
-> add-on feature requires the functionalities provided by some TDX module
-> extension. So kernel needs to enable the TDX module extensions.
+>>> How would you interpret reserved_host_counters=0? Because that would
+>>> express that the host should have zero counters and the guest gets them
+>>> all. I remember in early versions of this series last year I did use 0
+>>> as the default but reviewers asked for a way to express the scenario of
+>>> of zero counters for the host.
 > 
-> > TDX Quoting is the target feature to
-> > enable but defer it for now until full kernel support is in place.
-> > 
-> > TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
-> > input parameters to specify which add-on features to configure. The
-> > bitmap uses the same definitions as TDX_FEATURES0.
-> > 
-> > For runtime update, Linux applies a policy that no newer features should
-> > be added after update to avoid disrupting live TDX operations. To adhere
-> > to this, TDH.SYS.UPDATE must configure the same features as the
-> > TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
-> > global var so that both phases can use it.
-> > 
-> > TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
-> > the change, so use the latest version (v1) for add-on feature enabling.
-> > But supporting existing modules which only support v0 is still necessary
-> > until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
-> > ever needs to change again and the code would stay in v1. So there is
-> > little value in worrying about deprecating v0 to save a couple lines of
-> > code in 5-7 years when these original TDX platforms sunset.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > ---
-> >   arch/x86/virt/vmx/tdx/tdx.h |  6 ++++--
-> >   arch/x86/virt/vmx/tdx/tdx.c | 28 ++++++++++++++++++++++++++--
-> >   2 files changed, 30 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> > index fbb520704662..a47e872480c7 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.h
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> > @@ -58,9 +58,11 @@
-> >   #define TDH_PHYMEM_CACHE_WB		40
-> >   #define TDH_PHYMEM_PAGE_WBINVD		41
-> >   #define TDH_VP_WR			43
-> > -#define TDH_SYS_CONFIG			45
-> > +#define TDH_SYS_CONFIG_V0		45
-> > +#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
-> >   #define TDH_SYS_SHUTDOWN		52
-> > -#define TDH_SYS_UPDATE			53
-> > +#define TDH_SYS_UPDATE_V0		53
-> > +#define TDH_SYS_UPDATE			SEAMCALL_LEAF_VER(TDH_SYS_UPDATE_V0, 1)
-> >   #define TDH_SYS_DISABLE			69
-> >   /* TDX page types */
-> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> > index 2a03152796e6..92305b5ea90d 100644
-> > --- a/arch/x86/virt/vmx/tdx/tdx.c
-> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> > @@ -57,6 +57,7 @@ static struct tdx_module_state tdx_module_state;
-> >   static u32 tdx_global_keyid __ro_after_init;
-> >   static u32 tdx_guest_keyid_start __ro_after_init;
-> >   static u32 tdx_nr_guest_keyids __ro_after_init;
-> > +static u64 tdx_addon_feature0 __ro_after_init;
-> >   static DEFINE_IDA(tdx_guest_keyid_pool);
-> > @@ -1004,9 +1005,18 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
-> >   	return ret;
-> >   }
-> > +static __init void set_tdx_addon_features(void)
-> > +{
-> > +	/*
-> > +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0 when
-> > +	 * kernel is ready.
-> > +	 */
-> > +}
-> > +
-> >   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-> >   				    u64 global_keyid)
-> >   {
-> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
-> >   	struct tdx_module_args args = {};
-> >   	u64 *tdmr_pa_array;
-> >   	size_t array_sz;
-> > @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
-> >   	args.rcx = __pa(tdmr_pa_array);
-> >   	args.rdx = tdmr_list->nr_consumed_tdmrs;
-> >   	args.r8 = global_keyid;
-> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
-> > +
-> > +	set_tdx_addon_features();
 > 
-> Maybe move the set_tdx_addon_features() out of config_tdx_module()? how
-> about putting it after check_features(). config_tdx_module() looks like just
-> a wrapper to invoke TDH.SYS.CONFIG, while the params of it are determined
-> outside of it.
+>> I think I would interpret it as it is now. Can't the host still use them
+>> until the guest does and then they only get squeezed if there is a
+>> collision? That doesn't sound too bad to me. And if a host wants
+>> reserved counters they can set a positive number.
+> 
+> Yeah that makes sense. I was thinking in an old headspace when it was
+> just a static reservation instead of changing when a guest is loaded.
+> 
+>> Is reserved_host_counters==max_counters equivalent to -1? And there's no
+>> overview in the cover letter or documentation about how it interacts
+>> with the dynamic guest counter reservations. A bit more detail or a few
+>> paragraphs in one place would help users, maybe with examples so they
+>> don't have to piece together all the commit messages to work it out.
+> 
+> It's not equivalent since we need a case where the guest only has access
+> to the fixed-purpose counters like the dedicated cycle
+> counter. reserved_host_counters specifies the number of general purpose
+> counters.
+> 
+> I'll document the operation more clearly. In the future please feel free
+> to email me to ask if you are confused about something.
+> 
+>>>> It's still a bit fiddly having to do two things to make it work, and
+>>>> there's no documentation about what the defaults or other prerequisites
+>>>> are. IMO it's not even trivial to work out that you need to prefix it
+>>>> with "arm_pmuv3.", which documentation would improve.
+> 
+>>> It is fiddly, which is why the more I think about it the more I'd rather
+>>> ditch the kernel cmdline entirely and leave it up to KVM. That's the
+>>> most flexible approach. There isn't a good way to change the cmdline
+>>> after boot. Trying to make it writeable via sysfs runs into the problem
+>>> of when is it safe to apply the change.
+> 
+>>> I thought it was commonly understood module parameters need to be
+>>> prefixed by the module name, but I can add better documentation to that
+>>> effect.
+> 
+> 
+> 
+>> People just want it written out fully somewhere so they can copy paste
+>> it. Kernel developers might be able to piece it together, but not
+>> everyone will.
+> 
+> This is the KVM mailing list. Kernel developers are the primary
+> audience, but I will make reasonable efforts to include others in the
+> future.
+> 
 
-I'm going to take Chao's advice [1] to remove the global var
-tdx_addon_feature0, so will also delete this global step -
-set_tdx_addon_features() - to setup this global var.
+I'm more thinking of the users of this after it gets merged, rather than 
+just for the review.
 
-Instead I'll use a "static u64 get_tdx_addon_features0(void)" for
-TDH.SYS.CONFIG/UPDATE.
+>>>> Testing the whole set I ran into a few issues:
+> 
+>>>> This warn is hit when there is some kind of interaction with 
+>>>> sleeping. I
+>>>> tried to bisect it but it only appears on the last commit when the
+>>>> option to enable partitioning is added.
+> 
+>>>>     /*
+>>>>      * ARM pmu always has to reprogram the period, so ignore
+>>>>      * PERF_EF_RELOAD, see the comment below.
+>>>>      */
+>>>>     if (flags & PERF_EF_RELOAD)
+>>>>         WARN_ON_ONCE(!(hwc->state & PERF_HES_UPTODATE));
+> 
+>>>> Steps to reproduce:
+> 
+>>>> Host (arm_pmuv3.reserved_host_counters=0):
+>>>>    $ sudo perf stat -C 2 -e \
+>>>>      'branches,branches,branches,branches,branches,branches'
+>>>>    $ sudo taskset --cpu-list 2 ./lkvm run --kernel \
+>>>>      /boot/vmlinux-7.1.0-rc7+ -m 1024 -c 1 --pmu
+> 
+>>>> Guest:
+>>>>    $ sleep 1
+> 
+>>>>     WARNING: drivers/perf/arm_pmu.c:302 at 
+>>>> cpu_pm_pmu_notify+0x278/0x2c0,
+>>>> CPU#2: swapper/2/0
+>>>>      Call trace:
+>>>>     cpu_pm_pmu_notify+0x278/0x2c0 (P)
+>>>>     notifier_call_chain+0x84/0x1d0
+>>>>     raw_notifier_call_chain+0x24/0x38
+>>>>     cpu_pm_exit+0x34/0x68
+>>>>     acpi_processor_ffh_lpi_enter+0x40/0x78
+>>>>     acpi_idle_lpi_enter+0x54/0x78
+>>>>     cpuidle_enter_state+0xb4/0x248
+>>>>     cpuidle_enter+0x44/0x68
+>>>>     do_idle+0x21c/0x300
+>>>>     cpu_startup_entry+0x40/0x50
+>>>>     secondary_start_kernel+0x120/0x150
+>>>>     __secondary_switched+0xc0/0xc8
+> 
+> 
+>>> I'll attempt to reproduce that. I've never seen it myself but I've
+>>> mainly been using QEMU for my testing.
+> 
+> 
+>> The newest Arm FVP should have cpuidle enabled if you boot it with ACPI,
+>> but I hit this on a Radxa Orion O6 board.
+> 
+> Noted. Thanks.
+> 
+> 
+>>>> When running the guest on a single CPU I get different counts for the
+>>>> same event for a single process, although this never happens on a host.
+>>>> I think there might even be some Perf tests which expect them to be the
+>>>> same, and this doesn't depend on whether any events are running on the
+>>>> host or not. Not sure if you ran all the Perf selftests in a guest or
+>>>> not?
+> 
+>>> I'll investigate but I'm not sure perf is intended to guarantee
+>>> that. perf stat just runs the event counters but may not write or read
+>>> them at exactly the same time.
+> 
+> 
+>> Is that true? The perf core calls perf_pmu_disable() when a process is
+>> scheduled out before reading the count of each event of that process in
+>> an inner loop. The perf_pmu_disable() clears PMCR_EL0.E which freezes
+>> all of the counters so they can be read out in a consistent state.
+> 
+>> It's important that they're all stopped at the same time because
+>> counters might be used in metrics as ratios of each other. So I think
+>> it's deliberately designed that way and appears to not be working in a
+>> guest now.
+> 
+> By default I think perf assumes events can be measured independently, If
+> you want to guarantee events are scheduled together to avoid measurement
+> skew you need to make sure the events are grouped.
+> 
+> The common way to do that is with {} around the event list:
+> 
+> perf stat -e {branches,branches}
+> 
+> Please see if that resolves the issue.
+> 
 
-The reason is that I've found this extra TDX status - tdx_addon_feature0 -
-makes the feature supporting judgement unnecessary complex, so don't
-make it long live.
+Groups only change how the events are scheduled, not how the driver 
+starts or stops multiple events running on the same PMU (grouped or 
+ungrouped). In my repro I had less events than counters in HW, so they 
+will always be scheduled at the same time regardless of grouping.
 
-[1]: https://lore.kernel.org/all/ajpHRNaq+z5bdn+R@intel.com/
+I did notice something extra though, you have to first open some amount 
+of counters, and then open more than that. Then the second time the ones 
+with different counts will be however many were opened first time, as if 
+some state has stuck.
+
+For example if I open two counters then 6, the first two always have 
+different counts the second time:
+
+   $ perf stat -e branches,branches true
+
+   Performance counter stats for 'true':
+
+             106129      branches 
+
+             106129      branches 
+
+
+
+   $ perf stat -e 
+'{branches,branches,branches,branches,branches,branches}' true
+
+   Performance counter stats for 'true':
+
+             117013      branches 
+
+             117013      branches 
+
+             110364      branches 
+
+             110364      branches 
+
+             110364      branches 
+
+             110364      branches
+
+
+After opening 6 again a third time they'll all have the same counts.
+
+>>>> I'm not sure if the exception level filtering isn't working or there is
+>>>> something wrong with freezing. Doesn't the host PMU driver need to
+>>>> freeze with HPME? I see it's still doing it with PMCR_EL0.E which
+>>>> freezes the guest's counters now doesn't it?
+> 
+>>> HPME only has any effect while HPMN is programmed to a value different
+>>> than the number of counters on the system. That is only true in a guest
+>>> context. As I understand it, that means HPME has no effect anywhere the
+>>> host driver needs to freeze counters since that happens in host context.
+> 
+> 
+>> Oh yeah that makes sense, I didn't think about that. I'm not sure if my
+>> other idea about exception level filtering being responsible makes sense
+>> either.
+> 
+> I'll check that too.
+> 
+>>> Maybe HPMN stays programmed during interrupt handling though. I'll
+>>> confirm.
+> 
+> 
+>>>> Host (arm_pmuv3.reserved_host_counters=0):
+>>>>    $ sudo taskset --cpu-list 2 ./lkvm run --kernel \
+>>>>      /boot/vmlinux-7.1.0-rc7+ -m 1024 -c 1 --pmu
+> 
+>>>> Guest:
+>>>>    $ perf stat -e branches,branches true
+> 
+>>>>     Performance counter stats for 'true':
+> 
+>>>>               167963      branches
+> 
+>>>>               160925      branches
+> 
+> 
+>>>>    $ perf stat -e branches,branches,branches,branches,branches true
+> 
+>>>>     Performance counter stats for 'true':
+> 
+>>>>               164425      branches
+> 
+>>>>               164425      branches
+> 
+>>>>               164425      branches
+> 
+>>>>               157743      branches
+> 
+>>>>               157743      branches
+> 
+> 
+>>>> When running the guest on two CPUs I just get zeros. Do the kvm
+>>>> selftests not catch this? Or is it something to do with my setup:
+> 
+>>> KVM selftests definitely don't catch it. I'll see if I can reproduce.
+> 
+>>> Since the problem happens with 2 CPUs I wonder if something is
+>>> triggering the lazy context swap behavior so the counter values aren't
+>>> being moved to the 2nd CPU correctly.
+> 
+> 
+>> If that was the case I would have expected it to be intermittent, or you
+>> would get a partial count if the second CPU started from 0, but not
+>> zeros every where every time. Let me know if I can run any more tests.
+> 
+> I'll let you know if I think of something.
+> 
+>>>> Host (arm_pmuv3.reserved_host_counters=0):
+>>>>    $ sudo taskset --cpu-list 2-3 ./lkvm run --kernel \
+>>>>      /boot/vmlinux-7.1.0-rc7+ -m 1024 -c 1 --pmu
+> 
+>>>> Guest:
+>>>>    $ perf stat -e branches,branches true
+> 
+>>>>    Performance counter stats for 'true':
+> 
+>>>>                    0      branches
+> 
+>>>>                    0      branches
+> 
+>>>> I also noticed I get the "squeezed" warning printed after launching the
+>>>> guest but not using Perf. This comment implies that not using counters
+>>>> makes it a nop:
+> 
+>>>>        /*
+>>>>      * If we aren't guest-owned then we know the guest isn't using
+>>>>      * the PMU anyway, so no need to bother with the swap.
+>>>>      */
+>>>>     if (vcpu->arch.pmu.access != VCPU_PMU_ACCESS_GUEST_OWNED)
+>>>>         return;
+> 
+>>>> But maybe linux is touching them in a way that makes them guest owned,
+>>>> even on probe? Or is the guest/host ownership tracking not working, I
+>>>> didn't look too hard.
+> 
+>>> Maybe. I'll check. The guest is also running its own PMU driver that
+>>> might trigger guest ownership on initialization since ownership is
+>>> determined by which registers the guest touches.
+> 
+> 
+>> It doesn't enable any counters though does it, even if it touches some
+>> of the registers to probe? Should that result in squeezing out host
+>> counters? Maybe it's more complicated to implement, but right now it
+>> seems like there is some complexity without much benefit as 90% of hosts
+>> are going to probe the counters just to see what's there but not use 
+>> them.
+> 
+> As far as I'm aware the driver probe shouldn't shouldn't enable any
+> counters or trigger squeezing. I'll narrow the conditions that trigger
+> guest ownership.
+> 
+> My first suspect is the guest driver probe is triggering guest ownership
+> by reading PMCR_EL0, which I agree should be changed to avoid that.
+
