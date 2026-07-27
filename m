@@ -1,143 +1,264 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011061.outbound.protection.outlook.com [40.93.194.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7157A3FADE5;
-	Mon, 27 Jul 2026 13:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785159966; cv=none; b=VV2N+nguONrlH0uvlvLUv0EG9Bc0a0qn8Osk18ubBL2WX3frdx6oHZBhuWhkqywzdxUPea8LEHLEp+ZYNRtTsu9qVenmvHcTK8uaSgNk5Im0eVsFDM4ywatlUZ/bqUI1CXI4Ce7ccoLa4mO7tR4ThSlF3XpxW5iIEhVcYpnARtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785159966; c=relaxed/simple;
-	bh=uZR06OsYX7bLFAlwTYUUY5e2nSFlRtrdQ76TYNgR/LM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=klleg3ZW60BNMxQPFmOAJTI2leqEMQaT/+/WUZYwl771i/u6Zc0L00exF8Cv4xOz5W1Yl8gznTGcjLqIRYiDnvAlIpBbFHqn1xXxXgNwW2iVxWO282tzl4M8laKypekXf3PB105481GDXD3W1GSnwTR0fyJouyiwyRRcWZlm860=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=aKBlSe1B; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD913290D2;
+	Mon, 27 Jul 2026 14:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785161302; cv=fail; b=I+5ZHNn/ztXIhOXjd/9SvkuSw3QQ9e784gkW3B9BYfIeP6gG1bOph05G8g60bPQgkot/R89LQ+FRZpbvUfw9NXVi1sSrNSkonKK/Sn/k8ddGyRr7LxrccnJXF5PncNlqDr+SFdxFeUpfugjcpip4GEoCd4YDb/VPwq634ht7RmY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785161302; c=relaxed/simple;
+	bh=u0epxSjblaimAjGSPCKE3FXD/ajITvCnwO5wdElh8gk=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hTPglrkRfa9T0odBHNGmApFnE6z1joAc1R3/qet9F7CAAXchM8S6EaZCgaGv0VPrg6tVscIYD8j0WuwyDy+2G5S1EOiFaDIAObpI9NdF5vmLCl5kOSSJVldX/Gpf6LClTbwZRpO2tVqkit2k4AHnxsqzLHfYgHt4F95kBM6111g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UCankGea; arc=fail smtp.client-ip=40.93.194.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="aKBlSe1B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1785159963;
-	bh=DztvKC6RI7e0C3xqh2KV+oSshUYJibZtujJTSmc47ck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aKBlSe1Bxj7jRHnppBdIVn1S94JHLAWklNDbJKJqbNhcznvuvyIh61hNLjYHHH1HL
-	 TXsDdRzKR5ocZhjXQ5bEgkvqJVEO1qw0NP1yzFg35S5n48NWnaIZwxYbjIw1HvhFV8
-	 iRCf9TjBanTlueDKuYRGwh30Y6Iudyp7WoJ4Zh9HM1GUx8BXjG++KBt6PKjRywRNH0
-	 C9K3oTmr3nPX08PgCT7WLndFHfvE6vwy7b+Bwt2SlVaLHss28BWvhVikc3v1DaQVa8
-	 eXuUlXHEC+m/3z0nTbCENC97h6mSvzZJdzQ5BW/yjUVSEJwJoTre0B7HDXVd2o+vwH
-	 jvpvGZB1I09hw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4h80HG2jTtz4w1j;
-	Mon, 27 Jul 2026 23:46:02 +1000 (AEST)
-Message-ID: <2b8961fb-efab-4d0d-a577-32ccf87e4a9e@ozlabs.org>
-Date: Mon, 27 Jul 2026 14:45:59 +0100
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UCankGea"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hQhkcmRMojUGC6zfTX3aFJi5m6Cmg/itC1MRBBqGQxcjIUHg71JN9SEbg3QSn72LhgntsNc2pWm4yt95q5VkpT1RoZjymaAKbgs7DNnKegQ66WdmC9Y6LoKU2LFM60OJ8nf+PzjkHDfErnFr8xZQfGLPvWUeGI/Wj1IaD5ZWlcMTokJlVD5Ux4hK+LEKiSo78I7gQrujEM40Oa68vwNhKpleHxu/GVpZXKCzElG5IF8mF9hEf4+mwmBdk90c5n8y3IWsIejdCBuZLeMgLki2KGOr7xoqnMg4T3UZzGwqvg1mJJrS4HuUVTVMLsl3jVraWwh8A3qv1FfylTvAdgrbcA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i9ZWLiP8EiTMz8TLTWOp5C0NtrVQp8SaVv17mIjq+z8=;
+ b=OMu3zF6edeQ/ADsUsyD291MJE5cNcaSI02C8Y/Kt2qQzee68oqjBTCjeosNpudkGqcYey86kUV823svajgxloRDApH7q8BZcH3D79u+O5knW823T4QX3+b81ErZzI3zDJBGNpZHpXcR5itF0l+wyK7F0sMsbbAhu/Bf6N3spLAB997yBmqtY8khKNvrkpcNixfM5Itg8ABBO+949yzjzAI+BPkFH/110lkJuj8XcZfp5z2uu807jU9Pknr2eLd9/LDuefp84t1cpqNS4zj4WjAPQQLk2HIUxnVPWEY5jsjH94xVsWkOdCCVJ7zFfWEp9klRunsohPj95yBjsBrZdyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i9ZWLiP8EiTMz8TLTWOp5C0NtrVQp8SaVv17mIjq+z8=;
+ b=UCankGeaMQzAvHH9alvjV4mWLojsk6Wy2RReoO2oBx0w3gYIgHOO/Kz23YB/tyD644ladLr+FQ/tKE4OvICkK2FzNMdt94TlejDu4khZr/1PqGodUKuCmdUSVc6Isjrz1PT53idd6K5ZQDSXwDZiCvk0MmcBZW3s9T1bcc2oLK1WIyuhjed+NEOHZtydf6KFcDV4Ij4ulPiJu7kemtHohlxEp6HJlxRXr+BPgGAJ01fxJNw3Mt1mK+fTRZgvc6LpAkSaGyH2p1hwwl7O5R4exmuGx136kt3mkZK6qHAzmSmG8q3vvYvOGybv9Nri80rELlHWBqDyC1Ps3tE/qOBZ5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by DS5PPF016FC81DF.namprd12.prod.outlook.com (2603:10b6:f:fc00::644) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Mon, 27 Jul
+ 2026 14:08:11 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 14:08:11 +0000
+Message-ID: <10ef2bf5-9232-4b0a-8a94-d7c84f8a0f0e@nvidia.com>
+Date: Mon, 27 Jul 2026 16:08:06 +0200
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
+ backend feature
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, netdev@vger.kernel.org
+References: <20260511094504.1619893-2-dtatulea@nvidia.com>
+ <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
+ <89b04dff-3cc6-4ce7-8909-30552aed653d@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <89b04dff-3cc6-4ce7-8909-30552aed653d@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0029.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c9::14) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 9/9] vfio/pci: Permanently revoke a DMABUF on request
-Content-Language: en-GB
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-pci@vger.kernel.org
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-10-matt@ozlabs.org>
- <20260715181131.12E0A1F000E9@smtp.kernel.org>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20260715181131.12E0A1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|DS5PPF016FC81DF:EE_
+X-MS-Office365-Filtering-Correlation-Id: 58f5ff3d-8047-4122-3841-08deebe87de0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|56012099006|10067099003|18002099003|22082099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	CT3F0QGvF3aDUgHTyCMd9OUVwbLntOH9b2XhvUQwqRz51UssLIgqOmIEGPg9W7hzfLOcOrq5u8Guh2gtsBnrM7PEkmbbcXW7vb7TepQusBFBnX04E/N9JEUj61o/KaNiAfq7RRLA98/IxytCqN6ybtlRFeJtwJqvkg/QLkluiz0gf20cHO16VWKbgYrADBdGPASsxadKfKFS6JPj5PjHfjXhYFXotDLCkrB+QzDOZctvpjAP+YhR4giECEgslqbAFy6Yq0cks9fPDSsP2/U9iopThgU67mm3rfEfIvtlhTtc2dEuPsPm9GIUr6j3NeNoY2XiIMvlEybsCjmlH2+neZI6TePnOxeBMT1lPqZkJoM/Z/EeH5aK5CoFp5yNt64oxOrKmvTgpGTNg0CdLmoNMJ6N5SR8H0SU+HF4YMBR0S+Xqe85apw6DKir/nXzcaHUG3rqK4FByI2u7UMYmPV7jTk/MtRk0lvyFlcTA7WrD+KipSPbr4erWS1LMatUOyPVhbrE359t57VU3SPmNW81s4KqPkijW7O0yVlfi2CE7uublZdpAkok/PPCe3AU2qUWVX/SLRptwchtVQ0vLEFPEiQMRlGo09bpwvEW90+ZOmyEA381ghXtYnGJty19clp8RAJlhRO7HHqM0xSFkNzD5kmtyqvuXUrS9VuRlykWaAE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(56012099006)(10067099003)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SDZ0Nnd1VWJGZ2RWUW9iQndwWG55cW00c3l6dm91VkhCNGFGNmtsS3JadjFQ?=
+ =?utf-8?B?V3hOL3R6L1RsTUZLcjBvZGVRbWVJbzJ1bGR1QkdRak5FN2FOeUY1V3dxNlhG?=
+ =?utf-8?B?NTNoa1locW9nL1ZVbXdaSklrUHVwR0kxNEIyRUM1Ymw3RW14QzVqbDBXeHR2?=
+ =?utf-8?B?RWdDbEtubXorNEZnaTZ0QllIS3JDTytZYnFWbkRXekd3QTZFZWxZTHNaUTN2?=
+ =?utf-8?B?T0wzUmpxWTVvZnJoZ2hDdFBDck5KNThHWmpNVHIzb1cxRXNKOTNnYSsxamJU?=
+ =?utf-8?B?bE9nV1hQMzQ0aW5XcEZqdUJ0OVJlWnJSMHJMbW1ST3IxS0J4TTlWYTE0RkxH?=
+ =?utf-8?B?ZVUvak5OSGZpZlNieHlIVEhnZ1N1ZmhtNXpoaHlVbEtIcEhZeEt4NThXMVd6?=
+ =?utf-8?B?YVV3L3RGSUY4TkdlQ0kwcVNlZVQyV3FmaTlLNVR2WGljWG9xK2NYNExieU1L?=
+ =?utf-8?B?QWdRSmpCQytFbXc0Rjc2OHZDcGVwejBJKzFZaGxFRis5UE9jOHprRVNTOGRF?=
+ =?utf-8?B?Q21QT2I1emZhWEwrNWM5dXM5anpqL3BKb3RYRklXWnhPV2QrLzJwelp6ekU2?=
+ =?utf-8?B?WjBBV1QxV1F3K29NcnVDaDdRTHlqaVdWbWlLbW8zUG5qVEtneFZRd0d3OFV4?=
+ =?utf-8?B?OXE4ZWpIS2t1UkxUdkswUTNhNHRyVGRvY04vTG8rK3dLdEhtMWdHd3RlM2sr?=
+ =?utf-8?B?ZmNsVFg4S0xhUWNNNEN2THdYR0JNSlNFYVhtUXNXOCsvRTc0aUNJdDlrRDdj?=
+ =?utf-8?B?Mis2MWZJNDQxSlhibUltMWYyaU1Wd3NZT0dyN0VIZkIvSTZ4RWRvQlpHZVhQ?=
+ =?utf-8?B?OFpScUhTNjRENzNBSy9aMzFTVjNuVTBsU0hzTE5GejVsUGtMMkRUL2xEQi9H?=
+ =?utf-8?B?MXR1VUhRanArTG14dUIyQ2hGdGtzWU12NFRoQTV4U2VLZGlqbW1tUld5UkpV?=
+ =?utf-8?B?UTBTSjh1eUp0RHBpVWJvMDhCbWF3U1dka1hEQ1NOdmtpc0ZSKzJYQTZaNmFs?=
+ =?utf-8?B?L3NPSU0zbUZyb2o3Z3Jtdi9Kb2h0Q3hzZjhpZ1NkUUlCdXRYRXlhaTd5SUhV?=
+ =?utf-8?B?SkZDYmFQWFVjUUROL2N3Qi85OThWV1liNkRJRVlyZ2piNXJxQXVxTGNHamFM?=
+ =?utf-8?B?dmgrakg2VkN1OWZBbm01cStGRzFiT210dHkzcHhnbTVTK3lCbXZ1MXF6VFBC?=
+ =?utf-8?B?ejdEbk42SGlvSzhIOUdxUW1jNEZZNEJPK041MmtuYjNTRkRCajVaQ1pXMGNm?=
+ =?utf-8?B?emYvelNrRko2ZTV3ZXpHd3ExNE9PbndHZ3NzK1RudDNDUTZhYVM3YVBzL3pR?=
+ =?utf-8?B?OVlsNzdQdktmYVo2WnNxK2xyYVRxSEoxclJoc0paMEJZQVJpdXNQZ1RLY0Nu?=
+ =?utf-8?B?dldHZ0hLOFdBam1BVTMxdml0R25tTE1lUkE3SEtpSGtoWkQzcXZoUFRYSEVI?=
+ =?utf-8?B?dGl6WUpOVlZHbkg3bmJDMUpxYWVLUU1HSldCVUovZ1ZIS0NkZVJnVUFSWUY0?=
+ =?utf-8?B?V283QzQrZ08xbGdzUHpFdTVOL1kxK1RTQTgxbk1TUkFzT2YyNzlhczl1eWQ5?=
+ =?utf-8?B?WS9OQVluSWV2R3RsMTBySnJGaGh6NERtVmw1V0ZDTElYaW1adXhtQlFaallL?=
+ =?utf-8?B?QW5STng3RElVbFFtL0ZMZVF5dGhadFZjYURDN25BdXRzQkVENnUwSlpVRGpa?=
+ =?utf-8?B?ajNNM094Qmw2TlJFVmFhSjBVdHppZU9OQnVqNitWendqQ0dGeVNKTncxV1pk?=
+ =?utf-8?B?d2pydG40TnkxbzVyaWo3UW9WL3BVRU0zdW1mcjl1eHR4Y1lNZXJxUzhjYzVr?=
+ =?utf-8?B?ZG9wZXJZdXFQM2VjNFBSREdCeGNzOVdkakxUQ2ZqQ2xTWVRXOFJ4NGluMDg2?=
+ =?utf-8?B?OTNLWXB3YnhpSzFDM3htcWlSU2hSWDBwcXFPejlERlJyc1dwN0VSZElnRUN2?=
+ =?utf-8?B?VndHMFZaS1FYZklJU3JFYW5GbTRsYmlnWnF4Y1cxalJXZ2lBeUd6QWRnc3Uz?=
+ =?utf-8?B?TDF1cThLajd1OGg0NEd3M08vMkU3aDJHamEyeW9TUXR0bzhDcktuWm9UNUt4?=
+ =?utf-8?B?SVdCVUN3M2xhM3dkazFWWS8zVTUzZkxuYnFSb3hWZTdlUzUwc09EdW9uTHdC?=
+ =?utf-8?B?LzdOT0lidnJJOXAwcjRObjV1eElORWdNRjhrdEtCKzY2dzNraVJVdFpPUjRj?=
+ =?utf-8?B?aFRSZGtwdnNidGc4VHpYQWlNdXB2N3ZGMzFWR0hPR3l4RldPb3ZFQjNLTHhw?=
+ =?utf-8?B?dFREbVpHN0VWUU10NStiS2oyNS84Vkw3WjQ1dVVVTzFiRGE0SisrWVR4cWkr?=
+ =?utf-8?B?dEpGcjk0bmo0T3l6eEVhcVE1R2UrS0VjMURzdHZzcFB4RlQyRzNMdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58f5ff3d-8047-4122-3841-08deebe87de0
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 14:08:11.2487
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DM8ePsfRfmPuRatccXMMKb3vhVPrciF6CP4IInshL7qiDgn9QV3n4qnM9Usmel3oqrOw6vyRGRHKXiCzs6CyOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF016FC81DF
 
-Dear robot,
 
-On 15/07/2026 19:11, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Low] The function `vfio_pci_core_feature_dma_buf_revoke` mixes `goto`-based error handling with scope-based cleanup helpers (`scoped_guard`).
-> --
+
+On 29.06.26 11:39, Dragos Tatulea wrote:
 > 
-> --- Patch [9]: [PATCH v5 9/9] vfio/pci: Permanently revoke a DMABUF on request ---
-> commit 668793566cfbdb5cee2b0a69188ebbada38dd4d5
-> Author: Matt Evans <matt@ozlabs.org>
 > 
-> vfio/pci: Permanently revoke a DMABUF on request
+> On 21.05.26 10:26, Eugenio Perez Martin wrote:
+>> On Mon, May 11, 2026 at 11:46 AM Dragos Tatulea <dtatulea@nvidia.com> wrote:
+>>>
+>>> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
+>>> once DRIVER_OK is set. That is too strict for devices which can safely
+>>> handle this during live migration flows.
+>>>
+>>> Bring back this behavior under a new vhost backend feature flag. The
+>>> feature is supported by mlx5 and vdpa_sim devices.
+>>>
+>>> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is set")
+>>> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+>>> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+>>
+>> Acked-by: Eugenio Pérez <eperezma@redhat.com>
+>>
+>>> ---
+>>>  drivers/vdpa/mlx5/net/mlx5_vnet.c |  3 ++-
+>>>  drivers/vdpa/vdpa_sim/vdpa_sim.c  |  3 ++-
+>>>  drivers/vhost/vdpa.c              | 13 +++++++++++--
+>>>  include/uapi/linux/vhost_types.h  |  4 ++++
+>>>  4 files changed, 19 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>>> index ad0d5fbbbca8..f89177957c76 100644
+>>> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>>> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+>>> @@ -2906,7 +2906,8 @@ static void unregister_link_notifier(struct mlx5_vdpa_net *ndev)
+>>>
+>>>  static u64 mlx5_vdpa_get_backend_features(const struct vdpa_device *vdpa)
+>>>  {
+>>> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+>>> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>>> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>>>  }
+>>>
+>>>  static int mlx5_vdpa_set_driver_features(struct vdpa_device *vdev, u64 features)
+>>> diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>>> index 8cb1cc2ea139..253c7fb35ea0 100644
+>>> --- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>>> +++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+>>> @@ -428,7 +428,8 @@ static u64 vdpasim_get_device_features(struct vdpa_device *vdpa)
+>>>
+>>>  static u64 vdpasim_get_backend_features(const struct vdpa_device *vdpa)
+>>>  {
+>>> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+>>> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>>> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>>>  }
+>>>
+>>>  static int vdpasim_set_driver_features(struct vdpa_device *vdpa, u64 features)
+>>> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+>>> index 692564b1bcbb..67b3f49fa709 100644
+>>> --- a/drivers/vhost/vdpa.c
+>>> +++ b/drivers/vhost/vdpa.c
+>>> @@ -682,7 +682,8 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+>>>                         return -EFAULT;
+>>>                 if (idx >= vdpa->ngroups || s.num >= vdpa->nas)
+>>>                         return -EINVAL;
+>>> -               if (ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK)
+>>> +               if ((ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK) &&
+>>> +                   !vhost_backend_has_feature(vq, VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK))
+>>>                         return -EBUSY;
+>>>                 if (!ops->set_group_asid)
+>>>                         return -EOPNOTSUPP;
+>>> @@ -791,7 +792,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>>                                  BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST) |
+>>>                                  BIT_ULL(VHOST_BACKEND_F_SUSPEND) |
+>>>                                  BIT_ULL(VHOST_BACKEND_F_RESUME) |
+>>> -                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK)))
+>>> +                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+>>> +                                BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
+>>>                         return -EOPNOTSUPP;
+>>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) &&
+>>>                      !vhost_vdpa_can_suspend(v))
+>>> @@ -805,6 +807,13 @@ static long vhost_vdpa_unlocked_ioctl(struct file *filep,
+>>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) &&
+>>>                      !vhost_vdpa_has_desc_group(v))
+>>>                         return -EOPNOTSUPP;
+>>
+>> Ouch to me here. By reading the errno manual:
+>>
+>> Nit: By reading errno(3):
+>> ENOTSUP - Operation not supported (POSIX.1-2001).
+>> EOPNOTSUPP - Operation not supported on socket (POSIX.1-2001).
+>>
+>> I picked the wrong constant even if they share the same errno value
+>> (by the same page of the manual). MST, is it worth changing it?
+>>
+>>> +               if (features & BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)) {
+>>> +                       if (!(features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID)))
+>>> +                               return -EINVAL;
+>>> +                       if (!(vhost_vdpa_get_backend_features(v) &
+>>> +                               BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK)))
+>>> +                               return -EOPNOTSUPP;
+>>> +               }
+>>>                 if ((features & BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST)) &&
+>>>                      !vhost_vdpa_has_persistent_map(v))
+>>>                         return -EOPNOTSUPP;
+>>> diff --git a/include/uapi/linux/vhost_types.h b/include/uapi/linux/vhost_types.h
+>>> index 1c39cc5f5a31..ec1ff8a2e260 100644
+>>> --- a/include/uapi/linux/vhost_types.h
+>>> +++ b/include/uapi/linux/vhost_types.h
+>>> @@ -197,5 +197,9 @@ struct vhost_vdpa_iova_range {
+>>>  #define VHOST_BACKEND_F_DESC_ASID    0x7
+>>>  /* IOTLB don't flush memory mapping across device reset */
+>>>  #define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
+>>> +/* Device supports changing the group ASID after DRIVER_OK.
+>>> + * Requires VHOST_BACKEND_F_IOTLB_ASID.
+>>> + */
+>>> +#define VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK  0x9
+>>>
+>>>  #endif
+>>> --
+>>> 2.54.0
+>>>
+>>
 > 
-> This commit expands the VFIO DMABUF revocation state to allow permanent
-> revocation via a new VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE feature request.
-> It refactors the revocation logic into a common function used by both
-> the move path and the new feature request path.
+> Gentle ping. Is this patch missing anything?
 > 
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index ccfe861f88b66..36bf07530840d 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> [ ... ]
->> @@ -671,9 +696,72 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
-> [ ... ]
->> +	if (dmabuf->ops != &vfio_pci_dmabuf_ops ||
->> +	    READ_ONCE(priv->vdev) != vdev) {
->> +		ret = -ENODEV;
->> +		goto out_put_buf;
->> +	}
->> +
->> +	scoped_guard(rwsem_write, &vdev->memory_lock) {
-> 
-> [Severity: Low]
-> Is it intentional to mix goto-based error handling and scope-based cleanup
-> helpers in the same function?
+One more ping.
 
-Yes.
-
-> The subsystem guidelines for cleanup helpers recommend against mixing goto
-> labels with scoped_guard in the same routine, to avoid confusing ownership
-> semantics and potential resource leaks during future refactoring.
-> 
-> Could the dma_buf_put cleanup at the out_put_buf label be converted to use a
-> scope-based helper, or could the scoped_guard be replaced with traditional
-> locking, to keep the error handling style consistent throughout
-> vfio_pci_core_feature_dma_buf_revoke?
-
-Those guidelines are good, and exist for clarity.  It's a good idea to
-avoid jumping into or out of scoped_guard blocks.  In the case of this
-function, it is clear what is going on regarding the scoped_guard, and
-the pattern is:
-
-- Verify input values; exit if unpalatable, else:
-- Do the scoped_guard block to perform action
-
-There is, IMO, very low scope for confusion from mixing one goto +
-scoped_guard here.
-
-(Mixing goto-out and return is worse, and this function is guilty of
-that.  However, converting four if()s to ret = -EFOO; goto out; would
-make the function longer and actually a little harder to read.
-
-IOW I think it's fine as is.
-
-
-Matt
-
-
-> 
->> +		if (priv->status == VFIO_PCI_DMABUF_PERM_REVOKED) {
->> +			ret = -EBADFD;
->> +		} else {
->> +			vfio_pci_dma_buf_set_status(priv,
->> +						    VFIO_PCI_DMABUF_PERM_REVOKED);
->> +			ret = 0;
->> +		}
->> +	}
->> +
->> +out_put_buf:
->> +	dma_buf_put(dmabuf);
->> +
->> +	return ret;
->> +}
->> +#endif /* CONFIG_VFIO_PCI_DMABUF */
-> 
-
+Thanks,
+Dragos
