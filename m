@@ -1,183 +1,175 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from esa9.hc1455-7.c3s2.iphmx.com (esa9.hc1455-7.c3s2.iphmx.com [139.138.36.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8D1368D42;
-	Mon, 27 Jul 2026 08:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66469368D42;
+	Mon, 27 Jul 2026 08:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.36.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785139902; cv=none; b=PVnGVvzHZBdl6ttN9uu2XS/0/b1uXEmN1Thmn+jciEzqiqbxUgKnsVYMOuJHiKvz8i3h7RJjVQyPrUoQtkQeQvVLk4locwSxgCfY8RIADa4IN4XziYzzAty4exbyC4WIJQrweXD8KB5PltYtShd3nXJe6JdcFaB79x60+LmuO18=
+	t=1785140099; cv=none; b=DK4P00rmgH87IqVYTOg8zWgbGh8l63Sb5B35lP9WkJNMI3m/oEgbIaOwBcPFB7uF6Re0S/pYjr95YAuC9BYeIsvt+T0h+Tesp4pq6DIDLDltjsNud4agQXbB3lf6JaV6KHGyc2H3RFi86cPk9GRpl8FdrCbToG1KFJspb0DHuO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785139902; c=relaxed/simple;
-	bh=SnNAuNycz5x7e3dlleiHX2E2Wv0eo8QEj7/xy9bv5A4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h966oHRTsqz5d8pY9nL9fpQ+NmexQrOVTodOm3P+8I7NxcNgdLFY7bd2Co5hHbiCbiXqhVfwWgXVkcFrIColgmMSqU4D+lBAPt8DtrryMiVzZkC1jaUtBQHb0PFoLJ4QvoOX+gGJbJOj6Qmm+1hZJEAp8fz4yXPGlAW8K7SSHKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MfZt1x//; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785140099; c=relaxed/simple;
+	bh=P7OnimFYQWkAalEgzraoPxXsrblUmypJNwaTPMgMFwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jm2xjn2RdW4lfBidBdQWa/W7XHBVAqTQn9NrIoUfq/K2ldXkS/YFZX5r/MWV11iqLTCd4dkUk1br3btSCrFa3jOn5RQAl5lXPXFd8HiEHFZzGvBuLMoTvfDUNLN2CjB66N6HUvgpeORlNDI/guEeXTW0YbyShalhvGdcX+r7s68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=cqRwbxJl; arc=none smtp.client-ip=139.138.36.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MfZt1x//"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66R7m8vu1638939;
-	Mon, 27 Jul 2026 08:11:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3bvZWs
-	SBZZi2WnC9Vyfq+J4KpSotF5UFdrCqbN230VU=; b=MfZt1x//TP1vANPc7ySDc5
-	6WRZLzITWPhltmy6KDxyE0cKuKciVjG3fNXL3B3bLtAacGfJMU4UsQdh2Wq7zw7k
-	lT+gbSLMtxVeEbePUJK6lbuofxp/jviQYpNR3OPO0jjUNiNga4MAJe0Ud7Ji8P9U
-	y+pxmVhrnWGOnrN5aAoRJGcTPPK0lrgNXuQGmLCMaEliwvPUIUoDyMJLZBwChKrA
-	qM9HCXgc9aZyR1bAzDXQPJU+Nni97ehEzIEEmi5DOi1VwBkF8GwkvKpo9Ud4uNRQ
-	YtiVJgjifvyYv5fbjiAGiF5ey3Mko4/hhdoUIDWn+cRja9Gz6Gx0K4iRwKBF7Uqg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwcpjuh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 08:11:23 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66R8BFHP005637;
-	Mon, 27 Jul 2026 08:11:23 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fjvg3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 08:11:23 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66R8BLd527788010
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 08:11:21 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE852201E2;
-	Mon, 27 Jul 2026 08:11:20 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E04B201E1;
-	Mon, 27 Jul 2026 08:11:20 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jul 2026 08:11:20 +0000 (GMT)
-Message-ID: <4f7b99e5-62b6-48ac-a141-24f25af125c1@linux.ibm.com>
-Date: Mon, 27 Jul 2026 10:11:20 +0200
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="cqRwbxJl"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1785140097; x=1816676097;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P7OnimFYQWkAalEgzraoPxXsrblUmypJNwaTPMgMFwo=;
+  b=cqRwbxJl5DDh5JKZaaZ2jJlTc6llbmrq2rC5TwmlF+XOfwTGKK4kuzGM
+   5hRIZhVr5WXcya3qiFggsuRvPNgLd50Ua3k3KYBC+J7zZYNaEKuOjq+g4
+   n71VLv2A6sXipf0SN5tQWoFnMLQq+vX2P3M3dfHh5/7PPjfcu30X9xa3U
+   r7DuoyWg7YJhfeyTIXYTexzS1FqEpWb+Qp11MHnRJ4eAv50cZfSN8XbDI
+   2IjIthuN42Sa2vKQF/ETXc047ItnFNrX8trAVF2Gsq5uLnDcK1fsO06Ib
+   uIhWaB7YhO/pqwGvVflsIpGJB1dCpRrM7Y8dgUgPAE7C5qYLmtpQTmNrD
+   g==;
+X-CSE-ConnectionGUID: uxnYRungQHunHWzHCWg4eA==
+X-CSE-MsgGUID: HW5+cRRYTLKvuqOADCLcJw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="236156703"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779116400"; 
+   d="scan'208";a="236156703"
+Received: from gmgwuk01.global.fujitsu.com ([172.187.114.235])
+  by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 17:14:50 +0900
+Received: from az2uksmgm4.o.css.fujitsu.com (unknown [10.151.22.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwuk01.global.fujitsu.com (Postfix) with ESMTPS id 310041002B9D;
+	Mon, 27 Jul 2026 08:14:50 +0000 (UTC)
+Received: from az2nlsmom1.o.css.fujitsu.com (unknown [10.150.26.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2uksmgm4.o.css.fujitsu.com (Postfix) with ESMTPS id DD60E1400120;
+	Mon, 27 Jul 2026 08:14:49 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.156.208])
+	by az2nlsmom1.o.css.fujitsu.com (Postfix) with SMTP id 9D98B829EFA;
+	Mon, 27 Jul 2026 08:14:41 +0000 (UTC)
+Date: Mon, 27 Jul 2026 17:14:33 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+Message-ID: <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH/RFC] btrfs: fix folio lock leak in writepage_delalloc()
- for folios dirtied behind btrfs' back
-To: Boris Burkov <boris@bur.io>, Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Matthew Wilcox <willy@infradead.org>, linux-btrfs@vger.kernel.org,
-        Qu Wenruo <wqu@suse.com>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        David Sterba <dsterba@suse.com>, Chris Mason <clm@fb.com>,
-        Josef Bacik <josef@toxicpanda.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260721191152.101118-1-borntraeger@linux.ibm.com>
- <20260721191152.101118-2-borntraeger@linux.ibm.com>
- <b226a6e9-fef2-49bd-b17e-9f9b015626c1@gmx.com>
- <83290932-cb8b-4741-bff0-6a7d8df2c637@linux.ibm.com>
- <224d56d2-fcad-41bf-afe3-6f5f5108172a@gmx.com>
- <f12f70e5-d84d-4a9f-ac94-693be4c863ac@linux.ibm.com>
- <amC-J7yzwk4Z5tHW@casper.infradead.org>
- <ad6eebbd-07f8-41ce-b04c-edd50d91a6e3@gmx.com>
- <amICQYTK9Xu4KLtH@casper.infradead.org>
- <d948c88b-dec5-4e29-b30a-3ea368997ceb@gmx.com>
- <20260725062614.GA2792359@zen.localdomain>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260725062614.GA2792359@zen.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: AlLRKo7elEF5sqU-sDOskeQ0vInREgy1
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDA3NyBTYWx0ZWRfXxAIMAqqxzUCL
- gG9H0fw+IsRKa9r2UqdPioQMj551U7gpC5RW/9slMrOBWyS+i7Z3xQ8fGiJ16iwt2d9bkjmySQX
- 9JdiDf7+xRsrgMe4hwBO1d7IyyOrBVs=
-X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a6712ac cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=bahnriwoLXFS9mbAnGMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDA3NyBTYWx0ZWRfX/HpPyWiH2srM
- wqien8I0GgjXlBEaAgyXkO7a3ZBIEbv7fNeMX6I8lSa48ximj9qPn/LWlEeqGjizY1yLeBKcxZp
- BDAp7JvmNEGX7ZpkR/nKI4iaGfME0hfwpS4e3KoVqjVjRJP6PeG1VKHJG0z2YZvfOSn1OcZa15H
- Er5VWv4mjJUxO47SGrS9oysdD4/lObMGoIJEdLLTHM0OLzY+jnpn0LBMfdbxF/F4RXDUwZ074nH
- 18f2znk/62OumAQqJPi61y2w5p6LE4uNhXes+RhdeSUz7kNGFuY2y4mRG+XUdtiwvHREm3u9Q1K
- txNLO58nFgCKzxnWyMxi6iwNSu6z8/tfd5shrn7NvGOQdz6UuFzQjnlyR8M49ygWNfWLzFiC0u9
- H9WF3dXNkukD8uhDxQhDf8eBCODjpEAqre7Q7UIe9Jx6D9O6fX11mRwJzh0FvBSX6eShuk/rm3N
- 3QUHsaUnxvil7o3zyFQ==
-X-Proofpoint-GUID: hyf8waAb68BtR7PhhX7GqTwuJjhi11Ht
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_02,2026-07-24_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1011 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270077
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260715142841.80544-15-steven.price@arm.com>
 
-Am 25.07.26 um 08:26 schrieb Boris Burkov:
-> On Fri, Jul 24, 2026 at 08:10:36AM +0930, Qu Wenruo wrote:
->>
->>
->> 在 2026/7/23 21:30, Matthew Wilcox 写道:
->>> On Thu, Jul 23, 2026 at 10:12:27AM +0930, Qu Wenruo wrote:
->>>>
->>>>
->>>> 在 2026/7/22 22:27, Matthew Wilcox 写道:
->>>>> On Wed, Jul 22, 2026 at 11:29:36AM +0200, Christian Borntraeger wrote:
->>>>>>     *   4. Thread B loops sync_file_range(WRITE|WAIT) on the target file.
->>>>>>     *      Whenever a full clean cycle (clear_page_dirty_for_io(),
->>>>>>     *      writeback, bits cleared) completes inside thread A's
->>>>>>     *      submission->completion window, the completion-time
->>>>>>     *      set_page_dirty_lock() hits a *clean* folio: filemap_dirty_folio()
->>>>>>     *      sets only the folio flag and the xarray tag - no btrfs subpage
->>>>>>     *      dirty bit, no delalloc reservation.  See the 20-year-old comment
->>>>>>     *      above bio_set_pages_dirty() in block/bio.c describing exactly
->>>>>>     *      this ("other code (eg, flusher threads) could clean the pages").
->>>>>
->>>>> There's your problem.  filemap_dirty_folio() documents that btrfs is
->>>>> doing it wrongly:
->>>>>
->>>>>     * Filesystems which do not use buffer heads should call this function
->>>>>     * from their dirty_folio address space operation.  It ignores the
->>>>>     * contents of folio_get_private(), so if the filesystem marks individual
->>>>>     * blocks as dirty, the filesystem should handle that itself.
->>>>>
->>>>> fs/btrfs/inode.c:       .dirty_folio    = filemap_dirty_folio,
->>>>>
->>>>> so btrfs should have its own btrfs_dirty_folio() which does whatever
->>>>> metadata updates it needs to and then call filemap_dirty_folio() to
->>>>> take care of the page cache business.  See iomap_dirty_folio() as
->>>>> an example, but many other filesystems also do this.
->>>>
->>>> Thanks a lot for the advice.
->>>>
->>>> However it looks like the sub-folio dirty block tracking is a little
->>>> different between iomap and btrfs.
->>>
->>> My point is not that "you should do it the exact same way as iomap".
->>> Rather "the dirty_folio op is the entry point to tell the filesystem
->>> that a folio is being dirtied".
->> And since dirty_folio() is not allowed to sleep, we should introduce some
->> extra mechanism, e.g. page private 2/checked, to notify the fs that the
->> folio is marked dirty without proper preparation.
->>
->> Then during writeback, detect such folio and do needed preparation for it
->> since at writeback we're allowed to sleep.
->>
->> That sounds feasible, but I haven't seen anyone doing that (including the
->> older btrfs cow fixup).
->>
->> Will explore that path. Thanks a lot again for the dirty_folio() help.
->>
->> Thanks,
->> Qu
+Hi Steven, I have a comment about rec_exit_sys_reg() below.
+
+On 07/15 15:28, Steven Price wrote:
+> Entering a realm is done using a SMC call to the RMM. On exit the
+> exit-codes need to be handled slightly differently to the normal KVM
+> path so define our own functions for realm enter/exit and hook them
+> in if the guest is a realm guest.
 > 
-> Here is my proposal for a candidate fix. It passes the reproducer in
-> this thread as well as several more intense reproducers (alluded to but
-> not yet included)
-> 
-> https://lore.kernel.org/linux-btrfs/6758d4f27be0bbdb865cee7dd5adc435c969f4a3.1784960646.git.boris@bur.io/T/#u
-I am willing to give it a try, but that does not seem to apply on 7.2-rc4
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> ---
+> Changes since v13:
+>  * The RMM is now required to provide an ESR value with the correct
+>    information to emulate MMIO, so we no longer need to hardcode 0s in
+>    rec_exit_sys_reg().
+>  * The PSCI changes mean that there is a potential race when turning on
+>    a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+>    with -EAGAIN in this case.
+> Changes since v12:
+>  * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+>  * Add handling of the IRQ exception case where IRQs need to be briefly
+>    enabled before exiting guest timing.
+> Changes since v8:
+>  * Introduce kvm_rec_pre_enter() called before entering an atomic
+>    section to handle operations that might require memory allocation
+>    (specifically completing a RIPAS change introduced in a later patch).
+>  * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+>    HPFAR_EL2_NS as a valid flag.
+>  * Fix exit reason when racing with PSCI shutdown to return
+>    KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+> Changes since v7:
+>  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>    been read (although that can never happen in the current code). Tidy
+>    up the condition to handle any future refactoring.
+> Changes since v6:
+>  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>    vcpu to the error.
+>  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+>    this exit type.
+>  * Split code handling a RIPAS change triggered by the guest to the
+>    following patch.
+> Changes since v5:
+>  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>    change on next entry rather than immediately on the exit. This allows
+>    the VMM to 'reject' a RIPAS change by refusing to continue
+>    scheduling.
+> Changes since v4:
+>  * Rename handle_rme_exit() to handle_rec_exit()
+>  * Move the loop to copy registers into the REC enter structure from the
+>    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>    where the handler exits to user space and user space wants to modify
+>    the GPRS.
+>  * Some code rearrangement in rec_exit_ripas_change().
+> Changes since v2:
+>  * realm_set_ipa_state() now provides an output parameter for the
+>    top_iap that was changed. Use this to signal the VMM with the correct
+>    range that has been transitioned.
+>  * Adapt to previous patch changes.
+> ---
+>
+> [...]
+>
+> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+> +{
+> +	struct realm_rec *rec = &vcpu->arch.rec;
+> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+> +	int ret;
+> +
+> +	if (is_write)
+> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+
+When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+OOB may not cause any practical issue, would it make sense to skip the
+access when rt is 31?
+
+if (is_write && rt != 31)
+    vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+
+> +
+> +	ret = kvm_handle_sys_reg(vcpu);
+> +	if (!is_write)
+> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+
+The same applies here:
+
+if (!is_write && rt != 31)
+    rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+
+> +
+> +	return ret;
+> +}
