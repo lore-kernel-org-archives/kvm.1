@@ -1,410 +1,246 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7683FA5FE
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 11:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB7F188713;
+	Mon, 27 Jul 2026 11:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785150681; cv=none; b=PIE8OC/CkujB3wl94ABUzgUrsMlIxJmaE1DACOLAi02TC6pWT7CeCNVZDFHofx8t3x6d0HuHdYCOQ/kQBCS8CiMmJJClnlZ3ExUYlSruLfrYRhJmeQR1zhVx/6Co2obkKAcIoN40weayMFO6ilh+ERutETJHAUOP8VZQIOhYWmQ=
+	t=1785150975; cv=none; b=Ivmx3VDbj0ofqGXXA74D7ArhYUuut3a7PjR4HvY+aiIj2drdhGq9iCa+pzN/fJy81ttbp5Olsason/uq47aeyQseBF5poWfd7WbFhIdp+DQPx2ZZ5iLiycjQgFdIsxyZrE6CGsXfmrWVEqIkWPMLgAJ4XyElQSYIWC9J1jADI4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785150681; c=relaxed/simple;
-	bh=DVYIRT5CnFGgz13+W9Ujakfd2/8RVKXgzZbl38sw+Uw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emvCx5sZi8nnCT6xj2LWP38W60jG7FahX2WT3KTVm48Uq7aFr1fuBEEY1Ml5/R2EEPwwmD2jjD+Omn5Eg126bGWc6Cn0MxOtJTK1DGxCK2HIt1yPXP26AeT/mddCkI+LZnH4zWBJubU7EqyfDLcTj6ReAPi8EP5J6mhP4/bp5TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=musLjB3r; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785150975; c=relaxed/simple;
+	bh=/+itlBm7r0v4QqIDP9l1rzX4iGLSmwtHVsUq25eU1x8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ny3qaGZDhxSdeUIpOr1bDd3RhLF74SHELA9FjT87Jnt5b51N8svHwtpPmKstVA/ULiWHxAhH7m8LJZan/YaM3qncHZQOt+lBBXyLo8pHN0rT7Pd1TDMDGYIwDXD3VhZZGeUDdh91OZZRPt/WlGQlX97F7oBttEZI4iNu+MMZgEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qp0BHyey; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="musLjB3r"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c1691e4ec40so338863366b.3
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 04:11:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785150676; x=1785755476; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rIRh8rLxbYh0lNXtq2f3kgP4YXDt3QK8yefpI/5/BFA=;
-        b=musLjB3rzJQmuXudm6sBAHDyuqoqgvVso3YFu8onx+F4nvwLjMkgQssh6QSUAwTM/i
-         GpCRXuRIJmGCYWoPLAait5RumQdp5I80Y/O+x32zJSg/vriKQzdBS0Fy3Zz+lm9TeSRI
-         LjSlKMwSXK2kNmTGm+7fqzvtWRAjnwfFyFoT3dv6PiagesxdbsXzC+7wnR3SBy9P74gW
-         jdEQwfK6kbRyeoTgzWoDP9A09Iaxpa2JD/h1m+h8yPoHGJWkVJb8fc+BbjviXhMdSHqr
-         x6n6pXwfe125ByUSqvmEPpRxCb1RDIvz3jgFBGuxnslkjBVsW40Myo+odZQeTffx+UTt
-         ZknA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785150676; x=1785755476;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rIRh8rLxbYh0lNXtq2f3kgP4YXDt3QK8yefpI/5/BFA=;
-        b=IKYjUop96Xm+sWTyngd5cKlaFHJ9TkI0gYJvKpKGUsDJoVZSC6x8RRZPko84EpcpoN
-         lD8ninksSU3yrJkuv57Nypin2N4ycm9Bs477EPgSbWUVeUgIgWf2xz+4rumflWKC8qjx
-         UgihMxbncWmxrGmYx/b5ijI19OjNDLeVEM57WMUAqiGClK77hkSzhZeeVXBVpLYAr9wO
-         NPB+4W/WhXfs8kQE36JWavtfrYRyMLUgE57DK70ueCbPnnVW7Ldh5mFAEzCuphyUtKVN
-         Nfc0U9UP4J19gWFwTIucXaMd3qM+iyIVlzZNo1aNBrQb4rwP7LGwEL1YAjhcZlyk8Gap
-         O+vg==
-X-Forwarded-Encrypted: i=1; AHgh+RpZXZFjUKSLcCZOkHwHDINnFXYJOe3fnlwiprZE2qEAzfgWl1lhKpw5IBS7jNWcWiew/oc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSz3kBqnsvR9oa2Qje0kofk4fB7ZBIs932pYPG+nuTBkaK0NDc
-	BLeojHOZ5gCWEElEAthPPYJt0Wiw5exC4UlFmfKb2QdOy9ZCUYcZwN63NxklOTK/Iw==
-X-Gm-Gg: AR+sD109oBkMXby/owHxnWKJcRqYErngFvrxBnCR1ldA6GDsBk0+oxYjesFVcbpiRIZ
-	OPS9TzmX9dmU85h/OfP9gQImSBIfWzqJFkUV/cTCdwbMe1D9uZ6SqRD71QrguXhE8tkuvFe3iVM
-	8o3gz3iM+mlFleP76nUKFTItdE5/nLiOeEcmpLX3UJTgUNOip2dwB6yGwTTjN1/XVWbuPChhUy9
-	SZJLYbByjD0w2tecP98QpPCatKfKO0h4LzVcnrYdf5mj5StSUp6JKCEBAigmOzcu4v1Mo4mNjTK
-	UzoukRCYAbE4Bq5M3YTUEHm7ElHG+M84wnj1Fo0ar+9jsI7MobDsXNR/ApVcAO0GP/ACzIp552G
-	nvXM39MxC7OFg6HqoOQbzJaWOietigbJapgI/tJL6bOvUwewf2GRwhQ4VhDGb+xBeOdnIGW7fQF
-	IufhWyNL5Y3cTK51J9z2iy04Wb9v86RfOG7ekoOkO2FD1DRw==
-X-Received: by 2002:a17:907:c0a:b0:c16:9f61:854b with SMTP id a640c23a62f3a-c1f1f153f26mr394532266b.42.1785150675763;
-        Mon, 27 Jul 2026 04:11:15 -0700 (PDT)
-Received: from google.com (135.91.155.104.bc.googleusercontent.com. [104.155.91.135])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1c32af45ecsm611801266b.28.2026.07.27.04.11.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 04:11:14 -0700 (PDT)
-Date: Mon, 27 Jul 2026 12:11:10 +0100
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Jack Thomson <jackabt.amazon@gmail.com>
-Cc: maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com,
-	joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org,
-	shuah@kernel.org, corbet@lwn.net, vladimir.murzin@arm.com,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
-	isaku.yamahata@intel.com, Jack Thomson <jackabt@amazon.com>
-Subject: Re: [PATCH v5 2/5] KVM: arm64: Add pre_fault_memory implementation
-Message-ID: <amc8zlGxegNKHxIY@google.com>
-References: <20260612162354.73378-1-jackabt.amazon@gmail.com>
- <20260612162354.73378-3-jackabt.amazon@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qp0BHyey"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RAJIph1923915;
+	Mon, 27 Jul 2026 11:16:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=8S1cLg
+	QcvXjYWpfjurcLn7t0WBOdgSCbMmbSNFjBi9I=; b=qp0BHyeym9EU/v97LxR/Hq
+	KzWD3OGPrH+7BR1DkaZlsOn4kaXJR+55PKHhPXP+0ftDt0zmie6qV39s+SSNa9ii
+	8SKSIVzyDzmlO6Jm5Zdl474zxMXsJnd4I3ebh1o74HXxV9WFWExsCp50vOMN+AGj
+	Lw8k2QIubu+Ega2cGzI2xhCWBKx0n26OguMr4nMDsoInr1s8Erh9bZb4IcrItGHF
+	ifDmbP8tluVK/ly2nFR7f7bzmLCBxCOSmQAOaKYXkyazr4/oGJDJsY5L7nr736Kn
+	ThFa0n/t2p/xKkR2GemFzcEZ2a62WLzNZgc1PIqXe6Nx/0KdOyfzlDaMDTIyw2Uw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuw77ns8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 11:16:12 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66RBBFSJ003475;
+	Mon, 27 Jul 2026 11:16:11 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yh51pp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 11:16:11 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RBG7hw36897202
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jul 2026 11:16:07 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AF0720090;
+	Mon, 27 Jul 2026 11:16:07 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64DDA20093;
+	Mon, 27 Jul 2026 11:16:07 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Jul 2026 11:16:07 +0000 (GMT)
+Message-ID: <a59c038d-a735-4a8e-a76f-60ffbeb6992b@linux.ibm.com>
+Date: Mon, 27 Jul 2026 13:15:59 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612162354.73378-3-jackabt.amazon@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [GIT PULL 2/7] KVM: s390: pci: Fix memory accounting for
+ pinned/unpinned pages
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>, kvm@vger.kernel.org
+References: <20260727095720.9150-1-borntraeger@linux.ibm.com>
+ <20260727095720.9150-3-borntraeger@linux.ibm.com>
+ <20260727101121.C86F61F00AC4@smtp.kernel.org>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260727101121.C86F61F00AC4@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: jxCCxUMGY3Ic_i2w-VQNgY77Jjpu4MRx
+X-Proofpoint-ORIG-GUID: jxCCxUMGY3Ic_i2w-VQNgY77Jjpu4MRx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDEwNSBTYWx0ZWRfX1kzTMQ8KyOVn
+ pz06+Yeou4JeSdwwMsY7yjMmNPZxHAITKIsFt5kq9MVKhKI7FP7JoWgYmuKcdAs2P+uCVsg98Nn
+ NIR9sq11A0Fzief6rHynGUJkasoZ52DQujHUA4EqDM2SbK5tkecMoe2xKQWWFDSyB6882q2YE5i
+ tiwMK7RwGXZmcYBTnY1404CT5frl4LEeJz1e+IZJqch9TB3sppZ9JHVyNZ/BIzhUwXrZNb2jeFU
+ MHZC0P6qC78hE7JfOrdEdw4ZP+4s36+ngML2ts7nN/Ps6kUPZMzHu5+HzJzySIRaliMzs9xnxQt
+ yCLbDNvHeTLgpUp6dtUKW1tu0XJDNwpSSJacAR0I3FEn9L7wtqW7EmJnYf3GPGmKeYPETHUoeeB
+ W+rYJPFwSKId4dHDWYXdgUfbyoxuJxTzOwAGOhNnQMqNEC5fjFueukMmZZnEDHko5G8YD2/Cv7Q
+ FLw3h5L0lwmtPLRBASA==
+X-Authority-Analysis: v=2.4 cv=SKFykuvH c=1 sm=1 tr=0 ts=6a673dfc cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=rpbQ5iLBezYDpLgtt8IA:9 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDEwNSBTYWx0ZWRfX+PTddQKEGrZr
+ 0CFRhryvsZYR9Iie9BebPoZ3rcGlrBByoh7hekZVFpETUv5g0rQwNdAVzaxPLyY9/sBSYtGqV6y
+ 3c+Eea9JLcBDB6lIul//824auyBQ7XY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_03,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607270105
 
-Hi,
-
-On Fri, Jun 12, 2026 at 05:23:50PM +0100, Jack Thomson wrote:
-> From: Jack Thomson <jackabt@amazon.com>
+Am 27.07.26 um 12:11 schrieb sashiko-bot@kernel.org:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
 > 
-> Add arm64 support for KVM_PRE_FAULT_MEMORY by synthesizing a read data
-> abort and routing it through the existing stage-2 fault handlers. Treat
-> the requested GPA as an IPA in the userspace-owned VM's memslot space
-> and always target the canonical stage-2, even if the vCPU last ran with
-> a nested/shadow MMU selected.
-> 
-> If the vCPU last ran in a nested context, switch to the canonical
-> stage-2 with the vCPU put/load helpers so VMID, VNCR and shadow-MMU
-> refcount state stay consistent. Leave the switch in place for the ioctl;
-> vcpu_put() at ioctl exit drops the hw_mmu and the next vcpu_load()
-> reselects the correct MMU from vCPU state.
-> 
-> Check existing mappings with a shared page-table walk under the MMU read
-> lock, and use the resulting walk level when constructing the synthetic
-> fault. Report poisoned pages through the ioctl return path with
-> -EHWPOISON instead of also queueing SIGBUS, and use the installed
-> mapping size to advance the prefault range.
-> 
-> Advertise KVM_CAP_PRE_FAULT_MEMORY on arm64. Protected VMs remain
-> unsupported: pKVM filters the capability, and the ioctl returns
-> -EOPNOTSUPP if invoked anyway.
-> 
-> Signed-off-by: Jack Thomson <jackabt@amazon.com>
-> ---
->  Documentation/virt/kvm/api.rst |  18 +++-
->  arch/arm64/kvm/Kconfig         |   1 +
->  arch/arm64/kvm/arm.c           |   1 +
->  arch/arm64/kvm/mmu.c           | 162 +++++++++++++++++++++++++++++++++
->  4 files changed, 178 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 52bbbb553ce1..657e05656fa6 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6462,7 +6462,7 @@ See KVM_SET_USER_MEMORY_REGION2 for additional details.
->  ---------------------------
->  
->  :Capability: KVM_CAP_PRE_FAULT_MEMORY
-> -:Architectures: none
-> +:Architectures: x86, arm64
->  :Type: vcpu ioctl
->  :Parameters: struct kvm_pre_fault_memory (in/out)
->  :Returns: 0 if at least one page is processed, < 0 on error
-> @@ -6470,11 +6470,14 @@ See KVM_SET_USER_MEMORY_REGION2 for additional details.
->  Errors:
->  
->    ========== ===============================================================
-> +  EAGAIN     A memslot update raced with the ioctl before any page was
-> +             processed.
->    EINVAL     The specified `gpa` and `size` were invalid (e.g. not
->               page aligned, causes an overflow, or size is zero).
->    ENOENT     The specified `gpa` is outside defined memslots.
->    EINTR      An unmasked signal is pending and no page was processed.
->    EFAULT     The parameter address was invalid.
-> +  EHWPOISON  A poisoned host page was encountered.
->    EOPNOTSUPP Mapping memory for a GPA is unsupported by the
->               hypervisor, and/or for the current vCPU state/mode.
->    EIO        unexpected error conditions (also causes a WARN)
-> @@ -6494,7 +6497,14 @@ Errors:
->  KVM_PRE_FAULT_MEMORY populates KVM's stage-2 page tables used to map memory
->  for the current vCPU state.  KVM maps memory as if the vCPU generated a
->  stage-2 read page fault, e.g. faults in memory as needed, but doesn't break
-> -CoW.  However, KVM does not mark any newly created stage-2 PTE as Accessed.
-> +CoW.  However, on x86, KVM does not mark any newly created stage-2 PTE as
-> +Accessed.  On arm64, newly created stage-2 PTEs are marked Accessed.
-> +
-> +On arm64, `gpa` is interpreted as an IPA in the userspace-owned VM's
-> +memslot address space.  If the vCPU most recently ran a nested guest, KVM
-> +still targets the VM's canonical stage-2, and does not interpret `gpa` as
-> +a nested guest IPA or target the nested/shadow stage-2 selected by the
-> +vCPU's last run state.
->  
->  In the case of confidential VM types where there is an initial set up of
->  private guest memory before the guest is 'finalized'/measured, this ioctl
-> @@ -6507,9 +6517,9 @@ case, the ioctl can be called in parallel.
->  
->  When the ioctl returns, the input values are updated to point to the
->  remaining range.  If `size` > 0 on return, the caller can just issue
-> -the ioctl again with the same `struct kvm_map_memory` argument.
-> +the ioctl again with the same `struct kvm_pre_fault_memory` argument.
->  
-> -Shadow page tables cannot support this ioctl because they
-> +On x86, shadow page tables cannot support this ioctl because they
->  are indexed by virtual address or nested guest physical address.
->  Calling this ioctl when the guest is using shadow page tables (for
->  example because it is running a nested guest with nested page tables)
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index 449154f9a485..6b89262e8ba7 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -24,6 +24,7 @@ menuconfig KVM
->  	select HAVE_KVM_CPU_RELAX_INTERCEPT
->  	select KVM_MMIO
->  	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
-> +	select KVM_GENERIC_PRE_FAULT_MEMORY
->  	select VIRT_XFER_TO_GUEST_WORK
->  	select KVM_VFIO
->  	select HAVE_KVM_DIRTY_RING_ACQ_REL
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 9453321ef8c6..dcb92bee13af 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -392,6 +392,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
->  	case KVM_CAP_COUNTER_OFFSET:
->  	case KVM_CAP_ARM_WRITABLE_IMP_ID_REGS:
->  	case KVM_CAP_ARM_SEA_TO_USER:
-> +	case KVM_CAP_PRE_FAULT_MEMORY:
->  		r = 1;
->  		break;
->  	case KVM_CAP_SET_GUEST_DEBUG2:
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index c720f07cb82e..4bf048bbcf8b 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1571,6 +1571,8 @@ struct kvm_s2_fault_desc {
->  	struct kvm_s2_trans	*nested;
->  	struct kvm_memory_slot	*memslot;
->  	unsigned long		hva;
-> +	unsigned long		*page_size;
+> New issues:
+> - [High] The patch introduces `mm_struct` and `user_struct` reference count leaks on the `airq_iv_alloc_bit()` error path.
 
-It looks a bit odd in that struct.
+For some reason sashiko failed to apply patch3, which fixes this exact problem.
 
-Also, transparent_hugepage_adjust() modifies pfn and gfn. So perhaps it'd be
-better to introduce a struct kvm_s2_fault_mapping that can be used to get what
-has actually been mapped in kvm_s2_fault_map()?
+> - [High] Calling the `KVM_S390_ZPCIOP_REG_AEN` ioctl multiple times sequentially overwrites `kzdev->mm_account` and `kzdev->user_account`, permanently leaking the previously acquired kernel object references.
 
-> +	bool			prefault;
->  };
->  
->  static int gmem_abort(const struct kvm_s2_fault_desc *s2fd)
-> @@ -1882,6 +1884,13 @@ static int kvm_s2_fault_pin_pfn(const struct kvm_s2_fault_desc *s2fd,
->  				      &s2vi->map_writable, &s2vi->page);
->  	if (unlikely(is_error_noslot_pfn(s2vi->pfn))) {
->  		if (s2vi->pfn == KVM_PFN_ERR_HWPOISON) {
-> +			/*
-> +			 * When prefaulting, report the poison via -EHWPOISON
-> +			 * only; don't also queue a SIGBUS as the run path
-> +			 * does for the faulting vCPU thread.
-> +			 */
-> +			if (s2fd->prefault)
-> +				return -EHWPOISON;
->  			kvm_send_hwpoison_signal(s2fd->hva, __ffs(s2vi->vma_pagesize));
->  			return 0;
->  		}
-> @@ -2053,6 +2062,9 @@ static int kvm_s2_fault_map(const struct kvm_s2_fault_desc *s2fd,
->  	kvm_release_faultin_page(kvm, s2vi->page, !!ret, writable);
->  	kvm_fault_unlock(kvm);
->  
-> +	if (s2fd->page_size && !ret)
-> +		*s2fd->page_size = mapping_size;
-> +
->  	/*
->  	 * Mark the page dirty only if the fault is handled successfully,
->  	 * making sure we adjust the canonical IPA if the mapping size has
-> @@ -2757,3 +2769,153 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled)
->  
->  	trace_kvm_toggle_cache(*vcpu_pc(vcpu), was_enabled, now_enabled);
->  }
-> +
-> +/*
-> + * Prefaulting always targets the canonical stage-2.  If the vCPU last ran
-> + * in a nested context, swap in the canonical MMU via the vCPU put/load
-> + * helpers so that preemption, VMID, VNCR fixmap and shadow-MMU refcount
-> + * state stay consistent.
-> + *
-> + * The swap is deliberately not undone: nothing runs in between the
-> + * per-page invocations of kvm_arch_vcpu_pre_fault_memory() except the
-> + * generic prefault loop, and the vcpu_put() at ioctl exit discards
-> + * vcpu->arch.hw_mmu anyway (see kvm_vcpu_put_hw_mmu()), so the next
-> + * vcpu_load() re-derives the correct MMU from the vCPU's context.  If the
-> + * prefault task is preempted in the meantime, kvm_vcpu_put_hw_mmu()
-> + * keeps the canonical MMU in place for the reload.  Leaving the swap in
-> + * place also bounds the cost to at most one put/load pair per ioctl,
-> + * rather than two pairs per prefaulted page.
-> + */
-> +static void kvm_pre_fault_load_canonical_mmu(struct kvm_vcpu *vcpu)
-> +{
-> +	if (!vcpu_has_nv(vcpu) || vcpu->arch.hw_mmu == &vcpu->kvm->arch.mmu)
-> +		return;
-> +
-> +	preempt_disable();
-> +	kvm_arch_vcpu_put(vcpu);
-> +	vcpu->arch.hw_mmu = &vcpu->kvm->arch.mmu;
-> +	kvm_arch_vcpu_load(vcpu, smp_processor_id());
-> +	preempt_enable();
-> +}
-> +
-> +long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu,
-> +				    struct kvm_pre_fault_memory *range)
-> +{
-> +	struct kvm_vcpu_fault_info *fault_info = &vcpu->arch.fault;
-> +	struct kvm_vcpu_fault_info fault_backup = *fault_info;
-> +	s8 walk_level = KVM_PGTABLE_LAST_LEVEL;
-> +	unsigned long page_size = PAGE_SIZE;
-> +	struct kvm_memory_slot *memslot;
-> +	phys_addr_t gpa = range->gpa;
-> +	struct kvm_pgtable *pgt;
-> +	phys_addr_t end;
-> +	kvm_pte_t pte;
-> +	hva_t hva;
-> +	gfn_t gfn;
-> +	long ret;
-> +
-> +	if (vcpu_is_protected(vcpu))
-> +		return -EOPNOTSUPP;
+same here. Looks like sashiko applied this series to a wrong tree.
 
-It could just call pkvm_mem_abort() when the VM is protected?
+All PCI fixes have been reviewed before here:
 
-> +
-> +	/*
-> +	 * Interpret range->gpa in the userspace-owned VM's IPA space, not in
-> +	 * any nested guest IPA space that may have been active on the vCPU's
-> +	 * last run.  Always target the canonical stage-2.
-> +	 */
-> +	kvm_pre_fault_load_canonical_mmu(vcpu);
-> +
-> +	if (gpa >= kvm_phys_size(vcpu->arch.hw_mmu)) {
-> +		ret = -ENOENT;
-> +		goto out;
-> +	}
-> +
-> +	gfn = gpa_to_gfn(gpa);
-> +	memslot = gfn_to_memslot(vcpu->kvm, gfn);
-> +	if (!memslot) {
-> +		ret = -ENOENT;
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * A racing memslot deletion or move installs an invalid slot before
-> +	 * zapping stage-2.  Ask userspace to retry once the update settles.
-> +	 */
-> +	if (memslot->flags & KVM_MEMSLOT_INVALID) {
-> +		ret = -EAGAIN;
-> +		goto out;
-> +	}
-> +
-> +	/*
-> +	 * pKVM stage-2 mappings aren't directly walkable from the host; let
-> +	 * the fault path handle both new and existing mappings.
-> +	 */
+https://sashiko.dev/#/patchset/20260723221409.5874-1-alifm%40linux.ibm.com
 
-pKVM has a host interval-tree where we keep track of what has been mapped and at
-what level. This tree is also protected with the mmu_lock.
 
-> +	if (!is_protected_kvm_enabled()) {
-> +		pgt = vcpu->arch.hw_mmu->pgt;
-> +		scoped_guard(read_lock, &vcpu->kvm->mmu_lock) {
-> +			ret = kvm_pgtable_get_leaf(pgt, gpa, &pte, &walk_level,
-> +						   KVM_PGTABLE_WALK_SHARED);
-> +		}
-> +		if (ret)
-> +			goto out;
-> +
-> +		if (kvm_pte_valid(pte)) {
-> +			page_size = kvm_granule_size(walk_level);
-> +			if (!(pte & KVM_PTE_LEAF_ATTR_LO_S2_AF))
-> +				handle_access_fault(vcpu, gpa);
-> +			goto out_success;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * Synthesize a read translation fault for the canonical IPA, at the
-> +	 * level where the stage-2 walk currently ends (the last level under
-> +	 * pKVM, where stage-2 isn't walkable from the host).
-> +	 */
-> +	fault_info->esr_el2 = (ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT) |
-> +		ESR_ELx_IL | ESR_ELx_FSC_FAULT_L(walk_level);
-> +	fault_info->hpfar_el2 = HPFAR_EL2_NS |
-> +		FIELD_PREP(HPFAR_EL2_FIPA, gpa >> 12);
-> +
-> +	struct kvm_s2_fault_desc s2fd = {
-> +		.vcpu		= vcpu,
-> +		.fault_ipa	= gpa,
-> +		.nested		= NULL,
-> +		.memslot	= memslot,
-> +		.page_size	= &page_size,
-> +		.prefault	= true,
-> +	};
-> +
-> +	/*
-> +	 * As in the run path, -EAGAIN from the abort handlers is treated as
-> +	 * progress: either a parallel fault installed the mapping, or a racing
-> +	 * invalidation is in flight and the next access will refault.
-> +	 */
-> +	if (kvm_slot_has_gmem(memslot)) {
-> +		ret = gmem_abort(&s2fd);
-> +	} else {
-> +		hva = gfn_to_hva_memslot_prot(memslot, gfn, NULL);
-> +		if (kvm_is_error_hva(hva)) {
-> +			ret = -EFAULT;
-> +			goto out;
-> +		}
-> +
-> +		s2fd.hva = hva;
-> +		ret = user_mem_abort(&s2fd);
-> +	}
-> +
-> +	if (ret < 0)
-> +		goto out;
-> +
-> +out_success:
-> +	end = ALIGN_DOWN(gpa, page_size) + page_size;
-> +	ret = min_t(u64, range->size, end - gpa);
-> +out:
-> +	/*
-> +	 * Restore the synthetic fault state so a subsequent KVM_RUN does not
-> +	 * observe it. kvm_handle_mmio_return() runs before guest entry can
-> +	 * refresh fault.esr_el2 from hardware, so leaving the synthetic ESR
-> +	 * in place would corrupt the completion of a pending MMIO exit.
-> +	 */
-> +	*fault_info = fault_backup;
-> +	return ret;
-> +}
-> -- 
-> 2.43.0
 > 
+> Pre-existing issues:
+> - [High] Missing NULL check for `airq_iv_create()` return value causes a guaranteed NULL pointer dereference.
+> --
 > 
+> --- Patch [1]: [GIT PULL 2/7] KVM: s390: pci: Fix memory accounting for pinned/unpinned pages ---
+> commit c8a84dcb0557ca0ba1070398f64a0a7a9a08e82b
+> Author: Farhan Ali <alifm@linux.ibm.com>
+> Date:   Mon Jul 27 09:57:15 2026 +0000
+> 
+>      KVM: s390: pci: Fix memory accounting for pinned/unpinned pages
+> 
+> This patch stores the pinning process user_struct and mm_struct when
+> accounting for pinned pages. It subsequently frees these resources when the
+> pages are unpinned to resolve context issues.
+> 
+>> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
+>> index 5b075c38998e3..c2f5085a0f5f1 100644
+>> --- a/arch/s390/kvm/pci.c
+>> +++ b/arch/s390/kvm/pci.c
+> [ ... ]
+>> @@ -190,33 +190,54 @@ static int kvm_zpci_clear_airq(struct zpci_dev *zdev)
+> [ ... ]
+>> -static inline int account_mem(unsigned long nr_pages)
+>> +static inline int account_mem(struct kvm_zdev *kzdev, unsigned long nr_pages)
+>>   {
+>>   	struct user_struct *user = get_uid(current_user());
+>>   	unsigned long page_limit, cur_pages, new_pages;
+>> +	int rc = 0;
+>>   
+>>   	page_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+>>   
+>>   	cur_pages = atomic_long_read(&user->locked_vm);
+>>   	do {
+>>   		new_pages = cur_pages + nr_pages;
+>> -		if (new_pages > page_limit)
+>> -			return -ENOMEM;
+>> +		if (new_pages > page_limit) {
+>> +			rc = -ENOMEM;
+>> +			goto out;
+>> +		}
+>>   	} while (!atomic_long_try_cmpxchg(&user->locked_vm, &cur_pages, new_pages));
+>>   
+>> -	atomic64_add(nr_pages, &current->mm->pinned_vm);
+>> +	if (current->mm) {
+>> +		mmgrab(current->mm);
+>> +		atomic64_add(nr_pages, &current->mm->pinned_vm);
+>> +	}
+>> +
+>> +	kzdev->user_account = user;
+>> +	kzdev->mm_account = current->mm;
+> 
+> [Severity: High]
+> If the KVM_S390_ZPCIOP_REG_AEN ioctl invokes kvm_s390_pci_aif_enable()
+> multiple times sequentially, will this unconditionally overwrite
+> kzdev->user_account and kzdev->mm_account?
+> 
+> It appears that if the device is already enabled, the previously acquired
+> references would be permanently leaked since unaccount_mem() isn't called
+> before assigning the new pointers here.
+> 
+>>   
+>>   	return 0;
+>> +
+>> +out:
+>> +	free_uid(user);
+>> +	return rc;
+>>   }
+>>   
+>>   static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>> @@ -275,7 +296,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
+>>   	}
+>>   
+>>   	/* Account for pinned pages, roll back on failure */
+>> -	if (account_mem(pcount))
+>> +	if (account_mem(zdev->kzdev, pcount))
+>>   		goto unpin2;
+>>   
+>>   	/* AISB must be allocated before we can fill in GAITE */
+> 
+> [Severity: High]
+> If airq_iv_alloc_bit() fails later in this function, the error path
+> jumps to the unlock and unpin labels:
+> 
+> kvm_s390_pci_aif_enable() {
+>          ...
+>          bit = airq_iv_alloc_bit(aift->sbv);
+>          if (bit == -1UL)
+>                  goto unlock;
+>          ...
+> unlock:
+>          mutex_unlock(&aift->aift_lock);
+> unpin2:
+>          if (fib->fmt0.sum == 1)
+>                  unpin_user_page(aisb_page);
+>          ...
+> }
+> 
+> Does this error path need to call unaccount_mem() to prevent leaking the
+> mm_struct and user_struct references acquired by account_mem() earlier?
+> 
+> [Severity: High]
+> This is a pre-existing issue, but is it possible for airq_iv_create() to
+> return NULL under memory pressure?
+> 
+> If it fails, zdev->aibv is assigned NULL a bit later in
+> kvm_s390_pci_aif_enable():
+> 
+> kvm_s390_pci_aif_enable() {
+>          ...
+>          zdev->aibv = airq_iv_create(...);
+>          ...
+>          rc = kvm_zpci_set_airq(zdev);
+>          ...
+> }
+> 
+> Could this lead to a NULL pointer dereference when kvm_zpci_set_airq()
+> attempts to access airq_iv_end(zdev->aibv)?
+> 
+
