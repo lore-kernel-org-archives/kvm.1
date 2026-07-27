@@ -1,136 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B325E373BE0;
-	Mon, 27 Jul 2026 15:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785165897; cv=none; b=L2f7M+hCUIXNkQ7PpgqGj0IlhRbX8aLCy9WgM6VN67+O1nCBP9vLcnc4a/NlpxIoMNr7IzjOTLm90kfvbFiqYI+B33u3VmrpgrzcDcCOeXvSii00JfBlxHDcGadZuvXUUM+dR5S7+L7avKXV9ZrDaO2li8u6eQ9CL6vcy4qgbIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785165897; c=relaxed/simple;
-	bh=PSp+TmAnM8T06oj2ua6xucA0mLR7kJaewsQLee692SE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TPY2rRVbAopY62Q1lSEAv9dJgCkcUit26Pf2VRLL42AuLwRmDMrgciQocYI4etDhJrmk6VX+xlFmEzCYyDgik1wplpaiLQgaoy5Q+MTyHfoIMwl9p5ZVSkIy1T2hq5cT6Jj7IFPQatpOQ7CgQnGlu2lMsUg7liIQZ8tqq12cX5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKOTxB2w; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9999E38F620
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 15:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785165951; cv=pass; b=OeQdo8LRUBcayUrQHv7P+gNmp+qFHXmohSwrKJ2RNb0RP/kzHo3p4U2V/AKPjRteg5tR5Qx9QldFnrY8mSy6JUsdOwZ3r/DIEkEdxjIzv2VAoMRTO//tdoEK5M1FsUMT2j4OnHdeouKLW5B649pCX49fvQWvMjIgAux3fDcMGsQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785165951; c=relaxed/simple;
+	bh=aN1lvwhg4cIpsXmW+qcL7ksUyBdvhNo8IXukcEIFeOA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kusT8iHv6no6+styLFgfzcKAcgXalqMNs8feAjT/KkUqZSv1IoXLvZKOXhe7lpvmb/R33qhk9mIqVR4GNJEI/3KMerbijSyT8huo/T7qlyhtYLnx0HvvPwSPNN78RxEanj3UK91BekZO4/cD+C8Bu1vZtv48woZiKana2bNs0ek=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=njufSEk4; arc=pass smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKOTxB2w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB331F000E9;
-	Mon, 27 Jul 2026 15:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785165896;
-	bh=5rqb6KCAKK0iTSapYubgDA2Qe/LdfhEAPWAMk2EUHUY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jKOTxB2wYC0ny85jsAZKHFAyVz34ptBXwoyiFafhKRptLdMsi0QRRSulm3CRmzJFE
-	 2EphEvEPo1AYrZwFqx+dhi+WUQGDLkt99KegXnbBDOdhQ6xaCXuQ4Z6a6G9YTiKlfj
-	 iEOSZtYhHfOcLyArSS4LACwXiZ9V82PpV7abDQOPiQPI137uH33dkKjGfTYa2tVura
-	 Lm67EbpoMSopj3lZsuHSEbNdO+CtHEvFjnkJJC8pSfi4a/iS/7SFazGHuMG8A3hp4+
-	 Y7Jyymhr3njxMPrBVyp0Ug4yqloVmcN/DvT4H/T1w+FyFv9t2r9d5jfcy/UirJCl29
-	 Ga/62f25msT4w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 01/10] KVM: s390: Fix unlikely NULL gmap dereference
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260727150254.236021-2-imbrenda@linux.ibm.com>
-References: <20260727150254.236021-1-imbrenda@linux.ibm.com>
- <20260727150254.236021-2-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 15:24:55 +0000
-Message-Id: <20260727152455.DCB331F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="njufSEk4"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38dfe7eb825so2222390a91.0
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 08:25:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785165950; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X2l9MebxJplejx6GJQ0q3hFi4+kMtrtOSsbVCgfQdkHhReEVlME8QHikynQhcMT3Ud
+         qQ1DUA32TznK8S/Z8YUfUB6vhFIg6aQKl3f24jVQEgJRZ837yV41JyFRTy9i5YVHGdAP
+         WnKDWBTz8SVUvBHiLX4ox/DRexZ4ITleIUZEbYqi1+tfGpYjymqfZYPxJDSuo36qQkwW
+         VYUDQDCFgKH0RhlCWEmjoOvfpPvJqKApc+Ji18fEewzsfXZRwTM/1VRU6xBssK+KSlVk
+         y4+fRLsCh0J52iajJDoj+i9WmhnfOc2nlSwx3rx87DM/ngHnmInaCwMnxwch3uRd0tK0
+         gNWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=31CIetStzX3TzwM8tOJbNAHIf31515DPG9HVGktRb6E=;
+        fh=0jr4E/1rkbX5UFRgK5qw3SdHBMnlxZHJK5M9+F2kHjQ=;
+        b=qVmO6JS8K9Ze781WCYPEsMc+NKp4eSo/4V0tyqwdnzZvnmZW015Qk9MZbBpBNq9lHS
+         GQ1Vxp3x9tKpd7AZumqcHFApNysfr7hPG/+6AGEaJI6J5bVaxgsR7OzhqKBh7Ff+8jgF
+         NsdDVH0wcgJU6yNEoLgmxSjYV1ZEwuWr/gAj8m+uVHdVx1XYaC9WLlD93kn7/jxAiL6C
+         7IXKa/P91kJd08HFHd/3QLIdWvgY0WUXuXPLmc/rSsjRXqOJxic7i9WMwPFYgiKiou8f
+         TRs7Ktmfh7iv4GeQPl4C15GxfM2HQ5nQ1AGtDG6LcLUVHEaJVDI0qTGp0I1UDv/QOyh5
+         xWfA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785165950; x=1785770750; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=31CIetStzX3TzwM8tOJbNAHIf31515DPG9HVGktRb6E=;
+        b=njufSEk4ZTWKZ1KuV5Co4+rZ72UY1QRyoYtfu/DtpUsKI7FqpJPy24S50JKqMafaYv
+         RaF36GizuEoAsCgWFhgSOQLNQffyVubmj9RJRjfngVh72fOksGWknySDLodKXpIK6/C+
+         l4uRsNSf/qR5TZZjQT3NUCPL3I2OQZOZnTKhMdWdfi1WKIbq9MMycTcCHiI3v+YwWzn4
+         ieEy6Z5UU2Stkrqyxh+YBPSnEQj9fyb31TZqRUNNGiWnYHgHNxdizQIJnrb84Jl9W6nM
+         A+IV8bIxkJspxYg6rUMRuhmTnZ/DJGkTOj1E22lZus5YvYzqW5iOzbPJKrYhptCszZCV
+         mdag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785165950; x=1785770750;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=31CIetStzX3TzwM8tOJbNAHIf31515DPG9HVGktRb6E=;
+        b=jd7dokHb8t2Y1evJAWrtM8C7QvlaBPOrRtq8ZC4E/iTsNYONitcM9np8rIycsgljOg
+         yUOwoKAjUqveIcm+reCYMTcWZlUXmwIqsRCxamFxQCXURSB6aYca7F5Hd67e/fBLDrls
+         YD/Q2QmG9C335NHaidMjV3fx9NJPeWj436mrcwvQEnfJm4i1TQYfKtgP1zTw2LnkGJBu
+         oPTEoFNIqqztv872zhmUVoQQVi7fqVMXgAVCozgWZaspDFylsKfdGEbTU7alViAFajTN
+         kZLOxrlmrZSG48I0sHOroS0/FMyqmmBxya74PnGux8uyWKrIsOwE8Iqppk7/ZJv5miXW
+         ezOg==
+X-Forwarded-Encrypted: i=1; AHgh+RoaxkyfIjwv9K8BGGlaEZkTgrwpGzT9z86aH56DdupFIHlB3ElZlPs5xUeav5MuRvfQogg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4jSu3acWajuDXcGkddzwg0eif7FslCcleCBPSgbIYMqmaxSOs
+	7QfP5YyxTPtIa20MhuDtzXXc7pSNS6KXSS0VHNGKlI2jV73l8eLWmq61QYfmUQJdcLiUDVJ4x2p
+	6lKMLXyvn0JJV3UJEhve/4JKGN9AleQ9j1IsueTVq
+X-Gm-Gg: AR+sD13dQtmzlNv+rqiQmmyWEuzxjJYdXq+L9xHumdm/pEmkK8bd+diWqoE3speWg2n
+	X9J7JXT4GrsCXWwgUfGHOG8hOV+3V/VyoWvwXreGcm4BONsAi+KRgYNJHToTxjSRmp+xH/btKqJ
+	CpqTaW5gTbu5KSJJRGh89q6PkC3a1txQ62YB1yF73doD/9dOB5ZeKRtLZ53RNiG23of6eYu7z3v
+	rXMU+/WvVWbWXnLJts/mI2ywDPiWe53bkLa42CzTrjuQnTSjKIWqb3gZjaYMR85d+apa4Hysyxl
+	gHfWFmiwCgExAHzW5IOR25Zm77EJQmGZyITu83O3DZarrZmTwNVFF1Vrh7wI2y15xAtjDVpV/hj
+	A2NtrSY/CJP0CnqOAsyAVaazWjGS9ujbV2Wpz2F8jcRI=
+X-Received: by 2002:a17:90b:1fc4:b0:387:e0db:bc2b with SMTP id
+ 98e67ed59e1d1-38f298a5f8dmr7269755a91.43.1785165948891; Mon, 27 Jul 2026
+ 08:25:48 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 27 Jul 2026 08:25:48 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 27 Jul 2026 08:25:48 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <amdqJtKey_zX4-Mf@google.com>
+References: <20260723210811.72720-1-seanjc@google.com> <20260723210811.72720-8-seanjc@google.com>
+ <627eda4b-c084-4cd8-ad3a-3b3793feae0d@intel.com> <amdqJtKey_zX4-Mf@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Date: Mon, 27 Jul 2026 08:25:48 -0700
+X-Gm-Features: AUfX_mzWYcnSjvvZ7YY8Cs7PDecKksNWvOG61nC9VzRxcHwogNJ47J_oW4kqtDY
+Message-ID: <CAEvNRgEn7Cjog12OWxAfwk8AHTtSy0ndp=-DUj2pv6C5iDTd3A@mail.gmail.com>
+Subject: Re: [PATCH v6 7/9] KVM: guest_memfd: Rename prepare() hook and
+ Kconfig to make_private() / CONVERT
+To: Sean Christopherson <seanjc@google.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Fuad Tabba <fuad.tabba@linux.dev>, Michael Roth <michael.roth@amd.com>, 
+	Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Missing compiler barrier in vCPU initialization publication allows=
- compiler reordering, potentially defeating the NULL pointer dereference fi=
-x.
---
+Sean Christopherson <seanjc@google.com> writes:
 
---- Patch [1]: [PATCH v3 01/10] KVM: s390: Fix unlikely NULL gmap dereferen=
-ce ---
-commit 5328cd0469f8706fce5babcef6c93d98cfcef985
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> On Mon, Jul 27, 2026, Xiaoyao Li wrote:
+>> On 7/24/2026 5:08 AM, Sean Christopherson wrote:
+>> > Rework guest_memfd's prepare() hook into a more accurate make_private(),
+>> > and rework its Kconfig from PREPARE to a more generic CONVERT.
+>>
+>> > This will
+>> > allow x86 to share (pun intended) a kvm_x86_ops.gmem_make_shared() hook
+>> > between the "convert to shared" and "reclaim" flows, which are one and the
+>> > same for SNP.
+>>
+>> Does it mean in the future we will introduce something like below?
+>>
+>> #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+>> int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>> int max_order)
+>> {
+>> 	return kvm_x86_call(gmem_make_private)(kvm, pfn, gfn, max_order);
+>> }
+>>
+>> +int kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
+>> +{
+>> +	return kvm_x86_call(gmem_make_private)(pfn, nr_pages);
+>
+> s/gmem_make_private/gmem_make_shared, but yeah, that's the plan for the in-place
+> conversion series.
 
-KVM: s390: Fix unlikely NULL gmap dereference
+Yup! Did this.
 
-This commit fixes a potential NULL pointer dereference if a malicious
-userspace program guesses a newly created vCPU file descriptor and
-starts it before kvm_arch_vcpu_postcreate() finishes. It adds an
-initialized flag that is checked before allowing vCPU ioctls to run.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 23c817595e28d..eff0644b8517d 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3611,6 +3611,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
->  	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
->  	    vcpu->kvm->arch.user_operexec)
->  		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
-> +
-> +	WRITE_ONCE(vcpu->arch.initialized, true);
-
-[Severity: High]
-Could the compiler reorder the gmap assignment after this WRITE_ONCE()?
-
-Since WRITE_ONCE() only guarantees volatile access but does not provide a
-general compiler barrier, it might be possible for the compiler to legally
-reorder the preceding non-volatile store (vcpu->arch.gmap =3D ...) to occur
-after the initialized flag is set.
-
-If this happens, a concurrent thread could read initialized as true but
-still observe a NULL gmap in __vcpu_run(), triggering the exact crash this
-patch intends to fix.=20
-
-Would it be safer to use smp_store_release() here to ensure the gmap
-initialization is safely published?
-
->  }
-> =20
->  static bool kvm_has_pckmo_subfunc(struct kvm *kvm, unsigned long nr)
-
-[ ... ]
-
-> @@ -5037,6 +5039,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  	    kvm_run->kvm_dirty_regs & ~KVM_SYNC_S390_VALID_FIELDS)
->  		return -EINVAL;
-> =20
-> +	if (!READ_ONCE(vcpu->arch.initialized))
-> +		return -EINVAL;
-
-[Severity: High]
-If smp_store_release() is used in kvm_arch_vcpu_postcreate(), would it make
-sense to use smp_load_acquire() here to properly pair with it and guarantee
-we observe the fully initialized vCPU state?
-
-> +
->  	vcpu_load(vcpu);
-> =20
->  	if (guestdbg_exit_pending(vcpu)) {
-
-[ ... ]
-
-> @@ -5521,6 +5526,9 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
->  	long r;
->  	u16 rc, rrc;
-> =20
-> +	if (!READ_ONCE(vcpu->arch.initialized))
-> +		return -EINVAL;
-
-[Severity: High]
-Similarly, should this be smp_load_acquire() to ensure memory visibility
-guarantees match across all the vCPU ioctl paths?
-
-> +
->  	vcpu_load(vcpu);
-> =20
->  	switch (ioctl) {
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727150254.2360=
-21-1-imbrenda@linux.ibm.com?part=3D1
+Should be able to send out v9 today, just need to run some tests...
