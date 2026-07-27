@@ -1,118 +1,224 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB7D392C32
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 08:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480673ABD9D
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 08:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785140583; cv=none; b=j+Vb2NUl3IiHH9JWhVWSm+H4Bp4evPkuBNhrY3xtOFMhJMFNmqdNhmTl5+palL242CSJb34z9DQWgxP0ViQ7qZjHCN9Dl7b82wF6CfWNn+o8+gz2odVjDXJ3IrZ5fnmSWd288vmkkqebURxSksdo+F735J54kbe9NhIxiy6gINs=
+	t=1785140596; cv=none; b=FzudvblihQWeTlz8vBZtA6AqPQU/CyAAa6BHwPwT2fPC2KVVkd0AQVkzF3EFsMATCHla17PqaUP5/X93zCJTbQ1GMcOXoCbhzXRQ03TjnHKx3F6M1OtXooeObfyTUUYp/sG5oRT8GFekuM8Pzyuu17m6AN9FBU6ygHYgokgzteQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785140583; c=relaxed/simple;
-	bh=RvCbP2n0Dm4RAtx7BwIh/SDybR2vfj2oNhoieR6sY5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IAWWAcQmcI8Zdbjd3EH0YLb88fy6RakzWVYLArMOZZP/8v5gm0ID8I8HJvL0O7LuAteXWCJ6EYg1+IrakEQ1mcCP1qOtiR+/pIjfDO9F7wWaph8qfYXPO1ReZhd07mMv3dJ8C1QZMSoRHLSdenv0LZ1NiADNaDuEaSImtNxjhhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P1Gs5tIZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785140596; c=relaxed/simple;
+	bh=nTAeuKeafdW0HJu/jJ8SEVDWxhTb6oLujYBvpoqBspk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QB4A+3OenRFLVFWr/TlQzX6TfiWbk2Mtku4QdSrQ2Gb2n+M6GNueMKnP7nM9OtpaJiSd9NoikbjLGzcnN4j7UlJWoDp250mYxRx0+Yk2hzDdwHL2yguOep1uRDJ5MpzcBu4YDxram1w4i8dYHyXkdKItwauAMIEmdaHxoS1c/GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NjDLIROc; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P1Gs5tIZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785140579;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6lOAHrr1Dw2w/S0fTULvS6UvPR8X5P8fRAdv/0dmbxQ=;
-	b=P1Gs5tIZeiaACN1dfrKsdJZlDCX/nmuFUCAafA2+Nz9JKmtvPD+1RLKyoaf0kJQaKAJF6C
-	sRsz7IeLn+Jtpw2Ko6SHcq5ONfwvH6hAIN1RCl2m+yFMyjnHhdoXt3iaN1qVrOhaL0c1dy
-	NfeWtM6YWVHTQRhQadACYkXtX8u857Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-345-K8_tC54rPRmlHLiiIGIOig-1; Mon,
- 27 Jul 2026 04:22:55 -0400
-X-MC-Unique: K8_tC54rPRmlHLiiIGIOig-1
-X-Mimecast-MFC-AGG-ID: K8_tC54rPRmlHLiiIGIOig_1785140574
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF842180135F;
-	Mon, 27 Jul 2026 08:22:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.44.32.196])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 16673429;
-	Mon, 27 Jul 2026 08:22:50 +0000 (UTC)
-Date: Mon, 27 Jul 2026 09:22:47 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
-Subject: Re: [PATCH 2/5] ui/vnc: fix OOB write in vnc_refresh_lossy_rect
-Message-ID: <amcVV5g4ENihVXpk@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <20260706-fix-v1-0-4b83a70e9f3b@redhat.com>
- <20260706-fix-v1-2-4b83a70e9f3b@redhat.com>
- <f83491f5-6ef7-45ba-bb84-26341835cb25@tls.msk.ru>
- <CAMxuvaxUWc=Qr9pQQ6wW6XnAzp4mf77aYpcFuXvret1KL_W9kA@mail.gmail.com>
- <0b2bf915-d2d5-4a21-8ee1-d11427476d40@tls.msk.ru>
- <CAMxuvaxU3HJwkyvD0WtifFCMfcivNiUTK4U9Yg0j7cpc5LXLaw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NjDLIROc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785140593; x=1816676593;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=nTAeuKeafdW0HJu/jJ8SEVDWxhTb6oLujYBvpoqBspk=;
+  b=NjDLIROcKf00s266Wv/BBYEMts02zCUoa+QKa3kN4G+hZhvxQa07VItG
+   RfXTv3hfICvNuuzWlW+6tkGQbWCxJgDGQCkyWRX7/hpLv5ojN3zT573kS
+   1jpYQRCp0B++NWzlS04CI+6S9D5/J3FjQsP5U+7PRbnGj/Fe8+JqNIBWt
+   vaHu+ehGVGIXqAIdDa0PQMc5eQuc7ZN58g/equ+EJg+fjUvjUPNGjB6w2
+   XdS48IQmZzd/lAuUlwoDIKNm9i22Gtl06+a1CIIVn+kD0zgJTuAakWh/Y
+   4BJ35o0ptEMAskyFCktuNSYmWzmvS0eKPpOipRIrKnO96+npRZnxBqg3P
+   Q==;
+X-CSE-ConnectionGUID: DUXl5F2xRda4bULq9cLtcQ==
+X-CSE-MsgGUID: gcdtdJI5TS6Hd+/CrV35jg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11857"; a="85747079"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="85747079"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 01:23:12 -0700
+X-CSE-ConnectionGUID: hG6sP2n2Tyak6bGJMm0m8w==
+X-CSE-MsgGUID: h5ccNoC1QYSdrVcbwevcyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
+   d="scan'208";a="255031713"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.238.208.132]) ([10.238.208.132])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 01:23:06 -0700
+Message-ID: <0d101660-8398-45f8-b732-8bfc37e4c257@intel.com>
+Date: Mon, 27 Jul 2026 16:23:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMxuvaxU3HJwkyvD0WtifFCMfcivNiUTK4U9Yg0j7cpc5LXLaw@mail.gmail.com>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/17] x86/virt/tdx: Make TDX module initialize the
+ extensions
+To: Xu Yilun <yilun.xu@linux.intel.com>, sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
+ rick.p.edgecombe@intel.com, yilun.xu@intel.com, sohil.mehta@intel.com,
+ adrian.hunter@intel.com, kishen.maloor@intel.com,
+ tony.lindgren@linux.intel.com, peter.fang@intel.com, dave.hansen@intel.com,
+ dave.hansen@linux.intel.com, chao.gao@intel.com
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-6-yilun.xu@linux.intel.com>
+ <20260618085431.B83541F000E9@smtp.kernel.org>
+ <ajq8RFjv2YFghvQp@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ajq8RFjv2YFghvQp@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 26, 2026 at 09:53:05PM +0400, Marc-André Lureau wrote:
-> Hi
+On 6/24/2026 1:03 AM, Xu Yilun wrote:
+>>> +/* Initialize TDX module extensions for extension SEAMCALLs */
+>>> +static __init int tdx_ext_init(void)
+>>> +{
+>>> +	struct tdx_module_args args = {};
+>>> +	u64 r;
+>>> +
+>>> +	do {
+>>> +		r = seamcall(TDH_EXT_INIT, &args);
+>>> +	} while (r == TDX_INTERRUPTED_RESUMABLE);
+>>> +
+>>> +	if (r != TDX_SUCCESS)
+>>> +		return -EFAULT;
+
+As Chao caught in patch 04, we need to return -EIO here for consistence.
+
+>>
+>> [Severity: Medium]
+>> Does this code silently discard the 64-bit hardware error code?
+>>
+>> When TDH_EXT_INIT fails, replacing the return value with -EFAULT means
+>> the caller only logs a generic initialization failure without details.
+>> Other TDX initialization functions use seamcall_prerr_ret() to preserve
+>> and log the hardware error.
+>>
+>> Could this be updated to use seamcall_prerr_ret() to ensure the exact
+>> firmware failure reason is logged?
 > 
-> On Sun, Jul 26, 2026 at 9:14 PM Michael Tokarev <mjt@tls.msk.ru> wrote:
-> >
-> > On 7/26/26 20:07, Marc-André Lureau wrote:
-> > ...>> Unfortunately this (additional) fix does not mention the
-> > >> previous fix, so there's some confusion about which commit
-> > >> actually fixed this issue.  It looks like the first fix was
-> > >> incomplete and this additional fix were needed.
-> > >
-> > > That's correct, we reused the same CVE
-> > >
-> > > Daniel P. Berrangé said on the issue:
-> > > We didn't release master yet. As long as we also didn't release any
-> > > stable branches that claimed to fix it, we could re-use it IMHO.
-> >
-> > Heh.  This is exactly what actually happened - there were
-> > 2 stable releases on Jun-25 (v10.0.11 and v11.0.2) which
-> > contained the first half.  Now there are 2 more stable
-> > releases from Jul-24 which contains the second half.
-> >
-> > Unfortunately I haven't noticed this duplicated CVE#,
-> > or else I'd add a note to the second half in the stable
-> > pick-ups.
-> >
-> > I know you don't like me rushing things to the stable
-> > series, and this is an example why this might be bad.
-> > Fortunately this is not a regression, at least.  And
-> > usually security fixes come in faster anyway.  Ohwell..
-> > I'm sorry to disappoint you further.
+> No, it can't use seamcall_prerr_ret() directly. TDX_INTERRUPTED_RESUMABLE
+> can't be handled in a unified way for all SEAMCALLs so can't embed in
+> fundamental seamcall wrappers. I see 2 conventions:
 > 
-> for the record, I do appreciate your work, and I make mistake too :)
-> Next time I'll check if a release was made already with the CVE#
+>    1. Host should set a resume=1 parameter on retry, such as,
+>       TDH_PHYMEM_CACHE_WB, and several migration SEAMCALLs,
+>       TDH.EXPORT.MEM, TDH.EXPORT.STATE.XXX
+> 
+>    2. Host just refills the previous args (may have been modified by seamcall
+>       output) on retry. Much more examples, TDH_EXT_INIT, TDH_EXT_MEM_ADD,
+>       TDH_QUOTE_INIT, TDH_QUOTE_GET...
+> 
+> So I think there is a need the callers have to:
+> 
+>    1. call seamcall() or seamcall wrappers (tdh_xxx)
+>    2. specific handling of raw SEAMCALL return code
+>    3. do a standard TDX error logging and Linux errno conversion.
+> 
+> seamcall_prerr_ret() does 1 & 2 & 3, but can't customize step 2.
+> 
+> I tried to add some TDX error logging & errno conversion helpers, most of
+> the code are abstracted from seamcall_prerr_ret(), see below.
+> 
+> But I'm not sure if it worths the churn.
 
-Or we just declare a strict "never reuse a CVE once a patch is
-merged to master" rule.
+Though I have some comment, below refactor doesn't look so bad.
 
-With regards,
-Daniel
--- 
-|: https://berrange.com       ~~        https://hachyderm.io/@berrange :|
-|: https://libvirt.org          ~~          https://entangle-photo.org :|
-|: https://pixelfed.art/berrange   ~~    https://fstop138.berrange.com :|
+The only risk is existing SEAMCALL warppers is a mess and people may not 
+want to add any more before re-work them. So the conservative option 
+would to just add an ad-hoc pr_err() for !TDX_SUCCESS case?
+
+> ----8<----
+> 
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/seamcall_internal.h b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+> index be5f446467df..f838715c9446 100644
+> --- a/arch/x86/virt/vmx/tdx/seamcall_internal.h
+> +++ b/arch/x86/virt/vmx/tdx/seamcall_internal.h
+> @@ -78,12 +78,10 @@ static inline void seamcall_err_ret(u64 fn, u64 err,
+>                          args->r9, args->r10, args->r11);
+>   }
+> 
+> -static __always_inline int sc_retry_prerr(sc_func_t func,
+> -                                         sc_err_func_t err_func,
+> -                                         u64 fn, struct tdx_module_args *args)
+> +static inline int sc_errno_prerr(sc_err_func_t err_func,
+> +                                u64 fn, u64 sret,
+> +                                struct tdx_module_args *args)
+>   {
+> -       u64 sret = sc_retry(func, fn, args);
+> -
+>          if (sret == TDX_SUCCESS)
+>                  return 0;
+> 
+> @@ -100,10 +98,25 @@ static __always_inline int sc_retry_prerr(sc_func_t func,
+>          return -EIO;
+>   }
+> 
+> +static __always_inline int sc_retry_prerr(sc_func_t func,
+> +                                         sc_err_func_t err_func,
+> +                                         u64 fn, struct tdx_module_args *args)
+> +{
+> +       u64 sret = sc_retry(func, fn, args);
+> +
+> +       return sc_errno_prerr(err_func, fn, sret, args);
+> +}
+> +
+>   #define seamcall_prerr(__fn, __args)                                           \
+>          sc_retry_prerr(__seamcall, seamcall_err, (__fn), (__args))
+> 
+>   #define seamcall_prerr_ret(__fn, __args)                                       \
+>          sc_retry_prerr(__seamcall_ret, seamcall_err_ret, (__fn), (__args))
+> 
+> +#define seamcall_errno_prerr(__fn, __sret, __args)                             \
+> +       sc_errno_prerr(seamcall_err, (__fn), (__sret), (__args))
+> +
+> +#define seamcall_errno_prerr_ret(__fn, __sret, __args)                         \
+> +       sc_errno_prerr(seamcall_err_ret, (__fn), (__sret), (__args))
+
+We don't need these two wrappers.
+
+The existing seamcall_prerr() and seamcall_prerr_ret() do two things:
+1. call SEAMCALL;
+2. handling the return code of SEAMCALL;
+
+But the 2 new wrappers only do setp 2. So we can just call 
+sc_errno_prerr() in the following cases ...
+
+>   #endif /* _X86_VIRT_SEAMCALL_INTERNAL_H */
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 826504fbcdc7..637ff01ed0f1 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1403,10 +1403,7 @@ static int tdx_ext_init(void)
+>                  r = seamcall(TDH_EXT_INIT, &args);
+>          } while (r == TDX_INTERRUPTED_RESUMABLE);
+> 
+> -       if (r != TDX_SUCCESS)
+> -               return -EFAULT;
+> -
+> -       return 0;
+> +       return seamcall_errno_prerr(TDH_EXT_INIT, r, &args);
+
+... return sc_errno_prerr(seamcall_err, TDH_EXT_INIT, r, &args);
+
+and
+
+>   }
+> 
+>   #define HPA_LIST_INFO_FIRST_ENTRY      GENMASK_U64(11, 3)
+> @@ -1438,10 +1435,7 @@ static __init int tdx_ext_mem_add(struct page *hpa_list_page,
+>                  r = seamcall_ret(TDH_EXT_MEM_ADD, &args);
+>          } while (r == TDX_INTERRUPTED_RESUMABLE);
+> 
+> -       if (r != TDX_SUCCESS)
+> -               return -EFAULT;
+> -
+> -       return 0;
+> +       return seamcall_errno_prerr_ret(TDH_EXT_MEM_ADD, r, &args);
+
+... return sc_errno_prerr(seamcall_err_ret, TDH_EXT_MEM_ADD, r, &args);
+
+>   }
 
