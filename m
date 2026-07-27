@@ -1,159 +1,114 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E8A3D649A;
-	Mon, 27 Jul 2026 19:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4AB3E47B
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 19:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785181456; cv=none; b=F+mmS21JXQgAnnu9JSo2bsjznTLL4idIGxcdVT0QBqC78b2opQ5GKnMKjs/KcAs7yXQueA6cS2zx9vtrfrOaCpMuswSR7SYBgWBDJj+udkPHzRy6TcY6rhK2RmUmdVlKFrXBWImSSpMP1zZlQfps+Cd/w0noRP4vTkL3XmtfVsA=
+	t=1785181490; cv=none; b=Kytw/G1D00yjaNOpYQxflU7z3WkG8Mlk3UpaQguisMZFtt4G4/N3QsCQnFTMuIOOKLmuHNKRatX7yYrjZ8r5NaDVhEe0klNsjZnvN7+6BvBqhpYxBKZxAf1jYBYsUssCG69Zpy+P6YKxJGnlDVeRvS6lBuTUd2r+dCw2zR+Ei6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785181456; c=relaxed/simple;
-	bh=WfP9KjGiUhNC00atHi0kyLYVsoioA+Sf9b2zatRqvMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSHfvzvjl32Fy+BkX6ji0GQeP+oIyNBn6JLhTPnXeCuuo2uSS3YAYvaaNFPUh9QSLy6OWchjYkyDKufItnPJ6aB4VI1QzOZ7H01H0BIGwI1FrurrisRtbbFjqgPSA5IPXIDl5qQkbiEldhc2AUjIxIyfOZt8LyJxWVxdPLcnrZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S6SEBloS; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785181490; c=relaxed/simple;
+	bh=8tuWdlgD9JBnZbZSvj6smXZJcnlcT/0EpO0rcEFWtuc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=A469VcnmGVquuBF0IupHicjXDkO8dMhBCLKfsFnxgW3zcO7BXhdVCjBgIS2yuaSmVztOUaqJsN9qt1nNIaHqlotNgz2FYRRfDg0SnYKglOp0hBD6HDAw87J5AtOLMNK7t2fOTFKKa/XqHAS1x+rADPs403X7/UmVQpfQjrxQqMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBADRJS5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S6SEBloS"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RIHrJA2991527;
-	Mon, 27 Jul 2026 19:43:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=t1PHiV8rkqviZARZ9
-	5VBMbb5uovzUNwzuKi8hlP295s=; b=S6SEBloSRtmNnQC5V+xvz/AzjqT3zI92G
-	1H7rVF6wHeyQGEcT6EHMFhc4XTkjy+UCiyjDrvYawwhdqQzfFauTErv206H1aa/5
-	myowEEf70pWeLYtwZz3XZx8JIQ8mv1kQZWRUaouXWJ6IkxiQgYtMFMpnlebmkgp6
-	Yi8WvgJI6+1mD81CRAkERznkIaKEdbRSpdB77ldFyE09JWU/J6RMFsY/3rcBtujZ
-	qEQZCnkN7roezS40Eu644ARyBVg4eLaAbHVDtQCTHILE4gC6+a5nCleBpFDSYY/b
-	4jKTyciBqUMv9OmxLX7w+c8wTVbCEWYHnthw78T/YHfuQsyBqjDTw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0xhta5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 19:43:58 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66RJfHCr020211;
-	Mon, 27 Jul 2026 19:43:57 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uvxwcr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jul 2026 19:43:57 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RJhrVT49807638
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jul 2026 19:43:53 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 286512023E;
-	Mon, 27 Jul 2026 19:22:47 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 082792023B;
-	Mon, 27 Jul 2026 19:22:47 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 27 Jul 2026 19:22:46 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id BF0AF162824; Mon, 27 Jul 2026 21:22:36 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Eric Farman <farman@linux.ibm.com>,
-        sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v7 05/10] s390/vfio_ccw: calculate idal length based on idaw type
-Date: Mon, 27 Jul 2026 21:22:25 +0200
-Message-ID: <20260727192230.2715207-6-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260727192230.2715207-1-farman@linux.ibm.com>
-References: <20260727192230.2715207-1-farman@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBADRJS5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD47F1F000E9;
+	Mon, 27 Jul 2026 19:44:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785181489;
+	bh=rcYZ00p05TfB+TkU7sS5Ey6xKJiNffxMrSR8Q7YwcKI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IBADRJS5UdcCfvSMC3h/RJo8hUF+KJ0HmbgZEFGnoIUSz11jWY8T1VW+3mHw71fv2
+	 HesQNAO1wN5yVrqw9y/5RnkEXF56Mdt+Jt9Jj46NG78BtjWMT0luHYR2dzgXkH4b7h
+	 /YUTKqQxw3oDgjGqMfXRhpf7qx9ZM77pSDu1ln2hVZs/Er+x+ugxLbQpUk0zyEx1ZM
+	 ZcqELKRwhCa8Yee8UmKutDrRaHTD5sa4fVrUy+4XTfQXe3garwcbOkyw/MjxqgAAtd
+	 yyCpXIWVnyMytwESt/s0Hvwpo6Dq3vTgtrp0AIaU/ycJE5OBWTomDBzOcTbzkODHk3
+	 TNNL3bA/K4Luw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 4/9] KVM: x86/pmu: Snapshot host
+ IA32_PERF_CAPABILITIES in kvm_host
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zide Chen" <zide.chen@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260727192131.582105-5-zide.chen@intel.com>
+References: <20260727192131.582105-1-zide.chen@intel.com>
+ <20260727192131.582105-5-zide.chen@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 27 Jul 2026 19:44:48 +0000
+Message-Id: <20260727194448.CD47F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ELH4skJgiawNxwrjon_R23pPQeGdAWdc
-X-Proofpoint-ORIG-GUID: ELH4skJgiawNxwrjon_R23pPQeGdAWdc
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDE3NyBTYWx0ZWRfX+76e6ZlyfA1y
- EQ99QDYXKCngPyAM0WJBbB+41qHtMwfoC0//3QJo+Cp6MwHT4UoAVd+eGbn5RCuu1AbCUAr0+rD
- vPrl6GRBR8/lNH7rAOFFEunJCLJ2ev4=
-X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a67b4fe cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=Qev3T-O1x3Ov5i2I8JAA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDE3NyBTYWx0ZWRfXz/uIVws1iw7S
- wSW4A0UjfCkz9TJ5kgGgRLrM6nmO/vgMSsgYrtw0bPzzKzyDrqrsl0Id0MOfKq4nsajUUOj6LSt
- ysCDs+LZA8+1A09HH97AJJadYRJ5WTtP/LLqmK+WIyNnekbYP3oKoE2IzxtT+n83PvK0eQaIXju
- KPhurAqA/r6MAsTK5Uvl8trOB0D7tlYtQRxL9JAvBCKX5ALfO09zsrrJShZbfm1j802bBseJsCH
- NXuPBKLH6vc0VnJkGgLSJnJBXcp+qoXZrqiFcnqUd5SsA3+A3vAvzgjUOEkDfynew58CwH0Z/Jl
- vgju+BNZmrbsrogiyjmoLAsN77D/zN4ksuH8471nuKV/9L1FIGoOggb6y2LJPZpFuc1ZEWOSka2
- xvjtjjuBhtYGwj/CSqndZKB6ODn3kLLSo3o9+oIcAZIqdnbfTm5cpqfs2xQawAY/CnkclEtFMbK
- +ZmohuqM/st8l29mS6w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-27_05,2026-07-27_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270177
 
-Sashiko pointed out that get_guest_idal() unconditionally calculates
-the length of the IDAL presuming everything is a Format-2 IDAW.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-The output of vfio-ccw is always Format-2, but the input can be either
-Format-1 (31-bit addresses) or Format-2 (64-bit addresses). As a result,
-the size of the guest IDAL may be incorrect and should be trimmed down.
+Pre-existing issues:
+- [High] Incomplete replacement of raw MSR_IA32_PERF_CAPABILITIES read leav=
+es KVM vulnerable to kernel panics during module initialization.
+--
 
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/r/20260720203400.7328E1F000E9@smtp.kernel.o=
-rg/
-Fixes: 1b676fe3d9d3 ("vfio/ccw: handle a guest Format-1 IDAL")
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
----
- drivers/s390/cio/vfio_ccw_cp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+--- Patch [4]: [PATCH v7 4/9] KVM: x86/pmu: Snapshot host IA32_PERF_CAPABIL=
+ITIES in kvm_host ---
+commit 6a6d946c1225761f83ef8a8498aa4ccab5425b72
+Author: Mingwei Zhang <mizhang@google.com>
 
-diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
-p.c
-index 6275794751cb..5ef082b8289a 100644
---- a/drivers/s390/cio/vfio_ccw_cp.c
-+++ b/drivers/s390/cio/vfio_ccw_cp.c
-@@ -233,6 +233,7 @@ static void convert_ccw0_to_ccw1(struct ccw1 *source,=
- unsigned long len)
- }
-=20
- #define idal_is_2k(_cp) (!(_cp)->orb.cmd.c64 || (_cp)->orb.cmd.i2k)
-+#define get_idaw_size(_cp) ((_cp)->orb.cmd.c64 ? sizeof(u64) : sizeof(u3=
-2))
-=20
- /*
-  * Helpers to operate ccwchain.
-@@ -524,7 +525,7 @@ static dma64_t *get_guest_idal(struct ccw1 *ccw, stru=
-ct channel_program *cp, int
- 	dma64_t *idaws;
- 	dma32_t *idaws_f1;
- 	u64 first_idaw;
--	int idal_len =3D idaw_nr * sizeof(*idaws);
-+	int idal_len =3D idaw_nr * get_idaw_size(cp);
- 	int idaw_size =3D idal_is_2k(cp) ? PAGE_SIZE / 2 : PAGE_SIZE;
- 	int idaw_mask =3D ~(idaw_size - 1);
- 	int i, ret;
-@@ -593,7 +594,7 @@ static int ccw_count_idaws(struct ccw1 *ccw,
- 	struct vfio_device *vdev =3D
- 		&container_of(cp, struct vfio_ccw_private, cp)->vdev;
- 	u64 iova;
--	int size =3D cp->orb.cmd.c64 ? sizeof(u64) : sizeof(u32);
-+	int size =3D get_idaw_size(cp);
- 	int ret;
- 	int bytes =3D 1;
-=20
+KVM: x86/pmu: Snapshot host IA32_PERF_CAPABILITIES in kvm_host
+   =20
+Cache the unadulterated snapshot of perf_capabilities so that KVM can
+compare guest vPMU capabilities against raw hardware capabilities.
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0626e835e9eb7..e0114f248a9ef 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+[ ... ]
+> @@ -7033,6 +7033,10 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *o=
+ps)
+>  	if (boot_cpu_has(X86_FEATURE_ARCH_CAPABILITIES))
+>  		rdmsrq(MSR_IA32_ARCH_CAPABILITIES, kvm_host.arch_capabilities);
+> =20
+> +	if (boot_cpu_has(X86_FEATURE_PDCM))
+> +		rdmsrq_safe(MSR_IA32_PERF_CAPABILITIES,
+> +			    &kvm_host.perf_capabilities);
+> +
+
+[Severity: High]
+This isn't a bug introduced by this patch, but there is an incomplete
+replacement of a raw MSR_IA32_PERF_CAPABILITIES read elsewhere that leaves
+KVM vulnerable to kernel panics during module initialization.
+
+If a nested hypervisor exposes CPUID.PDCM but faults on the MSR access, the
+raw rdmsrq() in intel_pmu_is_mediated_pmu_supported() can trigger a #GP and
+panic the kernel:
+
+arch/x86/kvm/vmx/pmu_intel.c:intel_pmu_is_mediated_pmu_supported() {
+    ...
+    rdmsrq(MSR_IA32_PERF_CAPABILITIES, host_perf_cap);
+    ...
+}
+
+While this patch safely caches the MSR using rdmsrq_safe() here in
+kvm_x86_vendor_init(), this snapshot is populated after
+kvm_init_pmu_capability() has already run.
+
+Because of this ordering, intel_pmu_is_mediated_pmu_supported() cannot
+currently use this safely cached value, as it would incorrectly read 0.
+
+Would it make sense to reorder the initialization so the snapshot is
+populated before kvm_init_pmu_capability() runs, and then update
+intel_pmu_is_mediated_pmu_supported() to use kvm_host.perf_capabilities
+to avoid the #GP risk?
+
+>  	WARN_ON_ONCE(kvm_nr_uret_msrs);
+> =20
+>  	r =3D ops->hardware_setup();
+
 --=20
-2.53.0
-
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727192131.5821=
+05-1-zide.chen@intel.com?part=3D4
