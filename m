@@ -1,120 +1,128 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA87641B8F7
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 16:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785168626; cv=pass; b=gRLeHAipDLLB21A+71OhFgg4ShPWCBddAjOo02w4ukP4/RU5CFB2NLvgtr/hL62FIHtPIXJbRHEDUL5h1AQDy9ZtyVhu1B7qaGxaGh6AWD8K/uHifXB2Hc/BByEudzbXvHlPJ3y/1ds1EHFH2ycwiTOj6P7fHNQFwi1fhZ9b1bY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785168626; c=relaxed/simple;
-	bh=OOsxF6EKGXLBykC9ScLiUIhGyadMeqkWsBstlwVytuc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dR0vQCjzUYWqCMrlUP/lQYm31NvkMzxSsqgnHjV4hDfeuVTsmSM0Qvp/80a71pcSmKACMJnOtDGqKOlr7EV56YVEGn6RqOBW/LZ/ocodKxba9YqwX/CsG8M51Spe9bmiDlgP71YzHJtjoP7D+nVAR/RR5uIW4b2e02I8v3TTeCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=muJPYlbS; arc=pass smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16641F34A;
+	Mon, 27 Jul 2026 16:14:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785168900; cv=none; b=s9n9C9PoV1y+NYU3PthGwuAwZJBnzmHXILBfZ+hGm/Yy8JYNkwYfwp2ocyq9ap4akVUufj35dZQ/WhaAL1o9+7AyiGq+MoYXFMHDGxmoTs+tvUjUYyXpMal/8ieAtOgZ73p9G2Xp9480kzAJk3C+88WvMJHBHdHFze1k6QurV6Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785168900; c=relaxed/simple;
+	bh=Z8l3HVqSD6DiU40DHhc0cr063GI3YZJGRxTmhH5QPvg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=D2+BzbMfCptFES4eC1sab3ki17i/Ey+i1UYcqm6qIvmDfvuNtf54p5GADLUqZS0TDdO7pLXAZ4l2blrGe9rYuMO/p+JE3FPRBON2SANaKGzAvOOn5hSgsV1n5wKkKfbSRWQ3gWH4FchtP1Uo8vVvQ1WyyYvVPdGrURRe8YVtSmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+RLUevU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="muJPYlbS"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66771ded50aso3637169d50.1
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 09:10:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785168624; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KlKDLR6odYNib/fxg93Eb1JD3okuL9XTIeOtjbzeJxERadpgsQHb42QryIkkKHA6ik
-         butkxnl27xPKbqnEM0ce8tG9DGBI0jtWT7lAmGnrpT2QonDeXrWgFKeTEFLjwVTXoe77
-         Z2YWUrRW160Euub9GCdaSXEILsqdUk7DrGGg1HPPreSCByMAOuWRE8rT9kypBz/9hHGm
-         6/witWf5iX5SqUP6/f45IYcHzsT3b3Ns9DmR+s21WjH4x7132KdLMgt+8QvLv/cdGvtU
-         qxSjKTIX61yEPRmW+oJpgAQmzbHF+MfMqAKS0De5I5L9g1GSTF55N6+roJF3q00yX+XA
-         63wA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=OOsxF6EKGXLBykC9ScLiUIhGyadMeqkWsBstlwVytuc=;
-        fh=RdTc8p3gFPzljFYbO58KtXoyj7yh3c861Q3sOh3/a3k=;
-        b=iXqDp9NyX/0sL4uYRMH1WPf+p6iCeEXL5ZOvEvLgFplcnOdSAVpnyA6Kz4QXx7EHrq
-         nG6sk+8lN3OHciSkG6KVzeQjyd/L43tm9L+TfDAUvGIfNzEVWXg7IGL99pJFZO3/ZCh0
-         gXS3A5HJIr80XuQZvmcTeQagGSk0WgqMa6iQz4dEgfxJwZ9ryMZqygx9Exn4aqFa3gHW
-         Srl/X7E0vJ6I9Zc1GEoDHXTxEpX1WQHDMI4vzvKHWOr8q6bIdhMNN6RoaR5+KYC3iqTk
-         e/HXVFRmafQy9Xy8aqpMyU3Ma2irY7Z28PhCyz9zYZswHIKDQdgZdcFMUAlAckgQeRNK
-         tufw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785168624; x=1785773424; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OOsxF6EKGXLBykC9ScLiUIhGyadMeqkWsBstlwVytuc=;
-        b=muJPYlbSbwSKQM/ZLcx0MA94P9EZlvY8AmAoSLqA+shZKBMNQOZUVX8QFfyBuGmOV1
-         HwLwSHgDdog/JaROy0L+1tOv4JUEobGITu+ZDtV7KvzpgZxMfKZx0rMvaMOOmNWRnK5f
-         UA+N/KjLcXGnIUqHSGzyWDQVHDPUaA9N2NyyZhD8nOq7CM60pKzsdCLXGQ0+aZ0+r+wc
-         +/RR5AzwLqx5sRJYPdu6xKYrk0qhljeRe+HJYmk1lIvoqOQ8L+UI7Tv2ntFjeV9OfZmT
-         dfZ8HN/B3RA7yGGERZM06EpuMooAj/JFek/w1UbmQa90bm/5W0jxSoZZMixRUqOTS8HJ
-         0EzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785168624; x=1785773424;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OOsxF6EKGXLBykC9ScLiUIhGyadMeqkWsBstlwVytuc=;
-        b=Y8mQioiSXLFQBsZ8D3vuUKGGdPVIujKUzpwlNAxziULo/yu6GwsUEKhjH+RDPC+RQp
-         mXuPPXp+ApQPnKf8ljYrBSheI64sKjhCVDMARykOx8SIbDxCQnFGEhNTssVPSzDd5mAK
-         MdJmPB+6fHufyNNPQUWNzouHj8L4THW7WV2ricvYjnOQfZXBOkxrGN/Tun8Sn2gDNaKv
-         3I5Eoh+F4Nq7JknFOBFlmI6C6SCjzxIkIaQ6HmWSIrAXkVz3ZvrzjXq+DPLFlF952F6O
-         uIWkHhsOdVspR7eNzFOdIRf8C+Z1BvXryL7Y/kc3egLbT+QHSC12noRXgiItZy98PHmu
-         8aPA==
-X-Forwarded-Encrypted: i=1; AHgh+RoeptZFSK+jSAWFIss0IDN3ydzojvZRvQFlw8ZUvkIiPtjGNaQbwWRc0EtaV+fHlwAC4Js=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5LSUOu4CO2F8VQNEy9nYuvUFt3srWI0jMQHMoDfX3OjfMX8Bw
-	6VNmMHMZBD8sfXDAbzyNFMYsqo7hMjvIKa+vMpLvS75ALXoYG7cF0eynjTkOLMsUcULKAZuVDta
-	bDQ4CrtDh0PiE6Ur4hy3/wIfBTh9BHqOaffMe+XFfI4lDieRxzOAelFU=
-X-Gm-Gg: AR+sD13NSZp5HPQ24Xa8ehpklYBLTgynjl68l6QELczm0WdycG0XUl+h5D2INutwlIQ
-	rVmuLUTll465RfnQAgNXz/bpavva64IsLPuNDnt3kY3O6T36lo1sHmTcAeEpzYyVVFjtzPnbfqc
-	JgTDXnWxX+0oYBJ4JAnauY51tK9WaE+YTw2lQ8fAQLZUR7NbY4rC1XE9VHIZkWIYypP+urAMD0U
-	4qH3Ae0Dp+C6Op+eav6cPblsw5qR/Y5aw/dy5iOwV5WSKc8AAKnu3ZYIvItPvA4bdrc0/RMDeMH
-	4F3Ehorkn/XtqedxJUBuYQ4TWKN4y1NTeX1g1DHIKUK5sMTjZnB9Jy7qiCGHVeDBZ8NgtaN2t97
-	qGV7pPn38D4D35aqbtlasFg6H6uLw
-X-Received: by 2002:a05:690e:58e:b0:668:482b:af78 with SMTP id
- 956f58d0204a3-668c7a76831mr2025073d50.28.1785168623684; Mon, 27 Jul 2026
- 09:10:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+RLUevU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7AC1F000E9;
+	Mon, 27 Jul 2026 16:14:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785168894;
+	bh=OlO7HjhyjpcAHirr3npQRaVvfWRMQEMQUzsUvRSkifs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=a+RLUevU9qQGbwZRUFpgXqRZRgU8be3atxhesGuGYphfN3iclm3qq1pPOLzjCSMvx
+	 7gWJ8vWaW9hz+8dQy0zdi095n/voeST/dAFq+kQNWhTRtZ1t8VM1h6XG4vpFC/bOJw
+	 wTqofEUeienUWAmbeLAanHiKXxE68Sk/axHtyp7Pnuyrta8dF+h6ZLiRHvVfeY/2qP
+	 PmGMxeQAj34j/51O3yfH3ZY1kY9lA20ZIgov2uo1hqveAZYTJyrh5CDJ5kIfRcg4t2
+	 VSYWQv0S3VeBtsvMRMBGZYzk0XfP4nVsX41LTvfzO7P9Uw1pWbTc1Rt6Rmc7OzKsWR
+	 hepLVCn6g8Gzw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 05/10] KVM: s390: ucontrol: Add missing locking
+ around gmap_remove_child()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260727150254.236021-6-imbrenda@linux.ibm.com>
+References: <20260727150254.236021-1-imbrenda@linux.ibm.com>
+ <20260727150254.236021-6-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 27 Jul 2026 16:14:53 +0000
+Message-Id: <20260727161453.AF7AC1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260629-pmu-v7-1-939518c349be@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260629-pmu-v7-1-939518c349be@rsg.ci.i.u-tokyo.ac.jp>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 27 Jul 2026 17:10:11 +0100
-X-Gm-Features: AUfX_mymxx0UeI3zaYN-XNOKfFhNqx9ca_fv4qPFNtyAB8qHCBXWywBAQqhTdMs
-Message-ID: <CAFEAcA-=u3ZgiAXRNWM1VCMv7FYG2YP=oirf40yGo--p0BSfbg@mail.gmail.com>
-Subject: Re: [PATCH v7] target/arm: Always add pmu property for host and max
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org, 
-	qemu-devel@nongnu.org, kvm@vger.kernel.org, devel@daynix.com
-Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 29 Jun 2026 at 09:10, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> kvm-steal-time and sve properties are added for KVM even if the
-> corresponding features are not available. Always add pmu property for
-> "host" and "max".
->
-> Note that we still don't add the property for other CPUs that lack PMU.
-> This is because we do not know what a PMU version should be enabled
-> when the user sets the property to true while it is defined as an error
-> for the "host" or "max" CPU when the hardware accelerator is enabled and
-> the host doesn't have a PMU.
->
-> This fixes qtest-aarch64/arm-cpu-features on the hosts that supports
-> KVM but doesn't support PMU emulation.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-No, we should not special case "host" and "max" like this.
-The "pmu" property exists only if the CPU has a PMU and it can
-be turned off. If The arm-cpu-features test assumes that the
-host CPU always has a PMU and so always has the property, then
-that's a bug in the test, not in the code handling the property.
+Pre-existing issues:
+- [Critical] Unconditional free of physical page 0 on error path in kvm_s39=
+0_vcpu_setup() when CMMA is disabled.
+--
 
--- PMM
+--- Patch [5]: [PATCH v3 05/10] KVM: s390: ucontrol: Add missing locking ar=
+ound gmap_remove_child() ---
+commit 23ca669df08a6ebee3b62a02dbada5159020162e
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+KVM: s390: ucontrol: Add missing locking around gmap_remove_child()
+
+gmap_remove_child() needs to be called while holding the children_lock
+of the parent gmap. This was not the case in the error handling path of
+kvm_arch_vcpu_create() for UCONTROL guests.
+
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 0a44351722702..e2a15799b9ac3 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -3867,7 +3867,9 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+> =20
+>  out_ucontrol_uninit:
+
+[Severity: Critical]
+This is a pre-existing issue, but is it possible for the error handling path
+in kvm_s390_vcpu_setup() to accidentally free physical page 0?
+
+In kvm_s390_vcpu_setup(), if use_cmma is 0, kvm_s390_vcpu_setup_cmma() is
+skipped and vcpu->arch.sie_block->cbrlo is left at its initialized value
+of 0.
+
+If a subsequent step like kvm_s390_pv_create_cpu() fails, the error path
+unconditionally triggers the CMMA cleanup:
+
+arch/s390/kvm/kvm-s390.c:kvm_s390_vcpu_setup() {
+    ...
+    if (rc)
+        goto out_free_cpu;
+    ...
+out_free_cpu:
+    kvm_s390_vcpu_unsetup_cmma(vcpu);
+    ...
+}
+
+Inside kvm_s390_vcpu_unsetup_cmma(), the page is freed without checking if
+CMMA was actually initialized:
+
+arch/s390/kvm/kvm-s390.c:kvm_s390_vcpu_unsetup_cmma() {
+    ...
+    free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
+    ...
+}
+
+On s390, phys_to_virt(0) evaluates to __identity_base. When KASLR is enable=
+d,
+this is a non-zero virtual address that maps exactly to physical page 0.
+
+Because the resulting virtual address is non-zero, it bypasses the addr !=
+=3D 0
+safeguard in free_pages(), which could cause physical page 0 (containing
+s390 lowcore data) to be freed into the buddy allocator.
+
+Would it make sense to verify use_cmma is enabled or that cbrlo is non-zero
+before freeing this page?
+
+>  	if (kvm_is_ucontrol(vcpu->kvm)) {
+> +		spin_lock(&vcpu->kvm->arch.gmap->children_lock);
+>  		gmap_remove_child(vcpu->arch.gmap);
+> +		spin_unlock(&vcpu->kvm->arch.gmap->children_lock);
+>  		vcpu->arch.gmap =3D gmap_put(vcpu->arch.gmap);
+>  	}
+>  out_free_sie_block:
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727150254.2360=
+21-1-imbrenda@linux.ibm.com?part=3D5
