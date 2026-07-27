@@ -1,179 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7AC377EC6;
-	Mon, 27 Jul 2026 15:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79D041B8F2;
+	Mon, 27 Jul 2026 15:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785164539; cv=none; b=jF0E6CWeblSTogvfb5SnCZGATdeLshzn0bSnkzVBi1yACcndc5WVN/LS+QXmnAzlUsMqjrF9QdcCDMGJ2rk/cOPvkk8Jk97YPq5vOnAVk3Kd7yYYlgcbAjsCX9Pmru00hMlHzbUtbNRnQTkHUJLGHASd03X+mMYq4uIeCH97EEY=
+	t=1785164586; cv=none; b=HixvV2fYPL6byb3XB4aWr988d+4y6nj96ljqtSOLvtImpIuEUO1utXk7T7KbUlFlL6TPNqMf4fKVnW4sGYo1cQ4m6/btVuojEWqpvnYhwDZqkyOZdgTUUFXs4+rgyt2BzbxOeAQ2SytcsYjjbevtfdZXPrOaxgFozlITtDKbqfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785164539; c=relaxed/simple;
-	bh=wW7Y0NWYKvq7vqfe6oKOfES/sAnZnYHg/65O2PGamuw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EAy+HQ99qySCee14r58dqZ45gwQApl1UcUnC1YbuhLHQRzp+0YHJgcGWloFrKsA/nDzCnqaG9AovMMeJlC7i2idFUe2bIiLUPJsn4EDYFOwq2eoukRNfH1mqyExnGaMYcfOjpZjp95jv1H9wrBmeujG1nO2bEOoMD3yiqwKeHN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMEaHSte; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785164586; c=relaxed/simple;
+	bh=qHPf4Rmp+aX5xas1wI/BLlLdGE6+D5+OX13PsClvMNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BGjxHzyTzTTqC6GQOcozXZwX+B2ZY7B8OoXh0HisL6vxZcaon2OpEUMxmNfKyohZYCSF2WjGqye7NqReEpwb3znz+E4nNS5MkvbbXJ6kTulrg/8e/G4+3iDdqXLwLobaY7x6NrP840vkv6VSpsYVQIQiizRJzYqtvc4lD9r4pZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=a1VnSe4p; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMEaHSte"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2AB1F000E9;
-	Mon, 27 Jul 2026 15:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785164537;
-	bh=GMsj86qUImXvesh2jycuBRWJLhN2UfJjZ0XxDz3JzMg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EMEaHSteJJbpefcd9Kd01LIDQkr7+ZelsCRFi8qlLdp8EguIxG3hQVRarc6ZhqX/j
-	 TRVy6z8dDQvQx9ZyKMS+5c5cIu09i0mjG5la5uOtxMUKM70WYkgXpPhi2p1HL3FUjS
-	 O0EF7xrwhN0LHiafD7HZCb/GplkMVcPUCJ4Moo0j1IzJ8t3zA1uqUDYBOicoYDwjGz
-	 7FheRA9OYUI0E8QgC3tjwsl6QVhG7Yz+yEBYmCqXY583OP4loarW5AvqBFL9NuoS92
-	 dUJcGoTl8cRskWUSlNE2n3h5/iqKYrtoK3PjmBoVCNoGrWh/TVABdE+BON+GaekUwT
-	 e6I74UNRxMVbQ==
-Message-ID: <4dbf7e54-a541-45de-b4b9-43ee5add287b@kernel.org>
-Date: Mon, 27 Jul 2026 17:02:00 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="a1VnSe4p"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66RDmuXm2407018;
+	Mon, 27 Jul 2026 15:03:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=mjIwUXcnJlNqMKkvQHKHyUFBeD3mjrxcLVjt8SwPu
+	dk=; b=a1VnSe4p8qZLMs7yXEMGMWLnF1lus2aWXmWf8ppI8aqq/3hC18RPLhujM
+	s9y5ZNErrRSpSdC52DdOIl5FSSckfun/V3IRLNnD3pdaQV7iuWKwIfEj7FbzBGCl
+	uly5LE+BlIdxntXALVaFHTmRZBp12pd+96hCOA4o6lpKKCYiXWaSUeEkAjmRg+OT
+	ccvdv83DG10VZoylvIZnMRQk8eXpl1PJqoCLll6BNymLUIuTaaOB8+ejOeSySjJg
+	LZZJ4PYWZcO5YnafutkwI1ypadfTs+55vg8UysIVxQ+i7NcY/y2J99FsxNg78qje
+	MrBkLRfDOqlq/ccmLMnM3QT+1+Euw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0xgn0s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 15:03:02 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66REuOZW030066;
+	Mon, 27 Jul 2026 15:03:01 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fjwud7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jul 2026 15:03:01 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66RF2ttC46727458
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jul 2026 15:02:55 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C708200F7;
+	Mon, 27 Jul 2026 15:02:55 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D923200F4;
+	Mon, 27 Jul 2026 15:02:54 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.1.146])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Jul 2026 15:02:54 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v3 00/10] KVM: s390: Misc fixes
+Date: Mon, 27 Jul 2026 17:02:44 +0200
+Message-ID: <20260727150254.236021-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 12/20] x86: mm: define pudp_set_access_flags() when
- CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD is enabled only.
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Dave Hansen <dave.hansen@intel.com>
-Cc: Russell King <linux@armlinux.org.uk>, Huacai Chen
- <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonas Bonn <jonas@southpole.se>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-riscv@lists.infradead.org, linux-openrisc@vger.kernel.org
-References: <20260722-dummy_ptxp3-v2-0-d9e4bad31e0a@arm.com>
- <20260722-dummy_ptxp3-v2-12-d9e4bad31e0a@arm.com>
- <188623a9-dba0-4229-a7ff-5feb2ef0c088@intel.com>
- <amD9iD7rjmU__9b6@e129823.arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <amD9iD7rjmU__9b6@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: iWUfcyvtdrsSOyV9NdFxHvOahWVnIf7X
+X-Proofpoint-ORIG-GUID: iWUfcyvtdrsSOyV9NdFxHvOahWVnIf7X
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI3MDE0MCBTYWx0ZWRfX+CqSNvxK0XC7
+ j7Vf4iV/IdtpctB6/ntJ2DhojAw7M7ncdE7VcRJ0nAmgn+ttxJTwKuBDxtCDhbc7UJbhinNRrIx
+ Y9V74X4uz40rPBcDZGYxchCQf+BvP78=
+X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a677326 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=wo0HmtkIjTO4S1HvodoA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI3MDE0MCBTYWx0ZWRfX8DPXEQ8d1xd9
+ 59u2+x6wA+ZJt/fd3JVEs1/3wdqF4gXvESIx3DiCUR4R+vhodhQH0ifW50tqCyw07WAUZERtiul
+ TrJ3oPRkkDjDxCTXIcfY8jwR6dIxlsC5/j6kNADmt0XsKxojUsYzk77Og0ByIZsrYK0/VmNegsZ
+ RAUhHGzOFKDA3pEuqoxbPwatl79Sw/I9nFkPEg2h3cVD9+a/U91SANiD2wso9Tnmip+frtCZ6Zk
+ sqkdpOhN5OGAMRMOelfwT/L9tx0tHMTed29iFavKNhKMLqvvG1L70MRiEpdzYHcM0MikmfBY5x2
+ XA4TwKj4kpk+2L3Br9xzwOPS+He27ZIywHQjcCYkfQYK5ODldSZfwMvTLN8BW2Cz+Y9Kk/aCJ7p
+ 70rdotJDUan/0RukK2LUrx1wNj2Spx5xttBavCYGExnhypnPJNCSDJV+Hv0sB5I3DBKERKnEJFe
+ jIKkhZ/G+9f7km0IiBw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_04,2026-07-24_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607270140
 
-On 7/22/26 19:27, Yeoreum Yun wrote:
-> Hi Dave,
-> 
->>> diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
->>> index f32facdb3035..edad847a2ecd 100644
->>> --- a/arch/x86/mm/pgtable.c
->>> +++ b/arch/x86/mm/pgtable.c
->>> @@ -411,6 +411,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma,
->>>  	return changed;
->>>  }
->>>  
->>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->>>  int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->>>  			  pud_t *pudp, pud_t entry, int dirty)
->>>  {
->>> @@ -430,6 +431,7 @@ int pudp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
->>>  
->>>  	return changed;
->>>  }
->>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
->>>  #endif
->>>  
->>>  bool ptep_test_and_clear_young(struct vm_area_struct *vma,
->>
->> #ifdefs in .c files are evil.
->>
->> The changelog doesn't make a strong enough case for why this evil should
->> be tolerated.
->>
->> These are also _precisely_ the kind of #ifdefs that cause compilation
->> problems. This one is:
->>
->> #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->> /// function here
->> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->> /// another function here
->> #endif
->> #endif
->>
->> So there end up being a couple of dependent config options in play. If
->> there are compile problems, this makes them harder to find.
->>
->> What is the _actual_ goal here? Saving 50 bytes of kernel text?
-> 
-> TBH, this came from for v1's change of behavior set_pud() where
-> triggered compiliation problem with v2 this change wouldn't require.
+Fix a bunch of small issues that came up during the previous round of fixes.
 
-If the patch is not required right now, let's drop it.
+They are mostly extremely unlikely races, but they should be fixed
+nonetheless.
 
-I agree that it's the right thing to do: just look at pudp_invalidate() in the
-very same file, but if we can reduce the churn and leave the cleanups to x86
-folks, that seems to be preferred.
+v2->v3
+* Use READ_ONCE to pair with WRITE_ONCE in the first patch
+* Fix leaking PGM_ADDRESSING also in kvm_s390_keyop() and related functions
+* Fix and improve commit messages
+* Use slots_arch_lock instead of slots_lock for ESSA operations
+* Use normal spin_{,un}lock() functions instead of scoped_guard to avoid
+  mixing the two styles
+* Use the newly introduced vcpu->arch.initialized to determine whether the
+  SCA entry needs to be cleared
+* Improve handling of -EINTR; handle_mvpg_pei() needed some refactoring to
+  deal with it properly
+* Three new patches:
+  - Free the mmu cache when kvm_arch_vcpu_create() fails
+  - Fix ordering when adding to SCA
+  - Fix cleanup in kvm_s390_pv_create_cpu()
+
+v1->v2
+* Drop some patches that have been picked upstream in the meantime.
+* Drop patch 3, as it was trying to fix a bug that does not exist
+* Avoid the NULL gmap dereference by using a flag
+* Fix the return value of kvm_s390_[gp]et_skeys too
+* Use kvm->slots_arch_lock instead of kvm->slots_lock for CMMA and ESSA
+  handling, to avoid potential deadlocks with the RCU.
+* Three new patches to fix other issues that came out while fixing the
+  other issues
+
+Claudio Imbrenda (10):
+  KVM: s390: Fix unlikely NULL gmap dereference
+  KVM: s390: Fix leaking of PGM_ADDRESSING to userspace
+  KVM: s390: Fix race in __do_essa()
+  KVM: s390: cmma: Fix dirty tracking when removing memslot
+  KVM: s390: ucontrol: Add missing locking around gmap_remove_child()
+  KVM: s390: Fix overclearing ESCA in case of error
+  KVM: s390: Return -EINTR if a signal was pending while faulting-in
+  KVM: s390: Free the mmu cache when kvm_arch_vcpu_create() fails
+  KVM: s390: Fix ordering when adding to SCA
+  KVM: s390: Fix cleanup in kvm_s390_pv_create_cpu()
+
+ arch/s390/include/asm/kvm_host.h |  1 +
+ arch/s390/kvm/dat.c              | 23 ++++++----
+ arch/s390/kvm/dat.h              |  2 +-
+ arch/s390/kvm/faultin.c          |  4 +-
+ arch/s390/kvm/intercept.c        | 18 ++++----
+ arch/s390/kvm/interrupt.c        |  2 +-
+ arch/s390/kvm/kvm-s390.c         | 72 ++++++++++++++++++++++----------
+ arch/s390/kvm/priv.c             | 10 +++--
+ arch/s390/kvm/pv.c               | 43 +++++++++----------
+ 9 files changed, 106 insertions(+), 69 deletions(-)
 
 -- 
-Cheers,
+2.55.0
 
-David
