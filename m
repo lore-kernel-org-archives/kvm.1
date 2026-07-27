@@ -1,171 +1,321 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010050.outbound.protection.outlook.com [40.93.198.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146FE3C061F
-	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 20:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBAC3DAABF
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 21:02:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785185885; cv=pass; b=tFTNrzMBEYfT0tT59IrhP6Geo5UHbnXvatf8xuX24Vsbs4sdtSHMAGI6FMDJjQwqJO6Mtk9/dXzBma6zEL3zcouBboMF8aHR3Meuh550P2PKctHIxZl9RP/RUClEU8Np52oKyVvUt5779almGaeutSPv3BOR/wHPyllpb7ZG080=
+	t=1785186136; cv=fail; b=VdjgvC5mp8Mc1eJnSoPZbrBUEGFTpqx9z8IKxxxjl2+xIGICxEPwVszibcrB0Vl2KTePbOemi8ZHwkGOCjT8PZQYz45gh35ej4nkrtpHTWn8PbQ/y6AUNVzOtpl+IcWo8426wp01bL1rQJC597cUJO3PJ5OXdf6zvITIh+TjPCI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785185885; c=relaxed/simple;
-	bh=erXio11sv8IeTMNTgjEf7aNDXWut/7A0Cyg4XNgL7AI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nwg5eM7XRVhjLgn0KJ0w1LXmpyMdnsvKQY3DaDV4/SsyYmPrAdZE+FhjNhoEe+ux5GOWYfuUL4m3jySVFLOHNtLt4ajL9phmfEH0LyquuNc1VUEEiSIMApWu8gYrE2SS95ZGPZODJIowDHYdj9v2ngF9Jjw78aypHX9vXn08gec=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kyHQbD4c; arc=pass smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785186136; c=relaxed/simple;
+	bh=Yzi9sf6wa6ohqZpbJq5wCYzNlIoTT6/2Q2BnfIMFCzE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=oaQRkX1Kd1s7NMDBoquTLEIenBhLpztZ/tMh2syQLKoD6DttcXVEfgl7MfCge7H6e4qNJmvBvOaN4WxthyueQ3OQNSX8dJQjWPnxO2iM3rQWwRACUJBqw8ZaudqEetj8MTPRnq9kG6PQUYf3CgGazUwzTI8mmheJzjupVaPirrA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ihvHDFkG; arc=fail smtp.client-ip=40.93.198.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kyHQbD4c"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b2a8173142so735e87.1
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 13:58:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785185882; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nJxOyycpC5T1RQjW50lj8h8EBj+WuESDUtV0nRs847+48dXkJS3rtrT6pRsERXIxOS
-         drNl759AJSENiEuQ+7h3r3uFMSy3oZ2zxfqAi0QgL4an5z9+b0q8Hlhw6AGSxQjdQjXt
-         dPJarE3ZuFW8KYLmUtW5K7e0Pf3G+IjCHwfB/CpSwy8OmHegpuUx6kzd6EQvHOm44JZP
-         ernbTCFOwB5abePPtiOGZ9/bfZ4uypdTDBIMkRE5smLyUy/uMc7+5Vnln/d9FLs3giRk
-         BaAa0Cmy1nyIdTMPppI8iS5Po2Dq8hiAVrEYg+lK48dYNw17yvIqezYAUuM3trHxVons
-         pqXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T+GWN9EcqlZwgwSAZCGbau2xiBsi9Jyqkx81+8LXg/E=;
-        fh=iZtqnaO0mDtNSC/VD5CURvOfrDYM2iHTsNhDilnx0jc=;
-        b=BlyXEqlZD0sXQxg92P03j3aaeO+OYte0myR7Fk7T8V0C3W8j34FUQooTweBolG2KZ+
-         Q5d2eo4eAgRK5N9wDw8eJXKE/zqeWCXyadEQka0WFmy7qg4iGXoitNKawozZYWUBPrW8
-         xwrCgF5zX57YJaDU9AVOtdK2J6ctZX88PZvY60YuJPDDJZYmc9t2VVQKpRbCSWIoU2NA
-         i5dT+MMwxVsFmb80GZF98ZljZqRxCfS61EHhegsOeigMaKRSNY8G09DyygtTiGBi3FZr
-         H+i0wFuS3j8PmzUs+qofbcYg1FCZyilawPwspUPlf4HUubunGKpVKWPGhVFE8tw/Oh9S
-         aykw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785185882; x=1785790682; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T+GWN9EcqlZwgwSAZCGbau2xiBsi9Jyqkx81+8LXg/E=;
-        b=kyHQbD4c+1vHtQPKnpccgBpC3cEakaw4zZzwlyEJNkv3xTDYTM+ethw6N2eIXcX/Sx
-         tO33EEGInfI05TzcZwmEKG1qCjCzQRekSCQt2QwrG4Fzr31njaQMHDmG5q+HfCL4zS44
-         kdOEw5ITwz5BJ/o07/n1wRbXhE7cLeFR5MFRDEU4msFUfFw49FiRmkDXpedCq/286mLG
-         4eUM4IRObwqF29yYMdTvN4235OC3G8bG/D3NLuuFaYC6LMP8l4j+Qba20MAiEqtGRKIW
-         DWUQK2bIF4f507OjIqrRVlo5G/it6+b2/ShPQD7+qvBkiW00hsvb18wrxQLlGR/F3YZe
-         iE1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785185882; x=1785790682;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T+GWN9EcqlZwgwSAZCGbau2xiBsi9Jyqkx81+8LXg/E=;
-        b=liOxL3ZQY4AzRU+sPGaYFmV5lwGy22KTlRXgUnej+nSbGdM8OXrdgXqxZNznES4csx
-         xUBbh7hI6r4Sf4zTt6/+jIVT3OdsU7g/ehqto5l+3vumcvhSdBQ758RfjcAkvXaDD+HG
-         9l7PW6hNz9IdwGziQdU4oAsGRkALJc4frNtYmEuml09vLS6Gt7Mle8mQbmESQK1GAJ0U
-         6tWt9BuaFU+Xo7wViR6lSnuhUnePpiDtcAtqDqaDHLPhsJYV4p19I+ej/Owf+gH48mOW
-         yvQcALuCTRVvmn5xlWqCYtCb5WS9a6wIAwrOzCE8+6fXJjamTfIlAODbwXFzMrZp+7ha
-         51WA==
-X-Forwarded-Encrypted: i=1; AHgh+Rob5YbtL082tIc0SHHIQjSfYw+PlwgphnS4t+FhEOkTjVmEyqNooXND5D8JHUpLkOewbF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFVNqhZTLxH+W3ek0qKE3to2+o35DtEKXDTMPtuMPqMPrSOc4G
-	QBu+GUQW4WEqTNO+y9PK84z+qO1EeyBIUVaaR5eYlHaCh+oSryDZ1ayfA3sJeDxlKLaqVxcENba
-	PfW5GTWmzs1RcsxawrpWPkFzEyxCeSo5jgCdRO/w=
-X-Gm-Gg: AR+sD13mZ3ZFXRWQD09m8SbAID0yBujQ9laydbheE6tSr9+nzCvi9tZRfLc9GFwXA36
-	ahYC1JkHNIuwZqcNewYu3yit/KGxtto/DY2UKMo1BbW8jwP30cRMUwAlSFJM0F4zn1eKK9Dx240
-	1lAeXOLuZSkARbMFn0VAyjEAIYRh4Fv14Y765T+wkQrCaJLQa2z3ICyN+deOOaKNQATxo0Zeu2Q
-	bFRHm+29Lr0544abqgSpZrvP8h9SvSqzjgW0Rl+oxb/0RE0Tuo1RN0HUQ==
-X-Received: by 2002:a05:6512:3185:b0:5b1:ca0b:25d2 with SMTP id
- 2adb3069b0e04-5b2bf3f14f6mr425478e87.4.1785185881592; Mon, 27 Jul 2026
- 13:58:01 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ihvHDFkG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jQel8WH6mp1eqUAu54WV7xa12g5deemDMR0f02ASYHYpfWRzIYl0tufBmVoRivdfWa6CtfbFgTGojU111bg6BMZfcvLcGh/HuKF2+LscYQWhiPJBVO6c5yFZsyQ+J5xdRPXT2s/IFdxjA2NNYdLwd2OnfQyOlGn0WieKztNVZ6ev/BzL14hNNaGK5hBBZBbWP5IVL77BROHu7NSYZecSwnjgoVQ148V/a9xfkEhbmo8gT78ejs91W8vNlGfbwWdApfr4p4DFa+16DCmAHBCwMYBJpyUagqIlO3h7+F2oEGE0OB0L5bsadrxhUm40udcMtg3wJg9zavDG8Nnx6V8jow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BJvGWkiayKKQOs331Bu4jPhhiuZC1w+Pt5ITX7vvpVo=;
+ b=jrdFhQ8ivtOWiutiVv6cbEZ+UbIhfJg7vX3/YYFxo3+6dnVfpW7VZ0hV69tiZZjK4n0ILTDthonLHPToYoi+3ztcWpLtFRKpf3RSACVnGwnmlKvb5Kaz2oy5BZ5mlLLxMEQ5ll+zHW4Mp9msm22gSp5X3kc+b/X33dRO2SOB6zmuoNgHp8dPXdEBoyhxXIqZvKh8BK3Ccg4zjJWzMCac9XCbwfDWEoc0ALK4mLwICTlOv0Th/p5DQxKpnioIPncNBUcVqpw4QRHzMMXN5t/87NXdjnKo+ju1fZzQMnmtt+UNyZ+9jNrgqkFtmp+zAjWGMkrCzLo5In/fLDx6Ed2TIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BJvGWkiayKKQOs331Bu4jPhhiuZC1w+Pt5ITX7vvpVo=;
+ b=ihvHDFkGoQWxN8zCK1JtmBLuKEvDf+AYnZTLu0YATfMOaYT2M7/sWjw+24ezCojbSUDA+5zxNaCuo0qYcG03YON5Dj/KnE8JjRbqGrRwtsbWXlOchkDxpMV2/ZT82s4MOzM2ldXc/Y8IloT55MeiopmElJJCwLaDhd+3mxPh5p8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by CY3PR12MB9653.namprd12.prod.outlook.com (2603:10b6:930:ff::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 21:02:07 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 21:02:07 +0000
+Message-ID: <901413fb-fab2-4611-b948-da485778f6b0@amd.com>
+Date: Mon, 27 Jul 2026 16:02:05 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
+ <20260727192230.9ADC91F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+Autocrypt: addr=ashish.kalra@amd.com; keydata=
+ xsFNBGnyeG8BEADrp4EWc3KHI3tz7Lnw4HgRJRG6U+IJKAp6EBnQA5uimlJspSAr+jf23I2a
+ T0mr1uiTnZG0JkfgFpTgwBYcR+d8J96WP9LDeId9z6R7b5jyB64fhYqX8Hpich3lon2Woijn
+ azEZ++sSUtAU75m2j9ZE6lkkPM2Ti9YWSBsSg92KDVVROXLO9n6U80lzudJrKAKHE0/PagzV
+ D5gjV/s7lb9PX8khKVK3ockGRuy97lw2mAcw17EV8GE5cuToOOzpP8ESXBt1g7xoXVcbHYol
+ yuX1ljHEfqy7cCtTsBk1+LzPuhZ7532MIfVmFtDcNUSwCGeGgwNRZno7lAJ9xd6fLkZPTEZ4
+ UNsaViyzmJ22P7xMiZqXWQWSk1LohnGhZZdTaIwidWT12c8RX+qVUCzesaFXGqKt0PNTipTp
+ L39iEZO8m/+lC1BmTo0EoYtsNfrlngwNPsSU7rtd/t00RuW4YHhXALT2JUbulLCHGK1w9isH
+ E7dJXprYjUiZRVF3SaeTF4zg5AzkWRB+0yL2KzWQPumDx1gscLNFev8J1EbdrYClcpUuNxKG
+ MMG95wPqWtZm/HaNyG08alXDZcnq8hhxA7AbJLnPYpqWd108p0qp3Vr0UrvuekBKZ6Y7be+m
+ Hb4A1xRX3hE2kB971lsVp0lXSEGFHB9TJw7FH/S8paITH58y4wARAQABzSNBc2hpc2ggS2Fs
+ cmEgPGFzaGlzaC5rYWxyYUBhbWQuY29tPsLBkQQTAQoAOxYhBOnNssdBmZnznITYhaE6KKJw
+ lji/BQJp8nhvAhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEKE6KKJwlji/q7AP
+ +wfg5wOWq+f7eB3uh0agX5Ax/o5r5hlK0EMyl+srJ4jc+NmNKKuVPwx0EwZEpuEcbDLlQuO3
+ JIyi13wm6n6FvIBOCfWjvndpaci1QGTMtZDnxueXM8UeFST3KjIEWFXbvgiAyiZBE+lHaSBp
+ 7UfAL19icIomKdCVCRtnqOsTvv7mcyPL8qs+OAOu8akvp3NlGsqLrkSB/YTEBKmh8oOR0aXz
+ 4VBIHpfTIppIu+F5l5PxOQGwNv/AfQ/oN+Aeo+o8i3s57gViqP8uVlVcI/vi1S4hngmc87Ah
+ 3p7KdbrxxPzahD+p1fMXsCwEf0dyJIRduDgAkpktmSLoRzBGkjtOX5nvs75QgA3r0WsvcfxF
+ zly+nnhu2GsptY+uu/ZzW6PCz6p0pHMiDfPAL1cfizY8eTMFJN5fnOW9rwXvKbM+DHbowfkw
+ NtF0DecH3qjmqAzGg2srE9XJxwOotS1JgeBp1TZsah8pXBaY+Z7s1iaY58H2TrdiDbz88DD+
+ TGX4ZHPjocpqeUuwxn7gTCKQq3K1fjt6IKY0A1ocxQEK33pjQMRTJ8lwy4z37V6EohmvCs9w
+ 5qyvI9D1gnMnFrqpbry1Jz7z1HB4sFFYxIxyMh86uOcUxGmHRrCiII3YqiSmzizvq4aUmHxd
+ YE1Wy+pKx2HVobhnuKIKoSJj2JgYV0+O5dk6zsFNBGnyeG8BEAC+BGciGUt4ODNq38ouK/6E
+ jlkJPpnxlksBhlhwce/p1vvARFceifVbawkM8ePHyIXrzxho0PUDjteGFFDjP1o/N0rQzgbf
+ 0INfkbJpHME+SYETxrkm+j9oe8DiHXZhdatY5rupZoypodNQJDD1G/HoT7bBQxPj6xDBgHWH
+ OyZbg1jjQXSWESgVX118uiQ5M9RdO+gc/YGLt5FDvN892uWs8899QBm804SdSlwkZGMKXZXv
+ 12qKw+swQoVzBdCqSLOOtIhGevkl6Ul5+N8iT7xeKMVZffAxkz7DF1yDovhJhrYtgKyUMQqW
+ qCINhtp9wHvPt+wfutzYsCLVJvVLMIj3fPtfYBSPXQu2FP0z2Nx6oUxQR/LjilP4UezSdXt9
+ WWpb+mvDLmelNuoA7WUxRauQBKu6tR1zoFl3zTdW4ZiSqZRgKInSfaVhINUMv8gqcLlAzkVS
+ seOwRrwNDUosSW3gVwj28m/T9JSfGR62i58WmH0sFQG42yuIbq/uE4crf2oQDrpFNzTJgx6+
+ Ede711weViGHEQz5vsgERmQrJDddRTgl/SlGtkAYNpVFJgYV2N/jYjiz98hgE2MYgZ2Kd8WL
+ T8dvswsQguvkDMpWJZ2BunYhRLGIpyVDhepu05qyFuNYA50GX/qcj7POBSEx/6mBaIQC7oXI
+ ffsirWGyL5WEVQARAQABwsF2BBgBCgAgFiEE6c2yx0GZmfOchNiFoTooonCWOL8FAmnyeG8C
+ GwwACgkQoTooonCWOL/tdA//RIcNr6dB4ZZaKWDe5SSw0KD7hKExIIiBkxIv5XILcazPK21x
+ LlDbXUHxWWaG+9wezceRRBe3GjRo2aKEpQzuAOgR5Ix5tRe5yJAFozO/CCGixiBzQ2I2TGIv
+ rp8xZqqvmgogckqz3RE9Rx5VF7bqKriuGbF+WciPU6+YSuN1rH+esS40yoFu2skbYAMfm+Av
+ AvEMDAmkR1o+weVZZAZMjm+2ZpCm2xXk5bjAqPQ+GoH70x/kPVv+TXjTN68xIjmP6gwA7c1P
+ qozwWzaA2Q2HO5D76clT3tmHbtzMuYt3cfwbWbCpNaqycaHvktATiRjy60Bz9FvRL8cMt0+4
+ jumtJoa0nAEmx88QzaMOK3QDW6KoDKzV8bqAHBPtrwH+jhOKId07yHmWCZxIGJAkhwqsdEx8
+ bXpP3nTer40r1tvds54lxhKxOlVvf5iBoxa3kC8f6cTNJeGm5ettvD5iFSR+fwAUDEyZEtxQ
+ f3Brs3CLkBfijS0zCw9rWqlZJGSst5xwV8UdfppsPWkU9lAUR8UZFsO+g1xCxtBc0nucygzh
+ O+mvU01WFeZGTnW7INdP+eDIvj4XYmVSjwCSNvDphJkPccAn2KFcPxYh8PJAqCDw++nfNDrc
+ BXA1uh2XzCnnzbc62A+AjwXB89wvlctBLptKlnKBVtrsKEFIoLugtmfIsa4=
+In-Reply-To: <20260727192230.9ADC91F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH2PR16CA0001.namprd16.prod.outlook.com
+ (2603:10b6:610:50::11) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260722-igb_v3_b4-v6-0-0be1d29918d4@google.com> <amPcKEBsrkTH1JqQ@google.com>
-In-Reply-To: <amPcKEBsrkTH1JqQ@google.com>
-From: Josh Hilke <jrhilke@google.com>
-Date: Mon, 27 Jul 2026 13:57:49 -0700
-X-Gm-Features: AUfX_mzaMPT1HE8B6R0kwFIkBSjA-FVd9OGRi9TkYoJKu3sKgsQD2Zw5Ip2cCVY
-Message-ID: <CAAdrzjvRzU_0J_-EdEJ0U=Wa9ayN4=J0vJ_EkSeKeqSBvrNyfA@mail.gmail.com>
-Subject: Re: [PATCH v6 0/6] vfio: selftests: Add driver for Intel Ethernet
- Gigabit Controller (IGB)
-To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Alex Williamson <alex.williamson@nvidia.com>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|CY3PR12MB9653:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78fb78b8-4005-4a27-ce7a-08deec225156
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|4143699003|5023799004|11063799006|56012099006|10067099003|6133799003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	bK9O9sr2x4E5UpEyER3TychCoLs9h4WELK5wJfayPqsxNI5FOphnpz+9s60mwDjII+PwjWvyertMw0JNqqq1bgmuCjbgG+qg3UiLYCdfNy3XqssfnOxsLQG6xZ+xzm2pWbQep4p3xVyeL2PH6EplG4TyEwxzt2cvZQojvyIODhDBO5yz9znwwDWsACTV3GtMqQ6FvAtHOY9fP+RkkkhA/8AwLSooMASNLLUcBr7KyUXdZtLCjJOLCG/5QoyfIpKpsCYApJkNqMMQ9a654lvNQuPPBk9PZOcpxJ0JT2ZbARvxmvd05dUA3pXawbStvLQ9sLNbO7kNVEWowh1K2gU6aFeDWF1YaDC1wRWxZE4SF/CqdYMgm3KXlX+5B0Z473DpQDjAzB8eCnE36XmIfos0dCH3t+ZNhIgAsTBFbBSqYZ8V7igcduP8b9of4CunULK/UwKEuXCwcsQaSTfry604+aWWL7MuilixOL4nqZvsmidmBbzGYO06ZZHRIILm0SGzKjsHnKZlzbUSVPWv519NA6EWPS5iIpO9MdG4BIPm8OsHGHK0qoRQTxB5F7KnHM86qGUycrkca+NsmcFhrPv6jXViPvkjD1AgmwO6pSx9awBorVyutRYn3oRoGwdaasMqMtsZmdegqF8w+LUjabmDMszyEKz0bSUjVGLHjs9OEcc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(4143699003)(5023799004)(11063799006)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QXFnR2oweWdZeW9pMFpYRnRROERBdmhRQTR5aWFPL2RxbUxydEllK1ZGWTl0?=
+ =?utf-8?B?c29IU0FXQXdTNlRVOXR4cHlYWVFJalRCVG9wRlJkOWRtN3Z6ZStnRGlsS3lr?=
+ =?utf-8?B?dW1ZRGx6RWhDMytrdUFJVjc5dkpQdUw4U3kva3pIQ09Ea3NHZFMrdncrYXFr?=
+ =?utf-8?B?c0N0ZjZyampaWGpSNzA3eVBwS3BrNUpJQml6OUltR1hzNExBWVJEbENGTjYv?=
+ =?utf-8?B?emZWK0ROQnhaUXRPSkZkQ0V3UVNaUGU1SkZETC9JS1VCNHlFQndYWGxXT2to?=
+ =?utf-8?B?K2pVS1UxSDBGNUJ3amdBVU8vYW4waDRRWDRRWFBRREV2eXppdnVXd0pJeUc4?=
+ =?utf-8?B?cktCeEY2VlQ1UCsrNnFnQU12MzhXY3hTWHBhd1hpcHg0SVdudVA1NkltN3U2?=
+ =?utf-8?B?NkFUWjhlWlhKS2g3VVM5dTVVRVRhSkQzRnBnM1hIVXBkMVFhd1V5aTd2c0d3?=
+ =?utf-8?B?QzByckhrU2JJcTFaSVg5UUtUd0FnK0JYWXo5U21lN212U0dpVHF2OWVtQXJ6?=
+ =?utf-8?B?RFB0M29Gc1NDbEF2VkxidVJFVk5qVE5tbml1S29JYnhqZXJlanNGU1picnBu?=
+ =?utf-8?B?dlJGRzRQN2VONzhJMDZqRU90TWNLQlovdXlqNW5qYm1WSy82SEUxV0YwM0dt?=
+ =?utf-8?B?MUNJQnE0bU9UWFl2TnEvc3F6c1ZENWtRYjNiMmdWS09iL05GakYwV2FiYldO?=
+ =?utf-8?B?RTJMQ1Z0SEtoN2tiTEN3UUtTOE9KdisxWURESWtPSzVBTmtwVWV2QU5CbWR0?=
+ =?utf-8?B?dGh5RTllckVJd21aWjk0SnQrWlJZWDYwQ2o2ZzIyY01NR3V2OXJtem5JejhP?=
+ =?utf-8?B?M1VlNytXWnkrOGUwdm9ONEFJQW4rMG9hNTVsYWd1N3ZuN0VRaHViajB6SnlN?=
+ =?utf-8?B?VFhuczJBSTVPNGk2ZGVNOEdjSGg1K3FINUFocFVKN0pkbVkzKzZBUVRTTVpS?=
+ =?utf-8?B?cmNLb3BuejBxNzU2clU0UythRFVFUnU1RXJhSnJIYm9Qa0ZyeFB6ZG0zM3RJ?=
+ =?utf-8?B?K3NuUkZ1NzZMVVNnbmVIQitYNGFwQWNNQmtvMU5UZlBIU3ZlNXlRMmFOOHI4?=
+ =?utf-8?B?NUtmVVZLY0RHUzJNMElmYWI2N2RUU0VSWFE0cVhDY05zc2tkcUNzejd3a0JB?=
+ =?utf-8?B?UStEckRCclpQa01iSVYxbHluU3lZTDcyOUtQcWVBdlN2WS9uZXQvRldlaUhy?=
+ =?utf-8?B?Ym5CN0YxTDlXMTdPOXJkdzZZbC9aZ2k2S01EVm5Ub0ZsVzIvZmptRFpQVmNP?=
+ =?utf-8?B?cmtyNjN4cS9zVjcwWVlDSFdlaTdUUHQ4L1dVWm5yR3F0L3ZHOFRiSWpBcU5G?=
+ =?utf-8?B?ZnUrRGpVcmE3SmV6WEUwM1J2SzV5cUh1bE1MekNTWWVma0J4YkJuNGV2aDli?=
+ =?utf-8?B?V2lPMDF3YUQ1VlpvV1NkQjhBeG9QM205bFFqWTFuaktvQ0NxeXhsRENOVVR4?=
+ =?utf-8?B?MUl1L1JXZ2dEdnhtZmRkZjVJcis0LzJ2aTJLQUhWS3M0allldjBXdHBEMm5N?=
+ =?utf-8?B?MktON2tkc01Eb1VualptR2dUR3Z4ekRyazZWVUsrR1U0TEJvazRCV2lGMmJl?=
+ =?utf-8?B?ekNoTWljSVZsQW1KWnh6ZmdPNVJLSjRWQ3ZodTJOY0dxdjU5L3lkemZYTm1h?=
+ =?utf-8?B?aERLZHV0TmtRbHhwQ3FXR0Qwbmtpdy9Wbng5d0VmUHFjVVRLVEhRaGlZQlN5?=
+ =?utf-8?B?OEJxajVwbFI4cEdsMGYzdlpzSGg4cERaTzZESkNWV0tqemdWTVNXbGp3MUpm?=
+ =?utf-8?B?YkdyNE5reTFGSWNZMHFBenAvbkZBZ08xREJvdTRzOEc3MUVXa0tObkU3ZTd5?=
+ =?utf-8?B?Y3Q0VjBIdkczQmZGUi9yVWQ1V09ha3dKUitoOFBBanprVmRTQzFTOUtncSts?=
+ =?utf-8?B?ZHBvSXdhNEtpU1lLbjUybFRHMzlVcnhKUGFGYXl6bmlJcm1DOWdYN0pQQWo0?=
+ =?utf-8?B?eWNuOVVLVy9SMThRMW8vemJXTnAzd2JZM2VOekZVdFN4M2hPcDk4TmpOaVdU?=
+ =?utf-8?B?dXZQNkJySmE3dG1CS29ZRUIwT0V5UGpWSWdTd1BEbnFlWUpwN3lKMFZubjlp?=
+ =?utf-8?B?K0IrQjJGWGVKNlU1eVNPUWRIT3ZvK3JrbG14ZlorTEgrMEJsZ09tRVVmQXJl?=
+ =?utf-8?B?VTVlRHc4NTg1ZFhaMUNCZklFd1dZSFRWaTI5RkpReEtabE5KOVJEdHNBdmdy?=
+ =?utf-8?B?eHlrYkdEdlpzTDQydTBLcXovM0JlSmZsYVk5ZGY1U1NNSkFCS0cvdTlISDFK?=
+ =?utf-8?B?Y1hXR0pzaTBBVjB2cGNTZnRUTHcvV0VyamRjNnJpSjFTVy9FeHA3dFpGZ1dk?=
+ =?utf-8?Q?z/jQfOoBUUfH/IlVRn?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78fb78b8-4005-4a27-ce7a-08deec225156
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 21:02:07.2668
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2A9soziouN8OOt6SKo2CbMwqQZ6VVgUlpbIBIyk47yV9c9QdblAaRb09lefv+TLapSsVeHsH/I/JTBZYbrvk0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9653
 
-Thank you so much for the review, David!
 
-Alex, does this series look good to you?
 
-On Fri, Jul 24, 2026 at 2:42=E2=80=AFPM David Matlack <dmatlack@google.com>=
- wrote:
->
-> On 2026-07-22 12:15 AM, Josh Hilke wrote:
-> > This v6 of a series which adds a VFIO selftest driver for the Intel
-> > Gigabit Ethernet controller (IGB), specifically targeting the 82576
-> > device. IGB is fully virtualized in QEMU, making it suitable for runnin=
-g
-> > VFIO selftests without specialized hardware.
->
-> > Testing
-> > =3D=3D=3D=3D=3D=3D=3D
-> > - VFIO selftests builds clean at every commit
-> > - vfio_pci_driver_test passes using IGB driver + QEMU. Use the followin=
-g
-> >   command to run the tests:
-> >
-> >   vng \
-> >   --run arch/x86/boot/bzImage \
-> >   --user root \
-> >   --disable-microvm \
-> >   --memory 32G \
-> >   --cpus 8 \
-> >   --qemu-opts=3D"-M q35,accel=3Dkvm,kernel-irqchip=3Dsplit" \
-> >   --qemu-opts=3D"-device intel-iommu,intremap=3Don,caching-mode=3Don,de=
-vice-iotlb=3Don" \
-> >   --qemu-opts=3D"-netdev user,id=3Dnet0 -device igb,netdev=3Dnet0,addr=
-=3D09.0" \
-> >   --append "console=3DttyS0 earlyprintk=3DttyS0 intel_iommu=3Don iommu=
-=3Dpt" \
-> >   --exec "modprobe vfio-pci && \
-> >           ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 =
-&& \
-> >           ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing=
-/selftests/vfio/vfio_pci_driver_test"
->
-> Extending this, you can run all VFIO selftests like this:
->
-> make -C tools/testing/selftests TARGETS=3Dvfio install
-> vng \
->         ...
->         --append=3D"hugepagesz=3D2M hugepages=3D1 hugepagesz=3D1G hugepag=
-es=3D1" \
->         --exec "
->                 tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.=
-0 &&
->                 export VFIO_SELFTESTS_BDF=3D0000:00:09.0 &&
->                 cd tools/testing/selftests/kselftest_install &&
->                 ./run_kselftest.sh -o 360 -c vfio
->         "
->
-> The --append flag makes sure there are HugeTLB pages allocated for
-> vfio_dma_mapping_test. The "-o 360" is needed because
-> vfio_pci_driver_test takes more than 45 seconds.
->
-> > Alex Williamson (4):
-> >       vfio: selftests: igb: Use PHY internal loopback on 82576
-> >       vfio: selftests: Add helpers to re-enable interrupts
-> >       vfio: selftests: igb: Factor hardware programming into igb_hw_ini=
-t()
-> >       vfio: selftests: igb: Recover after DMA-read faults
-> >
-> > Josh Hilke (2):
-> >       vfio: selftests: igb: Add driver for Intel 82576 device
-> >       vfio: selftests: Retry on EAGAIN during device reset
->
-> Reviewed-by: David Matlack <dmatlack@google.com>
->
-> Thanks!
+On 7/27/2026 2:22 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] `snp_cleanup_rmpopt()` unconditionally dereferences `rmpopt_cpumask`, causing a deterministic kernel panic on shutdown if the mask was never allocated (e.g., on CPUs without RMPOPT support or if allocation fails).
+> - [High] If SEV-SNP firmware initialization fails, the error path returns directly without cleaning up the state set by `snp_prepare()`, leaving CPU hotplug permanently disabled.
+> - [Medium] Re-initializing SEV-SNP after a legacy shutdown leaks the `rmpopt_cpumask` allocation because the old pointer is overwritten without being freed.
+> --
+> 
+> --- Patch [3]: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs ---
+> commit e4623d49ab6201adc5b609f5a6043ed6dfb7f55c
+> Author: Ashish Kalra <ashish.kalra@amd.com>
+> Subject: x86/sev: Initialize RMPOPT configuration MSRs
+> 
+> The new RMPOPT instruction helps manage per-CPU RMP optimization
+> structures inside the CPU. This commit initializes the per-CPU RMPOPT
+> table base to enable RMP optimization for up to 2 TB of system RAM.
+> 
+>> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+>> index e2f69fba09389..8bfd802848361 100644
+>> --- a/arch/x86/virt/svm/sev.c
+>> +++ b/arch/x86/virt/svm/sev.c
+> [ ... ]
+>> @@ -558,6 +561,17 @@ int snp_prepare(void)
+>>  }
+>>  EXPORT_SYMBOL_FOR_MODULES(snp_prepare, "ccp");
+>>  
+>> +static void snp_cleanup_rmpopt(void)
+>> +{
+>> +	int cpu;
+>> +
+>> +	for_each_cpu(cpu, rmpopt_cpumask)
+> 
+> [Severity: High]
+> If rmpopt_cpumask was never allocated, does this macro dereference a NULL
+> pointer?
+> 
+> In snp_setup_rmpopt(), if rmpopt_capable() is false, the mask remains
+> unallocated. When snp_shutdown() subsequently calls snp_cleanup_rmpopt(),
+> it iterates over the mask without checking if it is available.
+> 
+> Can this cause a kernel panic on system shutdown or module unload for
+> systems without RMPOPT support?
+
+Can't happen in the full series: patch 4 adds if (!rmpopt_wq) return;, and rmpopt_wq is non-NULL only after snp_setup_rmpopt() succeeds.
+On a host without RMPOPT it stays NULL, so rmpopt_cpumask is never dereferenced.
+
+> 
+>> +		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>> +
+>> +	free_cpumask_var(rmpopt_cpumask);
+>> +	rmpopt_pa_start = 0;
+>> +}
+> [ ... ]
+>> @@ -578,6 +593,46 @@ void snp_shutdown(void)
+>>  }
+>>  EXPORT_SYMBOL_FOR_MODULES(snp_shutdown, "ccp");
+>>  
+>> +static bool rmpopt_capable(void)
+>> +{
+>> +	return cpu_feature_enabled(X86_FEATURE_RMPOPT) &&
+>> +	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>> +}
+>> +
+>> +void snp_setup_rmpopt(void)
+>> +{
+>> +	u64 rmpopt_base;
+>> +	int cpu;
+>> +
+>> +	if (!rmpopt_capable())
+>> +		return;
+>> +
+>> +	if (!zalloc_cpumask_var(&rmpopt_cpumask, GFP_KERNEL)) {
+> 
+> [Severity: Medium]
+> Does this unconditional allocation leak the previously allocated cpumask
+> when SEV-SNP is re-initialized?
+> 
+> During a legacy shutdown, snp_shutdown() returns early when the SnpEn
+> firmware bit is still set, skipping snp_cleanup_rmpopt():
+> 
+> arch/x86/virt/svm/sev.c:snp_shutdown() {
+> ...
+> 	rdmsrq(MSR_AMD64_SYSCFG, syscfg);
+> 	if (syscfg & MSR_AMD64_SYSCFG_SNP_EN)
+> 		return;
+> ...
+> }
+> 
+> A subsequent call to __sev_snp_init_locked() will invoke snp_setup_rmpopt()
+> again and overwrite the old pointer without freeing it.
+
+Handled in the full series: patch 4's re-init guard (if (rmpopt_wq) { queue_delayed_work(...); return; }) re-queues the pass instead of re-allocating,
+so there's no leak.
+
+> 
+>> +		pr_err("Failed to allocate RMPOPT cpumask\n");
+>> +		return;
+>> +	}
+> [ ... ]
+>> diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+>> index f833cb7e4da36..0b40d23a26b45 100644
+>> --- a/drivers/crypto/ccp/sev-dev.c
+>> +++ b/drivers/crypto/ccp/sev-dev.c
+>> @@ -1630,6 +1630,9 @@ static int __sev_snp_init_locked(int *error, unsigned int max_snp_asid)
+>>  	}
+>>  
+>>  	snp_hv_fixed_pages_state_update(sev, HV_FIXED);
+>> +
+>> +	snp_setup_rmpopt();
+>> +
+> 
+> [Severity: High]
+> If the SEV-SNP firmware initialization fails, does this leave CPU hotplug
+> permanently disabled?
+> 
+> A global cpu_hotplug_disable() call is made inside snp_prepare() right before
+> we reach this code. If the subsequent firmware command fails in
+> __sev_snp_init_locked(), it returns the error directly without cleaning up:
+> 
+> drivers/crypto/ccp/sev-dev.c:__sev_snp_init_locked() {
+> ...
+> 	rc = __sev_do_cmd_locked(cmd, arg, error);
+> 	if (rc) {
+> 		dev_err(sev->dev, "SEV-SNP: %s failed rc %d, error %#x\n",
+> 			cmd == SEV_CMD_SNP_INIT_EX ? "SNP_INIT_EX" : "SNP_INIT",
+> 			rc, *error);
+> 		return rc;
+> 	}
+> ...
+> }
+> 
+> Since sev->snp_initialized remains false on this error path, snp_shutdown()
+> is never executed on teardown, meaning cpu_hotplug_enable() is never invoked
+> to release the lock.
+
+Intentional. snp_prepare() re-enables hotplug on its own failure (before SnpEn is set); once SnpEn is set, hotplug must stay disabled — 
+a CPU coming online without it would break RMP-check consistency and any SNP_INIT retry (which needs SnpEn on all present CPUs). 
+Documented in the commit message, and the triggering failure is already logged.
+
+Thanks,
+Ashish
+
+> 
+>>  	sev->snp_initialized = true;
+>>  	dev_dbg(sev->dev, "SEV-SNP firmware initialized, SEV-TIO is %s\n",
+>>  		data.tio_en ? "enabled" : "disabled");
+> 
