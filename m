@@ -1,142 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F983FF8A4;
-	Mon, 27 Jul 2026 12:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F12173
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 12:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785155936; cv=none; b=AfRTM+6f22pi4TsM40XcE06FwCYhFDT9ZxLx9VDfxlXVvMfjVc4Du8GhO6CnoSzaWiYab1X6BxaJWnRv/0KQ2rHHh0NAktwfFv1CgkroxLYdb49iFkZ6I8q18/x7tUvuYESegqXTNdGRdbitB9GBlaTGVI7n52hsX5C0emCBnvg=
+	t=1785155963; cv=none; b=SnznseRTKMMN9cEAA0J5fmmnslxXSDLd0ZwQLSBcv37zkV6o0VBSEpXwsO9sc6OUT6iX7DQ0Zm69604JYNuvewU0K0ocPEjucshouOpSx4h1AZAlk066vp5xQ3xKOPEREWbgyi0vu1h6PY2VPGKQ0Kwh0cIzxNStrgGquQU1iVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785155936; c=relaxed/simple;
-	bh=uo+UuR9oaaB90JXN6bGEXiAvzWQ4YpLIMthZ8Yizd9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bEDINi8OELWc6fdjtL2kfGtxlxV6iI5BQIRBOrqlzJjMSdXWUs1nvLdS0yNAajOG2Z4jjmnrc9Dgig9C8L7C9s1dAhb39xUS35Lul26jAcPhAQnthygcG8rDAlB+XfOlYOl43h7mKPArNoCFqa5rgXZETbAFV/2BSR9rXosdzy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvdoJtjr; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785155963; c=relaxed/simple;
+	bh=S8e1vECuRYnJIqPpX2t85ktJdPDlfOAafAMB9yQyadA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=h5p9z6TncfecLb/hh+nniKVV8m29nyVeJRkCQHfEqW7oHqq8hLiyVpiHyYbT9tqqKiwAvjCZLnl56ablcqb/jC3/REZMaYxaXH4EjUKibT4fQs64pkEnASN4nr+JwuJpQHLGZW51CX3ljdvH6WdHHAXBqs6+FQcXWe0+/K0p6kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p+01WtO0; arc=none smtp.client-ip=74.125.228.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvdoJtjr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785155934; x=1816691934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uo+UuR9oaaB90JXN6bGEXiAvzWQ4YpLIMthZ8Yizd9s=;
-  b=lvdoJtjrtKObCnom5RSJQKP+BPJUIAIfSQI/8Bg1vq3iQvH8f27iM8Mn
-   W+opK3gfPLzIEcuHDTC/J+I7QAco4jcUqUDVTND03zdvwyrr09wClSR1P
-   l3ethd3Xg9luPSfmJBPNKTbqBUuGS8EUwWnVLqrzxL3BoF9AmCF0Dc62F
-   /iqJ+rQDQBcCFuB4kX5T2p4kguQAqAwdSBp57+ojbwYgk/SOsiAFyEdGy
-   ErURGGqcfN2NpYrvVSiGdVw/YEiN+MVnXLNP87qL9WlSeZTThZxM+X72j
-   pfivXff/As4nfASQLIXxfXF7eUccYSYZXZC6UhU7gB3XWbnZynwKTgHTU
-   Q==;
-X-CSE-ConnectionGUID: Ye9dVb+2S+GK1jbi8SNlXQ==
-X-CSE-MsgGUID: ktZXpPRLRdetpSAuK7uvsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="111265965"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="111265965"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 05:38:53 -0700
-X-CSE-ConnectionGUID: xy/PzWN/ROu15CayvUdxyA==
-X-CSE-MsgGUID: gstEUFE0SFK00gJr5FwCYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; 
-   d="scan'208";a="258838957"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa008.jf.intel.com with ESMTP; 27 Jul 2026 05:38:50 -0700
-Date: Mon, 27 Jul 2026 20:38:49 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, djbw@kernel.org, kas@kernel.org,
-	rick.p.edgecombe@intel.com, yilun.xu@intel.com,
-	sohil.mehta@intel.com, adrian.hunter@intel.com,
-	kishen.maloor@intel.com, tony.lindgren@linux.intel.com,
-	peter.fang@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, dave.hansen@intel.com,
-	dave.hansen@linux.intel.com, seanjc@google.com
-Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
- initialization is required
-Message-ID: <amdRWaoKa0k324JM@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-4-yilun.xu@linux.intel.com>
- <cfeee0fe-c61d-447c-86bc-8d8244090879@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p+01WtO0"
+Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-c888c001628so1590903a12.0
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 05:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785155962; x=1785760762; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rHRV5gwUjVGQwdFF5biWwFHxQewlnY4tVqU7C1q5tGI=;
+        b=p+01WtO01b5bB6djROWYxsO/r/ABNoNhPDLcL0zYxueh8bLpMUaog+ZXVa1IpgZHpJ
+         4fafuPQz4ZJoND9A1kCC1VHgtFvbt7CecR0XN+VYNwwEE9AL5GFC/gxa3sDouFl9Wt6h
+         me07ucHZ6BkN1/eteoVTzT1BqNN+OGnASJjrCcEzxsafQ5eLQ/KFeem0oSK+KOuug9hd
+         WqxSyvWgfHBw8xEIARdEMKYyCc4rhN5NCuc8hEhlNLrC4UnPxH3OoPEs5EYJOBUY2xHQ
+         XojdIFyQGN7cifRGkRVwjYvB1IaHJ5eO+GTIm0u44h+5KCZZW5PL4ctT2h4QYf/6NIzL
+         hgVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785155962; x=1785760762;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rHRV5gwUjVGQwdFF5biWwFHxQewlnY4tVqU7C1q5tGI=;
+        b=nGRJJIT+Jat3e6qTvLf1ch7caftnNVf8HWt5oRBHgci9hbE0BxQSvMXPWyyQ8ATpPA
+         +Z0QttVA4S63Lpki+pOgDpG8ruDRCeree19909ixcDayErrfMBapjcn9oSZmugMKND3U
+         T2ouHURodYqRsPuT8DWB6U1+D6ZbV4gxlD8g7wkJyJr/mh9WHZaujbF7UolJrJhDGOas
+         zMifaIe7//HGokvEXFFCgCJJ5BfOC2hiMcf0DVcjmF97NANgnHQFBh4XhhPJfuFbe0xj
+         KF1hWk3B9rRl8cmIAHN2cqu5mJSfNLaC/kFF+s1gw9yxDpHNgVnZaC5Ujilhxu4ep1yl
+         V/gQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro+2Ipcb4V9STdaIDdqgQ9vJ1sAVHKPTbsMqX1/gWzVJtgvma7vceu3n/fPsUgvjSC9UsQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIK8XE3fXKVIOFQtgA5vlSpENq0Vw82kjXd6hDaWW73/3a0UGS
+	F6QzVNvaK3iL6jaDTa48WhnlqJl3ilDavmW2hSBemmuX4akv4Qritc8q
+X-Gm-Gg: AR+sD10GKQVuERcTHnjmmS6RG6eJfKBBN1GYAIKevwW7v7g4Uwoi/HrJrdX2Z/iJpO0
+	jzTt3vWj9C/0xTTV3zISbMwDzeOgWyhD3B+FxWIuR6Xetg5h/7kB3S99jLk+5LsXpPNwUnK9Tap
+	134hM32/7ouufQAnVTJMExu/Jpi6jptydlE61nvQHVG0fc80l04v0OJ5PlVQ1J4040rBp9SnHs3
+	khB7PwEvvd1Gloe5nRkAgyfducqRXS2JRZ2Q7RooGk2B98O/HCga/TrvqciHC6Hr6Y0yC93rXqC
+	z/arTKxPgM0P2MHA9jsL9lFF3GqWBP07vgQwoNi+Xb1gk3KJqit4CirphEpXBzADIxsFkRJG4Pl
+	Lc58mWVZqCzHBO9R7nfxN39N3do7UeXX18F3N+RkG2k3A/1bn+WFq/Bos8J4aXJJQmUdQ8/g=
+X-Received: by 2002:a05:6a00:983:b0:848:4123:68ff with SMTP id d2e1a72fcca58-84e5958eeb8mr6476053b3a.65.1785155961592;
+        Mon, 27 Jul 2026 05:39:21 -0700 (PDT)
+Received: from wud.. ([218.194.32.52])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e533d1386sm3036732b3a.36.2026.07.27.05.39.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jul 2026 05:39:21 -0700 (PDT)
+From: "Dylan.Wu" <fredwudi0305@gmail.com>
+To: pjw@kernel.org
+Cc: palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	anup@brainfault.org,
+	alex@ghiti.fr,
+	atish.patra@linux.dev,
+	zhouquan@iscas.ac.cn,
+	linux-riscv@lists.infradead.org,
+	kvm-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH 1/2] riscv: ptdump: Move pagetable definitions to common header
+Date: Mon, 27 Jul 2026 08:39:15 -0400
+Message-Id: <20260727123915.119650-1-fredwudi0305@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
+References: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cfeee0fe-c61d-447c-86bc-8d8244090879@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 24, 2026 at 04:42:33PM +0800, Xiaoyao Li wrote:
-> On 6/18/2026 4:13 PM, Xu Yilun wrote:
-> > TDX module extensions support extension SEAMCALLs that are preemptible
-> > and resumable, unlike normal SEAMCALLs that run to completion while
-> > monopolizing the CPU.
-> 
-> This is not true. There are some normal (non-extension) SEAMCALLs also are
-> preemptible and resumable. For example,
-> 
-> - TDH.PHYMEM.CACHE.WB
-> - TDH.SYS.DISABLE
-> - TDH.MEM.SEPT.ADD with version 1
+Hi Paul,
 
-No they are not preemptible and resumable. They just intentionally
-yield and don't have a generic way to save/resume their context. You
-can't rely on that to implement complex tasks in TDX module considering
-the complexity. That's the main reason why TDX module extensions are
-needed.
+Thank you very much for taking the time to review this patch and for
+the helpful suggestion.
 
-> 
-> (There might be more. I didn't check all.)
-> 
-> > This allows for higher-level API constructions,
-> > so better supports some add-on features that implement higher order
-> > security protocols.
-> 
-> I think we don't need to explain this? Just that some add-on features
-> require the functionalities of TDX module extensions is enough?
+I have split the patch as you requested and sent v2:
 
-mm.. a big part of the series is to bring up the TDX module extensions,
-and this is the first patch to start implementing TDX module extensions,
-a comment [1] said we could explain the context a little bit in general.
+  https://lore.kernel.org/linux-riscv/20260727122745.118764-1-fredwudi0305@gmail.com/
 
-[1]: https://lore.kernel.org/all/1783e7bd-3759-41f7-93e3-2f9e21264bd4@intel.com/
+Changes in v2:
+  - Patch 1/3: Create ptdump.h, move declarations there, and export note_page()
+  - Patch 2/3: Make attribute parsing use per-level bits, rename
+               pg_level[] to kernel_pg_levels[]
+  - Patch 3/3: KVM gstage ptdump
 
-[...]
+I would greatly appreciate any further feedback you may have.
 
-> > +static __init int init_tdx_module_extensions(void)
-> > +{
-> > +	struct tdx_sys_info_ext sysinfo_ext;
-> > +	int ret;
-> > +
-> > +	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-> > +		return 0;
-> > +
-> > +	ret = get_tdx_sys_info_ext(&sysinfo_ext);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Skip if no feature requires TDX module extensions. */
-> > +	if (!sysinfo_ext.ext_required)
-> > +		return 0;
-> 
-> There was the discussion around it in [1]. I agree with the point to make
-> kernel code simple. But it requires change/clarification from TDX spec,
-
-I got the answer from TDX module team, that there is no use case ext
-memory is needed/the Extensions are enabled but TDH.EXT.INIT is not
-required. IOW ext_required == false exactly means TDX module extensions
-are not required and no extension SEAMCALLs should be invoked.
-
-> right? So will TDX spec change?
-
-No I didn't raise this nits to distract their main focus on blocking
-changes. But yes I can raise a ticket for this.
-
-> 
-> If so, you would need to mention it somewhere.
-> 
-> [1] https://lore.kernel.org/all/9c00b87b7b69470ad1e7b1d2788414002b9a1c77.camel@intel.com/
+Best regards,
+Dylan
