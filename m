@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40093F7A98;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF53F1ADC;
 	Mon, 27 Jul 2026 23:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785196367; cv=none; b=Q4uurQgv8b7ClAYAUHm/MsvrUEbzek9E5md01c5XbYItu5XvSMgDrg44nb6Buf2jO++R6g0HVeuImi2bhKoEwwzb/vKWm0dYxG6ogmkdGkmRvX9wWPR+Ycq0zcNeJ16St+w90siaRPFgxj8JLOmWO6Klq8c2Iz0BT0zePghHllE=
+	t=1785196367; cv=none; b=QLXoIEIua3y5v5d/oqaUh/mVcPMLtV5SuFFEVWyI5c2g+q8l8CrFkkhiUtyuAWWMWi8di1Al0M2fWOAw8aZvADTn7jbrCAvlvpt0kQHCUn2OBKObq6Kh+gK29X99JstBriGEDh0hBaZTJ06ku1V+BUw5J02Pl9rb9Ehp6K4pTEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785196367; c=relaxed/simple;
-	bh=Rfx9Ob891ijev527lxLma+6QhMDftUCYG14i1EMaNs8=;
+	bh=5XVsruwghF/6D0VeeWoWyJYafarUlRZ2r1nc4YFF8x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G67Dop1vP4F79SIpIQF5629bGvNi1W5gsgRAMml0Pqly+lNWgoxVBS+6uKLoN/kji0c2UQczW6G25gpiEWJW4XYaKNSINR1HR6BtS5IH1ZQYv8uJIkISiyip6YAqahotdlw966ja7xPj+8X9WRf/LCiTpfRZuTB5ieMxQrBTOfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQZk3nX5; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=GKvQuCISEfZBjmHVHVkKakF9QQOktpKPMDFm9SspbIY/UM1SL+NN4roHi8rlm2f5A9EiZA9srCRXqol3WmtujGM4JX/jh5NtVsgphBgAMn7HovV5/LymZxDxZKbXkGxDRkZCMFzYZRGJMuNWIbEIWG1NS9BrlrrGwkJtdnYnj14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F165x+F8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQZk3nX5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7181F00A3F;
-	Mon, 27 Jul 2026 23:52:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F165x+F8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D621F00AC4;
+	Mon, 27 Jul 2026 23:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785196366;
-	bh=JGWLe8tti3MNvE6p4UgFa/PE4HUM2Km5+vazPZ/+LeA=;
+	bh=V9s8Li3UO1aEDiRJI0QPeqgaP6w6OYl37uTTpA5uKNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gQZk3nX5hwi4Irv76aBSj3+QpDWM+iT2tY8XE5opH26eEayAyDR9bVt+6pPb+fHvU
-	 ROotNd4ZVHoH7PEFQb/TXNa/gANpyDZmsBeCrc4ouLy/HOKpyggbvb5i6se8mH+Ufu
-	 2Tc6LoO/WvRwdu6HHTuGd2AwE20t5LxKfZaPwyPJ1cSTBU7IoLdDQu4TPFM64Uj5Nj
-	 iUSBxr24R38LAB9plU+vZcdAggnSZll8c3F5QB6LsActf+Sj24530Sj/2nw5+X8s90
-	 2YdepbjwLLW4cAIYVNifJ1gTJiWlhuefDkg7BrmJl/hvRjhvKc212fPswjSzKncxQ/
-	 l+yLibL8EMxlg==
+	b=F165x+F8I7UvJgXxxr4Wora9JtKM82lBWLjCbZEX7bSvJ9Hq+7l5e6zgYFstOaGw7
+	 boqHVptwUgqnbxqGoahSZI7FeNY0H5XXH/0VhgvBmGceIjEIu1nIKZww26ViFhZAFU
+	 w1E6vmeM1ZSLBKzAsTscelP+HbLtqvEKIF1pvyXYVY8Sw1nUJyYO4mBNAIAG46bL/v
+	 FYUATIC0QqEfcXDUiBzkSsq8pTr3MsEXPPDOwDCFrJUd8/EtMYs6wMqtc9ARX8WS9J
+	 EvHE69y20KsdEzRPG4O9C62MHKPf/gmtGLLAcjgZp0CaI4l9tE91dDCVBE9ljVowPL
+	 7JIADlSuMIyhQ==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v4 04/12] KVM: selftests: Handle rflags save/restore for SVM in guest_regs
-Date: Mon, 27 Jul 2026 23:52:20 +0000
-Message-ID: <20260727235228.1007324-5-yosry@kernel.org>
+Subject: [PATCH v4 03/12] KVM: selftests: Rework GPR registers switching for SVM (and fix offsets)
+Date: Mon, 27 Jul 2026 23:52:19 +0000
+Message-ID: <20260727235228.1007324-4-yosry@kernel.org>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260727235228.1007324-1-yosry@kernel.org>
 References: <20260727235228.1007324-1-yosry@kernel.org>
@@ -46,69 +46,178 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Instead of handling rflags separately, add it to guest_regs. No
-functional change intended.
+The assembly code defined by SAVE_GPR_C uses the wrong offsets for some
+registers in guest_regs. For example, the offset of RCX should be 0x08
+not 0x10. Also, the last offset in the struct (R15) is 0x78, not 0x80,
+so the code actually saves and restore beyond the end of gpr64_regs.
+
+Eliminate hardcoded offsets by dynamically generating offsets using
+offset_of() and using macros to pass the offsets to assembly as asm
+constraints.
+
+To avoid register conflicts in inline assembly (since almost all GPRs are
+context-switched), access guest_regs via absolute symbol addressing
+(guest_regs + offset) rather than using a base register which could
+get overwritten mid-assembly.
+
+While at it, rename SAVE_GPR_C and LOAD_GPR_C to a single macro,
+SVM_SWITCH_GPRS_ASM, rename gpr64_regs to guest_regs, and expose it in
+processor.h (in preparation for reusing it for VMX).
 
 Assisted-by: Gemini:Gemini-Next
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/kvm/include/x86/processor.h | 4 +++-
- tools/testing/selftests/kvm/lib/x86/svm.c           | 6 ++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ .../selftests/kvm/include/x86/processor.h     | 31 +++++++++++-
+ .../testing/selftests/kvm/lib/x86/processor.c |  2 +
+ tools/testing/selftests/kvm/lib/x86/svm.c     | 49 +++++++++----------
+ 3 files changed, 54 insertions(+), 28 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index d7f1acaddd4ee..dab64688e8eae 100644
+index b161174ece453..d7f1acaddd4ee 100644
 --- a/tools/testing/selftests/kvm/include/x86/processor.h
 +++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -415,6 +415,7 @@ struct guest_regs {
- 	u64 r13;
- 	u64 r14;
+@@ -398,8 +398,7 @@ static inline unsigned int x86_model(unsigned int eax)
+ #define PTE_GET_PA(pte)		((pte) & PHYSICAL_PAGE_MASK)
+ #define PTE_GET_PFN(pte)        (PTE_GET_PA(pte) >> PAGE_SHIFT)
+ 
+-/* General Registers in 64-Bit Mode */
+-struct gpr64_regs {
++struct guest_regs {
+ 	u64 rax;
+ 	u64 rcx;
+ 	u64 rdx;
+@@ -418,6 +417,34 @@ struct gpr64_regs {
  	u64 r15;
-+	u64 rflags;
  };
  
- extern struct guest_regs guest_regs;
-@@ -438,7 +439,8 @@ extern struct guest_regs guest_regs;
- 	GUEST_REG_OFFSET(r12),	\
- 	GUEST_REG_OFFSET(r13),	\
- 	GUEST_REG_OFFSET(r14),	\
--	GUEST_REG_OFFSET(r15)
-+	GUEST_REG_OFFSET(r15),	\
-+	GUEST_REG_OFFSET(rflags)
++extern struct guest_regs guest_regs;
++
++#define GUEST_REG_OFFSET(name) \
++	[off_##name] "i" (offsetof(struct guest_regs, name))
++
++#define GUEST_REGS_OFFSETS	\
++	GUEST_REG_OFFSET(rax),	\
++	GUEST_REG_OFFSET(rcx),	\
++	GUEST_REG_OFFSET(rdx),	\
++	GUEST_REG_OFFSET(rbx),	\
++	GUEST_REG_OFFSET(rsp),	\
++	GUEST_REG_OFFSET(rbp),	\
++	GUEST_REG_OFFSET(rsi),	\
++	GUEST_REG_OFFSET(rdi),	\
++	GUEST_REG_OFFSET(r8),	\
++	GUEST_REG_OFFSET(r9),	\
++	GUEST_REG_OFFSET(r10),	\
++	GUEST_REG_OFFSET(r11),	\
++	GUEST_REG_OFFSET(r12),	\
++	GUEST_REG_OFFSET(r13),	\
++	GUEST_REG_OFFSET(r14),	\
++	GUEST_REG_OFFSET(r15)
++
++#define GUEST_REG(name) "guest_regs + %c[off_" #name "]"
++
++#define GUEST_SWITCH_GPR_ASM(name) \
++	"xchg %%" #name ", " GUEST_REG(name) "\n\t"
++
+ struct desc64 {
+ 	u16 limit0;
+ 	u16 base0;
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index ef56dcefe0119..1f9201590f5b3 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -29,6 +29,8 @@ bool host_cpu_is_amd_compatible;
+ bool is_forced_emulation_enabled;
+ u64 guest_tsc_khz;
  
- #define GUEST_REG(name) "guest_regs + %c[off_" #name "]"
- 
++struct guest_regs guest_regs;
++
+ const char *ex_str(int vector)
+ {
+ 	switch (vector) {
 diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 7db38faded89e..b05be50f075d6 100644
+index 766d15f1d534a..7db38faded89e 100644
 --- a/tools/testing/selftests/kvm/lib/x86/svm.c
 +++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -13,8 +13,6 @@
+@@ -13,7 +13,6 @@
  
  #define SEV_DEV_PATH "/dev/sev"
  
--u64 rflags;
--
+-struct gpr64_regs guest_regs;
+ u64 rflags;
+ 
  /* Allocate memory regions for nested SVM tests.
-  *
-  * Input Args:
-@@ -161,7 +159,7 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
- {
- 	asm volatile (
+@@ -137,27 +136,25 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip)
+  * save/restore 64-bit general registers except rax, rip, rsp
+  * which are directly handed through the VMCB guest processor state
+  */
+-#define SAVE_GPR_C				\
+-	"xchg %%rbx, guest_regs+0x20\n\t"	\
+-	"xchg %%rcx, guest_regs+0x10\n\t"	\
+-	"xchg %%rdx, guest_regs+0x18\n\t"	\
+-	"xchg %%rbp, guest_regs+0x30\n\t"	\
+-	"xchg %%rsi, guest_regs+0x38\n\t"	\
+-	"xchg %%rdi, guest_regs+0x40\n\t"	\
+-	"xchg %%r8,  guest_regs+0x48\n\t"	\
+-	"xchg %%r9,  guest_regs+0x50\n\t"	\
+-	"xchg %%r10, guest_regs+0x58\n\t"	\
+-	"xchg %%r11, guest_regs+0x60\n\t"	\
+-	"xchg %%r12, guest_regs+0x68\n\t"	\
+-	"xchg %%r13, guest_regs+0x70\n\t"	\
+-	"xchg %%r14, guest_regs+0x78\n\t"	\
+-	"xchg %%r15, guest_regs+0x80\n\t"
+-
+-#define LOAD_GPR_C      SAVE_GPR_C
++#define SVM_SWITCH_GPRS_ASM \
++	GUEST_SWITCH_GPR_ASM(rbx) \
++	GUEST_SWITCH_GPR_ASM(rcx) \
++	GUEST_SWITCH_GPR_ASM(rdx) \
++	GUEST_SWITCH_GPR_ASM(rbp) \
++	GUEST_SWITCH_GPR_ASM(rsi) \
++	GUEST_SWITCH_GPR_ASM(rdi) \
++	GUEST_SWITCH_GPR_ASM(r8)  \
++	GUEST_SWITCH_GPR_ASM(r9)  \
++	GUEST_SWITCH_GPR_ASM(r10) \
++	GUEST_SWITCH_GPR_ASM(r11) \
++	GUEST_SWITCH_GPR_ASM(r12) \
++	GUEST_SWITCH_GPR_ASM(r13) \
++	GUEST_SWITCH_GPR_ASM(r14) \
++	GUEST_SWITCH_GPR_ASM(r15)
+ 
+ /*
+  * selftests do not use interrupts so we dropped clgi/sti/cli/stgi
+- * for now. registers involved in LOAD/SAVE_GPR_C are eventually
++ * for now. Registers involved in SVM_SWITCH_GPRS_ASM are eventually
+  * unmodified so they do not need to be in the clobber list.
+  */
+ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
+@@ -166,20 +163,20 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
  		"vmload %[vmcb_gpa]\n\t"
--		"mov rflags, %%r15\n\t"
-+		"mov " GUEST_REG(rflags) ", %%r15\n\t"
+ 		"mov rflags, %%r15\n\t"
  		"mov %%r15, %[vmcb_rflags]\n\t"
- 		"mov " GUEST_REG(rax) ", %%r15\n\t"
+-		"mov %[guest_regs_rax], %%r15\n\t"
++		"mov " GUEST_REG(rax) ", %%r15\n\t"
  		"mov %%r15, %[vmcb_rax]\n\t"
-@@ -169,7 +167,7 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
+-		LOAD_GPR_C
++		SVM_SWITCH_GPRS_ASM
  		"vmrun %[vmcb_gpa]\n\t"
- 		SVM_SWITCH_GPRS_ASM
+-		SAVE_GPR_C
++		SVM_SWITCH_GPRS_ASM
  		"mov %[vmcb_rflags], %%r15\n\t"
--		"mov %%r15, rflags\n\t"
-+		"mov %%r15, " GUEST_REG(rflags) "\n\t"
+ 		"mov %%r15, rflags\n\t"
  		"mov %[vmcb_rax], %%r15\n\t"	// rax
- 		"mov %%r15, " GUEST_REG(rax) "\n\t"
+-		"mov %%r15, %[guest_regs_rax]\n\t"
++		"mov %%r15, " GUEST_REG(rax) "\n\t"
  		"vmsave %[vmcb_gpa]\n\t"
+ 		: [vmcb_rflags] "+m" (vmcb->save.rflags),
+-		  [vmcb_rax] "+m" (vmcb->save.rax),
+-		  [guest_regs_rax] "+rm" (guest_regs.rax)
+-		: [vmcb_gpa] "a" (vmcb_gpa)
++		  [vmcb_rax] "+m" (vmcb->save.rax)
++		: [vmcb_gpa] "a" (vmcb_gpa),
++		  GUEST_REGS_OFFSETS
+ 		: "r15", "memory");
+ }
+ 
 -- 
 2.55.0.229.g6434b31f56-goog
 
