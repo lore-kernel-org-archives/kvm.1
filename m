@@ -1,124 +1,100 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4754908BF;
-	Mon, 27 Jul 2026 07:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0756D42A82
+	for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 07:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785137472; cv=none; b=c5WUCVWbXPHOewHoGzA/i3NaptED+WgLlTHbeNpfFZnWjA3LtSuvZM6ddJEgwNc/pvq/BFgKzP4bExPGnUmj2F3RSJYvUH4JlnOxgi/YZyn7giexa5u0SIN5N0ae6eu9sst5pGDgZicpJPLi0GcqlZmEyMDxvGJvadh5BERVxWA=
+	t=1785138010; cv=none; b=UgUQs24el9oeKZPKYMkShYXv2ULslLA8bE8iki5WzPsEeU8/ZsQ5a7kwXheseCw8AmZRao+vY1DHTuFMeeQmPwMa3KejmdsFPeO9iw713t9noNbfZTlk/wr/H8orl9xmlnhlOy3Rg5xji66KH3xsoRekRkY5bOrL+Jjnb1Zce90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785137472; c=relaxed/simple;
-	bh=nzIUANyQ67sj0RajWKzCUMVp6O1CkNspOyvI5v3HwlE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=apOlxtGSeDQZ5BlIsHOFelneOt4+NQqrW6pZYIh7FEFzppcDSkGut3Mi87PHRh2QxWCofvy0e/WNEb9RxqyuVDJIsMbQj/QChdQadXuNJygTEQTQ5Iv6pAeHWHUcunQYP3mvMX3jwWIJ7RNckLLJX/pCvljO5GPbRDWBMXF3dzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Cxg+g7CWdqwqkHAA--.4057S3;
-	Mon, 27 Jul 2026 15:31:07 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxLsfqCGdqOz4aAA--.51743S4;
-	Mon, 27 Jul 2026 15:30:26 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Xi Ruoyao <xry111@xry111.site>,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] LoongArch: KVM: Enable separate vmid feature
-Date: Mon, 27 Jul 2026 15:21:09 +0800
-Message-Id: <20260727072109.2151675-7-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260727072109.2151675-1-maobibo@loongson.cn>
+	s=arc-20240116; t=1785138010; c=relaxed/simple;
+	bh=Tm/bbOZGtoLIagqZanpert2YMnPzHOPLN+pPdLc5GNI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=lHdB0531sEvnjxu119mavvx9W5+fNDBqd1Nz7dvmLRb3mX85IrtY1bvd88TZOLvn2f27Ly5ttOPi3XWrF/uElJIxz1xmv3htWCsCC1EC2Q7FxQZde6tzHmVtzEIO6ZcxMYrso6i9+r8eP3R0UL6ASxx0ynAClwgTKYuwnLPXLK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIA+lLZ0; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIA+lLZ0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953AA1F00A3D;
+	Mon, 27 Jul 2026 07:40:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785138008;
+	bh=342lR/7D86KBbD+fSqXaBsHtD1LOKmeTGwGNOty294E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=gIA+lLZ0LQT2b4PDAdL3Ptxht0lc3igCIBAxRZMJ0XcbfX/q/Clzq20aKEJ3Fxll6
+	 YaEFpHDCjomPypnlP4iLFxGbrji6l5V2mssF6CwSGcxLgHyMuYKVZSDwrTs6Bj6kwa
+	 Ow4XIGRz3Ka70Vy+4A/9QDgvAKWxe4AAXbMKKSej4jUe1A3hju2PCPcF1a3cD5Dfy+
+	 B21Xvi/mTDT91wU5ia1CG7QOFAOGJRaQ1ssGI7g70XtzQOBXIgY+D1FPZvgpI/ixmR
+	 fWgv4elxbf92dzERZzOaJvf3IxeD2hPSwo5dv3+/YI9Lm6fsPidLY1zh3G01Mb8IRO
+	 TdykCpxmsnFyQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 6/6] LoongArch: KVM: Enable separate vmid feature
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Bibo Mao" <maobibo@loongson.cn>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260727072109.2151675-7-maobibo@loongson.cn>
 References: <20260727072109.2151675-1-maobibo@loongson.cn>
+ <20260727072109.2151675-7-maobibo@loongson.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 27 Jul 2026 07:40:08 +0000
+Message-Id: <20260727074008.953AA1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxLsfqCGdqOz4aAA--.51743S4
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] CSR_GTLBC_USEVMID is not cleared when virtualization is disabled=
+, leaving the CPU in an inconsistent state and leaking hypervisor state to =
+the underlying hardware.
+--
+
+--- Patch [6]: [PATCH 6/6] LoongArch: KVM: Enable separate vmid feature ---
+commit 255d457e2558ae0a9e092e8d465e179d08390542
+Author: Bibo Mao <maobibo@loongson.cn>
+
+LoongArch: KVM: Enable separate vmid feature
 
 With CSR GTLBC shortname for Guest TLB Control Register, separate vmid
 feature will be enabled if bit 14 CSR_GTLBC_USEVMID is set. Enable
 this feature if cpu_has_guestid is true when LVZ is enabled and the LVZ
 version is 2.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- arch/loongarch/include/asm/loongarch.h | 2 ++
- arch/loongarch/kernel/cpu-probe.c      | 7 ++++++-
- arch/loongarch/kvm/main.c              | 4 +++-
- 3 files changed, 11 insertions(+), 2 deletions(-)
+> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+> index 86b1af823e2b4..43f5b40786f24 100644
+> --- a/arch/loongarch/kvm/main.c
+> +++ b/arch/loongarch/kvm/main.c
+> @@ -365,7 +365,7 @@ int kvm_arch_enable_virtualization_cpu(void)
+>  	write_csr_gcfg(0);
+>  	write_csr_gstat(0);
+>  	write_csr_gintc(0);
+> -	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
+> +	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USEVMID);
 
-diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
-index 2a6bc99177d8..4c4249446a61 100644
---- a/arch/loongarch/include/asm/loongarch.h
-+++ b/arch/loongarch/include/asm/loongarch.h
-@@ -350,6 +350,8 @@
- #define  CSR_GTLBC_TGID_WIDTH		8
- #define  CSR_GTLBC_TGID_SHIFT_END	(CSR_GTLBC_TGID_SHIFT + CSR_GTLBC_TGID_WIDTH - 1)
- #define  CSR_GTLBC_TGID			(_ULCAST_(0xff) << CSR_GTLBC_TGID_SHIFT)
-+#define  CSR_GTLBC_USEVMID_SHIFT	14
-+#define  CSR_GTLBC_USEVMID		(_ULCAST_(0x1) << CSR_GTLBC_USEVMID_SHIFT)
- #define  CSR_GTLBC_TOTI_SHIFT		13
- #define  CSR_GTLBC_TOTI			(_ULCAST_(0x1) << CSR_GTLBC_TOTI_SHIFT)
- #define  CSR_GTLBC_USETGID_SHIFT	12
-diff --git a/arch/loongarch/kernel/cpu-probe.c b/arch/loongarch/kernel/cpu-probe.c
-index 74d31f260dfd..cbf1dafac0a0 100644
---- a/arch/loongarch/kernel/cpu-probe.c
-+++ b/arch/loongarch/kernel/cpu-probe.c
-@@ -135,7 +135,7 @@ static void set_isa(struct cpuinfo_loongarch *c, unsigned int isa)
- 
- static void cpu_probe_common(struct cpuinfo_loongarch *c)
- {
--	unsigned int config;
-+	unsigned int config, version;
- 	unsigned long asid_mask;
- 
- 	c->options = LOONGARCH_CPU_CPUCFG | LOONGARCH_CPU_CSR | LOONGARCH_CPU_VINT;
-@@ -221,6 +221,11 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
- 	if (config & CPUCFG2_LVZP) {
- 		c->options |= LOONGARCH_CPU_LVZ;
- 		elf_hwcap |= HWCAP_LOONGARCH_LVZ;
-+
-+		/* Separate VMID and VPID with LVZ version == 2 */
-+		version = (config & CPUCFG2_LVZVER) >> 11;
-+		if (version == 2)
-+			c->options |= LOONGARCH_CPU_GUESTID;
- 	}
- #ifdef CONFIG_CPU_HAS_LBT
- 	if (config & CPUCFG2_X86BT) {
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index 86b1af823e2b..43f5b40786f2 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -365,7 +365,7 @@ int kvm_arch_enable_virtualization_cpu(void)
- 	write_csr_gcfg(0);
- 	write_csr_gstat(0);
- 	write_csr_gintc(0);
--	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
-+	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USEVMID);
- 
- 	/*
- 	 * Enable virtualization features granting guest direct control of
-@@ -388,6 +388,8 @@ int kvm_arch_enable_virtualization_cpu(void)
- 
- 	/* Enable using TGID  */
- 	set_csr_gtlbc(CSR_GTLBC_USETGID);
-+	if (cpu_has_guestid)
-+		set_csr_gtlbc(CSR_GTLBC_USEVMID);
- 	kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
- 		  read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
- 
--- 
-2.39.3
+[Severity: Medium]
+Since this clears the newly added CSR_GTLBC_USEVMID bit during initializati=
+on,
+should it also be cleared in kvm_arch_disable_virtualization_cpu() when
+hardware virtualization is disabled?
 
+Currently, kvm_arch_disable_virtualization_cpu() only clears the prior bits:
+
+arch/loongarch/kvm/main.c:kvm_arch_disable_virtualization_cpu() {
+	write_csr_gcfg(0);
+	write_csr_gstat(0);
+	write_csr_gintc(0);
+	clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
+	...
+}
+
+Does missing this bit during teardown leave the CPU in an inconsistent state
+by retaining KVM-specific control bits in the Guest TLB Control register?
+
+This might cause issues during CPU offline/online cycles, kexec into a
+different kernel, or when another hypervisor initializes the CPU.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727072109.2151=
+675-1-maobibo@loongson.cn?part=3D6
