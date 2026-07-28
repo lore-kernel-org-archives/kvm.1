@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09D6422E23;
-	Tue, 28 Jul 2026 17:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C123C345C;
+	Tue, 28 Jul 2026 17:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785260562; cv=none; b=ng2icyrztR/4OX125L+Q91aQayHMXqPHRZhzlIRKsOh9D2vPtaRs6khOUKmJPhlVWXlRenX4FzIUyG+cWESOw5eLymKZRn5qD11b7bRYVWmnMvB+pXQWqOt4rmymUSNbXm7fMvYHIJBdGd6d0tH2UJm2v83bw5mExzYLyNejE3U=
+	t=1785260561; cv=none; b=R1BLgjUEsAcc0SZzJd9V7Lj9eoJMghDJ3w6aMyP+1Z2FGQcl6R1+oIVvXzweGwpWVR9wgeQzw4blyzib7LXZATITENefuvYPWqBKuzX8MotvonjU2YZoJlxvwX693Bz6QvP04dPAsSAAi5vfzyCOGSPJe3Yn0mWQ6FRqmTCRFCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785260562; c=relaxed/simple;
-	bh=FQXZ9Stckq8exVW0ERYClKUtBICXrdUIGPHCiL7iLkU=;
+	s=arc-20240116; t=1785260561; c=relaxed/simple;
+	bh=3sBfItJIGw4XM2N0p6r3Zfcp1Sobf5QQY4EGjxSoCf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoJQ2o75QnbhurkADX04By8tVe23+Sr8PEaNQBhHSVzvb+9lJ8Le4Hfyc48RUeBT+Abvx/bqr+3xmZ6kyryE6AUDIm18Uqfy364IYyEo9m800Em5i8M7WkKEEbjiZebE6q8jfttUNB/MxXIX6AfcpRPc18RpBrZ1h0PnMLgEx30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlxOqGlh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Z2gY7/+pu6eI/zo0xZ4TcqQUu9lUnybdUHSONmbHgvQj0of0HXCQUnRg7/u5Gn312c0XMmlm7MHlEf5nVL6QCNPvHjy+tqq7mtjohvH4rxyQIAPxn7yt336nY1w5d/EI89HyyivaeHdEd3T+uatAKnYT8yXgxpNXAGvjDIOn6Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AR7MaHd+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlxOqGlh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E9F1F00A3E;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AR7MaHd+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C621F00A3F;
 	Tue, 28 Jul 2026 17:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785260559;
-	bh=v39KYB6cskShr4qDx8ePPFvZkoDLUj4MhkwVa0MDDUM=;
+	s=k20260515; t=1785260560;
+	bh=/nbxMplgxe0xXfvo9gkgjUuImIq1Tc7IPTHKdjSjyyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GlxOqGlhw6vlkJS9T1+1HVktkMl/uN2jnV2bMFywa9HLvJpGYz5uzhNBo/TcjGCYf
-	 srOcv443Gc0W+4NpHYtFVgPDQFUEKKwDUUXSxFdI8i5ZnkgFdJYoCnv569tHWM4CmA
-	 f3N5ZiOLNkIfjqvHvf38zLsR3N/4D2wtP2oJ0mKWuRGgPYQjhZ2em2acLMEQDiJZI9
-	 FME5VcIrlbViRteiX2dtfMz5vQjZNjKfRQe2nmaPI1RYG9MjwmdRyz7ni2CeBGaLdA
-	 biaD/KQzrGr83r9vxMjVjvyS7GpcI6K0vWDjbWvRWzzA9LKvQcW7pbhGkmGdteEs5C
-	 drEclUZSp+ARg==
+	b=AR7MaHd+uvtF7ldnfQybUst0ErkUmIBjb3hPc3H+OH73c6xeel2INqK/vStajpq5j
+	 CDojuKtzn06vOnZRjrJpKkewtY5C90L9nYrda0LwdoTzuq/bPELXb+iv4fIY+8rZhX
+	 t4YDeWxLeOKqxpVylfcUxWiXOFnIV6t/oFt+ASd/Jm3VFr1oqx/7wqJQ8sO100eNz4
+	 BEsi5rSqOGYVU89UTHqjcVHoo7S6gOUpNX/5Ni2BxnRq3OEvQXKEy+MVf52W3Z+aDA
+	 hJ0dAyljb7i/S82FDdLSl/ROhEmvDp8zGMQwndc8Cd0Fih3/GhkxKA9rN+LHn4K4vF
+	 JcH5dVWRVUm0A==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH v5 02/13] KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
-Date: Tue, 28 Jul 2026 17:42:21 +0000
-Message-ID: <20260728174232.2423257-3-yosry@kernel.org>
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v5 03/13] KVM: selftests: Rework GPR registers switching for SVM (and fix offsets)
+Date: Tue, 28 Jul 2026 17:42:22 +0000
+Message-ID: <20260728174232.2423257-4-yosry@kernel.org>
 X-Mailer: git-send-email 2.55.0.487.gaf234c4eb3-goog
 In-Reply-To: <20260728174232.2423257-1-yosry@kernel.org>
 References: <20260728174232.2423257-1-yosry@kernel.org>
@@ -47,63 +46,175 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The offsets used (0x170 and 0x1f8) are offsets within vmcb_save_area,
-not vmcb. The correct offsets should include the base of vmcb_save_area
-within vmcb (which is 0x400 -- so 0x570 and 0x5f8).
+The assembly code defined by SAVE_GPR_C uses the wrong offsets for some
+registers in guest_regs. For example, the offset of RCX should be 0x08
+not 0x10. Also, the last offset in the struct (R15) is 0x78, not 0x80,
+so the code actually saves and restore beyond the end of gpr64_regs.
 
-Instead of just correcting the offsets, use vmcb->save.rax and
-vmcb->save.rflags as parameters to the asm block and avoid hardcoding
-offsets completely. While at it, also use guest_regs.rax directly
-instead of assuming it's at offset 0 of guest_regs.
+Eliminate hardcoded offsets by dynamically generating offsets using
+offset_of() and using macros to pass the offsets to assembly as asm
+constraints.
 
-Note: "+m" must be used for vmcb_rax and vmcb_rflags, as caching those
-fields in registers would be wrong as the underlying KVM will update
-them in memory.
+To avoid register conflicts in inline assembly (since almost all GPRs are
+context-switched), access guest_regs via absolute symbol addressing
+(guest_regs + offset) rather than using a base register which could
+get overwritten mid-assembly.
 
-The same problem was recently fixed (differently) for kvm-unit-tests
-[1].
+While at it, rename SAVE_GPR_C and LOAD_GPR_C to a single macro,
+SVM_SWITCH_GPRS_ASM, rename gpr64_regs to guest_regs, and expose it in
+processor.h (in preparation for reusing it for VMX).
 
-[1]https://lore.kernel.org/all/20260521092311.86030-1-pbonzini@redhat.com/
-
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260518202514.2037078-1-yosry%40kernel.org?part=1
+Assisted-by: Gemini:Gemini-Next
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/kvm/lib/x86/svm.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ .../selftests/kvm/include/x86/processor.h     | 31 +++++++++++-
+ .../testing/selftests/kvm/lib/x86/processor.c |  2 +
+ tools/testing/selftests/kvm/lib/x86/svm.c     | 49 +++++++++----------
+ 3 files changed, 54 insertions(+), 28 deletions(-)
 
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index b161174ece453..d7f1acaddd4ee 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -398,8 +398,7 @@ static inline unsigned int x86_model(unsigned int eax)
+ #define PTE_GET_PA(pte)		((pte) & PHYSICAL_PAGE_MASK)
+ #define PTE_GET_PFN(pte)        (PTE_GET_PA(pte) >> PAGE_SHIFT)
+ 
+-/* General Registers in 64-Bit Mode */
+-struct gpr64_regs {
++struct guest_regs {
+ 	u64 rax;
+ 	u64 rcx;
+ 	u64 rdx;
+@@ -418,6 +417,34 @@ struct gpr64_regs {
+ 	u64 r15;
+ };
+ 
++extern struct guest_regs guest_regs;
++
++#define GUEST_REG_OFFSET(name) \
++	[off_##name] "i" (offsetof(struct guest_regs, name))
++
++#define GUEST_REGS_OFFSETS	\
++	GUEST_REG_OFFSET(rax),	\
++	GUEST_REG_OFFSET(rcx),	\
++	GUEST_REG_OFFSET(rdx),	\
++	GUEST_REG_OFFSET(rbx),	\
++	GUEST_REG_OFFSET(rsp),	\
++	GUEST_REG_OFFSET(rbp),	\
++	GUEST_REG_OFFSET(rsi),	\
++	GUEST_REG_OFFSET(rdi),	\
++	GUEST_REG_OFFSET(r8),	\
++	GUEST_REG_OFFSET(r9),	\
++	GUEST_REG_OFFSET(r10),	\
++	GUEST_REG_OFFSET(r11),	\
++	GUEST_REG_OFFSET(r12),	\
++	GUEST_REG_OFFSET(r13),	\
++	GUEST_REG_OFFSET(r14),	\
++	GUEST_REG_OFFSET(r15)
++
++#define GUEST_REG(name) "guest_regs + %c[off_" #name "]"
++
++#define GUEST_SWITCH_GPR_ASM(name) \
++	"xchg %%" #name ", " GUEST_REG(name) "\n\t"
++
+ struct desc64 {
+ 	u16 limit0;
+ 	u16 base0;
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index ef56dcefe0119..1f9201590f5b3 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -29,6 +29,8 @@ bool host_cpu_is_amd_compatible;
+ bool is_forced_emulation_enabled;
+ u64 guest_tsc_khz;
+ 
++struct guest_regs guest_regs;
++
+ const char *ex_str(int vector)
+ {
+ 	switch (vector) {
 diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 1445b890986fd..766d15f1d534a 100644
+index 766d15f1d534a..7db38faded89e 100644
 --- a/tools/testing/selftests/kvm/lib/x86/svm.c
 +++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -164,19 +164,22 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
- {
- 	asm volatile (
+@@ -13,7 +13,6 @@
+ 
+ #define SEV_DEV_PATH "/dev/sev"
+ 
+-struct gpr64_regs guest_regs;
+ u64 rflags;
+ 
+ /* Allocate memory regions for nested SVM tests.
+@@ -137,27 +136,25 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip)
+  * save/restore 64-bit general registers except rax, rip, rsp
+  * which are directly handed through the VMCB guest processor state
+  */
+-#define SAVE_GPR_C				\
+-	"xchg %%rbx, guest_regs+0x20\n\t"	\
+-	"xchg %%rcx, guest_regs+0x10\n\t"	\
+-	"xchg %%rdx, guest_regs+0x18\n\t"	\
+-	"xchg %%rbp, guest_regs+0x30\n\t"	\
+-	"xchg %%rsi, guest_regs+0x38\n\t"	\
+-	"xchg %%rdi, guest_regs+0x40\n\t"	\
+-	"xchg %%r8,  guest_regs+0x48\n\t"	\
+-	"xchg %%r9,  guest_regs+0x50\n\t"	\
+-	"xchg %%r10, guest_regs+0x58\n\t"	\
+-	"xchg %%r11, guest_regs+0x60\n\t"	\
+-	"xchg %%r12, guest_regs+0x68\n\t"	\
+-	"xchg %%r13, guest_regs+0x70\n\t"	\
+-	"xchg %%r14, guest_regs+0x78\n\t"	\
+-	"xchg %%r15, guest_regs+0x80\n\t"
+-
+-#define LOAD_GPR_C      SAVE_GPR_C
++#define SVM_SWITCH_GPRS_ASM \
++	GUEST_SWITCH_GPR_ASM(rbx) \
++	GUEST_SWITCH_GPR_ASM(rcx) \
++	GUEST_SWITCH_GPR_ASM(rdx) \
++	GUEST_SWITCH_GPR_ASM(rbp) \
++	GUEST_SWITCH_GPR_ASM(rsi) \
++	GUEST_SWITCH_GPR_ASM(rdi) \
++	GUEST_SWITCH_GPR_ASM(r8)  \
++	GUEST_SWITCH_GPR_ASM(r9)  \
++	GUEST_SWITCH_GPR_ASM(r10) \
++	GUEST_SWITCH_GPR_ASM(r11) \
++	GUEST_SWITCH_GPR_ASM(r12) \
++	GUEST_SWITCH_GPR_ASM(r13) \
++	GUEST_SWITCH_GPR_ASM(r14) \
++	GUEST_SWITCH_GPR_ASM(r15)
+ 
+ /*
+  * selftests do not use interrupts so we dropped clgi/sti/cli/stgi
+- * for now. registers involved in LOAD/SAVE_GPR_C are eventually
++ * for now. Registers involved in SVM_SWITCH_GPRS_ASM are eventually
+  * unmodified so they do not need to be in the clobber list.
+  */
+ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
+@@ -166,20 +163,20 @@ void run_guest(struct vmcb *vmcb, u64 vmcb_gpa)
  		"vmload %[vmcb_gpa]\n\t"
--		"mov rflags, %%r15\n\t"	// rflags
--		"mov %%r15, 0x170(%[vmcb])\n\t"
--		"mov guest_regs, %%r15\n\t"	// rax
--		"mov %%r15, 0x1f8(%[vmcb])\n\t"
-+		"mov rflags, %%r15\n\t"
-+		"mov %%r15, %[vmcb_rflags]\n\t"
-+		"mov %[guest_regs_rax], %%r15\n\t"
-+		"mov %%r15, %[vmcb_rax]\n\t"
- 		LOAD_GPR_C
+ 		"mov rflags, %%r15\n\t"
+ 		"mov %%r15, %[vmcb_rflags]\n\t"
+-		"mov %[guest_regs_rax], %%r15\n\t"
++		"mov " GUEST_REG(rax) ", %%r15\n\t"
+ 		"mov %%r15, %[vmcb_rax]\n\t"
+-		LOAD_GPR_C
++		SVM_SWITCH_GPRS_ASM
  		"vmrun %[vmcb_gpa]\n\t"
- 		SAVE_GPR_C
--		"mov 0x170(%[vmcb]), %%r15\n\t"	// rflags
-+		"mov %[vmcb_rflags], %%r15\n\t"
+-		SAVE_GPR_C
++		SVM_SWITCH_GPRS_ASM
+ 		"mov %[vmcb_rflags], %%r15\n\t"
  		"mov %%r15, rflags\n\t"
--		"mov 0x1f8(%[vmcb]), %%r15\n\t"	// rax
--		"mov %%r15, guest_regs\n\t"
-+		"mov %[vmcb_rax], %%r15\n\t"	// rax
-+		"mov %%r15, %[guest_regs_rax]\n\t"
+ 		"mov %[vmcb_rax], %%r15\n\t"	// rax
+-		"mov %%r15, %[guest_regs_rax]\n\t"
++		"mov %%r15, " GUEST_REG(rax) "\n\t"
  		"vmsave %[vmcb_gpa]\n\t"
--		: : [vmcb] "r" (vmcb), [vmcb_gpa] "a" (vmcb_gpa)
-+		: [vmcb_rflags] "+m" (vmcb->save.rflags),
-+		  [vmcb_rax] "+m" (vmcb->save.rax),
-+		  [guest_regs_rax] "+rm" (guest_regs.rax)
-+		: [vmcb_gpa] "a" (vmcb_gpa)
+ 		: [vmcb_rflags] "+m" (vmcb->save.rflags),
+-		  [vmcb_rax] "+m" (vmcb->save.rax),
+-		  [guest_regs_rax] "+rm" (guest_regs.rax)
+-		: [vmcb_gpa] "a" (vmcb_gpa)
++		  [vmcb_rax] "+m" (vmcb->save.rax)
++		: [vmcb_gpa] "a" (vmcb_gpa),
++		  GUEST_REGS_OFFSETS
  		: "r15", "memory");
  }
  
