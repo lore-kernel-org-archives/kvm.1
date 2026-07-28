@@ -1,140 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3886630AD05
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F696311C2D
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785252692; cv=none; b=HtScaeSNAP+wutGmFff/T7pLIClQC1/e37hmnD+aFjqfiYVMmGWK9A7GYl/dWHkiH5YV+Fs9dUyhHiAzZMtyyKcVhaIMgX+zA70AIQnW7r1QNIIFmv1zkGUkCI9v/6CDck2t4MjvtNmQ4kyabCKqylRTWiQa2H/e6mRoyetU2c8=
+	t=1785252822; cv=none; b=SlJaGof1+kxZWpY1kadJVDCBdnnrbDzzqQsnBNQB9h399k2dF/tn9r9QodJpsenzw0/WOUEqP3x38E4elXWfVzl7XbNXy/WBrInJdyjYGTGDRin0Eja5dFUPZCQFBRGt+psYd0BNux2cF4SuvJk87RDR5aKhINKHUvu+wcBtXnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785252692; c=relaxed/simple;
-	bh=8NCClHrm2or4BNnnlAVP3I9JkEAjx9iVvTQl6qzFeak=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cpz7T1CMc3MFXZ/A1L4Y/NF3ZkON9EIB9cDuNUcYiDOtmdgwnyUQPnx6RMECJbdd7pRytw6QkW3dp5UzdoeFYy7GrC/Ky+gRPzLssQXdoNjh1XsCHWO28fO/sDcKUj463zw/itjhl49WCdlTj/OI5m4Z3aVnMNlbcZ3vmLWzCk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8A9UFN2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785252822; c=relaxed/simple;
+	bh=YuBTtINjR4jpnq2hKlU2JptssXWFADJS3Oya7sYVQDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vFaIA6LwsW6YgX0NNgYNU9uLg/NyR8MGH4HLjZsXOZ1lRbvRqr6M38faju4FlLndlL2ZLjWiJtqssbGMwHOP1WDWpMciciJx/jKVNSjFMsj+XhjCHzk3GaduwGj9Mi4BLlLODW+g2D1WvlWLeY6wHuIR/7gOVMUL+DJmQY7fitk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YDjpxILp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8A9UFN2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E665B1F00A3D;
-	Tue, 28 Jul 2026 15:31:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785252691;
-	bh=0vJ2qchA/3YJo8FrHzTOIrxIMOki1qZiXjYEE4aHUcs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=H8A9UFN2dyllLHddl7tM1f8FB71rOHR7NocU9K6G2cKaj03FrLk5SwB0Q1IjbxuVP
-	 VUhp1dsiSICzRzYp6lmxohaODv+MYE8SiVsjieh49jUw68ccyYmFiHm1NWzJiX4vC7
-	 hYVvgH7ohqRZ1cEsWj9vn0kx75gU9CRlP8kWXEANdugw/9St7gD7tiHTES+WWF9mUJ
-	 18JvsGE4XrKfaYKApDOkJ+FLSiZ+nXjwTugs/zt8BPF7x3pUcrYg9uOcOdgAVXjrwp
-	 bTF2eFXcumx7l6wKIYjNCgyl8J/yfh2RmOyhwtoBIbdwGn+oNcmW+xx1J+W8U04+KR
-	 myKhEbsz6866w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 28/36] KVM: x86: Activate master clock from
- kvm_arch_init_vm()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Woodhouse" <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-29-dwmw2@infradead.org>
-References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-29-dwmw2@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:31:30 +0000
-Message-Id: <20260728153130.E665B1F00A3D@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YDjpxILp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785252819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cryWGARQWgvDH8w4Iru00RCVGi/QlZW6kZxJHz1JXWU=;
+	b=YDjpxILpzNvLaz1M30v1xzjPN1e4TsMKzG18kuLL60+GaVSbNRsbIXyPJJnRNXMUBfKIkf
+	L9pmv0XQpi7G9A5UhwQk6N2sGn5FZ3Mw3Ep97MJSBOizynD/yz0+vqM2YfmORHXL1LRIJl
+	DSJtPnCV94WQHDW9K4OfP820qPQmWUo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-o_NNZKpZPpef7RsEd3ki3A-1; Tue,
+ 28 Jul 2026 11:33:32 -0400
+X-MC-Unique: o_NNZKpZPpef7RsEd3ki3A-1
+X-Mimecast-MFC-AGG-ID: o_NNZKpZPpef7RsEd3ki3A_1785252809
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0FC41955DDE;
+	Tue, 28 Jul 2026 15:33:24 +0000 (UTC)
+Received: from [10.44.32.140] (unknown [10.44.32.140])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9954B1800480;
+	Tue, 28 Jul 2026 15:33:22 +0000 (UTC)
+Message-ID: <1800dfd2-5d55-4244-a69f-c7e16868b238@redhat.com>
+Date: Tue, 28 Jul 2026 17:33:19 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] KVM: x86: Cancel delayed I/O APIC EOI handling before
+ destroying vCPUs
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ zdi-disclosures@trendmicro.com, Zhong Wang
+ <wangzhong.c0ss4ck@bytedance.com>,
+ Xuanqing Shi <shixuanqing.11@bytedance.com>,
+ Weiming Shi <bestswngs@gmail.com>
+References: <20260727171718.543491-1-seanjc@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260727171718.543491-1-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] Incorrect masterclock scaling ratio and stale state initialization=
- in `kvm_arch_init_vm()`.
-- [High] Unconditional setting of `user_set_tsc =3D true` at vCPU creation =
-breaks 1-second TSC slop protection.
---
+On 7/27/26 19:17, Sean Christopherson wrote:
+> From: Weiming Shi <bestswngs@gmail.com>
+> 
+> Cancel (and flush) the I/O APIC's delayed EOI handling work during the
+> "pre VM destroy" phase, before vCPUs are destroyed, as processing the EOI
+> broadcast will inject another IRQ if the line is asserted, i.e. will try
+> to deliver an IRQ to the target vCPU(s).  Canceling the work after vCPUs
+> are destroyed leads to UAF if the delayed work is processed after vCPUs are
+> destroyed.
+> 
+>    BUG: KASAN: slab-use-after-free in __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 arch/x86/kvm/lapic.c:1250
+>    Read of size 8 at addr ffff8880499abea0 by task kworker/1:2/1218
+> 
+>    CPU: 1 UID: 0 PID: 1218 Comm: kworker/1:2 Not tainted 7.1.0-rc7 #5 PREEMPT(lazy)
+>    Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+>    Workqueue: events kvm_ioapic_eoi_inject_work
+>    Call Trace:
+>     <TASK>
+>     __dump_stack lib/dump_stack.c:94
+>     dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+>     print_address_description mm/kasan/report.c:378
+>     print_report+0x139/0x4ad mm/kasan/report.c:482
+>     kasan_report+0xe4/0x1d0 mm/kasan/report.c:595
+>     __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 arch/x86/kvm/lapic.c:1250
+>     __kvm_irq_delivery_to_apic+0xd8/0xbf0 arch/x86/kvm/lapic.c:1345
+>     kvm_irq_delivery_to_apic arch/x86/kvm/lapic.h:129
+>     ioapic_service+0x308/0x590 arch/x86/kvm/ioapic.c:492
+>     kvm_ioapic_eoi_inject_work+0x13c/0x190 arch/x86/kvm/ioapic.c:532
+>     process_one_work+0xa59/0x19a0 kernel/workqueue.c:3314
+>     process_scheduled_works kernel/workqueue.c:3397
+>     worker_thread+0x5eb/0xe50 kernel/workqueue.c:3478
+>     kthread+0x370/0x450 kernel/kthread.c:436
+>     ret_from_fork+0x72b/0xd30 arch/x86/kernel/process.c:158
+>     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>     </TASK>
+> 
+> Note, the VM is unreachable once kvm_destroy_vm() starts, and scheduling
+> new work via kvm_ioapic_send_eoi() can only be done via KVM_RUN, i.e.
+> requires a live vCPU.
+> 
+> Alternatively, KVM could simply destroy the I/O APIC during the "pre" phase
+> of VM destruction, but that gets more than a bit sketchy as KVM expects the
+> I/O APIC to exist if ioapic_in_kernel() is true, and nested virtualization
+> in particular has a bad habit of touching VM-scope state during vCPU
+> destruction.  E.g. attempting to free the PIC during the pre phase would
+> lead to a NULL pointer dereference in kvm_cpu_has_extint(), and it's not
+> hard to imagine the I/O APIC having a similar flaw.
+> 
+> Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
+> Reported-by: <zdi-disclosures@trendmicro.com>
+> Reported-by: Zhong Wang <wangzhong.c0ss4ck@bytedance.com>
+> Reported-by: Xuanqing Shi <shixuanqing.11@bytedance.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
---- Patch [28]: [PATCH v7 28/36] KVM: x86: Activate master clock from kvm_a=
-rch_init_vm() ---
-commit c68bcfc5acfe3bb9dda51b0de8e297101615b7d5
-Author: David Woodhouse <dwmw@amazon.co.uk>
+Queued, thanks.
 
-KVM: x86: Activate master clock from kvm_arch_init_vm()
+Paolo
 
-Initialize the TSC generation and master clock state at VM creation
-time, rather than relying on kvm_update_masterclock() from
-kvm_arch_vcpu_postcreate().
-
+> ---
+> 
+> v3:
+>   - Go back to v1, sans the helper (x86.c already has an #ifdef). [Sean, syzbot]
+>   - Expand the block comment to call out the the PIC and I/O APIC must not be
+>     destroyed/free. [Kai]
+> 
+> v2:
+>   - https://lore.kernel.org/all/20260706180025.2735341-3-bestswngs@gmail.com
+>   - Per Kai's suggestion, instead of adding a kvm_ioapic_pre_destroy()
+>     helper that only cancels the eoi_inject work, move
+>     kvm_pic_destroy()/kvm_ioapic_destroy() as a whole into
+>     kvm_arch_pre_destroy_vm().  This also fixes the stale
+>     kvm_io_bus_unregister_dev() Kai pointed out.
+> 
+> v1: https://lore.kernel.org/all/20260705050443.1331662-1-bestswngs@gmail.com
+> 
+>   arch/x86/kvm/x86.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0626e835e9eb..2b8474812303 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
-> @@ -9407,8 +9407,6 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
->  		return;
->  	vcpu_load(vcpu);
->  	kvm_synchronize_tsc(vcpu, NULL);
+> @@ -9939,9 +9939,15 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+>   	 * iterating over vCPUs in a different task while vCPUs are being freed
+>   	 * is unsafe, i.e. will lead to use-after-free.  The PIT also needs to
+>   	 * be stopped before IRQ routing is freed.
+> +	 *
+> +	 * Do NOT free the in-kernel PIC or I/O APIC here (but as above, make
+> +	 * sure to flush any background work), as KVM expects interrupt routing
+> +	 * structures to be valid until vCPUs are destroyed.
+>   	 */
+>   #ifdef CONFIG_KVM_IOAPIC
+>   	kvm_free_pit(kvm);
+> +	if (kvm->arch.vioapic)
+> +		cancel_delayed_work_sync(&kvm->arch.vioapic->eoi_inject);
+>   #endif
+>   
+>   	kvm_mmu_pre_destroy_vm(kvm);
+> 
+> base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
 
-[Severity: High]
-A previous patch in this series modified kvm_set_tsc_khz() to unconditional=
-ly
-call kvm_synchronize_tsc(vcpu, &tsc) with a non-NULL pointer during vCPU
-initialization.
-
-Does this cause __kvm_synchronize_tsc() to unconditionally set
-kvm->arch.user_set_tsc =3D true globally for the VM when the very first vCPU
-is created?
-
-If user_set_tsc is set immediately at boot, does this break the 1-second TSC
-slop protection for newly restored VMs, potentially leading to timekeeping
-corruption and TSC jumps during live migration of young VMs?
-
-> -	if (!vcpu->kvm->arch.use_master_clock)
-> -		kvm_update_masterclock(vcpu->kvm, NULL);
-
-[Severity: High]
-By removing this synchronous update, are we deferring the
-master_tsc_scaling_ratio updates to KVM_RUN?=20
-
-If so, does this leave early KVM_GET_CLOCK requests with a stale ratio?
-
->  	vcpu_put(vcpu);
-
-[ ... ]
-
-> @@ -9849,18 +9849,47 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned lo=
-ng type)
-[ ... ]
->  	kvm->arch.default_tsc_khz =3D max_tsc_khz ? : tsc_khz;
->  	kvm->arch.apic_bus_cycle_ns =3D APIC_BUS_CYCLE_NS_DEFAULT;
->  	kvm->arch.guest_can_read_msr_platform_info =3D true;
->  	kvm->arch.enable_pmu =3D enable_pmu && !kvm->arch.has_protected_pmu;
-> =20
-> +	kvm->arch.all_vcpus_matched_freq =3D true;
-> +	kvm->arch.all_vcpus_matched_tsc =3D true;
-> +	kvm->arch.cur_tsc_scaling_ratio =3D kvm_caps.default_tsc_scaling_ratio;
-> +	kvm->arch.cur_tsc_khz =3D kvm->arch.default_tsc_khz;
-
-[Severity: High]
-Here we initialize cur_tsc_khz to default_tsc_khz, which might be scaled
-if max_tsc_khz is configured on the host.
-
-> +
-> +	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
-[ ... ]
-> +	kvm->arch.cur_tsc_write =3D 0;
-> +	kvm->arch.cur_tsc_offset =3D -(s64)kvmclock_host_tsc;
-
-[Severity: High]
-However, cur_tsc_offset is set to the unscaled -(s64)kvmclock_host_tsc here.
-
-When the first vCPU is created, kvm_synchronize_tsc() sees
-virtual_tsc_khz =3D=3D cur_tsc_khz. Will it then erroneously apply this uns=
-caled
-offset to a vCPU using a scaled multiplier, since we bypass the scaling that
-kvm_compute_l1_tsc_offset() would have provided?
-
-Could this lead to a large guest TSC jump at boot and cause timekeeping
-corruption?
-
-> +	kvm->arch.cur_tsc_nsec =3D kvmclock_ns;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D28
