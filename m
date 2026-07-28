@@ -1,165 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C9A41A540
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 09:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785230896; cv=none; b=oaQcl+iLluP6QtNvnWaHNdbuk9PQgJ/ThwgFqwa+4TOcPpQK9sQvn/+NU4cqnGGiXGfRJ/LpzcUPEIiIw1i7Juoydu/FNmV7lI9UHIqx+nyAImg40LDYWKCY75v/2c1C3mlKbci0T17aewq8yNO0m4Wc1gn2Ch9ZFYma3X9Q6CY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785230896; c=relaxed/simple;
-	bh=3cHCsmkDriw4q35Ms8S0Q7FoqP0LXycZ+lYHYQ7IEOw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=AvjRps3AsWkccgw/EgOoOKShaSYCbavgZDd1OP+6pkqj0ybNzLrKd2nolJ2ewklj/rruGG+szbbhOn2XKp55oFH4smKuzgnZigkXYw31xqZCACNbk50+S1pZc7/0McNq0pwdjy8Fb8O/REseTSp6cBpgRaLB7JQ54iSvcdWcmZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojzGZwdz; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5FC3FB077
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 09:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785231230; cv=pass; b=uNx2lPzz0W4anU9LcjD+7scp8Jx+uFmvgNtHq2ID9XEQgvAuPcMxhirjX3tP1uKetHv0wRIGMOCdCPSH6YA461dvwlMjC2CKI5zm71xURcnEB9NNutAU5F+XnMyM8BXImujle40NxCh29lXZ3WivUrTPDiSAaFvYw0eepa41w18=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785231230; c=relaxed/simple;
+	bh=J1o4dHV7U+1Ew0UtbcbsKTeggjMtHCkXXVkPjnbCYUA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Oujy2SEjpclIjX5WYCsNsb9UbQBwoMLjI7SXwt3tvQNCTYScF85CdhKq5ZBWppRgF24S+etV+hFLlZKF52fc5SRyxS4EMLKoAUGrVGN8O1L2VYykafr4BZgp93AUCtHSbrF9ZJOrw1va8ZDSSW1xmTqWatKrgpvWvUr1LTB9/Qo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LW2a+eI2; arc=pass smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojzGZwdz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372C11F00A3A;
-	Tue, 28 Jul 2026 09:28:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785230894;
-	bh=UCO00/7MmyiBCOgvM/GD0aHXMFIWaZDfSIGKbVKr4Xc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ojzGZwdzIrNHPihUIwiqBTZLIB6+oqRKIc8h+sDb/T/nNzohwvicLHPdhbV7uGgV8
-	 UUm7/z+iSGM+k8wm+q4fZTE/fLapuCV+G1grpDm+YQsuU6ek1v5wuVgRRsIR/gOoO/
-	 kIQcFIrpKWXNcLPV8szYhOrucceu3GOQ4V9loS/4JNHOGRxp0TVG0oa1M9PBUFvUYY
-	 aOtxxRRK0GjG5/00Wi4J1GvPFzb79vkeWjUYjiVmfuxJZv0c6QXKTVQdo20znUpJp3
-	 iPnUnoaHDl87pqx6OOpI2HGlmHatQubCQymZZa34kd6ABUhrmHX7ozLOjs6Zg/zKHa
-	 xV9d8Voq+6keg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v2 3/4] KVM: guest_memfd: add
- GUEST_MEMFD_FLAG_MIGRATABLE
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shivank Garg" <shivankg@amd.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728-shivank-gmem-migrate-v2-3-269ac1f84e2b@amd.com>
-References: <20260728-shivank-gmem-migrate-v2-0-269ac1f84e2b@amd.com>
- <20260728-shivank-gmem-migrate-v2-3-269ac1f84e2b@amd.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 09:28:13 +0000
-Message-Id: <20260728092814.372C11F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LW2a+eI2"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c15dd4b9132so531203866b.1
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 02:33:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785231227; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HYcSdEucTx9FHaadC20rXBgpgnxgGLIzQ4MLvYM5ev2758dZYaYYNKMzFY8Ey5+2EY
+         pa8wbSXqZGmhZJ3snpeybisSkmXKBmyVKZ9se/VHCqGCsJQWMzOyq0Thqkyt0A2ThfKF
+         4fBaIHJkNZrQrK5EdCpM9BrUDEdEzsqDJTEP1/ZmrfVSi/rhGm9Y6LbDJu43wVlUlDul
+         BjxUDEEHTGaNrvskK0svukFJcSgRU0nNmEOauCJAZSvQZ/2OWfPu4PoFFDAZ3fvgnTkt
+         wHpm6t2XtAylYm+Sebf//Dqj1dCAJ3J69RTr2+0P163fnlrgJ3MIcq83NggD5aMG+ozf
+         Nlaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=7anTwoJ6gAREbTJx72Mm68Sq3jGu+s8EJmYIrX7NAK4=;
+        fh=JdtqOogSoO4kC4psKo2zydoO/hSxNBc8RpLPucSU1/A=;
+        b=nkJei8EISqhphMFIjH6669eoGKxSl/3QvIl4qCv3TsKxnC5eN0XmhCKcIRJEDDLM7e
+         KGqgjK6fJyEW9dwRontg4aX3iF7eURnRnnHsMq/RFHUjqsfcs4VCacXcqVStWnp5CnWl
+         Z9Ra25fq1vFBxIs7nS7yK8AIIVpGdRTRDVmlKOczTSDpzGuR/SLh6wwQ6k0wsOr4DaVa
+         9qpbd9xvRGvNBFDsEqEmiW8m4Q4GG3gGhT4StzLzyf7nRXQ+EP4q4yNVoRVgELTiCAR3
+         eVuvNuU3CHPchh7U6FVGrNoXpyi742rtiv8CA+H5yiQfaxhdzPda/jyC+OTDLUfMxpiM
+         HGPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785231227; x=1785836027; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7anTwoJ6gAREbTJx72Mm68Sq3jGu+s8EJmYIrX7NAK4=;
+        b=LW2a+eI2TJQTLrYVOvD0GvfNIYm2AE0KZinPagZ7lXYUSVjCvB9fFchLJo7BsDMbEO
+         S3Dk/L9mJ2Vx35h/YozZlD5wcM5PoG8p/fIjeuHsLNpfeHyk1lq5xrWZhkONjztxe0dz
+         fofYGiAgGn+ZoBB4CDMowFPwu/AF0FiO3ampz07O5gdr6ztYdP28uAN8k7xE73JX7BIN
+         /UpQsWB+jNvMwWUJIQukTAW3A7nIJbOZo7mMnBg04jcNkpc48Ma2GjiXeA17k8iVurRr
+         H/v88ARIj81pUzVRdlTh3+GA3Kz0zmo5JyQ4YSx55XSJLkAKtcKgnin5V6fn5oTuAIPV
+         4isQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785231227; x=1785836027;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7anTwoJ6gAREbTJx72Mm68Sq3jGu+s8EJmYIrX7NAK4=;
+        b=Zj2xRDA5Sfn7dDxcqfGXzH4+Qc5rwJRpQqyyedGRbvJpjspBkyNDQGDXx0JLnd6PU4
+         wMTf8Qw4lrocAdrP0tz5yVS9PmNlPDTYLvc8lIkLj1PRqyPhyEvbTAa5pt4GLmZMi3FP
+         erjErYKGF8rUuldV0IEtyxFA+nuvTqW5qgJpQ5RQ5iQRxPtKeKiBYBa2CcrYvw/xXDr9
+         emfhS1XuMHulwR0hZic7E1kXacwYsOqSMKs8/HrxA+4+9t444NCBtgClt+In4VzuikoI
+         yjNe2ALKhJakDBG+bD+r+/oPk4Q1pBesswu94CYrgQTgo1rHRRseZxEZI1BecYlR2KC5
+         guWQ==
+X-Gm-Message-State: AOJu0YyCWTbYZh3oh+xTTXFsZ2ceHwhWuAmW9RieWIHHu/n8plt6jUBI
+	qw/zBN3SLB7PpnElrkWiyn3wGfm604D6UgdT/4PPYkz/eqOVxjZ0N+T2pW6eE3+OSMQvpxhE7jF
+	r7mllAcOJ7F4DTrQTQ0SKmRJcy1lJPQ==
+X-Gm-Gg: AR+sD11aS5FpznIDR+F7JYsvoupRzlM3xLquNOm6DR4CV0Sb/uZ9WJkCFSkHvyXNuDO
+	XrXb4j9Tx63fNIf5V8h44KECAL7764zCOlTHMprqolKhtL3564nySXK25ffHIQ8BWIGdylEbkOv
+	fNAHiarThbjFsQuF9vxKAx87M70271LkqO9G+WI5ssSpravzooV0RltVnn16G1cW3aovjraH7Cq
+	2L6cVhfE37EioV6AZRdN+G8luGbF9qZ871Jf53zv4PB0pG3wRPYkno5b05JmRCl/T89r0i6e5j6
+	4wc2lpz9EKxR86Z7i0xau6I6T2E0vWMQVWPuR9Etv7iTjgCtHdvlUS1egZCaXjctzIzlvWHR/g=
+	=
+X-Received: by 2002:a17:907:9414:b0:c1f:6822:945a with SMTP id
+ a640c23a62f3a-c1f7249e8f5mr72893966b.57.1785231226472; Tue, 28 Jul 2026
+ 02:33:46 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 28 Jul 2026 02:33:45 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Tue, 28 Jul 2026 02:33:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Myeonghun Pak <mhun512@gmail.com>
+Date: Tue, 28 Jul 2026 02:33:45 -0700
+X-Gm-Features: AUfX_myIF7_i5vRck_Vtzi3_UtBGZs0pOxtIQT05nTQ-s69f71oGHbv7j0_VJMw
+Message-ID: <CAGEsz8FbPu_DtOkTij0RvBriK1R0FspzEU6Oef0Gers-gS1d3w@mail.gmail.com>
+Subject: [PATCH] KVM: x86: Cancel IOAPIC EOI work before freeing vCPUs
+To: seanjc@google.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, security@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+The IOAPIC delayed EOI injection worker dereferences local APIC pointers
+from the VM's APIC map.  Since commit 17bcd7144263 ("KVM: x86: Free
+vCPUs before freeing VM state"), kvm_arch_destroy_vm() frees vCPUs and
+their local APICs before kvm_ioapic_destroy() synchronously cancels the
+worker.
 
-Pre-existing issues:
-- [Critical] Accessing memslots in `__kvm_gmem_invalidate_start` without ho=
-lding `kvm->srcu` allows a use-after-free if the memslot is concurrently de=
-leted while the guest_memfd is being closed.
-- [High] Concurrent execution of `kvm_gmem_unbind` on a dying file and `kvm=
-_gmem_migrate_folio` causes asymmetric `kvm_mmu_invalidate_begin`/`end` pai=
-ring, permanently hanging the VM in page faults.
---
+Consequently, if the delayed work is pending when VM teardown starts,
+the worker can run after a local APIC has been freed.  Generic KASAN
+reported:
 
---- Patch [3]: [PATCH RFC v2 3/4] KVM: guest_memfd: add GUEST_MEMFD_FLAG_MI=
-GRATABLE ---
-commit 5a71d0799db0fa4a13e00aa0d626b30f60552d46
-Author: Shivank Garg <shivankg@amd.com>
+  BUG: KASAN: slab-use-after-free in
+  __kvm_irq_delivery_to_apic_fast+0x7f6/0x840 [kvm]
+  Read of size 8 by task kworker/3:3
+  Workqueue: events kvm_ioapic_eoi_inject_work [kvm]
 
-KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
+The allocation stack contains kvm_create_lapic().  The free stack is:
 
-This commit introduces GUEST_MEMFD_FLAG_MIGRATABLE and
-kvm_arch_supports_gmem_migration() to control migration support. It allocat=
-es
-opted-in guest_memfds with GFP_HIGHUSER_MOVABLE, allowing folios to be
-migrated by the memory manager in non-confidential VMs.
+  kvm_arch_vcpu_destroy
+  kvm_destroy_vcpus
+  kvm_arch_destroy_vm
+  kvm_put_kvm
 
-[ ... ]
+A ring-0 guest can arm the delayed work by repeatedly acknowledging an
+asserted level-triggered interrupt, and can then request a reset that
+causes an unmodified QEMU process started with -no-reboot to perform
+final VM teardown.  I reproduced the UAF on current Linux master as of
+2026-07-27 with unmodified Debian QEMU 10.0.11.  No guest vCPU
+hot-unplug or post-launch host-side teardown ioctl was used.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index ec881cabe8e3e..8ae455a6b38df 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
+The regression first appeared upstream in v6.14.  The same ordering
+change was backported to the v6.12.y stable series and first released in
+v6.12.41.
 
-[ ... ]
+Cancel the delayed work from kvm_arch_pre_destroy_vm(), before vCPUs and
+their local APICs are freed.  Keep the cancellation in the final IOAPIC
+destroy path through the same helper so that partial initialization and
+error paths remain covered.
 
-> @@ -623,11 +628,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_=
-t size, u64 flags)
->  	inode->i_mapping->a_ops =3D &kvm_gmem_aops;
->  	inode->i_mode |=3D S_IFREG;
->  	inode->i_size =3D size;
-> -	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
->  	mapping_set_inaccessible(inode->i_mapping);
-> -	mapping_set_unmovable(inode->i_mapping);
-> -	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> -	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +	/* guest_memfd mappings should be marked unevictable. */
-> +	mapping_set_unevictable(inode->i_mapping);
-> +
-> +	if (flags & GUEST_MEMFD_FLAG_MIGRATABLE) {
+With this patch applied to the same KASAN build:
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but enabling migration here
-exposes a pre-existing use-after-free risk in __kvm_gmem_invalidate_start().
+  - arch/x86/kvm modules build successfully;
+  - scripts/checkpatch.pl --strict reports no errors or warnings;
+  - 500 complete stock-QEMU guest trigger/teardown iterations completed
+    without a new KASAN report;
+  - 50 iterations of the direct KVM race reproducer, each with 64 vCPUs,
+    completed without a new KASAN report;
+  - a stock-QEMU kernel-irqchip=split smoke test completed successfully,
+    covering the no in-kernel IOAPIC case;
+  - ftrace confirms kvm_ioapic_pre_destroy() runs before
+    kvm_destroy_vcpus() and kvm_free_lapic().
 
-If an unprivileged user creates a migratable guest_memfd and binds it, then
-concurrently closes the file descriptor and deletes the KVM memslot, memory
-compaction can invoke kvm_gmem_migrate_folio() which calls
-__kvm_gmem_invalidate_start().
+The source reproducer and full KASAN report are available on request.
 
-Because kvm_gmem_unbind() bypasses filemap_invalidate_lock when the file
-is dying, it does not wait for migration. __kvm_gmem_invalidate_start() then
-dereferences the memslot without holding kvm->srcu:
+Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
+Cc: stable@vger.kernel.org
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ arch/x86/kvm/ioapic.c | 12 +++++++++++-
+ arch/x86/kvm/ioapic.h |  1 +
+ arch/x86/kvm/x86.c    |  1 +
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_start() {
-    xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-        pgoff_t pgoff =3D slot->gmem.pgoff;
-        struct kvm_gfn_range gfn_range =3D {
-            .start =3D slot->base_gfn + max(pgoff, start) - pgoff,
-        ...
-}
+AI disclosure: I used AI assistance during the audit and am treating the
+issue as public as required by Documentation/process/security-bugs.rst.
+The reproducer has not been posted publicly.
 
-Is there a risk that the memslot deletion path completes synchronize_srcu()
-and calls kfree(slot) while __kvm_gmem_invalidate_start() is still accessing
-it?
+diff --git a/arch/x86/kvm/ioapic.c b/arch/x86/kvm/ioapic.c
+index 757667fb2bfa0..6133061e18f10 100644
+--- a/arch/x86/kvm/ioapic.c
++++ b/arch/x86/kvm/ioapic.c
+@@ -741,7 +741,7 @@ int kvm_ioapic_init(struct kvm *kvm)
+ 	return ret;
+ }
 
+-void kvm_ioapic_destroy(struct kvm *kvm)
++void kvm_ioapic_pre_destroy(struct kvm *kvm)
+ {
+ 	struct kvm_ioapic *ioapic = kvm->arch.vioapic;
 
-[Severity: High]
-This is also a pre-existing issue, but exposing the migratable flag makes it
-reachable. Could this lead to asymmetric kvm_mmu_invalidate_begin/end pairi=
-ng
-and a permanent VM hang?
+@@ -749,6 +749,16 @@ void kvm_ioapic_destroy(struct kvm *kvm)
+ 		return;
 
-When kvm_gmem_unbind() executes concurrently with kvm_gmem_migrate_folio()
-on a dying file, it bypasses the lock and removes the binding from the
-xarray between migration's invalidate_start and invalidate_end:
+ 	cancel_delayed_work_sync(&ioapic->eoi_inject);
++}
++
++void kvm_ioapic_destroy(struct kvm *kvm)
++{
++	struct kvm_ioapic *ioapic = kvm->arch.vioapic;
++
++	if (!ioapic)
++		return;
++
++	kvm_ioapic_pre_destroy(kvm);
+ 	mutex_lock(&kvm->slots_lock);
+ 	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &ioapic->dev);
+ 	mutex_unlock(&kvm->slots_lock);
+diff --git a/arch/x86/kvm/ioapic.h b/arch/x86/kvm/ioapic.h
+index 3dadae0936902..5bfbae63f3689 100644
+--- a/arch/x86/kvm/ioapic.h
++++ b/arch/x86/kvm/ioapic.h
+@@ -105,6 +105,7 @@ void kvm_rtc_eoi_tracking_restore_one(struct
+kvm_vcpu *vcpu);
+ void kvm_ioapic_update_eoi(struct kvm_vcpu *vcpu, int vector,
+ 			int trigger_mode);
+ int kvm_ioapic_init(struct kvm *kvm);
++void kvm_ioapic_pre_destroy(struct kvm *kvm);
+ void kvm_ioapic_destroy(struct kvm *kvm);
+ int kvm_ioapic_set_irq(struct kvm_kernel_irq_routing_entry *e, struct kvm *kvm,
+ 		       int irq_source_id, int level, bool line_status);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index afcac1042947a..9b4e89cd8169c 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13432,6 +13432,7 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+ 	 */
+ #ifdef CONFIG_KVM_IOAPIC
+ 	kvm_free_pit(kvm);
++	kvm_ioapic_pre_destroy(kvm);
+ #endif
 
-virt/kvm/guest_memfd.c:kvm_gmem_unbind() {
-    if (!file) {
-        __kvm_gmem_unbind(slot, slot->gmem.file->private_data);
-        return;
-    }
-}
-
-When the migration finishes, __kvm_gmem_invalidate_end() conditionally
-checks xa_find():
-
-virt/kvm/guest_memfd.c:__kvm_gmem_invalidate_end() {
-    if (xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
-        KVM_MMU_LOCK(kvm);
-        kvm_mmu_invalidate_end(kvm);
-        KVM_MMU_UNLOCK(kvm);
-    }
-}
-
-Since the binding disappeared, doesn't this skip the _end notification,
-permanently leaking KVM's mmu_invalidate_in_progress counter and causing
-subsequent page faults to infinitely loop in mmu_invalidate_retry_gfn()?
-
-> +		mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
-> +	} else {
-> +		mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +		mapping_set_unmovable(inode->i_mapping);
-> +	}
-> =20
->  	GMEM_I(inode)->flags =3D flags;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728-shivank-gm=
-em-migrate-v2-0-269ac1f84e2b@amd.com?part=3D3
+ 	kvm_mmu_pre_destroy_vm(kvm);
+-- 
+2.47.2
