@@ -1,63 +1,63 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD68F472F6E
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CBC472F72
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266805; cv=none; b=LbNrvjdRZOdVdeJGBca2KobKsiJsTqXjZXW7WkIQEMTR1QzTj2uT5cmQFkTsRqNWS+50nFx5uU5UE/Am2gJbWrOTGbbd0xZQOO4OI3Yj8sTfSMqfw4Fp3zgLiCPiGLCxXR8Yyk6Tx5Bv5DgBv0zXP2xT7uUoF324TAgb/6uOWn8=
+	t=1785266808; cv=none; b=uS1SGjl+w2jMFzju/9WxCAUKUwWvD1lcSV20mRKrSUZ10Mjpo+owWy8bFkkdgwdUw2FehUN93mrN0s/B2YA9bFOLzMwhiMZYNKY+W4//k+skO1gnQJhwOah07D6j0SDJWj6xuHWpcmyjGpNBU53QDW3uF2y3Asr/s2/k35/9YgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266805; c=relaxed/simple;
-	bh=OSzq2kDFqevjhWgUvCxECrei4QM0G45rXxCF9eZ32Y8=;
+	s=arc-20240116; t=1785266808; c=relaxed/simple;
+	bh=9oNZYUkgnWPa8+1fFBiTRsY0iL73hBjwx/0YwM9GSy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VR1CQDiCTSA/XkTvnDm9UoPzR3HwRECotH3ypSp6ZxyEmZ4ju2InLyJaoRfyGPM6EuMq5pyZgA1Pk42wtxMjSDqzb4FXQf6swrPhkg0A9Mb4djQ7yiI2ayW/YeiUC5dsTR8X3kKNTvQ5wNmnM03LqatZd7HMxLwXgOzVHyVGvUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IJsfGlYh; arc=none smtp.client-ip=209.85.216.46
+	 MIME-Version; b=W1Ax98LLF9f1WRNryXpoPZKV0mi/azCzhalpCWSBNTWDgb725yFSpTNh95uPsBCxdmiaU1C+PGsE1MM7YwXvS9w7bW2n8SnH8XSD1KXLVwoOLG3BDdT7J7r77FuH9JQY2og294S5dPHrkF9IQ5ycvvXihFSG6J3FldVrKP0BJfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=k5+Q339V; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IJsfGlYh"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so201077a91.0
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="k5+Q339V"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38f620399a0so146414a91.2
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785266803; x=1785871603; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1785266806; x=1785871606; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZnODmfi9jlHeHZOeJx2IurnBfxwM7mGEa2KAs0ZmXME=;
-        b=IJsfGlYhO9YJcb324j2oHma7uSRHuBAGMmeIT0P7uUfFmkpaYnqUrge1A8C1iL2Ilh
-         zmhzwdIo9qS8PK3xeHxTJyGBjofj9dmOzOGOMv3vVMbHj8op72PfayXNKiZglPzyahnA
-         n0N1bduvBoXJUAA/9CNMrzhS5pBwb+sAhS2759Z5evgVzQYXypCUSMC89KrCrU+JL8vF
-         GcweAfmosPZcfkZEWrwDXvWlV6CpggG9Ry+n1tUObIGGXwTCHmCaCCba8blrVHSzGTYJ
-         41YlburJAg1JhnStr8OOVLMjtyAqmehs4ZUi9PDJDc7Cp5BhotimW3bO/xlPH1YKQf8E
-         /Izw==
+        bh=P0YSgKbTi94FPXUFvygJmUQ5Zpn1OBxkC+C5ko65QCo=;
+        b=k5+Q339VvKJ+9WzFMQO0nME5p2k7N7fOMsZjSlyJHDvn9Gst5HS0vgUMbkulPSAWHI
+         PsW3K2/mYhFh0nczCb/UCDTRFD+QJ27Z2QPQ8OgPxwOGV1H5G+6g6FM983jROiAys+Ai
+         h6o4HtXNteYmZP6qj9bw9PplCUJSbaipzkJkh7h6k+AhZPTDtx4qjqo9ZCURj5jLioPZ
+         /zDjkAARPAMue5rPpp7YQXZ482RaavPfFmBNQZcBm8FDwaGCJ6SsEnx80Yve4HZ/KlBH
+         SsuDnqvvfwLqPvAEWxVA3SclA514wntmF7XlyfeP+kIBixZ2ZsH9ZkDyErQ2cmQ76rJ/
+         PooA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266803; x=1785871603;
+        d=1e100.net; s=20251104; t=1785266806; x=1785871606;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZnODmfi9jlHeHZOeJx2IurnBfxwM7mGEa2KAs0ZmXME=;
-        b=TdYgnr3seozJ53arx93T1jcGdm9jWlqG6z9pythrp9t8qQ9pTJYQNvs6aFpFzuKlny
-         2XlsiRN5/jKnFMvogNpHSoV4OkvuZJiNjTrFVUoKrOzqA9dtZpJbYZ/Bz4VZe700rCJ/
-         6N/MkKoF8mGbfhmeDiAty3+gMGrIUORyMqH9Rugiu/pSRzSCzvh6ucKvCY67EQ2i0AbL
-         WgSTfG23xD3uoeV+fijh4H1RT1hG8KCnGiXpttQD3B4tazFlYK3oMMLrw20f+jQ6i+nG
-         ru0igG19GlZIP4rBPeOagwHbJON25YMhG7EoeWwmCHEUtbGmj7/Eg9cZb+kIHBXKrLjg
-         y67A==
-X-Forwarded-Encrypted: i=1; AHgh+RqCRQSvLxJ/Y5QpPxnbNglPuE6YuaNlS0tzUlYVswDIt9nf3M1mM1nHpn7+W+BWv9je1PM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+4MMJIUSOqAccUFoU3OxU5xiqXRlx/TgYH7OjqYnVwl2ywoVN
-	Wn4vL+frE48JUIIqPRzB2BQgSkMAdDeG7DLQyHczhc6xHNT4B0WL0wca3wLNsupIvUw=
-X-Gm-Gg: AR+sD13N6QOKLoIb7Rbk0lBr+NsL1DSyfCmf5ci5efT6mx/w0F78iBZTMx3cB5SXgjH
-	kbjHL3R//ve1eMO0Jm/W7nnOnAAmJjfufYvxevFV3RvT4Xm8nTnvukV5InRoh0Mv3Q/XAwdr5a7
-	6Qe/dKw1/EEoyl/nSAUwv9ai//ZqNCOANPbU/NvXxh8xnGgI+DhEzS5XJMBCzgii88oGURl/h6u
-	Io6ZSJyAJN1qYfiSJ5YGV916SnVcrYXSvgItY8HuN+brPX4SoumEn1pfWDoh6gimSZjwLxbOuY4
-	pp/1U6G7UQXLONAtM/st0UlBGboWjIRkPSA9HwTaqZCf2gii3nIL/9NDomu7D0ROlrw2OOsaXpT
-	SMz5wIoQKByWB2lP+qgdpE6Ov04GvTBd1vxgkSgpHAn6lYqbl2nEY4Br1TG53hZcEw2x2R2BFbP
-	ErJQ1/kpzB+rGsOqrR3iu6uD2Fw4gvfd++kPUA/vY=
-X-Received: by 2002:a17:90b:3802:b0:380:9f17:6df3 with SMTP id 98e67ed59e1d1-38f6a34e1edmr3788843a91.4.1785266803143;
-        Tue, 28 Jul 2026 12:26:43 -0700 (PDT)
+        bh=P0YSgKbTi94FPXUFvygJmUQ5Zpn1OBxkC+C5ko65QCo=;
+        b=UbbJYpAagjfmrWrWPycMjf6HN6+AsKb+w0nbAF0Dl9Sl8I3+uVKdwCpsIoyVXMPBoV
+         wZHnxCmsUGIKAzBEUMHjDTyk5hdzdW3BimMZuSysOwTVfsiKaGQNLdulszdqZmbnPpSA
+         Q3kdtELlZZC/b7oAkq7GLfUdD6JOKtrHG0ILrJfHrfEslmlSDRax41dwKA7pxg896TAn
+         5LzPUZDuw1MmIy06ReZ00Oq5EQWO5Rva1/dfFWyxr2NWJfaJFq37BEybEIOiFaoe/Omg
+         /OVlbkA1Fonu+076hSSGJn/FXpZd/FskSkil781Z6aNsHwtLUqU1y7LoeGeGhjlKdAGG
+         5/Vw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6yF+3V/i4XHWdFLrMdiMSY/+1PetGJ+SCx1T3eUuYkRTUuzo7krnr4YHMgd5FZXtP4YY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxvf1XDysh8uH/J7aAtfeNnry0NK24gqW+JGVRZnsj9iNhH0Mk7
+	ldt7imihHOOMdDXAWGP4vJtq94l8uxnrnVuuxCHVwAm5C47/dshkBVZ01n25pTwvVfA=
+X-Gm-Gg: AR+sD11SGZ9FUC6zqjau5tb99mMjj9lw5aehbcPK3b2PYod5/WW9Gc09x8B3YVknCJb
+	myjnglUYIjnmJXccK70N851CT0pkkRc0mnL4Ipns9AmIHrxon5kH+9CTAE0gboQUeNbIxIPkkkm
+	9lAbLQeWxkRFabDBAYMliv7DR6yrGBrP+JUiblTTC95VVi9wisTmNLI/fRHRAh02FEazA/e4Rw3
+	C1B5zU3XXsWQrO9hcsBzN9+wDyxR8l3HY6pltuv5+OHrU2xgSV8alP0fgQEUKx2UrbTa0+tyBhf
+	Pw9akaCeqOoZkGP0+/ZlBDXKqCqhVG+GfRIvVcNy59FYk+Hli1DDQqKI8MBFSl1j/AN3TcvRo7T
+	tXi7Vio2FVQc5+9KG6nKp3Fjhw/SHOQx0RckTCfhpnm7s5dw8+fyHtwguByFy+vZWElU53AF+bH
+	qtJAoI+5v0sJ3yKKdXZZ6NKebopVui
+X-Received: by 2002:a17:90b:50c3:b0:37d:ee77:78ac with SMTP id 98e67ed59e1d1-38f6a3aba5emr4059612a91.19.1785266805956;
+        Tue, 28 Jul 2026 12:26:45 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:b9d1:87c9:a085:86c9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.41
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:26:42 -0700 (PDT)
+        Tue, 28 Jul 2026 12:26:44 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v2 05/24] target/arm/kvm: Split kvm_arch_get/put_registers
-Date: Tue, 28 Jul 2026 13:26:11 -0600
-Message-ID: <20260728192630.240375-6-mathieu.poirier@linaro.org>
+Subject: [RFC v2 06/24] target/arm/kvm-rme: Initialize vCPU
+Date: Tue, 28 Jul 2026 13:26:12 -0600
+Message-ID: <20260728192630.240375-7-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
 References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
@@ -89,78 +89,181 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-For a Realm, KVM is much more restrictive on the registers a VMM can
-initialize.  To prepare for Realm VM initialization, split the get/put
-register functions for a non-secure VM in their own function.
+The target code calls kvm_arm_vcpu_init() to mark the vCPU as part of a
+Realm. For a Realm vCPU, only x0-x7 can be set at runtime. Before boot,
+the PC can also be set, and is ignored at runtime. KVM also accepts a
+few system register changes during initial configuration, as returned by
+KVM_GET_REG_LIST.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ target/arm/cpu.h      |  3 +++
+ target/arm/kvm-rme.c  |  9 ++++++++
+ target/arm/kvm-stub.c |  5 ++++
+ target/arm/kvm.c      | 54 +++++++++++++++++++++++++++++++++++++++++--
+ target/arm/kvm_arm.h  | 10 ++++++++
+ 5 files changed, 79 insertions(+), 2 deletions(-)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 03a30afcbed1..c7927036360c 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1055,6 +1055,9 @@ struct ArchCPU {
+     /* KVM steal time */
+     OnOffAuto kvm_steal_time;
+ 
++    /* Realm Management Extension */
++    bool kvm_rme;
++
+     /* Uniprocessor system with MP extensions */
+     bool mp_is_up;
+ 
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index eb8e65ba438f..5d6814fcf9e5 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -69,6 +69,15 @@ static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
+     return 0;
+ }
+ 
++void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
++{
++    if (!rme_guest) {
++        return;
++    }
++
++    cpu->kvm_rme = true;
++}
++
+ static void rme_guest_class_init(ObjectClass *oc, const void *data)
+ {
+     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 88cbe8d85c41..5fde96f9b281 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -119,3 +119,8 @@ char *kvm_print_register_name(uint64_t regidx)
+ {
+     g_assert_not_reached();
+ }
++
++void kvm_arm_rme_vcpu_init(ARMCPU *cpu)
++{
++    g_assert_not_reached();
++}
 diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 401a6f669cbb..33c3763aebfa 100644
+index 33c3763aebfa..b4c6da1fb9f3 100644
 --- a/target/arm/kvm.c
 +++ b/target/arm/kvm.c
-@@ -2169,7 +2169,7 @@ static int kvm_arch_put_sve(CPUState *cs, uint32_t vq, bool have_ffr)
+@@ -2015,6 +2015,8 @@ int kvm_arch_init_vcpu(CPUState *cs)
+         cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
+     }
+ 
++    kvm_arm_rme_vcpu_init(cpu);
++
+     /* Do KVM_ARM_VCPU_INIT ioctl */
+     ret = kvm_arm_vcpu_init(cpu);
+     if (ret) {
+@@ -2169,6 +2171,29 @@ static int kvm_arch_put_sve(CPUState *cs, uint32_t vq, bool have_ffr)
      return 0;
  }
  
--int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
-+static int kvm_arm_put_core_regs(CPUState *cs, Error **errp)
- {
-     uint64_t val;
-     uint32_t fpr;
-@@ -2272,6 +2272,19 @@ int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
-         return ret;
-     }
- 
-+    return 0;
-+}
-+
-+int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
++static int kvm_arm_rme_put_core_regs(CPUState *cs, Error **errp)
 +{
-+    int ret;
++    int i, ret;
 +    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
 +
-+    ret = kvm_arm_put_core_regs(cs, errp);
++    /* The RME ABI only allows us to set 8 GPRs and the PC */
++    for (i = 0; i < 8; i++) {
++        ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.regs[i]),
++                              &env->xregs[i]);
++        if (ret) {
++            return ret;
++        }
++    }
++
++    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.pc), &env->pc);
 +    if (ret) {
 +        return ret;
 +    }
 +
-     write_cpustate_to_list(cpu, true);
- 
-     if (!write_list_to_kvmstate(cpu, level)) {
-@@ -2354,7 +2367,7 @@ static int kvm_arch_get_sve(CPUState *cs, uint32_t vq, bool have_ffr)
-     return 0;
- }
- 
--int kvm_arch_get_registers(CPUState *cs, Error **errp)
-+static int kvm_arm_get_core_regs(CPUState *cs, Error **errp)
- {
-     uint64_t val;
-     unsigned int el;
-@@ -2457,6 +2470,19 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
-     }
-     vfp_set_fpcr(env, fpr);
- 
 +    return 0;
 +}
 +
-+int kvm_arch_get_registers(CPUState *cs, Error **errp)
-+{
-+    int ret;
-+    ARMCPU *cpu = ARM_CPU(cs);
-+
-+    ret = kvm_arm_get_core_regs(cs, errp);
-+    if (ret) {
-+        return ret;
+ static int kvm_arm_put_core_regs(CPUState *cs, Error **errp)
+ {
+     uint64_t val;
+@@ -2280,7 +2305,11 @@ int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
+     int ret;
+     ARMCPU *cpu = ARM_CPU(cs);
+ 
+-    ret = kvm_arm_put_core_regs(cs, errp);
++    if (cpu->kvm_rme) {
++        ret = kvm_arm_rme_put_core_regs(cs, errp);
++    } else {
++        ret = kvm_arm_put_core_regs(cs, errp);
 +    }
-+
-     ret = kvm_get_vcpu_events(cpu);
      if (ret) {
          return ret;
+     }
+@@ -2367,6 +2396,23 @@ static int kvm_arch_get_sve(CPUState *cs, uint32_t vq, bool have_ffr)
+     return 0;
+ }
+ 
++static int kvm_arm_rme_get_core_regs(CPUState *cs, Error **errp)
++{
++    int i, ret;
++    ARMCPU *cpu = ARM_CPU(cs);
++    CPUARMState *env = &cpu->env;
++
++    for (i = 0; i < 8; i++) {
++        ret = kvm_get_one_reg(cs, AARCH64_CORE_REG(regs.regs[i]),
++                              &env->xregs[i]);
++        if (ret) {
++            return ret;
++        }
++    }
++
++    return 0;
++}
++
+ static int kvm_arm_get_core_regs(CPUState *cs, Error **errp)
+ {
+     uint64_t val;
+@@ -2478,7 +2524,11 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
+     int ret;
+     ARMCPU *cpu = ARM_CPU(cs);
+ 
+-    ret = kvm_arm_get_core_regs(cs, errp);
++    if (cpu->kvm_rme) {
++        ret = kvm_arm_rme_get_core_regs(cs, errp);
++    } else {
++        ret = kvm_arm_get_core_regs(cs, errp);
++    }
+     if (ret) {
+         return ret;
+     }
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index e7c40fb003e4..d95381c13afa 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -240,4 +240,14 @@ void arm_gic_cap_kvm_probe(GICCapability *v2, GICCapability *v3);
+  */
+ char *kvm_print_register_name(uint64_t regidx);
+ 
++/**
++ * kvm_arm_rme_vcpu_init
++ * @cs: the CPU
++ *
++ * If the user requested a Realm, setup the given vCPU accordingly. Realm vCPUs
++ * behave a little differently, for example most of their register state is
++ * hidden from the host.
++ */
++void kvm_arm_rme_vcpu_init(ARMCPU *cpu);
++
+ #endif
 -- 
 2.43.0
 
