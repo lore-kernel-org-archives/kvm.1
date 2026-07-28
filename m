@@ -1,37 +1,37 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782E9456DF4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CEB471260;
 	Tue, 28 Jul 2026 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250227; cv=none; b=ViKzBbopLLVWAcp33I2UWL7ODGbUY1aoGsPYlSb8Fn0NciNFaOff9VStTjs34PZLGi7+SrPupm6h9YpnggXMwToqEMHaFhC5Y05fh+khdtUFx5yaFYmUkxY1iEyZylvULsoWTWbs/YU5DRxr5rRXdFRYD7/YyRlgCddvTYOb4TA=
+	t=1785250227; cv=none; b=il3mR+1965T3+x3ZAjxeMsfHZGvl0pJpfMIVzjS7mVPV3F6Syw5Qr2X+u42nTxEXrT9eebvStDwpa3dcXg/saTBiGDzCcSJHbP8XaIN+otKLkYtrNBSLSHWZDRx9F1ir7j0XZQclYCJ9+Z85P3fkvTZ74SPf37ERT1QFX5aImEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785250227; c=relaxed/simple;
-	bh=dlg0OHt9Jv46ntntsOCbjjR3SjIeqs6bhl2bpzj2cKk=;
+	bh=Wg7Q6zX8nCGiewbTofOICDtvxS/HYE5sf35RtJsPup0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYnpRWh6Lc6NyVmy3f8esV5qo0aTzqQ4oiPLWkgLM6lliDqveiA7ZVzI0SKhKPfeOgdlXpsJvFP77diYGsPGWRfUrmilZcwmCTxLcd3/zQnhUUiRYgRDzxIDaW6ICMRo8NQlZZz//mn5BT38s0WTNeitKOSx1ydd+9Wlha5wRWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=IRn8U3JS; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=iQ2SsSdzA2G1G2kS4xuyHecVdQvOMHYS8iVjeCWIYyicygzuHuEUUDVUux4AzZ+BqeqxgmNX3sMOXe4FGyilw79JCfl/NSTfz57BGkiOGW+vyOZRK8Ia4KXMj7JErn3iMscK8ZLoA/4Z9oEfHo1BxI+TUeZOVV65YvT/dJVV6as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=U3C5lpvy; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="IRn8U3JS"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="U3C5lpvy"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=7tWCZ3O6g9mRHicwm5+/uwyfebvOB/GXlJK47aUBcYs=; b=IRn8U3JSQsqxuRBHBhPk+7VjVw
-	K14km9FYw/AHhg5l66WIvxx9eEvkX+dcmIBtNDKPKbG1Luyw9ZWwJlOETDtakCZf7ZGMsyhaQhiVT
-	niHXoWijNtcTKqDN5pfiQjg+8Scjxh5wGVV5P3UeAAJZdF00soXm3IENtMwPX1lpdk8315iLisVjl
-	LzktSV7kfA4Vi0NVJS3+BLBRD1FlbpyRwL0EmNwSWJXIcZBuE86JWWN0Qse1g5tEVezH3VdM9nqeV
-	1AnHEEaeG0GXKIPqNAPJ3i11pvRvcDAiQ3eaTshS5CWdUu1+OyBHXlNy7l0zUo44jzeT3obFpqIUJ
-	Q8VwS/uQ==;
+	bh=eanGRtFbt0e/6VhCHpzLvK8yKD/dtj+EuVn1/O+45Sw=; b=U3C5lpvyJz2mfvqci4tSiwtFKR
+	7OfszrTn9ujeY4IvnPfYSPiaKWDcs5nUWKHCYvFBqFeWmYlBfPsyhfH91PbeoVs1G8Bsq6yQg8n8E
+	JNCWozAd2Tm3OIPcpECeNpzaB0nWzmoUHOlo25IZHiSsRXA8WkwWfRkivYLeVi2Ql6nIMyZr/6cN2
+	hk7TzoiQJqvBLvdrkRxnqV9VMszyqZVxinmFPgXX9iTUn2knE7O9gqHZ2vzq2UEdzzjwt4r8uJVKD
+	IbngnRVRx+EOrhmOKu8OF0gWy9ywFBg0RaybNSIucFtxxTOn6QjwuftuHS/I4uOIFhz+nYL58Hfb1
+	M69m13yw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woj80-0000000DUOr-0QkL;
-	Tue, 28 Jul 2026 14:49:59 +0000
+	id 1woj80-0000000DUOo-0Osr;
+	Tue, 28 Jul 2026 14:49:56 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1woj7z-00000001UYS-2Nsg;
+	id 1woj7z-00000001UYb-2tcQ;
 	Tue, 28 Jul 2026 15:49:55 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v7 13/36] KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
-Date: Tue, 28 Jul 2026 15:39:53 +0100
-Message-ID: <20260728144954.355376-14-dwmw2@infradead.org>
+Subject: [PATCH v7 16/36] KVM: x86: Replace nr_vcpus_matched_tsc count with all_vcpus_matched_tsc bool
+Date: Tue, 28 Jul 2026 15:39:56 +0100
+Message-ID: <20260728144954.355376-17-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
@@ -79,99 +79,72 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Let the callers pass the host TSC value in as an explicit parameter.
-This leaves some fairly obviously stupid code, which is using this
-function to compare the guest TSC at some *other* time, with the
-newly-minted TSC value from rdtsc(). Unless it's being used to measure
-*elapsed* time, that isn't very sensible.
+Using a count and comparing with kvm->online_vcpus was always racy
+because a new vCPU could be created while kvm_track_tsc_matching() was
+running and comparing with kvm->online_vcpus. That variable is only
+atomic with respect to itself; kvm_arch_vcpu_create() runs before
+kvm->online_vcpus is incremented for the new vCPU.
 
-In this case, "obviously stupid" is an improvement over being
-non-obviously so.
+Replace the count with a boolean that is set in kvm_track_tsc_matching()
+after comparing the count, and cleared when a new TSC generation starts.
+The boolean is consumed by pvclock_update_vm_gtod_copy() under the
+tsc_write_lock, which serializes against __kvm_synchronize_tsc().
 
-No functional change intended.
+Keep the count for now as it's still used in the trace event.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/msrs.c |  3 ++-
- arch/x86/kvm/x86.c  | 11 ++++++-----
- arch/x86/kvm/x86.h  |  3 ++-
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  1 +
+ arch/x86/kvm/x86.c              | 10 ++++++----
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index 66fa7140d65d..22ceb39d41f6 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -1631,7 +1631,8 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (msr_info->host_initiated) {
- 			kvm_synchronize_tsc(vcpu, &data);
- 		} else if (!vcpu->arch.guest_tsc_protected) {
--			u64 adj = kvm_compute_l1_tsc_offset(vcpu, data) - vcpu->arch.l1_tsc_offset;
-+			u64 adj = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data) -
-+				  vcpu->arch.l1_tsc_offset;
- 			adjust_tsc_offset_guest(vcpu, adj);
- 			vcpu->arch.ia32_tsc_adjust_msr += adj;
- 		}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 2f01f3f9ba97..46919fe1cf4b 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1238,6 +1238,7 @@ struct kvm_arch {
+ 	u64 cur_tsc_write;
+ 	u64 cur_tsc_offset;
+ 	u64 cur_tsc_generation;
++	bool all_vcpus_matched_tsc;
+ 	int nr_vcpus_matched_tsc;
+ 
+ 	u32 default_tsc_khz;
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 77feed979b59..c4fd2367686c 100644
+index dceb6d3660a2..d3c4009b92bc 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -1153,11 +1153,12 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
- 	return _tsc;
- }
+@@ -1112,8 +1112,10 @@ static void kvm_track_tsc_matching(struct kvm_vcpu *vcpu, bool new_generation)
+ 	 * and all vCPUs must have matching TSCs.  Note, the count for matching
+ 	 * vCPUs doesn't include the reference vCPU, hence "+1".
+ 	 */
+-	bool use_master_clock = (ka->nr_vcpus_matched_tsc + 1 ==
+-				 atomic_read(&vcpu->kvm->online_vcpus)) &&
++	ka->all_vcpus_matched_tsc = (ka->nr_vcpus_matched_tsc + 1 ==
++				     atomic_read(&vcpu->kvm->online_vcpus));
++
++	bool use_master_clock = ka->all_vcpus_matched_tsc &&
+ 				gtod_is_based_on_tsc(gtod->clock.vclock_mode);
  
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc)
- {
- 	u64 tsc;
- 
--	tsc = kvm_scale_tsc(rdtsc(), vcpu->arch.l1_tsc_scaling_ratio);
-+	tsc = kvm_scale_tsc(host_tsc, vcpu->arch.l1_tsc_scaling_ratio);
- 
- 	return target_tsc - tsc;
- }
-@@ -1319,7 +1320,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 	bool synchronizing = false;
- 
- 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
--	offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+	offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 	ns = get_kvmclock_base_ns();
- 	elapsed = ns - kvm->arch.last_tsc_nsec;
- 
-@@ -1368,7 +1369,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 		} else {
- 			u64 delta = nsec_to_cycles(vcpu, elapsed);
- 			data += delta;
--			offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+			offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 		}
- 		matched = true;
+ 	/*
+@@ -1298,6 +1300,7 @@ static void __kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 offset, u64 tsc,
+ 		kvm->arch.cur_tsc_write = tsc;
+ 		kvm->arch.cur_tsc_offset = offset;
+ 		kvm->arch.nr_vcpus_matched_tsc = 0;
++		kvm->arch.all_vcpus_matched_tsc = false;
+ 	} else if (vcpu->arch.this_tsc_generation != kvm->arch.cur_tsc_generation) {
+ 		kvm->arch.nr_vcpus_matched_tsc++;
  	}
-@@ -2628,7 +2629,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 			mark_tsc_unstable("KVM discovered backwards TSC");
+@@ -1614,8 +1617,7 @@ static void pvclock_update_vm_gtod_copy(struct kvm *kvm)
+ 	bool host_tsc_clocksource, vcpus_matched;
  
- 		if (kvm_check_tsc_unstable()) {
--			u64 offset = kvm_compute_l1_tsc_offset(vcpu,
-+			u64 offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(),
- 						vcpu->arch.last_guest_tsc);
- 			kvm_vcpu_write_tsc_offset(vcpu, offset);
- 			if (!vcpu->arch.guest_tsc_protected)
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 0f5919b092e4..1d9a66048b01 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -335,7 +335,8 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio);
- u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
- u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
- u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier);
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc);
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc);
- void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset);
+ 	lockdep_assert_held(&kvm->arch.tsc_write_lock);
+-	vcpus_matched = (ka->nr_vcpus_matched_tsc + 1 ==
+-			atomic_read(&kvm->online_vcpus));
++	vcpus_matched = ka->all_vcpus_matched_tsc;
  
- static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
+ 	/*
+ 	 * If the host uses TSC clock, then passthrough TSC as stable
 -- 
 2.55.0
 
