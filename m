@@ -1,64 +1,63 @@
 Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7552D473C90
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE604734D3
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266841; cv=none; b=ap/9bZWRPKniZlwgRZdGmsTKcWkgcMikXohXWfT7JFMRcRuMl8IYZJXMBSIVMqIx4ORolcFBpYxPhzZZDeSNquq8NV25K/aXKTp7Xsuwlv6KdXSwOW5+uqH0cz63QBWiRTo8sKrKUeceu054iPzjJqo1CGc+4/Soitv7sANgYh4=
+	t=1785266842; cv=none; b=kiwQdsNLRJsSB3zaqU2kl1x21nymZTl2Rt+Npm2JqdwZoqowBkV2oF4R0LQtgAd8QOSKUKMbpENNC+vELRlgoNdzLSunNpOsXkV4+lNmLUhadmjhJFzbdDKRLlyf/Ig+EB+CqRJKZDiFBtUO5ARPERbZjfIXQCcFHpbw+xjmM9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266841; c=relaxed/simple;
-	bh=1AsxpXcworjn8nRnDntyhfBuXwfpTUqARck0wU7cQoc=;
+	s=arc-20240116; t=1785266842; c=relaxed/simple;
+	bh=6NBJ1j5PYHEP10H3V0hTPKXbzQ3LuNxD6Kn1Blx0c7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUZOztIw2HeP2fEIMTkpVK+4rlg7Qr+d0QlokqNWXoSWUHfYSzoWv12PCL7uWHTeZrifFCE1tgYZJansE8MzlaGThfGKMjXvfTCpSkFV7EUjwtfcH3HafcT6X/3eLfTzDk6mVst28U3+xz7in83pPi4zQh0TJSUWPe9HiObauMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NxPY1Slw; arc=none smtp.client-ip=209.85.216.44
+	 MIME-Version; b=tudpWJZZ8u4T2GhO/fpIFBR5XzuH1z1K9OSkCxdJGhf3mIbdhuO5LGJzj70w7k8dCXfH9lnXCZr9FAoPogW5zaz/n4/FoleLo7b5NConG2Cp283Ngf3BdENS0KSZqtfceh0nIdwsyvxB+Jt1XbHQcimk9LiZBfKasX3UsMERuD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=coichdLP; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NxPY1Slw"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso183793a91.3
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:27:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="coichdLP"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so210906a91.0
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785266839; x=1785871639; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1785266840; x=1785871640; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=n9HsMvAh/qkeYI9JbPnuTDiGCok2SGFh9CrU4gL7bDU=;
-        b=NxPY1Slwy8L7QBsSzqT8N6mHZVdp4LtfF6ztLfI3SXnXmPiTveomJj+HgHnu1WaGjb
-         0VGYTQ8pEiIaNnGVkEsqRqHveR4ng3FD8BnmztmbcJaz6T2IUrQ7MXFxBWrxaLHdXlHT
-         Q/pnvd2e7YJFSI9vZCx2QOtgZi+hWbCexi1eKtGw2DAbylhnJyelinE8EPe2xkAhpc6Y
-         rmyk5Sbeagla/x3s1nJar1Dch592DbIV8vdQKEKy43YWuM/TbgunKl76dMxmDQxijiHv
-         ad5tl/eylrnin6hMdlsqlqLBCCjRV5BcPsaGJRDuC2mr6dPGnSPSZDqdSCV2mZuP1AE9
-         fuPQ==
+        bh=HYPotfW6kht+UmRZFPn5+m79E9+yzPHwQhZ3Fc3kQx8=;
+        b=coichdLPNV2pkc8h5S3ayhsOIGSZR4Je6fuLVAFZTv6abbWOjKT1xCi3wQpIcU1pqs
+         je3fGlnC4GYR0aplCTOxzQYXCjrdFlT6pEpxadSGW/wWpO1oiSp8R2srrEXI8ItVPE2B
+         ZKiZVK9Ibpm6kOKSf6n7zYWkEYFn47xuhsjpcF5wGJ3LK63k1A7omfKfsPC98Wc417pU
+         drcc8qwNxZVORB9Iwpr+P5dcISVZ/RpmxLrUyrpanlOlZ/1ONYgtIy72f4Y5+TEYoDXW
+         +Hnv6WdXSFhRqzKWKSBChsniX81I8AufllaHbj3DFC7kVXgrQZZzbhyZLj5yNdmc6qkS
+         1biA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266839; x=1785871639;
+        d=1e100.net; s=20251104; t=1785266840; x=1785871640;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n9HsMvAh/qkeYI9JbPnuTDiGCok2SGFh9CrU4gL7bDU=;
-        b=IlZgYPlV7pjLoKcVm1BKKXbqCd1WVFvM5EWS3azoawN0XIzMA5OtWR9fWKmzA27/vg
-         97o7U8TCb5R2/PjywXInoDaqZGuMKuQ/+7Zb2LwXjubhilrPXQ7Is/iZ/2Oe1VJXN0e/
-         OAR1V6KHva2uaXCyMs/kWu6XhyyYc42BqvqnXzO/QwFPENJeMClUQPpZMIcQnBJPavcw
-         sSk6THeBNCThwh/PxEZdJttfBEC4j5qwxc6kUzg0DBjzoSTM9Lp9Am+zcGX65Im9uVGq
-         qz7pHaKezbcYxO5e7leE+fgRQZt+sNGpICjeqCQ+jNqdAXfiWmJGn6Rx+ZV+GD7hfSBK
-         ScxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RptrLpkEcboycuxt1miAINFs9ZY2qO2F0icQaDuOWYphDaZJg0y3KRiJemNH7ZUho0otL0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzec0rEoW6SXC2l6g0x2hPAS+OHyX5sUoOsDszrOjFb+IfM+CUv
-	dTzi/v/jcDbCuzRYCGw2B9Ef7kC6G9tmLBNyno8z5mFPv3UMYaeLlYv1iS7YL0tSkm8=
-X-Gm-Gg: AR+sD10KhFkx8p2XYGpqnyygrkz/QlU6Lwsfj8sgZdIWCmP6Q+GfbCkoyXN6rXjJ17i
-	hqqbBmHalGNjGwmFW7H9g9IhtVVeJT+G8si9Y06pDG0Zl7IEwquPBxy4nUI3KnM7KX0vxpTUr/R
-	nEmqZDvOHqmAqbwtRqvDjUqGcrezgi92wl+pu3k5CvViTWRWafIKfDjI5zBTaMWIMAZAQ2DaIGH
-	MUeA91LnCtyspBEwS1ssbsek1dVspRzC/Pwel+XDixXkp2rRQgV6C/dKJOodl0SipTIwg8ZtyjG
-	DDOody69nRxtok0XvfCoeC4ujZG5e+736UbWpl3Kd10zqWzRuMfCZsapKGY8xTGDs5Q/wvwMPQv
-	3DHuyrBeFxG/2TaTxMYkdY0N4tdssXema2qFDg4ppr0PaUItrolt9My4VOMbcz2Yza5/KKZjCoI
-	oety/w59iHWKFEYLR19uBYnIS59V11QgRwIcen91ZJq8AETaXXOrqEuk2ov/jfUshCiuiIeAu/a
-	mqgwJlK5EJP6MQ=
-X-Received: by 2002:a17:90b:2803:b0:38e:79f:76c6 with SMTP id 98e67ed59e1d1-38f6a4e2786mr3548232a91.24.1785266838605;
-        Tue, 28 Jul 2026 12:27:18 -0700 (PDT)
+        bh=HYPotfW6kht+UmRZFPn5+m79E9+yzPHwQhZ3Fc3kQx8=;
+        b=gykezq5OpqvfdP1imfHp8Krzw0EEaAadoT7XbItFCSoOYujRdVvtg1IJn+3G84i1Op
+         Mw0T816zD6lbsL/9P3N5eFpdFdBdzY4k0CVXICJ8ODejsklj95JCLrTt0VriBXNzJjpF
+         Zf66ZUqEBfrHksyM1zrtk0GSjlPLsqaGJclPAcZchvCUIpFn22xW0EJPTDRQo4epzctN
+         jns4MABsOgqkpIg7u2ALGXYurEBV6GS/vVdKNh8VqFjjSIWT37r4tUWx6BO1PiOK7IwR
+         N96iJi6MaTL1gM9YX+HoyjE7Q7S1uUaCsPf/SY9VKuEcJ2tBvZAHXhj1K0KEQLx8+t4V
+         wqLA==
+X-Forwarded-Encrypted: i=1; AHgh+RpowtfLFMUzsC20FezJ6lk58RoFQxYsuF70PlDW7weXbSAkhkZ99mEmfNTOUsm308bmdrE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1QJoNhUzBx59nsRSl5l3HlkGFcuZdkyuunH4jOLB9fFRbMtBy
+	fdzRmhNXCrFFFNNEMg5O5OIoV/cVJX2YL+JK9rpCP5UBgLl+9XrPuzNUL3vJZDIOINc=
+X-Gm-Gg: AR+sD10lflqwHpVToi50P2bbQIpg1RQeuEViTrBiU51thRx3uCv3zwKxEDlFWLtTU5R
+	cTnNK3JwPF4HPl7S9pulSSznO0Mm0e9xyLbDuJ9HHFL5oBNwTRM6zeVBwNnGvrd2xCvMZ0NP49H
+	TAI/5uqm9A0giRssavz0PmMLCntiY+ExGJvFVR5B+QAsbBM5j1QunX7Nl+A+gblbALLAnZU6f1O
+	7oiPHUu7js+n76H76i4zVhP2NyomsMUcbj6y5aq+0BaaNSdH9V2HWYWxlWyhmgNpUdQzlCgR5bY
+	RbbrJLVw/QIbgGGRrNWGL60v2GBPyUkpM7WJprJSJO5qEVpkKGMubnyrHNeImEZbB8b+VxPky1j
+	xgqvVQY/KX6jqqG2tNRxcjm/JgjbMg9ckw3HGvCXTOikW+HSR7CB2oXdpv1pHmgz3YDRvrmhflZ
+	UXWrCT+knx7zIhwe2hDHb3Ki/QWYMs
+X-Received: by 2002:a17:90b:584f:b0:38e:7297:a92e with SMTP id 98e67ed59e1d1-38f6a26e75dmr3724141a91.9.1785266840446;
+        Tue, 28 Jul 2026 12:27:20 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:b9d1:87c9:a085:86c9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.27.17
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.27.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:27:18 -0700 (PDT)
+        Tue, 28 Jul 2026 12:27:19 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -74,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v2 20/24] hw/arm/virt: Use RAM instead of flash for confidential guest firmware
-Date: Tue, 28 Jul 2026 13:26:26 -0600
-Message-ID: <20260728192630.240375-21-mathieu.poirier@linaro.org>
+Subject: [RFC v2 21/24] target/arm/kvm-rme: Add DMA remapping for the shared memory region
+Date: Tue, 28 Jul 2026 13:26:27 -0600
+Message-ID: <20260728192630.240375-22-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
 References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
@@ -90,207 +89,217 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-Use RAM instead of flash to store firmware image and boot information,
-including UEFI variables.  That way the firmware can be measured and
-included in the Realm's initial measurements.  It also prevents
-variable stored in flash and modified as part of the boot process to
-be leaked outside the Realm.
+In Arm CCA, the guest-physical address space is split in half. The top
+half represents memory shared between guest and host, and the bottom
+half is private to the guest. From QEMU's point of view, the two halves
+are merged into a single region, and pages within this region are either
+shared or private.
+
+Virtual devices implemented by the host are only allowed to access the
+top half. For emulated MMIO, KVM strips the GPA before returning to
+QEMU, so the GPA already belongs to QEMU's merged view of guest memory.
+However DMA addresses cannot be stripped this way and need special
+handling by the VMM.
+
+When emulating DMA the VMM needs to translate the addresses into its
+merged view. Add an IOMMU memory region on the top half, that
+retargets DMA accesses to the merged sysmem.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- hw/arm/boot.c         | 37 +++++++++++++++++++++++++--
- hw/arm/virt.c         | 58 +++++++++++++++++++++++++++++++++++++++++++
- include/hw/arm/boot.h |  9 +++++++
- 3 files changed, 102 insertions(+), 2 deletions(-)
+ hw/arm/virt.c         |   2 +
+ target/arm/kvm-rme.c  | 106 ++++++++++++++++++++++++++++++++++++++++++
+ target/arm/kvm-stub.c |   4 ++
+ target/arm/kvm_arm.h  |  10 ++++
+ 4 files changed, 122 insertions(+)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 9b7553dde5e1..1e8efada209f 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -1112,7 +1112,36 @@ static void arm_setup_direct_kernel_boot(ARMCPU *cpu,
-     }
- }
- 
--static void arm_setup_firmware_boot(ARMCPU *cpu, struct arm_boot_info *info)
-+static void arm_setup_confidential_firmware_boot(ARMCPU *cpu,
-+                                                 struct arm_boot_info *info,
-+                                                 const char *firmware_filename)
-+{
-+    ssize_t fw_size;
-+    const char *fname;
-+    AddressSpace *as = arm_boot_address_space(cpu, info);
-+
-+    fname = qemu_find_file(QEMU_FILE_TYPE_BIOS, firmware_filename);
-+    if (!fname) {
-+        error_report("Could not find firmware image '%s'", firmware_filename);
-+        exit(1);
-+    }
-+
-+    /*
-+     * Load the firmware image in the Realm's address space.  Mapping of the
-+     * firmware area in the Realm's address space is done in function
-+     * virt_confidential_firmware_init().
-+     */
-+    fw_size = load_image_targphys_as(firmware_filename,
-+                                     info->firmware_base,
-+                                     info->firmware_max_size, as, NULL);
-+    if (fw_size <= 0) {
-+        error_report("could not load firmware '%s'", firmware_filename);
-+        exit(1);
-+    }
-+}
-+
-+static void arm_setup_firmware_boot(ARMCPU *cpu, struct arm_boot_info *info,
-+                                    const char *firmware_filename)
- {
-     /* Set up for booting firmware (which might load a kernel via fw_cfg) */
- 
-@@ -1168,6 +1197,10 @@ static void arm_setup_firmware_boot(ARMCPU *cpu, struct arm_boot_info *info)
-         }
-     }
- 
-+    if (info->confidential) {
-+        arm_setup_confidential_firmware_boot(cpu, info, firmware_filename);
-+    }
-+
-     /*
-      * We will start from address 0 (typically a boot ROM image) in the
-      * same way as hardware. Leave env->boot_info NULL, so that
-@@ -1212,7 +1245,7 @@ void arm_load_kernel(ARMCPU *cpu, MachineState *ms, struct arm_boot_info *info)
- 
-     /* Load the kernel.  */
-     if (!info->kernel_filename || info->firmware_loaded) {
--        arm_setup_firmware_boot(cpu, info);
-+        arm_setup_firmware_boot(cpu, info, ms->firmware);
-     } else {
-         arm_setup_direct_kernel_boot(cpu, info);
-     }
 diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 74fe21712d4f..ae663d051ac3 100644
+index ae663d051ac3..5b1608c23462 100644
 --- a/hw/arm/virt.c
 +++ b/hw/arm/virt.c
-@@ -1823,6 +1823,16 @@ static PFlashCFI01 *virt_flash_create1(VirtMachineState *vms,
- 
- static void virt_flash_create(VirtMachineState *vms)
- {
-+    /*
-+     * For Realms, the firmware image is placed directly in the guest's
-+     * RAM area.  The association between the final location in the
-+     * guest's RAM and the system memory is done in function
-+     * virt_confidential_firmware_init().
-+     */
-+    if (virt_machine_is_confidential(vms)) {
-+        return;
-+    }
-+
-     vms->flash[0] = virt_flash_create1(vms, "virt.flash0", "pflash0");
-     vms->flash[1] = virt_flash_create1(vms, "virt.flash1", "pflash1");
- }
-@@ -1873,6 +1883,16 @@ static void virt_flash_fdt(VirtMachineState *vms,
-     MachineState *ms = MACHINE(vms);
-     char *nodename;
- 
-+    /*
-+     * For Realms the firmware images are stored in the guest's address
-+     * space.  As such there is no need for flash configuration in the FDT.
-+     * See function virt_confidential_firmware_init() and
-+     * arm_setup_confidential_firmware_boot() for details.
-+     */
-+    if (virt_machine_is_confidential(vms)) {
-+        return;
-+    }
-+
-     if (sysmem == secure_sysmem) {
-         /* Report both flash devices as a single node in the DT */
-         nodename = g_strdup_printf("/flash@%" PRIx64, flashbase);
-@@ -1908,6 +1928,32 @@ static void virt_flash_fdt(VirtMachineState *vms,
+@@ -3327,6 +3327,8 @@ static void machvirt_init(MachineState *machine)
+                                vms->fw_cfg, OBJECT(vms));
      }
- }
  
-+static bool virt_confidential_firmware_init(VirtMachineState *vms,
-+                                            MemoryRegion *sysmem)
-+{
-+    MemoryRegion *fw_ram;
-+    hwaddr fw_base = vms->memmap[VIRT_FLASH].base;
-+    hwaddr fw_size = vms->memmap[VIRT_FLASH].size;
++    kvm_arm_rme_init_gpa_space(vms->highest_gpa, vms->bus);
 +
-+    if (!MACHINE(vms)->firmware) {
-+        return false;
-+    }
-+
-+    assert(machine_require_guest_memfd(MACHINE(vms)));
-+
-+    fw_ram = g_new(MemoryRegion, 1);
-+    memory_region_init_ram_guest_memfd(fw_ram, NULL, "fw_ram", fw_size,
-+                                       &error_fatal);
-+    /*
-+     * Map the guest's firmware image directly in its address space.
-+     * Copying of the firmware image itself is done in function
-+     * arm_setup_confidential_firmware_boot().
-+     */
-+    memory_region_add_subregion(sysmem, fw_base, fw_ram);
-+
-+    return true;
-+}
-+
- static bool virt_firmware_init(VirtMachineState *vms,
-                                MemoryRegion *sysmem,
-                                MemoryRegion *secure_sysmem)
-@@ -1916,6 +1962,15 @@ static bool virt_firmware_init(VirtMachineState *vms,
-     const char *bios_name;
-     BlockBackend *pflash_blk0;
+     vms->bootinfo.ram_size = machine->ram_size;
+     vms->bootinfo.board_id = -1;
+     vms->bootinfo.loader_start = vms->memmap[VIRT_MEM].base;
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index 335ad60d0f3b..7b83de2f956b 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -11,10 +11,12 @@
+ #include "hw/core/boards.h"
+ #include "hw/core/cpu.h"
+ #include "hw/core/loader.h"
++#include "hw/pci/pci.h"
+ #include "kvm_arm.h"
+ #include "migration/blocker.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "qemu/units.h"
+ #include "qom/object_interfaces.h"
+ #include "system/confidential-guest-support.h"
+ #include "system/kvm.h"
+@@ -25,6 +27,23 @@ OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
  
-+    /*
-+     * For a confidential VM, the firmware image and any boot information,
-+     * including EFI variables, are stored in RAM in order to be measurable and
-+     * private. Create a RAM region and load the firmware image there.
-+     */
-+    if (virt_machine_is_confidential(vms)) {
-+        return virt_confidential_firmware_init(vms, sysmem);
-+    }
-+
-     /* Map legacy -drive if=pflash to machine properties */
-     for (i = 0; i < ARRAY_SIZE(vms->flash); i++) {
-         pflash_cfi01_legacy_drive(vms->flash[i],
-@@ -3278,7 +3333,10 @@ static void machvirt_init(MachineState *machine)
-     vms->bootinfo.get_dtb = machvirt_dtb;
-     vms->bootinfo.skip_dtb_autoload = true;
-     vms->bootinfo.firmware_loaded = firmware_loaded;
-+    vms->bootinfo.firmware_base = vms->memmap[VIRT_FLASH].base;
-+    vms->bootinfo.firmware_max_size = vms->memmap[VIRT_FLASH].size;
-     vms->bootinfo.psci_conduit = vms->psci_conduit;
-+    vms->bootinfo.confidential = virt_machine_is_confidential(vms);
-     arm_load_kernel(ARM_CPU(first_cpu), machine, &vms->bootinfo);
+ #define RME_PAGE_SIZE qemu_real_host_page_size()
  
-     vms->machine_done.notify = virt_machine_done;
-diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
-index 94386fdbea6c..fe7e14e94651 100644
---- a/include/hw/arm/boot.h
-+++ b/include/hw/arm/boot.h
-@@ -113,6 +113,10 @@ struct arm_boot_info {
-      */
-     bool firmware_loaded;
- 
-+    /* Used when loading firmware into RAM */
-+    hwaddr firmware_base;
-+    hwaddr firmware_max_size;
++/*
++ * Realms have a split guest-physical address space: the bottom half is private
++ * to the realm, and the top half is shared with the host. Within QEMU, we use a
++ * merged view of both halves. Most of RAM is private to the guest and not
++ * accessible to us, but the guest shares some pages with us.
++ *
++ * RealmDmaRegion performs remapping of top-half accesses to system memory.
++ */
++struct RealmDmaRegion {
++    IOMMUMemoryRegion parent_obj;
++};
 +
-     /* Address at which board specific loader/setup code exists. If enabled,
-      * this code-blob will run before anything else. It must return to the
-      * caller via the link register. There is no stack set up. Enabled by
-@@ -136,6 +140,11 @@ struct arm_boot_info {
- 
-     /* CPU having load the kernel and that should be the first to boot.  */
-     ARMCPU *primary_cpu;
++#define TYPE_REALM_DMA_REGION "realm-dma-region"
++OBJECT_DECLARE_SIMPLE_TYPE(RealmDmaRegion, REALM_DMA_REGION)
++OBJECT_DEFINE_SIMPLE_TYPE(RealmDmaRegion, realm_dma_region,
++                          REALM_DMA_REGION, IOMMU_MEMORY_REGION);
 +
-+    /*
-+     * Confidential guest boot loads everything into RAM so it can be measured.
-+     */
-+    bool confidential;
+ typedef struct {
+     hwaddr base;
+     hwaddr size;
+@@ -35,6 +54,10 @@ struct RmeGuest {
+     ConfidentialGuestSupport parent_obj;
+     Notifier rom_load_notifier;
+     GSList *ram_regions;
++    uint8_t ipa_bits;
++
++    RealmDmaRegion *dma_region;
++    AddressSpace dma_as;
  };
  
- /**
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+@@ -205,3 +228,86 @@ static void rme_guest_init(Object *obj)
+ static void rme_guest_finalize(Object *obj)
+ {
+ }
++
++static AddressSpace *rme_dma_get_address_space(PCIBus *bus, void *opaque,
++                                               int devfn)
++{
++    return &rme_guest->dma_as;
++}
++
++static const PCIIOMMUOps rme_dma_ops = {
++    .get_address_space = rme_dma_get_address_space,
++};
++
++void kvm_arm_rme_init_gpa_space(hwaddr highest_gpa, PCIBus *pci_bus)
++{
++    RealmDmaRegion *dma_region;
++    const unsigned int ipa_bits = 64 - clz64(highest_gpa) + 1;
++
++    if (!rme_guest) {
++        return;
++    }
++
++    assert(ipa_bits < 64);
++
++    /*
++     * Setup a DMA translation from the shared top half of the guest-physical
++     * address space to our merged view of RAM.
++     */
++    dma_region = g_new0(RealmDmaRegion, 1);
++
++    memory_region_init_iommu(dma_region, sizeof(*dma_region),
++                             TYPE_REALM_DMA_REGION, OBJECT(rme_guest),
++                             "realm-dma-region", 1ULL << ipa_bits);
++    address_space_init(&rme_guest->dma_as, MEMORY_REGION(dma_region),
++                       TYPE_REALM_DMA_REGION);
++    rme_guest->dma_region = dma_region;
++    rme_guest->ipa_bits = ipa_bits;
++
++    pci_setup_iommu(pci_bus, &rme_dma_ops, NULL);
++}
++
++static void realm_dma_region_init(Object *obj)
++{
++}
++
++static IOMMUTLBEntry realm_dma_region_translate(IOMMUMemoryRegion *mr,
++                                                hwaddr addr,
++                                                IOMMUAccessFlags flag,
++                                                int iommu_idx)
++{
++    const hwaddr address_mask = MAKE_64BIT_MASK(0, rme_guest->ipa_bits - 1);
++    IOMMUTLBEntry entry = {
++        .target_as = &address_space_memory,
++        .iova = addr,
++        .translated_addr = addr & address_mask,
++        /*
++         * Somewhat arbitrary granule for users that need one, such as
++         * address_space_get_iotlb_entry(). Should be relatively large to
++         * avoid frequent TLB misses. It can't be larger than memory region
++         * alignment (eg. address_mask) because that would mask the whole
++         * address, preventing vhost from finding the correct memory region.
++         */
++        .addr_mask = 4 * KiB - 1,
++        .perm = IOMMU_RW,
++    };
++
++    return entry;
++}
++
++static void realm_dma_region_replay(IOMMUMemoryRegion *mr, IOMMUNotifier *n)
++{
++    /* Nothing is shared at boot */
++}
++
++static void realm_dma_region_finalize(Object *obj)
++{
++}
++
++static void realm_dma_region_class_init(ObjectClass *oc, const void *data)
++{
++    IOMMUMemoryRegionClass *imrc = IOMMU_MEMORY_REGION_CLASS(oc);
++
++    imrc->translate = realm_dma_region_translate;
++    imrc->replay = realm_dma_region_replay;
++}
+diff --git a/target/arm/kvm-stub.c b/target/arm/kvm-stub.c
+index 5fde96f9b281..e5af5d20367f 100644
+--- a/target/arm/kvm-stub.c
++++ b/target/arm/kvm-stub.c
+@@ -42,6 +42,10 @@ bool kvm_arm_el2_supported(void)
+     return false;
+ }
+ 
++void kvm_arm_rme_init_gpa_space(hwaddr highest_gpa, PCIBus *pci_bus)
++{
++}
++
+ /*
+  * These functions should never actually be called without KVM support.
+  */
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index d95381c13afa..b4a293911f71 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -250,4 +250,14 @@ char *kvm_print_register_name(uint64_t regidx);
+  */
+ void kvm_arm_rme_vcpu_init(ARMCPU *cpu);
+ 
++/**
++ * kvm_arm_rme_setup_gpa
++ * @highest_gpa: highest address of the lower half of the guest address space
++ * @pci_bus: The main PCI bus, for which PCI queries DMA address spaces
++ *
++ * Setup the guest-physical address space for a Realm. Install a memory region
++ * and notifier to manage the shared upper half of the address space.
++ */
++void kvm_arm_rme_init_gpa_space(hwaddr highest_gpa, PCIBus *pci_bus);
++
+ #endif
 -- 
 2.43.0
 
