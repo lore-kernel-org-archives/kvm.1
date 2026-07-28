@@ -1,169 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24E230B517
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862DF456DEC
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251471; cv=none; b=uwS1tsbdjzUxSL7bbkIVrZ30TwtVk1lNqpBvdGY+IPriPGenpC90nR+VZtvA/ffoiTsP2pRZbY64mGJV047k15DP612GgHD3oGnU0RBScKiSZi9Td31FBYUeek4jp6itYO376GknU3NqWT9RZroqYwPmkU69qegx7zKffWt9/CA=
+	t=1785251482; cv=none; b=RaBayD0ugZ8HuriIQqKbj5mFl1pj6dKkj6LgRCQz2FDVkgnQpKrYr6Os6ZKoRNjQhz66ZYMJogqDBon6oPjSKbztXK6Sav4L6FnGbFns74dfI/LMJYqHSTd31i+OgbJL+g//8+2FaqXKm02NGBTlvCyIKnyQV1klCA4SI8RMPf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251471; c=relaxed/simple;
-	bh=ChIOjVFa02XaYmwnURyjNen5m2xTAwYau+s7xPpkGZI=;
+	s=arc-20240116; t=1785251482; c=relaxed/simple;
+	bh=T1+PrX73TNg9HjUmByDTiJTaCAW5HduspwgCBIvKxK0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ekLKf7xFEjp0HuPqcomYCgnIZy5RItO7UF6QK2jjVXYEPIg2T3c6zwN2gZJpfB/sxoqlYBGcpcxJ7Cp3doj34CySy0jGVQS5dnBkXz9Ac89OvcnEeMcTgX399e9pRXsk0Do+OartOC6OtRNsECH90SaH5hn24RKfabYTdx5Jkz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JfIk4rvu; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Nkqqqj2DCJdaickgPcIpAzlHKfgPFQT3ibdGAZSzq6n2kjqDNNUDmJz8LwfW67A8M31RXxU9W7Cp9CoQbJdgnFOoBjdAIdd0308j9WGS/tdI/h/tErESdKgRhhwrSHTUhnCszBl19K6AgPEHbXPa2EuieEOmus86CoQtCSb/fQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpLJITcG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JfIk4rvu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DD21F000E9;
-	Tue, 28 Jul 2026 15:11:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpLJITcG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0931F000E9;
+	Tue, 28 Jul 2026 15:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785251470;
-	bh=pIDkggKadmuSiDT3bwdEE3LSmG0CNMDgiNaGKaFzOlI=;
+	s=k20260515; t=1785251481;
+	bh=CaeyR39zCd+YkrZCKO54kgUztoSJDMLGJk1aumbeiw4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JfIk4rvufESw+ZfR/6IjI9bLutlXLi14+UTFtSfkvkgdXJlsOPQBTFJwRbwTMwOnq
-	 hiliuj0h/5gGRwdy86/loimIe60uFCb9Q7rr+s45f+4AWI8itBDrOO6P9gpSb+OtwI
-	 2LNPOoO5/886SydsDywBsjCoWKfjzRA56hNO7q7Tqa9yziIEEU1IalI9aUD3E0sKbY
-	 NNNvl1hoKa/B0GGu8AChw2gro/M+VspIfYjrd1M7jek0BnwvLnXt2zjJktbSWLrNTp
-	 +cJE3lsLx6myKYCHe0wUuiJ48P4iqgfZmWyXyyUw2escGbYa+2fCPC7vkhRMYY8EHr
-	 KdBOwbjQllwBw==
+	b=WpLJITcGgTkBhmR7UCaQK85CaQL6PHF4FhffiC75/pUG50bLdW59Supr929RRyYgH
+	 nvl8GgGZlftYMpg119/mX9A76Vw5uLAKf01TD90qo0pEcbTtePb8isU+H0HDrPAByN
+	 CVEFylQT/KppXoHnyL9eREDYHA7dlsgowOGyhXxf+Y93IHJDb5T2MZb3UHbunFwzow
+	 +/FeYVVNvtqPKDtYV1Ot8opvZF4Df20bDnt3sRVO/FXr41eUTMXBGugjxzXQv46Afh
+	 VK4Zrex55QA3kIINFgv83kkSvELRb/FsCeIRoQAfl0Yeyz1Na4j25l5GT7y293uqkG
+	 WgKjnFtllSmrw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 11/36] KVM: x86: Restructure kvm_guest_time_update()
- for TSC upscaling
+Subject: Re: [PATCH v7 07/36] KVM: x86: Restructure get_kvmclock()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-12-dwmw2@infradead.org>
+In-Reply-To: <20260728144954.355376-8-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-12-dwmw2@infradead.org>
+ <20260728144954.355376-8-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:11:09 +0000
-Message-Id: <20260728151110.33DD21F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 15:11:20 +0000
+Message-Id: <20260728151120.EC0931F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] Uninitialized kernel_ns and host_tsc variables are used on 32-=
-bit builds if use_master_clock is true.
-- [High] The fallback clock path reads rdtsc() after preemption is re-enabl=
-ed, causing mismatched TSC frequency calculations and guest clock corruptio=
-n.
+- [High] Removal of `get_cpu()` reintroduces a race condition between `rdts=
+c` and `cpu_tsc_khz`, and triggers a kernel warning for preemptible `__this=
+_cpu_read`.
 --
 
---- Patch [11]: [PATCH v7 11/36] KVM: x86: Restructure kvm_guest_time_updat=
-e() for TSC upscaling ---
-commit a9ced800a4cffa309e689174fd612acf127799a3
+--- Patch [7]: [PATCH v7 07/36] KVM: x86: Restructure get_kvmclock() ---
+commit c5c131ac2510f7641714a694b1cf0192a9da9749
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86: Restructure kvm_guest_time_update() for TSC upscaling
+KVM: x86: Restructure get_kvmclock()
 
-This commit restructures kvm_guest_time_update to simplify the TSC catchup
-adjustment by ensuring kernel_ns and host_tsc are always now during catchup,
-then swapping in the master clock reference values afterward.
+This commit wraps the use_master_clock block in an ifdef for CONFIG_X86_64
+to resolve 32-bit build issues with unused variables and host_tsc_clocksour=
+ce.
+It also refactors the master-clock success path to use continue, allowing
+the fallback computation to become the common tail.
 
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 27f2f02bd5f40..faeb2d7b19a48 100644
+> index ee115dc6df6e1..d68d00cdbea73 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
-> @@ -1776,45 +1776,60 @@ static void kvm_setup_guest_pvclock(struct pvcloc=
-k_vcpu_time_info *ref_hv_clock,
->  int kvm_guest_time_update(struct kvm_vcpu *v)
->  {
 [ ... ]
-> -	kernel_ns =3D 0;
-> -	host_tsc =3D 0;
-> -
->  	/*
->  	 * If the host uses TSC clock, then passthrough TSC as stable
->  	 * to the guest.
->  	 */
+> @@ -1636,34 +1636,38 @@ static unsigned long get_cpu_tsc_khz(void)
+>  static void get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
+>  {
+>  	struct kvm_arch *ka =3D &kvm->arch;
+> -	struct pvclock_vcpu_time_info hv_clock;
+>  	unsigned int seq;
+> =20
 >  	do {
 >  		seq =3D read_seqcount_begin(&ka->pvclock_sc);
+> =20
+>  		data->flags =3D 0;
+> -		if (ka->use_master_clock) {
+>  #ifdef CONFIG_X86_64
+> +		if (ka->use_master_clock) {
+> +			struct pvclock_vcpu_time_info hv_clock;
+>  			struct timespec64 ts;
+> =20
+>  			if (kvm_get_walltime_and_clockread(&ts, &data->host_tsc)) {
+>  				data->realtime =3D ts.tv_nsec + NSEC_PER_SEC * ts.tv_sec;
+> -				data->flags |=3D KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC;
+> -			} else
+> -#endif
+> -			data->host_tsc =3D rdtsc();
+> -
+> -			data->flags |=3D KVM_CLOCK_TSC_STABLE;
+> -			hv_clock.tsc_timestamp =3D ka->master_cycle_now;
+> -			hv_clock.system_time =3D ka->master_kernel_ns + ka->kvmclock_offset;
+> -			kvm_get_time_scale(NSEC_PER_SEC, get_cpu_tsc_khz() * 1000LL,
+> -					   &hv_clock.tsc_shift,
+> -					   &hv_clock.tsc_to_system_mul);
+> +				data->flags |=3D KVM_CLOCK_REALTIME | KVM_CLOCK_HOST_TSC | KVM_CLOCK=
+_TSC_STABLE;
 > +
->  		use_master_clock =3D ka->use_master_clock;
-> +
-> +		/*
-> +		 * The TSC read and the call to get_cpu_tsc_khz() must happen
-> +		 * on the same CPU.
-> +		 */
-> +		get_cpu();
-> +
-> +		tgt_tsc_hz =3D (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
-> +
-> +#ifdef CONFIG_X86_64
-> +		if (use_master_clock &&
-> +		    !kvm_get_time_and_clockread(&kernel_ns, &host_tsc) &&
-> +		    !read_seqcount_retry(&ka->pvclock_sc, seq))
-> +			use_master_clock =3D false;
-> +#endif
-> +
-> +		put_cpu();
-> +
-> +		if (use_master_clock) {
-> -			host_tsc =3D ka->master_cycle_now;
-> -			kernel_ns =3D ka->master_kernel_ns;
-> +			master_host_tsc =3D ka->master_cycle_now;
-> +			master_kernel_ns =3D ka->master_kernel_ns;
-> +		} else {
-> +			local_irq_disable();
-> +			host_tsc =3D rdtsc();
+> +				hv_clock.tsc_timestamp =3D ka->master_cycle_now;
+> +				hv_clock.system_time =3D ka->master_kernel_ns + ka->kvmclock_offset;
+> +				kvm_get_time_scale(NSEC_PER_SEC, get_cpu_tsc_khz() * 1000LL,
+> +						   &hv_clock.tsc_shift,
+> +						   &hv_clock.tsc_to_system_mul);
 
 [Severity: High]
-Because put_cpu() re-enables preemption, could the vCPU thread be preempted
-and migrated to another physical CPU before local_irq_disable() and rdtsc()
-are called in this fallback path?
+Does this code trigger a preemptible __this_cpu_read() warning?
 
-If migration occurs here, host_tsc might be read on a different CPU than
-where tgt_tsc_hz was calculated.
+If the host lacks X86_FEATURE_CONSTANT_TSC, get_cpu_tsc_khz() will call
+__this_cpu_read(cpu_tsc_khz). Since previous changes dropped the get_cpu()
+pinning protection in get_kvmclock(), this read happens with preemption
+enabled, which violates __this_cpu_read constraints and triggers the debug
+warning.
 
-> +			kernel_ns =3D get_kvmclock_base_ns();
-> +			local_irq_enable();
->  		}
+Can this also result in using a mismatched TSC frequency if the thread is
+preempted and migrated to a CPU with a different frequency while servicing
+ioctl(KVM_GET_CLOCK)?
 
-[ ... ]
-
-> @@ -1824,17 +1839,32 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
->  	 *      entry to avoid unknown leaps of TSC even when running
->  	 *      again on the same CPU.  This may cause apparent elapsed
->  	 *      time to disappear, and the guest to stand still or run
-> -	 *	very slowly.
-> +	 *      very slowly.
->  	 */
->  	if (vcpu->tsc_catchup) {
-> -		u64 tsc =3D compute_guest_tsc(v, kernel_ns);
-> -		if (tsc > tsc_timestamp) {
-> -			adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
-> -			tsc_timestamp =3D tsc;
-> -		}
-> +		s64 adjustment;
+> +				data->clock =3D __pvclock_read_cycles(&hv_clock, data->host_tsc);
+> +				continue;
+> +			}
 > +
-> +		/*
-> +		 * Calculate the delta between what the guest TSC *should* be
-> +		 * and what it actually is according to kvm_read_l1_tsc().
-> +		 */
-> +		adjustment =3D compute_guest_tsc(v, kernel_ns) -
-> +			     kvm_read_l1_tsc(v, host_tsc);
-
-[Severity: Critical]
-On 32-bit builds, will kernel_ns and host_tsc remain uninitialized when
-use_master_clock is true?
-
-The original 0-initializations for kernel_ns and host_tsc were removed by
-this patch. Their new initialization via kvm_get_time_and_clockread() is
-guarded by CONFIG_X86_64.
-
-When vcpu->tsc_catchup is set on 32-bit builds, it seems this would pass
-uninitialized stack variables to compute_guest_tsc() and kvm_read_l1_tsc()
-for the adjustment calculation.
-
-> +		if (adjustment > 0)
-> +			adjust_tsc_offset_guest(v, adjustment);
->  	}
+> +			/*
+> +			 * Clock read failed (e.g. clocksource is transitioning
+> +			 * away from TSC). Fall back to the non-master-clock path
+> +			 * rather than spinning.
+> +			 */
+>  		}
+> +#endif
+> +		data->clock =3D get_kvmclock_base_ns() + ka->kvmclock_offset;
+>  	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+>  }
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D11
+76-1-dwmw2@infradead.org?part=3D7
