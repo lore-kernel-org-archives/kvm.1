@@ -1,114 +1,88 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EDA3BF67A;
-	Tue, 28 Jul 2026 12:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55473B5843;
+	Tue, 28 Jul 2026 12:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785242126; cv=none; b=frrz1K1OLOCxfDrM+RsGZlcidmOz3K/phJbLXZCDRPgivEoPqpa3tMcE99mCTdMnshWrN84W+SRqQ1ERpHMdCp+jUzdAldatWke8d4Frg5DXJ2LHMEWY0RHNBRgE3BsXLwBaz0jqyMXDY6dBxhuiNH7PV9cafPebCh17tlF4yXA=
+	t=1785242360; cv=none; b=SBFHnOomqUIlhx8nPOgZ7DlCUWRSdYMrAHwlqT+igh7xMIunjiVoVD7kSR+ENsO4dl/LC1x9tuOnjNhXF4HaULRtPehC5vjCKDGM4qg1P8Yg6VzZnrG5vOx0udgpHX02oAT2mRoLmaXeJcd/zhx2Oo9s1bcmDlj+kF0lwMG9Kwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785242126; c=relaxed/simple;
-	bh=jSkOlShLkwdbOK35K3MXtJNt4F/3TX8RcZ/6F3kXuWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7CZ9ZuUtzpWv5bw53FVP5OyvdyofrHLb8KcGsRIPHuhHUPEoTFA02dKqHrx4XYlClLEj4ZIuo0kOB98flCHRRJHNlGlecyfN4QFRsAYSxDLsl7onaC4cWv7slX58JrcbTSmlEpLnYY8JA+P0h1BU/sI84LRlkmtje+D/mhGs0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S+IpwnEB; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S+IpwnEB"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBIOe4854591;
-	Tue, 28 Jul 2026 12:35:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Am9FMJ+R33dyNjpCjRlDZVeme9X64L
-	rZQW1cI3yuaDE=; b=S+IpwnEBnmnnrZPaEQCrtq3vydz0XXfJbxYDk7x/0a4cMi
-	4XjXjmTsfsC760OwWRLBs7/+N+rLwgyng/1SHgN2OijQq7FwU9G2e1ecDhVwpdZ4
-	vKTIYaJG8sU1Exe0CmGo3MRjInmX4tDaZweNSULJJUqd2PE+ha+p3lnqh2PGId/V
-	cqWq8j0e+NEQXmzcDIj+krVl2dN31myHZ4Qa63EdOQ1iU19kVA7YL1NNRmrWu/SA
-	ii9hqutxi7NbIN9iHbzL/59JWxM+NKeDcLZVKOf7GoZNPdufqL6Ot56PcSkGCdFz
-	GfGGLSIJXxykcE1p+Zq4lMR/w0idU6azHkP2K8MA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0nmgmh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 12:35:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SCQF9O017532;
-	Tue, 28 Jul 2026 12:35:21 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5y1fr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 12:35:21 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SCZHvK25232102
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 12:35:17 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1369120040;
-	Tue, 28 Jul 2026 12:35:17 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB20C2004B;
-	Tue, 28 Jul 2026 12:35:16 +0000 (GMT)
-Received: from osiris (unknown [9.224.76.185])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 28 Jul 2026 12:35:16 +0000 (GMT)
-Date: Tue, 28 Jul 2026 14:35:15 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: Re: [PATCH v3 09/10] KVM: s390: Fix ordering when adding to SCA
-Message-ID: <20260728123515.385398-B-seiden@linux.ibm.com>
-References: <20260727150254.236021-1-imbrenda@linux.ibm.com>
- <20260727150254.236021-10-imbrenda@linux.ibm.com>
+	s=arc-20240116; t=1785242360; c=relaxed/simple;
+	bh=BB/iNYIWb4K37ubQH44SrWBVyo1MmDQe/KwE3U3XcKY=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=TnSINXmDzqGoNyb9Xwyh+o/C5bckEMo4xNUYG/jlLaRCptrcVszf0THeqVlZVnaBN1dcUCrM5QdCs0cxGD2eN1mcAgBkk5QXwO1XXkkMGzJ0sy2pXN7nAQdfms+iHz1VIrpOX23ux7GgrknaUgmSQDLY0k9E6APk0q8t94FSvvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8BxGOvyomhqkh8IAA--.28372S3;
+	Tue, 28 Jul 2026 20:39:14 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxb8fvomhqRJ4bAA--.18382S2;
+	Tue, 28 Jul 2026 20:39:13 +0800 (CST)
+Subject: Re: [PATCH 2/2] KVM: LoongArch: selftests: Add in-kernel MMIO read
+ fast path test
+To: Zeng Chi <zeng_chi911@163.com>, Huacai Chen <chenhuacai@kernel.org>
+Cc: zhaotianrui@loongson.cn, kernel@xen0n.name, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, zengchi@kylinos.cn,
+ cui.tao@linux.dev
+References: <20260723111605.1630027-1-zeng_chi911@163.com>
+ <146b5e27-2ab0-da17-7b98-09235ef4f9c4@loongson.cn>
+ <CAAhV-H7pLEUeKWGmCZqDdF+2vr=2aexOFVCMa_UxTrDpUY+gvA@mail.gmail.com>
+ <92289f9a-67be-4839-8fe4-c6935871a349@163.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <2663aa71-f713-c458-368a-61fdb9634338@loongson.cn>
+Date: Tue, 28 Jul 2026 20:38:58 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727150254.236021-10-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEwOCBTYWx0ZWRfX84n0GFeai3LT
- 2XKHbuWXvSrJ8KzRArWpyKSlFox2sZ1B/VrZOwjTW2fUODTBUqObEyXojT2omdOrZJKi/6z0/fv
- KwNMOl2feU3guuvEv+R7xhPZSxCYmRU=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEwOCBTYWx0ZWRfX/lGTZ0/Ero3f
- m4tceWUay+CUQ9hwnCBb9GAFLwRBN0RijidMDbBcWmvIgqzxR6yssDR4Xurhrl0xo2CZLf1tC+v
- O5nXFoF0Tio+IovGNWp4/kkwoXn4Tkb6tvKl90r5oY6DgOo8XlnXdA+IApldWWGn+mFyfev1AMW
- l70tydsEAEuby/0mlj0Etx9KIUHbYIpMr8Ol68tmcS1IyJT0RZ1nZbeu1inB1VoZOzxiXchow8y
- KDYf5L4zH572H3UGDK/otHW0TldNccB2kK2dsouV3B7dzhh7oBVByrpKwr5BUC/UxiNFin8Q+cU
- jPl3zCShK7wfTuvj4egV+jU7MlebqgxabTluytfJP53C0gr+JqgVocD2CMbxdKiXJM0EFGuCSoD
- bI435DMZ1SINCgnve+7SzAReE1/bdytYgroBbN806dTQl9+BeBR6SNCISM2C9Wt7f/w+M+Vw9ZD
- EI4vI+Et/A3ivCGTX3g==
-X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a68a20a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=_LF6sWV_dHCqamZNFvUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: 50bFlax2Tad0H6f-lfF3CWL-_PoJddpa
-X-Proofpoint-ORIG-GUID: 50bFlax2Tad0H6f-lfF3CWL-_PoJddpa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280108
+In-Reply-To: <92289f9a-67be-4839-8fe4-c6935871a349@163.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxb8fvomhqRJ4bAA--.18382S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrKF1UAw4UWFWrCF45tr4UJrc_yoWxAFc_uF
+	WDC397Ca1DXF4rXa17KF10vrZ3C3yDX34rJw48Xr4aq343tr4kJFWfGrnavFsrtayrtFnI
+	grnYvr4S93W29osvyTuYvTs0mTUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbfAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8q2NtUUUUU==
 
-On Mon, Jul 27, 2026 at 05:02:53PM +0200, Claudio Imbrenda wrote:
-> When adding a new vCPU to the SCA area, the validity bit in the MCN was
-> set before the pointer to the state description, potentially allowing
-> for a race.
-> 
-> Fix by setting the pointer before setting the bit.
-> 
-> Fixes: 14542a0a54c5 ("KVM: S390: Remove sca_lock")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+
+On 2026/7/28 下午6:10, Zeng Chi wrote:
+> On Sat, Jul 25, 2026 at 5:41 PM Huacai Chen <chenhuacai@kernel.org> wrote:
+>> I think the fist patch is just enough. :)
+> Agreed. Please just take patch 1 and drop this one -- I will not
+> resend the series.
+> 
+> Bibo is right that the test only asserts that the PC advances by one
+> instruction, which is an implementation detail rather than observable
+> guest behaviour. If a PCH-PIC selftest is still wanted, I will send it
+> separately as one that injects an irq and verifies the guest actually
+> takes it.
+It is not necessary, just patch 1 is ok.
+
+Regards
+Bibo Mao
+> 
+> Bibo, Tao, thanks for the reviews.
+> 
+> Zeng Chi
+> 
 
