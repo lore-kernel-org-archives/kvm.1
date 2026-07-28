@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47B422423A;
-	Tue, 28 Jul 2026 00:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB1A22F388;
+	Tue, 28 Jul 2026 00:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785198967; cv=none; b=oeVhwzOpwGdQNOJfprpwb3YYXRHCS8GqEQP8vLDaEIztWh/mz5Qbftfz95qfD3lp5uMu6V7tAGroQctjuTpNvbdSr2lW6kxWIZHwCUSTMByXax5R1XgPx9QwaMev8dCMEMsyPerSO7AImP+8xw+zkHa5ZeZJ2h0l8uSrfLq7/Uo=
+	t=1785198968; cv=none; b=tY02aH74K3gTFHKuczCiIngTUaHO0qakj5JnuzvhnlgqZzRA6Q4FdtzAbjNHYVjTFEXnHw6FHYJn56y+AwG+qcMvPQzRm59Yp55Xjta9bkQsa4wsGTIgT75jeUqKwFeerEzlItzWqKWivQroQa2t+fKoNMZkiV4BRS35OQgHq4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785198967; c=relaxed/simple;
-	bh=GwuNjf+fY3NRr0yCX55W6I0nzSB0Q6To9kCbN1nIzUs=;
+	s=arc-20240116; t=1785198968; c=relaxed/simple;
+	bh=X+DmQd7D5va7G0hHHgXsOiJIUrhmhZvjxct/9QKfyK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYusjKb7QcajUyH3Grdu70z2bYkdi0vwVPV1y6mQvH0ngC977DscTot0cTaPUhXLmeTCFtvQkn5irUDPRpDyD6KGEgqac2CIkaxpfRrXA/bxjKuy0+sA3fcoRIuvw6NeiLobQ17Gn3oIVBtClzy0D7T9iB38xh9dbA2Gw7+1Ou0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hgy+Gq68; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=KhSVxXsNqQl6bc77bmthQOvGvQj38zAEIWsL5q4J5KnN4pJ7Drt0VelADavlBoXjmn5wJU7EV4yLZxkmrlp9ot/MfviZsZZM/SnICfjq6hVnNi3JXMAzy78F+FlYgLddWYG/no7T+XIClrp7qMHAJJvMfT2pVgYftX+eQr0GIqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0Wk0NkE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hgy+Gq68"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BFE1F00A3A;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0Wk0NkE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB571F00ACA;
 	Tue, 28 Jul 2026 00:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785198965;
-	bh=dxBIb/pEf85cMgBAYc8a1joLEMuO3tDAey6SdE9KAX4=;
+	s=k20260515; t=1785198966;
+	bh=h7jaYax/CIUFIfJutQBI5rm5o81rl9qGFc3zJCfbdKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hgy+Gq68HLjTzDsDUf20ubiF/NnBgY4OzZD92ugD+W2S7O3AjIxPkzPyqxcwTYk8P
-	 Zo2QxEyfsgvrlXUGmER8iYOfVPEz22Nnig2SHxlqHCV0Oi3upDr1S9a1Gz39NszUSs
-	 RLukZvPPPtl03jDVLjL7VEcnjsRPOvJrz/BKbwlVGBzEMI27rRpPYGsF5U6ukCGcCp
-	 R3iFlVAXAbfKofXvHGsvbtqGnDiI1D/VzaL1AlxRDgG66e+GEbq2GBQF/mN8u1mSXZ
-	 s5C6B9HAHo5Je5rDbDS3KcliQkAoN8HrX5CY9kFhlRmUN6qgWwhb7wBplXtZmjilNu
-	 cGs9wNQU50ZGw==
+	b=Q0Wk0NkEngvbpaq3htMMbYNnWQvOLgKXASXVW5IBND/jB5+IisDE/qqmaktKQOV/B
+	 ooHUL7bJ/03e99ItgqNSB7TFt1u9OuMWgLvsWB9/UjLO0y7b9RkJk2J6McZTuc8q7R
+	 vwstj+wSA3i2tBRiHWRee25HlJSo7MfpcMVxHing91UNIZPDYX7CAj+g8FwvGYOJ9d
+	 xIVNFaCdu+O9wOF1E73Ezu11hoVouMRXVUja5kfTeg3MMK8/fRVkHIoWFOh2adti4L
+	 dY50dn8M353KWGQlSHM4/S5azQuiM7MmdTthSuVZL7AsllG2CU3qrMla6llr5Kktui
+	 tlC/S21jzn1hg==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -36,9 +36,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v1 04/28] KVM: x86/mmu: Support specifying reserved TLB tags
-Date: Tue, 28 Jul 2026 00:35:33 +0000
-Message-ID: <20260728003557.1136583-5-yosry@kernel.org>
+Subject: [PATCH v1 05/28] KVM: SVM: Add helpers to set/clear ASID flush in VMCB
+Date: Tue, 28 Jul 2026 00:35:34 +0000
+Message-ID: <20260728003557.1136583-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.55.0.229.g6434b31f56-goog
 In-Reply-To: <20260728003557.1136583-1-yosry@kernel.org>
 References: <20260728003557.1136583-1-yosry@kernel.org>
@@ -50,145 +50,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In preparation for using the TLB tags allocator for SVM, which has a
-range of ASIDs allocated for SEV/SNP, pass in the number of reserved TLB
-tags when initializing the TLB tags allocator. The bitmap is
-conceptually shifted such that bit=0 corresponds to tag=nr_reserved.
-
-Specifying the minimum value during initialization also makes the API
-clearer, as tag=0 is now explicitly reserved by the caller.
-
-No functional change intended for VMX as VPID=0 was already implicitly
-reserved.
+Introduce set/clear helpers to set tlb_ctl to
+TLB_CONTROL_FLUSH_ASID or TLB_CONTROL_DO_NOTHING. Incoming changes will
+eliminate the use of TLB_CONTROL_FLUSH_ALL_ASID except as a fallback
+when FLUSHBYASID is not available, so the helpers will create a common
+path for this.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/mmu.h     |  2 +-
- arch/x86/kvm/mmu/mmu.c | 42 ++++++++++++++++++++++++++++--------------
- arch/x86/kvm/vmx/vmx.h |  2 +-
- 3 files changed, 30 insertions(+), 16 deletions(-)
+ arch/x86/kvm/svm/nested.c |  2 +-
+ arch/x86/kvm/svm/sev.c    |  2 +-
+ arch/x86/kvm/svm/svm.c    |  4 ++--
+ arch/x86/kvm/svm/svm.h    | 10 ++++++++++
+ 4 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
-index de79e002edf8f..b443a5083bfb0 100644
---- a/arch/x86/kvm/mmu.h
-+++ b/arch/x86/kvm/mmu.h
-@@ -413,7 +413,7 @@ static inline bool kvm_is_gfn_alias(struct kvm *kvm, gfn_t gfn)
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index 75378feddb349..ef0326932c446 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -931,7 +931,7 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
+ 	/* Done at vmrun: asid.  */
  
- typedef unsigned int kvm_tlb_tag_t;
+ 	/* Also overwritten later if necessary.  */
+-	vmcb02->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
++	vmcb_clr_flush_asid(vmcb02);
  
--int kvm_init_tlb_tags(unsigned int nr);
-+int kvm_init_tlb_tags(unsigned int nr_total, unsigned int nr_reserved);
- void kvm_destroy_tlb_tags(void);
- kvm_tlb_tag_t kvm_alloc_tlb_tag(void);
- void kvm_free_tlb_tag(kvm_tlb_tag_t tag);
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index d9edba502cac7..05d2ba2598e1b 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -8073,9 +8073,17 @@ static struct {
- 	spinlock_t	lock;
- 	unsigned long	*bitmap;
- 	unsigned int	nr;
-+	kvm_tlb_tag_t	start;
- } tlb_tags;
- 
--int kvm_init_tlb_tags(unsigned int nr)
-+/*
-+ * Initialize @nr_total TLB tags, where @nr_reserved of those tags are reserved.
-+ * Reserved tags start at 0 and are contiguous. Hence, usable tags are
-+ * [nr_reserved, nr_total). At least one reserved tag is required, as 0 is the
-+ * host TLB tag on both VMX and AMD, and is the value returned on a failed tag
-+ * allocation.
-+ */
-+int kvm_init_tlb_tags(unsigned int nr_total, unsigned int nr_reserved)
- {
- 	/*
- 	 * Limit the number of TLB tags to VMX's hardcoded maximum of 0x10000
-@@ -8085,7 +8093,12 @@ int kvm_init_tlb_tags(unsigned int nr)
- 	 * need a solution that works for both Intel and AMD.
- 	 */
- 	const unsigned int MAX_NR_TLB_TAGS = VMX_NR_VPIDS;
-+	unsigned int nr;
- 
-+	if (WARN_ON_ONCE(!nr_reserved || nr_reserved > nr_total))
-+		return -EINVAL;
-+
-+	nr = nr_total - nr_reserved;
- 	if (!nr)
+ 	/* Use vmcb01 MMU and format if guest does not use nNPT */
+ 	if (nested_npt_enabled(svm)) {
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 90a08d36d843d..d1f0e42c72b27 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3594,7 +3594,7 @@ int pre_sev_run(struct vcpu_svm *svm, int cpu)
  		return 0;
  
-@@ -8099,13 +8112,8 @@ int kvm_init_tlb_tags(unsigned int nr)
- 	if (!tlb_tags.bitmap)
- 		return -ENOMEM;
- 
--	/*
--	 * 0 is the host's TLB tag for both VMX's VPID and SVM's ASID, and is
--	 * returned on failed allocations (e.g. no more tags left).
--	 */
--	__set_bit(0, tlb_tags.bitmap);
--
- 	tlb_tags.nr = nr;
-+	tlb_tags.start = nr_reserved;
- 	spin_lock_init(&tlb_tags.lock);
+ 	sd->sev_vmcbs[asid] = svm->vmcb;
+-	svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
++	vmcb_set_flush_asid(svm->vmcb);
+ 	vmcb_mark_dirty(svm->vmcb, VMCB_ASID);
  	return 0;
  }
-@@ -8120,30 +8128,36 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_destroy_tlb_tags);
- 
- kvm_tlb_tag_t kvm_alloc_tlb_tag(void)
- {
--	kvm_tlb_tag_t tag;
-+	unsigned int bit;
- 
- 	if (!tlb_tags.bitmap)
- 		return 0;
- 
- 	guard(spinlock)(&tlb_tags.lock);
- 
--	tag = find_first_zero_bit(tlb_tags.bitmap, tlb_tags.nr);
--	if (tag >= tlb_tags.nr)
-+	bit = find_first_zero_bit(tlb_tags.bitmap, tlb_tags.nr);
-+	if (bit >= tlb_tags.nr)
- 		return 0;
- 
--	__set_bit(tag, tlb_tags.bitmap);
--	return tag;
-+	__set_bit(bit, tlb_tags.bitmap);
-+	return tlb_tags.start + bit;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index d68cba12c772b..de90320a2e669 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4199,7 +4199,7 @@ static void svm_flush_tlb_asid(struct kvm_vcpu *vcpu)
+ 	 * VM-Exit (via kvm_mmu_reset_context()).
+ 	 */
+ 	if (static_cpu_has(X86_FEATURE_FLUSHBYASID))
+-		svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
++		vmcb_set_flush_asid(svm->vmcb);
+ 	else
+ 		svm->current_vmcb->asid_generation--;
  }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_alloc_tlb_tag);
+@@ -4612,7 +4612,7 @@ static __no_kcsan fastpath_t svm_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 		vcpu->arch.nested_run_pending = 0;
+ 	}
  
- void kvm_free_tlb_tag(kvm_tlb_tag_t tag)
- {
--	if (!tag || WARN_ON_ONCE(tag >= tlb_tags.nr))
-+	unsigned int bit;
+-	svm->vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
++	vmcb_clr_flush_asid(svm->vmcb);
+ 
+ 	/*
+ 	 * Unconditionally mask off the CLEAR_RAP bit, the AND is just as cheap
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index a327bf751ecd5..e3cce839573d9 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -477,6 +477,16 @@ static inline void vmcb_set_gpat(struct vmcb *vmcb, u64 data)
+ 	vmcb_mark_dirty(vmcb, VMCB_NPT);
+ }
+ 
++static inline void vmcb_set_flush_asid(struct vmcb *vmcb)
++{
++	vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ASID;
++}
 +
-+	if (!tag || WARN_ON_ONCE(tag < tlb_tags.start))
-+		return;
++static inline void vmcb_clr_flush_asid(struct vmcb *vmcb)
++{
++	vmcb->control.tlb_ctl = TLB_CONTROL_DO_NOTHING;
++}
 +
-+	bit = tag - tlb_tags.start;
-+	if (WARN_ON_ONCE(bit >= tlb_tags.nr))
- 		return;
- 
- 	guard(spinlock)(&tlb_tags.lock);
- 
--	__clear_bit(tag, tlb_tags.bitmap);
-+	__clear_bit(bit, tlb_tags.bitmap);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_free_tlb_tag);
- 
-diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
-index 3de3ee53ccbdc..7b7e57fd549c4 100644
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -343,7 +343,7 @@ static __always_inline u32 vmx_get_intr_info(struct kvm_vcpu *vcpu)
- 
- static __always_inline int init_vpids(void)
+ static __always_inline struct vcpu_svm *to_svm(struct kvm_vcpu *vcpu)
  {
--	return enable_vpid ? kvm_init_tlb_tags(VMX_NR_VPIDS) : 0;
-+	return enable_vpid ? kvm_init_tlb_tags(VMX_NR_VPIDS, 1) : 0;
- }
- 
- static __always_inline void destroy_vpids(void)
+ 	return container_of(vcpu, struct vcpu_svm, vcpu);
 -- 
 2.55.0.229.g6434b31f56-goog
 
