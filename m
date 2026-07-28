@@ -1,112 +1,200 @@
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8A72D061C;
-	Tue, 28 Jul 2026 02:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A62175A7B;
+	Tue, 28 Jul 2026 02:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785204007; cv=none; b=IT4gAF5RSXyVgd9U1EIro8w/T02eluRChFthfugbsML5k0DXVe5OCzB6XG2ZHdogkttiD4y1m7NarMEOGZA8cbAxIOYW0QCqgTiDwQ5UWnTPHyZbl037eYSd1OHBp/5qyXWTw6VyCfse6WOyJNLoI1gmE3Up5lqAOmUgIfvspnE=
+	t=1785204084; cv=none; b=WB76lWs3qRkviJps0y36KkkI2NNGW/Ej64a0LbZ8QDVW+NBsmbPxITU1VMw7epJFaP/Rgt0NxfQos8/5iNA8TiMoNRrlnWYGC8qL2i4L8i37LciM8P2MgocyCdWlqqGNjts9lNkf7zu1S+smdgSSJ7/7i9sCRkTJMw6Bl+U7r/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785204007; c=relaxed/simple;
-	bh=fePWmtK9tZu2gh6X0NLBQhets24U3RmqzvIDmocbDKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CKuxbgIeDuS+Zawn0JlZbW+rvwM+e4tobWtX7mEWZlcpNd4L7H0ot50ihDguVNjdBNQN1/YwJCaGhg8a0OBGxaVJCybjej2i1kVGM+0VYkp1JQ7zTln8JU9RjAQ229dbUPELQjNLXjARmvY6VWPiCQzgOSroDHLBUTw4U53LqhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id A623323371;
-	Tue, 28 Jul 2026 04:54:17 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org
-Cc: Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH] KVM: x86: Re-pend NMI in vNMI hardware when injection is blocked
-Date: Tue, 28 Jul 2026 04:54:16 +0300
-Message-Id: <20260728015416.1371404-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1785204084; c=relaxed/simple;
+	bh=GcyKGx1W/KMlzC3WHeB74U2tSpKxBH73hydE7X/s9JQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nAtYBCLMLADccHf82QAs/EFEcVwrziLtRFAc8NtUqzW876oS3BODmkRjdPD5GtoCoYJxRHqUWylXP6xbIIYnKlhkEogzE7ryWMzG3sJZvjmz3VxS921akzo6q/ydepsZhI2CanyEtXhufjS62icj6KCQHQexYk07KXHNntlgK78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqW6MEd0; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqW6MEd0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8F61F00ADB;
+	Tue, 28 Jul 2026 02:01:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785204082;
+	bh=2f7VhaADrBnW603DHsC0RQvaBLDh6HaEqHpwIp40OQA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mqW6MEd0uQ6iILF+va//m7Rgvu87NlYkheZHw7lzCspRWDByq9LIzLiLBgfagEKlA
+	 YYUrOI7JXjMvVQTgLAKawLFdLqGXPzsn+l12FLbUt0F2YBlDhJArmYK58ZBEytUJ/T
+	 U59Hkr29vV1v2m/6L6IrAf6b/1uZyarY+ofvtxR09jg7gy2e2fS9DPsh+j1CbDXUOG
+	 zC71fNHwx+FhGm/kcx4A2X+N/FaPFRLhRCo8Y5m4vzYof54BU6boJJfIp4XX7sfQq6
+	 4HB7xCTgwAcFfjCoxzhYL17qJxwl8Kcrh6SsAQu6PVWEbROVvkl7U5TauPIuOxkdym
+	 mM7hyCZirL53Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 10/10] s390/vfio_ccw: implement a crw lock
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Eric Farman" <farman@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org
+In-Reply-To: <20260728013509.1551753-11-farman@linux.ibm.com>
+References: <20260728013509.1551753-1-farman@linux.ibm.com>
+ <20260728013509.1551753-11-farman@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 28 Jul 2026 02:01:21 +0000
+Message-Id: <20260728020122.0E8F61F00ADB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-With two NMIs pending and vNMI enabled, process_nmi() hands one NMI to
-hardware via kvm_x86_ops.set_vnmi_pending() and leaves the other in
-vcpu->arch.nmi_pending for injection via .inject_nmi(). If that injection
-is blocked - here by an interrupt shadow set through KVM_SET_VCPU_EVENTS -
-kvm_check_and_inject_events() calls .enable_nmi_window() to single-step
-the shadow. On the next VMRUN hardware delivers the NMI it was holding and
-sets NMI-blocking itself, so svm_get_nmi_mask() becomes true. KVM_REQ_NMI
-is not pending on the re-entry, so process_nmi() does not re-run and the
-leftover NMI is still queued; .enable_nmi_window() is called again with
-NMIs now masked, and svm_enable_nmi_window() hits WARN_ON_ONCE() - which
-asserts KVM never opens an NMI window while NMIs are masked under vNMI.
-With panic_on_warn this is a host DoS.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-WARNING: CPU: 3 PID: 1450 at arch/x86/kvm/svm/svm.c:4004 svm_enable_nmi_window+0x716/0x8f0 [kvm_amd]
-CPU: 3 UID: 0 PID: 1450 Comm: syz.1.86 Not tainted 6.12.85+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:svm_enable_nmi_window+0x716/0x8f0 arch/x86/kvm/svm/svm.c:4004 [kvm_amd]
-Call Trace:
- <TASK>
- kvm_check_and_inject_events+0x117a/0x1520 arch/x86/kvm/x86.c:10486 [kvm]
- vcpu_enter_guest.constprop.0+0x56f/0x40c0 arch/x86/kvm/x86.c:10946 [kvm]
- vcpu_run arch/x86/kvm/x86.c:11344 [inline] [kvm]
- kvm_arch_vcpu_ioctl_run+0x5dc/0x2560 arch/x86/kvm/x86.c:11671 [kvm]
- kvm_vcpu_ioctl+0x459/0x1510 virt/kvm/kvm_main.c:4492 [kvm]
- __x64_sys_ioctl+0x190/0x220 fs/ioctl.c:893
- do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+New issues:
+- [High] Missing cancellation of `notoper_work` during device release leads=
+ to Use-After-Free.
 
-Before falling back to a window, retry .set_vnmi_pending() as process_nmi()
-does. Hardware has already delivered the NMI it was holding, so the retry
-succeeds, nmi_pending drops to zero, and no window is requested; hardware
-delivers the re-pended NMI once the guest IRETs. On the first pass hardware
-still holds the earlier NMI, so the retry fails and single-stepping is
-unchanged. Without vNMI .set_vnmi_pending is NULL and the branch is a nop.
+Pre-existing issues:
+- [Critical] Lockless modification of eventfd triggers in `vfio_ccw_mdev_se=
+t_irqs` leads to Use-After-Free of `eventfd_ctx` in asynchronous workers.
+- [High] Race condition between asynchronous CSS callbacks and mdev removal=
+ leads to Use-After-Free of the `private` structure.
+--
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+--- Patch [10]: [PATCH v8 10/10] s390/vfio_ccw: implement a crw lock ---
+commit e956337911477e5c5887e514827c14569954a32d
+Author: Eric Farman <farman@linux.ibm.com>
 
-Fixes: fa4c027a7956 ("KVM: x86: Add support for SVM's Virtual NMI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-The splat above is from syzkaller fuzzing on 6.12; the bug also reproduces
-on kvm-x86/next with the syzkaller reproducer in a KVM guest on an
-AMD EPYC 9754 (Zen 4c) with vNMI enabled; the WARN no longer fires with
-this patch applied.
+s390/vfio_ccw: implement a crw lock
 
- arch/x86/kvm/x86.c | 3 +++
- 1 file changed, 3 insertions(+)
+This patch adds a lock to the vfio_ccw driver to manage the list of
+asynchronous CRW events. It serializes access to the CRW payload list
+to ensure cohesive reads between hardware events and userspace.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 960ff7fcd8db..d35f5fd3cb16 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7724,6 +7724,9 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
- 			can_inject = false;
- 			WARN_ON(kvm_x86_call(nmi_allowed)(vcpu, true) < 0);
- 		}
-+		if (vcpu->arch.nmi_pending &&
-+		    (kvm_x86_call(set_vnmi_pending)(vcpu)))
-+			vcpu->arch.nmi_pending--;
- 		if (vcpu->arch.nmi_pending)
- 			kvm_x86_call(enable_nmi_window)(vcpu);
- 	}
--- 
-2.50.1
+> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
+drv.c
+> index 757ff5b2556e3..ab6b518cc353f 100644
+> --- a/drivers/s390/cio/vfio_ccw_drv.c
+> +++ b/drivers/s390/cio/vfio_ccw_drv.c
+> [ ... ]
+> @@ -118,11 +118,14 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
+>  void vfio_ccw_crw_todo(struct work_struct *work)
+>  {
+>  	struct vfio_ccw_private *private;
+> +	unsigned long flags;
+> =20
+>  	private =3D container_of(work, struct vfio_ccw_private, crw_work);
+> =20
+> +	spin_lock_irqsave(&private->crw_lock, flags);
+>  	if (!list_empty(&private->crw) && private->crw_trigger)
+>  		eventfd_signal(private->crw_trigger);
 
+[Severity: Critical]
+This is a pre-existing issue, but I noticed a potential problem with how
+crw_trigger is accessed here.
+
+Does private->crw_lock actually protect private->crw_trigger from
+concurrent modification?
+
+Looking at vfio_ccw_mdev_set_irqs(), it replaces and frees eventfd contexts
+without holding any locks:
+
+drivers/s390/cio/vfio_ccw_ops.c:vfio_ccw_mdev_set_irqs() {
+    ...
+    if (*ctx)
+        eventfd_ctx_put(*ctx);
+
+    *ctx =3D efdctx;
+}
+
+If the VFIO_DEVICE_SET_IRQS ioctl swaps and frees the eventfd_ctx while
+this asynchronous worker is preparing to signal it, won't eventfd_signal()
+dereference a freed pointer?
+
+> +	spin_unlock_irqrestore(&private->crw_lock, flags);
+>  }
+> [ ... ]
+> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_=
+ops.c
+> index 1cca3ecdae45b..4a0fe2f8fdb44 100644
+> --- a/drivers/s390/cio/vfio_ccw_ops.c
+> +++ b/drivers/s390/cio/vfio_ccw_ops.c
+> [ ... ]
+> @@ -131,6 +132,7 @@ static void vfio_ccw_mdev_release_dev(struct vfio_dev=
+ice *vdev)
+>  	struct vfio_ccw_private *private =3D
+>  		container_of(vdev, struct vfio_ccw_private, vdev);
+>  	struct vfio_ccw_crw *crw, *temp;
+> +	unsigned long flags;
+> =20
+>  	/*
+>  	 * Ensure these work items are fully drained, so none can
+>  	 * fire after being released. The notoper_work struct is
+>  	 * only meaningful if the device had been opened, which
+>  	 * means it would have been cleaned in an earlier close.
+>  	 */
+>  	cancel_work_sync(&private->io_work);
+>  	cancel_work_sync(&private->crw_work);
+
+[Severity: High]
+The comment above suggests notoper_work is only meaningful if the device
+had been opened, but could a race occur here?
+
+If the device was never opened (state is VFIO_CCW_STATE_STANDBY), can an
+asynchronous CSS callback still trigger a VFIO_CCW_EVENT_NOT_OPER event
+(e.g., if the subchannel is unregistered)?
+
+If this happens and queues notoper_work, and the device is subsequently
+released, won't release_dev free the private structure while notoper_work
+is still queued?
+
+When the workqueue executes:
+
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_notoper_todo() {
+    ...
+    mutex_lock(&private->io_mutex);
+    cp_free(&private->cp);
+    mutex_unlock(&private->io_mutex);
+}
+
+Won't this dereference the freed private pointer? Should we add
+cancel_work_sync(&private->notoper_work) here?
+
+
+[Severity: High]
+This is a pre-existing issue, but since we are looking at the lifecycle of
+the private structure, is there a race condition with asynchronous CSS
+callbacks during mdev removal?
+
+In vfio_ccw_sch_event(), the private pointer is fetched locklessly:
+
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_sch_event() {
+    struct vfio_ccw_parent *parent =3D dev_get_drvdata(&sch->dev);
+    struct vfio_ccw_private *private =3D dev_get_drvdata(&parent->dev);
+    unsigned long flags;
+    ...
+    spin_lock_irqsave(&sch->lock, flags);
+}
+
+If vfio_ccw_mdev_remove() runs concurrently, it clears the drvdata
+locklessly and drops the device reference:
+
+drivers/s390/cio/vfio_ccw_ops.c:vfio_ccw_mdev_remove() {
+    vfio_unregister_group_dev(&private->vdev);
+    dev_set_drvdata(&parent->dev, NULL);
+    vfio_put_device(&private->vdev);
+}
+
+If the CSS callback is preempted after fetching the pointer but before
+acquiring sch->lock, and resumes after the removal path completes, won't
+it use the freed private structure?
+
+> +	spin_lock_irqsave(&private->crw_lock, flags);
+>  	list_for_each_entry_safe(crw, temp, &private->crw, next) {
+>  		list_del(&crw->next);
+>  		kfree(crw);
+>  	}
+> +	spin_unlock_irqrestore(&private->crw_lock, flags);
+> [ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728013509.1551=
+753-1-farman@linux.ibm.com?part=3D10
