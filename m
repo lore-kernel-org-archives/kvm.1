@@ -1,130 +1,178 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF22C2C0303;
-	Tue, 28 Jul 2026 14:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1C33A3815;
+	Tue, 28 Jul 2026 14:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250127; cv=none; b=cnDMQXb6GdkIzBaHK+X0hNS8H2LDP9Gb4gOG0ezjVrRQyjObj8fVU0guJHacvcJy/1SyDv0WpoYoy9W59l3IhUikyLwIKIgnHcxFI4dJqFL6ldcW35JK1lrp3LeclFHjUPtTX3vJfJF3TKgJxjNjGkE2jnLMb8FJEZzryhlbzFo=
+	t=1785250213; cv=none; b=r5gkBaDP3muadiWjahO+C2sIgxjTBu/4N7RXgw+nbEGhkz5vbSD/plwUYOr832kukWgnmXXBpMQpzbdrHpLgjgNnTV4lEJpJHBO4PpGzY54D1lx8kv1HHxlOsYH7jyirpQA3QwSaZwddF1J/5JJhFkM9EI4swnz3w/grRX5Q3f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250127; c=relaxed/simple;
-	bh=hVc37V4+KFyhr/kqrYFQobZVgNGJ+8AZOwS+diM7CO0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ewRgHUGedopIZ24Cx9Yf01SLCW3sApTRh7JBVEme8NxII2uN3Sq/DrFaOndW6Os4uTdXc2YwiYPLX8nY0vPrW4GdhFL3TSaJ7be2kmWBV7R1XN/vCLZh2tIJ2ZTHDpvPpl910sWaOewCl9le0NTTYuCsYbKQ9IzbIB9mRglLdso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IO90sMn1; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785250213; c=relaxed/simple;
+	bh=M4TOCKhItKiPhvGtG8nU1CV/FiP4J14drfVe0VrW2Yk=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rHsxOdbQY5LJJLij7C5XayBnb31aNewXgLV3hiYxAxlmuW62uuJ4mF6jHgpwH//5HaCzvSd4f5x9B2YLvxmsrcLWBkLOREqhPNGbHwX3Xl3wXZTL4YXZ67by4My7Tc4WOfZCIfww4g/GeG5gBZDp6s15g5Pt/jkMDfxIUXCMcRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XtKNCikn; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IO90sMn1"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SEldJC1380112;
-	Tue, 28 Jul 2026 14:48:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Da4qMw
-	DTeBrPlMuzFy3/5HHTQeEczRB3Ie5vwRT2g2s=; b=IO90sMn1Bje6miXeeAuz42
-	ENrSk+2OQ+0IfZX4Ek3vGQC/BG8RYTCjp3Z0kY/opu3XaKHV8gl232tEZjRblNch
-	bMh6yHKgnZ1bQYI1/hxyYVk6SQVhrU11B6/GkCawLTvXVPQqFhZT96BtFI/h/tSE
-	9xkucaOgr8w7BIIz6JvD6yJUf12GgajfVHtOd4M9mlkXeje5umgHYMll8V8soc8E
-	U5NAKMeHLFepoBEytTBAU+2O/gxJhfCpLushpmvjQAUzbE5PbLRd36M+qDoSZJTb
-	meyr9at0z7nKeaUQdEaN2edFuCsSMv+AQfE5iymX3kgirambJjG1etL9kn8qqE+g
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyj56nr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 14:48:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SEfa7l022321;
-	Tue, 28 Jul 2026 14:48:43 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqag4x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 14:48:43 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SEmgLG15270456
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 14:48:42 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B694558052;
-	Tue, 28 Jul 2026 14:48:42 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 390E55805A;
-	Tue, 28 Jul 2026 14:48:42 +0000 (GMT)
-Received: from [9.61.157.32] (unknown [9.61.157.32])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Jul 2026 14:48:42 +0000 (GMT)
-Message-ID: <52cb86e8-d9da-4b84-9e8b-d46251464793@linux.ibm.com>
-Date: Tue, 28 Jul 2026 10:48:41 -0400
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XtKNCikn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
+	From:Reply-To:Cc:Content-ID:Content-Description;
+	bh=+I3dInpptLqTW26MdB6BEu7uqX7SVYa01mQD7irMSeI=; b=XtKNCiknoJw9CdufrCRb6Qkxg3
+	5JVjfUAy3Qvd53x8eFTkkhBvRaaX+/ve6hijfLYVVWfnXLXAsQcgZUKS9kPtBB4ZZ1HPC+DScHJBd
+	JoNaHYZC0GhqXTHr/dwb3HaGAkCUD0CZb4I/sQN1hWpTYpk7e+KcuhK3PSxZklOg2kbk1FZNyhu9t
+	fVtCKZQC94T7q/P7m4MdZXyVODtVPrBXB3VxmDGS+CBDjcVfRJWF3ykUFtNIe7dVFEdBTjDuB7UgA
+	ArT0WakOTueOrz2XPs0FPni6KS+nptBZrwAlwanzw0p6jCF7IFSeBrjZ08H1s4LXwoy/MCcxBIQ4t
+	Y1CvLU7g==;
+Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1woj80-0000000DUOk-0PS1;
+	Tue, 28 Jul 2026 14:49:57 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
+	id 1woj7z-00000001UYG-1d7k;
+	Tue, 28 Jul 2026 15:49:55 +0100
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Paul Durrant <paul@xen.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Jack Allister <jalliste@amazon.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	joe.jin@oracle.com,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH v7 09/36] KVM: x86: Use get_kvmclock() in kvm_get_wall_clock_epoch()
+Date: Tue, 28 Jul 2026 15:39:49 +0100
+Message-ID: <20260728144954.355376-10-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
+References: <20260728144954.355376-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/10] s390/vfio_ccw: selectively expand io_mutex
-To: Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Halil Pasic <pasic@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        stable@vger.kernel.org
-References: <20260728033022.2658232-1-farman@linux.ibm.com>
- <20260728033022.2658232-10-farman@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260728033022.2658232-10-farman@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEzMiBTYWx0ZWRfXzqSu2y/2W3Xt
- lXX2Jwe9kV5bXuEO+tNKUJ8iP/3PgYt6D9q7wTp7F9M5kKnQdUvc3wvXNOwhMx9YaJGVNJDWTBN
- k+oHuCTcyU1X/iDPiRI2xcQeK+DCgTg=
-X-Proofpoint-GUID: tb4ktdPjPI4hnPMkVj3E_94f3Uo6cpGo
-X-Proofpoint-ORIG-GUID: tb4ktdPjPI4hnPMkVj3E_94f3Uo6cpGo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEzMiBTYWx0ZWRfX1E3BestZi+iJ
- jY33W/suLRY6ZCm8LHII/xPIZLizcCHU6IGgLaBs8HcptDQQJigIbLoRbrh7EMcVLbSZxMQcBhv
- emtp/3AxEAzfcAhV7Od36guuDkosVB94g/Fby2HuBJlAlrndjUeYajA/+TwXjnwN5e2tTBysmFN
- FQfm0i9JxXJ1YXTfJVT3kDqE1IV1h3O5JWk75PWVzRq4eYRedEXejdKEhb7/zFrHos82tSopHay
- mlf30xPSSmRxuU6FgbNLoStSCCOUyL4Zp4G8G+LKJDrT3l3j6x0KzC5XZZE5QFPAwlA3aVbaBNE
- ZqOig8GhsQgBQ8BYN34qowlVN6s/DnLEs2gQo8qm6RXBb7HqGQZmW4yttZmBWjyS8DUfjKHajO1
- MkaCFq8RG8WUINVTuy1ZkCXlhY/9Fh6XeExQrCVhAa/ssaTBqM9Otq/+ISV7UPodaKJkNYNjptg
- doIV7rEKNNmr76dCKQg==
-X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a68c14c cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=Pi-cMz3bnQeYMOJVrQsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_04,2026-07-28_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280132
+Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 7/27/26 11:30 PM, Eric Farman wrote:
-> The io_mutex was defined to serialize the io_regions, but then has
-> also sort of been associated with the I/O themselves because of
-> the close relationship they share.
-> 
-> With the handful of races that are possible, the choices are either to:
->  A) expand the scope of io_mutex to close these remaining windows, or
->  B) reduce the scope of io_mutex to just io_region, and introduce a new
->     lock mechanism for the remaining I/O resources
-> 
-> This patch implements A, since B brings with it a lot more interactions
-> that would need to be tracked and kept in a correct hierarchy. It also
-> takes advantage of the workqueue element for cp_free() that now gets
-> called out of fsm_notoper(), which could be invoked out of an interrupt
-> context and thus cannot acquire a mutex itself.
-> 
-> Fixes: 4f76617378ee ("vfio-ccw: protect the I/O region")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Now that get_kvmclock() correctly handles TSC scaling and captures both
+wallclock and kvmclock from the same TSC reading,
+kvm_get_wall_clock_epoch() can simply call it instead of duplicating
+the pvclock computation.
 
+This eliminates the last instance of the "definition C" kvmclock
+calculation — as described in commit 710b3a30f407 ("KVM: x86/xen: Do
+not corrupt KVM clock in kvm_xen_shared_info_init()") — which computed
+nanoseconds directly from the host TSC without accounting for guest
+TSC scaling.
 
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ arch/x86/kvm/x86.c | 59 +++++++---------------------------------------
+ 1 file changed, 9 insertions(+), 50 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index c00b1e19c3af..f7a9fb69e69d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1930,63 +1930,22 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+  * wallclock and kvmclock times, and subtracting one from the other.
+  *
+  * Fall back to using their values at slightly different moments by
+- * calling ktime_get_real_ns() and get_kvmclock_ns() separately.
++ * calling ktime_get_real_ns() and get_kvmclock() separately.
+  */
+ uint64_t kvm_get_wall_clock_epoch(struct kvm *kvm)
+ {
+-#ifdef CONFIG_X86_64
+-	struct pvclock_vcpu_time_info hv_clock;
+-	struct kvm_arch *ka = &kvm->arch;
+-	unsigned long seq, local_tsc_khz;
+-	struct timespec64 ts;
+-	uint64_t host_tsc;
+-
+-	do {
+-		seq = read_seqcount_begin(&ka->pvclock_sc);
+-
+-		local_tsc_khz = 0;
+-		if (!ka->use_master_clock)
+-			break;
+-
+-		/*
+-		 * The TSC read and the call to get_cpu_tsc_khz() must happen
+-		 * on the same CPU.
+-		 */
+-		get_cpu();
+-
+-		local_tsc_khz = get_cpu_tsc_khz();
+-
+-		if (local_tsc_khz &&
+-		    !kvm_get_walltime_and_clockread(&ts, &host_tsc))
+-			local_tsc_khz = 0; /* Fall back to old method */
+-
+-		put_cpu();
+-
+-		/*
+-		 * These values must be snapshotted within the seqcount loop.
+-		 * After that, it's just mathematics which can happen on any
+-		 * CPU at any time.
+-		 */
+-		hv_clock.tsc_timestamp = ka->master_cycle_now;
+-		hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
++	struct kvm_clock_data data;
+ 
+-	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
++	get_kvmclock(kvm, &data);
+ 
+ 	/*
+-	 * If the conditions were right, and obtaining the wallclock+TSC was
+-	 * successful, calculate the KVM clock at the corresponding time and
+-	 * subtract one from the other to get the guest's epoch in nanoseconds
+-	 * since 1970-01-01.
++	 * If get_kvmclock() captured both wallclock and kvmclock from the
++	 * same TSC reading, use them for a precise epoch calculation.
+ 	 */
+-	if (local_tsc_khz) {
+-		kvm_get_time_scale(NSEC_PER_SEC, local_tsc_khz * NSEC_PER_USEC,
+-				   &hv_clock.tsc_shift,
+-				   &hv_clock.tsc_to_system_mul);
+-		return ts.tv_nsec + NSEC_PER_SEC * ts.tv_sec -
+-			__pvclock_read_cycles(&hv_clock, host_tsc);
+-	}
+-#endif
+-	return ktime_get_real_ns() - get_kvmclock_ns(kvm);
++	if (data.flags & KVM_CLOCK_REALTIME)
++		return data.realtime - data.clock;
++
++	return ktime_get_real_ns() - data.clock;
+ }
+ 
+ /*
+-- 
+2.55.0
 
