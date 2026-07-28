@@ -1,111 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C150E54B
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 00:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7C23EA83
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 00:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785199906; cv=none; b=ggRfIHPN1Nm/R+BDiITl9d4yLJ9hI2lrMAlQHCfReDY5Qj64A8QRtiVbL3X5UoMFY1Hx2SzMgJgjUUFbeppcDKbXwRC41pmlysb0epOnqPSnOm79Y4VEkjv7KUk1FgcfFXM9uRSB71MiEoz0iLRYJtKS63zBiQMUBupkV0dwB1g=
+	t=1785199921; cv=none; b=NIvlJzCvcHgwgXiqID6Ig/KdthTpled6gmeyz7CxOI85VB8ZNu0eNNlUgDHGxY+jB2+C6mSSJzhFU/+qVZdKASZ0QU515Dv3uQYvBUyFBnyRH9IKwbIKZHuYYPhJIXngyDZlzyeEtWqDHLdsEequ5tmYXgmSGXUg7uTWI42xKWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785199906; c=relaxed/simple;
-	bh=oBtw+WSpwtymPSjaZNIAS40Gfj3mkN9PvJqb4RLtByw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=KfWIAuH46vyetIG/1Ghx6jajB1aquCCBxqL8Al0f+YtSsSTSqyjdhJJjwl0OE9dMfLWAyoGKRheg64jBKBVJqxgZgCURiqT8zqNB6yx/uqvZPsDgkk9ksBAdcUUwl/BdJHIiKBqwS7VQ+fv2dYhuruBbju5Trzq0/zwYQNOFCRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g13JB6MO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785199921; c=relaxed/simple;
+	bh=f4H3IH81xz+uOCdrbsf7SRi0ExkOj3mz9Ecxb6nQTsQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RMJ+qTGd6LcRwlcLhiwNpRfCGJgTzKxaM23CGNhkm2S+DMKFrdSdA/rQ27z2pTe2W8fOFDkW0nywFupP7dABvjxrn0hw7DeLeKFxNCDCL2aRFhEnoy/KoFCyTIDbs6zSWNEhg23tulhqTxPe0hU8KZF8wMZO91RVNogT8KRZkK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=svmCO/hg; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g13JB6MO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F9D1F000E9;
-	Tue, 28 Jul 2026 00:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785199903;
-	bh=PgARvOT1xYq0cdpv95Czb7+ykAlH33jmcOXpfDfrlT4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=g13JB6MOedyJbPQ43sdHRXSRhNQtHhlxlmPZhs1VQvvOoxUvd9dr9yS54OzjfNgBU
-	 z/4N2BRsJsUwdv/Z080Kcdhkm3+XTFn9tMHPWMsUUiMFq8zIjDMm41n+FoLwEXjTX9
-	 XBJhCVMBXHoxv2+YY9j+aY66sTH8uufrk+A74M4WR16zyzLBhME5sPWAujNuLhINYt
-	 qG06FL/BxXT5g3E/4DfnPpAZwQRegjfqDSj0+F64ecgs2xaCu0DZ1v2KQez1o25+h/
-	 4YEdW8wZTPTGdqBZd66Dl2HZuIl7CMdxNb4bc88KdNjW5GqyCEwK7tebqzyD1Tzm1Y
-	 2a+mBrCwJmPkA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 5/6] KVM: selftests: Refactor invalid nVMX state test
- to prepare for RSM testcase
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728004351.887076-6-seanjc@google.com>
-References: <20260728004351.887076-1-seanjc@google.com>
- <20260728004351.887076-6-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 00:51:42 +0000
-Message-Id: <20260728005142.E8F9D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="svmCO/hg"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cceabd70f5so90729055ad.1
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 17:52:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785199920; x=1785804720; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GQi7x436nDykBGBr3THdmSxZ/qUpCFOrJDr01TocQQI=;
+        b=svmCO/hgcWGDPCkMI7bBY0J79vrJjcH51C393MSQImOG93bYozgXpz3EJuRdc+MFSb
+         IoD99nn3UTdrJ0jEEx64f82yToPdT35TMbW31Lj3O7RnzCIlwy0CgjACYYtgO7HKzs8f
+         qJrg/RcYP7T1eGxtAOPXe9Ay00ask67aUZXxwompFK/ofZh3UKF1UZ5nnvsIUum3ynW+
+         9qrBWzi4lhAtBEGflUbGFGiDwkz1jx9yUpceylV/GtDA5BjwLYr8LzVrxhw3HzPufCqv
+         Tver2Rzm07sNPQi1hW+DbpOVdGqLaA4tkd5nuVh8Tkldc7I5bVF/FDwOeb/2ziYsEe8J
+         e4Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785199920; x=1785804720;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GQi7x436nDykBGBr3THdmSxZ/qUpCFOrJDr01TocQQI=;
+        b=E+V28OLkBci83yAGFGcx/eIlD7uXsebZfQ9SXFibUC2CoVOA67pbEXgL3BZ2tao+da
+         seFTIFb8iEybi4t9AkLiMvUkOBj9nhDt4sYB29kmlu8oFYKnTyBuVXqO/qR+nfRBefpx
+         9ewxWEAc4nBd1VIPJA771jUjpVd1mgMZ9r32Vft/2C+mdfJthn0UX6oaS/1IX/Ef93uR
+         Y9QTXfzQ5J+47t9tLiY+IDyaGEZn88OwsRVok1Lux8jsM9r6IHN87lvfvE7jy2vuz8+8
+         hpYNau6K9KIn6ruZp8C9q/dowLYy4wW3oL/IWJLg77bO1iLvan7gDeNPFxORHZRyk3Ak
+         8r3A==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9G1sKvUaBfLZrsOUuXza5E/6rctQAY+aGvmv7SkCiqWOb4CpCB7TNt4kLb9y/PEyvphM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwodcynUBPbqHk5mWUS/jx7eyLUOMj1QtCtN6Z/vRgMXCeRY05L
+	b4+VMwYqG466l5zrzH49YmvZfAGR0+k8Qxjwhyu9EEBvJeaw101fbjsGpUS8fnFDxAehLUmdhbn
+	MaPTeLg==
+X-Received: from plig13.prod.google.com ([2002:a17:903:458d:b0:2cc:ed0e:f302])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ce11:b0:2c9:e5ff:995d
+ with SMTP id d9443c01a7336-2d015f01e44mr1928135ad.31.1785199919741; Mon, 27
+ Jul 2026 17:51:59 -0700 (PDT)
+Date: Mon, 27 Jul 2026 17:51:59 -0700
+In-Reply-To: <b38f67187d3312c4bf2c9eddf89e14e8b10573d6.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260703212145.343527-1-dwmw2@infradead.org> <20260703212145.343527-16-dwmw2@infradead.org>
+ <amPYq48J9TPbmFNl@google.com> <b38f67187d3312c4bf2c9eddf89e14e8b10573d6.camel@infradead.org>
+Message-ID: <amf9L65ZlPOqJm7A@google.com>
+Subject: Re: [PATCH v6 15/36] KVM: x86: Fix compute_guest_tsc() to handle
+ negative time deltas
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The assertion failure message in `vcpu_run_to_io` hardcodes 'L2' as=
- the expected guest level, ignoring the `want_l2` parameter.
---
+On Sat, Jul 25, 2026, David Woodhouse wrote:
+> On Fri, 2026-07-24 at 14:27 -0700, Sean Christopherson wrote:
+> > On Fri, Jul 03, 2026, David Woodhouse wrote:
+> > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > >=20
+> > > The compute_guest_tsc() function computes the guest TSC at a given
+> > > kernel_ns timestamp. When the master clock reference point
+> > > (master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delt=
+a
+> > > is negative. Since pvclock_scale_delta() takes a u64, the negative
+> > > value wraps to a huge positive number, producing a wildly wrong resul=
+t.
+> > >=20
+> > > Handle negative deltas explicitly by negating the delta, scaling it,
+> > > and subtracting from this_tsc_write.
+> >=20
+> > Does this need=20
+> >=20
+> > =C2=A0 Cc: stable@vger.kernel.org
+> >=20
+> > or is this a "technically a bug fix, but can't happen in practice" sort=
+ of thing?
+>=20
+> Honestly, there's so much hosed in kvmclock that we could debate a
+> cc:stable for half of this series. I'm not doing *any* of this to
+> actually add new features. For this one I'm not sure it's reachable in
+> practice; I think I did it mostly to shut Sashiko up.
 
---- Patch [5]: [PATCH v4 5/6] KVM: selftests: Refactor invalid nVMX state t=
-est to prepare for RSM testcase ---
-commit 7bfb34d63ffa2d4c98580f574a703358bca449c2
-Author: Sean Christopherson <seanjc@google.com>
+Heh, in that case, throw a blurb in the changelog stating as much.  Knowing=
+ that
+a bug is likely unreachable in practice is helpful, e.g. in the super unlik=
+ely
+case that this change breaks someone.
 
-KVM: selftests: Refactor invalid nVMX state test to prepare for RSM testcase
+> I think even in the KVM_SET_CLOCK_GUEST it can't trigger, although I
+> have fantasies about changing the way KVM_SET_CLOCK_GUEST works to fix
+> that final =C2=B11ns imprecision (which requires separate work on the
+> timekeeping core), that *might* trigger the negative delta here...
 
-This commit extracts the VM creation and initial vCPU execution logic into
-helper functions to allow reuse for a future RSM testcase. It also eliminat=
-es
-the global vm variable and adds an assertion to ensure L2 is never resumed
-after an I/O exit to L1.
 
-> diff --git a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_sta=
-te.c b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-> --- a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-> +++ b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-
-[ ... ]
-
-> +static void vcpu_run_to_io(struct kvm_vcpu *vcpu, bool want_l2)
->  {
-> -	gva_t vmx_pages_gva;
-> -	struct kvm_sregs sregs;
-> -	struct kvm_vcpu *vcpu;
-> -	struct kvm_run *run;
-> -	struct ucall uc;
-> +	struct kvm_run *run =3D vcpu->run;
-> =20
-> -	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
-> +	vcpu_run(vcpu);
-> =20
-> -	vm =3D vm_create_with_one_vcpu(&vcpu, l1_guest_code);
-> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-> =20
-> -	/* Allocate VMX pages and shared descriptors (vmx_pages). */
-> -	vcpu_alloc_vmx(vm, &vmx_pages_gva);
-> -	vcpu_args_set(vcpu, 1, vmx_pages_gva);
-> +	TEST_ASSERT(run->io.port =3D=3D ARBITRARY_IO_PORT &&
-> +		    (!!(run->flags & KVM_RUN_X86_GUEST_MODE) =3D=3D want_l2  ||
-> +		     !kvm_has_cap(KVM_CAP_X86_GUEST_MODE)),
-> +		    "Expected IN from port %d from L2, got port %d from L%u",
-
-[Severity: Low]
-Is the hardcoded "from L2" in the expected message string intentional?
-
-Since vcpu_run_to_io() is a helper that takes a want_l2 parameter, the error
-output could be misleading if a test calls it expecting an exit from L1.
-Would it make sense to dynamically print L1 or L2 in the failure message
-based on the want_l2 parameter?
-
-> +		    ARBITRARY_IO_PORT, run->io.port,
-> +		    1 + !!(run->flags & KVM_RUN_X86_GUEST_MODE));
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728004351.8870=
-76-1-seanjc@google.com?part=3D5
