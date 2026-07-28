@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CB4471240;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BD047125A;
 	Tue, 28 Jul 2026 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250228; cv=none; b=h/tp2Fy2TjpO9J5s5kLIb8Xc/Zgi2Cen2D4cskZ/7WiiOjg5A4WX66GDrypjRMHeH1bRhwDRReBA/TFzD32EafiVmzR6zRKIXwrCxF1aCG9ZRM15lqP4qUBYteZJLONNTnvxuXuLRnB9YCTHLYonfHEIzPFtCsntvH2urN9jmjw=
+	t=1785250228; cv=none; b=NlXagXUtmd0LfsCbcUhkZD/PwK1uyxXJaPfERFvZhscUEt9AF8l2NoQ6S4pkF8H0FiGo11/zrX/eMh1DaL2AK2nLLzSjrTm+pDjEvWUa0/JG1mBduYhq4WLMxwPz9mysfLi4GbGs7kclDLS7fofYOFLMI4RRBQ7vZCFX8dH6pzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785250228; c=relaxed/simple;
-	bh=OYAenOSwDlpEkzpw/hZuIU5NlBxY7fp1IqBeYOPZPDE=;
+	bh=EVm3s3yuLphtkQMzbiS5QhhpvOoe78+ZCkvCK4Aeg1c=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3Tbm3VDTJIGd/D3hozQ1W3lqXjOQPlm5gt3r7rrApFnfCqgMIG8KQzUkV+aFqlZb20kVlHPjI9lTelt498QZADPQ/8+F1LpUQhsGkwbRJBZhg4StLo6EF5Df1Hat29C6aw+nm0Ir16U/c9p9JZjIeXdKlhD3JAIH4SWdTNJ+zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DZKx6RFv; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=g0jXV+BnDDTtkZvl0VLbiG/9awdAQb+gcIGrx6qRh3eKKdymGc1Zoh1jlPb3oUjbIDU8chadOfN+X2hSslUk72OMYxLPEVzSCwJ+SXLXP8slOnW1hi0n9mZhinJUQGkw3Bg/WVgeen+01Krjv5l1U/kuQTAypOPoegoV3bC6fDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mSv1FLKQ; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DZKx6RFv"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mSv1FLKQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=TzgYEQycZnk9NREs4BkWOyKg6Tp5meskn+6VMFWWmpQ=; b=DZKx6RFvQHAQs1Ojm8AZEO8oH5
-	EdXrPppB8RpLp8SjdUC5USPmltd9ZTJnJIw5OXYR+xL5uk00Wq5GotDuiSIBZWs8I7i9yKwfNhMS/
-	NsKmg9j/6LwR4eRzAhx9sKuy6/J/fX7nU9Vew91XzYZFeUPOwTEyQOa+SP0vveHaHr3VzVtraDzJ5
-	+KtPwFC7rybqp1C6uDODOJ4kuNDepZeX5+DXeOn8r9xA7tooRGLs+EQhChjOHFQdJY+L61w9UXoWY
-	mi+pT09OFVSUvomFpPWgAhWBDSNzkLG88+gztgItGkkEceaXLXT5+vp3fctgF0m+6PyB560hhcyru
-	bUk+dNTA==;
+	bh=iB5YYfvike65tIF3MOOBW8Lv1PZp8ABfxzZ5+cQ99SE=; b=mSv1FLKQmy9qmTlaSg8paMot5w
+	5myNTsrs1dZDL35ce2gh7Yo5ei9NKVscpYTX7Jy6gk7srDYNbj0B3HiLmIin9OFRKtibsOu+2BehZ
+	6Qtj0U3D3yD8WOjOOhB+TSvi/9xZdVBSxq0HwNsbaYljtXQQ0JfrT5r6miVvHqC/UfIQBSzu1CeJv
+	W6FiTzFS3hfiN/uZv79cQOCAah4i/cZI6cNV1gAu6Gc+ZEfhgIgCsxOwsbsZ1sVt8xWfeCBGzcxFb
+	cEM3muB7ScHvaIW+DBa475+pnF0wUV1cZG+A0Jsp3zwHAr5MBpArDqBggVXFjGY8nKhaHGYk6WVk9
+	LCfqUWyw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woj80-0000000DUOq-0Pyj;
-	Tue, 28 Jul 2026 14:49:56 +0000
+	id 1woj80-0000000DUP3-2REx;
+	Tue, 28 Jul 2026 14:49:57 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1woj7z-00000001UYJ-1rI0;
-	Tue, 28 Jul 2026 15:49:55 +0100
+	id 1woj80-00000001UZh-1PBL;
+	Tue, 28 Jul 2026 15:49:56 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v7 10/36] KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
-Date: Tue, 28 Jul 2026 15:39:50 +0100
-Message-ID: <20260728144954.355376-11-dwmw2@infradead.org>
+Subject: [PATCH v7 29/36] UAPI: x86: Move pvclock-abi to UAPI for x86 platforms
+Date: Tue, 28 Jul 2026 15:40:09 +0100
+Message-ID: <20260728144954.355376-30-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
@@ -77,52 +77,113 @@ Content-Transfer-Encoding: 8bit
 Sender: David Woodhouse <dwmw2@infradead.org>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Jack Allister <jalliste@amazon.com>
 
-The compute_guest_tsc() function computes the guest TSC at a given
-kernel_ns timestamp. When the master clock reference point
-(master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
-is negative. Since pvclock_scale_delta() takes a u64, the negative
-value wraps to a huge positive number, producing a wildly wrong result.
+A subsequent commit will provide a new KVM interface for performing a
+fixup/correction of the KVM clock against the reference TSC. The
+KVM_[GS]ET_CLOCK_GUEST API requires a pvclock_vcpu_time_info, as such
+the caller must know about this definition.
 
-Handle negative deltas explicitly by scaling the absolute value of the
-delta and applying it to this_tsc_write with the appropriate sign.
+Move the definition to the UAPI folder so that it is exported to
+usermode and also change the type definitions to use the standard for
+UAPI exports.
 
-This is believed to be unreachable in practice; no path has been
-identified which invokes compute_guest_tsc() with a timestamp from
-before the vCPU's TSC generation was established. Fix it for
-robustness, in the spirit of defence in depth.
-
+Signed-off-by: Jack Allister <jalliste@amazon.com>
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Tested-by: Dongli Zhang <dongli.zhang@oracle.com>
 ---
- arch/x86/kvm/x86.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ MAINTAINERS                                   |  4 +--
+ arch/x86/include/{ => uapi}/asm/pvclock-abi.h | 27 ++++++++++---------
+ scripts/xen-hypercalls.sh                     |  2 +-
+ 3 files changed, 18 insertions(+), 15 deletions(-)
+ rename arch/x86/include/{ => uapi}/asm/pvclock-abi.h (82%)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index f7a9fb69e69d..52c9268007f8 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1054,11 +1054,15 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
- 
- static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
- {
--	u64 tsc = pvclock_scale_delta(kernel_ns-vcpu->arch.this_tsc_nsec,
--				      vcpu->arch.virtual_tsc_mult,
--				      vcpu->arch.virtual_tsc_shift);
--	tsc += vcpu->arch.this_tsc_write;
--	return tsc;
-+	s64 delta_ns = kernel_ns - vcpu->arch.this_tsc_nsec;
-+	u64 tsc;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4a8b0fd665ce..4d5e1088458d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14546,7 +14546,7 @@ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+ F:	arch/um/include/asm/kvm_para.h
+ F:	arch/x86/include/asm/kvm_para.h
+-F:	arch/x86/include/asm/pvclock-abi.h
++F:	arch/x86/include/uapi/asm/pvclock-abi.h
+ F:	arch/x86/include/uapi/asm/kvm_para.h
+ F:	arch/x86/kernel/kvm.c
+ F:	arch/x86/kernel/kvmclock.c
+@@ -29435,7 +29435,7 @@ R:	Boris Ostrovsky <boris.ostrovsky@oracle.com>
+ L:	xen-devel@lists.xenproject.org (moderated for non-subscribers)
+ S:	Supported
+ F:	arch/x86/configs/xen.config
+-F:	arch/x86/include/asm/pvclock-abi.h
++F:	arch/x86/include/uapi/asm/pvclock-abi.h
+ F:	arch/x86/include/asm/xen/
+ F:	arch/x86/platform/pvh/
+ F:	arch/x86/xen/
+diff --git a/arch/x86/include/asm/pvclock-abi.h b/arch/x86/include/uapi/asm/pvclock-abi.h
+similarity index 82%
+rename from arch/x86/include/asm/pvclock-abi.h
+rename to arch/x86/include/uapi/asm/pvclock-abi.h
+index b9fece5fc96d..6d70cf640362 100644
+--- a/arch/x86/include/asm/pvclock-abi.h
++++ b/arch/x86/include/uapi/asm/pvclock-abi.h
+@@ -1,6 +1,9 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+ #ifndef _ASM_X86_PVCLOCK_ABI_H
+ #define _ASM_X86_PVCLOCK_ABI_H
 +
-+	/* Handle negative deltas gracefully (master clock ref may be earlier) */
-+	tsc = pvclock_scale_delta(abs(delta_ns),
-+				  vcpu->arch.virtual_tsc_mult,
-+				  vcpu->arch.virtual_tsc_shift);
++#include <linux/types.h>
 +
-+	return vcpu->arch.this_tsc_write + (delta_ns >= 0 ? tsc : -tsc);
- }
+ #ifndef __ASSEMBLER__
  
- #ifdef CONFIG_X86_64
+ /*
+@@ -24,20 +27,20 @@
+  */
+ 
+ struct pvclock_vcpu_time_info {
+-	u32   version;
+-	u32   pad0;
+-	u64   tsc_timestamp;
+-	u64   system_time;
+-	u32   tsc_to_system_mul;
+-	s8    tsc_shift;
+-	u8    flags;
+-	u8    pad[2];
++	__u32   version;
++	__u32   pad0;
++	__u64   tsc_timestamp;
++	__u64   system_time;
++	__u32   tsc_to_system_mul;
++	__s8    tsc_shift;
++	__u8    flags;
++	__u8    pad[2];
+ } __attribute__((__packed__)); /* 32 bytes */
+ 
+ struct pvclock_wall_clock {
+-	u32   version;
+-	u32   sec;
+-	u32   nsec;
++	__u32   version;
++	__u32   sec;
++	__u32   nsec;
+ } __attribute__((__packed__));
+ 
+ #define PVCLOCK_TSC_STABLE_BIT	(1 << 0)
+diff --git a/scripts/xen-hypercalls.sh b/scripts/xen-hypercalls.sh
+index f18b00843df3..51a722198997 100755
+--- a/scripts/xen-hypercalls.sh
++++ b/scripts/xen-hypercalls.sh
+@@ -5,7 +5,7 @@ shift
+ in="$@"
+ 
+ for i in $in; do
+-	eval $CPP $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
++	eval $CPP -D__KERNEL__ $LINUXINCLUDE -dD -imacros "$i" -x c /dev/null
+ done | \
+ awk '$1 == "#define" && $2 ~ /__HYPERVISOR_[a-z][a-z_0-9]*/ { v[$3] = $2 }
+ 	END {   print "/* auto-generated by scripts/xen-hypercall.sh */"
 -- 
 2.55.0
 
