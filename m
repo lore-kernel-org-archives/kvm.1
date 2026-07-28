@@ -1,162 +1,175 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D14D3321DC
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785254044; cv=pass; b=GZtiCAmh5SOyOZiMMOSM/eWZ9Q8PptvFHUs2HXUT85V1Dj+rTQWkn1i9uyTbyy2Sl8hk8EfKJCT/jOsy6n5m7Vohjd3993QGDmJfMF+BQfu9mdzRWa6l2LmuDLNvy1aSyzd/YzhnZ/frzUDI4oiUQoOSnNAlAnbydNfj2MeYw7g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785254044; c=relaxed/simple;
-	bh=VdgY403WdBNdk1xN9Bz16ZYD/M2uVC9qOnTtjXU5SSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vo2E4sUwZKD160m/JAAzxZnmZswyzaAb/BTDpTZ1N5xNDYH1yWKDm60WYXFAMS5m0Du5yxn5173nVGur2upemJpybNy+OfxAV0eh0/mPNjdWDZzLR6MH5q0OBtYN+eXw4BAkkn7pvTppXcEOfagMD8L29hd1kv6Wh8/6s3odGNE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=xwSVATqO; arc=pass smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D07F44C65C;
+	Tue, 28 Jul 2026 16:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255051; cv=none; b=Wi0W4/xhNv5GHv44q7MtQVEwWo85yXBLAkK5XjtK2P4D75jO0796FM7LFe/2qAxt2HrgB+aUCU9f0qzKYsgffnyVsOL2L/ThMDsHfhIms/eh7DY2Oy621EvyFXTJ7IgA9f6VF1jJgHWqe7jA26Y8OFLElOy4NPNDluoFHA4dXk4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255051; c=relaxed/simple;
+	bh=V+Hrhpg3KyUC02isYOBq/X3cNJpBekkAfJCuSF0dsf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q6rxu6PvCWU5O4dn/PcfiGGYpV7R6PBj9jCQWszd7OA/uF+UOSBFjOw/QTKmWs0qitL8iqyvT6ncUevCwDMjL278E/DF4fWpSZgazhF08ZeQ9/5179zdxLPGP/ONgNZSl2DEJyXTxLUttbaduRwAFAzPDpdcrPPzwTiIkD4QPwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MhF2FOXg; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="xwSVATqO"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-47de008b020so817932f8f.1
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 08:54:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785254041; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ygwr2v81/1bNRt4nKC2Uk6+HFVMRxXShbYyGMOMkK7IFjic7V4IztqtSG7BrrY6oRm
-         fDxASk1cnSBM9tSOZYGK8Gth6PoPLq7GN5IWHLCK65CTIRXAUJwimHm4QYXp7XLwXSHv
-         M7nXUQ1Fi36FbNHEuh9iRC6z2kKZe9tkE176GBi2RuTYNKmsxdOfofYVsRhbFMRLPLlE
-         /D7zZFwHYtoijEKczaR6J7cYXrQigfj2oLjPu+W7A8rYoI0Rwbufc9712FU+cMLtG/Nc
-         YyL/2L+C3mzNTMGneYDn+sV1isMKVcN/6ohMXbewzI7/yXxmWKbUm4yUjHxZObYfhktk
-         y4ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+U7EUowm/WpYWZVDDqRkyNBdiXnZeoZAf0Tk6pkUOwY=;
-        fh=3obs5/69oyQ8othQ66tK4UFLWSKDaPudpncls5+msCI=;
-        b=PaAKIIR201RaaR8zKh0xizs6qihx9xlCmSaGG0xieR4uuuGkPQoQM/hChreNirQimx
-         kNelB1NGhUPC1mCXl7OlhjBM7h157ieCZAHLUOupv8Wg8tUaVZ6oEnlWs+rLR1BiUNfm
-         vTL+mXDZXPKOlgN7JZN0GS8c8bFriOeZlifD+hRMZrriZiSVhsqd9Rs5miMdWz5pPN+f
-         beuggqaoA3qz7PJp9ZF9UJaihX5Cza3wYM1IHNqUKAhmX584eljD7Z/7sUfq7/mpwu0h
-         7rD3+jssaxUTsOYw1+pqa3xQa3ckHihn8llQ1uGNgUKaWwp/qDg7nvQWcIjmoqmK56b+
-         twqw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785254041; x=1785858841; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+U7EUowm/WpYWZVDDqRkyNBdiXnZeoZAf0Tk6pkUOwY=;
-        b=xwSVATqOIyzE+mwqBQHyrQ8C9WjxdeM53CK6wXHLMoUEjLfwdVeLsN4XB4zc7Mq8ny
-         AaqMginj9jsqlmEyfu2b+II2F4z1YOaL9PHMG0M77KuUF1tIi/hilzXtvecOLtsSFBeN
-         pTH/hRs+yeOc3uBx79ac4Nq+/zdvwdcwSoAqMrqK9NhkzJyOAiGCkwCcRSr6ZEAvbqlo
-         oJPj47XipXNcR4jNCh+ZFV6YTwIC5dLjs25zYLvD7Hv7ql/zdOSR1jgLIF596t2RUj74
-         znkTB6Lc9rorG3bi4SRl9BesHPrbF4FC0wtOqJJgydhj9UW7IoVzuesc4lZ3DsWoPW1e
-         YrTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785254041; x=1785858841;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+U7EUowm/WpYWZVDDqRkyNBdiXnZeoZAf0Tk6pkUOwY=;
-        b=NJYymuT6qU1Sb+taaueKfFcDz7Cljea5m4bXmXLQko4BJIZGrVavV5RbaGvSAX1ATR
-         lCOGeSUX1iE3w9JYWDEI7oHUTXZByb5pxcE/ZyP7SjLZ+gYlUKKa2qmC/TsqQ5QLPnmc
-         ZYY7Sg5Q+N99sMFNxwFjBYuoUimPB7/1MlsdzQk/2QMEb/d15GP4GCGW7C9CadXg/fOe
-         9MaDvU09ChGupTUjb2xBrNsV8Ya2s8L2dcDI32bx+o++ikpAao7MvS1AYmUmLQtZMy7U
-         sbAbxcrLVjiAPkS6z5SDh730t3KfXwm0Ua9GkzpJqAKmEzC2uC5CloWsHg0V4vmUbkb/
-         zrGw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq59kzayvCBKZKTHdzTTxxSecxtZJMOm3tm7Tt1lIS57XHPnuIHjB0mObstBZ3gc6GwdQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwabWS25YwjCdM8TvRzL26GzZWOCrFCIP1D6Xf7cGJ8q9blfmAp
-	8IZ5dJvjVvAn/TAHj0nlB9+8yUyWiDhK9PS7btu1yDQ+h3yUbqk4VCORkev9PQzcM0dHLJvmMZ3
-	7rhzRQMj87QtKT/Ude0f4dXXbNLgYUjowzjQFopUHew==
-X-Gm-Gg: AR+sD13afxlr7RxMN/SpZhT1aoihlE6Jy9/ILnvTgVTxyvRN2IxRnvqUtbG5QfzIJ3g
-	ABxLat2oK95cQQbDlBhDotcifz1F3v9atkzJ10Dql8WNmDa/X94HiwTq4Yxgungc4iX3MG+8fFK
-	i37X89tAUIqcaUnVG1K3ryudcNJe7tJyUB5hWEq8XV2PpXH6noYP6im2SXKoxxpYnrRLZCNi4de
-	/kso166aX3jbqG/vl4i91SUeb3Ve4eWhuf0x5U1dr4+7AZCJbpLwzk2QNdqS6y0pTnxeisy180a
-	wYYK/stXagdekuo4o1KcWJ1U9rFvb/5Vk7hBcQr9EHsPZkPtI0zAH1fWP2550v5Z/tuW+iodGdQ
-	B7RZCRQvPI//L/xE=
-X-Received: by 2002:a5d:5f51:0:b0:45e:dd32:92fa with SMTP id
- ffacd0b85a97d-47fb1e9992amr3932927f8f.12.1785254040632; Tue, 28 Jul 2026
- 08:54:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MhF2FOXg"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SElsFK1491484;
+	Tue, 28 Jul 2026 16:10:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=P2Fm6k
+	Oxa47Yk0X1bBsdXq4JnF3pI7aWndWhDXdxWAU=; b=MhF2FOXgSZhEigPr3kL+mb
+	QMuThWGYO5K/0VHZLCRiTsc2ZpOu4M/g+5oE7qSTadR63tL09KMd7BIPkl0lWgae
+	jg1iMK+8U9pcO0wT0kDAhg50COf2bE5KqFr0R7gOC+8LuhPGSfPTYH82Hb8pyWGe
+	H66G8fIZNNj38lYanuaK5/HVm3B3kAHqoVB13Euu/fMsn9ZS4oPUlg8khS/9QJpR
+	M+GXntrilUYoplTM9eI10wKHgSv6mM6U3YlCKQ41BPK8Q0ii7tRu3U5A7188YIEh
+	njOClXBzh8OobG1b4kRaYuqJIla9qIdGotY/6xcGzfRD3xPBxk0pb6ruUh9ABhuQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0xp8vq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 16:10:49 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SFuFOt020549;
+	Tue, 28 Jul 2026 16:10:48 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqavf9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 16:10:48 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SGAl5O49938756
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Jul 2026 16:10:47 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F280258061;
+	Tue, 28 Jul 2026 16:10:46 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 267FD58053;
+	Tue, 28 Jul 2026 16:10:46 +0000 (GMT)
+Received: from [9.61.138.160] (unknown [9.61.138.160])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Jul 2026 16:10:45 +0000 (GMT)
+Message-ID: <dc3726b5-99a0-4912-8e69-c7850860677f@linux.ibm.com>
+Date: Tue, 28 Jul 2026 12:10:45 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260709115610.287420-1-yhchen312@gmail.com>
-In-Reply-To: <20260709115610.287420-1-yhchen312@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Tue, 28 Jul 2026 21:23:49 +0530
-X-Gm-Features: AUfX_mwzsyiunp_bPATfO_O8RiK5DjkNzGjCdX_kznFgbSWBNjYBF0Izm64N9aI
-Message-ID: <CAAhSdy2r8Ei9ESdSJB8McC1T=Atp0yNa2MxEbOWNVRTUM_8YFA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control
- VS-mode WFI trapping
-To: "Yuhang.chen" <yhchen312@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Quan Zhou <zhouquan@iscas.ac.cn>, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] s390/vfio-ap: fix stale pqap_hook pointer on error in
+ vfio_ap_mdev_set_kvm()
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        linux-s390@vger.kernel.org
+References: <20260722140927.892342-1-akrowiak@linux.ibm.com>
+ <20260722142334.5BC8B1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260722142334.5BC8B1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 643WnnhEmIx3b8SXgVwuZeUAm8Z0Pgpu
+X-Proofpoint-ORIG-GUID: 643WnnhEmIx3b8SXgVwuZeUAm8Z0Pgpu
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDE0MCBTYWx0ZWRfX8tfJOMDoJkLY
+ CnyM1MgYuNLLGMofxei+OS/3Fm3Ezghkj953nbe/D/Ht9U7nxXghrSYDZ6pNkvnuPzV82aez+XX
+ WtbxvaL4tKkphAsOPAFnNFfoCGZP3zA=
+X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a68d489 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=L-Y-XvPL559Sbp1hanEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDE0MCBTYWx0ZWRfXyVlbU9apAvUm
+ aq/6Kx3ZfqJFx8SQjy6NBtTZYHwcHCSIiKp+oTj8CEoPRpKzTLwP5WGSRuNoYrKsuKyPlwrSaTA
+ zANeqaoVmlLSMxiWlTMOLRTTaQjsG/sn2HeBc7+5Za0xn6b0PyF/Bufkk14g6f1P3dBOnZ6+7+V
+ 0oZLB7m94BhjgJlZCiE5tIn4AnQ6hvrR3mNJk1HpRoc+0H7owNJWxangcDjYk+FUeenzB0K/j0X
+ QkheIVjCB7KWhmV8ioelJE3EULFmgoDkYEERyJln37kSCRCaO3SkqNhdUgte+20wRfW6eXYUrVL
+ gpkWDlIIRguDRKsTu/IWnMKNYgjyu38yP+0KSYpmB+Z4H4Rlpp0oljmoCT3SDjNcTVOxyS40rH+
+ VRvvlBlnlowyLUwZZfvwTnF2ikJjsVQWjLk/NNZ6FGvvEv0peuXQ6L9OR0dwj1ZOQ2hBzf3YN2A
+ pBvsAraRTnY3ay+HXIg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-28_04,2026-07-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 clxscore=1011 phishscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280140
 
-On Thu, Jul 9, 2026 at 5:26=E2=80=AFPM Yuhang.chen <yhchen312@gmail.com> wr=
-ote:
->
-> Add a kernel command-line option, kvm-riscv.wfi_trap_policy=3Dtrap|notrap=
-,
-> that controls whether a WFI executed by a VS-mode guest traps into KVM
-> (HS-mode) or executes natively.
->
-> Measured results (wfi_exit_stat delta / guest wake count over 3 s):
->
->   policy        WFI_EXITS   WAKE_CNT
->   ----------    ---------   --------
->   default       295         294      (=3D=3D trap, no regression)
->   trap          295         294
->   notrap          0         298
->
-> Assisted-by: YuanSheng:deepseek-v4-pro
-> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
-> ---
->  .../admin-guide/kernel-parameters.txt         | 14 ++++++
->  arch/riscv/kvm/vcpu.c                         | 44 ++++++++++++++++++-
->  2 files changed, 57 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index b5493a7f8f22..ee6603b30033 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -3254,6 +3254,20 @@ Kernel parameters
->
->                         notrap: clear WFI instruction trap
->
-> +       kvm-riscv.wfi_trap_policy=3D
-> +                       [KVM,RISCV] Control when to set the WFI instructi=
-on
-> +                       trap for KVM VMs. When set, a VS-mode WFI traps i=
-nto
-> +                       KVM and is emulated; when clear, the guest execut=
-es
-> +                       WFI natively and blocks until a VS-mode interrupt
-> +                       (e.g. the sstc timer) is pending.
-> +
-> +                       trap: set WFI instruction trap (HSTATUS.VTW=3D1)
-> +
-> +                       notrap: clear WFI instruction trap (HSTATUS.VTW=
-=3D0)
-> +
-> +                       Defaults to trap, preserving the previous
-> +                       unconditional behavior.
-> +
 
-This would mean that for the "notrap" policy the VCPU would never
-sleep and increase host CPU utilization even when VCPU is idle.
-Is this expected behaviour ?
 
-Regards,
-Anup
+On 7/22/26 10:23 AM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Critical] Restoring `kvm->arch.crypto.pqap_hook` to `&m->pqap_hook` after releasing update locks creates a TOCTOU race condition leading to an exploitable Use-After-Free.
+> --
+>
+> --- Patch [1]: [PATCH] s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm() ---
+> commit 3eedf7c518752f33e7b7b7758dc2098b54d797b9
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
+>
+> This commit addresses an issue where the pqap_hook pointer is left pointing
+> at a failing matrix_mdev when a conflicting assignment is detected. It fixes
+> this by restoring the hook to the legitimately attached mdev discovered
+> during the error path.
+>
+> Cc: stable@vger.kernel.org
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index 44b3a1dcc1b36..e18540fd6dc75 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> [ ... ]
+>
+>> @@ -1833,6 +1839,10 @@ static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+>>   		list_for_each_entry(m, &matrix_dev->mdev_list, node) {
+>>   			if (m != matrix_mdev && m->kvm == kvm) {
+>>   				release_update_locks_for_kvm(kvm);
+>> +				/* Undo the hook installation since we're failing */
+>> +				down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+>> +				kvm->arch.crypto.pqap_hook = &m->pqap_hook;
+> [Severity: Critical]
+> Is there a race condition introduced here since the update locks are released
+> right before restoring the hook pointer?
+
+This is a legitimate point since it could result in a use after free 
+problem accessing
+m->pqap_hook while not under the mdevs_lock. This needs to be fixed.
+
+>
+> Looking at vfio_ap_mdev_set_kvm() in drivers/s390/crypto/vfio_ap_ops.c,
+> release_update_locks_for_kvm() drops the mutexes that protect the mdev
+> list. Once those locks are dropped, could another thread concurrently remove
+> and free the existing mdev (m)?
+>
+> If m is freed while we are waiting to acquire the pqap_hook_rwsem, this code
+> would then assign a dangling pointer to kvm->arch.crypto.pqap_hook. Later,
+> when the guest executes a PQAP instruction, it might dereference this freed
+> memory, resulting in a use-after-free.
+>
+> Would it be safer to restore the hook pointer before calling
+> release_update_locks_for_kvm() to ensure m remains valid?
+
+The pqap_hook.rw_sem semaphore can not be held while the mdevs_lock
+mutex acquired via the get_update_locks_for_kvm() function are held. 
+This will result in
+a deadlock when the pqap_hook function is executed because it will be held
+while the hook is executing and the hook callback will try to acquire the
+mdevs_lock, thus resulting in a deadlock.
+
+>
+>> +				up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+>>   				return -EPERM;
+>>   			}
+>>   		}
+
