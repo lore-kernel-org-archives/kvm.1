@@ -1,190 +1,145 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378F5377A9A;
-	Tue, 28 Jul 2026 16:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255693; cv=none; b=usT7TpRHnrWXUu8UnLQo5Z2IjR01oGxtFWeshck4++2hmMKC1AVUB6cUVUvfDXye9FoCKCbrUcO8RAUHPL0bJ3R9PU0oyKrq6DQluDzFcw7p2foAi0esjOp2UBiyP8ACE4cpTIJe93qxJoSp7J+88uTn3EkNPQOBbXlDMjZT0hY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255693; c=relaxed/simple;
-	bh=hYEi2jCuXLe8ZIWyOxoM8w7uww8HOwqnK9b6z+1Uamo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uR8CcOY6hGmlK88s6xaFsXjlwvy9owVaUjlF29ePv2DlebD3d7qOah4cNA8XBDOZ3hnD0pzttvcdYxgWJq+BHeCh5zUyoKvhwabuQRIfCHWsF88D20uGYqHN2U6yKwg9Z5EXxGRhdOQz8G+zTWTwPR0/ZOhchg52vP1yvz8qmW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZfaNeyBT; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E6637C109
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255895; cv=pass; b=mw9vERSk1oOgrWsW/X/u8KgkWoRqQxRHODYJFx9qm1My63Yp/VlgWq6XAJocJH7hMkYAI99wANx5R5Lk1Iyc4PxEwPZ8JXxgr7eGzlXXYbpUmxj4++lajtiX/qMqtq9vjPeYhR4JCWT03ZdOhqBdr5YHEWLvfDH5CCL7WJ+kmlI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255895; c=relaxed/simple;
+	bh=i1628fISlf4UMwG9ccW9rlvACehVA/JJrr0ofdO8/Bs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XvMi79Eh6z3R9lOilwK8o3HC1nL8Cjn8gnhL8iXMD2LEtaS+SZ1RxUe0sni7jdR6qsnxUdOPRsdWFigeQNFa3+ZtpeE97Kfz94DtWREbCN0X8lWyUAYuh/USuAEM5rThWLA6xXDKXDIBjuL9ivPbDgGUVJ91KGjkmCAjv2fVj5I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lct2g94N; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZfaNeyBT"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SElgkH1380153;
-	Tue, 28 Jul 2026 16:21:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pFzsBu
-	+BlHojYcL0C4kQwTXqxp1R62iqsMD7jRO2woo=; b=ZfaNeyBT6avCVc/8kAG9+5
-	5Z3MmY/MGXFVj8ouHL8g7oN4fSw0cLZAxqAa7QaYpaUS7+6a/xugxd9iXTmQVvWJ
-	Wa/JbVnV3SbgXzcswcMoPgTsdo+8cJLk8lh1bnlkAYWWFJ69gh+TxV/n0TuFtgQp
-	UWypAEMv8bGzQ+oOoRhiVCkWWE/mJWumgKQNmTk//2/tYlXd2KPYUVRJOjWTHqbd
-	LM4/UdQ7MPIBTIbGXLKos74L2FhM8zB31pLHp4yVlWMvRRn1UYnCePQfXtk/O/WY
-	PVRq/dSFLX9EMSuXBePM9ePkfVp3BHjdFpGzAcClm8MsvwVd//dR3rX1wm834u5w
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyj5p5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 16:21:29 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SGBI6n027448;
-	Tue, 28 Jul 2026 16:21:29 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8fk2r3t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 16:21:29 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SGLRcI29360714
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 16:21:28 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA27F58052;
-	Tue, 28 Jul 2026 16:21:27 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 103C158062;
-	Tue, 28 Jul 2026 16:21:27 +0000 (GMT)
-Received: from [9.61.157.32] (unknown [9.61.157.32])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Jul 2026 16:21:26 +0000 (GMT)
-Message-ID: <eb8e8909-1e0e-4144-988d-05be9221e2b8@linux.ibm.com>
-Date: Tue, 28 Jul 2026 12:21:26 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lct2g94N"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a01b8959e7so2528029a12.1
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 09:24:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785255892; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Wdcey8AQVgdYTpE1jyBdW9QT+c/KVbXOBTjN0Y0TAcG2Mz5w/RTxXmFvDkwaxER9UI
+         M7j9kvg+VkmRqh1Q24SlMWNrM4kWL5JDwa196ze7Wf6w77JhKYVU+Y3T9CRuzDgyCuxX
+         Ik/lK32BmV4Cl9eZoOjmg9dorbhsMEeBQSRNZdMVHp1jo/YCMqVxqmE6vBPM/wTGRouN
+         CWyHAgXoTjg5MBOgkkpMYV/iB+eIoynFAoHobm9zE1cbXxAdZfwRFBaCcLWhn3XSz4Xm
+         x7BDwhUMvnWQEzRy8YFdx9rkZ9un/ZFeOR8isuoC50b8aiLgPoALaIoAJS9TxVvu48f3
+         mVWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
+        fh=GiwviZeVpj047NzW9KjWIrijY/rwtfKzhPwjDUKCVI0=;
+        b=KME+l/vdJwiEYADjzfSU7TfXuIOAB3xnGhh2CByen0noHN/ux9yf7t2j8vtuYOAB8D
+         aJ13tR5FpDz1jqdwHSYIfAZRR3AXyzlK8B0R8ADspKEDOohEhj62D5NKyN31myFaH4Oa
+         gFKrYcyuIdkFoqy02XteTXX/ybov5m9cQM9Xsu9QWoY9LIo8PERUdclkAytbHVBLPbdH
+         iIFv8hseBy1GA3QPTKrTrHDoiy0S60791GNZYoXgR1wfr9PcWbFdVQV31DUFXnH1lmVM
+         3RXBfspX+ZvzplAbW71AKbVwp9Vfl1VlDWlzds3p0yWroCKEnzh5mbC/8a+onwVyFcSr
+         VXtg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785255892; x=1785860692; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
+        b=lct2g94NA7Y78eYOuMwwwOD23muR4BCkZNRbsJICh+9hglpnHXOzXUql+nLU/P5tOK
+         0d0TBL0pW22X21jbhCabGSMFnajlsSvGV9OScRanEJLdGwTi7hHCw0a8oOhOhHgSnNJ/
+         XeHlIeq+bY+ne0zDcpy8Et3BbUl3VTAj0I33k+ARe/2krF0k7H/dHMDkAUTJOGMNpBLC
+         d/BnenlAukzH7JQ59YVf11d86AL5VodBO8CWe2cqgfDTbrK5B4gCxaaYes85D/J95kvj
+         RWXB+Djy9aFPf/lqI4ioHSn1BMI2+63edIw9TWw10DleSSBn8rO1NXcdhKmhsx04sgZv
+         I+NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785255892; x=1785860692;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
+        b=litmQSH7jxiY7VXKJOEf8eLVWE87SxD61vApMMYyMgcx13tiHVN2GFbjSPt0tkOad6
+         SWaiMgTR0DLV4KR6syjEz0X4mycRbQmryevUlxiXFe/wbJ1u4FdVqXoU8Pih6RHHRRbH
+         oP7JHEkN8ysntC14iXEfLqFnQMv94Ugg4wT7eI7TMII+RaVD30UveOvD3M71okogk0S3
+         a5wtStKSIPfv5kwYlajuXvYI2iE3tNic0eIFzTElr0zIyF7DslXf6hSIWvEkjlCnNR29
+         NnlaOMNij5wJXOR3LrEl4XSbhSgJanngWZhLxdc8jQAm1VIi066Noe7ZOWM4Uoz28QWC
+         GaZA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro7VvRrnwO6wjh7KBUEef7cWTblhtpd4/TG2J6vIEJEBQwhcTvhLTyZaTOxlIhK4FHgqzs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq6cVreCGAeEhjXCc+Sz7/3Ew2MFZy+WWZu2BaCLq7qRKzWGEX
+	65P8GunDuPx0wyo4sqGXvsDoozQBM01GDQDp19zYjkeX5AjVjwVbZr3LQeO2Kl1QnLYM32Q6lt7
+	xZjreSjJE3X+UheIU3QXrWjQyEV5CesKDqzc=
+X-Gm-Gg: AR+sD13gi+VW8KKnJtQXt93KfLZ27ONrz3i46QsYcsLhH3/D/Ac9XEXM3crWjbuyzt8
+	ZR3m6/sP/6Fcp9cmB0ZRmjgwnf/Xabe079AFSY6v8W6iczUM/XZcYqBtGy8p/68kiyD8+MYRv8d
+	ddue4ozJ+oCwQRO3ng509j0FUw+oB1rKZxthuWZTk8DGCT6qXjP+gaGcwDCvGpHDb+7/1y/9xuL
+	TdBHs42Oi/ZFBreBy/YVQLsibuAHnQMCB+MAgx5g0gSDPc1WfciNW6Uhdt5zc3gWZsE5W5EiiEQ
+	SmxXMoGek7GT1AoR3bcBCw4qzs183y049ped+bnmmEO+mhR+CZKYrtp3z/0XHoWZSbq0zQtv
+X-Received: by 2002:a17:906:6a1e:b0:c1c:1e8d:f8e8 with SMTP id
+ a640c23a62f3a-c1f727bc91dmr163943766b.56.1785255892096; Tue, 28 Jul 2026
+ 09:24:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] KVM: s390: Fall back to short-term pinning in MAP
- ioctl
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Jaehoon Kim <jhkim@linux.ibm.com>, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com
-Cc: david@kernel.org, svens@linux.ibm.com, freimuth@linux.ibm.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260724133943.1664961-1-jhkim@linux.ibm.com>
- <b099b7bf-31c6-40ec-a43f-9081f2c64195@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <b099b7bf-31c6-40ec-a43f-9081f2c64195@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDE0NCBTYWx0ZWRfX0l+J8yVqN5ND
- bLuNnc8uNaL6dTUix3VVNHijQSd+K422o9c/x3aNtiVtZI3KcvrgCv0fyofBUVaDmw42o6TO2tx
- wvx3dE6WeEYpl8MA+jp5wOwiM0V3nWA=
-X-Proofpoint-GUID: eEJlClbBnWUGDbcpkReHxV0pI4w0o15b
-X-Proofpoint-ORIG-GUID: eEJlClbBnWUGDbcpkReHxV0pI4w0o15b
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDE0NCBTYWx0ZWRfXyxLpVVA436Ln
- zTNkNXvxrDF5Ir7EsJkwuvmgseuRN+TZAgX3FPFwLsjkCUgXp+iBAZGNsDypWvH5PaAgqeMIPsY
- 2KODC2AjFORk2ZBM1Wr/13n5D7ivmzOU9SHRZUsPcvNAhKzFs70AYYQZUVDf/FkgbyOVj4rplTE
- F7aLsLYz+FXesQMLDFkmI5RkHij+OcxXGFDhe1zUTP1rAREoVFZy2nGav5NhEWTY9ocqWOW7fGD
- NV8VLtBfyo2P68Vrp/mAtgg/zO6xTXiRsRoJm9bJOjGv8AtmBfSyoM+dLnno5fRtRN/7zDQsaMM
- gCOCBu5TmnJvEqTmPk7CQ189HSysZXbh3+HLmcRE1ExaXfMi4ayrQOim2TcZJ1N8+qwlcvl9YQz
- LhKW9y8T9Ab1SYGDdk+35oUxt7AD6A==
-X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a68d709 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=yptSlSW76F1WqccU_tgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_04,2026-07-28_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0 suspectscore=0
- bulkscore=0 adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607280144
+References: <CAGEsz8FbPu_DtOkTij0RvBriK1R0FspzEU6Oef0Gers-gS1d3w@mail.gmail.com>
+ <aminBc88wFWw4NSC@google.com>
+In-Reply-To: <aminBc88wFWw4NSC@google.com>
+From: Myeonghun Pak <mhun512@gmail.com>
+Date: Wed, 29 Jul 2026 01:24:40 +0900
+X-Gm-Features: AUfX_mx2EsPBF60M4yH0xLU5_gaBUJWDb4Dt0wO-jKFSO-reKfI0H-VlmOyPqeE
+Message-ID: <CAGEsz8G8xWvnbtL-zCoGonFKFb8oL0TzmJQ77mPS_64CxrLdkQ@mail.gmail.com>
+Subject: Re: [PATCH] KVM: x86: Cancel IOAPIC EOI work before freeing vCPUs
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, security@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/27/26 3:29 AM, Christian Borntraeger wrote:
-> Am 24.07.26 um 15:39 schrieb Jaehoon Kim:
->> FOLL_LONGTERM pinning fails for some memory types, such as file-backed
->> guest memory. As a result, kvm_s390_adapter_map() returns -EINVAL and
->> irqfd adapter registration fails even though interrupt delivery could
->> still work via the existing non-atomic path.
->>
->> When FOLL_LONGTERM pinning fails, verify that the page is accessible
->> using a short-term pin instead. If the short-term pin succeeds, unpin
->> the page and add a map entry with pinned=false to preserve MAP/UNMAP
->> symmetry. The non-atomic irqfd path already performs short-term pinning
->> for interrupt delivery, so this restores the previous behavior for
->> memory that cannot be pinned long-term.
->>
->> get_map_info() is updated to return NULL for unpinned entries so that
->> the atomic irqfd fast path falls back to the non-atomic path.
->> kvm_s390_adapter_unmap() and kvm_s390_unmap_all_adapters() skip dirty
->> marking and unpin for unpinned entries.
->>
->> Update Documentation/virt/kvm/devices/s390_flic.rst to reflect the
->> new MAP/UNMAP behavior.
->>
->> Fixes: c9a568838086 ("KVM: s390: Add map/unmap ioctl and clean
->> mappings post-guest")
->> Signed-off-by: Jaehoon Kim <jhkim@linux.ibm.com>
->> Reviewed-by: Douglas Freimuth <freimuth@linux.ibm.com>
->> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> 
-> queued for kvm/master.
-> 
-> Doug, Jaehoon, Matt,
-> 
-> can you have a look at the sashiko feedback for the pre-existing issue
-> and work on a
-> followup fix?
-> 
+Thanks for confirming, Sean.
 
-I believe this report is not nearly as extreme as it sounds.
+I had not found the pending fix or the earlier reports during my
+search. I will drop my patch.
 
-It claims:
-"If a malicious guest or untrusted userspace configures an IRQ routing
-entry with an unmapped host virtual address for summary_addr, the
-short-term pin will fail:"
+Thanks,
+Myeonghun
 
-However: the summary_page was previously validated when the route was
-setup in kvm_set_routing_entry():
-
-uaddr_s = gpa_to_hva(kvm, ue->u.adapter.summary_addr);
-...
-if (kvm_is_error_hva(uaddr_s) || kvm_is_error_hva(uaddr_i))
-	return -EFAULT;
-e->adapter.summary_addr = uaddr_s;
-
-So we already know that the address was pre-validated before we try to
-use it in adapter_indicators_set().  BTW this is similar to what Janosch
-did for
-dcf96f7ad556 KVM: s390: Limit adapter indicator access to mapped page
-
-I think we could only have some problem if we later remove a memslot
-that happened to have the summary page on it such that the up-front
-validation is no longer accurate?  Can this even happen?
-
-So: Not nearly as easy or user-controlled as 'guest provides bogus
-address, crashing panic_on_warn=1 host'
-
-All that said:
-The only reason this case is 'weird' is because we may have already
-indicated AIBV successfully (made changes to the guest) but cannot
-complete delivery because AISB is unreachable.
-Maybe the simple answer is to downgrade this to something like
-pr_warn_once("Cannot indicate summary on previously-validated routing
-entry") so we don't lose the breadcrumbs for this highly-unlikely
-scenario but also don't add the potential panic in the first place?  If
-we ever reach this situation, the guest in question is going to get bits
-set in AIBV but will likely never see them because it will poll first on
-AISB which we cannot set anymore.
-
-
-That would track with
-https://docs.kernel.org/process/coding-style.html#do-not-warn-lightly
-even if I don't think it's easy to trigger.
-
-Doug / Jaehoon / s390 KVM maintainers -- thoughts?
+2026=EB=85=84 7=EC=9B=94 28=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 9:56, S=
+ean Christopherson <seanjc@google.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1=
+:
+>
+> On Tue, Jul 28, 2026, Myeonghun Pak wrote:
+> > The IOAPIC delayed EOI injection worker dereferences local APIC pointer=
+s
+> > from the VM's APIC map.  Since commit 17bcd7144263 ("KVM: x86: Free
+> > vCPUs before freeing VM state"), kvm_arch_destroy_vm() frees vCPUs and
+> > their local APICs before kvm_ioapic_destroy() synchronously cancels the
+> > worker.
+> >
+> > Consequently, if the delayed work is pending when VM teardown starts,
+> > the worker can run after a local APIC has been freed.
+>
+> ...
+>
+> > Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> > ---
+> >  arch/x86/kvm/ioapic.c | 12 +++++++++++-
+> >  arch/x86/kvm/ioapic.h |  1 +
+> >  arch/x86/kvm/x86.c    |  1 +
+> >  3 files changed, 13 insertions(+), 1 deletion(-)
+> >
+> > AI disclosure: I used AI assistance during the audit and am treating th=
+e
+> > issue as public as required by Documentation/process/security-bugs.rst.
+> > The reproducer has not been posted publicly.
+>
+> Though that doesn't seem to matter much given you're the fourth person/gr=
+oup to
+> independently report this bug. :-)
+>
+> A fix is already pending:
+> https://lore.kernel.org/all/20260727171718.543491-1-seanjc@google.com
+>
+> Thanks!
