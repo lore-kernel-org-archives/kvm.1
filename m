@@ -1,138 +1,182 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E759282F1B
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 01:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F42BEC5F;
+	Tue, 28 Jul 2026 01:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785201540; cv=none; b=jRsbgMy/XYF//KovxDc1YxUVpGlzDGl5/n5qAHRoLlM9RXXpDgRt5yu0yhkzPJp8tqc9x1NHTSkRMJ+RiirNogMMdLtLd5fyiotsfTFQxOTBOo2HXxF1tWtl9y5IGHnpJ1id9T2J4QsAufCQKcrCXgCXrAQGOqxcORtpa36WP4k=
+	t=1785202517; cv=none; b=Ydf3u9rkW2K2OTU4v/c6Tv2HHWpGpA/G1e8fK8Y9LJDcgwQn9yeN65X9fOMy9qUnIFh7u4xGS7G6INbCn+sbmuCV/2Rqis0Aq184mBRsI5z54gPJgSUgggwN76NQadDNijedtFHuHX4x3I12jKRZQ2K/NKNbafulaoV5pHsKNhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785201540; c=relaxed/simple;
-	bh=+5DkeVGWBTDD19jKdpMEnZdIcumnltaM7M+hf9rHv1o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TaZa1YIulv9M1u+u0jpDnHdM+lD8SqDlK4w/kaxvOne+iVCXtFUwkcIvVDUDLWSPuwNY9aJRL8PxNL/TzXlWN/y5M3FCtBegWXiqaDJO3GoGYGnzeNPT65crwFaIJpSzBeCcl4II55YzWj2EEbO+gsU0wHsthamQhLps1/L5NpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YoeBEZvk; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785202517; c=relaxed/simple;
+	bh=p+PbP0myv75st5mwvzBTsdFK7aSDgUKdeNFvumRPnck=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cyHnPTGEFJMzyYaavWqsOnZUNtU5T6WJnElLIvsgBJG+LSOA1dwDerUX/aqCx+6y0MyevfcOPjEI+GBvqxsSV4zJET0QqjlCAueslOOX8X8exLx/zolNyLP6jQFlz1YchLHUD34fCZKZ/GZR5MQmV7WEH8HxlCCRuY++SDPl4IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=r/o770CI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YoeBEZvk"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb835525b13so3711147a12.1
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 18:18:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785201538; x=1785806338; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+PYFdEx6jGoHPrXaWg/P5adSzHhZT94sZkOpxSRlebU=;
-        b=YoeBEZvkMxK37jFa+QbMS0eaI3QMnMoPfM8iwv1/MrIYzunDVfrxjWRdOgC2/PMruj
-         rnUUhkpCrGPrUZPrG2Cps/N9wyKchJsZ86Rzk0/ccRRciwJwhHuxc1Jtlbf6zfxh7L6z
-         +g/cw+Q762scdN7SWPwfY8U+HM16lPv2itUZAcfXjp7ARYWNzWE0PjdFLPHSFIX1Pg7J
-         d+RkKMRk6r9L3Vcg9Ldi3IHKXiw9E5P0Zx6BfhPzqv8UxJDTNiRTljPWlqqK/+sdJm9C
-         o6DNMarOoH1FD6+Rrv8EjuVvW7gXbHq+F/vhDxpr4Wmd9zaNMSNra5KPsQIw9qw8QN0C
-         VEyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785201538; x=1785806338;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+PYFdEx6jGoHPrXaWg/P5adSzHhZT94sZkOpxSRlebU=;
-        b=cEohU5GD9rAjo0aqsJ+F9kvfTNQByrrv7dSgWMWTTbOWxxveuAyLDK23PkPST0F09n
-         ZKoCcr/DAEgCXzWQoelQWpBbbH06qhdJ4LkoJ8BMRf2k7gt5zulz/0J2lzK8cTEr71+e
-         EnaPiIsoENboM0RgI/XG7UYkmxUgBThyvyNLY/TTG5Vl02igOXZVK0JPxRxblXCQa+Pe
-         pI8DXFgKuk9e9uZucyR7uN2pJHXPGtLGKWcQi3+NoO18pCUcTgcIDoj1wwxgDuGVymAJ
-         rEbt+jkZO0Qi4LSDtx7Xj6A339h26yBvBIS7tQ00QO1cZQ60jTF9DmvXKXYuNiZAGR6f
-         EVLQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4Q/uHjLGDyNwa9WAb6y3ejRYDYG51tuH5rvO2F0mgMHZwADIE5o9Dfb/dCUhc9b4844M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZCQ+M4f39Qw13g2YUz4nQUPL1oL1Lk4ZHuEDNlAs7LOvDV1By
-	sEce9srYhqHcOoh40XFKOZtJH0qQL89mQrmvECyEm3ij+6Sa+xsLlWM6KXCkppxz1ZqKrn5J7eO
-	OTiaaAQ==
-X-Received: from pgam4.prod.google.com ([2002:a05:6a02:2b44:b0:c8b:ed9c:4468])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:2291:b0:3c3:83e6:c705
- with SMTP id adf61e73a8af0-3c8ba5beec0mr399309637.35.1785201538348; Mon, 27
- Jul 2026 18:18:58 -0700 (PDT)
-Date: Mon, 27 Jul 2026 18:18:57 -0700
-In-Reply-To: <CAO9r8zOVyea=7yRD25JcRmar4-0JtTpuoDpK__J431o9MJYj2Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="r/o770CI"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66S0lbcg1887605;
+	Tue, 28 Jul 2026 01:35:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=WRGNLeV0oXr2M/BZ+
+	sfXha8JHIJWYlAk6/V1XSPYaiM=; b=r/o770CIqfngTvs3keGts7vstjnxNfFIT
+	WnEWMBZmwGXm1uFR/VUYfrD5RdGv738giMy2aW1WqD3eaeHT0RpYV/CsEE0mEaCU
+	Cas0BX6szZfV0QZ/tuoWRTkLejtaS/0Q1QJUy+tmbYw+l2tgsWOjnAHXPS1WnKSr
+	XvzL+yKU/hjTl49+iOu2RSUro9iemyELOsouGBi0FAeeN3zwpRXIqFPy874H4bJJ
+	Qg85TLf2pGZXytL57gshnLL8LSp9u5G8HwIsTTrDYQ9PWpYO4zgqGFzcIAq7NxIp
+	eOVpLIZ0nUt7Hu3lL5M0FWR4FPWM07YIacqLTkM9OZ5HW2y7++5UQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuycaw8p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 01:35:15 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66S1QQ60001018;
+	Tue, 28 Jul 2026 01:35:14 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5xyg1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 01:35:14 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66S1ZAm951118356
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Jul 2026 01:35:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B477C200C7;
+	Tue, 28 Jul 2026 01:35:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D984200C4;
+	Tue, 28 Jul 2026 01:35:10 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 28 Jul 2026 01:35:10 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id 746321627F0; Tue, 28 Jul 2026 03:35:10 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>, stable@vger.kernel.org,
+        Farhan Ali <alifm@linux.ibm.com>
+Subject: [PATCH v8 01/10] s390/vfio_ccw: free all memory if cp_init() fails
+Date: Tue, 28 Jul 2026 03:35:00 +0200
+Message-ID: <20260728013509.1551753-2-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260728013509.1551753-1-farman@linux.ibm.com>
+References: <20260728013509.1551753-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728003557.1136583-1-yosry@kernel.org> <CAO9r8zOVyea=7yRD25JcRmar4-0JtTpuoDpK__J431o9MJYj2Q@mail.gmail.com>
-Message-ID: <amgDgTpPGsE451QP@google.com>
-Subject: Re: [PATCH v1 00/28] KVM: nSVM: Optimize nSVM TLB flushes
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GDlltBqUQi9CeowqJiQOlXknl9qrsJTe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDAwOSBTYWx0ZWRfX+Oh99gepcfxu
+ KSeOxmJjY30ZOIRuu00YU8Tb2zs9JnWbx+tTJFTXZ/a8C9PJIDqkRtjFZ7KuTatkQbffmHCNsvA
+ Xe4g23WjHibSKzthxVdANPAT5Wp2/WxpLlY0QsX9oy3esM7kQOxqPWA4lzwesyCwWx9rI9+qB2r
+ TM99+9ECW6FXNK0+l7D9bMYQJg+jUncWBuQFinr9FLUCTMnww5SkpPKPyBlZEDQiasTcpgJFQog
+ pVPUtMWbjFUOrVSgV5OKjfMq0HgMLCOczMpi2fES5ptuvj0gZn2Ejla2O+S6025mPgHP3vsnKeq
+ KXUb688NVCP90rz2Qrb67nHFPMzqvw3+vPUnAZVVwT/cMDqkYeR6fDYNdT5NaNcmiGLBP8lG9Jl
+ WQWs0MVHtE5WCr2BsG0EHAIJgmYm9dpT7UhDQWmkpQtq24YFIujxaut39A3rR8PomuuaXe6BNvg
+ lx5Fs7qsORgXM992rDg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDAwOSBTYWx0ZWRfX6zMJTQZzmaxI
+ FfeQfD8V8Y50uqFupRXs74SOqVEyecC+AE8K/cfCD70DAhXmy0r2kUpYB6HqmdErzmIkwTD9C1s
+ NFzOvqY5q91CfvOPu4Xn4qbP1VmrHJQ=
+X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a680753 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=WEmllObKAWPfCt-5-jUA:9
+X-Proofpoint-GUID: GDlltBqUQi9CeowqJiQOlXknl9qrsJTe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-27_07,2026-07-27_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
+ clxscore=1015 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280009
 
-On Mon, Jul 27, 2026, Yosry Ahmed wrote:
-> > Yosry Ahmed (28):
-> >   KVM: nSVM: Flush the TLB after forcefully leaving nested
-> >   KVM: SVM: Document number of ASIDs CPUID setting
-> >   KVM: VMX: Generalize VPID allocation to be vendor-neutral
-> >   KVM: x86/mmu: Support specifying reserved TLB tags
-> >   KVM: SVM: Add helpers to set/clear ASID flush in VMCB
-> >   KVM: SVM: Fallback to flush everything if FLUSHBYASID is not available
-> >   KVM: SVM: Duplicate pre-run ASID check for SEV and non-SEV guests
-> >   KVM: SEV: Do ASID initialization at VMCB initialization
-> >   KVM: SEV: Expose sev_get_asid() outside of sev.c
-> >   KVM: SVM: Use a static ASID per vCPU
-> >   KVM: SVM: Only flush the fallback ASID when used by a different vCPU
-> >   KVM: nSVM: Add a placeholder ASID for L2
-> >   KVM: x86: hyper-v: Rename kvm_hv_vcpu_purge_flush_tlb()
-> >   KVM: x86: hyper-v: Allow puring all TLB flush FIFOs
-> >   KVM: nSVM: Drop svm->nested.initialized
-> >   KVM: nSVM: Flush both L1 and L2 ASIDs on KVM_REQ_TLB_FLUSH
-> >   KVM: nSVM: Always switch VMCB before leaving guest mode
-> >   KVM: nSVM: Split nested_svm_transition_tlb_flush() into entry/exit fns
-> >   KVM: nSVM: Service local TLB flushes before nested transitions
-> >   KVM: nSVM: Handle nested TLB flush requests through TLB_CONTROL
-> >   KVM: nSVM: Flush the TLB if L1 changes L2's ASID in vmcb12
-> >   KVM: nSVM: Do not reset TLB_CONTROL in vmcb02 on nested VM-Enter
-> >   KVM: x86/mmu: Rename __kvm_mmu_invalidate_addr() to
-> >     kvm_mmu_sync_addr()
-> >   KVM: x86/mmu: Refactor kvm_mmu_invlpg() to allow skipping the GVA
-> >     flush
-> >   KVM: nSVM: Flush L2's ASID when emulating INVLPGA
-> >   KVM: nSVM: Flush the ASID on nested transitions if shared by L1 and L2
-> >   KVM: nSVM: Use different ASIDs for L1 and L2
-> >   KVM: selftests: Add a test for nested TLB flushes
-> 
-> Sashiko wasn't able to apply the patches:
-> https://sashiko.dev/#/patchset/20260728003557.1136583-1-yosry%40kernel.org.
-> 
-> For some reason, it failed to apply on the baseline commit,
-> 271255273d5ff348fe29d89fe4712b2f7f7907c3.
-> 
-> This is the top of kvm-x86/next tho, so I am not sure what went wrong:
-> 
-> $ git show upstream/kvm-x86/next
-> commit 271255273d5ff348fe29d89fe4712b2f7f7907c3 (tag:
-> kvm-x86-next-2026.07.27, upstream/kvm-x86/next, upstream/kvm-x86/HEAD)
-> Merge: a204badd8432f 2abcdf03fda13 9c66085e6dcfb db3a46e200df2
-> 2708ecca4dbdb 710b3a30f407e e428f9779a437 653857a5af462 ec9a16c6aeba8
-> 05a0b701d1089
-> Author: Sean Christopherson <seanjc@google.com>
-> Date:   Mon Jul 27 12:44:28 2026 -0700
-> ...
-> 
-> The commit was from earlier today, maybe Sashiko only fetches the
-> trees every once in a while?
-> 
-> kvm-x86/next is not among the list of branches it tried. I don't see
-> the tree in MAINTAINERS, so perhaps this patch was never picked up:
-> https://lore.kernel.org/kvm/20260428171541.1342335-2-seanjc@google.com/.
+The routine cp_free() is called to unpin/free any memory once an I/O
+is completed successfully, or if cp_prefetch() fails. But if cp_init()
+fails, and cp->initialized is not enabled, the same routine cannot be
+used to free all the memory.
 
-Yeah, I need to get Paolo's eyeballs on those changes.
+An attempt to address this exists in ccwchain_handle_ccw(), where a
+single call to ccwchain_free() is made for the currently-processed
+CCW segment. But this will leak other segments (created as a result
+of a Transfer in Channel) that had been allocated as part of the same
+channel program.
 
-> Adding Roman here just in case. Sean, let me know if you want me to
-> resend this series after we figure this out.
+Address this by performing the cleanup outside of the recursive
+ccwchain_handle_ccw()/ccwchain_loop_tic() logic.
 
-This is probably my fault?  I force-pushed to kvm-x86/next this morning to fix a
-stupid goof I made, maybe Sashiko was confused by the exact objects not being in
-in linux-next?  I would say do nothing for now, we can always do a resend if us
-humans don't find anything in this version to necessitate a v2.
+Fixes: 8b515be512a2 ("vfio-ccw: Fix memory leak and don't call cp_free in=
+ cp_init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Farhan Ali<alifm@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+---
+ drivers/s390/cio/vfio_ccw_cp.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
+p.c
+index 7561aa7d3e01..086d1b54bdb0 100644
+--- a/drivers/s390/cio/vfio_ccw_cp.c
++++ b/drivers/s390/cio/vfio_ccw_cp.c
+@@ -455,9 +455,6 @@ static int ccwchain_handle_ccw(dma32_t cda, struct ch=
+annel_program *cp)
+ 	/* Loop for tics on this new chain. */
+ 	ret =3D ccwchain_loop_tic(chain, cp);
+=20
+-	if (ret)
+-		ccwchain_free(chain);
+-
+ 	return ret;
+ }
+=20
+@@ -486,6 +483,23 @@ static int ccwchain_loop_tic(struct ccwchain *chain,=
+ struct channel_program *cp)
+ 	return 0;
+ }
+=20
++static int ccwchain_build_ccws(dma32_t cda, struct channel_program *cp)
++{
++	struct ccwchain *chain, *temp;
++	int ret;
++
++	ret =3D ccwchain_handle_ccw(cda, cp);
++
++	if (ret) {
++		/* Cleanup if an error occurred */
++		list_for_each_entry_safe(chain, temp, &cp->ccwchain_list, next) {
++			ccwchain_free(chain);
++		}
++	}
++
++	return ret;
++}
++
+ static int ccwchain_fetch_tic(struct ccw1 *ccw,
+ 			      struct channel_program *cp)
+ {
+@@ -735,7 +749,7 @@ int cp_init(struct channel_program *cp, union orb *or=
+b)
+ 	memcpy(&cp->orb, orb, sizeof(*orb));
+=20
+ 	/* Build a ccwchain for the first CCW segment */
+-	ret =3D ccwchain_handle_ccw(orb->cmd.cpa, cp);
++	ret =3D ccwchain_build_ccws(orb->cmd.cpa, cp);
+=20
+ 	if (!ret)
+ 		cp->initialized =3D true;
+--=20
+2.53.0
+
