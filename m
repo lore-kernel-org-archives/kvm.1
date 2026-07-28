@@ -1,137 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15AA1B87C0
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36F13ABD9D
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785252356; cv=none; b=NUTHysDcEBPn5yP9UaGrnus/bUFdxkO/TpS+G2+nBmk4rpP3D7PQ+5/S8zlEogOgRy4pzfI6NqlI6pr3jKX2hUczgmnuw4H1NUhZJbSnT5bcY/FIeGzqfYXqCOd8n4mfszTFiUn72yOgX2K57f8cAaD2Fmuvm0pG681YCVOdfN4=
+	t=1785252387; cv=none; b=eIwxHI6EmN2ADSO+78mxPRYPZMXiBowBGz1WLleFyakEJlX25am862AWiZwWzQ2tKJnGStpltNbfMgct2/VOqvLEWBMNhzksXR8LLOvcIcLOrK4cAKp7U5SysSZEK0pb7L8L2ZooCI3fRHlUh2HvtNbtmxYrDQ5NssOw+ffIgB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785252356; c=relaxed/simple;
-	bh=dXgeHiBRDKBFvph+v48ujtsHB60MaMvrgu8CakQ9OhQ=;
+	s=arc-20240116; t=1785252387; c=relaxed/simple;
+	bh=lw/tF7r5fBNkCcJO6f/Z7SjU3GgUFACM4PTl+PBuvm0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=MdxkevXHF1Eomg92nKEqsrUozQ+IFKe320fnYavxv7ZRGuQd8TZg3sCh42+QbDn/zELDDOJST5PU/tDKcNWymjRN9VMo6d3IfRmHd74Bi1rtKbQ9v4Ky7gz5EYt4LPnvmL/kUZSEObTBZANlQvQZhxmCyCcn3l5Qa/ghfM1XFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQM7RIUl; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=uK4kFVdjwu8Y9eWGrr82TpFdqrwuIuB1VuJdFQOPfeZH2kRtGso0+lPk51usggcGTr3ZOjTOmZ2I+NYjukwlP6zJyq9ZhumNwiupDuQKvUMuK09vYre3mQzPZmFAFjAICF5gQorC8p6M9UEw2UDpzNIK47qaA0NoaW1iArS7grw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8eq1TjF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQM7RIUl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C06B1F000E9;
-	Tue, 28 Jul 2026 15:25:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8eq1TjF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7447F1F000E9;
+	Tue, 28 Jul 2026 15:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785252354;
-	bh=HA/VSEn+c/xlLlWW92jJPJNdXueeculkpcYACLmA/r8=;
+	s=k20260515; t=1785252385;
+	bh=DBL/IFzhSVUiJ2vXlvB2TqyMz4mgxLb1iy/1X36ZB8c=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JQM7RIUlBrASyfz0wtamgnphyDXvTbKzwdhe948Vhk+A9nJPxaymt1G4yzcnz6/Sq
-	 GHnMyNOfUI92EljiMHd1WY1UDi2d4ZzpMmjcTWT0u8RyPHtCpsLfHFTQq/Ep3DabBR
-	 BcQwa3Ty3glX1u7ufhDwSjLtVh0B40vf4N0QxMGvHcfXDyozJ37Vap7j2RPMzbKNUI
-	 TFYkL8VUy2uLtp6kyvaLiF7a88ZZQ8ISdxxQhAEyq7Ax5fwUdcMNJwt9cQjEJlUOMz
-	 KnczTgc5e1oKXHKZs6fPnx3S+tU7NcUmCULb3ZH/CEB7DLZG63/o0ZlonEZX+7keek
-	 XgTG7GaNvngaA==
+	b=L8eq1TjFOzeS2sKc/Jc5zlCrYiki778BF2rovkbjLkp/qitxCiiINSE7e6fEyftc3
+	 +K+zXphJk51ATpFFA25OktgB+bafwQO/c9ojQOlMWwuLoN+IoheD0Eo0uHyCZrv2jC
+	 AzfqB/XX93N7iQlMxA2Mo7PsWHymtalOKysdbBvybCJOUJIOn8l50Sa2RNU4eJLyYo
+	 z0rPv7nSBTsglrh6ImU+gbKRUOZ3YU5f9pRRtHgxRofi9hYVIqv5+r9GVhSozdjWZk
+	 3q7mtPs+jAIGFqOLAIlnkaumkgZpQxXWD0KhV6INy9ksj9R2PzuZ7EkgpFVDE7GPX1
+	 fCbVjM6FIjpRA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 27/36] KVM: x86: Remove pvclock_gtod_data and private
- timekeeping code
+Subject: Re: [PATCH v7 26/36] KVM: x86: Cache host vclock_mode for
+ masterclock eligibility checks
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-28-dwmw2@infradead.org>
+In-Reply-To: <20260728144954.355376-27-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-28-dwmw2@infradead.org>
+ <20260728144954.355376-27-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:25:53 +0000
-Message-Id: <20260728152554.6C06B1F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 15:26:25 +0000
+Message-Id: <20260728152625.7447F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] KVM references non-existent timekeeping functions and struct fields.
+- [High] The patch leaves behind unused static functions (`do_kvmclock_base=
+`, `do_monotonic`, `do_realtime`, `read_tsc`, `vgettsc`) and a useless data=
+ structure update (`update_pvclock_gtod` updating `pvclock_gtod_data`). Thi=
+s causes a build failure under `CONFIG_WERROR` due to `-Wunused-function` a=
+nd introduces unnecessary performance overhead on every timekeeper tick.
+- [Medium] Lockless accesses to `kvm_host_vclock_mode` lack `READ_ONCE()` a=
+nd `WRITE_ONCE()`, which can lead to compiler-optimized double-loads and sp=
+urious state transitions.
 --
 
---- Patch [27]: [PATCH v7 27/36] KVM: x86: Remove pvclock_gtod_data and pri=
-vate timekeeping code ---
-commit f5e01c2dbc04eb5669e9c80660aff5b3897195fa
+--- Patch [26]: [PATCH v7 26/36] KVM: x86: Cache host vclock_mode for maste=
+rclock eligibility checks ---
+commit d71eb6f562c183153e68671d8422238c00275229
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86: Remove pvclock_gtod_data and private timekeeping code
+KVM: x86: Cache host vclock_mode for masterclock eligibility checks
    =20
-Remove the now-unused KVM-private timekeeping infrastructure:
-   =20
- - struct pvclock_clock and struct pvclock_gtod_data
- - update_pvclock_gtod() and its seqcount-protected state copy
- - read_tsc() (KVM's private TSC reader with cycle_last clamping)
- - vgettsc() (KVM's private clocksource interpolation)
- - do_kvmclock_base(), do_monotonic(), do_realtime()
+This commit changes KVM to cache the host clocksource mode in a new
+kvm_host_vclock_mode variable. It removes the remaining readers of
+pvclock_gtod_data, opting to use gtod_is_based_on_tsc() with the cached
+value instead.
 
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 3f660bdea8a28..26d2f24aceec5 100644
+> index 32f0550c5c0dd..3f660bdea8a28 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
+
 [ ... ]
-> @@ -1455,128 +1403,6 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u=
-64 *user_value)
+
+> @@ -1155,7 +1156,7 @@ static void kvm_track_tsc_matching(struct kvm_vcpu =
+*vcpu, bool update_mclock)
+>  	 * accounts for its offset.
+>  	 */
+>  	bool use_master_clock =3D kvm_use_master_clock(vcpu->kvm) &&
+> -				gtod_is_based_on_tsc(gtod->clock.vclock_mode);
+> +				gtod_is_based_on_tsc(kvm_host_vclock_mode);
+
+[Severity: Medium]
+Should this lockless read of kvm_host_vclock_mode use READ_ONCE()?
+
+Because gtod_is_based_on_tsc() is inline and evaluates the mode multiple
+times:
+
+	return mode =3D=3D VDSO_CLOCKMODE_TSC || mode =3D=3D VDSO_CLOCKMODE_HVCLOC=
+K;
+
+If the compiler inlines the function and reads the global variable twice,
+could a concurrent update during a clocksource change cause both checks
+to evaluate to false?
+
+This could cause the code to spuriously drop masterclock usage.
+
+[ ... ]
+
+> @@ -7055,12 +7055,15 @@ static int pvclock_gtod_notify(struct notifier_bl=
+ock *nb, unsigned long unused,
+>  	update_pvclock_gtod(tk);
+
+[Severity: High]
+Does this commit leave behind unused static functions?
+
+With pvclock_gtod_data no longer being read by KVM, it appears
+update_pvclock_gtod() is now updating a useless data structure on every
+timekeeper tick, which adds unnecessary overhead.
+
+Additionally, does this leave behind static functions like do_kvmclock_base=
+(),
+do_monotonic(), do_realtime(), read_tsc(), and vgettsc() which are no longer
+referenced?
+
+Could this cause a build failure due to -Wunused-function when compiling wi=
+th
+CONFIG_WERROR?
+
 > =20
 >  #ifdef CONFIG_X86_64
-> =20
-> -static u64 read_tsc(void)
-> -{
-[ ... ]
-> -static int do_realtime(struct timespec64 *ts, u64 *tsc_timestamp)
-> -{
-[ ... ]
-> -	return mode;
-> -}
-> -
->  /*
->   * Calculates the kvmclock_base_ns (CLOCK_MONOTONIC_RAW + boot time) and
->   * reports the TSC value from which it do so. Returns true if host is
+> +	kvm_host_vclock_mode =3D
+> +		tk->tkr_mono.clock->vdso_clock_mode;
 
-[Severity: Low]
-Are these timekeeping functions and struct fields defined elsewhere?
+[Severity: Medium]
+Should this update to kvm_host_vclock_mode use WRITE_ONCE()?
 
-With the removal of the private timekeeping code, the remaining functions
-here seem to rely on undefined interfaces, which could cause a build failur=
-e.
+Since readers access this global variable locklessly, missing WRITE_ONCE()
+could lead to compiler-optimized tearing and trigger KCSAN data race warnin=
+gs.
 
-Specifically, kvm_get_time_and_clockread() calls ktime_get_snapshot_id(),
-which does not appear to be defined in the tree:
-
-arch/x86/kvm/x86.c:kvm_get_time_and_clockread() {
-    ...
-    struct system_time_snapshot snap =3D {};
-
-    ktime_get_snapshot_id(CLOCK_MONOTONIC_RAW, &snap);
-    ...
-    *kernel_ns =3D ktime_to_ns(ktime_mono_to_any(snap.systime, TK_OFFS_BOOT=
-));
-    ...
-}
-
-Additionally, kvm_snapshot_has_tsc() accesses several fields in
-struct system_time_snapshot that are not defined, such as valid, hw_csid,
-hw_cycles, and systime:
-
-arch/x86/kvm/x86.c:kvm_snapshot_has_tsc() {
-    ...
-    if (!snap->valid)
-        return false;
-
-    if (snap->cs_id =3D=3D CSID_X86_TSC) {
-        *tsc_timestamp =3D snap->cycles;
-        return true;
-    }
-
-    if (snap->hw_csid =3D=3D CSID_X86_TSC && snap->hw_cycles) {
-        *tsc_timestamp =3D snap->hw_cycles;
-        return true;
-    }
-    ...
-}
-
-Could this lead to compilation errors?
+> +
+>  	/*
+>  	 * Disable master clock if host does not trust, or does not use,
+>  	 * TSC based clocksource. Delegate queue_work() to irq_work as
+>  	 * this is invoked with tk_core.seq write held.
+>  	 */
+> -	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode) &&
+> +	if (!gtod_is_based_on_tsc(kvm_host_vclock_mode) &&
+>  	    atomic_read(&kvm_guest_has_master_clock) !=3D 0)
+>  		irq_work_queue(&pvclock_irq_work);
+>  #endif
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D27
+76-1-dwmw2@infradead.org?part=3D26
