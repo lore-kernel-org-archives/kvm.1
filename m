@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343902E738B;
-	Tue, 28 Jul 2026 14:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157BE3128D7;
+	Tue, 28 Jul 2026 14:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250213; cv=none; b=Wqk50Ys7XDpPv8D9A/ltH+oe8nkn7EJWb5JUMa2a4N3uXgW394ZZ+ewS889DkrEiiNoTJ0cHWbbefPrPYH0y57+bsZnIcHNHeF1W+cLPw5MN4rv0N7BX1zLdgQ11VmWjkFpXvWrk6t1PTUqhV/nra7WZcfd/0EaXpE/umg7KLGY=
+	t=1785250213; cv=none; b=Ak9ieQuLgF4WQECT9zxJILA9cpJvCf6wc597ok96iAdPDywuXwZZ5q/csYRmtXrS+RMbfx/ytmJ91bOchRM2iHTCJaS77pfGd+2l3mfg4f/o7giB5uPgwvFWCXmG+JXeGYHG+jvyujy/JACplZB+2zNbGTm6k8CWISTDkNArC6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785250213; c=relaxed/simple;
-	bh=ZeDcAw+QszgPZGuWkMhVnu2N978Ng9Xx2OuFcP5mNvo=;
+	bh=N3YZKjb7xq5Bd6C6WA7lypuH4k9xFBoQRSWZ5Cj7SYg=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+k5y8rpQqEAZr40G8lhUWKfITU65HEeWd9zfbKtN21VxV3jJXCMAKitx2sFvH6Y+RBHDARYOq5oUEG6hZ3xcI6lSxIC/I/pbTlEPROLbQqi6B2r3t3MNYp/rKHHGPNZ06vn4DKGBZD1WNyhv9YoTO9BYavKbN8egBJdSuc3g3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MEL2niT5; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=UlIEDeY/mr/gS0lzUAnSLjnbkAxq40AeFgeVnuK0o8AoAunRRP132epoZXyzZnma2ZhY07UhQOOmcCCdMQssGg1w5vAHYLToUyvlY8j2W/riR/9EPxxLu4gxCPiZqURYRZKOiQCAxAon8jN1LKqBQZE1ftk4IeAhFjJptqMW+vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WihKI3A4; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MEL2niT5"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WihKI3A4"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=+DxarpYo110/dFxnS/IKK6M+YoxESrTWdUshhMTCtwg=; b=MEL2niT5EFY+zAwbanklEWdU/M
-	ApQfH7CLS75uHA+Ve3HnJPT3CDoY7Ntln8AyL0ZVazYC2xpkp9Qp5ZpItc3r34n3CiWySuY+rm0QR
-	2K3bfN7zDWZ3w/8GVeqwrEMUwsjn7j/sYRJrpjKwP+RWVmXruv4VuM1PeRbegU7HDJdZsJpvc3Vrz
-	NE1zUxOfjT7GfZg7LOrYGSKbUEyXjcJc2Vl1c1UFdAPYaWJ6UW+40dXr9zINFbDqKEjv0uEmcac36
-	0wmBbegVWBsMrkr6O3FgL1arZdnJNfXuotkpgjO5jjCg9bg6ffA1PWZOalFNk7xcxUnFuFdylS5OG
-	zwCbQT8w==;
+	bh=Y/kXnXqoXWAwlPXvSAQg/Dr8WRfAw9Z9gfGyfdWRA9A=; b=WihKI3A4wFlL6/yozdtt+ZoGhM
+	ubegBCtRDisQxeQckBvSfX0NdqVwYEzhNS7d3BsoFXJKU/7/R3lD1V4ia7lXXCfTkVKYHJNkLtMbT
+	CQAWQr97L+wWoPqx/YHVAyhqU9ChkWJboU6eASXvi6gtNuYGUGEH1Jvo24uLRmGyP4WiBiTommmS7
+	8Nffcgf1hQRD1mZUHCWEL/jIMcxw8z5EgT0oXUSbP8vzPQNG7PAtmCRlhhuZslEL+zMb2t7uUyM4e
+	+mT1zr8BExOUf+bjqBeRY1pbtVDx8MzSvlnTN7qEeWCMYNTZXqGXTr6V/IQTfbZx74lcKW/sPKTIR
+	hQ+mbBWw==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woj80-0000000DUOt-0YGR;
-	Tue, 28 Jul 2026 14:49:56 +0000
+	id 1woj80-0000000DUOu-17VB;
+	Tue, 28 Jul 2026 14:49:58 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1woj7z-00000001UYn-3fCf;
-	Tue, 28 Jul 2026 15:49:55 +0100
+	id 1woj80-00000001UZI-092q;
+	Tue, 28 Jul 2026 15:49:56 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v7 20/36] KVM: x86/xen: Prevent runstate times from becoming negative
-Date: Tue, 28 Jul 2026 15:40:00 +0100
-Message-ID: <20260728144954.355376-21-dwmw2@infradead.org>
+Subject: [PATCH v7 23/36] KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
+Date: Tue, 28 Jul 2026 15:40:03 +0100
+Message-ID: <20260728144954.355376-24-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
@@ -79,91 +79,63 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-When kvm_xen_update_runstate() is invoked to set a vCPU's runstate, the
-time spent in the previous runstate is accounted. This is based on the
-delta between the current KVM clock time, and the previous value stored
-in vcpu->arch.xen.runstate_entry_time.
+KVM_SET_TSC_KHZ changes the vCPU's TSC scaling ratio but does not
+update the VM-wide cur_tsc_scaling_ratio used by get_kvmclock().
+This causes get_kvmclock() to use a stale (default 1:1) ratio when
+computing the KVM clock, leading to drift between the host-side
+kvmclock and what the guest observes.
 
-If the KVM clock goes backwards, that delta will be negative. Or, since
-it's an unsigned 64-bit integer, very *large*. Linux guests deal with
-that particularly badly, reporting 100% steal time for ever more (well,
-for *centuries* at least, until the delta has been consumed).
-
-So when a negative delta is detected, just refrain from updating the
-runstate times until the KVM clock catches up with runstate_entry_time
-again.
-
-Also clamp steal_ns to delta_ns to prevent steal time from exceeding
-the total elapsed time, and handle negative steal_ns (which can happen
-if run_delay goes backwards across a scheduler update).
-
-The userspace APIs for setting the runstate times do not allow them to
-be set past the current KVM clock, but userspace can still adjust the
-KVM clock *after* setting the runstate times, which would cause this
-situation to occur.
+Fix this by calling kvm_synchronize_tsc() after changing the TSC
+frequency. This:
+ - Updates cur_tsc_scaling_ratio (consumed by pvclock_update_vm_gtod_copy)
+ - Ensures the TSC value is continuous across the frequency change
+ - Triggers kvm_track_tsc_matching() for proper masterclock handling
+ - Allows subsequent vCPUs to synchronize via the 1-second slop hack
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/xen.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ arch/x86/kvm/x86.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index f2c6757fc1fa..998cdcb6aa30 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -587,29 +587,45 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
- {
- 	struct kvm_vcpu_xen *vx = &v->arch.xen;
- 	u64 now = get_kvmclock_ns(v->kvm);
--	u64 delta_ns = now - vx->runstate_entry_time;
- 	u64 run_delay = current->sched_info.run_delay;
-+	s64 delta_ns = now - vx->runstate_entry_time;
-+	s64 steal_ns = run_delay - vx->last_steal;
- 
-+	/*
-+	 * If the vCPU was never run before, its prior state should
-+	 * be considered RUNSTATE_offline.
-+	 */
- 	if (unlikely(!vx->runstate_entry_time))
- 		vx->current_runstate = RUNSTATE_offline;
- 
-+	/*
-+	 * If KVM clock went backwards, just update the current runstate
-+	 * but don't account any time. Leave entry_time unchanged so the
-+	 * next positive delta covers the full period once the clock
-+	 * catches up. Update last_steal every time so stolen time only
-+	 * reflects the interval since the most recent call.
-+	 */
-+	if (delta_ns < 0)
-+		goto update_guest;
-+
- 	/*
- 	 * Time waiting for the scheduler isn't "stolen" if the
- 	 * vCPU wasn't running anyway.
- 	 */
--	if (vx->current_runstate == RUNSTATE_running) {
--		u64 steal_ns = run_delay - vx->last_steal;
-+	if (vx->current_runstate == RUNSTATE_running && steal_ns > 0) {
-+		if (steal_ns > delta_ns)
-+			steal_ns = delta_ns;
- 
- 		delta_ns -= steal_ns;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 06f968007f1a..3e8cc8daf848 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -212,7 +212,6 @@ module_param(mitigate_smt_rsb, bool, 0444);
+ #ifdef CONFIG_X86_64
+ static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp);
+ #endif
 -
- 		vx->runstate_times[RUNSTATE_runnable] += steal_ns;
+ #define KVM_SUPPORTED_XCR0     (XFEATURE_MASK_FP | XFEATURE_MASK_SSE \
+ 				| XFEATURE_MASK_YMM | XFEATURE_MASK_BNDREGS \
+ 				| XFEATURE_MASK_BNDCSR | XFEATURE_MASK_AVX512 \
+@@ -1051,6 +1050,7 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
+ {
+ 	u32 thresh_lo, thresh_hi;
+ 	int use_scaling = 0;
++	u64 tsc;
+ 
+ 	/* tsc_khz can be zero if TSC calibration fails */
+ 	if (user_tsc_khz == 0) {
+@@ -1078,7 +1078,17 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
+ 			 user_tsc_khz, thresh_lo, thresh_hi);
+ 		use_scaling = 1;
  	}
--	vx->last_steal = run_delay;
- 
- 	vx->runstate_times[vx->current_runstate] += delta_ns;
--	vx->current_runstate = state;
- 	vx->runstate_entry_time = now;
- 
-+ update_guest:
-+	vx->current_runstate = state;
-+	vx->last_steal = run_delay;
- 	if (vx->runstate_cache.active)
- 		kvm_xen_update_runstate_guest(v, state == RUNSTATE_runnable);
+-	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
++	/*
++	 * Read the guest TSC before changing the ratio, so we can
++	 * re-synchronize to preserve continuity across the change.
++	 */
++	tsc = kvm_read_l1_tsc(vcpu, rdtsc());
++
++	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling))
++		return -1;
++
++	kvm_synchronize_tsc(vcpu, &tsc);
++	return 0;
  }
+ 
+ static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
 -- 
 2.55.0
 
