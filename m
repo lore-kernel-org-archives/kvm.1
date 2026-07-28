@@ -1,63 +1,64 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FAF4734DC
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AFA4734F0
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266816; cv=none; b=XDsE2mOlYGHS1z4Ow3SCckD5gTNNcQwQY3FJHgyiXw2O/zU2JP4Y0L+UMSnCj/uB+XI+p2tevcczEVj0oJWHv+uRLYXFuttfh8/CeE+HEDDIfEgV751u12tyV+5lxQ93kDg8g2fFjCx8KCrS90pNc483mZbeAE+ps1QlMotEGvQ=
+	t=1785266817; cv=none; b=HNQP2LcRrD18+car4zb+TnFThLvMO3TObUb3rre8rEgl78y9Lt8dOGtIZA1l1Aj25punzCgtB4zh1EPFyb+HDqqmCIGiRBJGcNB1iA6RGeAVHu+X/KeM44zzq40WSjW3VNZTbIs8xsHQBos72ju2GdH3MQmptlzHPiUmQncoWdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266816; c=relaxed/simple;
-	bh=WMyOuzAuc/tjESApaFsagWSlloHjl2CQ74DdH54Iwhs=;
+	s=arc-20240116; t=1785266817; c=relaxed/simple;
+	bh=Q5aOQM2pKvOxLUxlQmXFUB1Dj7uhfGEY0CjFx9Ef4bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHKuY1GKGjSJwkgL9LcGVXBS7akKA5EvNyrrgc8kMxC5xda8Wg1UB3j9/r6gGQoXdNkHIHwympoukSwu90teHSN2tUZPX2lmhiQR3TyVA0Paq7kw+BTTACuQ94/ebNPPosuFQPLu/dF1rc7/FqI0YkHD7qK/kwg42b3sXv5kbHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UKq/A6mX; arc=none smtp.client-ip=209.85.216.49
+	 MIME-Version; b=HKAfzuONbuetZbR1glJrieSp1tzENviPhFlq3BgWU6NVlFiqHk0GgztqtmrjaDksEhbiUCQb21HDqAtK9rvqM4xP345xpDQ7UO+rErUhOg9DRq5NLYWeOCzt7+UYVSTsFNshLfPgGrwLVDSxQptzO9BOuJCcqUyk38VJ2sfBMDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MASnXSdp; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UKq/A6mX"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso190978a91.1
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MASnXSdp"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso221457a91.2
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785266811; x=1785871611; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1785266816; x=1785871616; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mFQLzsllffyN31O2DXNS30O6LLhjzrmI1+U27crjJrU=;
-        b=UKq/A6mXHEhpzWMR0Y7PELpjOa/VGJ8vPeeuqS1tsoIoQ2VizMx7hLE8iIpCxT+SYy
-         FX+HJ19nU0r6tyTWoEx4IvbFtNLiG6jJWy8lpJAIH6LWyYcKk+w1PHzN2pavkwYSKC2u
-         Perzcb+FakTdrA1Pgdk2f381e+Jx1u0Ogx1ezk+UUoJ7BGbxhPuMIpzR2U/uf7Wqn0kG
-         9M6zUID/BSLnNX1hXAV5o01XSwXkttrd1c05QpWTVQM7snVLOquYaZpfMvl0N7FwGbSj
-         qsH+gKLltnq0yrp9Z0qhWh6BHFpWTbDPtLU+e9ItHkDLosBulq9WFyibO9FUwS0LQKVj
-         FfQQ==
+        bh=eK8Ckt90ew461zSdg6LQYBpQfbUxeqNFROzikiI270U=;
+        b=MASnXSdpDMekhsJR8SbhIuY+MyJdLXLpD0TwhT3UYGL0rXQwpBCrEVpYqzcQWpCPgW
+         cXVdIJ2a0EGe8Z7RIDvugwGQrmRYs7g6CNTmLgd7QkGWIx/Sbgl7Hv56sPw8rcnW2kbH
+         vabh0TGqiFwwYbHCjxkkvac3qW2lXd9jKpAkkIpZ3X2dhRI0kl9KAJBQ7+olcldZFuQn
+         6W//ugJnvYq0lh9XY9cWVLAiHqleKxU6PReEgGuVaqeAtQuEAT6HmqblQbAWEcWXtB7q
+         44SCvFSCTqv6fJP1T+CNqMj5iMBkDocCKW36MNObvetS67gJoUxGJiiwXDHYZV4NcafD
+         kAOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266811; x=1785871611;
+        d=1e100.net; s=20251104; t=1785266816; x=1785871616;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mFQLzsllffyN31O2DXNS30O6LLhjzrmI1+U27crjJrU=;
-        b=cJxjFyFKU3uK92b4pf0s5MCFENyTYpv+73AMTLqU2hXvvNfDpNFeu7pdTC5vxtNDAf
-         FzVaW+Xw67HYmZ+Wl34qyeVEjJnfqdLGE/yHacp90WNSobfdksJSXtkF/oBLbish3xwv
-         kXPWKzKlnhOElm9gaUZ/yNCeoKtpfq7RAj2yMHtwkdH4rsZ+up1tIDOFB77tZM+dZugL
-         3fmKKweZhDrzdTdMdmX0R1mMGjHnOC+/BRQFCS3vyu9yk8elb8Gf6P8WTbHNCdYFJS4e
-         QCRxayhCeNoR3Bei+486wKGtEh7Z+B1z9/mnn9p2AIaGoCkj6p9kI0Qul3MbfEJKxqEs
-         LiiA==
-X-Forwarded-Encrypted: i=1; AHgh+RoG4IawKPtScCS0liO70MHAbOC4cv0yPMLgURXKoGz1AeBkxFk38PMtnRuYhG66ZYzdpq4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8GKMTpQzOBTmfqLICCtkBFLdI0efR8s7rk9n8ep054QCJsCaj
-	padzKOtperapbjhjKX38nyVEE3EhIf86WUbF3cL7LLiXZvx2tRYN5+cSodvlFBk/SQM=
-X-Gm-Gg: AR+sD10jUicWnOp2AXPoK8xBqDA3zccje95S5BvOxXt8xOP4stLMdEPxqnXFXBwc5aX
-	bII4TD/8SyKyg71GHXYjvuuyIgkDgh928XLd/PwFJhrzyInKeChBVyFLMPTORps8RjDNAetPUkD
-	e66zoR45BjRBXJCJPPkUOJ9maw4EHVSsUnqbM4jj4DRANl6ZUaFTbtail/5gGkAVSByCCvkIV7d
-	Txn43cZDmDseLczNx68PY5Vt6AiMuZCth8SPjFZ5losqKt1lkvoEaYwLm5MNyfhavTr3J7uAq5R
-	4AFa1+ifAcnz8TcduZKdM+qwOwC/NOgShJHGj5KkFdCXmH6o8ISx1o+lhSMXg5JSWlmwGa/0Irf
-	K3ZD+QuQT8/vZzsXfaV1rCTJFPo7s1kdD4bPDmBjPKX3M9rXs6PiibOSWNbA+MjPlVRiC5T47A0
-	F+OgshzupqeBv8xwsr8BGgRhzRz4YQ
-X-Received: by 2002:a17:90b:582d:b0:37d:a52a:ff12 with SMTP id 98e67ed59e1d1-38f6a30c7ddmr3585247a91.10.1785266811540;
-        Tue, 28 Jul 2026 12:26:51 -0700 (PDT)
+        bh=eK8Ckt90ew461zSdg6LQYBpQfbUxeqNFROzikiI270U=;
+        b=EaB1XHGsGRUDIt1qSjmSVcZ+ZqRaak8J+Qz/pGJVPCr+IGAneyYcrMX4QzDTPPcMQ0
+         iQoh3r2IoNy2lzymLF0Q/IAWnMH4Jq6VM5WxhbLxk/8jWZCFjghDi/Z7L+z1wRtIY/YZ
+         HWxsscHe5RBUI+zXtwTaazSc7i9Je465qkBYwj/FBzcmSwD+CQkegdWL/tnhoyh+Ayjh
+         5yduMrVUzjFIzE0f9i+rIQ9jnZA8gwP1EAjmDufGOuDsgoXPMQG+MMa3HPlZyfBrsW/V
+         GafEEjoyrDyuoVz1Q1TH7vzK819uHrquaRgmow3hciJpc7XeEd5xZGggP+iXKaOUr28m
+         //JQ==
+X-Forwarded-Encrypted: i=1; AHgh+RooWw4wUT+G9OBHPgJYT9lfxWxyYfbVZnELxz/nmOYLLBAg17vRYyDVMnclsee6x9P5R7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL2nd1/2v77u+8Uq/4R+uNuV7FhXnE3oSEkbwu474zIqdPQLO1
+	sJPmE8g1v7CI636YxbEG3p7nrFRTs+ohu5+uKz3Amh60TFizeel7vidfP3NTbjraHpo=
+X-Gm-Gg: AR+sD13IQ9kG9r/GV+Y7l7PnlbXnKegv7oBrqdbLwAGt7cLGqtg8NCV0q83psfLoyrF
+	8JVzVeSj4hsSPUKk9kuvD9r44BaaxTzdpqecc1ceYeckW/lhznL0IspP30MDLnj3W0RaSvADdvs
+	kNw462RMCNb8y8CBhBn3R0Yg0cLheEQl7BZiWPFM5L+4DEvyTpeMJ9YencOtXRKAaz8XStBg8gy
+	JtQv5t+D6l++y6SF6pLAMHARHSdbef/ZVYjBitMOG9vJhj1+LTsZObPoZ21WHEzC4TjdtdgLoRP
+	EDrz7NuYoreVwHrged0sYU7pWaSTsLpd1PZYoPGR/Nd+CG6erGkyYjY1lxcHCgw9y7bx+1RjQHH
+	UKj/8/7OB22Nij0wiuCHNz5BR7kqKI2xW6FeaC+A5IVnUx1vEyrGEBzMNAGwK+GyuWt0mLCRod3
+	qlN+8PRV2vKRsf+w3a68h1eVFapEcv5ldYdF9qJrddI1t81K1e92LXSqufnPtt/hUwvIVgdmIfy
+	CPSZs+VqW4xx5s=
+X-Received: by 2002:a17:90b:6cb:b0:38f:26c7:165e with SMTP id 98e67ed59e1d1-38f6a3d5b08mr4041584a91.9.1785266815568;
+        Tue, 28 Jul 2026 12:26:55 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:b9d1:87c9:a085:86c9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.48
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:26:49 -0700 (PDT)
+        Tue, 28 Jul 2026 12:26:55 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -73,9 +74,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v2 08/24] target/arm/kvm: Use kvm_vm_check_extension() where necessary
-Date: Tue, 28 Jul 2026 13:26:14 -0600
-Message-ID: <20260728192630.240375-9-mathieu.poirier@linaro.org>
+Subject: [RFC v2 10/24] target/arm/kvm-rme: Keep track of images loaded in Realm memory
+Date: Tue, 28 Jul 2026 13:26:16 -0600
+Message-ID: <20260728192630.240375-11-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
 References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
@@ -89,61 +90,101 @@ Content-Transfer-Encoding: 8bit
 
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-The Arm KVM code can return different values from KVM_CHECK_EXTENSION
-depending on the VM type. Use kvm_vm_check_extension() where necessary
-to ensure we get the right response from KVM.
+Add a Rom notifier to keep track of binary blobs loaded in Realm memory.
+That way we can deterministically calculate the Realm Initial Measurement (RIM).
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/arm/kvm-rme.c | 52 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d86e66e056b9..ca25b707a0a8 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -331,7 +331,7 @@ static void kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
-                              1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
-     }
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index 5d6814fcf9e5..10bca9a944ba 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -10,6 +10,7 @@
  
--    if (kvm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
-+    if (kvm_vm_check_extension(kvm_state, KVM_CAP_ARM_PMU_V3)) {
-         init.features[0] |= 1 << KVM_ARM_VCPU_PMU_V3;
-         pmu_supported = true;
-         features |= 1ULL << ARM_FEATURE_PMU;
-@@ -636,7 +636,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         return -EINVAL;
-     }
+ #include "hw/core/boards.h"
+ #include "hw/core/cpu.h"
++#include "hw/core/loader.h"
+ #include "kvm_arm.h"
+ #include "migration/blocker.h"
+ #include "qapi/error.h"
+@@ -22,8 +23,18 @@
+ #define TYPE_RME_GUEST "rme-guest"
+ OBJECT_DECLARE_SIMPLE_TYPE(RmeGuest, RME_GUEST)
  
--    if (kvm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-+    if (kvm_vm_check_extension(s, KVM_CAP_ARM_NISV_TO_USER)) {
-         if (kvm_vm_enable_cap(s, KVM_CAP_ARM_NISV_TO_USER, 0)) {
-             error_report("Failed to enable KVM_CAP_ARM_NISV_TO_USER cap");
-         } else {
-@@ -667,11 +667,11 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
-     }
++#define RME_PAGE_SIZE qemu_real_host_page_size()
++
++typedef struct {
++    hwaddr base;
++    hwaddr size;
++    AddressSpace *as;
++} RmeRamRegion;
++
+ struct RmeGuest {
+     ConfidentialGuestSupport parent_obj;
++    Notifier rom_load_notifier;
++    GSList *ram_regions;
+ };
  
--    max_hw_wps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-+    max_hw_wps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_WPS);
-     hw_watchpoints = g_array_sized_new(true, true,
-                                        sizeof(HWWatchpoint), max_hw_wps);
+ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
+@@ -41,6 +52,44 @@ static void rme_vm_state_change(void *opaque, bool running, RunState state)
+     kvm_mark_guest_state_protected();
+ }
  
--    max_hw_bps = kvm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
-+    max_hw_bps = kvm_vm_check_extension(s, KVM_CAP_GUEST_DEBUG_HW_BPS);
-     hw_breakpoints = g_array_sized_new(true, true,
-                                        sizeof(HWBreakpoint), max_hw_bps);
- 
-@@ -1913,7 +1913,7 @@ void kvm_arm_pvtime_init(ARMCPU *cpu, uint64_t ipa)
- 
- void kvm_arm_steal_time_finalize(ARMCPU *cpu, Error **errp)
++static gint rme_compare_ram_regions(gconstpointer a, gconstpointer b)
++{
++    const RmeRamRegion *ra = a;
++    const RmeRamRegion *rb = b;
++
++    g_assert(ra->base != rb->base);
++    return ra->base < rb->base ? -1 : 1;
++}
++
++static void rme_rom_load_notify(Notifier *notifier, void *data)
++{
++    RmeRamRegion *region;
++    RomLoaderNotifyData *rom = data;
++
++    if (rom->addr == -1) {
++        /*
++         * These blobs (ACPI tables) are not loaded into guest RAM at reset.
++         * Instead the firmware will load them via fw_cfg and measure them
++         * itself.
++         */
++        return;
++    }
++
++    region = g_new0(RmeRamRegion, 1);
++    region->base = rom->addr;
++    region->size = rom->len;
++    region->as = rom->as;
++
++    /*
++     * The Realm Initial Measurement (RIM) depends on the order in which we
++     * initialize and populate the RAM regions. To help a verifier
++     * independently calculate the RIM, sort regions by GPA.
++     */
++    rme_guest->ram_regions = g_slist_insert_sorted(rme_guest->ram_regions,
++                                                   region,
++                                                   rme_compare_ram_regions);
++}
++
+ static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
--    bool has_steal_time = kvm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
-+    bool has_steal_time = kvm_vm_check_extension(kvm_state, KVM_CAP_STEAL_TIME);
+     KVMState *s = KVM_STATE(current_accel());
+@@ -58,6 +107,9 @@ static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
+     error_setg(&rme_mig_blocker, "RME: migration is not implemented");
+     migrate_add_blocker(&rme_mig_blocker, &error_fatal);
  
-     if (cpu->kvm_steal_time == ON_OFF_AUTO_AUTO) {
-         if (!has_steal_time || !arm_feature(&cpu->env, ARM_FEATURE_AARCH64)) {
++    rme_guest->rom_load_notifier.notify = rme_rom_load_notify;
++    rom_add_load_notifier(&rme_guest->rom_load_notifier);
++
+     /*
+      * The realm activation is done last, when the VM starts, after all images
+      * have been loaded and all vcpus finalized.
 -- 
 2.43.0
 
