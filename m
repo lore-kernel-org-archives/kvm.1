@@ -1,136 +1,206 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082A6412BEF
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 23:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD4B47A87A
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 23:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785280692; cv=none; b=nUr4VaOIs8L11+e1aJs13uVj2PyB476DO9lwA2if1U7Dk2p7tYN7+PwM4qlckECSXXAskX23/Hpw6vjezTuQxGpdeeOiSPX/hruCVicJ/TTFRZSv5/TAJvZ/q/clX8mPn9kGjyzcZfITkPaHwmnktR8fEmwhZRLgHygFHuqHNeg=
+	t=1785281088; cv=none; b=Rm23cmw6houH/swFo464k0qMryL5Ni9IP4yEceQdavuMuMonqAH/upAfh3nGVq1e8u56cUw7wojZpqRu+oSt6sehqn4yVdApkjffSQnIWl8O3QThJkymt+r5StdqvVyO5T5QeJMn9DoKDkb3wQ4Jn3kO30JJ8NfrhZsNQmQVWq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785280692; c=relaxed/simple;
-	bh=+IJupd9m+CLvEhmJ4GqDmfvWjZ3qTqTi6mGL864Pic0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jvmrGrGBxGJZABSzWrpdkNWqXEXOf+drTUoIObjJAuuU8Hi1VidndsQencN8utHTBh+WxJE4Dg+y3uGxQqiPCja0finJzDjZWgkWt4T3j2hUiT+P+Z4/a/PuDzUX0A6r3mcTId97J8O0tWBilzBji/Ckh2YlTtrECa0Jk65e0L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LDgUXepn; arc=none smtp.client-ip=209.85.210.199
+	s=arc-20240116; t=1785281088; c=relaxed/simple;
+	bh=97k0ZlGkYxJ3ZZkL6fedtzCve5UXzHsUti1g1e96dQE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IaDu6usfnAOb+Gdi7nPgbUF1sVH+sLZMRmsbpxN7C9RXKt8Z8A4zKdHUgBun4IiJmy3F4yypQUBZ8XWz6VBvQJBw7htzSidJ0MAoNNCoztjVLwetiAYEfXZSck1NI6H0GDLuRGnXlZPlxRfu4yx7ququc3bLAdrQ3RbSPV2Gkuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CPSp31GL; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LDgUXepn"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84e048a801dso498536b3a.3
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:18:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CPSp31GL"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e4ef9a74aso636518b3a.1
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:24:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785280690; x=1785885490; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ex04CCTVdjetODvdAROex2NhCtrMzXHsD4UUHe0nQXo=;
-        b=LDgUXepn+EoAg1oImPY8jLejYxWfJbdtXQ6sYISu4oarEjcpGfDeAp4nTzKICHrLMh
-         6HOUqGFHZ8uZWf0rThuwUD5qlkWWIe0cB2fPISHwJLAuPW6tJRpt6yAfnrg34o+vvWrN
-         oR37Cnbh8O9iuTFEo+4RDq2SK6VsbEDxFwEBkpHEPOz9p49UJlkWZMqDq0U7ufcwGpKV
-         Iv5y3bungwk3KYR2X7FlIMAaILmb/Kb45tB2XKHCkA+OF9uer4U5St4WP6Yf/0btcm/a
-         nLBzCCT90qSWylM2FRO0sFYOCTeMFCMR25ADrX4MNxE1YSkd83byTlBNVQhEg2ibexZs
-         v3Kg==
+        d=google.com; s=20251104; t=1785281086; x=1785885886; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BkAgoYMxCwX1gGJVGSLs/sDny9bwcXWRq8b7/ipRw0o=;
+        b=CPSp31GL0qwiS/vVONECcXQqtepqFQ/hOOWrqfP5Rer/61l2PzLwviptm9ml25HCyU
+         AWeQUYyF5GGvoiXncCjm837lr9brK4TbF2Cyp3CYGxoUP1SHb05l2vwJkfmpsO24KXX/
+         ViMCKtJW//KmEkMJbTO+/z+88HCHqYf6y4uuHxlFLIYKdsBS7dSrH8oP4esQaip8/zSl
+         ALToCuBNbj9XEDJTLidkkhZbLRRm3gzZyLayYjrKYFMnH4JgcoKZA8CCp19Gfdp0WiY6
+         A0PIabOfMcu5erLIXpWZVVx3TKmISyroRptox18uedJedBIgo0llFhGXUjM2DcZy+O15
+         sa5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785280690; x=1785885490;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ex04CCTVdjetODvdAROex2NhCtrMzXHsD4UUHe0nQXo=;
-        b=hM48SmM+kCs9/cWU/Km8BcyhQLwk361Id+OVNNDzfgkZ/jyvxQ1VxdZpisE+Q9j2G4
-         lS6QabOKOZviTdt6nqaF4wT0gNJhVhpO6Lpix27pG78rOlY+z6VzOLLQSJqe1kg7VL3c
-         qoOJ7GlggS5Gd83xfR93BhFZPGz0QFiVQrK1aUP09pP3Gx8fFiUUB9l0pfZv65iABsR3
-         7ixuo4puH58LQHSF+sFoxhI0NMOfsq/f8cfoFYhFcG3dRQZetJQT984qzIfoNrgR6Vb+
-         f4mNc/3H5CUb4zT99ll/cMfMD/rQUEhqdT+WIAYJOMfLrOmXTQhONd+ublrP0ojZ2cW4
-         Fu9g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr/I5icR6eLi1wX3vM/G4EKZAUk0AE1+7UDh8xgHMFNptJGOvgQuuifvbPIhht/D2+fm5U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx21wgoLMT67f7gZeR9OOC+stVXOtDcEvgIKnkx0AGP4CGERX+K
-	ENHJMlDnNbF3ZNP/KDCPaZPpiASYwzbEbB6mkT8SChCGIsRtNeC+xCSD7n+i5nxFUpab6ccwGWB
-	uAbPPTw==
-X-Received: from pfbig4.prod.google.com ([2002:a05:6a00:8b84:b0:84b:4480:8b65])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:288e:b0:847:8250:2b2a
- with SMTP id d2e1a72fcca58-84e933f382dmr4685664b3a.60.1785280690057; Tue, 28
- Jul 2026 16:18:10 -0700 (PDT)
-Date: Tue, 28 Jul 2026 16:18:09 -0700
-In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
+        d=1e100.net; s=20251104; t=1785281086; x=1785885886;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BkAgoYMxCwX1gGJVGSLs/sDny9bwcXWRq8b7/ipRw0o=;
+        b=CFGtxoBz4/FRGCgKVU2azawZ7EjyC1ZmWX8rh/FwaxLHsKaHuuIn2PyYA4VXOPzVfe
+         kXtfPbGSKCzXZ903gI7x/YVpS+jJiaXmBP89YtzJrbKudUFVgVmfKU7GWy+bz7U2ze1r
+         gCpziHu2SxGrgbvczRD858wudbMrXJJfmu3TaFzaXbSeEvbnQkL8oVeD0iGBYvQzvv+u
+         hb6uAycr/MNSFW9LzZnV6fp4h6EBfp1XQWF+sqdlfK1iGeZ+LxDV/dNIWdV7ZhRSUTK2
+         6JUmIJKRtHTqYcUcN8X0ZquwyM3Bl8JNNKL0xLCsym439Qr5mEUQHaWu4OXsGwxIF/T3
+         Ohmg==
+X-Forwarded-Encrypted: i=1; AHgh+RrkOk1mB6Q/aajWQ/bQ3HvR3tUDyaNzHR1sGLf81PYNuTh+eTvgTP22MKbHY/vsYhx/UDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOfkSjGtUbe0Fzp1YZzawF8QFg1lRZDBrx4Y3PO35eJgkr+bP/
+	KOlOTxGjRvZs6kUpsfG3P78VHQ6oIYMf87YLj+ay5GONVzf2IjLgegV8JE+HLNTWqdH/CUX/IGG
+	x5BpZ8DJf
+X-Received: from pgj1.prod.google.com ([2002:a63:901:0:b0:c9b:aaf2:afde])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:813:b0:848:2f77:e2de
+ with SMTP id d2e1a72fcca58-84e93380b96mr4733743b3a.71.1785281085492; Tue, 28
+ Jul 2026 16:24:45 -0700 (PDT)
+Date: Tue, 28 Jul 2026 23:24:25 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260728144954.355376-1-dwmw2@infradead.org>
-Message-ID: <amk4sX57FwapIp9B@google.com>
-Subject: Re: [PATCH v7 00/36] Cleaning up the KVM clock mess
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+X-B4-Tracking: v=1; b=H4sIACk6aWoC/2XMTQrCMBCG4auUrI3kP40r7yFSTDKmAW2klaCU3
+ t20uIi4/IZ53hlNMEaY0KGZ0Qg5TjENZehdg1x/GQLg6MtGjDBFNNE4Bttl3lmBhaFGOCq45g6
+ V/8cI1/jaWqdz2X2cnml8b+ks1uu3QklVyQITLBVoYFIr5+gxpBRusHfpjtZMljUVNZWFGioJB ++tae0fVRVlrKaqUGKBemYMbb34ocuyfAAfd4jbGQEAAA==
+X-Change-Id: 20260707-igb_v3_b4-49194c14373c
+X-Developer-Key: i=jrhilke@google.com; a=ed25519; pk=cK+Urrh214DoCHywJiTwhMP+zcs1ofpGrewToO/i/3A=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785281084; l=5999;
+ i=jrhilke@google.com; s=20260710; h=from:subject:message-id;
+ bh=97k0ZlGkYxJ3ZZkL6fedtzCve5UXzHsUti1g1e96dQE=; b=3qF1GNAiNDgHT1VMPxkNtGseQyBwuY1lCdhYno2jRnhocQj5dj2XA0S10bmb/6vlPrmLpMlKD
+ I5v9S+hwLecDsO+vcBV8wbKUapLXW2vie+dy1TR+xGEyDdFQMEDLaM9
+X-Mailer: b4 0.14.3
+Message-ID: <20260728-igb_v3_b4-v7-0-4616c3745796@google.com>
+Subject: [PATCH v7 0/6] vfio: selftests: Add driver for Intel Ethernet Gigabit
+ Controller (IGB)
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, Alex Williamson <alex.williamson@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 28, 2026, David Woodhouse wrote:
-> This is v7 of the series to clean up the KVM clock, rebased onto
-> kvm-x86/next (patch 1 of v6 is already merged there as commit
-> 710b3a30f407).
+This v7 of a series which adds a VFIO selftest driver for the Intel
+Gigabit Ethernet controller (IGB), specifically targeting the 82576
+device. IGB is fully virtualized in QEMU, making it suitable for running
+VFIO selftests without specialized hardware.
 
-FYI, I'm going to rebase that commit again, to put all of this in a dedicated
-topic branch.  But I'll also take care of updating references in commit messages.
-More below.
+v6: https://lore.kernel.org/kvm/20260722-igb_v3_b4-v6-0-0be1d29918d4@google.com/
 
-> David Woodhouse (33):
->       KVM: x86: Improve accuracy of KVM clock when TSC scaling is in force
->       KVM: x86: Explicitly disable TSC scaling without CONSTANT_TSC
->       KVM: x86: Activate master clock immediately on vCPU creation
->       KVM: x86: Avoid NTP frequency skew for KVM clock on 32-bit host
->       KVM: x86: Fold __get_kvmclock() into get_kvmclock()
->       KVM: x86: Drop CPU pinning in get_kvmclock()
->       KVM: x86: Restructure get_kvmclock()
->       KVM: x86: Fix KVM clock precision in get_kvmclock() with TSC scaling
->       KVM: x86: Use get_kvmclock() in kvm_get_wall_clock_epoch()
->       KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
->       KVM: x86: Restructure kvm_guest_time_update() for TSC upscaling
->       KVM: x86: Simplify and comment kvm_get_time_scale()
+v7 fixes a regression in reset logic for the physical device that was
+introduced in v5 and found by Alex (thanks!), and adjusts the Makefile
+to allow the driver to be used on all architectures, not just x86_64.
 
-I'll post a new version up through here, get it applied soon-ish, and then get
-back to chipping away at the rest of the series.  It'd obviously be nice to get
-all the cleanups (and the tests) into 7.3, but I suspect the rest will take a
-bit of back and worth (with Sashiko, if not me :-D).
+Testing
+=======
+- VFIO selftests builds clean at every commit
+- vfio_pci_driver_test passes using IGB driver + QEMU. Use the following
+  command to run the tests:
 
-I may punt on "Restructure kvm_guest_time_update() for TSC upscaling" if I have
-trouble sorting through Sashiko's feedback, but I'll give it a shot.  I need to
-page that all back in anyways.
+  vng \
+  --run arch/x86/boot/bzImage \
+  --user root \
+  --disable-microvm \
+  --memory 32G \
+  --cpus 8 \
+  --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
+  --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
+  --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
+  --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
+  --exec "modprobe vfio-pci && \
+          ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
+          ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
+--------
+Changelog:
 
->       KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
->       KVM: x86: Improve synchronization in kvm_synchronize_tsc()
->       KVM: x86: Kill last_tsc_{nsec,write,offset} fields
->       KVM: x86: Replace nr_vcpus_matched_tsc count with all_vcpus_matched_tsc bool
->       KVM: x86: Allow KVM master clock mode when TSCs are offset from each other
->       KVM: x86: Factor out kvm_use_master_clock()
->       KVM: x86: Avoid gratuitous global clock updates
->       KVM: x86/xen: Prevent runstate times from becoming negative
->       KVM: x86: Avoid redundant masterclock updates from multiple vCPUs
->       KVM: x86: Remove runtime Xen TSC frequency CPUID update
->       KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
->       KVM: x86: Use ktime_get_snapshot_id() for master clock
->       KVM: x86: Compute kvmclock base without pvclock_gtod_data
->       KVM: x86: Cache host vclock_mode for masterclock eligibility checks
->       KVM: x86: Remove pvclock_gtod_data and private timekeeping code
->       KVM: x86: Activate master clock from kvm_arch_init_vm()
->       KVM: selftests: Use UAPI pvclock-abi.h in xen_shinfo_test
->       KVM: x86: Add KVM_VCPU_TSC_SCALE and fix the documentation on TSC migration
->       KVM: selftests: Add master clock offset test
->       KVM: selftests: Add Xen/generic CPUID timing leaf test
->       KVM: selftests: Add Xen runstate migration test
-> 
-> Jack Allister (3):
->       UAPI: x86: Move pvclock-abi to UAPI for x86 platforms
->       KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for accurate KVM clock migration
->       KVM: selftests: Add KVM/PV clock selftest to prove timer correction
+v6 -> v7:
+- Allow the driver to be used on any architecture. (Alex) 
+- Fix regression in reset logic for the physical device. (Alex)
+
+v5 -> v6:
+- Retry on EAGAIN during device reset to handle transient lock contention (Sashiko).
+
+v4 -> v5:
+- Reordered igb_remove() to reset the device before disabling MSI-X (Sashiko)
+- Refactored hardware reset logic into igb_reset() helper.
+- Simplified reset completion check to usleep + assertion instead of retry loop (Sashiko).
+- Allow arbitrary test data by enabling Multicast Promiscuous (MPE)
+  and Broadcast Accept (BAM) modes (Sashiko).
+- Fixed igb_send_msi() to use MSIX_VECTOR_MASK instead of magic number (Sashiko).
+
+v3 -> v4
+- Enable MSI-X mode in GPIE (Sashiko)
+- Fix hardware initilization order to avoid race conditions (Alex/Sashiko)
+- Add memory barrier to prevent speculative reads (Alex/Sashiko)
+- Clean up stale references in commit messages and comments (Alex/Sashiko)
+- Add a comment to address software/firmware semaphore (Alex/Sashiko)
+
+v2 -> v3
+- Poll reset bit and document the required wait time (David/Sashiko)
+- Fix the logic for enabling PCI_COMMAND_MEMORY (David/Sashiko)
+- Fail the test if autonegotation fails (David/Sashiko)
+- Handle endianness conversions (David/Sashiko)
+- Use real IGB headers at the start of the series (David)
+- Add E1000_TXD_CMD_IFCS to the TX descriptor command word (Sashiko)
+
+v1 -> v2
+- Removed the chunking loop in igb_memcpy_start() (David)
+- Removed redundant writes to status_error and hdr_addr (David)
+- Include official IGB header files (David)
+
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Changes in v7:
+- Allow the driver to be used on any architecture (Alex).
+- Poll EECD.AUTO_RD during reset, with fallback to CTRL.RST for QEMU (Alex).
+- Link to v6: https://lore.kernel.org/r/20260722-igb_v3_b4-v6-0-0be1d29918d4@google.com
+
+Changes in v6:
+- Retry on EAGAIN during VFIO_DEVICE_RESET (FLR) to prevent test flakiness under
+  load when the device lock is temporarily held by kernel error handlers (Sashiko).
+- Remove the 10ms heuristic delay before reset in the recovery path since lock
+  contention is now handled by retrying (David).
+- Reorder the series to introduce the library reset helper before the driver
+  recovery patch.
+- Link to v5: https://lore.kernel.org/r/20260714-igb_v3_b4-v5-0-91503eddb98b@google.com
+
+Changes in v5:
+- Restructured the series from 9 to 5 code patches by folding advanced descriptor
+  support, MSI-X routing configuration, extended memcpy completion timeout, and
+  PCIe completion timeout retry disable directly into the initial driver patch.
+  This ensures a clean, fully-functional baseline driver from PATCH 01 and avoids
+  intermediate legacy descriptor, timeout, and bus-spamming bugs.
+- Reordered igb_remove() to reset the device before disabling MSI-X.
+- Switched igb_irq_clear() to write-to-clear as required by the datasheet when
+  EIAC is programmed.
+- Refactored hardware reset logic into igb_reset() helper with proper sleep
+  (1ms mandated by datasheet section 4.2.1.6.1) and poll-assertion.
+- Simplified reset completion check to usleep + assertion instead of retry loop.
+- Allowed arbitrary loopback test data by enabling Multicast Promiscuous (MPE)
+  and Broadcast Accept (BAM) modes.
+- Fixed igb_send_msi() to use MSIX_VECTOR_MASK instead of magic number.
+- Link to v4: https://lore.kernel.org/r/20260710-igb_v3_b4-v4-0-56e7e2576cc1@google.com
+
+---
+Alex Williamson (4):
+      vfio: selftests: igb: Use PHY internal loopback on 82576
+      vfio: selftests: Add helpers to re-enable interrupts
+      vfio: selftests: igb: Factor hardware programming into igb_hw_init()
+      vfio: selftests: igb: Recover after DMA-read faults
+
+Josh Hilke (2):
+      vfio: selftests: igb: Add driver for Intel 82576 device
+      vfio: selftests: Retry on EAGAIN during device reset
+
+ .../selftests/vfio/lib/drivers/igb/e1000_82575.h   |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_defines.h |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_regs.h    |   1 +
+ tools/testing/selftests/vfio/lib/drivers/igb/igb.c | 579 +++++++++++++++++++++
+ .../vfio/lib/include/libvfio/vfio_pci_device.h     |  15 +
+ tools/testing/selftests/vfio/lib/libvfio.mk        |   2 +
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c |  39 +-
+ tools/testing/selftests/vfio/lib/vfio_pci_driver.c |   2 +
+ 8 files changed, 639 insertions(+), 1 deletion(-)
+---
+base-commit: de61419bb27f985cb878b19942a55b026c9c865a
+change-id: 20260707-igb_v3_b4-49194c14373c
+
+Best regards,
+-- 
+Josh Hilke <jrhilke@google.com>
+
