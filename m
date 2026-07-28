@@ -1,179 +1,226 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF5D37C933;
-	Tue, 28 Jul 2026 16:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81853793DC;
+	Tue, 28 Jul 2026 16:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785256035; cv=none; b=t2B9/Dy5uYf1fAO3lGTISMrPY5OpIyxKY1Gj1tbSDQR93WQujklrQQQ25mxcmOjGL3iepYNLIBS2XVmkCgA57lyUVlLdnS54qSxMpBrNWRq0iokuQg/2AHmUoy14K/a9/w42nm+aWDvUvuAWUtF7bApbow3gzzk5r7m5S/rraeQ=
+	t=1785256172; cv=none; b=QCU3qn/Me6UnRbbaxLyybgSHd8Zcov5zCqTpzJ5iXDIdvggFe6yt3oStmMvKKgUNyGMyboPigEeRd3vdnhWcGzKjf/1FyOtELxTbcSUhQgbiXJw04dbIlFE5bK5/Z3vlSc9/WL4umfQl5p749ED56gjkP+kKTbvEAusL3+G8bdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785256035; c=relaxed/simple;
-	bh=RcbDJ1VrlYEZt+bPu1zapMNGaKRvqi04qbrj6d3yv0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o1DvrV7NhOgRisS+n57CpxZnRmUJTe+iDoP8lcfaGT3MBRNKtWDdBO/JYUoKs7XfHS2e1nlueTj+3JmPD0WPNd4CL/z5RNmCryYHJwYe55n34CkQPF/JF89PR4O1B0Sk/t8VpoBltNkx3wFVQH5HjplBH/YqI5u4caaT+MZgZ2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=s++CucMZ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785256172; c=relaxed/simple;
+	bh=MX0wJV+z6XrmccbfjJp7YafC0P4FALfhwuAFIt/qJyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RlE3k1mgJNa//SYCx9bGLy1az+VLmB9IOwu/dze2FbDC1+wjYzvR5rpD/f+efoOaIur+jh2T84FsezXrI+lg5il39Eq/FLnW2JLgrI9O366RcFY9/N2aRtWQujHOtXxEBKO/72iFfQOHR8T9XsijWBgYKsUAZiyA8XsISrZIXQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3XjuXcO; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="s++CucMZ"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SElv8H1501356;
-	Tue, 28 Jul 2026 16:27:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=rm5v6wxQF6+dLXgeL7Nvzy6nUOYLLucaazKWwJZVa
-	js=; b=s++CucMZVzKV6DzjmkzW/2ftb0+mIdcOTTFI6Dlt2e4fogqWTg8YFwADo
-	6gTj5ETYbBogvIBjBVN+5CG9Ivk+3S9J0VuF8NgeA1ZO4DRL8Gm2t2s3Hzr5YxIB
-	EDUDqD5598yMYE2QZU1MP3kNg75q5MeSptn3bU4eHPLjssyWN59d6fmjiT4wudge
-	mN0Oz1dBihBB8SZpe+LV/X2JApUQ0Z12Tba6Ruzxn+NCl/DxuVMCP2utDbc6doTX
-	FYxEagGPaOHDxFLR2XUpBafYvU9SCfIoDlagS9wykj0p7gMaMHlCUM5GwhZHDUkt
-	5HmYzDUrdMXfid3SuNnIvqFFu/ffQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwcwqtw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 16:27:09 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SGQJRw025158;
-	Tue, 28 Jul 2026 16:27:09 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uw2w6u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 16:27:08 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SGR70l37093948
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 16:27:07 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 956F358055;
-	Tue, 28 Jul 2026 16:27:07 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 182205804B;
-	Tue, 28 Jul 2026 16:27:06 +0000 (GMT)
-Received: from li-4c4c4544-004d-4810-8043-b7c04f423534.ibm.com.com (unknown [9.61.138.160])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Jul 2026 16:27:05 +0000 (GMT)
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, mjrosato@linux.ibm.com,
-        pasic@linux.ibm.com, alex@shazbot.org, kwankhede@nvidia.com,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        stable@vger.kernel.org
-Subject: [PATCH v2] s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
-Date: Tue, 28 Jul 2026 12:26:58 -0400
-Message-ID: <20260728162705.2631004-1-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3XjuXcO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785256170; x=1816792170;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=MX0wJV+z6XrmccbfjJp7YafC0P4FALfhwuAFIt/qJyk=;
+  b=R3XjuXcOm+hG7ClgIA3YSu8AshO12mNKQbdEx2KCH2wcjyexOOMSkpNw
+   w21wK6BU89pRHkVyxrRXaXJHqXZG3aWPSraHpYohGHBA0X/aA6cTMMjwi
+   bzeKqCiky1LI2lyJLcjmL9f+LpHLBoT9ZuYCOsr23lQmsvKTU9CTyCeAy
+   tINnKET4n+lPOGNfxYorz1AFZBIlVidJ9wiammkjlKG8QrTrzW3lbkGwF
+   vqAuQP3Sy/HIap6lUZ6aoDqKMUVHMvPlz8TZKpIjaUSkCKxxBuNVWXDyF
+   Ukd1QRBoxq7DILUgHcFgSQdnPlHlhNCEu5v4w38cB6gJGgLMkPXRLMwow
+   A==;
+X-CSE-ConnectionGUID: VEiwH3Z/TKiYa+c2WI7LEw==
+X-CSE-MsgGUID: h8xYDlgkS5uDVb0aFxEsfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="96202436"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
+   d="scan'208";a="96202436"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 09:29:29 -0700
+X-CSE-ConnectionGUID: 2wTNV8oMRL2SmhKicAFurA==
+X-CSE-MsgGUID: WXugfkNNSXqMvNzsilSfGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; 
+   d="scan'208";a="255832189"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa010.fm.intel.com with ESMTP; 28 Jul 2026 09:29:25 -0700
+Date: Wed, 29 Jul 2026 00:29:23 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"seanjc@google.com" <seanjc@google.com>
+Subject: Re: [PATCH v2 02/17] x86/virt/tdx: Configure add-on features on TDX
+ module init and update
+Message-ID: <amjY4970g2xCkls0@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-3-yilun.xu@linux.intel.com>
+ <2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: aAnbthLkoGXyXg4QoDfp-C4gUh5R1ZYy
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDE0NCBTYWx0ZWRfX9YUE8HCWtdM7
- RGtyBZ6pqFVvgnrCQfkOgUiv2ccClcfgHhGchbgMRsFB51V2lqQYSb42ucAtommKyjCPjqwxPK9
- QUrAbcoFOX33Pr7dqYz1vC/nvSsArtY=
-X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a68d85d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=nNqZshfXTVdLzTE6bdUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDE0NCBTYWx0ZWRfXz1b4Ox5LVctr
- j7uWB7+pEBdLbClc/enWurkOlET5L9ECXgYyKkcgfJY0kBEC63uOsuCSVz6xp9phOdqd6l2bXnT
- cnc4wSq2ZTnQmt6nMnTo74uurB70amAsD/E2NHxyvfveE6Exatrtq37F7TWj6uBBgEfQd2AuEAg
- pen8AHHvVn/BfBHloVXVGh4gILrdY2aZPtQ+K4oM3gZKpQO7SOA+9EJyG/nByy5NzyfZfsdCKIr
- lVssO4ag0SFPuSVh1AifEaIFr6fg4svOT++W6XjQwBEeuGaS6AMlKtegT23rGs3/twU/GsulStR
- ZFeATCkmu4zyyBHxvWEAMLe1mr7ObOYo3UnUY55kJlGSuEU1Er7VNtsY0QfX8EyPgrehB0VRaqU
- zj4fnYot3qMUZoC1qDX7lJJZjkdSj0/qDS3c5MUVDNsYQ4b4hz4vFKO7ApR2cBXKki8+B2Ytl3M
- 4B5iAS65qq4GmCeklbg==
-X-Proofpoint-GUID: aAnbthLkoGXyXg4QoDfp-C4gUh5R1ZYy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_04,2026-07-28_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280144
+In-Reply-To: <2d138a8acb685385016e0bb0535e7213952e44e5.camel@intel.com>
 
-In vfio_ap_mdev_set_kvm(), kvm->arch.crypto.pqap_hook is set to
-&matrix_mdev->pqap_hook before the update locks are acquired and the
-mdev list is checked for a conflicting assignment. If another mdev is
-already attached to the same KVM instance, the function returns -EPERM
-without restoring the hook pointer, leaving kvm->arch.crypto.pqap_hook
-pointing at the failing matrix_mdev instead of the mdev that legitimately
-owns the KVM.
+> >  To adhere
+> > to this, TDH.SYS.UPDATE must configure the same features as the
+> > TDH.SYS.CONFIG. Record the kernel required add-on feature bitmap in a
+> > global var so that both phases can use it.
+> > 
+> > TDX module advances the version of TDH.SYS.CONFIG and TDH.SYS.UPDATE for
+> > the change, so use the latest version (v1) for add-on feature enabling.
+> > But supporting existing modules which only support v0 is still necessary
+> > until they are deprecated. In fact, it is unlikely that TDH.SYS.CONFIG
+> > ever needs to change again and the code would stay in v1.
+> 
+> Ha, these are hard things to predict.
+> 
+> >  So there is
+> > little value in worrying about deprecating v0 to save a couple lines of
+> > code in 5-7 years when these original TDX platforms sunset.
+> 
+> We can't deprecate it today, so what is this saying exactly?
 
-Since matrix_mdev->kvm is never set on this error path,
-vfio_ap_mdev_unset_kvm() will not clean up the hook when matrix_mdev
-is later closed. If matrix_mdev is subsequently freed, any PQAP
-instruction executed by the guest will dereference the stale pointer
-through pqap_hook_rwsem, resulting in a use-after-free.
+This paragraph is outdated, at that time the target is to always use the
+latest SEAMCALL version. I'll remove it.
 
-Since kvm->arch.crypto.pqap_hook is only set in the vfio_ap_mdev_set_kvm()
-function and is cleared in the vfio_ap_mdev_unset_kvm() function, a check
-for 'kvm->arch.crypto.pqap_hook != NULL' is all that is needed to determine
-whether it belongs to another mdev. This will alleviate the need to iterate
-the matrix_dev->mdev_list list to see if the kvm object is assigned to
-another mdev. This likewise eliminates the need to hold the
-matrix_dev->mdevs_lock while iterating the list.
+I updated the changelog according to these comments, appended at the
+end.
 
-Note that the 'matrix_mdev' pointer retrieved via the 'container_of' macro
-in the 'vfio_ap_mdev_open_device()' callback will be available for the
-duration of that function because 'matrix_mdev' cannot be freed while
-'open_device' (which calls the 'vfio_ap_mdev_open_device()' function) is
-running.
+[...]
 
-Fixes: 86956e70761b3 ("s390/vfio-ap: replace open coded locks for VFIO_GROUP_NOTIFY_SET_KVM notification")
-Cc: stable@vger.kernel.org
+> > +static __init void set_tdx_addon_features(void)
+> > +{
+> > +	/*
+> > +	 * To add DICE-based TDX Quoting feature bit in tdx_addon_feature0
+> > when
+> > +	 * kernel is ready.
+> > +	 */
+> 
+> Can we not make this DICE specific?
 
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
----
- drivers/s390/crypto/vfio_ap_ops.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Yes.
 
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 44b3a1dcc1b3..b0a038faa93a 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -1821,26 +1821,25 @@ static const struct attribute_group *vfio_ap_mdev_attr_groups[] = {
- static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
- 				struct kvm *kvm)
- {
--	struct ap_matrix_mdev *m;
--
- 	if (kvm->arch.crypto.crycbd) {
-+		/*
-+		 * Taking the kvm->arch.crypto.pqap_hook_rwsem lock while
-+		 * holding the update locks (below) could result in a
-+		 * deadlock condition, so let's hold the rwsem here while we
-+		 * check and update the pqap_hook.
-+		 */
- 		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
-+		if (kvm->arch.crypto.pqap_hook) {
-+			up_write(&kvm->arch.crypto.pqap_hook_rwsem);
-+			return -EPERM;
-+		}
- 		kvm->arch.crypto.pqap_hook = &matrix_mdev->pqap_hook;
- 		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
- 
- 		get_update_locks_for_kvm(kvm);
--
--		list_for_each_entry(m, &matrix_dev->mdev_list, node) {
--			if (m != matrix_mdev && m->kvm == kvm) {
--				release_update_locks_for_kvm(kvm);
--				return -EPERM;
--			}
--		}
--
- 		kvm_get_kvm(kvm);
- 		matrix_mdev->kvm = kvm;
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
--
- 		release_update_locks_for_kvm(kvm);
- 	}
- 
--- 
-2.53.0
+> 
+> > +}
+> > +
+> >  static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+> >  				    u64 global_keyid)
+> >  {
+> > +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+> >  	struct tdx_module_args args = {};
+> >  	u64 *tdmr_pa_array;
+> >  	size_t array_sz;
+> > @@ -1032,7 +1042,15 @@ static __init int config_tdx_module(struct
+> > tdmr_info_list *tdmr_list,
+> >  	args.rcx = __pa(tdmr_pa_array);
+> >  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+> >  	args.r8 = global_keyid;
+> > -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+> > +
+> > +	set_tdx_addon_features();
+> 
+> This is a little opaque. Why not something like
+> 
+> tdx_addon_feature0 = TDX_KERNEL_SUPPORTED_ADDONS &
+> tdx_sysinfo.features.tdx_features0;
 
+Good to me.
+
+> 
+> tdx_addon_feature0 could probably be named better too. It means the features
+> that the kernel has decided to use. HMm, any ideas?
+
+How about tdx_supported_features0?
+
+BTW: I'm going to take Chao's advice [1] to remove the global var
+tdx_addon_feature0, and use a "static u64 get_tdx_supported_features0(void)"
+for TDH.SYS.CONFIG/UPDATE.
+
+> 
+> > +
+> > +	if (tdx_addon_feature0) {
+> > +		args.r9 = tdx_addon_feature0;
+> > +		seamcall_fn = TDH_SYS_CONFIG;
+> > +	}
+> 
+> This kind of feels hacky to me. tdx_addon_feature0 is zero if there are none
+> supported. It shouldn't interfere with the v0 call to set it unconditionally?
+> 
+> I think the connection between tdx_addon_feature0 and TDH_SYS_CONFIG is a bit
+> tenuous too. It is set if a extension is found that the kernel supports.
+> 
+> What do you think about wrapping TDH_SYS_CONFIG. Have the wrapper take all the
+> args including tdx_addon_feature0. Then have the wrapper decide which seamcall
+> to use. Have a nice comment that says "Use version of seamcall that supports add
+> ons if we have any, use the old one if none are supported for backward
+> compatibility".
+
+I'm good to add the wrapping for TDH_SYS_CONFIG and TDH_SYS_UPDATE.
+
+> 
+> BTW, looking at the tdx module, if I'm reading this right, r9 used to be
+> ignored. So did it need a new seamcall version? Some other VMM was passing
+> garbage?
+
+Yes, I think it prevents possible garbage inputs suddenly take effect.
+
+The updated changelog:
+
+----8<----
+
+    x86/virt/tdx: Set configurable features on TDX module init and update
+
+    TDX module identifies some configurable features that must be
+    explicitly enabled as the kernel supports them. These features affect
+    existing TDX systems: they may change the behaviors of the existing
+    features, reserve more memory, or impact the TDX initialization
+    performance. The kernel needs to explicitly enable these features at
+    boot or post-update initialization time.
+
+    Features such as TDISP, DICE-based quoting and TD migration are among
+    those configurable features. They use preemptible SEAMCALLs so require
+    extra memory and setup time to build a global service environment - the
+    TDX module extensions. Add support for the configurable feature setting
+    as the prerequisite for initializing TDX module extensions.
+
+    TDX module extends TDH.SYS.CONFIG and TDH.SYS.UPDATE with new bitmap
+    input parameters to specify which features to enable. The bitmap uses
+    the same definitions as TDX_FEATURES0. TDX module advances the version
+    of TDH.SYS.CONFIG and TDH.SYS.UPDATE for the enhancement. A previous
+    change [1] adds the 'version' field to struct tdx_module_args to support
+    versioned SEAMCALLs. Assign the version field to 1 if any configurable
+    feature is required.
+
+    Add a get_tdx_addon_features0() helper to return the bitmap of the
+    configurable features that the module & kernel both support. Initially,
+    this helper returns 0. It will be updated to return specific feature
+    bits as full kernel support lands. TDH.SYS.CONFIG consumes this bitmap
+    during TDX initialization.
+
+    Runtime updates keep the reported features unchanged across updates, so
+    that existing TDX users can continue to operate without disruption. To
+    adhere to this, provide TDH.SYS.UPDATE with the same bitmap returned by
+    get_tdx_addon_features0(). The bitmap is guaranteed to match the initial
+    TDH.SYS.CONFIG input because tdx_sysinfo.features.tdx_features0 is
+    cached and not refreshed after update.
+
+    Link: https://lore.kernel.org/all/20260722084634.131020-1-yilun.xu@linux.intel.com/ # [1]
