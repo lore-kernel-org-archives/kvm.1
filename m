@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F5F471268;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CB4471240;
 	Tue, 28 Jul 2026 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250227; cv=none; b=Rz6Ulm9dd7+S6EWpP2CywzXbe3wEt4kn/VVEMHI8fQcuVytUcFoY2bQ966tNq+Jdp8dkAvquMhh07BoT8tfDnUXw64wO3oMHK8uN42+fFyUNjZZSSYjDZG0W1fENj+p8Fjz+8feo1r1hmioqahX1xGQcLVa/yUg32uIkW7+A7ww=
+	t=1785250228; cv=none; b=h/tp2Fy2TjpO9J5s5kLIb8Xc/Zgi2Cen2D4cskZ/7WiiOjg5A4WX66GDrypjRMHeH1bRhwDRReBA/TFzD32EafiVmzR6zRKIXwrCxF1aCG9ZRM15lqP4qUBYteZJLONNTnvxuXuLRnB9YCTHLYonfHEIzPFtCsntvH2urN9jmjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250227; c=relaxed/simple;
-	bh=6encH/kyeAS7IyRKUSkmiicMoAetd9Tkv9Ji5r/3ppw=;
+	s=arc-20240116; t=1785250228; c=relaxed/simple;
+	bh=OYAenOSwDlpEkzpw/hZuIU5NlBxY7fp1IqBeYOPZPDE=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5fnujz79SEXAMe3x2IknRMW8iEQy38ocGLCr4YGFlKE7gCH+LZvFMqvtPJhcD9OXeOP94ilyHaStXN6/cULXOy6R3Z23ZE0eGclilJtkJvJqlcl/zUNxYlqkwOUjCUwAFQZR2QnfpkfwNFptEPKHrZGq9AKHuEXrlGk58UZ728=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=osmvVwXK; arc=none smtp.client-ip=90.155.50.34
+	 MIME-Version; b=J3Tbm3VDTJIGd/D3hozQ1W3lqXjOQPlm5gt3r7rrApFnfCqgMIG8KQzUkV+aFqlZb20kVlHPjI9lTelt498QZADPQ/8+F1LpUQhsGkwbRJBZhg4StLo6EF5Df1Hat29C6aw+nm0Ir16U/c9p9JZjIeXdKlhD3JAIH4SWdTNJ+zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DZKx6RFv; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="osmvVwXK"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DZKx6RFv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=u9O6eMJWPEiCuOzOKx7hWrotGcpuvpoKHiLFSq+dRQ8=; b=osmvVwXK3BKgOGHTz3sUtx96/m
-	MVqS38yzmvoisPEV4JzC8iatafIsLOvPbq2WoaXL0eyurSYWe5ZpyEbk/fKjgX1Y219V0NhLiNLjy
-	sfBFcLNp+K8sW9GeErWzYSt+wDd3mUdylsDI1Xn7LH7jfI0/x6W4NIsX914Bc3mhweI6xCi2PANEg
-	ZRA1YaIJytIo+pGgSqv/toZ6/5C3A0M+6a8jTklX5vbPhL7B0HDJCcIZxACI3vdi+XiIUT3fQEmUn
-	OqhvYfXy+wTehcYsu2OnMeXQRIetKHLG2LEWFUwd/8tlL85xjmTwJ6uEfe+n4ac0zT5aatCCpYHSS
-	Qi/4nLtA==;
+	bh=TzgYEQycZnk9NREs4BkWOyKg6Tp5meskn+6VMFWWmpQ=; b=DZKx6RFvQHAQs1Ojm8AZEO8oH5
+	EdXrPppB8RpLp8SjdUC5USPmltd9ZTJnJIw5OXYR+xL5uk00Wq5GotDuiSIBZWs8I7i9yKwfNhMS/
+	NsKmg9j/6LwR4eRzAhx9sKuy6/J/fX7nU9Vew91XzYZFeUPOwTEyQOa+SP0vveHaHr3VzVtraDzJ5
+	+KtPwFC7rybqp1C6uDODOJ4kuNDepZeX5+DXeOn8r9xA7tooRGLs+EQhChjOHFQdJY+L61w9UXoWY
+	mi+pT09OFVSUvomFpPWgAhWBDSNzkLG88+gztgItGkkEceaXLXT5+vp3fctgF0m+6PyB560hhcyru
+	bUk+dNTA==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woj80-0000000DUP6-2hqC;
-	Tue, 28 Jul 2026 14:49:57 +0000
+	id 1woj80-0000000DUOq-0Pyj;
+	Tue, 28 Jul 2026 14:49:56 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1woj80-00000001UZl-1jZF;
-	Tue, 28 Jul 2026 15:49:56 +0100
+	id 1woj7z-00000001UYJ-1rI0;
+	Tue, 28 Jul 2026 15:49:55 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v7 30/36] KVM: selftests: Use UAPI pvclock-abi.h in xen_shinfo_test
-Date: Tue, 28 Jul 2026 15:40:10 +0100
-Message-ID: <20260728144954.355376-31-dwmw2@infradead.org>
+Subject: [PATCH v7 10/36] KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
+Date: Tue, 28 Jul 2026 15:39:50 +0100
+Message-ID: <20260728144954.355376-11-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
@@ -79,42 +79,50 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Now that pvclock-abi.h is a UAPI header, use it in xen_shinfo_test.c
-instead of locally duplicating the struct definitions.
+The compute_guest_tsc() function computes the guest TSC at a given
+kernel_ns timestamp. When the master clock reference point
+(master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
+is negative. Since pvclock_scale_delta() takes a u64, the negative
+value wraps to a huge positive number, producing a wildly wrong result.
+
+Handle negative deltas explicitly by scaling the absolute value of the
+delta and applying it to this_tsc_write with the appropriate sign.
+
+This is believed to be unreachable in practice; no path has been
+identified which invokes compute_guest_tsc() with a timestamp from
+before the vCPU's TSC generation was established. Fix it for
+robustness, in the spirit of defence in depth.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- .../testing/selftests/kvm/x86/xen_shinfo_test.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+ arch/x86/kvm/x86.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-index 5076f6a75455..2f241ca4f096 100644
---- a/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-+++ b/tools/testing/selftests/kvm/x86/xen_shinfo_test.c
-@@ -98,22 +98,7 @@ struct sched_poll {
- 	u64 timeout;
- };
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f7a9fb69e69d..52c9268007f8 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1054,11 +1054,15 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
  
--struct pvclock_vcpu_time_info {
--	u32   version;
--	u32   pad0;
--	u64   tsc_timestamp;
--	u64   system_time;
--	u32   tsc_to_system_mul;
--	s8    tsc_shift;
--	u8    flags;
--	u8    pad[2];
--} __attribute__((__packed__)); /* 32 bytes */
--
--struct pvclock_wall_clock {
--	u32   version;
--	u32   sec;
--	u32   nsec;
--} __attribute__((__packed__));
-+#include <asm/pvclock-abi.h>
+ static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
+ {
+-	u64 tsc = pvclock_scale_delta(kernel_ns-vcpu->arch.this_tsc_nsec,
+-				      vcpu->arch.virtual_tsc_mult,
+-				      vcpu->arch.virtual_tsc_shift);
+-	tsc += vcpu->arch.this_tsc_write;
+-	return tsc;
++	s64 delta_ns = kernel_ns - vcpu->arch.this_tsc_nsec;
++	u64 tsc;
++
++	/* Handle negative deltas gracefully (master clock ref may be earlier) */
++	tsc = pvclock_scale_delta(abs(delta_ns),
++				  vcpu->arch.virtual_tsc_mult,
++				  vcpu->arch.virtual_tsc_shift);
++
++	return vcpu->arch.this_tsc_write + (delta_ns >= 0 ? tsc : -tsc);
+ }
  
- struct vcpu_runstate_info {
- 	u32 state;
+ #ifdef CONFIG_X86_64
 -- 
 2.55.0
 
