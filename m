@@ -1,143 +1,221 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9FD30568E
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8273C27A907
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251945; cv=none; b=kBsf6AwlVKJCU/CdKUibYba7pE56PPXorJvNneIWModvS+m63qRKlSJcsWQdPztLczuZPRpep8oGWbf/NBAWnYIS1Fl1c8Ip7slonGDpY5KyPnpd08x2krVM8HlWNYytNEeg1U6Qvacr4TK5Y9JeynkKoGLARm7DPZ5cERUjL7M=
+	t=1785252118; cv=none; b=abHFsKqmgJua38F0JtYQ6VTWO1DrvfLJ6ONsNQg5g36YV/Q6eh+iRiXwFspshDOv8OQeJz4NsT8BSxFbj+695jmGPiIlqVAR9FMpicwWTKRLVPZOvcfpqhUSEaKvWwuH2cASBa0whP0+naDqaClke/BhhR9PnPOVzn4QA1zlImc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251945; c=relaxed/simple;
-	bh=IjkFdsbewhkCcCmu+YhNAP5IiqATlISe6Iry8e1ZhlQ=;
+	s=arc-20240116; t=1785252118; c=relaxed/simple;
+	bh=v24ZWPy1EH+3VJJzu4DlUUo+z5PXLx4FmQ+bnTBMMHc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cuxyKXX7oU6Zwsg2vHcvaU6TdSEyrYyJV3Og20s/vgjWRuXm64woruOBt1bbUOpqBA1/r4oTDj7/BLVzw9eGH/5iM1fTVnTJCyrhHc2J/s9m07EsH4knQv1UCqBFprG7gy3KG0saSaNnTasNNbP1h9U0vbD86FGFxJ3G6KoLxYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oClo08Hb; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=d6SYxEhWI2aQc4sbwfkfIdF1GQXp2m/2aNcbuDUEpGnNURXTiMx9xd69SC0+q/Baz8c1ZO6O6XFr7mqvXfojWRnxaGHQLU+a23Eqsm3NIYhr9J2AY8rTmi4D6FSnupail+JQgJYmhIAkMmlJmefic4+0vWi7cRs8RLA66hsUyz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLJ94hWO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oClo08Hb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC561F000E9;
-	Tue, 28 Jul 2026 15:19:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLJ94hWO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48831F000E9;
+	Tue, 28 Jul 2026 15:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785251943;
-	bh=K79czuWMANjfznWLq/Wncr9cbSUFTqYSrutFk5zsB90=;
+	s=k20260515; t=1785252117;
+	bh=0qzdD7dKeJjX30B/NQAhwMQ57YqjL5mbwvqW2e79mvw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=oClo08Hbt83zWa3tIM0GGc1IZ+CezllyFvfWKebJmzdt55eRlg4Zn+oISufNfZw2R
-	 D6sO5JGGlu+6apsHCQz9VgYgjfhZX2hrW4rLbZlyALRxNXq8WItNpEbF87N+teUlTB
-	 OK9ywrU8Q6Dgj142JbNOxSFTxE+xoU+0hPrZ+7ja7BVM8GOXnCM3MkqfOldo7GWG60
-	 EEIQ+Sbz/tLWErcaWyGaWFqDzQKejCdkdc2+aNVHJG1fkPzCD+yWknvmOInYQ9vqgA
-	 /gJlamMwMmlt+d+731eFLLRqgweGLt20ElEWgEaryR82LsOzYkwiMIvoagHDeF2qSQ
-	 IU7JUtpARG1Gw==
+	b=OLJ94hWOYLPmXOpfLACpXkOffUHOGmouzaAR9FhGmlTgUlzJbvfLpZO/lkhAwQr8c
+	 FL/V4wA+KUzxBaSGUGF07sZaxt4sNsGwOWMEQOvAx1BHVb5MDy3vBLFX86mzT3fF2p
+	 XxvcpVMYFkbsGXDxz5KkYc23pCXUQzjuKo2svz6b7CZWVzUhsgvfzkbney9N7RfXnP
+	 x6OL5OWG+CwDevw/mwH7vqcn4DSZBBOeUxNaJ3EwHCOUjA8nv20iMc/CgbvNVSRB/D
+	 HlDHHMgmsOrxBcysiQsVUKrjfFeBJSa4qwe4UfEj81yJXaTZfb2CWwxMESHIumT0KA
+	 Glmh9SwmmRKAQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 23/36] KVM: x86: Re-synchronize TSC after
- KVM_SET_TSC_KHZ
+Subject: Re: [PATCH v7 24/36] KVM: x86: Use ktime_get_snapshot_id() for
+ master clock
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-24-dwmw2@infradead.org>
+In-Reply-To: <20260728144954.355376-25-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-24-dwmw2@infradead.org>
+ <20260728144954.355376-25-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:19:02 +0000
-Message-Id: <20260728151902.CEC561F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 15:21:56 +0000
+Message-Id: <20260728152156.A48831F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 6 potential issue(=
 s) to consider:
-- [High] KVM_SET_TSC_KHZ unconditionally sets user_set_tsc =3D true during =
-vCPU creation, breaking the 1-second slop hack workaround for live migratin=
-g young VMs.
-- [High] Lockless TOCTOU race when synchronizing the guest TSC causes guest=
- clock stalls or backwards jumps during preemption.
+- [High] Mathematically incorrect usage of `ktime_mono_to_any()` with a RAW=
+ timestamp.
+- [High] Cannot retrieve CLOCK_MONOTONIC using only the standard system_tim=
+e_snapshot.
+- [High] The patch silently breaks KVM masterclock support on Hyper-V hosts.
+- [High] Missing validation for zero cycles in kvm_snapshot_has_tsc leads t=
+o a massive guest time jump and potential DoS.
+- [Low] The patch introduces a build failure by calling a non-existent kern=
+el API and accessing non-existent struct fields.
+- [Low] Static helper functions were abandoned but not removed, breaking th=
+e build.
 --
 
---- Patch [23]: [PATCH v7 23/36] KVM: x86: Re-synchronize TSC after KVM_SET=
-_TSC_KHZ ---
-commit 7a6fbf4fe1dbd0e60f9a3418fa5cc8be64f86841
+--- Patch [24]: [PATCH v7 24/36] KVM: x86: Use ktime_get_snapshot_id() for =
+master clock ---
+commit 08cee26ad4312fb3cda5c262811876db0f33c933
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
+KVM: x86: Use ktime_get_snapshot_id() for master clock
 
-KVM_SET_TSC_KHZ changes the vCPU's TSC scaling ratio but does not
-update the VM-wide cur_tsc_scaling_ratio used by get_kvmclock().
-This commit calls kvm_synchronize_tsc() after changing the TSC
-frequency to ensure the TSC value is continuous and updates the scaling rat=
-io.
+This commit replaces the KVM-private timekeeping reimplementation with call=
+s=20
+to a generic ktime_get_snapshot_id interface. It is intended as a step towa=
+rds=20
+eliminating the pvclock_gtod_data private copy of timekeeping state.
 
 > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 1942ccadb7a50..57494812cc839 100644
+> index 57494812cc839..45a768fd7cb35 100644
 > --- a/arch/x86/kvm/x86.c
 > +++ b/arch/x86/kvm/x86.c
 
 [ ... ]
 
-> @@ -1061,7 +1061,17 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, =
-u32 user_tsc_khz)
->  			 user_tsc_khz, thresh_lo, thresh_hi);
->  		use_scaling =3D 1;
->  	}
-> -	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
+> @@ -1580,14 +1581,39 @@ static int do_realtime(struct timespec64 *ts, u64=
+ *tsc_timestamp)
+
+[Severity: Low]
+The commit message mentions replacing do_kvmclock_base, do_monotonic,=20
+do_realtime, and vgettsc. Were these functions meant to be removed in this=
+=20
+patch? Leaving them defined as static helper functions without any callers=
+=20
+will break builds compiled with -Werror=3Dunused-function.
+
+>   * reports the TSC value from which it do so. Returns true if host is
+>   * using TSC based clocksource.
+>   */
+> +static bool kvm_snapshot_has_tsc(struct system_time_snapshot *snap,
+> +				u64 *tsc_timestamp)
+> +{
 > +	/*
-> +	 * Read the guest TSC before changing the ratio, so we can
-> +	 * re-synchronize to preserve continuity across the change.
+> +	 * ktime_get_snapshot_id() cannot fail for standard clock IDs
+> +	 * (only for invalid/aux clocks or during suspend, with a WARN).
 > +	 */
-> +	tsc =3D kvm_read_l1_tsc(vcpu, rdtsc());
+> +	if (!snap->valid)
+
+[Severity: Low]
+Does the system_time_snapshot structure have a valid field? It appears this=
+=20
+field, along with hw_csid and hw_cycles used below, might not exist in the=
+=20
+mainline struct system_time_snapshot, which would cause a build failure.
+
+> +		return false;
+> +
+> +	if (snap->cs_id =3D=3D CSID_X86_TSC) {
 
 [Severity: High]
-Can this lockless read cause guest clock stalls or backwards jumps?
-
-If the thread is preempted between this lockless rdtsc() read and the=20
-lock acquisition in kvm_synchronize_tsc(), the delay is lost.
-
-kvm_synchronize_tsc() takes a new rdtsc() reading under tsc_write_lock:
-
-arch/x86/kvm/x86.c:__kvm_synchronize_tsc() {
-    ...
-    raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
-    ...
-    host_tsc =3D rdtsc();
-    ...
-}
-
-Will this effectively stall the guest TSC for the duration of any preemption
-delay, shifting it backwards relative to other vCPUs and the host clock?
-
-> +
-> +	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling))
-> +		return -1;
-> +
-> +	kvm_synchronize_tsc(vcpu, &tsc);
+Does this explicit check for CSID_X86_TSC exclude the previously supported=
+=20
+Hyper-V clocksource? Since VDSO_CLOCKMODE_HVCLOCK defaults to CSID_GENERIC,=
+=20
+it seems this might silently break KVM masterclock support for nested VMs=20
+running on Hyper-V hosts.
 
 [Severity: High]
-Does passing a non-NULL pointer to kvm_synchronize_tsc() here inadvertently=
+If the hardware read transiently fails (such as during host migration) and=
 =20
-break the 1-second slop hack workaround for live migrating young VMs?
+snap->cycles is 0, this block unconditionally returns true and passes 0 as =
+the=20
+host TSC reference. Could this result in a massive leap in guest time and=20
+cause a timer storm that soft-locks or crashes the guest VM? The commit=20
+message mentions raw_cycles being zero means the clocksource could not prov=
+ide=20
+a raw counter value, but it does not appear to be handled here.
 
-Since kvm_set_tsc_khz() is called unconditionally during vCPU creation via
-kvm_arch_vcpu_create()->kvm_set_tsc_khz(), passing &tsc causes=20
-kvm_synchronize_tsc() to treat this as a user-initiated write and globally=
+> +		*tsc_timestamp =3D snap->cycles;
+> +		return true;
+> +	}
+> +
+> +	if (snap->hw_csid =3D=3D CSID_X86_TSC && snap->hw_cycles) {
+> +		*tsc_timestamp =3D snap->hw_cycles;
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestam=
+p)
+>  {
+> -	/* checked again under seqlock below */
+> -	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode))
+> +	struct system_time_snapshot snap =3D {};
+> +
+> +	ktime_get_snapshot_id(CLOCK_MONOTONIC_RAW, &snap);
+
+[Severity: Low]
+Is ktime_get_snapshot_id available in the generic timekeeping code? Calling=
+ a=20
+non-existent API will result in a build failure.
+
+> +	if (!kvm_snapshot_has_tsc(&snap, tsc_timestamp))
+>  		return false;
+> =20
+> -	return gtod_is_based_on_tsc(do_kvmclock_base(kernel_ns,
+> -						     tsc_timestamp));
+> +	*kernel_ns =3D ktime_to_ns(ktime_mono_to_any(snap.systime, TK_OFFS_BOOT=
+));
+
+[Severity: High]
+Does passing a RAW timestamp (from CLOCK_MONOTONIC_RAW) to ktime_mono_to_an=
+y=20
+mathematically mix two different time domains? It looks like this adds the=
 =20
-set user_set_tsc =3D true for every new VM:
+monotonic-to-boot offset to a raw monotonic timestamp, which could corrupt=
+=20
+the guest masterclock base time.
 
-arch/x86/kvm/x86.c:__kvm_synchronize_tsc() {
-    ...
-    if (user_set_tsc)
-        vcpu->kvm->arch.user_set_tsc =3D true;
-    ...
-}
+Additionally, does snap.systime exist in struct system_time_snapshot, or is=
+=20
+this another missing field that will break the build?
 
-Would this defeat the flag's purpose, causing the 1-second slop hack to=20
-incorrectly trigger during migration and overwrite an explicitly restored=20
-guest TSC with a value synced to KVM's dummy creation time?
-
-> +	return 0;
+> +	return true;
 >  }
 > =20
->  static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
+>  /*
+> @@ -1596,12 +1622,14 @@ static bool kvm_get_time_and_clockread(s64 *kerne=
+l_ns, u64 *tsc_timestamp)
+>   */
+>  bool kvm_get_monotonic_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)
+>  {
+> -	/* checked again under seqlock below */
+> -	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode))
+> +	struct system_time_snapshot snap =3D {};
+> +
+> +	ktime_get_snapshot_id(CLOCK_MONOTONIC, &snap);
+> +	if (!kvm_snapshot_has_tsc(&snap, tsc_timestamp))
+>  		return false;
+> =20
+> -	return gtod_is_based_on_tsc(do_monotonic(kernel_ns,
+> -						 tsc_timestamp));
+> +	*kernel_ns =3D ktime_to_ns(snap.systime);
+
+[Severity: High]
+Can CLOCK_MONOTONIC time actually be retrieved using only the standard=20
+system_time_snapshot? The standard struct captures real, boot, and raw time=
+s,=20
+but lacks the timekeeper offsets needed to properly compute monotonic time.=
+=20
+KVM guest timekeeping requests might return corrupt data if relying solely =
+on=20
+this structure without proper offsets.
+
+> +	return true;
+>  }
+
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D23
+76-1-dwmw2@infradead.org?part=3D24
