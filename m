@@ -1,144 +1,153 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB6E2C326D
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C15306754
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785252124; cv=none; b=N8hZx66QUtG7XGO3dYceYXitFoBE4t2TGMBMdoCB2gHpVKMET3ltXwJ1q8idwjdo1YF11DqYx6FRLQ3dRkz6EY8bGthluipUcwU/kV88TmIriw8mMan2R8qOmP1YzTHV82lg2PIEYjBEMDsD7955GE9IEA+FeYUJTagjalMjNyw=
+	t=1785252218; cv=none; b=cKG1lMH2KQAI1dS69fuArqbwom02fwLNO4y+bVXZ/k4HhupSwsWW1nrQRAcqLYNvlVBXHgafZjWxqF7qMdSAbU3HQX5z19kJIXOuMh+8Y2mmvf7b9ZpH+kegQUKHrAKxjP2Px8qMzIJX6iNS29ZUx0qkky325cDE+aNqoaS/144=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785252124; c=relaxed/simple;
-	bh=6Kk5p5eiPh74p6dlRhwhsqS+ljfRwEIBYlaVaTpMyeQ=;
+	s=arc-20240116; t=1785252218; c=relaxed/simple;
+	bh=BD24merAGOOQFZUl/j3itxwHEqQl0iXVh6oiFcEd7Uc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=fXylbfS1LZCemhErGpaEl9I2nLt9jLEM8fyAlx4PoP+hsn5P1CcrTMVAxG/pTFAKTiGyFCF0oDPfBimlJfsyc8vnxOn45H4vLBiD6Q+vG7CyghlZ66JJPwBSWtWmEK78xeRpGjFZyUOhMQMkabGr+1q0r/BWuThsbdZRFRMyyWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCD8M7Sd; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=givRzQXWKtkNZs8bRc7kJJR2kK3iRbojKLs3YFt7BIUivqm4IfLXmLDA1waCLrPGde01k8a6ZHkgcx1xSAkYGhRDGvEPITKQnp3844XZpQIDUBpbFG5uluhbKd+HhU8sSaGaLQx56eO78/+jO/SbNOmq2EUfhLa2W7fXkTAScOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYMLBa3Y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCD8M7Sd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D151F000E9;
-	Tue, 28 Jul 2026 15:22:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYMLBa3Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC28F1F000E9;
+	Tue, 28 Jul 2026 15:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785252122;
-	bh=fDDNOYZDyYEQh678J4/av2QkxiqZOAJvollBX1CZQLk=;
+	s=k20260515; t=1785252216;
+	bh=COHXcrHqaHqid1Amko5iSSqC6V28GNfBn/ThKyQcASo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MCD8M7SdBnlmkUy58CDzs86fn4AxIjFf9r1nnaLUYPzF2yAbGMdYHw8O04fC0NcSU
-	 6vaBbEjt0tDuhjCx3o+ZHPHVZlJZYE5mETqGbdEhiLzB8qKcbQiOAJY9vK5/QuNfzy
-	 K49Vp1dzESQ/8185RmOQbTFjo/AJtJ0qOj9dS5iepExul7yy3D7w6fd+u/Ru/VLxXT
-	 KhCelahriAT0ihnkJkj8Nzxw0EzYZw14eYz6wbbsRFXDsL24tKE5Tw8WbSgm28VMc7
-	 jjHQhqhsiiSVH2ZYERtb2T72ksknCKPSSG/WcJx9eknHmnsy28nchQHVxIVR0Eb54J
-	 9NUAdWLFLfeiQ==
+	b=DYMLBa3Yg0/vmnDgWKO1+0SDmvmDXqYNyPbLfG0tz8G4+RDXruJiOIRkrl4WLGmMl
+	 O/2wQJyysXyBsq5z98i95LwNgdGRhEv99xkMmw8txbLUxw+MQ48BOs4+RQ1l6eemUY
+	 SvZjxENkaa64mBSF/5EQw/H2kYiKajny3vm5pUSYyog1TyMNxR6ACf7b531UdR8MIm
+	 fOWbLeZ5btdkxSQQrrzsh9x7bffffehDxiCyMgQy7iV/nmjI7y7WD4ohnzbFzj6mdi
+	 mgzc30dyudvD0Ycf+Aqzf+HbZCC+9Lgiw+B3Nb68OWtiVzskeukcenoFcD2gnpuF1y
+	 opLzPR4Awa6rw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 34/36] KVM: selftests: Add master clock offset test
+Subject: Re: [PATCH v7 21/36] KVM: x86: Avoid redundant masterclock updates
+ from multiple vCPUs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-35-dwmw2@infradead.org>
+In-Reply-To: <20260728144954.355376-22-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-35-dwmw2@infradead.org>
+ <20260728144954.355376-22-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:22:02 +0000
-Message-Id: <20260728152202.A6D151F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 15:23:35 +0000
+Message-Id: <20260728152335.DC28F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The test uses `__vcpu_ioctl` to query `KVM_GET_CLOCK_GUEST` but =
-ignores its return value, potentially leading to the use of uninitialized s=
-tack memory.
-- [Medium] The test's verification that the clock advanced by 1 hour is ine=
-ffective on machines with an uptime greater than 1 hour.
-- [Medium] All vCPUs register the exact same guest physical address for the=
-ir pvclock_vcpu_time_info structures.
+- [High] Moving O(N) VM-wide vCPU iterations inside a raw spinlock critical=
+ section and before write_seqcount_end() causes severe hardirq latency and =
+prolongs reader spinning.
 --
 
---- Patch [34]: [PATCH v7 34/36] KVM: selftests: Add master clock offset te=
-st ---
-commit 52f3f310d696d962b9db181f0b7e2661011f0cb2
+--- Patch [21]: [PATCH v7 21/36] KVM: x86: Avoid redundant masterclock upda=
+tes from multiple vCPUs ---
+commit 47fb88fca997575b4513fe25e0a0202e7a2e0b1b
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: selftests: Add master clock offset test
+KVM: x86: Avoid redundant masterclock updates from multiple vCPUs
 
-Verify that KVM master clock mode remains active when vCPUs have
-different TSC offsets but the same frequency. Creates three vCPUs,
-sets one to a different TSC value, and confirms KVM_CLOCK_HOST_TSC
-and KVM_CLOCK_TSC_STABLE are set.
+This patch optimizes masterclock updates by preventing multiple vCPUs from
+redundantly executing the update sequence. It introduces a check in
+__kvm_start_pvclock_update() to bail out if another vCPU has already
+processed the request.
 
-> diff --git a/tools/testing/selftests/kvm/x86/masterclock_offset_test.c b/=
-tools/testing/selftests/kvm/x86/masterclock_offset_test.c
-> new file mode 100644
-> index 0000000000000..88e2bd2edab51
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/masterclock_offset_test.c
-
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 [ ... ]
-
-> +static void guest_code(void)
+> @@ -1710,10 +1710,39 @@ static void kvm_make_mclock_inprogress_request(st=
+ruct kvm *kvm)
+>  	kvm_make_all_cpus_request(kvm, KVM_REQ_MCLOCK_INPROGRESS);
+>  }
+> =20
+> -static void __kvm_start_pvclock_update(struct kvm *kvm)
+> +static void kvm_clear_mclock_inprogress_request(struct kvm *kvm)
+>  {
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long i;
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm)
+> +		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
+> +}
+> +
+> +static bool __kvm_start_pvclock_update(struct kvm *kvm, struct kvm_vcpu =
+*requesting_vcpu)
 > +{
-> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, KVMCLOCK_GPA | KVM_MSR_ENABLED);
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long i;
+> +
+>  	raw_spin_lock_irq(&kvm->arch.tsc_write_lock);
+> +
+> +	/*
+> +	 * If another vCPU already did the update while we were waiting
+> +	 * for the lock, our request will have been cleared. Bail out.
+> +	 */
+> +	if (requesting_vcpu &&
+> +	    !kvm_test_request(KVM_REQ_MASTERCLOCK_UPDATE, requesting_vcpu)) {
+> +		kvm_clear_mclock_inprogress_request(kvm);
+> +		raw_spin_unlock_irq(&kvm->arch.tsc_write_lock);
+> +		return false;
+> +	}
+> +
+> +	/* The update is VM-wide; prevent other vCPUs from redoing it. */
+> +	kvm_for_each_vcpu(i, vcpu, kvm)
+> +		kvm_clear_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu);
 
-[Severity: Medium]
-Does this code instruct KVM to write to the identical GPA for all vCPUs?
-Since guest_code() unconditionally hardcodes KVMCLOCK_GPA, KVM will
-concurrently overwrite the same memory area with different vCPUs' time
-information. Is this API contract violation intended?
+[Severity: High]
+Will this O(N) loop cause hardirq latency issues on large VMs?
 
-> +	for (;;)
-> +		GUEST_SYNC(0);
-> +}
-
-[ ... ]
-
-> +	/* Get per-vCPU pvclock in order 0, 2, 1 */
-> +	int order[] =3D {0, 2, 1};
-> +	for (i =3D 0; i < 3; i++) {
-> +		int idx =3D order[i];
-> +		__vcpu_ioctl(vcpus[idx], KVM_GET_CLOCK_GUEST, &pvti[idx]);
-
-[Severity: Medium]
-Could this lead to the use of uninitialized stack memory? The return value
-of __vcpu_ioctl() is ignored, so if KVM_GET_CLOCK_GUEST fails or is
-unsupported on the host kernel, pvti[idx] will remain uninitialized.
-
-> +		pr_info("vCPU %d: tsc_timestamp=3D%lu system_time=3D%lu "
-
-[ ... ]
-
-> +	/* Re-read pvclocks */
-> +	for (i =3D 0; i < 3; i++)
-> +		__vcpu_ioctl(vcpus[order[i]], KVM_GET_CLOCK_GUEST, &pvti[order[i]]);
-
-[Severity: Medium]
-Does this also ignore the return value of __vcpu_ioctl() when re-reading
-pvclocks?
+By moving the kvm_for_each_vcpu() loop inside the raw_spin_lock_irq()
+critical section, a VM with hundreds or thousands of vCPUs will execute
+many atomic bit operations with interrupts disabled.
 
 > +
-> +	pr_info("After +1h: vCPU 0 system_time=3D%lu, vCPU 2 system_time=3D%lu\=
-n",
-
+>  	write_seqcount_begin(&kvm->arch.pvclock_sc);
+> +	return true;
+>  }
 [ ... ]
-
-> +	/* Verify the clock actually moved by ~1 hour */
-> +	TEST_ASSERT(clk0 > ONE_HOUR_NS,
-> +		    "Clock should be > 1 hour after set, got %lu ns",
-> +		    (unsigned long)clk0);
-
-[Severity: Medium]
-Will this assertion trivially pass on any machine with an uptime greater
-than 1 hour? The test validates the absolute clock value rather than the
-delta (for example, clk0 >=3D clk0_before + ONE_HOUR_NS). If KVM_SET_CLOCK
-completely fails to advance the clock, wouldn't the assertion still pass
-on hosts with sufficient uptime?
-
+> @@ -1730,22 +1759,25 @@ static void kvm_end_pvclock_update(struct kvm *kv=
+m)
+>  	struct kvm_vcpu *vcpu;
+>  	unsigned long i;
+> =20
+> -	write_seqcount_end(&ka->pvclock_sc);
+> -	raw_spin_unlock_irq(&ka->tsc_write_lock);
+>  	kvm_for_each_vcpu(i, vcpu, kvm)
+>  		kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+> =20
+>  	/* guest entries allowed */
+> -	kvm_for_each_vcpu(i, vcpu, kvm)
+> -		kvm_clear_request(KVM_REQ_MCLOCK_INPROGRESS, vcpu);
+> +	kvm_clear_mclock_inprogress_request(kvm);
 > +
-> +	pr_info("PASSED: pvclock still consistent after KVM_SET_CLOCK +1h\n");
-> +	kvm_vm_free(vm);
-> +	return 0;
-> +}
+> +	write_seqcount_end(&ka->pvclock_sc);
+> +	raw_spin_unlock_irq(&ka->tsc_write_lock);
+>  }
+
+[Severity: High]
+Does moving the seqcount and lock release to the end of the function
+prolong the critical section too much?
+
+The O(N) vCPU iteration loops are now happening before
+write_seqcount_end() and before releasing the tsc_write_lock. This
+substantially increases the IRQ-disabled critical section length.
+
+Furthermore, won't holding the seqcount write lock across these loops force
+reader vCPUs in kvm_guest_time_update() to spin indefinitely, wasting CPU
+cycles and exacerbating latency?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D34
+76-1-dwmw2@infradead.org?part=3D21
