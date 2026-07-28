@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C35837F00D
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0E5318B9C;
+	Tue, 28 Jul 2026 16:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785256316; cv=none; b=ijvkLoTKR4ipwNBSpS/JuwGzFh64/FL98UC7/RCHb5AYQex4RLrl71sAR7RLbuqH+POeezGPJsXHh3jjUHG/kjD47Zx4kCCLUQUpH4SQJvq98/0+mOz7c/EvCKZ5HkL3RgwQNPEfopxZqbC7esQ0E2c2tGRbkYP0EzAGv9AJTyk=
+	t=1785256867; cv=none; b=hQJRkHy6e1pD539C5SbvC0NOPvFcWLCuUxsXWUXO494FRpKnrxx6YXoDjBwCADTGapGxf4CmclidgMg3sJynjik34LyoKWOq6ZAOQB3MvN+ai72qnFQe32CQjNMDAuHB0cIHzvjpl9zpZtclPP8Ag98p5tpUGiM8i47zwdHBJto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785256316; c=relaxed/simple;
-	bh=TkH9DMniWm3L0eihT/i9mXKlDHlyAlZywr07pJwbPW0=;
+	s=arc-20240116; t=1785256867; c=relaxed/simple;
+	bh=h2yASVgT6omJ/ZyQW4BRUI5MDgQstXlGyF93GjEvPWE=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DIMl38b7vILUwxnSr0SlCwx8Va6kDV4FlO6iwMEKv9OMt8JAYS5NTfL4VSDQReaDXPatzM0bMPJRqdHbAlni3nWx9O1S7TG3Z7XM+2tZwuTiv+aADR5+iov9oqYdPv6nJgTLOQ5zDcUYvRz2sHzLtU1zjDTsC6hizcn/EL9cbDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQNqpbHD; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=AfJEonEd+J+yTq1CTdfOPoQT3VDta87LgjFuAYGKWUEYbsbXQIo9oCgE0W2fZWI+SQGjUEEBSHTkuUrCu9Hk5lTI5jomv9Nz5RZ0upHgbQQHUUmErptE6Y4AvbKzXvPEEFgwdmbbboY/JmJQBiyu5gVOFn6izn/MJtD5yzpJ8yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFtKrvZb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQNqpbHD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD1351F000E9;
-	Tue, 28 Jul 2026 16:31:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFtKrvZb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAC01F000E9;
+	Tue, 28 Jul 2026 16:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785256314;
-	bh=gu2o+pNogXsJ4XtjW9zSPBat4H5sjNfVJNd7+foImvs=;
+	s=k20260515; t=1785256865;
+	bh=KyELPn0zegrah0YqqW5JFKleUtcMd+FE7B6nIdVPsCE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NQNqpbHD8XfNedqUAdJpZt60SBo9IFQAPsIlzjxCT+sQDL7zAOM9k4UXD1DZtK8pp
-	 6JutSX6ZNZbpqc8xigAq4CLfyEjLQ5CKHRlxzedeEQtiG6DbDttMn/1slvI8ODblvl
-	 sNetPJ+M0H/wBKsqXftXGN1sS+Us6khC4NpoZiidbZxunhHYXmZev4Mox7nJv7jmXR
-	 8UPJKr0ls2UShoPnWfEqYYNumNgbmOGp/5HF3jnfzSfF3JRtq7cVHY9F/yr7A+uZLj
-	 grIbZPxYNTpWOH2cCyVLloZurj6kYFx2vIhTEIZlMVNah3XrcWcrTYAJh91tveThr2
-	 lerTvrSOeM3XQ==
+	b=mFtKrvZbRovRjqyJY1G2vCIUfgva9uxaKMbtEB0cAGH3uFLTdmk4fH/IZupDYMihp
+	 F0nI8aWOhxah8UuAc9zfiQMWqKX9hESj9k+74hl0FBgzZmSFAOIwhRuOiNxULWeqPv
+	 FA4ag30zHjdrqpi6f73nGBK89GrgsFhzUe8Xce1AxByAz1nvubay/cfVavgxtqLkMo
+	 x6LGNA0grkqi0l4GT/lRRvvzo35E+m93S/n5hE4QLZTU28111HuT+4ehFJTKSTYLjY
+	 rB9vbo5YpEtxYH+Q3hbVhyPh69UDX+U3kifigTjQwnUvkfqFXECs0GHcj7CI93lnR4
+	 0J3ZpVTQZkODQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/3] riscv: ptdump: Use per-level attribute bits for
- parsing
+Subject: Re: [PATCH v2] s390/vfio-ap: fix stale pqap_hook pointer on error
+ in vfio_ap_mdev_set_kvm()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: Dylan.Wu <fredwudi0305@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728161449.190058-3-fredwudi0305@gmail.com>
-References: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
- <20260728161449.190058-1-fredwudi0305@gmail.com>
- <20260728161449.190058-3-fredwudi0305@gmail.com>
+To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260728162705.2631004-1-akrowiak@linux.ibm.com>
+References: <20260728162705.2631004-1-akrowiak@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 16:31:54 +0000
-Message-Id: <20260728163154.AD1351F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 16:41:04 +0000
+Message-Id: <20260728164105.4AAC01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,92 +47,105 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Incomplete transition to per-instance and per-level page table a=
-ttributes in ptdump. The commit introduces a `pg_level` pointer in `struct =
-ptdump_pg_state` to allow different callers (like future KVM gstage code) t=
-o use their own attribute arrays. However, while `dump_prot()` uses this po=
-inter, `note_page()` and `dump_addr()` still hardcode the global `kernel_pg=
-_levels` array. Additionally, `ptdump_init()` hardcodes `pte_bits` when cal=
-culating masks instead of using the newly added per-level `bits` and `num` =
-fields.
+- [High] Removing the `mdev_list` iteration from within the `update_locks` =
+critical section introduces a Time-Of-Check to Time-Of-Use (TOCTOU) race co=
+ndition between `vfio_ap_mdev_set_kvm()` and `vfio_ap_mdev_unset_kvm()` tha=
+t silently clobbers KVM APCB masks for a newly attached mdev.
 --
 
---- Patch [2]: [PATCH v3 2/3] riscv: ptdump: Use per-level attribute bits f=
-or parsing ---
-commit 306ba7e65dcddd613da201b658930774a642dd75
-Author: Dylan.Wu <fredwudi0305@gmail.com>
+--- Patch [1]: [PATCH v2] s390/vfio-ap: fix stale pqap_hook pointer on erro=
+r in vfio_ap_mdev_set_kvm() ---
+commit 0834fa20c3fb715cac9e1ff09376e43784d44814
+Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
 
-riscv: ptdump: Use per-level attribute bits for parsing
+This commit changes vfio_ap_mdev_set_kvm() to use pqap_hook to detect
+conflicting assignments instead of iterating mdev_list under the update loc=
+ks,
+resolving a potential stale pointer dereference.
 
-This commit renames ptdump structures and adds a pg_level pointer to
-ptdump_pg_state. This allows different callers (like future KVM gstage code)
-to define and use their own page table attributes rather than relying on a
-global array.
+Fixes: 86956e70761b3 ("s390/vfio-ap: replace open coded locks for VFIO_GROU=
+P_NOTIFY_SET_KVM notification")
+Cc: stable@vger.kernel.org
 
-> diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-> index d9a955b8a532d..c67fbbf5ff624 100644
-> --- a/arch/riscv/mm/ptdump.c
-> +++ b/arch/riscv/mm/ptdump.c
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
+_ap_ops.c
+> index 44b3a1dcc1b36..b0a038faa93ac 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
 [ ... ]
-> @@ -221,10 +233,10 @@ static void dump_addr(struct pg_state *st, unsigned=
- long addr)
->  	}
-> =20
->  	pt_dump_seq_printf(st->seq, "%9lu%c %s", delta, *unit,
-> -			   pg_level[st->level].name);
-> +			   kernel_pg_levels[st->level].name);
-
-[Severity: Medium]
-Will this print incorrect level names if a caller provides a custom
-pg_level array? If the goal is to allow per-instance attribute arrays,
-should this use st->pg_level[st->level].name instead of the global
-kernel_pg_levels array?
-
-[ ... ]
-> @@ -242,12 +254,12 @@ static void note_prot_wx(struct pg_state *st, unsig=
-ned long addr)
->  void note_page(struct ptdump_state *pt_st, unsigned long addr,
->  	      int level, u64 val)
+> @@ -1821,26 +1821,25 @@ static const struct attribute_group *vfio_ap_mdev=
+_attr_groups[] =3D {
+>  static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
+>  				struct kvm *kvm)
 >  {
-> -	struct pg_state *st =3D container_of(pt_st, struct pg_state, ptdump);
-> +	struct ptdump_pg_state *st =3D container_of(pt_st, struct ptdump_pg_sta=
-te, ptdump);
->  	u64 pa =3D PFN_PHYS(pte_pfn(__pte(val)));
->  	u64 prot =3D 0;
+> -	struct ap_matrix_mdev *m;
+> -
+>  	if (kvm->arch.crypto.crycbd) {
+> +		/*
+> +		 * Taking the kvm->arch.crypto.pqap_hook_rwsem lock while
+> +		 * holding the update locks (below) could result in a
+> +		 * deadlock condition, so let's hold the rwsem here while we
+> +		 * check and update the pqap_hook.
+> +		 */
+>  		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+> +		if (kvm->arch.crypto.pqap_hook) {
+> +			up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+> +			return -EPERM;
+> +		}
+>  		kvm->arch.crypto.pqap_hook =3D &matrix_mdev->pqap_hook;
+>  		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
 > =20
->  	if (level >=3D 0)
-> -		prot =3D val & pg_level[level].mask;
-> +		prot =3D val & kernel_pg_levels[level].mask;
+>  		get_update_locks_for_kvm(kvm);
 
-[Severity: Medium]
-Does this bypass the custom attributes provided by the caller?
+[Severity: High]
+Can this introduce a race with vfio_ap_mdev_unset_kvm()?
 
-Using the hardcoded kernel_pg_levels array here will mask the PTE values
-with the global mask, rather than using st->pg_level[level].mask from the
-ptdump_pg_state instance.
+By moving the conflict check outside of the update_locks critical section,
+is it possible for the following sequence to occur during concurrent
+hot-plug/unplug operations?
 
-[ ... ]
-> @@ -410,12 +424,12 @@ static int __init ptdump_init(void)
-> =20
->  	kernel_ptd_info.base_addr =3D KERN_VIRT_START;
-> =20
-> -	pg_level[1].name =3D pgtable_l5_enabled ? "P4D" : "PGD";
-> -	pg_level[2].name =3D pgtable_l4_enabled ? "PUD" : "PGD";
-> +	kernel_pg_levels[1].name =3D pgtable_l5_enabled ? "P4D" : "PGD";
-> +	kernel_pg_levels[2].name =3D pgtable_l4_enabled ? "PUD" : "PGD";
-> =20
-> -	for (i =3D 0; i < ARRAY_SIZE(pg_level); i++)
-> +	for (i =3D 0; i < ARRAY_SIZE(kernel_pg_levels); i++)
->  		for (j =3D 0; j < ARRAY_SIZE(pte_bits); j++)
-> -			pg_level[i].mask |=3D pte_bits[j].mask;
-> +			kernel_pg_levels[i].mask |=3D pte_bits[j].mask;
+Thread 1 (in vfio_ap_mdev_unset_kvm):
+    down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+    kvm->arch.crypto.pqap_hook =3D NULL;
+    up_write(&kvm->arch.crypto.pqap_hook_rwsem);
 
-[Severity: Medium]
-Since kernel_pg_levels[i] now contains its own .bits and .num fields,
-should this initialization loop iterate over kernel_pg_levels[i].bits
-up to kernel_pg_levels[i].num instead of hardcoding the global pte_bits
-array?
+Thread 2 (in vfio_ap_mdev_set_kvm):
+    down_write(&kvm->arch.crypto.pqap_hook_rwsem);
+    // Sees pqap_hook is NULL
+    kvm->arch.crypto.pqap_hook =3D &matrix_mdev->pqap_hook;
+    up_write(&kvm->arch.crypto.pqap_hook_rwsem);
+    get_update_locks_for_kvm(kvm);
+    vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+    release_update_locks_for_kvm(kvm);
+
+Thread 1 (continuing in vfio_ap_mdev_unset_kvm):
+    get_update_locks_for_kvm(kvm);
+    kvm_arch_crypto_clear_masks(kvm);
+
+If Thread 1 interleaves after Thread 2 sets the guest masks but before Thre=
+ad
+1 clears them, would this result in Thread 1 unconditionally clearing the K=
+VM
+APCB masks that Thread 2 just successfully configured, leaving the newly
+attached mdev with inaccessible queues?
+
+> -
+> -		list_for_each_entry(m, &matrix_dev->mdev_list, node) {
+> -			if (m !=3D matrix_mdev && m->kvm =3D=3D kvm) {
+> -				release_update_locks_for_kvm(kvm);
+> -				return -EPERM;
+> -			}
+> -		}
+> -
+>  		kvm_get_kvm(kvm);
+>  		matrix_mdev->kvm =3D kvm;
+>  		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+> -
+>  		release_update_locks_for_kvm(kvm);
+>  	}
+>
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728161449.1900=
-58-1-fredwudi0305@gmail.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728162705.2631=
+004-1-akrowiak@linux.ibm.com?part=3D1
