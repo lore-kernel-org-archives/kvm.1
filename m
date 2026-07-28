@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED73466AFC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA528466B11;
 	Tue, 28 Jul 2026 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250221; cv=none; b=OytMq1T9vknsEBRGThZH0S9A1QCVLpeM7ZH2br1EgmCXx5xmAQA67cRMIJt3suHhrYKVp2PgabyutBRk+tUKSpNw9rp/dI+dNbkRgCFIeQB6VWJ/L2TWWGbb/+VcFnZKYZd2He7rirCK2FbMZSUvhz/x4MyPYeUrtWmcp/kWIfY=
+	t=1785250221; cv=none; b=DyM3NW8CVcMIpzYgKOn6qNLNO40dGQws4ioCuTeSM0MjM3aPheiD6uH0fXYWQUb87rVcS8vWk4rP+Uh8Lg7CvKaWJHls9kZC1ioZ/efp9zvVV2AT0A8eFTFQHqGn1JG+thTzalLY0ENyHDLJ/58bgzHyQxLrXTZX2elltaqfumE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785250221; c=relaxed/simple;
-	bh=aKDlbKJo/OpeOGhjVJoL/2EWSM25bcRtAfmutdNr2ys=;
+	bh=C4+ugtJvzkerh18uEdJ7XlhiKaxH7N0NusIaKgCvOG4=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZy0esN3gvhUafp8/boMotRbWbfu/8bfZsfDau0tFeLW/FL7Yby4UDvXeRMfxHxUEMmvaPBQbgGstp/fu48iP67osCO9z4t2SaX/xN1n9mtNm0tn6xQ07A4p83ye+s1UfmuELms9X2hTeY/MmyxBDxligbUtSkCGXkxbGBLFc0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AigdRXhG; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=VM1lRzpIT4ZD8fXguIqlwBHzZ7ro6SRow5I0lwBn5TlZaFVLp0GM64SllkLvtwe/w6ZZZV9B3IKsIbs9pRbje4ySLU8Bn07VWjueBANYANdEcf3TiFhvLjeypZpHcrTx4SUBeLBmJgMeS7nP/AnM0zgRWLxTfSy4bUSGFbCiOjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=je/Pdnaq; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AigdRXhG"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="je/Pdnaq"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=Sv1pnNixmKYuTjxcdahAJ3zwXMx4XJCiu4ZrlsHCeyU=; b=AigdRXhGXXcDK8j+O2zkPhOlZc
-	xKfCnkwVpaY5JkYQYvmg9me/fhv/BXON/DIsNAyoPTRsNyqYJdmVecAuOjflt8+0adFR+W68bur62
-	x0rNA6Olu8Gu2qKEZw95GfHmiAHnD/HlX9gKXkeq2Fa2EbtpjqHFbX4c6ZmStbxg7DPmVfK2dJnza
-	KipPqOpDdrGQW6yBYpD2bMBInz8JlYlIdFmtbtk9LH/TzA74A7hTRVpbwk1pRIU+H9oOfP9T8D3fm
-	gVGtexoqiH74+fQF5ubO9dxBRuKj6fqlxQYuJO69zCvj6qCcFq1CvVGUs4MZE/F393OVvyk04EWRG
-	7dwQas1g==;
+	bh=orrEg00hLy8fMybbrnjDaZHYqCx9oB4awTAFaDQZCS0=; b=je/PdnaqT5xutFWI8AtyhpUx3v
+	ol2mSafUyMImVcT4vDMLksr5Eq6fPPNB6kRqYT57Qjs9z43vtY0YaSxh5JALiXEwrhbrzWiJ2Y5+/
+	5glSuQ61DpxASgUW2I4HWNBMkKZzwWAwiDWm59PsX+J3H5yinWWGHVe9p6DxdnQ7UavugXZL3CcUs
+	3vwww4hSPfYZvDpPepVSi9H/BRdcn8Y8yG24b9via1AseSdtGB/D2W4DYfDS63kLAC3Zvq/itkXKs
+	AvJCzBZNeK6gi56oGbyErQk+DACG17tZzRAFmb766CPjGbYh69ndlsu/b9zSajZVaek2ggLLDEOZe
+	eXdo6l1g==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1woj82-000000052Va-33u1;
+	id 1woj82-000000052Ve-34m1;
 	Tue, 28 Jul 2026 14:49:59 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1woj7z-00000001UY1-0igE;
+	id 1woj7z-00000001UZE-46AP;
 	Tue, 28 Jul 2026 15:49:55 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v7 04/36] KVM: x86: Avoid NTP frequency skew for KVM clock on 32-bit host
-Date: Tue, 28 Jul 2026 15:39:44 +0100
-Message-ID: <20260728144954.355376-5-dwmw2@infradead.org>
+Subject: [PATCH v7 22/36] KVM: x86: Remove runtime Xen TSC frequency CPUID update
+Date: Tue, 28 Jul 2026 15:40:02 +0100
+Message-ID: <20260728144954.355376-23-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260728144954.355376-1-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
@@ -79,110 +79,96 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-Commit 53fafdbb8b21 ("KVM: x86: switch KVMCLOCK base to monotonic raw
-clock") did so only for 64-bit hosts, by capturing the boot offset from
-within the existing clocksource notifier update_pvclock_gtod().
+Remove the code in kvm_cpuid() that dynamically updates the Xen TSC
+info CPUID leaf at runtime. This code was updating the wrong sub-leaf
+anyway (0x40000x03/2 EAX is the *host* TSC frequency per the Xen ABI,
+not the guest frequency which belongs in 0x40000x03/0 ECX).
 
-That notifier was added in commit 16e8d74d2da9 ("KVM: x86: notifier for
-clocksource changes") but only on x86_64, because its original purpose
-was just to disable the "master clock" mode which is only supported on
-x86_64.
+Userspace now has all the information it needs to populate the Xen TSC
+info leaves (and the generic 0x40000010 timing leaf) at vCPU setup time:
 
-Now that the notifier is used for more than disabling master clock mode,
-enable it for the 32-bit build too so that get_kvmclock_base_ns() can be
-unaffected by NTP sync on 32-bit too.
+  - KVM_GET_CLOCK_GUEST returns the pvclock_vcpu_time_info structure
+    containing tsc_to_system_mul and tsc_shift (Xen leaf index 1)
+  - KVM_VCPU_TSC_SCALE returns the effective TSC and bus
+    frequencies in kHz (Xen leaf index 2, and 0x40000010)
+  - KVM_VCPU_TSC_SCALE returns the raw hardware scaling ratio for
+    precise arithmetic (VMClock)
+
+This eliminates the last instance of KVM modifying guest CPUID entries
+at runtime for timing information.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
 ---
- arch/x86/kvm/x86.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ arch/x86/kvm/cpuid.c | 17 -----------------
+ arch/x86/kvm/xen.h   | 13 -------------
+ 2 files changed, 30 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index dac9264497e8..71e0653aa447 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -874,7 +874,6 @@ static inline bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
- 	       kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending();
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 7049f5a5597b..ddb022cb203a 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -16,7 +16,6 @@
+ #include <linux/vmalloc.h>
+ #include <linux/uaccess.h>
+ #include <linux/sched/stat.h>
+-#include <linux/units.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/user.h>
+@@ -2133,22 +2132,6 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 		} else if (function == 0x80000007) {
+ 			if (kvm_hv_invtsc_suppressed(vcpu))
+ 				*edx &= ~feature_bit(CONSTANT_TSC);
+-		} else if (IS_ENABLED(CONFIG_KVM_XEN) &&
+-			   kvm_xen_is_tsc_leaf(vcpu, function)) {
+-			/*
+-			 * Update guest TSC frequency information if necessary.
+-			 * Ignore failures, there is no sane value that can be
+-			 * provided if KVM can't get the TSC frequency.
+-			 */
+-			if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, vcpu))
+-				kvm_guest_time_update(vcpu);
+-
+-			if (index == 1) {
+-				*ecx = vcpu->arch.pvclock_tsc_mul;
+-				*edx = vcpu->arch.pvclock_tsc_shift;
+-			} else if (index == 2) {
+-				*eax = div_u64(vcpu->arch.hw_tsc_hz, HZ_PER_KHZ);
+-			}
+ 		}
+ 	} else {
+ 		*eax = *ebx = *ecx = *edx = 0;
+diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
+index 59e6128a7bd3..f372855857a8 100644
+--- a/arch/x86/kvm/xen.h
++++ b/arch/x86/kvm/xen.h
+@@ -50,14 +50,6 @@ static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
+ 		kvm_xen_inject_vcpu_vector(vcpu);
  }
  
--#ifdef CONFIG_X86_64
- struct pvclock_clock {
- 	int vclock_mode;
- 	u64 cycle_last;
-@@ -932,13 +931,6 @@ static s64 get_kvmclock_base_ns(void)
- 	/* Count up from boot time, but with the frequency of the raw clock.  */
- 	return ktime_to_ns(ktime_add(ktime_get_raw(), pvclock_gtod_data.offs_boot));
- }
--#else
--static s64 get_kvmclock_base_ns(void)
+-static inline bool kvm_xen_is_tsc_leaf(struct kvm_vcpu *vcpu, u32 function)
 -{
--	/* Master clock not used, so we can just use CLOCK_BOOTTIME.  */
--	return ktime_get_boottime_ns();
+-	return static_branch_unlikely(&kvm_xen_enabled.key) &&
+-	       vcpu->arch.xen.cpuid.base &&
+-	       function <= vcpu->arch.xen.cpuid.limit &&
+-	       function == (vcpu->arch.xen.cpuid.base | XEN_CPUID_LEAF(3));
 -}
--#endif
- 
- static uint32_t div_frac(uint32_t dividend, uint32_t divisor)
+-
+ static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
  {
-@@ -6868,6 +6860,7 @@ static void pvclock_irq_work_fn(struct irq_work *w)
+ 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
+@@ -177,11 +169,6 @@ static inline bool kvm_xen_timer_enabled(struct kvm_vcpu *vcpu)
+ {
+ 	return false;
  }
- 
- static DEFINE_IRQ_WORK(pvclock_irq_work, pvclock_irq_work_fn);
-+#endif
- 
- /*
-  * Notification about pvclock gtod data update.
-@@ -6875,26 +6868,26 @@ static DEFINE_IRQ_WORK(pvclock_irq_work, pvclock_irq_work_fn);
- static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
- 			       void *priv)
- {
--	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
- 	struct timekeeper *tk = priv;
- 
- 	update_pvclock_gtod(tk);
- 
-+#ifdef CONFIG_X86_64
- 	/*
- 	 * Disable master clock if host does not trust, or does not use,
- 	 * TSC based clocksource. Delegate queue_work() to irq_work as
- 	 * this is invoked with tk_core.seq write held.
- 	 */
--	if (!gtod_is_based_on_tsc(gtod->clock.vclock_mode) &&
-+	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode) &&
- 	    atomic_read(&kvm_guest_has_master_clock) != 0)
- 		irq_work_queue(&pvclock_irq_work);
-+#endif
- 	return 0;
- }
- 
- static struct notifier_block pvclock_gtod_notifier = {
- 	.notifier_call = pvclock_gtod_notify,
- };
--#endif
- 
- void kvm_setup_xss_caps(void)
- {
-@@ -7113,9 +7106,9 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- 
- 	if (pi_inject_timer == -1)
- 		pi_inject_timer = housekeeping_enabled(HK_TYPE_TIMER);
--#ifdef CONFIG_X86_64
- 	pvclock_gtod_register_notifier(&pvclock_gtod_notifier);
- 
-+#ifdef CONFIG_X86_64
- 	if (hypervisor_is_type(X86_HYPER_MS_HYPERV))
- 		set_hv_tscchange_cb(kvm_hyperv_tsc_notifier);
+-
+-static inline bool kvm_xen_is_tsc_leaf(struct kvm_vcpu *vcpu, u32 function)
+-{
+-	return false;
+-}
  #endif
-@@ -7172,8 +7165,8 @@ void kvm_x86_vendor_exit(void)
- 					    CPUFREQ_TRANSITION_NOTIFIER);
- 		cpuhp_remove_state_nocalls(CPUHP_AP_X86_KVM_CLK_ONLINE);
- 	}
--#ifdef CONFIG_X86_64
- 	pvclock_gtod_unregister_notifier(&pvclock_gtod_notifier);
-+#ifdef CONFIG_X86_64
- 	irq_work_sync(&pvclock_irq_work);
- 	cancel_work_sync(&pvclock_gtod_work);
- #endif
+ 
+ int kvm_xen_hypercall(struct kvm_vcpu *vcpu);
 -- 
 2.55.0
 
