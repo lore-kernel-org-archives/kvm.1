@@ -1,62 +1,64 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635C472F98
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6394734C0
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266795; cv=none; b=GhQLe7LYMUGd4YRHfEQMZB/KuQSevOpduw+Xv7dI6nqRGF4fiMuKZQxwveMlzjMBXHh4gGGoE56oKdghLNPXt7+QAWct2ONToOcYRtDLltma9Lxhq/E7vGmSR/IgJTMu5pKEgtI8QhXgxpswIE+0OPOX8JnZEDhRgD0XTB+75OU=
+	t=1785266797; cv=none; b=GJwd407Xj/rjfRh7ciw0z4aAPzL7UISEbbqyQ6IWOBAiDf4kz8En49VH5HauZBYxlDVmChf9yoAbFiYRa9vfCNrNalwDvZ0V3aA5Xu6e0/b7ss9xv5eb395Rdifb5x48+QwymqvZOkzELJl4hW6R9A1aeB9rNFz8c9X3fCi0nnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266795; c=relaxed/simple;
-	bh=ODhetCkv+Li9ahgZe8Idz2p6MApXjZlundlnczY426k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WXXkfImE9h9OYZpKD1hTwezQpyk6XrUdzgOqhiXUFFWtxlHcwPpjVh3dxQXp89TC7mkTMdSD5opEUcfSQwRPb35ejilagWfnXPQlroA2eRp4G9gadW6SjvkLoaGlUHV2D+EJqdZJIMFCewHbZLja8+j/LfQPtAxgKuAEcaBPVbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wMPhZDiK; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1785266797; c=relaxed/simple;
+	bh=eP00Yni5ZlykP8CSavhpj6+O+6eKOHvcTh3XDTqmwyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GrTPCNHDL0loUC8Ar8XzW6lojqIDs9+uPLrU998hZc5ZnXVZOTGSBO8oVtfGGDV4Fh1Nq+3cchtCF4LJETNGPz0Ranw0Rdu2wy56kgdsILfqqQJlDqr8eYCpvIB0VhAnJUBp/Ayo3e5twgr6Cz4Gv+YFhpQ0mXJ/Mfe8CpquUJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Km8K36Xw; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wMPhZDiK"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso257053a91.1
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Km8K36Xw"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so246206a91.0
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785266794; x=1785871594; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mIfJvrcdId2+irdyMzI0RwFl4uOmWff7aVexV8ovtSk=;
-        b=wMPhZDiKQ+hfkmTVQF3lNrJBh7jn9X6Sz1HkedDPCEJf+yhi5rwBdxD9egXuPCLWUJ
-         qaIu4HgQegM83GaqAWg7y4ilZRYtXxuuR8hvDOcR/REieJt0gU4rm83IsPaa6rwyHbQL
-         xs5FtWQSmMduPukhzQxDcIlMgr2P95/i5ojkoP05cq2k45sZsps001WotOCByTz4Djv0
-         RndYjwljjz+ARVxAR8QKX7chz1NNEyBd2/7fv8VXTOo2wVLG51N6m/kJ3hxH3RPFnqN0
-         UH1QVz5avJOnUsFaSgh6/CZxmqF1a9Te59DAe1o+qq8UqIJMW/3AtnEnViPi7u2cVDhe
-         M81w==
+        d=linaro.org; s=google; t=1785266796; x=1785871596; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nymk/KlJTSOeG9pOLHjAQMrrwDf8dwvKcqF44jXbkLg=;
+        b=Km8K36XwJ8i4AM6hl6zDLv4BYb9WbNzHnVDgH1otaSBkAKOpdZwTtn4eLz50SxUGRG
+         W1UkAvdYgx21vZrbjir5B1IgXv+cBaio3fHtE5TruMEqQF7EU1d2RAkCsz8Xt5BNR1S3
+         K1mCs0rwTpqEDFdaDK/5eHcSsYmJCpzDDLNuA0Epi0v8RssV1wr0SgrzRiMFvlWyPd6F
+         JkKMagoQDiQPMlw3AALUAJs4ZO4dnKDDAqUcnZ6X/1tt+G8WqtIWIhu/6lmlxPFAf3Bo
+         jXCFboFTGkOmP6jK9RT1uQb+S+cfGT+dvVDiFcovrIHlMs/ivxm88NraKg4cHNPct71d
+         8LAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266794; x=1785871594;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mIfJvrcdId2+irdyMzI0RwFl4uOmWff7aVexV8ovtSk=;
-        b=KqdSScV5fA0m7E3fYgO9QIgJ36lBtPbRBwmqIhWzpFSPxow2nNxdMoDmj70c9ELdnl
-         inSLiHMZX4uaS6HvvA9PtegaPuqMDYMXs+JL8iNzTy2rRTvjt3Vtfho8SE+ajRG34hS+
-         LfVWVozMg5bPb5VDYNELrpElZBjFf3aXB3+QbyEvL14x0aeZqwWqAz4Tw+rKmXFX8QIm
-         Y0uZeaQwebCQWRKwOixzKpo2QcLnx3/tby5H8KK1NMzcbBB9q4pFG3CUT7yJa5yYj/lq
-         eLGKX9tvUlIty7l5IJ+w5ZiS6X4zEONPJvPsa3X8007tnzbi05EdzxnFXMHKnHAPEzR2
-         8dmw==
-X-Forwarded-Encrypted: i=1; AHgh+RpjPZz6rv991rHkUSqyNQ7jkhA0iEX73CmDE1Ff+XVDFHxtcf+7LnGugyK0zRhQ3ODmRMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRJ5W0vJDIdAhLkgtXM7XQ4MVmzB6pS9V3CxHrKkPbedwf9gnk
-	/hMewuBgWiaRPl6knVMCik8cFvtHAvBGN/hdVpwPoLcjdlDQDvi5o8w9oEwgWxptw9g=
-X-Gm-Gg: AR+sD10+P1ekVP45Tv7c5nALkQewjf23DxQ1m9xkZgasRC5n70jE8u8xtT4Yt49mX6u
-	2BBaLv4ePKsbovtCsGX4Zy1qWxKW6C+wG4BtHqWcI6gOaY4D6kOrui9j+IW3rU5VQIK4N+d8Gi2
-	3Zt3qU95k8jnNqTuOrEkP2SWfVMrJThZHS5G2oNxPbl8rk8z0CJZsneYzrl18wa090kE3wzoSae
-	4SA610YeWOZgP9gQZPJv4bqbrslE8iyECEtKr5xbRYm6mpLtGX7z1JIoC0DwnedKia+wh7ri7fG
-	Og0x6tge+yI/6kUfZ+xQnFvgfrXq0evs32iv8jnoUgxo+o6O5Eq99xr006zqjihJHacyjNnRnD9
-	07N/CtM2+HfMpp5/H/N+M3gNOGOzDqjnD+m8VaHfXWvSinb53h38lj5ZyPNREtPSe4BG9RPxn3+
-	39g165MMpzQK18tO8DaraA8dXMwymSQD87+A8Hw6U=
-X-Received: by 2002:a17:90b:1a8f:b0:387:e0db:3fad with SMTP id 98e67ed59e1d1-38f6a53f3a4mr3897416a91.38.1785266793575;
-        Tue, 28 Jul 2026 12:26:33 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785266796; x=1785871596;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nymk/KlJTSOeG9pOLHjAQMrrwDf8dwvKcqF44jXbkLg=;
+        b=VKJ+NASWI0D0dUuYpe82h5B85QDIT3u1OLRTjWPVjS1LJtNB68BHvF7/wbfVqryZIn
+         I4iDsUdWRH11aPZJEzuZpC7c+E13DrF3yJzV8kV3vi3GHp3C20anU2j44jATl7mnz5kh
+         2z4DpBwjphjpMON0l0If5p2A4TYU22b/dUmfJfzP1z43SaXzRDG2zjS2dmUCkXt96kX/
+         FFZXgCazItIg2EHddT+FJugV8rPH8R3rWN2rAqSj4Vkk8IUso1oMaKZy0HpWl1DPyvMB
+         SJXKTjks0YMZXUfQUVg9/yWDbkd9aM7Mtywaf9a56venHntoUYsod6oGxOsy4NRO0+i4
+         6gKA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpj4vVIUV0n5/bI3mJ1NXorjtSHHXURUhdmvOdZpPvQ0uRZ9+mZhg3jb+cm6gvkTBXeiIk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNDEEiEuKg0nzI9LlMSZxGpXmvTZ6jOHi47mL1Tg1sNI2R1mz1
+	3j7XX121/9lAQ1Thflz3gWgTcfgeFnWsCCdS42D7TQasT41Y0RXpCamBl2Re7YQCr5Q=
+X-Gm-Gg: AR+sD10i4r6GDVHqaQIbN1mAAhNrUnfe/UvDvj+kgx2tGW9cthA2fiARIu4T+6w8IVH
+	ma3RVVc5ytaYTWH7tMRbB6ojkjeXTILGge62cUVTTge+Vd5ivTL4jqyi47wj/bcZQ6MeliU5DP2
+	CSMe6dQI6xQAvNhgVVY464VmgNzgtnVp0p6rQ0u79D93MHpE1YiUYnNWRCmDirvB52xxAoB0VkU
+	OwPx5qXmR5VvwAzW9BvZD0rKl4lS7Ov7p/gKVqJfon/C5fSgZtS0OAr93w4s2r2iHFbyqb+MkCe
+	rfLUAz+39TD7iSlA5tqm356QZ1PPoaQpviNeku9ssUi/Zd5XoOOzp1Mj6f9p0Q10ATopEKcXGH/
+	W0mkTXEmek4MtfuB7MC71rHwpRNVz5140L+sQtth/WA7AFzBiZ9pf2fCa5bocjfsufKgxx7nZDT
+	SSbUFTU0oNQBEGNJw6BPy1WiE1frtuahEB/UXTp23O2QWH9vYwHQBKe+L5WkwwtUs5W32gbMCmW
+	BTszT8VAotOig4=
+X-Received: by 2002:a17:90a:d88d:b0:37d:f983:7b5 with SMTP id 98e67ed59e1d1-38f6a30eb9emr4333942a91.9.1785266795564;
+        Tue, 28 Jul 2026 12:26:35 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:b9d1:87c9:a085:86c9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:26:31 -0700 (PDT)
+        Tue, 28 Jul 2026 12:26:35 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -72,115 +74,94 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v2 00/24] Add Realm support to QEMU-VMM 
-Date: Tue, 28 Jul 2026 13:26:06 -0600
-Message-ID: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+Subject: [RFC v2 01/24] linux-headers: Add RME related definitions
+Date: Tue, 28 Jul 2026 13:26:07 -0600
+Message-ID: <20260728192630.240375-2-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patchset provides minimal functionality to start a Realm VM
-from an Arm RME capable host using the following command line:
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-qemu-system-aarch64 \
- -M confidential-guest-support=rme0 -object rme-guest,id=rme0 \
- -cpu host -M virt -enable-kvm -M gic-version=3,its=on -nodefaults ..
+This is a temporary patch intended for testing purposes only. It provides
+definitions related to supporting Realms by the QEMU-VMM.
 
-It is a refactoring of Jean-Philippe Brucker's initial work dating from a while
-back.  It is compatible with Steven Price's v14 revision [1] of his work adding
-CCA support to KVM.
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+---
+ linux-headers/asm-arm64/kvm.h |  9 +++++++++
+ linux-headers/linux/kvm.h     | 10 +++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-* We are currently working on rebasing the work to v15.
-
-It was tested on the QEMU SBSA machine.  For convenience, a repository is hosted
-here [2], along with the TF-A [3], RMM [4] and Linux kernel [5] for the SBSA
-machine (compatible with Steven's v14 patchset).
-
-Instructions to compile and run the entire stack can be found here [6].
-
-Device Assignment is not included.
-
-Thanks,
-Mathieu
-
-[1]. https://lore.kernel.org/kvm/20260513131757.116630-1-steven.price@arm.com/T/#m06dd14216aaf76acab65b0a76fb84653141ea64f
-[2]. https://gitlab.com/Linaro/cca-public/qemu/-/tree/upstream-v2?ref_type=heads
-[3]. https://gitlab.com/Linaro/cca-public/tf-a/trusted-firmware-a/-/tree/cca/v13?ref_type=heads
-[4]. https://gitlab.com/Linaro/cca-public/rmm/-/tree/cca/v14?ref_type=heads
-[5]. https://gitlab.com/Linaro/cca-public/linux/-/tree/upstream-v2?ref_type=heads 
-[6]. https://gitlab.com/Linaro/cca-public/build-instructions
-
-RFC v1:
-https://lists.gnu.org/archive/html/qemu-devel/2026-07/msg02307.html
-
-Changes for V2:
-- Fixed linux headers to include correct bit shift for Realm VM (Gavin).
-- Removed obsolete rme-guest options (Markus).
-- Set ConfidentialGuestSupportClass::kvm_init() to kvm_arm_rme_init() (Gavin).
-- Got rid of kvm_arm_rme_vm_type() (Gavin).
-- Used kvm_vm_check_extension() instead of kvm_check_extension() to avoid
-  error message when starting a Realm (Gavin).
-- Removed obsolete kvm_arm_rme_init_guest_ram() (Gavin).
-- Collected A-B and R-B.
-
-Jean-Philippe Brucker (23):
-  linux-headers: Add RME related definitions
-  target/arm/kvm: Return immediately on error in kvm_arch_init()
-  target/arm: Add confidential guest support
-  target/arm/kvm: Split kvm_arch_get/put_registers
-  target/arm/kvm-rme: Initialize vCPU
-  target/arm/kvm: Create scratch Realm VM when requested
-  target/arm/kvm: Use kvm_vm_check_extension() where necessary
-  hw/core/loader: Add a ROM loader notifier
-  target/arm/kvm-rme: Keep track of images loaded in Realm memory
-  target/arm/kvm-rme: Populate Realm with runtime images
-  target/arm/cpu: Set number of breakpoints and watchpoints in KVM
-  target/arm/cpu: Set number of PMU counters in KVM
-  target/arm/cpu: Don't read Realm registers
-  hw/arm/virt: Set proper conduit method for Realms
-  hw/arm/virt: Embed Realm VM type with IPA address space
-  hw/arm/virt: Reserve one bit of guest physical address for RME
-  hw/arm/virt: Disable DTB randomness for confidential VMs
-  hw/arm/virt: Move virt_flash_create() to machvirt_init()
-  hw/arm/virt: Use RAM instead of flash for confidential guest firmware
-  target/arm/kvm-rme: Add DMA remapping for the shared memory region
-  docs/interop/firmware.json: Add arm-rme firmware feature
-  hw/arm/boot: Load DTB as is for confidential VMs
-  hw/arm/boot: Skip bootloader for confidential guests
-
-Mathieu Poirier (1):
-  target/arm/kvm-rme: Add mechanic to initialize realms
-
- docs/interop/firmware.json                 |   5 +-
- docs/system/arm/virt.rst                   |   9 +-
- docs/system/confidential-guest-support.rst |   1 +
- hw/arm/boot.c                              |  70 ++++-
- hw/arm/virt.c                              | 142 ++++++++--
- hw/core/loader.c                           |  15 +
- include/hw/arm/boot.h                      |   9 +
- include/hw/arm/virt.h                      |   2 +-
- include/hw/core/loader.h                   |  17 ++
- linux-headers/asm-arm64/kvm.h              |   9 +
- linux-headers/linux/kvm.h                  |  10 +-
- qapi/qom.json                              |   1 +
- target/arm/arm-qmp-cmds.c                  |   1 +
- target/arm/cpu.c                           |   5 +
- target/arm/cpu.h                           |  10 +
- target/arm/cpu64.c                         | 122 ++++++++
- target/arm/kvm-rme.c                       | 313 +++++++++++++++++++++
- target/arm/kvm-stub.c                      |   9 +
- target/arm/kvm.c                           | 202 ++++++++++++-
- target/arm/kvm_arm.h                       |  20 ++
- target/arm/meson.build                     |   5 +-
- 21 files changed, 927 insertions(+), 50 deletions(-)
- create mode 100644 target/arm/kvm-rme.c
-
+diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
+index 6aefe7973814..4c08631ec7d2 100644
+--- a/linux-headers/asm-arm64/kvm.h
++++ b/linux-headers/asm-arm64/kvm.h
+@@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
+ 	__u64 reserved;
+ };
+ 
++#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
++struct kvm_arm_rmi_populate {
++	__u64 base;
++	__u64 size;
++	__u64 source_uaddr;
++	__u32 flags;
++	__u32 reserved;
++};
++
+ #define KVM_ARM_TAGS_TO_GUEST		0
+ #define KVM_ARM_TAGS_FROM_GUEST		1
+ 
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index dd52e2a65bfd..cdd5ad11f85a 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -689,14 +689,19 @@ struct kvm_enable_cap {
+  * address size for the VM. Bits[7-0] are reserved for the guest
+  * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
+  * value 0 implies the default IPA size, 40bits.
++ *
++ * Bits[30-31] are reserved for the VM type
+  */
+ #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
+ #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
+ 	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
+ 
++#define KVM_VM_TYPE_ARM_NORMAL		0
++#define KVM_VM_TYPE_ARM_REALM		(1UL << 30)
+ #define KVM_VM_TYPE_ARM_PROTECTED	(1UL << 31)
+ #define KVM_VM_TYPE_ARM_MASK		(KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
+-					 KVM_VM_TYPE_ARM_PROTECTED)
++					 KVM_VM_TYPE_ARM_PROTECTED | \
++					 KVM_VM_TYPE_ARM_REALM)
+ 
+ /*
+  * ioctls for /dev/kvm fds:
+@@ -719,6 +724,8 @@ struct kvm_enable_cap {
+ #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
+ #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
+ 
++#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
++
+ /*
+  * Extension capability list.
+  */
+@@ -986,6 +993,7 @@ struct kvm_enable_cap {
+ #define KVM_CAP_S390_KEYOP 247
+ #define KVM_CAP_S390_VSIE_ESAMODE 248
+ #define KVM_CAP_S390_HPAGE_2G 249
++#define KVM_CAP_ARM_RMI 250
+ 
+ struct kvm_irq_routing_irqchip {
+ 	__u32 irqchip;
 -- 
 2.43.0
 
