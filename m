@@ -1,64 +1,63 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7187D472F8E
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD68F472F6E
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 19:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785266803; cv=none; b=cm61mfCeikqkS4+TDNhEQMgjtQ/v7RspsZSNHAJuT+cyH5J/rKH4FnpjRc9w99t+FubU+uw0k2yganMRSD4tNPuWerMTKWz2V/tVhwTOBa+7l4ewF0Dcon+rwmqQyfWl1Lb4rIyJyWZfsYUmkfAPTETFJgbWNfdrJR3QhirsskM=
+	t=1785266805; cv=none; b=LbNrvjdRZOdVdeJGBca2KobKsiJsTqXjZXW7WkIQEMTR1QzTj2uT5cmQFkTsRqNWS+50nFx5uU5UE/Am2gJbWrOTGbbd0xZQOO4OI3Yj8sTfSMqfw4Fp3zgLiCPiGLCxXR8Yyk6Tx5Bv5DgBv0zXP2xT7uUoF324TAgb/6uOWn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785266803; c=relaxed/simple;
-	bh=1V3zdYqxeMxlyDWzyaqkpMHnHFs1wLaaEZhyLKLAmTo=;
+	s=arc-20240116; t=1785266805; c=relaxed/simple;
+	bh=OSzq2kDFqevjhWgUvCxECrei4QM0G45rXxCF9eZ32Y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIJs3AUou76oL68NzXxSg9vT2g99tgTaw4UqhCZJjY2pe0CkcIPQp61GGF/+Dfbtj3b+Ilw8Y/8vIV8xOff/+OiglxMrYYH7nGzhA7r8HH31tAD/EOPNtoBBx2BnMGFlIZFRp+kAsAFjzic5SlDHo5IcWeuB8NE78ueMEy4dTYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aFtwgb7q; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=VR1CQDiCTSA/XkTvnDm9UoPzR3HwRECotH3ypSp6ZxyEmZ4ju2InLyJaoRfyGPM6EuMq5pyZgA1Pk42wtxMjSDqzb4FXQf6swrPhkg0A9Mb4djQ7yiI2ayW/YeiUC5dsTR8X3kKNTvQ5wNmnM03LqatZd7HMxLwXgOzVHyVGvUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IJsfGlYh; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aFtwgb7q"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38101f85591so1268674a91.1
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IJsfGlYh"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so201077a91.0
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 12:26:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785266802; x=1785871602; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1785266803; x=1785871603; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FPcLPI8Xklacd9X4zG4SydQQX6Mfa0kQr3DHTZ+XxOQ=;
-        b=aFtwgb7qSdB0EDEzZoZxrDapmn1T9Ld7DkWScGk13xzZzzB1m9VltbiVV8q0m57m1Q
-         ZHfROLQwVfBKoZn+pEx7nXn4gTMPO/jopefG84j8DZTyKSt1rnEKP//UVXGTWfbwz/Aj
-         J6vtRl2Vfs4J0CMSWCEy/cq/9fdWY3tBrCvrqsr1+VzFNJ3NgE66Imon2eXHpkYGpx60
-         WkzLGGAR+l+y75w9sVVu3A6gxMYUZUGBsBxsPbCQ9u98L9FKFL6eogaC1AuxaXvN4wl4
-         OHEUZ1UTBnAYfHbMgSpy2E/FyKl3yQUllupFMoZOyt/wGaF3d90vH55Rmru9aMVLgWw6
-         sO6g==
+        bh=ZnODmfi9jlHeHZOeJx2IurnBfxwM7mGEa2KAs0ZmXME=;
+        b=IJsfGlYhO9YJcb324j2oHma7uSRHuBAGMmeIT0P7uUfFmkpaYnqUrge1A8C1iL2Ilh
+         zmhzwdIo9qS8PK3xeHxTJyGBjofj9dmOzOGOMv3vVMbHj8op72PfayXNKiZglPzyahnA
+         n0N1bduvBoXJUAA/9CNMrzhS5pBwb+sAhS2759Z5evgVzQYXypCUSMC89KrCrU+JL8vF
+         GcweAfmosPZcfkZEWrwDXvWlV6CpggG9Ry+n1tUObIGGXwTCHmCaCCba8blrVHSzGTYJ
+         41YlburJAg1JhnStr8OOVLMjtyAqmehs4ZUi9PDJDc7Cp5BhotimW3bO/xlPH1YKQf8E
+         /Izw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785266802; x=1785871602;
+        d=1e100.net; s=20251104; t=1785266803; x=1785871603;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FPcLPI8Xklacd9X4zG4SydQQX6Mfa0kQr3DHTZ+XxOQ=;
-        b=tZhkSyha0lcae0tSZuDhqapOva2RNDU3YRJe/JTXuE+tYH91WVMPGd2DtoVzlIykH9
-         qYL+Way1X9aowJ6QQ96SPJ9hxDp3uWMa3mBlDfQeLL+8mtJFrDRjnNu6A4T8hx9tqJ2C
-         tfA44fmJUecrWhc+OCVufx8F4Ik/LtJVgSm0SF3FLmb2FtA734mMCEs3NyXkxfmLMwPU
-         M4GKJRTmV53fweRdS40YfkmvBmo2dI8ayvLWAKRHidUfGDFsza+1H6Q2hDBxouDRAEZn
-         cNCwfgabeSPeXi5Lmg6iXbIZ+69VQAkzoJc/TOmqgrOEw1QnMJMpNcEiYGIFVE+DtIUP
-         EqBQ==
-X-Forwarded-Encrypted: i=1; AHgh+RquDZY3Q9k+yFXwQiMpWBn+x8y+0HacxA/Hm15VsKYk9lRcTTjXZ1vqMSX3TEf6xKEfAuc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzStyKcvgAmzSjDzzI/TSRsq01dsSdxIfu3rcjKRmtGUt98COj
-	i3KwnjOZV0G7yXiM0VCw/QwjgMvqv5MFKQYfWZwa+VLYAY6cesoetBQofTkwn1GXWIA=
-X-Gm-Gg: AR+sD10HH7o7a2jgIbHpM08kzmxAyVbF6sQgcnTa7UOtEau8SANKHHrVZlzsEuddLln
-	/puSDaGrG/3PaYirZFY/4tqEGLeMT0jSaSaf89tDwkPeTNUjXzkpHQwAXgX7qfddrhPj8ibivCD
-	suD5jXIctaqq7Nbpim9fNlZqmgttkkTU3lEiyImPYly+uRQDJss+GF0hY2bbmpt7QUiSgVAFQCQ
-	lZDC3v/MF3o5bbVuAgPjDhfmISpuv0ZUfACLYBeVnRobtHLwPEGlFp1l98q31CHR8zOIeKxReDl
-	DrRphAwt+KUUhqwtISFkdeI3aT7uWzunVltr5xX2ziHV44nVbDbfeWrAbPHetJhOE686yOJqVKX
-	RS317rPzprd5YLJyYxiM3zkJc1hMPgZyY0WLTehSGmI6MiwL7gvIO1mqZTCJZD142CBbtGnN2iA
-	qDO2tTmro9WtZhdWq+dt1fNZqKTExZzKUT9mWUmiCbEv/ugPuSFZ9bTcq6JFSv122gQOEhiGhpw
-	C18FG1jJRsLOzA=
-X-Received: by 2002:a17:90b:3908:b0:385:3ab:fecb with SMTP id 98e67ed59e1d1-38f6a205db2mr3283785a91.4.1785266801692;
-        Tue, 28 Jul 2026 12:26:41 -0700 (PDT)
+        bh=ZnODmfi9jlHeHZOeJx2IurnBfxwM7mGEa2KAs0ZmXME=;
+        b=TdYgnr3seozJ53arx93T1jcGdm9jWlqG6z9pythrp9t8qQ9pTJYQNvs6aFpFzuKlny
+         2XlsiRN5/jKnFMvogNpHSoV4OkvuZJiNjTrFVUoKrOzqA9dtZpJbYZ/Bz4VZe700rCJ/
+         6N/MkKoF8mGbfhmeDiAty3+gMGrIUORyMqH9Rugiu/pSRzSCzvh6ucKvCY67EQ2i0AbL
+         WgSTfG23xD3uoeV+fijh4H1RT1hG8KCnGiXpttQD3B4tazFlYK3oMMLrw20f+jQ6i+nG
+         ru0igG19GlZIP4rBPeOagwHbJON25YMhG7EoeWwmCHEUtbGmj7/Eg9cZb+kIHBXKrLjg
+         y67A==
+X-Forwarded-Encrypted: i=1; AHgh+RqCRQSvLxJ/Y5QpPxnbNglPuE6YuaNlS0tzUlYVswDIt9nf3M1mM1nHpn7+W+BWv9je1PM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+4MMJIUSOqAccUFoU3OxU5xiqXRlx/TgYH7OjqYnVwl2ywoVN
+	Wn4vL+frE48JUIIqPRzB2BQgSkMAdDeG7DLQyHczhc6xHNT4B0WL0wca3wLNsupIvUw=
+X-Gm-Gg: AR+sD13N6QOKLoIb7Rbk0lBr+NsL1DSyfCmf5ci5efT6mx/w0F78iBZTMx3cB5SXgjH
+	kbjHL3R//ve1eMO0Jm/W7nnOnAAmJjfufYvxevFV3RvT4Xm8nTnvukV5InRoh0Mv3Q/XAwdr5a7
+	6Qe/dKw1/EEoyl/nSAUwv9ai//ZqNCOANPbU/NvXxh8xnGgI+DhEzS5XJMBCzgii88oGURl/h6u
+	Io6ZSJyAJN1qYfiSJ5YGV916SnVcrYXSvgItY8HuN+brPX4SoumEn1pfWDoh6gimSZjwLxbOuY4
+	pp/1U6G7UQXLONAtM/st0UlBGboWjIRkPSA9HwTaqZCf2gii3nIL/9NDomu7D0ROlrw2OOsaXpT
+	SMz5wIoQKByWB2lP+qgdpE6Ov04GvTBd1vxgkSgpHAn6lYqbl2nEY4Br1TG53hZcEw2x2R2BFbP
+	ErJQ1/kpzB+rGsOqrR3iu6uD2Fw4gvfd++kPUA/vY=
+X-Received: by 2002:a17:90b:3802:b0:380:9f17:6df3 with SMTP id 98e67ed59e1d1-38f6a34e1edmr3788843a91.4.1785266803143;
+        Tue, 28 Jul 2026 12:26:43 -0700 (PDT)
 Received: from p14s.cg.shawcable.net ([2604:3d09:148c:c800:b9d1:87c9:a085:86c9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.40
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f1353fdsm372650a91.8.2026.07.28.12.26.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 12:26:41 -0700 (PDT)
+        Tue, 28 Jul 2026 12:26:42 -0700 (PDT)
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
 To: berrange@redhat.com,
 	kchamart@redhat.com,
@@ -74,9 +73,9 @@ To: berrange@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
 	kvm@vger.kernel.org
-Subject: [RFC v2 04/24] target/arm/kvm-rme: Add mechanic to initialize realms
-Date: Tue, 28 Jul 2026 13:26:10 -0600
-Message-ID: <20260728192630.240375-5-mathieu.poirier@linaro.org>
+Subject: [RFC v2 05/24] target/arm/kvm: Split kvm_arch_get/put_registers
+Date: Tue, 28 Jul 2026 13:26:11 -0600
+Message-ID: <20260728192630.240375-6-mathieu.poirier@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
 References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
@@ -88,136 +87,80 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Initialise an @rme_guest object and install a handler to get notified
-when the Realm is ready to start.  That way we can finish reading the
-Realm once we know everything is in place.
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+
+For a Realm, KVM is much more restrictive on the registers a VMM can
+initialize.  To prepare for Realm VM initialization, split the get/put
+register functions for a non-secure VM in their own function.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 ---
- target/arm/kvm-rme.c | 48 ++++++++++++++++++++++++++++++++++++++++++++
- target/arm/kvm.c     | 15 ++++++++++++--
- 2 files changed, 61 insertions(+), 2 deletions(-)
+ target/arm/kvm.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
-index 42e1d1e7b859..eb8e65ba438f 100644
---- a/target/arm/kvm-rme.c
-+++ b/target/arm/kvm-rme.c
-@@ -13,6 +13,7 @@
- #include "kvm_arm.h"
- #include "migration/blocker.h"
- #include "qapi/error.h"
-+#include "qemu/error-report.h"
- #include "qom/object_interfaces.h"
- #include "system/confidential-guest-support.h"
- #include "system/kvm.h"
-@@ -29,12 +30,59 @@ OBJECT_DEFINE_SIMPLE_TYPE_WITH_INTERFACES(RmeGuest, rme_guest, RME_GUEST,
-                                           CONFIDENTIAL_GUEST_SUPPORT,
-                                           { TYPE_USER_CREATABLE }, { })
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 401a6f669cbb..33c3763aebfa 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -2169,7 +2169,7 @@ static int kvm_arch_put_sve(CPUState *cs, uint32_t vq, bool have_ffr)
+     return 0;
+ }
  
-+static RmeGuest *rme_guest;
-+
-+static void rme_vm_state_change(void *opaque, bool running, RunState state)
-+{
-+    if (!running) {
-+        return;
-+    }
-+
-+    kvm_mark_guest_state_protected();
-+}
-+
-+static int kvm_arm_rme_init(ConfidentialGuestSupport *cgs, Error **errp)
-+{
-+    KVMState *s = KVM_STATE(current_accel());
-+    static Error *rme_mig_blocker;
-+
-+    if (!rme_guest) {
-+        return 0;
-+    }
-+
-+    if (!kvm_vm_check_extension(s, KVM_CAP_ARM_RMI)) {
-+        error_setg(errp, "VM doesn't support Realms");
-+        return -ENODEV;
-+    }
-+
-+    error_setg(&rme_mig_blocker, "RME: migration is not implemented");
-+    migrate_add_blocker(&rme_mig_blocker, &error_fatal);
-+
-+    /*
-+     * The realm activation is done last, when the VM starts, after all images
-+     * have been loaded and all vcpus finalized.
-+     */
-+    qemu_add_vm_change_state_handler(rme_vm_state_change, NULL);
-+
-+    cgs->require_guest_memfd = true;
-+    cgs->ready = true;
+-int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
++static int kvm_arm_put_core_regs(CPUState *cs, Error **errp)
+ {
+     uint64_t val;
+     uint32_t fpr;
+@@ -2272,6 +2272,19 @@ int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
+         return ret;
+     }
+ 
 +    return 0;
 +}
 +
- static void rme_guest_class_init(ObjectClass *oc, const void *data)
- {
-+    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++int kvm_arch_put_registers(CPUState *cs, KvmPutState level, Error **errp)
++{
++    int ret;
++    ARMCPU *cpu = ARM_CPU(cs);
 +
-+    klass->kvm_init = kvm_arm_rme_init;
- }
- 
- static void rme_guest_init(Object *obj)
- {
-+    if (rme_guest) {
-+        error_report("a single instance of RmeGuest is supported");
-+        exit(1);
-+    }
-+    rme_guest = RME_GUEST(obj);
- }
- 
- static void rme_guest_finalize(Object *obj)
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index ed99be7fd80c..401a6f669cbb 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -33,6 +33,7 @@
- #include "hw/pci/pci.h"
- #include "exec/memattrs.h"
- #include "system/address-spaces.h"
-+#include "system/confidential-guest-support.h"
- #include "gdbstub/enums.h"
- #include "hw/core/boards.h"
- #include "hw/core/irq.h"
-@@ -596,7 +597,8 @@ int kvm_arch_get_default_type(MachineState *ms)
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
--    int ret;
-+    Error *local_err = NULL;
-+    int ret = 0;
-     /* For ARM interrupt delivery is always asynchronous,
-      * whether we are using an in-kernel VGIC or not.
-      */
-@@ -610,6 +612,15 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
- 
-     cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
- 
-+    /* Initialize confidential guest (Realm) if needed */
-+    if (ms->cgs) {
-+        ret = confidential_guest_kvm_init(ms->cgs, &local_err);
-+            if (ret < 0) {
-+                error_report_err(local_err);
-+                return ret;
-+        }
++    ret = kvm_arm_put_core_regs(cs, errp);
++    if (ret) {
++        return ret;
 +    }
 +
-     /* Check whether user space can specify guest syndrome value */
-     cap_has_inject_serror_esr =
-         kvm_check_extension(s, KVM_CAP_ARM_INJECT_SERROR_ESR);
-@@ -660,7 +671,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     hw_breakpoints = g_array_sized_new(true, true,
-                                        sizeof(HWBreakpoint), max_hw_bps);
+     write_cpustate_to_list(cpu, true);
  
--    return 0;
-+    return ret;
+     if (!write_list_to_kvmstate(cpu, level)) {
+@@ -2354,7 +2367,7 @@ static int kvm_arch_get_sve(CPUState *cs, uint32_t vq, bool have_ffr)
+     return 0;
  }
  
- unsigned long kvm_arch_vcpu_id(CPUState *cpu)
+-int kvm_arch_get_registers(CPUState *cs, Error **errp)
++static int kvm_arm_get_core_regs(CPUState *cs, Error **errp)
+ {
+     uint64_t val;
+     unsigned int el;
+@@ -2457,6 +2470,19 @@ int kvm_arch_get_registers(CPUState *cs, Error **errp)
+     }
+     vfp_set_fpcr(env, fpr);
+ 
++    return 0;
++}
++
++int kvm_arch_get_registers(CPUState *cs, Error **errp)
++{
++    int ret;
++    ARMCPU *cpu = ARM_CPU(cs);
++
++    ret = kvm_arm_get_core_regs(cs, errp);
++    if (ret) {
++        return ret;
++    }
++
+     ret = kvm_get_vcpu_events(cpu);
+     if (ret) {
+         return ret;
 -- 
 2.43.0
 
