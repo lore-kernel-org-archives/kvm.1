@@ -1,95 +1,95 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FD81A0B0E
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 00:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959011DE2A5
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 00:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785198742; cv=pass; b=sLGLExuW+QFgJ79nb3nvjL+IAoxM2UTxn7qivVEnpTqb3vSRpsIaLgm+bdFZzmXwBoNC5+/qAeaZLVP4dlupYwpPERy1UQ34mXPhsomFQ9M7XpCndQLibGJ/Ayx/i5NCle8peTdy1gUePpSpB0kKx4C9swmBGa4SCvBDiwcUXsQ=
+	t=1785198914; cv=pass; b=K1APrfk3IeGHM50N1WnA+pnuEX1TnEjXuiiNHqeI0CATUDlAhUJ+xxZ6JunOibE+m/zn2zRN57WUfsMC/wh6yhtRPKqgEeoc9/o8ABSwfbb+QKm3J3kXFYxlKhZF47R6N3jK1BJhm90YiuVv3wOuWtVj235/S7VJ8TcVQvTtiw4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785198742; c=relaxed/simple;
-	bh=FL1AXtTaLJMwqVl0ZO02Ff3ZqGOscYBDyBP9pb8cPwA=;
+	s=arc-20240116; t=1785198914; c=relaxed/simple;
+	bh=c7elslAKfp51+QyvlqEzHSwTp3c3scsM3RZll4rhp/s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iAYJMB9eievzBg6VeF8kWeOBOvwyPd5zGCX2M67f6anXv2khSHnZwgWitIiu6doiL7V6GAlQFoWz8Y9fUJrS8QUHzpngGtR0HPbSEb/1WOP9Gzwlpp0SlbKMQx6b/j7o93mjTTSdNurmYOI8O0HJITpMRmIYH0M3BgmhEVce2Ds=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nW+yQRzJ; arc=pass smtp.client-ip=209.85.218.42
+	 To:Cc:Content-Type; b=sByzzH5OQwQNL2zgelFN0qcSkswR7cP03NUx7iBmqSkpvGMHnbbdJ+in53tBCYvf3OsumYb2dthT5ZQruwxP1/rwkCH+QDWpIgyLm2ShuKcbp4fp8I4M+ODflaM1fc6peYudpxToMdm38X6Oq9dpne4ejpVd0pOL26UIVn8WzbU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OuGo6Fff; arc=pass smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nW+yQRzJ"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1691e4ec40so439209066b.3
-        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 17:32:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785198738; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OuGo6Fff"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-698a9f11776so4919108a12.1
+        for <kvm@vger.kernel.org>; Mon, 27 Jul 2026 17:35:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785198912; cv=none;
         d=google.com; s=arc-20260327;
-        b=dpo3vtbbTCQ8zV9rQDGJCK978VnZdxWj5KkGRRH0zMEFIQgnwIshvQ5P30aFBiekwV
-         jpMsuee2pwOj8v86KPtJaQSMDP0QfQXx1qpzcWSGzqaM6b4+ApE5DeEUoS4ynI1+kULk
-         sKdNOmuZ6Qr5T+T7QekGu4cRZ16nNPkWGNn0J0CkVQFTNLPC1rSRTsLm8PqJHoqgnhi5
-         lY0YPyUtvJi6sYqYSqq4tglfAXZIJ7P+pW7EeFVPpjD5Mga76f8zfI7Ru7d9R5ZUNS0w
-         8zG0pTIdSnDXNIVvPsq1luZ0osarTAR2dwWt5zf+/gTZ5bJ5KkNqUTG3rxOlVkxMFAsy
-         xCog==
+        b=ViCu8MWOQu8Daf9STzvwHgpbGDRzIOn61Ykrvi3ZD8Wjw4Lxf8VqfF1XnAAujTHFlE
+         bIa0iRArSRNw4YtCP5yXDKrvRsV/Ho0RJXHeYKFr3n0pjqUaUg5FErFfuyrhXsiSEMKm
+         bhAAliy5iapk+jhfy9Sj71FTLEGrfnfwi8GyhWtxy5jBXBCgfiKOkLPOmSbHBZpkys93
+         S2+pt7AUCs0TSZKwl+X2xua4GI7/nX7MsxPPrT5mUt1ScMYbZ+WbuYW8aPorzq1uSb+4
+         OekXWmHLIGV9OToK1xhHoB5t8Pfuk/Yc/GZFdIsWrXJ8xXfK7g3yFIO7W2LfX5cQtjFK
+         G8Kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=HZglPpnUw2DB3NFcrzl72/zLIJkn4fwVu2mbddrqY8w=;
-        fh=0Wynthv3lf95AdhqUkWc5DFsl6QyHRKdKozHiyLP3ds=;
-        b=Q2Szp010zeTG2Lu2+Yr6RVUKFjoWtoqNMlyc2qIa5ewm0o+J5LvaSDYX4xHFyXLonU
-         A4WCaqZMjL3yxcSmxbDoeinHZsyKsEcneAT2IvqJSgDn6Kxl7gcdMnFjigrag0/M4IR8
-         YrVUw98ECA3a+BtUlvmya2oPufHw1k6eYt9HmboRdN4ZRWtTX9KmAR6KKRny4YBt/3hr
-         tU+F95dufkke/rT/fgsaXhWM69x3HUfvUG4gsj5aQj8IbBopteXg1BHQR+fIVGQPgTnN
-         KUDb/8Z6sZhAoP/9vJ87GfClxqqTVa13acgMK43M1p+qefFUYSoZ2ke2c/6f9CflfzpR
-         CLIw==;
+        bh=rUBaP3gqsbL9Mq7Cq3u6Q4ragspqXmhpMiQu/u/OyTE=;
+        fh=yIep5pdGeM6vlPNOZHEfURGrXN1UjgPnc2zZIWfAvx4=;
+        b=HaR8C+Fj4fApeBcTegzNz5OoTF8ypNvYQYns8LerVCVb3adA28d6bBeFt8knQkg0zK
+         0vGTg8cQVCWz9oQHxzWeWo40wJUo8eCaMYjirXSM7ia9u7urHJltPN3ZoHjuRAIvSpDQ
+         xL7HWzXRjaFsi0MJQsne/mnyL+59KsJqnkv87XwYaOuGK23E4D71V+lhRGHg1mWtanlA
+         czISO5lozV6Mq+98uI+FEEpQCoIQA+DhxrwifVZ8s9abAf/I06Ffx3ukq0TLVKcTfNne
+         LUK+upXm8lqjEhi2y8M8eolpqRioL1hKRzh+35jZJ+NSRQM09QT2I4lp7Jpa8xyDOHUc
+         UN3g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785198738; x=1785803538; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785198912; x=1785803712; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=HZglPpnUw2DB3NFcrzl72/zLIJkn4fwVu2mbddrqY8w=;
-        b=nW+yQRzJXkTroC8B/S7fPzbUnszfNwZNz+ypIJCzLe7TNvK8fCz7D/WioX8EKNWobt
-         bENvmtOJD9NvHUKL7StmzLKjKnIy9y7wgPMPjzV+3rrlbx4Yx7cqwe1VIcEeQzVgTwhr
-         LjvPp7lgZ8yZMghPIg843fIU9BRuWChdxKobjKX4iqN91GOOy1+5ba/Yzs25Kv/Jqe67
-         s5dl8fqQeQre8f+OwiN6l5cT/J3gG0I/BRXqgx3z7eMFtG/HMFeqhMBKQK/I7IrxIK61
-         v7CPi/urK+vN7NvITd3UCXj4cLRDVTm3OoNIJKea9bkHoBlaxyK2/4973cnfH88oaqvX
-         28Fg==
+        bh=rUBaP3gqsbL9Mq7Cq3u6Q4ragspqXmhpMiQu/u/OyTE=;
+        b=OuGo6Fffxbdq5GIz+ZFhtLonQHyGWyCGnArL9HrHSnpDUW/zJi306LygQ1eeujRSM3
+         s1TpJ5A7fL+2E14/OxspUoTOM8mx/bPm/5Rm+3FOdAHA4sspg1aQOLohA8NgfR564LjK
+         gyUSbHSArFQJesmVaB+bu9OHXpyCpbHeb7HgYLufw/GKe9ZeEcyaupNGyicA9GUfvonG
+         BFrWhCwqBneLd/bE7s6/D8H7SnWyYilaOB8sY3g7i7R4lbeb16kFR6+onVqJn4NuKEEc
+         DyG8eqykxTHNqIHCam6D4ZleSirRAXHm43q/EQcoj+HkEh7LuCpNhfP+w4aWzgYbPcZj
+         4l1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785198738; x=1785803538;
+        d=1e100.net; s=20251104; t=1785198912; x=1785803712;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HZglPpnUw2DB3NFcrzl72/zLIJkn4fwVu2mbddrqY8w=;
-        b=tAa86E1jY6iJJiHf8zrQ9IkkZIUll40z7My/rO4emkOKSOZayqa3dfubaI/+AyWIeA
-         Nw/Ea/kV1pxNI0ERX7G1wEQTKJv0wTEgUHbD8QxRhT294O685jU4nT7SizgLRIoCWOi9
-         SPNWxIdrzSRXEebvsEidA3IWuHsEPrPB9kXbRNg7ng3ngC8gM21y69jqUIYVJfYv0JVf
-         2e/2uPb+AIXhWOV2JPMJrow6hJ296otlihrj8A3fnDRU54hAy3xiF4zyUvIn9Quj+xgD
-         FJBOkG08iIT09OQK8fjixzZeZCXiWl0degYP8//3Y5+5gU37OCGJxq8xoqdfJWXETjJK
-         SZKQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoenwE5ffOAWX7PKzfvJ/Rt0u6gwlGbQpG8h+USZ0vtBH1+BrTCxgm3R0gtSsSgnfx8/LI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yye4dsWxSzAKLdYdDWRxcf+IsC6Y0oUyt71vFAwrf5Otp0hoKtr
-	OwdzHfaJWK+wkTBJzdTMHViYfoyPVQuiZNVTluvlSo9ioGZuVQIqRxSFdDLTqC4ew6eEjw/fegt
-	+tyY/azgQxnLdI2yKZdLVsUoYXjkcwGNgFXwGziKOiWVLgRYtrZIqZ5br
-X-Gm-Gg: AR+sD10s1Z+zfL0g1Hj1V/boj75Shb+hNdo8BTwe50UAQchos0rnVNN7gvIwlQTGs1Z
-	8lmT/vQe0sFZrkOqqaJsjLmFpisg+88wbWoIStVsu37pGSM1cDkGxYsW51c6DKceTJCYlrjrVkX
-	NalznXEnPPchjZz+bADeQQXBWoQFDnDyHB35qSKvrj0kf4eLkB5zLsuCXUIoyNaNockkGf0xVvV
-	+chppCElGFdnDSAIvunuHlhj4GNR4id2E9P46OPtuqzfpFSSBu0Bs/iHQKbKDCORZa02JmV5dTL
-	6h3sx4oNu732TnM1IzcsanPo0npMuPxoAGU2538xNMH8WPxp
-X-Received: by 2002:a17:907:960b:b0:c16:12ff:dc8d with SMTP id
- a640c23a62f3a-c1f71db115dmr5687766b.14.1785198737558; Mon, 27 Jul 2026
- 17:32:17 -0700 (PDT)
+        bh=rUBaP3gqsbL9Mq7Cq3u6Q4ragspqXmhpMiQu/u/OyTE=;
+        b=hNilIdlNKs3GYGzvxooPCHRgZFZlqJMS9WU+uOBwUmjHIc4DfyWWlRzp0x1wgvrkK9
+         0oSk7ZklMQ8AgzNHYjolegGstRfT8hleO9R5QYhqQt31g2wkvfF9tekzbd86TE09b0CV
+         ZqYUNsOhhfAg1D/frPXZy4HC+9pWAUlRkzi+fbcRSrB2U/lEiECtzed1eonMhKUX3jOl
+         CF0j9VQdoLNZxr+Jlc5H+7dlrB2Ajaw9vJCbVO9rzdnQObCFjbQeTD3WTuxFggy+/MdD
+         nMwajlighCgH75VkqYG8asnu7rZQN3LSl/xz6DGNzgBYG5XBVeXI5ISPvpHQ7R1GN7OS
+         DQyQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoBLrPPqbBNsiSozD9pn1w1BbVLi5FYlEk+aTkck+lAbWw3Y4N3+tx6JKKzuyDQQkT5ecM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZEiUl2Qgeph012J7dZjtaEckniQJunq3cjumLeLAGoZISXRs6
+	kqM79PIjxhnga2K8Yp9JTFuGKbWT0EiegO4rbyJaNadV/dii81zk6gF+cXWQC0LIEAlzOm6EqY0
+	WbuhHoEfNQfrffooxh1tpoeGY0SKOL98qPjcSTJG5
+X-Gm-Gg: AR+sD13bSQBTmzKus7wxv7UbGeCw99qgIDfhjmN+Vl58z0N0H4TDkB+Hp1LJI6Wfv4V
+	6EHPzvIr2dzdWLAJH612y93YtOhNS3ejYQvvVGxzNhgYAhhMSdVL6d0J0p2cx3V4q3YG05sZObc
+	E44nAiMXhalFQ8qKZ7VDDHtDYQRevpLd4d1/9ahu+B0Sj67OxjUsdFb1uLlx6LVjbS1UsHJYlK4
+	B2zDiFpHmsLJRx/h4E01GPEFs9CBT3agYZ0PcaiEMV27sNI1m1bDiqm/AN9NyDbZWwphmRbWXkQ
+	nN3W25ppfd4MnMcKTqVbHzhLKporgXHfHM5L5+cGuJrsZFDA/bvYAeLsydc=
+X-Received: by 2002:a17:907:d28:b0:c16:4e5:944a with SMTP id
+ a640c23a62f3a-c1f720c6126mr5018366b.21.1785198911384; Mon, 27 Jul 2026
+ 17:35:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260728002236.869865-1-seanjc@google.com> <20260728002236.869865-2-seanjc@google.com>
-In-Reply-To: <20260728002236.869865-2-seanjc@google.com>
+References: <20260728002236.869865-1-seanjc@google.com> <20260728002236.869865-3-seanjc@google.com>
+In-Reply-To: <20260728002236.869865-3-seanjc@google.com>
 From: James Houghton <jthoughton@google.com>
-Date: Mon, 27 Jul 2026 17:31:40 -0700
-X-Gm-Features: AUfX_mxwy_J6BZaJVMd17vOKwACxxnganTziZGRgoI2Wvk-XrA19dfFcnI-g2cQ
-Message-ID: <CADrL8HUtAD=aEHG5TKdZeXNWXDKugE0e0u6kZAcyHw90iNckwA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: x86/mmu: Use CMPXCHG when clearing Accessed bit
- in TDP MMU
+Date: Mon, 27 Jul 2026 17:34:34 -0700
+X-Gm-Features: AUfX_mzi-l_v-Rd9a_ewKge5wZz1oU_vWexjsibksmqh-2n5maA12JMD8OZ-R4o
+Message-ID: <CADrL8HWRuzmABm+_W7Xm14CdhT3R-y-QZBhDqq1Wh6bcw421Rw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] KVM: x86/mmu: Use CMPXCHG when clearing Accessed bit
+ in the shadow MMU
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -98,62 +98,33 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Jul 27, 2026 at 5:23=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Use LOCK CMPXCHG instead of LOCK AND to clear the Accessed bit when aging
-> SPTEs in the TDP MMU, as doing a LOCK AND can corrupt a FROZEN SPTE and
-> allow a third CPU to effectively overwrite the FROZEN SPTE.  As pointed
-> out by AI of some kind, because the magic FROZEN_SPTE value is a "full"
-> SPTE, not a single bit, and includes the Accessed bit, clearing the
-> Accessed bit in a FROZEN SPTE will result in is_frozen_spte() getting a
-> false negative.
->
-> E.g. if CPU0 freezes an SPTE, and CPU1 clears the Accessed bitin the froz=
-en
-> SPTE, then CPU2 could come along and overwrite the frozen SPTE with a
-> shadow-present SPTE.
->
-> Thankfully, the false negative is largely benign, because outside of TDX,
-> which doesn't support aging, KVM only freezes leaf SPTEs when removing an
-> upper level shadow page.  So while KVM could clobber a frozen SPTE back t=
-o
-> a shadow-present SPTE, and could even use the new SPTE, the subsequent TL=
-B
-> flush will make the orphaned, shadow-present SPTE unreachable.  Failure t=
-o
-> ever zap the orphaned leaf SPTE would show up in KVM's stats, but otherwi=
+> Use CMPXCHG instead of clear_bit(), which currently emits a LOCK BTR sinc=
+e
+> the to-be-cleared bit isn't a compiled-time constant, when aging SPTEs in
+> the shadow MMU to align with the approach taken by the TDP MMU, and becau=
 se
-> is benign (because KVM no longer keeps an elevated refcount for leaf SPTE=
-s).
+> using CMPXCHG is far more robust against bugs in KVM.  E.g. if the SPTE i=
+s
+> somehow no longer an SPTE due to a KVM bug, CMPXCHG will fail gracefully,
+> whereas clear_bit() would potentially corrupt/clobber memory.
 >
-> Opportunistically add a comment to warn future developers away from using
-> kvm_tdp_mmu_write_spte_atomic() and tdp_mmu_clear_spte_bits_atomic(), as
-> they are generally unsafe.  Keep the helpers, e.g. instead of open-coding
-> the atomic64_fetch_and() in tdp_mmu_clear_spte_bits(), as scary warnings
-> usually are more effective deterrent against recidivism than removal of t=
+> Clearing the Accessed bit without atomically ensuring the SPTE is still t=
 he
-> dangerous code.
+> old SPTE is "fine", as holding the rmap's lock ensures zapping the old SP=
+TE
+> can't fully complete, which in turn ensures a new, different SPTE can't b=
+e
+> installed.  But that chain of logic isn't exactly obvious, and there's ze=
+ro
+> reason to avoid CMPXCHG as its cost on modern hardware is within ~1-2 uop=
+s
+> of LOCK BTR (and may even be cheaper on some microarchitectures).  Doing =
+a
+> 64-bit CMPXCHG on 32-bit kernels does requires a more expensive CMPXCHG8B=
+,
+> but 32-bit KVM is all but dead at this point.
 >
-> Alternatively, KVM could use different bits for the magic FROZEN_SPTE val=
-ue,
-> e.g. setting the Dirty bits (with effective IPAT and Global aliases) woul=
-d
-> likely be "ok", as IPAT/Global are extremely unlikely to be cleared witho=
-ut
-> doing a full SPTE write, and KVM's clearing of Dirty bits shares logic wi=
-th
-> Write-Protection, which must do a full SPTE write (via cmpxchg64() in the
-> TDP MMU) to ensure KVM isn't clobbering state.  But there is zero reason =
-to
-> carry that risk (beyond stubbornness in wanting to preserve a "cute" idea=
-),
-> as the cost of LOCK CMPXCHG and LOCK AND are within 1-2 uops of each othe=
-r
-> on modern hardware.
->
-> Fixes: b146a9b34aed ("KVM: x86/mmu: Age TDP MMU SPTEs without holding mmu=
-_lock")
-> Cc: stable@vger.kernel.org
+> Cc: James Houghton <jthoughton@google.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Thanks for this. Feel free to add:
 
 Reviewed-by: James Houghton <jthoughton@google.com>
