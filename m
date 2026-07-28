@@ -1,166 +1,159 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A595C448CF4;
-	Tue, 28 Jul 2026 14:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF7344E643
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 14:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785249806; cv=none; b=RdUeY5CW1RMj9nHELjzTjuvTIWCzPii/X2F4T1Uzq2BJnNyfjM9JI6aK4sp3VgKpdMxQvtXZywIHeujS3HM2LohUARUwqgSkbgM4hHJs0F7uriTTrOphyp9IbmRuXlg9mqkJ+V9fsnoTu1N1tH9W0l3+NU/ZAgOoZYYzYNh0X1I=
+	t=1785249832; cv=none; b=JdMZ6gUu1zUEsoDLKPdbrsfHUSJu4HPiGaFlSpP7Z70vzVAzp+/fZGs8cgVUWbz3uxA18eAUYYkPNeEx+dBEfMsXXR2/pgKOhZ005DJybULT2xfeL/3ePQdvsHlI0N498BpjcgFnhRkBOyBjxg3wXAgdF/7Gx1aOQMAg/6kGmIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785249806; c=relaxed/simple;
-	bh=w7Zzhce0TWe/WabLsNQTEG8CbCIaUrKZfyu5lDhyQYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K5i54VvGzp1558/hHt3GpUOOPAyA6Hg/mQvMQnu1MdYayt3SX3a+wVSynkWA3N92hXljYCQS1a9Z8meoyX3FDnvsDKnuPAvyLau3MUYRAttd/fxkdRR75/yUm99lbpJFtd2PH1kIMa/L8vqV1WrR22Prkf6FkKFkZT6ZSa/n9BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bdWP6obn; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785249832; c=relaxed/simple;
+	bh=15OZzuRwefKmcn1sxyHGXEk+mImGsHP+AS5DcNLhZLA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i765POODk2ZIZrD+YIjwZ+4AJg8AeazSJX9sRbfEnMx7pFuJDdGj/m59k04WhHlywf6iA+0XR8oBPKu3UvJPiW8xqjeeQ/RX9xHI+hC07ucxbHpQbRS3sJhzuFVH0OelnU8hEw1CS/pNqg8g8eakXQ24629IWR2Xf57266PThPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gEEeAyvl; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bdWP6obn"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SDlg7A1356676;
-	Tue, 28 Jul 2026 14:43:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sqAdYE
-	Ob4kLdAF/BUMX181y0iRXHew1ImpypI2TO3Gk=; b=bdWP6obnB68ADRxReLti4/
-	U4CPipP7bHXAYMDk9k9ZYdHjpYHFe6ZEggtvHycALHdqmrpfyRurO9bX2TUQWua6
-	/KEr4DvY2pCcgYCtd0S66Zdig4ZE+8WFAbdWZ4q2gPkrXdLHb/s/w6fVRHhRs4lD
-	Jk9rB8pXAdGQI2oPfBys+lovgO/hgaaPeagEfLA1aolsR2phoL/NmXZgj+Xw661h
-	dMEmgTVjP9JbD0su8imgxUREkdgPGxb9UvSugbXJnFRzSHHOlMNVXm2ilo3sJO9X
-	wii2sIs1lWOQgtARHA3n63alztjP6RGw4M/UAdZbF/XKfIr8r84y+/1bsGMoz3uA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuwcw6q6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 14:43:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SEffum024265;
-	Tue, 28 Jul 2026 14:43:21 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fna5y20t0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jul 2026 14:43:20 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SEhEi232375048
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jul 2026 14:43:14 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B57D02004E;
-	Tue, 28 Jul 2026 14:43:14 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E0A6C20043;
-	Tue, 28 Jul 2026 14:43:13 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.111.73.241])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 28 Jul 2026 14:43:13 +0000 (GMT)
-Date: Tue, 28 Jul 2026 16:43:09 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com, david@kernel.org,
-        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com
-Subject: Re: [PATCH v3 10/10] KVM: s390: Fix cleanup in
- kvm_s390_pv_create_cpu()
-Message-ID: <20260728164309.5a172dac@p-imbrenda>
-In-Reply-To: <dd83d8ba-e8fc-48ec-b980-d9331d2e29c8@linux.ibm.com>
-References: <20260727150254.236021-1-imbrenda@linux.ibm.com>
-	<20260727150254.236021-11-imbrenda@linux.ibm.com>
-	<dd83d8ba-e8fc-48ec-b980-d9331d2e29c8@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gEEeAyvl"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8482b95574dso4169920b3a.1
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 07:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785249830; x=1785854630; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xYHf8j8BEo9L8k4s6md5eo+0/d4t8WQSTRCLKG006Pg=;
+        b=gEEeAyvl7GkQ6v1TLMK3BUACLxS/tUBLaZaj3koIV5sb7pv1cvJuh2skZkg+ywBwfL
+         hx/kvtWv7Tb8txSbHgv+qXXEpqRwTOosMS93sKxSA/vj1dxsyzYMD4C+x9lkkOF9Gk//
+         rU8Ae8kPmpivN6hvd1aAeVkKCsJjsKvMm3fmRvGgOuXcoujg+zT6XY0dRxfFoyN20lRj
+         O2RSjl7f+1u3p4Am2dnPn0WiY9Adp/edK4raOr40QaO24e+yBFTj+plQu+kxk6Pi/2Al
+         BjwnwaIugR6gdW1fO5WQ4SDRhGL0As+uEqPaFUzEF16rbUqv9Fu/3DA+Ysb5mWtMzv1D
+         RBnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785249830; x=1785854630;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xYHf8j8BEo9L8k4s6md5eo+0/d4t8WQSTRCLKG006Pg=;
+        b=IgFw8RpTMHMyNmXK0Q93CUETADFyKo3QtGo74F8t7NuoXXKch3s4mFA4I2jdiD0+O1
+         yBfEVOe8sZXgDK1k7mL45wIoNT785QdZdhO+nofkUwcPftZmE+aWnn+Ebblts3z91i7s
+         uZvRYIWCp7u/mGEgkcAucEG/Uada2xhN10cqYANtwGfYjAX3S33yxtinVKVXyGCqZKlC
+         lpGSGdbGxv/sQkQqRcjd33mxwTE5vpQquaFtpNofNv64xCuM+vDOShES9wnFHP+GqEt9
+         z6jLyPALB/yCtP2JlHO3miTvqokbaaG6vMgB2fMJPt8R0NdiqhXA7U2WRVAQ8/sbukmZ
+         2q+Q==
+X-Forwarded-Encrypted: i=1; AHgh+RokoAGYqe6Bq79LRuL4WJ0WgXcraBSumcvwrggJNKJohdW6jaqnh7i8MoHgisc+oFdmmEs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzS14pj+gAwkOOuuC8IjLBjyxMSk3hHfyQ1prx7z0Y2r2AVxeL
+	CtJtX1ml67DdJdKfOFZQuXVKDX0WOzMVBZtSyqa10HTBdeQ2mH1KfCgU9iZIrNyak4hT11hFYut
+	Yqg/O1Q==
+X-Received: from pfmy25.prod.google.com ([2002:aa7:8059:0:b0:848:866d:f119])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4308:b0:84c:518b:d915
+ with SMTP id d2e1a72fcca58-84e93367f0emr2823113b3a.65.1785249830149; Tue, 28
+ Jul 2026 07:43:50 -0700 (PDT)
+Date: Tue, 28 Jul 2026 07:43:49 -0700
+In-Reply-To: <20260727235228.1007324-12-yosry@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oVCemLghfhs-1B_SSZHALIa6I1x1wRel
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEyNyBTYWx0ZWRfX1GFpBrQsVf8O
- opK1nK02PYAaeXVVoPagca8dTtFoEs7fuSoE8IC7gMM0TlNiCYcve3dzzLK/iCFh0kWswgi+wYz
- BRpTmnfsM2D7Wuz1Fn+pY8/kblZFZM4=
-X-Authority-Analysis: v=2.4 cv=E/z9Y6dl c=1 sm=1 tr=0 ts=6a68c009 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=-VSMeyrPRzZKpqsa-XEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEyNyBTYWx0ZWRfX9KPc0AKyo3Kb
- FfDwoL8WprlvfT+MhFmQiUf7IDRqhJAth6TDlwugo0dIW6kJ+nkcZF3ganp4TgAKCbA5ONsQlAo
- vaTb5v5fXhVqOUWeTcxKOlh+nVhTwUbR61n75TRHCqjO23C6gEhjkJU4tjLdNtomwy+ewVUKy3G
- PyocT8GXRXOcRdj7zhkENUi59ZCyNPgmJ/NtzqFfY4b7EywU4qeGVv9yJvmagWPDj1J1urK8DPz
- OYORMJwUGyfdLmT7QJC8I4k4a8XxiE9C/3iiMe8uXdqRsvwcPvh1/QS/RTTjZCQBNUR0xWSi/LR
- 86YdAIKkgyVkmeRLOnP4eCJ+MFvIgGKFeOOqabhBw7EDL5PPgWazMAi2IzlWigWbOQtZE/IvTs9
- 8JPHQMKzz1dWXNdx5QLu6K44RX9bsSwy3BcGewYwfjs0vpyp8QsXTtuLFiTTS8PhA3fRkX6HclL
- Z9hsCWLMx9D6vFF1xWA==
-X-Proofpoint-GUID: oVCemLghfhs-1B_SSZHALIa6I1x1wRel
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-28_03,2026-07-28_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 spamscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280127
+Mime-Version: 1.0
+References: <20260727235228.1007324-1-yosry@kernel.org> <20260727235228.1007324-12-yosry@kernel.org>
+Message-ID: <amjAJQ1VZIcoefYg@google.com>
+Subject: Re: [PATCH v4 11/12] KVM: selftests: Support running stress
+ save+restore and #PF test in L2
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, 28 Jul 2026 16:12:15 +0200
-Janosch Frank <frankja@linux.ibm.com> wrote:
-
-> On 7/27/26 17:02, Claudio Imbrenda wrote:
-> > If creating a protected vCPU in kvm_s390_pv_create_cpu() fails,
-> > kvm_s390_pv_destroy_cpu() was called, which checks whether the vCPU has
-> > a PV handle and exits doing nothing otherwise. At that point, due to
-> > not having created the protected vCPU, the PV handle will not be set,
-> > and kvm_s390_pv_destroy_cpu() will do nothing, thus leaking the
-> > allocated memory.
-> > 
-> > Fix by factoring out the code to free and reset a PV vCPU; call it from
-> > kvm_s390_pv_destroy_cpu() and kvm_s390_pv_create_cpu().
-> > 
-> > Fixes: d4074324b07a ("KVM: s390: pv: avoid double free of sida page")
-> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> > ---
-> >   arch/s390/kvm/pv.c | 41 +++++++++++++++++++++--------------------
-> >   1 file changed, 21 insertions(+), 20 deletions(-)
-> > 
-> > diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
-> > index dc204b521052..b02e0159d3cd 100644
-> > --- a/arch/s390/kvm/pv.c
-> > +++ b/arch/s390/kvm/pv.c
-> > @@ -244,6 +244,24 @@ static void kvm_s390_clear_pv_state(struct kvm *kvm)
-> >   	kvm->arch.pv.stor_var = NULL;
-> >   }
-> >   
-> > +static void kvm_s390_pv_dispose_cpu(struct kvm_vcpu *vcpu, bool free_stor_base)
-> > +{
-> > +	if (free_stor_base)
-> > +		free_pages(vcpu->arch.pv.stor_base, get_order(uv_info.guest_cpu_stor_len));
-> > +	free_page((unsigned long)sida_addr(vcpu->arch.sie_block));
-> > +	vcpu->arch.sie_block->pv_handle_cpu = 0;
-> > +	vcpu->arch.sie_block->pv_handle_config = 0;
-> > +	memset(&vcpu->arch.pv, 0, sizeof(vcpu->arch.pv));
-> > +	vcpu->arch.sie_block->sdf = 0;
-> > +	/*
-> > +	 * The sidad field (for sdf == 2) is now the gbea field (for sdf == 0).
-> > +	 * Use the reset value of gbea to avoid leaking the kernel pointer of
-> > +	 * the just freed sida.
-> > +	 */
-> > +	vcpu->arch.sie_block->gbea = 1;
-> > +	kvm_make_request(KVM_REQ_TLB_FLUSH, vcpu);
-> > +}
-> > +
-> >   int kvm_s390_pv_destroy_cpu(struct kvm_vcpu *vcpu, u16 *rc, u16 *rrc)
-> >   {
-> >   	int cc;
-> > @@ -258,24 +276,9 @@ int kvm_s390_pv_destroy_cpu(struct kvm_vcpu *vcpu, u16 *rc, u16 *rrc)
-> >   	WARN_ONCE(cc, "protvirt destroy cpu failed rc %x rrc %x", *rc, *rrc);
-> >   
-> >   	/* Intended memory leak for something that should never happen. */  
+On Mon, Jul 27, 2026, Yosry Ahmed wrote:
+> Extend the stress test to allow running the access+#PF code in L2
+> instead of L1 by adding proper L1 guest code to bootstrap L2. By
+> default, the test runs in L2 after running in L1 if nested is supported.
 > 
-> That comment doesn't make a lot of sense anymore after your changes.
+> Assisted-by: Gemini:gemini-3.1-pro
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
+> ---
+>  .../kvm/x86/save_restore_pf_stress_test.c     | 61 ++++++++++++++++++-
+>  1 file changed, 58 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c b/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
+> index 664ed280b2e76..0e5ddeb5af444 100644
+> --- a/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
+> +++ b/tools/testing/selftests/kvm/x86/save_restore_pf_stress_test.c
+> @@ -8,10 +8,13 @@
+>  #include <pthread.h>
+>  #include <signal.h>
+>  #include <unistd.h>
+> +#include <getopt.h>
+>  
+>  #include "test_util.h"
+>  #include "kvm_util.h"
+>  #include "processor.h"
+> +#include "svm_util.h"
+> +#include "vmx.h"
+>  
+>  #define NR_ITERATIONS		500
+>  
+> @@ -81,6 +84,36 @@ static void guest_access_memory(void *arg)
+>  	}
+>  }
+>  
+> +static void l1_svm_code(struct svm_test_data *svm)
+> +{
+> +	generic_svm_setup(svm, guest_access_memory);
+> +	run_guest(svm->vmcb, svm->vmcb_gpa);
+> +	GUEST_ASSERT(false);
+> +}
+> +
+> +static void l1_vmx_code(struct vmx_pages *vmx)
+> +{
+> +	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
+> +	GUEST_ASSERT(load_vmcs(vmx));
+> +	prepare_vmcs(vmx, guest_access_memory);
+> +
+> +	/* Ignore any #PF */
 
-how so?
-potentially calling the helper function with free_stor_base == false
+This comment is rather ambiguous, especially when the #UD interception comes
+along, because unless the reader is reading carefully and sees the PFEC_MASK
+and PFEC_MATCH logic below, it's quite easy to read this as "intercept #PF to
+ignore them".
 
+I don't see any reason to write the code this way.  Yeah yeah, it's the SDM's
+suggested way to ignore #PFs, but IMO that's unnecessarily convoluted.  The more
+obvious way is to leave all fields '0'.
+
+In other words, just delete this entire block of code and rely on the default
+VMX allocation logic to disable interception of all exceptions.
+
+Oh, damnit.  Argh.  I see why you need this.  init_vmcs_control_fields() is buggy
+and actually configures #PF for interception.  Apparently Paolo didn't read the
+"If there is inequality, the meaning of that bit is reversed (for example, a VM
+exit occurs if that bit is clear)." part :-D
+
+So, let's fix that in a prep patch (AFAICT, no existing tests cares about #PF
+interception) so that this test doesn't have to carry confusing code, and because
+intercpeting #PF but nothing else by default is bound to cause problems.
+
+diff --git tools/testing/selftests/kvm/lib/x86/vmx.c tools/testing/selftests/kvm/lib/x86/vmx.c
+index cd09c9de4485..089e1a8af53f 100644
+--- tools/testing/selftests/kvm/lib/x86/vmx.c
++++ tools/testing/selftests/kvm/lib/x86/vmx.c
+@@ -232,7 +232,7 @@ static inline void init_vmcs_control_fields(struct vmx_pages *vmx)
+ 
+        vmwrite(EXCEPTION_BITMAP, 0);
+        vmwrite(PAGE_FAULT_ERROR_CODE_MASK, 0);
+-       vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, -1); /* Never match */
++       vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, 0);
+        vmwrite(CR3_TARGET_COUNT, 0);
+        vmwrite(VM_EXIT_CONTROLS, rdmsr(MSR_IA32_VMX_EXIT_CTLS) |
+                VM_EXIT_HOST_ADDR_SPACE_SIZE);    /* 64-bit host */
+
+> +	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(PF_VECTOR)));
+> +	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MASK, 0));
+> +	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, -1));
+> +
+> +	GUEST_ASSERT(!vmlaunch());
+> +	GUEST_ASSERT(false);
+> +}
