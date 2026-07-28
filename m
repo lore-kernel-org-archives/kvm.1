@@ -1,88 +1,139 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55473B5843;
-	Tue, 28 Jul 2026 12:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3333B5DEE;
+	Tue, 28 Jul 2026 12:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785242360; cv=none; b=SBFHnOomqUIlhx8nPOgZ7DlCUWRSdYMrAHwlqT+igh7xMIunjiVoVD7kSR+ENsO4dl/LC1x9tuOnjNhXF4HaULRtPehC5vjCKDGM4qg1P8Yg6VzZnrG5vOx0udgpHX02oAT2mRoLmaXeJcd/zhx2Oo9s1bcmDlj+kF0lwMG9Kwg=
+	t=1785242422; cv=none; b=o3dkmr4TbVeX174WbL4ShXwgoAZtBABjugGojJBsPE6mkPpkdPpOdBrSYEG5B/AhyZB3hvCsypGSMojwwFj7vp9RjAJYnkVMNKpepH3ouzH85o290PepkpE8hrdQuCRTEKfSzzjdqH1CqTjYeBnW2zJcXzjXEgNWvxJJyGudlAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785242360; c=relaxed/simple;
-	bh=BB/iNYIWb4K37ubQH44SrWBVyo1MmDQe/KwE3U3XcKY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=TnSINXmDzqGoNyb9Xwyh+o/C5bckEMo4xNUYG/jlLaRCptrcVszf0THeqVlZVnaBN1dcUCrM5QdCs0cxGD2eN1mcAgBkk5QXwO1XXkkMGzJ0sy2pXN7nAQdfms+iHz1VIrpOX23ux7GgrknaUgmSQDLY0k9E6APk0q8t94FSvvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxGOvyomhqkh8IAA--.28372S3;
-	Tue, 28 Jul 2026 20:39:14 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxb8fvomhqRJ4bAA--.18382S2;
-	Tue, 28 Jul 2026 20:39:13 +0800 (CST)
-Subject: Re: [PATCH 2/2] KVM: LoongArch: selftests: Add in-kernel MMIO read
- fast path test
-To: Zeng Chi <zeng_chi911@163.com>, Huacai Chen <chenhuacai@kernel.org>
-Cc: zhaotianrui@loongson.cn, kernel@xen0n.name, kvm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, zengchi@kylinos.cn,
- cui.tao@linux.dev
-References: <20260723111605.1630027-1-zeng_chi911@163.com>
- <146b5e27-2ab0-da17-7b98-09235ef4f9c4@loongson.cn>
- <CAAhV-H7pLEUeKWGmCZqDdF+2vr=2aexOFVCMa_UxTrDpUY+gvA@mail.gmail.com>
- <92289f9a-67be-4839-8fe4-c6935871a349@163.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <2663aa71-f713-c458-368a-61fdb9634338@loongson.cn>
-Date: Tue, 28 Jul 2026 20:38:58 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1785242422; c=relaxed/simple;
+	bh=ATaJ+vCiaCYkhADUOEEvZAEpCjCfGpIpfMsICowcuDw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BCx3hwRLD95gGllf224BWHDHFzw1u2ItD+NECXnAepMaq74KUYMzdAVME1Yoq0XmHhHyPrzzFU3vuktU6Mn7QkYPuxnP9Jt/mJTKBwN4SC2CHHKl8TfKLWrfzTbD85D/gotcUyHSWhrCLLr+HsfkPvlTbJaAwE2X+Vo3vxmOEUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=W7ytSD8C; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="W7ytSD8C"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66SBHc2l961642;
+	Tue, 28 Jul 2026 12:40:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=6Dzd1k5MG1fchQFTFX/sRaCd6uvt9F
+	jOZXKvzWqjeW0=; b=W7ytSD8CaBkC0ZJuf9VaRFRNDkCk1ADoAeu74PNZi94VMO
+	dSc1PRtecqNrEbtPhu+UAdcv/hB/7BiKTnbWBFeZ72SdCoV8JnNPsmEQIUfLDoNY
+	YScv+y80YbRDdRqIalFlj++F9sfQ2xohK99nUwZakED2TZxxK1qDxA6vkl1K8lRE
+	6dW0nLH4/ZCzdIteMTA96IylHjf5OlBR+dZbYA/YaoowXrT5tYVvyMmUGbDJaVdY
+	ZnGvyZM4cuE8i2TB0EGZ461TY/E9rzS0DmAq9xfJC+T4SIIMUuLu1CioAMHamJRr
+	+Pou1dJiHuC4RI+x5gBz/oS+ArEpQ/UlCdZ2XV/A==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0xn57r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 12:40:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66SCQGjs014965;
+	Tue, 28 Jul 2026 12:40:13 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn7uw1wxd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jul 2026 12:40:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66SCe9xN48955714
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Jul 2026 12:40:09 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2238A20049;
+	Tue, 28 Jul 2026 12:40:09 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB2C62004B;
+	Tue, 28 Jul 2026 12:40:08 +0000 (GMT)
+Received: from osiris (unknown [9.224.76.185])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 28 Jul 2026 12:40:08 +0000 (GMT)
+Date: Tue, 28 Jul 2026 14:40:07 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, nrb@linux.ibm.com,
+        schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: Re: [PATCH v3 10/10] KVM: s390: Fix cleanup in
+ kvm_s390_pv_create_cpu()
+Message-ID: <20260728124007.385398-C-seiden@linux.ibm.com>
+References: <20260727150254.236021-1-imbrenda@linux.ibm.com>
+ <20260727150254.236021-11-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <92289f9a-67be-4839-8fe4-c6935871a349@163.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxb8fvomhqRJ4bAA--.18382S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrKF1UAw4UWFWrCF45tr4UJrc_yoWxAFc_uF
-	WDC397Ca1DXF4rXa17KF10vrZ3C3yDX34rJw48Xr4aq343tr4kJFWfGrnavFsrtayrtFnI
-	grnYvr4S93W29osvyTuYvTs0mTUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbfAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
-	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8q2NtUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260727150254.236021-11-imbrenda@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PtyKNFv1j-hpnXYziDO6yAb5ZN_i_aMT
+X-Proofpoint-ORIG-GUID: PtyKNFv1j-hpnXYziDO6yAb5ZN_i_aMT
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDEwOCBTYWx0ZWRfX4gXlvFPdZCVa
+ L1ssyYVU+1e+YnxWYcqPA/ZVwXTPKhX5iF/VstdmCBxxabpGntH4i5tsRyuSNyZRN+2nTqaM+VX
+ nksohJXT0UAnNj+cUioiI2iYCofMqxA=
+X-Authority-Analysis: v=2.4 cv=dYuwG3Xe c=1 sm=1 tr=0 ts=6a68a32e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=3LDMQD1oRKttpTK8AWQA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDEwOCBTYWx0ZWRfX7QcpeqguCufZ
+ 4qLI7CMsZVBexS9RNw4KMByaNFM12nKEcVUFLK4h0lRrTsfjme8gQITc1JP+6xk3z8hvbuRwObB
+ obAQfbf3AOc3FXAPCJpAt1k2cchuT4m7lnNt3lA3rVKd8LExz6vAXWzsu3oEB73C2bqHksyJUZA
+ q0zmJitBQLpsCDZbO4qtOXdlGC8ukQhoLJN9sWERaWB66HwtfYYYe7tQnmFspBEwcH87wJUvFNP
+ +x3VoyqaFLO1AJfQJv/LU8Q/x5IUQZ8fhNejkj+zPepCZ78fWiNsmC4spRuSOspNeIEkdIePKoB
+ xzQjTwdDQCqRDaNSTyg0ncRbhdaGdJMXK5B/wwoONrhNJ0qSGyYKWu/8kUlgy80yPdhUUeN24FC
+ OG7OYrH2Tjr6kx6/sK75L2Q5CtFNm/lZy00VIDVeoJUjjlhdOOzjnMMQwBSlcBtpQjITqzQx4HB
+ 1ygBHSoFPgG9GuOUeDA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-28_03,2026-07-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607280108
 
-
-
-On 2026/7/28 下午6:10, Zeng Chi wrote:
-> On Sat, Jul 25, 2026 at 5:41 PM Huacai Chen <chenhuacai@kernel.org> wrote:
->> I think the fist patch is just enough. :)
-> Agreed. Please just take patch 1 and drop this one -- I will not
-> resend the series.
+On Mon, Jul 27, 2026 at 05:02:54PM +0200, Claudio Imbrenda wrote:
+> If creating a protected vCPU in kvm_s390_pv_create_cpu() fails,
+> kvm_s390_pv_destroy_cpu() was called, which checks whether the vCPU has
+> a PV handle and exits doing nothing otherwise. At that point, due to
+> not having created the protected vCPU, the PV handle will not be set,
+> and kvm_s390_pv_destroy_cpu() will do nothing, thus leaking the
+> allocated memory.
 > 
-> Bibo is right that the test only asserts that the PC advances by one
-> instruction, which is an implementation detail rather than observable
-> guest behaviour. If a PCH-PIC selftest is still wanted, I will send it
-> separately as one that injects an irq and verifies the guest actually
-> takes it.
-It is not necessary, just patch 1 is ok.
+> Fix by factoring out the code to free and reset a PV vCPU; call it from
+> kvm_s390_pv_destroy_cpu() and kvm_s390_pv_create_cpu().
+> 
+> Fixes: d4074324b07a ("KVM: s390: pv: avoid double free of sida page")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Regards
-Bibo Mao
-> 
-> Bibo, Tao, thanks for the reviews.
-> 
-> Zeng Chi
-> 
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
 
+> ---
+>  arch/s390/kvm/pv.c | 41 +++++++++++++++++++++--------------------
+>  1 file changed, 21 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/s390/kvm/pv.c b/arch/s390/kvm/pv.c
+> index dc204b521052..b02e0159d3cd 100644
+> --- a/arch/s390/kvm/pv.c
+> +++ b/arch/s390/kvm/pv.c
+...
+>  int kvm_s390_pv_destroy_cpu(struct kvm_vcpu *vcpu, u16 *rc, u16 *rrc)
+>  {
+>
+...
+
+> -	return cc ? EIO : 0;
+> +	return cc ? -EIO : 0;
+
+maye add a comment that you fixed this return value as well.
+
+	Steffen
