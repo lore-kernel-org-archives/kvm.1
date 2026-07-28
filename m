@@ -1,99 +1,131 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E212223909F;
-	Tue, 28 Jul 2026 15:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D8C41E6B6
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251272; cv=none; b=hppj8fm1LaTTfFhsvDDc+xq6JP7A/CivSsEJr9vUEXW+rY2034LkXwqB8FmHLE3qfnWUhsQMjdHNF6qMHUFImxMBMJJVA9O2b72yYCPlBr4Z+5QVSlSCwUdloAMOEZyuvHaqWJxeYAyVxi+fi8O+csrQ4WvtGey/G+KNySnx1Ro=
+	t=1785251288; cv=none; b=U9tQr3C/8GMOZKXGcliGqJHMzZhlyDtiuLOftruM+b1lBwJzC3JLFvmSEXMA7x7HSoWCm8VhG2Ir3MOkfEiJcKVXqGkGMJRqdSKg52b5o1NtF+pLEvJVjyBoK5hesH1fOqwYq3e8bu2PvTuQkqsMSoXbKQczOkrCYJxtpy9B97I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251272; c=relaxed/simple;
-	bh=BD1LV6gEweEYUjcl9ARIkRkGvDhvtnv+9e/uvIhdghI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fmZOKzbvpeKXq23rN30V9fPkL0XpthsKEMUqOF7lnV9m/+S++TVUBr/IE2x0vBBqlEhE5mfVNKBKGrOBEZJ/NDkA2pmpOUkAdmHtQehOoEab8jhQtKWx7l6/xEOoobC7h5W4W6r3LqGU/AtkZWwrlE1l0KFi6t901/dqQklc5AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=p/2GpzZ5; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785251288; c=relaxed/simple;
+	bh=p9cFdH5405zX7GJPjZVqMWv8IxERvoteM40qKh01Gdw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=HpNoscygqkb8+udLquj/BSTPptMbo/Ju0yM5UKd/t6osCugiXxMNPpEEMZVPYVOWmKUdXh8gtUOTX26PyqSxO3o39MXLaG+xHtV+SRGezPi1ODiMTvY82FT9Xq5SYi2vS5cyo7YU3S6wF5JqMQvfdfGLWUdEgZWa1ppqfO6mcuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iANd9g91; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="p/2GpzZ5"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BF3B169E;
-	Tue, 28 Jul 2026 08:07:46 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0824B3F66F;
-	Tue, 28 Jul 2026 08:07:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785251270; bh=BD1LV6gEweEYUjcl9ARIkRkGvDhvtnv+9e/uvIhdghI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p/2GpzZ5F0kbQ5EoZfBqT6yq53KWffSqkwhsIwKSHFzBhk0XWz3iHGtbOpnwKHDaR
-	 +mZWUXOg8abFit3hXggkmWfs+gpD13GREcrsMwRHMljNbkHBS+FeDf/VC9w1pW9RMp
-	 idzWRxlG6MXIBei4T3i++d8CNJbO219W9tqEu8Ng=
-Message-ID: <b8b1fbe4-fb73-418a-b43d-086894d31ce8@arm.com>
-Date: Tue, 28 Jul 2026 16:07:44 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iANd9g91"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68BE1F00A3D;
+	Tue, 28 Jul 2026 15:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785251287;
+	bh=u+KaUB1WViZTxTSd6IRpwOiv1xXb9HffoZK1nXXo6Wk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iANd9g91lhVPAcb0+zNNg1wFZzEfXBcllCnvlQBYFfDErkjf8yHT+c07P9QHQ2mrb
+	 J/ZpX63Vm1DXjw/TxtOvPod1zz9jKz70J1tfNxxMEBipss8wYd368w8+jhASVP8Lvp
+	 o99Syamsx9OqnljVNfTFgCmQgd0QLzhh3spi7U072a+4Hssfjj5VIroaaIKZzzOudR
+	 MZk1FfhYYBrHcmIslGe9mpmnWSyNkNhGbEvVXdEL0oUUm2V6zRqJnc0vXbhLlQbaF9
+	 D7G2wNCn4RSScz+jzv/4xq9up1Ubu7Ho+Lb0uum8hI8R02BQSH6JIuKrdrcIzprtfn
+	 +RQzxFcPNxdFQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 14/36] KVM: x86: Improve synchronization in
+ kvm_synchronize_tsc()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "David Woodhouse" <dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260728144954.355376-15-dwmw2@infradead.org>
+References: <20260728144954.355376-1-dwmw2@infradead.org>
+ <20260728144954.355376-15-dwmw2@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 28 Jul 2026 15:08:06 +0000
+Message-Id: <20260728150806.C68BE1F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/21] perf: arm_pmuv3: Check cntr_mask before using
- pmccntr
-To: Colton Lewis <coltonlewis@google.com>, kvm@vger.kernel.org
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
- Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
- Shuah Khan <shuah@kernel.org>,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-References: <20260612192909.1153907-1-coltonlewis@google.com>
- <20260612192909.1153907-6-coltonlewis@google.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260612192909.1153907-6-coltonlewis@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 12/06/2026 8:28 pm, Colton Lewis wrote:
-> Check cntr_mask before using pmccntr to ensure it's available. With a
-> partitioned PMU, there may be instances where pmccntr is being used by
-> the guest and will be absent from cntr_mask.
-> 
-> Signed-off-by: Colton Lewis <coltonlewis@google.com>
-> ---
->   drivers/perf/arm_pmuv3.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
-> index 1cceb1f614515..17bb1cfdc271c 100644
-> --- a/drivers/perf/arm_pmuv3.c
-> +++ b/drivers/perf/arm_pmuv3.c
-> @@ -1028,7 +1028,8 @@ static int armv8pmu_get_event_idx(struct pmu_hw_events *cpuc,
->   
->   	/* Always prefer to place a cycle counter into the cycle counter. */
->   	if (armv8pmu_can_use_pmccntr(cpuc, event)) {
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] Incorrect TSC calculation during synchronization mixes different t=
+ime bases (generation base vs. relative elapsed time), causing the guest TS=
+C to drift backwards for 3rd and subsequent vCPUs.
+- [Medium] The commit message claims to reset {data, ns} to previous values=
+, but the code actively advances the reference point instead.
+--
 
-Something smells wrong here - we can use PMCCNTR but we can't?
+--- Patch [14]: [PATCH v7 14/36] KVM: x86: Improve synchronization in kvm_s=
+ynchronize_tsc() ---
+commit 19537539a4f15d4647e8e8b2f7465c1412098ea0
+Author: David Woodhouse <dwmw@amazon.co.uk>
 
-> -		if (!test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
-> +		if (test_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask) &&
+KVM: x86: Improve synchronization in kvm_synchronize_tsc()
 
-...i.e. this test would seem to belong in the helper function.
+This commit addresses issues with how last_tsc_write and last_tsc_nsec were
+recorded, which caused subsequent writes to fail synchronization. It also
+unifies the TSC reads used for calculating current time by using
+kvm_get_time_and_clockread() where possible.
 
-> +		    !test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
->   			return ARMV8_PMU_CYCLE_IDX;
->   		else if (armv8pmu_event_is_64bit(event) &&
->   			   armv8pmu_event_want_user_access(event) &&
+> Fix that by resetting {data, ns} to the previous values before passing
+> them to __kvm_synchronize_tsc() when synchronization is detected.
+> Except in the case where the TSC is unstable and *has* to be synthesised
+> from the host clock, in which case attempt to create a nsec/tsc pair
+> which is on the correct line.
 
-Plus it also doesn't make much sense to fall through to the "we _could_ 
-accommodate this event if only PMCCNTR was free" case here if we know 
-PMCCNTR can never be free because it's not even available.
+[Severity: Medium]
+The commit message states that it fixes the issue by resetting data and ns
+to the previous values, but the code appears to actively advance the
+reference point instead.
 
-Thanks,
-Robin.
+Could the commit message be updated to more accurately reflect the implemen=
+ted
+logic?
+
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 083ab2ca6282f..a1265d1f5c3fe 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+
+[ ... ]
+
+> @@ -1347,13 +1360,18 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u=
+64 *user_value)
+>           */
+>  	if (synchronizing &&
+>  	    vcpu->arch.virtual_tsc_khz =3D=3D kvm->arch.last_tsc_khz) {
+> -		if (!kvm_check_tsc_unstable()) {
+> +		/*
+> +		 * If synchronizing, advance the reference point to "now"
+> +		 * so the matching window slides forward with each vCPU.
+> +		 */
+> +		u64 delta =3D nsec_to_cycles(vcpu, elapsed);
+> +
+> +		data =3D kvm->arch.cur_tsc_write + delta;
+
+[Severity: High]
+Does this calculate an incorrect TSC value by mixing different time bases?
+
+It appears that elapsed is computed as the time since the previous vCPU,
+but delta is added to kvm->arch.cur_tsc_write, which is the absolute base
+TSC of the first vCPU in the generation.
+
+If a VM is created with 3 or more vCPUs, wouldn't the time elapsed between
+the 1st and 2nd vCPUs be lost when calculating for the 3rd vCPU? This seems
+like it could cause the guest TSC to drift backwards across vCPUs.
+
+> +
+> +		if (!kvm_check_tsc_unstable())
+>  			offset =3D kvm->arch.cur_tsc_offset;
+> -		} else {
+> -			u64 delta =3D nsec_to_cycles(vcpu, elapsed);
+> -			data +=3D delta;
+> -			offset =3D kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
+> -		}
+> +		else
+> +			offset =3D kvm_compute_l1_tsc_offset(vcpu, host_tsc, data);
+>  		matched =3D true;
+>  	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
+76-1-dwmw2@infradead.org?part=3D14
