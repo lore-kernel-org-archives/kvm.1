@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D15377EBA
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 03:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BB4378D94;
+	Tue, 28 Jul 2026 03:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785211105; cv=none; b=pGidWcOzY7cWxBqAYJBdDdJiQ/jZTjcMUU1mDTQF4ooCnaHMjQHHo8YHePZO4mWL1mCL2REVLi8+IMp5S3n9+G9xbQBi3V5ooXdN1tpcn98+/VxFYz5mHgYbIbrwIzwQ/N+zzYCPrMAmThaEYIk9qAF5bFb92avg1KNcUgJM2Ao=
+	t=1785211194; cv=none; b=kMtu1x+0wLbF0KCqGzLVMHPiv6m+y71vLQdEWKiqIxhS31KKMun9I+So5u353E/4OJd87I6WDYktSnlmSxZjSJaoelOxE4Z90NJCRPZa2yYuqcbxNYf4gUa+xA6taGuW664CzsiOwCmp5BV4MmkcL/4qfDn1ctR5hoN9RPQugto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785211105; c=relaxed/simple;
-	bh=FeLJKfyKVvxcJl1Tr+USSUCHl+JDyYl+zGjEauuecFg=;
+	s=arc-20240116; t=1785211194; c=relaxed/simple;
+	bh=anDSb8BbAzDx5ymFFe8mrT0uOvEQIDLheJzXixVDez0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O4JXhDZ0/tkXB2S9Ejb4DdDqoyDoQBmEqD69MOTaL2wvNw+DUKSE3VXHQuYihSOm8YfxXyuiEauenqBJXVF5IEVKuRlwoaAG+yzjTryRY6Fc9AoHOKPyZFFPOqo3Y7er0BIakHAr8DScUhVqEQKzjKfWGbiObkMLU+SCc6HjhkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJpoWou0; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=X6SVVxBHSvV37+3iwlMxMSJrbIeDsAoVNEEKgvU4TVTKegcXayElo0I0BnhX5NtHG0MYNQQFoCQu+gLzsWr/x6EtjqqxFHG3Ln3jJe2EBYM2/VlyOkbYwCIn/MZ0TpX6inSwoADWwjSrEC2AjuvxCh9CZjJYq7wZHtcYTcus8Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIpzbDQF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJpoWou0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC051F000E9;
-	Tue, 28 Jul 2026 03:58:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIpzbDQF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0EC51F000E9;
+	Tue, 28 Jul 2026 03:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785211103;
-	bh=VUY3OtPrDjV2vDFTVd3tvcDHPkpWj/qE2a6d5m9vWoQ=;
+	s=k20260515; t=1785211191;
+	bh=VMPUzaQEqOMO7T72kl2aKv2Xe03IxXhIjZ2XwwS5UQ4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=VJpoWou0J+yYRoH0m3OKobdsMkLYtB1YTYhvcYcQEVPohSkEr1k8Fbq3YdfkchHuS
-	 VrRb6N1g46h9F+WFU6LvbxDTMDjJ1wpZb8ZTfFuNrGI47TpYB7GmIr10E3fcXYWuNB
-	 4WbVeRy7GZRkN/iTQP8P+Q7SsU7qUWNEFTMzkB1Q8vap/vcd3oC8DoQE+/6gtjxpzS
-	 6DFKzhDQ9unS21E0GkwIYNRAvKmy+FdDo5ofTtqm3YRcBsnSriNdfF8v9N++66it6E
-	 zyhAhkYeK5+aNs1heh7l5NGe2Kr6Xu3L9nnYXKIdd6+D7EPjcs9UNOrw1wZVHIJWwa
-	 fhbqIyyeLnadQ==
+	b=GIpzbDQF5LzmLjn2OVJEZr9tDgK9JEQETTTuriHmz/GDOCwYAHH9ntLD7DsNBJjxR
+	 VDaTGg1eYhhtKdl8s3MirJfnqIQKnM8JKaVdg/UPQPZtvtthob3V8DtaFnsWujO340
+	 ULuK3PtSYyX1vZUR6iJQVXxHMTp4OjVX0TpHknldp5HkbtfYxikZs7+SXl92lBIkaS
+	 rAKww2VC64mxT0uQsnajKZrBpv8kjO+yrkCQQDvSno4bS5gn4IapegdOdmu/DdELuD
+	 SThLddtKTKFoT+asFp5+g91cBOEWuHv2L4ceYntAGJQwu+nGhUyCucZDNNkI8p9ZmQ
+	 US7+raFg0PFRQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted
- virtqueues
+Subject: Re: [PATCH v9 03/10] s390/vfio_ccw: fix out of bounds check on CCW
+ array
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Weiming Shi" <bestswngs@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260727035804.1860862-1-bestswngs@gmail.com>
-References: <20260727035804.1860862-1-bestswngs@gmail.com>
+To: "Eric Farman" <farman@linux.ibm.com>
+Cc: "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260728033022.2658232-4-farman@linux.ibm.com>
+References: <20260728033022.2658232-1-farman@linux.ibm.com>
+ <20260728033022.2658232-4-farman@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 03:58:23 +0000
-Message-Id: <20260728035823.AFC051F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 03:59:50 +0000
+Message-Id: <20260728035950.D0EC51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,75 +50,90 @@ Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Incorrect flush_work() ordering in virtio_vsock_remove() allows rx=
-_work to be queued by a delayed send_pkt_work after rx_work has already bee=
-n flushed, leading to a use-after-free when vsock is destroyed.
+- [Critical] A preexisting logic flaw allows a guest to cause the host's Ch=
+annel Subsystem to execute out-of-bounds memory as a Channel Command Word (=
+CCW), potentially leading to arbitrary host memory corruption via DMA.
 --
 
---- Patch [1]: [PATCH] vsock/virtio: prevent workers from using deleted vir=
-tqueues ---
-commit fac9b600b273994b7593c604a6d3d0352d8dbee3
-Author: Weiming Shi <bestswngs@gmail.com>
+--- Patch [3]: [PATCH v9 03/10] s390/vfio_ccw: fix out of bounds check on C=
+CW array ---
+commit 622cd15d4520f97b7f1bb4f1d15867ddea2a23a6
+Author: Eric Farman <farman@linux.ibm.com>
 
-vsock/virtio: prevent workers from using deleted virtqueues
+s390/vfio_ccw: fix out of bounds check on CCW array
 
-The RX, TX and event workers read their virtqueue pointers before taking
-the mutex that protects the queue and its run flag. This patch reads each
-worker's virtqueue under its mutex after confirming the queue is running,
-preventing use-after-free of deleted virtqueues.
+This commit modifies the loop in ccwchain_calc_length() to fix an
+out-of-bounds array access that could examine the 257th CCW before failing.
+It changes a do..while loop to a for loop to strictly bound the CCW array
+examination.
 
-Cc: stable@vger.kernel.org
-
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_tran=
-sport.c
-> index 57f2d6ec3ffc6..79cf19f589439 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
+> diff --git a/drivers/s390/cio/vfio_ccw_cp.c b/drivers/s390/cio/vfio_ccw_c=
+p.c
+> index 1c2890d139c6b..af632f9d54535 100644
+> --- a/drivers/s390/cio/vfio_ccw_cp.c
+> +++ b/drivers/s390/cio/vfio_ccw_cp.c
 [ ... ]
-> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_stru=
-ct *work)
->  	} while (!virtqueue_enable_cb(vq));
+> @@ -377,11 +377,9 @@ static void ccwchain_cda_free(struct ccwchain *chain=
+, int idx)
+>  static int ccwchain_calc_length(u64 iova, struct channel_program *cp)
+>  {
+>  	struct ccw1 *ccw =3D cp->guest_cp;
+> -	int cnt =3D 0;
+> -
+> -	do {
+> -		cnt++;
+> +	int cnt;
 > =20
->  out:
-> -	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> +	if (vsock->rx_run &&
-> +	    vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->  		virtio_vsock_rx_fill(vsock);
->  	mutex_unlock(&vsock->rx_lock);
+> +	for (cnt =3D 1; cnt <=3D CCWCHAIN_LEN_MAX; cnt++, ccw++) {
+>  		/*
+>  		 * We want to keep counting if the current CCW has the
+>  		 * command-chaining flag enabled, or if it is a TIC CCW
+> @@ -391,15 +389,10 @@ static int ccwchain_calc_length(u64 iova, struct ch=
+annel_program *cp)
+>  		 * after the TIC, depending on the results of its operation.
+>  		 */
+>  		if (!ccw_is_chain(ccw) && !is_tic_within_range(ccw, iova, cnt))
+> -			break;
+> -
+> -		ccw++;
+> -	} while (cnt < CCWCHAIN_LEN_MAX + 1);
+> -
+> -	if (cnt =3D=3D CCWCHAIN_LEN_MAX + 1)
+> -		cnt =3D -EINVAL;
+> +			return cnt;
+
+[Severity: Critical]
+This is a pre-existing issue, but does this calculation adequately account =
+for
+the hardware's behavior of skipping a CCW when a Status Modifier is present=
+ed?
+
+If a guest submits a channel program where a CCW that can generate a Status
+Modifier (like a Search CCW) has the command-chaining (CC) flag enabled and=
+ is
+followed by a TIC CCW that lacks the CC flag and jumps to a different chain,
+the loop will stop counting at the TIC because both !ccw_is_chain(ccw) and
+!is_tic_within_range(...) are true.
+
+In this scenario, ccwchain_calc_length() returns a length of exactly 2. The
+host would then allocate 16 bytes for chain->ch_ccw from the DMA heap. When=
+ the
+hardware executes the first CCW and encounters a Status Modifier, it skips =
+the
+TIC and fetches the next CCW from 16 bytes into the allocation, which is
+out-of-bounds of the host's DMA heap allocation.
+
+By grooming the host heap, could a guest place controlled data adjacent to =
+this
+allocation, which the hardware would then execute as an untranslated CCW,
+potentially leading to arbitrary host memory corruption via DMA?
+
+> +	}
+> =20
+> -	return cnt;
+> +	return -EINVAL;
 >  }
 
-[Severity: High]
-This is a pre-existing issue, but is there a use-after-free risk in
-virtio_vsock_remove() due to the flush_work() ordering?
-
-In virtio_vsock_remove(), the flush sequence drains rx_work before
-send_pkt_work:
-
-    flush_work(&vsock->rx_work);
-    flush_work(&vsock->tx_work);
-    flush_work(&vsock->event_work);
-    flush_work(&vsock->send_pkt_work);
-    ...
-    kfree(vsock);
-
-Meanwhile, virtio_transport_send_pkt_work() can queue rx_work outside
-the tx_lock:
-
-out:
-    mutex_unlock(&vsock->tx_lock);
-
-    if (restart_rx)
-        queue_work(virtio_vsock_workqueue, &vsock->rx_work);
-
-If virtio_vsock_remove() flushes rx_work (which returns immediately if it
-has not been queued yet), and then blocks waiting on send_pkt_work to finis=
-h,
-could send_pkt_work queue rx_work just before completing?
-
-This would leave rx_work pending in the workqueue after virtio_vsock_remove=
-()
-frees the vsock object, leading to memory corruption when the work executes.
-
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260727035804.1860=
-862-1-bestswngs@gmail.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728033022.2658=
+232-1-farman@linux.ibm.com?part=3D3
