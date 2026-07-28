@@ -1,208 +1,132 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F696311C2D
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785252822; cv=none; b=SlJaGof1+kxZWpY1kadJVDCBdnnrbDzzqQsnBNQB9h399k2dF/tn9r9QodJpsenzw0/WOUEqP3x38E4elXWfVzl7XbNXy/WBrInJdyjYGTGDRin0Eja5dFUPZCQFBRGt+psYd0BNux2cF4SuvJk87RDR5aKhINKHUvu+wcBtXnM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785252822; c=relaxed/simple;
-	bh=YuBTtINjR4jpnq2hKlU2JptssXWFADJS3Oya7sYVQDE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vFaIA6LwsW6YgX0NNgYNU9uLg/NyR8MGH4HLjZsXOZ1lRbvRqr6M38faju4FlLndlL2ZLjWiJtqssbGMwHOP1WDWpMciciJx/jKVNSjFMsj+XhjCHzk3GaduwGj9Mi4BLlLODW+g2D1WvlWLeY6wHuIR/7gOVMUL+DJmQY7fitk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YDjpxILp; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EF730BB94
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785252954; cv=pass; b=aFL044mJwwf4ubNsWbdBfuh8Ctn8xMIaBy475Vc1PLY8oShmkYPAJu5eibsAM9ohrE163xzVeQPIbqtj6wRib5of+5MnsG/0bNj2yiCySlR9/NYe5lWeEXcAHvhDBWP/LjD5NtHqZisJSP5n4pU5YyjfUHb0zTvnwE5EJiNiTpw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785252954; c=relaxed/simple;
+	bh=AViFMS0ewOoq1cL1NaPq6qKbymiWEx2DbacEkdjRd2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XHMSk+U/+5+Ru1ZmECocUvSLlHCerLyfOpF9QAlH23/QfxINq4z5IDqbUvaStkUzK/hL6izN4tMth0UIPvUFALViW2PJfh6/cf6GLVSthP3OIaLMExrhEXNRJKnVErYkwYd/cg7ZjQFmCucM9pPRC+7gkd6JpxJJ43HkTKUw018=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=TaIZ5FYO; arc=pass smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YDjpxILp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785252819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cryWGARQWgvDH8w4Iru00RCVGi/QlZW6kZxJHz1JXWU=;
-	b=YDjpxILpzNvLaz1M30v1xzjPN1e4TsMKzG18kuLL60+GaVSbNRsbIXyPJJnRNXMUBfKIkf
-	L9pmv0XQpi7G9A5UhwQk6N2sGn5FZ3Mw3Ep97MJSBOizynD/yz0+vqM2YfmORHXL1LRIJl
-	DSJtPnCV94WQHDW9K4OfP820qPQmWUo=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-655-o_NNZKpZPpef7RsEd3ki3A-1; Tue,
- 28 Jul 2026 11:33:32 -0400
-X-MC-Unique: o_NNZKpZPpef7RsEd3ki3A-1
-X-Mimecast-MFC-AGG-ID: o_NNZKpZPpef7RsEd3ki3A_1785252809
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F0FC41955DDE;
-	Tue, 28 Jul 2026 15:33:24 +0000 (UTC)
-Received: from [10.44.32.140] (unknown [10.44.32.140])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9954B1800480;
-	Tue, 28 Jul 2026 15:33:22 +0000 (UTC)
-Message-ID: <1800dfd2-5d55-4244-a69f-c7e16868b238@redhat.com>
-Date: Tue, 28 Jul 2026 17:33:19 +0200
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="TaIZ5FYO"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f707e5d75so8625f8f.1
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 08:35:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785252951; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LYEL8Mn9I6E+J3e4qhJP1H63+nMmTw7YDzmP/e8QXv4w/z91KHV+vP3q31wr4uBzG5
+         zhwWWLWa3Hej6SIEGEptXBDWJ0f3F3KQZmkyn6GvGEGnPPK1lO/u8CKNlzPOQQfPRB5T
+         9XoD8aahRskrEFrS4sn2SeBKciHZDvegdplxRK5ukcbsPhxbPeHJ1pv/p2JbIMCISMa2
+         fYJ25jAy3AeYkpVlHkzFJjcCsfFmtjovIJl7yMcfccqGuCvYUxpi8MDcsorycEXOYSRi
+         aTezwO2gJjwGEE1Zw3DEIdSUO6+4WQ2ey7hswQorvFNUDlnwR2nN4Y/0oCNZr2hfjfZH
+         pJCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AViFMS0ewOoq1cL1NaPq6qKbymiWEx2DbacEkdjRd2Q=;
+        fh=ShGBO0rP6bCT9mW56AUAmJTJdmeq3X9dQ3oJQg+Zwv0=;
+        b=GyLTF06xzi5mdFY+Y/EuIk25pr8e3C/gsmsemKux23mdY2H6w08VJScLPAY1ueQzS9
+         B72c71bYXFr7uWi8gHKJVse15fTf2U629liYb+gIkR8gV8/9enizvD8P/SfLpZxe51XR
+         Ql7WdR93BSLsnkrSXG7DiDXcq82rDCqqQNU4jtk5FnEAM+A+c8ie2FtjT20qGBbY2H/6
+         5NxCZnC9y8jEXEYNRb72SW+dpe0bqlTj0psucP/9ROABSliehZ9aCsMD8ud3JEPXriyq
+         HjtNgwhfEM0/eoq3JdG0x+QXpTh6WortbuLEArPDJ1tmqwB11PJXmRMcGWGNCVMgptYg
+         6cFA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785252951; x=1785857751; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AViFMS0ewOoq1cL1NaPq6qKbymiWEx2DbacEkdjRd2Q=;
+        b=TaIZ5FYOP7kjMD2spjN8nKTndgTz1qrXF1ZGBikX4GyEsQAT196z/5lwckOrsPcCwa
+         Qe3m8PiqUSlIUcfGRaspD4sB/Eavw5StqqZSNr+EoSqM/r2G4Y3nMfVVMhLB0eZozKfV
+         TkC92HzgUYiUas0ToiPwfJ7CRgqompG3XR5HpBD+0YiQtxrG21yxZfcsPzX1tM+jWm6t
+         3MYNXL2GQn/RjXY82x0HVIC/RWxpmfTPRITLkz0qrgV32+XTR+cfJQ+gPRN6n9aFmiSv
+         0IQ5giFYQaF9EdkBZxXewoLWqhBOHwqAbv1CXrb7Qib2/jPzYtemGo+Sc8NiXBgRBhbA
+         VnGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785252951; x=1785857751;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AViFMS0ewOoq1cL1NaPq6qKbymiWEx2DbacEkdjRd2Q=;
+        b=r3PE+WJde5nhd8y8Rm0PWHrwKAUgbaVAlKNujx13+5o7ZEtJ8bmAzqZ0qaABTjjMuW
+         3AWT/RA0OLQxulfKTMc/Y9iOGCHvJj8rZvVr9zTkLEvV/KRFtyo4bWaiJNSVxAdSOkDg
+         wAb+w8IJhZEBZsvIMzSqzU4MGRqk3PsVYIpdHAqTxNcHVNb4BbrLSx7raD/fekj7esAZ
+         md8Gq/sn9/rVmwtL99acejE4p+CqR/wdbCOj7O5MFocNIm/aGts3R/iUaCF19d2z2YYB
+         svjighJJDXQBsgYAKWqpmW+eLUR5KE7he+yGzixbJtpcm7NRqsXNrExKLu0EhnE7vPV+
+         wGWA==
+X-Forwarded-Encrypted: i=1; AHgh+RrcBv7UuGHbG4kSyx6RDOyiC8Ww4rNkdeFGNpXoZIf9FuFckH9C3hLXg9ByfY0w8W4AcM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAMbwo8SMIkbpWxUGJDkcvU+AWhlkBns81MEmUGUVOogWYCt04
+	l2DsfSoXw8TIlN6ghW5WrEtSBqfERZ2iV9Pdr5j2NYXgyoQ4voQ9nmWiXf4jND+MMrmFyx5wzJU
+	aGY/8lFCNveBE1RNjanDYQq13VQNjlKcTOdbt/j92Nw==
+X-Gm-Gg: AR+sD139I8nLZvoSEbUoDA8mxnJwQQB3voI7fpEx+KxCNRzWv+ACfKWc2Z5y62jF34W
+	wFuEf4oKPpONaxiFZ1jKCJUzJ8WTUncpD3DqjKy376fx7KH7ndV1afRUvEz1xFPQ/e3bjvKbM8N
+	vYKDvO2vXDG5ODdRPaCpSpauqxxyAkzYg8rrA48dMTpx6iappi09Qx6Q/ori8xKeKmvT70gQRhV
+	1nHGV6xeLZd/4EQVZDYBK4q4yEoJlhr9aBWAV+U3K+vGZJH6woUpoo/rYyVm3o5VpvH7PK53Rl+
+	Cun7nfzxP2qZjOufo3fLpucl7Z7nkZ2UvfJ4FNcTkxYKkqP30GmAUUZqV0ihWuTGq4MbyqTxyMT
+	UauNP
+X-Received: by 2002:a05:6000:606:b0:47f:2634:b5a with SMTP id
+ ffacd0b85a97d-47fb1ea7d51mr3223821f8f.33.1785252951217; Tue, 28 Jul 2026
+ 08:35:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] KVM: x86: Cancel delayed I/O APIC EOI handling before
- destroying vCPUs
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- zdi-disclosures@trendmicro.com, Zhong Wang
- <wangzhong.c0ss4ck@bytedance.com>,
- Xuanqing Shi <shixuanqing.11@bytedance.com>,
- Weiming Shi <bestswngs@gmail.com>
-References: <20260727171718.543491-1-seanjc@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260727171718.543491-1-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+References: <20260626103619.174179-1-yhchen312@gmail.com>
+In-Reply-To: <20260626103619.174179-1-yhchen312@gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Tue, 28 Jul 2026 21:05:39 +0530
+X-Gm-Features: AUfX_mxshNrjU_4DhTQT2LcNdq_XRUYgd4f2QGjF33GZ2jYUBKW7SoamrV0OVuE
+Message-ID: <CAAhSdy2Qa2DGFzb27MgmoH5Pf1BOrgwaZBqP__U9eejs5-5Bsw@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Add arch-specific tracepoints
+To: "Yuhang.chen" <yhchen312@gmail.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Quan Zhou <zhouquan@iscas.ac.cn>, "bingyu . xian" <shanbeenyoo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/27/26 19:17, Sean Christopherson wrote:
-> From: Weiming Shi <bestswngs@gmail.com>
-> 
-> Cancel (and flush) the I/O APIC's delayed EOI handling work during the
-> "pre VM destroy" phase, before vCPUs are destroyed, as processing the EOI
-> broadcast will inject another IRQ if the line is asserted, i.e. will try
-> to deliver an IRQ to the target vCPU(s).  Canceling the work after vCPUs
-> are destroyed leads to UAF if the delayed work is processed after vCPUs are
-> destroyed.
-> 
->    BUG: KASAN: slab-use-after-free in __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 arch/x86/kvm/lapic.c:1250
->    Read of size 8 at addr ffff8880499abea0 by task kworker/1:2/1218
-> 
->    CPU: 1 UID: 0 PID: 1218 Comm: kworker/1:2 Not tainted 7.1.0-rc7 #5 PREEMPT(lazy)
->    Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
->    Workqueue: events kvm_ioapic_eoi_inject_work
->    Call Trace:
->     <TASK>
->     __dump_stack lib/dump_stack.c:94
->     dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
->     print_address_description mm/kasan/report.c:378
->     print_report+0x139/0x4ad mm/kasan/report.c:482
->     kasan_report+0xe4/0x1d0 mm/kasan/report.c:595
->     __kvm_irq_delivery_to_apic_fast+0x9bf/0xa20 arch/x86/kvm/lapic.c:1250
->     __kvm_irq_delivery_to_apic+0xd8/0xbf0 arch/x86/kvm/lapic.c:1345
->     kvm_irq_delivery_to_apic arch/x86/kvm/lapic.h:129
->     ioapic_service+0x308/0x590 arch/x86/kvm/ioapic.c:492
->     kvm_ioapic_eoi_inject_work+0x13c/0x190 arch/x86/kvm/ioapic.c:532
->     process_one_work+0xa59/0x19a0 kernel/workqueue.c:3314
->     process_scheduled_works kernel/workqueue.c:3397
->     worker_thread+0x5eb/0xe50 kernel/workqueue.c:3478
->     kthread+0x370/0x450 kernel/kthread.c:436
->     ret_from_fork+0x72b/0xd30 arch/x86/kernel/process.c:158
->     ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->     </TASK>
-> 
-> Note, the VM is unreachable once kvm_destroy_vm() starts, and scheduling
-> new work via kvm_ioapic_send_eoi() can only be done via KVM_RUN, i.e.
-> requires a live vCPU.
-> 
-> Alternatively, KVM could simply destroy the I/O APIC during the "pre" phase
-> of VM destruction, but that gets more than a bit sketchy as KVM expects the
-> I/O APIC to exist if ioapic_in_kernel() is true, and nested virtualization
-> in particular has a bad habit of touching VM-scope state during vCPU
-> destruction.  E.g. attempting to free the PIC during the pre phase would
-> lead to a NULL pointer dereference in kvm_cpu_has_extint(), and it's not
-> hard to imagine the I/O APIC having a similar flaw.
-> 
-> Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
-> Reported-by: <zdi-disclosures@trendmicro.com>
-> Reported-by: Zhong Wang <wangzhong.c0ss4ck@bytedance.com>
-> Reported-by: Xuanqing Shi <shixuanqing.11@bytedance.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Fri, Jun 26, 2026 at 4:07=E2=80=AFPM Yuhang.chen <yhchen312@gmail.com> w=
+rote:
+>
+> Add RISC-V KVM tracepoints for events that are useful when debugging
+> guest exits and in-kernel emulation paths. The existing kvm_entry and
+> kvm_exit tracepoints are kept, with the kvm_entry PC format fixed to use
+> zero-padded hexadecimal output.
+>
+> The newly added tracepoints cover:
+>
+> * kvm_guest_fault for G-stage page faults
+> * kvm_irq_line for userspace IRQ injection
+> * kvm_mmio_emulate for MMIO load/store emulation
+> * kvm_timer_update_irq for VS timer interrupt updates
+> * kvm_wait_riscv for trapped WFI/WRS instructions
+> * kvm_sbi_ecall for SBI ecalls
+> * kvm_csr_access for CSR emulation
 
-Queued, thanks.
+Drop kvm_guest_fault, kvm_sbi_ecall, kvm_wait_riscv, and
+kvm_csr_access tracepoints. Instead add common
+kvm_vcpu_exit tracepoint for all vcpu exits just before the
+switch case in kvm_riscv_vcpu_exit() function.
 
-Paolo
+Drop the kvm_irq_line and kvm_timer_update_irq tracepoints.
+Instead add common kvm_vcpu_irq tracepoint called from
+kvm_riscv_vcpu_set/unset_interrupt() function.
 
-> ---
-> 
-> v3:
->   - Go back to v1, sans the helper (x86.c already has an #ifdef). [Sean, syzbot]
->   - Expand the block comment to call out the the PIC and I/O APIC must not be
->     destroyed/free. [Kai]
-> 
-> v2:
->   - https://lore.kernel.org/all/20260706180025.2735341-3-bestswngs@gmail.com
->   - Per Kai's suggestion, instead of adding a kvm_ioapic_pre_destroy()
->     helper that only cancels the eoi_inject work, move
->     kvm_pic_destroy()/kvm_ioapic_destroy() as a whole into
->     kvm_arch_pre_destroy_vm().  This also fixes the stale
->     kvm_io_bus_unregister_dev() Kai pointed out.
-> 
-> v1: https://lore.kernel.org/all/20260705050443.1331662-1-bestswngs@gmail.com
-> 
->   arch/x86/kvm/x86.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 0626e835e9eb..2b8474812303 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9939,9 +9939,15 @@ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
->   	 * iterating over vCPUs in a different task while vCPUs are being freed
->   	 * is unsafe, i.e. will lead to use-after-free.  The PIT also needs to
->   	 * be stopped before IRQ routing is freed.
-> +	 *
-> +	 * Do NOT free the in-kernel PIC or I/O APIC here (but as above, make
-> +	 * sure to flush any background work), as KVM expects interrupt routing
-> +	 * structures to be valid until vCPUs are destroyed.
->   	 */
->   #ifdef CONFIG_KVM_IOAPIC
->   	kvm_free_pit(kvm);
-> +	if (kvm->arch.vioapic)
-> +		cancel_delayed_work_sync(&kvm->arch.vioapic->eoi_inject);
->   #endif
->   
->   	kvm_mmu_pre_destroy_vm(kvm);
-> 
-> base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
+The kvm_mmio_emulate tracepoint is fine.
 
+Regards,
+Anup
