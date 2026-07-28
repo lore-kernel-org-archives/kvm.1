@@ -1,145 +1,90 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E6637C109
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785255895; cv=pass; b=mw9vERSk1oOgrWsW/X/u8KgkWoRqQxRHODYJFx9qm1My63Yp/VlgWq6XAJocJH7hMkYAI99wANx5R5Lk1Iyc4PxEwPZ8JXxgr7eGzlXXYbpUmxj4++lajtiX/qMqtq9vjPeYhR4JCWT03ZdOhqBdr5YHEWLvfDH5CCL7WJ+kmlI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785255895; c=relaxed/simple;
-	bh=i1628fISlf4UMwG9ccW9rlvACehVA/JJrr0ofdO8/Bs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XvMi79Eh6z3R9lOilwK8o3HC1nL8Cjn8gnhL8iXMD2LEtaS+SZ1RxUe0sni7jdR6qsnxUdOPRsdWFigeQNFa3+ZtpeE97Kfz94DtWREbCN0X8lWyUAYuh/USuAEM5rThWLA6xXDKXDIBjuL9ivPbDgGUVJ91KGjkmCAjv2fVj5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lct2g94N; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F119379C38
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 16:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785255964; cv=none; b=KghbqlOPNr5+a2TiSt75DDPH0/Qrkl5axNQ/HsCCoEcHOtkwNftVBUhOF5W7Xr1mVFkGTZRwnWv55YnQtApKHCtbYAPL/UYOc1muOD9TLOO0kv26osMyS0YuvAqFl9UncUxZmp2IXR0onJQZEBeohGCXUo95cOZhzSDTHUNmPpE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785255964; c=relaxed/simple;
+	bh=cXGsuhxvawCJhH1ijlMwlBJ8BtQ7Tub4R5UAY82z6ME=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=h1q6/jShE1mVgYHvRb29ZleuH9rRL2MKNC38r5aohL7qeDQsEylv4+HwwOsOpWXmMJ1kupUQIIdYgHx2mpdRK9budDBQvzd/f4pB9SmBQ11jLRToWCa3PhS7uI+QwouDVWFPMT433QnpUgUmrbzBTXZPvxtMCjIzTUJ0SAruKSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJjvfRKf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lct2g94N"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a01b8959e7so2528029a12.1
-        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 09:24:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785255892; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Wdcey8AQVgdYTpE1jyBdW9QT+c/KVbXOBTjN0Y0TAcG2Mz5w/RTxXmFvDkwaxER9UI
-         M7j9kvg+VkmRqh1Q24SlMWNrM4kWL5JDwa196ze7Wf6w77JhKYVU+Y3T9CRuzDgyCuxX
-         Ik/lK32BmV4Cl9eZoOjmg9dorbhsMEeBQSRNZdMVHp1jo/YCMqVxqmE6vBPM/wTGRouN
-         CWyHAgXoTjg5MBOgkkpMYV/iB+eIoynFAoHobm9zE1cbXxAdZfwRFBaCcLWhn3XSz4Xm
-         x7BDwhUMvnWQEzRy8YFdx9rkZ9un/ZFeOR8isuoC50b8aiLgPoALaIoAJS9TxVvu48f3
-         mVWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
-        fh=GiwviZeVpj047NzW9KjWIrijY/rwtfKzhPwjDUKCVI0=;
-        b=KME+l/vdJwiEYADjzfSU7TfXuIOAB3xnGhh2CByen0noHN/ux9yf7t2j8vtuYOAB8D
-         aJ13tR5FpDz1jqdwHSYIfAZRR3AXyzlK8B0R8ADspKEDOohEhj62D5NKyN31myFaH4Oa
-         gFKrYcyuIdkFoqy02XteTXX/ybov5m9cQM9Xsu9QWoY9LIo8PERUdclkAytbHVBLPbdH
-         iIFv8hseBy1GA3QPTKrTrHDoiy0S60791GNZYoXgR1wfr9PcWbFdVQV31DUFXnH1lmVM
-         3RXBfspX+ZvzplAbW71AKbVwp9Vfl1VlDWlzds3p0yWroCKEnzh5mbC/8a+onwVyFcSr
-         VXtg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785255892; x=1785860692; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
-        b=lct2g94NA7Y78eYOuMwwwOD23muR4BCkZNRbsJICh+9hglpnHXOzXUql+nLU/P5tOK
-         0d0TBL0pW22X21jbhCabGSMFnajlsSvGV9OScRanEJLdGwTi7hHCw0a8oOhOhHgSnNJ/
-         XeHlIeq+bY+ne0zDcpy8Et3BbUl3VTAj0I33k+ARe/2krF0k7H/dHMDkAUTJOGMNpBLC
-         d/BnenlAukzH7JQ59YVf11d86AL5VodBO8CWe2cqgfDTbrK5B4gCxaaYes85D/J95kvj
-         RWXB+Djy9aFPf/lqI4ioHSn1BMI2+63edIw9TWw10DleSSBn8rO1NXcdhKmhsx04sgZv
-         I+NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785255892; x=1785860692;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m2b1aa1x2EwEerBPXqJZ1QjoQVkz6jCcTGc7EVDlyNo=;
-        b=litmQSH7jxiY7VXKJOEf8eLVWE87SxD61vApMMYyMgcx13tiHVN2GFbjSPt0tkOad6
-         SWaiMgTR0DLV4KR6syjEz0X4mycRbQmryevUlxiXFe/wbJ1u4FdVqXoU8Pih6RHHRRbH
-         oP7JHEkN8ysntC14iXEfLqFnQMv94Ugg4wT7eI7TMII+RaVD30UveOvD3M71okogk0S3
-         a5wtStKSIPfv5kwYlajuXvYI2iE3tNic0eIFzTElr0zIyF7DslXf6hSIWvEkjlCnNR29
-         NnlaOMNij5wJXOR3LrEl4XSbhSgJanngWZhLxdc8jQAm1VIi066Noe7ZOWM4Uoz28QWC
-         GaZA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7VvRrnwO6wjh7KBUEef7cWTblhtpd4/TG2J6vIEJEBQwhcTvhLTyZaTOxlIhK4FHgqzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq6cVreCGAeEhjXCc+Sz7/3Ew2MFZy+WWZu2BaCLq7qRKzWGEX
-	65P8GunDuPx0wyo4sqGXvsDoozQBM01GDQDp19zYjkeX5AjVjwVbZr3LQeO2Kl1QnLYM32Q6lt7
-	xZjreSjJE3X+UheIU3QXrWjQyEV5CesKDqzc=
-X-Gm-Gg: AR+sD13gi+VW8KKnJtQXt93KfLZ27ONrz3i46QsYcsLhH3/D/Ac9XEXM3crWjbuyzt8
-	ZR3m6/sP/6Fcp9cmB0ZRmjgwnf/Xabe079AFSY6v8W6iczUM/XZcYqBtGy8p/68kiyD8+MYRv8d
-	ddue4ozJ+oCwQRO3ng509j0FUw+oB1rKZxthuWZTk8DGCT6qXjP+gaGcwDCvGpHDb+7/1y/9xuL
-	TdBHs42Oi/ZFBreBy/YVQLsibuAHnQMCB+MAgx5g0gSDPc1WfciNW6Uhdt5zc3gWZsE5W5EiiEQ
-	SmxXMoGek7GT1AoR3bcBCw4qzs183y049ped+bnmmEO+mhR+CZKYrtp3z/0XHoWZSbq0zQtv
-X-Received: by 2002:a17:906:6a1e:b0:c1c:1e8d:f8e8 with SMTP id
- a640c23a62f3a-c1f727bc91dmr163943766b.56.1785255892096; Tue, 28 Jul 2026
- 09:24:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJjvfRKf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C21F000E9;
+	Tue, 28 Jul 2026 16:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785255962;
+	bh=TjQmY2wTlB3mjGRHZ0jd0r5CHkerBUOCTm2hJBYayyw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=FJjvfRKf8It8FDggV6bvGsoEjTXgO+93faAmCO+OFpwOxSl8D0l8a3c4Bau5APACt
+	 +ei3yoLNO3WSqBXjSLGOO25tfdq6eoijWBVOis19KIqKslvxrwwS8xQd5iKAk/AiBC
+	 ic/iXPWtNVFJwHvc1ckSCZhgt4HAwPeR4CTKYrSGH9kP79hhSZvrLU4Elr0MGRplFQ
+	 BNMxbRVw3G1XZXhJIDIhLWHyJw0cWgJrPkCQg5O8YO/tEr5nWAorSNQKFBrtw1GAfv
+	 CERN1VnIFoUdZ6ptL/Aba9fLdBGcfh1ViDanmAV7TKail/aPy46wsfllb3Rf6r8bG1
+	 KG35kz+gMOKjw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/3] riscv: ptdump: Create ptdump.h and move
+ declarations
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Dylan.Wu <fredwudi0305@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260728161449.190058-2-fredwudi0305@gmail.com>
+References: <3bb2f519-c70b-6c35-c404-6fbfe8adbeb1@kernel.org>
+ <20260728161449.190058-1-fredwudi0305@gmail.com>
+ <20260728161449.190058-2-fredwudi0305@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 28 Jul 2026 16:26:01 +0000
+Message-Id: <20260728162602.0D6C21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CAGEsz8FbPu_DtOkTij0RvBriK1R0FspzEU6Oef0Gers-gS1d3w@mail.gmail.com>
- <aminBc88wFWw4NSC@google.com>
-In-Reply-To: <aminBc88wFWw4NSC@google.com>
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Wed, 29 Jul 2026 01:24:40 +0900
-X-Gm-Features: AUfX_mx2EsPBF60M4yH0xLU5_gaBUJWDb4Dt0wO-jKFSO-reKfI0H-VlmOyPqeE
-Message-ID: <CAGEsz8G8xWvnbtL-zCoGonFKFb8oL0TzmJQ77mPS_64CxrLdkQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: x86: Cancel IOAPIC EOI work before freeing vCPUs
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, security@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Thanks for confirming, Sean.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] Exporting the generic symbol `note_page` pollutes the kernel's glob=
+al namespace.
+--
 
-I had not found the pending fix or the earlier reports during my
-search. I will drop my patch.
+--- Patch [1]: [PATCH v3 1/3] riscv: ptdump: Create ptdump.h and move decla=
+rations ---
+commit f9b97fdc17623863fd64f27ed80770e08d139f2a
+Author: Dylan.Wu <fredwudi0305@gmail.com>
 
-Thanks,
-Myeonghun
+riscv: ptdump: Create ptdump.h and move declarations
 
-2026=EB=85=84 7=EC=9B=94 28=EC=9D=BC (=ED=99=94) =EC=98=A4=ED=9B=84 9:56, S=
-ean Christopherson <seanjc@google.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1=
-:
->
-> On Tue, Jul 28, 2026, Myeonghun Pak wrote:
-> > The IOAPIC delayed EOI injection worker dereferences local APIC pointer=
-s
-> > from the VM's APIC map.  Since commit 17bcd7144263 ("KVM: x86: Free
-> > vCPUs before freeing VM state"), kvm_arch_destroy_vm() frees vCPUs and
-> > their local APICs before kvm_ioapic_destroy() synchronously cancels the
-> > worker.
-> >
-> > Consequently, if the delayed work is pending when VM teardown starts,
-> > the worker can run after a local APIC has been freed.
->
-> ...
->
-> > Fixes: 17bcd7144263 ("KVM: x86: Free vCPUs before freeing VM state")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> > ---
-> >  arch/x86/kvm/ioapic.c | 12 +++++++++++-
-> >  arch/x86/kvm/ioapic.h |  1 +
-> >  arch/x86/kvm/x86.c    |  1 +
-> >  3 files changed, 13 insertions(+), 1 deletion(-)
-> >
-> > AI disclosure: I used AI assistance during the audit and am treating th=
-e
-> > issue as public as required by Documentation/process/security-bugs.rst.
-> > The reproducer has not been posted publicly.
->
-> Though that doesn't seem to matter much given you're the fourth person/gr=
-oup to
-> independently report this bug. :-)
->
-> A fix is already pending:
-> https://lore.kernel.org/all/20260727171718.543491-1-seanjc@google.com
->
-> Thanks!
+This commit extracts page table dumping structures and level definitions
+into a new header file, arch/riscv/include/asm/ptdump.h. It also exports
+the note_page function for use by other kernel components like KVM.
+
+> diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+> index f4b4a9fcbbd88..d9a955b8a532d 100644
+> --- a/arch/riscv/mm/ptdump.c
+> +++ b/arch/riscv/mm/ptdump.c
+
+[ ... ]
+
+> @@ -317,6 +280,7 @@ static void note_page(struct ptdump_state *pt_st, uns=
+igned long addr,
+>  		st->last_pa =3D pa;
+>  	}
+>  }
+> +EXPORT_SYMBOL_GPL(note_page);
+
+[Severity: Low]
+Does exporting this highly generic name (note_page) without an architectural
+or subsystem prefix risk build or link collisions?
+
+Since it is now in the global module namespace, should it be renamed with a
+prefix like ptdump_ or riscv_ to avoid polluting the global namespace and
+adhere to standard kernel naming conventions?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728161449.1900=
+58-1-fredwudi0305@gmail.com?part=3D1
