@@ -1,216 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00963B1B3;
-	Tue, 28 Jul 2026 01:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8A72D061C;
+	Tue, 28 Jul 2026 02:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785203840; cv=none; b=rAF8GJwjsB5iv+WF/Gd9xus+RWaLal5FYuyNr3MJ91FOyYoGteZJO7nXsY8oJi7hAcTwhTxwxeQzGGNX7Yv2/c1V6zW13K27jOKPSaXo1/zm5acdqwEH/Fcrfcpbt8T/gWiQoLJdsRlW+8tVHCFW++/yzIyEohaDVFj4Xc50Ajw=
+	t=1785204007; cv=none; b=IT4gAF5RSXyVgd9U1EIro8w/T02eluRChFthfugbsML5k0DXVe5OCzB6XG2ZHdogkttiD4y1m7NarMEOGZA8cbAxIOYW0QCqgTiDwQ5UWnTPHyZbl037eYSd1OHBp/5qyXWTw6VyCfse6WOyJNLoI1gmE3Up5lqAOmUgIfvspnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785203840; c=relaxed/simple;
-	bh=9LiFuk3BEURIR52TJvSpwWCROpFoFd33pRcsJNjcIzg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=HatGq2u0vU0BRryDrM8i07F0cFvYsQwbh0U+NQdHH935F3R0D6HZxtrxLxhfNuzYkvgBIlLZv31bCJN2BsrgVFU0OR2Yu5z0deeKcLNBpxLHcyUz2ujgQ2lnnfGe95TLBvXSsiQj8vT+F9JRFeXegxdxdenrwPJyzYp46xPa3/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBIrI25/; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBIrI25/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8781F000E9;
-	Tue, 28 Jul 2026 01:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785203839;
-	bh=ta9y+3uyPMZ8vqpyd3Ox3C2Tr/25e+sgl8TiabLj8TY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XBIrI25/UGuEnsyvUG0bOJn6gruCA+n3NnlKbOhpJCXxQj9MXzFsuQNJWq+b4oiHJ
-	 7ZEh4GGK2yQPqkERkmHw0ocI3iq2zTSD8fnXKbLKP1t53X95Aw7hp1VEqXkKNbitXF
-	 ujhl5EPOMD4QhRl9sBA0d/2Jb0NEVqTg5+G5ZG8hNZRhPfBqV3k347P+2peyakygIA
-	 vXf29e+JeIM8uHqZ/RqDgqLFdHaSPNPILEw6gTriYQHX0zYQ2/cvlWT1duMcWwsiPg
-	 RnxPVzuGj7LqS8L3b6KwUDl/XarM9XDoKsguL2lPvxiiz1zcxpc1tIY4Sd2AxvkpDB
-	 qchBmUpY6vgTw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 09/10] s390/vfio_ccw: selectively expand io_mutex
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Eric Farman" <farman@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260728013509.1551753-10-farman@linux.ibm.com>
-References: <20260728013509.1551753-1-farman@linux.ibm.com>
- <20260728013509.1551753-10-farman@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 01:57:18 +0000
-Message-Id: <20260728015718.DE8781F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1785204007; c=relaxed/simple;
+	bh=fePWmtK9tZu2gh6X0NLBQhets24U3RmqzvIDmocbDKU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CKuxbgIeDuS+Zawn0JlZbW+rvwM+e4tobWtX7mEWZlcpNd4L7H0ot50ihDguVNjdBNQN1/YwJCaGhg8a0OBGxaVJCybjej2i1kVGM+0VYkp1JQ7zTln8JU9RjAQ229dbUPELQjNLXjARmvY6VWPiCQzgOSroDHLBUTw4U53LqhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id A623323371;
+	Tue, 28 Jul 2026 04:54:17 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Santosh Shukla <santosh.shukla@amd.com>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	kovalev@altlinux.org
+Subject: [PATCH] KVM: x86: Re-pend NMI in vNMI hardware when injection is blocked
+Date: Tue, 28 Jul 2026 04:54:16 +0300
+Message-Id: <20260728015416.1371404-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+With two NMIs pending and vNMI enabled, process_nmi() hands one NMI to
+hardware via kvm_x86_ops.set_vnmi_pending() and leaves the other in
+vcpu->arch.nmi_pending for injection via .inject_nmi(). If that injection
+is blocked - here by an interrupt shadow set through KVM_SET_VCPU_EVENTS -
+kvm_check_and_inject_events() calls .enable_nmi_window() to single-step
+the shadow. On the next VMRUN hardware delivers the NMI it was holding and
+sets NMI-blocking itself, so svm_get_nmi_mask() becomes true. KVM_REQ_NMI
+is not pending on the re-entry, so process_nmi() does not re-run and the
+leftover NMI is still queued; .enable_nmi_window() is called again with
+NMIs now masked, and svm_enable_nmi_window() hits WARN_ON_ONCE() - which
+asserts KVM never opens an NMI window while NMIs are masked under vNMI.
+With panic_on_warn this is a host DoS.
 
-New issues:
-- [High] The `notoper_work` work item is not canceled when the mediated dev=
-ice is released, leading to a Use-After-Free of the `vfio_ccw_private` stru=
-cture and `io_mutex` corruption.
+WARNING: CPU: 3 PID: 1450 at arch/x86/kvm/svm/svm.c:4004 svm_enable_nmi_window+0x716/0x8f0 [kvm_amd]
+CPU: 3 UID: 0 PID: 1450 Comm: syz.1.86 Not tainted 6.12.85+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:svm_enable_nmi_window+0x716/0x8f0 arch/x86/kvm/svm/svm.c:4004 [kvm_amd]
+Call Trace:
+ <TASK>
+ kvm_check_and_inject_events+0x117a/0x1520 arch/x86/kvm/x86.c:10486 [kvm]
+ vcpu_enter_guest.constprop.0+0x56f/0x40c0 arch/x86/kvm/x86.c:10946 [kvm]
+ vcpu_run arch/x86/kvm/x86.c:11344 [inline] [kvm]
+ kvm_arch_vcpu_ioctl_run+0x5dc/0x2560 arch/x86/kvm/x86.c:11671 [kvm]
+ kvm_vcpu_ioctl+0x459/0x1510 virt/kvm/kvm_main.c:4492 [kvm]
+ __x64_sys_ioctl+0x190/0x220 fs/ioctl.c:893
+ do_syscall_64+0xf5/0x220 arch/x86/entry/common.c:78
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Pre-existing issues:
-- [High] Incomplete synchronization of the `private->crw` list leads to a d=
-ata race and potential list corruption between atomic writers and mutex-hol=
-ding readers.
-- [High] The device state (`private->state`) is vulnerable to corruption be=
-cause the newly protected `io_mutex` critical sections race with lockless a=
-tomic context writers.
---
+Before falling back to a window, retry .set_vnmi_pending() as process_nmi()
+does. Hardware has already delivered the NMI it was holding, so the retry
+succeeds, nmi_pending drops to zero, and no window is requested; hardware
+delivers the re-pended NMI once the guest IRETs. On the first pass hardware
+still holds the earlier NMI, so the retry fails and single-stepping is
+unchanged. Without vNMI .set_vnmi_pending is NULL and the branch is a nop.
 
---- Patch [9]: [PATCH v8 09/10] s390/vfio_ccw: selectively expand io_mutex =
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fa4c027a7956 ("KVM: x86: Add support for SVM's Virtual NMI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
-commit 033ce2042d965485876fe10c634ebbb9d1df4992
-Author: Eric Farman <farman@linux.ibm.com>
-s390/vfio_ccw: selectively expand io_mutex
+The splat above is from syzkaller fuzzing on 6.12; the bug also reproduces
+on kvm-x86/next with the syzkaller reproducer in a KVM guest on an
+AMD EPYC 9754 (Zen 4c) with vNMI enabled; the WARN no longer fires with
+this patch applied.
 
-The io_mutex was defined to serialize the io_regions, but has also been
-associated with the I/O themselves. This patch expands the scope of io_mutex
-to close remaining race windows, and introduces a workqueue element for
-cp_free() to avoid acquiring mutexes in interrupt context.
+ arch/x86/kvm/x86.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> diff --git a/drivers/s390/cio/vfio_ccw_chp.c b/drivers/s390/cio/vfio_ccw_=
-chp.c
-> index f3015132d4b5f..9269b54f5cfd4 100644
-> --- a/drivers/s390/cio/vfio_ccw_chp.c
-> +++ b/drivers/s390/cio/vfio_ccw_chp.c
-> @@ -98,13 +98,13 @@ static ssize_t vfio_ccw_crw_region_read(struct vfio_c=
-cw_private *private,
->  	if (pos + count > sizeof(*region))
->  		return -EINVAL;
-> =20
-> +	mutex_lock(&private->io_mutex);
->  	crw =3D list_first_entry_or_null(&private->crw,
->  				       struct vfio_ccw_crw, next);
-> =20
->  	if (crw)
->  		list_del(&crw->next);
-> =20
-> -	mutex_lock(&private->io_mutex);
->  	if (i >=3D private->num_regions) {
->  		ret =3D -EINVAL;
->  		goto out;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 960ff7fcd8db..d35f5fd3cb16 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7724,6 +7724,9 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
+ 			can_inject = false;
+ 			WARN_ON(kvm_x86_call(nmi_allowed)(vcpu, true) < 0);
+ 		}
++		if (vcpu->arch.nmi_pending &&
++		    (kvm_x86_call(set_vnmi_pending)(vcpu)))
++			vcpu->arch.nmi_pending--;
+ 		if (vcpu->arch.nmi_pending)
+ 			kvm_x86_call(enable_nmi_window)(vcpu);
+ 	}
+-- 
+2.50.1
 
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but does
-this lock movement fully resolve the race on the private->crw list?
-
-While this patch protects list deletion in vfio_ccw_crw_region_read() with
-io_mutex, it appears the list can still be modified concurrently without
-locks. For example, vfio_ccw_queue_crw() adds items to this list locklessly:
-
-drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_queue_crw() {
-	...
-	crw->crw.rsid =3D rsid;
-
-	list_add_tail(&crw->next, &private->crw);
-	queue_work(vfio_ccw_work_q, &private->crw_work);
-	...
-}
-
-Because vfio_ccw_queue_crw() can be called from atomic contexts (like
-vfio_ccw_chp_event()), it cannot acquire the sleepable io_mutex. Can this
-result in list corruption between the lockless atomic producer and the
-mutex-holding reader?
-
-[ ... ]
-
-> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
-drv.c
-> index c197ad5ab5805..757ff5b2556e3 100644
-> --- a/drivers/s390/cio/vfio_ccw_drv.c
-> +++ b/drivers/s390/cio/vfio_ccw_drv.c
-> @@ -91,6 +91,7 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
-> =20
->  	is_final =3D !(scsw_actl(&irb->scsw) &
->  		     (SCSW_ACTL_DEVACT | SCSW_ACTL_SCHACT));
-> +	mutex_lock(&private->io_mutex);
->  	if (scsw_is_solicited(&irb->scsw)) {
->  		cp_update_scsw(&private->cp, &irb->scsw);
->  		if (is_final && private->state =3D=3D VFIO_CCW_STATE_CP_PENDING) {
-> @@ -98,9 +99,7 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
->  			cp_is_finished =3D true;
->  		}
->  	}
-> -	mutex_lock(&private->io_mutex);
->  	memcpy(private->io_region->irb_area, irb, sizeof(*irb));
-> -	mutex_unlock(&private->io_mutex);
-> =20
->  	/*
->  	 * Reset to IDLE only if processing of a channel program
-> @@ -110,6 +109,7 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
->  	 */
->  	if (cp_is_finished)
->  		private->state =3D VFIO_CCW_STATE_IDLE;
-> +	mutex_unlock(&private->io_mutex);
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch, but could
-this state update be overwritten by concurrent lockless modifications?
-
-With the newly expanded io_mutex, vfio_ccw_sch_io_todo() reads and modifies
-private->state under the lock. However, fsm_notoper() updates the state
-without acquiring io_mutex:
-
-drivers/s390/cio/vfio_ccw_fsm.c:fsm_notoper() {
-	...
-	css_sched_sch_todo(sch, SCH_TODO_UNREG);
-	private->state =3D VFIO_CCW_STATE_NOT_OPER;
-	...
-}
-
-If a device goes non-operational concurrently with the completion of a
-channel program, could vfio_ccw_sch_io_todo() overwrite the NOT_OPER state
-with IDLE, discarding the transition?
-
-[ ... ]
-
-> diff --git a/drivers/s390/cio/vfio_ccw_fsm.c b/drivers/s390/cio/vfio_ccw_=
-fsm.c
-> index 4d47a3c7b9a06..5fd94e9d5c618 100644
-> --- a/drivers/s390/cio/vfio_ccw_fsm.c
-> +++ b/drivers/s390/cio/vfio_ccw_fsm.c
-> @@ -170,6 +170,7 @@ static void fsm_notoper(struct vfio_ccw_private *priv=
-ate,
->  	css_sched_sch_todo(sch, SCH_TODO_UNREG);
->  	private->state =3D VFIO_CCW_STATE_NOT_OPER;
-> =20
-> +	/* This routine could be called from IRQ context, so defer */
->  	queue_work(vfio_ccw_work_q, &private->notoper_work);
->  }
-
-[Severity: High]
-Is it possible for private->notoper_work to outlive the private structure
-and cause a use-after-free?
-
-If a VFIO_CCW_EVENT_NOT_OPER event occurs while the device is in the STANDBY
-state (for instance, from an offline channel path before the device is
-opened), fsm_notoper() unconditionally queues notoper_work.
-
-However, if the mediated device is then removed without ever being opened,
-vfio_ccw_mdev_release_dev() appears to skip canceling this work:
-
-drivers/s390/cio/vfio_ccw_ops.c:vfio_ccw_mdev_release_dev() {
-	...
-	/*
-	 * Ensure these work items are fully drained, so none can
-	 * fire after being released. The notoper_work struct is
-	 * only meaningful if the device had been opened, which
-	 * means it would have been cleaned in an earlier close.
-	 */
-	cancel_work_sync(&private->io_work);
-	cancel_work_sync(&private->crw_work);
-	...
-}
-
-Because the notoper_work is never canceled here, could it execute after the
-private structure is freed, leading to memory corruption when
-vfio_ccw_notoper_todo() attempts to acquire io_mutex?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728013509.1551=
-753-1-farman@linux.ibm.com?part=3D9
