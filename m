@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836F729B799
-	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9FD30568E
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251933; cv=none; b=DMYI/KfhJXmZoPaprwsI6AQEf2zyqxVlyCGGTPU6+fo+oRPOEXleIu/PMMMfUljG+rslzV7WsXSt/z0yvvFBSfss0LSI4BY1e16MI6/Y4ra3Iyn+N4TeDYSJAT6kvM9S+dRvu95hjLqP/E9kWYdUsksMvfagL2ZdtpnejYWAPvE=
+	t=1785251945; cv=none; b=kBsf6AwlVKJCU/CdKUibYba7pE56PPXorJvNneIWModvS+m63qRKlSJcsWQdPztLczuZPRpep8oGWbf/NBAWnYIS1Fl1c8Ip7slonGDpY5KyPnpd08x2krVM8HlWNYytNEeg1U6Qvacr4TK5Y9JeynkKoGLARm7DPZ5cERUjL7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251933; c=relaxed/simple;
-	bh=okXHslJijcCT9dabm+V6bbMHs28wBl5N534NmVs+oEQ=;
+	s=arc-20240116; t=1785251945; c=relaxed/simple;
+	bh=IjkFdsbewhkCcCmu+YhNAP5IiqATlISe6Iry8e1ZhlQ=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hQs5titOdwi0ilMZaEmfmmHU6EXrXxLcZDClODoXoEzquNPCjjs6jvfo7p1LOG/mEbhxilrfItwxCrB99aerMLJw93T85gmHBaYN+60t+EFEixGN31NY5ioCkX3w/4RrPqL2LwN9zbBci/n38kvdL/1hl/qZN0myIePA6vJorSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWUZEPuG; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=cuxyKXX7oU6Zwsg2vHcvaU6TdSEyrYyJV3Og20s/vgjWRuXm64woruOBt1bbUOpqBA1/r4oTDj7/BLVzw9eGH/5iM1fTVnTJCyrhHc2J/s9m07EsH4knQv1UCqBFprG7gy3KG0saSaNnTasNNbP1h9U0vbD86FGFxJ3G6KoLxYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oClo08Hb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWUZEPuG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB631F000E9;
-	Tue, 28 Jul 2026 15:18:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oClo08Hb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC561F000E9;
+	Tue, 28 Jul 2026 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785251932;
-	bh=hzeiEWFtwgH7f22Q7HRnQu3nM2sJ3gVBboQ7Eyg8F6I=;
+	s=k20260515; t=1785251943;
+	bh=K79czuWMANjfznWLq/Wncr9cbSUFTqYSrutFk5zsB90=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JWUZEPuGaFOMYvbxVVDcvyhkq5DAHPMcMDldPLxCKCmZHK3AHEwYSqbXI9+kWSNM2
-	 TBWRVrD5OfxjY8cep+XOYfeGqfxw1aolegQAO9g1vlXpdqRiibCRJkSjCnQpAi3H2s
-	 s67TlCXEXRBSFIu98aNWDGzIj2RMnB6bQMMmDTptixBXiwhNNZ2DQBNKWVor57Renh
-	 jBlM4yeQGXccWrpcihUwMubKv+Wi+oxYBgZpLyPG4nD+YnDgGpX6oImRLFsPtp0B0f
-	 VH7l9wHtb74FXf8Nf0DVrLO8MCZcdVi2IP63Ryng558C6ojUOY9bDzrqdO2jybkLld
-	 amBdUe5oFQpcQ==
+	b=oClo08Hbt83zWa3tIM0GGc1IZ+CezllyFvfWKebJmzdt55eRlg4Zn+oISufNfZw2R
+	 D6sO5JGGlu+6apsHCQz9VgYgjfhZX2hrW4rLbZlyALRxNXq8WItNpEbF87N+teUlTB
+	 OK9ywrU8Q6Dgj142JbNOxSFTxE+xoU+0hPrZ+7ja7BVM8GOXnCM3MkqfOldo7GWG60
+	 EEIQ+Sbz/tLWErcaWyGaWFqDzQKejCdkdc2+aNVHJG1fkPzCD+yWknvmOInYQ9vqgA
+	 /gJlamMwMmlt+d+731eFLLRqgweGLt20ElEWgEaryR82LsOzYkwiMIvoagHDeF2qSQ
+	 IU7JUtpARG1Gw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 22/36] KVM: x86: Remove runtime Xen TSC frequency
- CPUID update
+Subject: Re: [PATCH v7 23/36] KVM: x86: Re-synchronize TSC after
+ KVM_SET_TSC_KHZ
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "David Woodhouse" <dwmw2@infradead.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260728144954.355376-23-dwmw2@infradead.org>
+In-Reply-To: <20260728144954.355376-24-dwmw2@infradead.org>
 References: <20260728144954.355376-1-dwmw2@infradead.org>
- <20260728144954.355376-23-dwmw2@infradead.org>
+ <20260728144954.355376-24-dwmw2@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 28 Jul 2026 15:18:51 +0000
-Message-Id: <20260728151852.0BB631F000E9@smtp.kernel.org>
+Date: Tue, 28 Jul 2026 15:19:02 +0000
+Message-Id: <20260728151902.CEC561F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,89 +47,97 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Unconditional removal of runtime Xen TSC CPUID updates breaks =
-existing userspace (e.g., older QEMU versions) that relies on KVM to popula=
-te these fields.
-- [High] The commit relies on non-existent IOCTLs (`KVM_GET_CLOCK_GUEST` an=
-d `KVM_VCPU_TSC_SCALE`) for userspace to populate the Xen TSC CPUID leaves.
+- [High] KVM_SET_TSC_KHZ unconditionally sets user_set_tsc =3D true during =
+vCPU creation, breaking the 1-second slop hack workaround for live migratin=
+g young VMs.
+- [High] Lockless TOCTOU race when synchronizing the guest TSC causes guest=
+ clock stalls or backwards jumps during preemption.
 --
 
---- Patch [22]: [PATCH v7 22/36] KVM: x86: Remove runtime Xen TSC frequency=
- CPUID update ---
-commit 127a72b774b2e5b2be60192682a2508bb1a3e37c
+--- Patch [23]: [PATCH v7 23/36] KVM: x86: Re-synchronize TSC after KVM_SET=
+_TSC_KHZ ---
+commit 7a6fbf4fe1dbd0e60f9a3418fa5cc8be64f86841
 Author: David Woodhouse <dwmw@amazon.co.uk>
 
-KVM: x86: Remove runtime Xen TSC frequency CPUID update
+KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
 
-This commit removes the dynamic updating of the Xen TSC info CPUID leaf in
-KVM, assuming that userspace can populate these fields using specific IOCTLs
-at vCPU setup time. It also removes the associated helper functions in xen.=
-h.
+KVM_SET_TSC_KHZ changes the vCPU's TSC scaling ratio but does not
+update the VM-wide cur_tsc_scaling_ratio used by get_kvmclock().
+This commit calls kvm_synchronize_tsc() after changing the TSC
+frequency to ensure the TSC value is continuous and updates the scaling rat=
+io.
 
->   - KVM_GET_CLOCK_GUEST returns the pvclock_vcpu_time_info structure
->     containing tsc_to_system_mul and tsc_shift (Xen leaf index 1)
->   - KVM_VCPU_TSC_SCALE returns the effective TSC and bus
->     frequencies in kHz (Xen leaf index 2, and 0x40000010)
->   - KVM_VCPU_TSC_SCALE returns the raw hardware scaling ratio for
->     precise arithmetic (VMClock)
-
-[Severity: High]
-Are KVM_GET_CLOCK_GUEST and KVM_VCPU_TSC_SCALE actually present in the tree?
-
-I cannot find these IOCTLs, and it doesn't appear that internal variables l=
-ike
-vcpu->arch.pvclock_tsc_mul are exported to userspace by any other mechanism.
-Could the commit message be updated, or are there missing patches that
-introduce these interfaces?
-
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 8eabd68fa0a15..cd495bedf6c8e 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 1942ccadb7a50..57494812cc839 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
 
 [ ... ]
 
-> @@ -2119,22 +2118,6 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u3=
-2 *ebx,
->  		} else if (function =3D=3D 0x80000007) {
->  			if (kvm_hv_invtsc_suppressed(vcpu))
->  				*edx &=3D ~feature_bit(CONSTANT_TSC);
-> -		} else if (IS_ENABLED(CONFIG_KVM_XEN) &&
-> -			   kvm_xen_is_tsc_leaf(vcpu, function)) {
-> -			/*
-> -			 * Update guest TSC frequency information if necessary.
-> -			 * Ignore failures, there is no sane value that can be
-> -			 * provided if KVM can't get the TSC frequency.
-> -			 */
+> @@ -1061,7 +1061,17 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, =
+u32 user_tsc_khz)
+>  			 user_tsc_khz, thresh_lo, thresh_hi);
+>  		use_scaling =3D 1;
+>  	}
+> -	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
+> +	/*
+> +	 * Read the guest TSC before changing the ratio, so we can
+> +	 * re-synchronize to preserve continuity across the change.
+> +	 */
+> +	tsc =3D kvm_read_l1_tsc(vcpu, rdtsc());
 
-[Severity: Critical]
-Does unconditionally removing this dynamic Xen TSC CPUID update break older
-userspace binaries (like older QEMU versions) that expect KVM to handle
-populating these leaves?
+[Severity: High]
+Can this lockless read cause guest clock stalls or backwards jumps?
 
-Since older VMMs do not populate these leaves themselves, removing this cou=
-ld
-result in Xen guests receiving zeroes or uninitialized data for TSC info,
-leading to incorrect timekeeping or crashes.
+If the thread is preempted between this lockless rdtsc() read and the=20
+lock acquisition in kvm_synchronize_tsc(), the delay is lost.
 
-Should this ABI change be gated behind a new capability (e.g.,
-KVM_CAP_XEN_TSC_CPUID) so that legacy VMMs continue functioning while new V=
-MMs
-can opt-in to the new behavior?
+kvm_synchronize_tsc() takes a new rdtsc() reading under tsc_write_lock:
 
-> -			if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, vcpu))
-> -				kvm_guest_time_update(vcpu);
-> -
-> -			if (index =3D=3D 1) {
-> -				*ecx =3D vcpu->arch.pvclock_tsc_mul;
-> -				*edx =3D vcpu->arch.pvclock_tsc_shift;
-> -			} else if (index =3D=3D 2) {
-> -				*eax =3D div_u64(vcpu->arch.hw_tsc_hz, HZ_PER_KHZ);
-> -			}
->  		}
->  	} else {
->  		*eax =3D *ebx =3D *ecx =3D *edx =3D 0;
+arch/x86/kvm/x86.c:__kvm_synchronize_tsc() {
+    ...
+    raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+    ...
+    host_tsc =3D rdtsc();
+    ...
+}
+
+Will this effectively stall the guest TSC for the duration of any preemption
+delay, shifting it backwards relative to other vCPUs and the host clock?
+
+> +
+> +	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling))
+> +		return -1;
+> +
+> +	kvm_synchronize_tsc(vcpu, &tsc);
+
+[Severity: High]
+Does passing a non-NULL pointer to kvm_synchronize_tsc() here inadvertently=
+=20
+break the 1-second slop hack workaround for live migrating young VMs?
+
+Since kvm_set_tsc_khz() is called unconditionally during vCPU creation via
+kvm_arch_vcpu_create()->kvm_set_tsc_khz(), passing &tsc causes=20
+kvm_synchronize_tsc() to treat this as a user-initiated write and globally=
+=20
+set user_set_tsc =3D true for every new VM:
+
+arch/x86/kvm/x86.c:__kvm_synchronize_tsc() {
+    ...
+    if (user_set_tsc)
+        vcpu->kvm->arch.user_set_tsc =3D true;
+    ...
+}
+
+Would this defeat the flag's purpose, causing the 1-second slop hack to=20
+incorrectly trigger during migration and overwrite an explicitly restored=20
+guest TSC with a value synced to KVM's dummy creation time?
+
+> +	return 0;
+>  }
+> =20
+>  static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728144954.3553=
-76-1-dwmw2@infradead.org?part=3D22
+76-1-dwmw2@infradead.org?part=3D23
