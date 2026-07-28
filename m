@@ -1,157 +1,238 @@
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336A541BA82;
-	Tue, 28 Jul 2026 22:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785278450; cv=none; b=XfNNQ8p3mLixevUk+4+DeKnZUKGCJo3wnOu/sp+Lv8Hs7eZG8PKfjdnzNylpgVzTg5ANUgh6rXqURffRLYeITKzE0uvex4y5dRAX5H2Nxkflj0lRaJ05N2wIMOxGhn9+v4JYXYFQR/4Kidg5YNjMxSWrE/vGgwYQHh68HXdTA18=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785278450; c=relaxed/simple;
-	bh=ExwwVNBktXnu9UARBPrflxeYriHzWoshnkBEQh0Y6CM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oVQK2gCDU86mVHGEDYoNahrAEsKU0BJtF/M6reMIGF9ZHKGLpu3Ax5itNEgnuQBDAcfaKQllF+SwnGGMqGE2mJ9Go7xIwFeqONkBI9rlMlyLXsPXhoR79gx4yfkJSQu72fvCDLvFKdF5kVwtTi5e+Q7zsxyACXtZLJB0zm+zU64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from [10.88.16.7] (unknown [193.43.11.2])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 7F727233AC;
-	Wed, 29 Jul 2026 01:40:42 +0300 (MSK)
-Message-ID: <b79158b0-6b08-261c-1007-3a83a5fc5504@basealt.ru>
-Date: Wed, 29 Jul 2026 01:40:41 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5033BBFB4
+	for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 22:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785279378; cv=pass; b=MM9H6acm0ChDej/gytZZuwl7YHUqHZZI9DB8n6o0TB7oOUd9kQfCXIYkaptK3PvQuEQ9AFiEz1TkZAQQI2e66TEUkY/mWicZlkGsewFnYROZStx0s4qdpn2CM3rvum3e7XPRVQNtHILkJTXuuqLUpIa1Wri6pRYKYmEe2+wBjC0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785279378; c=relaxed/simple;
+	bh=t9KvR2dL1m4zEK1lVjuJI6tVdJ4dqE2a/Rcy64SXybw=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PKHh1QZ0S9UlsO9mXctKp/fcq6Q2nLKnkEQdNqd5KefNFblGG9hnH1SxN0o1vt6IXG3XLgwgVUTB9603oTahOk+J5pd+xzZaf1J6Y2jC5FhoQvgxecrcAqFrubr8047FnrpbEOxKy2kVFAKSBJNADjYc1APT7Pxwl42OfbzWdJU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iUzXIHmg; arc=pass smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iUzXIHmg"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-38f0f132f56so1077991a91.0
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 15:56:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785279376; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kY/tKU/o1qovQdHTSj/pbmQp2KMwtCM/OMSA4cORhmNK3AFGFi4FwEjoOMJM+sMIpg
+         BFXQMkpb/g18ldBVzOBwNcAvgXjAn1OjeUUugF5iOHfGexYt3YxhHUWDGvv6nTTOIi/B
+         tjMUuxjDtO4pjruv7x3N0dUvfjvy2Rl9qQBTB+MUe/ZkvWcj0ZmBNcUzfok1tj8iuij3
+         SiRRjJN/8gOPCh5zGVziFEG11tyiDwFqTdjVKCeI/cNXi8V1kRCjqjz28RMhAr9qa579
+         99m1PdbrcyMba8Bp6q5Q3NYG1/LFVelJpsq3PYYv/pfRBz8QcaJgZYBxgczPZTgJLtjl
+         39/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        fh=Zkeb0MrzlNnePlPzfDtLX4tdNevdcM2fqs6AI4ayCMw=;
+        b=rpNN36r3I/EIL1Y8QiwhTwtOqZvdoThlyO8CLO2105G+usBqMmLOzDgkcAJ6fJgG40
+         CVsy07fw8ht2rmLkfV9A6VOijX/mcoiurhRCIj5A/DZu/YxqSAur7Jot2kLYmNvVaDWq
+         NxC6u9iXAcHcqT92qS1QhyLH+DmxPrPr4/cs45RJplTyD3jvoF+3e/rbju/Itv8kwUtR
+         qC4GiZEviqvXwXZKrSxMnT3VLV6rTgi8uppDV7bdewY+mmXFfGoAKhxB0RbARGJh97vW
+         Gd6ZeRMvmHlhAY76AhGWxfe3xzoDXGDiTQ+Dz3xCpBlnZzxWquGfb7k5oHp91lJbZxHH
+         2ZLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785279376; x=1785884176; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        b=iUzXIHmgH3q+ICwMCaVm2xy9Dw+14uRWHej6U5nZeoFMswYoMmHAElYE5TUShdRPUT
+         lq2aKWtAgMxfK22XN+3aW4VsmI2hFjQpQDYayBMy3BtIWY+7CI3dNm88qJOCgf2dVt06
+         R7gRPMyo1iGjM0nBbFrZX+2lNN6S63iDed0M9ArqIMKhLMcICCmrfOuhgPxtE3ISjsqh
+         NBm6EaK6d/sf9BHvtHqCNvoR+H27B3k6x1kO0OSjpj20gMymgSg+0aWG6bZFyS9eMzlH
+         SsZa1/rk2jU9iyqD56sPA3bJN0LCCVXwJhDn3qmrt9+YES9paGwYV0DeV4p+c4rfXFEc
+         b0zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785279376; x=1785884176;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j0z3e8zTvHIk07OlT0xkJIAxTqUKptSj/yxfg7rVtqA=;
+        b=Y5Kz8NIKQ3YGgzISZN1gOpMpVP9ljFe8Gz/xmM5jRAPaIboOnMwBZO70SEU4x66RQf
+         kgI0ao5AojZzoVChYKx08dEabl8B0TJGB9vZpryagcRSGECMkmnni/+oR2wquUXwU0Lr
+         kzICejpRGb5G2UdIZJuvCHq4ohuDCwPHAxo8v5QZb1ri8zeqtIrLre6SF9IMfLEMZOSZ
+         rQbRYZjz660sZChKKsK7k4P5thjGSCybX93tlAz9BhP+v90BuWpUTdKnhVAgegI/h6yK
+         H63w1WU5rsIProwOezaTFV8XiBQdceErDH2vTK7kuXbi9ZSvh1JMmVlCMlC7xG0gerop
+         BvzQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2RXjXRFiDDCzlhFWGCAJ+fe600XUnH9dOtUtQP/fpdgYpbnXxiEcRB+4qSIMn0rq+Yso=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLjauotzdV2bB74BWmlvUXMhLwRSW6+8TJFmh33V6u+B/2qu5v
+	h+QD9tppOcE2tRgMbsgdPu1sN7aXGIbgHkNat4QoEUCEoTkPQbQ2wDzeMqloIij6WhMPpsvybmi
+	tXTZYZDfLIV8qEPPLpdRxa0IfPKMopl9cE5Wdq3D4
+X-Gm-Gg: AR+sD102BdQeshynaXz1hBBA5sHgez7qMxbmCHEj0oJnavcdhrOOFMg8mR3IeG42e4F
+	zUa4N0vVH+yz9sgqbsOfq+9ll4zlwA7O/KSEiGlxjwy8l6J+QgK6hJb5Z2tHvFObSPG8pKCe1oW
+	YQu5zLlKhbeexfREuG9oA0mMFim0z1Y6bz94dC7skLdcZev1IOctS5erIlckSvjGTj1ZJlpqGCy
+	wx1l7S27HBfFXzvFcbP9Zl8yR9o8ZtP327Gg64sgLZpE+EdC1M5MKrH9yEt/btvONedJ7jSCEgL
+	eb/Cfr1rZlqpyaCymiQBhQt63idkTfWbxhk/VjW0hej+EP1dodzVIlML5xbPYHEvWpJJoqzqYwL
+	i5jXeFhnxfOUbEH8kvRhXaNyiaQds/0vC80s=
+X-Received: by 2002:a17:90b:51c4:b0:38e:a52e:a3c9 with SMTP id
+ 98e67ed59e1d1-38f6a2371dfmr4673531a91.8.1785279375292; Tue, 28 Jul 2026
+ 15:56:15 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 28 Jul 2026 15:56:13 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
+References: <20260722-tdx-selftests-v14-0-15ad654a50db@google.com> <20260722-tdx-selftests-v14-20-15ad654a50db@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] KVM: x86: Re-pend NMI in vNMI hardware when injection is
- blocked
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Maxim Levitsky <mlevitsk@redhat.com>, Santosh Shukla
- <santosh.shukla@amd.com>, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org
-References: <20260728015416.1371404-1-kovalev@altlinux.org>
-Content-Language: en-US
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <20260728015416.1371404-1-kovalev@altlinux.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Tue, 28 Jul 2026 15:56:13 -0700
+X-Gm-Features: AUfX_myT2IvN6iidckmuNazEnQKmStOxbwX6QxqpsFhVtfsB_eRaYA9iggDvkuc
+Message-ID: <CAEvNRgF-B6pKMJnFv5xPkSSbz3wj01-LXTHrn+KnD7N1mp-+mQ@mail.gmail.com>
+Subject: Re: [PATCH v14 20/22] KVM: selftests: Implement MMIO WRITE for the
+ TDX VM
+To: Lisa Wang <wyihan@google.com>, Andrew Jones <ajones@ventanamicro.com>, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Erdem Aktas <erdemaktas@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	linux-kselftest@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Pratik R. Sampat" <pratikrajesh.sampat@amd.com>, Reinette Chatre <reinette.chatre@intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Roger Wang <runanwang@google.com>, 
+	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
+	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Oliver Upton <oupton@kernel.org>
+Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Sean,
+Lisa Wang <wyihan@google.com> writes:
 
-On 7/28/26 04:54, Vasiliy Kovalev wrote:
->   [...]
-> 
-> Before falling back to a window, retry .set_vnmi_pending() as process_nmi()
-> does. Hardware has already delivered the NMI it was holding, so the retry
-> succeeds, nmi_pending drops to zero, and no window is requested; hardware
-> delivers the re-pended NMI once the guest IRETs. On the first pass hardware
-> still holds the earlier NMI, so the retry fails and single-stepping is
-> unchanged. Without vNMI .set_vnmi_pending is NULL and the branch is a nop.
-> 
-> [...]
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -7724,6 +7724,9 @@ static int kvm_check_and_inject_events(struct kvm_vcpu *vcpu,
->   			can_inject = false;
->   			WARN_ON(kvm_x86_call(nmi_allowed)(vcpu, true) < 0);
->   		}
-> +		if (vcpu->arch.nmi_pending &&
-> +		    (kvm_x86_call(set_vnmi_pending)(vcpu)))
-> +			vcpu->arch.nmi_pending--;
->   		if (vcpu->arch.nmi_pending)
->   			kvm_x86_call(enable_nmi_window)(vcpu);
->   	}
+> From: Erdem Aktas <erdemaktas@google.com>
+>
+> Implement the tdx_mmio_write() to allow TDX VMs to request MMIO
+> emulation.
+>
+> Follow the Intel Guest-Hypervisor Communication Interface (GHCI) spec
+> to the minimum extent that a spec-abiding TDX module will pass the
+> request to KVM. Skip implementing the #VE handler as described in the
+> GHCI spec to reduce selftests dependency.
+>
+> To perform emulated I/O, VMs use the TDG.VP.VMCALL instruction to
+> request MMIO.
+>
+> Signed-off-by: Erdem Aktas <erdemaktas@google.com>
+> Co-developed-by: Sagi Shahar <sagis@google.com>
+> Signed-off-by: Sagi Shahar <sagis@google.com>
+> Co-developed-by: Lisa Wang <wyihan@google.com>
+> Signed-off-by: Lisa Wang <wyihan@google.com>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm          |  1 +
+>  tools/testing/selftests/kvm/include/x86/tdx/tdx.h | 17 +++++++++++
+>  tools/testing/selftests/kvm/lib/x86/tdx/tdx.S     | 37 +++++++++++++++++++++++
+>  3 files changed, 55 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 645d9aac61db..28b33ed8c2e6 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -33,6 +33,7 @@ LIBKVM_x86 += lib/x86/tdx/tdx_util.c
+>  LIBKVM_x86 += lib/x86/ucall.c
+>  LIBKVM_x86 += lib/x86/vmx.c
+>  LIBKVM_x86 += lib/x86/tdx/td_boot.S
+> +LIBKVM_x86 += lib/x86/tdx/tdx.S
+>
+>  LIBKVM_arm64 += lib/arm64/gic.c
+>  LIBKVM_arm64 += lib/arm64/gic_v3.c
+> diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> new file mode 100644
+> index 000000000000..6355a30bb47f
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef SELFTEST_KVM_TDX_TDX_H
+> +#define SELFTEST_KVM_TDX_TDX_H
+> +
+> +#include <linux/types.h>
+> +
+> +#define TDG_VP_VMCALL_VE_REQUEST_MMIO    48
+> +#define TDVMCALL_MMIO_WRITE		  1
+> +
+> +u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15);
+> +
+> +static inline u64 tdx_mmio_write(u64 address, u32 size, u64 data_in)
+> +{
+> +	return __tdcall(TDG_VP_VMCALL_VE_REQUEST_MMIO, size,
+> +			TDVMCALL_MMIO_WRITE, address, data_in);
+> +}
+> +#endif /* SELFTEST_KVM_TDX_TDX_H */
+> diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> new file mode 100644
+> index 000000000000..dff48a3624a1
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx.S
+> @@ -0,0 +1,37 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +.globl __tdcall
+> +/*
+> + * u64 __tdcall(u64 leaf, u64 r12, u64 r13, u64 r14, u64 r15)
+> + */
+> +__tdcall:
+> +	push %r12
+> +	push %r13
+> +	push %r14
+> +	push %r15
+> +
+> +	/* Map C ABI fast arguments to TDX GHCI payload registers */
+> +	/* RDI=leaf, RSI=r12, RDX=r13, RCX=r14, R8=r15 */
+> +
+> +	mov %rdi, %r11
+> +	mov %rsi, %r12
+> +	mov %rdx, %r13
+> +	mov %rcx, %r14
+> +	mov %r8,  %r15
+> +
+> +	/* TDCALL boilerplate */
+> +	mov $0, %rax
+> +	mov $0xFC00, %rcx	/* Expose R10-R15 */
+> +	mov $0, %r10
+> +
+> +	/* tdcall instruction */
+> +	.byte 0x66, 0x0f, 0x01, 0xcc
+> +
+> +	/* Extract status */
+> +	mov %r10, %rax
+> +
+> +	pop %r15
+> +	pop %r14
+> +	pop %r13
+> +	pop %r12
+> +	ret
+>
+> --
+> 2.55.0.229.g6434b31f56-goog
 
+We've been discussing internally if there's a nicer way to write this
+and let it scale to other tdcall wrappers in future tests, especially
+when we run out of registers for passing parameters (input and output)
+for other tdcalls.
 
-Fuzzing on 6.12 (AMD EPYC 9754, vNMI) still hits this WARN with this patch
-applied, no stable reproducer. I dumped the vNMI state on entry to the NMI
-block in kvm_check_and_inject_events(), plus a line in the re-pend branch
-the patch adds:
+Looks like the only way to prevent the compiler from messing up register
+state before the tdcall instruction is to be completely explicit about
+it, and to use assembly in a .S file.
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 35ba3551f..f7615674f 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -34,6 +34,8 @@
-  #include "xen.h"
-  #include "smm.h"
+I miss how readable it was in v13 [1]. Sean's comments at [1] are also
+echoed in [2].
 
-+#include "svm/svm.h"
-+
-  #include <linux/clocksource.h>
-  #include <linux/interrupt.h>
-  #include <linux/kvm.h>
-@@ -10485,6 +10487,16 @@ static int kvm_check_and_inject_events(struct 
-kvm_vcpu *vcpu,
-  #endif
+[1] https://lore.kernel.org/all/ajGUBQ3y8lvwM6_N@google.com/
+[2] https://lore.kernel.org/all/YCFwo5tD3Jad6F69@google.com/
 
-         if (vcpu->arch.nmi_pending) {
-+               {
-+                       struct vcpu_svm *svm = to_svm(vcpu);
-+                       pr_warn("NMIdbg: entry pending=%u int_ctl=%#x 
-VB=%d VP=%d shadow=%d allowed=%d\n",
-+                               vcpu->arch.nmi_pending,
-+                               svm->vmcb->control.int_ctl,
-+                               !!(svm->vmcb->control.int_ctl & 
-V_NMI_BLOCKING_MASK),
-+                               !!(svm->vmcb->control.int_ctl & 
-V_NMI_PENDING_MASK),
-+                               !!(svm->vmcb->control.int_state & 
-SVM_INTERRUPT_SHADOW_MASK),
-+                               kvm_x86_call(nmi_allowed)(vcpu, false));
-+               }
-                 r = can_inject ? kvm_x86_call(nmi_allowed)(vcpu, true) :
-                                  -EBUSY;
-                 if (r < 0)
-@@ -10498,7 +10510,11 @@ static int kvm_check_and_inject_events(struct 
-kvm_vcpu *vcpu,
-                 }
-                 if (vcpu->arch.nmi_pending &&
-                     (kvm_x86_call(set_vnmi_pending)(vcpu)))
-+               {
-                         vcpu->arch.nmi_pending--;
-+                       pr_warn("NMIdbg: re-pended, pending now %u\n",
-+                                vcpu->arch.nmi_pending);
-+               }
-                 if (vcpu->arch.nmi_pending)
-                         kvm_x86_call(enable_nmi_window)(vcpu);
-         }
+We can figure out how best to extend this when the other tests are
+worked on.
 
-The WARN fires with V_NMI_BLOCKING and V_NMI_PENDING both set and an NMI
-still queued - and no "re-pended" line precedes it, i.e. set_vnmi_pending()
-returned false because the slot is already occupied:
-
-	NMIdbg: entry pending=1 int_ctl=0x7000a00 VB=0 VP=1 shadow=1 allowed=0 
-  (repeated)
-	NMIdbg: entry pending=1 int_ctl=0x7001a00 VB=1 VP=1 shadow=0 allowed=0
-	WARNING: CPU: 3 at arch/x86/kvm/svm/svm.c:4027 
-svm_enable_nmi_window+0x703/0x8e0
-	 kvm_check_and_inject_events+0x10ed/0x16a0
-	 vcpu_run+0x1922/0x4ed0
-	 kvm_vcpu_ioctl+0x469/0x1590
-
-So V_NMI_PENDING is already set: there's nowhere to re-pend, nmi_pending
-can't be drained, and the window is still requested. The patch fixes the
-interrupt-shadow path (original reproducer no longer triggers) but not this
-one. I couldn't minimize the exact sequence, but it looks like
-KVM_SET_VCPU_EVENTS setting nmi.masked while a vNMI is pending
-(svm_set_nmi_mask() sets V_NMI_BLOCKING without touching V_NMI_PENDING).
-
-In this state svm_enable_nmi_window() just takes the early return and
-hardware delivers the pending vNMI on IRET, so nothing malfunctions -
-b4bd55646747 makes the same "still function correctly" note for the
-STI-shadow/GIF=0 cases. Drop the WARN_ON_ONCE(), or is reaching this state
-(V_NMI_BLOCKING + V_NMI_PENDING set, nmi_pending != 0) itself a bug to fix
-elsewhere?
-
--- 
-Thanks,
-Vasiliy
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
