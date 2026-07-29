@@ -1,243 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D418E48D860
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 14:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA513B0589
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785336437; cv=none; b=MeBtQ88CNX+8WgiyzdqAN1MomOsQ/cRT7pRme40vFc6fbIAQswNlI4xAVnukJXJgOQ/01ZGjAylydec7F26dhDlDoyiZXw3beLLOe0isNzZEQWzmfYkzqhSjd11El2nYJXEC4RD9E4+fcKEfJKkiAalQ94bzDefgj9uOA11o7LA=
+	t=1785337954; cv=none; b=EhvzxiriEA6GMOnzHIW1o/1gCO5Ghzq0TFCNHq5kVHDEDejjYMuhdOGbEvNAYKmmwN4Lumc7BS/FEgNrRCox35QFn4Zpvy55UK7CMXekpx0B5J/SLylo7DBG+dgdq3E4JLrlULdsWTp2sYppK04Pxl1vW+STcjTE2iWxEdHu2Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785336437; c=relaxed/simple;
-	bh=F7gJ/ECoIn0yMRAvxBO25GQLBgLR0EPLHh+0r9A2Y1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cwc4JheNDfAHhxG0glsXYX6zut5Kdq7q+Ic5SY1sHKkaI5TE/hjH8AuItg9kkU462mguACzgFR3U42Inx6Ke4szDqv512CamYp0ZBm3ClOpZlm3+6CDjc7/GJNe9Ltz70gwFu4TW9C4FSccIkhsH/Jklw+WHGBiva4G2X6it9t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WTmRgDcI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KBnU0bLk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785337954; c=relaxed/simple;
+	bh=OcqSaTeLFBw/37oYMtNHG50Md6M29m6rUY9fQn9TwYo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eeLqseejyZAYMQ6CBme2YrOJ7dKjZ26jPrCRpftv5aRsmWJ2jS5NmwvOBpjX8D+wJHAGLTO/Jzpz2VS8oMmDZ1lyESFzPAEyBWC+qgSEZ+TO7B2YHBjdfVoH6sqXU42ndjWEjJ25CVzD3I7lXyAOQy0JeuqktCdA3661PUdUsTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pqUixAIj; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WTmRgDcI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KBnU0bLk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785336431;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pqUixAIj"
+X-Forwarded-Encrypted: i=1; AHgh+RoDxab80aVtC39h237fqA6J5D0ur1cdLXitHcT8YPcLC3RuIEdN4p7QhDEXJ9wEP5tr9jM=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785337950;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
-	b=WTmRgDcIqkc6RU5BBv9wCgrEJAc4Y6aeRSv0FpUvdzv8yBVrBNTTgDBg/idnjOwio9ZRoG
-	6Ka/g87/P92mBYXmavEliAu2afy9zN1WKpTHrw5cBF4AkSjeNhV4iCIBsxWuHeTstf7IEk
-	auIHm3oYPJ+PJhuSvWnLS8TI6/0utzg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-ICmekyGQMTmt5FucwvZq3Q-1; Wed, 29 Jul 2026 10:47:10 -0400
-X-MC-Unique: ICmekyGQMTmt5FucwvZq3Q-1
-X-Mimecast-MFC-AGG-ID: ICmekyGQMTmt5FucwvZq3Q_1785336429
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-492488f8583so9494505e9.2
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 07:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785336429; x=1785941229; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
-        b=KBnU0bLkgwVQuJQLZ3V7g+i1TV6HmLZJatMBRTpofkTxJnOeKFXXFNgmX1iGcXr9Oc
-         zGZTPm00fuAOSGFyQkJmo54LoGCp7ltRTo9KZ8HBx3yGkPjxBTWR41oo3y0uageKCXzC
-         aCMVUfMXbcd344cdEpANGJu8Gms6+BcR7Gl4TLVnqsOPqg721MhMN2QiduTBl7dntHlV
-         WMypzMt+gq1+fZ0wV2tx2exrfVzsoxPmnymTKfBS4MCdiSQGRI0oM6tMRTGKfCCydiv7
-         mQls58TQ9YD4ykIQfNyxDu51pwLXNARPpyw9o9okb+GT7d8dfPOgA3JQjCGIutgvbBkH
-         DPIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785336429; x=1785941229;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iUO+shHcXPXkW8jm7U6qNBfIeZI1sbU1fzZ8TMtvFnQ=;
-        b=dx1yobjmw+wGB8P4NSruUVLWL30WJQ6wK2y5i+6/rHPgLWq5ij1VJTUuAjwbVvWcSK
-         xixoswB5qlux06qfo8VaN1qYSGlykqaJCMTXLvc0YAiOgujeNG78WnL7hz6Ixidchxyw
-         t+rXfopy8yvnvLih1mNPdzjbmGSp8E3RAH9jRFGhI+U1WWtMMv5AXPQ6F9yqPZB/LFn3
-         obY3YSR6jCPkYlkRz8aAObmNqrs0wRUFe+Bt0PQvRpaRewMLt4r5TBYffRycVmCWkFfZ
-         njJVCO/Py3YZgQKGYqcaIQPSGDnH05VCIK55KQnotu5OvQ6h5zFuwYoT6kxwrzW807DF
-         EYlw==
-X-Forwarded-Encrypted: i=1; AHgh+RrzmhvSm/HYRZwmOYhf3aFAJTDATZ77fi8BL7Te9/vDT4DG5DM3zVCFiTzyydry8r64DTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBDTvdoie5rdMzvf2vEH/wrZNpC2OAahMnC9tCf4F2nLV0+s+y
-	l+bdhgZQa0rIpeLyG1TRnhqCNMh7tFXvEK5eWViQE8Joo+zK6M9PR9Bk0yCYTI8t5Km5wskPyJd
-	Bxs1EofijjOiXrK6ro+PP3f+Pu9KkG/2Ud6uKcIofRtWWto8yjox3yQ==
-X-Gm-Gg: AR+sD13gjiB/25qrWnkyqA0oz9fRaOQADmr0rEToZ51G1TPjONx5oZFNZkWmj+AyjJ3
-	sWxTeTg55ElhIv05KxfAnkU8ZhtUTTsodlDLFmbGcZzEeIxzzU1QzvIv64ZwUJTWbBW/Z2GtjI7
-	nadSnX0RrcnL8Hrguvkg+KzUOxR1wE4QMV5GbQ3gMyxHihiy/yKVSz7jTZyfXrrAYAdsxTXJhGq
-	lJrY/KjglE3Ir2MMFzri0XzNQc2+d5T/jlnZuBZ69zyZZO/AQFmxGPjYu8BAArEv9GpB83ibMNt
-	m7I2omTAsmMUU9czh5d+DI9NkkbREmfQBdUp2JKNF6Y14sjIxih93Tj10n0bfbqgsORfTXRAkPj
-	BNMaY5sC15+YlOKOEGh6PFrCEdQBuJskvEQu3lQ4g26U=
-X-Received: by 2002:a05:600c:4fc7:b0:495:5dcc:52b4 with SMTP id 5b1f17b1804b1-496c641505fmr101132205e9.3.1785336428962;
-        Wed, 29 Jul 2026 07:47:08 -0700 (PDT)
-X-Received: by 2002:a05:600c:4fc7:b0:495:5dcc:52b4 with SMTP id 5b1f17b1804b1-496c641505fmr101131455e9.3.1785336428269;
-        Wed, 29 Jul 2026 07:47:08 -0700 (PDT)
-Received: from sgarzare-redhat (ip139-137-192-82.pool-bba.aruba.it. [82.192.137.139])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4976bd6dcb3sm65934695e9.11.2026.07.29.07.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 07:47:07 -0700 (PDT)
-Date: Wed, 29 Jul 2026 16:47:02 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: Weiming Shi <bestswngs@gmail.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted
- virtqueues
-Message-ID: <amoR0pnMO2OQ2E6z@sgarzare-redhat>
-References: <20260727035804.1860862-1-bestswngs@gmail.com>
- <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
+	bh=GZkD05VF0k87b16ZMBfeT0j3aww6dW2ILKTzqN3+UtU=;
+	b=pqUixAIjzsUSNj3ecmiUj4vwLEvkHGgKOWj0uzMBXBKISr2g0dmCiFJuIqJrW/Z2GVlccH
+	CDEqXuU6FUYYfouBXnJh7Zj2oAnRW7wG91tRhv4CPMRqwz/Jnr7uK8yu6aEJJHZ4+BDZD3
+	dZqLO8cZ/ROGpF02zvXAFuxMkOSIBDk=
+X-Gm-Message-State: AOJu0YySAPZTg0Af/SH2+UGzQpj722GBQXz7/LO5JECOKwkv16gi6o+W
+	qIp3B1FtlLxNpzvsBy25srGlTQ/ikiwhDW2NxYTqsz1NeLJdN9vIWwj6oJ9HSbFJaoQa7XPnDLv
+	WbhlUTMOutiPTYWlaHEemVmKRYtkkDWBf9iqLM4RZ
+X-Received: by 2002:ac8:7e8e:0:b0:51b:ff0a:2048 with SMTP id
+ d75a77b69052e-52b350e5e9dmr111891cf.3.1785337931850; Wed, 29 Jul 2026
+ 08:12:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-1-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-1-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 16:11:34 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxy6f2EPhtOkHju39hGi91ZM5heu5ZA0upmmDxBq2GstQ@mail.gmail.com>
+X-Gm-Features: AUfX_myxJfjxAZR1tFLm51zrI58rRpwUPxuAUzGX7sj7-3UdzYo6Sjg9A4wrAHA
+Message-ID: <CA+EHjTxy6f2EPhtOkHju39hGi91ZM5heu5ZA0upmmDxBq2GstQ@mail.gmail.com>
+Subject: Re: [PATCH v9 01/16] KVM: arm64: Serialize repeated vCPU initialization
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jul 28, 2026 at 10:17:55AM -0700, Bobby Eshleman wrote:
->On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
->> The RX, TX and event workers read their virtqueue pointers before taking
->> the mutex that protects the queue and its run flag. A work item delayed
->> across freeze and restore can therefore retain a pointer deleted by
->> virtio_vsock_vqs_del(), observe the run flag for the replacement queues,
->> and use the freed pointer.
->>
->> RX has an additional path: when rx_run is clear, the common exit still
->> refills the RX queue. A queued worker can consequently call
->> virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
->>
->> BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
->> Read of size 4 by task kworker/2:1
->> Workqueue: virtio_vsock virtio_transport_rx_work
->> Call Trace:
->>  virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
->>  virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
->>  virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
->>  process_one_work (kernel/workqueue.c:3314)
->>  worker_thread (kernel/workqueue.c:3478)
->>  kthread (kernel/kthread.c:436)
->>  ret_from_fork (arch/x86/kernel/process.c:158)
->>  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
->> ...
->> Freed by task 141:
->>  kfree (mm/slub.c:6566)
->>  vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
->>  vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
->>  virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
->>  virtio_device_freeze (drivers/virtio/virtio.c:658)
->>  virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
->>  pci_pm_freeze (drivers/pci/pci-driver.c:1098)
->>  device_suspend (drivers/base/power/main.c:1968)
->> Kernel panic - not syncing: KASAN: panic_on_warn set ...
->>
->> Read each worker's virtqueue under its mutex after confirming that the
->> queue is running, and only refill RX while RX is running.
->>
->> Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()")
->> Cc: stable@vger.kernel.org
->> Reported-by: Xiang Mei <xmei5@asu.edu>
->> Assisted-by: OpenAI-Codex:gpt-5
->> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->> ---
->>  net/vmw_vsock/virtio_transport.c | 14 ++++++++------
->>  1 file changed, 8 insertions(+), 6 deletions(-)
->>
->> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->> index 57f2d6ec3ffc..79cf19f58943 100644
->> --- a/net/vmw_vsock/virtio_transport.c
->> +++ b/net/vmw_vsock/virtio_transport.c
->> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work_struct *work)
->>  	struct virtqueue *vq;
->>  	bool added = false;
->>
->> -	vq = vsock->vqs[VSOCK_VQ_TX];
->>  	mutex_lock(&vsock->tx_lock);
->>
->>  	if (!vsock->tx_run)
->>  		goto out;
->>
->> +	vq = vsock->vqs[VSOCK_VQ_TX];
->> +
->>  	do {
->>  		struct sk_buff *skb;
->>  		unsigned int len;
->> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct work_struct *work)
->>  		container_of(work, struct virtio_vsock, event_work);
->>  	struct virtqueue *vq;
->>
->> -	vq = vsock->vqs[VSOCK_VQ_EVENT];
->> -
->>  	mutex_lock(&vsock->event_lock);
->>
->>  	if (!vsock->event_run)
->>  		goto out;
->>
->> +	vq = vsock->vqs[VSOCK_VQ_EVENT];
->> +
->>  	do {
->>  		struct virtio_vsock_event *event;
->>  		unsigned int len;
->> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
->>  		container_of(work, struct virtio_vsock, rx_work);
->>  	struct virtqueue *vq;
->>
->> -	vq = vsock->vqs[VSOCK_VQ_RX];
->> -
->>  	mutex_lock(&vsock->rx_lock);
->>
->>  	if (!vsock->rx_run)
->>  		goto out;
->>
->> +	vq = vsock->vqs[VSOCK_VQ_RX];
->> +
->>  	do {
->>  		virtqueue_disable_cb(vq);
->>  		for (;;) {
->> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_struct *work)
->>  	} while (!virtqueue_enable_cb(vq));
->>
->>  out:
->> -	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->> +	if (vsock->rx_run &&
->> +	    vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->>  		virtio_vsock_rx_fill(vsock);
->>  	mutex_unlock(&vsock->rx_lock);
->>  }
->> --
->> 2.55.0
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
 >
->Not a strong opinion from me, but since this last hunk is the one that
->fixes the bug and the other hunks are moreso hardening, maybe break
->these out into two patches?
-
-I think also the other hunks fix an issue, but I agree on the split 
-since IMO we are fixing 2 different commits. Commit b917507e5ad9 
-("vsock/virtio: stop workers during the .remove()") was before 
-freeze/resume added by commit bd50c5dc182b ("vsock/virtio: add support 
-for device suspend/resume"). Only after that one we can have the false 
--> true transition of *_run variables.
-
-So IMO hunks 1-3 should have Fixes: bd50c5dc182b ... and hunk 4 should
-have Fixes: b917507e5ad9 ...
-
-That said, it's not a strong opinion here too, but if you prefer a 
-single patch, please add both Fixes.
-
-Thanks,
-Stefano
-
+> The initial KVM_ARM_VCPU_INIT path holds config_lock while resetting the
+> vCPU, but repeated initialization of an existing vCPU does not. As a
+> result, reset_mdcr() can race with VM-wide PMU configuration and
+> overwrite MDCR_EL2 with a stale counter count.
 >
->Besides, that all looks good to me.
+> Take config_lock around the repeated-init checks and reset. The vCPU
+> ioctl already holds vcpu->mutex, matching the established lock ordering.
 >
->Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
->
+> Fixes: c8823e51b534 ("KVM: arm64: Fix MDCR_EL2.HPMN reset value")
+> Closes: https://sashiko.dev/#/patchset/20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp?part=1
+> Assisted-by: Codex:gpt-5.6-sol
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+> ---
+>  arch/arm64/kvm/arm.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 50adfff75be8..a06ea39f57b1 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -1652,29 +1652,26 @@ static int __kvm_vcpu_set_target(struct kvm_vcpu *vcpu,
+>  {
+>         unsigned long features = init->features[0];
+>         struct kvm *kvm = vcpu->kvm;
+> -       int ret = -EINVAL;
+> +       int ret;
+>
+> -       mutex_lock(&kvm->arch.config_lock);
+> +       lockdep_assert_held(&kvm->arch.config_lock);
+>
+>         if (test_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED, &kvm->arch.flags) &&
+>             kvm_vcpu_init_changed(vcpu, init))
+> -               goto out_unlock;
+> +               return -EINVAL;
+>
+>         bitmap_copy(kvm->arch.vcpu_features, &features, KVM_VCPU_MAX_FEATURES);
+>
+>         ret = kvm_setup_vcpu(vcpu);
+>         if (ret)
+> -               goto out_unlock;
+> +               return ret;
+>
+>         /* Now we know what it is, we can reset it. */
+>         kvm_reset_vcpu(vcpu);
+>
+>         set_bit(KVM_ARCH_FLAG_VCPU_FEATURES_CONFIGURED, &kvm->arch.flags);
+>         vcpu_set_flag(vcpu, VCPU_INITIALIZED);
+> -       ret = 0;
+> -out_unlock:
+> -       mutex_unlock(&kvm->arch.config_lock);
+> -       return ret;
+> +       return 0;
+>  }
+>
+>  static int kvm_vcpu_set_target(struct kvm_vcpu *vcpu,
+> @@ -1690,6 +1687,8 @@ static int kvm_vcpu_set_target(struct kvm_vcpu *vcpu,
+>         if (ret)
+>                 return ret;
+>
+> +       guard(mutex)(&vcpu->kvm->arch.config_lock);
+> +
+>         if (!kvm_vcpu_initialized(vcpu))
+>                 return __kvm_vcpu_set_target(vcpu, init);
+>
+>
+> --
+> 2.55.0
+>
+>
