@@ -1,174 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA9E456E00;
-	Wed, 29 Jul 2026 11:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAA34570EE;
+	Wed, 29 Jul 2026 11:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785323267; cv=none; b=MeBajxrrFYWhqMx75oAbbvj6d7/yHmiFiiptgKuuh/Fr2IhCLdMUO8s1FrsLkcoXYHWTrRVL61PxmKVohwujY/6HPanGKj/bN3SQQCitewf6yAxpPOelUvFm+R/RGoMpoMhFHOcJ6alMeIFLZJFv1AMPEmocNAqeVKYNKxXcdH8=
+	t=1785323336; cv=none; b=Ddw3rXU1bg5EttC0CLvo9B3Db6GjkfFIrejqW5ZjFhmgcnRvQ3rH+jfS0oAlhk4T9V73i4JZ/BWgS1ziLJrFkZ7TztV0ZOAyFXtkVeoB7zEZqWp0F7i/Y+gLndaxMK9kLWBpMvZEN6F4kb/seAv+yJ3sV9nVmJZnXbJiYyM2hUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785323267; c=relaxed/simple;
-	bh=C6k8P7gpW7co/5WMrPa1FIUhudJWsyxTbvgvV44jdjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LARnromYet6tsO+Xw7a6iqXg//Mva4wakdzVVtOKfAEK57xgB9gG3plbL4+n/ZKYsT/ccga/9T2PTJO9C8hjb9l1nRo7d+uFrr5XKhY0oV3BG627SYhQCuHBMYyHEYAdqogBstTqMiyePsxLx1a7tNs7Xj3FjKPa1dNFfffmdXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=D3Pdkfun; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785323336; c=relaxed/simple;
+	bh=WsBB2fJ0g6xkP5QNn6rYrqJIAmkolyD6LzqYwWBdFPE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=i7x55dXThNwNqg8cEQlnUa2rLdXaiXfnffcanZaNod7fdsZwjbiDsABdArbbBgHx//pjDsl6LGBKFo9FqEhgppH40aw3IJJKY+pUvpOEHGtSN4dBbXbQBd6eI99/GMGUyrAKlOKJPMsfpHRDOdUKN+nXZO8QOayw+U5szt/dTq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYC33EAJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="D3Pdkfun"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785323265; x=1816859265;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=C6k8P7gpW7co/5WMrPa1FIUhudJWsyxTbvgvV44jdjQ=;
-  b=D3Pdkfun9pev7VGHJVoVWUjyqSNeaRJ4N4rd9yt1k94rIzqEnVV2BnhC
-   qndpulfcTltWzL/q77K4HdJ5MSnEgTZhQERkW6tzSuobN6lXQyAI7F7dl
-   dZgybIaliUhIXHHe9+RuSQxUPTYHpZiwyTrQysq3CYnsoIc/cQ4DZgH2h
-   +6k2U6XFPM5UcoyUoujIlFskG7K8hc6IstQXDDgqthhdKq2uglcmiZEaS
-   BBAa+GSL0fh3qnWrDSsBOiJP+HNCqcHndsG9D3xLjmfT+qVJvtAcxFfoZ
-   YPu1KiWJztS72vOmKfpp4fCzD7XZf9ibOr2Ky4VSuXpHhSTNXgJvlUauy
-   Q==;
-X-CSE-ConnectionGUID: x52ssaNXQbOLTMmBP7jpwQ==
-X-CSE-MsgGUID: L+QIdi/BSWqS6Ji52e7V0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85049960"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="85049960"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 04:07:44 -0700
-X-CSE-ConnectionGUID: BLHQ9rCzS76c3vZpzjKRCw==
-X-CSE-MsgGUID: +PW3ZyRRRTGMSnbNIOwY7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
-   d="scan'208";a="298197946"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa001.jf.intel.com with ESMTP; 29 Jul 2026 04:07:41 -0700
-Date: Wed, 29 Jul 2026 19:07:39 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>, "Xu, Yilun" <yilun.xu@intel.com>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"djbw@kernel.org" <djbw@kernel.org>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>
-Subject: Re: [PATCH v2 04/17] x86/virt/tdx: Add extra memory to TDX module
- for the extensions
-Message-ID: <amne+/6eIDdp0RZk@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-5-yilun.xu@linux.intel.com>
- <36d0108950e80c8ac769534fea2d8a6c0907c431.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYC33EAJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFC31F000E9;
+	Wed, 29 Jul 2026 11:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785323335;
+	bh=1E/IOmJhpU2BpQ7aoq5kfvtFwML8C52qc0I0D3sPGrg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=jYC33EAJxYKfwH2xOcHF7wjjYl6u9St/2IlUl87zG1ttabayO0tStS2vO9VL9RCLt
+	 p9AtEmJRoXjaNrT1myLW2GNifYFw5UlbLhrFbwikq7bMIbFBIdyyt2v+oPNWVMoPCS
+	 enE3+PrbzEyG5JYupW3Fs4RnR5HONvTdMcGBdjd+sV0ejwP5OWuNViUmznpyG8bAb8
+	 6cmtiN5hU/ZJlYIPD02bfkCltJ1MPfQBEB93SdUYqBx1ZJYvrXazzcdXJqQ+cj/MiI
+	 Q5qvzXGxn20ok39996YV9+JVjex6uX38qZliqOykBfrDdvAAf8ZSvuGW4d0RedNpye
+	 xUmIi81XvLF5A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 07/11] KVM: arm64: Dirty-bitmap: avoid splitting
+ previously split blocks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leonardo Bras" <leo.bras@arm.com>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Marc Zyngier" <maz@kernel.org>, "Oliver
+ Upton" <oupton@kernel.org>
+In-Reply-To: <20260729104548.3439958-8-leo.bras@arm.com>
+References: <20260729104548.3439958-1-leo.bras@arm.com>
+ <20260729104548.3439958-8-leo.bras@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 11:08:54 +0000
+Message-Id: <20260729110854.ACFC31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <36d0108950e80c8ac769534fea2d8a6c0907c431.camel@intel.com>
 
-> > TDH.EXT.MEM.ADD uses a new parameter type, HPA_LIST_INFO, to provide
-> > this memory. This type represents a list of pages for TDX module to
-> > access. It references an 'hpa_list page' which contains the list of
-> > target HPAs. It collapses the HPA of the hpa_list page and the number
-> > of valid target HPAs into a 64 bit raw value for SEAMCALL parameters.
-> > The hpa_list page is always a medium, TDX module never keeps the
-> > hpa_list page.
-> 
-> I think you are going to need to put the basic concepts up front. Don't lead
-> with the acronyms. The TDX module needs to get a list of pages. It takes them in
-> a PFN array that is encoded like (...). Create a helper for this, and name it
-> the same after the TDX module term for this format, HPA_LIST_INFO.
-> 
-> Basically there are no exotic concepts here. So you can explain it in normal
-> kernel terms.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] Dropping `mmu_lock` during eager page splitting creates a race win=
+dow that can permanently lose hardware-managed dirty bits (FEAT_HAFDBS), le=
+ading to silent guest data corruption during live migration.
+--
 
-OK. My refactored version:
+--- Patch [7]: [PATCH v3 07/11] KVM: arm64: Dirty-bitmap: avoid splitting p=
+reviously split blocks ---
+commit fb963a566e307a780c669718446f8bf7c2c6ef94
+Author: Leonardo Bras <leo.bras@arm.com>
 
-    When adding the memory, the TDX module needs to get a list of pages.
-    It accepts these target pages in a PFN array that is encoded into a
-    single 64-bit SEAMCALL parameter: the PFN of a container page that
-    holds the PFN array, and the number of the pages packed into a single
-    value. Create a helper to encode this format and name it after the TDX
-    module term: HPA_LIST_INFO.
+KVM: arm64: Dirty-bitmap: avoid splitting previously split blocks
 
-[...]
+If previous dirty-clean already split a block, then avoid calling the
+split helper on that block again.
 
-> >  TDX module extensions consume tens of megabytes memory that
-> > will never be returned to host. Use contiguous page allocation to
-> > isolate these large blocks entirely, avoiding permanent memory
-> > fragmentation and reducing buddy allocator efficiency. Print the
-> > allocation amount on TDX module extensions initialization for
-> > visibility.
-> 
-> Hmm. I'm not sure the user will care about the specific category of extension
-> used memory.
+> diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> index 5a6266205295e..d7e624f9b6308 100644
+> --- a/arch/arm64/kvm/dirty_bit.c
+> +++ b/arch/arm64/kvm/dirty_bit.c
+> @@ -295,10 +296,15 @@ int __kvm_arch_dirty_log_clear(struct kvm *kvm,
+> =20
+>  		offset =3D base_gfn + i * BITS_PER_LONG;
+> =20
+> -		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+> -			kvm_mmu_split_huge_pages(kvm,
+> -						 gfn_to_gpa(offset + __ffs(mask)),
+> -						 gfn_to_gpa(offset + __fls(mask) + 1));
+> +		if (kvm_dirty_log_manual_protect_and_init_set(kvm)) {
+> +			gpa_t split_start =3D gfn_to_gpa(offset + __ffs(mask));
+> +			gpa_t split_end =3D  gfn_to_gpa(offset + __fls(mask) + 1);
+> +
+> +			if (split_end > last_split) {
+> +				kvm_mmu_split_huge_pages(kvm, split_start, split_end);
 
-Not sure if you suggest removing the print, but this is suggested by Dave:
+[Severity: High]
+Can this sequence lose dirty state due to a race with hardware dirty bit
+management?
 
-https://lore.kernel.org/all/62bec236-4716-4326-8342-1863ad8a3f24@intel.com/
+In __kvm_arch_dirty_log_clear(), the software dirty_bitmap for the target p=
+ages
+is fetched and cleared before reaching this point.
 
-[...]
+When kvm_mmu_split_huge_pages() is called, it can temporarily drop
+kvm->mmu_lock to allocate memory.
 
-> > +struct tdx_hpa_list {
-> > +	u64 phys[PAGE_SIZE / sizeof(u64)];
-> > +};
-> > +
-> > +static_assert(sizeof(struct tdx_hpa_list) == PAGE_SIZE);
-> 
-> What kind of change are we guarding against here?
+During this unlocked window, a vCPU could locklessly write to the page. With
+FEAT_HAFDBS enabled, the hardware automatically sets the PTE dirty bit with=
+out
+trapping to KVM.
 
-I don't expect changes of the format, but this is to ensure the
-container of the PFN array is a page, and also serves as the
-documentation.
+After the lock is reacquired, the loop proceeds to dirty_bit_clear(), which
+unconditionally clears the hardware PTE dirty bit (via FEAT_HACDBS).
 
-[...]
+Because the software bitmap was already cleared and the hardware state is w=
+iped
+without feeding the dirty state back, could a write during the unlocked win=
+dow
+be permanently lost if userspace reads the page data before the clear opera=
+tion?
+The next KVM_GET_DIRTY_LOG would not see it.
 
-> > +	i = 0;
-> > +	while (i < required_pages) {
-> > +		unsigned int nents = min(required_pages - i,
-> > +					 ARRAY_SIZE(hpa_list->phys));
-> 
-> I think this whole loop could be made clearer. nents is the number of pages we
-> will add for an execution of the seamcall. That is not clear enough either.
-> 
-> > +		unsigned int j;
-> > +
-> > +		for (j = 0; j < nents; j++)
-> > +			hpa_list->phys[j] = page_to_phys(page + i + j);
-> > +
-> > +		ret = tdx_ext_mem_add(virt_to_page(hpa_list), nents);
-> > +		/*
-> > +		 * No SEAMCALLs to reclaim the added pages. For simple error
-> > +		 * handling, leak all pages.
-> > +		 */
-> > +		WARN(ret, "Fatal: TDX module rejected (%d) memory for
-> > extensions, stranded all pages\n",
-> > +		     ret);
-> > +		if (ret)
-> > +			break;
-> 
-> Can we combine the ret checks?
+> +				last_split =3D ALIGN_DOWN(split_end - 1, PMD_SIZE) + PMD_SIZE;
+> +			}
+> +		}
+> =20
+>  		do {
+>  			idx =3D mask_to_hdbss(&mask, hw_entries, offset, ttwl, idx, entries_s=
+z);
 
-Yes.
-
-> 
-> > +
-> > +		i += nents;
-> 
-> Maybe a full name for i?
-
-Yes, I changed the name of i & nents.
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729104548.3439=
+958-1-leo.bras@arm.com?part=3D7
