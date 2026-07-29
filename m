@@ -1,105 +1,137 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3617D3F12E0
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785367574; cv=pass; b=IRa56mMHvKy5aGGkvzCcrxTFsXy2Vko55cpmeM8ZUd60r5TViW0d8OGQOggvQFRRhlDyG29nZCtKnvy7tiufCv6mRznGsPjE2KqFS12CQfboOpEXa3xiVUxQM5WDoMqveCA8hU4j4e1eCio+rK4vHYE9iNZjMHeSyCv+Y6zvnMc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785367574; c=relaxed/simple;
-	bh=I/PT7cgF2fSz1wz2yFTWJuVc6/30f7CcO1Dj6lJrglE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=p7Zmz4nBHcNlD1hswEL9bzhDhvqJHid78Z3p0kysqmaat+VIT3A6zR5omU8RIzfKrUSDzesE9+9euvYR9SMhl322e7H7CQHSaoW+kLvPgHt9a097aEXQ3RhBV6SjBEV/AVOIkfBHGXjS4CfLcsdz7kBmLZeTc6F8+2daRgExD/g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O9/BieZq; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6463BFE34
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785368354; cv=none; b=DcmKxWwGbU14qPft3L9GMaVO6Fgv2YAsfbfhw55ze7zG8KKBDb9jR5WVkYjSL53TdHi/WntwBXnpnk3/bRoMsp/roxgYQ7NVuRhoneGN4rfAokwB5b/5xLoBZ7LLJS3dtpULXubEE3SbuDh5bug/0n8wEanRbY+3+wXHfByFC50=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785368354; c=relaxed/simple;
+	bh=CWevDlRVGGa+F9TVFxW5yFVcx6NegzKrVzoPEms0Ij4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=RcOyqu12khk9XA70RaaLUO+nhLdtDJ5sk7Imqgyrp2NIDZLS+KHVeeSu0V93HKXuUvg3ZCx21+jCe2PCay/hNN+UTlf6MyDA2NJQ6GDhlqg+5j/AoTcsgY5aSq/1wCLNU7RyH35u2GYbgmfQFQAeijEFEb5WFSG+om7J/D0dUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAJllbox; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O9/BieZq"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69fec980a30so1645762a12.3
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:26:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785367571; cv=none;
-        d=google.com; s=arc-20260327;
-        b=opC16hvydnPB9/NtQm+rCcFk9br2M4qBoobNJfOnaohYcCCZVzF8KAhFSIRT8Rhxjl
-         YDw7zhSVp2ld8sp3KpIPvgEJVRlVmFx4d+1Iumotm2IK2Mu9gRUfrFvJjh2eQl6aPgzU
-         +SGKNKZYeTQEVFE4pDBJGh/s6+NUZEDFCneTtcpy6ouvyE+vmH8csHZfqo7wK7crPEOs
-         ScvYA8yysXniL+P+Pgvybre1AqCVs0yaS0okGZjQU3zzS2e2tlWV9ckJhHvuMoYS3QKZ
-         GkovunbbRB/w5NLo5hxcMvgo0tI7lu4mF7jGVOGPPGYjOWsXWHtbRqjBNy4ZpnnDambw
-         3nDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:reply-to:mime-version
-         :dkim-signature;
-        bh=9TgX+ohmP77qyi8X+IaMTLUljQHMsrXLdqbLXzrxvXI=;
-        fh=IiX07mIZm8Q5pXXrjQ7De1yrYgyygSsoxFLA6inxw14=;
-        b=J4QSQEeEh62/0DpRY/vsjjufQhaYYLH2LcNqlHBZfE6WAA2jLM9K4ensShu+x+qI4x
-         I2EhaFwcuBTlpcuMF3nSG4je6sK8XQ+Jp+JRXom5ELNPMCaCv/f9JMXK0WuJo/KohNnH
-         1WjbK2Hevgs4iF7jIGQl8hnEk+cADcJy7nI/w8rWIZw2eNOqxYsyINfGPSHTFOoR/vVz
-         z6i+XHhgAr1AzxC6hlCASJN2F0DXRUZ1TF7RqFEI9xMPqSomkUAImf+Tum2YUSglUxFj
-         /6qpM2PxZtcpOBYL5vRl9j+mFr3Qqy/hVk9eafSMHPu57a6RuO7xGkpFS7t6b8yClyGg
-         oI4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785367571; x=1785972371; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9TgX+ohmP77qyi8X+IaMTLUljQHMsrXLdqbLXzrxvXI=;
-        b=O9/BieZqToaKStJHjDx/OQeWMn5D48X+1tCFiMJT76PBRsb9khsYggVjcJ1dcEtft9
-         6XFsIPMKp6nCrk9Afc0nqzx2/RBdHHScts6mFE277aqAwmhIa4uuYshuHwPHhxUJBSTH
-         Hjh/RY0KXLa85xcCrhZZGlDsTVCzNDDpfhIce9bNzjdodKWEbzw53jHP7CboegGsMm4A
-         NptleAU9VkQMmIoxAPWHQmtczxkmqqXIaX9cXwrDHw1pyVFYqevG31wb4kkVf037G/Lg
-         7J0a+wybHUZ8wACp4XwTZsUwMvsbkTqNI0h1dbImx9SI+7J3ErL4+F87bBRP9mFlpkdq
-         O8JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785367571; x=1785972371;
-        h=content-type:cc:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9TgX+ohmP77qyi8X+IaMTLUljQHMsrXLdqbLXzrxvXI=;
-        b=qoiG8KMqv9CfDX5MAEmVrx/q+SADlazt+3fyf7JfYYBj+alQJFw3yUzyuF+dNQL+8N
-         in9FAVUVT/JP/VqiEJvEnbaRORJKs+gi/ocP+v1w1RMxRn+MA/AKeGa4bMnz6NKgRcaL
-         drTYu3H3eoJil+d5cR9ShCg76HlLNRl1BlUzYbP8h0fP2D0D7jQJMialQ9de1kzSwI6y
-         by8AirOVAMyDCr1f17M6kSooU+uHyXDHT3MA5dxU9ESNm/9RqFfvTWR7wbpHnvBPwcxe
-         UoECezxfkMfC5hljf1dqBa5epvsnxYG9LvixVML+RisMP82Ji1FvEH3fUwbAJ2LhHF1/
-         jvGg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6F2yZx42H0NzxEvUcEXKEhss1Ior8gLn37ubqat5tTQMqqu+r2aSyWQFetXDwDviRMOc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPTNkpjP7eKVe97zmAYN81Xd6EFPrqS3Y0uDes0+6D3VArPNIL
-	OTUtKjuwb1HqpFZJUik5bjFtYyHloOnxRgPyR+a7ULseK9VsG4QD9MUxLVMhRMI2scEA31s6fJV
-	0SOAh9gQjQm0UoIC3O5uW4vaXh9j9B9g=
-X-Gm-Gg: AR+sD12ktsa94eMEGqjIhP3cDn5FoUuJ+LKdJTvVfEsAQpv1XIiVv1ujqZM8cIEktE9
-	0OPyTc5s5i62qtrhl3GLw4vAVzDkEOv6+EGkdyyBEczDeqIBJewsPl8+pyDiZu1OfnUwHvcI0ol
-	OZkd4klCoid5JYiYEQmntayJxKFDyKAHN/LzL9By1qAVHHYR2z77ntfrD+YZHf6sIZ00QuBMcR0
-	SZLsEq/dtx3wM4v7/VscPE8JT+oYLKpSDb2a1T/3XCsJE0eTy6Pi3IIcLJQ6iPg8jpHVS+5DaBS
-	qyIzxy37KX4YOvXwJnOfJJ7GuOjYlOoqObMGqQC2OdLt/fHvRnxN7dHr/SMxZGtcukWbMOb+0Ks
-	3Gw==
-X-Received: by 2002:a05:6402:2792:b0:69c:769d:6f19 with SMTP id
- 4fb4d7f45d1cf-6a07b7fc435mr156832a12.10.1785367571042; Wed, 29 Jul 2026
- 16:26:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAJllbox"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347AE1F000E9;
+	Wed, 29 Jul 2026 23:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785368352;
+	bh=TnNyo7NNO7PVIpgmfdqqCsbnDWmE89oiY49S29N7BoA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=AAJllboxpd9Bfa+VTIpWua034UeX5zPJwr3sjhTJJt6uG8D71zIXasuMg1aNwGwVQ
+	 hFX/5ElZUynpyySOTfKULq0moiURn2OE+h4/aCn/O6kClvK2pF0O/zPOWYVqbKw/zj
+	 Nyl37kkx2qstbNAbIrXdoEYYFWZdjaHxFMMbwY3YbF2Os2y+1oLuRRQIGAVoVVfPnQ
+	 CcaYTrY5MqYL+XpK7lNRVqVZlm9BNJSx39ySrZ0sgR+3CnuxoCH14t/2MZ7LHLFnxK
+	 cBdqwLbqzKKhUKv+8N3WHg5LABNM3lQMFgLHig3lPvMF5PR1o/lSEsDRsOg+Y0FR/0
+	 oA1kPi/rmgyBw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 1/4] RISC-V: KVM: Add SBI extension validate callback
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Inochi Amaoto" <inochiama@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260729232527.139183-2-inochiama@gmail.com>
+References: <20260729232527.139183-1-inochiama@gmail.com>
+ <20260729232527.139183-2-inochiama@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 23:39:11 +0000
+Message-Id: <20260729233912.347AE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Reply-To: ludloff@gmail.com
-From: Christian Ludloff <ludloff@gmail.com>
-Date: Wed, 29 Jul 2026 16:25:59 -0700
-X-Gm-Features: AUfX_mwLumpXFwqNyUo2sG79wn2zEhCljcWMZQcou6jl-9qng1COQMQ8ZAqDV-s
-Message-ID: <CAKSQd8X56f585VcsoXQbOhMoDfgffwfjXvxSv9Y2sqv6NcJspg@mail.gmail.com>
-Subject: Re: [PATCH v6 15/20] KVM: x86: Guard valid XCR0.APX settings
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: pbonzini@redhat.com, seanjc@google.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-> In the non-compacted XSAVE format, APX and MPX conflict on the same
-> offset. Although MPX is being deprecated in practice, KVM should
-> explicitly reject such configurations that set both bits.
-
-The ISA does not preclude an implementation that
-supports both MPX and APX simultaneously.
-
-Properly written SW deals with that possibility...  :)
-
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The validate callback is skipped for disabled extensions, defeatin=
+g its stated purpose of cleaning up state.
+- [High] The FWFT extension completely lacks the implementation of the new =
+validate callback.
 --
-C.
+
+--- Patch [1]: [PATCH v3 1/4] RISC-V: KVM: Add SBI extension validate callb=
+ack ---
+commit 3b3c6bd10bd24fef09cd0cfc1f43717873d6c992
+Author: Inochi Amaoto <inochiama@gmail.com>
+
+RISC-V: KVM: Add SBI extension validate callback
+
+This commit adds a generic SBI extension validate callback to allow extensi=
+ons
+to correct their parameters before the first run. It is specifically intend=
+ed
+to fix an issue where vCPU state remains broken if the FWFT extension is
+disabled after its features have been configured.
+
+> Add the generic SBI extension validate callback so the FWFT
+> extension can fix its parameters before the first run.
+
+[Severity: High]
+Is the actual implementation of the validate callback for the FWFT extensio=
+n=20
+missing from this patch?=20
+
+The generic framework is added here, but the validate function pointer=20
+assignment for vcpu_sbi_ext_fwft in arch/riscv/kvm/vcpu_sbi_fwft.c appears=
+=20
+to be absent.=20
+
+Without implementing this callback in the FWFT extension itself, the=20
+parameters will not actually be fixed when the extension is disabled.
+
+> diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+> index 46ab7b989432b..b737e9a7a12a2 100644
+> --- a/arch/riscv/kvm/vcpu_sbi.c
+> +++ b/arch/riscv/kvm/vcpu_sbi.c
+
+[ ... ]
+
+> @@ -723,3 +723,26 @@ void kvm_riscv_vcpu_sbi_reset(struct kvm_vcpu *vcpu)
+>  		ext->reset(vcpu);
+>  	}
+>  }
+> +
+> +void kvm_riscv_vcpu_sbi_validate(struct kvm_vcpu *vcpu)
+> +{
+> +	struct kvm_vcpu_sbi_context *scontext =3D &vcpu->arch.sbi_context;
+> +	const struct kvm_riscv_sbi_extension_entry *entry;
+> +	const struct kvm_vcpu_sbi_extension *ext;
+> +	int idx, i;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(sbi_ext); i++) {
+> +		entry =3D &sbi_ext[i];
+> +		ext =3D entry->ext_ptr;
+> +		idx =3D entry->ext_idx;
+> +
+> +		if (idx < 0 || idx >=3D ARRAY_SIZE(scontext->ext_status))
+> +			continue;
+> +
+> +		if (scontext->ext_status[idx] !=3D KVM_RISCV_SBI_EXT_STATUS_ENABLED ||
+> +		    !ext->validate)
+> +			continue;
+
+[Severity: High]
+Will this condition prevent disabled extensions from cleaning up their stat=
+e?
+
+The commit message notes this callback is needed to fix the vCPU state when=
+ a=20
+user disables the FWFT extension after setting a value.=20
+
+However, kvm_riscv_vcpu_sbi_validate() explicitly skips extensions unless=20
+their status is KVM_RISCV_SBI_EXT_STATUS_ENABLED.=20
+
+Does this mean a disabled extension will not have its validate callback=20
+invoked at all, leaving the vCPU in an inconsistent state?
+
+> +
+> +		ext->validate(vcpu);
+> +	}
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729232527.1391=
+83-1-inochiama@gmail.com?part=3D1
