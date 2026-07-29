@@ -1,145 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9877D3DCD96
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785363676; cv=pass; b=U0DAAAqo/bBmc8i2yic6MePbrpNg3AxUC5K5V1AaT91AG3/5scnHuIsoYP5srNt2I4eQFtZpWb5ViCcQGOde1wuIsSnrW62NjStXF1qo7GqELczbrHW9iyriWMHJOuSXVtgwcfqLbnCsUfoFpPawN3IbtXffRJL45kmznYILnVk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785363676; c=relaxed/simple;
-	bh=IKhB8+i2CpFK3T/BlrXLUDKbv/FSqDkVyYQ5Mc4RjYE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EGmJ1nwEGxlAJEV7Jf97bi7V9Jo8VXaQefmHumcRDzhL5YvxlLjBzwzuEmyOqX+RRBkQ1SN7Mbj1k2hiE4sR95RMAn+RuVMOHwA6svf8wCZB8T5jYRwWH+dt6YZFYw8esbbSKx804pcrF9vqJ5SiQ/FUNP4HShPCLpgW5x2z0Qg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VzrrZ6Mi; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jj+aPZKH; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1099440A2C
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785364028; cv=none; b=iN1j4jDTLIn1Jd1/sBro5jmrl9fOJVFTLkxEZsLyMHPuU5UVed6LltnLa/QY5w+JCExqf+FHvLEYTjEEGK6c2R8hVJFR/KMpn0W3Tpbo+htZaqe4M5c9Uy/IL0Q5U4CO4GjQpBDmINE1LfCQfQnx8L06OX/WbYqTEwI/Nj3LyVs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785364028; c=relaxed/simple;
+	bh=r1c+CaBhW5s4wXFD2O6k3jFF+p8PGPmXib9duAj+dtw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IfHuGTGfwalUUneMkXsYh0mnq50sUZD7CpwC0VUACku3rheGXYYupNxmOp7BLgYXcvOXPasRWwCgMlmAWxb3S/qvSz4OD2iUu+hU14lVhpNaNCB2iD0m5lhzLYpZEq5tPZ1QFABP/VJjbuyGqb95GUfpQp+QRCg0O/D7fnTmfpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KPdG9xoO; arc=none smtp.client-ip=209.85.215.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VzrrZ6Mi";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jj+aPZKH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785363671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BRMe1gcoYiqmBeNR5vKRg54P23wOOoNCf6X284VJh8Q=;
-	b=VzrrZ6Mi9o1tPbfSedpeBnTd8A/lMRY8OoMRQg/GiULQUZecUE5eUUsQ1nO1BhGXuU41I8
-	qrxomw9XzuSBbifCz7McOC3sWso//OVqoybsjbwvnctIwOFizcwrEB8hmmAWpOPMT7rsma
-	oH2pQMpoBbMXa0lV3yJkGyE7iqAWF4s=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-573-g79fM_jqN726ucHaUrepdw-1; Wed, 29 Jul 2026 18:21:09 -0400
-X-MC-Unique: g79fM_jqN726ucHaUrepdw-1
-X-Mimecast-MFC-AGG-ID: g79fM_jqN726ucHaUrepdw_1785363668
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f83450a8eso1285861f8f.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:21:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785363668; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OZbeCyfDtCKY5UATUvDqkNDY6D9jzfYIfiOSkebdlscqBrEY9bYl7tMtg8AWYY/tDK
-         JrEab/aBDuQceNTK4MArOwO5ONVLnzB3jUhOK9iXUUhNQvaYD5OzdDTtdbH5aA+5d3G9
-         qMKj7k5Sm4UJNrQme9En8mg6VP91u8jpsft0WQJRBQpKr1yvjlelCxII4YlnqonfT2ax
-         M6xIf+4FZgYO6Wb6YTGm7ADrkVPaWox8oqdTnB0Hkn1s1YDIXkAQ0Y5TN6wnqH9p6bns
-         vKjoPIcNHGYy/Z99f+yvv3Qb6I/SymsD+BUu4vKoEwjeQQ9AHh2Kgx3GyiR29K/mZuEf
-         oJSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BRMe1gcoYiqmBeNR5vKRg54P23wOOoNCf6X284VJh8Q=;
-        fh=iYdkCxoZYcXgBWx6aRa0xNYNS65Z8Ujc0t3ZzG6HVNU=;
-        b=EqNwtPrZFkoJgMKai5augScHr0pc5GBu4cuLvoxLxvWkMOdjhY4lhi/zSEwhKUWMj/
-         Fhoh4SrjPgP+24/DCg2dpKZzup1q1AUuFfDcDkm4H5/21Ju2sGd/MosRddiREwop4/nA
-         X3OGjTcvH9ruZlq28S6ECJ09FSVHPK/3ZSJ5nFiieinbfZQt6uZpYyPohRAmnyBULi9K
-         16V0k4JrSSDC2nS63OVowylss1PR07elexk2MZFV9egqzJbzmfT+DUq7hDOHL+AN0i3t
-         asjcgFHXbib2kY7eQr3pqgiNPJvnuXxUT3dYUVWG+KDaDAujkks3nJocQDrOG/IL6hRO
-         EtGw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KPdG9xoO"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ca124bf0189so116367a12.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:27:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785363668; x=1785968468; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BRMe1gcoYiqmBeNR5vKRg54P23wOOoNCf6X284VJh8Q=;
-        b=Jj+aPZKHrXMgU4ZfnusNlAOJYnCY1mG2M0pP+VtH6IMhMgYmDwY/lxWFxtLxSiMDYA
-         TXHDxYTZVz9f3DYOFqHGEDtzIP/5d33VoBzhZhWs6kPzdnMPTIy7HRGajtP569tfT6QS
-         GbnVpSc3nWvuONSSjxdr1Wd9W21poeDNFuqDXjTaX73Dz9JH7vx7xKulq+eTcPpqfA9a
-         Ju7QD017f8pgT36Y4wcMytEApTDIRaWOcG+IrLzRsTQFlmO9cMr1lBkN9evtbRZTE75i
-         yhvYBZBBrDGBZF22oG7X9cr2hLZ1Ma1Hy3Fkgo9aXI9pBzbFgsMaSNoFI0DRml5yd3pS
-         2LIw==
+        d=google.com; s=20251104; t=1785364026; x=1785968826; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6i9gxS0ccvnf11VUuXna08dr0rnR4es/fvIWpwBhRHA=;
+        b=KPdG9xoOeeAkYwv6rNeVc5TFkPwRqXwfsC+TcpzDrN11WI2y8npCLKWpgqycMjN/qF
+         rsAtx5ARHDpyzr2Dgl+SsJxlPaxeixFDNne+rsIvyrr5X4011QQ5uwiO49gEoBXGCTmE
+         D3Slza//jAE8CdvMd9tR+Hdjn+ANl3ZKuOn+sGOE9sN7m20Hmyejt1F2f6hBhaV6xJya
+         Zn1lUKdsuQRDrnUsMiZt9YghiV1FpDpncfkk8e+gFKKchgUtOi1JFItFF4iMk2ce/dNH
+         qTBcywDrSrVWozsEPwhmeiQjNejsDErBn5fRYz7gVwdlqZI18rBRVNVMPPH1hwG4nBA9
+         XrWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785363668; x=1785968468;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785364026; x=1785968826;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BRMe1gcoYiqmBeNR5vKRg54P23wOOoNCf6X284VJh8Q=;
-        b=C8UnHrPtxbPOuSyJHI5Vvs11kVM/SiKRXoKBDVJkW/KiYCJyvQpaPEX3SZez2kvbKX
-         RGJwqNbHSBm9TuNuQZOlXu84BlvGEbT6qPQCi/3S4YDKFXYuZvvM5xo8UjZOvWPBXY+H
-         sh8XNvmK9LwEahlDkxNsmeB9GJ2jaAk5JBiB8gW6LUUOMzGf6V/v3LWuJMFcF2R2vQQ+
-         /BABoHpZgvv14D+XHFL2zMNlyar1Ovi/V76ZGtjlNS5voUrE0veP4SmXTF4duZ3iReTa
-         VHLa2RlRzs29BVYoirGJzM2S3OJ2VilgdzCdNh4SAPqFPX7tkG4ZwlR3mSDItEE+EPVk
-         bQfg==
-X-Forwarded-Encrypted: i=1; AHgh+RrDKsPpIClFfR5k/NZi/QIsErq/jZ9KyMZ/KWanUvHxIj6W33WSPUjw7eurpT6JWpBUrsw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVNob11YJJ8ajTjMEw/5ejbTYLUx4Ub2X3FQI+cm5wTBvwrNBx
-	z8AtG11oJNv1rvalF8x88kqVESWPGwLaYC/zgwM1rqwGQlAkjrwQQHjFgsIGq3nGx4Lqq59DNmB
-	bbubdUUX/yTCAi2X+IoyuUe4gWez0+Nz4sUXpZi2rWX2q9kaoNHWmDAV1O2KkTR4lQ8eDo/qbOf
-	4Uul6hLf9XeXudL2xtLGcaudVOqTHK
-X-Gm-Gg: AR+sD13PJYT3tTbWC27sSGJeaE4Is35diDCRH1uBiq/ov6tTg6vGWbhUFPyNehtCNnf
-	tHLR3pKVLhURIBMCPCw+1figcgGxtxYiQMgPuHCnIltj8r05iTZ2JIi5Da7Jm5rDMdV0HNv2wzi
-	9rIGEpPb6o19nH2A1Wmp9DuI8FDV8SRJueuFnAQL3MXdKNW6sn3JLRtYqAGhLpTM/XhegDwTNXe
-	hZwrpJYpxFrdhXholp+mwurogUMrXnWT9FZsTtWnprw6Jpcm+9CRhsncSo=
-X-Received: by 2002:a05:6000:25c3:b0:47f:7261:3a58 with SMTP id ffacd0b85a97d-47fc80c1423mr199744f8f.1.1785363668588;
-        Wed, 29 Jul 2026 15:21:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:25c3:b0:47f:7261:3a58 with SMTP id
- ffacd0b85a97d-47fc80c1423mr199730f8f.1.1785363668311; Wed, 29 Jul 2026
- 15:21:08 -0700 (PDT)
+        bh=6i9gxS0ccvnf11VUuXna08dr0rnR4es/fvIWpwBhRHA=;
+        b=jTqOZwPGsByGN+KpNceUemNzweXYd1wIJZNZEts2P2lZqCz5Msddb+P9oH+ayS+drx
+         g57a8qG2VA6YNY2QP5CrFozAVEJZg8B7+tnYY60q45trLi/rhpR7QLPb2H7Pax2Aj4Ii
+         cNN4KRtEbL8K1nhSlR/cY7oWugIVlPUcqpPUk8apxeFiUxSGqPpYOErDaSmmhnWmxMvU
+         2Pvi4iSgzv1JLT/FZ5BP9noglH0ak3izk16togWty1O3MreijKD3tY9eHZPv4FUC8CUy
+         wppDNrXNP1+lN7xc8QTiVSegS3Z5y7WC1PgMu5FsDehFVc3FLrqtkrYSQYwLS62Ynx2+
+         p+FQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqNhiAAwCcqqQEyXXverXMgiM3Y3KF6GBKpZn0MK9fjUZTxPfnyAvY8tzbGTvO8EisPlOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyldpnlO194QVFCBED06Di+Mo91hH2/FQ9l1FEIBulQyMH8VW+p
+	O36y+q4P2tFtkB9sgaHH+0fhOdR8rEZE0b7Z/5OpAJwUIqsHm9EKjeVVJQ8CEqHxAYmvFHMEUn7
+	k5rBzpsvC
+X-Received: from plhz9.prod.google.com ([2002:a17:902:d9c9:b0:2ca:c400:4a09])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d54f:b0:2ce:803c:6f09
+ with SMTP id d9443c01a7336-2d035eece1emr1289925ad.18.1785364025721; Wed, 29
+ Jul 2026 15:27:05 -0700 (PDT)
+Date: Wed, 29 Jul 2026 22:26:55 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260729214500.651377-1-pbonzini@redhat.com> <CAHk-=wiK2vQfiex3JG0ZiBPfWqc=JnTOyyJBF86+GoEcKJ=3Cg@mail.gmail.com>
-In-Reply-To: <CAHk-=wiK2vQfiex3JG0ZiBPfWqc=JnTOyyJBF86+GoEcKJ=3Cg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 30 Jul 2026 00:20:56 +0200
-X-Gm-Features: AUfX_mwAC0trQwsVYQwIMnaVTSPJG4d22UtoqXE-t2i6LHZaLxVI0Th721Kzovs
-Message-ID: <CABgObfaLZzBsC2B8xdbW6pds_UyaBRmXh_eBNrn=cBVAPrj2jw@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM fixes for Linux 7.2-rc6
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAC9+amoC/2XM3QoCIRCG4VsJjzP8GZ21o+4jIlKnTag1dkOK2
+ HvPogOjw2+Y532yicZEE1svnmykkqaUhzq65YKF02HoiadYN1NCWYECeer9vui9Bw5OOggSNOr
+ A6v91pGO6f1rbXd2nNN3y+PikC7yv34oUTaUAF9xYQlIGbQhy0+fcn2kV8oW9M8W0FFpqKnXSC E0xetf5P2obqlRLbaXCk4zKOdlF+KPY0q6lWClYaYNGMOjsD53n+QWJXeg2VAEAAA==
+X-Change-Id: 20260707-igb_v3_b4-49194c14373c
+X-Developer-Key: i=jrhilke@google.com; a=ed25519; pk=cK+Urrh214DoCHywJiTwhMP+zcs1ofpGrewToO/i/3A=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785364025; l=4280;
+ i=jrhilke@google.com; s=20260710; h=from:subject:message-id;
+ bh=r1c+CaBhW5s4wXFD2O6k3jFF+p8PGPmXib9duAj+dtw=; b=GvZyKrMoebAjcDDlHpBwLITYvFjBc8UxGxjmlTe7z78CFZom1l0u1GemCj7aUoJII1+yOy7th
+ 7cDIB3fSI19CZcMppmbdegaPL19XcAoeU/u4gVi0fAcGCsp6EgDot1c
+X-Mailer: b4 0.14.3
+Message-ID: <20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com>
+Subject: [PATCH v8 0/6] vfio: selftests: Add driver for Intel Ethernet Gigabit
+ Controller (IGB)
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, Alex Williamson <alex.williamson@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jul 30, 2026 at 12:02=E2=80=AFAM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Wed, 29 Jul 2026 at 14:45, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> >
-> > - Add memory clobber to asm for VMX instructions; without one, the comp=
-iler
-> >   could reorder them in troublesome ways because "asm volatile" and "as=
-m goto"
-> >   only protect against removal of the asm.
->
-> This is simply not true.
->
-> "asm volatile" is not just a "don't remove". It is an ordering
-> constraint too. It cannot move wrt other asm volatiles.
-> So asm volatile is very much a "you can't re-order this asm or move it
-> around significantly". [...]
->
-> But at the same time it does *not* necessarily protect against the
-> compiler re-ordering *other* things - like regular non-volatile memory
-> reads and writes.
+This v8 of a series which adds a VFIO selftest driver for the Intel
+Gigabit Ethernet controller (IGB), specifically targeting the 82576
+device. IGB is fully virtualized in QEMU, making it suitable for running
+VFIO selftests without specialized hardware.
 
-Then I was mistaken that reordering of asms could still happen without
-a memory clobber. I agree that the commit message overstates what the
-compiler can decide to do.
+v7: https://lore.kernel.org/kvm/20260722-igb_v3_b4-v6-0-0be1d29918d4@google.com/
 
-Thanks for the explanation,
+Version 8 caps the retry logic in vfio_pci_device_reset() so that it
+doesn't loop forever, and rebases the series onto linux-next.
 
-Paolo
+Testing
+=======
+- VFIO selftests builds clean at every commit
+- vfio_pci_driver_test passes using IGB driver + QEMU. Use the following
+  command to run the tests:
+
+  vng \
+  --run arch/x86/boot/bzImage \
+  --user root \
+  --disable-microvm \
+  --memory 32G \
+  --cpus 8 \
+  --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
+  --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
+  --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
+  --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
+  --exec "modprobe vfio-pci && \
+          ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
+          ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
+--------
+Changelog:
+
+v7 -> v8:
+- Rebase onto linux-next branch. (Alex)
+- Implement retry limit in vfio_pci_device_reset(). (Alex)
+- Carry David's reviewed-by tag onto the patches that haven't been
+  touched since v6.
+
+v6 -> v7:
+- Allow the driver to be used on any architecture. (Alex) 
+- Fix regression in reset logic for the physical device. (Alex)
+
+v5 -> v6:
+- Retry on EAGAIN during device reset to handle transient lock contention (Sashiko).
+
+v4 -> v5:
+- Reordered igb_remove() to reset the device before disabling MSI-X (Sashiko)
+- Refactored hardware reset logic into igb_reset() helper.
+- Simplified reset completion check to usleep + assertion instead of retry loop (Sashiko).
+- Allow arbitrary test data by enabling Multicast Promiscuous (MPE)
+  and Broadcast Accept (BAM) modes (Sashiko).
+- Fixed igb_send_msi() to use MSIX_VECTOR_MASK instead of magic number (Sashiko).
+
+v3 -> v4
+- Enable MSI-X mode in GPIE (Sashiko)
+- Fix hardware initilization order to avoid race conditions (Alex/Sashiko)
+- Add memory barrier to prevent speculative reads (Alex/Sashiko)
+- Clean up stale references in commit messages and comments (Alex/Sashiko)
+- Add a comment to address software/firmware semaphore (Alex/Sashiko)
+
+v2 -> v3
+- Poll reset bit and document the required wait time (David/Sashiko)
+- Fix the logic for enabling PCI_COMMAND_MEMORY (David/Sashiko)
+- Fail the test if autonegotation fails (David/Sashiko)
+- Handle endianness conversions (David/Sashiko)
+- Use real IGB headers at the start of the series (David)
+- Add E1000_TXD_CMD_IFCS to the TX descriptor command word (Sashiko)
+
+v1 -> v2
+- Removed the chunking loop in igb_memcpy_start() (David)
+- Removed redundant writes to status_error and hdr_addr (David)
+- Include official IGB header files (David)
+
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Alex Williamson (4):
+      vfio: selftests: igb: Use PHY internal loopback on 82576
+      vfio: selftests: Add helpers to re-enable interrupts
+      vfio: selftests: igb: Factor hardware programming into igb_hw_init()
+      vfio: selftests: igb: Recover after DMA-read faults
+
+Josh Hilke (2):
+      vfio: selftests: igb: Add driver for Intel 82576 device
+      vfio: selftests: Retry on EAGAIN during device reset
+
+ .../selftests/vfio/lib/drivers/igb/e1000_82575.h   |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_defines.h |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_regs.h    |   1 +
+ tools/testing/selftests/vfio/lib/drivers/igb/igb.c | 579 +++++++++++++++++++++
+ .../vfio/lib/include/libvfio/vfio_pci_device.h     |  15 +
+ tools/testing/selftests/vfio/lib/libvfio.mk        |   1 +
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c |  42 +-
+ tools/testing/selftests/vfio/lib/vfio_pci_driver.c |   3 +-
+ 8 files changed, 641 insertions(+), 2 deletions(-)
+---
+base-commit: 550cab3931e84e8a7701155f4dc40c0e4069d390
+change-id: 20260707-igb_v3_b4-49194c14373c
+
+Best regards,
+-- 
+Josh Hilke <jrhilke@google.com>
 
