@@ -1,74 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D94D98E1;
-	Wed, 29 Jul 2026 18:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477FD4D2ED4;
+	Wed, 29 Jul 2026 18:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785349429; cv=none; b=PIKp+4MA1aZlcGjY10S/ToZ34zx6Tce5xWrNhQ+AjRDFXJoYnAq607L1NgMD5gCiDO13UPnbA9PKXfM/55MVC111k6FoONy0hqCDyUToZoT5yQLoZbL1m37YkJ/GHL/h3E68w/+GXreqB8EnLAO0VfCJ3+m55mW3CQR0Htbfx8o=
+	t=1785349777; cv=none; b=IBVn+CGT1Rq+jXNdkmm5Wjga5DcR27b1Sfcl8vO36m3XuEKVh2Bh6pixmlNnLd+Ag5KfTUAnBuDL7WjOYPX9uI44Zx56R6U22SFPJPv2xf/dW5gpBMZjJ5g642s/o21/9hqe8PyXYOEgX8xyMq6mTJ06JXwxEmpjIeJRW90sIEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785349429; c=relaxed/simple;
-	bh=mv2sMhP+7eL58KdtS+VFVsDFKBITpQqXNbEMsP3qolA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DmL3SOEP3pM8vKkEUzdxok0taz12gVyKcB51VBkWHORotYHUiXbXYGAbUfesDOLfqQISVFvaDqz6RB/bZ6Y4MeNmBkNQcX+5ftiN04IbVx4caV2Nv1wOFiCRzNUcCIGsNuJFvGIWRjUUB03eDPYrN0IfNW1xrNTBVrQece+Y8nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRdW6wZz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785349777; c=relaxed/simple;
+	bh=+AeacpbeQv/GkMsfjF6JrZr812QeEHglMVtIdTZwwzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DXjPs6YPEAvG2G0HvpVdyTDiTwwwcJAmxHYCMQ3Y1NSM7j0cZLG5i4PKbV7DZfD7SX2HbRMEZI8cwG+CnAWkZe0lh+QoaQBbKzSngwVQQIOgZ/G0PDQxcA17ttb9YtjUX8MLoCNGEpxysVce2W6fSvtBS6rVv6d1D7O6gS9pqIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FKqs7M2v; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRdW6wZz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7A31F000E9;
-	Wed, 29 Jul 2026 18:23:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785349422;
-	bh=mv2sMhP+7eL58KdtS+VFVsDFKBITpQqXNbEMsP3qolA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WRdW6wZzzvcQwtBnJIm8J+km7dQBoa67TWPyJGUk8PsP8CwR/RnvQraGRdB+lhGWy
-	 Leuqu4ciRNGkeKZkdKifuBMFr2XzCZC2DlgiuCZ4Lexi/JBFvqeyRcq7RiKeotPmuI
-	 BtGKQ+PTEAaFc83/dHIckGLpKqZtHTwGo+Gdz6f1tNe9gi10PNVLP9KgvxIfmCslR7
-	 4cVhOWdEFsg6dHgqAf67SjTr1IeNPYddqGytElMmqav4h6NU4u+XfLYOl61wGY5nq4
-	 QmRY1mG35Dq7dQDEySwQVeHGI+K2DhpqC1/1Is6haG5CdXy3/t9LqFvOh10KIgIVeK
-	 Wtq7GfLzF4c0A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Farhan Ali" <alifm@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260729181116.1373-1-alifm@linux.ibm.com>
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 18:23:41 +0000
-Message-Id: <20260729182342.0B7A31F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FKqs7M2v"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785349775; x=1816885775;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+AeacpbeQv/GkMsfjF6JrZr812QeEHglMVtIdTZwwzs=;
+  b=FKqs7M2vNeuBF8XFpLAxTkbygHa8MJc2Dq90MDvmAyQgZ/Imw24Q4EO4
+   NZ1zujJJkiWsv16IytTdwxg1ozlp5DqyWEhRmCMoQN1DL3eN/lqKedBck
+   b+Pi7pGake2urVdGxTCIBm21gPJvNWVKE2nkYEZ/A2MmZClYgOrYGQ8r3
+   c47YBL6/KtEprXluJRApAiIYn76U69r73GiTK3gOiZ37kKLjvVJC+Vs6q
+   u60A6RbyKcEFBoe5XlXBDXnB4n1HpkzUwtCOXC7M0x3CLypaVoS3pufUU
+   uSlSQsxzd2d1SPRdXGs4yOIUnAwMHrXIwAVtCmDYg5WckysMb9oeMLeiQ
+   w==;
+X-CSE-ConnectionGUID: ebK35JI5TFCtM51GZWXd8A==
+X-CSE-MsgGUID: RIIwpFHZQ3i7xVbygux/jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103369972"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; 
+   d="scan'208";a="103369972"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 11:29:35 -0700
+X-CSE-ConnectionGUID: vV+rzIWcQ1qj+USdj2FMWA==
+X-CSE-MsgGUID: TMA99PcsQXmKjx9SVTQSeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="263574597"
+Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 11:29:35 -0700
+Message-ID: <575d74b3-1531-40a3-abc3-bbacdc08832f@linux.intel.com>
+Date: Wed, 29 Jul 2026 11:29:34 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] virt: tdx-guest: Calculate the Quote buffer size
+ safely
+To: Peter Fang <peter.fang@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
+References: <20260729122939.1340412-1-peter.fang@intel.com>
+ <20260729122939.1340412-3-peter.fang@intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20260729122939.1340412-3-peter.fang@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but n=
-ot
-> all devices support having their BARs mapped by the CPU. The
-> non_mappable_bars flag indicates that a PCI device's BARs cannot be
-> accessed by the CPU. The ISM device on s390 is one such device. The BAR
-> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
-> to warnings:
->=20
-> vmalloc_node_range for size 281474976714752 failed: Address range
-> restricted to 0x2110bab00000 - 0x21903ab00000
->=20
-> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This fl=
-ag
-> is set by the PCI core at enumeration time and already serves the same
-> purpose in vfio_pci_probe_mmaps().
->=20
-> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci=
-_core_enable()")
-> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+Hi,
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+On 7/29/2026 5:29 AM, Peter Fang wrote:
+> struct tdx_quote_buf has a trailing flexible array member.
+> struct_size_t() calculates the size of this kind of struct safely. It
+> handles overflow, which is an important property since the Quote size
+> comes from the host.
+> 
+> Use it in place of the fixed length limit.
+> 
+> Signed-off-by: Peter Fang <peter.fang@intel.com>
+> ---
+> v3:
+>  - Split out the use of struct_size_t() for buffer length from the v2
+>    "Allocate Quote buffer dynamically" patch to refactor first. [Dave]
+>  - Drop the Reviewed-by tags from v2 (Kiryl, Binbin) as the patch was
+>    reworked.
+> ---
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729181116.1373=
--1-alifm@linux.ibm.com?part=3D1
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+
+
+>  drivers/virt/coco/tdx-guest/tdx-guest.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> index d0303e31e816..f47c5429d002 100644
+> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
+> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
+> @@ -170,7 +170,7 @@ static void tdx_mr_deinit(const struct attribute_group *mr_grp)
+>  #define GET_QUOTE_SUCCESS		0
+>  #define GET_QUOTE_IN_FLIGHT		0xffffffffffffffff
+>  
+> -#define TDX_QUOTE_MAX_LEN		(GET_QUOTE_BUF_SIZE - sizeof(struct tdx_quote_buf))
+> +#define TDX_QUOTE_BUF_LEN(n)		struct_size_t(struct tdx_quote_buf, data, n)
+>  
+>  /* struct tdx_quote_buf: Format of Quote request buffer.
+>   * @version: Quote format version, filled by TD.
+> @@ -315,7 +315,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
+>  
+>  	out_len = READ_ONCE(quote_buf->out_len);
+>  
+> -	if (out_len > TDX_QUOTE_MAX_LEN)
+> +	if (TDX_QUOTE_BUF_LEN(out_len) > GET_QUOTE_BUF_SIZE)
+>  		return -EFBIG;
+>  
+>  	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
