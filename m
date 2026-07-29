@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5CEC34D3B2;
-	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5AD37F01D;
+	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285310; cv=none; b=e/gvQ6l/X1HOtPWWwcn+CRYEN3qHDu4mBqfmUn9mG5yyocnNnz4Yl+hFeZMfYdLnqlndTBCaH/X7INTey2UOEI4akB4fuTWBLsnkw93GbWNQs18mSre0bo/QrtjsqBRpDobmU804wabwTDNClto0U3rw5IF/PMXgdNusNb3GkfY=
+	t=1785285311; cv=none; b=MsrC8YXT4gdRjw/na/fpvUu4vcsiChwg2J7x/6uAe7jganFfIQee9FPCCWWOo8A5QH6wGQes2W7yzUoihTkZdIvSpSr2BSPZfL7A+p/OWwEr/lnhhfobAZuSZbXh3byh4c6Yqr64Da5naFXyJNibBkEAOq8YyRDB3A74prmX7ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785285310; c=relaxed/simple;
-	bh=ee+k0gLRIeOZJUzHjO+ZbWO7XbmvclzhozNvKeyrbGA=;
+	s=arc-20240116; t=1785285311; c=relaxed/simple;
+	bh=CKrM+Wcm8lEWhCfDXJfOmgnUsmX0Lst7f7ovGq31Zk8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mMR0OAlPc9/lJ/M6nvBg0RUZKz9rWQcIXQ2AjdE5vD1ITm6wrPl2kD7aPQmqTHOcqaZrwttL7lSQG+OZi0Cawp/dFoBo0snBQ9tR85Kgqx3W4E1JLLC71V6dD2dfieLJOZS0N4Am4yMKdeM5oAk9ikemqjbNQe2tKoqjXNISQig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OR7QxTZe; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tADGa9PeIKZlOAIKbJbfBPPM0SbC1eXbZJ8RsALmJfc+Sjw1msV46It82K58XH5dP0TVQcyOriYo5V+n1Gl6wMoB5hy95TQ3EMzubVNPXwzpX/dzh+YKw8qK4c5ld24da3s+NNKAFmt1Q++vbRMu96uUqaHUl37SacJFcYmhMOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rI+2UPNt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OR7QxTZe"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B1E85C2BCF6;
-	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rI+2UPNt"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1D295C4AF1D;
+	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785285310;
-	bh=ee+k0gLRIeOZJUzHjO+ZbWO7XbmvclzhozNvKeyrbGA=;
+	s=k20201202; t=1785285311;
+	bh=CKrM+Wcm8lEWhCfDXJfOmgnUsmX0Lst7f7ovGq31Zk8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OR7QxTZeB8cLZAL8piDxH5E3w3Py9EtcLMUC4/KODO6/KDSA+wUidbU5Yk/nPck1Y
-	 qFUCfQL2+qh9Ub4gruqAJyB8FifZCZ1zXaInhnFfymvxpFdXMTyUws0dYVN0ZI5ZV0
-	 JILKrluTFgUhkuDMOHYaj9k+4MxEnT7aPLfR5JTb/IFfwKNhYKvqfeW1ET7cRGkloE
-	 BodlBBGdV5EwVf/FWpQmygM0I2yNISlyzOPJJzo6QjzmJadBFq+64BlR4wUgn2c4aP
-	 zjJ67Gdw8qjh3IlHzgT3Utv/AOvaceW72M+mgAuahl4U9bojhzOeH71ihdInSqmhFQ
-	 ZzX3/1CK/U2MQ==
+	b=rI+2UPNt3LW0nNA8yZt4qkus5HPofnLtJ+HMlxqoCKdnGp4NJws/86Myhu6711CqX
+	 7qhExmkr4PwTtI19vJasjN0s62DH/1ADzYjq/XgDpHmIOtn+ZJVTYFIesyvZ23+reH
+	 q4AZISATCQS5c6xST+UELbWzvd/6fC7F7cGHbUYfoCLeQVVE0x2INtynczGB8AXIqX
+	 Ba0WF2+8gY10e9ADUatVdr9i+cscZDQ0FeErYszae32yMqh6uIPVSKE2fxsRqj8rmo
+	 1VkcG7kCIeiJzrzm/GiVE5hQ0ySxEeBggCzOyZQMQYl6TElpDSc8tBrHBoUoWc2+uL
+	 6T0qz+kKqQv4A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A088C54F52;
-	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 079F2C54F52;
+	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:33 -0700
-Subject: [PATCH v9 34/41] KVM: selftests: Add helpers to pin pages with
- CONFIG_GUP_TEST
+Date: Tue, 28 Jul 2026 17:35:38 -0700
+Subject: [PATCH v9 39/41] KVM: selftests: Make TEST_EXPECT_SIGBUS
+ thread-safe
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-34-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-39-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -76,11 +76,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2727;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=5401;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=fMGRLXRDe9ewbqPURje2qeKCNAQagU823U8K9a0Ohls=;
- b=M0kLKLw+slgjihad6M2qkRHDlEJzV5uijRgDG/1KOFYV34CKq+mVkd2roLDanEtYk9Q1949d6
- YIoh1s1Ou5oDCLYuiAW1u5k5SqByblCRE089lYADsuuVCxWin4B8Tro
+ bh=VaYMc1TVcKA81tDmCa/7EVGlZnQxqJzfqmSuNBz8KJY=;
+ b=AXb+20EzOMuJESc9zmB4AV2ue8MSVdFchkc9xewn+F+5uozzqzhZheBrYc5aBGGSTPmKf+HK1
+ YlWL6a6K7VRAGOS3XWwcneWP5AH/VEC/LixD03tDJSOeNX9Hhyfx0Vs
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -90,81 +90,152 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add helper functions to allow KVM selftests to pin memory using
-CONFIG_GUP_TEST. This is useful for testing scenarios where some page has
-an increased refcount. such as in guest_memfd in-place conversion tests.
+The TEST_EXPECT_SIGBUS macro is not thread-safe as it uses a global
+sigjmp_buf and installs a global SIGBUS signal handler. If multiple threads
+execute the macro concurrently, they will race on installing the signal
+handler and stomp on other threads' jump buffers, leading to incorrect test
+behavior.
 
-The helpers open /sys/kernel/debug/gup_test and invoke the
-PIN_LONGTERM_TEST_START and PIN_LONGTERM_TEST_STOP ioctls. Since this
-functionality depends on the kernel being built with CONFIG_GUP_TEST,
-provide stub implementations that trigger a test failure if the
-configuration is missing.
+Make TEST_EXPECT_SIGBUS thread-safe with the following changes:
+
+Share the KVM tests' global signal handler. sigaction() applies to all
+threads; without sharing a global signal handler, one thread may have
+removed the signal handler that another thread added, hence leading to
+unexpected signals.
+
+The alternative of layering signal handlers was considered, but calling
+sigaction() within TEST_EXPECT_SIGBUS() necessarily creates a race. To
+avoid adding new setup and teardown routines to do sigaction() and keep
+usage of TEST_EXPECT_SIGBUS() simple, share the KVM tests' global signal
+handler.
+
+Opportunistically rename report_unexpected_signal to
+catchall_signal_handler.
+
+To continue to only expect SIGBUS within specific regions of code, use a
+thread-specific variable, expecting_sigbus, to replace installing and
+removing signal handlers.
+
+Make the execution environment for the thread, sigjmp_buf, a
+thread-specific variable.
+
+As part of TEST_EXPECT_SIGBUS(), assert the prerequisite for this setup,
+that the current signal handler is the catchall_signal_handler.
 
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
- tools/testing/selftests/kvm/lib/kvm_util.c     | 25 +++++++++++++++++++++++++
- 2 files changed, 28 insertions(+)
+ tools/testing/selftests/kvm/include/test_util.h | 32 +++++++++++++------------
+ tools/testing/selftests/kvm/lib/kvm_util.c      | 18 ++++++++++----
+ tools/testing/selftests/kvm/lib/test_util.c     |  7 ------
+ 3 files changed, 30 insertions(+), 27 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 626c960b4bb82..b726e49a3cfcf 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1197,6 +1197,9 @@ static inline int pin_self_to_any_cpu(void)
- 	return pin_task_to_any_cpu(pthread_self());
- }
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index c6492a29ee901..825fad48ab452 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -82,21 +82,23 @@ do {									\
+ 	__builtin_unreachable(); \
+ } while (0)
  
-+void pin_pages(void *vaddr, uint64_t size);
-+void unpin_pages(void);
+-extern sigjmp_buf expect_sigbus_jmpbuf;
+-void expect_sigbus_handler(int signum);
+-
+-#define TEST_EXPECT_SIGBUS(action)						\
+-do {										\
+-	struct sigaction sa_old, sa_new = {					\
+-		.sa_handler = expect_sigbus_handler,				\
+-	};									\
+-										\
+-	sigaction(SIGBUS, &sa_new, &sa_old);					\
+-	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {				\
+-		action;								\
+-		TEST_FAIL("'%s' should have triggered SIGBUS", #action);	\
+-	}									\
+-	sigaction(SIGBUS, &sa_old, NULL);					\
++extern __thread sigjmp_buf expect_sigbus_jmpbuf;
++extern __thread volatile sig_atomic_t expecting_sigbus;
++extern void catchall_signal_handler(int signum);
 +
- void kvm_print_vcpu_pinning_help(void);
- void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
- 			    int nr_vcpus);
++#define TEST_EXPECT_SIGBUS(action)					\
++do {									\
++	struct sigaction __sa = {};					\
++									\
++	TEST_ASSERT_EQ(sigaction(SIGBUS, NULL, &__sa), 0);		\
++	TEST_ASSERT_EQ(__sa.sa_handler, &catchall_signal_handler);	\
++									\
++	expecting_sigbus = true;					\
++	if (sigsetjmp(expect_sigbus_jmpbuf, 1) == 0) {			\
++		action;							\
++		TEST_FAIL("'%s' should have triggered SIGBUS", #action);\
++	}								\
++	expecting_sigbus = false;					\
+ } while (0)
+ 
+ size_t parse_size(const char *size);
 diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index e706669596947..ae0d7ff13f9f5 100644
+index 083717a11ff2d..ff70b4225f82e 100644
 --- a/tools/testing/selftests/kvm/lib/kvm_util.c
 +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -19,6 +19,8 @@
- #include <unistd.h>
- #include <linux/kernel.h>
- 
-+#include "../../../../../mm/gup_test.h"
-+
- #define KVM_UTIL_MIN_PFN	2
- 
- u32 kvm_random_seed;
-@@ -645,6 +647,29 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
- 	return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
+@@ -2318,13 +2318,20 @@ __weak void kvm_selftest_arch_init(void)
+ {
  }
  
-+static int gup_test_fd = -1;
+-static void report_unexpected_signal(int signum)
++__thread sigjmp_buf expect_sigbus_jmpbuf;
++__thread volatile sig_atomic_t expecting_sigbus;
 +
-+void pin_pages(void *vaddr, uint64_t size)
-+{
-+	const struct pin_longterm_test args = {
-+		.addr = (uint64_t)vaddr,
-+		.size = size,
-+		.flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
-+	};
-+
-+	gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
-+					  "Is CONFIG_GUP_TEST enabled?");
-+
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
-+}
-+
-+void unpin_pages(void)
-+{
-+	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
-+
-+	kvm_free_fd(gup_test_fd);
-+}
-+
- static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
++void catchall_signal_handler(int signum)
  {
- 	u32 pcpu = atoi_non_negative("CPU number", cpu_str);
++	switch (signum) {
++	case SIGBUS: {
++		if (expecting_sigbus)
++			siglongjmp(expect_sigbus_jmpbuf, 1);
++
++		TEST_FAIL("Unexpected SIGBUS (%d)\n", signum);
++	}
+ #define KVM_CASE_SIGNUM(sig)					\
+ 	case sig: TEST_FAIL("Unexpected " #sig " (%d)\n", signum)
+-
+-	switch (signum) {
+-	KVM_CASE_SIGNUM(SIGBUS);
+ 	KVM_CASE_SIGNUM(SIGSEGV);
+ 	KVM_CASE_SIGNUM(SIGILL);
+ 	KVM_CASE_SIGNUM(SIGFPE);
+@@ -2336,12 +2343,13 @@ static void report_unexpected_signal(int signum)
+ void __attribute((constructor)) kvm_selftest_init(void)
+ {
+ 	struct sigaction sig_sa = {
+-		.sa_handler = report_unexpected_signal,
++		.sa_handler = catchall_signal_handler,
+ 	};
+ 
+ 	/* Tell stdout not to buffer its content. */
+ 	setbuf(stdout, NULL);
+ 
++	expecting_sigbus = false;
+ 	sigaction(SIGBUS, &sig_sa, NULL);
+ 	sigaction(SIGSEGV, &sig_sa, NULL);
+ 	sigaction(SIGILL, &sig_sa, NULL);
+diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+index 6b00ab11f3c02..36e08d815758f 100644
+--- a/tools/testing/selftests/kvm/lib/test_util.c
++++ b/tools/testing/selftests/kvm/lib/test_util.c
+@@ -19,13 +19,6 @@
+ #include "test_util.h"
+ #include "kvm_syscalls.h"
+ 
+-sigjmp_buf expect_sigbus_jmpbuf;
+-
+-void __attribute__((used)) expect_sigbus_handler(int signum)
+-{
+-	siglongjmp(expect_sigbus_jmpbuf, 1);
+-}
+-
+ /*
+  * Random number generator that is usable from guest code. This is the
+  * Park-Miller LCG using standard constants.
 
 -- 
 2.55.0.508.g3f0d502094-goog
