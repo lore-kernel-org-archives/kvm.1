@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9043368A7;
-	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A1036A37A;
+	Wed, 29 Jul 2026 00:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285310; cv=none; b=CAH32DPSOpdvisueTgZLLSP32M2hJ2F6EbXz6edNyh24wYIGasOUSRRsHv+vCc9yh+HvBUPDs6lMmU7ckGcRzgxhHwyefMbE/N3dujn6GquOBCBOj39GOpAv/nG2GrqwNRg8ZpGY9KYeToaM13A9rBh/udzxlY4CMt6V2KdPJiQ=
+	t=1785285311; cv=none; b=r0Chi3WnM9E4lSgs2q6yAg+ZICrDoH2HR3PPXjhxjGpjnuiPfKGPAflHCGC8xTsPREi0HC+Q35ChjzKr+Weefkz+Fq3Y4w8JhHF1MXi5NuACOHrweJkKLuA4KILVaj7o+i8ASP9E50HyPyIznF9c7CtKUTQ7weiCCYp6pcDWmtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785285310; c=relaxed/simple;
-	bh=1JQNdh4DTRcD0JOIKHjtjkpSS42mmFJgCVctRlKn/as=;
+	s=arc-20240116; t=1785285311; c=relaxed/simple;
+	bh=rKIY4sXDq1J4jVGfzg5WxbhHUwRgT53KjAPpWOjyG7w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uPoA5mEqdOXa1xRW9qtlF6PNNHYBLI2pZQajJtHkFxkcAWZodTKkR2z6b0NlkLuippYAjErnGYGU3u8zdOgb9N5xRuRB6htCzafmfpzR0nV4YIjCH+GYwCdBPjrz29Gf01CT1Jbu3eULbrQzlUXwDbKmQYurmeosecLsJ3ey6xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g87sYffm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=rXuDdWS269JLJMlLCSV9HHr6tONw3RrvLJ1IAVhpmmfXgwbSPW9UzSeIN/5DBkh90FZG3vy0LkCA5Xm6EL+UUYDo/yBrDrcenU9NtmQGruZAK7sPDMKCvgRqyWc4VzfZQW3QLx6yi/hp6nb9k6AyWWXC37pHEe8sOM8d+Hjc384=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4+oatgn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g87sYffm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 37488C4AF63;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4+oatgn"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E9738C4AF13;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785285310;
-	bh=1JQNdh4DTRcD0JOIKHjtjkpSS42mmFJgCVctRlKn/as=;
+	s=k20201202; t=1785285311;
+	bh=rKIY4sXDq1J4jVGfzg5WxbhHUwRgT53KjAPpWOjyG7w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=g87sYffm6OXh1KgFt4W0xGJ39S7iuVXQvNPAuoioMapAR76KGjjkxDqfIdG7pymDA
-	 y3uejZCHw7c8644nRK0EaeNDrEsHShrKgd218eIck5k8s7TuCoXjA+dYZ6nEmt86T7
-	 ycJA5RmX+sU8hhPYd26y/boyFbc7b30yStyolWW0QSTbN3gD/z4O+6FY1CPQJq5+2G
-	 Tz5UGum6WIBx2Cigwt/V+R+F6aws8oVSr/Zaun4bjsUphc+QAUtk3Rqeck5BDrBfOb
-	 yvWYOysSXUXvw/5DwByHFatRO5/3n92yTl74ZJBVsKqf4nxceeH5R1+JaY8LSmNzQY
-	 EB2bn9KiZ9Iwg==
+	b=d4+oatgnV51RsK7VUu9IWRdfuhJvK2QpIooBgxy4Pj6HHGutV9gbwsRBaO49dm/3P
+	 FLdVxH/UAarOoYh46cDnAGY49dfdJO4fL/72spqD9lpfyHFNP5DFT8Olx0D/UciSDn
+	 rD6g3H9QCmQvKsomvcvBhw2gVTXHp3G52oQqQ1taKqXOc0Y0knBBCt9/5aqO0INirS
+	 TQUFarcvntwEK/heA66LgRMr1zWW1t9WP6r8aIsVt46/bUH74kk/1JYy3V98dNgmLQ
+	 6s5oipFGrqY9afe+LRhlPZR3kJPgsjRZe1SO9A4iqvstxSSUqSWP6PryNdHcqJSPQz
+	 06EWjXpbLCuSQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18860C54F52;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D528AC54F5C;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:28 -0700
-Subject: [PATCH v9 29/41] KVM: selftests: Test conversion precision in
- guest_memfd
+Date: Tue, 28 Jul 2026 17:35:36 -0700
+Subject: [PATCH v9 37/41] KVM: selftests: Provide function to look up
+ guest_memfd details from gpa
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-29-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-37-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -76,11 +76,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=4501;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=3994;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=knW3oEUmnPUSo1gpuqMigsR+t1Q/MFkz7O8GozByUvU=;
- b=fUXw40FC3/ChFHnmqc3VbvieVKq/kEnvWrEo0D03rJCacRFc8ThJ7uLfQzZnHhE22ixPpJhQc
- O27XDvaqfvxBLbgtpjqXv7wxaeb8V+TWRBvfzxuPcZKtdRwums97nOV
+ bh=hD3ailDpep/KXzMK4epkF6ag+laFkxTXHf8WBn3ggUQ=;
+ b=LNfSHlBDBlcGNiTXD24yv0QIbjlePoGVUKk2F2qWC8536yF4NspZm84e5sWXooyFOaMXM2bB3
+ 53kyB2FJgeBBMeey+f+PS+6i3ZwXM0LcUIGjpZ/suPD570DJgqKxnhr
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -90,23 +90,16 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-The existing guest_memfd conversion tests only use single-page memory
-regions. This provides no coverage for multi-page guest_memfd objects,
-specifically whether KVM correctly handles the page index for conversion
-operations. An incorrect implementation could, for example, always operate
-on the first page regardless of the index provided.
+Introduce a new helper, kvm_gpa_to_guest_memfd(), to find the
+guest_memfd-related details of a memory region that contains a given guest
+physical address (GPA).
 
-Add a new test case to verify that conversions between private and shared
-memory correctly target the specified page within a multi-page guest_memfd.
+The function returns the file descriptor for the memfd, the offset into
+the file that corresponds to the GPA, and the number of bytes remaining
+in the region from that GPA.
 
-This test also verifies the precision of memory conversions by converting a
-single page an then iterating through all other pages ensure they remain in
-their original state.
-
-To support this test, add a new GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED
-macro that handles setting up and tearing down the VM for each page
-iteration. The teardown logic is adjusted to prevent a double-free in this
-new scenario.
+kvm_gpa_to_guest_memfd() was factored out from vm_guest_mem_fallocate();
+refactor vm_guest_mem_fallocate() to use the new helper.
 
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
@@ -114,102 +107,86 @@ Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 66 ++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+ tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
+ tools/testing/selftests/kvm/lib/kvm_util.c     | 37 ++++++++++++++++----------
+ 2 files changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 5b070d3374eae..8e17d5c08aeb8 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -61,8 +61,13 @@ static void gmem_conversions_do_setup(test_data_t *t, int nr_pages,
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index b726e49a3cfcf..5f71eccf3565c 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -428,6 +428,9 @@ static inline void vm_enable_cap(struct kvm_vm *vm, u32 cap, u64 arg0)
+ 	vm_ioctl(vm, KVM_ENABLE_CAP, &enable_cap);
+ }
  
- static void gmem_conversions_do_teardown(test_data_t *t)
++int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
++			   size_t *nr_bytes);
++
+ /*
+  * KVM_SET_MEMORY_ATTRIBUTES{,2} overwrites _all_ attributes.  These
+  * flows need significant enhancements to support multiple attributes.
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index ae0d7ff13f9f5..083717a11ff2d 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1334,27 +1334,20 @@ void vm_guest_mem_fallocate(struct kvm_vm *vm, u64 base, u64 size,
+ 			    bool punch_hole)
  {
-+	/* Use NULL to avoid second free in FIXTURE_TEARDOWN (multipage tests). */
-+	if (!t->vcpu)
-+		return;
-+
- 	/* No need to close gmem_fd, it's owned by the VM structure. */
- 	kvm_vm_free(t->vcpu->vm);
-+	t->vcpu = NULL;
+ 	const int mode = FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC_FL_PUNCH_HOLE : 0);
+-	struct userspace_mem_region *region;
+ 	u64 end = base + size;
+-	gpa_t gpa, len;
+ 	off_t fd_offset;
+-	int ret;
++	int fd, ret;
++	size_t len;
++	gpa_t gpa;
+ 
+ 	for (gpa = base; gpa < end; gpa += len) {
+-		u64 offset;
+-
+-		region = userspace_mem_region_find(vm, gpa, gpa);
+-		TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
+-			    "Private memory region not found for GPA 0x%lx", gpa);
++		fd = kvm_gpa_to_guest_memfd(vm, gpa, &fd_offset, &len);
++		len = min(end - gpa, len);
+ 
+-		offset = gpa - region->region.guest_phys_addr;
+-		fd_offset = region->region.guest_memfd_offset + offset;
+-		len = min_t(u64, end - gpa, region->region.memory_size - offset);
+-
+-		ret = fallocate(region->region.guest_memfd, mode, fd_offset, len);
++		ret = fallocate(fd, mode, fd_offset, len);
+ 		TEST_ASSERT(!ret, "fallocate() failed to %s at %lx (len = %lu), fd = %d, mode = %x, offset = %lx",
+ 			    punch_hole ? "punch hole" : "allocate", gpa, len,
+-			    region->region.guest_memfd, mode, fd_offset);
++			    fd, mode, fd_offset);
+ 	}
  }
  
- FIXTURE_TEARDOWN(gmem_conversions)
-@@ -101,6 +106,29 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
- #define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
- 	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
- 
-+/*
-+ * Repeats test over nr_pages in a guest_memfd of size nr_pages, providing each
-+ * test iteration with test_page, the index of the page under test in
-+ * guest_memfd. test_page takes values 0..(nr_pages - 1) inclusive.
-+ */
-+#define GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(test, __nr_pages)		\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page);		\
-+										\
-+TEST_F(gmem_conversions, test)							\
-+{										\
-+	const u64 flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED; \
-+	int i;									\
-+										\
-+	for (i = 0; i < __nr_pages; ++i) {					\
-+		gmem_conversions_do_setup(self, __nr_pages, flags);		\
-+		__gmem_conversions_multipage_##test(self, __nr_pages, i);	\
-+		gmem_conversions_do_teardown(self);				\
-+	}									\
-+}										\
-+static void __gmem_conversions_multipage_##test(test_data_t *t, int nr_pages,	\
-+						const int test_page)
-+
- struct guest_check_data {
- 	void *mem;
- 	char expected_val;
-@@ -199,6 +227,44 @@ GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
- 	test_convert_to_shared(t, 0, 'C', 'D', 'E');
+@@ -1691,6 +1684,22 @@ void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa)
+ 	return (void *) ((uintptr_t) region->host_alias + offset);
  }
  
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
++int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
++			   size_t *nr_bytes)
 +{
-+	int i;
++	struct userspace_mem_region *region;
++	gpa_t gpa_offset;
 +
-+	/* Get a char that varies with both i and n. */
-+#define combine(x, n) ((x << 4) + (n))
-+#define i_(n) (combine(i, n))
-+#define t_(n) (combine(test_page, n))
++	region = userspace_mem_region_find(vm, gpa, gpa);
++	TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
++		    "guest_memfd memory region not found for GPA 0x%lx", gpa);
 +
-+	/*
-+	 * Start with the highest index, to catch any errors when, perhaps, the
-+	 * first page is returned even for the last index.
-+	 */
-+	for (i = nr_pages - 1; i >= 0; --i)
-+		test_shared(t, i, 0, i_(0), i_(2));
-+
-+	test_convert_to_private(t, test_page, t_(2), t_(3));
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		if (i == test_page)
-+			test_private(t, test_page, t_(3), t_(4));
-+		else
-+			test_shared(t, i, i_(2), i_(3), i_(4));
-+	}
-+
-+	test_convert_to_shared(t, test_page, t_(4), t_(5), t_(6));
-+
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = i == test_page ? t_(6) : i_(4);
-+
-+		test_shared(t, i, expected, i_(7), i_(8));
-+	}
-+
-+#undef t_
-+#undef i_
-+#undef combine
++	gpa_offset = gpa - region->region.guest_phys_addr;
++	*fd_offset = region->region.guest_memfd_offset + gpa_offset;
++	*nr_bytes = region->region.memory_size - gpa_offset;
++	return region->region.guest_memfd;
 +}
 +
- int main(int argc, char *argv[])
+ /* Create an interrupt controller chip for the specified VM. */
+ void vm_create_irqchip(struct kvm_vm *vm)
  {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.55.0.508.g3f0d502094-goog
