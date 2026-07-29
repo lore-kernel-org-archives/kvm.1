@@ -1,443 +1,373 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D863CF69E;
-	Wed, 29 Jul 2026 19:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317F13A8755
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354257; cv=none; b=ohRmUTstlYZKrNyWj4Arpoglx3K5ThSGrQZFoPWg/6g9gmQ9iB5umuuXvCeld5EjmBJeGj3jOQPTCtOL5ushdrdPBYm8Ca2Uw5PJa9g4HlfM6x6fO3OUHT2eto7Q3J4SQM3LfO6cZRwIouFKwU+UbW81yfKUWsNf4VK9gCKRt5E=
+	t=1785354390; cv=none; b=EZQ9BRM9Yjxgi7bSD0Bl6gZmFQ4X0AeaNTIdjv333a2ezdrgSuAs+b1+SckE7IQBcXhvkSDTcdbc1LAR65DLs+mEz5F+4itFGAC4F57BtokaaUc9QiSEJIqP5hJ3u0RdbXvm4sDRIz4bH+XQe1IdnGLqCy8FAJiZRWWjac8YQ/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354257; c=relaxed/simple;
-	bh=MBpESReHfnPAxHPFbT1e55nwk9KD92PIzLuNlBSxn3k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd34Vmw/pwmsEPYtSdUMJqkC0kxfts9+FxiONz1oFF1oP2c3HkEXCmNhTapeXoiX9myGqjeATY73l1kdAPOh7VeoI4EGvcCSG5oK0g83MoK5VAoS7dFt4hgcrg/p4OXwjn+5KzIMlH1s6ByE/yi5CZVOVnitjEVaUNLV/nLPqBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=euV/ils6; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785354390; c=relaxed/simple;
+	bh=MTsW4DPZPh15sIO/nZBnNM4EnhVhCyLOHMDWXXit5kI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Me7gnFN64mY+f4rpwKtGDsdivRrJHS7fECKfd38ycGraLaGfZSiEhz4XQ0+3UmRut0dA1wpzvZ6GpjS7/xGFZmH1MtotAY4g5l1ezvUeZv/mXWX+gJPEssqSGtX/pGuI3cGKEDQHq84YhzyZLAfT86W1fkAWLF4uT4LBnS0fsEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qItBFl2m; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="euV/ils6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785354249; x=1816890249;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MBpESReHfnPAxHPFbT1e55nwk9KD92PIzLuNlBSxn3k=;
-  b=euV/ils6XDdqmTmITDLAn0pcy+KmfXNN4rwmkLYI9INT39Na8/tG+bi9
-   AbCXehWdkCdmodYWuHM5KuPQq3SHtTVKapH/9U+g7XXcL2gTd5y5EYEvR
-   CTfZRqAlCwcyZoGzblPbM3/f3nlLGCUwNz8WOojOaZsSGwUwTLwFnjee7
-   o2SS8igIjHJv4ppS5wEvfqt+kgA/Pf+NgmrFOFV5+VIJ7WEwK6AmAUbU9
-   uxJA69kgNuWNEQGFSCuvoQIIrPtbw0dyi0tCSqnNPGHeLi700Ve3jGITM
-   OE3F3PCQPYKPJ9tJsRpD+nSiD3E9+OLAC4zensyxoS+8MG+3WuOXYNQM7
-   g==;
-X-CSE-ConnectionGUID: ejl+BALeTyGV1bqDLnJFSA==
-X-CSE-MsgGUID: n/oDolZCRZ6dNlqqi5hhWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508322"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103508322"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:35 -0700
-X-CSE-ConnectionGUID: CPCDtmCsQ7Owd/b4PtwFxA==
-X-CSE-MsgGUID: BKy8Ig2/QHWoZlIwzENhug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="256769283"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:35 -0700
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	chang.seok.bae@intel.com
-Subject: [PATCH v6 19/20] KVM: x86: selftests: Add APX state and ABI test
-Date: Wed, 29 Jul 2026 19:16:55 +0000
-Message-ID: <20260729191656.598771-20-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260729191656.598771-1-chang.seok.bae@intel.com>
-References: <20260729191656.598771-1-chang.seok.bae@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qItBFl2m"
+X-Forwarded-Encrypted: i=1; AHgh+Rrtks/R7RqnvGuW5djR2QNumMfsY46QqJbpTQJhUO3sPZd5QK9uLg4NQ/oQoelgR3uUL8E=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785354383;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m7NYxbVQukXWkUZPHzw13nh5/XBlWOt6m2oUVluhMlA=;
+	b=qItBFl2m7hfXOKg+63HUW1GwssZ8TcKE2pb0AiZvIuku149c4EQ1t734L97otQwja+1NQx
+	+ECZZSzSBbi1N+cPXqIyZ0rZVkEq1AzjraB69rdrjsC8qqJBk98+teGkJH9N7vLoAMmev8
+	IatkURJYklMNwwPpcu8c0Vo/5v7LuaE=
+X-Gm-Message-State: AOJu0Yy9ovtPkB/ZLBJTZ3bxHH5qwzQG3Pp4U//IRUsfNYjwwj2Q6UbR
+	Fo7hT5m8h1PzKcFXn1Ayt9IjfD3pLdSKiH70Ynnw5YW3MgQlS5rJ+vHDUSg0KXZ9qdARfYZupws
+	/YDSZ4ctjtzcCaP03nJCMviaJYNQa8O3qC12Zh9eO
+X-Received: by 2002:a05:622a:5145:b0:4ff:c0e7:be9c with SMTP id
+ d75a77b69052e-52b3741055amr1691401cf.0.1785354377611; Wed, 29 Jul 2026
+ 12:46:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-16-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-16-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 20:45:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyTOCyZRRsGj3hbzk6H=ZPZTfTCYQpv+o0MpcoLAXS95A@mail.gmail.com>
+X-Gm-Features: AUfX_mz5uV-Ty8nXNE0Bq2AH3IvUn36RDUN3WfgUMxDQ01Xo6HoyBjFL8QvNB8Y
+Message-ID: <CA+EHjTyTOCyZRRsGj3hbzk6H=ZPZTfTCYQpv+o0MpcoLAXS95A@mail.gmail.com>
+Subject: Re: [PATCH v9 16/16] KVM: arm64: selftests: Test PMU_V3_FIXED_COUNTERS_ONLY
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Test APX-specific behavior and ABI interactions as these are unique
-comparing to other state components:
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+>
+> Assert the following:
+> - FIXED_COUNTERS_ONLY is unset at initialization.
+> - FIXED_COUNTERS_ONLY can be set.
+> - Setting an event filter when FIXED_COUNTERS_ONLY has already been set
+>   results in EBUSY.
+> - Setting FIXED_COUNTERS_ONLY when an event filter has already been set
+>   results in EBUSY.
+> - Setting FIXED_COUNTERS_ONLY when a VCPU has already run results in
+>   EBUSY.
+>
+> Run the existing PMU and MDCR_EL2 tests in fixed-only mode. Verify that
+> enabling the mode preserves the userspace MDCR_EL2 value until a
+> subsequent KVM_ARM_VCPU_INIT resets HPMN to zero.
+>
+> Assisted-by: Codex:gpt-5.5
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-  * EGPR state is saved on VM entry assembly (unlike other components).
-  * The saved state is retained even if the guest disables APX.
-  * EGPR state is exposed via the XSAVE ABI while not stored in the
-    kernel XSAVE buffer.
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
----
-V4 -> V5: Use vcpu_xsave2_get() instead of vcpu_xsave_get() (review bot [*])
+Cheers,
+/fuad
 
-[*]: locally running Sashiko with gemini-3.1-pro-preview
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/x86/processor.h     | 120 +++++++++++
- tools/testing/selftests/kvm/x86/apx_test.c    | 191 ++++++++++++++++++
- 3 files changed, 312 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 4ace12606e93..373d685caae2 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -162,6 +162,7 @@ TEST_GEN_PROGS_x86 += rseq_test
- TEST_GEN_PROGS_x86 += steal_time
- TEST_GEN_PROGS_x86 += system_counter_offset_test
- TEST_GEN_PROGS_x86 += pre_fault_memory_test
-+TEST_GEN_PROGS_x86 += x86/apx_test
- 
- # Compiled outputs used by test targets
- TEST_GEN_PROGS_EXTENDED_x86 += x86/nx_huge_pages_test
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 7d3a27bc0d84..5f5acc33486a 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -107,6 +107,7 @@ struct xstate {
- #define XFEATURE_MASK_LBR		BIT_ULL(15)
- #define XFEATURE_MASK_XTILE_CFG		BIT_ULL(17)
- #define XFEATURE_MASK_XTILE_DATA	BIT_ULL(18)
-+#define XFEATURE_MASK_APX		BIT_ULL(19)
- 
- #define XFEATURE_MASK_AVX512		(XFEATURE_MASK_OPMASK | \
- 					 XFEATURE_MASK_ZMM_Hi256 | \
-@@ -194,6 +195,7 @@ struct kvm_x86_cpu_feature {
- #define	X86_FEATURE_SPEC_CTRL		KVM_X86_CPU_FEATURE(0x7, 0, EDX, 26)
- #define	X86_FEATURE_ARCH_CAPABILITIES	KVM_X86_CPU_FEATURE(0x7, 0, EDX, 29)
- #define	X86_FEATURE_PKS			KVM_X86_CPU_FEATURE(0x7, 0, ECX, 31)
-+#define	X86_FEATURE_APX			KVM_X86_CPU_FEATURE(0x7, 1, EDX, 21)
- #define	X86_FEATURE_XTILECFG		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 17)
- #define	X86_FEATURE_XTILEDATA		KVM_X86_CPU_FEATURE(0xD, 0, EAX, 18)
- #define	X86_FEATURE_XSAVES		KVM_X86_CPU_FEATURE(0xD, 1, EAX, 3)
-@@ -877,6 +879,124 @@ static inline void write_sse_reg(int reg, const sse128_t *data)
- 	}
- }
- 
-+static inline unsigned long read_egpr(int reg)
-+{
-+	unsigned long data = 0;
-+
-+	/* mov %r16..%r31, %rax */
-+	switch (reg) {
-+	case 16:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xc0" : "=a"(data));
-+		break;
-+	case 17:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xc8" : "=a"(data));
-+		break;
-+	case 18:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xd0" : "=a"(data));
-+		break;
-+	case 19:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xd8" : "=a"(data));
-+		break;
-+	case 20:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xe0" : "=a"(data));
-+		break;
-+	case 21:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xe8" : "=a"(data));
-+		break;
-+	case 22:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xf0" : "=a"(data));
-+		break;
-+	case 23:
-+		asm(".byte 0xd5, 0x48, 0x89, 0xf8" : "=a"(data));
-+		break;
-+	case 24:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xc0" : "=a"(data));
-+		break;
-+	case 25:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xc8" : "=a"(data));
-+		break;
-+	case 26:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xd0" : "=a"(data));
-+		break;
-+	case 27:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xd8" : "=a"(data));
-+		break;
-+	case 28:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xe0" : "=a"(data));
-+		break;
-+	case 29:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xe8" : "=a"(data));
-+		break;
-+	case 30:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xf0" : "=a"(data));
-+		break;
-+	case 31:
-+		asm(".byte 0xd5, 0x4c, 0x89, 0xf8" : "=a"(data));
-+		break;
-+	default:
-+		BUG();
-+	}
-+
-+	return data;
-+}
-+
-+static inline void write_egpr(int reg, unsigned long data)
-+{
-+	/* mov %%rax, %r16...%r31*/
-+	switch (reg) {
-+	case 16:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc0" : : "a"(data));
-+		break;
-+	case 17:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc1" : : "a"(data));
-+		break;
-+	case 18:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc2" : : "a"(data));
-+		break;
-+	case 19:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc3" : : "a"(data));
-+		break;
-+	case 20:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc4" : : "a"(data));
-+		break;
-+	case 21:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc5" : : "a"(data));
-+		break;
-+	case 22:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc6" : : "a"(data));
-+		break;
-+	case 23:
-+		asm(".byte 0xd5, 0x18, 0x89, 0xc7" : : "a"(data));
-+		break;
-+	case 24:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc0" : : "a"(data));
-+		break;
-+	case 25:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc1" : : "a"(data));
-+		break;
-+	case 26:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc2" : : "a"(data));
-+		break;
-+	case 27:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc3" : : "a"(data));
-+		break;
-+	case 28:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc4" : : "a"(data));
-+		break;
-+	case 29:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc5" : : "a"(data));
-+		break;
-+	case 30:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc6" : : "a"(data));
-+		break;
-+	case 31:
-+		asm(".byte 0xd5, 0x19, 0x89, 0xc7" : : "a"(data));
-+		break;
-+	default:
-+		BUG();
-+	}
-+}
-+
- static inline void cpu_relax(void)
- {
- 	asm volatile("rep; nop" ::: "memory");
-diff --git a/tools/testing/selftests/kvm/x86/apx_test.c b/tools/testing/selftests/kvm/x86/apx_test.c
-new file mode 100644
-index 000000000000..4825003d0616
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/apx_test.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "processor.h"
-+
-+enum stages {
-+	GUEST_UPDATE,
-+	USERSPACE_UPDATE,
-+	GUEST_APXOFF,
-+};
-+
-+enum egpr_ops {
-+	EGPRS_WRITE,
-+	EGPRS_CHECK,
-+};
-+
-+#define for_each_egpr(reg)	for (reg = 16; reg <= 31; reg++)
-+
-+/*
-+ * Deterministic per-stage test values for EGPRs so that guest and
-+ * userspace can validate state transitions.
-+ */
-+static inline unsigned long egpr_data(enum stages stage, int reg)
-+{
-+	switch (stage) {
-+	case GUEST_UPDATE:
-+		return 0xabcd + reg;
-+	case USERSPACE_UPDATE:
-+		return 0xbcde + reg;
-+	case GUEST_APXOFF:
-+		return 0xcdef + reg;
-+	default:
-+		return 0;
-+	}
-+}
-+
-+/*
-+ * Read/write or validate EGPR values either directly via registers
-+ * (guest context) or via a provided buffer (userspace XSAVE).
-+ */
-+static bool handle_egprs(enum egpr_ops ops, unsigned long *egprs, enum stages stage)
-+{
-+	unsigned long data;
-+	int reg;
-+
-+	for_each_egpr(reg) {
-+		data = egpr_data(stage, reg);
-+
-+		if (ops == EGPRS_WRITE) {
-+			if (egprs)
-+				egprs[reg - 16] = data;
-+			else
-+				write_egpr(reg, data);
-+			continue;
-+		}
-+
-+		if (ops != EGPRS_CHECK)
-+			return false;
-+
-+		if (egprs) {
-+			if (egprs[reg - 16] != data)
-+				return false;
-+			continue;
-+		}
-+
-+		if (read_egpr(reg) != data)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static void write_egprs(enum stages stage)
-+{
-+	handle_egprs(EGPRS_WRITE, NULL, stage);
-+}
-+
-+static bool validate_egprs(enum stages stage)
-+{
-+	return handle_egprs(EGPRS_CHECK, NULL, stage);
-+}
-+
-+static void test_guest_update(void)
-+{
-+	write_egprs(GUEST_UPDATE);
-+	GUEST_SYNC(GUEST_UPDATE);
-+	GUEST_ASSERT(validate_egprs(GUEST_UPDATE));
-+}
-+
-+static void test_userspace_update(void)
-+{
-+	/* Userspace updates EGPR state via the KVM XSAVE ABI */
-+	GUEST_SYNC(USERSPACE_UPDATE);
-+	GUEST_ASSERT(validate_egprs(USERSPACE_UPDATE));
-+}
-+
-+static void test_guest_apxoff(void)
-+{
-+	write_egprs(GUEST_APXOFF);
-+	/* Disable APX to verify state is preserved */
-+	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0() & ~XFEATURE_MASK_APX));
-+	GUEST_SYNC(GUEST_APXOFF);
-+	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0()));
-+	GUEST_ASSERT(validate_egprs(GUEST_APXOFF));
-+}
-+
-+static void guest_code(void)
-+{
-+	set_cr4(get_cr4() | X86_CR4_OSXSAVE);
-+	GUEST_ASSERT(!xsetbv_safe(0, this_cpu_supported_xcr0()));
-+
-+	test_guest_update();
-+	test_userspace_update();
-+	test_guest_apxoff();
-+
-+	GUEST_DONE();
-+}
-+
-+#define X86_PROPERTY_XSTATE_APX_OFFSET	KVM_X86_CPU_PROPERTY(0xd, 19, EBX, 0, 31)
-+#define XSAVE_HDR_OFFSET		512
-+
-+static inline unsigned long *xsave_egprs(void *xsave)
-+{
-+	return xsave + kvm_cpu_property(X86_PROPERTY_XSTATE_APX_OFFSET);
-+}
-+
-+static inline void xstatebv_set(void *xsave, uint64_t mask)
-+{
-+	*(uint64_t *)(xsave + XSAVE_HDR_OFFSET) |= mask;
-+}
-+
-+static void write_xsave_egprs(void *xsave, enum stages stage)
-+{
-+	handle_egprs(EGPRS_WRITE, xsave_egprs(xsave), stage);
-+	xstatebv_set(xsave, XFEATURE_MASK_APX);
-+}
-+
-+static bool validate_xsave_egprs(void *xsave, enum stages stage)
-+{
-+	return handle_egprs(EGPRS_CHECK, xsave_egprs(xsave), stage);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	struct kvm_xsave *xsave;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	enum stages stage;
-+	struct ucall uc;
-+	int xsave_size;
-+
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_XSAVE));
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_APX));
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	xsave_size = vm_check_cap(vcpu->vm, KVM_CAP_XSAVE2);
-+	TEST_ASSERT(xsave_size, "KVM_CAP_XSAVE2 not supported");
-+	xsave = malloc(xsave_size);
-+	TEST_ASSERT(xsave, "Failed to allocate XSAVE buffer");
-+
-+	while (1) {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+			break;
-+		case UCALL_SYNC: {
-+			stage = uc.args[1];
-+			vcpu_xsave2_get(vcpu, xsave);
-+			if (stage == USERSPACE_UPDATE) {
-+				write_xsave_egprs(xsave, stage);
-+			} else {
-+				TEST_ASSERT(validate_xsave_egprs(xsave, stage),
-+					    "EGPR state mismatch in userspace XSAVE buffer");
-+			}
-+			vcpu_xsave_set(vcpu, xsave);
-+			break;
-+		}
-+		case UCALL_DONE:
-+			goto done;
-+		default:
-+			TEST_FAIL("Unknown ucall %lu", uc.cmd);
-+		}
-+	}
-+
-+done:
-+	free(xsave);
-+	kvm_vm_free(vm);
-+	return 0;
-+}
--- 
-2.53.0
-
+> ---
+>  .../selftests/kvm/arm64/vpmu_counter_access.c      | 166 +++++++++++++++++----
+>  1 file changed, 137 insertions(+), 29 deletions(-)
+>
+> diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
+> index 73f04e4c6ca3..b5f8ce8d3451 100644
+> --- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
+> +++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
+> @@ -411,12 +411,7 @@ static void create_vpmu_vm(void *guest_code)
+>  {
+>         struct kvm_vcpu_init init;
+>         u8 pmuver, ec;
+> -       u64 dfr0, irq = 23;
+> -       struct kvm_device_attr irq_attr = {
+> -               .group = KVM_ARM_VCPU_PMU_V3_CTRL,
+> -               .attr = KVM_ARM_VCPU_PMU_V3_IRQ,
+> -               .addr = (u64)&irq,
+> -       };
+> +       u64 dfr0;
+>
+>         /* The test creates the vpmu_vm multiple times. Ensure a clean state */
+>         memset(&vpmu_vm, 0, sizeof(vpmu_vm));
+> @@ -442,8 +437,6 @@ static void create_vpmu_vm(void *guest_code)
+>         TEST_ASSERT(pmuver != ID_AA64DFR0_EL1_PMUVer_IMP_DEF &&
+>                     pmuver >= ID_AA64DFR0_EL1_PMUVer_IMP,
+>                     "Unexpected PMUVER (0x%x) on the vCPU with PMUv3", pmuver);
+> -
+> -       vcpu_ioctl(vpmu_vm.vcpu, KVM_SET_DEVICE_ATTR, &irq_attr);
+>  }
+>
+>  static void destroy_vpmu_vm(void)
+> @@ -494,13 +487,22 @@ static void set_nr_counters(struct kvm_vcpu *vcpu,
+>  }
+>
+>  static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
+> +                                                bool fixed_counters_only,
+>                                                  bool expect_fail)
+>  {
+>         struct kvm_vcpu *vcpu;
+> +       u64 irq = 23;
+>
+>         create_vpmu_vm(guest_code);
+>         vcpu = vpmu_vm.vcpu;
+>
+> +       if (fixed_counters_only)
+> +               vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +
+> +       vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
+> +
+>         set_nr_counters(vcpu, nr_counters, expect_fail);
+>
+>         vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_INIT, NULL);
+> @@ -510,15 +512,15 @@ static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
+>   * Create a guest with one vCPU, set the PMCR_EL0.N for the vCPU to @pmcr_n,
+>   * and run the test.
+>   */
+> -static void run_access_test(u64 pmcr_n)
+> +static void run_access_test(u64 pmcr_n, bool fixed_counters_only)
+>  {
+>         u64 sp;
+>         struct kvm_vcpu *vcpu;
+>         struct kvm_vcpu_init init;
+>
+> -       pr_debug("Test with pmcr_n %lu\n", pmcr_n);
+> +       pr_debug("Test with pmcr_n %lu, fixed_counters_only %d\n", pmcr_n, fixed_counters_only);
+>
+> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
+> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
+>         vcpu = vpmu_vm.vcpu;
+>
+>         /* Save the initial sp to restore them later to run the guest again */
+> @@ -552,14 +554,14 @@ static struct pmreg_sets validity_check_reg_sets[] = {
+>   * Create a VM, and check if KVM handles the userspace accesses of
+>   * the PMU register sets in @validity_check_reg_sets[] correctly.
+>   */
+> -static void run_pmregs_validity_test(u64 pmcr_n)
+> +static void run_pmregs_validity_test(u64 pmcr_n, bool fixed_counters_only)
+>  {
+>         int i;
+>         struct kvm_vcpu *vcpu;
+>         u64 set_reg_id, clr_reg_id, reg_val;
+>         u64 valid_counters_mask, max_counters_mask;
+>
+> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
+> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
+>         vcpu = vpmu_vm.vcpu;
+>
+>         valid_counters_mask = get_counters_mask(pmcr_n);
+> @@ -604,13 +606,15 @@ static void run_pmregs_validity_test(u64 pmcr_n)
+>         destroy_vpmu_vm();
+>  }
+>
+> -static void run_mdcr_el2_validity_test(u64 pmcr_n)
+> +static void run_mdcr_el2_validity_test(u64 pmcr_n, bool fixed_counters_only)
+>  {
+>         struct kvm_vcpu_init init;
+>         struct kvm_vcpu *vcpu;
+>         u64 expected_mdcr, mdcr;
+> +       u64 irq = 23;
+>
+> -       pr_debug("MDCR_EL2 test with pmcr_n %lu\n", pmcr_n);
+> +       pr_debug("MDCR_EL2 test with pmcr_n %lu, fixed_counters_only %d\n",
+> +                pmcr_n, fixed_counters_only);
+>
+>         create_vpmu_vm(guest_code);
+>         if (!vm_supports_el2(vpmu_vm.vm)) {
+> @@ -631,6 +635,16 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
+>                     "MDCR_EL2 was not properly updated after HPMN write (expected 0x%lx, got 0x%lx)",
+>                     expected_mdcr, mdcr);
+>
+> +       if (fixed_counters_only) {
+> +               vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +
+> +               mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
+> +               TEST_ASSERT(mdcr == expected_mdcr,
+> +                           "MDCR_EL2 changed after PMU_V3_FIXED_COUNTERS_ONLY (expected 0x%lx, got 0x%lx)",
+> +                           expected_mdcr, mdcr);
+> +       }
+> +
+>         set_nr_counters(vcpu, pmcr_n, false);
+>
+>         mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
+> @@ -638,6 +652,9 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
+>                     "MDCR_EL2 changed after PMU_V3_SET_NR_COUNTERS (expected 0x%lx, got 0x%lx)",
+>                     expected_mdcr, mdcr);
+>
+> +       vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
+> +
+>         vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+>                              KVM_ARM_VCPU_PMU_V3_INIT, NULL);
+>
+> @@ -672,11 +689,11 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
+>   * the vCPU to @pmcr_n, which is larger than the host value.
+>   * The attempt should fail as @pmcr_n is too big to set for the vCPU.
+>   */
+> -static void run_error_test(u64 pmcr_n)
+> +static void run_error_test(u64 pmcr_n, bool fixed_counters_only)
+>  {
+>         pr_debug("Error test with pmcr_n %lu (larger than the host)\n", pmcr_n);
+>
+> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, true);
+> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, true);
+>         destroy_vpmu_vm();
+>  }
+>
+> @@ -737,25 +754,116 @@ static void test_set_nr_counters_after_vcpu_run(void)
+>         kvm_vm_free(vm);
+>  }
+>
+> -int main(void)
+> +static void test_config(u64 pmcr_n, bool fixed_counters_only)
+> +{
+> +       u64 i;
+> +
+> +       for (i = 0; i <= pmcr_n; i++) {
+> +               run_access_test(i, fixed_counters_only);
+> +               run_pmregs_validity_test(i, fixed_counters_only);
+> +               run_mdcr_el2_validity_test(i, fixed_counters_only);
+> +       }
+> +
+> +       for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
+> +               run_error_test(i, fixed_counters_only);
+> +}
+> +
+> +static void test_fixed_counters_only(void)
+>  {
+> -       u64 i, pmcr_n;
+> +       struct kvm_pmu_event_filter filter = { .nevents = 0 };
+> +       struct kvm_vm *vm;
+> +       struct kvm_vcpu *running_vcpu;
+> +       struct kvm_vcpu *stopped_vcpu;
+> +       struct kvm_vcpu_init init;
+> +       int ret;
+> +       u64 irq = 23;
+> +
+> +       create_vpmu_vm(guest_code);
+> +       ret = __vcpu_has_device_attr(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY);
+> +       if (ret) {
+> +               TEST_ASSERT(ret == -1 && errno == ENXIO,
+> +                           KVM_IOCTL_ERROR(KVM_HAS_DEVICE_ATTR, ret));
+> +               destroy_vpmu_vm();
+> +               return;
+> +       }
+> +
+> +       /* Assert that FIXED_COUNTERS_ONLY is unset at initialization. */
+> +       ret = __vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +       TEST_ASSERT(ret == -1 && errno == ENXIO,
+> +                   KVM_IOCTL_ERROR(KVM_GET_DEVICE_ATTR, ret));
+> +
+> +       /* Assert that setting FIXED_COUNTERS_ONLY succeeds. */
+> +       vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +
+> +       /* Assert that FIXED_COUNTERS_ONLY is set. */
+> +       vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +
+> +       /*
+> +        * Setting an event filter when FIXED_COUNTERS_ONLY has already been set
+> +        * results in EBUSY.
+> +        */
+> +       ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
+> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
+> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
+> +
+> +       destroy_vpmu_vm();
+> +
+> +       create_vpmu_vm(guest_code);
+> +
+> +       /*
+> +        * Assert that setting FIXED_COUNTERS_ONLY when an event filter has
+> +        * already been set results in EBUSY.
+> +        */
+> +       vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
+> +
+> +       ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
+> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
+> +
+> +       destroy_vpmu_vm();
+> +
+> +       /*
+> +        * Assert that setting FIXED_COUNTERS_ONLY when a VCPU has already run
+> +        * results in EBUSY.
+> +        */
+> +       vm = vm_create(2);
+> +       vm_ioctl(vm, KVM_ARM_PREFERRED_TARGET, &init);
+> +       init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
+> +       running_vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code_done);
+> +       stopped_vcpu = aarch64_vcpu_add(vm, 1, &init, guest_code_done);
+> +       kvm_arch_vm_finalize_vcpus(vm);
+> +       vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
+> +       vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                            KVM_ARM_VCPU_PMU_V3_INIT, NULL);
+> +       vcpu_run(running_vcpu);
+> +
+> +       ret = __vcpu_device_attr_set(stopped_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
+> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
+> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
+> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
+> +
+> +       kvm_vm_free(vm);
+> +
+> +       test_config(0, true);
+> +}
+>
+> +int main(void)
+> +{
+>         TEST_REQUIRE(kvm_has_cap(KVM_CAP_ARM_PMU_V3));
+>         TEST_REQUIRE(kvm_supports_vgic_v3());
+>         TEST_REQUIRE(kvm_supports_nr_counters_attr());
+>
+>         test_set_nr_counters_after_vcpu_run();
+> -
+> -       pmcr_n = get_pmcr_n_limit();
+> -       for (i = 0; i <= pmcr_n; i++) {
+> -               run_access_test(i);
+> -               run_pmregs_validity_test(i);
+> -               run_mdcr_el2_validity_test(i);
+> -       }
+> -
+> -       for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
+> -               run_error_test(i);
+> +       test_config(get_pmcr_n_limit(), false);
+> +       test_fixed_counters_only();
+>
+>         return 0;
+>  }
+>
+> --
+> 2.55.0
+>
+>
