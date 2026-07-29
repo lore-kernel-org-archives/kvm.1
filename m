@@ -1,130 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C505A389E13;
-	Wed, 29 Jul 2026 03:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785297019; cv=none; b=FVtKLCklMt5OT1y6ms0e4pTOB1hjBzXc4PKlo9qmzhyf5K/JW8Abi9HPjjeB/9MwlyUXTNNpZE8pV6sOdnqL5L8YREdqHOW3ot1M04JfYIyCV73KWL/gQu2kcqYoK38wecSz6BW0NlAxEiZjJW61U1+ZYlP3+GZlhCzemhRxxZg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785297019; c=relaxed/simple;
-	bh=cbVN8bTsMYC/fEX0aBjw6tK6TMP8uPsBPqZ7WnMAEPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DwzKdeRIcq1Bh6BZkWj/6mHpvyvHMAifdb9EZGa78gGZSanCoSJzoNPdc96AXlcjXAcJ8+tolw0spQKsPCizlrOlhwH9WaoCwNjYhQK8PQF2yqDnTinGcAqzHW/6cKoqSsJFLvDmDUEhY/rtguky7jl6pukcdaHcaGwu2V0C6Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iLbraXns; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531AB2DEA8C
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 04:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785300818; cv=pass; b=o2ftnyn1A3OPM2NYY/wYvXXC3/c90SEeCVJYSW1A9pKZhkTM+YW+xMtRrEb5gbL0dGGb/dlpOkniLgLAmQHaI1OGNh+qHZKZyo5zPG1CezWRF/nITGc79E+F7n+FhOY6xsTav6xUpvS1cv55xmuyDEQXZwja2RnMksKsREmvJZ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785300818; c=relaxed/simple;
+	bh=sMFAAzwuME8O9Q4FkhBViLFDiCHSSEC3uT79oN/b0c0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dv3NP2dtuNnSWReYqQkcX5dnRZZ085Nivk1jqYTsIbJmBHmb9k4F5ikQRv6AwnxZRx4WMB41w2J9VFNLiKs64UCqbpcUcMN8tKybZ1YpriH9m3eI8lHyvhH9ikCpePdzYDsbOUMIYO5NQ0pD/yc4Xmak+v/LqIViUxKxGAfTRR8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wZ1ukyLY; arc=pass smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iLbraXns"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785297017; x=1816833017;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cbVN8bTsMYC/fEX0aBjw6tK6TMP8uPsBPqZ7WnMAEPI=;
-  b=iLbraXnsDs4OKcQQfYffS95JMGZge3nhBGHknKAwhGKSbdQEBchFWFtH
-   a44ocxZaCNlHbMzaJLYNkPXEF7vr6jh74G4SHH/zPxVSG0ZE52/Ksmw1I
-   9SfFMqjGGn+VgFLVJFjef6oJxxdBKwj1KDk2pH53PRrK1NcPWp6JJsk3l
-   omZvTzrQJE+WEZi5dN/cIDHFyDgxWJWIlF6LmXfdee4zsMFgts5AxcI18
-   ZgsPMJ992QFmx3/MqdWl5HxHaXjox4cC9LF4iGH5nWL861UVWBFWU7Z8F
-   zC88ukQMRPHj77qh/hmNJGa3go83rRfp/3AqcAE2NBmn5NVLOJPin8D8c
-   A==;
-X-CSE-ConnectionGUID: n11PqbdmQQmvcFkvMJotBg==
-X-CSE-MsgGUID: AzootewuQxSXrp2JgdcsUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86087105"
-X-IronPort-AV: E=Sophos;i="6.25,191,1779174000"; 
-   d="scan'208";a="86087105"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 20:50:15 -0700
-X-CSE-ConnectionGUID: qVLynDEkQoucSwKjNXMeBQ==
-X-CSE-MsgGUID: IGbDIZQQS7mPyj0BPNU4ow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,191,1779174000"; 
-   d="scan'208";a="283225576"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa002.fm.intel.com with ESMTP; 28 Jul 2026 20:50:10 -0700
-Date: Wed, 29 Jul 2026 11:50:09 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-	"Hansen, Dave" <dave.hansen@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"Hunter, Adrian" <adrian.hunter@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Xu, Yilun" <yilun.xu@intel.com>,
-	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"Mehta, Sohil" <sohil.mehta@intel.com>,
-	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
-	"djbw@kernel.org" <djbw@kernel.org>,
-	"Fang, Peter" <peter.fang@intel.com>,
-	"Maloor, Kishen" <kishen.maloor@intel.com>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH v2 03/17] x86/virt/tdx: Detect if the extensions
- initialization is required
-Message-ID: <aml4cVnFkKvmJimj@yilunxu-OptiPlex-7050>
-References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
- <20260618081355.3253581-4-yilun.xu@linux.intel.com>
- <cfeee0fe-c61d-447c-86bc-8d8244090879@intel.com>
- <amdRWaoKa0k324JM@yilunxu-OptiPlex-7050>
- <7611fe250925614d64f05cac8d398f54ee386583.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wZ1ukyLY"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69fec8b4638so7727a12.0
+        for <kvm@vger.kernel.org>; Tue, 28 Jul 2026 21:53:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785300815; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lAsXafZip+Zbyte1NGWpA7MN07zHmRVRFbXMNZlDNn3C1Phz85xpwX3ijjEMeJK+A8
+         xRewpMCaEIZP+aABK+3J2gqL+dw40iAbl5357KxJ6whK9fY0L+w8jY913M8cpJU/PWA8
+         aMXClwP5H74xo4deSs8kc5zpnfQuLt5pNnlDuPcoz03rJ1+t+gq/lWxADIakiGGGMG3C
+         YWCmZ/znZVheIAGe/L0wE59sLpXLvOjtDq6/rWDuA9GbJbl4uZwMjFRKJyMoV34Lx5d2
+         3jH0AvHWgUQSoWC6sswcHBwVpxyKq/+Hq6HkPajQYptragff0ylPVHjIfH8E4BOXUdDU
+         vkTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sMFAAzwuME8O9Q4FkhBViLFDiCHSSEC3uT79oN/b0c0=;
+        fh=/ma5m0e3tZ+ZXx3/OK28JhURwNiUoHE4d85cU1Skh10=;
+        b=YuFl/MjBbbDi8J9xgrh4YxyILRlFk6GXSVTej+5rEfa4zVUjEPYEbYRU8MIW66CSrM
+         NAZQhI/d8VaT4CzTQym2armNjx3YOxD125xzl37xnVAsRIu//tW0orFHehqCAyDjLIrY
+         w6ccCStlUfNf2laA7kGAwlrI2Ung9KeChQuXx6KHNiXB506xj8agYWzFDPgo71PBGV7o
+         R5p6acuigxkecu2qAmK9+dBmeYKgXO59oSfzB0jqDca20d3sNhLqtZ2f16uFyqN73Rn2
+         6Wrsz2FlCmEJYKqElKxwdtcNgycgkGZlUaiwcO4qcSiYRQLSSIqCwhb5+5TeDFPsWHmh
+         HOjA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785300815; x=1785905615; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sMFAAzwuME8O9Q4FkhBViLFDiCHSSEC3uT79oN/b0c0=;
+        b=wZ1ukyLYghLDCmYoTBv608CPQuSL12R7rR6np7Zq1eA5Gp4X6S8d+HwwRvgzGBuMTy
+         syJbQYPJ0yJfTlihtpHN2U2NG30BpogbM5vZKE0VIun7ufKvXoOANQ16nMyzJgTbOHyr
+         SMd56SYz2t2spiZka8Py9HL7lpR8/wrPvpXzswpoVZEmc9amRIZqq0n2vKnl9A7JFknQ
+         o8qINA+TwD7MjX/EiVwoF15fC6upnPRS3VALFoBnSSM+itidseTWtS4kX8Mmo6+w2fcZ
+         xocJz7uK8p/GECSgvZF070pa/kv3Xp/39jfVCctt6HTM8xY0evvyaav0aK54+2RQjCYo
+         cVKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785300815; x=1785905615;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sMFAAzwuME8O9Q4FkhBViLFDiCHSSEC3uT79oN/b0c0=;
+        b=tJDc/I3Yk79+95ETQx0fdO/VNR5AKg389TDdYZjRXoxPob+5k8e1BP7S03DpMrRp1d
+         cugNzz9IXjAddCrUJxqoJ8D/dka7yhS8JNph9ndqEdz5nK/MoH/r8PIaS5DHJe+cDSTZ
+         qKIks6EuR2ubEIQCiUeSyEdqQc4WztwxwfnR/SPWTTvyuKNeMmH5Mzv/mYeXeMoNkIOy
+         I4JZ2tTJ2gKa7Ja41WAlb4iaxTkyTrrdDo1YzdIYCZbfGNolL0PzrJ6GyzOZCg+t12Vy
+         zB4fkVpC9incZTtQfh8Fg6X+QmPlAYbq89huQh91vXUaZtJF+pF1UqLWCcThLxJq+3Cs
+         rWJw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro9zMqUglANr1RwogRgr/3J+l9SRXlRB55zw5lQJOmWVx5o/+mpLUScpt0ufF99xGQIpdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3hqXOPr7uApD8xeYoVvkCBou4FmkzX9AaqP6TFk2ZQE9QKo25
+	nKo+JabPtn5osfBo5UDN/5rDGaMoYz/K7KcaQo3zNZp2kVerMvtJVdr+7reXFtgpOCGAIL4oa0A
+	+yvm70IgiNFOITEnJYjn8xYwPoX6VbzIsJNF0bM4mult7xVB/M2bJsa/m
+X-Gm-Gg: AR+sD10jC5ab+e53dl4zpehfTFIlByA1tl0LvSOkvoeDwjCzZoOgaKvARdIGs/7+8yR
+	2DgvUOYcOxVE/va59R4ti7QQwA9hTGqaqEOlKUQ31x7eBgG65igCYeSMv8vMo4XsGqu6gubAEsC
+	aWw4XtztJrxUvJbpewK5HOFxu6Ci3NnEBGlXqPBpUZSC6gjiJ9i/42w5deT1hdyRVZFzpSVVzlZ
+	U/mm/olcVajZexW7Sn7X1rYmgxAPc/XY9Qlinc/EhdliVv9WrCiTFcDJUV0PEVktE0K2Ql0tPFO
+	hS2T8r5u2BTSklRT3iWN2fRTr2mk56mZ01Z7wce3396m
+X-Received: by 2002:a05:6402:b2c:b0:696:b77c:ba9a with SMTP id
+ 4fb4d7f45d1cf-6a063d6224bmr2083a12.1.1785300815153; Tue, 28 Jul 2026 21:53:35
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7611fe250925614d64f05cac8d398f54ee386583.camel@intel.com>
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+In-Reply-To: <20260713180153.2728382-2-yosry@kernel.org>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 28 Jul 2026 21:53:22 -0700
+X-Gm-Features: AUfX_mw5m8sb8VCglMRYjv50guo-4bXpkr1fp75evnF2-aR6x9YqPMGk2ozuZAs
+Message-ID: <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 27, 2026 at 05:56:31PM +0000, Edgecombe, Rick P wrote:
-> On Mon, 2026-07-27 at 20:38 +0800, Xu Yilun wrote:
-> > > This is not true. There are some normal (non-extension) SEAMCALLs also are
-> > > preemptible and resumable. For example,
-> > > 
-> > > - TDH.PHYMEM.CACHE.WB
-> > > - TDH.SYS.DISABLE
-> > > - TDH.MEM.SEPT.ADD with version 1
-> > 
-> > No they are not preemptible and resumable. They just intentionally
-> > yield and don't have a generic way to save/resume their context. You
-> > can't rely on that to implement complex tasks in TDX module considering
-> > the complexity. That's the main reason why TDX module extensions are
-> > needed.
-> 
-> We have RESUMABLE seamcalls today. They are guaranteed to save state and make
-> forward progress. Xiaoyao is right, this is not a new concept from the VMM side.
+On Mon, Jul 13, 2026 at 11:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> When handling userspace SREGS writes, check the validity of EFER (i.e.
+> allowed bits) before writing the new value of EFER through the
+> per-vendor set_efer callbacks. This prevents userspace from writing
+> bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+>
+> Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+> caps, not guest caps, so it is possible to set EFER bits that are
+> supported by KVM but not by the guest CPUID. Potentially allowing
+> userspace to set msrs before CPUID.
+>
+> However, for KVM_SET_SREGS*, check the validity of the set bits against
+> both KVM and guest caps. This is consistent with other validity checks
+> (e.g. for CR4) that check validity against guest caps, which already
+> imposes the need to set CPUID before SREGS.
 
-OK. Let me de-emphasize resumable.
-
-And I'm thinking of how to stop explaining new terms again and again,
-extension SEAMCALL is the one. I'm not sure if calling it "preemptible
-SEAMCALLs" helps, or is it still a new term?
-
-> But also why highlight this for the patch here. Are you trying to explain why
-> extension initialization needs some special step?
-
-I was following the suggestion [1] of explaining the context in general.
-But yes, a brief explaination of why we need special initialization is
-good to me: A global service environment should be built to provide
-some general context switching mechanism inside TDX module.
-
-[1]: https://lore.kernel.org/all/1783e7bd-3759-41f7-93e3-2f9e21264bd4@intel.com/
-
-Refactored the first paragraph:
-
-----8<----
-
-  TDX adds a new class of SEAMCALLs which are preemptible and can cooperate
-  with the host scheduling. Some features like TDISP, DICE-based quoting
-  rely on these preemptible SEAMCALLs to implement higher order security
-  protocols with simple ABIs. To enable preemptible SEAMCALLs, a global
-  service environment, called TDX module extensions, must first be
-  initialized.
-
-  ...
+Where is the requirement to set CPUID before SREGS documented, aside
+from this commit message?
