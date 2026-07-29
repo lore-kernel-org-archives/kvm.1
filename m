@@ -1,146 +1,178 @@
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C343E1226;
-	Wed, 29 Jul 2026 20:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A813411670
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 20:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785357371; cv=none; b=YKK+o04ftA71aG8xdLUYLrRZSaaIxF7CBiyIrKhmiu2toFvZri2tFQPM71ddYUU7Jpex+wA88Lmay+EpUngXJrpAflw9cjbyT1CWE0yDqMx4pZ1nsDpxpF/SXbc4AMTUn7PGYakA2CEcj0etX5UuQMR6mYKXSwfZG9hhopMv/Cc=
+	t=1785358128; cv=none; b=L/sC6gIzvZOnzIyTa/qUJXWMB2JOVa9Z7QKiYSy3AEIZZXiUrVMIUcSCbNaddEFIgWeVTE0mddFLurygHqClYD0f/YJj727piW94RsyLMk9RtHyl3HDF7B29oBLIxWpXzNW/fAbNtr18j2udH3XOAmmb3p8X1HfFt7K+HCuR45o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785357371; c=relaxed/simple;
-	bh=YHL7ZD6IQB5+BZcmiSJFZhSGM56v3nP6G5oEZpmyuV4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mYFWUJgcLFBeRCsaFC9b1EZLZFDgoSlxY5m8o2KSuhUHlR7JerQs5GVkoWBL+EW0ZlBf5+OXGOKM0aqBs35QEipMtHPmzvSAoZeVTvN7UpNgDYuQDynOUULLkmaXSZpQ8IPOolJMfR2MHDBl7+Ym2nxk9cooQoyXhbhNpydEpms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ASPACXzj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VhQdDVKT; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1785358128; c=relaxed/simple;
+	bh=EzORmWbOjgOdnv1LZqbbycpAYD+6JKJ80AzJHP3kIpU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Z22biw9Pkk4htqnDm5Mhc7gB/ADVPtlINnGJw6ks0PRfCzB5Y/guWluP5o3RpSJCEPMXFE61nIadQn9a6bbBnjppvUsU0Er0KLWzOevcOTBc7wf4W+8qVmPIn1tfcxuUzJwq49fg/gLXuHsByz9oSJLWno1sTqtBJoRCZdys1dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A0kn65CC; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ASPACXzj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VhQdDVKT"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id CCA5DEC0576;
-	Wed, 29 Jul 2026 16:36:05 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Wed, 29 Jul 2026 16:36:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785357365;
-	 x=1785443765; bh=VVJdTLW0XaIoP+oi8isAvMFYxiJ6/s4KOB+fFqHPCU0=; b=
-	ASPACXzj8icJmBkG87F5nTIFo1eP4KV5FU/qCoh9CPgJeNrWEYr5CsEeo2f1owER
-	PX6qKofeARJPUxa19sifYc1AesAhNBMUUPbzJ2dZagjkd/oajBDivU1ypSdCo2ZE
-	u0lf0zfru5R08TBeQrKMLyd34QuuQ4PZnH+UWbwLZddS5Neaxqov5kiHvNx/SBS/
-	k2iDyoGZTVQy95qlsI+YpDpayXkLrEIR1H0VWc/u6EONH9rqiYERF4twBfvH+APj
-	pOt64MlnNfjXIZC4K/TIo7hIAiwxatBwM+gAD9rX2NK070tUoW9xy7k90/U64NwH
-	ry7+4kyYlED1wdOmHbd6yw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785357365; x=
-	1785443765; bh=VVJdTLW0XaIoP+oi8isAvMFYxiJ6/s4KOB+fFqHPCU0=; b=V
-	hQdDVKT+EeA83hp6vP6GqlvXpC4nKgmCbTM+E5gcJ+vwsHDGSjIccuqzmEUOl1+6
-	jg4b3IT5TlWLVt1Pj9iuf1pXjoE+f+P4r2ALSpiTNvYGQy27WafqLv8AqiTPSDD7
-	Ysnk6aW/G2ht/s/MkJP2locasQzWdADSoiuaAXwkEaziNbQqJZ+AcL7vFxb7AePM
-	gMc0GNq1s9fhGF6UmJVrfsiLMOOP2PHbKGATiEWgfSQcFko34nKKv/1DSpTEF+tJ
-	JWOyHYBr1sEJjb3MYxAS7U1snB0tubH5Xz0y2kLhgf9c7ew6TcVubgBb73RKQ0VY
-	O0Igh9CSg9taVoeVvEXvA==
-X-ME-Sender: <xms:NWRqagYteBPguaKk4Nrgp_fVInFpmfaeMz6gG8k0KU2y3To47QxLxA>
-    <xme:NWRqajmgmLqZ6dlKZcKSeyB6Z7gWXO9Cu2uXEZaF4hWlDYO2jaukj-NLAvcrsk_0i
-    DIlXoLHVER0b9VkjThRrO1mWnGmdoiGJdoC0noOa8QvwR2Yd5BCf94>
-X-ME-Received: <xmr:NWRqamgw9j5o_1ZHznXUgr32Aeb31OZQNtJnS5ODvD6abzK19ZnLXRYbmB5Alg>
-X-ME-Proxy-Cause: dmFkZTF5joDESc+IKSOSrepkbuheblPyY5dq9qzqwT3frG3oX0lljCt9wDRX/f8thcowYS
-    4hQ99bagzIV7gWuGMPMC2XvMY+uuH4nO48bbyEXcg9j2btNN3XRt8FFEXBxJc2JjCE6Sx9
-    K0eHgMAcNFenhlx6eHtkFX38tni0Si2qxXaq5LtXZPd4Q7vlx8gIYcjBnPyl8ZsyXzhRvp
-    4vNrmRTUYeC7j0Ri3Fv9dd2ghkYS7u2+pRIFfA/YJNCAWuAmUTKQma7CgjgF4bSxhL3pW0
-    hgtR30HcLGElaD8ydvovi4SLDFxcYUdqvZmRE1+NAjNSIM9Hg9GgG8j9/ogK3ehDYdlGnc
-    aVAQ5XCpPEfWPmHp271RDmsIwuNhxMh6pvWGBmxFGyRgAAe0NNoDBmrf3069Db8WvKpV1H
-    ymH3giBhenYMIyCYi34xqQT9X9pCZ2VzkEsb6t/HzGk7FXWRbmjS8MaBOcOFOD+gv5SuW5
-    Pv7/J6f8smQuVJy9PLPxqSWHR50dsY91CYuCUj/UtZF1M7ho+RFNS5E0eY/0HAZpwY7fh3
-    RzLBORShYixGMH4rPS7BB0nzbzdQqtp4rtFcVV2fUt4Iqid2M2PJhWjC6JMNonExV6rnLK
-    rpCiwIXgNphL2IWwtj6V3/+DLHxSlSWoMfinhs4MMloiviIq4/9rMeCrtm2w
-X-ME-Proxy: <xmx:NWRqalSSqDAijr1aOyr2zsDMfp0yqSrqEeEkaY2jlemzxqivj8GIFg>
-    <xmx:NWRqanYJ_N9-LVVDpZXz-hhQ7hR8iPNIZg4c1glMSQsFX3amFRxoSg>
-    <xmx:NWRqaiTefNLvyNxRUpxxQf7zUKRV-y_x3GDyduuNywAA1aXMX2e-Qw>
-    <xmx:NWRqam8Iup8hSlLxzCBB-5q4tnz48XPj8M5w3OomcvColQTYUfIWrw>
-    <xmx:NWRqasa_VfXD2xP8Uybtco3FH-umnhYuVZSYYZF5yCCWbY9xtIBlJsh6>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Jul 2026 16:36:04 -0400 (EDT)
-Date: Wed, 29 Jul 2026 14:36:03 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, kvm@vger.kernel.org, borntraeger@linux.ibm.com,
- mattev@meta.com, schnelle@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-Message-ID: <20260729143603.175f60a7@shazbot.org>
-In-Reply-To: <46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
-	<e7b2da7b-2c70-46c2-9d07-6acc6949915e@linux.ibm.com>
-	<46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A0kn65CC"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8485b7e18b4so2309898b3a.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 13:48:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785358124; x=1785962924; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9S8u6Lrf74gQDTv+Bi/zcI3VRSjgCqo662Qkt2dHTqQ=;
+        b=A0kn65CCjR3/dXOinCix/8b/RQMdi5vQm9h4ZiVlI5E9cx0+5QBRLxM0mhO9GGedO6
+         BX5ZToAPM8drX9XZiPiCsuNRKiF1savT+58CQd1G+ZECoykAH+EeWSHV7FKJg348gxJZ
+         ykZAtfsMfDgXRUJRT/ddBHrOscIngAiK6gJzXFR+PMNi/qvOgKzZG8PEn42OTBJJ+qlh
+         0fBeGqadvnXFdU8mP2yDhQ2lmAEDswhwGy+TUiTGhUN8pBYQBi3yWSWPO2Mu0+K0zyHu
+         aucO35tK8ZHkzeiY0idfsQjopD63PJPE+2wrW2D6TirvkO8c4pfMONGRQcPDw8yZ7IJL
+         NwMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785358124; x=1785962924;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9S8u6Lrf74gQDTv+Bi/zcI3VRSjgCqo662Qkt2dHTqQ=;
+        b=eoiMzweolbhafRvVteLbpBSWrbMvQ76bNCGSs8EaZWQmrCunfzxUZ1LrVl4dDTDiI2
+         1yjGQ041gXdCqhvWZutrFg1g95v1SvbdEB70k/XmHgtx5pXdLrAI2ykMmoofotmbOCfG
+         x24ho9Hy/X/GItl+o1+NyaZzyXtxeWM7DLKKf5JHbQ4c6RIVdCt1l5/WZNO6ZduZKeLE
+         mFLBYj8TYkFeVkTJ3eRx1x+Yr8Ctgm6xRrEX/1La3FsSTRP7yJvHZU3P19KaqGrMZmMW
+         1dXAQeU9IYB9fIKSjZV/Bzj4HS6fCGgKqEr+SupAsGVyfJSbU6bqA0725pzn9421TYQM
+         JvVw==
+X-Forwarded-Encrypted: i=1; AHgh+RpDGB/aFHlscBN7a49b5clXPOZDKtVLr8a/bUIXaR09xCHXhn1zBI1Gz8CSAJqsZljo/Ws=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznPCjS401qufAWz7w3MX2FhJ6M4CmGma/BUFH3wg6gqDj0YwX8
+	wTPvJY1fqxMH6zFwl/yjrCe/rfpPUGnnv809RBiecbZbLKKubo5uod/hkxI3MUWl6fbgxj6sssA
+	NICvVSQ==
+X-Received: from pfwp10.prod.google.com ([2002:a05:6a00:26ca:b0:84a:3e5c:a215])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1748:b0:848:30c3:45d6
+ with SMTP id d2e1a72fcca58-84eb9e810bbmr337677b3a.14.1785358123914; Wed, 29
+ Jul 2026 13:48:43 -0700 (PDT)
+Date: Wed, 29 Jul 2026 13:48:43 -0700
+In-Reply-To: <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+ <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com>
+ <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com> <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
+Message-ID: <ampnK2k6oL79wCzV@google.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 29 Jul 2026 13:28:46 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
-
-> On 7/29/2026 12:41 PM, Matthew Rosato wrote:
-> > On 7/29/26 2:11 PM, Farhan Ali wrote:  
-> >> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
-> >> all devices support having their BARs mapped by the CPU. The
-> >> non_mappable_bars flag indicates that a PCI device's BARs cannot be
-> >> accessed by the CPU. The ISM device on s390 is one such device. The BAR
-> >> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
-> >> to warnings:
-> >>
-> >> vmalloc_node_range for size 281474976714752 failed: Address range
-> >> restricted to 0x2110bab00000 - 0x21903ab00000
-> >>
-> >> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
-> >> is set by the PCI core at enumeration time and already serves the same
-> >> purpose in vfio_pci_probe_mmaps().
-> >>
-> >> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
-> >> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> >> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> >> ---
-> >>   drivers/vfio/pci/vfio_pci_core.c | 3 +++
-> >>   1 file changed, 3 insertions(+)
-> >>
-> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> >> index 3f11a9624b9c..6a184588ff23 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_core.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> >> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
-> >>   
-> >>   		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
-> >>   
-> >> +		if (pdev->non_mappable_bars)
-> >> +			continue;
-> >> +  
-> > This would work for the ISM case at least, but I wonder: should we check
-> > vdev->bar_mmap_supported[bar] instead?
+On Wed, Jul 29, 2026, Yosry Ahmed wrote:
+> On Wed, Jul 29, 2026 at 9:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
 > >
-> > My question boils down to: do we still want messages for some of the
-> > cases where we set vdev->bar_mmap_supported[bar] = false in
-> > vfio_pci_probe_mmaps()?  
-> 
-> AFAIU vfio_pci_probe_mmaps() is only called in 
-> vfio_pci_core_finish_enable(). Since vfio_pci_core_map_bars() is called 
-> in vfio_pci_core_enable(), and before vfio_pci_core_finish_enable(), 
-> bar_mmap_supported would be false here for all devices. So I don't think 
-> it would work here, unless I missed something?
+> > On Tue, Jul 28, 2026 at 9:53=E2=80=AFPM Jim Mattson <jmattson@google.co=
+m> wrote:
+> > >
+> > > On Mon, Jul 13, 2026 at 11:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.or=
+g> wrote:
+> > > >
+> > > > When handling userspace SREGS writes, check the validity of EFER (i=
+.e.
+> > > > allowed bits) before writing the new value of EFER through the
+> > > > per-vendor set_efer callbacks. This prevents userspace from writing
+> > > > bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+> > > >
+> > > > Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KV=
+M
+> > > > caps, not guest caps, so it is possible to set EFER bits that are
+> > > > supported by KVM but not by the guest CPUID. Potentially allowing
+> > > > userspace to set msrs before CPUID.
+> > > >
+> > > > However, for KVM_SET_SREGS*, check the validity of the set bits aga=
+inst
+> > > > both KVM and guest caps. This is consistent with other validity che=
+cks
+> > > > (e.g. for CR4) that check validity against guest caps, which alread=
+y
+> > > > imposes the need to set CPUID before SREGS.
+> > >
+> > > Where is the requirement to set CPUID before SREGS documented, aside
+> > > from this commit message?
 
-Also IO Port and sub-page MMIO BARs are things that do exist.  Thanks,
+It's not, because it's not a true requirement.  And for me, this isn't abou=
+t
+whether or not KVM has a documented rule, it's about how likely it is that =
+this
+change will break userspace.  And for that, Yosry's statement is perfect: t=
+he
+risk of breaking userspace is tiny, because unless userspace is getting cre=
+ative,
+it already needs to set CPUID before loading SREGS.
 
-Alex
+> > I don't think so, and also coming back to this again I think the
+> > commit message is wrong. The whole basis for doing validity checks
+> > against guest CPUID (other than the convenience of using
+> > kvm_valid_efer()) is cr4_guest_rsvd_bits, which is initialized based
+> > on both KVM caps and guest CPUID.
+> >
+> > However, cr4_guest_rsvd_bits seems to be initialized *after* CPUID is
+> > set, so it only checks CR4 against CPUID if userspace already set
+> > CPUID. It doesn't impose a restriction to set CPUID before SREGS, but
+> > this patch is.
+> >
+> > So I think this may be too restrictive. We should probably only check
+> > against KVM caps, which was the whole motivation of this patch to
+> > begin with (disallowing EFER.SVME if nested=3D0). Maybe we should just
+> > drop the Cc:stable as it won't apply to any of the stable trees any
+> > way, and do this on top of the kvm_caps.supported_efer_bits changes?
+
+...
+
+> I take this back, I think I was right the first time.
+> kvm_vcpu_after_set_cpuid() is called on vCPU creation (confusing?),
+
+It's confusing/odd until you realize that zeroing CPUID is also "setting" C=
+PUID.
+
+> and looking closely at set_sregs_test seems like it specifically verifies
+> that CR4 bits guarded by CPUID bits cannot be set before CPUID is set.
+
+No, that isn't the goal.  There are two goals:
+
+ 1. Verify userspace can't set CR4 bits that aren't supported according to =
+the
+    virtual CPU model.
+
+ 2. Verify KVM doesn't try to "help" userspace by populating CPUID with non=
+-zero
+    values, e.g. so that we don't end up with a CPUID version of
+    KVM_X86_QUIRK_STUFF_FEATURE_MSRS.
+
+Combined, they effectively create the "rule" that userspace must set CPUID =
+before
+setting certain CR4 bits, but that itself is not what the test is trying to
+validate.
+
+So I 100% agree KVM's documentation is lacking, but what's lacking is a cal=
+l out
+that KVM disallows stuffing guest state that would violate the virtual CPU =
+model.
+I don't want to document a specific ordering of ioctls because then KVM wou=
+ld have
+to enforce the ordering, e.g. would have to carry code to specifically reje=
+ct
+setting SREGS before CPUID, which would be a waste of code.
+
+> I think the main difference here is probably that CR4 bits that are
+> guarded by CPUID are more "advanced" than EFER bits?
+
+Nah, the only "difference" is that it took us longer to notice that KVM was=
+n't
+validating EFER.  Blame through KVM's history and you'll find the same bugs=
+ for
+at least CR4.
