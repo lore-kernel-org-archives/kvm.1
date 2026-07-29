@@ -1,59 +1,58 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD023CBE95;
-	Wed, 29 Jul 2026 19:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CE93CE49E;
+	Wed, 29 Jul 2026 19:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354227; cv=none; b=M1Ncsj1sr5YKPyB9d0aTTfMsP5CRN++PKD6DcR85HxqvD50XMADG662YT++zQ5YGnkfacsEBIFijV1okL+tBTIpN8WCLJba8eB6x9g0KFuJ4XUgLW0p5+KoGEY1JNt8TLqGlUEbZVRLdOBK6MkGt2QRg5zJqxnWa5cG80w0shVo=
+	t=1785354233; cv=none; b=r5mNQlzp2bYEc6EPNdF9/S4cTyukb/zcgHMF5DOpdaIw7b0VJ58fN2MgyTZu5wtpAg9Wcw5tWvimsX5dDksB/7dp2m75d19El0nDd7O4fKI1yvlpb/SCc1FwrXQEYASwd1+NM/fxFzNB6XluzJpBPTA4LzTSSos5H3HPjn05GJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354227; c=relaxed/simple;
-	bh=j2KuJ+FnCMF5fGTyEVeJK/Qa4zDs6L2/RfMWpLjdBLU=;
+	s=arc-20240116; t=1785354233; c=relaxed/simple;
+	bh=hJrxV2vh1Ac+o1soV5h5EKzDyGNXsx1NRnZwGnyHvMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCD+SSLBkSOMTNmQsnoPgASWUKnAO/FIMxW/Z4Mypv7ckwK+AORZi9ahwYSt8c55YRc1hIv3YuBALiqc6MukGfUCfelIiQ3JUaRbXii8wozXUWk6jlDwdCO1LmU21Wb57N64fXhleaql0PIAKlcRkKcDE/McjeggQDcL8JLJzNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jsEP3ajO; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=nMH9MoP24WrEDAGHdK4NyWxHt+bmskpg+nu3E88XUPaRpmPtZjnUs5ije9SB6/APehzxj1OwC7dSUrZKbTXXxUmIo3H23IAaDuk9SJnBV69OXBz8cAVUI9CcbsJ2T5+URc9dgsRkPCk/XkSBYvKHWUckt7PFx2ra1+XaEuML6/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dRSsshZS; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jsEP3ajO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dRSsshZS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785354221; x=1816890221;
+  t=1785354227; x=1816890227;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=j2KuJ+FnCMF5fGTyEVeJK/Qa4zDs6L2/RfMWpLjdBLU=;
-  b=jsEP3ajOxWluH3wqh77QC96P2L9f3A2nq/vuToRnkMkM7GtZAWyoGWlT
-   tSe1X48JH7TMjE8QQ6fP6e/wAInvoLXQ6CFR+m9aza0accSutufS5I2NZ
-   wy5v6cSGSM1VPET9Rd5D1wua06GByf0wOKrVk1zP4ay3G9KYpqu3CS7yR
-   9BU+v5FzHJpsNbP5NasiLFtGYlWIkN4GXvDgcZInLyW7OesONCUPdOghk
-   EO0vYVE5UWuDtAdGU3RhqhBqTvQnymR/BUStbMvE7jSg2KvKTEeIFuG/+
-   2Qzh1b0kxPgFMxx3PqancLq9PNwMxQ0vBOEdnHq8dV6HYZo/e5OCwlE/F
-   g==;
-X-CSE-ConnectionGUID: M9H1I1V6QFiZ+5I6wm3KFQ==
-X-CSE-MsgGUID: k8xMAI0uTp679T0Ze6/AEQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508276"
+  bh=hJrxV2vh1Ac+o1soV5h5EKzDyGNXsx1NRnZwGnyHvMs=;
+  b=dRSsshZS0bU5BcVFfdVUnWyCq7q0aa/7FtBTxRXqNMAQ89JsEuQhXZIt
+   cqasjtOKBrnYbsUv3ICLJuBqxBOr7kcp7P9YMD77kLXqM6nWhZJDu+hPa
+   FD2Tr95Ai2dpGjeA/pQ4T2FGHVSVVw6VkSd+AhQbIV+tjEK6PlYx0rp5z
+   T7MlrCQky6i3HNQyjVR3ph+pJ7THcRVTx5SS+RHPQgHrVQwvatZ7q3BTz
+   3x3IZOBjy57tiHm7nWRiYD+4eEiz02eUgZPUHtjVp2FM20mkVYYG4vBZ5
+   R1Wk8A31jYrZJ5KCFF4mWpAWmjYL4VEC3veIA1efxYa4iQ82av9Ytg2ZZ
+   w==;
+X-CSE-ConnectionGUID: EU7Bge8XSOalNvTmixpC/g==
+X-CSE-MsgGUID: nULSFZrwSQuT1UNrNrxPdw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508284"
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103508276"
+   d="scan'208";a="103508284"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:25 -0700
-X-CSE-ConnectionGUID: H7Sn/0ErSYi7FvOJsuuwiw==
-X-CSE-MsgGUID: vxSQ+vD2SYajfMxMYiCFsA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:27 -0700
+X-CSE-ConnectionGUID: 66S6XGLOQNm0hdDFySJtgQ==
+X-CSE-MsgGUID: LNJ5XVNaSROtai1W8Ekg6A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="256769247"
+   d="scan'208";a="256769254"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:25 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:27 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
 Cc: kvm@vger.kernel.org,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	chang.seok.bae@intel.com,
-	Chao Gao <chao.gao@intel.com>
-Subject: [PATCH v6 09/20] KVM: nVMX: Propagate extended instruction information
-Date: Wed, 29 Jul 2026 19:16:45 +0000
-Message-ID: <20260729191656.598771-10-chang.seok.bae@intel.com>
+	chang.seok.bae@intel.com
+Subject: [PATCH v6 11/20] KVM: x86: Handle EGPR index and REX2-incompatible opcodes
+Date: Wed, 29 Jul 2026 19:16:47 +0000
+Message-ID: <20260729191656.598771-12-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260729191656.598771-1-chang.seok.bae@intel.com>
 References: <20260729191656.598771-1-chang.seok.bae@intel.com>
@@ -65,91 +64,209 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Define the new extended_instruction_info field in struct vmcs12 and
-propagate it to nested VMX. Gate the propagation on the guest APX
-enumeration, which aligns with bare metal behavior. Thus, define the
-CPUID bit here too.
+Prepare the emulator for REX2 handling by introducing the NoRex2 opcode
+flag and supporting extended register indices. For the latter, factor out
+common logic for calculating register IDs.
 
-Suggested-by: Chao Gao <chao.gao@intel.com>
+REX2 does not support three-byte opcodes. Instead, the REX2.M bit selects
+between one- and two-byte opcode tables, which were previously
+distinguished by the 0x0F escape byte.
+
+Some legacy instructions in those tables never reference extended
+registers. When prefixed with REX, such instructions are treated as if
+the prefix were absent. In contrast, a REX2 prefix causes a #UD, which
+should be handled explicitly.
+
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/aRvOSnaUt1E+%2FpkC@intel.com
+Link: https://lore.kernel.org/1ebf3a23-5671-41c1-8daa-c83f2f105936@redhat.com
 ---
- arch/x86/kvm/reverse_cpuid.h | 2 ++
- arch/x86/kvm/vmx/nested.c    | 6 ++++++
- arch/x86/kvm/vmx/vmcs12.c    | 1 +
- arch/x86/kvm/vmx/vmcs12.h    | 3 ++-
- 4 files changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c     | 80 +++++++++++++++++++++++---------------
+ arch/x86/kvm/kvm_emulate.h |  1 +
+ 2 files changed, 50 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 657f5f743ed9..de90697c4e5a 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -35,6 +35,7 @@
- #define X86_FEATURE_AVX_VNNI_INT16      KVM_X86_FEATURE(CPUID_7_1_EDX, 10)
- #define X86_FEATURE_PREFETCHITI         KVM_X86_FEATURE(CPUID_7_1_EDX, 14)
- #define X86_FEATURE_AVX10               KVM_X86_FEATURE(CPUID_7_1_EDX, 19)
-+#define KVM_X86_FEATURE_APX             KVM_X86_FEATURE(CPUID_7_1_EDX, 21)
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index b566ab5c7515..12a822870d08 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -175,6 +175,7 @@
+ #define TwoMemOp    ((u64)1 << 55)  /* Instruction has two memory operand */
+ #define IsBranch    ((u64)1 << 56)  /* Instruction is considered a branch. */
+ #define ShadowStack ((u64)1 << 57)  /* Instruction affects Shadow Stacks. */
++#define NoRex2      ((u64)1 << 58)  /* Instruction not present in REX2 maps */
  
- /* Intel-defined sub-features, CPUID level 0x00000007:2 (EDX) */
- #define X86_FEATURE_INTEL_PSFD		KVM_X86_FEATURE(CPUID_7_2_EDX, 0)
-@@ -144,6 +145,7 @@ static __always_inline u32 __feature_translate(int x86_feature)
- 	KVM_X86_TRANSLATE_FEATURE(SGX1);
- 	KVM_X86_TRANSLATE_FEATURE(SGX2);
- 	KVM_X86_TRANSLATE_FEATURE(SGX_EDECCSSA);
-+	KVM_X86_TRANSLATE_FEATURE(APX);
- 	KVM_X86_TRANSLATE_FEATURE(CONSTANT_TSC);
- 	KVM_X86_TRANSLATE_FEATURE(PERFMON_V2);
- 	KVM_X86_TRANSLATE_FEATURE(RRSBA_CTRL);
-diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-index 8e0523e40477..1684f5d1dbf4 100644
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4766,6 +4766,12 @@ static void prepare_vmcs12(struct kvm_vcpu *vcpu, struct vmcs12 *vmcs12,
- 		vmcs12->vm_exit_intr_info = exit_intr_info;
- 		vmcs12->vm_exit_instruction_len = exit_insn_len;
- 		vmcs12->vmx_instruction_info = vmcs_read32(VMX_INSTRUCTION_INFO);
-+		/*
-+		 * The APX enumeration guarantees the presence of the extended
-+		 * fields. This CPUID bit alone is sufficient to rely on it.
-+		 */
-+		if (guest_cpu_cap_has(vcpu, X86_FEATURE_APX))
-+			vmcs12->extended_instruction_info = vmcs_read64(EXTENDED_INSTRUCTION_INFO);
+ #define DstXacc     (DstAccLo | SrcAccHi | SrcWrite)
  
- 		/*
- 		 * According to spec, there's no need to store the guest's
-diff --git a/arch/x86/kvm/vmx/vmcs12.c b/arch/x86/kvm/vmx/vmcs12.c
-index 1ebe67c384ad..267aa64f005e 100644
---- a/arch/x86/kvm/vmx/vmcs12.c
-+++ b/arch/x86/kvm/vmx/vmcs12.c
-@@ -53,6 +53,7 @@ static const u16 kvm_supported_vmcs12_field_offsets[] __initconst = {
- 	FIELD64(XSS_EXIT_BITMAP, xss_exit_bitmap),
- 	FIELD64(ENCLS_EXITING_BITMAP, encls_exiting_bitmap),
- 	FIELD64(GUEST_PHYSICAL_ADDRESS, guest_physical_address),
-+	FIELD64(EXTENDED_INSTRUCTION_INFO, extended_instruction_info),
- 	FIELD64(VMCS_LINK_POINTER, vmcs_link_pointer),
- 	FIELD64(GUEST_IA32_DEBUGCTL, guest_ia32_debugctl),
- 	FIELD64(GUEST_IA32_PAT, guest_ia32_pat),
-diff --git a/arch/x86/kvm/vmx/vmcs12.h b/arch/x86/kvm/vmx/vmcs12.h
-index 21cd1b75e4fd..25e9a41c248f 100644
---- a/arch/x86/kvm/vmx/vmcs12.h
-+++ b/arch/x86/kvm/vmx/vmcs12.h
-@@ -71,7 +71,7 @@ struct __packed vmcs12 {
- 	u64 pml_address;
- 	u64 encls_exiting_bitmap;
- 	u64 tsc_multiplier;
--	u64 padding64[1]; /* room for future expansion */
-+	u64 extended_instruction_info;
- 	/*
- 	 * To allow migration of L1 (complete with its L2 guests) between
- 	 * machines of different natural widths (32 or 64 bit), we cannot have
-@@ -261,6 +261,7 @@ static inline void vmx_check_vmcs12_offsets(void)
- 	CHECK_OFFSET(pml_address, 312);
- 	CHECK_OFFSET(encls_exiting_bitmap, 320);
- 	CHECK_OFFSET(tsc_multiplier, 328);
-+	CHECK_OFFSET(extended_instruction_info, 336);
- 	CHECK_OFFSET(cr0_guest_host_mask, 344);
- 	CHECK_OFFSET(cr4_guest_host_mask, 352);
- 	CHECK_OFFSET(cr0_read_shadow, 360);
+@@ -244,6 +245,7 @@ enum rex_bits {
+ 	REX_X = 2,
+ 	REX_R = 4,
+ 	REX_W = 8,
++	REX_M = 0x80,
+ };
+ 
+ static void writeback_registers(struct x86_emulate_ctxt *ctxt)
+@@ -1079,6 +1081,15 @@ static int em_fnstsw(struct x86_emulate_ctxt *ctxt)
+ 	return X86EMUL_CONTINUE;
+ }
+ 
++static __always_inline int rex_get_rxb(u8 rex, u8 fld)
++{
++	BUILD_BUG_ON(!__builtin_constant_p(fld));
++	BUILD_BUG_ON(fld != REX_B && fld != REX_X && fld != REX_R);
++
++	rex >>= ffs(fld) - 1;
++	return (rex & 1 ? 8 : 0) + (rex & 0x10 ? 16 : 0);
++}
++
+ static void __decode_register_operand(struct x86_emulate_ctxt *ctxt,
+ 				      struct operand *op, int reg)
+ {
+@@ -1118,7 +1129,7 @@ static void decode_register_operand(struct x86_emulate_ctxt *ctxt,
+ 	if (ctxt->d & ModRM)
+ 		reg = ctxt->modrm_reg;
+ 	else
+-		reg = (ctxt->b & 7) | (ctxt->rex_bits & REX_B ? 8 : 0);
++		reg = (ctxt->b & 7) | rex_get_rxb(ctxt->rex_bits, REX_B);
+ 
+ 	__decode_register_operand(ctxt, op, reg);
+ }
+@@ -1137,9 +1148,9 @@ static int decode_modrm(struct x86_emulate_ctxt *ctxt,
+ 	int rc = X86EMUL_CONTINUE;
+ 	ulong modrm_ea = 0;
+ 
+-	ctxt->modrm_reg = (ctxt->rex_bits & REX_R ? 8 : 0);
+-	index_reg = (ctxt->rex_bits & REX_X ? 8 : 0);
+-	base_reg = (ctxt->rex_bits & REX_B ? 8 : 0);
++	ctxt->modrm_reg = rex_get_rxb(ctxt->rex_bits, REX_R);
++	index_reg       = rex_get_rxb(ctxt->rex_bits, REX_X);
++	base_reg        = rex_get_rxb(ctxt->rex_bits, REX_B);
+ 
+ 	ctxt->modrm_mod = (ctxt->modrm & 0xc0) >> 6;
+ 	ctxt->modrm_reg |= (ctxt->modrm & 0x38) >> 3;
+@@ -4247,7 +4258,7 @@ static const struct opcode opcode_table[256] = {
+ 	/* 0x38 - 0x3F */
+ 	I6ALU(NoWrite, em_cmp), N, N,
+ 	/* 0x40 - 0x4F */
+-	X8(I(DstReg, em_inc)), X8(I(DstReg, em_dec)),
++	X8(I(DstReg | NoRex2, em_inc)), X8(I(DstReg | NoRex2, em_dec)),
+ 	/* 0x50 - 0x57 */
+ 	X8(I(SrcReg | Stack, em_push)),
+ 	/* 0x58 - 0x5F */
+@@ -4265,7 +4276,7 @@ static const struct opcode opcode_table[256] = {
+ 	I2bvIP(DstDI | SrcDX | Mov | String | Unaligned, em_in, ins, check_perm_in), /* insb, insw/insd */
+ 	I2bvIP(SrcSI | DstDX | String, em_out, outs, check_perm_out), /* outsb, outsw/outsd */
+ 	/* 0x70 - 0x7F */
+-	X16(D(SrcImmByte | NearBranch | IsBranch)),
++	X16(D(SrcImmByte | NearBranch | IsBranch | NoRex2)),
+ 	/* 0x80 - 0x87 */
+ 	G(ByteOp | DstMem | SrcImm, group1),
+ 	G(DstMem | SrcImm, group1),
+@@ -4289,15 +4300,15 @@ static const struct opcode opcode_table[256] = {
+ 	II(ImplicitOps | Stack, em_popf, popf),
+ 	I(ImplicitOps, em_sahf), I(ImplicitOps, em_lahf),
+ 	/* 0xA0 - 0xA7 */
+-	I2bv(DstAcc | SrcMem | Mov | MemAbs, em_mov),
+-	I2bv(DstMem | SrcAcc | Mov | MemAbs | PageTable, em_mov),
+-	I2bv(SrcSI | DstDI | Mov | String | TwoMemOp, em_mov),
+-	I2bv(SrcSI | DstDI | String | NoWrite | TwoMemOp, em_cmp_r),
++	I2bv(DstAcc | SrcMem | Mov | MemAbs | NoRex2, em_mov),
++	I2bv(DstMem | SrcAcc | Mov | MemAbs | PageTable | NoRex2, em_mov),
++	I2bv(SrcSI | DstDI | Mov | String | TwoMemOp | NoRex2, em_mov),
++	I2bv(SrcSI | DstDI | String | NoWrite | TwoMemOp | NoRex2, em_cmp_r),
+ 	/* 0xA8 - 0xAF */
+-	I2bv(DstAcc | SrcImm | NoWrite, em_test),
+-	I2bv(SrcAcc | DstDI | Mov | String, em_mov),
+-	I2bv(SrcSI | DstAcc | Mov | String, em_mov),
+-	I2bv(SrcAcc | DstDI | String | NoWrite, em_cmp_r),
++	I2bv(DstAcc | SrcImm | NoWrite | NoRex2, em_test),
++	I2bv(SrcAcc | DstDI | Mov | String | NoRex2, em_mov),
++	I2bv(SrcSI | DstAcc | Mov | String | NoRex2, em_mov),
++	I2bv(SrcAcc | DstDI | String | NoWrite | NoRex2, em_cmp_r),
+ 	/* 0xB0 - 0xB7 */
+ 	X8(I(ByteOp | DstReg | SrcImm | Mov, em_mov)),
+ 	/* 0xB8 - 0xBF */
+@@ -4327,17 +4338,17 @@ static const struct opcode opcode_table[256] = {
+ 	/* 0xD8 - 0xDF */
+ 	N, E(0, &escape_d9), N, E(0, &escape_db), N, E(0, &escape_dd), N, N,
+ 	/* 0xE0 - 0xE7 */
+-	X3(I(SrcImmByte | NearBranch | IsBranch, em_loop)),
+-	I(SrcImmByte | NearBranch | IsBranch, em_jcxz),
+-	I2bvIP(SrcImmUByte | DstAcc, em_in,  in,  check_perm_in),
+-	I2bvIP(SrcAcc | DstImmUByte, em_out, out, check_perm_out),
++	X3(I(SrcImmByte | NearBranch | IsBranch | NoRex2, em_loop)),
++	I(SrcImmByte | NearBranch | IsBranch | NoRex2, em_jcxz),
++	I2bvIP(SrcImmUByte | DstAcc | NoRex2, em_in,  in,  check_perm_in),
++	I2bvIP(SrcAcc | DstImmUByte | NoRex2, em_out, out, check_perm_out),
+ 	/* 0xE8 - 0xEF */
+-	I(SrcImm | NearBranch | IsBranch | ShadowStack, em_call),
+-	D(SrcImm | ImplicitOps | NearBranch | IsBranch),
+-	I(SrcImmFAddr | No64 | IsBranch, em_jmp_far),
+-	D(SrcImmByte | ImplicitOps | NearBranch | IsBranch),
+-	I2bvIP(SrcDX | DstAcc, em_in,  in,  check_perm_in),
+-	I2bvIP(SrcAcc | DstDX, em_out, out, check_perm_out),
++	I(SrcImm | NearBranch | IsBranch | ShadowStack | NoRex2, em_call),
++	D(SrcImm | ImplicitOps | NearBranch | IsBranch | NoRex2),
++	I(SrcImmFAddr | No64 | IsBranch | NoRex2, em_jmp_far),
++	D(SrcImmByte | ImplicitOps | NearBranch | IsBranch | NoRex2),
++	I2bvIP(SrcDX | DstAcc | NoRex2, em_in,  in,  check_perm_in),
++	I2bvIP(SrcAcc | DstDX | NoRex2, em_out, out, check_perm_out),
+ 	/* 0xF0 - 0xF7 */
+ 	N, DI(ImplicitOps, icebp), N, N,
+ 	DI(ImplicitOps | Priv, hlt), D(ImplicitOps),
+@@ -4378,12 +4389,12 @@ static const struct opcode twobyte_table[256] = {
+ 	N, GP(ModRM | DstMem | SrcReg | Mov | Sse | Avx, &pfx_0f_2b),
+ 	N, N, N, N,
+ 	/* 0x30 - 0x3F */
+-	II(ImplicitOps | Priv, em_wrmsr, wrmsr),
+-	IIP(ImplicitOps, em_rdtsc, rdtsc, check_rdtsc),
+-	II(ImplicitOps | Priv, em_rdmsr, rdmsr),
+-	IIP(ImplicitOps, em_rdpmc, rdpmc, check_rdpmc),
+-	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack, em_sysenter),
+-	I(ImplicitOps | Priv | EmulateOnUD | IsBranch | ShadowStack, em_sysexit),
++	II(ImplicitOps | Priv | NoRex2, em_wrmsr, wrmsr),
++	IIP(ImplicitOps | NoRex2, em_rdtsc, rdtsc, check_rdtsc),
++	II(ImplicitOps | Priv | NoRex2, em_rdmsr, rdmsr),
++	IIP(ImplicitOps | NoRex2, em_rdpmc, rdpmc, check_rdpmc),
++	I(ImplicitOps | EmulateOnUD | IsBranch | ShadowStack | NoRex2, em_sysenter),
++	I(ImplicitOps | Priv | EmulateOnUD | IsBranch | ShadowStack | NoRex2, em_sysexit),
+ 	N, N,
+ 	N, N, N, N, N, N, N, N,
+ 	/* 0x40 - 0x4F */
+@@ -4401,7 +4412,7 @@ static const struct opcode twobyte_table[256] = {
+ 	N, N, N, N,
+ 	N, N, N, GP(SrcReg | DstMem | ModRM | Mov, &pfx_0f_6f_0f_7f),
+ 	/* 0x80 - 0x8F */
+-	X16(D(SrcImm | NearBranch | IsBranch)),
++	X16(D(SrcImm | NearBranch | IsBranch | NoRex2)),
+ 	/* 0x90 - 0x9F */
+ 	X16(D(ByteOp | DstMem | SrcNone | ModRM| Mov)),
+ 	/* 0xA0 - 0xA7 */
+@@ -4994,6 +5005,13 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 		opcode = opcode_table[ctxt->b];
+ 	}
+ 
++	/*
++	 * Instructions marked with NoRex2 ignore a legacy REX prefix, but #UD
++	 * should be raised when prefixed with REX2.
++	 */
++	if (opcode.flags & NoRex2 && ctxt->rex_prefix == REX2_PREFIX)
++		opcode.flags = Undefined;
++
+ 	if (opcode.flags & ModRM)
+ 		ctxt->modrm = insn_fetch(u8, ctxt);
+ 
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index b1498f618c81..f1ca1938af71 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -335,6 +335,7 @@ typedef void (*fastop_t)(struct fastop *);
+ enum rex_type {
+ 	REX_NONE,
+ 	REX_PREFIX,
++	REX2_PREFIX,
+ };
+ 
+ struct x86_emulate_ctxt {
 -- 
 2.53.0
 
