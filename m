@@ -1,164 +1,136 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274AE2EC090
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9494F469831
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785343584; cv=none; b=gI11NCHvbt9tdpMb7XY03Wm5dzPojeKAgfcAX746/Crw8Q5Iz11w6ei6+j5Syl6p5JBAIG5MP0XASEqnyyc/5ie9d+FSSp3lmFwxVowtSl8EoTvxn73pUf7FdfHn39fI7D6hYVU2qRjQfDQUP90RjFFecI1V21ZSHkHD/DFtTCY=
+	t=1785343964; cv=none; b=ovUtSMQNt7lsr7rvbXFeCSuu9I+yx924ck7ZxCiKTKCC8mZ4dHwzgR/9fG1aP4e/1iM6UVWfB64cszy5KhiiWfXFTneUXZLGr0Txu76vdqr4iJUvEjR5o7k5hpvfmcZCWm1jBMoRGaTpjtACBWYXZnqnr8hxQ/PMKKBmU0cwUQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785343584; c=relaxed/simple;
-	bh=25ype5RoJhJGhyl+eVhHNn3i5QfWvs7b8RwnLrzqKNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=IQZyy8Fd9Muit2t1roAJPRhpm/2QL/K1K5GD6Jt6pVREV63E4cOdhIwGXi/9fnTN7dkXKkMkh1iw59xMOeNhRts9FgeZaJy7BZk/LcXVPkkndJvU9jp3taACRJAB9gFJmPTsMo8zAq+AqAkoIiqyg92+Kd7F7Gfyin0Q9wwSj2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=ZxrtQUqD; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785343964; c=relaxed/simple;
+	bh=yZ6keUU//SyAf3odXLA3e6PUQbHpD9sJojWOqafguUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VFT7IWvFy9gO68Ryt3fTn/Q+6Bn2CxjdAXv5jfIEPRangMNiSVZ4enayBNG2qfT5yvibqqRHO9Mf6SNlPtUrjH//tkFHcHgjDSUVJDarsuM8K/zG5He3Z9pMeTYEO5SEqJic9+2BiePSO2IjnKzJD8VB4kfEFxQogprgf+jjUuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGXtcrNR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="ZxrtQUqD"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CB891684;
-	Wed, 29 Jul 2026 09:46:18 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3A5B3F66F;
-	Wed, 29 Jul 2026 09:46:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785343582; bh=25ype5RoJhJGhyl+eVhHNn3i5QfWvs7b8RwnLrzqKNo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZxrtQUqDliIbMRIigZ+gIzkGXPZZbiAFc+P/tkjkrXpB0NNkxq3NWRbnxMPgZh0Jh
-	 oEZsYvsVtwB/eueaAF6Zi6O8rCjW21YU6VMjkk7AZ1qdzscnMZ+7ExwzP9ytDFqyWi
-	 5GHZkcL/4/WN9HIRJW3mXYu2SqHqLRUAtUCNwQ4s=
-From: Leonardo Bras <leo.bras@arm.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	kvm@vger.kernel.org
-Subject: Re: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-Date: Wed, 29 Jul 2026 17:46:19 +0100
-Message-ID: <amouW-HY8mHWnf_3@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260729162606.06EA91F00A3A@smtp.kernel.org>
-References: <20260729161519.3778839-2-leo.bras@arm.com> <20260729161519.3778839-5-leo.bras@arm.com> <20260729162606.06EA91F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGXtcrNR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F30A1F00A3F
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:52:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785343963;
+	bh=7ehxLdevH6pV5fmYhYDwtO8w9XgXnocWaWew6zHoG4Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JGXtcrNRfHCEG+iHrkOM+Ah2X6b4FOjFv+BAZO9LqnY9eW1REeMCQcmIr36nCq03h
+	 sayHxhpzt6sR3KkxJka1BAr4pvdPJxubgzJisLvkb8eur6sm/o3Bvh12NxOz5yaxiP
+	 L0TQ24p6KKb/kQnDB7qR8XRPKINltfpH6rJKZ44ngYsZ3pij46BPiYysYbPKCsDA5/
+	 Ioqwwgxj3+kYR/+W/VVwNs2V1AGx/+J/yezG8oTWaHt86v2rABdTl9Gwpa1sverWvW
+	 iMWM1zpk05m2nRY9QHVfMQd8S1NfjvuPLK616GZNC3XUqFpVl+fOBlVX9/RxthIZq3
+	 AghegzoAtE5AA==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c15f020a223so189727066b.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 09:52:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoKmoNOadJmrVvK/DT/0TOzt6dmmPx5b9gmDkEMyHlVfWRDHQN0PH2148BBe+tYUuV0YyA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXl52BkEia3e0o2AATIeldREld1Rp82q4paFJ+l+0vXV/dgVPm
+	nYjJP9OU0d7X9yqgndJuH7FwYF7TBlinG6H6ybe0U/8fkwtPEtsDihT1OG3+q51SAEPHOPWGF/y
+	y/TgQ2SVntCKTKsh4PnsyDQ+GVLgUcOY=
+X-Received: by 2002:a17:907:3d05:b0:c1c:4db7:c9fd with SMTP id
+ a640c23a62f3a-c1f71d63e55mr435322766b.3.1785343962370; Wed, 29 Jul 2026
+ 09:52:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+ <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com>
+In-Reply-To: <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 29 Jul 2026 09:52:31 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
+X-Gm-Features: AUfX_mzAl4e7KHz633mEpJH_gK_fq3uzIjGy1NU7D5kCJU9XvpMXKlTwbeNiy0k
+Message-ID: <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 29, 2026 at 04:26:05PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] Lock contention wait time is incorrectly attributed to guest execution time instead of dirty ring clearing time.
-> --
-> 
-> --- Patch [3]: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add dirty-ring support ---
-> commit 314e5490e434eab524cfacd4f66a4c83a152147e
-> Author: Leonardo Bras <leo.bras@arm.com>
-> 
-> KVM: selftests: dirty_log_perf_test: Add dirty-ring support
->     
-> This commit adds dirty-ring tracking support to dirty_log_perf_test.
-> This allows comparing the performance of the dirty-ring mechanism against
-> the existing dirty-bitmap implementation.
-> 
-> > diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> > index 69b38791440e7..6e80d36cc61a3 100644
-> > --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> > +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> [ ... ]
-> > @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
-> >  
-> >  /* Host variables */
-> >  static u64 dirty_log_manual_caps;
-> > +static u32 dirty_ring_size;
-> >  static bool host_quit;
-> >  static int iteration;
-> >  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-> > +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
-> > +
-> > +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-> > +				struct timespec *ts)
-> > +{
-> > +	static pthread_mutex_t collect = PTHREAD_MUTEX_INITIALIZER;
-> > +	struct timespec start;
-> > +	struct kvm_dirty_gfn *dirty_gfns = vcpu_map_dirty_ring(vcpu);
-> > +	u32 idx = *ring_idx;
-> > +	u32 ring_size = vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_gfn);
-> > +	int cleared, count;
-> > +
-> > +	pthread_mutex_lock(&collect);
-> > +
-> > +	clock_gettime(CLOCK_MONOTONIC, &start);
-> 
-> [Severity: Medium]
-> Will this clock_gettime() placement exclude the mutex lock contention time
-> from the collected clearing metric?
-> 
-> By taking the start time after acquiring the mutex, any time spent waiting
-> for the lock will not be included in the 'collect' time.
+On Tue, Jul 28, 2026 at 9:53=E2=80=AFPM Jim Mattson <jmattson@google.com> w=
+rote:
+>
+> On Mon, Jul 13, 2026 at 11:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> w=
+rote:
+> >
+> > When handling userspace SREGS writes, check the validity of EFER (i.e.
+> > allowed bits) before writing the new value of EFER through the
+> > per-vendor set_efer callbacks. This prevents userspace from writing
+> > bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+> >
+> > Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+> > caps, not guest caps, so it is possible to set EFER bits that are
+> > supported by KVM but not by the guest CPUID. Potentially allowing
+> > userspace to set msrs before CPUID.
+> >
+> > However, for KVM_SET_SREGS*, check the validity of the set bits against
+> > both KVM and guest caps. This is consistent with other validity checks
+> > (e.g. for CR4) that check validity against guest caps, which already
+> > imposes the need to set CPUID before SREGS.
+>
+> Where is the requirement to set CPUID before SREGS documented, aside
+> from this commit message?
 
-Yes, that's supposed to measure the time spent on cleaning the dirty-bits, 
-not the time waiting for possible contention, as contention is not 
-predictable and would affect the perception of improvements in 
-dirty-cleaning.
+I don't think so, and also coming back to this again I think the
+commit message is wrong. The whole basis for doing validity checks
+against guest CPUID (other than the convenience of using
+kvm_valid_efer()) is cr4_guest_rsvd_bits, which is initialized based
+on both KVM caps and guest CPUID.
 
-> 
-> [ ... ]
-> > @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *vcpu_args)
-> >  	struct timespec ts_diff;
-> >  	struct timespec total = (struct timespec){0};
-> >  	struct timespec avg;
-> > +	bool use_dirty_ring = !!vcpu->vm->dirty_ring_size;
-> > +	u32 ring_idx = 0;
-> >  	int ret;
-> >  
-> >  	run = vcpu->run;
-> >  
-> >  	while (!READ_ONCE(host_quit)) {
-> >  		int current_iteration = READ_ONCE(iteration);
-> > +		struct timespec collect = (struct timespec){0};
-> >  
-> >  		clock_gettime(CLOCK_MONOTONIC, &start);
-> > -		ret = _vcpu_run(vcpu);
-> > +
-> > +		do {
-> > +			ret = _vcpu_run(vcpu);
-> > +			if (!use_dirty_ring)
-> > +				break;
-> > +
-> > +			dirty_ring_collect(vcpu, &ring_idx, &collect);
-> > +		} while (!ret && run->exit_reason == KVM_EXIT_DIRTY_RING_FULL);
-> > +
-> >  		ts_diff = timespec_elapsed(start);
-> >  
-> > +		if (use_dirty_ring) {
-> > +			ts_diff = timespec_sub(ts_diff, collect);
-> > +			vcpu_dirty_ring_collect[vcpu_idx] = collect;
-> > +		}
-> 
-> [Severity: Medium]
-> Does subtracting this incomplete 'collect' time strand the lock contention time
-> inside the guest execution time?
-> 
-> Since the lock contention time is excluded from 'collect' in
-> dirty_ring_collect(), subtracting it from the total 'ts_diff' leaves the
-> contention time attributed to the guest execution time rather than the
-> dirty ring clearing time.
-> 
-> Could this artificially inflate the guest execution metric when multiple
-> vCPUs contend on the lock?
+However, cr4_guest_rsvd_bits seems to be initialized *after* CPUID is
+set, so it only checks CR4 against CPUID if userspace already set
+CPUID. It doesn't impose a restriction to set CPUID before SREGS, but
+this patch is.
 
-Yes, but that's the tradeoff think works best.
-Alternativelly, we could:  
-- Get the lock inside the cleaning time, which would cause contention to be 
-  accounted as cleaning, which is terrible for getting reproducible 
-  results, or
-- Exclude the contention time from both cleaning and guest_execution, which 
-  would make code more complex, possibly adding a third time log 
-  "contention"
+So I think this may be too restrictive. We should probably only check
+against KVM caps, which was the whole motivation of this patch to
+begin with (disallowing EFER.SVME if nested=3D0). Maybe we should just
+drop the Cc:stable as it won't apply to any of the stable trees any
+way, and do this on top of the kvm_caps.supported_efer_bits changes?
 
-I could swich to the second approach if anybody cares about the inflation 
-of guest execution times, and don't care if time spent is not accounted.
+diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+index 8f66438989e47..412a37ca86ecc 100644
+--- a/arch/x86/kvm/regs.c
++++ b/arch/x86/kvm/regs.c
+@@ -565,7 +565,7 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu
+*vcpu, struct kvm_sregs *sregs)
 
-Thanks!
-Leo
+        return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
+               kvm_is_valid_cr0(vcpu, sregs->cr0) &&
+-              kvm_valid_efer(vcpu, sregs->efer);
++              !(sregs->efer & ~kvm_caps.supported_efer_bits);
+ }
+
+ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sre=
+gs,
+
+---
+
+diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c
+b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+index 603226ffe4374..c07ccf0bbe85a 100644
+--- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
++++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+@@ -171,7 +171,6 @@ int main(int argc, char *argv[])
+         */
+        vm =3D vm_create_barebones();
+        vcpu =3D __vm_vcpu_add(vm, 0);
+-       test_efer_bits(vcpu, KVM_ALWAYS_ALLOWED_EFER);
+        test_cr_bits(vcpu, KVM_ALWAYS_ALLOWED_CR4);
+        kvm_vm_free(vm);
+
+---
+
+Sean, WDYT?
+
+If we will change this, would you rather do it in place, a followup
+fix, or a new version?
