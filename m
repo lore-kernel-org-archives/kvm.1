@@ -1,141 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EED382371;
-	Wed, 29 Jul 2026 18:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58487479861
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785351198; cv=none; b=eUwZ4VgiC1Fl33UgrfQlFcL6iRKIwybYXd9UD+jDLVMCFr+dDy3gfjMhkZNB0tAj/v7tVUNyYhRy6ydYFbdRTUYtoOw64cRwSGnE64SD/dUlOGMvZ+wDNTmrQHo/F2mHWsQvbI53kpWxAk9jUg9vWlT7Yw7Mf4GYTFgWT5UeaIc=
+	t=1785351549; cv=none; b=uZPmJc5aRdIEqaidqT2XsqVG/qHliXhfL0C+OGtLsi2Qk4Trgi2Z60kkficqDXP7JI/RJumApm/5sobgHAIa5z0mzbh4axSbqgf2t9bXBGX0ELpEsj5Y8PhtvmokYSlM9Ii6L1wuDe65EGjRtdkS7zwESDen/3THp4M9PgmE3yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785351198; c=relaxed/simple;
-	bh=/6MUFfYL1sZQ3ZRRDeG4jK3QVt5PoNs4RmkEBf1cAME=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hiEScKh9ttCuMJGY9UUBeGYzJte/JpLo+qXOu5LiFrBDrqdeRo9BEWOLgn2GSxS2mMmpdVz9ntNiz99CbHh9mdWaGOMFky79NSxGQAX/WmxHne6cZ8FgLLyta9iMDFs+ztuvsSKEN5OCwGf3De6wTNpJv+gRhEd1WAFL43pyPC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7CJF7AS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785351549; c=relaxed/simple;
+	bh=6OQPemUbrtEvn35mHWX6wGaAzq7fYLjqo+G0OX7yMJQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GaSu/2/dYo1sXeZDbw+I2Udk9Mw7zsJfWUsUvBNlIzdqtsf9aNdSJW3UttyaA8Ab+7UDTbCRIf0WG5/INiQGPM246iywXZZE2fLq7pvvgSJG/NFq05gFb0WqfxdUBGOnmzAgQcYZd397/Okb7pNge6lQOwQyZ6hv47LUPIJpfvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qGEUikAx; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7CJF7AS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173BE1F000E9;
-	Wed, 29 Jul 2026 18:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785351197;
-	bh=070WhWz00rM9Pi+Apzi6vg4A4aLpPWJ42+a3DVjm6mc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=m7CJF7ASP8uAS6jczdwuFuGuT8NFwlK8aVpg+98RMLHcpMXWHtrcFP8mSnVfOJRHs
-	 zlqJiMbQP2AaVaACmkKTI6ZjalltKeWoXVYIjg8iOPbugKYy8GQbsXxCtN+x8sBlDL
-	 +zyY9A7TBOofcgC2/9kMGtXgYM8Js8u7i7wK5WCtR9OF82RtjeHQpTJrLPbe/jdiDy
-	 UgAElgiuV4lXRSlG/5PhABtbV7RnXS2kxGklefWH1/Oxa1ty9OqYv8WQSUm12KxzRg
-	 NHB+f5z2mWmA8Pqh/oBRALgobYLYogDSn0a5+cctmwReyeYsy0XBhi5NVcm6YGJybn
-	 O7bPL1AwLPh2Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 13/13] KVM: s390: Fix kvm_arch_commit_memory_region()
- when low on memory
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260729152938.782383-14-imbrenda@linux.ibm.com>
-References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
- <20260729152938.782383-14-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 18:53:16 +0000
-Message-Id: <20260729185317.173BE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qGEUikAx"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8485b358552so1503632b3a.2
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 11:59:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785351547; x=1785956347; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SCI3GixEP2KXXtfpULqWtW8LurdBltars+anz7Y6MWw=;
+        b=qGEUikAx3ZPCvNiZ9YoJerKvYjbWQzgtQyR13iIh4thtXE0DkII9Aiqy7GYcyXlDph
+         TTWpSB321t4+KrWUEpfpp8B685mtBDUAsHIEUJM0biWAHFEp9eJoVUgetYy+7Z1GIKmk
+         6Ej94LMh6BN8F+SKxZVr+fWNi3qt4lq+56z3Ox5mNwg+eI6yda/FhiYAMjz8YxdASo3M
+         1Ue743G5EdCOWo0LLuT24CTjWSKyGAUG/UZi+FBJv0sJPco469k7lArObCuNH7HusZLX
+         oHQzqqDDjwtrU8/YmBz34w+XQ+De9+9lz+R9g8Gjpoo2OVl7ObTQ5wiFSH3UCdPch4Dr
+         XXUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785351547; x=1785956347;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SCI3GixEP2KXXtfpULqWtW8LurdBltars+anz7Y6MWw=;
+        b=m4MemUZ7VIQRK52/wfKcNivoqYH6obh/p6BFlRUiRoVulzNheWge63JeQx101aTIl5
+         iW7WYRPt4hjjttuGQAGNqawTOmsACxn2BndmNU88PyqdRg60LoVyk4ciyuLYMz7QSpe6
+         GCEzQHV00/E0lNPSekfHzZUX2RLr/EHsszlUNjvwvjSPWRINbgB60hewRdeWiU8LwS/a
+         WW0DyXj9ZC/N1ToAxk8o79XeJjMPHXhMqkPFaoqJggSJU//36JTAsjT+eyTqH7NA+XRk
+         ++FCLj4LtItcR6uB+sHBAG6j+/F0CDh4NljZpbPYS08rRi/Cm7PECmDMk+9g1RmqCuVp
+         0eDg==
+X-Forwarded-Encrypted: i=1; AHgh+RphdnIHUvZmAGUdi187RSfrKRrlIYfnduIK8dYmZXET+PTcqmn3eEeyhRRJ7xhRffptvGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc2RqFPQ2dNQqU6ZbCTGY+dVowMuiLbLSn99rrypJoIiZ+e9fk
+	U/bcb4Ui9hKZwgrrDrlQm506klEXu+VX1wrWLEHRO8BgioLXhfOx2iIN
+X-Gm-Gg: AR+sD13T5xQISmD+c1bI/Zd83xU3pNQKM72SKYM+NnWHVCWVUpKdaXb45QKBieUGymz
+	CiX1+SVmpbA2TzHtm7ijSRhcZvlSHFWnU4coUjdrbmWum+U/Y0a1C82rGkD+f4Zpy8SzhLBsBtJ
+	ISbTzDY71L9MZ++Nrtkeg9ui1CAZ2H0h0oHmXkzeUR6jXk5b9Cx7Eq4znyBIvVXG02XP6qtoeU6
+	D7AgxT4X1B+gkp7RSIFQC9iEeCYvITjQkUf3e6a+jeavQZHaPNYfgjThddOGUvio4qTKz1M2W+b
+	LDvrKcDADbZnylD51PbeLSK65uw+3XrXjL7IGekpPv7d7MG7x2c6ris7JqAhBhg1WTxR8Ymn79R
+	nlPIsDjnDWLz1yFis74P9DYyu1JHrjTrGg04FAfgG/EezLK4DBV6jEOo7srw1fEQaBNVqxpdpPO
+	4v8VgzYTYY4m10Ivw5dq1Xffi76wxtJkP4W13ZpfYbToYpma57kv5sLKvqO2dphsEde9mciJuML
+	exboLA=
+X-Received: by 2002:a05:6a21:730c:b0:3c0:9c19:6586 with SMTP id adf61e73a8af0-3c8ba5daf6dmr9429868637.64.1785351546675;
+        Wed, 29 Jul 2026 11:59:06 -0700 (PDT)
+Received: from bogon ([2408:8207:1832:1b44::c6b])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbdba447107sm1237829a12.21.2026.07.29.11.59.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 11:59:05 -0700 (PDT)
+Sender: Weiming Shi <thebestswings@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: [PATCH v2 0/2] vsock/virtio: fix worker access after virtqueue teardown
+Date: Wed, 29 Jul 2026 11:58:26 -0700
+Message-ID: <20260729185831.3247971-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Critical] Dropping `kvm->mmu_lock` and retrying allows guest page faults=
- to populate page tables that are subsequently freed by `dat_create_slot`, =
-destroying guest ESSA state and leaking `cmma_dirty_pages`.
-- [High] The patch introduces a host-userspace-reachable KVM_BUG_ON() which=
- triggers a WARN_ON_ONCE, allowing unprivileged users to spam the kernel lo=
-g or crash the host if panic_on_warn is set.
---
+Virtio-vsock workers can remain queued while freeze deletes the
+virtqueues.  This series prevents workers delayed across freeze and
+restore from retaining pointers to deleted queues, and prevents the RX
+worker from refilling its queue after teardown.
 
---- Patch [13]: [PATCH v5 13/13] KVM: s390: Fix kvm_arch_commit_memory_regi=
-on() when low on memory ---
-commit 4801c2be100c4b8f582c02a4637cf4703c366817
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Changes in v2:
+- Split the worker pointer changes from the RX refill fix because they
+  fix different commits.
+- Use bd50c5dc182b as the Fixes tag for the worker pointer changes.
+- Keep b917507e5ad9 as the Fixes tag for the RX refill fix.
+- Use the suggested out_nofill label when rx_run is clear.
 
-KVM: s390: Fix kvm_arch_commit_memory_region() when low on memory
-   =20
-This commit updates the out-of-memory handling in
-kvm_arch_commit_memory_region(). It refills the kvm_s390_mmu_cache and
-retries the operation, and warns and kills the VM if the refill fails.
+Weiming Shi (2):
+  vsock/virtio: read virtqueues under worker locks
+  vsock/virtio: avoid refilling the RX queue after teardown
 
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-[ ... ]
-> @@ -5822,7 +5822,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
-[ ... ]
->  	mc =3D kvm_s390_new_mmu_cache();
-> -	if (!mc) {
-> -		rc =3D -ENOMEM;
-> +	if (!mc)
->  		goto out;
-> -	}
-> -
-> +retry:
->  	scoped_guard(write_lock, &kvm->mmu_lock) {
-[ ... ]
->  		default:
-> +			rc =3D 0;
->  			WARN(1, "Unknown KVM MR CHANGE: %d\n", change);
->  		}
->  	}
-> +	if (rc =3D=3D -ENOMEM) {
-> +		rc =3D kvm_s390_mmu_cache_topup(mc);
-> +		if (!rc)
-> +			goto retry;
+ net/vmw_vsock/virtio_transport.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-[Severity: Critical]
-Does dropping kvm->mmu_lock between the scoped_guard exit and the goto
-retry allow concurrent guest page faults?
 
-If a guest vCPU faults on an address in the new memslot during this
-window, it could populate a page table and execute ESSA instructions.
-When kvm_arch_commit_memory_region() restarts dat_create_slot() after
-re-acquiring the lock, could it blindly replace the now-populated CRSTE
-and free the new page table without cleaning up the atomic counters?
-
-Looking at dat_create_slot(), it appears that it replaces the CRSTE and
-frees the lower-level page table:
-
-arch/s390/kvm/dat.c:_dat_slot_crste() {
-    ...
-		/* A lower level table was present, needs to be freed. */
-		if (!crste.h.fc && !crste.h.i) {
-			if (is_pmd(crste))
-				dat_free_pt(dereference_pmd(crste.pmd));
-    ...
-}
-
-Could this regression result in the loss of guest state and leak
-cmma_dirty_pages?
-
-> +	}
->  out:
-> -	if (rc)
-> +	if (KVM_BUG_ON(rc, kvm))
-
-[Severity: High]
-Can this KVM_BUG_ON be triggered by an unprivileged host userspace
-process?
-
-If a process in a restrictive memory cgroup invokes the memslot ioctl,
-kvm_s390_mmu_cache_topup() could fail with -ENOMEM, passing the error to
-this path. Since KVM_BUG_ON internally executes WARN_ON_ONCE, could this
-allow a malicious host-userspace process to spam the kernel log or
-trigger a crash if panic_on_warn is set?
-
->  		pr_warn("failed to commit memory region\n");
->  	return;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
-83-1-imbrenda@linux.ibm.com?part=3D13
+base-commit: 51b093a7ba27476e1f639455f005e8d2e75390e4
+-- 
+2.55.0
