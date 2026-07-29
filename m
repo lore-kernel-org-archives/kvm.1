@@ -1,177 +1,150 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E10449B01
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9963D0C18
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785364034; cv=none; b=WXC2heiOuKNwve8mYY8QkGK2SD/V/r87qo1amXGxbIwHf+uEXSKAM7qGI04OFOSpyV2x4/FeBRau/GTNy8rX6hk8GWEUacNfmmvwlaea/BbwvigM4hW28+cA1pmbbGEg0nf+yrtnDPp+H5m2B9Z7rHkVDOiRKxXMxNe05QL/wTc=
+	t=1785364444; cv=none; b=aD1m0gkIEfCs5/WgFGwn2GdfWDjJubfFvB+UXYeu9QSNlkUaC6JF4qTaGRxYJcsFR1bDjcg2EACg3lchgzf8W1opKbWLWHdTBacmWw1fk3LcOfdw4YAbO9klIAs/xD1KI8EKVTgg+It+vN4fMSbjrYmHGJMSG04An5uzPnp1EME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785364034; c=relaxed/simple;
-	bh=lGkrKT9/9Ew0IKaXTGFVzH1tnSEh/k/7aacZK72GMd8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CvtfzmWuLl7iHfvbqNW4NyKFtilpYlzq3l0VGvtgouAxmOyf+BEwCALMaKXaR9I46G6LC3lu1UYmA5psahAkUn/eoMYnV5VQ098aKqcpgVL+FHia/Hd9YExWmI0Stirda79CtD7Ah8BZ0dlLUWusAVbFba3u+Djoep7t0tyM4OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H2222HWs; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+	s=arc-20240116; t=1785364444; c=relaxed/simple;
+	bh=0d7s90ZVVazxLIkAIFc6fAAnvqb+0IdFdB9k+3p45E4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JJzinFTkgGEczy6cyujLUFTvxA3ugnYxSTDuSqEN3K3RKf3ey7dd7+38/r+mPcUoVk+fq2AWnF0Nfq8D4FCqJ+LQtjkEHLGdyU7ukg2irEW9vqdh8OIykWmngJ8XMVWVqw9Nwlc8uozwn3NJfHQr1yNaE+KEcQlmRY2b4apXKwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H95hzxXO; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H2222HWs"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1542892b3a.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:27:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H95hzxXO"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d02b4c3601so10589765ad.3
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785364031; x=1785968831; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dYSUOVi/YcPFHLGdsUg+6qIajHpp6dbl/W50j1kiKQU=;
-        b=H2222HWsmlLrMlp5zfH5Dz6Zv7/pItUr5Io+Z0Y+mT2Qd9a9KAjZ2UOOZWWx8qV6G4
-         otFT6U+AaWaaglZy0bMEfEI75RlCBqdcm5j9ApeZX7HH/I80WjqiZJzvZ1sXidC7ko2b
-         6v51cWP/ePVdElOp7q2XQXORfgtGcnhdtH/JxW/vH3SS8qOQf/FHjoeK9zD3k+dsD0EZ
-         yYYwOgyIs8bZnCcHfu5W1sNnhwmoJqBijhCz8noz4mlYuZbx+3SEiqoltNkRkZ1w2V2O
-         yGHqKCfX8k0BwoIqMMy9dqF7jJuhRzrQr9yUy3QrIQ2r9p6+qeXqEUQr5uaHJePPLTO2
-         Tnag==
+        d=gmail.com; s=20251104; t=1785364439; x=1785969239; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XmJqv3LbtEXaKjjxddFIB/CCzuAW9BtsEymREcKNJvA=;
+        b=H95hzxXO5wanvU1SI/N86iX84fmyh9EKgtvSTGA0KU7JMA53PurBLw/wpB4xC10dlI
+         fzKVI8LUT1xB1q5QF6UBo85wBFZ2KFxO/qy6ARxnNbWZUYQVU+iPpq2V6zhP2Djl6z4v
+         aJCD/4uEgdl5sIVc4ptlrob0veF5Z000nbwrUxJux3zepj6Nu+fWu2Ak0cieJpIhksFB
+         YKTDjevNlHTl0H1TstyQRKUoPO/NV1vag+3uXJ6NUiKXb/+ar51izxvdUD8RYMLr2MN9
+         bl538I93Qd6gyyDT/i5cnQ5tdtUn/MZOGVPacS0+ChQ1z57+kIeF2CtConjZMY+0oQWD
+         M0SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785364031; x=1785968831;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dYSUOVi/YcPFHLGdsUg+6qIajHpp6dbl/W50j1kiKQU=;
-        b=S+ewMEsTZjEv6tsSFG18UCh0GaTGteFdIlrH0W+MOoFGw9tG3qdbGLErKon0HsqnkZ
-         FEduL+ju9fNtch0JNZyDHTs092xaTLXP4kZxfadfkvpSxxSha2Izv+6vJb9BTqcL4X4q
-         DN8+Ync6G+OKMN6IAEIi0AnlZ5Pr40MycROhtEB7JW5BOIVeFTKstpxSNVAkBsu41x04
-         kWsjgrU37wMqptYVMbH21rgfgr5qCXUCOYby90pLUOKnuUHiUynR2Btjnhtj5rdDM5iP
-         oUCH1LkB5VPM2BBRkSJ5PPOdZnKdN6MeBcLAjJKeCexKQxHMbGw4tMx8ydI94cIfNexq
-         NRag==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8s+wm6ZHh8tPbHHv3/mPI+QzZSYqi1mszygQdhsl7PjjFWtQ5ZqtlEjSuiK69FLQEkqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYSL8bhW+Xjj8nsmGAy2oBx73mAE15wlLHOvVREi84Q0fhsQmL
-	tuU3PBi1owj5Qz0g5/TmFzCug2mHbsScvnrszqsPQNEnPbaWX+74MHffYdzVEmQ/d9j3UiP2K30
-	TtDgi5wCl
-X-Received: from pfwz9.prod.google.com ([2002:a05:6a00:1d89:b0:847:926b:dc17])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:e13:b0:848:438d:3665
- with SMTP id d2e1a72fcca58-84ebc3ddc5dmr138466b3a.41.1785364030976; Wed, 29
- Jul 2026 15:27:10 -0700 (PDT)
-Date: Wed, 29 Jul 2026 22:27:01 +0000
-In-Reply-To: <20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com>
+        d=1e100.net; s=20251104; t=1785364439; x=1785969239;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XmJqv3LbtEXaKjjxddFIB/CCzuAW9BtsEymREcKNJvA=;
+        b=jiMGH2n5TMHLfzzA2OtIS9S1KElZY/kgHsiv2CmNmE5xj6gLjEM9Bm7LEQTWK65eMw
+         rxG8olYG960mgi3UkHF1RUO+Syz9CrLGX3jRfaBxzdFyWJjKqL+JIB4Gr/rl8iHfSzkG
+         0sMjfJbFhu7XGnx2oA0WnVWXuf+PCud1hOMTVHUsi3Th+Lk3u4jwhwN0uKnow6UZngIy
+         vT+XlZ5+CxRl+yEutz4qxprK2ktobLTA+pIeJWWAUeFCAfu5QqhSpTGFuVM54TEvAAtc
+         cA8EzzOhFSPWimnrGG/X8AkC8ZpHU22E4HjSrnrwxxj8/z5h2ncuj5FZQZPmBP4kZWwf
+         upQQ==
+X-Forwarded-Encrypted: i=1; AHgh+RooLczP0vipYhsVsGRuumRKPaF5ZEWnqg0vLNCITkNljpn7w2+Rt4+vUJcvbO6d3DvQJls=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNclzMwJSPeyOnOvkVXvVQ/9qSUDgBfpltlPkULqe6Db2xjDQn
+	KVqzCf6qvQFFzDDfyoZtCRaeuCRW1DK74YCa+X2j5ijoymprIKYxME7x
+X-Gm-Gg: AR+sD13FexTGQVjCtuCXOyiaYVSS+Bm0XycXz445ltQpiMyJQxCeUa0zinKSal3FQjg
+	tDA9NzGPMLdfB8UZDyxKOjDXJVX4jzbw2VKMlFjK9nFMCRwOMf758Ki6sJUheGIsXcRSfO6BfuR
+	VPz4T30urR4vBzs+5KR2zXmMs+7V880u9frBHdWMPRurT3ou/r5rFwZ7UcqziKMyqkjKW2snF35
+	h1YgCP7mi0bbyAnYlMvjaeFDFTYOBYgKfw0gjISt1crSgKDGiVAVgRzNWjSal5eOBZuZLHq331o
+	j7XgbjhKskCalV3AzI7EeuNdDpVbB/w3apW6oH5Cul6YM8BIurxqJzAV7kKcDzkLqnH5YsBsprV
+	HbCnP3CqGmYOSWDAAnwge3P07Z2zKC6Oitp5VUEkOMZQXDVIhMagRGKSH5TwkO3qL0+v18H2k85
+	zcHQ/oe4gYSfS2dhIF+YM/JtmffvNx7G6h67yj60lMIBFuUELhGZjThxeZ6D8=
+X-Received: by 2002:a17:902:e888:b0:2ca:d151:383a with SMTP id d9443c01a7336-2d035c10f84mr2037815ad.20.1785364439062;
+        Wed, 29 Jul 2026 15:33:59 -0700 (PDT)
+Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a468f7sm17125555ad.28.2026.07.29.15.33.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:33:58 -0700 (PDT)
+Date: Thu, 30 Jul 2026 06:33:45 +0800
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Anup Patel <anup@brainfault.org>, Inochi Amaoto <inochiama@gmail.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, 
+	Longbin Li <looong.bin@gmail.com>
+Subject: Re: [PATCH v2 3/3] RISC-V: KVM: Reset the SBI extension when disable
+ it
+Message-ID: <amp_hOi78SGkPjAp@inochi.infowork>
+References: <20260706021154.210289-1-inochiama@gmail.com>
+ <20260706021154.210289-4-inochiama@gmail.com>
+ <CAAhSdy3qnvWF1cdxJxnJxR9jf0_BUpKbauNAuJcY_AAVaJw9AQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com>
-X-Developer-Key: i=jrhilke@google.com; a=ed25519; pk=cK+Urrh214DoCHywJiTwhMP+zcs1ofpGrewToO/i/3A=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785364025; l=4430;
- i=jrhilke@google.com; s=20260710; h=from:subject:message-id;
- bh=UBcl8gUyQtUwJkhFbO1LHBTsapqjS6lR0WFKGzbETtI=; b=eFIZsSOClpkIO21dUN00oLj3idNkOQtKSMeC3Z1lg5ws2dNR3DUpmj1ZGAqlAYvWe5yFkwf2m
- 3nbGfDKRTJxAf3YByZZOKuWUbk709zSniEPPlNbbgrr4T+B/DMbSbyD
-X-Mailer: b4 0.14.3
-Message-ID: <20260729-igb_v3_b4-v8-6-3ed236272b4e@google.com>
-Subject: [PATCH v8 6/6] vfio: selftests: igb: Recover after DMA-read faults
-From: Josh Hilke <jrhilke@google.com>
-To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
-Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, 
-	Josh Hilke <jrhilke@google.com>, Alex Williamson <alex.williamson@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhSdy3qnvWF1cdxJxnJxR9jf0_BUpKbauNAuJcY_AAVaJw9AQ@mail.gmail.com>
 
-From: Alex Williamson <alex.williamson@nvidia.com>
+On Wed, Jul 29, 2026 at 01:32:40PM +0530, Anup Patel wrote:
+> On Mon, Jul 6, 2026 at 7:42 AM Inochi Amaoto <inochiama@gmail.com> wrote:
+> >
+> > The SBI extension validation callback can only fix the parameter if
+> > the extension is enabled. However, if the extension is disabled after
+> > modifty some parameters, the state of the extension is still broken.
+> >
+> > Reset the extension when the extenion is disabled so it can have
+> 
+> s/extenion/extension/
+> 
+> > a clear context.
+> >
+> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> > ---
+> >  arch/riscv/kvm/vcpu_sbi.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+> > index b737e9a7a12a..3eb7b7c57059 100644
+> > --- a/arch/riscv/kvm/vcpu_sbi.c
+> > +++ b/arch/riscv/kvm/vcpu_sbi.c
+> > @@ -221,6 +221,7 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
+> >  {
+> >         struct kvm_vcpu_sbi_context *scontext = &vcpu->arch.sbi_context;
+> >         const struct kvm_riscv_sbi_extension_entry *sext;
+> > +       const struct kvm_vcpu_sbi_extension *ext;
+> >
+> >         if (reg_val != 1 && reg_val != 0)
+> >                 return -EINVAL;
+> > @@ -229,6 +230,15 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
+> >         if (!sext || scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_UNAVAILABLE)
+> >                 return -ENOENT;
+> >
+> > +       ext = sext->ext_ptr;
+> > +
+> > +       if (!reg_val && scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_ENABLED) {
+> > +               if (ext->reset) {
+> > +                       ext->reset(vcpu);
+> > +                       vcpu->arch.csr_dirty = true;
+> 
+> Let's not blindly set "csr_dirty" when any SBI extension is disabled,
+> instead we should set "csr_dirtry" in kvm_sbi_ext_fwft_reset() (just
+> like we do in kvm_sbi_ext_fwft_set_reg()).
+> 
 
-The mix_and_match test intentionally submits a TX descriptor with an
-unmapped source IOVA so that the DMA read fails.  On real 82576
-hardware the resulting fault leaves the descriptor engine unable to
-service subsequent valid descriptors, so the next memcpy in the same
-test iteration times out.
+Good, I will move this line to the kvm_sbi_ext_fwft_reset() in the new version.
 
-The 82576 datasheet (section 4.2.1.6.1) describes CTRL.RST as the
-software mechanism to recover from a hung device.  Empirically
-CTRL.RST alone is not sufficient in this state: the visible queue
-registers are reinitialized, but the next valid memcpy still posts
-descriptors without any TDH/TDT progress in the same process.  A
-fresh device open after the failure works, which points to a reset
-scope broader than CTRL.RST being required.  The 82576 advertises
-PCIe FLR; VFIO_DEVICE_RESET drives FLR and supplies that scope while
-preserving the selftest process and its DMA mappings.
+> > +               }
+> > +       }
+> > +
+> >         scontext->ext_status[sext->ext_idx] = (reg_val) ?
+> >                         KVM_RISCV_SBI_EXT_STATUS_ENABLED :
+> >                         KVM_RISCV_SBI_EXT_STATUS_DISABLED;
+> > --
+> > 2.55.0
+> >
+> 
+> Regards,
+> Anup
+> 
 
-Add igb_error_reset_and_reinit() implementing the recovery sequence:
-issue VFIO_DEVICE_RESET, re-arm the kernel-side MSI-X trigger against
-the still-valid eventfd via vfio_pci_irq_reenable() (this does not
-touch the eventfd, which test fixtures may have cached), and
-re-program the device via igb_hw_init().  FLR clears EICR and leaves
-EIMS=0, so no explicit interrupt mask or cause writes are needed.
-igb_hw_init() resets tx_tail/rx_tail to 0 and igb_memcpy_start() zeros
-each descriptor before submission, so no ring memset is needed either.
-
-Call this from igb_memcpy_wait() on completion timeout. Lock contention
-during reset (e.g. if PCIe/IOMMU/AER error handling triggered by the
-just-observed DMA fault holds the device lock) is handled by the retry
-logic now present inside vfio_pci_device_reset(). The failed memcpy still
-returns -ETIMEDOUT; reset recovery only ensures the next operation starts
-from a usable device state.
-
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
-Reviewed-by: David Matlack <dmatlack@google.com>
----
- tools/testing/selftests/vfio/lib/drivers/igb/igb.c | 38 +++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index 12fce3d69025..4adad15f16a0 100644
---- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -480,6 +480,28 @@ static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
- 	igb_write32(igb, E1000_TDT(0), igb->tx_tail);
- }
- 
-+/*
-+ * Reset the device via VFIO_DEVICE_RESET (PCIe FLR on the 82576) and
-+ * re-program it.  VFIO_DEVICE_RESET tears down the kernel-side MSI-X
-+ * trigger but leaves user-side eventfds intact, so re-arm the trigger
-+ * via vfio_pci_irq_reenable() before reprogramming so any caller-cached
-+ * eventfd remains valid.
-+ *
-+ * FLR clears device-side state to power-on reset values (datasheet
-+ * 4.2.1.5.1: a PF FLR is "equivalent to a D0->D3->D0 transition"), so
-+ * EIMS and EICR come back as 0 from their register-defined initial
-+ * values, and igb_hw_init() resets tx_tail/rx_tail to 0.  The next
-+ * igb_memcpy_start() will memset each descriptor it touches before
-+ * submission, so no explicit IMC/EICR writes or ring memsets are
-+ * needed here.
-+ */
-+static void igb_error_reset_and_reinit(struct vfio_pci_device *device)
-+{
-+	vfio_pci_device_reset(device);
-+	vfio_pci_msix_reenable(device, MSIX_VECTOR, 1);
-+	igb_hw_init(device);
-+}
-+
- static int igb_memcpy_wait(struct vfio_pci_device *device)
- {
- 	struct igb *igb = to_igb_state(device);
-@@ -522,7 +544,21 @@ static int igb_memcpy_wait(struct vfio_pci_device *device)
- 
- 	igb_irq_enable(igb);
- 
--	return (status & 1) ? 0 : -ETIMEDOUT;
-+	if (status & 1)
-+		return 0;
-+
-+	/*
-+	 * The descriptor never completed.  On real 82576 hardware this
-+	 * typically follows a DMA-read fault from one of the intentional
-+	 * unmapped-IOVA tests; the fault leaves the descriptor engine
-+	 * unable to service subsequent valid descriptors.  CTRL.RST alone
-+	 * reinitializes the queue registers but leaves the engine wedged
-+	 * for the current process, so a broader VFIO_DEVICE_RESET (FLR)
-+	 * is required.
-+	 */
-+	igb_error_reset_and_reinit(device);
-+
-+	return -ETIMEDOUT;
- }
- 
- static void igb_send_msi(struct vfio_pci_device *device)
-
--- 
-2.55.0.508.g3f0d502094-goog
-
+Regards,
+Inochi
