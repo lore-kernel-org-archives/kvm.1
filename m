@@ -1,58 +1,59 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB9D3C871B;
-	Wed, 29 Jul 2026 19:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E133C819B;
+	Wed, 29 Jul 2026 19:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354210; cv=none; b=URNTHcv39RL9QGTklW4WN2h8N6MtkXmxqt49xpNSi9XOQhwS2Hn1sj+enLqKveBgBaIzelsMQgRpd6bBpmbEmUlc41YcNOt9bi7D01afMbXFny53HOSSOe08mcZaLBOd7dHVun4WHlUnDuhtfNSIMEhdQubp1PJLgpEvxM+FjAo=
+	t=1785354213; cv=none; b=SJ5mGWA2gyW9xL1oe55NyzFg3Eepb5pMyrVVI6gHKkAIMSZmQBPuYOetbfD1Aho+HQ36YLpHtzBgFKGSdiu3cvDrw6GVnGEA3zHiK6E12olLtAVzSWSPQiN3SmxrjzjcDDPZFXCQ9cIAL66AeiTIsYQs+eS2JPzPbF9MwM7tBR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354210; c=relaxed/simple;
-	bh=f64XoEdi97p1wuLv+H/o6Q7UZZsIMfkfdCWKtXvHdeQ=;
+	s=arc-20240116; t=1785354213; c=relaxed/simple;
+	bh=NoaQtYvc697R38p3nXqqqb7tsgum8RmWOe4gUlYcfHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVgkghmBE6aMXwrL2dXJFx9MCd+Uhd5trCoiR7uO51gOCGNTyxhrGPG5lXnIFxiTIixRpTNytrFc1I49xkaP9JohImlCVieYi36O1sdwFsw2q3dIFO5sUK9UuXboYsyLQ3nNPL7PDl/mrehCIdUKRHUHmHafephYEDhTJcwq5oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kl+T4sfC; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=SLQLtUyaikbhHAmLqKN6nCLryNO5fvljeflDkAPCdAviS+eDKysgLen/6JO2tmqMI+2gYXFWHrIUlhEw2kTATqIX4DnVF5MpztDXhOI5RauUjE2RvBsINv06oRNJdUS6FMvsGS+rlx55/N2Rq1rdrRszd/4IOwEGsAPrXgGUUNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JZQYUb7Q; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kl+T4sfC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JZQYUb7Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785354205; x=1816890205;
+  t=1785354209; x=1816890209;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=f64XoEdi97p1wuLv+H/o6Q7UZZsIMfkfdCWKtXvHdeQ=;
-  b=kl+T4sfCv/wlDEzhCEEkGD17SjtbbmONqq1V9y7ojKi+yUFfXVZ1IrlE
-   lcb2H1kBCjhjnEidErHAslv7rNkKikN/Ycd1H5sK3lHMR0tEN1w+7Tdlu
-   8+cl3U5Nqja5wue2xB6woIV5EgJdAXx58TiXWds+sc5lGnNE8uLYV5mGT
-   3viUS/VQ/KspJ+M8QqOegx0RoJ53Ei88afPysDI33kBgVXeqQd+s/Z/ls
-   z6M/kBicGFtx+rf48B5lvkxPCUpPy0Pn3AZtcEt+xHRAN2DcZ0uYRszYu
-   LCjfkUEeHNJnwgvIwSPpp3vtb49V7ow7YdqO+6PFHpvXdS5RSBIPaTxe6
+  bh=NoaQtYvc697R38p3nXqqqb7tsgum8RmWOe4gUlYcfHo=;
+  b=JZQYUb7QOaXWeSxZ9Z5MsRd6iotKKQ/R1kKi3Io9kxxIrRenNPC1vTPT
+   l2yRYQZoF15nggBkhMDM7nkZqkuEbLdOrB7er2SThs/+rvR4qns1it/dE
+   vmzw9o/FuzADBcTI6cHVWvgFQdmfi+zkaJHPC2mHpbi9LNwUg277kVnl4
+   j65VQB0PPziGEUacpL1ZDh6kGAcDmoP5f6+i62eSpxPVjd1h4JEc201L4
+   zH1Vl1kY+vcnqT3mxzIVmUXFCizA2GBrCzjuM5YAtg37cPma2C4q43iP0
+   XIaeTNVYdVzF3n5fw2UrvVG7z2EF+1z4+bEM85G22ZZ7fkn1+uzewOH8z
    w==;
-X-CSE-ConnectionGUID: nRa8bggiS6iULAbF4Ajhxg==
-X-CSE-MsgGUID: +LwkK1w3SRC+6Ko80OQQNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508248"
+X-CSE-ConnectionGUID: 4z1AFSnfRr22SoUduT514Q==
+X-CSE-MsgGUID: 3sC1bVqrTV2a1nzkq4TJdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508256"
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103508248"
+   d="scan'208";a="103508256"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:19 -0700
-X-CSE-ConnectionGUID: H1URDNCHSKuK26OYpZ7f0g==
-X-CSE-MsgGUID: j4PGztQJSEe0KQPV+rBpsg==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:21 -0700
+X-CSE-ConnectionGUID: U0rB7GxoTxuGxIGmrllOKA==
+X-CSE-MsgGUID: 0X35MLrTSKGrhezZ6afwSQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="256769225"
+   d="scan'208";a="256769234"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:18 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:21 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
 Cc: kvm@vger.kernel.org,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	chang.seok.bae@intel.com
-Subject: [PATCH v6 03/20] KVM: x86: Support APX state for XSAVE ABI
-Date: Wed, 29 Jul 2026 19:16:39 +0000
-Message-ID: <20260729191656.598771-4-chang.seok.bae@intel.com>
+	chang.seok.bae@intel.com,
+	kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH v6 05/20] KVM: VMX: Refactor instruction information decoding
+Date: Wed, 29 Jul 2026 19:16:41 +0000
+Message-ID: <20260729191656.598771-6-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260729191656.598771-1-chang.seok.bae@intel.com>
 References: <20260729191656.598771-1-chang.seok.bae@intel.com>
@@ -64,189 +65,285 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce a facility to copy APX state between the VCPU cache and the
-userspace buffer as the VCPU cache is the single source of truth.
+KVM currently decodes the VMX instruction information field using a mix
+of open-coded bit manipulations and ad hoc helpers. Convert all decoding
+to use helpers to centralize the decoding logic for the transition to a
+wider instruction information.
 
-The existing fpstate copy functions historically sync all XSTATEs in
-between userspace and kernel buffers [1]. In this regard, any additional
-state handling logic should be consistent with them -- i.e. validation of
-XSTATE_BV against the supported XCR0 mask.
+No functional change intended.
 
-Now with the two copy paths, their invocations require to take care of
-these facts:
-
-  * When exporting to userspace, the fpstate function should run first
-    since it zeros out the area of components either not present or
-    inactive. Then the VCPU cache function ensures copying APX state.
-
-  * On the opposite way, both will copy the state to both storages. This
-    duplication is avoidable by tweaking either the generic function or
-    XSTATE_BV/XCR0. But the optimization while at a slow path looks to
-    rather add complication. So keep the implementation simple.
-
-[1] Except for PKRU state, as stored in struct thread_struct.
-
+Tested-by: kernel test robot <oliver.sang@intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
-V4 -> V5: Copy to both storages
-
-The optimization bit had been reconsidered a little. V4 was attempting to
-introduce the one-off exception into the generic copy function. Before
-that, V3 had the tweak at the KVM site under the APX copy function.
-
-But unless either approach could reach some agreeable shape, the tweak
-appears to remain mere optimization. Here the third option would be
-simply absorbing the duplication, which isn't significant in this slow
-path in practice. Making simple looks to be a overall win, otherwise.
+V5 -> V6: Add Tested-by (0day)
+V4 -> V5: Fix handle_vmread() first accesses reg2 (0-day).
 ---
- arch/x86/kvm/cpuid.c       | 10 +++++++
- arch/x86/kvm/cpuid.h       |  2 ++
- arch/x86/kvm/vmx/vmenter.S |  2 +-
- arch/x86/kvm/x86.c         | 61 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 74 insertions(+), 1 deletion(-)
+ arch/x86/kvm/vmx/nested.c | 58 +++++++++++++++++++--------------------
+ arch/x86/kvm/vmx/vmx.c    |  9 +++---
+ arch/x86/kvm/vmx/vmx.h    | 48 +++++++++++++++++++++++++++++---
+ 3 files changed, 77 insertions(+), 38 deletions(-)
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 2698fa42cd97..122e46db9a15 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -60,6 +60,16 @@ void __init kvm_init_xstate_sizes(void)
- 	}
- }
- 
-+u32 xstate_size(unsigned int xfeature)
-+{
-+	return xstate_sizes[xfeature].eax;
-+}
-+
-+u32 xstate_offset(unsigned int xfeature)
-+{
-+	return xstate_sizes[xfeature].ebx;
-+}
-+
- u32 xstate_required_size(u64 xstate_bv, bool compacted)
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 92b530baa0ee..fdec041e95c7 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -5234,7 +5234,7 @@ static void nested_vmx_triple_fault(struct kvm_vcpu *vcpu)
+  * #UD, #GP, or #SS.
+  */
+ int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
+-			u64 vmx_instruction_info, bool wr, int len, gva_t *ret)
++			u64 instr_info, bool wr, int len, gva_t *ret)
  {
- 	u32 ret = XSAVE_HDR_SIZE + XSAVE_HDR_OFFSET;
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 8d863f45585d..1716f3b6b885 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -66,6 +66,8 @@ bool kvm_cpuid(struct kvm_vcpu *vcpu, u32 *eax, u32 *ebx,
+ 	gva_t off;
+ 	bool exn;
+@@ -5242,20 +5242,20 @@ int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualification,
  
- void __init kvm_init_xstate_sizes(void);
- u32 xstate_required_size(u64 xstate_bv, bool compacted);
-+u32 xstate_size(unsigned int xfeature);
-+u32 xstate_offset(unsigned int xfeature);
- 
- int cpuid_query_maxphyaddr(struct kvm_vcpu *vcpu);
- int cpuid_query_maxguestphyaddr(struct kvm_vcpu *vcpu);
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 702d86ade6b1..02308fb36f0f 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -213,7 +213,7 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_GLOBAL)
- 	jz	.Lclear_egprs_done
  	/*
- 	 * Unlike legacy GPRs, saving could be conditional here on VM-Fail,
--	 * which however isn't in fastpath. Instead, simply saving EGPRs always.
-+	 * which however isn't in fastpath. Instead, always save EGPRs.
+ 	 * According to Vol. 3B, "Information for VM Exits Due to Instruction
+-	 * Execution", on an exit, vmx_instruction_info holds most of the
+-	 * addressing components of the operand. Only the displacement part
+-	 * is put in exit_qualification (see 3B, "Basic VM-Exit Information").
++	 * Execution", on an exit, instr_info holds most of the addressing
++	 * components of the operand. Only the displacement part is put in
++	 * exit_qualification (see 3B, "Basic VM-Exit Information").
+ 	 * For how an actual address is calculated from all these components,
+ 	 * refer to Vol. 1, "Operand Addressing".
  	 */
- 	STORE_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
- 		   %r16, %r17, %r18, %r19, %r20, %r21, %r22, %r23, \
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0626e835e9eb..5578df10179a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3124,6 +3124,49 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_events(struct kvm_vcpu *vcpu,
- 	return 0;
+-	int  scaling = vmx_instruction_info & 3;
+-	int  addr_size = (vmx_instruction_info >> 7) & 7;
+-	bool is_reg = vmx_instruction_info & (1u << 10);
+-	int  seg_reg = (vmx_instruction_info >> 15) & 7;
+-	int  index_reg = (vmx_instruction_info >> 18) & 0xf;
+-	bool index_is_valid = !(vmx_instruction_info & (1u << 22));
+-	int  base_reg       = (vmx_instruction_info >> 23) & 0xf;
+-	bool base_is_valid  = !(vmx_instruction_info & (1u << 27));
++	int  scaling        = vmx_get_instr_info_scaling(instr_info);
++	int  addr_size      = vmx_get_instr_info_addr_size(instr_info);
++	bool is_reg         = vmx_get_instr_info_is_reg(instr_info);
++	int  seg_reg        = vmx_get_instr_info_seg_reg(instr_info);
++	int  index_reg      = vmx_get_instr_info_index_reg(instr_info);
++	bool index_is_valid = vmx_get_instr_info_index_is_valid(instr_info);
++	int  base_reg       = vmx_get_instr_info_base_reg(instr_info);
++	bool base_is_valid  = vmx_get_instr_info_base_is_valid(instr_info);
+ 
+ 	if (is_reg) {
+ 		kvm_queue_exception(vcpu, UD_VECTOR);
+@@ -5664,7 +5664,7 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
+ 		return 1;
+ 
+ 	/* Decode instruction info and find the field to read */
+-	field = kvm_register_read(vcpu, (((instr_info) >> 28) & 0xf));
++	field = kvm_register_read(vcpu, vmx_get_instr_info_reg2(instr_info));
+ 
+ 	if (!nested_vmx_is_evmptr12_valid(vmx)) {
+ 		/*
+@@ -5712,8 +5712,8 @@ static int handle_vmread(struct kvm_vcpu *vcpu)
+ 	 * Note that the number of bits actually copied is 32 or 64 depending
+ 	 * on the guest's mode (32 or 64 bit), not on the given field's length.
+ 	 */
+-	if (instr_info & BIT(10)) {
+-		kvm_register_write(vcpu, (((instr_info) >> 3) & 0xf), value);
++	if (vmx_get_instr_info_is_reg(instr_info)) {
++		kvm_register_write(vcpu, vmx_get_instr_info_reg(instr_info), value);
+ 	} else {
+ 		len = is_64_bit_mode(vcpu) ? 8 : 4;
+ 		if (get_vmx_mem_address(vcpu, exit_qualification,
+@@ -5786,8 +5786,8 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
+ 	     get_vmcs12(vcpu)->vmcs_link_pointer == INVALID_GPA))
+ 		return nested_vmx_failInvalid(vcpu);
+ 
+-	if (instr_info & BIT(10))
+-		value = kvm_register_read(vcpu, (((instr_info) >> 3) & 0xf));
++	if (vmx_get_instr_info_is_reg(instr_info))
++		value = kvm_register_read(vcpu, vmx_get_instr_info_reg(instr_info));
+ 	else {
+ 		len = is_64_bit_mode(vcpu) ? 8 : 4;
+ 		if (get_vmx_mem_address(vcpu, exit_qualification,
+@@ -5798,7 +5798,7 @@ static int handle_vmwrite(struct kvm_vcpu *vcpu)
+ 			return kvm_handle_memory_failure(vcpu, r, &e);
+ 	}
+ 
+-	field = kvm_register_read(vcpu, (((instr_info) >> 28) & 0xf));
++	field = kvm_register_read(vcpu, vmx_get_instr_info_reg2(instr_info));
+ 
+ 	offset = get_vmcs12_field_offset(field);
+ 	if (offset < 0)
+@@ -5975,7 +5975,7 @@ static int handle_invept(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 	unsigned long type, roots_to_free;
+-	u64 vmx_instruction_info;
++	u64 instr_info;
+ 	struct kvm_mmu *mmu;
+ 	gva_t gva;
+ 	struct x86_exception e;
+@@ -5995,8 +5995,8 @@ static int handle_invept(struct kvm_vcpu *vcpu)
+ 	if (!nested_vmx_check_permission(vcpu))
+ 		return 1;
+ 
+-	vmx_instruction_info = vmx_get_instr_info();
+-	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
++	instr_info = vmx_get_instr_info();
++	gpr_index = vmx_get_instr_info_reg2(instr_info);
+ 	type = kvm_register_read(vcpu, gpr_index);
+ 
+ 	types = (vmx->nested.msrs.ept_caps >> VMX_EPT_EXTENT_SHIFT) & 6;
+@@ -6008,7 +6008,7 @@ static int handle_invept(struct kvm_vcpu *vcpu)
+ 	 * operand is read even if it isn't needed (e.g., for type==global)
+ 	 */
+ 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
+-			vmx_instruction_info, false, sizeof(operand), &gva))
++				instr_info, false, sizeof(operand), &gva))
+ 		return 1;
+ 	r = kvm_read_guest_virt(vcpu, gva, &operand, sizeof(operand), &e);
+ 	if (r != X86EMUL_CONTINUE)
+@@ -6055,8 +6055,8 @@ static int handle_invept(struct kvm_vcpu *vcpu)
+ static int handle_invvpid(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-	u64 vmx_instruction_info;
+ 	unsigned long type, types;
++	u64 instr_info;
+ 	gva_t gva;
+ 	struct x86_exception e;
+ 	struct {
+@@ -6076,8 +6076,8 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
+ 	if (!nested_vmx_check_permission(vcpu))
+ 		return 1;
+ 
+-	vmx_instruction_info = vmx_get_instr_info();
+-	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
++	instr_info = vmx_get_instr_info();
++	gpr_index = vmx_get_instr_info_reg2(instr_info);
+ 	type = kvm_register_read(vcpu, gpr_index);
+ 
+ 	types = (vmx->nested.msrs.vpid_caps &
+@@ -6091,7 +6091,7 @@ static int handle_invvpid(struct kvm_vcpu *vcpu)
+ 	 * operand is read even if it isn't needed (e.g., for type==global)
+ 	 */
+ 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
+-			vmx_instruction_info, false, sizeof(operand), &gva))
++				instr_info, false, sizeof(operand), &gva))
+ 		return 1;
+ 	r = kvm_read_guest_virt(vcpu, gva, &operand, sizeof(operand), &e);
+ 	if (r != X86EMUL_CONTINUE)
+@@ -6429,16 +6429,16 @@ static bool nested_vmx_exit_handled_encls(struct kvm_vcpu *vcpu,
+ static bool nested_vmx_exit_handled_vmcs_access(struct kvm_vcpu *vcpu,
+ 	struct vmcs12 *vmcs12, gpa_t bitmap)
+ {
+-	u64 vmx_instruction_info;
+ 	unsigned long field;
++	u64 instr_info;
+ 	u8 b;
+ 
+ 	if (!nested_cpu_has_shadow_vmcs(vmcs12))
+ 		return true;
+ 
+ 	/* Decode instruction info and find the field to access */
+-	vmx_instruction_info = vmx_get_instr_info();
+-	field = kvm_register_read(vcpu, (((vmx_instruction_info) >> 28) & 0xf));
++	instr_info = vmx_get_instr_info();
++	field = kvm_register_read(vcpu, vmx_get_instr_info_reg2(instr_info));
+ 
+ 	/* Out-of-range fields always cause a VM exit from L2 to L1 */
+ 	if (field >> 15)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 8a4b578252c2..c49bc6fabae3 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6158,8 +6158,8 @@ static int handle_monitor_trap(struct kvm_vcpu *vcpu)
+ 
+ static int handle_invpcid(struct kvm_vcpu *vcpu)
+ {
+-	u64 vmx_instruction_info;
+ 	unsigned long type;
++	u64 instr_info;
+ 	gva_t gva;
+ 	struct {
+ 		u64 pcid;
+@@ -6172,16 +6172,15 @@ static int handle_invpcid(struct kvm_vcpu *vcpu)
+ 		return 1;
+ 	}
+ 
+-	vmx_instruction_info = vmx_get_instr_info();
+-	gpr_index = vmx_get_instr_info_reg2(vmx_instruction_info);
++	instr_info = vmx_get_instr_info();
++	gpr_index = vmx_get_instr_info_reg2(instr_info);
+ 	type = kvm_register_read(vcpu, gpr_index);
+ 
+ 	/* According to the Intel instruction reference, the memory operand
+ 	 * is read even if it isn't needed (e.g., for type==all)
+ 	 */
+ 	if (get_vmx_mem_address(vcpu, vmx_get_exit_qual(vcpu),
+-				vmx_instruction_info, false,
+-				sizeof(operand), &gva))
++				instr_info, false, sizeof(operand), &gva))
+ 		return 1;
+ 
+ 	return kvm_handle_invpcid(vcpu, type, gva);
+diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+index a3f58a3d90e5..acb4d7ac8b0a 100644
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -708,14 +708,54 @@ static inline u64 vmx_get_instr_info(void)
+ 	return vmcs_read32(VMX_INSTRUCTION_INFO);
  }
  
-+#ifdef CONFIG_KVM_APX
-+static void kvm_copy_vcpu_regs_to_uabi(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
-+{
-+	union fpregs_state *xstate = (union fpregs_state *)buf;
-+
-+	BUILD_BUG_ON(NR_VCPU_GENERAL_PURPOSE_REGS <= VCPU_REGS_R31);
-+
-+	if (!(supported_xcr0 & XFEATURE_MASK_APX))
-+		return;
-+
-+	memcpy(buf + xstate_offset(XFEATURE_APX),
-+	       &vcpu->arch.regs[VCPU_REGS_R16],
-+	       xstate_size(XFEATURE_APX));
-+
-+	xstate->xsave.header.xfeatures |= XFEATURE_MASK_APX;
-+}
-+
-+static int kvm_copy_uabi_to_vcpu_regs(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
-+{
-+	union fpregs_state *xstate = (union fpregs_state *)buf;
-+
-+	if (!(xstate->xsave.header.xfeatures & XFEATURE_MASK_APX))
-+		return 0;
-+
-+	if (!(supported_xcr0 & XFEATURE_MASK_APX))
-+		return -EINVAL;
-+
-+	BUILD_BUG_ON(NR_VCPU_GENERAL_PURPOSE_REGS <= VCPU_REGS_R31);
-+
-+	memcpy(&vcpu->arch.regs[VCPU_REGS_R16],
-+	       buf + xstate_offset(XFEATURE_APX),
-+	       xstate_size(XFEATURE_APX));
-+
-+	return 0;
-+}
-+#else
-+static void kvm_copy_vcpu_regs_to_uabi(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0) { }
-+static int kvm_copy_uabi_to_vcpu_regs(struct kvm_vcpu *vcpu, void *buf, u64 supported_xcr0)
-+{
-+	return 0;
-+}
-+#endif
-+
- static int kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
- 					 u8 *state, unsigned int size)
+-static inline int vmx_get_instr_info_reg(u64 vmx_instr_info)
++static inline int vmx_get_instr_info_reg(u64 instr_info)
  {
-@@ -3145,8 +3188,15 @@ static int kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
- 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
- 		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
- 
-+	/*
-+	 * This copy function zeros out userspace memory for any gap from the
-+	 * guest fpstate. So invoke before copying any other state, i.e. APX,
-+	 * that is not saved in fpstate.
-+	 */
- 	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu, state, size,
- 				       supported_xcr0, vcpu->arch.pkru);
-+	kvm_copy_vcpu_regs_to_uabi(vcpu, state, supported_xcr0);
-+
- 	return 0;
+-	return (vmx_instr_info >> 3) & 0xf;
++	return (instr_info >> 3) & 0xf;
  }
  
-@@ -3161,6 +3211,7 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
- 					struct kvm_xsave *guest_xsave)
+-static inline int vmx_get_instr_info_reg2(u64 vmx_instr_info)
++static inline int vmx_get_instr_info_reg2(u64 instr_info)
  {
- 	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
-+	int err;
- 
- 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
- 		return vcpu->kvm->arch.has_protected_state ? -EINVAL : 0;
-@@ -3172,6 +3223,16 @@ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
- 	 */
- 	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
- 
-+	/*
-+	 * This and the following copy functions copy APX state into each
-+	 * storage. The VCPU cache is the single source of truth but avoiding
-+	 * this redundant copy tends to introduce special-case handling. Since
-+	 * this lies in a slow path, keep the implementation simple.
-+	 */
-+	err = kvm_copy_uabi_to_vcpu_regs(vcpu, guest_xsave->region, kvm_caps.supported_xcr0);
-+	if (err)
-+		return err;
+-	return (vmx_instr_info >> 28) & 0xf;
++	return (instr_info >> 28) & 0xf;
++}
 +
- 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
- 					      guest_xsave->region,
- 					      kvm_caps.supported_xcr0,
++static inline int vmx_get_instr_info_scaling(u64 instr_info)
++{
++	return instr_info & 3;
++}
++
++static inline int vmx_get_instr_info_addr_size(u64 instr_info)
++{
++	return (instr_info >> 7) & 7;
++}
++
++static inline bool vmx_get_instr_info_is_reg(u64 instr_info)
++{
++	return !!(instr_info & BIT(10));
++}
++
++static inline int vmx_get_instr_info_seg_reg(u64 instr_info)
++{
++	return (instr_info >> 15) & 7;
++}
++
++static inline int vmx_get_instr_info_index_reg(u64 instr_info)
++{
++	return (instr_info >> 18) & 0xf;
++}
++
++static inline bool vmx_get_instr_info_index_is_valid(u64 instr_info)
++{
++	return !(instr_info & BIT(22));
++}
++
++static inline int vmx_get_instr_info_base_reg(u64 instr_info)
++{
++	return (instr_info >> 23) & 0xf;
++}
++
++static inline bool vmx_get_instr_info_base_is_valid(u64 instr_info)
++{
++	return !(instr_info & BIT(27));
+ }
+ 
+ static inline bool vmx_can_use_ipiv(struct kvm_vcpu *vcpu)
 -- 
 2.53.0
 
