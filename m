@@ -1,58 +1,59 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2D338889B;
-	Wed, 29 Jul 2026 19:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FCF3D75A8;
+	Wed, 29 Jul 2026 19:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354245; cv=none; b=P9nQxHD4WlSG3vMI1LWEN0eefajO8G2T9lSbZcu25uGazCxvevc5BdAFLSDS5jAQ6WdJ3Dm9nIAOGETr8DniOcZLdmGedmejPseiI9gXX+3OWpk97in/+cHwqL3ey+AiMxRSPQ5vdh+M4wgX0WaGJUuCUeeS0GK4DFdQ1jlm1Xw=
+	t=1785354250; cv=none; b=s2LEKkY2/frK03a1gi5TJ3nN5kHAEgcRvWefkpxCssocMcI4lCctyo4N4jvI0l4zGz6nJnJLJjWnOQBrnGNSAq/WlZ9T2JCmdwUrcOIPxU77+4fJ8AVsBcRPdZ432iLuBVGiVqchJajduc9+wCVRxmD2e0P2WdsG5c6Kohhk5uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354245; c=relaxed/simple;
-	bh=6uCcnulSABEeTlE4lQI/MpQP8kkqc07y5hMWHwPijIQ=;
+	s=arc-20240116; t=1785354250; c=relaxed/simple;
+	bh=h7VxCTD9N3GLuadAd7Kgbl147OmRMcBv6s7hLun0H2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmL8ycmtdiypd3jRa/nszGzpY9MEYgXS79YjhnZoRImtp4IGZLa28NLSnYpD2rAbBoAnf4ACd8RRuDJfS+GvtCje1KPzC9pBQqcsGRn8w2ipi+gy+gzPoqvb5oXoMxxE/yA3dsVsGEHgepnu03RuUwqA4kp5f7LxwxG8Ct1gYzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U0UmnSYr; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=AmXyBFen7kYOAdLDrnQqU8BBaS35IDH42zJeSPWKWu8DrRvpiYanTNjQo4kOq9T8FfzZaQnuDxfl9pkgJfoip/mI22hksw8mk+Q7FhkUpZThmi2DYVllSdOYaynne5ifEHX4BR6tsif8XlqDw0RPfMazgjMnWT8WqxEfXLUXNzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HheBEMSy; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U0UmnSYr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HheBEMSy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785354237; x=1816890237;
+  t=1785354245; x=1816890245;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=6uCcnulSABEeTlE4lQI/MpQP8kkqc07y5hMWHwPijIQ=;
-  b=U0UmnSYrFJDoP6kZF6Ha7fhpD+rgN1dTtiRiE2xLlo04zE3urf1jcFz3
-   d6GfqZjRY8ycOWjSSzqvEknp65AlL4QrT0iur3sAXqDzFI1Jr00KxtYyW
-   zokk9GNo+/2ckHs+nEfVJ5iEvH5Sd5V+Muew/s2qcqFzDYd3TcFZq0Bi1
-   hJYJxiEA01Vbtk/t8+4ntpSLgCYQEl8fF49mIURj2ZJQ2Bdnl4c3LfTe1
-   pkzfAMcTqx25Q+PIyOanUMFqgHCt+KnAsZ6fIHwJ9qyZ5c1QMyHc14XpS
-   A17hDrjcXtQ2DOokZCEcK+b+Ef5uhsNsX38WNv0ZIu083UQsjc1197G1+
-   A==;
-X-CSE-ConnectionGUID: tn9sNjfwTOOWbYaOs+Uo8Q==
-X-CSE-MsgGUID: 60lFi7tYTK+MBuFSJd9uLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508302"
+  bh=h7VxCTD9N3GLuadAd7Kgbl147OmRMcBv6s7hLun0H2g=;
+  b=HheBEMSypJI01Im8tlN3Ya7Ebe5UjAbz1VHlyJ0LK+gC/l4PWSv3Wrdy
+   HU6Va3JIqUMSoH4X28n9nDxNrvyp2ujgCpGu8PNZx3W/m71OdfijcbNnj
+   GIXG8EDTqoU3Vs1W1/lD9+bdT6jvHXsL0Bv38NZFxyrSVBw/t1rQ+qby3
+   PV9K56OrqJnGweiNUhzmk+lndjTfCyPjAhAYB6zXgXjpGg1L1zKsBFONl
+   Pcs7s516gPlh5aURPZ5f8RREcHCK5w/hFm+ESBwHjEO6Ra+FD5XsIBBe0
+   Rj1EuctWByKziy/NsUdJKdUGq37SKOwn5O1Rh7JK74abI018BWhVzAsFf
+   Q==;
+X-CSE-ConnectionGUID: ueBpnFK3RAiM5bMYqxyTdQ==
+X-CSE-MsgGUID: PsQj5wBNT/GBYBKLOWWMaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508312"
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103508302"
+   d="scan'208";a="103508312"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:31 -0700
-X-CSE-ConnectionGUID: 3AguvMecTaS6arTjrmJ2aA==
-X-CSE-MsgGUID: QJRyvqU/QwiezwMpImHL1Q==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:33 -0700
+X-CSE-ConnectionGUID: t1LEdCzzRqaKS67hMCNH5Q==
+X-CSE-MsgGUID: W0UyEwx9R/+k8ClUtdOS1g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="256769266"
+   d="scan'208";a="256769275"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:30 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:33 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
 Cc: kvm@vger.kernel.org,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	chang.seok.bae@intel.com
-Subject: [PATCH v6 15/20] KVM: x86: Guard valid XCR0.APX settings
-Date: Wed, 29 Jul 2026 19:16:51 +0000
-Message-ID: <20260729191656.598771-16-chang.seok.bae@intel.com>
+	chang.seok.bae@intel.com,
+	Peter Fang <peter.fang@intel.com>
+Subject: [PATCH v6 17/20] KVM: x86: Expose APX foundation feature to userspace
+Date: Wed, 29 Jul 2026 19:16:53 +0000
+Message-ID: <20260729191656.598771-18-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260729191656.598771-1-chang.seok.bae@intel.com>
 References: <20260729191656.598771-1-chang.seok.bae@intel.com>
@@ -64,60 +65,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Prevent invalid XCR0.APX configurations in two cases: conflict with MPX
-and lack of SVM support.
+Expose the APX feature to userspace component. Update the maximum
+supported CPUID leaf to 0x29 to include the APX leaf.
 
-In the non-compacted XSAVE format, APX and MPX conflict on the same
-offset. Although MPX is being deprecated in practice, KVM should
-explicitly reject such configurations that set both bits.
+On SVM, do not advertise APX, as EGPR support is not yet implemented.
 
-At this point, only VMX supports EGPRs. SVM will require corresponding
-extensions to handle EGPR indices.
+No APX sub-features are enumerated yet. Those will be exposed in a
+separate patch.
 
-Updating the supported XCR0 mask will be done separately.
-
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Originally-by: Peter Fang <peter.fang@intel.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/ab3f4937-38f5-4354-8850-bf773c159bbe@redhat.com
 ---
- arch/x86/kvm/svm/svm.c | 7 ++++++-
- arch/x86/kvm/x86.c     | 4 ++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+V5 -> V6: Add APX leaf 0x29 to cpuid_function_is_indexed() (Sashiko)
+---
+ arch/x86/include/asm/cpuid/api.h |  1 +
+ arch/x86/kvm/cpuid.c             | 10 +++++++++-
+ arch/x86/kvm/svm/svm.c           |  1 +
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
+diff --git a/arch/x86/include/asm/cpuid/api.h b/arch/x86/include/asm/cpuid/api.h
+index 44fa82e1267c..73ebb462ba0e 100644
+--- a/arch/x86/include/asm/cpuid/api.h
++++ b/arch/x86/include/asm/cpuid/api.h
+@@ -181,6 +181,7 @@ static __always_inline bool cpuid_function_is_indexed(u32 function)
+ 	case 0x1e:
+ 	case 0x1f:
+ 	case 0x24:
++	case 0x29:
+ 	case 0x8000001d:
+ 		return true;
+ 	}
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 1fc7a0f9a13a..db95f6b578d0 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1062,8 +1062,12 @@ void kvm_initialize_cpu_caps(void)
+ 		F(AVX_VNNI_INT16),
+ 		F(PREFETCHITI),
+ 		F(AVX10),
++		SCATTERED_F(APX),
+ 	);
+ 
++	if (!IS_ENABLED(CONFIG_KVM_APX))
++		kvm_cpu_cap_clear(X86_FEATURE_APX);
++
+ 	kvm_cpu_cap_init(CPUID_7_2_EDX,
+ 		F(INTEL_PSFD),
+ 		F(IPRED_CTRL),
+@@ -1442,7 +1446,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 	switch (function) {
+ 	case 0:
+ 		/* Limited to the highest leaf implemented in KVM. */
+-		entry->eax = min(entry->eax, 0x24U);
++		entry->eax = min(entry->eax, 0x29U);
+ 		break;
+ 	case 1:
+ 		cpuid_entry_override(entry, CPUID_1_EDX);
+@@ -1713,6 +1717,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
+ 		}
+ 		break;
+ 	}
++	/* APX sub-features */
++	case 0x29:
++		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
++		break;
+ 	case KVM_CPUID_SIGNATURE: {
+ 		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
+ 		entry->eax = KVM_CPUID_FEATURES;
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ef69a51ab27f..eb1b2ba1261d 100644
+index eb1b2ba1261d..573411777662 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -5612,8 +5612,13 @@ static __init int svm_hardware_setup(void)
- 		return -EOPNOTSUPP;
- 	}
+@@ -5593,6 +5593,7 @@ static __init void svm_set_cpu_caps(void)
+ 	 */
+ 	kvm_cpu_cap_clear(X86_FEATURE_BUS_LOCK_DETECT);
+ 	kvm_cpu_cap_clear(X86_FEATURE_MSR_IMM);
++	kvm_cpu_cap_clear(X86_FEATURE_APX);
  
-+	/*
-+	 * APX introduces EGPRs, which require additional VMCB support.
-+	 * Disable APX until the necessary extensions are handled.
-+	 */
- 	kvm_caps.supported_xcr0 &= ~(XFEATURE_MASK_BNDREGS |
--				     XFEATURE_MASK_BNDCSR);
-+				     XFEATURE_MASK_BNDCSR  |
-+				     XFEATURE_MASK_APX);
- 
- 	if (tsc_scaling) {
- 		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 84b2dcfcb007..266d7a02855b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -682,6 +682,10 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
- 	    (!(xcr0 & XFEATURE_MASK_BNDCSR)))
- 		return 1;
- 
-+	/* MPX and APX conflict in the non-compacted XSAVE format */
-+	if (xcr0 & XFEATURE_MASK_BNDREGS && xcr0 & XFEATURE_MASK_APX)
-+		return 1;
-+
- 	if (xcr0 & XFEATURE_MASK_AVX512) {
- 		if (!(xcr0 & XFEATURE_MASK_YMM))
- 			return 1;
+ 	kvm_setup_xss_caps();
+ 	kvm_finalize_cpu_caps();
 -- 
 2.53.0
 
