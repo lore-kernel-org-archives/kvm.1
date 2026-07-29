@@ -1,260 +1,272 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8013463B91
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785351994; cv=pass; b=UbiV20O0WTpFEGBxXwNZySlw4O7xciE9rQWUSgh+kgo7yZHHUKY7sqeGJGkir15UqLqCvYHl/t+iQ0KWu948KZEI78Z4gwiI2X7csfuVzfT6lWAN8OwY7uGZvYdK8PFCA4SDCdAXgUtmoA54K2cXikpLEwvoGnQebDBhoIAG4dY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785351994; c=relaxed/simple;
-	bh=6WPhx8PReV46HTsCogkuoq6nCnjySOBHp1E70tMVQgs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vag8dB2OH1cijbBUxgI3Vw6bWtW1bc47QvSK9rv+eAuQ8l0EoupZi0IAePl1mt3ymuzeRzL468SZrLEFA/SBxnG56s1FqxPGqafKyw3al3Nu8oLorZqqKpFcTocssJFAaU3tAvSD4eScK4DPCMuc873bFN1ssZ4tYeg8j/ZJe/U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ORPLAY/l; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA85538D40C
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785352058; cv=none; b=hoZIYk3jxi0irbUHpol9LStVocMOXfBE+EhYGky6IJClmeT2gIsBN/pABzGTJk392NJaI6P/8QV05SpgaHmNbnaC5B14DWmMkXjTg9ZISQ1l9FvL6C9/dOVYltCQgsYPWyZoxXCSKFFYt2O19mgFyqnXwgnlsWrDk9iG1vMgwqs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785352058; c=relaxed/simple;
+	bh=LKYqShh5kW9f4WPAvBmBeOlwPHlAX562WP4sa2zLm6U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OEC1DKVfUNlcOgrrh0sugRPR1meHDvNYiFqtViCzVq9i6ZCYQ47fOyb7dqg+v23QE0MJ44827zfNdtVBDswNy9jcTiUrzayzzixD0+12LGbixaHsBjj1o0hTDQK2in/TbLBBgZm/elJ9+5mHoNE/RzVMBr9d2ZSFY+1TQAhIm0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D8aarw+v; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ORPLAY/l"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6a051904222so1405202a12.2
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:06:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785351991; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VywI9byYHon4W3Tr1n+PRWMIHia8hFChLxAsV3Q8FIbE6OSPrfJRm0Z84QCqV+31qP
-         YSglerq1Q1R3aohO67KQNSllIfE77smJzBQR7fG+pFkgvm/brxPLR4MpoheopfzF5QbQ
-         Au9+pzTJLmtdw17wvhkg6cZl0JHtQVvfoUbX7NxlKysGNIsQuDowCnwIlSLwq1KMDcDJ
-         p0E1jJytNpunc27MoyZ2bYqiPjEOLXS8Cu7o42N/KHkc//nPno5L0qhNJGhofNzQFMZZ
-         sQxExsR50SxR/k4KMZJAu5PwLHzIkBmL7fGWZLj4NvJxuPUFy2yA+duylHnUBAso1Onx
-         pCDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
-        fh=yPy9lQpFa1reCRIdBiQEwy71RdikeTaW+Lg+YzsKrHw=;
-        b=aCBbQtQpG1pgFCcENWub/XnrOUJI2+CkeLuYANe7lOTGNaUbIfsTUjtj+wgOKCcnMI
-         eND0rh6CZdUuA4KYU/wD7o8D/yFC+tS6rfCpeHca1RgK5vbVhxYhuNNPF90wY1a/l1bv
-         Ko9Fya+m9JTTMrd3BMu8FoHaQtzuYoTTr9LWsAOxSvcAGpm2wraDPDmuyUaARqF+Xq19
-         8L97r1S6wdBPOlRlacfTniA310r0i7QYqi8F1xn7rKvODXTxtqGhaaLT3Ad+WT4NFgae
-         XA0KKn2hrIcPROlrqeg1BnLbyCgZCKvJL+Gl0i2ZVO3sYtrKGLUiiQNY23NHGRPxQIw+
-         4E9A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D8aarw+v"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8484b9fb055so2846352b3a.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:07:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785351991; x=1785956791; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
-        b=ORPLAY/lrOjps4RBgWwNtc3wVlIhc8J41F/qnZEa8/rRqfJLyh0LGQojGRhYVb9dvr
-         fR2SOID+Negk2PCqYP0z3u53BYcU2gaRxLV7cQhRlC8amZSQRvXO7g25z4orkOLCKlS/
-         QiQQZTBHOknFDTq3fwt32ah/NDhRdZwPcwmT8E31NjcRZUYUOOtDEsa7LBc0sh4JNZ7p
-         FoV2O1PL2piJuqwE3VU5KPiwzkDO8TojAzt6yb+LIzxd2A/dpxPGaIUjtpM6B23DBRvN
-         2nMDseuK3VxhrNHNSfLmRR6+Yqgs2gMZ8eBEAsWoAk+0LxyO1yctaEZUvYprHd/90qMv
-         bT8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785351991; x=1785956791;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785352056; x=1785956856; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xnnMp3bYdgLemtWGnJyzOun3f7Jn2r77yt762F4YIuA=;
-        b=jRRKQFD9t1vtcAVqes6g0C0Bmnq+E6G2B80Oej8FsueNpHC8SNGFx38sEXiKplYWGm
-         HYIG8DlaCZk2CDpp+AP4ujfd5zdRoRgc3Fl7/jxTl373W5i7G1ghazty/KsekbiTy7W1
-         K+vUTlz7exR1meftPZCnKm85OYw4DVLQu9o3kXM0cVtJ8bK4Enj07y/yEadWatbeuuOf
-         ZL1rIQ6x1r58gfyr7PXGQZahbq1Z4Vs07LHNvpZa1LZwMXG/Cw7lITj3I+qiYfmT4Bdp
-         vQlcN6tK1GSPs1ZWALznHrGDHhDVQQPrufFQQQQJNwXD9XiElM6CWbREfPR2UUmwEO/D
-         sWCQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqbKWH7oQdkTFglD4+nqLlDkDynuZJtPwsucx42VWTbsqYgaRCBekdIRd4scaP1ExSUteM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwZvqa5kIzFMpbukdIVqS1iOp8bvQ/yJFsvwCLJBUM1BF3Wf6s
-	zARUHqPLcbTNS0Sc3GW31EPXUtwYgP16uwnLjWuiKTBz9zCmqYL7jnzdF99rKw9T4NRY9JGupfB
-	Bn/wD91+rF8Jsfo1dutt3wsCrTXe020A=
-X-Gm-Gg: AR+sD11ak7kc6GZpH+fUrSkx0V4s0l9eS94+T3+9xmcuAICPb4jgZyVJaIcMn6uUh8D
-	iFBsqFWnlAKsVoNtcMhNdwvFEHzIkRw8h9C+byE4Vzce+SYquYOL/VhHRbMciuyFn0nQQcIf4v7
-	xvCInlOY0kG+ZCBWWpX3MvFq+Irl7cNk500q5Q7D5Py26K9p1V6cZJ2SsZNTErxXh9K4+MFkJaW
-	vYKN0LbybgowCi+xSQuZ/F0VJnOUdYpia3bdYdkZQSTi9eiOkDW+RgMfPCIoaP2VcgBoUv0HuYn
-	KqLn85vdzPmJhaZf/bsHyFXRjXkHVv3H2Lk5wR1CrHt/JahNglfHz8FLbwhFrKGhM3L6pzygQjg
-	=
-X-Received: by 2002:a17:907:9802:b0:c1c:4d19:f733 with SMTP id
- a640c23a62f3a-c1f720eefe6mr463168666b.40.1785351990816; Wed, 29 Jul 2026
- 12:06:30 -0700 (PDT)
+        bh=2b3fQxiZ8vmEMZ/LriNEMYs2OUmWmCeVFavLD+6FbmM=;
+        b=D8aarw+vvG8FiDESRsH1B2WvmLnt3Tzij3q2SlGoOsdB7cJkeBgmM9a2FuZ6S2VMnj
+         B8pVE6RMX265A7lto1sFu/NhDye2GO6AUUIvnqvyAiPlS2Z9XXcPH/5UbjvoWyw4jBWc
+         lDqJqRwIXFmWPBgEPG0lD95RiOFvOmju4rLlF35O/gJZeEjPQ5MMOsgidi1G9DRHTM9M
+         jPXwdeVkWLK8MXBcrFm/9KMbVETYiino9bvLgtPcYt/YaBeQrQkreZAE/ApTSNQH8jFN
+         9L6rMqyj5M33A/ERYaDAkmbhpRGrGxUveZCZFcUGxfd/Gj4kBSn9RWbNeEcfTP8H5PG3
+         CYaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785352056; x=1785956856;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2b3fQxiZ8vmEMZ/LriNEMYs2OUmWmCeVFavLD+6FbmM=;
+        b=Efccgs6fSuRUGgZzdKA+OShwp5jhg6lAIsj2qhHxKbUpDQygQ2Iv7iDec38z1KOAxT
+         Dx2EKhcB1QWWcqJKrpHQe8/ISEKNukkS/rrgdU6pScsmG/wqzJ+es+TlPzHzVd2YPbsI
+         ZdIC2wNv3CgCmaqLPPjrjfdYCvKW7b92ZFvx/GiPnq/p3TPzyGhtEBk6bjSsErsEdRxo
+         T+llwjd0XbTqwql8eiWxFSgY1wZDSTDWKrHPYmI6p2iP15o+1BX9mJYrJr+DJ8N9DJEF
+         Cvq/SCNvlZsya6iUFc5WjpIwUerRVeByHvqEHqSId8T8bUZ4ikKH0/hFW+jiJQQgchez
+         YO+Q==
+X-Gm-Message-State: AOJu0YzzRFfznD82gP8LOVTPpGN9Vq80j8l6CmkUwgW8XVPBeu1IJwBC
+	MV5BF8qJr9vzS/9k+QbT1psdXyM1GxALG0lR6YlL1mbXgneK8oIyzbiM1ZrdKi2x0Nt4vwiBwRk
+	u5xclYA==
+X-Received: from pfblc11.prod.google.com ([2002:a05:6a00:4f4b:b0:84a:894f:23e6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:391d:b0:848:56d4:3288
+ with SMTP id d2e1a72fcca58-84eb9e86fccmr34880b3a.4.1785352055899; Wed, 29 Jul
+ 2026 12:07:35 -0700 (PDT)
+Date: Wed, 29 Jul 2026 12:07:35 -0700
+In-Reply-To: <20260331194202.1722082-9-vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260727035804.1860862-1-bestswngs@gmail.com> <amjkQ2F+NEK9SPAj@devvm29614.prn0.facebook.com>
- <amoR0pnMO2OQ2E6z@sgarzare-redhat>
-In-Reply-To: <amoR0pnMO2OQ2E6z@sgarzare-redhat>
-From: Weiming Shi <thebestswings@gmail.com>
-Date: Thu, 30 Jul 2026 03:05:53 +0800
-X-Gm-Features: AUfX_mz3TgQR8C_4x8K7ZMCwqKKo1i2lXmGLm4XOyvkUGevFYGQ5eIt1hRXQEV0
-Message-ID: <CANgPUi2LFBiBG1c7+s_AyzrtDdncXDXQQuphNqmC0uktvBY1dg@mail.gmail.com>
-Subject: Re: [PATCH] vsock/virtio: prevent workers from using deleted virtqueues
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-9-vipinsh@google.com>
+Message-ID: <ampPd9szwRoGKwds@google.com>
+Subject: Re: [PATCH v4 8/9] KVM: selftests: Add rule to generate default tests
+ for KVM selftests runner
+From: Sean Christopherson <seanjc@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, 
+	pbonzini@redhat.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com, 
+	imbrenda@linux.ibm.com, anup@brainfault.org, atish.patra@linux.dev, 
+	zhaotianrui@loongson.cn, maobibo@loongson.cn, chenhuacai@kernel.org, 
+	maz@kernel.org, oliver.upton@linux.dev, ajones@ventanamicro.com
+Content-Type: text/plain; charset="us-ascii"
 
-Stefano Garzarella <sgarzare@redhat.com> =E4=BA=8E2026=E5=B9=B47=E6=9C=8829=
-=E6=97=A5=E5=91=A8=E4=B8=89 22:47=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Tue, Jul 28, 2026 at 10:17:55AM -0700, Bobby Eshleman wrote:
-> >On Sun, Jul 26, 2026 at 08:58:01PM -0700, Weiming Shi wrote:
-> >> The RX, TX and event workers read their virtqueue pointers before taki=
-ng
-> >> the mutex that protects the queue and its run flag. A work item delaye=
-d
-> >> across freeze and restore can therefore retain a pointer deleted by
-> >> virtio_vsock_vqs_del(), observe the run flag for the replacement queue=
-s,
-> >> and use the freed pointer.
-> >>
-> >> RX has an additional path: when rx_run is clear, the common exit still
-> >> refills the RX queue. A queued worker can consequently call
-> >> virtqueue_add_sgs() immediately after freeze deletes the virtqueues.
-> >>
-> >> BUG: KASAN: slab-use-after-free in virtqueue_add_sgs
-> >> Read of size 4 by task kworker/2:1
-> >> Workqueue: virtio_vsock virtio_transport_rx_work
-> >> Call Trace:
-> >>  virtqueue_add_sgs (drivers/virtio/virtio_ring.c:2796)
-> >>  virtio_vsock_rx_fill (net/vmw_vsock/virtio_transport.c:332)
-> >>  virtio_transport_rx_work (net/vmw_vsock/virtio_transport.c:701)
-> >>  process_one_work (kernel/workqueue.c:3314)
-> >>  worker_thread (kernel/workqueue.c:3478)
-> >>  kthread (kernel/kthread.c:436)
-> >>  ret_from_fork (arch/x86/kernel/process.c:158)
-> >>  ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-> >> ...
-> >> Freed by task 141:
-> >>  kfree (mm/slub.c:6566)
-> >>  vp_del_vq (drivers/virtio/virtio_pci_common.c:259)
-> >>  vp_del_vqs (drivers/virtio/virtio_pci_common.c:285)
-> >>  virtio_vsock_freeze (net/vmw_vsock/virtio_transport.c:912)
-> >>  virtio_device_freeze (drivers/virtio/virtio.c:658)
-> >>  virtio_pci_freeze (drivers/virtio/virtio_pci_common.c:601)
-> >>  pci_pm_freeze (drivers/pci/pci-driver.c:1098)
-> >>  device_suspend (drivers/base/power/main.c:1968)
-> >> Kernel panic - not syncing: KASAN: panic_on_warn set ...
-> >>
-> >> Read each worker's virtqueue under its mutex after confirming that the
-> >> queue is running, and only refill RX while RX is running.
-> >>
-> >> Fixes: b917507e5ad9 ("vsock/virtio: stop workers during the .remove()"=
-)
-> >> Cc: stable@vger.kernel.org
-> >> Reported-by: Xiang Mei <xmei5@asu.edu>
-> >> Assisted-by: OpenAI-Codex:gpt-5
-> >> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> >> ---
-> >>  net/vmw_vsock/virtio_transport.c | 14 ++++++++------
-> >>  1 file changed, 8 insertions(+), 6 deletions(-)
-> >>
-> >> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_t=
-ransport.c
-> >> index 57f2d6ec3ffc..79cf19f58943 100644
-> >> --- a/net/vmw_vsock/virtio_transport.c
-> >> +++ b/net/vmw_vsock/virtio_transport.c
-> >> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work=
-_struct *work)
-> >>      struct virtqueue *vq;
-> >>      bool added =3D false;
-> >>
-> >> -    vq =3D vsock->vqs[VSOCK_VQ_TX];
-> >>      mutex_lock(&vsock->tx_lock);
-> >>
-> >>      if (!vsock->tx_run)
-> >>              goto out;
-> >>
-> >> +    vq =3D vsock->vqs[VSOCK_VQ_TX];
-> >> +
-> >>      do {
-> >>              struct sk_buff *skb;
-> >>              unsigned int len;
-> >> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct w=
-ork_struct *work)
-> >>              container_of(work, struct virtio_vsock, event_work);
-> >>      struct virtqueue *vq;
-> >>
-> >> -    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
-> >> -
-> >>      mutex_lock(&vsock->event_lock);
-> >>
-> >>      if (!vsock->event_run)
-> >>              goto out;
-> >>
-> >> +    vq =3D vsock->vqs[VSOCK_VQ_EVENT];
-> >> +
-> >>      do {
-> >>              struct virtio_vsock_event *event;
-> >>              unsigned int len;
-> >> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work=
-_struct *work)
-> >>              container_of(work, struct virtio_vsock, rx_work);
-> >>      struct virtqueue *vq;
-> >>
-> >> -    vq =3D vsock->vqs[VSOCK_VQ_RX];
-> >> -
-> >>      mutex_lock(&vsock->rx_lock);
-> >>
-> >>      if (!vsock->rx_run)
-> >>              goto out;
-> >>
-> >> +    vq =3D vsock->vqs[VSOCK_VQ_RX];
-> >> +
-> >>      do {
-> >>              virtqueue_disable_cb(vq);
-> >>              for (;;) {
-> >> @@ -689,7 +690,8 @@ static void virtio_transport_rx_work(struct work_s=
-truct *work)
-> >>      } while (!virtqueue_enable_cb(vq));
-> >>
-> >>  out:
-> >> -    if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> >> +    if (vsock->rx_run &&
-> >> +        vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
-> >>              virtio_vsock_rx_fill(vsock);
-> >>      mutex_unlock(&vsock->rx_lock);
-> >>  }
-> >> --
-> >> 2.55.0
-> >
-> >Not a strong opinion from me, but since this last hunk is the one that
-> >fixes the bug and the other hunks are moreso hardening, maybe break
-> >these out into two patches?
->
-> I think also the other hunks fix an issue, but I agree on the split
-> since IMO we are fixing 2 different commits. Commit b917507e5ad9
-> ("vsock/virtio: stop workers during the .remove()") was before
-> freeze/resume added by commit bd50c5dc182b ("vsock/virtio: add support
-> for device suspend/resume"). Only after that one we can have the false
-> -> true transition of *_run variables.
->
-> So IMO hunks 1-3 should have Fixes: bd50c5dc182b ... and hunk 4 should
-> have Fixes: b917507e5ad9 ...
->
-> That said, it's not a strong opinion here too, but if you prefer a
-> single patch, please add both Fixes.
->
-> Thanks,
-> Stefano
->
-> >
-> >Besides, that all looks good to me.
-> >
-> >Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> >
->
+On Tue, Mar 31, 2026, Vipin Sharma wrote:
+> Add 'tests_install' rule in the Makefile.kvm to auto generate default
+> testcases for KVM selftests runner. Preserve the hierarchy of test
+> executables for autogenerated files. Remove these testcases on
+> invocation of 'make clean'.
+> 
+> Autogeneration of default test files allows runner to execute default
+> testcases easily. These default testcases don't need to be checked in as
+> they are just executing the test without any command line options.
+> 
+> Signed-off-by: Vipin Sharma <vipinsh@google.com>
+> ---
+>  tools/testing/selftests/kvm/.gitignore   |  1 +
+>  tools/testing/selftests/kvm/Makefile.kvm | 26 +++++++++++++++++++++++-
+>  2 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftests/kvm/.gitignore
+> index 95af97b1ff9e..548d435bde2f 100644
+> --- a/tools/testing/selftests/kvm/.gitignore
+> +++ b/tools/testing/selftests/kvm/.gitignore
+> @@ -7,6 +7,7 @@
+>  !*.S
+>  !*.sh
+>  !*.test
+> +default.test
+>  !.gitignore
+>  !config
+>  !settings
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 6471fa214a9f..fb9439cb5f3d 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  include ../../../build/Build.include
+>  
+> -all:
+> +all: tests_install
+>  
+>  LIBKVM += lib/assert.c
+>  LIBKVM += lib/elf.c
+> @@ -330,11 +330,15 @@ $(SPLIT_TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(OUTPUT)/$(ARCH)/%.o
+>  $(SPLIT_TEST_GEN_OBJ): $(OUTPUT)/$(ARCH)/%.o: $(ARCH)/%.c
+>  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+>  
+> +# Default testcases for KVM selftests runner will be generated in this directory.
+> +DEFAULT_TESTCASES = testcases_default_gen
 
-Thanks for your review. v2 sent.
+That's a cumbersome name.  It was also written by Yoda :-) How about default_testcases?
 
-Best,
-Weiming Shi
+> +
+>  EXTRA_CLEAN += $(GEN_HDRS) \
+>  	       $(LIBKVM_OBJS) \
+>  	       $(SPLIT_TEST_GEN_OBJ) \
+>  	       $(TEST_DEP_FILES) \
+>  	       $(TEST_GEN_OBJ) \
+> +	       $(OUTPUT)/$(DEFAULT_TESTCASES) \
+>  	       cscope.*
+>  
+>  $(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
+> @@ -363,3 +367,23 @@ cscope:
+>  	find . -name '*.c' \
+>  		-exec realpath --relative-base=$(PWD) {} \;) | sort -u > cscope.files
+>  	cscope -b
+> +
+> +# Generate runner testcases in DEFAULT_TESTCASES directory.
+> +# $(OUTPUT) is either CWD or specified in the make command.
+> +tests_install: list_progs = $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS))
+> +tests_install:
+
+This is very much *not* an install.  In fact, install is broken, because the
+runner isn't added to TEST_FILES.
+
+Another issue with install is that it flattens the directory structures, i.e.
+drops the $ARCH/ subdirectories.  That causes issues for the default.test testcases
+due to them using partially qualified paths.
+
+And coming back to this with fresh eyes, I don't love generating the testcases
+for the "normal" build.  It necessitates adding default.test to .gitignore,
+effectively requires copying the runner to the output directory, and is pure
+noise for folks that don't want to utilize the runner.
+
+Rather than generate testcases for the default build, what if we make this 100%
+opt-in, and take a hard dependency on install?  That should obviate the need for
+ignoring default.test, because if someone is silly enough to install testcases
+in the source tree, they get to deal with the noise.
+
+And we can commit to having the default testcases provide completely unqualified
+paths, so that the Just Work with the flattened output.  If someone wants to run
+with an unflattened tree, then we should update the runner itself to handle
+multiple paths, a la the actual PATH variable.
+
+The other nice thing is that we can make the runner opt-in, without requiring the
+user to run multiple make commands, by chaining testcases => install => all.  If
+we try to generate testcases as an optional step to the normal build, then we'll
+end up being able to run install without having generated the testcases, which
+is "fine", but probably not what we want for people that are trying to use the
+runner.
+
+The obvious downside is that it requires doing an install to get the default
+testcases, but IMO that's an acceptable tradeoff.
+
+> +	$(foreach tc, $(TEST_PROGS), \
+> +		$(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(patsubst %.sh,%,$(tc))))
+> +	$(foreach tc, $(TEST_PROGS), \
+> +		$(shell echo $(tc) > $(patsubst %.sh,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+> +
+> +	$(foreach tc, $(list_progs), \
+> +		$(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(tc)))
+> +	$(foreach tc, $(list_progs), \
+> +		$(shell echo $(tc) > $(patsubst %,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+> +
+> +	@if [ ! -d $(OUTPUT)/runner ]; then             \
+
+This is very wrong, as this will fail to pick up any changes made to the runner.
+
+All in all, this as fixup?
+
+diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftests/kvm/.gitignore
+index 83aa2fe01bac..91d2b21d396f 100644
+--- a/tools/testing/selftests/kvm/.gitignore
++++ b/tools/testing/selftests/kvm/.gitignore
+@@ -8,7 +8,6 @@
+ !*.S
+ !*.sh
+ !*.test
+-default.test
+ !.gitignore
+ !config
+ !settings
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index c5821d495ea6..fc9dc41fdbeb 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -1,8 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ include ../../../build/Build.include
+ 
+-all: tests_install
+-
+ LIBKVM += lib/assert.c
+ LIBKVM += lib/elf.c
+ LIBKVM += lib/guest_modes.c
+@@ -347,15 +345,13 @@ $(SPLIT_TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(OUTPUT)/$(ARCH)/%.o
+ $(SPLIT_TEST_GEN_OBJ): $(OUTPUT)/$(ARCH)/%.o: $(ARCH)/%.c
+        $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+ 
+-# Default testcases for KVM selftests runner will be generated in this directory.
+-DEFAULT_TESTCASES = testcases_default_gen
++TEST_FILES := $(selfdir)/kvm/runner
+ 
+ EXTRA_CLEAN += $(GEN_HDRS) \
+               $(LIBKVM_OBJS) \
+               $(SPLIT_TEST_GEN_OBJ) \
+               $(TEST_DEP_FILES) \
+               $(TEST_GEN_OBJ) \
+-              $(OUTPUT)/$(DEFAULT_TESTCASES) \
+               cscope.*
+ 
+ $(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
+@@ -386,21 +382,18 @@ cscope:
+        cscope -b
+ 
+ # Generate runner testcases in DEFAULT_TESTCASES directory.
+-# $(OUTPUT) is either CWD or specified in the make command.
+-tests_install: list_progs = $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS))
+-tests_install:
+-       $(foreach tc, $(TEST_PROGS), \
+-               $(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(patsubst %.sh,%,$(tc))))
+-       $(foreach tc, $(TEST_PROGS), \
+-               $(shell echo $(tc) > $(patsubst %.sh,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
++DEFAULT_TESTCASES = default_testcases
++
++testcases: list_progs = $(notdir $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS)))
++testcases: install
++       $(foreach tc, $(notdir $(TEST_PROGS)), \
++               $(shell mkdir -p $(INSTALL_PATH)/$(DEFAULT_TESTCASES)/$(notdir $(patsubst %.sh,%,$(tc)))))
++       $(foreach tc, $(notdir $(TEST_PROGS)), \
++               $(shell echo $(tc) > $(patsubst %.sh,$(INSTALL_PATH)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+ 
+        $(foreach tc, $(list_progs), \
+-               $(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(tc)))
++               $(shell mkdir -p $(INSTALL_PATH)/$(DEFAULT_TESTCASES)/$(tc)))
+        $(foreach tc, $(list_progs), \
+-               $(shell echo $(tc) > $(patsubst %,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+-
+-       @if [ ! -d $(OUTPUT)/runner ]; then             \
+-               cp -r $(selfdir)/kvm/runner $(OUTPUT);  \
+-       fi
++               $(shell echo $(tc) > $(patsubst %,$(INSTALL_PATH)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+ 
+        @:
+
+> +		cp -r $(selfdir)/kvm/runner $(OUTPUT);  \
+> +	fi
+> +
+> +	@:
+> -- 
+> 2.53.0.1118.gaef5881109-goog
+> 
