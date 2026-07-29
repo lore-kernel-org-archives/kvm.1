@@ -1,66 +1,66 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA85538D40C
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A4C4562A7
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785352058; cv=none; b=hoZIYk3jxi0irbUHpol9LStVocMOXfBE+EhYGky6IJClmeT2gIsBN/pABzGTJk392NJaI6P/8QV05SpgaHmNbnaC5B14DWmMkXjTg9ZISQ1l9FvL6C9/dOVYltCQgsYPWyZoxXCSKFFYt2O19mgFyqnXwgnlsWrDk9iG1vMgwqs=
+	t=1785352186; cv=none; b=CXn9qtonub5RBfsCruKw7uiy8R1FEJex8J9gStNSjhlfOMGdkV9F0lwalqWLfISg8uNMHlbsTHLG0j1FM+MpnYDGW4CvJ4MhyrDgk3fJ/8QNKvtLg1piR1B/CgSccWZ3bE7LfElDopL2+kak4rYl5y5pc2eTfSTOW7mhzB/e3cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785352058; c=relaxed/simple;
-	bh=LKYqShh5kW9f4WPAvBmBeOlwPHlAX562WP4sa2zLm6U=;
+	s=arc-20240116; t=1785352186; c=relaxed/simple;
+	bh=hNIhsvFq8wG6+0DC6AaTyfTe4s7ctnj612x+RgqzboI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OEC1DKVfUNlcOgrrh0sugRPR1meHDvNYiFqtViCzVq9i6ZCYQ47fOyb7dqg+v23QE0MJ44827zfNdtVBDswNy9jcTiUrzayzzixD0+12LGbixaHsBjj1o0hTDQK2in/TbLBBgZm/elJ9+5mHoNE/RzVMBr9d2ZSFY+1TQAhIm0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D8aarw+v; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=LsJd58wbzI03/URzZlcYGVdNILq2PuuT0HoNC3gPmqb3LpJYp3gG2bJdOe15kMUzkaisIXRWkp1Wxml8zHfOREKw0oKX+J1WWwysoLlrWXFn1/eumD8cls9mw1mDVdjwElYwtn1vW503z+VZbzPFpyicn3/USDaYTj+r6U+PIdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kbh38NBM; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D8aarw+v"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8484b9fb055so2846352b3a.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:07:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kbh38NBM"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8488ac68185so3017107b3a.2
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:09:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785352056; x=1785956856; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785352184; x=1785956984; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2b3fQxiZ8vmEMZ/LriNEMYs2OUmWmCeVFavLD+6FbmM=;
-        b=D8aarw+vvG8FiDESRsH1B2WvmLnt3Tzij3q2SlGoOsdB7cJkeBgmM9a2FuZ6S2VMnj
-         B8pVE6RMX265A7lto1sFu/NhDye2GO6AUUIvnqvyAiPlS2Z9XXcPH/5UbjvoWyw4jBWc
-         lDqJqRwIXFmWPBgEPG0lD95RiOFvOmju4rLlF35O/gJZeEjPQ5MMOsgidi1G9DRHTM9M
-         jPXwdeVkWLK8MXBcrFm/9KMbVETYiino9bvLgtPcYt/YaBeQrQkreZAE/ApTSNQH8jFN
-         9L6rMqyj5M33A/ERYaDAkmbhpRGrGxUveZCZFcUGxfd/Gj4kBSn9RWbNeEcfTP8H5PG3
-         CYaQ==
+        bh=+XMot+n6JciyNBBWBYdqJ5JavyhMGOvDIbDy5VtGrOA=;
+        b=Kbh38NBMGV98GmX9CjiGNnBWpScgeX4oGoYlo6nUIZbaj495YdBoVJNlrmGEr/I6aQ
+         R79i0fBWqVY6+6+WW+r97C2xbitSQndgNI+BojRN8MOOCO3uEeC/4vjJ58h3LTaqqfEP
+         eIIt7wx8ln9E2qSaanPuOUgCE6f/zN7sSBXnvAAhmxvNDCFyTakPMN3wyW6l3oUfOv6s
+         PUrILZnm8xIha2xvj5KOo7zDOOk62NoHEsx82rVCINOkLXX+xX0Z7KVCZTgIJT/stdAr
+         C4xmvTJtKhHnHj3+YnuySvZXzL5Ai3YqL4PiRXfeN3Uc3acLKfhv/1KchhZw4WlbZ29w
+         pVzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785352056; x=1785956856;
+        d=1e100.net; s=20251104; t=1785352184; x=1785956984;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2b3fQxiZ8vmEMZ/LriNEMYs2OUmWmCeVFavLD+6FbmM=;
-        b=Efccgs6fSuRUGgZzdKA+OShwp5jhg6lAIsj2qhHxKbUpDQygQ2Iv7iDec38z1KOAxT
-         Dx2EKhcB1QWWcqJKrpHQe8/ISEKNukkS/rrgdU6pScsmG/wqzJ+es+TlPzHzVd2YPbsI
-         ZdIC2wNv3CgCmaqLPPjrjfdYCvKW7b92ZFvx/GiPnq/p3TPzyGhtEBk6bjSsErsEdRxo
-         T+llwjd0XbTqwql8eiWxFSgY1wZDSTDWKrHPYmI6p2iP15o+1BX9mJYrJr+DJ8N9DJEF
-         Cvq/SCNvlZsya6iUFc5WjpIwUerRVeByHvqEHqSId8T8bUZ4ikKH0/hFW+jiJQQgchez
-         YO+Q==
-X-Gm-Message-State: AOJu0YzzRFfznD82gP8LOVTPpGN9Vq80j8l6CmkUwgW8XVPBeu1IJwBC
-	MV5BF8qJr9vzS/9k+QbT1psdXyM1GxALG0lR6YlL1mbXgneK8oIyzbiM1ZrdKi2x0Nt4vwiBwRk
-	u5xclYA==
-X-Received: from pfblc11.prod.google.com ([2002:a05:6a00:4f4b:b0:84a:894f:23e6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:391d:b0:848:56d4:3288
- with SMTP id d2e1a72fcca58-84eb9e86fccmr34880b3a.4.1785352055899; Wed, 29 Jul
- 2026 12:07:35 -0700 (PDT)
-Date: Wed, 29 Jul 2026 12:07:35 -0700
-In-Reply-To: <20260331194202.1722082-9-vipinsh@google.com>
+        bh=+XMot+n6JciyNBBWBYdqJ5JavyhMGOvDIbDy5VtGrOA=;
+        b=gcDLFDnKkE91VMaStKNNcXyJ+ve2SBFM/Rdhd0IrtNR9uyC2DvCMEmwPKJ3DgYZdCg
+         /Bb+/1TV3+ad+Ti+dySFRY21tU6IvLy3cMihiM6XkQNi17nWvtxN83S+mKgAXYwmxbJP
+         wHQ8btjOEdxkYly8scjOcbaOWf5m33VSmHHXQZGjWlviyXd8vL/nweT5pt5744wQNDIF
+         nNWW4UqiP+poW7E7alblbbnjxEO1BBNbJl5zFnUpxyu805HNAeciT7KG4NgvUv3kGd5A
+         q13Tiv8jPrs07CTDudVPE6iFaFgFgDUYtBi0yg1saPNlGiiY+bR+nUBw6KnQiryJLoQ4
+         bHHw==
+X-Gm-Message-State: AOJu0YwmbDrhbgvShqNsMykfRhzVJK7+srwh9O7sfvWcWVfp7wQBoAlq
+	tXUT/CUoYZsLIKpf08EVCbLx0cll9ksIq7Sqea49G6fwUJiyaBBCVLrpJZiyOXWk8aNQ+9RJxR2
+	U3MoEHg==
+X-Received: from pffz14.prod.google.com ([2002:aa7:990e:0:b0:848:49f6:6f5c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9290:b0:848:88e6:95d3
+ with SMTP id d2e1a72fcca58-84eba1ecb98mr1356b3a.72.1785352184010; Wed, 29 Jul
+ 2026 12:09:44 -0700 (PDT)
+Date: Wed, 29 Jul 2026 12:09:43 -0700
+In-Reply-To: <20260331194202.1722082-10-vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-9-vipinsh@google.com>
-Message-ID: <ampPd9szwRoGKwds@google.com>
-Subject: Re: [PATCH v4 8/9] KVM: selftests: Add rule to generate default tests
- for KVM selftests runner
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-10-vipinsh@google.com>
+Message-ID: <ampP93AEMawDmv4E@google.com>
+Subject: Re: [PATCH v4 9/9] KVM: selftests: Provide README.rst for KVM
+ selftests runner
 From: Sean Christopherson <seanjc@google.com>
 To: Vipin Sharma <vipinsh@google.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, 
@@ -71,202 +71,134 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org,
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Mar 31, 2026, Vipin Sharma wrote:
-> Add 'tests_install' rule in the Makefile.kvm to auto generate default
-> testcases for KVM selftests runner. Preserve the hierarchy of test
-> executables for autogenerated files. Remove these testcases on
-> invocation of 'make clean'.
-> 
-> Autogeneration of default test files allows runner to execute default
-> testcases easily. These default testcases don't need to be checked in as
-> they are just executing the test without any command line options.
-> 
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> ---
->  tools/testing/selftests/kvm/.gitignore   |  1 +
->  tools/testing/selftests/kvm/Makefile.kvm | 26 +++++++++++++++++++++++-
->  2 files changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftests/kvm/.gitignore
-> index 95af97b1ff9e..548d435bde2f 100644
-> --- a/tools/testing/selftests/kvm/.gitignore
-> +++ b/tools/testing/selftests/kvm/.gitignore
-> @@ -7,6 +7,7 @@
->  !*.S
->  !*.sh
->  !*.test
-> +default.test
->  !.gitignore
->  !config
->  !settings
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-> index 6471fa214a9f..fb9439cb5f3d 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  include ../../../build/Build.include
->  
-> -all:
-> +all: tests_install
->  
->  LIBKVM += lib/assert.c
->  LIBKVM += lib/elf.c
-> @@ -330,11 +330,15 @@ $(SPLIT_TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(OUTPUT)/$(ARCH)/%.o
->  $(SPLIT_TEST_GEN_OBJ): $(OUTPUT)/$(ARCH)/%.o: $(ARCH)/%.c
->  	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
->  
-> +# Default testcases for KVM selftests runner will be generated in this directory.
-> +DEFAULT_TESTCASES = testcases_default_gen
+> +Generate Default Tests
+> +======================
+> +
+> +Generate the default test case files using the provided make target::
+> +
+> +  # make tests_install
+> +
+> +This creates the ``testcases_default_gen`` directory containing ``default.test``
+> +files. Each KVM selftest has a directory with a ``default.test`` file. This file
+> +contains the executable path relative to the KVM selftest root directory
+> +(``/tools/testing/selftests/kvm``). For example, the ``dirty_log_perf_test``
+> +entry looks like::
+> +
+> +  # cat testcases_default_gen/dirty_log_perf_test/default.test
+> +  dirty_log_perf_test
+> +
+> +In above testcase, the runner executes ``dirty_log_perf_test``. Testcase files
+> +can provide extra arguments to the test::
+> +
+> +  # cat tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
+> +  dirty_log_perf_test -x 2 -v 5 -i 10
 
-That's a cumbersome name.  It was also written by Yoda :-) How about default_testcases?
+This is obviously not about the default tests.
 
 > +
->  EXTRA_CLEAN += $(GEN_HDRS) \
->  	       $(LIBKVM_OBJS) \
->  	       $(SPLIT_TEST_GEN_OBJ) \
->  	       $(TEST_DEP_FILES) \
->  	       $(TEST_GEN_OBJ) \
-> +	       $(OUTPUT)/$(DEFAULT_TESTCASES) \
->  	       cscope.*
->  
->  $(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
-> @@ -363,3 +367,23 @@ cscope:
->  	find . -name '*.c' \
->  		-exec realpath --relative-base=$(PWD) {} \;) | sort -u > cscope.files
->  	cscope -b
+> +In this case, the runner executes ``dirty_log_perf_test`` with the specified
+> +options.
 > +
-> +# Generate runner testcases in DEFAULT_TESTCASES directory.
-> +# $(OUTPUT) is either CWD or specified in the make command.
-> +tests_install: list_progs = $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS))
-> +tests_install:
-
-This is very much *not* an install.  In fact, install is broken, because the
-runner isn't added to TEST_FILES.
-
-Another issue with install is that it flattens the directory structures, i.e.
-drops the $ARCH/ subdirectories.  That causes issues for the default.test testcases
-due to them using partially qualified paths.
-
-And coming back to this with fresh eyes, I don't love generating the testcases
-for the "normal" build.  It necessitates adding default.test to .gitignore,
-effectively requires copying the runner to the output directory, and is pure
-noise for folks that don't want to utilize the runner.
-
-Rather than generate testcases for the default build, what if we make this 100%
-opt-in, and take a hard dependency on install?  That should obviate the need for
-ignoring default.test, because if someone is silly enough to install testcases
-in the source tree, they get to deal with the noise.
-
-And we can commit to having the default testcases provide completely unqualified
-paths, so that the Just Work with the flattened output.  If someone wants to run
-with an unflattened tree, then we should update the runner itself to handle
-multiple paths, a la the actual PATH variable.
-
-The other nice thing is that we can make the runner opt-in, without requiring the
-user to run multiple make commands, by chaining testcases => install => all.  If
-we try to generate testcases as an optional step to the normal build, then we'll
-end up being able to run install without having generated the testcases, which
-is "fine", but probably not what we want for people that are trying to use the
-runner.
-
-The obvious downside is that it requires doing an install to get the default
-testcases, but IMO that's an acceptable tradeoff.
-
-> +	$(foreach tc, $(TEST_PROGS), \
-> +		$(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(patsubst %.sh,%,$(tc))))
-> +	$(foreach tc, $(TEST_PROGS), \
-> +		$(shell echo $(tc) > $(patsubst %.sh,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+> +Examples
+> +========
 > +
-> +	$(foreach tc, $(list_progs), \
-> +		$(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(tc)))
-> +	$(foreach tc, $(list_progs), \
-> +		$(shell echo $(tc) > $(patsubst %,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
+> +Display all options::
 > +
-> +	@if [ ! -d $(OUTPUT)/runner ]; then             \
-
-This is very wrong, as this will fail to pick up any changes made to the runner.
-
-All in all, this as fixup?
-
-diff --git a/tools/testing/selftests/kvm/.gitignore b/tools/testing/selftests/kvm/.gitignore
-index 83aa2fe01bac..91d2b21d396f 100644
---- a/tools/testing/selftests/kvm/.gitignore
-+++ b/tools/testing/selftests/kvm/.gitignore
-@@ -8,7 +8,6 @@
- !*.S
- !*.sh
- !*.test
--default.test
- !.gitignore
- !config
- !settings
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index c5821d495ea6..fc9dc41fdbeb 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -1,8 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- include ../../../build/Build.include
- 
--all: tests_install
--
- LIBKVM += lib/assert.c
- LIBKVM += lib/elf.c
- LIBKVM += lib/guest_modes.c
-@@ -347,15 +345,13 @@ $(SPLIT_TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(OUTPUT)/$(ARCH)/%.o
- $(SPLIT_TEST_GEN_OBJ): $(OUTPUT)/$(ARCH)/%.o: $(ARCH)/%.c
-        $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
- 
--# Default testcases for KVM selftests runner will be generated in this directory.
--DEFAULT_TESTCASES = testcases_default_gen
-+TEST_FILES := $(selfdir)/kvm/runner
- 
- EXTRA_CLEAN += $(GEN_HDRS) \
-               $(LIBKVM_OBJS) \
-               $(SPLIT_TEST_GEN_OBJ) \
-               $(TEST_DEP_FILES) \
-               $(TEST_GEN_OBJ) \
--              $(OUTPUT)/$(DEFAULT_TESTCASES) \
-               cscope.*
- 
- $(LIBKVM_C_OBJ): $(OUTPUT)/%.o: %.c $(GEN_HDRS)
-@@ -386,21 +382,18 @@ cscope:
-        cscope -b
- 
- # Generate runner testcases in DEFAULT_TESTCASES directory.
--# $(OUTPUT) is either CWD or specified in the make command.
--tests_install: list_progs = $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS))
--tests_install:
--       $(foreach tc, $(TEST_PROGS), \
--               $(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(patsubst %.sh,%,$(tc))))
--       $(foreach tc, $(TEST_PROGS), \
--               $(shell echo $(tc) > $(patsubst %.sh,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
-+DEFAULT_TESTCASES = default_testcases
-+
-+testcases: list_progs = $(notdir $(patsubst $(OUTPUT)/%,%,$(TEST_GEN_PROGS)))
-+testcases: install
-+       $(foreach tc, $(notdir $(TEST_PROGS)), \
-+               $(shell mkdir -p $(INSTALL_PATH)/$(DEFAULT_TESTCASES)/$(notdir $(patsubst %.sh,%,$(tc)))))
-+       $(foreach tc, $(notdir $(TEST_PROGS)), \
-+               $(shell echo $(tc) > $(patsubst %.sh,$(INSTALL_PATH)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
- 
-        $(foreach tc, $(list_progs), \
--               $(shell mkdir -p $(OUTPUT)/$(DEFAULT_TESTCASES)/$(tc)))
-+               $(shell mkdir -p $(INSTALL_PATH)/$(DEFAULT_TESTCASES)/$(tc)))
-        $(foreach tc, $(list_progs), \
--               $(shell echo $(tc) > $(patsubst %,$(OUTPUT)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
--
--       @if [ ! -d $(OUTPUT)/runner ]; then             \
--               cp -r $(selfdir)/kvm/runner $(OUTPUT);  \
--       fi
-+               $(shell echo $(tc) > $(patsubst %,$(INSTALL_PATH)/$(DEFAULT_TESTCASES)/%/default.test,$(tc))))
- 
-        @:
-
-> +		cp -r $(selfdir)/kvm/runner $(OUTPUT);  \
-> +	fi
+> +  # python3 runner -h
 > +
-> +	@:
+> +Run all default tests::
+> +
+> +  # python3 runner -d testcases_default_gen
+
+s/testcases_default_gen/$(DEFAULT_TESTCASES), because the user (like me) might
+change it.
+
+Something like this, if we go testcases => install route?
+
+Generate Default Tests
+======================
+
+Generate the default test case files using the provided make target::
+
+  # make testcases
+
+Create a ``$(INSTALL_PATH)/$(DEFAULT_TESTCASES)`` directory and a sub-directory
+for each KVM selftest, and populate each selftest sub-directory with a
+``default.test`` file, where ``default.test`` contains the unqualified
+executable path.
+
+For example, the ``dirty_log_perf_test`` entry looks like::
+
+  # cat $(DEFAULT_TESTCASES)/dirty_log_perf_test/default.test
+  dirty_log_perf_test
+
+Note, the ``testcases`` target is dependent on the ``install`` target, i.e.
+installing testcases will also run ``install``.
+
+Testcase Syntax
+===============
+
+Testcase files can provide extra arguments to the test::
+
+  # cat tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
+  dirty_log_perf_test -x 2 -v 5 -i 10
+
+In this case, the runner executes ``dirty_log_perf_test`` with the specified
+options. 
+
+Examples 
+========
+
+Display all options::
+
+  # python3 runner -h
+
+Run all default tests::
+
+  # python3 runner -d $(DEFAULT_TESTCASES)
+
+Run tests in parallel::
+
+  # python3 runner -d $(DEFAULT_TESTCASES) -j 40
+
+Print only passed test status and failed test stderr::
+
+  # python3 runner -d $(DEFAULT_TESTCASES) --print-passed status \
+  --print-failed stderr
+
+Run test binaries from a different directory (e.g., out-of-tree builds)::
+
+  # python3 runner -d $(DEFAULT_TESTCASES) -p /path/to/binaries
+
+Save all test outputs (stdout, stderr, status) to a directory::
+
+  # python3 runner -d $(DEFAULT_TESTCASES) -o test_outputs
+
+Run specific testcase files::
+
+  # python3 runner -t tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
+
+> +
+> +Run tests in parallel::
+> +
+> +  # python3 runner -d testcases_default_gen -j 40
+> +
+> +Print only passed test status and failed test stderr::
+> +
+> +  # python3 runner -d testcases_default_gen --print-passed status \
+> +  --print-failed stderr
+> +
+> +Run test binaries from a different directory (e.g., out-of-tree builds)::
+> +
+> +  # python3 runner -d testcases_default_gen -p /path/to/binaries
+> +
+> +Save all test outputs (stdout, stderr, status) to a directory::
+> +
+> +  # python3 runner -d testcases_default_gen -o test_outputs
+> +
+> +Run specific testcase files::
+> +
+> +  # python3 runner -t tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
 > -- 
 > 2.53.0.1118.gaef5881109-goog
 > 
