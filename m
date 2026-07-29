@@ -1,63 +1,63 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C288A3FBEC1
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07712368D45
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785367546; cv=none; b=RQBJYgMbRpFCoApl7qQFk9xIhLL9W4E6QjOA5Hb3WNQ/Of6r2U8zAfC0A/WR7N1u1vD4rZgH2L6wSzEOHIZB2foBYvgokrtZ3EitS4n+EU+T1oLq8tZi3S+w/NXCMV6MxEveNV3gi88E0U4ch0dFX/QsiNpPD8p0rP03EhkkcqA=
+	t=1785367547; cv=none; b=IXDVTLUECa1gqVneB9tWo1NPRNATmmNCBUwKn+u+gIzvPhGL52EpSxlFfry3FC7TQM5PSIOxdpvTtsSBlrr0awGrgnjS0HTbgoP1jfc7095qi3ngeXbMzoXKgvmFMi8KFuPFvv6+JB6a0SJAKWHUaQidbvwCEoBFyqHrtihnV/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785367546; c=relaxed/simple;
-	bh=VRKBcrvkkTj50ug1nsBr/nbS1UFJ1XmMlvIvUd69GHY=;
+	s=arc-20240116; t=1785367547; c=relaxed/simple;
+	bh=q8qlrs4nCmmr/1qrzy3ueNPoW25hLnxO8i8kBJxKgj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5XIeEfAVJKobjWqB/CWSbUP2n2I6uyp5dtghfJf2DAeM+LirxpeB/+oiLW4JeHXEXOJ5z7yMEbyD2Bpi/37zU08UwVZaN5A8H6oLji+mIJVjL7GB87VhqrELg2KyitehrLQgNIMyMG9E3ulRXRzV//QnULMd+7CcOArYX+R56k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJ71dAbb; arc=none smtp.client-ip=209.85.215.178
+	 MIME-Version; b=WNFcv1iPjyd4ADd89DoMJCmTV980toRUOmkMI6qNRss5uQ9AO5qHrnL0564vDhOE/xq8QkZY9XN5zo4ujVvEVW1vVDJTxwZ3S+rdtVUgQj2vKxHG18x5WodrvmdJH5Lrxasfd0Y6BOH7lDZFtdXAk6HKHUUGNmvPWyx7Kv/Ky80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hgqN7mSi; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJ71dAbb"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca766c1c9ccso891817a12.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:25:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hgqN7mSi"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dd55ad76cso162054a91.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785367542; x=1785972342; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785367545; x=1785972345; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b5uwqzdU+bRfmUzUhku7H1r8OyjJF5nGSMJqcdrWCrY=;
-        b=dJ71dAbb2vXWkRrMdWy5XmYnKnDFuMkB+0aYfs6tNbd1ZoptYNLFGotGRl8OiFUy4u
-         Mjw9PTRj0ghZAPwvs8cPDJLUb67a79X+um1VuXUsdco3WnkL2DhjaR/Ugv/XVQ7KEtk7
-         dhn/XLsWCM2X3bgSwijT91glAqjyKO1wYQCOsKBbwbrRlky/llT1mwPJhWNoRYFSNBnR
-         ITQ+gQJ45V/TlzQCr7qvFFiPjBrxLeOsXJkfpzo9fin9xKjrJriSkLPaxmEINDP0d/ZP
-         O+PesOjJxkHe2t0KS+epHIJFLLd8Uk3LfvPWQWxZmdqTuyIX3wziOZnXk33KNf4Wh3Km
-         lAAA==
+        bh=Ig1ihYaIcCdMTQNvyfvc5KxHcD85RFL0JcLOryGs+LA=;
+        b=hgqN7mSiv1/t9TwapJHBm4YAAS6dgkdv+9KRUYz0Y4hBCv7S7G5a/GHjUxvZODwCwt
+         rdByhdSdjY/2BhUyWYQ4Lk63NROJnN3OCO+KZAG09tS1rDIWvpxOyQIKc7Dc6g6v9x1g
+         5N8+a49+xxlpqbT7FmOC0gkJYXzyU09ljff14M6VQ1WZIh6sHLgSHtceMOw+Gf1OJE4s
+         rp7KdPODv45OLEKIYikHIjCojPEE8yQjBj6l/s/nEuGF4hokUyAsOZa+kvnQ23wcal3M
+         UdWAwBcsjQhS8sZye1iHUppf8kGVhLNwkIecP+JZrtVB0SMCRqfrLoGg0e0sYUk53yJn
+         yIlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785367542; x=1785972342;
+        d=1e100.net; s=20251104; t=1785367545; x=1785972345;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b5uwqzdU+bRfmUzUhku7H1r8OyjJF5nGSMJqcdrWCrY=;
-        b=WnoM7XMThLO4hNgAUIl9Oagm9/tu/fCe2FoAeXBdknTty8L6T2T/PSX34Eb0ONOZv1
-         qI3WAc1C0wccyovGZZkDs2pKs7upSD6fJctkTDxuGoFkCfm2FS3VensXPHG9fXVSv3b4
-         pAxc7GN3O6t8YZQfIp1ScbLf1dwVaCKZTLHG4tA9rA095V0JaGbIHcdTwwcIUkPa4pjL
-         quttFmCgV1A33RlfjvLQo73zORvsmsy6wpy6kn+RbD5WYeXWxHe9pfk8WEAPbp1j+tdW
-         mGGcgYEZngMw4pmeMDeSUct5BNEeIij5Qbbf2Ghme5WgqAwFuMmkFUeru2En4l1Gx7xs
-         jJfA==
-X-Forwarded-Encrypted: i=1; AHgh+Roqk8dwOHeW9+3goXeG/xMy/MC7AI33dCN6x5R4dogwHWB1ti0KCegXK5dFOPZy4CQoeZA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH0jKe0tjzeaYO9bFs/XFWihqdQjoCQmaoHGpTBYPPTClUuRw2
-	SX+AZxmLDf4d3QZotjCO4vQJ6Ldztq/gxFdnDJzw2RGAshjEjZo4VXQUmWa0NH8p
-X-Gm-Gg: AR+sD11DVKCp29h/HJz3ulzXv5ilKo38e3HaYu4EbICyA+XZUK5+OanC5EfWppAzlMI
-	WLo23nKQSgglUutdHTYqYP98OPFg29dSVTYwS2MYiFihwCmyHOif78yUGkwTW9e4AjQIC+TaiUr
-	YtnXhbyGIqtOD2VijSyPGJSu9BGC3blipcutPr3IrJhC7tAar+yn4glvccqF/Fve8iU42+MfuaQ
-	+371GVcokV7hoTREV+67eK+PrdvBFtvEEyiqgXmSvNTJBSmhZydtlF8EGhVAyMBCzwIUbtgFGMq
-	LG8QtYG5SlE5PLWbHuE9J5ymoh3uTUB/5sPhddiLjYT2ISER5QNcVDXD4R+1zg1Xs/vSeIUyQEr
-	PsdpbmeooKWi4O63Kmu6yCWkbi2A4MqGGfizI0h5pxHZCu0DCMfZT08EB4YbJXXikcWwauzXaI8
-	fp5MyfRuhEfT8PGg/ZfNZNDjABAHIBERSgG9Z9olY72JNXnXwIYTfT9R0nAsU=
-X-Received: by 2002:a05:6a00:330e:b0:82f:38df:681c with SMTP id d2e1a72fcca58-84ebc1eb51amr328381b3a.6.1785367542040;
-        Wed, 29 Jul 2026 16:25:42 -0700 (PDT)
+        bh=Ig1ihYaIcCdMTQNvyfvc5KxHcD85RFL0JcLOryGs+LA=;
+        b=b25iDKQ80LY+m+LBjTyZOj1LtBwO1DXRu/LaiBLSo8rDD3MDsfDaxxT17+Tw0LN6Y4
+         b5iMsa2/G2LChM7VFuQwtLGL3CYT6emIMt+x93xH2sM8R1WgIBfi6OuiFvcb/nSB7pcP
+         PEo0JWDVGbNSlAxbi59n2NFyF3Sa0xYBZXiq1vvDI7dwKRW2fV7+m0efZE9kAn+UI5Zi
+         vD9EMDT3NwMYi1u7HPfrwS1L5nHjE54kmTSs/NO8TiL3HQ8lW5ra4b6hQkqt1/KoqCST
+         jiKaPasacnJ5YopIgfWN1YgBngO8mLYhDLSBazFU0DG4UYWqzbCwvydV4/YZYBu0NtZe
+         drgA==
+X-Forwarded-Encrypted: i=1; AHgh+RrwBafMhKwaMByqPHryYqk9z6xjY+3S8IQZRefrArNsQu7tnhy1OKPYUZY8ULBni7biUrE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF/DsH7OchyO82RHLuMP+KCUxEsZO6jx/dHdkyRW4rNvqHBj0N
+	58XG2UNJu05WtCutFa0zmOX9gYgnv+WChE94HxaVU0SPA9SS1rsInrwJ
+X-Gm-Gg: AR+sD12Evz+WiGqqlrHx3ul7D80KHG5HJU0zjRIIF06mdbCvbmYtZTpZk0gzcFqPMcy
+	T7k5TwVDXV7sQq8b5niSSe3EB9IfcnqoWTYzBb9W3HDFUZ02i5D3JW/MtMXauYA5WG6eyM0W5ms
+	QxTm1tZc1v0Uwb+6/FZG6aneL9iUCikypwQIt3iNxcBk/Pjt/iK6kYFL0se6WF0JwoqIgynsR+i
+	oOdKF5+B8eGaWH1fndY9EY0fp7KYICN4zC+tueZkv0VzT3dnvE9d4frMlFovLjz37a9TqL3VvjR
+	5y7PM+5Wyn9DYdUjXOWoMhHzxpXY9zB+2wJBIdcBmEjqtP7bWmI/euC5StYnJ0DLNzpEJN95TqH
+	RyIgxyg4LB4d7d25fErEXoUYUsKXm6pkTyNAkbajHYaRyj/IecJb4IaxoKlEeY6DDFvS2WPSkAu
+	UCII6wCBOLDdxJ8qGItvysUVPfNgI/NvnEp0h4S/uuQtbm5KUdnWjbOwKR7R0=
+X-Received: by 2002:a17:90b:2b4e:b0:37f:9e21:91d6 with SMTP id 98e67ed59e1d1-38f9bb15cd4mr230876a91.13.1785367545337;
+        Wed, 29 Jul 2026 16:25:45 -0700 (PDT)
 Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea02fa474sm1992558b3a.30.2026.07.29.16.25.41
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9b770e54sm90102a91.13.2026.07.29.16.25.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 16:25:41 -0700 (PDT)
+        Wed, 29 Jul 2026 16:25:44 -0700 (PDT)
 From: Inochi Amaoto <inochiama@gmail.com>
 To: Anup Patel <anup@brainfault.org>,
 	Atish Patra <atish.patra@linux.dev>,
@@ -72,9 +72,9 @@ Cc: Inochi Amaoto <inochiama@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Yixun Lan <dlan@gentoo.org>,
 	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH v3 1/4] RISC-V: KVM: Add SBI extension validate callback
-Date: Thu, 30 Jul 2026 07:25:22 +0800
-Message-ID: <20260729232527.139183-2-inochiama@gmail.com>
+Subject: [PATCH v3 2/4] RISC-V: KVM: Add SBI FWFT validation support
+Date: Thu, 30 Jul 2026 07:25:23 +0800
+Message-ID: <20260729232527.139183-3-inochiama@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260729232527.139183-1-inochiama@gmail.com>
 References: <20260729232527.139183-1-inochiama@gmail.com>
@@ -86,87 +86,58 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When user disable FWFT extension after setting any value of the
-FWFT feature, the state of vCPU will be broken since the value
-of disable FWFT feature is still functional.
-
-Add the generic SBI extension validate callback so the FWFT
-extension can fix its parameters before the first run.
+Since the KVM SBI has extension parameters validation support,
+implement it for the SBI FWFT support.
 
 Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 Reviewed-by: Anup Patel <anup@brainfault.org>
 ---
- arch/riscv/include/asm/kvm_vcpu_sbi.h |  4 ++++
- arch/riscv/kvm/vcpu_config.c          |  2 ++
- arch/riscv/kvm/vcpu_sbi.c             | 23 +++++++++++++++++++++++
- 3 files changed, 29 insertions(+)
+ arch/riscv/kvm/vcpu_sbi_fwft.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-index c1a7e3b40d9c..f01a2860c751 100644
---- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
-+++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
-@@ -60,6 +60,9 @@ struct kvm_vcpu_sbi_extension {
- 
- 	void (*reset)(struct kvm_vcpu *vcpu);
- 
-+	/* Allow the extension to correct its parameters before the first run */
-+	void (*validate)(struct kvm_vcpu *vcpu);
-+
- 	unsigned long state_reg_subtype;
- 	unsigned long (*get_state_reg_count)(struct kvm_vcpu *vcpu);
- 	int (*get_state_reg_id)(struct kvm_vcpu *vcpu, int index, u64 *reg_id);
-@@ -93,6 +96,7 @@ int kvm_riscv_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, struct kvm_run *run);
- void kvm_riscv_vcpu_sbi_init(struct kvm_vcpu *vcpu);
- void kvm_riscv_vcpu_sbi_deinit(struct kvm_vcpu *vcpu);
- void kvm_riscv_vcpu_sbi_reset(struct kvm_vcpu *vcpu);
-+void kvm_riscv_vcpu_sbi_validate(struct kvm_vcpu *vcpu);
- 
- #ifdef CONFIG_RISCV_SBI_V01
- extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_v01;
-diff --git a/arch/riscv/kvm/vcpu_config.c b/arch/riscv/kvm/vcpu_config.c
-index 238418fed2b9..b68aa830aaf5 100644
---- a/arch/riscv/kvm/vcpu_config.c
-+++ b/arch/riscv/kvm/vcpu_config.c
-@@ -69,6 +69,8 @@ void kvm_riscv_vcpu_config_ran_once(struct kvm_vcpu *vcpu)
- 
- 	if (vcpu->guest_debug)
- 		cfg->hedeleg &= ~BIT(EXC_BREAKPOINT);
-+
-+	kvm_riscv_vcpu_sbi_validate(vcpu);
- }
- 
- void kvm_riscv_vcpu_config_load(struct kvm_vcpu *vcpu)
-diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-index 46ab7b989432..b737e9a7a12a 100644
---- a/arch/riscv/kvm/vcpu_sbi.c
-+++ b/arch/riscv/kvm/vcpu_sbi.c
-@@ -723,3 +723,26 @@ void kvm_riscv_vcpu_sbi_reset(struct kvm_vcpu *vcpu)
- 		ext->reset(vcpu);
+diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwft.c
+index 03153fd8d15f..56fb59afe02a 100644
+--- a/arch/riscv/kvm/vcpu_sbi_fwft.c
++++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+@@ -603,6 +603,30 @@ static void kvm_sbi_ext_fwft_reset(struct kvm_vcpu *vcpu)
  	}
  }
-+
-+void kvm_riscv_vcpu_sbi_validate(struct kvm_vcpu *vcpu)
+ 
++static void kvm_sbi_ext_fwft_validate(struct kvm_vcpu *vcpu)
 +{
-+	struct kvm_vcpu_sbi_context *scontext = &vcpu->arch.sbi_context;
-+	const struct kvm_riscv_sbi_extension_entry *entry;
-+	const struct kvm_vcpu_sbi_extension *ext;
-+	int idx, i;
++	struct kvm_sbi_fwft *fwft = vcpu_to_fwft(vcpu);
++	const struct kvm_sbi_fwft_feature *feature;
++	struct kvm_sbi_fwft_config *conf;
++	int i;
 +
-+	for (i = 0; i < ARRAY_SIZE(sbi_ext); i++) {
-+		entry = &sbi_ext[i];
-+		ext = entry->ext_ptr;
-+		idx = entry->ext_idx;
-+
-+		if (idx < 0 || idx >= ARRAY_SIZE(scontext->ext_status))
++	for (i = 0; i < ARRAY_SIZE(features); i++) {
++		feature = &features[i];
++		conf = &fwft->configs[i];
++		if (!conf->supported)
 +			continue;
 +
-+		if (scontext->ext_status[idx] != KVM_RISCV_SBI_EXT_STATUS_ENABLED ||
-+		    !ext->validate)
++		if (!feature->supported || feature->supported(vcpu))
 +			continue;
 +
-+		ext->validate(vcpu);
++		conf->enabled = false;
++		conf->flags = 0;
++
++		if (feature->reset)
++			feature->reset(vcpu);
 +	}
 +}
++
+ static unsigned long kvm_sbi_ext_fwft_get_reg_count(struct kvm_vcpu *vcpu)
+ {
+ 	unsigned long max_reg_count = sizeof(struct kvm_riscv_sbi_fwft) / sizeof(unsigned long);
+@@ -755,6 +779,7 @@ const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_fwft = {
+ 	.init = kvm_sbi_ext_fwft_init,
+ 	.deinit = kvm_sbi_ext_fwft_deinit,
+ 	.reset = kvm_sbi_ext_fwft_reset,
++	.validate = kvm_sbi_ext_fwft_validate,
+ 	.state_reg_subtype = KVM_REG_RISCV_SBI_FWFT,
+ 	.get_state_reg_count = kvm_sbi_ext_fwft_get_reg_count,
+ 	.get_state_reg_id = kvm_sbi_ext_fwft_get_reg_id,
 -- 
 2.55.0
 
