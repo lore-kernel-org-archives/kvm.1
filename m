@@ -1,117 +1,134 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246B342C4F4
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6AB3EC828;
+	Wed, 29 Jul 2026 18:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785348405; cv=none; b=gTNpnfnMtA6q+qOzAaxQ98c9RwsCLQwOBUti+Dct6u9rReUP6gjRyUNw76cw/jdQttbcCNS3OBWfx8Vb/muAOW5QT63EyaBeU7Y5wdq5dWGO0zMFlc8FK4R87YmZzasWL1tcG6b8fHxRf0BSAIeN1VO0fas+CeuCkYLCiaRkvnQ=
+	t=1785348688; cv=none; b=UzvaSQoKeL6c6KBUYl7Gd0wgwSjKDTApBeCEEjzaK+P5WOEMVAgzJaBcmq4tcYOW72EVycyAqE6Cht2G0L6CZ5XJsqtJ+9W6HxQ4y0DvI47zSuTK+9fnbeFA6C3WjdULOGBY6ObzzPX9At/yWfQ2Y8ey6rVijqZS3KFcHYhM1e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785348405; c=relaxed/simple;
-	bh=awd77f5bif/dIgyPxCs6KSL0oviQPYlUuXl3UA5EPtQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FMichkz7Ki3f3bZIWdyYJKywg7QLJBMT8NjHlw9uBhKHriGxP+G7i4u1CUoDlRShifFL4CHxE3vIhx2fq4VIqPp7JfK0XdruqgkHf411tGuldIIgcAQyT0hzZ9XeH3LrISDXGNN0IjK7nhrCVVbeqyMYyhe9igm1Uw5Do8ndE/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Pgqtt3iY; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1785348688; c=relaxed/simple;
+	bh=FC3xdow7gvqfYTk3CFuk5P3bP84mOtzQDg9+fq4FJlM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qiIDO+y4xqp5EK5OqhuoJF344bHPEjS4epIIcZ+6RU2/3oERhcujOaox9U5Aiy+/AmNpi8qlSBKcXbHuc893+tVaUT2F+fRRHm6VqkRAebNkEGzQr0h1ez4MRC2b5Qmr8t6gA0w9p8jVRlgwOpDtJEwXOvTjY9itBRTFeSejhdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CzUbfXl4; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Pgqtt3iY"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47640541585so981929f8f.1
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 11:06:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785348394; x=1785953194; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+yaJ1hCjUBCmis82b4ussWNf6EXlhg+aBQ8DtTvotq0=;
-        b=Pgqtt3iYQBFWEiFoU6UiHcgTeBY2FPWJVikCRqrXhUhCxRd9kJAmxhQdkBJTK1heYB
-         rBYd1BbPrQI6cHh0NjMuHYoYhNveiySY10Kf0m77z5YhXSd1ORgKsPGOq2J1VBQp3U7X
-         ulqkhmp6mWILLTUdT3BSzXSiQbJM70qEvfz1o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785348394; x=1785953194;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+yaJ1hCjUBCmis82b4ussWNf6EXlhg+aBQ8DtTvotq0=;
-        b=avfjU3oEWV6MfgX+lYsDAXrv8SP9Ugo/yBcay6vfdEFxFIHnbZHvP22R7Nc5om2829
-         FagvkLVGzLvYnfmzRj22KeIp+aYPfOtQrjB0dM15uNFPuAjytp/Vr7FRjcedVlfYHg1/
-         ryadPb83zTGpdBZWvsQvcO5rxRIk8r41o6A90w8hr7OTwrG/AC5eouOD5mMQgObW5YmH
-         xdzoL/JbOhtmjDR+ya2rVgDSoQPO+roS/Z1mubQP+lSJSXVQuoGIWh0IT4h+uV8tc33/
-         f/zYu5J0WsQbRRubivh2fTMtUOXHJAqqTDyJhAJJLeebKO0/Go0zcbRtK5ZRXQ69Ilmg
-         Jsrg==
-X-Gm-Message-State: AOJu0Yz0jtTlXHwLLmI64nNu3z1XFciT31omHCrZA9qVGYecGEQ4Z6O2
-	XpAA9u7GegS2wSFVrl40CJ+7DL+rfA+wpDBvnsx3uBL1YViFArIhhve9plRcfNkxbb48RvhiAz2
-	TR6gcSw==
-X-Gm-Gg: AR+sD11eiDngBSBBF6JNB7ke7Gqgx7Exwg+ep+LHHQhwlNTunI+TqDhibSGZJhI+Wi2
-	DQ1khWALmLDSxs5Ky0jBo4iETwaGBrbGHEm+rH6ixO6CgvebZNFEVtTdePA3RNVCwucwagqUfaw
-	Qg+HEqvRe7RHNElKd5bTOjW6sznTXbdgRTotSlFptPx2U3Da+hdRGN3SzCzWUkavju+FqAw6ra/
-	uGyX5X3mqITfpZMlx+SEWlxNd6hZYoHL7zp5pUN9gRAeaolvrt0vR0L8Yt6qV0wrlrnDccavAEv
-	+q0Y/+3vhTmqgcInq5YB1TYouVphrGWIDUErGvG5kdARp3HXRkExcDt0vJPHbWpbAT1hYoMHeuT
-	7UP5QUsC73maIeT/MkQfAjC/3wi1iRNd2C9vrvAdGKfDSiNqhXgVa09FV3jgCMI1EDvAKrSG9le
-	EXqLWZs4VgfejyA2C8ClSKYw4VBdPiD6k0qJLT9SVVyQ3W5QmSsCgSJbaQMVkmo57jEuGPnIkgz
-	ROWdoKd6n9y9PwPlLFirg==
-X-Received: by 2002:a05:6000:430c:b0:47f:9201:6409 with SMTP id ffacd0b85a97d-47fb1f17008mr8860822f8f.40.1785348394087;
-        Wed, 29 Jul 2026 11:06:34 -0700 (PDT)
-Received: from google.com ([2a00:79e0:285b:8:6f8:f7bd:339a:29ca])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0f039sm10526768f8f.18.2026.07.29.11.06.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 11:06:33 -0700 (PDT)
-Date: Wed, 29 Jul 2026 20:06:30 +0200
-From: Dmytro Maluka <dmaluka@chromium.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: VMX: Fix stale PID-pointer table entry left
- after vCPU free
-Message-ID: <ampBJrSSas_XISim@google.com>
-References: <20260729170621.308809-1-dmaluka@chromium.org>
- <20260729170621.308809-3-dmaluka@chromium.org>
- <20260729172831.5BDE71F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CzUbfXl4"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66TFI15B2684724;
+	Wed, 29 Jul 2026 18:11:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=sgH2EJjcktcmM/j5u1s9LLcKOZo9NyikNK8G2yYlK
+	SQ=; b=CzUbfXl4unznxhD/QfsILvnjA4m6sw4n7tPHWR/Dffv7M2AZ6II9w1gnd
+	tFlcjBC1GhBxrI6ZY8wiqB0bfUaSug5iuvMm7WcLKp5EkocRYLEf4p6GLSTq5hpj
+	IxBaPTa/w/69zJKhVURm3iQfVXpqEBmOvsN7YIJphYF66XjM8EhIEC2BbCkK/Xkl
+	XjOTB8TpLWlwffMunxf2Y/Y1UBo1ACc7v43ZE7zxuVcZ6WRhM3m0kbIsQ+iNgGM5
+	q60/V04ppAshl3E/DGQH8pzsQYqDfJG+kCA7oB5mpey/l8VH79F4Nldf6jE2L8m/
+	fDeJw7VbzNzXBR0fBuKu6Pg/FW3cQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuycm0a5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 18:11:20 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66TIBJcm001238;
+	Wed, 29 Jul 2026 18:11:19 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhfs42-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2026 18:11:19 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66TIBIeM57606414
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Jul 2026 18:11:18 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 118EE5805D;
+	Wed, 29 Jul 2026 18:11:18 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A58658055;
+	Wed, 29 Jul 2026 18:11:17 +0000 (GMT)
+Received: from IBM-D32RQW3.ibm.com (unknown [9.61.243.109])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Jul 2026 18:11:17 +0000 (GMT)
+From: Farhan Ali <alifm@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: alifm@linux.ibm.com, mjrosato@linux.ibm.com, borntraeger@linux.ibm.com,
+        alex@shazbot.org, mattev@meta.com, schnelle@linux.ibm.com
+Subject: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with non-mappable BARs
+Date: Wed, 29 Jul 2026 11:11:16 -0700
+Message-ID: <20260729181116.1373-1-alifm@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260729172831.5BDE71F00A3A@smtp.kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: LZLAPB0ZKSqsoSbB9I8Ba8iFaPMiCcMJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDEzNyBTYWx0ZWRfXyM9tJftliIHh
+ /hFosqzbvpybEeLVyCw+1+H1d+nZIxLFeaBML+yyyipFALDvjb+vwsintc5GY/IMDhvjzQJSHOx
+ /81BHXOhTePpxSdVWKZAcpHAM1oFmy4UnZP9fX+zrRI/872Q+MEkdH7sucpIt/5/kluquB6WFVZ
+ LcMBUk8Ji183zzNPCPXgSmh4CxrInMnD/3Hbk1BbeC3k1yP4p3mEy5LxTkCwRIi8ocfPUoWpMHB
+ 93nO38wssTNi6HuWg83akTwXN3SOfU+Wt0FxQ5gC3LYmT8VUmzZP4rtDcm853O2tKEtT7Zh2q3W
+ g9LfhTFRZf2Jc36u4AfPnslKSmyM4ogoiwIQv6q0Rxjc4Pvgr/IUYP2suz0yI4Hyg4bydPnw+g0
+ OK4gYD/0IGseM8gaePwYAel3MsbFc1L3hoN4LcY+S2xjwrilbx0DAQX9lNgfEGnRGF1+PLDSZMd
+ TvZggJgS2zmxH+xFUgg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDEzNyBTYWx0ZWRfX0bRsLDC3p8Id
+ K/RuVn5KGYsCE97CH/ICYJv1vcHVU+vFZyt2yysd/FpvsrwzEQrFEqYLhjbjwfq+tT/6/V0OS5a
+ k03TkibpVlnHEn3Ci75F+MV4DHTwKsg=
+X-Authority-Analysis: v=2.4 cv=AZeB2XXG c=1 sm=1 tr=0 ts=6a6a4248 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=WVCk8p4kVaWWWIVyzUUA:9
+X-Proofpoint-GUID: LZLAPB0ZKSqsoSbB9I8Ba8iFaPMiCcMJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-29_06,2026-07-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 priorityscore=1501 phishscore=0 adultscore=0 impostorscore=0
+ clxscore=1011 malwarescore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607290137
 
-On Wed, Jul 29, 2026 at 05:28:30PM +0000, sashiko-bot@kernel.org wrote:
-> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> > index 6b96f7aea20bd..ebf26ea84a50b 100644
-> > --- a/arch/x86/kvm/vmx/vmx.c
-> > +++ b/arch/x86/kvm/vmx/vmx.c
-> > @@ -7572,6 +7572,9 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
-> >  	nested_vmx_free_vcpu(vcpu);
-> >  	free_loaded_vmcs(vmx->loaded_vmcs);
-> >  	free_page((unsigned long)vmx->ve_info);
-> > +
-> > +	if (vmx_can_use_ipiv(vcpu))
-> > +		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id], 0);
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does clearing the pid_table
-> entry alone prevent hardware from writing to the freed pi_desc?
-> 
-> According to the Intel SDM (Section 29.1.5), the processor caches PID-pointer
-> table entries in the VPID.
+vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
+all devices support having their BARs mapped by the CPU. The
+non_mappable_bars flag indicates that a PCI device's BARs cannot be
+accessed by the CPU. The ISM device on s390 is one such device. The BAR
+size for an ISM device is 256 TiB, and attempting to map the BAR will lead
+to warnings:
 
-I can't find this statement in the SDM, and I'm not sure what it has to
-do with VPID, apart from the acronym similarity.
+vmalloc_node_range for size 281474976714752 failed: Address range
+restricted to 0x2110bab00000 - 0x21903ab00000
 
-> Because KVM immediately frees the vcpu memory into kvm_vcpu_cache after
-> kvm_arch_vcpu_destroy() without issuing a cross-vCPU flush (e.g., via
-> kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)) to invalidate the VPID
-> caches of other running vCPUs and synchronize with in-flight IPI deliveries,
-> can other vCPUs still send hardware IPIs using the cached pi_desc pointer?
-> 
-> Could this result in the IPI hardware writing to the freed vcpu memory and
-> corrupting another newly created vCPU when the memory is reused from
-> kvm_vcpu_cache?
-> 
-> >  }
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20260729170621.308809-1-dmaluka@chromium.org?part=2
+Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
+is set by the PCI core at enumeration time and already serves the same
+purpose in vfio_pci_probe_mmaps().
+
+Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
+Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 3f11a9624b9c..6a184588ff23 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+ 
+ 		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
+ 
++		if (pdev->non_mappable_bars)
++			continue;
++
+ 		if (!pci_resource_len(pdev, i))
+ 			continue;
+ 
+-- 
+2.43.0
+
