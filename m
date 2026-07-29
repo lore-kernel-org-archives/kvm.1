@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B623603D3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED12345CAA;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285311; cv=none; b=dxjhIhUwQx3bLXNHry5GwBZExasyp/c4KC2s5WfO2AV/eOGl7Bh4Eklb2WCZSWSQc42dN7BP7auCTbRFNBTwIpKhtVk/eRztvsMmNkSgdu6E/a5MO5jnFt3Blgf84NmFzDTTW3hn5PtoQ9UjOgjRULDTWl3gXxzdB87Ded1zpVQ=
+	t=1785285310; cv=none; b=GCAOS/ULOL4UmFTXIyvhujqr8l08q2T9AsGqgwGVZ9/zsqDsILzn49FhmaPhURcjVx2daFEIbUEhDX2lDHMRMtidVstoBraMTKksvKcTWbvAn2s15TadfaLVwnVOvzUMZtj0gt74aBlpWzCjxu4llQASfadSdQjwbrpHmVIxYJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785285311; c=relaxed/simple;
-	bh=JuvEz0loFWZO3vqfVPsRy+gK5FqXHMStrsT//a/BlPQ=;
+	s=arc-20240116; t=1785285310; c=relaxed/simple;
+	bh=0lLMZ3l4ONPeH/mKx7eyUWm+z+05c4Fp5tdDO/KS1c4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o28n+AQ47f24g7N7FymrrLnDMvAmfqlNZCoV/zRYbbJ8esg/qRyYaGpDB3mE0GpIW79XD9CR9pTThdOrcWPUrnU5qcR25SvRc7iJYYIEPC+/plDZDsatJWiw8dz0RwVmFQxppMwJJ84nsARwdSTQ12Hh0815XPsF6rmX5fJS2GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVKmK3h8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=DIMjj3sioEw+y42e+bSNsVui3qYvEdMLf2XvBl9bn/mJEcLtbJpFy/RnJYLH/jPLj8Dg/8TBqXInhcvIjPyw2njX7fWN8WtXCp0gKyz/KDiCufe3ifsygM2VRX+wdQMbK3eArSzsDm0X0riypAivsmhOFhQ7AiCOiEuQi/PO7qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iheZNw7F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVKmK3h8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 612E3C2BCFC;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iheZNw7F"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6EB8EC4AF65;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785285310;
-	bh=JuvEz0loFWZO3vqfVPsRy+gK5FqXHMStrsT//a/BlPQ=;
+	bh=0lLMZ3l4ONPeH/mKx7eyUWm+z+05c4Fp5tdDO/KS1c4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PVKmK3h8AhJJ/sN2Ox6bhekGJ7AJqkGZln4Rg8L4vt6srUHmyPXPxbo917zd6zmcA
-	 GeocWYxfn2V6nDJvu3w2Om/W6Lq/6Acgpc7D7+KhTSsb3cuIhI/gb8xFFixhYHw8pt
-	 cs71cG2s5i2fzMfJ5HNpff9LHQ6+s56HvzaLJX+iRtUABa0pTqI8c/tJmsWcZXBIm8
-	 +KROeWv8r0fNFStR45ckg8ZdHAcAz22ASFrw3U5+C5vr55coSGejzMg47RECOX+ZBL
-	 a3Xd3JdLoH092mAE5cfaIvBTd8J4QT5L/k6BoAWBksZ6M+bJD7/wiHC+k518JBaiQk
-	 3FwuTAWdDENXQ==
+	b=iheZNw7FBcgaVAEtIKqx838Lb9cIsu+GY6a92i4nlfYWDjmDRjclVc7hRMW0EFxM/
+	 6xwMzfXL8d88R1c5jDbkQON5Ns46Ug47OOgwbwkss6KGWTzbFuL1G1/v4nEHrgcdq7
+	 H++VkmBf3XLIUn/F7/mHYxZVmNfGDVbiwmYnxtPNaVrCWJ71whqmaEcgUGB+gKDAw0
+	 893N9APLiUFsWhf0CYq4FSsiLkRGSCpsDcwyZqDFAGw8sfDJO8ssqCZzVAMC8sLky3
+	 atiQ4KigjeC2k9diAmajLIWXEK9xxyBQtZxldN7TfyhY/Uq3dqfiqxB434/IzsOwTr
+	 0eFRjHJ73qrXw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 438BFC54F57;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58E19C53219;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:30 -0700
-Subject: [PATCH v9 31/41] KVM: selftests: Convert with allocated folios in
- different layouts
+Date: Tue, 28 Jul 2026 17:35:31 -0700
+Subject: [PATCH v9 32/41] KVM: selftests: Test that truncation does not
+ change shared/private status
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-31-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-32-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -76,11 +76,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2317;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2066;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=WkLey8yQx3OGBDsexWHIgLsjEWvinSfVroxJ6rEhjbc=;
- b=DxC7wo6syGL1l+hjAxnlA0vq/Et0LhjDJCn9Td2x88Y0/BEPYBx2DhTTNHHadlbIOsu06bHJJ
- CNCZM6SfCX6BRcPelx+Rd5Dj8joB5XKxSDDG0O2BWR0EVr8M9hy77vi
+ bh=eiFVWqnVQojfvRcVrcUK4b646kY0rLDrJ8WTD6NqgBE=;
+ b=jktsq23A0PhJBuERFdfXmG/kKbsDpg4E6aQyM/ahLawz08jc8lNzCYOK5R+CRVucip2wVlrjt
+ YObEWFdvfjyChLp2x12qNA0p3YU56NP5PiYQ5DkwxYoTwLqXy4C/o5I
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -90,12 +90,14 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a guest_memfd selftest to verify that memory conversions work
-correctly with allocated folios in different layouts.
+Add a test to verify that deallocating a page in a guest memfd region via
+fallocate() with FALLOC_FL_PUNCH_HOLE does not alter the shared or private
+status of the corresponding memory range.
 
-By iterating through which pages are initially faulted, the test covers
-various layouts of contiguous allocated and unallocated regions, exercising
-conversion with different range layouts.
+When a page backing a guest memfd mapping is deallocated, e.g., by punching
+a hole or truncating the file, and then subsequently faulted back in, the
+new page must inherit the correct shared/private status tracked by
+guest_memfd.
 
 Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
@@ -103,45 +105,36 @@ Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../selftests/kvm/x86/guest_memfd_conversions_test.c       | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index b43ac196330f1..0b024fb7227f0 100644
+index 0b024fb7227f0..f03af2c46426f 100644
 --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -279,6 +279,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
- 	test_convert_to_shared(t, 0, 0, 'A', 'B');
+@@ -10,6 +10,7 @@
+ #include <linux/sizes.h>
+ 
+ #include "kvm_util.h"
++#include "kvm_syscalls.h"
+ #include "kselftest_harness.h"
+ #include "test_util.h"
+ #include "ucall_common.h"
+@@ -309,6 +310,19 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
+ 		test_convert_to_shared(t, i, 'B', 'C', 'D');
  }
  
-+/*
-+ * Test that when some of the folios in the conversion range are allocated,
-+ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
-+ * allocated before conversion, using test_page, to cover various layouts of
-+ * contiguous allocated and unallocated regions.
-+ */
-+GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
++/* Truncation should not affect shared/private status. */
++GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
 +{
-+	const int second_page_to_fault = 4;
-+	int i;
++	host_do_rmw(t->mem, 0, 0, 'A');
++	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
++	host_do_rmw(t->mem, 0, 0, 'A');
 +
-+	/*
-+	 * Fault 2 of the pages to test filemap range operations except when
-+	 * test_page == second_page_to_fault.
-+	 */
-+	host_do_rmw(t->mem, test_page, 0, 'A');
-+	if (test_page != second_page_to_fault)
-+		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
++	test_convert_to_private(t, 0, 'A', 'B');
 +
-+	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
-+	for (i = 0; i < nr_pages; ++i) {
-+		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
-+
-+		test_private(t, i, expected, 'B');
-+	}
-+
-+	for (i = 0; i < nr_pages; ++i)
-+		test_convert_to_shared(t, i, 'B', 'C', 'D');
++	kvm_fallocate(t->gmem_fd, FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE, 0, page_size);
++	test_private(t, 0, 0, 'A');
 +}
 +
  int main(int argc, char *argv[])
