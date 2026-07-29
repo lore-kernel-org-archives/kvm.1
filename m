@@ -1,312 +1,137 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBE3476060;
-	Wed, 29 Jul 2026 11:47:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08A647CA75
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785325668; cv=none; b=qhiFSRJ+pOD91nlk1u3VSLkaN1rNWPXy7R2lPpSqW5XnRVfklQYTY4S7jLWzgLF1VdZcfi5UCWnerQeUBjHhnaMqJ1i7DEHIGo3U3NXuHc0mvQBK6kRMajvSPn2Lyx636l4ETCra6hddedEIUuOTHPa1ubZnTYvLi9tJ6DirBqI=
+	t=1785326862; cv=none; b=Lo73cny05mWmMdpehPbklt3TXj2/lepp1/L82C7bNO2WHfJEQKA7gcfIf3WXpM4QC3aN+MrBF3z93uZvb6kDzGdXlizsy3xKUkv5DB3kIjhJOos0aoT7Sj9h22qOT4AU5uzG3hm8dc/pK62W68gko4wG4brUYOd22MLNPDWcZ4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785325668; c=relaxed/simple;
-	bh=HkMBCAbmrFXEE9kGoDxmwgXunRUkZppUwPpF/BM2mLc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bUvF+cV2y20TPqRArRtbFZXhC64y+fOwIsTGdpUZyq6Q05xBMuXvDuyBnzXigXSwmjAx3pSgWO7cR984YdQujQhgCH1TJsBzIpehp2gJwbgR+xwrXRQlr/F7IaJcJUO3ubBOg6qmrc0FvjjQMc94FiChXyPhAmUk4OarSmIa34U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=foOyvk/Y; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785326862; c=relaxed/simple;
+	bh=iUKsISx97Eyt6gD0CUDPFNVPi3iaca7Phiogt4QFNmE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rgLe+ayEcKThgh+TTKqbnFNjJIRFKAGwUbdF7RkLZGK56yUaMsetOGt/KCws3ig5Je0qPTrWwvaqOLEayiAulcryluVQ9rbCoxUdnqtesq1q9/AxNxXYiKkKiZ9JJexm3IVBmpOF03kSE3y51blEqJt76WiXJwOhhzvonftKVt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMOM4E4H; arc=none smtp.client-ip=74.125.228.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="foOyvk/Y"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8E451688;
-	Wed, 29 Jul 2026 04:47:38 -0700 (PDT)
-Received: from [10.57.41.95] (unknown [10.57.41.95])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D41B3F86F;
-	Wed, 29 Jul 2026 04:47:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785325662; bh=HkMBCAbmrFXEE9kGoDxmwgXunRUkZppUwPpF/BM2mLc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=foOyvk/YD/P95lT4XBdQFEDSgKrdW1PrQdmQte8+Y35jd52iLmQuPsHa0I04DfSf3
-	 yi4Fav4yfIXUVnjQe94RgJknoDy3rZA2Z/wsaxmWL4A2FqTGl0Ss7YDQefTBxG7Pko
-	 FN0P5I3VJuZsYk/v0ht6CwjWiMuM25bgL1xmchfo=
-Message-ID: <46d78aa2-cacb-4efd-ae62-3026f5fe9b3f@arm.com>
-Date: Wed, 29 Jul 2026 12:47:38 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMOM4E4H"
+Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-ca24d39d8a4so388571a12.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 05:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785326860; x=1785931660; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qLMnpNtLpsL2XHYkd+z33mKUcr79GQx5LDeNnSKUE6Y=;
+        b=NMOM4E4H/Es5UZqsV9fPFVl0rVJEPPG+A/3VXI5E+ZjCgQUp+XE4wgRo/koFtjBs4j
+         KWuuQ2ZyVK9sC98XdVaFqiCbpyw0YyDlUa28uzlmcUkocpUMEyInSH5dLdWfLcnhSGs/
+         Y+rmyFOCWxwLRORacSUXNffta963yjVqvEAp21kMiKs0ATknKcDLnkEF6adQ62do3+kF
+         sKuu6al9k/lbrowXY/FELO3SjYxZmQXFgdqjcZ2U3Bq0sX95YyHsq/SZholOzwOnlTSK
+         uydapEO/B04YyLKlvGdg30jXX4wWfzC3lqqcYfbhm/ng+ephKzKI58hUrKB2FsOGidF4
+         wkkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785326860; x=1785931660;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qLMnpNtLpsL2XHYkd+z33mKUcr79GQx5LDeNnSKUE6Y=;
+        b=nDalUCwAPxnyZXbJ3t7UnW6GfvKQbPZJsL3zrPMLITjzwHeFdQ6nl7LiIc2IKLquf9
+         C9ydqB9iyoVAYZD+YwfiYDt/m8nGC1s23+wEVlaUmHUiC0cBpUBfn275N2LJwc3MjVIA
+         hF0RSD9UXyNR85Fcy9QGMsMzisJxOFlQWaPGOYPW/+JQcZK+jmDfdttR5AMa/cCeqjkn
+         iWiMJ7uRU5wqvrwjIfSO5QlKTcpYjSCJJE63fGIyel1vUoxQhAtPFgBzD/+ZPjubep8g
+         WQ92TLG2egEvvMC6rcIzNhNCqOwNN1c2ePHR8ZJ9flWXVCE1OOs5h2z+kIaE/0h3yGsL
+         kZDA==
+X-Forwarded-Encrypted: i=1; AHgh+RrNa/hSOjkbobegMltwcPlS9ag1HDZ8mDwEV0U8g4KUcBXBfxBsrwDmfbOrP1uxjJnLrww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH2cWNWBIoC2fGIyKmDsXE15KQPja/FouyUI8jiUhZxnhL0cmp
+	BKQt4fUisaqwauBZE82BlsmfoUaMMDFa+Xe6kqgTsaLM9CpMvIiOcFRDQV7kFJ9NnCUlbg==
+X-Gm-Gg: AR+sD10uTPU92OHX9oyT8y0YvK+NvL+MCxKPWztj1AmgnZ4nx6lgBA39ZDoqJqCSMiV
+	DwaWnJZfCEqs6q9a3uWJVsNvMeJLipS6ujlbCQ2FsIdPwdFpwe2kJSU0vzCtVlNHEPHWXEGp+J/
+	gOyX+Ub1uCeU2NRMFx/d38GA/JIOfl3E9Y1SyK3CNyLooVxUzfcRRKW1eNQrTtlnOvOKzYBCIwS
+	PQv+FQoGpTndCeTdly2aNDvyXRGiuxVlJTpeIvvpyFDN5CQ0vxM1yicfCj1U1cTmFpctOfTcrk1
+	BLFmaSq1T3Pw7kLDkXN5fWFapviESnKBAK5BWEXjLJNJsHyFkmSNeCBAqI23JcQvhSzKj5AVi06
+	opnG/VK7N+9vdjK5+6n2WANradRZ7ifaSjGO/IqYChoSJjMLoCSAwxvtm9JvQAPA4t79V+6bTN8
+	wXf8ShkVIWvF6nla1p1MWp51uOt0Bxd7gq/Lz5xyczRlmQ5sk5+aPui+XrkulV6KfURR8p6kJco
+	7vCIq4k9PIsqYA=
+X-Received: by 2002:a05:6a00:ab8b:b0:84e:165:da58 with SMTP id d2e1a72fcca58-84e933cefd6mr6852509b3a.52.1785326859904;
+        Wed, 29 Jul 2026 05:07:39 -0700 (PDT)
+Received: from q-System-Product-Name ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea0055133sm1309570b3a.18.2026.07.29.05.07.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 05:07:39 -0700 (PDT)
+From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 0/3] RISC-V: KVM: G-stage fault path fix and cleanup
+Date: Wed, 29 Jul 2026 20:07:30 +0800
+Message-ID: <20260729120733.829457-1-shanbeeyoo@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260729075230.743030-1-shanbeeyoo@gmail.com>
+References: <20260729075230.743030-1-shanbeeyoo@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 1/2] KVM: arm64: CCA: Add support for configuring
- the Realm MEC policy
-Content-Language: en-GB
-To: Kohei Enju <enju.kohei@fujitsu.com>,
- linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev,
- Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Joey Gouly <joey.gouly@arm.com>,
- Steffen Eiden <seiden@linux.ibm.com>, Zenghui Yu <yuzenghui@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Steven Price <steven.price@arm.com>
-References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
- <20260724094120.166536-2-enju.kohei@fujitsu.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260724094120.166536-2-enju.kohei@fujitsu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hello
+Three small changes to the RISC-V G-stage page fault path, sent as
+separate patches per review feedback.
 
-Thanks for sending the patch. Please find my comments inline below.
+  1/3: Treat -EEXIST from kvm_riscv_gstage_map_page() as a quiet
+       success, aligning RISC-V with x86 and arm64.  Real bug fix;
+       Fixes: 9d05c1fee837, Cc: stable.
 
+  2/3: vma_pageshift: short -> unsigned int.  No-functional-change
+       type cleanup in preparation for sharing a common
+       struct kvm_page_fault across architectures.
 
-On 24/07/2026 10:40, Kohei Enju wrote:
-> Introduce the KVM_ARM_RMI_CONFIG ioctl to allow userspace to configure
-> Realm VM parameters before the Realm is created.
+  3/3: Widen the G-stage fault address to gpa_t end to end -- the
+       local in gstage_page_fault(), the (gpa_t) cast before the <<2
+       shift, and the fault_addr parameters of kvm_riscv_vcpu_mmio_load/
+       store().  This completes the RV32 34-bit GPA fix that v2 only
+       half-addressed: v2 widened the local and cast the shift, but the
+       address was still narrowed to 32 bits at the MMIO handler call
+       (unsigned long parameter), aliasing accesses above 4 GB into the
+       low 4 GB.  The handlers' internal uses (run->mmio.phys_addr is
+       __u64, kvm_io_bus_read/write() take gpa_t) are already 64-bit.
+       Also in preparation for sharing a common struct kvm_page_fault.
+       No functional change on RV64.  Not Cc'd to stable: RV32 KVM is
+       unsupported and this is untested at runtime.
 
-This approach is something we tried in the past. Another option is to
-add these as kvm_device_attr for the KVM VM, under a new group, e.g.,
-KVM_ARM_VM_RMI_CTRL and add the following attributes :
+Changes since v2 [1]:
+  - Split into separate patches per feedback.
+  - Completed the fault_addr widening v2 left half-done: widened the
+    kvm_riscv_vcpu_mmio_load/store() fault_addr parameters to gpa_t so
+    the 34-bit address is not truncated at the MMIO handler call.
 
-KVM_ARM_VM_RMI_CTRL_RPV 		-> Realm Personalization Value
-KVM_ARM_VM_RMI_CTRL_MEASUREMENT_ALGO	-> Measuerment algo
-KVM_ARM_VM_RMI_CTRL_MEC_PRIVATE		-> Private MEC Policy. By default to 
-shared ?
+The KVM_MEM_USERFAULT port that motivated this cleanup will follow as a
+separate RFC.
 
+[1] https://lore.kernel.org/kvm/20260729075230.743030-1-shanbeeyoo@gmail.com/
 
-Marc, Oliver, thoughts ?
+Bingyu.Xian (3):
+  RISC-V: KVM: Treat -EEXIST from G-stage map as success
+  RISC-V: KVM: Use unsigned int for vma_pageshift
+  RISC-V: KVM: Widen G-stage fault address to gpa_t
 
-Cheers
-Suzuki
+ arch/riscv/include/asm/kvm_vcpu_insn.h | 4 ++--
+ arch/riscv/kvm/mmu.c                   | 8 +++++---
+ arch/riscv/kvm/vcpu_exit.c             | 5 +++--
+ arch/riscv/kvm/vcpu_insn.c             | 4 ++--
+ 4 files changed, 12 insertions(+), 9 deletions(-)
 
-> 
-> Currently, ARM_RMI_CFG_MEC_POLICY is the only supported configuration
-> item. Its value can be ARM_RMI_MEC_POLICY_SHARED or
-> ARM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the platform
-> does not support private MECs.
-> 
-> If userspace does not explicitly configure the MEC policy,
-> ARM_RMI_MEC_POLICY_SHARED is used by default.
-
-
-
-> 
-> Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
-> ---
->   Documentation/virt/kvm/api.rst   | 29 +++++++++++++++++++++++++++++
->   arch/arm64/include/asm/kvm_rmi.h |  4 ++++
->   arch/arm64/kvm/arm.c             |  9 +++++++++
->   arch/arm64/kvm/rmi.c             | 29 +++++++++++++++++++++++++++++
->   drivers/firmware/arm_rmm/rmi.c   |  8 ++++++--
->   include/linux/arm-rmi-cmds.h     |  1 +
->   include/uapi/linux/kvm.h         | 17 +++++++++++++++++
->   7 files changed, 95 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> index 85bec9b4f021..e1c660e5eb34 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6690,6 +6690,35 @@ populated data is hashed and added to the guest's Realm Initial Measurement
->   (RIM) stored by the RMM. This can then be retrieved by the guest (using the RSI
->   interface) to present to an attestation server.
->   
-> +4.147 KVM_ARM_RMI_CONFIG
-> +------------------------
-> +
-> +:Capability: KVM_CAP_ARM_RMI
-> +:Architectures: arm64
-> +:Type: vm ioctl
-> +:Parameters: struct kvm_arm_rmi_config (in)
-> +:Returns: 0 on success, < 0 on error
-> +
-> +::
-> +
-> +  struct kvm_arm_rmi_config {
-> +       __u32 cfg;
-> +       union {
-> +               /* cfg == ARM_RMI_CFG_MEC_POLICY */
-> +               __u8 mec_policy;
-> +
-> +               /* Fix the size of the union */
-> +               __u8 reserved[256];
-> +       };
-> +  };
-> +
-> +Configures parameters of a Realm VM before the Realm is created.
-> +
-> +Currently, `ARM_RMI_CFG_MEC_POLICY` is the only supported configuration item.
-> +`mec_policy` must be either `ARM_RMI_MEC_POLICY_SHARED` or
-> +`ARM_RMI_MEC_POLICY_PRIVATE`. `ARM_RMI_MEC_POLICY_PRIVATE` is not supported if
-> +no private MEC is available on the platform.
-> +
->   .. _kvm_run:
->   
->   5. The kvm_run structure
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 420e99fca07e..721033b132e1 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -60,6 +60,7 @@ enum realm_state {
->    * @ia_bits: Number of valid Input Address bits in the IPA
->    * @stage2_unmapped: The Realm stage-2 mappings have been removed
->    * @rtts_destroyed: The non-root RTTs have been torn down
-> + * @mec_policy: MEC policy for the Realm VM
->    */
->   struct realm {
->   	void *rd;
-> @@ -76,6 +77,7 @@ struct realm {
->   	unsigned int ia_bits;
->   	bool stage2_unmapped;
->   	bool rtts_destroyed;
-> +	unsigned int mec_policy;
->   };
->   
->   /**
-> @@ -115,6 +117,8 @@ struct kvm_arm_rmi_populate;
->   
->   int kvm_arm_rmi_populate(struct kvm *kvm,
->   			 struct kvm_arm_rmi_populate *arg);
-> +struct kvm_arm_rmi_config;
-> +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *arg);
->   void kvm_realm_unmap_range(struct kvm *kvm,
->   			   unsigned long ipa,
->   			   unsigned long size,
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index 3862db30779f..17302ba2844c 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -2169,6 +2169,15 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
->   			return -EFAULT;
->   		return ret;
->   	}
-> +	case KVM_ARM_RMI_CONFIG: {
-> +		struct kvm_arm_rmi_config cfg;
-> +
-> +		if (!kvm_is_realm(kvm))
-> +			return -ENXIO;
-> +		if (copy_from_user(&cfg, argp, sizeof(cfg)))
-> +			return -EFAULT;
-> +		return kvm_arm_rmi_config(kvm, &cfg);
-> +	}
->   	default:
->   		return -EINVAL;
->   	}
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 06cc85fb5092..629dea5e8c47 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -572,6 +572,9 @@ static int realm_create_rd(struct kvm *kvm)
->   	if (kvm_lpa2_is_enabled())
->   		params->flags0 |= RMI_REALM_PARAM_FLAG_LPA2;
->   
-> +	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY,
-> +				     realm->mec_policy);
-> +
->   	r = realm_init_sve_param(kvm, params);
->   	if (r)
->   		goto out_undelegate_tables;
-> @@ -1155,6 +1158,30 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
->   	return ret;
->   }
->   
-> +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *cfg)
-> +{
-> +	guard(mutex)(&kvm->arch.config_lock);
-> +
-> +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
-> +		return -EBUSY;
-> +
-> +	switch (cfg->cfg) {
-> +	case ARM_RMI_CFG_MEC_POLICY:
-> +		if (cfg->mec_policy != ARM_RMI_MEC_POLICY_SHARED &&
-> +		    cfg->mec_policy != ARM_RMI_MEC_POLICY_PRIVATE)
-> +			return -EINVAL;
-> +
-> +		if (cfg->mec_policy == ARM_RMI_MEC_POLICY_PRIVATE &&
-> +		    rmi_mec_count() == 0)
-> +			return -EOPNOTSUPP;
-> +
-> +		kvm->arch.realm.mec_policy = cfg->mec_policy;
-> +		return 0;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->   static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
->   {
->   	struct kvm *kvm = vcpu->kvm;
-> @@ -1474,6 +1501,8 @@ int kvm_init_realm(struct kvm *kvm)
->   {
->   	struct realm *realm = &kvm->arch.realm;
->   
-> +	realm->mec_policy = ARM_RMI_MEC_POLICY_SHARED;
-> +
->   	realm->params = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
->   	realm->sro = kmalloc_obj(*realm->sro);
->   	if (!realm->params || !realm->sro) {
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index d0c083bdf251..e9632c35e7db 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -14,8 +14,7 @@
->   
->   static bool arm64_rmi_is_available;
->   
-> -/* Currently only the first 2 registers are used by Linux */
-> -#define RMI_FEAT_REG_COUNT	2
-> +#define RMI_FEAT_REG_COUNT	5
->   static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
->   
->   unsigned long rmi_feat_reg(unsigned long id)
-> @@ -27,6 +26,11 @@ unsigned long rmi_feat_reg(unsigned long id)
->   }
->   EXPORT_SYMBOL_GPL(rmi_feat_reg);
->   
-> +u64 rmi_mec_count(void)
-> +{
-> +	return u64_get_bits(rmi_feat_reg(4), RMI_FEATURE_REGISTER_4_MEC_COUNT);
-> +}
-> +
->   int rmi_delegate_range(phys_addr_t phys,
->   		       unsigned long size,
->   		       phys_addr_t *out_phys)
-> diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
-> index 138983ab4e3c..5236600421c6 100644
-> --- a/include/linux/arm-rmi-cmds.h
-> +++ b/include/linux/arm-rmi-cmds.h
-> @@ -28,6 +28,7 @@ struct rmi_sro_state {
->   };
->   
->   unsigned long rmi_feat_reg(unsigned long id);
-> +u64 rmi_mec_count(void);
->   
->   int rmi_delegate_range(phys_addr_t phys, unsigned long size,
->   		       phys_addr_t *out_phys);
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index adee3936d6ae..46e62327957c 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1704,4 +1704,21 @@ struct kvm_arm_rmi_populate {
->   	__u32 reserved;
->   };
->   
-> +#define KVM_ARM_RMI_CONFIG     _IOW(KVMIO, 0xd8, struct kvm_arm_rmi_config)
-> +
-> +#define ARM_RMI_CFG_MEC_POLICY		0
-> +#define ARM_RMI_MEC_POLICY_SHARED	0
-> +#define ARM_RMI_MEC_POLICY_PRIVATE	1
-> +
-> +struct kvm_arm_rmi_config {
-> +	__u32 cfg;
-> +	union {
-> +		/* cfg == ARM_RMI_CFG_MEC_POLICY */
-> +		__u8 mec_policy;
-> +
-> +		/* Reserve space for future configuration payloads. */
-> +		__u8 reserved[256];
-> +	};
-> +};
-> +
->   #endif /* __LINUX_KVM_H */
+-- 
+2.54.0
 
