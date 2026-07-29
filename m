@@ -1,101 +1,74 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BA0453A4F
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D94D98E1;
+	Wed, 29 Jul 2026 18:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785349154; cv=none; b=ilJx20eO9lflldnKOSs5FytTiqzIr2CIJJP2YGOBrppggSjGCyvmPi7Dy5qjtN50zD3LjWYyZ9983kVmSPKkeR0qh+6GAOOVBk9rDG57HeOyZUpoGYCxkbFgpejbUmcSzJoMSlassFMJ1G1tBb2y3znItJNtEOI/gwPnU2998fc=
+	t=1785349429; cv=none; b=PIKp+4MA1aZlcGjY10S/ToZ34zx6Tce5xWrNhQ+AjRDFXJoYnAq607L1NgMD5gCiDO13UPnbA9PKXfM/55MVC111k6FoONy0hqCDyUToZoT5yQLoZbL1m37YkJ/GHL/h3E68w/+GXreqB8EnLAO0VfCJ3+m55mW3CQR0Htbfx8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785349154; c=relaxed/simple;
-	bh=gXvDQmDnVr6OE7oYWu88IugIvt9fOy8iiTsQetL+410=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+GzV7gFGNh+3VoynCgUwbhxAdSB0BjnGPN7jTE0wwt5jZhnvKac9wommRFrxFiZzCZ01zWZ5UZpKRkRnzQ4sJU0XCpg4borYK5ptoyXtDxVP/IiANVRRBkkvSXrowHsA7aw2rTLd43j2ldp0jK36LsbSGj+MiqBlZeiSOavxGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SVKQHhRJ; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785349429; c=relaxed/simple;
+	bh=mv2sMhP+7eL58KdtS+VFVsDFKBITpQqXNbEMsP3qolA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DmL3SOEP3pM8vKkEUzdxok0taz12gVyKcB51VBkWHORotYHUiXbXYGAbUfesDOLfqQISVFvaDqz6RB/bZ6Y4MeNmBkNQcX+5ftiN04IbVx4caV2Nv1wOFiCRzNUcCIGsNuJFvGIWRjUUB03eDPYrN0IfNW1xrNTBVrQece+Y8nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRdW6wZz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SVKQHhRJ"
-X-Forwarded-Encrypted: i=1; AHgh+RosfFYLSya3OoTx09CRo8TTd7plt4fqyZnqkIU2f07zrTuZ7XCMaxDpK1I58642XuKUZ7g=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785349140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lQfSKZP/hCCmm/JkjqLE4pUKx2XQfDJnU0jPCvkwDAU=;
-	b=SVKQHhRJyBUbV74RPeFQqpFgas7zuf5h3REJqIYNdXbZjIRXCFLRk8Kdg0prvClQcZwdT3
-	gQ9YZDsQTUa96TPNXGB+F83ceOD4jVY7kHIusAQ56D3Mp6RGV/Aq7Dze0GFswzJyLAXJEX
-	RY5FAvSdjyCnMQ7VKHyX1zFwcTvha6Q=
-X-Gm-Message-State: AOJu0YxGT8IEytsaE29xPe1CoxbC4aXIQK26yPZ1mxnRHRWGAzFg2DzK
-	YeqHLaii4k9BE8XA4d1oPZ/PHssUEoiwQPBzXF8Vj1OBSV/uerFT7MB+UYP2agd47ECXw1EEo+j
-	W4wUTYzKa3uGSHsaR+WyyFoNBcU9VhvevRPVvf1qC
-X-Received: by 2002:a05:622a:684a:20b0:528:3186:5781 with SMTP id
- d75a77b69052e-52b35089f0cmr4050731cf.6.1785349127162; Wed, 29 Jul 2026
- 11:18:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRdW6wZz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7A31F000E9;
+	Wed, 29 Jul 2026 18:23:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785349422;
+	bh=mv2sMhP+7eL58KdtS+VFVsDFKBITpQqXNbEMsP3qolA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=WRdW6wZzzvcQwtBnJIm8J+km7dQBoa67TWPyJGUk8PsP8CwR/RnvQraGRdB+lhGWy
+	 Leuqu4ciRNGkeKZkdKifuBMFr2XzCZC2DlgiuCZ4Lexi/JBFvqeyRcq7RiKeotPmuI
+	 BtGKQ+PTEAaFc83/dHIckGLpKqZtHTwGo+Gdz6f1tNe9gi10PNVLP9KgvxIfmCslR7
+	 4cVhOWdEFsg6dHgqAf67SjTr1IeNPYddqGytElMmqav4h6NU4u+XfLYOl61wGY5nq4
+	 QmRY1mG35Dq7dQDEySwQVeHGI+K2DhpqC1/1Is6haG5CdXy3/t9LqFvOh10KIgIVeK
+	 Wtq7GfLzF4c0A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
+ non-mappable BARs
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Farhan Ali" <alifm@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260729181116.1373-1-alifm@linux.ibm.com>
+References: <20260729181116.1373-1-alifm@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 18:23:41 +0000
+Message-Id: <20260729182342.0B7A31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 29 Jul 2026 19:18:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
-X-Gm-Features: AUfX_mxyRATQUT7wjn046sqG_VDzxdGritkO_zqsOb5Kz7zkeUPamYRcZ06tFIY
-Message-ID: <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
-Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only emulation
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
 
-Hi Akihiko,
+> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but n=
+ot
+> all devices support having their BARs mapped by the CPU. The
+> non_mappable_bars flag indicates that a PCI device's BARs cannot be
+> accessed by the CPU. The ISM device on s390 is one such device. The BAR
+> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
+> to warnings:
+>=20
+> vmalloc_node_range for size 281474976714752 failed: Address range
+> restricted to 0x2110bab00000 - 0x21903ab00000
+>=20
+> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This fl=
+ag
+> is set by the PCI core at enumeration time and already serves the same
+> purpose in vfio_pci_probe_mmaps().
+>=20
+> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci=
+_core_enable()")
+> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 
-On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
-...
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-> +/**
-> + * kvm_pmu_create_perf_event - create a perf event for a counter
-> + * @pmc: Counter context
-> + */
-> +static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
-> +{
-> +       struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
-> +       struct arm_pmu *arm_pmu = vcpu->kvm->arch.arm_pmu;
-> +
-> +       if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
-> +               do {
-> +                       arm_pmu = kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
-> +
-> +                       if (!arm_pmu) {
-> +                               pr_warn_once("kvm: Unsupported PMU variation detected.\n");
-> +                               add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
-> +                               return;
-> +                       }
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729181116.1373=
+-1-alifm@linux.ibm.com?part=3D1
 
-Sashiko flagged that this can leave the perf event out of sync with
-the sysreg, which looks plausible: on a pCPU with no registered pPMU
-this returns without recreating the event, so a guest event-type
-change there updates the sysreg but not the event, and after migrating
-back to a pCPU the original pPMU covers, kvm_pmc_enable_perf_event()
-re-enables the stale event instead of recreating it.
-
-I know you treat the no-pPMU case as out of spec, but the dropped
-update lands once the vCPU is back on a normal pCPU. Is this intended?
-
-Cheers,
-/fuad
