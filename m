@@ -1,151 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3C433CEB0
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BA0453A4F
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:19:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785348860; cv=none; b=eismdGRJHa+zHc6sirdeibooKUy74GQGSLL7GP3VJsfm6gKd8EgTBl8gcza/ldXH/9tRGfYlQvbz/6N65EWSXVoxsInwTxdXEaaAUXjulGCZhGD4tMtTMwf0I8kIWvPskqBxxeiMU2PJno8s0F8Gm1t0WdSeObhEgEphNEQm3hU=
+	t=1785349154; cv=none; b=ilJx20eO9lflldnKOSs5FytTiqzIr2CIJJP2YGOBrppggSjGCyvmPi7Dy5qjtN50zD3LjWYyZ9983kVmSPKkeR0qh+6GAOOVBk9rDG57HeOyZUpoGYCxkbFgpejbUmcSzJoMSlassFMJ1G1tBb2y3znItJNtEOI/gwPnU2998fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785348860; c=relaxed/simple;
-	bh=nXvxhyCrLtuyKc3HaJEGA/kPIG4/7IU3AHxrZWgGmcI=;
+	s=arc-20240116; t=1785349154; c=relaxed/simple;
+	bh=gXvDQmDnVr6OE7oYWu88IugIvt9fOy8iiTsQetL+410=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PccSHWxH9eyaSkmAfNnaTYgycqvXo/in5PC28lAXb9FvdsQmyrEpjAA2BF/J4MzdN2F4PJWVNCbnl8KF1Xf5zBdaF0EAGGkporjhBCKaVPIqfMFjO3hXOQwxnQNjdTsvk0syHnQNRFnA/3jRmkX0C3j61A31weoC0aZtlu1nwEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Idq6+qHO; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=r+GzV7gFGNh+3VoynCgUwbhxAdSB0BjnGPN7jTE0wwt5jZhnvKac9wommRFrxFiZzCZ01zWZ5UZpKRkRnzQ4sJU0XCpg4borYK5ptoyXtDxVP/IiANVRRBkkvSXrowHsA7aw2rTLd43j2ldp0jK36LsbSGj+MiqBlZeiSOavxGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SVKQHhRJ; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Idq6+qHO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6B41F00A3F
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785348859;
-	bh=exmMkvw0Kbsw2gErktHRjURFCx5Kr1AFKum0kLUFv6A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Idq6+qHO9Uo8aX7Sy61XGftWDSr/adFLWdyzY8izz3yTFrapaq6TuwJmT6YAE0DTj
-	 fcP45rFjDH4qZNLnu4bJKC9bZb/cxA6GD9dVTqzmxbMkalm5Owj0pgkxb7q1vp0MXs
-	 huDacu6tLB/mcJuHoDVjoOD1GCvU+LHewFd20KbtcuFtZETnIeOFDNPcAdSVr8blxZ
-	 FIRDHYFzYekTQG9R3rA4B0KYI5MpDJ0Lx1liD2dwUjtOPc+YuX+GfIYroyvW3IH5LQ
-	 CQxgKu1u7f4UPf/gouLUST8kfDSo6QHQoy5afWhcBiCy8loyovDGD1tIKw3GE/6mRL
-	 VLDYk73nM4Mog==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1f5208b38dso242194366b.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 11:14:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RogVi/r9SYtHTcIuFUeYvkaRFlDhilc4/M6w1VWI1n+lE7t+I8EkfI9ZdSSMqyXG0TSSEc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPZjBW6aeizCEyA2Fiii6o66fuJOD2t/7LQgxt5K+9+vivxEL5
-	DIyV8BMDVr3iB+iy5CDWkursPCwT7zl9jbtwASqHkEu2oD0EzmUC4H/dmgPFc7Y+RkJp7vb6RY1
-	Ba2dPe5mwvfISRJI84qSrqxUB/zHszU0=
-X-Received: by 2002:a17:907:1787:b0:c15:ff7a:e56d with SMTP id
- a640c23a62f3a-c1f7215114dmr410786166b.51.1785348858159; Wed, 29 Jul 2026
- 11:14:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SVKQHhRJ"
+X-Forwarded-Encrypted: i=1; AHgh+RosfFYLSya3OoTx09CRo8TTd7plt4fqyZnqkIU2f07zrTuZ7XCMaxDpK1I58642XuKUZ7g=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785349140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lQfSKZP/hCCmm/JkjqLE4pUKx2XQfDJnU0jPCvkwDAU=;
+	b=SVKQHhRJyBUbV74RPeFQqpFgas7zuf5h3REJqIYNdXbZjIRXCFLRk8Kdg0prvClQcZwdT3
+	gQ9YZDsQTUa96TPNXGB+F83ceOD4jVY7kHIusAQ56D3Mp6RGV/Aq7Dze0GFswzJyLAXJEX
+	RY5FAvSdjyCnMQ7VKHyX1zFwcTvha6Q=
+X-Gm-Message-State: AOJu0YxGT8IEytsaE29xPe1CoxbC4aXIQK26yPZ1mxnRHRWGAzFg2DzK
+	YeqHLaii4k9BE8XA4d1oPZ/PHssUEoiwQPBzXF8Vj1OBSV/uerFT7MB+UYP2agd47ECXw1EEo+j
+	W4wUTYzKa3uGSHsaR+WyyFoNBcU9VhvevRPVvf1qC
+X-Received: by 2002:a05:622a:684a:20b0:528:3186:5781 with SMTP id
+ d75a77b69052e-52b35089f0cmr4050731cf.6.1785349127162; Wed, 29 Jul 2026
+ 11:18:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
- <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com> <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
-In-Reply-To: <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 29 Jul 2026 11:14:06 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
-X-Gm-Features: AUfX_mynzWvzboeMQfBAgSWIRLhEXTy3IK-N4jvqG-A9FNzHuoOCg0oOqU9ikZE
-Message-ID: <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
-To: Jim Mattson <jmattson@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 19:18:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxyRATQUT7wjn046sqG_VDzxdGritkO_zqsOb5Kz7zkeUPamYRcZ06tFIY
+Message-ID: <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
+Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only emulation
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jul 29, 2026 at 9:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
->
-> On Tue, Jul 28, 2026 at 9:53=E2=80=AFPM Jim Mattson <jmattson@google.com>=
- wrote:
-> >
-> > On Mon, Jul 13, 2026 at 11:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.org>=
- wrote:
-> > >
-> > > When handling userspace SREGS writes, check the validity of EFER (i.e=
-.
-> > > allowed bits) before writing the new value of EFER through the
-> > > per-vendor set_efer callbacks. This prevents userspace from writing
-> > > bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
-> > >
-> > > Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
-> > > caps, not guest caps, so it is possible to set EFER bits that are
-> > > supported by KVM but not by the guest CPUID. Potentially allowing
-> > > userspace to set msrs before CPUID.
-> > >
-> > > However, for KVM_SET_SREGS*, check the validity of the set bits again=
-st
-> > > both KVM and guest caps. This is consistent with other validity check=
-s
-> > > (e.g. for CR4) that check validity against guest caps, which already
-> > > imposes the need to set CPUID before SREGS.
-> >
-> > Where is the requirement to set CPUID before SREGS documented, aside
-> > from this commit message?
->
-> I don't think so, and also coming back to this again I think the
-> commit message is wrong. The whole basis for doing validity checks
-> against guest CPUID (other than the convenience of using
-> kvm_valid_efer()) is cr4_guest_rsvd_bits, which is initialized based
-> on both KVM caps and guest CPUID.
->
-> However, cr4_guest_rsvd_bits seems to be initialized *after* CPUID is
-> set, so it only checks CR4 against CPUID if userspace already set
-> CPUID. It doesn't impose a restriction to set CPUID before SREGS, but
-> this patch is.
->
-> So I think this may be too restrictive. We should probably only check
-> against KVM caps, which was the whole motivation of this patch to
-> begin with (disallowing EFER.SVME if nested=3D0). Maybe we should just
-> drop the Cc:stable as it won't apply to any of the stable trees any
-> way, and do this on top of the kvm_caps.supported_efer_bits changes?
->
-> diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
-> index 8f66438989e47..412a37ca86ecc 100644
-> --- a/arch/x86/kvm/regs.c
-> +++ b/arch/x86/kvm/regs.c
-> @@ -565,7 +565,7 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu
-> *vcpu, struct kvm_sregs *sregs)
->
->         return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
->                kvm_is_valid_cr0(vcpu, sregs->cr0) &&
-> -              kvm_valid_efer(vcpu, sregs->efer);
-> +              !(sregs->efer & ~kvm_caps.supported_efer_bits);
->  }
->
->  static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *s=
-regs,
->
-> ---
->
-> diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c
-> b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-> index 603226ffe4374..c07ccf0bbe85a 100644
-> --- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
-> +++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
-> @@ -171,7 +171,6 @@ int main(int argc, char *argv[])
->          */
->         vm =3D vm_create_barebones();
->         vcpu =3D __vm_vcpu_add(vm, 0);
-> -       test_efer_bits(vcpu, KVM_ALWAYS_ALLOWED_EFER);
->         test_cr_bits(vcpu, KVM_ALWAYS_ALLOWED_CR4);
->         kvm_vm_free(vm);
->
-> ---
->
-> Sean, WDYT?
->
-> If we will change this, would you rather do it in place, a followup
-> fix, or a new version?
+Hi Akihiko,
 
-I take this back, I think I was right the first time.
-kvm_vcpu_after_set_cpuid() is called on vCPU creation (confusing?),
-and looking closely at set_sregs_test seems like it specifically
-verifies that CR4 bits guarded by CPUID bits cannot be set before
-CPUID is set.
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+...
 
-I think the main difference here is probably that CR4 bits that are
-guarded by CPUID are more "advanced" than EFER bits?
+> +/**
+> + * kvm_pmu_create_perf_event - create a perf event for a counter
+> + * @pmc: Counter context
+> + */
+> +static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
+> +{
+> +       struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
+> +       struct arm_pmu *arm_pmu = vcpu->kvm->arch.arm_pmu;
+> +
+> +       if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
+> +               do {
+> +                       arm_pmu = kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
+> +
+> +                       if (!arm_pmu) {
+> +                               pr_warn_once("kvm: Unsupported PMU variation detected.\n");
+> +                               add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+> +                               return;
+> +                       }
+
+Sashiko flagged that this can leave the perf event out of sync with
+the sysreg, which looks plausible: on a pCPU with no registered pPMU
+this returns without recreating the event, so a guest event-type
+change there updates the sysreg but not the event, and after migrating
+back to a pCPU the original pPMU covers, kvm_pmc_enable_perf_event()
+re-enables the stale event instead of recreating it.
+
+I know you treat the no-pPMU case as out of spec, but the dropped
+update lands once the vCPU is back on a normal pCPU. Is this intended?
+
+Cheers,
+/fuad
