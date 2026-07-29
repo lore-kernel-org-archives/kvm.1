@@ -1,150 +1,183 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9963D0C18
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAA51A9FA0
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785364444; cv=none; b=aD1m0gkIEfCs5/WgFGwn2GdfWDjJubfFvB+UXYeu9QSNlkUaC6JF4qTaGRxYJcsFR1bDjcg2EACg3lchgzf8W1opKbWLWHdTBacmWw1fk3LcOfdw4YAbO9klIAs/xD1KI8EKVTgg+It+vN4fMSbjrYmHGJMSG04An5uzPnp1EME=
+	t=1785365156; cv=none; b=pnlR8RR2QxVFI4+8dFokS4/WmOjSNEPsuGlkEakBXgvQVLrgts0bLMspWm2m+IyhLKBQaVW4s31cLz2uVsiEPq7MlvX59MZ0PfEPbEnOAmXBZ+LQX7gWLZ8mPBoA65Ma5d8ae3MIYMTZzpF6lKy1e91VN8seUcD/DCINMh+Jmyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785364444; c=relaxed/simple;
-	bh=0d7s90ZVVazxLIkAIFc6fAAnvqb+0IdFdB9k+3p45E4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JJzinFTkgGEczy6cyujLUFTvxA3ugnYxSTDuSqEN3K3RKf3ey7dd7+38/r+mPcUoVk+fq2AWnF0Nfq8D4FCqJ+LQtjkEHLGdyU7ukg2irEW9vqdh8OIykWmngJ8XMVWVqw9Nwlc8uozwn3NJfHQr1yNaE+KEcQlmRY2b4apXKwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H95hzxXO; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785365156; c=relaxed/simple;
+	bh=CgtZ10zeFTCspKJcr6e85mnfuhh9dlCUQyNBcQhi3FY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VYmlOsDHhazCkwmDY3Dl9sKG/1W3hA8FxsQDZnAEo82vOKo7NWKrr5G3OoRoPtFm8y+hCBei/K1T02S2y/aLdKBKnQbt7vKQHWcGWJ9Mpq5kX0PIx+AVLaycNjoINUE5Jni5K99YEV5CHc+urauxDEexLtrXHflJFUNwMMdN+is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+/sN1Dw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H95hzxXO"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d02b4c3601so10589765ad.3
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:33:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785364439; x=1785969239; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XmJqv3LbtEXaKjjxddFIB/CCzuAW9BtsEymREcKNJvA=;
-        b=H95hzxXO5wanvU1SI/N86iX84fmyh9EKgtvSTGA0KU7JMA53PurBLw/wpB4xC10dlI
-         fzKVI8LUT1xB1q5QF6UBo85wBFZ2KFxO/qy6ARxnNbWZUYQVU+iPpq2V6zhP2Djl6z4v
-         aJCD/4uEgdl5sIVc4ptlrob0veF5Z000nbwrUxJux3zepj6Nu+fWu2Ak0cieJpIhksFB
-         YKTDjevNlHTl0H1TstyQRKUoPO/NV1vag+3uXJ6NUiKXb/+ar51izxvdUD8RYMLr2MN9
-         bl538I93Qd6gyyDT/i5cnQ5tdtUn/MZOGVPacS0+ChQ1z57+kIeF2CtConjZMY+0oQWD
-         M0SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785364439; x=1785969239;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=XmJqv3LbtEXaKjjxddFIB/CCzuAW9BtsEymREcKNJvA=;
-        b=jiMGH2n5TMHLfzzA2OtIS9S1KElZY/kgHsiv2CmNmE5xj6gLjEM9Bm7LEQTWK65eMw
-         rxG8olYG960mgi3UkHF1RUO+Syz9CrLGX3jRfaBxzdFyWJjKqL+JIB4Gr/rl8iHfSzkG
-         0sMjfJbFhu7XGnx2oA0WnVWXuf+PCud1hOMTVHUsi3Th+Lk3u4jwhwN0uKnow6UZngIy
-         vT+XlZ5+CxRl+yEutz4qxprK2ktobLTA+pIeJWWAUeFCAfu5QqhSpTGFuVM54TEvAAtc
-         cA8EzzOhFSPWimnrGG/X8AkC8ZpHU22E4HjSrnrwxxj8/z5h2ncuj5FZQZPmBP4kZWwf
-         upQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RooLczP0vipYhsVsGRuumRKPaF5ZEWnqg0vLNCITkNljpn7w2+Rt4+vUJcvbO6d3DvQJls=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNclzMwJSPeyOnOvkVXvVQ/9qSUDgBfpltlPkULqe6Db2xjDQn
-	KVqzCf6qvQFFzDDfyoZtCRaeuCRW1DK74YCa+X2j5ijoymprIKYxME7x
-X-Gm-Gg: AR+sD13FexTGQVjCtuCXOyiaYVSS+Bm0XycXz445ltQpiMyJQxCeUa0zinKSal3FQjg
-	tDA9NzGPMLdfB8UZDyxKOjDXJVX4jzbw2VKMlFjK9nFMCRwOMf758Ki6sJUheGIsXcRSfO6BfuR
-	VPz4T30urR4vBzs+5KR2zXmMs+7V880u9frBHdWMPRurT3ou/r5rFwZ7UcqziKMyqkjKW2snF35
-	h1YgCP7mi0bbyAnYlMvjaeFDFTYOBYgKfw0gjISt1crSgKDGiVAVgRzNWjSal5eOBZuZLHq331o
-	j7XgbjhKskCalV3AzI7EeuNdDpVbB/w3apW6oH5Cul6YM8BIurxqJzAV7kKcDzkLqnH5YsBsprV
-	HbCnP3CqGmYOSWDAAnwge3P07Z2zKC6Oitp5VUEkOMZQXDVIhMagRGKSH5TwkO3qL0+v18H2k85
-	zcHQ/oe4gYSfS2dhIF+YM/JtmffvNx7G6h67yj60lMIBFuUELhGZjThxeZ6D8=
-X-Received: by 2002:a17:902:e888:b0:2ca:d151:383a with SMTP id d9443c01a7336-2d035c10f84mr2037815ad.20.1785364439062;
-        Wed, 29 Jul 2026 15:33:59 -0700 (PDT)
-Received: from localhost ([2001:19f0:8000:3e6e:5400:6ff:fe38:3d01])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a468f7sm17125555ad.28.2026.07.29.15.33.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 15:33:58 -0700 (PDT)
-Date: Thu, 30 Jul 2026 06:33:45 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Anup Patel <anup@brainfault.org>, Inochi Amaoto <inochiama@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, Yixun Lan <dlan@gentoo.org>, 
-	Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH v2 3/3] RISC-V: KVM: Reset the SBI extension when disable
- it
-Message-ID: <amp_hOi78SGkPjAp@inochi.infowork>
-References: <20260706021154.210289-1-inochiama@gmail.com>
- <20260706021154.210289-4-inochiama@gmail.com>
- <CAAhSdy3qnvWF1cdxJxnJxR9jf0_BUpKbauNAuJcY_AAVaJw9AQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+/sN1Dw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C22C1F000E9;
+	Wed, 29 Jul 2026 22:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785365154;
+	bh=jMBcyEMHQ3NLmlhR/FgVPURGZyluiZuzHBL/6h1WrqQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=F+/sN1Dw/Y1jqxMAoAwaoIv+xCNTq4s1BMY5lQ1YLfogRv9Nasr6zk5qnBHI6nFuL
+	 KCLEQpDb5oRs2/NtZKWPS8Tr9ypEDK1c89ZTjjT3A+qc3GRMmapHIqtl7pzL0F2L9q
+	 Ayd4U8UAismQ49VYEH98bUi9xxCP7BJk3bLjf9B8/lmJqs57zYi6q657t9EWELWaq0
+	 dVT8pCMzMPoI9nMCDx9Y0aJysc2hdWCRKsfIkNnEDdy2o4xKwscw1c9SIOPXyp+Uxd
+	 0l5Ri1T1FNVJPCX0+7BZ5E7tsc+74B7a/g7/r66Bk1tqPTKZPX1nS+m5qUmjKntVX0
+	 8CqftQgBlxsDQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 1/6] vfio: selftests: igb: Add driver for Intel 82576
+ device
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Josh Hilke" <jrhilke@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260729-igb_v3_b4-v8-1-3ed236272b4e@google.com>
+References: <20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com>
+ <20260729-igb_v3_b4-v8-1-3ed236272b4e@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 22:45:53 +0000
+Message-Id: <20260729224554.0C22C1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhSdy3qnvWF1cdxJxnJxR9jf0_BUpKbauNAuJcY_AAVaJw9AQ@mail.gmail.com>
 
-On Wed, Jul 29, 2026 at 01:32:40PM +0530, Anup Patel wrote:
-> On Mon, Jul 6, 2026 at 7:42 AM Inochi Amaoto <inochiama@gmail.com> wrote:
-> >
-> > The SBI extension validation callback can only fix the parameter if
-> > the extension is enabled. However, if the extension is disabled after
-> > modifty some parameters, the state of the extension is still broken.
-> >
-> > Reset the extension when the extenion is disabled so it can have
-> 
-> s/extenion/extension/
-> 
-> > a clear context.
-> >
-> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> > ---
-> >  arch/riscv/kvm/vcpu_sbi.c | 10 ++++++++++
-> >  1 file changed, 10 insertions(+)
-> >
-> > diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-> > index b737e9a7a12a..3eb7b7c57059 100644
-> > --- a/arch/riscv/kvm/vcpu_sbi.c
-> > +++ b/arch/riscv/kvm/vcpu_sbi.c
-> > @@ -221,6 +221,7 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
-> >  {
-> >         struct kvm_vcpu_sbi_context *scontext = &vcpu->arch.sbi_context;
-> >         const struct kvm_riscv_sbi_extension_entry *sext;
-> > +       const struct kvm_vcpu_sbi_extension *ext;
-> >
-> >         if (reg_val != 1 && reg_val != 0)
-> >                 return -EINVAL;
-> > @@ -229,6 +230,15 @@ static int riscv_vcpu_set_sbi_ext_single(struct kvm_vcpu *vcpu,
-> >         if (!sext || scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_UNAVAILABLE)
-> >                 return -ENOENT;
-> >
-> > +       ext = sext->ext_ptr;
-> > +
-> > +       if (!reg_val && scontext->ext_status[sext->ext_idx] == KVM_RISCV_SBI_EXT_STATUS_ENABLED) {
-> > +               if (ext->reset) {
-> > +                       ext->reset(vcpu);
-> > +                       vcpu->arch.csr_dirty = true;
-> 
-> Let's not blindly set "csr_dirty" when any SBI extension is disabled,
-> instead we should set "csr_dirtry" in kvm_sbi_ext_fwft_reset() (just
-> like we do in kvm_sbi_ext_fwft_set_reg()).
-> 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [Medium] Hardware Testing Failure / Invalid Loopback Configuration
+- [Medium] Hardware Configuration / Frame Padding failure for short packets
+- [Low] Misleading comment about interrupt delivery during memcpy
+--
 
-Good, I will move this line to the kvm_sbi_ext_fwft_reset() in the new version.
+--- Patch [1]: [PATCH v8 1/6] vfio: selftests: igb: Add driver for Intel 82=
+576 device ---
+commit e83f78e00ae490d2604290c3e38f2458c48dd9d4
+Author: Josh Hilke <jrhilke@google.com>
 
-> > +               }
-> > +       }
-> > +
-> >         scontext->ext_status[sext->ext_idx] = (reg_val) ?
-> >                         KVM_RISCV_SBI_EXT_STATUS_ENABLED :
-> >                         KVM_RISCV_SBI_EXT_STATUS_DISABLED;
-> > --
-> > 2.55.0
-> >
-> 
-> Regards,
-> Anup
-> 
+vfio: selftests: igb: Add driver for Intel 82576 device
 
-Regards,
-Inochi
+This commit adds a VFIO selftest driver for the Intel 82576 Gigabit Ethernet
+controller. It uses advanced descriptors and programs MSI-X routing to test
+DMA loopback via QEMU's igb emulation and physical hardware.
+
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
+esting/selftests/vfio/lib/drivers/igb/igb.c
+> new file mode 100644
+> index 0000000000000..6fc6e7c0e7235
+> --- /dev/null
+> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+
+[ ... ]
+
+> +static void igb_phy_setup_autoneg(struct igb *igb)
+> +{
+> +	int timeout_ms =3D 1000;
+> +	bool success =3D false;
+> +	u16 phy_status;
+> +	int ret;
+> +	int i;
+> +
+> +	/* Trigger auto-negotiation */
+> +	ret =3D igb_write_phy(igb, MII_BMCR,
+> +			    BMCR_ANENABLE | BMCR_ANRESTART);
+
+[Severity: Medium]
+Will this auto-negotiation time out and fail the test via VFIO_ASSERT_TRUE
+when running on physical 82576 hardware without an active external link
+partner?
+
+> +	VFIO_ASSERT_EQ(ret, 0, "Failed to write PHY control register");
+> +
+> +	for (i =3D 0; i < timeout_ms; i++) {
+> +		if (igb_read_phy(igb, MII_BMSR, &phy_status) =3D=3D 0) {
+> +			success =3D !!(phy_status & BMSR_ANEGCOMPLETE);
+> +			if (success)
+> +				break;
+> +		}
+> +		usleep(1000);
+> +	}
+> +
+> +	VFIO_ASSERT_TRUE(success, "Auto-negotiation did not complete in time");
+> +}
+
+[ ... ]
+
+> +static void igb_init(struct vfio_pci_device *device)
+> +{
+
+[ ... ]
+
+> +	/* Enable Receiver and Transmitter */
+> +	rctl =3D E1000_RCTL_EN |       /* Receiver Enable */
+> +	       E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
+> +	       E1000_RCTL_MPE |      /* Multicast Promiscuous */
+> +	       E1000_RCTL_BAM |      /* Broadcast Accept Mode */
+> +	       E1000_RCTL_LBM_MAC |  /* MAC Loopback Mode */
+
+[Severity: Medium]
+Does real 82576 hardware support MAC loopback? It appears this might cause =
+DMA
+loopback to fail on physical hardware even if auto-negotiation completes.
+
+> +	       E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
+> +	igb_write32(igb, E1000_RCTL, rctl);
+> +	igb_write32(igb, E1000_TCTL, E1000_TCTL_EN);
+
+[Severity: Medium]
+Is the Pad Short Packets bit (E1000_TCTL_PSP) missing from the TCTL
+configuration here?
+
+If vfio_pci_driver_memcpy() is called with a size smaller than 60 bytes,
+would the hardware send a runt frame that the receiver drops (because Store
+Bad Packets is disabled), causing igb_memcpy_wait() to time out with
+-ETIMEDOUT?
+
+> +
+> +	/* Enable MSI-X with 1 vector for the test */
+> +	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
+> +
+> +	/*
+> +	 * Program MSI-X interrupt routing per 82576 datasheet:
+> +	 *
+> +	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
+> +	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
+> +	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
+> +	 * applies on EICR read/write).
+> +	 *
+> +	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
+> +	 * Without auto-clear the cause stays set after delivery and the
+> +	 * test can see spurious interrupts on the next memcpy batch.
+> +	 *
+> +	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
+> +	 * MSI-X assertion (effective because EIAME is set), so a single
+> +	 * interrupt is delivered per memcpy batch even if the cause
+> +	 * re-asserts before software re-enables the mask.
+
+[Severity: Low]
+This isn't a bug, but is this comment accurate about delivering a single
+interrupt per memcpy batch?
+
+Looking at igb_memcpy_start(), it explicitly disables interrupts before the
+batch:
+
+    igb_irq_disable(igb);
+
+and igb_memcpy_wait() polls the descriptor writeback before clearing the
+cause and re-enabling interrupts:
+
+    igb_irq_clear(igb);
+    igb_irq_enable(igb);
+
+It appears interrupts are prevented entirely during the polling loop.
+
+> +	 *
+> +	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
+> +	 * cause 0 to MSI-X vector 0 and mark the entry valid.
+> +	 */
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-igb_v3_b4-=
+v8-0-3ed236272b4e@google.com?part=3D1
