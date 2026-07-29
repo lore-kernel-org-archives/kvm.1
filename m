@@ -1,66 +1,66 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A4C4562A7
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEEA468C18
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785352186; cv=none; b=CXn9qtonub5RBfsCruKw7uiy8R1FEJex8J9gStNSjhlfOMGdkV9F0lwalqWLfISg8uNMHlbsTHLG0j1FM+MpnYDGW4CvJ4MhyrDgk3fJ/8QNKvtLg1piR1B/CgSccWZ3bE7LfElDopL2+kak4rYl5y5pc2eTfSTOW7mhzB/e3cU=
+	t=1785352467; cv=none; b=WsSfouxptZLSxpCml5oZcQqVCSGzfT5OjEynHY/fqDPAfSJjFAqSY1syCQrQtWERGj5+4Q+v/8volhGsLbAmjGnvWZXbh8iie52bXsk8JbKQLwYTANaWGNjHPgxyFtdT7n4FQ1wcysVv78juZ/NNX3QtUNo6Cxxm4TykOnHR/Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785352186; c=relaxed/simple;
-	bh=hNIhsvFq8wG6+0DC6AaTyfTe4s7ctnj612x+RgqzboI=;
+	s=arc-20240116; t=1785352467; c=relaxed/simple;
+	bh=p+KQBr3YBqi1Te9/qMRupI2bpcRUQjWYqgBXzXRGFJc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LsJd58wbzI03/URzZlcYGVdNILq2PuuT0HoNC3gPmqb3LpJYp3gG2bJdOe15kMUzkaisIXRWkp1Wxml8zHfOREKw0oKX+J1WWwysoLlrWXFn1/eumD8cls9mw1mDVdjwElYwtn1vW503z+VZbzPFpyicn3/USDaYTj+r6U+PIdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kbh38NBM; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=Hr6cReaT3Gjdv0sqxLuAX57ovMSZMYxOvtMPl5tg08seMZJTuchsKCVsS/hD2lIu7FpbzuebOgDemN7qyGSNJ+coMKKhBEhf7Vzw6iLU+p6PtTujrJaML8cMFxfQNOVp7ietlPTL5pfMQrqeUDdws1oVpzAZgUbJz2yMilrnYUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i6g7+k1n; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kbh38NBM"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8488ac68185so3017107b3a.2
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:09:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i6g7+k1n"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so1491933a91.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 12:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785352184; x=1785956984; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785352465; x=1785957265; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+XMot+n6JciyNBBWBYdqJ5JavyhMGOvDIbDy5VtGrOA=;
-        b=Kbh38NBMGV98GmX9CjiGNnBWpScgeX4oGoYlo6nUIZbaj495YdBoVJNlrmGEr/I6aQ
-         R79i0fBWqVY6+6+WW+r97C2xbitSQndgNI+BojRN8MOOCO3uEeC/4vjJ58h3LTaqqfEP
-         eIIt7wx8ln9E2qSaanPuOUgCE6f/zN7sSBXnvAAhmxvNDCFyTakPMN3wyW6l3oUfOv6s
-         PUrILZnm8xIha2xvj5KOo7zDOOk62NoHEsx82rVCINOkLXX+xX0Z7KVCZTgIJT/stdAr
-         C4xmvTJtKhHnHj3+YnuySvZXzL5Ai3YqL4PiRXfeN3Uc3acLKfhv/1KchhZw4WlbZ29w
-         pVzg==
+        bh=k+h3h28T4F1i6amtJLbBYljCpqUwi0VZ2BDIbc8sgVg=;
+        b=i6g7+k1np5PqMVVBvYNTU1mlUWjAyX/rdSpg6Ju6vwQ2ndPl0FXS6hJnP+oLd+lBLD
+         33TiMMKSjo303RG0IbIuyAYqW12goE0NEV7EyBYktODfHawWFxPYo319632cLnie/6qq
+         zChajurLslk3FkHdPFUSQVKnb1i9NAFUJA+2TaQ9TV/ksIrMJxLgM6Y6iQ0Qv5OaMJTG
+         bMaU7vPhQdnYLWbjS7NL//0KqwUx9NvVn+oIsJdciJ9TIQ+oSDqbasaktd/v+gaRkiRB
+         7BFWsbGWPPujJf141Z8HOD6RDk3jeNDOuhCdMqsZC96GeMADfrL/Pg+QOajrzdMQEYy8
+         J6ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785352184; x=1785956984;
+        d=1e100.net; s=20251104; t=1785352465; x=1785957265;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+XMot+n6JciyNBBWBYdqJ5JavyhMGOvDIbDy5VtGrOA=;
-        b=gcDLFDnKkE91VMaStKNNcXyJ+ve2SBFM/Rdhd0IrtNR9uyC2DvCMEmwPKJ3DgYZdCg
-         /Bb+/1TV3+ad+Ti+dySFRY21tU6IvLy3cMihiM6XkQNi17nWvtxN83S+mKgAXYwmxbJP
-         wHQ8btjOEdxkYly8scjOcbaOWf5m33VSmHHXQZGjWlviyXd8vL/nweT5pt5744wQNDIF
-         nNWW4UqiP+poW7E7alblbbnjxEO1BBNbJl5zFnUpxyu805HNAeciT7KG4NgvUv3kGd5A
-         q13Tiv8jPrs07CTDudVPE6iFaFgFgDUYtBi0yg1saPNlGiiY+bR+nUBw6KnQiryJLoQ4
-         bHHw==
-X-Gm-Message-State: AOJu0YwmbDrhbgvShqNsMykfRhzVJK7+srwh9O7sfvWcWVfp7wQBoAlq
-	tXUT/CUoYZsLIKpf08EVCbLx0cll9ksIq7Sqea49G6fwUJiyaBBCVLrpJZiyOXWk8aNQ+9RJxR2
-	U3MoEHg==
-X-Received: from pffz14.prod.google.com ([2002:aa7:990e:0:b0:848:49f6:6f5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9290:b0:848:88e6:95d3
- with SMTP id d2e1a72fcca58-84eba1ecb98mr1356b3a.72.1785352184010; Wed, 29 Jul
- 2026 12:09:44 -0700 (PDT)
-Date: Wed, 29 Jul 2026 12:09:43 -0700
-In-Reply-To: <20260331194202.1722082-10-vipinsh@google.com>
+        bh=k+h3h28T4F1i6amtJLbBYljCpqUwi0VZ2BDIbc8sgVg=;
+        b=dc1wQ3tMJr3Dpcqj4wWr6VsxN1uhzxbLo1ROmQktAyt3jHa6LA4M0/HktnpnKCd1MA
+         ALqOlHqYmhwTeuHKTFeQrbK1c+d8GnNvq1xJ4alnmOf8AYGFdSlL73nfoCUVelxlXGUf
+         yDcQvudQVCWa3LDQIWw4Etx0zPk7Nhy3YBvEBWZODKdFKtK1HvbcnVlS9vhLP6/RVUJU
+         UdM/dxFxXBVgRPwWGoyKNeyqmxPjggNp/NqPE+JQ0/tkq774pukKZJ2dn/8iY82+AMh3
+         VGPbsmwfObveg9f3Qnq9nvr5rK2VRQ0ukKjY4wGLj6l6ID+SH9sLHLx/Qp+CO80M4cOE
+         zDVw==
+X-Gm-Message-State: AOJu0Yz2vSuk0NwObExKgGsAdr4fsNSyPcVp35bjyQcA0gSnXWYGtXhl
+	4YMj83xTc7WJUjmdH6KIQyd+5rKmMNupTVScitnx9E4QXGkeWRdSGFKUM+m5wgjqbqAOEpf+otH
+	Otov4DA==
+X-Received: from pgae5.prod.google.com ([2002:a63:3705:0:b0:cb2:54cf:afe5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3204:b0:3c6:5673:2bd1
+ with SMTP id adf61e73a8af0-3c8ba5da101mr8929380637.42.1785352465072; Wed, 29
+ Jul 2026 12:14:25 -0700 (PDT)
+Date: Wed, 29 Jul 2026 12:14:24 -0700
+In-Reply-To: <20260331194202.1722082-7-vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-10-vipinsh@google.com>
-Message-ID: <ampP93AEMawDmv4E@google.com>
-Subject: Re: [PATCH v4 9/9] KVM: selftests: Provide README.rst for KVM
- selftests runner
+References: <20260331194202.1722082-1-vipinsh@google.com> <20260331194202.1722082-7-vipinsh@google.com>
+Message-ID: <ampREGtEqKh8_-Ua@google.com>
+Subject: Re: [PATCH v4 6/9] KVM: selftests: Add various print flags to KVM
+ selftest runner
 From: Sean Christopherson <seanjc@google.com>
 To: Vipin Sharma <vipinsh@google.com>
 Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org, 
@@ -71,134 +71,38 @@ Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, kvm-riscv@lists.infradead.org,
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Mar 31, 2026, Vipin Sharma wrote:
-> +Generate Default Tests
-> +======================
+> @@ -27,10 +34,14 @@ class TestRunner:
+>          return test
+>  
+>      def _log_result(self, test_result):
+> -        logger.info("*** stdout ***\n" + test_result.stdout)
+> -        logger.info("*** stderr ***\n" + test_result.stderr)
+> -        logger.log(test_result.status,
+> -                   f"[{test_result.status.name}] {test_result.test_path}")
+> +        print_level = self.print_stds.get(test_result.status, "full")
 > +
-> +Generate the default test case files using the provided make target::
-> +
-> +  # make tests_install
-> +
-> +This creates the ``testcases_default_gen`` directory containing ``default.test``
-> +files. Each KVM selftest has a directory with a ``default.test`` file. This file
-> +contains the executable path relative to the KVM selftest root directory
-> +(``/tools/testing/selftests/kvm``). For example, the ``dirty_log_perf_test``
-> +entry looks like::
-> +
-> +  # cat testcases_default_gen/dirty_log_perf_test/default.test
-> +  dirty_log_perf_test
-> +
-> +In above testcase, the runner executes ``dirty_log_perf_test``. Testcase files
-> +can provide extra arguments to the test::
-> +
-> +  # cat tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
-> +  dirty_log_perf_test -x 2 -v 5 -i 10
+> +        if (print_level == "full" or print_level == "stdout"):
+> +            logger.info("*** stdout ***\n" + test_result.stdout)
 
-This is obviously not about the default tests.
+IMO, when the print_level is exactly stdout or stderr, the runner shouldn't spit
+out the "*** std{out,err} ***" line, as it's pure noise.  E.g.
 
-> +
-> +In this case, the runner executes ``dirty_log_perf_test`` with the specified
-> +options.
-> +
-> +Examples
-> +========
-> +
-> +Display all options::
-> +
-> +  # python3 runner -h
-> +
-> +Run all default tests::
-> +
-> +  # python3 runner -d testcases_default_gen
+        print("\033[2K", end="\r", flush=True)
+        if (print_level == "full"):
+            logger.info("*** stdout ***\n" + test_result.stdout)
+            logger.info("*** stderr ***\n" + test_result.stderr)
+        elif (print_level == "stdout"):
+            logger.info(test_result.stdout)
+        elif (print_level == "stderr"):
+            logger.info(test_result.stderr)
 
-s/testcases_default_gen/$(DEFAULT_TESTCASES), because the user (like me) might
-change it.
-
-Something like this, if we go testcases => install route?
-
-Generate Default Tests
-======================
-
-Generate the default test case files using the provided make target::
-
-  # make testcases
-
-Create a ``$(INSTALL_PATH)/$(DEFAULT_TESTCASES)`` directory and a sub-directory
-for each KVM selftest, and populate each selftest sub-directory with a
-``default.test`` file, where ``default.test`` contains the unqualified
-executable path.
-
-For example, the ``dirty_log_perf_test`` entry looks like::
-
-  # cat $(DEFAULT_TESTCASES)/dirty_log_perf_test/default.test
-  dirty_log_perf_test
-
-Note, the ``testcases`` target is dependent on the ``install`` target, i.e.
-installing testcases will also run ``install``.
-
-Testcase Syntax
-===============
-
-Testcase files can provide extra arguments to the test::
-
-  # cat tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
-  dirty_log_perf_test -x 2 -v 5 -i 10
-
-In this case, the runner executes ``dirty_log_perf_test`` with the specified
-options. 
-
-Examples 
-========
-
-Display all options::
-
-  # python3 runner -h
-
-Run all default tests::
-
-  # python3 runner -d $(DEFAULT_TESTCASES)
-
-Run tests in parallel::
-
-  # python3 runner -d $(DEFAULT_TESTCASES) -j 40
-
-Print only passed test status and failed test stderr::
-
-  # python3 runner -d $(DEFAULT_TESTCASES) --print-passed status \
-  --print-failed stderr
-
-Run test binaries from a different directory (e.g., out-of-tree builds)::
-
-  # python3 runner -d $(DEFAULT_TESTCASES) -p /path/to/binaries
-
-Save all test outputs (stdout, stderr, status) to a directory::
-
-  # python3 runner -d $(DEFAULT_TESTCASES) -o test_outputs
-
-Run specific testcase files::
-
-  # python3 runner -t tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
-
-> +
-> +Run tests in parallel::
-> +
-> +  # python3 runner -d testcases_default_gen -j 40
-> +
-> +Print only passed test status and failed test stderr::
-> +
-> +  # python3 runner -d testcases_default_gen --print-passed status \
-> +  --print-failed stderr
-> +
-> +Run test binaries from a different directory (e.g., out-of-tree builds)::
-> +
-> +  # python3 runner -d testcases_default_gen -p /path/to/binaries
-> +
-> +Save all test outputs (stdout, stderr, status) to a directory::
-> +
-> +  # python3 runner -d testcases_default_gen -o test_outputs
-> +
-> +Run specific testcase files::
-> +
-> +  # python3 runner -t tests/dirty_log_perf_test/2slot_5vcpu_10iter.test
+> +        if (print_level == "full" or print_level == "stderr"):
+> +            logger.info("*** stderr ***\n" + test_result.stderr)
+> +        if (print_level != "off"):
+> +            logger.log(test_result.status, f"[{test_result.status.name}] {test_result.test_path}")
+>  
+>      def start(self):
+>          ret = 0
 > -- 
 > 2.53.0.1118.gaef5881109-goog
 > 
