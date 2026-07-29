@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5782D258CE5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5972F8E8A;
 	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285309; cv=none; b=LVOl406ooIb4y9bo6gxaMYLD34aLKkymV6PEDBFdD2nCH02J0j8wCFDupq9WgATWBfpFTHLvkjM8oGQv349QjmCDDeiTb/8EJ2/uUgNJ111c6F46CCgYuCk7RdRF8/nqt50Hkla+gec25QexynRoEMDdPLAhwHb1K+hmsDaXlyQ=
+	t=1785285309; cv=none; b=ochU9Urro0pIfUYbKuQycJSZCYZs7aPt6mE2JQVBXimNHOjfX3Om7aD41Nu79u5LKk++wkYZSrnJ0Hht5EFBQJIxL78Hy/bOhVYljiyhMZZ2ahQX0d3FmXFsTGM0EAXtHnXkphZFrfK7KNcVJbyFWAy6Znp9WBz1nmKNCwRa9T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785285309; c=relaxed/simple;
-	bh=8P2+/T9m6/t7l+sEVyKZYHunwUno4+zhgzh3aLZIyqs=;
+	bh=52/0Vt0dpEJnwhXlNQX3zcqGfpEYR+Me2/DktYpv8cM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NIuE6p1CxbYhtIKctcQ+Q4d+w9y9SMayBqQJoYeGh9RS4UrvUXIuN5D1NVT3LzMCaLyUTVWSFcfxUr63+aXC0TSr2i4PTjj/x86I5e5ZhTG1IajJt7pEVzvgmRejEkpvALPHJbUQkwx7me8cWEb5KTZnIpPxdMzuS30FALThDmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLKM2SaM; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Qjuw57kZsYclHZpyL1TCIAmIRPkbO2Cyurtf5AdKIoi0xElTXjKnjLEGIjkCRwavhxz+9pGbe5MFVXc0FqHRx8q1efNlQzReuTi8jR/CmJTMinHE5bf2zEYPPSgAv+RFB6B1liJE0N2Rj4BOQGi15zFGh33sR8yMoGKC1IjtDyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPVjul0X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLKM2SaM"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EC0D4C4DDE6;
-	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPVjul0X"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D447C4DE12;
+	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785285309;
-	bh=8P2+/T9m6/t7l+sEVyKZYHunwUno4+zhgzh3aLZIyqs=;
+	bh=52/0Vt0dpEJnwhXlNQX3zcqGfpEYR+Me2/DktYpv8cM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=uLKM2SaM4YHqF7GDIZnsMF5pflobvR0FKZyyDy06tLX/TSP3Ir/RAvWE5utou3yd3
-	 JNjIYUjdPJoh28psi//w39BHjSz9z1QhZWKJ5A64mPC591AFVFxgw+iVecKbki9iSV
-	 zVbUmUjWTbiD1vLi4p+Xo0yjNL5PDYcdZtKSjbZaTSZ9E5pp6gwTVv6wsgijC0q2ca
-	 WTF3wCiBku5/H3TcoVyjL0QpY3LeshoEZVvnh2XeL2i75eLYaslXhEj/2PmlrhvqZ7
-	 T82Rhif2b39dnxUYCbkhrSttS6gIM8PTiAeCMvlxtMOXpm1rcKJCHoAY0jaEekh3dW
-	 PWcmrsz39hTCA==
+	b=UPVjul0XnKVXb0w0p/8nBc3nmi0afcCo+9Fca4oumSzLg6LfYd3rvmTl7TsPRUyqe
+	 WInJVuT4kRktwFp+2dE+fVC9BIz17PWvegt47oxdB8NhJRdFVtHTCewXDxdJocYNqB
+	 JxOUnDTIUKeHhO4jlnZUaCjT8fz3tCx9WiHSRGsg1dNUPet+OKQyXW4P/wDkio/+nS
+	 DeU6qxzc8lBVUScfCszuEr1Gf3DOpW8ETfRgrCSQUfzYqo5xSvDFpIX+7d2q0HicRr
+	 4GTGWSNuQjEh4/m6eu/yxlp7GO07aDFA8GM8offjBlVbKJtw7Or0LMlESkSdaXKUOj
+	 nebQEmOdh7fpg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B34C54F5B;
-	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64DBDC54F52;
+	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:13 -0700
-Subject: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+Date: Tue, 28 Jul 2026 17:35:20 -0700
+Subject: [PATCH v9 21/41] KVM: guest_memfd: Enable INIT_SHARED on
+ guest_memfd for x86 Coco VMs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-21-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -73,13 +74,14 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
+ Xiaoyao Li <xiaoyao.li@intel.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2983;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=1641;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=z1k7bYULkqVrzF37fMOsSzxA45ibiL0mHnNKZDzJmd4=;
- b=TM3b/13YyGrFO85K9kaTUS8mgpgnU4Y/aXT5M33Ug87O/Lo9F++1+AEIN2PUps1BAHuyg7UuP
- 9q+hhwykKs8C0S2KklFGsxHRwALYYGPR3CNE+OCsczlAkk2peNgz2fe
+ bh=xqYH05bSCEd1Bk1hXIslSXCmEIZh87KnzlPOeglC0VM=;
+ b=bL9eALDZa5rrVw3e+oDoxAYk2lxBzN9/H13NtfJOfT/y/F4v9X0ogrXYkcZ82AmmYuS5rPP89
+ NZtt7tORv17DBB8S6dcZfZB7MvYLXrBe7t6xg7XcoiTHiOvXZz1Okf1
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,106 +89,49 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Extract the progressive LRU drain retry logic from
-collect_longterm_unpinnable_folios() into a reusable helper,
-lru_add_drain_progressive().
+Now that guest_memfd supports tracking private vs. shared within gmem
+itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
+for x86 Confidential Computing (CoCo) VMs, so long as in-place conversion
+is enabled, i.e. when it's actually possible for a guest_memfd instance to
+contain shared memory.
 
-When attempting to isolate folios that may still reside in per-CPU folio
-batches, draining is escalated progressively:
-
-1. State 0: Call lru_add_drain() to flush local CPU batches.
-2. State 1: Call lru_add_drain_all() to flush all CPU batches.
-3. State >= 2: Return false to stop retrying.
-
-Refactor collect_longterm_unpinnable_folios() to use this new helper.
-
-The helper will be used by KVM's guest_memfd in a later patch.
-
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/linux/swap.h |  2 ++
- mm/gup.c             | 19 ++++++-------------
- mm/swap.c            | 15 +++++++++++++++
- 3 files changed, 23 insertions(+), 13 deletions(-)
+ arch/x86/kvm/x86.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 8f0f68e245baa..cd54f73f34f39 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -344,6 +344,8 @@ extern void lru_add_drain(void);
- extern void lru_add_drain_cpu(int cpu);
- extern void lru_add_drain_cpu_zone(struct zone *zone);
- extern void lru_add_drain_all(void);
-+bool lru_add_drain_progressive(int *drain_state);
-+
- void folio_deactivate(struct folio *folio);
- void folio_mark_lazyfree(struct folio *folio);
- extern void swap_setup(void);
-diff --git a/mm/gup.c b/mm/gup.c
-index 0692119b79043..5f00435e2c635 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2268,7 +2268,7 @@ static unsigned long collect_longterm_unpinnable_folios(
- {
- 	unsigned long collected = 0;
- 	struct folio *folio;
--	int drained = 0;
-+	int drain_state = 0;
- 	long i = 0;
- 
- 	for (folio = pofs_get_folio(pofs, i); folio;
-@@ -2287,18 +2287,11 @@ static unsigned long collect_longterm_unpinnable_folios(
- 			continue;
- 		}
- 
--		if (drained == 0 && folio_may_be_lru_cached(folio) &&
--				folio_ref_count(folio) !=
--				folio_expected_ref_count(folio) + 1) {
--			lru_add_drain();
--			drained = 1;
--		}
--		if (drained == 1 && folio_may_be_lru_cached(folio) &&
--				folio_ref_count(folio) !=
--				folio_expected_ref_count(folio) + 1) {
--			lru_add_drain_all();
--			drained = 2;
--		}
-+		while (folio_may_be_lru_cached(folio) &&
-+		       folio_ref_count(folio) !=
-+		       folio_expected_ref_count(folio) + 1 &&
-+		       lru_add_drain_progressive(&drain_state))
-+			;
- 
- 		if (!folio_isolate_lru(folio))
- 			continue;
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8c..0f9465d31fe52 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -950,6 +950,21 @@ void lru_add_drain_all(void)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 52de3ec7c7f73..79538dedfad68 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10623,14 +10623,15 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
  }
- #endif /* CONFIG_SMP */
  
-+bool lru_add_drain_progressive(int *drain_state)
-+{
-+	if (*drain_state == 0) {
-+		lru_add_drain();
-+		*drain_state = 1;
-+		return true;
-+	}
-+	if (*drain_state == 1) {
-+		lru_add_drain_all();
-+		*drain_state = 2;
-+		return true;
-+	}
-+	return false;
-+}
-+
- atomic_t lru_disable_count = ATOMIC_INIT(0);
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+-/*
+- * KVM doesn't yet support initializing guest_memfd memory as shared for VMs
+- * with private memory (the private vs. shared tracking needs to be moved into
+- * guest_memfd).
+- */
+ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+ {
+-	return !kvm_arch_has_private_mem(kvm);
++	/*
++	 * INIT_SHARED is supported if in-place conversion is enabled, or if
++	 * the VM doesn't support private memory.  If the VM has private memory
++	 * and in-place conversion is disabled, then guest_memfd can _only_ be
++	 * used for private memory.
++	 */
++	return gmem_in_place_conversion || !kvm_arch_has_private_mem(kvm);
+ }
  
- /*
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
 
 -- 
 2.55.0.508.g3f0d502094-goog
