@@ -1,150 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1CC38331B;
-	Wed, 29 Jul 2026 17:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785346745; cv=none; b=mgWiplDHixjKdUFa05VGuxSzAGAaMitKgfaqiB22SkwSuoPeALiwLRhhzHLsZWo4uEBRrZVAnK+1/pJFfCk12cXXRwyozdGBztRDmo6IhZDz1t1qUUKcJp50lT0aAjGGd7zFHoKTDNph+I6XeA4GfHzeMGS1BCoA3p/A/6EPm88=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785346745; c=relaxed/simple;
-	bh=T9psTN51XnKSv0/MEwoXj5Pv7EP/vSBFnKeSALuz4s4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=l6X29mWADrxxQz5oIXg30c005HpgPhZaMrfjUrPMdqeTbWASrdDz2dOuMw9y2khzH0ec8TGM3dGQsz3q6+4exBDG+AdS+ArkyyEJSmaL/HWXn5s9OJrr/Y0y4tO+VYG6blltjzuGzXFx6NulCKWxrYRYCRx2R99l9KVI9sj9tYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kP9F8iII; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EA03845CB
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785346767; cv=pass; b=ZGLTpiyb19KnHa65vQaGQZRLIPjHU/fmje75+sZ24/3s2+BEfCXc8iJx3hVclQ+P+iq+UcsNi+K3DQ6kUfwypghF3x4OKbIEpwuIE3cde1Ws29U3bFtBAXOpCVuEYgDlj6cKPH2ynZgAUDTNSzhJoNsdYwzmg82BG9GVp99enbE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785346767; c=relaxed/simple;
+	bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PYawADNEJC9mcSaD5ULX7bRgAYtkfUWSsNXo7wLpndxYCb50EfQSYY+E+H9Q9iZ8IC0voc5YLEWhdO/Bs/iVdQufAZs6FvRDvHAGMqFrf09KNHIE/z+6X5a9LKtJmIUHp+lxLIeGxiwg/HlwaqW7qbMkI/55KQoVsoUFBmuZbaY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gzvhrs0w; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kP9F8iII"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C971F000E9;
-	Wed, 29 Jul 2026 17:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785346740;
-	bh=ChT5zN6to+qddqezJYQP4Q3G9hXYJys3zqXheJUyhdY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kP9F8iIIgBkVy4zuriUsZd0UB8pF3aj3aS9Oz0FbWuqZDkHbk7f+1qIIHD6kQ99QY
-	 s8BqLi8feolVkt3p9KxrCT0nYGw0zIwU/0u9Ys3wdEYDyKNIWk8b3n3Au0+e8hZF18
-	 7I1aBHJOsyRVVo+ItlsOPYrscGqYQSZvOzHbntUDRUsqUnF9iK4d1dhhptMtQyAfAD
-	 j3/clvc3w4t7s/JixudCuDjarXLYJBQrYIUhjqfDyav5GvHcZVwmXK10cPxtKC2n86
-	 1mqvCwC+SZRnbwfABtipr5o6xybeBim8D8NDjCRce62SK8pne1F7d1fqNHOxM/HeZ3
-	 l5lD+2hOd8Qkw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 07/13] KVM: s390: cmma: Fix dirty tracking when
- removing memslot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260729152938.782383-8-imbrenda@linux.ibm.com>
-References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
- <20260729152938.782383-8-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 17:38:59 +0000
-Message-Id: <20260729173859.A4C971F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gzvhrs0w"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so647a12.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 10:39:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785346764; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UfxvyDI7DebW0IX6f3NBehAW84XKGSgoZ6G68CdlJno7u9dw+v0YthDggnxYkGho+h
+         fG/CWVAj8gti2BPkcNhc/ac0q2RyHyc+hh0krcb/NIPaxCBGNRPPKVmZ2S2zkCCT9sPX
+         Bims+RtRpvPXLEVXKvMSQXn4QxmjoNfO3YygKzuFditvLE5d5zUjb8yH75XVSqUUhpZX
+         IN8RuKUhd6t/tcds38VSdWNBqghCMPqqwgH6ZvihCAYvr/U32LMpFgTSjAE6k3nUCTKF
+         xeefnR/Co2LRhpQwcrxuS2XuN8X8ZSMDQ5myNPvLc+vMWPdCfVnQaa5tNd/lGVAdMFrz
+         PdQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
+        fh=2jE91Q5AwZSgHmNMGbqKHRUNHd6icMETPUMsxASBb9c=;
+        b=F0ToKlCydpm02QmAYT2eQfOckuThssaQ6pVxq967HHDF4HopHmFgDpmM4G1lBY9DB7
+         6re/KLAdaJqlUTqTJqrYRDB6i5Rd1SpF/ksFOl3vTaLWgUDsGlaus3uYhaH+4w82uc8b
+         60eT48apKfjCn5elQefNth5/xgFXc9WiUckCEqpsNwpKYJxkUmXdWfsyJzUStJ4xatdM
+         nvR7VJeA4njFu3RnlvllnaCdUG4afssVZlQo6NisSHxaQfq3rKXtzv0iMy/agCn/52QH
+         FT8P6qNxZmc0Pris0itlGenYfRTt27TTOHmWDVFXpfKYRHZcRQ50y3q6CrxuokjeGexA
+         Rz8A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785346764; x=1785951564; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
+        b=Gzvhrs0wzfEo2AVjDDkXP8ZNnNw+L+JEdOJrrfpSr/+38RyRNioHOpDqPnQrCKv83z
+         JtYOAcH3SCmqmTLP1QlXICbpZuGlfmYm/rR7NZoeRE91dYU7PItatGXK++zfp6IikNKt
+         BtGeQOjwbdZCeaqJNYA17504GueRFLGwkDB+FLJUBpja1Ny7WZ3nTYBjNDopqqm1iLME
+         YEIZ5nAWPh1pdbDZzCc2WVN5NHr9raDRwdqGm/6kDp2bXPATHu3WukcEechxoG0mZgOp
+         HW3Y8ieP/vmBKt08bQorVYrt5D6LcJ1DXrQZt/FOlIzut1k8r2YJFmpNQRuhEtxXAp5P
+         tqOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785346764; x=1785951564;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
+        b=Bhd06rV8VSYUQt0f/60qnzdCeviGh2n2eShkqf4KocLnuqfwpSP9qDN7Rvx9/wCnBl
+         Cb3VB8JFlDUOEuQOptmix0A29A0x1CYfiGCi5tn3XykfzuCzRg+6RKi9mKU/VWo4FCRR
+         NmG5gyAgJXJt9jQ1qwnYELvbhkho3ZPD0rGa2xDgx5Y8NrvaMduM+5EfoVVR9LdEdX5n
+         ZMhZkSGYCBdo5VW7ftmuCLX3ouNy5fmy3w0u8JW0KJiCQprUhimFHXFsZlE7TehzRtgF
+         +jcqpDem2bAa9IOwK1r45JxnOjv9bijvQkifDUfbkcmFtA3rVpqKXMQ3UYpt00qROj3v
+         +boA==
+X-Forwarded-Encrypted: i=1; AHgh+RqMXnyiouXpN6OvW75dsvDBrrzc+bRhI9Hf0VzoLcTJYiW1ZwiODAUB+x9W7le/QnbtpHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHCIfcQotm+0cjMUCm3El7lEWRDomUGVAwSwJGp7EctIKe6APy
+	hPpjVuG7bpH6Y7sjuWsoN5nS+QAEHxuYhDM7apbtQglYM+GfAkwqP9R4cCCcFzJDHkHtfdlK9F4
+	EgW+OEAQvNJVSTeP4aHJt7bUrP/1d9A7XsZfW3ywC
+X-Gm-Gg: AR+sD12Oql/VHwLH7xdzWBL8BwRhVH4R4UagsZ+m8JBzEIt92RbEAK8qktkM9DZBTFE
+	6Gd9t6LNAD4kllRJRRcNhjZ2OF4hAWnDatnUhYl27jAD2HH085op8pR8hp/DNRib/Xy5Vgh11Oo
+	+iQuOg6/wX7crs8QbNlYFp9/uv3RzuCOyg+ux3f2SOGD+EtUuk1Vo43DgooKTJUHvAXq70FHhGT
+	5xXZOoyZWBC7swmCeWBS30jISqbFbmuQbxOLubj+CdZox2C4qeLVcoIjbE/kraWvKzQFpNtsRxV
+	js7ap6kFDgY9Noc+8tRJxqi4DFbyk9h9QkQ0onNoWkN+mzsLgXlwSkc=
+X-Received: by 2002:aa7:de02:0:b0:69a:df95:f1f8 with SMTP id
+ 4fb4d7f45d1cf-6a07919d471mr20008a12.2.1785346763174; Wed, 29 Jul 2026
+ 10:39:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <cover.1772732517.git.isaku.yamahata@intel.com>
+ <aliWoldWX9/9tqNn@intel.com> <amlYsJzUurSeYlTm@intel.com> <CALMp9eSKEMotL19H4WxZN5iVfUxnDScpW0TqGLAEGSitG4AAbw@mail.gmail.com>
+ <amnPFlSvI3k95uCV@intel.com>
+In-Reply-To: <amnPFlSvI3k95uCV@intel.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 29 Jul 2026 10:39:11 -0700
+X-Gm-Features: AUfX_mzOfWT4lwJ-6gy3vmCOfFPfE6muiKKlFqbHT5zOqJdTk6X8WWJgLDL0kLQ
+Message-ID: <CALMp9eSLLm_4K0c0ouRYTpqxGkiBcRShf2NO9JOS9ZP+Ws+H0w@mail.gmail.com>
+Subject: Re: [PATCH v2 00/36] KVM: VMX APIC timer virtualization support
+To: Chao Gao <chao.gao@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
+	isaku.yamahata@gmail.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Wed, Jul 29, 2026 at 3:00=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
+:
+>
+> On Tue, Jul 28, 2026 at 11:05:59PM -0700, Jim Mattson wrote:
+> >On Tue, Jul 28, 2026 at 6:35=E2=80=AFPM Chao Gao <chao.gao@intel.com> wr=
+ote:
+> >>
+> >> Hi Sean, Jim,
+> >>
+> >> Any thoughts on the approach of reusing hv_timer for APIC timer
+> >> virtualization?
+> >
+> >Last I heard, APIC timer virtualization was only available on E-cores,
+> >with no P-core intercept on the roadmap.
+>
+> It will be available on Coral Rapids as well, so it is relevant for
+> server.
 
-New issues:
-- [High] Missing `DAT_WALK_ANY` flag skips swapped-out pages, leaking the C=
-MMA dirty counter.
+That's welcome news!
 
-Pre-existing issues:
-- [High] Silent failure in `kvm_arch_commit_memory_region` leaves KVM memsl=
-ots and s390 DAT tables out of sync.
---
+I'm not a fan of the hv_timer approach. One major difference between
+the VMX preemption timer and the virtual TSC deadline MSR is that the
+VMX preemption timer has to be reprogrammed every time that KVM
+switches from hrtimer to hv_timer. The virtual TSC deadline timer
+never needs reprogramming during normal operation. Another difference
+is that KVM should never inject a virtual local APIC timer interrupt
+when the virtual TSC deadline timer is in use. Even if the vCPU was
+blocked and the hrtimer fired to wake it up, KVM should just let the
+hardware deliver the virtual interrupt on the next VM-entry.
 
---- Patch [7]: [PATCH v5 07/13] KVM: s390: cmma: Fix dirty tracking when re=
-moving memslot ---
-commit 209a02966d18973e5f9b2678eee5bc92d7952603
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-KVM: s390: cmma: Fix dirty tracking when removing memslot
-   =20
-When a memslot is removed, all ptes that mapped the slot are cleared or
-even deallocated. If this happens while the system is in migration
-mode, and if cmma-dirty pages are removed, the cmma-dirty counter will
-not reflect reality.
-   =20
-Fix by appropriately decrementing the cmma-dirty counter when removing
-a memslot.
-   =20
-Opportunistically improve kvm_arch_commit_memory_region() to use
-__free() for the struct kvm_s390_mmu_cache.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index a72ffd515c866..2ae431030621e 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-
-[ ... ]
-
-> @@ -5804,14 +5804,30 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
-m,
->  	return 0;
->  }
-> =20
-> +static long cmma_d_count_pte(union pte *ptep, gfn_t gfn, gfn_t next, str=
-uct dat_walk *walk)
-
-[ ... ]
-
->  void kvm_arch_commit_memory_region(struct kvm *kvm,
->  				struct kvm_memory_slot *old,
->  				const struct kvm_memory_slot *new,
->  				enum kvm_mr_change change)
->  {
-> -	struct kvm_s390_mmu_cache *mc =3D NULL;
-> +	const struct dat_walk_ops ops =3D { .pte_entry =3D cmma_d_count_pte, };
-> +	struct kvm_s390_mmu_cache *mc __free(kvm_s390_mmu_cache) =3D NULL;
-
-[Severity: High]
-This is a pre-existing issue, but if kvm_s390_new_mmu_cache() fails to
-allocate memory and returns NULL later in this function, doesn't it
-silently skip updating the DAT tables?
-
-Since kvm_arch_commit_memory_region() returns void, KVM assumes the changes
-are applied infallibly. Could this leave KVM memslots and the s390 hardware
-DAT tables fatally out of sync under host memory pressure?
-
->  	int rc =3D 0;
-> =20
-> +	guard(mutex)(&kvm->slots_arch_lock);
-> +
->  	if (change =3D=3D KVM_MR_FLAGS_ONLY)
->  		return;
-> =20
-> @@ -5822,6 +5838,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->  	}
-> =20
->  	scoped_guard(write_lock, &kvm->mmu_lock) {
-> +		if (kvm->arch.migration_mode && kvm->arch.use_cmma && old) {
-> +			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
-> +					    kvm->arch.gmap->asce, &ops, DAT_WALK_IGN_HOLES,
-> +					    &kvm->arch.cmma_dirty_pages);
-> +		}
-
-[Severity: High]
-Does this walk miss swapped-out pages by omitting the DAT_WALK_ANY flag?
-
-If DAT_WALK_ANY is not passed to _dat_walk_gfn_range(), holes are skipped
-and cmma_d_count_pte() is never called for swapped-out pages, leaking the
-cmma_dirty_pages count.
-
-However, the subsequent dat_delete_slot() will process those same holes and
-wipe their dirty status.
-
-Will this cause an infinite loop in userspace migration wait loops if the
-dirty count never drops to zero?
-
-> +
->  		switch (change) {
->  		case KVM_MR_DELETE:
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
-83-1-imbrenda@linux.ibm.com?part=3D7
+I'd rather see TSC deadline timer virtualization implemented as a
+standalone APIC virtualization feature.
