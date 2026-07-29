@@ -1,169 +1,167 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0A92F3C19;
-	Wed, 29 Jul 2026 21:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720AB40B379
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 21:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785360779; cv=none; b=cBDyqh75SICnxt8V+Ciia2cd63Tm1RkJNvm3sgpGQ3swQ4YRHyPfOL97hCUCVI+sjqRF4SkAd54SZu2ywANQvsL+F+/rGmPQfRF/ASSvVCNbFwuitEiiZefIQLPgcaNkxqST+6t+0j8DCCLOVih3PVSKSISp+s8eGeSZLu8jkCM=
+	t=1785360966; cv=none; b=lpxCOSf8MVyemHZHcnskRWcUY5VgOuwO8914Wt5yY8xZcmmVVP1rCqjT3Fr7LXWSpT1e/ZvwZB/X4idYA/yIveEnaQcN6UXagGXW/2I6mu8Y9x4qRy18cxtAr51a3YxHkByAwdtNnQC5dIkjYx5skL7tgoQV7NKs95+nd8OgPKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785360779; c=relaxed/simple;
-	bh=c40h7e6r/DLEC9DZU59NUpvgQvI1n1OyDKp1OFZSxlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nGfc2PTqFuHENs9mJeL4A5brqvLQJvGm9MnwnSk3z+oMvC7f5/b3sryaDlPvnmUakgGssVBGna0rTJMF0KQiqDYKNWyCjL4mjBB5NbJJJmbCTUSvERG+ODDmiUYWQiWD4YAr6vzunObeNemk5sxqpBrxL6W+cP894c/7NOzPVtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=apWQEugR; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785360966; c=relaxed/simple;
+	bh=AypAt2dwYegjAyUQDzlxyeSbBX154zyJYWZj/xmnuwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ndg67qBP2a0n1C0rUI+pFf35YMKG8w4GnatbHwz5wx4x38UF1qjK2GIio6FsZjtP6jZKhJiV008y5+piqSPZUzh8H4Xsvf5EMpQjf2+L8o7aKkmNCR5Ud/KIPOaKMD12hRKC60dG7RnSPAQ7IRXkN6IZOT+vIx+2J4/ygOMg/6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eHYPhCDF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UvtMJPdn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="apWQEugR"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66TLIdHS1053031;
-	Wed, 29 Jul 2026 21:32:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=/mb2ud
-	WjvsXgO+DrRURXADlbaiEqxMmSdWVMz+jHCTc=; b=apWQEugRaazTgWPAycaeq4
-	LOufgTkaAyNbDeWfwKAeY2zo80Gd+gH5VqE0Ql6DUhCHzxBm/3aKYbSgjzV0xEuS
-	sUv4jrtsW2FeepIjLGXxW8RaheVKyAjo9A6a/+3n/oCYLrEwnrmiqGYoCT+VU1Hl
-	/gBtKgllM9R5VDAWjAxSwfXojRfEMejmdEi4SQGPZW4VZOZLBA/QTJli2r0VhJLI
-	UB5lr4TofJeGVoA4Zx7U2/4CavjTv0JWEfHe9vBthVOAWRPy/l8icnHl5T9i7rRV
-	JZN2pTQFxNsujfdia2dXQyeJy2EC90ynefFbYCbQocMIHKPnM6+juM9oaDsRLEuw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0nv0aq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jul 2026 21:32:48 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66TLQK4A016406;
-	Wed, 29 Jul 2026 21:32:48 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn9pggd27-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jul 2026 21:32:48 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66TLWkNi39190918
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Jul 2026 21:32:47 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E0A4E58064;
-	Wed, 29 Jul 2026 21:32:46 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F67C58060;
-	Wed, 29 Jul 2026 21:32:46 +0000 (GMT)
-Received: from [9.61.253.71] (unknown [9.61.253.71])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 29 Jul 2026 21:32:46 +0000 (GMT)
-Message-ID: <42a3b06d-ecaa-4339-9472-7c592694f877@linux.ibm.com>
-Date: Wed, 29 Jul 2026 14:32:45 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eHYPhCDF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UvtMJPdn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785360963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xK39DDMEeGBY/lX94lalZUc7BSUjCYDDo/lETnDlHMw=;
+	b=eHYPhCDF2lyJdNO+gHdHxkFeVmPLnruH6pxRwWoIpvJmWFQ1vH7dAqykEGFIxAh3NmUlPR
+	Au/WwtbpDgsgcOy3vKNxbqG1qjZRdL2sQPKYO2ZkJ7VwMCeK42AaCEjGTMJqa1tQ9aCdQM
+	oWKuWBQjYE2CtUgSpi1zaNLTnMQwZMg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-7_lPHs7cOyChdSmkvjHjew-1; Wed, 29 Jul 2026 17:36:01 -0400
+X-MC-Unique: 7_lPHs7cOyChdSmkvjHjew-1
+X-Mimecast-MFC-AGG-ID: 7_lPHs7cOyChdSmkvjHjew_1785360961
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47485fde05aso940517f8f.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 14:36:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785360960; x=1785965760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xK39DDMEeGBY/lX94lalZUc7BSUjCYDDo/lETnDlHMw=;
+        b=UvtMJPdnu07tFrxtJon3VXK1uSmY5IVLBAzrHdqiHtkZd9Xzg0T78vl81rI+EKxuhl
+         uVvRPZUlEJJCfaHZhXtwFv2FUdhGyRb50iMa708u5pVC/F9TxiLr/HZzKF+s50uM1P1e
+         6aNvCoW/pkFe/jnzbG3hWMXjZLm6AvwM+NnfYT+KXm8TJLH7hi2OGo2Z1X91s71YXW6K
+         cUUALzbmfXJQK0BMK7cJ9jonpKz493sGKjLTwepMw/ZWDQYMWaimbppwwycPSCq4Fzc+
+         D/EWChFuoiWCiJWuYOjVTg3Wmm6DXthAmBjopcuPTqIqzelSmfkqpJR4lfXS1TARBm/g
+         cALw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785360960; x=1785965760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xK39DDMEeGBY/lX94lalZUc7BSUjCYDDo/lETnDlHMw=;
+        b=Ycd+QJfmUcgmaJi7t36CS+S0jsdS5l6T5XBIXjtAazZ+tIz780RkFFNZ/PaLIF+44Z
+         btgy/Cj16HNWgYf/0WuPZltFxy64hXYstc/8RVRGlw0PrrsOBxp7LUN+qPT6gVmJ/vHp
+         tJRkl1BhqiBUS0q0NPrfcOUdRWvgQ3IBzyqa8DCsMI9zEYFMmTbpCOhuaX0odN5vlnCu
+         JhbmbKerGRDPJL45+tRF6aFkBMAMXROyapbxG3rc9SQ0bNzA4fEhObQHa5fXsDjL8bot
+         tvUsxJKAe2HQXPpBaZTo5dHBvkmGiRkzSgq4LnCvcOMHirn42GbR5yUmGDhSMWl3yHk6
+         yTDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpxXndd6Q+Wl2+cZWuXAaDhMZCFDV9r9olbBM27lCcmwDyuw4fHaogmnOkrIn5H7Wacf2o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziejCuix9WDSSaVMRVFlHZ94oc4Ncx2lTzhSNhVEgAOY1DGq8x
+	ZIP71PUCSFgDdkhtZB65djOjUPMbipRthIsdItvIZx3mS1kJkEbmHnhuiujuk7fZeywjBwyt3zX
+	GJyeBlvjLU75gY6wqQGd/kJxTyZqigaezhQODUCrEmZUlg2Pzh39EaA==
+X-Gm-Gg: AR+sD13FQBlhmt9XDumJRQ7gTR0/Jmeiz80XrZxCJfInoE4zcfyh5nzjimIIVoAdwuk
+	DLUvDJYRMyy67lP7xXsvG2FbRGZoYdM7xhneVMxxDr4yXPWLF9NNxTWA9cuA/LsoOtNbnCo411o
+	b7w6rgzLxjQ+DitnWInI09iPIsdjQDxuabNLPHghPqqVk9hyroPtIks6CWVzZcrz3BlCkvRn2K2
+	NraV6EhVQnabS7KMA22HE4xutiNKy77kftAjqUnTVgVVb0taharYSNo5dif/gW635SPpKnU3Dpc
+	xM4jgZSib7G6GcBy3JlLBxN+owFC1OpdQ8/X452tdCEUIJvd89LFwuSCcI1TJq8vdVd7Jp9y/Zu
+	AbhV8ZuYAb8Rpt4HD81gagwvji8lB1xKsc/T0/KLpA73SDS/E38gm5/H1nLOYPD0gi/sLy/i/5W
+	WujhY=
+X-Received: by 2002:a05:600c:1990:b0:493:c8a6:b517 with SMTP id 5b1f17b1804b1-49800ec0955mr976795e9.38.1785360960647;
+        Wed, 29 Jul 2026 14:36:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:1990:b0:493:c8a6:b517 with SMTP id 5b1f17b1804b1-49800ec0955mr976635e9.38.1785360960311;
+        Wed, 29 Jul 2026 14:36:00 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.34.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498012168e7sm56715e9.15.2026.07.29.14.35.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 14:35:59 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	stable@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH] KVM: SVM: Update x2APIC MSR intercepts if AVIC is inhibited while L2 is active
+Date: Wed, 29 Jul 2026 23:35:58 +0200
+Message-ID: <20260729213558.639074-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-To: Alex Williamson <alex@shazbot.org>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        borntraeger@linux.ibm.com, mattev@meta.com, schnelle@linux.ibm.com
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
- <e7b2da7b-2c70-46c2-9d07-6acc6949915e@linux.ibm.com>
- <46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
- <20260729143603.175f60a7@shazbot.org>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260729143603.175f60a7@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI5MDE2MSBTYWx0ZWRfXwEAWqsdj1dKg
- XvSbAlC+SIy5xwCV9jSCWNm/ER70v10742xy7SYEXjFvpkOojHYIBQwzN1ZixE4UdImp0GT4vE8
- fH0BKcyvX2MuFeMOuh1ZH3ZRAAsLhMA=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI5MDE2MSBTYWx0ZWRfX+FPsXWejWhG+
- 4O6TO/bdilduPWI2fGPnb0n0d1A5m7BYWuMtNQYrV2LTHtD/uxSSFqb38mwMf22KsadsKOOG/Ev
- pe3QaX2CXiVmfCzp+it67IpF7FnkClVfgYTiSXuxcHA1AjtwKiGsNwgr1vHx3APLvVBUo57oepb
- em6NzK9/cWhTJWWhUnFTaIyWfl2XRQNmMuxGvoI9KqNUWJ85x1FjyvyDUEBFXDfTcz+OAp67vL1
- 9tY22YpQCQekNtLVbCGlGukhoTxE2q5lN32a+GDJD4X2tNnyzyumXB/5HizXeqNcR6lL9WNQ6bO
- OBnamR2d8b+HAfquLurrcW80rufhoNREn/A9PGnwupwZod1kBNT7MWY9bV+beLdErqSZbi4PD13
- F0irE4KnI8fVg8nFEAQw0FP9zAR4cNymPpXLX7NJxOvpFyoKa6wv3POGSC3UYOQd6Uwc9KmrfAP
- fmvsTMT/DtcPowXxjtw==
-X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a6a7180 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=UsrU7Yu2hTfJ4snfykwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: kTYZ1g_ZrdMYkId-iKz4jMFxJK4mYmQb
-X-Proofpoint-ORIG-GUID: kTYZ1g_ZrdMYkId-iKz4jMFxJK4mYmQb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-29_08,2026-07-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607290161
+Content-Transfer-Encoding: 8bit
 
+From: Sean Christopherson <seanjc@google.com>
 
-On 7/29/2026 1:36 PM, Alex Williamson wrote:
-> On Wed, 29 Jul 2026 13:28:46 -0700
-> Farhan Ali <alifm@linux.ibm.com> wrote:
->
->> On 7/29/2026 12:41 PM, Matthew Rosato wrote:
->>> On 7/29/26 2:11 PM, Farhan Ali wrote:
->>>> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
->>>> all devices support having their BARs mapped by the CPU. The
->>>> non_mappable_bars flag indicates that a PCI device's BARs cannot be
->>>> accessed by the CPU. The ISM device on s390 is one such device. The BAR
->>>> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
->>>> to warnings:
->>>>
->>>> vmalloc_node_range for size 281474976714752 failed: Address range
->>>> restricted to 0x2110bab00000 - 0x21903ab00000
->>>>
->>>> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
->>>> is set by the PCI core at enumeration time and already serves the same
->>>> purpose in vfio_pci_probe_mmaps().
->>>>
->>>> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
->>>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
->>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
->>>> ---
->>>>    drivers/vfio/pci/vfio_pci_core.c | 3 +++
->>>>    1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->>>> index 3f11a9624b9c..6a184588ff23 100644
->>>> --- a/drivers/vfio/pci/vfio_pci_core.c
->>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
->>>> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->>>>    
->>>>    		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
->>>>    
->>>> +		if (pdev->non_mappable_bars)
->>>> +			continue;
->>>> +
->>> This would work for the ISM case at least, but I wonder: should we check
->>> vdev->bar_mmap_supported[bar] instead?
->>>
->>> My question boils down to: do we still want messages for some of the
->>> cases where we set vdev->bar_mmap_supported[bar] = false in
->>> vfio_pci_probe_mmaps()?
->> AFAIU vfio_pci_probe_mmaps() is only called in
->> vfio_pci_core_finish_enable(). Since vfio_pci_core_map_bars() is called
->> in vfio_pci_core_enable(), and before vfio_pci_core_finish_enable(),
->> bar_mmap_supported would be false here for all devices. So I don't think
->> it would work here, unless I missed something?
-> Also IO Port and sub-page MMIO BARs are things that do exist.  Thanks,
->
-> Alex
+Always update x2APIC MSR intercepts for L1 when AVIC is deactivated, even
+if L2 is active and KVM is using a separate MSR bitmap to run L2.  If AVIC
+is fully enabled prior to running L2, and is then inhibited while L2 is
+active (for a VM-scoped inhibit), then KVM will run L1 with AVIC disabled,
+but with x2APIC MSR intercepts disabled, i.e. will allow L1 to read most of
+the host's APIC state, send arbitrary interrupts, change task priority, and
+ultimately trivially DoS the host.
 
-Just to clarify, are you suggesting we expand this check to also avoid 
-mapping IO port and sub-page MMIO BARs?
+E.g. sending a self-IPI in L1 on HYPERV_REENLIGHTENMENT_VECTOR, 0xee, with
+CONFIG_HYPERV=n in the host kernel as a "safe" PoC, yields:
 
-Thanks
+  Spurious interrupt (vector 0xee) on CPU#425. Acked
 
-Farhan
+And hacking KVM to abuse kvm_set_posted_intr_wakeup_handler() to register a
+handler and WARN on POSTED_INTR_WAKEUP_VECTOR yields:
 
+  ------------[ cut here ]------------
+  WARNING: arch/x86/kvm/svm/svm.c:5594 at pi_wakeup_handler+0x9/0x10 [kvm_amd], CPU#156: nested_x2apic_t/316940
+  CPU: 156 UID: 0 PID: 316940 Comm: nested_x2apic_t Tainted: G S   U
+  Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+  Hardware name: Google Astoria-Turin/astoria, BIOS 0.20260209.0-0 02/09/2026
+  RIP: 0010:pi_wakeup_handler+0x9/0x10 [kvm_amd]
+  Call Trace:
+   <IRQ>
+   sysvec_kvm_posted_intr_wakeup_ipi+0x64/0x80
+   </IRQ>
+   <TASK>
+   asm_sysvec_kvm_posted_intr_wakeup_ipi+0x1a/0x20
+  RIP: 0010:vcpu_run+0x1430/0x1e40 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x2c1/0x600 [kvm]
+   kvm_vcpu_ioctl+0x580/0x6b0 [kvm]
+   __se_sys_ioctl+0x6d/0xb0
+   do_syscall_64+0x10a/0x480
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+  RIP: 0033:0x46ff4b
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+Fixes: 091abbf578f9 ("KVM: x86: nSVM: optimize svm_set_x2apic_msr_interception")
+Cc: stable@vger.kernel.org
+Cc: Yosry Ahmed <yosry@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260710162052.2188574-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/svm/avic.c | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index 58e493a80cb0..16e09a8fe85e 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -240,14 +240,6 @@ static void avic_deactivate_vmcb(struct vcpu_svm *svm)
+ 	if (!is_sev_es_guest(&svm->vcpu))
+ 		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+ 
+-	/*
+-	 * If running nested and the guest uses its own MSR bitmap, there
+-	 * is no need to update L0's msr bitmap
+-	 */
+-	if (is_guest_mode(&svm->vcpu) &&
+-	    vmcb12_is_intercept(&svm->nested.ctl, INTERCEPT_MSR_PROT))
+-		return;
+-
+ 	/* Enabling MSR intercept for x2APIC registers */
+ 	avic_set_x2apic_msr_interception(svm, true);
+ }
+-- 
+2.55.0
 
