@@ -1,201 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80A84519A9;
-	Wed, 29 Jul 2026 18:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EED382371;
+	Wed, 29 Jul 2026 18:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785350873; cv=none; b=hzc2iyhEqSYNhGVoLOVYimIQZJktWwXMaqgU65Jjf3CwzWyDTC0BYs4rDvxHGVlULZXQTlsp+5whn0OctrpYUv8pp7RN+26nZ6QuGK/bTSDSYTUWF4b7JIO5iIGJBsuCohgC/ShGEIOcjlUlcMLcynHPt5Fa+PKWKOrihO7KWaw=
+	t=1785351198; cv=none; b=eUwZ4VgiC1Fl33UgrfQlFcL6iRKIwybYXd9UD+jDLVMCFr+dDy3gfjMhkZNB0tAj/v7tVUNyYhRy6ydYFbdRTUYtoOw64cRwSGnE64SD/dUlOGMvZ+wDNTmrQHo/F2mHWsQvbI53kpWxAk9jUg9vWlT7Yw7Mf4GYTFgWT5UeaIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785350873; c=relaxed/simple;
-	bh=WAuGVOefYb5qmZcDX0ScB7/eM/8zJ5ZjkVzmfYbZwDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RCa8VakCghD/TU6Y3iPNbse8/myckx07/8MH2CEsnxno7Mp39trZj3GCyPQcs7PnPdRZC009dSZ+rXmTJn+n4MqubdAsPeWUOE2vFKv55Goe4HDaek1L17FEYcEOTKxOjaxag97SqNbrF9QbqU2It1eQ/fcW+AMzEl+qovi1tcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cu7l/YF8; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785351198; c=relaxed/simple;
+	bh=/6MUFfYL1sZQ3ZRRDeG4jK3QVt5PoNs4RmkEBf1cAME=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hiEScKh9ttCuMJGY9UUBeGYzJte/JpLo+qXOu5LiFrBDrqdeRo9BEWOLgn2GSxS2mMmpdVz9ntNiz99CbHh9mdWaGOMFky79NSxGQAX/WmxHne6cZ8FgLLyta9iMDFs+ztuvsSKEN5OCwGf3De6wTNpJv+gRhEd1WAFL43pyPC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7CJF7AS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cu7l/YF8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785350872; x=1816886872;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WAuGVOefYb5qmZcDX0ScB7/eM/8zJ5ZjkVzmfYbZwDo=;
-  b=cu7l/YF89/SG1cP8haGsbHWW1vv6INdP1ukhpG32/iEDAO1nLHRjtNs4
-   86mL309TED2HubaSCFOuFbZpr2+2Id2xUohdr3b8TDG/PVcbB8m0WRoaZ
-   emX2HGObFoTveKL6DRLPj5j9EMeQ3NvH63hSFLIVNhH1uWSKcT44JZDWS
-   ZpkIO4cjWY65ILqAOq6zY5bKQlqU4nVka6aaPdkKARwgtsYsk+GLVB97C
-   mUVucf79S4/WIzH0c8OedcNRS8bWkPvExiXmv8EtYz/TCQbfhGqZdsqoR
-   khQtgM2VC0TdByP8eImaBPorxGNPH/M1zBojt44T0v5K2qMKoLx+BSF7W
-   w==;
-X-CSE-ConnectionGUID: /mz2yPm3S2+5JCZ42FFc0Q==
-X-CSE-MsgGUID: d94ufvTURu+itPcNoeoAug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85982151"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="85982151"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 11:47:51 -0700
-X-CSE-ConnectionGUID: zI84s8Y1Qgqi4LRfNI3d2w==
-X-CSE-MsgGUID: 7UY81pLXRfqVIv1ukPzUVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="264360743"
-Received: from soc-pf446t5c.clients.intel.com (HELO [10.24.80.90]) ([10.24.80.90])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 11:47:51 -0700
-Message-ID: <af483218-5c87-4ce1-b4a3-06132dcc3c49@linux.intel.com>
-Date: Wed, 29 Jul 2026 11:47:51 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7CJF7AS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173BE1F000E9;
+	Wed, 29 Jul 2026 18:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785351197;
+	bh=070WhWz00rM9Pi+Apzi6vg4A4aLpPWJ42+a3DVjm6mc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m7CJF7ASP8uAS6jczdwuFuGuT8NFwlK8aVpg+98RMLHcpMXWHtrcFP8mSnVfOJRHs
+	 zlqJiMbQP2AaVaACmkKTI6ZjalltKeWoXVYIjg8iOPbugKYy8GQbsXxCtN+x8sBlDL
+	 +zyY9A7TBOofcgC2/9kMGtXgYM8Js8u7i7wK5WCtR9OF82RtjeHQpTJrLPbe/jdiDy
+	 UgAElgiuV4lXRSlG/5PhABtbV7RnXS2kxGklefWH1/Oxa1ty9OqYv8WQSUm12KxzRg
+	 NHB+f5z2mWmA8Pqh/oBRALgobYLYogDSn0a5+cctmwReyeYsy0XBhi5NVcm6YGJybn
+	 O7bPL1AwLPh2Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 13/13] KVM: s390: Fix kvm_arch_commit_memory_region()
+ when low on memory
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>
+In-Reply-To: <20260729152938.782383-14-imbrenda@linux.ibm.com>
+References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
+ <20260729152938.782383-14-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 18:53:16 +0000
+Message-Id: <20260729185317.173BE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] virt: tdx-guest: Use a variable to store the Quote
- buffer size
-To: Peter Fang <peter.fang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Kiryl Shutsemau <kas@kernel.org>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- Xiaoyao Li <xiaoyao.li@intel.com>, Binbin Wu <binbin.wu@linux.intel.com>
-References: <20260729122939.1340412-1-peter.fang@intel.com>
- <20260729122939.1340412-4-peter.fang@intel.com>
-Content-Language: en-US
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20260729122939.1340412-4-peter.fang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Critical] Dropping `kvm->mmu_lock` and retrying allows guest page faults=
+ to populate page tables that are subsequently freed by `dat_create_slot`, =
+destroying guest ESSA state and leaking `cmma_dirty_pages`.
+- [High] The patch introduces a host-userspace-reachable KVM_BUG_ON() which=
+ triggers a WARN_ON_ONCE, allowing unprivileged users to spam the kernel lo=
+g or crash the host if panic_on_warn is set.
+--
 
+--- Patch [13]: [PATCH v5 13/13] KVM: s390: Fix kvm_arch_commit_memory_regi=
+on() when low on memory ---
+commit 4801c2be100c4b8f582c02a4637cf4703c366817
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-On 7/29/2026 5:29 AM, Peter Fang wrote:
-> In preparation for dynamic Quote buffer sizes, replace the fixed size
+KVM: s390: Fix kvm_arch_commit_memory_region() when low on memory
+   =20
+This commit updates the out-of-memory handling in
+kvm_arch_commit_memory_region(). It refills the kvm_s390_mmu_cache and
+retries the operation, and warns and kills the VM if the refill fails.
 
-sizes -> size?
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+[ ... ]
+> @@ -5822,7 +5822,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+[ ... ]
+>  	mc =3D kvm_s390_new_mmu_cache();
+> -	if (!mc) {
+> -		rc =3D -ENOMEM;
+> +	if (!mc)
+>  		goto out;
+> -	}
+> -
+> +retry:
+>  	scoped_guard(write_lock, &kvm->mmu_lock) {
+[ ... ]
+>  		default:
+> +			rc =3D 0;
+>  			WARN(1, "Unknown KVM MR CHANGE: %d\n", change);
+>  		}
+>  	}
+> +	if (rc =3D=3D -ENOMEM) {
+> +		rc =3D kvm_s390_mmu_cache_topup(mc);
+> +		if (!rc)
+> +			goto retry;
 
-> constant with a variable.
-> 
-> The size is currently a constant sprinkled across several places. Store
-> it in a variable and have all the users read it from there.
+[Severity: Critical]
+Does dropping kvm->mmu_lock between the scoped_guard exit and the goto
+retry allow concurrent guest page faults?
 
-You are also dropping PAGE_ALIGN() in alloc and free calls. You can
-mention it in commit log.
+If a guest vCPU faults on an address in the new memslot during this
+window, it could populate a page table and execute ESSA instructions.
+When kvm_arch_commit_memory_region() restarts dat_create_slot() after
+re-acquiring the lock, could it blindly replace the now-populated CRSTE
+and free the new page table without cleaning up the atomic counters?
 
-> 
-> Signed-off-by: Peter Fang <peter.fang@intel.com>
-> ---
+Looking at dat_create_slot(), it appears that it replaces the CRSTE and
+frees the lower-level page table:
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+arch/s390/kvm/dat.c:_dat_slot_crste() {
+    ...
+		/* A lower level table was present, needs to be freed. */
+		if (!crste.h.fc && !crste.h.i) {
+			if (is_pmd(crste))
+				dat_free_pt(dereference_pmd(crste.pmd));
+    ...
+}
 
+Could this regression result in the loss of guest state and leak
+cmma_dirty_pages?
 
-> v3:
->  - Split out using a variable for the buffer size from the v2 "Allocate
->    Quote buffer dynamically" patch to refactor first. [Dave]
->  - Pass the buffer size into alloc_quote_buf() by value. [Dave]
->  - Drop the Reviewed-by tags from v2 (Kiryl, Binbin) as the patch was
->    reworked.
-> ---
->  drivers/virt/coco/tdx-guest/tdx-guest.c | 22 +++++++++++-----------
->  1 file changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/virt/coco/tdx-guest/tdx-guest.c b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> index f47c5429d002..3d3f79ab45af 100644
-> --- a/drivers/virt/coco/tdx-guest/tdx-guest.c
-> +++ b/drivers/virt/coco/tdx-guest/tdx-guest.c
-> @@ -191,8 +191,9 @@ struct tdx_quote_buf {
->  	u8 data[];
->  };
->  
-> -/* Quote data buffer */
-> +/* Quote data buffer and length */
->  static void *quote_data;
-> +static size_t quote_data_len;
->  
->  /* Lock to streamline quote requests */
->  static DEFINE_MUTEX(quote_lock);
-> @@ -209,9 +210,8 @@ static long tdx_get_report0(struct tdx_report_req __user *req)
->  			     USER_SOCKPTR(req->tdreport));
->  }
->  
-> -static void free_quote_buf(void *buf)
-> +static void free_quote_buf(void *buf, size_t len)
->  {
-> -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->  	unsigned int count = len >> PAGE_SHIFT;
->  
->  	if (set_memory_encrypted((unsigned long)buf, count)) {
-> @@ -222,9 +222,8 @@ static void free_quote_buf(void *buf)
->  	free_pages_exact(buf, len);
->  }
->  
-> -static void *alloc_quote_buf(void)
-> +static void *alloc_quote_buf(size_t len)
->  {
-> -	size_t len = PAGE_ALIGN(GET_QUOTE_BUF_SIZE);
->  	unsigned int count = len >> PAGE_SHIFT;
->  	void *addr;
->  
-> @@ -285,7 +284,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (desc->inblob_len != TDX_REPORTDATA_LEN)
->  		return -EINVAL;
->  
-> -	memset(quote_data, 0, GET_QUOTE_BUF_SIZE);
-> +	memset(quote_data, 0, quote_data_len);
->  
->  	/* Update Quote buffer header */
->  	quote_buf->version = GET_QUOTE_CMD_VER;
-> @@ -296,7 +295,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  	if (ret)
->  		return ret;
->  
-> -	err = tdx_hcall_get_quote(quote_data, GET_QUOTE_BUF_SIZE);
-> +	err = tdx_hcall_get_quote(quote_data, quote_data_len);
->  	if (err) {
->  		pr_err("GetQuote hypercall failed, status:%llx\n", err);
->  		return -EIO;
-> @@ -315,7 +314,7 @@ static int tdx_report_new_locked(struct tsm_report *report, void *data)
->  
->  	out_len = READ_ONCE(quote_buf->out_len);
->  
-> -	if (TDX_QUOTE_BUF_LEN(out_len) > GET_QUOTE_BUF_SIZE)
-> +	if (TDX_QUOTE_BUF_LEN(out_len) > quote_data_len)
->  		return -EFBIG;
->  
->  	buf = kvmemdup(quote_buf->data, out_len, GFP_KERNEL);
-> @@ -417,7 +416,8 @@ static int __init tdx_guest_init(void)
->  	if (ret)
->  		goto deinit_mr;
->  
-> -	quote_data = alloc_quote_buf();
-> +	quote_data_len = GET_QUOTE_BUF_SIZE;
-> +	quote_data = alloc_quote_buf(quote_data_len);
->  	if (!quote_data) {
->  		pr_err("Failed to allocate Quote buffer\n");
->  		ret = -ENOMEM;
-> @@ -431,7 +431,7 @@ static int __init tdx_guest_init(void)
->  	return 0;
->  
->  free_quote:
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_data, quote_data_len);
->  free_misc:
->  	misc_deregister(&tdx_misc_dev);
->  deinit_mr:
-> @@ -444,7 +444,7 @@ module_init(tdx_guest_init);
->  static void __exit tdx_guest_exit(void)
->  {
->  	tsm_report_unregister(&tdx_tsm_ops);
-> -	free_quote_buf(quote_data);
-> +	free_quote_buf(quote_data, quote_data_len);
->  	misc_deregister(&tdx_misc_dev);
->  	tdx_mr_deinit(tdx_attr_groups[0]);
+> +	}
+>  out:
+> -	if (rc)
+> +	if (KVM_BUG_ON(rc, kvm))
+
+[Severity: High]
+Can this KVM_BUG_ON be triggered by an unprivileged host userspace
+process?
+
+If a process in a restrictive memory cgroup invokes the memslot ioctl,
+kvm_s390_mmu_cache_topup() could fail with -ENOMEM, passing the error to
+this path. Since KVM_BUG_ON internally executes WARN_ON_ONCE, could this
+allow a malicious host-userspace process to spam the kernel log or
+trigger a crash if panic_on_warn is set?
+
+>  		pr_warn("failed to commit memory region\n");
+>  	return;
 >  }
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
+83-1-imbrenda@linux.ibm.com?part=3D13
