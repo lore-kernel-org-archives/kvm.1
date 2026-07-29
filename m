@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513D339FCB5
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 20:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F63638837B
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 20:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785355335; cv=none; b=WCiTTGE6euIx9Pv1wRzopRs3fl5ceIKBNqG9FeW3mvBjVQAcJr2yxSJ2MRfLbeXxS2WyAdOOgLpIttNE7X89D0LBuPj7NMFNl0Vbryg0JvUyRcbeNlT+bYpT//1oaHaHU58/s8VzhJ2P3NbYHQs77D7XPU+pscLUlk9PL02ylkI=
+	t=1785355447; cv=none; b=D8vuc7vQUxuWGGHQ5JIC2UoDIaNh7KDb2wJMJFSiM3UC4zO1ygH7olVUvWUii96kNuRPR7gZdnTnJWmqeGl4LU9jXIEJ7FGgVfvzKHGv3ivRAaujX74ihYRiZTv+6PIcnuzBaswhX2sw3TxpqJgElVQrBMO3qjD9WIjQ09nFvcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785355335; c=relaxed/simple;
-	bh=+91wU/xEn2F7awJ34DO8xKSBiFleu0yUZOziUp/WOU4=;
+	s=arc-20240116; t=1785355447; c=relaxed/simple;
+	bh=HuZHsbjm3cxmTIBLHM8J/yDgUni75IqP2G3vScEAeUI=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=XFbKrmABi8AqiJa4wvJwNo8A86G5Txt6NPWZRmUn2u2V8hCqjuz/E8cANiKtZ8sEzGmSac8NpfTbsF+vJBijUxSKOggr9MBPHOWK799rwXBTiNoq0VuLBCmtKnfpsxmoBeurcrjn34TajhiZd6x9StAmOxaoGGn9G8ratgdeoFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hqu4b+RR; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=jHpBpONAFDSvHNrwtQ4LouJlsxo/YxBIStli3IRlYYA8x5+5xZiHGlANFi/s371YAF7MuBA0aiF8LK6c/6x8mKuaIuATKm3bw0Z5BF9Vs3RaxBYOl/d00hssGh6JjLqTDs8Gk37wNCVSDm6LvQVBvQrsLQSuohdM0Buf2wi9Tm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHO2w4ti; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hqu4b+RR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC1E1F000E9;
-	Wed, 29 Jul 2026 20:02:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHO2w4ti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BE11F000E9;
+	Wed, 29 Jul 2026 20:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785355334;
-	bh=GcU4KB5gZrfozxeLT0yqTkuWiV4/olk+Cy3ACEENWy4=;
+	s=k20260515; t=1785355446;
+	bh=eltmn8/nl9vh3IPoDXmn3tRviouwJ2jdcR5gmBrUyKY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Hqu4b+RRQLrG6t/I97hCUh/Aco2hSVSRKGFO0wT6dgTnfk5kiLltWtWAjyUA7rO5M
-	 NPxBvNqr7iYu84iKLES8Po/xD+fIvDf+CUlwS9xcNRJJm3RcYVGJ8JbtpmKsZqS7+z
-	 nvUR0OjicqGvdgu6MhH7fnOIcUFFqNE9sGjFZohz0YpH4mJgj+3IZD0HouPNnxjK54
-	 s4q1sjtloJkGWt+buYwnTMLwowBpE8SqYTxPEJ3eLe1TXsrFTkpbzlW8h0B7vS8nIW
-	 nqPRcxfvku2BaYV9W4rl8EZL0FtTySw1RXMRINzZgNbyiwKrnI61lSLkEA6inc4cpK
-	 PVRg/j+s/8uhQ==
+	b=HHO2w4tiqAWFU6Wa8Ys5CIxgXmzFouH+em4d6+eCLv+M8R9/a/tHegreoI/RzUBrF
+	 DrNtxKU8jffR8bPBbiDl6tqOzR6muoMhnybGC5Ww9keDPU7/bCGcP74L9zf0LuoGdT
+	 n/PSlBlt0tAfdfkc/aGzLw3j1MToyzpTJUgaBRkabfQbjxgqbWSyIPtI7a+mzCqeDw
+	 OrgrShtSJ7zsIgq//ez/SllIch8C8+kJEkBKwkUGddPNRpr5G5oJgrUtjwZN1x4r1D
+	 vJnKtdH6TUnxMF5Qj5malWPHaUBmytaixM3YM+76vGTdcDP66RUtL/OgixX2+m8X3Y
+	 Jp4ZDvFMmHhfQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 04/20] KVM: VMX: Refactor VMX instruction information
- access
+Subject: Re: [PATCH v6 01/20] KVM: x86: Extend VCPU registers for EGPRs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Chang S. Bae" <chang.seok.bae@intel.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260729191656.598771-5-chang.seok.bae@intel.com>
+In-Reply-To: <20260729191656.598771-2-chang.seok.bae@intel.com>
 References: <20260729191656.598771-1-chang.seok.bae@intel.com>
- <20260729191656.598771-5-chang.seok.bae@intel.com>
+ <20260729191656.598771-2-chang.seok.bae@intel.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 20:02:13 +0000
-Message-Id: <20260729200213.CBC1E1F000E9@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 20:04:05 +0000
+Message-Id: <20260729200406.01BE11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,76 +46,65 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Incomplete refactoring of VMX instruction information access lea=
-ves brittle hardcoded bit shifts.
+- [High] The patch extends the VCPU register array (`vcpu->arch.regs`) for =
+APX Extended General-Purpose Registers (R16-R31) but omits the required syn=
+chronization logic with the guest hardware or XSAVE state, leading to broke=
+n register caching and silent guest state corruption.
 --
 
---- Patch [4]: [PATCH v6 04/20] KVM: VMX: Refactor VMX instruction informat=
-ion access ---
-commit b0d7d66df897ae19fd14659a411d846da0d89653
+--- Patch [1]: [PATCH v6 01/20] KVM: x86: Extend VCPU registers for EGPRs -=
+--
+commit c513074e3dcbca9bda2fa54321ecd4e8c1d2229b
 Author: Chang S. Bae <chang.seok.bae@intel.com>
 
-KVM: VMX: Refactor VMX instruction information access
+KVM: x86: Extend VCPU registers for EGPRs
 
-Introduce a helper that returns the instruction information as a 64-bit
-value and adjust existing sites to prepare for a wider field.
+This commit extends the VCPU register storage array to include APX Extended
+General-Purpose Registers (EGPRs R16-R31) for VMX when KVM_APX is enabled.
+It uses VCPU storage to provide an access path for KVM instead of directly
+reading the guest fpstate.
 
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 0635e92471c89..92b530baa0ee9 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -5234,7 +5234,7 @@ static void nested_vmx_triple_fault(struct kvm_vcpu=
- *vcpu)
->   * #UD, #GP, or #SS.
->   */
->  int get_vmx_mem_address(struct kvm_vcpu *vcpu, unsigned long exit_qualif=
-ication,
-> -			u32 vmx_instruction_info, bool wr, int len, gva_t *ret)
-> +			u64 vmx_instruction_info, bool wr, int len, gva_t *ret)
->  {
+Link: https://lore.kernel.org/abL8SW5JS1aV5goa@google.com
 
-[Severity: Medium]
-This is a pre-existing issue, but while we are transitioning this function
-to take a u64, should we also update the memory operand extraction logic
-inside it?
-
-It currently contains open-coded bit shifts that might not handle the wider
-format correctly when extended register IDs are introduced:
-
-    int  index_reg =3D (vmx_instruction_info >> 18) & 0xf;
-    bool index_is_valid =3D !(vmx_instruction_info & (1u << 22));
-    int  base_reg       =3D (vmx_instruction_info >> 23) & 0xf;
-
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index b517257a63153..48547842d9fa0 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
 [ ... ]
+> @@ -178,6 +178,24 @@ enum kvm_reg {
+>  	VCPU_REGS_R13,
+>  	VCPU_REGS_R14,
+>  	VCPU_REGS_R15,
+> +#endif
+> +#ifdef CONFIG_KVM_APX
+> +	VCPU_REGS_R16,
+> +	VCPU_REGS_R17,
 
-> @@ -6428,7 +6429,7 @@ static bool nested_vmx_exit_handled_encls(struct kv=
-m_vcpu *vcpu,
->  static bool nested_vmx_exit_handled_vmcs_access(struct kvm_vcpu *vcpu,
->  	struct vmcs12 *vmcs12, gpa_t bitmap)
->  {
-> -	u32 vmx_instruction_info;
-> +	u64 vmx_instruction_info;
->  	unsigned long field;
->  	u8 b;
-> =20
-> @@ -6436,7 +6437,7 @@ static bool nested_vmx_exit_handled_vmcs_access(str=
-uct kvm_vcpu *vcpu,
->  		return true;
-> =20
->  	/* Decode instruction info and find the field to access */
-> -	vmx_instruction_info =3D vmcs_read32(VMX_INSTRUCTION_INFO);
-> +	vmx_instruction_info =3D vmx_get_instr_info();
->  	field =3D kvm_register_read(vcpu, (((vmx_instruction_info) >> 28) & 0xf=
-));
+[Severity: High]
+Does adding these registers before NR_VCPU_GENERAL_PURPOSE_REGS break KVM's
+register caching assumptions?
 
-[Severity: Medium]
-Since the goal is to prepare existing sites for a wider field, should this
-open-coded bit shift be converted to use the vmx_get_instr_info_reg2() help=
-er?
+KVM assumes all registers defined before NR_VCPU_GENERAL_PURPOSE_REGS are
+either eagerly saved and restored by assembly context switches or explicitly
+defined in the lazy load set. Because R16-R31 are not in the lazy load set,
+KVM's initialization will set their availability bits to 1, assuming they a=
+re
+always synchronized by hardware context switches.
 
-If the 64-bit extension changes register bit offsets in the future, this
-hardcoded shift could read incorrect bits.
+However, the context switch assembly only saves and restores up to R15 and
+does not touch R16-R31. When the KVM host emulator accesses R16-R31 to
+emulate an instruction, won't it read stale or uninitialized data from the
+software array?=20
+
+Furthermore, if KVM writes to these registers during emulation, won't those
+writes be silently lost upon resuming the guest since they are never
+synchronized back to the guest's XSAVE state?
+
+> +	VCPU_REGS_R18,
+> +	VCPU_REGS_R19,
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729191656.5987=
-71-1-chang.seok.bae@intel.com?part=3D4
+71-1-chang.seok.bae@intel.com?part=3D1
