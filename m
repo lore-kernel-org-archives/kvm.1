@@ -1,373 +1,169 @@
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317F13A8755
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354390; cv=none; b=EZQ9BRM9Yjxgi7bSD0Bl6gZmFQ4X0AeaNTIdjv333a2ezdrgSuAs+b1+SckE7IQBcXhvkSDTcdbc1LAR65DLs+mEz5F+4itFGAC4F57BtokaaUc9QiSEJIqP5hJ3u0RdbXvm4sDRIz4bH+XQe1IdnGLqCy8FAJiZRWWjac8YQ/4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354390; c=relaxed/simple;
-	bh=MTsW4DPZPh15sIO/nZBnNM4EnhVhCyLOHMDWXXit5kI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Me7gnFN64mY+f4rpwKtGDsdivRrJHS7fECKfd38ycGraLaGfZSiEhz4XQ0+3UmRut0dA1wpzvZ6GpjS7/xGFZmH1MtotAY4g5l1ezvUeZv/mXWX+gJPEssqSGtX/pGuI3cGKEDQHq84YhzyZLAfT86W1fkAWLF4uT4LBnS0fsEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qItBFl2m; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D333AA504;
+	Wed, 29 Jul 2026 19:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785354414; cv=fail; b=hms53VGNdD6m88R/NhBSPY9nUB5vRjlP5VyxinElEc9g45QXiNWexC30NvoHsaLfjhYlUdA706iZsErisu78CrZZJ+13TAuh+KtbHvd4NR9PHf9jM8LLn/pG2hk/TcelLDECB7FRXkAKvHKnP2F85NL64wsQgXXOEd/OcAUXo08=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785354414; c=relaxed/simple;
+	bh=ch8HKktOtUAfnH1rTgillJIjapcjoGh7Rb/FI2Kjgc0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=f28/iKyasevgLAFPR/BXbeI8fYV1rgpVBYsLAkIklNYRbBXXcRAMLcO2MFf9bzeJfUtCjjonJAFm9PlnTS6KzqTr946SB7KhlYdoQa76Peqk6IL9fAbQbKwluthYft+isWI02cnCpf3Fb6BEA8w+tAXwnfgKAvqooa9Ntjh8LVA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TEBj8cTM; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qItBFl2m"
-X-Forwarded-Encrypted: i=1; AHgh+Rrtks/R7RqnvGuW5djR2QNumMfsY46QqJbpTQJhUO3sPZd5QK9uLg4NQ/oQoelgR3uUL8E=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785354383;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m7NYxbVQukXWkUZPHzw13nh5/XBlWOt6m2oUVluhMlA=;
-	b=qItBFl2m7hfXOKg+63HUW1GwssZ8TcKE2pb0AiZvIuku149c4EQ1t734L97otQwja+1NQx
-	+ECZZSzSBbi1N+cPXqIyZ0rZVkEq1AzjraB69rdrjsC8qqJBk98+teGkJH9N7vLoAMmev8
-	IatkURJYklMNwwPpcu8c0Vo/5v7LuaE=
-X-Gm-Message-State: AOJu0Yy9ovtPkB/ZLBJTZ3bxHH5qwzQG3Pp4U//IRUsfNYjwwj2Q6UbR
-	Fo7hT5m8h1PzKcFXn1Ayt9IjfD3pLdSKiH70Ynnw5YW3MgQlS5rJ+vHDUSg0KXZ9qdARfYZupws
-	/YDSZ4ctjtzcCaP03nJCMviaJYNQa8O3qC12Zh9eO
-X-Received: by 2002:a05:622a:5145:b0:4ff:c0e7:be9c with SMTP id
- d75a77b69052e-52b3741055amr1691401cf.0.1785354377611; Wed, 29 Jul 2026
- 12:46:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TEBj8cTM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785354411; x=1816890411;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ch8HKktOtUAfnH1rTgillJIjapcjoGh7Rb/FI2Kjgc0=;
+  b=TEBj8cTMf/3Rl5jY1AWDe2MOW8gcolwHsxeM1+UPilhJ6kbrnx1ql7Tt
+   YlKYM2CW8m2zZAzeh46KJZdVF8BdIdrsSJUA/Fp7eVhxd/y2BXVw1HL+R
+   E8s+UIKVpPyI7LxvOiIMTdkMlFRKf7/xmltQ20FJBWd1rxg1MHFMS5lIJ
+   S+ot5EYD8VLXC+LtuKroyLWZ9Mb0U3t0r3HGQ49adges2GVt7ipGtzkDQ
+   1RZaxnRLTIXGNqj/yJzfpOnyRgeisBV+W+cvsjkK/YD46hUVxwvTF4GCI
+   729YCYSB2Czy+k/TxG0NAZ2A5lDAXXnx2BGx8I0Tytro0MHStAOGNfd33
+   g==;
+X-CSE-ConnectionGUID: 9fVwa+YoTyCXJBOzDD28Tw==
+X-CSE-MsgGUID: ZDv5pEE7Su+w0JEp35QohA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="97343856"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="97343856"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:46:48 -0700
+X-CSE-ConnectionGUID: qYo75p43QFmIw3rP09rrZw==
+X-CSE-MsgGUID: Oen1Ch8PQlOkoVvf9w42WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="260715332"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:46:48 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 29 Jul 2026 12:46:48 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 29 Jul 2026 12:46:48 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.59) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 29 Jul 2026 12:46:47 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h2V6YpXlHEazLfI4jN/Ez9q7utglEbR+BUGHv1kQXyZFKQ1GIInUYbhpZaJNtaS1lV7RbibZ/Iwou95Y9JwPv4Awp2WV9613tM7kQ2/lEvBa6KDrck+mEmTQxn87mkxOqe04v02+13BglEoS6iGzQ5Yr455cNq9V1/9KSyY6DCcnHJZILnkDiPRynGpuV0QFDwoOf8enaNhfHVmJqbndRtaYCk5/v/31rWyzzEE/U4w73sWbWot99GjXDIR22s37dViXY81ECOW0khxZIY4J6rpI4Ekq0ysB0xfs66K5WJo97XQDGK8XC4F/5txbcEG4cRWcsWLjFnbISwTULI9phA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SZ+rqHq2ua8tktfEcbsCtsbm99EPXgaW2Pog30Bb/Kw=;
+ b=p+F4LGwANy3C8K8l64rQVNey3jsTKQikNxWUp4NrHuwD8z+OPVnbeXEn4v1xpKvoADLt5LLn5Rb2oYirs8geuW4fNMPBGp6EJSyFWnWTEw7iVKnMxZkMY/nP8gDjgyW6gsh3Wbs10UmXDVvkeDqqOT4MpWdA7B/235fQsfDsg8F9lIMtQ+ggrrOQ0QjgCqNGncdHMsu11q0XL2elS3E2yTqyVfPOGWDlivt32qrQn66ES6K0uUpldKKLDtlTqqh+GDM5xbe2xRxGr++tYitvN4dH/imSN38NErqh8lK6n7pq+x1nnm1iRxdX2nofEtKdgDbkJOr0H0AjlpGD3ckmTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
+ SA1PR11MB9683.namprd11.prod.outlook.com (2603:10b6:806:4df::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Wed, 29 Jul
+ 2026 19:46:46 +0000
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84%3]) with mapi id 15.21.0270.012; Wed, 29 Jul 2026
+ 19:46:46 +0000
+Message-ID: <e21fde7b-f765-41c1-8dc0-88cb1e1a418e@intel.com>
+Date: Wed, 29 Jul 2026 12:46:44 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/20] KVM: x86: Enable APX for guests
+To: Oliver Sang <oliver.sang@intel.com>
+CC: <pbonzini@redhat.com>, <seanjc@google.com>, <kvm@vger.kernel.org>,
+	<x86@kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260720171949.498680-1-chang.seok.bae@intel.com>
+ <amgJObo15jsluTtY@xsang-OptiPlex-9020>
+Content-Language: en-US
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+In-Reply-To: <amgJObo15jsluTtY@xsang-OptiPlex-9020>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY1P220CA0015.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5c3::10) To DS0PR11MB7925.namprd11.prod.outlook.com
+ (2603:10b6:8:f8::18)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-16-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260720-hybrid-v9-16-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 29 Jul 2026 20:45:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyTOCyZRRsGj3hbzk6H=ZPZTfTCYQpv+o0MpcoLAXS95A@mail.gmail.com>
-X-Gm-Features: AUfX_mz5uV-Ty8nXNE0Bq2AH3IvUn36RDUN3WfgUMxDQ01Xo6HoyBjFL8QvNB8Y
-Message-ID: <CA+EHjTyTOCyZRRsGj3hbzk6H=ZPZTfTCYQpv+o0MpcoLAXS95A@mail.gmail.com>
-Subject: Re: [PATCH v9 16/16] KVM: arm64: selftests: Test PMU_V3_FIXED_COUNTERS_ONLY
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|SA1PR11MB9683:EE_
+X-MS-Office365-Filtering-Correlation-Id: 91643b2a-a5eb-4999-ca35-08deedaa1f7b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|11063799006|4143699003|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 5XFBa2q9Q40AB2ex1/Z3jg+oJM7K+SUjIe690SinfMy70ELBptoHYM5iWCzafRMF91pTep7QYGWYSnxLQ48Z68GvkWc1KZMA2xUbIa5oUC0ShbvhLMIoV7dPXp+ZCoOoJC106FPstXuui9wey425K3veCLDxp0/uhrp4rs7q5ol+2gQFcpIYAhBTpBZ1aBaBzOxCeIu/ZLGhjPgSBLFCdDviYbJFc5Rpo8+W1h+fvbBFN0zOcmR+kKxn6l1TDB3Yc+aWDQN9JmGlu2cZzLDlrHTCLUYRCYFYP8Y+cAKa6hukXzxth8kO8aLcqxlTgie1uDY08LySSMOdQROos3I02sqeHPQXsqva3ezgNLLIF3+OrtvMHIlrcC6xFJTHJL986XmqeqLAKCqIjuX2vzdaPjxuVI7OERhVhP+mfM3xSNWtS7su6Yg6f3zvMW3fbMOGgi0f5vp8aoiGbhYvKwU2o5tHIFnMZsPoKMLoSLcbr66NCn+awP922oSSYdXsChq+N4WR7aN0sJLOai/A3YgCcDIqJfl/NqN5sO1SFeh0aM/ucjimQnlQSpENVFm3gAnrnHQeOg0Bton6fhjQZZmNzynetyvuBliOOy0UlDQBwoMnzvtIBMIyGSVKnGvaywCgnwhkMcXUY9vk6HxVoECwJ0bKgHrxoJ/f1g+bvzPq+eE=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(11063799006)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y1B5OE9zY0V4eWpQd1dqMnhhVHZ5OG5MQmV0YmJZclhvS3RsOW1YM3pZSUxl?=
+ =?utf-8?B?Z1JNSmQ1czFtYU11VDB6d3lJS1lCQ3V4TjJEdnFNOForMlJsYkJCWkFZU0hn?=
+ =?utf-8?B?RXNLd3VUZHdkTEc0aFEvdTl3RGFvMG1vOGlnZVJKZlFac2p2akhzaFFBWUcw?=
+ =?utf-8?B?OHZRVityTU8xZTFJOUs3RDMwaFpwWGRaSERBK2VqMGMrZHl6N3VnWi9DNW9a?=
+ =?utf-8?B?dEVKSlZvcjVHSDVWdVhoWVBhVWlrVSs0VVlmNWdNOWJ0VC93eUVvWUwyL0Nh?=
+ =?utf-8?B?NEo3aS9XYnREWG94VkhoZVRKTDlZSS81ZlZ0aVMrbDJPbkFNbDRFc3dVc0ww?=
+ =?utf-8?B?RTZ1SU54Rzdtd0NQQzFXdXdXZmFLZnMzVVIyV3RpM2VOTTRuT3RxMEdWbTJs?=
+ =?utf-8?B?VWp0RTFKVjJkYVdRNmdITWp1T0dJS2ZzY1lOTEtaREtDMEI1amUzVzNSWEU2?=
+ =?utf-8?B?R1cxMUgyVjRLdXM0NTNoZHpNMTZmRHg0NnFXUzVqa3VCSTZTZzVYb1RlcXBt?=
+ =?utf-8?B?Tld5aFUyemlHUGdqbTVSQlJqalNqb25uWXF2bmEyOFJxWDRwREJrVmpFSEZW?=
+ =?utf-8?B?Um03YmNTVytia1FsYThlVDdTRC9YcWxCczQ1M0d0Q0RaRk8vN1pTL1ZtSkNP?=
+ =?utf-8?B?aUlHZDRkNTJUaGNtcm40OGxnQ3BOSjdYZTZNdXpFb3lmK1Y4MlZkTDg5UFZE?=
+ =?utf-8?B?c0REUG52alVYWW52ZmowaDVMb055aXFrbFRDbU9lRThOQ0dLVDlGU3YySkFY?=
+ =?utf-8?B?NEhWK1pGK0pTbVVhamJvUFQ0UnZKMjdSY2daSWEzdk9FQ2xKTFhsaGZybWM0?=
+ =?utf-8?B?VjRISGxCcFpqMk1wemdjMnFJYWRDbFZzeGZJcnBTbWg0aW40Zmc3c1IzbytN?=
+ =?utf-8?B?TzJrWkdWa2k0SDZqS0t4Y0V4K2t2SVBJT1VzS3dyUTJBb3gwN0liQUx6YU1t?=
+ =?utf-8?B?SkVpUGp5cmhCaVU0eUVWOG5DR0xtUVRBaGFvQWpvWFR2ejNZS0dEUFpLYWRJ?=
+ =?utf-8?B?L3YzRTlBWHdBaUwzakdwSGhwNGFWdXpOVnNlNTdhTmYzR2JwK29XYkNSVEh3?=
+ =?utf-8?B?R2hqdmtsUmRpbkNqTUd2RGhGOTBpeG9VbVR0Y2JsVkpZRU0xY0dHRWZWY2lQ?=
+ =?utf-8?B?a3N6Z2VLSFRCUDhBTitORHE3a2h0SWlQZUlUeU0wL3NNWHlWQWdBdzlWRnRp?=
+ =?utf-8?B?UE5qMWZRWnFEeStRSlQ4aGlrZXVVY3dLR1VWRHczVkduc3hVSkljcE5OVzRm?=
+ =?utf-8?B?T1ZwcXFodGNQZmJJYnBFcGVNR0dWdmtiN0dDYXRlTEpoYnJwazdTa281RU45?=
+ =?utf-8?B?WHBINlhrSTNrV1NkdWlLZlZ3OThHRld5S3I0R0d5REo3WHNFcEVzVkFRQkI0?=
+ =?utf-8?B?ckJiUmhuWWgwRVpHWVk1RWxoRWYwSUtZaUNtVmw5NXZuZUdNTEEzZlZia0Nw?=
+ =?utf-8?B?dmU5OVF2MHE4bk5nT0RCNnVkNWUvWXF3Qmx4VEFWYyt0OFpiV0dabHR0Q3Z0?=
+ =?utf-8?B?ZEJERGZxQkhMV25IZDZ0bHExSVJOeitzeDc5VXZ4bW40RjJMQXE5N2FyZDNS?=
+ =?utf-8?B?YmoyZ2pPYWZrTjY4U0pWY290VTZadkg1OGkzY2d2QkhnVHdyVWhrZXJtZk9E?=
+ =?utf-8?B?RW90WW1MWmRLSFhXSyt1c0RoWE44YmpoZ1NSOFowZm5ZNkJId3BzNUx4UXlv?=
+ =?utf-8?B?SkdPd1BaNjJGL2p4TTE5U055blAvVjk0Sm4zMVFmVFN6SHFOK0ZXemU0UVFY?=
+ =?utf-8?B?U0ZudE1RZWpCVUozZzFjdng2amlWWTh5YVJiV3lzNlM1N2JvZW4yZmlWL0p4?=
+ =?utf-8?B?WjU4WVZ4TG1DNkdDWnd0TlhycldPVUZ5SysvNW1QMUJqaFc1MFdCaGRTaGlx?=
+ =?utf-8?B?ZXhnWGtnOWhGUWZTV0lleC83eTlMSDk5T1A1TkNWY3VCL0FrdG0xUmhYVTJx?=
+ =?utf-8?B?RUNuUE9IVGhRWENwK3UrY2VsZkpZZytWMy8xVXJ1NkU5OGlNYmxEU05DVGZU?=
+ =?utf-8?B?eEgvKy9mb2RJWEZEQnFkUWpZSC9hTHhBTzZLOUI1aFFsWXJOTTFxNTlqMmU5?=
+ =?utf-8?B?NjhWVUhjSmFiSWhVVnNnNTNieSsxY2gvbmJQWlJINkpGWEQrTkpqaXZjYVF0?=
+ =?utf-8?B?WnYzSWVxeW1xU2V0NHJueUJWck1tbUNsTUtyYkd6UVY1K3JxbStFSzV6NmJX?=
+ =?utf-8?B?ZDIvSjFvdTJoaFZWeEVnc05ETHJ3TndjOHFTMjVpWndlN1ByWElCdHJhUi9u?=
+ =?utf-8?B?MlNrdWNnZmJ0MUxaMGp5bXBqQ0hidmpGbm5IUUptQ0d4Rm0rL3BSTW1XMWpQ?=
+ =?utf-8?B?TzB0bFhhSG1LTGRDU0dCRTIzNFZZaWwzcWU1Zk1VekJtOVZxaTdZUT09?=
+X-Exchange-RoutingPolicyChecked: oGww1+/6Udum76OCoZnQKWNwAPb1S+hnorDmNFmwIFy1wusUteB/yRTkuOPAx0GiURTgiwvBwXAuF0iG0SHUACzIL62CKSAkOnocLY/1Q9nx66bD1q209X9YYH1Y1iAzMyBPNhGR85ajRTp9fpiAleXleMeC/nUfCGt47600hqpPG/yoekZd4RQl3NJEgJnQFuCdTyqSNmO4M93nYF5O9PjT2z4yf9O8hV2QqYmMfzmWffJUe4GDcQFbjgBJ0cwj3L8U7yZh1D/NTE3a7LV4mjxLCUIZvrllHbXY1iv1eASsxzGEMyuzrlUotbCjgXNW/OvVIXIgm89PmLNYs63QHw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91643b2a-a5eb-4999-ca35-08deedaa1f7b
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 19:46:46.3600
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bq8D1WfdYFYxHHaZzhg/wSoK8X+OTaWFClF20mi5qaAXzvNGfcvSiai+R62uFg/GakMZL/d/uJShpZzXocgNeIG+cDC6hpsqiUK9KZY140s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9683
+X-OriginatorOrg: intel.com
 
-On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> Assert the following:
-> - FIXED_COUNTERS_ONLY is unset at initialization.
-> - FIXED_COUNTERS_ONLY can be set.
-> - Setting an event filter when FIXED_COUNTERS_ONLY has already been set
->   results in EBUSY.
-> - Setting FIXED_COUNTERS_ONLY when an event filter has already been set
->   results in EBUSY.
-> - Setting FIXED_COUNTERS_ONLY when a VCPU has already run results in
->   EBUSY.
->
-> Run the existing PMU and MDCR_EL2 tests in fixed-only mode. Verify that
-> enabling the mode preserves the userspace MDCR_EL2 value until a
-> subsequent KVM_ARM_VCPU_INIT resets HPMN to zero.
->
-> Assisted-by: Codex:gpt-5.5
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
-
-
-> ---
->  .../selftests/kvm/arm64/vpmu_counter_access.c      | 166 +++++++++++++++++----
->  1 file changed, 137 insertions(+), 29 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-> index 73f04e4c6ca3..b5f8ce8d3451 100644
-> --- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-> +++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-> @@ -411,12 +411,7 @@ static void create_vpmu_vm(void *guest_code)
->  {
->         struct kvm_vcpu_init init;
->         u8 pmuver, ec;
-> -       u64 dfr0, irq = 23;
-> -       struct kvm_device_attr irq_attr = {
-> -               .group = KVM_ARM_VCPU_PMU_V3_CTRL,
-> -               .attr = KVM_ARM_VCPU_PMU_V3_IRQ,
-> -               .addr = (u64)&irq,
-> -       };
-> +       u64 dfr0;
->
->         /* The test creates the vpmu_vm multiple times. Ensure a clean state */
->         memset(&vpmu_vm, 0, sizeof(vpmu_vm));
-> @@ -442,8 +437,6 @@ static void create_vpmu_vm(void *guest_code)
->         TEST_ASSERT(pmuver != ID_AA64DFR0_EL1_PMUVer_IMP_DEF &&
->                     pmuver >= ID_AA64DFR0_EL1_PMUVer_IMP,
->                     "Unexpected PMUVER (0x%x) on the vCPU with PMUv3", pmuver);
-> -
-> -       vcpu_ioctl(vpmu_vm.vcpu, KVM_SET_DEVICE_ATTR, &irq_attr);
->  }
->
->  static void destroy_vpmu_vm(void)
-> @@ -494,13 +487,22 @@ static void set_nr_counters(struct kvm_vcpu *vcpu,
->  }
->
->  static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
-> +                                                bool fixed_counters_only,
->                                                  bool expect_fail)
->  {
->         struct kvm_vcpu *vcpu;
-> +       u64 irq = 23;
->
->         create_vpmu_vm(guest_code);
->         vcpu = vpmu_vm.vcpu;
->
-> +       if (fixed_counters_only)
-> +               vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +
-> +       vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-> +
->         set_nr_counters(vcpu, nr_counters, expect_fail);
->
->         vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-> @@ -510,15 +512,15 @@ static void test_create_vpmu_vm_with_nr_counters(unsigned int nr_counters,
->   * Create a guest with one vCPU, set the PMCR_EL0.N for the vCPU to @pmcr_n,
->   * and run the test.
->   */
-> -static void run_access_test(u64 pmcr_n)
-> +static void run_access_test(u64 pmcr_n, bool fixed_counters_only)
->  {
->         u64 sp;
->         struct kvm_vcpu *vcpu;
->         struct kvm_vcpu_init init;
->
-> -       pr_debug("Test with pmcr_n %lu\n", pmcr_n);
-> +       pr_debug("Test with pmcr_n %lu, fixed_counters_only %d\n", pmcr_n, fixed_counters_only);
->
-> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
-> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
->         vcpu = vpmu_vm.vcpu;
->
->         /* Save the initial sp to restore them later to run the guest again */
-> @@ -552,14 +554,14 @@ static struct pmreg_sets validity_check_reg_sets[] = {
->   * Create a VM, and check if KVM handles the userspace accesses of
->   * the PMU register sets in @validity_check_reg_sets[] correctly.
->   */
-> -static void run_pmregs_validity_test(u64 pmcr_n)
-> +static void run_pmregs_validity_test(u64 pmcr_n, bool fixed_counters_only)
->  {
->         int i;
->         struct kvm_vcpu *vcpu;
->         u64 set_reg_id, clr_reg_id, reg_val;
->         u64 valid_counters_mask, max_counters_mask;
->
-> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, false);
-> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, false);
->         vcpu = vpmu_vm.vcpu;
->
->         valid_counters_mask = get_counters_mask(pmcr_n);
-> @@ -604,13 +606,15 @@ static void run_pmregs_validity_test(u64 pmcr_n)
->         destroy_vpmu_vm();
->  }
->
-> -static void run_mdcr_el2_validity_test(u64 pmcr_n)
-> +static void run_mdcr_el2_validity_test(u64 pmcr_n, bool fixed_counters_only)
->  {
->         struct kvm_vcpu_init init;
->         struct kvm_vcpu *vcpu;
->         u64 expected_mdcr, mdcr;
-> +       u64 irq = 23;
->
-> -       pr_debug("MDCR_EL2 test with pmcr_n %lu\n", pmcr_n);
-> +       pr_debug("MDCR_EL2 test with pmcr_n %lu, fixed_counters_only %d\n",
-> +                pmcr_n, fixed_counters_only);
->
->         create_vpmu_vm(guest_code);
->         if (!vm_supports_el2(vpmu_vm.vm)) {
-> @@ -631,6 +635,16 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
->                     "MDCR_EL2 was not properly updated after HPMN write (expected 0x%lx, got 0x%lx)",
->                     expected_mdcr, mdcr);
->
-> +       if (fixed_counters_only) {
-> +               vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +
-> +               mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
-> +               TEST_ASSERT(mdcr == expected_mdcr,
-> +                           "MDCR_EL2 changed after PMU_V3_FIXED_COUNTERS_ONLY (expected 0x%lx, got 0x%lx)",
-> +                           expected_mdcr, mdcr);
-> +       }
-> +
->         set_nr_counters(vcpu, pmcr_n, false);
->
->         mdcr = vcpu_get_reg(vcpu, KVM_ARM64_SYS_REG(SYS_MDCR_EL2));
-> @@ -638,6 +652,9 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
->                     "MDCR_EL2 changed after PMU_V3_SET_NR_COUNTERS (expected 0x%lx, got 0x%lx)",
->                     expected_mdcr, mdcr);
->
-> +       vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-> +
->         vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
->                              KVM_ARM_VCPU_PMU_V3_INIT, NULL);
->
-> @@ -672,11 +689,11 @@ static void run_mdcr_el2_validity_test(u64 pmcr_n)
->   * the vCPU to @pmcr_n, which is larger than the host value.
->   * The attempt should fail as @pmcr_n is too big to set for the vCPU.
->   */
-> -static void run_error_test(u64 pmcr_n)
-> +static void run_error_test(u64 pmcr_n, bool fixed_counters_only)
->  {
->         pr_debug("Error test with pmcr_n %lu (larger than the host)\n", pmcr_n);
->
-> -       test_create_vpmu_vm_with_nr_counters(pmcr_n, true);
-> +       test_create_vpmu_vm_with_nr_counters(pmcr_n, fixed_counters_only, true);
->         destroy_vpmu_vm();
->  }
->
-> @@ -737,25 +754,116 @@ static void test_set_nr_counters_after_vcpu_run(void)
->         kvm_vm_free(vm);
->  }
->
-> -int main(void)
-> +static void test_config(u64 pmcr_n, bool fixed_counters_only)
-> +{
-> +       u64 i;
-> +
-> +       for (i = 0; i <= pmcr_n; i++) {
-> +               run_access_test(i, fixed_counters_only);
-> +               run_pmregs_validity_test(i, fixed_counters_only);
-> +               run_mdcr_el2_validity_test(i, fixed_counters_only);
-> +       }
-> +
-> +       for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
-> +               run_error_test(i, fixed_counters_only);
-> +}
-> +
-> +static void test_fixed_counters_only(void)
->  {
-> -       u64 i, pmcr_n;
-> +       struct kvm_pmu_event_filter filter = { .nevents = 0 };
-> +       struct kvm_vm *vm;
-> +       struct kvm_vcpu *running_vcpu;
-> +       struct kvm_vcpu *stopped_vcpu;
-> +       struct kvm_vcpu_init init;
-> +       int ret;
-> +       u64 irq = 23;
-> +
-> +       create_vpmu_vm(guest_code);
-> +       ret = __vcpu_has_device_attr(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY);
-> +       if (ret) {
-> +               TEST_ASSERT(ret == -1 && errno == ENXIO,
-> +                           KVM_IOCTL_ERROR(KVM_HAS_DEVICE_ATTR, ret));
-> +               destroy_vpmu_vm();
-> +               return;
-> +       }
-> +
-> +       /* Assert that FIXED_COUNTERS_ONLY is unset at initialization. */
-> +       ret = __vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +       TEST_ASSERT(ret == -1 && errno == ENXIO,
-> +                   KVM_IOCTL_ERROR(KVM_GET_DEVICE_ATTR, ret));
-> +
-> +       /* Assert that setting FIXED_COUNTERS_ONLY succeeds. */
-> +       vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +
-> +       /* Assert that FIXED_COUNTERS_ONLY is set. */
-> +       vcpu_device_attr_get(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +
-> +       /*
-> +        * Setting an event filter when FIXED_COUNTERS_ONLY has already been set
-> +        * results in EBUSY.
-> +        */
-> +       ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
-> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
-> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-> +
-> +       destroy_vpmu_vm();
-> +
-> +       create_vpmu_vm(guest_code);
-> +
-> +       /*
-> +        * Assert that setting FIXED_COUNTERS_ONLY when an event filter has
-> +        * already been set results in EBUSY.
-> +        */
-> +       vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_FILTER, &filter);
-> +
-> +       ret = __vcpu_device_attr_set(vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
-> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-> +
-> +       destroy_vpmu_vm();
-> +
-> +       /*
-> +        * Assert that setting FIXED_COUNTERS_ONLY when a VCPU has already run
-> +        * results in EBUSY.
-> +        */
-> +       vm = vm_create(2);
-> +       vm_ioctl(vm, KVM_ARM_PREFERRED_TARGET, &init);
-> +       init.features[0] |= (1 << KVM_ARM_VCPU_PMU_V3);
-> +       running_vcpu = aarch64_vcpu_add(vm, 0, &init, guest_code_done);
-> +       stopped_vcpu = aarch64_vcpu_add(vm, 1, &init, guest_code_done);
-> +       kvm_arch_vm_finalize_vcpus(vm);
-> +       vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_IRQ, &irq);
-> +       vcpu_device_attr_set(running_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                            KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-> +       vcpu_run(running_vcpu);
-> +
-> +       ret = __vcpu_device_attr_set(stopped_vcpu, KVM_ARM_VCPU_PMU_V3_CTRL,
-> +                                    KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY, NULL);
-> +       TEST_ASSERT(ret == -1 && errno == EBUSY,
-> +                   KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
-> +
-> +       kvm_vm_free(vm);
-> +
-> +       test_config(0, true);
-> +}
->
-> +int main(void)
-> +{
->         TEST_REQUIRE(kvm_has_cap(KVM_CAP_ARM_PMU_V3));
->         TEST_REQUIRE(kvm_supports_vgic_v3());
->         TEST_REQUIRE(kvm_supports_nr_counters_attr());
->
->         test_set_nr_counters_after_vcpu_run();
-> -
-> -       pmcr_n = get_pmcr_n_limit();
-> -       for (i = 0; i <= pmcr_n; i++) {
-> -               run_access_test(i);
-> -               run_pmregs_validity_test(i);
-> -               run_mdcr_el2_validity_test(i);
-> -       }
-> -
-> -       for (i = pmcr_n + 1; i < ARMV8_PMU_MAX_COUNTERS; i++)
-> -               run_error_test(i);
-> +       test_config(get_pmcr_n_limit(), false);
-> +       test_fixed_counters_only();
->
->         return 0;
->  }
->
-> --
-> 2.55.0
->
->
+On 7/27/2026 6:43 PM, Oliver Sang wrote:
+> 
+> for previous version, we captured a regression in ltp.kvm_vmx01 test, now we
+> tested upon this version again and confirmed the test passes now. thanks!
+> 
+> Tested-by: kernel test robot <oliver.sang@intel.com>
+Thanks!
