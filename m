@@ -1,183 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAA51A9FA0
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84543D093E
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 22:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785365156; cv=none; b=pnlR8RR2QxVFI4+8dFokS4/WmOjSNEPsuGlkEakBXgvQVLrgts0bLMspWm2m+IyhLKBQaVW4s31cLz2uVsiEPq7MlvX59MZ0PfEPbEnOAmXBZ+LQX7gWLZ8mPBoA65Ma5d8ae3MIYMTZzpF6lKy1e91VN8seUcD/DCINMh+Jmyw=
+	t=1785365415; cv=none; b=W0yMH69uPvlkGkfXVHuYngNUHtxeYynQYrYMFCldVqSGqqL0128zABCGnRYqj08jxaTS5LNcAL5dYzBLsxEpIYOJdK2gJAbidXJHEnLD5QWPVoFbuupUJnBwXZ+4hQ2pH4nZf6/8YFUsvcMBAc9xtU283jxRYPhxYh65+wIAGIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785365156; c=relaxed/simple;
-	bh=CgtZ10zeFTCspKJcr6e85mnfuhh9dlCUQyNBcQhi3FY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VYmlOsDHhazCkwmDY3Dl9sKG/1W3hA8FxsQDZnAEo82vOKo7NWKrr5G3OoRoPtFm8y+hCBei/K1T02S2y/aLdKBKnQbt7vKQHWcGWJ9Mpq5kX0PIx+AVLaycNjoINUE5Jni5K99YEV5CHc+urauxDEexLtrXHflJFUNwMMdN+is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+/sN1Dw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785365415; c=relaxed/simple;
+	bh=RMkUPqdU/YmdQZQATNbtW5NBA3Vvme4PzsNPipjmf+k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ded3aSKQclj3OeMYBNxte8l0ZhUIOUdyZ6+FfDJTPVOgzDeS4Po7gbquvJJERJgv+6xhskbV95LiTr+TiqkSH+8OrDDpLqTxz+8+7UdnMKfIknuU3W69XY3awsl2PlcF0jMfv+ubJ5teEZb2rxpbNyJlWTQNwll2xC4UESNiiWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLTfwKUX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eC+J+sKe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+/sN1Dw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C22C1F000E9;
-	Wed, 29 Jul 2026 22:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785365154;
-	bh=jMBcyEMHQ3NLmlhR/FgVPURGZyluiZuzHBL/6h1WrqQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F+/sN1Dw/Y1jqxMAoAwaoIv+xCNTq4s1BMY5lQ1YLfogRv9Nasr6zk5qnBHI6nFuL
-	 KCLEQpDb5oRs2/NtZKWPS8Tr9ypEDK1c89ZTjjT3A+qc3GRMmapHIqtl7pzL0F2L9q
-	 Ayd4U8UAismQ49VYEH98bUi9xxCP7BJk3bLjf9B8/lmJqs57zYi6q657t9EWELWaq0
-	 dVT8pCMzMPoI9nMCDx9Y0aJysc2hdWCRKsfIkNnEDdy2o4xKwscw1c9SIOPXyp+Uxd
-	 0l5Ri1T1FNVJPCX0+7BZ5E7tsc+74B7a/g7/r66Bk1tqPTKZPX1nS+m5qUmjKntVX0
-	 8CqftQgBlxsDQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 1/6] vfio: selftests: igb: Add driver for Intel 82576
- device
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josh Hilke" <jrhilke@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260729-igb_v3_b4-v8-1-3ed236272b4e@google.com>
-References: <20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com>
- <20260729-igb_v3_b4-v8-1-3ed236272b4e@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 22:45:53 +0000
-Message-Id: <20260729224554.0C22C1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLTfwKUX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eC+J+sKe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785365412;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+redXxno3yhMsd+5uVnvErOalNBKKTe/Z8HP7r/UEyc=;
+	b=DLTfwKUXUuSs7emowGsy3tsy6H5IbBba6DkoosTPL+xg1IIMzXxfpkazF37Yj498ljRHLk
+	lXiaX16Irn7ynbGb9UPLVd0jOH1kn/esregRr+XVMcnI3VfZxzX9CVlmXEUeAlxwLG/Z2Q
+	9m22qFzsvFkjVVf65P1uGMOPrjV1Gbw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-260-FH6_M51kPlqz6Aki3qoOfQ-1; Wed, 29 Jul 2026 18:50:11 -0400
+X-MC-Unique: FH6_M51kPlqz6Aki3qoOfQ-1
+X-Mimecast-MFC-AGG-ID: FH6_M51kPlqz6Aki3qoOfQ_1785365410
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47407691804so1017447f8f.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 15:50:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785365410; x=1785970210; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+redXxno3yhMsd+5uVnvErOalNBKKTe/Z8HP7r/UEyc=;
+        b=eC+J+sKeJBJPdrMfSrUZznnJo2wC69OfLMtfFONf3JjKJ2V2MyGNqeQKeHveh+CBdK
+         0Uba7OiVIMMDmQgIHDMJOmvIM/n/a0ddWj4rwPEGExwnXei1YUyXIOdGF/vdlgbsI2pk
+         QqPQcLsoA1uASlKvDu8+49UPO7IqeyQj3rb0NfZaVyH12VMYLkWL7WQERN2YNxACrd8m
+         MXq/ME6RhmeGMC6GLtIfAgKy6ekDxyy7VU0EvCSntcRyGW7EMHiOpsQraSWll+BV8Obb
+         bn9Ra69S/oojyc06m0wlU8JWrjdpyMmwt9WzQ9BkAiGgYALaxl9xTUJ6XczR5fgjubXO
+         zYaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785365410; x=1785970210;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+redXxno3yhMsd+5uVnvErOalNBKKTe/Z8HP7r/UEyc=;
+        b=q3yo4S+bVfh99Icvks4QW+T9EuUSE80cjc5FV+5L37pb5KMRqYC55wMV/5jdjwVbiq
+         hw5yGRSHLC1crkBSSV1NIuM45yDbDWB7tsGpbcWrBD6afd5WPJqaMJOZVjIgsce+tEq9
+         2u4mRu8Tx4S+prZSg5X7Spuv+rNec6ttQ+07aoxcX4ccFzLoK7zptm0OxpAPC4QbbjAs
+         7in1+9y5hZ1q1uCDwMyApampT4fDGzNGQoWzaIAyL5XcoQTFgNhfJFnk7AbuhOHO/+yR
+         qiD+3eeCS89WvCQOnKaKlTbg3mENffuXEI4QWVcM4EJ+VzPOnhnaCuIeXKlyLrg7iGrV
+         s9VQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5hthEmOQTcWdLzei0lNhKtE7Mp8gRsMdQ5lBrsD9mhGrjqQdFZFHKuoxE1ucwPbnQIIQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlrsg+/tP3enj7kF+PCmN52WPDFxulOog+AXRv5cV5Y7COrmUT
+	GCny3l20A4DyNka5IDYSG1T5bwziUP16B9OxQUJninRWwPnFw/gisN3T022z7RIW5n0vbjiD5L7
+	+pgqoUaRWxKahCuJLzpORKFhPs77I5YmUVUDA0v3H7Y+dLv+lnxd7Ig==
+X-Gm-Gg: AR+sD10ofQ53ayH7lCDRJOFQUQwoK3zEwk5JsX023f79u1xs4sBnLOOaX1qZw9dWXz1
+	Ao3H+uGBjAOo0UYv75C7FzUeF2r69LCyXhRG8H/r/KLL5tUSBPQT0yQnzHbBHo1HBm8pHOI6ieO
+	O4Z+lAJKTsJa51wKiv7rmdzXFWmv/L0ndc9S5PRPWsOVC97wMIU9gEiSwnwPAnSxi1TTVXsWeXQ
+	bYMc6ap8zzMd54AJYB2c06n34rvApIi4sOD6Pc/YK7ThNnzKHk49Mc3xmd5Puh82ei8UJ7jXsuf
+	KWrFmjxGp8TPqFu6eMslL+lwQtm9vxfCFMu+U8mzchXQ7gmj95+s5UEulPx430gZ/BnAYHR6m5K
+	HKHT5SEN5zI9B7SQ0aElCA88IRS/F+cHoaYNMEO/4Lk5IG3/1UE6eXoUHDLLR//AbxTI7YzcS5A
+	brxTo=
+X-Received: by 2002:a05:6000:60c:b0:47f:c206:7c4 with SMTP id ffacd0b85a97d-47fc832c6c4mr185226f8f.47.1785365410194;
+        Wed, 29 Jul 2026 15:50:10 -0700 (PDT)
+X-Received: by 2002:a05:6000:60c:b0:47f:c206:7c4 with SMTP id ffacd0b85a97d-47fc832c6c4mr185207f8f.47.1785365409800;
+        Wed, 29 Jul 2026 15:50:09 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.34.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e424fsm168020f8f.14.2026.07.29.15.50.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 15:50:09 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Nikunj A Dadhania <nikunj@amd.com>,
+	stable@vger.kernel.org,
+	Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>,
+	Srikanth Aithal <Srikanth.Aithal@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH stable] KVM: SVM: Bump asid_generation on CPU online to avoid ASID collision after hotplug
+Date: Thu, 30 Jul 2026 00:50:05 +0200
+Message-ID: <20260729225006.671397-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] Hardware Testing Failure / Invalid Loopback Configuration
-- [Medium] Hardware Configuration / Frame Padding failure for short packets
-- [Low] Misleading comment about interrupt delivery during memcpy
---
+From: Nikunj A Dadhania <nikunj@amd.com>
 
---- Patch [1]: [PATCH v8 1/6] vfio: selftests: igb: Add driver for Intel 82=
-576 device ---
-commit e83f78e00ae490d2604290c3e38f2458c48dd9d4
-Author: Josh Hilke <jrhilke@google.com>
+[ Upstream commit 25f744ffa0c8e799e06250ce2e618367b166b0d4 ]
 
-vfio: selftests: igb: Add driver for Intel 82576 device
+If a vCPU stays scheduled out (or blocked) while the last pCPU it ran
+on goes through a hotplug cycle (online->offline->online), and the vCPU
+then resumes execution on the same pCPU, then it is possible for it to
+run with an ASID that has now been assigned to a different vCPU,
+resulting in stale TLB translations being used.
 
-This commit adds a VFIO selftest driver for the Intel 82576 Gigabit Ethernet
-controller. It uses advanced descriptors and programs MSI-X routing to test
-DMA loopback via QEMU's igb emulation and physical hardware.
+svm_enable_virtualization_cpu() resets asid_generation to 1 and sets
+next_asid to max_asid + 1 on every CPU online event, including hotplug
+cycles.  Because next_asid starts beyond the pool boundary, the first
+call to new_asid() after an online event always wraps the pool,
+incrementing asid_generation to 2 and assigning ASIDs starting from
+min_asid.
 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
-esting/selftests/vfio/lib/drivers/igb/igb.c
-> new file mode 100644
-> index 0000000000000..6fc6e7c0e7235
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+Consider two vCPUs from different VMs, vCPU-A pinned to CPU-X holding
+asid_generation=2 and ASID=N from before the hotplug event:
 
-[ ... ]
+  1. CPU-X goes offline and back online: asid_generation resets to 1,
+     next_asid = max_asid + 1.
 
-> +static void igb_phy_setup_autoneg(struct igb *igb)
-> +{
-> +	int timeout_ms =3D 1000;
-> +	bool success =3D false;
-> +	u16 phy_status;
-> +	int ret;
-> +	int i;
-> +
-> +	/* Trigger auto-negotiation */
-> +	ret =3D igb_write_phy(igb, MII_BMCR,
-> +			    BMCR_ANENABLE | BMCR_ANRESTART);
+  2. One or more vCPUs migrate to CPU-X and call new_asid(), wrapping
+     the pool and consuming ASIDs starting from min_asid.  Eventually
+     vCPU-B from a different VM is assigned asid_generation=2, ASID=N
+     — the same ASID that vCPU-A held before the hotplug.
 
-[Severity: Medium]
-Will this auto-negotiation time out and fail the test via VFIO_ASSERT_TRUE
-when running on physical 82576 hardware without an active external link
-partner?
+  3. vCPU-A enters pre_svm_run() on CPU-X: current_vmcb->cpu is
+     unchanged so the migration branch is skipped.  Its saved
+     asid_generation=2 matches sd->asid_generation=2, so the generation
+     check silently passes and vCPU-A continues running with ASID=N —
+     the same ASID just freshly assigned to vCPU-B.
 
-> +	VFIO_ASSERT_EQ(ret, 0, "Failed to write PHY control register");
-> +
-> +	for (i =3D 0; i < timeout_ms; i++) {
-> +		if (igb_read_phy(igb, MII_BMSR, &phy_status) =3D=3D 0) {
-> +			success =3D !!(phy_status & BMSR_ANEGCOMPLETE);
-> +			if (success)
-> +				break;
-> +		}
-> +		usleep(1000);
-> +	}
-> +
-> +	VFIO_ASSERT_TRUE(success, "Auto-negotiation did not complete in time");
-> +}
+Both vCPUs from different VMs now run on CPU-X with the same ASID,
+causing them to share NPT TLB entries and producing stale translations.
 
-[ ... ]
+The collision manifests as a KVM internal error (Suberror: 1, emulation
+failure).  The NPT page fault reports a faulting GPA far outside the
+VM's physical memory range — a sign of stale TLB translations being
+used.  KVM falls back to instruction emulation, which fails on
+FPU/XSave instructions (XRSTOR, STMXCSR) that the emulator does not
+implement.
 
-> +static void igb_init(struct vfio_pci_device *device)
-> +{
+Fix this by incrementing asid_generation instead of resetting it to 1
+in svm_enable_virtualization_cpu().  On module load, asid_generation
+starts at 0 (memset) and the increment produces 1, identical to the
+old behaviour.  On subsequent hotplug cycles the generation advances
+beyond any value a vCPU previously observed on this CPU, so the
+generation check in pre_svm_run() reliably forces new_asid() on every
+vCPU after every hotplug cycle.
 
-[ ... ]
+Fixes: 774c47f1d78e ("[PATCH] KVM: cpu hotplug support")
+Reported-by: Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>
+Tested-by: Srikanth Aithal <Srikanth.Aithal@amd.com>
+Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Message-ID: <20260715063506.672432-1-nikunj@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/svm/svm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> +	/* Enable Receiver and Transmitter */
-> +	rctl =3D E1000_RCTL_EN |       /* Receiver Enable */
-> +	       E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
-> +	       E1000_RCTL_MPE |      /* Multicast Promiscuous */
-> +	       E1000_RCTL_BAM |      /* Broadcast Accept Mode */
-> +	       E1000_RCTL_LBM_MAC |  /* MAC Loopback Mode */
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 4d2bacd00ec4..d0971685034b 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -571,7 +571,12 @@ static int svm_enable_virtualization_cpu(void)
+ 		return r;
+ 
+ 	sd = per_cpu_ptr(&svm_data, me);
+-	sd->asid_generation = 1;
++	/*
++	 * Bump the current asid_generation value to ensure any vCPU that
++	 * previously ran on this CPU sees a stale generation and is forced
++	 * to acquire a new ASID, preventing a latent ASID collision.
++	 */
++	sd->asid_generation++;
+ 	sd->max_asid = cpuid_ebx(SVM_CPUID_FUNC) - 1;
+ 	sd->next_asid = sd->max_asid + 1;
+ 	sd->min_asid = max_sev_asid + 1;
+-- 
+2.55.0
 
-[Severity: Medium]
-Does real 82576 hardware support MAC loopback? It appears this might cause =
-DMA
-loopback to fail on physical hardware even if auto-negotiation completes.
-
-> +	       E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
-> +	igb_write32(igb, E1000_RCTL, rctl);
-> +	igb_write32(igb, E1000_TCTL, E1000_TCTL_EN);
-
-[Severity: Medium]
-Is the Pad Short Packets bit (E1000_TCTL_PSP) missing from the TCTL
-configuration here?
-
-If vfio_pci_driver_memcpy() is called with a size smaller than 60 bytes,
-would the hardware send a runt frame that the receiver drops (because Store
-Bad Packets is disabled), causing igb_memcpy_wait() to time out with
--ETIMEDOUT?
-
-> +
-> +	/* Enable MSI-X with 1 vector for the test */
-> +	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
-> +
-> +	/*
-> +	 * Program MSI-X interrupt routing per 82576 datasheet:
-> +	 *
-> +	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
-> +	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
-> +	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
-> +	 * applies on EICR read/write).
-> +	 *
-> +	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
-> +	 * Without auto-clear the cause stays set after delivery and the
-> +	 * test can see spurious interrupts on the next memcpy batch.
-> +	 *
-> +	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
-> +	 * MSI-X assertion (effective because EIAME is set), so a single
-> +	 * interrupt is delivered per memcpy batch even if the cause
-> +	 * re-asserts before software re-enables the mask.
-
-[Severity: Low]
-This isn't a bug, but is this comment accurate about delivering a single
-interrupt per memcpy batch?
-
-Looking at igb_memcpy_start(), it explicitly disables interrupts before the
-batch:
-
-    igb_irq_disable(igb);
-
-and igb_memcpy_wait() polls the descriptor writeback before clearing the
-cause and re-enabling interrupts:
-
-    igb_irq_clear(igb);
-    igb_irq_enable(igb);
-
-It appears interrupts are prevented entirely during the polling loop.
-
-> +	 *
-> +	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
-> +	 * cause 0 to MSI-X vector 0 and mark the entry valid.
-> +	 */
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729-igb_v3_b4-=
-v8-0-3ed236272b4e@google.com?part=3D1
