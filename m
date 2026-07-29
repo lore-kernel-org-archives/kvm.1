@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5972F8E8A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3C02DCF55;
 	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285309; cv=none; b=ochU9Urro0pIfUYbKuQycJSZCYZs7aPt6mE2JQVBXimNHOjfX3Om7aD41Nu79u5LKk++wkYZSrnJ0Hht5EFBQJIxL78Hy/bOhVYljiyhMZZ2ahQX0d3FmXFsTGM0EAXtHnXkphZFrfK7KNcVJbyFWAy6Znp9WBz1nmKNCwRa9T0=
+	t=1785285309; cv=none; b=qo3155QI4X09pXdA8HRRmz4mez7OEenZsxlaq7zVoXSHz2prgyWA3CqyMWEWTpNXDmL3OV57/lQmSEJJU3zy9KgU9Lwo8Dkk6+oXasVX4u2Hhg0v0RxhuSUyDg5gEgjK6uIaHZFVEmETJ8AjmrcRsyvAV8HKhhHZ2dIwMQdOfu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785285309; c=relaxed/simple;
-	bh=52/0Vt0dpEJnwhXlNQX3zcqGfpEYR+Me2/DktYpv8cM=;
+	bh=y9s8lGEG7811uVLgjbEHjBppzW1/vDu3LGD/tpzmX0c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qjuw57kZsYclHZpyL1TCIAmIRPkbO2Cyurtf5AdKIoi0xElTXjKnjLEGIjkCRwavhxz+9pGbe5MFVXc0FqHRx8q1efNlQzReuTi8jR/CmJTMinHE5bf2zEYPPSgAv+RFB6B1liJE0N2Rj4BOQGi15zFGh33sR8yMoGKC1IjtDyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPVjul0X; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E54PNZBVugyTGS2lGJ2cwpHyL6oPpIcq9mEEdwJt3KiBlmBTDz64lV8O9XodNJMI6rc9v8Gv1rZbuBPqF+/8a5JQ84fwWQRXR5OHuTSPO5YgXk85nnEagpqRotDF/HX4rSCyMS3vcVQywzhlNAsggAVPqbRFFvXSorrhLmITykc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol292dno; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPVjul0X"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D447C4DE12;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol292dno"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 129C0C4DE1F;
 	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785285309;
-	bh=52/0Vt0dpEJnwhXlNQX3zcqGfpEYR+Me2/DktYpv8cM=;
+	bh=y9s8lGEG7811uVLgjbEHjBppzW1/vDu3LGD/tpzmX0c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=UPVjul0XnKVXb0w0p/8nBc3nmi0afcCo+9Fca4oumSzLg6LfYd3rvmTl7TsPRUyqe
-	 WInJVuT4kRktwFp+2dE+fVC9BIz17PWvegt47oxdB8NhJRdFVtHTCewXDxdJocYNqB
-	 JxOUnDTIUKeHhO4jlnZUaCjT8fz3tCx9WiHSRGsg1dNUPet+OKQyXW4P/wDkio/+nS
-	 DeU6qxzc8lBVUScfCszuEr1Gf3DOpW8ETfRgrCSQUfzYqo5xSvDFpIX+7d2q0HicRr
-	 4GTGWSNuQjEh4/m6eu/yxlp7GO07aDFA8GM8offjBlVbKJtw7Or0LMlESkSdaXKUOj
-	 nebQEmOdh7fpg==
+	b=Ol292dnoGjvwiuG6ZBKhP1JoEp7flx3SnTt9QThs7Oab8vfYH+oB/tIkzB5Z3jusr
+	 YoUETk6buG13nHngxL2vYZ546byUno/xHbpxCUHQ/IqTr4X9fe3vrrjLmMuOU7sGS8
+	 XGMpXjZL6+/XO4kjILtfUL9cMy8uO1pNC8kbxaxiTPVQE00TxrJxFwWnbY+FPBZLxu
+	 xFWZCsP31Ncvy92MNWSr4MnvqJhUKtKEXJoYCZk2OKgYnD1CmJdWScDbUaccQWfU7X
+	 T2+Fnwdcds++F7ubbIBj+ClZJ7ECDsHpTbVqljyxec5Y3ZrEy0Z4bI3stcWVQKwnek
+	 B65Cyw5n0xgqA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64DBDC54F52;
-	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E893CC54F52;
+	Wed, 29 Jul 2026 00:35:08 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:20 -0700
-Subject: [PATCH v9 21/41] KVM: guest_memfd: Enable INIT_SHARED on
- guest_memfd for x86 Coco VMs
+Date: Tue, 28 Jul 2026 17:35:14 -0700
+Subject: [PATCH v9 15/41] KVM: guest_memfd: Handle lru_add fbatch refcounts
+ during conversion safety check
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-21-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-15-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,14 +74,13 @@ To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=1641;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2739;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=xqYH05bSCEd1Bk1hXIslSXCmEIZh87KnzlPOeglC0VM=;
- b=bL9eALDZa5rrVw3e+oDoxAYk2lxBzN9/H13NtfJOfT/y/F4v9X0ogrXYkcZ82AmmYuS5rPP89
- NZtt7tORv17DBB8S6dcZfZB7MvYLXrBe7t6xg7XcoiTHiOvXZz1Okf1
+ bh=yzGmlEDFy/cjLSw+iMJeM2ur0Qa630sqxH0mSnKpbLc=;
+ b=bHbpb3CAou9uPxE9qLS+0Ete0qwRLtl5oyfQAGGSUyU/rOr+nAFuNfXSrcqFW31J95vZyoagb
+ J95vuSBHVIqDOJiMFt4O3/MaVCuQAloHhhFBIU/6XCZMXUwmIiUmtAk
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -89,49 +88,86 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Now that guest_memfd supports tracking private vs. shared within gmem
-itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
-for x86 Confidential Computing (CoCo) VMs, so long as in-place conversion
-is enabled, i.e. when it's actually possible for a guest_memfd instance to
-contain shared memory.
+When checking if a guest_memfd folio is safe for conversion, its refcount
+is examined. A folio may be present in a per-CPU lru_add fbatch, which
+temporarily increases its refcount. This can lead to a false positive,
+incorrectly indicating that the folio is in use and preventing the
+conversion, even if it is otherwise safe.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Fuad Tabba <tabba@google.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
+The conversion process might not be on the same CPU that holds the folio in
+its fbatch. Hence, use lru_add_drain_progressive() to progressively drain
+lru_add fbatches.
+
+guest_memfd folios are unevictable, so they can only reside in the lru_add
+fbatch. If the folio's refcount is still unsafe after draining, then the
+conversion is truly unsafe and has to be aborted.
+
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/x86.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ mm/swap.c              |  2 ++
+ virt/kvm/guest_memfd.c | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 52de3ec7c7f73..79538dedfad68 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10623,14 +10623,15 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
- }
+diff --git a/mm/swap.c b/mm/swap.c
+index 0f9465d31fe52..4427d76c88d6d 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_idle.h>
+ #include <linux/local_lock.h>
+ #include <linux/buffer_head.h>
++#include <linux/kvm_types.h>
  
- #ifdef CONFIG_KVM_GUEST_MEMFD
--/*
-- * KVM doesn't yet support initializing guest_memfd memory as shared for VMs
-- * with private memory (the private vs. shared tracking needs to be moved into
-- * guest_memfd).
-- */
- bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- {
--	return !kvm_arch_has_private_mem(kvm);
-+	/*
-+	 * INIT_SHARED is supported if in-place conversion is enabled, or if
-+	 * the VM doesn't support private memory.  If the VM has private memory
-+	 * and in-place conversion is disabled, then guest_memfd can _only_ be
-+	 * used for private memory.
-+	 */
-+	return gmem_in_place_conversion || !kvm_arch_has_private_mem(kvm);
- }
+ #include "internal.h"
  
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
+@@ -964,6 +965,7 @@ bool lru_add_drain_progressive(int *drain_state)
+ 	}
+ 	return false;
+ }
++EXPORT_SYMBOL_FOR_KVM(lru_add_drain_progressive);
+ 
+ atomic_t lru_disable_count = ATOMIC_INIT(0);
+ 
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 928fc7f4a01e4..505bb6747620b 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -8,6 +8,7 @@
+ #include <linux/mempolicy.h>
+ #include <linux/pseudo_fs.h>
+ #include <linux/pagemap.h>
++#include <linux/swap.h>
+ 
+ #include "kvm_mm.h"
+ 
+@@ -554,6 +555,7 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 	const int filemap_get_folios_refcount = 1;
+ 	pgoff_t last = start + nr_pages - 1;
+ 	struct folio_batch fbatch;
++	int drain_state = 0;
+ 	bool safe = true;
+ 	pgoff_t next;
+ 	int i;
+@@ -565,9 +567,15 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+ 
+ 		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+ 			struct folio *folio = fbatch.folios[i];
++			int expected_refcount = folio_nr_pages(folio) +
++						filemap_get_folios_refcount;
+ 
+-			if (folio_ref_count(folio) !=
+-			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
++			while (folio_may_be_lru_cached(folio) &&
++			       folio_ref_count(folio) != expected_refcount &&
++			       lru_add_drain_progressive(&drain_state))
++				;
++
++			if (folio_ref_count(folio) != expected_refcount) {
+ 				safe = false;
+ 				*err_index = max(start, folio->index);
+ 				break;
 
 -- 
 2.55.0.508.g3f0d502094-goog
