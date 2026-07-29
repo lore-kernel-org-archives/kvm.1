@@ -1,61 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269DB37F313;
-	Wed, 29 Jul 2026 18:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3C433CEB0
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785348780; cv=none; b=fO/WIs6YyyRWsCsBDbR5iLdl6wkQMXUu58GvArrW3a+R/BBpvWWTZ++SPJnsAE+g07l8V6ypjpeDi5yeecBlL2EXFxUGo1U0bsEuF3vhbxy78070cpNjF6/yr+n5ujq8DZtR3se+HGq0OKGvBZAH+rfr4/XcDb5iNSHZMf/rwSk=
+	t=1785348860; cv=none; b=eismdGRJHa+zHc6sirdeibooKUy74GQGSLL7GP3VJsfm6gKd8EgTBl8gcza/ldXH/9tRGfYlQvbz/6N65EWSXVoxsInwTxdXEaaAUXjulGCZhGD4tMtTMwf0I8kIWvPskqBxxeiMU2PJno8s0F8Gm1t0WdSeObhEgEphNEQm3hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785348780; c=relaxed/simple;
-	bh=DzryJh43pQgzqvZ9qNIpPbUUQll0gXm8bFQX1KKMdKI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hNwK49DPhreAwHGZYa3S4phJJHDHkFYfxbUTnGo3GpRKsCOSesz8WWtf9+XpJi0hWWMybh+1l1eHoTxCUASzGgazPbtE2ykiG4vBL2gikPjkQD+FZr7dhpUpw9DLehl4X7wMbdxWcpRYEaf/j5L4hvoED+G73AYMwfSYwYWL7QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cbd4MR+N; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785348860; c=relaxed/simple;
+	bh=nXvxhyCrLtuyKc3HaJEGA/kPIG4/7IU3AHxrZWgGmcI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PccSHWxH9eyaSkmAfNnaTYgycqvXo/in5PC28lAXb9FvdsQmyrEpjAA2BF/J4MzdN2F4PJWVNCbnl8KF1Xf5zBdaF0EAGGkporjhBCKaVPIqfMFjO3hXOQwxnQNjdTsvk0syHnQNRFnA/3jRmkX0C3j61A31weoC0aZtlu1nwEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Idq6+qHO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cbd4MR+N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328241F000E9;
-	Wed, 29 Jul 2026 18:12:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Idq6+qHO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6B41F00A3F
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785348778;
-	bh=DzryJh43pQgzqvZ9qNIpPbUUQll0gXm8bFQX1KKMdKI=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Cbd4MR+NnL/McQTiGalTBG2sHfR4pr/IOiX/2gB/WVuJ6sqxD+KBn+degQB7kBxI/
-	 5WMABMJQi8/i7wiDTLoOHlqStnSBiLq6f3rT7nlhTMr0W5ge0pjpEoDSYdz1C0B0QU
-	 yXz9PVtnLVe7omzbQkgqqA7bCztM959GL6XW7PzPWtme/CJOEWkmUyI5WkiK2ck4vG
-	 hl9qRbbWmCKqY5YvU4+vtSoBLgC9ICndjuavRM41F9eBkTzINmLeVlNa/36mUveVZH
-	 rADk3Y0HOavRUjuuZfRE1qnO2fFLQ9HOdxBEo6WOaobyvTJMQQ43H3RS8t9nvbSafA
-	 OA5RBVp76nYQg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 10/13] KVM: s390: Return -EINTR if a signal was
- pending while faulting-in
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260729152938.782383-11-imbrenda@linux.ibm.com>
-References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
- <20260729152938.782383-11-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 18:12:57 +0000
-Message-Id: <20260729181258.328241F000E9@smtp.kernel.org>
+	s=k20260515; t=1785348859;
+	bh=exmMkvw0Kbsw2gErktHRjURFCx5Kr1AFKum0kLUFv6A=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Idq6+qHO9Uo8aX7Sy61XGftWDSr/adFLWdyzY8izz3yTFrapaq6TuwJmT6YAE0DTj
+	 fcP45rFjDH4qZNLnu4bJKC9bZb/cxA6GD9dVTqzmxbMkalm5Owj0pgkxb7q1vp0MXs
+	 huDacu6tLB/mcJuHoDVjoOD1GCvU+LHewFd20KbtcuFtZETnIeOFDNPcAdSVr8blxZ
+	 FIRDHYFzYekTQG9R3rA4B0KYI5MpDJ0Lx1liD2dwUjtOPc+YuX+GfIYroyvW3IH5LQ
+	 CQxgKu1u7f4UPf/gouLUST8kfDSo6QHQoy5afWhcBiCy8loyovDGD1tIKw3GE/6mRL
+	 VLDYk73nM4Mog==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1f5208b38dso242194366b.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 11:14:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RogVi/r9SYtHTcIuFUeYvkaRFlDhilc4/M6w1VWI1n+lE7t+I8EkfI9ZdSSMqyXG0TSSEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPZjBW6aeizCEyA2Fiii6o66fuJOD2t/7LQgxt5K+9+vivxEL5
+	DIyV8BMDVr3iB+iy5CDWkursPCwT7zl9jbtwASqHkEu2oD0EzmUC4H/dmgPFc7Y+RkJp7vb6RY1
+	Ba2dPe5mwvfISRJI84qSrqxUB/zHszU0=
+X-Received: by 2002:a17:907:1787:b0:c15:ff7a:e56d with SMTP id
+ a640c23a62f3a-c1f7215114dmr410786166b.51.1785348858159; Wed, 29 Jul 2026
+ 11:14:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260713180153.2728382-1-yosry@kernel.org> <20260713180153.2728382-2-yosry@kernel.org>
+ <CALMp9eRhWq+MXj8zax8hS48eZVE031kctfa=SC1ngT31iBtC5w@mail.gmail.com> <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
+In-Reply-To: <CAO9r8zPe0ONLFaL+ZLM4qs=8EeUzd+Gn+vzsOxryga3SsK4e7w@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 29 Jul 2026 11:14:06 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
+X-Gm-Features: AUfX_mynzWvzboeMQfBAgSWIRLhEXTy3IK-N4jvqG-A9FNzHuoOCg0oOqU9ikZE
+Message-ID: <CAO9r8zOrCMqBSnxqxnqj1M1Mmr5wMU0H9uVeNuOYKLwhvQA0Sg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] KVM: x86: Check EFER validity on KVM_SET_SREGS*
+To: Jim Mattson <jmattson@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> If a fatal signal is pending while trying to fault-in a page, return
-> -EINTR instead of -EAGAIN.
->=20
-> Also fix unpack_one() to handle -EINTR properly.
->=20
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+On Wed, Jul 29, 2026 at 9:52=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> On Tue, Jul 28, 2026 at 9:53=E2=80=AFPM Jim Mattson <jmattson@google.com>=
+ wrote:
+> >
+> > On Mon, Jul 13, 2026 at 11:04=E2=80=AFAM Yosry Ahmed <yosry@kernel.org>=
+ wrote:
+> > >
+> > > When handling userspace SREGS writes, check the validity of EFER (i.e=
+.
+> > > allowed bits) before writing the new value of EFER through the
+> > > per-vendor set_efer callbacks. This prevents userspace from writing
+> > > bogus values (e.g. EFER.SVME=3D1 with nested=3D0).
+> > >
+> > > Note: on KVM_SET_MSRS, KVM only checks EFER validity in terms of KVM
+> > > caps, not guest caps, so it is possible to set EFER bits that are
+> > > supported by KVM but not by the guest CPUID. Potentially allowing
+> > > userspace to set msrs before CPUID.
+> > >
+> > > However, for KVM_SET_SREGS*, check the validity of the set bits again=
+st
+> > > both KVM and guest caps. This is consistent with other validity check=
+s
+> > > (e.g. for CR4) that check validity against guest caps, which already
+> > > imposes the need to set CPUID before SREGS.
+> >
+> > Where is the requirement to set CPUID before SREGS documented, aside
+> > from this commit message?
+>
+> I don't think so, and also coming back to this again I think the
+> commit message is wrong. The whole basis for doing validity checks
+> against guest CPUID (other than the convenience of using
+> kvm_valid_efer()) is cr4_guest_rsvd_bits, which is initialized based
+> on both KVM caps and guest CPUID.
+>
+> However, cr4_guest_rsvd_bits seems to be initialized *after* CPUID is
+> set, so it only checks CR4 against CPUID if userspace already set
+> CPUID. It doesn't impose a restriction to set CPUID before SREGS, but
+> this patch is.
+>
+> So I think this may be too restrictive. We should probably only check
+> against KVM caps, which was the whole motivation of this patch to
+> begin with (disallowing EFER.SVME if nested=3D0). Maybe we should just
+> drop the Cc:stable as it won't apply to any of the stable trees any
+> way, and do this on top of the kvm_caps.supported_efer_bits changes?
+>
+> diff --git a/arch/x86/kvm/regs.c b/arch/x86/kvm/regs.c
+> index 8f66438989e47..412a37ca86ecc 100644
+> --- a/arch/x86/kvm/regs.c
+> +++ b/arch/x86/kvm/regs.c
+> @@ -565,7 +565,7 @@ static bool kvm_is_valid_sregs(struct kvm_vcpu
+> *vcpu, struct kvm_sregs *sregs)
+>
+>         return kvm_is_valid_cr4(vcpu, sregs->cr4) &&
+>                kvm_is_valid_cr0(vcpu, sregs->cr0) &&
+> -              kvm_valid_efer(vcpu, sregs->efer);
+> +              !(sregs->efer & ~kvm_caps.supported_efer_bits);
+>  }
+>
+>  static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *s=
+regs,
+>
+> ---
+>
+> diff --git a/tools/testing/selftests/kvm/x86/set_sregs_test.c
+> b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+> index 603226ffe4374..c07ccf0bbe85a 100644
+> --- a/tools/testing/selftests/kvm/x86/set_sregs_test.c
+> +++ b/tools/testing/selftests/kvm/x86/set_sregs_test.c
+> @@ -171,7 +171,6 @@ int main(int argc, char *argv[])
+>          */
+>         vm =3D vm_create_barebones();
+>         vcpu =3D __vm_vcpu_add(vm, 0);
+> -       test_efer_bits(vcpu, KVM_ALWAYS_ALLOWED_EFER);
+>         test_cr_bits(vcpu, KVM_ALWAYS_ALLOWED_CR4);
+>         kvm_vm_free(vm);
+>
+> ---
+>
+> Sean, WDYT?
+>
+> If we will change this, would you rather do it in place, a followup
+> fix, or a new version?
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+I take this back, I think I was right the first time.
+kvm_vcpu_after_set_cpuid() is called on vCPU creation (confusing?),
+and looking closely at set_sregs_test seems like it specifically
+verifies that CR4 bits guarded by CPUID bits cannot be set before
+CPUID is set.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
-83-1-imbrenda@linux.ibm.com?part=3D10
-
+I think the main difference here is probably that CR4 bits that are
+guarded by CPUID are more "advanced" than EFER bits?
