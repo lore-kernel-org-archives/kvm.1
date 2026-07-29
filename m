@@ -1,152 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F245517E
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3DD48D885
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785342372; cv=none; b=HHAQ6UptfWAVPKcrL5qs1lrak2t9Ai4XS7mcy1sWGPWN3zYQsI7xlocHNBOMZHxvYPXfG6GUK4WhT61rXIq18HtAYbkqDv3zL6nF/igH5Daf/k5mB52j3NIOmeAzdjsF+JFKMdBR/2jwFet2CqCoqaRdJCsjlh3fWUgfBbP84R0=
+	t=1785342870; cv=none; b=i7rIGUUcwTgtsmE9N4hA4lRqWqmQtAsmj8xAAJ1MqpqFn0LkEjwqtCRc8fg1+rrC7IybNVIFDlYxRmU0mf0AouiYyN3Lh6nSJbCG9dz9oVV255wtk1uKPlcHgzbieo6LA2ngHU63VzBoUcM6XgzxuPJutsXaRj0FdEXb0dI2TJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785342372; c=relaxed/simple;
-	bh=js/gk0bOwiK81KqK4+pXXlkybf6x0fcrzgEmOclGcfk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sFckYCnPfUMF6UruaRLIaUkxu6s081BXSmilk6pi48wKc2R+gcXYOmHN7mdlqXSaZpOJG28aJLsys1xu0lFkoJxpmIVqDr2UnlF5PztpBovLgJ6MLFVjJQsbuM3W5pvtFQWp2adI80VS6HQLY5pljBotI7nptfLnUxYOa51xJeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpMp9iwm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785342870; c=relaxed/simple;
+	bh=xVCMaAYRMoA+7JRlPIAe/kKzeo1xh9J+66pWGwEUyFU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b19siAHlZo0YwHY7J4r2R+5TfjDcZFF7MaNU63Ynh5pr5SA9EVgzcQRBR5U+i4SyPJmbpDuJcVuVe2vgSjVC++kI6NUTyyz6u3v71QxKkk9Az8QqRVQ+r9+yxEv8kecM4o/e2bolPhUQYBB3Ep8HB9a1KKshU20Ukk4KQLfo2Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FCD0X156; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpMp9iwm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EA91F00A3A;
-	Wed, 29 Jul 2026 16:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785342366;
-	bh=kgikkfPzKSZTV2f/YcrZZ7hMRqbxtLjDEKesjAiLt3w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JpMp9iwmd6ojx/XapOeLRwtcweyi/so+6eKkwrHln9GhH1yybEAGibSwtMLvBlJUO
-	 0l6YnhxnEfWR/TOrVyxFEb5rng8JKMsdVxGftG0BEUppX8A4cTXbDv9+mCDK/Rn0gm
-	 cIsGPU2xj4q17mX/hVhsy31BwZoWjWdre06qLfeon0Zjv1mQ6ZqThrsnVRe/YOZODx
-	 laQ8cY1ZE3xcXwBUh0Y9MoUMkn+Xm+WJwXvbJCwZUVz6Z37IwSPROZ4PXOHD0f+/nF
-	 /NGL3ffhvW5WGegNgnsAsiKOxVj93trleO6YFm6VuJX8Wkw6v+xlVnG9URUVySqFCH
-	 H7od9vxOswDNw==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add
- dirty-ring support
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Leonardo Bras" <leo.bras@arm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260729161519.3778839-5-leo.bras@arm.com>
-References: <20260729161519.3778839-2-leo.bras@arm.com>
- <20260729161519.3778839-5-leo.bras@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 16:26:05 +0000
-Message-Id: <20260729162606.06EA91F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FCD0X156"
+X-Forwarded-Encrypted: i=1; AHgh+RonJCyzKSr99TpB6ec7g+gL9WrLms/VCQ44pWw+IZSLnWQkVUs+RQqCroh2A7XH3M5KB3Q=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785342866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CDwMDWK74FGPCQksjJUhT5TIKVqDAVbip9kxaBkjJBk=;
+	b=FCD0X156GxRSdy69AnwFVrpQDC1KNPrXkd46HJDtpVePqSGwZGeJ8A9yO0j/fVfMXYNTWB
+	7BGHwji+UFesA/kehnFbNYOvMxzTkMU/BE8t6N2qyiufAr/VNfkZwA4fYbGdWu3kUXdFF8
+	CEli92GDWYJLgIrb/VFE+vtcp+sMsPo=
+X-Gm-Message-State: AOJu0YzXasEhU7M3nABkQlY8Pz2LWrR1UDJLvLIfa72JBeTCWDcO+RYI
+	kj8RiGZkp/HVVDDwWnVifqxq6+h/41BLBVIrB6PhkiIV0szh2+oCbMetcYOd05flhVlmTQvSET+
+	UXrqxWQwJxAxO5yWcRDa/qy/e92na6Ry4TFxAyOmv
+X-Received: by 2002:a05:622a:2b49:b0:51c:ca9:3d15 with SMTP id
+ d75a77b69052e-52b3500260fmr2216081cf.12.1785342860083; Wed, 29 Jul 2026
+ 09:34:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-10-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-10-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 17:33:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTzuaMDJm8BPf1sA9DiSDvtyn=C1Z2LrOLYc228XKJzF2w@mail.gmail.com>
+X-Gm-Features: AUfX_mzDDgEy7qPOSuwHqBOjPkT5QQo0kZIP1lcw0jJbpzlF7P6EqmFVAn2Xz68
+Message-ID: <CA+EHjTzuaMDJm8BPf1sA9DiSDvtyn=C1Z2LrOLYc228XKJzF2w@mail.gmail.com>
+Subject: Re: [PATCH v9 10/16] KVM: arm64: Don't clear vcpu->cpu in kvm_arch_vcpu_put()
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Lock contention wait time is incorrectly attributed to guest exe=
-cution time instead of dirty ring clearing time.
---
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+>
+> From: Oliver Upton <oupton@kernel.org>
+>
+> commit e9b152cb957c ("arm/arm64: kvm: Set vcpu->cpu to -1 on vcpu_put")
+> reset vcpu->cpu in order for the VGIC to determine if there was any vCPU
+> running at the time of access. The VGIC has gone through an entire
+> rewrite since then, and with commit 7d450e282171 ("KVM: arm/arm64:
+> vgic-new: Add userland access to VGIC dist registers") the user
+> accessors just grab all vCPU mutexes instead.
+>
+> Drop this remaining vestige such that kvm_arch_vcpu_load() can properly
+> detect a CPU migration. While at it, rework kvm_reset_vcpu() to do a
+> much more pedantic check that the provided vCPU is actually what's
+> running on the present CPU.
+>
+> Signed-off-by: Oliver Upton <oupton@kernel.org>
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
---- Patch [3]: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add =
-dirty-ring support ---
-commit 314e5490e434eab524cfacd4f66a4c83a152147e
-Author: Leonardo Bras <leo.bras@arm.com>
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
-KVM: selftests: dirty_log_perf_test: Add dirty-ring support
-   =20
-This commit adds dirty-ring tracking support to dirty_log_perf_test.
-This allows comparing the performance of the dirty-ring mechanism against
-the existing dirty-bitmap implementation.
+Cheers,
+/fuad
 
-> diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/te=
-sting/selftests/kvm/dirty_log_perf_test.c
-> index 69b38791440e7..6e80d36cc61a3 100644
-> --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
-> +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
-[ ... ]
-> @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
-> =20
->  /* Host variables */
->  static u64 dirty_log_manual_caps;
-> +static u32 dirty_ring_size;
->  static bool host_quit;
->  static int iteration;
->  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
-> +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
+> ---
+>  arch/arm64/kvm/arm.c   |  1 -
+>  arch/arm64/kvm/reset.c | 16 +++++++++++-----
+>  2 files changed, 11 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index a06ea39f57b1..72ce79ce4d5e 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -749,7 +749,6 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>         kvm_arm_vmid_clear_active();
+>
+>         vcpu_clear_on_unsupported_cpu(vcpu);
+> -       vcpu->cpu = -1;
+>  }
+>
+>  static void __kvm_arm_vcpu_power_off(struct kvm_vcpu *vcpu)
+> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
+> index b963fd975aac..6bfb21f00444 100644
+> --- a/arch/arm64/kvm/reset.c
+> +++ b/arch/arm64/kvm/reset.c
+> @@ -190,7 +190,8 @@ static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
+>  void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>  {
+>         struct vcpu_reset_state reset_state;
+> -       bool loaded;
+> +       struct kvm_vcpu *running;
+> +       bool loaded = false;
+>         u32 pstate;
+>
+>         spin_lock(&vcpu->arch.mp_state_lock);
+> @@ -198,10 +199,16 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>         vcpu->arch.reset_state.reset = false;
+>         spin_unlock(&vcpu->arch.mp_state_lock);
+>
+> -       preempt_disable();
+> -       loaded = (vcpu->cpu != -1);
+> -       if (loaded)
+> +       guard(preempt)();
 > +
-> +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
-> +				struct timespec *ts)
-> +{
-> +	static pthread_mutex_t collect =3D PTHREAD_MUTEX_INITIALIZER;
-> +	struct timespec start;
-> +	struct kvm_dirty_gfn *dirty_gfns =3D vcpu_map_dirty_ring(vcpu);
-> +	u32 idx =3D *ring_idx;
-> +	u32 ring_size =3D vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_g=
-fn);
-> +	int cleared, count;
+> +       running = kvm_get_running_vcpu();
+> +       if (running) {
+> +               if (KVM_BUG_ON(running != vcpu, vcpu->kvm))
+> +                       return;
 > +
-> +	pthread_mutex_lock(&collect);
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &start);
-
-[Severity: Medium]
-Will this clock_gettime() placement exclude the mutex lock contention time
-from the collected clearing metric?
-
-By taking the start time after acquiring the mutex, any time spent waiting
-for the lock will not be included in the 'collect' time.
-
-[ ... ]
-> @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *v=
-cpu_args)
->  	struct timespec ts_diff;
->  	struct timespec total =3D (struct timespec){0};
->  	struct timespec avg;
-> +	bool use_dirty_ring =3D !!vcpu->vm->dirty_ring_size;
-> +	u32 ring_idx =3D 0;
->  	int ret;
-> =20
->  	run =3D vcpu->run;
-> =20
->  	while (!READ_ONCE(host_quit)) {
->  		int current_iteration =3D READ_ONCE(iteration);
-> +		struct timespec collect =3D (struct timespec){0};
-> =20
->  		clock_gettime(CLOCK_MONOTONIC, &start);
-> -		ret =3D _vcpu_run(vcpu);
-> +
-> +		do {
-> +			ret =3D _vcpu_run(vcpu);
-> +			if (!use_dirty_ring)
-> +				break;
-> +
-> +			dirty_ring_collect(vcpu, &ring_idx, &collect);
-> +		} while (!ret && run->exit_reason =3D=3D KVM_EXIT_DIRTY_RING_FULL);
-> +
->  		ts_diff =3D timespec_elapsed(start);
-> =20
-> +		if (use_dirty_ring) {
-> +			ts_diff =3D timespec_sub(ts_diff, collect);
-> +			vcpu_dirty_ring_collect[vcpu_idx] =3D collect;
-> +		}
-
-[Severity: Medium]
-Does subtracting this incomplete 'collect' time strand the lock contention =
-time
-inside the guest execution time?
-
-Since the lock contention time is excluded from 'collect' in
-dirty_ring_collect(), subtracting it from the total 'ts_diff' leaves the
-contention time attributed to the guest execution time rather than the
-dirty ring clearing time.
-
-Could this artificially inflate the guest execution metric when multiple
-vCPUs contend on the lock?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729161519.3778=
-839-2-leo.bras@arm.com?part=3D3
+> +               loaded = true;
+>                 kvm_arch_vcpu_put(vcpu);
+> +       }
+>
+>         if (!kvm_arm_vcpu_sve_finalized(vcpu)) {
+>                 if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_SVE))
+> @@ -269,7 +276,6 @@ void kvm_reset_vcpu(struct kvm_vcpu *vcpu)
+>
+>         if (loaded)
+>                 kvm_arch_vcpu_load(vcpu, smp_processor_id());
+> -       preempt_enable();
+>  }
+>
+>  u32 kvm_get_pa_bits(struct kvm *kvm)
+>
+> --
+> 2.55.0
+>
+>
