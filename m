@@ -1,196 +1,202 @@
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FE13D3CF0
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 07:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.137
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785311572; cv=none; b=U3NbLSCMSYWY14CpVfBeMpNqqPaRKRLBVnpmRV2LLnfLBt8hfxx9kmpu3laPD9/AQ69opW50mTZ1+KlIg9WsPRVciVfWYdnxzewOSVgOSw/hSug76WHkEgETOsu8FS+z7j9vh0/FN4CrTwj87aa3Nsy3LDSJvcpldroADgJVenU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785311572; c=relaxed/simple;
-	bh=0RyNL+d2u/8qwasZjrr/jkYtIiYWq7qAhWxhy72Q1r0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2DZtSOKHGslV/+xqg9Xcv0VSFZSLNdN5Rt8zrfXBEUOkWzU/az11jScXWlztAQeK4SgW8rA3SvySu6YV1p2qibjKLgEdVauxzOOVZVIla3UhwCfGn8C15HpUJkM84dC2D5+a8vt5iP0ebqYd1ssLDKsqvB275B4rvrP8tKYrfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JVFjAxve; arc=none smtp.client-ip=74.125.227.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348E23B531A
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 07:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785311991; cv=pass; b=GvL4c7IjUPBcDg73m48qTY2JHZslPz1ieE8d2YoOuBa8gwmFNNElJvG3oTPRx4p0VJAj0ZS5FhWgxKeuQtzI1szP/o+U0syD1OAD4qIewM6uUVRQKGeR4k8QlSYTyUjFNh4CJD3hlcqdXltxMuqOjyUQdRtUadg7p/9m4METwBw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785311991; c=relaxed/simple;
+	bh=wY/aLSr1rt/R3yau5yLpmoKSbA0z1w0ZIpCeZuGmjvs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dK/Idtb4SL1gyqbnWIZxxv/CKWuA+DEocQ1P2AlwgNA/QVii64ntw5JtYr8l3EJ4DxbzFbNLRBdsnH98Nr7KwStKbiFPalLawVmqLz/0gMM6Qdcf+CLNnjtrGx/UpJA/11/OiKpEPa6NzeDql99E7dXD1u2GNstPuW05phCAEG4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=iHycGlUJ; arc=pass smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JVFjAxve"
-Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-38f0f8ab050so527459a91.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 00:52:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="iHycGlUJ"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4956869750eso4429355e9.2
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 00:59:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785311988; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rri4BsK7DwP2RbsIckiA9O4QbEtpJwesBd2uVz8atYzlbRVdUX1uXTDbB6/OWGMoZR
+         u3A6NHX2vg8VR6eEUeK5xoE7P/d3qZgF7DYdyvgXxxyJ6/DxJngbGh1yCsrixKoNlXfR
+         L9a0VPEVXyLxaEBHipAIvhblJ1y8nkkfWRSciLhoNZTatKoHph6oP2r9Sd+SGPfGXoPK
+         ScktKIwsgURzutesH2eLTiIUum/NSCP6F63NoxITg85ps0p2i5IiieZ0ZC9XC7yYiExn
+         oyP/rb9cdP+zUfi87Jw0c5p60CU64dbcnNtfSApVSScmEBidc8NI+CZgYzf+XctpnZEi
+         TkEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QVvOzRbPCBlb9W0NH5g6QA4DgSsn5yXPXhOYOe+ERRA=;
+        fh=d0Y2frRbgXsYNYKp/1JyOL8IFL/sCPg2qe42ao2ZdmU=;
+        b=YIGP2xMZchZkoB/usMoDy7g0dXc27NeekbrxOYZTSM2uGHSHfxZg1v4jaGM278+d5U
+         CTAlGgUeCvD3At8m5yEiHoViWTdJrg+mhaGiw1cKE43aqzbcGEPAJHpoz+4MXFRcjp3E
+         LOrSa4/d8pT27higae8i1o/vQxa80zV7sqVNKgJ/Q39pWbXRkiobOFGpADGsgaN8z3RU
+         NfryNhcyuvch9XmtnR17jOhthkeFQrBcpFSlfBNc220tNc8cCQDHiu95Q0JR2P6wG7LL
+         C6V/ggjDjPdnnArgne5EJxwa4WojAkhrFzvlH3EZ4xPuj/e8vZviaVaBdr0Fw7IprG4b
+         Dojw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785311571; x=1785916371; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Q+S7Jp8AiRPMxLwArOeWjXj5fI/6HZ3Xr4zn06sU+Ak=;
-        b=JVFjAxveBp6dABTFparZhMY8bi6GnYQ9mr4/RWNYZtw6gOKnzowtPmshkI75GKnulu
-         uhkrD9T0P39jTIWfP0d4oZeBtCRh9vHVgbRaogWYDN5pvDfEedOIPZGff7lsWAoLYe3I
-         YpEUpMDMO/Qls0V4+RadMLlkdZF3kkfd0Yd/bS2HG+yQeVmedfGQocKkRSfJh2aYYbrO
-         i1eAjgq76CQ3+kkBMO2VgZskKcf3EgjTjTCy3tYZXAtOynZ5u5kRFQU49vnXo70eYAmT
-         W0DtS2OGHhiIQ5KoiS+ZPlP/2Jbmgb4WdtYZsXJ08HhiTK2OPhCMgeoHZ+ngZtLn3DNn
-         uAvg==
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785311988; x=1785916788; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QVvOzRbPCBlb9W0NH5g6QA4DgSsn5yXPXhOYOe+ERRA=;
+        b=iHycGlUJoJmPHH2gLn9QZB3P69ubyeaRQa3JoK9VEZEOVic7nYIjSur7jJ2647uzFe
+         Iz0PzygyjoYxnA0Xwe2/r3m61ecNORzXg03iYZbCcFT3s0GgcHHiyeLmVxXgy3PNBD3N
+         tKHcFotepYWSW6XEan/R5jaXJRaREQ/RxUJfHczQ88cr4rGW6kSe6ySO5/KQNJoF3DuD
+         oZIYBXHwVcJBOeIIvVz6Ilaog+XCVTqTEY88gzdv9Ha1y+0G8Z//L4cxBQiyhMv8AO0E
+         wRsUaQkoCSJRs3BtADXw+fmtkuMz6SaDCcSSQq6bo8VModgzrRv+d6jaEcZKzedur2aH
+         Rk3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785311571; x=1785916371;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q+S7Jp8AiRPMxLwArOeWjXj5fI/6HZ3Xr4zn06sU+Ak=;
-        b=jHBfx3IxoXsLtmiIYGtaM53hw+YkSCxzqfYEabjtWMBG0h4h/9l7w/C7rkSZbmAhWI
-         x3OW16Kxox0Oi0mJTXCbtss435P4l1HLb0NBOb/MvDX6nKWYOtLPDMNUXkRYGLTTNHjA
-         P/RFj04s/0U6iTludwm80gxoVACETU31HYpLPDUsMKS1w1X5nBodO0PAVnL5si8+KSFS
-         7v1ENlhtSamnX3wWS87ZxIbrLGCpRNj8PfAcz+6ZWJYh0xwDJ+xN2qm94T/ogKS8Viol
-         hZZW0cXAzSxgR7bNfv15ElQWhaR6vgEHHvbVZxXtMLQOcC3MHvEmrjKM/HRjltN5sUiL
-         ZGEA==
-X-Forwarded-Encrypted: i=1; AHgh+RrC8nByw+kpiqFPWk1kORA+HIN+5FC/dIfA19RC6Hi2YkHq2FRuOxBMjT9tkUYTEVzIaUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5I99QMb2tOJAyIDOvK1OelnXPcqIf51y2uVxs4Z2WmvSUxcJ+
-	UOQXPwuToX2i0vej5gXKKLS3RkJFS0GR4tWGpBUm/9ycl3kYSoCTOOoR
-X-Gm-Gg: AR+sD115LK59CurybwHSDKNojuoH8TGaZD5bhBDKbi29QXuNBDS4LRTFYNLwPBRXXHv
-	CYViPCUJWNbKfW2SnOGInXZ9l+LlnWP4HzWkp3NbVuESmXD/OUf8RLcDMauoJ120yeZtfdSBPZx
-	soQ43fnWfhMAupJHKjmRLDRqeUTVw7HAKRyL7PMIabRlv1F9hUjT0/FqwKAwjjJjpvG5ob03DIx
-	QZ1/h6G1cLpzoYZoUlYW6H1Kl2R6iaGPOCF6VHsmDzCfOfLQmrEiGxBiOFrVtUcTyp7MRUzoNLu
-	AzcNX8leJBldWYFKXwLY+6Q6igd4MQkZ/h1GkUPgVy5nHa2lSXI51fr4p27vHmRbujiCo2Ott9d
-	w3t7TEnYPXeSdzmWVHtZPNdyG3n/aJkB+kGQDwtiW+6Rxi+CZ/UskZbimFfb9X6ICFUrvvnrh1X
-	watKVfd24EKsReEnRsnmdrqaongy3+PH42B5xXzAT6DNz2PLlwHjsiIJjAxotCNkACoSn3wJ1/5
-	FU=
-X-Received: by 2002:a17:90a:d888:b0:38d:f096:a1dc with SMTP id 98e67ed59e1d1-38f6a40bd71mr5502911a91.11.1785311570796;
-        Wed, 29 Jul 2026 00:52:50 -0700 (PDT)
-Received: from q-System-Product-Name ([129.227.183.200])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f0edd51sm960739a91.2.2026.07.29.00.52.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 00:52:50 -0700 (PDT)
-From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Quan Zhou <zhouquan@iscas.ac.cn>,
-	Bingyu Xian <shanbeeyoo@gmail.com>
-Subject: [PATCH v2] RISC-V: KVM: Fix spurious -EEXIST and clean up gstage fault path types
-Date: Wed, 29 Jul 2026 15:52:30 +0800
-Message-ID: <20260729075230.743030-1-shanbeeyoo@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260729070749.730218-1-shanbeeyoo@gmail.com>
-References: <20260729070749.730218-1-shanbeeyoo@gmail.com>
+        d=1e100.net; s=20251104; t=1785311988; x=1785916788;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QVvOzRbPCBlb9W0NH5g6QA4DgSsn5yXPXhOYOe+ERRA=;
+        b=U4kNVzUjA3SNXvqDPOIMJNepDzWi+WQhuOTa95c6b7XA1Y4k52nN9oRldeMYTmUfTe
+         mh5r92ODoWkGVYUGDusiQljoOwTW3gPAN2JDZpeK2eNbsnidu+CFdf7b3xTSjRjha3pg
+         UtNPkvDyVXKK/besE5YdXL+jJPFH0HL25nIJfkRBBKOl+iDXpIgsDlXaa8m85lJJFE15
+         MTDmBFuFqEczwuJwY9ULwuWR+zqFzfdUwHeHc4+iCsi9K/GU1teWdLLAdWbDvyx0Qw62
+         bIZaAbCD3HqQu9EZLV8x9Sqn8FxbancdagemdLBYcZbFc0i6SVt6597SycDdoShO2YA2
+         4XCA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3/NcjnSab0ZaaDflKs+XyujlQMeY8LQ40EkMKx0x/ZT1E972bmtLFwZMHwkV2B6XsgLo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaavRDdhSIg8sacUrabc9X7t0u0X98M6g4bLw1zCNRxq2gmQeV
+	defLvot6c0YGHSb0BeYoMdMQLjj6mTjT1niIrcHFde4cdVz2PGRjGOoZT+fOsni78dIMBmhxtHL
+	3mJJQPGRo2O4EkLrmFn7+0NKsXtfdLyTlEVRSYFZAJg==
+X-Gm-Gg: AR+sD11kB1r9NAPTVPp8cFHDJDgc7a8LAxrPoV7pt79Exb9IqzDJ7/gJg2bq7ZBiT0i
+	N3cwNlKCh0c5LCzwMDy+Cwacjg71pfuQ2Y423STZf6/iY63h1Al2GeE4X/ab+N8+r4/2NQXWKY3
+	9ANlqYEzGNbMesc1iqPKZZ2M2MS/E3iZAnkpYk6W/SRE0jKLtkkbgDfxwVX5CEsShbeF23Mi4T8
+	PeumCxnAqFgG62FR/Ft/rxqSYSoKQyf/AqO+D47iqT3O6k0lpuJd+D16Tke4N0j2O31w3djhNSx
+	BI7WEmEFgfkrk5DmKTcgUupk58OhA9m6wDvR+eYDUYYUcAd2w7ZsOqz6mwk+ehGD7a6F9ZXAq4O
+	/8+/9w+B6XvcCmk5RxBPya79ubJQAHPT0DKfkUxVqNRdrG6Wt3DHujvVH3xqRbIs=
+X-Received: by 2002:a05:600c:c8f:b0:496:bbcb:b0bb with SMTP id
+ 5b1f17b1804b1-496c6568fd1mr61344235e9.18.1785311987732; Wed, 29 Jul 2026
+ 00:59:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260706021154.210289-1-inochiama@gmail.com> <20260706021154.210289-2-inochiama@gmail.com>
+In-Reply-To: <20260706021154.210289-2-inochiama@gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Wed, 29 Jul 2026 13:29:34 +0530
+X-Gm-Features: AUfX_mz4RJR30cfbJm3UUOJRSHu0t8jpNEHG-kXI5W1mmhuMCQSt5po-UTYLcn8
+Message-ID: <CAAhSdy0h03mwK7_N1G+o+0y9Gcb-HEUw1-FepLtHO_1NTpjJaQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] RISC-V: KVM: Add SBI extension validate callback
+To: Inochi Amaoto <inochiama@gmail.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Two small fixes to the RISC-V G-stage page fault path, both suggested
-during review of the in-progress KVM Userfault port.
+On Mon, Jul 6, 2026 at 7:42=E2=80=AFAM Inochi Amaoto <inochiama@gmail.com> =
+wrote:
+>
+> When user disable FWFT extension after setting any value of the
+> FWFT feature, the state of vCPU will be broken since the value
+> of disable FWFT feature is still functional.
+>
+> Add the generic SBI extension validate callback so the FWFT
+> extension can fix its parameters before the first run.
+>
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 
-1. Treat -EEXIST from kvm_riscv_gstage_map_page() as a quiet success.
+LGTM.
 
-   When a concurrent vCPU installs the same G-stage mapping while we
-   are waiting for mmu_lock, gstage_map_page() returns -EEXIST.  This
-   is not an error -- the page is correctly mapped and the faulting
-   vCPU can simply retry the guest instruction -- but KVM was treating
-   it as one: printing "Failed to map in G-stage" to dmesg and
-   propagating -EEXIST all the way to userspace.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-   Align RISC-V with x86 and arm64, which already swallow -EEXIST in
-   their respective fault handlers.  This also lets
-   kvm_release_faultin_page() drop its "ret && ret != -EEXIST" special
-   case: with ret normalized to 0 the regular release path is correct.
+Thanks,
+Anup
 
-2. Clean up fault path types.
-
-   - vma_pageshift: short -> unsigned int.  Bit widths and shift counts
-     conventionally use unsigned int in the kernel.
-
-   - fault_addr: unsigned long -> gpa_t.  RV32 with Sv32x4 has 34-bit
-     guest physical addresses.  fault_addr is widened to gpa_t (u64) to
-     hold the full address, and the shift reconstructing it,
-     (trap->htval << 2), is cast to gpa_t before the shift: htval is
-     unsigned long, so on RV32 the shift would otherwise be evaluated in
-     32-bit arithmetic and drop bits 32/33 before the result is widened.
-     No functional change on RV64.
-
-   These type changes are in preparation for sharing a common
-   struct kvm_page_fault across architectures, as requested during
-   review.
-
-No functional change on RV64 beyond silencing the spurious -EEXIST.
-
-These are independent fixes with no dependencies; they can be merged
-on their own.  The KVM_MEM_USERFAULT port that motivated them will be
-sent separately as an RFC once the generic userfault series lands.
-
-Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
-Assisted-by: YuanSheng: deepseek-v4-pro
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Bingyu Xian <shanbeeyoo@gmail.com>
----
-Changes since v1:
-- Cast trap->htval to gpa_t before the <<2 shift so the 34-bit guest
-  physical address is not truncated by 32-bit arithmetic on RV32.  v1
-  only widened the destination (fault_addr -> gpa_t); the shift itself
-  still dropped bits 32/33 before the result was widened.
-
- arch/riscv/kvm/mmu.c       | 8 +++++---
- arch/riscv/kvm/vcpu_exit.c | 5 +++--
- 2 files changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 8a0aa5e0e216..d2a06a54be17 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -541,7 +541,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	kvm_pfn_t hfn;
- 	bool is_hugetlb;
- 	bool writable;
--	short vma_pageshift;
-+	unsigned int vma_pageshift;
- 	gfn_t gfn = gpa >> PAGE_SHIFT;
- 	struct vm_area_struct *vma;
- 	struct kvm *kvm = vcpu->kvm;
-@@ -652,11 +652,13 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 						vma_pagesize, true, true, out_map);
- 	}
- 
--	if (ret)
-+	if (ret == -EEXIST)
-+		ret = 0;
-+	else if (ret)
- 		kvm_err("Failed to map in G-stage\n");
- 
- out_unlock:
--	kvm_release_faultin_page(kvm, page, ret && ret != -EEXIST, writable);
-+	kvm_release_faultin_page(kvm, page, ret, writable);
- 	write_unlock(&kvm->mmu_lock);
- 	return ret;
- }
-diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
-index 6c8530b9f29e..28cf9b27bb07 100644
---- a/arch/riscv/kvm/vcpu_exit.c
-+++ b/arch/riscv/kvm/vcpu_exit.c
-@@ -17,12 +17,13 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
- {
- 	struct kvm_gstage_mapping host_map;
- 	struct kvm_memory_slot *memslot;
--	unsigned long hva, fault_addr;
-+	unsigned long hva;
-+	gpa_t fault_addr;
- 	bool writable;
- 	gfn_t gfn;
- 	int ret;
- 
--	fault_addr = (trap->htval << 2) | (trap->stval & 0x3);
-+	fault_addr = ((gpa_t)trap->htval << 2) | (trap->stval & 0x3);
- 	gfn = fault_addr >> PAGE_SHIFT;
- 	memslot = gfn_to_memslot(vcpu->kvm, gfn);
- 	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
--- 
-2.54.0
-
+> ---
+>  arch/riscv/include/asm/kvm_vcpu_sbi.h |  4 ++++
+>  arch/riscv/kvm/vcpu_config.c          |  2 ++
+>  arch/riscv/kvm/vcpu_sbi.c             | 23 +++++++++++++++++++++++
+>  3 files changed, 29 insertions(+)
+>
+> diff --git a/arch/riscv/include/asm/kvm_vcpu_sbi.h b/arch/riscv/include/a=
+sm/kvm_vcpu_sbi.h
+> index c1a7e3b40d9c..f01a2860c751 100644
+> --- a/arch/riscv/include/asm/kvm_vcpu_sbi.h
+> +++ b/arch/riscv/include/asm/kvm_vcpu_sbi.h
+> @@ -60,6 +60,9 @@ struct kvm_vcpu_sbi_extension {
+>
+>         void (*reset)(struct kvm_vcpu *vcpu);
+>
+> +       /* Allow the extension to correct its parameters before the first=
+ run */
+> +       void (*validate)(struct kvm_vcpu *vcpu);
+> +
+>         unsigned long state_reg_subtype;
+>         unsigned long (*get_state_reg_count)(struct kvm_vcpu *vcpu);
+>         int (*get_state_reg_id)(struct kvm_vcpu *vcpu, int index, u64 *re=
+g_id);
+> @@ -93,6 +96,7 @@ int kvm_riscv_vcpu_sbi_ecall(struct kvm_vcpu *vcpu, str=
+uct kvm_run *run);
+>  void kvm_riscv_vcpu_sbi_init(struct kvm_vcpu *vcpu);
+>  void kvm_riscv_vcpu_sbi_deinit(struct kvm_vcpu *vcpu);
+>  void kvm_riscv_vcpu_sbi_reset(struct kvm_vcpu *vcpu);
+> +void kvm_riscv_vcpu_sbi_validate(struct kvm_vcpu *vcpu);
+>
+>  #ifdef CONFIG_RISCV_SBI_V01
+>  extern const struct kvm_vcpu_sbi_extension vcpu_sbi_ext_v01;
+> diff --git a/arch/riscv/kvm/vcpu_config.c b/arch/riscv/kvm/vcpu_config.c
+> index 238418fed2b9..b68aa830aaf5 100644
+> --- a/arch/riscv/kvm/vcpu_config.c
+> +++ b/arch/riscv/kvm/vcpu_config.c
+> @@ -69,6 +69,8 @@ void kvm_riscv_vcpu_config_ran_once(struct kvm_vcpu *vc=
+pu)
+>
+>         if (vcpu->guest_debug)
+>                 cfg->hedeleg &=3D ~BIT(EXC_BREAKPOINT);
+> +
+> +       kvm_riscv_vcpu_sbi_validate(vcpu);
+>  }
+>
+>  void kvm_riscv_vcpu_config_load(struct kvm_vcpu *vcpu)
+> diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
+> index 46ab7b989432..b737e9a7a12a 100644
+> --- a/arch/riscv/kvm/vcpu_sbi.c
+> +++ b/arch/riscv/kvm/vcpu_sbi.c
+> @@ -723,3 +723,26 @@ void kvm_riscv_vcpu_sbi_reset(struct kvm_vcpu *vcpu)
+>                 ext->reset(vcpu);
+>         }
+>  }
+> +
+> +void kvm_riscv_vcpu_sbi_validate(struct kvm_vcpu *vcpu)
+> +{
+> +       struct kvm_vcpu_sbi_context *scontext =3D &vcpu->arch.sbi_context=
+;
+> +       const struct kvm_riscv_sbi_extension_entry *entry;
+> +       const struct kvm_vcpu_sbi_extension *ext;
+> +       int idx, i;
+> +
+> +       for (i =3D 0; i < ARRAY_SIZE(sbi_ext); i++) {
+> +               entry =3D &sbi_ext[i];
+> +               ext =3D entry->ext_ptr;
+> +               idx =3D entry->ext_idx;
+> +
+> +               if (idx < 0 || idx >=3D ARRAY_SIZE(scontext->ext_status))
+> +                       continue;
+> +
+> +               if (scontext->ext_status[idx] !=3D KVM_RISCV_SBI_EXT_STAT=
+US_ENABLED ||
+> +                   !ext->validate)
+> +                       continue;
+> +
+> +               ext->validate(vcpu);
+> +       }
+> +}
+> --
+> 2.55.0
+>
