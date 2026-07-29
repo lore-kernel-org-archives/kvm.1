@@ -1,117 +1,152 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECDB453A32
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513F245517E
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785342348; cv=none; b=quNqcQEO3m+BR4y+E8iP7EY9ts5A5pJ/FzRVd2z3X2F3ertubtb+gXvbBSvtqQwdBmk9U/R+duHxWl2G0Z98GDTJ5DrwTq+9UhI6tCmUY+DF5mZzkyVu9NczDSZz1kGyQunxCn/KWixvDUJsZrxSIXBNjO+dpR5VA/ignwe7FEE=
+	t=1785342372; cv=none; b=HHAQ6UptfWAVPKcrL5qs1lrak2t9Ai4XS7mcy1sWGPWN3zYQsI7xlocHNBOMZHxvYPXfG6GUK4WhT61rXIq18HtAYbkqDv3zL6nF/igH5Daf/k5mB52j3NIOmeAzdjsF+JFKMdBR/2jwFet2CqCoqaRdJCsjlh3fWUgfBbP84R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785342348; c=relaxed/simple;
-	bh=1+R3U4GhR4LxVdqvm8mxsj7zocrKAwppHZHtKcHPL1Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BJr2MNy2kW9er+MgAGoYvKYSi5VKEq1fzj/UIQMIf2JoLOWAUgCBR3oVmEc0iK640JqrkzaqweAioJ2teE3mM9kHBSG+Sxhn7pEj8/dtOqe2YaZWdcCJuoHkRcqMN9g3KvU1FmbGayyKQC0tJmHq5dURe5vJVPkbgrrs0SCjBnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=K8eJsC3b; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785342372; c=relaxed/simple;
+	bh=js/gk0bOwiK81KqK4+pXXlkybf6x0fcrzgEmOclGcfk=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sFckYCnPfUMF6UruaRLIaUkxu6s081BXSmilk6pi48wKc2R+gcXYOmHN7mdlqXSaZpOJG28aJLsys1xu0lFkoJxpmIVqDr2UnlF5PztpBovLgJ6MLFVjJQsbuM3W5pvtFQWp2adI80VS6HQLY5pljBotI7nptfLnUxYOa51xJeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpMp9iwm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="K8eJsC3b"
-X-Forwarded-Encrypted: i=1; AHgh+RrmdQPMVEbRFmIJ4yF42B652JSCJHHGdT+WwZfEC2H35DXNPB3JFm+2QWoq5c16sZss46A=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785342343;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=I7xKPnebnrnj3oQ7O4pCZSku+N29w0+f4UqiJMIJTas=;
-	b=K8eJsC3bhm5ekDmTY10vtcPjRGYPIEkGW8+AVL0CvTPgegjNVmp241mDDBWpm6QeaKOGbM
-	o3MNxCX2sNhEQ4XLdxvFuL633LMFazNFYpsMmNZV53WFDzGEyX81MhFw0KQ7YgKRG0Kptq
-	D1QoPKTWqF/wSMEwtFZwKUOSpZkQKEY=
-X-Gm-Message-State: AOJu0YxGzBA05HADLclYn58QN0FjQD4YmcyV/1KWU4fDBG7ZbCTZNug9
-	f7uif+IPS2s46bHVYJZVL+eB97wU/amYTDpEtkm9Cfy6nwexLiBd/GLC6OqB/SdMGcWT3zTdQcF
-	N5cZoXoNRbSEOJercHCrNz1fEDfgzqtSYPH2N8B6J
-X-Received: by 2002:a05:622a:411b:b0:51c:6b7:d3de with SMTP id
- d75a77b69052e-52b350e5b35mr1825161cf.5.1785342329701; Wed, 29 Jul 2026
- 09:25:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpMp9iwm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EA91F00A3A;
+	Wed, 29 Jul 2026 16:26:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785342366;
+	bh=kgikkfPzKSZTV2f/YcrZZ7hMRqbxtLjDEKesjAiLt3w=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=JpMp9iwmd6ojx/XapOeLRwtcweyi/so+6eKkwrHln9GhH1yybEAGibSwtMLvBlJUO
+	 0l6YnhxnEfWR/TOrVyxFEb5rng8JKMsdVxGftG0BEUppX8A4cTXbDv9+mCDK/Rn0gm
+	 cIsGPU2xj4q17mX/hVhsy31BwZoWjWdre06qLfeon0Zjv1mQ6ZqThrsnVRe/YOZODx
+	 laQ8cY1ZE3xcXwBUh0Y9MoUMkn+Xm+WJwXvbJCwZUVz6Z37IwSPROZ4PXOHD0f+/nF
+	 /NGL3ffhvW5WGegNgnsAsiKOxVj93trleO6YFm6VuJX8Wkw6v+xlVnG9URUVySqFCH
+	 H7od9vxOswDNw==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add
+ dirty-ring support
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Leonardo Bras" <leo.bras@arm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260729161519.3778839-5-leo.bras@arm.com>
+References: <20260729161519.3778839-2-leo.bras@arm.com>
+ <20260729161519.3778839-5-leo.bras@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 16:26:05 +0000
+Message-Id: <20260729162606.06EA91F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-9-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260720-hybrid-v9-9-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 29 Jul 2026 17:24:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTy1O=Hnw16vKL813sCpjBV7j61jr+BU+9G6dvVePNSwAA@mail.gmail.com>
-X-Gm-Features: AUfX_myMVHKAsG5Q9-sL8f-xMHSuN9ptYr1gLGLLFeAl95SgQeRj9hCI0TZ8ETs
-Message-ID: <CA+EHjTy1O=Hnw16vKL813sCpjBV7j61jr+BU+9G6dvVePNSwAA@mail.gmail.com>
-Subject: Re: [PATCH v9 09/16] arm64: errata: Require Apple IMPDEF PMUv3 traps
- on all CPUs
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> KVM relies on ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS as a system-wide
-> precondition for PMUv3 emulation on affected Apple CPUs. A local CPU
-> erratum is too weak for that: once the workaround is enabled, a late CPU
-> that misses it may still be onlined.
->
-> Make the workaround an all-early-CPU capability instead. The matcher is
-> still local because it depends on MIDR_EL1, but the capability is only
-> advertised if all early CPUs match. A late CPU that misses an advertised
-> capability is therefore rejected.
->
-> Although kept in the errata capability table, this capability describes
-> optional trap support rather than a workaround required for safe CPU
-> operation. A late CPU may therefore match it when the system does not.
-> KVM treats an IMPDEF PMU as unimplemented unless the capability was
-> finalized system-wide, so the additional trap support remains unused.
->
-> Fixes: bed9b8ec8c71 ("KVM: arm64: Advertise PMUv3 if IMPDEF traps are present")
-> Assisted-by: Codex:gpt-5.5
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Lock contention wait time is incorrectly attributed to guest exe=
+cution time instead of dirty ring clearing time.
+--
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+--- Patch [3]: [RFC PATCH v4 3/3] KVM: selftests: dirty_log_perf_test: Add =
+dirty-ring support ---
+commit 314e5490e434eab524cfacd4f66a4c83a152147e
+Author: Leonardo Bras <leo.bras@arm.com>
 
-Cheers,
-/fuad
+KVM: selftests: dirty_log_perf_test: Add dirty-ring support
+   =20
+This commit adds dirty-ring tracking support to dirty_log_perf_test.
+This allows comparing the performance of the dirty-ring mechanism against
+the existing dirty-bitmap implementation.
 
+> diff --git a/tools/testing/selftests/kvm/dirty_log_perf_test.c b/tools/te=
+sting/selftests/kvm/dirty_log_perf_test.c
+> index 69b38791440e7..6e80d36cc61a3 100644
+> --- a/tools/testing/selftests/kvm/dirty_log_perf_test.c
+> +++ b/tools/testing/selftests/kvm/dirty_log_perf_test.c
+[ ... ]
+> @@ -29,9 +30,53 @@ static bool run_vcpus_while_disabling_dirty_logging;
+> =20
+>  /* Host variables */
+>  static u64 dirty_log_manual_caps;
+> +static u32 dirty_ring_size;
+>  static bool host_quit;
+>  static int iteration;
+>  static int vcpu_last_completed_iteration[KVM_MAX_VCPUS];
+> +static struct timespec vcpu_dirty_ring_collect[KVM_MAX_VCPUS];
+> +
+> +static void dirty_ring_collect(struct kvm_vcpu *vcpu, u32 *ring_idx,
+> +				struct timespec *ts)
+> +{
+> +	static pthread_mutex_t collect =3D PTHREAD_MUTEX_INITIALIZER;
+> +	struct timespec start;
+> +	struct kvm_dirty_gfn *dirty_gfns =3D vcpu_map_dirty_ring(vcpu);
+> +	u32 idx =3D *ring_idx;
+> +	u32 ring_size =3D vcpu->vm->dirty_ring_size / sizeof(struct kvm_dirty_g=
+fn);
+> +	int cleared, count;
+> +
+> +	pthread_mutex_lock(&collect);
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
 
+[Severity: Medium]
+Will this clock_gettime() placement exclude the mutex lock contention time
+from the collected clearing metric?
 
-> ---
->  arch/arm64/kernel/cpu_errata.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-> index 1995e1198648..a5ae628204a1 100644
-> --- a/arch/arm64/kernel/cpu_errata.c
-> +++ b/arch/arm64/kernel/cpu_errata.c
-> @@ -1005,7 +1005,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
->         {
->                 .desc = "Apple IMPDEF PMUv3 Traps",
->                 .capability = ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS,
-> -               .type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
-> +               .type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
->                 .matches = has_impdef_pmuv3,
->                 .cpu_enable = cpu_enable_impdef_pmuv3_traps,
->         },
->
-> --
-> 2.55.0
->
->
+By taking the start time after acquiring the mutex, any time spent waiting
+for the lock will not be included in the 'collect' time.
+
+[ ... ]
+> @@ -43,24 +88,45 @@ static void vcpu_worker(struct memstress_vcpu_args *v=
+cpu_args)
+>  	struct timespec ts_diff;
+>  	struct timespec total =3D (struct timespec){0};
+>  	struct timespec avg;
+> +	bool use_dirty_ring =3D !!vcpu->vm->dirty_ring_size;
+> +	u32 ring_idx =3D 0;
+>  	int ret;
+> =20
+>  	run =3D vcpu->run;
+> =20
+>  	while (!READ_ONCE(host_quit)) {
+>  		int current_iteration =3D READ_ONCE(iteration);
+> +		struct timespec collect =3D (struct timespec){0};
+> =20
+>  		clock_gettime(CLOCK_MONOTONIC, &start);
+> -		ret =3D _vcpu_run(vcpu);
+> +
+> +		do {
+> +			ret =3D _vcpu_run(vcpu);
+> +			if (!use_dirty_ring)
+> +				break;
+> +
+> +			dirty_ring_collect(vcpu, &ring_idx, &collect);
+> +		} while (!ret && run->exit_reason =3D=3D KVM_EXIT_DIRTY_RING_FULL);
+> +
+>  		ts_diff =3D timespec_elapsed(start);
+> =20
+> +		if (use_dirty_ring) {
+> +			ts_diff =3D timespec_sub(ts_diff, collect);
+> +			vcpu_dirty_ring_collect[vcpu_idx] =3D collect;
+> +		}
+
+[Severity: Medium]
+Does subtracting this incomplete 'collect' time strand the lock contention =
+time
+inside the guest execution time?
+
+Since the lock contention time is excluded from 'collect' in
+dirty_ring_collect(), subtracting it from the total 'ts_diff' leaves the
+contention time attributed to the guest execution time rather than the
+dirty ring clearing time.
+
+Could this artificially inflate the guest execution metric when multiple
+vCPUs contend on the lock?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729161519.3778=
+839-2-leo.bras@arm.com?part=3D3
