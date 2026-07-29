@@ -1,59 +1,61 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0456C469839
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5603C1D72
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785344794; cv=none; b=g/8cxPDvYCHujPOrAifb4oYuG+2yB25ESsdxxSKhrDsGysJVK5pod7xTgBkiF0FBU8kGFfO2zoZNpIgO7bzBF98dgxV6TNrRC53jPx/Mh1ch7Y/J17qKToWlPZEFh58An+gsGWqyQVjrfWF4Mx4OX53Kb/JJOUM61ovhADwXgNk=
+	t=1785344795; cv=none; b=pInXKWekow93VAfcZFV87sx/RICi7buvxb8wgyNBdA76OSeV3/OoaV2B4V1/oPL9jDGdtoE3kQSEJ3uu1imsFxdblcJP6xoWxxVtDxj7NkvfjQcan/TGBR2mgApB57nQI/kQ/7qfBCny92ckNAZ0Bp789r6Sb+sYn8f7bv6TPM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785344794; c=relaxed/simple;
-	bh=tsiOlAUa96Yb2zXENGGsMr86rnfZCA9ALJ7FgQ6u+oU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ku6Xoi2a/A7oTe1OFSPqsT3XvIXXgRADBtt/7xthanLQGqPzDYPGqo2W9bZ3jUfwZMXrf6+dSWTathaFtpjuQVJ7e7dVC3r0FKBljGcGsZvewQM7QMduqQdmvhsN8HDhlwETFGpcII3qo7xGM/9+fXvkAWkb6SASDkH95XxdDaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=I3KzD3y6; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1785344795; c=relaxed/simple;
+	bh=gQV+oA8dHAh9NyVh4jmgVndq914N0D4KL5WtvsnYJNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qndzymB7OTV6P+7TudHXiASkFgoSkXhIlcuonXERcvWFL45QAi46U6YR7leB57LpBfThuLh0bc/SSRkHXkc4FWlfagGLAl7dZV46NJrqzQV7G2qh7RIZIJPs40ggSnVu6xeD0zeAzdhn3KEyWvKBC/VggYqJfbIi+OpIcM1yzys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UmMTrauO; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="I3KzD3y6"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c1c26d7e951so169669166b.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 10:06:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UmMTrauO"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15dd4b9132so190978466b.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 10:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785344790; x=1785949590; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JUjgOR7a0LIRa7JTwKXaksAfk4KfPx7m8MrD3Mnq65c=;
-        b=I3KzD3y61JpwzMdgNytyKg2gr5ETKNNPk9/kamMPvTkwxTkJwgJREJprzFIV+MHsop
-         0gg/PwEuTte4k1pp3b9KlYexbjY3WQv3u/J7cADDYJZfKEU+E4or0Q5mHpuH3MHqwLo6
-         KSCqiU2RIl90BnFWXDOJlP8xV2o6uatXiTRNI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785344790; x=1785949590;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1785344792; x=1785949592; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=JUjgOR7a0LIRa7JTwKXaksAfk4KfPx7m8MrD3Mnq65c=;
-        b=c3/NGg7cRL0KZTPWzMx+Mce+agaaJH1WvMMd6mlVFgwQWl/xefubUZ/vF0o4BWAWh0
-         zxWVcbq/0gFFwd6boJ65uAe4ku2422C30Pszdo8JFvCUL3EFc+eXsz6Zd1jnH933VDej
-         SwBZr5DwtnTtjI6UH8QQRI/MjVFtu2QhpXrEra7IbcwPBUy29r09SUa5XzTpoLoEElIy
-         owaDUvfnwAHXaPByLXJz86BMGTDBa6A1lIPa0vjrycwnOnsPMfOy6lknm0ubIZpNJN9S
-         yWtvMcRi1k/hDsIdIfPNZjfYFKsOpUDICRmEkh1QhYvJ8hBgIBytkwRWBnx+EzvPyuAd
-         SPKg==
-X-Forwarded-Encrypted: i=1; AHgh+RrnU+nCfx+vRnsqdmGadKnMqfLGJ6RhsK8rTxOmiVJc6TN5XvGC86oiKsT5ud1cSpiB2K0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzQLp8zA0QUpp4z8T+lFxbVmMhLheH9gSCmMo4mgof9ZTrqmkG
-	mhnNvB0dWrhdd4jwdS5mreXKva+0eJBd44sLV5ssXA7gwmtoKO7WSVa4v9mlvboDPA==
-X-Gm-Gg: AR+sD13piwDcJsVP342Yav19udBHXA+bWedCR08lODNoPFAOSVMn289RiFpurUExJqb
-	4118KIUpu7Ijub5Uy08/XyzyREWvhYgegHbMfyvKkFsEPbZxNV3rH5H8Wq9A3gO7yc//6IsZhuT
-	+QgPyKOaYR4kJI6tM3NMNii0yOAwZ0hLqhhXUxk0IA1GOOmA5Vanc8TNccuNrg68uiqBYU2n5V5
-	59QcFAoF8I/FtalzaGljiDnVk7mI5ZpJr+Kv53OHJhc8xtZtNai/B7CIOX+MBeFu3Q3I9+tCzMy
-	ydwUE7a+it3npL60pujl66PV+aYqgXIHkab7peJgXRREq5BZ7ptpUlkm6FR4pty/CxL/qIeLPw0
-	AexQzp9nFHs0go6Dnrxw8pMk5GErzhSQqs0xaPoIw91ALjklFQuJgINzbSpbD+awqAiMlGp9nhZ
-	TwzL6t364St0vdOAsCPggxv2Q3JcQd/YskLfKUqFXv9eFm2Ls27txWwLiQ8gxgTOhfFZRnoBZnK
-	CfdmCcqmMJX2SgqH1ZplBSy1hqKVFy++dMH0DazTss/Pp3MXCdClug=
-X-Received: by 2002:a17:907:9487:b0:c12:6584:c1 with SMTP id a640c23a62f3a-c1f7221f3aemr422167466b.40.1785344790234;
-        Wed, 29 Jul 2026 10:06:30 -0700 (PDT)
+        bh=CjCULYYFmjqcqzs4KKnIVY3J9skRPRrh5u08j6m5z2o=;
+        b=UmMTrauO87dsVz3YiQf0xvrugQ9WMxqDY6khCHF7PZTPYoNtVLHHDRDVcr5aa/m81s
+         WzEnV5DsKIH5UfQY5Z4Ea+W7FhNXugoNvGPlsNHjYq5jVWRaquqP8xgmstvejV749Dgr
+         U1zEMOA78sNKHLrKHwIEBcpv9tHXKqkd+2uCs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785344792; x=1785949592;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CjCULYYFmjqcqzs4KKnIVY3J9skRPRrh5u08j6m5z2o=;
+        b=Jmkg76kl0mTR0mXRMXnz2m/uphmKPSDUgJNQVayUDjKC874RItW2PCLAPwOA1vZfDd
+         YvXHm393fEHKA8nKPEcZVIE5nxgezd4cV2IJ63ZRIGE9s2mCta1+9YM+Pk8gW0F3crRc
+         wCDeP2ngPCyuTlYbsPy7JMiu13lce6UL/JzjLizIO7sIkAcchHoIZVdXnwoSGD7wCbQq
+         oHLRVbYloi/dxsFA+LeH9cRsVCyhtZ5+vaNnWU7KqJqD2PD0t8yO6QRJ9QAwKeJttcef
+         PTr/NsboFz5BFairRgqZqJ8Wxc/V8L0IU/aBt0VfdqUAxHdNdKzc55phwL633/IULlsY
+         a83A==
+X-Forwarded-Encrypted: i=1; AHgh+RpvzzfcCnZ9QVWQLfFFiE/qAuy+hm9e1LrC4SE51HId9aB6b0HW94Z3PDcXiJkoJkgx4yU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbqOcrc8BrhJGa/vTkfREXNG0vLNUbRNq69QuroWrRuFFQXTlx
+	j0/EKK9bB5h60Lm9fM8SfTnmpoWA8VHu7K1khgSME3VK6JiMeWKM/0knFUwzUd221g==
+X-Gm-Gg: AR+sD10Xq4VpBTI+n5PjCEq9NJbswXpfq4y64fLOoEOdd8OcbcT/3RGWBlBk240e5MU
+	0yARIU8O+fe5M1mvpf3zp5vNL9MQQrXSOk1k66J1bAYvD6dEx2b14qfCvt/lfvtfi0frLLAo/X5
+	KX26Lrf5z92OSdBGx5PdSg+5+ElM8oLrYLvh9qJekKtBKHOSiCS247dR6Jxucv0T6iAl7PQIr63
+	fmS8BMt8o+nhJ/LYlTKyVKW7XWD0fpl0cTRJ8Wqrtb6pyGZ9ZdMmt/bs73JmdXpStFRqbgha+0n
+	ArbKD4Mdu1TmQuijP8J2w5C8H4KahfTI2lKtnOPgPMVQDyHjBs2yxs5nMH31WAwF3WQ7uhE7zv+
+	0vHLKKplx/CSydP9ZhMaKf2toSm1o17D1h0C6xOJV4DqXcBxJH4JTVynVWiua455pTunDXtXjk+
+	heTwXJXRcQgdElUolAM+oJkg76ihtVu4Z8gwsE0TnKaaIOjnh2/wgxPlVlT5Ij9zTuKrkOTjGCj
+	rDOlx53LZtgII2DtvBSQwnzocFs8HtZxFA5jx4lYlPt/Of/XhvGyKA=
+X-Received: by 2002:a17:907:60d5:b0:c1c:2c32:1163 with SMTP id a640c23a62f3a-c1f720fbe49mr419330566b.25.1785344791879;
+        Wed, 29 Jul 2026 10:06:31 -0700 (PDT)
 Received: from dmaluka.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1f83c686a8sm142753566b.4.2026.07.29.10.06.29
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1f83c686a8sm142753566b.4.2026.07.29.10.06.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 10:06:29 -0700 (PDT)
+        Wed, 29 Jul 2026 10:06:31 -0700 (PDT)
 From: Dmytro Maluka <dmaluka@chromium.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,10 +70,12 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Aashish Sharma <aashish@aashishsharma.net>,
 	Grzegorz Jaszczyk <jaszczyk@chromium.org>,
 	Dmytro Maluka <dmaluka@chromium.org>
-Subject: [PATCH v2 0/2] KVM: VMX: Fix IPIv use-after-free + improve checking duplicate vcpu_id
-Date: Wed, 29 Jul 2026 17:06:19 +0000
-Message-ID: <20260729170621.308809-1-dmaluka@chromium.org>
+Subject: [PATCH v2 1/2] KVM: Check for duplicate vcpu_id as early as possible
+Date: Wed, 29 Jul 2026 17:06:20 +0000
+Message-ID: <20260729170621.308809-2-dmaluka@chromium.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+In-Reply-To: <20260729170621.308809-1-dmaluka@chromium.org>
+References: <20260729170621.308809-1-dmaluka@chromium.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -80,61 +84,104 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vCPU creation in kvm_vm_ioctl_create_vcpu() may fail after
-kvm_arch_vcpu_create() -> vmx_vcpu_create() already succeeded. In such
-case kvm_vm_ioctl_create_vcpu() destroys the newly created vCPU in the
-failure path. However, that leaves a side effect: the IPIv pid_table
-entry remains configured with this vCPU's pi_desc address. As a result,
-when another vCPU sends an IPI to the APIC ID of this failed-to-create
-vCPU, it will cause HW to write to this (freed!) pi_desc memory.
+If userspace tries to create a vCPU with the same vcpu_id as an existing
+one, kvm_vm_ioctl_create_vcpu() checks for that and fails with -EEXIST
+only after it already created the vCPU via kvm_arch_vcpu_create(). As a
+result, even though this newly created vCPU is destroyed in the failure
+path, the fact that it is temporarily created with an invalid vcpu_id
+and that there are temporarily two vCPUs with the same vcpu_id is a
+potential source of subtle issues.
 
-The straightforward way to fix this is to clear the pid_table entry in
-vmx_vcpu_free(), which is what patch 2 in this series does.
+In particular, this prevents fixing the VMX IPIv issue fixed in the next
+patch: a stale entry left in the VM's PI descriptor table after the vCPU
+is destroyed in the failure path. The right way to fix that issue is to
+clear that entry when destroying the vCPU, however right now that would
+have a nasty side effect: since the same entry is used for the other,
+previously created vCPU with same vcpu_id, clearing it would mean
+effectively disabling IPIv for that existing good vCPU.
 
-But that requires addressing a related meta-issue first: if userspace
-tries to create a vCPU with the same vcpu_id as an existing one,
-kvm_vm_ioctl_create_vcpu() checks for that and fails with -EEXIST only
-after it already created the vCPU via kvm_arch_vcpu_create(). As a
-result, clearing the pid_table entry in the vmx_vcpu_free() in the
-failure path would clear the pid_table entry for that already existing
-good vCPU, i.e. effectively disable IPIv for that vCPU.
+So to avoid this and similar problems, check for duplicate vcpu_id as
+early in the vCPU creation path as possible, before
+kvm_arch_vcpu_create() and even before kvm_arch_vcpu_precreate().
 
-For this reason, the v1 patch [1] addressed the IPIv issue by postponing
-the pid_table entry setup until kvm_arch_vcpu_postcreate() when we are
-sure that the vCPU creation succeeded, instead of clearing it when
-destroying the vCPU.
+We cannot just move the existing kvm_get_vcpu_by_id() check earlier,
+since we drop kvm->lock and then take it again, so if we just moved
+the kvm_get_vcpu_by_id() check before the first unlock of kvm->lock,
+we would introduce a race:
 
-However, as pointed out by Sean [2], insufficient validation of vcpu_id
-before calling kvm_arch_vcpu_create() is a potential source of a whole
-class of similar issues, so it's better to fix this meta-issue once and
-for all. Another concern about the v1 approach is that initializing vCPU
-state in vcpu_postcreate, after the vCPU is already reachable, is
-generally tricky.
+1. vCPU A is being created but not installed in kvm->vcpu_array yet.
+2. vCPU B with the same vcpu_id is being created. It passes the
+   duplicated vcpu_id check, since the check doesn't find vCPU A in
+   kvm->vcpu_array.
+3. vCPU A is installed in kvm->vcpu_array, vCPU creation succeeds.
+4. vCPU B with the same vcpu_id is installed in kvm->vcpu_array, vCPU
+   creation succeeds.
 
-So patch 1 in this series moves checking for duplicated vcpu_id in
-kvm_vm_ioctl_create_vcpu() earlier, before creating the vCPU. To do that
-without races, it introduces the kvm->vcpu_ids bitmap (see patch 1
-description for the details). It is a slightly adjusted version of
-Sean's bitmap patch from [2].
+So introduce the bitmap of vcpu_ids used by the VM, in order to safely
+check if the given vcpu_id is used and mark is as used before releasing
+kvm->lock first time.
 
-P.S. Note that the same IPIv use-after-free issue exists on SVM as well,
-as pointed out by sashiko and confirmed by Naveen [3]. This remains to
-be fixed. (Supposedly it is as trivial to fix as for VMX, but I'll leave
-that to someone who's familiar with that and has AMD hardware.)
-
-[1] https://lore.kernel.org/kvm/20260716160801.3155582-1-dmaluka@chromium.org/
-[2] https://lore.kernel.org/kvm/al6eg7C-2sDBEAFD@google.com/
-[3] https://lore.kernel.org/kvm/al4rNqpBYy8FGKPw@blrnaveerao1/
-
-Dmytro Maluka (2):
-  KVM: Check for duplicate vcpu_id as early as possible
-  KVM: VMX: Fix stale PID-pointer table entry left after vCPU free
-
- arch/x86/kvm/vmx/vmx.c   | 3 +++
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/kvm/al6eg7C-2sDBEAFD@google.com/
+Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+---
  include/linux/kvm_host.h | 1 +
  virt/kvm/kvm_main.c      | 9 ++++++++-
- 3 files changed, 12 insertions(+), 1 deletion(-)
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index ab8cfaec82d3..6f883ed82581 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -791,6 +791,7 @@ struct kvm {
+ 	/* The current active memslot set for each address space */
+ 	struct kvm_memslots __rcu *memslots[KVM_MAX_NR_ADDRESS_SPACES];
+ 	struct xarray vcpu_array;
++	DECLARE_BITMAP(vcpu_ids, KVM_MAX_VCPU_IDS);
+ 	/*
+ 	 * Protected by slots_lock, but can be read outside if an
+ 	 * incorrect answer is acceptable.
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 45e784462ec6..1e3714c5daa7 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -4173,6 +4173,11 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 		return -EINVAL;
+ 	}
+ 
++	if (test_bit(id, kvm->vcpu_ids)) {
++		mutex_unlock(&kvm->lock);
++		return -EEXIST;
++	}
++
+ 	r = kvm_arch_vcpu_precreate(kvm, id);
+ 	if (r) {
+ 		mutex_unlock(&kvm->lock);
+@@ -4180,6 +4185,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 	}
+ 
+ 	kvm->created_vcpus++;
++	__set_bit(id, kvm->vcpu_ids);
+ 	mutex_unlock(&kvm->lock);
+ 
+ 	vcpu = kmem_cache_zalloc(kvm_vcpu_cache, GFP_KERNEL_ACCOUNT);
+@@ -4211,7 +4217,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ 
+ 	mutex_lock(&kvm->lock);
+ 
+-	if (kvm_get_vcpu_by_id(kvm, id)) {
++	if (WARN_ON_ONCE(kvm_get_vcpu_by_id(kvm, id))) {
+ 		r = -EEXIST;
+ 		goto unlock_vcpu_destroy;
+ 	}
+@@ -4265,6 +4271,7 @@ static int kvm_vm_ioctl_create_vcpu(struct kvm *kvm, unsigned long id)
+ vcpu_decrement:
+ 	mutex_lock(&kvm->lock);
+ 	kvm->created_vcpus--;
++	__clear_bit(id, kvm->vcpu_ids);
+ 	mutex_unlock(&kvm->lock);
+ 	return r;
+ }
 -- 
 2.55.0.508.g3f0d502094-goog
 
