@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771EA380FE3
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1CC38331B;
+	Wed, 29 Jul 2026 17:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785346113; cv=none; b=EGr3G1ExoyvtWy8fTi0KGquYH4cac3gQxDDph5XayoFtaFMSrVlw4/xK/DE8UFUUsJ+xwyAZL+kQXbtkq0+CPTe9+NAtewM77KnOl+3WqWejX08dAEuuW3ojQW6rKlOmamXYJ1a0RMBEy83MF+BNdoFJrHZBVWSDQUHe251vOWw=
+	t=1785346745; cv=none; b=mgWiplDHixjKdUFa05VGuxSzAGAaMitKgfaqiB22SkwSuoPeALiwLRhhzHLsZWo4uEBRrZVAnK+1/pJFfCk12cXXRwyozdGBztRDmo6IhZDz1t1qUUKcJp50lT0aAjGGd7zFHoKTDNph+I6XeA4GfHzeMGS1BCoA3p/A/6EPm88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785346113; c=relaxed/simple;
-	bh=4aV2oUeGKpH2JRtdHOgIsMP6ysB3q6ciRdeyG3bBfXc=;
+	s=arc-20240116; t=1785346745; c=relaxed/simple;
+	bh=T9psTN51XnKSv0/MEwoXj5Pv7EP/vSBFnKeSALuz4s4=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=kAmXq8ncQ2v7jLByA8/A93ZinwVN39eUubBiX7QLU8FaDt5fBZxUApwZYPASm6iWwrlL7mQUtq0XVQlAj//dh/psvB5VNPOe2o77q4O/CUJeRC04Rpbr7BqX4TXAOZTsptnvgmX50Szn5MRw/StFDv/za7RTTFE+hj3zwZ3jjEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AS1TU86g; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=l6X29mWADrxxQz5oIXg30c005HpgPhZaMrfjUrPMdqeTbWASrdDz2dOuMw9y2khzH0ec8TGM3dGQsz3q6+4exBDG+AdS+ArkyyEJSmaL/HWXn5s9OJrr/Y0y4tO+VYG6blltjzuGzXFx6NulCKWxrYRYCRx2R99l9KVI9sj9tYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kP9F8iII; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AS1TU86g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDE71F00A3A;
-	Wed, 29 Jul 2026 17:28:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kP9F8iII"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C971F000E9;
+	Wed, 29 Jul 2026 17:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785346111;
-	bh=UP5NYb4MKqbaHlwaYusHiAzprwNeq71Kp/yA64nftso=;
+	s=k20260515; t=1785346740;
+	bh=ChT5zN6to+qddqezJYQP4Q3G9hXYJys3zqXheJUyhdY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AS1TU86gW7pNhRR3cmebr98VoNH3/PvifwKaA6cbFzH+/yI4fYrDjHPy24xi/X7bx
-	 E15Nk+qxFziMD0NdK4oZa/XvzfuwmDDXyUe3x/zcYjlhZBDxugbuQd0XeRNSt9nyG4
-	 aT4mbGZ1aaBow7HM7OKJTMsCqzk7eSZOGAcpU4dKx/hBW/hSyWMY7lDqm3sYnBa+Z/
-	 uHRuJI3XqG4qph0ASJq2syYV774RYHVVgS4OqMW4KuNbugi3W0vmvCQhKRvHFJefhN
-	 1cLnZ9P3BAGaWLr+IZBuDGjzTAskYjik91QtJpxZUEuAFwBCKs9he4Ox4VtexSFunr
-	 vvtdgGGn/Kp1Q==
+	b=kP9F8iIIgBkVy4zuriUsZd0UB8pF3aj3aS9Oz0FbWuqZDkHbk7f+1qIIHD6kQ99QY
+	 s8BqLi8feolVkt3p9KxrCT0nYGw0zIwU/0u9Ys3wdEYDyKNIWk8b3n3Au0+e8hZF18
+	 7I1aBHJOsyRVVo+ItlsOPYrscGqYQSZvOzHbntUDRUsqUnF9iK4d1dhhptMtQyAfAD
+	 j3/clvc3w4t7s/JixudCuDjarXLYJBQrYIUhjqfDyav5GvHcZVwmXK10cPxtKC2n86
+	 1mqvCwC+SZRnbwfABtipr5o6xybeBim8D8NDjCRce62SK8pne1F7d1fqNHOxM/HeZ3
+	 l5lD+2hOd8Qkw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] KVM: VMX: Fix stale PID-pointer table entry left
- after vCPU free
+Subject: Re: [PATCH v5 07/13] KVM: s390: cmma: Fix dirty tracking when
+ removing memslot
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Dmytro Maluka" <dmaluka@chromium.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260729170621.308809-3-dmaluka@chromium.org>
-References: <20260729170621.308809-1-dmaluka@chromium.org>
- <20260729170621.308809-3-dmaluka@chromium.org>
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
+ Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260729152938.782383-8-imbrenda@linux.ibm.com>
+References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
+ <20260729152938.782383-8-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 17:28:30 +0000
-Message-Id: <20260729172831.5BDE71F00A3A@smtp.kernel.org>
+Date: Wed, 29 Jul 2026 17:38:59 +0000
+Message-Id: <20260729173859.A4C971F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,83 +49,102 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
+New issues:
+- [High] Missing `DAT_WALK_ANY` flag skips swapped-out pages, leaking the C=
+MMA dirty counter.
+
 Pre-existing issues:
-- [Critical] Persistent Use-After-Free of AVIC backing page due to dangling=
- pointer in `avic_physical_id_table` when SVM vCPU creation fails.
-- [High] Transient Use-After-Free of vcpu memory due to missing hardware ca=
-che invalidation (VPID) and synchronization during VMX vCPU destruction.
+- [High] Silent failure in `kvm_arch_commit_memory_region` leaves KVM memsl=
+ots and s390 DAT tables out of sync.
 --
 
---- Patch [2]: [PATCH v2 2/2] KVM: VMX: Fix stale PID-pointer table entry l=
-eft after vCPU free ---
-commit a1d19d2d3c1c1e5aad00c7f77f6736e2bfb89509
-Author: Dmytro Maluka <dmaluka@chromium.org>
+--- Patch [7]: [PATCH v5 07/13] KVM: s390: cmma: Fix dirty tracking when re=
+moving memslot ---
+commit 209a02966d18973e5f9b2678eee5bc92d7952603
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-KVM: VMX: Fix stale PID-pointer table entry left after vCPU free
+KVM: s390: cmma: Fix dirty tracking when removing memslot
+   =20
+When a memslot is removed, all ptes that mapped the slot are cleared or
+even deallocated. If this happens while the system is in migration
+mode, and if cmma-dirty pages are removed, the cmma-dirty counter will
+not reflect reality.
+   =20
+Fix by appropriately decrementing the cmma-dirty counter when removing
+a memslot.
+   =20
+Opportunistically improve kvm_arch_commit_memory_region() to use
+__free() for the struct kvm_s390_mmu_cache.
 
-vCPU creation in kvm_vm_ioctl_create_vcpu() may fail after
-kvm_arch_vcpu_create() -> vmx_vcpu_create() already succeeded. In such
-case kvm_vm_ioctl_create_vcpu() destroys the newly created vCPU in the
-failure path. However, that leaves a side effect: the IPIv pid_table
-entry remains configured with this vCPU's pi_desc address.
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index a72ffd515c866..2ae431030621e 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
 
-Link: https://lore.kernel.org/kvm/al4rNqpBYy8FGKPw@blrnaveerao1/
+[ ... ]
 
-> Note that the same issue exists for SVM AVIC as well [1], to be fixed.
+> @@ -5804,14 +5804,30 @@ int kvm_arch_prepare_memory_region(struct kvm *kv=
+m,
+>  	return 0;
+>  }
+> =20
+> +static long cmma_d_count_pte(union pte *ptep, gfn_t gfn, gfn_t next, str=
+uct dat_walk *walk)
 
-[Severity: Critical]
-This is a pre-existing issue, but does SVM vCPU destruction leave a dangling
-pointer in avic_physical_id_table?
+[ ... ]
 
-During KVM_CREATE_VCPU, avic_init_backing_page() sets
-avic_physical_id_table[id] to point to the newly allocated AVIC backing page
-and marks it valid.
-
-If vCPU creation later fails in kvm_vm_ioctl_create_vcpu(), svm_vcpu_free()=
- is
-called but fails to clear this physical ID table entry. kvm_arch_vcpu_destr=
-oy()
-then calls kvm_free_lapic(), which uses free_page() to release the backing =
-page.
-
-The avic_physical_id_table retains a valid physical pointer to this freed
-page. If a guest sends an IPI to this freed vCPU ID, could the SVM AVIC
-hardware use the stale table entry to perform memory writes on the freed pa=
-ge,
-causing host kernel memory corruption?
-
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index 6b96f7aea20bd..ebf26ea84a50b 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -7572,6 +7572,9 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
->  	nested_vmx_free_vcpu(vcpu);
->  	free_loaded_vmcs(vmx->loaded_vmcs);
->  	free_page((unsigned long)vmx->ve_info);
-> +
-> +	if (vmx_can_use_ipiv(vcpu))
-> +		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id], 0);
+>  void kvm_arch_commit_memory_region(struct kvm *kvm,
+>  				struct kvm_memory_slot *old,
+>  				const struct kvm_memory_slot *new,
+>  				enum kvm_mr_change change)
+>  {
+> -	struct kvm_s390_mmu_cache *mc =3D NULL;
+> +	const struct dat_walk_ops ops =3D { .pte_entry =3D cmma_d_count_pte, };
+> +	struct kvm_s390_mmu_cache *mc __free(kvm_s390_mmu_cache) =3D NULL;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does clearing the pid_table
-entry alone prevent hardware from writing to the freed pi_desc?
+This is a pre-existing issue, but if kvm_s390_new_mmu_cache() fails to
+allocate memory and returns NULL later in this function, doesn't it
+silently skip updating the DAT tables?
 
-According to the Intel SDM (Section 29.1.5), the processor caches PID-point=
-er
-table entries in the VPID.
+Since kvm_arch_commit_memory_region() returns void, KVM assumes the changes
+are applied infallibly. Could this leave KVM memslots and the s390 hardware
+DAT tables fatally out of sync under host memory pressure?
 
-Because KVM immediately frees the vcpu memory into kvm_vcpu_cache after
-kvm_arch_vcpu_destroy() without issuing a cross-vCPU flush (e.g., via
-kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)) to invalidate the VPID
-caches of other running vCPUs and synchronize with in-flight IPI deliveries,
-can other vCPUs still send hardware IPIs using the cached pi_desc pointer?
+>  	int rc =3D 0;
+> =20
+> +	guard(mutex)(&kvm->slots_arch_lock);
+> +
+>  	if (change =3D=3D KVM_MR_FLAGS_ONLY)
+>  		return;
+> =20
+> @@ -5822,6 +5838,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+>  	}
+> =20
+>  	scoped_guard(write_lock, &kvm->mmu_lock) {
+> +		if (kvm->arch.migration_mode && kvm->arch.use_cmma && old) {
+> +			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
+> +					    kvm->arch.gmap->asce, &ops, DAT_WALK_IGN_HOLES,
+> +					    &kvm->arch.cmma_dirty_pages);
+> +		}
 
-Could this result in the IPI hardware writing to the freed vcpu memory and
-corrupting another newly created vCPU when the memory is reused from
-kvm_vcpu_cache?
+[Severity: High]
+Does this walk miss swapped-out pages by omitting the DAT_WALK_ANY flag?
 
->  }
+If DAT_WALK_ANY is not passed to _dat_walk_gfn_range(), holes are skipped
+and cmma_d_count_pte() is never called for swapped-out pages, leaking the
+cmma_dirty_pages count.
+
+However, the subsequent dat_delete_slot() will process those same holes and
+wipe their dirty status.
+
+Will this cause an infinite loop in userspace migration wait loops if the
+dirty count never drops to zero?
+
+> +
+>  		switch (change) {
+>  		case KVM_MR_DELETE:
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729170621.3088=
-09-1-dmaluka@chromium.org?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
+83-1-imbrenda@linux.ibm.com?part=3D7
