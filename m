@@ -1,128 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19D93AEB26;
-	Wed, 29 Jul 2026 18:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246B342C4F4
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 18:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785348133; cv=none; b=WcTYB8uob5JcIyfjUW8kv5izaJ4PDt82jT057xxKiy4epey+NFJiUq39cqbNgMhhPz6veXV9+AKr6biyKWlcX/wwGKR5gYpng5dlmUhwkaaQsPa4C57WlNt4m1c4jzxAptOnN2F7fdLpwVh+Nr287n4TtLAQAscEIrgqYkLgMeU=
+	t=1785348405; cv=none; b=gTNpnfnMtA6q+qOzAaxQ98c9RwsCLQwOBUti+Dct6u9rReUP6gjRyUNw76cw/jdQttbcCNS3OBWfx8Vb/muAOW5QT63EyaBeU7Y5wdq5dWGO0zMFlc8FK4R87YmZzasWL1tcG6b8fHxRf0BSAIeN1VO0fas+CeuCkYLCiaRkvnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785348133; c=relaxed/simple;
-	bh=mt7dw3J04Rsk2VEoQRgQmLJEXHRXbFb7/6Lpr48+7n8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=RXdTcr0WLfBG3RylGBD4/5cNYiznpj7XuL1SzACNuBnaylKzWGI2RM0J9wao7NwCo0f2v/3KGUJzeWQac1ed3OgHN/VZNjB8NR1caF1AvAUkIptDOfr/sIWNO0o5xuGqq72Iam7RUWP/NTU10fAg6gsG4JKGCwNEerIdMOVxh2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZbMP8Ix; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785348405; c=relaxed/simple;
+	bh=awd77f5bif/dIgyPxCs6KSL0oviQPYlUuXl3UA5EPtQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FMichkz7Ki3f3bZIWdyYJKywg7QLJBMT8NjHlw9uBhKHriGxP+G7i4u1CUoDlRShifFL4CHxE3vIhx2fq4VIqPp7JfK0XdruqgkHf411tGuldIIgcAQyT0hzZ9XeH3LrISDXGNN0IjK7nhrCVVbeqyMYyhe9igm1Uw5Do8ndE/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Pgqtt3iY; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZbMP8Ix"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B484E1F000E9;
-	Wed, 29 Jul 2026 18:02:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785348129;
-	bh=8JyWJBqkdPOj7EwcOgUOCs+Agwff3aK7G5/y4WgwZlY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bZbMP8IxSOJYgK31rauAaUb1dDrRvDC3jmJ6VM2lTewNonNWk8gULh0xxlsYlcl8I
-	 kTDEw1y3F4wq370vKRHyIEFd+61lH3pGR5ohEuhsZMpT7X/tVhDIjS21PuVBFPsaaj
-	 se8E+9SiGTcxHKKHzaSx+whCP+/fU1ihRVXh4/Jj5JsqQV6L3CMETzXC6c56kPQJzM
-	 z7jAYqwkWy/30l0BmwcmO4UOrLuia2GZtH4yL0SOq/gJy1/Lo7PjOhGoMhpCO8WeRE
-	 wNJXso4wy/B/BQT2WlSu8gGpF9hHzW3ebnMkS+XVSlq6ur55oUnyn2jdv1zev6WyRG
-	 NOIrgECDmUQEg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 09/13] KVM: s390: Free the mmu cache when
- kvm_arch_vcpu_create() fails
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260729152938.782383-10-imbrenda@linux.ibm.com>
-References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
- <20260729152938.782383-10-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 18:02:08 +0000
-Message-Id: <20260729180208.B484E1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Pgqtt3iY"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47640541585so981929f8f.1
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 11:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1785348394; x=1785953194; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+yaJ1hCjUBCmis82b4ussWNf6EXlhg+aBQ8DtTvotq0=;
+        b=Pgqtt3iYQBFWEiFoU6UiHcgTeBY2FPWJVikCRqrXhUhCxRd9kJAmxhQdkBJTK1heYB
+         rBYd1BbPrQI6cHh0NjMuHYoYhNveiySY10Kf0m77z5YhXSd1ORgKsPGOq2J1VBQp3U7X
+         ulqkhmp6mWILLTUdT3BSzXSiQbJM70qEvfz1o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785348394; x=1785953194;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+yaJ1hCjUBCmis82b4ussWNf6EXlhg+aBQ8DtTvotq0=;
+        b=avfjU3oEWV6MfgX+lYsDAXrv8SP9Ugo/yBcay6vfdEFxFIHnbZHvP22R7Nc5om2829
+         FagvkLVGzLvYnfmzRj22KeIp+aYPfOtQrjB0dM15uNFPuAjytp/Vr7FRjcedVlfYHg1/
+         ryadPb83zTGpdBZWvsQvcO5rxRIk8r41o6A90w8hr7OTwrG/AC5eouOD5mMQgObW5YmH
+         xdzoL/JbOhtmjDR+ya2rVgDSoQPO+roS/Z1mubQP+lSJSXVQuoGIWh0IT4h+uV8tc33/
+         f/zYu5J0WsQbRRubivh2fTMtUOXHJAqqTDyJhAJJLeebKO0/Go0zcbRtK5ZRXQ69Ilmg
+         Jsrg==
+X-Gm-Message-State: AOJu0Yz0jtTlXHwLLmI64nNu3z1XFciT31omHCrZA9qVGYecGEQ4Z6O2
+	XpAA9u7GegS2wSFVrl40CJ+7DL+rfA+wpDBvnsx3uBL1YViFArIhhve9plRcfNkxbb48RvhiAz2
+	TR6gcSw==
+X-Gm-Gg: AR+sD11eiDngBSBBF6JNB7ke7Gqgx7Exwg+ep+LHHQhwlNTunI+TqDhibSGZJhI+Wi2
+	DQ1khWALmLDSxs5Ky0jBo4iETwaGBrbGHEm+rH6ixO6CgvebZNFEVtTdePA3RNVCwucwagqUfaw
+	Qg+HEqvRe7RHNElKd5bTOjW6sznTXbdgRTotSlFptPx2U3Da+hdRGN3SzCzWUkavju+FqAw6ra/
+	uGyX5X3mqITfpZMlx+SEWlxNd6hZYoHL7zp5pUN9gRAeaolvrt0vR0L8Yt6qV0wrlrnDccavAEv
+	+q0Y/+3vhTmqgcInq5YB1TYouVphrGWIDUErGvG5kdARp3HXRkExcDt0vJPHbWpbAT1hYoMHeuT
+	7UP5QUsC73maIeT/MkQfAjC/3wi1iRNd2C9vrvAdGKfDSiNqhXgVa09FV3jgCMI1EDvAKrSG9le
+	EXqLWZs4VgfejyA2C8ClSKYw4VBdPiD6k0qJLT9SVVyQ3W5QmSsCgSJbaQMVkmo57jEuGPnIkgz
+	ROWdoKd6n9y9PwPlLFirg==
+X-Received: by 2002:a05:6000:430c:b0:47f:9201:6409 with SMTP id ffacd0b85a97d-47fb1f17008mr8860822f8f.40.1785348394087;
+        Wed, 29 Jul 2026 11:06:34 -0700 (PDT)
+Received: from google.com ([2a00:79e0:285b:8:6f8:f7bd:339a:29ca])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0f039sm10526768f8f.18.2026.07.29.11.06.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 11:06:33 -0700 (PDT)
+Date: Wed, 29 Jul 2026 20:06:30 +0200
+From: Dmytro Maluka <dmaluka@chromium.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] KVM: VMX: Fix stale PID-pointer table entry left
+ after vCPU free
+Message-ID: <ampBJrSSas_XISim@google.com>
+References: <20260729170621.308809-1-dmaluka@chromium.org>
+ <20260729170621.308809-3-dmaluka@chromium.org>
+ <20260729172831.5BDE71F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260729172831.5BDE71F00A3A@smtp.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Wed, Jul 29, 2026 at 05:28:30PM +0000, sashiko-bot@kernel.org wrote:
+> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> > index 6b96f7aea20bd..ebf26ea84a50b 100644
+> > --- a/arch/x86/kvm/vmx/vmx.c
+> > +++ b/arch/x86/kvm/vmx/vmx.c
+> > @@ -7572,6 +7572,9 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
+> >  	nested_vmx_free_vcpu(vcpu);
+> >  	free_loaded_vmcs(vmx->loaded_vmcs);
+> >  	free_page((unsigned long)vmx->ve_info);
+> > +
+> > +	if (vmx_can_use_ipiv(vcpu))
+> > +		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id], 0);
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but does clearing the pid_table
+> entry alone prevent hardware from writing to the freed pi_desc?
+> 
+> According to the Intel SDM (Section 29.1.5), the processor caches PID-pointer
+> table entries in the VPID.
 
-Pre-existing issues:
-- [High] Memory leak of `vcpu->arch.pv.stor_base` and `sida_addr` in `kvm_s=
-390_pv_create_cpu` error path.
---
+I can't find this statement in the SDM, and I'm not sure what it has to
+do with VPID, apart from the acronym similarity.
 
---- Patch [9]: [PATCH v5 09/13] KVM: s390: Free the mmu cache when kvm_arch=
-_vcpu_create() fails ---
-commit b7924aec9fd280e9673810b13295e30b7a659f81
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-KVM: s390: Free the mmu cache when kvm_arch_vcpu_create() fails
-
-The mmu cache is the first thing that is allocated in
-kvm_arch_vcpu_create(), but in case of failure it was not freed.
-This patch refactors the function to use scope-based cleanup to ensure
-proper cleanup on failure.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index c04b7e84c4346..40f33cdcdf84d 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-[ ... ]
-> @@ -3861,22 +3860,19 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->  	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
-> =20
->  	rc =3D kvm_s390_vcpu_setup(vcpu);
-> -	if (rc)
-> -		goto out_ucontrol_uninit;
-> +	if (rc) {
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the error path in
-kvm_s390_pv_create_cpu() leak vcpu->arch.pv.stor_base and sida_addr when
-called from kvm_s390_vcpu_setup() here?
-
-If uv_call() fails during kvm_s390_pv_create_cpu(), it attempts cleanup
-by calling kvm_s390_pv_destroy_cpu():
-
-arch/s390/kvm/pv.c:kvm_s390_pv_create_cpu() {
-	...
-	if (cc) {
-		u16 dummy;
-
-		kvm_s390_pv_destroy_cpu(vcpu, &dummy, &dummy);
-		return -EIO;
-	}
-	...
-}
-
-However, kvm_s390_pv_destroy_cpu() returns early because the PV handle
-is not yet set:
-
-arch/s390/kvm/pv.c:kvm_s390_pv_destroy_cpu() {
-	...
-	if (!kvm_s390_pv_cpu_get_handle(vcpu))
-		return 0;
-	...
-}
-
-Since vcpu->arch.pv.handle is assigned only after a successful uv_call(),
-it is 0 during this error path. As a result, kvm_s390_pv_destroy_cpu()
-does not free the previously allocated stor_base and sida_addr.=20
-
-The caller then propagates the error back here, and generic KVM code skips
-kvm_arch_vcpu_destroy(), making the memory leak permanent.
-
-> +		if (kvm_is_ucontrol(vcpu->kvm)) {
-> +			scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock)
-> +				gmap_remove_child(vcpu->arch.gmap);
-> +			vcpu->arch.gmap =3D gmap_put(vcpu->arch.gmap);
-> +		}
-> +		return rc;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
-83-1-imbrenda@linux.ibm.com?part=3D9
+> Because KVM immediately frees the vcpu memory into kvm_vcpu_cache after
+> kvm_arch_vcpu_destroy() without issuing a cross-vCPU flush (e.g., via
+> kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)) to invalidate the VPID
+> caches of other running vCPUs and synchronize with in-flight IPI deliveries,
+> can other vCPUs still send hardware IPIs using the cached pi_desc pointer?
+> 
+> Could this result in the IPI hardware writing to the freed vcpu memory and
+> corrupting another newly created vCPU when the memory is reused from
+> kvm_vcpu_cache?
+> 
+> >  }
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260729170621.308809-1-dmaluka@chromium.org?part=2
