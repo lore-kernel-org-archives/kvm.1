@@ -1,131 +1,150 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EA03845CB
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785346767; cv=pass; b=ZGLTpiyb19KnHa65vQaGQZRLIPjHU/fmje75+sZ24/3s2+BEfCXc8iJx3hVclQ+P+iq+UcsNi+K3DQ6kUfwypghF3x4OKbIEpwuIE3cde1Ws29U3bFtBAXOpCVuEYgDlj6cKPH2ynZgAUDTNSzhJoNsdYwzmg82BG9GVp99enbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785346767; c=relaxed/simple;
-	bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC64376BC6
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785347147; cv=none; b=IK9Dx30I+BrbUgW/9i9Ifgu+bGugQoqFEwoAdqccayKbisPSZRD9+uCgAgMEdkZg97yUIt8n9fveAeg2b/pDC775ZQTR1ehDdJBTy/AJJWg9N2Kxfas9VjvlUTz3eSw8+9hSrPGbLlhNN/P5kPcXyJkhhwXs5Q1BjSfv2Q48Jjg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785347147; c=relaxed/simple;
+	bh=zfmqSG45MPP18hMoaAXwcOuAm70pzOQ7EdxS1N12l4I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PYawADNEJC9mcSaD5ULX7bRgAYtkfUWSsNXo7wLpndxYCb50EfQSYY+E+H9Q9iZ8IC0voc5YLEWhdO/Bs/iVdQufAZs6FvRDvHAGMqFrf09KNHIE/z+6X5a9LKtJmIUHp+lxLIeGxiwg/HlwaqW7qbMkI/55KQoVsoUFBmuZbaY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gzvhrs0w; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=U1YXbSyI4tfslWzj8XtRXfTITbIEW3FPDRj4mVmWTuZTooX90yE5+TCF8yXV4nENgW43k3xUSlPbdTrMZvBIiEN4+0vupuOmxmy1ZpsvHYofLetqmTOMBD1VvgrO7vOzlo3wHp4yqEZS4RrqpGYF95HkAIY0Kapin6FEh5ayJRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Hv5kdH7W; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gzvhrs0w"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so647a12.1
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 10:39:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785346764; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UfxvyDI7DebW0IX6f3NBehAW84XKGSgoZ6G68CdlJno7u9dw+v0YthDggnxYkGho+h
-         fG/CWVAj8gti2BPkcNhc/ac0q2RyHyc+hh0krcb/NIPaxCBGNRPPKVmZ2S2zkCCT9sPX
-         Bims+RtRpvPXLEVXKvMSQXn4QxmjoNfO3YygKzuFditvLE5d5zUjb8yH75XVSqUUhpZX
-         IN8RuKUhd6t/tcds38VSdWNBqghCMPqqwgH6ZvihCAYvr/U32LMpFgTSjAE6k3nUCTKF
-         xeefnR/Co2LRhpQwcrxuS2XuN8X8ZSMDQ5myNPvLc+vMWPdCfVnQaa5tNd/lGVAdMFrz
-         PdQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
-        fh=2jE91Q5AwZSgHmNMGbqKHRUNHd6icMETPUMsxASBb9c=;
-        b=F0ToKlCydpm02QmAYT2eQfOckuThssaQ6pVxq967HHDF4HopHmFgDpmM4G1lBY9DB7
-         6re/KLAdaJqlUTqTJqrYRDB6i5Rd1SpF/ksFOl3vTaLWgUDsGlaus3uYhaH+4w82uc8b
-         60eT48apKfjCn5elQefNth5/xgFXc9WiUckCEqpsNwpKYJxkUmXdWfsyJzUStJ4xatdM
-         nvR7VJeA4njFu3RnlvllnaCdUG4afssVZlQo6NisSHxaQfq3rKXtzv0iMy/agCn/52QH
-         FT8P6qNxZmc0Pris0itlGenYfRTt27TTOHmWDVFXpfKYRHZcRQ50y3q6CrxuokjeGexA
-         Rz8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785346764; x=1785951564; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
-        b=Gzvhrs0wzfEo2AVjDDkXP8ZNnNw+L+JEdOJrrfpSr/+38RyRNioHOpDqPnQrCKv83z
-         JtYOAcH3SCmqmTLP1QlXICbpZuGlfmYm/rR7NZoeRE91dYU7PItatGXK++zfp6IikNKt
-         BtGeQOjwbdZCeaqJNYA17504GueRFLGwkDB+FLJUBpja1Ny7WZ3nTYBjNDopqqm1iLME
-         YEIZ5nAWPh1pdbDZzCc2WVN5NHr9raDRwdqGm/6kDp2bXPATHu3WukcEechxoG0mZgOp
-         HW3Y8ieP/vmBKt08bQorVYrt5D6LcJ1DXrQZt/FOlIzut1k8r2YJFmpNQRuhEtxXAp5P
-         tqOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785346764; x=1785951564;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RifLKyOv5pvt7VjS/iXYnfUQ6AFvljTl6Crxs/bPhjk=;
-        b=Bhd06rV8VSYUQt0f/60qnzdCeviGh2n2eShkqf4KocLnuqfwpSP9qDN7Rvx9/wCnBl
-         Cb3VB8JFlDUOEuQOptmix0A29A0x1CYfiGCi5tn3XykfzuCzRg+6RKi9mKU/VWo4FCRR
-         NmG5gyAgJXJt9jQ1qwnYELvbhkho3ZPD0rGa2xDgx5Y8NrvaMduM+5EfoVVR9LdEdX5n
-         ZMhZkSGYCBdo5VW7ftmuCLX3ouNy5fmy3w0u8JW0KJiCQprUhimFHXFsZlE7TehzRtgF
-         +jcqpDem2bAa9IOwK1r45JxnOjv9bijvQkifDUfbkcmFtA3rVpqKXMQ3UYpt00qROj3v
-         +boA==
-X-Forwarded-Encrypted: i=1; AHgh+RqMXnyiouXpN6OvW75dsvDBrrzc+bRhI9Hf0VzoLcTJYiW1ZwiODAUB+x9W7le/QnbtpHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHCIfcQotm+0cjMUCm3El7lEWRDomUGVAwSwJGp7EctIKe6APy
-	hPpjVuG7bpH6Y7sjuWsoN5nS+QAEHxuYhDM7apbtQglYM+GfAkwqP9R4cCCcFzJDHkHtfdlK9F4
-	EgW+OEAQvNJVSTeP4aHJt7bUrP/1d9A7XsZfW3ywC
-X-Gm-Gg: AR+sD12Oql/VHwLH7xdzWBL8BwRhVH4R4UagsZ+m8JBzEIt92RbEAK8qktkM9DZBTFE
-	6Gd9t6LNAD4kllRJRRcNhjZ2OF4hAWnDatnUhYl27jAD2HH085op8pR8hp/DNRib/Xy5Vgh11Oo
-	+iQuOg6/wX7crs8QbNlYFp9/uv3RzuCOyg+ux3f2SOGD+EtUuk1Vo43DgooKTJUHvAXq70FHhGT
-	5xXZOoyZWBC7swmCeWBS30jISqbFbmuQbxOLubj+CdZox2C4qeLVcoIjbE/kraWvKzQFpNtsRxV
-	js7ap6kFDgY9Noc+8tRJxqi4DFbyk9h9QkQ0onNoWkN+mzsLgXlwSkc=
-X-Received: by 2002:aa7:de02:0:b0:69a:df95:f1f8 with SMTP id
- 4fb4d7f45d1cf-6a07919d471mr20008a12.2.1785346763174; Wed, 29 Jul 2026
- 10:39:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Hv5kdH7W"
+X-Forwarded-Encrypted: i=1; AHgh+RoKFSHKP4v2UMQCKx5d+8rRoYtJrtGgp9evVJHiUv7MgOWeb4NrzHC4oTMc3FNcCEkq2I4=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785347140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0y7NAqhy+F78Z9m8RS3MxYSs5HfIndgDT2RQmGz4iCU=;
+	b=Hv5kdH7WFn1DtAmaOPnRkodWw7ARiQC14brKaBJuauzV5pn/wjOfuXgGTicHnSIONDeLRY
+	DotYoqCLi69pDjT/JAm0nwnrWCn5mvgkXIqRqsyxGYanaeJX2imskk/n/2PHds00nawT0F
+	93GfOmzdQO7W77awNkPGX67ZJGs0A44=
+X-Gm-Message-State: AOJu0YwK+3YOP4RyB4fpt5w3PXseYRRpAXMGVLedifCaLLCu48cAU79P
+	h6MT8Q4W78e1ub8KSY5cJ6mDIOkpxq6HxpPBei3TtZ9/OUQwCnEXSiyOIkGtSYc9655a/CxMcbZ
+	uuColljjxYArSHVOU6vPj+xJZ46t3h4CpJVNg9/zI
+X-Received: by 2002:a05:6512:12c3:b0:5ae:b1b3:145a with SMTP id
+ 2adb3069b0e04-5b2d9b5dff2mr47211e87.6.1785347137689; Wed, 29 Jul 2026
+ 10:45:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1772732517.git.isaku.yamahata@intel.com>
- <aliWoldWX9/9tqNn@intel.com> <amlYsJzUurSeYlTm@intel.com> <CALMp9eSKEMotL19H4WxZN5iVfUxnDScpW0TqGLAEGSitG4AAbw@mail.gmail.com>
- <amnPFlSvI3k95uCV@intel.com>
-In-Reply-To: <amnPFlSvI3k95uCV@intel.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 29 Jul 2026 10:39:11 -0700
-X-Gm-Features: AUfX_mzOfWT4lwJ-6gy3vmCOfFPfE6muiKKlFqbHT5zOqJdTk6X8WWJgLDL0kLQ
-Message-ID: <CALMp9eSLLm_4K0c0ouRYTpqxGkiBcRShf2NO9JOS9ZP+Ws+H0w@mail.gmail.com>
-Subject: Re: [PATCH v2 00/36] KVM: VMX APIC timer virtualization support
-To: Chao Gao <chao.gao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	isaku.yamahata@gmail.com, linux-kernel@vger.kernel.org
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <20260720-hybrid-v9-12-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720060334.E9C6C1F000E9@smtp.kernel.org>
+In-Reply-To: <20260720060334.E9C6C1F000E9@smtp.kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 18:44:58 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxzBQd5uqQBty_qjhsGv3XSTt-v2V0JAhm+9OWG8akVvA@mail.gmail.com>
+X-Gm-Features: AUfX_mx1MxbMGozpXwtZYMAWoytrKt8CWyfo8MLfsYTWkLY03ClZGM1tdaj7_iY
+Message-ID: <CA+EHjTxzBQd5uqQBty_qjhsGv3XSTt-v2V0JAhm+9OWG8akVvA@mail.gmail.com>
+Subject: Re: [PATCH v9 12/16] KVM: arm64: PMU: Pass the pPMU to kvm_map_pmu_event()
+To: sashiko-reviews@lists.linux.dev
+Cc: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>, kvmarm@lists.linux.dev, 
+	Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Jul 29, 2026 at 3:00=E2=80=AFAM Chao Gao <chao.gao@intel.com> wrote=
-:
+On Mon, 20 Jul 2026 at 07:03, <sashiko-bot@kernel.org> wrote:
 >
-> On Tue, Jul 28, 2026 at 11:05:59PM -0700, Jim Mattson wrote:
-> >On Tue, Jul 28, 2026 at 6:35=E2=80=AFPM Chao Gao <chao.gao@intel.com> wr=
-ote:
-> >>
-> >> Hi Sean, Jim,
-> >>
-> >> Any thoughts on the approach of reusing hv_timer for APIC timer
-> >> virtualization?
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+>
+> Pre-existing issues:
+> - [Critical] Host kernel panic via NULL pointer dereference in PMU event =
+creation when a guest without a PMU toggles `MDCR_EL2.HPME`.
+
+I don't think it's reachable. With no PMU, arm_pmu is NULL but the
+event is never created: the cycle counter can't be enabled (PMCR.E is
+0 and the guest can't write the hidden PMCR), and the
+nested-transition path is gated by kvm_vcpu_has_pmu().
+
+/fuad
+
+> --
+>
+> --- Patch [12]: [PATCH v9 12/16] KVM: arm64: PMU: Pass the pPMU to kvm_ma=
+p_pmu_event() ---
+> commit 61c39cb093b2170b92839ae7097044db9d1474cc
+> Author: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>
+> KVM: arm64: PMU: Pass the pPMU to kvm_map_pmu_event()
+>
+> This patch updates kvm_map_pmu_event() to accept the PMU structure direct=
+ly
+> rather than implicitly looking it up via the VM argument. This prepares t=
+he
+> code to map events against a per-vCPU selected pPMU in the future.
+>
+> > diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> > index c5c505b6fc61c..27db8877f96ea 100644
+> > --- a/arch/arm64/kvm/pmu-emul.c
+> > +++ b/arch/arm64/kvm/pmu-emul.c
+> [ ... ]
+> > @@ -725,7 +723,7 @@ static void kvm_pmu_create_perf_event(struct kvm_pm=
+c *pmc)
+> >        * Don't create an event if we're running on hardware that requir=
+es
+> >        * PMUv3 event translation and we couldn't find a valid mapping.
+> >        */
+> > -     eventsel =3D kvm_map_pmu_event(vcpu->kvm, eventsel);
+> > +     eventsel =3D kvm_map_pmu_event(vcpu->kvm->arch.arm_pmu, eventsel)=
+;
+>
+> [Severity: Critical]
+> This is a pre-existing issue, but this change makes it a bit more explici=
+t.
+> Could this pass a NULL pointer to kvm_map_pmu_event() and cause a host ke=
+rnel
+> panic?
+>
+> If a guest with nested virtualization enabled but no PMU configured toggl=
+es
+> the MDCR_EL2.HPME bit, access_mdcr() will unconditionally trigger a
+> KVM_REQ_RELOAD_PMU request without checking if the VM actually has a PMU.
+>
+> When kvm_vcpu_reload_pmu() handles this request on the next vCPU entry,
+> it tries to reprogram the cycle counter (which defaults to enabled). This
+> eventually reaches kvm_pmu_create_perf_event():
+>
+> arch/arm64/kvm/sys_regs.c:access_mdcr() {
+>     ...
+>     kvm_pmu_handle_mdcr(vcpu, old, val); /* Triggers KVM_REQ_RELOAD_PMU *=
+/
+> }
+>
+> arch/arm64/kvm/pmu-emul.c:kvm_pmu_create_perf_event() {
+>     ...
+>     eventsel =3D kvm_map_pmu_event(vcpu->kvm->arch.arm_pmu, eventsel);
+> }
+>
+> arch/arm64/kvm/pmu-emul.c:kvm_map_pmu_event() {
+>     ...
+>     if (unlikely(pmu->map_pmuv3_event)) /* NULL pointer dereference */
+> }
+>
+> Because no PMU was initialized for this guest, vcpu->kvm->arch.arm_pmu is=
+ NULL.
+>
+> Could access_mdcr() or kvm_pmu_create_perf_event() check if the PMU is
+> actually initialized before attempting to create events?
+>
+> >       if (eventsel < 0)
+> >               return;
 > >
-> >Last I heard, APIC timer virtualization was only available on E-cores,
-> >with no P-core intercept on the roadmap.
 >
-> It will be available on Coral Rapids as well, so it is relevant for
-> server.
-
-That's welcome news!
-
-I'm not a fan of the hv_timer approach. One major difference between
-the VMX preemption timer and the virtual TSC deadline MSR is that the
-VMX preemption timer has to be reprogrammed every time that KVM
-switches from hrtimer to hv_timer. The virtual TSC deadline timer
-never needs reprogramming during normal operation. Another difference
-is that KVM should never inject a virtual local APIC timer interrupt
-when the virtual TSC deadline timer is in use. Even if the vCPU was
-blocked and the hrtimer fired to wake it up, KVM should just let the
-hardware deliver the virtual interrupt on the next VM-entry.
-
-I'd rather see TSC deadline timer virtualization implemented as a
-standalone APIC virtualization feature.
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260720-hybrid-v=
+9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp?part=3D12
+>
