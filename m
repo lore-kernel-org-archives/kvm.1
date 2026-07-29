@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB683C871B;
-	Wed, 29 Jul 2026 19:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111F3E1222;
+	Wed, 29 Jul 2026 19:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785354252; cv=none; b=bxLlUuPcIgfNU9t+VrWV5mIhush4iOMEfSY6+3ValazJeZFe7Kucx8TaD2q2o8VdVZht9gNHONBAQCHPWZWCU56BqU7r2DXDE2rURfz5v9OGNZsRnEEhwoWeRygQfbUQ9RynrkbTc9b/2CJ3N95gsDM3V3VtuF/jVoiJfwRy48U=
+	t=1785354256; cv=none; b=nh3A2XjDpgXx3AATwB5Qofj42o56N+WrEx548IlST4DccxE+QUnxId6Q/xl+TXAAJKPTq+mqndYFa/zSR0m8KZlLmpfeoO5kft/SUpbl63LZs2cN69N30QJBLKQ4AOUiDOUvA+m+H1g342kr8ZvRbDsdf72xEqzD2tKVaVpObjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785354252; c=relaxed/simple;
-	bh=bqZmDjqMzToiwaBoty66E+PLAi3LUEdaxonitqJz6L0=;
+	s=arc-20240116; t=1785354256; c=relaxed/simple;
+	bh=anr9jp6F95ZMl5OuNXc1gxmHfRhIi2vcRZyTglo+qmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUqxAUsHqFFaLdZI9IAoN0CLNnz0lTz/V4oZRtIC1+oRgKQNaMfuyLBCcxeEr48Pzzg6QDn5Ep661nAsDMrmZBvrXfgXgW3Q+q9jCs4ytsj0Z4hqMugX6iY2XhGZVfw6vCilrnv0+qS4spkYq4v+T7Hc8nryHMIA5Pu4z5Heueg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TcMO7mkn; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=FVgTfXYmSVOFMmEHpL8xcrUM6/6+K8uZSJ3fO4J+gqicyMCOZWsyZwazcadNslfnUeWIu/jDSyEqUxO4EXKzIij6r/Ihu0P38CUGnSup7JVRQt1QJrV1zmdAEd3U45LnQa7n3HnwSjIS6OxkcLvuAriZEaOtWiUlVfWqXqA1ABE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M3CkfqZp; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TcMO7mkn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M3CkfqZp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785354247; x=1816890247;
+  t=1785354252; x=1816890252;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bqZmDjqMzToiwaBoty66E+PLAi3LUEdaxonitqJz6L0=;
-  b=TcMO7mknnTDxu1w1A8MpRHWmNKqi5S4yd2nd+iJLVAbgM4JxbCXg8oUk
-   TgmS708nmlGNTM9LWz1w3CmvvcKzQKjbotK6TYGmOI3WpKGAuHXjFF5pY
-   19Zph6yvlqlWgUcnom/5qr7s1Lp56ON8E2VNOOnwYMuv/lbJCqHkXA6lz
-   gvLH+aCvt+x2iNdkPTzt8xD3NuQAKeyR/RJbku+8BgSQbuNjSmby766Ta
-   +7ec1uadg+YoJwzfPDRpXSaubdhQqr18LcHpRjR9MgCmHVbJE8lDOhyhf
-   htKaqH8AdOLg7sVx3LHJj7XKj0Ab3JAjYftVYmoWstGWvXWm1h+N6bEBc
-   Q==;
-X-CSE-ConnectionGUID: 00kdeZ7qRtif2r9GlYgXcA==
-X-CSE-MsgGUID: qa1qs8iRTh6y9ebkZMRxtg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508317"
+  bh=anr9jp6F95ZMl5OuNXc1gxmHfRhIi2vcRZyTglo+qmk=;
+  b=M3CkfqZpETjLiu2AqYF7ZMK0zeSYo2eGdSUc/Dq69kowISaTKGxDp2Mw
+   5H0DKaRaAjf1K/27J+uBGbv1QcW2Rcshc7aIj2je/1EpTMCCpCPjlPmaY
+   ON+Aorex04XfZbp9RYH6kJQUL9+5CT8e/BDZfQeHDR0DfybpA8a5LCSsR
+   iSxq3WHlCgdD1vgXv3CuSQG9/B/ikfzMlrUbJaEBrhUQ91a5HKacfR6Io
+   3N7Z9m3+auh0YK0lFICB1zyMpeCso6tOnxhAkSDSN7Gk5OIuk1hyIPNGY
+   q3NuOXOiFe3slQvknyvZHOsCD0i4p+5Lp4y19LcXI8dxiLZ+/qblAYZzF
+   g==;
+X-CSE-ConnectionGUID: A94MnSgARq6dxXezoHTmuQ==
+X-CSE-MsgGUID: h4E2auFpTzal4gqhsyaimQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103508328"
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="103508317"
+   d="scan'208";a="103508328"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:34 -0700
-X-CSE-ConnectionGUID: uccWtLKyRV2MbYtaghunYw==
-X-CSE-MsgGUID: inbGySt5RcmjfJHPjjYUag==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 12:43:36 -0700
+X-CSE-ConnectionGUID: RMB3Op9RTX25KlFcG69lCQ==
+X-CSE-MsgGUID: 1Vq6B6G8SY+BQUUp56mfHg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
-   d="scan'208";a="256769278"
+   d="scan'208";a="256769287"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.174])
-  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:33 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jul 2026 12:43:36 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -50,9 +50,9 @@ Cc: kvm@vger.kernel.org,
 	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
 	chang.seok.bae@intel.com
-Subject: [PATCH v6 18/20] KVM: x86: Expose APX sub-features to userspace
-Date: Wed, 29 Jul 2026 19:16:54 +0000
-Message-ID: <20260729191656.598771-19-chang.seok.bae@intel.com>
+Subject: [PATCH v6 20/20] KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
+Date: Wed, 29 Jul 2026 19:16:56 +0000
+Message-ID: <20260729191656.598771-21-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260729191656.598771-1-chang.seok.bae@intel.com>
 References: <20260729191656.598771-1-chang.seok.bae@intel.com>
@@ -64,79 +64,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add CPUID leaf 0x29 sub-leaf 0 to expose these APX sub-features, if the
-APX foundation is available:
+Now that KVM exposes the APX feature to guests, extend some existing
+selftests to validate XCR0 configuration and state management.
 
-  * New Conditional Instructions (NCI)
-  * New Data Destination (NDD)
-  * Flags Suppression (NF)
+Since APX repurposes the XSAVE area previously used by MPX in the
+non-compacted format, add a check to ensure that MPX state is not set
+when APX is enabled.
+
+Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
+set, allowing validation of APX state testing.
 
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 ---
- arch/x86/include/asm/kvm_host.h | 1 +
- arch/x86/kvm/cpuid.c            | 7 ++++++-
- arch/x86/kvm/reverse_cpuid.h    | 4 ++++
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kvm/x86/state_test.c  |  3 +++
+ .../selftests/kvm/x86/xcr0_cpuid_test.c       | 19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 48547842d9fa..7df964f32ba0 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -868,6 +868,7 @@ enum kvm_only_cpuid_leafs {
- 	CPUID_7_1_ECX,
- 	CPUID_1E_1_EAX,
- 	CPUID_24_1_ECX,
-+	CPUID_29_0_EBX,
- 	NR_KVM_CPU_CAPS,
+diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
+index 4a1056a6cb8d..9727dbb2b981 100644
+--- a/tools/testing/selftests/kvm/x86/state_test.c
++++ b/tools/testing/selftests/kvm/x86/state_test.c
+@@ -164,6 +164,9 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
+ 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
+ 		}
  
- 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index db95f6b578d0..0339700e885d 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1112,6 +1112,10 @@ void kvm_initialize_cpu_caps(void)
- 		F(AVX10_VNNI_INT),
- 	);
- 
-+	kvm_cpu_cap_init(CPUID_29_0_EBX,
-+		F(APX_NCI_NDD_NF),
-+	);
++		if (supported_xcr0 & XFEATURE_MASK_APX)
++			write_egpr(16, 0xcccccccc);
 +
- 	kvm_cpu_cap_init(CPUID_8000_0001_ECX,
- 		F(LAHF_LM),
- 		F(CMP_LEGACY),
-@@ -1719,7 +1723,8 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
- 	}
- 	/* APX sub-features */
- 	case 0x29:
--		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-+		if (!kvm_cpu_cap_has(X86_FEATURE_APX))
-+			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
- 		break;
- 	case KVM_CPUID_SIGNATURE: {
- 		const u32 *sigptr = (const u32 *)KVM_SIGNATURE;
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index de90697c4e5a..cff071ccf926 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -67,6 +67,9 @@
- /* Intel-defined sub-features, CPUID level 0x00000024:1 (ECX) */
- #define X86_FEATURE_AVX10_VNNI_INT	KVM_X86_FEATURE(CPUID_24_1_ECX, 2)
+ 		if (this_cpu_has(X86_FEATURE_MPX)) {
+ 			u64 bounds[2] = { 10, 0xffffffffull };
+ 			u64 output[2] = { };
+diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
+index 40dc9e6b3fad..f74978ef5951 100644
+--- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
++++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
+@@ -46,6 +46,20 @@ do {									\
+ 		       __supported, (xfeatures));			\
+ } while (0)
  
-+/* Intel-defined sub-features, CPUID level 0x00000029:0 (EBX) */
-+#define X86_FEATURE_APX_NCI_NDD_NF	KVM_X86_FEATURE(CPUID_29_0_EBX, 0)
++/*
++ * Verify that mutually exclusive architectural features do not overlap.
++ * For example, APX and MPX must never be reported as supported together.
++ */
++#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
++do {											\
++	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
++											\
++	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
++		       !(__supported & (conflicts)),					\
++		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
++		       __supported, (xfeatures), (conflicts));				\
++} while (0)
 +
- /* CPUID level 0x80000007 (EDX). */
- #define KVM_X86_FEATURE_CONSTANT_TSC	KVM_X86_FEATURE(CPUID_8000_0007_EDX, 8)
+ static void guest_code(void)
+ {
+ 	u64 initial_xcr0;
+@@ -79,6 +93,11 @@ static void guest_code(void)
+ 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
+ 				    XFEATURE_MASK_XTILE);
  
-@@ -110,6 +113,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
- 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
- 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
- 	[CPUID_24_1_ECX]      = {      0x24, 1, CPUID_ECX},
-+	[CPUID_29_0_EBX]      = {      0x29, 0, CPUID_EBX},
- };
- 
- /*
++	/* Check APX by ensuring MPX is not exposed concurrently */
++	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
++				 XFEATURE_MASK_APX,
++				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
++
+ 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
+ 	__GUEST_ASSERT(!vector,
+ 		       "Expected success on XSETBV(FP), got %s",
 -- 
 2.53.0
 
