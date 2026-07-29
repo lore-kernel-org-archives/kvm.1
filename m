@@ -1,193 +1,128 @@
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350673ACA4C
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 17:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19D93AEB26;
+	Wed, 29 Jul 2026 18:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785347954; cv=none; b=DuuzAmLUOuyfh2FhSXJhBfhbJD9yVitHOOzTuApEzmiHU+227awsZOpb7LN+lARmz7iOxPPvqsqaR4FSxWn/bP8KBnn9h9XM97BVpVTWmwvqN0+7B0tUA30rciA/R97W7/BnDAoieSxrTe5d9PIVnE9sF0rjovObXqeKmSJ30cc=
+	t=1785348133; cv=none; b=WcTYB8uob5JcIyfjUW8kv5izaJ4PDt82jT057xxKiy4epey+NFJiUq39cqbNgMhhPz6veXV9+AKr6biyKWlcX/wwGKR5gYpng5dlmUhwkaaQsPa4C57WlNt4m1c4jzxAptOnN2F7fdLpwVh+Nr287n4TtLAQAscEIrgqYkLgMeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785347954; c=relaxed/simple;
-	bh=B20dbkBhewR9N5jqjB77bXHLofpTwdnRjIDZU++jZdQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SSufvykW8f0oxx00usQVYgeLcnVBTxvCifOVXfyAPqht2Fz9RcYg1kSlF08d7uzWXQVAk/u9VXhO3Fx9UeCwYMDwSry5G6Ks9Ejl9IXROOdL3/VMGhLs/gjD0tfAvCDhOOtfDAoQ0uMysMJrmnyvikd7C+Y1E1XoYnyNcVui0Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wa0jll8t; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785348133; c=relaxed/simple;
+	bh=mt7dw3J04Rsk2VEoQRgQmLJEXHRXbFb7/6Lpr48+7n8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=RXdTcr0WLfBG3RylGBD4/5cNYiznpj7XuL1SzACNuBnaylKzWGI2RM0J9wao7NwCo0f2v/3KGUJzeWQac1ed3OgHN/VZNjB8NR1caF1AvAUkIptDOfr/sIWNO0o5xuGqq72Iam7RUWP/NTU10fAg6gsG4JKGCwNEerIdMOVxh2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZbMP8Ix; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wa0jll8t"
-X-Forwarded-Encrypted: i=1; AHgh+RoC4kyo4KxaHrynRwAi6tTl3VI7gq41BQW20wE81S7nRmjW/nJbE9NoT2iH05ZGrcUNBgA=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785347943;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sHNGtvXmI1lmcYGaqQf2LJdsupyf9eDfU/t8/RKu5uQ=;
-	b=Wa0jll8tmi0kdIXjJBpkiU/h91PdkiOgYUb9H8eeR7038oMIHpVADv/wm5ZQk6fLeVv3YM
-	Vz3K+MzPtGLOCwd/3sb1UVmFuoV+8KcvTmxE9/apqVxamXe16hC8b7Uef4/foiiJ5uWyQY
-	d4jq+B4osdhrSnBdtiO3yTKB6b81tn0=
-X-Gm-Message-State: AOJu0YyVJKtcYpp3Fz1SUtFBW0b/uxuDQkbhp5ULE1PCrpBBdy65vVlO
-	4ThcLgWnoIYeoQhv/luVmuHbj3uV2BRlFnUE5Lv03ed8l9JsdnELnpRtIRlXAtzadiyIstH3jSZ
-	fSh5L/4veuLl6EOohvzBT0RkDKAynmR+i8sM3qfh0
-X-Received: by 2002:ac8:7fc7:0:b0:4ff:c0e7:be9c with SMTP id
- d75a77b69052e-52b34cf718bmr4279531cf.0.1785347937591; Wed, 29 Jul 2026
- 10:58:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZbMP8Ix"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B484E1F000E9;
+	Wed, 29 Jul 2026 18:02:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785348129;
+	bh=8JyWJBqkdPOj7EwcOgUOCs+Agwff3aK7G5/y4WgwZlY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bZbMP8IxSOJYgK31rauAaUb1dDrRvDC3jmJ6VM2lTewNonNWk8gULh0xxlsYlcl8I
+	 kTDEw1y3F4wq370vKRHyIEFd+61lH3pGR5ohEuhsZMpT7X/tVhDIjS21PuVBFPsaaj
+	 se8E+9SiGTcxHKKHzaSx+whCP+/fU1ihRVXh4/Jj5JsqQV6L3CMETzXC6c56kPQJzM
+	 z7jAYqwkWy/30l0BmwcmO4UOrLuia2GZtH4yL0SOq/gJy1/Lo7PjOhGoMhpCO8WeRE
+	 wNJXso4wy/B/BQT2WlSu8gGpF9hHzW3ebnMkS+XVSlq6ur55oUnyn2jdv1zev6WyRG
+	 NOIrgECDmUQEg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 09/13] KVM: s390: Free the mmu cache when
+ kvm_arch_vcpu_create() fails
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260729152938.782383-10-imbrenda@linux.ibm.com>
+References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
+ <20260729152938.782383-10-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 29 Jul 2026 18:02:08 +0000
+Message-Id: <20260729180208.B484E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-13-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260720-hybrid-v9-13-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 29 Jul 2026 18:58:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyBNtRHMGp9LvGfrEHC+WggA_B5hQq+Yf35+zNBfNxG1A@mail.gmail.com>
-X-Gm-Features: AUfX_mxD75QzlQhuaQNGxQQP31Q-APsfSKiFOjN07yFBd2o-UYKBSVA4waq0SzE
-Message-ID: <CA+EHjTyBNtRHMGp9LvGfrEHC+WggA_B5hQq+Yf35+zNBfNxG1A@mail.gmail.com>
-Subject: Re: [PATCH v9 13/16] KVM: arm64: PMU: Pass the target CPU to kvm_pmu_probe_armpmu()
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
 
-On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> kvm_pmu_probe_armpmu() currently samples the current CPU internally,
-> which ties the helper to default PMU selection.
->
-> Move that policy to kvm_arm_set_default_pmu() by passing
-> raw_smp_processor_id() from the caller, and make the helper search for
-> the pPMU covering an explicit CPU. Move the helper above
-> kvm_pmu_create_perf_event() so later code can reuse it when creating
-> PMU events for a VCPU's current pCPU.
->
-> This preserves the existing default PMU selection behavior while
-> preparing fixed-counters-only mode to select a pPMU at runtime.
->
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Pre-existing issues:
+- [High] Memory leak of `vcpu->arch.pv.stor_base` and `sida_addr` in `kvm_s=
+390_pv_create_cpu` error path.
+--
 
-Cheers,
-/fuad
+--- Patch [9]: [PATCH v5 09/13] KVM: s390: Free the mmu cache when kvm_arch=
+_vcpu_create() fails ---
+commit b7924aec9fd280e9673810b13295e30b7a659f81
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
+KVM: s390: Free the mmu cache when kvm_arch_vcpu_create() fails
 
-> ---
->  arch/arm64/kvm/pmu-emul.c | 72 +++++++++++++++++++++++------------------------
->  1 file changed, 35 insertions(+), 37 deletions(-)
->
-> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
-> index 27db8877f96e..78611eaecca2 100644
-> --- a/arch/arm64/kvm/pmu-emul.c
-> +++ b/arch/arm64/kvm/pmu-emul.c
-> @@ -682,6 +682,23 @@ static int kvm_map_pmu_event(struct arm_pmu *pmu, unsigned int eventsel)
->         return eventsel;
->  }
->
-> +static struct arm_pmu *kvm_pmu_probe_armpmu(int cpu)
-> +{
-> +       struct arm_pmu_entry *entry;
-> +       struct arm_pmu *pmu;
-> +
-> +       guard(rcu)();
-> +
-> +       list_for_each_entry_rcu(entry, &arm_pmus, entry) {
-> +               pmu = entry->arm_pmu;
-> +
-> +               if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
-> +                       return pmu;
-> +       }
-> +
-> +       return NULL;
-> +}
-> +
->  /**
->   * kvm_pmu_create_perf_event - create a perf event for a counter
->   * @pmc: Counter context
-> @@ -811,42 +828,6 @@ void kvm_host_pmu_init(struct arm_pmu *pmu)
->         list_add_tail_rcu(&entry->entry, &arm_pmus);
->  }
->
-> -static struct arm_pmu *kvm_pmu_probe_armpmu(void)
-> -{
-> -       struct arm_pmu_entry *entry;
-> -       struct arm_pmu *pmu;
-> -       int cpu;
-> -
-> -       guard(rcu)();
-> -
-> -       /*
-> -        * It is safe to use a stale cpu to iterate the list of PMUs so long as
-> -        * the same value is used for the entirety of the loop. Given this, and
-> -        * the fact that no percpu data is used for the lookup there is no need
-> -        * to disable preemption.
-> -        *
-> -        * It is still necessary to get a valid cpu, though, to probe for the
-> -        * default PMU instance as userspace is not required to specify a PMU
-> -        * type. In order to uphold the preexisting behavior KVM selects the
-> -        * PMU instance for the core during vcpu init. A dependent use
-> -        * case would be a user with disdain of all things big.LITTLE that
-> -        * affines the VMM to a particular cluster of cores.
-> -        *
-> -        * In any case, userspace should just do the sane thing and use the UAPI
-> -        * to select a PMU type directly. But, be wary of the baggage being
-> -        * carried here.
-> -        */
-> -       cpu = raw_smp_processor_id();
-> -       list_for_each_entry_rcu(entry, &arm_pmus, entry) {
-> -               pmu = entry->arm_pmu;
-> -
-> -               if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
-> -                       return pmu;
-> -       }
-> -
-> -       return NULL;
-> -}
-> -
->  static u64 __compute_pmceid(struct arm_pmu *pmu, bool pmceid1)
->  {
->         u32 hi[2], lo[2];
-> @@ -1072,7 +1053,24 @@ static void kvm_arm_set_pmu(struct kvm *kvm, struct arm_pmu *arm_pmu)
->   */
->  int kvm_arm_set_default_pmu(struct kvm *kvm)
->  {
-> -       struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu();
-> +       /*
-> +        * It is safe to use a stale cpu to iterate the list of PMUs so long as
-> +        * the same value is used for the entirety of the loop. Given this, and
-> +        * the fact that no percpu data is used for the lookup there is no need
-> +        * to disable preemption.
-> +        *
-> +        * It is still necessary to get a valid cpu, though, to probe for the
-> +        * default PMU instance as userspace is not required to specify a PMU
-> +        * type. In order to uphold the preexisting behavior KVM selects the
-> +        * PMU instance for the core during vcpu init. A dependent use
-> +        * case would be a user with disdain of all things big.LITTLE that
-> +        * affines the VMM to a particular cluster of cores.
-> +        *
-> +        * In any case, userspace should just do the sane thing and use the UAPI
-> +        * to select a PMU type directly. But, be wary of the baggage being
-> +        * carried here.
-> +        */
-> +       struct arm_pmu *arm_pmu = kvm_pmu_probe_armpmu(raw_smp_processor_id());
->
->         if (!arm_pmu)
->                 return -ENODEV;
->
-> --
-> 2.55.0
->
->
+The mmu cache is the first thing that is allocated in
+kvm_arch_vcpu_create(), but in case of failure it was not freed.
+This patch refactors the function to use scope-based cleanup to ensure
+proper cleanup on failure.
+
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index c04b7e84c4346..40f33cdcdf84d 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+[ ... ]
+> @@ -3861,22 +3860,19 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+>  	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
+> =20
+>  	rc =3D kvm_s390_vcpu_setup(vcpu);
+> -	if (rc)
+> -		goto out_ucontrol_uninit;
+> +	if (rc) {
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the error path in
+kvm_s390_pv_create_cpu() leak vcpu->arch.pv.stor_base and sida_addr when
+called from kvm_s390_vcpu_setup() here?
+
+If uv_call() fails during kvm_s390_pv_create_cpu(), it attempts cleanup
+by calling kvm_s390_pv_destroy_cpu():
+
+arch/s390/kvm/pv.c:kvm_s390_pv_create_cpu() {
+	...
+	if (cc) {
+		u16 dummy;
+
+		kvm_s390_pv_destroy_cpu(vcpu, &dummy, &dummy);
+		return -EIO;
+	}
+	...
+}
+
+However, kvm_s390_pv_destroy_cpu() returns early because the PV handle
+is not yet set:
+
+arch/s390/kvm/pv.c:kvm_s390_pv_destroy_cpu() {
+	...
+	if (!kvm_s390_pv_cpu_get_handle(vcpu))
+		return 0;
+	...
+}
+
+Since vcpu->arch.pv.handle is assigned only after a successful uv_call(),
+it is 0 during this error path. As a result, kvm_s390_pv_destroy_cpu()
+does not free the previously allocated stor_base and sida_addr.=20
+
+The caller then propagates the error back here, and generic KVM code skips
+kvm_arch_vcpu_destroy(), making the memory leak permanent.
+
+> +		if (kvm_is_ucontrol(vcpu->kvm)) {
+> +			scoped_guard(spinlock, &vcpu->kvm->arch.gmap->children_lock)
+> +				gmap_remove_child(vcpu->arch.gmap);
+> +			vcpu->arch.gmap =3D gmap_put(vcpu->arch.gmap);
+> +		}
+> +		return rc;
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
+83-1-imbrenda@linux.ibm.com?part=3D9
