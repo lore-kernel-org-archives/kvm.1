@@ -1,146 +1,163 @@
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325DD3EC83A
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785341121; cv=none; b=i15q//TyIDgjazX/yjvynDzB2g4jsUM3iFJJkh1S7cOYlSnPh6GllK/BfHZcEAZeG/pn51mKHWvqbUuC8xAKRR93fQZKVN0NSLnJaQuS8Se2Rrk3EROWR4N+fbgGhWRsebwtojacKybEUTClLeHk2jLNdkV76r7q6hVuCdVsn/0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785341121; c=relaxed/simple;
-	bh=6dhf2ThkaWXO1d6SgMWi/wi1OAGH6HEYT6nrIsYJvDw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C6945C6E1
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785341191; cv=pass; b=cnUrr0nCIP1JsCe2yV90TOxclbga+1RfTZRWW1M9xX2IORYCQ5j69GEOqGDs0/voFrTUBgsl8wvsqM2DGQgRygqY+GC2f0hf5/b7XqMWx57KaUF9PnjG+bO2NUHZXTB8w7aQlv1yoz0Zxw+XF/3DPN704qXJsb8DJEgKbT3HNJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785341191; c=relaxed/simple;
+	bh=OrwyfV74x4bYYJftIgMTXaC+/cQ3WeJ0wBEnzr8oB/U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P9oAa9/6WF+bqVMZqgn5TLcluU33esQwMNtOrzBv/C9NF5DxcSXga4QvMRAPMXjh/reX/1UKRoRqPAotT3gpF6Cy6Jo+Fzq5gEjgu6RITcsmE78zDzYazz1UEQgN1ALfZgJxy9dEXy1jrpy5/CRrgJeesXH+wXhEdGTM0tBzu78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fKKrk+Uz; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 To:Cc:Content-Type; b=BAULfVuBgg3PPm4OJqghxPf2EIu0JXRPH4izgz+VNfylAyQujIJcF20b0agKZ8ehnBYTMhuvntK0N/6lE0KdLgozLKSNXAuJrAfP67jzS21lNze7Wd9B0h14dPuBv8K2Jmnp/HIpDS/JC2ibllB2N7avzQFTglzyR4WFVqno8Bs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=AQIKyWht; arc=pass smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fKKrk+Uz"
-X-Forwarded-Encrypted: i=1; AHgh+Rr/a8NRfHfHGW70d6KVSjU8NHwJGh1f4YcBRSebHXI4qdG1UGOKY2Dy6FolGh8yQh93oh0=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785341118;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FWo0ftyBa7lC2aPQ/hBNWMcCRmwtU50P0VZaxqKFsjs=;
-	b=fKKrk+UzoYifU5FVDkXkflhqtVa5hAxlybvxfwmpygJZUljFk3fn+8tFLeeX71BkYCHKmB
-	dQ9g7hxlrqr/SxCDCkrw3/GhLlsGX4oalWTIZxPc7OLkcO06DX+4FJCwCt/xGH+w5pFz2a
-	nl679Tx5tUdyYpo4Bp3OKMBxa1oJp64=
-X-Gm-Message-State: AOJu0Yy4fO3BtPwM2RSpu/a3nvIOZUPQqE73d1A8E73ZH2hHp4WjhpJR
-	QgVwfJl2Ki3DNlfFSSPPN6sRv6mX09QDnGX39fKelT7MfxwIcOcnPhx1o5ar+6Dzq8KjSte32hL
-	RI9Yy4oFt8T9eswLevkM8Hyszo1YYfvkEPhepO2u4
-X-Received: by 2002:a05:622a:a15:b0:517:64f6:3365 with SMTP id
- d75a77b69052e-52b34e85fb1mr1702101cf.4.1785341097295; Wed, 29 Jul 2026
- 09:04:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="AQIKyWht"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47f7027ca11so770825f8f.3
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 09:06:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785341187; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cPYYXcFqnGY16VwkC0/ZsiHtzdfxeiFkqkK+xF/++A8x0iB89tpeNTjsJgyKo2RaKc
+         Q6N38kqHLJrBHzNSTvfQGPuElHQR6rXWD+YQziVa4Z3qKdPwDMLi33MgBGjGNBgZQXnm
+         uiwnWK0EhjnKYYJ5DKgQTImKZkkVaUDtnzsDQZe5IGiVhP7VZ8ra/xbj6aF1BVUH9aJH
+         G47qGiZIjBBzCb/96TxUxrcK92AEgLcfveV15SI8f9FtvnCgtDKs9NvOBRqjKK+H3xFN
+         lxDp/bxXMB+9LhOukI4gSpJF6sgVB0WhhW/j/2z25YUnpytAuMZQjC1tvOzN6nzSos8y
+         WUdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PZCxNpAkNUCXAcRdhLTO0d6tb8+6Q3Nj0sfDnYlByPI=;
+        fh=71q3un+i7jYZY4rKi2FH4XkS3V2uJJuHasQC7khLFKI=;
+        b=e4CCCGuqqlLZJHePEobaBaQiOttVB0aPJC6yc8vl72KrgKw0DMcldMtxL4soT9awAr
+         g93tb3Ngx0qKiyuLAfZ9sjfJU1w9PH5IyR9zKCQuu6UkMTmQfKmc6jI3ieDKcrV9GQ0a
+         zlnWy20JUVwv5pq7mXCWpikjuNco4Bzx0y4GYrYfaaHKdGZM3JhKDgw5heJCrYppDDPL
+         s5DI0HQwU+aPN4jXd5eM7THsX+HgAZBKvmNdOSXtTtLtrl0akZSivRZR80gLuHW5+lpa
+         Ee+Td2H6aB5rH4WtPnivfQHYtAA/MB+mDJpWO7TrN5vMK/ny76a9QBdJeQBj+EaFv9UU
+         xlqw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785341187; x=1785945987; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PZCxNpAkNUCXAcRdhLTO0d6tb8+6Q3Nj0sfDnYlByPI=;
+        b=AQIKyWhtCqrwkOhI16aUTnWVNuDGQ+V8I9MiU85et5TlcYpi0D8Nl8hThfcf/JwzHt
+         dC56g4GWa9IFFO0ixLNjc8wQ6VUw81j5aWmzYExU14EYLNfAFxTtryNfPIpXRk0l0l0C
+         yo8EltW5nocE1d1ecXCJzQZsH3+iN7z745jKi/JWhzPsb2dQ7TL9LujnXBMQt3ywZXJr
+         6aMkC6DgvERAkHrHvboq8FqBXelc9+dH3vwaxMvzMq3TroxJjCQI4B9x+q3KkKvoStzr
+         b06VStPDMmqckRBKSnJmCgN9tdfcOAhY2UfFrEXNVfPuu6iWvwnFgNWQ2fdoey7fjNVd
+         GKpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785341187; x=1785945987;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PZCxNpAkNUCXAcRdhLTO0d6tb8+6Q3Nj0sfDnYlByPI=;
+        b=JIExL9sNy03McpAf9X6Hhc4bpsD7YIur70p++OPRsz4z2evkTVegbPTdLzK7MBld5u
+         JtbVyKPOyRCMxkOCNpD7gTDUTgYphn8BxZrPoyOnybIlU8oveOUWJM95BzdFjqtR96/0
+         RgxdqwViyHdVXE9RYkNfLvKBDp1M9tG0aheI1anskkIep7OXfE1xOl0gbjwuuhKDpHUw
+         feKTSMpN78M1sp3t1fAl6yM/AFFMGxa4M/z7UUO7tETEKDiodK/34wrFnCjeaP7KKsbb
+         flJpi5rFk6P+SFEWw1rqgpljM1+WoJsNfMvzpq/oUWyd0zkCTUSPPziXD78sCMqXpWVn
+         5h5Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoxLxpUjOGmDPQo8o+ysnLy4jfvArvFg/x/sXd5kLJG/Ia5iszDe6iOjJAlafUzlFvb+Sg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztwMWbVKaEedx5mTrUzJjxawdZiw0WiMLbt/nDgb4L+HYi7Fxc
+	1b7hzFPlAR1r/DSyLRZLlw47VhLeH6DHgGxvydvhDMXiMC3J9LTOfqHQpENoDUW4Vo/6V7W21w+
+	3rKn0/CSR31b43HcMV5lXbgVaVM+ThM34PJvytHja/w==
+X-Gm-Gg: AR+sD10ggjA/2znZtSmQQPqYPzvLWWfUIqiu8HInuc/YHKE7YhEXe/zkXjKDWRTSw4/
+	O3tqbOz9ELPl4UWXUNrLGpRql58lsy3tK+lp3E9rFZp40NQDKrTPwIAdSKVVNwgBLL4c8l/GGgm
+	+KNDibhL771zBfQ4l5cf4dG43xNhA2QLfhj3eJAIMrL0o1ig64zPnr54Qgnxf/jRn+MPhbzVZI8
+	y+XY3F18NEuDRHqQR5TrReJzu1vDI/yLeh5XP1THvT67rCEmYUcMB3Z4QByX6aHSDFNGqWfvgk7
+	dvYY9JKBXRYMDp6lNMsC/R5L9Sx4zE0Bld2yh7dhWpHQ1sEnLzpCtNwJb3ftz6JEFGzCYwXE82g
+	hNUh9RLJEmmTvsPcHNE8+81eOMPCq8+ZVRnb2COCphMdQ/NlhaKwt+qi3iCDCbbWf
+X-Received: by 2002:a05:600c:8b2e:b0:495:6e68:39bd with SMTP id
+ 5b1f17b1804b1-496c6597a0fmr96285485e9.28.1785341186425; Wed, 29 Jul 2026
+ 09:06:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-7-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260720-hybrid-v9-7-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Wed, 29 Jul 2026 17:03:00 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTyTcUBzAcGhG88w7qxUgm5BF709Za9XWYWEHE=JMCL2hA@mail.gmail.com>
-X-Gm-Features: AUfX_myu-7UL3bRAtMkrPeNTWcxaXv9440Zld_Zcb7LGPBk6xfJMpVLySDjt26o
-Message-ID: <CA+EHjTyTcUBzAcGhG88w7qxUgm5BF709Za9XWYWEHE=JMCL2hA@mail.gmail.com>
-Subject: Re: [PATCH v9 07/16] tools headers: Use u* types for bitfield helpers
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+References: <20260729075230.743030-1-shanbeeyoo@gmail.com> <20260729120733.829457-1-shanbeeyoo@gmail.com>
+ <20260729120733.829457-2-shanbeeyoo@gmail.com>
+In-Reply-To: <20260729120733.829457-2-shanbeeyoo@gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Wed, 29 Jul 2026 21:36:14 +0530
+X-Gm-Features: AUfX_mwiSOUOFP2TPHe4Inq1CQye-PgTV4ubVFK-FDwozFalkW3VgzVL7PEKoxM
+Message-ID: <CAAhSdy3ziS_1iiUjC5HSVqX9iMgckyS7Yro=xwZyomxXC=MC7w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] RISC-V: KVM: Treat -EEXIST from G-stage map as success
+To: "Bingyu.Xian" <shanbeeyoo@gmail.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Quan Zhou <zhouquan@iscas.ac.cn>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+On Wed, Jul 29, 2026 at 5:37=E2=80=AFPM Bingyu.Xian <shanbeeyoo@gmail.com> =
+wrote:
 >
-> Commit 9486aa387716 ("perf tools: Fix 64 bit integer format strings")
-> defined the tools-local u64 as uint64_t so that PRI*64 format macros
-> match its underlying C type. On architectures where uint64_t and __u64
-> are distinct types, however, ____MAKE_OP() still gives the u64_*
-> helpers an __u64 interface.
+> When a concurrent vCPU installs the same G-stage mapping while we are
+> waiting for mmu_lock, kvm_riscv_gstage_map_page() returns -EEXIST.
+> This is not an error -- the page is correctly mapped and the faulting
+> vCPU can simply retry the guest instruction -- but KVM was treating it
+> as one: printing "Failed to map in G-stage" to dmesg and propagating
+> -EEXIST all the way to userspace.
+
+The kvm_riscv_gstage_map_page() return -EEXIST only when a leaf-PTE
+of higher-order already exists. It does not return error when leaf-PTE at
+same level already exists so this is an invalid fix.
+
+Regards,
+Anup
+
 >
-> Teach ____MAKE_OP() to accept the helper name and storage type
-> separately. Keep endian helpers on __le* and __be*, and generate the
-> native helpers using the tools-local u* types.
+> Align RISC-V with x86 and arm64, which already swallow -EEXIST in
+> their respective fault handlers.  This also lets kvm_release_faultin_page=
+()
+> drop its "ret && ret !=3D -EEXIST" special case: with ret normalized to 0
+> the regular release path is correct.
 >
-> Assisted-by: Codex:gpt-5.6-sol
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
-
-Cheers,
-/fuad
-
-
-
+> Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programmin=
+g")
+> Cc: stable@vger.kernel.org
+> Assisted-by: YuanSheng: deepseek-v4-pro
+> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+> Signed-off-by: Bingyu Xian <shanbeeyoo@gmail.com>
 > ---
->  tools/include/linux/bitfield.h | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
+>  arch/riscv/kvm/mmu.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 >
-> diff --git a/tools/include/linux/bitfield.h b/tools/include/linux/bitfield.h
-> index ddf81f24956b..1c633343d576 100644
-> --- a/tools/include/linux/bitfield.h
-> +++ b/tools/include/linux/bitfield.h
-> @@ -142,32 +142,32 @@ static __always_inline u64 field_mask(u64 field)
->         return field / field_multiplier(field);
->  }
->  #define field_max(field)       ((typeof(field))field_mask(field))
-> -#define ____MAKE_OP(type,base,to,from)                                 \
-> -static __always_inline __##type type##_encode_bits(base v, base field) \
-> +#define ____MAKE_OP(name,type,base,to,from)                            \
-> +static __always_inline type name##_encode_bits(base v, base field)     \
->  {                                                                      \
->         if (__builtin_constant_p(v) && (v & ~field_mask(field)))        \
->                 __field_overflow();                                     \
->         return to((v & field_mask(field)) * field_multiplier(field));   \
->  }                                                                      \
-> -static __always_inline __##type type##_replace_bits(__##type old,      \
-> -                                       base val, base field)           \
-> +static __always_inline type name##_replace_bits(type old,              \
-> +                                               base val, base field)   \
->  {                                                                      \
-> -       return (old & ~to(field)) | type##_encode_bits(val, field);     \
-> +       return (old & ~to(field)) | name##_encode_bits(val, field);     \
->  }                                                                      \
-> -static __always_inline void type##p_replace_bits(__##type *p,          \
-> +static __always_inline void name##p_replace_bits(type *p,              \
->                                         base val, base field)           \
->  {                                                                      \
-> -       *p = (*p & ~to(field)) | type##_encode_bits(val, field);        \
-> +       *p = (*p & ~to(field)) | name##_encode_bits(val, field);        \
->  }                                                                      \
-> -static __always_inline base type##_get_bits(__##type v, base field)    \
-> +static __always_inline base name##_get_bits(type v, base field)        \
->  {                                                                      \
->         return (from(v) & field)/field_multiplier(field);               \
->  }
-> -#define __MAKE_OP(size)                                                        \
-> -       ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
-> -       ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
-> -       ____MAKE_OP(u##size,u##size,,)
-> -____MAKE_OP(u8,u8,,)
-> +#define __MAKE_OP(size)                                                                        \
-> +       ____MAKE_OP(le##size,__le##size,u##size,cpu_to_le##size,le##size##_to_cpu)      \
-> +       ____MAKE_OP(be##size,__be##size,u##size,cpu_to_be##size,be##size##_to_cpu)      \
-> +       ____MAKE_OP(u##size,u##size,u##size,,)
-> +____MAKE_OP(u8,u8,u8,,)
->  __MAKE_OP(16)
->  __MAKE_OP(32)
->  __MAKE_OP(64)
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 8a0aa5e0e216..943d8dc72105 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -652,11 +652,13 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct=
+ kvm_memory_slot *memslot,
+>                                                 vma_pagesize, true, true,=
+ out_map);
+>         }
 >
+> -       if (ret)
+> +       if (ret =3D=3D -EEXIST)
+> +               ret =3D 0;
+> +       else if (ret)
+>                 kvm_err("Failed to map in G-stage\n");
+>
+>  out_unlock:
+> -       kvm_release_faultin_page(kvm, page, ret && ret !=3D -EEXIST, writ=
+able);
+> +       kvm_release_faultin_page(kvm, page, ret, writable);
+>         write_unlock(&kvm->mmu_lock);
+>         return ret;
+>  }
 > --
-> 2.55.0
->
+> 2.54.0
 >
