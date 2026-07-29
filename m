@@ -1,154 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D495411A1F;
-	Wed, 29 Jul 2026 16:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907904C6EE6
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785342922; cv=none; b=UkHy7gk86gI331Nfw3TtQlycKksNpg/WuZ8o6QYABvMreh7RMhNstyYdNsyodhUiErfB15Tkb5/TmOBUaY66qk3Uroy0FdnAD+ACG9IXbgP9DQ0yqomMGXk+z3PmUr5WIS7ubl+WKfGbd7pNzRXBN2u3Mo4z2DyOgTo8VqXAPWs=
+	t=1785343236; cv=none; b=Fd8sdZbH3hcGkFXoMjKvoQrbJ82I1xIx2c5eCWv4y99rqfflB9N1RrmdT/mpHYNIbLQEhwn10b2/NlzH68+NtsayYga1d/SuBnJoCJubQErtFjdQwbS+wPZbV8D8l7rjtSdxXkatZsQXi6JuN/Oueqg6aFMFxvQpDbDAtKWcd7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785342922; c=relaxed/simple;
-	bh=3xgqX10ROYlke4Y7g6+kbWJI71ZAvlfYtb6BB8Qsjkc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=UT39xUbkayNFVmF4PjZmm2a3B3GL1Z/ylv5EsXk4l1k0HRzWA1vSqzjrnU6JLkRUXxotYS8250nO1Zz+nGxAC4OLPeEnQ5OkpIx+8kJQ9/Bp0XGvkluMhIwQKlYUCkJ8fB6niFPZ0ADui8Au48xVIfIK77zMo8nQ3+KawB8lkV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0etTpIn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785343236; c=relaxed/simple;
+	bh=P1CBFuFn5URk4XkWKPaomxNCNRYuE86ueT9NGJQmOPY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QXZAbjNmWOyrgT1O0LfKiS+Fo8s6LM2G9T/Nn6vVf4NVxmmE9jwMNZYCjx2IIyhjW/OKrtfowTI/MUJzup+irFFQIHI5pCRio7ZMmtNyP2LtBVqcGUrzci4JaCMTUsXsNec+MOYTKCg4E9PT0t/toZuvLYw9IV+g+WZOi4nKLQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XaMm7rjV; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0etTpIn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A4D1F000E9;
-	Wed, 29 Jul 2026 16:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785342921;
-	bh=FzTRepEBTaYg6S4skEGauvhuai/LzBm9NnU5vONjhZ8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=L0etTpInN5YS2wKhph7yVmb+E9tGUgbSY0/ZpMvqTUgySwPmDppw4tClGoqckEqbA
-	 ILm0WTg0v8dfpv4fPhPD7LzcR58JMuQfNgzIJcpXQyBtwo6bb1xCfJo+MDVwfaM6bf
-	 WMMJ8bociz4zT9vgoNvDjGlcDD/1L6eXUK3JaCL9+XrZA7XqVQ1n8dI1DS07XSf4Ar
-	 YwY4F16cQT5y+bpqH/mU4hcs9iHIbIP2vh5LCeOJfk9XWy7uUO68v24P5TrzFQuDZu
-	 L26q76JTu6izaqLB9FMGFevLQpRc+SNSc/DWweH94/4JbSf+M/ymOUKL/3ziIZ8rwP
-	 in0E2Su613QYw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 03/13] KVM: s390: Fix overclearing ESCA in case of
- error
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260729152938.782383-4-imbrenda@linux.ibm.com>
-References: <20260729152938.782383-1-imbrenda@linux.ibm.com>
- <20260729152938.782383-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 16:35:20 +0000
-Message-Id: <20260729163521.03A4D1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XaMm7rjV"
+X-Forwarded-Encrypted: i=1; AHgh+RqHNBVY4Uc/O9+/7fY47Pa8i6XNSq5456BG0gnXAXu0+aIn0X2sp7VQsilj9OAENLFeMFg=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785343229;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hTKtf9y0sAvMzfV5x7XnlOJ9LjJuEUBlqCkfsXA/OVA=;
+	b=XaMm7rjVahJ18DKqLrBqetibqJVEQoCbrOtAVxkjvBaaqSGsQW0HBp8WlikQS8pBdvZqlU
+	88hdnCut+0pTeYUMWPtd/8UfeV6hHnhY5nVdoVmDD6RZLlisMQCuq8PFjR4DPm3Q+YuPgs
+	juTWWp2bMN7OAdiry/5v9FsO4GcCPeY=
+X-Gm-Message-State: AOJu0YzJizImiLpcVBsz9CGaYzXF8gBcENEPbn8akAbVpc7RQQ6VSqOC
+	5KLzC9SwoGEUjPfcF5Rb//tJWmeFkgEPqhMOKiiTk1tIYwpwEpvUJ6gbVP3aJEweVPBWGem3RGh
+	uGVjPblZw0xvNC2K6lFKK2Me78x9uW5E/0Bn7AOWc
+X-Received: by 2002:a05:622a:c4:b0:517:5ac7:332e with SMTP id
+ d75a77b69052e-52b34fbe0femr1827251cf.6.1785343198660; Wed, 29 Jul 2026
+ 09:39:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp> <20260720-hybrid-v9-11-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-11-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Wed, 29 Jul 2026 17:39:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyY3PnJLHBVWCx1Mjy09a+AztByawZxcSSVtBUfzObC_A@mail.gmail.com>
+X-Gm-Features: AUfX_myAfVdxJqe8mBkarWtUgPMModQPrWR0zonAtg_LmKu_beXtJUxWvL2MWRA
+Message-ID: <CA+EHjTyY3PnJLHBVWCx1Mjy09a+AztByawZxcSSVtBUfzObC_A@mail.gmail.com>
+Subject: Re: [PATCH v9 11/16] KVM: arm64: PMU: Protect the list of PMUs with RCU
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+>
+> Convert the list of PMUs to a RCU-protected list that has primitives to
+> avoid read-side contention.
+>
+> Assisted-by: Codex:gpt-5.5
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-Pre-existing issues:
-- [Critical] Creating and destroying a KVM_VM_S390_UCONTROL VM with vCPU ID=
-s >=3D KVM_S390_ESCA_CPU_SLOTS (248) causes out-of-bounds memory accesses o=
-n `esca_block->cpu`.
-- [High] gmap_remove_child() is called without holding the parent gmap's ch=
-ildren_lock in the error path of kvm_arch_vcpu_create().
---
+Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
 
---- Patch [3]: [PATCH v5 03/13] KVM: s390: Fix overclearing ESCA in case of=
- error ---
-commit de5b0e7f34127f8db5eb8b0fa184043139c25a8c
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cheers,
+/fuad
 
-KVM: s390: Fix overclearing ESCA in case of error
 
-If an attempt is made to create a vCPU with an already existing ID,
-the duplicated vCPU is destroyed. This patch ensures the ESCA entry
-is only cleared if the vCPU was successfully created to avoid
-clearing the original vCPU's ESCA entry by mistake.
-
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 9e3e6b0d72ad6..2acdff130fa6c 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -86,7 +86,7 @@ static void sca_clear_ext_call(struct kvm_vcpu *vcpu)
->  	struct esca_block *sca =3D vcpu->kvm->arch.sca;
->  	union esca_sigp_ctrl *sigp_ctrl =3D &sca->cpu[vcpu->vcpu_id].sigp_ctrl;
-> =20
-> -	if (!kvm_s390_use_sca_entries())
-> +	if (!kvm_s390_use_sca_entries() || !vcpu->arch.initialized)
->  		return;
-
-[Severity: Critical]
-This is a pre-existing issue, but can this out-of-bounds access still occur
-for UCONTROL VMs?
-
-In kvm_arch_vcpu_precreate(), the sca_can_add_vcpu() bounds check is skipped
-for UCONTROL VMs, which allows vcpu_id to be up to KVM_MAX_VCPUS - 1 (254):
-
-arch/s390/kvm/kvm-s390.c:kvm_arch_vcpu_precreate() {
-	...
-	if (!kvm_is_ucontrol(kvm) && !sca_can_add_vcpu(kvm, id))
-		return -EINVAL;
-	...
-}
-
-Because the esca_block->cpu array only has KVM_S390_ESCA_CPU_SLOTS (248)
-elements, if a UCONTROL vCPU with an ID between 248 and 254 successfully
-initializes, it would bypass the new !vcpu->arch.initialized check here.
-
-When this vCPU is destroyed in sca_clear_ext_call() or handles an external =
-call
-interrupt in sca_inject_ext_call(), computing &sca->cpu[vcpu->vcpu_id] resu=
-lts
-in a pointer outside the allocated esca_block.
-
-Could this allow writing out of bounds when WRITE_ONCE(sigp_ctrl->value, 0)=
- is
-called?
-
->  	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_ECALL_PEND);
-> =20
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 096b426c1281b..3e40a52bfd152 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3459,7 +3459,7 @@ static void sca_del_vcpu(struct kvm_vcpu *vcpu)
+> ---
+>  arch/arm64/kvm/pmu-emul.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/pmu-emul.c b/arch/arm64/kvm/pmu-emul.c
+> index 9ac5f307ea31..c5c505b6fc61 100644
+> --- a/arch/arm64/kvm/pmu-emul.c
+> +++ b/arch/arm64/kvm/pmu-emul.c
+> @@ -7,9 +7,9 @@
+>  #include <linux/cpu.h>
+>  #include <linux/kvm.h>
+>  #include <linux/kvm_host.h>
+> -#include <linux/list.h>
+>  #include <linux/perf_event.h>
+>  #include <linux/perf/arm_pmu.h>
+> +#include <linux/rculist.h>
+>  #include <linux/uaccess.h>
+>  #include <asm/kvm_emulate.h>
+>  #include <kvm/arm_pmu.h>
+> @@ -20,6 +20,10 @@
+>  #define MDCR_EL2_PMU_RECREATE_MASK     (MDCR_EL2_HPMN | MDCR_EL2_HPMD | \
+>                                          MDCR_EL2_HLP)
+>
+> +/*
+> + * arm_pmus is append-only. kvm_supports_guest_pmuv3() feeds persistent
+> + * VM state, so a true result must remain valid after the check.
+> + */
+>  static LIST_HEAD(arm_pmus);
+>  static DEFINE_MUTEX(arm_pmus_lock);
+>
+> @@ -29,7 +33,6 @@ static bool kvm_pmu_counter_is_enabled(struct kvm_pmc *pmc);
+>
+>  bool kvm_supports_guest_pmuv3(void)
 >  {
->  	struct esca_block *sca =3D vcpu->kvm->arch.sca;
-> =20
-> -	if (!kvm_s390_use_sca_entries())
-> +	if (!kvm_s390_use_sca_entries() || !vcpu->arch.initialized)
->  		return;
-> =20
->  	clear_bit_inv(vcpu->vcpu_id, (unsigned long *)sca->mcn);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is there a data race in the
-error handling path of kvm_arch_vcpu_create() for UCONTROL VMs?
-
-If kvm_s390_vcpu_setup() fails, the code jumps to out_ucontrol_uninit:
-
-arch/s390/kvm/kvm-s390.c:kvm_arch_vcpu_create() {
-	...
-out_ucontrol_uninit:
-	if (kvm_is_ucontrol(vcpu->kvm)) {
-		gmap_remove_child(vcpu->arch.gmap);
-		vcpu->arch.gmap =3D gmap_put(vcpu->arch.gmap);
-	}
-	...
-}
-
-Because kvm->lock is released prior to calling kvm_arch_vcpu_create(), mult=
-iple
-concurrent vCPU creations could fail and execute this error path simultaneo=
-usly.
-
-Since gmap_remove_child() mutates the parent gmap's children list without
-holding the children_lock, could this lead to list corruption?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729152938.7823=
-83-1-imbrenda@linux.ibm.com?part=3D3
+> -       guard(mutex)(&arm_pmus_lock);
+>         return !list_empty(&arm_pmus);
+>  }
+>
+> @@ -807,7 +810,7 @@ void kvm_host_pmu_init(struct arm_pmu *pmu)
+>                 return;
+>
+>         entry->arm_pmu = pmu;
+> -       list_add_tail(&entry->entry, &arm_pmus);
+> +       list_add_tail_rcu(&entry->entry, &arm_pmus);
+>  }
+>
+>  static struct arm_pmu *kvm_pmu_probe_armpmu(void)
+> @@ -816,7 +819,7 @@ static struct arm_pmu *kvm_pmu_probe_armpmu(void)
+>         struct arm_pmu *pmu;
+>         int cpu;
+>
+> -       guard(mutex)(&arm_pmus_lock);
+> +       guard(rcu)();
+>
+>         /*
+>          * It is safe to use a stale cpu to iterate the list of PMUs so long as
+> @@ -836,7 +839,7 @@ static struct arm_pmu *kvm_pmu_probe_armpmu(void)
+>          * carried here.
+>          */
+>         cpu = raw_smp_processor_id();
+> -       list_for_each_entry(entry, &arm_pmus, entry) {
+> +       list_for_each_entry_rcu(entry, &arm_pmus, entry) {
+>                 pmu = entry->arm_pmu;
+>
+>                 if (cpumask_test_cpu(cpu, &pmu->supported_cpus))
+> @@ -1088,9 +1091,9 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
+>         int ret = -ENXIO;
+>
+>         lockdep_assert_held(&kvm->arch.config_lock);
+> -       mutex_lock(&arm_pmus_lock);
+> +       guard(rcu)();
+>
+> -       list_for_each_entry(entry, &arm_pmus, entry) {
+> +       list_for_each_entry_rcu(entry, &arm_pmus, entry) {
+>                 arm_pmu = entry->arm_pmu;
+>                 if (arm_pmu->pmu.type == pmu_id) {
+>                         if (kvm_vm_has_ran_once(kvm) ||
+> @@ -1106,7 +1109,6 @@ static int kvm_arm_pmu_v3_set_pmu(struct kvm_vcpu *vcpu, int pmu_id)
+>                 }
+>         }
+>
+> -       mutex_unlock(&arm_pmus_lock);
+>         return ret;
+>  }
+>
+>
+> --
+> 2.55.0
+>
+>
