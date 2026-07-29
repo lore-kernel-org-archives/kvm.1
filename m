@@ -1,148 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413AC3ACEE0
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA37303CAB
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785369261; cv=none; b=losUSVYbe4IhtKpMydCTYVkPQD/ebincCNUgJOssXSYWwoOs8aCJ1L8Jh9S5gBxO1LNckEKY795lBW7jJP3ErzKhi2zjqbf2p1mKW9UjU3n7PgmPqkL5OYJxQmePkPVC7rtJS/x2ms5unMOeFCclSqANpWAtCjQXKXLJA9G4d7k=
+	t=1785369446; cv=none; b=KnuKvFw6do7XxsZxS4m5DdG5CsQcl+BfG2THxN7N3bv4wESWbRqs5Ex6W7HxdVk634JH+c+aCPdvptp2V2KR4rumqzcF+jpZ3+xa3kGySSQ40N/4hvHKDUv5GFS6kNnewNuKdz85xAy1fJX0eLldJfzXVu0ZBb4rRk+kItsBQNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785369261; c=relaxed/simple;
-	bh=K9v08rLG0xUCV0/34cCopC2LdfQGSWFMfBPipip2QUk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=tNcN5T5TDr4oneMvufIMS/RqyFtV5qVgaoYrQrxRQP1Uw9KDW/wQYDAxvgWcXrpiCWHDRp4fK/MZX2aCb4lELT8WLFFeUwUPOu0h8ICcr/urslfNMzIcB9ZQ+ey9nI7JmkADIQ2BGG5dKxUezZhjuHod43qgXYLZ9lKACeoF+tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UjKA7MHM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785369446; c=relaxed/simple;
+	bh=x40rpiARFSh3T5lEfW7U0Jp2NGDYvCg2rqs+FMxdw1I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NxEgX8biEE1JKQRzivsuTKnGF+4DQBcZpRuw9AqoLRwLaNVZMpKmrLcx3WbqxlgxSaC4DEuv3z5XUtI1s4giuqpOrHgGyF8SfHhapAMzUjLtAtaNreEFpOXlE3V7upxao83k2pMw7oPg1sdj3qryutxRvV2NN31N4FHW1mLXLcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T96uDIU6; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UjKA7MHM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3141F000E9;
-	Wed, 29 Jul 2026 23:54:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785369259;
-	bh=RfSIxv/8mfPLJHBsJa3bUgB7en0rQvT0+aznFdaRhGE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=UjKA7MHMcWyFJfLU+e1aQJlE8g5wAz5V/ZV9V5DwTaxPEX1uBdfiwkbXIJdoBJYQp
-	 hicgiATl7UBrXGo516otpQeAlqRElUBnEl3TWJDdxdPYyQ3FQakrfUojaPydXn31GF
-	 JTxkxVMSrKk5I/u4S6brlYmcQI1Xk+Fg9Sng8rmBHjS/xhc7Rs+xYEXC7nQSwYz7U1
-	 b+VYa/ZipTz6rIsZJ84pw6VgG2RzmeDn5fYCZdfQByK24HlMaAvvphCMuaCLXo8go5
-	 huRpsJTKEiehd+aLWk4I1jyV4kQmtJKCb9k0ikbk7S570vuqCbnpn4rjMN+qtbvk5s
-	 3v26+YTDsYLQg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] RISC-V: KVM: Mark the reset callback of FWFT
- extension always dirties CSR
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Inochi Amaoto" <inochiama@gmail.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260729232527.139183-5-inochiama@gmail.com>
-References: <20260729232527.139183-1-inochiama@gmail.com>
- <20260729232527.139183-5-inochiama@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 29 Jul 2026 23:54:19 +0000
-Message-Id: <20260729235419.AA3141F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T96uDIU6"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2ccb6823efcso13463995ad.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 16:57:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785369443; x=1785974243; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ht1aTs4pO9WHnQaSF7pKvIACIeVphUGRPBFrJ5uIv+8=;
+        b=T96uDIU6VfkfEe78RA3/KP22l6Z26FjfTQ+nsGQydcFNmVMtvNNbQTd0TGnLrbEfKe
+         pqCY26jImGT1HTveLZyELZRscGp/6VQgj33tE06fPohRhd6xh3mxGmKonuwZfUQXWDgr
+         YrbymKH+DfLlvnODoh6H12pQoSbL6+6cCmIMYENZIKQ+yeW+78egLCzfHFjxyOq9XMLC
+         /84EMVuDpsYAZyMVp11KoT4ifWAulkjzyU2g250EinAjs5ImfiZ8ndUYMgDE3padlGB+
+         GB8kecLNN0seKVftE83RR0R31RP91EUw0QMtlh7P3tOaOupm95C66//BbnW+NOZstN2R
+         Sf3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785369443; x=1785974243;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ht1aTs4pO9WHnQaSF7pKvIACIeVphUGRPBFrJ5uIv+8=;
+        b=eNxibMfCjoi2KeDhtSsm3ROui0pVesCFxGb1Yrl3qlEJA14NjWPGq//THwxqnrSh6O
+         owSOXnV4MIUvD7O9re5i4A1ApEVnT75QPok/wC70LLG3eVX7lmfAXzz3ryCsyyJBL8/F
+         9fW7uLud4sBFi+xa48xc/gcBB5FSbqNAf9NK4MeO4w1f02O5zmlMahh8ny9ltiU5FWJs
+         8JsGfUUaYaqxiG+DA/VJD10CO49UZ5EUf8bwDCGeHg0DnVe9MjHqhnCW/retN5Z9L0vz
+         vWGC1BIOYMisq0NscsPrL9DU0XAG7X8VGJNlftctsT9Jc1XhZtwYeXjzIsnIKWafyFWw
+         MafQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp2tWbp7Hl4F0JowKudXwtq5bPteS2Z3FaSSwxaAn4bnGKc6fMCyr0oJDRz5ONvlxgA/ds=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWSYH6KaGA0ylorAhkuqOWKi718faWgSOpn1LPwR1YcJim+vBp
+	D9rvX0GtKdB8lHFop59JBMmM4fNryzR5YqYyA18P/4Uug5LwiI8UdHU4nKoFMmYt3RKNUMOJ5dX
+	Go1QVuA==
+X-Received: from plpw13.prod.google.com ([2002:a17:902:9a8d:b0:2cc:fd6c:c5d3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d591:b0:2c9:da58:17dd
+ with SMTP id d9443c01a7336-2d035e4b61amr3750695ad.34.1785369443197; Wed, 29
+ Jul 2026 16:57:23 -0700 (PDT)
+Date: Wed, 29 Jul 2026 16:57:22 -0700
+In-Reply-To: <ampBJrSSas_XISim@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260729170621.308809-1-dmaluka@chromium.org> <20260729170621.308809-3-dmaluka@chromium.org>
+ <20260729172831.5BDE71F00A3A@smtp.kernel.org> <ampBJrSSas_XISim@google.com>
+Message-ID: <amqTYv4LtlI4SKcj@google.com>
+Subject: Re: [PATCH v2 2/2] KVM: VMX: Fix stale PID-pointer table entry left
+ after vCPU free
+From: Sean Christopherson <seanjc@google.com>
+To: Dmytro Maluka <dmaluka@chromium.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Wed, Jul 29, 2026, Dmytro Maluka wrote:
+> On Wed, Jul 29, 2026 at 05:28:30PM +0000, sashiko-bot@kernel.org wrote:
+> > > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> > > index 6b96f7aea20bd..ebf26ea84a50b 100644
+> > > --- a/arch/x86/kvm/vmx/vmx.c
+> > > +++ b/arch/x86/kvm/vmx/vmx.c
+> > > @@ -7572,6 +7572,9 @@ void vmx_vcpu_free(struct kvm_vcpu *vcpu)
+> > >  	nested_vmx_free_vcpu(vcpu);
+> > >  	free_loaded_vmcs(vmx->loaded_vmcs);
+> > >  	free_page((unsigned long)vmx->ve_info);
+> > > +
+> > > +	if (vmx_can_use_ipiv(vcpu))
+> > > +		WRITE_ONCE(to_kvm_vmx(vcpu->kvm)->pid_table[vcpu->vcpu_id], 0);
+> > 
+> > [Severity: High]
+> > This isn't a bug introduced by this patch, but does clearing the pid_table
+> > entry alone prevent hardware from writing to the freed pi_desc?
+> > 
+> > According to the Intel SDM (Section 29.1.5), the processor caches PID-pointer
+> > table entries in the VPID.
+> 
+> I can't find this statement in the SDM, and I'm not sure what it has to
+> do with VPID, apart from the acronym similarity.
 
-New issues:
-- [Low] The addition of `vcpu->arch.csr_dirty =3D true` in `kvm_sbi_ext_fwf=
-t_reset()` is entirely redundant, contradicting the commit message premise.
+Yeah, I have no idea what Sashiko is talking about.  The PID table is physically
+addressed, AFAIK it doesn't have a TLB entry of any kind, let alone one tagged
+with the vCPU's VPID.
 
-Pre-existing issues:
-- [High] Missing `vcpu_load()` around `KVM_SET_ONE_REG` for timer state cau=
-ses physical CPU hardware CSR corruption.
---
-
---- Patch [4]: [PATCH v3 4/4] RISC-V: KVM: Mark the reset callback of FWFT =
-extension always dirties CSR ---
-commit 316b183f1319c7935d993137c0fbff524d4ecc07
-Author: Inochi Amaoto <inochiama@gmail.com>
-
-RISC-V: KVM: Mark the reset callback of FWFT extension always dirties CSR
-
-As the CSR is only flushed when the csr_dirty is set, always set the
-csr_dirty field in kvm_sbi_ext_fwft_reset() so the CSR change can take
-effect immediately.
-
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 2794e9e5b495e..8748df921f101 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -420,6 +420,8 @@ static void kvm_sbi_ext_fwft_reset(struct kvm_vcpu *v=
-cpu)
->  		if (feature->reset)
->  			feature->reset(vcpu);
->  	}
-> +
-> +	vcpu->arch.csr_dirty =3D true;
-
-[Severity: Low]
-Is this assignment actually needed?
-
-The commit message states csr_dirty =3D true is added so the CSR change tak=
-es
-effect immediately. However, kvm_sbi_ext_fwft_reset() is executed exclusive=
-ly
-via the .reset callback in two paths: riscv_vcpu_set_sbi_ext_single() (which
-returns -EBUSY if the vCPU has already run) and kvm_riscv_vcpu_sbi_reset()
-(called immediately after last_exit_cpu is explicitly set to -1).
-
-In both scenarios, vcpu->arch.last_exit_cpu is guaranteed to be -1.
-When kvm_arch_vcpu_load() later evaluates the fast-path condition:
-
-arch/riscv/kvm/vcpu.c:kvm_arch_vcpu_load() {
-    ...
-	else if (vcpu->arch.last_exit_cpu =3D=3D cpu && !vcpu->arch.csr_dirty)
-		goto csr_restore_done;
-    ...
-}
-
-It will always evaluate to false (since physical cpu >=3D 0), meaning KVM
-unconditionally bypasses the skip and flushes the CSRs anyway. Does this ma=
-ke
-the csr_dirty assignment redundant?
-
->  }
-
-[Severity: High]
-This is a pre-existing issue, but I noticed a potential hardware CSR
-corruption when setting the timer state via ioctl.
-
-Unlike x86, s390, MIPS, and LoongArch, the RISC-V implementation of
-kvm_arch_vcpu_ioctl() handles KVM_SET_ONE_REG without acquiring
-vcpu_load(vcpu):
-
-arch/riscv/kvm/vcpu.c:kvm_arch_vcpu_ioctl() {
-    ...
-	if (ioctl =3D=3D KVM_SET_ONE_REG)
-		r =3D kvm_riscv_vcpu_set_reg(vcpu, &reg);
-    ...
-}
-
-When an unprivileged userspace process sets the timer state (e.g.,
-KVM_REG_RISCV_TIMER_REG(state) to KVM_RISCV_TIMER_STATE_ON) on a system with
-the SSTC extension, it eventually invokes kvm_riscv_vcpu_update_vstimecmp(),
-which executes a direct hardware write:
-
-arch/riscv/kvm/vcpu_timer.c:kvm_riscv_vcpu_update_vstimecmp() {
-    ...
-	ncsr_write(CSR_VSTIMECMP, ncycles);
-    ...
-}
-
-Because the vCPU is not loaded onto the host CPU and preempt notifiers are
-not active, does this directly corrupt the physical CPU's VSTIMECMP hardware
-register?
-
-If this destroys the -1UL safeguard, could it result in spurious guest timer
-interrupts on the host, degraded power-savings (where WFI becomes a NOP), or
-corruption of another running vCPU's timer state?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260729232527.1391=
-83-1-inochiama@gmail.com?part=3D4
+> > Because KVM immediately frees the vcpu memory into kvm_vcpu_cache after
+> > kvm_arch_vcpu_destroy() without issuing a cross-vCPU flush (e.g., via
+> > kvm_make_all_cpus_request(kvm, KVM_REQ_TLB_FLUSH)) to invalidate the VPID
+> > caches of other running vCPUs and synchronize with in-flight IPI deliveries,
+> > can other vCPUs still send hardware IPIs using the cached pi_desc pointer?
+> > 
+> > Could this result in the IPI hardware writing to the freed vcpu memory and
+> > corrupting another newly created vCPU when the memory is reused from
+> > kvm_vcpu_cache?
