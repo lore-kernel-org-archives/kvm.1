@@ -1,62 +1,62 @@
-Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C793B995B
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 07:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB133BED42
+	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 07:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785308878; cv=none; b=iICQ5PHPB/2QZ++/IOsV8Wkoeys+e7m180LLPAbMica161xwmm/T2bLukGt48SQpJM4pTHyBOg9UToemTSSIoD03e4ZLzj4iZT4QWly/oJAnXCOuZv0scfl09QyZPmn1FleksWNfx+Gqk6nQNJO9GcYSpoWZe8dscQysbEyqbos=
+	t=1785308886; cv=none; b=d8BcohXxOmFSBQCNsv/UQeb6iAHczsW53E7CgvvyVP9HvO8vnrP1yQO7m+mUd24KAO4u0TcqLqpPKM+FPUQ2hPaLx6MRSXCqwuRTqTc3OtPT3AQd8Q24E2cCMZNbY1dWfqOPeMF+6cwpvZ1HWo4c6K0PCCnbMWZo1qaDA0/MT3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785308878; c=relaxed/simple;
-	bh=uxkXFNWNZi5D34tDH/Krd7LciHBRYBtcyiQYP/YDYjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rJQx9TGYccIVcrVog0o2TXQ9pOr2Y18nJNdksSccMREUGarHq5Lo9hTx4at911BJVS05FQLZoG2w89104Q/YUf3nW7cfPA/9+yR2/sVXWqQ/2bE81/WVW+83Ov6BVZqXhG/XtaSlRjbrScEyvFLL1u14bJqhhDogRNOiHNgw+GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqeoQe//; arc=none smtp.client-ip=74.125.228.1
+	s=arc-20240116; t=1785308886; c=relaxed/simple;
+	bh=SsdaLCBhfc9q+NwsQ9Mq9LtNazpr/xt1goUIO6J1tz8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u9Fvua9OViDBUxvsBCk+pGMAUHauoQ40GGLIsGjV9d+zFj0T9PI/O/h/PF+pR0L1SF0up33cFTOV8S9DptE2CXYVXTRfvWOPuYbhH2d4uAnzvxZVgSewn61HXr/9vvMONF88w5+lCcTXK51nGQMbTHx7hjoRv4qCntctpXu44vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=awkirnrd; arc=none smtp.client-ip=74.125.227.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqeoQe//"
-Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-cab1b0bb489so459493a12.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 00:07:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="awkirnrd"
+Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-38dcd98e5easo346504a91.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 00:08:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785308876; x=1785913676; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785308884; x=1785913684; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D50VgXdohjCe0RlJun/XbYhvNc02+cTyZmQgaJjzY0o=;
-        b=MqeoQe//lTtdct+e3KLoiBKgA6gPKkcLv0VE+wiBqVxK0pbZYRr1jS5Vz1P6RvGqX3
-         7nlvGw6n34zoC6fmk4dS2RqhofaHuHv0j1hpfZTW+oOQzAuVeF4ZPhKYlX/2T8Y8hdWM
-         zecJremX+hxC9fTNPQGhqZ1XJJ9HlpUSZvyXx/PbXmf//ABONZc37N3PuF/Ny90LPwka
-         kQXBIrjEg3JL8/cZph0gHYhOlwYXIEjWDwXc4oTQbFLE1Ascr9ZLvNL+kQ0S12S6i9xA
-         wSOLoswgKZAn+t/fNaeykcSj3wZvGnOPv3fc/T671JOpZDU59dKt7HeSxpulNX6DX6fF
-         JmdQ==
+        bh=X3JdpARdvO6SntweUzlxloeUTF3+X8KQZf2BNPxyxhE=;
+        b=awkirnrdijVR7kwF9FdRXg2zfdU9NsRkjwJpLwxqhHsFdjObWIIIrogBQ+H0cczfKw
+         NbQsr0q5EcZCXp4UQ/4vpxv6cQ+b+eASaRh6KXLCkmanrKtShAVoF/l3MWn4iupn9mnA
+         aLBQwO4A9a0fybo2TPZiHS5gCc8rDbQQcSX6Dtm1SvUUXBSTKRmMAYytJKRrWhDRpZNG
+         2vyDNyMwfbu/gQhswwzAVBcGw2u5Fwk0b4NsPy50urUdjVWp/4iKHIuO0h+tVwhQY0zv
+         7e8jxEnU2au9IL84T7aXkhScQrj95N30fsC34Mwv184hb8qVf4jvIp5vZuQuhwRQBZUN
+         Czpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785308876; x=1785913676;
+        d=1e100.net; s=20251104; t=1785308884; x=1785913684;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D50VgXdohjCe0RlJun/XbYhvNc02+cTyZmQgaJjzY0o=;
-        b=Ern+1sS0xvf/1QOOp74wvRRPfS1kCTZ00cpVegkmiJzeo9eiNPn/5MUnOyPAw9ceYv
-         eLEchDU4PXX6UNQmtmuBxvJREMblcyIwQundSQUJPSC35RWsM8cDnLD8CHQWzs9Ic44K
-         ZAzUmXQjCqYZieaaxml2cChTYVpHVWa4wAAQ6raP1pOd/f/s1DktdSq3CfTgvXHPJZlM
-         q6gjhumPj5k0rl7AAWcF+Xkjgk28pncsb2YAoEtFaDvPWST6E69eyYRcqRQ9nCx3HqL5
-         jyvYnmi/CR2qY5eO8Hq33JwCWd08wVV8mPURzu6b6vUdVnm/AeIqQbsZz/OdiiwSSSrG
-         On/w==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6poWp3dkeMPny2RBoDquGgwuQJjWvSurjRCoVoPw9QeNcVHKP3Yg8cF56cOOwUU5wry8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKHFwLRPwS9x9Ph7Y+hCKXbVQQxVtA96qQwDY07DDfN9EQOj/J
-	YKKxSgnQ+EtJDfmwloHJNT+9dLiZDgv9K51GhegwZyuE/qbTur4HPYTd
-X-Gm-Gg: AR+sD10K5PJaPtQX2jYev/UUFg0nrZDBw5lpv9+GnX78ECiSfWBaj9WsIrMQ0CwBqOG
-	jIIRxHEh9HwjtxTOPjV76A8ihKkw7a9LS8AW8JUaewqXG6YPl4InSpFFUruMOvY4/B0VV6vrOEm
-	rR8/ffNYCwwmxguGF6GdLuD3J6QQemwi/N4ziFdldY9xtbLn3QEuZ6YKFz+S9/mJZQ+sWce5gB2
-	0vykC+0dt1cosypTPhXvAPFSHi2m5jevHvx7BtOuzg3z6KDGXN4m0oVJ2pB82gur623QhAyTFAj
-	myhHVGOfGcqSGuFtVVWAP331VtWwsQZlWufPuVwDFzH3QYp1FpXU/pnfhSXep2GpQ2BSdFiCGQj
-	U1H0aMSseyHmm9S9UUPosqFLzxdNJ1QV40ADd/pvjHO3OhqXvyi+eZMauTgMZwt/Gnvlasx1bKZ
-	mjvY2pT1/4oH0r32RYvAy7ewcTqrEZdg+iONz58LQd8oG+94rpJLqh2SF853cczDDFBYEc3we0c
-	M8Mj/5MsXlddrBv5372WL/jQw==
-X-Received: by 2002:a05:6a00:cc6:b0:848:467d:293b with SMTP id d2e1a72fcca58-84e931b505dmr5656775b3a.11.1785308876062;
-        Wed, 29 Jul 2026 00:07:56 -0700 (PDT)
+        bh=X3JdpARdvO6SntweUzlxloeUTF3+X8KQZf2BNPxyxhE=;
+        b=Co7mtzq+joxBzmFlmsRHmbQ2vADXzjaBWhHa8bavg4EdMxEWw0EbSkCW0sJVomAV9s
+         X2umsggwFI6PkFYnZ32UpmkW1YIrhaLvU8WwhBU8b0C+QbudhhoQSNMxuuNdCQM+c5N3
+         BK5ozn/MlY/xof8QYBI6SPhRDPrrR9O2db73L1ASz9eD2W338fixcdsxoOCXqkJudnIF
+         dzrRWo5YXScogAQkur//6rrxSxiekmw+gr4yIRyIiu7XFyArs48YODi3pgeZqLZ7WkaH
+         rC2tDXDBkruE1JbqeO6btwW/RxRcQoHp+iLp7a1M33xHhpJ7Vfa/00FgdAqtx+gs6bUZ
+         tXZA==
+X-Forwarded-Encrypted: i=1; AHgh+Rozzot022oL4R3f/9dzMwZC9TlEFFm0MgjhdrwDEZdGiwxN3ru8yojY1x3hvPHXIDKZoBg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymRFoY5TDFGFDq7JPprPiR8Ng9U6oPtHybNSJ0PkUJl0SrYkEr
+	FgaY1gAMoDcLwGUyFYnRo3PjfKlBdhezxbLsyXmptiZuas2cNb55UUme
+X-Gm-Gg: AR+sD13SuLoJnRhHnzL/qk6o+y3sPEiL/wQjEMAdqXK9C66S/Cch9xmPesmICP1qyLM
+	xRiTjd02eKKNu+GXThI+bMcYTOklEePucR9Noryy847zajcaw57k+n2yhgUrN+IcxQ+PIG9NXG2
+	qPPSJiLrqSPPG585pfcjD79qfZYA++wgMfAk8RTrEu06aAnuCIurNtL0OS1menbvJlusKd5DoWX
+	NF/+wLUfmjvxG/Sxo0L2TXJKoCOvge4YrzpKkI+q2Zd+XoERUWCx70pumF+Bqxa7BIrsQeMiZFB
+	aP0xoGWqk+B2xOkigQScmmQGAegdPuukCoOmosbTMWhqeard2y11gwkjDdHcMmu2mfmkuyM5DE4
+	u8tt6ZcstuZJWFGwuoVM5CEuB4tn+U+9B3UMqgXO1nH8HMsoSxdLQ9rr5pjcLMPwakjcziRTnrW
+	l5Hk277CMPOqhS8E73NKlboRQVni++uVXAw4lQ+Zu8PQUpLoGP4AcMV6izQot+a5ermFTsApmno
+	vM=
+X-Received: by 2002:a17:90b:3c12:b0:381:9028:5945 with SMTP id 98e67ed59e1d1-38f6a44b7a8mr6072575a91.14.1785308884161;
+        Wed, 29 Jul 2026 00:08:04 -0700 (PDT)
 Received: from q-System-Product-Name ([129.227.183.200])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84ea03d3182sm890181b3a.54.2026.07.29.00.07.53
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f7f292af9sm873721a91.11.2026.07.29.00.08.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 00:07:55 -0700 (PDT)
+        Wed, 29 Jul 2026 00:08:03 -0700 (PDT)
 From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
 To: Anup Patel <anup@brainfault.org>
 Cc: Atish Patra <atish.patra@linux.dev>,
@@ -70,9 +70,9 @@ Cc: Atish Patra <atish.patra@linux.dev>,
 	linux-kernel@vger.kernel.org,
 	Quan Zhou <zhouquan@iscas.ac.cn>,
 	Bingyu Xian <shanbeeyoo@gmail.com>
-Subject: [PATCH] RISC-V: KVM: Fix spurious -EEXIST and clean up gstage fault path types
-Date: Wed, 29 Jul 2026 15:07:49 +0800
-Message-ID: <20260729070749.730218-1-shanbeeyoo@gmail.com>
+Subject: [RFC PATCH] RISC-V: KVM: Add minimal guest_memfd support
+Date: Wed, 29 Jul 2026 15:07:56 +0800
+Message-ID: <20260729070756.730312-1-shanbeeyoo@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -82,96 +82,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two small fixes to the RISC-V G-stage page fault path, both suggested
-during review of the in-progress KVM Userfault port.
+Add minimal guest_memfd support for RISC-V KVM, following the same
+pattern as x86 and arm64.
 
-1. Treat -EEXIST from kvm_riscv_gstage_map_page() as a quiet success.
+1. Select KVM_GUEST_MEMFD in Kconfig
+2. In kvm_riscv_mmu_map(), check kvm_slot_has_gmem() early, before
+   taking mmap_read_lock(). For gmem memslots, resolve the PFN via
+   kvm_gmem_get_pfn(), then acquire kvm->mmu_lock and jump to G-stage
+   mapping, bypassing vma_lookup()/__kvm_faultin_pfn(). The gmem PFN
+   is resolved before mmap_read_lock() so the mmu_lock taken for the
+   mapping is never held while waiting for mmap_lock, which would
+   deadlock against mmu_notifier invalidation (mmu_lock -> mmap_lock).
+3. Skip kvm_release_faultin_page() for gmem pages; their lifetime is
+   managed by the gmem inode and invalidation notifiers.
 
-   When a concurrent vCPU installs the same G-stage mapping while we
-   are waiting for mmu_lock, gstage_map_page() returns -EEXIST.  This
-   is not an error -- the page is correctly mapped and the faulting
-   vCPU can simply retry the guest instruction -- but KVM was treating
-   it as one: printing "Failed to map in G-stage" to dmesg and
-   propagating -EEXIST all the way to userspace.
+Verified: defconfig + CONFIG_KVM_GUEST_MEMFD=y compiles cleanly.
 
-   Align RISC-V with x86 and arm64, which already swallow -EEXIST in
-   their respective fault handlers.  This also lets
-   kvm_release_faultin_page() drop its "ret && ret != -EEXIST" special
-   case: with ret normalized to 0 the regular release path is correct.
-
-2. Clean up fault path types.
-
-   - vma_pageshift: short -> unsigned int.  Bit widths and shift counts
-     conventionally use unsigned int in the kernel.
-
-   - fault_addr: unsigned long -> gpa_t.  RV32 with Sv32x4 has 34-bit
-     guest physical addresses that would be truncated when stored in a
-     32-bit unsigned long; gpa_t is u64 on RV32 and holds the full
-     address.  No functional change on RV64.
-
-   These type changes are in preparation for sharing a common
-   struct kvm_page_fault across architectures, as requested during
-   review.
-
-No functional change on RV64 beyond silencing the spurious -EEXIST.
-
-These are independent fixes with no dependencies; they can be merged
-on their own.  The KVM_MEM_USERFAULT port that motivated them will be
-sent separately as an RFC once the generic userfault series lands.
-
-Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
 Assisted-by: YuanSheng: deepseek-v4-pro
 Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
 Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
 Signed-off-by: Bingyu Xian <shanbeeyoo@gmail.com>
 ---
- arch/riscv/kvm/mmu.c       | 8 +++++---
- arch/riscv/kvm/vcpu_exit.c | 3 ++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/Kconfig |  1 +
+ arch/riscv/kvm/mmu.c   | 17 ++++++++++++++++-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
+diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+index ec2cee0a39e0..77121100579f 100644
+--- a/arch/riscv/kvm/Kconfig
++++ b/arch/riscv/kvm/Kconfig
+@@ -29,6 +29,7 @@ config KVM
+ 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
+ 	select KVM_GENERIC_HARDWARE_ENABLING
+ 	select KVM_MMIO
++	select KVM_GUEST_MEMFD
+ 	select VIRT_XFER_TO_GUEST_WORK
+ 	select SCHED_INFO
+ 	select GUEST_PERF_EVENTS if PERF_EVENTS
 diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 8a0aa5e0e216..d2a06a54be17 100644
+index d2a06a54be17..a9d61d0366e2 100644
 --- a/arch/riscv/kvm/mmu.c
 +++ b/arch/riscv/kvm/mmu.c
-@@ -541,7 +541,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	kvm_pfn_t hfn;
- 	bool is_hugetlb;
- 	bool writable;
--	short vma_pageshift;
-+	unsigned int vma_pageshift;
- 	gfn_t gfn = gpa >> PAGE_SHIFT;
- 	struct vm_area_struct *vma;
- 	struct kvm *kvm = vcpu->kvm;
-@@ -652,11 +652,13 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 						vma_pagesize, true, true, out_map);
- 	}
+@@ -557,6 +557,19 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	/* Setup initial state of output mapping */
+ 	memset(out_map, 0, sizeof(*out_map));
  
--	if (ret)
-+	if (ret == -EEXIST)
-+		ret = 0;
-+	else if (ret)
++	if (kvm_slot_has_gmem(memslot)) {
++		int max_order;
++
++		ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &hfn, &page, &max_order);
++		if (ret)
++			return ret;
++
++		vma_pagesize = PAGE_SIZE;
++		writable = true;
++		write_lock(&kvm->mmu_lock);
++		goto map_gstage;
++	}
++
+ 	if (is_write && logging &&
+ 	    kvm_riscv_mmu_dirty_log_write_fault_fast(kvm, memslot, gpa, out_map))
+ 		return 0;
+@@ -643,6 +656,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (!logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
+ 		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
+ 
++map_gstage:
+ 	if (writable) {
+ 		mark_page_dirty_in_slot(kvm, memslot, gfn);
+ 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
+@@ -658,7 +672,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
  		kvm_err("Failed to map in G-stage\n");
  
  out_unlock:
--	kvm_release_faultin_page(kvm, page, ret && ret != -EEXIST, writable);
-+	kvm_release_faultin_page(kvm, page, ret, writable);
+-	kvm_release_faultin_page(kvm, page, ret, writable);
++	if (!kvm_slot_has_gmem(memslot))
++		kvm_release_faultin_page(kvm, page, ret, writable);
  	write_unlock(&kvm->mmu_lock);
  	return ret;
  }
-diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
-index 6c8530b9f29e..76cceecee5ab 100644
---- a/arch/riscv/kvm/vcpu_exit.c
-+++ b/arch/riscv/kvm/vcpu_exit.c
-@@ -17,7 +17,8 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
- {
- 	struct kvm_gstage_mapping host_map;
- 	struct kvm_memory_slot *memslot;
--	unsigned long hva, fault_addr;
-+	unsigned long hva;
-+	gpa_t fault_addr;
- 	bool writable;
- 	gfn_t gfn;
- 	int ret;
 -- 
 2.54.0
 
