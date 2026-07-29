@@ -1,107 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF3043CEE9
-	for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 08:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7D1425862;
+	Wed, 29 Jul 2026 08:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785314702; cv=none; b=s9RQrhcN+dKAj3DqMUp6L61iWKRppG3EUoo0Fs4XPNSat+OZrT9Th2iNp/iPhUvxgRpyDz7ldpo6GEMdjCDaLW5Z+zoIOR9T8jvHC6uuppdETBktqA4ooW2OpiyHOkTL1NzVeTQt9Q0Hpxi5wjgB/82hTSIiYkZxAvguVndC0Qc=
+	t=1785315134; cv=none; b=YCe2KWGWpJJy5LqICx/73+DdeBcTRXh6TOj+Ulgx6sNhKkMpEnFYdggneCZmC7u3Q5Kez7cnRetfM1uvWSqMXNnnq8AmFfmyppwoCY6piEaa4tH3Bdls7KhESvfNseoCoKAjjrwNxKksPKLFbaw1vdabKC9LEwVNOwq0FSvvV34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785314702; c=relaxed/simple;
-	bh=yIw6OKboj0oYZ4wBCF+AvbEyU5EHbzJU0A0UnfBUyxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zw/bHM+eZfumMbmQ7YkZjerY68QFNpoOcf205tdayUWEIPoycJOZ4rIQ43snkmwfGk4NHTO3N/EhXGTYJfMFjrsJq2/CMucbza75K5W0t2Yr0Ay7ux9dYjtlxD2TRAzHwWaj5W3n0M+IZl5MENEq4/p4QXjJNSvCbbAAhPjFVjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQcR/QHG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785315134; c=relaxed/simple;
+	bh=pQ92s1dsJXbO1L084ER++vm8HZLfiXrippuYCfmyohw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=o0K0xWtYkTQXDFdOnUFU+YNZH6grKaNzZpzBjGKTSXWUX13QXahyvjxCdoyvWiVN7TQMnHMMLqImItWhBhwCsntygHpBGXbGtyB520VMaxwxlR6d9QrfZq0wgiHPtEMbnfZ9RDVMSSkVTiI2RY2tyjWnbuP9e1hfY3BXd1343B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Fi3t5e1+; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQcR/QHG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8A51F000E9;
-	Wed, 29 Jul 2026 08:44:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785314700;
-	bh=D0CluIGc1MVu89QcquHLZ/G/m76BWe29aW2jG65T4pk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YQcR/QHGSnsEURic9iO4rpfgSpZLgQHaO7nqi29hGP04hwld3n0v4VkrB9yduZs4X
-	 WBGk3lpCOh7oq5F0Y2tcBwISt3hlJvWf3Pvg+MgIOcSXbQTo+0Jwlxxk0YQehqj/6R
-	 gzZiY7NQ+WAvtvd8FzZIk5xx8XHbX3NTghgp9ckY=
-Date: Wed, 29 Jul 2026 10:44:47 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: anup@brainfault.org, atish.patra@linux.dev, kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
-	security@kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Synchronize hrtimer callback during teardown
-Message-ID: <2026072959-penpal-petroleum-bf6e@gregkh>
-References: <CAGEsz8GNHFCOZ=-_y56rK1aX+Ze7w8qVqZSQ-OuGo_dPC4bXCw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Fi3t5e1+"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=QPRGoo1D4Xw+SnYlljs3qul9NrnGRmxeCI+oa2x6cZ4=;
+	b=Fi3t5e1+OI7bmwazxV2U9+2ZkXeAg9WLy+4JXRviv/rIWOWCFJtWjh0aQQtfYPFt2qYmYP34V
+	CjWuXdKpD6OQR7F9A4GJEM9wDrpk4GSbYuTtQnFFIgWT76Qr334KuIOxIb/T4lKDFWRY9BZUH5m
+	Mw++ag529lCX5BdwAg98K0k=
+Received: from mail.maildlp.com (unknown [172.19.162.144])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4h95S653Rnz1T4Fq;
+	Wed, 29 Jul 2026 16:42:30 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2E1144056D;
+	Wed, 29 Jul 2026 16:52:01 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 29 Jul 2026 16:52:00 +0800
+Message-ID: <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
+Date: Wed, 29 Jul 2026 16:51:59 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGEsz8GNHFCOZ=-_y56rK1aX+Ze7w8qVqZSQ-OuGo_dPC4bXCw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
+ dirty tracking
+To: Leonardo Bras <leo.bras@arm.com>
+CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
+	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
+	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-4-zhengtian10@huawei.com>
+ <aliKo7dTZzKcWHzI@kernel.org>
+ <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
+ <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <al4bYajWE-v6wofu@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Wed, Jul 29, 2026 at 01:42:24AM +0900, Myeonghun Pak wrote:
-> The non-Sstc hrtimer callback clears next_set before its final uses of
-> the enclosing vCPU.  If teardown observes next_set as false while the
-> callback is still running, kvm_riscv_vcpu_timer_cancel() skips
-> hrtimer_cancel() and kvm_destroy_vcpus() can free the vCPU before the
-> callback enters kvm_riscv_vcpu_set_interrupt().
-> 
-> A guest can arm the timer with SBI TIME and request shutdown with SBI
-> legacy shutdown or SRST.  A VMM that honors KVM_EXIT_SYSTEM_EVENT and
-> destroys the VM supplies the teardown side of the race; no post-launch
-> host ioctl is needed to arm or request teardown.
-> 
-> On upstream master 62cc90241548, generic KASAN reported:
-> 
->   BUG: KASAN: slab-use-after-free in do_raw_spin_lock
->   Write of size 4 at addr ff60000005e58898
-> 
->   kvm_riscv_vcpu_set_interrupt
->   kvm_riscv_vcpu_hrtimer_expired
->   __hrtimer_run_queues
->   hrtimer_interrupt
-> 
-> The object was allocated by KVM_CREATE_VCPU and freed concurrently by:
-> 
->   kvm_destroy_vcpus
->   kvm_arch_destroy_vm
->   kvm_destroy_vm
->   __fput
-> 
-> For deterministic validation, I added mdelay(1000) immediately after
-> the existing next_set = false assignment.  This only widens the
-> existing post-clear callback window.  A no-delay trace build naturally
-> reached the callback-after-teardown-start/before-deinit ordering in 12
-> of 200 runs, but 1,500 stock-kernel stress iterations did not produce a
-> KASAN report, so natural reproduction is timing-sensitive.
-> 
-> Always invoke hrtimer_cancel() for an initialized timer.  Preserve the
-> existing -EINVAL result when the timer is no longer set, but only after
-> synchronizing with a running callback.
-> 
-> With this patch, hrtimer_cancel() blocked for the full widened callback
-> window before vCPU destruction.  KASAN reported no error in 100
-> fixed-and-widened runs or 200 fix-only timing-sweep runs.
-> 
-> Fixes: 3a9f66cb25e1 ("RISC-V: KVM: Add timer functionality")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> ---
->  arch/riscv/kvm/vcpu_timer.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> AI disclosure: I used AI assistance during the audit and am treating the
-> issue as public as required by Documentation/process/security-bugs.rst.
-> The reproducer and full KASAN trace have not been posted publicly and
-> are available on request.
 
-Then don't you need to add an "Assisted-by:" line to your patch?
 
-And as you posted this publicly, no need to cc: security@kernel.org.
+On 7/20/2026 8:58 PM, Leonardo Bras wrote:
+> On Fri, Jul 17, 2026 at 04:21:32PM +0100, Leonardo Bras wrote:
+>> On Fri, Jul 17, 2026 at 11:58:06AM +0800, Tian Zheng wrote:
+>>>
+>>> On 7/16/2026 3:39 PM, Oliver Upton wrote:
+>>>> Hi Tian,
+>>>>
+>>>> On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+>>>>> -	if (prot & KVM_PGTABLE_PROT_W)
+>>>>> +	if (prot & KVM_PGTABLE_PROT_W) {
+>>>>>    		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>>>>
+>>>>> +		/*
+>>>>> +		 * No DEVICE filter needed here: relax_perms is only called
+>>>>> +		 * on FSC_PERM faults. Device pages always get full RW from
+>>>>> +		 * initial mapping and are never write-protected during
+>>>>> +		 * migration, so they never trigger a permission fault.
+>>>>> +		 */
+>>>>> +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
+>>>>> +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>> +	} else {
+>>>>> +		/*
+>>>>> +		 * Clear DBM on W→RO downgrade to prevent hardware from
+>>>>> +		 * silently upgrading RO+DBM back to W+dirty, which would
+>>>>> +		 * bypass KVM's write tracking and cause data corruption.
+>>>>> +		 */
+>>>>> +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>> +	}
+>>>>> +
+>>>> This block makes it pretty evident that the DBM bit really *is* the
+>>>> write permission bit. I'd much rather we introduce the concept of dirty
+>>>> state to the page table library and migrate the abstract write
+>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
+>>>>
+>>
+>> Ohh, that's an amazing idea!
+> 
+> Thinking about that again...
+> If we adopt the encoding with DBM being the write-permission bit, and all
+> PTEs have it since the start, how can we have lazy-splitting happening?
+> 
+> Only way I think of is removing both DBM and S2_S2AP_W bit from writable
+> PTEs during dirty-track enable, and re-adding them during the first write
+> fault. If we don't remove the DBM bit, systems with HDBSS would just dirty
+> it by hardware, without causing a fault.
+> 
+> DBM=0 would need to happen only in the first write-protect (only on
+> lazy-splitting). All other write-protecting would just clean the S2_S2AP_W
+> bit, as everything is already split.
+> 
+> Is that what was intended?
+> 
+> Thanks!
+> Leo
+> 
+Hi Leo,
 
-thanks,
+I think the cleanest way to handle this is to simply avoid setting DBM
+on block mappings. If we only set DBM on page-level PTEs, then block
+mappings will naturally stay DBM=0 and trigger a write fault on first
+access — exactly what we need for lazy splitting.
 
-greg k-h
+When the fault occurs, the block gets split into page-level PTEs, and at
+that point we can set DBM=1 on the resulting leaf entries. This way:
+
+1. Lazy split works naturally (fault -> split -> set DBM=1)
+
+2. No need to clear DBM globally at dirty-track enable
+
+3. No special handling for block mappings
+
+So I think global DBM is still viable — we just need to filter out block 
+mappings when setting the DBM bit. That way the lazy split path is 
+preserved without extra complexity.
