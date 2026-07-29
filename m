@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB1431714A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B623603D3;
 	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785285310; cv=none; b=mrcHYpLw/CCWU423xJP4+DNW3fQCcUo12AMlc1eWjjKoKFTMuLEMcB3GUu5r4UzzZdXWEDvy9rrsK/yxpC7lCvzJkk2ccQJsw1tSrDVKP39LC8neSaeHMm4FkZpoeTirMFqIfvNFKuruZ9CAfb+Of8fhWuVPBL6+KsTNMMicCyU=
+	t=1785285311; cv=none; b=dxjhIhUwQx3bLXNHry5GwBZExasyp/c4KC2s5WfO2AV/eOGl7Bh4Eklb2WCZSWSQc42dN7BP7auCTbRFNBTwIpKhtVk/eRztvsMmNkSgdu6E/a5MO5jnFt3Blgf84NmFzDTTW3hn5PtoQ9UjOgjRULDTWl3gXxzdB87Ded1zpVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785285310; c=relaxed/simple;
-	bh=hMvA+0a3KcvWoUzzj7q8wiq30aZ48ZPR5uLoFDaJKBY=;
+	s=arc-20240116; t=1785285311; c=relaxed/simple;
+	bh=JuvEz0loFWZO3vqfVPsRy+gK5FqXHMStrsT//a/BlPQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uYnSfepYi0VzKppm6yo/cLMtRXnr6YPdnV3TYfRiivoJ4cPEAevueYk7cpBg8EzryY0Ku9hw00CGOA3qS9lAk9T1VCWhuvvdpBfnCmgbjH14gvpeOEYHM1nJXEqJN9kaKWQqdq8iFWPnHlq/jja8whliiXWZ3ZYEvxYGoTQ2IyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADGfnAnf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=o28n+AQ47f24g7N7FymrrLnDMvAmfqlNZCoV/zRYbbJ8esg/qRyYaGpDB3mE0GpIW79XD9CR9pTThdOrcWPUrnU5qcR25SvRc7iJYYIEPC+/plDZDsatJWiw8dz0RwVmFQxppMwJJ84nsARwdSTQ12Hh0815XPsF6rmX5fJS2GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVKmK3h8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADGfnAnf"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DCDC6C4FDFF;
-	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVKmK3h8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 612E3C2BCFC;
+	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785285309;
-	bh=hMvA+0a3KcvWoUzzj7q8wiq30aZ48ZPR5uLoFDaJKBY=;
+	s=k20201202; t=1785285310;
+	bh=JuvEz0loFWZO3vqfVPsRy+gK5FqXHMStrsT//a/BlPQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=ADGfnAnfv7RLliFNfFLXUZ0EUTmNVdMVr6zeRHGWdEAfLpGsdqh1A0rlGHqq/vt55
-	 z+ly5ui1v8/+/luR2/rQMn6NbLowrnV+p0IqVaTkDPjXZyLe2kJ1sPZBkXg+LwqwDV
-	 Ew4J4t7GmmufNrFSd42LrPxSZ3yfswjiSy8mmsA4ZPkkIIm5H3rEwHMmF3D+HLUkom
-	 mRFiGvMfq3LejXjTU5m/UNNETFelCiN3KM10YJ/cc6rgzhHMgk5WbcGaMYuA3yexVz
-	 Ue1Fy1I6I4FzQ5VBKB7j6SyeewY3enHrns09kg612PsiAFhdewN6ETrYRP7q59JvY8
-	 cA0Y+inB9pEFQ==
+	b=PVKmK3h8AhJJ/sN2Ox6bhekGJ7AJqkGZln4Rg8L4vt6srUHmyPXPxbo917zd6zmcA
+	 GeocWYxfn2V6nDJvu3w2Om/W6Lq/6Acgpc7D7+KhTSsb3cuIhI/gb8xFFixhYHw8pt
+	 cs71cG2s5i2fzMfJ5HNpff9LHQ6+s56HvzaLJX+iRtUABa0pTqI8c/tJmsWcZXBIm8
+	 +KROeWv8r0fNFStR45ckg8ZdHAcAz22ASFrw3U5+C5vr55coSGejzMg47RECOX+ZBL
+	 a3Xd3JdLoH092mAE5cfaIvBTd8J4QT5L/k6BoAWBksZ6M+bJD7/wiHC+k518JBaiQk
+	 3FwuTAWdDENXQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B743AC54F5C;
-	Wed, 29 Jul 2026 00:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 438BFC54F57;
+	Wed, 29 Jul 2026 00:35:10 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Jul 2026 17:35:24 -0700
-Subject: [PATCH v9 25/41] KVM: selftests: Add selftests global for guest
- memory attributes capability
+Date: Tue, 28 Jul 2026 17:35:30 -0700
+Subject: [PATCH v9 31/41] KVM: selftests: Convert with allocated folios in
+ different layouts
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-gmem-inplace-conversion-v9-25-35f9aec2aed2@google.com>
+Message-Id: <20260728-gmem-inplace-conversion-v9-31-35f9aec2aed2@google.com>
 References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 In-Reply-To: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -76,11 +76,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2380;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785285305; l=2317;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=6z64Yh3XQft5nJ/QOz1ShFn15iZbmRUTFgmDtTKZig0=;
- b=1xAWrAo6YI26Sy6HBtLO8YdfC4fzQ+9moT+u/9w+NwY3jljyTVsHumWL7NEbU2qyFnZDgr8RZ
- VrzFCOFTjppBfBtXPKxmdG0vvWyQC/0jF0dlbQ23Vg/DTrb4WLP08wW
+ bh=WkLey8yQx3OGBDsexWHIgLsjEWvinSfVroxJ6rEhjbc=;
+ b=DxC7wo6syGL1l+hjAxnlA0vq/Et0LhjDJCn9Td2x88Y0/BEPYBx2DhTTNHHadlbIOsu06bHJJ
+ CNCZM6SfCX6BRcPelx+Rd5Dj8joB5XKxSDDG0O2BWR0EVr8M9hy77vi
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -88,69 +88,65 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Add a global variable, kvm_has_gmem_attributes, to make the result of
-checking for KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES available to all tests.
+Add a guest_memfd selftest to verify that memory conversions work
+correctly with allocated folios in different layouts.
 
-kvm_has_gmem_attributes is true if guest_memfd tracks memory attributes, as
-opposed to VM-level tracking.
+By iterating through which pages are initially faulted, the test covers
+various layouts of contiguous allocated and unallocated regions, exercising
+conversion with different range layouts.
 
-This global variable is synced to the guest for testing convenience, to
-avoid introducing subtle bugs when host/guest state is desynced.
-
+Co-developed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Tested-by: Shivank Garg <shivankg@amd.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h | 2 ++
- tools/testing/selftests/kvm/lib/kvm_util.c      | 5 +++++
- 2 files changed, 7 insertions(+)
+ .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index d64c8a228207a..c6492a29ee901 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -115,6 +115,8 @@ struct kvm_random_state {
- extern u32 kvm_random_seed;
- extern struct kvm_random_state kvm_rng;
- 
-+extern bool kvm_has_gmem_attributes;
-+
- struct kvm_random_state new_kvm_random_state(u32 seed);
- u32 kvm_random_u32(struct kvm_random_state *state);
- 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 2017dd34001f8..e706669596947 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -32,6 +32,8 @@ static void kvm_seed_rng(u32 seed)
- 	kvm_rng = new_kvm_random_state(kvm_random_seed);
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index b43ac196330f1..0b024fb7227f0 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -279,6 +279,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
+ 	test_convert_to_shared(t, 0, 0, 'A', 'B');
  }
  
-+bool kvm_has_gmem_attributes;
++/*
++ * Test that when some of the folios in the conversion range are allocated,
++ * conversion requests are handled correctly in guest_memfd.  Vary the ranges
++ * allocated before conversion, using test_page, to cover various layouts of
++ * contiguous allocated and unallocated regions.
++ */
++GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
++{
++	const int second_page_to_fault = 4;
++	int i;
 +
- static size_t vcpu_mmap_sz(void);
- 
- int __open_path_or_exit(const char *path, int flags, const char *enoent_help)
-@@ -527,6 +529,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
- 		kvm_seed_rng(kvm_random_seed);
- 
- 	sync_global_to_guest(vm, kvm_rng);
-+	sync_global_to_guest(vm, kvm_has_gmem_attributes);
- 
- 	kvm_arch_vm_post_create(vm, nr_runnable_vcpus);
- 
-@@ -2313,6 +2316,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
- 	srandom(time(0));
- 	kvm_seed_rng(random());
- 
-+	kvm_has_gmem_attributes = kvm_has_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
++	/*
++	 * Fault 2 of the pages to test filemap range operations except when
++	 * test_page == second_page_to_fault.
++	 */
++	host_do_rmw(t->mem, test_page, 0, 'A');
++	if (test_page != second_page_to_fault)
++		host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
 +
- 	kvm_selftest_arch_init();
- }
- 
++	gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
++	for (i = 0; i < nr_pages; ++i) {
++		char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
++
++		test_private(t, i, expected, 'B');
++	}
++
++	for (i = 0; i < nr_pages; ++i)
++		test_convert_to_shared(t, i, 'B', 'C', 'D');
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
 
 -- 
 2.55.0.508.g3f0d502094-goog
