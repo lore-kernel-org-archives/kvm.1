@@ -1,169 +1,178 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA9237BE70
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F62C44CAF7
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785434819; cv=pass; b=XXjICpk7AdL8iqwAlaNeiF1rclpGP69dH5ekmQTup2Bm84NHk9+pqr2lx+YCBFeEhWrse8s7Hvk5doMir/YVy7FEisWj17WRU2FnVTJiZhQ9hrsR4tb+IJlkfdhqf+Xdkx03f+1oUajtK2chtVgoZVdXCi4xp3rNpQqj/PSvBzA=
+	t=1785435142; cv=pass; b=ROY/ptUsdtCA1uIIHTpKfQpvVEavnIpsEGx3jC1OmrROVrf5dqHJMpXWPQBWmtQxFxdNuviBvEsDLq3B13c3J/lNyLni6Dx2eMyW1gKmunBWwiBlDgp93m0UZDenLCwWpt4S5v7Lpgd7vdA+5Q5EunASmEeclhivpPrU31MLZYE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785434819; c=relaxed/simple;
-	bh=dEihRTHtQ5+rqzTB5gZENLrIKf/vdVkf+94K6FYyTic=;
+	s=arc-20240116; t=1785435142; c=relaxed/simple;
+	bh=TfIMwScvckB1Fib5Y+wsX3mqgKnQULjNLMCYcEOof2g=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fWc5sF0qy4GeS8rKd1gH9evTVpWI03DASnXGamkvJ1I3FlLDcY9UE/ehUfGWljvaiBk6OnLP8Tyruak8QX8CsuoAV3NrsEarJNcpHKewPMgyk+WQ4bdFC51xpSaHYo/Ci4cnLe5kKh1yrJfANV9mGwD3ZIsQyyQY8tU2ywXG654=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WxrUM/lP; arc=pass smtp.client-ip=209.85.216.50
+	 To:Cc:Content-Type; b=SSRdMyX3KF6OaEQ1trUwWc+vtWAtqQKJf0yB2b2IpTgixtKiXDgwiQHcqCqtT92Lb3d0/FzzZe542SCUkGZSu/F5/JN2oa3CpT5B4I/IO2qLxM3PR8x11GGnBgmwTjm7T0H4Vm/P44lXQnZi9Xvk7XJTvaY0PH5EbI501t583uY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uF91zuAN; arc=pass smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WxrUM/lP"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38e347638adso273227a91.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:06:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785434818; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uF91zuAN"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccf2360620so674675ad.3
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:12:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785435134; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZfQ2xxMvx6gT6cz0HG5fh9kz6gju0PBPcbyN4ymCy0pQmYKFGZBGvDTdTxBX+4r/vz
-         Xu/I3a7M2JTIH8zvMQsax3kSEQyLxbOXFNtQsDMDCjrGIs4DpTGCDSRan6SI71ZxcTL3
-         Z5qWsxQw24IgSuyaHW5YQ3MVXUV6bgsaxvI+uRPJPeyQsnZO6OTM+lIuMCDAUaGjOIP8
-         +sjOP6+WKo62WY+IKBn8hsH+TkNm8VmPgBn8NHprkg/oFgWw63j/lpsxdLpbn+hNit7W
-         2RfSEe6w6Mc97EV4vGKkfeM31/GdYwgLOp32SzX5mt1UYzvt0q828DoPckbgYGW5ZvSx
-         khgg==
+        b=q6wAiJudQ9N4FLFIHVBxDSLxMj/PxEyD0IINDk9uksTQXSKvzuWdhomSYqEWLFu+eS
+         2Ym6gHBtUPwlv14tZCS/sedCCq0ekmCu74s4gHAPFqg/obpPZjHIbajW+iQy3Quu/s0P
+         2//McAKwHzH5PRHno3YKPB3QVIulvod5bzmdqT28lokDWAYpLDEXlHZGojPJA2934Ep5
+         ClykReVjoa48sbx2HqcUESCoSfcIjLQerUXThdsfEvI/gdlaCBbEBpLTSObwm4+njGDU
+         xSTR+Vuz2xeaNO0Qf0f1fWuUgf15XUZmFM8fsX0f9ybyZB9i4SuNRbPqD33Ngv+VdqcB
+         gPRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=ksA4Cb+zc98xgjMVnrwp9nVxjWZKE5S3Fc2xP42UsGM=;
-        fh=tiz2sWbDPPsLahhiZ1KQAdEMgPLocV7jB1S8kZKnHXo=;
-        b=C6hbLX+tzHft7W7K3Q+5tnMYGB81AB5Rs5gQ2dDVXoodpfF79Qgd7s1FrqYEOybIB9
-         8KSxVbfwx2tA2XKLPy+dO27pbeEC7CYj2yPU0HBzHl1AUPP77mK5NPAvlrkpULB2lYia
-         9bg050RwkXeArYSf6zufqma7tBPN5T1LJJCKOCU9+N5yQY2Pf7BU7R13totXJ7A7nU2s
-         nfb5msTVbLhVtMNo38ZK5S9nL8GKisFQafieBmP/6ZYPQRI7K3Ea+yMfb53TMTKSBZS6
-         JHdB90SRQ3N6JOC6YklmYnKegDcw4aLbCsBs9/i/5WLk9m47EZ2u1B+sQVq9zDoaKqGW
-         92FQ==;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=gPvFSTghJ28Kixi5Kvwbbt6p3THpZRrypXj1JQIqIto=;
+        fh=QgROu/kfFLDao8feHuq7cio9EUFN7U4cFnOp2ZNeIAc=;
+        b=K7Z28NZEiHtAwu0zDvsFpwsWnlLoSnznI41cwbvs8R8cRaKsKpO07zdGl/yyccZMWf
+         e58xLJ/980skIPzKT/QSH2gLuK2xfJCDECBV9Y+D6F279VEQ5jUyJra3IC4f5/jMQT5k
+         ZRG06AgXNNyLtjD4eFGMj2NvM8n25H7wNb+dgsHFKTZG50a7hUdI3ceuNwdP2JGuS90y
+         Vju7fjyzENVB7YJsWq1wGlPrjZyYDPOcBEq3d0sLoEaxDghrsNigaeDXGv0VpU6apE89
+         SvzB0EGw1Xsi/W6gBTjW2l/VcA/DhbrTHNsig2IfECUjGFV3/11y2/HYm50d/u5PPAW/
+         tQMg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785434818; x=1786039618; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ksA4Cb+zc98xgjMVnrwp9nVxjWZKE5S3Fc2xP42UsGM=;
-        b=WxrUM/lPcAapFRGZbXH6xJgozHhdz2yAocZbk61fongUT978uD6Uzq6SHSCx+35sUr
-         BTLX493gkQqr9BV9BVVdhBteLmmkz9WGvAKsWyK3UmcwTccOUQfQmw91pRhpBKQmb9ZK
-         VKmrQCDjdLeh8z+GEeqrqQIJu1iKIXI9dx9TUJw+C+vknYyplcpM9v864OdxinSlwCnY
-         VgQuKOKS1up1K5t2pq1hY4c2AFAEClyEYvdW9WsK2TNq9thuMJUfE5/lw6QCVYZe4T/9
-         iht+FYaqE5Alqhk96DrytFjpim2twGvOyGTDVPUvHU1fI/B85peajMjyypYmFZF/Aspa
-         FfTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785434818; x=1786039618;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:mime-version:references:in-reply-to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785435134; x=1786039934; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ksA4Cb+zc98xgjMVnrwp9nVxjWZKE5S3Fc2xP42UsGM=;
-        b=L4m0cVJGV173HlYaOXld8bE7esKRN3CpeHJxJHsV29aoXTCZWR26jyXqim7jOooNMh
-         6qNsNi51CTf3lkXJ4If9ExB5PKwaD2R5jsRCKZO6V9K1Ell4jKzCbrrGC5KCdxhC6GCX
-         HPADd+4sH5JexAb1jrUw2rNJ935AQ6mGUi0JLEP5GBWKV6OunnbIwsl5MO/UXOC2In+K
-         Vz6PBcjcleYqZu1fttovc6/vRtCv+lYsg33j2eSyzRC6WGxzAZPfdWPaNW+vUdhNPlUu
-         1yJwSpPoRa9IyOOIThLak2zdIIwG+dtpnGhy4JJtNGqC/rH4utjAe3pvpOxse8ToRjQx
-         WUbg==
-X-Gm-Message-State: AOJu0YwCr8KSwzFPhwR0MpW+3zUxvGfN7AQL7sxG36bQng0yoja0viX9
-	LSY9o5kUfnnT1AfxR1JVC7V19fLUjczYRmiJy1zvOfOpczEi7waQJDNPYM2Qa8E3QzJ9Al//IaN
-	7uk1USXU5Q8+fGlWyQGO7guftaW1EeBBLqRvkglXk
-X-Gm-Gg: AR+sD10mmBdp1uygnkSBuRUvLx0V0QnTyByGv0elwBnN4VBvi7HDz9TQDgZCSe3P/vU
-	JDyGqjeSaccv5jgoz2frDP4iyf+3wZ0yPB41rgrvtPfvOaVL8Q680Gj/6CcMIrdg+uWJwZHCaG+
-	6lMKjxqZUN+ycER2VmZgUSOciDgR6fJg9eaADrlriDbNbHd96Lhqq71A1jGt0kORw3SqcEURE43
-	PoDks/5RpwHgwN8e+/NMTBnCBAi9oQvyKiQY5hUFKY4IRtLVw0MVwey+otJq4NR3/CrLC2SyDeS
-	LzOWGwmrTMJJmw8f9QOfEhnZHwBcDETe5eokgFIuZBUielg/I5EdQ0NHbl8IohWBVkgzBd73lBs
-	0t5dysacpcm2B/Qith67ve98DA2tVvvRpTdIufMG7IdjI
-X-Received: by 2002:a17:90b:4424:b0:38e:2517:5d1f with SMTP id
- 98e67ed59e1d1-38f9bd3e096mr2908488a91.9.1785434816901; Thu, 30 Jul 2026
- 11:06:56 -0700 (PDT)
+        bh=gPvFSTghJ28Kixi5Kvwbbt6p3THpZRrypXj1JQIqIto=;
+        b=uF91zuAN4E52hdv7rh5ePXW5IbE21BmQyOaLbedFouQNsSbV9KuoJ0tX4AkVWtRDjb
+         JbMNO6qgTtJXtJwUXcYMpGigwjyCKv/8ASC9KiKkp4WywqK+muw7YUGcf+zcD3nAB1Kw
+         Sh33C1d4YCur1zwK5LwbeboW5N+kIptKOXnJdzasF6sL44NEwIg5WF8wjcc6Lblzs/XC
+         6BibsrvKm6LZ6+p/cUor07EBzr8p8eNO2VGQaHi3e96wuG/tw5hC+CEYRP7OwqxiVweh
+         1BwVmnHf9ZlKmp/mymp6a8k2fXq5xA7Sjg2QtEn6pLrPUU0R7DCFrEZdD1tuxMyeDkkp
+         ZOjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785435134; x=1786039934;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gPvFSTghJ28Kixi5Kvwbbt6p3THpZRrypXj1JQIqIto=;
+        b=dq3TXRqi9Cbfb39tZXscM0eGDgBZtYLKKqLM3wnqR9rmdRehVob176ko58b95vbpde
+         iGyl++imz5oddYqaMNauOR5ejF483GIw/tsYqD1e5IqIf5w7ZSafnHRYwTi9lYijVw/q
+         JqtrTtbvnbuRL8Ge9CCwoYChWTLL1Ykj+TkkWH82ewTHv7OtqtkvZCC2xqQwLEvqkzZu
+         SVcyNQl7Vu6o31ME6mkEdbhzmLtlekyuCX4/eRWi+1s4tP8T46f3fzkSQIJbKHElPZLh
+         XFIDJZjq/gcZJ6m1n7rACJoKdAyIco2rf90MjKoEu19DHLZ/h9vPqPoGNCCdsKIENbgD
+         XVgg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8XisuSvhFNGtqNBEW3ozZOB58eFiKL8WBL2iRv/n+ve1bRRkDdzGdKsDFQTVC4CwYyoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQzAbtCm8WLvOuT+rMwhDktTU76T7GJwVJfRjyMge1f0TyaCGO
+	dxqKgB0PZ0ux0u3VXE18uvoO65CrJxO5nCst6qgB2/mMutLdMtfBjhLbK+UCs6WklTulg38Hr3A
+	3Pwvy6KSLHmJRGtnrBrti97/nqGv3KDeojMZCKJXA
+X-Gm-Gg: AR+sD12WUrUWO8Xo/6X6AZUaWC8RaV+/5K6xFAE0JDSuu8a/cHFRGeVkQ/a/w6fl7sM
+	i+N4jUFc97EglCfZ8A/CNY1cweuzhK9Hssco9eglRNLEfeIYg1mBQNU1eYK1LnLGMbVdgtYsWOz
+	w1qUp+ZW5rJSoxs7Sp7Jt4vxBZIbVss6s/9NwVktsMyMlmTRPlLH7B14yrRD4ynb7WvQhaFIGUb
+	SPrFKZArA0FQSexyBEYuaWmeWyfUMRoxjgedemMFGxnT6NQT+Xy5bmpdOtdvkCPcg9q99m2RgUa
+	8XVcQynF3QlWSn1n+VjZAEDjyfREmHNNQV2V+fR+vrjc3ToElUZ5YZjjNvjiELdY+xmTSkZiqfW
+	x3Za9H0hfI+cGw8IySkGjOb3okb2Lrm/Isw==
+X-Received: by 2002:a05:6a20:7f95:b0:3bf:9b61:f7ae with SMTP id
+ adf61e73a8af0-3c90046cff3mr3701207637.14.1785435133085; Thu, 30 Jul 2026
+ 11:12:13 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:06:56 -0700
+ HTTPREST; Thu, 30 Jul 2026 11:12:12 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:06:56 -0700
+ HTTPREST; Thu, 30 Jul 2026 11:12:11 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728122245.AA83D1F000E9@smtp.kernel.org>
-References: <20260728121138.1103610-1-tarunsahu@google.com>
- <20260728121138.1103610-2-tarunsahu@google.com> <20260728122245.AA83D1F000E9@smtp.kernel.org>
+In-Reply-To: <20260728121138.1103610-8-tarunsahu@google.com>
+References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-8-tarunsahu@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 11:06:56 -0700
-X-Gm-Features: AUfX_mxg8N6Cgn4jHI_wA550VSPb-h9Q0N7SiD0v3YCrbcFHGVvI1NAH9Wyaw3c
-Message-ID: <CAEvNRgGHuiXG1KZ24+kX-ZgTS_rqGPFqJMjoJhqf6GpZh4xN3g@mail.gmail.com>
-Subject: Re: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
-To: sashiko-reviews@lists.linux.dev, Tarun Sahu <tarunsahu@google.com>
-Cc: kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
-	Oliver Upton <oupton@kernel.org>
+Date: Thu, 30 Jul 2026 11:12:11 -0700
+X-Gm-Features: AUfX_mx2gL8KIE-6PLoUtXVMOZbkrQaxrGgfvvgdayE505KQfySpbra5kxUa-V4
+Message-ID: <CAEvNRgHW0P78eL0ip799XF+2geKwz7MQrjSFTgvCdUAuh9oykg@mail.gmail.com>
+Subject: Re: [PATCH v4 07/11] KVM: guest_memfd: Add support for freezing mappings
+To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
+	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
+Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
+	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
+	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
+	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
+	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
+	kexec@lists.infradead.org, suzuki.poulose@arm.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-sashiko-bot@kernel.org writes:
+Tarun Sahu <tarunsahu@google.com> writes:
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
-> - [Medium] The patch introduces the `LIVEUPDATE_GUEST_MEMFD` Kconfig opti=
-on claiming to enable a new feature, but there is no actual implementation =
-provided.
-> --
 >
-> --- Patch [1]: [PATCH v4 01/11] liveupdate: Add LIVEUPDATE_GUEST_MEMFD co=
-nfig option ---
-> commit e0c3fde657d56c548cd9a7467d2143f0f42c5242
-> Author: Tarun Sahu <tarunsahu@google.com>
+> [...snip...]
 >
-> liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+> @@ -273,16 +284,30 @@ static long kvm_gmem_allocate(struct inode *inode, loff_t offset, loff_t len)
+>  static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
+>  			       loff_t len)
+>  {
+> +	struct inode *inode = file_inode(file);
+>  	int ret;
+> +	int idx;
 >
-> This commit introduces the LIVEUPDATE_GUEST_MEMFD Kconfig option, which a=
-ims
-> to enable live update support for KVM guest_memfd files.
+> -	if (!(mode & FALLOC_FL_KEEP_SIZE))
+> -		return -EOPNOTSUPP;
+> +	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
+> +	if (kvm_gmem_is_frozen(inode)) {
+> +		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+> +		return -EPERM;
+> +	}
 >
->> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
->> index 1a8513f16ef7c..0bbc4037192e9 100644
->> --- a/kernel/liveupdate/Kconfig
->> +++ b/kernel/liveupdate/Kconfig
->> @@ -88,4 +88,19 @@ config LIVEUPDATE_MEMFD
->>
->>  	  If unsure, say N.
->>
->> +config LIVEUPDATE_GUEST_MEMFD
->> +	bool "Live update support for guest_memfd"
->> +	depends on LIVEUPDATE
->> +	depends on KVM_GUEST_MEMFD
->> +	default LIVEUPDATE
+> -	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
+> -		return -EOPNOTSUPP;
+> +	if (!(mode & FALLOC_FL_KEEP_SIZE)) {
+> +		ret = -EOPNOTSUPP;
+> +		goto out;
+> +	}
 >
-> [Severity: Medium]
-> Is the implementation for this feature missing from this patch?
->
-> The commit message notes that this patch enables live update support for =
-KVM
-> guest_memfd files, but the newly added LIVEUPDATE_GUEST_MEMFD symbol appe=
-ars
-> to be unreferenced in the tree. Since there are no Makefiles, C files, or
-> preprocessor checks that use it, this currently acts as dead code.
->
-> Could the implementation be missing, or was this intended to be introduce=
-d as
-> part of a larger series where the symbol is used in a subsequent patch?
+> -	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
+> -		return -EINVAL;
+> +	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE)) {
+> +		ret = -EOPNOTSUPP;
+> +		goto out;
+> +	}
+> +
+> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
 >
 
-Sashiko is right here, I think this patch should be squashed with the
-first usage.
+Continuing from [1], this guard is actually meant for PUNCH_HOLE... I
+wonder if there could be a deeper refactoring to check when actually
+punching a hole, basically the equivalent place as kvm_gmem_get_folio()
+in the flow of fallocating.
 
->> +	help
->> +	  Enable live update support for KVM guest_memfd files. This allows
->> +	  preserving VM Memory backed by guest_memfd file across kernel live
->> +	  updates.
->> +
->> +	  This can only be used for the guest_memfd that are fully-shared
->> +	  and pre-faulted.
->> +
->> +	  If unsure, say N.
->> +
->>  endmenu
+Will srcu_read_lock() be taken in a nested way for the fallocate case?
+It can be taken in a nested way with some intricacies, but maybe if the
+freeze check can be done just as the folio is about to be removed (as
+described in the above paragraph), it would avoid this nested locking
+here.
+
+[1] https://lore.kernel.org/all/2vxzzf0kl3dt.fsf@kernel.org/
+
+>  	if (mode & FALLOC_FL_PUNCH_HOLE)
+>  		ret = kvm_gmem_punch_hole(file_inode(file), offset, len);
+> @@ -291,6 +316,9 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
 >
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728121138.11=
-03610-1-tarunsahu@google.com?part=3D1
+>  	if (!ret)
+>  		file_modified(file);
+> +
+> +out:
+> +	srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
+>  	return ret;
+>  }
+>
+>
+> [...snip...]
+>
