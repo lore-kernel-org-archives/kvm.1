@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1462042086A
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 12:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0562F429008
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 12:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785414867; cv=none; b=N+ztW0qEbMr/u7ENvl3JLH/4xH+Fe/qsk8n9OYoNDkJUU2D9G28vn89LDfmzealjB/f3NuDlwKA6V8yLIY6Y8qdn30QyAiYAnaa58wydl5rzsGvahMP5Otw/c6RDwApDO4d7gblw9ngDGvRiKjxRxGwRt+aoUtSNbFNLd+kPlCU=
+	t=1785415112; cv=none; b=ea22TOmCdqoE8J6w6ZHAbQteBb5YeC2W+CrpkFgZTgU2DEGJXk3VBlPuk6yL00BYnKMRy7JSISphn1CB3NrIXmSn4VOWgYMKaV3RpZFfJvweaXH/2hnFfaTQ7e1qnK4lKrnjn+ObVy9Z27phL1yzQ45MsPG6iYkJdQx7vak37b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785414867; c=relaxed/simple;
-	bh=Ixs+siVdMrKayMGWQRWqsUcSwBy3HVdnR9Lg80FDz1o=;
+	s=arc-20240116; t=1785415112; c=relaxed/simple;
+	bh=zjhux7bZLcc4ff0CgJs9oRYMKHjZDJNNh/t3PyNC54s=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CcauZIsCuC8A2txh+FVia49cuCro4O95HIZV0lYA7iUVHf+kuGotqgrjOuuxnshhVFbAGRuv54A+zGAmOHCMCT1oAWC3UwbjFCAqwR5OrBdj4G/C1e8AEOaIaW0ocm8VAjPiM5PpjwZ3x5UjA9y7zJqNZhVK2+fs1skpvQTlhzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvS98381; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=hsGZCjpFgU0V942Vx2cPny9emX0S64vkQxjsRhiA1ElhZcq9nm5w4ew6PSRaXNj/PfbNo4pFHwSmcsZc1kTx0qamBzT7xZKzesi0av11EJPK1QCniHNeb4RgG9DimBo8tDV4RuZtiiMHv/514PMm0k7uAeMoqSiIH/qMZx1yknM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LX3fTMjf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvS98381"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7918B1F000E9;
-	Thu, 30 Jul 2026 12:34:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LX3fTMjf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EF01F000E9;
+	Thu, 30 Jul 2026 12:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785414865;
-	bh=wqwrsuZ6rERCg/XfzTCZXX35EDjv+/DUY0uoZHr+GJE=;
+	s=k20260515; t=1785415110;
+	bh=vBgD3oeYJz8IgI/3uvZUa/3h29LmNim/WRe5E7+gq6U=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=kvS98381IfU+v09AhVOCwqw+q9UbbFrN517wRrt9pTeqj39ZFY0HZ8bIKi73L762r
-	 XtttYJkEykZswLoj93WN8e8Trpl0C56V80v2FaF0rDS2tylZmPW2yQR5mG4byZQPra
-	 fuQ0Gxr1IC5YBeN/n8JXpkJH5CbAfKFJ8z4TQmYeLXzDhvUfwOwL45ZpgJKqc9+PBt
-	 tWEumuLQSIx/OnGnXKU5CFbgS2Hf4904+e7F7VED9TU3hYsCy883YHu3URhXpBqwfn
-	 9D29P+iKHwXxSL7IcVQFBf5O3Yh/Ub2LkXKkjI0xNvqEhN6u3RF/IKpCk4Zj4m1rEh
-	 DUdhJKN2n1FZA==
+	b=LX3fTMjfu8UMY0td2T+pYkyW2NhiPxtR3IG/r5Za9UzuyQ6s6fQq3UhDbhCQf+LpA
+	 Y/I9EJ28YqEFyzTfpv2wApFIINjzvuKjrHGXxF+kGYnNMQ8UGksi/X910ndL8+uTMR
+	 9VSM/fd9U6xOigYbpcDJrrTJB0+zj99/des6syfTxnrxUun1LNFq1CV7E7kv0fEI4l
+	 8v4QqwgvJc0mqNVsAGnrk/zl1IRkZOiKdxBEVlVIlWBLV74bGTQcXu4DD/oxKrVQG9
+	 6GABcAw/wAawQo7+eMvT7Kxl+mdYgyXNFP6RNzlSI/ohfBBMzgzwVurahXBSdMUxXb
+	 08P0q+j/aQa9w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 9/9] KVM: selftests: Add nested SVM DecodeAssists
- test
+Subject: Re: [PATCH v3 1/9] KVM: x86: Add helper to provide intercept linear
+ addresses
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tina Zhang" <zhang_wei@open-hieco.net>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <0e335bfb321909a0ddba98337a2325f8f88e58ce.1785411877.git.zhang_wei@open-hieco.net>
+In-Reply-To: <233ea37ecf646692c2d2aa6d335643c3dbb1fe09.1785411877.git.zhang_wei@open-hieco.net>
 References: <cover.1785411877.git.zhang_wei@open-hieco.net>
- <0e335bfb321909a0ddba98337a2325f8f88e58ce.1785411877.git.zhang_wei@open-hieco.net>
+ <233ea37ecf646692c2d2aa6d335643c3dbb1fe09.1785411877.git.zhang_wei@open-hieco.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 12:34:25 +0000
-Message-Id: <20260730123425.7918B1F000E9@smtp.kernel.org>
+Date: Thu, 30 Jul 2026 12:38:30 +0000
+Message-Id: <20260730123830.A3EF01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,84 +47,64 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] The selftest `test_synthesized_npf_linear_wrap` incorrectly asse=
-rts that 64-bit linear addresses wrap at 4GB in compatibility mode, cementi=
-ng a preexisting KVM emulator bug.
+
+Pre-existing issues:
+- [High] The patch computes `intercept_linear_addr` and adds it to `x86_ins=
+truction_info`, but fails to actually use it in the architecture-specific i=
+ntercept handlers (`svm_check_intercept` and `vmx_check_intercept`), leavin=
+g a severe preexisting bug unfixed.
 --
 
---- Patch [9]: [PATCH v3 9/9] KVM: selftests: Add nested SVM DecodeAssists =
-test ---
-commit 90a4009aecfc1596a0c559275e2cf280935e0a29
+--- Patch [1]: [PATCH v3 1/9] KVM: x86: Add helper to provide intercept lin=
+ear addresses ---
+commit e0c208c3018cdb4b9689064eac5e998c1b4d07df
 Author: Tina Zhang <zhang_wei@open-hieco.net>
 
-KVM: selftests: Add nested SVM DecodeAssists test
+KVM: x86: Add helper to provide intercept linear addresses
 
-Add a nested SVM selftest for DecodeAssists. Verify that KVM exposes
-the feature to L1 and provides architectural exit state for various
-instructions and intercepts.
+This commit adds get_intercept_linear_addr() to compute the linear address
+for INVLPG intercepts. It passes this address through x86_instruction_info
+so intercept handlers can use it directly without duplicating the calculati=
+on.
 
-> diff --git a/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_te=
-st.c b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
-> new file mode 100644
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+> --- a/arch/x86/kvm/emulate.c
+> +++ b/arch/x86/kvm/emulate.c
 [ ... ]
-> +static void test_synthesized_npf_linear_wrap(struct svm_test_data *svm,
-> +					     gpa_t npf_gpa)
-> +{
-> +	struct vmcb *vmcb =3D svm->vmcb;
-[ ... ]
-> +	prepare_l2_for_vmrun(svm, setup_eip);
-> +	run_guest(vmcb, svm->vmcb_gpa);
-> +	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
-> +	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
-> +	GUEST_ASSERT_EQ(vmcb->save.rip, outsb_eip);
-> +	GUEST_ASSERT_EQ(vmcb->control.insn_len,
-> +			sizeof(linear_wrap_insn_bytes));
+> @@ -427,6 +447,7 @@ static int emulator_check_intercept(struct x86_emulat=
+e_ctxt *ctxt,
+>  		.src_type   =3D ctxt->src.type,
+>  		.dst_type   =3D ctxt->dst.type,
+>  		.ad_bytes   =3D ctxt->ad_bytes,
+> +		.intercept_linear_addr =3D get_intercept_linear_addr(ctxt, intercept),
+>  		.rip	    =3D ctxt->eip,
+>  		.next_rip   =3D ctxt->_eip,
+>  	};
 
-[Severity: Medium]
-Does this test enforce an architectural violation by requiring the KVM
-emulator to wrap 64-bit linear addresses to 32 bits?
+[Severity: High]
+This isn't a bug introduced by this patch, but it looks like the architectu=
+re
+backends might still need to be updated to consume this new field.
 
-By setting up L2 in compatibility mode (CS.L=3D0) with a non-zero segment
-base and an EIP that crosses the 4GB boundary, this asserts that KVM
-successfully fetches all 15 instruction bytes from GVA 0. This appears to
-cement a pre-existing KVM emulator bug rather than verifying correct
-hardware behavior (where the correct 64-bit linear address would be
-0x100000000).
+If an L2 guest executes an INVLPG instruction that KVM intercepts and emula=
+tes,
+and L1 is also intercepting INVLPG, the KVM emulator populates
+intercept_linear_addr here.
 
-> +	GUEST_ASSERT(!memcmp(vmcb->control.insn_bytes,
-> +			     linear_wrap_insn_bytes,
-> +			     sizeof(linear_wrap_insn_bytes)));
-> +	vmcb->save.cs.attrib =3D cs_attrib;
-> +	vmcb->save.cs.base =3D cs_base;
-> +	vmcb->save.cs.limit =3D cs_limit;
-> +}
-[ ... ]
-> +static void prepare_linear_wrap_outsb_code(struct kvm_vm *vm)
-> +{
-[ ... ]
-> +	memcpy(&high_page[LINEAR_WRAP_OUTSB_OFFSET],
-> +	       linear_wrap_insn_bytes,
-> +	       PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET);
-> +	memcpy(low_page,
-> +	       &linear_wrap_insn_bytes[PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET],
-> +	       sizeof(linear_wrap_insn_bytes) -
-> +	       (PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET));
-> +
-> +	virt_map(vm, LINEAR_WRAP_CODE_GVA, high_gpa, 1);
-> +	virt_map(vm, 0, low_gpa, 1);
+However, if the handlers in arch/x86/kvm/svm/svm.c:svm_check_intercept() and
+arch/x86/kvm/vmx/vmx.c:vmx_check_intercept() don't use this new field, does
+KVM synthesize nested VM-exits for INVLPG incorrectly?
 
-[Severity: Medium]
-Is mapping GVA 0 here anticipating and validating the emulator's incorrect
-32-bit truncation of the linear address?
+For SVM, if it falls through to the default case and leaves
+vmcb->control.exit_info_1 unmodified, could this leak previous host or
+VM-exit data to the L1 hypervisor?
 
-If the emulator is ever fixed to comply with the AMD APM and use the full
-64-bit address, wouldn't this test begin failing since it maps the
-fallback wrapped address?
+For VMX, does lacking a case for x86_intercept_invlpg entirely cause it to
+return X86EMUL_UNHANDLEABLE and fail emulation?
 
-> +}
+Should the hardware intercept handlers be updated in this series to prevent
+stale data leakage and L2 DoS?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1785411877.gi=
-t.zhang_wei@open-hieco.net?part=3D9
+t.zhang_wei@open-hieco.net?part=3D1
