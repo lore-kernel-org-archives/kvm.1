@@ -1,141 +1,161 @@
-Received: from esa7.hc1455-7.c3s2.iphmx.com (esa7.hc1455-7.c3s2.iphmx.com [139.138.61.252])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094453AAF42
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 05:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.61.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF43AB5CA;
+	Thu, 30 Jul 2026 05:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785388342; cv=none; b=XpVce3/pdFxKdE6DVDFo499Nd8MswR9YLYUSJ1MrnOGNQERNstt+5ky4dgu4N1uQDxjqQoYuUEFdVC+tvgs5FfNDIwMjOe8YgAU61/W4OCdnKiN+C8D+MUGElJXmcwgjwR2qk2Vsk4tTDidOqsecj8M8jst65yRmkLC/A/SfKts=
+	t=1785389685; cv=none; b=DGS7pXK1mRIKPPulfR5iD1yO445R4Vxl5ORAny46Wlth9AP6pUsyjyUAqk8d9K5ZALQTnBkShygmvDYXnUtpve90JZi+rBzR7PSasW7FKW+ioY4Kp1lZSIAV1YiKpy0zEMaqaOI0k90oIWQoKoUQLJ9sQTHWVztDNDQgPdWXLlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785388342; c=relaxed/simple;
-	bh=uLkTZ9LRMqNcz43KTjDdnCYMF+FfxoFiF+mcqAsvx7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LimRDVvtYLGHLDpRv9XjYD/+4kok4sSKsUFxKOB1POAQbnqu3e6VMCYOIpos1fmjqYndKCRVigTEiK+z1iYr60ipfOc6ryQiOxBQ46PI/TfGCs09TPCgMwifv5GclyCVIuC8psM3ZZgcvhNHpqnRp8t7uLChqYZ7Z/KmbxY3KXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=jnVuQ+F1; arc=none smtp.client-ip=139.138.61.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1785389685; c=relaxed/simple;
+	bh=xmiVlc/G9KIfdrQJC4ROCuezBmMa+ZhJmI109/GrorI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ulFBecgbSoAjxKvdHB+qspuzWkd7SGwe92SRWwH8HO6i/9ax/S3hWB3JNukjbXgMlKP6QDXDVmoxwp5nyGrUbHnhsxgvL0Hguxi01HnuedSAvYoVzGpzENFOpF5PYyCqWz2GnJxpkimp/Lk/ZPKY8i5EwjhgMiaUSSMcrurI0Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d0vPPegE; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="jnVuQ+F1"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1785388339; x=1816924339;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uLkTZ9LRMqNcz43KTjDdnCYMF+FfxoFiF+mcqAsvx7g=;
-  b=jnVuQ+F1jHLUtLWllCR/AUOWhCq+v2M5wWhW1jGj9vYXGlteGIBUpwXt
-   lX6UaNVqlkHD24tjaH1iogUuf5aiTBeQSsB5IrxN3RwsYQUl3JLgVE36B
-   /dHkuoH+zZjasb+ONQFHEvRkSzeR5WQX/y6HJFgBQizr/Ckz+I/rtO8bZ
-   l5qY/3veDGREiY6qlc1CCtXphXobmiuwjhP8AAZ8Le0yZSv3HdBCuO5Jf
-   Gv2nwqLhlKWb3xgVvOT2niRzstiLkXv2wLeekS6nTDIxaAGHCBib44oQR
-   d5xPTiNUBPVw/QLHMIerXvVBNU/ar5lmHk9+ugbwWWqmnWR0dmblobOoM
-   w==;
-X-CSE-ConnectionGUID: RAAwftzoRBCgCHHxdvabGg==
-X-CSE-MsgGUID: rdHRYsN+RkKDDZGzHfiULw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="227969845"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779116400"; 
-   d="scan'208";a="227969845"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa7.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 14:12:11 +0900
-Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 5AC1942A30A
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 05:12:11 +0000 (UTC)
-Received: from az2uksmom2.o.css.fujitsu.com (unknown [10.151.22.203])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id 04C331892C61
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 05:12:11 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.194.125])
-	by az2uksmom2.o.css.fujitsu.com (Postfix) with SMTP id 9D0121400088;
-	Thu, 30 Jul 2026 05:12:05 +0000 (UTC)
-Date: Thu, 30 Jul 2026 14:11:57 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: berrange@redhat.com, kchamart@redhat.com, 
-	pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org, mst@redhat.com, cohuck@redhat.com, 
-	pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, 
-	lorenzo.pieralisi@linaro.org, gshan@redhat.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
-	kvm@vger.kernel.org
-Subject: Re: [RFC v2 00/24] Add Realm support to QEMU-VMM
-Message-ID: <amrYWWyWlhnN2Fll@FCCLS0092175.localdomain>
-References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d0vPPegE"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66U3mMnF1825445;
+	Thu, 30 Jul 2026 05:34:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=xmzvxQXiu03U89fVGbz8jCxYjNwmZXD7hWyUAP4dR
+	Ek=; b=d0vPPegE7/P+WgA9IFvGUgclC4PWPmF7SP68XuqoTFNcD3jgHHlo4C+bC
+	RbzzuxiywScuuMMMYSebk/YlwUD+NoHnL5tmW832fdnMzzY50il3ILYZdtpVXQdP
+	X0Y6WWR6gg6tm23BhSrk35R0DOZ8OW6ylRU6kccZNEKhnCvryjKSbWsxIlYL9gER
+	TkdahrGOBQINQcxyYA+YTf6k+f4+ASEf/MCHVYBQvCiReHyhYOTe3WrpfxFFMJqr
+	AXgqIXESDXbxth1guCUImChJPDoaAV7+KhYwXx9l7Kso8U50DCzI+VaqdZYlsJvO
+	3l3Mkj7xEeE8N0l0Nu2XoEp82pTtQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuyjdahu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 05:34:42 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66U5QFQ1010506;
+	Thu, 30 Jul 2026 05:34:42 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqj3m3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2026 05:34:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66U5YcDP28705256
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jul 2026 05:34:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E9172004B;
+	Thu, 30 Jul 2026 05:34:38 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE80520040;
+	Thu, 30 Jul 2026 05:34:37 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Jul 2026 05:34:37 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Tony Krowiak <akrowiak@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Jason Herne <jjherne@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
+        kvm@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Update s390 specific vfio sections
+Date: Thu, 30 Jul 2026 07:34:37 +0200
+Message-ID: <20260730053437.3288650-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260728192630.240375-1-mathieu.poirier@linaro.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMwMDAzMyBTYWx0ZWRfX302rektQwM1h
+ IVH58+j8cfTdy2eFaxWFtra8CqSKVJ1UAdPS5w55BNit4o/DNDGUCeISylGnytk8i+s44IgLDBd
+ Cpuk7gm9IBBdm2oetpiAhwjK8T/i6Wc=
+X-Proofpoint-GUID: DoZwnXnm3xI8cvMANe15_HtgkSd8voIt
+X-Proofpoint-ORIG-GUID: DoZwnXnm3xI8cvMANe15_HtgkSd8voIt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMwMDAzMyBTYWx0ZWRfX4V1eBPFDReFH
+ p9IATRO3UXru6wBugYS0DW4oouQT9QB2FVX4Dz4SFqcLwYl5wt1o+Ii036wOWewY0c2BcA4jWDR
+ YvB4rMirGyCl3OPuEW/in1W464NXOl24jZntbjDFdy6Vvyltnub9lywlF1m5c/5mcZowi8YLyfq
+ g0sS/rQgs9PKxiYv4V+Bmat5Sn+a8uIk4i5DdRHbtysDM2aG9lLWBOt3gTmyrMdVS5CNKKbuk/I
+ P1zYuPgxn7bTL9/hueLFaGkJS3bDQinLKCdJ4CRf4kAkDOCzRq1dPCuGdG6guvirjJHooPs4RY+
+ Sewk/3S9nlgU0VfClJ8ueFA0T7T3Y2421OH5UtZDAvN+OQXEG60SrL3M0TE/V6dm7fAfap4JBjO
+ rp25UEOS2BUvvqNlD8tNWfsqawc33Z+ztwjEJz7AVObOCqdXHAPXNN8IgGKmbZ6kiE8AgGvxuLv
+ 7gTz+4OQFBiX7fXiRKg==
+X-Authority-Analysis: v=2.4 cv=X5Vi7mTe c=1 sm=1 tr=0 ts=6a6ae272 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=HXouF8ib0_UHXk9rWhcA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-30_01,2026-07-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607300033
 
-On 07/28 13:26, Mathieu Poirier wrote:
-> This patchset provides minimal functionality to start a Realm VM
-> from an Arm RME capable host using the following command line:
-> 
-> qemu-system-aarch64 \
->  -M confidential-guest-support=rme0 -object rme-guest,id=rme0 \
->  -cpu host -M virt -enable-kvm -M gic-version=3,its=on -nodefaults ..
-> 
-> It is a refactoring of Jean-Philippe Brucker's initial work dating from a while
-> back.  It is compatible with Steven Price's v14 revision [1] of his work adding
-> CCA support to KVM.
-> 
-> * We are currently working on rebasing the work to v15.
-> 
-> It was tested on the QEMU SBSA machine.  For convenience, a repository is hosted
-> here [2], along with the TF-A [3], RMM [4] and Linux kernel [5] for the SBSA
-> machine (compatible with Steven's v14 patchset).
-> 
-> Instructions to compile and run the entire stack can be found here [6].
-> 
-> Device Assignment is not included.
-> 
-> Thanks,
-> Mathieu
+Update all three s390 vfio sections to clarify that s390 specific
+vfio code normally will go upstream via the kvms390 git tree.
+Add a corresponding T entry to reflect that.
 
-Hi Mathieu, thank you for your work on upstreaming CCA support. I've
-tested this series in QEMU-TCG(x-rme=on) environments and confirmed
-that the basic functionality works well.
+For consistency with the other s390 specfic vfio sections rename
+"VFIO AP" to "VFIO-AP" and add an L entry for the kvm mailing list.
 
-I have a question about a QMP command for querying CCA capabilities.
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Acked-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Acked-by: Eric Farman <farman@linux.ibm.com>
+Acked-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Acked-by: Farhan Ali <alifm@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+---
+ MAINTAINERS | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Jean's tree contains the following commit adding such a QMP command. Was
-this functionality intentionally omitted from this series?
-https://git.codelinaro.org/linaro/dcap/qemu/-/commit/41f7852cc8590a38c47299a35a7238da09ff9a12
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 716acfc3d7c1..b95bebe8a78a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23890,12 +23890,14 @@ S:	Supported
+ F:	drivers/s390/block/scm*
+ F:	drivers/s390/cio/scm.c
+ 
+-S390 VFIO AP DRIVER
++S390 VFIO-AP DRIVER
+ M:	Tony Krowiak <akrowiak@linux.ibm.com>
+ M:	Halil Pasic <pasic@linux.ibm.com>
+ M:	Jason Herne <jjherne@linux.ibm.com>
+ L:	linux-s390@vger.kernel.org
++L:	kvm@vger.kernel.org
+ S:	Supported
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git
+ F:	Documentation/arch/s390/vfio-ap*
+ F:	drivers/s390/crypto/vfio_ap*
+ 
+@@ -23906,6 +23908,7 @@ R:	Halil Pasic <pasic@linux.ibm.com>
+ L:	linux-s390@vger.kernel.org
+ L:	kvm@vger.kernel.org
+ S:	Supported
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git
+ F:	Documentation/arch/s390/vfio-ccw.rst
+ F:	drivers/s390/cio/vfio_ccw*
+ F:	include/uapi/linux/vfio_ccw.h
+@@ -23917,6 +23920,7 @@ R:	Eric Farman <farman@linux.ibm.com>
+ L:	linux-s390@vger.kernel.org
+ L:	kvm@vger.kernel.org
+ S:	Supported
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git
+ F:	arch/s390/kvm/pci*
+ F:	drivers/vfio/pci/vfio_pci_zdev.c
+ F:	include/uapi/linux/vfio_zdev.h
+-- 
+2.53.0
 
-We are interested in adding this functionality because we are also
-planning to upstream CCA support for libvirt, which will need a QMP
-interface to query the CCA capabilities exposed by QEMU.
-
-Since the Linux kernel dropped some configuration parameters such as the
-hash algorithm, I need to rework the implementation of that QMP command
-a bit. If it's okay with you, I'd be happy to send out the reworked
-patch based on this series.
-
-Thanks,
-Kohei
-
-> 
-> [1]. https://lore.kernel.org/kvm/20260513131757.116630-1-steven.price@arm.com/T/#m06dd14216aaf76acab65b0a76fb84653141ea64f
-> [2]. https://gitlab.com/Linaro/cca-public/qemu/-/tree/upstream-v2?ref_type=heads
-> [3]. https://gitlab.com/Linaro/cca-public/tf-a/trusted-firmware-a/-/tree/cca/v13?ref_type=heads
-> [4]. https://gitlab.com/Linaro/cca-public/rmm/-/tree/cca/v14?ref_type=heads
-> [5]. https://gitlab.com/Linaro/cca-public/linux/-/tree/upstream-v2?ref_type=heads 
-> [6]. https://gitlab.com/Linaro/cca-public/build-instructions
-> 
-> RFC v1:
-> https://lists.gnu.org/archive/html/qemu-devel/2026-07/msg02307.html
-> 
-> Changes for V2:
-> - Fixed linux headers to include correct bit shift for Realm VM (Gavin).
-> - Removed obsolete rme-guest options (Markus).
-> - Set ConfidentialGuestSupportClass::kvm_init() to kvm_arm_rme_init() (Gavin).
-> - Got rid of kvm_arm_rme_vm_type() (Gavin).
-> - Used kvm_vm_check_extension() instead of kvm_check_extension() to avoid
->   error message when starting a Realm (Gavin).
-> - Removed obsolete kvm_arm_rme_init_guest_ram() (Gavin).
-> - Collected A-B and R-B.
