@@ -1,151 +1,164 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D283D891B
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 22:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2A53D3012
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 22:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785450671; cv=pass; b=SOe571zY+WwpDsekSdcc3ZZJ0GDR2zNnIDFgQ2LNp0z1ub3wfePA+GsiLwemkRQu/3NVP5P4FBGeHneCpXIU0z5O9Wbt203CUCT/auLirW9BiC6HJM0XlyIh5m7nzHvlrVZ4ZJJRS3MKo4ZXuMbxTd3p7OnW9XrXz57ivWISFxM=
+	t=1785451586; cv=pass; b=nYH7X0s2OYgJVcK60xeY7dW6RTBUHnW3WdsQkgd495Suvz47bPN+CjNf0qGYB8DjUrD4ljIWsTjvYq6xtHeK8DjFMBpOLbWhXxaf7yb5r8GFaO2A4upB8RsEPWWeRpUzseTJnQTA+ewTxePds74kZHEDAFuHeswvwR0zjphvNdI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785450671; c=relaxed/simple;
-	bh=RFb9jxFt+SB050uUN4iOEqSU+hhGaZfWAlwTqxcdY2s=;
+	s=arc-20240116; t=1785451586; c=relaxed/simple;
+	bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WdiuhupdRhAmxVjcQy39wuXTJzrQ5h88m0HZcRbMjqFUdVgQBIEUOZs4mq3+VccwelIKNftz3BfPeVXEBaY+SO+/cVx1eWOhD4sGeHghEaaFhG+ywmrSXRfKgMSmBmirMKtVJFdCv9M3zISOl6a2e3LX1OVhfABEW/KEgLPQ/S4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iyX8ta1o; arc=pass smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=bC3VO3T5Hv/1ZjlQ4a+tVlRfrbPMyiReeAS5K3wIH5+agqHLSxWmb7HNT+gkdB4KDehayQumMkRLVf2ZsE1TBVQm47XTFgVG3qySHDYXpIgB0E7Iy63s3pMejdBBHuENXGY7UmQPYD9sE0f2GrlzmTg2TcaOn5AFWS68FJBogU4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VjXXd/Ik; arc=pass smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iyX8ta1o"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-381c51fde6bso429382a91.2
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 15:31:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785450669; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VjXXd/Ik"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38e3efab7e0so140088a91.0
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 15:46:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785451584; cv=none;
         d=google.com; s=arc-20260327;
-        b=RDXZUSX14MJvB/fZGdjvt2JKEDvsp+zaRlvaj4B1C+dBh7sBBzJ/o8uZCZje8HDQEz
-         XgyM9t2WmUtnls/pdLJGSg2CUUhnDV0pd0nSbUbc5aFEWhvAbx9pPMnGpY88neD8HJ9u
-         3OpzFhQsPlJboDnQzCdOCjL7HUX2D9O19IWqBfB/Iw9hByGVIoNHswdIJueRobeYHwKe
-         S9rmWcN39iBWt6iYVfW0/a0xSWh4dS8c31kcjvUFSmn4RQW4C3fANVhVXXsUS5tz52Qf
-         v92zSnqoPmfvhA0y+daMM4L+BYTPik4Un5iopAr/AApguJRj1dRlpzKLT7AcrtsYkMy2
-         NlYQ==
+        b=YL/ccdTxK72nFp/QgYqtJaugyphy8Wn51sbCUaQMtjvk97XK6qm8e4628xBIA380fn
+         6VkZiEOKmSPU5tFQIyqQywmWGoC+7piXHu/yKGz31cWHtrSettVQI/riCUMdztvW4sC7
+         4+NzdtmqNlvEka8VCxp5b0uNZKieVbS3h1cXcrf5WC/SR9NgpbY9jt2mUnzczdcHuTgV
+         jWSSg2VS6UU0ZcTbomQng07uYajXT8suPtIefX9f1PjZOLXgwh6E8m4nTHqEe2zBr6aN
+         e1U0Nv9TBVfPKOjqqkQBef38W62inizFXCv/rO00NYolahPNlqY3xbgfaun4ZpdE0Y4l
+         tAmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=NT7QpFfx9ePxD+EfhDliJc1nWKGrZODd+FSZ20/4RHU=;
-        fh=EU4AzIIRBJ2ngivreOQBh3QCxHs9TIYUX3YVcsmwOUg=;
-        b=o5immUJpcfPINRfdOi6JHlKvCys+ClhPmgNZ3EycpPlCE1hxVJ2xSA69xAu/JCocBL
-         uoqQmm3NLSE4jUw0kAAHE3ZIu/4/IQXN5YhNgyXuW+oUWldpxWb2JlNeZ6LfqXFbotVe
-         7wEW+CPSYb2nEapIm23Ek5mJjEYjBQAkK7iIGEOIdfpFgYeoMxjD7MArzqiOn70mcggs
-         V96tY7TndMicGg02Mrww9EbG5bjFvtATjJliuJEUdLOe5TVrWJwrbPyrn+wgI8eNGMr4
-         5zCeLka2DGAt2ewtblL1uHApLPiWEeY6SNN77bsBwFDWQMQOrEuYpoUn4ebpBRYoKY+p
-         aoKQ==;
+        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
+        fh=wrFrF33qHPwrSBYTgmBhwAsXDIwvLPTugRZNiRRsuGM=;
+        b=kzE55eGFTXQZm3gO5KETIlQhffNndlnc60+xl1GvWGCI53UurbgavnThoblQf5i1ar
+         3RHDNeqh3m/VTyP1wYguG06lCWFgG36ja47c/ocAiJbenMaA44PMzZaYEQ7S72NGkHEo
+         UDLUVtBzPpSCrM6Mze9zXTdjhtsKka6Dnzvt9IJzUslAqGEmBl/C6b8rj4hjN/LwvAig
+         qadF+IxkpMonxn9r/zlKy5q7y+VVrR+ZIryTVS0IXYspi26yic/nykjUVjz9BygLBXEV
+         63EvfFY9oRO8bhtGVuAyc6dB6rp5jDnlL718uloPpOAGbX+6g9G7bhB0xNSZtU6HirY3
+         NSug==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785450669; x=1786055469; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785451584; x=1786056384; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NT7QpFfx9ePxD+EfhDliJc1nWKGrZODd+FSZ20/4RHU=;
-        b=iyX8ta1oIXwTHeAbpQ9turwrD41nAuMnhWMV4eirv2p0xKFz/MQSM4n3C5TQm/1mow
-         rImFsx2dMqgyRj8q9VpXQUyMoSiEDCDojWmqvMlzzO/na9zMRvemi8prn/dxivQ1QVMk
-         LVZuPVBpUTYtxvVP7piuI1cQBARqDGrZHQgYQ0cLjjZKR6mnZ61yWzYHTD81C8u/GSUw
-         rJOWb20U4q4G9HbgX+Y0kCM2ziLBG7EyssUbKsY2xyqR7wKLA7yxhVtLZc5VIeg/lPT1
-         31OSNEjnMoCwIPxCeGs5DfrvnTqagmDPi02jt7IlsXbcgyyDp75AYtDjbE9k+L4M94c4
-         f7qg==
+        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
+        b=VjXXd/IkuxtMiLoEN6RGA31tBEY0xFkbhcuPIQTILxqEA9Yzgktf1BHYrk2xEMiE7B
+         XgjpPrWyoy3ZKWYc1IV6f0gilGJLBSzGFukI6Edyyl00YMkF4hVYoqyENE/Cckk59i+7
+         FJ+150AE7I3wadiCBjHyFRl3jNrrmiKLgLLAWTOHY6LX7SV/SSPNxJ7ieS9X6rsJByQH
+         86qwo46x4++q4jRT8r0JuefikuPzSoUMMWEmlLxeIOrp/WjyoH8gOx3+GKiuKKDZkmop
+         tYXaEKiKMzF8SYDZeZdwVwddKFPn90CmdkYZGoxd0OLndfH74T37AzupSCLbBHPtkOgk
+         abfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785450669; x=1786055469;
+        d=1e100.net; s=20251104; t=1785451584; x=1786056384;
         h=content-type:cc:to:subject:message-id:date:mime-version:references
          :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NT7QpFfx9ePxD+EfhDliJc1nWKGrZODd+FSZ20/4RHU=;
-        b=kMWvDsKznda8cyysnbd9u8XmGt8OQXinWpXp7bBTVeNSgKCyDjZnbkWHUyw44plS5X
-         +MQIbUN0bWU5WUFdHIDEzt6CFK3xGBSgBsUJcE+tBt7fUmx4lz7GS7S5HBPi53hXWeKd
-         KyIt+86YIXXiq+ihiutr6lqkStwPPKnAQOpTR6wyu2uOSzoQFCcIgsd4SnPnViPdPkxD
-         Ku2RzHl14gU1Mn3x3wx69FTAtTcnYYkMqNUWvW63EY/2XKUxCK/grBMC5U4pGIwb2hfk
-         1OTa1+uX4omVtIuSoh5fVo8R/hpRBFvTWcXtAtK9kE3WXK4lLuooIkYehdbqBdibvglE
-         6WzA==
-X-Gm-Message-State: AOJu0Yy+1fvtOLTKpaJYKgdHW7M+SNWoQlNmNSpVG4WQJ+ZM2yaSMert
-	lha+jYpDdhFU7b1lewh47mwZ5UYXH9NWzb1BO4vGVInm7Vg1w10+jD1aUuQap0SvigLx5smV2N8
-	k5OQ8HJDRTeML3j9fXcqzlBK7Mpt7ZBxXVrL+zeTJ
-X-Gm-Gg: AR+sD10JQOWPOlaaGEIvXChcKxODDnHpi3qqmqs85zF+NVEomB4o+c834L9YXA3UXMd
-	4cs9LVfvUQpc6gLWkzzuJlccGjCWDKcbSMeltXapqvSnaqNbrih5XNMEZeDv7CSEmOD2lG+5GzW
-	tIMNyC+/ykYRhy9ZV1sCXheCiThsy4QIlucKFOroV0dqfGJzvXcVcihLPcpsJ3EqTPLiAE2uN2R
-	D9srVz3B5fvrRVUFg7nGkPdSQbfcNgkuiDo7HeZJlAA12wFEuX/oW7CJkUr7RW2dO8Ia1RfKRQW
-	SjSutyWL+u1OgZ3vfQOJb1YJ0S4X8Sm2i2AmU1bSnT7VTILO5GPZ8naxukU8aeutmz1ZFn9DKZ7
-	pmrwPV2gNdqPJlSJMZHrscZ+qFGh8EtkHm58tKG2U8UqXMoM=
-X-Received: by 2002:a17:90b:3c88:b0:38e:3fdc:62e5 with SMTP id
- 98e67ed59e1d1-38f9bdb3885mr3385917a91.19.1785450668084; Thu, 30 Jul 2026
- 15:31:08 -0700 (PDT)
+        bh=W7DZ+f0MeQTnq04NgpGqANM3Cz0BYewhjBpaHxc9ELk=;
+        b=M9ARMlik2u3p6qqBGn1SY93BBY+C+DzqfjvZk3EYRN4VdAMcLB2V1VsUeDD/bZXF6q
+         IudYSGFZYwOFmBiCYakIl6FVfVwdqKbHRcvUPQJLcsdsJScLYKGgdECmifnCjYLTFeNh
+         O6RNHIVGzuSztTxZUoRgnlpYhxE6Z8aZo53URjg9ebeZJX/oo/MeAS26kEv8jtz1jnZ0
+         lP1MhiW/98pkn1JAxTr9Ju0e3v4y0AU/usJKci4v8rD/e5L4kwf96pgEz1Gw6w+2Cqn3
+         AwUdGXMANBOD7+yq1UbYb1Ub4+IRvuTbz3EMHcU+F5gr9OzWS0ozlZW1yN8js9XMrhHw
+         i7FQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7cRy8zm2xke1/uWUtrs/x7L0xf1uC2mzUAKObRNw29bYBkqlYm85enXUVzADYXycxzVg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytmyPMwfBAZ8uD0hSRkHO8t+zZxeLIbBN4CUARmGxb53T/pHJK
+	oo0juzrPYbKLWhDYvT+5H19JB+4YNzy1PvHriAszO4swAbRlvBN2fH9G82H4WL8M7pPZpZTyqGn
+	tMDXljg+256lct/prqTtDOYxOpuNsZuG3U50KEQBY
+X-Gm-Gg: AR+sD11aQm7ufz5NxaxZBroa7FpKBbl1N1xRGyLiEe54lksHA17kuRoOqZA8dsovUmE
+	PvmOd/6zk8+TBfeJsxnUZU0H1049ZG+R+24ezqnVUBUPFdxiFNtpUVtowTpD1ySpmiAkMeCNUK5
+	9Va7xUxEGZCttirwEKd4Q5zlHDcQGo2Lailyfr182QW//TVq4/oMFMCi1siNe7YnQbVJ1WDWgst
+	pU5oAi7imyqAz0mi5khJCDearNfmP5LCeI3lW/TiX0wWMeaMsPR3o5rucHnMuxWDY+0dEoEhJ8x
+	OBxc8ARdA1XM15+tiqb7BlGorDo430mRRnPfDMNTuP6BAaz+2iyTH/JKkkZtbWCPkrQtJdWYXof
+	swaNskFk9PuiH8WcesUuIny8A771LFn5IaGGauIYFpSwljg==
+X-Received: by 2002:a17:90b:2f06:b0:36b:b903:994 with SMTP id
+ 98e67ed59e1d1-38fa68500b7mr1838360a91.4.1785451583701; Thu, 30 Jul 2026
+ 15:46:23 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 15:31:07 -0700
+ HTTPREST; Thu, 30 Jul 2026 15:46:22 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 15:31:06 -0700
+ HTTPREST; Thu, 30 Jul 2026 15:46:22 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-13-35f9aec2aed2@google.com>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com> <20260728-gmem-inplace-conversion-v9-13-35f9aec2aed2@google.com>
+In-Reply-To: <afEwWZksU0Fw61oT@plex>
+References: <afEwWZksU0Fw61oT@plex>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 15:31:06 -0700
-X-Gm-Features: AUfX_mwSrnPTxdnd5yQR4dz6uVJVHdsuk5_VpYazXm1_NpOUC6lIlEZN5j_ISHs
-Message-ID: <CAEvNRgEscmPoW2f4UWHnPub_ycDg_QHRR-cCU5yL9HXu=G-OFQ@mail.gmail.com>
-Subject: Re: [PATCH v9 13/41] KVM: guest_memfd: Return early if range already
- has requested attributes
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+Date: Thu, 30 Jul 2026 15:46:22 -0700
+X-Gm-Features: AUfX_mztKVf-vmsid_VHO9yf9OChzZkQAo084zzlpI1FA8C_xfqYz8r7z-LEAo8
+Message-ID: <CAEvNRgE8YHXVZLTQQYZJrJvnrW+WUfpGUn2XpxpkDRj1Zwi4Cw@mail.gmail.com>
+Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
+ Live Update
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	kvmarm@lists.linux.dev
+Cc: rppt@kernel.org, graf@amazon.com, pratyush@kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, maz@kernel.org, oupton@kernel.org, dwmw2@infradead.org, 
+	alex.williamson@redhat.com, kevin.tian@intel.com, rientjes@google.com, 
+	Tycho.Andersen@amd.com, anthony.yznaga@oracle.com, baolu.lu@linux.intel.com, 
+	david@kernel.org, dmatlack@google.com, mheyne@amazon.de, jgowans@amazon.com, 
+	jgg@nvidia.com, pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, 
+	vipinsh@google.com, vannapurve@google.com, corbet@lwn.net, 
+	loeser@linux.microsoft.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-writes:
+Pasha Tatashin <pasha.tatashin@soleen.com> writes:
 
-> From: Ackerley Tng <ackerleytng@google.com>
 >
-> Extract a helper out of kvm_gmem_range_is_private() that checks that a
-> range has given attributes.
+> [...snip...]
+>
+> The Caretaker
+> =============
+>
+> The Caretaker is a specialized, identity-mapped bare-metal executable
+> attached to each vCPU. While it is installed during the initial VM setup
+> and remains permanently enabled as an interpose layer between the Guest
+> and KVM, it is the key architectural feature required for a VM to be
+> orphaned. By providing an execution environment independent of the host
+> OS, the Caretaker enables the guest workload to safely survive the host
+> lifecycle transition.
+>
+> During normal VM operation, the Caretaker acts as a fast-path shim: it
+> forwards standard VM Exits down to the backing KVM kernel module and
+> handles certain exits autonomously. However, during the "Management Gap"
+> (when no host OS is active and standard KVM handlers are offline), the
+> Caretaker enters a standalone mode to ensure continuous guest execution
+> without host intervention.
 >
 
-This should have been
+I think this might already be explained in different ways by the other
+commenters.
 
-  Extract out a helper that checks that a range has given attributes.
+I guess the main question I have is, if the Caretaker could indeed take
+over caretaking during a "Management Gap", then we're adding code to
+tell KVM what to do to handle some VM exits.
 
-kvm_gmem_range_is_private() was renamed to kvm_range_is_private() in
-some earlier patch. Thanks Fuad!
+In that case, it would be awesome to have that functionality provided by
+KVM in the first place, to avoid some number of kernel exits to the
+userspace VMM.
 
-> Optimize setting memory attributes by returning early if all pages in the
-> requested range already has the requested attributes.
+> While this proposal focuses on its critical role in minimally disruptive
+> Live Update, the Caretaker is fundamentally designed as an extensible
+> primitive.
+
+If the Caretaker can/needs to be extended, then on the other extreme,
+the entirety of the userspace VMM's functionality could go into the
+caretaker, and perhaps that's another direction to go, where maybe LUO
+could keep some slice of userspace alive? (then the VM is no longer
+orphaned)
+
+> Its architecture allows it to be leveraged for a variety of
+> other advanced virtualization use cases, such as running custom
+> lightweight hypervisors or completely offloading virtualization duties
+> to an accelerator card.
 >
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Tested-by: Shivank Garg <shivankg@amd.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 >
 > [...snip...]
 >
