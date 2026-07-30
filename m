@@ -1,359 +1,164 @@
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F5D29DB6C
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 02:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB5037E5CD;
+	Thu, 30 Jul 2026 02:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785379517; cv=none; b=XHqCgr88h72Xote2RmxPq3TnmflWAISKaF6ZJfJRxLlXq5Hbe05IKmW4Va/oydbz+ijCHqddQIf2/C3hWaGI8GcQlZsCI+YFjRQrlK7kuXl83Dgi67ttB1SloyBxNX8cr1bI3ytn/3Cchcfs/5B6rNme6YhD/nxGxggI6kKD6zs=
+	t=1785379882; cv=none; b=JUlo1pvwZWWdWQB7l7Chxbb7jKjyCHWRUSJVg89Q9n2dOSFM4mqi/94DIZ2DlKYe2lamzNOi1jpJLvWV205r+4JgN+yEskSyob+3y3CpEpV9xFLqxhd36Iz3Tf9i06yblIo5a3arjzAEjUWQtyKocQTNN4eB9ZYhimv3WMKzOOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785379517; c=relaxed/simple;
-	bh=CZ2rrIc94GJdpkfHUQSCzR62mwlcDJg4NwjiezgSD08=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We+RxGIvIGbXOvBvMNJIv2s0/Rn/AbMk8kGC9NTExuBVX9CBdRFFW8QRYnOFE3U1kTvgtM6aYSnw1SxV+q++O4rh2E29A+eTeaJJXikF+7k0TeqvED6gVlzY/Uot/YGBFzYPC7wcoFGD0nim6Hfi3O+8b+AXO0nK9r78mio9O0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYzoQtcg; arc=none smtp.client-ip=74.125.227.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785379882; c=relaxed/simple;
+	bh=58BUX/Pc9LVGX59oowWgG9SPbEbBcMJaSGaZjjJTc3A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JzU8bcIIQ69MEQspYRk5pRfvUPs4qUPF2kTmXdqhHssyNbQqXRmnV0vuzmIb7aEjC17oOccJSd57Pw9SiRae7SLmsdYvTo9nstuN4vQ9wbjk8dSiMTaE7M7kMxOeRsISRhgZjG3u0LUuj14fMYOB4DFKNJOing+aaCSbz/j2Eaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H4rnyeYL; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYzoQtcg"
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-38111ea8a88so1003568a91.1
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 19:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785379515; x=1785984315; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=meJSQ04WBiDIRj28ufTGbhmrt28uHJ+jjo+yeu158ak=;
-        b=XYzoQtcgfLGrYVPAWqty7lilSN+5kgz87dS32OHaP3DMB6FapRMoinrxcLLj/v/wzN
-         PFzJCJ/dDliXMbIATQnYe1/4f+kr3VWZwOh1/7Ad+9PiaaJe1d/qhJRwpFetYNX4TGmN
-         zO5F/AARxYQsjt3R2O/qey9NYTo2R4VWyc1D8kvCP3DLq/AjSE/Ey+RitTRqWu38Di6e
-         yb2slQLgzRFmGpDSy85snMINGcWf8EHKtZqhABlYPs6xfh+IF9YjcfQw1l1+HYvIfv0Q
-         80hs8jpg2+wicVsFwJTUe1AzneVGWn2Cg6e8ayVFvFYxu8JuhGW9CZ0HO6tNt+OqBw3Q
-         Mxzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785379515; x=1785984315;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=meJSQ04WBiDIRj28ufTGbhmrt28uHJ+jjo+yeu158ak=;
-        b=WRI5iMepmWVgOmjN6DhhTP5lApm6Io3dVAPq1X9d0hz6T/FBDIP7M6v2uOk/aKfRvW
-         Wi1rN8mNIbFY7RYeSGclz9Q83WjvLWjmztEEliHf7Jt73Gc+E74kM7mKix5nOWc1UXKQ
-         CrVgvIZKu0Ikw9EOXK2tbuGBpU37hFM1BIfcAi11UYvFeKg/d6ZkFvJipWi49EbWVOHx
-         vqMsdM5T9C5RHKxbshizDGTmNQxTnjenLmX4baha59fCQRctUTwPHRhIXVMjgQJevTTp
-         YoBQ1J+aW1WR1z+H4/hoNf4txaiIZWXFjj54hNqkg4CgUQ5rxI6blI/zah+Od2jT8GSL
-         bu4A==
-X-Gm-Message-State: AOJu0Yy7k+9ZcaY4XiV9XPGnCanp0B0qFX7VzNOSQpVz5Uhb4SOHz4d8
-	2/fPwT7TBZbTxXU5NEYMnZOLMLEX+JTKCIPMEUlCgRuNBOHp5aSOpPW81CUcEzY9308=
-X-Gm-Gg: AR+sD115txducc3uoaIRD9PBrEPPIkPLFIZAQm3h1FYMK3OUgSJj+9udp1bXmKgK6KL
-	QeqlRv/TfNU84Rj8skl2Z5Qq3q4qQaGmtmRni0mAFM5T8zkyBpofKLIzFYrHrdmIgLSZcXBzt2q
-	uMtgBlpZziLY4+AG46DRkc5mhtI90ZN++X0lTMTzI23JoQO/1INCtVTWQzbdHO/9VFpmUeXnMFy
-	z/S2N3HjwMVgMgaGOqVGCtiBJk0J9ppLgPjM8frTAxWw4fWg5JTeiO0/DpfcAf52qx/efSBY282
-	0k3Lub4tVroHZ3nwYRkEOsbwBTZgKXzFmwZl8wd1Zfo6uAk6sPpK1SS0qqDRoJNslDGv2hdXADK
-	7AIDiQvinZSX8VVL8a4heyIm34h+9tEB6AJ49n6T9e4Fdjn61qgwirD9ENB0Wf6V5gJVF2F7i/F
-	n8DhJIVp0pXF3vDTNchvxLw+FsfQ486EotCauj7H2G1otXHyXUnA2aU1zNwcuBKqilMxqi3RxSh
-	xo=
-X-Received: by 2002:a17:90b:52cc:b0:38e:712a:bb38 with SMTP id 98e67ed59e1d1-38f9bef3409mr874083a91.24.1785379514730;
-        Wed, 29 Jul 2026 19:45:14 -0700 (PDT)
-Received: from q-System-Product-Name ([129.227.183.200])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f9babbf90sm221489a91.14.2026.07.29.19.45.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 19:45:14 -0700 (PDT)
-From: "Bingyu.Xian" <shanbeeyoo@gmail.com>
-To: kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org
-Cc: linux-riscv@lists.infradead.org,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: [PATCH v2] RISC-V: KVM: Add minimal guest_memfd support
-Date: Thu, 30 Jul 2026 10:45:10 +0800
-Message-ID: <20260730024510.1063290-1-shanbeeyoo@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260729070756.730312-1-shanbeeyoo@gmail.com>
-References: <20260729070756.730312-1-shanbeeyoo@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H4rnyeYL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785379881; x=1816915881;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=58BUX/Pc9LVGX59oowWgG9SPbEbBcMJaSGaZjjJTc3A=;
+  b=H4rnyeYL8f5a/Eh/mHE4hhcghKYCsF/Zhtw49d/Mcc1bhhLXvcoXeXBv
+   DUyZcC8M8fjdPdFNZDXfZbTgjQVUjV2VqH+A3kEDKzNVNupjsqdh8W205
+   6liXR4tBZzNpWRK/3wOu7hiCZxpLMPsEqrb8rgeTxqMz46JFiqkbwiW3Q
+   z37uk5HRYRjLXbu0Cpk1SSRPSQAsg2yref/crQoqgADS502JsBnwzKH9u
+   jALrJqvWSE1yRN3G5RoNNNBYPiHx1YCzWpw6vvtctLSGh+EfTtFmQI0tv
+   0BQo4zcTMmSDXCna17WurJxDuKRIkIEsmNlqRa2QXsrzjza0P1JQaazVn
+   Q==;
+X-CSE-ConnectionGUID: t+Wa509yTHy9Ad0TRqFdjw==
+X-CSE-MsgGUID: kYhGb2rQTiyGyZYy6DYWTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85848296"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="85848296"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 19:51:20 -0700
+X-CSE-ConnectionGUID: MKxZhcNeSS+14YAS31UiXg==
+X-CSE-MsgGUID: 6kLRLULWRIGSBKbcIQo1Jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="258941269"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.178]) ([10.124.241.178])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 19:51:17 -0700
+Message-ID: <a6481eb0-0480-41f2-97c3-ab5f278f7e50@linux.intel.com>
+Date: Thu, 30 Jul 2026 10:51:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Add minimal guest_memfd support for RISC-V KVM, following the same
-
-pattern as x86 and arm64.
-
-1. Select KVM_GUEST_MEMFD in Kconfig
-
-2. In kvm_riscv_mmu_map(), check kvm_slot_has_gmem() early, before
-
-   taking mmap_read_lock(). For gmem memslots, resolve the PFN via
-
-   kvm_gmem_get_pfn(), then acquire kvm->mmu_lock and jump to G-stage
-
-   mapping, bypassing vma_lookup()/__kvm_faultin_pfn(). The gmem PFN
-
-   is resolved before mmap_read_lock() so the mmu_lock taken for the
-
-   mapping is never held while waiting for mmap_lock, which would
-
-   deadlock against mmu_notifier invalidation (mmu_lock -> mmap_lock).
-
-3. Skip kvm_release_faultin_page() for gmem pages; their lifetime is
-
-   managed by the gmem inode and invalidation notifier.
-
-4. Skip hva lookup and validity check in gstage_page_fault() for gmem,
-
-   which does not have a userspace VMA backing it.
-
-Changes since RFC v1:
-
-  - Add vcpu_exit.c hva lookup bypass for gmem slots
-
-  - Call kvm_prepare_memory_fault_exit() on gmem fault failure
-
-  - Respect KVM_MEM_READONLY for gmem slot writability
-
-  - Skip THP adjustment for gmem (only PAGE_SIZE supported)
-
-  - Skip dirty tracking for gmem (handled by gmem notifier)
-
-  - Replace goto with is_gmem variable for cleaner flow
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to known
+ CPUs
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260727192131.582105-1-zide.chen@intel.com>
+ <20260727192131.582105-8-zide.chen@intel.com>
+Content-Language: en-US
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260727192131.582105-8-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-Assisted-by: YuanSheng: deepseek-v4-pro
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Bingyu.Xian <shanbeeyoo@gmail.com>
----
- arch/riscv/kvm/Kconfig     |   1 +
- arch/riscv/kvm/mmu.c       | 134 +++++++++++++++++++++++--------------
- arch/riscv/kvm/vcpu_exit.c |  17 ++++-
- 3 files changed, 99 insertions(+), 53 deletions(-)
+On 7/28/2026 3:21 AM, Zide Chen wrote:
+> RDPMC type encodings are vendor-defined and could theoretically be
+> extended on future CPUs. An unknown RDPMC type could leak host
+> PMU information to the guest through RDPMC passthrough.
+>
+> Rather than assuming future CPUs are safe, explicitly permit only
+> reviewed CPU models and require RDPMC interception everywhere else.
+> This ensures RDPMC passthrough is enabled only on CPUs whose RDPMC
+> encodings are audited and supported by KVM.
+>
+> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+> Suggested-by: Jim Mattson <jmattson@google.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v7: new patch.
+> ---
+>  arch/x86/kvm/pmu.c | 32 ++++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+>
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index 51c6d00a485f..092809bd757d 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -77,6 +77,21 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] = {
+>  	{}
+>  };
+>  
+> +/*
+> + * CPUs whose RDPMC encodings have been audited for KVM RDPMC
+> + * passthrough support.
+> + */
+> +static const struct x86_cpu_id kvm_rdpmc_known_cpus[] = {
+> +	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, NULL),
+> +	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
+> +	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
+> +	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
+> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
+> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_R, NULL),
+> +	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
+> +	{}
+> +};
+> +
+>  /* NOTE:
+>   * - Each perf counter is defined as "struct kvm_pmc";
+>   * - There are two types of perf counters: general purpose (gp) and fixed.
+> @@ -807,6 +822,20 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
+>  
+> +static bool kvm_rdpmc_encoding_supported(void)
+> +{
+> +	/* KVM understands all RDPMC encodings prior to PMU v6. */
+> +	if (kvm_host_pmu.version < 6)
 
-diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
-index ec2cee0a39e0..77121100579f 100644
---- a/arch/riscv/kvm/Kconfig
-+++ b/arch/riscv/kvm/Kconfig
-@@ -29,6 +29,7 @@ config KVM
- 	select KVM_GENERIC_DIRTYLOG_READ_PROTECT
- 	select KVM_GENERIC_HARDWARE_ENABLING
- 	select KVM_MMIO
-+	select KVM_GUEST_MEMFD
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select SCHED_INFO
- 	select GUEST_PERF_EVENTS if PERF_EVENTS
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index d2a06a54be17..5d37d8a93a1d 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -551,6 +551,8 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	unsigned long vma_pagesize, mmu_seq;
- 	struct kvm_gstage gstage;
- 	struct page *page;
-+	int max_order;
-+	bool is_gmem;
- 
- 	kvm_riscv_gstage_init(&gstage, kvm);
- 
-@@ -568,60 +570,79 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 		return ret;
- 	}
- 
--	mmap_read_lock(current->mm);
--
--	vma = vma_lookup(current->mm, hva);
--	if (unlikely(!vma)) {
--		kvm_err("Failed to find VMA for hva 0x%lx\n", hva);
--		mmap_read_unlock(current->mm);
--		return -EFAULT;
--	}
-+	is_gmem = kvm_slot_has_gmem(memslot);
-+	if (is_gmem) {
-+		/*
-+		 * For guest_memfd-backed slots, bypass the userspace VMA lookup
-+		 * and get the PFN directly from the guest_memfd inode.
-+		 */
-+		ret = kvm_gmem_get_pfn(kvm, memslot, gfn, &hfn, &page, &max_order);
-+		if (ret) {
-+			kvm_prepare_memory_fault_exit(vcpu, gpa, PAGE_SIZE,
-+						      is_write, false, false);
-+			return ret;
-+		}
- 
--	is_hugetlb = is_vm_hugetlb_page(vma);
--	if (is_hugetlb)
--		vma_pageshift = huge_page_shift(hstate_vma(vma));
--	else
--		vma_pageshift = PAGE_SHIFT;
--	vma_pagesize = 1ULL << vma_pageshift;
--	if (logging || (vma->vm_flags & VM_PFNMAP))
- 		vma_pagesize = PAGE_SIZE;
--	else if (is_hugetlb)
--		vma_pagesize = hugetlb_mapping_size(memslot, hva, vma_pagesize);
-+		writable = !(memslot->flags & KVM_MEM_READONLY);
-+		/* gmem faultin does not go through mmu notifier invalidation */
-+		mmu_seq = kvm->mmu_invalidate_seq;
-+	} else {
-+		mmap_read_lock(current->mm);
- 
--	/*
--	 * For hugetlb mappings, vma_pagesize might have been reduced from the
--	 * VMA size to a smaller safe mapping size.
--	 */
--	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
--		gfn = ALIGN_DOWN(gpa, vma_pagesize) >> PAGE_SHIFT;
-+		vma = vma_lookup(current->mm, hva);
-+		if (unlikely(!vma)) {
-+			kvm_err("Failed to find VMA for hva 0x%lx\n", hva);
-+			mmap_read_unlock(current->mm);
-+			return -EFAULT;
-+		}
- 
--	/*
--	 * Read mmu_invalidate_seq so that KVM can detect if the results of
--	 * vma_lookup() or __kvm_faultin_pfn() become stale prior to acquiring
--	 * kvm->mmu_lock.
--	 *
--	 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
--	 * with the smp_wmb() in kvm_mmu_invalidate_end().
--	 */
--	mmu_seq = kvm->mmu_invalidate_seq;
--	mmap_read_unlock(current->mm);
-+		is_hugetlb = is_vm_hugetlb_page(vma);
-+		if (is_hugetlb)
-+			vma_pageshift = huge_page_shift(hstate_vma(vma));
-+		else
-+			vma_pageshift = PAGE_SHIFT;
-+		vma_pagesize = 1ULL << vma_pageshift;
-+		if (logging || (vma->vm_flags & VM_PFNMAP))
-+			vma_pagesize = PAGE_SIZE;
-+		else if (is_hugetlb)
-+			vma_pagesize = hugetlb_mapping_size(memslot, hva, vma_pagesize);
- 
--	if (vma_pagesize != PUD_SIZE &&
--	    vma_pagesize != PMD_SIZE &&
--	    vma_pagesize != PAGE_SIZE) {
--		kvm_err("Invalid VMA page size 0x%lx\n", vma_pagesize);
--		return -EFAULT;
--	}
-+		/*
-+		 * For hugetlb mappings, vma_pagesize might have been reduced from the
-+		 * VMA size to a smaller safe mapping size.
-+		 */
-+		if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
-+			gfn = ALIGN_DOWN(gpa, vma_pagesize) >> PAGE_SHIFT;
- 
--	hfn = __kvm_faultin_pfn(memslot, gfn, is_write ? FOLL_WRITE : 0,
--				&writable, &page);
--	if (hfn == KVM_PFN_ERR_HWPOISON) {
--		send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
--				vma_pageshift, current);
--		return 0;
-+		/*
-+		 * Read mmu_invalidate_seq so that KVM can detect if the results of
-+		 * vma_lookup() or __kvm_faultin_pfn() become stale prior to acquiring
-+		 * kvm->mmu_lock.
-+		 *
-+		 * Rely on mmap_read_unlock() for an implicit smp_rmb(), which pairs
-+		 * with the smp_wmb() in kvm_mmu_invalidate_end().
-+		 */
-+		mmu_seq = kvm->mmu_invalidate_seq;
-+		mmap_read_unlock(current->mm);
-+
-+		if (vma_pagesize != PUD_SIZE &&
-+		    vma_pagesize != PMD_SIZE &&
-+		    vma_pagesize != PAGE_SIZE) {
-+			kvm_err("Invalid VMA page size 0x%lx\n", vma_pagesize);
-+			return -EFAULT;
-+		}
-+
-+		hfn = __kvm_faultin_pfn(memslot, gfn, is_write ? FOLL_WRITE : 0,
-+					&writable, &page);
-+		if (hfn == KVM_PFN_ERR_HWPOISON) {
-+			send_sig_mceerr(BUS_MCEERR_AR, (void __user *)hva,
-+					vma_pageshift, current);
-+			return 0;
-+		}
-+		if (is_error_noslot_pfn(hfn))
-+			return -EFAULT;
- 	}
--	if (is_error_noslot_pfn(hfn))
--		return -EFAULT;
- 
- 	/*
- 	 * If logging is active then we allow writable pages only
-@@ -639,12 +660,20 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 	 * Check if we are backed by a THP and thus use block mapping if
- 	 * possible. Hugetlb mappings already selected their target size above,
- 	 * so do not promote them through the THP helper.
-+	 *
-+	 * Skip THP adjustment for gmem, which only supports PAGE_SIZE mappings
-+	 * and does not have a valid hva for follow_pte().
- 	 */
--	if (!logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
-+	if (!is_gmem && !logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
- 		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
- 
- 	if (writable) {
--		mark_page_dirty_in_slot(kvm, memslot, gfn);
-+		/*
-+		 * Skip dirty page tracking for gmem; page dirtying is handled
-+		 * via the gmem invalidation notifier and page cache.
-+		 */
-+		if (!is_gmem)
-+			mark_page_dirty_in_slot(kvm, memslot, gfn);
- 		ret = kvm_riscv_gstage_map_page(&gstage, pcache, gpa, hfn << PAGE_SHIFT,
- 						vma_pagesize, false, true, out_map);
- 	} else {
-@@ -658,7 +687,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 		kvm_err("Failed to map in G-stage\n");
- 
- out_unlock:
--	kvm_release_faultin_page(kvm, page, ret, writable);
-+	/*
-+	 * Skip kvm_release_faultin_page() for gmem pages; their lifetime is
-+	 * managed by the gmem inode and invalidation notifier.
-+	 */
-+	if (!is_gmem)
-+		kvm_release_faultin_page(kvm, page, ret, writable);
- 	write_unlock(&kvm->mmu_lock);
- 	return ret;
- }
-diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
-index 28cf9b27bb07..5c381a4f9977 100644
---- a/arch/riscv/kvm/vcpu_exit.c
-+++ b/arch/riscv/kvm/vcpu_exit.c
-@@ -26,10 +26,21 @@ static int gstage_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 	fault_addr = ((gpa_t)trap->htval << 2) | (trap->stval & 0x3);
- 	gfn = fault_addr >> PAGE_SHIFT;
- 	memslot = gfn_to_memslot(vcpu->kvm, gfn);
--	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
- 
--	if (kvm_is_error_hva(hva) ||
--	    (trap->scause == EXC_STORE_GUEST_PAGE_FAULT && !writable)) {
-+	/*
-+	 * For guest_memfd-backed slots, bypass the hva lookup and validity check
-+	 * since gmem does not have a userspace VMA backing it.
-+	 */
-+	if (kvm_slot_has_gmem(memslot)) {
-+		hva = 0;
-+		writable = !(memslot->flags & KVM_MEM_READONLY);
-+	} else {
-+		hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
-+	}
-+
-+	if (!kvm_slot_has_gmem(memslot) &&
-+	    (kvm_is_error_hva(hva) ||
-+	     (trap->scause == EXC_STORE_GUEST_PAGE_FAULT && !writable))) {
- 		switch (trap->scause) {
- 		case EXC_LOAD_GUEST_PAGE_FAULT:
- 			return kvm_riscv_vcpu_mmio_load(vcpu, run,
--- 
-2.54.0
+I'm not sure if this works for AMD platforms. Jim said current AMD
+platforms already have security holes and I believe the PMU version of AMD
+platforms are less than 6.
 
+Need AMD guys to confirm. @Sandipan, @Manali.
+
+
+> +		return true;
+> +
+> +	/*
+> +	 * Future PMU v6 implementations and future PMU versions require RDPMC
+> +	 * interception until their RDPMC encodings are audited and supported
+> +	 * by KVM.
+> +	 */
+> +	return x86_match_cpu(kvm_rdpmc_known_cpus);
+
+x86_match_cpu() returns structure x86_cpu_id pointer or NULL instead of a
+boolean variable. Better explicitly covert it to a boolean variable.
+
+return x86_match_cpu(kvm_rdpmc_known_cpus) != NULL;
+
+
+
+> +}
+> +
+>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> @@ -818,6 +847,9 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
+>  	if (enable_vmware_backdoor)
+>  		return true;
+>  
+> +	if (!kvm_rdpmc_encoding_supported())
+> +		return true;
+> +
+>  	return kvm_need_any_pmc_intercept(vcpu) ||
+>  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
+>  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
