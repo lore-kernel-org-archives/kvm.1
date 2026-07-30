@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303A93BB10B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264C43BB9EF;
 	Thu, 30 Jul 2026 07:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395466; cv=none; b=N3B5sxMSZqzKJunyJiVMIVLemR3DB/NM0nWmVe7bOoH3fTpdUlvKLWEtzqxoqVpePE5PEr7IqAIERyjMdX8i7scC1ITRQfaSsJ9K+JQZ+ux2mFW0s8SdDjFeGUCngVOvHhSMetkhtd20h+xdRzQrB9tFBnvQdOtkeUJibGZIDOY=
+	t=1785395468; cv=none; b=S86UVuUqiv3AEdFXU8HRVD6P4q5q+/x9/0o0m0t79MAH/3Pn+/wZk0vNEkt4e1fSHK5P+wDC9aUyWmhOb20pzQ07V+duDWkznqdMb5BGA8HRwe8oKyaZt6ih/TcpDnNeftebfl6hsu1F1WzLoQr8jjpwcpzZaANWTvhiruWLr1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785395466; c=relaxed/simple;
-	bh=Ctm60o0xAufdR3O8pdvaLg0AXjj7b4MUSwEs8kEpTXs=;
+	s=arc-20240116; t=1785395468; c=relaxed/simple;
+	bh=w+EhWlX+qPy30XG42S6s3EApG0JUaH1FUB+lO5ZOjM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRcdt0D/2Cbl482fd7QUeP/mPRUQeJ56VQcWV21QnxI9o0ngcILsW8F24pXYCQIh/ix1FxxUCz9O8NzgCWQAN2T2/Nb0apdx420ab0I1+jXKm2iUTlviuayYBSKMxM/LQ4qEVck2PbHEvfCFtn/EtKOTQqxPXneJMakus3C+mwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSBp+4jp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=VES5MmT/KdW/8/SoVfZAxdFrwJZEUE0x4g19G7OkWY1X2iGu/IOWhJfN/AuCN27cQAJ4jDEXfw3NszCPGSOfLP3Yx1Cgflm6pdBGm3ygwhA3sTR+xYKBaNpL8kjxe6RF60qPw/GN4W6d08pzyunHfUQNrGH1cjOoW/AlzCZxuTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpHQ5fJN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSBp+4jp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF7E1F01564;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpHQ5fJN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B00D1F0155D;
 	Thu, 30 Jul 2026 07:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785395453;
-	bh=JAhWhZje9gmOpJhtyVPvANp/6kcIKzyOvMGnE5qE5Xw=;
+	bh=c5q7g0Tr+SZI10mLKtzVtO1D8rNE5+dliITwvOUWOnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SSBp+4jpb1EWcn9BcacpjFcmc1dj4Xz9sU0xd3TFoPMuQ2q7JoQ9UFGMAUVLVBbjc
-	 vB9atIHrq9B0r3IkwkeKbdOay1V7ujcU1dMMYiLMGaOAJhNBCIj/g+44AATLU7OgBg
-	 yp6vfMFShyv5XhOCxiQxd0HqvWkKyYC2M+CGC3HDDsUc31+fFN48uSmNiPGV+Q+1er
-	 I6Vri6GULZk8Q19PS7YHzDEl6SGIQGHErpm1lJqFvaQMkH9L/0dSIE+XKp70o+/ON8
-	 F2WMVE0VZz5zOazzZ/s0ZZTPCmdjeNzHr4YzYEWqQPy+DV9M/SmGXi921pRdu6QyBZ
-	 gt2o0gGzImG2A==
+	b=EpHQ5fJNOZiy/x1XyD2zTqwYkkGWW6roZBeLZJBcYgB+pvfd8//crvrVkVcJTqZ3J
+	 MxdcpXwJO2O6uTHBbOCnfCgynxop/6So3eklO/URS/gCS8nR4I+CuR1FSgvFgim0t3
+	 aN5XpRiK1m+cNvjuaQsGn2HqKPfHWPAehemgSjct/wsypCVIfZQ+ApxqC7q50hQtS3
+	 O5uUZwkwjDe3Lmm5DzYj3Fz6Jke113Y4RwH6RmCxcXS9E14zF5PSM3MEP4f302Psp4
+	 i+BxS5FYCuZCdKuxgtPXuGcwZWPYL32wPZVyUAzQoLeBseW5NHBzTn1K2Be69frD62
+	 dn7hhKDfa3VqA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wpKuq-0000000AOpW-18cG;
-	Thu, 30 Jul 2026 07:10:52 +0000
+	id 1wpKup-0000000AOpW-3gmO;
+	Thu, 30 Jul 2026 07:10:51 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -44,9 +44,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>,
 	Vladimir Murzin <vladimir.murzin@arm.com>
-Subject: [PATCH v4 18/29] KVM: arm64: Add kvm_has_nv{2,3}() predicates
-Date: Thu, 30 Jul 2026 08:10:11 +0100
-Message-ID: <20260730071022.296811-19-maz@kernel.org>
+Subject: [PATCH v4 16/29] KVM: arm64: Split NV-specific exit fixups from the non-NV handling
+Date: Thu, 30 Jul 2026 08:10:09 +0100
+Message-ID: <20260730071022.296811-17-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260730071022.296811-1-maz@kernel.org>
 References: <20260730071022.296811-1-maz@kernel.org>
@@ -62,48 +62,59 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Add a new set of predicates indicating whether VM is capable of
-NV2, NV3, and is in a nested NV3 context.
-
-This is going to become useful as we start dealing with a mix of
-behaviours (NV2, NV3, NV2 on NV3...).
+In order to facilitate further changes, move the NV handling of
+early fixups in its own helper. This also makes the code slightly
+simpler to parse.
 
 Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_emulate.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm64/kvm/hyp/vhe/switch.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index 9831166695186..bdb7dfaa271cd 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -266,6 +266,25 @@ static inline bool vserror_state_is_nested(struct kvm_vcpu *vcpu)
- 	       (__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_TMEA);
- }
+diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
+index a8da40568a048..53af19212895d 100644
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -539,18 +539,15 @@ static const exit_handler_fn hyp_exit_handlers[] = {
+ 	[0x3F]				= kvm_hyp_handle_impdef,
+ };
  
-+static inline bool kvm_has_nv2(struct kvm *kvm)
-+{
-+	return (cpus_have_final_cap(ARM64_HAS_NESTED_VIRT) &&
-+		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY));
+-static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
++static void fixup_nv_guest_exit(struct kvm_vcpu *vcpu)
+ {
+-	synchronize_vcpu_pstate(vcpu);
+-
+ 	/*
+ 	 * If we were in HYP context on entry, adjust the PSTATE view
+ 	 * so that the usual helpers work correctly. This enforces our
+ 	 * invariant that the guest's HYP context status is preserved
+ 	 * across a run.
+ 	 */
+-	if (vcpu_has_nv(vcpu) &&
+-	    unlikely(host_data_test_flag(VCPU_IN_HYP_CONTEXT))) {
++	if (unlikely(host_data_test_flag(VCPU_IN_HYP_CONTEXT))) {
+ 		u64 mode = *vcpu_cpsr(vcpu) & (PSR_MODE_MASK | PSR_MODE32_BIT);
+ 
+ 		switch (mode) {
+@@ -567,8 +564,15 @@ static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 	}
+ 
+ 	/* Apply extreme paranoia! */
+-	BUG_ON(vcpu_has_nv(vcpu) &&
+-	       !!host_data_test_flag(VCPU_IN_HYP_CONTEXT) != is_hyp_ctxt(vcpu));
++	BUG_ON(!!host_data_test_flag(VCPU_IN_HYP_CONTEXT) != is_hyp_ctxt(vcpu));
 +}
 +
-+static inline bool kvm_has_nv3(struct kvm *kvm)
++static bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
 +{
-+	return (cpus_have_final_cap(ARM64_HAS_NV3) &&
-+		kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV3));
-+}
++	synchronize_vcpu_pstate(vcpu);
 +
-+static inline bool is_nested_nv3_ctxt(struct kvm_vcpu *vcpu)
-+{
-+	return (has_vhe() && kvm_has_nv3(vcpu->kvm) && is_nested_ctxt(vcpu) &&
-+		(__vcpu_sys_reg(vcpu, HCR_EL2) & HCR_EL2_NV) &&
-+		(__vcpu_sys_reg(vcpu, HCRX_EL2) & HCRX_EL2_NVTGE));
-+}
-+
- /*
-  * The layout of SPSR for an AArch32 state is different when observed from an
-  * AArch64 SPSR_ELx or an AArch32 SPSR_*. This function generates the AArch32
++	if (vcpu_has_nv(vcpu))
++		fixup_nv_guest_exit(vcpu);
+ 
+ 	return __fixup_guest_exit(vcpu, exit_code, hyp_exit_handlers);
+ }
 -- 
 2.47.3
 
