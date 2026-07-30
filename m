@@ -1,73 +1,76 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A573859EF
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8A244607E
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785435716; cv=none; b=J6PhZ7Id+WeXlW633LDgaScAP/Ln9fXW/ljyWjqjQJKnROyiX3+agiS7HiqTBsrSbjRb+D5tzkfWeKVyvbXIKEGnIF6ctIkGiO6r0XahQEMp6fcgrlb1ieRPmtpfP4LAV1KPOAO9CQhJld+taQ7r5nRMLfzPF+c/mBzCPqZaWCs=
+	t=1785435875; cv=none; b=I/DZ0E2ikPC7ADZexn0pIPk6uN9F78VAEIBjS/Be/VmYqhZ/kwr1KmB/JAMEiDLEndnYtKmQyElOacoDIvg5OqYEmqSGea8LMKPnuaeyMB6H0d7g4+ZIMHTF6ol92rSZjxaCKAU1vpRfuCkNEmc5PY9rFmLhavlU7VzbEItr630=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785435716; c=relaxed/simple;
-	bh=cnXdVpJqtS6CKYmSYOu5HrZeA6Sexa9Db8fDkVzi/M0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k/j4AG4FaxFOk69aTGFC8V2wEnFC4DCoO2+msv49KfkNdlP/Qd/PQ/8Y5C/LpJQxMfhdpU3u4V+z1m4Z7w+C2qesCl+4XLgYN11SIH+fpJ4goU3N425528sgSUD/Hu5Bmz61ORn5xMHYv+wfuYzcARsd3rlmA9Eao2ZVtEjfrU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SlBzeBIX; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785435875; c=relaxed/simple;
+	bh=WmC0rz+Iq3rxPGrf8sHcUVcKnqR8nA46jesqA2w8hOg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pRdTyRYl9gzz5TAYb3cK7rAunNNKBhvPLx5bVYn3lRX881thuxw157sChB6fif3dIZ0+QGv2Jysb4BUjY20a49GsPlzkt02PL8bKwRMtai2nv5os1qM8ArZfdfndX53wtUJAlSKTSI9GneeCcRezlH+W4ldXcqdlT/25DgDYT0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FjJ4Yi3o; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SlBzeBIX"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cea3004256so1338895ad.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:21:53 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FjJ4Yi3o"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4954c0833b4so474795e9.1
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785435712; x=1786040512; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1785435871; x=1786040671; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WhUNIqsonkRRMTXAnOyItlVLbQQzWZZfYjEel872m6o=;
-        b=SlBzeBIXo0hZ2Dl5gQ30K1c2ImTgSrsFked8QQKKyPW5C10QZA0y1CIvBnMoYU8mTG
-         ICIHQsIrYmxEbw4lSs27UEMP7dy63XLEy/d1HERzo1sYVqex3JkfEoQi1otQYD/earJI
-         v2AyNKEKDJ50KxijoJa7mekiGTqLJNdR2RKJA/nN63kdJSG/ImI0Qn4OTIQcrfZWDjUD
-         22YCXCGG4C9vNwPcab1HgfF+VxqoVX4Yp0FewMy2tcS98BfZjFXBKNO/o1D5O1wT1O+s
-         h18M97Lb7ApdsgfEEspS7gQwbRfKfdXKTZjzGBtpqPpKFkI9qLWEUAGSQViy2OiGR1px
-         7/iA==
+        bh=PWg5Br4dovuA6zfdYwI8dsMXvZRa2U86H6MD/QZgnCo=;
+        b=FjJ4Yi3ow4AvKLMqQ61zzq1S1NFMu5d2UFAk/QaIdIGrQuK8lFzbJBP+bt5KVQxiJe
+         M2LJGMPC4U5MT5zHY6pEpnHnOLOR4egQu8+vRGg6dJdKKl6icCjfL8ImlvTlE3JYebkd
+         BFGN6DYgpMbMHHgRyx/AA04J7RON+I1tX4Nb4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785435712; x=1786040512;
+        d=1e100.net; s=20251104; t=1785435871; x=1786040671;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WhUNIqsonkRRMTXAnOyItlVLbQQzWZZfYjEel872m6o=;
-        b=RQKCSKIZVILOC9gzvAK7nPxj3BrRXml66RDeRnu7tEZFCCm9Eq1mMcxDMnqqsqxP7p
-         iMdSVcHnyU0cZxRHQmJwCoOYGvnARRhzZAsBfrN9piLligPiz0Bv+VS/G6IC/JNdY3XL
-         2tyVKiTqOY/6VaEOmYHYqEu2w5yRomtASkStoTHoeZKfZxiY5HHFHcklY3HIFav7DtHr
-         Qq+3DjM/YWgylQtGpuBOXQ91b+/pUTahj4+XlObrIYS0fTFB13NCYu84NiAIeOUCEqBA
-         dfAeoKGx4KPUM3+JKQYTDbil4+/7pjdTU5eXmuimHS+cAjfSnNSIlvjTehRxFPf4ZOQN
-         0SVA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqlvu/ATMDPfMgweqAg2rgoFMJCIN2PLQsKcfiBFJQYjKES478xu+a4XvSQjP1ecVPyUPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6c6wrZ+VWeTVBF71hjADEdnYufmYAqvqhbVH7nno+SC06JZvK
-	mNZ0++2h8bwTNUUHde/eCEQ3kYmbplp16XHNgbj/s6AIWerebdBBKD7G
-X-Gm-Gg: AR+sD11npikM1/Ckyuo8GyED92enhYWYiWGKhmslYYlTOuDqRfzDPCx7YDiq3joemc2
-	8EHje5yISXo5Kyk5efyiiaWri8m24HdIgX2Fh6eezS4d/50nHLukn9lYX4YBNhRoWOLj+xsP1e+
-	eKRJc1SL+tHnk9IOYBnVCiAsHiCkbaR+A1443CV3Bq6307v4YNVT9XVMNutckMOkUK3Ah42PTz2
-	Pm5jQc7BChHLAm09gC9QWwt+8IaAm8NedbSsCApTysoyx9RBptxPLXAsbGg58Tt25ZKGgrgw7NE
-	sMzuOLX9a/g/9B80X29fuoQOnbdP/qQ8NT08TDbxT3kzQ/CjCJ9aBVljv2UtPJeOF/JiG03OJCg
-	MciQpGPmsThTYzg3REMqhL3HAGRpQE6i6hAMAPFFwWh6U85GGVe/+8tvKQad8a0qpjtK0hcbrb+
-	EU1jCy2cVjSdwjSmWQ3dMWkzS2C2rewo6pfh9CUyWwRwUGRMG/pymx8Zi/el4B2P3E/5IQE+rWb
-	Iq/sliwzkHQIJ1Ru9iR211g0qKonZkzLWWOuTrOWvA0ovZGiKmr
-X-Received: by 2002:a17:903:1a2b:b0:2cf:9cf2:3533 with SMTP id d9443c01a7336-2d035be4b51mr35641225ad.18.1785435712288;
-        Thu, 30 Jul 2026 11:21:52 -0700 (PDT)
-Received: from wirene2.c.googlers.com.com (249.65.83.34.bc.googleusercontent.com. [34.83.65.249])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc5afasm30750155ad.46.2026.07.30.11.21.51
+        bh=PWg5Br4dovuA6zfdYwI8dsMXvZRa2U86H6MD/QZgnCo=;
+        b=Yrko3WEsrgx9GDwtOBQCGH46STLqmrX1e0z/ZYFQyrqHYBFXEqi06gYmVQ8Gk4u1oc
+         vcFq/Cr1hyICZWuEfjTiLmEkAPagFy058nYeekJiQ5m7bGqMGv+9BklHHVr1lEmrkqtX
+         CTTdweii15Z/zhu9zBmUO4bOrsGJDMYjBpmKhK5iK7gt/HG7UtYNKdQu3eBOgWIXzQJG
+         kNV1oTRDCQTHsx3z23f4PDCLfkP9Oc6giHrfEEM4MlxVtW8fltm8oPC/K5TeCTiMjUTx
+         y+X7auJC7kpwWWtHVbpNugpjlKxgqgKlmCBpyeDHm1TO41h8I2NXvBjZQM8+Dw4KGhlo
+         0+Zg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq02b+4kmIXaqFqf5dYyrx4X7A31Ctj88VfM6HNRSY7jq0yJRXHiVj+XAFh0blIafX4tTU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU0ziNzD1F7xDNKvUUtTgZL70aiPWInvXlGaFb09PMph//EjGf
+	coqdZGEQTTunPparZptdBYS8xu/V6N15toYEOk6l50Cp0GwE/brb84SxhU9IBatInQ==
+X-Gm-Gg: AR+sD11Yzf+svpI9yC1aP408cT/YnzXlcrDKTDCl0o29epzGAujH22YCaZHERNVvS51
+	W2WfFptudkJfX/VGlLnJAM4Vg39Sfx5orraZiR/DkoRDwYnG06yLePGnYwdmc9yZ/3oGwTse+jX
+	/b44i6hEkZDdHtQibV5tpvODyW0qVUMVnrl2T+E8ENFhG7qf6iwsBPcUan7mhQrLsqhJdFdqJ5i
+	8HWIUdpfZn8jcgyiwqDQp5hEI3DfWXpMeublc9L75IPeLjuvhBW6loTXiuL4c5glKnMREEcUAwi
+	wf3s6bMytaGOrj5zR2srNStI4sChP/eBV5qwFtkx9Bc1gCsZK5v/3HOGiGq4KFruqENyLBxnLsh
+	sJaO+9xM/+dMHRdpYdvwDMUKu/RRV4EHqhiKyMfJdg3BZx0yQ2WAWtUziFKt8enAI58GSLc9flH
+	eNYr4Am2RnP9NVXcU4xs0iFzZwjtXdQx/uiyE901dUF+wlyYPCbDWHd7zWHQAV2WnNJrZeAooT6
+	u3oPlivNkjumo9HaT8d0WD+JKvrc0aTi+Qlkp7XPWRY1xCoAVZZdRjwz15jtGhfww==
+X-Received: by 2002:a05:600c:8b51:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-49800e6cffcmr53667995e9.2.1785435871010;
+        Thu, 30 Jul 2026 11:24:31 -0700 (PDT)
+Received: from dmaluka.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498010aade3sm84008685e9.14.2026.07.30.11.24.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 11:21:51 -0700 (PDT)
-From: Irene Wang <yiranirenewang@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Andrew Jones <andrew.jones@linux.dev>,
-	Thomas Huth <thuth@redhat.com>,
+        Thu, 30 Jul 2026 11:24:30 -0700 (PDT)
+From: Dmytro Maluka <dmaluka@chromium.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Mathias Krause <minipli@grsecurity.net>,
 	kvm@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Matlack <dmatlack@google.com>
-Subject: [kvm-unit-tests PATCH] x86: pci: Support unaligned register access in PCI config read/write
-Date: Thu, 30 Jul 2026 18:20:20 +0000
-Message-ID: <20260730182053.905335-1-yiranirenewang@gmail.com>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Vineeth Pillai <vineeth@bitbyteword.org>,
+	Chuanxiao Dong <chuanxiao.dong@intel.com>,
+	Aashish Sharma <aashish@aashishsharma.net>,
+	Grzegorz Jaszczyk <jaszczyk@chromium.org>,
+	Dmytro Maluka <dmaluka@chromium.org>
+Subject: [PATCH 0/3] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
+Date: Thu, 30 Jul 2026 18:24:22 +0000
+Message-ID: <20260730182425.1223530-1-dmaluka@chromium.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -77,74 +80,30 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
-Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
-register offset (bits [1:0] = 00b), while byte and word offsets within
-the DWORD must be selected via data port 0xCFC + (reg & 3).
+max_vcpu_ids and KVM_CAP_MAX_VCPU_ID are exclusive, i.e. the maximum
+allowed vcpu_id value is max_vcpu_ids minus one, not max_vcpu_ids.
 
-Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
-16-bit helpers always accessed base port 0xCFC directly. This worked
-in QEMU because its PCI host bridge emulation preserves unaligned bits
-in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
-in strictly spec-compliant VMMs (and potentially real hardware), bits
-[1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
-0xCFC to erroneously target byte 0 of the DWORD. In practice, this
-causes pci_find_dev() to read the vendor ID twice instead of reading
-the vendor ID and device ID.
+Fix the sanity checks for KVM_SET_BOOT_CPU_ID and KVM_CAP_MAX_VCPU_ID
+and the selftests for them (added in series [1]) to fail when
+bsp_vcpu_id is incorrectly set to max_vcpu_ids, not to a value below
+max_vcpu_ids.
 
-Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
-the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
-accessors, ensuring compatibility across QEMU and other VMMs.
+Also clarify that in the documentation of KVM_CAP_MAX_VCPU_ID, in an
+attempt to make this a bit less confusing.
 
-Assisted-by: Gemini:gemini-3.6-flash
-Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
----
- lib/x86/asm/pci.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+[1] https://lore.kernel.org/all/20240614202859.3597745-1-minipli@grsecurity.net/
 
-diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
-index 03e55c27..09fd2372 100644
---- a/lib/x86/asm/pci.h
-+++ b/lib/x86/asm/pci.h
-@@ -9,18 +9,18 @@
- #include "pci.h"
- #include "x86/asm/io.h"
- 
--#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
-+#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | ((reg) & ~3))
- 
- static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    return inb(0xCFC);
-+    return inb(0xCFC + (reg & 3));
- }
- 
- static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    return inw(0xCFC);
-+    return inw(0xCFC + (reg & 3));
- }
- 
- static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
-@@ -33,14 +33,14 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
-                                      uint8_t val)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    outb(val, 0xCFC);
-+    outb(val, 0xCFC + (reg & 3));
- }
- 
- static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
-                                      uint16_t val)
- {
-     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
--    outw(val, 0xCFC);
-+    outw(val, 0xCFC + (reg & 3));
- }
- 
- static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
+Dmytro Maluka (3):
+  KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive
+  KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
+  Documentation: KVM: Clarify that KVM_CAP_MAX_VCPU_ID is exclusive
+
+ Documentation/virt/kvm/api.rst                  | 13 ++++++++-----
+ arch/x86/kvm/x86.c                              |  6 +++---
+ .../selftests/kvm/x86/max_vcpuid_cap_test.c     | 17 ++++++++++-------
+ .../testing/selftests/kvm/x86/set_boot_cpu_id.c |  4 ++--
+ 4 files changed, 23 insertions(+), 17 deletions(-)
+
 -- 
 2.55.0.508.g3f0d502094-goog
 
