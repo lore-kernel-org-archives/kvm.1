@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6E38DC78;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E59A3BB106;
 	Thu, 30 Jul 2026 07:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395468; cv=none; b=mAcfpwucd4/+L/DqVMSdnltX2Qvh+Rq9TuiBBQpikjR+sRloHq3l4Uwd0D3apr1Wt49Q41aW9K+1Mh+DP6IDKoUSG0eHa2jaAWLAdLdQMljnkYwwet7XWhY0iBrYMVBGhSmpfnXYJtTS+CZfkNwXjhFi2w8s2DvYCYMQnrRGTAM=
+	t=1785395469; cv=none; b=KjPDH7rKqVvkP1lbiktdTTL3q+rxM8UbQ3JFxEHOHN8GKg88XM7XzqX/BE+fV9ZcjL3wwAsO9kEShm/235jHIzXx6q59Ie3rbI1Z/gXPjJl3j/0CWlPrVUyCuRSsfm2x6zpTz+3OnRN5SFcj7VxfYYwNx2MHsga4HqgziZoEeEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785395468; c=relaxed/simple;
-	bh=7lU5tWhlbqk0Ou8Fsk5PirNKlWEaQMlZFnczx+8Mz4s=;
+	s=arc-20240116; t=1785395469; c=relaxed/simple;
+	bh=+AC0ZAnxae81VfoQo1YmtmSDnC5nuOsQgviqngbcL+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfHWpnTrCr2T8utQMZZFXz/Ec1vzoLBikbgHudJRsdpPWaBFsxLiC1SzAMU4JfgaZIfzE+K2fvo++snaIsW3JMgmovMfR4frwhQy2Dd8V/Tnk/aWhJbfCVk6YRazM/QI5jmWuA++Ckq/sKTTemwZfevE7DreLzvvWu9FC5hQPjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqscpBjS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=k+OoITlzFPsLNxggH9DCoc2DlJv9mp9W8Ih8dHS9EVUfMcMLNk7OgSCdH0UjMLmbwkSCUbf8sOxdWVvZyCn1u+lc6tb5HjmfQ4IUOBzPzUnMsgoXOaVkGUfPuesTQyU/xbE242BDGtnSMOnaesr7A1DpxxXs4QsIOZ2+xUxeDUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RGr7vw+T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqscpBjS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3070C1F01570;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RGr7vw+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898621F0155F;
 	Thu, 30 Jul 2026 07:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1785395454;
-	bh=t2ZyS7MGeKPEnxfcEbRBB5SdyHEJoFL0TAo3eEVJD3E=;
+	bh=nyIGlzMp8KtUkHTmmzLTDwn4GTo9DZ59gUjGug7RCBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aqscpBjSkHzLphNQR3XJ9JgFIi4QQS3Mf7cjiZIuMlFauVbCln/oHVpySKzkemZH0
-	 I7IfD0uJI20duyDhHjOIvX96WgKGjffk1gZgTGMHwcXUiIVCTPemPFNiClDO5Aj1SA
-	 056eyMAyka5va1yTnzwhtzPhr6FDX84xRgaXp+U/xEyR9vy/cqtdGPugvS9FlXKXKg
-	 gXvTiEhvQAfrK5vdAMtmz5xKaAmecfKSVGXjPNe9AAEDKtV0uTXOzBVlTli1yyoYYP
-	 cTqzGFTY7uVUs5jzcv1cXtLeYeH3PbDpuD3z4fe1Yv0nlWIEBQC0Bo5kOpGCtRxLtt
-	 ppH9+HXD4lrPA==
+	b=RGr7vw+T41uqCaXxsaoPdQR+aOs1OBcAXAatKBrNpXTCyEO7mgZ6bAl/WI+ZkbS7k
+	 YWjkgq5EsQnh79Ocs5UuD1cM7JIBaaiASwPobLVrkKRibOqmGkYGDEr+HeUJuH+2m8
+	 33xDAGsjdd3GMeKoPgdxs1v5rCHAFtdF/lyPeukBnl7yDcBKEeYCemBVL4W0/pqWV8
+	 rVNWrAgPVdkkiAJUty4wi8R4ny3k2FSkgJFkgwDQe7ZPl3wPyDB+b/LenowxZeaijv
+	 ODauhJUWEkjVSlwo0AQIfIHxo8l4nDwXAepnSxMkPQSKkqahZL2Bu5mLdBFvoVWcjT
+	 2RpJBJ/JlpcRw==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wpKuq-0000000AOpW-21X3;
+	id 1wpKuq-0000000AOpW-3qi1;
 	Thu, 30 Jul 2026 07:10:52 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
@@ -44,9 +44,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>,
 	Vladimir Murzin <vladimir.murzin@arm.com>
-Subject: [PATCH v4 19/29] KVM: arm64: Make HCR_EL2 a non-VNCR register
-Date: Thu, 30 Jul 2026 08:10:12 +0100
-Message-ID: <20260730071022.296811-20-maz@kernel.org>
+Subject: [PATCH v4 21/29] KVM: arm64: Add NVHCR_EL2 handling to the sysreg array
+Date: Thu, 30 Jul 2026 08:10:14 +0100
+Message-ID: <20260730071022.296811-22-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260730071022.296811-1-maz@kernel.org>
 References: <20260730071022.296811-1-maz@kernel.org>
@@ -62,103 +62,84 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-FEAT_NV3 makes a fundamental change to the architecture, by moving
-guest-initiated HCR_EL2 accesses to the NVHCR_EL2 register. As the
-names suggests, this is HCR_EL2 for a NV guest.
+Expose NVHCR_EL2 to userspace, and treat the direct access as UNDEF,
+as that would only outline a bug in our exception routing.
 
-But where do NVHCR_EL2 accesses from a guest go? The are redirected
-to the VNCR page, right where HCR_EL2 is stored in the NV2 case.
-Does it hurt? Good. There's more coming.
+The generic accessors are also updated to deal with the relatively
+uncommon location of that register.
 
-The challenge here is to make KVM work seamlessly, without rewriting
-everything. Which implies that things such as __vcpu_sys_reg(HCR_EL2)
-must work, no matter the underlying NV implementation.
-
-A simple way to deal with it is to move HCR_EL2's canonical storage
-outside of VNCR for the vast majority of the KVM code, and only have
-a copy at entry/exit times. Given that we don't really support NV3
-yet, this is pretty simple.
-
-In the process, advertise NVHCR_EL2 as the register that now holds
-offset 0x78 in the VNCR page.
-
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/kvm_host.h     | 3 ++-
- arch/arm64/include/asm/vncr_mapping.h | 2 +-
- arch/arm64/kvm/hyp/vhe/switch.c       | 9 +++++++++
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/sys_regs.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-index bae2c4f92ef5c..2648c8a717ba0 100644
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -543,6 +543,7 @@ enum vcpu_sysreg {
- 	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
- 	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
- 	ZCR_EL2,	/* SVE Control Register (EL2) */
-+	HCR_EL2,	/* Hypervisor Control Register */
- 
- 	/* Any VNCR-capable reg goes after this point */
- 	MARKER(__VNCR_START__),
-@@ -571,7 +572,7 @@ enum vcpu_sysreg {
- 	VNCR(TFSR_EL1),	/* Tag Fault Status Register (EL1) */
- 	VNCR(VPIDR_EL2),/* Virtualization Processor ID Register */
- 	VNCR(VMPIDR_EL2),/* Virtualization Multiprocessor ID Register */
--	VNCR(HCR_EL2),	/* Hypervisor Configuration Register */
-+	VNCR(NVHCR_EL2),/* NV Hypervisor Configuration Register */
- 	VNCR(HSTR_EL2),	/* Hypervisor System Trap Register */
- 	VNCR(VTTBR_EL2),/* Virtualization Translation Table Base Register */
- 	VNCR(VTCR_EL2),	/* Virtualization Translation Control Register */
-diff --git a/arch/arm64/include/asm/vncr_mapping.h b/arch/arm64/include/asm/vncr_mapping.h
-index 14366d35ce82f..9e8a49fa8b638 100644
---- a/arch/arm64/include/asm/vncr_mapping.h
-+++ b/arch/arm64/include/asm/vncr_mapping.h
-@@ -11,7 +11,7 @@
- #define VNCR_VTCR_EL2           0x040
- #define VNCR_VMPIDR_EL2         0x050
- #define VNCR_CNTVOFF_EL2        0x060
--#define VNCR_HCR_EL2            0x078
-+#define VNCR_NVHCR_EL2          0x078
- #define VNCR_HSTR_EL2           0x080
- #define VNCR_VPIDR_EL2          0x088
- #define VNCR_TPIDR_EL2          0x090
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 53af19212895d..e5a51dc3cbe5e 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -70,6 +70,9 @@ static u64 __compute_hcr(struct kvm_vcpu *vcpu)
- 		if (!vcpu_el2_e2h_is_set(vcpu))
- 			hcr |= HCR_NV1;
- 
-+		/* Publish the guest's view of HCR_EL2 to the HW */
-+		__vcpu_assign_sys_reg(vcpu, NVHCR_EL2, __vcpu_sys_reg(vcpu, HCR_EL2));
-+
- 		/*
- 		 * Nothing in HCR_EL2 should impact running in hypervisor
- 		 * context, apart from bits we have defined as RESx (E2H,
-@@ -549,6 +552,7 @@ static void fixup_nv_guest_exit(struct kvm_vcpu *vcpu)
- 	 */
- 	if (unlikely(host_data_test_flag(VCPU_IN_HYP_CONTEXT))) {
- 		u64 mode = *vcpu_cpsr(vcpu) & (PSR_MODE_MASK | PSR_MODE32_BIT);
-+		u64 hcr;
- 
- 		switch (mode) {
- 		case PSR_MODE_EL1t:
-@@ -561,6 +565,11 @@ static void fixup_nv_guest_exit(struct kvm_vcpu *vcpu)
- 
- 		*vcpu_cpsr(vcpu) &= ~(PSR_MODE_MASK | PSR_MODE32_BIT);
- 		*vcpu_cpsr(vcpu) |= mode;
-+
-+		/* Publish the latest HCR_EL2 to the emulation */
-+		hcr = __vcpu_sys_reg(vcpu, NVHCR_EL2);
-+
-+		__vcpu_assign_sys_reg(vcpu, HCR_EL2, hcr);
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index 9439c5b2b1fe8..0aeb2e736fde3 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -221,6 +221,20 @@ static void locate_register(const struct kvm_vcpu *vcpu, enum vcpu_sysreg reg,
+ 		if (is_hyp_ctxt(vcpu) && vcpu_el2_e2h_is_set(vcpu))
+ 			loc->loc = SR_LOC_SPECIAL;
+ 		break;
++	case NVHCR_EL2:
++		/*
++		 * Yes, NVHCR_EL2 maps to itself when loaded in nested
++		 * context. If you feel like the architecture is double
++		 * backing on itself upside down, you're not alone.
++		 */
++		WARN_ON_ONCE(!kvm_has_nv3(vcpu->kvm));
++		if (is_hyp_ctxt(vcpu)) {
++			loc->loc = SR_LOC_MEMORY;
++		} else {
++			loc->loc = SR_LOC_LOADED | SR_LOC_MAPPED;
++			loc->map_reg = NVHCR_EL2;
++		}
++		break;
+ 	default:
+ 		loc->loc = locate_direct_register(vcpu, reg);
+ 	}
+@@ -260,6 +274,7 @@ static u64 read_sr_from_cpu(enum vcpu_sysreg reg)
+ 	case DACR32_EL2:	val = read_sysreg_s(SYS_DACR32_EL2);	break;
+ 	case IFSR32_EL2:	val = read_sysreg_s(SYS_IFSR32_EL2);	break;
+ 	case DBGVCR32_EL2:	val = read_sysreg_s(SYS_DBGVCR32_EL2);	break;
++	case NVHCR_EL2:		val = read_sysreg_s(SYS_NVHCR_EL2);	break;
+ 	default:		WARN_ON_ONCE(1);
  	}
  
- 	/* Apply extreme paranoia! */
+@@ -298,6 +313,7 @@ static void write_sr_to_cpu(enum vcpu_sysreg reg, u64 val)
+ 	case DACR32_EL2:	write_sysreg_s(val, SYS_DACR32_EL2);	break;
+ 	case IFSR32_EL2:	write_sysreg_s(val, SYS_IFSR32_EL2);	break;
+ 	case DBGVCR32_EL2:	write_sysreg_s(val, SYS_DBGVCR32_EL2);	break;
++	case NVHCR_EL2:		write_sysreg_s(val, SYS_NVHCR_EL2);	break;
+ 	default:		WARN_ON_ONCE(1);
+ 	}
+ }
+@@ -2861,6 +2877,16 @@ static unsigned int vncr_el2_visibility(const struct kvm_vcpu *vcpu,
+ 	return REG_HIDDEN;
+ }
+ 
++static unsigned int nvhcr_el2_visibility(const struct kvm_vcpu *vcpu,
++					const struct sys_reg_desc *rd)
++{
++	if (el2_visibility(vcpu, rd) == 0 &&
++	    kvm_has_feat(vcpu->kvm, ID_AA64MMFR4_EL1, NV_frac, NV3))
++		return 0;
++
++	return REG_HIDDEN;
++}
++
+ static unsigned int sctlr2_visibility(const struct kvm_vcpu *vcpu,
+ 				      const struct sys_reg_desc *rd)
+ {
+@@ -3774,6 +3800,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 			 sve_el2_visibility),
+ 
+ 	EL2_REG_VNCR(HCRX_EL2, reset_val, 0),
++	EL2_REG_FILTERED(NVHCR_EL2, undef_access, reset_val, 0,
++			 nvhcr_el2_visibility),
+ 
+ 	EL2_REG(TTBR0_EL2, access_rw, reset_val, 0),
+ 	EL2_REG(TTBR1_EL2, access_rw, reset_val, 0),
 -- 
 2.47.3
 
