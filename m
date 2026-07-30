@@ -1,130 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63373914E1;
-	Thu, 30 Jul 2026 16:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86D53939DA
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785430272; cv=none; b=JognaoNPtZ9JYnAB34tnOfmlvWeN0LQ9TuH9Lnv6LRceFN833KU3crVn2F0gAdM8HRWlpiZfIN/ZsG9ISaX64C/06ILZNxVyykVpPhAExFVn8L6sqTesuxVsMyqc2avcuJEQZCpXsAa1DPiSqCiy45NUXk9CDSc43bCQEvgc428=
+	t=1785430323; cv=none; b=IGAEXC2I8BVBpOMaWkBFumkBPMICTu/ZNJDXpYd+A2I9CoqBKft5VJfQtUIHztRh+uML/V1QhxWTfwdY5bVlIuoKhgzcCUoiykWrqJ8cFeZ4xyKL7aBhvtOBIUy6VBrd4EtAbOxtFFZ4WkDeENwTyAHGeG2QXIN6dQcj9fdwQ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785430272; c=relaxed/simple;
-	bh=QsAeqHUxBLaOOrOZ6CswcKMoGr0oWkSvE5n7Tf3GwVE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FaaJqOThFmDx2uGgX1bBos4XdWun1qH8ExOEG5Jb7A70eX4O9Xq4r1sfRL470bBVaBEsrHR89hlMP4dOjBF6SOExkdwyeBT1mX223pPN9oqzlu43effRobMp7NjVdaeCrbae6GyWEx4lWCoaHZ9EgQex6uvh3DL/1Xml3mq9eWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jcqj1X+2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785430323; c=relaxed/simple;
+	bh=y04dFwd5QWP+IqlNvWgSGMRQNDIqk+2uXcIZuSUqkY8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e9uRiWA7g5RuffjGWtxHnsG1l+a78ZtIqe3UBID1N8JxetTkqA3s5FCyAwsLWBxSCc7CHaVoxG/xYoJRerTRE5GnW14LBROQNmq9t33msLysH3eegGIlcECxG/4AUrLzVoEKSEYuVrUz1eX/bzphv5T4cltGoJ+nxjwH94fT2ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eeWU9iBK; arc=none smtp.client-ip=209.85.214.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jcqj1X+2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBF71F000E9;
-	Thu, 30 Jul 2026 16:51:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785430271;
-	bh=JFo1JM2igaZfoKNPd6xNIjkyyqQ3ddikNo8PRjVmuOQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jcqj1X+2VIhPbnjvtlqSGGX6SkXfBIgL8zmalOHIn8AxJoeXdq11HwhJi0gOyK3H5
-	 fJXDr03+e+psmKtCtqtSFU9eWThy+Shop8kaO7mBLwozo/1k7jErjSCyzoLZ576KiS
-	 puLEd4v290eaR+gghD/ZKRIfTrXULlkl7sV2RFPAEws3Eb1dPbKmpuRjjHRxjaBdy4
-	 U2v6mXmGBeM5vzb6aJMbKjPcPdA8YvYs3RUFGkNLlqDuXDBhEALUVn26686Bs/7D2b
-	 dCcaBv2amfrWI7gFw3uXQfOsXagZx2MZmAViueE2pDH3BBmi6CDOEHsxHhs/0kHHyD
-	 EAHPVbElSvNLQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 04/14] KVM: s390: ucontrol: Fix sca_clear_ext_call()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260730162714.133327-5-imbrenda@linux.ibm.com>
-References: <20260730162714.133327-1-imbrenda@linux.ibm.com>
- <20260730162714.133327-5-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 16:51:10 +0000
-Message-Id: <20260730165111.2CBF71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eeWU9iBK"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d004f13426so29411895ad.3
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 09:52:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785430321; x=1786035121; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/ZGz5OPToGH5LOf1V99GZkk6FjXuQA3/sLBX/QC8yio=;
+        b=eeWU9iBK2+wnsY5LJLxK3+wNKnt8nPVFG8Qx+0ivgvEePO92Qe8ZSInucUREBoRWnc
+         YcCR+Ow23yvlGzFT4EGDtjqnmJbS+SaSwQCYHYtIJg9aaWC9wlldSUvWADjhwYcQSGHn
+         aN1odHJBOZaGNbSXstYs3KOgBCctDmEgniWqTgc9jeZDsLR2+mbY8N65UiCiB0LgUnFB
+         i2pRJTdcgoE3oLvQU5VShNLrBJHe5YERzpqypX+xRW/s+qilomF9BQj7pdOnY9snSBPC
+         nWrD6b2ETK5pmslo7+zm5wvE+KaSquSjjNAAIOFhGt2hDmeyqlCqaeghSKKVf09rO2DN
+         5lJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785430321; x=1786035121;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/ZGz5OPToGH5LOf1V99GZkk6FjXuQA3/sLBX/QC8yio=;
+        b=Nsb1VYJBk/btTnVHPklQxF63oRubxljYfWzfpyo6XKMUKM5HwVIserjY8MYuwK/Ear
+         6vzLL+CvkObv/C58WW37fhy+bG5PBr0pFP3OgkDDSoW1fZfddMsA8juT5oXNkzq3yBlF
+         ZQiep9EBM4ZAdx2nSI7BUlCoS7jwL0evAnanAa2tWcXHutfQ8/obJfxlOdmjjpdGlqeP
+         0rTjRGiPyFyaq3k0jmDKbVi199E++T6bBOlnGSFgwZ9veMatta5j9LfTmxl4eg4zSjBb
+         K7Onpvgf098crxmbohddUU0eFB70yUhLfbI+vaNe+qtKbZuG7hMOb3DXKrDAFEeJ9Ypu
+         LRvw==
+X-Gm-Message-State: AOJu0Yyy1HrZIs9CYC57UGSSLm7nM3aAA/XN/XRaISMPO614lT8amKw1
+	4r6huGOshGS1duU9F9MEbY0DQ2RzkggJPATRIK4eQfeMPNIFv7ppgEMSq6Ldz3GTcQQdg6m4bYZ
+	iX4b13g==
+X-Received: from pldo18.prod.google.com ([2002:a17:903:92:b0:2ce:7984:4347])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3848:b0:2cf:b23d:79c
+ with SMTP id d9443c01a7336-2d035e472e6mr28070495ad.43.1785430320812; Thu, 30
+ Jul 2026 09:52:00 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 30 Jul 2026 09:51:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260730165159.1988017-1-seanjc@google.com>
+Subject: [PATCH] KVM: selftests: Only link to VFIO library on x86
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Josh Hilke <jrhilke@google.com>, 
+	Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The patch introduces a KVM_BUG_ON() in sca_inject_ext_call() and=
- sca_ext_call_pending() to assert that UCONTROL VMs never reach these funct=
-ions. However, userspace can easily reach them because the patch fails to f=
-ence VCPU-level ioctls and memory-mapped sie_block access.
---
+Link to the VFIO library only on architectures where it's actually needed,
+i.e. only on architectures that support irq_test, which is currently
+x86-only.  The irq_test series, which pulled in VFIO support, effectively
+raced with commit e65f1bf8a2db ("vfio: selftests: Extend container/iommufd
+setup for passing vf_token").  I.e. when the KVM test was posted, pulling
+in libvfio.mk didn't require linking to any new libraries other than VFIO
+itself.
 
---- Patch [4]: [PATCH v6 04/14] KVM: s390: ucontrol: Fix sca_clear_ext_call=
-() ---
-commit b27149eacddb40ae95c3a0b8dc6d91809e9ace8b
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Now that libvfio.mk pulls in luuid, unconditionally linking in support for
+VFIO is quite onerous, especially when cross-compiling, as it requires
+installing what is effectively an unused library on four architectures.
 
-KVM: s390: ucontrol: Fix sca_clear_ext_call()
+Eventually KVM selftests will likely support irq_test and thus need to link
+to VFIO on architectures other than x86, but at least then there will be
+some amount of gain for the pain.
 
-When cleaning up a UCONTROL VM, sca_clear_ext_call() will touch memory
-outside of the allocated ESCA block, and UCONTROL VMs don't even use
-ESCA. This patch fixes the issue by not touching ESCA for UCONTROL VMs
-and fencing the VM-level KVM_S390_INTERRUPT ioctl. It also adds checks
-to prevent sca_ext_call_pending() and sca_inject_ext_call() from running
-on UCONTROL VMs.
+Fixes: a262fc49e0aa ("KVM: selftests: Build and link selftests/vfio/lib into KVM selftests")
+Cc: David Matlack <dmatlack@google.com>
+Cc: Josh Hilke <jrhilke@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ tools/testing/selftests/kvm/Makefile.kvm | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 2acdff130fa6c..6013f28e3461f 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -45,13 +45,16 @@ static struct kvm_s390_gib *gib;
->  static int sca_ext_call_pending(struct kvm_vcpu *vcpu, int *src_id)
->  {
->  	struct esca_block *sca =3D vcpu->kvm->arch.sca;
-> -	union esca_sigp_ctrl sigp_ctrl =3D sca->cpu[vcpu->vcpu_id].sigp_ctrl;
-> +	union esca_sigp_ctrl sigp_ctrl;
-> =20
->  	if (!kvm_s390_test_cpuflags(vcpu, CPUSTAT_ECALL_PEND))
->  		return 0;
-> =20
-> +	if (KVM_BUG_ON(kvm_is_ucontrol(vcpu->kvm), vcpu->kvm))
-> +		return -EINVAL;
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 88c6c8046dde..ee91051786d8 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -261,7 +261,10 @@ OVERRIDE_TARGETS = 1
+ # which causes the environment variable to override the makefile).
+ include ../lib.mk
+ include ../cgroup/lib/libcgroup.mk
++
++ifeq ($(ARCH),x86)
+ include ../vfio/lib/libvfio.mk
++endif
+ 
+ INSTALL_HDR_PATH = $(top_srcdir)/usr
+ LINUX_HDR_PATH = $(INSTALL_HDR_PATH)/include/
+@@ -318,7 +321,9 @@ LIBKVM_S_OBJ := $(patsubst %.S, $(OUTPUT)/%.o, $(LIBKVM_S))
+ LIBKVM_STRING_OBJ := $(patsubst %.c, $(OUTPUT)/%.o, $(LIBKVM_STRING))
+ LIBKVM_OBJS = $(LIBKVM_C_OBJ) $(LIBKVM_S_OBJ) $(LIBKVM_STRING_OBJ)
+ LIBKVM_OBJS += $(LIBCGROUP_O)
++ifeq ($(ARCH),x86)
+ LIBKVM_OBJS += $(LIBVFIO_O)
++endif
+ SPLIT_TEST_GEN_PROGS := $(patsubst %, $(OUTPUT)/%, $(SPLIT_TESTS))
+ SPLIT_TEST_GEN_OBJ := $(patsubst %, $(OUTPUT)/$(ARCH)/%.o, $(SPLIT_TESTS))
+ 
 
-[Severity: Medium]
-Is it possible for userspace to trigger this KVM_BUG_ON and cause a host
-kernel warning splat?
+base-commit: 3c7d7f908d574277a845423ec32250a8d8df44c8
+-- 
+2.55.0.508.g3f0d502094-goog
 
-For UCONTROL VMs, the sie_block is directly memory-mapped to userspace at
-KVM_S390_SIE_PAGE_OFFSET. If userspace manually sets the CPUSTAT_ECALL_PEND
-bit in sie_block->cpuflags and executes KVM_RUN, wouldn't it reach this
-check during pending interrupt evaluation?
-
->  	BUG_ON(!kvm_s390_use_sca_entries());
-
-[ ... ]
-
-> @@ -60,13 +63,16 @@ static int sca_ext_call_pending(struct kvm_vcpu *vcpu=
-, int *src_id)
-> =20
->  static int sca_inject_ext_call(struct kvm_vcpu *vcpu, int src_id)
->  {
-> -	struct esca_block *sca =3D vcpu->kvm->arch.sca;
-> -	union esca_sigp_ctrl *sigp_ctrl =3D &sca->cpu[vcpu->vcpu_id].sigp_ctrl;
->  	union esca_sigp_ctrl old_val, new_val =3D {.scn =3D src_id, .c =3D 1};
-> +	struct esca_block *sca =3D vcpu->kvm->arch.sca;
-> +	union esca_sigp_ctrl *sigp_ctrl;
->  	int expect, rc;
-> =20
->  	BUG_ON(!kvm_s390_use_sca_entries());
-> +	if (KVM_BUG_ON(kvm_is_ucontrol(vcpu->kvm), vcpu->kvm))
-> +		return -EINVAL;
-
-[Severity: Medium]
-Could this KVM_BUG_ON be reached via the VCPU-level ioctls?
-
-While this patch fences the VM-level KVM_S390_INTERRUPT ioctl, it appears
-that the VCPU-level KVM_S390_IRQ and KVM_S390_INTERRUPT ioctls in
-kvm_arch_vcpu_unlocked_ioctl() remain unfenced for UCONTROL VMs.
-
-If userspace calls one of these VCPU ioctls with KVM_S390_INT_EXTERNAL_CALL,
-would it flow through kvm_s390_inject_vcpu() to sca_inject_ext_call() and h=
-it
-this assertion?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730162714.1333=
-27-1-imbrenda@linux.ibm.com?part=3D4
