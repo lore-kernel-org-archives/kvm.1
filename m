@@ -1,182 +1,119 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE0A400966
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 09:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785404220; cv=pass; b=hxH18ncxBWwfl5KIW6+fauSvTfb0/O0/fUwmIf+1iB+XxmAmPvhEEPgHXd1aVefmxgBXVweJ+sZjcZz11ddxyRVQ0+sCcu+OHfxjzM+e1o6CVTPLTNeXvGTeav4HMHFud4CH6xXQkc0wcnqj0qO36HaUwZFPrwpx1WV3aCNPVyg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785404220; c=relaxed/simple;
-	bh=ILzfmwUXg3GMOH2fNnwuPr2GE5O+eslWBv/w4b4Puz4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FKxYfqoB34OwpBSYQ3OBsUDG4dE9iSRyQYE3hpK+5hRYnCWjcJGcypex81hA25qPmv+4bJWSBOS3MOSwA17bqhYquqiKlcd5rL/B71XQYU9XTo32SVvJCRD+frpmhbo95jGNUW+sadCzdLJScKNFT5cEbv4PbA6R0uJyzRINAyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ln4BMKNf; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90303F54CB
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 09:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785404546; cv=none; b=pWE9g9wTd7bq/75YXH4wt6RvVOEYGrVWERzwm0Gy46iWx/VHl7kIOGeyPLeQW5KGV9xwL4QexJBBoANhSo8F+xbht5oqLde4+K8rsEiXyO1WYbav0A5kt3LZCFPS1Sqj8AZVxpjwZYuoATicWyuEJoiLu70UJoXdRSXrXYjRZxY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785404546; c=relaxed/simple;
+	bh=lHBav+NnSbaievhmsIcyM4nMmorZWzeCuHUGA/WlAUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pmu++Ys/SZJy4aua3j0ZFk4dok3rWGj1DQH1I2G37DozdlC6YcZE3ToRjFwf1xnG4WiT68B4D/U2ye3u7GmBdfJxzD1Ieh1U1zOn77mx/g+i4urENZ7ekQdOyogvUxEJiA/q4xAJu/EtpV/2kWkKlE3F6xu77vViuuDJp+VJFoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Bvf4P35Z; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ln4BMKNf"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so3160834a12.1
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 02:36:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785404217; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FzN9PDA2unTzvvelVTT+1Ea2FV0BRVgYSQ3MMzvj3rKRUWKYLoXQY7FTAF3BpELkJe
-         Hj1R955Ha/0zAhw2zQ4L6lQOtOOYFcaFY0EiABsmlGObX9Sb1VdK7JC8PX9FxuueGmHJ
-         ZLuXUvVlB1nzKQ3HqEJQNZLx78bHgTWnzqmBuMx90cnFYWV1gVW4wxQZfy0NJOFDJlWt
-         efPejGbqhmY6jwMY+ITP4vLOJbC+s0DGw3YRMSOsNJgXrMLJMKsxMud/avCiN+HjMnwo
-         j2hR6xON4aflsfoTdZh9EjJ+kjkjt49x7LIhpbclv2cTr5sZWcO+N3yLMtNNIPoQGbvO
-         mXzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ozUuSmNdhlKHiyOphMBueEUOvz/5sgYbLE8fquvwg+4=;
-        fh=fItrUtV5UsY1KSNx1ZNnzv3miYMbODbRRQWQ18AP5Zc=;
-        b=KIi9XtfkQ4SLMvmj8qKFVXciHkJlBpufJM8t5ibAEtYBwe5MI4zv2A6/fO1gVfKLSv
-         RXGWUsKKsYq4/dVZaZlGlJBDRBv91Pz1wunBCjXl5iv95qdQYxM9AOwD0vKbyXhjAo5o
-         CY9RfH0tn4460El+Ycmwri5y0F0akHWYjgP3xBWOn8STXuwNRH+xBzZi4yXbgzjbZ4+W
-         hVVziNOa+wCEhiJFgKtsb2zdT2cDoe3qe4ZapIwQMOBrlznFK73YExvWdFbjl9xYy8+e
-         R1l4eQlv9h/WnmdRqy9aQjQ/Et9s1Cq9vxErHbUwoLwVLdTsBLCOz3QcQSJOgFmHqw+B
-         3/VA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785404217; x=1786009017; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ozUuSmNdhlKHiyOphMBueEUOvz/5sgYbLE8fquvwg+4=;
-        b=ln4BMKNfS3gxXGECKXKcrL/lUnzQDlFPEDwkV2vPNqFzD4li2SCWN43jrm+Rfj4Ylc
-         +ZhZI5V6nb7BSdSyzgyzDG7vTBFJYJjnpXdhLMDSV4Xdr00sVYrcvmMtuatfp5NTQyFw
-         p2hY2QKdU/DDuq8ZL/Q0StUAOuL49MwWvIGmZxTsxKPfrigo6coiHNWo15L1Xchw5ksr
-         RsUTNSEsxop9iABEjyl5RzxZgdvSJWbEjXIdMdMk0OZNEvzmGwNLyPngyah+smS0+Q5U
-         /QaCpSonNpI1rzX+gp0zOJouDgwlAuWntIpnx3eIkMFHV0Kq5NGzWWvrL6N5ezwJ8F2S
-         UrYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785404217; x=1786009017;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ozUuSmNdhlKHiyOphMBueEUOvz/5sgYbLE8fquvwg+4=;
-        b=ovyPbHQTfh6Qq6dlRZVPYlnCY/W7yvtPLQgbA6AJqoqMPjgoKPf8YS7Fj+pgLvpVrE
-         dC56RsbDAvxaDeqjRC683+KBVoi6ju9EGj2216PMyGg03GSke2GWcBxLdnQXlj9pCmLq
-         bHEBcVxbz9iYxLsRH6+5CQkUCCoxkV9VFLhgb9wBTCmWbYZSYhxOCg3CXkMlZxf8QMER
-         DOc6pvW8+KI65tfJlyP/nO6MiUFnT/437hI83da1TkzR3PAAE2tq6k9UuKOfqw2r7JV7
-         Rtis3Kq6cQjxHT+/DE3ge9DNVve+4yBdNrCg+9d+QdOhfolVEy+ZWhB9X0V1Sdjp7npc
-         sYRQ==
-X-Gm-Message-State: AOJu0YwhFxmIqAslmzeZc2V3wf69FaAC72tPWS96vBFXoG/cKFeu5MhG
-	aRwUR3kQV4l6YnW1pc4dMT6rHam8/SoczhsK8j95pExkwwys5cfK7U4Ynsk/GiINOEVQqugUge/
-	Z+3epx1XTlmdnEjF8InPaNj/L45uytto=
-X-Gm-Gg: AR+sD13h/hFv44IpR1k3404+MS1ypm2nU1EJ/3nDDHOKOFh3kk8HQJmeFeKYQlr8xGg
-	1P+nbmtWbPgieUQ5CtLNk4W2C05m0SoZ7oejzGRmAxmZCNWk4CT3B0xmRMAiyepRyZi77TjG6LO
-	NTiNEUAGCAp1KaQbH+rVN7TKk78dnqR2ZZKRIGas0QE3j7HKapkhnadG8wgEEmACWPw89Qj+j8I
-	vEN5dBCwBuarEtSbf0rYatTUbDFsUXZ195x9Y9CDVXjonzg9uxT/EbtYiWXKn4E6HTqFkdUiIuQ
-	7rWziokFc5IT+rnlGHpSpj6A2rbr+I51ZNnDgbWy95g=
-X-Received: by 2002:a05:6402:2b8c:b0:69e:a9ca:58fa with SMTP id
- 4fb4d7f45d1cf-6a07b89314bmr800887a12.40.1785404217141; Thu, 30 Jul 2026
- 02:36:57 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Bvf4P35Z"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21F751684;
+	Thu, 30 Jul 2026 02:42:19 -0700 (PDT)
+Received: from e143914.arm.com (e143914.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 901423F763;
+	Thu, 30 Jul 2026 02:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785404543; bh=lHBav+NnSbaievhmsIcyM4nMmorZWzeCuHUGA/WlAUg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bvf4P35ZuMEw6g5GS4WbbaROy2H5MVn8hCWTX5hoPi10fjAcJRak4SEwjGFv+PawJ
+	 IId/lbdJHF2TF9n29cyx3OswKHL1dwPGhZ88DwVyaQ9zRqzHO3xx4MU4Q57S4mV9rg
+	 T2mXeYo764JP3APdwbZ5HLfBdtWUQCWYQhH42/rw=
+Date: Thu, 30 Jul 2026 10:42:16 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	Yao Yuan <yaoyuan@linux.alibaba.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Vladimir Murzin <vladimir.murzin@arm.com>
+Subject: Re: [PATCH v4 03/29] KVM: arm64: Merge guest's HCRX_EL2 using
+ NV_HCRX_GUEST_EXCLUDE
+Message-ID: <amscW_LCL_5RkJFQ@e143914.arm.com>
+References: <20260730071022.296811-1-maz@kernel.org>
+ <20260730071022.296811-4-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260718153620.829378-1-2045gemini@gmail.com> <20260718154914.891C81F000E9@smtp.kernel.org>
-In-Reply-To: <20260718154914.891C81F000E9@smtp.kernel.org>
-From: Guidong Han <2045gemini@gmail.com>
-Date: Thu, 30 Jul 2026 17:36:22 +0800
-X-Gm-Features: AUfX_mww5oBvzltvKFLOTW_sUsjC1AZV-2L7Cj7yijTdZWDWVjDQXhzvW5gwQWE
-Message-ID: <CAOPYjvb63kHmba4JFgsNjMcjbei-wEBu7oRCiZZQC6-XApsvEw@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix PMU event info array size overflow
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730071022.296811-4-maz@kernel.org>
 
-On Sat, Jul 18, 2026 at 11:49=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
->
-> Pre-existing issues:
-> - [High] Guest-controlled large allocation lacks __GFP_NOWARN and __GFP_A=
-CCOUNT, allowing host log spam and memcg limit bypass.
+On Thu, Jul 30, 2026 at 08:09:56AM +0100, Marc Zyngier wrote:
+> The way we merge the guest-provided HCRX_EL2 value with the host's
+> is bonkers. We try to make it look like the FGT registers by using
+> positive and negative polarities for traps, but most of these bits
+> are not strictly about trapping, as they actively change the way
+> some architectural state is managed.
+> 
+> It would be far better to deal with these bits like we do for
+> HCR_EL2, by enumerating the list of bits we don't allow the guest
+> to override. This is simplified by the fact that HCRX_EL2 only
+> affects EL1, and not EL2.
+> 
+> Re-jig the HCRX_EL2 handling with a macro that list the bits excluded
+> from the merge (TMEA, PTTWI, EnIDCP128).
+> 
+> Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/hyp/include/hyp/switch.h | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> index 4bf624a49591d..8e5f492f39086 100644
+> --- a/arch/arm64/kvm/hyp/include/hyp/switch.h
+> +++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+> @@ -325,6 +325,24 @@ static inline void __deactivate_traps_mpam(void)
+>  		write_sysreg_s(MPAMHCR_HOST_FLAGS, SYS_MPAMHCR_EL2);
+>  }
+>  
+> +/*
+> + * Just like for HCR_EL2, we can't let the guest mess with some of the
+> + * basics we rely on in HCRX_EL2. However, the major difference is that
+> + * HCRX_EL2 only affects EL1, and never EL2 (sudden outburst of sanity, I
+> + * guess). So it is always the guest inflicting it on its own guestx.
 
-You're right, this was helpful. Fixed in v2. Thanks!
+Unsure if "guestx" is a typo or a funny way of saying guest's HCRX_EL2!
 
-> --
->
-> --- Patch [1]: [PATCH] RISC-V: KVM: Fix PMU event info array size overflo=
-w ---
-> commit f0a5b0643b60a1981804276ca1f91780cd681469
-> Author: Guidong Han <2045gemini@gmail.com>
->
-> RISC-V: KVM: Fix PMU event info array size overflow
->
-> The patch prevents an integer overflow when calculating shmem_size from
-> guest-controlled num_events in the SBI PMU EVENT_GET_INFO handler. It
-> introduces check_mul_overflow and rejects sizes beyond KMALLOC_MAX_SIZE.
->
-> > diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> > index bb46dcbfb24da..8b489fc3051f4 100644
-> > --- a/arch/riscv/kvm/vcpu_pmu.c
-> > +++ b/arch/riscv/kvm/vcpu_pmu.c
->
-> [ ... ]
->
-> > @@ -479,16 +481,21 @@ int kvm_riscv_vcpu_pmu_event_info(struct kvm_vcpu=
- *vcpu, unsigned long saddr_low
-> >                                 unsigned long flags, struct kvm_vcpu_sb=
-i_return *retdata)
-> >  {
-> >       struct riscv_pmu_event_info *einfo =3D NULL;
-> > -     int shmem_size =3D num_events * sizeof(*einfo);
-> > +     size_t shmem_size;
-> >       gpa_t shmem;
-> >       u32 eidx, etype;
-> >       u64 econfig;
-> >       int ret;
-> >
-> > -     if (flags !=3D 0 || (saddr_low & (SZ_16 - 1) || num_events =3D=3D=
- 0)) {
-> > +     if (flags !=3D 0 || (saddr_low & (SZ_16 - 1)) || num_events =3D=
-=3D 0 ||
-> > +         check_mul_overflow(num_events, sizeof(*einfo), &shmem_size)) =
-{
-> >               ret =3D SBI_ERR_INVALID_PARAM;
-> >               goto out;
-> >       }
-> > +     if (shmem_size > KMALLOC_MAX_SIZE) {
-> > +             ret =3D SBI_ERR_FAILURE;
-> > +             goto out;
-> > +     }
->
-> [Severity: High]
-> This is a pre-existing issue, but is it safe to allow a guest-controlled
-> allocation up to KMALLOC_MAX_SIZE using kzalloc() without __GFP_ACCOUNT
-> and __GFP_NOWARN?
->
-> Later in kvm_riscv_vcpu_pmu_event_info(), the code does:
->
->         einfo =3D kzalloc(shmem_size, GFP_KERNEL);
->
-> Since the allocation uses GFP_KERNEL without __GFP_ACCOUNT, this memory i=
-s
-> not charged to the guest's memory cgroup. Could an untrusted guest coordi=
-nate
-> concurrent SBI_EXT_PMU_EVENT_GET_INFO hypercalls across multiple vCPUs to
-> temporarily hoard host memory, potentially causing a host OOM?
->
-> Additionally, without __GFP_NOWARN, won't allocation failures for these
-> high-order pages on a fragmented system generate rate-limited page
-> allocation failure stack traces, causing host log spam?
->
-> Since these allocations can be large and are guest-driven, would it be be=
-tter
-> to use kvcalloc() with GFP_KERNEL_ACCOUNT | __GFP_NOWARN so it falls back=
- to
-> vmalloc() if physical memory is fragmented?
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260718153620.82=
-9378-1-2045gemini@gmail.com?part=3D1
+> + *
+> + * Things we don't want to let the guest control are:
+> + *
+> + * - TMEA: That's for us to decide how an SEA is routed, not the guest.
+> + *
+> + * - PTTWI: Similarly, it is for us to decide whether Reduced Coherency for
+> + *   the PTW is a thing. It really isn't.
+> + *
+> + * - EnIDCP128: We don't allow IMPDEF sysregs -- full stop.
+> + */
+> +#define NV_HCRX_GUEST_EXCLUDE	(HCRX_EL2_TMEA	    | HCRX_EL2_PTTWI | \
+> +				 HCRX_EL2_EnIDCP128)
+> +
+>  static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
+>  {
+>  	struct kvm_cpu_context *hctxt = host_data_ptr(host_ctxt);
+> @@ -350,8 +368,8 @@ static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
+>  		u64 hcrx = vcpu->arch.hcrx_el2;
+>  		if (is_nested_ctxt(vcpu)) {
+>  			u64 val = __vcpu_sys_reg(vcpu, HCRX_EL2);
+> -			hcrx |= val & __HCRX_EL2_MASK;
+> -			hcrx &= ~(~val & __HCRX_EL2_nMASK);
+> +			hcrx |= (val & ~NV_HCRX_GUEST_EXCLUDE);
+> +			hcrx &= ~(~val & ~NV_HCRX_GUEST_EXCLUDE);
+>  		}
+>  
+>  		ctxt_sys_reg(hctxt, HCRX_EL2) = read_sysreg_s(SYS_HCRX_EL2);
+
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
