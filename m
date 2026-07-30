@@ -1,179 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D291E43D502
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 14:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FC5445ACF;
+	Thu, 30 Jul 2026 14:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785423086; cv=none; b=RViIyo5WagE+Ics6Z37kfiD5ClUgk6BLHtRwmKH61IdAHZVmjRKG9g/JN6Nvq/XY4X3oKVOnlM7ew083mxej+cp9OKr+xBOmr72+n2Br4vzSq1iqFn2zY+STucvmRphUo3UVtkaSjh6cbSE+zy+vNcveXGJmWY0DQDGQ01Ms+kw=
+	t=1785423485; cv=none; b=l9KKMXNt0S0BOh5Z0rXPhzKOYlbkVDjK8JAw0YxaS8z/qMvM4MJ13/2YTF9115Qe1naMwDGIctR06tIsV0lTZwLr2F6EfnKOnPn7IrIBOtuRAjSWcarOUTILVHznJ4jP7uluPq09lH+V4R6E12mSKXRPgLVfGfOvBnaPXrdow1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785423086; c=relaxed/simple;
-	bh=tUIAFR2ZSygyso4Eb9U1hdNssTpLdhR2q00ylJ7K4MY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=odnv2MEGzDv9BYQ7kgONWxqNd7PgLxf1I8oUWf4MhClIuBqR+Xpv/hC7kj8PxqzPEbaOsXh/Rl7oelmVlgVV1j3/IRQGsgGpsRLaZy/UHrClJCrgpLlHviQDCUUMQN3Efy8jrrOXDTTfgqaPvxBQqRdXWl7Fg/sIdsAwzZ2Jn3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WY6KofLp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KdiRQ6lc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785423485; c=relaxed/simple;
+	bh=QdUEHiQ1g/E0KBV9ww2GwULKMU6hS4iCjwpIc1PjORE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ckfThTMou/Mgcbr0LlkXTa56VVi/b0mylSldINZSMvhFIRhTNLOyM1JOeAXkDBiOqPLC3s1tg6MQ8SCwV7iROtbb0+SPuPoY19qKpHHibd1XO8tpioIV7vn2ZyHHnkLI7ZpCwwikkbKafLmLwUOhWrvT2B7fpvPgjsXX/FcsPFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=PxaMbIWZ; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WY6KofLp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KdiRQ6lc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785423083;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W3zt6XkOgWd+IfIfzdQFphbvcN6LQXkbPFo9WHWQNv0=;
-	b=WY6KofLpRDR1rf/iBSrEBroWJLYlULtB28Ph7zNkXj074Y7QQ1R/3BHomKJQfTIOeQ2CMJ
-	7jJF0RYOG1BZZcyz+6yOe1btTaY8+ZybjnzCP0k//8e/4riyV27lHiFhqCEkq1MyVZXIrK
-	cHl/SrfebNcEnQJjj6Uj5AtaeCvWtxk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-wrX7vVqOPfi2z2adly4LuA-1; Thu, 30 Jul 2026 10:51:21 -0400
-X-MC-Unique: wrX7vVqOPfi2z2adly4LuA-1
-X-Mimecast-MFC-AGG-ID: wrX7vVqOPfi2z2adly4LuA_1785423079
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-496bbcf7d1eso15623795e9.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 07:51:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785423079; x=1786027879; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W3zt6XkOgWd+IfIfzdQFphbvcN6LQXkbPFo9WHWQNv0=;
-        b=KdiRQ6lcXWxsY7Gbj2oPTjwup8NolxFNkYijXjDqI6Rzhto8HyJz1ZS//siSqVgAbT
-         HvNsEhlv3at2SPFk3nhMESX8ZJ8TEE7sxgCwvGM26vevgOQ+QidO28QI4oklyDPaFRlL
-         avUnI65oJWRYL6kKW0K3UCbNQ7jSet0PqVA56Gsd2T9eP7LSrLibgxWmIcai2JGn4GhR
-         HlyQdpyYYg7+UKpjkT70itMcw4ZskD/m/OSYC8RJ7CAzlZaNqBgW0J5ZwITjJ18DV7Ll
-         aH3NKB7uNYhf9LoX/6CiEfOi/hvJkOeigk9eW8oMSAEIgNXlTwuWBRa2e5WE0skTXKaY
-         JHaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785423079; x=1786027879;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W3zt6XkOgWd+IfIfzdQFphbvcN6LQXkbPFo9WHWQNv0=;
-        b=EwEk2oOLXRPBf03Sl4IOrw0V10d7ERpgsCnvyaikdj8/o9nXRQn34y6zeIcjzYxLRc
-         g2k0b25DQytGHcDrzMzdyjLERT+GjxFU8ZcI4YeaBjm0jjL1JB/QHgHtbqtRwcu+Sl6J
-         jIU6RXk5/8xT1CLvb+A4VUEAh8IMt4GthdOk8mXZobyuwijP/M71pmqueAF+PhRHhpTf
-         ReRn7U3A3RfF5yj2avavgpuDVXSeJReN1DpkMIsZWoqrjRVSL3GXyvRqaBP6NzuTCrak
-         GLsEErtPvi96GVxFVtzq9mIL1j0dpN8fyOcBhuobNx58xTG/TNGhON843cYIBGMNoZ0h
-         e4dg==
-X-Forwarded-Encrypted: i=1; AHgh+RqBuScu5OyKnvTiELsiKxNNxOF2QHt0nA3T8VUabrBIdXMZhhTKXDN9mF+598ldVo27xqQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhibXVKFWlchWioJH6daiDzoTdVmiFvT8khpUbsUjtgDr4hVus
-	mtSdYqmD38siuZ7xBMeVzEAv4NtQavTX3dMzI9mhobqftb3fBTSzDvGnht87NqPiz+QzBe9wwAI
-	SbbqrCU4n2uV6H6i1D78w5AdbiShZBOYHdvmqHUO5QXk2JTCcvo839KdoLDXVAyQa
-X-Gm-Gg: AR+sD122lG+gFucy073oGbsoF2K/m1/5hhb4anCENHI+smJ/JgcLyGu558CX3pfEGiJ
-	3lTJ9xPQlmd4GdpIPYnd6/CdXdFB4bd5ZeyH5EBhE0gbrD2WXENMG/0myKxLJdUi+CdVQoIZnBg
-	zZ2crpw6KZgv0D2KLgglF62N7QDAo6/kzTf+SDVfFY9yvVf76KeXqhuBGDDuwMvEaYylWnT37sr
-	e25fN0CTIPLMwXtnwtLIG3Yl8o4i0hk80R2UTWXrkKSHuc452P9D5sDLaMWqhEmRLU/OLt2OU3O
-	kFHeelIKe23+C83Tkd7CSHUADUQGNgB9pkyogw3LLQfEORa9fuKnJ58hfmIY8I+aZ1Nlu1Dm1Xm
-	s0VtKdk3Po3j3pima5/dBnww=
-X-Received: by 2002:a05:600d:8444:20b0:495:46dd:e238 with SMTP id 5b1f17b1804b1-49800ebd355mr30260715e9.30.1785423079331;
-        Thu, 30 Jul 2026 07:51:19 -0700 (PDT)
-X-Received: by 2002:a05:600d:8444:20b0:495:46dd:e238 with SMTP id 5b1f17b1804b1-49800ebd355mr30260275e9.30.1785423078800;
-        Thu, 30 Jul 2026 07:51:18 -0700 (PDT)
-Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498011f2b45sm65069295e9.4.2026.07.30.07.51.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 07:51:18 -0700 (PDT)
-Date: Thu, 30 Jul 2026 10:51:15 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, jasowang@gmail.com,
-	eperezma@redhat.com, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/vsock: prevent stale IOTLB after ACCESS_PLATFORM
- changes
-Message-ID: <20260730104857-mutt-send-email-mst@kernel.org>
-References: <20260730040938.1725757-1-physicalmtea@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="PxaMbIWZ"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 394B3204C;
+	Thu, 30 Jul 2026 07:57:59 -0700 (PDT)
+Received: from [10.57.41.95] (unknown [10.57.41.95])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DF9A3F66F;
+	Thu, 30 Jul 2026 07:57:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785423483; bh=QdUEHiQ1g/E0KBV9ww2GwULKMU6hS4iCjwpIc1PjORE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PxaMbIWZ76NWB0IhSbwuVG5xdlD0nokGYuRpStDa6hcRmS3rfVz3Ub+vD3vCuGCSN
+	 TzJ4OMLGkHjuSAPETRjF1i0ttIuOKRiijX7a5rHPJm3XevUAFKjxiqM1lNa6RIWADM
+	 bmxGC6YA0zRI94VtR8CqUD8YAW55psINh80KlfiQ=
+Message-ID: <763eb5db-e9af-4b3a-b05b-746700cf0304@arm.com>
+Date: Thu, 30 Jul 2026 15:57:56 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260730040938.1725757-1-physicalmtea@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
+ <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+ <08599315-2dd3-4602-a902-09b197265b44@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <08599315-2dd3-4602-a902-09b197265b44@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026 at 12:09:38PM +0800, Jia Jia wrote:
-> vhost_vsock_set_features() initializes dev->iotlb when
-> VIRTIO_F_ACCESS_PLATFORM is enabled. It does not remove that IOTLB
-> when the feature is later cleared. The virtqueue still points at the
-> old IOTLB, and vhost_vsock_handle_tx_kick() passes descriptors to
-> vhost_get_vq_desc(), which translates them through that mapping.
+On 30/07/2026 14:58, Steven Price wrote:
+> On 27/07/2026 09:14, Kohei Enju wrote:
+>> Hi Steven, I have a comment about rec_exit_sys_reg() below.
+>>
+>> On 07/15 15:28, Steven Price wrote:
+>>> Entering a realm is done using a SMC call to the RMM. On exit the
+>>> exit-codes need to be handled slightly differently to the normal KVM
+>>> path so define our own functions for realm enter/exit and hook them
+>>> in if the guest is a realm guest.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>> Changes since v13:
+>>>   * The RMM is now required to provide an ESR value with the correct
+>>>     information to emulate MMIO, so we no longer need to hardcode 0s in
+>>>     rec_exit_sys_reg().
+>>>   * The PSCI changes mean that there is a potential race when turning on
+>>>     a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+>>>     with -EAGAIN in this case.
+>>> Changes since v12:
+>>>   * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+>>>   * Add handling of the IRQ exception case where IRQs need to be briefly
+>>>     enabled before exiting guest timing.
+>>> Changes since v8:
+>>>   * Introduce kvm_rec_pre_enter() called before entering an atomic
+>>>     section to handle operations that might require memory allocation
+>>>     (specifically completing a RIPAS change introduced in a later patch).
+>>>   * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+>>>     HPFAR_EL2_NS as a valid flag.
+>>>   * Fix exit reason when racing with PSCI shutdown to return
+>>>     KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+>>> Changes since v7:
+>>>   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>>>     been read (although that can never happen in the current code). Tidy
+>>>     up the condition to handle any future refactoring.
+>>> Changes since v6:
+>>>   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>>>     vcpu to the error.
+>>>   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+>>>     this exit type.
+>>>   * Split code handling a RIPAS change triggered by the guest to the
+>>>     following patch.
+>>> Changes since v5:
+>>>   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>>>     change on next entry rather than immediately on the exit. This allows
+>>>     the VMM to 'reject' a RIPAS change by refusing to continue
+>>>     scheduling.
+>>> Changes since v4:
+>>>   * Rename handle_rme_exit() to handle_rec_exit()
+>>>   * Move the loop to copy registers into the REC enter structure from the
+>>>     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>>>     where the handler exits to user space and user space wants to modify
+>>>     the GPRS.
+>>>   * Some code rearrangement in rec_exit_ripas_change().
+>>> Changes since v2:
+>>>   * realm_set_ipa_state() now provides an output parameter for the
+>>>     top_iap that was changed. Use this to signal the VMM with the correct
+>>>     range that has been transitioned.
+>>>   * Adapt to previous patch changes.
+>>> ---
+>>>
+>>> [...]
+>>>
+>>> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+>>> +{
+>>> +	struct realm_rec *rec = &vcpu->arch.rec;
+>>> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+>>> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+>>> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+>>> +	int ret;
+>>> +
+>>> +	if (is_write)
+>>> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+>>
+>> When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+>> since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+>> OOB may not cause any practical issue, would it make sense to skip the
+>> access when rt is 31?
+>>
+
+RMM mandates that the ESR_ELx.ISS.RT == 0 on an exit due to System 
+register access. See "A4.3.4.4 REC exit due to System register access"
+
+So this shouldn't be a problem, but doesn't hurt to defend the host
+against a malicious RMM ?
+
+Suzuki
+
+
+
+>> if (is_write && rt != 31)
+>>      vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
 > 
-> A userspace backend can enable ACCESS_PLATFORM, install an IOTLB entry
-> for a payload GPA, start the device, clear ACCESS_PLATFORM, replace the
-> memory table, and reuse the old HVA before submitting the same GPA
-> again. The feature state then says direct memory access is in use
-> while the TX path still uses the old IOTLB HVA.
+> Very true - as you say in practise this isn't a big issue because
+> vcpu_set_reg() is a no-op, so it's just a read of padding. But
+> definitely worth fixing.
 > 
-> Reject clearing ACCESS_PLATFORM while the device IOTLB exists. Also
-> keep the existing IOTLB when a feature update leaves ACCESS_PLATFORM
-> enabled; VHOST_SET_FEATURES is used for runtime log updates and must
-> not discard the current translations by allocating an empty IOTLB.
+>>> +
+>>> +	ret = kvm_handle_sys_reg(vcpu);
+>>> +	if (!is_write)
+>>> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+>>
+>> The same applies here:
+>>
+>> if (!is_write && rt != 31)
+>>      rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
 > 
-> Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-
-Thanks for the patch! yet something to improve:
-
-> ---
->  drivers/vhost/vsock.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
+> And the same here - a zero written into the padding.
 > 
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index ae01457ea2cd..57e8fd1eb670 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -798,6 +798,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
->  static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
->  {
->  	struct vhost_virtqueue *vq;
-> +	int ret = -EFAULT;
->  	int i;
->  
->  	if (features & ~VHOST_VSOCK_FEATURES)
-> @@ -809,7 +810,14 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
->  		goto err;
->  	}
->  
-> -	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
-> +	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-> +	    vsock->dev.iotlb) {
-> +		ret = -EBUSY;
-> +		goto err;
-> +	}
-
-
-I don't know if this will break anything. Why not just blow
-out the iotlb? kernel will rebuild it if it needs it afterwards
-for some reason.
-
-
-
-> +
-> +	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-> +	    !vsock->dev.iotlb) {
->  		if (vhost_init_device_iotlb(&vsock->dev))
->  			goto err;
->  	}
-
-
-This part you are fixing is harmless. Let's make it a separate patch
-and document the motivation.
-
-> @@ -827,7 +835,7 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
->  
->  err:
->  	mutex_unlock(&vsock->dev.mutex);
-> -	return -EFAULT;
-> +	return ret;
->  }
->  
->  static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
-> -- 
-> 2.34.1
+> Thanks for the review!
+> 
+> Steve
+> 
+>>> +
+>>> +	return ret;
+>>> +}
+> 
 
