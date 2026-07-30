@@ -1,115 +1,168 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD8F43846C;
-	Thu, 30 Jul 2026 13:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C650438484
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 13:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785418802; cv=none; b=KP2kvcY9cuQw6kap2YBrSg874cbTs19jEENUtjJ0umVNdvBp1OJMMpPexEtaUD4a6suP8y2q3+4TH8c4bVKLVT/iaM/yMXhsMfmCqpikiYBAr73VqQy8LYgEHsX6NMRnnuzBgPCfZ4LaDx7Mnncj3697Qy7iKZSw/hJVNGgjlss=
+	t=1785419720; cv=none; b=H2HBK6y3GsjBSHsVilqBJGGlVTp/M6JlNlrXFngVg1j6P39tXXgID9vGm+zmgtoD9CXuOH2/VQ85EZGH2n0Hh4Hgq6VntH9mWuKwwlt2emoyFKAWRA9HPetnk5LnKDqEO3l1CevaoBzkWNygGPwfYPw5a+rTX+bSSNFyCA3TH8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785418802; c=relaxed/simple;
-	bh=S+k1k0fRNbxqwmvAZnyBTPG7LuRFMSqvnSxW0D/ZHY4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u5FG1HjvXDK9IMnxG6+Kjh4wqbNKEBhmI6IPAqBMdkaaKIqL/ttxeQJI3m9QZBjoW9cnrdT8LSrEhtrBewvzctA4DJWOgG5Q/Vk5JVqL5i8q5xKpVq0evy1p3tICNaHSKrD689jZURuj9CTDwFBhUlkcLRYGcPp540qmVd0m2QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TF/gjU1P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785419720; c=relaxed/simple;
+	bh=jw2FzdY8gX+RdVSUNHD/1Z45SnK0pCPcHOh2A+Uq9oE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YXcNneufpMo3AZ+vUfFBRBmsAUaMgyrHQI+XMR4xjKzXEJIm8iuK6PiMbQL9HaxZo0kZFt3cXnqxefjadt1BwQIf6CK8pzTykG27PJyPKuSTOE9L9zih+mYYzOGb/z94ySBMGoQ+wiBPP+z1SS2hJW6Kj8A55FyQbIB7EMkoF8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K1UD4rZf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TF/gjU1P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F531F000E9;
-	Thu, 30 Jul 2026 13:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785418800;
-	bh=CcWkhZ8w+K45IMXyGbvqAYSZz9IRowVkBzgpTkkrMJE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TF/gjU1PcFVmYGhx/3aLEDfGBqcCuzmC89cJSXAiYpBtdnawszepSKCEQMHAJaFsu
-	 prbqGH5AuspIt/1I54kDfDbqpgYSG/bXJ2HaTERmS8uYa1tEQ6PJ+YoTxKUHLa4QHT
-	 eSPx3My+IO8z7RzRe2iIntiTym0L6UKQ4n0efaddimW+Ajbd2s0/JrTytg/y2oNqPW
-	 jtxBrLfqtaNaEs7eWyN5ZlShWfwovV391u8vs6bu4W8Mby3CDSJzoBNGC9T+tOnbQN
-	 HgOz/yENXW98oEGf7igBrjWWDjiSv7HAdCN/sH+ZN5E6zEXm9m018KegLOGd1jZKl7
-	 ypVN9xXUR4jJg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wpQzO-0000000AY9r-29b5;
-	Thu, 30 Jul 2026 13:39:58 +0000
-Date: Thu, 30 Jul 2026 14:39:58 +0100
-Message-ID: <86h5lgd2a9.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	"Oliver\
- Upton" <oupton@kernel.org>
-Subject: Re: [PATCH v4 03/29] KVM: arm64: Merge guest's HCRX_EL2 using NV_HCRX_GUEST_EXCLUDE
-In-Reply-To: <86o6fodhya.wl-maz@kernel.org>
-References: <20260730071022.296811-1-maz@kernel.org>
-	<20260730071022.296811-4-maz@kernel.org>
-	<20260730072930.85DB21F000E9@smtp.kernel.org>
-	<86o6fodhya.wl-maz@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K1UD4rZf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785419716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kA6RdxhutI1Br8ceaw7LS/E/bmiLwIkU0wCTumrQB6I=;
+	b=K1UD4rZflgk2j9n55IdrEcVM53/5xk+XmCWaEAs07biSLOvR26oyRBen/0Eoq7s0XxGqgY
+	JoxihF16hUgo+oFb7YjA+KGdb/g2C19zJ8wRIW+u1ngSHWdlhxt+57oeBkL28y+o+LRlZX
+	DKe4nzmWDMLivNiylSRyePOK9Vy1HX8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-tegOc7dLPx2YyIio0TIW2w-1; Thu,
+ 30 Jul 2026 09:55:12 -0400
+X-MC-Unique: tegOc7dLPx2YyIio0TIW2w-1
+X-Mimecast-MFC-AGG-ID: tegOc7dLPx2YyIio0TIW2w_1785419710
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54EE718004A9;
+	Thu, 30 Jul 2026 13:55:10 +0000 (UTC)
+Received: from localhost (unknown [10.2.16.133])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7A85180049F;
+	Thu, 30 Jul 2026 13:55:09 +0000 (UTC)
+Date: Thu, 30 Jul 2026 09:55:08 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: sgarzare@redhat.com, mst@redhat.com, jasowang@gmail.com,
+	eperezma@redhat.com, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost/vsock: prevent stale IOTLB after ACCESS_PLATFORM
+ changes
+Message-ID: <20260730135508.GC1442692@fedora>
+References: <20260730040938.1725757-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oupton@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="SVDwW4C3wzVzfyYK"
+Content-Disposition: inline
+In-Reply-To: <20260730040938.1725757-1-physicalmtea@gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, 30 Jul 2026 09:01:33 +0100,
-Marc Zyngier <maz@kernel.org> wrote:
-> 
->
-> Furthermore, trapping non-matching CPUs is a guest decision, and L0 is
-> not in charge of deciding this. However, what is missing is the
-> redirection of the exception to L1 when it fires.
+--SVDwW4C3wzVzfyYK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I've changed my tune on this.
+On Thu, Jul 30, 2026 at 12:09:38PM +0800, Jia Jia wrote:
+> vhost_vsock_set_features() initializes dev->iotlb when
+> VIRTIO_F_ACCESS_PLATFORM is enabled. It does not remove that IOTLB
+> when the feature is later cleared. The virtqueue still points at the
+> old IOTLB, and vhost_vsock_handle_tx_kick() passes descriptors to
+> vhost_get_vq_desc(), which translates them through that mapping.
+>=20
+> A userspace backend can enable ACCESS_PLATFORM, install an IOTLB entry
+> for a payload GPA, start the device, clear ACCESS_PLATFORM, replace the
+> memory table, and reuse the old HVA before submitting the same GPA
+> again. The feature state then says direct memory access is in use
+> while the TX path still uses the old IOTLB HVA.
+>=20
+> Reject clearing ACCESS_PLATFORM while the device IOTLB exists. Also
+> keep the existing IOTLB when a feature update leaves ACCESS_PLATFORM
+> enabled; VHOST_SET_FEATURES is used for runtime log updates and must
+> not discard the current translations by allocating an empty IOTLB.
+>=20
+> Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> ---
+>  drivers/vhost/vsock.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index ae01457ea2cd..57e8fd1eb670 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -798,6 +798,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vs=
+ock, u64 guest_cid)
+>  static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 featu=
+res)
+>  {
+>  	struct vhost_virtqueue *vq;
+> +	int ret =3D -EFAULT;
+>  	int i;
+> =20
+>  	if (features & ~VHOST_VSOCK_FEATURES)
+> @@ -809,7 +810,14 @@ static int vhost_vsock_set_features(struct vhost_vso=
+ck *vsock, u64 features)
+>  		goto err;
+>  	}
+> =20
+> -	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
+> +	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
+> +	    vsock->dev.iotlb) {
+> +		ret =3D -EBUSY;
+> +		goto err;
+> +	}
 
-Flipping between L0 and L1 to fixup the brokenness of the architecture
-is not great, because the vcpu could have migrated in the interval
-and, and be subjected to another similar exception. This results in
-forward-progress issues on top of the obvious performance overhead.
+This prevents one problem but there are still other issues with how
+feature bit negotiation and the IOTLB are implemented:
 
-I'll add something like this, either as a separate patch or as a fixup
-if I have to respin the series.
+1. VIRTIO_F_ACCESS_PLATFORM is defined by the VIRTIO spec and must not
+   be change after feature bit negotiation. Please reject all feature
+   bit updates except VHOST_F_LOG_ALL to comply with the VIRTIO spec and
+   eliminate potential bugs in drivers/vhost/vsock.c.
 
-	M.
+2. When the device is reset, the iotlb cannot be left initialized
+   because there is no guarantee that VIRTIO_F_ACCESS_PLATFORM will be
+   negotiated again.
 
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
-index 7b27296c94607..5311a0dd16af7 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -330,7 +330,7 @@ static inline void __deactivate_traps_mpam(void)
-  * Just like for HCR_EL2, we can't let the guest mess with some of the
-  * basics we rely on in HCRX_EL2. However, the major difference is that
-  * HCRX_EL2 only affects EL1, and never EL2 (sudden outburst of sanity, I
-- * guess). So it is always the guest inflicting it on its own guestx.
-+ * guess). So it is always the guest inflicting it on its own guest.
-  *
-  * Things we don't want to let the guest control are:
-  *
-@@ -339,10 +339,14 @@ static inline void __deactivate_traps_mpam(void)
-  * - PTTWI: Similarly, it is for us to decide whether Reduced Coherency for
-  *   the PTW is a thing. It really isn't.
-  *
-+ * - MCE2: FEAT_MOPS generated exceptions for Option-{A,B} interoperability
-+ *   are always handled on the host and not forwarded to a guest hypervisor
-+ *   in order to give the (poor) illusion of a homogeneous system.
-+ *
-  * - EnIDCP128: We don't allow IMPDEF sysregs -- full stop.
-  */
- #define NV_HCRX_GUEST_EXCLUDE	(HCRX_EL2_TMEA	    | HCRX_EL2_PTTWI | \
--				 HCRX_EL2_EnIDCP128)
-+				 HCRX_EL2_MCE2	    | HCRX_EL2_EnIDCP128)
- 
- static inline void __activate_traps_common(struct kvm_vcpu *vcpu)
- {
+> +	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
+> +	    !vsock->dev.iotlb) {
+>  		if (vhost_init_device_iotlb(&vsock->dev))
+>  			goto err;
+>  	}
+> @@ -827,7 +835,7 @@ static int vhost_vsock_set_features(struct vhost_vsoc=
+k *vsock, u64 features)
+> =20
+>  err:
+>  	mutex_unlock(&vsock->dev.mutex);
+> -	return -EFAULT;
+> +	return ret;
+>  }
+> =20
+>  static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
+> --=20
+> 2.34.1
+>=20
 
--- 
-Without deviation from the norm, progress is not possible.
+--SVDwW4C3wzVzfyYK
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmprV7wACgkQnKSrs4Gr
+c8iuEAf7BOAf4LqI2+MgMLd+yvBG8EGJT86K0c+qhFk2J8MtCQRS8WaKnPJmnDvS
+/oDOhvCpPZa1U07FFcrabv3hRF9pgJavgivzWwfOUyyb64tDiF71MhXv6dgv4Dh0
+048zctZ5eP1okqvt1jWTFWKAZwzcluvV5cwIt0BmqRqfpFmH0b2zMZy71opBE56Q
+dVgsw6ae4axuoZZZYsokOQ1JKzvRIQKj9oWlysHUhyL9WLsogB8wyKLi4F5KGcwk
+bZZWNbGffs2v8olgI+Iffni89ziilv+/3OL7lFlu4W6V9zIzbDjBFEaMJnqBWyYz
+YfZoegWbYr4DmbjdNnqH19M2He8wWQ==
+=0EEQ
+-----END PGP SIGNATURE-----
+
+--SVDwW4C3wzVzfyYK--
+
