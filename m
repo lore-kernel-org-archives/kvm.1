@@ -1,168 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C650438484
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 13:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9488442107;
+	Thu, 30 Jul 2026 13:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785419720; cv=none; b=H2HBK6y3GsjBSHsVilqBJGGlVTp/M6JlNlrXFngVg1j6P39tXXgID9vGm+zmgtoD9CXuOH2/VQ85EZGH2n0Hh4Hgq6VntH9mWuKwwlt2emoyFKAWRA9HPetnk5LnKDqEO3l1CevaoBzkWNygGPwfYPw5a+rTX+bSSNFyCA3TH8U=
+	t=1785419934; cv=none; b=uWHTgAZw1gxyJfYxMtEKHBRBVYRyK5WhpPhcnq6S7xy3Om3RGUPoLL3b4PvMB1ucS9KulYLbcP5aSJs6aQxRMsjFoucUgHVS2EztGQs0TYVlwrvPWiPFbWXS2h+Ir6SgE4UQ4Jx3pdCZH0wyBDeuzKHb7+u9hRJiAL/l6My0b1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785419720; c=relaxed/simple;
-	bh=jw2FzdY8gX+RdVSUNHD/1Z45SnK0pCPcHOh2A+Uq9oE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YXcNneufpMo3AZ+vUfFBRBmsAUaMgyrHQI+XMR4xjKzXEJIm8iuK6PiMbQL9HaxZo0kZFt3cXnqxefjadt1BwQIf6CK8pzTykG27PJyPKuSTOE9L9zih+mYYzOGb/z94ySBMGoQ+wiBPP+z1SS2hJW6Kj8A55FyQbIB7EMkoF8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K1UD4rZf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785419934; c=relaxed/simple;
+	bh=P2akoiC1GNSXya01eYvaPvAt9k5Gt8HBgYjl15fRFZ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gCo9j5xC+mbVayF0mKREY04VWvxvZgzLWouKw3nXRjf3nlLLVmg4tHWJQ/AyD3BSiZHY18OGZlQkxSppncKLkm/IMYDr5Xdpx0Et5SIGp93Cf/ivUbxnwYm7/fcti/Z0+1tiRyOEf9//8fbJ+Et+Snr6Bs/ykSfI8ZNfL88f+pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YIkdTTP4; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K1UD4rZf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785419716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kA6RdxhutI1Br8ceaw7LS/E/bmiLwIkU0wCTumrQB6I=;
-	b=K1UD4rZflgk2j9n55IdrEcVM53/5xk+XmCWaEAs07biSLOvR26oyRBen/0Eoq7s0XxGqgY
-	JoxihF16hUgo+oFb7YjA+KGdb/g2C19zJ8wRIW+u1ngSHWdlhxt+57oeBkL28y+o+LRlZX
-	DKe4nzmWDMLivNiylSRyePOK9Vy1HX8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-tegOc7dLPx2YyIio0TIW2w-1; Thu,
- 30 Jul 2026 09:55:12 -0400
-X-MC-Unique: tegOc7dLPx2YyIio0TIW2w-1
-X-Mimecast-MFC-AGG-ID: tegOc7dLPx2YyIio0TIW2w_1785419710
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 54EE718004A9;
-	Thu, 30 Jul 2026 13:55:10 +0000 (UTC)
-Received: from localhost (unknown [10.2.16.133])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7A85180049F;
-	Thu, 30 Jul 2026 13:55:09 +0000 (UTC)
-Date: Thu, 30 Jul 2026 09:55:08 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: sgarzare@redhat.com, mst@redhat.com, jasowang@gmail.com,
-	eperezma@redhat.com, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost/vsock: prevent stale IOTLB after ACCESS_PLATFORM
- changes
-Message-ID: <20260730135508.GC1442692@fedora>
-References: <20260730040938.1725757-1-physicalmtea@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YIkdTTP4"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 41C3F1684;
+	Thu, 30 Jul 2026 06:58:45 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13C953F7B4;
+	Thu, 30 Jul 2026 06:58:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785419929; bh=P2akoiC1GNSXya01eYvaPvAt9k5Gt8HBgYjl15fRFZ0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YIkdTTP4w6YqY8vGR8E9PpY5ju5582NAJ4JnPrdafTA4Ouq46T4hN90d70T8MBywP
+	 Vx62n/bs8kOOet8uM6PlyHqYdzokIZeV7KE5Y32eZYQ9bSPvJZk3f2VPsEuC7LD/rV
+	 rB1KX+UO4b1GLcjF31uCR8XKxkf3AJ3dWiwXvp/c=
+Message-ID: <08599315-2dd3-4602-a902-09b197265b44@arm.com>
+Date: Thu, 30 Jul 2026 14:58:43 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="SVDwW4C3wzVzfyYK"
-Content-Disposition: inline
-In-Reply-To: <20260730040938.1725757-1-physicalmtea@gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+To: Kohei Enju <enju.kohei@fujitsu.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
+ <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
---SVDwW4C3wzVzfyYK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 27/07/2026 09:14, Kohei Enju wrote:
+> Hi Steven, I have a comment about rec_exit_sys_reg() below.
+> 
+> On 07/15 15:28, Steven Price wrote:
+>> Entering a realm is done using a SMC call to the RMM. On exit the
+>> exit-codes need to be handled slightly differently to the normal KVM
+>> path so define our own functions for realm enter/exit and hook them
+>> in if the guest is a realm guest.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>> Changes since v13:
+>>  * The RMM is now required to provide an ESR value with the correct
+>>    information to emulate MMIO, so we no longer need to hardcode 0s in
+>>    rec_exit_sys_reg().
+>>  * The PSCI changes mean that there is a potential race when turning on
+>>    a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+>>    with -EAGAIN in this case.
+>> Changes since v12:
+>>  * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+>>  * Add handling of the IRQ exception case where IRQs need to be briefly
+>>    enabled before exiting guest timing.
+>> Changes since v8:
+>>  * Introduce kvm_rec_pre_enter() called before entering an atomic
+>>    section to handle operations that might require memory allocation
+>>    (specifically completing a RIPAS change introduced in a later patch).
+>>  * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+>>    HPFAR_EL2_NS as a valid flag.
+>>  * Fix exit reason when racing with PSCI shutdown to return
+>>    KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+>> Changes since v7:
+>>  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+>>    been read (although that can never happen in the current code). Tidy
+>>    up the condition to handle any future refactoring.
+>> Changes since v6:
+>>  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+>>    vcpu to the error.
+>>  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+>>    this exit type.
+>>  * Split code handling a RIPAS change triggered by the guest to the
+>>    following patch.
+>> Changes since v5:
+>>  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+>>    change on next entry rather than immediately on the exit. This allows
+>>    the VMM to 'reject' a RIPAS change by refusing to continue
+>>    scheduling.
+>> Changes since v4:
+>>  * Rename handle_rme_exit() to handle_rec_exit()
+>>  * Move the loop to copy registers into the REC enter structure from the
+>>    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+>>    where the handler exits to user space and user space wants to modify
+>>    the GPRS.
+>>  * Some code rearrangement in rec_exit_ripas_change().
+>> Changes since v2:
+>>  * realm_set_ipa_state() now provides an output parameter for the
+>>    top_iap that was changed. Use this to signal the VMM with the correct
+>>    range that has been transitioned.
+>>  * Adapt to previous patch changes.
+>> ---
+>>
+>> [...]
+>>
+>> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct realm_rec *rec = &vcpu->arch.rec;
+>> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+>> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+>> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+>> +	int ret;
+>> +
+>> +	if (is_write)
+>> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> 
+> When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+> since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+> OOB may not cause any practical issue, would it make sense to skip the
+> access when rt is 31?
+> 
+> if (is_write && rt != 31)
+>     vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
 
-On Thu, Jul 30, 2026 at 12:09:38PM +0800, Jia Jia wrote:
-> vhost_vsock_set_features() initializes dev->iotlb when
-> VIRTIO_F_ACCESS_PLATFORM is enabled. It does not remove that IOTLB
-> when the feature is later cleared. The virtqueue still points at the
-> old IOTLB, and vhost_vsock_handle_tx_kick() passes descriptors to
-> vhost_get_vq_desc(), which translates them through that mapping.
->=20
-> A userspace backend can enable ACCESS_PLATFORM, install an IOTLB entry
-> for a payload GPA, start the device, clear ACCESS_PLATFORM, replace the
-> memory table, and reuse the old HVA before submitting the same GPA
-> again. The feature state then says direct memory access is in use
-> while the TX path still uses the old IOTLB HVA.
->=20
-> Reject clearing ACCESS_PLATFORM while the device IOTLB exists. Also
-> keep the existing IOTLB when a feature update leaves ACCESS_PLATFORM
-> enabled; VHOST_SET_FEATURES is used for runtime log updates and must
-> not discard the current translations by allocating an empty IOTLB.
->=20
-> Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> ---
->  drivers/vhost/vsock.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> index ae01457ea2cd..57e8fd1eb670 100644
-> --- a/drivers/vhost/vsock.c
-> +++ b/drivers/vhost/vsock.c
-> @@ -798,6 +798,7 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vs=
-ock, u64 guest_cid)
->  static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 featu=
-res)
->  {
->  	struct vhost_virtqueue *vq;
-> +	int ret =3D -EFAULT;
->  	int i;
-> =20
->  	if (features & ~VHOST_VSOCK_FEATURES)
-> @@ -809,7 +810,14 @@ static int vhost_vsock_set_features(struct vhost_vso=
-ck *vsock, u64 features)
->  		goto err;
->  	}
-> =20
-> -	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
-> +	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-> +	    vsock->dev.iotlb) {
-> +		ret =3D -EBUSY;
-> +		goto err;
-> +	}
+Very true - as you say in practise this isn't a big issue because
+vcpu_set_reg() is a no-op, so it's just a read of padding. But
+definitely worth fixing.
 
-This prevents one problem but there are still other issues with how
-feature bit negotiation and the IOTLB are implemented:
+>> +
+>> +	ret = kvm_handle_sys_reg(vcpu);
+>> +	if (!is_write)
+>> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+> 
+> The same applies here:
+> 
+> if (!is_write && rt != 31)
+>     rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
 
-1. VIRTIO_F_ACCESS_PLATFORM is defined by the VIRTIO spec and must not
-   be change after feature bit negotiation. Please reject all feature
-   bit updates except VHOST_F_LOG_ALL to comply with the VIRTIO spec and
-   eliminate potential bugs in drivers/vhost/vsock.c.
+And the same here - a zero written into the padding.
 
-2. When the device is reset, the iotlb cannot be left initialized
-   because there is no guarantee that VIRTIO_F_ACCESS_PLATFORM will be
-   negotiated again.
+Thanks for the review!
 
-> +	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-> +	    !vsock->dev.iotlb) {
->  		if (vhost_init_device_iotlb(&vsock->dev))
->  			goto err;
->  	}
-> @@ -827,7 +835,7 @@ static int vhost_vsock_set_features(struct vhost_vsoc=
-k *vsock, u64 features)
-> =20
->  err:
->  	mutex_unlock(&vsock->dev.mutex);
-> -	return -EFAULT;
-> +	return ret;
->  }
-> =20
->  static long vhost_vsock_dev_ioctl(struct file *f, unsigned int ioctl,
-> --=20
-> 2.34.1
->=20
+Steve
 
---SVDwW4C3wzVzfyYK
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmprV7wACgkQnKSrs4Gr
-c8iuEAf7BOAf4LqI2+MgMLd+yvBG8EGJT86K0c+qhFk2J8MtCQRS8WaKnPJmnDvS
-/oDOhvCpPZa1U07FFcrabv3hRF9pgJavgivzWwfOUyyb64tDiF71MhXv6dgv4Dh0
-048zctZ5eP1okqvt1jWTFWKAZwzcluvV5cwIt0BmqRqfpFmH0b2zMZy71opBE56Q
-dVgsw6ae4axuoZZZYsokOQ1JKzvRIQKj9oWlysHUhyL9WLsogB8wyKLi4F5KGcwk
-bZZWNbGffs2v8olgI+Iffni89ziilv+/3OL7lFlu4W6V9zIzbDjBFEaMJnqBWyYz
-YfZoegWbYr4DmbjdNnqH19M2He8wWQ==
-=0EEQ
------END PGP SIGNATURE-----
-
---SVDwW4C3wzVzfyYK--
+>> +
+>> +	return ret;
+>> +}
 
