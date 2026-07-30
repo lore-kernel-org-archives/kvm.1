@@ -1,170 +1,132 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FBB3A6F11
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 21:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127F23DA5B8
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 21:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785448025; cv=none; b=lIRNgTn/iEhKp8t65TFMG97GoJCS2BAqptjMzhYqUyHfWX4kxJdALa8nNYWSQ2GzerEim+maashDA06yUsv6zvsAeKbOW+w6XOTWyVg4jRBqnCzjsdItI7TKouztpzLblbJU09YHsdNO+j/rxmdZER06Pn2iJDFS3Tyl6uMs4E8=
+	t=1785448355; cv=none; b=Efp8YUkvRt8RkWdECwAg6nfyg2ZoeixkMt5aGs42sDGCx4tg53vJp+PT7sBjwk40+aOTbRVGeIC21SZVMEbuRlimHZPbhN7lv+dkX1LAgxYn2Ihh/ZiEzE/bLN3bD54v2OB/tRn/EbkbaG6f1WYw5NNggN8f6Thwx8c5VgdaUlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785448025; c=relaxed/simple;
-	bh=w7iSUrEkyKIfpcXJr36ZtXbPrCa/n9wTF5n6WkXijcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJkcf/YWUpUXLc9YGjWlonwpC85cSlGTRyt5KQ2KPcOmoLhmCrxPNTPhOxkGLYXGDVrf8XNHRHbBU9/V+ZkpoGeJ2ALANTBsvYASpZ2WNKUz9Ic6txz7GbV6oL5aKq78iJ8QVgZTMH++eHsXmR6Oyv9XI61e02cE9gwAtBNnehw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gX6wp9UE; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785448355; c=relaxed/simple;
+	bh=3ax2xWT96hdBxoA/EzUeFCl5VjuMJx1x4gBNptWsfs4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=og9BcfOGsLdRVFSvsOp5KOOMEBWGIipcZXsX9LZ6CZSwzxdgCtM2qEIQno10hNB/c87FHavAclr77jF4liWWA50Eo7QX8D1LKH+Z6tT4YfsRBa428PH9Jd6BVn3/xRPmmhBBEWvqALPqeB6vUq1/DXEF5OTGxlOjgIUJ0mAyfkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGgQuMii; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gX6wp9UE"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ced3386430so2617895ad.1
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 14:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785448024; x=1786052824; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HgSFHsXVsSy3LRIldCAG7H7RU31CdwstWIeTWGMAIC0=;
-        b=gX6wp9UER48YblagjXnXhqdtDfisNlj0xYBiHmfgVnkn/la9tQQvXWATCruel+1yhE
-         xImhh46q0Rwu6/ysRxWgYDrL3f1ltFMx8bF0Q6Kf1xWtzEBhBaXR9D2rT6ggjojzklK5
-         3UwP0JTQdX/i8loJ9xKtxMJjvZPPKAIA9VBxYxYO5j/IWoEUfBJCQe54SnAErle8syoG
-         8dnrygT0F0g2u1q9Cy4b0K2VETZKGWhcxMHDNNOt8eoltfb/NvKyQlTcb3rtaHUDKD4h
-         evTe057x4Zm2k4cUb+quvjaQPFZ72pt3JhXGNub+K6NvXo8PmqKMGsB/gcQnubRfDXQw
-         Cl0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785448024; x=1786052824;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HgSFHsXVsSy3LRIldCAG7H7RU31CdwstWIeTWGMAIC0=;
-        b=ND6FeDXSUg6MaQwx74fVO86yZSRhVt30My1j9fxXqKUy2f6B1Vf271f503l6sfOsG7
-         6+0WTa+ncYCKj3iFwa1WUisgecooUJozCSIZFVNNae2zgB6q9dlyKlsYLWGBKI8s5H55
-         IKjxjpc2mTnGpcwqB/5j2K2jEbt7j8G5wvV814vZ1ls1zY/+wvwFOKenN8YaQeSWRSCO
-         zApQLAiJjiEK1welyMgeX2xqDlALwerkyaPe9CEUl7Ig8F6xrYjC03xQFe8Na2c8HhP7
-         SZeVu/wz1iu6BX/dBILAHYY9p36VIIXhwSOXx/5UvTfDDbWD/FsNHt3HBZBhsT7N9JgZ
-         iZaQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqKOUlIvVtvaSOkWifoLixNIStiilhb7CLI1OnQfjPQ051J2gI0WzFw41dmRGKIBAfYHB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzr0JVH9fw8gBGBU0SLF/8zxV154vqwpUiRnG4oEC+nFSb7OtCU
-	erk+7R/7fhbNsIcitcGXjzgrWcTLaR6qFz9ygYERrdFv1Iltba48fo+r
-X-Gm-Gg: AR+sD134cPTUp9vblm63xKJ1HIk5pjexLIOyAU50BfOc3ysW7qPGfoDXrZMp1PkW7XK
-	m39qHD8Xfib5rMce9nMpKtCIr6dX8DN6D98sNS7sfpF45IGta6Eq7T7+dlfdwddRW20wCRr7HV5
-	Hd7yaLXDEw4P8+MpLFz4XGZ1IkpQK6MjKW6AHf1vR167/0RiA2vGvje347Ygk/BXGweW2ks2NZM
-	h1FUjhSlbfi7wyMcBSwK8Ladd3Z0+gh06T8vWK+8pemvxLXlHSpSe8KW4s753zMoVog7vpjms5b
-	+llEsYwe/dMeQRUw8awJTXEivQDxJfbbcxuBuhRrre7IGhTYGFQqFppROEM3LoQvP6Tur3re696
-	N0aUIrNe1Si1zKVZw1rh2cMm7Xb2xX6/lC/cjfQxOiW7DnJ3dygOzjDFb0PiDzGQjrU5L2075a8
-	Bye/oQkwCBn1h0aD4QdJwEpC1NuPw2+2OJ4gX91tAUlFMxQhJrvSyU3qQoWv9u6KS3uPdWhp4mj
-	T6G5UwqQV4=
-X-Received: by 2002:a17:902:f652:b0:2ca:a03a:29b2 with SMTP id d9443c01a7336-2d035b9ad39mr42104245ad.8.1785448023652;
-        Thu, 30 Jul 2026 14:47:03 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:57::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022a151fbsm31736035ad.10.2026.07.30.14.47.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 14:47:01 -0700 (PDT)
-Date: Thu, 30 Jul 2026 14:46:59 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH v3 1/2] vsock/virtio: read virtqueues under worker locks
-Message-ID: <amvGU9j4lHl7TnS8@devvm29614.prn0.facebook.com>
-References: <20260729185831.3247971-1-bestswngs@gmail.com>
- <cover.1785352330.git.bestswngs@gmail.com>
- <e79f68ad9284c983364fc3ac46904b6d9ef50231.1785352330.git.bestswngs@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGgQuMii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF911F00A3D
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 21:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785448353;
+	bh=mOkuZXXkYQQc+HwFSsqYbvnpokRgyX0t3K5LtyeMgAk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IGgQuMii2YPYQyJnf+bRi5v4E4OhmvP1FM5M3KddzigdPIU77/yRYLbIUXw5wE6uO
+	 O5dusUH/ZO6b45V/DkV0yRTihGfftQmF6YO7QPYMTTevU2Q00IcHfv4Vf3cQcbipzX
+	 ylf1OGe0MmHLEZEd2dx/X2RdfmJNJ0potE9o0Z1cgh5oU08/J0vTha7GK/4O3FOM4G
+	 tlbJ8tYJCVQuFz/lSduwDXCtKdUojsC8nVWcwpwYWogFt/Z05PD0+BNx9XQ7tnc5l8
+	 kBW2kmnP/wX8WRkUa67w0qatj754czhPjJ3UmLA+n1w/rNzBrlB/M9Alo/VyXI9xXE
+	 rkFpqpOUIo5RA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c197f968b3cso34165366b.2
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 14:52:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq9nhmlxskMjCrSQ+USCzY3CrpAlUlmM98XV2TXqvAJgxWVozQZj/SuHrMQqUYLNb15A3Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuffv7WZIkur/nCymbF2OIy01KVs0b5cqL1ht8V6YVkJO8HuTT
+	VfU2vplFCdwcW0jeGpI2AUROkYyJEVe2HQXGHXO9JYfNrTF50/vwDUUA09qOLU5yvcwdsYDTseA
+	ZwOwwdkYmc8VgjJkhpBXQeiEwAs9bz5s=
+X-Received: by 2002:a17:907:b041:10b0:c1c:1e4e:f924 with SMTP id
+ a640c23a62f3a-c1fa57c58a0mr149363866b.34.1785448352324; Thu, 30 Jul 2026
+ 14:52:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e79f68ad9284c983364fc3ac46904b6d9ef50231.1785352330.git.bestswngs@gmail.com>
+References: <20260728003557.1136583-1-yosry@kernel.org> <CAO9r8zOVyea=7yRD25JcRmar4-0JtTpuoDpK__J431o9MJYj2Q@mail.gmail.com>
+ <amgDgTpPGsE451QP@google.com>
+In-Reply-To: <amgDgTpPGsE451QP@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 30 Jul 2026 14:52:20 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNFoxNTb7zm7vUJ1TbybxisYpJ_eHEsgSYrSib5WtG3Dg@mail.gmail.com>
+X-Gm-Features: AUfX_mztqLmnvjMe8rxRDQp66UrwXOLVd5-8ucW-dBQQOtOC4h5_aPiLzWjoryM
+Message-ID: <CAO9r8zNFoxNTb7zm7vUJ1TbybxisYpJ_eHEsgSYrSib5WtG3Dg@mail.gmail.com>
+Subject: Re: [PATCH v1 00/28] KVM: nSVM: Optimize nSVM TLB flushes
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 29, 2026 at 12:16:54PM -0700, Weiming Shi wrote:
-> Commit bd50c5dc182b ("vsock/virtio: add support for device
-> suspend/resume") made the *_run flags transition from false to true when
-> restore installs replacement virtqueues.  The RX, TX and event workers
-> read their virtqueue before locking and checking the corresponding flag,
-> so a worker delayed across freeze and restore can observe the replacement
-> queue's running state while retaining a pointer to the deleted queue.
-> 
-> Read each virtqueue under its mutex after checking the run flag, keeping
-> the pointer and state in the same queue generation.
-> 
-> Fixes: bd50c5dc182b ("vsock/virtio: add support for device suspend/resume")
-> Cc: stable@vger.kernel.org
-> Reported-by: Xiang Mei <xmei5@asu.edu>
-> Link: https://lore.kernel.org/r/20260727035804.1860862-1-bestswngs@gmail.com
-> Assisted-by: OpenAI-Codex:gpt-5
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> ---
->  net/vmw_vsock/virtio_transport.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index 57f2d6ec3ffc..a8e1dd95ba8c 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -346,12 +346,13 @@ static void virtio_transport_tx_work(struct work_struct *work)
->  	struct virtqueue *vq;
->  	bool added = false;
->  
-> -	vq = vsock->vqs[VSOCK_VQ_TX];
->  	mutex_lock(&vsock->tx_lock);
->  
->  	if (!vsock->tx_run)
->  		goto out;
->  
-> +	vq = vsock->vqs[VSOCK_VQ_TX];
-> +
->  	do {
->  		struct sk_buff *skb;
->  		unsigned int len;
-> @@ -451,13 +452,13 @@ static void virtio_transport_event_work(struct work_struct *work)
->  		container_of(work, struct virtio_vsock, event_work);
->  	struct virtqueue *vq;
->  
-> -	vq = vsock->vqs[VSOCK_VQ_EVENT];
-> -
->  	mutex_lock(&vsock->event_lock);
->  
->  	if (!vsock->event_run)
->  		goto out;
->  
-> +	vq = vsock->vqs[VSOCK_VQ_EVENT];
-> +
->  	do {
->  		struct virtio_vsock_event *event;
->  		unsigned int len;
-> @@ -634,13 +635,13 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  		container_of(work, struct virtio_vsock, rx_work);
->  	struct virtqueue *vq;
->  
-> -	vq = vsock->vqs[VSOCK_VQ_RX];
-> -
->  	mutex_lock(&vsock->rx_lock);
->  
->  	if (!vsock->rx_run)
->  		goto out;
->  
-> +	vq = vsock->vqs[VSOCK_VQ_RX];
-> +
->  	do {
->  		virtqueue_disable_cb(vq);
->  		for (;;) {
-> -- 
-> 2.55.0
-> 
+On Mon, Jul 27, 2026 at 6:19=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Mon, Jul 27, 2026, Yosry Ahmed wrote:
+> > > Yosry Ahmed (28):
+> > >   KVM: nSVM: Flush the TLB after forcefully leaving nested
+> > >   KVM: SVM: Document number of ASIDs CPUID setting
+> > >   KVM: VMX: Generalize VPID allocation to be vendor-neutral
+> > >   KVM: x86/mmu: Support specifying reserved TLB tags
+> > >   KVM: SVM: Add helpers to set/clear ASID flush in VMCB
+> > >   KVM: SVM: Fallback to flush everything if FLUSHBYASID is not availa=
+ble
+> > >   KVM: SVM: Duplicate pre-run ASID check for SEV and non-SEV guests
+> > >   KVM: SEV: Do ASID initialization at VMCB initialization
+> > >   KVM: SEV: Expose sev_get_asid() outside of sev.c
+> > >   KVM: SVM: Use a static ASID per vCPU
+> > >   KVM: SVM: Only flush the fallback ASID when used by a different vCP=
+U
+> > >   KVM: nSVM: Add a placeholder ASID for L2
+> > >   KVM: x86: hyper-v: Rename kvm_hv_vcpu_purge_flush_tlb()
+> > >   KVM: x86: hyper-v: Allow puring all TLB flush FIFOs
+> > >   KVM: nSVM: Drop svm->nested.initialized
+> > >   KVM: nSVM: Flush both L1 and L2 ASIDs on KVM_REQ_TLB_FLUSH
+> > >   KVM: nSVM: Always switch VMCB before leaving guest mode
+> > >   KVM: nSVM: Split nested_svm_transition_tlb_flush() into entry/exit =
+fns
+> > >   KVM: nSVM: Service local TLB flushes before nested transitions
+> > >   KVM: nSVM: Handle nested TLB flush requests through TLB_CONTROL
+> > >   KVM: nSVM: Flush the TLB if L1 changes L2's ASID in vmcb12
+> > >   KVM: nSVM: Do not reset TLB_CONTROL in vmcb02 on nested VM-Enter
+> > >   KVM: x86/mmu: Rename __kvm_mmu_invalidate_addr() to
+> > >     kvm_mmu_sync_addr()
+> > >   KVM: x86/mmu: Refactor kvm_mmu_invlpg() to allow skipping the GVA
+> > >     flush
+> > >   KVM: nSVM: Flush L2's ASID when emulating INVLPGA
+> > >   KVM: nSVM: Flush the ASID on nested transitions if shared by L1 and=
+ L2
+> > >   KVM: nSVM: Use different ASIDs for L1 and L2
+> > >   KVM: selftests: Add a test for nested TLB flushes
+> >
+> > Sashiko wasn't able to apply the patches:
+> > https://sashiko.dev/#/patchset/20260728003557.1136583-1-yosry%40kernel.=
+org.
+> >
+> > For some reason, it failed to apply on the baseline commit,
+> > 271255273d5ff348fe29d89fe4712b2f7f7907c3.
+> >
+> > This is the top of kvm-x86/next tho, so I am not sure what went wrong:
+> >
+> > $ git show upstream/kvm-x86/next
+> > commit 271255273d5ff348fe29d89fe4712b2f7f7907c3 (tag:
+> > kvm-x86-next-2026.07.27, upstream/kvm-x86/next, upstream/kvm-x86/HEAD)
+> > Merge: a204badd8432f 2abcdf03fda13 9c66085e6dcfb db3a46e200df2
+> > 2708ecca4dbdb 710b3a30f407e e428f9779a437 653857a5af462 ec9a16c6aeba8
+> > 05a0b701d1089
+> > Author: Sean Christopherson <seanjc@google.com>
+> > Date:   Mon Jul 27 12:44:28 2026 -0700
+> > ...
+> >
+> > The commit was from earlier today, maybe Sashiko only fetches the
+> > trees every once in a while?
+> >
+> > kvm-x86/next is not among the list of branches it tried. I don't see
+> > the tree in MAINTAINERS, so perhaps this patch was never picked up:
+> > https://lore.kernel.org/kvm/20260428171541.1342335-2-seanjc@google.com/=
+.
+>
+> Yeah, I need to get Paolo's eyeballs on those changes.
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+It's really none of my business, but what about just getting patch 1
+merged for now? I think this is everything Sashiko needs and the tree
+is already documented in the maintainer profile (so it's nothing new)?
