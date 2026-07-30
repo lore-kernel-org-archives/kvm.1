@@ -1,184 +1,157 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEB13AEB26
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 20:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785444850; cv=pass; b=P3oYmoHbOtzV/qyMQt3+pCtgHIiqdCXl0Ezt1pPgqnYqQqwv9VPnOiRzTBI01WtyjGURrsWit6l6I47tD6jHEmmVBfaaShBc9vIznCdKXsPKiu/yCbdWTFb5g4XZaIVOerpRUWb0mzlJ9N+254sqj7tzEM/4E5VgQwChVWNIxS8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785444850; c=relaxed/simple;
-	bh=8Sy6N/FPMWyV68WdC4FpVq8IfaF9RIqsw3m25K2J0lg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RwY7AcQoXkXGNJ7n5DwHkmM3E5qth+IZMg0X66UsQ8LxeI+TciswP+OwFzWvz1sMG4Oi/Q+c1aOzb1CGHKOqGluPUm7GNYsM3AKaXY2n8XVjgRdIXRNqiJJ+ttDZyklcTUwy+RTnIdpskYtI2PGolfBaTbAbTODfcSD+5x+ECbA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=os+EKOZR; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5603D75C2
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 21:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785447095; cv=none; b=PuX4wpE+3OWcZH9ZFXxZ7dGJ1ptGzs96vxBfU63OGDzNBXKVjNYS7Dy9kdYYROd2tk1QNFyKWqhaseBCli3qblLv6muDda8GBxeQF05SAMjc3Svd/t/GfoPChpt01pozy5iHRiU8nhD7aWSLFuYOGHNLphWkyOawwQPEHSOXWA4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785447095; c=relaxed/simple;
+	bh=O87oU9Fb3GfKmf6vbnol7Em2lHY9Uv+VCYWvp85rtP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B8KSyJ/S9CDAQevYNsDev3ZUbiHbNdYVLvapcAf+LU56gOrAGVlXD4psFVMUBcnt7UY/nbF4D7qBFYT5AEXFG5Yre29pUPQdratC3WNyitp47kWMOUDbRf/1qg3bwC0QCA+HxUpXsYcNM/bR/IXNV90MMJ+Yn4oqm7UNv22P19A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C14c3Kj0; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="os+EKOZR"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so1030a12.1
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 13:54:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785444847; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z8Wk2BCpk5SqJao3CLA4w/plKpGbPF2j8xJznnDPDbltFO+w4FDkBMSDCIQWANxIj8
-         RF9PmywTdXYO4F9MPVjSgFkwDriOK7Puf/a7V4fO5qnLKY0x/M5RiCpAce91eSV7t0/M
-         J50CIVcTYgF8w+MH0xySa4SHVn5mxyp4zzImfd1jMa+13CHncrjLGSefEYz7n3Hlw2Y2
-         3fDagg6Y2hUuIGCWUACCJAX4p8zHawlRKO/B5y7As1M5k+ZS9BmZzCoH6Yz+Qj/x4hZx
-         2uqNMGlbfRIbFye65EJ9ohj+4zlan6uCxjH2r3erDXohqAB8LyuNYNaT4aUEVM99bQ9V
-         Avgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Dd1rWgTdokLZNBjdKW0vxlxfqezHLCpaEhueuQxAFxY=;
-        fh=SSW8VhxvxHDTXLhFtBTgEHo2Py/mYybSvLpfWEYV+FI=;
-        b=dGRKJnptIrZ5G/B+36UkDFfdO6XWST1dhbHEHSOc1Ti6lWOof4M27WahD2sbUSH0/v
-         W0y70YinvwNK1WuMnwCMvt0gDdVORinunYDgoWPFRd5+PFDP/gHWWDoAIY+1a02BVmV9
-         vd+jJjCurcDndw/E8q4pvqa9lEo1oU8Kwqdyys6xMoAKFrYIB8HPMcJMUR3Mia1gjYPP
-         wUHvzbblPLZ1jLtTpy7pINhJ3dJlycI1/nxcjOpG+i7L4JR8N5UT998d8aZeWjhfgk4L
-         qxlaXV6P0OuXLDLBYq9cqrm8zCa1IUaZpksKzXC07EAPnZ+JQVoQtkvwpZUjpTJgUK9Q
-         X5ew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C14c3Kj0"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495757ccbc1so2026675e9.2
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 14:31:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785444847; x=1786049647; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=chromium.org; s=google; t=1785447089; x=1786051889; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Dd1rWgTdokLZNBjdKW0vxlxfqezHLCpaEhueuQxAFxY=;
-        b=os+EKOZRlChP9jWazaZ4NXbtncBpa8NSbVISdW386GgISolF0LzKXZpr6aUjCQCVz2
-         H610DnkAQPK0Ld0cyVsCbec9pVdA6GQp055h4vv760xATBlkDj5o7NGdosUNNqLOPRZ6
-         dpopLFx5HxAsFvuym6Lnm0EofWgxGbQPG+8IqT6c8PdneZz0X1mCyZCTE71tAyJaqKPV
-         NtfMZ6Lh/a/fbtQNFFIyIXjpr+SzNCPqm6EFgqyc2iTYpQgIDdasxdeiJ/alYVzSU9vJ
-         W4k9u88I3c9Tk3lxIN/vhxG6JDgcv0YJtBnEGVI3btW4NBeD0u7Hy/SoTzk2FUUUv9+5
-         T1TQ==
+        bh=O4aYxqAdUOYM4AMAjFlgTBaleZEy4IWPgN5zXutE3dw=;
+        b=C14c3Kj09egPVdPZvtXhDikbtSDlxk+ldqoZpy6htouIb2/kGzu0F+LvLCjE164aFz
+         jvJroCGdxn5E8Bn4Mtm9SqAEIFa+GoTKvcXNTOf1SeCu6No5PezQ2sdMlo2Fxu9myl8g
+         dYBDcQBMCT8l3OqLKpMzC2VPm+ff/Sfs2+AWg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785444847; x=1786049647;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1785447089; x=1786051889;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Dd1rWgTdokLZNBjdKW0vxlxfqezHLCpaEhueuQxAFxY=;
-        b=Vc8yD/dCSV5fVpRbaGEJXTrN2Adk66k3CdMAf7uUSBH4CWtbRpXFhLF4nnbrBbJuTU
-         xUms9dOfCkiUGLk0xWRt+sovtsgGl7zfwDku3tp/yvKVPT3iJVa5ZQqRvItA6w3xugqB
-         DDDzT2sswD/xVc/yRShTXB3bAogKWycHd7BV2HPB0vGitseLVysH5iU3qcbbw7WPiUeI
-         f4m8PPLDLGOZDxWDoZaB0jJs/DTZqjypkkcmhWxhQNpBBiwe0xdOLBgQzYDPVtqixtiP
-         MFl9nVHjxN/GzsfMdaRMXJ5qEMVJO20Zk+AhsWA2hWMpA53ljgqTmddINfjoekfNd2Fn
-         y5ww==
-X-Forwarded-Encrypted: i=1; AHgh+Rp7W3bvRwecsVoMvbIv8v0kfR8VSgtQfwI4qrzgJNgoX/Qb2YS/rcWlRTodrFRgtYodsRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztLnP0EeBMX+PzL21O/FDA2PZyY0/sA6isF3UU+ZMBV2dhN/Fc
-	Cg3xroMN/bJtP7o9b+TjCVF1L45Z1U5fpU3H6kxQODjTA8SZvg+v5yunqHeuYVM1EK2wm3Ij4EU
-	aHgsJiIay+/KFeuyXQy3vK4ZRsotYU1t18sMMfrtW
-X-Gm-Gg: AR+sD119KA7U1M61q7ITuSBYSIvfXzWFQsbvggydkkCjItJFFvxMXWWmuGEileqvTgl
-	51OtVk7b4PbiLcxmwTp/fmBEi7bNEQSS+BjjboXYpEtua9mMEgfBooSLtI1xeDLNTJKhvv/aOxz
-	oyfHHTgoy3u0SPOoaAhGKD5YRGBmjpxebz31Lv1LMHJ2Czlj19jSZNRVeG8A+EUbIOhrwWQXjmP
-	jc7YMuZ9TX04ooMBDBRdIKPun40JQsQTasiZuW4pa0s3HCZwoh7a8ejcYXy1F346XRV2GJcQL3M
-	3yMSWG6wcqHjpYVXSgCrIBV/0+M7G1t5rzkSuP47OghSxvNKHpms00zAGaYh3d3CGZ4=
-X-Received: by 2002:aa7:d498:0:b0:6a0:11d7:ada3 with SMTP id
- 4fb4d7f45d1cf-6a09636b0f0mr3795a12.5.1785444846230; Thu, 30 Jul 2026 13:54:06
- -0700 (PDT)
+        bh=O4aYxqAdUOYM4AMAjFlgTBaleZEy4IWPgN5zXutE3dw=;
+        b=P6RxJcJxROMpvDPDKfpW7T+cxAgZG6De9j2VZmbn0TUryuxquf7UtLPMUC+MXrPAaQ
+         a+edYokhy3IrsOi9ax5H7Z72/v9eZcCgK3apuFE8PbmdChiYirlK+XWBPlOx9efHKd67
+         StXBFXn/oaLhC1fn/eAXTjrkyYlGdFyptFwXom2e8A5qGMW9x2h9D1Y6Rxf2rGQQ25M/
+         I6xpgj4PWrta1vTKkWx0Sr2f4ctqqy0NzejE3uCUCZE/Nw/yhOJFu5D52XrhIDAI3jAC
+         zUinkstDn7r1w31xzrCfONyNATR/O/pyvMw3jUUG//o0hIMwIcTV/J4oGlQg9f9w9cX1
+         Xljg==
+X-Gm-Message-State: AOJu0YxnGgBHoRXrmBOh03MJxKssFkhVylwqVvtcCfvgs7BZcFLsW00c
+	GK9H7fVcCj79SIuoviNde0BPc+ruZT4mrMRFMAQCH9Ih1tmNFQKZiMMQpzS6tBbUYJNpNYPlQq/
+	Yi43NWlv3
+X-Gm-Gg: AR+sD11ucnXc0rc28g1POXsFM0AVJ9z09BAsONLS9y9YW4rbiTp0YzrZqq9HJj20X84
+	mdEyrecn4z/PiyjO0GSorxpxHnhg+StXAHgdVBtlyujyXXTQeTSrFr/pi8PcqIQEcu6x9jwQvZD
+	Uf9Jhg7WN2vn/iXZITJaLSged/TqqatcJWLxU1iTzz4cC2iYkE5ZNQwmVvfNvmCb3Ei26RL0cez
+	WcrNMhAXcIZwswlFDAoftjtyxoMHkH7jFmZiwVUZ07tFwRp7WfG0hvTTmYsHV8k1eV1oMUzAlSg
+	daM7WVeWTf4aO+Rd/PE6OvEbELmWizxv8mmWFLpNc7BzIGYtqa79qMsLmWLzqSxVyHBc7jJSyuX
+	bYmo0Ypmbsw6PJ9juuxNpgT5FdfRz9PfVJVoNOifPWCSluGM8EEfGIjyKOupj6ZaiWyqty7pVdY
+	jemqeABAIXy732lvxZP8tLlfK1inTY9aPij1JtcRevLWjaOj2SBVkCvsctHa2m//o=
+X-Received: by 2002:a05:600c:4747:b0:495:4811:d71c with SMTP id 5b1f17b1804b1-49800e7592fmr59495625e9.13.1785447089066;
+        Thu, 30 Jul 2026 14:31:29 -0700 (PDT)
+Received: from google.com ([2a02:a31b:20c3:6680:c10c:309:fdd2:f109])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e439asm8757792f8f.11.2026.07.30.14.31.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 14:31:28 -0700 (PDT)
+Date: Thu, 30 Jul 2026 23:31:25 +0200
+From: Dmytro Maluka <dmaluka@chromium.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Subject: Re: [PATCH 1/3] KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as
+ inclusive
+Message-ID: <amvCrTMCjgkjtGVx@google.com>
+References: <20260730182425.1223530-1-dmaluka@chromium.org>
+ <20260730182425.1223530-2-dmaluka@chromium.org>
+ <20260730185243.CD3201F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260730182053.905335-1-yiranirenewang@gmail.com>
-In-Reply-To: <20260730182053.905335-1-yiranirenewang@gmail.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 30 Jul 2026 13:53:53 -0700
-X-Gm-Features: AUfX_mxgXEY5UuXJ0qadWpqPq8gsH-tAqJG6sLeqmOeDEf76KQLr4Q91m2V_Iz0
-Message-ID: <CALMp9eSJ__HL3jqaYOEn57cYER7M6NOWvge=CULcHjtqSH6+MQ@mail.gmail.com>
-Subject: Re: [kvm-unit-tests PATCH] x86: pci: Support unaligned register
- access in PCI config read/write
-To: Irene Wang <yiranirenewang@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Andrew Jones <andrew.jones@linux.dev>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, David Matlack <dmatlack@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260730185243.CD3201F000E9@smtp.kernel.org>
 
-On Thu, Jul 30, 2026 at 11:31=E2=80=AFAM Irene Wang <yiranirenewang@gmail.c=
-om> wrote:
->
-> Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
-> Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
-> register offset (bits [1:0] =3D 00b), while byte and word offsets within
-> the DWORD must be selected via data port 0xCFC + (reg & 3).
->
-> Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
-> 16-bit helpers always accessed base port 0xCFC directly. This worked
-> in QEMU because its PCI host bridge emulation preserves unaligned bits
-> in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
-> in strictly spec-compliant VMMs (and potentially real hardware), bits
-> [1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
-> 0xCFC to erroneously target byte 0 of the DWORD. In practice, this
-> causes pci_find_dev() to read the vendor ID twice instead of reading
-> the vendor ID and device ID.
->
-> Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
-> the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
-> accessors, ensuring compatibility across QEMU and other VMMs.
->
-> Assisted-by: Gemini:gemini-3.6-flash
-> Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
-> ---
->  lib/x86/asm/pci.h | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
-> index 03e55c27..09fd2372 100644
-> --- a/lib/x86/asm/pci.h
-> +++ b/lib/x86/asm/pci.h
-> @@ -9,18 +9,18 @@
->  #include "pci.h"
->  #include "x86/asm/io.h"
->
-> -#define PCI_CONF1_ADDRESS(dev, reg)    ((0x1 << 31) | (dev << 8) | reg)
-> +#define PCI_CONF1_ADDRESS(dev, reg)    ((0x1 << 31) | (dev << 8) | ((reg=
-) & ~3))
-
-Nit: ((0x1 << 31) | ((dev) << 8) | ((reg) & ~3)) is more future-proof.
-
->  static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inb(0xCFC);
-> +    return inb(0xCFC + (reg & 3));
->  }
->
->  static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    return inw(0xCFC);
-> +    return inw(0xCFC + (reg & 3));
-
-What happens here if (reg & 3) =3D=3D 3? I don't think inw(0xCFF) is legal.
-
->  }
->
->  static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
-> @@ -33,14 +33,14 @@ static inline void pci_config_writeb(pcidevaddr_t dev=
-, uint8_t reg,
->                                       uint8_t val)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outb(val, 0xCFC);
-> +    outb(val, 0xCFC + (reg & 3));
->  }
->
->  static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
->                                       uint16_t val)
->  {
->      outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
-> -    outw(val, 0xCFC);
-> +    outw(val, 0xCFC + (reg & 3));
-
-Same as above. I don't think outw(val, 0XCFF) is legal.
-
->  }
->
->  static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
+On Thu, Jul 30, 2026 at 06:52:43PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [Medium] The selftest changes assert that setting `bsp_vcpu_id` equal to `max_vcpu_ids` (the exclusive upper bound for vcpu IDs) will be rejected with `-EINVAL`, but the KVM kernel code was not fixed to enforce this and still returns success, causing the tests to fail.
 > --
-> 2.55.0.508.g3f0d502094-goog
->
->
+> 
+> --- Patch [1]: [PATCH 1/3] KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive ---
+> commit 985e68429c6e20e59d983752bd84f5dc599b83f0
+> Author: Dmytro Maluka <dmaluka@chromium.org>
+> 
+> KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive
+> 
+> This commit updates KVM selftests to treat KVM_CAP_MAX_VCPU_ID as
+> exclusive rather than inclusive. It modifies the tests to assert that
+> setting a boot CPU ID or vCPU ID equal to or greater than the maximum
+> capacity will fail.
+> 
+> > diff --git a/tools/testing/selftests/kvm/x86/max_vcpuid_cap_test.c b/tools/testing/selftests/kvm/x86/max_vcpuid_cap_test.c
+> > index 7e2bfb3c3f3ba..43f16c052de4a 100644
+> > --- a/tools/testing/selftests/kvm/x86/max_vcpuid_cap_test.c
+> > +++ b/tools/testing/selftests/kvm/x86/max_vcpuid_cap_test.c
+> > @@ -30,22 +30,25 @@ int main(int argc, char *argv[])
+> >  	if (kvm_has_cap(KVM_CAP_SET_BOOT_CPU_ID)) {
+> >  		vm_ioctl(vm, KVM_SET_BOOT_CPU_ID, (void *)MAX_VCPU_ID);
+> >  
+> > -		/* Try setting KVM_CAP_MAX_VCPU_ID below BOOT_CPU_ID */
+> > -		ret = __vm_enable_cap(vm, KVM_CAP_MAX_VCPU_ID, MAX_VCPU_ID - 1);
+> > +		/* Try setting KVM_CAP_MAX_VCPU_ID below or equal to BOOT_CPU_ID */
+> > +		ret = __vm_enable_cap(vm, KVM_CAP_MAX_VCPU_ID, MAX_VCPU_ID);
+> >  		TEST_ASSERT(ret < 0,
+> > -			    "Setting KVM_CAP_MAX_VCPU_ID below BOOT_CPU_ID should fail");
+> > +			    "Setting KVM_CAP_MAX_VCPU_ID <= BOOT_CPU_ID should fail");
+> 
+> [Severity: Medium]
+> Will this assertion now fail because the kernel code hasn't been updated to
+> enforce this behavior?
+> 
+> Looking at how KVM_CAP_MAX_VCPU_ID is handled in the kernel, it checks:
+> 
+>     if (kvm->arch.bsp_vcpu_id > cap->args[0]) {
+>         r = -EINVAL;
+>         break;
+>     }
+> 
+> If both kvm->arch.bsp_vcpu_id and cap->args[0] are set to MAX_VCPU_ID, the
+> greater-than condition evaluates to false. Will the ioctl return success
+> instead of -EINVAL, causing this test to crash?
+> 
+> [ ... ]
+> 
+> > diff --git a/tools/testing/selftests/kvm/x86/set_boot_cpu_id.c b/tools/testing/selftests/kvm/x86/set_boot_cpu_id.c
+> > index 8e3898646c69d..1c4ebdf8e82c5 100644
+> > --- a/tools/testing/selftests/kvm/x86/set_boot_cpu_id.c
+> > +++ b/tools/testing/selftests/kvm/x86/set_boot_cpu_id.c
+> > @@ -39,8 +39,8 @@ static void test_set_invalid_bsp(struct kvm_vm *vm)
+> >  	int r;
+> >  
+> >  	if (max_vcpu_id) {
+> > -		r = __vm_ioctl(vm, KVM_SET_BOOT_CPU_ID, (void *)(max_vcpu_id + 1));
+> > -		TEST_ASSERT(r == -1 && errno == EINVAL, "BSP with ID > MAX should fail");
+> > +		r = __vm_ioctl(vm, KVM_SET_BOOT_CPU_ID, (void *)max_vcpu_id);
+> > +		TEST_ASSERT(r == -1 && errno == EINVAL, "BSP with ID >= MAX should fail");
+> 
+> [Severity: Medium]
+> Does this change also cause the test to fail against the current kernel?
+> 
+> Looking at the KVM_SET_BOOT_CPU_ID handling in arch/x86/kvm/x86.c:kvm_vm_ioctl():
+> 
+>     else if (arg > KVM_MAX_VCPU_IDS ||
+>              (kvm->arch.max_vcpu_ids && arg > kvm->arch.max_vcpu_ids))
+>         r = -EINVAL;
+> 
+> Since the kernel checks if arg is greater than max_vcpu_ids instead of
+> greater than or equal to, will setting arg to max_vcpu_id return success
+> here and trigger the TEST_ASSERT failure?
+
+Yeah, I should split this selftest patch into two: the changes which
+prevent the KVM fix from breaking the test (and thus should go before
+the KVM fix) and the changes which break the test unless the KVM fix is
+applied (and thus should go after).
