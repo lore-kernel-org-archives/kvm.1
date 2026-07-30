@@ -1,183 +1,145 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E60479872;
-	Thu, 30 Jul 2026 23:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C3E47ACC5
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 23:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785455362; cv=none; b=FtGNtwwrM+XGT/T8pkKZ4HNO6hBifeNf/vhdives8ZSYGdpcJjoa7lg24iEgOGvh1JTG4nnq3UXbX9zpb6t7ceJhK+e3Fh2ztflLynRtyBESrVEzZ9l1R04sjLt9pO/pWz5XzSu7CrDph4n1bLu2iDHKfaX2q9I2QfaBRnO1TJo=
+	t=1785455368; cv=none; b=FtPYkTvz3wYXVi3AzAeD7P2OsgGYVvSj/dJMYC+j9r8txyANPqkrekNpKrPgU4zsaywiqDCnwOyiDnZ6+uyeQhZcwxAZWmtwT/hsh/wMOECi83hlW/HHViE6DZ1+Fmpjzywc4aNClTcjBloqoBftBzqm7GddNUWDr/KHnPcnJxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785455362; c=relaxed/simple;
-	bh=EBqRt2FUcludAcZTS+/lEH3JghanKhXyWdirr2aKXZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FU1omGwusrMH6XktfeL8S3cuFABvwNIW+f7sTMmAoFjXKFK/9f1E5LIokAvMWOzsIhWgjuU45eU3u1JazUBM70YqaOVStbdUGFVbnWnlwvXuyRkiwS0u8aPZghkYTi23hgwmOfoerY7DqBeS8qPLYcSNe6DQj+0RvgwHAWbH/Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=auUUHpuF; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785455368; c=relaxed/simple;
+	bh=QBPX2FlNZdNHfPS9xAx4hnsjicFqelsPaGbARid3Jq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nCPjW58fABxuRg9gOoNuvoQ1O8Ftcm96yqfGd2b3g5AjhzMQhy/nvveEypKnV5NFAFZd7kdKL3InWuDN8xqqYrmzb06toNuz22H1scH5FnYtJyfvz6RDabpYi1SKTWKOXOUHsGhVNhDFwmbHDgGjKlsJgMWWCugnNpLvnyu6MBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f2esO6pB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FkpE9nji; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="auUUHpuF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785455359; x=1816991359;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EBqRt2FUcludAcZTS+/lEH3JghanKhXyWdirr2aKXZk=;
-  b=auUUHpuFzGeVZ72PwoolN8CdqpZPj99EaEsw+S1+P3OVDrVlFGaw58FC
-   qZnzBvE30kFzlDms4X1X/YKjHTmc55l7aDMNagvp3TCvCE4B3gQkJVo1a
-   XoT4f5BswG+9T8TbF8Cb3XBlfSD7MDYZXUU+vKzmy/DtgoXoTVI7WmC2K
-   ggctskMDemlPjr12IVNctzbKjjXX6f3rIQvMyO1oKBU6vPfU/eFtx/doo
-   iPvPE19T3b09NC2bjXsZ0kJrlof32EJQU5HBPtl67DV52vD+6i2NMGx57
-   89X5Xw9A0oNSV8iQ3kEdoymBDnO5xAySwvGEwfe8xZyu2FVCpmNzA5Q5d
-   A==;
-X-CSE-ConnectionGUID: pHjIpe0nRyGUdgZw/+Rt5g==
-X-CSE-MsgGUID: 2k0BMBAIRaehF6zOXqAVRg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="96670035"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="96670035"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 16:49:18 -0700
-X-CSE-ConnectionGUID: 3hvv/sojQLGAat42r0fN/g==
-X-CSE-MsgGUID: 6mgkoACnRjCJhd9evfHvNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="298631756"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 16:49:03 -0700
-Message-ID: <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
-Date: Fri, 31 Jul 2026 07:49:00 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f2esO6pB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FkpE9nji"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785455366;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0imh//Ln8azssKsT3gHIO0joG70m1DE2os+hdd9glB8=;
+	b=f2esO6pBuSTskpTrlJwnmloS9d2CO+BqdRzMIpLINGq6RM3Qr0wmoKGVqT8+TQ1AGB/YUI
+	WIBpSSAcKwDYVYoOXxQEf7t59ewZ4D7Qx2b+rr12RIy1ToZByZzFCvf8Rk+Wh2/Px3BAMm
+	pdFwYWgE9X7o6qQlUOi3jqhHOhwue7g=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-pKleY929OKusB1btVFRi9Q-1; Thu, 30 Jul 2026 19:49:24 -0400
+X-MC-Unique: pKleY929OKusB1btVFRi9Q-1
+X-Mimecast-MFC-AGG-ID: pKleY929OKusB1btVFRi9Q_1785455363
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47f8398ed9fso186451f8f.0
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785455363; x=1786060163; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0imh//Ln8azssKsT3gHIO0joG70m1DE2os+hdd9glB8=;
+        b=FkpE9nji4wxkpUe3Ffk+MOlVK1tC0jcQ6whLGoly6zFl1V+YfNevc96l2sQ/ze3Sbm
+         /P0ajtlK+Wc9eD/02B5NibY0itmzNXSraB9ALjqF96uCR5lwpisCTHozLbVw9g18bJxR
+         g7upksgpvxHK1awXbDb09M/7pJxifyVwBkntBynXJ/2VEAYyVhPXBm4MbqMwQ1aW14y5
+         xZeAUp3+fOKIQR5uXEUF6XQa9zr4nVvO/Pb3xp09TCjlGbcw9+lObIOWusDcx4RxxurS
+         MDJkuTQXvtt5LJposciLGDtaJO1FWuO9Jv1byHaULiLN41Vs36l1J3844vuW/e/PoQcX
+         RYQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785455363; x=1786060163;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0imh//Ln8azssKsT3gHIO0joG70m1DE2os+hdd9glB8=;
+        b=jU1c+JmL2zSJEyRXuixzK/UZZoAnHiCdB1rXp0CGjrMozWZbbFJuzJbmL9WeVu0mRs
+         VOdMerBC3Ma32gIjh8zj2cp+Qem585SOBKFk5SH63O2mdBgW6sji20qfD/BhQ6HTvc+N
+         BZY8/GyzJ0+Xsu66CpFr8Md6uNQy26Rdt5UgG7CxXCDtKnOnykuV+nIQNBfpvFvm/FWu
+         5nUGJ541vp546Zrd14dJHyA6Hy1oDv0pCDWSmFagYlbvNdFJzNmr9asbRDPPgqZ/zqEh
+         oen/ib1oNsPDSjBKcSYwkZ+mQFg1ke8vqwZh5gJSL5YNpXHPcC7zF/8mHM7VxEy73Lol
+         PYgQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrgsJLBhfUQa3hYLX6uLpW79dyWvUesMC1Mgly6HXtpdc0IMQ9qXx85XyovPQsRMmtCrhA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOVrF2VHPxlqYa7DJv7/hbrZJP6vQfO74Pg1Or+uZIxlZf/Mru
+	3apTb61ypU/ZnB0MiuBcqZm2vIhS6HmQN6pogqrc37Gw1J+ouqvM6Sc1P7ZVyR/YjqLcz1UyIN2
+	Sf/AuIWBZEyfufl8/uUhXQ9kxEIHTY7F9LCvcmyyQeocAIW0+3ASeXQ==
+X-Gm-Gg: AR+sD13E2ewUZfUWFxCpv1wa7B/q5kX8pbl4SvriUMkKk2KBZ5WYGDh3O3/t4xvFGrJ
+	WEGdo5UKOto6C48zGZFZ7J50W29UfjL6RuwuBhdRev4F1IYg0Ui7pvAhbScQgytF4KI5mq6RMWR
+	oJKWOpFPSN5xJfjgxkseVoUslgBtkTEZtydNMkslIr1oL6TCN+iD+29CcMes7IKUbIwGzCfwSnB
+	/eG6Hn9kN/ohAjJb7Ov9hE6TsWpClAvMR9NS1m+WwDIg6T+/cqAz7yUEkwIIkYOuAR0g9LrMj6i
+	6xU1kpKcddB4J0m4AMO26IkKOup217qfUEh8i3U/lbuzvvMw6VCkJ1xf+uG7+dehujBgfCH77Ap
+	IbFlf72v4J+CiNUSExif9zjU=
+X-Received: by 2002:a5d:5f88:0:b0:474:cd60:1154 with SMTP id ffacd0b85a97d-47fc8200021mr6660272f8f.41.1785455363411;
+        Thu, 30 Jul 2026 16:49:23 -0700 (PDT)
+X-Received: by 2002:a5d:5f88:0:b0:474:cd60:1154 with SMTP id ffacd0b85a97d-47fc8200021mr6660223f8f.41.1785455362999;
+        Thu, 30 Jul 2026 16:49:22 -0700 (PDT)
+Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fc88e3c73sm10792795f8f.10.2026.07.30.16.49.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 16:49:22 -0700 (PDT)
+Date: Thu, 30 Jul 2026 19:49:19 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	sgarzare@redhat.com, stefanha@redhat.com, dongli.zhang@oracle.com,
+	maciej.szmigiero@oracle.com, bchaney@akamai.com,
+	mark.kanda@oracle.com, ptikhomirov@virtuozzo.com, den@openvz.org
+Subject: Re: [PATCH v6 0/5] vhost/vsock: add support for VHOST_RESET_OWNER
+ and CPR migration
+Message-ID: <20260730194858-mutt-send-email-mst@kernel.org>
+References: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
- <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
 
-On 7/31/2026 4:42 AM, Ackerley Tng wrote:
-> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+On Fri, Jul 24, 2026 at 02:45:37PM +0300, Andrey Drobyshev wrote:
+> v5 -> v6:
 > 
->> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
->>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>> index 33c9830190e2e..89cf922232920 100644
->>> --- a/virt/kvm/guest_memfd.c
->>> +++ b/virt/kvm/guest_memfd.c
->>> @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>    EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->>>
->>>    #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->>> +static bool kvm_range_is_private(struct file *file, pgoff_t index,
->>> +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->>> +{
->>> +	struct inode *inode = file_inode(file);
->>> +	pgoff_t last = index + nr_pages - 1;
->>> +	struct maple_tree *mt;
->>> +	void *entry;
->>> +
->>> +	if (!gmem_in_place_conversion)
->>> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>> +
->>> +	mt = &GMEM_I(inode)->attributes;
->>> +	mt_for_each(mt, entry, index, last) {
->>> +		if (kvm_gmem_interpret_entry(inode, entry) !=
->>> +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
->>> +			return false;
->>> +	}
->>> +	return true;
->>> +}
->>>
->>>    static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>    				struct file *file, gfn_t gfn, struct page *src_page,
->>> @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>
->>>    	folio_unlock(folio);
->>>
->>> -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
->>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->>> +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
->>
->> It's checking if a single gfn is private.
->>
+>   * Patch 4:
+>     - make sync+flush conditional by adding a bool 'sync' param to the
+>       chain, as suggested by Michael:
+>         vhost_dev_reset_owner()
+>           vhost_dev_cleanup()
+>             vhost_workers_free()
 > 
-> But with huge page support we'd need to check a range of gfns... I guess
-> there's the argument of not keeping complexity for the future, but in
-> this case it's undoing functionality for this series and probably adding
-> it back later.
+>     - reword commit message and comment;
+>     - drop Fixes;
+> 
+>   * Patch 5:
+>     - add 'sync' param to vhost_dev_reset_owner() call.
+> 
+> v5: https://lore.kernel.org/virtualization/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com
 
-let's leave the work for huge page support in the future.
+does not apply for me is this for net next?
+in that case
 
->> We can just use kvm_mem_is_private()? And it seems can be a separate patch.
->>
-> 
-> Do you mean that this refactoring could be a separate patch? I could
-> refactor out kvm_range_is_private() in a separate patch, then put in the
-> mt_for_each() check in this patch together as part of all the rest of
-> the "wiring".
-> 
-> I considered that but it seemed like the refactoring was too small to
-> separate out into another patch when the mt_for_each() part is going to
-> be in this patch anyway.
-> 
-> Or, I could add an earlier patch to first replace the call to
-> kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
-> then this wiring patch would be simpler.
->
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-This is what I meant. An earlier patch to just replace 
-kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we 
-can drop this 'big' diff in this patch.
-
-If kvm_range_is_private() is useful/required by huge page support, then 
-let the huge page series to introduce it. It has nothing to do with the 
-in-place conversion series.
-
-> Let me know what y'all think is best. Thanks!
+> Andrey Drobyshev (3):
+>   vhost/vsock: suppress EHOSTUNREACH fast-fail during CPR pause
+>   vhost/vsock: re-scan TX virtqueue on device start
+>   vhost: synchronize with RCU readers when freeing workers
 > 
->>>    		ret = -EINVAL;
->>>    		goto out_put_folio;
->>>    	}
+> Pavel Tikhomirov (2):
+>   vhost/vsock: split out vhost_vsock_drop_backends helper
+>   vhost/vsock: add VHOST_RESET_OWNER ioctl
+> 
+>  drivers/vhost/net.c   |  4 +-
+>  drivers/vhost/scsi.c  |  2 +-
+>  drivers/vhost/test.c  |  4 +-
+>  drivers/vhost/vdpa.c  |  4 +-
+>  drivers/vhost/vhost.c | 26 ++++++++++---
+>  drivers/vhost/vhost.h |  5 ++-
+>  drivers/vhost/vsock.c | 89 +++++++++++++++++++++++++++++++++----------
+>  7 files changed, 100 insertions(+), 34 deletions(-)
+> 
+> -- 
+> 2.47.1
 
