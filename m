@@ -1,149 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C76035C180;
-	Thu, 30 Jul 2026 17:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4253AAF4F
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 17:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785431085; cv=none; b=nHoHu97jpM5/ZM7NCBNLMxQchz8PzGBQIuARMmkWyhOHhniT38YmpN/go4ifHkgeiQRDKoyc9hkSxYrXA/1b4B6cpHsiLOcXmXViuIX/Yhu/U03HzU5GqUmFKl1CqwL/TfwCI1AbiQ5T/MsSvGhWO9r+/8h+Dl0i1Nr5zVC7Uao=
+	t=1785432664; cv=none; b=BhdfcgcMhKkTlxrRgfczmYuJLo7rMR2PjyIP0N3IMwKEHxTaLty5MroB4lPaylF05jb0DSvaZHp+eUeSEpI/hBsFkPcnR0cOsO094d03gZTe7sFe/HWwHe43D5Z8cLS+fmwdjldpaZAj1CqGQlbodjW8p2P7FX1Y2IFLvJFfBHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785431085; c=relaxed/simple;
-	bh=vDuvDHLHJ+0AZ41ug75orRGPYaz8ZMCR448uzbUP7qM=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mZ/6E5zIOjdh++Kam83nqutA2AnRVOxHUpZCaOiXqQyoP05oux58FMz9apicLQlzYscCGBwBs2K/NlvsBB+R+T51jK3mQiWErdpRBFyAb87y6o1F5JTfxaBZJj6R91RdhJUDDAnmFCdG+Cu8O7asXcPaCQPNlbDrlAJM6zaRw9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWHzmFL0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785432664; c=relaxed/simple;
+	bh=ASo3CSR1k4XpSIExSb42XUxsQPlrg9VT1v9CTYRhNC4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=pshd//TupGvOflg++mQbgrgXyLW5lD0GwLUuv0TAUWIYAlE25Vmj5AnkTKV4A+1yuXJELH2e4ku7Mit/RnETl+Pu0/reK6PH0bE4vAFG7aW6k0m9dmmzWyWl8E+boGx6GT5bAtcFlyTqzh2a0GfwkcS0x+ht199ZcG3h8bZmj4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ANKqMsZv; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWHzmFL0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7441F000E9;
-	Thu, 30 Jul 2026 17:04:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785431084;
-	bh=9J0QRCWAkroDOML7M6Pu99OroGdhTBe5DYMDcE6OMyY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RWHzmFL0+xM1OQnobx51vQNlmNiFtMLJoVR5Op4DYvMBxl9mx2MMbmHYOuTPtMeuY
-	 FsGdbHHrMNWJDEQW47V5um6BIoJzXuWtIeYgFTLLRHvhTnU89GmRXvo/550v6c/XJo
-	 u55oKIvW0WKDG8zj9xlMaFLGNgdYlf1ZqNPOW8oFeu+duyqmn128TI4GzF6GjuB8bs
-	 k/jI0E6FcfLETeoCeoqjA9ahCus0SSbYN9guc83kCGZ0/XWOk+rvUCkCMfKD9Futjr
-	 Z7s/URHSWeUSHTPPU1EGwTXe9j0Pf0SobTFvynbPEu7zndcy5Rroyvd6LrGepBnnls
-	 ly3oTUefP70fw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 03/14] KVM: s390: Fix overclearing ESCA in case of
- error
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260730162714.133327-4-imbrenda@linux.ibm.com>
-References: <20260730162714.133327-1-imbrenda@linux.ibm.com>
- <20260730162714.133327-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 17:04:42 +0000
-Message-Id: <20260730170443.0E7441F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ANKqMsZv"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f5ac7416eso105757a91.3
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 10:31:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785432662; x=1786037462; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ouu8Y5jeG833FGaua+IzO9lFfQtuBKMW6QlirczT7MQ=;
+        b=ANKqMsZv+C4kgo81m2TIrXbXRlcTNXkSG8yGg2V6HdNgehaiEVfwpujUs7nkxpeWVk
+         b/PnRCyrXUgDPI2sL3EY6a9A89sv0QfIoBhC03rkuhyB2S9xMZyNTS1kd1SWZ9Rjd24x
+         Y2sLZwaITfnCNYWOAjnVo5WM3EhxgQ0KqPx22nEDjV1zbVk7x8Gv5pBuZU/mrYXTqDw5
+         Vx4Y72LwNDEwo/aFC7BfDdyCEUYV3AM6q5FkMF7aqFlpUVKPSjvWfyDi7z9IHq6vWjqv
+         1Zsi7hsJegcDzA1F3iYyEGnZx45lpoyznUPp7g6PthNjwYiR/TZSYfKwgsO84E2Pjgus
+         EMag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785432662; x=1786037462;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ouu8Y5jeG833FGaua+IzO9lFfQtuBKMW6QlirczT7MQ=;
+        b=fYKIrXXNtqle2FitvEOVAcEOtkOQRlbOl2Kn1Cv8LkgYswNeqauFQFL7EFwKWfhoas
+         zPTxm5UsBa+RvDIhCEc+8U48sxOC8hCnPHiF0xHykWw1SfaB6a95PbLoj5HIcUdiJPbE
+         Tb/pDf0d/sXwLyj/qkiuyhn6PuSHefO8eni/GJRZNN5RTnUKfLYjv7aDAXFqhdzaVvmL
+         ebLhNp4BBQzd6kdNYp2LYVteU9juom3D1y8zF2vny8+wun2yLbDxvZ8fKB6HZa4LNgFg
+         Q6tFGTMoKhf2LCpwo+gBKAg2Xz2q2u5v4JiaJ2l6lqjL8oTNZZLVW1e5C7cEr/QFJRR3
+         VZTA==
+X-Forwarded-Encrypted: i=1; AHgh+RrFx7wlLq00GacI9XDgE04kjFYshnzLB56bzk8KszUFFf6YPdA3d2Uf9uWL/vtRqXhcxxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy82oY0qI2NOlprA/C2NrbodRlb6aJ2f2oBj/QWt5VjFN/yK2Uh
+	lGIDu5QEgF/PI0wz3iwfPHOHQRnIPuTqwLkAu2gWXZtSVhbVhhehiHC056Z+uwRJfa8cD5Zeb5J
+	gAzYgAQ==
+X-Received: from pjc4.prod.google.com ([2002:a17:90b:2f44:b0:381:2921:e696])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:394b:b0:387:e0db:bc33
+ with SMTP id 98e67ed59e1d1-38f9c099dd5mr3102374a91.41.1785432661657; Thu, 30
+ Jul 2026 10:31:01 -0700 (PDT)
+Date: Thu, 30 Jul 2026 10:31:01 -0700
+In-Reply-To: <20260729072044.25796-1-slp@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260729072044.25796-1-slp@redhat.com>
+Message-ID: <amuKVfib5kela8AD@google.com>
+Subject: Re: [PATCH v3] KVM: have hva_to_pfn_remapped write-upgrade PTEs
+From: Sean Christopherson <seanjc@google.com>
+To: Sergio Lopez <slp@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Wed, Jul 29, 2026, Sergio Lopez wrote:
+> After 28e39181 ("drm/gem-shmem: Track folio accessed/dirty status in
+> mmap") was merged, a guest write to an unpopulated PTE from a mapping
+> backed by a DRM GEM BO triggers a VM exit with EFAULT, with
+> hva_to_pfn_remapped setting p_pfn to KVM_PFN_ERR_RO_FAULT.
+> 
+> This happens because that commit implements pfn_mkwrite for
+> drm_gem_shmem_vm_ops. With that function present, vma_wants_writenotify
+> returns true in vma_set_page_prot, clearing VM_SHARED and leading to the
+> entry to be installed as read-only. This is done on purpose so the
+> fault handler gets notified when the entry is going to be written.
+> 
+> In KVM, hva_to_pfn_remapped calls to fixup_user_fault to trigger the
+> fault handler but, as seen above, this one might install a read-only PTE
+> even with FAULT_FLAG_WRITE present in fault_flags. The check at the end
+> of hva_to_pfn_remapped notices that the entry is not writable despite
+> this being a write fault and sets p_pfn to KVM_PFN_ERR_RO_FAULT.
+> 
+> To address this issue, have hva_to_pfn_remapped issue a second
+> fixup_user_fault call when needed for write-upgrading the PTE.
+> 
+> Signed-off-by: Sergio Lopez <slp@redhat.com>
+> ---
 
-Pre-existing issues:
-- [High] Missing ucontrol checks in ESCA handling lead to out-of-bounds mem=
-ory accesses for KVM_VM_UCONTROL VMs.
-- [High] Memory leak of `vcpu->arch.mc` on error paths in `kvm_arch_vcpu_cr=
-eate()`.
---
+NAK, this doesn't belong in KVM.  Expecting callers of fixup_user_fault() to
+retry a FAULT_FLAG_WRITE fault on *success* is absurd.  Either manually do the
+retry in fixup_user_fault(), or return VM_FAULT_RETRY so that KVM will naturally
+retry.  I assume the latter is the correct approach.
 
---- Patch [3]: [PATCH v6 03/14] KVM: s390: Fix overclearing ESCA in case of=
- error ---
-commit 0972b46b8d10201faec4d5ded093d7c4cc013c9b
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-KVM: s390: Fix overclearing ESCA in case of error
-   =20
-If an attempt is made to create a vCPU with an already existing ID,
-the duplicated vCPU will be destroyed. When destroying a vCPU, its
-ESCA entry will be cleared. In the above scenario, the spurious
-duplicate vCPU is destroyed, but the ESCA entry corresponding to the
-original vCPU is cleared.
-
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 9e3e6b0d72ad6..2acdff130fa6c 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -86,7 +86,7 @@ static void sca_clear_ext_call(struct kvm_vcpu *vcpu)
->  	struct esca_block *sca =3D vcpu->kvm->arch.sca;
->  	union esca_sigp_ctrl *sigp_ctrl =3D &sca->cpu[vcpu->vcpu_id].sigp_ctrl;
-> =20
-> -	if (!kvm_s390_use_sca_entries())
-> +	if (!kvm_s390_use_sca_entries() || !vcpu->arch.initialized)
-
-[Severity: High]
-This is a pre-existing issue, but missing ucontrol checks in ESCA handling
-can lead to out-of-bounds memory accesses for KVM_VM_UCONTROL VMs.
-
-If a user creates a KVM_VM_S390_UCONTROL VM (requires CAP_SYS_ADMIN), skips
-sca_can_add_vcpu() limit checks during vCPU creation, and successfully
-initializes vCPU IDs up to 254 (above the ESCA array limit of 248), does th=
-is
-allow out-of-bounds reads and writes?
-
-For example, when injecting KVM_S390_INT_EXTERNAL_CALL or resetting the vCP=
-U,
-sca_clear_ext_call() unconditionally writes 0:
-
-arch/s390/kvm/interrupt.c:sca_clear_ext_call() {
-    ...
-    WRITE_ONCE(sigp_ctrl->value, 0);
-}
-
-Similarly, sca_inject_ext_call() performs an out-of-bounds cmpxchg write:
-
-arch/s390/kvm/interrupt.c:sca_inject_ext_call() {
-    ...
-    rc =3D cmpxchg(&sigp_ctrl->value, old_val.value, new_val.value);
-}
-
-Could this corrupt the kernel memory adjacent to the esca_block pages for
-vCPU IDs >=3D 248?
-
->  		return;
->  	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_ECALL_PEND);
-
-[ ... ]
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 9ec5833a09732..58cec3703c2d5 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-
-[ ... ]
-
-[Severity: High]
-This is a pre-existing issue, but does kvm_arch_vcpu_create() in
-arch/s390/kvm/kvm-s390.c leak the MMU cache allocation on error paths?
-
-If a subsequent allocation fails after kvm_s390_new_mmu_cache() assigns the
-cache to vcpu->arch.mc, the function jumps to out_free_sie_block and returns
-an error without freeing the MMU cache:
-
-arch/s390/kvm/kvm-s390.c:kvm_arch_vcpu_create() {
-    ...
-out_free_sie_block:
-    free_page((unsigned long)(vcpu->arch.sie_block));
-    return rc;
-}
-
-Since kvm_vm_ioctl_create_vcpu() decrements kvm->created_vcpus and frees the
-vCPU struct but does not call kvm_arch_vcpu_destroy() on this error path,
-would vcpu->arch.mc be permanently leaked?
-
-Can an unprivileged user repeatedly attempt to create a vCPU and force memo=
-ry
-allocation failures to cause an unbounded memory leak?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730162714.1333=
-27-1-imbrenda@linux.ibm.com?part=3D3
