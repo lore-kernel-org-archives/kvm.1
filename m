@@ -1,146 +1,120 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19FC372070
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785393664; cv=pass; b=AmBNyWpBr+cc/nXCreYGo4nhaEm0b5NzLWeS4kpttvDhX+qVtuGaMspA+oLT7GuydGt5U6m+oWDfb0+sxCBIRNgVSm6nHdcl2bGmo58A7VDCmcnre3mPDYUn2mxqwycFnqDf8RXmpvJr/8hIhVH1DN5UMsUNBSK4Ywe9ZgzXK1c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785393664; c=relaxed/simple;
-	bh=KVc4w40Uma0FaFG+WIZt0WqsEIGgGdlxSVnGRb/4478=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nZOHicvOjj+LCInejtHiuvmwWOjeksVXlrCZKI8GZMDkleNUytqOU1FcAB8JBxA0mNjzBc1FGNlpln7lTkb0U3hrPB2AsXss7siZbMDjExC3pxb+MSmZICDT/IAHTLGE9GFHsiwD25nWUrtPYtLhguxxijTz1VYwPkw07CLOGD4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=cI16V+Qt; arc=pass smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F64A3314A1
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785394299; cv=none; b=c5djGDl50DhXrpwM+cB3HsLAM7gFZDSAS77HtNw0KUGQ4LFepjYV1NQbWEVTiooGqXAvUT18X4VkVy3rh5nc9asbaqZFHIAen/5VmqtxjBSX62TcTV/iWlNRpwLttk7+hdGHyW6ikxJ/M8qPce7k24rq6OsuHb1LJ7N3TH9gZu0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785394299; c=relaxed/simple;
+	bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=F793nhlx5HxODyotnvrLn2IAaluBMHQhnC+sdlQa+Z5IdA++ev+Ufx7v01RwRbi5DkEsO0olQy4+NJUmtJY3mNViI3xG6dez9vNmG1mugLuGiWtNqGibEMlX8tNjGv3Hbu13GmXu69qXCA6FsScJtyHnlbpM1swhZfoOXkLf5pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4bnug+O; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="cI16V+Qt"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso1586252f8f.3
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:41:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785393661; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XnYFffDrIOlFcq6B9cRQfbZNo7f9KZK4RvcLNSRokYjPr6yOsDiamLKUCkEfiYcrgb
-         +Y2GMkR8tJCqUa5BoTp0KrenQsINVP+5SQdm5g5XrZYXyQXkwqp4QU1iHUaJqWOYV1AF
-         rtel2qXoY7Rps0D88uWtTZxtaqIDiVq7utZ7NOArUB3F5Ad3eSv0aAzy8i0T0AgnNOdL
-         oW6aIiz4TZn6aQo/XI/n5700Jj+ltDKAmufafoD/w4w+7XYUza9PL2ivmAEH9yLoDJ2z
-         BSVUFR8H1uBeAp2kCjr/dhuCNfLp+us2OMaKPZAVXzleuHHi++vzEBBzsAgLg0Ork4sg
-         sVRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gCSg4A13UG+ezvuOT5T/4OdsBnQnd/Owb7FoNwTVWMw=;
-        fh=FIZKAHJHSqAcTAsmmirdkL8RBgbJSj4yW4KV765XQYQ=;
-        b=D/fZ/yAy+g8sf8ZFYaFL4JcQw0WUuWWeEp8wbrRN5azhx6aweGAiOSR4bbbsobBIt/
-         uHXoV8RlaqCY1HgAwyH1b0V2tKgkNlXngvbG4h88YO+GfmD8svZl2PdowhbYMvInw+jA
-         olZMk/I4FR45OuPQKefgM4acR8v9P0lSK1dRlIYYW7+CalSahbLxuMT1nPbL1wRhcf3R
-         xqnw6eexdI7BSRUfdmGizrhA617IGiUZ5Mr5AfeDmpGENoKhsMu87I8hCR7v+6wCaoH4
-         sKofWtU6GSvPUsHDPq9MY5CvgKBnmx/KZXiaLQynDe/+msj3WF5xc+W8Xzdtj3U9NFZL
-         Zv8A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4bnug+O"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cea3004256so20741645ad.0
+        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785393661; x=1785998461; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gCSg4A13UG+ezvuOT5T/4OdsBnQnd/Owb7FoNwTVWMw=;
-        b=cI16V+Qtk9Jz3CoDjFi8rO8s++9BSPuVwhdYoyHR+WOt/YNnHxgVQX809NhV29o5et
-         Y3Xe5lBsqxggMy47HVq1k00fKH6uqxz8/4hc71RNusYqZcsUUBzITQwchBUGxMXeM9uj
-         5/EHMejBXxek2GY79ToNz0ua3THzsnvfGTod0iGuY7K6XySrK6MBsUTT7M1/CERf8CrN
-         F1UVMmq+cTW/PPytIHyAvPQXn6kw80c7XNMsitXDy15oi3OXS3tnmixczbz+Z/uL7Pz7
-         hXpEaRiX/OgPU8JkgsNJHN+6COIWKUJ2eT97oF+iSu/Fx5Cphc8gE3VS2SV/vylZsRNi
-         JP2A==
+        d=gmail.com; s=20251104; t=1785394298; x=1785999098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
+        b=C4bnug+OpoaYI6Db1xXte6jzqprbUS7hz8vW/xRkn3Jy6FNxdFaTaAJMOAjs7A6FPr
+         hXDiKpO6hBsaeo7ZaXNBSthYr0obejy1ovGNJ84l1KXijgJsFUmow+uOnztO5lZOVI5J
+         fIa9VDKyPvrTm6NIguioUD28h9ZHyFJHmApk9vLPVaWN1AKVU+KKTUEI7GWvHw45jpG1
+         bOiWIBtPCGg2llF08yV7mlKLgibAesLjlWfbwOXcL+mIphrZgyltaZmke8tdCrMt6t7o
+         lyPrt8AJLhcZgIuxpuAomwsExdp1lPvbVoyhaTC7a64wzrVFeeMG610sCaO0yqRWJ4yo
+         DxYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785393661; x=1785998461;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gCSg4A13UG+ezvuOT5T/4OdsBnQnd/Owb7FoNwTVWMw=;
-        b=aPQrcTKIree00VT9LTDeB+/lvG2NPm9SsVOVqj4pWovNn24173aIwZu/4Ba1teRXaP
-         6XViOskIWZRov6regaMdom9Zjdkm3TAzDa8bMHNO9UkquqOlG4NfRqQMrT5aFD/zTGZ8
-         V7wNLrl0WWXheZfKCcsXob5x9Nfr2mqc+/zpGMsnMZK2pQsyr+yUy6vaDx2HKpbiZvQY
-         dWpGjjrbkdAaJ2Y7hxQ0I5CXJ1sOJhrJYNo+5rZtZbXecdesKkVTE5fWVdGrUiGSbeKM
-         yxHiIH/CfPeMJtHvhtLSHrTBYO2jOoVCtPivI0J+/cUAPJ4KZKLHybCuHNdalnfNWDh+
-         9YcQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqc6D9z+oDKi8gqLsVk55FJUlgFTTmkRj/FeJIx3i+gYfQr5CJCxNYGAuyVD4OSY4i2c+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmJFWVZftacuqB5oudLtRJEuHEaa8xayuiSryT/EtkehsIYnA+
-	GkYo3faLbw7CBrv7WaamgDGblCtaQZ0YQZoHO0mR58lEiylCmSgBq9BHQEdMjJqPCCTKoNPYMvk
-	IoQOyoAY0IFXTu3SGxkU+PnUpdsjFc1JLSSRJr1VYaQ==
-X-Gm-Gg: AR+sD10MT+CQH4nqV49XHD7jrb0jO4OFtgjFo8tykhXKe67NWOuXbkFqr5/F5vTehXe
-	EAPF3kMbczXub/GxCGLs/l6xJGAIVlzAWgl9YjlLkkC09vEnCgDpAS4BSkaPIi+MneKr+zpzzQO
-	vJITHzIL71wHixuH3fdqUZfrBiPhKHuw5adt7NHCX69S9mtKcWJ5SFyxJFmeVZQMlV2EFO8Y8ig
-	pM+yVvU56hsTOCXqf4NA0Q51l01z2bEtxoxnHtHCW50zWvrByF+lrUHPlZafstzozKlgoiO3let
-	ppvKTTwU2OLZkZcAwCbsa/c6XEBueZ9aoNw5Sk01qQTD8wSiEk6iWsZtRA515PTfI2rQGbBoi+o
-	MoFBqWKXC5gqgm5OAjLuYhLhq3hHdWB7/YXx0FOgOr/E6DPrEfCOpvyqJmV76AIU=
-X-Received: by 2002:a5d:64e4:0:b0:47f:81fe:12fb with SMTP id
- ffacd0b85a97d-47fc82029fbmr1441430f8f.47.1785393660872; Wed, 29 Jul 2026
- 23:41:00 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785394298; x=1785999098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
+        b=msTehUZe9R1+w2+jld7sJHLQsHxidspJUNErRszZUDeg/sLGu/v266m7gVFUO0vWEI
+         UNecqe7xNIIRjJVnREKIW86jV0k5w+iiTrMW72dN0XmXbGO3BEBr+XCTUX4fHK1sZFSg
+         gaTA5ssJHltqx+XlhRiChnfl+ebtDDoR3N60XMUhRATPP2nVQlAPSgI8e1PqH8VY54uN
+         MDDd03S7ZBYD3de2lM2ascbgsiQqNyw12rgQvBVc0qeBq2Al/h00Uw3ZH0yCAq55FMC0
+         zeA0Sb9A+tLcQH+dr1fWJyx9XfB10zR0B/RM/RpQpDTkMr7tSUoMCUgOnSDq1rp+U5HA
+         8wRA==
+X-Forwarded-Encrypted: i=1; AHgh+RrOMlRli7GhuaVMgdX2UIExkVp718k/Km5tPS7eFRJVmAXL/PX0QcHqs8NJakMQTiBX370=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCH6/Jl6SCWELEMRyn6y7XAe0zLauOaoH0yzlf2kLHXy00Z4g8
+	wYK9yfhAahNzc9qEXRs4JdiFat/fsJwx8KWvhTGEnz+uc1ODY6CeBQod
+X-Gm-Gg: AR+sD10CuQXJj3tHZQvlORRIcijL7f2uA51RAiQWdhwjoZeEEeWyEDf76DMhgGi0/zz
+	Qx/sNQE8Q0/5pgksnAbkzZ0WpM4BELLfTOolSF8qFV5Xry73LLgcjozWuemcLm2H38DKOwrVh97
+	pkZ4SBdfA1d6tHynczoOX4vyLz5gl2oy7Qplw/YpVBzEh3hO4Ntl/2AksBLWLuYY9k7bUxuoddz
+	0u9pni0716PxDCi2o4wgxSACRjHHdgVVyW9BPQBL+dssZijwevyNEfKD4XVz+bUMWcJZ6Jqd+4n
+	2xDDDABOVdyberpQ7C/kY/0/uqesmDDePIIf3Uvghu1zoIuJU62HxYHXXadVMReAI2Sq9n/PN8M
+	yHsKWRBRdjmqnIZT/SgtXbwNrCk9RA4/Q8Tqxbdeauxdb4Vha1kwNmI+4tln6EJROqeR6GM6Tvc
+	ODqM9j+qbic16VzHNDijepI5OhC4oEj82opx1ZO8FTQIXu7DA1x0ug9PwmPnWX+MHhC5dpotXHl
+	ixgnlwKpmV9oF4kAg==
+X-Received: by 2002:a17:903:1585:b0:2c9:97a7:71ab with SMTP id d9443c01a7336-2d035d0097cmr15283805ad.38.1785394297603;
+        Wed, 29 Jul 2026 23:51:37 -0700 (PDT)
+Received: from cyh-System-Product-Name.. ([129.227.183.200])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bca9d7sm21707555ad.52.2026.07.29.23.51.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jul 2026 23:51:37 -0700 (PDT)
+From: "Yuhang.Chen" <yhchen312@gmail.com>
+To: Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>
+Cc: Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Quan Zhou <zhouquan@iscas.ac.cn>
+Subject: Re: [PATCH] RISC-V: KVM: Add arch-specific tracepoints
+Date: Thu, 30 Jul 2026 14:50:48 +0800
+Message-Id: <20260730065048.3715824-1-yhchen312@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CAAhSdy2Qa2DGFzb27MgmoH5Pf1BOrgwaZBqP__U9eejs5-5Bsw@mail.gmail.com>
+References: <20260626103619.174179-1-yhchen312@gmail.com> <CAAhSdy2Qa2DGFzb27MgmoH5Pf1BOrgwaZBqP__U9eejs5-5Bsw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729232527.139183-1-inochiama@gmail.com>
-In-Reply-To: <20260729232527.139183-1-inochiama@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 30 Jul 2026 12:10:49 +0530
-X-Gm-Features: AUfX_mx-1OMiSrp_cztB7RBUzQgECxkWV-SuPzBeqXIqONCE7eUdTY36tN80PSc
-Message-ID: <CAAhSdy3W5LQ_iKLgb6qLNSswgh1OOjgjyAizHZ751=yq7UQTkQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] RISC-V: KVM: Cleanup SBI extension status when disable
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 30, 2026 at 4:55=E2=80=AFAM Inochi Amaoto <inochiama@gmail.com>=
- wrote:
->
-> KVM SBI FWFT extension has multiple internal state can be programmed
-> by the userspace. However, when the FWFT feature or the FWFT extension
-> is disabled, the internal state will be kept as it is, which may cause
-> some side effect for the vCPU, cleanup these state when a SBI extension
-> or FWFT feature is disabled.
->
-> Change from v2:
-> - https://lore.kernel.org/kvm/20260706021154.210289-1-inochiama@gmail.com
-> patch 1, 2:
-> 1. Apply Anup's tag.
-> patch 3:
-> 1. Remove the csr_dirty set.
-> patch 4:
-> 1. Add a new patch that sets the csr_dirty for FWFT extension.
->
-> Change from v1:
-> - https://lore.kernel.org/kvm/20260701094731.1022163-1-inochiama@gmail.co=
-m
-> patch 2:
-> 1. Check support callback existed before using it.
->
-> Inochi Amaoto (4):
->   RISC-V: KVM: Add SBI extension validate callback
->   RISC-V: KVM: Add SBI FWFT validation support
->   RISC-V: KVM: Reset the SBI extension when disable it
->   RISC-V: KVM: Mark the reset callback of FWFT extension always dirties
->     CSR
->
->  arch/riscv/include/asm/kvm_vcpu_sbi.h |  4 ++++
->  arch/riscv/kvm/vcpu_config.c          |  2 ++
->  arch/riscv/kvm/vcpu_sbi.c             | 30 +++++++++++++++++++++++++++
->  arch/riscv/kvm/vcpu_sbi_fwft.c        | 27 ++++++++++++++++++++++++
->  4 files changed, 63 insertions(+)
->
-> --
-> 2.55.0
->
+Hi Anup,
 
-Queued this series for Linux-7.3
+Thanks for the review.
+
+I've addressed your comments in v2.
+
+On Tue, Jul 28, 2026 at 09:05:39PM +0530, Anup Patel wrote:
+> Drop kvm_guest_fault, kvm_sbi_ecall, kvm_wait_riscv, and
+> kvm_csr_access tracepoints. Instead add common
+> kvm_vcpu_exit tracepoint for all vcpu exits just before the
+> switch case in kvm_riscv_vcpu_exit() function.
+
+Done. kvm_vcpu_exit now reports the full trap context
+(sepc/scause/stval/htval/htinst) and is placed just before the switch
+case, after the CAUSE_IRQ_FLAG early-return, so it fires only for
+synchronous traps.
+
+> Drop the kvm_irq_line and kvm_timer_update_irq tracepoints.
+> Instead add common kvm_vcpu_irq tracepoint called from
+> kvm_riscv_vcpu_set/unset_interrupt() function.
+
+Done. kvm_vcpu_irq is called from kvm_riscv_vcpu_set_interrupt() and
+kvm_riscv_vcpu_unset_interrupt(), covering all callers.
+
+> The kvm_mmio_emulate tracepoint is fine.
+
+Kept kvm_mmio_emulate unchanged.
+
+v2 follows in this thread, with example trace output captured from QEMU
+included in the commit message.
 
 Thanks,
-Anup
+Yuhang
