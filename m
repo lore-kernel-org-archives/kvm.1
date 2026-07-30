@@ -1,148 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A5C37B012;
-	Thu, 30 Jul 2026 15:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A334534A9;
+	Thu, 30 Jul 2026 16:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785426421; cv=none; b=HU4Qy44aaqNxh4yjbrHDM2Fhm5cbvvjqXxvyS0Wo2BjwvyTtJjlYLkT2J3UhJslidxah6eiTvaUZTnCeWKqJRoDewe68edfzAs5zYGo9i2LUrPEGaZIEUI2B4HkTNlc8tdSmkOgy+Yyn2vlLqJW70OLxtdF4hFih5cWwXMbNwNI=
+	t=1785427273; cv=none; b=jsyxhUds91DFZnAQpSooswzaOTILh5HMjuIkw1LOdaebsAod37gs9zjxPEJTbIy8p1XZDbqizsvOv5xhDArYO0pSnOBVh68MFbxRlbpndGjpRDRQC1sMYKM9Ag90FJlR4PrgKxXaevEitmR3bKIi3M3GgqBUH0BeBR6h3SpjlJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785426421; c=relaxed/simple;
-	bh=+WM9Fv05eGPSbpnl8U8M0nlsC0Ei27t3cMrWugEs8lw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=smjcBiFz09OQpTyGHDJ3tJp3C8+GHrknidGtsNG7E40FRGJXrhqSMlFHjFwaku//madFFuPrWrkJ5ZtQsZrgdjalqgUKRTtq7m5nplLEBMnetqT4xupBIO5CRvel0EAjCeZP0WRNUyQdsc65T7yOpkB2wH7w25C0QWEu1x0FnUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1KWAsew; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785427273; c=relaxed/simple;
+	bh=/2Vl+Sgp38kta3rBF4lWXFSlPYjg0XJ6Fq04dcb5cpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=boWOar6TAItja4lOeljook45+rUoeMrn16YntYHlUv3160SmXov3e8UczcfXR8Ds9g7pdI67pZiinoHTx0CDyztYNKdpnTF58RkvN45r6+5JhX1FQ3vM8ArubrgF4abaB5M4QgkcI4jrx6XriBMua1ayKW3KO0aEIVNz3uXQdVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V0gnQnPy; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1KWAsew"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3241F00A3A;
-	Thu, 30 Jul 2026 15:46:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785426419;
-	bh=gs3C1zCDvA2wp9wg7YnZk+CxKVlnTztzohVmGraT5p4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=T1KWAsewlkov6VqHTBzIxdo9rW5ZcB4KY/yRUYLKzNJ0jv6SCobxqGKwdE4750L6X
-	 AaMdYbQjfFwMQA8rs/EaDqhcKqFplE5U8W06nO0UPAlfaD9BeYbqAPhj2y4yu01avs
-	 MPIAiMs1ijfXFtyR0yDmVtSOK/aVS4uttia28NEFVALAAr8B/iKN5PjJ3n6SZORqxo
-	 zjwcZr6CWRMSET1JbzfKy2t/u3WYxRhQwYQfn5uHgcQYC/JMS5Nh2+MqUJstyHi6vz
-	 vpEt4sLcqASjh8MWMjJTpWvkItKO0L6biUfrWE1vZRWbF4eOQVD/g7ka0NSMDZZj9V
-	 V03fMTFCm0akg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3] s390/vfio-ap: fix stale pqap_hook pointer on error
- in vfio_ap_mdev_set_kvm()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anthony Krowiak" <akrowiak@linux.ibm.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260730152628.3158573-1-akrowiak@linux.ibm.com>
-References: <20260730152628.3158573-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 15:46:59 +0000
-Message-Id: <20260730154659.AE3241F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V0gnQnPy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785427270; x=1816963270;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/2Vl+Sgp38kta3rBF4lWXFSlPYjg0XJ6Fq04dcb5cpk=;
+  b=V0gnQnPyZtCVQkIwU7dTs+J41Lr2bYLtSh9Lmg0MFiDkRVQutfr9uAeo
+   US9wMz7mR+Ru/iy7bj7I/Mb3KlOhW4WaueCPCzcEpNW46fupvVdLbv+E1
+   rc2wMTvGLr6Uqgky0rwicBiMlsACwmA5Paa89b88+kuhgGrENh+/Vmdg3
+   nVBuqxO9q9knBirj89mPsXXFE1McEGdN6UCNgDP6EI8w7MbXcf12oh2CF
+   jSWmftWhdhJxKZDCZTu/psnXIdY4w2Q85E9Gn/PYnp6r6fNMdHhdyJbJn
+   /GVnRkSMsxSj1gYEJ8n47YLmzo2AXO38vV1yUIMtZfXKDPrjBTkH877ug
+   g==;
+X-CSE-ConnectionGUID: cxOALVA7TeuMMAm5Do/RsA==
+X-CSE-MsgGUID: +oEUTyJYT22RgMjei915QA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="73586580"
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
+   d="scan'208";a="73586580"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 09:01:09 -0700
+X-CSE-ConnectionGUID: beyw7IASSRm87YNZuLfT6A==
+X-CSE-MsgGUID: 7mrB/l1zTROozyVWvEDxIA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; 
+   d="scan'208";a="256994286"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa007.fm.intel.com with ESMTP; 30 Jul 2026 09:01:05 -0700
+Date: Fri, 31 Jul 2026 00:01:04 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "Gao, Chao" <chao.gao@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v2 06/17] x86/virt/tdx: Re-initialize the extensions on
+ runtime TDX module update
+Message-ID: <amt1QNCBQas95XYB@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-7-yilun.xu@linux.intel.com>
+ <akIo+E5hfQL7C30E@intel.com>
+ <603e7857a2036b0fef86dcf8ad0ab97e0232188c.camel@intel.com>
+ <amsxCvZUpNwxeDK4@yilunxu-OptiPlex-7050>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <amsxCvZUpNwxeDK4@yilunxu-OptiPlex-7050>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Thu, Jul 30, 2026 at 07:10:02PM +0800, Xu Yilun wrote:
+> On Mon, Jul 27, 2026 at 06:37:39PM +0000, Edgecombe, Rick P wrote:
+> > On Mon, 2026-06-29 at 16:12 +0800, Chao Gao wrote:
+> > > Will tdx_ext_init() return an error if more memory is needed?
+> > > 
+> > > If yes, we can leave this check to the module. And with ext_required
+> > > removed (per my earlier comment), this function simplifies to:
+> > > 
+> > > int update_tdx_module_extensions(void)
+> > > {
+> > > 	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+> > > 		return 0;
+> > > 
+> > > 	return tdx_ext_init();
+> > > }
+> > 
+> > Oh, it can be simplified and not share so much with the init side. Please ignore
+> > my other question.
+> 
+> It can't be simplified like that. If extensions are supported but no
+> extension feature is configured at boot up time. tdx_ext_init() would
+> fail and the runtime update failed.
+> 
+> I've found issue in my implementation. If extensions are required at
+> boot up time but somehow not required after update, the code just skip
+> tdx_ext_init() and the update succeed, but after that the extension
+> features will break.
+> 
+> IOW, we should not update the metadata, we should follow the boot up
+> time metadata to ensure no feature changes.
 
-New issues:
-- [High] Lock inversion between KVM's SRCU (`kvm->srcu`), `pqap_hook_rwsem`=
-, and `kvm->lock` leads to circular deadlocks.
+Sorry, I changed my mind. I remember TDX module architector said "the
+host should not assume any feature/SEAMCALL must be associated with any
+extension, it is hidden from the host. Today a SEAMCALL is backed by an
+extension, tomorrow it may not".
 
-Pre-existing issues:
-- [Critical] Calling `kvm_put_kvm(kvm)` before releasing `kvm->lock` and `p=
-qap_hook_rwsem` leads to a potential Use-After-Free of the locks embedded i=
-n the `kvm` structure.
---
+So in this case, ext_required may flip across updates and we should
+honor the runtime metadata.
 
---- Patch [1]: [PATCH v3] s390/vfio-ap: fix stale pqap_hook pointer on erro=
-r in vfio_ap_mdev_set_kvm() ---
-commit 5f259db058dc54a89b0a65f6eb549bf2d44cc6f7
-Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+I made another effort to combine common routines for ext init and
+update, but don't like how it turns out. If no one wants it that much,
+I'd rather stay unchanged:
 
-s390/vfio-ap: fix stale pqap_hook pointer on error in vfio_ap_mdev_set_kvm()
+----8<----
 
-In vfio_ap_mdev_set_kvm(), kvm->arch.crypto.pqap_hook is set to
-&matrix_mdev->pqap_hook before the update locks are acquired and the
-mdev list is checked for a conflicting assignment.
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index cec266f76dc0..448d0ab76d05 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1302,15 +1302,22 @@ static int tdx_ext_init(void)
+        return 0;
+ }
 
-Cc: stable@vger.kernel.org
++static int get_tdx_sys_info_extensions(struct tdx_sys_info_ext *sysinfo_ext)
++{
++       if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT)) {
++               memset(sysinfo_ext, 0, sizeof(*sysinfo_ext));
++               return 0;
++       }
++
++       return get_tdx_sys_info_ext(sysinfo_ext);
++}
++
+ static __init int init_tdx_module_extensions(void)
+ {
+        struct tdx_sys_info_ext sysinfo_ext;
+        int ret;
 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio=
-_ap_ops.c
-> index 44b3a1dcc1b36..f9460310d47b1 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -1821,27 +1821,20 @@ static const struct attribute_group *vfio_ap_mdev=
-_attr_groups[] =3D {
->  static int vfio_ap_mdev_set_kvm(struct ap_matrix_mdev *matrix_mdev,
->  				struct kvm *kvm)
->  {
-> -	struct ap_matrix_mdev *m;
-> -
->  	if (kvm->arch.crypto.crycbd) {
->  		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
-> +		if (kvm->arch.crypto.pqap_hook) {
-> +			up_write(&kvm->arch.crypto.pqap_hook_rwsem);
-> +			return -EPERM;
-> +		}
->  		kvm->arch.crypto.pqap_hook =3D &matrix_mdev->pqap_hook;
-> -		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
-> =20
->  		get_update_locks_for_kvm(kvm);
+-       if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+-               return 0;
+-
+-       ret = get_tdx_sys_info_ext(&sysinfo_ext);
++       ret = get_tdx_sys_info_extensions(&sysinfo_ext);
+        if (ret)
+                return ret;
 
-[Severity: High]
-Does acquiring the locks in this order create a circular deadlock with KVM's
-SRCU and kvm->lock?
+@@ -1339,10 +1346,7 @@ static int update_tdx_module_extensions(void)
+        struct tdx_sys_info_ext sysinfo_ext;
+        int ret;
 
-If a guest executes a PQAP instruction, the KVM intercept handler runs with
-srcu_read_lock(&kvm->srcu) held and acquires pqap_hook_rwsem in read mode.
+-       if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+-               return 0;
+-
+-       ret = get_tdx_sys_info_ext(&sysinfo_ext);
++       ret = get_tdx_sys_info_extensions(&sysinfo_ext);
+        if (ret)
+                return ret;
 
-By holding pqap_hook_rwsem in write mode here across
-get_update_locks_for_kvm(), which acquires kvm->lock, this introduces a lock
-dependency: pqap_hook_rwsem -> kvm->lock.
-
-If a concurrent KVM core operation acquires kvm->lock and then calls
-synchronize_srcu(&kvm->srcu), this creates a 3-way circular deadlock:
-kvm->srcu -> pqap_hook_rwsem -> kvm->lock -> kvm->srcu.
-
-[ ... ]
-
-> @@ -1885,7 +1878,6 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix=
-_mdev *matrix_mdev)
->  	if (kvm && kvm->arch.crypto.crycbd) {
->  		down_write(&kvm->arch.crypto.pqap_hook_rwsem);
->  		kvm->arch.crypto.pqap_hook =3D NULL;
-> -		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
-> =20
->  		get_update_locks_for_kvm(kvm);
-> =20
-> @@ -1895,6 +1887,7 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix=
-_mdev *matrix_mdev)
->  		matrix_mdev->kvm =3D NULL;
-> =20
->  		release_update_locks_for_kvm(kvm);
-> +		up_write(&kvm->arch.crypto.pqap_hook_rwsem);
-
-[Severity: Critical]
-This is a pre-existing issue, but does dropping the KVM reference before
-releasing the locks lead to a use-after-free of the kvm structure?
-
-If userspace closes the KVM file descriptor before closing the mdev file
-descriptor, the initial KVM reference is dropped. When kvm_put_kvm(kvm)
-is called just before this block in vfio_ap_mdev_unset_kvm(), it drops
-the final reference and synchronously frees the kvm structure.
-
-The subsequent calls to release_update_locks_for_kvm() and
-up_write(&kvm->arch.crypto.pqap_hook_rwsem) will then attempt to unlock
-mutexes within the freed kvm struct, which can corrupt memory.
-
->  	}
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730152628.3158=
-573-1-akrowiak@linux.ibm.com?part=3D1
