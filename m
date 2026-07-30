@@ -1,121 +1,159 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E023C1D7C
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 17:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BF8445AE5
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 17:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785433018; cv=pass; b=CTIbXyZ80zIijtCrfoYr+7ta2IPPiEtvPX9o5XWJDbcbcmXWIJFqGg5XQx9Vr66twARIzY0ZNDmmlqphSsQ14yp/haCAXGdW8ZfRx480gLEN3hm6zpc2iCpfcdhpp+LdaA920nNqsIssDknF2glb+Kfa5i3ZAKV86g532xGaNqg=
+	t=1785433430; cv=pass; b=BpHdQg+jegMlC+KAkGTSkXyIsF9ZCp7PfbnF4wwbvVPqlXup2b8fJsMgOsLmbDqhoNSLoo+kz2ESAThqriq0pwuMbjq1TywW4tupISzNAEHbd2ra/G4Y0TbVSwfylaL7i1ob4RyLqM+LPQbcRR0HMajc+ThZmeyFE5K6iJzu05A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785433018; c=relaxed/simple;
-	bh=bEZVfjW3X/ZJJhJsMcL2gQZGx4De7c1nlF8QDVmWlMY=;
+	s=arc-20240116; t=1785433430; c=relaxed/simple;
+	bh=OlBwlhKOiCMRiIdYne4F/M0ahn6Xw3rouRdmpnSET1s=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ph4jhesV4vw7SoHWQt04Jo6VoAzThS/2qcBbPGp46W9j2Qg2G10lVm0U9AEx4T9im3X8BuDF++8X2l5Vp4hV3xGJDGwMzctIVYk5or+HN/ZRFM7GcUPCc3p4pWw/lw76nhZf+dS/kl27LYH7eGkurGhxGNX3RA/qJKvBSltkGnM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cagJfX0F; arc=pass smtp.client-ip=209.85.214.176
+	 To:Cc:Content-Type; b=XWskRcU/P6KR0Zp7YDA64HQz59ALuG+WlJjejIUWMpfie6WK1S/0ho6P2bQ/p5YXFdqbQVappOcYq5OH5NO0kWA/d+2CeNDRtzvlWaH60BFWy9Aue/CQ6GviyoD1SFaMOBD+Wujk7gkkVhLTzsK8Qrw7lFcnPY7XkfCOHmK5LVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hoyCLUYD; arc=pass smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cagJfX0F"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2caed617615so557865ad.3
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 10:36:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785433016; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hoyCLUYD"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso144388a91.3
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 10:43:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785433427; cv=none;
         d=google.com; s=arc-20260327;
-        b=U+PD4nAakI09gEXl+ZhCoE5rl6LEgvypgX//zd5ADANgxKNpXbCYpSp5j81c8dH88C
-         YaOOsueTz4pLzkxPZk4Gb34r627L+r6HWVsaCXwk/aT4c5ZIW0WQdC/4URhtdt44RhNP
-         NmLpFtnZGNgKLJl0uKNkUfyvrvDEv3T2fbf3+XqPr1GsW8E/PBVVCCLssRjDXy8R3Q8Y
-         s/hP3KoJ3l1z5wG3WnBqh3LWWBiMBAerNhEdgywzGFS5y4xH6bzz4CQJau2FnFMuboG3
-         NdspRZVEoZ6hav3hRuDO7AOh6JCA9A7+kG/NXjpY6FUxE8K0bp7lC6JYlcC6TLXjwfzV
-         RW9w==
+        b=g/QeWh6FJ9EDyp2Tfyat16OSK1X/GgmAqZfelnrZ8Zu35wvH9sq5GXFa1gY6M9ETQz
+         NFQLxsEO999OgZIp20j9B2Dn6aVncHMF5j0als3KyGTcWycQ/KQIQm5O3Z/BChbUr/ue
+         nXJb+eaeKcy/VULbUsBUHrHFsGh320minpmvHK1/PBIy1Y3du+Kd6p2nK4SkWFTB2LSW
+         zJRgLUwGevl11xn5Q1DGw8ImOFqgm77OcyL0RCIXY7Z4NbxO4CX7I5dEiBZBnaOsndKy
+         5d/9g5lOWF835OGOofN9a66W9YWbUtEJAZqSb2BaY/ubUlQ7xgXOs20r+PSwDsll5fFE
+         CMGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=cF6Glwk5JHPcXFLYP8vDOSrow7Ekc+sBztL/w45l/K8=;
-        fh=SNBs1VRVUfvNvGCVV8/Ls8TOAxATegWGkniUl5WCma4=;
-        b=gNu5HFEKgsb5Nrm3gEDdX5lKf77orKtM3KXR7UqpvMDNesy/GnFGxvvp6X9yGJHFNz
-         U+aMovwBSuNRnhfdihJPGRulIikXcv0cuwv9tPFyQutElhKLikT6Jk/rScOgGAptqeOm
-         iLqjBb6gWda4xVI4PogOZvs+2uwgoAava0+07moWsnFed8RTJqlBwH6YgcwWhinbD5nK
-         8B3oSQO4nq89emhIMJRFLbUS0vFvpZqoBpEHF1aHlLBPcfSp3JlrGMwlFt6dCwF/cAZP
-         z5WZN/RtatPl5cF/XUPiTIpc+FdLSskcv3Qr4CLCuUBB9mtnMP3FLZjGoiO+0MHVu64p
-         asDg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:dkim-signature;
+        bh=63PGhmBtUzf4vUZbWnyFr9JI9DJZU2NrWkZa1qKZ4cY=;
+        fh=UovrO0TvLiqRHU1kp7Fq/+U56YUYq5jh58TPdqHXeG0=;
+        b=QRFCGrpOGc2q805KWYsR7gmeNkXY56qs8RngNIZ99QreNXmSVabw97Ju4VwOqOvEAt
+         d5RD4DJjbesn+IF0HkvpvuvcBXhu3knwJMwOwHlTnCJmGx8UjAsaqqnbG0kOLhwXM3oa
+         Frr9yOkCvRVBdSr70ozF2O898jC2HO/IYDsxYWi1oBRqPSMw7gRMgN2IcVJQTAZbkG2v
+         la6fGy0aQsZ2n3dwBhy5SM2WpT55x4l6xgbtZXWupBwCnjazuFbTBXdNFT/3xdrFvueB
+         hpUeBOOpVlPwXrAlUr2EE/L7Boapn7ezcigg4BIkR0C21JlJBzWnS5OSyxkxEJfAcANc
+         8l2g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785433016; x=1786037816; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cF6Glwk5JHPcXFLYP8vDOSrow7Ekc+sBztL/w45l/K8=;
-        b=cagJfX0FCSgk1ujuaijcW4jPR/t8fGWlyob+Gx8vyrAs18Wjrm/zgCJCz4fd5qUFYl
-         d95wNBU20RdJe9VwhCkD9FRzlgChn8vRXrJJlxoBkTzaO+61XDz8ticDicbtZdyTP8vS
-         EwzWdbDOk1akmjDje7XW3iX4NKCec3drxMv+LKHJFLBxTcVnFBBb2LzRLQ4qcpQ5/64r
-         jgsxwUTpw7zQcs85u+bsR0TG2udwHua8VZealKkm1IA8BItSYdFmLMfrOITwvFQ8BY8k
-         ykTxQyKuk35OUGY1nsMRUP1sNOTx8QEap+3AqMtr2wAyQV1h1PtXzWFqCDnJF8/RJJYs
-         OJmA==
+        d=google.com; s=20251104; t=1785433427; x=1786038227; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=63PGhmBtUzf4vUZbWnyFr9JI9DJZU2NrWkZa1qKZ4cY=;
+        b=hoyCLUYD4G+jJRJ3ycSoXL6iJZGLfMkcqILSFDkWqU3Uk5eRCNjqGv+wxRy3rmMBjE
+         11ByW3b/ItB1Wt2jMVErlLmgNZ3FKlqxk/v+6H0cI4YWAJvFSbT//2R6v06ZO9ohLj3P
+         8h3mkTobAfXV5X5ug5DyFpxaHpYuLDUlutdocLSgYttwMPjQlfKr1MSt2E2p6Tyrh/DC
+         ZpZUJwzsYJ6YJCZUy8c487DdWp7YXWc3TOYotB3di1bsm++FDW9Z+I7Gw5viiSaksePC
+         KSvKlJRj6D+EtnNrijzG7iux+CTzpRPjc8lqN9CmVXNi5dJsPywJEB2uPvDrn8DyvEKT
+         lfOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785433016; x=1786037816;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cF6Glwk5JHPcXFLYP8vDOSrow7Ekc+sBztL/w45l/K8=;
-        b=juVT8bm22/oXAYfqhmq+7pkWsWu8uWJpcdDFpjr2q/vXPjqE2H98zqrsY82WkkPExm
-         8b2ESX5yyWYM0s5irSNDLBDUa8LoN2dWAgL6ZQcXNR1sTHDdM/iLbJvUuVnskxIg9dr4
-         1+SFaTL1ut+wnyz3asAWudPZFp/fCKendf4ynQEHq+obdqWnSjswHAqEdA3CTFjcrUEH
-         nFBKIb8OjQL1LUxU/27GDAf0VW36/FsWsaYCicw9MUC8X3zhtembCLJDHKlsr2PqfNji
-         zC69zVig89JSi5esUZ4g4rBlf4C2MLuvIdEDGHqizU+qcrZ5pm+DGVVyADtymsGb0r8x
-         fjHA==
-X-Forwarded-Encrypted: i=1; AHgh+RpSf0yh4hhCBap7qwdGvXIQuZbRVJ3pJ6TOFlyL9fHd7mSlw2cA/SfmaSl1l/c9MyuT+8k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypjZURlebChFG0k912CU5JUxwP0vPx1jnCZVbvblhQmHcrndnN
-	HwtL2QQN2m2aa5bOmH6SCSTR4MY9tN8sVYMl3jpbAMQo/GeX6yCHEd5yQSZMJ8IJ9GONk7yZi/L
-	INSEAy5UfoWb6jDUB7lLatgc/8xhz9TRaycNacD3L
-X-Gm-Gg: AR+sD13P1QRSwQZNnBF6C/TcO8GgH3TPXo2taync8XnVF+mBhfGZ/AUypcsuYf7Jeyo
-	fLTUe3vis8eafTVGCo6VBx+6n6p49VRRMG8eNIT1FLJQJESxbjQvlw7u8ZysXh3s2IfrNxquwmO
-	CcantpgYW/bOik7bI7GV8hRvS4d1nPP6Hpt5t5djC3cK1OvJV2YcsnJoPaYuY3OklZUDPnnyZi7
-	dJ0Lfs30/UuxtAcBJov6Ua9E5tmBL5LghtdC9ZTQhTFrcind/Rk1d8V87QYbDOEoCkKbi82ioaq
-	ClqhhvD+Vaf+O9v2KQPnxgf/JLcEN3n/paBXSVN35V/DzX2q0s4oLPQURhA/100w5mbnr0Fx9SI
-	s1YR2YhA8sxAv7RRB6PACa5LJtYNI0BhdMw==
-X-Received: by 2002:a05:6a20:d805:b0:3c3:8651:b302 with SMTP id
- adf61e73a8af0-3c90072a2acmr3423693637.28.1785433015659; Thu, 30 Jul 2026
- 10:36:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785433427; x=1786038227;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=63PGhmBtUzf4vUZbWnyFr9JI9DJZU2NrWkZa1qKZ4cY=;
+        b=sU3ASka/yBC3TcQIIjWyZ5P43y98x9re4cmkIUxA1dxtBQfomts7Q7Ml32EL7EsBd3
+         XVoJqEg9yIft4EpvCoxMEc+rVV3TNXFM8MRPxQXFiKMFo6egnpU7VyQztvUtKYXV/WxO
+         UG4vzF+H18wmvL0ff1Y8aGkP6V48+urfelj4p4NLSgJIwKJT96kjKKll5HXpbxpb4bLc
+         IA5JFJ36wamM222XL94QL7CMau3Rm+OSKbkMvL6vi7Gl+/Gm4YVjeIavOcJPqGQEGcft
+         bWD9COzgOSlpec91ijoy+vGG61a1VPfgF/StklGuNJ43gI4+AbloZa2RBYcxyRbKoV0Q
+         6PdA==
+X-Gm-Message-State: AOJu0Yx7iG6xWGNaywQAY34a1NK2oqQ5hx81DuF5j5kAR+Pe2DcRPnSh
+	nSqPpCCv+fDjtabvhnSLbnsGtLr3fBNEnKui4nS5vbBaVIBloFHdouIUBqmw4/i0e0zhmYu+CfT
+	+RgQHcMMYvcuUfuvbZfkE1aC+EQi7QVPGaiGd6pGV
+X-Gm-Gg: AR+sD11kLdztIYr8r6thKBXvKzTWEYwe2t3c8dqPDxo/qLyoo7wWHNjKBUjOH6iF2bW
+	H5K9uPgBp9Wu1ENQyhibvihQcbBZNT04636IFn0C5g3S5X7OK1733iA3fiidTMBIQHRGJmbUUui
+	7OHYlusbkRpCBt6b4pIwcv4EX5oJC7WvhTUlL33tde6aj8qqSC2XWhpuD32U3Qvd7Pmcm/+vcaA
+	fxqaCKvIMczkKw2tow+bvHUWiCJg3okrVhgPK2Gu/aC+tYKc4y8pZkHBjNkFPbCNhek86+Kij6v
+	HWxrYc+0LDsMgbtRa33xKwNvvxEuTHMllEHaFLM0wnLr3x0AMNewd2LA92fc3x8lE+1DAFzvo2z
+	nE2Q7ruCgO64dNUW33EFqm+N03GUKTIDntqPXEwJgMfpmJg==
+X-Received: by 2002:a17:90b:1dc7:b0:38f:240d:b857 with SMTP id
+ 98e67ed59e1d1-38f9bda5d44mr2890773a91.2.1785433426437; Thu, 30 Jul 2026
+ 10:43:46 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 10:36:54 -0700
+ HTTPREST; Thu, 30 Jul 2026 10:43:45 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 10:36:54 -0700
+ HTTPREST; Thu, 30 Jul 2026 10:43:45 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728121138.1103610-3-tarunsahu@google.com>
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-3-tarunsahu@google.com>
+In-Reply-To: <20260728122655.17C791F00A3A@smtp.kernel.org>
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-4-tarunsahu@google.com> <20260728122655.17C791F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 10:36:54 -0700
-X-Gm-Features: AUfX_mwFoYwitx3VhlqJDH1-k0l0ItJ6i-x625ej1dYBsVgzkh7R-MZiFMgMH5w
-Message-ID: <CAEvNRgGazT2D-G7sEem4RD5nUEj7dmcg8vx2=3bpatS_o5uE+g@mail.gmail.com>
-Subject: Re: [PATCH v4 02/11] KVM: Introduce kvm_create_vm_file() helper
-To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
+Date: Thu, 30 Jul 2026 10:43:45 -0700
+X-Gm-Features: AUfX_myKuoszqFvWeEwTloNt1W9Hm9CCDiUlXfsqzDGDzLiGRc2fM4YKO_l1eUo
+Message-ID: <CAEvNRgGDhcu2LUqhwVtGJSUo4uXQHrGOYRDaM2qzPTO4LX=jKQ@mail.gmail.com>
+Subject: Re: [PATCH v4 03/11] KVM: Export kvm_uevent_notify_vm_create()
+To: sashiko-reviews@lists.linux.dev, Tarun Sahu <tarunsahu@google.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tarun Sahu <tarunsahu@google.com> writes:
+sashiko-bot@kernel.org writes:
 
-> - Move ITOA_MAX_LEN to kvm_mm.h for reuse by upcoming kvm_luo code.
-> - Introduce kvm_create_vm_file() to wrap kvm_create_vm() and
->   anon_inode_getfile(), providing a unified VM file creation API.
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [Low] The patch claims to export `kvm_uevent_notify_vm_create()` but fa=
+ils to include the `EXPORT_SYMBOL_GPL()` or `EXPORT_SYMBOL_FOR_KVM_INTERNAL=
+()` macro.
+> --
+>
+> --- Patch [3]: [PATCH v4 03/11] KVM: Export kvm_uevent_notify_vm_create()=
+ ---
+> commit 5e642ea16f0d267e622a352de60bfe397ecf79df
+> Author: Tarun Sahu <tarunsahu@google.com>
+>
+> KVM: Export kvm_uevent_notify_vm_create()
+>
+> This commit exposes the kvm_uevent_notify_vm_create function to allow
+> triggering KVM event notifications during VM creation.
+>
+> [ ... ]
+>
+>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+>> --- a/virt/kvm/kvm_main.c
+>> +++ b/virt/kvm/kvm_main.c
+>> @@ -6348,6 +6348,11 @@ static void kvm_uevent_notify_change(unsigned int=
+ type, struct kvm *kvm)
+>>  	kfree(env);
+>>  }
+>>
+>> +void kvm_uevent_notify_vm_create(struct kvm *kvm)
+>> +{
+>> +	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
+>> +}
+>
+> [Severity: Low]
+> The commit message mentions exporting this function, but is it missing an
+> EXPORT_SYMBOL_GPL or EXPORT_SYMBOL_FOR_KVM_INTERNAL declaration?
+>
+> Without the macro, won't dynamically loaded architecture-specific modules
+> like kvm-intel.ko hit undefined symbol linking errors when they try to
+> call it?
 >
 
-I think these should be 2 separate patches.
+I'm not 100% sure about the use of EXPORT_SYMBOL... here but usually I
+compile kvm as a module to try and catch these types of linking
+issues. Maybe Sean will have a better method/explanation for this.
 
->
-> [...snip...]
->
+This brings about another question I have though. How does luo work if
+the new kernel's deserialization of the persisted data structures
+depends on a module? Like in this case, KVM is a module, if KVM isn't
+loaded in the new kernel, do the data structures stick around until KVM
+is loaded? Or is KVM required to be loaded as a module in the new
+kernel?
+
+> --
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260728121138.11=
+03610-1-tarunsahu@google.com?part=3D3
