@@ -1,67 +1,66 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E349476CDC
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 23:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5538339E191
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 23:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785454400; cv=none; b=Tod8MAJMSXSr59SwbouHLrRy0bADcse4QQCOe3M8wabdoqGSAwdQg4vtQHPktzxGXJb0UdpUa52LSML5wPNAYpMc8uj9JeBFDyxzAV50IoX9AbQ5duGpb+JSwaj7yl0iOrz3WwJP1a+jnsn6K7DJTDHpEVXdBr1HNAkM7l/AZws=
+	t=1785455002; cv=none; b=tCw2VwvJyGbpACEHo1Xt8dyEI7KkOvOIKJGyzy1V1oaMSRPpdekqYYHhuXxR1kRmvKgFgGTaSn+pfhgj3NhB6M7Yee7k23vc7DoDOMmEcVruTbokY5nfjL9E/pYyOTyjy7JRE2lmBMma5BsXJbclFkys4J+t8qOZSFwCyv4PPtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785454400; c=relaxed/simple;
-	bh=Iq9ol7OXU1ahRu/wapfwTXujNB5WFM05r9AjxlRtuJo=;
+	s=arc-20240116; t=1785455002; c=relaxed/simple;
+	bh=EtBv4ug8/GzoJNUW3Lwe7MHv5uNlqeWbx0nW+DTkR4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IGmySabPJHTsP2h/CzdbyO5wapHaq+n8RbfZ1FRPzqtGzN60CBsP7W2IfuMa8VaeQeA4d6Sgm9XlYZPXj3sNsfDnW0TqDlfdLzNmXzajJXYaq0nFt/Yn37Jt4FknvgQ8ekivt0fBIGW/pStFdaMmu/24Pf4DxlLc0RQwaml3ohk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cjqlfTNA; arc=none smtp.client-ip=209.85.214.181
+	 Content-Type:Content-Disposition:In-Reply-To; b=aVOqNdCRj2o6UishmsaDqfWcwwaCGQA1IsdIIyYQLT0mIsXQieSZ6ShKru8exK2IBPW4H0Gme+DBydbvBI/TFTb6tvGk4zHwqtA+5DjSBrAPs2vDUxOyeHTK4RilAkl95RW1F8/hOqLMqzB/FHNo6L5Y75bIrj40JnLGOijs9RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZY0MoCp/; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cjqlfTNA"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cede6375caso43175ad.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:33:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZY0MoCp/"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ccdf36f63dso58655ad.0
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:43:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785454399; x=1786059199; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785455000; x=1786059800; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Dg+/alpKqQYpNCx1oouhanYFhK3x1/3K8PlW/VCS3GE=;
-        b=cjqlfTNAiSvEl5DjFzjhn2TZHWvD/qPUKQkzC3qE2q52M9I+ieIrMU+iTI3KyCVZky
-         wyrWozOwOzCROIWE6TEN4BH+GfAuloUBOU9XXU9xW5n32SwwIl5kpVU3Vv4xUzI9wYSp
-         NfkHO8p740TS0M5wlKByt+mU1Gm+7ipDwuIIO6TLcBYw1+TGtAhKXXDnrtgvKzgPuDHP
-         H0n3QsfEz4YKkRXd4oHNyv7CPqGjuDbhDcIkK2zJCkHmnCMMsnzx9NFqil/KnrgH8ULm
-         3xbk4OgmJlSC4EPtGRCKabo/3/Gg4W8Wud1J0JU7TiHmaslv5SJAMfEczrTOLd68lCCc
-         w4hw==
+        bh=45rkLKaqdLBM9DjpkbwhGyUvtKXILeitur9eOChkeqI=;
+        b=ZY0MoCp/FbUwTdDgLNAVNIQ7MpDiDYZ5lMco63yU8nI5ewRwmx8xChNr3jzpTgiTnk
+         0Vhd7UCPVhyyw0cglLA7VHJm9QVI/ZytPf2oVUzW8KZ6AdL9WmRSlTuCUSC2aPghPB+g
+         9Zwg1oUv9zALj6KaH3/8WR5sjw5LYCpuS3i60Fl7t8DA9SGjSPBy7hiyq8rE2QC1dJEi
+         drcG9rI1tctp1SHY63CTJhTZGRd23UtxnnP9XIV51aLpXFEHWsyUH7QUJLsNduvSSxfl
+         jdqrQQnfuRsKHt8qUZvwsV8D/DtrJiUfItHM4HjVUb+CbLB8z5txXYk+kvOBauoa7tFp
+         +oXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785454399; x=1786059199;
+        d=1e100.net; s=20251104; t=1785455000; x=1786059800;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Dg+/alpKqQYpNCx1oouhanYFhK3x1/3K8PlW/VCS3GE=;
-        b=ifXJexCNfezpW4ggt8lGPRD98cTF2i3apVSLmrHwM+XXZhFO6ar/LrbGGZYB8JNMrr
-         +F8rCtrQXUhwaIQV1B3dgIASpSG3Z0fTf2O3hl4KFs2Hs6a8wYN6obQeOAy6c/Fc57G+
-         7KJ9H46353rSEz8Ppbib4G3ZKzsFctWWe/fljQL1BVocmrJtMZzLZ5NECEBld+cTuq4F
-         3zC/Pz4XDf239tEOY/cfJd0C3H/We5//XbVG0WeCnAwVBzUxDFdHeax2YlM+4KN1CddV
-         OsxiWZW7DSvUj0pfB0csdb/Re3ylC+iv/251YWywoOtcVBwS5dtufI26u0WJ/bMePSqp
-         DfFg==
-X-Forwarded-Encrypted: i=1; AHgh+RrdksqTPL7JTxsSSEfrZpDn7V+UG37npCOe7QLKSPD+96CsMUs7U5ew53//BUvKs0UBud4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF7zEnB9gRitI9Mr33S/5l01FS9nHDQBW1/uX0J95Zc/YTPcSO
-	ATJQa65gS3woPSKuueXqzOMzOcWYU/UjxTEuuc2eq57z9k3HSkZJ5YKMak7LbWksygIi56KNQw9
-	e2yl/4w==
-X-Gm-Gg: AR+sD12b2rIFtqNRbLwqPuFBHlJF5wkE6bbrU+Mi76qSnuqgE6okHWDMrI5+8VrlK9Z
-	Awn621L8s+Kdw6YiuVK19Uks3cHv6ZwQRPiXILwVFx5h3JWi3LWBnm+eL358MkmToR3KEgKac05
-	dPmjJHybFxHXjtvvJtfJI3mu699bxoqK//dwKiuYWM4kmkPpJhT8Gi81jipU08XDUYUjo2g5id2
-	/oWJRn2YKdq32kVuQZJGZBQQIlDwD59xbJ0XMCWCWFUXncWNeFtluJi0icF0AZlGOj9IBcwfV/3
-	fEd/GjbbbpcByOD8guwKgFotyAnpkQpgVVP1hth3Peqhx3Yxq2bke4vOYcffBTON1jt+Loa4iXA
-	kOD7lftSq0vXzuIYj21QFz79L/EOvrlMiBogfMBrapvZc2WdQrcMJGjRzn7nqeSW23SxVG9BYmQ
-	H1fu3uoeFX25VZAgUgAHD9EdpD1cZ3Y+n2BOY/GzPOK7GpubHZ8K94Z2NfmwCcrjR+DUsag8e+v
-	zIBZ2BrgPzP4X9mHPPo+6Y=
-X-Received: by 2002:a17:902:f2d1:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2d041127ae9mr3387895ad.2.1785454398363;
-        Thu, 30 Jul 2026 16:33:18 -0700 (PDT)
+        bh=45rkLKaqdLBM9DjpkbwhGyUvtKXILeitur9eOChkeqI=;
+        b=EK6Ao+OQ9eRCOYb4bnyHcsugrEcdoIAvNUV5n/HN+7AqOEa/x8lXJD2TFn0dFNhBOK
+         hrvYrb92XE3cYliHPIInRo+U3Y6lUAXE0GkJAcFt9fyEGLoNPaHXHWkJnUATPMmbH14S
+         PQfCgiW5IQaDhz0q6YgTwb0Pn/MFF5uv1H8nYjsyNRGR8Ba68ISrX8/qs22zGKGk1+T3
+         8EsKEZxL2WhavZ/1Eor8owrjjzIGQwwjWr/PY0LSi+cjAIGmAjAejtcmrnjiKYGhtHxH
+         9ysc4CyaAP6aFKYGzKvaixkG2Dgfl/E7MYCw9RHLiuVqzVj0qZB2dzLFzfDk2ztt6y+9
+         nb5w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp14OSnqdU3GBFK2dVz4piDZnT5hB1Q2J6BurT/k9oBW94eiKkq51ewUen3BgH8fpJ1cis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjfNRitp0Hpbi49DDOwqloNf/fWt+ZF82Oh1nZ587z0r9MbmFs
+	TzeeEfug210lv03NHe3V4RL2A6QPLrz3dsVFvK97HwqWTvYjEDbWF42i/4/IWW4LTA==
+X-Gm-Gg: AR+sD12ePWl8UnhaUz7Rq7nEOLRsGQ4RxKb06AnwcMixdEspAZD8dAC352/fnbbqABk
+	vap4NcGztV09ADSJGHAG2poBCsVZlQXpoPDv/FAfRJ/o7f6DXE2mWnL8ysrO3PmrzNiTh5IiZD/
+	SLvf/C/c8YFjgwnfghazbrmjULp+RdWe3YsYkr/1eDZEpgkRgjVAKB6MJzrSWO6nL7qPtiXvb12
+	4WagKp/7/rTPZsJu2q80g3xH3N3HTudXT/RC7Yn/o+TKSEZl5aak5hlMa3GypoA1dB63VTHCQgF
+	MuEYWolshjOtPvRFLhjonSySe7+i3KEjJchKCDZOcHUexehT5JnchZ8HK5riTeME+zyJ3ec+8+m
+	opTqlkTa/9QLAUg8KnvRxghiO0HcZUFiBZHIvrE4B5Jyq7VyKcbV5SFD2PApi1kGvRHNQF7ZeaH
+	eNtlM9RwHt26QSuYfbkPdenuLklNAyaDzrr7cVP/hpPTt59Z0lt7C2BE6+OSFNdA4uZoqCxj4q5
+	iPMnY4hQIFKwOtw+SQ90W0=
+X-Received: by 2002:a17:902:f647:b0:2c7:b1e7:501e with SMTP id d9443c01a7336-2d043d582c9mr2482505ad.3.1785454999087;
+        Thu, 30 Jul 2026 16:43:19 -0700 (PDT)
 Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e72643a12sm39399784c88.5.2026.07.30.16.33.13
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e7271f010sm29587416c88.9.2026.07.30.16.43.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 16:33:17 -0700 (PDT)
-Date: Thu, 30 Jul 2026 23:33:10 +0000
+        Thu, 30 Jul 2026 16:43:18 -0700 (PDT)
+Date: Thu, 30 Jul 2026 23:43:10 +0000
 From: Pranjal Shrivastava <praan@google.com>
 To: Matt Evans <matt@ozlabs.org>
 Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
@@ -81,10 +80,10 @@ Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
 	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5 8/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Message-ID: <amvfNhagavtGqZ-W@google.com>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Permanently revoke a DMABUF on request
+Message-ID: <amvhjtQEjAZI0tJl@google.com>
 References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-9-matt@ozlabs.org>
+ <20260715174737.15287-10-matt@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -93,33 +92,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260715174737.15287-9-matt@ozlabs.org>
+In-Reply-To: <20260715174737.15287-10-matt@ozlabs.org>
 
-On Wed, Jul 15, 2026 at 06:47:31PM +0100, Matt Evans wrote:
-> A VFIO DMABUF can export a subset of a BAR to userspace by fd; add
-> support for mmap() of this fd.  This provides another route for a
-> process to map BARs, in which the process can only map a specific
-> subset of a BAR represented by the exported DMABUF.
+On Wed, Jul 15, 2026 at 06:47:32PM +0100, Matt Evans wrote:
+> Expand the VFIO DMABUF revocation state to three states:
+> Not revoked, temporarily revoked, and permanently revoked.
 > 
-> mmap() support enables userspace driver designs that safely delegate
-> access to BAR sub-ranges to other client processes by sharing a DMABUF
-> fd, without having to share the (omnipotent) VFIO device fd with them.
+> The first two are for existing transient revocation, e.g. across a
+> function reset, and the DMABUF is put into the last in response to a
+> new VFIO feature VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE.
 > 
-> Since the main VFIO BAR mmap() is now DMABUF-aware, the new mmap() reuses
-> the existing vm_ops.
+> VFIO_DEVICE_FEATURE_DMA_BUF_REVOKE passes a DMABUF by fd and requests
+> that the DMABUF is permanently revoked.  On success, it's guaranteed
+> that the buffer can never be imported/attached/mmap()ed in future,
+> that dynamic imports have been cleanly detached, and that all mappings
+> have been made inaccessible/PTEs zapped.
 > 
-> The lifecycle of an exported DMABUF remains decoupled from that of the
-> device fd it came from, i.e. the device fd could be closed with DMABUF
-> VMAs present, meaning a fault on a VMA could happen concurrently with
-> vfio_pci_dma_buf_cleanup().
+> This is useful for lifecycle management, to reclaim VFIO PCI BAR
+> ranges previously delegated to a subordinate client process: by
+> revoking, the driver process can ensure that the loaned resources are
+> made inaccessible when the client is deemed "done".  The original
+> DMABUF is defunct, and BAR resources can then be safely re-exported
+> for use by new clients.
 > 
-> To deal with this scenario, the fault handler now temporarily takes a
-> VFIO device registration to ensure the vdev remains valid, and then
-> vdev->memory_lock can be taken on it.
+> Refactor the revocation code out of vfio_pci_dma_buf_move() to a
+> function common to move and the new feature request path.  Note: this
+> now only calls dma_buf_invalidate_mappings()/dma_resv_wait_timeout()
+> on the revoke path, whereas vfio_pci_dma_buf_move() originally called
+> them for both revoke and (unnecessarily) un-revoke.
 > 
 > Signed-off-by: Matt Evans <matt@ozlabs.org>
-
-Nice note on locking, enjoyed the lock dance!
+> ---
 
 Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
