@@ -1,298 +1,134 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0A940099E
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 10:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785407764; cv=pass; b=Gyfem08eOsJphGq8m43WjKVMW4xaGUWOHQRLvlRKnc9sehCcff5gQ808RWyTML4bJBo9BxIHbwWKqk8QSluRgvtpnKRW/DuEgvqb8UhSWYAJKE+neyyfxyW/wYc8wH01F8xD5mrjPHAX/Ya1TSn7/0Tts1QCIuphUczks47LMJ0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785407764; c=relaxed/simple;
-	bh=lN5P2U6zU77+d38S81rcqTKY2nPem/l6z4v0pII5/Bs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671B44052C3
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785409295; cv=none; b=eyF62sWHbjgimV0Ge5VTBMgisOaRP+YZCx1TS7+zyRE/xUkRRUAH9OaOuBho4M49cqSxXn0C+QT5W6SvJClcOhXnfiRJHlNNJhtJT1DizomtSbHeXY3Zwy7GS9QUxoNdbemNT05dqGBc2S8wRqBpQ1fKYerQqfyUZM1kfeWFvWE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785409295; c=relaxed/simple;
+	bh=MTbnHVaGs+oJ8/iRE8SGUTfgRyNeD2t1YHYfV3s4MaU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u1YbxqDsUvr4l5XkF0WLhNxDCvZyBFZbo1939yvXild95qNxye/Xvpy5TLSshdbX2HBqg/7cULb13LQ+0T3thZgTyMwuHDOwF/9azJKUM4bHXIcqdPWDaaN/oYRM+2ZBjL6/1LXeq9wuP9qY8CQDfTd5SeLdTQR5pGfoPXHuRtA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eCdb7hQl; arc=pass smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=aJQH00q2L+SeyfxfU4T7/0KDCC3l9uUy3myg+19tNmepfCBmZoaAdKj6KbfJSo6ot6Rl+g0WblQhm4SNILgqcAqR8VFFrG8vs6YLX8KwxF5y4+/RnU/9637iuJKUim+xy1opwdNPNWeium/vyiyTEuysMsIe6asbkUUL6mvMtpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EGU1FV84; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eCdb7hQl"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51c01c79467so255871cf.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 03:36:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785407761; cv=none;
-        d=google.com; s=arc-20260327;
-        b=boQUwZDlKBtSdtHksEtG0V+8PerY6+cKMlf/5a+htj4I65A4HxhmtOU9R00w7pv1Wi
-         3x1+C+xIxFD7NHxBTSOnHRSEIraWtxWZZ9Hj9aQTo3Rvjkxd3/M0ReAu045nTnI9elC7
-         K/NROk0/v5HCzgVpn0L66S/wik73y+Z2/HKUWKGWwE54ZKLbvfpTbq81m135EBM3wPpS
-         0MufVekOGu2YyS93G3jZJgN7XsXB3u95Sw4P9JJB9vju+XVhnoCXiz1aGUf2uVCsANDz
-         jcQ8VVLaou0LuvTN0p2Ulh+EPLiZqxEw0TeF0DZOYXqEfRllYD7vRHUfdo5/6nXGxrZE
-         U7YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=SOOBkZJwQCWVQFO2bew9xlSgUrM3XWnbKBiotDY5lMU=;
-        fh=7cpHqr29KTjKo4KIRas1sXUZPpso740JKNrQ5IV3NAA=;
-        b=CNo1+x8HmEgBXV2tka+/uQXCl/5nmQhPUt4I+zKNIhZa8olKYtBSBgMF3wMmtRgrPH
-         rJaNOXc6+5PQfPFD9K4kV/59h+60RADnPRVxmpfcmutSJrpNrxa7AodzJLMrKq1PbbnY
-         SKCe8TrM50C1g9p6HfGJAXKfMNjWTtgZ4rAIWuZg5DSHhPktN3ZhxObS1scMd/Y+TIDP
-         CK30/TARE3OkCJAqZgWKwgUDs6rHKOxfIgQFB1S2GKLHE7QTzEy96A7JcO/0ZvVrIkCN
-         BnG8C84bWKNQoYjSreELZeZ1o92lu8A97SFJZKBA97cjDdfB23V7gNgRshhu3mNOYRVO
-         ZJ/g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785407761; x=1786012561; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SOOBkZJwQCWVQFO2bew9xlSgUrM3XWnbKBiotDY5lMU=;
-        b=eCdb7hQlCy51cfk6yQiIIYk2G5r8XrYjHOatiEVyhKpizERUphkiD8WfxMuGjzGarX
-         //90Tt2kbTn7NzZ2nZ+yHxNgRHxkTdZA7kPR5Zh0HcSSI6IguxuBG2to4ELkF1HF6X4I
-         TLKP5EFtUUhBRkk6KwY+/YZVxvPjxKU69tlGYw7hDfQUII8dZ6qD6tfhg3SFhiqM10ju
-         vVQbyqG0cj5F+RxW6ey/Hl+XPXz8eCLHj3LFYOCWxFqO0r6b7RafgHV1fAzdfrL8iTR0
-         S2O9CLs1oS0tvq+IUv8Mx+ag9bxpum1r4Jld4USr4HnH3rzOu3AhxbsnGQyxxFcUED9W
-         dfww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785407761; x=1786012561;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=SOOBkZJwQCWVQFO2bew9xlSgUrM3XWnbKBiotDY5lMU=;
-        b=Wb7OcX4yZQCpMf6fz3c+cFOoFpFk9JD7GLOPoIxrFTMiLL7nP8e0WsHW96PSdrW6/N
-         bjTIYOUF4tWdZtU13qZLpAxFCXf/iPn0FiOX4H8vgMr7wkvJgWH4R+1zTDkm31rfn71P
-         JIfi+XRWCW1nzD9//u7WOOgauAJFmSm3/IVByJq8VevYirl6lpbPIbDraB5nVDuE99V3
-         cK7YLDv/hP/uFCQw8ivPhDqy7OM3yeTDLegEiFu3vePjMFSfzoBe+vlXbhk0YKOBkjhm
-         KLM7WadRZ5J4JZOPZff5wxIR0MGX1LS0ttaPLdwpJCdLelABhxUyjWv+EFM4qgxmf8IH
-         JyNA==
-X-Forwarded-Encrypted: i=1; AHgh+RrtZnxENulNUmlBTbJu86t4EfC7es0LSz287FKY9wXnnYLpb+JfEQwcVP2qIBiVV5pWOp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfjDHOWpxnhZLG2sfc1lnjGSESfSzErD+PMFR/6nMkf6IjcG7i
-	HRuU2g9c4tS2NcOimU9V+qkS8+q7GmNB2mGGJIwk8tk/T8Nl0MMBPeETmnF80noZNJ10v1sK/ZA
-	zPCvuhVu+wNle4U1XyFHmK0CDVcLbQljacYxJSp9f
-X-Gm-Gg: AR+sD13SL22rCjLnTTqbeCqf336Gp4SxPkqeCKww4bdhICIRyuBNLFKS5MEyYvTM9rg
-	seClPxwijPm4UluzpUgQkn8jO2ua9kK1rnWDcJoYNfbXwY4nxslkCm0sMKyLbD5HkXrinL+yOgv
-	GES01H58KGn4bBz54rwDDjNGRt1AjRLOl5IJh6bTBuxgnHGj3FKuxbxjZMDN4yfT7QsQUXuGztj
-	loAgiQShbt7dAr5UySGgECZhSVm/Rx1M7nfjR5MvZ8HBwOkZIJg0C5B5d5JnyEc0kOEW3o13m/B
-	QKsslapXcCAB4xdW6XIeatAixo/EJLaahw4DYpMx9WFp
-X-Received: by 2002:a05:622a:e198:20b0:517:64f6:3365 with SMTP id
- d75a77b69052e-52b391602aamr11675091cf.4.1785407760987; Thu, 30 Jul 2026
- 03:36:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EGU1FV84"
+X-Forwarded-Encrypted: i=1; AHgh+Rofkv2feEZfodzZGmIZ6HDajqFBXIeWuVQUCxTCS8lFfzhrptYzve4C66HSXpWI6gxjdnM=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785409290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/kRpQrpUg02tctY6yhu6jWBSJHpdY77PwAU3jL1bxM=;
+	b=EGU1FV84TNf0eSfINAjFoXEtyMcup54h89acKGcZFY13c5c289BTg95TTuaz9KR9NhZRCv
+	E1tfv/hQrwkP794+XdW57y3GHF2XYCe2OUDAN9Tf/BLa6Sqb8ap/dy3ZL74JOzFADZRAkw
+	HTvt4Y/tvPtDxhdkeIdPKA2pOqBP79w=
+X-Gm-Message-State: AOJu0YxunUePqo0ds7k3XAfCQxvM7b8dqS6kCkG+GMlFC0BRAevd0QWr
+	AHFP3JyIpT9hTscn2o+8YAs6jaO7ZwT/5fk2j4gnHjOmDiTdl0667yL8JKlSdoKKsHBN4PKYr61
+	BpyhLehsbMCCCGaecj6whquEIHgzijeXwd227LLLK
+X-Received: by 2002:a05:622a:684e:20b0:517:5ac7:332e with SMTP id
+ d75a77b69052e-52b3933f844mr9328641cf.6.1785409276641; Thu, 30 Jul 2026
+ 04:01:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com> <20260728-gmem-inplace-conversion-v9-12-35f9aec2aed2@google.com>
-In-Reply-To: <20260728-gmem-inplace-conversion-v9-12-35f9aec2aed2@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 30 Jul 2026 11:35:23 +0100
-X-Gm-Features: AUfX_myxKBJR6h01nzpu_vZoQunkdC1wrGyOxOE_3W2zA3Dduo4yuXfuFwjgfug
-Message-ID: <CA+EHjTzypkaq3qUpLeFM3k96QtFSMZMPW4Y+AA_A0WUo1u97Vg@mail.gmail.com>
-Subject: Re: [PATCH v9 12/41] KVM: guest_memfd: Call arch make_shared callback
- for to-shared conversion
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
+ <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
+ <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
+ <20260712221934.GF674038@nvidia.com> <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
+ <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
+In-Reply-To: <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 30 Jul 2026 12:00:39 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTz82R_hJXHfPG2OLqkB9kVq1=exE_9Cn=2GXQYpbtaBkQ@mail.gmail.com>
+X-Gm-Features: AUfX_mze5Bz4sCJxR7dQfrTfBjLkX9Ma4V02Tb4h9t58N81ewiYYgPohtp6A6lI
+Message-ID: <CA+EHjTz82R_hJXHfPG2OLqkB9kVq1=exE_9Cn=2GXQYpbtaBkQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org, 
+	sumit.semwal@linaro.org, christian.koenig@amd.com, pbonzini@redhat.com, 
+	seanjc@google.com, alex.williamson@redhat.com, dan.j.williams@intel.com, 
+	aik@amd.com, linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
+	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
+	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
+	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
+	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
+	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
 Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Hi Ackerley,
-
-On Wed, 29 Jul 2026 at 01:35, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
+On Mon, 27 Jul 2026 at 10:03, Xu Yilun <yilun.xu@linux.intel.com> wrote:
 >
-> From: Ackerley Tng <ackerleytng@google.com>
+> > > If VFIO can create one
 >
-> When memory in guest_memfd is converted from private to shared, the
-> platform-specific state associated with the guest-private pages must be
-> invalidated or cleaned up.
->
-> Iterate over the folios in the affected range and call the
-> kvm_arch_gmem_invalidate() hook for each PFN range. This allows
+> It is an interesting idea to let VFIO create a guest_memfd instance, if
+> DMABUF doesn't work. But to achieve this goal, I think we still need to
+> refactor guest_memfd to allow for different memory/MMIO resource
+> exporters/creators, and different resource importers/users like KVM MMU
+> & IOMMUFD.
 
-I think this line is left over from v8. The patch calls
-kvm_arch_gmem_make_shared() now, and kvm_arch_gmem_invalidate() no
-longer exists after the reclaim/convert rework, so the changelog
-describes a hook the code doesn't call.
+I don't have a strong view on which side creates the fd, and the
+argument that MMIO lifecycle belongs to VFIO makes sense to me. But
+the refactor you describe is the part I'd like to make sure we get
+right for the non-MMIO case, because pKVM needs ordinary guest RAM to
+keep working through it.
 
-With that fixed:
+Two properties we depend on today, both of which are easy to lose if
+guest_memfd grows an exporter abstraction designed around MMIO:
 
-Reviewed-by: Fuad Tabba <fuad.tabba@linux.dev>
+Conversion has to stay page-granular on subsets of a region. A pKVM
+guest shares and unshares ranges with hypercalls and has no idea what
+is backing them, so we can't require whole-region transitions. This is
+fine for assigned MMIO, where the shared parts are static, but it
+isn't a property we can give up for memory.
+
+Shared pages have to stay mmapable by the VMM and GUP-able through
+those mappings. That's what the VMM does I/O on. It's the reason a
+CMA-heap dmabuf turned out not to work for us, since that mmap path is
+VM_PFNMAP.
+
+So my suggestion is narrow: if guest_memfd grows a notion of an
+external exporter, could the memory case keep going through the normal
+guest_memfd allocation and mapping paths, rather than being folded
+into whatever form the MMIO case needs? I'm not asking for anything
+new here, just that the refactor not quietly close the door.
 
 Cheers,
 /fuad
 
-> architectures to perform necessary teardown, such as updating hardware
-> metadata or encryption states, before the pages are transitioned to the
-> shared state.
+
+
+> > At guest_memfd creation time, guest_memfd is always created for a
+> > KVM. This is the first place where it is bound to a kvm instance. This
+> > is one place where it helps Yilun with Confidential VMs, so KVM can be
+> > sure that the memory was meant for a specific CoCo kvm and not any VM.
+> >
+> > I think it might be weird to have VFIO take a kvm fd to create a
+> > guest_memfd?
 >
-> Invoke this helper after indicating to KVM's mmu code that an invalidation
-> is in progress to stop in-flight page faults from succeeding.
+> I think having VFIO create a guest_memfd is better than having KVM
+> create a guest_memfd on behalf of VFIO.
 >
-> Omit support for calling the arch hook to make private, since SNP, the only
-> implementer of the arch make-private hook today, would actually prefer
-> making private only just before faulting memory into the NPTs.
+> The lifecycle of the MMIO resources should be managed by VFIO, cause
+> the availability of these MMIO resouces are impacted by device
+> operations, e.g., device reset, PCI Memory Space Enable (MSE) ...
+> You can't export MMIO resources to KVM MMU without VFIO's awareness.
 >
-> Calling the make-private arch hook would require iterating both bindings
-> and the filemap to find the intersection of bindings and allocated
-> folios. On top of that, SNP would need to figure out whether to actually
-> make private based on whether the memory is about the be faulted, or
-> whether it is a conversion.
+> And VFIO doesn't have to take a kvm fd paramter to create a guest_memfd,
+> VFIO has got the kvm instance via KVM_DEV_VFIO_FILE_ADD.
 >
-> This does leak SNP-specific details into guest_memfd (as in, why only
-> make-shared during conversions but not make-private?), but the additional
-> complexity is not worth taking on until guest_memfd has a user actually
-> requiring an arch make-private call.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  arch/x86/include/asm/kvm-x86-ops.h |  2 +-
->  arch/x86/include/asm/kvm_host.h    |  2 +-
->  arch/x86/kvm/x86.c                 |  5 +++++
->  include/linux/kvm_host.h           |  1 +
->  virt/kvm/guest_memfd.c             | 42 ++++++++++++++++++++++++++++++++++++++
->  5 files changed, 50 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-> index 5cb132eca3c35..8e0d6970c43b5 100644
-> --- a/arch/x86/include/asm/kvm-x86-ops.h
-> +++ b/arch/x86/include/asm/kvm-x86-ops.h
-> @@ -149,7 +149,7 @@ KVM_X86_OP_OPTIONAL(alloc_apic_backing_page)
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  KVM_X86_OP_OPTIONAL_RET0(gmem_make_private)
->  #endif
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-> +#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
->  KVM_X86_OP_OPTIONAL(gmem_make_shared)
->  #endif
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> index 9fdf13b071097..ceb2abf43b76f 100644
-> --- a/arch/x86/include/asm/kvm_host.h
-> +++ b/arch/x86/include/asm/kvm_host.h
-> @@ -1730,7 +1730,7 @@ struct kvm_x86_ops {
->         int (*gmem_make_private)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->                                  kvm_pfn_t nr_pages);
->  #endif
-> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-> +#if defined(CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT) || defined(CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM)
->         void (*gmem_make_shared)(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
->  #endif
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 3308d58342955..52de3ec7c7f73 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -10639,6 +10639,11 @@ int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->  {
->         return kvm_x86_call(gmem_make_private)(kvm, gfn, pfn, nr_pages);
->  }
-> +
-> +void kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages)
-> +{
-> +       kvm_x86_call(gmem_make_shared)(pfn, nr_pages);
-> +}
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_RECLAIM
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index f408746d315f7..47f633cddffe0 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2612,6 +2612,7 @@ static inline int kvm_gmem_get_pfn(struct kvm *kvm,
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
->  int kvm_arch_gmem_make_private(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->                                kvm_pfn_t nr_pages);
-> +void kvm_arch_gmem_make_shared(kvm_pfn_t pfn, kvm_pfn_t nr_pages);
->  #endif
->
->  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index d3c813dcbf96d..612fcde4ae8ea 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -563,6 +563,43 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->         return safe;
->  }
->
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_CONVERT
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
-> +{
-> +       struct folio_batch fbatch;
-> +       pgoff_t next = start;
-> +       int i;
-> +
-> +       folio_batch_init(&fbatch);
-> +       while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> +               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +                       struct folio *folio = fbatch.folios[i];
-> +                       pgoff_t start_index, end_index;
-> +                       kvm_pfn_t start_pfn;
-> +                       kvm_pfn_t nr_pages;
-> +
-> +                       start_index = max(start, folio->index);
-> +                       end_index = min(end, folio_next_index(folio));
-> +                       /*
-> +                        * end_index is either in folio or points to
-> +                        * the first page of the next folio. Hence,
-> +                        * all pages in range [start_index, end_index)
-> +                        * are contiguous.
-> +                        */
-> +                       start_pfn = folio_file_pfn(folio, start_index);
-> +                       nr_pages = end_index - start_index;
-> +
-> +                       kvm_arch_gmem_make_shared(start_pfn, nr_pages);
-> +               }
-> +
-> +               folio_batch_release(&fbatch);
-> +               cond_resched();
-> +       }
-> +}
-> +#else
-> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> +#endif
-> +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->                                      size_t nr_pages, uint64_t attrs,
->                                      pgoff_t *err_index)
-> @@ -605,7 +642,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->
->         filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
->         kvm_gmem_invalidate_start(inode, start, end, filter);
-> +
-> +       if (!to_private)
-> +               kvm_gmem_make_shared(inode, start, end);
-> +
->         mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +
->         kvm_gmem_invalidate_end(inode, start, end);
->  out:
->         filemap_invalidate_unlock(mapping);
->
-> --
-> 2.55.0.508.g3f0d502094-goog
->
+> >
+> > I was thinking that the userspace VMM could do something like:
+> >
+> >   int vfio_fd = open("/dev/vfio/devices/vfio0");
+> >   int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
 >
