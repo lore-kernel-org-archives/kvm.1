@@ -1,169 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC842C4E0
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 12:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1462042086A
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 12:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785414845; cv=none; b=PNsutDGbLibuSyVgofUt225reMMEpu6ua+5/iAnErn179swOqCJx3EOCo07ZWHAjTKyin4woZKRptFNujwf+alL8UmUHzoTGyHyW75Y1634Bs4TB7Zopa3nu35cWZY7HJcnq8pHalPFtrelvry15C0Y7GNpWST5sq8fDk/ryUII=
+	t=1785414867; cv=none; b=N+ztW0qEbMr/u7ENvl3JLH/4xH+Fe/qsk8n9OYoNDkJUU2D9G28vn89LDfmzealjB/f3NuDlwKA6V8yLIY6Y8qdn30QyAiYAnaa58wydl5rzsGvahMP5Otw/c6RDwApDO4d7gblw9ngDGvRiKjxRxGwRt+aoUtSNbFNLd+kPlCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785414845; c=relaxed/simple;
-	bh=1gYGfWo1GBxEBqjEM37El2huI9mmM9m2KtOOyNF/Mec=;
+	s=arc-20240116; t=1785414867; c=relaxed/simple;
+	bh=Ixs+siVdMrKayMGWQRWqsUcSwBy3HVdnR9Lg80FDz1o=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=O/McdgmCoPcKsYERyR0cKLU6HbDNwQQupCv8gAQc82jHyLrg9FyKg8DOmhRlgNKy2t6yTTIyo37d0HSiwaisbjoTQJYhE5gdgT3Wuby7fu2tIvRvoL5jxigzg9+B5UhHyy1K+xp+13c82DismYBVJkZkA/FJBJ8HGI12mvbVcpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOW8WWkN; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=CcauZIsCuC8A2txh+FVia49cuCro4O95HIZV0lYA7iUVHf+kuGotqgrjOuuxnshhVFbAGRuv54A+zGAmOHCMCT1oAWC3UwbjFCAqwR5OrBdj4G/C1e8AEOaIaW0ocm8VAjPiM5PpjwZ3x5UjA9y7zJqNZhVK2+fs1skpvQTlhzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvS98381; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOW8WWkN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA11F000E9;
-	Thu, 30 Jul 2026 12:34:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvS98381"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7918B1F000E9;
+	Thu, 30 Jul 2026 12:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785414843;
-	bh=pjpULwMSclFPB+VyPj/olgFRrzVNYDfpP/EwVC47SmE=;
+	s=k20260515; t=1785414865;
+	bh=wqwrsuZ6rERCg/XfzTCZXX35EDjv+/DUY0uoZHr+GJE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WOW8WWkN0NcExFuKAK7eAnnEB8WIouHKjtoRGIUKSilfVKuye74wmQU8G5WWCaFjr
-	 /t6tgICgy6m7i/pSoLMUHozwqrL0wfL5l8+WhNrizsy/6NkfDr3Kr3491x4cTNk0lN
-	 vvGsKtybShquYBG/1DUH0TWOo+tCa0mfLITpvlQu8IaGsk8DU8jMopgEYyB2f+B6MP
-	 HNHMhSJWTHoEfSUlnICN7PSB36foECSL0hW1JMfwSm4b5ttrNp9yFKAEvyzROd0W/4
-	 bYeWJvsRBWQEy0tLVVBu6k3l0cIFsdGe8twAZp4wcXFYE6am9ONPDU3c1cXFuIejOP
-	 zcD1qIvwh1fsw==
+	b=kvS98381IfU+v09AhVOCwqw+q9UbbFrN517wRrt9pTeqj39ZFY0HZ8bIKi73L762r
+	 XtttYJkEykZswLoj93WN8e8Trpl0C56V80v2FaF0rDS2tylZmPW2yQR5mG4byZQPra
+	 fuQ0Gxr1IC5YBeN/n8JXpkJH5CbAfKFJ8z4TQmYeLXzDhvUfwOwL45ZpgJKqc9+PBt
+	 tWEumuLQSIx/OnGnXKU5CFbgS2Hf4904+e7F7VED9TU3hYsCy883YHu3URhXpBqwfn
+	 9D29P+iKHwXxSL7IcVQFBf5O3Yh/Ub2LkXKkjI0xNvqEhN6u3RF/IKpCk4Zj4m1rEh
+	 DUdhJKN2n1FZA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 3/9] KVM: nSVM: Track hardware-provided instruction
- bytes
+Subject: Re: [PATCH v3 9/9] KVM: selftests: Add nested SVM DecodeAssists
+ test
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Tina Zhang" <zhang_wei@open-hieco.net>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <0d1e1110881aada32e474c74105f3d4cc5ba991e.1785411877.git.zhang_wei@open-hieco.net>
+In-Reply-To: <0e335bfb321909a0ddba98337a2325f8f88e58ce.1785411877.git.zhang_wei@open-hieco.net>
 References: <cover.1785411877.git.zhang_wei@open-hieco.net>
- <0d1e1110881aada32e474c74105f3d4cc5ba991e.1785411877.git.zhang_wei@open-hieco.net>
+ <0e335bfb321909a0ddba98337a2325f8f88e58ce.1785411877.git.zhang_wei@open-hieco.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 12:34:03 +0000
-Message-Id: <20260730123403.96BA11F000E9@smtp.kernel.org>
+Date: Thu, 30 Jul 2026 12:34:25 +0000
+Message-Id: <20260730123425.7918B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The patch clears instruction bytes only on nested VMRUN, causing s=
-tale DecodeAssist data from L0-handled exits to be falsely flagged as fresh=
- during subsequent intercepts.
-- [High] Hardware-provided DecodeAssist data and the fresh flag are lost ac=
-ross live migration for a pending nested #PF.
+- [Medium] The selftest `test_synthesized_npf_linear_wrap` incorrectly asse=
+rts that 64-bit linear addresses wrap at 4GB in compatibility mode, cementi=
+ng a preexisting KVM emulator bug.
 --
 
---- Patch [3]: [PATCH v3 3/9] KVM: nSVM: Track hardware-provided instructio=
-n bytes ---
-commit e944fdb4c1650228b5e210eab6c8b6fe2761112a
+--- Patch [9]: [PATCH v3 9/9] KVM: selftests: Add nested SVM DecodeAssists =
+test ---
+commit 90a4009aecfc1596a0c559275e2cf280935e0a29
 Author: Tina Zhang <zhang_wei@open-hieco.net>
 
-KVM: nSVM: Track hardware-provided instruction bytes
-   =20
-DecodeAssists provides instruction bytes for nested page faults and
-intercepted page faults caused by data accesses.  When reflecting such an
-exit to L1, KVM needs to distinguish bytes produced by the current hardware
-VM-Exit from stale VMCB02 state.
+KVM: selftests: Add nested SVM DecodeAssists test
 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index b63234a2feb8d..6e2ceb700567c 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
+Add a nested SVM selftest for DecodeAssists. Verify that KVM exposes
+the feature to L1 and provides architectural exit state for various
+instructions and intercepts.
 
+> diff --git a/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_te=
+st.c b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/svm_nested_decode_assists_test.c
 [ ... ]
-
-> @@ -1953,14 +1953,20 @@ static void svm_set_dr7(struct kvm_vcpu *vcpu, un=
-signed long value)
->  static int pf_interception(struct kvm_vcpu *vcpu)
->  {
->  	struct vcpu_svm *svm =3D to_svm(vcpu);
-> -
->  	u64 fault_address =3D svm->vmcb->control.exit_info_2;
->  	u64 error_code =3D svm->vmcb->control.exit_info_1;
-> +	int r;
-> +
-> +	r =3D kvm_handle_page_fault(vcpu, error_code, fault_address,
-> +				  static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
-> +				  svm->vmcb->control.insn_bytes : NULL,
-> +				  svm->vmcb->control.insn_len);
-> =20
-> -	return kvm_handle_page_fault(vcpu, error_code, fault_address,
-> -			static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
-> -			svm->vmcb->control.insn_bytes : NULL,
-> -			svm->vmcb->control.insn_len);
-> +	if (is_guest_mode(vcpu) && vcpu->arch.exception_vmexit.pending &&
-> +	    vcpu->arch.exception_vmexit.vector =3D=3D PF_VECTOR)
-> +		svm->nested.vmcb02_insn_bytes_fresh =3D true;
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: High]
-Does this unconditionally mark the instruction bytes as fresh for any PF_VE=
-CTOR,
-including instruction fetches where DecodeAssist is inactive?
-
-If so, could this result in stale bytes from a previous hardware VM-Exit
-being incorrectly synthesized to the L1 hypervisor?
-
-> +
-> +	return r;
->  }
-
+> +static void test_synthesized_npf_linear_wrap(struct svm_test_data *svm,
+> +					     gpa_t npf_gpa)
+> +{
+> +	struct vmcb *vmcb =3D svm->vmcb;
 [ ... ]
+> +	prepare_l2_for_vmrun(svm, setup_eip);
+> +	run_guest(vmcb, svm->vmcb_gpa);
+> +	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_NPF);
+> +	GUEST_ASSERT_EQ(vmcb->control.exit_info_2, npf_gpa);
+> +	GUEST_ASSERT_EQ(vmcb->save.rip, outsb_eip);
+> +	GUEST_ASSERT_EQ(vmcb->control.insn_len,
+> +			sizeof(linear_wrap_insn_bytes));
 
-> @@ -3725,7 +3731,7 @@ static int svm_handle_exit(struct kvm_vcpu *vcpu, f=
-astpath_t exit_fastpath)
->  		vmexit =3D nested_svm_exit_special(svm);
-> =20
->  		if (vmexit =3D=3D NESTED_EXIT_CONTINUE)
-> -			vmexit =3D nested_svm_exit_handled(svm);
-> +			vmexit =3D nested_svm_exit_handled(svm, true);
-                                                              ^^^^
+[Severity: Medium]
+Does this test enforce an architectural violation by requiring the KVM
+emulator to wrap 64-bit linear addresses to 32 bits?
 
-[Severity: High]
-By passing true here for all NESTED_EXIT_CONTINUE VM-exits, does this
-incorrectly flag stale bytes as fresh for exits where DecodeAssist is
-not active?
+By setting up L2 in compatibility mode (CS.L=3D0) with a non-zero segment
+base and an EIP that crosses the 4GB boundary, this asserts that KVM
+successfully fetches all 15 instruction bytes from GVA 0. This appears to
+cement a pre-existing KVM emulator bug rather than verifying correct
+hardware behavior (where the correct 64-bit linear address would be
+0x100000000).
 
-For example, if L2 causes a data #PF handled by L0 (which writes insn_bytes)
-and is resumed without clearing the instruction bytes, and then L2 causes a
-different exit intercepted by L1 (like an MSR intercept), will this pass the
-stale instruction bytes to L1 as fresh?
-
-> =20
->  		if (vmexit =3D=3D NESTED_EXIT_DONE)
->  			return 1;
-
+> +	GUEST_ASSERT(!memcmp(vmcb->control.insn_bytes,
+> +			     linear_wrap_insn_bytes,
+> +			     sizeof(linear_wrap_insn_bytes)));
+> +	vmcb->save.cs.attrib =3D cs_attrib;
+> +	vmcb->save.cs.base =3D cs_base;
+> +	vmcb->save.cs.limit =3D cs_limit;
+> +}
 [ ... ]
-
-> diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-> index a327bf751ecd5..96d2471a03c8c 100644
-> --- a/arch/x86/kvm/svm/svm.h
-> +++ b/arch/x86/kvm/svm/svm.h
-> @@ -242,6 +242,12 @@ struct svm_nested_state {
->  	 * on its side.
->  	 */
->  	bool force_msr_bitmap_recalc;
+> +static void prepare_linear_wrap_outsb_code(struct kvm_vm *vm)
+> +{
+[ ... ]
+> +	memcpy(&high_page[LINEAR_WRAP_OUTSB_OFFSET],
+> +	       linear_wrap_insn_bytes,
+> +	       PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET);
+> +	memcpy(low_page,
+> +	       &linear_wrap_insn_bytes[PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET],
+> +	       sizeof(linear_wrap_insn_bytes) -
+> +	       (PAGE_SIZE - LINEAR_WRAP_OUTSB_OFFSET));
 > +
-> +	/*
-> +	 * True if VMCB02 contains DecodeAssist instruction bytes from the
-> +	 * hardware VM-Exit currently being reflected to L1.
-> +	 */
-> +	bool vmcb02_insn_bytes_fresh;
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +	virt_map(vm, LINEAR_WRAP_CODE_GVA, high_gpa, 1);
+> +	virt_map(vm, 0, low_gpa, 1);
 
-[Severity: High]
-Will this tracking state be lost across live migration?
+[Severity: Medium]
+Is mapping GVA 0 here anticipating and validating the emulator's incorrect
+32-bit truncation of the linear address?
 
-Since it appears this flag is added to the nested state structure but omitt=
-ed
-from KVM_GET_NESTED_STATE serialization, if a migration occurs while a nest=
-ed
-exit is pending, won't the target host fail to receive the instruction bytes
-and potentially cause emulation failure in L1?
+If the emulator is ever fixed to comply with the AMD APM and use the full
+64-bit address, wouldn't this test begin failing since it maps the
+fallback wrapped address?
 
->  };
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1785411877.gi=
-t.zhang_wei@open-hieco.net?part=3D3
+t.zhang_wei@open-hieco.net?part=3D9
