@@ -1,141 +1,129 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92ED51E515
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:36:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785393394; cv=pass; b=rB0hpuKAju/0Kgk4wg9xx+O5//SeHxS787XvRhxeUM7aNxCYhFSRO/pT2TIuQ4CnPufrIOcuolz34T+Yc91jIq3DHBlwWjyA+Xkmg+fwuOeNd0+eq8196uBzQREM8zq+Qcv3YNG4VmI32LYH4x4Zov7ut5LdIElgy97GOC3VbHQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785393394; c=relaxed/simple;
-	bh=HqCNvr3RehKJCJOmUpyaLBl/xGdtbyrZSMkWYjHgkpQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bBgBczDXkuybbzS1BrOgTTiZQ/59MBYJSGfK4F3fL1BcJwN6cTKNwnKLNyWZskILzcc36TZnlHtp2iYxCdHEO0UwNJRzmqRwW10Ks51YyyYrs8ZSnwsd/5PuMTgXAp4vRa/YH6u17iuH3ASXk0hPaKdm61mALUyi/jl2afyAxCE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=cD0Udpsm; arc=pass smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED133ADAE;
+	Thu, 30 Jul 2026 06:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785393451; cv=none; b=m4Qoz1X+peqoCdJsTv/yE6fbjNCcIMq3oJ7BQo+J1LreAAW91z1nn2z+1/qYCjQ9xtA5ntq80BiNouzDUKHLXmzmEwsgxBGegWCyG9DjuvPcpQH5nSuiaaCyCGtdPChKxXLYvad2t/PqJtKxJKcAKftTcm1aKuiFwL8RiHXMeTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785393451; c=relaxed/simple;
+	bh=d6cqkNkrA6VgWVaf8YHHsunGkY2K7fvI3djAUWPPOJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fluiW8aAJleSh+Vzhbzmg3ye2cBxHPkGb0ySEO4BdTREH18/pgL/IlYDn3TC0W6GSaosArubDiCrUBofym4Mjl6naJ2p4dKJyjSUUtIztHO9C1vYCex+/JH4pTiNFG/tu+VSKGxpnFv1OwriuNPNnR0Avl8+XrlXgkR1/gQiSi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=CR02EmMJ; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="cD0Udpsm"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47de008b020so235465f8f.1
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:36:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785393392; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IfeR9GGQ6MgOrS1mb8CgdvfG8g1/snboYS8FUKgx1XS7/k99vnaNwaJB2s8r7o28ci
-         pJPg1qZH4c1N7s/wOd8XpVQA8yOaxh3cbA4yoGLn+tuFMs+TK7JIGd/fqEj3tHj0ZSXl
-         Yv0py8F4OvLO52icNpNJNaj/n1OA0OSUUk6QW+apcj9T1BdvTfbbccVmLmMmSQOWP52a
-         RPt7XwO6657i3N3owPq531w42D/+ifem8Be/NleFSQpGL+w0eVom4uJHvAdlfa8VyaKP
-         XGRy1WDEWqgiCkvtK7V3dA+rz8faTOCXgkDsMkW38j86infwiBkwjuA17caL50wIbO8a
-         JBJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qTmettx8cBsuN1BktqpKr41TwEVmMBQwm8x7EG1kBB4=;
-        fh=OoT1glIjq3EZYJDFwz52ZNeYCB0F/o8cP+zijikrTxE=;
-        b=GfS/cF69gXPbfsV8NIJNqFMT8BmouqEaD0bmFzBmtBbWujQxzae7LylNqL0CRVk4Fe
-         MZoqnE1T3xgCt9JGXK0KfxScjy3Hqj4tPSDDY+W/7Js9Uc68webMW3Oq/aEYKiqnGGFN
-         usuAAFuX0VBDAx2MZwsXpjgVyVDEy43CARHTv+isRTZNtbvhu6qRQukiwqHkDiRhfnTW
-         Mi2l6dc21s1lISgRzLJEV2Q3u8ROEfzowy1dkHACsMfszCcCDv062yF+bzU/LvlYJIqd
-         8A9WVlufarh2sQycHn6Frhqy1G0E2DheEPNjUVtjjsxDpe2kztaE5H3w9e6zKUFCtdi4
-         1QiA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785393392; x=1785998192; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qTmettx8cBsuN1BktqpKr41TwEVmMBQwm8x7EG1kBB4=;
-        b=cD0UdpsmFVhrQ9Ha2hBH8cyC+qZ6iWJreizLoCKI7Yp3zgV/sTf7dXrY2wWJLw8qGc
-         xobY7ZoqCs+nkteyq2Ncx8dHzRC0jIDdMufG1ileZoknz6BP6ctdtDwfTujRXaQyQ6Wt
-         iYyWD+z5uxqd/IXaov32VMsgUZ4OV2sPE9//SnDBPHcu3NojpvK2neGNe567wPWQlWbT
-         t5KPEs3goQWJ/2Zbniv27gWV5+YOCQZ32R+rsS7znEtBvYmYdUh8Kgkx4hQO61rKZCD3
-         H37nR2jUFduLNfyZAiokgC8T0d24fHBBTwtJUfSeOJX4LOuwRNvyOk4VgXjJoS/xRQyf
-         dyWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785393392; x=1785998192;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qTmettx8cBsuN1BktqpKr41TwEVmMBQwm8x7EG1kBB4=;
-        b=LBD9VHiA0cQ/LC3XO+HNFU7pdevJXz4HBYK938QQwStvNTNuDumItdw8XwjEkhYhMI
-         Fiy5cwus12BgqVrjTy6+Sd5mChLmR+Giv2D49dtNxFWQRzyEmB5gHX0wN4sFZJkSz6K0
-         43jmslFNzL8KQzl3UXJhOv9zB1Jl5As3sNvqt0eyXj7F4ZOhP5QnGgYcj47nTMMA8gFK
-         ArX5Yj1mdmOHjI6FdGLIChm1YmNHEpu8FO7z055ILS/UJNq4V5UA5JRTtUUwQHOgv8c0
-         zWdTjTZIuZK1vXH0IE6PkGunQHTLza9d0DbPOKty2YxEPexmMzkJVrvo/vHUpBI0qs9P
-         Zd/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoYyx8kR2dykst61n+e9zoLtwvs8YyCEpfzcfmx45/sjn443lOlv71oFVULjy32Y5BNFYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNn+/KN8/9q/cCWtarMpdKz+kubyUOojimBR02rORSEMvPT7Zu
-	6aNrrrc102jGtpJsV7BzaFuA7PYBsiHx035VJK+fSKaUO2GrVqN/oVFVavlA3VB354p+fgEtNMT
-	8dUfuumsCtgfgqo9g4B+xA/9t+mJfhavT6hEP0ynBZA==
-X-Gm-Gg: AR+sD10pT9K5qh7YuedxG5EFEOwgKQDqH+99egpIGbhhTLPiiDVuTAwXE+7sehwvokT
-	caWIOhK4nMVoDvQ0PFZuJvMb19K77MzltYzdlhrU+djMpVV3YLUUkhZd4Q/SoQCAfQJ3jsCDOg+
-	ndwhM5EaFKAnKujmlXcGfon34MenOHJsXC9i0wPBiSSTNAiUg5JdR+Q4uaMMn1ToaHK3Vmfftf0
-	lFMLxgyS5xPqsIlbM72r8mb9FvaXLNMaGzytkrS3sI2bmIF3dLwp5FSSGFZF87vAcfp6LEmxLSS
-	9CuAWRMWFvrZerIriy/8QxURqkC4ZatMCx1aCqBUBJP7fyhgB6RVeGWqQnBrt/mmta+hYSxZQx9
-	vWcrr6okG++ur3NQAJqxW5myu8zsd6A1ZymwZeXaVO+q8SRjgkPKGDCBD2HCSgvE=
-X-Received: by 2002:a5d:588f:0:b0:475:da0e:744d with SMTP id
- ffacd0b85a97d-47fc8bd9a17mr1123969f8f.8.1785393391373; Wed, 29 Jul 2026
- 23:36:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="CR02EmMJ"
+Received: from [133.11.54.183] (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 66U6aH4o056545
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 30 Jul 2026 15:36:17 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=/MaMi87RWhMSAus5qN4EIk8TtDM9x9f0bzGDNP+s4l8=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20250326; t=1785393378; v=1;
+        b=CR02EmMJ6YJKNFkKLren40kXzZGtLt35yQRS20Az0NGX7Jm0IItpOIiJ48tk4D+j
+         rVeOUQaPTaJLIRQMGQGPymW+FcXh4R5wmIxwBqX6xun4O/ZABjohzvFq452q1ev/
+         YrSg6ACGWGVzhxeqB01mYofr+/ZJgWbwtqkkbmyAAP/YRm1+e7Rz3/UVkgzaU6Wt
+         dr0B0wZv9b+dBkyktdOfUGGcH10DMnIhloYmuEY1CnDswT7VJRMVYCyf8ra5Kb4s
+         ZKZderu/9rHc0ARcUKa3rC1OPfvFkqbg9UXc7WcR4S+1DZISyboyD9RQ+jn0zfbV
+         viziw2KISB01Nbt8FTXigQ==
+Message-ID: <e023d791-38c3-47b4-9b09-3420fe78d9ea@rsg.ci.i.u-tokyo.ac.jp>
+Date: Thu, 30 Jul 2026 15:36:15 +0900
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260729232527.139183-1-inochiama@gmail.com> <20260729232527.139183-5-inochiama@gmail.com>
-In-Reply-To: <20260729232527.139183-5-inochiama@gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 30 Jul 2026 12:06:18 +0530
-X-Gm-Features: AUfX_myMCEfrPFgw6hpa1bzA5HZDULLUkMJkPLOpIjbzM3NJsjXgJbt-fDAUHQY
-Message-ID: <CAAhSdy3mzKDCy1zEpB7K7qJHG_mUThUu_bXwD+n+RjONPvtS3w@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] RISC-V: KVM: Mark the reset callback of FWFT
- extension always dirties CSR
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Yixun Lan <dlan@gentoo.org>, Longbin Li <looong.bin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only
+ emulation
+To: Fuad Tabba <fuad.tabba@linux.dev>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Catalin Marinas
+ <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+        Yury Norov <yury.norov@gmail.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Steffen Eiden <seiden@linux.ibm.com>,
+        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 30, 2026 at 4:55=E2=80=AFAM Inochi Amaoto <inochiama@gmail.com>=
- wrote:
->
-> As the CSR is only flushed when the csr_dirty is set, always set the
-> csr_dirty field in kvm_sbi_ext_fwft_reset() so the CSR change can take
-> effect immediately. This unconditional set should be safe as all
-> supported FWFT features change the CSR state currently.
->
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
 
-LGTM.
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+On 2026/07/30 3:18, Fuad Tabba wrote:
+> Hi Akihiko,
+> 
+> On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+> <odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+> ...
+> 
+>> +/**
+>> + * kvm_pmu_create_perf_event - create a perf event for a counter
+>> + * @pmc: Counter context
+>> + */
+>> +static void kvm_pmu_create_perf_event(struct kvm_pmc *pmc)
+>> +{
+>> +       struct kvm_vcpu *vcpu = kvm_pmc_to_vcpu(pmc);
+>> +       struct arm_pmu *arm_pmu = vcpu->kvm->arch.arm_pmu;
+>> +
+>> +       if (kvm_pmu_fixed_counters_only(vcpu->kvm)) {
+>> +               do {
+>> +                       arm_pmu = kvm_pmu_probe_armpmu(READ_ONCE(vcpu->cpu));
+>> +
+>> +                       if (!arm_pmu) {
+>> +                               pr_warn_once("kvm: Unsupported PMU variation detected.\n");
+>> +                               add_taint(TAINT_CPU_OUT_OF_SPEC, LOCKDEP_STILL_OK);
+>> +                               return;
+>> +                       }
+> 
+> Sashiko flagged that this can leave the perf event out of sync with
+> the sysreg, which looks plausible: on a pCPU with no registered pPMU
+> this returns without recreating the event, so a guest event-type
+> change there updates the sysreg but not the event, and after migrating
+> back to a pCPU the original pPMU covers, kvm_pmc_enable_perf_event()
+> re-enables the stale event instead of recreating it.
+> 
+> I know you treat the no-pPMU case as out of spec, but the dropped
+> update lands once the vCPU is back on a normal pCPU. Is this intended?
 
-Thanks,
-Anup
+"[PATCH v9 06/16] KVM: arm64: PMU: Recreate events after MDCR_EL2 
+changes" calls kvm_pmu_stop_counter() in kvm_vcpu_reload_pmu(), so it 
+does not matter whether this function calls kvm_pmu_stop_counter().
 
-> ---
->  arch/riscv/kvm/vcpu_sbi_fwft.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 56fb59afe02a..2e35e7e12327 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -601,6 +601,8 @@ static void kvm_sbi_ext_fwft_reset(struct kvm_vcpu *v=
-cpu)
->                 if (feature->reset)
->                         feature->reset(vcpu);
->         }
-> +
-> +       vcpu->arch.csr_dirty =3D true;
->  }
->
->  static void kvm_sbi_ext_fwft_validate(struct kvm_vcpu *vcpu)
-> --
-> 2.55.0
->
+The other changes that require recreating the event are currently not 
+handled at all as Sashiko complains [1]. I'll fix that as done in 
+MDCR_EL2 setters in the next version.
+
+That said, I do not intend to add any extra complexity to provide any 
+guarantee for a system with unsupported PMU variation except that the 
+user can notice and react to that (i.e., the taint is reported and no 
+oops happens due to NULL dereference). The patch message is somewhat 
+misleading in this aspect so I'm going to fix that in the next version.
+
+[1] 
+https://sashiko.dev/#/patchset/20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp?part=6
+
+Regards,
+Akihiko Odaki
