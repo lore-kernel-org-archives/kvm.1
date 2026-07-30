@@ -1,65 +1,50 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012044.outbound.protection.outlook.com [40.93.195.44])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B5235E92B;
-	Thu, 30 Jul 2026 02:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785380153; cv=fail; b=OFwd1LwiKxJHsJgViDrXb7MRnJ+JquTyf+YIxX7NylrT8BVPOnYPFp0LA5Qy/KvjttHr1+/zAJ95W5h3c1zjlVEZeu+E2njZ86aWee8XeTPX6lJ3YmQdNDaxXSYOsP2DWVHVhlGrYBkIOOHvUWPwMIP59AJtDYbpWF4U1sMiM9c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785380153; c=relaxed/simple;
-	bh=drCa4V2qwfnFGm7uv6EL+oP8X/53AlgtWdSL4ganllk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UHtCnVbvm/GZeRD3C5WjCFzAzX+h6xCpSm4yIYiyP6nsYPVqw8MTeMtNxOeMyMZbP+7qk1K9LlBCk0QHWq0TfTjj6bYeljv8xJ4XextWHbWMxs0R8MJtD/0il+6OrBRNo5N5mh+ZZheTzYR+5mRHwdgYSlB5z7E6L+rQjIuCzms=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o6HHMK1/; arc=fail smtp.client-ip=40.93.195.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C92370D5A;
+	Thu, 30 Jul 2026 02:58:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785380310; cv=none; b=tIlsOealUSIYMaYjiiaM0DtfA963jyPPNY5RvvrtPveXhCeEiNqo1BDL5WeMjLlQhZUE67PHKTQoBDq1r597pzhgEQgC1z+30uJ9R4RI3u7PJMxMismPB2xz55l8AuTtw5AMXXx9VXdOmhQ7jBJCPz+SfWlvq3C/di19+7ULx6E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785380310; c=relaxed/simple;
+	bh=SFSZE9BInnGnGyldACZ/gGg0XLDvlYC8EYZv62LThY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RPpWb08p9krjr55l7B9KgEmJ/d30Tj+OFQ1ATFxMlXPl2qBOZt9PuQRxiT7bzgnETBbCH3/3D5bqWrohRx7G5pMaGKJhFFdGCe2jZnyXYx8EbxS/BXYz3IsKPiyn7qWDCo/2ZHxIrZINJm6qT3I8advesGC1xx22fXfTUXPWRFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g+UgZ/rg; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o6HHMK1/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ycBY+02lsUoMYxHlHR9K7tt3lQkinnpZNmXzhhVJOaIUOVSrNSYzRuHGBsYjUXNiOaGtynkPzyRbHHw53HUpAbJrNc2s000M8v/YIL1HI+wUk+z0qqPL+M8B3SFTqktA7hBQgRYXffO+BeuUceL6pmOOPsGjMmNcXLWQco1HCpC8/70j8Gfl9rRwKTUgH3SepJmHfv+QrCDXqHAMkexdjZkHaqhCNkuisLAdixXkKKd8C78H5qdsRck6AdTpAM+f1wn9iFN+VyR54BwvX5S1myI6CFTS51JbrStBRyZKz6YsJej7WHHsDsa40rs9m2pO9MbyfaH37S8XthhY9vCSYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1GXvrfHyVwh9U5N5nbejNel/+ZDP55aPdPfLJHOD87g=;
- b=o5RcxAQNCZKd6qpbIPZ6o1Pf3SuR4qR0bGi7XkBW24QXXgiSizprLY+bah43/HpEHDIdN29xVFKFbKhJxsAQuM72mzK0ioa2sAO77n0zBQecVlhVfjFqeelZV1WxZTE0iZE9igSa8ZhFtYXklNYdFQ93TQRuMP3395L414hSwsRmWozjetFcwWnIVacKFGaDjz8sTvmQFdf1p7Yc9q73Hcn1WgVKZURPFXtljfnVvWDfbiVE4dfXJN74GNqrHpTiK1Izb6C/nRbGVu/hPxTsxrWdpPVzcv4X8wmziqFt1cMHgVVmliYBWw6wDqMMKnIuInlRo7pOiUPcJE4J/GSgFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=alien8.de smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1GXvrfHyVwh9U5N5nbejNel/+ZDP55aPdPfLJHOD87g=;
- b=o6HHMK1/MOKK5GY1dEba8/6uh3vE5igCiIVwe6jOlmUAZyoux8CSFR++f4XK3R4lv0Mw9xfm4Kz85achk8ushOAMQyrRIC62yEHWBufZh/nuRJtGLBVLByj1SYhcST+URAe8hkofiMfWQdM5vlB4LReooix+RFMrNpcRU7Yw4R0=
-Received: from CH5P222CA0002.NAMP222.PROD.OUTLOOK.COM (2603:10b6:610:1ee::22)
- by SJ2PR12MB9139.namprd12.prod.outlook.com (2603:10b6:a03:564::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Thu, 30 Jul
- 2026 02:55:47 +0000
-Received: from CH2PEPF0000009E.namprd02.prod.outlook.com
- (2603:10b6:610:1ee:cafe::a5) by CH5P222CA0002.outlook.office365.com
- (2603:10b6:610:1ee::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.14 via Frontend Transport; Thu,
- 30 Jul 2026 02:55:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CH2PEPF0000009E.mail.protection.outlook.com (10.167.244.27) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Thu, 30 Jul 2026 02:55:46 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 29 Jul
- 2026 21:55:46 -0500
-Received: from [10.136.32.30] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 29 Jul 2026 21:55:38 -0500
-Message-ID: <7f837674-786a-42b7-a289-4c048fbec6b8@amd.com>
-Date: Thu, 30 Jul 2026 08:25:37 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g+UgZ/rg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785380308; x=1816916308;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SFSZE9BInnGnGyldACZ/gGg0XLDvlYC8EYZv62LThY8=;
+  b=g+UgZ/rgT9Gp4ApS4n+C4P4QRveCDiPnPCBdct5KtX5btcn2Ki3XREBp
+   zW10vGzN4vFkR3ZOzMCNF6BvuMJWlzRFBVKRtz3q8VNpbbKl/J+mAnODU
+   4OQpiFLOJSugFblUTKULIYLqp9tK0xgrxJU9gHti94ljzW+DsgeTwtBbC
+   gFTZy7Np9FSMzGu8yBTMKNLf4IRvV1gNoAcNJgVb3degQyeV0wLZ/SFDN
+   yh1ibIce8MI9f7VxKyDlLO/iZvTi+K2upxUc1YsCgRywtiUygESKls4uv
+   RkZNOrYQ8jfWjse8QMmMAf+sbHY5rFNs5pS3sBFw1peeZwqe3p/J2m0f9
+   A==;
+X-CSE-ConnectionGUID: 7boWRY5fSkqgUR/XV/TqSg==
+X-CSE-MsgGUID: PBshuUZpTxeyoglwAfvSxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85848593"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="85848593"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 19:58:28 -0700
+X-CSE-ConnectionGUID: 6AbkIaqVTV6+pnw5fpZkJA==
+X-CSE-MsgGUID: IRkXUrbHT/KbczQm3tuW3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; 
+   d="scan'208";a="258942127"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.178]) ([10.124.241.178])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 19:58:25 -0700
+Message-ID: <7cbed207-51f8-4707-b21c-432f49515aa5@linux.intel.com>
+Date: Thu, 30 Jul 2026 10:58:22 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,121 +52,243 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/6] x86/sev: Initialize RMPOPT configuration MSRs
-To: Borislav Petkov <bp@alien8.de>, Ashish Kalra <Ashish.Kalra@amd.com>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, <hpa@zytor.com>, <seanjc@google.com>,
-	<peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>,
-	<pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<Tycho.Andersen@amd.com>, <Nathan.Fontenot@amd.com>,
-	<ackerleytng@google.com>, <jackyli@google.com>, <pgonda@google.com>,
-	<rientjes@google.com>, <jacobhxu@google.com>, <xin@zytor.com>,
-	<pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-References: <cover.1784844080.git.ashish.kalra@amd.com>
- <ff346ea1770cf996e1623270a085ac08d21888c6.1784844080.git.ashish.kalra@amd.com>
- <20260730020704.GGamqxyPy5oJAmC5Oy@fat_crate.local>
+Subject: Re: [PATCH v7 9/9] KVM: selftests: Add PERF_METRICS and fixed counter
+ 3 tests
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
+ Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
+ Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260727192131.582105-1-zide.chen@intel.com>
+ <20260727192131.582105-10-zide.chen@intel.com>
 Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20260730020704.GGamqxyPy5oJAmC5Oy@fat_crate.local>
-Content-Type: text/plain; charset="UTF-8"
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260727192131.582105-10-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009E:EE_|SJ2PR12MB9139:EE_
-X-MS-Office365-Filtering-Correlation-Id: 98f3e8aa-7509-4128-512b-08deede60e17
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|23010399003|36860700016|11063799006|4143699003|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	OnBd4GFkw4gA/7LvJaz/xeH+6qFZR7djUkgOXUQFJ2U/NTBZlcHPeG5nr1JzJWz28USQYudHP8gASYG7MRBwi3hw4OGwQisrK/uP928P6NWvVGknBM6gqJJrEp3lsxi7nr8C9N6F10PEtRIYlQY+IxfrAoTiePheNtYBM+cd/+679jrBt4JpWDacbZT09oxKdRmdCvuHUumlaNaUTuKBFouRJSoOqqWgEUF+VwCRpdrlYbIzso10t9zVR2Ts4tWy9Eg5zfUTcqUqhyVL+HSSyBa39dWzU+1xbcThN8u/cLXsY4mN3FyvVU418tquW/A+QwEM/Zd+SZdVzzmjsVq4NYn3unKV98HoB58fk4DJbSdeNmYxiEH+PhTWivAOpHPf1sqFHYKtBWVNpwhA2/A0AkDN2Zce+tPTFy6G7iX5zpj7FdSskCOIS8S7dUy/oNM/KNED6nk9iMP/CCqoTOC0vS5Tx5dhey2iexuA1kXI/Pmz3C2bcIncvk1KIsI3j0JXkE9VrMeCQ+pw2fV5t5sWZNLvNvrYOvpWtzP4zDk2UCWrX9+GO6mFjRgAeRrA/HaDGvKanwOZcEO6D+TK7beWRhcxYpV4WwHCx0xIM5yPs3FMmFHLy8jZop2zS8baioXYz3fGrXSkmT4qwN0mTtZBO2WRmB19g8yph11rpf3fmCDeu554Zx+dcOTQmjXelUS1DuClboahwYBYujwr6eIWPQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(23010399003)(36860700016)(11063799006)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	2YunLvug1Y831OJwg2DoL/1pAdwXOC8mJiyGWynz6DUT0TFcJfozdmhDHDlHxol2F/ZwqU/TKYvoFDIZloc01jyJ7NulgY/3NqtENCDUVL/CjOr8+u5AdXqg1Zys7VX9szsANeqdPY6TYFi/jDI9xORUk2/9765KrF+PzrAUJWYryE0Xf10KFwsuzyinlJ+/mL7zZSg9CwRVXLWYUuNSfQkkg3EfyNY4DovqCtwCt2HHw21IkKaorz8G4et33/NHqoZNnwzHfViVUcxQI+Q5URMQWLcrR5TBqt8hT6BKt0Gnpqs4c4EZSNz9P/TAI88BtHUDbbrtkCHa5uliaSmvboIVxrrhFxnerr1StUDwmjgjpHnhTBnGPpZKJNNDQ6JyHMv5xi4AX0bNL8SJPHY6z2dJJ10bWO3F+eBeICOvb87A6/DAG1XqYTxfJoHtNDO+
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 02:55:46.7264
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 98f3e8aa-7509-4128-512b-08deede60e17
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9139
 
-Hello Boris,
+LGTM. Thanks.
 
-On 7/30/2026 7:37 AM, Borislav Petkov wrote:
-> On Mon, Jul 27, 2026 at 07:04:57PM +0000, Ashish Kalra wrote:
->> @@ -705,10 +760,12 @@ bool snp_probe_rmptable_info(void)
->>  	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP))
->>  		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
->>  
->> -	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
->> +	if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED) {
->>  		return probe_segmented_rmptable_info();
->> -	else
->> +	} else {
->> +		setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> 
-> That looks a bit squirreled away in a probing function. Let's make that a bit
-> more obvious:
-> 
-> bool snp_probe_rmptable_info(void)
-> {
->         if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
->                 rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
-> 
->                 if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
->                         return probe_segmented_rmptable_info();
->         } else {
-
-I believe there can be cases where CPUID advertises
-X86_FEATURE_SEGMENTED_RMP but rmf_cfg doesn't set
-MSR_AMD64_SEG_RMP_ENABLED because otherwise checking rmp_cfg in
-addition to the feature bit makes no sense.
-
-In that case we should attempt a probe_contiguous_rmptable_info() even
-for X86_FEATURE_SEGMENTED_RMP.
-
-Essentially drop that "else" and do something like:
-
-bool snp_probe_rmptable_info(void)
-{
-	if (cpu_feature_enabled(X86_FEATURE_SEGMENTED_RMP)) {
-		rdmsrq(MSR_AMD64_RMP_CFG, rmp_cfg);
-
-		if (rmp_cfg & MSR_AMD64_SEG_RMP_ENABLED)
-			return probe_segmented_rmptable_info();
-	}
-
-	/*
-	 * Segmented RMP is either not supported on the platform or
-	 * is disabled by the firmware. RMPOPT is not not supported
-	 * without segmented RMP.
-	 */
-	setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-
-	return probe_contiguous_rmptable_info();
-}
-
->                 /* RMPOPT is supported only with a segmented RMP table. */
->                 setup_clear_cpu_cap(X86_FEATURE_RMPOPT);
-> 
->                 return probe_contiguous_rmptable_info();
->         }       
-> }
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
 
--- 
-Thanks and Regards,
-Prateek
-
+On 7/28/2026 3:21 AM, Zide Chen wrote:
+> Add a test case to exercise IA32_PERF_METRICS, i.e. architectural
+> support for Topdown (TMA) Level 1 metrics, enumerated by
+> IA32_PERF_CAPABILITIES[15].
+>
+> Only check for non-zero metrics, as they are derived and depend on
+> the workload, CPU model, and host scheduling, making precise
+> expectations fragile.
+>
+> Extend the PMU selftest to cover Intel fixed counter 3 by bumping
+> MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
+>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> v7:
+> - Use RDPMC instead of RDMSR in PERF_METRICS sanity test.
+> v6:
+> - Move perf metrics test out of test_arch_events(); it doesn't belong
+>   there, and this also avoids redundant runs of perf metrics test.
+> - Correct the +/-3 error margin.
+> v3:
+> - Slightly reword comment to explain the sum of Topdown metrics
+>   is close to 100%.
+> - Change abs() with explicit bounds (sum >= 0xfd && sum <= 0x102)
+>   for better readability.
+> v2:
+> - New patch.
+> ---
+>  tools/arch/x86/include/asm/msr-index.h        |  1 +
+>  tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
+>  .../selftests/kvm/x86/pmu_counters_test.c     | 94 ++++++++++++++++++-
+>  3 files changed, 93 insertions(+), 5 deletions(-)
+>
+> diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
+> index eff29645719b..e7745e2cd543 100644
+> --- a/tools/arch/x86/include/asm/msr-index.h
+> +++ b/tools/arch/x86/include/asm/msr-index.h
+> @@ -331,6 +331,7 @@
+>  #define PERF_CAP_PEBS_FORMAT		0xf00
+>  #define PERF_CAP_FW_WRITES		BIT_ULL(13)
+>  #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
+> +#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
+>  #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
+>  #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
+>  					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
+> diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
+> index 608ed83d7c6a..6c19503e0bb7 100644
+> --- a/tools/testing/selftests/kvm/include/x86/pmu.h
+> +++ b/tools/testing/selftests/kvm/include/x86/pmu.h
+> @@ -52,6 +52,9 @@
+>  /* Fixed PMC controls, Intel only. */
+>  #define FIXED_PMC_GLOBAL_CTRL_ENABLE(_idx)	BIT_ULL((32 + (_idx)))
+>  
+> +/* PERF_METRICS enable, Intel only. */
+> +#define PERF_METRICS_GLOBAL_CTRL_ENABLE		BIT_ULL(48)
+> +
+>  #define FIXED_PMC_KERNEL			BIT_ULL(0)
+>  #define FIXED_PMC_USER				BIT_ULL(1)
+>  #define FIXED_PMC_ANYTHREAD			BIT_ULL(2)
+> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> index dc6afac3aa91..8294a0089a85 100644
+> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> @@ -3,6 +3,7 @@
+>   * Copyright (C) 2023, Tencent, Inc.
+>   */
+>  #include <x86intrin.h>
+> +#include <linux/bitfield.h>
+>  
+>  #include "pmu.h"
+>  #include "processor.h"
+> @@ -241,17 +242,20 @@ do {										\
+>  	);									\
+>  } while (0)
+>  
+> -#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
+> +#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP)				\
+>  do {										\
+> -	wrmsr(_pmc_msr, 0);							\
+> -										\
+>  	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))				\
+>  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflushopt %[m]", FEP);	\
+>  	else if (this_cpu_has(X86_FEATURE_CLFLUSH))				\
+>  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflush  %[m]", FEP);	\
+>  	else									\
+>  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop", FEP);		\
+> -										\
+> +} while (0)
+> +
+> +#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
+> +do {										\
+> +	wrmsr(_pmc_msr, 0);							\
+> +	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP);				\
+>  	guest_assert_event_count(_idx, _pmc, _pmc_msr);				\
+>  } while (0)
+>  
+> @@ -361,7 +365,7 @@ static void test_arch_events(u8 pmu_version, u64 perf_capabilities,
+>   * other than PMCs in the future.
+>   */
+>  #define MAX_NR_GP_COUNTERS	8
+> -#define MAX_NR_FIXED_COUNTERS	3
+> +#define MAX_NR_FIXED_COUNTERS	4
+>  
+>  #define GUEST_ASSERT_PMC_MSR_ACCESS(insn, msr, expect_gp, vector)		\
+>  __GUEST_ASSERT(expect_gp ? vector == GP_VECTOR : !vector,			\
+> @@ -580,11 +584,81 @@ static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities,
+>  	kvm_vm_free(vm);
+>  }
+>  
+> +static void __guest_test_perf_metrics(void)
+> +{
+> +	int retiring, bad_spec, fe_bound, be_bound, sum;
+> +	u64 global_ctrl, metrics;
+> +
+> +	if ((guest_get_pmu_version() < 2) ||	/* Does guest have GLOBAL_CTRL? */
+> +	    !this_cpu_has(X86_FEATURE_PDCM) ||
+> +	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
+> +		return;
+> +
+> +	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
+> +	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
+> +	wrmsr(MSR_PERF_METRICS, 0);
+> +
+> +	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS. */
+> +	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
+> +	global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
+> +		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
+> +
+> +	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
+> +
+> +	/* Check test results. */
+> +	metrics = rdmsr(MSR_PERF_METRICS);
+> +	retiring = FIELD_GET(GENMASK_ULL(7, 0), metrics);
+> +	bad_spec = FIELD_GET(GENMASK_ULL(15, 8), metrics);
+> +	fe_bound = FIELD_GET(GENMASK_ULL(23, 16), metrics);
+> +	be_bound = FIELD_GET(GENMASK_ULL(31, 24), metrics);
+> +
+> +	/*
+> +	 * Be conservative: the measured payload definitely retires work, so
+> +	 * Retiring should be non-zero.
+> +	 */
+> +	GUEST_ASSERT_NE(metrics, 0ULL);
+> +	GUEST_ASSERT_NE(retiring, 0ULL);
+> +
+> +	/*
+> +	 * Each level-1 Topdown metric is an integer fraction of 0xff.
+> +	 * A +/-3 error margin is chosen for a loose sanity check.
+> +	 */
+> +	sum = retiring + bad_spec + fe_bound + be_bound;
+> +	GUEST_ASSERT(sum >= 0xfc && sum <= 0x102);
+> +
+> +	/* Sanity check after PERF_METRICS disabled. */
+> +	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
+> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
+> +	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
+> +
+> +	guest_test_rdpmc(INTEL_RDPMC_METRICS, true, 0xdeaddead);
+> +}
+> +
+> +static void guest_test_perf_metrics(void)
+> +{
+> +	__guest_test_perf_metrics();
+> +	GUEST_DONE();
+> +}
+> +
+> +static void test_perf_metrics(u8 pmu_version, u64 perf_capabilities)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +
+> +	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_perf_metrics,
+> +					 pmu_version, perf_capabilities);
+> +
+> +	run_vcpu(vcpu);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+>  static void test_intel_counters(void)
+>  {
+>  	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
+>  	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
+>  	u8 pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
+> +	u64 advertised_perf_caps = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
+>  	unsigned int i;
+>  	u8 v, j;
+>  	u32 k;
+> @@ -592,6 +666,7 @@ static void test_intel_counters(void)
+>  	const u64 perf_caps[] = {
+>  		0,
+>  		PMU_CAP_FW_WRITES,
+> +		PERF_CAP_PERF_METRICS,
+>  	};
+>  
+>  	/*
+> @@ -649,6 +724,10 @@ static void test_intel_counters(void)
+>  			if (!kvm_has_perf_caps && perf_caps[i])
+>  				continue;
+>  
+> +			/* Ignore unsupported features. */
+> +			if (perf_caps[i] & ~advertised_perf_caps)
+> +				continue;
+> +
+>  			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
+>  				v, perf_caps[i]);
+>  
+> @@ -675,6 +754,11 @@ static void test_intel_counters(void)
+>  				for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
+>  					test_fixed_counters(v, perf_caps[i], j, k);
+>  			}
+> +
+> +			pr_info("Testing Perf Metrics, PMU version %u, perf_caps = %lx\n",
+> +				v, perf_caps[i]);
+> +
+> +			test_perf_metrics(v, perf_caps[i]);
+>  		}
+>  	}
+>  }
