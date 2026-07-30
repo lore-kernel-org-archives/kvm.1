@@ -1,170 +1,56 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9488442107;
-	Thu, 30 Jul 2026 13:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0345643E097;
+	Thu, 30 Jul 2026 14:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785419934; cv=none; b=uWHTgAZw1gxyJfYxMtEKHBRBVYRyK5WhpPhcnq6S7xy3Om3RGUPoLL3b4PvMB1ucS9KulYLbcP5aSJs6aQxRMsjFoucUgHVS2EztGQs0TYVlwrvPWiPFbWXS2h+Ir6SgE4UQ4Jx3pdCZH0wyBDeuzKHb7+u9hRJiAL/l6My0b1o=
+	t=1785420609; cv=none; b=B0+WrJYE75eVwcFgTE36piDzisdZ52aABkPidnamkjCtCc+k2FfhAh9726vFKKO6dKEkF+y+WLEQpTS6ZASt5rqK1WCsX5kwE/20OFfzd3YIko3PTQucOUBeuAwWB48hvy+BmOwK4E6trKB1wR8t34UjaQiDjUzU7aWrop8mnSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785419934; c=relaxed/simple;
-	bh=P2akoiC1GNSXya01eYvaPvAt9k5Gt8HBgYjl15fRFZ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gCo9j5xC+mbVayF0mKREY04VWvxvZgzLWouKw3nXRjf3nlLLVmg4tHWJQ/AyD3BSiZHY18OGZlQkxSppncKLkm/IMYDr5Xdpx0Et5SIGp93Cf/ivUbxnwYm7/fcti/Z0+1tiRyOEf9//8fbJ+Et+Snr6Bs/ykSfI8ZNfL88f+pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YIkdTTP4; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785420609; c=relaxed/simple;
+	bh=JFacijSoOk+Pfz3bncLtVSm7DvRRfvar765CcQ10RiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KG5ePyLS4yYQJchx+ikaYB9B+z4HsHKmzfbzBBRO5KnGkFA7xGffk5coVL/UJmyOyjdtl5z6HEFfwCVhkm2AhIPLyh7N2OJIKScYzBFxcZeYGiGAY8dMIvPYT4AWq9BJmu9H+7mYoZUSiO0ea4OKFyF1S4RRttY9uRTNK7dNp0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0D36w1D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YIkdTTP4"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 41C3F1684;
-	Thu, 30 Jul 2026 06:58:45 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13C953F7B4;
-	Thu, 30 Jul 2026 06:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785419929; bh=P2akoiC1GNSXya01eYvaPvAt9k5Gt8HBgYjl15fRFZ0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YIkdTTP4w6YqY8vGR8E9PpY5ju5582NAJ4JnPrdafTA4Ouq46T4hN90d70T8MBywP
-	 Vx62n/bs8kOOet8uM6PlyHqYdzokIZeV7KE5Y32eZYQ9bSPvJZk3f2VPsEuC7LD/rV
-	 rB1KX+UO4b1GLcjF31uCR8XKxkf3AJ3dWiwXvp/c=
-Message-ID: <08599315-2dd3-4602-a902-09b197265b44@arm.com>
-Date: Thu, 30 Jul 2026 14:58:43 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0D36w1D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC6AA1F00A3D;
+	Thu, 30 Jul 2026 14:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785420607;
+	bh=n0GKQP4+y2busracc0QkdYbb3zXLNLuvBf3Ozt98nAg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=u0D36w1DScj92QqkZZmwwKXoDN4LN6ORkaYhGEO1OafSEL1oFFrzSlg1UWH1ePCK1
+	 sBmOARlczob3S85HkOF98ixqZAaXrfIQB1TGMpj18UJvLRNQcfBo/rM2/HXjR0hstX
+	 N6S1QOVUjwiAMi8QfaZdeFsMMVs9K9v9rbAhwxkY=
+Date: Thu, 30 Jul 2026 16:09:53 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Nikunj A Dadhania <nikunj@amd.com>, stable@vger.kernel.org,
+	Chandrakanth Silveru <Chandrakanth.Silveru@amd.com>,
+	Srikanth Aithal <Srikanth.Aithal@amd.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH stable] KVM: SVM: Bump asid_generation on CPU online to
+ avoid ASID collision after hotplug
+Message-ID: <2026073045-shrimp-amaze-7668@gregkh>
+References: <20260729225006.671397-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
-To: Kohei Enju <enju.kohei@fujitsu.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-15-steven.price@arm.com>
- <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260729225006.671397-1-pbonzini@redhat.com>
 
-On 27/07/2026 09:14, Kohei Enju wrote:
-> Hi Steven, I have a comment about rec_exit_sys_reg() below.
+On Thu, Jul 30, 2026 at 12:50:05AM +0200, Paolo Bonzini wrote:
+> From: Nikunj A Dadhania <nikunj@amd.com>
 > 
-> On 07/15 15:28, Steven Price wrote:
->> Entering a realm is done using a SMC call to the RMM. On exit the
->> exit-codes need to be handled slightly differently to the normal KVM
->> path so define our own functions for realm enter/exit and hook them
->> in if the guest is a realm guest.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> Reviewed-by: Gavin Shan <gshan@redhat.com>
->> ---
->> Changes since v13:
->>  * The RMM is now required to provide an ESR value with the correct
->>    information to emulate MMIO, so we no longer need to hardcode 0s in
->>    rec_exit_sys_reg().
->>  * The PSCI changes mean that there is a potential race when turning on
->>    a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
->>    with -EAGAIN in this case.
->> Changes since v12:
->>  * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
->>  * Add handling of the IRQ exception case where IRQs need to be briefly
->>    enabled before exiting guest timing.
->> Changes since v8:
->>  * Introduce kvm_rec_pre_enter() called before entering an atomic
->>    section to handle operations that might require memory allocation
->>    (specifically completing a RIPAS change introduced in a later patch).
->>  * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
->>    HPFAR_EL2_NS as a valid flag.
->>  * Fix exit reason when racing with PSCI shutdown to return
->>    KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
->> Changes since v7:
->>  * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
->>    been read (although that can never happen in the current code). Tidy
->>    up the condition to handle any future refactoring.
->> Changes since v6:
->>  * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
->>    vcpu to the error.
->>  * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
->>    this exit type.
->>  * Split code handling a RIPAS change triggered by the guest to the
->>    following patch.
->> Changes since v5:
->>  * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
->>    change on next entry rather than immediately on the exit. This allows
->>    the VMM to 'reject' a RIPAS change by refusing to continue
->>    scheduling.
->> Changes since v4:
->>  * Rename handle_rme_exit() to handle_rec_exit()
->>  * Move the loop to copy registers into the REC enter structure from the
->>    to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
->>    where the handler exits to user space and user space wants to modify
->>    the GPRS.
->>  * Some code rearrangement in rec_exit_ripas_change().
->> Changes since v2:
->>  * realm_set_ipa_state() now provides an output parameter for the
->>    top_iap that was changed. Use this to signal the VMM with the correct
->>    range that has been transitioned.
->>  * Adapt to previous patch changes.
->> ---
->>
->> [...]
->>
->> +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
->> +{
->> +	struct realm_rec *rec = &vcpu->arch.rec;
->> +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
->> +	int rt = kvm_vcpu_sys_get_rt(vcpu);
->> +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
->> +	int ret;
->> +
->> +	if (is_write)
->> +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
-> 
-> When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
-> since REC_RUN_GPRS is 31? Although the padding after the gprs means this
-> OOB may not cause any practical issue, would it make sense to skip the
-> access when rt is 31?
-> 
-> if (is_write && rt != 31)
->     vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> [ Upstream commit 25f744ffa0c8e799e06250ce2e618367b166b0d4 ]
 
-Very true - as you say in practise this isn't a big issue because
-vcpu_set_reg() is a no-op, so it's just a read of padding. But
-definitely worth fixing.
+Applied to 6.1.y and newer, thanks!
 
->> +
->> +	ret = kvm_handle_sys_reg(vcpu);
->> +	if (!is_write)
->> +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
-> 
-> The same applies here:
-> 
-> if (!is_write && rt != 31)
->     rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
-
-And the same here - a zero written into the padding.
-
-Thanks for the review!
-
-Steve
-
->> +
->> +	return ret;
->> +}
-
+greg k-h
