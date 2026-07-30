@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9745B3FFFA1
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8603D3305
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785410812; cv=none; b=TT5Org6SWUGLqGIn4v1iZWRti9lhlmlYfShrPmBHXZivT3svx7bXLMcr2HtufpqOgWEV/9CgKvT7zhOY1roqwnS4HLzee+4qg97K9yxuAgLPtRh0hjB1KUZlXvRNqSx3lOtjhzuYsOsM0+bZoMuXf8UhTl7iVqzJvAwcFx9uTkc=
+	t=1785411825; cv=none; b=dnSuXSRkGOLNIKCVNs+vLQxgQXjA1tDVcCz2tuQ+l4Ws6yz2TRUHGIri7p2vcrEi3zYxn2t2c4QmqsMSJkgoODMH3javghE/vselcyhkAnQl+0x6tN61KqPc9fMZxEmoY222LO8bkxEWU2kFCScmZli/6KE2QeKC04MFWL/P1qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785410812; c=relaxed/simple;
-	bh=rjtsBSvx95rOJmBq3mZTryV8XjdPzR2jRI/yu+d9TEw=;
+	s=arc-20240116; t=1785411825; c=relaxed/simple;
+	bh=OhZyTStBWlFhEEhiOYJYqRf/6aUp3nuKdpjBLKIfNMk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PcZQrP+H9XkJgs21/aDB0s4Bhy6BGzrgGLYl1GC1OOUgNjM/zzNVvlcCCKLhJVnPblY50RW+hiVuwPyEGzqQPhttEwcBseO4VVh2fWQ/b/DgV3y8NGZGQNglTaHLjLh3U516ECRFFnD2KpjsQFIcnV1wFIhHT1sTPkrjRXJBA1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mgmvPbMK; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=cb6XxidAD/2XE+Vqm4tHw0vHOCmBDrvigyOfHPgI6VP8rCD3sO+QyU7ia/RYC+KZQdgTtAnuRBLtkkUaJet70Jm8tA2xrugKgk4oJrobVQGW2AKgrtksvfGgsuMyQ0LxOh8TPPTh64wzWU9oHWIkH9WdzA1jwjOZi4bKHNVV17k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHPd4enJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mgmvPbMK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319641F00A3A;
-	Thu, 30 Jul 2026 11:26:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHPd4enJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED2E1F000E9;
+	Thu, 30 Jul 2026 11:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785410811;
-	bh=Y54KiZ+D0oUv0n81x3eVbOpyVYDrVN3bDNK4HAIjAWA=;
+	s=k20260515; t=1785411824;
+	bh=QBUgZvjJu2jcNCWXIp1ZUZRZh1tSTDWsxYCD84FWQKM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=mgmvPbMKUUlk5kKuk3VP5PlkyoXUIQAPQmYSgiXPyeNv7ry8hrHSSt/xAYp5alcWM
-	 rDqmocz3QbfWCMik/XCSdXgzgfn4i9RdrYv/UuNgvDK6Zg6Ng9Q0+PkNOYbgvB8vHg
-	 TePDaJYsEj95OmUtqheVN9wjH9lZfhEV57J6gxoyTqClnSJHW5pou6DYi+vg7g+MKr
-	 PDkk/mae1rZ/dsjXV9mG8FKX/1lEkXD/WqoBytBfahpICJmcrFHUO55Q8MoI9OpOYk
-	 nfIbSyOvAzoWKfI08vOD8Yoye16vTkJCoFoT5YMq4S3MCSjdjrdAzWqeyFqrUB2Ykh
-	 wDGjSr0H7gHMQ==
+	b=jHPd4enJZ18rgLmFo0HLrvrOnnWrtv4N35amD/WG6qF0F/j3GuXKHtfrRh8/IiAYJ
+	 E/ZjyciMh81ijhqOl6+/14rU0N7G+hzpfpes8qFXuUXejHiNLPomDFUzzfrD0oJqBi
+	 D7Kg5tbUd/lPxA1dRRRQLh2fYfhzv5XLaDeyC6WeXHd/s8YqmdVDKCl2voCx2T2pmH
+	 juf8a8c/KVLXk585dNz3vkCZC+6gUhdolHQ/XlYXnAIGr3oxjMoHpbSoBV1gqgCaGA
+	 LHg43NgWWpilvWSF4PdW5ASm2kFcIRccoDeFdfDL2Tw/ylDq9o6tXAPgQ+aRq76SR2
+	 Grzu47HbvyMQQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/8] KVM: selftests: Add Zhaoxin (ZX) CPU detection
- support
+Subject: Re: [PATCH 2/8] KVM: selftests: nx_huge_pages_test: Add TDP
+ detection for Zhaoxin CPUs
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ewan Hai-oc" <ewanhai-oc@zhaoxin.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260730110524.2539316-2-ewanhai-oc@zhaoxin.com>
+In-Reply-To: <20260730110524.2539316-3-ewanhai-oc@zhaoxin.com>
 References: <20260730110524.2539316-1-ewanhai-oc@zhaoxin.com>
- <20260730110524.2539316-2-ewanhai-oc@zhaoxin.com>
+ <20260730110524.2539316-3-ewanhai-oc@zhaoxin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 30 Jul 2026 11:26:50 +0000
-Message-Id: <20260730112651.319641F00A3A@smtp.kernel.org>
+Date: Thu, 30 Jul 2026 11:43:43 +0000
+Message-Id: <20260730114343.BED2E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,52 +47,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] Type punning from `const char *` to `const u32 *` violates strict a=
-liasing rules.
+- [Medium] Incomplete Zhaoxin (ZX) CPU support in KVM selftests due to miss=
+ing VMX behavior checks.
 --
 
---- Patch [1]: [PATCH 1/8] KVM: selftests: Add Zhaoxin (ZX) CPU detection s=
-upport ---
-commit a6b3b2a2cfda9cc7037a7ac4f7079fa35f410950
+--- Patch [2]: [PATCH 2/8] KVM: selftests: nx_huge_pages_test: Add TDP dete=
+ction for Zhaoxin CPUs ---
+commit eac5eaa125fdff453925a87e65268f6af95ed4ee
 Author: Frank Zhu <frankzhu@zhaoxin.com>
 
-KVM: selftests: Add Zhaoxin (ZX) CPU detection support
-   =20
-Add infrastructure to detect Zhaoxin CPUs in KVM selftests. Zhaoxin
-CPUs use vendor strings "CentaurHauls" or "  Shanghai  " and implement
-VMX-compatible virtualization technology.
+KVM: selftests: nx_huge_pages_test: Add TDP detection for Zhaoxin CPUs
 
-> diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/=
-testing/selftests/kvm/include/x86/processor.h
-> index b161174ece453..9840b583877c3 100644
-> --- a/tools/testing/selftests/kvm/include/x86/processor.h
-> +++ b/tools/testing/selftests/kvm/include/x86/processor.h
+Update the kvm_is_tdp_enabled() function to include Zhaoxin CPUs when
+checking for EPT support, maintaining compatibility while extending
+support to ZX CPU systems.
 
-[ ... ]
-
-> @@ -744,6 +745,12 @@ static inline bool this_cpu_is_hygon(void)
->  	return this_cpu_vendor_string_is("HygonGenuine");
->  }
+> diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/test=
+ing/selftests/kvm/lib/x86/processor.c
+> index a8ea591ebe8e6..4688cb2b00923 100644
+> --- a/tools/testing/selftests/kvm/lib/x86/processor.c
+> +++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+> @@ -156,7 +156,7 @@ static void sregs_dump(FILE *stream, struct kvm_sregs=
+ *sregs, u8 indent)
 > =20
-> +static inline bool this_cpu_is_zx(void)
-> +{
-> +	return this_cpu_vendor_string_is("CentaurHauls") ||
-> +	       this_cpu_vendor_string_is("  Shanghai  ");
-> +}
+>  bool kvm_is_tdp_enabled(void)
+>  {
+> -	if (host_cpu_is_intel)
+> +	if (host_cpu_is_intel || host_cpu_is_zx)
 
-[Severity: Low]
-Does passing string literals to this_cpu_vendor_string_is() introduce a
-strict aliasing violation?
+[Severity: Medium]
+Since this adds Zhaoxin (ZX) support here, do other tests that use
+host_cpu_is_intel as a proxy for VMX behavior also need to be updated?
 
-Since this code is built as a selftest under tools/, standard
--fstrict-aliasing semantics apply rather than the core kernel's
--fno-strict-aliasing rules. Passing a const char * string literal to
-this_cpu_vendor_string_is() results in an incompatible pointer cast to
-const u32 * during evaluation.
+ZX CPUs implement VMX but host_cpu_is_intel evaluates to false, which might
+cause several tests to incorrectly fall back to AMD behavior or assert.
 
-Could this type punning lead to undefined behavior or compiler
-misoptimizations?
+For example, guest_main() in=20
+tools/testing/selftests/kvm/x86/fix_hypercall_test.c will hit an assert:
+
+	if (host_cpu_is_intel) {
+		native_hypercall_insn =3D vmx_vmcall;
+		other_hypercall_insn  =3D svm_vmmcall;
+	} else if (host_cpu_is_amd_compatible) {
+		native_hypercall_insn =3D svm_vmmcall;
+		other_hypercall_insn  =3D vmx_vmcall;
+	} else {
+		GUEST_ASSERT(0);
+		/* unreachable */
+		return;
+	}
+
+And kvm_is_mediated_pmu_enabled() in=20
+tools/testing/selftests/kvm/include/x86/processor.h will incorrectly try to=
+=20
+read the kvm_amd module parameter:
+
+	if (host_cpu_is_intel)
+		return get_kvm_intel_param_bool("enable_mediated_pmu");
+
+	return get_kvm_amd_param_bool("enable_mediated_pmu");
+
+Similar missing checks appear to exist in test_feature_msr() in=20
+feature_msrs_test.c for the MSR reset value and in main() in=20
+kvm_buslock_test.c for trap-like exits.
+
+Will these tests crash or fail on ZX CPUs without similar updates?
+
+>  		return get_kvm_intel_param_bool("ept");
+>  	else
+>  		return get_kvm_amd_param_bool("npt");
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730110524.2539=
-316-1-ewanhai-oc@zhaoxin.com?part=3D1
+316-1-ewanhai-oc@zhaoxin.com?part=3D2
