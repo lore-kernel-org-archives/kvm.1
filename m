@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2A1390CB7;
-	Thu, 30 Jul 2026 07:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5552C38F926;
+	Thu, 30 Jul 2026 07:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395456; cv=none; b=FkfIzZwflaYiGUHt72wlT/dG2C9CA5ggWw1hTor06UeUHdmGpFQVA4ofGxsTFjvvMsXY9l1PFU96IMnDhxuOqK+nNrrzZYwWPfk6pQqCxXaE4m7OrvgyZ0b3X0GN/Zh632N6qrLpUiFX1Z/Vig4KngHexsANEeH/nevcMxDfSv8=
+	t=1785395456; cv=none; b=cV4vmA16OUOxFGWOSWc+4PpwISdBzk6V5qOwMU17hFW6ozhlq3PunX7PXSQtyKOI0k3t/lpNOewtQ4Eg+z8GpXTqx0otkyV9O2P9ReIPV2M242KodOe3HbNyiv6TX5IZaAh+gfepa7k4xVteEgsdBdoLwS7gE9J7m+FLuB0SH+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785395456; c=relaxed/simple;
-	bh=Irah+PadLzYNreyWrL9/KP7/XTf98UCFdHV1fXwmNRw=;
+	bh=I/XLKcWhw3StOLDgNWVzCTC8n4YbKBi9G7WSDC7e3sk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAH/ebjD3PkDQjCRzfj55eGFvcpKlK3MH8jCwn/PTqF2XpO3nPpkme9p6YQfeh285Md4uQaIIKfaC+zGmV7nFaGpdux1KzbQyyIuFohOozyir6TN5cm2uMXrV4ZexeR8iomTIdKHad9cXi8/85+RI8K/1ePltfDaZ+Ipm+G3orw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSHbh99N; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=hF5tJYXn5XuTWqIrl4W5RNl212CspS2qDwBmmgdPErJjE867Y3UKJg2NALFG9rXVdFe0JQRQzwbQ+30gC5n7RfU8TLcN8qxzqKb7OPsDPrwcczTWOkSHfhp8oQqNay7us4Ja9RjDLp9e5oIsYkrXCdrz1aEbklQKJ0EbqikI5II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pszk7mka; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSHbh99N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE211F000E9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pszk7mka"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7B31F00A3D;
 	Thu, 30 Jul 2026 07:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785395450;
-	bh=iOnrRfQe8JkETVZDmjV9EvPQTRH5bPfEGXwyCXiiPF8=;
+	s=k20260515; t=1785395451;
+	bh=hB5Fo/1k00kBWJGWj6+LcZUAXL7m6TNnlLfmZ8Ugvfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BSHbh99NGA02Td/bKG0/cqv/sMGO0n56yKm7Mz0SxDQd0N8Ep0U+8DsoCTgLJXKkf
-	 rfiLWuNy5L+7VqT6ZiGXrEmRX5SQmBzgmpaMNR9yv2Z+cWKSmZsMXnt1CRKghj67og
-	 Jlz783Kh+MXgRk8xuVZchrCavdEz4gAoZMyyBNWJhNRH88eTN2NwsXeLfKn4fNFSI3
-	 6Sp4KJTrkMIVy/fBAsFDWt33fV498qv5BJbjYOa47Sot2WO4t+I7uLggFZH9aDHZDa
-	 Y4Fc3+ECVeaC2ZRbY5F0D4fPgIq+dDoxUG1io9TGQGL0cJPM59FXj37ZVh2rd85xhv
-	 IXt+aAXsA56tw==
+	b=Pszk7mkax88XoZ+IWEP8c8fjNgDyErTxQx/3OfItQFK9J6nLZliAeR3lQ8mQo3gkZ
+	 WohMaK/iyg+TqmEmz0KpNBaHbPGkMJrJGQwBOytXTgMJrmd/AghDjvZHH87mjQQ8Ww
+	 pfIecJFFSPLWDi/42jFqRu+vD2qhO9KZ5xmg0sbMJhWBwMCHNJMlUu/xemHvZUEFhd
+	 3OFSn6F02Z0RkFrljBJjMoaK8eZ4HwusI8elQ+1iypoHrDeuRQSc3E2rKETXDfZAEI
+	 SmwMlVrXl4Pbrvh+7ckDxeB6pKq6DM6wacmhoEzuwJiJScdDV5RDaKY8JnB2zQh1EK
+	 /78FzaCyQewDQ==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wpKum-0000000AOpW-2Bhh;
-	Thu, 30 Jul 2026 07:10:48 +0000
+	id 1wpKun-0000000AOpW-0nKj;
+	Thu, 30 Jul 2026 07:10:49 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -44,9 +44,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>,
 	Vladimir Murzin <vladimir.murzin@arm.com>
-Subject: [PATCH v4 01/29] arm64: sysreg: Emit RESx/UNKN values for Mapping/Fields definitions
-Date: Thu, 30 Jul 2026 08:09:54 +0100
-Message-ID: <20260730071022.296811-2-maz@kernel.org>
+Subject: [PATCH v4 04/29] KVM: arm64: Drop __HCRX_EL2_* masks
+Date: Thu, 30 Jul 2026 08:09:57 +0100
+Message-ID: <20260730071022.296811-5-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260730071022.296811-1-maz@kernel.org>
 References: <20260730071022.296811-1-maz@kernel.org>
@@ -62,50 +62,93 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The sysreg file is using the Mapping or Fields qualifiers to indicate
-that a given encoding is only a mapping to a particular register (or
-an instance of a more generic register definition).
-
-As a result, we don't output any definition, and instead expect
-the canonical definitions to be used.
-
-This works rather well for individual fields, but creates problems
-for macros that refer to more generic classes of bits such as RESx.
-
-Relax the above rule by emitting the RESx and UNKN values for Mapping
-and Fields qualifiers as well.
+The __HCRX_EL2_* masks are a leftover from a time where we didn't
+have much sanitisation for the system registers. Since we are now
+in a better place, rely on the existing checks to detect unhandled
+bits in HCRX_EL2.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/tools/gen-sysreg.awk | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/kvm_arm.h | 15 ---------------
+ arch/arm64/kvm/config.c          |  5 +++--
+ arch/arm64/kvm/emulate-nested.c  |  5 -----
+ 3 files changed, 3 insertions(+), 22 deletions(-)
 
-diff --git a/arch/arm64/tools/gen-sysreg.awk b/arch/arm64/tools/gen-sysreg.awk
-index 86860ab672dc7..53844f5c5e525 100755
---- a/arch/arm64/tools/gen-sysreg.awk
-+++ b/arch/arm64/tools/gen-sysreg.awk
-@@ -228,7 +228,7 @@ $1 == "EndSysreg" && block_current() == "Sysreg" {
- }
+diff --git a/arch/arm64/include/asm/kvm_arm.h b/arch/arm64/include/asm/kvm_arm.h
+index 3f9233b5a1308..f6cd851047947 100644
+--- a/arch/arm64/include/asm/kvm_arm.h
++++ b/arch/arm64/include/asm/kvm_arm.h
+@@ -287,21 +287,6 @@
+ 				 GENMASK(19, 18) |	\
+ 				 GENMASK(15, 0))
  
- # Currently this is effectivey a comment, in future we may want to emit
--# defines for the fields.
-+# defines for the fields. We do emit RESx and UNKN values in any case.
- ($1 == "Fields" || $1 == "Mapping") && block_current() == "Sysreg" {
- 	expect_fields(2)
+-/*
+- * Polarity masks for HCRX_EL2, limited to the bits that we know about
+- * at this point in time. It doesn't mean that we actually *handle*
+- * them, but that at least those that are not advertised to a guest
+- * will be RES0 for that guest.
+- */
+-#define __HCRX_EL2_MASK		(BIT_ULL(6))
+-#define __HCRX_EL2_nMASK	(GENMASK_ULL(24, 14) | \
+-				 GENMASK_ULL(11, 7)  | \
+-				 GENMASK_ULL(5, 0))
+-#define __HCRX_EL2_RES0		~(__HCRX_EL2_nMASK | __HCRX_EL2_MASK)
+-#define __HCRX_EL2_RES1		~(__HCRX_EL2_nMASK | \
+-				  __HCRX_EL2_MASK  | \
+-				  __HCRX_EL2_RES0)
+-
+ /* Hyp Prefetch Fault Address Register (HPFAR/HDFAR) */
+ #define HPFAR_MASK	(~UL(0xf))
+ /*
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index 0622162b089e5..96ddcefc71eb5 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -930,10 +930,12 @@ static const struct reg_bits_to_feat_map hcrx_feat_map[] = {
+ 	NEEDS_FEAT(HCRX_EL2_EnASR, FEAT_LS64_V),
+ 	NEEDS_FEAT(HCRX_EL2_EnALS, FEAT_LS64),
+ 	NEEDS_FEAT(HCRX_EL2_EnAS0, FEAT_LS64_ACCDATA),
++	FORCE_RES0(HCRX_EL2_RES0),
++	FORCE_RES1(HCRX_EL2_RES1),
+ };
  
-@@ -239,9 +239,9 @@ $1 == "EndSysreg" && block_current() == "Sysreg" {
- 	print ""
  
- 	next_bit = -1
--	res0 = null
--	res1 = null
--	unkn = null
-+	res0 = $2 "_RES0"
-+	res1 = $2 "_RES1"
-+	unkn = $2 "_UNKN"
+-static const DECLARE_FEAT_MAP(hcrx_desc, __HCRX_EL2,
++static const DECLARE_FEAT_MAP(hcrx_desc, HCRX_EL2,
+ 			      hcrx_feat_map, FEAT_HCX);
  
- 	next
- }
+ static const struct reg_bits_to_feat_map hcr_feat_map[] = {
+@@ -1579,7 +1581,6 @@ struct resx get_reg_fixed_bits(struct kvm *kvm, enum vcpu_sysreg reg)
+ 		break;
+ 	case HCRX_EL2:
+ 		resx = compute_reg_resx_bits(kvm, &hcrx_desc, 0, 0);
+-		resx.res1 |= __HCRX_EL2_RES1;
+ 		break;
+ 	case HCR_EL2:
+ 		resx = compute_reg_resx_bits(kvm, &hcr_desc, 0, 0);
+diff --git a/arch/arm64/kvm/emulate-nested.c b/arch/arm64/kvm/emulate-nested.c
+index 3c82f392845d1..b7f3d86a94031 100644
+--- a/arch/arm64/kvm/emulate-nested.c
++++ b/arch/arm64/kvm/emulate-nested.c
+@@ -2320,7 +2320,6 @@ int __init populate_nv_trap_config(void)
+ 	BUILD_BUG_ON(__NR_CGT_GROUP_IDS__ > BIT(TC_CGT_BITS));
+ 	BUILD_BUG_ON(__NR_FGT_GROUP_IDS__ > BIT(TC_FGT_BITS));
+ 	BUILD_BUG_ON(__NR_FG_FILTER_IDS__ > BIT(TC_FGF_BITS));
+-	BUILD_BUG_ON(__HCRX_EL2_MASK & __HCRX_EL2_nMASK);
+ 
+ 	for (int i = 0; i < ARRAY_SIZE(encoding_to_cgt); i++) {
+ 		const struct encoding_to_trap_config *cgt = &encoding_to_cgt[i];
+@@ -2346,10 +2345,6 @@ int __init populate_nv_trap_config(void)
+ 		}
+ 	}
+ 
+-	if (__HCRX_EL2_RES0 != HCRX_EL2_RES0)
+-		kvm_info("Sanitised HCR_EL2_RES0 = %016llx, expecting %016llx\n",
+-			 __HCRX_EL2_RES0, HCRX_EL2_RES0);
+-
+ 	kvm_info("nv: %ld coarse grained trap handlers\n",
+ 		 ARRAY_SIZE(encoding_to_cgt));
+ 
 -- 
 2.47.3
 
