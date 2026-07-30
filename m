@@ -1,181 +1,211 @@
-Received: from esa5.hc1455-7.c3s2.iphmx.com (esa5.hc1455-7.c3s2.iphmx.com [68.232.139.130])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396B1385D99
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66183B47E9
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785392068; cv=none; b=kmO7lJ7c7hb17jLQ/b66qoEZKxSmNc++/4jpJRulkbrQFLK8Xg18khDRS1HH0BdcD0+2co44SRngn1ZpgSVFiruxEypurFk6zqY6axlaXxQbTWjrY1m63ERx+RBa0fq+yXS4xEA+hQOyrc7RhrxbQfQhcIUFTnhcJ+n0ZBSKX1g=
+	t=1785393133; cv=none; b=Y1jgEcLmRjhLr2uzs2VCY+sLdOI+VnFsUxrGA42idNFZMl2gM48vbqadG+RStXJ4dnyatVjwipitfw61IKdDaFYeGUDOll2HsciWeRT21C9zDptJjvp79NSrYKcQgA36L2/oFJASfxNw4ebHjm5XQKgIQ5w/zvTk14l3tQYsXCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785392068; c=relaxed/simple;
-	bh=2JMtIHddTzE0dtxltyyyxoqKtdSqKhmCGJF2z/HOr9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ld1R702bYn/xwhLXmKJYfRvx18RIhA2MbQ1ezpfigzmjtUmTqL9fhK/r/+ySd3wYuq4gI2SvQBFk8tiPqi+3On8rMoIr5nIQ5e1ramoLCPV9VPWnSYsqKS6cgrbquoje7tVh1z27y8Ki2ttvlY0ZOyBRXwEkni5Vo7p+XQfbtDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=AgF07woe; arc=none smtp.client-ip=68.232.139.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+	s=arc-20240116; t=1785393133; c=relaxed/simple;
+	bh=sbMYUCSymqtK47EOKzAJOAFr7vCx44JGs0xy+7yRMKs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AdT8Hj/ZYk9ajcalRkyEA6l8bE44t/AqNsy85hj4kdM2JBEg18ALg2Fn1Qz6mmTTdOz+1XVlN8OWxIE1+LwegK99lqKI/LME8pFmiGZkpD6IKFC5H1TusnImGvtChnw1pR2e7VhTFQHyco9OlqdxS5EFtrf6qmYN2uddxU7/mXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CS3tueY8; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="AgF07woe"
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1785392060; x=1816928060;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2JMtIHddTzE0dtxltyyyxoqKtdSqKhmCGJF2z/HOr9Q=;
-  b=AgF07woe6qzRnbAobNKC6JZ+YA4rW4WFENwXSxKSoxy4Y/7OEuGaY9CI
-   dj4HGSgqu9yMa5vNXDnvINswbxQch6nYYH1v/+EGvWDS3iEK+nwXFq0gf
-   p7oqk4u3y8GKyuBp8WQC8xQxJi8ZbdP2wLctgStO39r+nKwzATsJKV/QQ
-   PUQDS+1j6zmIP9UlqlvIFAuSMCPMnE2UpXtj3p9JHrKVrLcvrKD91vgKm
-   bSd4J1s+KXJ6BJ5qs1uJrXIDGxPIfzKHB1OTE4N4B2PRGkuigjXgWK39S
-   aGgXKbAbJi4uFXU8DowMX8aGN9PiIVx3nwjbHJfkNhtybakdjWwF+SPCq
-   w==;
-X-CSE-ConnectionGUID: v1j2sIMVTpe3XYl5y4eX1g==
-X-CSE-MsgGUID: ii3a/3RlRJm+hDzyJsBALg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="247255475"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779116400"; 
-   d="scan'208";a="247255475"
-Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
-  by esa5.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 15:14:09 +0900
-Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 537F81000378
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:14:09 +0000 (UTC)
-Received: from az2uksmom1.o.css.fujitsu.com (unknown [10.151.22.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id 05C761007106
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:14:09 +0000 (UTC)
-Received: from FCCLS0092175.localdomain (unknown [10.8.194.125])
-	by az2uksmom1.o.css.fujitsu.com (Postfix) with SMTP id AA43D18004F3;
-	Thu, 30 Jul 2026 06:14:03 +0000 (UTC)
-Date: Thu, 30 Jul 2026 15:13:55 +0900
-From: Kohei Enju <enju.kohei@fujitsu.com>
-To: Gavin Shan <gshan@redhat.com>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, berrange@redhat.com, 
-	kchamart@redhat.com, pierrick.bouvier@oss.qualcomm.com, peter.maydell@linaro.org, 
-	mst@redhat.com, cohuck@redhat.com, pbonzini@redhat.com, eblake@redhat.com, 
-	armbru@redhat.com, lorenzo.pieralisi@linaro.org, qemu-devel@nongnu.org, 
-	qemu-arm@nongnu.org, kvm@vger.kernel.org
-Subject: Re: [RFC v2 01/24] linux-headers: Add RME related definitions
-Message-ID: <amrq1_O7cOb8zk1Y@FCCLS0092175.localdomain>
-References: <20260728192630.240375-1-mathieu.poirier@linaro.org>
- <20260728192630.240375-2-mathieu.poirier@linaro.org>
- <amrhioS_O_0ztjb_@FCCLS0092175.localdomain>
- <30967c8c-be29-49bb-b8fc-f4a3b870fed1@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CS3tueY8"
+X-Forwarded-Encrypted: i=1; AHgh+RpL1yvakpgEm0kDtOIEDLoIMm/C5OzVUVR90tdxHCfPbDyWnoomRm30DpmGtl08HFwMtZY=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785393125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vlYljchxQ5reT/eVU8Xnl/sWmMhVEbgvnN8Wduj0Ep0=;
+	b=CS3tueY8mw5PTye0vrxGkgR7R6VhW9tGJuwfmQFEi9pmvfj5nWUCCGu8M3GptkUGdpcNlU
+	6l+iBoUrBrEKeeXz1Dd4L+Ko4jqw+qDNFjSur6bkqIZEhxRHOrJ+XvQiOoW21/sD8UBXW9
+	GR/7L/VrI7M8FKfCSOFGDtr5+oGK/34=
+X-Gm-Message-State: AOJu0Yws0/18r7CVKwK1XNNczkb8glUo3CmtONUKdeNRr2Q4HHELN5H+
+	Hw6jWnG7noczAXQlxZem9R9Xzq2BKHtwNo0wGpUZ3QcL90XqOdZ+PIZjXGBg/bs39MkLHNr+eTI
+	Y7NJOYr6TLnLpvJAGRxWsdAkJ8l47C8m3Dq1OFGKM
+X-Received: by 2002:a05:622a:684e:20b0:517:5ac7:332e with SMTP id
+ d75a77b69052e-52b3933f844mr5275111cf.6.1785393052137; Wed, 29 Jul 2026
+ 23:30:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <30967c8c-be29-49bb-b8fc-f4a3b870fed1@redhat.com>
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 30 Jul 2026 07:29:00 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTyAtAg=u61nwqGYPstRkq1qiBJ=Up_9e=J_3FUOONZ9YA@mail.gmail.com>
+X-Gm-Features: AUfX_mwGOo05YLjkVSJlO76kvHbah6i3Ay-YiXXIqVAHXXpYgYhu4HvJ-rdWTks
+Message-ID: <CA+EHjTyAtAg=u61nwqGYPstRkq1qiBJ=Up_9e=J_3FUOONZ9YA@mail.gmail.com>
+Subject: Re: [PATCH v9 00/16] KVM: arm64: PMU: Use multiple host PMUs
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-On 07/30 16:08, Gavin Shan wrote:
-> On 7/30/26 3:41 PM, Kohei Enju wrote:
-> > On 07/28 13:26, Mathieu Poirier wrote:
-> > > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > 
-> > > This is a temporary patch intended for testing purposes only. It provides
-> > > definitions related to supporting Realms by the QEMU-VMM.
-> > > 
-> > > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > > Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > > ---
-> > >   linux-headers/asm-arm64/kvm.h |  9 +++++++++
-> > >   linux-headers/linux/kvm.h     | 10 +++++++++-
-> > >   2 files changed, 18 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/linux-headers/asm-arm64/kvm.h b/linux-headers/asm-arm64/kvm.h
-> > > index 6aefe7973814..4c08631ec7d2 100644
-> > > --- a/linux-headers/asm-arm64/kvm.h
-> > > +++ b/linux-headers/asm-arm64/kvm.h
-> > > @@ -208,6 +208,15 @@ struct kvm_arm_counter_offset {
-> > >   	__u64 reserved;
-> > >   };
-> > > +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE     (1 << 0)
-> > > +struct kvm_arm_rmi_populate {
-> > > +	__u64 base;
-> > > +	__u64 size;
-> > > +	__u64 source_uaddr;
-> > > +	__u32 flags;
-> > > +	__u32 reserved;
-> > > +};
-> > > +
-> > >   #define KVM_ARM_TAGS_TO_GUEST		0
-> > >   #define KVM_ARM_TAGS_FROM_GUEST		1
-> > > diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-> > > index dd52e2a65bfd..cdd5ad11f85a 100644
-> > > --- a/linux-headers/linux/kvm.h
-> > > +++ b/linux-headers/linux/kvm.h
-> > > @@ -689,14 +689,19 @@ struct kvm_enable_cap {
-> > >    * address size for the VM. Bits[7-0] are reserved for the guest
-> > >    * PA size shift (i.e, log2(PA_Size)). For backward compatibility,
-> > >    * value 0 implies the default IPA size, 40bits.
-> > > + *
-> > > + * Bits[30-31] are reserved for the VM type
-> > >    */
-> > >   #define KVM_VM_TYPE_ARM_IPA_SIZE_MASK	0xffULL
-> > >   #define KVM_VM_TYPE_ARM_IPA_SIZE(x)		\
-> > >   	((x) & KVM_VM_TYPE_ARM_IPA_SIZE_MASK)
-> > > +#define KVM_VM_TYPE_ARM_NORMAL		0
-> > > +#define KVM_VM_TYPE_ARM_REALM		(1UL << 30)
-> > >   #define KVM_VM_TYPE_ARM_PROTECTED	(1UL << 31)
-> > >   #define KVM_VM_TYPE_ARM_MASK		(KVM_VM_TYPE_ARM_IPA_SIZE_MASK | \
-> > > -					 KVM_VM_TYPE_ARM_PROTECTED)
-> > > +					 KVM_VM_TYPE_ARM_PROTECTED | \
-> > > +					 KVM_VM_TYPE_ARM_REALM)
-> > >   /*
-> > >    * ioctls for /dev/kvm fds:
-> > > @@ -719,6 +724,8 @@ struct kvm_enable_cap {
-> > >   #define KVM_GET_EMULATED_CPUID	  _IOWR(KVMIO, 0x09, struct kvm_cpuid2)
-> > >   #define KVM_GET_MSR_FEATURE_INDEX_LIST    _IOWR(KVMIO, 0x0a, struct kvm_msr_list)
-> > > +#define KVM_ARM_RMI_POPULATE	  _IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
-> > > +
-> > >   /*
-> > >    * Extension capability list.
-> > >    */
-> > > @@ -986,6 +993,7 @@ struct kvm_enable_cap {
-> > >   #define KVM_CAP_S390_KEYOP 247
-> > >   #define KVM_CAP_S390_VSIE_ESAMODE 248
-> > >   #define KVM_CAP_S390_HPAGE_2G 249
-> > > +#define KVM_CAP_ARM_RMI 250
-> > 
-> > Not a big deal, but a note for anyone testing this series:
-> > 
-> > Use Linaro's Linux kernel tree, as mentioned in the cover letter:
-> > https://gitlab.com/Linaro/cca-public/linux/-/tree/upstream-v2?ref_type=heads
-> > 
-> 
-> It seems the capability values get an extra leap on KVM_CAP_ARM_AMI in
-> "upstream-v2" host kernel.
-> 
->   include/uapi/linux/kvm.h
-> 
->   #define KVM_CAP_S390_KEYOP 247
->   #define KVM_CAP_S390_VSIE_ESAMODE 248
->   #define KVM_CAP_ARM_RMI 250
+On Mon, 20 Jul 2026 at 06:39, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+...
+> A QEMU patch that demonstrates the usage of the new attribute is
+> available at:
+> https://lore.kernel.org/qemu-devel/20260706-kvm-v4-1-089cac8c25c3@rsg.ci.i.u-tokyo.ac.jp/
+> ("[PATCH RFC v4] target/arm/kvm: Choose PMU backend")
+>
+> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-Yes. The following commit changed it in "upstream-v2".
-https://gitlab.com/Linaro/cca-public/linux/-/commit/1558aa1d9b8a49283d69c15889cb2df98183d7d0
+I didn't test with the QEMU patch, but I tested on QEMU: booting the
+host and a KVM guest, plus the vpmu_counter_access and get-reg-list
+KVM selftests under nvhe, vhe, andvhe with kvm-arm.mode=nested.
 
-> 
-> > Alternetively, if you're using Arm's tree or other trees with Steven
-> > Price's v14 series as I am:
-> > 
-> > You'll need to adjust the definition of KVM_CAP_ARM_RMI, since it uses a
-> > differenct capability number.
-> > 
-> > >   struct kvm_irq_routing_irqchip {
-> > >   	__u32 irqchip;
-> > > -- 
-> > > 2.43.0
-> > > 
-> 
-> Thanks,
-> Gavin
-> 
+For the series:
+Tested-by: Fuad Tabba < fuad.tabba@linux.dev>
+
+Cheers,
+/fuad
+
+> ---
+> Changes in v9:
+> - Dropped patch
+>   "KVM: arm64: Disallow vPMU when pPMUs do not cover all CPUs".
+> - Added patch
+>   "KVM: arm64: PMU: Stop updating MDCR_EL2.HPMN".
+> - Added patch
+>   "KVM: arm64: selftests: Cover PMU state in MDCR_EL2".
+> - Added patch
+>   "arm64: errata: Require Apple IMPDEF PMUv3 traps on all CPUs".
+> - Added patch
+>   "KVM: arm64: Don't clear vcpu->cpu in kvm_arch_vcpu_put()".
+> - Noted that fixed-counters-only mode avoids relying on the default PMU.
+> - Clarified why fixed-counters-only mode hides PMCEID.
+> - Added patch "KVM: arm64: Serialize repeated vCPU initialization".
+> - Added patch "KVM: arm64: PMU: Freeze counter count after first run".
+> - Added patch
+>   "KVM: arm64: selftests: Test SET_NR_COUNTERS after first run".
+> - Added patch "KVM: arm64: PMU: Recreate events after MDCR_EL2 changes".
+> - Clarified why extra IMPDEF PMUv3 trap support on a late CPU is safe.
+> - Changed fixed-counters-only emulation to taint the kernel when it
+>   encounters a CPU without a registered pPMU; see the commit message.
+> - Added patch
+>   "KVM: arm64: PMU: Keep implemented counter mask EL-independent".
+> - Added a targeted bitfield helper type change to tools headers.
+> - Link to v8: https://patch.msgid.link/20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v8:
+> - Added patch
+>   "KVM: arm64: Disallow vPMU when pPMUs do not cover all CPUs".
+> - Split patch "KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY".
+> - Documented the FEAT_PMUv3_ICNTR support plan.
+> - Ensured KVM_ARM_VCPU_PMU_V3_FILTER and
+>   KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY are mutually exclusive.
+> - Ensured KVM_ARM_VCPU_PMU_V3_SET_PMU and
+>   KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY are mutually exclusive.
+> - Dropped the code to support KVM_ARM_VCPU_PMU_V3_SET_NR_COUNTERS for
+>   KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY.
+> - Added a function to de-duplicate
+>   "test_bit(KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY, ...)".
+> - Link to v7: https://lore.kernel.org/r/20260418-hybrid-v7-0-2bf39ad009bf@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v7:
+> - Fixed the vCPU run hang in test_fixed_counters_only().
+> - Link to v6: https://lore.kernel.org/r/20260413-hybrid-v6-0-e79d760f7f1b@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v6:
+> - Removed WARN_ON_ONCE() in kvm_pmu_create_perf_event(). It can be
+>   triggered in kvm_arch_vcpu_load() before it checks supported_cpus.
+> - Removed an extra lockdep assertion in kvm_arm_pmu_v3_get_attr().
+> - Fixed error messages in test_fixed_counters_only().
+> - Fixed the vCPU run in test_fixed_counters_only().
+> - Link to v5: https://lore.kernel.org/r/20260411-hybrid-v5-0-b043b4d9f49e@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v5:
+> - Rebased.
+> - Fixed the order to clear KVM_ARCH_FLAG_PMU_V3_FIXED_COUNTERS_ONLY in
+>   kvm_arm_pmu_v3_set_pmu().
+> - Fixed the setting of KVM_ARM_VCPU_PMU_V3_IRQ in
+>   test_fixed_counters_only().
+> - Changed to WARN_ON_ONCE() when kvm_pmu_probe_armpmu() returns NULL in
+>   kvm_pmu_create_perf_event(), which is no longer supposed to happen.
+> - Link to v4: https://lore.kernel.org/r/20260317-hybrid-v4-0-bd62bcd48644@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v4:
+> - Extracted kvm_pmu_enabled_counter_mask() into a separate patch.
+> - Added patch "KVM: arm64: PMU: Protect the list of PMUs with RCU".
+> - Merged KVM_REQ_CREATE_PMU into KVM_REQ_RELOAD_PMU.
+> - Added a check to avoid unnecessary KVM_REQ_RELOAD_PMU requests.
+> - Dropped the change to avoid setting kvm_arm_set_default_pmu() when
+>   KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY is not set.
+> - Link to v3: https://lore.kernel.org/r/20260225-hybrid-v3-0-46e8fe220880@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v3:
+> - Renamed the attribute to KVM_ARM_VCPU_PMU_V3_FIXED_COUNTERS_ONLY.
+> - Changed to request the creation of perf counters when loading vCPU.
+> - Link to v2: https://lore.kernel.org/r/20250806-hybrid-v2-0-0661aec3af8c@rsg.ci.i.u-tokyo.ac.jp
+>
+> Changes in v2:
+> - Added the KVM_ARM_VCPU_PMU_V3_COMPOSITION attribute to opt in the
+>   feature.
+> - Added code to handle overflow.
+> - Link to v1: https://lore.kernel.org/r/20250319-hybrid-v1-1-4d1ada10e705@daynix.com
+>
+> ---
+> Akihiko Odaki (15):
+>       KVM: arm64: Serialize repeated vCPU initialization
+>       KVM: arm64: PMU: Stop updating MDCR_EL2.HPMN
+>       KVM: arm64: PMU: Freeze counter count after first run
+>       KVM: arm64: selftests: Test SET_NR_COUNTERS after first run
+>       KVM: arm64: PMU: Keep implemented counter mask EL-independent
+>       KVM: arm64: PMU: Recreate events after MDCR_EL2 changes
+>       tools headers: Use u* types for bitfield helpers
+>       KVM: arm64: selftests: Cover PMU state in MDCR_EL2
+>       arm64: errata: Require Apple IMPDEF PMUv3 traps on all CPUs
+>       KVM: arm64: PMU: Protect the list of PMUs with RCU
+>       KVM: arm64: PMU: Pass the pPMU to kvm_map_pmu_event()
+>       KVM: arm64: PMU: Pass the target CPU to kvm_pmu_probe_armpmu()
+>       KVM: arm64: PMU: Implement fixed-counters-only emulation
+>       KVM: arm64: PMU: Introduce FIXED_COUNTERS_ONLY
+>       KVM: arm64: selftests: Test PMU_V3_FIXED_COUNTERS_ONLY
+>
+> Oliver Upton (1):
+>       KVM: arm64: Don't clear vcpu->cpu in kvm_arch_vcpu_put()
+>
+>  Documentation/virt/kvm/devices/vcpu.rst            |  30 ++-
+>  arch/arm64/include/asm/kvm_host.h                  |   4 +
+>  arch/arm64/include/uapi/asm/kvm.h                  |   1 +
+>  arch/arm64/kernel/cpu_errata.c                     |   2 +-
+>  arch/arm64/kvm/arm.c                               |  18 +-
+>  arch/arm64/kvm/pmu-emul.c                          | 241 +++++++++++------
+>  arch/arm64/kvm/reset.c                             |  16 +-
+>  arch/arm64/kvm/sys_regs.c                          |  31 ++-
+>  include/kvm/arm_pmu.h                              |   5 +
+>  tools/arch/arm64/include/uapi/asm/kvm.h            |   1 +
+>  tools/include/linux/bitfield.h                     |  26 +-
+>  .../selftests/kvm/arm64/vpmu_counter_access.c      | 284 ++++++++++++++++++---
+>  12 files changed, 510 insertions(+), 149 deletions(-)
+> ---
+> base-commit: cb9360ae6549120975f20887840fb33d47c13898
+> change-id: 20250224-hybrid-01d5ff47edd2
+>
+> Best regards,
+> --
+> Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+>
+>
