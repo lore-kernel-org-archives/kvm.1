@@ -1,120 +1,106 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F64A3314A1
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF1D3AC0E5
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 06:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785394299; cv=none; b=c5djGDl50DhXrpwM+cB3HsLAM7gFZDSAS77HtNw0KUGQ4LFepjYV1NQbWEVTiooGqXAvUT18X4VkVy3rh5nc9asbaqZFHIAen/5VmqtxjBSX62TcTV/iWlNRpwLttk7+hdGHyW6ikxJ/M8qPce7k24rq6OsuHb1LJ7N3TH9gZu0=
+	t=1785394384; cv=none; b=O5un8Hxm2MDAZuq5fVD9kZzkAC8REJa6nHggX71L7kvaRbXtCFOSInmn/uwk/xcZ7Ho0LeOrQbdWwjJuAjwlO921+bUHCN/NZ+lZ7sWIOzuzkVIMxvC6p/cNpWoNvdb3a7WlTFfVOJlxGb9IArhKRsYOb9QP1R8Iwhh3q+Cz5sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785394299; c=relaxed/simple;
-	bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F793nhlx5HxODyotnvrLn2IAaluBMHQhnC+sdlQa+Z5IdA++ev+Ufx7v01RwRbi5DkEsO0olQy4+NJUmtJY3mNViI3xG6dez9vNmG1mugLuGiWtNqGibEMlX8tNjGv3Hbu13GmXu69qXCA6FsScJtyHnlbpM1swhZfoOXkLf5pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C4bnug+O; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785394384; c=relaxed/simple;
+	bh=Pbj0P+gU8va8jJCrhk4MN1M1pVJoePTsLFgY9CKEP0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BZazQnI9QsjQnp3VhmvrZJL/D9gUe7/GPcD80slfwhT/fSHVP0Q6zfill/hAYAK3UtK0DAD97ni2tAucmw+AN+AdvbQe9NLSeQwgQeA//NNUDCq0GQEzm3ws3rY04FF4IhQ/oDiXYwheeJW1rqVnLnaou9H7uOC5E6jGtKG3x3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rL38xCDG; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C4bnug+O"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cea3004256so20741645ad.0
-        for <kvm@vger.kernel.org>; Wed, 29 Jul 2026 23:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785394298; x=1785999098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
-        b=C4bnug+OpoaYI6Db1xXte6jzqprbUS7hz8vW/xRkn3Jy6FNxdFaTaAJMOAjs7A6FPr
-         hXDiKpO6hBsaeo7ZaXNBSthYr0obejy1ovGNJ84l1KXijgJsFUmow+uOnztO5lZOVI5J
-         fIa9VDKyPvrTm6NIguioUD28h9ZHyFJHmApk9vLPVaWN1AKVU+KKTUEI7GWvHw45jpG1
-         bOiWIBtPCGg2llF08yV7mlKLgibAesLjlWfbwOXcL+mIphrZgyltaZmke8tdCrMt6t7o
-         lyPrt8AJLhcZgIuxpuAomwsExdp1lPvbVoyhaTC7a64wzrVFeeMG610sCaO0yqRWJ4yo
-         DxYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785394298; x=1785999098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=icMXTnzaSJ6+MSeJ5Apat14mapNo5PQAIFNRe+YMLec=;
-        b=msTehUZe9R1+w2+jld7sJHLQsHxidspJUNErRszZUDeg/sLGu/v266m7gVFUO0vWEI
-         UNecqe7xNIIRjJVnREKIW86jV0k5w+iiTrMW72dN0XmXbGO3BEBr+XCTUX4fHK1sZFSg
-         gaTA5ssJHltqx+XlhRiChnfl+ebtDDoR3N60XMUhRATPP2nVQlAPSgI8e1PqH8VY54uN
-         MDDd03S7ZBYD3de2lM2ascbgsiQqNyw12rgQvBVc0qeBq2Al/h00Uw3ZH0yCAq55FMC0
-         zeA0Sb9A+tLcQH+dr1fWJyx9XfB10zR0B/RM/RpQpDTkMr7tSUoMCUgOnSDq1rp+U5HA
-         8wRA==
-X-Forwarded-Encrypted: i=1; AHgh+RrOMlRli7GhuaVMgdX2UIExkVp718k/Km5tPS7eFRJVmAXL/PX0QcHqs8NJakMQTiBX370=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCH6/Jl6SCWELEMRyn6y7XAe0zLauOaoH0yzlf2kLHXy00Z4g8
-	wYK9yfhAahNzc9qEXRs4JdiFat/fsJwx8KWvhTGEnz+uc1ODY6CeBQod
-X-Gm-Gg: AR+sD10CuQXJj3tHZQvlORRIcijL7f2uA51RAiQWdhwjoZeEEeWyEDf76DMhgGi0/zz
-	Qx/sNQE8Q0/5pgksnAbkzZ0WpM4BELLfTOolSF8qFV5Xry73LLgcjozWuemcLm2H38DKOwrVh97
-	pkZ4SBdfA1d6tHynczoOX4vyLz5gl2oy7Qplw/YpVBzEh3hO4Ntl/2AksBLWLuYY9k7bUxuoddz
-	0u9pni0716PxDCi2o4wgxSACRjHHdgVVyW9BPQBL+dssZijwevyNEfKD4XVz+bUMWcJZ6Jqd+4n
-	2xDDDABOVdyberpQ7C/kY/0/uqesmDDePIIf3Uvghu1zoIuJU62HxYHXXadVMReAI2Sq9n/PN8M
-	yHsKWRBRdjmqnIZT/SgtXbwNrCk9RA4/Q8Tqxbdeauxdb4Vha1kwNmI+4tln6EJROqeR6GM6Tvc
-	ODqM9j+qbic16VzHNDijepI5OhC4oEj82opx1ZO8FTQIXu7DA1x0ug9PwmPnWX+MHhC5dpotXHl
-	ixgnlwKpmV9oF4kAg==
-X-Received: by 2002:a17:903:1585:b0:2c9:97a7:71ab with SMTP id d9443c01a7336-2d035d0097cmr15283805ad.38.1785394297603;
-        Wed, 29 Jul 2026 23:51:37 -0700 (PDT)
-Received: from cyh-System-Product-Name.. ([129.227.183.200])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bca9d7sm21707555ad.52.2026.07.29.23.51.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 23:51:37 -0700 (PDT)
-From: "Yuhang.Chen" <yhchen312@gmail.com>
-To: Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>
-Cc: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Quan Zhou <zhouquan@iscas.ac.cn>
-Subject: Re: [PATCH] RISC-V: KVM: Add arch-specific tracepoints
-Date: Thu, 30 Jul 2026 14:50:48 +0800
-Message-Id: <20260730065048.3715824-1-yhchen312@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAAhSdy2Qa2DGFzb27MgmoH5Pf1BOrgwaZBqP__U9eejs5-5Bsw@mail.gmail.com>
-References: <20260626103619.174179-1-yhchen312@gmail.com> <CAAhSdy2Qa2DGFzb27MgmoH5Pf1BOrgwaZBqP__U9eejs5-5Bsw@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rL38xCDG"
+X-Forwarded-Encrypted: i=1; AHgh+RqLEy9qWaKaGc7WO4bdej21RfWyPOS4ecW8PFdpnGfP6hcf3cIaKM6SsTp72OH3rI7msXg=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785394378;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pbj0P+gU8va8jJCrhk4MN1M1pVJoePTsLFgY9CKEP0E=;
+	b=rL38xCDGkIBNKVcvNNOTpBWFN/2N3A2VCxkvOviHFLREik5dWrreh3BAgPzEQDLdJfx6Mb
+	E/QxSkWg5iHLYKCr4YYSgNJTFhT6xZawcx3B4Rddu1DI8BxjrZit6RVIEXR/Br2YUEnb6p
+	NkjUDJH53xJ/NmJvv0xGLTfv8V+JhRQ=
+X-Gm-Message-State: AOJu0YyoZHk2DEObwXguV4KZuwY/7dW1jpaf2b/9tX9K7CUVWxf94aDS
+	fpZN9Vrkg0XUv/axiva09LyPZ6gwQ4UJsg+OR02QzqTpMBKoE1tjV241s/HuiHLb6HssY1a71UU
+	mhZu1bSC6V+QAoJn3TFrZhQwD/cTlhI7cwJQ5Yvcy
+X-Received: by 2002:a05:622a:1f18:b0:528:38d6:71b4 with SMTP id
+ d75a77b69052e-52b39484e98mr9124391cf.11.1785394358893; Wed, 29 Jul 2026
+ 23:52:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <20260720-hybrid-v9-14-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp>
+ <CA+EHjTx0zNQ_yPCz38vGYpBssshE4b3KWaoUxjzuerGgzB=JSQ@mail.gmail.com> <e023d791-38c3-47b4-9b09-3420fe78d9ea@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <e023d791-38c3-47b4-9b09-3420fe78d9ea@rsg.ci.i.u-tokyo.ac.jp>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Thu, 30 Jul 2026 07:52:01 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTxAH-eW4soxjbSJi8DwbH-yRXE-jJ9s02nEZ7kVXxxWMQ@mail.gmail.com>
+X-Gm-Features: AUfX_my8ZWlfDB9plrXG5PWElkl5pTmNLk-LtsIhDb0mp2MLaqYsxid4gcfDy1k
+Message-ID: <CA+EHjTxAH-eW4soxjbSJi8DwbH-yRXE-jJ9s02nEZ7kVXxxWMQ@mail.gmail.com>
+Subject: Re: [PATCH v9 14/16] KVM: arm64: PMU: Implement fixed-counters-only emulation
+To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Steffen Eiden <seiden@linux.ibm.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Hi Anup,
+Hi Akihiko,
 
-Thanks for the review.
+On Thu, 30 Jul 2026 at 07:36, Akihiko Odaki
+<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
+...
+> > Sashiko flagged that this can leave the perf event out of sync with
+> > the sysreg, which looks plausible: on a pCPU with no registered pPMU
+> > this returns without recreating the event, so a guest event-type
+> > change there updates the sysreg but not the event, and after migrating
+> > back to a pCPU the original pPMU covers, kvm_pmc_enable_perf_event()
+> > re-enables the stale event instead of recreating it.
+> >
+> > I know you treat the no-pPMU case as out of spec, but the dropped
+> > update lands once the vCPU is back on a normal pCPU. Is this intended?
+>
+> "[PATCH v9 06/16] KVM: arm64: PMU: Recreate events after MDCR_EL2
+> changes" calls kvm_pmu_stop_counter() in kvm_vcpu_reload_pmu(), so it
+> does not matter whether this function calls kvm_pmu_stop_counter().
+>
+> The other changes that require recreating the event are currently not
+> handled at all as Sashiko complains [1]. I'll fix that as done in
+> MDCR_EL2 setters in the next version.
+>
+> That said, I do not intend to add any extra complexity to provide any
+> guarantee for a system with unsupported PMU variation except that the
+> user can notice and react to that (i.e., the taint is reported and no
+> oops happens due to NULL dereference). The patch message is somewhat
+> misleading in this aspect so I'm going to fix that in the next version.
 
-I've addressed your comments in v2.
-
-On Tue, Jul 28, 2026 at 09:05:39PM +0530, Anup Patel wrote:
-> Drop kvm_guest_fault, kvm_sbi_ecall, kvm_wait_riscv, and
-> kvm_csr_access tracepoints. Instead add common
-> kvm_vcpu_exit tracepoint for all vcpu exits just before the
-> switch case in kvm_riscv_vcpu_exit() function.
-
-Done. kvm_vcpu_exit now reports the full trap context
-(sepc/scause/stval/htval/htinst) and is placed just before the switch
-case, after the CAUSE_IRQ_FLAG early-return, so it fires only for
-synchronous traps.
-
-> Drop the kvm_irq_line and kvm_timer_update_irq tracepoints.
-> Instead add common kvm_vcpu_irq tracepoint called from
-> kvm_riscv_vcpu_set/unset_interrupt() function.
-
-Done. kvm_vcpu_irq is called from kvm_riscv_vcpu_set_interrupt() and
-kvm_riscv_vcpu_unset_interrupt(), covering all callers.
-
-> The kvm_mmio_emulate tracepoint is fine.
-
-Kept kvm_mmio_emulate unchanged.
-
-v2 follows in this thread, with example trace output captured from QEMU
-included in the commit message.
+I see, yes, fixing the changelog would help.
 
 Thanks,
-Yuhang
+/fuad
+
+>
+> [1]
+> https://sashiko.dev/#/patchset/20260720-hybrid-v9-0-2b713ca1b5dc@rsg.ci.i.u-tokyo.ac.jp?part=6
+>
+> Regards,
+> Akihiko Odaki
