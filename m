@@ -1,155 +1,150 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486C131716E
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785435528; cv=pass; b=ogL469Wna54ZvkifNE6b4huS0GL771HM8+qixoTNPJgUNYeioyffaFN8ym5dRpzFH6Ru8ouk10fs2ixqpJG4dMhRq+lOXPO4wtFhcdv7ZInKfi4LoY9hxtXUwEPGnaZVZ4qmSJpw0sYiUQuSJl0+jr1EzG28M0kOr8ogaQk6Km0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785435528; c=relaxed/simple;
-	bh=gJHV3b2Sc8xEI8IKQeSL3rSLGGFn/d5inPeMCN2Ei2g=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TTzQ0FwawNYM0E98kQ+5QzIQgyhIH82PE8JfN4TkXEtEOkIMMHZ4awCFM+nWw/QERPCKDoTTyEwBAP6SDcG07GJVR8c8Pd4OhkhYEJAqv6Wz2zFmiUwK1yyxqA//wCOvLcvSodzhQFkPG3JGZWlqOsQKhlDU4DOuXGlobzNyRfQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GBYHkGsk; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A573859EF
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:21:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785435716; cv=none; b=J6PhZ7Id+WeXlW633LDgaScAP/Ln9fXW/ljyWjqjQJKnROyiX3+agiS7HiqTBsrSbjRb+D5tzkfWeKVyvbXIKEGnIF6ctIkGiO6r0XahQEMp6fcgrlb1ieRPmtpfP4LAV1KPOAO9CQhJld+taQ7r5nRMLfzPF+c/mBzCPqZaWCs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785435716; c=relaxed/simple;
+	bh=cnXdVpJqtS6CKYmSYOu5HrZeA6Sexa9Db8fDkVzi/M0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k/j4AG4FaxFOk69aTGFC8V2wEnFC4DCoO2+msv49KfkNdlP/Qd/PQ/8Y5C/LpJQxMfhdpU3u4V+z1m4Z7w+C2qesCl+4XLgYN11SIH+fpJ4goU3N425528sgSUD/Hu5Bmz61ORn5xMHYv+wfuYzcARsd3rlmA9Eao2ZVtEjfrU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SlBzeBIX; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GBYHkGsk"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dcbade417so186245a91.1
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:18:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785435527; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Vn+WueZGN+UphgJ4v2Hv5JXw7c4O2YFe1PdVLqjt+ykzQikJgZNVk1o8scLCvDaoi1
-         W5wrcxnCF0HIrs0hRNyYehl83FcCMcz3jMYzL5w09lSGOEnQksFpgmafdurALqL8SAem
-         gerUHXRnKtthK/2yZtOtXVBRUdFengRLdoNWBYTSw5QaAB/Ym2f0EdmZb9uSGjrxUfLU
-         kSGlKbMwDC7MZ5PSwtIijWZk3daNK/zAEQA7uLI0WtcIS1tRN5fM9FZaIhxgeo0/Qrn/
-         cKfzAXvd+4QcYqQoQL6+mQj6jYntZxWlC9g28ejmUpMBCOT9P1HMfHUZMxqgg4O2ask0
-         5oAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        fh=lJvb6MjQO/bnRRYza9g5fsRuvP4xFQx4YVnqUwNpQ5Y=;
-        b=qFKYZhsJY0k8t6htWa+K5abJkmnc9D6au032iblgag2wM8FG0Qupq5X79CepDSCuxZ
-         F8p+iblN7IaIkfzguObgV+B55XRypazAqhmUEW3bZD6Vp7xiaOCq6ufyOKNfELds6r10
-         MpXJKPxias5kTwwxjTCcLr69nb6V6O+E8Y3b0lcjj0xZrBTQdzqQ9ONqxi41btu0at9i
-         2S3pCmduyIcB6uUoEqlFkgBYIv8O7mvAL6N8yzwxKf1XkABCLSy+Yvg6pioglwfiH1jN
-         A698KHsASbIEiyko19JLiDpXhGUVsDcOSy9x+wTPSADchizT1LuHMRQnB2LYrbg3W+Nr
-         LcnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SlBzeBIX"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cea3004256so1338895ad.0
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:21:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785435527; x=1786040327; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        b=GBYHkGskC3W/60mVgxyZuq99MzKq6IwMmllpmiuyP8fW71ofh312bKprI4rBFRkvmn
-         RsrziMBdwyHcnbvEkVt0XvwqT/wekwoMY/FxanxEMuPFZSbQ3eCBBfcQ8U9ga2zRwXZm
-         T8gmVfC/AYMjk+PEYSrqZnt19/ePl98DZOBJ3f1pJ7jWAz/D/rzkWrhWLVnLxUe9M1oF
-         8u/4XmZplHV0yq72RRTP3gNS3Bl3eTHE0oxlVLtz2r4zLH2ZzxA4UUnH5UB/1OcVrLFC
-         hCc3Pv6tkQkM7VhysQnVzUL4Jx4ED+mK1iuvB/lq7oTFBZ1v/X66ElNlbfhPXA2gj0tM
-         HoOg==
+        d=gmail.com; s=20251104; t=1785435712; x=1786040512; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=WhUNIqsonkRRMTXAnOyItlVLbQQzWZZfYjEel872m6o=;
+        b=SlBzeBIXo0hZ2Dl5gQ30K1c2ImTgSrsFked8QQKKyPW5C10QZA0y1CIvBnMoYU8mTG
+         ICIHQsIrYmxEbw4lSs27UEMP7dy63XLEy/d1HERzo1sYVqex3JkfEoQi1otQYD/earJI
+         v2AyNKEKDJ50KxijoJa7mekiGTqLJNdR2RKJA/nN63kdJSG/ImI0Qn4OTIQcrfZWDjUD
+         22YCXCGG4C9vNwPcab1HgfF+VxqoVX4Yp0FewMy2tcS98BfZjFXBKNO/o1D5O1wT1O+s
+         h18M97Lb7ApdsgfEEspS7gQwbRfKfdXKTZjzGBtpqPpKFkI9qLWEUAGSQViy2OiGR1px
+         7/iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785435527; x=1786040327;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1785435712; x=1786040512;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BcSk1/y4fhEYP1oDWtEyRtQmE44YyXI71BVE0scYBk4=;
-        b=RLQwqym8iFPpNufpK7sqI17gvdzeSbPApvsmZoLMkvBVwU0MV6mR+Jjd8CnKV9gBPD
-         uBOY+51iJ19XBWz12T2TVpI/WQA8ZLfUYNZHYVUdUToazQiTYdmW4Kvn0yA13M/ZSUFC
-         75J9BhV5ThqyQ9EZPvEHHk1XpLW8nHdOwarm6Bl/Bz8SiOnFNUyhjwwWqomiFdg35ucB
-         eQ6GjdJLEx4/UIUPMsm6hq7jb7Ejb6HoCf+27dd8P/Jqgdvn5vrUqgaz6PeK1i7K+ks5
-         pZ2wNzD100ij2aOhqTvk4FVTtbDmY3pAzzGBV9SKcu2fHF3O6Jm5yu3IhxQwtdUtIHj+
-         LsMg==
-X-Forwarded-Encrypted: i=1; AHgh+RrFI5YQnze+xv6M7UgmMaOlGwKExgVICTDfCohZom238DMMoEkMya3W516sY4fQHTGMY9s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxooyuca9KjQxXTYMZRVZ0ChlGiE5xpz0+41OCFspvuOztAeX07
-	D2m54rPqqHvMuKKqglAGh3zEZgumpelnCveAkYclu/rybyjB5ESJlUefh0I9vCE2jNhTbfnKvbp
-	VISmOHSuSx2UKKOPJcR3oHsc6XOHyil5gMMCLsnCg
-X-Gm-Gg: AR+sD12mw0CiEzmY0o6A+Uv4bOUpcaHtI+XaM7DcuIpSPfRnQ/w0uyuZmAdKDvdzya+
-	dN0xBHBQgDkuEDd1j+DLbWKFcnO9XBEMKVoeedznjEPwVpvlQRrxXbpQ1ZOMT/Ao4nzK7imOkfA
-	5JBFjX4IUbvRjhSWyE49y8HoCkGlnubG9edxpVQLgeVn7rW8+CCrEeENBh6sz88hm7QmiBuy3ru
-	UGGKXy/I3PrWvPB5uK94L3c4HeU5eFSkPQWjmdvmt57eUWmNxB01slpa2CKommgX9nW4bPVpdHm
-	OzEpySn1HDkthg84KE4tA0TBajfQJ42THR1jX/o/AF6N+adjV/kbNZXFA+Z58E3+GCl7pOOrrj9
-	rsIWXIXgOVWjAd3UI//fZPzu57IamdkFSkg==
-X-Received: by 2002:a17:90a:d007:b0:37c:6130:7a5b with SMTP id
- 98e67ed59e1d1-38fa7dcb036mr912482a91.8.1785435525974; Thu, 30 Jul 2026
- 11:18:45 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:18:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Jul 2026 11:18:44 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260728121138.1103610-12-tarunsahu@google.com>
-References: <20260728121138.1103610-1-tarunsahu@google.com> <20260728121138.1103610-12-tarunsahu@google.com>
+        bh=WhUNIqsonkRRMTXAnOyItlVLbQQzWZZfYjEel872m6o=;
+        b=RQKCSKIZVILOC9gzvAK7nPxj3BrRXml66RDeRnu7tEZFCCm9Eq1mMcxDMnqqsqxP7p
+         iMdSVcHnyU0cZxRHQmJwCoOYGvnARRhzZAsBfrN9piLligPiz0Bv+VS/G6IC/JNdY3XL
+         2tyVKiTqOY/6VaEOmYHYqEu2w5yRomtASkStoTHoeZKfZxiY5HHFHcklY3HIFav7DtHr
+         Qq+3DjM/YWgylQtGpuBOXQ91b+/pUTahj4+XlObrIYS0fTFB13NCYu84NiAIeOUCEqBA
+         dfAeoKGx4KPUM3+JKQYTDbil4+/7pjdTU5eXmuimHS+cAjfSnNSIlvjTehRxFPf4ZOQN
+         0SVA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqlvu/ATMDPfMgweqAg2rgoFMJCIN2PLQsKcfiBFJQYjKES478xu+a4XvSQjP1ecVPyUPM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6c6wrZ+VWeTVBF71hjADEdnYufmYAqvqhbVH7nno+SC06JZvK
+	mNZ0++2h8bwTNUUHde/eCEQ3kYmbplp16XHNgbj/s6AIWerebdBBKD7G
+X-Gm-Gg: AR+sD11npikM1/Ckyuo8GyED92enhYWYiWGKhmslYYlTOuDqRfzDPCx7YDiq3joemc2
+	8EHje5yISXo5Kyk5efyiiaWri8m24HdIgX2Fh6eezS4d/50nHLukn9lYX4YBNhRoWOLj+xsP1e+
+	eKRJc1SL+tHnk9IOYBnVCiAsHiCkbaR+A1443CV3Bq6307v4YNVT9XVMNutckMOkUK3Ah42PTz2
+	Pm5jQc7BChHLAm09gC9QWwt+8IaAm8NedbSsCApTysoyx9RBptxPLXAsbGg58Tt25ZKGgrgw7NE
+	sMzuOLX9a/g/9B80X29fuoQOnbdP/qQ8NT08TDbxT3kzQ/CjCJ9aBVljv2UtPJeOF/JiG03OJCg
+	MciQpGPmsThTYzg3REMqhL3HAGRpQE6i6hAMAPFFwWh6U85GGVe/+8tvKQad8a0qpjtK0hcbrb+
+	EU1jCy2cVjSdwjSmWQ3dMWkzS2C2rewo6pfh9CUyWwRwUGRMG/pymx8Zi/el4B2P3E/5IQE+rWb
+	Iq/sliwzkHQIJ1Ru9iR211g0qKonZkzLWWOuTrOWvA0ovZGiKmr
+X-Received: by 2002:a17:903:1a2b:b0:2cf:9cf2:3533 with SMTP id d9443c01a7336-2d035be4b51mr35641225ad.18.1785435712288;
+        Thu, 30 Jul 2026 11:21:52 -0700 (PDT)
+Received: from wirene2.c.googlers.com.com (249.65.83.34.bc.googleusercontent.com. [34.83.65.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d022bc5afasm30750155ad.46.2026.07.30.11.21.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jul 2026 11:21:51 -0700 (PDT)
+From: Irene Wang <yiranirenewang@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>,
+	Thomas Huth <thuth@redhat.com>,
+	kvm@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>,
+	David Matlack <dmatlack@google.com>
+Subject: [kvm-unit-tests PATCH] x86: pci: Support unaligned register access in PCI config read/write
+Date: Thu, 30 Jul 2026 18:20:20 +0000
+Message-ID: <20260730182053.905335-1-yiranirenewang@gmail.com>
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Jul 2026 11:18:44 -0700
-X-Gm-Features: AUfX_mzurojFzFl7kQ4jInKyqzMda986c-EWBvJn_4YyREdNQpyHfl__fqR3AfU
-Message-ID: <CAEvNRgEbS06snhyHznPSqxnUrdudVEKUuOpPwnU+AJATWFBRBA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/11] KVM: selftests: Add guest_memfd_preservation_test
-To: Tarun Sahu <tarunsahu@google.com>, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Tarun Sahu <tarunsahu@google.com> writes:
+Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
+Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
+register offset (bits [1:0] = 00b), while byte and word offsets within
+the DWORD must be selected via data port 0xCFC + (reg & 3).
 
-> Add guest_memfd_preservation_test to verify that KVM VM state and guest
-> memory backed by guest_memfd are preserved across a kexec reboot via Live
-> Update Orchestrator (LUO).
->
-> This test includes multiple tests
-> - (A) Test to preserve non-guest_memfd, non-memfd which must fail (/dev/null)
-> - (B) Test to preserve guest_memfd with no INIT_SHARED flag which must fail
-> - (C) Test to allocate the guest_memfd memory after preservation because
->   preservation makes the guest_memfd frozen. Which must fail as well.
-> - (D) Test to verify guest_memfd with INIT_SHARED flag preservation across
->   kexec: Below is the details of stages in this test.
->
+Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
+16-bit helpers always accessed base port 0xCFC directly. This worked
+in QEMU because its PCI host bridge emulation preserves unaligned bits
+in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
+in strictly spec-compliant VMMs (and potentially real hardware), bits
+[1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
+0xCFC to erroneously target byte 0 of the DWORD. In practice, this
+causes pci_find_dev() to read the vendor ID twice instead of reading
+the vendor ID and device ID.
 
-I think we should split this into multiple patches, where each patch
-introduces 1 test.
+Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
+the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
+accessors, ensuring compatibility across QEMU and other VMMs.
 
->
-> [...snip...]
->
-> +++ b/tools/testing/selftests/kvm/guest_memfd_preservation_test.c
-> @@ -0,0 +1,357 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2026, Google LLC.
-> + *
-> + * Author: Tarun Sahu <tarunsahu@google.com>
-> + *
-> + * Test for VM and guest_memfd preservation across kexec (Live Update) via LUO.
-> + *
-> + * NOTE: This is a MANUAL test and is excluded from automated CI/testing
-> + * frameworks because Stage 1 daemonizes into the background to pin resources
-> + * and requires a human operator to manually trigger kexec before Stage 2
-> + * is executed. Running Stage 1 automatically would leak the background daemon
-> + * and cause CI runners to falsely interpret it as a passed test.
-> + *
+Assisted-by: Gemini:gemini-3.6-flash
+Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
+---
+ lib/x86/asm/pci.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Usually there aren't many printfs in tests, but since this is a MANUAL
-test, maybe that's ok?
+diff --git a/lib/x86/asm/pci.h b/lib/x86/asm/pci.h
+index 03e55c27..09fd2372 100644
+--- a/lib/x86/asm/pci.h
++++ b/lib/x86/asm/pci.h
+@@ -9,18 +9,18 @@
+ #include "pci.h"
+ #include "x86/asm/io.h"
+ 
+-#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | reg)
++#define PCI_CONF1_ADDRESS(dev, reg)	((0x1 << 31) | (dev << 8) | ((reg) & ~3))
+ 
+ static inline uint8_t pci_config_readb(pcidevaddr_t dev, uint8_t reg)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    return inb(0xCFC);
++    return inb(0xCFC + (reg & 3));
+ }
+ 
+ static inline uint16_t pci_config_readw(pcidevaddr_t dev, uint8_t reg)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    return inw(0xCFC);
++    return inw(0xCFC + (reg & 3));
+ }
+ 
+ static inline uint32_t pci_config_readl(pcidevaddr_t dev, uint8_t reg)
+@@ -33,14 +33,14 @@ static inline void pci_config_writeb(pcidevaddr_t dev, uint8_t reg,
+                                      uint8_t val)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    outb(val, 0xCFC);
++    outb(val, 0xCFC + (reg & 3));
+ }
+ 
+ static inline void pci_config_writew(pcidevaddr_t dev, uint8_t reg,
+                                      uint16_t val)
+ {
+     outl(PCI_CONF1_ADDRESS(dev, reg), 0xCF8);
+-    outw(val, 0xCFC);
++    outw(val, 0xCFC + (reg & 3));
+ }
+ 
+ static inline void pci_config_writel(pcidevaddr_t dev, uint8_t reg,
+-- 
+2.55.0.508.g3f0d502094-goog
 
-Would like to know what Sean thinks of this, and printfs in general.
-
->
-> [...snip...]
->
