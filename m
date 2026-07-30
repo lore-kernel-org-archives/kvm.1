@@ -1,133 +1,203 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24CDD449B31
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A273436C0D6
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 18:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785435882; cv=none; b=GxDsDbh1im74LDJ/gpTBiV4gQm/zSjBPnbtdVf0ZE4vAk7f9M9FpAw1eRb3lFiBlW2LnlnXeelVDeDlLzpT2DxTfyFIMfEq1m8TvbyeKGBYTp1dgk5ehWsRLrbNch736dCcCJgvvImz2edrIGd3W/bISFxzsejx30mg/jIGwIPc=
+	t=1785436690; cv=none; b=DV/WAS7x1FmzpoHrjUZ+cF6tifw0Rzaycv7s+HMwQ2k0OpQJx+J3J+qwaab+QqImSl1ywz7QTedz3Z0URo559qyFhiOwM4tr3g63AxPrqQgA0ztNSsUsuB/q1b58Vibskf440rqUs3ZdJT5xrpklGkLN11Z/2dKSnoLkbM71aWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785435882; c=relaxed/simple;
-	bh=O14zjjovGhUS1oisSmIPImyZNtw8PEWRZRj6BhjFqXc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5T9if0DsZo3I3HDThEDhV0czL38p8zBUsYTwV6glN3K2OPYs7JRulQ/OA79mKsXlqlgBRVmLUyWbQExOhysOzwgEVHvV5o9S+V/L05vEVznWnxfBzoZEO7jfiHxe+ovT0/NtBJfutxgP1aMSwIabgBWcMAZ8YipnfCaGQ4xJsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mokaldYi; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1785436690; c=relaxed/simple;
+	bh=MclfqqAOvRhjdUnW4KUPI/0nCU2GrBKsXkAWYdFV3iA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=A6fF7ZJwtvLPFrRyxoZYqaeMWP6yOKZy/eatF1VMrYYX2GKYfN239vO8WA5IeTEajrpt/QaWkYPgb6ExPQohKJj1nhz+XxOBUfLXqs72NcKAmD3ERTS9x+QQ+86McbrMT8nkD72dtubsKHFnZotU8WIgdkMQvXy2yA4qNMlVzt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sn6IXPEg; arc=none smtp.client-ip=209.85.216.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mokaldYi"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4953e04ef16so651265e9.2
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:24:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sn6IXPEg"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-388b404eaa4so236436a91.0
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:38:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785435875; x=1786040675; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=flDxck68r8K2V0lreAAuQvFuepl9jlGM1LdPTHPMSDc=;
-        b=mokaldYi7J7Pf10stqOrObcnJXzIGGGMd6j8NPwU6LrLjpFybAPW7BxrhTlDAKxtbo
-         GyfLb9bUjmhr0dSsYqWV+ddiISgko7ojqKYRAi/Stm7Yir6Fv3LTcmk9yqJFev4c1dIt
-         YW2LAaPXQqnoW4md+2+kdg4lVLvvYvzhgG62Q=
+        d=google.com; s=20251104; t=1785436680; x=1786041480; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/bpb7rVnMP2yhSUFeRPzDa/SCZEbyHiuIMPgM8gQi/g=;
+        b=Sn6IXPEgqgRF8446dQ0UvfQLVQ6V89UtPH62la5io7ghi6qfLF3JXCOy+O0i33GtvK
+         FDAAo9lVQORTKPeN1r2jXco0X66mlccyhOxOGx44h2RLCnu2OZkz3ACHGsc3fQ1wz+Wv
+         BjXh0qdNksOqmlK8JVnGoUaUQR0xlAn4gnpYpey6LwAwP01VngNLQZf/vmmSuqLYUetV
+         7Ar9JX9B40fw2c1AYpnrKE/UmaU0xaA+osJPPgdm6/nXCrFnePfQ0fCevWMjx2lx6Rz8
+         RzeGzjTSq6+Zme/A1GCX2DPFgV9WUR62FFnzxg0/s0VHb0NQCTvhWdObBAHPKR3a20zm
+         4qeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785435875; x=1786040675;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=flDxck68r8K2V0lreAAuQvFuepl9jlGM1LdPTHPMSDc=;
-        b=CybTGhz+JaHFOU7AXeln4m/4cpYoGmSQXTLImImN1rb+mKOsZLMgNukbszf6o/jKfN
-         IazM0Dt4mOahm3IJ6j8H/MZKytqxZzIiVRAnOFJYiQ5q/9DoVTWoWfhdpCifm1MxSr9U
-         IhEqyPNBuXAtCsrFiGgqNp2Iiu0fCrEIT6mu3Uh/SQFE637OcgAsZraWLx041JFkRKx4
-         BYUT724bGLYCCgcorRZanIecJVSBjDtAzVHwIkt/UvrDy04XzZ/Bhhx1k4vtsGGv6kE2
-         CbfrfzRz9oCKDXpangwOoh28ECFlS8o4TqQP3wWukSmMtA4ICJ/mYPNyBGvq4NZ/SF96
-         0ugA==
-X-Forwarded-Encrypted: i=1; AHgh+RqeYw5yzFKoL+Y13GQ3pJAv4gwpDMQNhMnE3CDrdrLL44bzddhJTrlXb/sBsBxn9Xkcu+o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPnNKl82T13b34tH/Z6IPRLChRjz7hG8veR2J2KmXRfotKWbOx
-	7B0arCg/GBeD5y/jekoaT6euBvoQ0b3I6HetYJCQbgHTCYVNZJaiL0hA5CwTHAY3VA==
-X-Gm-Gg: AR+sD109KYc0OvcIM4aHgfE94SBr6CFoiDoqDLjTWd5jsRlTc2Ilwl28LC1bqAOxxWd
-	iPWcK3kbkOiIdyv6HNWnJG+y5XiSANVPUYHDkzyIy4zFkgy9l6epXJbQglV/iC1BtYcHeGjZJKD
-	fQrNHoPoW7HVpi4qdtRy5wn3HegP36npbqmVtLyNZmz//r889Z8DJ886WLRDiymlRaseq2hcE9d
-	PfOSiTi9WSSOE9kEGh02xzquluXYqzyZYQQNRLHc0Jst+ZdybM1Hv4U/3yv9A2hbIYWvYhGN8eI
-	S0gOULtNlQIWi83Z2ga2IN+skIstCljYLcR+Miedj7gsBNOll9F+DaL5qBZOrp8W7O+86TVi0S5
-	zpZGCocwv+nx1P5xyMq1nNfzGJ5ZrgnXjrQZPtDeoK+gPpdMKARvtRoaLKk55453gGPwJFzWnva
-	+Dp39k4hw3fdnMSzTtQNUKuAiMi4BoAdEefZ7UHIvDU++HG+fKPz0O0ggLEsEWj3rLwB243KDAk
-	qvBgzgpFcMva7m+NGAKhtJP0ydS4McMQprthcxRoOcTNG6+ywwVvHM=
-X-Received: by 2002:a05:600c:4e89:b0:498:28b:1025 with SMTP id 5b1f17b1804b1-498028b10f7mr47675555e9.5.1785435874942;
-        Thu, 30 Jul 2026 11:24:34 -0700 (PDT)
-Received: from dmaluka.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-498010aade3sm84008685e9.14.2026.07.30.11.24.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 11:24:34 -0700 (PDT)
-From: Dmytro Maluka <dmaluka@chromium.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Mathias Krause <minipli@grsecurity.net>,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Vineeth Pillai <vineeth@bitbyteword.org>,
-	Chuanxiao Dong <chuanxiao.dong@intel.com>,
-	Aashish Sharma <aashish@aashishsharma.net>,
-	Grzegorz Jaszczyk <jaszczyk@chromium.org>,
-	Dmytro Maluka <dmaluka@chromium.org>
-Subject: [PATCH 3/3] Documentation: KVM: Clarify that KVM_CAP_MAX_VCPU_ID is exclusive
-Date: Thu, 30 Jul 2026 18:24:25 +0000
-Message-ID: <20260730182425.1223530-4-dmaluka@chromium.org>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-In-Reply-To: <20260730182425.1223530-1-dmaluka@chromium.org>
-References: <20260730182425.1223530-1-dmaluka@chromium.org>
+        d=1e100.net; s=20251104; t=1785436680; x=1786041480;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/bpb7rVnMP2yhSUFeRPzDa/SCZEbyHiuIMPgM8gQi/g=;
+        b=rAq+D3y8HVZM00LkZiKYfmVmK2xzkNm7iQJlejszsqtOW7qJSrM0a74eC3/sBI+fki
+         mAKY4NJfYqDZ6lWx817b/x09ocDRs9HZNaxi1FQ1G6LLYSxZ53TdBqFDG+bam9OP8rxs
+         oVndiVcj9JpUfzpLX1LO0YUAT7fkv7vSlB9YZlSFDFS1yYBFlhtSQCWed/1f/DYpNJy+
+         kr65lFi7iRZhiCGIPBU3o0ucUYHP5lgRbnKNQWIuTAqxHaT39g8PAFDLLRnNmchS0hmc
+         mzbK/YVEfjyvZLtF4PTBj0uWHWQPbum1Ntt3M+PlnYBxuNSaqDZXNutXrQTrfW0OoG62
+         dw5w==
+X-Forwarded-Encrypted: i=1; AHgh+RqIDKYTWuFy6QnCIAx36JXI9PeSaVQx4onskgug2OCVizw1kk9NdolcYGL8UNxFeR3yhGE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEs7m+TATYb+NuiXlKYsqPyT12cIa8X+Z0ez+Y2HcBxKHzgjMp
+	5EB+rayWw6/ZgAqrEkJaB1vQVHWdTs/bkcxr6FuAFeoIEJGollyiXCsJTnz5ZPlehDyU4gFVe1j
+	ox2UHwQ==
+X-Received: from pjon4.prod.google.com ([2002:a17:90a:9284:b0:381:127b:2e24])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:c884:b0:381:3b5d:30f4
+ with SMTP id 98e67ed59e1d1-38f9bd51be4mr3217997a91.1.1785436679924; Thu, 30
+ Jul 2026 11:37:59 -0700 (PDT)
+Date: Thu, 30 Jul 2026 11:37:59 -0700
+In-Reply-To: <073cfbe1-0a27-015b-c688-53c186100fa1@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260504112808.21276-1-sebott@redhat.com> <7575a845-a542-4b16-b512-aec3126f97f3@linux.dev>
+ <335f21e5-493d-012d-b07c-2e48cc2b9aeb@redhat.com> <a6ccc7a8-488b-4454-81b1-f29dd875845c@linux.dev>
+ <073cfbe1-0a27-015b-c688-53c186100fa1@redhat.com>
+Message-ID: <amuaB-dZ2s3lI8NU@google.com>
+Subject: Re: [PATCH] KVM: selftests: fix steal_time for arm64 with host page
+ size > 4K
+From: Sean Christopherson <seanjc@google.com>
+To: Sebastian Ott <sebott@redhat.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>, Jiakai Xu <xujiakai2025@iscas.ac.cn>, 
+	Shuah Khan <shuah@kernel.org>, Andrew Jones <andrew.jones@oss.qualcomm.com>, 
+	Anup Patel <anup@brainfault.org>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-The KVM_CAP_MAX_VCPU_ID capability value is exclusive, i.e. valid APIC
-ID values are only values below this value, not including it. Its
-documentation doesn't make that clear, and even suggests otherwise.
-Fix it and explicitly state that it is exclusive.
+On Mon, Jun 29, 2026, Sebastian Ott wrote:
+> On Sun, 28 Jun 2026, Zenghui Yu wrote:
+> 
+> > On 6/22/26 10:14 PM, Sebastian Ott wrote:
+> > > 
+> > > Fix the following failure when running with 16K host page size:
+> > > ==== Test Assertion Failure ====
+> > >   lib/kvm_util.c:991: vm_adjust_num_guest_pages(vm->mode, npages) == npages
+> > >   pid=873 tid=873 errno=0 - Success
+> > >      1  0x0000000000405a27: vm_mem_add at kvm_util.c:991
+> > >      2  0x000000000040241f: check_steal_time_uapi at steal_time.c:223 (discriminator 7)
+> > >      3   (inlined by) main at steal_time.c:539 (discriminator 7)
+> > >      4  0x00007fff8b57af3b: ?? ??:0
+> > >      5  0x00007fff8b57b007: ?? ??:0
+> > >      6  0x0000000000402b6f: _start at ??:?
+> > >   Number of guest pages is not compatible with the host. Try npages=4
+> > > 
+> > > Fixes: fc240715fc50 ("KVM: selftests: arm64: Fix steal_time test after UAPI refactoring")
+> > > Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+> > > Link: https://lore.kernel.org/kvmarm/7575a845-a542-4b16-b512-aec3126f97f3@linux.dev/T/#u
+> > > Signed-off-by: Sebastian Ott <sebott@redhat.com>
+> > > ---
+> > >  tools/testing/selftests/kvm/steal_time.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+> > > index 76fcdd1fd3cb..cdb81f3ee4b2 100644
+> > > --- a/tools/testing/selftests/kvm/steal_time.c
+> > > +++ b/tools/testing/selftests/kvm/steal_time.c
+> > > @@ -208,6 +208,7 @@ static void check_steal_time_uapi(void)
+> > >  {
+> > >      struct kvm_vm *vm;
+> > >      struct kvm_vcpu *vcpu;
+> > > +    unsigned int gpages;
+> > >      u64 st_ipa;
+> > >      int ret;
+> > > 
+> > > @@ -220,8 +221,9 @@ static void check_steal_time_uapi(void)
+> > >      };
+> > > 
+> > >      vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
+> > > -    vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, 1, 0);
+> > > -    virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, 1);
+> > > +    gpages = vm_calc_num_guest_pages(VM_MODE_DEFAULT, 1);
+> > 
+> > Would vm_calc_num_guest_pages(VM_MODE_DEFAULT, STEAL_TIME_SIZE) be better
+> > to describe the number of pages we want to add?
+> 
+> Hm, I don't think we care. This is just for the uapi checker - the vm/vcpu
+> doesn't even run..
 
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
----
- Documentation/virt/kvm/api.rst | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Even though we don't truly care, we can "fix" that and dedup code at the same
+time.  E.g.
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e3003a241d5b..dab9a28c0fb5 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -8593,21 +8593,24 @@ KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT        By default, KVM for nested SVM guests
+diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
+index bc3c62b72c58..c0256d4c4b09 100644
+--- a/tools/testing/selftests/kvm/steal_time.c
++++ b/tools/testing/selftests/kvm/steal_time.c
+@@ -27,6 +27,9 @@
+ static void *st_gva[NR_VCPUS];
+ static u64 guest_stolen_time[NR_VCPUS];
  
- :Architectures: x86
- :Target: VM
--:Parameters: args[0] - maximum APIC ID value set for current VM
-+:Parameters: args[0] - maximum APIC ID value (plus one) set for current VM
- :Returns: 0 on success, -EINVAL if args[0] is beyond KVM_MAX_VCPU_IDS
-           supported in KVM or if it has been set.
- 
--This capability allows userspace to specify maximum possible APIC ID
-+This capability allows userspace to specify a limit on APIC ID values
- assigned for current VM session prior to the creation of vCPUs, saving
- memory for data structures indexed by the APIC ID.  Userspace is able
- to calculate the limit to APIC ID values from designated
- CPU topology.
- 
--The value can be changed only until KVM_ENABLE_CAP is set to a nonzero
-+The limit is not inclusive, i.e. the maximum possible APIC ID value is
-+args[0] - 1.
++static struct kvm_vm *vm_create_steal_time(u32 nr_vcpus, void *guest_code,
++                                          struct kvm_vcpu *vcpus[]);
 +
-+The capability value can only be changed until it is set to a nonzero
- value or until a vCPU is created.  Upon creation of the first vCPU,
- if the value was set to zero or KVM_ENABLE_CAP was not invoked, KVM
--uses the return value of KVM_CHECK_EXTENSION(KVM_CAP_MAX_VCPU_ID) as
--the maximum APIC ID.
-+uses the return value of KVM_CHECK_EXTENSION(KVM_CAP_MAX_VCPU_ID) - 1
-+as the maximum APIC ID.
+ #if defined(__x86_64__)
  
- 7.33 KVM_CAP_X86_NOTIFY_VMEXIT
- ------------------------------
--- 
-2.55.0.508.g3f0d502094-goog
+ /* steal_time must have 64-byte alignment */
+@@ -210,17 +213,14 @@ static void check_steal_time_uapi(void)
+        u64 st_ipa;
+        int ret;
+ 
+-       vm = vm_create_with_one_vcpu(&vcpu, NULL);
+-
+        struct kvm_device_attr dev = {
+                .group = KVM_ARM_VCPU_PVTIME_CTRL,
+                .attr = KVM_ARM_VCPU_PVTIME_IPA,
+                .addr = (u64)&st_ipa,
+        };
+ 
++       vm = vm_create_steal_time(1, NULL, &vcpu);
+        vcpu_ioctl(vcpu, KVM_HAS_DEVICE_ATTR, &dev);
+-       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, 1, 0);
+-       virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, 1);
+ 
+        st_ipa = (ulong)ST_GPA_BASE | 1;
+        ret = __vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &dev);
+@@ -500,13 +500,26 @@ static void run_vcpu(struct kvm_vcpu *vcpu)
+        }
+ }
+ 
++static struct kvm_vm *vm_create_steal_time(u32 nr_vcpus, void *guest_code,
++                                          struct kvm_vcpu *vcpus[])
++{
++       unsigned int gpages;
++       struct kvm_vm *vm;
++
++       vm = vm_create_with_vcpus(NR_VCPUS, guest_code, vcpus);
++       gpages = vm_calc_num_guest_pages(VM_MODE_DEFAULT, STEAL_TIME_SIZE * nr_vcpus);
++       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, gpages, 0);
++       virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, gpages);
++
++       return vm;
++}
++
+ int main(int ac, char **av)
+ {
+        struct kvm_vcpu *vcpus[NR_VCPUS];
+        struct kvm_vm *vm;
+        pthread_t thread;
+        cpu_set_t cpuset;
+-       unsigned int gpages;
+        long stolen_time;
+        long run_delay;
+        bool verbose;
+@@ -518,10 +531,7 @@ int main(int ac, char **av)
+        cpu = pin_self_to_any_cpu();
+ 
+        /* Create a VM and an identity mapped memslot for the steal time structure */
+-       vm = vm_create_with_vcpus(NR_VCPUS, guest_code, vcpus);
+-       gpages = vm_calc_num_guest_pages(VM_MODE_DEFAULT, STEAL_TIME_SIZE * NR_VCPUS);
+-       vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE, 1, gpages, 0);
+-       virt_map(vm, ST_GPA_BASE, ST_GPA_BASE, gpages);
++       vm = vm_create_steal_time(NR_VCPUS, guest_code, vcpus);
+ 
+        ksft_print_header();
+        TEST_REQUIRE(is_steal_time_supported(vcpus[0]));
 
