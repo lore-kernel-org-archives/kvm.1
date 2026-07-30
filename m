@@ -1,25 +1,25 @@
 Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7217D403B0C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7224C403E88;
 	Thu, 30 Jul 2026 11:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409548; cv=none; b=PoamjbUq/N4Kjx+51ZK4NtBkg4Q2fmTIjK9aI+qtLjeeoqD39S6zEiiggAxNRpSjQWQQmXfxQpnqH5C9ENmvFzzJRUYh3iGkdmzjrbsTUPixrfIbFn4HaQ7b7NyqU2eOkKNj4qCo89P3nIAMv/cHVwWWX0LFopAXFPLNKX9NjL0=
+	t=1785409549; cv=none; b=CfxMbZUWnCduxZushf2+Qet4FGk7lS1MtyKkXMp6f/0E1NfZKOJ2Cb1bm6zpT8+Wrt2kcdmQybt8Cj/ztbrE8Kh3XV+KONSrP3up4V6bbzLEWHbAv+UwMj507PT2RMXMuG/Ow74t4VTbdd60t0x9oRXOAPA6HxKrgnN6G10vhw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409548; c=relaxed/simple;
-	bh=Pg7A7o2LPH1/DS2+iG/h/OysJIRNTtkDlfEaj5Xtc2M=;
+	s=arc-20240116; t=1785409549; c=relaxed/simple;
+	bh=84xT1aYCe3jjrUAO/6d8VI6JPFcF0vXEMVWZcwwItiI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J42MuXISRIutBz8Ws4uDH5zV0vpXUiCAiE/1lOHhARnzq5EPafWOMTK7rLmXzqmthZntDaiEp+qjddx4Fi0nfE3FXSJk5A+ufzTWDPD7OuHn8ukaSbNOUP7ws7oX+tc2GmmRA34luLmZmXV/k0jI3gNqsFlkDHAoFL0g7/ay14A=
+	 MIME-Version; b=aEFltJqTwERDXZ2SSZFvGO+7Dv3d2aGBRHSUa6GGdn0KQs2UTIpin6mZyDvYg8e6VZl7kfnDrl6WlhTuM7/Lw8bUVoIHBJvWnvFWBbqdBTKon3zz+J9y0BafjfTNoekThZ5KBrXCkmf7m33XFYt5QDWS82y+hJDA1HhyrQBN2K0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
 Received: from zhaoxin.com (unknown [127.0.0.1])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4h9mZn1NRFzYq2h5;
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4h9mZn1lF3zYq2h6;
 	Thu, 30 Jul 2026 19:05:37 +0800 (CST)
 Received: from zhaoxin.com (unknown [10.28.208.166])
-	by mx1.zhaoxin.com (MTA) with ESMTP id 4h9mZl3TzzzYq2gx;
+	by mx1.zhaoxin.com (MTA) with ESMTP id 4h9mZl3R1tzYq2gx;
 	Thu, 30 Jul 2026 19:05:35 +0800 (CST)
 Received: from ewan-server.zhaoxin.com (ewan-server.zhaoxin.com [10.28.24.2])
-	by zhaoxin.com (8.30) with ESMTPef2f25f2dfb86486edd8dbccd36e50b8
+	by zhaoxin.com (8.30) with ESMTP6b7e43b3429133be812d33c58b8f50b8
 	Thu, 30 Jul 2026 19:05:34 +0800
 X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
 X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
@@ -32,9 +32,9 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	kvm@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/8] KVM: selftests: feature_msrs_test: Extend MSR_IA32_UCODE_REV quirk to Zhaoxin
-Date: Thu, 30 Jul 2026 19:05:22 +0800
-Message-Id: <20260730110524.2539316-7-ewanhai-oc@zhaoxin.com>
+Subject: [PATCH 7/8] KVM: selftests: nested_exceptions_test: Add Zhaoxin CPU support
+Date: Thu, 30 Jul 2026 19:05:23 +0800
+Message-Id: <20260730110524.2539316-8-ewanhai-oc@zhaoxin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260730110524.2539316-1-ewanhai-oc@zhaoxin.com>
 References: <20260730110524.2539316-1-ewanhai-oc@zhaoxin.com>
@@ -49,29 +49,38 @@ X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
 
 From: Frank Zhu <frankzhu@zhaoxin.com>
 
-Zhaoxin CPUs use KVM's VMX backend and therefore observe the same
-KVM-defined initial value as Intel vCPUs. Update feature_msrs_test to
-expect 0x100000000ULL for Zhaoxin vCPUs.
+In the test, the ERROR_CODE_EXT_FLAG bit should not be set in the #GP
+error code on Zhaoxin CPUs. Add GP_ERROR_CODE_ZX and use it when
+running on Zhaoxin hardware.
 
 Signed-off-by: Frank Zhu <frankzhu@zhaoxin.com>
 Signed-off-by: Ewan Hai <ewanhai-oc@zhaoxin.com>
 ---
- tools/testing/selftests/kvm/x86/feature_msrs_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/kvm/x86/nested_exceptions_test.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/feature_msrs_test.c b/tools/testing/selftests/kvm/x86/feature_msrs_test.c
-index 9602e29bf9cc..c24fa5275a99 100644
---- a/tools/testing/selftests/kvm/x86/feature_msrs_test.c
-+++ b/tools/testing/selftests/kvm/x86/feature_msrs_test.c
-@@ -72,7 +72,7 @@ static void test_feature_msr(u32 msr)
- 	 * but initializes the vCPU's revision ID to an arbitrary value.
- 	 */
- 	if (msr == MSR_IA32_UCODE_REV)
--		reset_value = host_cpu_is_intel ? 0x100000000ULL : 0x01000065;
-+		reset_value = (host_cpu_is_intel || host_cpu_is_zx) ? 0x100000000ULL : 0x01000065;
+diff --git a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+index aeec3121c8e8..bacbbdc5dc69 100644
+--- a/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
++++ b/tools/testing/selftests/kvm/x86/nested_exceptions_test.c
+@@ -38,6 +38,7 @@
+  */
+ #define GP_ERROR_CODE_AMD ((SS_VECTOR * 8) | ERROR_CODE_IDT_FLAG)
+ #define GP_ERROR_CODE_INTEL ((SS_VECTOR * 8) | ERROR_CODE_IDT_FLAG | ERROR_CODE_EXT_FLAG)
++#define GP_ERROR_CODE_ZX ((SS_VECTOR * 8) | ERROR_CODE_IDT_FLAG)
  
- 	/*
- 	 * For quirked MSRs, KVM's ABI is to initialize the vCPU's value to the
+ /*
+  * Intel and AMD both shove '0' into the error code on #DF, regardless of what
+@@ -139,7 +140,8 @@ static void l1_vmx_code(struct vmx_pages *vmx)
+ 	 */
+ 	GUEST_ASSERT_EQ(vmwrite(EXCEPTION_BITMAP, INTERCEPT_SS_GP_DF), 0);
+ 	vmx_run_l2(l2_ss_pending_test, SS_VECTOR, (u16)SS_ERROR_CODE);
+-	vmx_run_l2(l2_ss_injected_gp_test, GP_VECTOR, GP_ERROR_CODE_INTEL);
++	vmx_run_l2(l2_ss_injected_gp_test, GP_VECTOR,
++		   host_cpu_is_zx ? GP_ERROR_CODE_ZX : GP_ERROR_CODE_INTEL);
+ 
+ 	GUEST_ASSERT_EQ(vmwrite(EXCEPTION_BITMAP, INTERCEPT_SS_DF), 0);
+ 	vmx_run_l2(l2_ss_injected_df_test, DF_VECTOR, DF_ERROR_CODE);
 -- 
 2.34.1
 
