@@ -1,134 +1,204 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671B44052C3
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B54D4071E9
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 11:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785409295; cv=none; b=eyF62sWHbjgimV0Ge5VTBMgisOaRP+YZCx1TS7+zyRE/xUkRRUAH9OaOuBho4M49cqSxXn0C+QT5W6SvJClcOhXnfiRJHlNNJhtJT1DizomtSbHeXY3Zwy7GS9QUxoNdbemNT05dqGBc2S8wRqBpQ1fKYerQqfyUZM1kfeWFvWE=
+	t=1785409381; cv=none; b=PG2nVcqXpgvyOXSLWJllqT+6IA7KsTK3bzttEhWQESEwrp9aI+lVMencQB2epsatkFg9phJjXAV1DNgQ8pum8N16U8bVDe5xaeTVvvlov8oFk0YQWJFO9s9W7zfVvC4kWiL2bPb4RV8iVzDenm846R2HWFj6b2ser0bFCh2l6CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785409295; c=relaxed/simple;
-	bh=MTbnHVaGs+oJ8/iRE8SGUTfgRyNeD2t1YHYfV3s4MaU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aJQH00q2L+SeyfxfU4T7/0KDCC3l9uUy3myg+19tNmepfCBmZoaAdKj6KbfJSo6ot6Rl+g0WblQhm4SNILgqcAqR8VFFrG8vs6YLX8KwxF5y4+/RnU/9637iuJKUim+xy1opwdNPNWeium/vyiyTEuysMsIe6asbkUUL6mvMtpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EGU1FV84; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785409381; c=relaxed/simple;
+	bh=hFS3hhrEjm7Iilrrdo7J/ms/HMz8aVhin2mHFh7m4yM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tGr598DgU+aS52HM48lkmqpQaJCJ0vmqHLSNlad6y97VsAUFxttveB6dXhpVd/7TlGlT5UwwpQZNEe1mvzT0SIfGdsOqDF4fR+Dkaf2ts1w1oJhZwJkQcoK0bJrR83ssVMDi/0OXymOHs8H6VYvJsCzqM0DqdTDWPdLQ3J2VJEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EVVwu0pw; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EGU1FV84"
-X-Forwarded-Encrypted: i=1; AHgh+Rofkv2feEZfodzZGmIZ6HDajqFBXIeWuVQUCxTCS8lFfzhrptYzve4C66HSXpWI6gxjdnM=@vger.kernel.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785409290;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EVVwu0pw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785409378;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=e/kRpQrpUg02tctY6yhu6jWBSJHpdY77PwAU3jL1bxM=;
-	b=EGU1FV84TNf0eSfINAjFoXEtyMcup54h89acKGcZFY13c5c289BTg95TTuaz9KR9NhZRCv
-	E1tfv/hQrwkP794+XdW57y3GHF2XYCe2OUDAN9Tf/BLa6Sqb8ap/dy3ZL74JOzFADZRAkw
-	HTvt4Y/tvPtDxhdkeIdPKA2pOqBP79w=
-X-Gm-Message-State: AOJu0YxunUePqo0ds7k3XAfCQxvM7b8dqS6kCkG+GMlFC0BRAevd0QWr
-	AHFP3JyIpT9hTscn2o+8YAs6jaO7ZwT/5fk2j4gnHjOmDiTdl0667yL8JKlSdoKKsHBN4PKYr61
-	BpyhLehsbMCCCGaecj6whquEIHgzijeXwd227LLLK
-X-Received: by 2002:a05:622a:684e:20b0:517:5ac7:332e with SMTP id
- d75a77b69052e-52b3933f844mr9328641cf.6.1785409276641; Thu, 30 Jul 2026
- 04:01:16 -0700 (PDT)
+	bh=i2QWVsKwSY5f2aALx7A2Y/kpJV//Dd4ebcO5MiUk08A=;
+	b=EVVwu0pwiJA1ex05X9cDyUG38251YnsvOr7gPNaOha0D7QcZwwpsDUJR2Sjz1arQCQ84pT
+	OonyhilCoK8pBsb8kDIST2/GMbXApzoZgZ4XJWMr/Y7nL6jf8ewS9wboWxg9/tq4LeN0mY
+	0GpbDeQwO9C5OoyF8b6PUkHWVHrYy5c=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-C3CcKHE7OBCOh9YgU8eeww-1; Thu,
+ 30 Jul 2026 07:02:54 -0400
+X-MC-Unique: C3CcKHE7OBCOh9YgU8eeww-1
+X-Mimecast-MFC-AGG-ID: C3CcKHE7OBCOh9YgU8eeww_1785409373
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ACB3419560A3;
+	Thu, 30 Jul 2026 11:02:53 +0000 (UTC)
+Received: from alougovs-mac.redhat.com (unknown [10.44.33.11])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CFC1219560AB;
+	Thu, 30 Jul 2026 11:02:50 +0000 (UTC)
+From: Alexander Lougovski <alougovs@redhat.com>
+To: tycho@kernel.org
+Cc: Alexander Lougovski <alougovs@redhat.com>,
+	bp@alien8.de,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pbonzini@redhat.com,
+	thomas.lendacky@amd.com,
+	vkuznets@redhat.com
+Subject: Re: [PATCH] KVM: SVM: make svm_flush_tlb_gva do a full asid flush if NPT enabled
+Date: Thu, 30 Jul 2026 13:02:46 +0200
+Message-ID: <20260730110248.49444-1-alougovs@redhat.com>
+In-Reply-To: <amkdorffsAuguuIk@tycho.pizza>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529053513.1592088-1-yilun.xu@linux.intel.com>
- <20250529053513.1592088-11-yilun.xu@linux.intel.com> <20250602133009.GC233377@nvidia.com>
- <CAEvNRgFpJWQ5M5sQhGpQUV3GbBq9N+MQhhaxdxa=D8ky94SCsw@mail.gmail.com>
- <20260712221934.GF674038@nvidia.com> <CAEvNRgEo2kLUmaGU-Vsgx2sTQvU_NNUJ4bRp5Z4Ygs_xvVLOYA@mail.gmail.com>
- <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
-In-Reply-To: <amcdueQI1voXWPQb@yilunxu-OptiPlex-7050>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 30 Jul 2026 12:00:39 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTz82R_hJXHfPG2OLqkB9kVq1=exE_9Cn=2GXQYpbtaBkQ@mail.gmail.com>
-X-Gm-Features: AUfX_mze5Bz4sCJxR7dQfrTfBjLkX9Ma4V02Tb4h9t58N81ewiYYgPohtp6A6lI
-Message-ID: <CA+EHjTz82R_hJXHfPG2OLqkB9kVq1=exE_9Cn=2GXQYpbtaBkQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/30] vfio/pci: Export vfio dma-buf specific info for importers
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, Jason Gunthorpe <jgg@nvidia.com>, kvm@vger.kernel.org, 
-	sumit.semwal@linaro.org, christian.koenig@amd.com, pbonzini@redhat.com, 
-	seanjc@google.com, alex.williamson@redhat.com, dan.j.williams@intel.com, 
-	aik@amd.com, linux-coco@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	vivek.kasireddy@intel.com, yilun.xu@intel.com, linux-kernel@vger.kernel.org, 
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch, 
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com, 
-	tao1.su@intel.com, linux-pci@vger.kernel.org, zhiw@nvidia.com, 
-	simona.vetter@ffwll.ch, shameerali.kolothum.thodi@huawei.com, 
-	aneesh.kumar@kernel.org, iommu@lists.linux.dev, kevin.tian@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, 27 Jul 2026 at 10:03, Xu Yilun <yilun.xu@linux.intel.com> wrote:
->
-> > > If VFIO can create one
->
-> It is an interesting idea to let VFIO create a guest_memfd instance, if
-> DMABUF doesn't work. But to achieve this goal, I think we still need to
-> refactor guest_memfd to allow for different memory/MMIO resource
-> exporters/creators, and different resource importers/users like KVM MMU
-> & IOMMUFD.
+On Tue, Jul 28, 2026 at 03:34:36PM -0600, Tycho Andersen wrote:
+> my LLM complained about the '% 2800000', looks like it's selecting
+> from 1..2.8M in a 1.6M table, so the updates above 1.6M don't affect
+> any rows.
 
-I don't have a strong view on which side creates the fd, and the
-argument that MMIO lifecycle belongs to VFIO makes sense to me. But
-the refactor you describe is the part I'd like to make sure we get
-right for the non-MMIO case, because pKVM needs ordinary guest RAM to
-keep working through it.
-
-Two properties we depend on today, both of which are easy to lose if
-guest_memfd grows an exporter abstraction designed around MMIO:
-
-Conversion has to stay page-granular on subsets of a region. A pKVM
-guest shares and unshares ranges with hypercalls and has no idea what
-is backing them, so we can't require whole-region transitions. This is
-fine for assigned MMIO, where the shared parts are static, but it
-isn't a property we can give up for memory.
-
-Shared pages have to stay mmapable by the VMM and GUP-able through
-those mappings. That's what the VMM does I/O on. It's the reason a
-CMA-heap dmabuf turned out not to work for us, since that mmap path is
-VM_PFNMAP.
-
-So my suggestion is narrow: if guest_memfd grows a notion of an
-external exporter, could the memory case keep going through the normal
-guest_memfd allocation and mapping paths, rather than being folded
-into whatever form the MMIO case needs? I'm not asking for anything
-new here, just that the refactor not quietly close the door.
-
-Cheers,
-/fuad
+Hi Tycho,
+ah, true. Your LLM is correct. I've been experimenting with the different sizes of DB to ensure more memory churn (avoid sql reading from the cache) but then settled back to 1.6M.
 
 
+Another thing to mention, it looks like 1582 workload version I've shared doesn't work correctly. So I'm attaching an improved version which mitigates problems - the version I shared before, was still generating a noticeable amount of TLB flushes but still wasn't exactly working as it's supposed to. So here is the improved version:
 
-> > At guest_memfd creation time, guest_memfd is always created for a
-> > KVM. This is the first place where it is bound to a kvm instance. This
-> > is one place where it helps Yilun with Confidential VMs, so KVM can be
-> > sure that the memory was meant for a specific CoCo kvm and not any VM.
-> >
-> > I think it might be weird to have VFIO take a kvm fd to create a
-> > guest_memfd?
->
-> I think having VFIO create a guest_memfd is better than having KVM
-> create a guest_memfd on behalf of VFIO.
->
-> The lifecycle of the MMIO resources should be managed by VFIO, cause
-> the availability of these MMIO resouces are impacted by device
-> operations, e.g., device reset, PCI Memory Space Enable (MSE) ...
-> You can't export MMIO resources to KVM MMU without VFIO's awareness.
->
-> And VFIO doesn't have to take a kvm fd paramter to create a guest_memfd,
-> VFIO has got the kvm instance via KVM_DEV_VFIO_FILE_ADD.
->
-> >
-> > I was thinking that the userspace VMM could do something like:
-> >
-> >   int vfio_fd = open("/dev/vfio/devices/vfio0");
-> >   int gmem_fd = ioctl(KVM_CREATE_GUEST_MEMFD, { .fd = vfio_fd });
->
+---------8<-------------
+
+
+$ErrorActionPreference = 'Stop'
+$logFile = "C:\drivers\workload-1582-errors.log"
+
+$block = {
+    param($logFile)
+    $files = @(
+        "$env:SystemRoot\System32\ntdll.dll",
+        "$env:SystemRoot\System32\kernel32.dll",
+        "$env:SystemRoot\System32\user32.dll",
+        "$env:SystemRoot\System32\advapi32.dll",
+        "$env:SystemRoot\System32\ole32.dll",
+        "$env:SystemRoot\System32\shell32.dll",
+        "$env:SystemRoot\System32\comctl32.dll",
+        "$env:SystemRoot\System32\msvcrt.dll"
+    )
+    $i = 0
+    while ($true) {
+        $f = $files[(Get-Random -Maximum $files.Count)]
+        try {
+            $fs = [System.IO.FileStream]::new($f,
+                [System.IO.FileMode]::Open,
+                [System.IO.FileAccess]::Read,
+                [System.IO.FileShare]::Read)
+            $mmf = [System.IO.MemoryMappedFiles.MemoryMappedFile]::CreateFromFile(
+                $fs, [NullString]::Value, 0,
+                [System.IO.MemoryMappedFiles.MemoryMappedFileAccess]::Read,
+                [System.IO.HandleInheritability]::None, $false)
+            $view = $mmf.CreateViewAccessor(0, 0,
+                [System.IO.MemoryMappedFiles.MemoryMappedFileAccess]::Read)
+            for ($p = 0; $p -lt [Math]::Min($view.Capacity, 65536); $p += 4096) {
+                $null = $view.ReadByte($p)
+            }
+            $view.Dispose()
+            $mmf.Dispose()
+        } catch {
+            "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') iter=$i file=$f error=$($_.Exception.Message)" | Out-File -Append $logFile
+        }
+        $i++
+        if ($i % 50 -eq 0) {
+            try {
+                [GC]::Collect()
+                [GC]::WaitForPendingFinalizers()
+            } catch {
+                "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') iter=$i GC error=$($_.Exception.Message)" | Out-File -Append $logFile
+            }
+        }
+    }
+}
+
+"$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') Workload1582 starting (PID=$PID)" | Out-File -Append $logFile
+
+try {
+    1..2 | ForEach-Object {
+        Start-Job -ScriptBlock $block -ArgumentList $logFile
+    }
+
+    while ($true) {
+        $jobs = Get-Job
+        $failed = $jobs | Where-Object { $_.State -eq 'Failed' }
+        if ($failed) {
+            foreach ($j in $failed) {
+                "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') Job $($j.Id) FAILED: $($j.ChildJobs[0].JobStateInfo.Reason)" | Out-File -Append $logFile
+                Remove-Job $j -Force
+                Start-Job -ScriptBlock $block -ArgumentList $logFile
+            }
+        }
+        $running = @(Get-Job | Where-Object { $_.State -eq 'Running' })
+        if ($running.Count -eq 0) {
+            "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ALL JOBS DEAD, restarting" | Out-File -Append $logFile
+            1..2 | ForEach-Object {
+                Start-Job -ScriptBlock $block -ArgumentList $logFile
+            }
+        }
+        Start-Sleep -Seconds 60
+    }
+} catch {
+    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') PARENT CAUGHT EXCEPTION: $($_.Exception.GetType().FullName): $($_.Exception.Message)" | Out-File -Append $logFile
+    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') STACK: $($_.ScriptStackTrace)" | Out-File -Append $logFile
+} finally {
+    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') PARENT EXITING (PID=$PID) LastExitCode=$LASTEXITCODE" | Out-File -Append $logFile
+}
+
+
+---------8<-------------
+
+
+Also here is my qemu cmd:
+
+/usr/libexec/qemu-kvm
+  -name vm-1,debug-threads=on
+  -machine pc-q35-rhel9.6.0,usb=off,dump-guest-core=off,hpet=off,acpi=on
+  -accel kvm
+  -cpu host,hv-time=on,hv-relaxed=on,hv-vapic=on,hv-spinlocks=0x1fff,hv-vpindex=on,hv-runtime=on,hv-synic=on,hv-reset=on,hv-frequencies=on,hv-tlbflush=on,hv-ipi=on
+  -m 16384
+  -object memory-backend-ram,id=ram-node0,size=16G,host-nodes=0,policy=bind
+  -numa node,nodeid=0,cpus=0-3,memdev=ram-node0
+  -smp 4,sockets=1,dies=1,cores=4,threads=1
+  -rtc base=localtime,driftfix=slew
+  -global kvm-pit.lost_tick_policy=delay
+  -device virtio-blk-pci,drive=drive0,write-cache=on
+  -drive file=/mnt/nfs-fleet/vm-1.raw,if=none,id=drive0,format=raw,aio=native,cache.direct=on,discard=unmap
+  -device virtio-net-pci,netdev=net0,mac=XX:XX:XX:XX:XX:XX,mq=on,vectors=18,host_mtu=9000
+  -netdev tap,id=net0,ifname=tap1,script=no,downscript=no
+  -device virtio-serial-pci
+  -device virtio-balloon-pci
+  -device virtio-rng-pci,rng=objrng0
+  -object rng-random,id=objrng0,filename=/dev/urandom
+  -device vmcoreinfo
+  -vga virtio
+  -serial unix:/tmp/serial-1.sock,server,nowait
+  -qmp unix:/tmp/qmp-1.sock,server,nowait
+  -display none
+  -daemonize
+
+
+which follows the issue reported in the virtio-win project:
+https://github.com/virtio-win/kvm-guest-drivers-windows/issues/1582 
+
+
+Thanks,
+Al 
+
+
