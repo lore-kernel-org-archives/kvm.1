@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EC5390CB7;
-	Thu, 30 Jul 2026 07:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9585B3B83F9;
+	Thu, 30 Jul 2026 07:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785395470; cv=none; b=CNF6H/aGtaCsIIhZMJDhlpJ89eRYBBsJ7XJSdz8RCzl0rL9/ig/sN84S7RZkOQSA+5x4TZ3zdvgjKezvT1jInIT6+ALVD51uCc8GrQ1naBhRhn/A6l884dNUuhjcb0ElcITNjoUElRTHijt3M8a/5/ORXRuY3vKNYFUTLL7+j7o=
+	t=1785395469; cv=none; b=XyJIt020cTC2X0oAMs85sk7SUfuhol7d1ZptAEfqEDN9S0c01linqVbTQCkptpUSIx4aXZdIAQqJYle7zOW4Xk7OjirBot8Do9BYJ05Dt6uN4qna4TrVWqQ0PpPFawgAZ3/p6i8CxkcohSGu/YgZWjPMq2/817pkxVXubLrMZm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785395470; c=relaxed/simple;
-	bh=TI6EYGOCRgNk/ucDoE12A0BQnvQn+jC2XBs9+FkWCJ0=;
+	s=arc-20240116; t=1785395469; c=relaxed/simple;
+	bh=0oA5e6BH9RbYPuD7HYpZuzByUqXOlKrAGOCKImp2DqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bzvr1jLCz2SXSghikRdFvcAmI041V4No4M1UbwkpZL0uUkD0MmvPTu0CQ/VI1lqjrZG9PlsJjfk+PqTA2YADMpe9eunFLRtEKONK211qgKZEhFTd2/cWTqdnIl78v1az692i1wiFsawxnEEwvvmhQxI72IFkdixTKHJWIahjDIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FitMpvnq; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ol7O5Rj+lrOFU++EN6K9ptIaN4KNz2Z1y2vhBSOnPKsGBkqyiCFtRuDZJzeNf/quU1+Ixh6WeXcXbFtB1xF808NFpJynzqvH7HlxEDu7ZfkihoEHMdJXN+SPD5mLlsDoTjvT9F19h05UGKeobZfWN306MBT4Ozjep/SKWW+yybo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f463NtPa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FitMpvnq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0641F00A3F;
-	Thu, 30 Jul 2026 07:10:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f463NtPa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C301F0156C;
+	Thu, 30 Jul 2026 07:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785395456;
-	bh=jlKRqeuAHeiHYifY33jkifn9qRcM+UmxYlbf8Yr05cs=;
+	s=k20260515; t=1785395453;
+	bh=nvPddLwq+3E5BpZogpvn3U5ADhW+cJYX5/jH9oxoba8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FitMpvnqFkGwrUg/vD/duU8xcE9iGn1rUnbyq4ngExAcY4XNGkxjtOt983hsffOUK
-	 t4+RVlk2A+O8mldc+O6mfjsVBaB53bkX+Ug19s3TdeF1YXa5JyKi3JI+qS88oPQh64
-	 pJ8UU1teGofI+brZmJFGms7GRQ29gqR5zHedXzSj+rYS7UbfshDlDS6c+fbHOz4m8G
-	 PqAFWA7bCYltEh1JzNpPDEEeUM7q0r1rU69K+sO0pGlIW3vmrW7zhJS6RBMCu5iIxX
-	 Hbd5mJmloaj71CaGxEXJ0Zpxg2AlCtjN3UJbHUVDAVVn4tbiJbWwxMXMv4+6FHNqQc
-	 jN69PGut3f4Mw==
+	b=f463NtPaY4HT+/TSgo+5t/0JsVII9nY+joCZ9V1JmiGw3RjjSzC21ei1IGwDhG24/
+	 dFW+TjZqfseFpHSI62FFG+MxTCwoRT5t6+RtvxWe1tc1/XCVWze8EgoqLfztP/LSIp
+	 NW7qq7otBkud1FVWkpMcHnxXLV+vQlxAMg483poj8BmsI41z4G0x5y8wRYd1CHJHq8
+	 f117mRPqueVPGe08EmKQrnBNIK4aLUviJlBYnh3qXxvXve1nBfaBkrDvHFuBUZv+Wh
+	 3FIGJsvHCEA3z9zwBRB8NeMo2JiTofMH+k7LXb6oFV1jGukaNzTxU72wpbG2TBNrpf
+	 rQZidHPsWYnhA==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wpKus-0000000AOpW-32Wa;
-	Thu, 30 Jul 2026 07:10:54 +0000
+	id 1wpKuq-0000000AOpW-0KAz;
+	Thu, 30 Jul 2026 07:10:52 +0000
 From: Marc Zyngier <maz@kernel.org>
 To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
@@ -44,9 +44,9 @@ Cc: Steffen Eiden <seiden@linux.ibm.com>,
 	Yao Yuan <yaoyuan@linux.alibaba.com>,
 	Wei-Lin Chang <weilin.chang@arm.com>,
 	Vladimir Murzin <vladimir.murzin@arm.com>
-Subject: [PATCH v4 29/29] arm64: Add override for ID_AA64MMFR4_EL1.NV_frac
-Date: Thu, 30 Jul 2026 08:10:22 +0100
-Message-ID: <20260730071022.296811-30-maz@kernel.org>
+Subject: [PATCH v4 17/29] KVM: arm64: Add NV3 control bits to HCRX_EL2 sanitisation
+Date: Thu, 30 Jul 2026 08:10:10 +0100
+Message-ID: <20260730071022.296811-18-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260730071022.296811-1-maz@kernel.org>
 References: <20260730071022.296811-1-maz@kernel.org>
@@ -62,97 +62,38 @@ X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-In a very unsurprising turn of events, there is a large class of
-firmware that is totally unable to deal with FEAT_NV3, and doesn't
-set the required SCR2_EL3.NV3En bit, leading to an UNDEF exception
-or an unhandled trap to EL3, depending on the implementation.
-
-Allow the unfortunate user to override ID_AA64MMFR4_EL1.NV_frac
-and get a working system. Hopefully firmware will be fixed before
-actually HW ships, but I have been there before... :-/
+Expose the FEAT_NV3 control bits to the sanitisation code so that
+KVM stops moaning about the unattributed bits.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 ---
- arch/arm64/include/asm/cpufeature.h   |  1 +
- arch/arm64/kernel/cpufeature.c        |  4 +++-
- arch/arm64/kernel/image-vars.h        |  1 +
- arch/arm64/kernel/pi/idreg-override.c | 10 ++++++++++
- 4 files changed, 15 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/config.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index a57870fa96db5..a42683af79fb5 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -968,6 +968,7 @@ struct arm64_ftr_reg *get_arm64_ftr_reg(u32 sys_id);
- extern struct arm64_ftr_override id_aa64mmfr0_override;
- extern struct arm64_ftr_override id_aa64mmfr1_override;
- extern struct arm64_ftr_override id_aa64mmfr2_override;
-+extern struct arm64_ftr_override id_aa64mmfr4_override;
- extern struct arm64_ftr_override id_aa64pfr0_override;
- extern struct arm64_ftr_override id_aa64pfr1_override;
- extern struct arm64_ftr_override id_aa64zfr0_override;
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index 6ae1c816e2010..14fbfa8e6b7b5 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -785,6 +785,7 @@ static const struct arm64_ftr_bits ftr_raz[] = {
- struct arm64_ftr_override __read_mostly id_aa64mmfr0_override;
- struct arm64_ftr_override __read_mostly id_aa64mmfr1_override;
- struct arm64_ftr_override __read_mostly id_aa64mmfr2_override;
-+struct arm64_ftr_override __read_mostly id_aa64mmfr4_override;
- struct arm64_ftr_override __read_mostly id_aa64pfr0_override;
- struct arm64_ftr_override __read_mostly id_aa64pfr1_override;
- struct arm64_ftr_override __read_mostly id_aa64zfr0_override;
-@@ -858,7 +859,8 @@ static const struct __ftr_reg_entry {
- 	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR2_EL1, ftr_id_aa64mmfr2,
- 			       &id_aa64mmfr2_override),
- 	ARM64_FTR_REG(SYS_ID_AA64MMFR3_EL1, ftr_id_aa64mmfr3),
--	ARM64_FTR_REG(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4),
-+	ARM64_FTR_REG_OVERRIDE(SYS_ID_AA64MMFR4_EL1, ftr_id_aa64mmfr4,
-+			       &id_aa64mmfr4_override),
+diff --git a/arch/arm64/kvm/config.c b/arch/arm64/kvm/config.c
+index c61d62b796023..467f57eb8e6bb 100644
+--- a/arch/arm64/kvm/config.c
++++ b/arch/arm64/kvm/config.c
+@@ -225,6 +225,7 @@ struct reg_feat_map_desc {
+ #define FEAT_HCX		ID_AA64MMFR1_EL1, HCX, IMP
+ #define FEAT_S2PIE		ID_AA64MMFR3_EL1, S2PIE, IMP
+ #define FEAT_GCIE		ID_AA64PFR2_EL1, GCIE, IMP
++#define FEAT_NV3		ID_AA64MMFR4_EL1, NV_frac, NV3
  
- 	/* Op1 = 0, CRn = 10, CRm = 4 */
- 	ARM64_FTR_REG(SYS_MPAMIDR_EL1, ftr_mpamidr),
-diff --git a/arch/arm64/kernel/image-vars.h b/arch/arm64/kernel/image-vars.h
-index d4c7d45ae6bc8..d15c2cb1b0f28 100644
---- a/arch/arm64/kernel/image-vars.h
-+++ b/arch/arm64/kernel/image-vars.h
-@@ -51,6 +51,7 @@ PI_EXPORT_SYM(id_aa64isar2_override);
- PI_EXPORT_SYM(id_aa64mmfr0_override);
- PI_EXPORT_SYM(id_aa64mmfr1_override);
- PI_EXPORT_SYM(id_aa64mmfr2_override);
-+PI_EXPORT_SYM(id_aa64mmfr4_override);
- PI_EXPORT_SYM(id_aa64pfr0_override);
- PI_EXPORT_SYM(id_aa64pfr1_override);
- PI_EXPORT_SYM(id_aa64smfr0_override);
-diff --git a/arch/arm64/kernel/pi/idreg-override.c b/arch/arm64/kernel/pi/idreg-override.c
-index bc57b290e5e7b..4e47616bcac23 100644
---- a/arch/arm64/kernel/pi/idreg-override.c
-+++ b/arch/arm64/kernel/pi/idreg-override.c
-@@ -106,6 +106,15 @@ static const struct ftr_set_desc mmfr2 __prel64_initconst = {
- 	},
- };
- 
-+static const struct ftr_set_desc mmfr4 __prel64_initconst = {
-+	.name		= "id_aa64mmfr4",
-+	.override	= &id_aa64mmfr4_override,
-+	.fields		= {
-+		FIELD("nv_frac", ID_AA64MMFR4_EL1_NV_frac_SHIFT, NULL),
-+		{}
-+	},
-+};
-+
- static bool __init pfr0_sve_filter(u64 val)
+ static bool not_feat_aa64el3(struct kvm *kvm)
  {
- 	/*
-@@ -220,6 +229,7 @@ PREL64(const struct ftr_set_desc, reg) regs[] __prel64_initconst = {
- 	{ &mmfr0	},
- 	{ &mmfr1	},
- 	{ &mmfr2	},
-+	{ &mmfr4	},
- 	{ &pfr0 	},
- 	{ &pfr1 	},
- 	{ &isar1	},
+@@ -904,6 +905,11 @@ static const DECLARE_FEAT_MAP_FGT(hdfgwtr2_desc, hdfgwtr2_masks,
+ 
+ 
+ static const struct reg_bits_to_feat_map hcrx_feat_map[] = {
++	NEEDS_FEAT(HCRX_EL2_NVTGE		|
++		   HCRX_EL2_NVnTTLB		|
++		   HCRX_EL2_NVnTTLBIS		|
++		   HCRX_EL2_NVnTTLBOS,
++		   FEAT_NV3),
+ 	NEEDS_FEAT(HCRX_EL2_SRMASKEn, FEAT_SRMASK),
+ 	NEEDS_FEAT(HCRX_EL2_PACMEn, feat_pauth_lr),
+ 	NEEDS_FEAT(HCRX_EL2_EnFPM, FEAT_FPMR),
 -- 
 2.47.3
 
