@@ -1,126 +1,185 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1137B4749FD
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 23:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12CE477E2D
+	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 23:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785453620; cv=none; b=NNCDCm5No46/OlHmIj7UBKjfMAw6Qs1ZSdXqqRPu5KhCp3ehJuH8N7qzpoXF8MhTkyZsfWZB3sYFOrJG+GTB2GmhWJhnVFKm7hpRA6pKckJLoIgiU+E59/hEq7kpawpEt/rbWBG3Sth7Sraf8pbdCnsYxHcJmgjPkeZYCzvej1o=
+	t=1785454298; cv=none; b=Siwf5SjdTujkZGN3ePs8jbf2ceXuUv1UJoYCWyNYZ0ewOHRb3syiHdYB9L1iHtpvSzr22nDWphJmmICoRfAXJzwgIiQEw1Th/S799b7Q5nd4THo5DkKmww5mHnsoxokok+HU1EQ9OBc8K19NiYegBqZcJQmmLFV9/rT8HkT+FH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785453620; c=relaxed/simple;
-	bh=D1HG6b77iifw3DUMszzZ7R8qVj01yGi3PV2UPXRdquM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lTKJhrF8KJLGkAC6pk74rgITveY5fx62e/VHsqQPeucYmauAWvWizdI0cYkfYLYLRRIpAruKc2zTKcELpeFzh6W1qNeHF2ELB/EwOYw22lz/2TTQS1hn6kbih8vydbWacFbZD2zmqvuOliax4c7EmK/uPN/gM8llVAu+ilC2iV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EJmG/Hjr; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1785454298; c=relaxed/simple;
+	bh=y5JUWpBC9ZinaNrBiu9Ex9HCA7XQbTmIU8bYaz3FCDM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fJQkaQXkKGcRJKlxDaCcjIPLsIzojTSAKnmPN5Yg2iOsuSNd0qa2hrSr3Tqe7sEJWijBohnre7847iwWricpcpQhEg6LjOcisq51Q9FCOJdUBchl6GS0/PNahTj/jsvSksKtS3j8YGeKA3NAuBuZFC+YVawrK3CWQXNa790IfjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ai6W4DjO; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EJmG/Hjr"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ccdf36f63dso57085ad.0
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:20:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ai6W4DjO"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3823dcc1647so538826a91.3
+        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 16:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785453617; x=1786058417; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i8nq0/Hmm93fF2JW2THyDFZojbW5xmKXoinFZToOHmQ=;
-        b=EJmG/Hjr+YdbZnwRfiRY1eYlZTOV2eeL3RN70Cfe37RhydlKsY4jDKXOu5lN2oG6IU
-         bQ4k8Q6L9PNwpwpMlbXVd0lOkfgBCvkxJWGUy79dQDNRks8IqS2hnBPVpESe4wqDsU9E
-         ovBfcHDSazjA/FoAfbUialeirbvZmMyKt/LE9TxLXX5FcrawobnODpL7zKyB3fOujiwf
-         yCX5+KuwiDvjW0F2ZliHFDvPh0j8Zd4UZBFtw/wHztJzjMcDI59mvAZNTyWLcNBUq8R7
-         dSF8qCRCKU4kvHQaew/7BUzKZ6bL6i5ZtMRahhx+M795j0pHgn4q330wbzJaJ8ewFNut
-         R56Q==
+        d=google.com; s=20251104; t=1785454296; x=1786059096; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xz8u3Wn2RzlzqgpqFMq2TpNFtucYC8ouaOfrUxHadWI=;
+        b=Ai6W4DjO24de2EPNufjZEnt48splaER+fSVNheodIPk74VpdVx0MMsru5mORcNPxAl
+         ar5m3KUnq1Yevf5ZPZRWddJsQtTUtd8qQymTY7ABGi4U6pElwarvH6OdPIWdYk4vueaO
+         uHQwYy9SD5luyFvF4WKSDWPakQzEFVM/LPJpocgJiYEcLQV67LI9BL4ruv3/1S2YzGix
+         nwUm/vC8+qGDobndz/H0Scgcm3TwGvPuNP24xm4SwvTnPIxwsQ1haJJxc54Y2jPkaip4
+         ZBnLgoapgcq5vJ4TcUhqcq/lSbYjsKHuGIiHo2MmHsg8x9tejgBgcJxpAhgmEJEIFuct
+         2Q8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785453617; x=1786058417;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785454296; x=1786059096;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i8nq0/Hmm93fF2JW2THyDFZojbW5xmKXoinFZToOHmQ=;
-        b=K+8zlsM3PuXMJitiIfJAvKv2DLfAuNguKmw0fQ4xDrQN/iAssbzoqwm1od+alPWIfK
-         xl6gH/dTpS7/RzzhGkSy4oSxeVuv6IabrqqdZupfZCMAslAXP40SEwF5mUufIAzFCeff
-         KKNuInB+e2nai2z+y1F0rEVJO0jkgVOe/OJ4W0qJ0vcheHD837RZLi0sDR/p68VB8AoA
-         9rPSsPnOGNEvtGqTYswsK6PQDfoUxoVEGBHgVmH65TeQ8zncITfZaQbM4gZbccV+mrch
-         LVJ58rwzLJBisduEoGI6ZcXlANyPZVOfPJZ30tAmGTQT8uRrwle7H6uVupCmiit3ip1s
-         zDUg==
-X-Forwarded-Encrypted: i=1; AHgh+Rpe7Kq9vu914qYsvVtTbL1h2bTGPy4f18lzjGq5omiN2SP3/DfOIUtTxGYbC2tcGbBJlIo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9JRQoBCaxrCAYfK/0b4lfb0aIZq3VGRvDyshbWxx2n3VRnsPQ
-	b6xDWbmseAEvh5252cChe6Gom3lF2Lw6x2XBXp4MVhOua6x3z0zGRmXb6eAB0iKrXA==
-X-Gm-Gg: AR+sD135xZSadOMhq+C+MPCqktd1koRntSX0zHxFnyrrE9DkXHjhgd2CQ+8y8SfidMX
-	v8+ELGeKYFsSFtX1qorttxOH73Eb8XFuHcWai67qMPlRl62KvvTH0GbnRPO6osnP14Q2poWfoCk
-	TTJWaon4bRFJPCgZVBP6tJf6Nd2JXmXdYM9ELwdsWXjt8j6gC/C4kXgMM7toqyr69x/0hLTrkR4
-	ewEvTbOaPgJtC2kIAqToBMOK6glp4RuTbNFysJKFnETaPLFlY7hvnKujot/bz7eC+sS5q9GsJrV
-	F/LEF9uYnAeYZVCquldIuyk39QZBT/Ia+/t2s2tfS8skvzrE1KFhfRjTi1I2GIctlVptsWs9Jgq
-	IoB+17ZEptPFXKkdjAmEc45vT7E68aZo1uJhL8NQiWiXMeTv4LwLIb4q77PdzikxClO9pbAMmHO
-	w5wSIlR/nJLrs0o1YOuyY4HVWgpSYKmLfo9N2wlZ2q9Q2rqN24B0QctKEH1zHBBJJTemeJTP5Gu
-	0Fq9vNkH/Sed0W8J8wcFBE=
-X-Received: by 2002:a17:903:2a88:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2d043c66fc3mr2363495ad.1.1785453616883;
-        Thu, 30 Jul 2026 16:20:16 -0700 (PDT)
-Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e7265be48sm24706277c88.8.2026.07.30.16.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 16:20:16 -0700 (PDT)
-Date: Thu, 30 Jul 2026 23:20:08 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
-Message-ID: <amvcKL8FR60OoTDW@google.com>
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-8-matt@ozlabs.org>
+        bh=Xz8u3Wn2RzlzqgpqFMq2TpNFtucYC8ouaOfrUxHadWI=;
+        b=lFFk5ZZ9zvLoCZK93N7WMAbIxxEguXejclFO65fgz0kBvXjly6weRshdQjFx2mpj3t
+         gtBBmD/09lbRHHnn7GKIOFqD4L0rjYTG8Ej8fVTUYKaZykeRq9VIbkZukn0tg+etqImn
+         bQH1DUuz7shnhArdRET4KnU63MPxxy96kwwkS4OtIJwcFRC3pD64eahvDlK+k+irStZ0
+         Wr7NKCf3cdbvcv1fZFiPqIywZUAzgHXPx34bvX3cT3H+hRo7qrmE1qj0CvW++JnoXCfw
+         bDzqrg8IgZN9rXaTSReceYgw5UQweB39opAMlbFSslpVHanlQk3SFItPjesUMxcvFne1
+         y6qg==
+X-Forwarded-Encrypted: i=1; AHgh+RpfRZj5Jva6FAZSpkm47+S7qH5TZSkXa2F2rzI1JV1kiIWntFBRI71zx/c21QkcMmAY/FI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjNdAWqGyvjHdwbVeLMvQ7leDF8LX3OrudjJe1fp7lUeXH0O+Q
+	huDMSgjvqahd2zVpCn/6MiZh4pdqruswtN2XRY8IqWrpcoC3j30ivvDLyZsM2jXh4ID3jS2OC7d
+	12xr6Qq4F
+X-Received: from pjbnp16.prod.google.com ([2002:a17:90b:4c50:b0:38e:a577:5cbd])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1641:b0:37f:9ce2:348c
+ with SMTP id 98e67ed59e1d1-38f9bee60d9mr3914341a91.29.1785454295795; Thu, 30
+ Jul 2026 16:31:35 -0700 (PDT)
+Date: Thu, 30 Jul 2026 23:31:28 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715174737.15287-8-matt@ozlabs.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANDea2oC/2XO3WoDIRCG4VsJHtfiz+g4Ocp9lBKiTjdCG8Nuk
+ Zaw914TcmDZw2/wefEmFp4LL2K/u4mZW1lKvfRBLzuRzqfLxLLkvoVRxitUKMsUj80eI0ggTZA
+ 0WLRJ9PfXmT/Kz6P19t73uSzfdf59pBvcr8+KVkOlgVTSeUY2Dn1K+jDVOn3ya6pf4p5pbqQwU
+ tcpaacs5xwpxA31AzVmpL5TFVlnQ6RDhg3FkYaRYqfgtU8WwSH5DQ0jpZGGTvtnjfUGTQT+R9d 1/QN5tYoajwEAAA==
+X-Change-Id: 20260707-igb_v3_b4-49194c14373c
+X-Developer-Key: i=jrhilke@google.com; a=ed25519; pk=cK+Urrh214DoCHywJiTwhMP+zcs1ofpGrewToO/i/3A=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785454295; l=4527;
+ i=jrhilke@google.com; s=20260710; h=from:subject:message-id;
+ bh=y5JUWpBC9ZinaNrBiu9Ex9HCA7XQbTmIU8bYaz3FCDM=; b=IlIquqeKDLgwS50puJtY4XAYyqzP33VaWoN84QoiGxxJt1l93GYgI0Pi4edqXgAVy+WLKuRhE
+ I009pLFUIV1DNdZyITl9mJ9KV2B138Te8V6GLx1XmesezkirgbTACpR
+X-Mailer: b4 0.14.3
+Message-ID: <20260730-igb_v3_b4-v9-0-9e4d8682437e@google.com>
+Subject: [PATCH v9 0/5] vfio: selftests: Add driver for Intel Ethernet Gigabit
+ Controller (IGB)
+From: Josh Hilke <jrhilke@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, 
+	Josh Hilke <jrhilke@google.com>, Alex Williamson <alex.williamson@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jul 15, 2026 at 06:47:30PM +0100, Matt Evans wrote:
-> Previously, vfio_pci_zap_bars() (and the wrapper
-> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
-> calls to vfio_pci_dma_buf_move().
-> 
-> This commit replaces them with a unified new function,
-> vfio_pci_revoke_bars() containing both the vfio_pci_dma_buf_move() and
-> the unmap_mapping_range(), making it harder for callers to omit one.
-> It adds a wrapper, vfio_pci_lock_revoke_bars(), which takes the write
-> memory_lock before zapping, and adds a new vfio_pci_unrevoke_bars()
-> for the re-enable path.
-> 
-> As of "vfio/pci: Convert BAR mmap() to use a DMABUF", the zap via
-> unmap_mapping_range() is no longer performed for vfio-pci since the
-> DMABUFs used for BAR mappings already zap PTEs when the
-> vfio_pci_dma_buf_move() occurs.
-> 
-> However, it must be assumed that VFIO drivers which override the .mmap
-> op could create mappings _not_ backed by DMABUFs.  So, the zap is
-> still performed on revoke if .mmap is overridden, using a new
-> zap_bars_on_revoke flag.  A driver can explicitly opt out; the flag is
-> cleared by the hisi_acc_vfio_pci driver, since its .mmap just wraps
-> vfio_pci_core_mmap() and so still uses DMABUFs.
-> 
-> Signed-off-by: Matt Evans <matt@ozlabs.org>
+This v9 of a series which adds a VFIO selftest driver for the Intel
+Gigabit Ethernet controller (IGB), specifically targeting the 82576
+device. IGB is fully virtualized in QEMU, making it suitable for running
+VFIO selftests without specialized hardware.
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+v8: https://lore.kernel.org/kvm/20260729-igb_v3_b4-v8-0-3ed236272b4e@google.com/
 
-Thanks
-Praan
+Version 9 enables Pad Short Packets (PSP) to support short packet
+transfers, per Sashiko's comments, and fixes an inaccurate comment. I
+also squashed patch 2 from v8 into patch 1 so that Sashiko wouldn't
+complain about issues in patch 1 that were fixed by patch 2.
+
+Testing
+=======
+- VFIO selftests builds clean at every commit
+- vfio_pci_driver_test passes using IGB driver + QEMU. Use the following
+  command to run the tests:
+
+  vng \
+  --run arch/x86/boot/bzImage \
+  --user root \
+  --disable-microvm \
+  --memory 32G \
+  --cpus 8 \
+  --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
+  --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
+  --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
+  --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
+  --exec "modprobe vfio-pci && \
+          ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
+          ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
+--------
+Changelog:
+
+v8 -> v9:
+- Enable Pad Short Packets (PSP) in TCTL to support transfers < 60 bytes. (Sashiko)
+- Correct misleading comment about interrupt delivery in Patch 1. (Sashiko)
+
+v7 -> v8:
+- Rebase onto linux-next branch. (Alex)
+- Implement retry limit in vfio_pci_device_reset(). (Alex)
+- Carry David's reviewed-by tag onto the patches that haven't been
+  touched since v6.
+
+v6 -> v7:
+- Allow the driver to be used on any architecture. (Alex) 
+- Fix regression in reset logic for the physical device. (Alex)
+
+v5 -> v6:
+- Retry on EAGAIN during device reset to handle transient lock contention (Sashiko).
+
+v4 -> v5:
+- Reordered igb_remove() to reset the device before disabling MSI-X (Sashiko)
+- Refactored hardware reset logic into igb_reset() helper.
+- Simplified reset completion check to usleep + assertion instead of retry loop (Sashiko).
+- Allow arbitrary test data by enabling Multicast Promiscuous (MPE)
+  and Broadcast Accept (BAM) modes (Sashiko).
+- Fixed igb_send_msi() to use MSIX_VECTOR_MASK instead of magic number (Sashiko).
+
+v3 -> v4
+- Enable MSI-X mode in GPIE (Sashiko)
+- Fix hardware initilization order to avoid race conditions (Alex/Sashiko)
+- Add memory barrier to prevent speculative reads (Alex/Sashiko)
+- Clean up stale references in commit messages and comments (Alex/Sashiko)
+- Add a comment to address software/firmware semaphore (Alex/Sashiko)
+
+v2 -> v3
+- Poll reset bit and document the required wait time (David/Sashiko)
+- Fix the logic for enabling PCI_COMMAND_MEMORY (David/Sashiko)
+- Fail the test if autonegotation fails (David/Sashiko)
+- Handle endianness conversions (David/Sashiko)
+- Use real IGB headers at the start of the series (David)
+- Add E1000_TXD_CMD_IFCS to the TX descriptor command word (Sashiko)
+
+v1 -> v2
+- Removed the chunking loop in igb_memcpy_start() (David)
+- Removed redundant writes to status_error and hdr_addr (David)
+- Include official IGB header files (David)
+
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+Alex Williamson (3):
+      vfio: selftests: Add helpers to re-enable interrupts
+      vfio: selftests: igb: Factor hardware programming into igb_hw_init()
+      vfio: selftests: igb: Recover after DMA-read faults
+
+Josh Hilke (2):
+      vfio: selftests: igb: Add driver for Intel 82576 device
+      vfio: selftests: Retry on EAGAIN during device reset
+
+ .../selftests/vfio/lib/drivers/igb/e1000_82575.h   |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_defines.h |   1 +
+ .../selftests/vfio/lib/drivers/igb/e1000_regs.h    |   1 +
+ tools/testing/selftests/vfio/lib/drivers/igb/igb.c | 577 +++++++++++++++++++++
+ .../vfio/lib/include/libvfio/vfio_pci_device.h     |  15 +
+ tools/testing/selftests/vfio/lib/libvfio.mk        |   1 +
+ tools/testing/selftests/vfio/lib/vfio_pci_device.c |  42 +-
+ tools/testing/selftests/vfio/lib/vfio_pci_driver.c |   3 +-
+ 8 files changed, 639 insertions(+), 2 deletions(-)
+---
+base-commit: 550cab3931e84e8a7701155f4dc40c0e4069d390
+change-id: 20260707-igb_v3_b4-49194c14373c
+
+Best regards,
+-- 
+Josh Hilke <jrhilke@google.com>
+
