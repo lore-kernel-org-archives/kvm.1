@@ -1,155 +1,152 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E503812C2
-	for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 08:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906C33B3896;
+	Thu, 30 Jul 2026 08:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785400838; cv=none; b=lY7qoKrfUVcg1vmEukTbvdYSi7K3NlHmBSn9M61w2HQdvWfbCUTxRvFjEkpgECpIJBhUm2fmjJT0Em/PJICVMUYHUk/eV8cbDOA6vw9U9BCS9ow3LygT6Y5npmtZ5A27DPBgjgKatRSQeGRKtlqMyAHSxhQ1GCknxZp5X2XZ8tY=
+	t=1785401261; cv=none; b=Bqhf7YEeujTD9ObPjstL0SzBpVTgKIxKW4hnyglAwMTFjl844H3oxzOl5uSo7W9CZgqUaq2Fs/xjPKYJqDmaC7oY1u5U+USl7ghEOFnbjzPbKCOW2sMtmvctUJ+mhFJ2Cjr8UV+uJvU5idoCb1ZL+21LeoplcI8Z344vpLwDuzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785400838; c=relaxed/simple;
-	bh=SVV2F8ebZQUTRNqDDxcrlIi1AM3xo4GXFmJpdF26b/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j6DgN2AISVsXVsr+7uG01iXCMFvOHUWfMgh3Ne6oOyQved3T+Xf43CrsQk0TKT8S8wlJ2NHSlW4XBViIh5c5cLlCrwjd7tODONME+ymTZmi29IdGvJdTK6mxkVe3KcSbskQOID55yziGgZ3onLzjgTuc/Atq5rqN+QT0ILkgZXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jv+bHdaA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785401261; c=relaxed/simple;
+	bh=NF6CVCP5rayLeYmCb+Hp0tt9lxGmXGx3Nh0bLF2qWW8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=soz7EWscJt+7vgmsPnmQeNhGrtiJnE2l30QJp0L83CBHpMyQR6ngu/akKVlExFL7XaL4LszM4itRtYzxq6V7T9Iw+lTrNU37D1QdTla2BjaeUcMi0qXCYVE30GZKdTYmH/KPQq4azUkNUhFNKiEwu29MNNUufsOo3z7gCmxLpFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NMM3xcMr; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jv+bHdaA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785400836;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fK6hpv259oIHFodhfLsiUsD3Tx8s1yqYxRfkG08L2y0=;
-	b=Jv+bHdaA20UiIsuBM13oyUZPX/BUFpFjdEJIbe+9UHD8AsySnEq9nMWq4QH1jo91GKZ5dB
-	IvE87JmBMdTga9Q7zuyWnn2jHU9KUkIhGr5SS/TID0KfY6pZK/Kt2J6hP2ZKiKE7ERUefA
-	yOst/i1JOM5fqpKEnag+xViyM9u95hM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-284-uWd6tHyzOnyGcv70cZsrFQ-1; Thu,
- 30 Jul 2026 04:40:34 -0400
-X-MC-Unique: uWd6tHyzOnyGcv70cZsrFQ-1
-X-Mimecast-MFC-AGG-ID: uWd6tHyzOnyGcv70cZsrFQ_1785400833
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADE661800378;
-	Thu, 30 Jul 2026 08:40:33 +0000 (UTC)
-Received: from f44vm (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 49BB81800480;
-	Thu, 30 Jul 2026 08:40:32 +0000 (UTC)
-From: Sergio Lopez <slp@redhat.com>
-To: kvm@vger.kernel.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	linux-kernel@vger.kernel.org
-Cc: Sergio Lopez <slp@redhat.com>
-Subject: [PATCH v2] KVM: have hva_to_pfn_remapped write-upgrade PTEs
-Date: Wed, 29 Jul 2026 05:21:12 +0200
-Message-ID: <20260729032112.20629-1-slp@redhat.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NMM3xcMr"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 724871684;
+	Thu, 30 Jul 2026 01:47:32 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A35EB3F86F;
+	Thu, 30 Jul 2026 01:47:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785401256; bh=NF6CVCP5rayLeYmCb+Hp0tt9lxGmXGx3Nh0bLF2qWW8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NMM3xcMrCXMylVU2uhyif9apu4tRv1/ulSUa/4zzwefu3iFuYmiuRcKu7MhYHiM32
+	 ZkosZs53h6NRg2uC9iLjfIVMIB6z5hwLNZnGWjHeZFxltOJyj8DwE2Fy/JjiQ5lESn
+	 00/eg9A9lnuMK9v+ThlYH6jXj3zB9IjsldgYRMqs=
+Message-ID: <56f2ae6a-a45b-4ef4-8503-5f095a834b09@arm.com>
+Date: Thu, 30 Jul 2026 09:47:27 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v15 13/37] KVM: arm64: CCA: Support timers in realm RECs
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-14-steven.price@arm.com> <861pcoeqk5.wl-maz@kernel.org>
+ <dff2eee7-09cf-4f85-8dec-c7c243f3ba0f@arm.com> <86qzkmcbaq.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86qzkmcbaq.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-After 28e39181 ("drm/gem-shmem: Track folio accessed/dirty status in
-mmap") was merged, a guest write to an unpopulated PTE from a mapping
-backed by a DRM GEM BO triggers a VM exit with EFAULT, with
-hva_to_pfn_remapped setting p_pfn to KVM_PFN_ERR_RO_FAULT.
+On 29/07/2026 11:58, Marc Zyngier wrote:
+> On Wed, 29 Jul 2026 11:47:03 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> On 27/07/2026 10:21, Marc Zyngier wrote:
+>>> On Wed, 15 Jul 2026 15:28:15 +0100,
+>>> Steven Price <steven.price@arm.com> wrote:
+>>>>
+>>>> The RMM keeps track of the timer while the realm REC is running, but on
+>>>> exit to the normal world KVM is responsible for handling the timers.
+>>>>
+>>>> A later patch adds the support for propagating the timer values from the
+>>>> exit data structure and calling kvm_realm_timers_update().
+>>>>
+>>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>>> ---
+>>>> Changes since v14:
+>>>>  * Special case in kvm_timer_vcpu_load()/kvm_timer_vcpu_put() the timer
+>>>>    handling.
+>>>> Changes since v12:
+>>>>  * Adapt to upstream changes.
+>>>> Changes since v11:
+>>>>  * Drop the kvm_is_realm() check from timer_set_offset(). We already
+>>>>    ensure that the offset is 0 when calling the function.
+>>>> Changes since v10:
+>>>>  * KVM_CAP_COUNTER_OFFSET is now already hidden by a previous patch.
+>>>> Changes since v9:
+>>>>  * No need to move the call to kvm_timer_unblocking() in
+>>>>    kvm_timer_vcpu_load().
+>>>> Changes since v7:
+>>>>  * Hide KVM_CAP_COUNTER_OFFSET for realm guests.
+>>>> ---
+>>>>  arch/arm64/kvm/arch_timer.c  | 38 +++++++++++++++++++++++++++++++++---
+>>>>  include/kvm/arm_arch_timer.h |  2 ++
+>>>>  2 files changed, 37 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/kvm/arch_timer.c b/arch/arm64/kvm/arch_timer.c
+>>>> index 4155fe89b58a..fdd68f1f5b7b 100644
+>>>> --- a/arch/arm64/kvm/arch_timer.c
+>>>> +++ b/arch/arm64/kvm/arch_timer.c
+>>>> @@ -482,6 +482,20 @@ static void kvm_timer_update_irq(struct kvm_vcpu *vcpu, bool new_level,
+>>>>  			    timer_ctx);
+>>>>  }
+>>>>  
+>>>> +void kvm_realm_timers_update(struct kvm_vcpu *vcpu)
+>>>> +{
+>>>> +	struct arch_timer_cpu *arch_timer = &vcpu->arch.timer_cpu;
+>>>> +	int i;
+>>>> +
+>>>> +	for (i = 0; i < NR_KVM_EL0_TIMERS; i++) {
+>>>> +		struct arch_timer_context *timer = &arch_timer->timers[i];
+>>>> +		bool status = timer_get_ctl(timer) & ARCH_TIMER_CTRL_IT_STAT;
+>>>> +		bool level = kvm_timer_enabled(timer) && status;
+>>>> +
+>>>> +		kvm_timer_update_irq(vcpu, level, timer);
+>>>> +	}
+>>>> +}
+>>>> +
+>>>
+>>> Why do we need this? What is so special about CCA that it cannot use
+>>> the existing timer flow?
+>>
+>> CCA is a little special because the timer context is owned by the RMM
+>> while the realm is executing. It's the RMM which actually loads/saves
+>> the timer registers not KVM.
+>>
+>> The RMM returns some of the timer state on every exit, and the host is
+>> responsible for updating the interrupt status (as the host controls the
+>> GIC emulation).
+> 
+> But KVM relies on the timers being live when the vcpu is loaded. So
+> the first port of call should be for CCA to adapt to KVM, and not the
+> other way around.
+> 
+> You can always make sure that the timers are in the registers at the
+> point where you reach the KVM code.
 
-This happens because that commit implements pfn_mkwrite for
-drm_gem_shmem_vm_ops. With that function present, vma_wants_writenotify
-returns true in vma_set_page_prot, clearing VM_SHARED and leading to the
-entry to be installed as read-only. This is done on purpose so the
-fault handler gets nofitied when the entry is going to be written.
+Indeed if you'd prefer that I can modify the code to load the timer
+state into the registers in the Linux CCA code before reaching the
+generic KVM code. It's a little weird from an overall point of view (the
+RMM saves the state into memory, and then Linux reloads it just to save
+it again), but I don't see any implementation issues.
 
-In KVM, hva_to_pfn_remapped calls to fixup_user_fault to trigger the
-fault handler but, as seen above, this one might install a read-only PTE
-even with FAULT_FLAG_WRITE present in fault_flags. The check a the end
-of hvf_to_pfn_remapped notices that the entry is not writable despite
-this being a write fault and sets p_pfn to KVM_PFN_ERR_RO_FAULT.
+But a quick go at implementing this does indeed seem to save us a bit of
+code, so I'll include this in the next posting.
 
-To address this issue, have hva_to_pfn_remapped issue a second
-fixup_user_fault call when needed for write-upgrading the PTE.
-
-Signed-off-by: Sergio Lopez <slp@redhat.com>
----
- virt/kvm/kvm_main.c | 42 +++++++++++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 13 deletions(-)
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..8d8b4a974ab0 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2936,6 +2936,21 @@ static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
- 	return true;
- }
- 
-+static inline int do_fixup_user_fault(unsigned long address, unsigned int fault_flags,
-+				      struct follow_pfnmap_args *args)
-+{
-+	bool unlocked = false;
-+	int r;
-+
-+	r = fixup_user_fault(current->mm, address, fault_flags, &unlocked);
-+	if (unlocked)
-+		return -EAGAIN;
-+	if (r)
-+		return r;
-+
-+	return follow_pfnmap_start(args);
-+}
-+
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
- {
-@@ -2957,27 +2972,28 @@ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 		 * get_user_pages fails for VM_IO and VM_PFNMAP vmas and does
- 		 * not call the fault handler, so do it here.
- 		 */
--		bool unlocked = false;
--		r = fixup_user_fault(current->mm, kfp->hva,
--				     (write_fault ? FAULT_FLAG_WRITE : 0),
--				     &unlocked);
--		if (unlocked)
--			return -EAGAIN;
--		if (r)
--			return r;
--
--		r = follow_pfnmap_start(&args);
-+		r = do_fixup_user_fault(kfp->hva,
-+					(write_fault ? FAULT_FLAG_WRITE : 0),
-+					&args);
- 		if (r)
- 			return r;
- 	}
- 
- 	if (write_fault && !args.writable) {
--		*p_pfn = KVM_PFN_ERR_RO_FAULT;
--		goto out;
-+		/*
-+		 * VM_PFNMAP fault handlers may install read-only PTEs via
-+		 * vmf_insert_pfn(), deferring the write upgrade to a second
-+		 * fault. Trigger that upgrade now.
-+		 */
-+		follow_pfnmap_end(&args);
-+		r = do_fixup_user_fault(kfp->hva, FAULT_FLAG_WRITE, &args);
-+		if (r) {
-+			*p_pfn = KVM_PFN_ERR_RO_FAULT;
-+			return 0;
-+		}
- 	}
- 
- 	*p_pfn = kvm_resolve_pfn(kfp, NULL, &args, args.writable);
--out:
- 	follow_pfnmap_end(&args);
- 	return r;
- }
--- 
-2.55.0
+Thanks,
+Steve
 
