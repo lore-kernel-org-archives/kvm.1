@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DE7360ED6
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 22:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98C9314B8C
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 22:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785536642; cv=none; b=nUFrYwEacYmRD7PfoOr6O5Bu1kQ/vbgmBHqvlxQXzUy6vDJE0Nn1f1x3Gfa7pnh4UaQvy40qjW8wql27IRJ3K15p+DAy2WsZweWxq2tdSS3fLLINvZQYJufycjcged/9XXur6CjX5d6mhyQLajsi3f00a6ey5bTxcfrH/QmZl6Q=
+	t=1785536794; cv=none; b=ccqqQaEO3k6U6OGcV16v96wWaLXmUNnC+Oj+qQohwDK2Aa/uOhp6XKuSLiopPN2FM9oiofvus9n/MJCnKtBlFBDegGyqBp+UUtiJdv5XJVBgciyC+35y83YJ4+zgmijEIXSt/LgpZ6G4CZeODd7O3o7b0GqmfakwdGinzKzFrEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785536642; c=relaxed/simple;
-	bh=yPAasUyJRo2QHNrAw0MbFXUq0FA4pynz1N1k9q9rhNc=;
+	s=arc-20240116; t=1785536794; c=relaxed/simple;
+	bh=UN1xhyxEFzlOGbSiJFwIjbJOa/4+vvmh8cYOC1us/cY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IqlWE6ek/gVGopY0fpWQ39gTqxsbK3a90ntC/wtslXWXHOEJMupCxqesFS2sui07xRhEQ+ObGEHpEPzeVm21NheVjyXeI7dbJ4r4r7AdELoP4HzB7p1PR58ONto64cMncxINPcNRk0H4XDeOLFoslv+NiHhQCunsoWMD/Y8G9Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdX8tk0V; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=a2qgOWoy+XyrTS/TIsTLPJt+KwBAf/ssGExh3f/hqV+P+Zsue3WtX3fSPCiJGEhzpe0lukTPNNyIrkymmJSF9X8udRpFAaImXDPbI7SGx03XtqSJPRVg3PaKqZ+hgx1cKhgTPz3j+XSoY0TJADFgkFTGYF0fbaQiZRQwmbxroro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvKkxteA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdX8tk0V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC7D1F00AC4;
-	Fri, 31 Jul 2026 22:24:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvKkxteA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DE01F00AC4;
+	Fri, 31 Jul 2026 22:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785536640;
-	bh=jA03Doh9TCXs+aTg7+Rre2d2PC1VSv2ljTW6qhfEpwg=;
+	s=k20260515; t=1785536793;
+	bh=TYkd98ICkDzHBf1/Tnd7upsGMwj06r3rJxk41xRdafY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RdX8tk0VCX+RycXDvKn8BAr/fPiaxqTXNJmKvw8D9m6rPmUAo05NYbnA/4xmWEMPM
-	 D0IGNrixMxBU3j6kKptXyfFRk0GrDqWWu9IqCh/C/eL4O1tt8Gw4Wa3c9zzrQPg38f
-	 jByMgD0tj1YAGJJrVcaLcxR8mDpYYMhL+F+YLAjxOwj5A8ewCp9PtlyZ/zoY+kIqN4
-	 J4c44OrfZemo5s6VOzeMy4ZdF9KkS+ESrGwW+wG2ldXJ9W9Os37SerjlOfWgIF4/QC
-	 f/Y5iJ0mMgHhFbcbVBPFIRXgnHbs+FfkXAI07QXLU0LdVOc0VM9rwW2d6RqgIOaXZZ
-	 LKY7KIjtssDbg==
+	b=MvKkxteAXQ4k79oCfMLpmfnIf9/SHt1ZhyVXDap2A8xl1s0vj0wATk5aFl0HD0uQX
+	 RVD55b/SReG/sD//SzzGL6pgkafWrQPpTjhW5lCIjm3Th6Af1Q1dfeLl1PJ5BiAQ9n
+	 MYb4r3QAX3KYhKEYLTsLjYf40oeb408gjzjVbnEOpHX1SVObPdvwOql8tn4KBP3dTj
+	 Wmzw+IAOGbGvZ8ZWhy8XS/V3lOSx+heyQx94ZBQr+pEIAh8gH1dJKPxp7vmVTuTYLr
+	 X7uug3Ak4JI/Rj5F4HjGJs4zPTtvwIjdcKy9svg691DFiUESm48JOTSGmHq8AW1yJf
+	 fE1CeXEGXQgzQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/2] vhost-scsi: use kvzalloc for vq array allocation
+Subject: Re: [PATCH 2/2] vhost-scsi: reject invalid max_io_vqs module
+ parameter
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Dongli Zhang" <dongli.zhang@oracle.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260731221116.236791-2-dongli.zhang@oracle.com>
+In-Reply-To: <20260731221116.236791-3-dongli.zhang@oracle.com>
 References: <20260731221116.236791-1-dongli.zhang@oracle.com>
- <20260731221116.236791-2-dongli.zhang@oracle.com>
+ <20260731221116.236791-3-dongli.zhang@oracle.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 22:24:00 +0000
-Message-Id: <20260731222400.8AC7D1F00AC4@smtp.kernel.org>
+Date: Fri, 31 Jul 2026 22:26:32 +0000
+Message-Id: <20260731222633.15DE01F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,64 +47,79 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] The `max_io_vqs` module parameter is parsed as an unsigned integer=
- but assigned to a signed `int` in `vhost_scsi_open()`. Setting this parame=
-ter to a large unsigned value (e.g., `4294967295`) results in a negative va=
-lue (e.g., `-1`) that bypasses the maximum bound check. This leads to an un=
-dersized allocation followed by statically indexed Out-Of-Bounds (OOB) writ=
-es.
+- [Medium] Missing READ_ONCE() on module parameter allows compiler remateri=
+alization, leading to TOCTOU array out-of-bounds access.
 --
 
---- Patch [1]: [PATCH 1/2] vhost-scsi: use kvzalloc for vq array allocation=
- ---
-commit 3573b684f78f79b1ae3460e4a7625cb917f76044
+--- Patch [2]: [PATCH 2/2] vhost-scsi: reject invalid max_io_vqs module par=
+ameter ---
+commit 93f3d55f364233d31773cdb70b64bd78dafbf480
 Author: Dongli Zhang <dongli.zhang@oracle.com>
 
-vhost-scsi: use kvzalloc for vq array allocation
+vhost-scsi: reject invalid max_io_vqs module parameter
 
-vhost_scsi_open() allocates one struct vhost_scsi_virtqueue for each
-virtqueue. With large max_io_vqs values, this array can require a
-high-order contiguous allocation and trigger a page allocator warning.
-This patch replaces kmalloc_objs with kvzalloc_objs to avoid the
-warning.
+This commit shifts the validation of the max_io_vqs module parameter from
+device open time to when the parameter is written. It removes the
+bounds-checking code from vhost_scsi_open() and uses a module parameter
+callback to reject invalid sysfs writes instead.
 
 > diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 9a1253b9d8c50..0c0634eea1443 100644
+> index 0c0634eea1443..c138c29ce3dd4 100644
 > --- a/drivers/vhost/scsi.c
 > +++ b/drivers/vhost/scsi.c
-> @@ -2295,7 +2295,7 @@ static int vhost_scsi_open(struct inode *inode, str=
-uct file *f)
->  	if (!vs->old_inflight)
->  		goto err_inflight;
+[ ... ]
+> @@ -2273,22 +2286,14 @@ static int vhost_scsi_open(struct inode *inode, s=
+truct file *f)
+>  	struct vhost_scsi_virtqueue *svq;
+>  	struct vhost_scsi *vs;
+>  	struct vhost_virtqueue **vqs;
+> -	int r =3D -ENOMEM, i, nvqs =3D vhost_scsi_max_io_vqs;
+> +	int r =3D -ENOMEM, i, nvqs;
 > =20
-> -	vs->vqs =3D kmalloc_objs(*vs->vqs, nvqs, GFP_KERNEL | __GFP_ZERO);
-> +	vs->vqs =3D kvzalloc_objs(*vs->vqs, nvqs);
+>  	vs =3D kvzalloc_obj(*vs);
+>  	if (!vs)
+>  		goto err_vs;
+>  	vs->inline_sg_cnt =3D vhost_scsi_inline_sg_cnt;
+> =20
+> -	if (nvqs > VHOST_SCSI_MAX_IO_VQ) {
+> -		pr_err("Invalid max_io_vqs of %d. Using %d.\n", nvqs,
+> -		       VHOST_SCSI_MAX_IO_VQ);
+> -		nvqs =3D VHOST_SCSI_MAX_IO_VQ;
+> -	} else if (nvqs =3D=3D 0) {
+> -		pr_err("Invalid max_io_vqs of %d. Using 1.\n", nvqs);
+> -		nvqs =3D 1;
+> -	}
+> -	nvqs +=3D VHOST_SCSI_VQ_IO;
+> +	nvqs =3D vhost_scsi_max_io_vqs + VHOST_SCSI_VQ_IO;
 
-[Severity: High]
-This is a pre-existing issue, but could this allocation be undersized due to
-an integer overflow in the nvqs calculation?
+[Severity: Medium]
+Since vhost_scsi_max_io_vqs is modifiable via sysfs (0644 permissions), cou=
+ld
+the compiler rematerialize nvqs by reloading the global variable from memory
+multiple times in this function?
 
-If a privileged user sets the max_io_vqs module parameter to a value that
-overflows the signed integer nvqs (e.g., 4294967295), nvqs could become
-negative (e.g., -1). Because it is signed, this bypasses the maximum bounds
-check against VHOST_SCSI_MAX_IO_VQ.
+Without a READ_ONCE(), the compiler is permitted to reload
+vhost_scsi_max_io_vqs instead of spilling nvqs to the stack across the
+subsequent kmalloc_objs() and kvzalloc_objs() calls. If a concurrent sysfs
+write occurs, the reloaded values can differ.
 
-When VHOST_SCSI_VQ_IO (2) is added, nvqs becomes 1. The allocation is then
-sized for exactly 1 element:
+Could this cause the array allocation sizes to be smaller than the nvqs
+value used in the subsequent initialization loop, resulting in an
+out-of-bounds access?
 
-    vs->vqs =3D kvzalloc_objs(*vs->vqs, nvqs);
+For example, if the compiler decides to reload the variable:
 
-However, the code later unconditionally writes to index 1 (VHOST_SCSI_VQ_EV=
-T),
-which would cause a heap out-of-bounds write:
+vs->old_inflight =3D kmalloc_objs(*vs->old_inflight, nvqs, ...);
+// ...
+vs->vqs =3D kvzalloc_objs(*vs->vqs, nvqs);
+// ...
+for (i =3D VHOST_SCSI_VQ_IO; i < nvqs; i++) {
+        svq =3D &vs->vqs[i];
 
-    vqs[VHOST_SCSI_VQ_EVT] =3D &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
-
-Would it be safer to use an unsigned type for nvqs and related variables to
-prevent this bounds check bypass?
+Previously, the complex bounds-checking block likely prevented the compiler
+from reloading the variable, but with the check removed, the value is read
+directly. Should READ_ONCE(vhost_scsi_max_io_vqs) be used here?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731221116.2367=
-91-1-dongli.zhang@oracle.com?part=3D1
+91-1-dongli.zhang@oracle.com?part=3D2
