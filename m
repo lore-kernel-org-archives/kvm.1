@@ -1,88 +1,99 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6737B3546F0
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18FE331222
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528636; cv=none; b=dJPBsvlWZneOJAXk5yYPLItyGAoXkIRHlOv0iFNDVYk8cdcU5xPD3mGR3RcjAKfVMvLmV/uCG0ASArWApFpQUOFQ4N/2eb8p6y1FZuB6C/NfLeMNMIGE6xlCcUpWZdSPSKxMkL4d6ePbckEPPVrYWi7uHwaEfUbk/8FigLscKIY=
+	t=1785528642; cv=none; b=FMfO7deYpLI1R3ZkIlcVN5yu43eyiG/J8XTYT+gFU4KOTgGPog9a2OI0gq6qT+IagzevoqzZ4JC65HBTYcXqRUwq5nqebTImWR1ksfYpJtyeWpK8na7dZKPtvTr/NES/tnE5SgQkKSz0Zkt6jIO7l9EYCT/A42GOuQQj3lgCZSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528636; c=relaxed/simple;
-	bh=SVnTfczQzOhzH0y0LlZWFaQ09zpzlX4riUtSH+bq4wc=;
+	s=arc-20240116; t=1785528642; c=relaxed/simple;
+	bh=I6na69F/Nuy0VvfxxAcYJk/QzSruwLvHmQEDbjV5h2U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WzQorKEjYLF9bnrCIimmU8NiYveJB3V2eRKXofUPj2l+BLZn/QwSmm0wETLwi6505rrBznwja4CbiwoB4rx5bWtAkL1a+p4ggjN9imoOn2w7GVaDtL4Dn11xHjj3yCEj4Sr9uN88Ge2GtIQu00gPovSRsmmDUJjnvs+wrdpTGBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vk0K/+x1; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=d9uq04be4psy8o867/9i/K1AtOEXROwd+brIsRnmIgRe4QFRABA6JtlpkJpwaPRhsSyh9QU5j1xqVFdNxwW8vm98o9+7bELx8AGg7+CCltU8ELyvB78jEHVMUhgPPQQ8dlhQGSAxLKzbDQsFk8+3Hv8NOQksMmLZLAccjLQVdbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=obIDrT0h; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vk0K/+x1"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc86a9ef97so23883465ad.3
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:10:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="obIDrT0h"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cfa55c9430so11918205ad.0
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:10:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785528635; x=1786133435; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785528641; x=1786133441; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TBgNnD6aRn/2TcCAkCvX20HdpQ+UmnIXjam1WYJQA5Q=;
-        b=vk0K/+x14JgJjgKiWzAsxbd2nyNLBFjz0/XsdPbLhTlvWMvzFvYOWiwB9KRmzA2xQc
-         vj/yqzn2zyketv/fL02An9Qm6Rtw7J9BpOGZC3UYNC+YuVCRISdJxAAEIqS3VuT+DUT0
-         dH692/tO8Q6nwtQ3j2aIGEnVpuPqEADsMYHX7czaXlLJvJFqkTHt+WiAZ/Xpj4CVeIji
-         Z+ndKZmOAXSSe53CL0s0UoCzpPhA9W1I5IhM5aQIBFyucqaL4MkjlXXekn3zYKfjn/B/
-         EqPBE2yY4Af9DoND1i5CC5iNiEwqoecFVB0MoSZQ3WI+N6yUzRJoK/u/wwgS2pHn5Odw
-         B5xw==
+        bh=FU39kIkoMhXTKKpE37dh0PJvK+pnljqlvEGquRB6geM=;
+        b=obIDrT0hWY+wXtjielfWNeaP/hh9geESH9WBfktnprgs5OgxqIIgsvQ4PJppG+CYIi
+         xX1t8Iq741ZUBvwfbYlVXzVTUnqEjh0rmRMcNSefeE4XyQfEbklkZ3Y1L2kxVTIZ0f+I
+         BN2UZpBvWDU3wvbdV1T5j8Tn/2B3DMm57FbIk9qB0NLIj89ppzdaEcN3rLFtEmghFBWs
+         OypFOAa67jHLiLHnPYHGQ5Ph+Z4SQK5+C0L4KRnvkUBzYuB9Q8ylFrBj37yhplV91y88
+         K187XoToZ1tqmXVcbEUW9tBffIzq4cYLJrAp9h7idzeYDK/ecVn2LLZrtRhIcD8Za92j
+         eSGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528635; x=1786133435;
+        d=1e100.net; s=20251104; t=1785528641; x=1786133441;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TBgNnD6aRn/2TcCAkCvX20HdpQ+UmnIXjam1WYJQA5Q=;
-        b=cvKkkeTMZSNw/RxK9fooMNA1mK+ZCj075ekoZbifKf0uU0GUBwXdO4Es9N0Ya6KMok
-         TFjKqMQBbOYZ9NaXgLjPfi3ERUlGO4a6Ok6YCDtZnDnHHR8Bcr2ox6P1u/oWQWzRYBqK
-         FLUiDZ9jDSvsolpcE3Y9e2BJlGMxQOwVQWTz5QAnYI9J/Sd8TE+vssDaVa5FMS6O47Ks
-         bZTz76wlU8rFD7zkasU7QcPeRb9cT2AR0tMWZkKuxTNmE4nnjMvFFgN1fFaxT5hvY0vH
-         B4q+EMmwK12y+A4wjIiZwb/JWkmvY/WRVcTr6ak/h4H7ieKuLLMuB1ES8ER29qGCR5/h
-         yStQ==
-X-Gm-Message-State: AOJu0Yy9bPUBU9ZHhroDzPAQmXcylVK5+LwCksvwsYbp3fcomYPz3FrU
-	q/T2UVME/bOG8zehsJFD20vTBveuAvTj40Y0o/0+AIJI1j1GHZzRKZmRjeqXQQMWHEtBgDKnbZ0
-	nIZKBNw==
-X-Received: from plhn5.prod.google.com ([2002:a17:903:1105:b0:2ca:cdc4:8da])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c26:b0:2c9:97a7:3289
- with SMTP id d9443c01a7336-2d0524a43ffmr11615445ad.43.1785528634621; Fri, 31
- Jul 2026 13:10:34 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:09:50 -0700
-In-Reply-To: <20260715090505.601174-1-kai.huang@intel.com>
+        bh=FU39kIkoMhXTKKpE37dh0PJvK+pnljqlvEGquRB6geM=;
+        b=bDj5n58zHvfSXAGNaNYnZ/ys79GzxemGD9tiMJLnRFR7eGLJ5r/8iFszMujLydPkp/
+         eZQS/cAtzKprDO1kVSTSjUlIl20p0A600QJ58xLI+DJS7ya7lxeH6SnMCCltluwC9Vbt
+         808FuZH0wZMUnpceBsau0/q1Jn5WrtYcZ84l71zUoNYgdoyM7g9xHNMy5SiX3yhHRyrz
+         kUOZ1pCuea8e0Y4A97SiOSjQ2baoiDM3nvywI2x+IuUS3/4OzOcd58q564KuUIjFxBCP
+         BCBTbL44RqEP2wKkz2NtFXjBJlcezOTy/sBEncUTM1w++Wzn0ScpC1PH6932TenD3v6o
+         72Vw==
+X-Forwarded-Encrypted: i=1; AHgh+RphZbeTKhBTA7vM5rUk74Zxc10E6axbuDy6u47bC0k5PcO3DBrI71n2KCBmEolvj19hCns=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqQ8yIVLXNEIo5WjCX5aThlR+sKnGZB4qd9+EYoxvlAw/x7kMf
+	1/JeNaJ+ARvQLiKnsoDrrjMg3GxGYlFx4rxoETq6GtYdm82fbVwHUyxbF5tz3gMa3Mq2SkpdlYf
+	MzSdCkg==
+X-Received: from plbi4.prod.google.com ([2002:a17:903:20c4:b0:2ca:caf1:5e10])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:390c:b0:2ca:ce92:6e44
+ with SMTP id d9443c01a7336-2d05218984fmr11367635ad.8.1785528640749; Fri, 31
+ Jul 2026 13:10:40 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:09:52 -0700
+In-Reply-To: <20260724004757.131420-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260715090505.601174-1-kai.huang@intel.com>
+References: <20260724004757.131420-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <178552856364.2715352.9297869306293103788.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: x86: Use KVM_X86_OP() for the .pi_update_irte() hook
+Message-ID: <178552810478.2701886.12087185654970147716.b4-ty@google.com>
+Subject: Re: [PATCH 0/6] KVM: Harden kvm_vcpu_map() usage against memory leaks
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, Kai Huang <kai.huang@intel.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 15 Jul 2026 21:05:05 +1200, Kai Huang wrote:
-> Change to using KVM_X86_OP() instead of KVM_X86_OP_OPTIONAL() for the
-> .pi_update_irte() hook in kvm-x86-ops.h since now both VMX and SVM have
-> implemented it.
+On Thu, 23 Jul 2026 17:47:51 -0700, Sean Christopherson wrote:
+> Harden kvm_vcpu_map() usage against memory leaks by yelling if there's already
+> a valid mapping, and then unmapping the existing mapping before establishing a
+> new one.  To get there, add a CLASS() for local, on-stack usage, to guarantee
+> the map metadata is zero-initialized (well, so long as the CLASS() is used).
 > 
-> For the Fixes tag:
-> 
-> This hook was introduced for VMX posted-interrupt support.  SVM later
-> added its implementation, but at this point KVM_X86_OP* had not been
-> introduced yet.
+> Prompted by 2f2312c422fd ("KVM: nVMX: Put vmcs12 pages if nested VM-Enter fails
+> due to invalid guest state").
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: x86: Use KVM_X86_OP() for the .pi_update_irte() hook
-      https://github.com/kvm-x86/linux/commit/9498f4d6edd3
+[1/6] KVM: nVMX: Ensure KVM_REQ_GET_NESTED_STATE_PAGES is cleared on VM-Exit
+      https://github.com/kvm-x86/linux/commit/11722439fb20
+[2/6] KVM: nSVM: Add CLASS()es for automagically handling local kvm_vcpu_map() usage
+      https://github.com/kvm-x86/linux/commit/d196e4d91e78
+[3/6] KVM: nSVM: Use CLASS(kvm_vcpu_map_local) for SMM VMCB mappings
+      https://github.com/kvm-x86/linux/commit/b717245a7b08
+[4/6] KVM: nVMX: Use CLASS(kvm_vcpu_map_local_readonly) for MSR bitmap merging
+      https://github.com/kvm-x86/linux/commit/6bb3493175d8
+[5/6] KVM: PPC: Use CLASS(kvm_vcpu_map_local_readonly) for patching dcbz
+      https://github.com/kvm-x86/linux/commit/e060b94a1cd4
+[6/6] KVM: Harden kvm_vcpu_map() against double-mapping and thus leaking references
+      https://github.com/kvm-x86/linux/commit/e186d4e34ad5
 
 --
 https://github.com/kvm-x86/linux/tree/next
