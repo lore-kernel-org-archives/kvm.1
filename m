@@ -1,57 +1,57 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA01374A12
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 19:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F6376BF2
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 19:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785527781; cv=none; b=LB8ZAo6ZYc/05az8pIq9WZriQ5ruLchRDft1e03ovutzEf28D3blCi7V22RVU3Z+aB6ZBlqVnXWGKdjbG9waFXinBxCFx7xkaaixf8vSZXu+mPAACCHDsC+PwHkCFxlGOu2HZAINlcziSMGC8jH0iorz0lQatt8YJs1HIVz+QUI=
+	t=1785527783; cv=none; b=C2lU+aCg9jVrcqUTn10+N8Doe0mg8dn4kMkpRyNyoK2P/iAbYiC69vhcENPq0Vqk7tzsodJOeuQDNJWqP35kZVNdBzHbrS55NH12bQKuPo3cfqAEdTck6xm+qrcU7uSowE9iSLs8gOnuGypTo40ArfV6DzIbd9WfqjO/5N0theA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785527781; c=relaxed/simple;
-	bh=GTCdXxGxuqpPISX7zn1bGR9hfy0DxUEEavsRgWp0XqI=;
+	s=arc-20240116; t=1785527783; c=relaxed/simple;
+	bh=cFWa99Xo2ScAZGQfMvB0ds8Ya6pH9puVFr0S2RC2rBc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aInCc5Db5R9BF2nqMYNGGHCGk+fQsHGEgcyxUqnvvzhlHTDWzpEc+OWsIDrkht2VkW4HVkPxFyZ3RQyJQGabNJqR35Tb1pIdsW9jD5TvsHml1UiJ28TpQNQ1e+ZDONlpyORIrp9zonvT6MlOhcpUWg7jHaLWI0OoF+TzYWPokXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Liey1uSx; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=WruUl6FY/nLr+tWh+dzTqy/e3ayyoxIcNAfgWCtZTaP6r7vPUlRoiU2Kx9N7oqC95n3AukWgag+6zRjhTEUfDqR+uO9OQa4Mzkl20hscy1+F9Uq4quycnvh/Nlwyf3JLqnlHg1eSRtftJwK187XHPUPm6xhEM3LpqM8rFwyjpNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uqmhx+xd; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Liey1uSx"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cb48f41343aso1722038a12.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 12:56:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uqmhx+xd"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8487eb67173so2706431b3a.2
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 12:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785527779; x=1786132579; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785527780; x=1786132580; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=6tcAvkg/zKE4Wpx2bpF+dHLf7/L283ci232zJUD1488=;
-        b=Liey1uSxpfKCH6JZeLyUxzZ7+n64L7Ns6lCIr+nI/s9trFUIhi1tXdbG20rGJuIAR+
-         aW3TNt+JPMbwTLAAbvdx9qYUmoCNZHq1j1SiJQdHmq2CUGvYolGipBGyb5VyKF1qKk2m
-         RS9wRTbFHRRhYtL/JYb0Tcb5u3VJhuTy9mvptfv74a1t/HlpnVr14YBL+qkH0juXzEk4
-         jxwICG+b9SupYtrxv7whoPRRjulpTaRzuZCOtaynoovSWv3pJ6ZvWf3T5NhUCRkgmngb
-         ZAmX40ckyns3VTONZKYsb6Nrq+5SLqNHuc1rdFWBgIWosQFVwwZlCDa4ZfTm6f1i5qnD
-         vTDQ==
+        bh=QWTFo4fs/kSU6lr4ZzfhIdwS/NOVkYn2PmTaiQ/QINI=;
+        b=Uqmhx+xde/OQk9o3ODE/bJ8K14+7evpgyTRwVq4pNNe1Ja3Va4Xr5mvEtJeeKLLiNb
+         Q5HY382K7kNjMHGs/ozuMEMCIphJKTuN3HsY3i8Z7ouQptTJ7ss3jeuutxP2TLHMpN9w
+         V8oRpkL8Amo8pBM69+OI1BvROvbVw/VaqpSvdsBntP/CLOFzonvxD668UTVe37xdtGMw
+         LfXKmRJkdoHdExvcf4tCqD9YDzzTnr0fYmwmeZ8hkSOZB7dCKOHVzEtwgdoYU1f9NaAb
+         czwJZYpuKRZavKQMNM/9s7JOE/qKtIuyHQk6+o42OxEmJgd89el6wGMqKEYR0LfaGcDW
+         SnEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785527779; x=1786132579;
+        d=1e100.net; s=20251104; t=1785527780; x=1786132580;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=6tcAvkg/zKE4Wpx2bpF+dHLf7/L283ci232zJUD1488=;
-        b=Ch4Q8F/2gjomLRiaLLufU0nMjXIjgt2SgYx/jeqZK+2YdIAxvOJXdsIXLwT6bh7VTU
-         K7Qgc8VJCDyjuuoyljZACxZ8q8lLuqX7utkbqifKbfCI93ep7vPBnpwHxSn02LAOH3Nj
-         6D9+SKmI5lj56LxY+CV0KaE4GY8Rug9Bu1Mpo6mQqgdHmWmIzF0ClA0ApsYI1BEZ6y6Q
-         Ggsc+QZV4HCGqR1qb/YRi+EiT6zo3Taze4xfTeRF/Azb3kn3rwJYpm+TjCSqyh+j/Z63
-         jcTkuwPfQOVIK+OQGJM8rvdHUz8pFcVpZhxhquRhagHJIJEwZOvchXTi7iEq8MpmREFY
-         Id8A==
-X-Forwarded-Encrypted: i=1; AHgh+Rqo5V6MZfklFqDgIIkZY159mmibiH05DjjquiBY7UIfJnIpjGhmZ8tv3YZoOfXbsjHQr84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysLKWripP26GIuK7ypXLWHm6UedydT9bo+r3RWvl0+kELfoIq7
-	mzvkCKSHanZaH4dyAq/fAnstr9tZmSow0YFX+V6hoDTrdFdJsZdjtbn+JThXj8U5VQlD1c+o7Al
-	3Atj3Qw==
-X-Received: from pgj184.prod.google.com ([2002:a63:9c1:0:b0:c99:aff5:7078])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7290:b0:3bf:651d:fee0
- with SMTP id adf61e73a8af0-3c92ae1d81fmr774604637.19.1785527778610; Fri, 31
- Jul 2026 12:56:18 -0700 (PDT)
+        bh=QWTFo4fs/kSU6lr4ZzfhIdwS/NOVkYn2PmTaiQ/QINI=;
+        b=YssaxkuxcRczBXI/+Akoy/20Ly1a7008n9Da6pRnQE13ZkfoJUBk3Lhx26DGciaqZ3
+         dprOHsPIxPcPxCqPrap+n4L1M4OQiIT6NzWYXCzASvnG6k0cbvW22zbA46fPbgskNheW
+         aXtuBvL30u4mE0xhToiAtadHw3ffOI9gqPepitXhNi6ZZ3qU1QvRbbXbXftpx4URmCP6
+         Ve7C17xYYLtkX1Z7GQc9nlWn6z99B/V6x0f06N73gJ1AR0KtHbS7N/g2vFQZjvyvk8gz
+         tn/1fCarhzp71UjyN9eLQQ/sdzDD2HV5g71YJg6CG5ZB4h/jn3gtM60CUMYmTadWOGtU
+         RQcw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrs6K1dexVg9wizkJTnJoR0R1guMWH+IIQpm2lnsfTgI2gNmWin1wQa4D5kkBHPN6M3Xqs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkZIB/e7HGNs+8FrRFt6flQ2zES0GAljv8BAjmohHsesvtEme5
+	uusWoNUaY8zzXkFx+CD0GEM2v4QY7CF4+eZ3urHrAbTaMW5o6Di+FO0sfcf5SoysgVM1nSs2kDz
+	d6x0xBg==
+X-Received: from pgnp30.prod.google.com ([2002:a63:7f5e:0:b0:cbb:b782:6be1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:13aa:b0:847:1d73:f753
+ with SMTP id d2e1a72fcca58-84ee48a4d18mr834507b3a.45.1785527779971; Fri, 31
+ Jul 2026 12:56:19 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jul 2026 12:56:02 -0700
+Date: Fri, 31 Jul 2026 12:56:03 -0700
 In-Reply-To: <20260731195612.2697986-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260731195612.2697986-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731195612.2697986-3-seanjc@google.com>
-Subject: [PATCH v3 02/12] KVM: selftests: Set threads CPU affinity before
- doing work in hardware disable test
+Message-ID: <20260731195612.2697986-4-seanjc@google.com>
+Subject: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in hardware
+ disable test when possible
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
@@ -76,106 +76,71 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Affine worker threads to their target pCPU set *before* doing any work in
-the hardware disable test.  When running a preemptible kernel on a NUMA
-system with a large number of CPUs (100+ of CPUs), waiting to set the
-affinity of the grandchildren until after the grandchild is fully spun up
-results in total test runtimes of over a minute, presumably due to
-cross-node NUMA penalties and scheduler lock contention.
-
-E.g. from the perspective of the caller, when waiting to affine the tasks,
-pthread_create() takes ~100x longer.
+When building against a libc that provides pthread_attr_setaffinity_np(),
+pre-set the grandchildren threads CPU affinity in the hardware disable test
+to further reduce the perceived latency of pthread_create().  On large NUMA
+systems, this reduces the average runtime from ~10s to ~5s.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../selftests/kvm/hardware_disable_test.c     | 23 +++++++------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ .../testing/selftests/kvm/hardware_disable_test.c  | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/testing/selftests/kvm/hardware_disable_test.c
-index 3147f5c97e94..f088b4af3ccc 100644
+index f088b4af3ccc..b4edeadfa3f4 100644
 --- a/tools/testing/selftests/kvm/hardware_disable_test.c
 +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
-@@ -21,6 +21,7 @@
- #define FORK_NUM (1ULL << 9)
- #define DELAY_US_MAX 2000
- 
-+static cpu_set_t threads_cpu_set;
- sem_t *sem;
- 
- static void guest_code(void)
-@@ -35,6 +36,8 @@ static void *run_vcpu(void *arg)
+@@ -36,7 +36,9 @@ static void *run_vcpu(void *arg)
  	struct kvm_vcpu *vcpu = arg;
  	struct kvm_run *run = vcpu->run;
  
-+	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
-+
++#ifndef _GNU_SOURCE
+ 	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
++#endif
+ 
  	vcpu_run(vcpu);
  
- 	TEST_ASSERT(false, "%s: exited with reason %d: %s",
-@@ -47,6 +50,8 @@ static void *sleeping_thread(void *arg)
+@@ -50,7 +52,9 @@ static void *sleeping_thread(void *arg)
  {
  	int fd;
  
-+	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
-+
++#ifndef _GNU_SOURCE
+ 	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
++#endif
+ 
  	while (true) {
  		fd = open("/dev/null", O_RDWR);
- 		close(fd);
-@@ -64,14 +69,6 @@ static inline void check_create_thread(pthread_t *thread, pthread_attr_t *attr,
- 	TEST_ASSERT(r == 0, "%s: failed to create thread", __func__);
- }
- 
--static inline void check_set_affinity(pthread_t thread, cpu_set_t *cpu_set)
--{
--	int r;
--
--	r = pthread_setaffinity_np(thread, sizeof(cpu_set_t), cpu_set);
--	TEST_ASSERT(r == 0, "%s: failed set affinity", __func__);
--}
--
- static inline void check_join(pthread_t thread, void **retval)
- {
- 	int r;
-@@ -84,16 +81,11 @@ static void run_test(u32 run)
+@@ -80,22 +84,28 @@ static inline void check_join(pthread_t thread, void **retval)
+ static void run_test(u32 run)
  {
  	struct kvm_vcpu *vcpu;
++	pthread_attr_t attr;
  	struct kvm_vm *vm;
--	cpu_set_t cpu_set;
  	pthread_t threads[VCPU_NUM];
  	pthread_t throw_away;
  	void *b;
  	u32 i, j;
  
--	CPU_ZERO(&cpu_set);
--	for (i = 0; i < VCPU_NUM; i++)
--		CPU_SET(i, &cpu_set);
--
++	TEST_ASSERT_EQ(pthread_attr_init(&attr), 0);
++#ifdef _GNU_SOURCE
++	TEST_ASSERT_EQ(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &threads_cpu_set), 0);
++#endif
++
  	vm = vm_create(VCPU_NUM);
  
  	pr_debug("%s: [%d] start vcpus\n", __func__, run);
-@@ -101,12 +93,10 @@ static void run_test(u32 run)
+ 	for (i = 0; i < VCPU_NUM; ++i) {
  		vcpu = vm_vcpu_add(vm, i, guest_code);
  
- 		check_create_thread(&threads[i], NULL, run_vcpu, vcpu);
--		check_set_affinity(threads[i], &cpu_set);
+-		check_create_thread(&threads[i], NULL, run_vcpu, vcpu);
++		check_create_thread(&threads[i], &attr, run_vcpu, vcpu);
  
  		for (j = 0; j < SLEEPING_THREAD_NUM; ++j) {
- 			check_create_thread(&throw_away, NULL, sleeping_thread,
+-			check_create_thread(&throw_away, NULL, sleeping_thread,
++			check_create_thread(&throw_away, &attr, sleeping_thread,
  					    (void *)NULL);
--			check_set_affinity(throw_away, &cpu_set);
  		}
  	}
- 	pr_debug("%s: [%d] all threads launched\n", __func__, run);
-@@ -153,6 +143,9 @@ int main(int argc, char **argv)
- 	int s, r;
- 	pid_t pid;
- 
-+	for (i = 0; i < VCPU_NUM; i++)
-+		CPU_SET(i, &threads_cpu_set);
-+
- 	sem = sem_open("vm_sem", O_CREAT | O_EXCL, 0644, 0);
- 	sem_unlink("vm_sem");
- 
 -- 
 2.55.0.508.g3f0d502094-goog
 
