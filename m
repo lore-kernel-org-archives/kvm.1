@@ -1,44 +1,44 @@
 Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73D53803D6
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8ED37F00A
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785533287; cv=none; b=nRq52ddS8OMReVWX2EEaJAIPHCw3xMwUQ9oIl0KPTWrPwDJ7fgxlodQG5bHRBfHPgtS+7jILYouFTZmKAQnGXTjFGo/vlHF/kORgNGw1/aFn+udy9twGxIRwsZuH3dHOSbhvIEJPAhh3fMpZrhT2uDl40cbVXWLsfGo4fQzWSJY=
+	t=1785533295; cv=none; b=q3zS1AE7FRNCbqRQVzHqiw2EHBAbfYyvannzase5ibRbMnF05YcqXGd4s67L1c4Y+eH0wONkxoArVx18P9oBc1QMrgdCNqU/L2us+L4ydg448XOCWPmFTb2khABtmm0lAL5TVzRnLvGetS7WJtdjAQUrOl7fTdqwUF/yqkvORuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785533287; c=relaxed/simple;
-	bh=meQDWovVlwq9l83GJ3i+XK2S1UHI8/kEM1Z1ZJaX5MI=;
+	s=arc-20240116; t=1785533295; c=relaxed/simple;
+	bh=Hg2HmwZoonc3RXGHU8rX7j7gf7wcOwbfjtnCSvpqYbg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AUH63gF4pHlCZP2mcO4Ha1SAefWYPn0r52hgl7P3QbHdlj/VZ7221KCwEtuNfVHJZbsyi7zhrobl3YtOqPKIoWvHE+ZA9/ZE6LUbTIxO4L4jhGsdTiG58p/bpVidTXk66Evha7rpaLKU6xgYyDDtfpHNBIIZfNn4pmLRGNE9MPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=HZlnexVt; arc=none smtp.client-ip=67.231.145.42
+	 MIME-Version:Content-Type; b=ARVjfoUdYwHbkiCWkHhNVY3RLqnWu2eX/C1TE36RegfQ2TRvVlbzB9EtR5jhiIhBtfGHdHVB8n8XN7KcjgnDmk5ldeJTz5ymxa+6sqO56hm2iOu4wUVRLOgXM3h8Wzqp+eGYUAi4WvAwF12jR9bTyD9usYFK4CXPmlXf0wsEjmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=BerzG1Vs; arc=none smtp.client-ip=67.231.145.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="HZlnexVt"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VKX5Jw2105498
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:28:05 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="BerzG1Vs"
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VKWY5i1888568
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:28:13 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=W7iqLmYoZdNfKKZd/AsiKZKGkQzWVXi2ivpsj
-	OaJhGQ=; b=HZlnexVt3+uoXQ66UYkAypriTFtiVZCTZ0iuWnripwU4s81QQYMtf
-	3uiGm7MDLbrR3rjFIOMPn62LHDRzhW3PlLrqOJV3tfj8gTBN6OcXnzxfDecOgtKP
-	qUKbjdUe8IMDI1YfX8bmQZEZVGbunyhMrquhFNbFvOCZea6NwtEsRNjOKF2QzHJ4
-	Hmdxyd7aYrM8RzpU0ZVs8ZqQMTT/oBFRzrw9l0QDqGu2pxGc4LxOL1K+ymsaV5PB
-	ndv1MDSEHEVYXhnrc5IWACVLSQTVgOd+58F8tlerdxD+pnzlJ+B6tYcZWYxn24aj
-	hdJni3HX7B9Y+EOIeOSrtR5b6Hp5dQdag==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fs2n60a8j-17
+	pps82601-s2048-2026-q3; bh=dawVXRLF7As82TJE534FIW9bleOAb90pEt/+G
+	KEnD4M=; b=BerzG1VsMnrADddeoL6y7rY/DFS4fLOrGJh4YfQ6cZwMF5ABZ6Cyv
+	yYLpsdWy/h0cbr0GfRK5lMBbnmlIPk6FtorIXMOJ0KRI4ZVQalgMJ9ez3oR7OEv+
+	B0UTwhNcBgD5YRuwhqkmKtPygA4hjH2fbRrdplR22E3+fhMf9URhfSwXfZr4ZwKw
+	TymTq0L9i6Lj6NsiVa2BBK3Kxzm37niZkPo/Os8jxws3L+cfAPhbiPkNXLGF6yAW
+	kkq7IfCzmy+qxJdwLcnf/x/lbQ9p2l1lcPn7pJT1S46zu6sa5cpOtHAFoz+7BZ32
+	lUVyUkzelPp391656YfWwN7F/pPAEzUYw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fqrj2qxrg-8
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:28:04 -0700 (PDT)
-Received: from twshared14582.04.snb2.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:28:12 -0700 (PDT)
+Received: from twshared98642.15.frc2.facebook.com (2620:10d:c0a8:1c::1b) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.45; Fri, 31 Jul 2026 21:27:57 +0000
+ 15.2.2562.45; Fri, 31 Jul 2026 21:28:07 +0000
 Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id BDF5043C24EC0; Fri, 31 Jul 2026 14:16:14 -0700 (PDT)
+	id 69EC343C24EC8; Fri, 31 Jul 2026 14:16:15 -0700 (PDT)
 From: Zhiping Zhang <zhipingz@meta.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
         Michael
@@ -51,11 +51,10 @@ To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
 CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
         <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
         Zhiping Zhang
-	<zhipingz@meta.com>,
-        Chengwen Feng <fengchengwen@huawei.com>
-Subject: [PATCH v13 1/5] PCI/TPH: treat reserved 0b10 completer encoding as unsupported
-Date: Fri, 31 Jul 2026 14:15:48 -0700
-Message-ID: <20260731211601.3033906-2-zhipingz@meta.com>
+	<zhipingz@meta.com>
+Subject: [PATCH v13 2/5] PCI/TPH: Add requester/completer type helpers
+Date: Fri, 31 Jul 2026 14:15:49 -0700
+Message-ID: <20260731211601.3033906-3-zhipingz@meta.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260731211601.3033906-1-zhipingz@meta.com>
 References: <20260731211601.3033906-1-zhipingz@meta.com>
@@ -68,79 +67,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-FB-Internal: Safe
 Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDE2MyBTYWx0ZWRfX81ZeirEA7nSC
- HYPOmZ1sW6MouSstIbeT8Rk814656X26Wz5NLHo8XOtiYe1zmeYp4ji/T3W5IgWmCD3u/CCZoc5
- /bCsihm2XTHaqc9OFy8Jrcwlov0N5y0=
-X-Proofpoint-ORIG-GUID: nSQeOEpTnlmeTR3CNEePSUmybFObBoj3
-X-Proofpoint-GUID: nSQeOEpTnlmeTR3CNEePSUmybFObBoj3
-X-Authority-Analysis: v=2.4 cv=UvNT8ewB c=1 sm=1 tr=0 ts=6a6d1364 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+X-Proofpoint-ORIG-GUID: VozW3akLdrA7i77ebRx-uHLMNowNeudS
+X-Authority-Analysis: v=2.4 cv=QuhuG1yd c=1 sm=1 tr=0 ts=6a6d136c cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
  a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=_1IyUuN4QrATX339ibzo:22 a=VabnemYjAAAA:8 a=i0EeH86SAAAA:8
- a=5iV6q52TU81yRMb5XQMA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDE2MyBTYWx0ZWRfX5JVdbR5ql6T1
- IVdOX6DH8R2cuyN2S0UrT8O9q+S6MzTcMWZJ7IGsaImr+CZM7r7LWy0M8CYLBE1ucSOHNort4qU
- U9pfwJgfk+6OpktfijlXm5ZR5W+FSAbwCmdEw9Ezr7bfkzE7GHOYWjSLDNZhDBOFwAr7j9cFSuF
- YpItzs8WLgMjJTs85Vlw2c2mo67XGuG8+4BTFPDNsjwRHBLTnqwNG24NbNavIdDIlc8VgwcSlCE
- GV1vUJMkkzoXfxitTEuAXxvjJRBTSBuGsE15Hy69p+YiezOD0wCFGkKWfakkt0LKo6AEmahtZnE
- 7NnzdEVgjqNWS8koW5iFpAyTE1XKMM4Tw3kmGB/hfrbKEzEYHxx6CD3Q4qY5ZAxyt2fWdcGRtxx
- ubdrLXr20LbRBqIWoTquA8AHYR111JN2U8xAocYnVuYh+atQXprV+gmbcwdDoLpPmZAWwZgMSWb
- vRi+vLoB1AfXcX9SbjQ==
+ a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8 a=WR4Jl2Km8_0e0mXVxbYA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDE2MyBTYWx0ZWRfX8QCCYKik+rxd
+ SvuBdq6weoGdRrH7QwOMoyxjT0snDv4ryZYshBvUhWZQXvWJXGDdoCyxipvM12pRtQYElf+J7hL
+ ragqmw1G04obNLPpM3+/FgklYMs4xHTdeAsdUmbUhcd+RQx/ZEZVKWUEdx8EXTmVkOYHzbHVrz1
+ 3rryTxmy46b+dTVJ0dCh/eq3/3MjNO/9uR3Z5W6FnNvlR8ysTQCR5oFeqa3Glcdv/NTItSrqUbi
+ 1lJuJwdUPORvAeVFJMq42Ut4pnRfC9HdHmzcljF4m7t070i8aW3vKH3xYT+BuvLv894xyBTRXkd
+ 3xCdOLb3+cSve3hwYoCxdL/ToBrXIvQaxEfSWLM5ZcIBGXx+DGQlkHfxpnz/gaxfP/6R3xS95+/
+ DU9j5+hgXt34zk64l+4laCojBGu/Lv54Y/x8rh7VvGuFOnQD7It7YXcXkV+ujglaMQspitlIuxF
+ JE5FKo6cNflXY1LS+Og==
+X-Proofpoint-GUID: VozW3akLdrA7i77ebRx-uHLMNowNeudS
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDE2MyBTYWx0ZWRfXywEsZ46RDzZu
+ YSM8EmJ666Nn9zexjHdTWVkSn2//Pl15ahh3MapeoTISVHEa5q9UZdF/0+PzWtteJqdXAP7lINB
+ XDUJhyB9C/Y8dRQ+Rig8rmob1jlkzNA=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-31_06,2026-07-30_01,2025-10-01_01
 
-get_rp_completer_type() returns the Root Port's "TPH Completer
-Supported" field (bits 13:12 of Device Capabilities 2) verbatim. The
-0b10 encoding is reserved, but pcie_enable_tph() feeds the raw value
-into the requester type:
+Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+requester mode without reaching into pci_dev internals.
 
-	pdev->tph_req_type =3D min(pdev->tph_req_type, rp_req_type);
+Add pcie_tph_completer_type() so drivers that publish TPH metadata for a
+device acting as a completer can gate on the "TPH Completer Supported"
+field of Device Capabilities 2 (bits 13:12, PCI_EXP_DEVCAP2_TPH_COMP_MASK=
+)
+rather than reusing requester-side state. It applies the same reserved-
+encoding fold as get_rp_completer_type(), inlined, so the reserved 0b10
+value never reaches callers.
 
-and later writes tph_req_type to the TPH Requester Enable field, which
-only defines 0b00 (disable), 0b01 (TPH only) and 0b11 (extended TPH).
-
-No known hardware presents the reserved 0b10 in this field, so this is
-defensive hardening rather than a fix for observed silicon: fold the
-reserved encoding into "not supported" so only the three architected
-values can ever reach the Requester Enable field.
+This keeps pci_dev::tph_req_type and the completer-capability decode
+inside the PCI/TPH code and provides !CONFIG_PCIE_TPH stubs for callers.
 
 Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-Acked-by: Chengwen Feng <fengchengwen@huawei.com>
 ---
- drivers/pci/tph.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/pci/tph.c       | 44 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/pci-tph.h |  8 ++++++++
+ 2 files changed, 52 insertions(+)
 
 diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index 655ffd60e62f..5cbb381e2a02 100644
+index 5cbb381e2a02..d0202ff7a1b2 100644
 --- a/drivers/pci/tph.c
 +++ b/drivers/pci/tph.c
-@@ -200,6 +200,7 @@ EXPORT_SYMBOL(pcie_tph_get_st_table_size);
- static u8 get_rp_completer_type(struct pci_dev *pdev)
- {
- 	struct pci_dev *rp;
-+	u8 tph_comp;
- 	u32 reg;
- 	int ret;
-=20
-@@ -211,7 +212,15 @@ static u8 get_rp_completer_type(struct pci_dev *pdev=
+@@ -223,6 +223,50 @@ static u8 get_rp_completer_type(struct pci_dev *pdev=
 )
- 	if (ret)
- 		return 0;
+ 	return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
+ }
 =20
--	return FIELD_GET(PCI_EXP_DEVCAP2_TPH_COMP_MASK, reg);
-+	/*
-+	 * 0b10 is reserved; treat it as "not supported" so only the
-+	 * architected encodings reach the Requester Enable field.
-+	 */
++/**
++ * pcie_tph_enabled_req_type - Return the device's enabled TPH requester=
+ type
++ * @pdev: PCI device to query
++ *
++ * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_=
+TPH.
++ */
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{
++	return pdev->tph_req_type;
++}
++EXPORT_SYMBOL(pcie_tph_enabled_req_type);
++
++/**
++ * pcie_tph_completer_type - Return the device's TPH Completer support
++ * @pdev: PCI device to query
++ *
++ * Reads the "TPH Completer Supported" field (bits 13:12) of Device
++ * Capabilities 2. The reserved 0b10 encoding is folded into
++ * "not supported" so callers only need to compare against the three
++ * defined values.
++ *
++ * Return: one of %PCI_EXP_DEVCAP2_TPH_COMP_NONE,
++ *         %PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY or
++ *         %PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH.
++ */
++u8 pcie_tph_completer_type(struct pci_dev *pdev)
++{
++	u8 tph_comp;
++	u32 reg;
++
++	if (pcie_capability_read_dword(pdev, PCI_EXP_DEVCAP2, &reg))
++		return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
++	if (PCI_POSSIBLE_ERROR(reg))
++		return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
++
++	/* 0b10 is reserved; fold it into "not supported" (see above). */
 +	tph_comp =3D FIELD_GET(PCI_EXP_DEVCAP2_TPH_COMP_MASK, reg);
 +	if (tph_comp =3D=3D PCI_EXP_DEVCAP2_TPH_COMP_TPH_ONLY ||
 +	    tph_comp =3D=3D PCI_EXP_DEVCAP2_TPH_COMP_EXT_TPH)
 +		return tph_comp;
 +	return PCI_EXP_DEVCAP2_TPH_COMP_NONE;
- }
-=20
++}
++EXPORT_SYMBOL(pcie_tph_completer_type);
++
  /* Write tag to ST table - Return 0 if OK, otherwise -errno */
+ static int write_tag_to_st_table(struct pci_dev *pdev, int index, u16 ta=
+g)
+ {
+diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+index be68cd17f2f8..7743af6fe432 100644
+--- a/include/linux/pci-tph.h
++++ b/include/linux/pci-tph.h
+@@ -9,6 +9,8 @@
+ #ifndef LINUX_PCI_TPH_H
+ #define LINUX_PCI_TPH_H
+=20
++#include <linux/pci_regs.h>
++
+ /*
+  * According to the ECN for PCI Firmware Spec, Steering Tag can be diffe=
+rent
+  * depending on the memory type: Volatile Memory or Persistent Memory. W=
+hen a
+@@ -30,6 +32,8 @@ void pcie_disable_tph(struct pci_dev *pdev);
+ int pcie_enable_tph(struct pci_dev *pdev, int mode);
+ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
++u8 pcie_tph_completer_type(struct pci_dev *pdev);
+ #else
+ static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+ 					unsigned int index, u16 tag)
+@@ -41,6 +45,10 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *=
+dev,
+ static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+ static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+ { return -EINVAL; }
++static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{ return PCI_TPH_REQ_DISABLE; }
++static inline u8 pcie_tph_completer_type(struct pci_dev *pdev)
++{ return PCI_EXP_DEVCAP2_TPH_COMP_NONE; }
+ #endif
+=20
+ #endif /* LINUX_PCI_TPH_H */
 --=20
 2.53.0-Meta
 
