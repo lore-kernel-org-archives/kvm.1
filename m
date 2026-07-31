@@ -1,158 +1,89 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C75A47CC8F
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 18:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3582347987E;
+	Fri, 31 Jul 2026 18:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785523614; cv=none; b=LmB+kq19Q11KYi4Sg2c1NXTpZNytF1d8OXMVKZ15K2ED7WvhhKkizjaA+HFGHirqjrr6ur3LrCYDdfaMzPHEZaFj4Mo7EEzZaCyGJ/mwRB29IwDChgLg99IwU45qaOH2yfccT77FqowvrFgVtepBchGZtyygHlNJOjBTM/w8m1A=
+	t=1785523914; cv=none; b=mN2WG/QCekCGE9wlsyupGHBUVzYByes2tCeIUA1Ag3QXhc9WHgzoq5ILeXMY8XwR5Ewl1+flHxD2zzmdD9RJ0G4aab5wGibLJywCyelQSD4vPkzB7DTTuFb6r72+z80XibhovY0wUk2cr9z+UQJt3AoN49Xig8ASbwmw2nbFJhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785523614; c=relaxed/simple;
-	bh=J9CJJngSEkGxvW0KdIe9U0T3muoZkE0J8ZChPn5T/Rc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VagBDsuFtRlaCC21JJTZyY2l7D2v1tLQ1qxGun7ajssWS3VWetLFavCEpT0EqEpXbXTEF5NaxKHFvR/SKzRg3QNFK/UjHuf3nOBDY25C1vk1ILBfQ/37h+a9dipd2nOYIl9LlrBN85uLvb13HwFKRu3y10WjkmZwYD/3xx8uRXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H+vJN02A; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785523914; c=relaxed/simple;
+	bh=Xk98sFUvrCpMxkX85+qDFdjYRwm+QTgOL6cUrk3dQgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HWGpidng3LEkt2+pZkejMXA3EP3Js+X5Srkay/lZXzKF0GvAyFG3CdKzyZ4zbtNfroyFU90uMdtWdt6fVnAsN2dNISlLqaxbpm0OiZIY1NWWAEnicBQYNXH+q+UntvtEw8e6lnYHErJVqlJEmgBX8IVwnJ2gFOoEkrzobklNEMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cWj+jl6+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H+vJN02A"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cc6dd43737so27693195ad.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 11:46:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785523610; x=1786128410; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zTbunwlWGL4ObDbgs2Q2RbR+6N7LoKlc6q6xk+L8cCw=;
-        b=H+vJN02A8QddMMm9cJlpgh+KPcmxMPXsnz8zYTtf8kVEPJn9dYfKczxvZRLV1DgnhG
-         9oN0+CVw2ovRwC6xh3IZQyy9HmDhBNPTaThxrCObqP6hz5RYMxcNOeNoa1jnUZ0VbDPb
-         LjmfebhUB+I7gW7jvD5lzGAIEEMEyzQBKDmZ+W7zHVP7vaIAt5T1I1g8o+rC+/XIpQt4
-         5tfaH8OSY/kFeh7g2yiqyV7VY3EZ+QOGYqOdqAn38y3tAD+9mftUJzQ+qP2Ft661LA9g
-         R5XM8lkZlFosAx+ZoBWEuIN9u1qPsaA9aB5GrtCP3EfpvPMOuEy3+dJNc87yK1QTfuku
-         TWMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785523610; x=1786128410;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zTbunwlWGL4ObDbgs2Q2RbR+6N7LoKlc6q6xk+L8cCw=;
-        b=cfXAj6nPSvW+9kRNT3suNsmgc/7WSQKdw59AXhtet3PgFDYqFa3HW4eahA0SfmlLIK
-         xM9v6f3FKgJyROhgVYtjv2aCgE7S/EqC2N1qqUWinb7iK9mpVUE2/rxAoy5B3ZXYnjVf
-         ebs3t3taKeOy/vbPDcoMvGLjRqS3JmoyN6go9QU/j9MRQ9eWX+mo3OcVW1onHZa9yJ8m
-         Qv/o59t/nInIhEau0kUTNlADRdDsf7SQQwz4KhWqtFU/WuCLJvjvGR5NWQdnmChwc6VX
-         8EUKwzYpvjEE2/Bn/BL+16sav+5dT56X+/5/M9loLNH9rEvSPDu2bJjls3xIiy7B9pB1
-         D/sw==
-X-Forwarded-Encrypted: i=1; AHgh+RqCyVeLEokoV3/Qo/THSiBno/OIbyHFTtgAwg/OIDxkWvug69mWrBLd22/8x8INysDHWUI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeInh3SaH6egYxISl4SQ7Z0YV8FRGrEvYEkgNZ5NuwnYQH8n+M
-	igBI2o4TT/O2mKTFTZN5f09kejCs49G+Oq3ZjWVnaVNrZcbDOnqc5vPB6eLizbBZtnBxvUj5Bx+
-	fkVC/Bg==
-X-Received: from plbja1.prod.google.com ([2002:a17:902:efc1:b0:2ce:fa1a:2684])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a4d:b0:2cc:df15:91de
- with SMTP id d9443c01a7336-2d0524a2b59mr9441425ad.42.1785523610000; Fri, 31
- Jul 2026 11:46:50 -0700 (PDT)
-Date: Fri, 31 Jul 2026 11:46:49 -0700
-In-Reply-To: <20260731175834.1121005-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cWj+jl6+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B221F00AC4;
+	Fri, 31 Jul 2026 18:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785523913;
+	bh=WZot6GFuhy9a+s0IugMlJ70eCJTGgM/zB3nf4mCWRaw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=cWj+jl6+CIO586r12U21up84e9GPZCTcTt1faCSxLcxizMMQQYcGKJGz/RvwNUsY/
+	 aNz08ZnrEy2GS4PI9u7HWHsjdy2cEuPiuw4/2ICAhpkLXV+jfknNspSWeB8GuyJdiZ
+	 v4l033aztqBDf7SJKezD1t/ki1Ul0fh+H749i48g6EUXUccI/Kk1nM9juxWpPQahEK
+	 hS5gBep5O6YqbxDTAEq0IbrHvL+dXmHxuPf6At3kVig8G23cbWX8/SnAMmXWMwo/vw
+	 xdCfQCzCunPoMu9xqGAK4A18oKbFIOUJQhxkIJYMXhgFS/Ms+YHadkGCkOuth+dJTa
+	 j/oVHggj+p9Hg==
+From: Oliver Upton <oupton@kernel.org>
+To: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Congkai Tan <congkai@amazon.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Haris Okanovic <harisokn@amazon.com>,
+	Geoff Blake <blakgeof@amazon.com>,
+	Stanislav Spassov <stanspas@amazon.de>,
+	kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] KVM: arm64: Expose PMMIR_EL1.SLOTS to guests
+Date: Fri, 31 Jul 2026 11:51:44 -0700
+Message-ID: <178552142318.30097.12495596662819704320.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260722202702.4165917-1-congkai@amazon.com>
+References: <20260722202702.4165917-1-congkai@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260731175834.1121005-1-pbonzini@redhat.com>
-Message-ID: <amztmWhHXUR4zBv1@google.com>
-Subject: Re: [PATCH] kvm: apply VM_READ/VM_WRITE checks to all VMA types
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 31, 2026, Paolo Bonzini wrote:
-> The VM_READ and VM_WRITE flags are checked only at the very end of
-> hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
-> mappings, this adds unnecessary cases and inconsistent error behavior.
+On Wed, 22 Jul 2026 20:26:58 +0000, Congkai Tan wrote:
+> Today when the perf tool runs in a guest on cores with PMUv3p4, it fails
+> to parse the default metrics with "Failure to read '#slots'", since perf
+> can only read 0 from sysfs caps/slots, which is backed by PMMIR_EL1.SLOTS
+> that KVM traps as RAZ/WI.
 > 
-> For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
-> detect this situation.  This is fragile because hva_to_pfn_remapped()
-> returns different error codes for a !VM_WRITE VMA depending on whether
-> the PTE happens to be mapped:
+> Taking into account backward compatibility and heterogeneous systems, the
+> exposure of PMMIR_EL1.SLOTS is gated behind a new vCPU feature flag:
 > 
-> * if the PTE is present, follow_pfnmap_start() sets args.writable to
->   false and KVM_PFN_ERR_RO_FAULT is returned;
-> 
-> * if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
->   -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
->   up returning KVM_PFN_ERR_FAULT.
-> 
-> With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.
+> [...]
 
-IMO, returning KVM_PFN_ERR_RO_FAULT on a read-only VMA is wrong.  AFAICT, that
-behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM: do not assume
-PTE is writable after follow_pfn").  Given that that's the only case where KVM
-returns KVM_PFN_ERR_RO_FAULT, I would much prefer to fix that wart and cross our
-fingers nothing has come to rely on the behavior in the last ~5 years.
+Applied to next, thanks!
 
-> Likewise, a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE
-> was pte_present()[1] when the guest attempted to read it; with the patch
-> instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
-> avoids these special cases and also sidesteps the issue pointed out at
-> https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
-> 
-> For regular mappings a PROT_READ VMA, if placed in a writable memslot,
-> would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-> the guest writes to it.  This would cause a -EFAULT exit to userspace,
-> instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
+[1/4] KVM: arm64: Expose PMMIR_EL1.SLOTS under strict PMUv3 UAPI
+      https://git.kernel.org/kvmarm/kvmarm/c/453f6ff04b8d
+[2/4] KVM: arm64: Advertise STALL_SLOT* in PMCEID1 under strict PMUv3 UAPI
+      https://git.kernel.org/kvmarm/kvmarm/c/203b22f76dc3
+[3/4] KVM: arm64: Ignore writes to PMCR_EL0.N when using strict UAPI
+      https://git.kernel.org/kvmarm/kvmarm/c/bbef6317f97b
+[4/4] KVM: arm64: Add KVM_ARM_VCPU_PMU_V3_STRICT vCPU feature
+      https://git.kernel.org/kvmarm/kvmarm/c/ad220e275c39
 
-No, arm64 is checking the memslot, not the VMA.
-
-	hva = gfn_to_hva_memslot_prot(memslot, gfn, &writable);
-	write_fault = kvm_is_write_fault(vcpu);
-	if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-
-Or are you talking about different code?
-
-> however it should be considered part of the KVM API because mmu_stress_test
-> relies on it.
-
-...
-
->  	} else {
-> -		if ((kfp->flags & FOLL_NOWAIT) &&
-> -		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
-> -			pfn = KVM_PFN_ERR_NEEDS_IO;
-> -		else
-> -			pfn = KVM_PFN_ERR_FAULT;
-> +		pfn = kfp->flags & FOLL_NOWAIT
-> +			? KVM_PFN_ERR_NEEDS_IO : KVM_PFN_ERR_FAULT;
-
-I find this style much easier to read:
-
-		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
-						 KVM_PFN_ERR_FAULT;
-
-If we "fix" the read-only behavior, isn't it this?
-
-	/*
-	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
-	 * or the page might be absent.
-	 */
-	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ)) ||
-	    ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE)))) {
-		pfn = KVM_PFN_ERR_FAULT;
-	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-		r = hva_to_pfn_remapped(vma, kfp, &pfn);
-		if (r == -EAGAIN)
-			goto retry;
-		if (r < 0)
-			pfn = KVM_PFN_ERR_FAULT;
-	} else {
-		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
-						 KVM_PFN_ERR_FAULT;
-	}
-
-
->  	}
->  	mmap_read_unlock(current->mm);
->  	return pfn;
-> -- 
-> 2.55.0
-> 
+--
+Best,
+Oliver
