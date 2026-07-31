@@ -1,161 +1,360 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF7F436367;
-	Fri, 31 Jul 2026 13:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785502925; cv=none; b=DQ8DOUYKpUvvGAY94WR9vFl1HSG7V5goxlVEng3azRkniGpo2PUK9wQlzBcKFJ+9V3l37X0AeoPHI3ZYvoCMiM0dgovB15C0Qin0HDqQ6qwbEFVHPBLGKQFypYwtMAnyrDTUh5gzqt0vVBqsBAQXXwJvlIEVb51arZRLka/ogK4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785502925; c=relaxed/simple;
-	bh=b/FnuFBeNRL1fg42qbv/eY/bvC3oo74Z1wmOgclH1iw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcDxls+xdhLcndeVXowlUc0suwOwDfgSA1x5GG4aLybdzM+RTFQGf+Z74xoZSL0/TTP84owpEiHR/7/5RdNr3i1EDss64MpIO4TdR24YiH4tkcgl0ozwBkN/xuqFHAjRtQkQ608DR2mJoAQtuTdgfe2F5jMp3XAIdioOYq58v6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EUoXaBzK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C0242EEA4
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785503002; cv=pass; b=ZwdvlqIxp9VUJL0IHCL7yhdRJL+tBk3HsoUbA55NkJ0cElG/Z+kfjuWQQBf2LJ87Cmd0BTADKo3dJQJwevqKcAHN2CdPWYnV2M8exHl424+uATZBzQOGcTa80OhS0mEYQMw9OAE+7cF1oxwj/c3XwhVoES1awvCGYzUDTvxOXlM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785503002; c=relaxed/simple;
+	bh=IMWMnLbQOy6b9tEx6TPxB/pT3EmTOMY8ss6oX8Lyp+A=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sQUBBSr6ByFIZbMi0tlzhs2jDquDw3o7yp9mTpWlCjW+31u+j8KQDkh3Vw8C6Vc15030AM3QbTjohQqVoAfquBHBqt64Tj07CPWdwWr0c6lHwvY+GFH3kGVOWxPntX1W0/p773UDefdpcz3/hZqF+KINZJN7cnLigAj1kDyeVrs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fwvZ3Eda; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EUoXaBzK"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VBlg421672712;
-	Fri, 31 Jul 2026 13:02:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=JoqRAFDJVF71pHpNT
-	n63l2JSsVeaBFtqNLLsWQK4oOo=; b=EUoXaBzKBv8jugGIS0YGzjizPjSfrxsko
-	ZzAVyAyB7wifsaLGQfWfCcFddjtzMGSUGflSWI4gWwrBn3WOSzPDdou56jcUx47R
-	gzlc0MB7Y3lZPOoMjbbxYuInbhGR6MXz5hrjG7mnuC2QcclSnrHPQUxe1SRyKEfS
-	KU/dyVcm01CoQqY89nR7i2wfHo5QmCbt28xjbfpkAjtlcaWNSISwdZpKbNxmiY+H
-	oBgtBPqIPi5Zs8nbKPlclFsv62xNH2jZ+rUZM4FwbPtr6FIw54z/ixgxY21UL4ds
-	ioaXo6xs9WEqLbEZaegvWwStx8dG/i5CFICMfN4jrkbmkZd3pYWOg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmv0p421d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 13:02:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66VCuOlJ021058;
-	Fri, 31 Jul 2026 13:02:00 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fn7fqr3vc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jul 2026 13:02:00 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66VD1rWi30605648
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 Jul 2026 13:01:53 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D04B420043;
-	Fri, 31 Jul 2026 13:01:53 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E9C8320040;
-	Fri, 31 Jul 2026 13:01:52 +0000 (GMT)
-Received: from p-imbrenda.ibmuc.com (unknown [9.111.4.62])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 31 Jul 2026 13:01:52 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: [PATCH v7 14/14] KVM: s390: Fix kvm_arch_commit_memory_region() when low on memory
-Date: Fri, 31 Jul 2026 15:01:38 +0200
-Message-ID: <20260731130138.173983-15-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260731130138.173983-1-imbrenda@linux.ibm.com>
-References: <20260731130138.173983-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fwvZ3Eda"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso1211899a91.2
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 06:03:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785502999; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sFygqw2LZC1ngpsIhyy4APg3/yGnslD1BCuDH9xTlcXGrGc2Yo7paoBeKA585vOgIZ
+         qdzPHcCh2VpYpFhYTgyQeIVr8PGf4vMjmdk01QmOMvfByuKUPHBgnTahHXId/vZBAdk2
+         Qi9zgUuk6HksDUmfy7yTL7E8DfIPwljBhhNLZc0eDdwAXXwsF17vVAeuO2DsRZ1rkHtr
+         EEycXKMDrbvn5zOipdvDzWcMnJBT/rHaCevhtmtlC1h4sJlga7tckO9ZaRBktBxahRDQ
+         cU6SkZyXWtiY9r5rpoX1C5ckp/Rkt+noHhNl3FQ+Zyfbo9JUAw9qorMHoMeXsxfLh3Eu
+         GcXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
+        fh=oUjIu0NoAdFWNkMQLjehYhVPwzkvXTrKYtRDjk0ixRw=;
+        b=Jf5WJyd+pHW1RbScLAA/kejyhZGeufzIhkkVX3YotRzZ8lE2tAs9AqPn2kO28mt4cX
+         iJpPBkbOACDAjsitTQKK9r+dzAqtzYLIYDSGJr71vBVWoK3pMWb9vkxSetWFuu5u44O6
+         pEHjdYv+Yt2NN0MKqhiEZveyJUikuQgXWGtkc8QMhOgQcfAClIpSt5xyXzkDsBNOfsTK
+         HznwrBbkIRzSM1GBkB+OaFNv/oFasUEBnq4PlLUHloDblASLFj89De5YbgLEc8BxgEU/
+         xaPYn3xGOGxAhhkRMOFk2BiMkB/qhpKjxlt0KoCbfExaycQlrduvKbiylJyann3JerlQ
+         eAWQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785502999; x=1786107799; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
+        b=fwvZ3EdanYTcZntQg6z5shQh35bHMua2dGwtzgsNtVN1L35Ca+5jn+1clB3d+LYIaY
+         2tnwbzAC6BXPwagaN9gBMq3A6igRT1JBvctvagRW8irJ3iiVVFWzF4hToJrNY/J/P8PX
+         MxtNu44klSDkXSlNu8SAPZxAeAE4C0lcygMDe4swh4vwz6YS0rWN3p2mHyFQOBfvJwfS
+         gwotFjae0HUhjyvC4kweshgj7u7WAQWcfl30sWKh1LaCQVdg7oi9JoiYAwVoDu6xoCWI
+         wIg9eoLw8FC5vqT4jfLR/B2qLMqFct4yNrtGhCL4V0oUXCtZoCapXg9Fh+8TSOPZeCHB
+         Rbxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785502999; x=1786107799;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
+        b=P5vwqax0w2UXUK/KoZ4ii3pCgZA8T/6aVR6oKzf5WSBZpKjjqDOnxu/Fgc1C/rGNO+
+         P2nIoD8N3i8HVrFCZlg587Up944KKHnpo0EhSYVdBAYiciCg6T7UQlx+Y/0PuLORqFqR
+         NjuC1bOQNKwDlQTd258uqD2AGv+HnzZFZuvQJNYbq9MxBzw/w6C91JDdLyEzvOQSqL62
+         tZe9htLs+9qfMJlsY+ETXBD/c1Z5+7g9js7NaDokNpIwMiTIdIZ7LPhAk7/WQ9fSvuKm
+         BtGB61cN6QCOJBvXR6VbUF4bVnhimaLVxYT8VUArVYvEFyriJBcV/ioqZ9UBCQw1ursI
+         WPaw==
+X-Gm-Message-State: AOJu0YwjPytPZBNlFKr5ymM30lCT1Q27N0dfCvaF8cmup3Y9ALIQtFCq
+	Kx85Y6duyTsC39MFxNeBnAQkD54bl35r0CdnbVR3tPFTffvdfwVCaHRf8g60K4D4GyH6Dxzn2xE
+	yqov12Q+MtAXR/pZ1uVKC4A3uozuSjUkccIJ7iHno
+X-Gm-Gg: AR+sD10cksG9sZ8UDTSQ4EI8qTKwxV6avi53fb3g89OE/SuGNFfAHr94g3sx+6GKoeq
+	xFjnYkUNgJQDO+3rr/5EvDUIFAf9uw7p7HFPnRlgZiMmxAfy9SK4mu5nxk9GDy4KBU2Vf7+HlKt
+	g2ofuvVEv6zwDRz1FMcOw959Je2LEhx9oobMcjE7lpIAVe6b4fPVOWdNM1euHTRInjBF2EtETT+
+	PbvGWmDW/2ZG9wiDrX17fZ5Pf+Ut61raML8o4iWp+XJZaebjU3SG8UE+36LtNwbAbWUrIcy5JzL
+	EmP3XeR74SUZ7DiXm2RYi0gplj3KL+WnQehr8oPhdgi3tLM1TdbrnWEbAUvdFIAWuq3iQXUU9xM
+	+
+X-Received: by 2002:a17:90b:1345:b0:38e:655c:6516 with SMTP id
+ 98e67ed59e1d1-38fb0e7d036mr2121478a91.0.1785502996836; Fri, 31 Jul 2026
+ 06:03:16 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 31 Jul 2026 06:03:15 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 31 Jul 2026 06:03:15 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+ <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
+ <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA5NiBTYWx0ZWRfX3vHTqdDiCkri
- ifXg3Dkyr/Y0O7f6G55kOzoeXSBXO2KuJPBewuUrPJLjy5eNCtR57eXWjHvJfixLjQ08rewdu0f
- 5UGOYYraApYx4BlyDVIRCoHaCXjpE/A=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA5NiBTYWx0ZWRfXwmdoRzAl4n+s
- wESxoNTVS+pqiBgNTIUfmuSLTjoxmZeNylf+Fy+UiwxXh/3tKsYQS82TgU4BWnB5TVLELRKt6ai
- ZpTze1xFBvdafkdRowVKPoyaEkgWs6WEf1NzE+vk4pG6EInrh7dArGQXDG/x0sbj6orpF/zxnK/
- BpJwp+YgGaiebEuF45onLei5khMyHPCquSH5A8wpiAvIXVbtNPOhh3B106WnC5wQ8INsS/Pclb5
- HuvStyn6u1AxhFZkalQaoKWI2mPyew12t2yenUBVwKju1mNNTMxwCFPZ2u7d4S46FEVtynT1ytS
- LIH/pNLctRp2/2kWSlSH2Xdz51JxF06tJX875V0F8bhZxz1OxByF/dCezco8B6V6CNeBsjQXRlG
- dnadg0mit/GPocduRA+i9vYwJj1vYv37zkSavO1UnNFE4gxL+81CGOLvN10zpmyK6M5myylgGQ4
- YIe0l2URxDVnoVolRew==
-X-Authority-Analysis: v=2.4 cv=b5WCJNGx c=1 sm=1 tr=0 ts=6a6c9cc9 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=UZJgiOjggnZcZ0CJR5AA:9
-X-Proofpoint-GUID: lGkeF6Uwoupbth2r2MTLuJL4rZ2ps_Vl
-X-Proofpoint-ORIG-GUID: lGkeF6Uwoupbth2r2MTLuJL4rZ2ps_Vl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-31_04,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607310096
+Date: Fri, 31 Jul 2026 06:03:15 -0700
+X-Gm-Features: AUfX_myvtAX7kCr1AZOI0RcjaLMvHuuJT4jX9i2y3E3Aj03MfOs1jY1iA4ExW_o
+Message-ID: <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-When low on memory, kvm_arch_commit_memory_region() might not perform
-the required action completely, and instead just print a warning and
-return. This allows the VM to continue running with an inconsistent
-state.
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-Fix by refilling the struct kvm_s390_mmu_cache and trying again. A true
-failure only happens if the refill fails, or if the cache cannot be
-allocated at all; in such case print a warning and kill the VM. Such a
-failure cannot currently happen.
+> On 7/31/26 12:22, David Hildenbrand (Arm) wrote:
+>>>
+>>> I didn't really like this either, the drain_state thing is really
+>>> awkward, but in both usages (collect_longterm_unpinnable_folios() and
+>>> guest_memfd), there's an outer loop where if the draining happened on
+>>> the local CPU before it should skip straight to just draining on all the
+>>> other CPUs.
+>>
+>> Just nasty :)
+>>
+>>>
+>>>> I was hoping that we could embed more logic in a helper. The history [1] of the
+>>>> refcount check is rather sad:
+>>>>
+>>>> https://lore.kernel.org/all/c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com/
+>>>>
+>>>> ... primarily because of mlock() handling.
+>>>>
+>>>
+>>> In the original code in collect_longterm_unpinnable_folios(), I couldn't
+>>> find anything that handles folio_test_mlock(), so I was lost for a while
+>>> until I realized mlock() doesn't add a refcount to the folio.
+>>
+>> mlocked folios in the mlock cache hold a reference as well.
+>>
+>>>
+>>> Are you kind of proposing an optimization to
+>>> collect_longterm_unpinnable_folios() by adding a check for
+>>> !folio_test_mlock()? I hope we can put that in a separate patch series,
+>>> I'm still hoping to get this series in for 7.3!!
+>>
+>> I was trying to avoid messing with the refcount for ordinary LRU cache pages.
+>> mlock() should be a corner case for guest_memfd.
+>>
+>> Relying on the refcount just means that one unconditionally performs a lot of LRU
+>> cache draining even though it doesn't make any sense.
+>>
+>>>
+>>>> For guest_memfd(), would mlock() ever apply on a path where you need that check?
+>>>>
+>>>
+>>> For guest_memfd, if a folio were mlocked, unmapping it would fail, and
+>>> so the refcount on the folio would be elevated. The
+>>> kvm_gmem_is_safe_for_conversion() check in the patch after this one
+>>> would fail, correctly.
+>>>
+>>> I really wanted the caller of the lru_add_drain_progressive() function
+>>> to control whether to do the drain (see below), which would solve the
+>>> mlock problem by not assuming the use of folio_expected_ref_count() to
+>>> determine whether to do draining.
+>>
+>> Again, the problem is that on *any* raised reference you would drain. I
+>> was trying to limit the harm.
+>>
+>> [...]
+>>
+>>>> + */
+>>>> +static void lru_cache_drain_for_folio(const struct folio *folio,
+>>>> +		enum lru_cache_drained *drained)
+>>>
+>>> The main thing I wanted in the proposed version
+>>> (lru_add_drain_progressive()), was to let the caller determine whether
+>>> to try or to continue draining.
+>>
+>> Why?
+>>
+>>>
+>>> I wanted the caller to have full control over whether to drain or not,
+>>> so I didn't want to pass folio into the function. I thought the caller
+>>> should first determine whether to drain, then call the function.
+>>
+>> Why?
+>>
+>> That's literally what the existing refcount check tries to do: figure out if
+>> there are LRU caches.
+>>
+>>>
+>>> This version assumes that the caller wants to continue draining based on
+>>> something to do with a folio, and the folio may or may not be on the
+>>> lru_add fbatch at all, which is a little strange to me.
+>>
+>> I really don't understand what you are trying to say.
+>>
+>> Draining only makes sense if something is on the LRU cache. And there are
+>> better ways of checking that than relying only on even less precise refcounts.
+>>
+>> If someone wants to do an early refcount check to abort the overall
+>> operation, that's fine.
+>>
+>>>
+>>> Also, this version enforces a certain definition of "expected" number of
+>>> refcounts on the folio. I guess in this case this definition works with
+>>> guest_memfd, but guest_memfd doesn't support swap so the swapcache check
+>>> in folio_expected_ref_count() isn't necessary.
+>>
+>> ?!
+>>
+>> That's why we have the universal definition of expected references and the
+>> common helper.
+>>
+>> Because pagecache pages commonly don't support the swapcache.
+>>
+>>> Also, if the definition
+>>> folio_expected_ref_count() changes, then guest_memfd is implicitly
+>>> affected. Not sure if the "expected" definition is the same for all
+>>> callers?
+>>
+>> It must, because that is used all over the place. The only thing it
+>> cannot deal with is references held by the caller (which could be supplied
+>> through and "additional references" parameter like we do elsewhere).
+>>
+>>>
+>>> I guess if there was a function named
+>>> folio_ref_counts_indicate_presence_only_in_the_filemap() instead of
+>>> folio_expected_ref_count(), then it'd be the perfect function for
+>>
+>> You're not seriously proposing such an abomination I hope?
+>>
+>>> guest_memfd to use. The current definition of folio_expected_ref_count()
+>>> also includes page table mappings, but in this check guest_memfd really
+>>> wants to make sure that there are no page table mappings.
+>>
+>> You can just check early for mappings.
+>>
+>> Remember: this is about LRU draining, *not* about your final
+>> "unexpected references" check.
+>>
+>>>
+>>> This version folds folio_likely_lru_cached() into the check, and I
+>>> adopted the check for guest_memfd because it'd help with huge pages,
+>>> though technically guest_memfd is always 4K now so the check is also
+>>> pointless.
+>>
+>> Who cares if we end up with a common usable helper? We have usless
+>> checks *all over the place* in common helpers.
+>>
+>>>
+>>> I tried a macro version of this where the macro caller can pass in a
+>>> full condition, which would look like this:
+>>>
+>>>   lru_add_drain_while(folio_may_be_lru_cached(folio) &&
+>>>                       folio_ref_count(folio) != expected_refcount,
+>>>                       drain_state);
+>>
+>> Yuk.
+>>
+>>>
+>>> but I thought that just created something people have to jump to, to
+>>> first understand how the macro works, so I left it as an explicit while
+>>> loop instead.
+>>>
+>>>> +{
+>>>> +	if (!folio_likely_lru_cached(folio))
+>>>> +		return false;
+>>>> +
+>>>> +	/* Try local draining first, if not already done previously. */
+>>>> +	if (*drained == LRU_CACHE_NOT_DRAINED) {
+>>>> +		lru_add_drain();
+>>>> +		*drained = LRU_CACHE_DRAINED;
+>>>> +	}
+>>>> +	/* Try draining all CPUs next if still not an LRU folio. */
+>>>> +	if (folio_likely_lru_cached(folio) && *drained == LRU_CACHE_DRAINED) {
+>>>> +		lru_add_drain_all();
+>>>> +		*drained = LRU_CACHE_DRAINED_ALL;
+>>>> +	}
+>>>> +}
+>>>> +
+>>>>  /*
+>>>>   * Returns the number of collected folios. Return value is always >= 0.
+>>>>   */
+>>>> @@ -2266,9 +2316,9 @@ static unsigned long collect_longterm_unpinnable_folios(
+>>>>  		struct list_head *movable_folio_list,
+>>>>  		struct pages_or_folios *pofs)
+>>>>  {
+>>>> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
+>>>
+>>> I also considered an enum, but it would be another thing to export. I
+>>> was thinking to have drain_state just be opaque to the caller and the
+>>> only thing the caller needs to know is to initialize it to 0.
+>>>
+>>> Perhaps there's a better way to "make it opaque"?
+>>
+>> Putting an enum into a header is a problem in which universe? :)
+>>
+>> Ackerley, please stop making up stuff. Having generic helper is not a problem. Doing
+>> checks in common helpers is not a problem. Putting enums in headers is not a problem.
+>>
+>> Your version is just bad.
+>>
+>> I can later try something that keeps the questionable refcount checks in place,
+>> maybe that could do as a temporary solution until Hugh possibly finds a way to
+>> remove the need for draining entirely.
+>>
+>
+> And looking at it, the current folio_ref_count() in GUP is entirely wrong
+> and always makes us drain local+all.
+>
+> Let me fix that first, which will also modify this code.
+>
+> I'd say, to unblock gmem we could have something minimal that I would clean
+> up later, but I think the problem is that lru_add_drain() / lru_add_drain_all()
+> is not exported, right?
+>
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Fixes: e38c884df921 ("KVM: s390: Switch to new gmap")
----
- arch/s390/kvm/kvm-s390.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+My bad, I totally mixed up refcounting to drain with refcounting for the
+safe conversion and didn't have a complete understanding of mlock().
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 518a69c55e85..fd8badb0d571 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -5830,7 +5830,7 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- {
- 	const struct dat_walk_ops ops = { .pte_entry = cmma_d_count_pte, };
- 	struct kvm_s390_mmu_cache *mc __free(kvm_s390_mmu_cache) = NULL;
--	int rc = 0;
-+	int rc = -ENOMEM;
- 
- 	guard(mutex)(&kvm->slots_arch_lock);
- 
-@@ -5838,11 +5838,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 		return;
- 
- 	mc = kvm_s390_new_mmu_cache();
--	if (!mc) {
--		rc = -ENOMEM;
-+	if (!mc)
- 		goto out;
--	}
--
-+retry:
- 	scoped_guard(write_lock, &kvm->mmu_lock) {
- 		if (kvm->arch.migration_mode && kvm->arch.use_cmma && old) {
- 			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
-@@ -5865,9 +5863,15 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 		case KVM_MR_FLAGS_ONLY:
- 			break;
- 		default:
-+			rc = 0;
- 			WARN(1, "Unknown KVM MR CHANGE: %d\n", change);
- 		}
- 	}
-+	if (rc == -ENOMEM) {
-+		rc = kvm_s390_mmu_cache_topup(mc);
-+		if (!rc)
-+			goto retry;
-+	}
- out:
- 	if (rc)
- 		pr_warn("failed to commit memory region\n");
--- 
-2.55.0
+The problem for gmem was that if there was an elevated refcount on some
+folio in the range, it might be because the folio was in the lru_add
+fbatch.
 
+If it were in the lru_add fbatch, it would be fine to just drain the
+lru_add fbatch and proceed with the conversion.
+
+lru_add_drain() isn't sufficient since the conversion might be handled
+on one CPU when the folio is on another CPU's fbatch, so I had to do
+lru_add_drain_all(), but lru_add_drain_all() causes IPIs which are
+expensive.
+
+In an earlier revision I exported lru_add_drain_all(). My understanding
+of the discussion at guest_memfd biweekly was that Sean didn't want us
+to export lru_add_drain_all() now, and then end up exporting some other
+function and unexporting lru_add_drain_all(). To avoid exporting and
+unexporting, we then said we should refactor now.
+
+Happy to go with your proposal too.
+
+> --
+> Cheers,
+>
+> David
