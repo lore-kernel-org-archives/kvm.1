@@ -1,95 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B4D449B11
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C64F44AB99;
+	Fri, 31 Jul 2026 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517722; cv=none; b=mZI/bssgrLZ1sVkDA+jo/Qqpdll2rK7NiK1xvOnVPknRRus0OJJ/uEGcIE4OyRvTnf4ZC8RCNPuWIn5zgBOhK+sj+dN22JFwPRxJnW1drYIaGRJ4v6Q454XTVg7/55gL2vU8oTIuaUEF7ALXTkHXrOmN/3zIZxec6NL+fvVsbYk=
+	t=1785518142; cv=none; b=mwBKN8WlIEOpJt1Bjz9FxqwkF5XSwETT6Tqj6mwdfsNSIMeDR7OFcAs5xNTkYW8BZPtq/BBBSX8UWc7FgxWld92HxCOFUcNWRL/M8TfokJhG43RH2iS8MF9eNEEIxkEgKau5t9SiKdAjjHzW2rb9W5OACFd3ktckE5mG1LlM+e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517722; c=relaxed/simple;
-	bh=2TpKWBoTN/DrGsd5lycbOX0YAHForGoWbU2RUCRu6RI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fiYxeRaZda+99meEW35wzY28v/Q4JXaFx8nPbPqeMQdJ/8d0HwB6XB9zsgWFzml1dKervZ/mHPgcf2MScDjEnsNVgpWz+chs8wfr//bEYbuyMtCYz9AK5Ga5RpC5g+HgisKZBJbegwqdkYwrdF+esRMaC99V+CVwLXLmT/plHLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUB0DzTU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785518142; c=relaxed/simple;
+	bh=OxRvi3BZ5QA9TgHDa8XGL02xaPN2MGD5B5Xyo87p97U=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Zh9pKLUNP65QEcFNJUYE234JJYDDwZu7WzCCRdKjDzonVQnpb85xsaRD0cpxn0KzgqF+BojSrTRTn3OKf1XXCZurNSgc9bCYE0+qI0EaMFN0UElREr0/F6MCtv2QXz70ppbVDpGNRLBxfP4FQHz0MXx0BnVY4PGU60pLSev2+W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3uFZhA7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUB0DzTU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23C71F00AC4;
-	Fri, 31 Jul 2026 17:08:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3uFZhA7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3FF1F00AC4;
+	Fri, 31 Jul 2026 17:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785517720;
-	bh=z+SmHUmNPTP4wE9HFsbKwlHHj5g5tELCiA7GWd+zXfM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gUB0DzTURPDb2JHijMZDWk6eZTu0xS0ItH6TCLM5CpeCegNKcmNxCimFqxkK2kUbf
-	 KAeWMWID6esublkNpg46LiaIPrr5sArC++SViaNwSDbhWLyEZpXGv7laozFuRpUwhw
-	 2tFY3ALrWE8EU7hlZZsoNVBVVxaSge6xuBdBhpktqo9uf4gslTQT72kYt2jq5TaupA
-	 yr4sMhBh8U9LDwvyPVLqj0Gj1CLKVl5JOLVBFuk6YAs7BkXq2eLdB/50MWRwm1e4Wo
-	 5tWVR2b1axWAM+hzGPLKRZKmov9AuOLB6GN+x4SQ/rWl6Iz1OP+9Keq56VGoyf88+K
-	 YPAIqrMKPGY/w==
-Date: Fri, 31 Jul 2026 18:08:36 +0100
-From: Will Deacon <will@kernel.org>
-To: Xie Bo <xb@ultrarisc.com>
-Cc: kvm@vger.kernel.org, Julien Thierry <julien.thierry.kdev@gmail.com>,
-	Anup Patel <anup@brainfault.org>
-Subject: Re: [PATCH kvmtool] virtio: 9p: Order used ring updates before
- notifications
-Message-ID: <amzWlInb1rgkRy_4@google.com>
-References: <20260724091046.1868685-1-xb@ultrarisc.com>
+	s=k20260515; t=1785518140;
+	bh=UzfyyKeaFfXOHOc1A3zIbNaYa3Ju5Hh5ybifXfcg3Qk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=P3uFZhA7ryXnXNacOXuQX7rQ2OwZUrRZNuHjpCKUm8d7z9W7aNRE+PTHPR35QTn70
+	 zR/3qFWjSpNI+kpBYTBjMz0CZzlrnWRrvARPkTE2q41wq+G8l0ZFwaSDHjXuYeLCyV
+	 ehpSEh3d5fuSgQ6DwreTTe3LqMw3UpuqLYivX+GVXRRdv49cJLeXQvyTZhJWiSxOVR
+	 c90egZgEpChfMNeG61qxtGzo3eKmFwhIukWO1zH0hXr4WArb5spYiOd8CeLnEHkazr
+	 bMX3dMzWB+YFU+j3VXWhTKV/GGnq/m4No+e5+NYP1OfJtyA+DSwVgXfSh+0kzGcYGW
+	 HA0z2bPdk2uZw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 06/12] KVM: selftests: Affine threads to random CPUs
+ in hardware disable test
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: "Marc Zyngier" <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+In-Reply-To: <20260731170619.2620845-7-seanjc@google.com>
+References: <20260731170619.2620845-1-seanjc@google.com>
+ <20260731170619.2620845-7-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 17:15:40 +0000
+Message-Id: <20260731171540.7B3FF1F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260724091046.1868685-1-xb@ultrarisc.com>
 
-On Fri, Jul 24, 2026 at 05:10:41PM +0800, Xie Bo wrote:
-> virtio_p9_do_io() signals the guest immediately after adding each
-> request to the used ring. Unlike the block and net backends, it bypasses
-> virtio_queue__should_signal(), which provides the full memory barrier
-> needed between publishing used->idx and injecting the interrupt.
-> 
-> On weakly ordered architectures, the guest can therefore handle the
-> interrupt before the updated used->idx becomes visible. If it observes
-> the old index and goes back to sleep, the completed request can remain
-> stuck indefinitely because no further interrupt is generated.
-> 
-> This was observed on RISC-V with two 9p RPCs blocked while the host
-> used->idx was two entries ahead of the guest's last_used_idx.
-> 
-> Process all available requests first, then use
-> virtio_queue__should_signal() before notifying the guest. Besides
-> providing the required ordering, this also honors the driver's
-> notification suppression request.
-> 
-> Fixes: 1c7850f95903 ("kvm tools: Add virtio-9p")
-> Signed-off-by: Xie Bo <xb@ultrarisc.com>
-> ---
->  virtio/9p.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/virtio/9p.c b/virtio/9p.c
-> index cf3e547..d2680e9 100644
-> --- a/virtio/9p.c
-> +++ b/virtio/9p.c
-> @@ -1372,11 +1372,15 @@ static void virtio_p9_do_io(struct kvm *kvm, void *param)
->  	struct p9_dev_job *job = (struct p9_dev_job *)param;
->  	struct p9_dev *p9dev   = job->p9dev;
->  	struct virt_queue *vq  = job->vq;
-> +	bool completed = false;
->  
->  	while (virt_queue__available(vq)) {
->  		virtio_p9_do_io_request(kvm, job);
-> -		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
-> +		completed = true;
->  	}
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Randomly selected CPUs are not removed from `allowed_cpu_set`, l=
+eading to duplicate selections and artificially reduced test concurrency.
+--
+
+--- Patch [6]: [PATCH v2 06/12] KVM: selftests: Affine threads to random CP=
+Us in hardware disable test ---
+commit 093b65b96e15e7cdd5b611bd7d8556fb88cae6e6
+Author: Sean Christopherson <seanjc@google.com>
+
+KVM: selftests: Affine threads to random CPUs in hardware disable test
+
+This patch modifies the hardware disable test to affine worker threads
+to random CPUs instead of hardcoding them to CPUs 0-3. It also honors
+the starting CPU set during this process.
+
+> diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/=
+testing/selftests/kvm/hardware_disable_test.c
+> index d8288147b0a69..bd23c13003707 100644
+> --- a/tools/testing/selftests/kvm/hardware_disable_test.c
+> +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
+> @@ -149,12 +149,15 @@ void wait_for_child_setup(pid_t pid)
+> =20
+>  int main(int argc, char **argv)
+>  {
+> +	cpu_set_t allowed_cpu_set;
+>  	u32 i;
+>  	int s, r;
+>  	pid_t pid;
+> =20
+> -	for (i =3D 0; i < VCPU_NUM; i++)
+> -		CPU_SET(i, &threads_cpu_set);
+> +	kvm_sched_getaffinity(0, sizeof(cpu_set_t), &allowed_cpu_set);
 > +
-> +	if (completed && virtio_queue__should_signal(vq))
-> +		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
+> +	for (i =3D 0; i < VCPU_NUM && CPU_COUNT(&allowed_cpu_set); i++)
+> +		CPU_SET(kvm_pick_random_cpu(&allowed_cpu_set), &threads_cpu_set);
 
-Why do you need the 'completed' bool here? Can't we just rely on
-virtio_queue__should_signal() instead?
+[Severity: Medium]
+Since kvm_pick_random_cpu() doesn't clear the selected CPU from
+allowed_cpu_set, can the same CPU be selected multiple times here?
 
-Will
+Because the selected CPU is not cleared (for example, with CPU_CLR),
+threads_cpu_set could end up with fewer than VCPU_NUM unique CPUs. This
+might artificially reduce the test's concurrency.
+
+Additionally, the loop condition checks CPU_COUNT(&allowed_cpu_set), but
+since allowed_cpu_set is never modified inside the loop, this count
+will remain constant. Was there an intention to remove the chosen CPU
+from allowed_cpu_set in each iteration?
+
+>  	sem =3D sem_open("vm_sem", O_CREAT | O_EXCL, 0644, 0);
+>  	sem_unlink("vm_sem");
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731170619.2620=
+845-1-seanjc@google.com?part=3D6
