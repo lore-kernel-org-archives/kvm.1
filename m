@@ -1,153 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019054502F;
-	Fri, 31 Jul 2026 01:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8187923EAA6;
+	Fri, 31 Jul 2026 02:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785460336; cv=none; b=FnfUPlRt/Py1pKrUgf4HTxUSEzBacszlFZaS/zq1AkmCYyxs5hehfRAHltM5EKb2+XiDS7WoSrekm48kmUJdXp3Fm1doQv4m74G3a5xO8F/u664srzpXL2PwFvD2hSTAnvLnwsLd0rZgRsxVKbaieZ85dM8S7qnVxOGFC7q/OO4=
+	t=1785465027; cv=none; b=QC9QrrHG8cqZ7FJ5v+f8lmo6yaxqh1eMPQa/2svP9NfZDxACMQNhUBlD9bnBpbjDTZsECGgkllBJjowBYmztNNK+Zg4ffv7p3E7FEYAOH749rlC/2/IeiqCC2bdyeY/bZ8uW67vVCAscrF0hdtBW6Rha3gkasexvEUB9OG6oBSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785460336; c=relaxed/simple;
-	bh=/A/sBe8U2tBnDXUTAEyxeTMj76MLGKutst30t8p6+sQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kaygTlblDeQsiJc0jrKeHKx3aAD+PISrYM7vsUc8dSu5vVlDSfDy5AJJVYQROZsYudAxcQS1j/Mubq7WjAxW2vfe4QyPCWB/b3OAwW8R7fY8nXMxTFQhRe1Imqx368g9oroc4Uexj/l07X4i+Vyn+HPQKhL1pg2XlVRkd3wsEFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oCGPhY1t; arc=none smtp.client-ip=198.175.65.11
+	s=arc-20240116; t=1785465027; c=relaxed/simple;
+	bh=dsOwYgn4rPNoCzjNcGwU6HrOV4OTM8Ctv9IMOrIcWK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BvsLa5dcaAUyEyqthbS8SlN31tbyCejzul5FyQRUJod6P6tvtKxOW3bi1tsj/1zWIq01yIY76vvEzJEJEqu2mh5TNVIBq5IKansZ8dkIQk93fpBIPCpW8oirN78rQbQPnTniSoBXS9cT4m/uN0G1xfv9nQMsI7jHFYBtYrMv6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fG+2hftE; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oCGPhY1t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fG+2hftE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785460334; x=1816996334;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/A/sBe8U2tBnDXUTAEyxeTMj76MLGKutst30t8p6+sQ=;
-  b=oCGPhY1t4XukWpni/eNVrSts6dSxsdU05NgNnSOnjni1mfcXSeC18wUV
-   Jy7LwaKJGtxWdSPpULOMhE9KPVCtLhaxvI9JLoa6J85LAyZX5ZZM6/Cr6
-   yj9Mo8aq0TBsjNlMcXXmt1v1eGJcJk/E5paOFoYkaSgV5l0tWUHGtzsIq
-   j1hqYzGKiOd98oEjrXiZjxnigRmySxWgHKjPEkK8CSZL/g0nbOKRGdjyc
-   gpLNajglzxDKVoRQgCcOxp6d7+fILn1rhYePlRuQ40G6QY8ClGUMF4W+l
-   4tnWs9wFoc5Jyq/CJw5QfznSOH/61Ef8Fk7ojSlRbyfOdpHGY1LJrxuJu
+  t=1785465026; x=1817001026;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dsOwYgn4rPNoCzjNcGwU6HrOV4OTM8Ctv9IMOrIcWK8=;
+  b=fG+2hftE89SUEDH4olO85I64e4bJkwHn3oxGKMww0VvaNEcLpY5KVufE
+   24WIW5rIpc2NgvnOIOZD6vhS1WYUU8q5BQi5C6no/JDXr/l/XuwJ4+N0T
+   FiCxkvaW7mdu37P5fLF8GIjYFYOzv03egAJdpheAzXacd8qzsK1je83BC
+   KDrv8/k7nI7+swSPr1AgMpxIXAPHSpU/BQaybUS40m566yMVh8W950qXF
+   GlB+/ySEBZbi3BdnMZrnrhUlHKcDLD0Run1j3yuBCJYYUUkpZi/+Coo7k
+   HNxcJVTxJvs7bCEmELo56hfQV1kxQKGY/mRVjMglgOiOpRSiGAeU/NZmO
    Q==;
-X-CSE-ConnectionGUID: jYd5YQh4SdOvLmFfOQIX9g==
-X-CSE-MsgGUID: WeJxaMw5Qzi3Vrn+BanUAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="96446997"
+X-CSE-ConnectionGUID: QxvwqAeoRQiEEhB1vepLfA==
+X-CSE-MsgGUID: UD+xwb90QY2liL74yOaaow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86283353"
 X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="96446997"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 18:12:13 -0700
-X-CSE-ConnectionGUID: /iOTrlauQmOKMn9ewMquCg==
-X-CSE-MsgGUID: t4J7j4pxTcud4yQjx7mzSw==
+   d="scan'208";a="86283353"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 19:30:25 -0700
+X-CSE-ConnectionGUID: JcNKgZAuRpC7ds39C933LA==
+X-CSE-MsgGUID: 4nQur/I4QXm8Uu2cxQupxw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="258661137"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 18:12:10 -0700
-Message-ID: <a3fd76f2-96cd-4d56-8a58-f86b2270c56e@linux.intel.com>
-Date: Fri, 31 Jul 2026 09:12:09 +0800
+   d="scan'208";a="290406632"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa002.jf.intel.com with ESMTP; 30 Jul 2026 19:30:21 -0700
+Date: Fri, 31 Jul 2026 10:30:19 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"Li, Xiaoyao" <xiaoyao.li@intel.com>,
+	"Hansen, Dave" <dave.hansen@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
+	"Hunter, Adrian" <adrian.hunter@intel.com>,
+	"kas@kernel.org" <kas@kernel.org>,
+	"tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+	"Xu, Yilun" <yilun.xu@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"Mehta, Sohil" <sohil.mehta@intel.com>,
+	"Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+	"Gao, Chao" <chao.gao@intel.com>,
+	"djbw@kernel.org" <djbw@kernel.org>,
+	"Maloor, Kishen" <kishen.maloor@intel.com>,
+	"Fang, Peter" <peter.fang@intel.com>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v2 06/17] x86/virt/tdx: Re-initialize the extensions on
+ runtime TDX module update
+Message-ID: <amwIu8VcGh8uTZPl@yilunxu-OptiPlex-7050>
+References: <20260618081355.3253581-1-yilun.xu@linux.intel.com>
+ <20260618081355.3253581-7-yilun.xu@linux.intel.com>
+ <akIo+E5hfQL7C30E@intel.com>
+ <603e7857a2036b0fef86dcf8ad0ab97e0232188c.camel@intel.com>
+ <amsxCvZUpNwxeDK4@yilunxu-OptiPlex-7050>
+ <amt1QNCBQas95XYB@yilunxu-OptiPlex-7050>
+ <1f99ce03929f3272319d0f81aecaa93e86022aae.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to known
- CPUs
-To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260727192131.582105-1-zide.chen@intel.com>
- <20260727192131.582105-8-zide.chen@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260727192131.582105-8-zide.chen@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f99ce03929f3272319d0f81aecaa93e86022aae.camel@intel.com>
 
+On Thu, Jul 30, 2026 at 06:41:55PM +0000, Edgecombe, Rick P wrote:
+> On Fri, 2026-07-31 at 00:01 +0800, Xu Yilun wrote:
+> > > I've found issue in my implementation. If extensions are required at
+> > > boot up time but somehow not required after update, the code just skip
+> > > tdx_ext_init() and the update succeed, but after that the extension
+> > > features will break.
+> > > 
+> > > IOW, we should not update the metadata, we should follow the boot up
+> > > time metadata to ensure no feature changes.
+> > 
+> > Sorry, I changed my mind. I remember TDX module architector said "the
+> > host should not assume any feature/SEAMCALL must be associated with any
+> > extension, it is hidden from the host. Today a SEAMCALL is backed by an
+> > extension, tomorrow it may not".
+> > 
+> > So in this case, ext_required may flip across updates and we should
+> > honor the runtime metadata.
+> 
+> Then this is an incompatible update, no? Linux doesn't support incompatible
+> updates. We can keep it simpler.
 
-On 7/28/2026 3:21 AM, Zide Chen wrote:
-> RDPMC type encodings are vendor-defined and could theoretically be
-> extended on future CPUs. An unknown RDPMC type could leak host
-> PMU information to the guest through RDPMC passthrough.
->
-> Rather than assuming future CPUs are safe, explicitly permit only
-> reviewed CPU models and require RDPMC interception everywhere else.
-> This ensures RDPMC passthrough is enabled only on CPUs whose RDPMC
-> encodings are audited and supported by KVM.
->
-> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Suggested-by: Jim Mattson <jmattson@google.com>
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> v7: new patch.
-> ---
->  arch/x86/kvm/pmu.c | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
->
-> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-> index 51c6d00a485f..092809bd757d 100644
-> --- a/arch/x86/kvm/pmu.c
-> +++ b/arch/x86/kvm/pmu.c
-> @@ -77,6 +77,21 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] = {
->  	{}
->  };
->  
-> +/*
-> + * CPUs whose RDPMC encodings have been audited for KVM RDPMC
-> + * passthrough support.
-> + */
-> +static const struct x86_cpu_id kvm_rdpmc_known_cpus[] = {
-> +	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, NULL),
-> +	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
-> +	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
-> +	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
-> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
-> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_R, NULL),
-> +	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
+I imagine if a SEAMCALL is no longer backed by an extension and we
+switched off extension after update, the SEAMCALL would still work. But
+I don't have use case and I'm not sure.
 
-Zide, it seems this list is incomplete. The
-DMR/ARL(INTEL_ARROWLAKE/INTEL_ARROWLAKE_H) should be secure as well. Thanks.
-
-
-> +	{}
-> +};
-> +
->  /* NOTE:
->   * - Each perf counter is defined as "struct kvm_pmc";
->   * - There are two types of perf counters: general purpose (gp) and fixed.
-> @@ -807,6 +822,20 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
->  
-> +static bool kvm_rdpmc_encoding_supported(void)
-> +{
-> +	/* KVM understands all RDPMC encodings prior to PMU v6. */
-> +	if (kvm_host_pmu.version < 6)
-> +		return true;
-> +
-> +	/*
-> +	 * Future PMU v6 implementations and future PMU versions require RDPMC
-> +	 * interception until their RDPMC encodings are audited and supported
-> +	 * by KVM.
-> +	 */
-> +	return x86_match_cpu(kvm_rdpmc_known_cpus);
-> +}
-> +
->  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->  {
->  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
-> @@ -818,6 +847,9 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->  	if (enable_vmware_backdoor)
->  		return true;
->  
-> +	if (!kvm_rdpmc_encoding_supported())
-> +		return true;
-> +
->  	return kvm_need_any_pmc_intercept(vcpu) ||
->  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
->  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
+OK. I'm good this is defined as incompatible update now. Maybe I'm too
+worried about thing that is hardly possible. I'll make this set simple.
