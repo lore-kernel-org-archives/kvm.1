@@ -1,173 +1,164 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752FA3AFD1F
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785515352; cv=pass; b=mK2s9ecK5c4+5ANqCOKIk543I6BY0TgW8TlRYQD7W/w8M0yMUcITauMq0BehuAjGzo7Cpf+mzBxyaixf6q3BqEEjUxn8qx7qcsuKliAq9NABJBPLGshtrig1dsqhm7wudk60T0IMrmCHerhtM6KLT1KO1zoXfKOwyavTM48xhlI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785515352; c=relaxed/simple;
-	bh=bjIDRrRO0VH6lWxxueWImISdbELHVpWVJmc0kP3gl1o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Qc9AiHc5ZKLFz43nxisHA90zfYygZAyYKoFwQdGSu9TX8W2iFNMGAOk1S4SSaKt37/V2jWo99NAjFS+sh7R6gZbo4nqp1n0Kw61cOep7gM3poZihtHOe8d2BBB20ZjljJy+zVM2SiqxCHXiDKJfmpb17MEI5jLjA1ne24rw6e2E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPAsrFTz; arc=pass smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAE437455
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785515756; cv=none; b=WyeC+fR+vewWzrfm1u/ehifw+2xmV2ycsKKdnRHrPRW5SPftsLOvuCDvGidU8fglzs+KEIGqmvIt2FyqxJbMmictgBnbFH2+frZChcKGgj12ZhrDDYBKTJuohKsPjorOzcMAVdU83s9i/jh/US11wvPhzwOvaDrDWl+rUYfqgvI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785515756; c=relaxed/simple;
+	bh=8AsJQivIvh05NxAaZ800XMQSi1CvVtRnuVUMO8HT4qQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JasN0iB42g/vR+v/VAIjjvzfZFoS0lgDv0oG96h86Cdz+PF11EMAVe1F9/9tuwJpxMsY6h82eSA058Io0/MJy3luCUmqKYWi5PUGI3jImN2SK/2mPFUvDT3SFNwy7/l/KwIjjw/OLzfE2M0mgs+AiTIFLCEtlyC5Ohq7Qq2hzgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MR/Ekjkk; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPAsrFTz"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69c20ba892eso3031045a12.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 09:29:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785515349; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qQgdqnnEB4L+2LKEchK4EzjiMmBWMco1PBckIUedhLV8eAUh5s/182b/NsNz6m9lIw
-         /uaX+KmG8NCBHf0Z1BNMcsGn1QWec3N1M7AVQF1yBXkTR93mQZa4tpFHXiVENYrel/pb
-         tc1x2QMwMXYp7Pp1pbCuwTSpGl7aPfu7k6xLVYIslMCsIQztLTz0U0ANGcnc1wG1dZGm
-         zvzE+eadsc4yhai/CeWnyz7uLaJavrAnZbaMetj7SZ1RVSvk4bQrbhzUlcBIlZbuk9tt
-         dflKQ1e2DW6wd2MeKwGwu2qGCGVvMSPFQ/QtS8Ujxs6eUr1aW5GzFp9+JwbfEqho0duy
-         WppQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bzxv7es/cGE32AnA7OkYihLVGuHTXsiSU2uTN1sSLTM=;
-        fh=xW41DK2JGL12761Dj3zTbjaM4YhBFELKds4q0DnypVU=;
-        b=mcuxvgrONOS2gS5n8Eeykrnm1vpot432dPWmx65WiNTp1LkJYhVtIo23rleAxK/U2q
-         v6VwhO8M3s1Xu0wc6pg21lWQkUeWOucHtEAjE/jO27P0p5toyFdqQhP4lvDkFovsoFa8
-         n95XYaTHJpbMtav5BGY78hPzBjZhtK82KUh0nnnv+/m7vM0eVRQmOnktHWq7wNA3HrFv
-         g3K6wuESuDJ3JWFNJuVpgu6D9mQnnMD23wUDWWwbTcOE9yFZ81jsVktf2njX42j++4wm
-         fUWHSlbEqmSYJdJAm3zojuYeHVrj+CknW17osFgYvjKrgMPPChzJ6Whq+enouSXscLu+
-         n2+Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MR/Ekjkk"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso1026362b3a.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 09:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785515349; x=1786120149; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Bzxv7es/cGE32AnA7OkYihLVGuHTXsiSU2uTN1sSLTM=;
-        b=BPAsrFTzw1uTWLM51p/aUZAOPJzOxlVpIjFp8CEvwys0sFQy0ll9Octsh2QkNN3SCl
-         5HB+FtIOLje3h4DZTUgyjHDYbxOgCXXGAWymlad9Nov2tPdP2ZZR1go4SFPQRggWvNGB
-         /Pf4flaiFiQjvrNJvuWa90ULYJJs4Cvq4FJ8oK4kWqE4d0b8EsOQS/eZHMh9z45i8zIC
-         4ZPOOWjyLTxuqg+bu8jd/KYhrXfy9vXVvqrdkqR1OVmu+ayP3YFDbSSdh2P8I7gwKog1
-         5fmOWzAMF692DwFGodDjmvJI/yIlEDJZxBJ2f0DmBJhMDedouETl233mKPNTZS1/ccdZ
-         Wi3A==
+        d=gmail.com; s=20251104; t=1785515755; x=1786120555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rU2QgWWmiwDOTc97tpYJfn2gTZC2cyR2MioCmCqpMNY=;
+        b=MR/EkjkkpKh+lQapp2CdZAFuKlKb4YXHlc3ZQLITtMcOx9sdfoXeaeLedRTvBapwd/
+         Dx74d4ZlDzfkAnvY7Ktz8p1Pk9ZLIyePj3CV3A1+4eJMpz8JuocOe/dubUZZNxKA+SV3
+         FlzEnD3T2qkyVlHheUiO/9cMrg89RjqQNJUB+k1QGQKSfzHe2tlv/vOk2Lrx/4Np7WOV
+         DwWa4ZzAzjZfgQx3lkWb8WbfnSjjeFBCQBhhTQMFz+aiQdy3QWYJMn8gkG21A38x2u3F
+         gpHgZgqoz9knAUs33OCkEBB7WRXoEyMGY+12H5qYmalYQR4aT9Jl+txKPhpUWihc9Xmt
+         lIEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785515349; x=1786120149;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Bzxv7es/cGE32AnA7OkYihLVGuHTXsiSU2uTN1sSLTM=;
-        b=gqXEmV0ukOGKgWzEmepI5F0WgdFuJhfMCDqcQpqwkX3EfrI5BLU1aOYncrqSS99wdm
-         uCrR3hJUNNrh9pnJzgielJQsYqnc75IV2t/gRDVUqffNNobWM2rYuQ8CCw2KWHlsxUhO
-         nqPrSk0qIel7GXrC7wuv6LTdQng2GyDOAa8Uhs82ZBWyOJhagoY0PyZ2GIWh0GDV/c1J
-         MYpdY3A73MCXEt1nNfEUxYL8ELKfUxMO87o4R4ywBCsMeWk33vEcIObfTUASA+B60Yfo
-         J00JMDu/EJdkHIVJepkR/ekaHw81dHJfcgGa9DXOqOSFSR2HTpTNozULh48oKP1cAd0p
-         naQg==
-X-Forwarded-Encrypted: i=1; AHgh+RqhRC1j0N/SIPx1Bt+ACLDZ3SPJ4Mpaogb2//3Nq/zWKj7OtTEwSTbq4a/zfjOhrBhwlF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbUSKIFRmqF9Rejd2eMoALVQYzUjaDqw2mR+j6WTgarAXjueOf
-	pwx7YJrWzP8/Eejcs9Aobf323nddUhRjUZYAnCmM2qxtH3POzn9aacvqD+xfwcLBb+PNfxGeSiV
-	6kAD/DyHgSJvg46azI+mzLbE88ThLkg==
-X-Gm-Gg: AR+sD13eCOSav+QgCNODvygbW3CN+ExXvXuorwJy2N4VR8Sc2avd6ZRL82fEVUxhagO
-	5/gcUWts2DvR6lGxIzL1gUeVIji/pCmXkw+5IAh/y+1ZrMvTSuDzCylV+j8Tr8j2kaEly3TjPxE
-	RwLTorZZ4bkt187u50VYwKPuPB1FyYeBF+Yk0tRzfwk0DK4ucVgqyLVjNG1mICo3Mc7e7V83GHt
-	OJwQupmyeCkr81ol5y19Eb6nxcCsDRRzP58G8iWevPTprDI3++ZS81hPKyriBB2V4r2pC4q4Dxb
-	fDjTEBQQAR03FwdNJHHF/FLE4okEiZVnkTBa9zZyTY4vXPXQ7VWmxH+WEAEepWvv5ekyss4dQWo
-	QtS8RnV2zg0q22VIBmrfOjKOECCLjwAva/2Yl3SiloJlkq/JkQs3ipVY=
-X-Received: by 2002:a17:907:3e95:b0:c1f:ba1d:805c with SMTP id
- a640c23a62f3a-c1fe7bdb22cmr26721166b.19.1785515348552; Fri, 31 Jul 2026
- 09:29:08 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785515755; x=1786120555;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rU2QgWWmiwDOTc97tpYJfn2gTZC2cyR2MioCmCqpMNY=;
+        b=dUtekAzj+yxFUeWBd2+2dBTj5/TYceKyW3veJRpzyci3WfDEet0FVz/uVQjhXVbF14
+         FkxDKAqZ0HPd/i0rd5PYem3l5M1VqS6q1662xo4yajCA1SXU0sTc2357hc2wISkOIGGY
+         pyuz8AXBO/HUQ5UUY8f/QeBSTrB6+n1wkSt9VbLkZS1SZSIjTepx1a2YvK4sIFnSecgk
+         ksLftp2qOKvxjk6cJWhCdWHQyRY7rT8ABKOGuKj67Rx6dTB46r4FB2c3NZozpMe+KYTf
+         2SLeU48RJ2ybw789jXLxXIRq3R6Pu+8nksQ1dpd416gWW16Ii1VrB++RQGMF+J24CGn5
+         4YFg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0yHaWLNAbwwsOShbqB07GjpYZ/rpXqvZJS9iJubh/jWYyH+kbR3DKwN9STuDXVv5dHjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIpR+Cwn5cM15VXEUGgvq4Uld5x4jOuvIaWFe/o9nU6gbal2VG
+	ITSQTDcK9RQOz5AuY2qHfxT6kIE0wokkA0HzYz71s6/Y8iqxdxyBT1hCCkhiBWY=
+X-Gm-Gg: AR+sD12N0JPvJp5XWPe1A8pBCgYDi8NBOsx2odCYHZMwYUOGoRp9uhm2BgUrYgkqdXS
+	1U5gwvCux+EplTIpozmhRoMPg2J7YIRYhmrKP04yXG8Gggt2rVQdkh/mkdLILR+iobhM8nOoMTD
+	zQcrHxsKwjb9mBLixcQ8QbgfXZ/nI4a3taO2J5zK1K7pU7QMFd3zBFRCODzrpHNikl6PSQgGn9G
+	xKm4FgVG+ohdBSK1lFlfXJefiirNXA6AuMrXdCueUoJ1cf7l6Ppfr1UgHnOhno0zc03RhivG3UM
+	jU9sBcb+I58BW65x72RRGLngSFeW7l4zDecpWr173ie7EBB4BTeyYNL1ilAnlOB43rIP9SOPfBw
+	1Gg2YiALTbFzWhePu58dNQ9Hbck9LDFHua2zZhW5g4mGNJ7Jr7xJeCbpOz7lOty6S35njcGYP8y
+	JnSbA7A14DD6u6jWNPjqBjTs47bexZ3cGwbrTobGu1m8UfIkzUXdSKJZ410/gPKc+v80AQhzrtM
+	QANs5upZXxEnm/LPabKhIc6whiZmgW7GWVmHfJtPCpRW7PC8mtFmOfaUpsPxseRQIVSANy2N2pk
+	g/6Bx4hfqA/d2T1kMPjcsHk=
+X-Received: by 2002:a05:6a00:14cd:b0:848:40f5:ff5e with SMTP id d2e1a72fcca58-84ed7517231mr2195457b3a.37.1785515754707;
+        Fri, 31 Jul 2026 09:35:54 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc422ff9sm674942b3a.54.2026.07.31.09.35.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 31 Jul 2026 09:35:53 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: anup@brainfault.org
+Cc: atish.patra@linux.dev,
+	kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] RISC-V: KVM: Synchronize hrtimer callback during teardown
+Date: Sat,  1 Aug 2026 01:35:50 +0900
+Message-ID: <20260731163550.46991-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CAGEsz8GNHFCOZ=-_y56rK1aX+Ze7w8qVqZSQ-OuGo_dPC4bXCw@mail.gmail.com>
+References: <CAGEsz8GNHFCOZ=-_y56rK1aX+Ze7w8qVqZSQ-OuGo_dPC4bXCw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGEsz8GNHFCOZ=-_y56rK1aX+Ze7w8qVqZSQ-OuGo_dPC4bXCw@mail.gmail.com>
- <2026072959-penpal-petroleum-bf6e@gregkh>
-In-Reply-To: <2026072959-penpal-petroleum-bf6e@gregkh>
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Sat, 1 Aug 2026 01:28:56 +0900
-X-Gm-Features: AUfX_mwKhraFu6PfYqhOTJLGLuJFa6rmB6-o56Tiq_IBsdm3mhBeyxgy96LLjrQ
-Message-ID: <CAGEsz8EzBqC=0A_DgRCMQCfmAp8iKysAyzccJ1sDrQE9OaZY2g@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Synchronize hrtimer callback during teardown
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: anup@brainfault.org, atish.patra@linux.dev, kvm@vger.kernel.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	security@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-You're right. I'll add an Assisted-by trailer and drop
-security@kernel.org from the recipients in v2.
+The non-Sstc hrtimer callback clears next_set before its final uses of
+the enclosing vCPU.  If teardown observes next_set as false while the
+callback is still running, kvm_riscv_vcpu_timer_cancel() skips
+hrtimer_cancel() and kvm_destroy_vcpus() can free the vCPU before the
+callback enters kvm_riscv_vcpu_set_interrupt().
 
-Thanks,
-Myeonghun
+A guest can arm the timer with SBI TIME and request shutdown with SBI
+legacy shutdown or SRST.  A VMM that honors KVM_EXIT_SYSTEM_EVENT and
+destroys the VM supplies the teardown side of the race; no post-launch
+host ioctl is needed to arm or request teardown.
 
-2026=EB=85=84 7=EC=9B=94 29=EC=9D=BC (=EC=88=98) =EC=98=A4=ED=9B=84 5:45, G=
-reg KH <gregkh@linuxfoundation.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On Wed, Jul 29, 2026 at 01:42:24AM +0900, Myeonghun Pak wrote:
-> > The non-Sstc hrtimer callback clears next_set before its final uses of
-> > the enclosing vCPU.  If teardown observes next_set as false while the
-> > callback is still running, kvm_riscv_vcpu_timer_cancel() skips
-> > hrtimer_cancel() and kvm_destroy_vcpus() can free the vCPU before the
-> > callback enters kvm_riscv_vcpu_set_interrupt().
-> >
-> > A guest can arm the timer with SBI TIME and request shutdown with SBI
-> > legacy shutdown or SRST.  A VMM that honors KVM_EXIT_SYSTEM_EVENT and
-> > destroys the VM supplies the teardown side of the race; no post-launch
-> > host ioctl is needed to arm or request teardown.
-> >
-> > On upstream master 62cc90241548, generic KASAN reported:
-> >
-> >   BUG: KASAN: slab-use-after-free in do_raw_spin_lock
-> >   Write of size 4 at addr ff60000005e58898
-> >
-> >   kvm_riscv_vcpu_set_interrupt
-> >   kvm_riscv_vcpu_hrtimer_expired
-> >   __hrtimer_run_queues
-> >   hrtimer_interrupt
-> >
-> > The object was allocated by KVM_CREATE_VCPU and freed concurrently by:
-> >
-> >   kvm_destroy_vcpus
-> >   kvm_arch_destroy_vm
-> >   kvm_destroy_vm
-> >   __fput
-> >
-> > For deterministic validation, I added mdelay(1000) immediately after
-> > the existing next_set =3D false assignment.  This only widens the
-> > existing post-clear callback window.  A no-delay trace build naturally
-> > reached the callback-after-teardown-start/before-deinit ordering in 12
-> > of 200 runs, but 1,500 stock-kernel stress iterations did not produce a
-> > KASAN report, so natural reproduction is timing-sensitive.
-> >
-> > Always invoke hrtimer_cancel() for an initialized timer.  Preserve the
-> > existing -EINVAL result when the timer is no longer set, but only after
-> > synchronizing with a running callback.
-> >
-> > With this patch, hrtimer_cancel() blocked for the full widened callback
-> > window before vCPU destruction.  KASAN reported no error in 100
-> > fixed-and-widened runs or 200 fix-only timing-sweep runs.
-> >
-> > Fixes: 3a9f66cb25e1 ("RISC-V: KVM: Add timer functionality")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-> > ---
-> >  arch/riscv/kvm/vcpu_timer.c | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> >
-> > AI disclosure: I used AI assistance during the audit and am treating th=
-e
-> > issue as public as required by Documentation/process/security-bugs.rst.
-> > The reproducer and full KASAN trace have not been posted publicly and
-> > are available on request.
->
-> Then don't you need to add an "Assisted-by:" line to your patch?
->
-> And as you posted this publicly, no need to cc: security@kernel.org.
->
-> thanks,
->
-> greg k-h
+On upstream master 62cc90241548, generic KASAN reported:
+
+  BUG: KASAN: slab-use-after-free in do_raw_spin_lock
+  Write of size 4 at addr ff60000005e58898
+
+  kvm_riscv_vcpu_set_interrupt
+  kvm_riscv_vcpu_hrtimer_expired
+  __hrtimer_run_queues
+  hrtimer_interrupt
+
+The object was allocated by KVM_CREATE_VCPU and freed concurrently by:
+
+  kvm_destroy_vcpus
+  kvm_arch_destroy_vm
+  kvm_destroy_vm
+  __fput
+
+For deterministic validation, I added mdelay(1000) immediately after
+the existing next_set = false assignment.  This only widens the
+existing post-clear callback window.  A no-delay trace build naturally
+reached the callback-after-teardown-start/before-deinit ordering in 12
+of 200 runs, but 1,500 stock-kernel stress iterations did not produce a
+KASAN report, so natural reproduction is timing-sensitive.
+
+Always invoke hrtimer_cancel() for an initialized timer.  Preserve the
+existing -EINVAL result when the timer is no longer set, but only after
+synchronizing with a running callback.
+
+With this patch, hrtimer_cancel() blocked for the full widened callback
+window before vCPU destruction.  KASAN reported no error in 100
+fixed-and-widened runs or 200 fix-only timing-sweep runs.
+
+Fixes: 3a9f66cb25e1 ("RISC-V: KVM: Add timer functionality")
+Cc: stable@vger.kernel.org
+Assisted-by: OpenAI:GPT-5.6
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+Changes in v2:
+- Add the required Assisted-by trailer.
+- Drop security@kernel.org from the recipients.
+
+ arch/riscv/kvm/vcpu_timer.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+AI disclosure: I used AI assistance during the audit and am treating the
+issue as public as required by Documentation/process/security-bugs.rst.
+The reproducer and full KASAN trace have not been posted publicly and
+are available on request.
+
+diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
+index ae53133c7ab0..a2cd277a4059 100644
+--- a/arch/riscv/kvm/vcpu_timer.c
++++ b/arch/riscv/kvm/vcpu_timer.c
+@@ -61,10 +61,13 @@ kvm_riscv_vcpu_hrtimer_expired(struct hrtimer *h)
+ 
+ static int kvm_riscv_vcpu_timer_cancel(struct kvm_vcpu_timer *t)
+ {
+-	if (!t->init_done || !t->next_set)
++	if (!t->init_done)
+ 		return -EINVAL;
+ 
+ 	hrtimer_cancel(&t->hrt);
++
++	if (!t->next_set)
++		return -EINVAL;
+ 	t->next_set = false;
+ 
+ 	return 0;
+--
+2.47.2
