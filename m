@@ -1,106 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8650E44AB65
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B4D449B11
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517612; cv=none; b=KTTUGW4e0wjxKPrCMs2LZod3KCQIU5VPs4AqUBnc/sUMFHB8rW/1rXEqdCsdXnJdO8xPc0SkkHX65/rwOVMF1AYx6ARmPxgOeuF7g3EBbG7rEvjcORFK+lxjumUBkvjtivVBT0xnRE/HO5EhQKq0a3GqFZ7gMMvo1BmJUo5b8NU=
+	t=1785517722; cv=none; b=mZI/bssgrLZ1sVkDA+jo/Qqpdll2rK7NiK1xvOnVPknRRus0OJJ/uEGcIE4OyRvTnf4ZC8RCNPuWIn5zgBOhK+sj+dN22JFwPRxJnW1drYIaGRJ4v6Q454XTVg7/55gL2vU8oTIuaUEF7ALXTkHXrOmN/3zIZxec6NL+fvVsbYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517612; c=relaxed/simple;
-	bh=6a6JMJBFVfVEQ+Hr8X0gMZYCLuqN5WOwaRhPFPLE4R4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=YSzUdVBAlV3RRGNTd934vpQH2q5qxFokqWjci9rHiKZKtgg1h/1Qz/bju6BZ/9gWah7N6X7QIBmb1PsORqbRJOIx5ZbbSyE7TPsoXl2Wg0wUv2GsEXElhtAqfYKrIcRBhrlNqHbxgGnqc9dDCd3qe4+0qzdLWv2Ut84VqbS2sNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0wpJypn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785517722; c=relaxed/simple;
+	bh=2TpKWBoTN/DrGsd5lycbOX0YAHForGoWbU2RUCRu6RI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fiYxeRaZda+99meEW35wzY28v/Q4JXaFx8nPbPqeMQdJ/8d0HwB6XB9zsgWFzml1dKervZ/mHPgcf2MScDjEnsNVgpWz+chs8wfr//bEYbuyMtCYz9AK5Ga5RpC5g+HgisKZBJbegwqdkYwrdF+esRMaC99V+CVwLXLmT/plHLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUB0DzTU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0wpJypn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6F91F0155B;
-	Fri, 31 Jul 2026 17:06:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUB0DzTU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23C71F00AC4;
+	Fri, 31 Jul 2026 17:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785517611;
-	bh=Jkm7qTOwVu0f1PJw17vuWKPRppXrIVe/VWIbuaoVqGM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=j0wpJypnz/sVwU5Q5nTZwu3zR1REfib00/8OqkxYClAvlD4rjQ4rF46OxXF30Bv0B
-	 Kw9F6e9anD9lJ1JVhSfqA5P/Ma4S8hWLT2IhvxxMrEz8UwWMuliYpyvaLJWGpuGf0P
-	 Q7JIBEi1C+khYwM6Q+7kPSuyF+2y6giB2hFwYESuVpYtvi/BUVUomoKbDb43dy78X3
-	 lAA9btFUcVCslQUvQLhaSQDr1ZUYB/paPRVt9xB9NiloEzbpIDGnDuq4MqqMdtmCY1
-	 cOCik6Ox5Dmkb/aMTrhBBQcUDCKtiJ/MMBFYusrbVKiNXJ2hsrHq6UxIJvX0TP7bRe
-	 NFXyQ3cl0HcpA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFT 2/3] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <20260731164341.1109827-3-pbonzini@redhat.com>
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <20260731164341.1109827-3-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 17:06:50 +0000
-Message-Id: <20260731170650.EF6F91F0155B@smtp.kernel.org>
+	s=k20260515; t=1785517720;
+	bh=z+SmHUmNPTP4wE9HFsbKwlHHj5g5tELCiA7GWd+zXfM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gUB0DzTURPDb2JHijMZDWk6eZTu0xS0ItH6TCLM5CpeCegNKcmNxCimFqxkK2kUbf
+	 KAeWMWID6esublkNpg46LiaIPrr5sArC++SViaNwSDbhWLyEZpXGv7laozFuRpUwhw
+	 2tFY3ALrWE8EU7hlZZsoNVBVVxaSge6xuBdBhpktqo9uf4gslTQT72kYt2jq5TaupA
+	 yr4sMhBh8U9LDwvyPVLqj0Gj1CLKVl5JOLVBFuk6YAs7BkXq2eLdB/50MWRwm1e4Wo
+	 5tWVR2b1axWAM+hzGPLKRZKmov9AuOLB6GN+x4SQ/rWl6Iz1OP+9Keq56VGoyf88+K
+	 YPAIqrMKPGY/w==
+Date: Fri, 31 Jul 2026 18:08:36 +0100
+From: Will Deacon <will@kernel.org>
+To: Xie Bo <xb@ultrarisc.com>
+Cc: kvm@vger.kernel.org, Julien Thierry <julien.thierry.kdev@gmail.com>,
+	Anup Patel <anup@brainfault.org>
+Subject: Re: [PATCH kvmtool] virtio: 9p: Order used ring updates before
+ notifications
+Message-ID: <amzWlInb1rgkRy_4@google.com>
+References: <20260724091046.1868685-1-xb@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260724091046.1868685-1-xb@ultrarisc.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, Jul 24, 2026 at 05:10:41PM +0800, Xie Bo wrote:
+> virtio_p9_do_io() signals the guest immediately after adding each
+> request to the used ring. Unlike the block and net backends, it bypasses
+> virtio_queue__should_signal(), which provides the full memory barrier
+> needed between publishing used->idx and injecting the interrupt.
+> 
+> On weakly ordered architectures, the guest can therefore handle the
+> interrupt before the updated used->idx becomes visible. If it observes
+> the old index and goes back to sleep, the completed request can remain
+> stuck indefinitely because no further interrupt is generated.
+> 
+> This was observed on RISC-V with two 9p RPCs blocked while the host
+> used->idx was two entries ahead of the guest's last_used_idx.
+> 
+> Process all available requests first, then use
+> virtio_queue__should_signal() before notifying the guest. Besides
+> providing the required ordering, this also honors the driver's
+> notification suppression request.
+> 
+> Fixes: 1c7850f95903 ("kvm tools: Add virtio-9p")
+> Signed-off-by: Xie Bo <xb@ultrarisc.com>
+> ---
+>  virtio/9p.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/virtio/9p.c b/virtio/9p.c
+> index cf3e547..d2680e9 100644
+> --- a/virtio/9p.c
+> +++ b/virtio/9p.c
+> @@ -1372,11 +1372,15 @@ static void virtio_p9_do_io(struct kvm *kvm, void *param)
+>  	struct p9_dev_job *job = (struct p9_dev_job *)param;
+>  	struct p9_dev *p9dev   = job->p9dev;
+>  	struct virt_queue *vq  = job->vq;
+> +	bool completed = false;
+>  
+>  	while (virt_queue__available(vq)) {
+>  		virtio_p9_do_io_request(kvm, job);
+> -		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
+> +		completed = true;
+>  	}
+> +
+> +	if (completed && virtio_queue__should_signal(vq))
+> +		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
 
-Pre-existing issues:
-- [High] Incorrect page offset calculation causes wrong pages to be mapped =
-after VMA split (munmap/mremap)
---
+Why do you need the 'completed' bool here? Can't we just rely on
+virtio_queue__should_signal() instead?
 
---- Patch [2]: [PATCH RFT 2/3] drm/shmem_helper: use vmf_insert_pfn_mkwrite=
-() ---
-commit e238b92cc06e6221554d7e59a6c25c7b8c19b7ac
-Author: Paolo Bonzini <pbonzini@redhat.com>
-
-drm/shmem_helper: use vmf_insert_pfn_mkwrite()
-
-This commit changes the shmem helper to use vmf_insert_pfn_mkwrite() to
-ensure KVM or VFIO correctly see a writable PTE when requested. It also
-updates the PMD mapping case to pass the write flag instead of recording
-the write fault early.
-
-Link: https://lore.kernel.org/kvm/20260729072044.25796-1-slp@redhat.com/
-
-> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm=
-_gem_shmem_helper.c
-> index c989459eb2159..c81be3e973173 100644
-> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> @@ -589,11 +589,25 @@ static void drm_gem_shmem_record_mkwrite(struct vm_=
-fault *vmf)
->  	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does this result in the wrong page being
-marked dirty or mapped after a VMA split?
-
-Looking at drm_gem_shmem_record_mkwrite() (line 583) and
-drm_gem_shmem_any_fault() (line 638) in drivers/gpu/drm/drm_gem_shmem_helpe=
-r.c,
-page_offset is calculated as:
-
-    pgoff_t page_offset =3D vmf->pgoff - vma->vm_pgoff;
-
-If userspace maps a GEM object and then splits the VMA (e.g., via a partial
-munmap() at the beginning of the VMA), the kernel advances vma->vm_pgoff to
-account for the split. When a page fault subsequently occurs in the new VMA,
-vmf->pgoff evaluates to the fake offset plus the split offset plus the fault
-offset.
-
-This makes the calculation mathematically equivalent to
-(address - vma->vm_start) >> PAGE_SHIFT. This completely discards the split
-offset, meaning the remaining VMA will erroneously map the GEM object start=
-ing
-from page 0 again, rather than the correct sub-page.
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731164341.1109=
-827-1-pbonzini@redhat.com?part=3D2
+Will
