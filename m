@@ -1,116 +1,112 @@
 Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D448988E
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 12:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC47221FB4
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785502669; cv=none; b=PurICLCU3YR4y8MYZ1ba3JkaqnbstDiR3RCb5Gw7OjtXxSJuzdGH9Q4eleRkQmnlnzqdiSh4MmHr4z5XdUmnThJwfuz0Ma0tFZysuGBhg830TvZc5p0ttim8Hm6MzZB3rPAZ9ExA+vgRikkn+HzfGz5KuTcKEVskyhewoskfmEc=
+	t=1785502831; cv=none; b=OjdR+5UvtZ2MYAJ2qZfP7oU3V+Q0/PlP/ctRqU3c9flkx5JwxH895NNCE3ZTSjL2ZcbtME1LqW1YDZT1UmawxrnVlp/EPUIh9Tc3YnG6qpT7WZ1LRSlZRr8rsgibCM2H6L4tPsv5AcgJeK3S1c+ysDl6+sdUDjN8tQTQmzR99PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785502669; c=relaxed/simple;
-	bh=Qf+YMuIQNVyb8s5FLB+yWhk0qzi57BBRwHsHNMzFjXw=;
+	s=arc-20240116; t=1785502831; c=relaxed/simple;
+	bh=gP0NW1Gj2B2BTBK8qEpzwW+mSr4iWHeoSNmWkG0WWDg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sS9OsYUixd8gsmXjoLP/JV3+Br4aiCCnq2VuX5mhrEJTa3rnkD+GwPH2eMyzBAqFTHqxoD9YVoh5/RlCtOeS9jODwMLHkI4CtRZMV0KIvuDmBa7ezhplqHKzmreB61/9d46h1/l1HUxhUXUikPdFOlIMySPaKrttMX7tPH6xeXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uVyLAm2x; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=NuAQrcMTkr+kCtjouKyfDSdmf4N+lm88HXC6vbXv05Pu24299G+/1HXC5U/aOBL5XOyvuQWg9f0Uk/wxwiQZFLn94Am7sQ1EWnOzIvmTIPxjsLDyd5WTEoZdC0N0ma3uF958m/7oifMTJ6jzCsM+OkuOUj7qyyR+VBHAHpAW5BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GBcy1unU; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uVyLAm2x"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84865f326efso942671b3a.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 05:57:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GBcy1unU"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486c3411c8so1326979b3a.2
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 06:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785502667; x=1786107467; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785502829; x=1786107629; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=W+MYtEuS2vtFWuFLVJK+8nkcZ8WpqUgMlXXAQz8N1+I=;
-        b=uVyLAm2xZZPdIlDrFsaM46p7AuBOf1B1SiNwDTWxOFodHqnegDNb+DMCJ+kSFwYawB
-         czYgauqgdsZyhfd6SkqVlQETaY+hcNTanZIAfDOPFGU08E2Doz3cG3S3Vy5DgBRCDEu8
-         cwdpCkp33iDF1GbiWRyYZvsCXurbxmGix5lt8ecwKtt0wVKb4Mu7PGQdwYmTYVp0utoY
-         78PsR6jKT1TtaGTwOmAjnICCo/BmHhisYsqjjVHfmbrEclFcptH+Tt4Cyhn2rvWEFhuK
-         An0mJlMvNl25k5u6MompWwAqUaVatlaFeifWU2XDgRAe33iRUxFdp3bhT4aafwnZHv8T
-         JQkg==
+        bh=XFQU8iH1zNafQF+sd3fwpkuxE9NFiGxCV4Yz8a5shVE=;
+        b=GBcy1unUrChsMEdWwJ4MJFPLlt+OT2+cPo0MsWGT9pix61A3FXi2D43k7WZsFOoyRT
+         4QUD1SgYSc2qmp4HGMBnbM8jMrmAwZuCRV7RJ+SO8f8xbDX8MvMUnK1NIK9BAsOzZOUu
+         oevvPRSMnMZqsMD3LsWZwseuUR6A5TaV+cf9PKO2G96WpgsMhgjOXfdOa/t1attb+kSZ
+         4r37ujpqOtkJsY7cJ+XEoTDpk2BH2RXCf7a1jSyUXj7R8MY7e7WFKQeM+2XE2VgpTb3v
+         lIMKz74/HF5N62zUe0H1oZ1sf4GLmO3biV02NCnLpOsNMXnCadiLWgmiVUNpbyvCAdxs
+         yIcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785502667; x=1786107467;
+        d=1e100.net; s=20251104; t=1785502829; x=1786107629;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=W+MYtEuS2vtFWuFLVJK+8nkcZ8WpqUgMlXXAQz8N1+I=;
-        b=eZXeXnFY0EDUc3E078Q6DMxm0/tnoJFVrFmWD0m97q3A+jCyUnMyI94qZD2EM8IplY
-         NxmWAZZi2U3zZUoPt2UwbCUugp9KC+4jThxyVGDnHMJvSkuXWVZUSQWrQohx9EJk6Tzq
-         6aRdrAHODgbkM1SS06yoP4wsFvifd/CsuP5GEmB+WCoG327e3LL+lXTr3bWNJXq+8ujU
-         vjazWSemXVDktOnSprY3dj9sGth/kAozee4yGoqn21ZKsfP4QxCQaagiS+U5jaqMEAko
-         rpwJKWg9JLrFRkWeXXtQE/JXzV1Qyr+XBDmj/9HoU4Ra6CyxfEIcJL9TjA+V2mhdPxVa
-         IOSw==
-X-Forwarded-Encrypted: i=1; AHgh+RqtDESKuzIWDfszkYlDEom6gO63pWo6wYT8QU7ayt3nmVcIJ8+Z96+klwURnVRGUVwNp8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2MNHmcSOeFIC5fZ63qjbtXXcdWC8KaqrqdMOo0GFsoPsqQr/v
-	VCWk2vrBWF4DlFr4E3iXfh2dx2fSy8YvUTbJft1twCF1kOXmYLPy4wodGHO90BSk8anh87gMJCz
-	iVInMMg==
-X-Received: from pfxx18.prod.google.com ([2002:a05:6a00:112:b0:847:a13f:28e2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:240e:b0:847:712d:19ac
- with SMTP id d2e1a72fcca58-84ed6d4b3aamr1665328b3a.8.1785502667024; Fri, 31
- Jul 2026 05:57:47 -0700 (PDT)
-Date: Fri, 31 Jul 2026 05:57:46 -0700
-In-Reply-To: <CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=bEHmfnG54qyBAHFg@mail.gmail.com>
+        bh=XFQU8iH1zNafQF+sd3fwpkuxE9NFiGxCV4Yz8a5shVE=;
+        b=lW4FvhqmzvL6ugs/2toysu8SQIjiQlnjJW4IiuS63eLhsGN8QHHqbGQXxNqCn/cAE+
+         gLtYaOoTyoWnLFnjqbX1rm2SfvWCwDAfk6SekE6eaOjxM4e/vOzE1eXpOyir6vVNN4UZ
+         +cYkpRX8/2K5jA1uuvuRaabPee68CNeqz6azIyRxfnf2gW/KDmAp+KszsJJpjmQKd1XL
+         A9VUT2CrXbpjqeXoY980fpyAlo0noDAptTwD8cjKxGaxCcdOHprTnv7h41PXbA6L0X6+
+         l4kOK2BB5TkeObnGhljhP68ojt+xO+WRc4Al9Zsv7oH1s0zOaD3HArOb4YRVtABE6DVS
+         JQ1A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6MlzTYb1zB2wY6G8pyTa+J7iNuaK6QpjBIZhiDhulCtFY3hQ1MC9WRpsqX6CUNs7TVEQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyinP8POR/Uj2kcVFrh+FwNYWsgi9wltsDCst3zdJSvRb0ScM7m
+	B1GaHe3JJtzm+y2M+4XQcAWmhyDAWzd/iGoe7goRQ4gqvQDNkk3Hz7zclx5yVjGOc20jfL/y9Cb
+	78+3fSw==
+X-Received: from pgbfq12.prod.google.com ([2002:a05:6a02:298c:b0:c8b:2706:11a7])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:301a:b0:847:99bb:b6d8
+ with SMTP id d2e1a72fcca58-84ed6ec0944mr1900997b3a.26.1785502827606; Fri, 31
+ Jul 2026 06:00:27 -0700 (PDT)
+Date: Fri, 31 Jul 2026 06:00:26 -0700
+In-Reply-To: <20260730193035.CFEDF1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260729072044.25796-1-slp@redhat.com> <amuKVfib5kela8AD@google.com>
- <CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=bEHmfnG54qyBAHFg@mail.gmail.com>
-Message-ID: <amybygGUiPlbiDE2@google.com>
-Subject: Re: [PATCH v3] KVM: have hva_to_pfn_remapped write-upgrade PTEs
+References: <20260730191908.2084803-1-seanjc@google.com> <20260730191908.2084803-5-seanjc@google.com>
+ <20260730193035.CFEDF1F000E9@smtp.kernel.org>
+Message-ID: <amycahxKDq0cO0ri@google.com>
+Subject: Re: [PATCH 4/9] KVM: selftests: Drop unreachable, dead code from
+ hardware disable test
 From: Sean Christopherson <seanjc@google.com>
-To: Sergio Lopez Pascual <slp@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jul 31, 2026, Sergio Lopez Pascual wrote:
-> Sean Christopherson <seanjc@google.com> writes:
+On Thu, Jul 30, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/testing/selftests/kvm/hardware_disable_test.c
+> > index 1bcbd13e99947..e08aef94382f3 100644
+> > --- a/tools/testing/selftests/kvm/hardware_disable_test.c
+> > +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
 > 
-> > On Wed, Jul 29, 2026, Sergio Lopez wrote:
-> >> After 28e39181 ("drm/gem-shmem: Track folio accessed/dirty status in
-> >> mmap") was merged, a guest write to an unpopulated PTE from a mapping
-> >> backed by a DRM GEM BO triggers a VM exit with EFAULT, with
-> >> hva_to_pfn_remapped setting p_pfn to KVM_PFN_ERR_RO_FAULT.
-> >>
-> >> This happens because that commit implements pfn_mkwrite for
-> >> drm_gem_shmem_vm_ops. With that function present, vma_wants_writenotify
-> >> returns true in vma_set_page_prot, clearing VM_SHARED and leading to the
-> >> entry to be installed as read-only. This is done on purpose so the
-> >> fault handler gets notified when the entry is going to be written.
-> >>
-> >> In KVM, hva_to_pfn_remapped calls to fixup_user_fault to trigger the
-> >> fault handler but, as seen above, this one might install a read-only PTE
-> >> even with FAULT_FLAG_WRITE present in fault_flags. The check at the end
-> >> of hva_to_pfn_remapped notices that the entry is not writable despite
-> >> this being a write fault and sets p_pfn to KVM_PFN_ERR_RO_FAULT.
-> >>
-> >> To address this issue, have hva_to_pfn_remapped issue a second
-> >> fixup_user_fault call when needed for write-upgrading the PTE.
-> >>
-> >> Signed-off-by: Sergio Lopez <slp@redhat.com>
-> >> ---
-> >
-> > NAK, this doesn't belong in KVM.  Expecting callers of fixup_user_fault() to
-> > retry a FAULT_FLAG_WRITE fault on *success* is absurd.  Either manually do the
-> > retry in fixup_user_fault(), or return VM_FAULT_RETRY so that KVM will naturally
-> > retry.  I assume the latter is the correct approach.
+> [ ... ]
 > 
-> The issue goes beyond fixup_user_fault() behavior. If we're faulting on
-> a page which already has a ready-only PTE installed,
-> follow_pfnmap_start() returns success, fixup_user_fault isn't called at
-> all, and we're still hitting the "(write_fault && !args.writable)"
-> condition, setting p_pfn to KVM_PFN_ERR_RO_FAULT.
+> > @@ -96,21 +84,19 @@ static void run_test(u32 run)
+> [ ... ]
+> >  	pr_debug("%s: [%d] all threads launched\n", __func__, run);
+> >  	sem_post(sem);
+> > -	for (i = 0; i < VCPU_NUM; ++i)
+> > -		check_join(threads[i], &b);
+> > -	/* Should not be reached */
+> > -	TEST_ASSERT(false, "%s: [%d] child escaped the ninja", __func__, run);
+> > +
+> > +	/* Wait for the parent to SIGKILL this child. */
+> > +	while (1);
 > 
-> Without this change, KVM can't deal with VM_PFNMAP vmas with read-only
-> PTEs installed.
+> [Severity: Medium]
+> Since the child and parent share the same CPU affinity, will this busy spin
+> loop cause unnecessary scheduler contention with the parent process when the
+> parent's timer fires?
 
-IMO, that's a bug in the APIs.  If a normal #PF handler looked at a write fault
-and decided a read-only mapping sufficed, that would be a bug.  I don't see why
-this is any different.
+Doesn't seem like it?  Or rather, any contention between the parent and the
+immediate child doesn't seem to matter.
 
-And if KVM has this problem, so will other users of follow_pfnmap_start() and
-friends.
+> Because the processes are pinned to a single CPU core, spinning in this loop
+> burns CPU cycles and forces the parent to contend with the spinning child for
+> CPU time.
+
+Yep.
+
+> Would it be better to use a blocking wait like pause() or sleep() here to
+> reduce scheduler latency and avoid 100% CPU utilization?
+
+Yeah, it makes sense to throw pause() in here, if only to maintain equivalent
+functionality.  Because that's effectively what pthread_join() will do since the
+grandchildren never exit.
