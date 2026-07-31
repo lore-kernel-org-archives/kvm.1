@@ -1,110 +1,115 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0044379C4F
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498833783C5;
+	Fri, 31 Jul 2026 20:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528702; cv=none; b=kZZZIANPNHmOiVePqr20uTMpdOYUm2SAqgxRn0IdBw2rgMKLIk0tbdgF+XPzxJXT+bT08RhoqWHjecITusAFzxcTpPZ9VxluFWBpWQRIMJYV8FiL2JWyBLngWxi5E0nE7YDvUKy771FaBHQR2G5ZtT7oFFgMRa8/FT6kEKyP2cE=
+	t=1785528703; cv=none; b=Y2mxMYkMGwT3pYsaRN2sLMpf799sW0f/B9S+CNvPYg86s/jkdpgC11b63hmNvVtMQI41GuUrJKEzlEDANPBO73RZ6Yhd681oqkTg9cOSIWD7QHfNi9OZ6eH19PDHQk0VRYoR/hZiIThkMU+mVCndrpiqOowDqbHV4skBXr6wd4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528702; c=relaxed/simple;
-	bh=+8SnJBBx/ztZWOEB0rX5OcIIHjP0Jk2UhjGoGXECl6E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DFSEVAcg2/QTDk8ohmqm+7mMCAaerdDpCqNd0ALQFpMgFBpiRuO8TGQPo7rnmvi60gfsVcR5T05zwhsHZj4IYfLbkxAJwveJbqXgy7sOe14/dcjfTQzgx2D3wtYV/QjzF5eEzN2zlcGo6Bq10bwaBRwRA+AtdKv/xKL8yc1HomM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SBgPCoq4; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785528703; c=relaxed/simple;
+	bh=2TOOrMG3BDCQ965Fh6fB0DJfBAYrTT7cm9wx8TCeDwg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cgZc9l0yvY8e9pE6abl2J5nWJj6+SLmNWhVkCWRcf1pUgqVd+l9YtvZOLhVTajYlTccfcdYYgSDEr43/K7rQvZuGGTG9TZYv0h0bGntl7U/WHOXXWcIAwgd/I0nm4uTE+mYSP5qezfqBufMt+bU0v6+9DQEuwlGr9+VDbHS7iHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzjpH1FP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SBgPCoq4"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8487ed7f7beso1582526b3a.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785528700; x=1786133500; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PIIW3zze/gc7+/5TXWZ7ScLNciQfdvJlTxagUbQZKRQ=;
-        b=SBgPCoq4uUpfsY1Phs1wtXH93eq/9icp5SdSefTYYUzEzcsJeqIhvXQB3q6h7BSCF/
-         FPfNKgqNYvSm+jHrNGl4Lfv/prKZhFqbEggtx/KQScplLIEvWVK/vvonjQcy+x9WB8pt
-         OUrftHiM6erBec+RwbQr2cH+haws89R+i55DUtaX5n7ch/sy5MQG2qgGtzNKEaZ3gmRq
-         nQfRKtMUH29P8dbcWFXqbDg+1FUwveBwu+YQNIpg9isJcFfe89FO2gGEZWV/V5cUOcIQ
-         TETP0+A0qeXczTqGSs/PeHZBiCQmG7dAuuZdamakmwNrI7q6r6IQ9bjUzOF4519NKMvy
-         4s5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528700; x=1786133500;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PIIW3zze/gc7+/5TXWZ7ScLNciQfdvJlTxagUbQZKRQ=;
-        b=bKXJptLu4qjbaaUbe9TmDHOijx38kCbP04Z4TEg0Zf2XakNe+G5F7kqG4oKYPh2yKd
-         H3I63fnTDfu4mU7kkIlnWyLQHiNViSgAuA3SIF81Ie5B/lar6dnwsACO+URp62jei/M2
-         zzeDmcEkX1O+mQlex1m4uMcgQ41E4WY7hFS19WGeb0ZtmDZwO4WLEdkTliS4TIealRNV
-         eHxwW0f8ks7PDDDxkQXuysZSKsfkUo29RVK4FuRwHVVWFB70VGmNJ4mm1a2nMB8qpu0I
-         ikXQl4cr0BMJOpCUdINpSQ2h8tZr79QXOo/eAeu71NUl2hNNSfd9V7YTKNRqB4KkEgnG
-         yobw==
-X-Forwarded-Encrypted: i=1; AHgh+RpwwcVAClkcQVgd8B8niPlhHSuZJRwC5YP3lxMq1fmrXVzdzNwZ+b9bbwOCCZk6lfeVvrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6wNyoGq47HYdOuVjSTrrDW7ABi+gmWMdYyasGQhtBjJR3H2Y/
-	ayyuvZu0YuXQREM8etGh5A50RsdWN0Rpk7mtkHKkI8nZUhm/B/Yv3QConCdBlK6jzyZgeVjaNgo
-	lX/4ing==
-X-Received: from pfbhj5.prod.google.com ([2002:a05:6a00:8705:b0:848:49f6:6f5c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:178d:b0:845:e9e8:6458
- with SMTP id d2e1a72fcca58-84ee47d50e3mr732442b3a.20.1785528699809; Fri, 31
- Jul 2026 13:11:39 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:10:09 -0700
-In-Reply-To: <20260728174232.2423257-1-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzjpH1FP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF0C1F00AC4;
+	Fri, 31 Jul 2026 20:11:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785528701;
+	bh=212dNqAYyuDALpdVKIYLVZtbY6/IY6Q7Nvevmsxznaw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=RzjpH1FPDLC+UuXVzPw1A159uBdVbOJdm8mmsgVD0RoPug4BCSkguLiDGDZPhUESj
+	 8zoDmxS5vxzDseKOvJ8NT7n5YpxXSoW+AroLDuftASuQD4cOby7GamqOgCM3bIzof2
+	 NVNrbRcuweaEh0CA1T2Sbl4QUhh1XTxHo2wD2zWWxgg/ejKT/aS4h5iEM5dltWat7M
+	 JmVlbgdyt5hmQfDS3lJLgdmT+y6olwc7gBFgZgUCzC0Un8K/Xh7CXuM/O+iJwY8SS3
+	 kkkQjlDqbXrHHKglbrxVjZD43DRDnzV6CbTatKPN+L1XmgQftb6Q+oQ8r8AS3mkemp
+	 tntF8SGpIkPoQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in
+ hardware disable test when possible
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+In-Reply-To: <20260731195612.2697986-4-seanjc@google.com>
+References: <20260731195612.2697986-1-seanjc@google.com>
+ <20260731195612.2697986-4-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 20:11:39 +0000
+Message-Id: <20260731201140.5AF0C1F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728174232.2423257-1-yosry@kernel.org>
-X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <178552796387.2700347.9476724036977525615.b4-ty@google.com>
-Subject: Re: [PATCH v5 00/13] KVM: selftests: Stress save+restore and #PF (ft. nested)
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
 
-On Tue, 28 Jul 2026 17:42:19 +0000, Yosry Ahmed wrote:
-> Add a stress test for save+restore while the guest is triggering and
-> handling #PFs, in both L1 and L2. The goal was to create a generic
-> selftest that would catch bugs like the one fixed by commit 5c247d08bc81
-> ("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested
-> #VMEXIT"), instead of relying on high-level testing (e.g. building GCC
-> in L2) to catch it.
-> 
-> [...]
-
-Applied to kvm-x86 selftests, thanks!
-
-[01/13] KVM: selftests: Use __stringify() instead of custom XSTR() macros
-        https://github.com/kvm-x86/linux/commit/9be54a82656c
-[02/13] KVM: selftests: Fix RAX and RFLAGS VMCB offsets when running L2
-        https://github.com/kvm-x86/linux/commit/53f4ad49d76b
-[03/13] KVM: selftests: Rework GPR registers switching for SVM (and fix offsets)
-        https://github.com/kvm-x86/linux/commit/546455d9c724
-[04/13] KVM: selftests: Handle rflags save/restore for SVM in guest_regs
-        https://github.com/kvm-x86/linux/commit/9547309406d5
-[05/13] KVM: selftests: Reuse GPR switching logic for nVMX
-        https://github.com/kvm-x86/linux/commit/3d31fea7b6d1
-[06/13] KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
-        https://github.com/kvm-x86/linux/commit/2bdef77c6019
-[07/13] KVM: selftests: Add a blank line before logging assertion failures
-        https://github.com/kvm-x86/linux/commit/12f4d8b06a53
-[08/13] KVM: selftests: Expose PTE masks to guests as part of an MMU
-        https://github.com/kvm-x86/linux/commit/e21d4dc0ca63
-[09/13] KVM: selftests: Do not intercept #PF by default in nVMX tests
-        https://github.com/kvm-x86/linux/commit/7317f5b143aa
-[10/13] KVM: selftests: Add basic stress test for save+restore and #PF handling
-        https://github.com/kvm-x86/linux/commit/d24dde74f72f
-[11/13] KVM: selftests: Trigger save+restore randomly in the #PF stress test
-        https://github.com/kvm-x86/linux/commit/d99ad3c842f0
-[12/13] KVM: selftests: Support running stress save+restore and #PF test in L2
-        https://github.com/kvm-x86/linux/commit/1494b3d17c95
-[13/13] KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
-        https://github.com/kvm-x86/linux/commit/583ad2052ddd
-
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Low] The fallback logic for setting thread CPU affinity is guarded by `#=
+ifndef _GNU_SOURCE`, which is always false because KVM selftests unconditio=
+nally define `_GNU_SOURCE`. This renders the fallback dead code and breaks =
+builds on non-glibc systems.
 --
-https://github.com/kvm-x86/linux/tree/next
+
+--- Patch [3]: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in=
+ hardware disable test when possible ---
+commit 242db3bb38cdcdb7592d9d34951b2c689c2c39b5
+Author: Sean Christopherson <seanjc@google.com>
+
+KVM: selftests: Pre-set threads affinity in hardware disable test when poss=
+ible
+
+This commit pre-sets thread affinity using pthread_attr_setaffinity_np to
+reduce pthread creation latency on large NUMA systems. It attempts to add a
+fallback using kvm_sched_setaffinity when _GNU_SOURCE is not defined.
+
+> diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/=
+testing/selftests/kvm/hardware_disable_test.c
+> index f088b4af3ccc7..b4edeadfa3f45 100644
+> --- a/tools/testing/selftests/kvm/hardware_disable_test.c
+> +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
+> @@ -36,7 +36,9 @@ static void *run_vcpu(void *arg)
+>  	struct kvm_vcpu *vcpu =3D arg;
+>  	struct kvm_run *run =3D vcpu->run;
+> =20
+> +#ifndef _GNU_SOURCE
+>  	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
+> +#endif
+
+[Severity: Low]
+Since the KVM selftests build system unconditionally defines _GNU_SOURCE,
+will this fallback code ever be reached?
+
+[ ... ]
+
+> @@ -80,22 +84,28 @@ static inline void check_join(pthread_t thread, void =
+**retval)
+>  static void run_test(u32 run)
+>  {
+>  	struct kvm_vcpu *vcpu;
+> +	pthread_attr_t attr;
+>  	struct kvm_vm *vm;
+>  	pthread_t threads[VCPU_NUM];
+>  	pthread_t throw_away;
+>  	void *b;
+>  	u32 i, j;
+> =20
+> +	TEST_ASSERT_EQ(pthread_attr_init(&attr), 0);
+> +#ifdef _GNU_SOURCE
+> +	TEST_ASSERT_EQ(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &t=
+hreads_cpu_set), 0);
+> +#endif
+
+[Severity: Low]
+Could this break the build on systems using alternative libc implementations
+like musl?
+
+If _GNU_SOURCE is unconditionally defined by the Makefile but the libc
+doesn't provide pthread_attr_setaffinity_np, this might result in a
+compilation error rather than using the intended fallback.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731195612.2697=
+986-1-seanjc@google.com?part=3D3
