@@ -1,172 +1,99 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EB244E67E
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300DA44C674
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785519234; cv=none; b=svCcTFSQGLBTnqk7LNwWOPiJGZdKgiPUdqtv2uvEv8BJukzrL91sx+uALkMCeY8RYTpk/48INg3jMKw+tef6Gu1udDVEvTjOtkfb/GjoYr+6R6uGGy6vb0rISJZshhAi8rHaeXX5qVUmxYpRbOAjHzcLBesNSI+4i2jEH3rrLUk=
+	t=1785519529; cv=none; b=WYuTwMmSK4kDi6RGPQYy/e99nonKGbG1O1+23dhdR4uoMoZGtxN+26AYYKg4MYe7Bq453JGPvGFTZXR7tFjS5jKEoU/8sS6M86eMArrH5f3yGX5iYPzwZg2Hkd9fvAf/u7quJ0f9kb8xPP81AiWjg6U9xCmIg3B9oKEegMZbQZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785519234; c=relaxed/simple;
-	bh=+gogjg/3D4gQHcPEQRIYtYjXFvse8XsAoXE16fKGJuE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YeHq5S/aumm/PJC3SJ1/lMXaJdWBOresvgjFOMOLqAOwTIw4A71ae3i60i9rO6hQWOZGToqxxf9KXD7/gstUfnOhcNIn3sZtRtE1YlQAOfOfO6wxVbKHA5TsD0ehukMnrgfZzFI9GeEMKxSseehNthk26cyvWcJkqFY52W53cd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CQfjOLfj; arc=none smtp.client-ip=209.85.216.72
+	s=arc-20240116; t=1785519529; c=relaxed/simple;
+	bh=P9UMYWbtzdwQZFlzLRIZV+ZkrpzSHaARpENaclXt0RU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C8ss6LGBE5Bdz4BYFQyPhKfCGZZaUg6bh2B8XkHk9zif9MqxsYWFrGj+BVQ6ZODf/ZaIIHq+LWSAZwbIF80gDuJvuseawCMBvKu4QSjhFqai/NsL1W69LL1PvRWQFupQbWiIT+luPL6OaT/u4d1Mei2uA3x+WmB9VwcvqmKIicQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wcw6mZDR; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CQfjOLfj"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8e864ef0so1996981a91.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:33:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wcw6mZDR"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38ea32e57e2so2329704a91.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:38:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785519230; x=1786124030; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=OXBC54gDOgEf6948QYc+7NMHsIhOHZjkaHYeMetA6x8=;
-        b=CQfjOLfjsLWberS6pngvlxSL4xKcz0E2CVF/ly/7Fgg4rrNZwxW3PFaRAme52U/lE0
-         1IlqPZCqu64RYPQPivIltkkknQZl0Hg+GUSFZmj93zJS1U4ZsY2HYD1EGGsuh5nMSyJs
-         do8ZV5nUPQZroOKMQlTWA7sajf24H6FzeYfAgEZPOd+DnNssOEuf9ZdhXjuwDnJ57ItV
-         suh2LXCKLVPnR038L2M65vNHhcIlbgfF4rmZMjWCM7yGVW1d9KuA2nQduCcwzvFrRN3m
-         9uQUECQoL9fcgroAMnBnw9Xq9m5+chhaj5UbFMz7y7+1ffbCuVB/+nRbMj5130uqvSdr
-         qnaQ==
+        d=google.com; s=20251104; t=1785519525; x=1786124325; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gqFEN9SNh9XdHmsXGDCS9ctdoEOLW1lYemPfuTEo4Fw=;
+        b=Wcw6mZDRmr595mX1iiBjDUCErVYxUx5CQ7WUEviTENp9O/daT7qoRwriR8cJt9IoHQ
+         zkmTvj3KbQk2QXCzNEcORyU9O1vtXuW9CGPLtDakaw/UYNakSSkilDdOsVlec6QIwpSS
+         m4B7YSpO4rqadM0Sy6yasW8mNX81rAWGKzVOYg/Hl9nbGOC1n3KrDdemBnGStoYL/wMv
+         TYovOLGFNxmC8J41/pi6l0fzZ7j63Y/YIFxi1hXLPCT2Hjj88v74DrbZbRKd9yQF/5Cz
+         kBe9UKCU+ZZ/+jkUgurSXJwNAjJXY+UUfDAimM8ksAgjOMTF2I87jpfAm6RzrJwVfa2j
+         3tEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785519230; x=1786124030;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OXBC54gDOgEf6948QYc+7NMHsIhOHZjkaHYeMetA6x8=;
-        b=OBB3MiHffhknNmr6XU/fcTLIxAP7KFHQj2OpQ549GowBop2CHZfXVotAuYeOdLqA7h
-         1vL8WeoBlGqWAejpU+WrmeK4ojSfloYs9MibmlOr6x6tHSRsi3/NI1CM3nu517CGS0ts
-         r9sIEGL1hrB7ujUX2dDBfQNS/qu+YmjTx5OQ4Pr9KxHubjY9HObdX5gPRfTod+kv+BcP
-         XxUosO+7WgRXM0u9Z0/YvO9PCbXioOTnqoL14VBXRhvquwjkpoQIxTV8k/MqZgzmVxOD
-         7HAL7VVDD63ht2HUbtY/SJKaYpXhkIhOE1o0kNvkHjWbiVkKoPa9GFO4j/YIOmQNdbwO
-         qxyA==
-X-Gm-Message-State: AOJu0YzH8JOG1I/vwllKkPyk9JuT3l8PlUws2zxIrOWjZVujFlhciTf9
-	J1AAa7mygj7rAC/t73PXkbTPENJj0/3Rx0ebOlm+BEiAXnWbRELGWSVAlj1nk6yj75bL8hiCNWV
-	AIpi67Q==
-X-Received: from pghm11.prod.google.com ([2002:a63:f60b:0:b0:c8a:604f:6851])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:93a1:b0:3c4:2cf9:2896
- with SMTP id adf61e73a8af0-3c92a8af306mr633679637.45.1785519229414; Fri, 31
- Jul 2026 10:33:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1785519525; x=1786124325;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gqFEN9SNh9XdHmsXGDCS9ctdoEOLW1lYemPfuTEo4Fw=;
+        b=eZTuTsEWsE+y1QHFRE6x5lpTrqZem0IjASFxiWmbeVVD5WjDuhZ+xqik3Jd+/M82Kr
+         9KhKGN7hoSVkgnYoEaxp/QfB+VwT6jnL5gz6FREwKJcAd52fRtbzTBYpaxUWb/UIlnRX
+         OX4JaXcw+knypgsK7X52etyVljVjxCmvSVSPWPVkGT6AtZcHBR9w51X8Uh7GGn1jw52J
+         U434TwNjsbF236+V8ka0gvnD/dTjAccVMatggQF7alaFoQHtYqv+izRAYSM8+zvrYbdE
+         XEz3RV/pa0XWpwVIgMdGzBNrBbPhkU1haVgCVOE3smPIUg7Bccm67ZYZ703X1c2we0wR
+         52hw==
+X-Forwarded-Encrypted: i=1; AHgh+RrKuCoqg6E3BieV8Zy59/gArX5/1K93U96hP2flbaPMQfVeU/IDsx6Ufhm2AckKaEdXrnA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFyCNRZ+E/N7QBQmViKNrRTerBu7kGQxUcT4tvWarp2TLmJBzd
+	p1hR2PhdnAxlHwTwMYCGZ+diyxCD4epbIghKTAwdG41UECEfa7qkgTSn8NEE2UjDqbxhTMjaMZM
+	jBIc6Jw==
+X-Received: from pgna2.prod.google.com ([2002:a63:7042:0:b0:c99:3b68:c9e4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a26:b0:3bf:6222:2e7e
+ with SMTP id adf61e73a8af0-3c92a51779fmr667501637.4.1785519524939; Fri, 31
+ Jul 2026 10:38:44 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jul 2026 10:33:40 -0700
-In-Reply-To: <20260731173340.2644656-1-seanjc@google.com>
+Date: Fri, 31 Jul 2026 10:38:37 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260731173340.2644656-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731173340.2644656-7-seanjc@google.com>
-Subject: [PATCH v5 6/6] KVM: selftests: Extend the invalid nVMX guest state
- test to cover RSM
+Message-ID: <20260731173842.2649391-1-seanjc@google.com>
+Subject: [PATCH v2 0/5] MAINTAINERS: KVM tweaks and additions
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Hao Zhang <zhanghao1@kylinos.cn>, Hao Zhang <hao_zhang_kdev@163.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
+Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Anup Patel <anup@brainfault.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Hao Zhang <hao_zhang_kdev@163.com>
+A few tangentially related KVM MAINTAINERS updates, details in each patch
+(though the shortlog is probably enough info in most cases).
 
-Extend the invalid nVMX guest state to cover RSM, i.e. to validate that KVM
-synthesizes SHUTDOWN for L1 if SMRAM is clobbered with invalid guest state
-during an L2 => SMI => RSM => L2 sequence.
+v2: Collect David's acks, drop RFC tag.
 
-Note, unlike the existing testcase, clobbering SMRAM should result in L1,
-not L2, getting SHUTDOWN / TRIPLE_FAULT, as RSM is architecturally defined
-to trigger shutdown if the CPU detects invalid state.
+v1 (RFC): https://lore.kernel.org/all/20260428171541.1342335-1-seanjc@google.com
 
-Signed-off-by: Hao Zhang <hao_zhang_kdev@163.com>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../kvm/x86/vmx_invalid_nested_guest_state.c  | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
+Sean Christopherson (5):
+  MAINTAINERS: Add kvm-x86 tree to KVM x86 entries
+  KVM: guest_memfd: Move gmem function declarations to dedicated
+    guest_memfd.h
+  MAINTAINERS: Add an entry for KVM's guest_memfd
+  MAINTAINERS: Add David H. as a KVM guest_memfd reviewer
+  MAINTAINERS: Add myself (Sean) as a reviewer in the main KVM entry
 
-diff --git a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-index 4b1bb190c2c6..c8379124b317 100644
---- a/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-+++ b/tools/testing/selftests/kvm/x86/vmx_invalid_nested_guest_state.c
-@@ -2,6 +2,7 @@
- #include "test_util.h"
- #include "kvm_util.h"
- #include "processor.h"
-+#include "smm.h"
- #include "vmx.h"
- 
- #include <string.h>
-@@ -11,6 +12,22 @@
- 
- #define ARBITRARY_IO_PORT 0x80
- 
-+/*
-+ * The 64-bit SMRAM state-save area starts at SMBASE + 0xfe00.  TR starts at
-+ * offset 0xfe90, and attributes is the second 16-bit field in the descriptor.
-+ */
-+#define SMRAM64_TR_ATTRIBUTES_OFFSET	0xfe92
-+#define SMRAM_GPA			0x1000000
-+
-+/*
-+ * SMI handler that runs in 16-bit Real Mode.  Syncs with L0 via port I/O, then
-+ * executes RSM to trigger the consumption of invalid guest state.
-+ */
-+static u8 smi_handler[] = {
-+	0xe4, ARBITRARY_IO_PORT,	/* IN $ARBITRARY_IO_PORT, %al */
-+	0x0f, 0xaa,			/* RSM */
-+};
-+
- static void l2_guest_code(void)
- {
- 	/*
-@@ -114,9 +131,45 @@ static void test_invalid_l2_guest_state(void)
- 	kvm_vm_free(vm);
- }
- 
-+static void test_invalid_l2_guest_state_rsm(void)
-+{
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	u16 *tr_attrs;
-+
-+	if (!kvm_has_cap(KVM_CAP_X86_SMM))
-+		return;
-+
-+	vm = vm_create_and_run_l2(&vcpu);
-+
-+	/*
-+	 * Inject SMI while L2 is active, run the vCPU to get I/O exit from L1,
-+	 * then stuff TR in the SMRAM state-save area so that RSM restores
-+	 * invalid L2 state.
-+	 */
-+	setup_smram(vm, vcpu, SMRAM_GPA, smi_handler, sizeof(smi_handler));
-+	inject_smi(vcpu);
-+
-+	vcpu_run_to_io(vcpu, false);
-+
-+	/* Clear the present bit in SMRAM to make TR unusable. */
-+	tr_attrs = addr_gpa2hva(vm, SMRAM_GPA + SMRAM64_TR_ATTRIBUTES_OFFSET);
-+	*tr_attrs &= ~BIT(7);
-+
-+	vcpu_run(vcpu);
-+
-+	/*
-+	 * For RSM, L1 gets the SHUTDOWN because RSM is architecturally defined
-+	 * to result in shutdown if the CPU detects invalid state in SMRAM.
-+	 */
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SHUTDOWN);
-+	kvm_vm_free(vm);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_VMX));
- 
- 	test_invalid_l2_guest_state();
-+	test_invalid_l2_guest_state_rsm();
- }
+ MAINTAINERS            | 14 ++++++++++++++
+ virt/kvm/guest_memfd.c |  1 +
+ virt/kvm/guest_memfd.h | 34 ++++++++++++++++++++++++++++++++++
+ virt/kvm/kvm_main.c    |  1 +
+ virt/kvm/kvm_mm.h      | 27 ---------------------------
+ 5 files changed, 50 insertions(+), 27 deletions(-)
+ create mode 100644 virt/kvm/guest_memfd.h
+
+
+base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
 -- 
 2.55.0.508.g3f0d502094-goog
 
