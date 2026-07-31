@@ -1,105 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA1E2AE68;
-	Fri, 31 Jul 2026 20:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ED1369D74
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528343; cv=none; b=ivjZzi63Wc7C04pDxV999zwTqhb9aw7OH+jtrnBlnM/9k7TGZObvEt1KlnFRO3j3bJQ4IynunfVJvZL9ayF6mQrfW2o3XrFJZQHnxCZIjla1/OIekCFV164Q6T7Y6TWaIo/sJfNr4g3iJVdhw2yvvLXoYFP24QB4p3AWo4JIqZk=
+	t=1785528612; cv=none; b=Vl3UyTtpOXkCq27//xLB0oEkkQla08iiWw6A14E/AeT7F3cAXzPUZY1+T4UxmaRJfvduGiTIxrKNBoZfVxSWxzJJO2fzn8srtdj1aYc3LsYgsOfIevhfK24Aou/lWEBO54ApRUHD8D/7I0VxO42MGjU/36ZzTwHuaWGJreknc+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528343; c=relaxed/simple;
-	bh=zo56Gnd1AQzJe+MKAELMxizFxj8IzCHAcwvlKn0Oh2w=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Zrk+rqHHcVenLpfmCpDvJmUssyuC5R+e4+BuEkMxxJz8r5ewF/U1VMrSueYt+04gYoiRjmQjr8W80mija7NXleYVDoDO1TqA0GN7C9aLoCBs4OvsNh4hliZEHoXLRgGd70jhB5ix+4DvCAtj8V5HYi6ESNKI4nT8LTDP4X/rcpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSOo+m9H; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785528612; c=relaxed/simple;
+	bh=EbkAtw/yPxzI+zkDqTO3nDCw8wZaoKCV5tUxOPgLNqc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Content-Type; b=GmkQELnAx1QiAB9nrFYBRUQd/YIVVDGR5tk2pV0ZCdvDbjLjpk4INpIF/dJi1Gq9HwkVp73bcNFPkYZBQ0lf7M1SKef490beWMAEfPtqnRKhGwG7RjbawWjJz5lVvzBXH8Lc5sTdGE90iQh+EZFSDkBMnOac7baRiu+cedJVQCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EUH7X7Vb; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSOo+m9H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC90E1F00AC4;
-	Fri, 31 Jul 2026 20:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785528342;
-	bh=fscBRLpahpY/cZ7dSQqNQTwjkFM8uGa5YbAsWof7DM4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WSOo+m9HOR1c/Emt4WIAe2c4/xSvtCIj0JDNZC+rLfGrtnsn/nS6C5kDv2oe35wpf
-	 U8Pk7teD/rRu8vB8HH+jkpXjQ6oC0UCqVKr+60ZHTY7K4StrUgEjRtDPgHGZooVVM9
-	 89cdmV7E/N17hQCwKo8q0eS5/nzR6EHkxwLWuXRzhre5sTFbPGzu2lIhPQLq1MIyJU
-	 kn9MY9rh4bfGH5Fnswg37QDvhqv5spHrRuQq92NE62Cbr0JcEtXx3P48ShB7cermXI
-	 BGGb2fnHr0qi6Kc2cdkFi7/5jM/kAnM9j9aZhisdt+WTH1JRngG2qMqs0M2ltY54Zn
-	 79FW9Fdmi6yZQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 08/12] KVM: selftests: Add KVM syscall wrapper for
- pthread_create()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, "Oliver Upton" <oupton@kernel.org>, kvm@vger.kernel.org
-In-Reply-To: <20260731195612.2697986-9-seanjc@google.com>
-References: <20260731195612.2697986-1-seanjc@google.com>
- <20260731195612.2697986-9-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 20:05:41 +0000
-Message-Id: <20260731200541.CC90E1F00AC4@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EUH7X7Vb"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84e13b57b2cso1943927b3a.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:10:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785528611; x=1786133411; darn=vger.kernel.org;
+        h=content-type:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6dGHZhChNpAHEZYB2yzeExiUjrKbT3b7Zh2GTXyKqp4=;
+        b=EUH7X7Vbv4/l+BwVXuuqLMnRLyHEUB/DxQAU/eTnGEz55NEyVg6g4f5/HdTsspSU4F
+         2AnlvFgrvKtDSByeLBmXaFCXX5KjSQ8W2OZqz55SUq+8V/9GmnIsobrQhrALQwLuHnXR
+         Clyw9aWyZfb45rZbBoblwBJhL26YCigISCxVNyUbKcvM6hROmZ63oU15sanYmfIFxCPS
+         ka3jWY+vYcHA56P2TSYY0bHs0xo8fKE625tiUTP5NOOSpA2VFKJh3sgFPmR2fDxgYC4x
+         bkBS7FoEH9k3V8VZzsDIvdb7kHxo98mJBcUfy2TVYGnM9eY7J0SYpgr2gvUmfgOG3QN1
+         WxNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785528611; x=1786133411;
+        h=content-type:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6dGHZhChNpAHEZYB2yzeExiUjrKbT3b7Zh2GTXyKqp4=;
+        b=Vd8FaduqTufEE/nnL7+f9EBLfiIvO8gU+h2H8H9hr4d6De18/fvXQzpNwv1nBNqAcG
+         J8Gjy/3YRDtEhMeOBhXB0uniX7zKIJ0pxVMTAntwRd9qv3QJb7mbNHurYX21nWudi9Lp
+         vSG8jFfEvio7WsoZXgCDR1z3yCfCQYXpf/WTOx5ISx8sYsaSRSMzdCxMiDVIf9W5u27Y
+         dS83VH09EpDt6CcdQGSJWjwZCqOKayFjsCkLLrmzuhtrCNLPQ3QNc9DNHVcuyNlvTJpK
+         e7AA+hABfH3KlqR6ztsTGeXLG6KyjpxcP81tEr8TMKwEzFCWW4v5RDa+dEpu3XYr8+pt
+         eZxw==
+X-Forwarded-Encrypted: i=1; AHgh+RrB/Bd3VtA9rHlI9S+E3OdVrghueb6MUv6BpuH20fRMGBWWQpQ6ZkQ/YrV8NrXNmJERDr0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI1zwkcUnKGt4VzWOgrK379XBP+pD7UpokBOZZ9Bzc+FTpZbPf
+	pEVrXwLKlTA0/CF4zrgU4erU5iTrM3d5AYWI4DfV9GVLylY3hTZUsUmntyhR2P7/+N2BFqNSrkF
+	yguGzng==
+X-Received: from pfbi27-n2.prod.google.com ([2002:a05:6a00:a51b:20b0:848:5395:9a78])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d87:b0:848:4256:d6ad
+ with SMTP id d2e1a72fcca58-84ee48f8ab0mr799329b3a.60.1785528610394; Fri, 31
+ Jul 2026 13:10:10 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:09:44 -0700
+In-Reply-To: <20260703212145.343527-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260703212145.343527-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <178552799129.2700794.10181439022561913222.b4-ty@google.com>
+Subject: Re: [PATCH v6 00/36] Cleaning up the KVM clock mess
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org, 
+	David Woodhouse <dwmw2@infradead.org>
+Content-Type: text/plain; charset="utf-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `kvm_pthread_create` wrapper incorrectly uses `errno` for er=
-ror reporting, which `pthread_create` does not set.
+On Fri, 03 Jul 2026 22:17:39 +0100, David Woodhouse wrote:
+> This is v6 of the series to clean up the KVM clock, rebased onto the
+> tip timers/ptp material (the timers-ptp-2026-06-13 merge, which includes
+> Thomas's ktime snapshot series and the read_snapshot patches).
+> 
+> The KVM clock has historically suffered from three problems:
+> 
+>  1. Imprecision: get_kvmclock_ns() computed the clock from the *host*
+>     TSC without applying guest TSC scaling, causing systemic drift from
+>     the values the guest computes from its own TSC.
+> 
+> [...]
+
+Applied patch 1 to kvm-x86 clocks.
+
+[01/36] KVM: x86/xen: Do not corrupt KVM clock in kvm_xen_shared_info_init()
+        https://github.com/kvm-x86/linux/commit/3d4b20b5a7df
+
 --
-
---- Patch [8]: [PATCH v3 08/12] KVM: selftests: Add KVM syscall wrapper for=
- pthread_create() ---
-commit d35383198b73b658a7a90f8c3560d48c6d71d62b
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: selftests: Add KVM syscall wrapper for pthread_create()
-
-This commit adds a wrapper for pthread_create() in KVM selftests to
-automatically assert success. It converts various manual checks across
-multiple tests to use the new kvm_pthread_create() wrapper.
-
-> diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/t=
-esting/selftests/kvm/include/kvm_syscalls.h
-> --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-[ ... ]
-> @@ -97,6 +98,10 @@ __KVM_SYSCALL_DEFINE(madvise, 3, void *, addr, size_t,=
- length, int, advice);
->  __KVM_SYSCALL_DEFINE(sched_getaffinity, 3, pid_t, pid, size_t, cpusetsiz=
-e, cpu_set_t *, mask);
->  __KVM_SYSCALL_DEFINE(sched_setaffinity, 3, pid_t, pid, size_t, cpusetsiz=
-e, cpu_set_t *, mask);
-> =20
-> +typedef void *(*pthread_fn_t)(void *);
-> +__KVM_SYSCALL_DEFINE(pthread_create, 4, pthread_t *, thread,
-> +		     const pthread_attr_t *, attr, pthread_fn_t, fn, void *, arg);
-> +
-
-[Severity: Medium]
-Since pthread_create() returns the error code directly rather than setting
-errno, will this __KVM_SYSCALL_DEFINE wrapper print stale or zero errno val=
-ues
-on failure?
-
-The __KVM_SYSCALL_DEFINE macro relies on __KVM_SYSCALL_ERROR, which formats
-the error using errno:
-
-#define __KVM_SYSCALL_ERROR(_name, _ret) \
-    "%s failed, rc: %i errno: %i (%s)", (_name), (_ret), errno, strerror(er=
-rno)
-
-If pthread_create() fails, should it be handled differently to ensure the
-actual returned error code is passed to strerror() instead of the unmodified
-errno?
-
->  #define kvm_free_fd(fd)		\
->  do {				\
->  	kvm_close(fd);		\
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731195612.2697=
-986-1-seanjc@google.com?part=3D8
+https://github.com/kvm-x86/linux/tree/next
