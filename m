@@ -1,169 +1,156 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012038.outbound.protection.outlook.com [52.101.66.38])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C923B7759
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 09:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.38
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785490606; cv=fail; b=r+SC8++hFHlNfg6K1IP70GwkYl1OqXMfsmqGdLTGu/Y5VXdjgJ42o3yox2H0277QSNfWohZRaXusSmYbva1tR321B41ZEzsXvWjqys9JXL3sgS+goytunGth1QMRubOdOfz8KiXUOwCU83mDeKTfRXYR3cKwYCXJWyFKMZ7e02o=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785490606; c=relaxed/simple;
-	bh=3f+bGByMCRzV3H70ppk92PDlbvg1HeobMnWQ8D7B9mw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OaTaRfWZuLTs1gGo4FlMN1n9mxneHdz6sW9EMM3DPqZPs/GyzNrRm8fGQhjiFbD0U14V+Lhp3gEWB3+XoLymJVYmsr76tyBANcG/kYKE8dHGqPnz7UErjeOkq7qiKBejPJ9BzOGadTSiVpdHgQJ2ASRgK3rnvCuhI+64KtDWXUk=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EA73aZNl; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EA73aZNl; arc=fail smtp.client-ip=52.101.66.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A422BEFF5
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 09:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785490694; cv=none; b=bgHcciMP1n7HJM7cqHLmpQe+CJDx8Evdi2TG8dLs7g78/2/txVEQzosXAl35HIX4MngOYD0gbpVktJrC+UVgHvcUQu9verV13Imk2NKZplgEXBEJuD4k6wVo1WD7MTor/dPuC+LuUi/Lfp6VZQwjBK2TDplj6VlU8ielwJenMKM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785490694; c=relaxed/simple;
+	bh=2JVB5NHlGcJkRbxyYTYM1W0SpjpRQTNPaqgefsqMK44=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5pTrof+issGIsB1wkNyvRwUZ0unXR9rYbJpicLRuKBNAJfh1/95TxZpd/swtjIWTWdsNB8Qbv17aCw34RoO+YBnOYc9bd9OfkubVbIsMHvaYExECFQe7Syzs3S+15eKjuhmpFWf1x99MdgihuEDF2dpG8dmL5/dKjxUGUxu4cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LoOKlSMf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tvw5rzR3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EA73aZNl";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EA73aZNl"
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=yBjG5q8HKxclFPG5KHcubdJe/SbaJLzYP0b4I5tae0/uH+fGtse9+qeBMEEl6BQmR7SQyDfck1KxQZMAcaUEgvaC4bdGKTYmrzOb3/D3y1KpG6yMrL9yLKv/+X/+/MAhZ+tiDUr92/xvhMErTax1Yp94ATjsI4iXxARyCdzuGCIALvUQcib4AO+KH+A8k2E6/o7TeLuqx6ep8EI0wKR/Z8o00wljvVDzACTlYWxNa1GwCncxG57TyvG0iwA28d1oJLUSnLyRytAbMsWl+AOYwYOSCvOL7jquA/c8opOT2WCjBcl9+APq+/+cdCWrlm4HtcPGDDj3T2mdpZjr1P2c2Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3f+bGByMCRzV3H70ppk92PDlbvg1HeobMnWQ8D7B9mw=;
- b=oDVqfHN5KVtrYBYhN364+OtBY7myN7uLw+IzDmkku4r5EHa/XmFLpMTs6LdJlh/fLQGu9HXtUMyVoGesUTHAV0onKLK1WZ5O3WrpPZegHumnFUE/e+V/AtIY8YE6+sZMdU0GzFdmwxiQbJwQpU98Z1BBauazlnGesdxURO8FYzif6p00UmJNSPBua6TiKEXne8uQKbEZCkMw8S13+OUrquH9JoENdfQQqicTYjj6eWNQlKd3JgkIwlGDJVHxHH3K6M0rox05x3thEqGaIxFSjhR3A13Aul4QJIc0oFREA3ZuY/sy80mtYftpSPC0X0NofsceuWwt/bDEuFRLF1hAFw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3f+bGByMCRzV3H70ppk92PDlbvg1HeobMnWQ8D7B9mw=;
- b=EA73aZNl531hhBUvNvWuafRneteswoaeKRd2nXgZihMvfxv9dm72PMAbYNkaV/e6KDdRaM7lWzBLdIoWCNsOkxDMa29Tkrl+il/sqsPRucTb+mAny2aBdBJycjYk8qLpLl8SDLTE3R3WbSmOKIQmuEpua24CHnxZtJ8vFgQTIYQ=
-Received: from AS8PR07CA0038.eurprd07.prod.outlook.com (2603:10a6:20b:459::23)
- by AM9PR08MB6225.eurprd08.prod.outlook.com (2603:10a6:20b:2de::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
- 2026 09:36:41 +0000
-Received: from AMS1EPF00000046.eurprd04.prod.outlook.com
- (2603:10a6:20b:459:cafe::84) by AS8PR07CA0038.outlook.office365.com
- (2603:10a6:20b:459::23) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.10 via Frontend Transport; Fri,
- 31 Jul 2026 09:36:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- AMS1EPF00000046.mail.protection.outlook.com (10.167.16.43) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
- via Frontend Transport; Fri, 31 Jul 2026 09:36:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LRYmIENxvi2PN6zwo8uytTdUcgq+QQLJT8r8auRbhu4j35E5DHj3m1uLUCVvwVvBmA1dKIaBzZ9ALkAwwWbYg3R6WQ216vPAgZXboSxg7kRHE7hBd3nfiNx2/9P4STEa+dBgWGY+NZBmypA7Zcgb2kmwShakuIDuc9PGVss9NCXEk027BEr1n71FhHjNpeFKIYCdKpVhRliTJW6Rh2x8bwK6RUqLSA8vrZ1axTfavD2dR3KGnzZbOV6iTGb5mwZSpUdNnUKJ/f8YbldMpmzs8iR1dLkwWFBiwjxN2tkCQAn4I1qN/JDTqAmhnN5a1U3ZaaQ/uv0MuK6sUQWPUIcGrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3f+bGByMCRzV3H70ppk92PDlbvg1HeobMnWQ8D7B9mw=;
- b=n0Xcs6gMKKCHCBo3y9eSIkv1qupHBirZl49ZBzAEXYaJ4WJKXtuH79lPiuCCz+KO2ejWBUKgua018+8OLDOS3S/NgPE77EMo5tUTMYO5Ewp/xbXbOo1TKwxq6IKETN39O/KA5K9PaQIz3FbylTT+xpNFTWSkoULPGmW9qjOgY4XFiI+UHixUU/YHOAiKOKx5mZm2Hgk2z4v66WBRsMYXZE+TaHj60Gjd3v5IOC6VPGIXeMdB/njD/PH5fj9W1Ocj0yBN5GjY3xbYVee959xKxaZwjHv89wFJ+9vSuOEK4o04QRi0T3MsbZ+EpU10Cw9EOzL6GFkTzQCpz6ZTm8lvBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3f+bGByMCRzV3H70ppk92PDlbvg1HeobMnWQ8D7B9mw=;
- b=EA73aZNl531hhBUvNvWuafRneteswoaeKRd2nXgZihMvfxv9dm72PMAbYNkaV/e6KDdRaM7lWzBLdIoWCNsOkxDMa29Tkrl+il/sqsPRucTb+mAny2aBdBJycjYk8qLpLl8SDLTE3R3WbSmOKIQmuEpua24CHnxZtJ8vFgQTIYQ=
-Received: from DU0PR08MB8421.eurprd08.prod.outlook.com (2603:10a6:10:407::19)
- by DBBPR08MB10722.eurprd08.prod.outlook.com (2603:10a6:10:530::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.16; Fri, 31 Jul
- 2026 09:35:35 +0000
-Received: from DU0PR08MB8421.eurprd08.prod.outlook.com
- ([fe80::2158:1cab:1d88:ba2e]) by DU0PR08MB8421.eurprd08.prod.outlook.com
- ([fe80::2158:1cab:1d88:ba2e%5]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
- 09:35:35 +0000
-From: Sascha Bischoff <Sascha.Bischoff@arm.com>
-To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
-CC: "maz@kernel.org" <maz@kernel.org>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"oupton@kernel.org" <oupton@kernel.org>, nd <nd@arm.com>
-Subject: Re: [PATCH v4 07/48] KVM: arm64: gic-v5: Extract host IRS caps from
- IRS config frame
-Thread-Topic: [PATCH v4 07/48] KVM: arm64: gic-v5: Extract host IRS caps from
- IRS config frame
-Thread-Index: AQHdG1o0qOow5djU00KduraRpDffM7Z8hdWAgArjUwA=
-Date: Fri, 31 Jul 2026 09:35:35 +0000
-Message-ID: <837e507425c6a2f4f8d79b87cb5763cd3d482957.camel@arm.com>
-References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
-	 <20260724104819.1296803-8-sascha.bischoff@arm.com>
-	 <20260724111919.7EAB41F000E9@smtp.kernel.org>
-In-Reply-To: <20260724111919.7EAB41F000E9@smtp.kernel.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1.1 
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic:
-	DU0PR08MB8421:EE_|DBBPR08MB10722:EE_|AMS1EPF00000046:EE_|AM9PR08MB6225:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d3c04ee-13b8-4f88-9774-08deeee73a21
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info-Original:
- /+f44d68wYwn8/ZKbiuR/Sz7tf8rssfq2MY580WyrrAkpbTEttHeDnTc0HzD/ZuHd4syIPOosb5FY2eIMvOS8Lhiyna+2Qi+QYT6+lPCUYPxgxsqrFQ5YKVuw/4wkbO7+nRVMCKsYmq+Y+fyB/L+CNSovY4qe8inOCeeJhu+frnYcEB36I/WaI1uiQOzznSW1nLAwq8qwVkBTFujHXsuK1ryg6fRJUH6pshGJijrXH4ctxJeFCxlXtw2omOGepjj8BwlufxxQW9xIuLy50/z7ZgrkvtfYlh7nQiT4VsYt8RSxGXzfVu0lICT5hSWd8abbcoOfMvaj65oSK+jXqZ1fl3c77YOO9ZknyIA+PmeeCeCMpudwTyceEu8b27Yqgmehn5/YXxLLxv8YeJKHgiReh7o6VmHk1E9xrCSmVfhN6CLLyQ6zt0i49ZS+hylLAmsHzDucC1yQhwfJanLamlV03eyKjfoeIU/TkplpXncN6fa5kuZFNmbrBbtuUbJbH/FMpl3liX8lvvsSeQGOu0Xsddk+lQxzcHdj+MAFrVl9GbCQX2Qo4xRY6ParhUQ67ujAAHchIKNi0koTGs1yGwbKgS0J4O2dXAdfto6itCloVlCjY1v6t4v31TdsD9p2BYkU29u+CHs1d7g6QSdWQSv+BPwewHXnsxEJz3HHZvAnnQ3dV3y2HYER5792xB+n0VUDH4J7Yi2Xb30z/TDfGXpyQ==
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB8421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <44C2101DCCBE4B4083A9A09608F99E15@eurprd08.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LoOKlSMf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tvw5rzR3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785490691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XynOkVOU0Sg6QSEg62BZ8juSeRUPNKjmdjv0kL5gaaM=;
+	b=LoOKlSMfxhVPbdfhN0l2DOnpFF7eolzpR1/XfJmqOrcmmPpaZIUTRTUKj2Ck4RS9q2+xLs
+	c0PClRvMujK0Wp2s7OLNRm74ak/LomLtWLrMmOEG0i7lQx4tL66EPsGnruKJYnI8F6P44T
+	D27lwPmRjJny8fEFaxxD95KHcvEg4sQ=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-280-iyiCSDRvMu28TjWVV0sC5w-1; Fri, 31 Jul 2026 05:38:10 -0400
+X-MC-Unique: iyiCSDRvMu28TjWVV0sC5w-1
+X-Mimecast-MFC-AGG-ID: iyiCSDRvMu28TjWVV0sC5w_1785490689
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6984787eeddso722733a12.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 02:38:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785490689; x=1786095489; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XynOkVOU0Sg6QSEg62BZ8juSeRUPNKjmdjv0kL5gaaM=;
+        b=Tvw5rzR3YqVSd23egUPUIU/s1JCuFitZbI7iV9s+euhiKc/0fhvVs8yB0brHvU315I
+         b7cMRFCOaHJ7g2z+JjxgF8isZxYk8VXT4Fed8sqztuX9CHq7R0defCkoaq9n2MBBiI3x
+         TLXoJYSu7Em7A7W06uS5ThO73d4hTLuneV/hTqh6YwSTJdyeYlS4xyC1zPLkWWxVSJKx
+         8Om7IMjxhPFVAX6ETV1VhdD2p+9MUKThZoAnmPUMTwE/siOGvFGmvNyn84clYVdILcfT
+         Bg7dGkFb4YlMs1mbHfO0sbENNLXYl3T2aNWr+U3xRzKFbY+PCkWHT4CXWOjNxRz5nN3n
+         7nNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785490689; x=1786095489;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XynOkVOU0Sg6QSEg62BZ8juSeRUPNKjmdjv0kL5gaaM=;
+        b=bnjHbDeV4d2jkT4JBMDpGELMmvKXU1iQ4Fz1uT69sRkk0au/KgbEkJG0mWPKeUuCqw
+         x7oWlRCyazP84YKlq4zI3U1QdK9KB4sOctwcCZl2wR4xycdlOy7MenwIMZUQzu7Rf6+d
+         CKZa0h7Pp24V7LF9jzuNw56+Why4RqU2cgT/WghCo38o60bo3qvOjvaAs290piNvSHSN
+         JASZ0zaY9S69UaZaBfXHW3OmEz62cGGqa0JNbYj7Ff9vFEwD3AdEmANdHz61goVh6r8E
+         xcm5gQC9nL0NdORmKKzKcjkwDjoM1p4o4ZdDqIzie5aBizqC8bZOUSC4B1qzb584BUkp
+         oP9A==
+X-Forwarded-Encrypted: i=1; AHgh+RoE1s7YLBfKeyn+9fM/fy5MNkomCAfne4Raf/G8qAztIyj8BKO0RapeFVs3M3TlEdpmQ18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoHKCpIF6MIt0keo8F6oM0heYuPkQgSNJzLTK/nDOPgv+4Qj/5
+	pBj/LNWM+ys7BsoPDwzYYnrhOZwSVemsi4c8xup0XyC4Hmlk6HdOaRGrJQWQedXl+uYUu0wdMOX
+	wlkS4yP9BnCRTcskNWWIyEhAISW4eZ80FrizKCsacSnOqSbzkc70fAA==
+X-Gm-Gg: AR+sD13MV+YBCt5unk4/xk1x1UJfiaWH1BMFuEzMPquhWS2QWiVkgzg4+KZwGAjZYLc
+	zVzntuJFnZ4zMr5kPNp+btmOco4thPHLy49/xnVxjS0M5cd+WdW6n+VvH+gho+RTEBsKhK5ilkB
+	gSfWpGxsDRV4KyvpTeSznzq/BDcWhevwdp+IdqgQ/KQGUpfyMHk6CqQkwuhv0D3GYmn4SQklnQx
+	8kauwjaKYWMkkTvdfueJIHOudvNqbVOnqMUehsk+BQESRKKqNEms8OKrG5Scd7hIjjdTUU4+aLm
+	/hdmhqNlhsrWRM8lrY8eUKY2aKlSKNiLXQcXQsB+U5CXtOdkk9aHgatWwd/ceD3co/z2/Op5if2
+	m/IEalJO2emejKV2t20/zM8U=
+X-Received: by 2002:a17:907:b046:20b0:c16:16b9:9907 with SMTP id a640c23a62f3a-c1fd1e9acdfmr50313266b.15.1785490688994;
+        Fri, 31 Jul 2026 02:38:08 -0700 (PDT)
+X-Received: by 2002:a17:907:b046:20b0:c16:16b9:9907 with SMTP id a640c23a62f3a-c1fd1e9acdfmr50311166b.15.1785490688444;
+        Fri, 31 Jul 2026 02:38:08 -0700 (PDT)
+Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c5b8c7sm92699366b.9.2026.07.31.02.38.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 02:38:07 -0700 (PDT)
+Date: Fri, 31 Jul 2026 05:38:04 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vhost/vsock: prevent stale IOTLB after ACCESS_PLATFORM
+ changes
+Message-ID: <20260731053736-mutt-send-email-mst@kernel.org>
+References: <20260730104857-mutt-send-email-mst@kernel.org>
+ <20260731044145.1734317-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
- oQIP9iRHxwLoBTCqkpgLj3ujYWSw14hhNkRgPQDo3LvWWkdiPwFBjjhmfJYCBPaTc9tXnLCXuKzsn55LXqYt2LkFykvPkrG1WgRDqDpXsyTShoFQW/Vuh+NlUimNdZIvJ+vNvBfGZ0UOL4ZkiUtFdYA4CY50eeZLo9czAlBswoNKOdAmIajD+x5uoBrxd7MR6Sosn6DO7SKuZYFW14AuyiGGdLVaN2O3rqKO0xbxfbTtvu/+CdYDrUNjb+Z96lID+wVXtxpbUl9GUOd2rEnabef1UAH/VI2o8ttud2GWvX85usHzNTNmw8Wr0YsIJX1DTU0Oj5t0HA7lvyYuRpSceA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB10722
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF00000046.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	8ce3ac20-9a2b-439a-3ae4-08deeee712c4
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|376014|35042699022|1800799024|14060799003|23010399003|56012099006|11063799006|4143699003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	qGYUxhn6R/8LVb0ODcFvJ6FSpAgsBcf2UJ6gjYnAO3nrcMzSU9Z7g+Ocsa2yvAxpIPawyEbLcKls35Oo4akTQVkONWomW+o1S+Z3ELoXOb8nanICndrzzaO7ImS3eoxjwNUg7IFC+e7MAo0MN9R/3aMWLZfFT3r6o6laaRSlqltYbcPWIUNwiUpqJ7ctOB8DUkI1qpQAtoNcKdaD6ZmwciHeRff2IHDefbZgeLwM5Y00ESNA7ZonM8E/aiNoxiJaoiZn1QpHNCkv0XHG9IUfXM+9q94rcXSDLFHsphtbHLLOsh4N43AFGVLxsGUNRk458aMxl+viJpGlyuBjma0TzON/z0imQ2ho+2zj15PBz2jqr9GX4aOTE+skI1sAAyk2VPeFyp/w64856ulDHSUmhejCMfhktB45Cqp+8oXTi17zR+me6zE0NT3uks7BlerWiLX8krGZoJHI9aRrPMlGG1QNdHrwJUggJdGhNm0V1fef13m6+flum06RyRgUjUBmS9R4W+a8H4TpdH3pzPBmftBIgP5JMbFE3Xa8RPlRuOiKwaVZMW+JNdSMvWopYBj3IZOsU9Sj5VtGnOynnQTQAhj4WSvtuDPNN4TLK0aRfCK1Osp2JNmEHtu+VM2XoVaudYtt3AUYLKqXyL/GbTbkMdgZabhwTrbuHSRA+yCBP5BUgv7pmDm+lLmCBQGje1bK
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(35042699022)(1800799024)(14060799003)(23010399003)(56012099006)(11063799006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	lqXkkuVf2YWOlWtPvByk5xjP5Hzw8Z75dVxmBrp6J1w1zBvq+UAh+kdjpQrAbQv8lRE2C6ZxKlN9sjd5ECqXOl2CcNcikNLCcfEFh1lLbguy6a/6LDWgJ0XSdPBbEqufnmWV5LR8qTVCh3M19GEKxjDwnB1Gufj31C/dCsecHMp3YB191Cv1/g3AqckhI2p+kSq+G9oWnULdvdIkRxixPUxyDvwE5zUupRhJjYw/QMPJ5A25j5RRCr2yE/MvMuKfMuwAGotBrff9KkeZMktwxZBMKlCqhSlTPqfoPrV6+JyHqNPX/dks2oEU/oA1RX83iyMlWRBA9SY0mOjRPROarhgyDBYiK5VaMBRhrJcL3IRhsFbi57OLLnIwPpJBcJi1nLzyKrq6jHFLfB7mn1DEkmj/mHU2VYNPMyU/bUF6NXMPbJoDQfTTASf1XVKFI5A3
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 09:36:41.2375
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d3c04ee-13b8-4f88-9774-08deeee73a21
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6225
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731044145.1734317-1-physicalmtea@gmail.com>
 
-T24gRnJpLCAyMDI2LTA3LTI0IGF0IDExOjE5ICswMDAwLCBzYXNoaWtvLWJvdEBrZXJuZWwub3Jn
-IHdyb3RlOg0KPiA+ICsJaWRyID0gaXJzX3JlYWRsX3JlbGF4ZWQoR0lDVjVfSVJTX0lEUjMpOw0K
-PiA+ICsNCj4gPiArCWlyc19jYXBzLm1heF92bXMgPQ0KPiA+IEJJVChGSUVMRF9HRVQoR0lDVjVf
-SVJTX0lEUjNfVk1fSURfQklUUywgaWRyKSk7DQo+IA0KPiBbU2V2ZXJpdHk6IE1lZGl1bV0NCj4g
-U2hvdWxkIHRoaXMgaGF2ZSBhICsgMSBhcHBsaWVkIHRvIHRoZSBmaWVsZCB2YWx1ZSwgc2ltaWxh
-ciB0byBob3cNCj4gVlBFX0lEX0JJVFMNCj4gaXMgaGFuZGxlZCBiZWxvdz8gDQo+IA0KPiBHSUMg
-YXJjaGl0ZWN0dXJlIElEIGJpdCBmaWVsZHMgY2Fub25pY2FsbHkgc3RvcmUgdGhlIG51bWJlciBv
-ZiBiaXRzDQo+IG1pbnVzIDEuDQo+IElmIFZNX0lEX0JJVFMgZm9sbG93cyB0aGUgc2FtZSBwYXR0
-ZXJuLCBvbWl0dGluZyB0aGUgKyAxIHdpbGwgcmVzdWx0DQo+IGluIEtWTQ0KPiBjYWxjdWxhdGlu
-ZyBleGFjdGx5IGhhbGYgb2YgdGhlIGFjdHVhbCBtYXhpbXVtIG51bWJlciBvZiBWTXMNCj4gc3Vw
-cG9ydGVkIGJ5IHRoZQ0KPiBoYXJkd2FyZSwgbGVhZGluZyB0byBwcmVtYXR1cmUgcmVzb3VyY2Ug
-ZXhoYXVzdGlvbi4NCg0KVGhlIGZpZWxkIGRvZXMgTk9UIGZvbGxvdyB0aGF0IHBhdHRlcm4uIFNv
-bWUgZmllbGRzIGhhdmUgdGhhdCwgYW5kDQpvdGhlcnMgZG8gbm90LiBUaGlzIG9uZSBkb2VzIG5v
-dCBhcyBhZGRpbmcgYW4gb2Zmc2V0IG9mICsxIHdvdWxkIGJyZWFrDQp0aGluZ3MuDQoNClRoYW5r
-cywNClNhc2NoYQ0K
+On Fri, Jul 31, 2026 at 12:41:45PM +0800, Jia Jia wrote:
+> On Thu, Jul 30, 2026 at 10:51:15AM -0400, Michael S. Tsirkin wrote:
+> > I don't know if this will break anything. Why not just blow
+> > out the iotlb? kernel will rebuild it if it needs it afterwards
+> > for some reason.
+> >
+> > This part you are fixing is harmless. Let's make it a separate patch
+> > and document the motivation.
+> 
+> Thanks.
+> 
+> Yes, I considered discarding the IOTLB before choosing -EBUSY. My
+> hesitation was not about whether it could eventually be rebuilt, but
+> that doing so would no longer be only a control-plane validation
+> change. It would modify translation state directly used by running
+> virtqueues.
+> 
+> The minimum synchronization I had in mind was roughly:
+> 
+>   vhost_vsock_set_features(features):
+>       mutex_lock(dev.mutex)
+> 
+>       if (!(features & ACCESS_PLATFORM) && dev.iotlb):
+>           lock all vq.mutex in index order
+> 
+>           old = dev.iotlb
+>           dev.iotlb = NULL
+> 
+>           for each vq:
+>               vq.iotlb = NULL
+>               reset vq.meta_iotlb
+>               vq.acked_features = features
+> 
+>           unlock all vq.mutex
+>           vhost_iotlb_free(old)
+> 
+>       ...
+> 
+>       mutex_unlock(dev.mutex)
+> 
+> The switch has to be serialized against all active VQs. My hesitation
+> was that this turns VHOST_SET_FEATURES into a datapath synchronization
+> point: the ioctl may wait for in-flight kick handlers, and rebuilding
+> an empty IOTLB may stall queues on misses until the translations are
+> restored. If stopping or flushing the device is also required, the
+> disruption is larger than a normal feature update.
+> 
+> I was not sure whether VHOST_SET_FEATURES is expected to impose that
+> cost on a running device, or whether userspace should quiesce it first.
+> That is why I chose -EBUSY for v1. If synchronization with active VQs is
+> the intended behavior here, I can rework the patch accordingly.
+> 
+> I will also split the existing-IOTLB preservation change into a
+> separate patch and document its motivation.
+
+thanks
+
