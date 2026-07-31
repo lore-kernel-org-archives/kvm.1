@@ -1,80 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C483750BC
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B690489880;
+	Fri, 31 Jul 2026 21:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785533730; cv=none; b=bJWCjsYZlMqAV0sBXWsuSd35C0jGmm3ewhxypKU6XcbgSUmrl+x9pIgpLb4EZcShmh5q3JxKtuNekpRq+eysy7I5oWudqjaFthbM+3s2UjuRmXBlKtuDFrqnSVlLajQ31aYtouJ1mojEUG0mCcwdFLTjQ2vC8fOV7XueLHEj0jU=
+	t=1785533875; cv=none; b=EHV8dcqtZk1n7ITlD7sESNHxtmlYcwbtnji7jwXgDO4I1rcVZOyT14dYp68Od4AnYiVeC68X07wiRLvqjvZUybYU7gkwlByEXgJOmMzyZiligmKuISFABS+RuJeYhhlPNWZSq539hvtcgx4+92OKclLLvF4gdKdyphPM/DMoEQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785533730; c=relaxed/simple;
-	bh=2EqvsjEt5koKNsWYyqZebzmj+8ynedJAEvmViS0Srz0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RtZZG3CFDnTdyeVP4NYNqtP0Q3/W7IvIeW8Hojljr6m8+aU6Geg4LWX1cIQ80k9UNOJt1Eoz9nemMw7fiufARBWFw1xTVUkmqCkbmeyCRDP4x5fPPOGQGtE9yw82KXOQAMEYh45ODgGOGjMvrOrtpy9MQAdlGGRSui9MYgBdhFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcdh5uXQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785533875; c=relaxed/simple;
+	bh=ybKNoGvghGU0Ou7ZOs2A2D+Qwu5Isjo95hKQIoRo/sE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=B/KfLU489yqyjeBKzWO3cxDYsIA2HqhxZwtS1MoLo1/WGAco0uQHPdNNgwWDUa6a+9OJtBo8FpXARNzFokJpEqdUoaBT8pMpbcemw5/9ykdcnXwvO7IFV0LdgWDXJ327OiQZ8UensyzeZSnEE0YNfcqkK5SIUO0aTdC6zKSndLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mh/09H8f; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcdh5uXQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867581F0155B
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:35:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mh/09H8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CAC1F00AC4;
+	Fri, 31 Jul 2026 21:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785533728;
-	bh=K++rx1kgaP2Gvj5Cqx+OBSxkCsmXhtm0mAnimMEoo0o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fcdh5uXQ8J17UNZiJjPZxiCcZj9kCpIZat/7Q1TNleFpevWzca4DIoFmB1cj+uKAu
-	 VEKZtL0/TvjR/zs2ZH1OZSo7FiRcASX47S+6roDXIEHVvUSu+/61GQpAI1BE9yiW9e
-	 4BYOEHnCjwxErnUzao/3OcAGiYy1PRNOENwhZ+BsAW+Z8dBj1tbT11GvtFAAryiOps
-	 CnL64qIRL4V9Bp3cXQkteQ8Zw7dON0SX3SGfBS79wGak/CZDQEHEk1RuUzHUybsZBz
-	 IjIha/gxifdk7WpY7qyq47SnYSPGCz3ptYsmSxZYYCfTwYW5nB5GHCpbRCAR/D+sJi
-	 b36wZq3p+c9qA==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c1671ec8692so185397366b.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:35:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqihY6q7mhDLow/7SE0sNKuuI5arfEa1NHDQoasV7yTgW71UWF4Q6+wBG/ffyLicrYsFjU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvaBAX7maD+9tmPPuC1I8msmI20d5usQ9kCCTQbAyashWaawHW
-	qaYXKv9/7Qnw8A8p39my1QQy8P86ky1+Y+k0TLAXllpDN9Sy7czqoWECIyC+8pp8vdm1Lm26p2k
-	f+YqC3CPxGwaNeS+xDthsc2/XdJqTWqE=
-X-Received: by 2002:a17:906:7f84:b0:c12:8664:6aec with SMTP id
- a640c23a62f3a-c1fe826eac5mr42821066b.53.1785533727476; Fri, 31 Jul 2026
- 14:35:27 -0700 (PDT)
+	s=k20260515; t=1785533873;
+	bh=ybKNoGvghGU0Ou7ZOs2A2D+Qwu5Isjo95hKQIoRo/sE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Mh/09H8fR6wVeJeS3nzsbPGXz8qk2WT06AkpgN1tZCsafBNrPdkiYvBrccl8+nbVO
+	 oTnz/jSY7LfAR1TW7CMUimSN5l9EH050xq9AyG67O3v680byvosPrEWmyNF4J2SDv3
+	 v+Lr18aaqZ1GT6sJeUh4y7aAhhnKE2P8j08QaLMcUShWBj6ErfQFhrfMfvTF+qnh7S
+	 fFEczbIa+CoQYHomITvXnhCWHVkBrYzyIeTlP6xEyG4pXiKvlZeB57arxcq9e3nMbj
+	 VjqqusauSV7u457izThVk3AwFhSGFWk+KfNM4FsNRdgvo800ubL1RNtJym8LWGj3Bv
+	 +KwsCXnXEzH2Q==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 3/5] dma-buf: add optional get_pci_tph() callback
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Zhiping Zhang" <zhipingz@meta.com>
+Cc: dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260731211601.3033906-4-zhipingz@meta.com>
+References: <20260731211601.3033906-1-zhipingz@meta.com>
+ <20260731211601.3033906-4-zhipingz@meta.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 21:37:53 +0000
+Message-Id: <20260731213753.A0CAC1F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260731195612.2697986-1-seanjc@google.com>
-In-Reply-To: <20260731195612.2697986-1-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 31 Jul 2026 14:35:16 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zO-eCz-4Gpa_FUjRKPaDj82PP7et7KON4S5QfhRU2J-Ug@mail.gmail.com>
-X-Gm-Features: AUfX_mwe_OJz39TjVH0VtgPbVgoU9MwzP5iyfl-3Rd-uJd2L1ePI9CeEd3Sup4w
-Message-ID: <CAO9r8zO-eCz-4Gpa_FUjRKPaDj82PP7et7KON4S5QfhRU2J-Ug@mail.gmail.com>
-Subject: Re: [PATCH v3 00/12] KVM: selftests: Add more syscall wrappers, fix hardware_disable_test
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 31, 2026 at 12:56=E2=80=AFPM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> Third time's a charm.  Sorry for the spam.
->
-> Buried in the middle of this is a fix for the hardware_disable_test where
-> it can end up with a runtime of multiple minutes when running a preemptib=
-le
-> kernels on a large NUMA system.  Turns out my analysis/guess in v1 was wr=
-ong;
-> the problem isn't direct CPU contention, it's that letting the workers do=
- any
-> amount of "real" work on any CPUs leads to pthread_create() slowdowns fro=
-m
-> the perspective of the caller.
+> Add an optional dma_buf_ops.get_pci_tph callback and a
+> DMA-buf importer wrapper, dma_buf_get_pci_tph().
+>=20
+> TPH is PCIe TLP Processing Hint. 8-bit ST and 16-bit Extended ST are
+> distinct PCIe TPH namespaces, so the importer requests the namespace it
+> can emit and the exporter returns the matching ST/PH tuple or
+> -EOPNOTSUPP.
+>=20
+> dma_buf_get_pci_tph() is the importer entry point. It requires
+> &dmabuf->resv to be held while the callback runs and returns
+> -EOPNOTSUPP when the exporter does not provide PCI TPH metadata.
+>=20
+> The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with
+> mlx5 as the first importer.
+>=20
+> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 
-How long does the test take to run with this series?
+Sashiko has reviewed this patch and found no issues. It looks great!
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731211601.3033=
+906-1-zhipingz@meta.com?part=3D3
+
