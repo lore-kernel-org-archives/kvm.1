@@ -1,165 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F1A35C6B1;
-	Fri, 31 Jul 2026 20:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3BB35C68D
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529738; cv=none; b=rux0zWduVIDQLXsZ9ey+3dhE20qrWR2xM5rWQmPS6yaicXL8/GgfdMdtPK1gvnW2rNBk+wzREGq7JfvleGEIC95vMdLrAPr+JMU9+EpADkdqLv2HD8BJaajYnYlNT0APZY0t+SpamNGReFm0Tir3hICxNWBKqErqm6ZzfPCDv1c=
+	t=1785531051; cv=none; b=bpaY12EeQ600d8nXZ2t6hDSKmYE/jeDd8Zuz7cxDtyHUnxrxOcqf8GJhy035iqVb6+qyjoi3PDPgRVRSmZNLgi6SEbEYZDWd/7ZKvCFcCY/Tj+QhWiuSAQBX5K68GazyDCc4NhWe6uV8YRM+97oxrXRDbE8mdwjwQoT4URvfBOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529738; c=relaxed/simple;
-	bh=4X6+7Qi9rentiho+U9TWI6rXHYVOMBxs/UVAtq+13sE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=D/9w+N2JIxfdppt2oSa/Ss5nigsi/ukbv6cqD0T9uU8oB3i3jI45P+l0c9IQp5lYL1KkQERAu+F1O7oxziKMS2GFU8l9kh8ChFlp6hAerxBG9JnQmPffucPT/NerivpWMjnYyz4gNW9OaVqylA0Otw1W/CSng+MNEs4aTRptQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZulNCeS+; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785531051; c=relaxed/simple;
+	bh=Hbhi6+KMjpxoERuBtIxFEqObdZKUIZ5jGtT8v620HxI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jAyE4JC6ENlihSH4ZIlLgFC/PyJ2wM1E0Bb2vy3uM5uBPaTVoNNyCH7E5xfRUuKFnDUX7A6ff48pIM88bIGjEANIqg85PVnWzexzBk4SSrgYZApWnnrrgoz1nigV+klbnpF+n8toVSk02FRrQVKSsWdk0a95iBY+JIlCQetEp6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a4T5ICc5; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZulNCeS+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785529737; x=1817065737;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=4X6+7Qi9rentiho+U9TWI6rXHYVOMBxs/UVAtq+13sE=;
-  b=ZulNCeS+mirPFYCVninZmNVrykn9WoZpoLkxn3lcvtVBYoltpvKyu/ou
-   cvNzAihkrN+QLg8pkTzvgobdC++sMHNP1AGCWpUGsevMfMFr5erHAkEFZ
-   G85kxpTNM3/uYHi1vAQTYJk9gd4Hg/oX+ejG33E0aDQAJQoxdLcQQNAHd
-   /4/XcyNvpNR8VRA3KD/4drnDIXMw8+CofXQg2ecvpdJBUsvj8m38WPGRH
-   9QtjVQVzolR54XYtGZYNet7vGhbVfFAsIkIRO1qhTeeZf0iq9vzuIeHML
-   z2H+sIJ6OWlHKsjUDEbptXaEHIgP6KpTyRQxnDzilZZp+7pRj5ulvJfRA
-   g==;
-X-CSE-ConnectionGUID: 4ZWvgUC+RyOJwobFhenW4w==
-X-CSE-MsgGUID: yc+yb/lPSNWJxpyqslQUeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11861"; a="86175703"
-X-IronPort-AV: E=Sophos;i="6.25,197,1779174000"; 
-   d="scan'208";a="86175703"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 13:28:56 -0700
-X-CSE-ConnectionGUID: QT+jL2NERwGOhpa0zncZYA==
-X-CSE-MsgGUID: KR9BDgYcSLGPY50Y4rU7Ow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,197,1779174000"; 
-   d="scan'208";a="284007975"
-Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 13:28:55 -0700
-Message-ID: <0997911f-3605-4ff7-b89b-bbe6c7a04095@intel.com>
-Date: Fri, 31 Jul 2026 15:28:54 -0500
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a4T5ICc5"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84eccf9d899so1909115b3a.2
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:50:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785531049; x=1786135849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MJ+1zz4bd0vi4BfDFozlsEf5MBhzPjdddShFFlbqKaE=;
+        b=a4T5ICc5lcZp7DFP4DROdD5iGCI0a9WJfKLLM35beTC+vkVnizUZ9fUKKjZWqQiZk0
+         d5vBrS6LwfS2isfF3QCqghlcZJGDLY1aZdpoBuTxGu/l6oXqTZslFNBN630u9Hgy+7vN
+         w9Hy0SZxzvBlA9H0szMsGeW0MOZ2k5FGo7et+8gICpfk0wocS++SeR2jzUblxbzDOols
+         2Ucp9RkEKMVwwo3iKypc5w2ZHYWVb7mNyERgHSj58Yn5Lxk2HJcCKusjH2obou32T/2M
+         WOvxJeCE5IRqgT0tw1khSaLlhZ631UXg06r7rXRxDmxfySZcGL8KrD1hwH6EpnHpMw+K
+         WP8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785531049; x=1786135849;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MJ+1zz4bd0vi4BfDFozlsEf5MBhzPjdddShFFlbqKaE=;
+        b=ILJvzfAkBcsXY1ZN/gAbbVtYnuN12rg0KRms3OumdmbrPaqRjBDechvQBtklS1r496
+         xblPHsjtCSfx9KtheqBoZsAJPMWtNhOLGMLSgKjWEa8Yfly/vjovdwxt8HMWsyHlAmZL
+         +/ApXDvsBCbYA9dEJkeguQ07RXsccNtE05GnDmGNdrSptbKXnmixV67iTPVDAHrezr23
+         vLv8MhdTRPNM2eEzUkf+w6KkWi+m/efOjDN2SA/aE7Bij6BXBlHlZxZp02Sm7k+p17B+
+         WBNdpvHQDSkhPRzDKJGTT+5YdDx8hAp7t65/sUoecawTEm/geEEd6nev1sz1l2RbD8fU
+         KJwA==
+X-Forwarded-Encrypted: i=1; AHgh+RpObaZ9K50wsh9+tvhZU3N4UBLGKkJfDG/RQNPreEPbBBVu0l2Q6ZzZQchvlH2KixDP+uU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLpIZnEhs6k4lgxM6oCTxk5IoOcqJMYnYANMXPXmU3Lm7dj9me
+	OeZ9eY8RTNjsAexUSsBiluWtQoGNE5NrXAgeThy2Z5Oe3FQKWmbZJdctle1mOMomfms/dnl/doh
+	HXIg46A==
+X-Received: from pfn38.prod.google.com ([2002:a05:6a00:a226:b0:84b:be30:8d22])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1785:b0:848:2f84:732
+ with SMTP id d2e1a72fcca58-84ee493ea6emr863311b3a.69.1785531049266; Fri, 31
+ Jul 2026 13:50:49 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:50:48 -0700
+In-Reply-To: <20260731201140.5AF0C1F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Chen, Zide" <zide.chen@intel.com>
-Subject: Re: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to known
- CPUs
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260727192131.582105-1-zide.chen@intel.com>
- <20260727192131.582105-8-zide.chen@intel.com>
- <a3fd76f2-96cd-4d56-8a58-f86b2270c56e@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <a3fd76f2-96cd-4d56-8a58-f86b2270c56e@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260731195612.2697986-1-seanjc@google.com> <20260731195612.2697986-4-seanjc@google.com>
+ <20260731201140.5AF0C1F00AC4@smtp.kernel.org>
+Message-ID: <am0KqJOD-FiC9BXs@google.com>
+Subject: Re: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in
+ hardware disable test when possible
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, Aqib Faruqui <aqibaf@amazon.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
++Aqib
+
+On Fri, Jul 31, 2026, sashiko-bot@kernel.org wrote:
+> > diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tool=
+s/testing/selftests/kvm/hardware_disable_test.c
+> > index f088b4af3ccc7..b4edeadfa3f45 100644
+> > --- a/tools/testing/selftests/kvm/hardware_disable_test.c
+> > +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
+> > @@ -36,7 +36,9 @@ static void *run_vcpu(void *arg)
+> >  	struct kvm_vcpu *vcpu =3D arg;
+> >  	struct kvm_run *run =3D vcpu->run;
+> > =20
+> > +#ifndef _GNU_SOURCE
+> >  	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
+> > +#endif
+>=20
+> [Severity: Low]
+> Since the KVM selftests build system unconditionally defines _GNU_SOURCE,
+> will this fallback code ever be reached?
+>=20
+> [ ... ]
+>=20
+> > @@ -80,22 +84,28 @@ static inline void check_join(pthread_t thread, voi=
+d **retval)
+> >  static void run_test(u32 run)
+> >  {
+> >  	struct kvm_vcpu *vcpu;
+> > +	pthread_attr_t attr;
+> >  	struct kvm_vm *vm;
+> >  	pthread_t threads[VCPU_NUM];
+> >  	pthread_t throw_away;
+> >  	void *b;
+> >  	u32 i, j;
+> > =20
+> > +	TEST_ASSERT_EQ(pthread_attr_init(&attr), 0);
+> > +#ifdef _GNU_SOURCE
+> > +	TEST_ASSERT_EQ(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), =
+&threads_cpu_set), 0);
+> > +#endif
+
+Aqib,
+
+Do you happen to definitively know which is the "right" macro to check to d=
+etect
+support for pthread_attr_setaffinity_np()?  Belatedly, I saw that you used =
+__GLIBC__
+in a patch that ultimately wasn't applied[*].
+
+I initially used __USE_GNU here, but then Sashiko yelled at me, so I switch=
+ed to
+_GNU_SOURCE based on Sashiko's suggestion, and now it's yelling at me again=
+ :-)
 
 
+[*] https://lore.kernel.org/all/20250829142556.72577-4-aqibaf@amazon.com
 
-On 7/30/2026 8:12 PM, Mi, Dapeng wrote:
-> 
-> On 7/28/2026 3:21 AM, Zide Chen wrote:
->> RDPMC type encodings are vendor-defined and could theoretically be
->> extended on future CPUs. An unknown RDPMC type could leak host
->> PMU information to the guest through RDPMC passthrough.
->>
->> Rather than assuming future CPUs are safe, explicitly permit only
->> reviewed CPU models and require RDPMC interception everywhere else.
->> This ensures RDPMC passthrough is enabled only on CPUs whose RDPMC
->> encodings are audited and supported by KVM.
->>
->> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->> Suggested-by: Jim Mattson <jmattson@google.com>
->> Signed-off-by: Zide Chen <zide.chen@intel.com>
->> ---
->> v7: new patch.
->> ---
->>  arch/x86/kvm/pmu.c | 32 ++++++++++++++++++++++++++++++++
->>  1 file changed, 32 insertions(+)
->>
->> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->> index 51c6d00a485f..092809bd757d 100644
->> --- a/arch/x86/kvm/pmu.c
->> +++ b/arch/x86/kvm/pmu.c
->> @@ -77,6 +77,21 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] = {
->>  	{}
->>  };
->>  
->> +/*
->> + * CPUs whose RDPMC encodings have been audited for KVM RDPMC
->> + * passthrough support.
->> + */
->> +static const struct x86_cpu_id kvm_rdpmc_known_cpus[] = {
->> +	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, NULL),
->> +	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
->> +	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
->> +	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
->> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
->> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_R, NULL),
->> +	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
-> 
-> Zide, it seems this list is incomplete. The
-> DMR/ARL(INTEL_ARROWLAKE/INTEL_ARROWLAKE_H) should be secure as well. Thanks.
-
-Thanks for pointing that out. I didn't realize that some Arrow Lake
-models are PMU v6.
-
-However, all of the client CPUs listed above are hybrid CPUs, and KVM
-does not currently support vPMU on hybrid platforms.Therefore, only
-Clearwater Forest and Diamond Rapids need to be included in this list
-for now. I'll add a comment documenting the exclusion of hybrid CPUs.
-
->> +	{}
->> +};
->> +
->>  /* NOTE:
->>   * - Each perf counter is defined as "struct kvm_pmc";
->>   * - There are two types of perf counters: general purpose (gp) and fixed.
->> @@ -807,6 +822,20 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
->>  }
->>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
->>  
->> +static bool kvm_rdpmc_encoding_supported(void)
->> +{
->> +	/* KVM understands all RDPMC encodings prior to PMU v6. */
->> +	if (kvm_host_pmu.version < 6)
->> +		return true;
->> +
->> +	/*
->> +	 * Future PMU v6 implementations and future PMU versions require RDPMC
->> +	 * interception until their RDPMC encodings are audited and supported
->> +	 * by KVM.
->> +	 */
->> +	return x86_match_cpu(kvm_rdpmc_known_cpus);
->> +}
->> +
->>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>  {
->>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
->> @@ -818,6 +847,9 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>  	if (enable_vmware_backdoor)
->>  		return true;
->>  
->> +	if (!kvm_rdpmc_encoding_supported())
->> +		return true;
->> +
->>  	return kvm_need_any_pmc_intercept(vcpu) ||
->>  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
->>  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
-
+> [Severity: Low]
+> Could this break the build on systems using alternative libc implementati=
+ons
+> like musl?
+>=20
+> If _GNU_SOURCE is unconditionally defined by the Makefile but the libc
+> doesn't provide pthread_attr_setaffinity_np, this might result in a
+> compilation error rather than using the intended fallback.
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731195612.26=
+97986-1-seanjc@google.com?part=3D3
