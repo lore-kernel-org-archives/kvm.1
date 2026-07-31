@@ -1,57 +1,57 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39F6376BF2
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 19:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86313793B0
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 19:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785527783; cv=none; b=C2lU+aCg9jVrcqUTn10+N8Doe0mg8dn4kMkpRyNyoK2P/iAbYiC69vhcENPq0Vqk7tzsodJOeuQDNJWqP35kZVNdBzHbrS55NH12bQKuPo3cfqAEdTck6xm+qrcU7uSowE9iSLs8gOnuGypTo40ArfV6DzIbd9WfqjO/5N0theA=
+	t=1785527786; cv=none; b=YwCCagsXPy0R192TzXezqRE4Ze2EfRzqDp/7HliYFZ2aVEzq8GErQ4S44fPcePD3ihg8xIqdNOTg2XS1jaKsxOHvNXitUJ7Ws0Z4W+KoWlv1xvmSAV/dhp6O7aJoCGvKc3w8UhayttrzcVH/MC/fAXsohy1ECOcOw6V91g9F0WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785527783; c=relaxed/simple;
-	bh=cFWa99Xo2ScAZGQfMvB0ds8Ya6pH9puVFr0S2RC2rBc=;
+	s=arc-20240116; t=1785527786; c=relaxed/simple;
+	bh=/TJjnxpVpH8WmXNaVzrS2AeOgP3QdjHKxDY/CbjUI8M=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WruUl6FY/nLr+tWh+dzTqy/e3ayyoxIcNAfgWCtZTaP6r7vPUlRoiU2Kx9N7oqC95n3AukWgag+6zRjhTEUfDqR+uO9OQa4Mzkl20hscy1+F9Uq4quycnvh/Nlwyf3JLqnlHg1eSRtftJwK187XHPUPm6xhEM3LpqM8rFwyjpNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uqmhx+xd; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=XN9hqaT3wOLZ1NTI3wwoJD28qapUBc/U9iX5PIyRibNhvY1vVBWcgOllXR+0YbJJ190QXYUSDwtOkJQYLWantsBrcaRq8ZV0esaCgbFon4QyMlvOcwRF3d0TdKiIsIDeoUqo5cAKTk03d5pq2dJ9lLw2XcY02WLY6ZwA0cz9dyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T6RMoV8q; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uqmhx+xd"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8487eb67173so2706431b3a.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 12:56:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T6RMoV8q"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-848662cd2a1so1720613b3a.2
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 12:56:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785527780; x=1786132580; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785527782; x=1786132582; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=QWTFo4fs/kSU6lr4ZzfhIdwS/NOVkYn2PmTaiQ/QINI=;
-        b=Uqmhx+xde/OQk9o3ODE/bJ8K14+7evpgyTRwVq4pNNe1Ja3Va4Xr5mvEtJeeKLLiNb
-         Q5HY382K7kNjMHGs/ozuMEMCIphJKTuN3HsY3i8Z7ouQptTJ7ss3jeuutxP2TLHMpN9w
-         V8oRpkL8Amo8pBM69+OI1BvROvbVw/VaqpSvdsBntP/CLOFzonvxD668UTVe37xdtGMw
-         LfXKmRJkdoHdExvcf4tCqD9YDzzTnr0fYmwmeZ8hkSOZB7dCKOHVzEtwgdoYU1f9NaAb
-         czwJZYpuKRZavKQMNM/9s7JOE/qKtIuyHQk6+o42OxEmJgd89el6wGMqKEYR0LfaGcDW
-         SnEw==
+        bh=Bs3K8CpV0aK6wpGyTBasGbTbkVQEzOsTzupfjJkDnT8=;
+        b=T6RMoV8qn0c/W+cns8wL6/JmEkZz8g4PGOvKgBvQPCtLtXCPAQQ0lp0EmyV9gNXjja
+         xNziTiLLs0oRmyQsWvrpMWUkyHbswLF4yPvk4EwBahNXyo8fHvX18Kom7+i7bGAz4yvn
+         TTUS72naIHfsLxKG7p5+PRIZxCZG0Lms/rvlebP1sVjI/NYUQpLjiGhDb1lXfRCNIK1e
+         RusdEF5k/2OAqgjbj5n4Vo2dLAbS20ZjN4BIZh5LXcYd4cmHyRjWKVlXdhIxXf9Lwvj4
+         3kxKeJWZpPFe8aersI39m2Zywdt+uAqKEPgVBciT2c7n88o+2sJ3mRsTigKL7u5KDaCB
+         TFzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785527780; x=1786132580;
+        d=1e100.net; s=20251104; t=1785527782; x=1786132582;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=QWTFo4fs/kSU6lr4ZzfhIdwS/NOVkYn2PmTaiQ/QINI=;
-        b=YssaxkuxcRczBXI/+Akoy/20Ly1a7008n9Da6pRnQE13ZkfoJUBk3Lhx26DGciaqZ3
-         dprOHsPIxPcPxCqPrap+n4L1M4OQiIT6NzWYXCzASvnG6k0cbvW22zbA46fPbgskNheW
-         aXtuBvL30u4mE0xhToiAtadHw3ffOI9gqPepitXhNi6ZZ3qU1QvRbbXbXftpx4URmCP6
-         Ve7C17xYYLtkX1Z7GQc9nlWn6z99B/V6x0f06N73gJ1AR0KtHbS7N/g2vFQZjvyvk8gz
-         tn/1fCarhzp71UjyN9eLQQ/sdzDD2HV5g71YJg6CG5ZB4h/jn3gtM60CUMYmTadWOGtU
-         RQcw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrs6K1dexVg9wizkJTnJoR0R1guMWH+IIQpm2lnsfTgI2gNmWin1wQa4D5kkBHPN6M3Xqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkZIB/e7HGNs+8FrRFt6flQ2zES0GAljv8BAjmohHsesvtEme5
-	uusWoNUaY8zzXkFx+CD0GEM2v4QY7CF4+eZ3urHrAbTaMW5o6Di+FO0sfcf5SoysgVM1nSs2kDz
-	d6x0xBg==
-X-Received: from pgnp30.prod.google.com ([2002:a63:7f5e:0:b0:cbb:b782:6be1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:13aa:b0:847:1d73:f753
- with SMTP id d2e1a72fcca58-84ee48a4d18mr834507b3a.45.1785527779971; Fri, 31
- Jul 2026 12:56:19 -0700 (PDT)
+        bh=Bs3K8CpV0aK6wpGyTBasGbTbkVQEzOsTzupfjJkDnT8=;
+        b=VqFRwRNKRC54byFdwuF2ydw8JhDEXmesOrF2I1t/p+8z2jlaEfg4pCUXGE2rCkgl9E
+         pOgLryTuaTayc4STJ1kAxzHpJi5Bwk+b+wkrmkh1ZR9fXE6MpFOW5VUyMw4z1G/hgvBV
+         2XFQbCnby1Qm47e9mmjp8/r5Lw67lu4yvRMMP1ZEzHEiLRejqhEcoIfUlpi7bk0RvYeZ
+         gTPVcXZ3gfWQ7i8u+eigpKwCyk0OvWF351OCjqF9kr0+mmtD/4zKsn4uGbrR0enVNIYs
+         HPrHAAcml9UiD3VR6UcvePJoenrSKeY4fLgLg7z2rP3rrmkz2wUpmwPHQjUTi3VR3H/X
+         QWLA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4yyrBztrgmYq9GTpaIIi5nhcCcz09ZTh3nzbGsfq21962KBgYriXDrdHgH1qB14Aka2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxesxACsw+ge2YMeoVgeggyIwBKxHxm8ZA9vczDfI83S/aTzPLK
+	D1odfnutVfUw6LaRdOcszfTC1GYH9zpvk+X1ULmd9Vrdf9AwqNQx4PPfsoU7N2IS8h9HtvG+9aQ
+	keXZAqw==
+X-Received: from pfh33.prod.google.com ([2002:a05:6a00:12e1:b0:848:46c7:cfe2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f04:b0:84e:d46f:4921
+ with SMTP id d2e1a72fcca58-84ee4915b80mr752468b3a.66.1785527782134; Fri, 31
+ Jul 2026 12:56:22 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jul 2026 12:56:03 -0700
+Date: Fri, 31 Jul 2026 12:56:05 -0700
 In-Reply-To: <20260731195612.2697986-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260731195612.2697986-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731195612.2697986-4-seanjc@google.com>
-Subject: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in hardware
- disable test when possible
+Message-ID: <20260731195612.2697986-6-seanjc@google.com>
+Subject: [PATCH v3 05/12] KVM: selftests: Extract picking of random CPU from
+ cpu_set_t to separate API
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
 	Oliver Upton <oupton@kernel.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
@@ -76,71 +76,74 @@ Cc: Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-When building against a libc that provides pthread_attr_setaffinity_np(),
-pre-set the grandchildren threads CPU affinity in the hardware disable test
-to further reduce the perceived latency of pthread_create().  On large NUMA
-systems, this reduces the average runtime from ~10s to ~5s.
+Extract kvm_pick_random_cpu() out of pin_task_to_random_cpu() so that tests
+can choose a random CPU without having to immediately pin a task to that
+CPU.
+
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- .../testing/selftests/kvm/hardware_disable_test.c  | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h | 11 ++++++++++-
+ tools/testing/selftests/kvm/lib/kvm_util.c     |  7 ++-----
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/testing/selftests/kvm/hardware_disable_test.c
-index f088b4af3ccc..b4edeadfa3f4 100644
---- a/tools/testing/selftests/kvm/hardware_disable_test.c
-+++ b/tools/testing/selftests/kvm/hardware_disable_test.c
-@@ -36,7 +36,9 @@ static void *run_vcpu(void *arg)
- 	struct kvm_vcpu *vcpu = arg;
- 	struct kvm_run *run = vcpu->run;
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 61d72e1e7601..5a7a455b5387 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -1084,6 +1084,8 @@ struct kvm_vcpu *vm_recreate_with_one_vcpu(struct kvm_vm *vm);
  
-+#ifndef _GNU_SOURCE
- 	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
-+#endif
+ void kvm_set_files_rlimit(u32 nr_vcpus);
  
- 	vcpu_run(vcpu);
- 
-@@ -50,7 +52,9 @@ static void *sleeping_thread(void *arg)
- {
- 	int fd;
- 
-+#ifndef _GNU_SOURCE
- 	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
-+#endif
- 
- 	while (true) {
- 		fd = open("/dev/null", O_RDWR);
-@@ -80,22 +84,28 @@ static inline void check_join(pthread_t thread, void **retval)
- static void run_test(u32 run)
- {
- 	struct kvm_vcpu *vcpu;
-+	pthread_attr_t attr;
- 	struct kvm_vm *vm;
- 	pthread_t threads[VCPU_NUM];
- 	pthread_t throw_away;
- 	void *b;
- 	u32 i, j;
- 
-+	TEST_ASSERT_EQ(pthread_attr_init(&attr), 0);
-+#ifdef _GNU_SOURCE
-+	TEST_ASSERT_EQ(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &threads_cpu_set), 0);
-+#endif
++int kvm_pick_random_cpu(cpu_set_t *possible_cpus);
 +
- 	vm = vm_create(VCPU_NUM);
+ int __pin_task_to_cpu(pthread_t task, int cpu);
  
- 	pr_debug("%s: [%d] start vcpus\n", __func__, run);
- 	for (i = 0; i < VCPU_NUM; ++i) {
- 		vcpu = vm_vcpu_add(vm, i, guest_code);
+ static inline void pin_task_to_cpu(pthread_t task, int cpu)
+@@ -1094,7 +1096,14 @@ static inline void pin_task_to_cpu(pthread_t task, int cpu)
+ 	TEST_ASSERT(!r, "Failed to set thread affinity to pCPU '%u'", cpu);
+ }
  
--		check_create_thread(&threads[i], NULL, run_vcpu, vcpu);
-+		check_create_thread(&threads[i], &attr, run_vcpu, vcpu);
+-int pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus);
++static inline int pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus)
++{
++	int cpu;
++
++	cpu = kvm_pick_random_cpu(possible_cpus);
++	pin_task_to_cpu(task, cpu);
++	return cpu;
++}
  
- 		for (j = 0; j < SLEEPING_THREAD_NUM; ++j) {
--			check_create_thread(&throw_away, NULL, sleeping_thread,
-+			check_create_thread(&throw_away, &attr, sleeping_thread,
- 					    (void *)NULL);
- 		}
+ static inline int pin_task_to_any_cpu(pthread_t task)
+ {
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index af2bad0553f9..9ddc047d5c27 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -668,7 +668,7 @@ void kvm_print_vcpu_pinning_help(void)
+ 	       "     (default: no pinning)\n", name, name);
+ }
+ 
+-int pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus)
++int kvm_pick_random_cpu(cpu_set_t *possible_cpus)
+ {
+ 	int target_idx;
+ 	int nr_cpus;
+@@ -680,12 +680,9 @@ int pin_task_to_random_cpu(pthread_t task, cpu_set_t *possible_cpus)
+ 	target_idx = kvm_random_u64(&kvm_rng) % nr_cpus;
+ 
+ 	for (cpu = 0; cpu < CPU_SETSIZE; cpu++) {
+-		if (CPU_ISSET(cpu, possible_cpus) && target_idx-- == 0) {
+-			pin_task_to_cpu(task, cpu);
++		if (CPU_ISSET(cpu, possible_cpus) && target_idx-- == 0)
+ 			return cpu;
+-		}
  	}
+-
+ 	TEST_FAIL("Failed to find random CPU in possible_cpus");
+ 	return -1;
+ }
 -- 
 2.55.0.508.g3f0d502094-goog
 
