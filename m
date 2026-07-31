@@ -1,260 +1,553 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90B9443311;
-	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BA833507C;
+	Fri, 31 Jul 2026 18:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785521714; cv=none; b=eWQjWYvwFOr+RiJU8kT/b/0Hbd8ehPEqsMbzunFNwh5MQ3eH9zPFrj5YNtFlVJBI6WhV/czm6HviiVdb7Ge/ggwGTMaa9Im63rZVryTIvkXwUeS96eqbVJPJ5ZZjVMTCg6tFToa475vEOXJvgbf5RJUWtIgEvI94EO+9YGpolwU=
+	t=1785522342; cv=none; b=tKuEYbkRMrpraBM1k/kQV+tKzV3NN87kQ7NUlQ3wAs9OJEIs+/gW0AUE+OV7WXhWAOy/pMh336exqvwaJKYMHZ0L6ECjNpxBE3vML4uC82cHuPwkTDP3/sUYIFYrToYy6uU78VPKMYuFiIYB3xbM7sFqf720w8kfBeadSrrelOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785521714; c=relaxed/simple;
-	bh=2Moq2AK3SSG6Wgcc8ZmuFd3ydbPumPydyOFkSk499Tk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dIT3VQbI0gbgRZmYWrUB+7+JnxG4Pi4MDC/XpsB4QK1tZoXd7wUauNoE68Jp8EvMA1BFCcMGCToxbMqdJ6EetvAcrIQClcfqJVnZJdzpwr+srZMqraEocMfDPQaSGgPeLbS+Vh5v6x0sddQfPm9gkvZ3EJhMcA6YbD2VoGbr7dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=B/yr5I5R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fgGrR0Eo; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1785522342; c=relaxed/simple;
+	bh=Fk8B+Pduq/Umd1AuJQEpBBkJ75M82MRArJWNWlQQ3hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jKgAte0mMgEIuUynn81vcZ01CjnzlaCqelss5hLSO1Hl91GNwObwV07Hj9iHlYVh/2zZHpIXoIiaoIhh/yx43wS+XWSeOa27SL/zXqtvyXMEY+pZyBNowSqRdmb1IuKVSCc4LZ3JG1Tbeb/hrQKQRdTYqUg7DGJdiMa9Y7qwZLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=EpTo3SPv; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="B/yr5I5R";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fgGrR0Eo"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 035F6EC01DE;
-	Fri, 31 Jul 2026 14:15:06 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 31 Jul 2026 14:15:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785521705;
-	 x=1785608105; bh=wara+qW6sdFZ1836AKS1NURRQzyRNvWsCNqprbx89LU=; b=
-	B/yr5I5RdkPIc7eQcKq0a3PQYmFEKJGIRzbjq121GMHj42j4nkFeRutF0zr2TKDK
-	vGsnTIIs7T+6WJf/ULywOPqxPPh18caNwN/x8vfZyvBwh3u2MnCtBBEUc0MWEPwW
-	UOPV10MaD3rXc/f72ef4y8eQnR6H3PiCFE1Z6zI0rCDgqrxGXObdxyx/NV9++uSE
-	0vuY1zU3s1RAV0veBYIBPPgZCew4phIDJLAey8+2EL7CGPR/OcM1MbYgWrJHk5Z8
-	UUemhvGQgs0A44cKH5dYArIb+N0O3ZoE8cWVZSEjeA+dS9TrardZmPXKnk53l6pD
-	bMjkYjhIZZspI586e7NLbg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785521705; x=
-	1785608105; bh=wara+qW6sdFZ1836AKS1NURRQzyRNvWsCNqprbx89LU=; b=f
-	gGrR0EomkameyvTMqUiajdv35srWPd8LsK2D1lugcVteupJDSZF0gpyNYL1zFZFg
-	41MTzi/5K3Ar5NSuvkwVOmiTleG2TJq6npLdnsiEZGwEr4138v91wuA0foDKpWeM
-	//Lo4mymZ6Pf1L1Qb7FJ0INBldWP609+js9pChLU5ut4FBQP1mnswpvjjohI4g0e
-	6XIJZcs1H0u8+xSsJ/BraEFrXVd7QYbGU0nLSbxdnAsIuy8IzK4wXTIm7Na3in13
-	hqdke5mLlPYGecaIg153XajlpMEKyx/L9X9swvVVZ6yqcJqYehQByro077khbZXp
-	pzNfavWj47Z6sE4P9suaA==
-X-ME-Sender: <xms:KeZsauk98lbigP5olN3hAvfd-YfEP8fi4BhlhlD-FbPu_tuOsOmQAA>
-    <xme:KeZsamRoMduIwqH6mp0ni6-hs6zbnOBugh-Rre6CFYuObY3prl0kUbGxcynR-KQ1V
-    mJlcPszO9TGcjmpO9ERZAjOJ_JxYkP7OOvOWHuSFZv8oScBg4uk_w>
-X-ME-Received: <xmr:KeZsatVGCnXhBxLxDIbH3j6XUVoT7PgHU2MWMgLRg6YPKp8FGiT-xMNHWOhNXA>
-X-ME-Proxy-Cause: dmFkZTEptP546QCDj06/N8/lJGxmRh8V2NbF93IEPiTPkDOvRohe6SIyHZ4/4gqm/Wk8J3
-    ClJGX+3QXMXXsACjvxLY98+TxILOjdB9MPhzn9KC8cSrd2Lkeh899lkLIIYY+9TnhdY4yf
-    GrCpAHhc/bwj/FEy5dYhfJazSOQuIgecfAgl+7yR3uI9e60hS099jIbgoWYzssUz3Sewr7
-    HPomG169a6qN/N5wfbLtDI/xFfXlL8zIOCPcVVtI2HQL6pc6fUcJMM1sC0qh0JRFp/Mp+c
-    WXzl/6k/PgshKaftXZK/EEk5ZNsIA/fcWzGH1uK7CmTBLrbFpzeclfpV2YrEvjziSonRag
-    btYkhDlJgunFcE66xbV3xo02tgzr5GlM4VPoqyFfNaEhL2oUxLlZVjwsYiktGWkOV+J5AA
-    X1gDeJ0sRpnD38iCZTEuNPUTZGow6QYPaYygoRyTTGV2laTJwQaWwVvcjqo+m7iFdhSkcN
-    Q/2hgGpBLAmCbd83sevlzopnTqHtXoNBG0vmwE6Xa9CKC2z3/diCHVLGFxvzHEm86fG8p4
-    pN/BvriiX0724Y1dgN/ZoUmYFkDpyQG7AkDSd2R3XkAAAFWoIfV2IsqP8EqNPqPlv2cj1e
-    C7BOhyKLR8n2JWxx+yYQ8EdXIhV/hyQ64LPox33ngl3liSvOl0qFgwj3dSgg
-X-ME-Proxy: <xmx:KeZsaqJtK4seGqNF_Yk9-8nNC-G9X9NRzT3iK_oO1nNg9kTflQGd6w>
-    <xmx:KeZsat1y-0b_9lxBEzrwHl_D-X04xNFbzXrgZiiDf7vm7-owzWYIxg>
-    <xmx:KeZsanJ3c9z-MbQICj_cFT6-peVZpSTZVkGYPEB31y8fq3YOQzoolw>
-    <xmx:KeZsaogfsO-1MhHyTWCZt7pfHbZJXeaA8gQcfGzCfruaFsFUu3vRIQ>
-    <xmx:KeZsaiuJaJTYS_53Pot_ejAv9_WhdaGu4EofmurrAe7ciIy1OnZRxd0z>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 14:15:04 -0400 (EDT)
-Date: Fri, 31 Jul 2026 12:15:02 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Josh Hilke <jrhilke@google.com>
-Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, Alex
- Williamson <alex.williamson@nvidia.com>, alex@shazbot.org
-Subject: Re: [PATCH v9 1/5] vfio: selftests: igb: Add driver for Intel 82576
- device
-Message-ID: <20260731121502.3e5416ca@shazbot.org>
-In-Reply-To: <20260730-igb_v3_b4-v9-1-9e4d8682437e@google.com>
-References: <20260730-igb_v3_b4-v9-0-9e4d8682437e@google.com>
-	<20260730-igb_v3_b4-v9-1-9e4d8682437e@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="EpTo3SPv"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B971C204C;
+	Fri, 31 Jul 2026 11:25:33 -0700 (PDT)
+Received: from [10.57.41.95] (unknown [10.57.41.95])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD98D3F86F;
+	Fri, 31 Jul 2026 11:25:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785522337; bh=Fk8B+Pduq/Umd1AuJQEpBBkJ75M82MRArJWNWlQQ3hk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EpTo3SPvJRCnit/TJ6V5YputDuyD9upCEIsmkvNFREaZamgMRk2y2jpE9rgpBF4zx
+	 tixRrx51DpUaRlPxPcdvQwfCD3Bpb4NFoxfpjKnQkw2uGsVIjqVffVdozmr7oiFIUL
+	 3rTGn8JziFaAuCOxzBBsdZ9drjCBAE3FeUCdKlHQ=
+Message-ID: <a694a1d3-d8d8-4167-9f77-6d9d1e86254f@arm.com>
+Date: Fri, 31 Jul 2026 19:25:33 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] firmware: arm_rmm: Add support for SRO
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-6-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260715142739.80398-6-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Jul 2026 23:31:29 +0000
-Josh Hilke <jrhilke@google.com> wrote:
-> +static void igb_init(struct vfio_pci_device *device)
+Hi Steven
+
+
+I have left some minor comments below. Otherwise looks good to me.
+
+On 15/07/2026 15:27, Steven Price wrote:
+> RMM v2.0 introduces the concept of "Stateful RMI Operations" (SRO). This
+> means that an SMC can return with an operation still in progress. The
+> host is expected to continue the operation until it reaches a conclusion
+> (either success or failure). During this process the RMM can request
+> additional memory ('donate') or hand memory back to the host
+> ('reclaim'). The host can request an in progress operation is cancelled,
+> but still continue the operation until it has completed (otherwise the
+> incomplete operation may cause future RMM operations to fail).
+> 
+> The SRO is tracked using a struct rmi_sro_state object which keeps track
+> of any memory which has been allocated but not yet consumed by the RMM
+> or reclaimed from the RMM. This allows the memory to be reused in a
+> future request within the same operation. It will also permit an
+> operation to be done in a context where memory allocation may be
+> difficult (e.g. atomic context) with the option to abort the operation
+> and retry the memory allocation outside of the atomic context. The
+> memory stored in the struct rmi_sro_state object can then be reused on
+> the subsequent attempt.
+> 
+> Wrappers for SRO RMI commands are also provided here because they depend
+> on the rmi_sro_execute() implementation added by this patch.
+> Delegate/undelegate handles are also added here because they now use the
+> SRO/stateful command infrastructure.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> v15:
+>   * Wrappers for SRO RMI functions are provided in this patch due to
+>     their dependency on the SRO infrastructure.
+>   * Fold the range delegate/undelegate wrappers into this patch because
+>     they depend on the stateful command infrastructure.
+>   * Add cpu_relax() calls when RMI_BUSY/RMI_BLOCKED is returned.
+>   * Various fixes.
+> v14:
+>   * SRO support has improved although is still not fully complete. The
+>     infrastructure has been moved out of KVM.
+> ---
+>   arch/arm64/include/asm/rmi_cmds.h | 392 ++++++++++++++++++++++++
+>   drivers/firmware/arm_rmm/rmi.c    | 491 +++++++++++++++++++++++++++++-
+>   include/linux/arm-rmi-cmds.h      | 114 +++++++
+>   3 files changed, 996 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
+> index 7eb2c8d7f7fa..f13ecdb40ded 100644
+> --- a/arch/arm64/include/asm/rmi_cmds.h
+> +++ b/arch/arm64/include/asm/rmi_cmds.h
+> @@ -9,6 +9,102 @@
+>   #include <linux/arm-rmi-cmds.h>
+>   #include <linux/arm-smccc-rmi.h>
+
+
+--8>--
+
+
+> + * rmi_rtt_data_map_init() - Create a protected mapping with data contents
+
+> + * rmi_rtt_data_map() - Create mappings in protected IPA with unknown contents
+
+> + * rmi_rtt_data_unmap() - Remove mappings to conventional memory
+
+>    * rmi_psci_complete() - Complete pending PSCI command
+
+
+> + * rmi_realm_create() - Create a realm
+
+> + * rmi_realm_terminate() - Terminate a realm
+
+> + * rmi_realm_destroy() - Destroy a realm
+
+> + * rmi_rec_create() - Create a REC
+
+> + * rmi_rec_destroy() - Destroy a REC
+
+> + * rmi_rtt_create() - Creates an RTT
+
+> + * rmi_rtt_destroy() - Destroy an RTT
+
+> + * rmi_rtt_fold() - Fold an RTT
+
+> + * rmi_rtt_init_ripas() - Set RIPAS for new realm
+
+> + * rmi_rtt_unprot_map() - Map unprotected granules into a realm
+
+> + * rmi_rtt_set_ripas() - Set RIPAS for an running realm
+
+> + * rmi_rtt_unprot_unmap() - Remove mappings within an unprotected IPA range
+...
+
+--<8--
+
+
+All of the above wrappers seems to be the Realm VM related ones. Could
+we move them to the KVM support patches ? They kind of look out of place
+here ?  That way we can maintain the logical separation of the series's
+from that of the KVM support ?
+
+
+> +
+>   #endif /* __ASM_RMI_CMDS_H */
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> index e7ab4a7df3ca..6a9f61760fd7 100644
+> --- a/drivers/firmware/arm_rmm/rmi.c
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -6,6 +6,7 @@
+>   #include <linux/cpufeature.h>
+>   #include <linux/memblock.h>
+>   #include <linux/arm-rmi-cmds.h>
+> +#include <linux/processor.h>
+>   #include <linux/slab.h>
+>   
+>   #include <asm/memory.h>
+> @@ -22,6 +23,487 @@ unsigned long rmi_feat_reg(unsigned long id)
+>   
+>   	return rmi_feat_reg_cache[id];
+>   }
+> +EXPORT_SYMBOL_GPL(rmi_feat_reg);
+> +
+
+This looks like should be part of the patch which introduced rmi_feat_reg?
+
+> +int rmi_delegate_range(phys_addr_t phys,
+> +		       unsigned long size,
+> +		       phys_addr_t *out_phys)
 > +{
-> +	struct igb *igb = to_igb_state(device);
-> +	u64 iova_tx, iova_rx;
-> +	u32 ctrl, rctl;
-> +	u16 cmd_reg;
-> +	int retries;
+> +	unsigned long ret = 0;
+> +	unsigned long top = phys + size;
+> +	unsigned long out_top;
 > +
-> +	VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
-> +
-> +	/* Set up rings and calculate IOVAs */
-> +	igb->bar0 = device->bars[0].vaddr;
-> +
-> +	iova_tx = to_iova(device, igb->tx_ring);
-> +	iova_rx = to_iova(device, igb->rx_ring);
-> +
-> +	igb_reset(igb);
-> +
-> +	/* Signal that the driver is loaded */
-> +	ctrl = igb_read32(igb, E1000_CTRL_EXT);
-> +	ctrl |= E1000_CTRL_EXT_DRV_LOAD;
-> +	ctrl &= ~E1000_CTRL_EXT_LINK_MODE_MASK;
-> +	igb_write32(igb, E1000_CTRL_EXT, ctrl);
-> +
-> +	/* Enable PCI Bus Master. */
-> +	cmd_reg = vfio_pci_config_readw(device, PCI_COMMAND);
-> +	if ((cmd_reg & (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) !=
-> +	    (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) {
-> +		cmd_reg |= (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-> +		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
-> +	}
-> +
-> +	/* Configure PHY internal loopback for testing. */
-> +	igb_setup_loopback(igb);
-> +
-> +	/*
-> +	 * Disable DMA re-send on PCIe completion timeout (82576 datasheet
-> +	 * section 8.6.1, GCR.Completion_Timeout_Resend, bit 16).  The
-> +	 * mix_and_match test intentionally submits descriptors targeting
-> +	 * unmapped IOVAs; with the default (set) value, the device keeps
-> +	 * retrying the failed read indefinitely, which keeps PCIe AER and
-> +	 * IOMMU error handling busy and interferes with reset recovery.
-> +	 */
-> +	ctrl = igb_read32(igb, E1000_GCR);
-> +	ctrl &= ~E1000_GCR_CMPL_TMOUT_RESEND;
-> +	igb_write32(igb, E1000_GCR, ctrl);
-> +
-> +	/* Configure TX and RX descriptor rings */
-> +	igb_write32(igb, E1000_TDBAL(0), (u32)iova_tx);
-> +	igb_write32(igb, E1000_TDBAH(0), (u32)(iova_tx >> 32));
-> +	igb_write32(igb, E1000_TDLEN(0), RING_SIZE * sizeof(struct igb_tx_desc));
-> +	igb_write32(igb, E1000_TDH(0), 0);
-> +	igb_write32(igb, E1000_TDT(0), 0);
-> +	igb_write32(igb, E1000_TXDCTL(0), E1000_TXDCTL_QUEUE_ENABLE);
-> +
-> +	igb_write32(igb, E1000_RDBAL(0), (u32)iova_rx);
-> +	igb_write32(igb, E1000_RDBAH(0), (u32)(iova_rx >> 32));
-> +	igb_write32(igb, E1000_RDLEN(0), RING_SIZE * sizeof(struct igb_rx_desc));
-> +	igb_write32(igb, E1000_RDH(0), 0);
-> +	igb_write32(igb, E1000_RDT(0), 0);
-> +
-> +	/*
-> +	 * Select the advanced one-buffer descriptor format.  Per 82576
-> +	 * datasheet section 7.1.5.2: "SRRCTL[n].DESCTYPE must be set to a
-> +	 * value other than 000b for the 82576 to write back the special
-> +	 * descriptors."  struct igb_rx_desc matches the advanced one-buffer
-> +	 * writeback layout (section 7.1.5.2), so polling rx.wb.status_error
-> +	 * requires this format.  Section 8.10.2 specifies DESCTYPE[27:25].
-> +	 *
-> +	 * The direct write also zeroes SRRCTL.BSIZEPACKET, which is
-> +	 * intentional: per section 7.1.3.1 a zero BSIZEPACKET falls back to
-> +	 * the RCTL.BSIZE buffer size, whose reset default (00b) is 2048
-> +	 * bytes -- ample for the loopback frames here.
-> +	 */
-> +	igb_write32(igb, E1000_SRRCTL(0), E1000_SRRCTL_DESCTYPE_ADV_ONEBUF);
-> +
-> +	igb_write32(igb, E1000_RXDCTL(0), E1000_RXDCTL_QUEUE_ENABLE);
-> +
-> +	/* Wait for TX and RX queues to be enabled */
-> +	retries = 2000;
-> +	while (retries-- > 0) {
-> +		if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
-> +		    (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
+> +	while (phys < top) {
+> +		ret = rmi_granule_range_delegate(phys, top, &out_top);
+> +		if (ret == RMI_SUCCESS)
+> +			phys = out_top;
+> +		else if (ret == RMI_BUSY || ret == RMI_BLOCKED)
+> +			cpu_relax();
+> +		else
 > +			break;
-> +		usleep(10);
 > +	}
-> +	VFIO_ASSERT_GE(retries, 0);
+> +
+> +	if (out_phys)
+> +		*out_phys = phys;
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_delegate_range);
+> +
+> +int rmi_undelegate_range(phys_addr_t phys,
+> +			 unsigned long size)
+> +{
+> +	unsigned long ret = 0;
+> +	unsigned long top = phys + size;
+> +	unsigned long out_top;
+> +
+> +	while (phys < top) {
+> +		ret = rmi_granule_range_undelegate(phys, top, &out_top);
+> +		if (ret == RMI_SUCCESS)
+> +			phys = out_top;
+> +		else if (ret == RMI_BUSY || ret == RMI_BLOCKED)
+> +			cpu_relax();
+> +		else
+> +			break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(rmi_undelegate_range);
+> +
+> +static unsigned long donate_req_to_size(unsigned long donatereq)
+> +{
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+> +
+> +	return BIT(ARM64_HW_PGTABLE_LEVEL_SHIFT(3 - unit_size));
+> +}
+> +
+> +static void rmi_smccc_invoke(struct arm_smccc_1_2_regs *regs_in,
+> +			     struct arm_smccc_1_2_regs *regs_out)
+> +{
+> +	struct arm_smccc_1_2_regs regs = *regs_in;
+> +	unsigned long status;
+> +
+> +	while (1) {
+> +		arm_smccc_1_2_invoke(&regs, regs_out);
+> +		status = RMI_RETURN_STATUS(regs_out->a0);
+> +		if (status != RMI_BUSY && status != RMI_BLOCKED)
+> +			break;
+> +		cpu_relax();
+> +	}
+> +}
+> +
+> +static void rmi_op_continue(unsigned long sro_handle, unsigned long flags,
+> +			    struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_CONTINUE, sro_handle, flags
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +}
+> +
+> +static void rmi_op_cancel(unsigned long sro_handle,
+> +			  struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_CANCEL, sro_handle
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +}
+> +
+> +static void rmi_op_mem_donate(unsigned long sro_handle, unsigned long list_addr,
+> +			      unsigned long list_count, unsigned long flags,
+> +			      struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_MEM_DONATE, sro_handle, list_addr, list_count, flags
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +}
+> +
+> +static void rmi_op_mem_reclaim(unsigned long sro_handle,
+> +			       unsigned long list_addr,
+> +			       unsigned long list_count,
+> +			       struct arm_smccc_1_2_regs *out_regs)
+> +{
+> +	struct arm_smccc_1_2_regs regs = {
+> +		SMC_RMI_OP_MEM_RECLAIM, sro_handle, list_addr, list_count
+> +	};
+> +
+> +	rmi_smccc_invoke(&regs, out_regs);
+> +}
+> +
+> +int free_delegated_page(phys_addr_t phys)
+> +{
+> +	if (WARN_ON_ONCE(rmi_undelegate_page(phys))) {
+> +		/* Undelegate failed: leak the page */
+> +		return -EBUSY;
+> +	}
+> +
+> +	free_page((unsigned long)phys_to_virt(phys));
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(free_delegated_page);
+> +
+> +static int rmi_sro_ensure_capacity(struct rmi_sro_state *sro,
+> +				   unsigned long count)
+> +{
+> +	if (WARN_ON_ONCE(sro->addr_count > RMI_MAX_ADDR_LIST))
+> +		return -EOVERFLOW;
+> +
+> +	if (count > RMI_MAX_ADDR_LIST - sro->addr_count)
+> +		return -ENOSPC;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate_contig(struct rmi_sro_state *sro,
+> +				 unsigned long sro_handle,
+> +				 unsigned long donatereq,
+> +				 struct arm_smccc_1_2_regs *out_regs,
+> +				 gfp_t gfp)
+> +{
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+> +	unsigned long unit_size_bytes = donate_req_to_size(donatereq);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long size = unit_size_bytes * count;
+> +	unsigned long addr_range;
+> +	int ret;
+> +	void *virt;
+> +	phys_addr_t phys;
+> +
+> +	for (int i = 0; i < sro->addr_count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == count &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state &&
+> +		    IS_ALIGNED(RMI_ADDR_RANGE_ADDR(entry), size)) {
+> +			sro->addr_count--;
+> +			swap(sro->addr_list[sro->addr_count],
+> +			     sro->addr_list[i]);
+> +
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	virt = alloc_pages_exact(size, gfp);
+> +	if (!virt)
+> +		return -ENOMEM;
+> +	phys = virt_to_phys(virt);
+> +
+> +	if (state == RMI_OP_MEM_DELEGATED) {
+> +		phys_addr_t delegated_phys;
+> +
+> +		if (rmi_delegate_range(phys, size, &delegated_phys)) {
+> +			if (!rmi_undelegate_range(phys, delegated_phys - phys))
+> +				free_pages_exact(virt, size);
+> +			return -ENXIO;
+> +		}
+> +	}
+> +
+> +	addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, count);
+> +	FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+> +
+> +	sro->addr_list[sro->addr_count] = addr_range;
+> +
+> +out:
+> +	rmi_op_mem_donate(sro_handle,
+> +			  virt_to_phys(&sro->addr_list[sro->addr_count]), 1,
+> +			  0, out_regs);
+> +
+> +	unsigned long donated_granules = out_regs->a1;
+> +	unsigned long donated_size = donated_granules << PAGE_SHIFT;
 
-I'm not sure how I missed this in the previous iteration, but this
-new-ish assert exposes a latent ordering issue on real hardware.  As per
-the below referenced register definitions, the per-queue enable bits are
-zero until the global enable bits are set.
+super minor nit: Some slightly older toolchains can't tolerate these
+variable declarations. May be a good idea to move them to the top.
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index 97a2f29aade3..fae523059f86 100644
---- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -303,16 +303,6 @@ static void igb_hw_init(struct vfio_pci_device *device)
- 
-        igb_write32(igb, E1000_RXDCTL(0), E1000_RXDCTL_QUEUE_ENABLE);
- 
--       /* Wait for TX and RX queues to be enabled */
--       retries = 2000;
--       while (retries-- > 0) {
--               if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
--                   (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
--                       break;
--               usleep(10);
--       }
--       VFIO_ASSERT_GE(retries, 0);
--
-        /*
-         * Enable Receiver and Transmitter.  RCTL.LBM_MAC is set in addition
-         * to PHY loopback as a QEMU-only accommodation: QEMU's emulated igb
-@@ -335,6 +325,21 @@ static void igb_hw_init(struct vfio_pci_device *device)
-        igb_write32(igb, E1000_RCTL, rctl);
-        igb_write32(igb, E1000_TCTL, E1000_TCTL_EN | E1000_TCTL_PSP);
- 
-+       /*
-+        * Wait for TX and RX queues to be enabled.  Per the RXDCTL/TXDCTL
-+        * register definitions (8.10.10/8.12.13), the per-queue enable bit
-+        * "remains zero" until the global RCTL.RXEN/TCTL.TXEN are set, so
-+        * E1000_RCTL_EN and E1000_TCTL_EN must already be written above.
-+        */
-+       retries = 2000;
-+       while (retries-- > 0) {
-+               if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
-+                   (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
-+                       break;
-+               usleep(10);
-+       }
-+       VFIO_ASSERT_GE(retries, 0);
-+
-        /*
-         * Program MSI-X interrupt routing per 82576 datasheet:
-         *
-
-Back to 35/35 on real hardware with this.  NB, patch is against fully
-applied series, so lands in igb_hw_init() but the source of the
-ordering issue is in patch 1 here, where it's igb_init().  Thanks,
-
-Alex
 
 > +
+> +	if (donated_granules == 0) {
+> +		/* No pages used by the RMM */
+> +		sro->addr_count++;
+> +	} else if (donated_size < size) {
+> +		phys = sro->addr_list[sro->addr_count] & RMI_ADDR_RANGE_ADDR_MASK;
+> +
+> +		/* Not all granules used by the RMM, free the remaining pages */
+> +		for (long i = donated_size; i < size; i += PAGE_SIZE) {
+> +			if (state == RMI_OP_MEM_DELEGATED)
+> +				free_delegated_page(phys + i);
+> +			else
+> +				__free_page(phys_to_page(phys + i));
+> +		}
+
+super minor nit: This pattern is repeated below and may be wrapped into
+a helper ?
+
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate_noncontig(struct rmi_sro_state *sro,
+> +				    unsigned long sro_handle,
+> +				    unsigned long donatereq,
+> +				    struct arm_smccc_1_2_regs *out_regs,
+> +				    gfp_t gfp)
+> +{
+> +	unsigned long unit_size = RMI_DONATE_SIZE(donatereq);
+> +	unsigned long unit_size_bytes = donate_req_to_size(donatereq);
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +	unsigned long state = RMI_DONATE_STATE(donatereq);
+> +	unsigned long found = 0;
+> +	unsigned long addr_list_start = sro->addr_count;
+> +	int ret;
+> +
+> +	for (int i = 0; i < addr_list_start && found < count; i++) {
+> +		unsigned long entry = sro->addr_list[i];
+> +
+> +		if (RMI_ADDR_RANGE_SIZE(entry) == unit_size &&
+> +		    RMI_ADDR_RANGE_COUNT(entry) == 1 &&
+> +		    RMI_ADDR_RANGE_STATE(entry) == state) {
+> +			addr_list_start--;
+> +			swap(sro->addr_list[addr_list_start],
+> +			     sro->addr_list[i]);
+> +			found++;
+> +			i--;
+> +		}
+> +	}
+> +
+> +	ret = rmi_sro_ensure_capacity(sro, count - found);
+> +	if (ret)
+> +		return ret;
+> +
+> +	while (found < count) {
+> +		unsigned long addr_range;
+> +		void *virt = alloc_pages_exact(unit_size_bytes, gfp);
+> +		phys_addr_t phys;
+> +
+> +		if (!virt)
+> +			return -ENOMEM;
+> +
+> +		phys = virt_to_phys(virt);
+> +
+> +		if (state == RMI_OP_MEM_DELEGATED) {
+> +			phys_addr_t delegated_phys;
+> +
+> +			if (rmi_delegate_range(phys, unit_size_bytes,
+> +					       &delegated_phys)) {
+> +				if (!rmi_undelegate_range(phys, delegated_phys - phys))
+> +					free_pages_exact(virt, unit_size_bytes);
+> +				return -ENXIO;
+> +			}
+> +		}
+> +
+> +		addr_range = phys & RMI_ADDR_RANGE_ADDR_MASK;
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_SIZE_MASK, &addr_range, unit_size);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_COUNT_MASK, &addr_range, 1);
+> +		FIELD_MODIFY(RMI_ADDR_RANGE_STATE_MASK, &addr_range, state);
+> +
+> +		sro->addr_list[sro->addr_count++] = addr_range;
+> +		found++;
+> +	}
+> +
+> +	rmi_op_mem_donate(sro_handle,
+> +			  virt_to_phys(&sro->addr_list[addr_list_start]),
+> +			  found, 0, out_regs);
+> +
+> +	unsigned long donated_granules = out_regs->a1;
+> +	unsigned long granules_per_unit = unit_size_bytes >> PAGE_SHIFT;
+> +	unsigned long consumed_units;
+> +
 > +	/*
-> +	 * Enable Receiver and Transmitter.  RCTL.LBM_MAC is set in addition
-> +	 * to PHY loopback as a QEMU-only accommodation: QEMU's emulated igb
-> +	 * does not honor PHY register 0 bit 14 (PHY internal loopback) and
-> +	 * relies on RCTL.LBM_MAC to wrap TX descriptors back to the RX
-> +	 * queue.  Datasheet 8.10.1 (RCTL register) advises "When using the
-> +	 * internal PHY, LBM should remain set to 00b", so setting LBM_MAC
-> +	 * here deviates from datasheet guidance; empirically the bit has
-> +	 * no observable effect on real 82576 hardware because MAC loopback
-> +	 * is not implemented (datasheet 3.5.6.2).  Setting both lets the
-> +	 * selftest work on both real hardware and QEMU without conditional
-> +	 * code paths.
+> +	 * The RMM shouldn't report more granules than we provided, but clamp
+> +	 * just in case.
 > +	 */
-> +	rctl = E1000_RCTL_EN |       /* Receiver Enable */
-> +	       E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
-> +	       E1000_RCTL_MPE |      /* Multicast Promiscuous */
-> +	       E1000_RCTL_BAM |      /* Broadcast Accept Mode */
-> +	       E1000_RCTL_LBM_MAC |  /* MAC Loopback - for QEMU emulation only */
-> +	       E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
-> +	igb_write32(igb, E1000_RCTL, rctl);
-> +	igb_write32(igb, E1000_TCTL, E1000_TCTL_EN | E1000_TCTL_PSP);
+> +	if (WARN_ON_ONCE(donated_granules > found * granules_per_unit))
+> +		donated_granules = found * granules_per_unit;
+> +
+> +	/*
+> +	 * The RMM reports the consumed memory in terms of granules, but we
+> +	 * track in the address lists in unit-sized ranges. So divide to get
+> +	 * the number of (complete) consumed units.
+> +	 */
+> +	consumed_units = donated_granules / granules_per_unit;
+> +	if (donated_granules % granules_per_unit) {
+> +		/*
+> +		 * A unit has been partially consumed, the start is owned by
+> +		 * the RMM, the tail is owned by the host
+> +		 */
+> +		unsigned long entry =
+> +			sro->addr_list[addr_list_start + consumed_units];
+> +		phys_addr_t phys = RMI_ADDR_RANGE_ADDR(entry);
+> +		unsigned long donated_size =
+> +			(donated_granules % granules_per_unit) << PAGE_SHIFT;
+> +
+> +		/* Free the tail back */
+> +		for (unsigned long i = donated_size; i < unit_size_bytes;
+> +		     i += PAGE_SIZE) {
+> +			if (state == RMI_OP_MEM_DELEGATED)
+> +				free_delegated_page(phys + i);
+> +			else
+> +				__free_page(phys_to_page(phys + i));
+> +		}
+> +
+> +		/*
+> +		 * This unit is now fully 'consumed' (either held by the RMM or
+> +		 * freed)
+> +		 */
+> +		consumed_units++;
+> +	}
+> +
+> +	/* Keep just the units the RMM didn't use in addr_list */
+> +	for (unsigned long i = consumed_units; i < found; i++)
+> +		sro->addr_list[addr_list_start + i - consumed_units] =
+> +			sro->addr_list[addr_list_start + i];
+> +
+> +	sro->addr_count -= consumed_units;
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_sro_donate(struct rmi_sro_state *sro,
+> +			  unsigned long sro_handle,
+> +			  unsigned long donatereq,
+> +			  struct arm_smccc_1_2_regs *regs,
+> +			  gfp_t gfp)
+> +{
+> +	unsigned long count = RMI_DONATE_COUNT(donatereq);
+> +
+> +	if (WARN_ON_ONCE(!count))
+> +		return 0;
+
+minor nit :
+	if (WARN_ON_ONCE(!RMI_DONATE_COUNT(donatereq)))
+		return 0;
+
+and drop count ?
+
+Suzuki
