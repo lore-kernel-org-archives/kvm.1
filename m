@@ -1,360 +1,233 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010050.outbound.protection.outlook.com [52.101.69.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C0242EEA4
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785503002; cv=pass; b=ZwdvlqIxp9VUJL0IHCL7yhdRJL+tBk3HsoUbA55NkJ0cElG/Z+kfjuWQQBf2LJ87Cmd0BTADKo3dJQJwevqKcAHN2CdPWYnV2M8exHl424+uATZBzQOGcTa80OhS0mEYQMw9OAE+7cF1oxwj/c3XwhVoES1awvCGYzUDTvxOXlM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785503002; c=relaxed/simple;
-	bh=IMWMnLbQOy6b9tEx6TPxB/pT3EmTOMY8ss6oX8Lyp+A=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sQUBBSr6ByFIZbMi0tlzhs2jDquDw3o7yp9mTpWlCjW+31u+j8KQDkh3Vw8C6Vc15030AM3QbTjohQqVoAfquBHBqt64Tj07CPWdwWr0c6lHwvY+GFH3kGVOWxPntX1W0/p773UDefdpcz3/hZqF+KINZJN7cnLigAj1kDyeVrs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fwvZ3Eda; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF7248986F
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.50
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785503185; cv=fail; b=LLJSOXu9xaBtpBFFb5peIqWp++Lv+t+X/I5HrQFqcfsrk1F/EBn7mYKF8hLJrTANMkNjLjhcZR+/Zk1nqFnOODUkJp2z50pMbDH7R8EhC7sBDTeapOSxtGAbYUdp0FrSnz7EQ3DzxXTWaqrQAOoKtVRKbk1ir5URUn3Wo1YI5gM=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785503185; c=relaxed/simple;
+	bh=4HwHTUzrtJObj2Yf8528I9kV86N9Z5Ckrb2mkQkFz9o=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QP34rB1t5YcuEJL+UL1mjawg0gNPma8QyD1HnHwYvIa4pXxSCAtYMxsz9K2wOwvcYtKstFQ1bgBnj4I8SLPmfRzCjy1JZrOEsYytuCywstaMa0mf3ODfTbJWkGRyyiiLlpeOajIjS9h3lGEes2M1itAgKQ3khjpulCZNkGJxRB8=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BWrtUgIq; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BWrtUgIq; arc=fail smtp.client-ip=52.101.69.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fwvZ3Eda"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso1211899a91.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 06:03:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785502999; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sFygqw2LZC1ngpsIhyy4APg3/yGnslD1BCuDH9xTlcXGrGc2Yo7paoBeKA585vOgIZ
-         qdzPHcCh2VpYpFhYTgyQeIVr8PGf4vMjmdk01QmOMvfByuKUPHBgnTahHXId/vZBAdk2
-         Qi9zgUuk6HksDUmfy7yTL7E8DfIPwljBhhNLZc0eDdwAXXwsF17vVAeuO2DsRZ1rkHtr
-         EEycXKMDrbvn5zOipdvDzWcMnJBT/rHaCevhtmtlC1h4sJlga7tckO9ZaRBktBxahRDQ
-         cU6SkZyXWtiY9r5rpoX1C5ckp/Rkt+noHhNl3FQ+Zyfbo9JUAw9qorMHoMeXsxfLh3Eu
-         GcXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
-        fh=oUjIu0NoAdFWNkMQLjehYhVPwzkvXTrKYtRDjk0ixRw=;
-        b=Jf5WJyd+pHW1RbScLAA/kejyhZGeufzIhkkVX3YotRzZ8lE2tAs9AqPn2kO28mt4cX
-         iJpPBkbOACDAjsitTQKK9r+dzAqtzYLIYDSGJr71vBVWoK3pMWb9vkxSetWFuu5u44O6
-         pEHjdYv+Yt2NN0MKqhiEZveyJUikuQgXWGtkc8QMhOgQcfAClIpSt5xyXzkDsBNOfsTK
-         HznwrBbkIRzSM1GBkB+OaFNv/oFasUEBnq4PlLUHloDblASLFj89De5YbgLEc8BxgEU/
-         xaPYn3xGOGxAhhkRMOFk2BiMkB/qhpKjxlt0KoCbfExaycQlrduvKbiylJyann3JerlQ
-         eAWQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785502999; x=1786107799; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
-        b=fwvZ3EdanYTcZntQg6z5shQh35bHMua2dGwtzgsNtVN1L35Ca+5jn+1clB3d+LYIaY
-         2tnwbzAC6BXPwagaN9gBMq3A6igRT1JBvctvagRW8irJ3iiVVFWzF4hToJrNY/J/P8PX
-         MxtNu44klSDkXSlNu8SAPZxAeAE4C0lcygMDe4swh4vwz6YS0rWN3p2mHyFQOBfvJwfS
-         gwotFjae0HUhjyvC4kweshgj7u7WAQWcfl30sWKh1LaCQVdg7oi9JoiYAwVoDu6xoCWI
-         wIg9eoLw8FC5vqT4jfLR/B2qLMqFct4yNrtGhCL4V0oUXCtZoCapXg9Fh+8TSOPZeCHB
-         Rbxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785502999; x=1786107799;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=J+eugezfVQYSMU5tvUvWbSgw3mM0uud+rXMj1ASY7rI=;
-        b=P5vwqax0w2UXUK/KoZ4ii3pCgZA8T/6aVR6oKzf5WSBZpKjjqDOnxu/Fgc1C/rGNO+
-         P2nIoD8N3i8HVrFCZlg587Up944KKHnpo0EhSYVdBAYiciCg6T7UQlx+Y/0PuLORqFqR
-         NjuC1bOQNKwDlQTd258uqD2AGv+HnzZFZuvQJNYbq9MxBzw/w6C91JDdLyEzvOQSqL62
-         tZe9htLs+9qfMJlsY+ETXBD/c1Z5+7g9js7NaDokNpIwMiTIdIZ7LPhAk7/WQ9fSvuKm
-         BtGB61cN6QCOJBvXR6VbUF4bVnhimaLVxYT8VUArVYvEFyriJBcV/ioqZ9UBCQw1ursI
-         WPaw==
-X-Gm-Message-State: AOJu0YwjPytPZBNlFKr5ymM30lCT1Q27N0dfCvaF8cmup3Y9ALIQtFCq
-	Kx85Y6duyTsC39MFxNeBnAQkD54bl35r0CdnbVR3tPFTffvdfwVCaHRf8g60K4D4GyH6Dxzn2xE
-	yqov12Q+MtAXR/pZ1uVKC4A3uozuSjUkccIJ7iHno
-X-Gm-Gg: AR+sD10cksG9sZ8UDTSQ4EI8qTKwxV6avi53fb3g89OE/SuGNFfAHr94g3sx+6GKoeq
-	xFjnYkUNgJQDO+3rr/5EvDUIFAf9uw7p7HFPnRlgZiMmxAfy9SK4mu5nxk9GDy4KBU2Vf7+HlKt
-	g2ofuvVEv6zwDRz1FMcOw959Je2LEhx9oobMcjE7lpIAVe6b4fPVOWdNM1euHTRInjBF2EtETT+
-	PbvGWmDW/2ZG9wiDrX17fZ5Pf+Ut61raML8o4iWp+XJZaebjU3SG8UE+36LtNwbAbWUrIcy5JzL
-	EmP3XeR74SUZ7DiXm2RYi0gplj3KL+WnQehr8oPhdgi3tLM1TdbrnWEbAUvdFIAWuq3iQXUU9xM
-	+
-X-Received: by 2002:a17:90b:1345:b0:38e:655c:6516 with SMTP id
- 98e67ed59e1d1-38fb0e7d036mr2121478a91.0.1785502996836; Fri, 31 Jul 2026
- 06:03:16 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Jul 2026 06:03:15 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 31 Jul 2026 06:03:15 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
- <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BWrtUgIq";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BWrtUgIq"
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=v0u+sIAobnkey5WiA9I5e4p++3Gn8Std0Wkfu3n6AhE2tCO6V8wAjx/u7s3g6BG0h4ylfm+o8bsi2RRoWLdaBY4XkvdxPtFjC2bp+a6cQH67KFFzPNYlqgmBy3+Y5iDbjLiKJ5jMVbcIr2Utxa4gzXSfAeBcV7EB8LwGjOx3+d4PLUau8tnJX74oNo8eKidnzzVRGfLiWrYhnEee7rYRKM7moDgPw195Bjue8e+lAXsA8H4qB9oWP9RCAAqJnCch5ECCugeknj7pTI4obASP1AejFA+rD0FUoVYL3Prjeba1tehaFkRjvqLPaBvTSfeA8smOYu52AWW8GWNdr+edhA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4HwHTUzrtJObj2Yf8528I9kV86N9Z5Ckrb2mkQkFz9o=;
+ b=dweFpWoaUAzCt+GZanKQ8d1hFVV3lnjSAsSCTvkH3JEidlSYU/nwaHq44XnYoDhnCR9yd/WhGeaI0Twrgq4tb6DBbBw8te8oDhNzOPbES8ACwwsbTw6lUoD6G1QQc5X/qieqmI3Dd804DUVf1KyBXeTK55eqgGMkbetcvEmsnkROJixWdYxKx8Db8fyonrwsCM6mjl13h4tDl+wPUkSu8ZHLPXmBjXLFgPrHs+GH11BoyqzvZFHOVouoHBP29rq4ENjjRzAidr9XhHQh9OcMIO6GTXGfEHDxf+joSAFUyTevC1Qyeg08f719T9vtVVkur/3uCP+ZlLzukHjUD5Tm0Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=arm.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
+ dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4HwHTUzrtJObj2Yf8528I9kV86N9Z5Ckrb2mkQkFz9o=;
+ b=BWrtUgIqfElnu/d4UYi6S88JO3eN5TmvROmTqV233t/lI34PwvDUu+2/Ti9tPCG97TnetkxeZCjmkO7uMkSAiYMthIFR3hPm27YkdeAQUsasae1vB7dLyQFM2BIfCqPbI8StV9Zzic16IcY5u9iMMmUY2dA7hAln0dDCT9I6AJY=
+Received: from DU7PR01CA0005.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:50f::28) by GV1PR08MB11245.eurprd08.prod.outlook.com
+ (2603:10a6:150:281::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 13:06:17 +0000
+Received: from DB5PEPF00014B97.eurprd02.prod.outlook.com
+ (2603:10a6:10:50f:cafe::16) by DU7PR01CA0005.outlook.office365.com
+ (2603:10a6:10:50f::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.15 via Frontend Transport; Fri,
+ 31 Jul 2026 13:06:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB5PEPF00014B97.mail.protection.outlook.com (10.167.8.235) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.8
+ via Frontend Transport; Fri, 31 Jul 2026 13:06:16 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pktH8Y+z+mXiVPP8d1I2tBguScZMdhWkPIYjVDMLO/ySDz+okNqzkDEOYGNVy3NO+cir56bmiqbnFBed1K/+Ja6l2aEJBUVzkedTlQ4xD7mCNVIs+nGqtWhCJjwHOSGcxD93nfyw4cfnZVLrUOdjE5bhWs1IAMcWT8WGs5hZIR5mvIWhH9qIXsi3E1R+pDv/2QT3sPlIreh3QkZORYW7YxgAEN3bF41vF7lPnp/sEGEhWQC5t6FHnLkHFC/f+OYwP6aPkvR1QbJ4QfDdQmdI+0LNpFhUpDCHG9+GDU94A9X+5cZMfcfyuZjXAwPFsRYwiJ3Gc5io22tWVRb1UC8h+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4HwHTUzrtJObj2Yf8528I9kV86N9Z5Ckrb2mkQkFz9o=;
+ b=MdPKP0M8kcTcdRNYk3xixtjfJl7CbdTXDB3I7lqoQw4YQ0mMif1Xv9C//8E7p5UhIq/l3Kv7oZky/KDlHH2o5Iy5j5SlfhW9jX1d9V2zbMI3E0E9d3tlEXPPIX67yvkRm2zKqodsSzx534L9L2hGsOrEmyIpVWCf7jU6PD84G//w4oHTww4HcmSdhnKn91oal0uhsnZjPy0Rjl/sluhJTePIEVqBpe8UcF2mH2VboUNvh4f8h/yQ1qPnt1Z0sFm3MJjz7HUbctZFr60KupRceWLR7JLUJLFwt+PLf5p6HpevtaOyCANi4EhT+JlN6V8A3sCqFMuqzufT6n7YBPwgrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4HwHTUzrtJObj2Yf8528I9kV86N9Z5Ckrb2mkQkFz9o=;
+ b=BWrtUgIqfElnu/d4UYi6S88JO3eN5TmvROmTqV233t/lI34PwvDUu+2/Ti9tPCG97TnetkxeZCjmkO7uMkSAiYMthIFR3hPm27YkdeAQUsasae1vB7dLyQFM2BIfCqPbI8StV9Zzic16IcY5u9iMMmUY2dA7hAln0dDCT9I6AJY=
+Received: from DU0PR08MB8421.eurprd08.prod.outlook.com (2603:10a6:10:407::19)
+ by VI0PR08MB11408.eurprd08.prod.outlook.com (2603:10a6:800:302::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 13:05:13 +0000
+Received: from DU0PR08MB8421.eurprd08.prod.outlook.com
+ ([fe80::2158:1cab:1d88:ba2e]) by DU0PR08MB8421.eurprd08.prod.outlook.com
+ ([fe80::2158:1cab:1d88:ba2e%5]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
+ 13:05:13 +0000
+From: Sascha Bischoff <Sascha.Bischoff@arm.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "maz@kernel.org" <maz@kernel.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"oupton@kernel.org" <oupton@kernel.org>, nd <nd@arm.com>
+Subject: Re: [PATCH v4 22/48] KVM: arm64: gic-v5: Register the IRS IODEV
+Thread-Topic: [PATCH v4 22/48] KVM: arm64: gic-v5: Register the IRS IODEV
+Thread-Index: AQHdG1q+qpbeSOrkREKmE8gEsg+CKLZ8ieAAgAsZ2wA=
+Date: Fri, 31 Jul 2026 13:05:13 +0000
+Message-ID: <10a033292802dd8b57172353edd8350fc2c23374.camel@arm.com>
+References: <20260724104819.1296803-1-sascha.bischoff@arm.com>
+	 <20260724104819.1296803-23-sascha.bischoff@arm.com>
+	 <20260724113349.0E5791F000E9@smtp.kernel.org>
+In-Reply-To: <20260724113349.0E5791F000E9@smtp.kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.3-0ubuntu1.1 
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic:
+	DU0PR08MB8421:EE_|VI0PR08MB11408:EE_|DB5PEPF00014B97:EE_|GV1PR08MB11245:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78287d18-c1dc-45e4-f51b-08deef0481bc
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|4143699003|38070700021|11063799006|10067099003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info-Original:
+ 0+bAkc4r1WX9S/nVchsejK65C21KX0GycG0FZa98cxK1UOipgKTVGTc/sxFXQPNfg4xKHmh3AIPn1IXiDSJH0Rg83u1lkuwX2eoZYedlpDuCrONgojO99ulgqLAtU5dT9Kjjof9ISu17h1Zlx3CKXDOmrWLYA6X6p5zxthRee2+oIi+igkmybPK6j2bZK4k8dPwaWeggjeryvZnC7JBX2UXzyVyCM//DMmhcaeOZWA3Zn/+zsbfcbpOrEI6oBuenPfq8agSEFUkZ83U8LeOGAz8y5umIRgHRw+nUfV8DavyvjYPhTrRRfAHyTLiL6B4JSyWo8eRZ0Qi6uzT1COan/KJ4F+h8WbczmjkmbRXA/BaEtmzsXXqg4XtS1Zw/IjA1E6/TECxW7R0CnQVBYZRjC1r5tgnf92R52nZiUjVjRhlLeOYQGrzrdMUtqPDtP7FXtHZKaSRtToN9SUr7vsfJEsTqCoJ/ShncMRYVhWonq2Jkam8Kpqy5tgUrVWZkN2oeh7M1BEMN8YWHYDQdKEOcwG1cxVYBNfnLBccDt4p3KT3CP0E8ozm8qhsBPIJEQLP3yPTpORQK1lpHYBen3Emmy9jAiiElQ3jBZ47/SPRxKSqTkc3TwVJXEboNXx2b8aaXgJEVZNfT8ZkWn/m/kSr22SQxvqSRlxgASOEiBqDMjLUU9XB6AQPmLRaR4B++tZ7YgoOL4qxPb+58xWUoy51R7CQwZf3o0b7i2ncP+To6+gE=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB8421.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(4143699003)(38070700021)(11063799006)(10067099003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <081564FF54BEED49B5AF2E03CAF9407E@eurprd08.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 31 Jul 2026 06:03:15 -0700
-X-Gm-Features: AUfX_myvtAX7kCr1AZOI0RcjaLMvHuuJT4jX9i2y3E3Aj03MfOs1jY1iA4ExW_o
-Message-ID: <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
-Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-Exchange-RoutingPolicyChecked:
+ jdPW43TNrK0wGXKjyElhs5gh5zBfCxmN1X/VYQLMF225GiUVfABPQUTYEIJafFGVz8/COWdrhj7BsQfIadXHP/vHPMtsWSdnf/Rxqt19/qlB/9Mar8pOTql9cWJU6q3c+uYOkInR5jShmwbYMlW0ZSxARc5ywmNo0p5aGtmthAznp9OmsZIBLRzResArnyjtNy6eb/bMppmCj2vtq4PHXOiV+U349/s7NTSWQYwdGdEGdvrXCdSyl/8NB9cv6LqQ7LUX2loHuYcwcdSPvPQ7NhU2UJrHSsBAezPho5nnVYwIIvd4ElnVyWcx/NQxZZVz0gWS3vrTtYprv8Mdkr0DuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11408
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB5PEPF00014B97.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	3600914f-5316-4232-c47c-08deef045c02
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|35042699022|36860700016|376014|1800799024|23010399003|14060799003|82310400026|18002099003|22082099003|10067099003|11063799006|6133799003|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	baFbgHv0C721CRrl0FpZMmZYYuqDiof/6prHnLQUjLDi7ngPl6J+z7fBCdKbxXq5+8C+UDm5EYiy5WhBDQhk4wA0asNDirt2/rYgBxB1f1bOlzC74tViO29hNwzTgPGX68qIEWUIYU9gua2G35ET1gIDX6LBo3hWgwmPwgCnqBTOnHgB0IVIdlxiLnRH1n3uI2bLa4vFakc/A+LZQNkGqyvEPQTm3WUfAu9FHsOvYh8gZ4GsfoAKj6DnAYLEzOhvcp4MDYp4NhieInCD7XnZ/SBSXih0HGGu/p5ebO/yTDNqqExHRnZMcH/o3t4/ty+cBh13yxiWVlL0E1EgmlVZJ42J4S0Gz/yjuKgOFqtlVsMf0IiHTnmwDYsVpSNlVv+7pBjR2roxzBsVrckZiKqUVDCRd9oYeDvpMay3/u9oLxntAI6NePOSJzb2IZ1+gTeJfncpq1R4wMGG+gQNOwmNDOrYZIN2XHsri8q04hVQQa2FVvEzQ4Ex4NZcjeb5sJdUsPwW9hZlUtRahAJlVVSaqstNMF8x79b4dF5cXTSjEdl8UFP1RoDVAzJpJdAW8ArzypLIbi2XhfH7L/0GU+SzvdupVSOJWRpeXkLvpSg2YV4W98lbzTeXU1b84zndEMzATPkDONtr4b5DQnCy46uiZ6TXKAeIrNiiK5rl416ukpMEo7wj6lALxbRy9tMEXB9V9TyEjFzPyh9L2hghaCVWhQ==
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(36860700016)(376014)(1800799024)(23010399003)(14060799003)(82310400026)(18002099003)(22082099003)(10067099003)(11063799006)(6133799003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	8O3AuJKS3ILy2wBw5lLZ2rpjWMcOWZLg5TfiJ7n2PZWgddamE6kpcvDI6RfShjjNRsEDgwqLMA/JVMaC/Jqbw2afyFLEtkxvB0bjrm+gGkjR5I+5SZiGdlgIsuiYELS3qLNbziD9ww1bvHgE0fvS9T0vTRhODwUj/tsUwN2Dh7GUKyWU8yvIu9FxGWUYUZ/XbEZrrtOYK3PBvdWp/Qm0CH095jVSWtykP2W/GcT5po3xbO7a0Ts0fwa5gsU7pCsYgDavxoznX8tWZqiox4nohu+21LL7rtEqBZ5L8Lb85/4tGvfQuFSS0fCR/qLDkRXtPaZGw8WPV5RSevNfwH0bCsTVEzsyLmJmJ3nnAFgJC2RUIzs+d4MoghSBGDUDym2758KTefMcrxy87tL5cz9rcNBoTAAUj4pvy0PN2BG3WCl8NhTzELbYqMZNbPsCPflp
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 13:06:16.7652
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78287d18-c1dc-45e4-f51b-08deef0481bc
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B97.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB11245
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
-
-> On 7/31/26 12:22, David Hildenbrand (Arm) wrote:
->>>
->>> I didn't really like this either, the drain_state thing is really
->>> awkward, but in both usages (collect_longterm_unpinnable_folios() and
->>> guest_memfd), there's an outer loop where if the draining happened on
->>> the local CPU before it should skip straight to just draining on all the
->>> other CPUs.
->>
->> Just nasty :)
->>
->>>
->>>> I was hoping that we could embed more logic in a helper. The history [1] of the
->>>> refcount check is rather sad:
->>>>
->>>> https://lore.kernel.org/all/c5bac539-fd8a-4db7-c21c-cd3e457eee91@google.com/
->>>>
->>>> ... primarily because of mlock() handling.
->>>>
->>>
->>> In the original code in collect_longterm_unpinnable_folios(), I couldn't
->>> find anything that handles folio_test_mlock(), so I was lost for a while
->>> until I realized mlock() doesn't add a refcount to the folio.
->>
->> mlocked folios in the mlock cache hold a reference as well.
->>
->>>
->>> Are you kind of proposing an optimization to
->>> collect_longterm_unpinnable_folios() by adding a check for
->>> !folio_test_mlock()? I hope we can put that in a separate patch series,
->>> I'm still hoping to get this series in for 7.3!!
->>
->> I was trying to avoid messing with the refcount for ordinary LRU cache pages.
->> mlock() should be a corner case for guest_memfd.
->>
->> Relying on the refcount just means that one unconditionally performs a lot of LRU
->> cache draining even though it doesn't make any sense.
->>
->>>
->>>> For guest_memfd(), would mlock() ever apply on a path where you need that check?
->>>>
->>>
->>> For guest_memfd, if a folio were mlocked, unmapping it would fail, and
->>> so the refcount on the folio would be elevated. The
->>> kvm_gmem_is_safe_for_conversion() check in the patch after this one
->>> would fail, correctly.
->>>
->>> I really wanted the caller of the lru_add_drain_progressive() function
->>> to control whether to do the drain (see below), which would solve the
->>> mlock problem by not assuming the use of folio_expected_ref_count() to
->>> determine whether to do draining.
->>
->> Again, the problem is that on *any* raised reference you would drain. I
->> was trying to limit the harm.
->>
->> [...]
->>
->>>> + */
->>>> +static void lru_cache_drain_for_folio(const struct folio *folio,
->>>> +		enum lru_cache_drained *drained)
->>>
->>> The main thing I wanted in the proposed version
->>> (lru_add_drain_progressive()), was to let the caller determine whether
->>> to try or to continue draining.
->>
->> Why?
->>
->>>
->>> I wanted the caller to have full control over whether to drain or not,
->>> so I didn't want to pass folio into the function. I thought the caller
->>> should first determine whether to drain, then call the function.
->>
->> Why?
->>
->> That's literally what the existing refcount check tries to do: figure out if
->> there are LRU caches.
->>
->>>
->>> This version assumes that the caller wants to continue draining based on
->>> something to do with a folio, and the folio may or may not be on the
->>> lru_add fbatch at all, which is a little strange to me.
->>
->> I really don't understand what you are trying to say.
->>
->> Draining only makes sense if something is on the LRU cache. And there are
->> better ways of checking that than relying only on even less precise refcounts.
->>
->> If someone wants to do an early refcount check to abort the overall
->> operation, that's fine.
->>
->>>
->>> Also, this version enforces a certain definition of "expected" number of
->>> refcounts on the folio. I guess in this case this definition works with
->>> guest_memfd, but guest_memfd doesn't support swap so the swapcache check
->>> in folio_expected_ref_count() isn't necessary.
->>
->> ?!
->>
->> That's why we have the universal definition of expected references and the
->> common helper.
->>
->> Because pagecache pages commonly don't support the swapcache.
->>
->>> Also, if the definition
->>> folio_expected_ref_count() changes, then guest_memfd is implicitly
->>> affected. Not sure if the "expected" definition is the same for all
->>> callers?
->>
->> It must, because that is used all over the place. The only thing it
->> cannot deal with is references held by the caller (which could be supplied
->> through and "additional references" parameter like we do elsewhere).
->>
->>>
->>> I guess if there was a function named
->>> folio_ref_counts_indicate_presence_only_in_the_filemap() instead of
->>> folio_expected_ref_count(), then it'd be the perfect function for
->>
->> You're not seriously proposing such an abomination I hope?
->>
->>> guest_memfd to use. The current definition of folio_expected_ref_count()
->>> also includes page table mappings, but in this check guest_memfd really
->>> wants to make sure that there are no page table mappings.
->>
->> You can just check early for mappings.
->>
->> Remember: this is about LRU draining, *not* about your final
->> "unexpected references" check.
->>
->>>
->>> This version folds folio_likely_lru_cached() into the check, and I
->>> adopted the check for guest_memfd because it'd help with huge pages,
->>> though technically guest_memfd is always 4K now so the check is also
->>> pointless.
->>
->> Who cares if we end up with a common usable helper? We have usless
->> checks *all over the place* in common helpers.
->>
->>>
->>> I tried a macro version of this where the macro caller can pass in a
->>> full condition, which would look like this:
->>>
->>>   lru_add_drain_while(folio_may_be_lru_cached(folio) &&
->>>                       folio_ref_count(folio) != expected_refcount,
->>>                       drain_state);
->>
->> Yuk.
->>
->>>
->>> but I thought that just created something people have to jump to, to
->>> first understand how the macro works, so I left it as an explicit while
->>> loop instead.
->>>
->>>> +{
->>>> +	if (!folio_likely_lru_cached(folio))
->>>> +		return false;
->>>> +
->>>> +	/* Try local draining first, if not already done previously. */
->>>> +	if (*drained == LRU_CACHE_NOT_DRAINED) {
->>>> +		lru_add_drain();
->>>> +		*drained = LRU_CACHE_DRAINED;
->>>> +	}
->>>> +	/* Try draining all CPUs next if still not an LRU folio. */
->>>> +	if (folio_likely_lru_cached(folio) && *drained == LRU_CACHE_DRAINED) {
->>>> +		lru_add_drain_all();
->>>> +		*drained = LRU_CACHE_DRAINED_ALL;
->>>> +	}
->>>> +}
->>>> +
->>>>  /*
->>>>   * Returns the number of collected folios. Return value is always >= 0.
->>>>   */
->>>> @@ -2266,9 +2316,9 @@ static unsigned long collect_longterm_unpinnable_folios(
->>>>  		struct list_head *movable_folio_list,
->>>>  		struct pages_or_folios *pofs)
->>>>  {
->>>> +	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
->>>
->>> I also considered an enum, but it would be another thing to export. I
->>> was thinking to have drain_state just be opaque to the caller and the
->>> only thing the caller needs to know is to initialize it to 0.
->>>
->>> Perhaps there's a better way to "make it opaque"?
->>
->> Putting an enum into a header is a problem in which universe? :)
->>
->> Ackerley, please stop making up stuff. Having generic helper is not a problem. Doing
->> checks in common helpers is not a problem. Putting enums in headers is not a problem.
->>
->> Your version is just bad.
->>
->> I can later try something that keeps the questionable refcount checks in place,
->> maybe that could do as a temporary solution until Hugh possibly finds a way to
->> remove the need for draining entirely.
->>
->
-> And looking at it, the current folio_ref_count() in GUP is entirely wrong
-> and always makes us drain local+all.
->
-> Let me fix that first, which will also modify this code.
->
-> I'd say, to unblock gmem we could have something minimal that I would clean
-> up later, but I think the problem is that lru_add_drain() / lru_add_drain_all()
-> is not exported, right?
->
-
-My bad, I totally mixed up refcounting to drain with refcounting for the
-safe conversion and didn't have a complete understanding of mlock().
-
-The problem for gmem was that if there was an elevated refcount on some
-folio in the range, it might be because the folio was in the lru_add
-fbatch.
-
-If it were in the lru_add fbatch, it would be fine to just drain the
-lru_add fbatch and proceed with the conversion.
-
-lru_add_drain() isn't sufficient since the conversion might be handled
-on one CPU when the folio is on another CPU's fbatch, so I had to do
-lru_add_drain_all(), but lru_add_drain_all() causes IPIs which are
-expensive.
-
-In an earlier revision I exported lru_add_drain_all(). My understanding
-of the discussion at guest_memfd biweekly was that Sean didn't want us
-to export lru_add_drain_all() now, and then end up exporting some other
-function and unexporting lru_add_drain_all(). To avoid exporting and
-unexporting, we then said we should refactor now.
-
-Happy to go with your proposal too.
-
-> --
-> Cheers,
->
-> David
+T24gRnJpLCAyMDI2LTA3LTI0IGF0IDExOjMzICswMDAwLCBzYXNoaWtvLWJvdEBrZXJuZWwub3Jn
+IHdyb3RlOg0KPiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJl
+dmlldyBmb3VuZCAyIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlcjoNCj4gLSBbSGln
+aF0gR0lDdjUgU1BJcyBjYW5ub3QgYmUgcmV0cmlldmVkIGJlY2F1c2UgdmdpY19nZXRfaXJxKCkN
+Cj4gZXhwbGljaXRseSByZWplY3RzIG5vbi1wcml2YXRlIEdJQ3Y1IElSUXMsIHJlbmRlcmluZyB0
+aGUgbmV3bHkNCj4gYWN0aXZhdGVkIElSUyBTUEkgY29uZmlndXJhdGlvbiBicm9rZW4uDQo+IC0g
+W0hpZ2hdIEFsbG93aW5nIHVzZXJzcGFjZSB0byBjb25maWd1cmUgdXAgdG8gNjUsNTM2IEdJQ3Y1
+IFNQSXMNCj4gdHJpZ2dlcnMgYSBsYXJnZSBjb250aWd1b3VzIG1lbW9yeSBhbGxvY2F0aW9uIHZp
+YSBrY2FsbG9jLCB3aGljaCBjYW4NCj4gZGV0ZXJtaW5pc3RpY2FsbHkgZmFpbCBhbmQgY2F1c2Ug
+a2VybmVsIHdhcm5pbmdzLCByZXN1bHRpbmcgaW4gYQ0KPiBob3N0LXNpZGUgRG9TLg0KPiAtLQ0K
+PiANCj4gLS0tIFBhdGNoIFsyMl06IFtQQVRDSCB2NCAyMi80OF0gS1ZNOiBhcm02NDogZ2ljLXY1
+OiBSZWdpc3RlciB0aGUgSVJTDQo+IElPREVWIC0tLQ0KPiBjb21taXQgZDBmNDk1MDNjOWU5MGFi
+NmFiOWY3MWNiNWJhMjJkNTljNTY0YmNkOA0KPiBBdXRob3I6IFNhc2NoYSBCaXNjaG9mZiA8U2Fz
+Y2hhLkJpc2Nob2ZmQGFybS5jb20+DQo+IEtWTTogYXJtNjQ6IGdpYy12NTogUmVnaXN0ZXIgdGhl
+IElSUyBJT0RFVg0KPiANCj4gTm93IHRoYXQgd2UgaGF2ZSBhbiBlbXVsYXRlZCBJUlMsIGl0IG5l
+ZWRzIHRvIGJlIHJlZ2lzdGVyZWQsIHdoaWNoDQo+IGVuc3VyZXMgdGhhdA0KPiBndWVzdCBhY2Nl
+c3NlcyB0byB0aGUgTU1JTyByZWdpb25zIGhhbmRsZWQgYnkgdGhlIGRldmljZSBhcmUgaGFuZGxl
+ZA0KPiBhcHByb3ByaWF0ZWx5IGluIEtWTS4gQXMgcGFydCBvZiB0aGlzIGNoYW5nZSwgZXhwb3Nl
+IHNldHRpbmcgdGhlDQo+IGFkZHJlc3Mgb2YNCj4gdGhlIGVtdWxhdGVkIElSUyB2aWEgS1ZNX1ZH
+SUNfVjVfQUREUl9UWVBFX0lSUyB0byB1c2Vyc3BhY2UuIEFsc28NCj4gYWxsb3cNCj4gdXNlcnNw
+YWNlIHRvIHNldCB0aGUgbnVtYmVyIG9mIFNQSXMgaGFuZGxlZCBieSB0aGUgZW11bGF0ZWQgR0lD
+djUNCj4gaW1wbGVtZW50YXRpb24uDQo+IA0KPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0L2t2
+bS92Z2ljL3ZnaWMta3ZtLWRldmljZS5jDQo+ID4gYi9hcmNoL2FybTY0L2t2bS92Z2ljL3ZnaWMt
+a3ZtLWRldmljZS5jDQo+ID4gaW5kZXggOTBiZTk5NDQzZGYzYi4uOGMyYzY4ODZhZjRlMyAxMDA2
+NDQNCj4gPiAtLS0gYS9hcmNoL2FybTY0L2t2bS92Z2ljL3ZnaWMta3ZtLWRldmljZS5jDQo+ID4g
+KysrIGIvYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLWt2bS1kZXZpY2UuYw0KPiANCj4gWyAuLi4g
+XQ0KPiANCj4gPiBAQCAtMjI0LDMxICsyMzIsNDggQEAgc3RhdGljIGludCB2Z2ljX3NldF9jb21t
+b25fYXR0cihzdHJ1Y3QNCj4gPiBrdm1fZGV2aWNlICpkZXYsDQo+ID4gwqAJCWlmIChnZXRfdXNl
+cih2YWwsIHVhZGRyKSkNCj4gPiDCoAkJCXJldHVybiAtRUZBVUxUOw0KPiA+IMKgDQo+ID4gLQkJ
+LyoNCj4gPiAtCQkgKiBXZSByZXF1aXJlOg0KPiA+IC0JCSAqIC0gYXQgbGVhc3QgMzIgU1BJcyBv
+biB0b3Agb2YgdGhlIDE2IFNHSXMgYW5kIDE2DQo+ID4gUFBJcw0KPiA+IC0JCSAqIC0gYXQgbW9z
+dCAxMDI0IGludGVycnVwdHMNCj4gPiAtCQkgKiAtIGEgbXVsdGlwbGUgb2YgMzIgaW50ZXJydXB0
+cw0KPiA+IC0JCSAqLw0KPiA+IC0JCWlmICh2YWwgPCAoVkdJQ19OUl9QUklWQVRFX0lSUVMgKyAz
+MikgfHwNCj4gPiAtCQnCoMKgwqAgdmFsID4gVkdJQ19NQVhfUkVTRVJWRUQgfHwNCj4gPiAtCQnC
+oMKgwqAgKHZhbCAmIDMxKSkNCj4gPiAtCQkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gKwkJaWYgKCF2
+Z2ljX2lzX3Y1KGRldi0+a3ZtKSkgew0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiArCQl9IGVsc2Ug
+ew0KPiA+ICsJCQkvKg0KPiA+ICsJCQkgKiBHSUN2NSByZXBvcnRzIGEgbnVtYmVyIG9mIFNQSXMs
+IG5vdCBhDQo+ID4gdG90YWwgbnVtYmVyIG9mDQo+ID4gKwkJCSAqIGludGVycnVwdHMuIFJlcXVp
+cmUgYSBtdWx0aXBsZSBvZiAzMg0KPiA+IFNQSXMuDQo+ID4gKwkJCSAqLw0KPiA+ICsJCQlpZiAo
+dmFsIDwgVkdJQ19WNV9ERUZBVUxUX05SX1NQSVMgfHwNCj4gPiArCQkJwqDCoMKgIHZhbCA+IFZH
+SUNfVjVfTUFYX05SX1NQSVMgfHwNCj4gPiArCQkJwqDCoMKgICh2YWwgJiAzMSkpDQo+ID4gKwkJ
+CQlyZXR1cm4gLUVJTlZBTDsNCj4gDQo+IFtTZXZlcml0eTogSGlnaF0NCj4gRG9lcyBhbGxvd2lu
+ZyB1c2Vyc3BhY2UgdG8gc2V0IG5yX3NwaXMgdXAgdG8gVkdJQ19WNV9NQVhfTlJfU1BJUw0KPiAo
+NjU1MzYpIHJpc2sNCj4gdHJpZ2dlcmluZyBhIGhvc3Qtc2lkZSBhbGxvY2F0aW9uIHdhcm5pbmcg
+b3IgZmFpbHVyZT8NCj4gDQo+IElmIHVzZXJzcGFjZSBzZXRzIG5yX3NwaXMgdG8gdGhlIG1heGlt
+dW0sIEtWTSB3aWxsIGV2ZW50dWFsbHkgY2FsbA0KPiBrY2FsbG9jKCkNCj4gZm9yIHRoZSBTUElz
+Og0KPiANCj4gYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLWlycy12NS5jOmt2bV92Z2ljX3Y1X2ly
+c19pbml0KCkgew0KPiDCoMKgwqAgLi4uDQo+IAlkaXN0LT5zcGlzID0ga2NhbGxvYyhucl9zcGlz
+LCBzaXplb2Yoc3RydWN0IHZnaWNfaXJxKSwNCj4gCQkJwqDCoMKgwqAgR0ZQX0tFUk5FTF9BQ0NP
+VU5UKTsNCj4gwqDCoMKgIC4uLg0KPiB9DQo+IA0KPiBTaW5jZSBzaXplb2Yoc3RydWN0IHZnaWNf
+aXJxKSBpcyBvdmVyIDEwMCBieXRlcywgdGhpcyByZXF1aXJlcyBhDQo+IHBoeXNpY2FsbHkNCj4g
+Y29udGlndW91cyBhbGxvY2F0aW9uIG9mIHJvdWdobHkgN01CLiBUaGlzIGV4Y2VlZHMgdGhlIHR5
+cGljYWwNCj4gS01BTExPQ19NQVhfU0laRQ0KPiBvZiA0TUIsIHdoaWNoIHdvdWxkIGNhdXNlIHRo
+ZSBhbGxvY2F0aW9uIHRvIGRldGVybWluaXN0aWNhbGx5IGZhaWwNCj4gYW5kDQo+IHBvdGVudGlh
+bGx5IHRyaWdnZXIgYSBrZXJuZWwgd2FybmluZyBvciBwYW5pYyAoaWYgcGFuaWNfb25fd2FybiBp
+cw0KPiBzZXQpLA0KPiBhbGxvd2luZyBhbiB1bnByaXZpbGVnZWQgdXNlciB0byBjYXVzZSBhIGhv
+c3Qtc2lkZSBkZW5pYWwgb2Ygc2VydmljZS4NCg0KT0ssIHllcywgdGhpcyB3b3VsZCBiZSBhbiBp
+c3N1ZS4NCg0KRm9sbG93aW5nIGFuIG9mZmxpbmUgZGlzY3Vzc2lvbiB3aXRoIE1hcmMsIEknbSBn
+b2luZyB0byBjYXAgU1BJcyBmb3INCkdJQ3Y1IGF0IDEwMjQgZm9yIHRoZSB0aW1lIGJlaW5nLiBU
+aGlzIGlzIGEgc2ltaWxhciB1cHBlciBsaW1pdCB0byB3aGF0DQp3ZSBoYXZlIGZvciBHSUN2MyB1
+bmRlciBLVk0sIGFuZCB0aGlzIGhhcyBzbyBmYXIgbm90IGJlZW4gYW4gaXNzdWUNCnRoZXJlLiBJ
+ZiBhbmQgd2hlbiB0aGUgbmVlZCBhcmlzZXMgaW4gdGhlIGZ1dHVyZSwgdGhpcyBjb3VsZCBiZSBi
+dW1wZWQNCnVwLg0KDQo+IA0KPiA+ICsNCj4gPiArCQkJbXV0ZXhfbG9jaygmZGV2LT5rdm0tPmFy
+Y2guY29uZmlnX2xvY2spOw0KPiA+ICsJCQlpZiAodmdpY19pbml0aWFsaXplZChkZXYtPmt2bSkg
+fHwgZGV2LQ0KPiA+ID5rdm0tPmFyY2gudmdpYy5ucl9zcGlzKQ0KPiA+ICsJCQkJcmV0ID0gLUVC
+VVNZOw0KPiA+ICsJCQllbHNlDQo+ID4gKwkJCQlkZXYtPmt2bS0+YXJjaC52Z2ljLm5yX3NwaXMg
+PSB2YWw7DQo+IA0KPiBbU2V2ZXJpdHk6IEhpZ2hdDQo+IEFyZSB3ZSBhYmxlIHRvIHJldHJpZXZl
+IHRoZXNlIEdJQ3Y1IFNQSXMgb25jZSB0aGV5IGFyZSBjb25maWd1cmVkDQo+IGhlcmU/DQo+IA0K
+PiBDdXJyZW50bHksIHZnaWNfZ2V0X2lycSgpIGV4cGxpY2l0bHkgcmVqZWN0cyBub24tcHJpdmF0
+ZSBHSUN2NSBJUlFzOg0KPiANCj4gYXJjaC9hcm02NC9rdm0vdmdpYy92Z2ljLmM6dmdpY19nZXRf
+aXJxKCkgew0KPiDCoMKgwqAgLi4uDQo+IAkvKiBOb24tcHJpdmF0ZSBJUlFzIGFyZSBub3QgeWV0
+IGltcGxlbWVudGVkIGZvciBHSUN2NSAqLw0KPiAJaWYgKHZnaWNfaXNfdjUoa3ZtKSkNCj4gCQly
+ZXR1cm4gTlVMTDsNCj4gwqDCoMKgIC4uLg0KPiB9DQo+IA0KPiBUaGlzIG1lYW5zIHRoYXQgd2hl
+biB0aGUgZ3Vlc3QgYWNjZXNzZXMgdGhlIElSUyBNTUlPIGludGVyZmFjZSBmb3INCj4gU1BJcywg
+dGhlDQo+IGhhbmRsZXIgKGUuZy4sIHZnaWNfdjVfbW1pb193cml0ZV9pcnNfc3BpKSB3aWxsIGZh
+aWwgdG8gcmV0cmlldmUgdGhlDQo+IFNQSQ0KPiBzdHJ1Y3R1cmUgYW5kIHNpbGVudGx5IGFib3J0
+LiBXaWxsIHRoaXMgbGVhdmUgR0lDdjUgU1BJcw0KPiB1bmNvbmZpZ3VyYWJsZT8NCg0KV2l0aCBq
+dXN0IHRoaXMgY29tbWl0LCB5ZXMuIFRoZSBzdXBwb3J0IGNvbWVzIGluIGEgbGF0ZXIgY29tbWl0
+Lg0KDQo+IA0KPiA+ICsJCQltdXRleF91bmxvY2soJmRldi0+a3ZtLT5hcmNoLmNvbmZpZ19sb2Nr
+KTsNCj4gPiArCQl9DQo+ID4gwqANCj4gPiDCoAkJcmV0dXJuIHJldDsNCj4gPiDCoAl9DQo+IA0K
+DQpUaGFua3MsDQpTYXNjaGENCg==
