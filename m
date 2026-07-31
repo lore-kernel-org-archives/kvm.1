@@ -1,68 +1,67 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC24744781A
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC7737F8DB
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785540781; cv=none; b=Oqx7LvQTLOZfJx9I+cj1ibd7Xj0GYggqEcd6CcqXvtSJoKQ3RC643tmPoZohKrGu/h/0tJiIgWGEB7345VYzlWo9VeuEUeVJVwU0UmMttwrfyN7Kn+A8gK1kkAITIvU8QRlgZpqHBhGX4jILJ5u7zB3VOrDV8XsHgAcJ+i6aJmg=
+	t=1785541119; cv=none; b=Skq328PYX0RVO2tHr9dXJw1JxpCyi3xsdi+vjmTcew2JwrTKY2+CAVvDE7OK/gtwvz1O72sfDzlV8pkDeYWEHmYwIIrPeePMhqQjPFqC9KckaS/NeCDMGQtocB19NdtbXVo4eXnhYGTQCeYes48t7soUYev4B0aHG1sg2hhCDvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785540781; c=relaxed/simple;
-	bh=t+Cf3qmtd23qA0r4BDXkizW3SEklEe7ujMZOzL2AWCs=;
+	s=arc-20240116; t=1785541119; c=relaxed/simple;
+	bh=zKG0iS70PV1ZsDDU0ojNP7wKsx3DKqaKvtYhgGjhqec=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dKywXAhUISQ+XKAgDvbKJCq8S3NqJKD+xAOTIjkKjRuk0m3M3sVo3PaF0ji/+OnNcpy3bC1OvLiRoJc3kPa8FfV5tTQ/Y5h/ZRttAR9Cly0KFwLPEPohHQ2UlhyJUHQdZ9j7tmLPFv1TSSyioPioZv00D3rYzPoTbcz7xghfa48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fgk+Y4bv; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=maItTNNKySmDZesXkqexGkLLxRwnQ8qMpmWVcxGeLobQ5MnMRLwB31E09n1F/AqijRfedvTDMKf9YjVrOp42b/BUWdUFbkr3zPKsq/al/1V7QWRD7uhmSX47UxkERQmcKdOD7A88ktbv/UhzNzOvQkPVT/HMG2BwgyI+GukoYT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W1vKjvQW; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fgk+Y4bv"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbb467e56aaso1760691a12.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W1vKjvQW"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486ffba174so2723305b3a.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785540779; x=1786145579; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785541117; x=1786145917; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=8/b1huLAEdiKYHbWYUwfN/XZnmcBk/ZLpbBd8pgF/SE=;
-        b=fgk+Y4bvva3BMtU4tIH1kM66mbRCYtM8Bg2dPRChe14j5kVr0u86mcpHjdxzxmDAhV
-         f7vn9ECkcG2UmHM26vC3fnPIcSyhnCkwiFkELGQY/cRL5zU/C2a+iq/iiE1Wm9Rnl281
-         /3gckBJ7xh4faEhLhwBMbB2ZzFe8OrNdYq5eMsKOGuXOyhUl8dJfxywL6s89BKBn4g7j
-         ji+Ffi4vTp5cno3pv41Z5N1+JKUvNiI4G2L2JCztABMWDK8Z03U1Va2KNTqWJZWLZb1T
-         1SdfKPR2Q8jYti6SE5+zLiBupHAFTUtm96f1LhbVLZ/EbXTWWh3JQbZ6KyI8DCsgPkrx
-         bdYw==
+        bh=dmKsJOviftvACUGPABBN88S+tJ91thYPhBWQcoJdx18=;
+        b=W1vKjvQWU2LANf0hil7JAJKIzwtCO2qQsxWxRYPJFktMEYoEosVjNuPvQOlgo+yN9/
+         9Efpz3ACwONT5oj34ijQIr2zrNOzFUt4rGxNkk60pwlO+u7i7ffdexxCEMoAu5wHU8V3
+         zSYEsX3fR7iSQ3V2wDi6NUbH1MML9uI9P+KstO/dBj6nLwyJMr1hj0fLNUxQOqvAp3iY
+         +2MOL7MJnmK0fI8Qg2svBwS8be/XAIq3dym2AI6Bojk/7SaU4IG0ju0nN+ulP7vGKdGA
+         s662rLvG7wrLlDQYX7IxYNoaznEWfUsgM2VTbRVLusuNNfL6/ngs6/HhtedAOSKMdZoc
+         guHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785540779; x=1786145579;
+        d=1e100.net; s=20251104; t=1785541117; x=1786145917;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8/b1huLAEdiKYHbWYUwfN/XZnmcBk/ZLpbBd8pgF/SE=;
-        b=H6Vcg7M2CH+Vi9IGS515V8o2TJmZs0SWTOUK8RyICvl2aj/274RQQTXcrUYKEch8Ek
-         YvvFqgitMSLRruRvreTWnxybUqbo9QgEYTlRdKxEeYR13QZkaHhz1BTPiieW2j8TMHNA
-         G6Ztefp+YPDwAqGVAi3XeMU5JxTmfZnsuXaCEAXtyZVNonhByjz3hYwzemqtry/5RN+n
-         bdaIQSCdWcPwco2PZcZ0VW5Wn6Eg5MngvunIOPrCd8Mdoj/GPDGydWk49cvq+sHWxPxW
-         FCu11L6HCRsQCOE/7FULUPs9FM4Z3vI6eDhV/Wn7j27DST12rnLa+BRCRZUXVu6jHjx5
-         a53Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrMT/vaZzEpO+cPzhrF2TfDj764KQsbQdOOJ12Xyij21KjZMUp5SpkghX7hAKSXINW9VoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyM31YT4mz2n4QJcg1InOT8CJMmryv1Pp+rH40Q8Q7Qi5zu7RhJ
-	EkiEDAcKrDsnCnMrChX7vzN7chb7Ki5m8q78WAijfoffMfPIYgAsILrZ73G8qeNCz/Jtrw+Iovq
-	h3GkJWA==
-X-Received: from pgbs63.prod.google.com ([2002:a63:5e42:0:b0:cbb:5dd3:9904])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:9e0e:b0:3c0:9c18:d5a7
- with SMTP id adf61e73a8af0-3c92a8d8717mr1547928637.68.1785540778920; Fri, 31
- Jul 2026 16:32:58 -0700 (PDT)
-Date: Fri, 31 Jul 2026 16:32:58 -0700
-In-Reply-To: <20260728144954.355376-34-dwmw2@infradead.org>
+        bh=dmKsJOviftvACUGPABBN88S+tJ91thYPhBWQcoJdx18=;
+        b=cqH9vC8fMP0TLKaNJYUdixNthsFQn5Cz6nTs+ByimZ8NiRez9MNLlNkVyJRvUAb5d0
+         prlSSiCAPDiVZSMx1xAOOXDj74/115zNYo7l9Gm17wahvf9DNoHyQlNfJIs2VzxuxyuG
+         sbklZ2yIDiYpluNc2cZreTvW/P3waBHOmHQRBp51Ad4MDiUUsRNTpaxnUCT1NCJbBYL0
+         yD+oTXcWfyFyeLUbrTlTC8QwgWEzDnnyQVFKiRCpbHbjAzOqRtTJpdq+qehL8uHzqMpR
+         vbvTdmxH51dYyTjeRtsQWiFz0kAK19vRXWF4A7NvZbtF6P/eCeBv00z9k6+hy5D3uCGR
+         QxNA==
+X-Forwarded-Encrypted: i=1; AHgh+RpQu6EYlDd9A4BJAMWs1ecb5euQqsnTkpChTDn+eMUWKfgqJLRCrl1rVwa64y8RI1x3pBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzRuyyq+zXcIizin5meDLcyLNAXGLWZS8GyD9Fi/qd+RoSV1rq
+	r0UvOL56e7w36llnYg2HW1GyY1eyVmEbY6+rgtReqdq2SsvCMPUbe3Eg1/jDMbyyvjh7awDkM1J
+	MdG3LUQ==
+X-Received: from pful5.prod.google.com ([2002:a05:6a00:1405:b0:847:a85b:6c23])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c8f:b0:847:8b0f:2508
+ with SMTP id d2e1a72fcca58-84ee47789c4mr1324782b3a.13.1785541116639; Fri, 31
+ Jul 2026 16:38:36 -0700 (PDT)
+Date: Fri, 31 Jul 2026 16:38:36 -0700
+In-Reply-To: <20260728144954.355376-35-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-34-dwmw2@infradead.org>
-Message-ID: <am0wquLHtd28syfx@google.com>
-Subject: Re: [PATCH v7 33/36] KVM: selftests: Add KVM/PV clock selftest to
- prove timer correction
+References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-35-dwmw2@infradead.org>
+Message-ID: <am0x_ORC0olomizu@google.com>
+Subject: Re: [PATCH v7 34/36] KVM: selftests: Add master clock offset test
 From: Sean Christopherson <seanjc@google.com>
 To: David Woodhouse <dwmw2@infradead.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -79,236 +78,148 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-> +int main(int argc, char *argv[])
-> +{
-> +	static const struct option long_opts[] =3D {
-> +		{ "sleep", required_argument, NULL, 's' },
-> +		{ "help",  no_argument,       NULL, 'h' },
-> +		{ NULL,    0,                  NULL,  0  },
-> +	};
-> +	unsigned int sleep_sec =3D 2;
-> +	struct kvm_vcpu *vcpu;
-> +	struct kvm_vm *vm;
-> +	uint64_t host_khz;
-> +	uint64_t freq;
-> +	int opt;
+On Tue, Jul 28, 2026, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>=20
+> Verify that KVM master clock mode remains active when vCPUs have
+> different TSC offsets but the same frequency. Creates three vCPUs,
+> sets one to a different TSC value, and confirms:
+>=20
+>  - KVM_CLOCK_HOST_TSC is set (master clock active)
+>  - KVM_CLOCK_TSC_STABLE IS set (master clock =E2=87=92 stable flag)
+>  - PVCLOCK_TSC_STABLE_BIT is NOT set (offsets differ)
+>=20
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> Assisted-by: Kiro (claude-opus-4.6-1m)
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../kvm/x86/masterclock_offset_test.c         | 180 ++++++++++++++++++
+>  2 files changed, 181 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/x86/masterclock_offset_te=
+st.c
+>=20
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
+ftests/kvm/Makefile.kvm
+> index 95539deea266..f6027a35f790 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -108,6 +108,7 @@ TEST_GEN_PROGS_x86 +=3D x86/pmu_event_filter_test
+>  TEST_GEN_PROGS_x86 +=3D x86/private_mem_conversions_test
+>  TEST_GEN_PROGS_x86 +=3D x86/private_mem_kvm_exits_test
+>  TEST_GEN_PROGS_x86 +=3D x86/pvclock_test
+> +TEST_GEN_PROGS_x86 +=3D x86/masterclock_offset_test
+
+Keep these sorted alphabetically.
+
+>  TEST_GEN_PROGS_x86 +=3D x86/pvclock_migration_test
+>  TEST_GEN_PROGS_x86 +=3D x86/set_boot_cpu_id
+>  TEST_GEN_PROGS_x86 +=3D x86/set_sregs_test
+> diff --git a/tools/testing/selftests/kvm/x86/masterclock_offset_test.c b/=
+tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> new file mode 100644
+> index 000000000000..88e2bd2edab5
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/masterclock_offset_test.c
+> @@ -0,0 +1,180 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Test that KVM master clock mode works with different TSC offsets
+> + * as long as all vCPUs have the same TSC frequency.
+> + */
+> +#include <stdint.h>
+> +#include <string.h>
 > +
-> +	while ((opt =3D getopt_long(argc, argv, "s:h", long_opts, NULL)) !=3D -=
-1) {
-> +		switch (opt) {
-> +		case 's':
-> +			sleep_sec =3D atoi(optarg);
-> +			break;
-> +		case 'h':
-> +		default:
-> +			usage(argv[0]);
-> +			return opt =3D=3D 'h' ? 0 : 1;
-> +		}
-> +	}
+> +#include "test_util.h"
+> +#include "kvm_util.h"
+> +#include "processor.h"
+> +
+> +#include <asm/pvclock-abi.h>
+> +
+> +#define KVMCLOCK_GPA	0xc0000000ull
+> +#define TSC_OFFSET	(1000000000ULL)
+> +
+> +static uint64_t pvclock_calc(struct pvclock_vcpu_time_info *pvti, uint64=
+_t guest_tsc)
+> +{
+> +	uint64_t delta =3D guest_tsc - pvti->tsc_timestamp;
+> +
+> +	if (pvti->tsc_shift >=3D 0)
+> +		delta <<=3D pvti->tsc_shift;
+> +	else
+> +		delta >>=3D -(int)pvti->tsc_shift;
+> +
+> +	return pvti->system_time + ((__uint128_t)delta * pvti->tsc_to_system_mu=
+l >> 32);
+> +}
+> +
+> +static void guest_code(void)
+> +{
+> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, KVMCLOCK_GPA | KVM_MSR_ENABLED);
+> +	for (;;)
+> +		GUEST_SYNC(0);
+> +}
+> +
+> +int main(void)
+> +{
+> +	struct kvm_vcpu *vcpus[3];
+> +	struct kvm_clock_data clock;
+> +	struct pvclock_vcpu_time_info pvti[3];
+> +	struct kvm_vm *vm;
+> +	uint64_t offset0, host_tsc, clk0, clk2;
+> +	int i;
 > +
 > +	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_TSC_CONTROL));
 > +
-> +	vm =3D vm_create_with_one_vcpu(&vcpu, guest_code);
-> +	configure_pvclock(vm);
+> +	vm =3D vm_create_with_vcpus(3, guest_code, vcpus);
 > +
-> +	/* Check KVM_GET_CLOCK_GUEST is supported */
-> +	{
-> +		struct pvclock_vcpu_time_info tmp;
-> +		int ret =3D __vcpu_ioctl(vcpu, KVM_GET_CLOCK_GUEST, &tmp);
-> +		TEST_REQUIRE(ret =3D=3D 0);
+> +	TEST_REQUIRE(!__vcpu_has_device_attr(vcpus[0], KVM_VCPU_TSC_CTRL,
+> +					     KVM_VCPU_TSC_OFFSET));
+> +
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
+> +				    KVMCLOCK_GPA, 1,
+> +				    vm_calc_num_guest_pages(VM_MODE_DEFAULT,
+> +							   getpagesize()), 0);
+> +	virt_map(vm, KVMCLOCK_GPA, KVMCLOCK_GPA,
+> +		 vm_calc_num_guest_pages(VM_MODE_DEFAULT, getpagesize()));
+> +
+> +	/* Get vCPU 0's default offset and set vCPU 2's offset higher */
+> +	vcpu_device_attr_get(vcpus[0], KVM_VCPU_TSC_CTRL,
+> +			     KVM_VCPU_TSC_OFFSET, &offset0);
+> +	uint64_t offset2 =3D offset0 + TSC_OFFSET;
+> +	vcpu_device_attr_set(vcpus[2], KVM_VCPU_TSC_CTRL,
+> +			     KVM_VCPU_TSC_OFFSET, &offset2);
+> +
+> +	/* Run each vCPU to enable kvmclock (with offset already set) */
+> +	for (i =3D 0; i < 3; i++) {
 
-It will likely be a moot point since we should have a CAP, but don't do TES=
-T_REQUIRE()
-on a local variable like this, it completely defeates the purpose of the ma=
-cro
-shenanigans.  Becuase this:
+ARRAY_SIZE(vcpus)
 
-  1..0 # SKIP - Requirement not met: ret =3D=3D 0
-
-is useless information, whereas this:
-
-  1..0 # SKIP - Requirement not met: !__vcpu_ioctl(vcpu, KVM_GET_CLOCK_GUES=
-T, &tmp)
-
-gives the user a starting point without having to go search through the tes=
-t code.
-
+> +		vcpu_run(vcpus[i]);
+> +		TEST_ASSERT_KVM_EXIT_REASON(vcpus[i], KVM_EXIT_IO);
 > +	}
+> +
+> +	/* Check master clock is active */
+> +	memset(&clock, 0, sizeof(clock));
+> +	vm_ioctl(vm, KVM_GET_CLOCK, &clock);
 
-...
+Provide an API.
 
-> +static volatile uint32_t vcpu_counter;
-> +static void guest_code_stable_bit(void)
-> +{
-> +	uint32_t idx =3D __atomic_fetch_add(&vcpu_counter, 1, __ATOMIC_SEQ_CST)=
-;
-> +	uint64_t gpa =3D KVMCLOCK_GPA + idx * sizeof(struct pvclock_vcpu_time_i=
-nfo);
+> +	pr_info("KVM_GET_CLOCK flags: 0x%x\n", clock.flags);
+> +	TEST_ASSERT(clock.flags & KVM_CLOCK_HOST_TSC,
+> +		    "Master clock should be active, flags=3D0x%x", clock.flags);
+> +	TEST_ASSERT(clock.flags & KVM_CLOCK_TSC_STABLE,
+> +		    "KVM_CLOCK_TSC_STABLE should be set, flags=3D0x%x", clock.flags);
+> +
+> +	/* Get per-vCPU pvclock in order 0, 2, 1 */
+> +	int order[] =3D {0, 2, 1};
 
-This series needs to be updated to catch up to upstream.  Selftests now use
-u32, u64, etc.  And at least one patch missed an obvious opportunity for gu=
-ard().=20
+Please don't declare variables in the middle code.  Yes, it's now technical=
+ly
+possible thanks to all the guard() magic, but it's still against preferred =
+kernel
+style.
 
-> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, gpa | KVM_MSR_ENABLED);
-> +	GUEST_SYNC(0);
-> +	GUEST_SYNC(0);
-> +	GUEST_SYNC(0);
-> +}
-> +
-> +static void set_tsc_offset(struct kvm_vcpu *vcpu, uint64_t offset)
-> +{
-> +	struct kvm_device_attr attr =3D {
-> +		.group =3D KVM_VCPU_TSC_CTRL,
-> +		.attr =3D KVM_VCPU_TSC_OFFSET,
-> +		.addr =3D (__u64)(uintptr_t)&offset,
-> +	};
-> +
-> +	TEST_REQUIRE(__vcpu_has_device_attr(vcpu, KVM_VCPU_TSC_CTRL,
-> +					    KVM_VCPU_TSC_OFFSET) =3D=3D 0);
-> +	vcpu_ioctl(vcpu, KVM_SET_DEVICE_ATTR, &attr);
-
-This quite clearly belongs in library code.
-
-> +}
-> +
-> +static void run_vcpu_once(struct kvm_vcpu *vcpu)
-> +{
-> +	struct ucall uc;
-> +
-> +	vcpu_run(vcpu);
-> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-> +	switch (get_ucall(vcpu, &uc)) {
-> +	case UCALL_ABORT:
-> +		REPORT_GUEST_ASSERT(uc);
-
-Gah, we really need to have vcpu_run() handle guest asserts.
-
-> +		break;
-> +	case UCALL_SYNC:
-> +		break;
-> +	default:
-> +		TEST_FAIL("Unexpected ucall");
-> +	}
-> +}
-> +
-> +static void test_tsc_stable_bit(void)
-> +{
-> +	struct pvclock_vcpu_time_info pvti;
-> +	struct kvm_vcpu *vcpus[2];
-> +	struct kvm_vm *vm;
-> +	int ret;
-> +
-> +	pr_info("Testing PVCLOCK_TSC_STABLE_BIT with matched/unmatched TSCs\n")=
-;
-> +
-> +	vm =3D vm_create_with_vcpus(2, guest_code_stable_bit, vcpus);
-> +	configure_pvclock(vm);
-> +
-> +	/*
-> +	 * Case 1: All TSCs matched (same frequency and offset).
-> +	 * Master clock should be active, PVCLOCK_TSC_STABLE_BIT set.
-> +	 */
-> +	run_vcpu_once(vcpus[0]);
-> +
-> +	ret =3D __vcpu_ioctl(vcpus[0], KVM_GET_CLOCK_GUEST, &pvti);
-> +	TEST_ASSERT(!ret, "GET_CLOCK_GUEST should succeed with matched TSCs");
-> +	TEST_ASSERT(pvti.flags & PVCLOCK_TSC_STABLE_BIT,
-> +		    "PVCLOCK_TSC_STABLE_BIT should be set with matched TSCs");
-> +
-> +	/*
-> +	 * Case 2: Different TSC offset, same frequency.
-> +	 * Master clock should still be active (frequency matches), but
-> +	 * PVCLOCK_TSC_STABLE_BIT should be cleared (offsets differ).
-> +	 */
-> +	set_tsc_offset(vcpus[1], 12345678);
-> +	run_vcpu_once(vcpus[1]);
-> +	run_vcpu_once(vcpus[0]);
-> +
-> +	ret =3D __vcpu_ioctl(vcpus[0], KVM_GET_CLOCK_GUEST, &pvti);
-> +	if (ret) {
-> +		/* Master clock disabled by offset mismatch =E2=80=94 old kernel */
-> +		pr_info("  Skipping offset tests (master clock requires matched offset=
-s)\n");
-> +		goto out_stable;
-> +	}
-> +	TEST_ASSERT(!(pvti.flags & PVCLOCK_TSC_STABLE_BIT),
-> +		    "PVCLOCK_TSC_STABLE_BIT should be clear with offset-mismatched TSC=
-s");
-> +
-> +	/*
-> +	 * Case 3: Different TSC frequency.
-> +	 * Master clock should be disabled entirely.
-> +	 */
-> +	vcpu_ioctl(vcpus[1], KVM_SET_TSC_KHZ,
-> +		   (void *)(unsigned long)(__vcpu_ioctl(vcpus[1], KVM_GET_TSC_KHZ, NUL=
-L) / 2));
-> +	/* Write TSC to trigger kvm_synchronize_tsc / kvm_track_tsc_matching */
-> +	vcpu_set_msr(vcpus[1], MSR_IA32_TSC, 0);
-> +	run_vcpu_once(vcpus[1]);
-> +
-> +	ret =3D __vcpu_ioctl(vcpus[0], KVM_GET_CLOCK_GUEST, &pvti);
-> +	TEST_ASSERT(ret && errno =3D=3D EINVAL,
-> +		    "GET_CLOCK_GUEST should fail with frequency-mismatched TSCs, got %=
-d (errno %d)",
-> +		    ret, errno);
-> +
-> +out_stable:
-> +	kvm_vm_free(vm);
-> +}
-> +
-> +static void test_clock_guest_with_offsets(void)
-> +{
-> +	struct pvclock_vcpu_time_info pvti0, pvti1, pvti1_after;
-> +	struct kvm_vcpu *vcpus[2];
-> +	struct kvm_vm *vm;
-> +	int64_t delta;
-> +	int ret;
-> +
-> +	pr_info("Testing KVM_[GS]ET_CLOCK_GUEST with different TSC offsets\n");
-> +
-> +	vm =3D vm_create_with_vcpus(2, guest_code_stable_bit, vcpus);
-> +	configure_pvclock(vm);
-> +
-> +	/* Set different TSC offsets on the two vCPUs */
-> +	set_tsc_offset(vcpus[0], 0);
-> +	set_tsc_offset(vcpus[1], 1000000000ull);
-> +
-> +	/* Run both to establish kvmclock */
-> +	run_vcpu_once(vcpus[0]);
-> +	run_vcpu_once(vcpus[1]);
-> +
-> +	/* GET_CLOCK_GUEST on both =E2=80=94 should succeed (master clock activ=
-e) */
-> +	ret =3D __vcpu_ioctl(vcpus[0], KVM_GET_CLOCK_GUEST, &pvti0);
-> +	if (ret) {
-> +		pr_info("  Skipping (master clock requires matched offsets on this ker=
-nel)\n");
-> +		kvm_vm_free(vm);
-> +		return;
-> +	}
-> +	ret =3D __vcpu_ioctl(vcpus[1], KVM_GET_CLOCK_GUEST, &pvti1);
-> +	TEST_ASSERT(!ret, "GET_CLOCK_GUEST on vcpu1 failed");
-> +
-> +	/* The tsc_timestamps should differ (different offsets) */
-> +	TEST_ASSERT(pvti0.tsc_timestamp !=3D pvti1.tsc_timestamp,
-> +		    "tsc_timestamps should differ with different offsets");
-> +
-> +	/* Sleep to let time elapse, then restore vcpu0's clock */
-> +	sleep(1);
-> +	vcpu_ioctl(vcpus[0], KVM_SET_CLOCK_GUEST, &pvti0);
-> +
-> +	/* Run vcpu0 to process the clock update */
-> +	run_vcpu_once(vcpus[0]);
-> +
-> +	/* GET_CLOCK_GUEST on vcpu1 =E2=80=94 should reflect the correction */
-> +	ret =3D __vcpu_ioctl(vcpus[1], KVM_GET_CLOCK_GUEST, &pvti1_after);
-> +	TEST_ASSERT(!ret, "GET_CLOCK_GUEST on vcpu1 after SET failed");
-
-Please add proper APIs instead of copy+pasting the same code everywhere.  E=
-.g.
-this should really be something like
-
-	vcpu_get_clock_guest(vcpus[1], ...);
-
-where vcpu_ioctl() asserts success.
+Though this itself is probably a really, really good indication that this n=
+eeds
+to be split into multiple testcases.  Maybe using TEST_F() and a custom fix=
+ture?
