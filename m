@@ -1,183 +1,214 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from esa2.hc1455-7.c3s2.iphmx.com (esa2.hc1455-7.c3s2.iphmx.com [207.54.90.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD38286A4;
-	Fri, 31 Jul 2026 00:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685062C0F6D;
+	Fri, 31 Jul 2026 00:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.54.90.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785459025; cv=none; b=s4H9MXOnn6681hrIVdBqY7qZMXTeCSMdjCUZ47YBvrWRKGUPu6XMkdKscWf1/uvx/cKacXK+ua1EyCVP49oC1wbxSqKelhWkcfRbYkeHFs6WZqPuxfXNqRmMwLwBjUR25owSg/27TZB4GWsFYJydpluMTdQXcsYb/SFAcZqn+ec=
+	t=1785459448; cv=none; b=u/Qyy/4J9eDY9rePBzki0sg5BqeYb6aIOaUWWeRZMKfR93jgNZbI+p338WWq5eNVuzskOyiSYIWMrmODXzRUU4V1PBVkr8dG3dG1DAJbx2SmCAWE4wnmXq7kDBhYecDQBCVqSIxuCRaV4Ux4Xs8QZWRPnBE+9N8HjZBqCYCltAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785459025; c=relaxed/simple;
-	bh=GQgUCicHeFn563f1WIJfLzxhTUk47BUk/CIQaaBqbss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f+YOvY/epC8hpE43hHhaRLMVs8oM7zUexNQ7SVBkwYt1dRsy3TaThiFHzqdmgR5zRv392k8uOvAbWPN3utTdFs4FqWLjrDaSasVbV2fywMiP6+bkrWsctTBoJSSYL6RkhbfC7pciJyyMejFbZDS6+HlDfc4Q4ga76LGtyn8TkkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dnhW1CWv; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1785459448; c=relaxed/simple;
+	bh=CldFfWlOgnf4zC1U/6YI+wfPKxwfum0uI/0Ov2QKXAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jx33zKOMDqLe7ABfawYKFX/WLxTUXw4TaF2BgpHlhlC0PN+fcrTH/PnhztVDFy/RxuM13e7c7MKG9Y/oFGVwNHnRzcEMbl7PxwTVtv0sbPAm+SpbHR4CMl8B3ulYy1h/Cv39tiMVH11gE6oTNN5DsC3+qd8+7nHTlsD6v0ZWqOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=SthFqsNr; arc=none smtp.client-ip=207.54.90.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dnhW1CWv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785459022; x=1816995022;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GQgUCicHeFn563f1WIJfLzxhTUk47BUk/CIQaaBqbss=;
-  b=dnhW1CWvz8g4y3tPep24pPCeQxbE/FCpU0crBDOXwxSnm+8KQZ1OIg8S
-   mVnu3Rzpv8zCTgEGUUNy0/VH3FjEQjVbAuOfNjLI7+NtdjU0PxlvTVps6
-   dZ6XUNZXFprnYQ/pLY8u15SE2s7YZpKyZaotPLnHDivHZ4AqJAWSDXcBH
-   r6oUKox0GnGUEhYkXuWaqT02Z0r3btXRA8/oPvLuTHP4As29dgwsnFShu
-   FYD0ayXeiKbajgaKm/2ai/+Zie/nHtD6KueU/xcLfGjML64Sf0znF/IXF
-   YH15tzdr+B/OrphJgro0i6LzZAfDW4CxntC9ktXleMC/S4LiqLxbH7cJ9
-   A==;
-X-CSE-ConnectionGUID: 8JrIWgDFQwujRYaPVQi9xQ==
-X-CSE-MsgGUID: lw+YpBaXRzqAlgPDWQl1xA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86036746"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="86036746"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 17:50:22 -0700
-X-CSE-ConnectionGUID: YsInxz/dSduRH1Ns6TmKyQ==
-X-CSE-MsgGUID: ktw/BC8qS7mH2qkgjPsPNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; 
-   d="scan'208";a="265506980"
-Received: from ylu48-mobl1.ccr.corp.intel.com (HELO [10.124.241.239]) ([10.124.241.239])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2026 17:50:20 -0700
-Message-ID: <b96073d4-6e6e-4188-bcee-5ff0feeebc96@linux.intel.com>
-Date: Fri, 31 Jul 2026 08:50:17 +0800
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="SthFqsNr"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1785459447; x=1816995447;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CldFfWlOgnf4zC1U/6YI+wfPKxwfum0uI/0Ov2QKXAc=;
+  b=SthFqsNrdC4TSUKVseiQWaUI1DmyJFQoUS+/YExYacfh0Hn6DqMTGC6y
+   vtZ6qVkhGNJW9YyTeuGLAsaGaKHAXlk8Gtp2f8e2/VkhyQKPGZgVOHji0
+   jfb4F18k+aRb4KEg3ukPHyvDxWl3vD4xVT//6d4JE45+OL3ijvNhs7U0T
+   aIxAkp8G3MEPC5zAOfC/gBpW9aGDeNuhhfn+EHUxvXeVCSlLD6RSoJZHm
+   YnrHf8mCnCPLB1TfVO0LmXIZLmBf+K/f5RTHWaufhDaAeZmaj8REA+gq3
+   I11FJzu0eiLw/S3AqYSUl/9de+dghFVQYJPk7ic+OclC0a2p18VYSWT/i
+   Q==;
+X-CSE-ConnectionGUID: 9Hdz9qYBTCKM520if+XmcQ==
+X-CSE-MsgGUID: MINhh676SfaMpG1RezmtMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="249190708"
+X-IronPort-AV: E=Sophos;i="6.25,195,1779116400"; 
+   d="scan'208";a="249190708"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 09:57:20 +0900
+Received: from az2nlsmgm4.fujitsu.com (unknown [10.150.26.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 038F810000C5;
+	Fri, 31 Jul 2026 00:57:19 +0000 (UTC)
+Received: from az2nlsmom2.o.css.fujitsu.com (unknown [10.150.26.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm4.fujitsu.com (Postfix) with ESMTPS id A717C10214D1;
+	Fri, 31 Jul 2026 00:57:18 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.9.24.243])
+	by az2nlsmom2.o.css.fujitsu.com (Postfix) with SMTP id 21DD11800D71;
+	Fri, 31 Jul 2026 00:57:08 +0000 (UTC)
+Date: Fri, 31 Jul 2026 09:57:06 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
+	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 14/37] KVM: arm64: CCA: Handle realm enter/exit
+Message-ID: <amvx9kxuc6FTkJC4@FCCLS0092175.localdomain>
+References: <20260715142841.80544-1-steven.price@arm.com>
+ <20260715142841.80544-15-steven.price@arm.com>
+ <amcOp7tpRCkI29vt@FCCLS0092175.localdomain>
+ <08599315-2dd3-4602-a902-09b197265b44@arm.com>
+ <763eb5db-e9af-4b3a-b05b-746700cf0304@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 7/9] KVM: x86/pmu: Restrict RDPMC passthrough to known
- CPUs
-To: "Chen, Zide" <zide.chen@intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Jim Mattson <jmattson@google.com>,
- Andi Kleen <ak@linux.intel.com>, linux-kernel@vger.kernel.org,
- Mingwei Zhang <mizhang@google.com>, Das Sandipan <Sandipan.Das@amd.com>,
- Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260727192131.582105-1-zide.chen@intel.com>
- <20260727192131.582105-8-zide.chen@intel.com>
- <a6481eb0-0480-41f2-97c3-ab5f278f7e50@linux.intel.com>
- <f8f9fc13-fafc-4828-ad5b-79e3677d9536@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <f8f9fc13-fafc-4828-ad5b-79e3677d9536@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <763eb5db-e9af-4b3a-b05b-746700cf0304@arm.com>
 
+On 07/30 15:57, Suzuki K Poulose wrote:
+> On 30/07/2026 14:58, Steven Price wrote:
+> > On 27/07/2026 09:14, Kohei Enju wrote:
+> > > Hi Steven, I have a comment about rec_exit_sys_reg() below.
+> > > 
+> > > On 07/15 15:28, Steven Price wrote:
+> > > > Entering a realm is done using a SMC call to the RMM. On exit the
+> > > > exit-codes need to be handled slightly differently to the normal KVM
+> > > > path so define our own functions for realm enter/exit and hook them
+> > > > in if the guest is a realm guest.
+> > > > 
+> > > > Signed-off-by: Steven Price <steven.price@arm.com>
+> > > > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > ---
+> > > > Changes since v13:
+> > > >   * The RMM is now required to provide an ESR value with the correct
+> > > >     information to emulate MMIO, so we no longer need to hardcode 0s in
+> > > >     rec_exit_sys_reg().
+> > > >   * The PSCI changes mean that there is a potential race when turning on
+> > > >     a VCPU which can cause a RMI_ERROR_REC return. Exit to user space
+> > > >     with -EAGAIN in this case.
+> > > > Changes since v12:
+> > > >   * Call guest_state_{enter,exit}_irqoff() around rmi_rec_enter().
+> > > >   * Add handling of the IRQ exception case where IRQs need to be briefly
+> > > >     enabled before exiting guest timing.
+> > > > Changes since v8:
+> > > >   * Introduce kvm_rec_pre_enter() called before entering an atomic
+> > > >     section to handle operations that might require memory allocation
+> > > >     (specifically completing a RIPAS change introduced in a later patch).
+> > > >   * Updates to align with upstream changes to hpfar_el2 which now (ab)uses
+> > > >     HPFAR_EL2_NS as a valid flag.
+> > > >   * Fix exit reason when racing with PSCI shutdown to return
+> > > >     KVM_EXIT_SHUTDOWN rather than KVM_EXIT_UNKNOWN.
+> > > > Changes since v7:
+> > > >   * A return of 0 from kvm_handle_sys_reg() doesn't mean the register has
+> > > >     been read (although that can never happen in the current code). Tidy
+> > > >     up the condition to handle any future refactoring.
+> > > > Changes since v6:
+> > > >   * Use vcpu_err() rather than pr_err/kvm_err when there is an associated
+> > > >     vcpu to the error.
+> > > >   * Return -EFAULT for KVM_EXIT_MEMORY_FAULT as per the documentation for
+> > > >     this exit type.
+> > > >   * Split code handling a RIPAS change triggered by the guest to the
+> > > >     following patch.
+> > > > Changes since v5:
+> > > >   * For a RIPAS_CHANGE request from the guest perform the actual RIPAS
+> > > >     change on next entry rather than immediately on the exit. This allows
+> > > >     the VMM to 'reject' a RIPAS change by refusing to continue
+> > > >     scheduling.
+> > > > Changes since v4:
+> > > >   * Rename handle_rme_exit() to handle_rec_exit()
+> > > >   * Move the loop to copy registers into the REC enter structure from the
+> > > >     to rec_exit_handlers callbacks to kvm_rec_enter(). This fixes a bug
+> > > >     where the handler exits to user space and user space wants to modify
+> > > >     the GPRS.
+> > > >   * Some code rearrangement in rec_exit_ripas_change().
+> > > > Changes since v2:
+> > > >   * realm_set_ipa_state() now provides an output parameter for the
+> > > >     top_iap that was changed. Use this to signal the VMM with the correct
+> > > >     range that has been transitioned.
+> > > >   * Adapt to previous patch changes.
+> > > > ---
+> > > > 
+> > > > [...]
+> > > > 
+> > > > +static int rec_exit_sys_reg(struct kvm_vcpu *vcpu)
+> > > > +{
+> > > > +	struct realm_rec *rec = &vcpu->arch.rec;
+> > > > +	unsigned long esr = kvm_vcpu_get_esr(vcpu);
+> > > > +	int rt = kvm_vcpu_sys_get_rt(vcpu);
+> > > > +	bool is_write = (esr & ESR_ELx_SYS64_ISS_DIR_MASK) == ESR_ELx_SYS64_ISS_DIR_WRITE;
+> > > > +	int ret;
+> > > > +
+> > > > +	if (is_write)
+> > > > +		vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> > > 
+> > > When rt is 31 (XZR), does exit.gprs[rt] trigger an out-of-bounds read
+> > > since REC_RUN_GPRS is 31? Although the padding after the gprs means this
+> > > OOB may not cause any practical issue, would it make sense to skip the
+> > > access when rt is 31?
+> > > 
+> 
+> RMM mandates that the ESR_ELx.ISS.RT == 0 on an exit due to System register
+> access. See "A4.3.4.4 REC exit due to System register access"
+> 
+> So this shouldn't be a problem, but doesn't hurt to defend the host
+> against a malicious RMM ?
 
-On 7/30/2026 11:05 PM, Chen, Zide wrote:
->
-> On 7/29/2026 9:51 PM, Mi, Dapeng wrote:
->> On 7/28/2026 3:21 AM, Zide Chen wrote:
->>> RDPMC type encodings are vendor-defined and could theoretically be
->>> extended on future CPUs. An unknown RDPMC type could leak host
->>> PMU information to the guest through RDPMC passthrough.
->>>
->>> Rather than assuming future CPUs are safe, explicitly permit only
->>> reviewed CPU models and require RDPMC interception everywhere else.
->>> This ensures RDPMC passthrough is enabled only on CPUs whose RDPMC
->>> encodings are audited and supported by KVM.
->>>
->>> Suggested-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>> Suggested-by: Jim Mattson <jmattson@google.com>
->>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>> ---
->>> v7: new patch.
->>> ---
->>>  arch/x86/kvm/pmu.c | 32 ++++++++++++++++++++++++++++++++
->>>  1 file changed, 32 insertions(+)
->>>
->>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->>> index 51c6d00a485f..092809bd757d 100644
->>> --- a/arch/x86/kvm/pmu.c
->>> +++ b/arch/x86/kvm/pmu.c
->>> @@ -77,6 +77,21 @@ static const struct x86_cpu_id vmx_pebs_pdist_cpu[] = {
->>>  	{}
->>>  };
->>>  
->>> +/*
->>> + * CPUs whose RDPMC encodings have been audited for KVM RDPMC
->>> + * passthrough support.
->>> + */
->>> +static const struct x86_cpu_id kvm_rdpmc_known_cpus[] = {
->>> +	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, NULL),
->>> +	X86_MATCH_VFM(INTEL_LUNARLAKE_M, NULL),
->>> +	X86_MATCH_VFM(INTEL_NOVALAKE, NULL),
->>> +	X86_MATCH_VFM(INTEL_NOVALAKE_L, NULL),
->>> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_L, NULL),
->>> +	X86_MATCH_VFM(INTEL_PANTHERLAKE_R, NULL),
->>> +	X86_MATCH_VFM(INTEL_WILDCATLAKE_L, NULL),
->>> +	{}
->>> +};
->>> +
->>>  /* NOTE:
->>>   * - Each perf counter is defined as "struct kvm_pmc";
->>>   * - There are two types of perf counters: general purpose (gp) and fixed.
->>> @@ -807,6 +822,20 @@ bool kvm_need_perf_global_ctrl_intercept(struct kvm_vcpu *vcpu)
->>>  }
->>>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_need_perf_global_ctrl_intercept);
->>>  
->>> +static bool kvm_rdpmc_encoding_supported(void)
->>> +{
->>> +	/* KVM understands all RDPMC encodings prior to PMU v6. */
->>> +	if (kvm_host_pmu.version < 6)
->> I'm not sure if this works for AMD platforms. Jim said current AMD
->> platforms already have security holes and I believe the PMU version of AMD
->> platforms are less than 6.
->>
->> Need AMD guys to confirm. @Sandipan, @Manali.
->>
->>
->>> +		return true;
->>> +
->>> +	/*
->>> +	 * Future PMU v6 implementations and future PMU versions require RDPMC
->>> +	 * interception until their RDPMC encodings are audited and supported
->>> +	 * by KVM.
->>> +	 */
->>> +	return x86_match_cpu(kvm_rdpmc_known_cpus);
->> x86_match_cpu() returns structure x86_cpu_id pointer or NULL instead of a
->> boolean variable. Better explicitly covert it to a boolean variable.
->>
->> return x86_match_cpu(kvm_rdpmc_known_cpus) != NULL;
-> I think the implicit conversion is valid here. In C99, implicit
-> conversion from a pointer to bool is well-defined, and is commonly used,
-> e.g. if (x86_match_cpu(...)).
->
-> bool is a typedef of _Bool.
->
-> C99 6.3.1.2 "Boolean type":
->
-> When any scalar value is converted to _Bool, the result is 0 if the
-> value compares equal to 0; otherwise the result is 1.
+Ah, I missed that requirement. The changelog and the old RMM
+implementation led me to mistakenly assume tat Rt could be non-zero.
 
-Yeah, the implicit conversion is fine in theory. But the explicit
-conversion seems more intuitionistic for me. Anyway, you can decide which
-way you want. :)
+Then special-casing Rt == 31 doesn't really make sense. So keeping the
+code as it is seems fine to me:)
 
+Thanks,
+Kohei
 
->
->
->>> +}
->>> +
->>>  bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>  {
->>>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
->>> @@ -818,6 +847,9 @@ bool kvm_need_rdpmc_intercept(struct kvm_vcpu *vcpu)
->>>  	if (enable_vmware_backdoor)
->>>  		return true;
->>>  
->>> +	if (!kvm_rdpmc_encoding_supported())
->>> +		return true;
->>> +
->>>  	return kvm_need_any_pmc_intercept(vcpu) ||
->>>  	       pmu->counter_bitmask[KVM_PMC_GP] != (BIT_ULL(kvm_host_pmu.bit_width_gp) - 1) ||
->>>  	       pmu->counter_bitmask[KVM_PMC_FIXED] != (BIT_ULL(kvm_host_pmu.bit_width_fixed) - 1);
->
+> 
+> Suzuki
+> 
+> 
+> 
+> > > if (is_write && rt != 31)
+> > >      vcpu_set_reg(vcpu, rt, rec->run->exit.gprs[rt]);
+> > 
+> > Very true - as you say in practise this isn't a big issue because
+> > vcpu_set_reg() is a no-op, so it's just a read of padding. But
+> > definitely worth fixing.
+> > 
+> > > > +
+> > > > +	ret = kvm_handle_sys_reg(vcpu);
+> > > > +	if (!is_write)
+> > > > +		rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+> > > 
+> > > The same applies here:
+> > > 
+> > > if (!is_write && rt != 31)
+> > >      rec->run->enter.gprs[rt] = vcpu_get_reg(vcpu, rt);
+> > 
+> > And the same here - a zero written into the padding.
+> > 
+> > Thanks for the review!
+> > 
+> > Steve
+> > 
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > 
+> 
