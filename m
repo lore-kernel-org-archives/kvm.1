@@ -1,373 +1,273 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA74357739;
-	Fri, 31 Jul 2026 21:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A512D489880
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785531910; cv=none; b=OmSaSxvU+IHjIl1w/FYX6SRvx1o/G8s4KcJf/se/9zy9GOfIeO1mFzoP8ALoQ2pnqDvJZeNt7zv/xbGW6DUjpboDc1GFT/Ii9pjCuASktHQQdsxIfGcILVmxraQ5qGrpjmrNFOH/ya3GY2/eEsjvML3gpSL31L+15m6QnL+cE5Q=
+	t=1785532937; cv=none; b=eaR5Mx/oyBacvR8j85Gv2EBcdps+mJMcilmZoF9pwV/5aWMlBMJ1ld9XStgB9ut6LkQ6qeUd4CI4A7R1Vxe6FxxRBj0qUcLjXVPXCl402+9wBPJLNIvd+ycHWT6s9NPQs8pN6Vcv9aDk7QLdUr5RXjD6OBlgUyNystHDK8gO3DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785531910; c=relaxed/simple;
-	bh=IB7cjfq/Ti2hStzu97EPkSkIGPTtJMKm6DfaV9MngTk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=bi/iIx7IMJkfxFGdvNWqNV2Z7uXgFj+m8Jb7kCcFePLAewkx/QedIKo8j871ellIVf4k1rk7o16+KJZ4n9URkYwLMGKLhIv5ipdiDDwJ8qvfb5p6Q/Rs+QNS8UW0t9R8pUhUKPqc6cqwqDXo0FaXjot+YmSAXovY2klsXgmhoIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASz5lEyW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785532937; c=relaxed/simple;
+	bh=61LGxgbwioDhky7KmCpvz9QsqWmStm3Otzwr5zJolHY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cUx0QLu39AsSkcZ/pvOPllrrqaMWQtSS7ChRbwHC/tDmg1ymCbVZMcduBUsMuZAv3jZZjF+yEXFFnkwr1irvBE0XHSfdINanuxGPZsOl8j1IvLkTiVTt38zE0H45rM9PfdH7xDZD7X2eeP8wJff/uUVJzCrGoUiTQZ5+NjCQmZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=HT6OU2r0; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASz5lEyW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B010E1F00ACF;
-	Fri, 31 Jul 2026 21:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785531908;
-	bh=JtMKNzJTI+uCVgkjTRgphz8WNm4MH4HgItmshCKTVcc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=ASz5lEyWHccui+JC+tz6SUDwa73tWQP3GgCUMoUZt9S0I6PqoePYURwjR2ETqakcn
-	 zc8QOlgVoUfgwLJw0LEk7syZL+DuCwtMJyMHFgVPP2qmx30Uvs6RhY+/aZPdKj4QLT
-	 PfYNMk8CvWJLxUx4SRtDCU71GaiO2qyxGvhEk8HXWdxZRi0OwMFin2/xP5zeExRvip
-	 fjpd6s7z5cQXaFfAE8AcN4+4CBMFc1i8QX50Frh1LdbD6/yMerdN3raQft+ND6WivP
-	 OGMWSXicej38Ppez7fVhPQTIpp9nMCY0xbfUx+htQbbJPIpEo0d0hcCFMgQ9dNqz4V
-	 rdFuHlbk3Rh3w==
-Message-ID: <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
-Date: Fri, 31 Jul 2026 23:04:50 +0200
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="HT6OU2r0"
+Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VKXC4T2186232
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:22:14 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=pFKzXrE9d
+	JCGAaJnRLSJRFbf4ZRBBbauPPLUdV0LPAM=; b=HT6OU2r0MqdmsK4r2Xs76u1e6
+	Gfmyp4XOqdNVpohEkMGck6DZ2qQEUdp4Gw1TvZcYj/toKBMuZ2RMbGkuYQMZYxow
+	D23tXIHhS73DLSrA2bGy7Btr7+kJuSf9dtqu2rHSPeV+7YK+pkH7438cIu+ury3z
+	oHrtIDD3PIOMKOy7J/uaTO9AWjdz0FAKcEtsseji7zxiQi1chvPoK2ha/mYruI65
+	Ve75BdrRn9em0zckEx19Ysdo4NWJWkSg6NC5rWHLTOkqSmcsjO8PFjpFB1vrZbKe
+	QW+T7RM/1eRzpspOOhQsBLNWvn9qHErSB4QdvfiMmNJT5tmaiyupfT/jae5Jw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4fs0dsh67u-7
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 14:22:14 -0700 (PDT)
+Received: from twshared22813.02.snb2.facebook.com (2620:10d:c0a8:1b::2d) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.45; Fri, 31 Jul 2026 21:22:10 +0000
+Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
+	id 2B8DE43C24DD7; Fri, 31 Jul 2026 14:16:01 -0700 (PDT)
+From: Zhiping Zhang <zhipingz@meta.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Michael
+ Guralnik <michaelgur@nvidia.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Christian Konig <christian.koenig@amd.com>,
+        Alex Williamson
+	<alex@shazbot.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC: <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        Zhiping Zhang
+	<zhipingz@meta.com>
+Subject: [PATCH v13 0/5] vfio/dma-buf: add TPH support for peer-to-peer access
+Date: Fri, 31 Jul 2026 14:15:47 -0700
+Message-ID: <20260731211601.3033906-1-zhipingz@meta.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- "hughd@google.com" <hughd@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
- <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org>
- <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org>
- <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
- <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
- <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDE2MiBTYWx0ZWRfXzdFK4DcN2jDD
+ 2zAOGaUCI2f4UYhFBkUL5Cb5x1lhRUEmgChbQVF4XS81KRvHLQi8X/6d6zWiXvQbsymchTAsUox
+ PgwhpBxmppTlQpeAqZaz5g0StW1yVkQt/KEmFmsigxCC1S7xFQJfG/tPY+ToUj3bNHHNJj/FZWG
+ EYUOJrZ+Vd7KWnBFm0pU4UGEVd3ykn2dF5SQdiIZAkTchHmo1IQ2OqRgCg/jXMh94bwDMoqgBx0
+ g365cWGl7beOPszkEW9jsqYdgfAh8VWjhAdz7qf8uxHekrpdEvDyOSAHGm4OYLI+9n08TDk6KP5
+ ez6eo2gL3QrT7Aq9lfpMtnomgjLkk8G0aKs5r6Zmc85SbW1A1GVnmDXUm5330YzK9GAdCSo2gak
+ dPJcYfmw3UzQvtkCpuLYF0n1YvKWD9jwmL56ldW9Pc+LosEzgOFh0QVnal1ZSzTzBgJpa6/5JV7
+ a4HtoiFiW1h8v5UIAlQ==
+X-Authority-Analysis: v=2.4 cv=Du9mPm/+ c=1 sm=1 tr=0 ts=6a6d1206 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=GbPsI2Ihf5RTnMjR_gZv:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=6WOsqIM7_T6_WFakPMoA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDE2MiBTYWx0ZWRfX+dl+8KqoePNh
+ K6V2dgUqqY4XhduBvbcwWTqK8h/mBbYB3ioUvoraNk5R7lYlKLK3WPJC+nr0XwmbdfHBmukpXzn
+ IGyObmUDDB9mYPdp6inoLVouvouflHw=
+X-Proofpoint-ORIG-GUID: cHFUHb87REZWgaMB3DgAgRFGxuGSKqdi
+X-Proofpoint-GUID: cHFUHb87REZWgaMB3DgAgRFGxuGSKqdi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-31_06,2026-07-30_01,2025-10-01_01
 
-On 7/31/26 16:09, David Hildenbrand (Arm) wrote:
-> On 7/31/26 15:03, Ackerley Tng wrote:
->> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->>
->>>
->>> And looking at it, the current folio_ref_count() in GUP is entirely wrong
->>> and always makes us drain local+all.
->>>
->>> Let me fix that first, which will also modify this code.
->>>
->>> I'd say, to unblock gmem we could have something minimal that I would clean
->>> up later, but I think the problem is that lru_add_drain() / lru_add_drain_all()
->>> is not exported, right?
->>>
->>
->> My bad, I totally mixed up refcounting to drain with refcounting for the
->> safe conversion and didn't have a complete understanding of mlock().
->>
->> The problem for gmem was that if there was an elevated refcount on some
->> folio in the range, it might be because the folio was in the lru_add
->> fbatch.
-> 
-> Right.
-> 
->>
->> If it were in the lru_add fbatch, it would be fine to just drain the
->> lru_add fbatch and proceed with the conversion.
->>
->> lru_add_drain() isn't sufficient since the conversion might be handled
->> on one CPU when the folio is on another CPU's fbatch, so I had to do
->> lru_add_drain_all(), but lru_add_drain_all() causes IPIs which are
->> expensive.
-> 
-> Yes.
-> 
-> You should probably do an early
-> 
-> folio_maybe_dma_pinned() || folio_mapped() check and just return -- don't drain.
-> 
->>
->> In an earlier revision I exported lru_add_drain_all(). My understanding
->> of the discussion at guest_memfd biweekly was that Sean didn't want us
->> to export lru_add_drain_all() now, and then end up exporting some other
->> function and unexporting lru_add_drain_all(). To avoid exporting and
->> unexporting, we then said we should refactor now.
->>
->> Happy to go with your proposal too.
-> Yeah, I have to look into this more closely. I'm now convinced that we really
-> have to use the refcount for now, but hopefully we can limit it on
-> folio_expected_refcount() internally + additional references
-> from the caller.
-> 
-> I'm quite busy today, but let me flesh something out that actually works.
-> 
+This series adds TLP Processing Hints (TPH) support to the VFIO dma-buf
+export path, allowing importing drivers (e.g. mlx5) to use the
+exporter's steering tag when performing peer-to-peer DMA into a
+VFIO-owned device.
 
-Sorry for being rather grumpy previously, I know you only mean good :)
+There is no separate in-tree vendor kernel driver for the target device:
+vfio-pci is the in-tree driver and the targeted device is managed
+from userspace via VFIO passthrough. That is why the ST has to flow
+through a uAPI: userspace owns the device and its ST table, so it is the
+entity that can configure a meaningful value for a given dma-buf. The
+kernel-visible participants are still in-tree: vfio-pci exports the
+dma-buf and mlx5 imports it.
 
+On the effect: the endpoint's PCIe ingress block uses the ST as
+an in-band instruction for the incoming P2P TLP -- selecting a target
+cache partition and, on writes, an in-flight operation on the data
+before it lands. The dma-buf callback keeps this opaque to the
+framework -- only the producer (userspace owner of the VFIO device)
+and the consumer (endpoint block) need to interpret the value. The
+dma-buf get_pci_tph callback itself is optional, but workloads that
+depend on the endpoint's in-flight operation need it because fallback
+does not produce the same result.
 
-I sent a fix for the GUP code that always makes us drain right now:
+The dma-buf hook is intentionally generic and discoverable rather than
+a private side channel. The exporter owns the completing address
+space for the dma-buf and decides whether it can provide a meaningful
+ST/PH tuple for that completer; the dma-buf core keeps the tuple opaque,
+and importers merely request the namespace they support and place the
+returned value on generated TLPs. Exporters that cannot derive a
+meaningful tuple simply return -EOPNOTSUPP.
 
-https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
+TPH is advisory: a steering tag that is not honored on the path (for
+example an intermediate routing element that does not forward the TPH
+prefix) is ignored and the request completes as an ordinary,
+non-TPH transaction (PCIe Base 6.4 sec 2.2.7.1). This series therefore
+targets the same-Root-Port / common-switch topology, where the ST
+reaches the completer; cross-Root-Port P2P is best-effort and is not
+gated in the uAPI, since supplying an unused ST is harmless and there
+is no discoverable "TPH routing" capability to test against.
 
-Would the following (agains mm-unstable + fix) work for you?
+Patch 1 folds the reserved 0b10 "TPH Completer Supported" encoding into
+"not supported" in get_rp_completer_type(), so only architected values
+can reach the TPH Requester Enable field. It was previously posted
+standalone to linux-pci; per Alex Williamson's v12 review it now travels
+with the series, which removes the cross-tree ordering dependency and
+lets review tooling apply the series as posted.
+Patch 2 adds small PCI/TPH type helpers so drivers can query the enabled
+TPH requester mode and the device's TPH Completer Supported field
+without reaching into pci_dev internals (and so callers in
+CONFIG_PCIE_TPH=3Dn builds get a clean fallback). pcie_tph_completer_type=
+()
+applies the same reserved-encoding fold as get_rp_completer_type(),
+inlined locally so the helper is self-contained.
+Patch 3 adds the optional dma_buf_ops::get_pci_tph callback plus the
+dma_buf_get_pci_tph() importer wrapper so importers can fetch TPH
+metadata from an exporter under dmabuf->resv.
+Patch 4 implements get_pci_tph in vfio-pci and adds the new uAPI
+(VFIO_DEVICE_FEATURE_DMA_BUF_TPH) for userspace to attach the metadata.
+Patch 5 wires up the mlx5 RDMA driver as a consumer. It also enforces the
+dma_buf_get_pci_tph() steering-tag lifetime: the tag is only valid for th=
+e
+mapping it was queried against, and the mkey's TPH fields cannot be
+reprogrammed in place. mlx5 therefore records the registration-time tuple
+and re-queries after each dma-buf mapping is established under
+dmabuf->resv; unchanged tuples continue with the existing mkey, while
+changed or missing tuples fail the remap rather than continue with a
+stale hint. For vfio-pci BAR dma-bufs this is expected to be a no-op
+because invalidation is revoke/quiesce, not movement to a new backing
+placement, and the userspace-provided tuple is not changed by the
+revoke/un-revoke path.
 
+Build-tested with both CONFIG_PCIE_TPH=3Dy and CONFIG_PCIE_TPH=3Dn.
+Functional validation on the target topology: PCIe analyzer captures
+on the P2P TLPs confirm the ST emitted by mlx5 matches the value
+configured through VFIO_DEVICE_FEATURE_DMA_BUF_TPH, and the end-to-end
+P2P workload only produces results consistent with the endpoint's
+ST-selected in-flight operation. For example, with userspace
+configuring 8-bit ST=3D0xf0 and PH=3D2, an analyzer capture of a peer-to-
+peer MWr64 shows "STP MWr64 TC=3D0 OHC=3D2 ..." followed by "OHC-B
+ST=3DF0h PH=3D2 HV=3D1":
+(TLP Captures)
+08000260 -> STP MWr64 TC=3D0 OHC=3D2 TS=3D0 Attr=3D0 L=3D8
+F0000004 -> RID=3D4h:0h.0h EP- Tag=3DF0h
+E0200000 -> AddrH=3D000020E0h
+00080006 -> AddrL=3D06000800h
+90F00000 -> OHC-B ST=3DF0h PH=3D2 HV=3D1 AMA=3D0 AV-
 
-I assume that you'd have to call it as
+The dma-buf get_pci_tph interface has also been exercised by a second,
+independent importer: a different vendor's NIC whose driver is not yet
+upstream, locally taught to call dma_buf_get_pci_tph(). A PCIe analyzer
+confirmed the ST it placed on outbound P2P TLPs matches the value
+configured through VFIO_DEVICE_FEATURE_DMA_BUF_TPH, the same result as
+with mlx5. Two unrelated importer drivers exercising the callback
+end-to-end shows the interface is not tied to a single consumer. That
+importer change is out-of-tree and not part of this series. For that
+second importer, with userspace configuring 8-bit ST=3D0xe0 and PH=3D0,
+an analyzer capture shows:
+(TLP Captures)
+08200260 -> STP MWr64 TC=3D0 OHC=3D2 TS=3D1 Attr=3D0 L=3D8
+4E00004C -> RID=3D4Ch:0h.0h EP- Tag=3D4Eh
+00170000 -> AddrH=3D00001700h
+00200006 -> AddrL=3D06002000h
+10E00000 -> OHC-B ST=3DE0h PH=3D0 HV=3D1 AMA=3D0 AV-
 
-	lru_cache_drain_for_folio(folio, 0, NULL);
+Changes since v12:
+  Patch 1 (PCI/TPH, new to the series): the reserved-encoding fold,
+  previously posted standalone to linux-pci [1], is now the first patch
+  here (Alex Williamson). Sashiko could not apply v12 because of that
+  external dependency; with the fold in-series and the mlx5 leak fix in
+  linux-next, v13 has none. The code is unchanged from the standalone
+  v3; the Fixes: tag is dropped, since no code path can reach the
+  reserved encoding today and the patch is hardening rather than a fix
+  for observed silicon.
 
-But maybe there are indeed extra references that are not reflected in
-folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
-there would be a problem.
+  Patch 2 (PCI/TPH): inline the reserved-encoding fold in
+  pcie_tph_completer_type() rather than calling the helper that earlier
+  folding revisions added; that helper was dropped in folding v3 per
+  Bjorn Helgaas and Wei Huang.
 
-There is a small problem for merging:
+  Patch 3 (dma-buf): no functional change.
 
-(1) The patch depends on the fix.
+  Patch 4 (vfio/pci): also gate the DMA_BUF_TPH feature on
+  vdev->pci_ops->get_dmabuf_phys, matching
+  vfio_pci_core_feature_dma_buf(). Without it PROBE reported the feature
+  as supported on a device that advertises TPH Completer support but
+  cannot export a vfio dma-buf at all, so nothing could ever carry the
+  metadata (Alex Williamson, who raised this to uAPI-affecting
+  severity).
 
-(2) mm/swap.c was moved to mm/folio.c in the mm tree.
+  Patch 5 (mlx5): keep the !dev->st early-out in mlx5_st_alloc_index()
+  ahead of the pcie_tph_get_cpu_st() call, so splitting out
+  mlx5_st_alloc_index_by_tag() neither adds an ACPI _DSM invocation on
+  devices without ST support nor changes the errno userspace sees when
+  the _DSM lookup fails (Alex Williamson). The commit message now
+  describes this rather than presenting the split as a pure extraction.
 
-We could write what I have below against Linus' tree and have the conflict be resolved
-when merging. Topic branches are unfortunately not yet a thing in MM land.
+Previous link:
+v12: https://lore.kernel.org/linux-pci/20260715204008.3911275-1-zhipingz@=
+meta.com/
+v11: https://lore.kernel.org/linux-pci/20260702181025.2694961-1-zhipingz@=
+meta.com/
+v10: https://lore.kernel.org/linux-pci/20260630224328.3218796-1-zhipingz@=
+meta.com/
+v9: https://lore.kernel.org/dri-devel/20260622184211.2229399-1-zhipingz@m=
+eta.com/
+v8: https://lore.kernel.org/dri-devel/20260615065912.2177918-1-zhipingz@m=
+eta.com/
+v7: https://lore.kernel.org/dri-devel/20260611161546.4075580-1-zhipingz@m=
+eta.com/
+v6: https://lore.kernel.org/dri-devel/20260608185646.4085127-1-zhipingz@m=
+eta.com/
+v5: https://lore.kernel.org/dri-devel/20260526144401.1485788-1-zhipingz@m=
+eta.com/
+v4: https://lore.kernel.org/linux-pci/20260519201401.1558410-1-zhipingz@m=
+eta.com/
+v3: https://lore.kernel.org/linux-pci/20260512184755.4137227-1-zhipingz@m=
+eta.com/
+v2: https://lore.kernel.org/linux-pci/20260430200704.352228-1-zhipingz@me=
+ta.com/
 
+Zhiping Zhang (5):
+  PCI/TPH: treat reserved 0b10 completer encoding as unsupported
+  PCI/TPH: Add requester/completer type helpers
+  dma-buf: add optional get_pci_tph() callback
+  vfio/pci: implement get_pci_tph and DMA_BUF_TPH feature
+  RDMA/mlx5: get tph for p2p access when registering dma-buf mr
 
-From 9e8d49ca4e77b1f843cc0113af1cc92274193399 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 31 Jul 2026 12:08:13 +0200
-Subject: [PATCH] mm/gup: factor out LRU cache draining for folio into
- lru_cache_drain_for_folio()
+ drivers/dma-buf/dma-buf.c                     |  32 ++++
+ drivers/infiniband/hw/mlx5/main.c             |   1 +
+ drivers/infiniband/hw/mlx5/mlx5_ib.h          |  11 ++
+ drivers/infiniband/hw/mlx5/mr.c               | 151 +++++++++++++++++-
+ drivers/infiniband/hw/mlx5/odp.c              |   7 +
+ .../net/ethernet/mellanox/mlx5/core/lib/st.c  |  52 +++++-
+ drivers/pci/tph.c                             |  55 ++++++-
+ drivers/vfio/pci/vfio_pci_core.c              |   3 +
+ drivers/vfio/pci/vfio_pci_dmabuf.c            | 120 +++++++++++++-
+ drivers/vfio/pci/vfio_pci_priv.h              |  13 ++
+ include/linux/dma-buf.h                       |  25 +++
+ include/linux/mlx5/driver.h                   |  15 ++
+ include/linux/pci-tph.h                       |   8 +
+ include/uapi/linux/vfio.h                     |  43 +++++
+ 14 files changed, 517 insertions(+), 19 deletions(-)
 
-KVM with guest_memfd wants to remove any folio references due to LRU
-caches, as it really must only allow to convert folios from shared to
-private when there are no unexpected folio references (e.g., from GUP
-references).
+--=20
+2.53.0-Meta
 
-So, to drive the refcount down, it needs a way to flush the LRU caches.
-Let's factor out what we have in lru_cache_drain_for_folio(),
-
-Maybe there is a chance to avoid the draining entirely in the future,
-by avoiding extra references from the LRU cache: Hugh thinks there might
-be a way. But for the time being, this handling is unfortunately
-required.
-
-Make folio_may_be_lru_cached() accept a const pointer so
-lru_cache_drain_for_folio() can accept a const pointer as well.
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/swap.h |  8 ++++++++
- mm/folio.c           | 46 ++++++++++++++++++++++++++++++++++++++++++++
- mm/gup.c             | 15 ++-------------
- mm/internal.h        |  2 +-
- 4 files changed, 57 insertions(+), 14 deletions(-)
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 0544b2ec4c565..733b84e0bce43 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -298,6 +298,14 @@ void folio_add_lru(struct folio *folio);
- void folio_mark_accessed(struct folio *folio);
- void lru_add_drain_all(void);
-
-+enum lru_cache_drained {
-+	LRU_CACHE_NOT_DRAINED,
-+	LRU_CACHE_DRAINED,
-+	LRU_CACHE_DRAINED_ALL,
-+};
-+void lru_cache_drain_for_folio(const struct folio *folio,
-+		unsigned int extra_refs, enum lru_cache_drained *drained);
-+
- /* linux/mm/folio-compat.c */
- void mark_page_accessed(struct page *page);
-
-diff --git a/mm/folio.c b/mm/folio.c
-index d2937600cf726..a41d107b8b28a 100644
---- a/mm/folio.c
-+++ b/mm/folio.c
-@@ -948,6 +948,52 @@ void lru_add_drain_all(void)
- }
- #endif /* CONFIG_SMP */
-
-+/**
-+ * lru_cache_drain_for_folio() - drain LRU caches if the folio might have
-+ *				 references from the caches
-+ * @folio: The folio.
-+ * @extra_refs: Extra folio references held by the caller.
-+ * @drained: Drain status for batch folio processing.
-+ *
-+ * Drain LRU caches if the folio might be referenced by these caches, such
-+ * that e.g., later page migration will not fail due to them. Start with a
-+ * local LRU cache drain, to then drain LRU caches on all CPUs if local
-+ * draining was insufficient.
-+ *
-+ * This function detects LRU cache references by comparing the folio refcount
-+ * with the sum of the expected folio refcount + extra references held by the
-+ * caller. Note that we cannot rely on PG_lru to reliably detect all LRU
-+ * cache references.
-+ *
-+ * If @drained is not NULL, the function will avoid re-draining LRU caches
-+ * when processing multiple folios in a row. In that case, the value
-+ * @drained points to must be initialized to LRU_CACHE_NOT_DRAINED before
-+ * the first invocation, to keep passing @drained to successive invocations.
-+ */
-+void lru_cache_drain_for_folio(const struct folio *folio,
-+		unsigned int extra_refs, enum lru_cache_drained *drained)
-+{
-+	const int expected_refs = folio_expected_ref_count(folio) + extra_refs;
-+
-+	if (!folio_may_be_lru_cached(folio))
-+		return;
-+
-+	if (!drained || *drained == LRU_CACHE_NOT_DRAINED) {
-+		if (folio_ref_count(folio) == expected_refs)
-+			return;
-+		lru_add_drain();
-+		if (drained)
-+			*drained = LRU_CACHE_DRAINED;
-+	}
-+	if (!drained || *drained == LRU_CACHE_DRAINED) {
-+		if (folio_ref_count(folio) == expected_refs)
-+			return;
-+		lru_add_drain_all();
-+		if (drained)
-+			*drained = LRU_CACHE_DRAINED_ALL;
-+	}
-+}
-+
- atomic_t lru_disable_count = ATOMIC_INIT(0);
-
- /*
-diff --git a/mm/gup.c b/mm/gup.c
-index 41c3317e0f0f4..297e7de81c374 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2266,9 +2266,9 @@ static unsigned long collect_longterm_unpinnable_folios(
- 		struct list_head *movable_folio_list,
- 		struct pages_or_folios *pofs)
- {
-+	enum lru_cache_drained drained = LRU_CACHE_NOT_DRAINED;
- 	unsigned long collected = 0;
- 	struct folio *folio;
--	int drained = 0;
- 	long i = 0;
-
- 	for (folio = pofs_get_folio(pofs, i); folio;
-@@ -2293,18 +2293,7 @@ static unsigned long collect_longterm_unpinnable_folios(
- 		 * but also to remove any other folio references from LRU
- 		 * caches.
- 		 */
--		if (drained == 0 && folio_may_be_lru_cached(folio) &&
--				folio_ref_count(folio) !=
--				folio_expected_ref_count(folio) + pin_refs) {
--			lru_add_drain();
--			drained = 1;
--		}
--		if (drained == 1 && folio_may_be_lru_cached(folio) &&
--				folio_ref_count(folio) !=
--				folio_expected_ref_count(folio) + pin_refs) {
--			lru_add_drain_all();
--			drained = 2;
--		}
-+		lru_cache_drain_for_folio(folio, pin_refs, &drained);
-
- 		if (!folio_isolate_lru(folio))
- 			continue;
-diff --git a/mm/internal.h b/mm/internal.h
-index f26423de4ca28..7aa787768353a 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -46,7 +46,7 @@ void lru_note_cost_unlock_irq(struct lruvec *lruvec, bool file,
- void lru_note_cost_refault(struct folio *folio);
- void folio_add_lru_vma(struct folio *folio, struct vm_area_struct *vma);
-
--static inline bool folio_may_be_lru_cached(struct folio *folio)
-+static inline bool folio_may_be_lru_cached(const struct folio *folio)
- {
- 	/*
- 	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
--- 
-2.43.0
-
-
--- 
-Cheers,
-
-David
