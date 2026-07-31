@@ -1,112 +1,196 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC47221FB4
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7841E22E9;
+	Fri, 31 Jul 2026 13:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785502831; cv=none; b=OjdR+5UvtZ2MYAJ2qZfP7oU3V+Q0/PlP/ctRqU3c9flkx5JwxH895NNCE3ZTSjL2ZcbtME1LqW1YDZT1UmawxrnVlp/EPUIh9Tc3YnG6qpT7WZ1LRSlZRr8rsgibCM2H6L4tPsv5AcgJeK3S1c+ysDl6+sdUDjN8tQTQmzR99PY=
+	t=1785502911; cv=none; b=pCFZrAIUd1Rq/umebNjc2fTR3aqbwSh/4BHR8/92JqCepsrSBhtE7AH7POfeEfpJm0inKgp2dyiCKYC9+LBOzlF0mSoU9K4krvo7n8tcVwy8eP5fbiWdd+sazCt7FK1OqHveWwl8K6k7a+vGsOtliNFVVn++CrtczhKwfgEjD5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785502831; c=relaxed/simple;
-	bh=gP0NW1Gj2B2BTBK8qEpzwW+mSr4iWHeoSNmWkG0WWDg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NuAQrcMTkr+kCtjouKyfDSdmf4N+lm88HXC6vbXv05Pu24299G+/1HXC5U/aOBL5XOyvuQWg9f0Uk/wxwiQZFLn94Am7sQ1EWnOzIvmTIPxjsLDyd5WTEoZdC0N0ma3uF958m/7oifMTJ6jzCsM+OkuOUj7qyyR+VBHAHpAW5BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GBcy1unU; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785502911; c=relaxed/simple;
+	bh=P03uccBnEaJ1BZ9Nekhpu4UTkcSnKTJJk+BnkvoptRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KytcVOR+MQAu3b/47JKkT0i/U/HFSCC+NFpszetk4k1aNZlam9tb2B+e4xfJn+bl91adL5ADQr8AzzzPs61PcztdPz8QBNpbBa1+RnQF2WQEnt8kADBH/CQ32sX/ae5msrQPvYQ410+RGt7HhD1isczwn95HqIP9UHt2WVj9Y5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=m9YjwrIJ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GBcy1unU"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486c3411c8so1326979b3a.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 06:00:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785502829; x=1786107629; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XFQU8iH1zNafQF+sd3fwpkuxE9NFiGxCV4Yz8a5shVE=;
-        b=GBcy1unUrChsMEdWwJ4MJFPLlt+OT2+cPo0MsWGT9pix61A3FXi2D43k7WZsFOoyRT
-         4QUD1SgYSc2qmp4HGMBnbM8jMrmAwZuCRV7RJ+SO8f8xbDX8MvMUnK1NIK9BAsOzZOUu
-         oevvPRSMnMZqsMD3LsWZwseuUR6A5TaV+cf9PKO2G96WpgsMhgjOXfdOa/t1attb+kSZ
-         4r37ujpqOtkJsY7cJ+XEoTDpk2BH2RXCf7a1jSyUXj7R8MY7e7WFKQeM+2XE2VgpTb3v
-         lIMKz74/HF5N62zUe0H1oZ1sf4GLmO3biV02NCnLpOsNMXnCadiLWgmiVUNpbyvCAdxs
-         yIcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785502829; x=1786107629;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XFQU8iH1zNafQF+sd3fwpkuxE9NFiGxCV4Yz8a5shVE=;
-        b=lW4FvhqmzvL6ugs/2toysu8SQIjiQlnjJW4IiuS63eLhsGN8QHHqbGQXxNqCn/cAE+
-         gLtYaOoTyoWnLFnjqbX1rm2SfvWCwDAfk6SekE6eaOjxM4e/vOzE1eXpOyir6vVNN4UZ
-         +cYkpRX8/2K5jA1uuvuRaabPee68CNeqz6azIyRxfnf2gW/KDmAp+KszsJJpjmQKd1XL
-         A9VUT2CrXbpjqeXoY980fpyAlo0noDAptTwD8cjKxGaxCcdOHprTnv7h41PXbA6L0X6+
-         l4kOK2BB5TkeObnGhljhP68ojt+xO+WRc4Al9Zsv7oH1s0zOaD3HArOb4YRVtABE6DVS
-         JQ1A==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6MlzTYb1zB2wY6G8pyTa+J7iNuaK6QpjBIZhiDhulCtFY3hQ1MC9WRpsqX6CUNs7TVEQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyinP8POR/Uj2kcVFrh+FwNYWsgi9wltsDCst3zdJSvRb0ScM7m
-	B1GaHe3JJtzm+y2M+4XQcAWmhyDAWzd/iGoe7goRQ4gqvQDNkk3Hz7zclx5yVjGOc20jfL/y9Cb
-	78+3fSw==
-X-Received: from pgbfq12.prod.google.com ([2002:a05:6a02:298c:b0:c8b:2706:11a7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:301a:b0:847:99bb:b6d8
- with SMTP id d2e1a72fcca58-84ed6ec0944mr1900997b3a.26.1785502827606; Fri, 31
- Jul 2026 06:00:27 -0700 (PDT)
-Date: Fri, 31 Jul 2026 06:00:26 -0700
-In-Reply-To: <20260730193035.CFEDF1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="m9YjwrIJ"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VBlutw1731148;
+	Fri, 31 Jul 2026 13:01:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=VMy0CVmB1D3jOew6zg+TMqZMyswN2jPyBofcH/Koj
+	KM=; b=m9YjwrIJP7s7+mVBZDsxDjPc8ar38DRY5txPBO04SRB+FndoM74jQBv7k
+	hh94Dv5ca7ZiX8NuvA9D6TXc6yHL3COmWBRCBIakR2vfCK0D3l5kHCZUXik7oy3R
+	MNvcrT2tDZs3Qqoj9QGVWXMbtwpXWl7VFoB+IA/P/3QtgEut5bperLKC7L1I4uCE
+	ZYaHCs2kBRokJmcdt3kQUE5uSnPtKmPrFkSk2sTMmBjkr+nSPGhaevbEdVqY62iU
+	jbgJ0gHZR77t6boIvXcynNtOLMBYzwSCeo+Ub2pHy1D+vDop5ryklCQkVXcp2JGK
+	ufKda7GMYyzBMPRctj8LZnpB7HpIA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fmuw7w3f0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jul 2026 13:01:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 66VCuPxN026547;
+	Fri, 31 Jul 2026 13:01:46 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fn8yhquvp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jul 2026 13:01:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 66VD1d6v29950400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Jul 2026 13:01:39 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E4AE20043;
+	Fri, 31 Jul 2026 13:01:39 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D12F620040;
+	Fri, 31 Jul 2026 13:01:38 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.4.62])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 31 Jul 2026 13:01:38 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com
+Subject: [PATCH v7 00/14] KVM: s390: Misc fixes
+Date: Fri, 31 Jul 2026 15:01:24 +0200
+Message-ID: <20260731130138.173983-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260730191908.2084803-1-seanjc@google.com> <20260730191908.2084803-5-seanjc@google.com>
- <20260730193035.CFEDF1F000E9@smtp.kernel.org>
-Message-ID: <amycahxKDq0cO0ri@google.com>
-Subject: Re: [PATCH 4/9] KVM: selftests: Drop unreachable, dead code from
- hardware disable test
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: Oliver Upton <oupton@kernel.org>, Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IXSngbKukCDI1kaT_yWSR3Hg2Q79LmD5
+X-Proofpoint-ORIG-GUID: IXSngbKukCDI1kaT_yWSR3Hg2Q79LmD5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDA5NiBTYWx0ZWRfX1EzfpK2SDj5R
+ ReeZTeKOF4BUTCQuOtS7QcdA2ArvwrW6nOT1/B0JOJCa8NKdZubXQlFCz8dRfCq4SGtg4L7Q6Kp
+ p7Nwd76ZKZYWD6zoHuT1l+nYoQQca4LD0DlbG7j1lgeMHucIBKHSm9pArwtHt6DgqwymFdqqTiu
+ 6Np5oNio8zXdUa7qmthxHaHSdSKiJjx1B1GOTNsanpLmBlF6ZKeKCqrQFM3lW84JXD6SVXG4tDX
+ 9AZEHAcpIGb6QjDorVNWJUSFy4eCSAak/p2ZaT5hbDcouazvkNkflkLkyuT1TEFLxud4xGC8MDn
+ jVZeHtHleksgskZgPsGlUzLvN9eKsTbbjWhNrpErZiTs1EqrpR2HzhZZxeng6/eRWA/Dbh6Zm0n
+ kcmEWQ5mAjCYnNg5Q+elZSSjc9Vsa32NaKfMWb1YHVgef8oiRToKdJmzP0GlqaeIPYMPj1IREjy
+ Ta3Dh4oKpb0SEcU+GKQ==
+X-Authority-Analysis: v=2.4 cv=SKFykuvH c=1 sm=1 tr=0 ts=6a6c9cbb cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=O17wmb0z-pt-y8_z3AwA:9
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDA5NiBTYWx0ZWRfX6QDi/QiELww6
+ XGNpVo8mzc78dhwjsx2h4iQYTbUWsx5y3xXdFlUE1WDyeivDkR+f1gsXRercSxUlEN4BUbMP+RG
+ gX4OAZmDaA+02wzqTRZ5TCFr8Rvt6p4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-31_04,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607310096
 
-On Thu, Jul 30, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/testing/selftests/kvm/hardware_disable_test.c
-> > index 1bcbd13e99947..e08aef94382f3 100644
-> > --- a/tools/testing/selftests/kvm/hardware_disable_test.c
-> > +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
-> 
-> [ ... ]
-> 
-> > @@ -96,21 +84,19 @@ static void run_test(u32 run)
-> [ ... ]
-> >  	pr_debug("%s: [%d] all threads launched\n", __func__, run);
-> >  	sem_post(sem);
-> > -	for (i = 0; i < VCPU_NUM; ++i)
-> > -		check_join(threads[i], &b);
-> > -	/* Should not be reached */
-> > -	TEST_ASSERT(false, "%s: [%d] child escaped the ninja", __func__, run);
-> > +
-> > +	/* Wait for the parent to SIGKILL this child. */
-> > +	while (1);
-> 
-> [Severity: Medium]
-> Since the child and parent share the same CPU affinity, will this busy spin
-> loop cause unnecessary scheduler contention with the parent process when the
-> parent's timer fires?
+Fix a bunch of small issues that came up during the previous round of fixes.
 
-Doesn't seem like it?  Or rather, any contention between the parent and the
-immediate child doesn't seem to matter.
+They are mostly extremely unlikely races, but they should be fixed
+nonetheless.
 
-> Because the processes are pinned to a single CPU core, spinning in this loop
-> burns CPU cycles and forces the parent to contend with the spinning child for
-> CPU time.
+v6->v7
+* Do not free SCA in kvm_arch_init_vm() if it was not allocated
+* Remove a KVM_BUG_ON() that could still be triggered from userspace
+  with UCONTROL.
+* Remove KVM_BUG_ON() if a memslot change could not be performed.
+* Fence KVM_S390_INTERRUPT also for vCPUs for UCONTROL VMs.
+* Drop the last patch. Will need a more complex fix, will be done in a
+  different series.
 
-Yep.
+v5->v6
+* Move the memory accesses in sca_ext_call_pending() and
+  sca_inject_ext_call() so that they only happen after the newly
+  introduced checks. Otherwise an out of bounds access was still possible.
+* Completely fence the KVM_S390_INTERRUPT ioctl for UCONTROL VMs.
+* Move page table updates from kvm_arch_commit_memory_region() to
+  kvm_arch_prepare_memory_region(), so that failures are not ignored.
 
-> Would it be better to use a blocking wait like pause() or sleep() here to
-> reduce scheduler latency and avoid 100% CPU utilization?
+v4->v5
+* Improve / fix some comments
+* Undo handle_mvpg_pei() changes
+* cmma_d_count_pte() now clears the cmma_d bit, to avoid double counting
+* Improve some patch descriptions
+* Trigger KVM_BUG_ON() in sca_ext_call_pending() and
+  sca_inject_ext_call() if called on UCONTROL vCPUs
+* Reshuffle the order of the patches to hopefully get fewer false
+  positives from sashiko
+* Check and free cbrlo only if it's not zero
 
-Yeah, it makes sense to throw pause() in here, if only to maintain equivalent
-functionality.  Because that's effectively what pthread_join() will do since the
-grandchildren never exit.
+v3->v4
+* Improve patch descriptions, add comments
+* Use smp_store_release and smp_load_acquire in the first patch
+* Multiple fixes in patch 4: potential NULL pointer dereference,
+  incorrect behaviour in low memory condition
+* Rework patch 8 to use scope-based cleanup instead of gotos.
+* Three new patches:
+  - KVM: s390: Fix kvm_arch_commit_memory_region() when low on memory
+  - KVM: s390: Fix kvm_s390_vcpu_unsetup_cmma()
+  - KVM: s390: Fix sca_clear_ext_call() for UCONTROL
+
+v2->v3
+* Use READ_ONCE to pair with WRITE_ONCE in the first patch
+* Fix leaking PGM_ADDRESSING also in kvm_s390_keyop() and related functions
+* Fix and improve commit messages
+* Use slots_arch_lock instead of slots_lock for ESSA operations
+* Use normal spin_{,un}lock() functions instead of scoped_guard to avoid
+  mixing the two styles
+* Use the newly introduced vcpu->arch.initialized to determine whether the
+  SCA entry needs to be cleared
+* Improve handling of -EINTR; handle_mvpg_pei() needed some refactoring to
+  deal with it properly
+* Three new patches:
+  - Free the mmu cache when kvm_arch_vcpu_create() fails
+  - Fix ordering when adding to SCA
+  - Fix cleanup in kvm_s390_pv_create_cpu()
+
+v1->v2
+* Drop some patches that have been picked upstream in the meantime.
+* Drop patch 3, as it was trying to fix a bug that does not exist
+* Avoid the NULL gmap dereference by using a flag
+* Fix the return value of kvm_s390_[gp]et_skeys too
+* Use kvm->slots_arch_lock instead of kvm->slots_lock for CMMA and ESSA
+  handling, to avoid potential deadlocks with the RCU.
+* Three new patches to fix other issues that came out while fixing the
+  other issues
+
+Claudio Imbrenda (14):
+  KVM: s390: Fix unlikely NULL gmap dereference
+  KVM: s390: Do not free SCA if it was not allocated
+  KVM: s390: Fix kvm_s390_vcpu_unsetup_cmma()
+  KVM: s390: Fix overclearing ESCA in case of error
+  KVM: s390: ucontrol: Fix sca_clear_ext_call()
+  KVM: s390: Fix leaking of PGM_ADDRESSING to userspace
+  KVM: s390: Fix race in __do_essa()
+  KVM: s390: cmma: Fix dirty tracking when removing memslot
+  KVM: s390: ucontrol: Add missing locking around gmap_remove_child()
+  KVM: s390: Free the mmu cache when kvm_arch_vcpu_create() fails
+  KVM: s390: Return -EINTR if a signal is pending while faulting-in
+  KVM: s390: Fix ordering when adding to SCA
+  KVM: s390: Fix cleanup in kvm_s390_pv_create_cpu()
+  KVM: s390: Fix kvm_arch_commit_memory_region() when low on memory
+
+ arch/s390/include/asm/kvm_host.h |   1 +
+ arch/s390/kvm/dat.c              |  23 +++--
+ arch/s390/kvm/dat.h              |   2 +-
+ arch/s390/kvm/faultin.c          |   6 +-
+ arch/s390/kvm/interrupt.c        |  19 +++--
+ arch/s390/kvm/kvm-s390.c         | 139 ++++++++++++++++++++-----------
+ arch/s390/kvm/priv.c             |  10 ++-
+ arch/s390/kvm/pv.c               |  43 +++++-----
+ 8 files changed, 153 insertions(+), 90 deletions(-)
+
+-- 
+2.55.0
+
