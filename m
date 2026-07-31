@@ -1,198 +1,260 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CDF430781
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90B9443311;
+	Fri, 31 Jul 2026 18:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785520723; cv=none; b=qgWSnIoFH6tulZph42kaOOagqODOObMIxzoI4HjrRzp3b1QeRq5E1iuIyxqS2uCjxmYBtIjvcVF2FZBCzZkoGpgxMFjivBIrtQXVIUioL79oHXloyd/nPD8aYBr3drI/BT8zpRLitEmGZ93SDdWlh9hCT7KyOz88imSZ7axReM0=
+	t=1785521714; cv=none; b=eWQjWYvwFOr+RiJU8kT/b/0Hbd8ehPEqsMbzunFNwh5MQ3eH9zPFrj5YNtFlVJBI6WhV/czm6HviiVdb7Ge/ggwGTMaa9Im63rZVryTIvkXwUeS96eqbVJPJ5ZZjVMTCg6tFToa475vEOXJvgbf5RJUWtIgEvI94EO+9YGpolwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785520723; c=relaxed/simple;
-	bh=pQ0teTd7XDWNbpvsOw580l+rfVUj4fBL0/VVxc3yCKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DW2xXz7uOsEGK2zQMlXni+UHZCIISHmHVHqGl1RHKEADvXTs7XQ4idzvs6oNXuTlK8sORcASRxfQB9gb8Xicf94OLKil9Ia+b8q6kCW5cD6YcByR2lickVqg5i7w7AxuboFiL5zTZSIhdpBtE6GGz3UsTBxoaDu1IdLQxrCFE8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c20kOij3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=icj+N84N; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785521714; c=relaxed/simple;
+	bh=2Moq2AK3SSG6Wgcc8ZmuFd3ydbPumPydyOFkSk499Tk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dIT3VQbI0gbgRZmYWrUB+7+JnxG4Pi4MDC/XpsB4QK1tZoXd7wUauNoE68Jp8EvMA1BFCcMGCToxbMqdJ6EetvAcrIQClcfqJVnZJdzpwr+srZMqraEocMfDPQaSGgPeLbS+Vh5v6x0sddQfPm9gkvZ3EJhMcA6YbD2VoGbr7dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=B/yr5I5R; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fgGrR0Eo; arc=none smtp.client-ip=103.168.172.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c20kOij3";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="icj+N84N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785520720;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2qKhJTG2JAuuEqxKzD1FHAMu/w1RQ6BoELHLT6tOYQg=;
-	b=c20kOij3CtV9TgWZ2QIqaetC4oRR7gid6soIxujLfvrTOPcPmBk6NqNSnc3/pqC6s7xSqo
-	CejnZQhUHKceur0K6QGQmJZ0rSyCIpTgqXUpgiE/+gZzSAt0GXFps/4zhrYpf0gs/sFNoT
-	92hQt3wNycyRcOA6bUZUIyMfxyuJ6ME=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-KHoxbTSXMp6V8fVzSCnr7w-1; Fri, 31 Jul 2026 13:58:38 -0400
-X-MC-Unique: KHoxbTSXMp6V8fVzSCnr7w-1
-X-Mimecast-MFC-AGG-ID: KHoxbTSXMp6V8fVzSCnr7w_1785520717
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c15f0aea084so111477266b.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785520717; x=1786125517; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2qKhJTG2JAuuEqxKzD1FHAMu/w1RQ6BoELHLT6tOYQg=;
-        b=icj+N84N44o+lVhMiejxyugpInwSpI9bzOA9JrN2EiLJ29MI/5fXGjhhB19LnPAgCG
-         oDgBIAydzmFGp1twxxZh3N2Rvv7ckBl6u5VNgZRj1Xxw1SA1vsODAQ6RDSMqlJKGwlxA
-         jFSI4HPbDL+sq6/GKX051KBAYl1s4/ZXHoDgk/KsAUzRtfxpcDszqhrdrfrSUZK+Q/A2
-         ixdhNLCBgcqg55j6C0HYdoIlmMXgrToDc0whK81kylTKSjKFM/i7j2S+EUfGEcyREiUw
-         1YpRgxNfF9y2Rz4R7vf7EgSbekgRir4nNU0zguI7QwjrjcEXx8NEO7oK2pIpF7LTwQdE
-         MgxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785520717; x=1786125517;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2qKhJTG2JAuuEqxKzD1FHAMu/w1RQ6BoELHLT6tOYQg=;
-        b=fI0BVy29IAq4Hqhy90aZ2EpKtPvZjE1D4eIJahlFj/Q79ZQtWuS1GMWo1mmJOorpFR
-         Hob5QlSeozhMLTo1H+yxzuWasePEjoY5QrtHhdIblrY9TLfQuWfE82gdvTtA3B/zjxkg
-         ISBVwlKsx1lMy3Pt22EBpQYNQetUEgugN9AMx2WoLmHlY5i1kGZ+Y65xHOGcrmPM+/9P
-         DxW6XF8wJXNGRz13IHn9Ltafu3SdYSr0fZPEr1ar68pIz4Q000PSZ5VABNWetptC5kdO
-         idzVPJMdzKichraCh0l2QCMIuSHdTh4yqlH01UBfkRtaCm25udu9CelkSaHMWJO+e9eB
-         7noQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5xTbAro9BSu/B0+6gAl1AcFxFHQvj3dSR8UtNmU90q/ZK0AXkFxudHKCEIwDxUyU/dEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5OEHEu0d/nj7DnTz81zozVSre7qkl5yljh32jR/DdgMHuDkkZ
-	hB8ReEW2NqOOR/d+Ylci51JqHx10Z6ZiVxNoTudlkmZyXib+iiDkcSTjwVqM5iy1wDB11YQhD3j
-	67LK0e+XtXO5QbeyGH2oTbZsmr7PmnXJALbAKBS3ckx2tSZfKyJqShB8y+8RMow==
-X-Gm-Gg: AR+sD10r4bPXEo77QFw0md6dNVTfFNikPCSboWGCKLWAn9GuP2S3txjBZkKPdoaSrEp
-	fzKlf7ABpRUDewIMm7IDU7KZObkU0ZZEUPrHCbzNQPIi81+NP/T5ZXSivj7Kq0RRnEw9Nrf3j/8
-	Gxv9lnMjFnUGTID8Hw07ZshbvbGFBSoqNLUxAHtvAaEg4h5RBLG88DJLeNGsywW0BrOixySTdYg
-	aNyUS8SdivdEI61kuobZ/nXLXXNoX4o0F5Dukx6zSEsOVnujKKPV4PvGEVd48U/5QqYQNd2OGvz
-	oMjGWK7Vu9Pd6Sq9dLmZ9EXg9+mbPaYrVr8mV5AVWWGOO2/BIkJQU/YUsreYoNUEG3gthj/NZ7U
-	dSGA9oZGdrgnKG80HAZD1xk3NmmmC7XyJFJ3gdCmaJjM+CdV7XdyRvwXM/+iR+jwrWnkL5VzUrI
-	aIQk0=
-X-Received: by 2002:a17:907:961a:b0:c16:8aed:cec3 with SMTP id a640c23a62f3a-c1fe8315915mr41041966b.58.1785520716974;
-        Fri, 31 Jul 2026 10:58:36 -0700 (PDT)
-X-Received: by 2002:a17:907:961a:b0:c16:8aed:cec3 with SMTP id a640c23a62f3a-c1fe8315915mr41039966b.58.1785520716265;
-        Fri, 31 Jul 2026 10:58:36 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd4454321sm215703566b.31.2026.07.31.10.58.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 10:58:35 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>
-Subject: [PATCH] kvm: apply VM_READ/VM_WRITE checks to all VMA types
-Date: Fri, 31 Jul 2026 19:58:34 +0200
-Message-ID: <20260731175834.1121005-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="B/yr5I5R";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fgGrR0Eo"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.phl.internal (Postfix) with ESMTP id 035F6EC01DE;
+	Fri, 31 Jul 2026 14:15:06 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 31 Jul 2026 14:15:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785521705;
+	 x=1785608105; bh=wara+qW6sdFZ1836AKS1NURRQzyRNvWsCNqprbx89LU=; b=
+	B/yr5I5RdkPIc7eQcKq0a3PQYmFEKJGIRzbjq121GMHj42j4nkFeRutF0zr2TKDK
+	vGsnTIIs7T+6WJf/ULywOPqxPPh18caNwN/x8vfZyvBwh3u2MnCtBBEUc0MWEPwW
+	UOPV10MaD3rXc/f72ef4y8eQnR6H3PiCFE1Z6zI0rCDgqrxGXObdxyx/NV9++uSE
+	0vuY1zU3s1RAV0veBYIBPPgZCew4phIDJLAey8+2EL7CGPR/OcM1MbYgWrJHk5Z8
+	UUemhvGQgs0A44cKH5dYArIb+N0O3ZoE8cWVZSEjeA+dS9TrardZmPXKnk53l6pD
+	bMjkYjhIZZspI586e7NLbg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1785521705; x=
+	1785608105; bh=wara+qW6sdFZ1836AKS1NURRQzyRNvWsCNqprbx89LU=; b=f
+	gGrR0EomkameyvTMqUiajdv35srWPd8LsK2D1lugcVteupJDSZF0gpyNYL1zFZFg
+	41MTzi/5K3Ar5NSuvkwVOmiTleG2TJq6npLdnsiEZGwEr4138v91wuA0foDKpWeM
+	//Lo4mymZ6Pf1L1Qb7FJ0INBldWP609+js9pChLU5ut4FBQP1mnswpvjjohI4g0e
+	6XIJZcs1H0u8+xSsJ/BraEFrXVd7QYbGU0nLSbxdnAsIuy8IzK4wXTIm7Na3in13
+	hqdke5mLlPYGecaIg153XajlpMEKyx/L9X9swvVVZ6yqcJqYehQByro077khbZXp
+	pzNfavWj47Z6sE4P9suaA==
+X-ME-Sender: <xms:KeZsauk98lbigP5olN3hAvfd-YfEP8fi4BhlhlD-FbPu_tuOsOmQAA>
+    <xme:KeZsamRoMduIwqH6mp0ni6-hs6zbnOBugh-Rre6CFYuObY3prl0kUbGxcynR-KQ1V
+    mJlcPszO9TGcjmpO9ERZAjOJ_JxYkP7OOvOWHuSFZv8oScBg4uk_w>
+X-ME-Received: <xmr:KeZsatVGCnXhBxLxDIbH3j6XUVoT7PgHU2MWMgLRg6YPKp8FGiT-xMNHWOhNXA>
+X-ME-Proxy-Cause: dmFkZTEptP546QCDj06/N8/lJGxmRh8V2NbF93IEPiTPkDOvRohe6SIyHZ4/4gqm/Wk8J3
+    ClJGX+3QXMXXsACjvxLY98+TxILOjdB9MPhzn9KC8cSrd2Lkeh899lkLIIYY+9TnhdY4yf
+    GrCpAHhc/bwj/FEy5dYhfJazSOQuIgecfAgl+7yR3uI9e60hS099jIbgoWYzssUz3Sewr7
+    HPomG169a6qN/N5wfbLtDI/xFfXlL8zIOCPcVVtI2HQL6pc6fUcJMM1sC0qh0JRFp/Mp+c
+    WXzl/6k/PgshKaftXZK/EEk5ZNsIA/fcWzGH1uK7CmTBLrbFpzeclfpV2YrEvjziSonRag
+    btYkhDlJgunFcE66xbV3xo02tgzr5GlM4VPoqyFfNaEhL2oUxLlZVjwsYiktGWkOV+J5AA
+    X1gDeJ0sRpnD38iCZTEuNPUTZGow6QYPaYygoRyTTGV2laTJwQaWwVvcjqo+m7iFdhSkcN
+    Q/2hgGpBLAmCbd83sevlzopnTqHtXoNBG0vmwE6Xa9CKC2z3/diCHVLGFxvzHEm86fG8p4
+    pN/BvriiX0724Y1dgN/ZoUmYFkDpyQG7AkDSd2R3XkAAAFWoIfV2IsqP8EqNPqPlv2cj1e
+    C7BOhyKLR8n2JWxx+yYQ8EdXIhV/hyQ64LPox33ngl3liSvOl0qFgwj3dSgg
+X-ME-Proxy: <xmx:KeZsaqJtK4seGqNF_Yk9-8nNC-G9X9NRzT3iK_oO1nNg9kTflQGd6w>
+    <xmx:KeZsat1y-0b_9lxBEzrwHl_D-X04xNFbzXrgZiiDf7vm7-owzWYIxg>
+    <xmx:KeZsanJ3c9z-MbQICj_cFT6-peVZpSTZVkGYPEB31y8fq3YOQzoolw>
+    <xmx:KeZsaogfsO-1MhHyTWCZt7pfHbZJXeaA8gQcfGzCfruaFsFUu3vRIQ>
+    <xmx:KeZsaiuJaJTYS_53Pot_ejAv9_WhdaGu4EofmurrAe7ciIy1OnZRxd0z>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 31 Jul 2026 14:15:04 -0400 (EDT)
+Date: Fri, 31 Jul 2026 12:15:02 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Josh Hilke <jrhilke@google.com>
+Cc: David Matlack <dmatlack@google.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Vipin Sharma <vipinsh@google.com>, Alex
+ Williamson <alex.williamson@nvidia.com>, alex@shazbot.org
+Subject: Re: [PATCH v9 1/5] vfio: selftests: igb: Add driver for Intel 82576
+ device
+Message-ID: <20260731121502.3e5416ca@shazbot.org>
+In-Reply-To: <20260730-igb_v3_b4-v9-1-9e4d8682437e@google.com>
+References: <20260730-igb_v3_b4-v9-0-9e4d8682437e@google.com>
+	<20260730-igb_v3_b4-v9-1-9e4d8682437e@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The VM_READ and VM_WRITE flags are checked only at the very end of
-hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
-mappings, this adds unnecessary cases and inconsistent error behavior.
+On Thu, 30 Jul 2026 23:31:29 +0000
+Josh Hilke <jrhilke@google.com> wrote:
+> +static void igb_init(struct vfio_pci_device *device)
+> +{
+> +	struct igb *igb = to_igb_state(device);
+> +	u64 iova_tx, iova_rx;
+> +	u32 ctrl, rctl;
+> +	u16 cmd_reg;
+> +	int retries;
+> +
+> +	VFIO_ASSERT_GE(device->driver.region.size, sizeof(struct igb));
+> +
+> +	/* Set up rings and calculate IOVAs */
+> +	igb->bar0 = device->bars[0].vaddr;
+> +
+> +	iova_tx = to_iova(device, igb->tx_ring);
+> +	iova_rx = to_iova(device, igb->rx_ring);
+> +
+> +	igb_reset(igb);
+> +
+> +	/* Signal that the driver is loaded */
+> +	ctrl = igb_read32(igb, E1000_CTRL_EXT);
+> +	ctrl |= E1000_CTRL_EXT_DRV_LOAD;
+> +	ctrl &= ~E1000_CTRL_EXT_LINK_MODE_MASK;
+> +	igb_write32(igb, E1000_CTRL_EXT, ctrl);
+> +
+> +	/* Enable PCI Bus Master. */
+> +	cmd_reg = vfio_pci_config_readw(device, PCI_COMMAND);
+> +	if ((cmd_reg & (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) !=
+> +	    (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY)) {
+> +		cmd_reg |= (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
+> +		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
+> +	}
+> +
+> +	/* Configure PHY internal loopback for testing. */
+> +	igb_setup_loopback(igb);
+> +
+> +	/*
+> +	 * Disable DMA re-send on PCIe completion timeout (82576 datasheet
+> +	 * section 8.6.1, GCR.Completion_Timeout_Resend, bit 16).  The
+> +	 * mix_and_match test intentionally submits descriptors targeting
+> +	 * unmapped IOVAs; with the default (set) value, the device keeps
+> +	 * retrying the failed read indefinitely, which keeps PCIe AER and
+> +	 * IOMMU error handling busy and interferes with reset recovery.
+> +	 */
+> +	ctrl = igb_read32(igb, E1000_GCR);
+> +	ctrl &= ~E1000_GCR_CMPL_TMOUT_RESEND;
+> +	igb_write32(igb, E1000_GCR, ctrl);
+> +
+> +	/* Configure TX and RX descriptor rings */
+> +	igb_write32(igb, E1000_TDBAL(0), (u32)iova_tx);
+> +	igb_write32(igb, E1000_TDBAH(0), (u32)(iova_tx >> 32));
+> +	igb_write32(igb, E1000_TDLEN(0), RING_SIZE * sizeof(struct igb_tx_desc));
+> +	igb_write32(igb, E1000_TDH(0), 0);
+> +	igb_write32(igb, E1000_TDT(0), 0);
+> +	igb_write32(igb, E1000_TXDCTL(0), E1000_TXDCTL_QUEUE_ENABLE);
+> +
+> +	igb_write32(igb, E1000_RDBAL(0), (u32)iova_rx);
+> +	igb_write32(igb, E1000_RDBAH(0), (u32)(iova_rx >> 32));
+> +	igb_write32(igb, E1000_RDLEN(0), RING_SIZE * sizeof(struct igb_rx_desc));
+> +	igb_write32(igb, E1000_RDH(0), 0);
+> +	igb_write32(igb, E1000_RDT(0), 0);
+> +
+> +	/*
+> +	 * Select the advanced one-buffer descriptor format.  Per 82576
+> +	 * datasheet section 7.1.5.2: "SRRCTL[n].DESCTYPE must be set to a
+> +	 * value other than 000b for the 82576 to write back the special
+> +	 * descriptors."  struct igb_rx_desc matches the advanced one-buffer
+> +	 * writeback layout (section 7.1.5.2), so polling rx.wb.status_error
+> +	 * requires this format.  Section 8.10.2 specifies DESCTYPE[27:25].
+> +	 *
+> +	 * The direct write also zeroes SRRCTL.BSIZEPACKET, which is
+> +	 * intentional: per section 7.1.3.1 a zero BSIZEPACKET falls back to
+> +	 * the RCTL.BSIZE buffer size, whose reset default (00b) is 2048
+> +	 * bytes -- ample for the loopback frames here.
+> +	 */
+> +	igb_write32(igb, E1000_SRRCTL(0), E1000_SRRCTL_DESCTYPE_ADV_ONEBUF);
+> +
+> +	igb_write32(igb, E1000_RXDCTL(0), E1000_RXDCTL_QUEUE_ENABLE);
+> +
+> +	/* Wait for TX and RX queues to be enabled */
+> +	retries = 2000;
+> +	while (retries-- > 0) {
+> +		if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
+> +		    (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
+> +			break;
+> +		usleep(10);
+> +	}
+> +	VFIO_ASSERT_GE(retries, 0);
 
-For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
-detect this situation.  This is fragile because hva_to_pfn_remapped()
-returns different error codes for a !VM_WRITE VMA depending on whether
-the PTE happens to be mapped:
+I'm not sure how I missed this in the previous iteration, but this
+new-ish assert exposes a latent ordering issue on real hardware.  As per
+the below referenced register definitions, the per-queue enable bits are
+zero until the global enable bits are set.
 
-* if the PTE is present, follow_pfnmap_start() sets args.writable to
-  false and KVM_PFN_ERR_RO_FAULT is returned;
-
-* if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
-  -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
-  up returning KVM_PFN_ERR_FAULT.
-
-With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
-a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
-pte_present()[1] when the guest attempted to read it; with the patch
-instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
-avoids these special cases and also sidesteps the issue pointed out at
-https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
-
-For regular mappings a PROT_READ VMA, if placed in a writable memslot,
-would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-the guest writes to it.  This would cause a -EFAULT exit to userspace,
-instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
-however it should be considered part of the KVM API because mmu_stress_test
-relies on it.
-
-Still, even with this snag about the returned pfn error code, pull the
-vm_flags checks in front so that they are done for all VMAs and the
-above inconsistency goes away for the VM_IO|VM_PFNMAP case.
-
-[1] on x86, for example, such a page would have _PAGE_PRESENT clear
-  but _PAGE_PROTNONE set
-
-Cc: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
-
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..eaf8ee0725d4 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
- 	return npages;
- }
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+index 97a2f29aade3..fae523059f86 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+@@ -303,16 +303,6 @@ static void igb_hw_init(struct vfio_pci_device *device)
  
--static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
--{
--	if (unlikely(!(vma->vm_flags & VM_READ)))
--		return false;
--
--	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
--		return false;
--
--	return true;
--}
--
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
- {
-@@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
- retry:
- 	vma = vma_lookup(current->mm, kfp->hva);
+        igb_write32(igb, E1000_RXDCTL(0), E1000_RXDCTL_QUEUE_ENABLE);
  
--	if (vma == NULL)
-+	/*
-+	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
-+	 * or the page might be absent.
-+	 */
+-       /* Wait for TX and RX queues to be enabled */
+-       retries = 2000;
+-       while (retries-- > 0) {
+-               if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
+-                   (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
+-                       break;
+-               usleep(10);
+-       }
+-       VFIO_ASSERT_GE(retries, 0);
+-
+        /*
+         * Enable Receiver and Transmitter.  RCTL.LBM_MAC is set in addition
+         * to PHY loopback as a QEMU-only accommodation: QEMU's emulated igb
+@@ -335,6 +325,21 @@ static void igb_hw_init(struct vfio_pci_device *device)
+        igb_write32(igb, E1000_RCTL, rctl);
+        igb_write32(igb, E1000_TCTL, E1000_TCTL_EN | E1000_TCTL_PSP);
+ 
++       /*
++        * Wait for TX and RX queues to be enabled.  Per the RXDCTL/TXDCTL
++        * register definitions (8.10.10/8.12.13), the per-queue enable bit
++        * "remains zero" until the global RCTL.RXEN/TCTL.TXEN are set, so
++        * E1000_RCTL_EN and E1000_TCTL_EN must already be written above.
++        */
++       retries = 2000;
++       while (retries-- > 0) {
++               if ((igb_read32(igb, E1000_TXDCTL(0)) & E1000_TXDCTL_QUEUE_ENABLE) &&
++                   (igb_read32(igb, E1000_RXDCTL(0)) & E1000_RXDCTL_QUEUE_ENABLE))
++                       break;
++               usleep(10);
++       }
++       VFIO_ASSERT_GE(retries, 0);
 +
-+	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
- 		pfn = KVM_PFN_ERR_FAULT;
--	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-+	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
-+		/*
-+		 * Exit to userspace for PROT_READ mappings in a writable
-+		 * memslot, as this is part of the API.
-+		 */
-+		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP)
-+			? KVM_PFN_ERR_RO_FAULT : KVM_PFN_ERR_FAULT;
-+	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
- 		r = hva_to_pfn_remapped(vma, kfp, &pfn);
- 		if (r == -EAGAIN)
- 			goto retry;
- 		if (r < 0)
- 			pfn = KVM_PFN_ERR_FAULT;
- 	} else {
--		if ((kfp->flags & FOLL_NOWAIT) &&
--		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
--			pfn = KVM_PFN_ERR_NEEDS_IO;
--		else
--			pfn = KVM_PFN_ERR_FAULT;
-+		pfn = kfp->flags & FOLL_NOWAIT
-+			? KVM_PFN_ERR_NEEDS_IO : KVM_PFN_ERR_FAULT;
- 	}
- 	mmap_read_unlock(current->mm);
- 	return pfn;
--- 
-2.55.0
+        /*
+         * Program MSI-X interrupt routing per 82576 datasheet:
+         *
 
+Back to 35/35 on real hardware with this.  NB, patch is against fully
+applied series, so lands in igb_hw_init() but the source of the
+ordering issue is in patch 1 here, where it's igb_init().  Thanks,
+
+Alex
+
+> +
+> +	/*
+> +	 * Enable Receiver and Transmitter.  RCTL.LBM_MAC is set in addition
+> +	 * to PHY loopback as a QEMU-only accommodation: QEMU's emulated igb
+> +	 * does not honor PHY register 0 bit 14 (PHY internal loopback) and
+> +	 * relies on RCTL.LBM_MAC to wrap TX descriptors back to the RX
+> +	 * queue.  Datasheet 8.10.1 (RCTL register) advises "When using the
+> +	 * internal PHY, LBM should remain set to 00b", so setting LBM_MAC
+> +	 * here deviates from datasheet guidance; empirically the bit has
+> +	 * no observable effect on real 82576 hardware because MAC loopback
+> +	 * is not implemented (datasheet 3.5.6.2).  Setting both lets the
+> +	 * selftest work on both real hardware and QEMU without conditional
+> +	 * code paths.
+> +	 */
+> +	rctl = E1000_RCTL_EN |       /* Receiver Enable */
+> +	       E1000_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
+> +	       E1000_RCTL_MPE |      /* Multicast Promiscuous */
+> +	       E1000_RCTL_BAM |      /* Broadcast Accept Mode */
+> +	       E1000_RCTL_LBM_MAC |  /* MAC Loopback - for QEMU emulation only */
+> +	       E1000_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
+> +	igb_write32(igb, E1000_RCTL, rctl);
+> +	igb_write32(igb, E1000_TCTL, E1000_TCTL_EN | E1000_TCTL_PSP);
