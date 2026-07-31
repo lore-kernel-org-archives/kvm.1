@@ -1,99 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544104499B8;
-	Fri, 31 Jul 2026 17:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F243443E4E
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518290; cv=none; b=BXJVyiREhRKPSj7AATsbxVikzgaQN9rhY5Oco5BoB0LaL8nrWBH3860nFINv98U1CP42ANMUxujcVOGKDGYj7ki6XFRZSf8jCB6uluJG34jbMuC9QuiSiifdzXbWGXLjHQnhK5az3TZCCnJ1hNALDlsWBvb8AMpfCE4RyxbuiOI=
+	t=1785518373; cv=none; b=XrZChT3X4eGu6pBNAIAUjibaL1ga8HXZ2wbudu0pDT/lgP+eNg30Y0TaqXofOViaiJ/yaA+OU58tL55xje9UhPo81Y3ROusriFXED87koNVQO0G3eHSaRNRGPE5/ncY/K4zBLZxbIWWqJn/a67sS1RXXD/m0O0w3c+5JAS1k9QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518290; c=relaxed/simple;
-	bh=08s9E6ka3dFOAJcXYZ5mzc7bo8l76a3hNsjYgpcE6Yc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=CzkT2s+7qfuGL/OtZtJVuHyKfY1RTOIikCAL+oeDG57c5qizBM2qxXHTWvWgg2XSym9Zk9xKE8gb6DdMHuoLxOzr+gnDFqgPcR1rAO3JKJQlQg/JJdckDWMB2z8mA6Lszm0+EnuCMrtrzNAkhwTXNvOAR1QfELu057CrO9/F3Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkfUQsVD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785518373; c=relaxed/simple;
+	bh=xIU6uO65MTI5GT5LeU4s+zhDQ366657/3pJut9ChS7g=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XJclqgEO3jxS6+DrzHTbVZPBdggpx/0pSCUxdWQi5zf6PS0ebgoYw/ub+xJLWU0pqWoLA3/aBH4lq/hoTcJ+rgSDIpR5HhKb5/Oda1dyjr7EV6e7RDFxo7lBwbgcyA1+Etqfc088GMkqC8JLcsIjeWC0gaxLBFO1Cy7n4n2qCVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=naN+pMMT; arc=none smtp.client-ip=209.85.216.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkfUQsVD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51731F00AC4;
-	Fri, 31 Jul 2026 17:18:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785518289;
-	bh=BFR3+HDgiAMrK9bfd6XM2NF4MmQluEWmZ+rtRVJs8Jo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=GkfUQsVDCcteWJ/BrkoxeP8h51GMQnIG0CF/u+FcT0cvVQ0AGig09Fk4LkWfa6DK9
-	 aaHDpJ+arWkF/pT9ZOv0MspUOSXy4g6DijfAjNrD+0ScsaQCvtzaXSu09lcIYhagPn
-	 QYmorE6/0A3+X+mzOYsMoyArqEMd4xa4SV1R6q9jHMu7WBqr6IneI5BXNW8O7CiTLo
-	 0dnLBLvZHcNPmw/v3PsPHUOze4lB/0FQgDS+XfS9FbqScaJTjq/EWlsxy8HxzGc8oi
-	 nJDWhhD0YmC+VgCIkZPGR3dYMYT0CMHgbjEw+LWs2cnw01EKgHXV4ZID/Je+rBeR1P
-	 jyzT7o98LI0vg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 09/12] KVM: selftests: Add KVM syscall wrappers for
- pthread_{cancel,join}()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org, "Oliver
- Upton" <oupton@kernel.org>
-In-Reply-To: <20260731170619.2620845-10-seanjc@google.com>
-References: <20260731170619.2620845-1-seanjc@google.com>
- <20260731170619.2620845-10-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 17:18:08 +0000
-Message-Id: <20260731171808.A51731F00AC4@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="naN+pMMT"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38f5ac7354dso2212845a91.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:19:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785518369; x=1786123169; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XIBeCVj+waoKu55IzF4HgiRWJHXPMbjXy1AWpcy6gsA=;
+        b=naN+pMMTIU2eyjP5o7bzJnEbE+nDIU049RmW4eUakW8rIoefIlNkAeZ4+r0dgJ2kAr
+         JM1MMz1HyTWE0P8AkEI1adklxzED+I80tEcQwqwIoyM1G+HXwHEXjU3Wsr4VnYn3kqk8
+         Mt4RxqABV/pvbLk2i1x2OPQutBr3cFfMmFPquKTz9BEer1LAWF+94U7Y7MCynEckjjau
+         l00dVxtyxWNWbYKtRgm4rr2vPktz11Sy2KS4w08NWq0VzHxlCOBrWsptPkgr381eZAyo
+         FDtmifVhBE5AbLkqH0STpPVkFc2czSS59Dwlydjrz13Q0NMhu6s6yYF8WG+U8SFJubI5
+         aHow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785518369; x=1786123169;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=XIBeCVj+waoKu55IzF4HgiRWJHXPMbjXy1AWpcy6gsA=;
+        b=GaeI0PatTWXMNU6ko1Yw87xsGNk/eHsb9GgBTZyn1/HqXT/IBwn2v+ZWVXl4UhJBOB
+         0KN+emDUwWuvt60LiIL07zf4n5rI3FT0D+giM4IpmyVjie5qioFWeO5H8jNt0H6TK/XS
+         G+83n39Ce7KE2otcmG4KLSKq8gLc8qMSjNXQIPnVL+Wz1SCzxaMsDynA8FFcdEA/lYdb
+         iEZeZj7ohQk4V6gRcfqNO6EFzW2QlQV5ahuqNccMcDAnfahRDeBVYKMT2I4uxdr4m3Xd
+         GP5lyOjUiL7/ZCFSzLp7oDM4zxmpIBf1uzoa+9y2qLpf6x7jqbiMW34Z7yYwSx3uEegu
+         i/jQ==
+X-Gm-Message-State: AOJu0YyxKN2IT7BD83DIK7v6eDsp538DtUiaCI/VQxu3bm0zgHlOfdoa
+	Iqv1oV6JYlFNKnlyQt2RzAs+XrlvFXBme57CQM72Y3i/svL0xHAqyrlhIT6Jt5pd1rhwpv74m9R
+	XD5n5fA==
+X-Received: from pgaf18.prod.google.com ([2002:a63:3812:0:b0:c85:98b1:c613])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b8f:b0:38e:2524:7272
+ with SMTP id 98e67ed59e1d1-38fbc56c8d6mr561358a91.39.1785518367803; Fri, 31
+ Jul 2026 10:19:27 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 31 Jul 2026 10:19:24 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <20260731171926.2629627-1-seanjc@google.com>
+Subject: [PATCH v7 0/2] KVM: VMX: Workaround VMX preemption timer erratum
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
+	Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The `kvm_pthread_join` and `kvm_pthread_cancel` wrappers are def=
-ined using the `__KVM_SYSCALL_DEFINE` macro, which incorrectly assumes the =
-wrapped function sets the thread-local `errno` variable on failure.
---
+Due to a widespread Intel erratum (e.g. EMR158), programming the VMX
+preemption timer with certain large values may cause the timer to expire
+earlier than expected. The recommended workaround is to cap the timer value
+to strictly less than 2^25 * CPUID.15H:EBX[31:0] / CPUID.15H:EAX[31:0].
 
---- Patch [9]: [PATCH v2 09/12] KVM: selftests: Add KVM syscall wrappers fo=
-r pthread_{cancel,join}() ---
-commit b9978e67ef4ca95fc0d3b87b0d80bdb48e623a21
-Author: Sean Christopherson <seanjc@google.com>
+v7:
+ - Ensure the timer doesn't exceed the architectural max. [Sashiko]
 
-KVM: selftests: Add KVM syscall wrappers for pthread_{cancel,join}()
+v6:
+ - https://lore.kernel.org/all/20260729134203.1377606-2-seanjc@google.com
+ - Collect reviews. [Chao, Binbin]
+ - Massage the wording in patch 1's changelog. [Binbin]
+ - Use an inclusive "max" instead of an exclusive "limit".
+ - Define a local ARCHITECTURAL_MAX_VALUE instead of open coding it in multiple
+   locations.
+ - Don't apply the workaround when running as a guest.
+ - WARN if the CPUID.0x15 information would result in max value of 0.
 
-This commit adds kvm_pthread_join() and kvm_pthread_cancel() wrappers to
-KVM selftests. These wrappers automatically assert that the underlying pthr=
-ead
-functions succeed, removing the need for manual error checking across multi=
-ple
-tests.
+v5:
+ - https://lore.kernel.org/all/20260724234914.987987-1-jmattson@google.com
+ - Include Sean's preparatory patch burying VMX preemption timer code under
+   CONFIG_X86_64=y [Sean]
+ - Replace div_u64() with direct division (/)
 
-> diff --git a/tools/testing/selftests/kvm/include/kvm_syscalls.h b/tools/t=
-esting/selftests/kvm/include/kvm_syscalls.h
-> index e75be83787798..d6c18e13b9c8b 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_syscalls.h
-> @@ -101,6 +101,8 @@ __KVM_SYSCALL_DEFINE(sched_setaffinity, 3, pid_t, pid=
-, size_t, cpusetsize, cpu_s
->  typedef void *(*pthread_fn_t)(void *);
->  __KVM_SYSCALL_DEFINE(pthread_create, 4, pthread_t *, thread,
->  		     const pthread_attr_t *, attr, pthread_fn_t, fn, void *, arg);
-> +__KVM_SYSCALL_DEFINE(pthread_join, 2, pthread_t, thread, void **, thread=
-_return);
-> +__KVM_SYSCALL_DEFINE(pthread_cancel, 1, pthread_t, thread);
+v4: https://lore.kernel.org/all/20260722143024.3938899-1-jmattson@google.com
+v3: https://lore.kernel.org/all/20260722040311.3369898-1-jmattson@google.com
+v2: https://lore.kernel.org/all/20260720231639.1592848-1-jmattson@google.com
+v1: https://lore.kernel.org/all/20260720205230.1457146-1-jmattson@google.com
 
-[Severity: Medium]
-Will this produce misleading error messages on test failures?
+Jim Mattson (1):
+  KVM: VMX: Cap VMX preemption timer to work around Intel erratum
 
-Pthread functions like pthread_join and pthread_cancel return their error
-codes directly and do not set the thread-local errno variable.
+Sean Christopherson (1):
+  KVM: VMX: Bury all of the VMX preemption timer code under
+    CONFIG_X86_64=y
 
-Since these wrappers use the __KVM_SYSCALL_DEFINE macro, if the underlying
-pthread function fails, the __KVM_SYSCALL_ERROR macro will format the
-error message using the stale errno instead of the returned error code. This
-could result in test assertions printing an incorrect errno (e.g., "Success=
-")
-rather than the actual error string.
+ arch/x86/kvm/vmx/vmx.c | 158 ++++++++++++++++++++++++++---------------
+ 1 file changed, 102 insertions(+), 56 deletions(-)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731170619.2620=
-845-1-seanjc@google.com?part=3D9
+
+base-commit: 3c7d7f908d574277a845423ec32250a8d8df44c8
+-- 
+2.55.0.508.g3f0d502094-goog
+
