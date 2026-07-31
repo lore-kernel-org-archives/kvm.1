@@ -1,159 +1,344 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A86A32B137
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 05:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785476662; cv=pass; b=Fp1ahqxA2syE1LsOYvyuKp+02UmXBrfpnObT1gCj9EBWaSOt4N+y7/8is3eLisjYYHRMtDSqVLUTEqLEOcLTCRytnPMuDDpYaDxtIRDCnAfU9eINeEnjK9nvJ2K+NUVw+AtbLEa8sPguzS6x3Fn9bxJbOlNzcyzH6rrV4Snc5mE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785476662; c=relaxed/simple;
-	bh=zWZgcW4lyFMbzuE/2ay3O9mzW/r4iAm+NagUMTo/AC0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=glRcq2nBufCxPRY2n4U5nwOljNIVlMpFrA8+cbqeo0vxnS+8IzZdHta6Ct6oPeWgVkykLP+u72f88AYVSYxaweONDY3Xyg7rJdoFEQKRs31NQuTTwwcH8VscmvKUinOACfAcSuFcz02tup9wlar6hFmUAo8oIyT0rzGYFS7MEHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=mVl14OOF; arc=pass smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D473537C7;
+	Fri, 31 Jul 2026 05:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785476722; cv=none; b=irinYsP3EemQ2ilnXE4jP8S5b6jK8rNy/WZkmfwRSAYMFFl/oFOzJjF3fK6n9hzJ809H7h8MJU+9gGPG5BeI8JQLGblvPYpyQQTMZxHxpEaA13tsWK8M4WcB5WQfRbQZWe4DBsD7Vis3MWAdhFsSooBtRq/a/CnWPDaBY6YlrWs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785476722; c=relaxed/simple;
+	bh=zOOJ8DeOnYEfhyleSa0bO9fdEyUdlWPrWt3by1HgCV8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QUCgPlvHXCZ6nhu52C948Ovh5+i7eBlCymW18tGq17z/AbsS+JZFSz56/2dO988TpG0Nz4uh+xfFTBRiWAO10l4R5ac65ij0bWLKeYroN8UsuYlT2AFLKk9HoG8gK7qWGc4l1kGWjZ6taDp8foL1ZfCmKW90q8a2xPM/wAONn58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Wu6aBahq; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="mVl14OOF"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47fd4531020so27446f8f.3
-        for <kvm@vger.kernel.org>; Thu, 30 Jul 2026 22:44:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785476659; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mX/xe//LWKDnD3nOEBWY/P4x5YZ0mpcCjRB/Ya1lf59FoAA5UNjcQ3vM6/oB8pacVI
-         ILv0A3mDsUc8UkPenQS+hNnnUUn3mgT88uiwWmrBdpzN1UZfHMrT3bB/dkMM5WfXiIhb
-         yVNyd1TfLlnaE+7QBsmJAo26zFOve4+4oTk6uyhbw6UN55E/MJmarKPTZeK44kXOv/7z
-         kX6vhpQsUd6TZcAPfrUDB+0JzUM1I6qUeCtb++u9GIjwA4HTa9UgO62rmyDVfrzY+SsL
-         p23OyGL6Hz+dJpd80oFJA5Cah87bLO/j5P/Y3m4lskG0pd+UNYKN/sf3xQwngQjaLjeV
-         tmlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tyufRcDXkH7OGX3Tp/WXvppb4b1akynKEKRhP9itFK4=;
-        fh=TqkDo7HJm6C2bTHYqbzn7b/i6oYTm+CMOZGiIKAd8p4=;
-        b=paXNTLqyFBcfgw4LpZUSHCz2pRIXIOSrylMsi0eIR+OC3GKGXmf7Fa4VxeVeULaQiG
-         F7+obAyoAmr/zpamqBhkr7lIb6Rt/g4+/DWqwDRjNtmP1xbOY0H226S8+Q9xQiKizlna
-         3Eiit8I9/t7IL6hrsFt5I6IJKoos0Z3laqii+hdWAn8GdEB3rLs4L2zfPfrCbnUrXYKk
-         waUZGYtFfyveU+q1Qvo/lnnOQ0cZwFS6d6Sq62F/ztxGmQXqZ1jchc4/TLe8Y9uo3ePs
-         GbQvPiF9QOuUsQdkYfEAzlY54yfeLbQPm45d4buyuveM75GibJmuA3lwlVEaGk5ILcQi
-         QYiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1785476659; x=1786081459; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tyufRcDXkH7OGX3Tp/WXvppb4b1akynKEKRhP9itFK4=;
-        b=mVl14OOF+wbBneYF5bHOB+K1CnqjOrlrslfXFEwxiBHYir80C4dtafQJ3FQouzBkYz
-         fQAIMEl/xNmngy0Yorp2Q2I7my4pasMPiE4I9siAz66YCyDGGfWQwI4b3tWGtiBfTrcB
-         O5pRV+vyi1Bwb0qQyofINXH7AWXMzCPBdWRscEtoCHyRm1OCAtVT7Z9b4YsunO1i3LCC
-         B4dvrnT7EuamO2i9MOENxB+uLQSg9ZYQduOzAeI+CmFUPNPAzOtOQBPF0zn2cS1wV0c7
-         /WFa3gLIF1HMPuTd65Hm/FadrpSuuV0X/0Qjl3UKHNOwETIWCmS1WMr6DgeS8+8mAADt
-         RtDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785476659; x=1786081459;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tyufRcDXkH7OGX3Tp/WXvppb4b1akynKEKRhP9itFK4=;
-        b=FIoWNIHexA8IlvJDnU7USCJb5ppAzJMhMSDL+ZqUeAFJufQwUPAnof/y4glqElcm6U
-         hUn1FiEO/8OEwD9lJnbJLXP3ugNmF1P/wfM7fhojZLW/dt66YHZZLH1WYALzETF8khs0
-         IhGx6wQ0bD0p+nhKShDbXXwdtq/thI3WnidFZ+UqtOrfkirgdNPGeQqa7ASET5XfEWk1
-         +sK8vzTgjd1vS8OtDQH14xbe0Ha00rkGCXIn1ISMtedMGp15ZApG9c/tI6NFDLlsvzuQ
-         i+N0gQJrw/RxQGTiWbf0OCniTqsOwN03vyx8wRHnCLf1sI91fFgIsi02VrL6s42IznAO
-         4YQQ==
-X-Gm-Message-State: AOJu0YzTpll2MBT8UF5JFFNNIbkAX+VDg9NC2+b2VGyjhxdhvKUDFOJ4
-	pKLbUld57JUdaAQABaPPNCRrlKEIUt7DyFEMNPS4eBOec9HQ0J+Q8ZQhwVCntfLIy3DGqNOhvi0
-	TtI8uJfyWvu23wLiRtKs1nNrAe7sYL4C4ikayn7HjRg==
-X-Gm-Gg: AR+sD12j4JXodHmRAnaR5JLvfQK8CkASMVPXv/8d8BwZHlhwsYPn1UfSL+whrJkN9Z9
-	Yz4LBIkGGG2lhUXjfO+AGJYx5vPmitedK34Y1LzZJm4pR/mFY2VAXjM1bBD0C8kEbM/dsoTuCL5
-	GYJqeJmbX6pD4vi2SUDPOgAFF6nT8cxZJaOAKVPzU3j0TLjaBAqZZ+rZHvQMXyK6QGLLYsiI/XV
-	1bA4UPijK3EvjCMc6PpwGdq5KF+Vo6OYxPCOgfTfXjLCmxrJETDlP11FU4PebXJvelLvgeCrMRx
-	kZM/DNqk4zEfa6f2imKh462pSlfy/umKzh3VJszLtlh65JBgmkMdpYs8PvtffjtGC18+zBbwrNn
-	9Qr86k7gl44AyiwR+0dgtgFA/p+z4ivVuc5S2Zqw6vbsZpYV9YUFqqz8tViZqbKI=
-X-Received: by 2002:a05:6000:2212:b0:47f:8e50:93e0 with SMTP id
- ffacd0b85a97d-47fd2b328efmr1580964f8f.39.1785476659463; Thu, 30 Jul 2026
- 22:44:19 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Wu6aBahq"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F16C140E01CE;
+	Fri, 31 Jul 2026 05:45:17 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8_PwlhpFGBNE; Fri, 31 Jul 2026 05:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785476703; bh=G7VWzTnNmnNc6vhXzTYbTJEpS6/d3XUsM+DmxJ+z4VM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wu6aBahqgkgJsXoi5HEueysdb2eC1wxyelov+kGWWcB5Z7bcUFrE1U9XqUfNkUz6q
+	 iezceb1dvqkpxhd7Ywn+0zFzfW6Fdbo/1974qlRlQ+eSfkbzT01O3D9hB+35PEnyQ5
+	 YJ1t41XypyN3Pz8/iNgW3BbdRYu9ciBhaDr0v7t8wW2T2dZxRlYzarWKBWV27W4ufF
+	 lWv+ro9CdLsNud7xPDqkwnp5e3P3Ze4NG+RVAmu5krMgttVLhWXiyufEBUIAGaUFfR
+	 1rRwmheov/iXkrBZn26IS365QaRCjrrqowUaH26xNjhXqBJpiOoG0aYuogZ6Mhvj5P
+	 t+qVdJVniXRpElv1Yq3Z4MYaaUq3wuwprgVE33xzcgcHDOPIQBXTmbseSn/O9ZdQwm
+	 tfLLVSh9wfZIEmyJi+rYeJYGgASEe7Ie61DzgeoOJihRreRipN5T7eGhLhQRxh8UEU
+	 sL0XwnyCZTZJfKWYsMg/bJ6m6hgzLfC/LeOdoE9H2bvqTXP1Icc4gpY+R0VmRrBji2
+	 wMykaVRpj0RwDK5V6j/ywsDEju2FC4N4sPeE3quznsUIrKit1Womtq5dIJJ8XisTHe
+	 BDmoSpIAI7M0o01/HjFjNnjvlUCqX/jMCW1EbVhclczaW7Bz9YYcs80/gN42GJ7yB2
+	 jNyV27vJTuFWw/fpyG4Qe3Bg=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7169340E014C;
+	Fri, 31 Jul 2026 05:44:28 +0000 (UTC)
+Date: Thu, 30 Jul 2026 22:44:25 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260731054425.GNamw2OelKuNhVwnrU@fat_crate.local>
+References: <cover.1784844080.git.ashish.kalra@amd.com>
+ <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260701120954.129873-1-wang.yechao255@zte.com.cn> <20260701120954.129873-4-wang.yechao255@zte.com.cn>
-In-Reply-To: <20260701120954.129873-4-wang.yechao255@zte.com.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 31 Jul 2026 11:14:08 +0530
-X-Gm-Features: AUfX_myKDnYmDHijHAzG-jJrRvK3vmSuf-KnXv-nXgVsR5qZr7fmqUsH6abxvaI
-Message-ID: <CAAhSdy27pUkVYiciMOp6RdcyzNvsEeOXGA5pW43C1oZJZR4W_Q@mail.gmail.com>
-Subject: Re: [PATCH v4 3/5] RISC-V: KVM: Remove redundant TLB flush operations
-To: Wang Yechao <wang.yechao255@zte.com.cn>
-Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Atish Patra <atish.patra@linux.dev>, Alexandre Ghiti <alex@ghiti.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <7f582569acea933c3045be604a81975e29b5ee2b.1784844080.git.ashish.kalra@amd.com>
 
-On Wed, Jul 1, 2026 at 5:41=E2=80=AFPM Wang Yechao <wang.yechao255@zte.com.=
-cn> wrote:
->
-> The function kvm_arch_mmu_enable_log_dirty_pt_masked() is invoked from
-> two distinct call paths:
->
-> kvm_clear_dirty_log_protect()
->   kvm_arch_mmu_enable_log_dirty_pt_masked()
->
-> kvm_vm_ioctl_reset_dirty_pages()
->   kvm_dirty_ring_reset()
->     kvm_reset_dirty_gfn()
->         kvm_arch_mmu_enable_log_dirty_pt_masked()
->
-> In both scenarios, the caller already performs a remote TLB flush after
-> dirty logging is enabled, so the TLB flush inside
-> kvm_arch_mmu_enable_log_dirty_pt_masked() is unnecessary. Remove it.
->
-> Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+On Mon, Jul 27, 2026 at 07:05:29PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
+> 
+> When SEV-SNP is enabled, all writes to memory are checked to ensure
+> integrity of SNP guest memory. This imposes performance overhead on the
+
+s/SNP//
+
+The checks are done not only on SNP guest memory but on *all* memory, as your
+next paragraph suggests.
+
+> whole system.
+> 
+> RMPOPT is a new instruction that minimizes the performance overhead of
+> RMP checks on the hypervisor and on non-SNP guests by allowing RMP
+> checks to be skipped for 1GB regions of memory that are known not to
+> contain any SEV-SNP guest memory.
+
+Let's tone down the abbreviations. "SNP guest memory" is enough and let's
+stick to that.
+
+> Add support for performing RMP optimizations asynchronously using a
+> dedicated workqueue.
+> 
+> Enable RMPOPT optimizations for up to 2TB of system RAM starting from
+> the lowest physical memory address aligned down to a 1GB boundary at
+> RMP initialization time. RMP checks can initially be skipped for 1GB
+
+Why "initially"? What are you trying to say here?
+
+> memory ranges that do not contain SEV-SNP guest memory (excluding
+> preassigned pages such as the RMP table and firmware pages). As SNP
+> guests are launched, RMPUPDATE will disable the corresponding RMPOPT
+> optimizations.
+
+Because it will add pages to the RMP table?
+
+This paragraph needs clarification.
+
+> Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Suggested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
 > ---
->  arch/riscv/kvm/mmu.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 363238efaedb4..056c0abe278af 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -162,14 +162,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct=
- kvm *kvm,
->         phys_addr_t start =3D (base_gfn +  __ffs(mask)) << PAGE_SHIFT;
->         phys_addr_t end =3D (base_gfn + __fls(mask) + 1) << PAGE_SHIFT;
->         struct kvm_gstage gstage;
-> -       bool flush;
->
->         kvm_riscv_gstage_init(&gstage, kvm);
->
-> -       flush =3D kvm_riscv_gstage_wp_range(&gstage, start, end);
-> -       if (flush)
-> -               kvm_flush_remote_tlbs_range(kvm, start >> PAGE_SHIFT,
-> -                                           (end - start) >> PAGE_SHIFT);
-> +       kvm_riscv_gstage_wp_range(&gstage, start, end);
+>  arch/x86/virt/svm/sev.c | 160 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 158 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
+> index 8bfd80284836..04b19e64f832 100644
+> --- a/arch/x86/virt/svm/sev.c
+> +++ b/arch/x86/virt/svm/sev.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/iommu.h>
+>  #include <linux/amd-iommu.h>
+>  #include <linux/nospec.h>
+> +#include <linux/workqueue.h>
+>  
+>  #include <asm/sev.h>
+>  #include <asm/processor.h>
+> @@ -125,7 +126,18 @@ static void *rmp_bookkeeping __ro_after_init;
+>  static u64 probed_rmp_base, probed_rmp_size;
+>  
+>  static cpumask_var_t rmpopt_cpumask;
+> -static phys_addr_t rmpopt_pa_start;
+> +static phys_addr_t rmpopt_pa_start, rmpopt_pa_end;
+> +
+> +enum rmpopt_function {
 
-Please add comment here that remote TLB flush is not needed here
-since callers of kvm_arch_mmu_enable_log_dirty_pt_masked() already
-do it.
+	rmpopt_op_type
 
+> +	RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS,
+> +	RMPOPT_FUNC_REPORT_STATUS
+
+RMPOPT_OP_VERIFY...
+
+> +};
+> +
+
+/*
+ * This timeout was selected this way because...
+ */
+
+> +#define RMPOPT_WORK_TIMEOUT	10000
+> +
+> +static struct workqueue_struct *rmpopt_wq;
+> +static struct delayed_work rmpopt_delayed_work;
+> +static DEFINE_MUTEX(rmpopt_wq_mutex);
+>  
+>  static LIST_HEAD(snp_leaked_pages_list);
+>  static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
+> @@ -565,11 +577,20 @@ static void snp_cleanup_rmpopt(void)
+>  {
+>  	int cpu;
+>  
+> +	guard(mutex)(&rmpopt_wq_mutex);
+> +
+> +	if (!rmpopt_wq)
+> +		return;
+
+If there's no workqueue, you skip all the rest, including undoing things which
+are not workqueue-related?
+
+That workqueue pointer must be magical and special. Yet, I don't see anything
+explaining that.
+
+> +
+> +	cancel_delayed_work_sync(&rmpopt_delayed_work);
+> +	destroy_workqueue(rmpopt_wq);
+> +
+>  	for_each_cpu(cpu, rmpopt_cpumask)
+>  		wrmsrq_on_cpu(cpu, MSR_AMD64_RMPOPT_BASE, 0);
+>  
+>  	free_cpumask_var(rmpopt_cpumask);
+> -	rmpopt_pa_start = 0;
+> +	rmpopt_pa_start = rmpopt_pa_end = 0;
+> +	rmpopt_wq = NULL;
 >  }
->
->  void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *me=
-mslot)
-> --
-> 2.43.5
->
+>  
+>  void snp_shutdown(void)
+> @@ -599,6 +620,96 @@ static bool rmpopt_capable(void)
+>  	       cc_platform_has(CC_ATTR_HOST_SEV_SNP);
+>  }
+>  
+> +/*
+> + * RMPOPT: F2 0F 01 FC
+> + *   Input:  RAX = system physical address (1GB aligned)
+> + *           RCX = operation type
+> + *   Output: CF set if the range was optimized
+> + */
+> +static inline bool __rmpopt(u64 pa_start, u64 op_type)
+> +{
+> +	bool optimized;
+> +
 
-Otherwise, this looks good to me.
+	/*
+	 * needs a comment here which says which binutils version
+	 * supports the RMPOPT mnemonic.
+	 */
+> +	asm volatile(".byte 0xf2, 0x0f, 0x01, 0xfc"
+> +		     : "=@ccc" (optimized)
+> +		     : "a" (pa_start), "c" (op_type)
+> +		     : "memory", "cc");
+> +
+> +	return optimized;
+> +}
+> +
+> +static void rmpopt(u64 pa)
+> +{
+> +	u64 pa_start = ALIGN_DOWN(pa, SZ_1G);
+> +	u64 op_type = RMPOPT_FUNC_VERIFY_AND_REPORT_STATUS;
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+	enum rmpopt_op_type op = ...
 
-Thanks,
-Anup
+> +
+> +	__rmpopt(pa_start, op_type);
+
+Looks like the __rmpopt() carve out is not really necessary and you can merge
+it back into rmpopt().
+
+> +}
+> +
+> +/*
+> + * 'val' is a system physical address.
+> + */
+> +static void rmpopt_smp(void *val)
+
+You don't need that one - you can use rmpopt(). But keep on reading...
+
+> +{
+> +	rmpopt((u64)val);
+> +}
+> +
+> +/*
+> + * RMPOPT optimizations skip RMP checks at 1GB granularity if this
+> + * range of memory does not contain any SNP guest memory.
+> + */
+
+Put that comment above rmpopt().
+
+> +static void rmpopt_work_handler(struct work_struct *work)
+> +{
+> +	cpumask_var_t follower_mask;
+> +	phys_addr_t pa;
+
+So either phys_addr_t or u64 but not both for a pa.
+
+> +	int this_cpu;
+> +
+> +	pr_info("Attempt RMP optimizations on physical address range @1GB alignment [0x%016llx - 0x%016llx]\n",
+> +		rmpopt_pa_start, rmpopt_pa_end);
+
+This is going to spam dmesg every time the workqueue runs?
+
+Nope, zap it.
+
+> +	if (!alloc_cpumask_var(&follower_mask, GFP_KERNEL)) {
+> +		pr_warn("RMP optimization pass skipped: cpumask allocation failed\n");
+> +		return;
+> +	}
+
+Why? Why isn't the follower mask allocated once at init time?
+
+> +
+> +	/*
+> +	 * RMPOPT scans the RMP table, stores the result of the scan in the
+> +	 * reserved processor memory. The RMP scan is the most expensive
+> +	 * part. If a second RMPOPT occurs, it can skip the expensive scan
+> +	 * if they can see a cached result in the reserved processor memory.
+> +	 *
+> +	 * Do RMPOPT on one CPU alone. Then, follow that up with RMPOPT
+> +	 * on every other primary thread. Followers are "designed to"
+> +	 * skip the scan if they see the "cached" scan results.
+> +	 *
+> +	 * Pin the worker to the current CPU for the leader loop so that
+
+Isn't worker == leader here?
+
+> +	 * this_cpu remains valid and the RMPOPT instruction executes on
+> +	 * the correct CPU. 
+
+> Use migrate_disable() rather than get_cpu() to
+> +	 * prevent migration while still allowing preemption.
+
+No need to explain that.
+
+> +	 */
+> +	migrate_disable();
+> +	this_cpu = smp_processor_id();
+> +
+> +	cpumask_andnot(follower_mask, rmpopt_cpumask,
+> +		       topology_sibling_cpumask(this_cpu));
+> +
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		rmpopt(pa);
+> +
+> +	migrate_enable();
+> +
+> +	/*
+> +	 * Followers: run RMPOPT on the remaining cores.  cpus_read_lock() is
+> +	 * intentionally not held here: CPU hotplug is disabled for the entire
+> +	 * time SNP is active (see snp_prepare()), and this work only runs while
+> +	 * SNP is active, so the follower set stays valid across the whole scan.
+> +	 */
+> +	for (pa = rmpopt_pa_start; pa < rmpopt_pa_end; pa += SZ_1G)
+> +		on_each_cpu_mask(follower_mask, rmpopt_smp, (void *)pa, true);
+
+An IPI per 1G pa?!?!? On each CPU?!
+
+Instead of IPIing each CPU and inside the handler, doing the loop?
+
+Nope.
+
+> +
+> +	free_cpumask_var(follower_mask);
+> +}
+
+Ok, enough for this part. Part II coming up later.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
