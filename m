@@ -1,144 +1,62 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69362366052;
-	Fri, 31 Jul 2026 13:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A651C3EF0C8;
+	Fri, 31 Jul 2026 13:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785504094; cv=none; b=sW2xsq1Zm0uUmr5jfx6bnPdkjuzI1lvTSQugquIhY6nehhQJKsRz0ZHrpdWaAq5E7rSQIAocqcBZH46TmNZNQF6B9WZflPjExLtrj6I3h5QNEdZ5oI3UMOI3tLBUzprazBi60pe8Ehy2M1gYg1aljtpZ/GKfpftbZHaaALKBLuI=
+	t=1785504094; cv=none; b=Xaq/CjVTnj2QEg6o4kUYshD1oL+vTsvsfeLg66hjM5N0/KLl3LyVHpp7t0TEKAmv5MvSAdOR7VYc1PLNj+CFXs98JBiHSmk7LV5Y9JxivuAShrHg/PJoMUI9MUyy2SxSoGgMaedJ61GkiZZ/u9vh9vSnB5H2CMHqlCax8c4gR4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785504094; c=relaxed/simple;
-	bh=a8R607Zd+Ysh0+DvB4Rv3NkQEdHP55J1eTeMHHcWJhg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tP09/EsJqSpU6QWxTb8qvX6TjYvZK8YbtVMZwvdz31IHlrnbo+glQRpdwXht7V+mB1MGC7OWonEFgxOhXk46YMG0K+MH9t+2jwtLzdjDLxWCeghqzAGdKNETPEOhKJiML5pKR/HXmBYOeAgXeefWl38pTbm2arWZP1mxW/2ZA2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YytOMRlT; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	bh=bYpk7qYSyjS7yCPzOOenakrIMCTpUDNrDueevRU8/gM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=cMVjZLhCLbZAqCpi+j3WlWyGdVld2AXCFYJyz+FuehHlKqmuLId6QFI34aUCXWkg+6pbO6digEUFQsaTcdvUmH2mUNZJQsRPotrL0xoMpuQr9RN3tQz5u+5duXfNkoLripAJjmnmtv60HdyNx/lGWVeBiOWuYhIJG1fnZ8gSls8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSomi7bK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YytOMRlT"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3FDA204C;
-	Fri, 31 Jul 2026 06:21:27 -0700 (PDT)
-Received: from [10.57.41.95] (unknown [10.57.41.95])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B00293F7B4;
-	Fri, 31 Jul 2026 06:21:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785504091; bh=a8R607Zd+Ysh0+DvB4Rv3NkQEdHP55J1eTeMHHcWJhg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YytOMRlTwKYJZD2iEI7Yt++9iYWq34vkrxAyM2SHO0tciXiAdnkeGSTlPpqisIix4
-	 rvsFviTayww6pLlFab1ELBOENLakfHh6A90OYDhojK1ph6Fj3je8EeB+/Z4767DF46
-	 8lhqhiwIP4NMJkV9/nUUEyxwzUmXI9eSxWfmqpDk=
-Message-ID: <d383d34e-f38d-4bd1-8221-09f5f0c7df7f@arm.com>
-Date: Fri, 31 Jul 2026 14:21:27 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSomi7bK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AA71F00A3A;
+	Fri, 31 Jul 2026 13:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785504093;
+	bh=bYpk7qYSyjS7yCPzOOenakrIMCTpUDNrDueevRU8/gM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZSomi7bKr8Wyk3dHrGYpkVTEpPUPxR+4lWZwHN4mw2MeTxqMJtzTkLUbnfrRQMFkI
+	 d/DmNwZMQrCm7F7DUDWz+utHIwbYQWyn44eniXDw7nrneRcN5PeGciINr+x2Y1Jrzz
+	 q6v75VOMHHGCMlUqT2AW+nu37F2DQ9EI+VTWjLxJg6DyhRlEfKddaNDV1+cwny+jki
+	 zF3tmeMFYqkTX7J2UuVgUxi7SZmyn2SJUe6Ry7q/hRyMnOTBlMWCqTPVRZc1m/gdVB
+	 JobMTiQ/WbAvPNisAxIcEf5I+9C0q+uc0hPeEJtZX8Y2UydWzIGKNtRFB6l1RRobK7
+	 3/A/ZgEVP8fhg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 12/14] KVM: s390: Fix ordering when adding to SCA
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260731130138.173983-13-imbrenda@linux.ibm.com>
+References: <20260731130138.173983-1-imbrenda@linux.ibm.com>
+ <20260731130138.173983-13-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 13:21:32 +0000
+Message-Id: <20260731132133.08AA71F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] firmware: arm_rmm: Configure the RMM with the host's
- page size
-Content-Language: en-GB
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
- kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
- Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
- Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
- <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
- Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142739.80398-1-steven.price@arm.com>
- <20260715142739.80398-5-steven.price@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20260715142739.80398-5-steven.price@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 15/07/2026 15:27, Steven Price wrote:
-> RMM v2.0 brings the ability to set the RMM's granule size. Check the
-> feature registers and configure the RMM so that it matches the host's
-> page size. This means that operations can be done with a granularity
-> equal to PAGE_SIZE.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v14:
->   * Move the implementation into drivers/firmware/arm_rmm.
-> Changes since v13:
->   * Moved out of KVM.
-> ---
->   drivers/firmware/arm_rmm/rmi.c | 43 ++++++++++++++++++++++++++++++++++
->   1 file changed, 43 insertions(+)
-> 
-> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
-> index c4850976544f..e7ab4a7df3ca 100644
-> --- a/drivers/firmware/arm_rmm/rmi.c
-> +++ b/drivers/firmware/arm_rmm/rmi.c
-> @@ -76,6 +76,45 @@ static int rmi_read_features(void)
->   	return 0;
->   }
->   
-> +static int rmi_configure(void)
-> +{
-> +	unsigned long ret;
-> +	struct rmm_config *config __free(free_page) = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
-> +
-> +	if (!config)
-> +		return -ENOMEM;
-> +
-> +	switch (PAGE_SIZE) {
-> +	case SZ_4K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
-> +		break;
-> +	case SZ_16K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
-> +		break;
-> +	case SZ_64K:
-> +		config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
-> +		break;
-> +	default:
-> +		BUILD_BUG();
-> +	}
-> +
-> +	/*
-> +	 * For now we set the tracking_region_size to 0 which is the only option
-> +	 * for 4KB PAGE_SIZE (1GB for 4KB PAGE_SIZE, 32MB/512MB for 16KB/64KB).
-> +	 * TODO: Support other tracking sizes via Kconfig option for other
-> +	 * PAGE_SIZES
-> +	 */
-> +	config->tracking_region_size = 0;
-> +
-> +	ret = rmi_rmm_config_set(virt_to_phys(config));
-> +	if (ret) {
-> +		pr_err("RMM config set failed\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->   static int __init arm64_init_rmi(void)
->   {
->   	int ret;
-> @@ -89,6 +128,10 @@ static int __init arm64_init_rmi(void)
->   	if (ret)
->   		return ret;
->   
-> +	ret = rmi_configure();
-> +	if (ret)
-> +		return ret;
-> +
+> When adding a new vCPU to the SCA area, the validity bit in the MCN was
+> set before the pointer to the state description, potentially allowing
+> for a race.
+>=20
+> Fix by setting the pointer before setting the bit.
+>=20
+> Fixes: 14542a0a54c5 ("KVM: S390: Remove sca_lock")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-
->   	return 0;
->   }
->   
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731130138.1739=
+83-1-imbrenda@linux.ibm.com?part=3D12
 
