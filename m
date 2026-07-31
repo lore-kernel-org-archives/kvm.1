@@ -1,96 +1,93 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1108B3793BA
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87547377A9A
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528663; cv=none; b=cZ2TbD033vzsTc+vbVFUzPeXeczH1woXu5RkCLwxcwfPBjIHDedbmS8dsMs23zbap+AtY6NR5pMzxUhiTVkxFJimEj4MtvmPRaBX3kOc9nxElco/i1gHfEYAXtMiduGd4N/jXej1zA0EjP/CXCpDFbTIRKZWyNa+9b9i4Dnr+50=
+	t=1785528681; cv=none; b=E1yPdJvZ31cuBiohpxIS4EA/cCfDL0XM/biO25/UCwjVikUvml4h5qAftbVCXt3T+5HToiBn03KFo3jaYrMvYb9bPaDI0uUqJM/+2HMWqNospZxhRQehVRrIFlIFXP49WmT/YD57GuzHyR86bRxHCEV+cdFE7ci8p6Rl7cXkgKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528663; c=relaxed/simple;
-	bh=Uj8SmNrzZrIhvlxYtUrWznuFFfQpzPJVVMjYZQhVJWM=;
+	s=arc-20240116; t=1785528681; c=relaxed/simple;
+	bh=ikujtm3HHHpDvNGxFy14i5cscXGSwML1OnPpO6fPqW4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tcSRGSs1FV3gn2k6Sgd3lutWbJLYfSccUbl6u81W9cnG+bOp4hPWhn3JaYYyLNYc6SpLaPHspil8RdHbBKqo0PtTX4bthKr6C0dudOc8drlSm9imE1Z0367K1JMO3kRCHPZ5YwyyvT7lt0800shJX7G50+em0CiFs1SlUwc7Gtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vrOQtyDC; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=eQzyR/ElOKqVX1+tw26OUNkaTj/dgfaCdMhGIglMSKJq2Aj4hkqK+9+lDGGf5TExto3Wzh3cvMujbJtJ0HiHQsNTKzhObqTQQsZoL12yarGgRhManG3MOgFDqBcEhbeHTO0zgk0Tdn4pSxJkOtT7WrlwfItRlPqhxnWThp9GNRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lfXvpHw9; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vrOQtyDC"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cab041eced3so2019008a12.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lfXvpHw9"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84a251c2e3eso3028646b3a.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785528660; x=1786133460; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785528680; x=1786133480; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nCwkrHoQw8GqZhR+kRNFmX+b1WOcdKZEDyMBbasgAHI=;
-        b=vrOQtyDCt+pYfy3qOU+1CbFd+Y0GE7SDxWlR8ac0EAEQt/26uY/42G9XIlXR1cs20M
-         SzP9FXpcnhJIsVXMszjZluWaiDEj3qdNwHeSQg9+mJAEIC5dHkwzygC7rVB6jppMs2aM
-         38KFv3Bp2a90i8urOvG+fnPL8VQGlQryBvkknaQaRxi4NdzybSiZtW3dKC5BoZU7FfKp
-         QGUbuEvKJTd2bOrNKIAnKMBkP8TIhQwOBbMfzdIHkLnM+MHHeVfnTdWH/RCsQ24OEztt
-         16UYTLh3yGAljvHPvtXMr+BxnqofQHhxAcACsut28jhd4367N3Q9VIojewRMsEOoSL5S
-         RZbw==
+        bh=1jQzFcpqBSYYCtWlVzLC7o6CID0+BkEtgiFKx+1cRaM=;
+        b=lfXvpHw9p4QyyRV9IVEs5MOhzf2qnpbrjQpIOAcb9w1lgc8IkRpQahCbL8d1qArC7L
+         5MuNvOF+A82Q5C6+xJh6htMsvsb0cDOfojSbsQyk+5Oz2bjyl3tiMEX2Nhsgdum4LfKi
+         2Cu113w3t1TRZ4PVQo/XT/Yq4sM/rCdKkCg/09J4E+6wdiDHiIXuCKOMSjm9nclGWMu6
+         C1QEFhcNOwKcphtZIF5T6p5XBKcr97UtUJULcupasmj1vDvBWvIfzeQtcLFkdm1xh7wd
+         0ulFyUlbezPuaVTwlL/tt80X7rJhTx5aVJAC6s2fg3k301x9kGmv08GMeo8D7uI0ase7
+         Ho+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528660; x=1786133460;
+        d=1e100.net; s=20251104; t=1785528680; x=1786133480;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nCwkrHoQw8GqZhR+kRNFmX+b1WOcdKZEDyMBbasgAHI=;
-        b=QtK91KdOvWdBKBmA6dwhU839+A4JItEkns5/8+Lu/9qtTiVQj3vdrjHj0Zn2vVQkBM
-         Mg0ZORMtdlK3YoqWiwy/JXdd84TksLMrVIv2SHtF+KwcnP22mzW2jhEfUUzXXUhuGtm4
-         VF184+XoEZi6N3NaQIwOipOs3maQBULjmUpNzmYIlB7BlfVNBsnyX0ARgUCUxX+6VFjM
-         DyIvn7Cgpgve6IXF3EnG+lljsGubAlnH2aiYRFsFMaQ8CidLNX0cQgTdHdmLTVpTfdAv
-         Edi0qFkTOC6hytD/XYFbx9WPbCLaS3abMqSwae6/BqiCSwSk9ndckGkSJcDqjYRCIyau
-         z0Rg==
-X-Forwarded-Encrypted: i=1; AHgh+RqON9p6lqU7Sn5WzGIod9uut4HU8CWdJP7yMqWpj2RJgggblNfN3evt2kxHiI+wMQw09F4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWxCOgegQ9PexHrch4qCbNes2Xvd+SZAZvwmXwAO99wSSVqUzz
-	jT8pNLR/EB/aA5dGGBTdsBkUCR3//V7I2YvktzARPmlYrF7kox5LPPfBmZzmRoh78/QPL3mAO6J
-	ctOKAIA==
-X-Received: from pgjs24.prod.google.com ([2002:a63:f058:0:b0:c9a:ffcc:19c8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:9cca:b0:3bf:6c08:fba7
- with SMTP id adf61e73a8af0-3c92a84ec9amr946941637.59.1785528660082; Fri, 31
- Jul 2026 13:11:00 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:10:00 -0700
-In-Reply-To: <20260713181020.2735367-1-yosry@kernel.org>
+        bh=1jQzFcpqBSYYCtWlVzLC7o6CID0+BkEtgiFKx+1cRaM=;
+        b=JNdYg+eN+E37J4FijXD62r0NW2rOC9n2qbFFE3LJItAmXwCZ38XQJRF4gerZLTfAie
+         80sSgeKC4eNag2BQAvmXrWm3UlyvHKu20j49x71Qq9aptu666fuf2ebNwoFk+UGE+YOe
+         FpQYDcC54h+aF7KYM8IAaJc2uberi/VTsr19JpHoYV3GWRadSoR6YRVmv0Yuaeq06ZQw
+         NCkMibisPQ+ldhGYITpE/EmYy0mraYuYwRHLGZNlHSewx9MyiMb9xFVMI8cW0+JnsNv4
+         HawaE1c/JfiBwnh7ypHXuNFc81C6QG1/96ECFfFIorYo91XWuXOiep+siGVsUNxosiKS
+         bdOw==
+X-Forwarded-Encrypted: i=1; AHgh+RrpAGVpddz/qmvfq9GXUEiaC3btjTCyWjoGM0SF5L0QJyjQv+9PfstH/D4pqGqfe1/ByFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGlGvsucnyRkCEFKB9aPV5NBvt3OfKMG+2ehugEHxqCMwRAvAN
+	hxRlGxf3EOSHV8BBH5Ew4pyfghO0K6XdM+GABTFfsi3dg2IO1CA0XBukr7xpG7H8mZ3v9Qm6lci
+	pDfkqfQ==
+X-Received: from pfbkr4.prod.google.com ([2002:a05:6a00:4b44:b0:847:80c0:ec04])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3393:b0:84c:241e:9070
+ with SMTP id d2e1a72fcca58-84ee486ed75mr804821b3a.17.1785528679754; Fri, 31
+ Jul 2026 13:11:19 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:10:03 -0700
+In-Reply-To: <20260720-rmap-age-elided-submit-v2-1-668973030d47@phil.gs>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260713181020.2735367-1-yosry@kernel.org>
+References: <20260720-rmap-age-elided-submit-v2-1-668973030d47@phil.gs>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <178552843072.2713482.13489119130019659719.b4-ty@google.com>
-Subject: Re: [PATCH v3 0/5] KVM: x86: Fix EFER reserved bits initialization
+Message-ID: <178552831477.2708818.5845774682019110498.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: x86/mmu: Consume the locked rmap value in the
+ lockless rmap walk
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Phil Rosenthal <phil@phil.gs>
+Cc: James Houghton <jthoughton@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 13 Jul 2026 18:10:15 +0000, Yosry Ahmed wrote:
-> v3 of fixing EFER reserved bits initialization on vendor module reload,
-> and move them into kvm_caps. I reworked and reordered the patches such
-> that we go straight to reinitializing the EFER reserved bits, instead of
-> first re-reserving the bits on vendor init if nested=0.
+On Mon, 20 Jul 2026 13:45:49 -0400, Phil Rosenthal wrote:
+> __kvm_rmap_lock() deliberately elides the rmap lock when it observes an
+> empty rmap.  In that case kvm_rmap_lock_readonly() also re-enables
+> preemption and returns zero, so the caller holds neither the rmap lock
+> nor a preemption reference.  The elision documents the invariant it
+> relies on:
 > 
-> The motivation for the previous approach was simpler backports, but
-> practically the fixes don't apply cleanly anyway to most stable kernels
-> due to EFER.LMSLE handling being introduced very recently.
+> 	 * Elide the lock if the rmap is empty, as lockless walkers (read-only
+> 	 * mode) don't need to (and can't) walk an empty rmap, nor can they add
+> 	 * entries to the rmap.  I.e. the only paths that process empty rmaps
+> 	 * do so while holding mmu_lock for write, and are mutually exclusive.
 > 
 > [...]
 
-Applied to kvm-x86 misc, thanks!
+Applied to kvm-x86 mmu, thanks!
 
-[1/5] KVM: x86: Move enabling EFER.SVME and EFER.LMSLE to generic EFER setup
-      https://github.com/kvm-x86/linux/commit/6ccc19d4c1eb
-[2/5] KVM: x86: Disallow EFER.LME and EFER.LMA if long mode is not supported
-      https://github.com/kvm-x86/linux/commit/e62392bf39eb
-[3/5] KVM: x86: Always initialize EFER reserved bits on vendor initialization
-      https://github.com/kvm-x86/linux/commit/a4b8acd428ba
-[4/5] KVM: x86: Reverse the polarity of efer_reserved_bits
-      https://github.com/kvm-x86/linux/commit/37352c4fbdd7
-[5/5] KVM: x86: Move supported EFER bits to kvm_caps
-      https://github.com/kvm-x86/linux/commit/92b2af2b6d2c
+[1/1] KVM: x86/mmu: Consume the locked rmap value in the lockless rmap walk
+      https://github.com/kvm-x86/linux/commit/e428f9779a43
 
 --
 https://github.com/kvm-x86/linux/tree/next
