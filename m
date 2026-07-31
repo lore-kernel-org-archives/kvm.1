@@ -1,57 +1,57 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E1F3438A2
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E03745040E
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785519534; cv=none; b=SdmOKVAFsTflC2Y4mpjW1ijGbrE/1Dz4qTPEnd0anE/7QBx+cJQ+UBNLhfUoLBep0HbHxivuDOOyToJ8DeUwHWUY79hh20WtGlaTVEdzRqp+g/ylDOGEms0+ZVw5var/q2KekiLZEL7RbI9TqIv+iMnuEFKqoKqRdka8lwRuu5A=
+	t=1785519535; cv=none; b=K36hM+85Ng0Z22+1qwTcvjpiFmirxezUceSNLMyyLEGix9cW5w+1nLtT6z8COWTAMf8OVE6ZLNz4fJOUMRHO/y9JyYcdYxvDWuAqcLIbrLnkaPhCaomykYjONsdS5MnyVw5tOVtzb/eP57P2IrEd2E5W+9jo2loRtIRQhqMwZ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785519534; c=relaxed/simple;
-	bh=/EEXduCbbJW7RsBSjzki2NtQI5CR6bVt940+ugp+/tQ=;
+	s=arc-20240116; t=1785519535; c=relaxed/simple;
+	bh=RHV6S91XxWOnp6mer53iR9CJQ71TXd8Ehz31ij4ywT0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=roIF5aq0pKP8ElktYSwr872fII5/SnlkzUxanI3gEJahExi4/sCF2pjI6kpz+EzvImY4/wsV6XFMTQ8PacM1JP/s4kjeCxNgbTRbUnGMui0hPhd/B1Y/D6qcgaS++5c8MUF8EWYIMnHc1PtnOUB+8Psfoq124VLYJWLCGLIYOuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lHkalhvY; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=MtsJ5fXsELkA50AzrhPTxNdvo317ydViB0DttT9EN97Mev74+4wD0uPOrCYqB1fckrxX1PHzyNRNE9FYVKkNZH3fqVFII8sxEOqMCzq4Z2lT66q+rvvX/CtMRr4fUlX2riq801+8ejdPEPS9JyPinBexHNq6+1V/xQVQm3E21Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nG1Gum1N; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lHkalhvY"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-ca8aee88725so1841281a12.3
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:38:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nG1Gum1N"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cd01a14e81so15434105ad.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:38:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785519531; x=1786124331; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785519530; x=1786124330; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=+VSfyNtMip4APtZ088guBfkT6xHvZaUvjwNSK+dWASI=;
-        b=lHkalhvYLY78mlq47Vbd3M41jeNm7a3Giis7WC5jtqelvYvdB77Vx8JQ2HQ166Knli
-         eMlmDWje2lMI5cogwdHjFi0fTNi1PHAW4Qwsdn8AOGwco2pY+eSQxFMoqHZ2JSTp7305
-         1IokEahc7CIkXa0bS7L5EsXhsZflY6DnZCCN2s5XzeOTuohVmVu3PxabGxXoo1xRuzAc
-         NBFH0rnFEFFC1BZONZZoN205pJY2Go9y+XS/rbg0wMAhhHoUvFIu5ACV09UFZZn6MD2U
-         xC3tpsETWI1Fh3VY0nVjvc5inkS0KY393zk5aPukUUlN65KEc7YC19z9adFpXU0pjje7
-         jbDg==
+        bh=4IW2TxQzpuRrl9K2PLDKB2iOCJoKXfZuD46r99yUXPA=;
+        b=nG1Gum1NUvLsDqH/nmxPb5D1IWTl6eUcSqU/oF8K6xxuB4pdqaySO2ILWAUnw9uNSN
+         ZfRwTKzYwnH27d4Se+Omwrd5GaQzbprtzcmgohZ531mH10UDY+NesMgGB+faHcNGvprn
+         grunldGjtnrJjCScu9wpPfGgRQi3MLXHp/n2EkzzKibMUhyAKMzQelZTEIL9ZMHk3kJV
+         ijqbklxWgzaImBSG/ilA9zOLnoCMSgvKfTSbVHiF9ieHH5P+3t7GA7D/kIAroOStFr78
+         0hVr9O5e53JcDbLU5uBzQSftiP9uv1ceH2k4JU9QXs2V48VhkYl/OelF8FZu6vtkLPvI
+         lPXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785519531; x=1786124331;
+        d=1e100.net; s=20251104; t=1785519530; x=1786124330;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+VSfyNtMip4APtZ088guBfkT6xHvZaUvjwNSK+dWASI=;
-        b=CKTXzG5ZX7R4T4bgthsDnjZ62Q+uHx3n/hTStflNVDVJ9iARYGO572I72aW+6h46OX
-         vFvAyNdstHOrv30sMxZTYqSKMI4uvRErpeWg0VpR9veQWa5SowhAAwnbj7EomTqXfSCe
-         ZzvmVQnKZK3F7n9PJH+YTX42OIAqJ4Q56y9IHTFOfkAwf0r1g8vukA1jP2DxFxXSHGOG
-         Gv82O/Q8p8nEN+jp+ET6WdFMkm4XsN49b3LWT1Ch+30k+Nojjwv5hMWUn0/O9mGi/9vX
-         EOeDmWGcj9LRfDDwpcZKNthSrCRcMkWfpb2UFQDtx0eP4EvUOLJ61Q/KXzvOOIBUcfga
-         iMNA==
-X-Forwarded-Encrypted: i=1; AHgh+RpIpO4wdl3i6mH3fbYLF3zZPxyceaSgb/mWL7Wek96zF8Z5J30j7MBp/sw6yl7X+JzaJfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/kcwvD4SUpr8pNXfgXnoixR/rdhf3hLHUASbwOJKA0U51y7Ms
-	RQblOiT1e+i7jYKteWehnjePblNVD+KbNH1dEvBCAvMGk4dXH9nZpeFXaFKRY4zrMcjMbPWghT/
-	eJ9DzMA==
-X-Received: from pghu22.prod.google.com ([2002:a63:ef16:0:b0:c85:8035:8b21])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7007:b0:3c4:2fe1:fa42
- with SMTP id adf61e73a8af0-3c92a8f5941mr657605637.52.1785519530805; Fri, 31
- Jul 2026 10:38:50 -0700 (PDT)
+        bh=4IW2TxQzpuRrl9K2PLDKB2iOCJoKXfZuD46r99yUXPA=;
+        b=CdeLTGByQdAfABsoTZWb2o0FfkFZtO4qYwtfLfu8PXln3Us5Qm9S4sk6NUsPIBBBiK
+         Ty7FQng3JIgxk0zmAN2mQ9/LhEaDSnQTFqQkPV19+jm8wo8WjNgenYZujbGFGPOvJEIK
+         nsPToSz+U7QY9MVpvhE7fdctmi2ZdiiSpBKKOYkmsd/6xEksVGTKv+LUuzANiG2/rGsp
+         EvDrqcXejGTvZqo5hnCdh0Yhx68lg1LZyfywWNafMB6IRT9+n55TYyzQ/7rREvea1dQM
+         //EdVVPZMJKnidEvSulO8dgeFvyn1VQKhjEFj5pVghYgdcx+ImhQXBnnUKiBs8BBRDxr
+         9IGA==
+X-Forwarded-Encrypted: i=1; AHgh+RrjnPtzwi3rE4ySAKS2xpH9ydcNkbO2Nd9x0TURySfXDKocEDHdNyCVJu7GWr1RPM+tB8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHJVothi/hm/SFlJEM+50O1vGm8ZA3eLbH3Ak22xt4elfC6H4X
+	eeJYkv3OPwygrkxBXjwc1oiucBud3aRAwGt9lGb1r/Rkycu5yO+C+MgGRtMN336qVAzA8iSYQun
+	TfIm0AQ==
+X-Received: from plbld14.prod.google.com ([2002:a17:902:face:b0:2ce:fc5f:e782])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e84d:b0:2c9:d539:61e7
+ with SMTP id d9443c01a7336-2d05221c115mr7938825ad.19.1785519529718; Fri, 31
+ Jul 2026 10:38:49 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 31 Jul 2026 10:38:41 -0700
+Date: Fri, 31 Jul 2026 10:38:40 -0700
 In-Reply-To: <20260731173842.2649391-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260731173842.2649391-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <20260731173842.2649391-5-seanjc@google.com>
-Subject: [PATCH v2 4/5] MAINTAINERS: Add David H. as a KVM guest_memfd reviewer
+Message-ID: <20260731173842.2649391-4-seanjc@google.com>
+Subject: [PATCH v2 3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>
 Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -73,31 +73,39 @@ Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger
 	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Officially "reward" David with guest_memfd responsibilities and authority,
-as he's been instrumental in pushing guest_memfd forward, and his ongoing
-input and feedback, especially from an mm/ perspective, is and will be
-critical to keeping us virtualization folks from going too far off the
-rails.
+To better reflect how guest_memfd has been maintained for the last few
+years, and to prepare for significant upcoming growth and expansion, add a
+dedicated MAINTAINERS entry for KVM's guest_memfd, with Paolo and myself
+(Sean) as co-maintainers.
 
-Cc: David Hildenbrand <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+List both the KVM and KVM x86 git trees as authoritative repositories, as
+any given guest_memfd change has a equal odds of hitting KVM x86 or not.
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0e2f441314a1..6c79bb25522f 100644
+index 64980c262893..0e2f441314a1 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -14415,6 +14415,7 @@ F:	drivers/video/backlight/ktz8866.c
- KVM GUEST_MEMFD
- M:	Sean Christopherson <seanjc@google.com>
+@@ -14412,6 +14412,15 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
+ F:	drivers/video/backlight/ktz8866.c
+ 
++KVM GUEST_MEMFD
++M:	Sean Christopherson <seanjc@google.com>
++M:	Paolo Bonzini <pbonzini@redhat.com>
++L:	kvm@vger.kernel.org
++S:	Supported
++T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
++T:	git https://github.com/kvm-x86/linux.git
++F:	virt/kvm/guest_memfd.*
++
+ KVM PARAVIRT (KVM/paravirt)
  M:	Paolo Bonzini <pbonzini@redhat.com>
-+R:	David Hildenbrand <david@kernel.org>
- L:	kvm@vger.kernel.org
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+ R:	Vitaly Kuznetsov <vkuznets@redhat.com>
 -- 
 2.55.0.508.g3f0d502094-goog
 
