@@ -1,93 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D282737A83D
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B990634BA42
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 21:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785534035; cv=none; b=kHIo8kqWOexk7HoTGJ7+I7X3q4W2FTgDafs0FzdGfPE3OjTfs0yID7nw/rQO3J9/Hp0wcCb8rCTweefyixVsYiEZpsafXI4U6KXwjF+ocOCmAVpRXpqI0oL/CAzzDK/15Mcg/ouozPWwJ2DKEC4PpPX/6PCkOwmDsRKgQT+iuTU=
+	t=1785534035; cv=none; b=raAbWB1+n2p8yjhKRJqws0UUZ9quG5ykUT4o0CvaEnXd4Z1vkRGLuoUrE3KJkOb1di5yjG3RN7zwVFZc3fyPMbu+XNTJZ8UH93fTmWRpPybZcHmBnO8GyQSGcYj2XXMLCX38xS2nH/AreqjvknBOGPGk2orssQwNNyoM3s4Jwos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785534035; c=relaxed/simple;
-	bh=PbIiAuOFzstU7Cec1rWWvaUvsgfLnbF47nUhljR9eAg=;
+	bh=BYd/CsxkHI/N8BhTkG62vFSX36773eqe0Cd2UNwFDb8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=NoH4AY/4zbMPOZrFxHY6M3Muem+Aw+4uSOmR1FIZUqfBJrWe0X0Udk9EGjQ1cveTxesXuZzXdWGlW/gulFRlXycGuc+BlCIuJpIkC3zR26Q6U6jzL/ni5YBrhCwmAU9Q6vYqJBEjcdJegivfcHJgg4PDYIjzcal+sEnvWoPb9Bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=koo5ES/H; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=W+5in84eJ16Y/CGnH97+uWch7M0S0Tl/Larqn8r94HJsEmBkJq/PERM9pvMtQ7C4C1mJyJG5wkZROBo98CmZNiQ3lJQckf1hZwUOk4unFBO738kKiySwNIHbH/IB/aeXtQQOTG8Sw9F1qV9urZ5+vO8wOFA/bjFiqAiHb4GyhnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtYEa/PM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="koo5ES/H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42B71F00AC4;
-	Fri, 31 Jul 2026 21:40:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtYEa/PM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415AC1F00ACA;
+	Fri, 31 Jul 2026 21:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785534033;
-	bh=gyFC39/rSlAZ2vn0IfwJ4n40wVL2/PEoZ9JURnsOTyM=;
+	s=k20260515; t=1785534034;
+	bh=JesnD1pz0ilAiH6tiDanTJC6XZRUmZCg5XkeF4q4TvU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=koo5ES/H0Va5I9+IV4dS2dI25tuFyUdcemN7bbyZEsZUT4kTIgd82dNecd76GQIRp
-	 ct/JMaJAJ57MBhQUsme/5hKHOjs0xzzW5hy8HOR+1Qw5DbNVfgYPaz4+K0Z3ltjAcL
-	 bWlIKlHAdTp8s21omjw7E7chR4WyO4/DiLfo/0sHVYVCqDrS4QufkyDIBeGPG0CybH
-	 gYiSME7F3I24LbAsCZvPoVWWELY1xy00cGwjztWuS0Id/vUvYujKSziydQW027HBLt
-	 kkwcRWAfWwujKc2q+VWwHB8/Fth+jConFjwX1TLcyWf0f6seClI8fbJ7AIZg+ppzhK
-	 iX9UZuOPa0xyA==
+	b=dtYEa/PMUKE3WtmB2xAyoe/eLnav5vnWMVG9mZhO9yifgKVsxn4LEj9v7VcY9/Qdg
+	 O7R0OwBgns6dCHfX/DFQ/1rdddyC4uH6mzNrBbKBrmpc1+7NtS6yw0HX2UvPVyHAWL
+	 GaAjYHWOpOfnBsF7qYRF35kU7ZFpD0vRgN31NPOfZYgibGKBuecetNM+GtU5E9KlQs
+	 W1M64Gw78SEwHPk4qfGfdktEkkdRnWTE6yfVYN6ZT98CDxk4fzisESl0rJlcnQDwvY
+	 ZdrDYAYsQLRK6v+jvn768QuvkvEEc3AGp1n4VVW5hKfKR6FCx4EEM7ynerQ1E/0k5T
+	 l1cxz8nGo5DXw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH net-next v13 1/5] tun/tap: add IFF_BACKPRESSURE flag
+Subject: Re: [PATCH net-next v13 2/5] tun/tap: add ptr_ring consume helper
+ with netdev queue wakeup
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Simon Schippers" <simon.schippers@tu-dortmund.de>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260730213639.726381-2-simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260730213639.726381-3-simon.schippers@tu-dortmund.de>
 References: <20260730213639.726381-1-simon.schippers@tu-dortmund.de>
- <20260730213639.726381-2-simon.schippers@tu-dortmund.de>
+ <20260730213639.726381-3-simon.schippers@tu-dortmund.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 Date: Fri, 31 Jul 2026 21:40:33 +0000
-Message-Id: <20260731214033.A42B71F00AC4@smtp.kernel.org>
+Message-Id: <20260731214034.415AC1F00ACA@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] Premature UAPI exposure of `IFF_BACKPRESSURE` flag breaks featur=
-e detection.
+
+New issues:
+- [High] vhost-net bypasses the new queue wakeup logic (`tun_ring_consume`)=
+, leading to a permanent TX queue stall when IFF_BACKPRESSURE is used.
+
+Pre-existing issues:
+- [High] A structural flaw in `tun_set_iff` allows changing a non-multiqueu=
+e persistent TUN device into a multiqueue device, leading to out-of-bounds =
+accesses on the `dev->_tx` array via the newly introduced `__tun_wake_queue=
+`.
 --
 
---- Patch [1]: [PATCH net-next v13 1/5] tun/tap: add IFF_BACKPRESSURE flag =
----
-commit 43e4cc9000a7c476758fd2aa10db82e86b3c41ca
+--- Patch [2]: [PATCH net-next v13 2/5] tun/tap: add ptr_ring consume helpe=
+r with netdev queue wakeup ---
+commit 537cb0b1726915d53bc505e79f9dac64d03106a9
 Author: Simon Schippers <simon.schippers@tu-dortmund.de>
 
-tun/tap: add IFF_BACKPRESSURE flag
+tun/tap: add ptr_ring consume helper with netdev queue wakeup
 
-This commit adds the IFF_BACKPRESSURE flag to the tun/tap UAPI headers and
-enables it in TUN_FEATURES. The flag is intended to gate qdisc backpressure
-logic added in subsequent patches.
+Introduce tun_ring_consume() that wraps ptr_ring_consume() and calls
+__tun_wake_queue(). The latter wakes the stopped netdev subqueue once
+half of the ring capacity has been consumed, tracked via the new
+cons_cnt field in tun_file.
 
 > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index ea8573efb8489..d9db6d2e4c56a 100644
 > --- a/drivers/net/tun.c
 > +++ b/drivers/net/tun.c
+
 [ ... ]
-> @@ -98,7 +98,8 @@ static void tun_default_link_ksettings(struct net_devic=
-e *dev,
->  #define TUN_FASYNC	IFF_ATTACH_QUEUE
+
+> @@ -2117,13 +2142,50 @@ static ssize_t tun_put_user(struct tun_struct *tu=
+n,
+>  	return total;
+>  }
 > =20
->  #define TUN_FEATURES (IFF_NO_PI | IFF_ONE_QUEUE | IFF_VNET_HDR | \
-> -		      IFF_MULTI_QUEUE | IFF_NAPI | IFF_NAPI_FRAGS)
-> +		      IFF_MULTI_QUEUE | IFF_NAPI | IFF_NAPI_FRAGS | \
-> +		      IFF_BACKPRESSURE)
+> -static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
+> +/* Callers must hold ring.consumer_lock */
+> +static void __tun_wake_queue(struct tun_struct *tun,
+> +			     struct tun_file *tfile, int consumed)
+> +{
+> +	struct netdev_queue *txq;
+> +
+> +	if (!(tun->flags & IFF_BACKPRESSURE))
+> +		return;
+> +
+> +	txq =3D netdev_get_tx_queue(tun->dev, tfile->queue_index);
 
-[Severity: Medium]
-Does adding this flag to TUN_FEATURES before the implementation is present
-break userspace feature detection during a git bisect?
+[Severity: High]
+This is a pre-existing issue, but can this lead to an out-of-bounds access
+on the dev->_tx array?
 
-If userspace calls ioctl(TUNGETFEATURES) at this specific commit, it will
-see IFF_BACKPRESSURE as supported and might set it via TUNSETIFF. However,
-because the actual backpressure logic is delegated to later patches in the
-series, the kernel will silently drop packets instead of exerting
-backpressure.
+If a persistent TUN device is initially created without IFF_MULTI_QUEUE, the
+underlying net_device is allocated with only 1 TX queue. If the file
+descriptor is closed and TUNSETIFF is called again with IFF_MULTI_QUEUE
+enabled, tun_set_iff() allows the change but the net_device still only has
+a single queue.
 
-Would it be safer to introduce the UAPI flag definitions early in the
-series, but wait to add IFF_BACKPRESSURE to TUN_FEATURES until the final
-patch when the implementation is fully in place?
+When a second file descriptor is attached, it receives a queue_index of 1.
+Will this cause netdev_get_tx_queue() to access dev->_tx[1], resulting in
+a heap out-of-bounds access when evaluated here?
+
+> +
+> +	/* Paired with smp_mb__after_atomic() in tun_net_xmit() */
+> +	smp_mb();
+> +	if (netif_tx_queue_stopped(txq)) {
+> +		tfile->cons_cnt +=3D consumed;
+> +		if (tfile->cons_cnt >=3D tfile->tx_ring.size / 2 ||
+> +		    __ptr_ring_empty(&tfile->tx_ring)) {
+> +			netif_tx_wake_queue(txq);
+> +			tfile->cons_cnt =3D 0;
+> +		}
+> +	}
+> +}
+> +
+> +static void *tun_ring_consume(struct tun_struct *tun, struct tun_file *t=
+file)
+> +{
+> +	void *ptr;
+> +
+> +	spin_lock(&tfile->tx_ring.consumer_lock);
+> +	ptr =3D __ptr_ring_consume(&tfile->tx_ring);
+> +	if (ptr)
+> +		__tun_wake_queue(tun, tfile, 1);
+
+[Severity: High]
+Will this cause a permanent TX queue stall when IFF_BACKPRESSURE is used
+with vhost-net?
+
+vhost-net directly accesses the transmit ring via tun_get_tx_ring() and
+consumes packets natively, completely bypassing tun_ring_recv() and
+tun_ring_consume().
+
+Since the queue wakeup logic is exclusively placed here inside
+tun_ring_consume(), does this mean the netdev subqueue will never be woken
+up when vhost-net is consuming the packets?
+
+> +
+> +	spin_unlock(&tfile->tx_ring.consumer_lock);
+> +	return ptr;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260730213639.7263=
-81-1-simon.schippers@tu-dortmund.de?part=3D1
+81-1-simon.schippers@tu-dortmund.de?part=3D2
