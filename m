@@ -1,38 +1,38 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF8235A93C;
-	Fri, 31 Jul 2026 06:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68F363C74;
+	Fri, 31 Jul 2026 06:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785478306; cv=none; b=bkis1dA6wPEXnmVljelZ7aqvJ/HSbgQxskgBAayzB/3m+XoLeKPeJFlgbg0kZAjScpta+5UHue9bDkhH42+DXTHBuE5A7sdHN4JWnLpT1509NgIZ7Qa27ylAY+dyWG/zLiglLdooJ8iy0yYNG2cEfop+9gwiAIfAvi+zuxZYPcs=
+	t=1785478699; cv=none; b=hs4JJ2LwL2/5s5V6+YhdI1G1OK7rGaj0GxZ2Fc2pueVnO10Y8h9oflBDju/0EVHKn+n647LmEHLbLD8auKrsB+7sE0hQlRBZhL6kZlCzSw3VFa+fMcQHsKkFca9GJgT1pt4iNZAkwUsRlwgh9ansjo3n6JMP7d667QY5SNR4H6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785478306; c=relaxed/simple;
-	bh=63diiC56Hxg7jd1MjV51r83N2WaCL0G918kWhD8NevY=;
+	s=arc-20240116; t=1785478699; c=relaxed/simple;
+	bh=zjeon/Kaips5jmPFYgLK4A3ds0kAVcvd3U06TABiPGA=;
 	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=CbKa1VZVwt745IH/AHdK+wuksnBhsMQTCTas+AScqnJOFhx0oSI0gikheyI/AbqdlCpiPqyzR9pgi/eAEZEwGPk3/pUer7HxuhVBwXQmnzHW8nBwKZ3s4f14gEJGO4hRqQHqWqQtfmh8vaAFHW91czOr44AM5jw7mDRP+CTK+4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
+	 Subject:Content-Type; b=iGMdNUlA21bw24Io3yI5FB41/s+gKogFNKiS0V7tu/SXTfVfXG7bB/eyp+bK0gLxk1X0yl9d6wew08BmxspFi2Hp+yB9FFu9X4rPDs1SCzW68WCQoFHlHbL36KsUh46pDZ5WGP8+XoDzDtp/Wo3Cv3a66kzceL1Q+3rM+Ji3/7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hBG151hcmz56S5Z;
-	Fri, 31 Jul 2026 14:11:37 +0800 (CST)
-Received: from szxl2zmapp06.zte.com.cn ([10.1.32.108])
-	by mse-fl2.zte.com.cn with SMTP id 66V6BTq5055955;
-	Fri, 31 Jul 2026 14:11:29 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hBG8j3Bc7z8Xrkn;
+	Fri, 31 Jul 2026 14:18:13 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl2.zte.com.cn with SMTP id 66V6I0Io068098;
+	Fri, 31 Jul 2026 14:18:00 +0800 (+08)
 	(envelope-from wang.yechao255@zte.com.cn)
 Received: from mapi (szxlzmapp03[null])
 	by mapi (Zmail) with MAPI id mid12;
-	Fri, 31 Jul 2026 14:11:30 +0800 (CST)
-X-Zmail-TransId: 2b056a6c3c92204-5b4d3
+	Fri, 31 Jul 2026 14:18:01 +0800 (CST)
+X-Zmail-TransId: 2b056a6c3e19e16-710d0
 X-Mailer: Zmail v1.0
-Message-ID: <20260731141130967G9r8eUgi_oMRjksjgXyRf@zte.com.cn>
-In-Reply-To: <CAAhSdy0_dCHC+ZVG7HZdtUxZWWX_KG3YfN=ngVdpy-7_pquUFA@mail.gmail.com>
-References: 20260701120954.129873-1-wang.yechao255@zte.com.cn,20260701120954.129873-2-wang.yechao255@zte.com.cn,CAAhSdy0_dCHC+ZVG7HZdtUxZWWX_KG3YfN=ngVdpy-7_pquUFA@mail.gmail.com
-Date: Fri, 31 Jul 2026 14:11:30 +0800 (CST)
+Message-ID: <20260731141801793hQfTkkNj5hVzU1qUKbRQY@zte.com.cn>
+In-Reply-To: <CAAhSdy3bBQTwj80cmBvWYfqWgO1e8_Y85x=QG46UamGEbYy+UQ@mail.gmail.com>
+References: 20260707125034.416521-1-wang.yechao255@zte.com.cn,CAAhSdy3bBQTwj80cmBvWYfqWgO1e8_Y85x=QG46UamGEbYy+UQ@mail.gmail.com
+Date: Fri, 31 Jul 2026 14:18:01 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,34 +45,61 @@ Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
         <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
         <atish.patra@linux.dev>, <alex@ghiti.fr>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2NCAxLzVdIFJJU0MtVjogS1ZNOiBBZGQgdGhlIHNwbGl0IHBhZ2UgY2FjaGUgZm9yIGlvY3RsIGNvbnRleHQ=?=
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAwLzJdIFJJU0MtVjogS1ZNOiBPcHRpbWl6ZSBoZmVuY2UgcmVxdWVzdCBoYW5kbGluZyBmb3IgU01QIGd1ZXN0cw==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66V6BTq5055955
+X-MAIL:mse-fl2.zte.com.cn 66V6I0Io068098
 X-TLS: YES
 X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 31 Jul 2026 14:11:37 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Fri, 31 Jul 2026 14:18:13 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A6C3C99.000/4hBG151hcmz56S5Z
+X-Fangmail-MID-QID: 6A6C3E25.000/4hBG8j3Bc7z8Xrkn
 
-> > @@ -54,6 +54,12 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
-> >         kvm_destroy_vcpus(kvm);
 > >
-> >         kvm_riscv_aia_destroy_vm(kvm);
-> > +
-> > +       /*
-> > +        * Free the split page cache after all vCPUs and devices are destroyed.
-> > +        * At this point, there are no concurrent accesses to the cache.
-> > +        */
-> > +       kvm_mmu_free_memory_cache(&kvm->arch.pgd_split_page_cache);
+> > This series improves the hfence request handling in RISC-V KVM,
+> > targeting scenarios where multiple VCPUs are running an SMP guest.
+> >
+> > The first patch Introduce make_xfence_request_nodata for FENCE.I
+> > requests and moves the hfence data/type validation out of the
+> > VCPU loop to avoid redundant checks on every iteration.
+> >
+> > The second patch fixes a more subtle performance issue: when one
+> > VCPU's hfence queue becomes full and triggers a fallback, the
+> > current code applies the fallback to all VCPUs indiscriminately.
+> > This unnecessarily degrades healthy VCPUs and can cause their
+> > queues to fill up prematurely due to lack of processing it.
+> >
+> > With these changes, fallback is applied only to the VCPUs that
+> > actually need it, preserving the efficiency of the normal path
+> > for others.
+> >
+> > Changes in v2:
+> >  - Fix the patch01 broken the KVM_REQ_FENCE_I request(Sashiko AI review).
+> >
+> >  - Link to v1:
+> >  https://lore.kernel.org/linux-riscv/20260707113715.413265-1-wang.yechao255@zte.com.cn/
+> >
+> > Wang Yechao (2):
+> >   RISC-V: KVM: Introduce make_xfence_request_nodata for FENCE.I requests
+> >   RISC-V: KVM: Separate req and fallback_req masks in
+> >     make_xfence_request
+> >
+> >  arch/riscv/kvm/tlb.c | 46 +++++++++++++++++++++++++++++++++-----------
+> >  1 file changed, 35 insertions(+), 11 deletions(-)
+> >
+> > --
+> > 2.43.5
+> >
 >
-> Better to do this in kvm_riscv_mmu_free_pgd()
-> 
+> The PATCH2 is a fix independent of PATCH1 so re-order
+> and make PATCH2 as first patch which can be applied
+> independent of PATCH1
+>
 > Regards,
 > Anup
 
-Thanks for the review. I'll move it back to kvm_riscv_mmu_free_pgd() in v5 version.
+Thanks for the review.  I will reorder the patches in v3 so that PATCH2 comes first.
 
 Regards,
 Yechao
