@@ -1,184 +1,104 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0816930E0E5
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 22:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016BB2E5B21
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 22:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785535458; cv=none; b=piq1A2JCoO7jJtazp6qkHY/pX5EVbumLYO2uF2mAQ8i9NwfHuFHcOv7M6SvL3PNqKOR0T2UtKmedqi1JXp/HNv5+ZXIwZYnCS8jmiaygKfx7jgdD/Y08b3Pdbpc+t02se+JfqZh7vNyIKv80z4A/eTPAYZnbvNr7/EmD29bmv4A=
+	t=1785536023; cv=none; b=cNbu0mjVLcEVkFargRJvzfWQOD5wO8rc8GPRZUY+P3FYk+LiJQwRMMM5FC8y59sL0Ud2ZjM5nKZRhbPYuRqcfal40Sgs1mFNczpUr9Kbt02ra9fg9NPltnF/jD1Er61SMfDNdzp5gIxc/BtuuaVMTivI6g8xtOr1gW5e+8Hmq7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785535458; c=relaxed/simple;
-	bh=MHqkxONd47xYtXkQvMIn+bZeV1Kl1MS+VS9PxsAVyfI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=osnp0ZsZLNvgMWRaiPhTjLMlv491cofjKPSu8ELevoUwqZrxQsD9Im3OJciYxCFJ3Om8oPOpopRXWPiRRQPC0ftAGlPMc849iQ9JW6vQTYxZI8FOOP24HSLVk19gPFXa8mvR59E17g62wfK7ZO3fjBT203tp53a5Cwvrdci94J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pu0sdSlB; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785536023; c=relaxed/simple;
+	bh=uj1F/cpMTObq5HK3aHXGqdVv7tyfxY7N7imH5LcYTIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d2SWny0djF1DYJ4USbUwYBvx9S50jVM8kJgQaBt8npKoxMrjENEWP3RTzPZVYiZDL3igWQF0d/dXqh6N2zgADvDjPHTmAAYoKtTz5cpAnkgea04cpIBblHbKG5ZI3lJ83MJpgkUtpDQ4vooWWp1KAJqyEjZ6eXolCVVxftT8hXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=V2hYPoq9; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pu0sdSlB"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so1618118a91.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 15:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785535456; x=1786140256; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Kjm1X49/TS50eJc3UJI0XiqdzXOvgZST2gXdTEOC2CE=;
-        b=pu0sdSlBY7rLbYlglYp3/Hvabr353s4dXLqY3CxkrsvEO0ZVPogYT0IFJnN+X4HLby
-         CZ6P0QciehGB4isurkcDf4cEvD9i7AYonvW9LmQLPQH9CQJdLWpy7ksw3pz9oCftlUXC
-         Is+WhHIHyL2ev/3zD6GXQ0ifuaZolWqI4UD9yeRKMda4AKYXMM7CUAZWxqbuve663xAK
-         xNBQ3lMJEmHc3XyAm6ybGbW5pwXI+D1yFBPJwc2dy/Ni0gJNQSBSZ9feWOjW8fU8Gj87
-         izMPPFGIYgF4MvHBEWTOGJIQVGtbb1r7f1RvA3jz9LjtzzK0idTlVpMqSo2Zw3QVzpVK
-         paNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785535456; x=1786140256;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kjm1X49/TS50eJc3UJI0XiqdzXOvgZST2gXdTEOC2CE=;
-        b=iu3NEd7xagN0g7RFXuZYfWhfhBfM9+tr0QGpZ83U6diD4jnZgTRed7Lr4atI7AYa9v
-         s6ncVGHHRhYmnSMcsZ7b+yg27DgAMB/C6C/n42XzQDY29v6oNmYlA3EvviynpD6hRTOZ
-         vsko1b+gecZ4IDYddtd4Cq46b2Y+Icow5Lt0wAiXE5R1bETo5b3bTw57p2R7kdQr8U9U
-         RGx+YpOD+QdbwILPcQ6IxoKn9bDU3bSK44WIhZhDLZipV8OgvprTa5KSV7OibL7BJfxP
-         /KcHiEgboiO/Fak5c53VzdT3oVjhoTcSYKof/RJuRvCbjQUcm9GVqBCsl9OBe80gsnEM
-         6TTw==
-X-Forwarded-Encrypted: i=1; AHgh+RrgI5c+wWVPmZwn6Cuu4oCEpHk9hQFQ4zWnvuSGjhdppC4zIbwNCASat2xYmBzFMbbwAc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0wttgvtFmxp3yPf8JWfvyL1NjUMU86ItwrTwNwP6T1HmvNtjO
-	o/ALcLOghObx6PR6VqRjUnBc8lpdSCfWkWB7ZIKtqGYKsefGWKdzaSilOYLnG/oqiqlL+h8Ph+h
-	W2lqVTQ==
-X-Received: from pjbie11.prod.google.com ([2002:a17:90b:400b:b0:38e:b8e0:d97d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57e6:b0:38f:23d6:b4ad
- with SMTP id 98e67ed59e1d1-38fbc3f7e43mr1187379a91.8.1785535456041; Fri, 31
- Jul 2026 15:04:16 -0700 (PDT)
-Date: Fri, 31 Jul 2026 15:04:15 -0700
-In-Reply-To: <20260710050442.826777-1-hemanth.selam@gmail.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="V2hYPoq9"
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66VJtWfA556801;
+	Fri, 31 Jul 2026 22:13:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=l/Oeh7aiJ4wgj9UZYxrPtACq6kt8F
+	MXBzr0Jw40bOMw=; b=V2hYPoq9ZcGIoOG3ed0grq2EZXsAZdCVxSEskdxfQ5bCx
+	7OdZp5vuyG/9xeB808fKd9Y2TEPiT4oM8SadVBY6iaAD6rQX/ekh5JasHt2uNz+h
+	RWXxkE5gcf9yiqJa0icUFTYYgFDL62ufqNlNkoGa7/6+9nTuuaRf1w1tcjIHpnZ/
+	sho80RI8W1lJxB/ZHNVPaztYnzTCLRypurufYCnLFAtUGsHTtDuTSGB/1VGZO4IT
+	x+rdFtSPWMsxmo/qVleUCpRqA70evU3SuOYtji9BO+WHnZJYKfj2ehVt01StWpwW
+	FAwmvvPEyYDJqyZ5RxFVDUXWYyVWtyE0Do1FxQZkg==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fmr3pv3bb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Jul 2026 22:13:36 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 66VMA6ru007731;
+	Fri, 31 Jul 2026 22:13:36 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4fnheq8a96-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Jul 2026 22:13:36 +0000 (GMT)
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 66VMDZB5018145;
+	Fri, 31 Jul 2026 22:13:35 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4fnheq8a8s-1;
+	Fri, 31 Jul 2026 22:13:35 +0000 (GMT)
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: virtualization@lists.linux.dev
+Cc: mst@redhat.com, jasowangio@gmail.com, michael.christie@oracle.com,
+        pbonzini@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
+        kvm@vger.kernel.org, joe.jin@oracle.com
+Subject: [PATCH 0/2] vhost-scsi: fix max_io_vqs handling
+Date: Fri, 31 Jul 2026 15:10:22 -0700
+Message-ID: <20260731221116.236791-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709174955.628913-1-hemanth.selam@gmail.com> <20260710050442.826777-1-hemanth.selam@gmail.com>
-Message-ID: <am0b36OWeFSy2faX@google.com>
-Subject: Re: [PATCH v3] KVM: selftests: Add a test for KVM_CREATE_VM VM type enforcement
-From: Sean Christopherson <seanjc@google.com>
-To: Hemanth Selam <hemanth.selam@gmail.com>
-Cc: pbonzini@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-31_07,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxscore=0 bulkscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=870
+ spamscore=0 adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2606160000 definitions=main-2607310167
+X-Proofpoint-GUID: zGfZHVW9PbkSeDW9tgZqBVP4gUn7ftwD
+X-Proofpoint-ORIG-GUID: zGfZHVW9PbkSeDW9tgZqBVP4gUn7ftwD
+X-Authority-Analysis: v=2.4 cv=RKWD2Yi+ c=1 sm=1 tr=0 ts=6a6d1e10 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=EIcjfB9IiI4px24ztqRk:22 a=W1Wc-le84Cf0Po2QwqYA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzMxMDE2NyBTYWx0ZWRfXyVOUSG3C25Ek
+ DaSlTRWGWIh3QfAQ9uhp/txe0xWoRn0tF1wexCPzB6CSwQf0ZwqoZHG+ehEU01wyr0pa18BZFqW
+ gORBsxzpiok9HiHs8CPVjcWbeE9hwtOccTUsY5d4oxK5rnAJaBKCjMl74+VnJdpV3ufl0NshjDm
+ rgvbjjucyZ6mqef8NIMwc07hW1TCh2p4v5BYak/GmBfhK5CwXwhFvO5V7cim7V/2SBwuPlopQW+
+ CyEIrQmp0OOFlTgrKrVLOOpbH/boQKMDgR9yDRyvmTeoFWTs7NadCy2/Ha2tcLGyS20wzytruFq
+ cUYhaAg7MuGk1+zHDGkqIwCvYz4vFK03pGJyKdZnrEKaqvZo6Gy8dLgH8x4IbpzxSTXKjYDFblz
+ vpVl5/ttlWyrQZT5bAbPJ7eQmM/nAcdcSYeVXdFLll9xfKSLtD90MFkPzOG8WvG3tPlbr0KG5+C
+ zIxqvzYip73s6gisJHQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzMxMDE2NyBTYWx0ZWRfX3MhI7VXSWOvU
+ 4IjchoaQIl8srR2mONpXcZbeo/9dkucuqha5b2HZi0LRSyEnUgKzO3+3lNKoT268X7WvTRnhHXI
+ kuK94dpargr0hZJTF8DI5eODt/iL1f13/HfL7Iwtxh66kNEQkpJM
 
-A handful of nits, but no need for another version, I'll fixup when applying.
+Avoid high-order kmalloc() allocations for the vhost-scsi virtqueue array,
+and reject invalid max_io_vqs updates so the stored value remains within
+the supported range.
 
-Thanks!
+Dongli Zhang (2):
+  vhost-scsi: use kvzalloc for vq array allocation
+  vhost-scsi: reject invalid max_io_vqs module parameter
 
-On Fri, Jul 10, 2026, Hemanth Selam wrote:
-> diff --git a/tools/testing/selftests/kvm/vm_types_test.c b/tools/testing/selftests/kvm/vm_types_test.c
-> new file mode 100644
-> index 000000000000..e8ef3b018f6c
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/vm_types_test.c
-> @@ -0,0 +1,50 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Verify that KVM_CREATE_VM accepts exactly the VM types enumerated by
-> + * KVM_CAP_VM_TYPES, and rejects every other type with -EINVAL.
-> + */
-> +#include <errno.h>
-> +#include <stdbool.h>
-> +#include <unistd.h>
-> +
-> +#include <linux/kvm.h>
-> +
-> +#include "kvm_util.h"
-> +#include "test_util.h"
-> +
-> +int main(void)
-> +{
-> +	unsigned int supported_types;
-> +	unsigned long type;
-> +	int kvm_fd, fd;
+ drivers/vhost/scsi.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-Probably worth declaring "fd" inside the for-loop.   Definitely a coin toss on
-which is "better".
+base-commit: 8ba098e6b6ff0db8edf28528d1552be261af30d4
 
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_VM_TYPES));
-> +
-> +	kvm_fd = open_kvm_dev_path_or_exit();
-> +	supported_types = kvm_check_cap(KVM_CAP_VM_TYPES);
-> +	pr_info("KVM_CAP_VM_TYPES: 0x%x\n", supported_types);
+Thank you very much!
 
-Rather than "KVM_CAP_VM_TYPES" print a more human friendly message, e.g.
-"Supported VM Types: ", otherwise it's not entirely obvious that the message is
-printing the result of KVM_CAP_VM_TYPES version the raw macro number.
+Dongli Zhang
 
-> +
-> +	/*
-> +	 * KVM_CAP_VM_TYPES is a u32 bitmap, so only types 0..31 can ever be
-> +	 * advertised.  Walk past that range as well to confirm that any
-> +	 * out-of-range type is rejected rather than silently accepted.
-
-Rather than lean on KVM internals, I think it makes sense to express this limitation
-in terms of KVM_CHECK_EXTENSION's return values.  Which is still kinda sorta an
-internal detail, but it's at least more visible to userspace.
-
-Specifically, track supported_types as an "unsigned long", and then have the
-comment talk about KVM's deliberately retristed return value, not how KVM tracks
-its supported types internally.  As a bonus, the loop can iterate on the bits per
-supported_types, not a hardcoded "64".
-
-	/*
-	 * For compatibility with 32-bit kernels, KVM_CHECK_EXTENSION restricts
-	 * its return to 32-bit values, i.e. only types 0..31 can be advertised.
-	 * Walk past that range as well to confirm that any out-of-range type is
-	 * rejected rather than silently accepted (or truncated).
-	 */
-	for (type = 0; type < BITS_PER_TYPE(supported_types); type++) {
-
-> +	 */
-> +	for (type = 0; type < 64; type++) {
-> +		bool supported = type < 32 && (supported_types & (1U << type));
-
-And then if supported_types is an "unsigned long", the "type < 32" goes away.
-A bonus to _that_ is that the test will Just Work if future KVM does enumerate
-support for types > 31.
-
-The bitwise-AND can also use BIT().
-
-> +
-> +		fd = __kvm_ioctl(kvm_fd, KVM_CREATE_VM, (void *)type);
-> +
-> +		if (supported) {
-> +			TEST_ASSERT(fd >= 0,
-> +				    "KVM_CREATE_VM(%lu) should succeed, KVM_CAP_VM_TYPES=0x%x",
-> +				    type, supported_types);
-> +			close(fd);
-
-kvm_close()
-
-> +		} else {
-> +			TEST_ASSERT(fd < 0 && errno == EINVAL,
-> +				    "KVM_CREATE_VM(%lu) should fail with EINVAL, KVM_CAP_VM_TYPES=0x%x",
-> +				    type, supported_types);
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> diff --git a/tools/testing/selftests/kvm/x86/sev_init2_tests.c b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-> index 8db88c355f16..d4227dc922ab 100644
-> --- a/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-> +++ b/tools/testing/selftests/kvm/x86/sev_init2_tests.c
-> @@ -77,10 +77,6 @@ void test_vm_types(void)
->  {
->  	test_init2(KVM_X86_SEV_VM, &(struct kvm_sev_init){});
->  
-> -	/*
-> -	 * TODO: check that unsupported types cannot be created.  Probably
-> -	 * a separate selftest.
-> -	 */
->  	if (have_sev_es)
->  		test_init2(KVM_X86_SEV_ES_VM, &(struct kvm_sev_init){});
->  
-> -- 
-> 2.43.7
-> 
