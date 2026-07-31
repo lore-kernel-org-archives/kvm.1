@@ -1,115 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498833783C5;
-	Fri, 31 Jul 2026 20:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93714381B07
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528703; cv=none; b=Y2mxMYkMGwT3pYsaRN2sLMpf799sW0f/B9S+CNvPYg86s/jkdpgC11b63hmNvVtMQI41GuUrJKEzlEDANPBO73RZ6Yhd681oqkTg9cOSIWD7QHfNi9OZ6eH19PDHQk0VRYoR/hZiIThkMU+mVCndrpiqOowDqbHV4skBXr6wd4E=
+	t=1785528709; cv=none; b=KYHZUL2xL0Ha0BQ1sAWPdbBKKNACMC+5dOCyKBWzloeWg1ZAlJcnXyMZyU+qlqJ+vGztZvVtuMz1u1lqEKEXiYftU5cXVgkJgzH+cMsvzsNXxPdCBCCrRHyzrciYeGoGmDbNaU922MGOlafwOYhSl1YaWUYPM0+I6+JDB1BIuN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528703; c=relaxed/simple;
-	bh=2TOOrMG3BDCQ965Fh6fB0DJfBAYrTT7cm9wx8TCeDwg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cgZc9l0yvY8e9pE6abl2J5nWJj6+SLmNWhVkCWRcf1pUgqVd+l9YtvZOLhVTajYlTccfcdYYgSDEr43/K7rQvZuGGTG9TZYv0h0bGntl7U/WHOXXWcIAwgd/I0nm4uTE+mYSP5qezfqBufMt+bU0v6+9DQEuwlGr9+VDbHS7iHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzjpH1FP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785528709; c=relaxed/simple;
+	bh=33e8ObnVADSbfFZgUMyvgoQvOwBUQ+VNku56S/k47s0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LJeciDHusi3comZGNhfvWpTjbJPEwoF4ozAPAp04SWJrYlVkaTtQ9VvbRdlS2rpEHN5zxibQXmS489U90I5cp0ltwjcGN9paW6FO5ibtcdlwS3QxIgYTL/DKqWWu24dZXcnX7nR0CGDZ6QrlSu1f3fT3TTcXncx59B3QWBCyhwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ob7+dPIp; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzjpH1FP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF0C1F00AC4;
-	Fri, 31 Jul 2026 20:11:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785528701;
-	bh=212dNqAYyuDALpdVKIYLVZtbY6/IY6Q7Nvevmsxznaw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RzjpH1FPDLC+UuXVzPw1A159uBdVbOJdm8mmsgVD0RoPug4BCSkguLiDGDZPhUESj
-	 8zoDmxS5vxzDseKOvJ8NT7n5YpxXSoW+AroLDuftASuQD4cOby7GamqOgCM3bIzof2
-	 NVNrbRcuweaEh0CA1T2Sbl4QUhh1XTxHo2wD2zWWxgg/ejKT/aS4h5iEM5dltWat7M
-	 JmVlbgdyt5hmQfDS3lJLgdmT+y6olwc7gBFgZgUCzC0Un8K/Xh7CXuM/O+iJwY8SS3
-	 kkkQjlDqbXrHHKglbrxVjZD43DRDnzV6CbTatKPN+L1XmgQftb6Q+oQ8r8AS3mkemp
-	 tntF8SGpIkPoQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in
- hardware disable test when possible
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "Oliver Upton" <oupton@kernel.org>, "Marc Zyngier" <maz@kernel.org>, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-In-Reply-To: <20260731195612.2697986-4-seanjc@google.com>
-References: <20260731195612.2697986-1-seanjc@google.com>
- <20260731195612.2697986-4-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 31 Jul 2026 20:11:39 +0000
-Message-Id: <20260731201140.5AF0C1F00AC4@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ob7+dPIp"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab041eced3so2020030a12.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785528708; x=1786133508; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bxmXIU2iY4wJrhpgJP6fox76TKpljehd+FqjXTThCRg=;
+        b=Ob7+dPIpFlKpe7Ne++zSPvBcrkbuLIXB+tkm6wEv4Rr+tVtzJ1+9R+EQ82D4sOSuBJ
+         j4eh09Ni8tHDB5tJQg8LOL/VLMGE+XD+0tkCLxVqnxQhREiTOOD0oTWoFuQwHkZcFY2C
+         n7WEP8koDmACJOQeAM1m6Qsf9NR6qSk6OwFRyFbGuqDI6q87heESDzwzyHOCnl2VDWcN
+         mOajs4tCqJre9whMA69MSa2OcgnLMLFp+yrcf5+7zbSSmcdeOz3KkvFaeIFt/Hzt8Goc
+         xclWEGxlNx7h1IAHriHiV437hX6L5gUdQlf3Ty6TFU+Q34elJHgEbhCYpsg3vnbaBhim
+         CqNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785528708; x=1786133508;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bxmXIU2iY4wJrhpgJP6fox76TKpljehd+FqjXTThCRg=;
+        b=EzIAI+LWEkSfkpJNkS7qaWyZII9aQm90rqxktMpTXlL6bp5fN5Ac9D0NY9jsKfGKwO
+         XQm32S1zrw7/Q69MmAl+CQhWPxDkcdIE23968eHuLbFO+lEytQudAeuiU7EUbw/KRPXA
+         izXypAQz/HDC/4gLAe2+hoq+/HXQ0sPaZ6u526A3rpizNCjJ8W2VRr4CuduEN39y106l
+         eDe9+mBsPJNa4OERAeoiCS9I72vvpFeVOQgLuoPEQNnTdWRj7iXjmL6BEqsjivA6a+TZ
+         PYEEONrvphG61fke35xyr/fiN5gyw8XkHxu5bjPa8OriAr/M/Z67DwCPvvCbe89m5ZEm
+         i49Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoVF3frlLgof1E89aKbx5NX38aXJFlYS2tN0/HJZhh4bxUDst7c3UEVX5cuAzLoQCv4olE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1bV5BJmGuOK0VrnPRDlltf0cSYLX/PHh3Fl4MbNJvw6XOMv5l
+	Fitg7WTN/4GHfISxFraec862mh41in1c2mxIwvMERLK63iA8RR6w9D+RvEu9c9nHjgWahYQnlDI
+	i5uMg5A==
+X-Received: from pfbfi13.prod.google.com ([2002:a05:6a00:398d:b0:847:86de:a817])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:92a9:b0:848:63fb:fda7
+ with SMTP id d2e1a72fcca58-84ee48cdaddmr811949b3a.44.1785528707582; Fri, 31
+ Jul 2026 13:11:47 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:10:11 -0700
+In-Reply-To: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+Message-ID: <178552822130.2706707.4814565423555232517.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	David Woodhouse <dwmw2@infradead.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, "Saenz Julienne, Nicolas" <nsaenz@amazon.es>, 
+	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Content-Type: text/plain; charset="utf-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The fallback logic for setting thread CPU affinity is guarded by `#=
-ifndef _GNU_SOURCE`, which is always false because KVM selftests unconditio=
-nally define `_GNU_SOURCE`. This renders the fallback dead code and breaks =
-builds on non-glibc systems.
+On Thu, 07 May 2026 12:22:24 +0100, David Woodhouse wrote:
+> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
+> trap, but on SVM it was not always intercepted. Unconditionally
+> intercept ICEBP on SVM to match VMX behaviour and ensure correct
+> event delivery semantics.
+> 
+> Add two selftests exercising ICEBP:
+> 
+> [...]
+
+Applied the KVM change to kvm-x86 svm, but omitted the selftests, at least for
+now.
+
+[1/1] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+      https://github.com/kvm-x86/linux/commit/ec9a16c6aeba
+
 --
-
---- Patch [3]: [PATCH v3 03/12] KVM: selftests: Pre-set threads affinity in=
- hardware disable test when possible ---
-commit 242db3bb38cdcdb7592d9d34951b2c689c2c39b5
-Author: Sean Christopherson <seanjc@google.com>
-
-KVM: selftests: Pre-set threads affinity in hardware disable test when poss=
-ible
-
-This commit pre-sets thread affinity using pthread_attr_setaffinity_np to
-reduce pthread creation latency on large NUMA systems. It attempts to add a
-fallback using kvm_sched_setaffinity when _GNU_SOURCE is not defined.
-
-> diff --git a/tools/testing/selftests/kvm/hardware_disable_test.c b/tools/=
-testing/selftests/kvm/hardware_disable_test.c
-> index f088b4af3ccc7..b4edeadfa3f45 100644
-> --- a/tools/testing/selftests/kvm/hardware_disable_test.c
-> +++ b/tools/testing/selftests/kvm/hardware_disable_test.c
-> @@ -36,7 +36,9 @@ static void *run_vcpu(void *arg)
->  	struct kvm_vcpu *vcpu =3D arg;
->  	struct kvm_run *run =3D vcpu->run;
-> =20
-> +#ifndef _GNU_SOURCE
->  	kvm_sched_setaffinity(0, sizeof(cpu_set_t), &threads_cpu_set);
-> +#endif
-
-[Severity: Low]
-Since the KVM selftests build system unconditionally defines _GNU_SOURCE,
-will this fallback code ever be reached?
-
-[ ... ]
-
-> @@ -80,22 +84,28 @@ static inline void check_join(pthread_t thread, void =
-**retval)
->  static void run_test(u32 run)
->  {
->  	struct kvm_vcpu *vcpu;
-> +	pthread_attr_t attr;
->  	struct kvm_vm *vm;
->  	pthread_t threads[VCPU_NUM];
->  	pthread_t throw_away;
->  	void *b;
->  	u32 i, j;
-> =20
-> +	TEST_ASSERT_EQ(pthread_attr_init(&attr), 0);
-> +#ifdef _GNU_SOURCE
-> +	TEST_ASSERT_EQ(pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &t=
-hreads_cpu_set), 0);
-> +#endif
-
-[Severity: Low]
-Could this break the build on systems using alternative libc implementations
-like musl?
-
-If _GNU_SOURCE is unconditionally defined by the Makefile but the libc
-doesn't provide pthread_attr_setaffinity_np, this might result in a
-compilation error rather than using the intended fallback.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731195612.2697=
-986-1-seanjc@google.com?part=3D3
+https://github.com/kvm-x86/linux/tree/next
