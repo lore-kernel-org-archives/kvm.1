@@ -1,110 +1,294 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899C93EA970
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 10:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335713C1D4D;
+	Fri, 31 Jul 2026 10:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785494094; cv=none; b=k8AT8quGUSmic4y5SlRDZydN/Lny9NSYn4lX9YQ2hU5k0Re3ebah/pGCvRguC4wdpboeWusbP1j+m+Xs4ieIaqZyfi8uCh9ILahSRVp9cJw6bd8kLCNpavgGru3WItCLz0ZkQ6/WCyXij4HqralGg0v0PxNdRBKZFbsFM6252oU=
+	t=1785494840; cv=none; b=qUF/4RcSVOUxzKaAZ9ym7Vk4PTlIg6CA+et075KOzP3r7o3XC2euhp7T0t+2ZzGrrMjIQz2liKC06rpHHyTG8AxVcnF47ObCP4YUYz+ZG8TYCosK1zFwYUo7VSXX++rpK7xlec1N2vmLkdOC/KiPNvDm1eCUhpVVIKX828lG+98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785494094; c=relaxed/simple;
-	bh=8jBFo3leZDgnmqctwiw0V0hqICmlxQdyuA6JJbEn+2A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bsywqtvhLTDGjvfdiIiqbvxMPiKNAxYmhXbMWl7otWw0QzJ3rws+tQ5X0H5yYwQ6qIw+rtawW4T/BB/VYcQWzbEsCnKEHDZavxCN0wiXgcsDsg8VPRMpyLc3+rXrxcdQYQqYFgrWg1YCmxDhtjOFrvbCv/FpH604ppW5RhTL2pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amMWzn2G; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785494840; c=relaxed/simple;
+	bh=xnQDXFr6x9WSg7RzzF32+vNJKDwAKWafEf9u1c2+2A8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jx7sIy80dqGp8nfboyXIq1uBfAfY9ExcQQB1Y0OF2AGYQ+lkduJvx4wQQifRbDFnFRYJv+YuQVDooPBhZfEiR/eFlHk2GFBhdOepF/ALCKp7TxqyDV1v5/3SPp7ag01/jtHOC+di9W9dw9w1fbuec1wlJgXBuZCZCuIjcTLqGKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=U0I5ymXy; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amMWzn2G"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso600062a91.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 03:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785494073; x=1786098873; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2oD6x90/2ngEh3h/+xTr/e8V2AGqBaiy+5NsZiEXuL8=;
-        b=amMWzn2G7H4DsYjZsU4DW9QPkdO2lYcEdgzK8PDh0yRCiDEPydyTjvUcowdEibAcTS
-         0Ofk43j8m7xQSKZ9ltuYhs1q4q1b2wKJhZB3KK4U6yuy5UL/MhOJPi6Dy0woVaBE5n/J
-         cjJ9hjDrLxGDMhsFZNEkSDUlHdFq/VQl6YAAaC4IANuizvbZ9Hxb/4dhw7wN4Ffhref2
-         8UAyGxlWdDVz0zd2vVOAmHnyaYYXDjg7ltBKxSf9dypxGEMrd09OcuqanP0kS6uWZXWg
-         ckUyLME1hVr47Zf1KOHmy5flBSXvH5UPxxjoLrJnYDz+RaG2P7zjaL1j1U+b2HRze3o9
-         UrwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785494073; x=1786098873;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2oD6x90/2ngEh3h/+xTr/e8V2AGqBaiy+5NsZiEXuL8=;
-        b=PPpNVCrM0DMVswswEOlt2Z9Zf/sxN6iUQmpioNaMFuwYq5BlRqLAoSrgxXyN0UZhnX
-         w+4aIGCcJ1rWZTnt0mLk/4Eg8ZXmmaEDz4IscyTxdD1KvNPxSSyqsQlZmUM5IfbeEMJ6
-         GoRjkkuMuiF1bGy51cyNh39Ejt1Br9j3HM2/jWJ9e30Bip84H257OVdghQi2H51Y1oMI
-         pWSlv2QQYoyBCptsyJzMcm8h+IxwGOtI3r0cXda9ebWLqNz5QJKRYOz7VZhZsHh2FFJy
-         NWsXWTysMgrBp4OIFRIo7SENV6U9CbRBOVLvDVPvW6AWIIua1+6jx16JTGpIRYCGJKhE
-         qbGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRFa23XfhKSuoZkdxZwNuavGE2XrTMEAKDCtcOvwv+w8K7ttySS8pgzfEgA9Mwt35I+Ns=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDnT5rbSx+D8RtVfugK9YNIlEFC8er2DAeJPs9aSdWqf93kBWP
-	AHZOcf6yhr7wXedqlV/pQoIDitcHSWDYdiotlTpnv1ab0ekVPPx5/L8Y
-X-Gm-Gg: AR+sD11LTyxy6KZoyZK+NdPk94kG/ijGFfyNqMrhTDsZ52oIN8O8P6BW2pYONWMbF3h
-	xah3W1O86sntSoeMwf+AQAge27OWHWD9UC+7BJ7+xrkgW7hoLQEyyLHtI9F57aQRzgmr2JFmfAx
-	a7paSa0gte/6XcUDAp6mypdHaUdNrbMfTvJYMRyewKPKXB3dv9O1kakerFtHNuVcf/uE8iPE4sk
-	dCJmSZ16zhPbkxv7qKPIN/WvgbMFSf/yik1A8edT/yoGgmlJ/+rKyAZneMZsuXmRt39Edn74l/L
-	0UNQbKcnNCTcG8AuJmW63VC+y4+dJFj+SIrzPnwOaarg4wyUTJFgvKduEf61xN5OPJj3SsCUqDk
-	u87K47zPWuUEMO3x6bu3CoXULCGGGam4qFYhNT3KpE7xBMSsaxFXO1C0EXM6gmv11Pen+p/BSIu
-	4bQCAlevR+lFS9n1Pj6nfyF2j24HozLJEorfGtRK4zL8FT9nCHvznvFn1RvCKVlms=
-X-Received: by 2002:a17:90b:4d04:b0:38e:712a:be68 with SMTP id 98e67ed59e1d1-38fb15304fdmr1243750a91.43.1785494072849;
-        Fri, 31 Jul 2026 03:34:32 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fab25227bsm1934172c88.7.2026.07.31.03.34.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 03:34:32 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com
-Cc: stefanha@redhat.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] vhost/vsock: keep IOTLB across feature updates
-Date: Fri, 31 Jul 2026 18:34:14 +0800
-Message-Id: <20260731103414.1746316-3-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260731103414.1746316-1-physicalmtea@gmail.com>
-References: <20260730104857-mutt-send-email-mst@kernel.org>
- <20260731103414.1746316-1-physicalmtea@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="U0I5ymXy"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 430B9165C;
+	Fri, 31 Jul 2026 03:46:59 -0700 (PDT)
+Received: from [10.57.41.95] (unknown [10.57.41.95])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7DDAA3F86F;
+	Fri, 31 Jul 2026 03:46:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785494823; bh=xnQDXFr6x9WSg7RzzF32+vNJKDwAKWafEf9u1c2+2A8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=U0I5ymXyAcvtBhfwzLJP6OiqaHKPHoEJ+/G9qjCJbs8UU44IG9uFNYAdplwIDZZtU
+	 1OJ/kllaVrv5Zu+K9RZ9Xg9DUesQAMGg1DxH8SXy8m9QPuj0n7NW4QFfC1m0zY2zKW
+	 Jw/X8cGnlds8C47/dOOL8fUyWBrnTBCNaEwMiRTY=
+Message-ID: <54805b15-c3cd-4dfd-ad50-fdaa460d4f5f@arm.com>
+Date: Fri, 31 Jul 2026 11:46:57 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/6] firmware: arm_rmm: Check for RMI support at init
+Content-Language: en-GB
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260715142739.80398-1-steven.price@arm.com>
+ <20260715142739.80398-4-steven.price@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260715142739.80398-4-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-VHOST_SET_FEATURES is also used to update logging while a device is
-running. When ACCESS_PLATFORM stays enabled, allocating a new empty
-IOTLB on every call drops valid translations and forces avoidable
-misses.
+On 15/07/2026 15:27, Steven Price wrote:
+> Query the RMI version number and check if it is a compatible version.
+> The first two feature registers are read and exposed for future code to
+> use.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> v15:
+>   * The code is moved again, this time into the 'firmware' directory.
+> v14:
+>   * This moves the basic RMI setup into the 'kernel' directory. This is
+>     because RMI will be used for some features outside of KVM so should
+>     be available even if KVM isn't compiled in.
+> ---
+>   arch/arm64/Kconfig                |   1 +
+>   arch/arm64/kernel/cpufeature.c    |   1 +
+>   drivers/firmware/Kconfig          |   1 +
+>   drivers/firmware/Makefile         |   1 +
+>   drivers/firmware/arm_rmm/Kconfig  |  22 +++++++
+>   drivers/firmware/arm_rmm/Makefile |   2 +
+>   drivers/firmware/arm_rmm/rmi.c    | 100 ++++++++++++++++++++++++++++++
+>   7 files changed, 128 insertions(+)
+>   create mode 100644 drivers/firmware/arm_rmm/Kconfig
+>   create mode 100644 drivers/firmware/arm_rmm/Makefile
+>   create mode 100644 drivers/firmware/arm_rmm/rmi.c
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index b3afe0688919..0f1956edf130 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -38,6 +38,7 @@ config ARM64
+>   	select ARCH_HAS_MEMBARRIER_SYNC_CORE
+>   	select ARCH_HAS_MEM_ENCRYPT
+>   	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+> +	select ARCH_SUPPORTS_RMM
+>   	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+>   	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+>   	select ARCH_HAS_NONLEAF_PMD_YOUNG if ARM64_HAFT
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 9a22df0c5120..4ae63c89cda9 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -293,6 +293,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar3[] = {
+>   static const struct arm64_ftr_bits ftr_id_aa64pfr0[] = {
+>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV3_SHIFT, 4, 0),
+>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_CSV2_SHIFT, 4, 0),
+> +	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_RME_SHIFT, 4, 0),
+>   	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_DIT_SHIFT, 4, 0),
+>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_AMU_SHIFT, 4, 0),
+>   	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64PFR0_EL1_MPAM_SHIFT, 4, 0),
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> index 12dc70254842..55542879fbb8 100644
+> --- a/drivers/firmware/Kconfig
+> +++ b/drivers/firmware/Kconfig
+> @@ -301,5 +301,6 @@ source "drivers/firmware/samsung/Kconfig"
+>   source "drivers/firmware/smccc/Kconfig"
+>   source "drivers/firmware/tegra/Kconfig"
+>   source "drivers/firmware/xilinx/Kconfig"
+> +source "drivers/firmware/arm_rmm/Kconfig"
+>   
+>   endmenu
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> index 4ddec2820c96..07e8ca1789b4 100644
+> --- a/drivers/firmware/Makefile
+> +++ b/drivers/firmware/Makefile
+> @@ -38,3 +38,4 @@ obj-y				+= samsung/
+>   obj-y				+= smccc/
+>   obj-y				+= tegra/
+>   obj-y				+= xilinx/
+> +obj-y				+= arm_rmm/
+> diff --git a/drivers/firmware/arm_rmm/Kconfig b/drivers/firmware/arm_rmm/Kconfig
+> new file mode 100644
+> index 000000000000..d224a72cca90
+> --- /dev/null
+> +++ b/drivers/firmware/arm_rmm/Kconfig
+> @@ -0,0 +1,22 @@
+> +
+> +config ARCH_SUPPORTS_RMM
+> +	bool
+> +
+> +config ARM_RMM
+> +	bool "Realm Management Monitor (RMM) Support"
+> +	depends on ARCH_SUPPORTS_RMM
+> +	default y
+> +	help
+> +	  Support the Realm Management Monitor (RMM) on Arm systems that
+> +	  implement the Realm Management Extension (RME), as defined by the
+> +	  Arm Confidential Compute Architecture.
+> +
+> +	  The RMM runs in the Realm world and provides the Realm Management
 
-Initialize the device IOTLB only when one does not already exist.
+minor nit:
+	  The RMM runs at EL2 in the Realm world ...
+		OR
+	  The RMM runs at R-EL2 ...
 
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- drivers/vhost/vsock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 562b9e139a76..3703fd219039 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -893,7 +893,8 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
- 		goto err;
- 	}
- 
--	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM))) {
-+	if ((features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
-+	    !vsock->dev.iotlb) {
- 		if (vhost_init_device_iotlb(&vsock->dev))
- 			goto err;
- 	}
--- 
-2.34.1
+> +	  Interface (RMI) used by a Normal World host to create, manage and run
+> +	  protected virtual machines called Realms. This option builds the
+
+           The RMM could also act as a TSM, as defined by the PCIe TDISP
+	  and can manage the PCI IDE setup for securing the PCIe links.
+
+for covering the IDE setup case, which could exist withou the Realm VM
+support.
+
+Rest looks good to me.
+
+Suzuki
+
+
+
+> +	  host-side RMI support used by KVM to detect a compatible RMM,
+> +	  configure it, manage delegated memory and enable Realm guests.
+> +
+> +	  Selecting this option does not by itself make Realm guests available:
+> +	  the system must also provide RME-capable hardware and firmware with a
+> +	  compatible RMM implementation.
+> diff --git a/drivers/firmware/arm_rmm/Makefile b/drivers/firmware/arm_rmm/Makefile
+> new file mode 100644
+> index 000000000000..51aef5cc04b0
+> --- /dev/null
+> +++ b/drivers/firmware/arm_rmm/Makefile
+> @@ -0,0 +1,2 @@
+> +
+> +obj-$(CONFIG_ARM_RMM)	= rmi.o
+> diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> new file mode 100644
+> index 000000000000..c4850976544f
+> --- /dev/null
+> +++ b/drivers/firmware/arm_rmm/rmi.c
+> @@ -0,0 +1,100 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2023-2026 ARM Ltd.
+> + */
+> +
+> +#include <linux/cpufeature.h>
+> +#include <linux/memblock.h>
+> +#include <linux/arm-rmi-cmds.h>
+> +#include <linux/slab.h>
+> +
+> +#include <asm/memory.h>
+> +#include <asm/pgtable-hwdef.h>
+> +
+> +/* Currently only the first 2 registers are used by Linux */
+> +#define RMI_FEAT_REG_COUNT	2
+> +static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
+> +
+> +unsigned long rmi_feat_reg(unsigned long id)
+> +{
+> +	if (WARN_ON(id >= RMI_FEAT_REG_COUNT))
+> +		return 0;
+> +
+> +	return rmi_feat_reg_cache[id];
+> +}
+> +
+> +static int rmi_check_version(void)
+> +{
+> +	struct arm_smccc_res res;
+> +	unsigned short version_major, version_minor;
+> +	unsigned long host_version = RMI_ABI_VERSION(RMI_ABI_MAJOR_VERSION,
+> +						     RMI_ABI_MINOR_VERSION);
+> +	unsigned long aa64pfr0 = read_sanitised_ftr_reg(SYS_ID_AA64PFR0_EL1);
+> +
+> +	/* If RME isn't supported, then RMI can't be */
+> +	if (cpuid_feature_extract_unsigned_field(aa64pfr0, ID_AA64PFR0_EL1_RME_SHIFT) == 0)
+> +		return -ENXIO;
+> +
+> +	arm_smccc_1_1_invoke(SMC_RMI_VERSION, host_version, &res);
+> +
+> +	if (res.a0 == SMCCC_RET_NOT_SUPPORTED)
+> +		return -ENXIO;
+> +
+> +	version_major = RMI_ABI_VERSION_GET_MAJOR(res.a1);
+> +	version_minor = RMI_ABI_VERSION_GET_MINOR(res.a1);
+> +
+> +	if (res.a0 != RMI_SUCCESS) {
+> +		unsigned short high_version_major, high_version_minor;
+> +
+> +		high_version_major = RMI_ABI_VERSION_GET_MAJOR(res.a2);
+> +		high_version_minor = RMI_ABI_VERSION_GET_MINOR(res.a2);
+> +
+> +		pr_err("Unsupported RMI ABI (v%d.%d - v%d.%d) we want v%d.%d\n",
+> +		       version_major, version_minor,
+> +		       high_version_major, high_version_minor,
+> +		       RMI_ABI_MAJOR_VERSION,
+> +		       RMI_ABI_MINOR_VERSION);
+> +		return -ENXIO;
+> +	}
+> +
+> +	pr_info("RMI ABI version %d.%d\n", version_major, version_minor);
+> +
+> +	return 0;
+> +}
+> +
+> +static int rmi_read_features(void)
+> +{
+> +	/*
+> +	 * Since we've negotiated a compatible version these feature registers
+> +	 * should always be available
+> +	 */
+> +	for (int i = 0; i < RMI_FEAT_REG_COUNT; i++) {
+> +		if (WARN_ON(rmi_features(i, &rmi_feat_reg_cache[i])))
+> +			return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int __init arm64_init_rmi(void)
+> +{
+> +	int ret;
+> +
+> +	/* Continue without realm support if we can't agree on a version */
+> +	ret = rmi_check_version();
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = rmi_read_features();
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Note arm64_init_rmi() must be called before kvm_init_rmi() otherwise KVM
+> + * will not support realm guests. subsys_initcall() is called before
+> + * module_init() (used for KVM) so this is OK.
+> + */
+> +subsys_initcall(arm64_init_rmi);
 
