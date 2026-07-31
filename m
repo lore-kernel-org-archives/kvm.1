@@ -1,105 +1,176 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68F363C74;
-	Fri, 31 Jul 2026 06:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DB048987C
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 07:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785478699; cv=none; b=hs4JJ2LwL2/5s5V6+YhdI1G1OK7rGaj0GxZ2Fc2pueVnO10Y8h9oflBDju/0EVHKn+n647LmEHLbLD8auKrsB+7sE0hQlRBZhL6kZlCzSw3VFa+fMcQHsKkFca9GJgT1pt4iNZAkwUsRlwgh9ansjo3n6JMP7d667QY5SNR4H6g=
+	t=1785481365; cv=none; b=PWh/y/XSWi8J3y3MNJUv2GbK+J5f+ZV4NkUmD2v2zo+Dir4V7aBiJ48ztTPzehlaTd+FKF8e8SuBfJWStfzDXGVbTALvfL1nISU5jEp6SRZqnbvRHNAi7fIR4+Ogqzo8p1HBuXB7e/1xTwj8n1lR/M9LeNYMdTT1GQNf2QwV3oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785478699; c=relaxed/simple;
-	bh=zjeon/Kaips5jmPFYgLK4A3ds0kAVcvd3U06TABiPGA=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=iGMdNUlA21bw24Io3yI5FB41/s+gKogFNKiS0V7tu/SXTfVfXG7bB/eyp+bK0gLxk1X0yl9d6wew08BmxspFi2Hp+yB9FFu9X4rPDs1SCzW68WCQoFHlHbL36KsUh46pDZ5WGP8+XoDzDtp/Wo3Cv3a66kzceL1Q+3rM+Ji3/7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hBG8j3Bc7z8Xrkn;
-	Fri, 31 Jul 2026 14:18:13 +0800 (CST)
-Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
-	by mse-fl2.zte.com.cn with SMTP id 66V6I0Io068098;
-	Fri, 31 Jul 2026 14:18:00 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp03[null])
-	by mapi (Zmail) with MAPI id mid12;
-	Fri, 31 Jul 2026 14:18:01 +0800 (CST)
-X-Zmail-TransId: 2b056a6c3e19e16-710d0
-X-Mailer: Zmail v1.0
-Message-ID: <20260731141801793hQfTkkNj5hVzU1qUKbRQY@zte.com.cn>
-In-Reply-To: <CAAhSdy3bBQTwj80cmBvWYfqWgO1e8_Y85x=QG46UamGEbYy+UQ@mail.gmail.com>
-References: 20260707125034.416521-1-wang.yechao255@zte.com.cn,CAAhSdy3bBQTwj80cmBvWYfqWgO1e8_Y85x=QG46UamGEbYy+UQ@mail.gmail.com
-Date: Fri, 31 Jul 2026 14:18:01 +0800 (CST)
+	s=arc-20240116; t=1785481365; c=relaxed/simple;
+	bh=q+bBhFiR/a3Yhx/IQoWPqSv6sYswYpdvscBkOWh1GY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G2y0XP63PU85cxkDKRFDCAwMRdgwItqMjRR8Qn4eYjALkd+eAo66p4Lc4F5Plgk/venFUooDNdo9LHIsHbLGKQreQHXH2jr3/hcnV/d2cXT8fkr+8O/Lcj57NxW5d3lXmnhhM3QVcCinG5P9X29ILsaP7nkgMJXqVnTQEaAcjwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BLgF6BRt; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BLgF6BRt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785481363; x=1817017363;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=q+bBhFiR/a3Yhx/IQoWPqSv6sYswYpdvscBkOWh1GY0=;
+  b=BLgF6BRtV7AJVZKVnJEpDHpcMfQqoA+xBkhvA/bkGoBFSm3TQyKCHlRw
+   +xFgFiGdR4cCRhwFj3qfPjD1HHp0bJfYt+ovSXoUnIBbBL186TNiAx/+/
+   JemYBNMSrFi+F/QstpsHJiYQJOgyPsq13NAGzMztd+waNph2Vu0jbyhnv
+   CMeo1QjFJ/8DvXJgwtvSitvFpWoN8GDF7+NaEboY/NGkLXBHfM/EvVyV7
+   EZFVFFNQK2AeCDp8cznXbVWMcesPepDAa7RF9Aez3L52r/lLZ+zs++lCd
+   VKs5Uwf0pqAKsMaQjDFO9TYSmVUMg5GW8Fn23byBQiQjUwlf6sPcBEErq
+   A==;
+X-CSE-ConnectionGUID: Wp3lq163RmWfj3XbywzT2Q==
+X-CSE-MsgGUID: HC5rFHpbTmCf6qsd/A3rQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="108897382"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
+   d="scan'208";a="108897382"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 00:02:42 -0700
+X-CSE-ConnectionGUID: uDImOzGnRGO6la07l3fwJw==
+X-CSE-MsgGUID: +OEGw4F1Q2OziMuRltsWNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; 
+   d="scan'208";a="261116799"
+Received: from zhaoliu1-desk.sh.intel.com (HELO localhost) ([10.238.208.118])
+  by orviesa009.jf.intel.com with ESMTP; 31 Jul 2026 00:02:41 -0700
+Date: Fri, 31 Jul 2026 15:02:39 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: zhang_wei@open-hieco.net
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v1 1/9] target/i386: Sync AMD CPUID aliases for Hygon
+Message-ID: <amxIj+rZvDrtX7BM@intel.com>
+References: <20260706055530.1752094-1-zhang_wei@open-hieco.net>
+ <20260706055530.1752094-2-zhang_wei@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <anup@brainfault.org>
-Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <pjw@kernel.org>, <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>,
-        <atish.patra@linux.dev>, <alex@ghiti.fr>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAwLzJdIFJJU0MtVjogS1ZNOiBPcHRpbWl6ZSBoZmVuY2UgcmVxdWVzdCBoYW5kbGluZyBmb3IgU01QIGd1ZXN0cw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66V6I0Io068098
-X-TLS: YES
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 31 Jul 2026 14:18:13 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A6C3E25.000/4hBG8j3Bc7z8Xrkn
+MIME-Version: 1.0
+Content-Type: text/plain; charset=gb2312
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260706055530.1752094-2-zhang_wei@open-hieco.net>
 
-> >
-> > This series improves the hfence request handling in RISC-V KVM,
-> > targeting scenarios where multiple VCPUs are running an SMP guest.
-> >
-> > The first patch Introduce make_xfence_request_nodata for FENCE.I
-> > requests and moves the hfence data/type validation out of the
-> > VCPU loop to avoid redundant checks on every iteration.
-> >
-> > The second patch fixes a more subtle performance issue: when one
-> > VCPU's hfence queue becomes full and triggers a fallback, the
-> > current code applies the fallback to all VCPUs indiscriminately.
-> > This unnecessarily degrades healthy VCPUs and can cause their
-> > queues to fill up prematurely due to lack of processing it.
-> >
-> > With these changes, fallback is applied only to the VCPUs that
-> > actually need it, preserving the efficiency of the normal path
-> > for others.
-> >
-> > Changes in v2:
-> >  - Fix the patch01 broken the KVM_REQ_FENCE_I request(Sashiko AI review).
-> >
-> >  - Link to v1:
-> >  https://lore.kernel.org/linux-riscv/20260707113715.413265-1-wang.yechao255@zte.com.cn/
-> >
-> > Wang Yechao (2):
-> >   RISC-V: KVM: Introduce make_xfence_request_nodata for FENCE.I requests
-> >   RISC-V: KVM: Separate req and fallback_req masks in
-> >     make_xfence_request
-> >
-> >  arch/riscv/kvm/tlb.c | 46 +++++++++++++++++++++++++++++++++-----------
-> >  1 file changed, 35 insertions(+), 11 deletions(-)
-> >
-> > --
-> > 2.43.5
-> >
->
-> The PATCH2 is a fix independent of PATCH1 so re-order
-> and make PATCH2 as first patch which can be applied
-> independent of PATCH1
->
-> Regards,
-> Anup
+> -GlobalProperty pc_compat_11_0[] = {};
+> +GlobalProperty pc_compat_11_0[] = {
+> +    { TYPE_X86_CPU, "x-hygon-vendor-abi-fixes", "false" },
+> +};
 
-Thanks for the review.  I will reorder the patches in v3 so that PATCH2 comes first.
+This needs rebase on v11.1 :)
+
+>  const size_t pc_compat_11_0_len = G_N_ELEMENTS(pc_compat_11_0);
+>  
+>  GlobalProperty pc_compat_10_2[] = {};
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 5805d33ab9..32b8bc9ebd 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -8608,6 +8608,20 @@ uint32_t cpu_x86_virtual_addr_width(CPUX86State *env)
+>      }
+>  }
+>  
+> +/*
+> + * AMD CPUs define CPUID[0x80000001].EDX aliases for selected CPUID[1].EDX
+> + * feature bits.  Hygon Dhyana follows the same extended feature alias rules.
+> + * Enable the corrected Hygon behavior only for machine types where Hygon
+> + * vendor ABI fixes are on.
+> + */
+> +static bool x86_cpu_has_amd_cpuid_aliases(const X86CPU *cpu)
+> +{
+> +    const CPUX86State *env = &cpu->env;
+> +
+> +    return IS_AMD_CPU(env) ||
+> +           (cpu->hygon_vendor_abi_fixes && IS_HYGON_CPU(env));
+> +}
+> +
+>  void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>                     uint32_t *eax, uint32_t *ebx,
+>                     uint32_t *ecx, uint32_t *edx)
+> @@ -10147,10 +10161,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+>          }
+>      }
+>  
+> -    /* On AMD CPUs, some CPUID[8000_0001].EDX bits must match the bits on
+> -     * CPUID[1].EDX.
+> +    /*
+> +     * CPUs that use AMD-compatible extended CPUID aliases must keep selected
+> +     * CPUID[0x80000001].EDX bits synchronized with CPUID[1].EDX.
+>       */
+> -    if (IS_AMD_CPU(env)) {
+> +    if (x86_cpu_has_amd_cpuid_aliases(cpu)) {
+
+Or we can omit this helper ("x86_cpu_has_amd_cpuid_aliases(cpu)") and
+instead do the check directly inline?
+
+I think we should have fewer helpers like this, unless the conditional
+checks are really lengthy... Since the helpers added for each ABI is
+similar, but we can¡¯t consolidate them into a single generic helper
+(because while the AMD and Hygon ABIs are basically similar, there are
+still differences), having too many similar helpers makes the code seem
+fragmented.
+
+> @@ -2461,6 +2467,12 @@ struct ArchCPU {
+>       */
+>      bool vendor_cpuid_only_v2;
+>  
+> +    /*
+> +     * Enable Hygon vendor ABI fixes for new machine types.  Old machine
+> +     * types disable this to preserve guest-visible CPU ABI.
+> +     */
+> +    bool hygon_vendor_abi_fixes;
+> +
+
+Maybe the following comment to emphasize this is a compat option?
+
+/*
+ * Compatibility bits for old machine types: if true, apply Hygon
+ * vendor-specific ABI fixes.  Old machine types disable this to
+ * preserve the guest-visible CPU ABI.
+ */
+
+>      /* Only advertise TOPOEXT features that AMD defines */
+>      bool amd_topoext_features_only;
+>  
+> diff --git a/tests/qtest/test-x86-cpuid-compat.c b/tests/qtest/test-x86-cpuid-compat.c
+> index 17c0965827..b7f8834052 100644
+> --- a/tests/qtest/test-x86-cpuid-compat.c
+> +++ b/tests/qtest/test-x86-cpuid-compat.c
+> @@ -113,6 +113,21 @@ typedef struct FeatureTestArgs {
+>      bool expected_value;
+>  } FeatureTestArgs;
+>  
+> +typedef struct BoolPropTestArgs {
+> +    /* Test name */
+> +    const char *name;
+> +    /* CPU type */
+> +    const char *cpu;
+> +    /* CPU features (may be NULL) */
+> +    const char *cpufeat;
+> +    /* machine type (may be NULL to use default machine) */
+> +    const char *machine;
+> +    /* CPU property to read */
+> +    const char *property;
+> +    /* expected value of the property */
+> +    bool expected_value;
+> +} BoolPropTestArgs;
+
+Good test!
 
 Regards,
-Yechao
+Zhao
+
