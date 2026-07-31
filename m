@@ -1,126 +1,121 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D090943CE72
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180BB2F12AC;
+	Fri, 31 Jul 2026 16:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785514566; cv=none; b=bkXhDw22faLzIB222WQQM8QzPIO9kZUv85EFh1iZhz0IBUMNSjgtSsRm20qAOG4ia+AG65oyJxu1axo5hT9/0tbYdMjkp3NuKu/Wprq+yfEhwzHYPHh/Fuako7GqK2VGZ0vdpeUDFQ889VjpYNeick+iivmfpcqUUZ/yCW7Zxoo=
+	t=1785514843; cv=none; b=sBlEBNPWUY1dLx8knc9sgiIoLkps2l23Jq5ytQuTkN7S3sh3b5K1gAbqI8soFEmSTBqUg68F/4Hj8XqPxOMkwD49J3TiumhCeyXEUHsvupnNDXVYj6HblMBenxvSSFGelQTF5nwPU7axVfBGU8daJ4y+GRK3Ks79WFXikWpWgtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785514566; c=relaxed/simple;
-	bh=/6OQz+DQUsZXcPRJ4R2zsd2kat4n8VozoJNKylE8h7k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aQ8FCX79IB3cm+IvIB6nBZfB/rtAsfgiZ1gVbzeR+XXsvS/oep6dcHQz+pjGZg6iIPc92hKg+dT9Va3VNlQ9iu6D4a1S7Ax1skQbMjD6236Inyc0136UWbBHeqKHxcbPXd26Op0aimZVEZa6MOlJ4KqtNcHAdthM0Q2d5wHkXqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqP4OygU; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785514843; c=relaxed/simple;
+	bh=nFVhHwKkJgbd9A4o4BwqBIhJ0qqZ4lCrIhEat7W8/x8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=QAlwZei49gszxHDmDwLmcnvgTqd6SqUOU0RXNMXfb7dPZWS3C77xT8PEPl5exKzc+bny2pbwmGzbCop53jWMxFrDsCG14NlYxwtl7MsMSuUtFM7a/qU6v15iIWhHQzp2SAqh3JGKxVsDU+Vz5LXe919l8eGjuMmb0/VVdp6cpnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWdSqKVu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqP4OygU"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cee894b3d8so20480695ad.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 09:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785514553; x=1786119353; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ytOyVvVUp1+iOjUCBAJJ+Zr5Yli10sJrrWCx9PaxhI=;
-        b=CqP4OygUWrH6P+lkpntthXkzYpPLbwcQdtqZbPs+rRWV+BbPQXzwNwoL2SXbuJVijx
-         fsUTIKGUV2hKL6Uv7udfOpPJti5WmnfHcg03O0TT+mStE43rMMAXNzm+y4/EY8FO+Pbd
-         LCGO6wPG+Vfuo5oLK68lxk/Fzqcgbs4vPKbM1JkoQEynX6z+6gcev28J9XSmdJpNmyIK
-         +clsuEUWheJp9Pt+QUUdaJ7bz/+Ykn6Bdkedpq7XI2xzMLAvbsb2sDxt6+WC8eOPzCwI
-         HKsJET5c+R3E1zPwDpm8SVbIrY8mf/brluyp3+4+NUTawTywKN5rsu5Vf+GNx4SxlmI4
-         YLDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785514553; x=1786119353;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9ytOyVvVUp1+iOjUCBAJJ+Zr5Yli10sJrrWCx9PaxhI=;
-        b=SAI2TLxK+TVnERzXhE2kAuaONUltVTs2kdoHCG5jDyWe2zU1Lsk9WEd4QM0Dt4G9uC
-         ahBMiIe0eM0Aa1YACVjlSl9r9vl7+lcv8cY162hi0Eppe4SDkvlbsqdkXs+WfC5GOoVr
-         ZmxuwNgqReqibnkkfEUkgd12bKQPnIweT8kRNPUl4pUB+w7LE9MsKeA/IOpYExFig4Nn
-         CEz+pm+kDbZXTvOvMcylsF63wlcq9FIfQyJyAyM7cvLgrM2fLBMvhdpB6LHqJYpJn0gd
-         CUn46X3Y7BdEIOs27d20wnSx92F7rZTTX5PKzQtmybMgWqtJEc7hbm+Up6tGmUSnU1Bi
-         70Ew==
-X-Gm-Message-State: AOJu0YzFuJYYIaCAg/xPIUzQqSGDWx9NitepDDm4K7vBHX7E1icDpY2p
-	0zTBZXO93KpfW5tBHXtMPhjid9AokAvKpXu8YuSdC06/EqrVha7wajLysiA8bNLHpS+5riUcNsE
-	mkMjMaA==
-X-Received: from plbjg5.prod.google.com ([2002:a17:903:26c5:b0:2d0:40fa:a53d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2410:b0:2d0:4021:bb62
- with SMTP id d9443c01a7336-2d0521bcc4dmr5824855ad.16.1785514552447; Fri, 31
- Jul 2026 09:15:52 -0700 (PDT)
-Date: Fri, 31 Jul 2026 09:15:51 -0700
-In-Reply-To: <20260731145435.1016137-B-seiden@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWdSqKVu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA1C1F00AC4;
+	Fri, 31 Jul 2026 16:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785514836;
+	bh=0WWuGiL1LTw1W6f84+ovwwgW8xMflAkxqbFx6AGS+gg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mWdSqKVuDvMC04PlPZldCOE/ej0tfiPP7Cw1naa789pWR3Gzv9JrXDTTUTlB9XxCc
+	 ltLOSz5AvQ09IPQucjIvfoBmK0opH0ASINO0v9fpEkv1a4RNs9HrudQjyXTQLiUSx1
+	 bXVQ8aZCI+q9F/TY/GNjEwNT+Ig6vg/7/Tx0L5Idx9zpvuifTWRbuuzNkpYPPAt0Oi
+	 Y7jnq/EF1sB+4SsMoS7plJX5z/IhtLBGGStf3Fem65ZWIuQuujiwoyIEeTJrdKJDj2
+	 l9yTy+u3fi16H52G8B06538UP1QCzCj3ezL1l3MbYnX3KJnRX6r2B77WWK8OfxrmbV
+	 SUVukFBhVYipg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm: pull writability check to follow_pfnmap_start()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org
+In-Reply-To: <20260731160514.1101989-1-pbonzini@redhat.com>
+References: <20260731160514.1101989-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 31 Jul 2026 16:20:35 +0000
+Message-Id: <20260731162036.1FA1C1F00AC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260731130902.654679-1-seiden@linux.ibm.com> <20260731130902.654679-2-seiden@linux.ibm.com>
- <20260731145435.1016137-B-seiden@linux.ibm.com>
-Message-ID: <amzKNzYWD1ngXdOZ@google.com>
-Subject: Re: [PATCH v5 01/31] vfio: Use file-based reference counting for KVM
-From: Sean Christopherson <seanjc@google.com>
-To: Steffen Eiden <seiden@linux.ibm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andreas Grapentin <gra@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
-	Friedrich Welter <fritz@linux.ibm.com>, Fuad Tabba <tabba@google.com>, 
-	Gautam Gala <ggala@linux.ibm.com>, Hariharan Mari <hari55@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Hendrik Brueckner <brueckner@linux.ibm.com>, 
-	Ilya Leoshkevich <iii@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Marc Zyngier <maz@kernel.org>, Nico Boehr <nrb@linux.ibm.com>, 
-	Nina Schoetterl-Glausch <oss@nina.schoetterlglausch.eu>, Oliver Upton <oupton@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Ulrich Weigand <Ulrich.Weigand@de.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>
-Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Jul 31, 2026, Steffen Eiden wrote:
-> On Fri, Jul 31, 2026 at 03:08:29PM +0200, Steffen Eiden wrote:
-> > Replace manual module reference counting with file-based reference
-> > counting for KVM integration. Previously, VFIO used symbol_get() to
-> > obtain function pointers for kvm_get_kvm_safe() and kvm_put_kvm(),
-> > then manually tracked module references through these symbols. This
-> > approach required storing the put_kvm function pointer in each device
-> > and carefully managing symbol references.
-> > 
-> > Pass struct file pointers instead of struct kvm pointers throughout the
-> > VFIO-KVM interface. This leverages the kernel's existing file reference
-> > counting mechanism via get_file_active() and fput(), eliminating the
-> > need for manual module reference tracking. The file->private_data field
-> > provides access to the underlying struct kvm when needed.
-> > 
-> > This simplifies the code and removes all remaining externally exported
-> > symbols for KVM, paving the path for a second concurrent KVM module.
-> > 
-> > Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> > Suggested-by: Sean Christopherson <seanjc@google.com>
-> > Signed-off-by: Steffen Eiden <seiden@linux.ibm.com>
-> > ---
-> >  arch/x86/include/asm/kvm_page_track.h |  8 ++---
-> >  arch/x86/kvm/Makefile                 |  3 --
-> >  arch/x86/kvm/mmu/page_track.c         | 16 +++++----
-> >  drivers/s390/crypto/vfio_ap_ops.c     | 24 ++++++++++---
-> >  drivers/vfio/group.c                  |  2 +-
-> >  drivers/vfio/pci/vfio_pci_zdev.c      |  7 +++-
-> >  drivers/vfio/vfio.h                   | 10 +++---
-> >  drivers/vfio/vfio_main.c              | 49 ++++++---------------------
-> >  include/linux/kvm_host.h              |  2 ++
-> >  include/linux/vfio.h                  |  4 +--
-> >  virt/kvm/kvm_main.c                   | 23 ++++++++++---
-> >  virt/kvm/vfio.c                       |  8 ++---
-> >  12 files changed, 81 insertions(+), 75 deletions(-)
-> 
-> @sean: This is based on your draft in https://lore.kernel.org/all/adkFk3ZN4HJtpLA3@google.com/
-> do you want another/more attribution? 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] KVM fails to return KVM_PFN_ERR_RO_FAULT on write faults to read-o=
+nly PFNMAP VMAs, breaking MMIO emulation.
+--
 
-No preference.  Do whatever feels right to you, you'll know better than me how
-much of the final code came from me.  If you want to give me a Co-developed-by,
-here's my:
+--- Patch [1]: [PATCH] mm: pull writability check to follow_pfnmap_start() =
+---
+commit 22ed2320251e3d4544366aecf373c7a819e369d9
+Author: Paolo Bonzini <pbonzini@redhat.com>
 
-  Signed-off-by: Sean Christopherson <seanjc@google.com>
+mm: pull writability check to follow_pfnmap_start()
+
+This commit pulls the writability check directly into follow_pfnmap_start()
+via a new write_fault parameter. This allows the function to check
+permissions and return an error directly if the mapping is not writable
+when a write fault is requested.
+
+Link: https://lore.kernel.org/kvm/CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=3DbEHm=
+fnG54qyBAHFg@mail.gmail.com/
+
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+
+[ ... ]
+
+>  static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+>  			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
+>  {
+
+[ ... ]
+
+>  		bool unlocked =3D false;
+>  		r =3D fixup_user_fault(current->mm, kfp->hva,
+> -				     (write_fault ? FAULT_FLAG_WRITE : 0),
+> +				     (args.write_fault ? FAULT_FLAG_WRITE : 0),
+>  				     &unlocked);
+>  		if (unlocked)
+>  			return -EAGAIN;
+>  		if (r)
+>  			return r;
+
+[Severity: High]
+Will this early return bypass the new KVM_PFN_ERR_RO_FAULT fallback logic
+added below?
+
+When handling a write fault on a read-only PFNMAP memory region,
+args.write_fault is true, causing the first follow_pfnmap_start() to return
+-EFAULT. This correctly triggers a call to fixup_user_fault() with
+FAULT_FLAG_WRITE.
+
+However, since the underlying VMA lacks VM_WRITE, fixup_user_fault() will
+also return -EFAULT. The early error check here will immediately propagate
+that -EFAULT back to the caller.
+
+> =20
+>  		r =3D follow_pfnmap_start(&args);
+> -		if (r)
+> +		if (r) {
+> +			if (r =3D=3D -EFAULT) {
+> +				*p_pfn =3D KVM_PFN_ERR_RO_FAULT;
+> +				return 0;
+> +			}
+>  			return r;
+
+Could this cause the function to skip this new check entirely, preventing K=
+VM
+from properly returning KVM_PFN_ERR_RO_FAULT? If so, it seems like this
+would crash the VM on guest writes to read-only PFNMAP memory regions
+instead of emulating them.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260731160514.1101=
+989-1-pbonzini@redhat.com?part=3D1
