@@ -1,93 +1,94 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93714381B07
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47D38229A
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528709; cv=none; b=KYHZUL2xL0Ha0BQ1sAWPdbBKKNACMC+5dOCyKBWzloeWg1ZAlJcnXyMZyU+qlqJ+vGztZvVtuMz1u1lqEKEXiYftU5cXVgkJgzH+cMsvzsNXxPdCBCCrRHyzrciYeGoGmDbNaU922MGOlafwOYhSl1YaWUYPM0+I6+JDB1BIuN4=
+	t=1785528713; cv=none; b=tUzIt0fhgKDi9jed2eUd9Ws33qgYOp6tJ1ZqLXKRHLYPF8JUViOz58rShhKk0xWA9/4eJItTmQnbPFQtNyveX0x47TP6DwjXx2VlYhc5/KkRHkLjNWNbiEg+S02elbj/3gxEuKRMXcn4GUyvdTIbd4+jBJnJq1yMBde8uUy2Mrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528709; c=relaxed/simple;
-	bh=33e8ObnVADSbfFZgUMyvgoQvOwBUQ+VNku56S/k47s0=;
+	s=arc-20240116; t=1785528713; c=relaxed/simple;
+	bh=Db3mdvMaHRUiMUCFH7rsGHgUlVEuwPKkCSHT2bSVqos=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LJeciDHusi3comZGNhfvWpTjbJPEwoF4ozAPAp04SWJrYlVkaTtQ9VvbRdlS2rpEHN5zxibQXmS489U90I5cp0ltwjcGN9paW6FO5ibtcdlwS3QxIgYTL/DKqWWu24dZXcnX7nR0CGDZ6QrlSu1f3fT3TTcXncx59B3QWBCyhwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ob7+dPIp; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=Unf1qml3t218iWnFJ9WPiVYHc91fDxzP7cqlmFPUN1MqH73zNyDO2nGXLL1PasoloRFbYy9fLY9VU+b1xarNr0w+PYNLcqftQ2VHbMeXhuk2Xf4Ds/Y7OB3xWRzgWQ64cSdr0/DpxB2g2a4c9RSpGFslltNhTksA3L3K2jmpZcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivUGsgkX; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ob7+dPIp"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab041eced3so2020030a12.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivUGsgkX"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8484ba00601so1697242b3a.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:11:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785528708; x=1786133508; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785528712; x=1786133512; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bxmXIU2iY4wJrhpgJP6fox76TKpljehd+FqjXTThCRg=;
-        b=Ob7+dPIpFlKpe7Ne++zSPvBcrkbuLIXB+tkm6wEv4Rr+tVtzJ1+9R+EQ82D4sOSuBJ
-         j4eh09Ni8tHDB5tJQg8LOL/VLMGE+XD+0tkCLxVqnxQhREiTOOD0oTWoFuQwHkZcFY2C
-         n7WEP8koDmACJOQeAM1m6Qsf9NR6qSk6OwFRyFbGuqDI6q87heESDzwzyHOCnl2VDWcN
-         mOajs4tCqJre9whMA69MSa2OcgnLMLFp+yrcf5+7zbSSmcdeOz3KkvFaeIFt/Hzt8Goc
-         xclWEGxlNx7h1IAHriHiV437hX6L5gUdQlf3Ty6TFU+Q34elJHgEbhCYpsg3vnbaBhim
-         CqNQ==
+        bh=KwciVqmU1E+FOM/kcV3bDOj/AK72EAiYVE9xetCtvi4=;
+        b=ivUGsgkX/attFUqbZENaSA/Y2cIYvR/NRj7byxCvUeE6VRjjAkQR9yaUVV3EkkgQWz
+         39GtJizsF2UI7I5CG5H3NJEbJ18qng7WQBGnj+woSXWxoW4ypJJ/81RMquDhx7K913TK
+         WL4E/T3D4AvF7594dgbxJsJOc89tDHnTmAn3yQ3xM5w2NyBteKhaEe2TTiSSxCL6xwP8
+         j7pl29rEoVuCRSS43ly9b2gxAZHGyz96CSfznPcB2pzobLIEYGDjwT22fNMBtZLM2suM
+         LbgXhb/UQEOv3uyaLlnG3Ijli3xZXVLkKP3ZHPkXFpng9e7zRTdksUsui4H93UYG9Fj0
+         YGAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528708; x=1786133508;
+        d=1e100.net; s=20251104; t=1785528712; x=1786133512;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bxmXIU2iY4wJrhpgJP6fox76TKpljehd+FqjXTThCRg=;
-        b=EzIAI+LWEkSfkpJNkS7qaWyZII9aQm90rqxktMpTXlL6bp5fN5Ac9D0NY9jsKfGKwO
-         XQm32S1zrw7/Q69MmAl+CQhWPxDkcdIE23968eHuLbFO+lEytQudAeuiU7EUbw/KRPXA
-         izXypAQz/HDC/4gLAe2+hoq+/HXQ0sPaZ6u526A3rpizNCjJ8W2VRr4CuduEN39y106l
-         eDe9+mBsPJNa4OERAeoiCS9I72vvpFeVOQgLuoPEQNnTdWRj7iXjmL6BEqsjivA6a+TZ
-         PYEEONrvphG61fke35xyr/fiN5gyw8XkHxu5bjPa8OriAr/M/Z67DwCPvvCbe89m5ZEm
-         i49Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoVF3frlLgof1E89aKbx5NX38aXJFlYS2tN0/HJZhh4bxUDst7c3UEVX5cuAzLoQCv4olE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1bV5BJmGuOK0VrnPRDlltf0cSYLX/PHh3Fl4MbNJvw6XOMv5l
-	Fitg7WTN/4GHfISxFraec862mh41in1c2mxIwvMERLK63iA8RR6w9D+RvEu9c9nHjgWahYQnlDI
-	i5uMg5A==
-X-Received: from pfbfi13.prod.google.com ([2002:a05:6a00:398d:b0:847:86de:a817])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:92a9:b0:848:63fb:fda7
- with SMTP id d2e1a72fcca58-84ee48cdaddmr811949b3a.44.1785528707582; Fri, 31
- Jul 2026 13:11:47 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:10:11 -0700
-In-Reply-To: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+        bh=KwciVqmU1E+FOM/kcV3bDOj/AK72EAiYVE9xetCtvi4=;
+        b=MiGr0fHJu3p5xsdTtB7mmZdcaVnnXWAAHadcIaV02XjTdxG/QXaDcKtyVQ4M2/io4A
+         UvpvcFsyLrU39JXv9Sbkd3EZv2B4cwpCeQwKbaMy5vgqq2aCG9rQuq6VgczBsL76hle9
+         bQ+joH5bATjWgJewjawjyeTmVetRrzCMkMx3EBJz2c+TPyq4q7V9BmIc3GfBkIMsKYLl
+         59IENPhe3LFzA1ybDSt3CbRpujW8kVcWsE45NcarkiXJ8+8bhI1VdKVyPu/s504M7qPY
+         EUsgh5CuuFTKx96trjHaB2iQDcAfiObkIPWyAagmooVziBS2hyK4iv1CJ9Ww/tF/7xA1
+         J5BA==
+X-Forwarded-Encrypted: i=1; AHgh+RrtY/gHIAqd+akr6ArIjiWkDucoGVfiyCxwhdtSlr2AuxBpxPoeNF7nRe1gNZPCmMqVtiA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx3RJ5ZguwCOtJlKb79J3iptNvbHbL24h9vl4z07XQnA/pHNvh
+	nx6mb0Dpk2w4UlzQ3iVGdOWC/EJdFBZeH7PRuxwfV7QhAvCK4Rt0zZVd73Ylwo7CyWkXBRIXVvw
+	FZu1ugg==
+X-Received: from pfblg20.prod.google.com ([2002:a05:6a00:7094:b0:84a:3b69:a287])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b51:b0:848:438d:3665
+ with SMTP id d2e1a72fcca58-84ee48bcd15mr763440b3a.41.1785528711875; Fri, 31
+ Jul 2026 13:11:51 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:10:13 -0700
+In-Reply-To: <20260715063626.65899-1-pankaj.gupta@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+References: <20260715063626.65899-1-pankaj.gupta@amd.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <178552822130.2706707.4814565423555232517.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+Message-ID: <178552837642.2712144.16765082260306461300.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: SEV: drop FOLL_WRITE for encrypted region registration
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	David Woodhouse <dwmw2@infradead.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, "Saenz Julienne, Nicolas" <nsaenz@amazon.es>, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, tglx@kernel.org, bp@alien8.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, 
+	Pankaj Gupta <pankaj.gupta@amd.com>
+Cc: x86@kernel.org, thomas.lendacky@amd.com, hpa@zytor.com, david@kernel.org, 
+	yangge1116@126.com, ljs@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 07 May 2026 12:22:24 +0100, David Woodhouse wrote:
-> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
-> trap, but on SVM it was not always intercepted. Unconditionally
-> intercept ICEBP on SVM to match VMX behaviour and ensure correct
-> event delivery semantics.
+On Wed, 15 Jul 2026 01:36:26 -0500, Pankaj Gupta wrote:
+> Commit 7e066cb9b71a ("KVM: SEV: Use long-term pin when registering
+> encrypted memory regions") added FOLL_LONGTERM to
+> sev_mem_enc_register_region() so anonymous guest RAM is migrated out of
+> MIGRATE_CMA/ZONE_MOVABLE before a long term pin. It also kept
+> FOLL_WRITE on the pin.
 > 
-> Add two selftests exercising ICEBP:
+> Combining FOLL_WRITE with FOLL_LONGTERM breaks registration of file-backed
+> guest memory, such as virtio-pmem host memory-backend-file mappings
+> (MAP_SHARED). GUP rejects long-term writable pins on dirty tracked file
+> mappings since:
 > 
 > [...]
 
-Applied the KVM change to kvm-x86 svm, but omitted the selftests, at least for
-now.
+Applied to kvm-x86 svm, thanks!
 
-[1/1] KVM: SVM: Always intercept ICEBP, add INT1 selftests
-      https://github.com/kvm-x86/linux/commit/ec9a16c6aeba
+[1/1] KVM: SEV: drop FOLL_WRITE for encrypted region registration
+      https://github.com/kvm-x86/linux/commit/ee1a586dd1fa
 
 --
 https://github.com/kvm-x86/linux/tree/next
