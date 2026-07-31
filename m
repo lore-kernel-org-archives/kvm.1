@@ -1,59 +1,61 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA347437861
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA224437845
 	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 15:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785510546; cv=none; b=RRidSWBKsq2j3zck4SwjCjAG4hSC5abwJFUEAP0OxJWGvRm9sw4p2nGVhmxocvAaDwdIQAaLoK7D1MRNZGeEtxCGBmc+SbYVmas1M5o0o5VFzVydsdC/KEyNcPsjFGrhPohUYaGZO3Kymv5YMxYpIm7uPtrz4JrFvQbUhxyuK3I=
+	t=1785510547; cv=none; b=Rqwo3NEsEQ7TdeNYGNRn6gHFY65a7LpICDUkWYdl057Z9ifHH1NAvYrRslEG2EeLaazVrywk5jvDs7qEfXDCau/D9I7Bw41NGQmN5PzQjFLCi0Z/aa0D1dv82TbI+SbnyahgC+HXtmQ/vN5LHRdU/ZJXtBbnZlyhc/Z1mQdZjx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785510546; c=relaxed/simple;
-	bh=ZLXgSTC1xaiI6a9LalfXnkq5VEO4QKxt9vodQK1/FG8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RWpE84X1tnhBpriGD8VDlFZZ3ZK1uf+N3adVWnxyXqLlOwAxjALhs34yNbQfDdrxMq25zEJP5WHyyp88k8aoXjSV69STrcOaG1cjvePx7JaZBTZazho5iCv/fEevu0ovxmCnUYN6gj83EgKWA2qsP+6aOMT/YyeDcb485DyYSe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ADxyP+uK; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1785510547; c=relaxed/simple;
+	bh=AIVWrh6CF4CKx4RF7vzN6YiuXpAZvS5KqSwfzePjOCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h53OVXrNh6sLoM/LiOHstNJHNbehe+fCwYiksrZmtYt+Ji1D/vFnsoU7tDKYy6fKntwtAyIX20KPKmiJp8pkFE75V4ffWQTJ7nXNFtOZvfuU3ZaVqj/x586r0FX5N+DNC37i92ri0uZO1UfXfKsJbL5tKSpURsGBvHbWLPfUgv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=JkGWWF5g; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ADxyP+uK"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1391130f8f.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 08:08:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="JkGWWF5g"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c15dd4b9132so173073466b.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 08:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1785510533; x=1786115333; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+0P+R2A756VjaLeieE8ZcHad5KvFTCwR/lqQP3cLlzg=;
-        b=ADxyP+uKVM4UdQ0S9OvFXMFPQKYdm3vPRZNrHYH2IyvV0i2kbFLO7f3tKUMyN5ROYf
-         qkguDENLrOoS1mtW6GaIWlwDcsf5HEJWyjAXjkhNGSNQw4+wSfUJypnBLWZ6qr9PrqCr
-         Gye+TUTZwZrrH4gaolSkEmK7Vn0+3hxZFq6yc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785510533; x=1786115333;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1785510534; x=1786115334; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+0P+R2A756VjaLeieE8ZcHad5KvFTCwR/lqQP3cLlzg=;
-        b=RmxXg6Q7GE+LL6zSta39OMiy0N20Y/XoFufDkRrhbB8o+xR8Y1yq1/0LaelgaAvjOJ
-         TrocwUeFCcT4cd74ptPagvpMiXK/nraHTnOmfi346du6xuWvUn7GBAqv9f00hIJ55KI8
-         ja4+D+kKbOYZ80G6u/wsfpIu7oDnfitmnVZ6rF60N33Y6mpVqeRDyan11MfS6MPSFBwp
-         7WrGF2sfiud3nlNM0n4UXJCn6330T1hmtjQOTMqokE45P2mHMYaogBczp80iNU7M3/Sy
-         R9AOhOR5xIKyMAEivcl5uvgklY0v1ewgd38CVx/oN2ubIAJubDgzWqw+m3ibDJ8iix8k
-         R1ig==
-X-Forwarded-Encrypted: i=1; AHgh+RpE8z9A+oM+6EQQs9lAb7qUfnNu4tVm+2LAlk6dYailjAs5dA0L7StxLH+dbMT0GbYL664=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDZ2boUDzR8fXgNwaSP4W+BYxFzRoKZdMss9sFKafw6sD1lmhs
-	zEEiE7Fju5UKciVBYuinhwLvKqGuuJx39wDPbP77ZVH3fR7DBVsY0A6QsGPVZY19lA==
-X-Gm-Gg: AR+sD10ztb6oEqtHxCWWIYJolSKphkkndLpnIdhFNdev8sENyyRKjsjPhGNL2gOUO0O
-	47YIkKPpfDVj2ReMoA0IydgV8gSd4hxS7r7uxubP/iWmTFdP7wMXM7sPYdyV1mJaIKhKJ1xONhi
-	x3Azn7G8VdgWWpdlSJXOPH4bVAPZjTUJyc7SEV+dvAl9spmpyI6XizpRKWd62QeO3xM8jwmCiRe
-	KRhUBOEgAd2wqAz2L9n6Ac43YniJkJBI9qGcQy51QLzIhZ88bLlaPM/rstGqcYneO5xj8PFkMm3
-	JY1K5NjpX6aNNMG3/0qMRr5N3k/r002LvRto4lkiksEbmQtR6qEi31kA9EombvKduwMQvgugZqU
-	fl+9m7yg3vVTZsP/HzcEw4yjnhZdyHnJ8bleNTNWKuC+tyM5oKyXHBuC2VSqOL8Yi6VmWJIaoY0
-	g6Kh7DltPoD5F9SKM26ZBir+Rt2s0hE/Q/B1Ju/DRkIfPmTk2xtUvBb0CT3Hj+099CxCfdEU1Et
-	vhN6RDZtywKdCaL1pc6NZmcglThhHzrcr2jcJTKYagVpKyqkmdT2VQfMoArrv7j8Ac=
-X-Received: by 2002:a05:6000:1787:b0:47f:673c:42cc with SMTP id ffacd0b85a97d-47fd72c3732mr37783f8f.27.1785510532009;
-        Fri, 31 Jul 2026 08:08:52 -0700 (PDT)
+        bh=gOaXPDNzFmfCcFZASeKm4HD2Emk8ASo1ynV4rSmHLg0=;
+        b=JkGWWF5gOjxkMrtpUQnC0kHCKCA3ttjqTCMdQPIQE2A5UYwLq1eZL4gKLP0DQkuRt1
+         n0DZRcuOr9wrD1JRrLw8AAIUsjdiLUdraGfE14xZ/yooQKHdvOBT4aDlBOe41XykaCSh
+         9csXID9vksGdyUNwsRh43D2hL2GY3ojFIfix8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785510534; x=1786115334;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gOaXPDNzFmfCcFZASeKm4HD2Emk8ASo1ynV4rSmHLg0=;
+        b=pp6xpxgD79AzwHI+koLJL0L2xjt2MoaLuHsIRdKiBE+wFF0SBREXczds8hxeIeDsBc
+         ErAzNv/jMW1HscxXh3TtkThxGb7OnK5XlFRztTzoaknNY/oX3SYbs2lgc4311w9WqmkR
+         o059BMRnpyXyl+RryTQuEGt8LFauLORP7EKr4h3rUteh91XW9JTin1FcKggzd25gm7nY
+         l1JcV+QDop4aebdpiIQBKpMnoUcEqwcmGbPzIZnp7+tSgv1itB0ANFEFWmVnFd1i3IpM
+         ROBwhfIHiCuGy9yovijOg3YLNOoZvEczD6187lq7koodVHnYYvPGX7WKhW6nYcmxDUxO
+         xqQQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrGjvOwCCEm+bgTEoXIs1M9SMS623b4Jgpfcyb1aRUkd4Mc47JSYCGPORVG5I/w5FPYOhI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1tnMM82/Q/Td5mLjTGKQFQT9S+SxrX/EssG56OaPBzqdNl/Xy
+	GbIa0mPwa3bueb++wClNEWszAlW1d2cpLCPC8RtQUGCig95QP9KrLvd+lX4/1vPgoQ==
+X-Gm-Gg: AR+sD109QNse3TlsjhezqXT2XzYQjleexBtulFWy6L3kS9bHf8UqTF2obrTK6wMmgLG
+	KvfEDuw16v9wudPTqKvDux6BhgUHHJ9RN3gSyqXHS6vrcIgtectIjCdEcaeEzMSnLCbEVcCEpfB
+	YRKV2KTpwfxtEq8QHU3I8X7BW8WtdhfW1uNtKgftZd9vCtMbGNofUId+hmFxg36vhAjnnJFuAU+
+	ajON0ElGkbrdoY6h19v06P9o9l13seiwfOrOjLI9l8o4PjuR23mAFNsaPcTjPMXpA6UZonecGeR
+	t0Lq0gbw+8NQdUZnA7IJGRtojfGXkmJEf8bs4OJ5XqvztKrYU/kH7PD/1xqzWmdPFdx++sAjbyD
+	4PIho6fks02jGtYDcVm5WfrWAHuVNpKOGP5bdVyxqrGmONa2rpHIqMSxKtoWA+XlKAnzUfl19eD
+	r+UYSyTPT4JiqM+57yqScwcyFiy12fVEIbQHPuBQoIERuOJBgkRJxZZ3H6piSNnXJoyTi1gSBTw
+	KUWl17vuHd6MWJ9e4PRKuKcKeevRYpkaLl/gmNhcfuEh5axpwOJDrA=
+X-Received: by 2002:a05:6938:a08a:10b0:c1f:e172:cf16 with SMTP id a640c23a62f3a-c1fe172d0aamr53127366b.46.1785510534451;
+        Fri, 31 Jul 2026 08:08:54 -0700 (PDT)
 Received: from dmaluka.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a0c8bsm5647974f8f.34.2026.07.31.08.08.51
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd45a0c8bsm5647974f8f.34.2026.07.31.08.08.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 08:08:51 -0700 (PDT)
+        Fri, 31 Jul 2026 08:08:54 -0700 (PDT)
 From: Dmytro Maluka <dmaluka@chromium.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -68,10 +70,12 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	Aashish Sharma <aashish@aashishsharma.net>,
 	Grzegorz Jaszczyk <jaszczyk@chromium.org>,
 	Dmytro Maluka <dmaluka@chromium.org>
-Subject: [PATCH v2 0/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
-Date: Fri, 31 Jul 2026 15:08:41 +0000
-Message-ID: <20260731150846.1728164-1-dmaluka@chromium.org>
+Subject: [PATCH v2 2/4] KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
+Date: Fri, 31 Jul 2026 15:08:43 +0000
+Message-ID: <20260731150846.1728164-3-dmaluka@chromium.org>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
+In-Reply-To: <20260731150846.1728164-1-dmaluka@chromium.org>
+References: <20260731150846.1728164-1-dmaluka@chromium.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -83,32 +87,41 @@ Content-Transfer-Encoding: 8bit
 max_vcpu_ids and KVM_CAP_MAX_VCPU_ID are exclusive, i.e. the maximum
 allowed vcpu_id value is max_vcpu_ids minus one, not max_vcpu_ids.
 
-Fix the sanity checks for KVM_SET_BOOT_CPU_ID and KVM_CAP_MAX_VCPU_ID
-and the selftests for them (added in series [1]) to fail when
-bsp_vcpu_id is incorrectly set to max_vcpu_ids, not to a value below
-max_vcpu_ids.
+Fix sanity checks for KVM_SET_BOOT_CPU_ID and KVM_CAP_MAX_VCPU_ID to
+correctly fail when bsp_vcpu_id is set to max_vcpu_ids, not to a value
+below max_vcpu_ids.
 
-Also clarify that in the documentation of KVM_CAP_MAX_VCPU_ID, in an
-attempt to make this a bit less confusing.
+Fixes: 7c305d5118e6 ("KVM: x86: Limit check IDs for KVM_SET_BOOT_CPU_ID")
+Fixes: d29bf2ca1404 ("KVM: x86: Prevent excluding the BSP on setting max_vcpu_ids")
+Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+---
+ arch/x86/kvm/x86.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-v1 -> v2:
-Split selftest fix into two patches, to avoid interim breakage of tests.
-
-[1] https://lore.kernel.org/all/20240614202859.3597745-1-minipli@grsecurity.net/
-
-Dmytro Maluka (4):
-  KVM: selftests: Fix treating KVM_CAP_MAX_VCPU_ID as inclusive
-  KVM: x86: Fix off-by-one in max_vcpu_ids bounds checks
-  KVM: selftests: Improve bsp_vcpu_id and max_vcpu_ids out-of-bound
-    tests
-  Documentation: KVM: Clarify that KVM_CAP_MAX_VCPU_ID is exclusive
-
- Documentation/virt/kvm/api.rst                  | 13 ++++++++-----
- arch/x86/kvm/x86.c                              |  6 +++---
- .../selftests/kvm/x86/max_vcpuid_cap_test.c     | 17 ++++++++++-------
- .../testing/selftests/kvm/x86/set_boot_cpu_id.c |  4 ++--
- 4 files changed, 23 insertions(+), 17 deletions(-)
-
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 47cb9eba113b..b576b46869d2 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6908,7 +6908,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 			break;
+ 
+ 		mutex_lock(&kvm->lock);
+-		if (kvm->arch.bsp_vcpu_id > cap->args[0]) {
++		if (kvm->arch.bsp_vcpu_id >= cap->args[0]) {
+ 			;
+ 		} else if (kvm->arch.max_vcpu_ids == cap->args[0]) {
+ 			r = 0;
+@@ -7478,8 +7478,8 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+ 		mutex_lock(&kvm->lock);
+ 		if (kvm->created_vcpus)
+ 			r = -EBUSY;
+-		else if (arg > KVM_MAX_VCPU_IDS ||
+-			 (kvm->arch.max_vcpu_ids && arg > kvm->arch.max_vcpu_ids))
++		else if (arg >= KVM_MAX_VCPU_IDS ||
++			 (kvm->arch.max_vcpu_ids && arg >= kvm->arch.max_vcpu_ids))
+ 			r = -EINVAL;
+ 		else
+ 			kvm->arch.bsp_vcpu_id = arg;
 -- 
 2.55.0.508.g3f0d502094-goog
 
