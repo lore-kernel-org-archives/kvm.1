@@ -1,98 +1,88 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0FA2BEFF5
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6737B3546F0
+	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 20:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785528632; cv=none; b=imWB9QFFe/IZObN7A87+ZcKQUNzMhm3dtnjJYqGSd1Y87IP2wYVIK1n5uyQLBw6Eo9rJ2nHJrGshtxVKflF19EPtxvx8XuXPA30lfEcWhbsEQDHAg2MZuy7lb9Rx09yk84t1SRaxEV+Pl7BCjcQdGWtxMYywMMiGIzfpFh42t/A=
+	t=1785528636; cv=none; b=dJPBsvlWZneOJAXk5yYPLItyGAoXkIRHlOv0iFNDVYk8cdcU5xPD3mGR3RcjAKfVMvLmV/uCG0ASArWApFpQUOFQ4N/2eb8p6y1FZuB6C/NfLeMNMIGE6xlCcUpWZdSPSKxMkL4d6ePbckEPPVrYWi7uHwaEfUbk/8FigLscKIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785528632; c=relaxed/simple;
-	bh=cjtvqra6Da7JbabTLVyMdGWY8L8oS+d2J2o1+ULetdw=;
+	s=arc-20240116; t=1785528636; c=relaxed/simple;
+	bh=SVnTfczQzOhzH0y0LlZWFaQ09zpzlX4riUtSH+bq4wc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N6VsTNtcKU0KnsNeCwh1IlJAoZCBrY+a61tVresHDriLfJ2OEO6wb1vbMx2p00DyBTGzIy/PXU00n8WDykSJpBEoxtIa1GpvyF2mlxvbfsAmllCqVC4WkEIuwPTfPKNOe65I3M/x8F0WrPY6wXuSfDcx8SBgoN6AEiINdHowTfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v27M1LCa; arc=none smtp.client-ip=209.85.216.70
+	 To:Cc:Content-Type; b=WzQorKEjYLF9bnrCIimmU8NiYveJB3V2eRKXofUPj2l+BLZn/QwSmm0wETLwi6505rrBznwja4CbiwoB4rx5bWtAkL1a+p4ggjN9imoOn2w7GVaDtL4Dn11xHjj3yCEj4Sr9uN88Ge2GtIQu00gPovSRsmmDUJjnvs+wrdpTGBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vk0K/+x1; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v27M1LCa"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e5a616d07so1244058a91.2
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:10:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vk0K/+x1"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc86a9ef97so23883465ad.3
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 13:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785528631; x=1786133431; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=pnhgtXGSWYXwjagUjZG+lqx31Qbui9BS9mWbC0HAXks=;
-        b=v27M1LCaShef4TgSk2GcU3TTcoYgEqo/ExN2Iw6v6kigKNdp1Vf3551GZ0ymhNeRza
-         8k3lY7NiWSv34aP6oXwQ5o6k7NMW9wHP2aY0wR5NW80q7TYOhUvpPMVfC2mFjvHFu6N6
-         0OGn600iBmgelJ9BUZoDtus4HECASguBajuxNZ4/Z80t45ORYaj19ErZAVK6f9XKBJln
-         YkqMA7LtQt3SeWgrGvwyTDQNovv1lYY3PceY+LtzlCo2zOJg1hYBIvtWk5Ib7ixUt3R1
-         bHUlvnBQWouGa12QQSaoyrctw01uhWMwAzq89ZSOfUV+bfcWCiG6r9n9dfJuYlecYnAe
-         UUkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785528631; x=1786133431;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785528635; x=1786133435; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pnhgtXGSWYXwjagUjZG+lqx31Qbui9BS9mWbC0HAXks=;
-        b=m9ByUbootZ9b9IAODwF8A5G425YCCY0n5xaTiEQDVuUHGJV88tjXFoOxtBUtTvqMD8
-         F6HyAhB52IXFyAGUFpuKCEFKm7OBGSUNGMh3JCmRK47gz445Jr/tB74alVWiVqiYZRmg
-         ZyHRhWcI8w43xPnBdhlRVGttWDfaG4RGiq3edieGVSOL6xgasQQDtLsvuiEFaKYM49QV
-         Z6f9m2UhAF7t0AGmimadI+U8oKomcODRqYYRTzVurn8Dzn+UamZpSecVcT9KzxEQA/Bw
-         8P7ktXakdOacgbh30brmNYLVvQR28t0SAW6oztklAgdOf0hCvVuKRXRPOTtVM2JNpqij
-         cZxg==
-X-Forwarded-Encrypted: i=1; AHgh+RoKrcihVFCNHZwS6Nl4cXpK8kYxP7yAf49CxRQFav5tW3aGkMvFcAB3e0Z669W12pNWqbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8O/fgKJq7uHXaQy5NVdPU1A97ixRedjL0bP9h5vSu+6oaYenJ
-	GR76C8g32DuClIvHBOlfw/snxmn6LZEyL3v3xcZMdkF5rZnG0vMWNyx8cDBNCL1KEujsI/DQiGT
-	esMII6A==
-X-Received: from pjbmg5.prod.google.com ([2002:a17:90b:3705:b0:37d:ce7c:cbd6])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4a4c:b0:37f:9cdf:f03e
- with SMTP id 98e67ed59e1d1-38fbc52ab5bmr948777a91.33.1785528630414; Fri, 31
- Jul 2026 13:10:30 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:09:48 -0700
-In-Reply-To: <20260714133212.3916611-3-clopez@suse.de>
+        bh=TBgNnD6aRn/2TcCAkCvX20HdpQ+UmnIXjam1WYJQA5Q=;
+        b=vk0K/+x14JgJjgKiWzAsxbd2nyNLBFjz0/XsdPbLhTlvWMvzFvYOWiwB9KRmzA2xQc
+         vj/yqzn2zyketv/fL02An9Qm6Rtw7J9BpOGZC3UYNC+YuVCRISdJxAAEIqS3VuT+DUT0
+         dH692/tO8Q6nwtQ3j2aIGEnVpuPqEADsMYHX7czaXlLJvJFqkTHt+WiAZ/Xpj4CVeIji
+         Z+ndKZmOAXSSe53CL0s0UoCzpPhA9W1I5IhM5aQIBFyucqaL4MkjlXXekn3zYKfjn/B/
+         EqPBE2yY4Af9DoND1i5CC5iNiEwqoecFVB0MoSZQ3WI+N6yUzRJoK/u/wwgS2pHn5Odw
+         B5xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785528635; x=1786133435;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TBgNnD6aRn/2TcCAkCvX20HdpQ+UmnIXjam1WYJQA5Q=;
+        b=cvKkkeTMZSNw/RxK9fooMNA1mK+ZCj075ekoZbifKf0uU0GUBwXdO4Es9N0Ya6KMok
+         TFjKqMQBbOYZ9NaXgLjPfi3ERUlGO4a6Ok6YCDtZnDnHHR8Bcr2ox6P1u/oWQWzRYBqK
+         FLUiDZ9jDSvsolpcE3Y9e2BJlGMxQOwVQWTz5QAnYI9J/Sd8TE+vssDaVa5FMS6O47Ks
+         bZTz76wlU8rFD7zkasU7QcPeRb9cT2AR0tMWZkKuxTNmE4nnjMvFFgN1fFaxT5hvY0vH
+         B4q+EMmwK12y+A4wjIiZwb/JWkmvY/WRVcTr6ak/h4H7ieKuLLMuB1ES8ER29qGCR5/h
+         yStQ==
+X-Gm-Message-State: AOJu0Yy9bPUBU9ZHhroDzPAQmXcylVK5+LwCksvwsYbp3fcomYPz3FrU
+	q/T2UVME/bOG8zehsJFD20vTBveuAvTj40Y0o/0+AIJI1j1GHZzRKZmRjeqXQQMWHEtBgDKnbZ0
+	nIZKBNw==
+X-Received: from plhn5.prod.google.com ([2002:a17:903:1105:b0:2ca:cdc4:8da])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c26:b0:2c9:97a7:3289
+ with SMTP id d9443c01a7336-2d0524a43ffmr11615445ad.43.1785528634621; Fri, 31
+ Jul 2026 13:10:34 -0700 (PDT)
+Date: Fri, 31 Jul 2026 13:09:50 -0700
+In-Reply-To: <20260715090505.601174-1-kai.huang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260714133212.3916611-3-clopez@suse.de>
+References: <20260715090505.601174-1-kai.huang@intel.com>
 X-Mailer: git-send-email 2.55.0.508.g3f0d502094-goog
-Message-ID: <178552855078.2715065.17683736613611362664.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
+Message-ID: <178552856364.2715352.9297869306293103788.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: x86: Use KVM_X86_OP() for the .pi_update_irte() hook
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"=?UTF-8?q?Carlos=20L=C3=B3pez?=" <clopez@suse.de>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	syzbot+3d5461510f8dc4adfe30@syzkaller.appspotmail.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Roman Kagan <rkagan@virtuozzo.com>, 
-	Andrey Smetanin <asmetanin@virtuozzo.com>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, Kai Huang <kai.huang@intel.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 14 Jul 2026 15:32:13 +0200, Carlos L=C3=B3pez wrote:
-> Fix an issue where userspace or the guest can program an Hyper-V
-> synthetic timer to have a deadline in the past via integer overflow,
-> preventing the CPU from making progress and triggering an RCU stall.
->=20
-> Hyper-V's SynIC exposes 4 per-vCPU synthetic timers to the
-> guest, which are emulated by KVM. Each is programmed through the
-> HV_X64_MSR_STIMERi_CONFIG and HV_X64_MSR_STIMERi_COUNT MSRs. Depending
-> on CONFIG, COUNT represents either the absolute expiration time or the
-> period of a periodic timer, both expressed in 100ns ticks. These timers
-> may be set both by the guest (WRMSR) and the host (KVM_SET_MSRS).
->=20
+On Wed, 15 Jul 2026 21:05:05 +1200, Kai Huang wrote:
+> Change to using KVM_X86_OP() instead of KVM_X86_OP_OPTIONAL() for the
+> .pi_update_irte() hook in kvm-x86-ops.h since now both VMX and SVM have
+> implemented it.
+> 
+> For the Fixes tag:
+> 
+> This hook was introduced for VMX posted-interrupt support.  SVM later
+> added its implementation, but at this point KVM_X86_OP* had not been
+> introduced yet.
+> 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/1] KVM: x86: hyper-v: Clamp stimer deadline to avoid livelock
-      https://github.com/kvm-x86/linux/commit/0ca49fbd2883
+[1/1] KVM: x86: Use KVM_X86_OP() for the .pi_update_irte() hook
+      https://github.com/kvm-x86/linux/commit/9498f4d6edd3
 
 --
 https://github.com/kvm-x86/linux/tree/next
