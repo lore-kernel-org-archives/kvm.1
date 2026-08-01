@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D8A439015
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 11:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86ED439904
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 11:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785583732; cv=none; b=u3F4M/JGAlHKq7NnRyrkYgt1YrGl/MwUyw/Qpeu+PmMnf3JficR5cWvpEKbfpO7b2khbrgATIhhdpFsZdQaCG6A7s+/du4iHBE01B1ZQE6VBZnD4aGD1u42IgxFwv+402N1CwqhPSYLZ594oa7h01Xrcd1v3op7iEdh0wopTpFk=
+	t=1785583734; cv=none; b=LJm99zg49nJWGofhBUzax+UbflBw4ubtsilkD3TOYfu09dF0x2WSMTQ/5Lr47jlXQDl98b5Cu1nytXHX8zIAM5N2WuUmqS/zJ5XXzwUBTl3HqmvYVyXQCyGC0dKrV15Nk46QRmcbsOMJQ9dckk9kM6n0uHEYBJ6UAalQJp3DGsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785583732; c=relaxed/simple;
-	bh=dOvQQ4fWhjz4awtbDMg+G37Icy4k1NQ1snwwZ+YO9Ec=;
+	s=arc-20240116; t=1785583734; c=relaxed/simple;
+	bh=ezViDqC2sh3bsmVSE+s1GDsC2dwtV7VUcE+2pBh1xbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6/1S3EIdLphpKIkvOhvpjuYymdv7vXM6vVdanH4tVfg/x881pvT9YM/wm4EkbEXjjv5UMu0GCUCExhl4LUyXHloHmm+IClJHb0zlQ/xHLtdGT1fkZfviE4LXkvNo40CRlzXawKkiU+XdMGHHWTiL71XcLhKgbvLTNPfQn3+Ca8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUUhozpb; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PyDDKtZqWXcKJL+97b1BuK/DqTGTepcaDzkqTJUy+DT6p2F/jkAmL/AQ+JEFlE0SxnN1cJJmUU7zu/OXsbw4GSbtbd4ZVLvtRPkMncgl0SK+plCt6AgP9RET+C1JnmWdwAWYDplvqxRFDATalOlhBo38ToEEU1JlP/D90O3f8OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tl0s7olI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUUhozpb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60A41F00ACF;
-	Sat,  1 Aug 2026 11:28:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tl0s7olI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D858F1F00AC4;
+	Sat,  1 Aug 2026 11:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785583731;
-	bh=x820O9K4coS9hT8uHtVNftKKW5pmwFoUaeF2MngRO3c=;
+	s=k20260515; t=1785583733;
+	bh=pYc8FE36sw4EsWNDAiDc/dGegDvdfbg7N3YW0yIs1qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZUUhozpbRnS3Nh6AoBXfSA3uYU+UUU80TRKpXOJnu7eniu9FzMDpt67rZmrVkCE1R
-	 5YNk/BoRgf3Bj6gEbM81He55cnwlgLP8DcBdqTzklVY+IVdsKvfCW2FSLSrX0E0Ekj
-	 R/3rANRfwW8dH04ksV0BeEHZ65OojdiZThqIkvn6gR4/S+tBh7VBqS27OtuWQYJfNH
-	 Fu+YBQF6hZg0c3H3kFnzp9tZJGVwTvCcFSYtzqZdvlHuZFlSX/Co2dCTJBfzyyezAH
-	 uACSlR2O7fA7JnXNqxd/u9KDyft+7yASUbnfRUf09RFBcsAIsMs1wVpNZx5k7ztU5X
-	 z+0w01IHXrXMg==
+	b=Tl0s7olInQHGasdChz8GiA9Vpr12IUi2MlGjftC89EIGmq3gGeT5fqeYk2/D95Oxt
+	 q3oz9vY1Eoc5tL+Qg3RO6VIyNgDGbkNoGHnGJoU32tJZIuuUjGKazFGdYlQm8USG3i
+	 Bx2ouUwRmZkbGFA/sAt/ovIpfv5B7vFrdATh8KXRUAb5C/pKYSuAdwTacq0XChmmBs
+	 vfcK1f2dN1kTVdaJ6d3SAriHsTHHcF26Nkahr+AnmfcSUNa83FM51dntwhkMZej1Zw
+	 AhlWC7WUGcxuw/W2IlexrbHLyKml4phZLOiQ/9AtoaInZfIzRel06oy40GvV/2mbuG
+	 QoweRGz8j6YyQ==
 From: Will Deacon <will@kernel.org>
 To: kvm@vger.kernel.org,
-	julien.thierry.kdev@gmail.com,
-	Zongmin Zhou <min_halo@163.com>
+	Xie Bo <xb@ultrarisc.com>
 Cc: catalin.marinas@arm.com,
 	kernel-team@android.com,
 	Will Deacon <will@kernel.org>,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: Re: [PATCH kvmtool] riscv: Add extensions support after v7.1 update
-Date: Sat,  1 Aug 2026 12:28:31 +0100
-Message-ID: <178551725214.364934.6261821697852689480.b4-ty@kernel.org>
+	julien.thierry.kdev@gmail.com,
+	maz@kernel.org,
+	jean-philippe@linaro.org
+Subject: Re: [PATCH kvmtool] virtio/pci: Serialize legacy ISR and INTx updates
+Date: Sat,  1 Aug 2026 12:28:32 +0100
+Message-ID: <178551819891.370614.4195141930046292210.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260714060931.82182-1-min_halo@163.com>
-References: <20260714060931.82182-1-min_halo@163.com>
+In-Reply-To: <20260729014348.6601-1-xb@ultrarisc.com>
+References: <20260729014348.6601-1-xb@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,16 +50,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Tue, 14 Jul 2026 14:09:31 +0800, Zongmin Zhou wrote:
-> Expose the Zclsd, Zilsd and Zalasr extensions to KVM guests.
-> Add command-line options to disable each extension individually.
+On Wed, 29 Jul 2026 09:43:48 +0800, Xie Bo wrote:
+> The legacy virtio-pci interrupt state is represented by two pieces of
+> state: vpci->isr and the legacy INTx line level. Backend threads set ISR
+> bits and assert INTx when queue or configuration changes occur, while
+> vCPU threads read and clear the ISR and deassert INTx.
 > 
+> Those operations currently race. One possible interleaving is:
 > 
+> [...]
 
 Applied to kvmtool (master), thanks!
 
-[1/1] riscv: Add extensions support after v7.1 update
-      https://git.kernel.org/will/kvmtool/c/391deebb1209
+[1/1] virtio/pci: Serialize legacy ISR and INTx updates
+      https://git.kernel.org/will/kvmtool/c/51f527bde8a2
 
 Cheers,
 -- 
