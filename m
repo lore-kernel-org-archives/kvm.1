@@ -1,74 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86ED439904
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 11:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF642472B8;
+	Sat,  1 Aug 2026 12:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785583734; cv=none; b=LJm99zg49nJWGofhBUzax+UbflBw4ubtsilkD3TOYfu09dF0x2WSMTQ/5Lr47jlXQDl98b5Cu1nytXHX8zIAM5N2WuUmqS/zJ5XXzwUBTl3HqmvYVyXQCyGC0dKrV15Nk46QRmcbsOMJQ9dckk9kM6n0uHEYBJ6UAalQJp3DGsw=
+	t=1785588522; cv=none; b=lQ+OMvAfGWz9BixPuqizdR19vnbY4SmHjoFW0ecfiIDxY9Izf2n5oX4x5mqxVXC9O2q0jPkZyIpJVJnLd6WSbDfznRfd7Xp1hI24it3JqcgSWtCbUBVgU1b+/BS+YfB3pmiU+JZ+II7kDjXezEnKZyAdZKi3IxZVV4HhpmGpXm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785583734; c=relaxed/simple;
-	bh=ezViDqC2sh3bsmVSE+s1GDsC2dwtV7VUcE+2pBh1xbc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PyDDKtZqWXcKJL+97b1BuK/DqTGTepcaDzkqTJUy+DT6p2F/jkAmL/AQ+JEFlE0SxnN1cJJmUU7zu/OXsbw4GSbtbd4ZVLvtRPkMncgl0SK+plCt6AgP9RET+C1JnmWdwAWYDplvqxRFDATalOlhBo38ToEEU1JlP/D90O3f8OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tl0s7olI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785588522; c=relaxed/simple;
+	bh=a40C7S3vmVW5m2CBGcsUTdZYQ9++SwgmdHQF+nYXH5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r/vzO/kNuwz6GXAog1fY+c7y21iaaoujdP8835Jq8P1dwrWDI2tD4lkB/yTZjwziXolrrZqBreALKW52O9qy2nqXCPzv5mlX5GqijouyBfboHH+0ZUkCxyJnZp54dIg2ThohSXmP3P6Xn7NaqPsafzsrJb0Ta9iOHgI1KrkzQqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO8sRV1c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tl0s7olI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D858F1F00AC4;
-	Sat,  1 Aug 2026 11:28:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO8sRV1c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA9C1F00ACF;
+	Sat,  1 Aug 2026 12:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785583733;
-	bh=pYc8FE36sw4EsWNDAiDc/dGegDvdfbg7N3YW0yIs1qM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tl0s7olInQHGasdChz8GiA9Vpr12IUi2MlGjftC89EIGmq3gGeT5fqeYk2/D95Oxt
-	 q3oz9vY1Eoc5tL+Qg3RO6VIyNgDGbkNoGHnGJoU32tJZIuuUjGKazFGdYlQm8USG3i
-	 Bx2ouUwRmZkbGFA/sAt/ovIpfv5B7vFrdATh8KXRUAb5C/pKYSuAdwTacq0XChmmBs
-	 vfcK1f2dN1kTVdaJ6d3SAriHsTHHcF26Nkahr+AnmfcSUNa83FM51dntwhkMZej1Zw
-	 AhlWC7WUGcxuw/W2IlexrbHLyKml4phZLOiQ/9AtoaInZfIzRel06oy40GvV/2mbuG
-	 QoweRGz8j6YyQ==
-From: Will Deacon <will@kernel.org>
-To: kvm@vger.kernel.org,
-	Xie Bo <xb@ultrarisc.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	julien.thierry.kdev@gmail.com,
-	maz@kernel.org,
-	jean-philippe@linaro.org
-Subject: Re: [PATCH kvmtool] virtio/pci: Serialize legacy ISR and INTx updates
-Date: Sat,  1 Aug 2026 12:28:32 +0100
-Message-ID: <178551819891.370614.4195141930046292210.b4-ty@kernel.org>
+	s=k20260515; t=1785588521;
+	bh=SCuqMDpuQQzx9dcXw3N6jP0KkAKpom7E/b6/DDyvjNo=;
+	h=From:To:Cc:Subject:Date;
+	b=UO8sRV1cyWGFm1QWOzzy2YPayy1cdlEtK1rfTtHB0LAp6tHuqDATDebldH2Bgvg14
+	 8BfTrIoWuFOhs61EyoyB0h9DPaUNqFC+m6kpIlkari57vc3YdReKzLuHuJlo2sos38
+	 qOQtDDapFh63mx2zKQbUfT29LExDqf1XJ/z26OoVw2RMoQRIh9o/mtXc8B0V4bG979
+	 wy5pu2p8+j9KvAg/oL8jhxAGY5KXdd+o/FIFfhYm+P6uR8E1D7c3HEcOsDCfQaevAB
+	 LDmYKsf6jJernlKYsGKySqG005OvIXZITpGd4aoURFL0xJFnlqqti2kv/FNGlwWPwc
+	 6mzgdpK2St4sQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wq98p-0000000BGK2-0lGL;
+	Sat, 01 Aug 2026 12:48:39 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>
+Subject: [PATCH 0/6] KVM: arm64: VNCR TLB invalidation fixes
+Date: Sat,  1 Aug 2026 13:48:12 +0100
+Message-ID: <20260801124818.366274-1-maz@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260729014348.6601-1-xb@ultrarisc.com>
-References: <20260729014348.6601-1-xb@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, imv4bel@gmail.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 29 Jul 2026 09:43:48 +0800, Xie Bo wrote:
-> The legacy virtio-pci interrupt state is represented by two pieces of
-> state: vpci->isr and the legacy INTx line level. Backend threads set ISR
-> bits and assert INTx when queue or configuration changes occur, while
-> vCPU threads read and clear the ISR and deassert INTx.
-> 
-> Those operations currently race. One possible interleaving is:
-> 
-> [...]
+Prompted by a patch [0] from Hyunwoo Kim which was addressing a pretty
+annoying corner case, I spent some time looking at what was wrong in
+our VNCR TLBI code. And there was a few things to say about it...
 
-Applied to kvmtool (master), thanks!
+- The TLB tracking to get into the slow path is wrong. It tracks what
+  is mapped, but not the established TLBs. Kind of annoying.
 
-[1/1] virtio/pci: Serialize legacy ISR and INTx updates
-      https://git.kernel.org/will/kvmtool/c/51f527bde8a2
+- Handling IPA invalidation when the TLB was established with the S1
+  MMU disabled is failing for a number of reasons. This is the bug
+  that Hyunwoo Kim found, but I decided to address it at its root
+  rather than just fixing the symptoms.
 
-Cheers,
+- Deciding to run with a VNCR TLB doesn't take the state of
+  SCTLR_EL2.M into account. Yes, this is a special sort of sport to
+  run a hypervisor with its MMU disabled...
+
+- TLB invalidation by VA targeting the last page/block of TTBR1_EL2 is
+  dropped on the floor, because I cannot count. This was amusing. Not.
+
+I have fixes for each of these issues, all stable candidates. On top
+of that, I have a couple of patches reintroducing the tracking that
+the first patch removes, this time in a way that is actually
+functional. Or at least I think it is...
+
+I'd like to thank Hyunwoo Kim for their initial patch and for
+providing a reproducer that helped me finding these issues by running
+it at multiple levels of nesting. It is most probably too late for
+7.2, so let's try to make this 7.3 material.
+
+[0] https://lore.kernel.org/r/ameGoxbn2wzBq2kL@v4bel
+
+Marc Zyngier (6):
+  KVM: arm64: Remove VM-wide VNCR mapping counter
+  KVM: arm64: Handle negative S1 walk levels in VNCR TLB size evaluation
+  KVM: arm64: Consider SCTLR_EL2.M when mapping the L1 VNCR page
+  KVM: arm64: Correctly handle end of VA space TLBI invalidation
+  KVM: arm64: Couple VNCR fixmap clearing and CPU number invalidation
+  KVM: arm64: Add VNCR TLB tracking again
+
+ arch/arm64/include/asm/kvm_host.h   |   4 +-
+ arch/arm64/include/asm/kvm_nested.h |   7 ++
+ arch/arm64/kvm/at.c                 |   2 -
+ arch/arm64/kvm/hyp/vhe/switch.c     |   4 +-
+ arch/arm64/kvm/nested.c             | 109 +++++++++++++++++-----------
+ 5 files changed, 78 insertions(+), 48 deletions(-)
+
 -- 
-Will
+2.47.3
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
