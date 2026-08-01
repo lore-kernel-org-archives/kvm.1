@@ -1,115 +1,96 @@
-Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC693372ED7;
-	Sat,  1 Aug 2026 06:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7364379996
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785566139; cv=none; b=Fe2/aGzJPfSCwyFIEaV5bd9rE/cQWz0QIWchH2xQI7rhKK3h8P56X0hxnCpguWGWmzg0bOr9xeMel7hZWSgnTLXI3HikSPmgqrQFKTzote7x+QtjknC51LyDT9UMy4gE+9ZN5riW1b06PgkmCDt7sbsznlwEroCn8YfbU9Qbfs4=
+	t=1785566198; cv=none; b=g/TEkxbBifsqsosDlVhoUsy3Cr/TZYNhbwLLbnkN0NUA3JKdl8dKaBhUsqBc3jvBisA9ylY2gK7UpwgbJw3hW0gR3csPlUbP2WE6/4cVOsa40Wf1zvRd8PJGiO8fPO2rxbSOrJp7tZyewDi1F+wBTth9Dc/dLjroFxeXZDnOnic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785566139; c=relaxed/simple;
-	bh=sobde0AGf3S5vrulxqXSeE8Yr9d4n8k+fI0Q3+tlJuA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eSbh19AK7GMnt3KdvX6wKgvFgenbxUm3DLwav0u4kjduys6ihHwtyYyeJecHBNq1G5XO4Re9WTaE1Bp87O+StnG93ZM4jG8rk0x+9Kl+vM68ZXNrvJubaA1ozowcoJMPbWUXcVS0XvvMOUUEqLUwEy2ZxzpCdyPEUrfLAntFD4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=K2XFECkA; arc=none smtp.client-ip=49.212.243.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+	s=arc-20240116; t=1785566198; c=relaxed/simple;
+	bh=Ousd6CYC1YU8z9pjyH/qBZFeU/54JXTdrMbuXmqFfUU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EeJavC6Su7Ass6SMk+2B8o9HNDdHYq7CJeWq+3PJfWUinqv0B+q/wxEIQAeKWUDD/mvbon2FBpNslNuyI4o1/H+uLmaU/EKDayypFtQA8daD5ILz2CA2/w6mEmDO22cSLPKMHpXvpDrU5WuzsF0GNBcJfnMgqn2gQAgDlEc7gTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8gy028H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="K2XFECkA"
-Received: from [133.11.54.183] (h183.csg.ci.i.u-tokyo.ac.jp [133.11.54.183])
-	(authenticated bits=0)
-	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 6716YCSG018797
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 1 Aug 2026 15:34:12 +0900 (JST)
-	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
-DKIM-Signature: a=rsa-sha256; bh=xJoh3FskZlMZXN0frCV7KCjMR5sn7IPdvl3P81QRqzo=;
-        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20250326; t=1785566053; v=1;
-        b=K2XFECkA0Z9J1wXM376KVU1kqybglUVyvN9n43lQWKGqRyrvg+1wAHFpXKrsJyTv
-         7dO28hIdlCPUIKivvDpx66LiaWaMiUf1eMwX6HKnwGFy0BQRI/ZPqLF3hJ52UeoK
-         9AP8hhhgXc9PTpW4Zl0NUnJo17Epe0Or63UjaIvExn2v2BtXF+fsswayy25CM5r7
-         A6r0MtMXHSxU1bBIFTHXchDGmoYOLmKCHLdg5MhGoVcYXjwTa2rvghFY1qORzTYk
-         LMgUJyt3SOTNzfKJTvTGqH9iBdkizXE0bRzs4ZGh1kMGUExnDgbs3mZYI8tjnGuQ
-         I5KG078+99SmfBTRnx/1lg==
-Message-ID: <417908e2-c226-46a3-9dbe-a7a2432d1662@rsg.ci.i.u-tokyo.ac.jp>
-Date: Sat, 1 Aug 2026 15:34:11 +0900
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8gy028H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C611F00ACF
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785566197;
+	bh=j3Kysazr4yCNbR4B/VBHf/2W7V9Ytp+PM2SXBjHYjDE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Y8gy028Hly5PACuF0/UwKcWk5GFxLBfaOrKHlnnxzIQvlMOGCBMt2aKvPGDsj0P52
+	 bqVsG88fywR5KdvyhgoRyihiV9c2m1VWf5kLHh9j14nypmlCzbysPv6QsSvvJg0zvm
+	 XUL+aoz3lr5uTqY0k1WRQNJ70QCxM6f73nhZbZ407Ca7Yi83BZOURv+HsPIEC1vCsX
+	 jZQaxTo2JBYPaoTP9AUdYfqsfjya1rg6fHyZsltR8ZNYCufGQ8/f07XfZQqSy9L2+Y
+	 +dGL94xpOfoY2mYZFWfiBSppUaxbcGoADCqzbIiiK52HHVkYELlk9XdwOmg2fKvGaw
+	 kIfpceQtb3GvQ==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15e03c2763so316205766b.0
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:36:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rqu/O3iy5wCaa7Qqzrhe6eGSjFrku3UdvV9okXRfZ7L6GJsCZmjjJ2TNqfXtKgqgpzJ78I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHZEIbiRxwvbc5xZdvbN/RBBsB6YPnsc7tEZgMItKUnRRhrWcX
+	xntTgJ5V1RgAvvfl4betwg+TfIRRNoj40YacWRJUb2f/8nF1DuVkFLXP5qF8mssIIpltF9VpL5s
+	HpBNJrzflmv6Yo4AUOTDA1sBiSkpZ5HM=
+X-Received: by 2002:a17:907:ea87:b0:c1c:6d29:8a11 with SMTP id
+ a640c23a62f3a-c1fe79e2d56mr141576566b.13.1785566196337; Fri, 31 Jul 2026
+ 23:36:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 04/11] arm64: errata: Require Apple IMPDEF PMUv3 traps
- on all CPUs
-To: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Catalin Marinas
- <catalin.marinas@arm.com>,
-        Kees Cook <kees@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        devel@daynix.com, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-References: <20260710-hybrid-v8-0-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
- <20260710-hybrid-v8-4-621409f3a592@rsg.ci.i.u-tokyo.ac.jp>
- <amzSTp3cUCMuwJKf@google.com>
-Content-Language: en-US
-From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <amzSTp3cUCMuwJKf@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260728003557.1136583-1-yosry@kernel.org> <20260728003557.1136583-27-yosry@kernel.org>
+In-Reply-To: <20260728003557.1136583-27-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 31 Jul 2026 23:36:24 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNJj2E=ahPBfHfwVH1XYL1wpgVCSXeTpQMx6XNTOzR-oA@mail.gmail.com>
+X-Gm-Features: AUfX_mxOqRY9yhLd7g1O42DAy-KnxrD4xiG9q0df5DOIrFP5ASwS4znYf57mKsw
+Message-ID: <CAO9r8zNJj2E=ahPBfHfwVH1XYL1wpgVCSXeTpQMx6XNTOzR-oA@mail.gmail.com>
+Subject: Re: [PATCH v1 26/28] KVM: nSVM: Flush the ASID on nested transitions
+ if shared by L1 and L2
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026/08/01 1:50, Will Deacon wrote:
-> On Fri, Jul 10, 2026 at 08:14:58PM +0900, Akihiko Odaki wrote:
->> KVM relies on ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS as a system-wide
->> precondition for PMUv3 emulation on affected Apple CPUs. A local CPU
->> erratum is too weak for that: once the workaround is enabled, a late CPU
->> that misses it may still be onlined.
->>
->> Make the workaround an all-early-CPU capability instead. The matcher is
->> still local because it depends on MIDR_EL1, but the capability is only
->> advertised if all early CPUs match, and late CPUs that miss it are
->> rejected once the capability is enabled.
->>
->> Assisted-by: Codex:gpt-5.5
->> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
->> ---
->>   arch/arm64/kernel/cpu_errata.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
->> index 476a37c82108..14ce49d693c4 100644
->> --- a/arch/arm64/kernel/cpu_errata.c
->> +++ b/arch/arm64/kernel/cpu_errata.c
->> @@ -964,7 +964,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
->>   	{
->>   		.desc = "Apple IMPDEF PMUv3 Traps",
->>   		.capability = ARM64_WORKAROUND_PMUV3_IMPDEF_TRAPS,
->> -		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
->> +		.type = ARM64_CPUCAP_EARLY_LOCAL_CPU_FEATURE,
-> 
-> I always get tangled in knots with this code, but does this correctly
-> handle the case where the boot/early CPUs don't have the impdef PMU
-> feature but late-onlined CPUs do? I'm not sure we configure the traps
-> correctly in that case but this is all gloriously undocumented.
-It's not only you but Fuad and Sashiko also had the same question:
-https://lore.kernel.org/qemu-devel/4cf2911c-610e-4cf1-9c42-cc5792265a89@rsg.ci.i.u-tokyo.ac.jp/
+> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+> index 58e7d099c559e..9ea8f21be9940 100644
+> --- a/arch/x86/kvm/svm/nested.c
+> +++ b/arch/x86/kvm/svm/nested.c
+> @@ -719,6 +719,15 @@ static void nested_svm_entry_tlb_flush(struct kvm_vcpu *vcpu)
+>                 kvm_make_request(KVM_REQ_TLB_FLUSH_GUEST, vcpu);
+>         }
+>
+> +       /*
+> +        * If L1 and L2 share the same ASID in hardware (when using the fallback
+> +        * ASID for both, or for SEV guests), flush it on nested transitions.
+> +        */
+> +       if (svm->asid == svm->nested.asid02) {
+> +               WARN_ON_ONCE(svm->asid != fallback_asid && !is_sev_guest(vcpu));
 
-The answer is that we simply don't enable hypervisor traps. Accessing 
-PMUv3 registers will be UNDEFINED on all CPUs, enforcing the 
-architectural behavior system-wide.
+From internal Sashiko:
+---
+Will this WARN_ON_ONCE fire deterministically on the first nested VM-Enter
+for normal nested SVM guests?
 
-I plan to change the patch message to clarify this in the next version.
+Because L1 and L2 ASIDs are not properly separated until a later commit in
+this series (commit 0fcd2c53996cc885d1e9898202bcd67438d2a97a, "KVM: nSVM:
+Use different ASIDs for L1 and L2"), svm->asid and svm->nested.asid02 are
+unconditionally equal at this point in the git history.
 
-Regards,
-Akihiko Odaki
+For a normal nested SVM guest, both svm->asid != fallback_asid and
+!is_sev_guest(vcpu) will evaluate to true.
+
+Could an untrusted L1 guest executing VMRUN trigger this warning, potentially
+causing a host Denial of Service if panic_on_warn is set? Even though this is
+resolved in a later commit, should the WARN_ON_ONCE be deferred until the
+ASID separation is actually implemented so that bisectability is preserved and
+intermediate commits remain fully self-contained?
+---
+
+I don't think a DoS is a risk here, but yeah the warning will fire at
+this patch. It should probably be moved till the next patch or a
+standalone patch.
