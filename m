@@ -1,225 +1,187 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC7737F8DB
-	for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B7262B
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 00:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785541119; cv=none; b=Skq328PYX0RVO2tHr9dXJw1JxpCyi3xsdi+vjmTcew2JwrTKY2+CAVvDE7OK/gtwvz1O72sfDzlV8pkDeYWEHmYwIIrPeePMhqQjPFqC9KckaS/NeCDMGQtocB19NdtbXVo4eXnhYGTQCeYes48t7soUYev4B0aHG1sg2hhCDvs=
+	t=1785542423; cv=none; b=laoP0xYEg69n7xgmicFYCZoT937FhzE7XzfIzx3dNifTuf9L1G4j01bHWroxMRoT0XNTjd8eUo94FRb8JUb4Y0Q4EZlkjVRo4AaerX+/e9Q5UqJmp+veMVAjafD62SyHbEuauylEz8xM2u2IdWmZnUNknMRvusj8NlT+/xmK9d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785541119; c=relaxed/simple;
-	bh=zKG0iS70PV1ZsDDU0ojNP7wKsx3DKqaKvtYhgGjhqec=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=maItTNNKySmDZesXkqexGkLLxRwnQ8qMpmWVcxGeLobQ5MnMRLwB31E09n1F/AqijRfedvTDMKf9YjVrOp42b/BUWdUFbkr3zPKsq/al/1V7QWRD7uhmSX47UxkERQmcKdOD7A88ktbv/UhzNzOvQkPVT/HMG2BwgyI+GukoYT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W1vKjvQW; arc=none smtp.client-ip=209.85.210.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785542423; c=relaxed/simple;
+	bh=O8HqmJQWZA1nfUBNMj9sxQRGTvaC1yJRVK0bfgHcTrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iJSQS9Hx0ppq7hJmscM8r9m3hsnHlpuvT4Bw6hbH/a8mYYeWxqbJpjjfWkaPqarYsdSmpJRn+gmOmLAZRVgRC9NSnJzsZhxXsDL6u/LsyxQL2OmwLCisXYeTmTmOdNTIEY2DKtDj8lod+9ulhVSsVF38jW0m9fVZejphl/pJL0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OVafTl4e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=laVcCU9D; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W1vKjvQW"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-8486ffba174so2723305b3a.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 16:38:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OVafTl4e";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="laVcCU9D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785542420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
+	b=OVafTl4e7n9t5YKhPD+8IajHWu7a4YBNP6/vV4hjzpAHJcN8kOg34w6JthVhWUvWM29lpD
+	XjEixjqZGaRI1baMySq5HD8u0fEmOuzuS+U8wjq40yeN+mwCZ4XLg7NyeIPyHg5xbx7TQv
+	AljCpzZKpDhF1rgrj5YuO6WaxaSEimk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-688-rYhkcqv6NQu7rw7miyCAng-1; Fri, 31 Jul 2026 20:00:18 -0400
+X-MC-Unique: rYhkcqv6NQu7rw7miyCAng-1
+X-Mimecast-MFC-AGG-ID: rYhkcqv6NQu7rw7miyCAng_1785542417
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4955b84e25eso2021435e9.1
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785541117; x=1786145917; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dmKsJOviftvACUGPABBN88S+tJ91thYPhBWQcoJdx18=;
-        b=W1vKjvQWU2LANf0hil7JAJKIzwtCO2qQsxWxRYPJFktMEYoEosVjNuPvQOlgo+yN9/
-         9Efpz3ACwONT5oj34ijQIr2zrNOzFUt4rGxNkk60pwlO+u7i7ffdexxCEMoAu5wHU8V3
-         zSYEsX3fR7iSQ3V2wDi6NUbH1MML9uI9P+KstO/dBj6nLwyJMr1hj0fLNUxQOqvAp3iY
-         +2MOL7MJnmK0fI8Qg2svBwS8be/XAIq3dym2AI6Bojk/7SaU4IG0ju0nN+ulP7vGKdGA
-         s662rLvG7wrLlDQYX7IxYNoaznEWfUsgM2VTbRVLusuNNfL6/ngs6/HhtedAOSKMdZoc
-         guHA==
+        d=redhat.com; s=google; t=1785542417; x=1786147217; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
+        b=laVcCU9DWjNxIeKBmrEPilAP8c9LzvZKUb40q/xfrJeNvkYHAH7XfBw83Wnfw6+KLI
+         3c1bRRxR7o+4Im4AaeA/4rm+LN4WS/cRYyuQK7IOTR/oab11JgdimMe1jGtN97DcyR4i
+         K+f/somufouLzLVPft8k5i4vDWXZxsFtpJZLZOU48XiEQlGtc9dDjHLKbVPO3E9A4xZP
+         W9ufSa/aXhGnSBc6bBZocXtjM2+9SoIJodAmcIF5Q0JAjOPkl4obZtn+P7zx/QLwSALB
+         wPFvLuVVO8GICzHZOjH/okVkvT0v9DhoDVo7ryO8NuTpHdpDzQvQo172haf3gSc+zEgO
+         c5mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785541117; x=1786145917;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20251104; t=1785542417; x=1786147217;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dmKsJOviftvACUGPABBN88S+tJ91thYPhBWQcoJdx18=;
-        b=cqH9vC8fMP0TLKaNJYUdixNthsFQn5Cz6nTs+ByimZ8NiRez9MNLlNkVyJRvUAb5d0
-         prlSSiCAPDiVZSMx1xAOOXDj74/115zNYo7l9Gm17wahvf9DNoHyQlNfJIs2VzxuxyuG
-         sbklZ2yIDiYpluNc2cZreTvW/P3waBHOmHQRBp51Ad4MDiUUsRNTpaxnUCT1NCJbBYL0
-         yD+oTXcWfyFyeLUbrTlTC8QwgWEzDnnyQVFKiRCpbHbjAzOqRtTJpdq+qehL8uHzqMpR
-         vbvTdmxH51dYyTjeRtsQWiFz0kAK19vRXWF4A7NvZbtF6P/eCeBv00z9k6+hy5D3uCGR
-         QxNA==
-X-Forwarded-Encrypted: i=1; AHgh+RpQu6EYlDd9A4BJAMWs1ecb5euQqsnTkpChTDn+eMUWKfgqJLRCrl1rVwa64y8RI1x3pBo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzRuyyq+zXcIizin5meDLcyLNAXGLWZS8GyD9Fi/qd+RoSV1rq
-	r0UvOL56e7w36llnYg2HW1GyY1eyVmEbY6+rgtReqdq2SsvCMPUbe3Eg1/jDMbyyvjh7awDkM1J
-	MdG3LUQ==
-X-Received: from pful5.prod.google.com ([2002:a05:6a00:1405:b0:847:a85b:6c23])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c8f:b0:847:8b0f:2508
- with SMTP id d2e1a72fcca58-84ee47789c4mr1324782b3a.13.1785541116639; Fri, 31
- Jul 2026 16:38:36 -0700 (PDT)
-Date: Fri, 31 Jul 2026 16:38:36 -0700
-In-Reply-To: <20260728144954.355376-35-dwmw2@infradead.org>
+        bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
+        b=CGORgNAq+ojD6mWhpCMMy6pq/0eOhvMp3sc4F5pRDN2nzU0GjJkFe2mVoohnriDeBZ
+         84OxgmwEbFFw/PzmGAjf63ZdfyA63ruqCsMPHyOMyyulVe6hto3GRaP8bwWegI5z/Yqp
+         WsXAkU+8yEspO5u2O2IaG9ioCg70AZGdQw5iGO2Q2d6+YBIyeD6v4vr4Ac4atwa3IGev
+         NYIwOtFX5CBp3RsWcZaGov0x18uruwKUYR3sGW4FXlpYBaXWNWoz1nFZl5J5fu8tVisU
+         U+ZD+oYMLOHhjS0hNBR/s5gCQx+sGjNEtEKBc+588QlXM/juBWkYYvWcQT+59PcIjfQg
+         A7ag==
+X-Forwarded-Encrypted: i=1; AHgh+Rpcw/M/OiB+3zOgk/PwAPMkoLbGMR1Usk9oULBRm7WGtlQzBIw4Zb+HkQ90cn2Qos2cghE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1qH7WuhYGT3q2vi0UQmP33MJeRBLUDlx2wcWZ5b/NhCCN3me6
+	KtMj64IXzjF3FEkieXDX7goNhOz3gb6rtrTDdrHcjOrJkCGWjP1xngC6c8TViOPoxSLuvOiNT8D
+	LzvP8jRaajVIw1S4OsnVo7R2ziM0bUMng880ycXE9PmJara3Lrq+5UA==
+X-Gm-Gg: AR+sD12rixNL284tPT436Ytjt5PfMUUIXA5ZbCzWoNK8V6ZUoL23PDtaUheHErzboPw
+	wStvGWMTz2u3h1vdAW+w6TkvP1MignD2P2OfUgLjfIMSz13n/hFIX42PY30UF+tou4TrNQM4lsD
+	sZKbIGKBU32mjhLpI9AKwVWtJZNSlkM37lIQWnjLzX1QEsSCevjRhkEwljq8HPi4NOuWDVC16Id
+	8evc1TdF33h1K6xU4J9yGGqTJbe/FE3zBDwve16drHL2ZwTOvXhqYk/1WBmmVPj3AggzgUx85w4
+	AsVFz990PLCP6O9lJFaqQbfTdeDZOcrxJu1xJV5UI/Z057AJnack+pSUID/nn4eAm3EcAGzOGtH
+	ifD6OQKHCWlN8LvK+beM232I=
+X-Received: by 2002:a05:600c:48a2:b0:496:bba5:33a7 with SMTP id 5b1f17b1804b1-4980c6824e7mr1432165e9.27.1785542416738;
+        Fri, 31 Jul 2026 17:00:16 -0700 (PDT)
+X-Received: by 2002:a05:600c:48a2:b0:496:bba5:33a7 with SMTP id 5b1f17b1804b1-4980c6824e7mr1432025e9.27.1785542416366;
+        Fri, 31 Jul 2026 17:00:16 -0700 (PDT)
+Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807eb12c5sm3178825e9.3.2026.07.31.17.00.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jul 2026 17:00:15 -0700 (PDT)
+Date: Fri, 31 Jul 2026 20:00:12 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: virtualization@lists.linux.dev, jasowangio@gmail.com,
+	michael.christie@oracle.com, pbonzini@redhat.com,
+	stefanha@redhat.com, eperezma@redhat.com, kvm@vger.kernel.org,
+	joe.jin@oracle.com
+Subject: Re: [PATCH 2/2] vhost-scsi: reject invalid max_io_vqs module
+ parameter
+Message-ID: <20260731195756-mutt-send-email-mst@kernel.org>
+References: <20260731221116.236791-1-dongli.zhang@oracle.com>
+ <20260731221116.236791-3-dongli.zhang@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-35-dwmw2@infradead.org>
-Message-ID: <am0x_ORC0olomizu@google.com>
-Subject: Re: [PATCH v7 34/36] KVM: selftests: Add master clock offset test
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731221116.236791-3-dongli.zhang@oracle.com>
 
-On Tue, Jul 28, 2026, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> Verify that KVM master clock mode remains active when vCPUs have
-> different TSC offsets but the same frequency. Creates three vCPUs,
-> sets one to a different TSC value, and confirms:
->=20
->  - KVM_CLOCK_HOST_TSC is set (master clock active)
->  - KVM_CLOCK_TSC_STABLE IS set (master clock =E2=87=92 stable flag)
->  - PVCLOCK_TSC_STABLE_BIT is NOT set (offsets differ)
->=20
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> Assisted-by: Kiro (claude-opus-4.6-1m)
+On Fri, Jul 31, 2026 at 03:10:24PM -0700, Dongli Zhang wrote:
+> max_io_vqs is currently validated only when a vhost-scsi device is opened.
+> This allows sysfs to show values larger than the driver will actually use,
+> e.g. writing 2048 succeeds even though vhost_scsi_open() later clamps it to
+> VHOST_SCSI_MAX_IO_VQ. This makes the sysfs value differ from the value that
+> will actually be used.
+> 
+> hv# echo 2048 > /sys/module/vhost_scsi/parameters/max_io_vqs
+> 
+> hv# cat /sys/module/vhost_scsi/parameters/max_io_vqs
+> 2048
+> 
+> [  315.630495] Invalid max_io_vqs of 2048. Using 1024.
+> 
+> Use a module parameter callback to reject out-of-range updates when the
+> parameter is written. This keeps the visible parameter value consistent
+> with the effective queue limit.
+> 
+> With the parameter value kept in range, remove the duplicate validation
+> from vhost_scsi_open().
+> 
+> Invalid values now fail with -EINVAL at write/load time instead of being
+> accepted and silently adjusted later when the device is opened.
+> 
+> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+
+why should we change userspace visible behaviour now?
+
 > ---
->  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->  .../kvm/x86/masterclock_offset_test.c         | 180 ++++++++++++++++++
->  2 files changed, 181 insertions(+)
->  create mode 100644 tools/testing/selftests/kvm/x86/masterclock_offset_te=
-st.c
->=20
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index 95539deea266..f6027a35f790 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -108,6 +108,7 @@ TEST_GEN_PROGS_x86 +=3D x86/pmu_event_filter_test
->  TEST_GEN_PROGS_x86 +=3D x86/private_mem_conversions_test
->  TEST_GEN_PROGS_x86 +=3D x86/private_mem_kvm_exits_test
->  TEST_GEN_PROGS_x86 +=3D x86/pvclock_test
-> +TEST_GEN_PROGS_x86 +=3D x86/masterclock_offset_test
-
-Keep these sorted alphabetically.
-
->  TEST_GEN_PROGS_x86 +=3D x86/pvclock_migration_test
->  TEST_GEN_PROGS_x86 +=3D x86/set_boot_cpu_id
->  TEST_GEN_PROGS_x86 +=3D x86/set_sregs_test
-> diff --git a/tools/testing/selftests/kvm/x86/masterclock_offset_test.c b/=
-tools/testing/selftests/kvm/x86/masterclock_offset_test.c
-> new file mode 100644
-> index 000000000000..88e2bd2edab5
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/masterclock_offset_test.c
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Test that KVM master clock mode works with different TSC offsets
-> + * as long as all vCPUs have the same TSC frequency.
-> + */
-> +#include <stdint.h>
-> +#include <string.h>
+>  drivers/vhost/scsi.c | 27 ++++++++++++++++-----------
+>  1 file changed, 16 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+> index 0c0634eea144..c138c29ce3dd 100644
+> --- a/drivers/vhost/scsi.c
+> +++ b/drivers/vhost/scsi.c
+> @@ -210,7 +210,20 @@ static const int vhost_scsi_bits[] = {
+>  #define VHOST_SCSI_MAX_EVENT	128
+>  
+>  static unsigned vhost_scsi_max_io_vqs = 128;
+> -module_param_named(max_io_vqs, vhost_scsi_max_io_vqs, uint, 0644);
 > +
-> +#include "test_util.h"
-> +#include "kvm_util.h"
-> +#include "processor.h"
-> +
-> +#include <asm/pvclock-abi.h>
-> +
-> +#define KVMCLOCK_GPA	0xc0000000ull
-> +#define TSC_OFFSET	(1000000000ULL)
-> +
-> +static uint64_t pvclock_calc(struct pvclock_vcpu_time_info *pvti, uint64=
-_t guest_tsc)
+> +static int vhost_scsi_set_max_io_vqs(const char *val,
+> +				     const struct kernel_param *kp)
 > +{
-> +	uint64_t delta =3D guest_tsc - pvti->tsc_timestamp;
-> +
-> +	if (pvti->tsc_shift >=3D 0)
-> +		delta <<=3D pvti->tsc_shift;
-> +	else
-> +		delta >>=3D -(int)pvti->tsc_shift;
-> +
-> +	return pvti->system_time + ((__uint128_t)delta * pvti->tsc_to_system_mu=
-l >> 32);
+> +	return param_set_uint_minmax(val, kp, 1, VHOST_SCSI_MAX_IO_VQ);
 > +}
 > +
-> +static void guest_code(void)
-> +{
-> +	wrmsr(MSR_KVM_SYSTEM_TIME_NEW, KVMCLOCK_GPA | KVM_MSR_ENABLED);
-> +	for (;;)
-> +		GUEST_SYNC(0);
-> +}
+> +static const struct kernel_param_ops vhost_scsi_max_io_vqs_op = {
+> +	.set = vhost_scsi_set_max_io_vqs,
+> +	.get = param_get_uint,
+> +};
 > +
-> +int main(void)
-> +{
-> +	struct kvm_vcpu *vcpus[3];
-> +	struct kvm_clock_data clock;
-> +	struct pvclock_vcpu_time_info pvti[3];
-> +	struct kvm_vm *vm;
-> +	uint64_t offset0, host_tsc, clk0, clk2;
-> +	int i;
-> +
-> +	TEST_REQUIRE(sys_clocksource_is_based_on_tsc());
-> +
-> +	vm =3D vm_create_with_vcpus(3, guest_code, vcpus);
-> +
-> +	TEST_REQUIRE(!__vcpu_has_device_attr(vcpus[0], KVM_VCPU_TSC_CTRL,
-> +					     KVM_VCPU_TSC_OFFSET));
-> +
-> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-> +				    KVMCLOCK_GPA, 1,
-> +				    vm_calc_num_guest_pages(VM_MODE_DEFAULT,
-> +							   getpagesize()), 0);
-> +	virt_map(vm, KVMCLOCK_GPA, KVMCLOCK_GPA,
-> +		 vm_calc_num_guest_pages(VM_MODE_DEFAULT, getpagesize()));
-> +
-> +	/* Get vCPU 0's default offset and set vCPU 2's offset higher */
-> +	vcpu_device_attr_get(vcpus[0], KVM_VCPU_TSC_CTRL,
-> +			     KVM_VCPU_TSC_OFFSET, &offset0);
-> +	uint64_t offset2 =3D offset0 + TSC_OFFSET;
-> +	vcpu_device_attr_set(vcpus[2], KVM_VCPU_TSC_CTRL,
-> +			     KVM_VCPU_TSC_OFFSET, &offset2);
-> +
-> +	/* Run each vCPU to enable kvmclock (with offset already set) */
-> +	for (i =3D 0; i < 3; i++) {
+> +module_param_cb(max_io_vqs, &vhost_scsi_max_io_vqs_op,
+> +		&vhost_scsi_max_io_vqs, 0644);
+>  MODULE_PARM_DESC(max_io_vqs, "Set the max number of IO virtqueues a vhost scsi device can support. The default is 128. The max is 1024.");
+>  
+>  struct vhost_scsi_virtqueue {
+> @@ -2273,22 +2286,14 @@ static int vhost_scsi_open(struct inode *inode, struct file *f)
+>  	struct vhost_scsi_virtqueue *svq;
+>  	struct vhost_scsi *vs;
+>  	struct vhost_virtqueue **vqs;
+> -	int r = -ENOMEM, i, nvqs = vhost_scsi_max_io_vqs;
+> +	int r = -ENOMEM, i, nvqs;
+>  
+>  	vs = kvzalloc_obj(*vs);
+>  	if (!vs)
+>  		goto err_vs;
+>  	vs->inline_sg_cnt = vhost_scsi_inline_sg_cnt;
+>  
+> -	if (nvqs > VHOST_SCSI_MAX_IO_VQ) {
+> -		pr_err("Invalid max_io_vqs of %d. Using %d.\n", nvqs,
+> -		       VHOST_SCSI_MAX_IO_VQ);
+> -		nvqs = VHOST_SCSI_MAX_IO_VQ;
+> -	} else if (nvqs == 0) {
+> -		pr_err("Invalid max_io_vqs of %d. Using 1.\n", nvqs);
+> -		nvqs = 1;
+> -	}
+> -	nvqs += VHOST_SCSI_VQ_IO;
+> +	nvqs = vhost_scsi_max_io_vqs + VHOST_SCSI_VQ_IO;
+>  
+>  	vs->old_inflight = kmalloc_objs(*vs->old_inflight, nvqs,
+>  					GFP_KERNEL | __GFP_ZERO);
+> -- 
+> 2.43.5
 
-ARRAY_SIZE(vcpus)
-
-> +		vcpu_run(vcpus[i]);
-> +		TEST_ASSERT_KVM_EXIT_REASON(vcpus[i], KVM_EXIT_IO);
-> +	}
-> +
-> +	/* Check master clock is active */
-> +	memset(&clock, 0, sizeof(clock));
-> +	vm_ioctl(vm, KVM_GET_CLOCK, &clock);
-
-Provide an API.
-
-> +	pr_info("KVM_GET_CLOCK flags: 0x%x\n", clock.flags);
-> +	TEST_ASSERT(clock.flags & KVM_CLOCK_HOST_TSC,
-> +		    "Master clock should be active, flags=3D0x%x", clock.flags);
-> +	TEST_ASSERT(clock.flags & KVM_CLOCK_TSC_STABLE,
-> +		    "KVM_CLOCK_TSC_STABLE should be set, flags=3D0x%x", clock.flags);
-> +
-> +	/* Get per-vCPU pvclock in order 0, 2, 1 */
-> +	int order[] =3D {0, 2, 1};
-
-Please don't declare variables in the middle code.  Yes, it's now technical=
-ly
-possible thanks to all the guard() magic, but it's still against preferred =
-kernel
-style.
-
-Though this itself is probably a really, really good indication that this n=
-eeds
-to be split into multiple testcases.  Maybe using TEST_F() and a custom fix=
-ture?
