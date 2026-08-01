@@ -1,109 +1,121 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A500357D1D
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5551357D1D
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785564622; cv=none; b=jcouyf8Xpe2oe8p6MIjwLx+VCWmr3IK+b6P4TJQCxxN2XreZONBXbBFhen9Y6QaWLVdhkkrFHqkRWtmwwLzSIq1R80bqvCyYhbrI8iG73Bz/s6ze5WyacM4RafqOfompCJ1a+TXyvwS/23w9kW1YoW7Nqu+rrpph8zrSPYGirms=
+	t=1785564826; cv=none; b=XH7q60TfBLPukM9r6E7ih/xktaPVmf6NAs5SLLziZRrddRiqMWnVI5+BQutlycljdgPzcGBDniGW3vb3jAzaxcxrWdZcUS0KM6ghWExew4P97b5P5QOFAGkjkX8tTS4kHElxKfiHAbNK73wQhLzfQN1sMN4xiUqbyKw0zyHSbnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785564622; c=relaxed/simple;
-	bh=FcgT1DlZ5qKQ+i4hWOcaKhX2kBBV5yow/1bVrhzPsic=;
+	s=arc-20240116; t=1785564826; c=relaxed/simple;
+	bh=F/0TQKobzq9nRsArNLQM3n02a+QIDfwK7oyy7ZMcCJs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BB+CMb/A1n1x83uNdh2V73uabEhFibKWBeIoZXEYiFRTklvA4+dDAZxYVzLJnsvOWvcll65+4jxqvDgiCWNdzbc9/Rlyw4N6t4kooFm3ut7unBGfTp+UQU+C8BT7Y7xQ1C6gDFuPUVUOeoZsROMZfT57PHrteHkgFBIQ1QFIKik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNWfRYFy; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=dTboTz9ARsMUkViVJBF8AK/jFHttogL66XW/Dvd43yw2E8psbcQHcgNL2d3S/AEsyHW34M3yRWvm61cnnyqUCIcmS1IQj+KG8H3arDyG6NBWTvmrbPHyMMcBe2DHx0o34n2fn53etFfJvhqEanAaISpXYQO8NUd5yGRvkVcWfmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k5rEHTyf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNWfRYFy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED161F01558
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:10:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5rEHTyf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9871F00ACA
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785564620;
-	bh=T+lPUrW4At6rnw6kymwX4eKloaHv/K1zPk7Ayk2RyM4=;
+	s=k20260515; t=1785564825;
+	bh=Gk1flL7AiM6xla5vM/j5YFBuEUmKoPYV+2/r01MtSwc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=CNWfRYFyqzZH8mAs68WBTXdYtatFCnaRlRMizzA+nU2n3fOUcKcXABTH0VcGD+Rhv
-	 RSuU6tAArSFqrcKni8FSrcsmj28SO4Zf5us0ijpUF7/AmJie5Xz3eC1uvofqNQVAGL
-	 eL0rrTMTSEkWW86yJeBeSHe0T+LWmWN7P+PH6Ge21DzCxcMdVx6yMElEUmoDufHGl/
-	 8NRBqmgL8wB94+n65B8uwlcKsMyKUK7yN6IUbC3YWeA+iZKJQ86/30iJVIHEaX37+3
-	 oD/4YE/pwkHyo8ot2nraYwA9wrrbwR9YBJpRrMpikTJWYxTuxWDK4zHgy7/Xn9kYCv
-	 dRgsuzoum8EVw==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15f47e6297so190865566b.0
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:10:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqqBDZgF4CU5sOge54LsS6IcZMsAuXMWW7j3eAMN+B+KBWBDRf1F8tVHnD+MT8FiBQkN2Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWL53A/wk1hcrhn30z52M96ZYQyPws+pFPF+6BFKrfPc68Qs3U
-	Wl4uMzNLQvzQUddCI027yjJZGTEYZVhfwa9eDqjcji9iwMJ1UWxSgAN5iIj7oYijWphQW6yIAOb
-	+OO8ERVyjpSZzeYVz2Yi00Ecs6DVPj70=
-X-Received: by 2002:a17:906:f91a:b0:c1c:4752:b5fb with SMTP id
- a640c23a62f3a-c1fe7f3e45bmr121096366b.27.1785564619503; Fri, 31 Jul 2026
- 23:10:19 -0700 (PDT)
+	b=k5rEHTyf2eZCCzzPAs1OEg39hZ+OBSssrXDMpY2G40wijotKGQYo4IpoBWt219sJV
+	 LPJW9OARlH4bnnOJCyvxlEZAfma2pZEEu+2UnzuZcxky+TlBz1zl+AvyqTAjktd+wF
+	 kAZka4k0J34A77+vTLsBP7CtfU3csVuPbQOOxCLr49tuNRHVMhpcgvewUsJfDc5zPz
+	 KS8cElzHVCNAJSQ7CAQApmbTorsh2VIanVvQ6YQg0fI1zV9QUmi48hK4Zy/MsmAG8o
+	 jACWRevxUMTmRoV4nmAdVygRUpEQ/NFUQUkNMkuf5rsO+8ZVbxv8IrWsw0FctwJGWU
+	 zOctHwzUi4ggw==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-69c1220bd51so2807065a12.3
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:13:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rp/d/DsK1v9jDdD075wbQowOWZe+odUPpBX2IrsncGjD3H/qtFWxCm5Ss3gj7BA4/mw1Ww=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2nxdrnz9qo1hPWOxNQbVpkT4JgIY3Utt/Jag8AKmOdx08ymXo
+	5kAUYSfaWorD7jg7VukFhhxf6hahJXArcVNTYdqOKKMG//BGWg1yQ9k/h7n2J/IGIWNoez1x6kf
+	5NWTfZk7/J0Uc2Nnil5Wep5opvtCm8wU=
+X-Received: by 2002:a17:907:c14:b0:c15:b4f3:6d25 with SMTP id
+ a640c23a62f3a-c1fe80ca46emr148750066b.19.1785564824192; Fri, 31 Jul 2026
+ 23:13:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260728003557.1136583-1-yosry@kernel.org> <20260728003557.1136583-3-yosry@kernel.org>
-In-Reply-To: <20260728003557.1136583-3-yosry@kernel.org>
+References: <20260728003557.1136583-1-yosry@kernel.org> <20260728003557.1136583-4-yosry@kernel.org>
+In-Reply-To: <20260728003557.1136583-4-yosry@kernel.org>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 31 Jul 2026 23:10:08 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP3=B8Cn58D+0Gp+aF7g1QaxCb6QNV8vvLmeCidC55Tkg@mail.gmail.com>
-X-Gm-Features: AUfX_mzE-NKK6no_OQU1lh3jfAx-VDe3r-kqGwJlFAavATar-1NUzUxYv-YTLWc
-Message-ID: <CAO9r8zP3=B8Cn58D+0Gp+aF7g1QaxCb6QNV8vvLmeCidC55Tkg@mail.gmail.com>
-Subject: Re: [PATCH v1 02/28] KVM: SVM: Document number of ASIDs CPUID setting
+Date: Fri, 31 Jul 2026 23:13:32 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNxs-xLGqLL+4nja5UdRrhfM7NjLFZrSJW16a=44nEL_w@mail.gmail.com>
+X-Gm-Features: AUfX_mxyN3tfn74RsCUuZ0xJQtiBqYT89GPCbgPOwOqZLfu2IQkXhoQxtiS5kpg
+Message-ID: <CAO9r8zNxs-xLGqLL+4nja5UdRrhfM7NjLFZrSJW16a=44nEL_w@mail.gmail.com>
+Subject: Re: [PATCH v1 03/28] KVM: VMX: Generalize VPID allocation to be vendor-neutral
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
 	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 27, 2026 at 5:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+> @@ -8711,8 +8685,6 @@ __init int vmx_hardware_setup(void)
+>         kvm_caps.has_bus_lock_exit = cpu_has_vmx_bus_lock_detection();
+>         kvm_caps.has_notify_vmexit = cpu_has_notify_vmexit();
 >
-> KVM arbitrarly advertises 8 ASIDs in KVM_GET_SUPPORTED_CPUID for
-> historical reasons. Advertising a small number of ASIDs to L1 is
-> currently harmless, as KVM (L0) uses the same ASID for both L1 and L2,
-> and flushes that ASID on nested transitions.
+> -       set_bit(0, vmx_vpid_bitmap); /* 0 is reserved for host */
+> -
+>         if (enable_ept)
+>                 kvm_mmu_set_ept_masks(enable_ept_ad_bits);
+>         else
+> @@ -8777,6 +8749,10 @@ __init int vmx_hardware_setup(void)
 >
-> However, following changes will add proper ASID emulation and a separate
-> ASID for L2, minimizing the TLB flushes on nested transitions. At that
-> point, a full TLB flush from a KVM guest (L1) would flush both L1 and L2
-> ASIDs, so should be avoided as much as possible by advertising more
-> ASIDs to L1.
+>         vmx_set_cpu_caps();
 >
-> Increasing the value advertised by KVM is tricky, because a VMM copying
-> the number of ASIDs from KVM_GET_SUPPORTED_CPUID may perceive a new VM
-> with a higher number of ASIDs as incompatible with older KVM (which is
-> not true).
->
-> Avoid changing the value advertised by KVM, but document that it is
-> essentially meaningless and does not represent a limit or a hint. Also,
-> more-or-less encourage userspace to advertise a higher value to avoid
-> potential unnecessary TLB flushes from an L1 hypervisor.
->
-> Suggested-by: Jim Mattson <jmattson@google.com>
-> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
-> ---
->  Documentation/virt/kvm/api.rst | 20 ++++++++++++++++++++
->  arch/x86/kvm/cpuid.c           |  4 ++--
->  2 files changed, 22 insertions(+), 2 deletions(-)
->
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index a5f9ee92f43e8..2d24bf708d77e 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -9542,6 +9542,26 @@ the APIC ID is found in EDX for all subleaves of 0=
-x0b and 0x1f, and in EAX
->  for 0x8000001e; the latter also encodes the core id and node id in bits
->  7:0 of EBX and ECX respectively.
->
-> +Number of ASIDs (nested SVM)
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +       r = init_vpids();
+> +       if (r)
+> +               return r;
 > +
-> +CPUID[0x8000000A]:EBX reports the number of ASIDs supported by the proce=
-ssor
-> +on AMD CPUs. KVM's ``KVM_GET_SUPPORTED_CPUID`` hardcodes this value to 8=
- for
-> +historical reasons. This is value is arbitrary and does not represent a
 
-This value*
+From internal Sashiko:
+---
+If tdx_hardware_setup() fails after vmx_hardware_setup() succeeds, will
+this leak the dynamically allocated tlb_tags.bitmap?
+
+Looking at vt_hardware_setup() in arch/x86/kvm/vmx/main.c:
+
+arch/x86/kvm/vmx/main.c:vt_hardware_setup() {
+        ...
+        ret = vmx_hardware_setup();
+        if (ret)
+                return ret;
+        return enable_tdx ? tdx_hardware_setup() : 0;
+}
+
+When tdx_hardware_setup() fails, it returns the error code directly without
+calling vmx_hardware_unsetup(). KVM's core setup (kvm_x86_vendor_init)
+expects vendor routines to handle their own partial initialization failures
+and skips hardware_unsetup() if hardware_setup() fails.
+
+Since this patch changes the VPID bitmap from a static array to a dynamic
+allocation in init_vpids(), this error path will now leave tlb_tags.bitmap
+permanently leaked on module initialization failure.
+
+Does vt_hardware_setup() need to call vmx_hardware_unsetup() when TDX
+setup fails to ensure the new dynamic allocations are freed?
+---
+
+I think this is a pre-existing issue. The allocations made by
+nested_vmx_hardware_setup() are also not properly cleaned up.
+
+>         /*
+>          * Configure nested capabilities after core CPU capabilities so that
+>          * nested support can be conditional on base support, e.g. so that KVM
+> @@ -8784,8 +8760,10 @@ __init int vmx_hardware_setup(void)
+>          */
+>         if (nested) {
+>                 r = nested_vmx_hardware_setup(kvm_vmx_exit_handlers);
+> -               if (r)
+> +               if (r) {
+> +                       destroy_vpids();
+>                         return r;
+> +               }
+>         }
+>         vmx_nested_ops.enabled = nested;
+>
