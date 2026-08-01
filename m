@@ -1,228 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2BC337105;
-	Sat,  1 Aug 2026 16:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6F426E173;
+	Sat,  1 Aug 2026 18:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785603423; cv=none; b=AmqYPaqox68DwDdsO3rZ4wjNBbTCWx21ILJIu/umgs3wKIp02oBNQsSTcrfVA+6xpVQa+wbSa46SCA3i4cG4FOx1a2QrXyLmHFzeI0+xh1SXQQ31Rtylg4gGPYvOXQxKMo/a+h718u89ev0hJPFu3OEfD7AEUb/YYWmrOXTbMqA=
+	t=1785608077; cv=none; b=Z/GSS9ArXuexwG4UcIYHbyC1H9Li6nSCjUftr5KWgdgfvXR5i9ledJ6m0Hv8ZEScBu7buQT9Sh5+szyR3YSh208a3VmGuOy+spACPxMKyLuRDEMGRd/+/tLj9Rltvv5D1oLSxBv0lBOffeHtAiqWgneFFl5UhutcDpmHX1vp2do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785603423; c=relaxed/simple;
-	bh=d+TTclD9SIWbHf6DvU0ahaB+5z46g21wSuI7omCyHnI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PcvEDon9avTYcWYy+3W+qGsODMStyozWhbG6+yEVNHbDzzQAbRZsQFask7FR8X0eTfC0oTxFKw/1mWc5uvSXwAWk3B5Nw78usgHQFuEu1DV3uGDqLrhQ7inUPWpGlyM06t92UkCOrEW4yGgh0VOctAEUe7fG2YVq70VeZy4KKck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4hUTV4Q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785608077; c=relaxed/simple;
+	bh=Yb1hU74A3S9CVp+ABKEU0BJelXX/U8llns+ohxnrYyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cqdaY0PCGfDPChPqn0GXHlejaKlwgSO7HpiaBuFEBJXhV7afFCZze55z+w3O3fQtsXLCeqCd1qIOY1AMm8YmzMT/AQd0L3JQK7gLoyVnIfXby4b3HRzTkklDfacY9F68pqIyE2xVzjljl0a9Ws2zgD5YLKXuaxw2PKCgPd9zQpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=yCyfNo4/; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4hUTV4Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B881F00AC4;
-	Sat,  1 Aug 2026 16:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785603421;
-	bh=Kymd9GnLiiGDQY+sNKBHnxcjsiopYfYgyw9JAcg7YHo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=R4hUTV4QkfKl4gG77/QK4xfDNOLysOJurfAk8cJpNagHA0RQVosZ2jHg8Q1KeopJa
-	 IFVmdrWFRe5u4aNO3LLEim2GEb/7CWVULZoy02WBfH2OJBN+qUV4Tp+Q/Zg9oP6XoQ
-	 EhK6MDxxM4YpiFLiFFm7LmX8KRZ2aXdHZRx7Vcc1dUwt95Y1whzkM1rjTvt2uAXKgZ
-	 0nlt1H9RbiST06UTE4gci0Gvpv0l2PlnXrt3J/yXtK8D/OONg9BCqvUtquE9HDWUz3
-	 MjEK7lVr5PWt24re08hGEKx9qzPwBrVNSoK0U71zdeatt8bg4seTeQBt86GqoJOyAs
-	 hjAu+7aZbf6+g==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wqD19-0000000BIv9-3CMg;
-	Sat, 01 Aug 2026 16:56:59 +0000
-Date: Sat, 01 Aug 2026 18:01:11 +0100
-Message-ID: <87mrv5pyg8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: "Oliver Upton" <oupton@kernel.org>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Subject: Re: [PATCH 6/6] KVM: arm64: Add VNCR TLB tracking again
-In-Reply-To: <20260801130454.5D9F11F00AC4@smtp.kernel.org>
-References: <20260801124818.366274-1-maz@kernel.org>
-	<20260801124818.366274-7-maz@kernel.org>
-	<20260801130454.5D9F11F00AC4@smtp.kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="yCyfNo4/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=QuBl/cyk6WkMiSlkYTuIjIVYKEnZ1o22nS/lC518xZY=; b=yCyfNo4/s+GGm5+FZgAVnoMDky
+	H0lRXEaTqlnu6WlZdkDD6qucfhnYiBFObnvOOHe+ScYn1uA9R7p+G5OextNtGAqmwz+Nhgy7gutOa
+	Mt+W7lN5eMDoGcF6wz4aN0K6sR4+pKFjTykVM/lWmGNlqRvmGX54klSh4e33EYv5SAzgarYfB8+aD
+	Rt9lDt2ZyV2yRtBbN9uO9+wRWhChpIuaV6sPco/QWQ5/DluUEKfBSGblJSU0iJtdtaAAmOjTkJfGP
+	HBO2hYa29n6CnJswdpqWHwhjJI72OKdmsVy2yLqek8DMKP+2fZdIgFeqh5R6oZTYQE09HAK89dNpH
+	PzzbAmvg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wqEEB-0000000Ewpp-3Evy;
+	Sat, 01 Aug 2026 18:14:31 +0000
+Message-ID: <e7e85814-3f8e-49d1-823d-70bf49387d01@infradead.org>
+Date: Sat, 1 Aug 2026 11:14:30 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sashiko-reviews@lists.linux.dev, oupton@kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: KVM: fix heading level for
+ KVM_S390_VM_CPU_PROCESSOR
+To: Kohei Enju <kohei@enjuk.jp>, kvm@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20260801064414.23747-1-kohei@enjuk.jp>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260801064414.23747-1-kohei@enjuk.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 01 Aug 2026 14:04:53 +0100,
-sashiko-bot@kernel.org wrote:
-> 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> 
-> Pre-existing issues:
-> - [Critical] Cross-CPU invalidation of VNCR TLBs (e.g., via MMU notifiers) clears the fixmap and resets `vt->cpu` but fails to clear the per-CPU `L1_VNCR_MAPPED` flag on the CPU where the vCPU is running. When the vCPU is subsequently scheduled out, `this_cpu_reset_vncr_fixmap()` checks the local flag, finds it set, and hits a `BUG_ON` because `vt->cpu` is `-1`. This allows unprivileged host userspace to panic the host kernel.
-> - [High] The fast-path check in `kvm_hyp_handle_tlbi_el2()` skips VNCR TLB invalidation for EL2 TLBI instructions when `E2H` or `TGE` is 0, leaving stale translations in the software VNCR TLB.
-> - [High] A TOCTOU race exists between lockless guest page table walks and guest TLBI intercepts, allowing stale VNCR translations to survive invalidation.
-> --
-> 
-> --- Patch [6]: [PATCH 6/6] KVM: arm64: Add VNCR TLB tracking again ---
-> commit bde680578e8485472440ba4858d93cb92173897d
-> Author: Marc Zyngier <maz@kernel.org>
-> Date:   Sat Aug 1 12:48:18 2026 +0000
-> 
->     KVM: arm64: Add VNCR TLB tracking again
->     
->     This patch re-introduces VNCR TLB tracking to force EL2 S1 TLBI handling
->     onto the slow path when valid VNCR TLBs exist. It uses a VM-wide atomic
->     counter to track the presence of valid VNCR TLBs, updating it under the
->     MMU lock.
-> 
-> > diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-> > index c09b1d411c584..eb59549ec2172 100644
-> > --- a/arch/arm64/kvm/hyp/vhe/switch.c
-> > +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> > @@ -424,10 +424,11 @@ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
-> >  		return false;
-> >  
-> >  	/*
-> > -	 * If we have to check for any VNCR mapping being invalidated,
-> > +	 * If we have to check for any VNCR TLB being invalidated,
-> >  	 * go back to the slow path for further processing.
-> >  	 */
-> > -	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu))
-> > +	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu) &&
-> > +	    atomic_read(&vcpu->kvm->arch.vncr_tlb_count))
-> >  		return false;
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does this check skip VNCR TLB
-> invalidation for EL2 TLBI instructions when the guest is in nVHE
-> mode?
 
-nVHE and NV are mutually exclusive in KVM.
 
-[...]
+On 7/31/26 11:44 PM, Kohei Enju wrote:
+> Change the section title underline from '=' to '-' so that the attribute
+> is at the same heading level as the other attributes.
+> 
+> Signed-off-by: Kohei Enju <kohei@enjuk.jp>
 
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 8d5b0208ad728..2a7dd9f9fb597 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> [ ... ]
-> > @@ -998,9 +999,11 @@ u16 get_asid_by_regime(struct kvm_vcpu *vcpu, enum trans_regime regime)
-> >  	return asid;
-> >  }
-> >  
-> > -static void invalidate_vncr(struct vncr_tlb *vt)
-> > +static void invalidate_vncr(struct kvm *kvm, struct vncr_tlb *vt)
-> >  {
-> > +	BUG_ON(!vt->valid);
-> >  	vt->valid = false;
-> > +	atomic_dec(&kvm->arch.vncr_tlb_count);
-> >  	if (vt->cpu != -1)
-> >  		unmap_l1_vncr(vt);
-> >  }
-> 
-> [Severity: Critical]
-> This is a pre-existing issue, but does this cross-CPU invalidation path leave
-> the per-CPU L1_VNCR_MAPPED flag set locally?
-> 
-> If an MMU notifier on CPU B calls kvm_invalidate_vncr_ipa() which reaches
-> invalidate_vncr(), unmap_l1_vncr() will clear the fixmap and set vt->cpu = -1.
-> 
-> When CPU A (which was running the vCPU) exits the guest and calls
-> this_cpu_reset_vncr_fixmap(), won't it see its local L1_VNCR_MAPPED flag still
-> set and trigger BUG_ON(vcpu->arch.vncr_tlb->cpu != smp_processor_id()) because
-> vt->cpu is now -1?
 
-Addressed in my reply to the comment on the previous patch.
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 
-> 
-> [ ... ]
-> > @@ -1460,6 +1471,8 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
-> >  		vt->valid = true;
-> >  		vt->cpu = -1;
-> >  
-> > +		atomic_inc(&vcpu->kvm->arch.vncr_tlb_count);
-> > +
-> >  		kvm_make_request(KVM_REQ_MAP_L1_VNCR_EL2, vcpu);
-> >  		kvm_release_faultin_page(vcpu->kvm, page, false, vt->wr.pw && vt->hpa_writable);
-> >  	}
-> 
-> [Severity: High]
-> This is a pre-existing issue, but is there a time-of-check to time-of-use race
-> between the lockless guest page table walk and guest TLBI intercepts here?
-> 
-> CPU1 locklessly resolves the guest virtual address via __kvm_translate_va()
-> earlier in kvm_translate_vncr().
-> 
-> Before CPU1 acquires the mmu_lock and increments vncr_tlb_count, CPU2 could
-> modify the guest page table and issue a TLBI.
-> 
-> The TLBI on CPU2 would see vncr_tlb_count == 0 (or vt->valid == false) and
-> complete. CPU1 would then acquire mmu_lock, pass the mmu_invalidate_retry()
-> check (which only tracks host MMU notifiers), and install the stale
-> translation.
-> 
-> Could this result in caching a stale VNCR mapping?
+Thanks.
 
-Yup. That's definitely another problem.
-
-I think we need something that like the mmu notifier retry
-mechanism. We can hoist the increment of vcpu_tlb_count to the
-beginning of the translation process, sample a counter, and recheck
-this counter once we've acquired the mmu lock.
-
-I wonder if we can actually use the exact same counter outside of the
-MMU notifiers, bumping it up from the TLBI VA code... Something like
-the untested hack below.
-
-	M.
-
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index dfdd1b4abb839..73c7bd4223f13 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1010,6 +1010,8 @@ static void invalidate_vncr(struct kvm *kvm, struct vncr_tlb *vt)
- 	vt->valid = false;
- 	atomic_dec(&kvm->arch.vncr_tlb_count);
- 	unmap_l1_vncr(vt);
-+	kvm->mmu_invalidate_seq++;
-+	smp_wmb();
- }
- 
- static bool vncr_tlb_intersects(struct vncr_tlb *vt, u64 addr,
-@@ -1475,8 +1477,6 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
- 		vt->valid = true;
- 		atomic_set(&vt->cpu, -1);
- 
--		atomic_inc(&vcpu->kvm->arch.vncr_tlb_count);
--
- 		kvm_make_request(KVM_REQ_MAP_L1_VNCR_EL2, vcpu);
- 		kvm_release_faultin_page(vcpu->kvm, page, false, vt->wr.pw && vt->hpa_writable);
- 	}
-@@ -1530,7 +1530,17 @@ int kvm_handle_vncr_abort(struct kvm_vcpu *vcpu)
- 		return -EIO;
- 	}
- 
-+	/*
-+	 * Speculatively increment the TLB count to make sure concurrent
-+	 * TLBIs will take the slow path, and will interact with the retry
-+	 * mechanism. Drop it again on error.
-+	 */
-+	atomic_inc(&vcpu->kvm->arch.vncr_tlb_count);
-+
- 	ret = kvm_translate_vncr(vcpu, &is_gmem);
-+	if (ret)
-+		atomic_dec(&vcpu->kvm->arch.vncr_tlb_count);
-+
- 	switch (ret) {
- 	case -EAGAIN:
- 		/* Let's try again... */
+> ---
+>  Documentation/virt/kvm/devices/vm.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/virt/kvm/devices/vm.rst b/Documentation/virt/kvm/devices/vm.rst
+> index a4d39fa1b083..71ab1351ad27 100644
+> --- a/Documentation/virt/kvm/devices/vm.rst
+> +++ b/Documentation/virt/kvm/devices/vm.rst
+> @@ -77,7 +77,7 @@ Allows user space to retrieve machine and kvm specific cpu related information::
+>  	    0 in case of success.
+>  
+>  2.2. ATTRIBUTE: KVM_S390_VM_CPU_PROCESSOR (r/w)
+> -===============================================
+> +-----------------------------------------------
+>  
+>  Allows user space to retrieve or request to change cpu related information for a vcpu::
+>  
 
 -- 
-Jazz isn't dead. It just smells funny.
+~Randy
