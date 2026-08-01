@@ -1,95 +1,96 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D382BEFEF
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080932BEFEF
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785573317; cv=pass; b=qanqqT2PcAJZ/Cw2aEQF4lKix24z5E4UQVyUr1kNWs4G/4Gpi/XPGdSXEN2J+cBQFfqc+etuDMKha84crsStRBxl9vrd3oeEIDWVlDfqHsnySzUDFHcwa8blPvdjWHDjPXSw39CLwYe2zveN51Dj4S5nioj9khdqZRwwnOOIfs0=
+	t=1785573333; cv=pass; b=ZyfJ5HAgaC7MNw5S5qFDkKjFOLMgjYKW19Q/PCGyFv+rhJBAFXYEUSRC4fKJK0IXmBoV4tjE3VZgD6fYhz8M7mlW1AONnSgRYSUXnD4I3lpn64h8zELpW8MQKnMW50/qbF9emrlonty7VC8vBKWdxQBkY0NzSEECloZaVZ/P41w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785573317; c=relaxed/simple;
-	bh=JVLt/VfCQ4ybmxrrl52fXJwS0Xia3Oy7iSLA+TtcEjU=;
+	s=arc-20240116; t=1785573333; c=relaxed/simple;
+	bh=vtDT32oMB7ziitkHLrGHeg0kIpvwcPs2e+1P3OsUqIw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dELWJ56rD1oJ3PPCDDSc9d9QGXgz3HbPOtoY/L2Bl9Y1F0pmAmCb49vyJA/nGdCPL8pV/pwU35MTQatMQQFt9RDb8UDmaVlBLpemyvvrNlduFrHVnM1mMy0ALiYK3+XmHzbw99fg2uLc53VbEVAwyqTpHMf/wNsHj5RUsn+dJ94=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=TPCChKIa; arc=pass smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=CDSHVMawo21cxYCGc8y08TNN5mOBhiFrswRk5f0hjV7GepQJ/EEgL70qsY7+nXjLhvlRBC9WRkA34d45ryV7ubG4WwPBoVG8ggzNKSYNFY/sao1qASnCsXT3NuF8APIaUm9JRr5C3V8TnLxKrbbMS7oH/5AkWz0N+pLA2HzqRtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=pvizaoFJ; arc=pass smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="TPCChKIa"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f9ab7ee38so989523f8f.2
-        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:35:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785573314; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="pvizaoFJ"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4758bd3731bso1826301f8f.0
+        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:35:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785573330; cv=none;
         d=google.com; s=arc-20260327;
-        b=j2FO86nhnM3W4vTBCxVVKcxQHdDe+HoYLxdX2M7917aVHrNOVx9FXuch5S7r671GMq
-         wfm9FwRL0mbtVIDOlrjrjYjArSzrooBMLuhm77SQ094LdYjTbwoAgi22hBQZCr7c7SeQ
-         W7jFXFfnkVS3+qEnugNREWZzRahviM7H5pCYY/oaYsDYvarh1xwc5L3fK0qGc4FP9wjK
-         XeaGCvSH1RrG27B3GPgxqKQJzqFVt1UpnXEHIF9WYXcATOFdKyoGnzTMdPQf79hltq6f
-         RjLQIcf/QJ600hp9FiXCZ0yTWco/qIZt8vPekzFDG8uebwzaJO9e4oZKf9AKn7ln6Zb9
-         Aipw==
+        b=pRXJXubUVOAzQZa4sO2a159Ojx/Xr3yN6icmK6rLN40Li1gem3u/AHV7q2JHV4LAmL
+         rJFoZ0FGqXHS4nZIdLGwTOk+k4n6xsROlakAAas4evhZ2FfCYHncoaGpQoX8e9rZyaYs
+         /qEmDezrMFtpz+YCgwXNvbsaq7DsygBikyQcjxL7DOM2VynfmHsyulUYdjKpBaV764ud
+         9Ogc3V8d0Nw3gFUba8qAixLxPv5zNfqCTZm8lpTncbE1+jG55J8WcKpJvUFZnoLHvd5q
+         t/HRtqg7540rOTDXc4qfcwJYrLed/k4od+jBNT3DfwTE6hgcxzMq9XY/ZHOZo17BM/1+
+         fTvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=pjXyNG4M1zJXOBT1pnPYT12PCibopv8OC4ryVZx/p+M=;
+        bh=bUTf6pJUeP1uJ/800+RmRcBQOzqOSOy6aUpAs+g0B94=;
         fh=TqkDo7HJm6C2bTHYqbzn7b/i6oYTm+CMOZGiIKAd8p4=;
-        b=n0IPdxFLwuqUgm6dXnOfGjLeVn3xmxRNXxY8xyefA+tt9Kdgxd2En8J1YxypGsRuSJ
-         Xi4eNRkrbezmuILsMoV1D4M6sIvzICKCtWKIKbdioGB+rh2xKZkkeoNHZ13Thp16Dp+W
-         aRpgQNcxDkryYJQ9IYWkfaHmXP1uLfJjQYMGTktZWoCpHrK6lnWwQ63neIjBTYESUU7q
-         9icvttEJ+5F5l5uUhSO5R4VHrUqap3SiIE2X3lK2i6QOkO5nR4msCsRnm5vasWW1ts+Q
-         WZNUqF3syeN4d5O2NS04wDmhL/eVblaumLqtPsPCljm8UFikdT36rGaYf99A78Dbbpxn
-         g7UQ==;
+        b=j10IsViPJ9r/FN5B0CRCVUFAShq4E/0w+hSgfeXR2/81jWaR1IkGN1OkJDbJ0wwhBG
+         BUauX5GDkBVZtoIJbr6bpeq9fJpK1sspPXdUzWdMS7mVk+K6GbgP7shwASzrb/eJDDbf
+         QLHBKq3f/np2xsb04QvgtbH/VBG3/YEjFj4n/P1wfiY3WBhvEQN92EKd5s407/d8SQ5I
+         4KAgezj66isHc3q+liFKphq4C5d7e9uJ/Movb93FsxMrM+af7TXCO6AWfJsJHgWu9j1+
+         t9zbD7UF6f2wCEHcCgDshRkm9l/dQgvbTjXpSCG90WUIiMMLx5MvXrB3zWaKEnOGBFAW
+         oaMw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1785573314; x=1786178114; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1785573330; x=1786178130; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=pjXyNG4M1zJXOBT1pnPYT12PCibopv8OC4ryVZx/p+M=;
-        b=TPCChKIakFXaUPTnjrWarj44+oVEFAdngLVh3+sTDUO9S+gcZ2qlLSNLCMEbEgt7os
-         lvNxlmEEbByK4ZT4P7GFoBz35zh+SigegF6zprqp+n8PRhaxQKfVRjF2sMmxBdoSOwy7
-         MevZTi9sNfG+ExLPTNs2l+3qaQg5R4K3MFnS+4C1bVPor8TAMpiQHSs3ZVxmxXkHyE5k
-         Ht7LG5xGISam+020bWDBNkfivqeAiFkdv7WIzzyPEmQ10W3O6nbmZ1C7a7jNCHYLq0UL
-         IVO/K//GBCMgPBQ+6j3ES9D0drywrUrzLitI2uzWO7KlDJ566Kgs+K2vtgcb0AYlQyCV
-         jgVA==
+        bh=bUTf6pJUeP1uJ/800+RmRcBQOzqOSOy6aUpAs+g0B94=;
+        b=pvizaoFJh1mzZCSOGtWUEOgTKTOeEzvA7PBg9iheaEuO/xm+j4o5JrgDt4HyNrILiU
+         GNsztYGwliVT5kcWTGZ2rXC70AxDz1CMx2FbJsCcxeRTU4s/WXYUGT8lf/hDySnm994v
+         HhCaLla6NLvW7Ls+L5lYUGksnC4aeQKd3K0G5iDxqQxeEPpXvBHXFVEpLz4hip0b+cwB
+         UZVULlgBk+0+N6gBY9hcbA7EmIvRcgtjmg5NpDhdM2tTxXEYy3mcGOBuPQGic+3SwKSz
+         RuFisPsWMcV7KVf61Qrlgeh37hX4fZJTkKQlV9z4gZTr7TIImOlnNj/1LQ08IhRUOVpM
+         wIgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785573314; x=1786178114;
+        d=1e100.net; s=20251104; t=1785573330; x=1786178130;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pjXyNG4M1zJXOBT1pnPYT12PCibopv8OC4ryVZx/p+M=;
-        b=YXd+mDcUKB0j4zAAeWTI+bIM1xEJftj5RwJebqYQ0DGkj1ltFI3cKzSmYUYh8k4QFf
-         2CNfiWlp2tzewdqmrWMAZlX8+tfd/Yv8fnZZbNOErBW6hVy2KCX18Lzr2F3Qsn9O0ijQ
-         jlX09esxLUA0LFsi0Z5+rny1bzS13Bb190kqMjIXk0kxsACHQpQ43Jyvdfxb/qhNglr9
-         QYEqGIJc6odN8xdOr1uEvm+ZWKcFWyewwaV7UDKOI4w9TIoQLijDhXVVdrZmqUDZNiIg
-         QRYMyyu39JbDyYPCdekQjhmSIcgr4cC6BR4moJ8SPLhhuAkn3xK0bmTOvmsHSX5zWQd/
-         HKTw==
-X-Gm-Message-State: AOJu0YweYLtzuFMAUA3BJykZ3r2eXEUlqZSAgyc62nSsxlpztfLLEs61
-	RD8Axw66FVmboelc9jgeoP0FU5nnVE9LGB3ZdvSxMlGYi2qCocHaZ31wGMQelMF5v81BSMsHGwx
-	DxOLJEo4+unklvW1150f7tobtsi7gQjPXvwhu/lL5lNRdx3rnsy//ck0=
-X-Gm-Gg: AR+sD125wYXa/nPSooGXRQoiDWQ+E4sa8o27sJJkWenms0H3jPhn7DglKaVbM0L52bn
-	YJMBzHxbU35zuXth5KNLs9q1A3EhPuopUfQri2gHPeiSZGSNC0+W+r3K86Q96X3fLyT2+0iN2Xb
-	4YqT8K7oyqLVusZvlJskUZSgMmd+6XuhHaFSUkaPRXwPExYsT1CKLbIDg/pCRkzTAzPxBlNkdqW
-	V9hBInUUTcaxA5wF/q0ETSTDNuwCvr0H0HEWX5QJv/9VAP2Mg/Erm77v89R0it7wxY8Rl3B50Ra
-	AVt1aDdVw3nwiBihhJP75yqQ1+OYqH1/gjK78nmkXKNkOnuX2MkG0l9S6jJeHS27z1mKMhdlSXZ
-	5TTbWtQms7Mlfwnp446CfK1qmH2xIO1lOc7Ar28mTdoHwxNINP9zn5AldL2R4r8Fu
-X-Received: by 2002:adf:f504:0:b0:47f:6e23:64d6 with SMTP id
- ffacd0b85a97d-47fd72b070bmr5048569f8f.16.1785573314037; Sat, 01 Aug 2026
- 01:35:14 -0700 (PDT)
+        bh=bUTf6pJUeP1uJ/800+RmRcBQOzqOSOy6aUpAs+g0B94=;
+        b=gppqgMXVzAgrME40P9ngurgequUqoGYP+QX5/CQ3dojUa1YQ5ZQiGv8Kynp2vvPoXQ
+         Oxusw7f/ZOGBya38L0gGgYWk7GCS4fgdB3Iemmis74ahVf/sXMOcTlnFVDLVLWTSUSXL
+         BdoqZf2nOSxolRFenZ/XYLdwEdMhCb6PA3FA5lf+u6r2jwu7Kf7YcPWi4ffi9Ja1pHo8
+         9SgVd+XUGMDIglpMOSlwC04bpbvULUL+XMFygjHjG/5Xf/cFd6peTjYvGRC3h3f3bUKo
+         9x+Sch/yS0xaNUu+1g0AH4KSklgpCmr8oHXviKtiH+m5S6kM0xS+YV1y7qGPODTmg4KE
+         OSrQ==
+X-Gm-Message-State: AOJu0YxYGA3rj43Udw/WqY1N3/1rPW+H6O1WOuItz6ZSKx05dI+s6faT
+	Y6UMWIagCz16xeS0JxZQBO4BtYn4jP9/j+jBd9ATfvpjwh5vjgPxCmxCoOAUab7PvFhqQtYocdC
+	TvOG4wb4VqleDRnLvluuhDmNNlcQ5YhHOEWRkxpY353E27OPgnChzP4URig==
+X-Gm-Gg: AR+sD13n3VbuLz688e7KuOD+gj2xm74/Rk/QRz0ysXM8teh8kzWKj+0JxDLN7O4yt1A
+	Vo/wYn5veG0xIHALbGoOJCT4V9jopIy7LQBXCOYkpGJfBEh310bkHZRMx4B1dBq+iOyo49Ap+Bj
+	F8vYDkxMd7iraExQiZGAqtlMz25sEf/r7/dDiAlfqoTC9Rrf2abeuMCklx/aHG08XDzHZBawbyr
+	f23lqf+fhH8I4+ff5TncDiJ+qSnzOM2lur9e/2LQn9N2vkDsCR2+OM3F4zbLLA/zBmMndFsfBEL
+	IbEl6f605ijPkar2Duxxp3SdAZ+AHEixtHaMM9IpvlrIrlEumERgFDCBhJh4iw90OlA0ZbQVblN
+	znM7us6rXCgiF0+i7KQTXikNXDflyTpP3b+gllyxQM2X9vc2gX1+n4JoK53aGDl5KPt1gVzyamj
+	xo
+X-Received: by 2002:a05:6000:1846:b0:47f:6e8b:699c with SMTP id
+ ffacd0b85a97d-47fd729208fmr5228759f8f.14.1785573330190; Sat, 01 Aug 2026
+ 01:35:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731093833.1551341-1-wang.yechao255@zte.com.cn> <20260731093833.1551341-2-wang.yechao255@zte.com.cn>
-In-Reply-To: <20260731093833.1551341-2-wang.yechao255@zte.com.cn>
+References: <20260731093833.1551341-1-wang.yechao255@zte.com.cn> <20260731093833.1551341-3-wang.yechao255@zte.com.cn>
+In-Reply-To: <20260731093833.1551341-3-wang.yechao255@zte.com.cn>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 1 Aug 2026 14:05:02 +0530
-X-Gm-Features: AUfX_mzbsVBnjZ3iyM-h0AGkXdQtsU_1jaxbI5xdNw7bsmFJ-QMjnUZ7jmAm6zw
-Message-ID: <CAAhSdy1QwcYv_Dz0s5P_9RjRegJsJQz8fjiskGNmYYFXGOnB2A@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] RISC-V: KVM: Separate req and fallback_req masks
- in make_xfence_request
+Date: Sat, 1 Aug 2026 14:05:18 +0530
+X-Gm-Features: AUfX_mxVZMTqUYg5I25kzku9hNu-Y6ngd-XdOTNy6Xs3S7Apun6Etlayif9FnM8
+Message-ID: <CAAhSdy1r=wfR3j5da2DtyiitNi6S5EOrRAh6Nv6kMqZDBpMMhg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] RISC-V: KVM: Introduce make_xfence_request_nodata
+ for FENCE.I requests
 To: Wang Yechao <wang.yechao255@zte.com.cn>
 Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
 	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
@@ -101,27 +102,14 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Jul 31, 2026 at 3:12=E2=80=AFPM Wang Yechao <wang.yechao255@zte.com=
 .cn> wrote:
 >
-> When handling hfence requests in make_xfence_request(), the current code
-> uses a single 'actual_req' variable and a single vcpu_mask. If any VCPU
-> fails to enqueue the hfence data (because its queue is full), the request
-> falls back to 'fallback_req' for all VCPUs, even if other VCPUs still
-> have available queue space.
+> FENCE.I does not need hfence data, but it currently goes through the
+> generic make_xfence_request() path with NULL data, incurring unnecessary
+> per-VCPU checks.
 >
-> This can cause unnecessary fallback for healthy VCPUs, and more seriously=
-,
-> those healthy VCPUs will not process their already-enqueued hfence
-> requests because no 'req' is set for them. As a result, their queues will
-> quickly become full as well, degrading performance for SMP guests.
+> Split out a separate make_xfence_request_nodata() function to handle
+> FENCE.I directly, and move the data validity check to the top of the
+> generic function to avoid redundant checks.
 >
-> Fix this by maintaining two separate bitmaps: one for VCPUs that
-> successfully enqueued the hfence data (req_vcpu_mask) and another for
-> those that failed (fallback_req_vcpu_mask). Then send the appropriate
-> requests to each group. This ensures that fallback is only applied to
-> VCPUs that actually need it, preserving the efficiency of the normal
-> path for others.
->
-> Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on V=
-CPU requests")
 > Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
 
 LGTM.
@@ -132,59 +120,78 @@ Thanks,
 Anup
 
 > ---
->  arch/riscv/kvm/tlb.c | 20 ++++++++++++--------
->  1 file changed, 12 insertions(+), 8 deletions(-)
+>  arch/riscv/kvm/tlb.c | 34 +++++++++++++++++++++++++++-------
+>  1 file changed, 27 insertions(+), 7 deletions(-)
 >
 > diff --git a/arch/riscv/kvm/tlb.c b/arch/riscv/kvm/tlb.c
-> index 993b25ea94d67..c54522decaa64 100644
+> index c54522decaa64..fd445e9fa3f94 100644
 > --- a/arch/riscv/kvm/tlb.c
 > +++ b/arch/riscv/kvm/tlb.c
-> @@ -332,10 +332,11 @@ static void make_xfence_request(struct kvm *kvm,
->  {
->         unsigned long i;
->         struct kvm_vcpu *vcpu;
-> -       unsigned int actual_req =3D req;
-> -       DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
-> +       DECLARE_BITMAP(req_vcpu_mask, KVM_MAX_VCPUS);
-> +       DECLARE_BITMAP(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
+> @@ -325,6 +325,29 @@ void kvm_riscv_hfence_process(struct kvm_vcpu *vcpu)
+>         }
+>  }
 >
-> -       bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
-> +       bitmap_zero(req_vcpu_mask, KVM_MAX_VCPUS);
-> +       bitmap_zero(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
+> +static void make_xfence_request_nodata(struct kvm *kvm, unsigned long hb=
+ase,
+> +                                      unsigned long hmask, unsigned int =
+req)
+> +{
+> +       unsigned long i;
+> +       struct kvm_vcpu *vcpu;
+> +       DECLARE_BITMAP(vcpu_mask, KVM_MAX_VCPUS);
+> +
+> +       bitmap_zero(vcpu_mask, KVM_MAX_VCPUS);
+> +       kvm_for_each_vcpu(i, vcpu, kvm) {
+> +               if (hbase !=3D -1UL) {
+> +                       if (vcpu->vcpu_id < hbase ||
+> +                               vcpu->vcpu_id >=3D hbase + BITS_PER_LONG)
+> +                               continue;
+> +                       if (!(hmask & (1UL << (vcpu->vcpu_id - hbase))))
+> +                               continue;
+> +               }
+> +
+> +               bitmap_set(vcpu_mask, i, 1);
+> +       }
+> +
+> +       kvm_make_vcpus_request_mask(kvm, req, vcpu_mask);
+> +}
+> +
+>  static void make_xfence_request(struct kvm *kvm,
+>                                 unsigned long hbase, unsigned long hmask,
+>                                 unsigned int req, unsigned int fallback_r=
+eq,
+> @@ -335,6 +358,9 @@ static void make_xfence_request(struct kvm *kvm,
+>         DECLARE_BITMAP(req_vcpu_mask, KVM_MAX_VCPUS);
+>         DECLARE_BITMAP(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
+>
+> +       if (!data || !data->type)
+> +               return;
+> +
+>         bitmap_zero(req_vcpu_mask, KVM_MAX_VCPUS);
+>         bitmap_zero(fallback_req_vcpu_mask, KVM_MAX_VCPUS);
 >         kvm_for_each_vcpu(i, vcpu, kvm) {
->                 if (hbase !=3D -1UL) {
->                         if (vcpu->vcpu_id < hbase ||
-> @@ -345,10 +346,10 @@ static void make_xfence_request(struct kvm *kvm,
+> @@ -346,11 +372,6 @@ static void make_xfence_request(struct kvm *kvm,
 >                                 continue;
 >                 }
 >
-> -               bitmap_set(vcpu_mask, i, 1);
+> -               if (!data || !data->type) {
+> -                       bitmap_set(req_vcpu_mask, i, 1);
+> -                       continue;
+> -               }
 > -
-> -               if (!data || !data->type)
-> +               if (!data || !data->type) {
-> +                       bitmap_set(req_vcpu_mask, i, 1);
->                         continue;
-> +               }
->
 >                 /*
 >                  * Enqueue hfence data to VCPU hfence queue. If we don't
-> @@ -356,10 +357,13 @@ static void make_xfence_request(struct kvm *kvm,
->                  * a more conservative hfence request.
->                  */
->                 if (!vcpu_hfence_enqueue(vcpu, data))
-> -                       actual_req =3D fallback_req;
-> +                       bitmap_set(fallback_req_vcpu_mask, i, 1);
-> +               else
-> +                       bitmap_set(req_vcpu_mask, i, 1);
->         }
->
-> -       kvm_make_vcpus_request_mask(kvm, actual_req, vcpu_mask);
-> +       kvm_make_vcpus_request_mask(kvm, req, req_vcpu_mask);
-> +       kvm_make_vcpus_request_mask(kvm, fallback_req, fallback_req_vcpu_=
-mask);
+>                  * have space in the VCPU hfence queue then fallback to
+> @@ -369,8 +390,7 @@ static void make_xfence_request(struct kvm *kvm,
+>  void kvm_riscv_fence_i(struct kvm *kvm,
+>                        unsigned long hbase, unsigned long hmask)
+>  {
+> -       make_xfence_request(kvm, hbase, hmask, KVM_REQ_FENCE_I,
+> -                           KVM_REQ_FENCE_I, NULL);
+> +       make_xfence_request_nodata(kvm, hbase, hmask, KVM_REQ_FENCE_I);
 >  }
 >
->  void kvm_riscv_fence_i(struct kvm *kvm,
+>  void kvm_riscv_hfence_gvma_vmid_gpa(struct kvm *kvm,
 > --
 > 2.39.3
 >
