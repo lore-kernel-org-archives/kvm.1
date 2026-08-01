@@ -1,187 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E7B7262B
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 00:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A500357D1D
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785542423; cv=none; b=laoP0xYEg69n7xgmicFYCZoT937FhzE7XzfIzx3dNifTuf9L1G4j01bHWroxMRoT0XNTjd8eUo94FRb8JUb4Y0Q4EZlkjVRo4AaerX+/e9Q5UqJmp+veMVAjafD62SyHbEuauylEz8xM2u2IdWmZnUNknMRvusj8NlT+/xmK9d0=
+	t=1785564622; cv=none; b=jcouyf8Xpe2oe8p6MIjwLx+VCWmr3IK+b6P4TJQCxxN2XreZONBXbBFhen9Y6QaWLVdhkkrFHqkRWtmwwLzSIq1R80bqvCyYhbrI8iG73Bz/s6ze5WyacM4RafqOfompCJ1a+TXyvwS/23w9kW1YoW7Nqu+rrpph8zrSPYGirms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785542423; c=relaxed/simple;
-	bh=O8HqmJQWZA1nfUBNMj9sxQRGTvaC1yJRVK0bfgHcTrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJSQS9Hx0ppq7hJmscM8r9m3hsnHlpuvT4Bw6hbH/a8mYYeWxqbJpjjfWkaPqarYsdSmpJRn+gmOmLAZRVgRC9NSnJzsZhxXsDL6u/LsyxQL2OmwLCisXYeTmTmOdNTIEY2DKtDj8lod+9ulhVSsVF38jW0m9fVZejphl/pJL0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OVafTl4e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=laVcCU9D; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785564622; c=relaxed/simple;
+	bh=FcgT1DlZ5qKQ+i4hWOcaKhX2kBBV5yow/1bVrhzPsic=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BB+CMb/A1n1x83uNdh2V73uabEhFibKWBeIoZXEYiFRTklvA4+dDAZxYVzLJnsvOWvcll65+4jxqvDgiCWNdzbc9/Rlyw4N6t4kooFm3ut7unBGfTp+UQU+C8BT7Y7xQ1C6gDFuPUVUOeoZsROMZfT57PHrteHkgFBIQ1QFIKik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CNWfRYFy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OVafTl4e";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="laVcCU9D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785542420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
-	b=OVafTl4e7n9t5YKhPD+8IajHWu7a4YBNP6/vV4hjzpAHJcN8kOg34w6JthVhWUvWM29lpD
-	XjEixjqZGaRI1baMySq5HD8u0fEmOuzuS+U8wjq40yeN+mwCZ4XLg7NyeIPyHg5xbx7TQv
-	AljCpzZKpDhF1rgrj5YuO6WaxaSEimk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-rYhkcqv6NQu7rw7miyCAng-1; Fri, 31 Jul 2026 20:00:18 -0400
-X-MC-Unique: rYhkcqv6NQu7rw7miyCAng-1
-X-Mimecast-MFC-AGG-ID: rYhkcqv6NQu7rw7miyCAng_1785542417
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4955b84e25eso2021435e9.1
-        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 17:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785542417; x=1786147217; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
-        b=laVcCU9DWjNxIeKBmrEPilAP8c9LzvZKUb40q/xfrJeNvkYHAH7XfBw83Wnfw6+KLI
-         3c1bRRxR7o+4Im4AaeA/4rm+LN4WS/cRYyuQK7IOTR/oab11JgdimMe1jGtN97DcyR4i
-         K+f/somufouLzLVPft8k5i4vDWXZxsFtpJZLZOU48XiEQlGtc9dDjHLKbVPO3E9A4xZP
-         W9ufSa/aXhGnSBc6bBZocXtjM2+9SoIJodAmcIF5Q0JAjOPkl4obZtn+P7zx/QLwSALB
-         wPFvLuVVO8GICzHZOjH/okVkvT0v9DhoDVo7ryO8NuTpHdpDzQvQo172haf3gSc+zEgO
-         c5mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785542417; x=1786147217;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=H0eYF5OZd5Mj1htNYojskxEZwjl7/C9yBVDIfFNOInU=;
-        b=CGORgNAq+ojD6mWhpCMMy6pq/0eOhvMp3sc4F5pRDN2nzU0GjJkFe2mVoohnriDeBZ
-         84OxgmwEbFFw/PzmGAjf63ZdfyA63ruqCsMPHyOMyyulVe6hto3GRaP8bwWegI5z/Yqp
-         WsXAkU+8yEspO5u2O2IaG9ioCg70AZGdQw5iGO2Q2d6+YBIyeD6v4vr4Ac4atwa3IGev
-         NYIwOtFX5CBp3RsWcZaGov0x18uruwKUYR3sGW4FXlpYBaXWNWoz1nFZl5J5fu8tVisU
-         U+ZD+oYMLOHhjS0hNBR/s5gCQx+sGjNEtEKBc+588QlXM/juBWkYYvWcQT+59PcIjfQg
-         A7ag==
-X-Forwarded-Encrypted: i=1; AHgh+Rpcw/M/OiB+3zOgk/PwAPMkoLbGMR1Usk9oULBRm7WGtlQzBIw4Zb+HkQ90cn2Qos2cghE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1qH7WuhYGT3q2vi0UQmP33MJeRBLUDlx2wcWZ5b/NhCCN3me6
-	KtMj64IXzjF3FEkieXDX7goNhOz3gb6rtrTDdrHcjOrJkCGWjP1xngC6c8TViOPoxSLuvOiNT8D
-	LzvP8jRaajVIw1S4OsnVo7R2ziM0bUMng880ycXE9PmJara3Lrq+5UA==
-X-Gm-Gg: AR+sD12rixNL284tPT436Ytjt5PfMUUIXA5ZbCzWoNK8V6ZUoL23PDtaUheHErzboPw
-	wStvGWMTz2u3h1vdAW+w6TkvP1MignD2P2OfUgLjfIMSz13n/hFIX42PY30UF+tou4TrNQM4lsD
-	sZKbIGKBU32mjhLpI9AKwVWtJZNSlkM37lIQWnjLzX1QEsSCevjRhkEwljq8HPi4NOuWDVC16Id
-	8evc1TdF33h1K6xU4J9yGGqTJbe/FE3zBDwve16drHL2ZwTOvXhqYk/1WBmmVPj3AggzgUx85w4
-	AsVFz990PLCP6O9lJFaqQbfTdeDZOcrxJu1xJV5UI/Z057AJnack+pSUID/nn4eAm3EcAGzOGtH
-	ifD6OQKHCWlN8LvK+beM232I=
-X-Received: by 2002:a05:600c:48a2:b0:496:bba5:33a7 with SMTP id 5b1f17b1804b1-4980c6824e7mr1432165e9.27.1785542416738;
-        Fri, 31 Jul 2026 17:00:16 -0700 (PDT)
-X-Received: by 2002:a05:600c:48a2:b0:496:bba5:33a7 with SMTP id 5b1f17b1804b1-4980c6824e7mr1432025e9.27.1785542416366;
-        Fri, 31 Jul 2026 17:00:16 -0700 (PDT)
-Received: from redhat.com (ppp-94-66-118-61.home.otenet.gr. [94.66.118.61])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807eb12c5sm3178825e9.3.2026.07.31.17.00.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jul 2026 17:00:15 -0700 (PDT)
-Date: Fri, 31 Jul 2026 20:00:12 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: virtualization@lists.linux.dev, jasowangio@gmail.com,
-	michael.christie@oracle.com, pbonzini@redhat.com,
-	stefanha@redhat.com, eperezma@redhat.com, kvm@vger.kernel.org,
-	joe.jin@oracle.com
-Subject: Re: [PATCH 2/2] vhost-scsi: reject invalid max_io_vqs module
- parameter
-Message-ID: <20260731195756-mutt-send-email-mst@kernel.org>
-References: <20260731221116.236791-1-dongli.zhang@oracle.com>
- <20260731221116.236791-3-dongli.zhang@oracle.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CNWfRYFy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED161F01558
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 06:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785564620;
+	bh=T+lPUrW4At6rnw6kymwX4eKloaHv/K1zPk7Ayk2RyM4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CNWfRYFyqzZH8mAs68WBTXdYtatFCnaRlRMizzA+nU2n3fOUcKcXABTH0VcGD+Rhv
+	 RSuU6tAArSFqrcKni8FSrcsmj28SO4Zf5us0ijpUF7/AmJie5Xz3eC1uvofqNQVAGL
+	 eL0rrTMTSEkWW86yJeBeSHe0T+LWmWN7P+PH6Ge21DzCxcMdVx6yMElEUmoDufHGl/
+	 8NRBqmgL8wB94+n65B8uwlcKsMyKUK7yN6IUbC3YWeA+iZKJQ86/30iJVIHEaX37+3
+	 oD/4YE/pwkHyo8ot2nraYwA9wrrbwR9YBJpRrMpikTJWYxTuxWDK4zHgy7/Xn9kYCv
+	 dRgsuzoum8EVw==
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c15f47e6297so190865566b.0
+        for <kvm@vger.kernel.org>; Fri, 31 Jul 2026 23:10:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqqBDZgF4CU5sOge54LsS6IcZMsAuXMWW7j3eAMN+B+KBWBDRf1F8tVHnD+MT8FiBQkN2Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWL53A/wk1hcrhn30z52M96ZYQyPws+pFPF+6BFKrfPc68Qs3U
+	Wl4uMzNLQvzQUddCI027yjJZGTEYZVhfwa9eDqjcji9iwMJ1UWxSgAN5iIj7oYijWphQW6yIAOb
+	+OO8ERVyjpSZzeYVz2Yi00Ecs6DVPj70=
+X-Received: by 2002:a17:906:f91a:b0:c1c:4752:b5fb with SMTP id
+ a640c23a62f3a-c1fe7f3e45bmr121096366b.27.1785564619503; Fri, 31 Jul 2026
+ 23:10:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260731221116.236791-3-dongli.zhang@oracle.com>
+References: <20260728003557.1136583-1-yosry@kernel.org> <20260728003557.1136583-3-yosry@kernel.org>
+In-Reply-To: <20260728003557.1136583-3-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Fri, 31 Jul 2026 23:10:08 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zP3=B8Cn58D+0Gp+aF7g1QaxCb6QNV8vvLmeCidC55Tkg@mail.gmail.com>
+X-Gm-Features: AUfX_mzE-NKK6no_OQU1lh3jfAx-VDe3r-kqGwJlFAavATar-1NUzUxYv-YTLWc
+Message-ID: <CAO9r8zP3=B8Cn58D+0Gp+aF7g1QaxCb6QNV8vvLmeCidC55Tkg@mail.gmail.com>
+Subject: Re: [PATCH v1 02/28] KVM: SVM: Document number of ASIDs CPUID setting
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 31, 2026 at 03:10:24PM -0700, Dongli Zhang wrote:
-> max_io_vqs is currently validated only when a vhost-scsi device is opened.
-> This allows sysfs to show values larger than the driver will actually use,
-> e.g. writing 2048 succeeds even though vhost_scsi_open() later clamps it to
-> VHOST_SCSI_MAX_IO_VQ. This makes the sysfs value differ from the value that
-> will actually be used.
-> 
-> hv# echo 2048 > /sys/module/vhost_scsi/parameters/max_io_vqs
-> 
-> hv# cat /sys/module/vhost_scsi/parameters/max_io_vqs
-> 2048
-> 
-> [  315.630495] Invalid max_io_vqs of 2048. Using 1024.
-> 
-> Use a module parameter callback to reject out-of-range updates when the
-> parameter is written. This keeps the visible parameter value consistent
-> with the effective queue limit.
-> 
-> With the parameter value kept in range, remove the duplicate validation
-> from vhost_scsi_open().
-> 
-> Invalid values now fail with -EINVAL at write/load time instead of being
-> accepted and silently adjusted later when the device is opened.
-> 
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-
-why should we change userspace visible behaviour now?
-
+On Mon, Jul 27, 2026 at 5:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> KVM arbitrarly advertises 8 ASIDs in KVM_GET_SUPPORTED_CPUID for
+> historical reasons. Advertising a small number of ASIDs to L1 is
+> currently harmless, as KVM (L0) uses the same ASID for both L1 and L2,
+> and flushes that ASID on nested transitions.
+>
+> However, following changes will add proper ASID emulation and a separate
+> ASID for L2, minimizing the TLB flushes on nested transitions. At that
+> point, a full TLB flush from a KVM guest (L1) would flush both L1 and L2
+> ASIDs, so should be avoided as much as possible by advertising more
+> ASIDs to L1.
+>
+> Increasing the value advertised by KVM is tricky, because a VMM copying
+> the number of ASIDs from KVM_GET_SUPPORTED_CPUID may perceive a new VM
+> with a higher number of ASIDs as incompatible with older KVM (which is
+> not true).
+>
+> Avoid changing the value advertised by KVM, but document that it is
+> essentially meaningless and does not represent a limit or a hint. Also,
+> more-or-less encourage userspace to advertise a higher value to avoid
+> potential unnecessary TLB flushes from an L1 hypervisor.
+>
+> Suggested-by: Jim Mattson <jmattson@google.com>
+> Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 > ---
->  drivers/vhost/scsi.c | 27 ++++++++++++++++-----------
->  1 file changed, 16 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 0c0634eea144..c138c29ce3dd 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -210,7 +210,20 @@ static const int vhost_scsi_bits[] = {
->  #define VHOST_SCSI_MAX_EVENT	128
->  
->  static unsigned vhost_scsi_max_io_vqs = 128;
-> -module_param_named(max_io_vqs, vhost_scsi_max_io_vqs, uint, 0644);
+>  Documentation/virt/kvm/api.rst | 20 ++++++++++++++++++++
+>  arch/x86/kvm/cpuid.c           |  4 ++--
+>  2 files changed, 22 insertions(+), 2 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
+rst
+> index a5f9ee92f43e8..2d24bf708d77e 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -9542,6 +9542,26 @@ the APIC ID is found in EDX for all subleaves of 0=
+x0b and 0x1f, and in EAX
+>  for 0x8000001e; the latter also encodes the core id and node id in bits
+>  7:0 of EBX and ECX respectively.
+>
+> +Number of ASIDs (nested SVM)
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > +
-> +static int vhost_scsi_set_max_io_vqs(const char *val,
-> +				     const struct kernel_param *kp)
-> +{
-> +	return param_set_uint_minmax(val, kp, 1, VHOST_SCSI_MAX_IO_VQ);
-> +}
-> +
-> +static const struct kernel_param_ops vhost_scsi_max_io_vqs_op = {
-> +	.set = vhost_scsi_set_max_io_vqs,
-> +	.get = param_get_uint,
-> +};
-> +
-> +module_param_cb(max_io_vqs, &vhost_scsi_max_io_vqs_op,
-> +		&vhost_scsi_max_io_vqs, 0644);
->  MODULE_PARM_DESC(max_io_vqs, "Set the max number of IO virtqueues a vhost scsi device can support. The default is 128. The max is 1024.");
->  
->  struct vhost_scsi_virtqueue {
-> @@ -2273,22 +2286,14 @@ static int vhost_scsi_open(struct inode *inode, struct file *f)
->  	struct vhost_scsi_virtqueue *svq;
->  	struct vhost_scsi *vs;
->  	struct vhost_virtqueue **vqs;
-> -	int r = -ENOMEM, i, nvqs = vhost_scsi_max_io_vqs;
-> +	int r = -ENOMEM, i, nvqs;
->  
->  	vs = kvzalloc_obj(*vs);
->  	if (!vs)
->  		goto err_vs;
->  	vs->inline_sg_cnt = vhost_scsi_inline_sg_cnt;
->  
-> -	if (nvqs > VHOST_SCSI_MAX_IO_VQ) {
-> -		pr_err("Invalid max_io_vqs of %d. Using %d.\n", nvqs,
-> -		       VHOST_SCSI_MAX_IO_VQ);
-> -		nvqs = VHOST_SCSI_MAX_IO_VQ;
-> -	} else if (nvqs == 0) {
-> -		pr_err("Invalid max_io_vqs of %d. Using 1.\n", nvqs);
-> -		nvqs = 1;
-> -	}
-> -	nvqs += VHOST_SCSI_VQ_IO;
-> +	nvqs = vhost_scsi_max_io_vqs + VHOST_SCSI_VQ_IO;
->  
->  	vs->old_inflight = kmalloc_objs(*vs->old_inflight, nvqs,
->  					GFP_KERNEL | __GFP_ZERO);
-> -- 
-> 2.43.5
+> +CPUID[0x8000000A]:EBX reports the number of ASIDs supported by the proce=
+ssor
+> +on AMD CPUs. KVM's ``KVM_GET_SUPPORTED_CPUID`` hardcodes this value to 8=
+ for
+> +historical reasons. This is value is arbitrary and does not represent a
 
+This value*
