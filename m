@@ -1,50 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87B137DAD5;
-	Sat,  1 Aug 2026 11:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D8A439015
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 11:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785583725; cv=none; b=Pw49e5v1WgaEmgYvOtohJEzXWXU6T0ZpqsEz92Rqpx9zdr7PwJ1VDXD94hA7OQY/YekiwIS8+fhLdvY79b7RdVlgm6hn5cazKyETuljXNVhER/TiuPWBmfdde06+T6GUIicd3fsrCuvpsKwEGNNEZ/hIs0ke0uuRzITlSgqPObA=
+	t=1785583732; cv=none; b=u3F4M/JGAlHKq7NnRyrkYgt1YrGl/MwUyw/Qpeu+PmMnf3JficR5cWvpEKbfpO7b2khbrgATIhhdpFsZdQaCG6A7s+/du4iHBE01B1ZQE6VBZnD4aGD1u42IgxFwv+402N1CwqhPSYLZ594oa7h01Xrcd1v3op7iEdh0wopTpFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785583725; c=relaxed/simple;
-	bh=nCdGLEdZlkBbgtsn9xsKiRtio3TC7qHKN7g9BY3O4BM=;
+	s=arc-20240116; t=1785583732; c=relaxed/simple;
+	bh=dOvQQ4fWhjz4awtbDMg+G37Icy4k1NQ1snwwZ+YO9Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C0D8lArzYoMvzxRfXz7ISkz9GSZQICLiE/2msdxPO4vU0lw+2MwPqO6xBJ4FPLaAc3AJJw6QzMJ793jRt/L0//f2L1Duk106LqMk9RBgDngN+QFmeM+h4F9IV7yGYAMjGN7m3/+qSJ1FgaimiedvKOfqMufI5rXKEkvDR1UxJ70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCQxbqkH; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=A6/1S3EIdLphpKIkvOhvpjuYymdv7vXM6vVdanH4tVfg/x881pvT9YM/wm4EkbEXjjv5UMu0GCUCExhl4LUyXHloHmm+IClJHb0zlQ/xHLtdGT1fkZfviE4LXkvNo40CRlzXawKkiU+XdMGHHWTiL71XcLhKgbvLTNPfQn3+Ca8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUUhozpb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCQxbqkH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F0A1F00ACF;
-	Sat,  1 Aug 2026 11:28:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUUhozpb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C60A41F00ACF;
+	Sat,  1 Aug 2026 11:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785583724;
-	bh=FNiPy1mHNo26ffGS4gdXNh3aAvvP5u1SwLHqtcqiK0A=;
+	s=k20260515; t=1785583731;
+	bh=x820O9K4coS9hT8uHtVNftKKW5pmwFoUaeF2MngRO3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nCQxbqkH8QkFF4TPi94kyRMSWlKEQ7COTdUrl88aV1Pl+W1k2OxawPzl0yzG8oa8v
-	 i6uX00cdECQ9gDbUmfrVyOGlqx+Xw6o9tY6WgSMYMrMQZG/sePfcTskzeiYqbui+84
-	 b83HBcTXWzk+ZM2RWQc5GPgWlfD+jAxEU9BMVEITPklxWQpt+bQLRxZ+i+OLHQYe3U
-	 dwWOlO7MHNLT2S8J2c3kgou6PjYgRCwapsPB185hzqzXe/Vy6z4tS1XekqMxtmZfiI
-	 6ntfghfg+wfpSlYYvYxCVQpzauT1Q3gISj4Nq0MrTVSNMdl8j/8bSgut5J4xjkDgah
-	 PmPg//nEIfxdw==
+	b=ZUUhozpbRnS3Nh6AoBXfSA3uYU+UUU80TRKpXOJnu7eniu9FzMDpt67rZmrVkCE1R
+	 5YNk/BoRgf3Bj6gEbM81He55cnwlgLP8DcBdqTzklVY+IVdsKvfCW2FSLSrX0E0Ekj
+	 R/3rANRfwW8dH04ksV0BeEHZ65OojdiZThqIkvn6gR4/S+tBh7VBqS27OtuWQYJfNH
+	 Fu+YBQF6hZg0c3H3kFnzp9tZJGVwTvCcFSYtzqZdvlHuZFlSX/Co2dCTJBfzyyezAH
+	 uACSlR2O7fA7JnXNqxd/u9KDyft+7yASUbnfRUf09RFBcsAIsMs1wVpNZx5k7ztU5X
+	 z+0w01IHXrXMg==
 From: Will Deacon <will@kernel.org>
 To: kvm@vger.kernel.org,
-	Fuad Tabba <fuad.tabba@linux.dev>
+	julien.thierry.kdev@gmail.com,
+	Zongmin Zhou <min_halo@163.com>
 Cc: catalin.marinas@arm.com,
 	kernel-team@android.com,
 	Will Deacon <will@kernel.org>,
-	kvmarm@lists.linux.dev,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH kvmtool v3 0/4] Add guest_memfd support for arm64
-Date: Sat,  1 Aug 2026 12:28:28 +0100
-Message-ID: <178551731037.365411.15650012187546845687.b4-ty@kernel.org>
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: Re: [PATCH kvmtool] riscv: Add extensions support after v7.1 update
+Date: Sat,  1 Aug 2026 12:28:31 +0100
+Message-ID: <178551725214.364934.6261821697852689480.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260712142536.1391557-1-fuad.tabba@linux.dev>
-References: <20260712142536.1391557-1-fuad.tabba@linux.dev>
+In-Reply-To: <20260714060931.82182-1-min_halo@163.com>
+References: <20260714060931.82182-1-min_halo@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -54,31 +49,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Sun, 12 Jul 2026 15:25:32 +0100, Fuad Tabba wrote:
-> Changes since v2 [1]:
-> - Assert guest_memfd >= 0 in kvm__register_ram_guest_memfd() (Alexandru)
-> - Don't split line after = sign (Alexandru)
-> - Disable MTE when --guest-memfd is used (Alexandru)
-> - Carried Reviewed-bys
+On Tue, 14 Jul 2026 14:09:31 +0800, Zongmin Zhou wrote:
+> Expose the Zclsd, Zilsd and Zalasr extensions to KVM guests.
+> Add command-line options to disable each extension individually.
 > 
-> Changes since v1 [2]:
-> - Use kvm_userspace_memory_region2 only for guest_memfd slots (Suzuki)
-> - Check KVM_CAP_GUEST_MEMFD before KVM_CAP_GUEST_MEMFD_FLAGS (Alexandru)
-> - Close guest_memfd fd after unmapping at teardown (Alexandru)
-> - Carried Reviewed-bys
 > 
-> [...]
 
 Applied to kvmtool (master), thanks!
 
-[1/4] Initialize the return value in kvm__for_each_mem_bank()
-      https://git.kernel.org/will/kvmtool/c/8e77acfac060
-[2/4] Remove newline from end of die() aborts
-      https://git.kernel.org/will/kvmtool/c/a6d971e56ee2
-[3/4] Add support for registering guest_memfd-backed memory regions
-      https://git.kernel.org/will/kvmtool/c/3f5bf00c2449
-[4/4] arm64: Add --guest-memfd option to back guest RAM with guest_memfd
-      https://git.kernel.org/will/kvmtool/c/0717297de3d5
+[1/1] riscv: Add extensions support after v7.1 update
+      https://git.kernel.org/will/kvmtool/c/391deebb1209
 
 Cheers,
 -- 
