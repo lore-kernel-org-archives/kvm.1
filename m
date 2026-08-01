@@ -1,123 +1,117 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C69E37AA65
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDAD21257E
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785574334; cv=pass; b=SvfQgggmDva+ctauiT183nhqO2MChxnABHfQSFDGIryjD9pyGDJieF7OrJsJjJwipF5Q/V1iv705PtcBpNK23sok4QpXn80uTtOMBpx+abuBqYtKO0oU+cKA+3vFh67rtWcEvB1wBoJDcei+qJ+qe2uiGT93LjB56SUhSgc7HGI=
+	t=1785574709; cv=pass; b=iA2ghwPvIcwbnX+ElHtXnY0FLrOedwt0Dy+q3ltzWir5AOxZcO4BS3lb7ZODR/HDC6LEk0drYlV+0YRu52lFT68d3Op8oiADd3OLrTlpoCwATGe0XG8rjoJ8WTI/y29KRGsqVJMYujMLDMaw9zzqL9ivitc8y8B+Q9Q4xC6lYrw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785574334; c=relaxed/simple;
-	bh=vRZKEY8d4nz1lnBLS4virEdWYCCu9Yt/2KSkMZXy5ZU=;
+	s=arc-20240116; t=1785574709; c=relaxed/simple;
+	bh=bb701Q8teJSTMHcxmolgthmZiSRCIlhdxDfPwwPhAnw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fG9zPHjXTsU6bXpP8Q2ClIiTMAUGtWw+EhPgqF9hcKyatSuUa1SfvYJX2yf1ixeIj3pAAnM2oA+x94xhEDGauDupf9z2i3GSTq22a1euthrKxZEfrx8pYbohlj34S+OZaYI7KfYBwvu0W+o2j7l80KiWD+JT1u6zYWl3LGddOyA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=nq7JZ/qs; arc=pass smtp.client-ip=209.85.208.178
+	 To:Cc:Content-Type; b=rHetbhw7fx1HJkNlFIBy2RChRgp1Rp1pN1In6C2zLUvgPS7ZKuVCOnEkxE1DFzT5jRbXvptIX/0H/m3DfKhnM29zR1bwGFgkxZbBwhPHjXhB5nDdp0Lu+ztS7UtPHFHg8dZVvJxT1z5oEk5A7NFjMiwXnGLF5nB5yxFBELBD8H0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=gn3mE+3o; arc=pass smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="nq7JZ/qs"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-39c953950dfso15438801fa.1
-        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:52:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785574330; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="gn3mE+3o"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aeb8c19017so2236728e87.0
+        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:58:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785574706; cv=none;
         d=google.com; s=arc-20260327;
-        b=WUiGhlZZ29Tfr7JDp81ZchzcB/+0Fc+dDM8ofOiqzLpMIuKxPUA/oVypeM4ah+0n0H
-         mViOOhhQv+iADZseqgyBog0QSN1D3njCcuhO6Ty+ZaebVoKM6CxbRID0PAtwv29rI0Of
-         /3NZ1x5iHPtSRghByF9rlBuve4QVhVCqoplocV8GX8ro/rkRGEcP1+xRG96udy+6A/TC
-         /PRmj9GmOHvSoEUjYVpRMIk0yG35nOjn5uvzslaVXjna3ib6pLW++D77vooYj/dsXjUc
-         UHmMs1ya4L8dokLRH04CLPH0Ct0fGfxMLtufPDRSO7j64xvqr4rs0Wz9ht04aF/31l5M
-         HaLg==
+        b=AZG8wKsHVlPjposmKQW+c6ExK+ivbo7xjub3ExobFmovDeNj4VG1xwqygfSimU3nqR
+         8MvJXMD9MN/AmEj6Wh+Ql8qhb51ZUAFLbGM4FOcmG2lZeT7oHJ3D++TDHAw5IadvZyAD
+         SkGTFVv5VvX9D4aDIUtsFeWjO/50PjUKZ1hzA9L3mDkGN+rLtdMG6DawRQkmbrd/I6he
+         pPgE/AXR/6WxUhvghNB8dj9ziW3Q1hsIDJQOq6fTMZTtd3HvkayVcEndbFmGfYIeh70i
+         DwpqYahGXljk1mvj4IOvJOr5jMUU6jjD3Hi6G/tVi8b28OhUtmv+XJDEhflruDyN38I2
+         LyUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=OolFLJ3qIJliRKXCQGXygUbNJuKJwRQO7ZGmC2zl2Cg=;
-        fh=ntJQTZKW5WX3UGalJmxQRTK2nM9AuGZatn2vKR15pCg=;
-        b=PDP2zgd1Gjzd72f0lGO+cHDSrx/WvHKznimHvLurmsvG5/0Waq4ITDLTmOrNh9tLc2
-         DNoUrKURwM9aSiB0GuuvlFiCbgfkvzTw1G+SnvSLALzc9oxZ7NppZke8rNGKG+myxvto
-         ZtuWZEuhqmmVvhzDTH8wOHaXgy9CThxT+QlTCEjc+xbKa2H23fQVJHNnD02vG2DYUY4N
-         bu6kbh/8Tll6fbySBOYcWB571MWA6Spy05Ek/BDGzydhPTSOvrFKWbcP6oeJdTZOE+q7
-         zzrgC9MIiSyGUFvOH0+xnEHNWQsoJLYRGh6L4KDM9v/0HEdA0OwO5UueElw6tuJ3aSq2
-         WQbw==;
+        bh=Ot7Bn3ZEURQrk42Oh0sapiZcIWCpwwKzFXd66di2HQw=;
+        fh=X/lstyDC47p7PJSTGoeNF1VYdMhZUmmIvQPPqFOsHDY=;
+        b=DTNvgPIJCHGrkZsJf3g/VfZpWvqs8mqOS91vlKLFAqUTWqm4TfrNyb//XOXKH2kTn3
+         QBmxvJHO02CxmbVnI+1kff/fe0/BkWS8T7HGG2GmViXDvAFAws4DDqRjdLmU8SKkGHG2
+         QSQrHfcaDJc+7xmHgQwSk8gMSchIUxmWWx+FSoEEJ+3Bh6EhIUMlLOI/5KYNiRCCCGVP
+         fj7fIwnY612HDrdayu7C+7Xr6y4G2EUXebRlXjXCjBuoxF8XJxLE7UqzVHK+0namXHeP
+         fU0vzk3wanwc1KxBgRT374tm91OntziLgdsjpvbcO7rsc/j1SYmswn7eh+CXPem+q0rd
+         RlNQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1785574330; x=1786179130; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1785574706; x=1786179506; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=OolFLJ3qIJliRKXCQGXygUbNJuKJwRQO7ZGmC2zl2Cg=;
-        b=nq7JZ/qsXXDyAowhUiFIyameaQaaQQXwBBfr7eHOlYYP8sOZXqxOGfIhJJsjkPtTHF
-         ezEqTarblCHyBfFikxc+pBNxe9Dg+VGHs/k5DxdaDODz6SU4rcHXTNuoKuKjzT2cJ0SZ
-         7HcoGxbDF6kzrq/CAAdJUP/0np2iGonpVX9pZtekBoKnvu0cv6ZldnB9pKAef/Utcbxq
-         KcsZaEsmIw2+R9M6qC5+OqNVkN9V0BGr4R0BtNKPPs0KUHqd1dUU/BZpLFFU1GtcEUck
-         CujB4IzEzO45X5+/+LWgDjVjtc84X+4MEs/Rbz5ssP1l9hk1vrywSVfQkb8ZexkqWwzL
-         TMlQ==
+        bh=Ot7Bn3ZEURQrk42Oh0sapiZcIWCpwwKzFXd66di2HQw=;
+        b=gn3mE+3ogq9CGZ/njFH2J/loPwBqRPnXD/B1RpncSx95f/EIukFSYvWFYGe/4/kKUZ
+         RLXiOhB59JvhkrC8UGh4lfEFv7fs0gs4BTrHFrNCtBjmklkSTJPF8r7gAiXoDtwg8Abs
+         QOFjzqkeZ4tNQwU+8pFd4k0pa9plDISZsU3uHEcAKU+xQsIPi2cmBhKqqXKBeMltBU/H
+         BUQAYYI5UxVBfE9hQQqST3UFBo38z01cp4SmMgP08Z0bmJEmiq549I2jYkqsD/QMlq2f
+         nXOZCDXJkmjjOpzw0gomaN2sUFJ31bEJV8yBgx/LuRKDHhQrIhOSqNDWAllbrmBtR5lB
+         u9vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785574330; x=1786179130;
+        d=1e100.net; s=20251104; t=1785574706; x=1786179506;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OolFLJ3qIJliRKXCQGXygUbNJuKJwRQO7ZGmC2zl2Cg=;
-        b=hT3vRk2bF1XcBtEt3u++U+O+jY/fGRINEoelO3ZLsUocQkme4/r9zGSRIqqqEm/i3d
-         szJPr91kiQL+tZJ30GryvP/WbVDbrcg8vG7pDTpE0GByS16b7t4fjNMZEJudbImgg8M/
-         FMWmMRp6VyZkil3hNY7YomVlqsHzJJaV2MM/3GKdiaiBW91hcMg+zU/gwUOkYHVv0Cs8
-         pJu/ewu1Jj68++2CMwvxCIxgka4Yeg60g/tIMVoI42JUXMKbfq2rZDSRjc6MmTHx3247
-         J667raSCq/QIV4qZTqa6yWUhqNx4nmHGcNbG6j1ssIL6XtEfmNTglnZsKIndCHCslHSr
-         H1NA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0jUN9qpxyoVdokN+CjhSTJp5wxaR/sCyVdVNV0HMXAo2iQnOkS5ZOOk7upuKeJ8u3c+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNosuG/q6yMe0TzbFHKOhQ5/oP1RmpgNtOc7/pwZmSgsY9lhVG
-	YBc6RjvXDBnP1mFKb+zmS1IIpioPDG0XoY0KdWnAu/Nnvl0oQJQbAM9GMZfjTaIWVqIcBIYKVK2
-	xJGAoS3NXuMk+4yAgt6FuTpB59/GMLLXRCVFxtJrocA==
-X-Gm-Gg: AR+sD106uBaJo+GCBCH6csmItjHhSxw0Y/ul46pMfdP64csQgpcLGbz7JdJFRZ42vD2
-	/XJPDwQyIgdadPMm5y6bSTghqWaTm7tsUbioqIPMpb9xT4Fe34PNbigWiuaC1yqLV764W8a8LrK
-	1XUTpcqxQ5Rm0QsOxJZd6Xm4hF6CfmsYlnohk1AeS3S7LWc/Nn9U2X8yS1FzUDBF4YjEv2I1HUg
-	huOHNGHQhY8uZqQcT/BKhxoA1+ixmCk9gwyKxs9wH21A7v0B8/84Xp2bWf8aMIqu+GyFVcLShtj
-	tKJNodQa16ESVxyXg5Kpguo/MzHCM4dnDamR4OHjo8av5LkBETrVeZzZh8QhlquAu4iKoKWuytH
-	zLGQ+tLb/peLSWBkmp2ADWqaQP83ep6wVAnaWv6d+nTtgzMt/7DjoyMFWyzaNWZZB
-X-Received: by 2002:ac2:5a45:0:b0:5b0:1433:13b9 with SMTP id
- 2adb3069b0e04-5b2e4f34619mr363739e87.25.1785574330267; Sat, 01 Aug 2026
- 01:52:10 -0700 (PDT)
+        bh=Ot7Bn3ZEURQrk42Oh0sapiZcIWCpwwKzFXd66di2HQw=;
+        b=FfiRT+g0ONuC4clmzSKSyvgtgpBEXT4Phcdb38wZE4BRrId0Sj3vX7ieLL2Yt0l53f
+         N0PvJ1ZURchtnsrIYJFTsY1QenB6ia9sOTSjZyj9xz5OEF5iK/YDOL3Vx1REEKyEy6jv
+         bD663WrLqMfcwGOMws2n4bOl+iQSQOCZ017KGzzFyXFGELNNzhrYZfEKKh9qJCSZyTGg
+         VQrd3eyRVYE51TMT8RXC1uL7XUdpxeAw/Z9PhhCkqzLZwQaVfjlx6p3kSIsCSjIpG0r6
+         i0mwUsAaC6/HxTCiD2cQWrwgpqOgmOXzZW8ocMC2JVJ6HW+kgYyOzhA6W6bSDu/KfKzZ
+         mE/Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqnyujZgjXReUJG5F5QI4mpUxkr1VKkpjP6Vf4aqI7uANDY3BwoQTSUuusVWXh4fsV5l80=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpNL2nrySmJCr465c/KWsK3MlyJ4hjS+uwaSiHLzpf+GhcFjSV
+	lLrIVy6epoYwqkfxGX/jrKGSUnBUcIxtuEfipNvzDSkK38sG85k6ncSpJaXf9/KYanmzUJjR2qS
+	erEeVS1C9Dep8lUutTYlkWb51D2lGLZkIQCfYo242Qg==
+X-Gm-Gg: AR+sD12egAz8CLxFrbrw0FwFelgjIGe7EQH7RKI6Scr55fdAmwVVQ7kHCO78gKteLo1
+	6zDSL+FiWBrJWXvCTzpoBLeCki4bzq+yp1cW6CDcmXenU7MIxqU5zJHCK7MJRCoP6G5ibLTcfnc
+	o8APwCbidLZ3rV/saw528+4POZM0dSdpRy2F+Lf4IQ927TV1lPsGfVdCFp9byLO4Tk4ZyNy0l7F
+	w0CfrH/OynHNwH3Ir+VF9ufL3xo+ldVM39x+NY+2MlIOSdKUSVebs6wDq90V7C5TI2i46F+q2p1
+	/9zC7QuNo+HVtPMGa2RcduxgTQ4iFSBaDDFmSihsHMmftpeebBSw8sCHLUKLnp2wt5bSC+4NVqP
+	KL7/YnjBP0klnNQOEpbPozbumMMGwoc/XIhBbGia1n+Pax/wEyzg1uG4VseQFMQkl
+X-Received: by 2002:a05:6512:1093:b0:5b0:1df9:2adf with SMTP id
+ 2adb3069b0e04-5b2e4f3cf51mr582135e87.28.1785574706057; Sat, 01 Aug 2026
+ 01:58:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260716064112.2387938-1-yhchen312@gmail.com>
-In-Reply-To: <20260716064112.2387938-1-yhchen312@gmail.com>
+References: <20260716073756.44153-1-min_halo@163.com>
+In-Reply-To: <20260716073756.44153-1-min_halo@163.com>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 1 Aug 2026 14:21:58 +0530
-X-Gm-Features: AUfX_mzX7yVO0_wbnjUcTQveTiyE93ynqUCnT2aQAUQJKGgBPynLlffjyXq5axI
-Message-ID: <CAAhSdy1JJxRsAGxKbOwy38rorCuiVkjp4QD8KCBS4Pc-7zea5g@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Account VM-scoped allocations to the VM cgroup
-To: yhchen312@gmail.com
+Date: Sat, 1 Aug 2026 14:28:13 +0530
+X-Gm-Features: AUfX_my5qj7P0Pupl53QfIIfW1LsY1looLvmcDl2m-c-rMFrzQ4zMY72aHpKZiA
+Message-ID: <CAAhSdy2eTsxG=aoXb=LqG6+=mthMcwTY6cZOi+NSvzHJ0s7r=w@mail.gmail.com>
+Subject: Re: [PATCH] KVM: riscv: Fix infinite loop in NACL hfence entry allocation
+To: Zongmin Zhou <min_halo@163.com>
 Cc: atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com, 
 	aou@eecs.berkeley.edu, alex@ghiti.fr, kvm@vger.kernel.org, 
 	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Quan Zhou <zhouquan@iscas.ac.cn>
+	linux-kernel@vger.kernel.org, Zongmin Zhou <zhouzongmin@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 16, 2026 at 12:11=E2=80=AFPM <yhchen312@gmail.com> wrote:
+On Thu, Jul 16, 2026 at 1:08=E2=80=AFPM Zongmin Zhou <min_halo@163.com> wro=
+te:
 >
-> From: "Yuhang.chen" <yhchen312@gmail.com>
+> From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 >
-> Charge the per-VM and per-vCPU allocations (stage-2 PGD, APLIC state,
-> IMSIC context, vector context, FWFT config, PMU snapshot) to the
-> allocating process's memory cgroup via GFP_KERNEL_ACCOUNT / __GFP_ACCOUNT=
-.
-> Per-CPU module-init allocations and transient scratch buffers are left
-> unaccounted.
+> try_count is initialized to 5 but never decremented in the retry path,
+> making the `if (try_count)` check always true. If all NACL shared memory
+> hfence entries remain in the pending state after sync, the function loops
+> forever, causing a soft lockup. Decrement try_count on each retry so the
+> fallback warning and return become reachable.
 >
-> Measured results (KVM guest run in a memory cgroup; VM cgroup
-> memory.current after guest boot):
->
->   VM cgroup memory.current    1044480 bytes
->
-> Assisted-by: YuanSheng:deepseek-v4-pro
-> Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-> Signed-off-by: Yuhang.chen <yhchen312@gmail.com>
+> Fixes: d466c19cead5 ("RISC-V: KVM: Add common nested acceleration support=
+")
+> Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
 LGTM.
 
@@ -129,123 +123,26 @@ Thanks,
 Anup
 
 > ---
->  arch/riscv/kvm/aia_aplic.c     | 3 ++-
->  arch/riscv/kvm/aia_imsic.c     | 4 ++--
->  arch/riscv/kvm/mmu.c           | 4 ++--
->  arch/riscv/kvm/vcpu_pmu.c      | 2 +-
->  arch/riscv/kvm/vcpu_sbi_fwft.c | 2 +-
->  arch/riscv/kvm/vcpu_vector.c   | 4 ++--
->  6 files changed, 10 insertions(+), 9 deletions(-)
+>  arch/riscv/kvm/nacl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-> index 748107c347d9..be902ea6480b 100644
-> --- a/arch/riscv/kvm/aia_aplic.c
-> +++ b/arch/riscv/kvm/aia_aplic.c
-> @@ -581,7 +581,8 @@ int kvm_riscv_aia_aplic_init(struct kvm *kvm)
->                 return 0;
->
->         /* Allocate APLIC global state */
-> -       aplic =3D kzalloc_flex(*aplic, irqs, kvm->arch.aia.nr_sources + 1=
-);
-> +       aplic =3D kzalloc_flex(*aplic, irqs, kvm->arch.aia.nr_sources + 1=
-,
-> +                            GFP_KERNEL_ACCOUNT);
->         if (!aplic)
->                 return -ENOMEM;
->         kvm->arch.aia.aplic_state =3D aplic;
-> diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
-> index d38f5de0834c..507d82e5bc88 100644
-> --- a/arch/riscv/kvm/aia_imsic.c
-> +++ b/arch/riscv/kvm/aia_imsic.c
-> @@ -1108,7 +1108,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *=
-vcpu)
->                 return -EINVAL;
->
->         /* Allocate IMSIC context */
-> -       imsic =3D kzalloc_obj(*imsic);
-> +       imsic =3D kzalloc_obj(*imsic, GFP_KERNEL_ACCOUNT);
->         if (!imsic)
->                 return -ENOMEM;
->         vcpu->arch.aia_context.imsic_state =3D imsic;
-> @@ -1121,7 +1121,7 @@ int kvm_riscv_vcpu_aia_imsic_init(struct kvm_vcpu *=
-vcpu)
->         imsic->vsfile_hgei =3D imsic->vsfile_cpu =3D -1;
->
->         /* Setup IMSIC SW-file */
-> -       swfile_page =3D alloc_pages(GFP_KERNEL | __GFP_ZERO,
-> +       swfile_page =3D alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
->                                   get_order(sizeof(*imsic->swfile)));
->         if (!swfile_page) {
->                 ret =3D -ENOMEM;
-> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-> index 082f9b261733..9b1d809daf2c 100644
-> --- a/arch/riscv/kvm/mmu.c
-> +++ b/arch/riscv/kvm/mmu.c
-> @@ -669,8 +669,8 @@ int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm)
->                 return -EINVAL;
+> diff --git a/arch/riscv/kvm/nacl.c b/arch/riscv/kvm/nacl.c
+> index 6f9f8963e9dd..9aff03c4f667 100644
+> --- a/arch/riscv/kvm/nacl.c
+> +++ b/arch/riscv/kvm/nacl.c
+> @@ -33,7 +33,7 @@ void __kvm_riscv_nacl_hfence(void *shmem,
 >         }
 >
-> -       pgd_page =3D alloc_pages(GFP_KERNEL | __GFP_ZERO,
-> -                               get_order(kvm_riscv_gstage_pgd_size));
-> +       pgd_page =3D alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
-> +                              get_order(kvm_riscv_gstage_pgd_size));
->         if (!pgd_page)
->                 return -ENOMEM;
->         kvm->arch.pgd =3D page_to_virt(pgd_page);
-> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
-> index bb46dcbfb24d..e5018784779d 100644
-> --- a/arch/riscv/kvm/vcpu_pmu.c
-> +++ b/arch/riscv/kvm/vcpu_pmu.c
-> @@ -452,7 +452,7 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_=
-vcpu *vcpu, unsigned long s
->                 }
->         }
->
-> -       kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC);
-> +       kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC | __GFP_A=
-CCOUNT);
->         if (!kvpmu->sdata) {
->                 sbiret =3D SBI_ERR_FAILURE;
->                 goto out;
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index ab39ac464ffd..4984d3e54e23 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -377,7 +377,7 @@ static int kvm_sbi_ext_fwft_init(struct kvm_vcpu *vcp=
-u)
->         int i;
->
->         fwft->configs =3D kzalloc_objs(struct kvm_sbi_fwft_config,
-> -                                    ARRAY_SIZE(features));
-> +                                    ARRAY_SIZE(features), GFP_KERNEL_ACC=
-OUNT);
->         if (!fwft->configs)
->                 return -ENOMEM;
->
-> diff --git a/arch/riscv/kvm/vcpu_vector.c b/arch/riscv/kvm/vcpu_vector.c
-> index 62d2fb77bb9b..d748e7d825e1 100644
-> --- a/arch/riscv/kvm/vcpu_vector.c
-> +++ b/arch/riscv/kvm/vcpu_vector.c
-> @@ -76,11 +76,11 @@ void kvm_riscv_vcpu_host_vector_restore(struct kvm_cp=
-u_context *cntx)
->
->  int kvm_riscv_vcpu_alloc_vector_context(struct kvm_vcpu *vcpu)
->  {
-> -       vcpu->arch.guest_context.vector.datap =3D kzalloc(riscv_v_vsize, =
-GFP_KERNEL);
-> +       vcpu->arch.guest_context.vector.datap =3D kzalloc(riscv_v_vsize, =
-GFP_KERNEL_ACCOUNT);
->         if (!vcpu->arch.guest_context.vector.datap)
->                 return -ENOMEM;
->
-> -       vcpu->arch.host_context.vector.datap =3D kzalloc(riscv_v_vsize, G=
-FP_KERNEL);
-> +       vcpu->arch.host_context.vector.datap =3D kzalloc(riscv_v_vsize, G=
-FP_KERNEL_ACCOUNT);
->         if (!vcpu->arch.host_context.vector.datap) {
->                 kfree(vcpu->arch.guest_context.vector.datap);
->                 vcpu->arch.guest_context.vector.datap =3D NULL;
+>         if (ent < 0) {
+> -               if (try_count) {
+> +               if (try_count--) {
+>                         nacl_sync_hfence(-1UL);
+>                         goto again;
+>                 } else {
 > --
 > 2.34.1
+>
+>
+> No virus found
+>                 Checked by Hillstone Network AntiVirus
 >
