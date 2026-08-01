@@ -1,94 +1,95 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1D331B82B
-	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964B22BEFEF
+	for <kvm@vger.kernel.org>; Sat,  1 Aug 2026 08:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785573346; cv=pass; b=tCcC8N1xx1ETkNwaBON1EsZh5bOBGbgLS407D9WsAuiRzwOymN9Nwnc373zjLuk2+FvUftJS5obmtEj2Mya3/xnbjArw7S0OgCVe7GNvGOTUP+qzbq/gsPbOEeXivkEnw5VYj6dy4j/Pz77b2VoI8P9zJK87wBVxyEFcprbXi6s=
+	t=1785573370; cv=pass; b=rRS837F9ICjhBS2eTuyHo+cx01BvMi7uKKf1LtPmKBIZwRtKodHHbNcC9/tCDSixNM6QgwXMZU66AHZfGqFyLEEWGeoeCGiSTVxaV//DzTvMc4LVxRW0ey2xqNJL2/u3AjaLR3XsX34JxgPVtBlJGxV00gzPBmNJFNlOyrfNudw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785573346; c=relaxed/simple;
-	bh=sO8qEfv0wP0XNeJTxP8D18+JoBakW2isgUdDlhsmT64=;
+	s=arc-20240116; t=1785573370; c=relaxed/simple;
+	bh=D4HT5rkk4Ok2q40FOmCgxgsTTux7Eb6NzU9OGses0Vk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CXRNptc573fyRj1iSZGY+SnDPeAZtkN+UyAWBdPjNDJR6jmo5NAlVwRoY9imQ3Txx+otWbVPbCkw53DD/4GcZdH9ZdpEGZhXm6VWYWogpxatQ26Y5j3qCNJTUcJY2hrvgJO5/mVQ8pW5Dzq0iqgK++ryXKojtyo1iAR0CULxfxs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=p+s/tMhp; arc=pass smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=CZ4rYzFbdtWA//ANLwv5eukJ6Zs5WMLbgnpCxPkRRqNdJsBQiI6C63rhuxNjGdtrq6rdJt8IK9DFIah8nscdPZoHzy/dFMJwwyC18FZu+TP0q+iMY+bXMZXyYwAuCgI+11UHBxqns/ubQ2Uxr9kKbYvS+m4g9g24n/wzxhLjWWY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=IfOpVXzA; arc=pass smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="p+s/tMhp"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b0117d49dcso2064609e87.3
-        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:35:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785573341; cv=none;
+	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="IfOpVXzA"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b29599b81cso2435754e87.1
+        for <kvm@vger.kernel.org>; Sat, 01 Aug 2026 01:36:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785573367; cv=none;
         d=google.com; s=arc-20260327;
-        b=cHoyX4aSAlsTOh0Ee0ZwE71PrqUF0zGhteiewfhyHwRZQATJvkl1IsvCO4Ctph3Gsd
-         x4k8q3yCAhtPjwECSH74U6j8CfacNcVIs+59Zh+Z9rzdYHd0xQkkZuOlPJEgg2i4edvL
-         0EZvt46vYllq7KZEz44/BrqjNk5oid1nmCNHJZ2zZKgmHSw2reKm/NxhMTWOaYA9190w
-         xWZiNC7utLUOQXjQb4M5rjAOeKlDOZu8KOqc/nFrYS3BO0QF9m5I8lJZ4fYYOR4wDyIs
-         lftm43TeBE2osjPkrQcVXCB4+MQRYSi1iz9VoQgXE/h9Cf1YGFMMJ2fKzoVrsl92RiUs
-         VkBw==
+        b=h9PqYZW4LmFfrn/SZH5ajvmbb32vP1f1Qd8sRloOCd4hF+jiEKtK+CB9pY+fEmYRxx
+         WH+hMKAc930WciY0regtmA8NY9zg43tAEq0/O+nalRVLttn4BhCBbzMJrIRf1fNXWhSW
+         jG9LFAjJUJ55U1vH0GB+ELV8CFr+jrPK2HvJpMB14UJPs9hKLmVpqbVfFOkjNNqc9K/9
+         D/qY67TrteH0OoEmwWL7v684tuxdpCvShIkfVUpLBBZXVWnAapU7ifc+Mpq89hzZ9EkL
+         m+Vho7XulaxE2kPAK5T69i2Iifdi50ii0oB1NyfMLsiA5L5PcV4XPo1wYBPFudncI/Ha
+         VtHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ti7qy/Wgg1UvAG+vuSmd4Pnu4gP//7qkOjMeXPRouA8=;
+        bh=oN+sLPJRs7U6ubaCblfaryc964dsGbRviBowu4xGE9o=;
         fh=TqkDo7HJm6C2bTHYqbzn7b/i6oYTm+CMOZGiIKAd8p4=;
-        b=T9vLa6bjRiXi1W25BzmBkZBF5jilwlbxtG4PhgJpAGNXf7/vQJPQ/lnSKjA32nN+5N
-         CaBi5vzApxxXJ2n51IH8sD0Obc1yBLvi2C179ck+X0AXLdSuTKyf0g4nLyl+tVerGlsX
-         KSx3e+MMXMHyzauHT+aQ6Ob7LBKjcxwXeiqOIXOAscuGDXqjbdWg7PbSgY0LHq022/g2
-         ajA3WFmkodERy8ZstzbxP9cf1o36FIdercnd1QayYK+7DDETOAQgLkPV8P17V7LN1omO
-         CEsvyhw6m60lyeIFcyQ7of+FjGGeI+Kd3e9BrWHx8Zlc2XGn9FD11Aqh7bRChwJVzzZd
-         nk7Q==;
+        b=mIPEQKLwDaIJZLpxGcvJ7TJPCm9Smjbp0XXJT81+QfzFbAu6RrTrEOwlZSe6Ut7bz/
+         XjikIkebuhjh9U8xhiYlOLJDboDN5eqKkH6ZacZbGSkCzZJ7/tvXgQuiQD7v/ZIxVtgT
+         22jMaKnzIKs/Mcf31qCBWP7t+1eC8oxYKNqHYTDY3hXjme1Em7EpGq1npu1IeKCAHITA
+         lC4iR2S3kM1m/yuLxr4uPb39mxftTKofMcGUsB9zHIDm8fGiRcWmSL1VdVwRrqJ7vqpE
+         aWBzvnKeUmZDlJYzx56D57RR5+zi13VnbBUfUoh0GpgOL22pHEsvC6ieDasSUeBKUnV4
+         D89w==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1785573341; x=1786178141; darn=vger.kernel.org;
+        d=brainfault.org; s=google; t=1785573367; x=1786178167; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ti7qy/Wgg1UvAG+vuSmd4Pnu4gP//7qkOjMeXPRouA8=;
-        b=p+s/tMhp9jeq4R9DYsIYA1EetyNRVrWF9VwFIY7qV0svE/1JfPWOiOoeuOKKm9wAdj
-         bxZQqNcLgKmdXG9GOgtWirGY6VR1bKd5yuv2Oy65JbAi3rxuTXXo88YkVswjrP93xTUP
-         zNNwCE0dKsPldSJe4GdJlzq4Q9iv2NvRZBiMlvTDODKS+W3McMs3IHH/HGUy0/+GBOxb
-         OP+MGy1xC0Wp6Saz7nwthATotanCi05cfIBA6LdjflScOGuhx5F9bmpNYu09ICWdAqVY
-         zxS2NzpbNGqjxwYH9wkbYqQdg+1qib7NyGrpfRq2CggmLLw/0/EanB5C36u1i1W7ToGa
-         yDHg==
+        bh=oN+sLPJRs7U6ubaCblfaryc964dsGbRviBowu4xGE9o=;
+        b=IfOpVXzAY0NpwLDXPqQ6WFfg47KsL2cnbcXUqOHj76kmpPOAtgY3Rg1Xbc3tkq8Qz1
+         sA4bgXsqEeDpPVTnIJN26/fXqOlKLXakpCUZjxbkvMNJClTqpwRWOaSi3gFwP/Qk2z9E
+         WN67mujYRZr8m+x6mhLFs+dZl9qLYz8LgzYcht3AfLPqQEYJEj/jBsQ5DUq8Fmme+jcG
+         3DY/OOKgvsUt40eAlbilRxAoTFVf4GAPkUGidvl75c7wDSGEaaitvolsBAGeqrgLXzfb
+         Gx5L7Ztr/dIdvyX3t+ilDvSE3jYnYPp8Q5QAAv67D2B/hdbIjI54A2RgbmKA7cy1aTCv
+         f1Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785573341; x=1786178141;
+        d=1e100.net; s=20251104; t=1785573367; x=1786178167;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ti7qy/Wgg1UvAG+vuSmd4Pnu4gP//7qkOjMeXPRouA8=;
-        b=WAAFehmQOdxD9JQjsPBm+VLdK9rP/b0sX5bpj8+NKFg2UA2g22WUZC1oLCuXSWa5iW
-         Rra3nVRCA9RjAR0+ru5zJ9BfC9Tdsy0ryPlCkIKz5eRQw6pIc8QSeh+/nYnZRr5Yo5DW
-         o0DC8jepWTuANZfFOTP1ke5JVL+gMvtPpT1iXZiS29nQ0raO9pIXnSwrhR1i0ywj63P4
-         kLWy52hU6/ShwFTHuLLp1LVQHY0jUQZKAp73LcVoYeGGKB3q5RNtEs706//xjOlCVBw/
-         BYYkwgtBOseH3bBAsSttMaTwLau4l2UwdY+CR83Hkxg5A0VR7xJDdA6bJto4XlVHPHip
-         fnsg==
-X-Gm-Message-State: AOJu0Yyi1grCXtNlGT2KHXtt3rMqpLcwccfXVS3/qTHq9Am/s8TLSvBy
-	VhLzNn+LyasKilmKhqN+Tgsl4A3itKToXqWELoJHI6RkZilGRJoQbnuYHIpIlzHv9Amju1VWQM4
-	q37Yu2T9J3A9NAdpVhbBKOfXPzTHbCiX3kMIBqbcq4w==
-X-Gm-Gg: AR+sD122lWmvi0urDkL0Vp69DWJsm+JruxOJkGKTf57BJq+HR901e3XUoDASvW/n1BK
-	R94GCIoI/UL13xR+dNwhXLn3F/bt7hKTY+dLqVFdU0w3VkCMvqgYzI3uQColc3M/+1W5c2+EOA9
-	USgr/6HFx6G6nj7+ShPxeBExxTt+niD9K1jNz5c3tiluKyRzEWBq3B11QUTMhSHmWrs+K18rL9j
-	TfUNcz0dkyWsXIIimAsX1vJm5Ka4fxQjx/hk4RoLStbBGfU7/ckN9orAumejmEj3VjdZ48doCQt
-	U21iE0Oxsz7oFDGnTWWZfWhdbNhwR9ZLVtJmm9QGPRYK5MY/FjQANI+UBazhWewNymuaoWLAyT9
-	MS4HnJ2J5GZfe/7nABjynymydPPkB7GyQctovmC48OVYdMVeC0nUTgbCOyCMjOMBX
-X-Received: by 2002:a05:6512:6884:10b0:5b0:12cf:ae28 with SMTP id
- 2adb3069b0e04-5b2e4f6d20bmr309861e87.34.1785573341398; Sat, 01 Aug 2026
- 01:35:41 -0700 (PDT)
+        bh=oN+sLPJRs7U6ubaCblfaryc964dsGbRviBowu4xGE9o=;
+        b=S6qfx26pXNISj/jiqJ0ecENU7WpDx2o1iJ4gGq49VLAxjFgEaJhE34dEu+qwOD+RUv
+         YBTzUHnBDcmnYqTlHH1pubNRvVF067eexd9FNnZwm+sFXRCBvoT2mRPObLClmDhTfN9+
+         dWWcFaL+Kf7TBJ2KtjIhSKjpI78lQ6r66y6VDYoRdwMnFjr6U1LAV32wuvM4ZWZ7DPhf
+         a6NOm1lsrUa+RVWfRCXiQ7HuaNym/0GQJdVz9PrhtRtsrFCrv3kAhaRNvmYT/tvC8S7H
+         2pJ3i5PKXQ9HOaeeTLQn/Oes0EXRubPUIC+yPr67d9xBLNZKIuaC70Hwlb5dwqAU3Lk3
+         o/KQ==
+X-Gm-Message-State: AOJu0YzDoh/gikfnGDfNZTMAqhQDJZRsQMjQXR4BIIWupmrbisMU65iB
+	YforiBJX5yJpMSeS0Y1SB64LphaDtjyNOOW8YRT1IyZypUNiMBrZcD/RbBaE+SIjmKK1/Xjg+hc
+	Mc7WJoBH5MYKqFtKmnr04IUP8usLUJpie3H2Zpz2Kyg==
+X-Gm-Gg: AR+sD13tSZrCaqUZouhQPIds2SJ1I9N8wQ6mOyiN0VBNGVhe8WZ3z3E/Zs7QaICit2X
+	qpjqxtgTjErmJW891UaU8IyiI0uLzwqz3VTX51SjB459YLqwxLSf2Yl7Jag3Ef5goZKvDBcD+hF
+	NktgNg/G1jsx0c2dICBEKZ3i5r4X4E8wjVXNB/QfbpotkmpLxSrUsdpuRA94OcO9aqHApBpbJN1
+	8Zav6Bg1rSWVqh3w3BGTbcd/J2xCjG5tvKA7FfaTeWQ0O8L8fjjJC3ZVqDAeUiK0NNjmdHaWNMW
+	h+J/xbQZPX/xLW6eykfkqzq6ouBTD/LDoMhOwkCYA+BWkjWbmjdSDhqwHHCw0q/hBP2jjfq8Acs
+	UlwVq0j7wNczcQNoAzPashSIIUb8PdFWkorE3K8+39AqbbaisRLlFseq+S0fO+3ND
+X-Received: by 2002:a05:6512:6889:20b0:5ae:b764:3ba5 with SMTP id
+ 2adb3069b0e04-5b2e4f9c50amr288278e87.64.1785573366525; Sat, 01 Aug 2026
+ 01:36:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731091215.1549430-1-wang.yechao255@zte.com.cn>
-In-Reply-To: <20260731091215.1549430-1-wang.yechao255@zte.com.cn>
+References: <20260731093833.1551341-1-wang.yechao255@zte.com.cn>
+In-Reply-To: <20260731093833.1551341-1-wang.yechao255@zte.com.cn>
 From: Anup Patel <anup@brainfault.org>
-Date: Sat, 1 Aug 2026 14:05:29 +0530
-X-Gm-Features: AUfX_mz53XbCAJ1CS-mX5hYkoLEkQs_MWRVhje-M7z7-nmkWZgGhs1bk87PQqdM
-Message-ID: <CAAhSdy15rQDkLVncPmdQ3+tKyFXv6HiuUe1=xKCG+Q1rzBOqVA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] Implement Eager Page Splitting for RISC-V
+Date: Sat, 1 Aug 2026 14:05:52 +0530
+X-Gm-Features: AUfX_mxBMP70jLpvU1dCTqR-waeQ9HTBiOZcnjCyTgyRTSVEjpFRKArAdatF0Gk
+Message-ID: <CAAhSdy17xH1D7RpGnqJubqax_hTQaKpRu5g0tSDd2U6Rx71V9g@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] RISC-V: KVM: Optimize hfence request handling for
+ SMP guests
 To: Wang Yechao <wang.yechao255@zte.com.cn>
 Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
 	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
@@ -97,88 +98,49 @@ Cc: kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 31, 2026 at 2:45=E2=80=AFPM Wang Yechao <wang.yechao255@zte.com=
+On Fri, Jul 31, 2026 at 3:11=E2=80=AFPM Wang Yechao <wang.yechao255@zte.com=
 .cn> wrote:
 >
-> Eager Page Splitting is implemented on x86 and ARM. It improves the
-> performance of dirty logging (used in live migrations) when guest memory
-> is backed by huge pages.
+> This series improves the hfence request handling in RISC-V KVM,
+> targeting scenarios where multiple VCPUs are running an SMP guest.
 >
-> This series implement Eager Page Splitting for RISC-V. The Implementation
-> similar to x86 and ARM. It provides two ways to split huge pages in ioctl
-> context instead of on fault in vCPU context:
+> The first patch Introduce make_xfence_request_nodata for FENCE.I
+> requests and moves the hfence data/type validation out of the
+> VCPU loop to avoid redundant checks on every iteration.
 >
-> - Split huge pages when dirty logging is enabled when
->   KVM_DIRTY_LOG_INITIALLY_SET is not set. This happens when enabling the
->   KVM_MEM_LOG_DIRTY_PAGES flag of a memslot, and splits the whole memslot
->   into 4K mappings.
+> The second patch fixes a more subtle performance issue: when one
+> VCPU's hfence queue becomes full and triggers a fallback, the
+> current code applies the fallback to all VCPUs indiscriminately.
+> This unnecessarily degrades healthy VCPUs and can cause their
+> queues to fill up prematurely due to lack of processing it.
 >
-> - Split huge pages during KVM_CLEAR_DIRTY_LOG when
->   KVM_DIRTY_LOG_INITIALLY_SET is set. This happens when enabling dirty lo=
-g
->   in small chunks. It does not split the whole memslot, but only the
->   requested chunk range.
->
-> Changes in v5:
->  - PATCH1: Move pgd_split_page_cache freeing to kvm_riscv_mmu_free_pgd().
->  - PATCH3: Add a comment to explain why TLB flush is not needed here.
->  - Link to v4:
->  https://lore.kernel.org/linux-riscv/20260701120954.129873-1-wang.yechao2=
-55@zte.com.cn/
->
-> Changes in v4:
->  - Rebase on v7.2-rc1 version.
->  sashiko-bot AI review
->  (https://sashiko.dev/#/patchset/20260624160054463wcDvJaMoydSggcNOWgcfB@z=
-te.com.cn)
->  - Add the rwlock_needbreak() check when toup split cache.
->  - ALIGN_DOWN the start addr to PMD_SIZE.
->
-> Changes in v3 resend:
->  - Fix patch format to ensure emails reach the linux-riscv and kvm-riscv
->    mailing lists.
->  - Move the free pgd_split_page_cache into kvm_arch_destroy_vm().
->  https://lore.kernel.org/kvm-riscv/20260624160054463wcDvJaMoydSggcNOWgcfB=
-@zte.com.cn/
+> With these changes, fallback is applied only to the VCPUs that
+> actually need it, preserving the efficiency of the normal path
+> for others.
 >
 > Changes in v3:
->  - Rebase on v7.1 version.
->  - Add patch03 to remove the redundant TLB flush operations.
->
->  sashiko-bot AI review
->  (https://sashiko.dev/#/message/20260603104847.9692C1F00893%40smtp.kernel=
-.org)
->  - Check the kvm->arch.pgd before split huge pages.
->  - Align the start address to PMD_SIZE before split.
->  - Flushing remote TLBs before Dropping mmu_lock.
+>  - Re-order the PATCH1 and PATCH2, let the fix PATCH as first patch.
+>  - Link to v2:
+>  https://lore.kernel.org/kvm-riscv/20260707125034.416521-1-wang.yechao255=
+@zte.com.cn/
 >
 > Changes in v2:
->  - Rename the split_page_cache.
->  - Rename the kvm_riscv_split_huge_pages and
->    kvm_riscv_split_memory_region.
->  - Add lockdep_assert_held check before split huge pages.
->  - Update Documentation/admin-guide/kernel-parameters.txt.
->  - Link to v2
->  https://lore.kernel.org/linux-riscv/20260603175256408L0jnqGs1cJGc0ijCduj=
-ci@zte.com.cn/
+>  - Fix the patch01 broken the KVM_REQ_FENCE_I request(Sashiko AI review).
 >
 >  - Link to v1:
->  https://lore.kernel.org/linux-riscv/20260513153656847l3c4fI5hBsAyoIZi8aG=
-Is@zte.com.cn/
+>  https://lore.kernel.org/linux-riscv/20260707113715.413265-1-wang.yechao2=
+55@zte.com.cn/
 >
-> Wang Yechao (5):
->   RISC-V: KVM: Add the split page cache for ioctl context
->   RISC-V: KVM: Split huge pages when dirty logging is enabled
->   RISC-V: KVM: Remove redundant TLB flush operations
->   RISC-V: KVM: Split huge pages during KVM_CLEAR_DIRTY_LOG
->   RISC-V: KVM: Add the eager_page_split module parameter
+> Wang Yechao (2):
+>   RISC-V: KVM: Separate req and fallback_req masks in
+>     make_xfence_request
+>   RISC-V: KVM: Introduce make_xfence_request_nodata for FENCE.I requests
 >
->  .../admin-guide/kernel-parameters.txt         |   7 +-
->  arch/riscv/include/asm/kvm_gstage.h           |   6 +-
->  arch/riscv/include/asm/kvm_host.h             |   1 +
->  arch/riscv/kvm/gstage.c                       |  23 ++--
->  arch/riscv/kvm/mmu.c                          | 100 +++++++++++++++++-
->  5 files changed, 120 insertions(+), 17 deletions(-)
+>  arch/riscv/kvm/tlb.c | 46 +++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 35 insertions(+), 11 deletions(-)
+>
+> --
+> 2.39.3
 >
 
 Queued this series for Linux-7.3
