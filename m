@@ -1,57 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB67F3932EA
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D6A3932EA
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785679701; cv=none; b=JMya3PhcJBrce+vrBcaQBiH/yNea5IbmxgJZtr0DgKGTqwhDDgzz3cKbrPk9XXOlTcAvS2z1KJ904h32q2lJ4B4QT+NNcz33bcYccEh7U8Lr6bGGgd0eHTFawoMa2p52DK6rvdVyOCC/a05liI72QMNSSi4oW0iFVexn26hiJyA=
+	t=1785679840; cv=none; b=Bh1k4uOZDD8h5hzortTG+owr5ai6qogWvUCnUoDxvprF7wc0wTzZqU85lGSza+dVhU1Fj15xtAxo/IEy2fJqVEcexpypE7/QM8J6E/30pP2DqS6cJq+shunYl4gLljWGbCi7gg/SG2WERwVyLO40Jvw1uvtsq7Yot/IznYhdPmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785679701; c=relaxed/simple;
-	bh=oUCNdOh9Kwkj8aGAi05IkLLrqAfYLuUGKQ9qpFqDbp8=;
+	s=arc-20240116; t=1785679840; c=relaxed/simple;
+	bh=lRO8VDcoa3TIBO/CPMJ0s3De3InVTqKIhmYtGLt8Y20=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VkrKX4tEHE+y4EzkstHI0Tf+7cyT6Tilstj7eKO4IBA3LjIsL7livf8iqcAIoNK+LOPGYx+/Cd9I6cMPauvkZgZjk/oAkAIKl/iK986jtBESr07xZulhPt262rsQKrVK5xRS40GjG35MP0cpVIoDQRbqLTj/+PTQSqevnUqcWv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bct4ExGg; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=ARSbwehGKB5vIAf0HeCt5WaEC1wf6e86dxOmQYkpCJJprtswmVzN0ual8mLUD87WoT/lurwfbrYsiQ2QFMp5OUF+iQ4Fn7bJxz3PKnzhkecj9ZizN3QokwTTgjD32chC5SWcthRIWjXPLlHTg2lbRvqMbywFSluNcnRkRGLrosg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G82nP5D0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bct4ExGg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30A11F00A3E
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:08:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G82nP5D0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34ABD1F00A3F
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785679699;
-	bh=QxiERV+W64FsC74zKKtfmIJ5yAmZNdQWDagjEo1LMO4=;
+	s=k20260515; t=1785679839;
+	bh=DQjOuBhLjuT6mtQbbyh60bt901EFtaE/jLkYdyn1c4k=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=bct4ExGg1WgTO6fKbWdUIFZrTuCS7BlIr74JEQj1PU/8HeU1amYveI2y3xgMQ8Q7A
-	 HV+Nay9FnPLfO99EsaXZ5AxIrLH3NU/VJ6hfJKNe96L4UpoGPjKF2IjwVADVagB1B6
-	 Fyy+l26SdaFl84jBtetKoT6jug6TaiG67GZ4HDRiJWpTl29HuVFwXd6ysjTkFqJyvq
-	 xP2pgiok+pbvMXFaDjpO5R3GmYpqsOzzIyCiz3rpoo/9Vwu1q004+jx4S0Y7je0QVH
-	 3oUvpo3K+klBlnjOKzlDDfwWhk3sVGr5HgFbQnDJqGjLBS4dzr5MmmbADpWepXQPMY
-	 EW+3hEPr904vw==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so4392049a12.1
-        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 07:08:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq7ZKbziZ1EuJn6OaK2Flc0xAAyoWDnaqMEMQptTroTQHkys0Mgcd5HLG3imCCj1FCJ+BM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOW8d7cFxfXunbvpa48dhhyC2Vc9X+89mVUd/gGp8ZbDa7iqGG
-	LpL+JlV0ZiASRS/PKVil6/3AXQCgnK/5oxPCxpyMGVg1RXBRTyq+5WGWO8cAvhf7WpRLklQ40XQ
-	8HIqmfFfFu++Zr0WVEND+r8z0EJK7FYs=
-X-Received: by 2002:a05:6402:44dc:b0:698:5610:76de with SMTP id
- 4fb4d7f45d1cf-6a0a7c614e1mr3823671a12.4.1785679698310; Sun, 02 Aug 2026
- 07:08:18 -0700 (PDT)
+	b=G82nP5D0tsGLzX1I/FFM3k8eEygPSUOoUPchd3r2nRl/KND3ClcDu73CaZcUSrVtj
+	 8QFvHcdMt7M6zZqjYwzu9dTuNVWJolVQCyzedHHm5Xby8xDUCB22JdX6Hh3RJY28sR
+	 IR1hQMHiUfSvEOwBAHn2pGmIYwsuOTNhs5gXoTlr6nhHKPm8l3tO5jSUv+bYd/vTQ6
+	 ELgvBG0r45f38Ub8jChpSHdvWWxcrtvQtnRfs4YkckhcbteEPwFK7fOBYSfHnBJUiI
+	 3wHkam8pXKVDRPslClRdsjB7uHAY8pRtVjKrYpm6Y6y/4Ji3BOxLh/hQG42LvycaIx
+	 fyQWWG7ULRE7w==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-69fec980a30so3087320a12.3
+        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 07:10:39 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwBLPQgsccbJKK2sbE7x4UznSU0qz89ww+1SAsuNFOMP4+m8rgQ
+	xWdsd7VLuQ+XnKhzfDMFKbUPee/errIXGilhcLckipeXQNl4X145ka9qeKBF6TZn9lRlrCF3O0y
+	qCqp6JLYD6Gl60pEXtgSFXqUPbZ7CeRE=
+X-Received: by 2002:a05:6402:5055:b0:6a0:926e:f8fa with SMTP id
+ 4fb4d7f45d1cf-6a0a7c60456mr4742944a12.2.1785679837852; Sun, 02 Aug 2026
+ 07:10:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260714072520.2745942-1-maobibo@loongson.cn>
-In-Reply-To: <20260714072520.2745942-1-maobibo@loongson.cn>
+References: <20260616022615.2141072-1-maobibo@loongson.cn>
+In-Reply-To: <20260616022615.2141072-1-maobibo@loongson.cn>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 2 Aug 2026 22:08:07 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H49xHp+7qn8dXBc91yksGUCoYmuZWwCte3AHSutGRRK-g@mail.gmail.com>
-X-Gm-Features: AUfX_mwkjJhmiaMAimXlH3M5HrdNW6aW2mr8kFkdEi2X-bhkAtKWCOpI-4aJPmk
-Message-ID: <CAAhV-H49xHp+7qn8dXBc91yksGUCoYmuZWwCte3AHSutGRRK-g@mail.gmail.com>
-Subject: Re: [PATCH v5 0/5] LoongArch: KVM: Harden interrupt injection
+Date: Sun, 2 Aug 2026 22:10:26 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7Zy4c=pQyGFpp7BaEr6XMg1sO5=8mEEKd-UN1K0eUzdQ@mail.gmail.com>
+X-Gm-Features: AUfX_mxH34VOw-RYvT74o-50Pv__NPojjRwRUzsuTf4wTRGTeKstN_GkN6ajPjs
+Message-ID: <CAAhV-H7Zy4c=pQyGFpp7BaEr6XMg1sO5=8mEEKd-UN1K0eUzdQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] KVM: LoongArch: selftests: Add FPU test case
 To: Bibo Mao <maobibo@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -60,65 +59,43 @@ Series applied, thanks.
 
 Huacai
 
-On Tue, Jul 14, 2026 at 3:32=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
+On Tue, Jun 16, 2026 at 10:26=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wro=
+te:
 >
-> API kvm_vcpu_ioctl_interrupt() is mainly to used to deliver interrupt
-> from user mode, and internal APIs kvm_queue_irq() and kvm_dequeue_irq()
-> are used in kernel mode, also moves IPI interrupt handling within lock
-> protection.
->
-> Also this patch replaces kvm_err() with WARN_ONCE() to avoid noise
-> kernel log.
->
+> Here add FPU test case and verify FPU register get and set APIs, the
+> FPU width supports 64/128/256 bits. It is important for VM migration.
 > ---
-> v4 ... v5:
->   1. Add one new patch and fix uninitialized stack variable issue with
->      dmsintc.
->   2. In patch 2, set return value with 0 to prevent information leak
->      where return directly with non-aligned address in IPI irqchip.
->
-> v3 ... v4:
->   1. From AI assist, replace kvm_err() with kvm_pr_unimpl() rather than
->      WARN_ONCE(), since host may crash with WARN_ONCE() when kernel
->      parameter panic_on_warn=3D1 is set.
->   2. Add one new patch 3 which returns directly when IPI address is not
->      aligned, rather than only print WARN_ON_ONCE() and continue to run.
->
 > v2 ... v3:
->   1. Split the patches into three smaller ones, the first patch removes
->      old default case and kvm_err() since it is impossible to happen.
->      And the second patch replaces kvm_err() with WARN_ONCE().
+>   1. Remove __vm_has_feature() and use __kvm_has_device_attr() directly
+>      when checking LSX/LASX feature in patch 2.
 >
 > v1 ... v2:
->   1. Add border check with ipnum in eiointc_set_sw_coreisr() and
->      eiointc_update_irq(), so that injected interrupt vector is valid.
->
->   2. Move IPI inject and ack within lock to avoid contention in
->      ipi_set() and ipi_clear().
->
->   3. Add kvm_arch_irqchip_in_kernel() check in user mode irq injection
->     in function kvm_vcpu_ioctl_interrupt(), contention of user mode irq
->     injection is assured from user mode VMM.
+>   1. Replace hardcode value with CSR_EUEN_XXX when enable FPU access.
+>   2. Add attribute __aligned(64) with kvm_fpureg variable with better FPU
+>      save and restore.
+>   3. Add clobber $f0 register with inline assemble language with
+>      fld.d/vld/xvld instruction.
+>   4. Add fallthrough between UCALL_DONE and UCALL_SYNC switch case
+>      sentences.
+>   5. Remove sync_global_from_guest() between vcpu_fpu_get() ioctl test
+>      case, since the buffer is not modified with such instructions
+>      fld.d/vld/xvld.
+>   6. Modify FPU register with random value rather than plus 0x10, and
+>      random() is replaced with value 0x10.
 > ---
-> Bibo Mao (5):
->   LoongArch: KVM: Fix uninitialized stack variable issue with dmsintc
->   LoongArch: KVM: Return directly when IPI address is not aligned
->   LoongArch: KVM: Set default MAILBOX access size with 8
->   LoongArch: KVM: Replace kvm_err() with kvm_pr_unimpl()
->   LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+> Bibo Mao (2):
+>   KVM: LoongArch: selftests: Enable LASX feature by auto detect method
+>   KVM: LoongArch: selftests: Add FPU test case
 >
->  arch/loongarch/kvm/exit.c         | 16 +++----
->  arch/loongarch/kvm/intc/dmsintc.c | 17 ++++---
->  arch/loongarch/kvm/intc/eiointc.c | 32 ++++++++------
->  arch/loongarch/kvm/intc/ipi.c     | 73 ++++++++++++++-----------------
->  arch/loongarch/kvm/intc/pch_pic.c | 12 ++---
->  arch/loongarch/kvm/vcpu.c         |  5 ++-
->  6 files changed, 80 insertions(+), 75 deletions(-)
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../kvm/include/loongarch/processor.h         |  18 +++
+>  .../selftests/kvm/lib/loongarch/processor.c   |  12 +-
+>  .../selftests/kvm/loongarch/fpu_test.c        | 138 ++++++++++++++++++
+>  4 files changed, 168 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/kvm/loongarch/fpu_test.c
 >
 >
-> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+> base-commit: 8cd9520d35a6c38db6567e97dd93b1f11f185dc6
 > --
 > 2.39.3
->
 >
