@@ -1,180 +1,109 @@
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDA33ACA46
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 15:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E348184
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 17:28:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785686194; cv=none; b=IpLweroZm3scME3FA1c4sBPx+WlSf0/o/5BixyZER4eGE0rbFefZZiDmEAbTYX+bGIdK72CrI7Wl2hkMjtzUpEYNaHoF8uLv9ZMKzjqnVKq/vdkJQ8kaLCdaGWOKOLvQXb7NZmxZAeqgwcFL1HT2CwT2JVT+RhPT9GwNL9VVp+Q=
+	t=1785691697; cv=none; b=WKgOW8WqVGWwdvNOH7RrH3kcsBvPAYu11nKMEbqe9qoTktEm3NDJcjzfOIBJWdVdmM7BG5yc6Mo4LfOurUf3QACw0KqbG8ZH38NA89UG+OxT+2jZcVV9WfqvOPbB7bXHU9hmnUm8f08BOY1zFlOBGvDln3FonNd+v7rNIq4jwyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785686194; c=relaxed/simple;
-	bh=BVUBcbqGjsRzNyaVXFgYWgR6JF5mmUNjmUm+GGVT5EI=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=rQTJZ1yeljqta519We1//zcTwtqSrsGWZyFOb0tKY+lvHzWS0CLNT0eUFmlAVZ0RYH9DzsQs/XsrAYAE1oE7w2ZS73aKahJnthIhPdaJuUVvQjqsQHKe4EgczVLiUxM0K+3o4aCZH57B57qxBZjL1UJagyPit7y6CRV7ag0a3t0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-4ab8b646492so4489649b6e.0
-        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 08:56:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785686191; x=1786290991;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=6yIdQ0f04z44Ose39PNgv4Q0GzPZnUB1UrHSKaFiTLY=;
-        b=OJRKPso0YRCOjHLK0zF7eJjwLJp/+ogv4yhTe6rZl468HWUP6Mh70meEkGge2OGm2a
-         BFkemErNbDTHhze9O4f8lclWBBRZpL2BR1T9QuIndn2CRLtqQJ3HPuUmr/3VFyrTg5sz
-         Dq67OKikXnwuuA1mZJk2K60D8eMhti5TzlBN/r4jzxlbzdB7edI2tjL7Unql9Ioz5wYC
-         iDCnvMnxuDkWqO7XfZYapNP+Y30Zdc/1lrhUlhlYRlg7KIJj6k7yp5MkZeBAZDakrbcF
-         4kzqWZ4U7S/82cTLVIzf7mzJwHHd6x5VtQy9s1k80Qrbfc2bviTe8a2GNMQvMusb1nQY
-         dnNw==
-X-Forwarded-Encrypted: i=1; AHgh+RqgbEQcjpmCmXw44Q/xgmBVkK9E76+sZnFua8Ay1ptIXiKUUrfu+yQRTqMbJuU+F05+7DM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoK5EdHfYUq2GWAcEN3yAqI2iqeZG3vp8q9cgaJLQrthbSQpOl
-	kD/I0uK9TJTfqqyCKfgnjshU7s3ktxQ/xUA5tkzIqzwjl93ulPt8w0qkhcAsu/JExncW11uiogv
-	l8awldLtlW7Qmu5ty6A5qk0U/cyuzHpzsISNzwUk82lVHMDwlQS+YEBGk27w=
+	s=arc-20240116; t=1785691697; c=relaxed/simple;
+	bh=mDq3AWn/JwiacVYVkvzK7pYEiWzF+qv3b+wSIDweVlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ncVNAJae8we4987UK38a1Xxc5cjTzI03FxytnrfJpKToa2HeWng9tG2+gJ+3BwkhkacJ+j55bR964fAxDUrbY/tjfMNa6DkrayP4NmOZjHQXdDuZEPO7jTiatNIpXjsthJCTBce2pUA6vhrl217X8jlk9D2Mk5mz+oZ4Hx+6IcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=WOe3N3r0; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="WOe3N3r0"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672DU2qR805819;
+	Sun, 2 Aug 2026 17:28:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=zn46TrKj46C6dHGtkHwecJrsSVP/U
+	eTDJC37sPVWJ0s=; b=WOe3N3r0j+O2SHptWtVywuIoZ0Y4NSY1rn2GzJ5DQqGIF
+	F/7WxYC/7A8sIKKsf32n0am9QEWqtOmZW75sv4NmyKJB2lp9C6q2J42pPSudMgr+
+	WkLOBr8buZMbpZ7BVdlEioMn04fBArxRHym37cKy3jOFdR69vOqjXUmF/G0xweoq
+	6282jwE3GYy84l8SBoIUxYNsM1UxPnTMgrWcGIgfMicaonegX0lVg/QirG4lODEX
+	Jj1f8oGipAitg79T9+nxVNDglpf9FRJtQ510CwmlyiVQuNQ2dy/GhtUfTsJ+5pnX
+	LF9FZp+2aGQBeo7xPBKDxr8Zim647iAdvbclCntwA==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fs7qa31sk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 02 Aug 2026 17:28:10 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 672HPpm1027653;
+	Sun, 2 Aug 2026 17:28:09 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fs78r0h6v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 02 Aug 2026 17:28:09 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 672HS8PC032953;
+	Sun, 2 Aug 2026 17:28:08 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fs78r0h6r-1;
+	Sun, 02 Aug 2026 17:28:08 +0000 (GMT)
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: virtualization@lists.linux.dev
+Cc: mst@redhat.com, jasowangio@gmail.com, michael.christie@oracle.com,
+        pbonzini@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
+        kvm@vger.kernel.org, joe.jin@oracle.com
+Subject: [PATCH v2 0/2] vhost-scsi: fix max_io_vqs handling
+Date: Sun,  2 Aug 2026 10:24:54 -0700
+Message-ID: <20260802172534.260047-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:250e:b0:495:f74a:b572 with SMTP id
- 5614622812f47-4af5e031fb3mr10999278b6e.5.1785686191472; Sun, 02 Aug 2026
- 08:56:31 -0700 (PDT)
-Date: Sun, 02 Aug 2026 08:56:31 -0700
-In-Reply-To: <6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a6f68af.13bfb6d0.1ecdd5.0271.GAE@google.com>
-Subject: Re: [syzbot] [kvm?] [kvm-x86?] KASAN: use-after-free Read in kvm_xen_shared_info_init
-From: syzbot <syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com>
-To: aha310510@gmail.com, bp@alien8.de, dave.hansen@linux.intel.com, 
-	dwmw2@infradead.org, dwmw@amazon.co.uk, hpa@zytor.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mingo@redhat.com, paul@xen.org, 
-	pbonzini@redhat.com, pdurrant@amazon.com, seanjc@google.com, 
-	souradiptodas6@gmail.com, syzkaller-bugs@googlegroups.com, tglx@kernel.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-02_05,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 mlxlogscore=897 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608020159
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAyMDE1OSBTYWx0ZWRfX8YjciiN+5qGn
+ bN163RsuS9HuUi7lKcnxXlTjeyZYlnKdQdQYFON7pEky+TDaS8OLRzxLSMKvbOOqbH1gFdTS9Ex
+ AfzV5dNGbPxYEk2TJAfk5Gtyw1Q+dHPFlLxijNqvWuBv08BOmW9xtmN4l4cbjjrUBfVdx4B/s8r
+ zysf2T5iYP6251dhWiG1MC3g12TFBWBKNyvuL+USzDveAigX/TPEQG1SSWmVjF4YWXQSlwYX7Tw
+ DZRwTBHBt8Z24lBlmyBgxCTA6VLaGsJ5U2R7Q+CZYUBhli0jBWLECpyVnBjmq3oXIICvZVU/8Ef
+ 6XC2VECJSKVTxykFwlsXjOvMljdkJqF4vR3HvXjPWJbVvZP4EP/X2FHwfU14P2QTyxCBPqkkqu7
+ eYaZBGGTjXMtVwOktuVN3Lu+eAUWA9MSQqzG2yNX2uT9IlO6eYrgh8VAzy5/TtSjMW84bCuDI36
+ C3w45Hs01qYLLL3FHXpwZdwYSDJKHbQGF2z4HCAw=
+X-Proofpoint-GUID: FQmet4nVhuCggHhm_Nnsa7eEJxeJRe2i
+X-Authority-Analysis: v=2.4 cv=frDsol4f c=1 sm=1 tr=0 ts=6a6f7e2a b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=x0eKOSpe3m1H3M0S9YoZ:22 a=-s18Wruy92E9eT26p_4A:9 a=zZCYzV9kfG8A:10
+ a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13517
+X-Proofpoint-ORIG-GUID: FQmet4nVhuCggHhm_Nnsa7eEJxeJRe2i
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAyMDE1OSBTYWx0ZWRfX0RV84wRX7ENC
+ Z5ieF8m38+P5ZPGPr+CyGls2n610+277v1CMNi3H1qUs+KTVEG5jW/LdXsuWTKIhVIysbk+kN7X
+ UeGnHeqBkynjIUjG2pCgBGWBYMjRteA07YSRFzXgiOPXJS69SIos
 
-syzbot has found a reproducer for the following issue on:
+Avoid high-order kmalloc() allocations for the vhost-scsi virtqueue array,
+and clamp out-of-range max_io_vqs updates so the stored value remains
+within the supported range.
 
-HEAD commit:    2d2338c93da7 Merge tag 'i2c-fixes-7.2-rc6' of git://git.ke..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16fc9e32580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
-dashboard link: https://syzkaller.appspot.com/bug?extid=0948c82180d475ad24e2
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11fdf4c6580000
+v1->v2:
+  - Access vhost_scsi_max_io_vqs with READ_ONCE().
+  - Clamp out-of-range max_io_vqs values instead of rejecting them.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/f6ed15f8269a/disk-2d2338c9.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/a4e97eab66d0/vmlinux-2d2338c9.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/afd310a94440/bzImage-2d2338c9.xz
+Dongli Zhang (2):
+  vhost-scsi: use kvzalloc for vq array allocation
+  vhost-scsi: vhost-scsi: clamp max_io_vqs module parameter
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+ drivers/vhost/scsi.c | 49 ++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 36 insertions(+), 13 deletions(-)
 
-==================================================================
-BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x3c6/0x440 arch/x86/kvm/xen.c:90
-Read of size 4 at addr ffff8880599c2900 by task syz.2.383/7257
+base-commit: 2d2338c93da79b3bfe4b6099a931d9468d539952
 
-CPU: 1 UID: 0 PID: 7257 Comm: syz.2.383 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/16/2026
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x13d/0x4b0 mm/kasan/report.c:482
- kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
- kvm_xen_shared_info_init+0x3c6/0x440 arch/x86/kvm/xen.c:90
- kvm_xen_hvm_set_attr+0xcef/0x16a0 arch/x86/kvm/xen.c:806
- kvm_arch_vm_ioctl+0x2a0/0x18d0 arch/x86/kvm/x86.c:7514
- kvm_vm_ioctl+0x1560/0x4180 virt/kvm/kvm_main.c:5381
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f03cc39e019
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f03cd189028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f03cc626090 RCX: 00007f03cc39e019
-RDX: 0000200000000840 RSI: 000000004048aec9 RDI: 0000000000000004
-RBP: 00007f03cc43500c R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f03cc626128 R14: 00007f03cc626090 R15: 00007ffd770bb9c8
- </TASK>
+Thank you very much!
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xe pfn:0x599c2
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-raw: 00fff00000000000 ffffea0001a41648 ffff8880b85414b0 0000000000000000
-raw: 000000000000000e 0000000000000000 00000000ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 0, migratetype Movable, gfp_mask 0x140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), pid 7257, tgid 7253 (syz.2.383), ts 169739507412, free_ts 169740156503
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
- prep_new_page mm/page_alloc.c:1867 [inline]
- get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
- __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
- alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
- folio_alloc_mpol_noprof+0x36/0x260 mm/mempolicy.c:2509
- shmem_alloc_folio+0x135/0x160 mm/shmem.c:1917
- shmem_alloc_and_add_folio+0x371/0xd40 mm/shmem.c:1959
- shmem_get_folio_gfp+0x6ad/0x1910 mm/shmem.c:2512
- shmem_fault+0x1f9/0xa20 mm/shmem.c:2713
- __do_fault+0x10b/0x440 mm/memory.c:5425
- do_shared_fault mm/memory.c:5924 [inline]
- do_fault+0x2db/0x1750 mm/memory.c:5998
- do_pte_missing mm/memory.c:4566 [inline]
- handle_pte_fault mm/memory.c:6379 [inline]
- __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6517
- handle_mm_fault+0x37b/0xa30 mm/memory.c:6686
- faultin_page mm/gup.c:1126 [inline]
- __get_user_pages+0x1178/0x32a0 mm/gup.c:1428
- __get_user_pages_locked mm/gup.c:1752 [inline]
- get_user_pages_unlocked+0x30a/0x7d0 mm/gup.c:2681
- hva_to_pfn_slow virt/kvm/kvm_main.c:2903 [inline]
- hva_to_pfn+0x871/0xd60 virt/kvm/kvm_main.c:2999
-page last free pid 7257 tgid 7253 stack trace:
- reset_page_owner include/linux/page_owner.h:25 [inline]
- __free_pages_prepare mm/page_alloc.c:1406 [inline]
- __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
- __folio_put+0x3b4/0x5f0 mm/swap.c:112
- folio_put include/linux/mm.h:2124 [inline]
- put_page include/linux/mm.h:2193 [inline]
- kvm_release_page_clean virt/kvm/kvm_main.c:2813 [inline]
- kvm_release_page_clean+0x1dc/0x250 virt/kvm/kvm_main.c:2807
- hva_to_pfn_retry virt/kvm/pfncache.c:246 [inline]
- __kvm_gpc_refresh+0x1a63/0x22d0 virt/kvm/pfncache.c:330
- __kvm_gpc_activate+0x2ab/0x490 virt/kvm/pfncache.c:424
- kvm_gpc_activate_hva+0x73/0xa0 virt/kvm/pfncache.c:444
- kvm_xen_hvm_set_attr+0x395/0x16a0 arch/x86/kvm/xen.c:798
- kvm_arch_vm_ioctl+0x2a0/0x18d0 arch/x86/kvm/x86.c:7514
- kvm_vm_ioctl+0x1560/0x4180 virt/kvm/kvm_main.c:5381
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Dongli Zhang
 
-Memory state around the buggy address:
- ffff8880599c2800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8880599c2880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
->ffff8880599c2900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                   ^
- ffff8880599c2980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff8880599c2a00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-==================================================================
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
