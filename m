@@ -1,135 +1,124 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034233B47CA
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 13:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB67F3932EA
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785678302; cv=none; b=HAtCH/l3uRjWFJ5DT0OB065s4igUsn2qJ2za3UjbhyXUX5NuhnmoMbLYLmBZDr37/pwwwIslv5PWzu/de9n7KvmftKyUQS/pWcHEIqHkd1JvPHMqW5weCf5KdYLMioNIA74i6MrVnJtbv52jr57ZGUELiVzRAU+itNNPsL8xCUA=
+	t=1785679701; cv=none; b=JMya3PhcJBrce+vrBcaQBiH/yNea5IbmxgJZtr0DgKGTqwhDDgzz3cKbrPk9XXOlTcAvS2z1KJ904h32q2lJ4B4QT+NNcz33bcYccEh7U8Lr6bGGgd0eHTFawoMa2p52DK6rvdVyOCC/a05liI72QMNSSi4oW0iFVexn26hiJyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785678302; c=relaxed/simple;
-	bh=gZ0UUdT48hbMs0jRzaOu4QypASHEVAG3ns1aMnD1mIs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCJfFbBSaw6W+25LSd/NN2XRJ4eJ8frQGrA9dHH3ZhMoYzr0j4gGPTu7JlpkIrLNE004xrjcSYWNFm2dT4Ps/vAIQHcJQuJdsQLPyF07iNOGKuX/9L1HBWQl0yfmyM74LErWN0KJ4G+MFQKZZk/dd3oGF0xk6gKaPzsxZmqFLQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1iYj0ES; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785679701; c=relaxed/simple;
+	bh=oUCNdOh9Kwkj8aGAi05IkLLrqAfYLuUGKQ9qpFqDbp8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VkrKX4tEHE+y4EzkstHI0Tf+7cyT6Tilstj7eKO4IBA3LjIsL7livf8iqcAIoNK+LOPGYx+/Cd9I6cMPauvkZgZjk/oAkAIKl/iK986jtBESr07xZulhPt262rsQKrVK5xRS40GjG35MP0cpVIoDQRbqLTj/+PTQSqevnUqcWv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bct4ExGg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1iYj0ES"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4956d1d9fb2so2052965e9.0
-        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 06:44:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785678297; x=1786283097; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uvXixwprFJLlnKdN8GIk4RHMYlK0y98sLKZBpOoa3aw=;
-        b=H1iYj0ESnbzVi2khpFQfnxuDo/hj6yy0IDkUhmAagxrC/t0buB/BuP4lhUnm4Ps1El
-         tiXjkJJL+w2eYxgw7nfF8ME+yjxXtJBYSNnGeigPqoMMlQSZsyNlEugSHGPigsEIbzdm
-         1LBwqy+WSJ1oMK4B7pXPlTGDOUmU5s5ny0FQApck29QmrccRYGVoyXfpZhQcY3TRXhGW
-         41cysmD+qK+IDgaMAW3Y6obRsjWHgm9vlG3t56aCXtPlN+IAIS45xbo3N2aQxCo3lBhF
-         WII4HClZgM2ZN1HMCA6mMiM71icNjIHY8Na0XgJzlHfXSrv0/pfq8ZFQMheqMdBK00K7
-         YKSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785678297; x=1786283097;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uvXixwprFJLlnKdN8GIk4RHMYlK0y98sLKZBpOoa3aw=;
-        b=M1SNRwThAQt8oSuSHD8teYHzDmXbBly3jLdppBXlnZh8zu8m4MZi0L7HcwKr6L73Wf
-         Xwv7XT1YSFAOp/ejoPDrKvrukwbk7tas8l5k75DNAIkWbZ5cksOSdDMlY3AT9YtdVLOA
-         hjuWtf0tn6DTZD0Y483uy+V791ZYACQAImYSz+aCYFwZzkF2PwOTD/Qk/IeaNCkW/q1Y
-         ujFWaRsYLdqBjJotOjaV7jPS4Rodhfz9EQfh083odcuUDZqy8XGCWkI8V3lT+x84RIEI
-         X2IRyfm4e7Q1pTyj53B20L0ShSMJgpxIuHZ9Nh7dRfpyMIT8VSNoOhjhlXlyZzT9c2iW
-         3c3g==
-X-Forwarded-Encrypted: i=1; AHgh+RqFo3fNsTu5hBPC0O3H1GnezbEen76FFBVpqFy1s2rZK9St6CQrVkRfm2/0cbmwWDUlB/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRfKmHzx3BqfEYjhxmJ/K9BB9D2lq3qXr5b4PQnIsbJ9Vxs1Gl
-	y16xsxVA9tdIxha/8FpY3LCPPOYck4xTRHKZzooK5ObWX/q+pk2m8L+9
-X-Gm-Gg: AR+sD12ox+B/CeOcE7q0w0cL3eSlgu3UNDv2M4xda5gho2t7aJjOor2Ja8tIlsKYaSI
-	pPYKubC4yY3ZymbK1n6SUTGkhv/4qLWa0OlTbqUPYJ599qch4gG6kWNx1wKzcCUj2nhdWag+c7C
-	Q7h+URCYHaEFchhMueBOv+V16Sclfk6dqG146CdRbqB82Qlyxnj25C7tlToNThdN8FkaO2wb0aq
-	f0kvTPjG25Qrr1cEKzg4RoiyfAuunYmf/6FWVkMx79xwo1NO4/MKTyX7F3Wr+0IZw4u96VUXirY
-	K0pi0Pq5/qpu1wF6KxZhb64jfSelCADPygGBZ6QrcbdEQqakdsmhp7xyJ2ZeByEb0jWSTOuH62o
-	xViuaNWdHBxGIu0aeUP1PVYxSaGEU/9t15P7o3qmlM4hsKLmgVaS7rj8Eok4nh/WlSp0VPDh0wU
-	xSDM9DIHRyGtCbaF1Yc8U5WKqQCJRPN0sJ+FizRh/sx6doKi4My6gZ1JaHIGkyGi6fosEarMOB0
-	CA3/SeIkv4=
-X-Received: by 2002:a05:600c:5487:b0:495:4505:dad0 with SMTP id 5b1f17b1804b1-4980c68e1b4mr68517975e9.2.1785678296748;
-        Sun, 02 Aug 2026 06:44:56 -0700 (PDT)
-Received: from lima-kdev.local ([85.99.180.157])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807ba8032sm112278855e9.15.2026.08.02.06.44.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 06:44:55 -0700 (PDT)
-From: Kayra Cizmeci <kayracizmeci@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kayra Cizmeci <kayracizmeci@gmail.com>
-Subject: [PATCH v3 2/2] KVM: x86: Add limit check to IDT in __emulate_int_real()
-Date: Sun,  2 Aug 2026 16:44:28 +0300
-Message-ID: <20260802134428.69252-2-kayracizmeci@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260802134428.69252-1-kayracizmeci@gmail.com>
-References: <20260802134428.69252-1-kayracizmeci@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bct4ExGg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30A11F00A3E
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 14:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785679699;
+	bh=QxiERV+W64FsC74zKKtfmIJ5yAmZNdQWDagjEo1LMO4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bct4ExGg1WgTO6fKbWdUIFZrTuCS7BlIr74JEQj1PU/8HeU1amYveI2y3xgMQ8Q7A
+	 HV+Nay9FnPLfO99EsaXZ5AxIrLH3NU/VJ6hfJKNe96L4UpoGPjKF2IjwVADVagB1B6
+	 Fyy+l26SdaFl84jBtetKoT6jug6TaiG67GZ4HDRiJWpTl29HuVFwXd6ysjTkFqJyvq
+	 xP2pgiok+pbvMXFaDjpO5R3GmYpqsOzzIyCiz3rpoo/9Vwu1q004+jx4S0Y7je0QVH
+	 3oUvpo3K+klBlnjOKzlDDfwWhk3sVGr5HgFbQnDJqGjLBS4dzr5MmmbADpWepXQPMY
+	 EW+3hEPr904vw==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so4392049a12.1
+        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 07:08:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq7ZKbziZ1EuJn6OaK2Flc0xAAyoWDnaqMEMQptTroTQHkys0Mgcd5HLG3imCCj1FCJ+BM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOW8d7cFxfXunbvpa48dhhyC2Vc9X+89mVUd/gGp8ZbDa7iqGG
+	LpL+JlV0ZiASRS/PKVil6/3AXQCgnK/5oxPCxpyMGVg1RXBRTyq+5WGWO8cAvhf7WpRLklQ40XQ
+	8HIqmfFfFu++Zr0WVEND+r8z0EJK7FYs=
+X-Received: by 2002:a05:6402:44dc:b0:698:5610:76de with SMTP id
+ 4fb4d7f45d1cf-6a0a7c614e1mr3823671a12.4.1785679698310; Sun, 02 Aug 2026
+ 07:08:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260714072520.2745942-1-maobibo@loongson.cn>
+In-Reply-To: <20260714072520.2745942-1-maobibo@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 2 Aug 2026 22:08:07 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H49xHp+7qn8dXBc91yksGUCoYmuZWwCte3AHSutGRRK-g@mail.gmail.com>
+X-Gm-Features: AUfX_mwkjJhmiaMAimXlH3M5HrdNW6aW2mr8kFkdEi2X-bhkAtKWCOpI-4aJPmk
+Message-ID: <CAAhV-H49xHp+7qn8dXBc91yksGUCoYmuZWwCte3AHSutGRRK-g@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] LoongArch: KVM: Harden interrupt injection
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently there are no limit check at __emulate_int_real(),
-and normally greater numbers than the IDT limits needs to
-cause a #GP, but currently there is no limit check for doing that.
+Series applied, thanks.
 
-So add a limit check for IDT to catch greater numbers than the IDT
-limit and if the number is greater than the IDT limit inject a #GP.
 
-Signed-off-by: Kayra Cizmeci <kayracizmeci@gmail.com>
----
-v1: adds IDT limit check to __emulate_int_real(), link:
-https://lore.kernel.org/kvm/20260608123503.23298-1-kayracizmeci@gmail.com/
-v2: fixes the sign-extension of INT n, link:
-https://lore.kernel.org/kvm/20260608134642.25849-1-kayracizmeci@gmail.com/
-v3: rewrote commit messages, split 1 commit into 2 commits and rebased
-onto current mainline.
+Huacai
 
- arch/x86/kvm/emulate.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index ec3138801bb7..68d099131d47 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -2023,7 +2023,11 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
- 	gva_t eip_addr;
- 	u16 cs, eip;
- 
--	/* TODO: Add limit checks */
-+	ops->get_idt(ctxt, &dt);
-+
-+	if (dt.size < (irq << 2) + 3)
-+		return emulate_gp(ctxt, 0);
-+
- 	ctxt->src.val = ctxt->eflags;
- 	rc = em_push(ctxt);
- 	if (rc != X86EMUL_CONTINUE)
-@@ -2041,8 +2045,6 @@ static int __emulate_int_real(struct x86_emulate_ctxt *ctxt, int irq)
- 	if (rc != X86EMUL_CONTINUE)
- 		return rc;
- 
--	ops->get_idt(ctxt, &dt);
--
- 	eip_addr = dt.address + (irq << 2);
- 	cs_addr = dt.address + (irq << 2) + 2;
- 
--- 
-2.53.0
-
+On Tue, Jul 14, 2026 at 3:32=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+> API kvm_vcpu_ioctl_interrupt() is mainly to used to deliver interrupt
+> from user mode, and internal APIs kvm_queue_irq() and kvm_dequeue_irq()
+> are used in kernel mode, also moves IPI interrupt handling within lock
+> protection.
+>
+> Also this patch replaces kvm_err() with WARN_ONCE() to avoid noise
+> kernel log.
+>
+> ---
+> v4 ... v5:
+>   1. Add one new patch and fix uninitialized stack variable issue with
+>      dmsintc.
+>   2. In patch 2, set return value with 0 to prevent information leak
+>      where return directly with non-aligned address in IPI irqchip.
+>
+> v3 ... v4:
+>   1. From AI assist, replace kvm_err() with kvm_pr_unimpl() rather than
+>      WARN_ONCE(), since host may crash with WARN_ONCE() when kernel
+>      parameter panic_on_warn=3D1 is set.
+>   2. Add one new patch 3 which returns directly when IPI address is not
+>      aligned, rather than only print WARN_ON_ONCE() and continue to run.
+>
+> v2 ... v3:
+>   1. Split the patches into three smaller ones, the first patch removes
+>      old default case and kvm_err() since it is impossible to happen.
+>      And the second patch replaces kvm_err() with WARN_ONCE().
+>
+> v1 ... v2:
+>   1. Add border check with ipnum in eiointc_set_sw_coreisr() and
+>      eiointc_update_irq(), so that injected interrupt vector is valid.
+>
+>   2. Move IPI inject and ack within lock to avoid contention in
+>      ipi_set() and ipi_clear().
+>
+>   3. Add kvm_arch_irqchip_in_kernel() check in user mode irq injection
+>     in function kvm_vcpu_ioctl_interrupt(), contention of user mode irq
+>     injection is assured from user mode VMM.
+> ---
+> Bibo Mao (5):
+>   LoongArch: KVM: Fix uninitialized stack variable issue with dmsintc
+>   LoongArch: KVM: Return directly when IPI address is not aligned
+>   LoongArch: KVM: Set default MAILBOX access size with 8
+>   LoongArch: KVM: Replace kvm_err() with kvm_pr_unimpl()
+>   LoongArch: KVM: Use internal API to deliver interrupt in kernel mode
+>
+>  arch/loongarch/kvm/exit.c         | 16 +++----
+>  arch/loongarch/kvm/intc/dmsintc.c | 17 ++++---
+>  arch/loongarch/kvm/intc/eiointc.c | 32 ++++++++------
+>  arch/loongarch/kvm/intc/ipi.c     | 73 ++++++++++++++-----------------
+>  arch/loongarch/kvm/intc/pch_pic.c | 12 ++---
+>  arch/loongarch/kvm/vcpu.c         |  5 ++-
+>  6 files changed, 80 insertions(+), 75 deletions(-)
+>
+>
+> base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+> --
+> 2.39.3
+>
+>
