@@ -1,95 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE52DF128
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 12:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1BC3B8111
+	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 13:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785672127; cv=none; b=ZXc/uD5g9gkp2PSDHc93iTGDjkUCzVW4D9ACW6A7fw0nGS/p0sU5oHih5Ff+O4iZZPsV3cRp1eHg2bXxvXSunPU2KtebPOP4p1tAIDcnPUxu4I4frphkbuONa6vuhC1xpEWw8VZ+Zs0pbAYPk5aeWG2HaGF83odTom7QZ9s6DFE=
+	t=1785678296; cv=none; b=eb2QjDtuWCqhjGxk0ZqYDDnTrrdYT+THb/0L9v3SVyZfSm1oDQVaDso008YzXrV5rYxMW6VDfHtrc7HN4L113oGln2d0kC5kUIivBBPajlltIi4S8Y9wAf00WEouN2XSOaXWia57GvGTJUjACpyzFp+D+wYp3+dN0eEY52ZUrWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785672127; c=relaxed/simple;
-	bh=20OVG5ErC74HkkynhRenCb5S/w+tVliz6zl+6H0LziE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NQkOV5W3QY6b7ripHMQoiLMyX//qMj8xzu9l0+tCqKEYKuJeLa8C4R4pExl3ciz9h0c2B+Ys84TZEJJ5Gp9avpUdX0fMcsPnia9uaWaFjBYSun3mBMtefZncbcMna8JStxGbXaA8CzgAWmBOvOD/Ad1Drf0pjmXBzDU/HLqhF7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jcb3NB3q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785678296; c=relaxed/simple;
+	bh=ocNLif/0rlmf3UctRPXm5KVBq1hdZW3njDekld5qclc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XwiF6SHCu0HDczehnZYYw3vvkDPX6A8bSsLTx623d2v4Ws6+oGO6AtX1CZ1mdISP404DAzhstuQYon22afsmyBR3Dt9l+6Wg9c2hmvsbffQZTy2aVOF1Zc0BcSb1Z4rMrXORUfRqD09N4kTqm2wzDhJGkxo1dlb8BIFJ7zCulJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SATI3I82; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jcb3NB3q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933FA1F00A3A
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 12:02:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785672125;
-	bh=hG+6Cf31gLh5W2uTxuxW/+rY4a9XbZb2q/SCpe0oMgc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Jcb3NB3quz5AZXM3/mjuw4m8MEQpYjFfexNrOzVqrtfEB19+Wf4buOaQI95VyeiPW
-	 aQ7AQ+RqnoCdO/fkLnwrPQ8gb2sSH3JWZtYCky9FZjkTNB59VuwWM06ZIX+Le/gnG9
-	 s/Dh9Y+EHN4nUyI3DXNB7H3fjsa5rrX4Vr++5Eq//CLPB7f0MbHUrq+ywqYs6IK2d1
-	 TkFl5iW4fC1jWX/FDqkiV9KsN5BC8YmnSg6bjH8PcTlDZFvp3lTU8HFsfynRDkovDC
-	 qpCz70fZC5vefzLPofW4qkPQdtAnp745hbNcXSHD1Q6ocoYPSVLIAj0cQn9BuFLYNj
-	 QpIjIvRQEDCaA==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6a0de062db5so463345a12.1
-        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 05:02:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rp6B8Fi+xNNTLjnc9audr1oRIWfFRAi9Yp5J1wiHg7vg9lGfisQaKmRcbYW0aEiceZrSGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVEx+BkR9wV6xPeWdKZHT6ZnQJr9AVNTxzpQjt+4P307fjCbK4
-	JCHxtDBUpzk2XVYJU+pWkmodHgDju0QIdgAFUrlimEGYr3z5RiMZcpDjan9WsjZkmBiQJtGSRAR
-	oGLKsGLh1P3kWR/R7kCGfc+ei4lqx42g=
-X-Received: by 2002:a05:6402:3250:b0:6a0:eb:ae41 with SMTP id
- 4fb4d7f45d1cf-6a0a7c850ffmr3328472a12.10.1785672124284; Sun, 02 Aug 2026
- 05:02:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SATI3I82"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954c08a7c8so1760895e9.3
+        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 06:44:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785678291; x=1786283091; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gx+lrTmOnbSyTafGzP658UcqNuptTVpf6Q722e+7sx0=;
+        b=SATI3I82IzJCctUQYII/S8cCAQeEAA1Xnl1cU/mh3hZNPcKFQDuYa0+8S5JG4GjoUn
+         4CcGTZotbia+czASqga/DmG2N8RWGGpz3TYD3H4huHUAYxRuojqKbhOzxfxNF+DFVQMJ
+         RmIo4MC8rufUCeMHOoWClJtM2TuRnMfLDUZhr2qllXYVjE6uXLMo3RI/as7oLfr0CjbS
+         pz0SUzjx0w6PpGMIVc7nuW/dJX/1fnGOAMPTvmrs/7IAYASNM/CF1V3KarQT/J40p4nG
+         osGoGwngPPIgA/DTDh1oEr3eNLxqURRsVcH9SK9N0CHdgxx3SSYUXrXHYH8AZzHlDoq3
+         hx+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785678291; x=1786283091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=gx+lrTmOnbSyTafGzP658UcqNuptTVpf6Q722e+7sx0=;
+        b=J5cf0cARto2Osys2v9r8+S3nAxt+3EjfJVFp6rjdPLP0viSU5tHTD0tDIoeUuOt76q
+         rpYugk73RYL+57Et/0x1fNC2vty3EvG4Ohf4X68pc9xX2s1i2vBFnuPHcSqNAlr/os6O
+         WuKRNMW996bZUNRTSi7edj6iY2LjtJun3DoUlvovS9AvjbHXBrawkwOHist428k51kA/
+         1eSUCYjHEWXB3EOhUFc2UPj9gjNucocHxOS5A1/ZFUwhp0gyI/KNzo1EgrsgIPhovN0g
+         pBEiEhNOsD4D8B4H9z+VeViDVgWty2jSzOpzyYLHGmZRsnB4g5iQerQnlx8yadQhA81K
+         Tf+A==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7DdCo9HeTbse7+DtH9u9cOh1fYRagnxpU2PaHuNKtC+F/MovxevqzlZhZtH032mjsOiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgagFX1C05XwkBwDnHA+w8BdTxBTU2erpvsPSDmaL4Xvgd9tDu
+	yfvbR55Fq5dP9ihZCGjf3End7WVt6+spwpgDcxG0JeHGd8nlKmCMnBaF
+X-Gm-Gg: AR+sD11X7a4/TE0k41TAgaor1/tVFkY75OxnvQ0yBSowMU2ot4NhDqCUCFcWAUr9/mj
+	54CxvKr5wr/Q8ad4+uDnVfh7I6lD9UhD110EoPHsjqe5xvT7sTWr1fXXQ94k77tP24D301uCLZC
+	y2uJRQlZHCdRZASjCnbAEU3WGjsD7G1nzlvG0j+BwzwRmMNY9na7QNy2qNl1U4x2Nzm9FdJFD+d
+	OYmT4UW2HHmlMOG0/+Q0NDFAoRXgPu+wTh1+C1jmDURRTzlReagu/GDT40OsXEmov/EJEAYE7pl
+	sho4rs9B/vlq9XaIvHgN0/dUdaw8aBrvpCEGJSe7eiYmsQRjc0qecd1MtR5wawe+0l713bWVsD/
+	XYIxjGVlnkR1eUQRwWzScGgZS1J2pnOnmaGsnkkcjm3qNdy96zuv6t67PaADqzqOcOBI4Dtlud9
+	Ith1TwQNySMLnTtrzAPKoPJktOTCgak+MT0do85sk6WtHXIR9/UCddHk4QfgaGGrSGdpgmv6wQg
+	0jrbmeX7fU=
+X-Received: by 2002:a05:600c:1d21:b0:495:6713:9ae2 with SMTP id 5b1f17b1804b1-4980c66d99bmr81513185e9.1.1785678291242;
+        Sun, 02 Aug 2026 06:44:51 -0700 (PDT)
+Received: from lima-kdev.local ([85.99.180.157])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807ba8032sm112278855e9.15.2026.08.02.06.44.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Aug 2026 06:44:50 -0700 (PDT)
+From: Kayra Cizmeci <kayracizmeci@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kayra Cizmeci <kayracizmeci@gmail.com>
+Subject: [PATCH v3 1/2] KVM: x86: Fix sign-extension of the INT n vector in the emulator
+Date: Sun,  2 Aug 2026 16:44:27 +0300
+Message-ID: <20260802134428.69252-1-kayracizmeci@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260715100640.1454413-1-cui.tao@linux.dev>
-In-Reply-To: <20260715100640.1454413-1-cui.tao@linux.dev>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 2 Aug 2026 20:01:53 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7NArGzQJX-h9U5Wr5JjkKoTAc=4Ug6z9FeR5yDy6PSTA@mail.gmail.com>
-X-Gm-Features: AUfX_mw4We0MyYo-vIPcV8d8ksM5N3MkaFbWWCQgB2Ilg1yNIOy3V3f2MIHYSZ8
-Message-ID: <CAAhV-H7NArGzQJX-h9U5Wr5JjkKoTAc=4Ug6z9FeR5yDy6PSTA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] LoongArch: KVM: Fix timer restore issues
-To: Tao Cui <cui.tao@linux.dev>
-Cc: zhaotianrui@loongson.cn, maobibo@loongson.cn, kernel@xen0n.name, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	lixianglai@loongson.cn, cuitao@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Series applied, thanks.
+Currently the INT n operand use SrcImmByte which translates vectors
+above 127 to negative numbers. And this negative numbers gets to
+(vector << 2) and from there vector are handed and without any
+warnings.
 
-Huacai
+Use SrcImmUByte so the vector never translates to negative.
 
-On Wed, Jul 15, 2026 at 6:07=E2=80=AFPM Tao Cui <cui.tao@linux.dev> wrote:
->
-> From: Tao Cui <cuitao@kylinos.cn>
->
-> Fix two issues in kvm_restore_timer():
->
-> Patch 1 fixes a one-shot timer firing immediately after migration because
-> vcpu->arch.expire is not migrated.
->
-> Patch 2 fixes a division-by-zero crash when a guest programs a periodic
-> timer with a period value of zero.
->
-> Both are in the same function (kvm_restore_timer) and are sent as a
-> series for convenience.
->
-> Tao Cui (2):
->   LoongArch: KVM: Reload one-shot TVAL on migration destination
->   LoongArch: KVM: Prevent division by zero in periodic timer restore
->
->  arch/loongarch/kvm/timer.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> ---
-> Changes in v3:
-> - Add patch 2 (division by zero fix, found by Sashiko AI review).
-> - Reuse the existing now timestamp instead of a redundant ktime_get().
->
-> Changes in v2:
-> - Move the expire check before ktime_before() (suggested by Bibo Mao)
-> - Remove the old else-if branch that was one-shot only.
-> --
-> 2.43.0
->
+Signed-off-by: Kayra Cizmeci <kayracizmeci@gmail.com>
+---
+v1: adds IDT limit check to __emulate_int_real(), link:
+https://lore.kernel.org/kvm/20260608123503.23298-1-kayracizmeci@gmail.com/
+v2: fixes the sign-extension of INT n, link:
+https://lore.kernel.org/kvm/20260608134642.25849-1-kayracizmeci@gmail.com/
+v3: rewrote commit messages, split 1 commit into 2 commits and rebased
+onto current mainline.
+
+ arch/x86/kvm/emulate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index b566ab5c7515..ec3138801bb7 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -4314,7 +4314,7 @@ static const struct opcode opcode_table[256] = {
+ 	I(Stack, em_leave),
+ 	I(ImplicitOps | SrcImmU16 | IsBranch | ShadowStack, em_ret_far_imm),
+ 	I(ImplicitOps | IsBranch | ShadowStack, em_ret_far),
+-	D(ImplicitOps | IsBranch), DI(SrcImmByte | IsBranch | ShadowStack, intn),
++	D(ImplicitOps | IsBranch), DI(SrcImmUByte | IsBranch | ShadowStack, intn),
+ 	D(ImplicitOps | No64 | IsBranch),
+ 	II(ImplicitOps | IsBranch | ShadowStack, em_iret, iret),
+ 	/* 0xD0 - 0xD7 */
+-- 
+2.53.0
+
