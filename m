@@ -1,219 +1,215 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5ED38330F;
-	Mon,  3 Aug 2026 12:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F2A372046;
+	Mon,  3 Aug 2026 12:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785759399; cv=none; b=OEr83qHv8iiQssT8zkd/wIzXSLs7Omi2guudCd+3j5odbWUhVj6KxMlBQk4zWMYGe0V/acPaqEuDbX0DLRuRmBrcxH2+24ndV2uGSjFIMsmCE1x5tboikMHDgYIi57YZZAQJw7/gFYOpgTJpVuSomj2mJA4jfak28cF5wgM5Fio=
+	t=1785760145; cv=none; b=XmdDKKL2q1GqGZ5qMFWNhrbFBn/fNA44DHUE7FVawkkrZ4G9hgllNxYE1BfD0vP557ILqVu4j4UZkcE91p5/Oz/zw1ow/x++5NpmdxP39cYhp/2uADXYTqKzly+0yX3qz8df9dZ/NbnWf3gOLMTO5HvvlM2oxWcR7LWds783gXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785759399; c=relaxed/simple;
-	bh=DhaV9KWGsVIjXjQAu8mkjhNIhjShnX6ggRWIGRejfek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UZ6iytOFHfCaayLK836yxtSHc50NBbXAQ8ZOgOw4SaBplgW/6oA7NUnpISa/k2c7cvVA+bEqk+Az+xPwyW3qPUp2TVZYzCF8eKjL8nnJFb9e7apuOysEpzHhBnOoD2yY62azw6dM1+OnsSEgb97fKr0zc9J3FbmAHgF3UTAVZJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhilxiHV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785760145; c=relaxed/simple;
+	bh=OoL1As3dEZH4IFoCMmqEOhBx7078X8VfvoTX/lO8FMY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nd1pFCVsBBbBtq8EHcIWpOzSX72NBeq+7BoeXVjIAUcbUXOmzSjSE51oEYLO73R4IFcLBf/X06Hl5l4LQ8ak0t2r6cDvgSuvKtRIUf0S5+6rS3W9LEI5mt48fFjYVhU+e2li7un6ezH1e+sQd16AKGww+fQ631AzYrGPAXJbrbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2u5WNve; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhilxiHV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0933A1F000E9;
-	Mon,  3 Aug 2026 12:16:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2u5WNve"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE001F000E9;
+	Mon,  3 Aug 2026 12:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785759398;
-	bh=55xmHsjPqzaGV0ly1LUi624NBcwUFcBTGLs//q+Aif4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZhilxiHVcGglLBMt5PIQz/4XhyzmurGW7f7hDst5wFgXLkEJ7Ql4j38SUeUjDtxpo
-	 iujYsQK51eOkQ+gMwj9rS2dVQ7eOYOVNnhbZESsOAcqCXH+mx1d/0Fdd9WEzcoiI8c
-	 vDP9WGdcT7/uIbYeu3lbftJzQrqcB1xe98RAX036DKn6XJXwFInPs1bs1Ka5WOVZcj
-	 h7OmESiRPlzjasLU3dDExgLYViNgbcUhxF4UfAyoDE9r+H+KGPx+tuBH7/2OUI0/u1
-	 /x/TJ2Xr65rD94DLz9eth0zXRCVGm6UE64DiY5TolS1I3TuHsCYsINlPMG/kPcDX+W
-	 4IjSrT+t9CKJg==
-Message-ID: <bf97ed0d-571f-4c61-b761-5b45d435c4c2@kernel.org>
-Date: Mon, 3 Aug 2026 14:16:33 +0200
+	s=k20260515; t=1785760143;
+	bh=d0JxQ8lHSv0NhahRmDmv7DHjVItDMVG5WIkT3vPSZ4Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=K2u5WNveD3tarc9m99nLHttoafzVZJMWXeZ1mKL9CXbB+AeI9MsFnx6xyQypxH1bv
+	 qPxC1XHer0BhzjNjHvwV19I/TWMPd2oWmuetuVVShhvWay3zLLwtOqs11Pg0B4xzBK
+	 VQTS2rO4ssP7ieC6Nf6PDSs6DVIo/HmEH516Z9uyLPzQ47ZhWpsxdF3zygghVx3tnq
+	 gFI/u/+Gz5VY48ZlXfC9+oKyn5t3RnUuPPH3Kdk7TuKza8YZKrOTtP5JKUp0LDXHy8
+	 xHzE9C+Mo0UH1x68foO+/wP81EgN6hPEEVjnIUtShDNdA55CxFqOH3hDeyCi2x2tdM
+	 RqVrw7yDI6bIQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wqrmv-0000000BkPQ-1W3i;
+	Mon, 03 Aug 2026 12:29:01 +0000
+Date: Mon, 03 Aug 2026 13:29:00 +0100
+Message-ID: <8633wvcrqr.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: Re: [PATCH v15 19/37] KVM: arm64: CCA: Activate realms on first vCPU run
+In-Reply-To: <20260715142841.80544-20-steven.price@arm.com>
+References: <20260715142841.80544-1-steven.price@arm.com>
+	<20260715142841.80544-20-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 1/3] mm: export variants of vmf_insert_pfn* for use
- with pfn_mkwrite()
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <20260731164341.1109827-2-pbonzini@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260731164341.1109827-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 7/31/26 18:43, Paolo Bonzini wrote:
-> Right now, users of .pfn_mkwrite() have no way to create a PTE
-> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
-> will have cleared the writable PTE bit, users of fixup_user_fault()
-> will see a read-only PTE and have no clue that the page needs
-> a *second* fault to reach its final status.
+On Wed, 15 Jul 2026 15:28:21 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> Handling this in fixup_user_fault() is problematic: the information
-> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
-> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
-> knows how to retrieve it.
+> Use kvm_arch_vcpu_run_pid_change() to check if this is the first time
+> the realm guest has run. If this is the first run then activate the
+> realm.
 > 
-> There are actually some preexisting functions that suggest how this
-> is supposed to be handled, namely vmf_insert_page_mkwrite() and
-> vmf_insert_pfn_pmd().  Adjust mm/memory.c to export two more
-> functions: vmf_insert_pfn_mkwrite() for the common case where
-> vma->vm_page_prot is okay, and __vmf_insert_pfn_prot() when
-> really all parameters are needed.  This makes it possible
-> to fix drivers that use .pfn_mkwrite together with
-> vmf_insert_pfn() and vmf_insert_pfn_prot().
+> Signed-off-by: Steven Price <steven.price@arm.com>
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  include/linux/mm.h |  4 +++
->  mm/huge_memory.c   |  2 +-
->  mm/memory.c        | 75 +++++++++++++++++++++++++++++++++-------------
->  3 files changed, 59 insertions(+), 22 deletions(-)
+> Changes since v12:
+>  * Fix commit message
+>  * Change realm_state checks to be >= REALM_STATE_ACTIVE to avoid a dead
+>    guest being revived by kvm_activate_realm().
+> ---
+>  arch/arm64/include/asm/kvm_rmi.h |  1 +
+>  arch/arm64/kvm/arm.c             |  6 +++++
+>  arch/arm64/kvm/rmi.c             | 45 ++++++++++++++++++++++++++++++--
+>  3 files changed, 50 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 34c79b5fcb9b..33c7de36b214 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4551,6 +4551,10 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn);
->  vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn, pgprot_t pgprot);
-> +vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma, unsigned long addr,
-> +			unsigned long pfn, bool write);
-> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
-> +			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
->  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn);
->  vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index b5d1e9d4463d..2f4dcaa819b7 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->   * @pfn: pfn to insert
->   * @write: whether it's a write fault
->   *
-> - * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
-> + * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
->   *
->   * Return: vm_fault_t value.
->   */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 40997a26846f..7b950be8f511 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2718,6 +2718,34 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  	return VM_FAULT_NOPAGE;
+> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> index 5461c49bea4d..5cb99c187202 100644
+> --- a/arch/arm64/include/asm/kvm_rmi.h
+> +++ b/arch/arm64/include/asm/kvm_rmi.h
+> @@ -96,6 +96,7 @@ void kvm_init_rmi(void);
+>  u32 kvm_rmm_ipa_limit(void);
+>  
+>  int kvm_init_realm(struct kvm *kvm);
+> +int kvm_activate_realm(struct kvm *kvm);
+>  void kvm_destroy_realm(struct kvm *kvm);
+>  int kvm_realm_teardown_stage2(struct kvm *kvm);
+>  void kvm_destroy_rec(struct kvm_vcpu *vcpu);
+> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> index 534d33b7c67a..df33322b8fea 100644
+> --- a/arch/arm64/kvm/arm.c
+> +++ b/arch/arm64/kvm/arm.c
+> @@ -1034,6 +1034,12 @@ int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+>  			return ret;
+>  	}
+>  
+> +	if (kvm_is_realm(vcpu->kvm)) {
+> +		ret = kvm_activate_realm(kvm);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	mutex_lock(&kvm->arch.config_lock);
+>  	set_bit(KVM_ARCH_FLAG_HAS_RAN_ONCE, &kvm->arch.flags);
+>  	mutex_unlock(&kvm->arch.config_lock);
+> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> index 94776a9262c9..53b5b18f2275 100644
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -687,7 +687,7 @@ static int realm_set_ipa_state(struct kvm_vcpu *vcpu,
+>  	return ret;
 >  }
 >  
-
-
-[...]
-
-> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma,
-> +			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
-> +			bool mkwrite)
-
-(We indent two tabs, I assume vmf_insert_pfn_prot uses 3 for legacy reasons after
-renamings)
-
-Hm, having a __ function that looks like an internal helper exported to drivers
-and then not adding kerneldocs.
-
-Why not simply have
-
-	vmf_insert_pfn_prot_mkwrite()
-
-And add proper documentation?
-
-I guess we could also turn vmf_insert_pfn(), vmf_insert_pfn_mkwrite() and
-vmf_insert_pfn_prot() into simple inline functions in the header. And I'd even
-say that a single excessive documentation of vmf_insert_pfn_prot_mkwrite()
-might be sufficient, and keeping it very short for the wrappers.
-
-
+> -static int __maybe_unused realm_ensure_created(struct kvm *kvm)
+> +static int realm_ensure_created(struct kvm *kvm)
+>  {
+>  	lockdep_assert_held(&kvm->arch.config_lock);
+>  
+> @@ -793,7 +793,7 @@ int noinstr kvm_rec_enter(struct kvm_vcpu *vcpu)
+>  	return ret;
+>  }
+>  
+> -static int __maybe_unused kvm_create_rec(struct kvm_vcpu *vcpu)
+> +static int kvm_create_rec(struct kvm_vcpu *vcpu)
+>  {
+>  	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
+>  	unsigned long mpidr = kvm_vcpu_get_mpidr_aff(vcpu);
+> @@ -893,6 +893,47 @@ void kvm_destroy_rec(struct kvm_vcpu *vcpu)
+>  	rec->rec_page = NULL;
+>  }
+>  
+> +int kvm_activate_realm(struct kvm *kvm)
 > +{
-> +	/*
-> +	 * Technically, architectures with pte_special can avoid all these
-> +	 * restrictions (same for remap_pfn_range).  However we would like
-> +	 * consistency in testing and feature parity among all, so we should
-> +	 * try to keep these invariants in place for everybody.
-> +	 */
-> +	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
-> +	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
-> +						(VM_PFNMAP|VM_MIXEDMAP));
-> +	BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
-> +	BUG_ON((vma->vm_flags & VM_MIXEDMAP) && pfn_valid(pfn));
+> +	struct realm *realm = &kvm->arch.realm;
+> +	struct kvm_vcpu *vcpu;
+> +	unsigned long i;
+> +	int ret;
 > +
-> +	if (addr < vma->vm_start || addr >= vma->vm_end)
-> +		return VM_FAULT_SIGBUS;
+> +	if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+> +		return 0;
 > +
-> +	if (!pfn_modify_allowed(pfn, pgprot))
-> +		return VM_FAULT_SIGBUS;
-> +
-> +	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
-> +
-> +	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
-> +}
-> +EXPORT_SYMBOL(__vmf_insert_pfn_prot);
+> +	if (!irqchip_in_kernel(kvm)) {
+> +		/* Userspace irqchip not yet supported with realms */
+> +		return -EOPNOTSUPP;
+> +	}
 
-If this becomes a dedicated symbol, why not GPL?
+This could race with the irqchip being created on another CPU. Also,
+an irqchip being in kernel doesn't mean it is ready, and I suspect
+you also need to check that it has been initialised.
+
+> +
+> +	guard(mutex)(&kvm->arch.config_lock);
+> +	/* Check again with the lock held */
+> +	if (kvm_realm_state(kvm) >= REALM_STATE_ACTIVE)
+> +		return 0;
+> +
+> +	ret = realm_ensure_created(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Mark state as dead in case we fail */
+> +	kvm_set_realm_state(kvm, REALM_STATE_DEAD);
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		ret = kvm_create_rec(vcpu);
+> +		if (ret)
+> +			return ret;
+> +	}
+
+If the realm is dead, shouldn't the KVM view of death apply as well?
+
+> +
+> +	ret = rmi_realm_activate(virt_to_phys(realm->rd));
+> +	if (ret)
+> +		return -ENXIO;
+> +
+> +	kvm_set_realm_state(kvm, REALM_STATE_ACTIVE);
+> +	return 0;
+> +}
+> +
+>  void kvm_destroy_realm(struct kvm *kvm)
+>  {
+>  	struct realm *realm = &kvm->arch.realm;
+
+Thanks,
+
+	M.
 
 -- 
-Cheers,
-
-David
+Without deviation from the norm, progress is not possible.
