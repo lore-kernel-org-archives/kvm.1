@@ -1,248 +1,185 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1F3377ED7
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 14:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766949; cv=pass; b=LH4aHC7sBNAD3oq8WYtITVVWLU0NU49CJOGXAmFNilYx3VA6sC5b2Y5BswFN2YblXYO2AdfsM9Qz6d3bq9Log2g0JqasNL4+YA6hGLwaR2sIhZ825KFc7the3c3D3cVhvdJBvFYxKhsJbuJFhFPcjAoDIOqaIGix9f0Ou9UHS34=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766949; c=relaxed/simple;
-	bh=BnEgOQvG5N65DRQI21tX00Ztj1aK3tL2lBUHc1cQ/rg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dvQoZrjTUwb9W+YTlLMn4wnOxDmuUB03mXPoDHW5XVvj+LwrPrNkXKDWONzgDKCRFUb179fdI1lmAPsKR+DehWQstfE/sgEbfso6mnabfO7KcY9B6yq0sZzGr9l8c/t4tb84qI97PXQXv7lWncWY6/eK+515xYzucFKllV5AHTo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b=CG7Spmv1; arc=pass smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA9040B0EC;
+	Mon,  3 Aug 2026 14:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785767432; cv=none; b=Ch6d0/FgDKiRC2IO2A7UGLoLCZG3w/Z0TMluJExjUkhMiN2C7htdYk5BsXkGgisws9nRxJ4MfObqZ7GpS5C0Wfh0OrSJb15wiPwt89l0+QdS2FpGMjX0ND2KvRpS8zUx6UpjbySCQg/ZB8gCIf6et5nIVZMBt9lCdpv3DYCQN/k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785767432; c=relaxed/simple;
+	bh=5mYxHgt8oBcGMml1lqbC7u5Z0EuS9MSylv5reSNBfWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HRspERpIPSvQYInjWP4l/xlaaqoWvS34LAi74ijBhpNArYhSghL+X06ZD6WV1052mV4QvoW1lcXLk3a7RV9pdk8uYjv5wCFkMXc/ZWImQHLaQp5FUb9r2osNNEiAGe3gS50uhp0Wcd2Retj/szyvoU9V3OabQ+xsXERC1fsOVWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Se+z14Pr; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault.org header.i=@brainfault.org header.b="CG7Spmv1"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47f9ab7ee38so1785725f8f.2
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 07:22:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785766946; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eIaO1uGgvhcpJ1V59GrtOh/lrw76r37GnOj0WUsQ/ZhgZj7NGl3mtKBSifD+eqvBS+
-         BcoqFQ9vrTGkESaW9hNRQNHnNY19aRDsBlfQ5SvYxyxC9xNpQK71QLAAmim5VvDlZ8vd
-         0AnjE23R1iZOMrOwB0e1uEEZ9+0l1a0W5njtO/3YVCRYBWiOo9SfLRgrK5nKwidenNqU
-         7jQF9fmLbZrO7f7ds2D+Z7bHSrxtA4U7XkgyzXgWJFM0t/XewbBFS4refUSJkKigO7E9
-         e5w4Nd7qtzaOOHgqfNG2gVeT7lD9x9Smep4sch5dXZF7VpvPZPMSWkVyjLtDLTcbyOBH
-         5YoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nnW4RZTqOdHnNX2YCN/ivfsmi8KlSc6lQLWkmG08CIs=;
-        fh=PLGOSCTkZZSBA0RJEpb70nza/CuIyRoDoy/6NABDy1s=;
-        b=Mel0mZHsIk0WfJickkTq6XhvM6mU4FDN1HS//7rGmR+xWJIvVvlRAzA3Xaxa4Nor/Z
-         8Is2zIZl1ejGeKjVKlBy9cvnObU+xKlxq2y2KCjbpNdEB6yoA/7aP7iWXq9wNT4AR7CL
-         Wun+irQ6jk3IoAYfHDpJlMUOQ/sBxMsKu7OPLaopZ0ialg4uhYfDULVNkWHSi7bpQe8F
-         0lm1TBDYMr1LM3Gmp9SIrCF2fzouRF9PBjARTJ6HcHHlommY1P9l/UHByOnKR5JTl9hT
-         mf7tYHzTylnlIg44sUb7oPPY8Vzij6/9N3c/wuxDF4BVAfLuE1+Dyf2Y99ewlAetViJS
-         aMjg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault.org; s=google; t=1785766946; x=1786371746; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nnW4RZTqOdHnNX2YCN/ivfsmi8KlSc6lQLWkmG08CIs=;
-        b=CG7Spmv1vi9sHtVatdjUvU0qmUaaH0mFZOk/ysjYwHFTAQUONUwemjCPYBnxIX7z3A
-         On4UttoH3kBc+n/mrDzC3X17KKUoEZbIM6oW5tNkO4iez6UpKdXn3gh+E5deBTYETUTL
-         iOSSRovPY0Tl+OF94ivYa8DsVHhOD8/Cx7hnaj057/q9/FrmFQ5zI1H5QaXrCOvH04pG
-         UfX+mzK94NCuaZ8RHHahClIopp7udt88SYlUsGHX3k3bZEyXvBYS+y4KH21itj/1OZ+e
-         udwt4Sra8KtO/xK1tT1w7mIAO09fn+VNwbqb9GC1o1Y1S546f2EpIN/RcMg75gu7Meo7
-         scXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785766946; x=1786371746;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nnW4RZTqOdHnNX2YCN/ivfsmi8KlSc6lQLWkmG08CIs=;
-        b=c209llr/LTrYAyFXPgA7LOrBUkG5onCJeoc4yG18hqs4toc2IbzPrTNk5IavoXot7P
-         wy7qWHJ5auuQ0PiwB94uc/ODxfimpsCsR1/JYIXKfwTtvua2AAmtFEfSQDVQEHC/ATiw
-         t80tARgGlXo6qNdLu6EnhQZpMgi/S8yX0AtnfubtNKr6AIdpg0OjFPgHXe9qZ48Urw/B
-         tr+1NUSAQOv0VJDvk+EXsEN2E6chUJWxQyHeVEWHtIl0IX931xvKTepi+uCkABxVhAfD
-         VeWE9vCx+Sts1Iblhj35hXs+Iz9v/ZkDuHYbKm46mF/04g/0iHaZamvuTvf0WcE0KJrV
-         LePQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoHfXnR3GHV8XrSomaTHaVJnH737e9FL2/PVkmBhNZB5zk0Z6pGRv9pLWrSUJRSP5wgR7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkkXh71Gm5Ydk5Okwbzm0aSA5CPUfyzSvPsLj/mHfsL/Z6aqBl
-	AyQo/xiIJYyB4hRkZrkiZW+f6j+0UbB7VwcLbmmHbJaFqD+POST0LuZbNeR0wjkJjohHsbYL4w5
-	jRASfHjm6nQ8eI50ciV7CHmY+FCvXz+9rvPmkIBcQxQ==
-X-Gm-Gg: AR+sD13qqcPSAw5vo490yKyOCxBV9Eyjve+SjZ0hBkoqe2kT32qCqGA8/MUMjSpF4Dx
-	dj1uRDQ2CbxMUtI0fvu9vOH+bAecMbQ508e1eG7HXATe556gTV8fHjQLYzY7sOdQ2zwDQsNMhmQ
-	ET6ZrnDevZaHfdZty/gKv5KtxlEU1ML7vEEaVKqUyZlIAW7JKdUAxe8aULUFyPUPXz2Mn3dR76h
-	dMprjHGTLKyf1BxwuNaV1LM5thGm9yqAddRXW9A5li8jS3YaaTrAYIwhLdqfTg1+De/p3VZz5yI
-	lFVl0MMNVsM/RsNfUU3IIH0CSRLOQz6XIKhbQ/NM2/Gh3u46+S8XE1wlaiWrnNZdXcl6kvMY/PG
-	D7Apy6Q0KuJ3xjZEjeC6P9nywgWvG3ule+/ihoTScPqxh95OuT0vGwtBj7HrU0jjI
-X-Received: by 2002:a05:6000:2209:b0:47f:9822:d99b with SMTP id
- ffacd0b85a97d-47fd7251edamr27970002f8f.0.1785766945662; Mon, 03 Aug 2026
- 07:22:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Se+z14Pr"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EHxYP2282951;
+	Mon, 3 Aug 2026 14:30:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EnjV55
+	SPIGPVnv0ih3OhVVmCTbn5icadDSoBkmnSzjQ=; b=Se+z14PrQi1KQffOaBdN6k
+	dTojXKtbLZpqlCBSamEsK21XGQoEbaMD9yXPPB6csu3hTpRTmJQiHIRskkbOLSbR
+	PX68dbpqo3wXlcR/AZ62i5+ny0hmJ+FGA4RpoCUZvBczlsnJtbSNz4WZ57IXiAQ8
+	6A4Lc4tHj0wEH3T/NsOSyMbPsqremryMxvE0jTg0sSs1tlanjHz3HrRhEEMlGDXN
+	e8Yc9RH2Y+VgWrF0/3/hlZqz+yEIkkDdtVVfztxIZsCXsgn0IZEr9DtG64fVLlwg
+	udhwVznGMiu5CpnT1Bmm64p2d+0d5OJ9bIfooZq4Sq9ECuk1hT9nMjxJOETIr69Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h4s979-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 14:30:29 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673EQGld013577;
+	Mon, 3 Aug 2026 14:30:28 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qdxy6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 14:30:28 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673EUMft47579516
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Aug 2026 14:30:22 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 166482004D;
+	Mon,  3 Aug 2026 14:30:22 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D762220043;
+	Mon,  3 Aug 2026 14:30:21 +0000 (GMT)
+Received: from [9.224.88.46] (unknown [9.224.88.46])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Aug 2026 14:30:21 +0000 (GMT)
+Message-ID: <b36684f2-0844-4695-8d9f-cac74ad88af9@linux.ibm.com>
+Date: Mon, 3 Aug 2026 16:30:21 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
-In-Reply-To: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 3 Aug 2026 19:52:14 +0530
-X-Gm-Features: AUfX_myXIqx2WOmWzoJ4yL_SBCfdvCijmO0NjkJNDBHMHzLnarxMlDom9ViiKt8
-Message-ID: <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
-Subject: Re: [RFC] RISC-V KVM: guest local sfence.vma may miss stale VS-stage
- TLB after vCPU migration
-To: Yaxing Guo <guoyaxing@bosc.ac.cn>
-Cc: Atish Patra <atish.patra@linux.dev>, kvm-riscv@lists.infradead.org, 
-	kvm@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Hui Min Mina Chou <minachou@andestech.com>, majiuyue@bosc.ac.cn, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 03/13] KVM: s390: Fix kvm_s390_vcpu_unsetup_cmma()
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
+        schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
+ <20260803124040.126471-4-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
+ qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
+ 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
+ zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
+ lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
+ Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
+ 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
+ cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
+ Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
+ HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
+ YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
+ CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
+ AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
+ bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
+ eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
+ CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
+ EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
+ rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
+ UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
+ RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
+ dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
+ jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
+ cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
+ JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
+ iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
+ tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
+ 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
+ v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
+ HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
+ 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
+ gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
+ BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
+ 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
+ jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
+ IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
+ katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
+ dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
+ FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
+ DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
+ Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
+ phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
+In-Reply-To: <20260803124040.126471-4-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDEyOCBTYWx0ZWRfX/hHiD3DdgHz4
+ TpnNxjHl22/+qmJTYNU7cTbdyIEu4szERP6rguvyQcYyj2U3m6Ory6ALMuOEg+et2kdiXUwy2ny
+ QDR/v49kZ/j7/egg8eae0GzqemM9w98=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDEyOCBTYWx0ZWRfX+Z88ALKyCw5q
+ jN2MLUvJCVRlNIwT+U4+hjPwm1xLw4I0ScUWfsGady+AqhqicjoUR2512MhS01E0etCerG4CTrq
+ S348/ncwbLbm8BBcsF1czVeKRCwZ4E2t+dcrWghLisP+YXvlKRJwwWJy7Mg63kvxSdxJw5sTmVo
+ cPjumeeEk4xRsrNaba/wo15TbezybdmZ4r6R8eYWpq52pt7JOF2qaFF264PsE7wZNxs6MeA2cbO
+ G+svZ6KsCypFoGBeuSzmrNl+syhMR9UMjwsXEbQsF15sgaphAjjinjYHgQ7U82M8q98kUQotxAB
+ +iU4LEoae5oT4ZeUF12prCb0+2/0S2hibSC2hLvT43u+k3WzxzY5ZzuoGePMoVRrzjVpP3WlDkV
+ HrDd8Z+KV7kpFTjyWeEvSVbk3FRfYwMiOZfla6dt+0LUxEMBjWZelts0N0kzrfK4ls66G3wZLpl
+ yKWrPFEjDlo7Uz0l5Cw==
+X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a70a605 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=igm0tsip4JlBMjQ8PrsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ovLrBsWmw1FeO1Bts1monnMLv2llRJxA
+X-Proofpoint-GUID: ovLrBsWmw1FeO1Bts1monnMLv2llRJxA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-03_03,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608030128
 
-On Sun, Aug 2, 2026 at 10:30=E2=80=AFAM Yaxing Guo <guoyaxing@bosc.ac.cn> w=
-rote:
->
-> Hi all,
->
-> I would like to ask whether RISC-V KVM has a gap around guest sfence.vma
-> and VS-stage TLB invalidation when a vCPU migrates across host CPUs.
->
-> On bare metal, Linux uses mm_cpumask in __flush_tlb_range() to decide
-> whether to send a local or remote sfence.vma. That works because the cpum=
-ask
-> reflects physical CPUs. In a guest, however, the kernel only sees vCPUs, =
-so
-> from the guest point of view a task may never "migrate" even though the
-> underlying vCPU moved to a different host CPU. In other words, guest
-> mm_cpumask is effectively a vCPU mask, not a host CPU mask.
->
-> There is also a related switch_mm()/set_mm_asid() aspect. With the ASID
-> allocator enabled, RISC-V Linux does not flush on every context switch. A
-> local_flush_tlb_all() is only done when a deferred ASID rollover flush is
-> pending for the current CPU. That is fine on bare metal, because previous
-> shootdowns are also based on physical CPUs. In a guest, however, the earl=
-ier
-> shootdown may have been only a guest-local sfence.vma and may have missed=
- an
-> old host CPU where the same vCPU ran previously.
->
-> A simplified sequence is:
->
-> 1. A guest task with mm A runs on vcpu0 while vcpu0 is scheduled on host
->    CPU1. CPU1 fills a VS-stage TLB entry for that mm/ASID.
-> 2. vcpu0 migrates to host CPU0. KVM's vCPU migration sanitization is loca=
-l
->    to the current host CPU, so it does not invalidate the VS-stage TLB en=
-try
->    that was left on host CPU1.
+On 8/3/26 14:40, Claudio Imbrenda wrote:
+> In some cases kvm_s390_vcpu_unsetup_cmma() can be called with a 0
+> cbrlo; in such cases, if running with V != R, free_page() will attempt
+> to free physical page 0.
 
-When vcpu0 migrates to host CPU0, the host CPU0 may or may not have
-VS-stage TLB entry so VCPU migration sanitization does the right thing.
+Secure guests without cmma in the unsecure guest?
 
-In the future, vcpu0 may again move back to host CPU1 containing stale
-VS-stage TLB entries left in step1 above so the VCPU migration sanitization
-will cleanup these stale TLB enteries.
+> 
+> Fix by freeing cbrlo only if it's non-zero.
+> 
+> Fixes: b31605c12f4e ("KVM: s390: make cmma usage conditionally")
+> Fixes: 29b40f105ec8 ("KVM: s390: protvirt: Add initial vm and cpu lifecycle handling")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> ---
+>   arch/s390/kvm/kvm-s390.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 1b3290a5ad1a..9be27db0a21e 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -3678,7 +3678,8 @@ static void kvm_s390_vcpu_crypto_setup(struct kvm_vcpu *vcpu)
+>   
+>   void kvm_s390_vcpu_unsetup_cmma(struct kvm_vcpu *vcpu)
+>   {
+> -	free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
+> +	if (vcpu->arch.sie_block->cbrlo)
+> +		free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
+>   	vcpu->arch.sie_block->cbrlo = 0;
+>   }
+>   
 
-> 3. The guest later updates mm A's page table from vcpu0, for example due =
-to
->    COW. Since the guest still sees mm A as having run only on guest CPU0,
->    __flush_tlb_range() can choose a local sfence.vma. That local sfence.v=
-ma
->    only affects host CPU0, where vcpu0 is currently running, so the stale
->    VS-stage entry on host CPU1 remains.
+This is fenced for destroy cpu, but not for the transition into secure 
+mode. Can we check "use_cmma" instead of cbrlo and then remove the 
+fencing in the cpu destroy path?
 
-No need to worry about stale VS-stage entry on host CPU1 because these
-will age-out or same guest may again move to host CPU1 resulting in
-VCPU migration sanitization.
-
-> 4. Later, the task is scheduled again while vcpu0 is running on host CPU1=
-.
->    If the ASID is still valid and no deferred ASID rollover flush is pend=
-ing,
->    set_mm_asid() may not issue any flush. The access on host CPU1 can the=
-n
->    hit the old VS-stage TLB entry.
-
-See above comments.
-
->
-> We hit this on a XiangShan RISC-V system. A bash task in the guest was
-> scheduled on vcpu0 while that vCPU was running on host CPU1. A read-only
-> page was prefetched and cached in CPU1's VS-stage TLB. Later the same vCP=
-U
-> migrated to host CPU0, the guest triggered COW and updated the mapping, a=
-nd
-> the guest still issued only a local sfence.vma. The stale VS-stage entry =
-on
-> CPU1 was not invalidated. After running for some time, the task later
-> accessed that mapping while running on host CPU1 again and hit the stale
-> translation. The data in that page was a pointer from the GOT, so it
-> dereferenced to NULL and eventually caused a segmentation fault.
-
-The above example is already taken care by TLB flushes in KVM RISC-V.
-This smells like some HW errata to me.
-
->
-> I checked current upstream RISC-V KVM (v7.0.2) and I do not see HSTATUS.V=
-TVM
-> being enabled, so guest sfence.vma is not trapped. I found
-> kvm_riscv_local_tlb_sanitize() on host CPU migration, which handles G-sta=
-ge
-> VMID entries on the current host CPU, but I do not think it generally sol=
-ves
-> the stale VS-stage TLB case described above.
->
-> I also noticed the vendor-specific kvm_riscv_vsstage_tlb_no_gpa path in
-> current upstream. It looks like a workaround for a particular implementat=
-ion
-> issue on Andes AX66, where the VS-stage TLB does not cache guest physical
-> address and VMID, so the normal VMID/GPA-based invalidation model is
-> insufficient. In that sense, it does not seem to be a generic solution fo=
-r
-> guest sfence.vma coherence across vCPU migration.
->
-> I am wondering what the right direction should be. Enabling HSTATUS.VTVM =
-and
-> trapping guest sfence.vma would allow KVM to translate guest local sfence=
-.vma
-> into the required host-side hfence.vvma, but that may be too heavy for th=
-e
-> common case. Another possible direction may be to make the current
-> Andes-specific vCPU migration flush logic more generic, so implementation=
-s
-> that need VS-stage TLB sanitization on vCPU migration can opt in through =
-a
-> common mechanism. A third possibility may be to define a lightweight SBI
-> interface for guest local sfence.vma, so Linux could use it in
-> __flush_tlb_range() for the local case when running under KVM, and KVM co=
-uld
-> then decide whether a local sfence.vma is sufficient or whether host-side
-> hfence.vvma is also needed.
-
-Enabling HSTATUS.VTVM has a big impact on performance so certainly
-NACK from myside.
-
->
-> My questions are:
-> 1. Is the behavior above expected on current RISC-V KVM?
-
-Yes, it should work fine unless there is some HW bug.
-
-> 2. If not, what would be the preferred fix direction?
-> 3. Should this be handled by trapping guest sfence.vma with VTVM, by
->    generalizing the existing vCPU-migration VS-stage TLB flush logic, or =
-by
->    adding a lighter SBI-mediated path for guest local sfence.vma?
-> 4. Or is there another intended mechanism to keep VS-stage TLB state cohe=
-rent
->    across vCPU migration?
->
-> If needed, I can send a reproducer and the exact hardware/kernel details.
->
-
-Even if you share some reporducing code sequence, we still have don't
-have access to your HW so it won't help much.
-
-Regards,
-Anup
+If cmma is not set-up in vcpu_create, then we exit vcpu creation.
+Maybe sprinkle in a warn on for !cbrlo
