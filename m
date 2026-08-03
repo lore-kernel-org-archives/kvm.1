@@ -1,104 +1,119 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9B13126B9;
-	Mon,  3 Aug 2026 02:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239E42F3C3D
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 02:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785723613; cv=none; b=qUrlD7PQ+z7l5fYOGlCoRznt4iXz+bCt95pVI55I3IEuEX4V6tgPG2dhQDMDyvJqnz+hYCwZRYlDz3Gr/FDEbP/TgfV5fe1bLBVaSoX19SaB3H2c5EeVw7J0oABI4HbeZ7EI1rNn97sxOrMteT8/u56Nnz7SgunkpgEAzdI8OYk=
+	t=1785724036; cv=none; b=m7hLmAsRyCEpYzjrJ1kRkqUIdsz+gc/FMHS9J9aFyJcPNjzaI1bgYEDoSdQ02AoqQ27I72Rno/f+VfJkWAjbQRCkvB07lXyqQgJr9rsfTCitlHOI6mQrtcwiLm35XalfKdSV2fkVqXxJ81rlPeq0+4c0hcFl/nUHt+dO8letTYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785723613; c=relaxed/simple;
-	bh=plr2sLaORL0evL1/zkWyfBcheeh7c7N1Cy9mDTPJENE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cL+jHx9s1eEYc4ocdZQJ4ik0x+82++dw6AWDyiZuaLEQtvq0j7adMTKpuv9UrDwuPoCxCK3c5IPGxB4PytB1IzYrHjePCxp5CdRSrzm2iSYvK1oWHjF5B+ue443Q6TPw4wFSV4pLOGRN3KwsUQ+9DlFaGKgBWAnKMtCDIZkNsTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=LeojY92n; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785724036; c=relaxed/simple;
+	bh=AIGTEahovfWLQaaQy5hTYypcO+jzOkfVyhuAEo4T+UQ=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JsM22FKHrMLrqTHTSKpioQDjAVAtTMRZvNsckj3yu0tXfJFmiE+tOElSVIW9fQVRbnFfCeETdUOyIrpGzgNxEtPUyxPy1dbx7tHUEGv5KsVweZyYuwIEsJRperaJMEH91azNPKK0+/ACCcD9C3uzvjER124amSTJJkmVvhmzC5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sob8EeWC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="LeojY92n"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=1KJ1V0q32HSR285luoF6bGzZESOmfnh+OyNwaAio0Ls=;
-	b=LeojY92nNSymfkbAKpV3LmvXxLMy8pNhIj9mM92SQjXBNtRLDPwmWKppL0USen2lu4099Rou6
-	y5d0qK9EmfllDZTHshiewBsJ+S+cve1NZSr2Tme/AHG0Jr12lZ0oMlE+6E0Jr1ULlNMjoqir1Mw
-	0Xgth2IeG/3gdNl0Pk5yi8M=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hD0WV4XBZzLlX5;
-	Mon,  3 Aug 2026 10:10:30 +0800 (CST)
-Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8FD3B4057A;
-	Mon,  3 Aug 2026 10:20:00 +0800 (CST)
-Received: from huawei.com (10.50.163.32) by dggpemf500015.china.huawei.com
- (7.185.36.143) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 3 Aug
- 2026 10:20:00 +0800
-From: Longfang Liu <liulongfang@huawei.com>
-To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<liulongfang@huawei.com>
-Subject: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page size
-Date: Mon, 3 Aug 2026 10:18:57 +0800
-Message-ID: <20260803021857.2370179-3-liulongfang@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260803021857.2370179-1-liulongfang@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sob8EeWC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972861F000E9;
+	Mon,  3 Aug 2026 02:27:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785724034;
+	bh=Cjf3EzDV0TulaGupAS8r4j+AzIN6yXNKz5eNe3H/Urk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Sob8EeWCFC38xcb2LZMG0IzUpcvGyH397d5+3L1N6gukd85Si8YiNNZDD05lYw1Cr
+	 p37261ShJrxAtlGJ3gT52/KDVHGShV6u72iEGlVX/0pAphD0RG32u5FQ8OIwo2h/X0
+	 ZX4s5EIzdMMAA+gN5IsApakzgOoiTMNeDBEfM5y8zoV2Hkc1cGt0FIfD6ZnSgQo8W/
+	 D2B8tQjkGupSIcPhuXSBVJ1UoF2ytck2BPxv3hQvc5S9harMY2jqWMMtty49I6Rob6
+	 LmzF4GL9ypolHo6cNXgsANLs2BJfQSTpEIBjcR+MO3FXfG8jQqeWJS20qt5kyZKmi/
+	 736L8ROqe8Ieg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page
+ size
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Longfang Liu" <liulongfang@huawei.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260803021857.2370179-3-liulongfang@huawei.com>
 References: <20260803021857.2370179-1-liulongfang@huawei.com>
+ <20260803021857.2370179-3-liulongfang@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 03 Aug 2026 02:27:14 +0000
+Message-Id: <20260803022714.972861F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- dggpemf500015.china.huawei.com (7.185.36.143)
 
-    On HW_ACC_MIG_VF_CTRL hardware, VF BAR2 is split into functional
-and migration register regions. When kernel page size exceeds the
-functional region size (e.g. 64KB pages vs 32KB functional region),
-guest mmap operations get rounded up to page size, causing the VMA
-to exceed functional boundaries and fail validation.
-    The solution aligns mmap boundaries to page size while maintaining
-byte-granularity access control through hisi_acc_pci_rw_access_check()
-for read/write operations and accurate region size reporting via
-hisi_acc_vfio_ioctl_get_region(), ensuring migration registers remain
-protected from non-mmap access while resolving compatibility issues.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] Guest memory-mapping of BAR2 allows direct access to sensitive=
+ migration control registers, bypassing software isolation.
+--
 
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
----
- drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+--- Patch [2]: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page=
+ size ---
+commit 6249c89b3b40e6c3a5627d170614fe16d3e815bf
+Author: Longfang Liu <liulongfang@huawei.com>
 
-diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-index 36490be7a61a..44b3e7d8fef5 100644
---- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-+++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-@@ -1355,14 +1355,21 @@ static int hisi_acc_vfio_pci_mmap(struct vfio_device *core_vdev,
- 	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
- 	if (index == VFIO_PCI_BAR2_REGION_INDEX) {
- 		u64 req_len, pgoff, req_start;
--		resource_size_t end;
-+		resource_size_t end, dev_len;
- 
--		end = hisi_acc_get_resource_len(vdev, index);
-+		dev_len = hisi_acc_get_resource_len(vdev, index);
- 		req_len = vma->vm_end - vma->vm_start;
- 		pgoff = vma->vm_pgoff &
- 			((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
- 		req_start = pgoff << PAGE_SHIFT;
--
-+		/*
-+		 * The BAR2 functional region (dev_len) may be smaller than the
-+		 * kernel page size. Align it to PAGE_SIZE so a page-rounded
-+		 * guest mmap is not rejected, which would make the VF unusable.
-+		 * The read/write path still truncates at the real functional
-+		 * boundary, keeping the migration registers inaccessible.
-+		 */
-+		end = PAGE_ALIGN(dev_len);
- 		if (req_start + req_len > end)
- 			return -EINVAL;
- 	}
--- 
-2.43.0
+hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page size
 
+This commit aligns the BAR2 functional region mmap boundaries to PAGE_SIZE.
+This is intended to prevent guest mmap operations from being rejected on 64=
+KB
+page size kernels when the functional region is smaller.
+
+> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfi=
+o/pci/hisilicon/hisi_acc_vfio_pci.c
+> index 36490be7a61aa..44b3e7d8fef5c 100644
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1355,14 +1355,21 @@ static int hisi_acc_vfio_pci_mmap(struct vfio_dev=
+ice *core_vdev,
+>  	index =3D vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+>  	if (index =3D=3D VFIO_PCI_BAR2_REGION_INDEX) {
+>  		u64 req_len, pgoff, req_start;
+> -		resource_size_t end;
+> +		resource_size_t end, dev_len;
+> =20
+> -		end =3D hisi_acc_get_resource_len(vdev, index);
+> +		dev_len =3D hisi_acc_get_resource_len(vdev, index);
+>  		req_len =3D vma->vm_end - vma->vm_start;
+>  		pgoff =3D vma->vm_pgoff &
+>  			((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+>  		req_start =3D pgoff << PAGE_SHIFT;
+> -
+> +		/*
+> +		 * The BAR2 functional region (dev_len) may be smaller than the
+> +		 * kernel page size. Align it to PAGE_SIZE so a page-rounded
+> +		 * guest mmap is not rejected, which would make the VF unusable.
+> +		 * The read/write path still truncates at the real functional
+> +		 * boundary, keeping the migration registers inaccessible.
+> +		 */
+> +		end =3D PAGE_ALIGN(dev_len);
+> +		if (req_start + req_len > end)
+> +			return -EINVAL;
+
+[Severity: Critical]
+Does this change allow an untrusted guest or userspace process to bypass
+software isolation and gain direct access to migration control registers?
+
+By rounding dev_len up to PAGE_SIZE in hisi_acc_vfio_pci_mmap(), the bounda=
+ry
+check intended to prevent mapping of the hardware migration registers is
+circumvented.
+
+If a guest running on a 64KB page host requests an mmap of the BAR2
+functional region, the code rounds dev_len up to PAGE_SIZE. This allows the
+request to be validated and passed to vfio_pci_core_mmap(), mapping the
+full 64KB physical page into the guest's stage-2 page tables.
+
+If the functional region is 32KB and the migration registers reside in the
+upper 32KB of the same physical page, the guest would gain unmediated
+read/write access to the migration control registers via direct memory
+load/store instructions. This appears to bypass the kernel's read/write
+interception and the hisi_acc_pci_rw_access_check() boundary checks.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803021857.2370=
+179-1-liulongfang@huawei.com?part=3D2
