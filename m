@@ -1,159 +1,111 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2DD1FFC48;
-	Mon,  3 Aug 2026 01:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569DC64AA4
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 01:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785720396; cv=none; b=TDRRmtJZ2xvbW0XWF/pl4jKUO9TvYDtoZLtD0m6Wd3/va0AnGVIxd60d3Dq7TjFelZegV5GH8ddDY79UI0Qatmb6eBu/sFCcGwrurjMhhj4xzvd0j2lGkP5eSvGZ9rh8uG9BPgik03Cdt8ejGKae1cg72bVkXkTn9bH2IdFOeAk=
+	t=1785720766; cv=none; b=NW5yLbcViN6xAWlhyiQWEoCiouVfI2O8VtugVCdNoYaHkad5Yapz5FU2LlipZ/1TrTeyPUOUZe5c49yNY8gqiGF8dGStt3fdY/G7zMBSR3KnxFhvuxku/yyqztCVdtgd1MByCXW9z9sTYmH6W0ah0gUkc5p9FUsGjyBwWrVQl6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785720396; c=relaxed/simple;
-	bh=8ILm0spJYr+SRR0E44DKXFSzW3Y5RThqkAFqb9vxXKk=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=cB/H+NCefl5CSTGy8VOfUdH3igOy97SMFYVU96gj29lcjv+RHJ5nOtnNde/b59jBXjWaGj7x88mv/xGVkmgqQdsBjnRK0tgJFxCLJ18Bt9NG4gSBgEtad+pdvUF8WTugvOC7fSK/DLZ322wDf3jlWChC5D55Xf78GaisdmMsMr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8BxJOhJ7m9qUMQJAA--.9240S3;
-	Mon, 03 Aug 2026 09:26:33 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJDxDcdF7m9qupQhAA--.50067S2;
-	Mon, 03 Aug 2026 09:26:32 +0800 (CST)
-Subject: Re: [PATCH 6/6] LoongArch: KVM: Enable separate vmid feature
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
- Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260727072109.2151675-1-maobibo@loongson.cn>
- <20260727072109.2151675-7-maobibo@loongson.cn>
- <CAAhV-H46JoQpPx4Eg1eGT010Gq_4OnLNExhVrgjkdXkeoHESCA@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <92446f9b-3484-880b-5871-4ebfe26feb81@loongson.cn>
-Date: Mon, 3 Aug 2026 09:26:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1785720766; c=relaxed/simple;
+	bh=XgGSnrmiEplsuwdy9X5QAMWzJBtazd6Xs+YV0+ohndk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MFs0WQwr/jJ33sjUhgTngvyjDbIamuY/W6fYl4ayyMZY1YX3HPvE1YcR6k282On4DO+tlh6Wzp0+O16SscxJMGKxAJTv8ujA4f4VrvvCuHe+l2eXLn/p2XVWsuT0mFhFW8JT4maLwVxpOFg9L8k9X5vxNIy1ui5GKQCf2ybqa+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=FBKt5gXL; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="FBKt5gXL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
+	Message-ID:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=zyOoDT8YQTbXcnnqKnt2EmzdR1me4CRwRe
+	9zua4HSmM=; b=FBKt5gXLT1u3RNW1U4FFeNvI57xME8QW49VyRDDI6HWPjLhQZ/
+	fYbb3ufRsLGAz6muEkgJ6Kb7CDp6OdA0MAN2lywoU6ai+jEueTw3JXdFjA1bXsZu
+	OWMkOMJMY2dcTg3WJN+rx3SeWMUxcF2BR3sa0sSULJeaixdVQYTv819Fk=
+Received: from ur-dp1000 (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwDXEELF729qJA0WAA--.18137S2;
+	Mon, 03 Aug 2026 09:33:01 +0800 (CST)
+From: Xie Bo <xb@ultrarisc.com>
+To: kvm@vger.kernel.org
+Cc: will@kernel.org,
+	julien.thierry.kdev@gmail.com,
+	anup@brainfault.org,
+	Xie Bo <xb@ultrarisc.com>
+Subject: [PATCH kvmtool v2] virtio: 9p: Order used ring updates before notifications
+Date: Mon,  3 Aug 2026 09:32:26 +0800
+Message-ID: <20260803013226.333910-1-xb@ultrarisc.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <amzWlInb1rgkRy_4@google.com>
+References: <amzWlInb1rgkRy_4@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H46JoQpPx4Eg1eGT010Gq_4OnLNExhVrgjkdXkeoHESCA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxDcdF7m9qupQhAA--.50067S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWFyDKr47Ar4kGryfJw47trc_yoW5Kw43pr
-	yUAFsrJrW8ur93Ga4qqwn5Xr98XrsFg3W2gFn7Ja4FyFnFgFW8tF1kK3s8ZF15Ww4xtFyF
-	9F9Yka9IvFsFy3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4Xo7DUUUU
+X-CM-TRANSID:AQAAfwDXEELF729qJA0WAA--.18137S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1xKw47XF1DtFy3GF4xCrg_yoW8AF13pF
+	WvkaySyr98WrnFq3WfGF48Wr17CwsxGry7Jr1Fg34UXr45XFs7AF1DK345tr1fW39Yqw1j
+	yrWvvFWqvayj9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv214x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r1j6r
+	4UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+	JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
+	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
+	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa
+	7VUjiID7UUUUU==
+X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAFB2psG9MAEgACsd
 
+virtio_p9_do_io() signals the guest immediately after adding each
+request to the used ring. Unlike the block and net backends, it bypasses
+virtio_queue__should_signal(), which provides the full memory barrier
+needed between publishing used->idx and injecting the interrupt.
 
+On weakly ordered architectures, the guest can therefore handle the
+interrupt before the updated used->idx becomes visible. If it observes
+the old index and goes back to sleep, the completed request can remain
+stuck indefinitely because no further interrupt is generated.
 
-On 2026/8/2 下午10:14, Huacai Chen wrote:
-> Hi, Bibo,
-> 
-> On Mon, Jul 27, 2026 at 3:31 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> With CSR GTLBC shortname for Guest TLB Control Register, separate vmid
->> feature will be enabled if bit 14 CSR_GTLBC_USEVMID is set. Enable
->> this feature if cpu_has_guestid is true when LVZ is enabled and the LVZ
->> version is 2.
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/include/asm/loongarch.h | 2 ++
->>   arch/loongarch/kernel/cpu-probe.c      | 7 ++++++-
->>   arch/loongarch/kvm/main.c              | 4 +++-
->>   3 files changed, 11 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
->> index 2a6bc99177d8..4c4249446a61 100644
->> --- a/arch/loongarch/include/asm/loongarch.h
->> +++ b/arch/loongarch/include/asm/loongarch.h
->> @@ -350,6 +350,8 @@
->>   #define  CSR_GTLBC_TGID_WIDTH          8
->>   #define  CSR_GTLBC_TGID_SHIFT_END      (CSR_GTLBC_TGID_SHIFT + CSR_GTLBC_TGID_WIDTH - 1)
->>   #define  CSR_GTLBC_TGID                        (_ULCAST_(0xff) << CSR_GTLBC_TGID_SHIFT)
->> +#define  CSR_GTLBC_USEVMID_SHIFT       14
->> +#define  CSR_GTLBC_USEVMID             (_ULCAST_(0x1) << CSR_GTLBC_USEVMID_SHIFT)
->>   #define  CSR_GTLBC_TOTI_SHIFT          13
->>   #define  CSR_GTLBC_TOTI                        (_ULCAST_(0x1) << CSR_GTLBC_TOTI_SHIFT)
->>   #define  CSR_GTLBC_USETGID_SHIFT       12
->> diff --git a/arch/loongarch/kernel/cpu-probe.c b/arch/loongarch/kernel/cpu-probe.c
->> index 74d31f260dfd..cbf1dafac0a0 100644
->> --- a/arch/loongarch/kernel/cpu-probe.c
->> +++ b/arch/loongarch/kernel/cpu-probe.c
->> @@ -135,7 +135,7 @@ static void set_isa(struct cpuinfo_loongarch *c, unsigned int isa)
->>
->>   static void cpu_probe_common(struct cpuinfo_loongarch *c)
->>   {
->> -       unsigned int config;
->> +       unsigned int config, version;
->>          unsigned long asid_mask;
->>
->>          c->options = LOONGARCH_CPU_CPUCFG | LOONGARCH_CPU_CSR | LOONGARCH_CPU_VINT;
->> @@ -221,6 +221,11 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
->>          if (config & CPUCFG2_LVZP) {
->>                  c->options |= LOONGARCH_CPU_LVZ;
->>                  elf_hwcap |= HWCAP_LOONGARCH_LVZ;
->> +
->> +               /* Separate VMID and VPID with LVZ version == 2 */
->> +               version = (config & CPUCFG2_LVZVER) >> 11;
->> +               if (version == 2)
-> I think ">1" judgement is better than "==2".
-I am ok with "> 1" and it is better from software side, only that it 
-requires that HW keeps compatible with later LVZ function. Will discuss 
-this with HW guys.
+This was observed on RISC-V with two 9p RPCs blocked while the host
+used->idx was two entries ahead of the guest's last_used_idx.
 
-Regards
-Bibo Mao
-> 
-> 
-> Huacai
-> 
->> +                       c->options |= LOONGARCH_CPU_GUESTID;
->>          }
->>   #ifdef CONFIG_CPU_HAS_LBT
->>          if (config & CPUCFG2_X86BT) {
->> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
->> index 86b1af823e2b..43f5b40786f2 100644
->> --- a/arch/loongarch/kvm/main.c
->> +++ b/arch/loongarch/kvm/main.c
->> @@ -365,7 +365,7 @@ int kvm_arch_enable_virtualization_cpu(void)
->>          write_csr_gcfg(0);
->>          write_csr_gstat(0);
->>          write_csr_gintc(0);
->> -       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
->> +       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USEVMID);
->>
->>          /*
->>           * Enable virtualization features granting guest direct control of
->> @@ -388,6 +388,8 @@ int kvm_arch_enable_virtualization_cpu(void)
->>
->>          /* Enable using TGID  */
->>          set_csr_gtlbc(CSR_GTLBC_USETGID);
->> +       if (cpu_has_guestid)
->> +               set_csr_gtlbc(CSR_GTLBC_USEVMID);
->>          kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
->>                    read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
->>
->> --
->> 2.39.3
->>
->>
+Process all available requests first, then use
+virtio_queue__should_signal() before notifying the guest. Besides
+providing the required ordering, this also honors the driver's
+notification suppression request.
+
+Fixes: 1c7850f95903 ("kvm tools: Add virtio-9p")
+Signed-off-by: Xie Bo <xb@ultrarisc.com>
+---
+Changes in v2:
+- Drop the completed flag and rely directly on
+  virtio_queue__should_signal(), as suggested by Will Deacon.
+
+ virtio/9p.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/virtio/9p.c b/virtio/9p.c
+index e6f669c..100926a 100644
+--- a/virtio/9p.c
++++ b/virtio/9p.c
+@@ -1375,8 +1375,10 @@ static void virtio_p9_do_io(struct kvm *kvm, void *param)
+ 
+ 	while (virt_queue__available(vq)) {
+ 		virtio_p9_do_io_request(kvm, job);
+-		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
+ 	}
++
++	if (virtio_queue__should_signal(vq))
++		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
+ }
+ 
+ static u8 *get_config(struct kvm *kvm, void *dev)
+-- 
+2.54.0
 
