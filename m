@@ -1,188 +1,218 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D926384CE8;
-	Mon,  3 Aug 2026 16:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B239386C3F;
+	Mon,  3 Aug 2026 16:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775168; cv=none; b=BddFrH/SlEiJ5/AmtsFh4IhdPpbedOWbh01x9/e5oSh76LJcFHaaid8evJqrKSSCA7sGbDZsltByQsulLDxzR2Y+MCvkAlNecGSmm/+5OUa6+W7Z+PnnBYHwJhYGS3/0IQmXKHLKnjyia5xje75X+5xMh4ED2otKZHpxcZwEmzI=
+	t=1785775298; cv=none; b=nvnQiyDUE5ZySCB10VOcYQZ1UY/7lGlV8Z++po8ZQfnvfleKIpa62UR9m1xirXQqXoWxmQLgc9tqbRYfTnLMtUBjKYvDB9Lq3iqCQhvQLVUBB/xcE/rP7t2r750QigK/mvXFqr5gR7gIhMmjMGw6jQ/Lw0G6oZ8W/sSEygNvYTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775168; c=relaxed/simple;
-	bh=RAbCEjg+DiJkIV2QudEY1shfV7HQCukJVuQ//eO2OAQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DC+FvSXHCgHTJMJXqq1jXtT2aNdApjqh1s680sokXEbcJH7rHKmn5XQhVe9NM0bCrav6kK6XZeMtOeqLMQ+zdsTtdZ51/c18NY9m6oqZUYq29GjaHpO9yk3kWwBOtLyVSRjyhUxX7pQ+rt7F1VBF8G/Wr6+g7LOjNV7XzZr77xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GXXtbApU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785775298; c=relaxed/simple;
+	bh=8eauQcoOxaZr5hV2SNSHoZm1dEc9RASllM7ZreMnJU4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=hXKI0KvKvYrDkr5WRMc5nqBbNgfSFlGp4516/ZQXf1lOp1Yt+gJwct2oXBqKeH/fP+mmoHLohmKbnT25Jd5vMDo0TnhvzpZxYQmgIQ+E9ez0muINf3Ok8ORSzvhKUVyA911HRpG6BY6hjHIYMBN7QE6S0plr/vfN/mMs1kiDB8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abHYbiqX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GXXtbApU"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EIMB92203559;
-	Mon, 3 Aug 2026 16:39:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3pZI0V
-	Lx4Q9pGVwfQ8dJX1d9nTq6d7Ui0R7lWd4UrXo=; b=GXXtbApUsmt3ch79irKbmM
-	LGbeOlwc+RtQmoDX0dEQcBt8Ra62UI5hu5chqeqJ9TZQrx5fhDJO5nF+bvj/UwYV
-	aOkF87w2raMisDSSt9uLYtWUXWhZD/a09BPWMMtGoYXx2LWF7UwUOiPZBtlyJocw
-	V4rb73j1vUxpVPyYMTGnI+5ftAqTnIxe5SqnwXjQBUCFsC5jRKO/NUiqjlh0rdns
-	l950+Y+gUF23562ag+o/8QUy2P6BbZiPCdcXL/oo/IPY4K68X2ra8UJxsCbClD7Z
-	iiYc4m4otbNG2z9GiMEXWHHvJBvZHui3fbWj0FHrxw+VH30un0Q9I2JMjr6z1z7Q
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67hhsy0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 16:39:22 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673GQHK5006505;
-	Mon, 3 Aug 2026 16:39:22 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugvxck8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 16:39:22 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673GdKPo31261432
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 16:39:21 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A33B58056;
-	Mon,  3 Aug 2026 16:39:20 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B6B1C58052;
-	Mon,  3 Aug 2026 16:39:19 +0000 (GMT)
-Received: from [9.61.246.17] (unknown [9.61.246.17])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 16:39:19 +0000 (GMT)
-Message-ID: <c0e6803f-7e57-4dfa-a4cd-f2ee188070c8@linux.ibm.com>
-Date: Mon, 3 Aug 2026 09:39:19 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abHYbiqX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5371F000E9;
+	Mon,  3 Aug 2026 16:41:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785775297;
+	bh=u3kRSpLdKmHDt05+dtxh1K00QVpdOgkUQWblAilPyT4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=abHYbiqXGYU7iZasXijXBsWjsrZ1zQUO+Zz8+pk5j/l6E3cqRdq5GIzfBBP34XZ7/
+	 bOQ1IOeaiaFu6xfegEgurf+CnID1hd3508J2Ia4iqSiEAn6JZL20tc+PvlXx4nf7v0
+	 yrfyl80DSjcgRS7MkvxTh5B0W/31oEYoDwvhv07/m6qfycUMJyIr5OM/cih/gw8xtc
+	 NaztVq5KiAEJ9hnHdPpJjuLh/U5y0dABKZoZNdjQMrEfQ6Y4nTuFcHBKqYC9/Bmpl1
+	 ALuzP+rOQoZbcUym7UOHPDTM9qi83P1DiocWKvWRsCLdM8Mfy8KMyOCT0CXqVwadUP
+	 Bh8vfcUNObm9g==
+From: sashiko-bot@kernel.org
+Subject: Re: [GIT PULL v1 07/23] s390/vfio_ccw: Cancel existing workqueues
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260803160924.236807-8-imbrenda@linux.ibm.com>
+References: <20260803160924.236807-1-imbrenda@linux.ibm.com>
+ <20260803160924.236807-8-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 03 Aug 2026 16:41:35 +0000
+Message-Id: <20260803164136.CA5371F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-To: Alex Williamson <alex@shazbot.org>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, kvm@vger.kernel.org,
-        borntraeger@linux.ibm.com, mattev@meta.com, schnelle@linux.ibm.com
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
- <e7b2da7b-2c70-46c2-9d07-6acc6949915e@linux.ibm.com>
- <46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
- <20260729143603.175f60a7@shazbot.org>
- <42a3b06d-ecaa-4339-9472-7c592694f877@linux.ibm.com>
- <20260729155021.64f7e1ba@shazbot.org>
-Content-Language: en-US
-From: Farhan Ali <alifm@linux.ibm.com>
-In-Reply-To: <20260729155021.64f7e1ba@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDE0NiBTYWx0ZWRfXwCZdwPCXq/0y
- G+50Vj4Yt/+Ai7J3YOXClKs62GffSr5946q+SLxxplg8S0cdpU4brfLKwsDtGs26cC56dn38SCO
- M2v0uaJ/aftM4miUd4aUWkGq+ZyxnME=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a70c43a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=XnJmXvh4KQp14z-JlSQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDE0NiBTYWx0ZWRfX1z3j7YZqowSr
- xiOBH9XrxT9wJDyLxZYX6pHIlrnUy9h09jU1iT+2giPwYfa0KynIYoGrd2KoeKq573M+n4XcwOi
- +izpFH17Hwiae3qzU5F9cenrb0wbFWgEY4tNSIcz274VgBarqIhT0c1eIBzFw/Q5HqCuaiwPC9f
- HVDz+lAc7bR8dM7FsETJfNpapLvCwYb9lJmBb+bJtYRmwweWJn254BuNBW5W4n29jjgMD6jmO47
- TyVNXDWF5MUqqGOcLuNgbpVOQYMXS4h9QS6/Nmk9KnQX5TsZTzTkoRf7lLZ2NLM4EXgJj/6TcrH
- dp5xDvJPHUJuz9A7LJtNFF7l+C5sBY7E8egjQCRSdb9wduVNG+EQfofHIdetNnpHewD5lh1yvvV
- VtZfJ6mJ1mDJFCGQ7eo0u+L9q1fvZ8RgyjSNOrQYHgzikw8GupqFre+zgRtlmh1f3dEO8nY5sOM
- SM1wcIDNAyuAiRo3yGw==
-X-Proofpoint-ORIG-GUID: ewPa9Umx2uUOxLKALDOoBpH4ydTpwb8o
-X-Proofpoint-GUID: ewPa9Umx2uUOxLKALDOoBpH4ydTpwb8o
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-03_03,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030146
 
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
 
-On 7/29/2026 2:50 PM, Alex Williamson wrote:
-> On Wed, 29 Jul 2026 14:32:45 -0700
-> Farhan Ali <alifm@linux.ibm.com> wrote:
->
->> On 7/29/2026 1:36 PM, Alex Williamson wrote:
->>> On Wed, 29 Jul 2026 13:28:46 -0700
->>> Farhan Ali <alifm@linux.ibm.com> wrote:
->>>   
->>>> On 7/29/2026 12:41 PM, Matthew Rosato wrote:
->>>>> On 7/29/26 2:11 PM, Farhan Ali wrote:
->>>>>> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
->>>>>> all devices support having their BARs mapped by the CPU. The
->>>>>> non_mappable_bars flag indicates that a PCI device's BARs cannot be
->>>>>> accessed by the CPU. The ISM device on s390 is one such device. The BAR
->>>>>> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
->>>>>> to warnings:
->>>>>>
->>>>>> vmalloc_node_range for size 281474976714752 failed: Address range
->>>>>> restricted to 0x2110bab00000 - 0x21903ab00000
->>>>>>
->>>>>> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
->>>>>> is set by the PCI core at enumeration time and already serves the same
->>>>>> purpose in vfio_pci_probe_mmaps().
->>>>>>
->>>>>> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
->>>>>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
->>>>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
->>>>>> ---
->>>>>>     drivers/vfio/pci/vfio_pci_core.c | 3 +++
->>>>>>     1 file changed, 3 insertions(+)
->>>>>>
->>>>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->>>>>> index 3f11a9624b9c..6a184588ff23 100644
->>>>>> --- a/drivers/vfio/pci/vfio_pci_core.c
->>>>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
->>>>>> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->>>>>>     
->>>>>>     		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
->>>>>>     
->>>>>> +		if (pdev->non_mappable_bars)
->>>>>> +			continue;
->>>>>> +
->>>>> This would work for the ISM case at least, but I wonder: should we check
->>>>> vdev->bar_mmap_supported[bar] instead?
->>>>>
->>>>> My question boils down to: do we still want messages for some of the
->>>>> cases where we set vdev->bar_mmap_supported[bar] = false in
->>>>> vfio_pci_probe_mmaps()?
->>>> AFAIU vfio_pci_probe_mmaps() is only called in
->>>> vfio_pci_core_finish_enable(). Since vfio_pci_core_map_bars() is called
->>>> in vfio_pci_core_enable(), and before vfio_pci_core_finish_enable(),
->>>> bar_mmap_supported would be false here for all devices. So I don't think
->>>> it would work here, unless I missed something?
->>> Also IO Port and sub-page MMIO BARs are things that do exist.  Thanks,
->> Just to clarify, are you suggesting we expand this check to also avoid
->> mapping IO port and sub-page MMIO BARs?
-> Sorry, no, I'm not.  I think we're conflating that the barmap is
-> related to mmap access.  The barmap itself is holding the iomap of the
-> BAR, used for read/write.  The only real relation to the mmap is that
-> we request the resource via this path as well.
->
-> Therefore not only is the ordering of setting up bar_mmap_supported
-> wrong, it's flagging entirely the wrong thing here and keying on it
-> would entirely break IO port and sub-page MMIO BAR access.  Thanks,
->
-> Alex
+Pre-existing issues:
+- [High] Double-free and use-after-free of channel program structures due t=
+o concurrent execution of `cp_free()`.
+- [High] Use-after-free of `vfio_ccw_private` due to concurrent execution o=
+f `vfio_ccw_mdev_remove()` and `vfio_ccw_chp_event()`.
+- [High] Data race and linked list corruption of `private->crw`.
+- [High] Use-after-free of `eventfd_ctx` due to lack of synchronization in =
+`vfio_ccw_mdev_set_irqs()`.
+--
 
-Hi Alex,
+--- Patch [7]: [GIT PULL v1 07/23] s390/vfio_ccw: Cancel existing workqueue=
+s ---
+commit 9c72e034f4d8d6193d6ae49cecd7dc50eda41903
+Author: Eric Farman <farman@linux.ibm.com>
+Subject: s390/vfio_ccw: Cancel existing workqueues
 
-I wanted some guidance on how we should proceed with this patch? The 
-warning messages are a regression on s390 for ISM devices, so we would 
-like to fix it.
+The initialization of the io_work and crw_work workqueues begs the
+question of whether they should be un-initialized. Add the corresponding
+cleanup tags in _release_dev to ensure work isn't dispatched after
+the private struct is free'd.
 
-Thanks
+> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_=
+ops.c
+> index 032a1cdf4df70..d361d1fde3a0d 100644
+> --- a/drivers/s390/cio/vfio_ccw_ops.c
+> +++ b/drivers/s390/cio/vfio_ccw_ops.c
+> @@ -131,6 +131,13 @@ static void vfio_ccw_mdev_release_dev(struct vfio_de=
+vice *vdev)
+>  		container_of(vdev, struct vfio_ccw_private, vdev);
+>  	struct vfio_ccw_crw *crw, *temp;
+> =20
+> +	/*
+> +	 * Ensure these work items are fully drained, so none can
+> +	 * fire after being released.
+> +	 */
+> +	cancel_work_sync(&private->io_work);
+> +	cancel_work_sync(&private->crw_work);
 
-Farhan
+[Severity: High]
+This is a pre-existing issue, but does this cancellation prevent subsequent
+queuing if vfio_ccw_chp_event() races with vfio_ccw_mdev_remove()?
 
+vfio_ccw_chp_event() reads private locklessly before it is cleared and
+prepares to queue work:
 
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_chp_event() {
+    struct vfio_ccw_private *private =3D dev_get_drvdata(&parent->dev);
+    ...
+        vfio_ccw_queue_crw(private, CRW_RSC_CPATH, CRW_ERC_PERRN,
+                           link->chpid.id);
+}
+
+If vfio_ccw_mdev_remove() concurrently clears the driver data, releases the
+device, and drains the currently empty workqueue via
+cancel_work_sync(&private->crw_work), can vfio_ccw_chp_event() subsequently
+queue work on the freed private object, leading to a use-after-free when
+vfio_ccw_crw_todo() executes?
+
+>  	list_for_each_entry_safe(crw, temp, &private->crw, next) {
+
+[Severity: High]
+This is a pre-existing issue, but is the private->crw linked list protected
+against concurrent modifications here?
+
+vfio_ccw_queue_crw() appends elements to the list with list_add_tail() while
+holding sch->lock. Concurrently, userspace triggering a read on the CRW
+region invokes vfio_ccw_crw_region_read(), which locklessly calls
+list_first_entry_or_null() and list_del() before acquiring
+private->io_mutex:
+
+drivers/s390/cio/vfio_ccw_chp.c:vfio_ccw_crw_region_read() {
+    ...
+    crw =3D list_first_entry_or_null(&private->crw,
+                                   struct vfio_ccw_crw, next);
+    if (crw)
+        list_del(&crw->next);
+    mutex_lock(&private->io_mutex);
+}
+
+Can multiple concurrent reads, or a read concurrent with an asynchronous
+channel path event, corrupt the list pointers?
+
+>  		list_del(&crw->next);
+>  		kfree(crw);
+>  	}
+
+[ ... ]
+
+> @@ -202,6 +209,14 @@ static void vfio_ccw_mdev_close_device(struct vfio_d=
+evice *vdev)
+>  		container_of(vdev, struct vfio_ccw_private, vdev);
+> =20
+>  	vfio_ccw_fsm_event(private, VFIO_CCW_EVENT_CLOSE);
+> +
+> +	/*
+> +	 * Ensure these work items are drained, in the event the
+> +	 * device is re-opened instead of released.
+> +	 */
+> +	cancel_work_sync(&private->io_work);
+
+[Severity: High]
+This is a pre-existing issue, but does placing cancel_work_sync() after
+vfio_ccw_fsm_event() leave a double-free race intact?
+
+The device is closed via vfio_ccw_mdev_close_device(), which triggers the
+FSM CLOSE event and calls fsm_close(). fsm_close() invokes cp_free()
+entirely locklessly:
+
+drivers/s390/cio/vfio_ccw_fsm.c:fsm_close() {
+    ...
+    spin_unlock_irq(&sch->lock);
+    cp_free(&private->cp);
+}
+
+Concurrently, if the io_work workqueue is already running
+vfio_ccw_sch_io_todo(), it locklessly evaluates
+private->state =3D=3D VFIO_CCW_STATE_CP_PENDING and also calls cp_free():
+
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_sch_io_todo() {
+    ...
+    if (is_final && private->state =3D=3D VFIO_CCW_STATE_CP_PENDING) {
+        cp_free(&private->cp);
+    ...
+}
+
+Since the new cancel_work_sync(&private->io_work) executes after the FSM
+event, can io_work still execute concurrently with the FSM close handler
+and double-free the channel program structures?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the lack of
+synchronization in vfio_ccw_mdev_set_irqs() allow a use-after-free of the
+eventfd_ctx object?
+
+In vfio_ccw_mdev_set_irqs(), userspace can unregister an eventfd, executing
+eventfd_ctx_put(*ctx):
+
+drivers/s390/cio/vfio_ccw_ops.c:vfio_ccw_mdev_set_irqs() {
+    ...
+        if (fd =3D=3D -1) {
+            if (*ctx)
+                eventfd_ctx_put(*ctx);
+            *ctx =3D NULL;
+        }
+}
+
+There appear to be no locks preventing the workqueue from concurrently
+reading private->io_trigger. If vfio_ccw_sch_io_todo() reads the pointer
+locklessly:
+
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_sch_io_todo() {
+    ...
+    if (private->io_trigger)
+        eventfd_signal(private->io_trigger);
+}
+
+Can the workqueue execute eventfd_signal() on freed memory if
+vfio_ccw_mdev_set_irqs() frees the context after it was read but before it
+is signaled?
+
+> +	cancel_work_sync(&private->crw_work);
+> +
+>  	vfio_ccw_unregister_dev_regions(private);
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803160924.2368=
+07-1-imbrenda@linux.ibm.com?part=3D7
