@@ -1,260 +1,118 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D0D267B07;
-	Mon,  3 Aug 2026 16:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9661233FE33;
+	Mon,  3 Aug 2026 16:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785774759; cv=none; b=EDdZ8kBhif2K3V5XLInxUsscyN/8Z7UrOw7SNrs+zJaQkSJRSZRvNGsoCfGV9BA/VzSWfPu/FE9JHTl0cMX72f/+xcyRwmkzzBK9uco4HflkyLGaoSBOXkCBJwGG84qWU5TsXVNQn6920JgKM1UuDmcydlXIzyqSbbUxcnZ9S6A=
+	t=1785774870; cv=none; b=J9f3nvc2QavV6v9Qxc76Pjmla0t6D6vRo5HP2sGDrZuN2+3qLBGuAmM87xFDzmyih5aig9PJkJprfn2MbWPG41r9DIVJIxIpbeYSgMy8QvopYmCXWMZsnkIU1ryF4K0XXbGac1boPa6c5dqYrXfL5+7F8ZOV9J+7BbXuHCZnG2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785774759; c=relaxed/simple;
-	bh=kMCRYnVu2ziu/S2sTcE7rO1L3JuMziKPoA9lvFaK3gM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=ZVnYUnP9mRCveVTsDrxJ91ffiKOUgdzngfYOaX+V4n3v4NYlA0gVPkYiyKk2p5QaMwDt9J4ILEM/qeSmx8X1Ioz8osPxtaOYjqTTEbRgNdn0Wd0aBgrMsKhzFAKFubsOf3e7+YeoEd0izwHu1ZCocsLiNMhg5JCZToCnSOxwiLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=D635WGLW; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1785774870; c=relaxed/simple;
+	bh=7VQ5pa+RpJe8T2VXYqwHcL0S7IG5ik8Yxooyc7jqByM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=J/tvdjptNTCbnSO/TDC2tyKugGGCGILcUw4CWPhN8nBDmTfrxjd2iHHO0rZc2s2XW2Apb6uWmWURGyXkZrSKdVgED75PErMVp7qF7BIT8XvAbXE7ioXJp0TF8Z6z7+t3TM6m5cOy8wfQLftB+ge3ImHfMgnu2S/dbWDlEVnVU3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTsLxqy8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="D635WGLW"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8055B1476;
-	Mon,  3 Aug 2026 09:32:32 -0700 (PDT)
-Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3295F3F86F;
-	Mon,  3 Aug 2026 09:32:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785774756; bh=kMCRYnVu2ziu/S2sTcE7rO1L3JuMziKPoA9lvFaK3gM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D635WGLWg41afrTUcB0n7QX8dSILbC83WrO7c6GJw7xkLjsi8lGh9R1MuqMZRGsJo
-	 M0WuHHp2i1P81bjktnl+rnai7EHm8aVUhMBObMLbLKeAfibwC3PaEIHRAXMT+XrkME
-	 453UrhsvuufD5nCNnQi0yKX7ISxY5iBdMBnrO4kw=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Tian Zheng <zhengtian10@huawei.com>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	maz@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	yuzenghui@huawei.com,
-	wangzhou1@hisilicon.com,
-	yangjinqian1@huawei.com,
-	caijian11@h-partners.com,
-	liuyonglong@huawei.com,
-	yezhenyu2@huawei.com,
-	yubihong@huawei.com,
-	linuxarm@huawei.com,
-	joey.gouly@arm.com,
-	kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	seiden@linux.ibm.com,
-	suzuki.poulose@arm.com
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware dirty tracking
-Date: Mon,  3 Aug 2026 17:32:30 +0100
-Message-ID: <anDCno9HdVI5UAls@LeoBrasDK>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
-References: <aliKo7dTZzKcWHzI@kernel.org> <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com> <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK> <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com> <amoZY8uGLf1PEpjK@LeoBrasDK> <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com> <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com> <anBrvILpcSFhW7Wg@LeoBrasDK> <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTsLxqy8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C830F1F000E9;
+	Mon,  3 Aug 2026 16:34:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785774869;
+	bh=R3muTn1aaV2rPIlMhUoPHbqXgEcDCYx0/1sWYcNX5T4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=VTsLxqy847LAyXw4f1xWgQhpkXxMI8IC3uBB7ejrzCqdixaooJzDgG3wt8i9N1zXg
+	 aIRuUSh+pPtEoWERdRQX4wcMODCpIsDUQB3L9Uv4DGoDJNgxXcByXNI5Z4M+NmYPYC
+	 8wvAzLXQLsIVXVfKCCCZ7BIb6STcy3a4HQqCC7r3qbbStcp8HbJoMKiZOc2wXvRNap
+	 TAsPmCt5KtkrDu7MkkvmAPKpxxUrmvQJ1GLtL0wITkY4Ejo0viKQYkvH1DVcPi/cIz
+	 lmdY/kmjYHxq0yCPc7rKvs53U+sRQpm97/JlgZCpj/bhL0jPEW3cnuAu+8f/XGziFy
+	 wI/JTKrzPNR7g==
+From: sashiko-bot@kernel.org
+Subject: Re: [GIT PULL v1 06/23] s390/vfio_ccw: Ensure index for read/write
+ regions are within range
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, "Alexander Gordeev" <agordeev@linux.ibm.com>
+In-Reply-To: <20260803160924.236807-7-imbrenda@linux.ibm.com>
+References: <20260803160924.236807-1-imbrenda@linux.ibm.com>
+ <20260803160924.236807-7-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 03 Aug 2026 16:34:27 +0000
+Message-Id: <20260803163428.C830F1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 03, 2026 at 09:57:46PM +0800, Tian Zheng wrote:
-> 
-> 
-> On 8/3/2026 6:21 PM, Leonardo Bras wrote:
-> > On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
-> > > 
-> > > 
-> > > On 8/3/2026 9:33 AM, Tian Zheng wrote:
-> > > > > > > > > > 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
-> > > > > > > > > > > -    if (prot & KVM_PGTABLE_PROT_W)
-> > > > > > > > > > > +    if (prot & KVM_PGTABLE_PROT_W) {
-> > > > > > > > > > >              set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
-> > > > > > > > > > > 
-> > > > > > > > > > > +        /*
-> > > > > > > > > > > +         * No DEVICE filter needed here:
-> > > > > > > > > > > relax_perms is only called
-> > > > > > > > > > > +         * on FSC_PERM faults. Device pages
-> > > > > > > > > > > always get full RW from
-> > > > > > > > > > > +         * initial mapping and are never write-protected during
-> > > > > > > > > > > +         * migration, so they never trigger a permission fault.
-> > > > > > > > > > > +         */
-> > > > > > > > > > > +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
-> > > > > > > > > > > +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > > > > > > > > > +    } else {
-> > > > > > > > > > > +        /*
-> > > > > > > > > > > +         * Clear DBM on W→RO downgrade to prevent hardware from
-> > > > > > > > > > > +         * silently upgrading RO+DBM back to W+dirty, which would
-> > > > > > > > > > > +         * bypass KVM's write tracking and cause data corruption.
-> > > > > > > > > > > +         */
-> > > > > > > > > > > +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
-> > > > > > > > > > > +    }
-> > > > > > > > > > > +
-> > > > > > > > > > This block makes it pretty evident that the DBM bit really *is* the
-> > > > > > > > > > write permission bit. I'd much rather we
-> > > > > > > > > > introduce the concept of dirty
-> > > > > > > > > > state to the page table library and migrate the abstract write
-> > > > > > > > > > permission to the DBM field, even if we don't have FEAT_HAFDBS.
-> > > > > > > > > > 
-> > > > > > > > 
-> > > > > > > > Ohh, that's an amazing idea!
-> > > > > > > 
-> > > > > > > Thinking about that again...
-> > > > > > > If we adopt the encoding with DBM being the write-permission
-> > > > > > > bit, and all
-> > > > > > > PTEs have it since the start, how can we have lazy-splitting happening?
-> > > > > > > 
-> > > > > > > Only way I think of is removing both DBM and S2_S2AP_W bit
-> > > > > > > from writable
-> > > > > > > PTEs during dirty-track enable, and re-adding them during
-> > > > > > > the first write
-> > > > > > > fault. If we don't remove the DBM bit, systems with HDBSS
-> > > > > > > would just dirty
-> > > > > > > it by hardware, without causing a fault.
-> > > > > > > 
-> > > > > > > DBM=0 would need to happen only in the first write-protect (only on
-> > > > > > > lazy-splitting). All other write-protecting would just clean
-> > > > > > > the S2_S2AP_W
-> > > > > > > bit, as everything is already split.
-> > > > > > > 
-> > > > > > > Is that what was intended?
-> > > > > > > 
-> > > > > > > Thanks!
-> > > > > > > Leo
-> > > > > > > 
-> > > > > > Hi Leo,
-> > > > > > 
-> > > > > > I think the cleanest way to handle this is to simply avoid setting DBM
-> > > > > > on block mappings. If we only set DBM on page-level PTEs, then block
-> > > > > > mappings will naturally stay DBM=0 and trigger a write fault on first
-> > > > > > access — exactly what we need for lazy splitting.
-> > > > > > 
-> > > > > > When the fault occurs, the block gets split into page-level PTEs, and at
-> > > > > > that point we can set DBM=1 on the resulting leaf entries. This way:
-> > > > > > 
-> > > > > > 1. Lazy split works naturally (fault -> split -> set DBM=1)
-> > > > > > 
-> > > > > > 2. No need to clear DBM globally at dirty-track enable
-> > > > > > 
-> > > > > > 3. No special handling for block mappings
-> > > > > > 
-> > > > > > So I think global DBM is still viable — we just need to filter out block
-> > > > > > mappings when setting the DBM bit. That way the lazy split path
-> > > > > > is preserved
-> > > > > > without extra complexity.
-> > > > > 
-> > > > > Hi Tian,
-> > > > > 
-> > > > > Humm, but would not that be contrary to what Oliver suggested:
-> > > > > changing the
-> > > > > encoding from the PTE for all entries?
-> > > > > 
-> > > > > (Like, if the PTE is writable, it has to have DBM set)
-> > > > > 
-> > > > > IIUC what you said, on first faulting of the page in the VM:
-> > > > > - If the entry is a page (level-3 leaf) and writable, add DBM
-> > > > > - If it's a block entry (leaf but not a level-3), don't add DBM
-> > > > > 
-> > > > > So after we enable dirty-logging:
-> > > > > - a level-3 entry would not fault, using HDBSS, and
-> > > > > - a block entry would fault, do the splitting, and add DBM to level-3
-> > > > >     entries during the split.
-> > > > > 
-> > > > > If I got that correct, that would be clean indeed.
-> > > > > 
-> > > > > But then we would have a different encoding for block entries and page
-> > > > > entries. In page entries, DBM could be used to say if the page is
-> > > > > writable,
-> > > > > but on block entries one would have to look at the 'dirty-bit'.
-> > > > > 
-> > > > > Would that be ok?
-> > > > > 
-> > > > > Thanks!
-> > > > > Leo
-> > > > > 
-> > > > Hi Leo,
-> > > > 
-> > > > My initial concern was that clearing all DBM bits at the start of
-> > > > migration would be too expensive, so I thought distinguishing between
-> > > > level-3 entries and block entries would be better.
-> > > > 
-> > 
-> > I think we expect it to be expensive, but since we already clean the
-> > dirty-bit (ro/rw) bit, we can have both happening in the same write :)
-> > 
-> > (since we only mark the DBM bit when we fault the memory on lazy-splitting,
-> > we are expecting to have the same amount of writes to pagetable as we have
-> > before HDBSS, both on faulting and 1st iteration cleaning)
-> > 
-> Hi, Leo
-> 
-> Actually, I have thought about this approach too, but if we clear DBM in
-> kvm_pgtable_stage2_wrprotect(), then during the first round of
-> migration, we will fault and release RO -> W, and then add DBM.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Yeah, that's only for lazy-splitting, though.
+Pre-existing issues:
+- [Critical] The `private->crw` linked list is accessed and modified concur=
+rently without any synchronization, leading to list corruption.
+--
 
->
-> But next time, when we migrate the dirty pages in round two, we will run
-> kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
-> finally, HDBSS will be useless during migration.
+--- Patch [6]: [GIT PULL v1 06/23] s390/vfio_ccw: Ensure index for read/wri=
+te regions are within range ---
+commit e1d18d0b96d197063d1125d864eec65df5351f67
+Author: Eric Farman <farman@linux.ibm.com>
 
-Right, on lazy splitting, we have to clean the DBM bit on the  
-write-protect only if it's a block entry (hugepage). 
+    s390/vfio_ccw: Ensure index for read/write regions are within range
+   =20
+    The introduction of the capability chain rightly clamped the
+    region indexes to the range of the capabilities itself, but
+    neglected to do so for the existing read/write regions which
+    should also be enforced.
 
-Once it faults for the first time, it will lazy-split, and we don't need to 
-clean the DBM bit.
+[ ... ]
 
-> 
-> > 
-> > > > However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
-> > > > turned out to be around 30ns — which I think is acceptable.
-> > > 
-> > > Just a quick correction — I misstated the unit in my previous email. The
-> > > overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
-> > > ns.
-> > > 
-> > 
-> > Oh, that seems more likely :)
-> > 
-> > Question: is tha above amount of memory initially in Level-1 blocks,
-> > level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
-> > hugepages?)
-> > 
-> 
-> I'm using transparent hugepages. However, if we were to use level-3 stage-2
-> pages with -mem-prealloc enabled in QEMU, I believe the time cost would be
-> extremely high — potentially out of our control.
-> 
+> diff --git a/drivers/s390/cio/vfio_ccw_chp.c b/drivers/s390/cio/vfio_ccw_=
+chp.c
+> index 38c176cf62957..f3015132d4b5f 100644
+> --- a/drivers/s390/cio/vfio_ccw_chp.c
+> +++ b/drivers/s390/cio/vfio_ccw_chp.c
 
-Yeah, that's the issue.
-For this not to explode like this, we need to mark as RO only when the 
-entries are blocks AND we are doing lazy splitting.
+[ ... ]
 
-We have:
-Mode	DBM	Dirty bit
-RO	0	X
-WC	1	0
-WD	1	1
+> @@ -97,6 +105,12 @@ static ssize_t vfio_ccw_crw_region_read(struct vfio_c=
+cw_private *private,
+>  		list_del(&crw->next);
+> =20
 
-On write-protect:
-- Lazy splitting + block entry (hugepage, level 2-) -> RO
-- Otherwise					    -> WC
+[Severity: Critical]
+This is a pre-existing issue, but does this code corrupt the private->crw l=
+ist?
 
-On first fault, the block entry will be lazy-splitten, and we can set DBM=1 
-in every new page.
+CRW events are dequeued from the list here without any lock protection, all=
+owing
+concurrent read() syscalls to race and corrupt the list.
 
-That way we guarantee that we are not faulting level-3 pages unecessarily, 
-nor need to go through the whole tree setting DBM=1 or DBM=0 on level-3 
-pages.
+It looks like events are also appended to the list locklessly by
+vfio_ccw_queue_crw():
 
-How does that sound?
+drivers/s390/cio/vfio_ccw_drv.c:vfio_ccw_queue_crw() {
+	...
+	list_add_tail(&crw->next, &private->crw);
+	queue_work(vfio_ccw_work_q, &private->crw_work);
+}
 
-Thanks!
-Leo
+This means a single read() call can race against an incoming channel path e=
+vent
+handled by the asynchronous CSS callback vfio_ccw_chp_event(), resulting in=
+ list
+corruption.
+
+>  	mutex_lock(&private->io_mutex);
+> +	if (i >=3D private->num_regions) {
+> +		ret =3D -EINVAL;
+> +		goto out;
+> +	}
+> +
+> +	i =3D array_index_nospec(i, private->num_regions);
+>  	region =3D private->region[i].data;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803160924.2368=
+07-1-imbrenda@linux.ibm.com?part=3D6
