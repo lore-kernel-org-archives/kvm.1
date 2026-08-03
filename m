@@ -1,204 +1,353 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from esa12.hc1455-7.c3s2.iphmx.com (esa12.hc1455-7.c3s2.iphmx.com [139.138.37.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D00489863;
-	Mon,  3 Aug 2026 02:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABF146B5;
+	Mon,  3 Aug 2026 02:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.138.37.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785725028; cv=none; b=oFXVFkAL6Xom5BrLzI3+CN5M3hFJcTRVGq7iAQa0cWzkCVwxua+soySRtMJeXuG6HoRmf3sWbZz8A2s4gl5srIXltPSFRNSHJdi6FsS/cFcCeOQTGSIIS8qSCKe3CkIrf65VtkdZhHTsMbDRun1omeDdBOC6igtWOtuZCeWbzFc=
+	t=1785725917; cv=none; b=bIZ6BC1tntPO1LYfh4GKkQmp/eLsusHJodOZH69/FrjieyDafuM8dS3EnBlhdqYZCgsYAKA22rNX6VKMTnEjrh5Gva9/yI8fHpJ0VCDzrSDTwSeoe6nfcPkSItbEvLn5UFncm+o9LaWWNUIx2VoxQkr2pmkEhn9qyjBXdVoSWnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785725028; c=relaxed/simple;
-	bh=CFNSytE+2tg0bkqq7UMDHzkgq4F5EqtfTyEFf8TpgrM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sprt2HZY7CZF4+dHM+cusvgTi/fXUfUaLlkQr/wT/Mnt3K5DAfdufJU2XywUqd7YjuCmdjH7K+ppOjUCtqEy8wqI4557pkbKb4ajtEKOlf2SPzI4ip2A4Ad7PLag/BHWsWJRutyWldNXCVZMlZKucuzBPO69lJQINdThWhA9ZLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kFu8fuyU; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785725917; c=relaxed/simple;
+	bh=csdPmkjxsSkC1o2swlCZEV2MB1nP8nHKszxMfGQKTYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fxez8vxI7qqrG+eRZcQYuZc2h8pvd/JBgWsqHXdNyG4l95mDrg1dGUDHFpV3H3JvEDRJup99EKsAvu/UNsYjIK6x8/6W9k05u5DM282bWXUSYlB9NHUhJfdRV0m9CdZZCFCM67hjrORYHeyJjO8KbC//A1wkg5Q9kzB2AgxE62w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=mh43EKOE; arc=none smtp.client-ip=139.138.37.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kFu8fuyU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785725025; x=1817261025;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CFNSytE+2tg0bkqq7UMDHzkgq4F5EqtfTyEFf8TpgrM=;
-  b=kFu8fuyUivNfuv1b20Z/BgKD5WD0q3KZabkjyh8d8j7+1k2kH34NjNGr
-   EQ7z4a3PmfHJvUUes4Nhwqy9ZxeMaKHiHG8pUhx12luooITjLr2XZETEW
-   X8lg9UpVfwv0WyZmba8bv0MQ8SErvfAUAtLo9wZmDO/XjlP/afTYSpMhw
-   vOdTQ5THt8yq12nd6xz5ZmJ0pg/R6cGdhr7Exu09/Je0SlywJrt+BAr9s
-   mCCDsqLmDda5uOtPmtD+74ttxeVAEfSwSigijoou7ZdvzozvfOaepWH2i
-   jqnL8+YY5sYr8yvvEqFhWar1Yy/LJ24tfHOl4l1KT1fY5vEWNz2iRP9Kw
-   Q==;
-X-CSE-ConnectionGUID: qlLuhEv4Sbqog1+RZIQvTg==
-X-CSE-MsgGUID: c9q+uS57TbC3XHJLE4GpRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="90143910"
-X-IronPort-AV: E=Sophos;i="6.25,201,1779174000"; 
-   d="scan'208";a="90143910"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2026 19:43:44 -0700
-X-CSE-ConnectionGUID: BEG4ZP1DRymmaTKVaWpetA==
-X-CSE-MsgGUID: B7M1+kP7TIiUCgGwEr8Lcw==
-X-ExtLoop1: 1
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.248]) ([10.124.240.248])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2026 19:43:30 -0700
-Message-ID: <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
-Date: Mon, 3 Aug 2026 10:43:26 +0800
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="mh43EKOE"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1785725916; x=1817261916;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=csdPmkjxsSkC1o2swlCZEV2MB1nP8nHKszxMfGQKTYs=;
+  b=mh43EKOEDcVAnMIwaSnF/Ukte29PyPJQsMVUhia5iSOFOdK4kspVMg10
+   hjlr6aGptvkSoS6RGnLW1mtRkQEbLA1WsBx1L0D9S6IOsNrlvbdWIpe4L
+   UuhaPQtRkM9LgRCzCru4BDbqMdiuFH6dy9pgh8bMJmFLCB5Ot99nj03Wb
+   OTrM8APD15I4Koxzn4VivdsGbQpDHXlj9iB0QRJ2AoO9aOf9hBP9BIzkA
+   1dSCK3D1Q7Sw45yxrTzozzdYedwi9rwp+egxViI8Ku7BiZJ3Wzz8n5x7u
+   5aqQnYjkiG9zuUmpBGXLGD+nVLUtkE8HNu76sc/Jz9A8ukfqqWHxI1Wh5
+   g==;
+X-CSE-ConnectionGUID: Rmk6Y/eCQfm9SB/5DGLCgQ==
+X-CSE-MsgGUID: U36/peEqTPS6vDK3NE7nOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="227165186"
+X-IronPort-AV: E=Sophos;i="6.25,201,1779116400"; 
+   d="scan'208";a="227165186"
+Received: from gmgwnl01.global.fujitsu.com ([52.143.17.124])
+  by esa12.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 11:58:28 +0900
+Received: from az2nlsmgm3.fujitsu.com (unknown [10.150.26.205])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by gmgwnl01.global.fujitsu.com (Postfix) with ESMTPS id 66CFB1C00087;
+	Mon,  3 Aug 2026 02:58:28 +0000 (UTC)
+Received: from az2uksmom4.o.css.fujitsu.com (unknown [10.151.22.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by az2nlsmgm3.fujitsu.com (Postfix) with ESMTPS id 191B8188633E;
+	Mon,  3 Aug 2026 02:58:28 +0000 (UTC)
+Received: from FCCLS0092175.localdomain (unknown [10.8.239.116])
+	by az2uksmom4.o.css.fujitsu.com (Postfix) with SMTP id 58CBA4045C9;
+	Mon,  3 Aug 2026 02:58:22 +0000 (UTC)
+Date: Mon, 3 Aug 2026 11:58:15 +0900
+From: Kohei Enju <enju.kohei@fujitsu.com>
+To: Steven Price <steven.price@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, cgroups@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Subject: Re: [RFC PATCH v1 1/2] KVM: arm64: CCA: Add support for configuring
+ the Realm MEC policy
+Message-ID: <am_9x46Z7jvvi8xE@FCCLS0092175.localdomain>
+References: <20260724094120.166536-1-enju.kohei@fujitsu.com>
+ <20260724094120.166536-2-enju.kohei@fujitsu.com>
+ <a3db6519-f76a-433c-8c21-3286a038c584@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
- <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
- <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
- <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
- <amzMtg4K6qEEsudx@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <amzMtg4K6qEEsudx@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <a3db6519-f76a-433c-8c21-3286a038c584@arm.com>
 
-On 8/1/2026 12:26 AM, Sean Christopherson wrote:
-> On Fri, Jul 31, 2026, Xiaoyao Li wrote:
->> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
->>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>
->>>> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
->>>>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>>>> index 33c9830190e2e..89cf922232920 100644
->>>>> --- a/virt/kvm/guest_memfd.c
->>>>> +++ b/virt/kvm/guest_memfd.c
->>>>> @@ -893,6 +893,27 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>>>     EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->>>>>
->>>>>     #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->>>>> +static bool kvm_range_is_private(struct file *file, pgoff_t index,
->>>>> +				 size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->>>>> +{
->>>>> +	struct inode *inode = file_inode(file);
->>>>> +	pgoff_t last = index + nr_pages - 1;
->>>>> +	struct maple_tree *mt;
->>>>> +	void *entry;
->>>>> +
->>>>> +	if (!gmem_in_place_conversion)
->>>>> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->>>>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>>>> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>>>> +
->>>>> +	mt = &GMEM_I(inode)->attributes;
->>>>> +	mt_for_each(mt, entry, index, last) {
->>>>> +		if (kvm_gmem_interpret_entry(inode, entry) !=
->>>>> +		    KVM_MEMORY_ATTRIBUTE_PRIVATE)
->>>>> +			return false;
->>>>> +	}
->>>>> +	return true;
->>>>> +}
->>>>>
->>>>>     static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>>>     				struct file *file, gfn_t gfn, struct page *src_page,
->>>>> @@ -913,9 +934,7 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
->>>>>
->>>>>     	folio_unlock(folio);
->>>>>
->>>>> -	if (!kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + 1,
->>>>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>>>> -						KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
->>>>> +	if (!kvm_range_is_private(file, index, 1, kvm, gfn)) {
->>>>
->>>> It's checking if a single gfn is private.
->>>>
->>>
->>> But with huge page support we'd need to check a range of gfns... I guess
->>> there's the argument of not keeping complexity for the future, but in
->>> this case it's undoing functionality for this series and probably adding
->>> it back later.
->>
->> let's leave the work for huge page support in the future.
+On 07/31 11:59, Steven Price wrote:
+> Hi Kohei,
 > 
-> It's not just for hugepage support, the core functionality is used in this series
-> by __kvm_gmem_set_attributes() in:
+> Thanks for posting this - it looks good to me, but as Suzuki says it
+> would be good to get some maintainer feedback. One bug I spotted below.
+
+Hi Steven,
+Thanks for reviewing!
+
 > 
->    KVM: guest_memfd: Return early if range already has requested attributes
+> On 24/07/2026 10:40, Kohei Enju wrote:
+> > Introduce the KVM_ARM_RMI_CONFIG ioctl to allow userspace to configure
+> > Realm VM parameters before the Realm is created.
+> > 
+> > Currently, ARM_RMI_CFG_MEC_POLICY is the only supported configuration
+> > item. Its value can be ARM_RMI_MEC_POLICY_SHARED or
+> > ARM_RMI_MEC_POLICY_PRIVATE. Reject the private policy if the platform
+> > does not support private MECs.
+> > 
+> > If userspace does not explicitly configure the MEC policy,
+> > ARM_RMI_MEC_POLICY_SHARED is used by default.
+> > 
+> > Signed-off-by: Kohei Enju <enju.kohei@fujitsu.com>
+> > ---
+> >  Documentation/virt/kvm/api.rst   | 29 +++++++++++++++++++++++++++++
+> >  arch/arm64/include/asm/kvm_rmi.h |  4 ++++
+> >  arch/arm64/kvm/arm.c             |  9 +++++++++
+> >  arch/arm64/kvm/rmi.c             | 29 +++++++++++++++++++++++++++++
+> >  drivers/firmware/arm_rmm/rmi.c   |  8 ++++++--
+> >  include/linux/arm-rmi-cmds.h     |  1 +
+> >  include/uapi/linux/kvm.h         | 17 +++++++++++++++++
+> >  7 files changed, 95 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> > index 85bec9b4f021..e1c660e5eb34 100644
+> > --- a/Documentation/virt/kvm/api.rst
+> > +++ b/Documentation/virt/kvm/api.rst
+> > @@ -6690,6 +6690,35 @@ populated data is hashed and added to the guest's Realm Initial Measurement
+> >  (RIM) stored by the RMM. This can then be retrieved by the guest (using the RSI
+> >  interface) to present to an attestation server.
+> >  
+> > +4.147 KVM_ARM_RMI_CONFIG
+> > +------------------------
+> > +
+> > +:Capability: KVM_CAP_ARM_RMI
+> > +:Architectures: arm64
+> > +:Type: vm ioctl
+> > +:Parameters: struct kvm_arm_rmi_config (in)
+> > +:Returns: 0 on success, < 0 on error
+> > +
+> > +::
+> > +
+> > +  struct kvm_arm_rmi_config {
+> > +       __u32 cfg;
+> > +       union {
+> > +               /* cfg == ARM_RMI_CFG_MEC_POLICY */
+> > +               __u8 mec_policy;
+> > +
+> > +               /* Fix the size of the union */
+> > +               __u8 reserved[256];
+> > +       };
+> > +  };
+> > +
+> > +Configures parameters of a Realm VM before the Realm is created.
+> > +
+> > +Currently, `ARM_RMI_CFG_MEC_POLICY` is the only supported configuration item.
+> > +`mec_policy` must be either `ARM_RMI_MEC_POLICY_SHARED` or
+> > +`ARM_RMI_MEC_POLICY_PRIVATE`. `ARM_RMI_MEC_POLICY_PRIVATE` is not supported if
+> > +no private MEC is available on the platform.
+> > +
+> >  .. _kvm_run:
+> >  
+> >  5. The kvm_run structure
+> > diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
+> > index 420e99fca07e..721033b132e1 100644
+> > --- a/arch/arm64/include/asm/kvm_rmi.h
+> > +++ b/arch/arm64/include/asm/kvm_rmi.h
+> > @@ -60,6 +60,7 @@ enum realm_state {
+> >   * @ia_bits: Number of valid Input Address bits in the IPA
+> >   * @stage2_unmapped: The Realm stage-2 mappings have been removed
+> >   * @rtts_destroyed: The non-root RTTs have been torn down
+> > + * @mec_policy: MEC policy for the Realm VM
+> >   */
+> >  struct realm {
+> >  	void *rd;
+> > @@ -76,6 +77,7 @@ struct realm {
+> >  	unsigned int ia_bits;
+> >  	bool stage2_unmapped;
+> >  	bool rtts_destroyed;
+> > +	unsigned int mec_policy;
+> >  };
+> >  
+> >  /**
+> > @@ -115,6 +117,8 @@ struct kvm_arm_rmi_populate;
+> >  
+> >  int kvm_arm_rmi_populate(struct kvm *kvm,
+> >  			 struct kvm_arm_rmi_populate *arg);
+> > +struct kvm_arm_rmi_config;
+> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *arg);
+> >  void kvm_realm_unmap_range(struct kvm *kvm,
+> >  			   unsigned long ipa,
+> >  			   unsigned long size,
+> > diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+> > index 3862db30779f..17302ba2844c 100644
+> > --- a/arch/arm64/kvm/arm.c
+> > +++ b/arch/arm64/kvm/arm.c
+> > @@ -2169,6 +2169,15 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+> >  			return -EFAULT;
+> >  		return ret;
+> >  	}
+> > +	case KVM_ARM_RMI_CONFIG: {
+> > +		struct kvm_arm_rmi_config cfg;
+> > +
+> > +		if (!kvm_is_realm(kvm))
+> > +			return -ENXIO;
+> > +		if (copy_from_user(&cfg, argp, sizeof(cfg)))
+> > +			return -EFAULT;
+> > +		return kvm_arm_rmi_config(kvm, &cfg);
+> > +	}
+> >  	default:
+> >  		return -EINVAL;
+> >  	}
+> > diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
+> > index 06cc85fb5092..629dea5e8c47 100644
+> > --- a/arch/arm64/kvm/rmi.c
+> > +++ b/arch/arm64/kvm/rmi.c
+> > @@ -572,6 +572,9 @@ static int realm_create_rd(struct kvm *kvm)
+> >  	if (kvm_lpa2_is_enabled())
+> >  		params->flags0 |= RMI_REALM_PARAM_FLAG_LPA2;
+> >  
+> > +	params->flags0 |= FIELD_PREP(RMI_REALM_PARAM_FLAG_MEC_POLICY,
+> > +				     realm->mec_policy);
+> > +
 > 
->>>> We can just use kvm_mem_is_private()? And it seems can be a separate patch.
->>>>
->>>
->>> Do you mean that this refactoring could be a separate patch? I could
->>> refactor out kvm_range_is_private() in a separate patch, then put in the
->>> mt_for_each() check in this patch together as part of all the rest of
->>> the "wiring".
->>>
->>> I considered that but it seemed like the refactoring was too small to
->>> separate out into another patch when the mt_for_each() part is going to
->>> be in this patch anyway.
->>>
->>> Or, I could add an earlier patch to first replace the call to
->>> kvm_range_has_vm_memory_attributes() with a call to check just 1 gfn,
->>> then this wiring patch would be simpler.
->>>
->>
->> This is what I meant. An earlier patch to just replace
->> kvm_range_has_vm_memory_attributes() with kvm_mem_is_private(). Then we can
->> drop this 'big' diff in this patch.
->>
->> If kvm_range_is_private() is useful/required by huge page support, then let
->> the huge page series to introduce it. It has nothing to do with the in-place
->> conversion series.
+> Not your bug, but I realised this could cause problems. If the attempt
+> to create fails (perhaps due to the second patch and the cgroup charge
+> failing) and the VMM then reconfigures the MEC_POLICY then flags0
+> doesn't get reset. 
+
+Oops, good catch. That's an important point.
+I think I should have used FIELD_MODIFY() instead of ORing FIELD_PREP().
+
+> Technically that applies to a couple of other flags,
+> but here (with the following patch) this becomes a way of bypassing the
+> cgroups policy.
+
+Indeed.
+
 > 
-> If it weren't for the fact that the range-based search is used later in this
-> series, I would 100% agree with Xiaoyao.  
- > But since the core logic is used and needed elsewhere,
+> I'll fix this by allocating realm->params directly in realm_create_rd()
+> so that it always starts off zeroed (and removing the redundant member
+> of the struct). I think in a previous version of the series the params
+> was built piecemeal, but that's not true anymore.
+> 
+> The upshot is you don't need to do anything - it's my bug and I'll fix
+> it in the next version ;)
 
-I don't see it a problem. Without introducing kvm_range_is_private() in 
-this patch, the core logic of range-based search on gmem can still be 
-introduced as kvm_gmem_range_has_attributes() directly in patch 10 or in 
-a separate patch.
+Acknowledged. Thank you for addressing this in your series:)
 
- > and because kvm_range_has_vm_memory_attributes() takes a range,> my 
-vote is to provide the plumbing now, even though a small portion of it isn't
-> strictly necessary.
+Thanks,
+Kohei
 
-So my initial feedback was "we can just use kvm_mem_is_private(kvm, 
-gfn)". It makes code simpler. And as a bonus, the logic to choose 
-between gmem-based attribute query and vm-based attribute query is 
-hidden from the static call.
-
-The second bonus of dropping kvm_range_is_private() is that we can 
-eliminate one more chunk in patch 20.
+> 
+> Thanks,
+> Steve
+> 
+> >  	r = realm_init_sve_param(kvm, params);
+> >  	if (r)
+> >  		goto out_undelegate_tables;
+> > @@ -1155,6 +1158,30 @@ int kvm_arm_rmi_populate(struct kvm *kvm,
+> >  	return ret;
+> >  }
+> >  
+> > +int kvm_arm_rmi_config(struct kvm *kvm, struct kvm_arm_rmi_config *cfg)
+> > +{
+> > +	guard(mutex)(&kvm->arch.config_lock);
+> > +
+> > +	if (kvm_realm_state(kvm) != REALM_STATE_NONE)
+> > +		return -EBUSY;
+> > +
+> > +	switch (cfg->cfg) {
+> > +	case ARM_RMI_CFG_MEC_POLICY:
+> > +		if (cfg->mec_policy != ARM_RMI_MEC_POLICY_SHARED &&
+> > +		    cfg->mec_policy != ARM_RMI_MEC_POLICY_PRIVATE)
+> > +			return -EINVAL;
+> > +
+> > +		if (cfg->mec_policy == ARM_RMI_MEC_POLICY_PRIVATE &&
+> > +		    rmi_mec_count() == 0)
+> > +			return -EOPNOTSUPP;
+> > +
+> > +		kvm->arch.realm.mec_policy = cfg->mec_policy;
+> > +		return 0;
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
+> >  static void kvm_complete_ripas_change(struct kvm_vcpu *vcpu)
+> >  {
+> >  	struct kvm *kvm = vcpu->kvm;
+> > @@ -1474,6 +1501,8 @@ int kvm_init_realm(struct kvm *kvm)
+> >  {
+> >  	struct realm *realm = &kvm->arch.realm;
+> >  
+> > +	realm->mec_policy = ARM_RMI_MEC_POLICY_SHARED;
+> > +
+> >  	realm->params = (void *)get_zeroed_page(GFP_KERNEL_ACCOUNT);
+> >  	realm->sro = kmalloc_obj(*realm->sro);
+> >  	if (!realm->params || !realm->sro) {
+> > diff --git a/drivers/firmware/arm_rmm/rmi.c b/drivers/firmware/arm_rmm/rmi.c
+> > index d0c083bdf251..e9632c35e7db 100644
+> > --- a/drivers/firmware/arm_rmm/rmi.c
+> > +++ b/drivers/firmware/arm_rmm/rmi.c
+> > @@ -14,8 +14,7 @@
+> >  
+> >  static bool arm64_rmi_is_available;
+> >  
+> > -/* Currently only the first 2 registers are used by Linux */
+> > -#define RMI_FEAT_REG_COUNT	2
+> > +#define RMI_FEAT_REG_COUNT	5
+> >  static __ro_after_init unsigned long rmi_feat_reg_cache[RMI_FEAT_REG_COUNT];
+> >  
+> >  unsigned long rmi_feat_reg(unsigned long id)
+> > @@ -27,6 +26,11 @@ unsigned long rmi_feat_reg(unsigned long id)
+> >  }
+> >  EXPORT_SYMBOL_GPL(rmi_feat_reg);
+> >  
+> > +u64 rmi_mec_count(void)
+> > +{
+> > +	return u64_get_bits(rmi_feat_reg(4), RMI_FEATURE_REGISTER_4_MEC_COUNT);
+> > +}
+> > +
+> >  int rmi_delegate_range(phys_addr_t phys,
+> >  		       unsigned long size,
+> >  		       phys_addr_t *out_phys)
+> > diff --git a/include/linux/arm-rmi-cmds.h b/include/linux/arm-rmi-cmds.h
+> > index 138983ab4e3c..5236600421c6 100644
+> > --- a/include/linux/arm-rmi-cmds.h
+> > +++ b/include/linux/arm-rmi-cmds.h
+> > @@ -28,6 +28,7 @@ struct rmi_sro_state {
+> >  };
+> >  
+> >  unsigned long rmi_feat_reg(unsigned long id);
+> > +u64 rmi_mec_count(void);
+> >  
+> >  int rmi_delegate_range(phys_addr_t phys, unsigned long size,
+> >  		       phys_addr_t *out_phys);
+> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> > index adee3936d6ae..46e62327957c 100644
+> > --- a/include/uapi/linux/kvm.h
+> > +++ b/include/uapi/linux/kvm.h
+> > @@ -1704,4 +1704,21 @@ struct kvm_arm_rmi_populate {
+> >  	__u32 reserved;
+> >  };
+> >  
+> > +#define KVM_ARM_RMI_CONFIG     _IOW(KVMIO, 0xd8, struct kvm_arm_rmi_config)
+> > +
+> > +#define ARM_RMI_CFG_MEC_POLICY		0
+> > +#define ARM_RMI_MEC_POLICY_SHARED	0
+> > +#define ARM_RMI_MEC_POLICY_PRIVATE	1
+> > +
+> > +struct kvm_arm_rmi_config {
+> > +	__u32 cfg;
+> > +	union {
+> > +		/* cfg == ARM_RMI_CFG_MEC_POLICY */
+> > +		__u8 mec_policy;
+> > +
+> > +		/* Reserve space for future configuration payloads. */
+> > +		__u8 reserved[256];
+> > +	};
+> > +};
+> > +
+> >  #endif /* __LINUX_KVM_H */
+> 
