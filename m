@@ -1,175 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DAC395AF0
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 06:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C1539B960;
+	Mon,  3 Aug 2026 06:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785737401; cv=none; b=FCNk+/pH+75AEN+Q64d2q0AYoM3UwruOm3bEnJQU9B8XHVtkC9oxjjupqT8gi3zerk2IIdQr8xBOWgz1Q52yC/QFjdHcQNC0ZWK5b6lLiQzqqB1hh8RS5dvKsGDXnu2dxRNaNN4qKQTsQtaKdR5w4Uzzz8N+5BVVXWHuuI3lkdM=
+	t=1785740311; cv=none; b=edB+2q7XZLFuY0qIUhoZPuPixhndpo4xV9WO6WEzHKLBfDoz46NPcxE8yt9cn37hpah2eZijZ4qJRafRJkgADX7FMbawSmraVHOq4zbx8oF0OmZJubWwZPdkZWEeuUwoQ8Jbf9nkW/y2gzZl4Npn3MqeW4G3BTyY0nFfaLnQXYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785737401; c=relaxed/simple;
-	bh=kGVTFjQOt0Sx2VxVQgyTluCNk7T0u6JCg8f0cfpLT/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K+LJM2bvu508SsXS1i1YAtU97zE1n6bR+2MS5XTAv8JiXyxAos4SZEbpdlnbJlNiurR04JS0h3SaiWqQs72MnfeDCDX6Nz5wN7280D3MQYU3oneLoKxKAIOV9jhmn5/3oRawfKA2FA4EX+z2H+uLaO9n6YyFydUpY4m5MX55efY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BhcJgmjh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FvHGZchd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785740311; c=relaxed/simple;
+	bh=SWkTOOBwhFgdAMbTXzzrze3cqxGO7WsW/4bM+Iirnqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Elz9ubE6USP+2TFGR2uZ1B3VckTWk+mYGQXf/eAnK65lj4yUCy4ZA+SVhRW9z+6aNJiVi/Mv3JRRDRbvoyCurSn6Nwkh+CcbIlYQWBvWJBn4m9vwvPhrP5257DTV13E8NcgDRtGucRg1XQDn2+QbU2irV0++pbvaK8a3USYRNMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=PfFPEZfP; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BhcJgmjh";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FvHGZchd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785737398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=opESCzEHUJBRfpmQVy8tuXudchPZvHydKoko2MNrriA=;
-	b=BhcJgmjhDvJkeHHmDmeqj2hez+ED7mYyqU6lEJb1tIwX7OWP1oMprRU8QrXnZnEJ1HFbBz
-	2srCWwvU6vQSazvr/bvAhaT+HY9+PVeSRAOgtVXekntlWQCnVYxzFk15YsbdQPCR3ybnbN
-	jUbckhSKTZqducjBDeEyB6Qpw9xiIk8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-KlU8nlC-PuG7dlbX8G9jIA-1; Mon, 03 Aug 2026 02:09:57 -0400
-X-MC-Unique: KlU8nlC-PuG7dlbX8G9jIA-1
-X-Mimecast-MFC-AGG-ID: KlU8nlC-PuG7dlbX8G9jIA_1785737396
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955843c6cdso16307545e9.1
-        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 23:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785737396; x=1786342196; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=opESCzEHUJBRfpmQVy8tuXudchPZvHydKoko2MNrriA=;
-        b=FvHGZchdvONJS+J8kYurf+KKzcwXdFxqLzdjcrlGgswTL5BQI6InNZwcG6MLj+XwZV
-         jxKJu0og2GPyjCZ9I1N37XK3M3k0/JQ4HxFMyr1AJY1Q0QOsGQndSpfYLxzNSTiSQG2f
-         fAVh9ZdodhRF9syVhcoi29bkJUcmK4aAFIhSBa6vrEVoJ6b0c1Vpd3gEHI0/jBn/Lzda
-         E1InX6WuA37HoVs5XE81QzD4XLgCSeCjzF2DeZ1va3x6rPkHlq98Z8MJBA3q8lOXyVCF
-         6553wSE8llbWdOC11+v/4Sd66z2mDDK+24pEBIaePGJKNyvPlElzEqx/PU6xB/Kq0rcq
-         S5RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785737396; x=1786342196;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=opESCzEHUJBRfpmQVy8tuXudchPZvHydKoko2MNrriA=;
-        b=YCFG2MLYQmwORdpgFnb5LdKs7C9BYvXSTlNEpBDAPILfRHQ9q7SWxBLGqRn3qJJK/9
-         rt4gkdcDE8aCPD42rdKIH5P5S7f3/4toSfKCahlNowpeTHkxwPTYQsXuYDiIj+/pI2p0
-         G3QlwiX1AZMTxxlaF19KAyHn0DeozBjmBXmjJznHXRJFwDNfVy3ZqI8SdnYBBDaTN87c
-         WuORLt3185L6u7aAR5mC7VheKccWYgmcYMK+kG1lZeke+EtJQvtri66f90CQf7X+abv8
-         dS1GXK6nttH1GgfV/9Kqgzi18QlcR5B9f4wNeh2GT4VH3WdqHnwUdd88k0wB0+Yr2I9x
-         5lBg==
-X-Forwarded-Encrypted: i=1; AHgh+RrUGiC560HZyE2FASFP0QhUL6j7IhZVe4xUbarGCO9qe2Z/kuvMZSBu4PuypjenHeAReDs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMxgd4KZIVxBVyrNGUOY3G7RHkTtjzUawG9+6fO0+OTv+cnz+P
-	AeHcT/rUo3glnmf0QgNFGnnmUaeqxR/ZcPJGv8shvzWVKxokCCFpjycaaj3dRNdlzcubx4BmNbX
-	Uq2mIrgYXoVhZ+afEeNGpwKxrnhtV+XKkDrIbVVX33UTfq7s4NTK20g==
-X-Gm-Gg: AR+sD12FwKTWRohxBMEoa8GgsrbmYy0bXkYDtzF9oWxMAAto6z1Qhy2WSuOhMCdfRm0
-	l7jRlhl21b2nf2QFbNxrA6TQFKqq47jfMT0C4AtwDsHv9duPU8yQ4TRF+C5JYF7UvAvRXddwhgR
-	eXkP1odf1+XmL6Feq5nf5/xMmKDe2XV/9gPvMVSxNmgqU9zsaS7Z3N0h6gPiggdguX2UQDbJi8U
-	vZPzpVVC9YBeaUiV007IdJDaLynF5pLsGf/YUa6onHYk74dr9tuL5h5k04P9s4gtZWfb7j9106B
-	6nd2lTRHQaiGnG3uMAERqm6ChoRTFY4hlT2O+XNsVTQft0xAthpqSsa0CUT1dHo0t8rZ13TRtDX
-	CjuYKBMWpAUGhtps1WG3kxw==
-X-Received: by 2002:a05:600c:c490:b0:495:7538:d4ea with SMTP id 5b1f17b1804b1-4980c5fd773mr159725935e9.0.1785737396400;
-        Sun, 02 Aug 2026 23:09:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:c490:b0:495:7538:d4ea with SMTP id 5b1f17b1804b1-4980c5fd773mr159725185e9.0.1785737395940;
-        Sun, 02 Aug 2026 23:09:55 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4980878dcb4sm327289125e9.13.2026.08.02.23.09.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 23:09:55 -0700 (PDT)
-Date: Mon, 3 Aug 2026 02:09:52 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jun Yang <juny24602@gmail.com>
-Cc: netdev@vger.kernel.org, Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org, TencentOS Corvus AI <corvus@tencent.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vhost: reset the vring metadata cache on vring
- reconfiguration
-Message-ID: <20260803020641-mutt-send-email-mst@kernel.org>
-References: <20260803014823.68623-1-juny24602@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="PfFPEZfP"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672LmVuW169288;
+	Mon, 3 Aug 2026 06:58:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HK8Sih
+	/O7/pUQN240tbl3whlGaMSyOyNdnlEdAmpDHA=; b=PfFPEZfPb6jONi402oFI64
+	h3cfqXxMA00vJi+yg5VtaNK1Aj7xOwF1+a/zLoIn1B2CVhUdm78JWQ95zlN+Teen
+	WhKPh3MPL8nf/g98evh6vxq9BU9W9vXy07pZZTOKRlMJP8KhzajwMrkonl/Z0XbS
+	OvtBFeocU5LOmk8nfY5rsvUDvNE3iw0saJIaTvXCgLCmFl19dDozF8fI7/ngcRXS
+	OO6a3nX1biF33K4bU147xS2hxuvvQw2RbLtNKgC9ljAZM8wutnITtRC93n+tqj3x
+	lIpHnFS+LGefgP77jS87D+gUdVrSd9wzj3n6iW2isgFvfkddIBih5SzGKGJplKDg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77fy5mj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 06:58:10 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6736uSuZ019404;
+	Mon, 3 Aug 2026 06:58:09 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qc9mv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 06:58:09 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6736w57329884786
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Aug 2026 06:58:05 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C08CF20049;
+	Mon,  3 Aug 2026 06:58:05 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E14462004B;
+	Mon,  3 Aug 2026 06:58:02 +0000 (GMT)
+Received: from Linuxdev.j9d-in.ibm.com (unknown [9.123.86.85])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Aug 2026 06:58:02 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: Vishal Chourasia <vishalc@linux.ibm.com>
+Cc: peterz@infradead.org, frederic@kernel.org, npiggin@gmail.com,
+        mpe@ellerman.id.au, chleroy@kernel.org, sshegde@linux.ibm.com,
+        amachhiw@linux.ibm.com, vaibhav@linux.ibm.com, harshpb@linux.ibm.com,
+        gautam@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] KVM: powerpc: Use generic xfer to guest work function
+Date: Mon,  3 Aug 2026 12:28:02 +0530
+Message-ID: <178574013459.29744.14268082002008456960.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260709092140.1753715-2-vishalc@linux.ibm.com>
+References: <20260709092140.1753715-2-vishalc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803014823.68623-1-juny24602@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDA1OCBTYWx0ZWRfX8ffrc5J4nAHK
+ vH0+Q9XBCLdiegmcOYxvyyKNnvUxCP2KvqsQ3vz8AobgUwn0UdWI4ktqo85no3m5pIAi858QWg2
+ ca3jDyRpGZdhxwpthZznO3ZSKNREhC4ReXx0xmg6aYa8AvX1m+P+IBHBnh7uhNJNI8hYqBnGKon
+ X3UuoW1siD9hmJ4qFzlOKY8vS5IQ77U04IS9T5VaesQ8KIA9ecOGd5ts1hYufo/tr+8mDK/MO/M
+ kRr5aL1pyhkB8iqmHXgAZ+LRYhzIoe6V4Bwhg8FMRUMW4srptT2OsiQBAslfiNym3cDok7aSmsp
+ fvFNfg+nwMMqtq2YgAH87SexYcsN9g4XK3YcM9NBW02N4/Kaw2b5UO3Yuo3czZKIdGBtPdaXFam
+ zs8ulExvMjBXyCnVfvgCBPRlEsZkhwwTApzcl1L8ESQRbIW+X2JJRn/WZu+CRxij2iatMYcrHO1
+ VlZT70Qfvi5/ct6gMsA==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a703c02 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=HOfZ0xPUYLTITXtUa5IA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: Vyf5O9lbPYgGCKingTMYhlKUBhx8kaK9
+X-Proofpoint-ORIG-GUID: rRkzfVMjvXWlizzBobUaxG7SB7_HjGwC
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDA1OCBTYWx0ZWRfXx5gDHJcZnTEF
+ PCGE9pTuihnUSK3oXlAa6BGMTECBz5mLP8zhy2kgLO280TE/YgfyTnsDyLy8jInMYhTdlSioHOz
+ 9J492Z4c4oK2+kKqOmFLWY7AyN5c+UE=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030058
 
-On Mon, Aug 03, 2026 at 09:45:14AM +0800, Jun Yang wrote:
-> From: Jun Yang <junvyyang@tencent.com>
+On Thu, 09 Jul 2026 14:51:38 +0530, Vishal Chourasia wrote:
+> This series fixes a KVM scheduling bug on Book3S HV where a guest VM
+> under a cpu.max bandwidth limit can run arbitrarily past its quota and
+> then appear frozen for minutes afterwards.
 > 
-> vq->meta_iotlb[] caches the vhost_iotlb_map that backs each vring
-> metadata region, and iotlb_access_ok() returns early on a cache hit,
-> taking the hit as proof that the region has already been validated:
+> == Problem ==
 > 
-> 	if (vhost_vq_meta_fetch(vq, addr, len, type))
-> 		return true;
+> Since commit 2cd571245b43 ("sched/fair: Add related data structure for
+> task based throttle"), merged in v6.18, CFS bandwidth throttling no
+> longer dequeues a task directly. Instead it queues a task_work item via
+> task_work_add(..., TWA_RESUME), sets TIF_NOTIFY_RESUME, and relies on
+> that work running on the return path to actually dequeue the task.
 > 
-> The cache is reset on VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE, on
-> device IOTLB (re)initialisation and on vq reset, but not when
-> VHOST_SET_VRING_ADDR replaces vq->desc, vq->avail and vq->used, nor when
-> VHOST_SET_VRING_NUM changes the region sizes.
-> 
-> With a device IOTLB attached both ioctls are accepted while the vq is
-> live, and neither validates the addresses at ioctl time: vq_access_ok()
-> and vq_log_used_access_ok() return true early because the addresses are
-> GIOVAs, deferring validation to prefetch time.  Once the cache has been
-> populated that deferred validation no longer runs -- vq_meta_prefetch()
-> hits the stale entry and returns true -- and vhost_vq_meta_fetch() keeps
-> translating through the old mapping as
-> 
-> 	map->addr + addr - map->start
-> 
-> for an address the mapping no longer covers.  vhost_copy_to_user() and
-> vhost_copy_from_user() consume the result with __copy_to_user() and
-> __copy_from_user(), which do not check it either, so a subsequent used
-> ring update or descriptor fetch accesses memory outside the region the
-> IOTLB actually maps.
-> 
-> Reset the metadata cache whenever the vring is reconfigured, so the new
-> addresses are pushed back through iotlb_access_ok()'s slow path.
-> 
-> Fixes: f88949138058 ("vhost: introduce O(1) vq metadata cache")
-> Cc: stable@kernel.org
-> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-> Signed-off-by: Jun Yang <junvyyang@tencent.com>
+> [...]
 
-And it seems AI assisted writing at least the commit log am I right?
+Applied to powerpc/next.
 
-You are supposed to use:
+[1/2] KVM: powerpc: Use generic xfer to guest work function
+      https://git.kernel.org/powerpc/c/12013e3d4695721ef83b2e32fdfd20e2eb9b0cc9
+[2/2] powerpc: enable to run posix cpu timers in task context
+      https://git.kernel.org/powerpc/c/c2c8844316a12c2e1a3314e4f021815dd7fc7b47
 
-Assisted-by: AGENT_NAME:MODEL_VERSION 
-
-
-
-> ---
->  drivers/vhost/vhost.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-> index 4c525b3e16ea..77c96993100b 100644
-> --- a/drivers/vhost/vhost.c
-> +++ b/drivers/vhost/vhost.c
-> @@ -2126,6 +2126,14 @@ static long vhost_vring_set_num_addr(struct vhost_dev *d,
->  		BUG();
->  	}
->  
-> +	/*
-> +	 * The metadata cache holds the IOTLB mapping that backed the previous
-> +	 * desc/avail/used addresses and vring size, both of which are being
-> +	 * replaced here.  iotlb_access_ok() takes a cache hit as proof that the
-> +	 * region was validated, so the stale entries have to go.
-> +	 */
-> +	__vhost_vq_meta_reset(vq);
-> +
->  	mutex_unlock(&vq->mutex);
->  
->  	return r;
-> -- 
-> 2.55.0
-
+cheers
