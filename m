@@ -1,119 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239E42F3C3D
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 02:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C72489863
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 02:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785724036; cv=none; b=m7hLmAsRyCEpYzjrJ1kRkqUIdsz+gc/FMHS9J9aFyJcPNjzaI1bgYEDoSdQ02AoqQ27I72Rno/f+VfJkWAjbQRCkvB07lXyqQgJr9rsfTCitlHOI6mQrtcwiLm35XalfKdSV2fkVqXxJ81rlPeq0+4c0hcFl/nUHt+dO8letTYw=
+	t=1785724942; cv=none; b=DEMNXB51ii9EcjWOTDgtm1MjovBERecXmv2yLkzviBIgWn0vTnudc+wz4chWnXjxhY0u7emW3DYFwmc/D8gx5jqWKqc+OBty1EUaK8nrOeb2uPARTqbc6OlwlBgi5xviSKh1HZcuhssqIjf1dQzADro2af72d0sNPCJ53MUuyOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785724036; c=relaxed/simple;
-	bh=AIGTEahovfWLQaaQy5hTYypcO+jzOkfVyhuAEo4T+UQ=;
+	s=arc-20240116; t=1785724942; c=relaxed/simple;
+	bh=KyFA94HH3rDgnOXKBdatglA1R3CTSM65990G7g1ZmKY=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JsM22FKHrMLrqTHTSKpioQDjAVAtTMRZvNsckj3yu0tXfJFmiE+tOElSVIW9fQVRbnFfCeETdUOyIrpGzgNxEtPUyxPy1dbx7tHUEGv5KsVweZyYuwIEsJRperaJMEH91azNPKK0+/ACCcD9C3uzvjER124amSTJJkmVvhmzC5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sob8EeWC; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=mmvOE7xowSLx58axD3571Cg66ZJcrh7qU+Al8nTMR84WU/TEvML0BQfzvw5jSa8BecVeqU8Huap6oG/3p8G5Y3eh2c30OQhSMI/HvOGg01AkB2zlKXrZCov3YJbIgkYkJ7NW8F6VedS9r1nGyx4huxzQXiF4cWe+tShN9mHoZEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aZ2udDEQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sob8EeWC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972861F000E9;
-	Mon,  3 Aug 2026 02:27:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aZ2udDEQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB9E1F000E9;
+	Mon,  3 Aug 2026 02:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785724034;
-	bh=Cjf3EzDV0TulaGupAS8r4j+AzIN6yXNKz5eNe3H/Urk=;
+	s=k20260515; t=1785724940;
+	bh=TVoIOPt35BBhVk95nWGYNs1N2KvK/7Quh4V55Rl9/V4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Sob8EeWCFC38xcb2LZMG0IzUpcvGyH397d5+3L1N6gukd85Si8YiNNZDD05lYw1Cr
-	 p37261ShJrxAtlGJ3gT52/KDVHGShV6u72iEGlVX/0pAphD0RG32u5FQ8OIwo2h/X0
-	 ZX4s5EIzdMMAA+gN5IsApakzgOoiTMNeDBEfM5y8zoV2Hkc1cGt0FIfD6ZnSgQo8W/
-	 D2B8tQjkGupSIcPhuXSBVJ1UoF2ytck2BPxv3hQvc5S9harMY2jqWMMtty49I6Rob6
-	 LmzF4GL9ypolHo6cNXgsANLs2BJfQSTpEIBjcR+MO3FXfG8jQqeWJS20qt5kyZKmi/
-	 736L8ROqe8Ieg==
+	b=aZ2udDEQNaDnT3AfPotw693UsrhzGRTG2OVdhxPCHqO0ExsjgrMfX9eNUtMTgka+3
+	 /VxvnspeMy0xXJJtogKqucL8PJS4UMv9S4cnIErpn+cqyorsAarnjBF8HgbUhLiK/K
+	 QKpOHY1sv8BcCr0g8sBmqIPEFjE2qCG0HMONtbrRpWEfcX6DlKEQkEUzgNJq2di543
+	 ByYvQisxYDvbwwR0fXqkyFYovRpB9q1EJEgX1dBboXINZAy7Tdi1ExJSHxHG5yjFbO
+	 sAvGJN9jyOU/UNogaJ1FfVnPe2qp5ucaSmSaSP9Bs12jndJYIfKJJjjuP6OfXH8xD4
+	 jYOWubEzA4aKQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page
- size
+Subject: Re: [PATCH 1/2] hisi_acc_vfio_pci: fix live migration enable
+ conditions for PF passthrough
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Longfang Liu" <liulongfang@huawei.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260803021857.2370179-3-liulongfang@huawei.com>
+In-Reply-To: <20260803021857.2370179-2-liulongfang@huawei.com>
 References: <20260803021857.2370179-1-liulongfang@huawei.com>
- <20260803021857.2370179-3-liulongfang@huawei.com>
+ <20260803021857.2370179-2-liulongfang@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 02:27:14 +0000
-Message-Id: <20260803022714.972861F000E9@smtp.kernel.org>
+Date: Mon, 03 Aug 2026 02:42:20 +0000
+Message-Id: <20260803024220.ABB9E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Critical] Guest memory-mapping of BAR2 allows direct access to sensitive=
- migration control registers, bypassing software isolation.
+
+Pre-existing issues:
+- [High] The patch fails to prevent a Use-After-Free because `pf_qm` become=
+s a dangling pointer (not NULL) when the PF driver is unbound.
+- [High] `set_reset_flag` is never cleared, causing spurious lock release d=
+uring subsequent failed resets.
 --
 
---- Patch [2]: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page=
- size ---
-commit 6249c89b3b40e6c3a5627d170614fe16d3e815bf
+--- Patch [1]: [PATCH 1/2] hisi_acc_vfio_pci: fix live migration enable con=
+ditions for PF passthrough ---
+commit 2cccd4c0444989d0fd451c1227c40bde4c25acb2
 Author: Longfang Liu <liulongfang@huawei.com>
+Subject: hisi_acc_vfio_pci: fix live migration enable conditions for PF pas=
+sthrough
 
-hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page size
-
-This commit aligns the BAR2 functional region mmap boundaries to PAGE_SIZE.
-This is intended to prevent guest mmap operations from being rejected on 64=
-KB
-page size kernels when the functional region is smaller.
+This commit attempts to fix a calltrace exception triggered when a user
+unbinds the PF device driver from the host and directly passes it through to
+a VM, then attempts live migration. It adds checks across operations that
+depend on PF driver commands to ensure the PF's QM structure is available.
 
 > diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfi=
 o/pci/hisilicon/hisi_acc_vfio_pci.c
-> index 36490be7a61aa..44b3e7d8fef5c 100644
+> index 86362ec424a50..36490be7a61aa 100644
 > --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
 > +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
-> @@ -1355,14 +1355,21 @@ static int hisi_acc_vfio_pci_mmap(struct vfio_dev=
-ice *core_vdev,
->  	index =3D vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
->  	if (index =3D=3D VFIO_PCI_BAR2_REGION_INDEX) {
->  		u64 req_len, pgoff, req_start;
-> -		resource_size_t end;
-> +		resource_size_t end, dev_len;
+> @@ -378,6 +378,11 @@ static int vf_qm_check_match(struct hisi_acc_vf_core=
+_device *hisi_acc_vdev,
+>  	if (migf->total_length < QM_MATCH_SIZE || hisi_acc_vdev->match_done)
+>  		return 0;
 > =20
-> -		end =3D hisi_acc_get_resource_len(vdev, index);
-> +		dev_len =3D hisi_acc_get_resource_len(vdev, index);
->  		req_len =3D vma->vm_end - vma->vm_start;
->  		pgoff =3D vma->vm_pgoff &
->  			((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
->  		req_start =3D pgoff << PAGE_SHIFT;
-> -
-> +		/*
-> +		 * The BAR2 functional region (dev_len) may be smaller than the
-> +		 * kernel page size. Align it to PAGE_SIZE so a page-rounded
-> +		 * guest mmap is not rejected, which would make the VF unusable.
-> +		 * The read/write path still truncates at the real functional
-> +		 * boundary, keeping the migration registers inaccessible.
-> +		 */
-> +		end =3D PAGE_ALIGN(dev_len);
-> +		if (req_start + req_len > end)
-> +			return -EINVAL;
+> +	if (!pf_qm || !pf_qm->io_base) {
 
-[Severity: Critical]
-Does this change allow an untrusted guest or userspace process to bypass
-software isolation and gain direct access to migration control registers?
+[Severity: High]
+This isn't a bug introduced by this patch, but since the patch attempts to
+fix it here, does this check fully prevent a Use-After-Free?
 
-By rounding dev_len up to PAGE_SIZE in hisi_acc_vfio_pci_mmap(), the bounda=
-ry
-check intended to prevent mapping of the hardware migration registers is
-circumvented.
+When the PF driver is unbound while a VF is assigned to a VM,
+pci_disable_sriov() warns but doesn't prevent the driver's remove callback
+from executing, causing the PF's qm structure to be freed via devres.
 
-If a guest running on a 64KB page host requests an mmap of the BAR2
-functional region, the code rounds dev_len up to PAGE_SIZE. This allows the
-request to be validated and passed to vfio_pci_core_mmap(), mapping the
-full 64KB physical page into the guest's stage-2 page tables.
+This leaves hisi_acc_vdev->pf_qm as a dangling pointer rather than NULL.
+Will the !pf_qm check fail to catch this, leading to a UAF read when
+accessing pf_qm->io_base?
 
-If the functional region is 32KB and the migration registers reside in the
-upper 32KB of the same physical page, the guest would gain unmediated
-read/write access to the migration control registers via direct memory
-load/store instructions. This appears to bypass the kernel's read/write
-interception and the hisi_acc_pci_rw_access_check() boundary checks.
+> +		dev_err(dev, "failed to match check for PF QM migration\n");
+> +		return -ENODEV;
+> +	}
+> +
+>  	ret =3D vf_qm_version_check(vf_data, dev);
+
+[ ... ]
+
+> @@ -1174,8 +1194,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct =
+pci_dev *pdev)
+>  	struct hisi_acc_vf_core_device *hisi_acc_vdev =3D hisi_acc_drvdata(pdev=
+);
+>  	struct hisi_qm *qm =3D hisi_acc_vdev->pf_qm;
+> =20
+> -	if (hisi_acc_vdev->set_reset_flag)
+> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
+> +	if (hisi_acc_vdev->set_reset_flag) {
+> +		if (qm && qm->io_base)
+> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
+
+[Severity: High]
+This is a pre-existing issue, but should the set_reset_flag be cleared after
+releasing this lock?
+
+If hisi_acc_vf_pci_reset_prepare() successfully acquires the lock, it sets
+set_reset_flag =3D true. However, when hisi_acc_vf_pci_aer_reset_done()
+clears the lock here, it doesn't appear to reset the flag back to false.
+
+If a subsequent reset occurs and reset_prepare() fails to acquire the lock
+(e.g., due to a timeout because another VF or the PF holds it), won't this
+function erroneously clear the QM_RESETTING lock that is actively held by
+another context?
+
+> +		else
+> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
+> +	}
+> =20
+>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
+>  		return;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803021857.2370=
-179-1-liulongfang@huawei.com?part=3D2
+179-1-liulongfang@huawei.com?part=3D1
