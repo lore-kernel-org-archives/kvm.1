@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C39390C9F;
-	Mon,  3 Aug 2026 11:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5ED38330F;
+	Mon,  3 Aug 2026 12:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785758101; cv=none; b=a0qfjOmavfYINgW2x8XTL+CjA43kV8axlaOIQLRvmEgyFXdJmTEW/C0UcLBMgEb9P5N44xtIXgY1xHTz/RUsDoYvjfvulRVzhDhpQjcXoGFU2cdtEZFym3qLrKxzs4iLddlZbBLyrhbxwU4f8Rp4NV5BvX493QG53LwItdTqE+w=
+	t=1785759399; cv=none; b=OEr83qHv8iiQssT8zkd/wIzXSLs7Omi2guudCd+3j5odbWUhVj6KxMlBQk4zWMYGe0V/acPaqEuDbX0DLRuRmBrcxH2+24ndV2uGSjFIMsmCE1x5tboikMHDgYIi57YZZAQJw7/gFYOpgTJpVuSomj2mJA4jfak28cF5wgM5Fio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785758101; c=relaxed/simple;
-	bh=4vEFrWkB7L58dxp3sSQwZLpaU96zItj1JCbs19FmGQo=;
+	s=arc-20240116; t=1785759399; c=relaxed/simple;
+	bh=DhaV9KWGsVIjXjQAu8mkjhNIhjShnX6ggRWIGRejfek=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IAXFtY8X6GD60GpJQ3CRqHNhtE0J51DMme9uFpUoUlW13C7SzSSDFdMQVTvv7SdXvVqlIgNFL6cXn0cdhQr2h3cNaVUda8aoQAkkDMYo8e8eAXK+c0tQBjq3JUIvYBEGWcYnYNHK+FZGEdhSqmEVloqmcSNgen2vU0vu/W2PUHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQXmk3Kn; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=UZ6iytOFHfCaayLK836yxtSHc50NBbXAQ8ZOgOw4SaBplgW/6oA7NUnpISa/k2c7cvVA+bEqk+Az+xPwyW3qPUp2TVZYzCF8eKjL8nnJFb9e7apuOysEpzHhBnOoD2yY62azw6dM1+OnsSEgb97fKr0zc9J3FbmAHgF3UTAVZJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhilxiHV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQXmk3Kn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B81F000E9;
-	Mon,  3 Aug 2026 11:54:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhilxiHV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0933A1F000E9;
+	Mon,  3 Aug 2026 12:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785758099;
-	bh=JFi+EA9EOv5ZOt8q1SqzBGAoG8UY4elQgS2T1OsiJu4=;
+	s=k20260515; t=1785759398;
+	bh=55xmHsjPqzaGV0ly1LUi624NBcwUFcBTGLs//q+Aif4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cQXmk3Knvg7dM/zcDgDPmpTPAliR8g428C/ZeCCRqCHRD7/0zZaATfRYXIafsOIzJ
-	 v8Y1ds4rE7OyDP+Th0j1Q/K9EYDZHAjVOdhQEa8LX8XzqN9eiEy2B3e+1kpLpsKbPy
-	 v2SNYPvCk+QvxRGpZKHNRkzhvkXVT+NYNCNPTMmP6JRzDgeErtSD7mgMkrJp3xOxPQ
-	 ZpRzfKgTS8Lepastwp3BkcxVPafPBQqFOI3IKvlR7C0HD/ZiSPTKQBhxVy0G6E/Cg9
-	 V4v0G3TVy8x8r1wYLm13toU6vqeEMNKwHJPMFl+IejDzzi57fsLc02iUcIgpwaLgJ2
-	 BlxjkdChydpVg==
-Message-ID: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
-Date: Mon, 3 Aug 2026 13:54:55 +0200
+	b=ZhilxiHVcGglLBMt5PIQz/4XhyzmurGW7f7hDst5wFgXLkEJ7Ql4j38SUeUjDtxpo
+	 iujYsQK51eOkQ+gMwj9rS2dVQ7eOYOVNnhbZESsOAcqCXH+mx1d/0Fdd9WEzcoiI8c
+	 vDP9WGdcT7/uIbYeu3lbftJzQrqcB1xe98RAX036DKn6XJXwFInPs1bs1Ka5WOVZcj
+	 h7OmESiRPlzjasLU3dDExgLYViNgbcUhxF4UfAyoDE9r+H+KGPx+tuBH7/2OUI0/u1
+	 /x/TJ2Xr65rD94DLz9eth0zXRCVGm6UE64DiY5TolS1I3TuHsCYsINlPMG/kPcDX+W
+	 4IjSrT+t9CKJg==
+Message-ID: <bf97ed0d-571f-4c61-b761-5b45d435c4c2@kernel.org>
+Date: Mon, 3 Aug 2026 14:16:33 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,8 +35,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
- followed by .pfn_mkwrite() for write faults
+Subject: Re: [PATCH RFT 1/3] mm: export variants of vmf_insert_pfn* for use
+ with pfn_mkwrite()
 To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
  kvm@vger.kernel.org
 Cc: Boris Brezillon <boris.brezillon@collabora.com>,
@@ -45,6 +45,7 @@ Cc: Boris Brezillon <boris.brezillon@collabora.com>,
  Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
  dri-devel@lists.freedesktop.org, linux-mm@kvack.org
 References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <20260731164341.1109827-2-pbonzini@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -91,14 +92,11 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260731164341.1109827-1-pbonzini@redhat.com>
+In-Reply-To: <20260731164341.1109827-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 7/31/26 18:43, Paolo Bonzini wrote:
-> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
-> the reporter to help with testing these patches.
-> 
 > Right now, users of .pfn_mkwrite() have no way to create a PTE
 > that has gone through maybe_mkwrite().  Because vma_set_page_prot()
 > will have cleared the writable PTE bit, users of fixup_user_fault()
@@ -109,8 +107,111 @@ On 7/31/26 18:43, Paolo Bonzini wrote:
 > about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
 > which is an opaque pgprot_t, therefore only follow_pfnmap_start()
 > knows how to retrieve it.
+> 
+> There are actually some preexisting functions that suggest how this
+> is supposed to be handled, namely vmf_insert_page_mkwrite() and
+> vmf_insert_pfn_pmd().  Adjust mm/memory.c to export two more
+> functions: vmf_insert_pfn_mkwrite() for the common case where
+> vma->vm_page_prot is okay, and __vmf_insert_pfn_prot() when
+> really all parameters are needed.  This makes it possible
+> to fix drivers that use .pfn_mkwrite together with
+> vmf_insert_pfn() and vmf_insert_pfn_prot().
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  include/linux/mm.h |  4 +++
+>  mm/huge_memory.c   |  2 +-
+>  mm/memory.c        | 75 +++++++++++++++++++++++++++++++++-------------
+>  3 files changed, 59 insertions(+), 22 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 34c79b5fcb9b..33c7de36b214 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4551,6 +4551,10 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+>  vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn, pgprot_t pgprot);
+> +vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma, unsigned long addr,
+> +			unsigned long pfn, bool write);
+> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+> +			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
+>  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+>  			unsigned long pfn);
+>  vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index b5d1e9d4463d..2f4dcaa819b7 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+>   * @pfn: pfn to insert
+>   * @write: whether it's a write fault
+>   *
+> - * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
+> + * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
+>   *
+>   * Return: vm_fault_t value.
+>   */
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 40997a26846f..7b950be8f511 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2718,6 +2718,34 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+>  	return VM_FAULT_NOPAGE;
+>  }
+>  
 
-How is mprotect() supposed to work in that case?
+
+[...]
+
+> +vm_fault_t __vmf_insert_pfn_prot(struct vm_area_struct *vma,
+> +			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
+> +			bool mkwrite)
+
+(We indent two tabs, I assume vmf_insert_pfn_prot uses 3 for legacy reasons after
+renamings)
+
+Hm, having a __ function that looks like an internal helper exported to drivers
+and then not adding kerneldocs.
+
+Why not simply have
+
+	vmf_insert_pfn_prot_mkwrite()
+
+And add proper documentation?
+
+I guess we could also turn vmf_insert_pfn(), vmf_insert_pfn_mkwrite() and
+vmf_insert_pfn_prot() into simple inline functions in the header. And I'd even
+say that a single excessive documentation of vmf_insert_pfn_prot_mkwrite()
+might be sufficient, and keeping it very short for the wrappers.
+
+
+> +{
+> +	/*
+> +	 * Technically, architectures with pte_special can avoid all these
+> +	 * restrictions (same for remap_pfn_range).  However we would like
+> +	 * consistency in testing and feature parity among all, so we should
+> +	 * try to keep these invariants in place for everybody.
+> +	 */
+> +	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
+> +	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
+> +						(VM_PFNMAP|VM_MIXEDMAP));
+> +	BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+> +	BUG_ON((vma->vm_flags & VM_MIXEDMAP) && pfn_valid(pfn));
+> +
+> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	if (!pfn_modify_allowed(pfn, pgprot))
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+> +
+> +	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
+> +}
+> +EXPORT_SYMBOL(__vmf_insert_pfn_prot);
+
+If this becomes a dedicated symbol, why not GPL?
 
 -- 
 Cheers,
