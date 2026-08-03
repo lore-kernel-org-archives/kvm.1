@@ -1,200 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DC4422536;
-	Mon,  3 Aug 2026 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00197423EB0
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 17:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785777612; cv=none; b=fTwx2G/D4yGDaV+vBRJDOgkFM3vYvqUeGc5vQurFDHx9tMmozWMiZm6Fa9BN+jJOF+lnImaT8FLE7x9snW0gW9PnfkVybbCK63UoG4+ki5l8+i+2TKHQdZ/faP6i02C66vk/Q/zT7akBuTwD5H+kN7ZNC39e/1N2QEgJaKJC74Q=
+	t=1785777732; cv=none; b=jjNk2XZEtWd/TAbCKA5x3YVFAjrJ/RlZJhC/SMhpS6Tkhi8cPlRaLfirizi6qAO99sfUJyhmHUfIa1dnTLjXZ0eTA95QI/vk6Uv7EQOXRrAp9IqYjuPCKLThv4s7FwgXu5mFUfCsWCOI9WVMye0y8FhoJu6KVTX8zaciLKWmYSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785777612; c=relaxed/simple;
-	bh=ooRUoff9XWgpcgt5f4bmeK4HtMsjgzJ34y4I0lj1OiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gSDGAZ/vcfjbMD7uBWxkCFQfTfafvGEvQlTn8c2vFovReuidSZkjGJ+HRR2I01Zd53Vk08gZ4QHw8qSiINkXCuLJtRd6PVE2+CkYAnou+Bg1j7rFmbax06NuV+beqWBTy4Ijv3ae+JFUDh7oBY1whG9bwTF4XXR72idXvOJpdns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbayUTqo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785777732; c=relaxed/simple;
+	bh=gTgQSmBE+r+iar07Jae2NQ8DsEkJUSa+ZqcZKGl3F8E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ePhPGYHeimZaBQdy0w+2dJmRj05EQeL6Y1KKuNE0IYhTFXegd7PNAYNnM8d1zgBnSSDzpGNemkQe3DUqGtk6T6/NpN19aHo4etVRbzT/ZD/6Kd+BsRIdC6/s3M337T1b9XahWJbaEG+9Vy6zcSeVGe0rELJgntDzMSfIwtgij5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PVtFfAsF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbayUTqo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077591F000E9;
-	Mon,  3 Aug 2026 17:19:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PVtFfAsF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08AB1F00AC4
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 17:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785777610;
-	bh=jaGdHeM2tuCpUDvo0NdoPoN7wNvxLwwXU1y/qBHI07Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fbayUTqo7MdRvRqdxmzf/Phk8m135Q8wfKB8ldMVsaTV/zLPGwSa5nfYccCoj1Rf7
-	 JesC/xr8mlGGZO4oqqRpn9Aoa0yqex2Rt9mldfpuAONfIXYpNqtti8wa82X5b4UxFs
-	 umbXKhmuMCUmDbcE6gCl+ZUEv/jUO3ZiEvFrNhMjtByhPgOxx1bPcchEmzo/He3ew8
-	 wmK4D/fBv745ymNdhdfwBEggAQ7wWMLh7RCJGT7Rb6sMucvVgZtOjdhNpaHW1oTxj/
-	 vRX1swsf80TWILUb88FP4a6Mij/Nicr6aBCv0u8pdB2C+I8IuZKMeyG9CjP1pU7QK4
-	 ffgeIZb481pDw==
-Date: Mon, 3 Aug 2026 13:19:47 -0400
-From: Guo Ren <guoren@kernel.org>
-To: Anup Patel <anup@brainfault.org>
-Cc: Yaxing Guo <guoyaxing@bosc.ac.cn>, Atish Patra <atish.patra@linux.dev>,
-	kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Hui Min Mina Chou <minachou@andestech.com>, majiuyue@bosc.ac.cn,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC] RISC-V KVM: guest local sfence.vma may miss stale VS-stage
- TLB after vCPU migration
-Message-ID: <anDNs9KCzz3DTXdu@gmail.com>
-References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
- <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
+	s=k20260515; t=1785777730;
+	bh=Yk5slSieC/CU7tsLjWCOdn7b11iCwR3umpnuQdQLwak=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PVtFfAsFoNkwyF9wScBe39Unh0qWbabS1YgzBv3XR59zYW5FaB3JC8+OAlWgi3w6A
+	 ckd7i9lqu/bkgpUfUH60vtEAu0lGnXwjsdjLsgnJT2DOLZrL4PLenb2KaMduGKv1Ko
+	 wuAq12bQUD/29KaWYoUcKSakMNai6irebNPLy0S2ty3BTulKyeqOBRDVrS7OlPOKvl
+	 dQSvau6XyyBOYSytOgX1AkxpP+Xwf+VsXn9CmzKspyBACIARFCzsNM/z7CwM4+XB8a
+	 Jr2Y/lZlBTr/KCZkkwYTyyJuBbQBKL+1XvSDvdg8AmWf5jE/cZp3swtwNvmVD3Bfsi
+	 JKKxc6f547grQ==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6983d3dae7aso215949a12.0
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 10:22:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqqjQRRnpTdnZr5zte80p8YKCfjhXlbGmQUeTANb1Z4oEtVH4gGgZYznCseMe1p7bFKd3E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6vQC8Kb8lmYLkuMhH47113pUnDSXvo3cgRStLhuitHEpzXLaA
+	zsrs7a5zHBFa37eYQHhC7jni2tKIMsRs9FCnl9hEEpKLjTw+eplXYSgSRRXuELaGXDg+4VJ+7Cn
+	zJBPYOiEWFf/upSLbjrGgxcRGXpn6eAQ=
+X-Received: by 2002:a17:906:7944:b0:c12:525b:4e7d with SMTP id
+ a640c23a62f3a-c20247da30cmr35710366b.15.1785777729744; Mon, 03 Aug 2026
+ 10:22:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
+References: <20260728003557.1136583-1-yosry@kernel.org> <20260728003557.1136583-26-yosry@kernel.org>
+ <CAO9r8zOKXjiaYer9d1bpDsGqgbRybR-kys7=VS5+bgamhH7LkQ@mail.gmail.com>
+In-Reply-To: <CAO9r8zOKXjiaYer9d1bpDsGqgbRybR-kys7=VS5+bgamhH7LkQ@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 3 Aug 2026 10:21:57 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPq6j54qjSpx974+7LJ_behFs0R2Nk9yziVbcgbiro76Q@mail.gmail.com>
+X-Gm-Features: AUfX_mz7YWhrREaV4IA-vywsQPLiJzkZFwq8IcY9HnCKrftBoH0XoxO7Xhr6Hhs
+Message-ID: <CAO9r8zPq6j54qjSpx974+7LJ_behFs0R2Nk9yziVbcgbiro76Q@mail.gmail.com>
+Subject: Re: [PATCH v1 25/28] KVM: nSVM: Flush L2's ASID when emulating INVLPGA
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Maxim Levitsky <mlevitsk@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 07:52:14PM +0530, Anup Patel wrote:
-> On Sun, Aug 2, 2026 at 10:30 AM Yaxing Guo <guoyaxing@bosc.ac.cn> wrote:
+On Fri, Jul 31, 2026 at 11:41=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wro=
+te:
+>
+> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+> > index e4bda43238654..d7b20941b1fee 100644
+> > --- a/arch/x86/kvm/svm/svm.c
+> > +++ b/arch/x86/kvm/svm/svm.c
+> > @@ -2425,17 +2425,51 @@ static int clgi_interception(struct kvm_vcpu *v=
+cpu)
 > >
-> > Hi all,
+> >  static int invlpga_interception(struct kvm_vcpu *vcpu)
+> >  {
+> > +       struct vcpu_svm *svm =3D to_svm(vcpu);
+> >         /* FIXME: Handle an address size prefix. */
+> >         gva_t gva =3D kvm_rax_read(vcpu);
+> >         u32 asid =3D kvm_ecx_read(vcpu);
+> > +       int cpu;
 > >
-> > I would like to ask whether RISC-V KVM has a gap around guest sfence.vma
-> > and VS-stage TLB invalidation when a vCPU migrates across host CPUs.
+> >         if (nested_svm_check_permissions(vcpu))
+> >                 return 1;
 > >
-> > On bare metal, Linux uses mm_cpumask in __flush_tlb_range() to decide
-> > whether to send a local or remote sfence.vma. That works because the cpumask
-> > reflects physical CPUs. In a guest, however, the kernel only sees vCPUs, so
-> > from the guest point of view a task may never "migrate" even though the
-> > underlying vCPU moved to a different host CPU. In other words, guest
-> > mm_cpumask is effectively a vCPU mask, not a host CPU mask.
+> >         trace_kvm_invlpga(to_svm(vcpu)->vmcb->save.rip, asid, gva);
 > >
-> > There is also a related switch_mm()/set_mm_asid() aspect. With the ASID
-> > allocator enabled, RISC-V Linux does not flush on every context switch. A
-> > local_flush_tlb_all() is only done when a deferred ASID rollover flush is
-> > pending for the current CPU. That is fine on bare metal, because previous
-> > shootdowns are also based on physical CPUs. In a guest, however, the earlier
-> > shootdown may have been only a guest-local sfence.vma and may have missed an
-> > old host CPU where the same vCPU ran previously.
-> >
-> > A simplified sequence is:
-> >
-> > 1. A guest task with mm A runs on vcpu0 while vcpu0 is scheduled on host
-> >    CPU1. CPU1 fills a VS-stage TLB entry for that mm/ASID.
-> > 2. vcpu0 migrates to host CPU0. KVM's vCPU migration sanitization is local
-> >    to the current host CPU, so it does not invalidate the VS-stage TLB entry
-> >    that was left on host CPU1.
-> 
-> When vcpu0 migrates to host CPU0, the host CPU0 may or may not have
-> VS-stage TLB entry so VCPU migration sanitization does the right thing.
-> 
-> In the future, vcpu0 may again move back to host CPU1 containing stale
-> VS-stage TLB entries left in step1 above so the VCPU migration sanitization
-> will cleanup these stale TLB enteries.
-> 
-> > 3. The guest later updates mm A's page table from vcpu0, for example due to
-> >    COW. Since the guest still sees mm A as having run only on guest CPU0,
-> >    __flush_tlb_range() can choose a local sfence.vma. That local sfence.vma
-> >    only affects host CPU0, where vcpu0 is currently running, so the stale
-> >    VS-stage entry on host CPU1 remains.
-> 
-> No need to worry about stale VS-stage entry on host CPU1 because these
-> will age-out or same guest may again move to host CPU1 resulting in
-> VCPU migration sanitization.
+> > -       /* Let's treat INVLPGA the same as INVLPG (can be optimized!) *=
+/
+> > -       kvm_mmu_invlpg(vcpu, gva);
+> > +       /*
+> > +        * INVLPG on a non-canonical address is a NOP according to the =
+SDM,
+> > +        * assumethe same behavior from INVLPGA since the APM doesn't s=
+pecify.
+> > +        */
+> > +       if (is_noncanonical_invlpg_address(gva, vcpu))
+> > +               return kvm_skip_emulated_instruction(vcpu);
+>
+> From internal Sashiko:
+> ---
+> This is a pre-existing issue and was not introduced by the patch under re=
+view,
+> but if L1 is configured for 4-level paging and L2 is configured for 5-lev=
+el
+> paging, could this drop valid INVLPGA TLB flushes for L2?
+>
+> Since vcpu represents L1, the check is_noncanonical_invlpg_address(gva, v=
+cpu)
+> uses L1's canonical boundaries. If L1 executes INVLPGA to flush a valid 5=
+7-bit
+> virtual address for the L2 guest, will KVM incorrectly deem the L2 addres=
+s as
+> non-canonical and silently skip emulation?
+>
+> Bypassing both the hardware TLB flush and shadow page table synchronizati=
+on
+> could allow L2 to continue accessing memory through old translations,
+> potentially leading to memory corruption or security boundary bypass
+> inside L2.
+> ---
+>
+> I need to take a closer look here, but if this is indeed an issue,
+> even if pre-existing, it would only matter with this series. Before
+> this series, even if INVLPGA is ignored we flush everything before
+> running L2 anyway.
 
-void kvm_riscv_local_tlb_sanitize(struct kvm_vcpu *vcpu)
-{
-        unsigned long vmid;
+I don't think this is an issue. is_noncanonical_invlpg_address()
+doesn't use "L1's canonical boundaries". It calls
+is_noncanonical_address(.., X86EMUL_F_INVLPG), which calls
+__is_canonical_address(.., max_host_virt_addr_bits()). So the
+canonicality checks depend on the host support, not L1's CPUID or
+configuration.
 
-        if (!kvm_riscv_gstage_vmid_bits() ||
-            vcpu->arch.last_exit_cpu == vcpu->cpu)
-                return;
-
-You're right that kvm_riscv_local_tlb_sanitize() can correctly detect a
-CPU migration via the above check. This check runs before
-kvm_riscv_vcpu_enter_exit(), so last_exit_cpu still holds the previous
-CPU and the migration case is properly handled.
-
-        vmid = READ_ONCE(vcpu->kvm->arch.vmid.vmid);
-        kvm_riscv_local_hfence_gvma_vmid_all(vmid);
-
-The XiangShan team seems to read the specification as not requiring
-HFENCE.GVMA to invalidate VS-stage TLB entries. Could you please point
-me to the exact wording in the RISC-V Privileged Specification that
-indicates otherwise? I would really appreciate the reference.
-
-> 
-> > 4. Later, the task is scheduled again while vcpu0 is running on host CPU1.
-> >    If the ASID is still valid and no deferred ASID rollover flush is pending,
-> >    set_mm_asid() may not issue any flush. The access on host CPU1 can then
-> >    hit the old VS-stage TLB entry.
-> 
-> See above comments.
-> 
-> >
-> > We hit this on a XiangShan RISC-V system. A bash task in the guest was
-> > scheduled on vcpu0 while that vCPU was running on host CPU1. A read-only
-> > page was prefetched and cached in CPU1's VS-stage TLB. Later the same vCPU
-> > migrated to host CPU0, the guest triggered COW and updated the mapping, and
-> > the guest still issued only a local sfence.vma. The stale VS-stage entry on
-> > CPU1 was not invalidated. After running for some time, the task later
-> > accessed that mapping while running on host CPU1 again and hit the stale
-> > translation. The data in that page was a pointer from the GOT, so it
-> > dereferenced to NULL and eventually caused a segmentation fault.
-> 
-> The above example is already taken care by TLB flushes in KVM RISC-V.
-> This smells like some HW errata to me.
-> 
-> >
-> > I checked current upstream RISC-V KVM (v7.0.2) and I do not see HSTATUS.VTVM
-> > being enabled, so guest sfence.vma is not trapped. I found
-> > kvm_riscv_local_tlb_sanitize() on host CPU migration, which handles G-stage
-> > VMID entries on the current host CPU, but I do not think it generally solves
-> > the stale VS-stage TLB case described above.
-> >
-> > I also noticed the vendor-specific kvm_riscv_vsstage_tlb_no_gpa path in
-> > current upstream. It looks like a workaround for a particular implementation
-> > issue on Andes AX66, where the VS-stage TLB does not cache guest physical
-> > address and VMID, so the normal VMID/GPA-based invalidation model is
-> > insufficient. In that sense, it does not seem to be a generic solution for
-> > guest sfence.vma coherence across vCPU migration.
-> >
-> > I am wondering what the right direction should be. Enabling HSTATUS.VTVM and
-> > trapping guest sfence.vma would allow KVM to translate guest local sfence.vma
-> > into the required host-side hfence.vvma, but that may be too heavy for the
-> > common case. Another possible direction may be to make the current
-> > Andes-specific vCPU migration flush logic more generic, so implementations
-> > that need VS-stage TLB sanitization on vCPU migration can opt in through a
-> > common mechanism. A third possibility may be to define a lightweight SBI
-> > interface for guest local sfence.vma, so Linux could use it in
-> > __flush_tlb_range() for the local case when running under KVM, and KVM could
-> > then decide whether a local sfence.vma is sufficient or whether host-side
-> > hfence.vvma is also needed.
-> 
-> Enabling HSTATUS.VTVM has a big impact on performance so certainly
-> NACK from myside.
-> 
-> >
-> > My questions are:
-> > 1. Is the behavior above expected on current RISC-V KVM?
-> 
-> Yes, it should work fine unless there is some HW bug.
-> 
-> > 2. If not, what would be the preferred fix direction?
-> > 3. Should this be handled by trapping guest sfence.vma with VTVM, by
-> >    generalizing the existing vCPU-migration VS-stage TLB flush logic, or by
-> >    adding a lighter SBI-mediated path for guest local sfence.vma?
-> > 4. Or is there another intended mechanism to keep VS-stage TLB state coherent
-> >    across vCPU migration?
-> >
-> > If needed, I can send a reproducer and the exact hardware/kernel details.
-> >
-> 
-> Even if you share some reporducing code sequence, we still have don't
-> have access to your HW so it won't help much.
-> 
-> Regards,
-> Anup
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+The only potentially interesting case is if hardware
+only supports 48-bit addresses and L1 decides to emulate 57-bit
+addresses (e.g. emulate 5-level paging on HW with only 4-level paging
+support). In this case (if it all possible to begin with), I assume
+it's L1's responsibility to make sure this is emulated correctly (e.g.
+intercept L2's page faults with higher bits set).
