@@ -1,35 +1,35 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAF81FFC48;
-	Mon,  3 Aug 2026 01:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2DD1FFC48;
+	Mon,  3 Aug 2026 01:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785720254; cv=none; b=NOKK6rrLxMR4mzsnxz81nWrf7w1rS3ByzK9j67rOFTUit09RcNG+C+g2ig+MS8lJhUH0gqGlCdwW2CyGV7++srIjkNJzgqe++LrDtnaCROOp4vSInHcV0hPzcASoB28D0bE0/SEArpwPhL0cbWZh5wpngjXFsqOfG5xcLDkFN0M=
+	t=1785720396; cv=none; b=TDRRmtJZ2xvbW0XWF/pl4jKUO9TvYDtoZLtD0m6Wd3/va0AnGVIxd60d3Dq7TjFelZegV5GH8ddDY79UI0Qatmb6eBu/sFCcGwrurjMhhj4xzvd0j2lGkP5eSvGZ9rh8uG9BPgik03Cdt8ejGKae1cg72bVkXkTn9bH2IdFOeAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785720254; c=relaxed/simple;
-	bh=uKohA31mNOMvFx55waig9Ph8EQlvfvJOnCoKA6jkUGQ=;
+	s=arc-20240116; t=1785720396; c=relaxed/simple;
+	bh=8ILm0spJYr+SRR0E44DKXFSzW3Y5RThqkAFqb9vxXKk=;
 	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=XNM5gaNu41ZP2zAGg1XH0/TQ9n7/KpM4IPKwkxcg6iuSspOe/RjA/v4hbU8X7WeMrmaPgqs3oo+3zWWP480d9xF7ZgWscz1OUqNcYok+uiYR/RRFDKCZvwDWTnEEDnAzyZZoQVR3CgE3gZwIHu5eU8HQhnWFHhvpoiI7sMjuvyE=
+	 In-Reply-To:Content-Type; b=cB/H+NCefl5CSTGy8VOfUdH3igOy97SMFYVU96gj29lcjv+RHJ5nOtnNde/b59jBXjWaGj7x88mv/xGVkmgqQdsBjnRK0tgJFxCLJ18Bt9NG4gSBgEtad+pdvUF8WTugvOC7fSK/DLZ322wDf3jlWChC5D55Xf78GaisdmMsMr8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bx0+m67W9qHMQJAA--.9025S3;
-	Mon, 03 Aug 2026 09:24:10 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxJOhJ7m9qUMQJAA--.9240S3;
+	Mon, 03 Aug 2026 09:26:33 +0800 (CST)
 Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxPse47W9qU5QhAA--.54519S2;
-	Mon, 03 Aug 2026 09:24:08 +0800 (CST)
-Subject: Re: [PATCH 4/6] LoongArch: KVM: implement vmid updating logic
+	by front1 (Coremail) with SMTP id qMiowJDxDcdF7m9qupQhAA--.50067S2;
+	Mon, 03 Aug 2026 09:26:32 +0800 (CST)
+Subject: Re: [PATCH 6/6] LoongArch: KVM: Enable separate vmid feature
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: Sean Christopherson <seanjc@google.com>,
  Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
  Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
  kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
 References: <20260727072109.2151675-1-maobibo@loongson.cn>
- <20260727072109.2151675-5-maobibo@loongson.cn>
- <CAAhV-H5uF_hzKGZZbXzj5t6TFPefDVn09F0VM-AuNiDjoJZzCQ@mail.gmail.com>
+ <20260727072109.2151675-7-maobibo@loongson.cn>
+ <CAAhV-H46JoQpPx4Eg1eGT010Gq_4OnLNExhVrgjkdXkeoHESCA@mail.gmail.com>
 From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <b4689c17-e900-468b-eb08-6fb199c14a63@loongson.cn>
-Date: Mon, 3 Aug 2026 09:23:53 +0800
+Message-ID: <92446f9b-3484-880b-5871-4ebfe26feb81@loongson.cn>
+Date: Mon, 3 Aug 2026 09:26:14 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 Precedence: bulk
@@ -38,15 +38,15 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H5uF_hzKGZZbXzj5t6TFPefDVn09F0VM-AuNiDjoJZzCQ@mail.gmail.com>
+In-Reply-To: <CAAhV-H46JoQpPx4Eg1eGT010Gq_4OnLNExhVrgjkdXkeoHESCA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxPse47W9qU5QhAA--.54519S2
+X-CM-TRANSID:qMiowJDxDcdF7m9qupQhAA--.50067S2
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxur4ktFykury3Gw1fWr13Jrc_yoW5KF4UpF
-	y093Z8Ja18Gr13A3s0vw1q9FnYg3ykKr1293ZxtayYyr1qvr1DGrWkG398uFy8J34rGF4I
-	vF15tF13ZF4UK3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoWxWFyDKr47Ar4kGryfJw47trc_yoW5Kw43pr
+	yUAFsrJrW8ur93Ga4qqwn5Xr98XrsFg3W2gFn7Ja4FyFnFgFW8tF1kK3s8ZF15Ww4xtFyF
+	9F9Yka9IvFsFy3cCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
 	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
@@ -64,18 +64,61 @@ X-Coremail-Antispam: 1Uk129KBj93XoWxur4ktFykury3Gw1fWr13Jrc_yoW5KF4UpF
 
 
 
-On 2026/8/2 下午10:13, Huacai Chen wrote:
-> Hi, BIbo,
+On 2026/8/2 下午10:14, Huacai Chen wrote:
+> Hi, Bibo,
 > 
-> On Mon, Jul 27, 2026 at 3:30 PM Bibo Mao <maobibo@loongson.cn> wrote:
+> On Mon, Jul 27, 2026 at 3:31 PM Bibo Mao <maobibo@loongson.cn> wrote:
 >>
->> For every physical CPU, there is one vmid calculation method. For
->> vCPUs on the same VM, vmid is the same. However for vCPUs on
->> different VM, vmid is different. When vCPU is scheduled on the
->> physical CPU, it checked vmid of this VM and the global cached
->> vmid, and judge whether it is valid or not.
-> I think Patch#2/3/4 can be folded into one.
-will merge patch 2/3/4 together.
+>> With CSR GTLBC shortname for Guest TLB Control Register, separate vmid
+>> feature will be enabled if bit 14 CSR_GTLBC_USEVMID is set. Enable
+>> this feature if cpu_has_guestid is true when LVZ is enabled and the LVZ
+>> version is 2.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   arch/loongarch/include/asm/loongarch.h | 2 ++
+>>   arch/loongarch/kernel/cpu-probe.c      | 7 ++++++-
+>>   arch/loongarch/kvm/main.c              | 4 +++-
+>>   3 files changed, 11 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/loongarch/include/asm/loongarch.h b/arch/loongarch/include/asm/loongarch.h
+>> index 2a6bc99177d8..4c4249446a61 100644
+>> --- a/arch/loongarch/include/asm/loongarch.h
+>> +++ b/arch/loongarch/include/asm/loongarch.h
+>> @@ -350,6 +350,8 @@
+>>   #define  CSR_GTLBC_TGID_WIDTH          8
+>>   #define  CSR_GTLBC_TGID_SHIFT_END      (CSR_GTLBC_TGID_SHIFT + CSR_GTLBC_TGID_WIDTH - 1)
+>>   #define  CSR_GTLBC_TGID                        (_ULCAST_(0xff) << CSR_GTLBC_TGID_SHIFT)
+>> +#define  CSR_GTLBC_USEVMID_SHIFT       14
+>> +#define  CSR_GTLBC_USEVMID             (_ULCAST_(0x1) << CSR_GTLBC_USEVMID_SHIFT)
+>>   #define  CSR_GTLBC_TOTI_SHIFT          13
+>>   #define  CSR_GTLBC_TOTI                        (_ULCAST_(0x1) << CSR_GTLBC_TOTI_SHIFT)
+>>   #define  CSR_GTLBC_USETGID_SHIFT       12
+>> diff --git a/arch/loongarch/kernel/cpu-probe.c b/arch/loongarch/kernel/cpu-probe.c
+>> index 74d31f260dfd..cbf1dafac0a0 100644
+>> --- a/arch/loongarch/kernel/cpu-probe.c
+>> +++ b/arch/loongarch/kernel/cpu-probe.c
+>> @@ -135,7 +135,7 @@ static void set_isa(struct cpuinfo_loongarch *c, unsigned int isa)
+>>
+>>   static void cpu_probe_common(struct cpuinfo_loongarch *c)
+>>   {
+>> -       unsigned int config;
+>> +       unsigned int config, version;
+>>          unsigned long asid_mask;
+>>
+>>          c->options = LOONGARCH_CPU_CPUCFG | LOONGARCH_CPU_CSR | LOONGARCH_CPU_VINT;
+>> @@ -221,6 +221,11 @@ static void cpu_probe_common(struct cpuinfo_loongarch *c)
+>>          if (config & CPUCFG2_LVZP) {
+>>                  c->options |= LOONGARCH_CPU_LVZ;
+>>                  elf_hwcap |= HWCAP_LOONGARCH_LVZ;
+>> +
+>> +               /* Separate VMID and VPID with LVZ version == 2 */
+>> +               version = (config & CPUCFG2_LVZVER) >> 11;
+>> +               if (version == 2)
+> I think ">1" judgement is better than "==2".
+I am ok with "> 1" and it is better from software side, only that it 
+requires that HW keeps compatible with later LVZ function. Will discuss 
+this with HW guys.
 
 Regards
 Bibo Mao
@@ -83,103 +126,34 @@ Bibo Mao
 > 
 > Huacai
 > 
->>
->> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->> ---
->>   arch/loongarch/include/asm/kvm_host.h |  2 ++
->>   arch/loongarch/kvm/main.c             | 42 ++++++++++++++++++++++++++-
->>   2 files changed, 43 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
->> index e93307cbe740..a01623c42c7a 100644
->> --- a/arch/loongarch/include/asm/kvm_host.h
->> +++ b/arch/loongarch/include/asm/kvm_host.h
->> @@ -79,6 +79,7 @@ struct kvm_arch_memory_slot {
->>   #define HOST_MAX_PMNUM                 16
->>   struct kvm_context {
->>          unsigned long vpid_cache;
->> +       unsigned long vmid_cache;
->>          struct kvm_vcpu *last_vcpu;
->>          /* Host PMU CSR */
->>          u64 perf_ctrl[HOST_MAX_PMNUM];
->> @@ -132,6 +133,7 @@ struct kvm_arch {
->>          unsigned long kvm_features;
->>
->>          s64 time_offset;
->> +       unsigned long vmid[NR_CPUS];
->>          struct kvm_context __percpu *vmcs;
->>          struct loongarch_ipi *ipi;
->>          struct loongarch_dmsintc *dmsintc;
+>> +                       c->options |= LOONGARCH_CPU_GUESTID;
+>>          }
+>>   #ifdef CONFIG_CPU_HAS_LBT
+>>          if (config & CPUCFG2_X86BT) {
 >> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
->> index 3df46e02594f..7b3661da8958 100644
+>> index 86b1af823e2b..43f5b40786f2 100644
 >> --- a/arch/loongarch/kvm/main.c
 >> +++ b/arch/loongarch/kvm/main.c
->> @@ -281,9 +281,33 @@ static void kvm_check_vcpuid(struct kvm_vcpu *vcpu)
->>          }
->>   }
+>> @@ -365,7 +365,7 @@ int kvm_arch_enable_virtualization_cpu(void)
+>>          write_csr_gcfg(0);
+>>          write_csr_gstat(0);
+>>          write_csr_gintc(0);
+>> -       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI);
+>> +       clear_csr_gtlbc(CSR_GTLBC_USETGID | CSR_GTLBC_TOTI | CSR_GTLBC_USEVMID);
 >>
->> -static void kvm_check_vmid(struct kvm_vcpu *vcpu)
->> +static void kvm_update_vmid(struct kvm_vcpu *vcpu, int cpu)
->>   {
->>          unsigned long vmid;
->> +       struct kvm_context *context;
->> +
->> +       context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
->> +       vmid = context->vmid_cache + 1;
->> +       if (!(vmid & vpid_mask)) {
->> +               /* finish round of vmid loop */
->> +               if (unlikely(!vmid))
->> +                       vmid = vpid_mask + 1;
->> +
->> +               ++vmid; /* vmid 0 reserved for root */
->> +
->> +               /* start new vmid cycle */
->> +               kvm_flush_tlb_all_stage2();
->> +       }
->> +
->> +       context->vmid_cache = vmid;
->> +       vcpu->kvm->arch.vmid[cpu] = vmid;
->> +}
->> +
->> +static void kvm_check_vmid(struct kvm_vcpu *vcpu)
->> +{
->> +       int cpu;
->> +       unsigned long ver, old, vmid;
->> +       struct kvm_context *context;
+>>          /*
+>>           * Enable virtualization features granting guest direct control of
+>> @@ -388,6 +388,8 @@ int kvm_arch_enable_virtualization_cpu(void)
 >>
->>          /* On some machines like 3A5000, vmid needs the same with vpid */
->>          if (!cpu_has_guestid) {
->> @@ -295,6 +319,21 @@ static void kvm_check_vmid(struct kvm_vcpu *vcpu)
->>
->>                  return;
->>          }
->> +
->> +       cpu = smp_processor_id();
->> +       context = per_cpu_ptr(vcpu->kvm->arch.vmcs, cpu);
->> +
->> +       /*
->> +        * Check if our vmid is of an older version
->> +        */
->> +       ver = vcpu->kvm->arch.vmid[cpu] & ~vpid_mask;
->> +       old = context->vmid_cache & ~vpid_mask;
->> +       if (ver != old) {
->> +               kvm_update_vmid(vcpu, cpu);
->> +               kvm_clear_request(KVM_REQ_TLB_FLUSH_GPA, vcpu);
->> +       }
->> +
->> +       vcpu->arch.vmid = vcpu->kvm->arch.vmid[cpu] & vpid_mask;
->>   }
->>
->>   void kvm_check_vpid(struct kvm_vcpu *vcpu)
->> @@ -400,6 +439,7 @@ static int kvm_loongarch_env_init(void)
->>          for_each_possible_cpu(cpu) {
->>                  context = per_cpu_ptr(vmcs, cpu);
->>                  context->vpid_cache = vpid_mask + 1;
->> +               context->vmid_cache = vpid_mask + 1;
->>                  context->last_vcpu = NULL;
->>          }
+>>          /* Enable using TGID  */
+>>          set_csr_gtlbc(CSR_GTLBC_USETGID);
+>> +       if (cpu_has_guestid)
+>> +               set_csr_gtlbc(CSR_GTLBC_USEVMID);
+>>          kvm_debug("GCFG:%lx GSTAT:%lx GINTC:%lx GTLBC:%lx",
+>>                    read_csr_gcfg(), read_csr_gstat(), read_csr_gintc(), read_csr_gtlbc());
 >>
 >> --
 >> 2.39.3
+>>
 >>
 
