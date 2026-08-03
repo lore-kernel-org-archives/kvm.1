@@ -1,174 +1,106 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3374234D916
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 22:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785796208; cv=pass; b=aJRkzBcMl0jqDHDh1+PPi5Hs/iyNTPmOaTmB7iB2+qrRe7JZMYLtEFR5NDr/jLT7m8yPvEYkM+Gc1FkEe+F92qBeHpyz8VoAz1BFdwC2HGObc4noAyfxmJLo18IfRqIzrRlyqfkBv1Lx7gw/sddZhXb4/x9Kk6H6kYNX8uieGAM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785796208; c=relaxed/simple;
-	bh=SoGWMfuDZcITvarO1qukl7KE+ls5azooLD7ZNrSHGPg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ox/uJVHhNgT+bWz7pfQU6HxNePTJHbe8Hd9rJ4Wikz1BrpwDT6ydlMjCUmDFi7efpO5F+1Qp1k253QpHDlbGZQ0bj0sKrgjq4sJtAEIc17ZMSQeFa8NQfO51eaEODFSbd3M3bYNc2D3FgRUoeS2MEIimfHsOGBNi82RT5lJsP74=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZHcQziAs; arc=pass smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA627A92D
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 22:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785796663; cv=none; b=uy6e6rU0lbn0wYkZs5+265aRVML7ye8EXYJJgfNGhsCTz9sY4a5yCAlp/Bwef3aE3vL3ZfD/OvX3Ock63iPxWzcHJDP8zScG4p2NTu7lTKFK2YK6c+SwEkPfT9Vab3IsWMh7n54s1wZ8QhJ+JvrDHiXTXQx7pyGsP61DgKSo/zs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785796663; c=relaxed/simple;
+	bh=6k5d/yGVFzN5oLPDHAYgfPWngvlHeA/j76H+mwv3EJs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=QEOvPq2paEdxWbpmEZYE5DtSFnfVzNiGmKWOmE6dHzbsX88oIc9yEGwBNxoDoKCP7yb2Y2XQBZo3CBJ15gRVBqdDlrm/vko75HHeaInkkpMQsb8WKc4Fjm3n4nLEzVFHAMMsilo17gKGIAPpnlvRy/+jcgjDpGi+msRo502gRdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dV2XuSU/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZHcQziAs"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e57a753f9so290429585a.2
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 15:30:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785796206; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RlC+qmEP10p61tYtMiRtcmj9Q0n+WWmzYxPEuEoAaZSTX4ELnItgIZiIvAkvI9J02f
-         Jz3NaVVNkhCDBKeDC/KhVebvLyUv+MRrj3WZhw73RXHJrbpFC1Nh9AUK9D6O6Nx8/gaR
-         wMvwjF17eo9i3dDwqQEijTrX5DpRGyvJcGETVO7xK83xyXKlVrzAhurk4VWTeVnIRo9A
-         7SNK52stk4EaGLqf9Y2k9Sjy1yOvX6mme/XM3CTzINwEYbnZNUE54fpS+Ql7MdqJF+gI
-         L7f6jwG+fJ3DdOwik1pcLNfQlyj0uC/mQnvXPp8MaxMXOaK0ish3cDxHtn9YZW8NK0y3
-         yhTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3yTl9Y/o436Zlv2Vup2MQ3FRSTw8xGxoHxInk9rGis4=;
-        fh=BRtUdATIegm+BEo+jnt2w+2sDYRV+XDAnWUbwRUv4xg=;
-        b=TUSbUJRQglEr+gf/lD42ytXuQxVT5wpxfzuTi5ikPQRo8dhTa1zZU60cUXEjTa8DWV
-         7I+Tg2nKrM3nY6NTA0tzkGQwvKcwZ478qudsX3eRqSivqBu/8rGmfSPS5K++aHlmPLAH
-         uB/g9mWhe/Je8Z08H/gMKKFpUaZQ5+++A0cQq3RNruQauytVWCIU/DLdcxgKWquR5DIq
-         2CxtSgiml5J60AmNUv9Mywu8LTzPo799ywWQylrVrFBVf1bm9L7t0WXPywsMfK041wCR
-         h7kT4zqLAKBakkXAsHc/Yiau3ilHDXE1RU5hhKgbE+vqIE0uNif7N7kXuIyM+vCNNiJ8
-         dYEA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785796206; x=1786401006; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3yTl9Y/o436Zlv2Vup2MQ3FRSTw8xGxoHxInk9rGis4=;
-        b=ZHcQziAsPpJ3g0c3it/71c2BORIUp7rJ8isVH2r4Fg+/rDzDHV37b9/i1Qpic8XaZA
-         KlwMUUBJaauZqoOH7U2msKuRTVrI5cmoXJ7cSvn+SA4Ns/IUMAhTdfqI6PVe03/MBmw3
-         HYG7xpX6B+FPpEdalQ5hBm56r213FxkjYKj5Jsy8T7xn55SFQhPpo3d/sZBNsv8QTgPB
-         IA3VVRbcxT62Z/3ImPGFrMcDPEaOXh0TYw0B0ErMdD5e1WQVqqLe2PWZph+d/4UlmmYn
-         ifjrrRzkl7WmAHcC/36GkQIjfPRN3k3rKhclIu3mOUzNN21/Z/A5FdViKK55SrE6AQRh
-         ZEtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785796206; x=1786401006;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3yTl9Y/o436Zlv2Vup2MQ3FRSTw8xGxoHxInk9rGis4=;
-        b=L1ri73vZpT7KkeMiklySM6khy19wPn4G/ErK1/RYwr/6/Bl9MQulacrpuKWC0fXIxm
-         jbEwjmOlwX53lgFB1qP5pl2v72trio++Fz/w26NgdbIVetKtY60R189uM3Uhh60+oNEA
-         /npC+aLcibuM2gCt2Wmz637tnLwCHFyXIxTua698OIWL4bm3K/3RNCcX9wUa/V65eItl
-         X7x/aI91Rw6NQyTpECsFuDECWD83vnYlBu2XObfF2q29TrZXZg6DiSP0xgQxnfoizXRp
-         efvoLGmEtNNXNlmlyu8OJeC0MpG2cfww49Zf6saWvWD+ZO+1XPSHrNHC0bOssF310fu7
-         xzDQ==
-X-Gm-Message-State: AOJu0YxLSWAPpeePXLLf68i0lYl5W3bCVj74KOM+NakY7w5FrmiK9fKc
-	UKKwSq7HhGdg1WG5glU4M5KCSRxvG/z988NMMhvmaqmkSmCMbrKhuoEkfNmWQoIe9bvCqim4wVX
-	DzL11s78e5csIlnptt78c9pY7SPslfy2W+FXL2BVB
-X-Gm-Gg: AR+sD13RaHYZwlTLB7Ee2EP4O5HNrgVJLmsbQ3qECfQGOyMKKN6Ro8jSHvFzEfjGnBW
-	SYT6K4fd9ixLphqYA/kc0RnJSc/5jtvUaoDXTdS1UP4klBClL+NS4HKM+J/w2RXvJJqt0u7ztub
-	fVFyn7fF4TntJ6SJKNDrGWxjz1a07+lZoczhs/wpKgWjhQ0rLZIeMk7TQ/5nxQgrKjZdbdL7Cqb
-	vEW8Af/4LwtGrT8z1YqiRbD/E3uFS4Ce8VYhIay2KviGTLU/dMMNH+GTuerDw6yckh5URQVQt66
-	FWnq/iDvhIctbfjDf9Iv8o33ZgDHIkOU2taZkKWTptGHOsdA+cFDYtT59sp28XFq0kKfyRe2IGF
-	iRQ==
-X-Received: by 2002:a05:620a:1788:b0:932:d92c:1604 with SMTP id
- af79cd13be357-934a093ee41mr1858091985a.23.1785796205213; Mon, 03 Aug 2026
- 15:30:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dV2XuSU/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C19C1F00A3A;
+	Mon,  3 Aug 2026 22:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785796662;
+	bh=rsJo1UVgls1GOnJ0Rget9IC/DdzO7BV9Mk8ioiFF++E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dV2XuSU/69ffloKeolYHRmlVXGjV6iPDWRtlsunXkBSm2KD89geQPogMAKEwUTw9z
+	 cFh3n+Dodtz0bJ1IqtK/Sx621wmrXtcgosnpR6XwHjsxQNRp9C4+ZFFFm8vj0o2NO3
+	 RLpi+LIgi0qu6Yj9aUwe0rzEqbb/ugvn90PvL9kkuQxe0pWfFj6XpLPCUOJOCGPnyA
+	 bHHlQ4Ms9eA1MfSodkdNlWiS5E1iDElYXt4XbTDgn/ACsSFe7n1Dc6YomEKrAfsnyC
+	 kMURB4LaQCZdWdksl9xU3XSLN8NHpwbkJABE2Cc3eu7nISeFnJnO54snqHtK+AOg7a
+	 I92gDZ/Eurc0w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 3/3] RISC-V: KVM: fix vcpu vector context handling
+ for kernel-mode vector
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Andy Chiu" <tchiu@tenstorrent.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260803215250.824417-4-tchiu@tenstorrent.com>
+References: <20260803215250.824417-1-tchiu@tenstorrent.com>
+ <20260803215250.824417-4-tchiu@tenstorrent.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 03 Aug 2026 22:37:41 +0000
+Message-Id: <20260803223742.0C19C1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260803134403.80630-1-steven.price@arm.com> <20260803134403.80630-18-steven.price@arm.com>
-In-Reply-To: <20260803134403.80630-18-steven.price@arm.com>
-From: Alper Gun <alpergun@google.com>
-Date: Mon, 3 Aug 2026 15:29:53 -0700
-X-Gm-Features: AUfX_mzgu7kD5xmIyUYZ_YnVZsQj0adTFpMJoMddiEH4UKglz6_2Lo8CDB6wxAY
-Message-ID: <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
-Subject: Re: [PATCH v16 17/45] KVM: arm64: CCA: Tear down RTTs
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
-	James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
-	Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, 
-	Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 3, 2026 at 6:45=E2=80=AFAM Steven Price <steven.price@arm.com> =
-wrote:
-> [...]
-> +static void realm_unmap_stage2(struct kvm *kvm)
-> +{
-> +       struct realm *realm =3D &kvm->arch.realm;
-> +
-> +       lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +       if (realm->stage2_unmapped)
-> +               return;
-> +
-> +       write_lock(&kvm->mmu_lock);
-> +       kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
-> +                              BIT(realm->ia_bits - 1), true);
-> +       write_unlock(&kvm->mmu_lock);
-> +
-> +       realm->stage2_unmapped =3D true;
-> +}
-> +
-> +int kvm_realm_teardown_stage2(struct kvm *kvm)
-> +{
-> +       lockdep_assert_held(&kvm->arch.config_lock);
-> +
-> +       realm_unmap_stage2(kvm);
-> +       return realm_destroy_rtts(kvm);
-> +}
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Hi Steven,
+Pre-existing issues:
+- [High] Preemptible kernel-mode vector (KMV) state is corrupted by KVM pre=
+empt notifiers when a VCPU thread is preempted.
+--
 
-I noticed a warning in dmesg when destroying a realm:
+--- Patch [3]: [PATCH v5 3/3] RISC-V: KVM: fix vcpu vector context handling=
+ for kernel-mode vector ---
+commit 077b610f9ed223f15b05bd83c13e358e4b341dc9
+Author: Andy Chiu <tchiu@tenstorrent.com>
 
-  [  158.533495] Call trace:
-  [  158.535927]  kvm_destroy_realm+0x208/0x218
-  [  158.540356]  kvm_arch_destroy_vm+0xc8/0xd8
-  [  158.544439]  kvm_put_kvm+0x324/0x4b0
-  [  158.548002]  kvm_vm_stats_release+0x1c/0x38
+RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector
+   =20
+This commit registers an RCU-protected callback to flush the vCPU vector
+context when kernel-mode vector (KMV) is serving a guest. This prevents
+KMV from misattributing the guest's vCPU context as the user's context.
 
-I traced this and found the following:
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+[ ... ]
+> @@ -654,9 +656,11 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+>  	kvm_riscv_vcpu_host_fp_restore(&vcpu->arch.host_context);
+> =20
+>  	kvm_riscv_vcpu_timer_save(vcpu);
+> +	get_cpu_vector_context();
+>  	kvm_riscv_vcpu_guest_vector_save(&vcpu->arch.guest_context,
+>  					 vcpu->arch.isa);
+>  	kvm_riscv_vcpu_host_vector_restore(&vcpu->arch.host_context);
 
-At this point, calling realm_destroy_rtts() may fail destroying the RTTs
-because RECs are still active and the Realm is not terminated, but the
-walk finishes and still sets realm->rtts_destroyed =3D true.
+[Severity: High]
+This is a pre-existing issue, but does unconditionally restoring the host=20
+vector context here corrupt the kernel-mode vector state if the vCPU thread
+is preempted?
 
-Later, kvm_destroy_realm() calls rmi_realm_terminate() and then calls
-realm_destroy_rtts(kvm) again. But because realm->rtts_destroyed is already
-set to true, it exits early without tearing down the RTTs.
+If a vCPU thread enters a kernel-mode vector section (like
+enter_vector_usercopy() during guest I/O) and is preempted by a page fault,
+kvm_sched_out() calls kvm_arch_vcpu_put(). This unconditionally restores the
+host (QEMU) vector registers via kvm_riscv_vcpu_host_vector_restore().
 
-Consequently, rmi_realm_destroy() is invoked while the RTT tables still
-exist in RMM, which fails and triggers WARN_ON(rmi_realm_destroy).
+When switch_to() subsequently calls __switch_to_vector(), wouldn't it save
+this newly clobbered hardware state into the kernel's vector context buffer
+(kernel_vstate) instead of the actual kernel vector state?
 
-The fix I used was to remove realm_destroy_rtts() from
-kvm_realm_teardown_stage2():
---- a/arch/arm64/kvm/rmi.c
-+++ b/arch/arm64/kvm/rmi.c
-@@ -434,7 +434,7 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
-  lockdep_assert_held(&kvm->arch.config_lock);
+Could a malicious guest trigger this by supplying an unmapped virtual addre=
+ss
+for an I/O operation, forcing a page fault and voluntary preemption during
+the vector-optimized copy_to_user()?
 
-  realm_unmap_stage2(kvm);
-- return realm_destroy_rtts(kvm);
-+ return 0;
- }
+> +	put_cpu_vector_context();
+> =20
+>  	if (kvm_riscv_nacl_available()) {
+>  		nsh =3D nacl_shmem();
 
-I think we don't need RTT destruction here as it will be handled cleanly in
-kvm_destroy_realm() later.
-
-Thanks,
-Alper
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803215250.8244=
+17-1-tchiu@tenstorrent.com?part=3D3
