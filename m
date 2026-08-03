@@ -1,134 +1,257 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168D8412C08;
-	Mon,  3 Aug 2026 13:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6165426D4C3;
+	Mon,  3 Aug 2026 13:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785765337; cv=none; b=g1QmGTsQ6lrNRipYSYbYk7+6hcvnKJyiOvPYCsC0wDlB5j+5DrxR8AcfdI4MFaJTSYqUOMVu1W3rkfCOG9jBLpvfBKos3eaiflPLE+5VkP8LTMWXdbqfwuwlL6ee0AukCItrEJzzFIkidU5K6L61QypV2ZjrWdhyjtLxfU+O0qI=
+	t=1785765475; cv=none; b=Kyt/8jn1dwL0GbJx0OdicoNqNOTkbKHcWGPX0pOJEI4cgQHQt2zqeS5K6gnmGixDFwGU+by7Mnrzqs72zNMMmqMt8AQW1/yLedQOlHF7Fm0uo3+0Sw8lxBvHMKFcqcCkRDPEael8Zf9JmxyyiKFtSVvsYvlakq6j3+QJvBpS9jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785765337; c=relaxed/simple;
-	bh=G6HYHfCi7INwqQUp6u6NXbIdEHGHdzr8vKztR9xYr/U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RpmYXezyvYBTzNlHxdxL0v209mM51S1atCFauUsRYkK0kEzlnqzfMhXdxClc4iv2NfKUVFGw6xYpRAY0kN/N5XCf5OljxiV0ChuznBDckWpzwJ8a1F/vcyDsLKtqCotqZp/zGjjMLqyh1Qn5575e7D8SyxfmG95mAxEeEKpIbE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aquetkbG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785765475; c=relaxed/simple;
+	bh=oUeYoDsmJ/o5Tkvi6L3H3GV3ht+Wn/8zngDjtQ2RZd4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ym4VccbLnU6XwgCeZvfnunr/fyyf+VRin7zhOGPPxHxnjbdRcrLjLh45E30L/LBkomEtQLT0HvBBxZWu6IM4iZTYNz7iG1npLkSqGaT9o0vDGyqZ3LS78Jv2ERNTRH/7+wEjmJ8V7xBthZSba4rbL8aZUr1UikwjKfmBC4BfBCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HzU5LTy6; arc=none smtp.client-ip=113.46.200.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aquetkbG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D471D1F000E9;
-	Mon,  3 Aug 2026 13:55:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785765336;
-	bh=/wWrSnfW58pauafNrE+p0KzqqpQFCnPVL21BrXaLMbA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aquetkbGJCwL2l9qEk33SedqffSbzmgdGlkzRTXPNGyUVCVQWi30wZ79AkHKC1sxx
-	 lVBBvn0a31gjeQw2TDWBkny2IJdZ2dhcLQGvX1K7SHN3eaib+eWZzMCrsvQZ78hgsk
-	 ib9lk0EE+dgK3U5mCi+7hyw8LcZL1ih4UeiwHGdZ86GyIg7SOeoXfQU/YCTlwRRMIZ
-	 tvmd4jLnLU55HCHUczdUVKx54bioUztPGKmURbqEkJCxKnrhBLY1/pLE6oA45bMz0s
-	 ToRFQV69nd8jvmgDB86aLIX1J6ZN8SniGiRwA6peUuievcOEP7yOLyoU6ZrIfgtGxX
-	 bE7TdyAmtXsYg==
-From: Guo Ren <guoren@kernel.org>
-To: guoyaxing@bosc.ac.cn
-Cc: alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	majiuyue@bosc.ac.cn,
-	minachou@andestech.com,
-	palmer@dabbelt.com,
-	pjw@kernel.org,
-	"Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
-Subject: [PATCH] riscv: KVM: Flush VS-stage stale entries
-Date: Mon,  3 Aug 2026 13:54:54 +0000
-Message-ID: <20260803135454.2726112-1-guoren@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
-References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HzU5LTy6"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=W2Yhs3HC5lLnpwSlVNxBzFcusBn8vMvgb9H7dfd9e9w=;
+	b=HzU5LTy6Wqkr1hqW17jR7hg06Vi/fQ53VlPxHNMX8Uj4cmQRf1P9nS986t0gtG8BLmbDZt+N6
+	xjiz8ucghtF89gyPP4BRlkkyw/60j/a9P9xm3dBi/XRd9+Py9cL8QaTbzd+YGaNhIVR84maDzn9
+	BQwMZQq8er0/eL9aBcqopJo=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hDJ0d1ZsxzLlTm;
+	Mon,  3 Aug 2026 21:48:17 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7030140572;
+	Mon,  3 Aug 2026 21:57:47 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 3 Aug 2026 21:57:46 +0800
+Message-ID: <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
+Date: Mon, 3 Aug 2026 21:57:46 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
+ dirty tracking
+To: Leonardo Bras <leo.bras@arm.com>
+CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
+	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
+	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-4-zhengtian10@huawei.com>
+ <aliKo7dTZzKcWHzI@kernel.org>
+ <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
+ <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
+ <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
+ <amoZY8uGLf1PEpjK@LeoBrasDK>
+ <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
+ <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com>
+ <anBrvILpcSFhW7Wg@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <anBrvILpcSFhW7Wg@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-When a vCPU migrates to a different host CPU, the new CPU may retain
-stale VS-stage TLB entries (GVA → GPA) left by a previous run of the
-same guest. Issue an HFENCE.VVMA (all ASIDs, all addresses) inside
-kvm_riscv_mmu_update_hgatp() whenever the vCPU is loaded on a CPU
-different from the one it last exited on.
 
-Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
----
-Does this patch solve your problem? I would prefer to issue a full
-HFENCE.VVMA whenever a new VMID is installed on a pCPU.
----
- arch/riscv/include/asm/kvm_mmu.h | 2 +-
- arch/riscv/kvm/mmu.c             | 5 ++++-
- arch/riscv/kvm/vcpu.c            | 4 ++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
+On 8/3/2026 6:21 PM, Leonardo Bras wrote:
+> On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
+>>
+>>
+>> On 8/3/2026 9:33 AM, Tian Zheng wrote:
+>>>>>>>>> 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+>>>>>>>>>> -    if (prot & KVM_PGTABLE_PROT_W)
+>>>>>>>>>> +    if (prot & KVM_PGTABLE_PROT_W) {
+>>>>>>>>>>              set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>>>>>>>>>
+>>>>>>>>>> +        /*
+>>>>>>>>>> +         * No DEVICE filter needed here:
+>>>>>>>>>> relax_perms is only called
+>>>>>>>>>> +         * on FSC_PERM faults. Device pages
+>>>>>>>>>> always get full RW from
+>>>>>>>>>> +         * initial mapping and are never write-protected during
+>>>>>>>>>> +         * migration, so they never trigger a permission fault.
+>>>>>>>>>> +         */
+>>>>>>>>>> +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
+>>>>>>>>>> +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>>>>> +    } else {
+>>>>>>>>>> +        /*
+>>>>>>>>>> +         * Clear DBM on W→RO downgrade to prevent hardware from
+>>>>>>>>>> +         * silently upgrading RO+DBM back to W+dirty, which would
+>>>>>>>>>> +         * bypass KVM's write tracking and cause data corruption.
+>>>>>>>>>> +         */
+>>>>>>>>>> +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>>>>> +    }
+>>>>>>>>>> +
+>>>>>>>>> This block makes it pretty evident that the DBM bit really *is* the
+>>>>>>>>> write permission bit. I'd much rather we
+>>>>>>>>> introduce the concept of dirty
+>>>>>>>>> state to the page table library and migrate the abstract write
+>>>>>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
+>>>>>>>>>
+>>>>>>>
+>>>>>>> Ohh, that's an amazing idea!
+>>>>>>
+>>>>>> Thinking about that again...
+>>>>>> If we adopt the encoding with DBM being the write-permission
+>>>>>> bit, and all
+>>>>>> PTEs have it since the start, how can we have lazy-splitting happening?
+>>>>>>
+>>>>>> Only way I think of is removing both DBM and S2_S2AP_W bit
+>>>>>> from writable
+>>>>>> PTEs during dirty-track enable, and re-adding them during
+>>>>>> the first write
+>>>>>> fault. If we don't remove the DBM bit, systems with HDBSS
+>>>>>> would just dirty
+>>>>>> it by hardware, without causing a fault.
+>>>>>>
+>>>>>> DBM=0 would need to happen only in the first write-protect (only on
+>>>>>> lazy-splitting). All other write-protecting would just clean
+>>>>>> the S2_S2AP_W
+>>>>>> bit, as everything is already split.
+>>>>>>
+>>>>>> Is that what was intended?
+>>>>>>
+>>>>>> Thanks!
+>>>>>> Leo
+>>>>>>
+>>>>> Hi Leo,
+>>>>>
+>>>>> I think the cleanest way to handle this is to simply avoid setting DBM
+>>>>> on block mappings. If we only set DBM on page-level PTEs, then block
+>>>>> mappings will naturally stay DBM=0 and trigger a write fault on first
+>>>>> access — exactly what we need for lazy splitting.
+>>>>>
+>>>>> When the fault occurs, the block gets split into page-level PTEs, and at
+>>>>> that point we can set DBM=1 on the resulting leaf entries. This way:
+>>>>>
+>>>>> 1. Lazy split works naturally (fault -> split -> set DBM=1)
+>>>>>
+>>>>> 2. No need to clear DBM globally at dirty-track enable
+>>>>>
+>>>>> 3. No special handling for block mappings
+>>>>>
+>>>>> So I think global DBM is still viable — we just need to filter out block
+>>>>> mappings when setting the DBM bit. That way the lazy split path
+>>>>> is preserved
+>>>>> without extra complexity.
+>>>>
+>>>> Hi Tian,
+>>>>
+>>>> Humm, but would not that be contrary to what Oliver suggested:
+>>>> changing the
+>>>> encoding from the PTE for all entries?
+>>>>
+>>>> (Like, if the PTE is writable, it has to have DBM set)
+>>>>
+>>>> IIUC what you said, on first faulting of the page in the VM:
+>>>> - If the entry is a page (level-3 leaf) and writable, add DBM
+>>>> - If it's a block entry (leaf but not a level-3), don't add DBM
+>>>>
+>>>> So after we enable dirty-logging:
+>>>> - a level-3 entry would not fault, using HDBSS, and
+>>>> - a block entry would fault, do the splitting, and add DBM to level-3
+>>>>     entries during the split.
+>>>>
+>>>> If I got that correct, that would be clean indeed.
+>>>>
+>>>> But then we would have a different encoding for block entries and page
+>>>> entries. In page entries, DBM could be used to say if the page is
+>>>> writable,
+>>>> but on block entries one would have to look at the 'dirty-bit'.
+>>>>
+>>>> Would that be ok?
+>>>>
+>>>> Thanks!
+>>>> Leo
+>>>>
+>>> Hi Leo,
+>>>
+>>> My initial concern was that clearing all DBM bits at the start of
+>>> migration would be too expensive, so I thought distinguishing between
+>>> level-3 entries and block entries would be better.
+>>>
+> 
+> I think we expect it to be expensive, but since we already clean the
+> dirty-bit (ro/rw) bit, we can have both happening in the same write :)
+> 
+> (since we only mark the DBM bit when we fault the memory on lazy-splitting,
+> we are expecting to have the same amount of writes to pagetable as we have
+> before HDBSS, both on faulting and 1st iteration cleaning)
+> 
+Hi, Leo
 
-diff --git a/arch/riscv/include/asm/kvm_mmu.h b/arch/riscv/include/asm/kvm_mmu.h
-index 5439e76f0a96..f0c5d2d01052 100644
---- a/arch/riscv/include/asm/kvm_mmu.h
-+++ b/arch/riscv/include/asm/kvm_mmu.h
-@@ -16,6 +16,6 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
- 		      struct kvm_gstage_mapping *out_map);
- int kvm_riscv_mmu_alloc_pgd(struct kvm *kvm);
- void kvm_riscv_mmu_free_pgd(struct kvm *kvm);
--void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu);
-+void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu, int cpu);
- 
- #endif
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 082f9b261733..b76a90f5811a 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -705,7 +705,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
- 		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
- }
- 
--void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
-+void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu, int cpu)
- {
- 	struct kvm_arch *ka = &vcpu->kvm->arch;
- 	unsigned long hgatp = kvm_riscv_gstage_mode(ka->pgd_levels)
-@@ -718,4 +718,7 @@ void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
- 
- 	if (!kvm_riscv_gstage_vmid_bits())
- 		kvm_riscv_local_hfence_gvma_all();
-+
-+	if (vcpu->arch.last_exit_cpu != cpu)
-+		asm volatile(HFENCE_VVMA(zero, zero) : : : "memory");
- }
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index cf6e231e76e2..9692f5f5a70a 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -593,7 +593,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 		csr_write(CSR_VSATP, csr->vsatp);
- 	}
- 
--	kvm_riscv_mmu_update_hgatp(vcpu);
-+	kvm_riscv_mmu_update_hgatp(vcpu, cpu);
- 
- 	kvm_riscv_vcpu_aia_load(vcpu, cpu);
- 
-@@ -686,7 +686,7 @@ static int kvm_riscv_check_vcpu_requests(struct kvm_vcpu *vcpu)
- 			kvm_riscv_reset_vcpu(vcpu, true);
- 
- 		if (kvm_check_request(KVM_REQ_UPDATE_HGATP, vcpu))
--			kvm_riscv_mmu_update_hgatp(vcpu);
-+			kvm_riscv_mmu_update_hgatp(vcpu, vcpu->cpu);
- 
- 		if (kvm_check_request(KVM_REQ_FENCE_I, vcpu))
- 			kvm_riscv_fence_i_process(vcpu);
--- 
-2.43.0
+Actually, I have thought about this approach too, but if we clear DBM in
+kvm_pgtable_stage2_wrprotect(), then during the first round of
+migration, we will fault and release RO -> W, and then add DBM.
+
+But next time, when we migrate the dirty pages in round two, we will run
+kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
+finally, HDBSS will be useless during migration.
+
+> 
+>>> However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
+>>> turned out to be around 30ns — which I think is acceptable.
+>>
+>> Just a quick correction — I misstated the unit in my previous email. The
+>> overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
+>> ns.
+>>
+> 
+> Oh, that seems more likely :)
+> 
+> Question: is tha above amount of memory initially in Level-1 blocks,
+> level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
+> hugepages?)
+> 
+
+I'm using transparent hugepages. However, if we were to use level-3 
+stage-2 pages with -mem-prealloc enabled in QEMU, I believe the time 
+cost would be extremely high — potentially out of our control.
+
+>>>
+>>> So I think we can go with your approach: simply clear DBM globally in
+>>> kvm_arch_commit_memory_region() when dirty logging starts, before write-
+>>> protecting the memslot.
+>>>
+>>> ```
+>>> void kvm_arch_commit_memory_region(...)
+>>> {
+>>>       // ...
+>>>       if (log_dirty_pages) {
+>>>           if (change == KVM_MR_DELETE)
+>>>               return;
+>>>
+>>>           kvm_mmu_clear_dbm_memory_region(kvm, new->id);
+> 
+> Agree, but see the comment above about using the same write that already
+> exists, then we are not supposed to see much of a change.
+
+Please see the discussion above.
+
+> 
+> Thanks!
+> Leo
+> 
+
+Thanks!
+Tian
 
