@@ -1,121 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8F740F75D;
-	Mon,  3 Aug 2026 13:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E0640D590
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 13:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785762526; cv=none; b=acd3zD9dJ1pyUAbkQAAhNqj0mHUMYZr4jGpCxP0sMzNJs3I8uQbTzTuJtkAxZHFI4vPMog+TBhRvh0u5DsQXh8sDx+FQMZKEHZ01IyHaRUbHTq+qKxRHB31oYCgwKwr3+8nbH74/o75dCVrdyKHag9f6qiX9nffP7IkK4Ym9xwo=
+	t=1785762853; cv=none; b=DVT3grr5iwmgx56ijMYN2DZT1D2YyQ5NUjAPIHi7QGIs5wl8Mn49rHMmXCkkpzWDMxf56LeOQBJN8RtVocW8MtyMRYPMw/AQg2qNeHzSyz82PnwxhT9gVIj6hPdu4rQt7cdFmrCzry8inEeKSrhEjNzkJkhbsrsI57KrfXp6fLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785762526; c=relaxed/simple;
-	bh=n5tu+xInQvNO3LrbvXSVAwzgQWyJIIzVR0oeEiloz1s=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iZAUl723B/bSkkp6wL/LMbc6hudLRNUc8LWA2DoOJmvfqZwIgyP+HohqqplcYkZ1bp3+DgC3mPBX74rwJBeOCQe7fktL3ePdWwZ37CQsvZvMuKgQENNIAURFqbTjX2RPqinMOe1+dMsg/9Z0zTnqcSrZqc2ZWoddyMc92/Wv6hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DySaHdrN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785762853; c=relaxed/simple;
+	bh=wbJugdrkkqPiqfydhiI0PX1m4h32ed2mGP/FAOZPy+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=tvdCFPjVPxEm3q7JTDtCpYJl8hBxlnIh0UXBf8hT+Qm3YRtSJlRNCLG5l9t1Tjv82oh2W0dMNiIj+wdzY5/6NjA9qFR/5S8xGjIYvxWxkFzFljI3RQboGDMRSB/G46j2I3BBMQb1bVhqDRmNt1AGxILwYO93N/YK9teih3UoQFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SACgf6wL; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DySaHdrN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0640B1F000E9;
-	Mon,  3 Aug 2026 13:08:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785762524;
-	bh=ZRIiGFzjZ3FJXXWS3EoeUVh2aIwH/oTIs0H/DdYCVNk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DySaHdrNJG4d5ctYDxnnmvCy4Dy4l5c3Plh+FD736cZpzlpOUfduRYekrpofD/Xpt
-	 KxeFtzNe/7GBIZgapjoybYHsgpS1hwuvWbGGzFAb0TgyeGRrnvdCIMq9zMhY/gAZ8D
-	 IU/LiDQ1+jirV1KyXip2LshPfiraNqvY2rwxTx5uWkZXNHIe9iTwPLP/brKmyTgqBM
-	 HUX979n4nTPvwJvfCixWgWS3oBKnjR+ysuUMwk9nOOqHhcglx9cK+Hmm5LtVp45Uot
-	 4zX3Qtx477arD2LOhVjh5ulvlyPCrUdBTzbkRb1uhcKTNEcOWaN+p7ZHw0f1cC7gir
-	 UXtmZflVSk6sA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 08/13] KVM: s390: cmma: Fix dirty tracking when
- removing memslot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Heiko
- Carstens" <hca@linux.ibm.com>
-In-Reply-To: <20260803124040.126471-9-imbrenda@linux.ibm.com>
-References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
- <20260803124040.126471-9-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 13:08:42 +0000
-Message-Id: <20260803130844.0640B1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="SACgf6wL"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 57D8A143D;
+	Mon,  3 Aug 2026 06:13:57 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 67C0A3F66F;
+	Mon,  3 Aug 2026 06:14:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785762841; bh=wbJugdrkkqPiqfydhiI0PX1m4h32ed2mGP/FAOZPy+E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SACgf6wLE/+pYkMxKbE3zND4EXSOGuvgw7/dAyYc0CcfUYKrHhVEc2b/KYWrx5Q4P
+	 IhaRWhyRXtxn5Ryt6Vr35r78WXzqUSsu/Alc+b35jb7V6rvc2jm1oFU1p1WyjGrTZq
+	 CU0ZKjC1KsEyoFy/S1keGyCoPIXj9YaMW8KtU7ak=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org,
+	Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: Re: [PATCH v3 01/11] KVM: arm64: HDBSS bits
+Date: Mon,  3 Aug 2026 14:13:52 +0100
+Message-ID: <anCUEAKj-AUHWoo3@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260729105541.3FECC1F00A3A@smtp.kernel.org>
+References: <20260729104548.3439958-1-leo.bras@arm.com> <20260729104548.3439958-2-leo.bras@arm.com> <20260729105541.3FECC1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The CMMA dirty pages counter leaks when unmapped pages (holes) wit=
-h `cmma_d =3D=3D 1` are deleted.
---
+On Wed, Jul 29, 2026 at 10:55:40AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 6 potential issue(s) to consider:
+> - [High] The patch is explicitly marked by the author as a test hack that should not be merged upstream.
+> - [High] Hardware Dirty Bit Management (DBM) is not cleared when write-protecting pages, allowing guests to bypass software write-protection (such as userfaultfd-wp or software dirty logging).
+> - [Medium] Left shifting a negative signed integer is undefined behavior in C.
+> - [Medium] The hardcoded split_page_chunk_size is excessively large, causing massive memory allocations under the mmu_lock.
+> - [Low] HDBSS entry macros are defined in a `.c` file instead of a header file, making them inaccessible to other subsystems.
+> - [Low] Typo in the parameter name of `has_vhe_hdbss`.
+> --
+> 
+> --- Patch [1]: [PATCH v3 01/11] KVM: arm64: HDBSS bits ---
+> commit 125f04d66539bf05e0255567036409a407e48004
+> Author: Leonardo Bras <leo.bras@arm.com>
+> Subject: KVM: arm64: HDBSS bits
+> 
+> A brief summary:
+> This commit introduces preliminary support for the Hardware Dirty state
+> tracking structure (HDBSS) feature on ARM64. It adds CPU feature detection,
+> sets the DBM stage-2 page table flag when write protection is relaxed, and
+> configures eager page splitting chunk sizes for testing purposes.
+> 
+> > I added them here in order to fulfill the dependencies and be able to
+> > easily build and test this patchset, but this particular patch should *not*
+> > be merged upstream.
+> 
+> [Severity: High]
+> Since this is explicitly marked as a test hack meant only for local building
+> and testing, should this patch be dropped from the series before it gets
+> merged upstream?
+> 
+> [ ... ]
+> 
+> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > --- a/arch/arm64/kernel/cpufeature.c
+> > +++ b/arch/arm64/kernel/cpufeature.c
+> > @@ -2131,6 +2131,11 @@ static bool hvhe_possible(const struct arm64_cpu_capabilities *entry,
+> >  	return arm64_test_sw_feature_override(ARM64_SW_FEATURE_OVERRIDE_HVHE);
+> >  }
+> >  
+> > +static bool has_vhe_hdbss(const struct arm64_cpu_capabilities *entry, int cope)
+>                                                                              ^^^^
+> [Severity: Low]
+> Is this intended to be named scope? The standard convention for capability
+> matching functions in cpufeature.c uses scope for this parameter.
+> 
+> [ ... ]
+> 
+> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > new file mode 100644
+> > --- /dev/null
+> > +++ b/arch/arm64/kvm/dirty_bit.c
+> > @@ -0,0 +1,16 @@
+> [ ... ]
+> > +#include <asm/kvm_dirty_bit.h>
+> > +
+> > +/* HDBSS entry field definitions */
+> > +#define HDBSS_ENTRY_VALID BIT(0)
+> > +#define HDBSS_ENTRY_TTWL_SHIFT (1)
+> > +#define HDBSS_ENTRY_TTWL_MASK (GENMASK(3, 1))
+> > +#define HDBSS_ENTRY_TTWL(x) \
+> > +	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
+> > +#define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
+> 
+> [Severity: Low]
+> Because these HDBSS entry macros are defined directly in the .c file rather
+> than in the newly created header arch/arm64/include/asm/kvm_dirty_bit.h, they
+> are inaccessible to other subsystems. Should they be moved to the header file
+> so dependent patches can use them?
+> 
+> [Severity: Medium]
+> Will HDBSS_ENTRY_TTWL_RESV trigger undefined behavior here? The macro expands
+> to ((-4) << 1), and left shifting a negative signed integer is undefined
+> behavior in C (prior to C23), which can lead to shift-out-of-bounds splats
+> at runtime.
+> 
+> > +#define HDBSS_ENTRY_IPA GENMASK_ULL(55, 12)
+> 
+> [ ... ]
+> 
+> > diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+> > --- a/arch/arm64/kvm/hyp/pgtable.c
+> > +++ b/arch/arm64/kvm/hyp/pgtable.c
+> > @@ -1367,9 +1371,13 @@ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+> >  	if (prot & KVM_PGTABLE_PROT_R)
+> >  		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_R;
+> >  
+> > -	if (prot & KVM_PGTABLE_PROT_W)
+> > +	if (prot & KVM_PGTABLE_PROT_W) {
+> >  		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+> >  
+> > +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
+> > +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+> > +	}
+> > +
+> 
+> [Severity: High]
+> Does kvm_pgtable_stage2_wrprotect() also need to be updated to clear the DBM
+> bit? 
+> 
+> Currently, kvm_pgtable_stage2_wrprotect() clears the 
+> KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W bit to trap writes, but if 
+> KVM_PTE_LEAF_ATTR_HI_S2_DBM is left set, the hardware will autonomously update 
+> the PTE to allow writes without generating a permission fault. Could this 
+> allow guests to bypass software write-protection mechanisms like 
+> userfaultfd-wp or KVM software dirty page logging?
+> 
+> >  	if (prot & KVM_PGTABLE_PROT_X) {
+> >  		ret = stage2_set_xn_attr(prot, &xn);
+> >  		if (ret)
+> 
+> [ ... ]
+> 
+> > diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> > --- a/arch/arm64/kvm/mmu.c
+> > +++ b/arch/arm64/kvm/mmu.c
+> > @@ -1027,8 +1027,12 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+> >  	for_each_possible_cpu(cpu)
+> >  		*per_cpu_ptr(mmu->last_vcpu_ran, cpu) = -1;
+> >  
+> > -	 /* The eager page splitting is disabled by default */
+> > -	mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > +	 /* The eager page splitting is disabled by default if system has no HDBSS */
+> > +	if (system_supports_hdbss())
+> > +		mmu->split_page_chunk_size = 256 * 1024 * PAGE_SIZE;
+> 
+> [Severity: Medium]
+> Is this hardcoded split_page_chunk_size excessively large? This evaluates to
+> 1GB on 4KB page systems and 16GB on 64KB page systems. When splitting this
+> chunk, kvm_mmu_topup_memory_cache might attempt to allocate a massive amount
+> of page tables under the mmu_lock. Could this cause severe latency spikes or
+> allocation failures under memory pressure?
+> 
+> > +	else
+> > +		mmu->split_page_chunk_size = KVM_ARM_EAGER_SPLIT_CHUNK_SIZE_DEFAULT;
+> > +
+> >  	mmu->split_page_cache.gfp_zero = __GFP_ZERO;
+> >  
+> >  	mmu->pgd_phys = __pa(pgt->pgd);
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260729104548.3439958-1-leo.bras@arm.com?part=1
 
---- Patch [8]: [PATCH v8 08/13] KVM: s390: cmma: Fix dirty tracking when re=
-moving memslot ---
-commit 914169226ab516b51f60cbd45659598a2b39525d
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+As previously mentioned, this first patch is just for placing basic 
+infrastructure for testing the speedup caused by HACDBS. Of course there 
+are a lot of incomplete stuff around, because this does not replace the 
+actual patchset.
 
-KVM: s390: cmma: Fix dirty tracking when removing memslot
-
-This commit decrements the cmma-dirty counter when a memslot is removed
-to ensure accurate dirty tracking during migration mode. It also
-opportunistically adopts scope-based resource management for the
-kvm_s390_mmu_cache.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index e5c5e9f61cb24..ba811f0673d10 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-[ ... ]
-> @@ -5830,6 +5846,12 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
->  	}
-> =20
->  	scoped_guard(write_lock, &kvm->mmu_lock) {
-> +		if (kvm->arch.migration_mode && kvm->arch.use_cmma && old) {
-> +			_dat_walk_gfn_range(old->base_gfn, old->base_gfn + old->npages,
-> +					    kvm->arch.gmap->asce, &ops, DAT_WALK_IGN_HOLES,
-> +					    &kvm->arch.cmma_dirty_pages);
-> +		}
-> +
-
-[Severity: High]
-Does this code leak the cmma_dirty_pages counter when unmapped pages (holes)
-have cmma_d =3D=3D 1?
-
-Because this pre-walk uses DAT_WALK_IGN_HOLES without DAT_WALK_ANY,
-dat_pte_walk_range() will skip calling cmma_d_count_pte() for holes:
-
-arch/s390/kvm/dat.c:dat_pte_walk_range() {
-	if (pte_hole(READ_ONCE(table->ptes[idx]))) {
-		if (!(w->flags & DAT_WALK_IGN_HOLES))
-			return -EFAULT;
-		if (!(w->flags & DAT_WALK_ANY))
-			continue;
-	}
-	...
-}
-
-If a guest page was dirtied (setting cmma_d =3D 1 and incrementing the
-counter), and then the host unmaps the page (e.g., via page reclaim
-or MADV_DONTNEED), the PTE becomes a hole but the PGSTE retains
-cmma_d =3D=3D 1.
-
-When the memslot is removed, this pre-walk skips the hole, failing
-to decrement cmma_dirty_pages. Then dat_delete_slot() walks the range
-with DAT_WALK_ANY and clears cmma_d, causing the counter to permanently
-leak.
-
-If this counter never reaches 0, could it stall live migration by causing
-userspace to infinite loop waiting for remaining dirty pages to drop to 0?
-
->  		switch (change) {
->  		case KVM_MR_DELETE:
->  			rc =3D dat_delete_slot(mc, kvm->arch.gmap->asce, old->base_gfn, old->=
-npages);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803124040.1264=
-71-1-imbrenda@linux.ibm.com?part=3D8
+Thanks
+Leo
