@@ -1,33 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F0D42AB7;
-	Mon,  3 Aug 2026 08:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09AE3CC300;
+	Mon,  3 Aug 2026 09:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785747331; cv=none; b=pyL3Euf/JPQV5V12yA58nUKCxhJ2Z+4J1CzTInvuATcVSHYfnjvr71urL/Q/48EkwgXnsHYPuoOPt6ItcGaVnMCgbJ9Ufl8y5LXpIiUnedXX37q1NFkkntUfzRpxntDEb4BQbtHa41P5fvZOOY27RxUaSaBWH0hY6HLV+YMzrwY=
+	t=1785747730; cv=none; b=nbnJxJaxf+dZiJABcQCAHB8XEzHk3l8jV1EHxlyQCFeeEdZJ469P7hZvWSvbqKOxW/X/VOaDr6r9cUWoaaWwGLuYOPhr0TeEJSEXk27VJWaGF7WovIMSqqW3TkFE5Qognrq1SVgVbdMgqtzfiGXdw/QxtXLe+D4v5+f+Aa43Gkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785747331; c=relaxed/simple;
-	bh=cKJDvn5YJCw5zMjj5ST3vV1BKOyM6lf4QfamlpYiIRc=;
+	s=arc-20240116; t=1785747730; c=relaxed/simple;
+	bh=2ztGEmqru85Ey6gm7m9O58HxwtyjzxdZHxeZUAm5rgs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X3tXS0qjc/DLRYlAHAJfRSMtvIC2d1cj9lgbGCik4GYxyQEGlhbDYaDWNmA5zKoZXwd6dDPcgdZpPHY3zj6LQsLzJlPU+RUpnqMnaVbQ4LhWZ4N7JZLKAxNAolv6fTlPFe/q6lxZ3JKBeOB8Kk3FacBErbNq388ZuZlmE90TWz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XFsASIfG; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=qVHjZMhZTAKvtFhIU97m2YtuPO0PlAD5xquwxOEkgQhozJtLIOFwLeNTRELK2bexySyW3kD68sMHdGHsO1u49AbDUngskmILWkBp7n1GprirSfGyE9PtRA9+Y8jXbKqIJiaJ4p2TeMegvuV9wQw22N2P6WWfW5cGTlb5LvmAGK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oMLu2XVm; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XFsASIfG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDCF1F000E9;
-	Mon,  3 Aug 2026 08:55:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785747329;
-	bh=MFYRuVGotRRV/Itr2HNCyDdiZPa8mRw+riWzrv18CkE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XFsASIfG887MEylBFK/VV7zOG4pTZr7VkBRusfpGrMGat7arjNStYoDU4/FFoTOhw
-	 o3EaUDv0YC/CES4rDGgAEkyO1A1XgXhRrWihJJqZi6fNNK1vZ7KdOTripqUyS5rcuN
-	 fHSl2XK+YWLStdsn6SVuFT/LSPTxajLTOdLTLy9IYbhei7SnGc1YBXb72HK2Acw+k+
-	 QZAuZZYOl549M12WWAHzbPdCnI8ZAb84rO69I4VC+eB2ogkdKZ9N92fwHqkffxKsn2
-	 meCq+NUKjyyFLlKjf6H0eod/2PTP4y4CwNlwYKsNHwVyjIYiSzYapIrJMQyBmlY0uT
-	 9Vb7fQ95lk2WA==
-Message-ID: <0a9c8cc8-1fa7-4f4c-b7df-e847925c2b24@kernel.org>
-Date: Mon, 3 Aug 2026 10:55:24 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oMLu2XVm"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672LmAFa168341;
+	Mon, 3 Aug 2026 09:02:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fBSh1L
+	b3YRXcC0jkle/G/Y08YwnZCP7GQlJEugymKrw=; b=oMLu2XVmnkvG0Q79/5Dz6e
+	Q5ib2AnCvJkI7Vo2QdcyUcs8+NJG9u7XxNJs/TADLJ2O/+BIl0QBuApEBN26l/b4
+	4+ffRqteLAatdyadKH262d7Hoa2fjQWOQu/oFstCJv8woldkABH1sUb55WenuuxY
+	pzflxa9a3ksY9ymCmDEaKavgEgad6mGO/9fLji5xCn00J7eKgDSy6i40AEMigOPc
+	hyEMpqp6v41FKMS9ILFir4Ni+UukQJZXDDrvtvp4PzEu67GuQKxj7et60/bVPaj5
+	qeQoyO/eiMXYzgboduSAHEr2Km8ICpVX33koA0FyegG9dD14ps8NijL4oZcq3Vwg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77fyqh8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 09:01:59 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6738uRjM021554;
+	Mon, 3 Aug 2026 09:01:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh4jpp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 09:01:58 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 67391s7H43188702
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Aug 2026 09:01:54 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B78962004F;
+	Mon,  3 Aug 2026 09:01:54 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 805C22004D;
+	Mon,  3 Aug 2026 09:01:54 +0000 (GMT)
+Received: from [9.224.88.46] (unknown [9.224.88.46])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Aug 2026 09:01:54 +0000 (GMT)
+Message-ID: <8831abaa-9423-4104-b252-bcd73af7639c@linux.ibm.com>
+Date: Mon, 3 Aug 2026 11:01:53 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,125 +62,118 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: pull writability check to follow_pfnmap_start()
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>, Fei Li <fei1.li@intel.com>,
- Peter Xu <peterx@redhat.com>, linux-s390@vger.kernel.org,
- linux-mm@kvack.org, Sergio Lopez <slp@redhat.com>
-References: <20260731160514.1101989-1-pbonzini@redhat.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 5/5] MAINTAINERS: Add myself (Sean) as a reviewer in
+ the main KVM entry
+To: Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+        Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>,
+        Oliver Upton <oupton@kernel.org>,
+        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+        Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20260731173842.2649391-1-seanjc@google.com>
+ <20260731173842.2649391-6-seanjc@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260731160514.1101989-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <20260731173842.2649391-6-seanjc@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDA3NyBTYWx0ZWRfXzNJoIW1ecwNw
+ 3jGHhaLEVj07SAg4BQujB8i7xSPCwXnkCwNciwNQbBpXZg9S8OVfu+RfUbY4PQc01d+YvkoJQ+v
+ e6kpax5kYfFBEsugDLYYIVpK7yELxAbHMLMSA4vAgGrnBZqndiW57S+SineHd49RGv2kOQdn+qi
+ QD4gKHhGmRuR8QDs6X56rY27SKdvBwccF2WjobZk6osZH6LYymS527rnLtqP+1lpWzuDJ4gV09R
+ LaXm1qZ4hf8KGsoIuy2bsH12XrE2eSUBKX5yoJ9aAaLUdQ6h2UXA4Uk5hCv+3Rf0/JbTIKunh/R
+ M0BxViKuPZtoSfS4o18g0Wk2/5fRtXcjxmEigay+EsENAnu/XQhEVTcPljY+wirtp6Hx4/brg1U
+ a45nwjcnyGA7JxnkteRJWhUvq4/1ztp4o01WbYpEb+4nH3owDgxa84/ow98PF0Hwulm8JLjrQdj
+ xVamyFPDWYg1dE7+YSw==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a705908 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=W-_n0kkjAAAA:8 a=VnNF1IyMAAAA:8 a=1XWaLZrsAAAA:8 a=XjUzImER9C1jqGHORZAA:9
+ a=QEXdDO2ut3YA:10 a=qeNa2pbTr82C0GpJEZFS:22
+X-Proofpoint-GUID: K-1Ec8fvL5tz2kDqkYfQZwxMfyl09jLW
+X-Proofpoint-ORIG-GUID: jTrpXQ0NmzD0frfqEWPYYomoV-Hl6bfg
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDA3NyBTYWx0ZWRfXydIyu4eAcBVb
+ 0laTjyY++8Zzs54IsvjMv7M/RgkoN/YFKrXw0M0Mvy1v2CLzez3rOx4afLDFp17iWOS2cFEp7/9
+ SmVNeytsQYuMm8qUlhcqfFHylmEQvk8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030077
 
-On 7/31/26 18:05, Paolo Bonzini wrote:
-> All callers of follow_pfnmap_start() except s390_pci_mmio_write() are
-> following it, if they are doing a write, with a check that args.writable
-> is true; for s390_pci_mmio_write() that's a bug.  Most of them return
-> -EFAULT if it is not, but because follow_pfnmap_start() returned success,
-> they do not attempt to upgrade the page from read-only to read-write
-> with fixup_user_fault().
+On 7/31/26 19:38, Sean Christopherson wrote:
+> Add myself as a reviewer for overall KVM, as I have been helping shepherd
+> a decent chunk of the virt/kvm commits into the kernel over the last few
+> years, and I expect to continue doing so.  Of the 270 non-merge commits
+> that have been made to virt/kvm since v6.6, I have committed 127 (~47%)
+> and Paolo has committed 117 (~43.3%), with all but 5 of the remaining 26
+> coming from non-KVM folks, e.g. from treewide changes.
 > 
-> Pull the check directly into follow_pfnmap_start() through another
-> input parameter args.write_fault; this eliminates the need to do it in
-> the caller and, for callers that do use fixup_user_fault(), lets it
-> attempt to upgrade the page.
+> Note, this intended to purely be an efficiency and quality of life
+> improvement, for both contributors and myself.  There is no implied right
+> of succession or anything of the sort.
 > 
-> The change in return code to -EFAULT is okay:
-> 
-> - s390 is the only one to have a functional change in this respect;
->   but EINVAL is only documented for "Invalid length argument", while
->   "The address in mmio_addr is invalid" should already return EFAULT
->   (https://www.man7.org/linux/man-pages/man2/s390_pci_mmio_read.2.html)
-> 
-> - for VFIO and ACRN, -EFAULT was returned already
-> 
-> - for KVM, -EFAULT is eaten
-> 
-> - for generic_access_phys() the caller is __access_remote_vm()
->   which does not care about the error code.
-> 
-> Reported-by: Sergio Lopez <slp@redhat.com>
-
-Reported-by: without Fixes: is odd.
-
-> Link: https://lore.kernel.org/kvm/CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=bEHmfnG54qyBAHFg@mail.gmail.com/
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Oliver Upton <oupton@kernel.org>
+> Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+> Cc: Bibo Mao <maobibo@loongson.cn>
+> Cc: Huacai Chen <chenhuacai@kernel.org>
+> Cc: Anup Patel <anup@brainfault.org>
+> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Cc: Janosch Frank <frankja@linux.ibm.com>
+> Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
-
-[...]
-
-> index 485df9c2dbdd..34c79b5fcb9b 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3136,9 +3136,12 @@ struct follow_pfnmap_args {
->  	 * Inputs:
->  	 * @vma: Pointer to @vm_area_struct struct
->  	 * @address: the virtual address to walk
-> +	 * @write_fault: if true, fail with -EFAULT unless the mapping is
-
-Just wondering whether EPERM would be better.
-
-> +	 * writable
->  	 */
->  	struct vm_area_struct *vma;
->  	unsigned long address;
-> +	bool write_fault;
-
-"write_fault" is a rather odd name for this, given that this function will not
-trigger a write fault.
-
-You want something that matches FOLL_WRITE.
-
-"write_access" / "check_writable" maybe?
-
--- 
-Cheers,
-
-David
+Acked-by: Janosch Frank <frankja@linux.ibm.com>
