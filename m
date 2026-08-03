@@ -1,202 +1,193 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012001.outbound.protection.outlook.com [52.101.48.1])
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A854433E8C;
-	Mon,  3 Aug 2026 19:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785785892; cv=fail; b=Nk1akV0k7eM9bBzPe6HiOfwPPOpJ723VPLqvcXXOAEh5EPU5foA+zVGgya9BhGJ6LgjKxy3S3hbibG2QmHaX/zv/SgM7jsul5Uf+27i9PippPVPlxxdTCye/YOGTDhIOYtpZMuM/HQWhP0ew9qi/xbHvmPsHySA1rN+0b6q8NJo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785785892; c=relaxed/simple;
-	bh=9GsE6KwPMxdrchkt2sLcJrKl0muQ9phmRphmnCJ72QE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DoOiSjlcXtASOFzOvW1TE3ZskWrRd1vtMgTvKiODmKWY3KhPs6EwcBpgi8d46LKHZoMbyVZhQmVb8SOJSSlURG0HiLfI/w4rQFvDCK9oIX8/d+N0bttFrUH1DxfJmIyAFshdE+NtPy2S5s5JieaQSguyvI7baKicM6q38w/AxPI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dtLEsNeY; arc=fail smtp.client-ip=52.101.48.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF698233704;
+	Mon,  3 Aug 2026 19:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785786863; cv=none; b=gEWJog+/kSRED/bQm082X0D6EqqT5ZogT+jjWxaZWnd0f0+8m7FqRztypriSmu7I1N3YKYUnthiiJ6byeD1cWAnTYbuJNe8WO7p3xezOb0m3NYkhm7v9qdYu9MIDHsaEXCe2nJksyW/APdLVvBwCPXhABm08j3GBfc7Ad47a11A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785786863; c=relaxed/simple;
+	bh=6e/HZpZPILJEKifBNLBLxosvOjZJ/QaSMn5G6qLB+yA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SExrzJ4fZhxeRw8jG1qDWF+VOKRv7SXxgPkDYyy50ezqFljZvi0oszPp1dWtfLzM5srpn2EAZt3QbqKxGZZEZ1H9nXa17rqM/jdS4hQHRi/s7dwBpvwDOT2D9K/Jt2Pm+o8w8NIEU5WIhgND1rgOor+N88uVU9P7djZKRaLPhgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Sj9mfymY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DBJH0kYR; arc=none smtp.client-ip=202.12.124.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dtLEsNeY"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RjobAEJ3FKlY0SD+FEoq+ajN6WHe31HVEAcDvMD4homCHQgqNhzpbLdEpHvHqvUmtFl2fe/NAacgrPUHpRxcLH/ODTOnVGO1TaIRn64v1dzk2QwSedionLHOxQgQJvJ9EmsHODZrdAygYS0JZtTpKAmUs4leIu9hsiV30eMnnlWDRdHMAoAD6btMmgO8zbbjR7UNPJWcqjx4tteOiZjYNwN9zzKK0r/F05awSdOq8Wyzd0g65nNS5z22XB/NMSbSmmg9jcOkfaJR/p4rxKXpqNABtwcsBcqfAgbkfAfAbpNyyxT4IHzE3SXDOfgifOE5I9civaK5fzPUXKyk/SI6eg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=45Fp3/fLniY6I1Mj5gQ/5rQrMcmECfBmtjkJ65bQk8o=;
- b=aVTZx78blyQ5zp8jQYGHboAKQ1RH3cdL7J/EgAnDDdDnNZUfPKgoM/yju0+SsYSJfYFKuCpwsRdgej+fW5KosB7OnsqQT3GfclZCe1jT5NS8iiIfy60DI7QsIE0c63z31i4W1csFpCJyVdaX5XSmLNZZpzMVihNkAKft/JoarzPp2Etr0HEqBtoY+j6LYANx8AU/wF+dGEXIUuUQZf3wFL1m9l+MDm0rGBdbbDwoqbV1mGib/MzX5h1940YGu7LmcYGVkqYSCca/iDP+cv7USO36FcOA1hb0krOxKM++RWE1YL+d/17vf2nl9XpzmUBelOrlgCAtOJaRzM+VbaqFEw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=45Fp3/fLniY6I1Mj5gQ/5rQrMcmECfBmtjkJ65bQk8o=;
- b=dtLEsNeYaz3tQEmCAeAZCLszFoxZhd4yCV6uYfatPbh54lMY1jbr2dMmBA6ARWpc/V2Yx3ajWLGFbLZlo0U4f39Wqy8f/crcA0UmiKhgnQ7FURLIC6/zIJVq5dr3IvgFqdcqeV68gLwfCL4u3G+qBVmhmpDDXagndm9ZyVN0lhs=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
- by CY1PR12MB9650.namprd12.prod.outlook.com (2603:10b6:930:105::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 19:38:04 +0000
-Received: from BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
- ([fe80::ae6a:9bdd:af5b:e9ad%7]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
- 19:38:04 +0000
-Message-ID: <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
-Date: Mon, 3 Aug 2026 14:37:59 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP optimizations
- asynchronously
-To: Borislav Petkov <bp@alien8.de>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
- x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
- thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
- ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
- KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
- ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
- rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
- pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
- nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
- linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- kvm@vger.kernel.org, linux-coco@lists.linux.dev
-References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
- <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
-Content-Language: en-US
-From: "Kalra, Ashish" <ashish.kalra@amd.com>
-Autocrypt: addr=ashish.kalra@amd.com; keydata=
- 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
-In-Reply-To: <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: CH2PR11CA0002.namprd11.prod.outlook.com
- (2603:10b6:610:54::12) To BL3PR12MB9049.namprd12.prod.outlook.com
- (2603:10b6:208:3b8::21)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Sj9mfymY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DBJH0kYR"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8E6BD7A0027;
+	Mon,  3 Aug 2026 15:54:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Mon, 03 Aug 2026 15:54:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785786858;
+	 x=1785873258; bh=6gvqG0h/fnfFqw/tyXSjXEQXU3l/ydB7TEWvbht+nMM=; b=
+	Sj9mfymYe69Bakliu9nrsUmEo/Pat63TMV7uS89z3b9L8hGY0Gutko5gWTpjcSQt
+	H6GLgCirsQJwQn6PBC5IpzHLpfLCKSTftgXrIQrpbIt9NlhInoR3pgAFYm2h7su6
+	1Q2dNlp6lp6aMWRr+Iq4XylKE0zcyAq5vKa7iUZRpTYTksnOyr2VTsFfROexmZNd
+	U5B7esjICFOf5kwwKGhYR10FSIJ5VjA2iEouKFE/MFEsRqi4ONwCxhFQOdF2Ni4/
+	JyqIdUyG9UdRTbBv6AwIrA5K6oKx97o+t5Ocgnk8/K+Zn2k7VYlpCSuvmUOtkPzS
+	n0ov3R626sCgiaGD8fYIfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785786858; x=
+	1785873258; bh=6gvqG0h/fnfFqw/tyXSjXEQXU3l/ydB7TEWvbht+nMM=; b=D
+	BJH0kYR4t5Mk/RywNw8lSa3FYZUUC55+8OQhHX7AWDZlnGgkL3Wi+rkj7PpooIpk
+	qIGYT+nomqYHp6osL8gDu88COXF2goht/euTohtjPX9vrR+Nx9MrwS3oRhd6xPag
+	nJRSburNYM9ygJBmnLohHvtkwJsk+uVzbV0S70jKMhsebSThF9vXR++IoaT+YlVr
+	kp4GIj0JpuFkl3/1lmEtgm8ip5H6xHINIx8B/vs2CdL15B8VXKXpjcv6dttNiDEg
+	6mLPnLDXQG2b0qzpTJ8RyCRXYJuVYF0tKkNqWaqQ2ovcYLg/ysT/ysmal2voUVti
+	sJqhsV1xHgOTMq/+Ih2Jg==
+X-ME-Sender: <xms:6vFwas_biVn3knImByGQp3QAfjnb-ZXjOGY3FS8qy0LudxzE5xZgRw>
+    <xme:6vFwas6hdOJtwxp_y9ugpLYri1CwLA-uU1Imo9nBpbik-eYH4HdOjDoq4IMEGWpPQ
+    QDByiy7x_aKfKbp-aA1zzaP6zV69kmcn3RFL4ne5u4kXyxEitN_Ig>
+X-ME-Received: <xmr:6vFwatm6aowWXeqwCAUmGxwUsKYrSb5J1IyjfA208iQKM0Bq0QCkE9pXy3Rw4A>
+X-ME-Proxy-Cause: dmFkZTGltzPlwtmti0E2Nh31khFASEJ+ar9YxNqtyAevun1jv7a1T+z1vDJEvEhgJZm9x+
+    Fg/mgO2N+BKvSKB1WjxoRaWku66YQLbE5obBRr6hJ10xTiimC+SN4ABMnnyaXs7eYjB/hf
+    WNa6AGagpZ66ucru3QotzyCBR6Qfr2T+Kqymqc84GPjH+Ww7LnjLH4M61vdgHI0kEH+WdV
+    cRf6EurkUMcICU8gGxz2V7KwrbcDPPzcrSGLrvnIVIHPhR/etzqx6sbzE2DPfIjoQRhRSW
+    aF3yq4V66AFW2fT8N9x9i6N5dsS5iGvFs/vm/uurpTx9ktJiHQbZI0i1cjaSICV4SSvBst
+    JO+30QiMoOmCnNqXGqoxtmny+z0scYPK9h8TnOJGwQT5s4lteB0/HxhZFaoh0cwNKNl/aP
+    aXUHW4b/mxgu3ZlXDqZn1XCSstiKo/Ec62FHtvNyaCCjKpH9H04kiTBeUD/1TgTHcth42E
+    0bSo+dBeBpXAtm33/X7oZ7rHb5/9Bq6msaG99OSIiilvFIR0PAWEyGBq1uv3UbCCy2MQm+
+    JoynWvqFfxgyOVoBx1hjz7wrBLT5lw7+ASA8Fgvkg+k7V6iXRDyDdKh797GpR3iay0+7Ry
+    9HOoaKCt06FmZbjc1kaVFaEY6DywQpwCvWlkPspew6+aw2p8IOJyKm1YxIVw
+X-ME-Proxy: <xmx:6vFwanEK1X1e7UW1z-J4jVYJQ7v9G_GE1CtthfzedPfRBbpu3NkcoA>
+    <xmx:6vFwas87kZC4MDqTN5oCmWudgLf2iMfa6ah-SJjKOjZ-b4H602OjHw>
+    <xmx:6vFwaglES6WfjMt8qdjdlhlouOooj7ol7D8YYnEYsex1ih3ehWczOA>
+    <xmx:6vFwavAoQ1bL7bHD9dfr5XA8Y7y-kHrLsouPuCTgF950cSCFRQY4pQ>
+    <xmx:6vFwah9zX0s96clh4sFZs3ZBpXe9kVqyC6cLdzYLAvfjCzcRqf1yKXnS>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Aug 2026 15:54:17 -0400 (EDT)
+Date: Mon, 3 Aug 2026 13:54:15 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Farhan Ali <alifm@linux.ibm.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ linux-s390@vger.kernel.org, kvm@vger.kernel.org, borntraeger@linux.ibm.com,
+ mattev@meta.com, schnelle@linux.ibm.com, alex@shazbot.org
+Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
+ non-mappable BARs
+Message-ID: <20260803135415.2cfd37bb@shazbot.org>
+In-Reply-To: <c0e6803f-7e57-4dfa-a4cd-f2ee188070c8@linux.ibm.com>
+References: <20260729181116.1373-1-alifm@linux.ibm.com>
+	<e7b2da7b-2c70-46c2-9d07-6acc6949915e@linux.ibm.com>
+	<46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
+	<20260729143603.175f60a7@shazbot.org>
+	<42a3b06d-ecaa-4339-9472-7c592694f877@linux.ibm.com>
+	<20260729155021.64f7e1ba@shazbot.org>
+	<c0e6803f-7e57-4dfa-a4cd-f2ee188070c8@linux.ibm.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|CY1PR12MB9650:EE_
-X-MS-Office365-Filtering-Correlation-Id: 405a4049-adc1-42f9-334a-08def196bc6c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	nPm+LNEx0SKDUwl0u0NKU7mL09hNUVdRnAX4ZKHw3H2fuPZluTCLpdv7slRKHSK2dvALQ9/0iDZRAC18tsSRQHe4qwI4sD4JbsGAzEHwlyNnHMQTsK04zYeWtXzYG1RZEzbyQ1Gj2EsRem8kEfGd6zoUAl6K0kZM9FwBKv3yCcxLVZptyODkZpDj1XaceKFais70aoo2BHAsVkkShQzT0r7lNOxd8H1UM8/7sI/sW0q17QiLu3lGwvmBJLzeYgYWOagjZx3AnsMjTfnwrCdIA4e0zV2+kfuVAmyORyoxxK9wF6kHl99QWdNqsFLHtFAgkZWtHLcvcTmc7zqWzpOA8WTLLwfK6itcIMyciH0Ez9DJQ5LSye96Q6ltbSIsaNRBwylXy7kjQPo9Vjof1FPhxFVO5xxK0S4yH5Z/fbohpqM1uYo1sJ925nDO7yltKU/cIfYSJ9XEzCRZjCYCfNdZvko7h4tsB5qyxe8BVwLSAFOIcBi24YO1ohWpBX3rqdYAo0WYRSCLtBBa9HvBHchGpAnnQvSTWbOOMzfhnRtoUsUj74vElhJha1DUfqW/K2NSNHIIeOj+bPbyDx6mRtW0AtEb55UWOUnAfnt1rxhiHVWPxgqbmQuJaNvri52i39mzlIavjr7zTkrxgbvX/vW2opeCBEMcP3K4TAAgL1sogLs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RkFWMkI2Y29iejlCeE4wdWJuNWk3R3Q3RDdYWTFkYUhib1pUMDR5U1RTdEdT?=
- =?utf-8?B?d3N3bTVqc2pTV3N3SiswbUVLbG13OWUvUTVXSHpITVBuTExvQldlOFVMOHg5?=
- =?utf-8?B?b3ArMkNlZkRlUU1kVExrbDRJMXNpMXRHME5LMEMwK0MzcnkweFBQZXdITTdF?=
- =?utf-8?B?aVZSZFJZd2F4MTJDb0w1Y3l0THBGN1c2WU8xeXl4ZXgvdEU4RkV6K25iZnl3?=
- =?utf-8?B?NnZZVmxrWUN2UjNpZUJReU5ISUlTa0lHQ3RPby9IalB6bHVocDlNcC9SenhY?=
- =?utf-8?B?eG4ydmZHdThkQmIrT0tLYWVGZ0NqaG1BVnBqUkFlT1BjSmRnajFUN0ZROVZj?=
- =?utf-8?B?NUhHRWNjZFZPb29sVmlOZFNCVnpOeGRWc3lpbm1qVXl5RDBUc2FMcFNEMEhy?=
- =?utf-8?B?cFdyVWZzL256ZHczbWhpU1FobFVycCtlK3hHRnBkem1NeE1LSXZDT1NoaEVV?=
- =?utf-8?B?T0V5TFhRa3NqSlVsR2d5RVpqM2NFTVBBS3VzOWV2aVZHeW9QWVR0S3BkcUNP?=
- =?utf-8?B?OVFhbW1idXhNOWc2TFRaYXEySHBMMEFpTTZUZTFLOGJLeHpHMUVjaHU0SHF2?=
- =?utf-8?B?L20yUHlDR1J1MTNseTB1MlM0RExuSUhaMmJQLzNkMm0rcHU3bDl0dXl6TE9K?=
- =?utf-8?B?anhLMHIyL1RhUVJWaHBXSmZUSU5ISGtrRzhNcEd1VzZxcnVJRDZubU5VWllO?=
- =?utf-8?B?clpsRXNSdnhxK3dpNkc2aTBmTkFoODFHRDZra044VUd0dTh2dy9SWEJBNU9L?=
- =?utf-8?B?YzdZUjFsY1BQOGwvcWdMYTB4Y29uL1UvdTVBWG5STG1ObSsySVRHdEZ4emRu?=
- =?utf-8?B?UW0xZndWbHJxWkdnYzFHNFFFNGcxTzZ3UW8rdnBDZ1F4REFLSzhoeGNDUGxK?=
- =?utf-8?B?MHFsL3ZvdEY3dGNvUkZhdjhkSFFHbUNsRENQMEg4SXBFNnYxYVpKNVdsTFpF?=
- =?utf-8?B?MHIzbytvVFNMZFlKR21VNjk4UTFHOWprbHd4em13M3dLQTVoNGxCMUpMTHNI?=
- =?utf-8?B?eDNlc0tQaDlZNmx4UEh1VDZrR2NDR0ZaSUZmb2lac0xYZFZzUE52a0UyL21o?=
- =?utf-8?B?RXRkUXNzNmRlUHdHcWR2Rmc0Y3ZkZyt2emVFNUZmRlF1aGNCSGhYSFBGZmps?=
- =?utf-8?B?RmRiMUxXNzJLQmJWcHQwd1J2N0Jac1Q4WUtLejNXVFBmSFdZQmNnRHNiRkQv?=
- =?utf-8?B?YlBzTmNBK1B0S21BMzVneWF6aUxtUmZwd3M2SFdmT29YMkZWeTE3ejN1dWND?=
- =?utf-8?B?MGFJcTZCWVV5WkdmQTAxbkFGWVFoc2Rhc25uOE9ybnp6dkVFNDM4VTRjV2xZ?=
- =?utf-8?B?ajZycjVKdk1Dd0ZMRzc4NXFjbjNEcDBaOEFldUhDVDJoeFBQK1M5eWdBZzF2?=
- =?utf-8?B?bTRhM1pvc25VVG01T05EU2FqTXF1blVNM0lhQS9BVFdrYmFGWEdYa1cvKzhG?=
- =?utf-8?B?TTJTcFd2SFM5V29QamRrcEF1N21CaXZjOC91ckp3LysvUjdWWTZiMlZaYTFk?=
- =?utf-8?B?UHdTZFEwT1JpcXdMTFNWUWpjbG1CMjdHRWNGVUpPdG5UMUFtc1pIUUR2bHFE?=
- =?utf-8?B?UmFrNU5nYUJVYWQ1WjB0Y2RibkwrQWtOb1NzNjB2NWwxZ29aZjBtTkEzTzFN?=
- =?utf-8?B?T1J3QmJTVzZ4ZDN3QnFZekYvS2Y4NE93dS9OZXhJQWU5c2xES3lZa3FaSDdS?=
- =?utf-8?B?UVlKbmViU0dMcmJCaWI1REJHREdWeG5qOUowcEVTY2xlZ1c4ekVwY0xSY1B2?=
- =?utf-8?B?YUNFNmwyZ0ZyNXpYaWxRLzdtY2kyaVpYUlFtRk9ZQ3dLYVBhaCtrQ041Z0Jp?=
- =?utf-8?B?YWFLSW94TmFmd1FDQm5jZE1WdE9vcVVVWE81ZjNRNVFadzVmaXkrNkVHNjYx?=
- =?utf-8?B?cWprWkdmSVJUVGFiVzBOYjlzaTgxTVZLS3hIbHJaTDZITW1QOWlGdEJ2cXIw?=
- =?utf-8?B?cXFyeXdtYUtSd3NET2JOWU9yaDExK240K1dETEU3b211akhhVWhLUXVJcEl4?=
- =?utf-8?B?L0h5YUNzQXlSWHI2eld3c2xUY0V2ZTBLa00vd2srNC9zbll4M2VqNmw4UnBw?=
- =?utf-8?B?VGtraFIrY3V4QUk1LzF0UWMydDB3ekgzeFJoMFlBeXMrRWMyS2FYYnlyUTNR?=
- =?utf-8?B?cUlBT3JWN1cybW1WWlhiUVdkblEybkc2NDh3WSs2MkMwRWxSUmNySFM2WHZs?=
- =?utf-8?B?NVBySVh0K2lWZkVPdTZkZWtoQ3lXZnM3dmlBblFLOWxsdVROT3E4Yyt5dFdK?=
- =?utf-8?B?Vk53NFdlR0FUZEViR1BLWHg4QVJ3U3lhT2o0aE1hYUhOdFJ4Q3FVNDd5Y2pw?=
- =?utf-8?Q?nRVrXTTW9g3IY8kdDi?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 405a4049-adc1-42f9-334a-08def196bc6c
-X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 19:38:04.4738
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2EnnU3h8zDhlGr/j31dFbZwNq+EnqltOGNvhzbfvHETNNM1cP78DgOJl6Wg/yDxqxJ0XQ3irUuhsV0ksnKJ3IQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9650
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 3 Aug 2026 09:39:19 -0700
+Farhan Ali <alifm@linux.ibm.com> wrote:
 
-On 8/3/2026 2:24 PM, Borislav Petkov wrote:
-> Kalra, Ashish <ashish.kalra@amd.com> wrote:
->> Followers are RMP-scan cache hits (cheap) and this only runs at setup/teardown
+> On 7/29/2026 2:50 PM, Alex Williamson wrote:
+> > On Wed, 29 Jul 2026 14:32:45 -0700
+> > Farhan Ali <alifm@linux.ibm.com> wrote:
+> >  
+> >> On 7/29/2026 1:36 PM, Alex Williamson wrote:  
+> >>> On Wed, 29 Jul 2026 13:28:46 -0700
+> >>> Farhan Ali <alifm@linux.ibm.com> wrote:
+> >>>     
+> >>>> On 7/29/2026 12:41 PM, Matthew Rosato wrote:  
+> >>>>> On 7/29/26 2:11 PM, Farhan Ali wrote:  
+> >>>>>> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
+> >>>>>> all devices support having their BARs mapped by the CPU. The
+> >>>>>> non_mappable_bars flag indicates that a PCI device's BARs cannot be
+> >>>>>> accessed by the CPU. The ISM device on s390 is one such device. The BAR
+> >>>>>> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
+> >>>>>> to warnings:
+> >>>>>>
+> >>>>>> vmalloc_node_range for size 281474976714752 failed: Address range
+> >>>>>> restricted to 0x2110bab00000 - 0x21903ab00000
+> >>>>>>
+> >>>>>> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
+> >>>>>> is set by the PCI core at enumeration time and already serves the same
+> >>>>>> purpose in vfio_pci_probe_mmaps().
+> >>>>>>
+> >>>>>> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
+> >>>>>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> >>>>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> >>>>>> ---
+> >>>>>>     drivers/vfio/pci/vfio_pci_core.c | 3 +++
+> >>>>>>     1 file changed, 3 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> >>>>>> index 3f11a9624b9c..6a184588ff23 100644
+> >>>>>> --- a/drivers/vfio/pci/vfio_pci_core.c
+> >>>>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> >>>>>> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+> >>>>>>     
+> >>>>>>     		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
+> >>>>>>     
+> >>>>>> +		if (pdev->non_mappable_bars)
+> >>>>>> +			continue;
+> >>>>>> +  
+> >>>>> This would work for the ISM case at least, but I wonder: should we check
+> >>>>> vdev->bar_mmap_supported[bar] instead?
+> >>>>>
+> >>>>> My question boils down to: do we still want messages for some of the
+> >>>>> cases where we set vdev->bar_mmap_supported[bar] = false in
+> >>>>> vfio_pci_probe_mmaps()?  
+> >>>> AFAIU vfio_pci_probe_mmaps() is only called in
+> >>>> vfio_pci_core_finish_enable(). Since vfio_pci_core_map_bars() is called
+> >>>> in vfio_pci_core_enable(), and before vfio_pci_core_finish_enable(),
+> >>>> bar_mmap_supported would be false here for all devices. So I don't think
+> >>>> it would work here, unless I missed something?  
+> >>> Also IO Port and sub-page MMIO BARs are things that do exist.  Thanks,  
+> >> Just to clarify, are you suggesting we expand this check to also avoid
+> >> mapping IO port and sub-page MMIO BARs?  
+> > Sorry, no, I'm not.  I think we're conflating that the barmap is
+> > related to mmap access.  The barmap itself is holding the iomap of the
+> > BAR, used for read/write.  The only real relation to the mmap is that
+> > we request the resource via this path as well.
+> >
+> > Therefore not only is the ordering of setting up bar_mmap_supported
+> > wrong, it's flagging entirely the wrong thing here and keying on it
+> > would entirely break IO port and sub-page MMIO BAR access.  Thanks,
+> >
+> > Alex  
 > 
-> How?
+> Hi Alex,
 > 
-> I see the workqueue running periodically. And in talking about periodically, RMPOPT_WORK_TIMEOUT is not used anywhere.
-> 
-> What's up?
+> I wanted some guidance on how we should proceed with this patch? The 
+> warning messages are a regression on s390 for ISM devices, so we would 
+> like to fix it.
 
-RMPOPT_WORK_TIMEOUT is used by snp_rmpopt_all_physmem() (mod_delayed_work()), which is added in the next patch — I'll
-move the define there so each patch is self-contained. 
+I think the original proposal is probably the correct one.  The
+non_mmapable_bars flag doesn't restrict its application to specific BAR
+types or access, at least not beyond "can't be mapped to CPU or peers."
 
-It isn't periodic either: the handler doesn't re-arm itself. The work runs at setup and re-init with queue_delayed_work(), 
-and then per SNP-guest teardown via mod_delayed_work() (batched by the timeout) once the later patches wire that up.
+If we can't map the BAR to the CPU, then we don't need to request the
+region or perform the pci_iomap(), which is what I understand explodes
+here.  Therefore we really only need to establish the errno in the
+barmap here.
 
+The bar_mmap_supported flag describes something else, whether the BAR
+can be mapped into the user address space.  My intention was only to
+point out that there are BARs that cannot be mapped to the user address
+space because either they're not MMIO or we can't safely map the full
+page, therefore bar_mmap_supported is an invalid test for whether we
+should request the region or iomap the BAR.
+
+Is there still a gap with the original proposal that I'm missing?
 Thanks,
-Ashish
+
+Alex
