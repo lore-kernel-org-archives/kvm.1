@@ -1,64 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C748041D207;
-	Mon,  3 Aug 2026 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E693426D0C;
+	Mon,  3 Aug 2026 17:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785777991; cv=none; b=EaJbDs6slrZPE/h4ZROWpusNn/68UD8vEqbr/EP6tgmzBaPggM4YSKgab19bQ6WeIkMmJsXPinbi8dH7dPbl9KnPtnRbGYKwQL2mUiLGnX9JQZDQyhZAa78LUiZrbMc8Bcv2Pa6Y65AHBnc7Envq3EgfqphTb0JHHnmp4aQvgT0=
+	t=1785778834; cv=none; b=K5BvTQjVpaL3HE95D7weznu5/PWWy5KHmc1M7bBkeHiJXJ9fOI1yatDyoSrL4Sz8jz5EDBOnWDOEyCgX+VD6pELzDEEZOjySZGJpIqVQacN3FRf5I7tGv0wlDc7xTJ33I/0f5+zLkJ0rrhUOhqa0PIwOzqdG1EbWKRnueMyH+/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785777991; c=relaxed/simple;
-	bh=JLVNva4vfntjzpvo9kcxdnXMCdj7v11FkKAb1wIg2gk=;
+	s=arc-20240116; t=1785778834; c=relaxed/simple;
+	bh=bgsIxbEbcnxJXOiI3d52IKMx+kp1IA9lUHxjkZGNCeo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=gMie1EyHg2Oi0GWWwAOoqiuBYgk8Nb+smR36ihbylhMJBHu7ctBozcqawMMmv80AhN/5iWkFd8enhdoUtEaKLRfCohPyUAIla9SdNr6jrRp5Rk+mKL2AcUcbsyjnGygRvcKPM7Sp52WVXbrqcmbIeFK0V9VQlvQ3t0Awxy/+2Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSL2dEuE; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=UDvA7FaMJZVSV8d0NwbQ/rDvoSRM3foAIEQWTdsl5BDx6MNlbu34xg5Fzpb86f69iFMATY1r5vC07koPLKfsqpWzPx+tNn3ON92Z7pQvZ+79riRYU5Z4Ao72cu+lhFKETmVz8xGEQHoA7R80zanfxCnqW763stJTJZ+SR9zE2PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z4DROpGT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSL2dEuE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268CE1F000E9;
-	Mon,  3 Aug 2026 17:26:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z4DROpGT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCD01F000E9;
+	Mon,  3 Aug 2026 17:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785777990;
-	bh=JLVNva4vfntjzpvo9kcxdnXMCdj7v11FkKAb1wIg2gk=;
+	s=k20260515; t=1785778832;
+	bh=bgsIxbEbcnxJXOiI3d52IKMx+kp1IA9lUHxjkZGNCeo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MSL2dEuExUYe13KJYTL5z5Zrs0zs3NQS+oyDAIuVVxcSbwen0hg394RNSkrGO5ugd
-	 ExZ6GuqO13dbdM/EeKrUN/Q7vBty7zwDfnwCfdZ+nasAVbY+5JShCDbJIC1yV/Spsr
-	 15Tha9N6eLGYAF6WgKwzd094cIffKeK24lGwWMKEKw8GYCoo+8LSw0xPWkEi0aN9Kv
-	 mt6YbGksHpsG7kPsRw4FZXDYutvii6SyhIg3OQtMXLutkinSKvejNUhbg/9t+oEoF2
-	 qamx6CSupeT5EVfOyqrhsPsrSBXuUQCkNcptBV2f1s6LPamkc//6DgZ7e36C7rafQk
-	 UOqXHr0QhVUXA==
+	b=Z4DROpGTd+11jbWl8CYeom/fH8/1axMtsIC8OsOQQVHLJYDKLlSqY4MmSq2MBPrXV
+	 VsYkWmHpL8x6VAW0i8k9vkYIGXvNzhGxhwIRbRFoxaiGO2/6U2PrFSL8jatYsgzDIe
+	 XxVLKjl52gyvmyL74VALjWWekeVtnkJLqdeRjlq13G6h9xV752udbl1YnT/KyIQdWc
+	 EvHaEgtxRVNLmyztJlPdwqXZVy3Dg/8wWmEz/m/efEPseVOmi/ggY59AXQ6QFjK6aH
+	 TzBNveHyrZGG51EXL2Nc/2Rt0Cek/2RX/CeG8TsSvEr/GlbjeOUEBq5e2Q59amF02e
+	 synuUddfrpOqQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 22/23] KVM: s390: Fix ordering when adding to SCA
+Subject: Re: [GIT PULL v1 21/23] KVM: s390: Return -EINTR if a signal is
+ pending while faulting-in
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260803160924.236807-23-imbrenda@linux.ibm.com>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
+ Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org
+In-Reply-To: <20260803160924.236807-22-imbrenda@linux.ibm.com>
 References: <20260803160924.236807-1-imbrenda@linux.ibm.com>
- <20260803160924.236807-23-imbrenda@linux.ibm.com>
+ <20260803160924.236807-22-imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 17:26:29 +0000
-Message-Id: <20260803172630.268CE1F000E9@smtp.kernel.org>
+Date: Mon, 03 Aug 2026 17:40:31 +0000
+Message-Id: <20260803174032.8CCD01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-> When adding a new vCPU to the SCA area, the validity bit in the MCN was
-> set before the pointer to the state description, potentially allowing
-> for a race.
+> If a fatal signal is pending while trying to fault-in a page, return
+> -EINTR instead of -EAGAIN.
 >=20
-> Fix by setting the pointer before setting the bit.
+> Also fix unpack_one() to handle -EINTR properly.
 >=20
-> Fixes: 14542a0a54c5 ("KVM: S390: Remove sca_lock")
-> Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-> Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+> Fixes: e907ae530133 ("KVM: s390: Add helper functions for fault handling")
 > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803160924.2368=
-07-1-imbrenda@linux.ibm.com?part=3D22
+07-1-imbrenda@linux.ibm.com?part=3D21
 
