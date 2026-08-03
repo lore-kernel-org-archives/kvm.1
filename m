@@ -1,185 +1,368 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA9040B0EC;
-	Mon,  3 Aug 2026 14:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFB63E5A20
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 14:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785767432; cv=none; b=Ch6d0/FgDKiRC2IO2A7UGLoLCZG3w/Z0TMluJExjUkhMiN2C7htdYk5BsXkGgisws9nRxJ4MfObqZ7GpS5C0Wfh0OrSJb15wiPwt89l0+QdS2FpGMjX0ND2KvRpS8zUx6UpjbySCQg/ZB8gCIf6et5nIVZMBt9lCdpv3DYCQN/k=
+	t=1785768461; cv=none; b=DS2yuoraFHEGAaeoccqOTlOzrweL/tSqsDKsQlVtJ1i7KbzC/mz7YMrO3wbZ9Az+K8ozgCsar3876p5QOxqnVcWc5XkVS4mQVYiqiCoFEj6iP1aQYOH+DMVEM67zNM7SwfxXc6zae+hwTlfy8Ib90b3JzFn5WvMtjG08/KlLSmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785767432; c=relaxed/simple;
-	bh=5mYxHgt8oBcGMml1lqbC7u5Z0EuS9MSylv5reSNBfWE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HRspERpIPSvQYInjWP4l/xlaaqoWvS34LAi74ijBhpNArYhSghL+X06ZD6WV1052mV4QvoW1lcXLk3a7RV9pdk8uYjv5wCFkMXc/ZWImQHLaQp5FUb9r2osNNEiAGe3gS50uhp0Wcd2Retj/szyvoU9V3OabQ+xsXERC1fsOVWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Se+z14Pr; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785768461; c=relaxed/simple;
+	bh=38cWHigXcc4kq3LUHJEhpk1zbpHG87KHCVunwzlvl8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=WcPo+5t21jPgwMSkOdK0iR80Z1inEAkNuDeZDSlybg6HQC+pbqt0I++alxU+2RXUp2p4wxO6U8z0QwgQkTk5fiUv/xhPF0tpNAF3z7w0lKq/s55zTcZFH0KCjpZm327rKja4Hq1ScWEn93u7sLN0pWgcie0jxA2WiZfq47KQ4K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XYjPVarq; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Se+z14Pr"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EHxYP2282951;
-	Mon, 3 Aug 2026 14:30:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EnjV55
-	SPIGPVnv0ih3OhVVmCTbn5icadDSoBkmnSzjQ=; b=Se+z14PrQi1KQffOaBdN6k
-	dTojXKtbLZpqlCBSamEsK21XGQoEbaMD9yXPPB6csu3hTpRTmJQiHIRskkbOLSbR
-	PX68dbpqo3wXlcR/AZ62i5+ny0hmJ+FGA4RpoCUZvBczlsnJtbSNz4WZ57IXiAQ8
-	6A4Lc4tHj0wEH3T/NsOSyMbPsqremryMxvE0jTg0sSs1tlanjHz3HrRhEEMlGDXN
-	e8Yc9RH2Y+VgWrF0/3/hlZqz+yEIkkDdtVVfztxIZsCXsgn0IZEr9DtG64fVLlwg
-	udhwVznGMiu5CpnT1Bmm64p2d+0d5OJ9bIfooZq4Sq9ECuk1hT9nMjxJOETIr69Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h4s979-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 14:30:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673EQGld013577;
-	Mon, 3 Aug 2026 14:30:28 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qdxy6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 14:30:28 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673EUMft47579516
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 14:30:22 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 166482004D;
-	Mon,  3 Aug 2026 14:30:22 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D762220043;
-	Mon,  3 Aug 2026 14:30:21 +0000 (GMT)
-Received: from [9.224.88.46] (unknown [9.224.88.46])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 14:30:21 +0000 (GMT)
-Message-ID: <b36684f2-0844-4695-8d9f-cac74ad88af9@linux.ibm.com>
-Date: Mon, 3 Aug 2026 16:30:21 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XYjPVarq"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71CE7143D;
+	Mon,  3 Aug 2026 07:47:34 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7F28C3F632;
+	Mon,  3 Aug 2026 07:47:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785768458; bh=38cWHigXcc4kq3LUHJEhpk1zbpHG87KHCVunwzlvl8Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XYjPVarqny0nWZzw1E7KmrYY4oQrQ6COa1NPKF+kAOCPGZouTEIUslF7Ct4ihs8wr
+	 UkdZUBycIs76Wm3q0Xbh1/f5w64NS5xlfp/EbGl9ZbT7Qd6L+GcsaokV5c3VLOJHwy
+	 eBwK+DaH4kxGStG2VTB9GPIgz3jqqhCbKNmL31u0=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvm@vger.kernel.org,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	kvmarm@lists.linux.dev
+Subject: Re: [PATCH v3 04/11] KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+Date: Mon,  3 Aug 2026 15:47:35 +0100
+Message-ID: <anCqB-Y7kk_h1qwe@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260729105753.B1E6B1F000E9@smtp.kernel.org>
+References: <20260729104548.3439958-1-leo.bras@arm.com> <20260729104548.3439958-5-leo.bras@arm.com> <20260729105753.B1E6B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/13] KVM: s390: Fix kvm_s390_vcpu_unsetup_cmma()
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
- <20260803124040.126471-4-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <20260803124040.126471-4-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDEyOCBTYWx0ZWRfX/hHiD3DdgHz4
- TpnNxjHl22/+qmJTYNU7cTbdyIEu4szERP6rguvyQcYyj2U3m6Ory6ALMuOEg+et2kdiXUwy2ny
- QDR/v49kZ/j7/egg8eae0GzqemM9w98=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDEyOCBTYWx0ZWRfX+Z88ALKyCw5q
- jN2MLUvJCVRlNIwT+U4+hjPwm1xLw4I0ScUWfsGady+AqhqicjoUR2512MhS01E0etCerG4CTrq
- S348/ncwbLbm8BBcsF1czVeKRCwZ4E2t+dcrWghLisP+YXvlKRJwwWJy7Mg63kvxSdxJw5sTmVo
- cPjumeeEk4xRsrNaba/wo15TbezybdmZ4r6R8eYWpq52pt7JOF2qaFF264PsE7wZNxs6MeA2cbO
- G+svZ6KsCypFoGBeuSzmrNl+syhMR9UMjwsXEbQsF15sgaphAjjinjYHgQ7U82M8q98kUQotxAB
- +iU4LEoae5oT4ZeUF12prCb0+2/0S2hibSC2hLvT43u+k3WzxzY5ZzuoGePMoVRrzjVpP3WlDkV
- HrDd8Z+KV7kpFTjyWeEvSVbk3FRfYwMiOZfla6dt+0LUxEMBjWZelts0N0kzrfK4ls66G3wZLpl
- yKWrPFEjDlo7Uz0l5Cw==
-X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a70a605 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=igm0tsip4JlBMjQ8PrsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ovLrBsWmw1FeO1Bts1monnMLv2llRJxA
-X-Proofpoint-GUID: ovLrBsWmw1FeO1Bts1monnMLv2llRJxA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-03_03,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608030128
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 8/3/26 14:40, Claudio Imbrenda wrote:
-> In some cases kvm_s390_vcpu_unsetup_cmma() can be called with a 0
-> cbrlo; in such cases, if running with V != R, free_page() will attempt
-> to free physical page 0.
+On Wed, Jul 29, 2026 at 10:57:53AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 8 potential issue(s) to consider:
+> - [Critical] `hacdbs_sched_in` restores a potentially stale VMID from `save.vttbr_el2`, leading to cross-VM memory corruption.
+> - [High] Direct EL2 system register accesses from host code without a VHE check causes kernel panics on nVHE systems.
+> - [High] Writes to control-plane system registers are batched and not immediately followed by an `isb()` barrier.
+> - [High] Missing synchronization barrier (`DSB`) before changing the translation context after disabling the HACDBS asynchronous engine.
+> - [High] The hardware polling loop in `dirty_bit_clear` lacks a timeout or signal check, risking an unkillable task hang.
+> - [Medium] Using `virt_to_phys()` on a dynamic buffer array which could be non-contiguous (e.g. allocated with vmalloc).
+> - [Medium] The commit message explicitly asserts the code runs with preemption disabled, but the implementation explicitly enables preemption.
+> - [Low] Left-shift of a negative integer in macro definition.
+> --
+> 
+> --- Patch [4]: [PATCH v3 04/11] KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine ---
+> commit b837f416f1871772a3bac546015e6fcac9c7accb
+> Author: Leonardo Bras <leo.bras@arm.com>
+> 
+> KVM: arm64: dirty_bit: Add base FEAT_HACDBS cleaning routine
+> 
+> Introduce the basic cleaning routine that is going to be used for both
+> dirty-bitmap and dirty-ring routines. It sets the required registers with
+> the input buffer, and wait for HACDBS to finish.
+> 
+> > It is ran with preemption disabled, as a task being scheduled in could
+> > change the translation registers used by HACDBS and end up corrupting the
+> > current dirty-bit tracking and the sched-in task's S2 pagetables.
+> 
+> [Severity: Medium]
+> The commit message asserts that the code runs with preemption disabled, but
+> looking at dirty_bit_clear(), preemption is explicitly enabled immediately
+> after registering the notifier:
+> 
+> dirty_bit_clear() {
+>     preempt_disable();
+>     preempt_notifier_register(&save.notifier);
+>     preempt_enable();
+> }
+> 
+> Is this description accurate, or does the implementation contradict the
+> commit message's synchronization premise?
 
-Secure guests without cmma in the unsecure guest?
+Argh, forgot to update that message.
+Done for next version.
 
 > 
-> Fix by freeing cbrlo only if it's non-zero.
+> > diff --git a/arch/arm64/kvm/dirty_bit.c b/arch/arm64/kvm/dirty_bit.c
+> > index 32fe938d6bf70..33826bbd16d91 100644
+> > --- a/arch/arm64/kvm/dirty_bit.c
+> > +++ b/arch/arm64/kvm/dirty_bit.c
+> > @@ -5,6 +5,7 @@
+> >   */
+> >  
+> >  #include <asm/kvm_dirty_bit.h>
+> > +#include <asm/kvm_mmu.h>
+> >  
+> >  /* HDBSS entry field definitions */
+> >  #define HDBSS_ENTRY_VALID BIT(0)
+> > @@ -14,3 +15,178 @@
+> >  	(((x) << HDBSS_ENTRY_TTWL_SHIFT) & HDBSS_ENTRY_TTWL_MASK)
+> >  #define HDBSS_ENTRY_TTWL_RESV HDBSS_ENTRY_TTWL(-4)
 > 
-> Fixes: b31605c12f4e ("KVM: s390: make cmma usage conditionally")
-> Fixes: 29b40f105ec8 ("KVM: s390: protvirt: Add initial vm and cpu lifecycle handling")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->   arch/s390/kvm/kvm-s390.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+> [Severity: Low]
+> Does this code trigger undefined behavior by left-shifting a negative
+> signed integer (-4) via the HDBSS_ENTRY_TTWL macro?
 > 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 1b3290a5ad1a..9be27db0a21e 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3678,7 +3678,8 @@ static void kvm_s390_vcpu_crypto_setup(struct kvm_vcpu *vcpu)
->   
->   void kvm_s390_vcpu_unsetup_cmma(struct kvm_vcpu *vcpu)
->   {
-> -	free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
-> +	if (vcpu->arch.sie_block->cbrlo)
-> +		free_page((unsigned long)phys_to_virt(vcpu->arch.sie_block->cbrlo));
->   	vcpu->arch.sie_block->cbrlo = 0;
->   }
->   
+> [ ... ]
 
-This is fenced for destroy cpu, but not for the transition into secure 
-mode. Can we check "use_cmma" instead of cbrlo and then remove the 
-fencing in the cpu destroy path?
+This should have been notified in the first patch. 
+But sure, will tackle this.
 
-If cmma is not set-up in vcpu_create, then we exit vcpu creation.
-Maybe sprinkle in a warn on for !cbrlo
+> 
+> > +static void hacdbs_start(u64 *hw_entries, int size)
+> > +{
+> > +	u64 br;
+> > +	/* Each entry is 8 bytes */
+> > +	int size_b = size * sizeof(hw_entries[0]);
+> > +	int size_p2 = max(roundup_pow_of_two(size_b), PAGE_SIZE);
+> > +
+> > +	/* If not using the full size of the array, put a stop entry at the end */
+> > +	if (size_b < size_p2)
+> > +		hw_entries[size] = HDBSS_ENTRY_VALID | HDBSS_ENTRY_TTWL_RESV;
+> > +
+> > +	sysreg_clear_set_s(SYS_HACDBSCONS_EL2,
+> > +			   HACDBSCONS_EL2_ERR_REASON | HACDBSCONS_EL2_INDEX, 0);
+> 
+> [Severity: High]
+> Can this sequence leave the CPU executing with architecturally undefined
+> pipeline state?
+> 
+> In hacdbs_start(), the write to the control-plane system register
+> SYS_HACDBSCONS_EL2 is followed by pointer arithmetic and a dsb() rather
+> than an isb() as the very next instruction.
+> 
+
+There would be no issue if we reorder writes to HACDBS*_EL2, so no need for 
+an isb() between them.
+
+> > +
+> > +	br = (virt_to_phys(hw_entries) & HACDBSBR_EL2_BADDR_MASK) |
+> > +	     FIELD_PREP(HACDBSBR_EL2_SZ, ilog2(size_p2) - 12) |
+> > +	     FIELD_PREP(HACDBSBR_EL2_EN, 1);
+> 
+> [Severity: Medium]
+> Will this return an invalid physical address if hw_entries is allocated via
+> vmalloc() or kvmalloc()?
+> 
+> Using virt_to_phys() on a dynamic buffer array assumes it resides in the
+> physically contiguous linear map, which could lead to hardware DMA targeting
+> the wrong physical memory pages.
+> 
+
+It will not be fed with *vmalloc() allocations, as one can see in the 
+next patches. 
+
+> > +
+> > +	/* All writes to the array have to complete before starting */
+> > +	dsb(ishst);
+> > +
+> > +	write_sysreg_s(br, SYS_HACDBSBR_EL2);
+> 
+> [Severity: High]
+> Does this code cause a kernel panic on nVHE systems?
+> 
+> In hacdbs_start(), directly writing to the EL2 system register
+> SYS_HACDBSBR_EL2 from the KVM host kernel executing at EL1 without a
+> has_vhe() guard will trigger an immediate Undefined Instruction trap.
+> 
+
+VHE will be tested in the next patches, before getting in this part.
+
+> > +	isb();
+> > +}
+> 
+> [ ... ]
+> 
+> > +static void hacdbs_sched_in(struct preempt_notifier *notifier, int cpu)
+> > +{
+> > +	struct hacdbs_sched_save *save = container_of(notifier,
+> > +						      struct hacdbs_sched_save,
+> > +						      notifier);
+> > +
+> > +	write_sysreg_s(save->save.vtcr_el2, SYS_VTCR_EL2);
+> > +	write_sysreg_s(save->save.vttbr_el2, SYS_VTTBR_EL2);
+> 
+> [Severity: High]
+> Could this direct EL2 register access cause a panic on nVHE systems?
+> 
+> Similar to hacdbs_start(), hacdbs_sched_in() accesses SYS_VTCR_EL2 and
+> SYS_VTTBR_EL2 from EL1 without a VHE check.
+> 
+
+iden above
+
+> [Severity: High]
+> Is a synchronization barrier missing here?
+> 
+> In hacdbs_sched_in(), the write to SYS_VTCR_EL2 is immediately followed by a
+> write to SYS_VTTBR_EL2 rather than an isb(), meaning subsequent instructions
+> may observe undefined pipeline state.
+> 
+
+This should be fine, as __load_stage2() does exactly the same.
+
+
+
+> [Severity: Critical]
+> Can this restore a stale VMID and cause cross-VM memory corruption?
+> 
+> hacdbs_sched_in() restores the cached save.vttbr_el2 (which contains the
+> VMID). Since this is a generic host thread, if KVM's VMID allocator rolls
+> over while the task sleeps, the VMID could be reassigned.
+> 
+> This could cause the HACDBS engine to operate on another VM's memory.
+> 
+
+That would require either that the VMID of the running VM gets assigned to 
+a new VM, which would break a lot more stuff. If this threads gets 
+preempted, then the vm dies another way, I assume this trhead will be 
+removed and have no chance of restoring the values.
+
+> > +	isb();
+> > +
+> > +	if (save->save.hcr_vm_set) {
+> > +		sysreg_clear_set_hcr(0, HCR_EL2_VM);
+> > +		isb();
+> > +	}
+> > +
+> > +	write_sysreg_s(save->save.hacdbscons_el2, SYS_HACDBSCONS_EL2);
+> > +	write_sysreg_s(save->save.hacdbsbr_el2, SYS_HACDBSBR_EL2);
+> 
+> [Severity: High]
+> Does this sequence lack an immediate isb() after writing SYS_HACDBSCONS_EL2,
+> allowing the CPU to execute the SYS_HACDBSBR_EL2 write with undefined
+> pipeline state?
+
+It should not be an issue.
+
+
+> 
+> > +	isb();
+> > +}
+> > +
+> > +static void hacdbs_sched_out(struct preempt_notifier *notifier,
+> > +			     struct task_struct *next)
+> > +{
+> > +	struct hacdbs_sched_save *save = container_of(notifier,
+> > +						      struct hacdbs_sched_save,
+> > +						      notifier);
+> > +
+> > +	if (read_sysreg_s(SYS_HACDBSBR_EL2) & HACDBSBR_EL2_EN) {
+> > +		save->save.hacdbsbr_el2 = HACDBSBR_EL2_EN;
+> > +		sysreg_clear_set_s(SYS_HACDBSBR_EL2, HACDBSBR_EL2_EN, 0);
+> > +		isb();
+> > +	} else {
+> > +		save->save.hacdbsbr_el2 = 0;
+> > +	}
+> > +
+> > +	save->save.hacdbscons_el2 = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> > +	save->save.hacdbsbr_el2 |= read_sysreg_s(SYS_HACDBSBR_EL2);
+> > +	save->save.vttbr_el2 = read_sysreg_s(SYS_VTTBR_EL2);
+> 
+> [Severity: Critical]
+> Is it safe to cache the VTTBR (including the VMID) into task-local memory
+> here in hacdbs_sched_out()?
+> 
+> As mentioned for hacdbs_sched_in(), if a VMID rollover occurs while this
+> task is preempted, the cached VMID becomes stale.
+> 
+
+Again, will the VMID of a running VM be reassigned to a new VM? 
+
+> > +	save->save.vtcr_el2 = read_sysreg_s(SYS_VTCR_EL2);
+> > +
+> > +	if (read_sysreg_s(SYS_HCR_EL2) & HCR_EL2_VM) {
+> > +		sysreg_clear_set_hcr(HCR_EL2_VM, 0);
+> 
+> [Severity: High]
+> Does this code change the translation regime (clearing HCR_EL2_VM) without
+> a preceding dsb()?
+> 
+> The engine was disabled earlier in hacdbs_sched_out() (by clearing
+> HACDBSBR_EL2_EN), but without a dsb(), the asynchronous engine might not be
+> definitively halted before the translation context changes.
+> 
+
+Above code clears HACDBSBR_EL2.EN, then run a isb(), which should make sure 
+HACDBS is not issuing any writes after that. IIUC, any possible pending 
+write by the HACDBS engine should already be physically addressed.
+
+> > +		isb();
+> > +		save->save.hcr_vm_set = true;
+> > +	} else {
+> > +		save->save.hcr_vm_set = false;
+> > +	}
+> > +}
+> 
+> [ ... ]
+> 
+> > +static int dirty_bit_clear(struct kvm *kvm, u64 *hw_entries, int size)
+> > +{
+> > +	int ret;
+> > +	u64 cons;
+> > +	struct hacdbs_sched_save save;
+> > +
+> > +	preempt_notifier_init(&save.notifier, &hacdbs_preempt_ops);
+> > +	preempt_disable();
+> > +	preempt_notifier_register(&save.notifier);
+> > +	preempt_enable();
+> > +
+> > +	__load_stage2(&kvm->arch.mmu);
+> > +	sysreg_clear_set_hcr(0, HCR_EL2_VM);
+> > +	isb();
+> > +
+> > +	hacdbs_start(hw_entries, size);
+> > +
+> > +	do {
+> > +		cons = read_sysreg_s(SYS_HACDBSCONS_EL2);
+> > +		if (FIELD_GET(HACDBSCONS_EL2_ERR_REASON, cons))
+> > +			break;
+> > +
+> > +		if (FIELD_GET(HACDBSCONS_EL2_INDEX, cons) >= size)
+> > +			break;
+> > +
+> > +		udelay(1);
+> > +	} while (true);
+> 
+> [Severity: High]
+> Could this continuous hardware polling loop hang the CPU permanently?
+> 
+> In dirty_bit_clear(), this loop waits for the hardware engine to finish, but
+> it lacks a timeout mechanism, bounded retry, or a fatal_signal_pending()
+> check.
+
+If that happens, it's a hardware bug, and it hanging in that loop allows 
+better debugging. This code is preemptable, so the hardware bug should not 
+cause host crash or keep the cpu busy.
+
+> 
+> > +
+> > +	ret = hacdbs_stop(size);
+> > +
+> > +	sysreg_clear_set_hcr(HCR_EL2_VM, 0);
+> 
+> [Severity: High]
+> Can this translation regime change lead to speculative execution or out of
+> context memory accesses?
+> 
+> In dirty_bit_clear(), hacdbs_stop() clears the enable bit, but clearing
+> HCR_EL2_VM immediately after lacks an intervening dsb() to ensure the
+> hardware engine is definitively halted.
+> 
+
+Above code clears HACDBSBR_EL2.EN, then run a isb(), which should make sure 
+HACDBS is not issuing any writes after that. IIUC, any possible pending 
+write by the HACDBS engine should already be physically addressed.
+
+
+Leo
