@@ -1,181 +1,121 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43C1403AE6;
-	Mon,  3 Aug 2026 14:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204521DFFB
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 14:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766436; cv=none; b=ipGDWTFpSs9xOptPPoy7uS4AGlmd2vOf8n2IWcZa1c55jLpwZa+WyJFrbDOj19DOqfmkEj3tHtsd3Yl4L2ICAuT2t2HQ4JQ2n7XdPbNe3eaaP/W3eAlGFKGpzmDN8zpcs+7sWEUyhIji2ebYrg6SWbqJot3o3CPGnaIqlHDujWw=
+	t=1785766497; cv=none; b=cffPCGFWPAW5pwSdV28GrJsVyexwudNXDBQKYebHO2cYmMHdSOMSgBCuIS1oewnNKBwXVVkxD2XNru+/GcptMIdH0lMlatObwuNNYDNzDwoXa1EdO5DvfDkttncIZuuAb5x/MwDc+Zo9mA2wTGcx7X6BLHJQWMO6EU621x0FDpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766436; c=relaxed/simple;
-	bh=IUgiuI5dQu8yeCl3P+r02WgX/nsq39eQuMppI51MJVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WarP/FmoDvYHEtS8H0Pv9VDlbdf125lxUqpMH7lgcjFPQfCzw8exfgCPGZpksrEacjXHQ4YXo5JJ1KDertPb1P/C6Cf0Zt7hbZGvztxJXsD4A1Aqi5bnHxy4nvprqpKo732qyIAlQdNEmrveRSnYjw3FuKW7lmjyg0bYU9om9MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=l4yqY2A6; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785766497; c=relaxed/simple;
+	bh=aJeVpm/Iog+ttCrwtI2lyoNLFBoJTVBZji3LN2VUlvE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=q97RviyhyuCpRzYZ/il6m4TtMEWs1xHwr299jK4sB1cNpnoyEFZ7bLRkhf6cGNW31AZOxW+O2kz1/i8fWtQPCuZdYPWAP6Cph22xwgL+NjGyn8pUJPdy6d7bcztaAYhCKcxx74XPGuLjcsbsetskcpe7hyNV1+Xwu5dr9ixJ/Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDdb25Of; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="l4yqY2A6"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673DlX3Y2214380;
-	Mon, 3 Aug 2026 14:13:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=oL0oe0
-	a1m84O8qmrj0n3N4XdYR2npE4MkJlokWlkV6U=; b=l4yqY2A6rx+sSJ1ORrNUyp
-	HN7riL44beZQ5k/PVL8OMH1MKp97H37EFZ9C5abNefYwyJg2W0/zwF1ia59zDNcd
-	37BXXxXbwtQ3gihCdcLFyNQ4ouXNoa0il+H569odSvUMgbjkHuiO6+ZVOIy0PrTs
-	UDDw4MEDhvir6s1FtP88gSJUUfHADdnZHxPUwv0ztrvDKM8tGTnOGLFzqVJRuobK
-	TAj/zobFJy49EG+vfiyLFwj3IxxLe5HeWIgDh8tsuGgWkqTmp/2h7uSnM150/F8A
-	TW78MFNTy9UtsO+8DMjFlH+0fzB7S15vHNGu459+C08BJ89t4uE/cEpjH+etjVbQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h4s6qh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 14:13:52 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673EDO5Z003966;
-	Mon, 3 Aug 2026 14:13:51 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugvwtgq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 14:13:51 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673EDixj30015926
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 14:13:44 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B3A412004B;
-	Mon,  3 Aug 2026 14:13:44 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E92120043;
-	Mon,  3 Aug 2026 14:13:44 +0000 (GMT)
-Received: from [9.224.88.46] (unknown [9.224.88.46])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 14:13:44 +0000 (GMT)
-Message-ID: <ba672a56-6177-44c5-a4a1-4c381fa90f5b@linux.ibm.com>
-Date: Mon, 3 Aug 2026 16:13:44 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDdb25Of"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AEB1F000E9;
+	Mon,  3 Aug 2026 14:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785766495;
+	bh=OVtt8IliwN1VS45O1RWE9NlKn+SeRdNzh7YOy3WlDN0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BDdb25Of5VFj+AwoOxhlUHNn6tJwE+MNOIlZfl//DoT0wrsJhCkn7LeuGf4BVGCbF
+	 e2a/JxCZL7/5M/9tzDeDyv6cqm5CfGLIJGQVy04naXdwA+t5J32JgDMP1+MN6WJbrG
+	 4NdOlm0xfTOpbRjLIZsKBkZTo0JQSXQl15vxWpEI5A0eYEBOvVf24fGFUEF7DIyT0R
+	 waACHtIBXij+pxH/uaeboAXJ+VM1GMxM2FPrgoTJIAAoyvMZaKJJZhJXhO/Wx7bq4z
+	 oHVL8rGDxoH00Ofzsc4A+qveyoaVcQt1QnyBHhiC2XdYrzQYxfgCGn3eKcAuQauztU
+	 RJG6o6odD3MhQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] riscv: KVM: Flush VS-stage stale entries
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Guo Ren" <guoren@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260803135454.2726112-1-guoren@kernel.org>
+References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
+ <20260803135454.2726112-1-guoren@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 03 Aug 2026 14:14:53 +0000
+Message-Id: <20260803141455.01AEB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 02/13] KVM: s390: Do not free SCA if it was not
- allocated
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
- <20260803124040.126471-3-imbrenda@linux.ibm.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- xsFNBFubpD4BEADX0uhkRhkj2AVn7kI4IuPY3A8xKat0ihuPDXbynUC77mNox7yvK3X5QBO6
- qLqYr+qrG3buymJJRD9xkp4mqgasHdB5WR9MhXWKH08EvtvAMkEJLnqxgbqf8td3pCQ2cEpv
- 15mH49iKSmlTcJ+PvJpGZcq/jE42u9/0YFHhozm8GfQdb9SOI/wBSsOqcXcLTUeAvbdqSBZe
- zuMRBivJQQI1esD9HuADmxdE7c4AeMlap9MvxvUtWk4ZJ/1Z3swMVCGzZb2Xg/9jZpLsyQzb
- lDbbTlEeyBACeED7DYLZI3d0SFKeJZ1SUyMmSOcr9zeSh4S4h4w8xgDDGmeDVygBQZa1HaoL
- Esb8Y4avOYIgYDhgkCh0nol7XQ5i/yKLtnNThubAcxNyryw1xSstnKlxPRoxtqTsxMAiSekk
- 0m3WJwvwd1s878HrQNK0orWd8BzzlSswzjNfQYLF466JOjHPWFOok9pzRs+ucrs6MUwDJj0S
- cITWU9Rxb04XyigY4XmZ8dywaxwi2ZVTEg+MD+sPmRrTw+5F+sU83cUstuymF3w1GmyofgsU
- Z+/ldjToHnq21MNa1wx0lCEipCCyE/8K9B9bg9pUwy5lfx7yORP3JuAUfCYb8DVSHWBPHKNj
- HTOLb2g2UT65AjZEQE95U2AY9iYm5usMqaWD39pAHfhC09/7NQARAQABzSVKYW5vc2NoIEZy
- YW5rIDxmcmFua2phQGxpbnV4LmlibS5jb20+wsF3BBMBCAAhBQJbm6Q+AhsjBQsJCAcCBhUI
- CQoLAgQWAgMBAh4BAheAAAoJEONU5rjiOLn4p9gQALjkdj5euJVI2nNT3/IAxAhQSmRhPEt0
- AmnCYnuTcHRWPujNr5kqgtyER9+EMQ0ZkX44JU2q7OWxTdSNSAN/5Z7qmOR9JySvDOf4d3mS
- bMB5zxL9d8SbnSs1uW96H9ZBTlTQnmLfsiM9TetAjSrR8nUmjGhe2YUhJLR1v1LguME+YseT
- eXnLzIzqqpu311/eYiiIGcmaOjPCE+vFjcXL5oLnGUE73qSYiujwhfPCCUK0850o1fUAYq5p
- CNBCoKT4OddZR+0itKc/cT6NwEDwdokeg0+rAhxb4Rv5oFO70lziBplEjOxu3dqgIKbHbjza
- EXTb+mr7VI9O4tTdqrwJo2q9zLqqOfDBi7NDvZFLzaCewhbdEpDYVu6/WxprAY94hY3F4trT
- rQMHJKQENtF6ZTQc9fcT5I3gAmP+OEvDE5hcTALpWm6Z6SzxO7gEYCnF+qGXqp8sJVrweMub
- UscyLqHoqdZC2UG4LQ1OJ97nzDpIRe0g6oJ9ZIYHKmfw5jjwH6rASTld5MFWajWdNsqK15k/
- RZnHAGICKVIBOBsq26m4EsBlfCdt3b/6emuBjUXR1pyjHMz2awWzCq6/6OWs5eANZ0sdosNq
- dq2v0ULYTazJz2rlCXV89qRa7ukkNwdBSZNEwsD4eEMicj1LSrqWDZMAALw50L4jxaMD7lPL
- jJbazsFNBFubpD4BEADAcUTRqXF/aY53OSH7IwIK9lFKxIm0IoFkOEh7LMfp7FGzaP7ANrZd
- cIzhZi38xyOkcaFY+npGEWvko7rlIAn0JpBO4x3hfhmhBD/WSY8LQIFQNNjEm3vzrMo7b9Jb
- JAqQxfbURY3Dql3GUzeWTG9uaJ00u+EEPlY8zcVShDltIl5PLih20e8xgTnNzx5c110lQSu0
- iZv2lAE6DM+2bJQTsMSYiwKlwTuv9LI9Chnoo6+tsN55NqyMxYqJgElk3VzlTXSr3+rtSCwf
- tq2cinETbzxc1XuhIX6pu/aCGnNfuEkM34b7G1D6CPzDMqokNFbyoO6DQ1+fW6c5gctXg/lZ
- 602iEl4C4rgcr3+EpfoPUWzKeM8JXv5Kpq4YDxhvbitr8Dm8gr38+UKFZKlWLlwhQ56r/zAU
- v6LIsm11GmFs2/cmgD1bqBTNHHcTWwWtRTLgmnqJbVisMJuYJt4KNPqphTWsPY8SEtbufIlY
- HXOJ2lqUzOReTrie2u0qcSvGAbSfec9apTFl2Xko/ddqPcZMpKhBiXmY8tJzSPk3+G4tqur4
- 6TYAm5ouitJsgAR61Cu7s+PNuq/pTLDhK+6/Njmc94NGBcRA4qTuysEGE79vYWP2oIAU4Fv6
- gqaWHZ4MEI2XTqH8wiwzPdCQPYsSE0fXWiYu7ObeErT6iLSTZGx4rQARAQABwsFfBBgBCAAJ
- BQJbm6Q+AhsMAAoJEONU5rjiOLn4DDEP/RuyckW65SZcPG4cMfNgWxZF8rVjeVl/9PBfy01K
- 8R0hajU40bWtXSMiby7j0/dMjz99jN6L+AJHJvrLz4qYRzn2Ys843W+RfXj62Zde4YNBE5SL
- jJweRCbMWKaJLj6499fctxTyeb9+AMLQS4yRSwHuAZLmAb5AyCW1gBcTWZb8ON5BmWnRqeGm
- IgC1EvCnHy++aBnHTn0m+zV89BhTLTUal35tcjUFwluBY39R2ux/HNlBO1GY3Z+WYXhBvq7q
- katThLjaQSmnOrMhzqYmdShP1leFTVbzXUUIYv/GbynO/YrL2gaQpaP1bEUEi8lUAfXJbEWG
- dnHFkciryi092E8/9j89DJg4mmZqOau7TtUxjRMlBcIliXkzSLUk+QvD4LK1kWievJse4mte
- FBdkWHfP4BH/+8DxapRcG1UAheSnSRQ5LiO50annOB7oXF+vgKIaie2TBfZxQNGAs3RQ+bga
- DchCqFm5adiSP5+OT4NjkKUeGpBe/aRyQSle/RropTgCi85pje/juYEn2P9UAgkfBJrOHvQ9
- Z+2Sva8FRd61NJLkCJ4LFumRn9wQlX2icFbi8UDV3do0hXJRRYTWCxrHscMhkrFWLhYiPF4i
- phX7UNdOWBQ90qpHyAxHmDazdo27gEjfvsgYMdveKknEOTEb5phwxWgg7BcIDoJf9UMC
-In-Reply-To: <20260803124040.126471-3-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDEyNCBTYWx0ZWRfXzMEkULtn0Jjw
- 7vQ5tRgJcdPKUkqPZpUjt4jg4av1QGZOcqyIZ7nQQvwYsZi0KpJQaWFgy1DSOEfNahTkB/YS3bV
- Wuk5Wdjn6GqWn8rE+/SDzz+f2xWsfL0=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDEyNCBTYWx0ZWRfX+NwEMeJbinrm
- 7sUcVBu2V4c6aeF5lzqJ4ox6ltq7/Wymi/aYikkKf+ELxPUYRNPvO5rDQsF5xg0jxCXEwH+kUyS
- QPiZtuY4HMc0qLKMFwGL/RIe7y/XAe/aRua+Hgo3hc4gEbEjw++DZUXB1WgLLkB4SLlB6VLal33
- J7H8HWnBzdbuytCzoGIRZmCuCRCl6THNCBUMNtvBsYvDA9Kg24wJpV4baRx9i8BnvqWcO5R+n5F
- l5iGe/qplMHfmdHI5V7tG3ZVkMJCSwF1GEW1cwGcgVv47Gkq61/0s6rIdSs1Y/mk1KyjlVVLjZ2
- FQDzze6uVvLXB/jttsNmynw/a2ngPlsdAL9KBSEuVmT/ZPVRQQCLYRPwfyLgTMnRD2VFWX0Wf1q
- qrVsu40O8zAozQ7TC0Lvt/lDCSxLpRa3OrmVy1BdfWCgAxG/TBwKgJubI0B2PuxP+JVsq1IUxin
- tYg4vAF+vIHhqgJcfhw==
-X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a70a220 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=M5uM2SGDJJfKum1V:21 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
- a=VnNF1IyMAAAA:8 a=2HitSDPJqUxGu8htRZYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: EEV39lBO2SnROxtYa-u73MwRmubjz3Xm
-X-Proofpoint-GUID: EEV39lBO2SnROxtYa-u73MwRmubjz3Xm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-03_03,2026-08-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
- phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608030124
 
-On 8/3/26 14:40, Claudio Imbrenda wrote:
-> If VM creation fails early in kvm_arch_init_vm(), the cleanup code
-> tries to free up the SCA, even though the address is 0. Due to using
-> free_pages_exact(), only the first page is skipped, accidentally
-> freeing pages 1, 2, and 3.
-> 
-> Fix by checking whether the pointer is NULL before attempting to free
-> the SCA in sca_dispose().
-> 
-> Fixes: e72753ed1267 ("KVM: s390: Use ESCA instead of BSCA at VM init")
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> ---
->   arch/s390/kvm/kvm-s390.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index f86b4b0b356f..1b3290a5ad1a 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3247,7 +3247,8 @@ static void kvm_s390_crypto_init(struct kvm *kvm)
->   
->   static void sca_dispose(struct kvm *kvm)
->   {
-> -	free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
-> +	if (kvm->arch.sca)
-> +		free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
->   	kvm->arch.sca = NULL;
->   }
->   
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-uh, right, there's no null check in free_pages_exact()
+New issues:
+- [High] Direct execution of the raw HFENCE.VVMA instruction in kvm_riscv_m=
+mu_update_hgatp() bypasses the Nested Acceleration (NACL) shared memory mec=
+hanism, breaking nested virtualization.
 
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Pre-existing issues:
+- [Critical] The VS-stage TLB flush condition `last_exit_cpu !=3D cpu` is i=
+ncomplete, skipping necessary flushes during VMID rollover, `vmid_bits =3D=
+=3D 0` configurations, and same-VM vCPU interleaving on the same physical C=
+PU.
+--
+
+--- Patch [1]: [PATCH] riscv: KVM: Flush VS-stage stale entries ---
+commit f1e080e98f0df465d2cf4d51c2026f9bf9cd7c71
+Author: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+
+riscv: KVM: Flush VS-stage stale entries
+
+When a vCPU migrates to a different host CPU, the new CPU may retain
+stale VS-stage TLB entries (GVA -> GPA) left by a previous run of the
+same guest. This patch issues an HFENCE.VVMA inside
+kvm_riscv_mmu_update_hgatp() whenever the vCPU is loaded on a CPU
+different from the one it last exited on.
+
+> diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+> index 8a0aa5e0e216e..8eae1805442ba 100644
+> --- a/arch/riscv/kvm/mmu.c
+> +++ b/arch/riscv/kvm/mmu.c
+> @@ -719,4 +719,7 @@ void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
+> =20
+>  	if (!kvm_riscv_gstage_vmid_bits())
+>  		kvm_riscv_local_hfence_gvma_all();
+> +
+> +	if (vcpu->arch.last_exit_cpu !=3D cpu)
+
+[Severity: Critical]
+This is a pre-existing issue, but does this condition properly flush VS-sta=
+ge
+TLB entries during VMID rollover, configurations where vmid_bits is 0, or w=
+hen
+interleaving different VMs on the same physical CPU?
+
+If a vCPU switches VMs on the same physical CPU, last_exit_cpu will still
+equal cpu and skip the flush. Since HFENCE.GVMA issued during rollover or VM
+switch does not guarantee flushing of VS-stage entries, could the incoming
+vCPU inherit the previous VM's stale VS-stage mappings?
+
+> +		asm volatile(HFENCE_VVMA(zero, zero) : : : "memory");
+
+[Severity: High]
+Does executing the raw HFENCE.VVMA instruction bypass the Nested Accelerati=
+on
+(NACL) shared memory mechanism?
+
+When executing as an L1 guest with NACL enabled, ncsr_write(CSR_HGATP, hgat=
+p)
+only updates KVM's shared memory page with L0, not the physical CSR. Since =
+the
+direct HFENCE.VVMA instruction is executed immediately after on the physical
+core, does it flush the TLB using the old (stale) VMID still present in the
+physical CSR?
+
+Additionally, if no flush request is enqueued into the NACL shared memory v=
+ia
+nacl_hfence_vvma_all(), will the L0 hypervisor fail to perform the flush for
+the new VMID before switching to the L2 guest?
+
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803135454.2726=
+112-1-guoren@kernel.org?part=3D1
