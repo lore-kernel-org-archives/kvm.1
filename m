@@ -1,119 +1,76 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D7030F92E;
-	Mon,  3 Aug 2026 07:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E6F3A900B;
+	Mon,  3 Aug 2026 07:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785742577; cv=none; b=Uf4AQEE9l6vCiEV4ZJBiYKUfJfKC5H/EtYf3AF0CXCnkE4th8GyxsXM+RtZu9wEQMuhfCl4f5CwSe3PNZ5O4JchbH2ulSE8GiLuJkzSKzFhTap8y1Htz2ELPepkRUxsvIiQ2OxhHmut3YHY0BNlhKPgP2batdlFGcfN60aVZCRI=
+	t=1785743272; cv=none; b=OvX7uk/8/FjdgnahDbsdtu6rX5oqtXZH3F8Aukl1+vfR5gr4DsTYICLZBQzJ3qLNwdShB9DgAKOjopHsSHMTMaM/W6mvm3PzIZYczwgzbyhYiNVc+iy+b9fRgdk7FiWavZ6nUmjFRwAAF1VfDkFwDxcqhLHttS5FP9d+mxdpzcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785742577; c=relaxed/simple;
-	bh=MLbthMci7xN7+BaVXFIclZZ6NUEKVjykn9NnESRWsTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EYqCMAAJQG3xExUGItVGCTJLBkrFMDFY4ervolpQ26ekCw3TmU4fJcaVgPlScaV1v76vTGiUU2sjecBAxKkXrmnoOpOy6/nP4Vpk3yYofWoUhwGs0OBGeQM/WvZrmMw3AEanbUg3C/O7UximtZTgds3fOvvJjgY/z4Sl8Wz8kas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sFr8Kgi/; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sFr8Kgi/"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672LmGmO161234;
-	Mon, 3 Aug 2026 07:35:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=k05fDa
-	9assDlL2WtWM9/r84vAk05owIhLl+YB2vjjPw=; b=sFr8Kgi/vtPigOZPhtzrJG
-	y2Tnsfz2pcc5H+6+eAnpHFvUMT1NkRXJDZzshgrQVcYkFAmBk2GK3intxctdS48b
-	J/JeZ+Sscx1mXu82of0sw6HxGHnL0jTmx9G/6Z0SXzrqlVrBzBkN5jYiGBaW9w4i
-	blV+zqFRTda1Lzt/oXRB7Rqb/oNRz6A1RgGPM41Th4VUIi7CelQHSdurMid7Y6O7
-	FXuLaqVkbafNGjiC5kvjGXVSv3Zb9bscxjGl5CroKsJm2/HXIgIf1R8PTSQjLf+O
-	N7Sr3Gsp/8yOl4Hv6YAtnecENWUmStOZrjNDTvQk/TItYYIOWtQxsCmyFFWU+RJQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67hfev3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 07:35:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6737QKQo023118;
-	Mon, 3 Aug 2026 07:35:58 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qce7t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 07:35:58 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6737ZsJK50135502
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 07:35:54 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FEEE20043;
-	Mon,  3 Aug 2026 07:35:54 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 135C72004B;
-	Mon,  3 Aug 2026 07:35:54 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 07:35:54 +0000 (GMT)
-Message-ID: <fa4af6fa-d1bd-4e9d-95be-54f12f5a317a@linux.ibm.com>
-Date: Mon, 3 Aug 2026 09:35:53 +0200
+	s=arc-20240116; t=1785743272; c=relaxed/simple;
+	bh=h2ARywrfLi9H1ZKhiCEV1QKvo/q5f3DvYyGJY+XrrEA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Vnr/ljPQLOZH5KLbkojD8mmqgyYocHiTGatN4qQcISjd19otDO7Bz6tlFTQrgLUR1NFNgb6cX4W75Jw9xxwbF0i/j62ehMplL46DJmFao3WGx/kr51i5skL7lzUYmcj7N5JpRlXXfhwYjhsD9M3PUSP+3iRcUtMEQ9GxfhENweg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8BxOqGiR3Bqz9gJAA--.9381S3;
+	Mon, 03 Aug 2026 15:47:46 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxPsecR3BqkeEhAA--.56294S2;
+	Mon, 03 Aug 2026 15:47:41 +0800 (CST)
+Subject: Re: [PATCH v2 5/5] MAINTAINERS: Add myself (Sean) as a reviewer in
+ the main KVM entry
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
+ Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20260731173842.2649391-1-seanjc@google.com>
+ <20260731173842.2649391-6-seanjc@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <5ef3fac2-ebf5-5171-a12f-4ccce1c48079@loongson.cn>
+Date: Mon, 3 Aug 2026 15:47:25 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] MAINTAINERS: Add myself (Sean) as a reviewer in
- the main KVM entry
-To: Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>,
-        Ackerley Tng <ackerleytng@google.com>, Marc Zyngier <maz@kernel.org>,
-        Oliver Upton <oupton@kernel.org>,
-        Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>
-References: <20260731173842.2649391-1-seanjc@google.com>
- <20260731173842.2649391-6-seanjc@google.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
 In-Reply-To: <20260731173842.2649391-6-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDA2MyBTYWx0ZWRfXwQDhXiUV1+sT
- 5hkwuVYobhdniXMnTtLhNh1stBxazBPQK7n9YweoHQGOv77Xk5loWN8t+O9IJ/RW5rfyMqQ44ye
- 1hOjmcmRwMymw0cD87Qwd/E9+b/IxHY=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a7044df cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=6y9mIIUkAAAA:8
- a=VwQbUJbxAAAA:8 a=W-_n0kkjAAAA:8 a=VnNF1IyMAAAA:8 a=1XWaLZrsAAAA:8
- a=20KFwNOVAAAA:8 a=Ecsn7Dsdv0dABK82YRoA:9 a=QEXdDO2ut3YA:10
- a=BT1tkpHCJze4Rb8jY6gx:22 a=qeNa2pbTr82C0GpJEZFS:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDA2MyBTYWx0ZWRfXxReA4K/9qVKe
- FSrI2zQV5Nub9KiPM6AHsQzoVrDIP3X0JYZq4t4jThVMaJ76D/t7jB0yO2jMnD5gpSV0o8/K6Pa
- r3O+DOu0UgR7zu9BoxN6y0LkXs/+lCrO10PJB8YuNX0SteRasf4afH3G11cC61houAMNod352We
- 0mRqe3pmjWuzbce3bquuc2WA9o2AFLv1tsc79vR/K+Bp5Xb4w6ZJKUFEKUrn5jTpgJMUwc/SAVt
- a/EeeTe6v3GlGf5eX2iKVFGkFAFH3wjGZFdcCuwscGniw6XmEdqfByc8EDWieTalAEvyo5mHtwh
- NHl3uPYCZlBj/Pw/re1vHGzQ75F3TYtUhihuTGAlz/LHKACbfr6w3uKqbt5E57Wy5tV7E4KlAmp
- umhyL4pqLNV9b6I6Sfre56S+cf3Q8zUzSBTpyIIa55eZc4xmAi15kKuYqD3WGSOalUG1KzboHYq
- i7UBZrb8skjVytjHn8Q==
-X-Proofpoint-ORIG-GUID: BMtiM_6KjwB2zCvVIQLi2eE-84xAVp0b
-X-Proofpoint-GUID: a_GsYzzJSCtyJczOgPWtAuMatbdLdtUJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030063
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxPsecR3BqkeEhAA--.56294S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Ar4kKw4xGryxXrykXr15KFX_yoW8WF15pF
+	WfCr4jyrWDKFWrJwn7Kry2kay3X395Cr9I9Fnrtrn5Zr9xJw1Fqw17tw4a93ZrJr1Ika1j
+	9rs7uF1Iga18ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07joc_-UUU
+	UU=
 
 
-Am 31.07.26 um 19:38 schrieb Sean Christopherson:
+
+On 2026/8/1 上午1:38, Sean Christopherson wrote:
 > Add myself as a reviewer for overall KVM, as I have been helping shepherd
 > a decent chunk of the virt/kvm commits into the kernel over the last few
 > years, and I expect to continue doing so.  Of the 270 non-merge commits
@@ -136,9 +93,7 @@ Am 31.07.26 um 19:38 schrieb Sean Christopherson:
 > Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Acked-by: Christian Borntraeger@linux.ibm.com>
-
-
+Acked-by: Bibo Mao <maobibo@loongson.cn>
 > ---
 >   MAINTAINERS | 1 +
 >   1 file changed, 1 insertion(+)
@@ -155,4 +110,5 @@ Acked-by: Christian Borntraeger@linux.ibm.com>
 >   L:	kvm@vger.kernel.org
 >   S:	Supported
 >   W:	http://www.linux-kvm.org
+> 
 
