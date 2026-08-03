@@ -1,33 +1,60 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EFB41D627;
-	Mon,  3 Aug 2026 14:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07182E7365;
+	Mon,  3 Aug 2026 14:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785765883; cv=none; b=duEh5bLVxuLFKvEYE+/juF9EXLe3/8c7BXKc5E4fESftntYYLUetes13zM20jgNGiQhI8Nj3c15KskYKY+8oLwN8KFPZG09VifwUxtMzRRgxgK9yVyORGLpC4B8uF65gly5Soho/V89oEHB61Ev3Kfv9nDb4CFaQoAwadhu9cEc=
+	t=1785766112; cv=none; b=Zpkho1qIx9RkNmocSe4imMZn9TZqm1ZqSWqwyA2g42GGqD0p7hpPzcfjXEl3GyCnLoQbvuiagKK7QMjgiQOJyURQwaPt6AYfilJhmq+CUmGWPjOKYDNIQmIRRS+LdoQAjQbvx9JDjDwnS3SfDXcKL3Flrqh4DT2FJ3Bqv5mHXO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785765883; c=relaxed/simple;
-	bh=R5zVtJQeJdnpiL1SXoRY5in2VKOjAQvpPgHtildoK4Y=;
+	s=arc-20240116; t=1785766112; c=relaxed/simple;
+	bh=L8/fdCorWeJNAHphY2bA84IhAj9ziQdgK1NlLSQHFkA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=losEHzLJnIO8VWQLjN41Fo5Cm6sQz4Xhs+fGnlecjAR42dhUV3BmbeNW/pZzepL2Z9j8GibkBVa1q/UNgcxkTuiLX9UMBkKgeYyCstaVzP8hindvHqYmKRI76nRMP9j2NMMqUIgmpBrINYsAIbdEXzJqyTU64bUS/6ZkFiJSjMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=Phdo70qu; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=s4i8CVDdTy/auwKF2AE9yisGAysI1tHE34s0EytGcjKCshueNLNN9gnpNk9vBdJBtOBZrhVByEZ6geuagCQ6TcvOvvN2U/kfXbMxrN1Pux/V2Lhz7H+k4KsSAwGJ1QzHGv4CAq6+eOo+fAwmrr13GULZyiVR0msxld83fwDTgvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U+5ERiZ6; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=de.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="Phdo70qu"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF613143D;
-	Mon,  3 Aug 2026 07:04:36 -0700 (PDT)
-Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28AF23F632;
-	Mon,  3 Aug 2026 07:04:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785765880; bh=R5zVtJQeJdnpiL1SXoRY5in2VKOjAQvpPgHtildoK4Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Phdo70quSxNwfAFYbq70eisXqrPYXMiWgSYK1sX3pctFAEcRrfygnwgOhCWloGpTV
-	 S4EOs4gpdcwU+j4KniTPTF/lkfVb/DGq2NurltGXqArUnmv7+vK3bZrFyd4G7uyOmQ
-	 M9KiU4CTW8cY7JCGZq4RQbmE2aZ96e9r6zRuVpW4=
-Message-ID: <f971d029-84d9-4c66-9875-36fa8f1a2a1b@arm.com>
-Date: Mon, 3 Aug 2026 15:04:32 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U+5ERiZ6"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673Dlg052194645;
+	Mon, 3 Aug 2026 14:08:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=oKSiox
+	KGi33/OZpp6NIG9X1mKxupjKgxJWpLRZUGk4w=; b=U+5ERiZ6Uym+prs9N2CatU
+	328Fm8r+gVCBZasHAj/dAeAT6eoKYMXfYiRk2VROdZjsRC0ZABMstEtyn46IeAq1
+	on5g7SLdVfLtNy5pfFEpwKYwDHOh/RM8/hYyrv46i7tFAT1auTUkyggShw7Pz4T6
+	f/ptwepUxJjmSTL7Z5VwLarkCDA3r0RCZ+DlibocL55VzgWwWoaULUJdRDVtcZJW
+	h29vzRTBNkWBCH1VJWG/Z+63S5ftgEhOATHbyxrmx6Lbc4CKIPvLGdNnjSCBdlm2
+	/G/kHcBC5lQ6ElT70Iyg3IGC30T4ZThWe0cRx3AvsaKxJfsuXIOQClsVwznTKF1A
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3s6ch-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 14:08:28 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673DuHI8008282;
+	Mon, 3 Aug 2026 14:08:27 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsv4jwq2g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 14:08:27 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673E8N2I32440716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Aug 2026 14:08:23 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 19A4420049;
+	Mon,  3 Aug 2026 14:08:23 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B09B220040;
+	Mon,  3 Aug 2026 14:08:22 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Aug 2026 14:08:22 +0000 (GMT)
+Message-ID: <09e79918-6f3d-4990-a8ac-3f4a5e9447d6@de.ibm.com>
+Date: Mon, 3 Aug 2026 16:08:22 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -35,163 +62,80 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 15/37] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
- linux-coco@lists.linux.dev,
- Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
- Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
- Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
- Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
- Lorenzo Pieralisi <lpieralisi@kernel.org>
-References: <20260715142841.80544-1-steven.price@arm.com>
- <20260715142841.80544-16-steven.price@arm.com> <865x1rcvfw.wl-maz@kernel.org>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <865x1rcvfw.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v8 02/13] KVM: s390: Do not free SCA if it was not
+ allocated
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-kernel@vger.kernel.org
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
+        david@kernel.org, seiden@linux.ibm.com, nrb@linux.ibm.com,
+        schlameuss@linux.ibm.com, gra@linux.ibm.com
+References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
+ <20260803124040.126471-3-imbrenda@linux.ibm.com>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@de.ibm.com>
+In-Reply-To: <20260803124040.126471-3-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a70a0dc cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=M5uM2SGDJJfKum1V:21 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
+ a=VnNF1IyMAAAA:8 a=2HitSDPJqUxGu8htRZYA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: qoiKzP9xAXQ36osAhgydZUOoxnL9gM_q
+X-Proofpoint-GUID: qoiKzP9xAXQ36osAhgydZUOoxnL9gM_q
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDEyNCBTYWx0ZWRfXwEXZtk5kfs2+
+ 4aOtBJnch0T7RZbyZl8CGQAmlOVHIPI6/JD4x8l9Og0zeoM94KvMjdDwrccLtnzvWdzUthbEPFT
+ xtllgwxTPgZZdWr00cq7xv2yZyc05GA=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDEyNCBTYWx0ZWRfX76IPY8F7xvC9
+ kaATVcpwG4DW1QS2IyVtSQW+IjSTX1BaAuhttATD1ruD3zUHTI8Zn4pUvZf+Rq5uKgUhL2xCi8R
+ OHfZhrEaLAGBdfdRYvlA3q1QuW6sCFD1O7LXEMiSFfhrI5Y8lzTnvlbwtythrH+54shqABQxT23
+ qPAfe7ZOphYVh7rSICA5jYmGN0Pn3zK42/Q8+2X7UGwSnfLo/EhcvS48086wMKBTgMtJh/OjDUB
+ uJf1PJlawUitmK4Xpdd5R+68u1ueWv+QJnzB2fFJVOIdW0vEh6BHS6Uk1xO9DjH5lT6Jlxo/Ap/
+ d8mLsT8lSOZdaXJKk3Pz9UtemLjPO6qr0O9pNQxAa4vGF68mVrkzTMszs5U9u+nWhVY06b5ezxv
+ DIeNtmX6pyRV+JJpa00bbc7lRBFGYNFT3yZVcqgnIfozIIb0pcGwIedIhaJoF6JzAgwGupPFL3i
+ QGdhvCKjxHeqd6PoCHQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-03_03,2026-08-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608030124
 
-Hi Marc,
 
-I've just posted v16 before looking at these - I didn't want to delay
-posting before responding as I'm going to be on holiday for a week after
-today. Apologies that I haven't addressed these comments in v16.
 
-On 03/08/2026 12:09, Marc Zyngier wrote:
-> On Wed, 15 Jul 2026 15:28:17 +0100,
-> Steven Price <steven.price@arm.com> wrote:
->>
->> The guest can request that a region of its protected address space is
->> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
->> RSI_IPA_STATE_SET. This causes a guest exit with the
->> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
->> protected region to unprotected (or back), exiting to the VMM to make
->> the necessary changes to the guest_memfd and memslot mappings. On the
->> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
->> calls.
->>
->> The VMM may wish to reject the RIPAS change requested by the guest. For
->> now it can only do this by no longer scheduling the VCPU as we don't
->> currently have a usecase for returning that rejection to the guest, but
->> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
->> open for adding a new ioctl in the future for this purpose.
->>
->> Signed-off-by: Steven Price <steven.price@arm.com>
->> ---
->> Changes since v14:
->>  * Use addition rather than bitwise OR for adding the shared_bit in
->>    realm_unmap_shared_range(), this handles the case where the region
->>    includes the last address (which means 'end' already has the bit
->>    set).
->> Changes since v13:
->>  * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
->>  * Drop ugly hack for RMM bug which errored when the RIPAS was already
->>    set to the desired value.
->> Changes since v12:
->>  * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
->>    address range.
->> Changes since v11:
->>  * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
->>    adding functions before they are used.
->>  * Drop the CAP for setting RIPAS and adapt to changes from previous
->>    patches.
->> Changes since v10:
->>  * Add comment explaining the assignment of rec->run->exit.ripas_base in
->>    kvm_complete_ripas_change().
->> Changes since v8:
->>  * Make use of ripas_change() from a previous patch to implement
->>    realm_set_ipa_state().
->>  * Update exit.ripas_base after a RIPAS change so that, if instead of
->>    entering the guest we exit to user space, we don't attempt to repeat
->>    the RIPAS change (triggering an error from the RMM).
->> Changes since v7:
->>  * Rework the loop in realm_set_ipa_state() to make it clear when the
->>    'next' output value of rmi_rtt_set_ripas() is used.
->> New patch for v7: The code was previously split awkwardly between two
->> other patches.
->> ---
->>  arch/arm64/include/asm/kvm_rmi.h |   6 +
->>  arch/arm64/kvm/mmu.c             |   8 +-
->>  arch/arm64/kvm/rmi.c             | 457 +++++++++++++++++++++++++++++++
->>  3 files changed, 468 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
->> index b1e4cf0f6803..5461c49bea4d 100644
->> --- a/arch/arm64/include/asm/kvm_rmi.h
->> +++ b/arch/arm64/include/asm/kvm_rmi.h
->> @@ -104,6 +104,12 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->>  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->>  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->>  
->> +void kvm_realm_unmap_range(struct kvm *kvm,
->> +			   unsigned long ipa,
->> +			   unsigned long size,
->> +			   bool unmap_private,
->> +			   bool may_block);
->> +
->>  static inline bool kvm_realm_is_private_address(struct realm *realm,
->>  						unsigned long addr)
->>  {
->> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
->> index cd06881c1497..dcc2ab08d0e4 100644
->> --- a/arch/arm64/kvm/mmu.c
->> +++ b/arch/arm64/kvm/mmu.c
->> @@ -319,6 +319,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->>   * @start: The intermediate physical base address of the range to unmap
->>   * @size:  The size of the area to unmap
->>   * @may_block: Whether or not we are permitted to block
->> + * @only_shared: If true then protected mappings should not be unmapped
->>   *
+Am 03.08.26 um 14:40 schrieb Claudio Imbrenda:
+> If VM creation fails early in kvm_arch_init_vm(), the cleanup code
+> tries to free up the SCA, even though the address is 0. Due to using
+> free_pages_exact(), only the first page is skipped, accidentally
+> freeing pages 1, 2, and 3.
 > 
-> I don't understand the need for this additional argument. Given that
-> CCA imposes that shared and private are in non-overlapping ranges, why
-> is it necessary to introduce this at the core of the S2 management
-> code?
+> Fix by checking whether the pointer is NULL before attempting to free
+> the SCA in sca_dispose().
 > 
-> I'd expect that the CCA code could simply work out what range it needs
-> to run on and keep the API intact.
+> Fixes: e72753ed1267 ("KVM: s390: Use ESCA instead of BSCA at VM init")
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+
+> ---
+>   arch/s390/kvm/kvm-s390.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
->>   * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
->>   * be called while holding mmu_lock (unless for freeing the stage2 pgd before
->> @@ -326,7 +327,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->>   * with things behind our backs.
->>   */
->>  static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
->> -				 bool may_block)
->> +				 bool may_block, bool only_shared)
->>  {
->>  	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->>  	phys_addr_t end = start + size;
-> 
-> So what is the *actual* change?
-
-It looks like I've screwed up what goes in which patch. The real change
-is in patch 22 where this 'only_shared' property gets passed down to
-kvm_realm_unmap_range(). There it's used to decide whether the private
-range should be unmapped or not.
-
-The reason for this is kvm_unmap_gfn_range() which has a 'attr_filter'
-member of 'kvm_gfn_range' which can specify KVM_FILTER_PRIVATE. Which is
-used in __kvm_gmem_set_attributes() so choose whether to invalidate the
-private or shared part of a gmem range.
-
-The issue on CCA is that invalidating the private mapping is destructive
-- if the guest doesn't agree to it then the guest will not be able to
-continue executing. For the shared part this isn't a problem (we can
-refault the address).
-
-Clearly I've screwed up the patch ordering here, but I'm not sure quite
-how to structure the APIs better to avoid adding this argument.
-
-Thanks,
-Steve
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index f86b4b0b356f..1b3290a5ad1a 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -3247,7 +3247,8 @@ static void kvm_s390_crypto_init(struct kvm *kvm)
+>   
+>   static void sca_dispose(struct kvm *kvm)
+>   {
+> -	free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
+> +	if (kvm->arch.sca)
+> +		free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
+>   	kvm->arch.sca = NULL;
+>   }
+>   
 
