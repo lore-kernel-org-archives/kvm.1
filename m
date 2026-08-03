@@ -1,193 +1,180 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A053BE628
-	for <kvm@vger.kernel.org>; Sun,  2 Aug 2026 17:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD482D8385;
+	Mon,  3 Aug 2026 01:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785691699; cv=none; b=f2HesGsah8wTEfCdR/MuGAVcrinc0RSnEIagtzZc+XasX3hxuwrCYk/DUJnedW1/IRzuErMtwpy3nC53XOGFzlZ2xNnagS0jxNZcSwjjqYnmIq6E0OhZiJwY6GHK2+gQZmi6ySctfc2y3+8Sfbt5PklsZ1O0P50r77MI78j7g2s=
+	t=1785720071; cv=none; b=Kt2x5GD/lsTrJFTrDhLjmbAKoSZ9a9Je7b+N4qV3+LbEfoz5YMLjF2mEve0yJ7nJKHg2lr64ZeVVUqUfhJiJY/aWhU+dKOPbKczNG2hjY4DR26joFLiScdo7wrlSuRjvVDivGz9NaVIkgbQbQIjCS9ixtBqmrd3hocqwHeCRkzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785691699; c=relaxed/simple;
-	bh=+HiQhT47ZMOqVgmEnA+WqPwCj1BNDoqtSphAip/m3BU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGop/+trWxwa7GQgXXNU5/OnlirBDwlfiKW7fxCHnAc5cj09ihWyZLssPsNEID1J41sqAF0N3Snuk/uuunXYFqi+DxELABi4AIHTSeRXpSqEXIuznW01mNX7rYLIaQ/16dBLl7hKdxK0amAMTfpgHSsWcXwzp7bPuLonPFmValk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=SKtdmEeA; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="SKtdmEeA"
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672GjVhO789840;
-	Sun, 2 Aug 2026 17:28:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=uN1bD
-	Lqd+HScH5QnQLhTxJvNWIG09vu3n0FNQ1Ow9yw=; b=SKtdmEeAmw9TOTQ4lZjAm
-	30Ed53o7Ntet2R2w2YF1JGjk0Tq8SUuTE9HgzNYf0tZemv5XIGTDeR3MYSP9QBVA
-	4gzl318UnYIWjpjWYIZ6JroaGaMo2jhuMJhpXDn1g0bh1jOua6h9mnnvOaTlpgUz
-	E9wDLxEX30SKZuw8el9sX5KuBTrQQYyf8BBAas997ti3/4hHn4ITBdxTgNliWS97
-	xomO+0BPtobT8tnlZBcOdb70iQ2/ereW6m3uSs3wyGEx4npvKFIWAUnyJTMFcl09
-	GotBUskkOLW4V53ZTtKYbHV4Nk3gHr4M/3gfGzihmtadXqokapgM+EBcw9n6kPk8
-	w==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4fs7cy330u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 02 Aug 2026 17:28:12 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 672HPphD027820;
-	Sun, 2 Aug 2026 17:28:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4fs78r0h79-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 02 Aug 2026 17:28:11 +0000 (GMT)
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 672HS8PG032953;
-	Sun, 2 Aug 2026 17:28:10 GMT
-Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4fs78r0h6r-3;
-	Sun, 02 Aug 2026 17:28:10 +0000 (GMT)
-From: Dongli Zhang <dongli.zhang@oracle.com>
-To: virtualization@lists.linux.dev
-Cc: mst@redhat.com, jasowangio@gmail.com, michael.christie@oracle.com,
-        pbonzini@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
-        kvm@vger.kernel.org, joe.jin@oracle.com
-Subject: [PATCH v2 2/2] vhost-scsi: clamp max_io_vqs module parameter
-Date: Sun,  2 Aug 2026 10:24:56 -0700
-Message-ID: <20260802172534.260047-3-dongli.zhang@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260802172534.260047-1-dongli.zhang@oracle.com>
-References: <20260802172534.260047-1-dongli.zhang@oracle.com>
+	s=arc-20240116; t=1785720071; c=relaxed/simple;
+	bh=CAxFFZikT7uqteiXljmpjLG73rgz6Xpa4WRqsDC/C+Q=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=VQu4OS5Uqd3V1YGfGpCl6M8VVOm0u3Gjbk5vs6MJ28G1oqAiy9wzvxxTRtGVoHFHGjE1Zv50dVRVlbIZse3rPLSh0LmNllgswEnxXm6d6rjn7EqObN3mJFzjT53CAzHJhv2muMj+xYmv6sBT0SV8OoFkkTPsyvT/JBghCQgJzaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8CxzKH97G9qqsMJAA--.9053S3;
+	Mon, 03 Aug 2026 09:21:01 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxPcX57G9qoZMhAA--.49859S2;
+	Mon, 03 Aug 2026 09:20:59 +0800 (CST)
+Subject: Re: [PATCH 1/6] LoongArch: KVM: Add vmid support for stage2 MMU
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
+ Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260727072109.2151675-1-maobibo@loongson.cn>
+ <20260727072109.2151675-2-maobibo@loongson.cn>
+ <CAAhV-H6sEXa6XM-4=OTuPw=gNKgVxC7ZwqO6T-F81pvt_gBN8Q@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <dc67eb43-adb2-c26b-a54f-ccd52ce910eb@loongson.cn>
+Date: Mon, 3 Aug 2026 09:20:42 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <CAAhV-H6sEXa6XM-4=OTuPw=gNKgVxC7ZwqO6T-F81pvt_gBN8Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-02_05,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 mlxlogscore=999 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2606160000 definitions=main-2608020159
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAyMDE1OSBTYWx0ZWRfX5PNtWJacEs1j
- CCnR8hqFR+zvCOHguZkPLrjxGw484VcgKCqoJ9yLyiTz7QjrPsy+xZj5nv8gpOSMUpObxtbOSFU
- sDsiR5Fm74jSokfBgtOQUxNvE55KA9DyKYJBaN3EMCSGhCJj13G/
-X-Proofpoint-ORIG-GUID: 6AMEKKMxW3dFKw9c1UVNGPsHSjlibQwa
-X-Proofpoint-GUID: 6AMEKKMxW3dFKw9c1UVNGPsHSjlibQwa
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAyMDE1OSBTYWx0ZWRfXzCwwLevkVApg
- qVBaZjBhaKyMsTgRkkfR/xW9V21S/eCI5Q490Z/hXRBB880ZCzrvp2uZv4YRhMPQi1EgXfd9OUw
- NBiJNjdNylFAXZiSq0wAAziPRtXb2Ug733AYMby4AnlpkMJIyZsgVaTXl7op9Kx16EKyrUwWwdp
- O7QfsBTJVl033Oh/4zJfcszFze438TGz17gg83bCGBbSk0lOaMDMkF0C34hauAHhp9qkIrulIv+
- GI7Wk99qfTetZuVSPXmc41WIPncWPIlzEnBXNEkiyN7krVy/5Ur6kfnAAy1rXXd0E+1uNZ0epg7
- R8wYjQcZ4o4ntj8KHwj7vZb231s4AaP2kjt5swhh8r67AqVVSe3omrX9cqKQbdpnkIA5fc9liwx
- jphh5IZnzG6l2J2fMeJ4zlmncdopSWQC6k5GUI0YEu83H/IyDaCRayAUEcfr/c3EiAP16BH7rmL
- CX7Q9tVxzistPjypxRNfDqXgZT2Z2+q0jHNsMcuw=
-X-Authority-Analysis: v=2.4 cv=TsPWQjXh c=1 sm=1 tr=0 ts=6a6f7e2c b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=RD47p0oAkeU5bO7t-o6f:22 a=yPCof4ZbAAAA:8 a=Xp5TNOvvSn1DBsKdsM8A:9
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:13517
+X-CM-TRANSID:qMiowJDxPcX57G9qoZMhAA--.49859S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZF43GF45CF47uF47Xr1UJwc_yoWrCw4kpF
+	9rAF4kWr40grykCa4qq3s5Wr45X3ykKw1aga1SyFyFyr12vr18ArykCryDuFy5Jw4rAF4I
+	vF95K3ZFvF4Dt3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5xhLUUUUU=
 
-max_io_vqs is currently validated only when a vhost-scsi device is opened.
-This allows sysfs to show values larger than the driver will actually use,
-e.g. writing 2048 succeeds even though vhost_scsi_open() later clamps it to
-VHOST_SCSI_MAX_IO_VQ. This makes the sysfs value differ from the value that
-will actually be used.
 
-hv# echo 2048 > /sys/module/vhost_scsi/parameters/max_io_vqs
 
-hv# cat /sys/module/vhost_scsi/parameters/max_io_vqs
-2048
+On 2026/8/2 下午10:11, Huacai Chen wrote:
+> Hi, Bibo,
+> 
+> On Mon, Jul 27, 2026 at 3:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>> LoongArch KVM hypervisor supports two-level MMU, vpid index is used
+>> for stage1 MMU and vmid index is used for stage2 MMU.
+>>
+>> On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
+>> may separate from vpid. If vcpu migrate to different physical CPUs,
+>> vpid need change however vmid can keep the same with old value. Also
+>> vmid index of the while VM machine on physical CPU the same, all vCPUs
+>> on the VM can share the same vmid index on one physical CPU.
+>>
+>> Here vmid index is added and it keeps the same with vpid still.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   arch/loongarch/include/asm/kvm_host.h | 3 +++
+>>   arch/loongarch/kernel/asm-offsets.c   | 1 +
+>>   arch/loongarch/kvm/main.c             | 1 +
+>>   arch/loongarch/kvm/switch.S           | 5 ++---
+>>   arch/loongarch/kvm/tlb.c              | 5 ++++-
+>>   5 files changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+>> index 23cfbecebbd7..ec7b0c402385 100644
+>> --- a/arch/loongarch/include/asm/kvm_host.h
+>> +++ b/arch/loongarch/include/asm/kvm_host.h
+>> @@ -189,6 +189,9 @@ struct kvm_vcpu_arch {
+>>          unsigned long host_tp;
+>>          unsigned long host_pgd;
+>>
+>> +       /* vmid info for guest VM */
+>> +       unsigned long vmid;
+> Put it near vpid?
+yes, it it better to near vpid. will do this.
+> 
+>> +
+>>          /* Host CSRs are used when handling exits from guest */
+>>          unsigned long badi;
+>>          unsigned long badv;
+>> diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+>> index 1b861cbc5e10..32ef6adfc8dd 100644
+>> --- a/arch/loongarch/kernel/asm-offsets.c
+>> +++ b/arch/loongarch/kernel/asm-offsets.c
+>> @@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
+>>          OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
+>>          OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
+>>          OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
+>> +       OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, vmid);
+>>          OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
+>>          OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
+>>          OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
+>> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+>> index 3e1005526f4b..6e3e8efa1dc2 100644
+>> --- a/arch/loongarch/kvm/main.c
+>> +++ b/arch/loongarch/kvm/main.c
+>> @@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, int cpu)
+>>
+>>          context->vpid_cache = vpid;
+>>          vcpu->arch.vpid = vpid;
+>> +       vcpu->arch.vmid = vcpu->arch.vpid & vpid_mask;
+> 
+> I think both vpid and vmid need "& vpid_mask".
+vpid used in function kvm_check_vcpuid() includes version information 
+also. vmid here is hardware id directly used by LOONGARCH_CSR_GTLBC in 
+arch/loongarch/kvm/switch.S.
 
-[  315.630495] Invalid max_io_vqs of 2048. Using 1024.
-
-Keep accepting out-of-range values for compatibility, but clamp them in the
-module parameter setter and store the effective value. This preserves the
-existing behavior that invalid values do not make module loading or sysfs
-writes fail. It also makes reads report the value that will actually be
-used.
-
-With the parameter value kept in range, remove the duplicate validation
-from vhost_scsi_open().
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
----
-v1->v2:
-  - Access vhost_scsi_max_io_vqs with READ_ONCE().
-  - Clamp out-of-range max_io_vqs values instead of rejecting them.
-
- drivers/vhost/scsi.c | 43 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 33 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 0c0634eea144..fb262cf9a34d 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -210,7 +210,37 @@ static const int vhost_scsi_bits[] = {
- #define VHOST_SCSI_MAX_EVENT	128
- 
- static unsigned vhost_scsi_max_io_vqs = 128;
--module_param_named(max_io_vqs, vhost_scsi_max_io_vqs, uint, 0644);
-+
-+static int vhost_scsi_set_max_io_vqs(const char *val,
-+				     const struct kernel_param *kp)
-+{
-+	unsigned int max_io_vqs;
-+	int ret;
-+
-+	ret = kstrtouint(val, 0, &max_io_vqs);
-+	if (ret)
-+		return ret;
-+
-+	if (max_io_vqs > VHOST_SCSI_MAX_IO_VQ) {
-+		pr_err("Invalid max_io_vqs of %u. Using %u.\n",
-+		       max_io_vqs, VHOST_SCSI_MAX_IO_VQ);
-+		max_io_vqs = VHOST_SCSI_MAX_IO_VQ;
-+	} else if (!max_io_vqs) {
-+		pr_err("Invalid max_io_vqs of 0. Using 1.\n");
-+		max_io_vqs = 1;
-+	}
-+
-+	WRITE_ONCE(vhost_scsi_max_io_vqs, max_io_vqs);
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops vhost_scsi_max_io_vqs_op = {
-+	.set = vhost_scsi_set_max_io_vqs,
-+	.get = param_get_uint,
-+};
-+
-+module_param_cb(max_io_vqs, &vhost_scsi_max_io_vqs_op,
-+		&vhost_scsi_max_io_vqs, 0644);
- MODULE_PARM_DESC(max_io_vqs, "Set the max number of IO virtqueues a vhost scsi device can support. The default is 128. The max is 1024.");
- 
- struct vhost_scsi_virtqueue {
-@@ -2273,21 +2303,14 @@ static int vhost_scsi_open(struct inode *inode, struct file *f)
- 	struct vhost_scsi_virtqueue *svq;
- 	struct vhost_scsi *vs;
- 	struct vhost_virtqueue **vqs;
--	int r = -ENOMEM, i, nvqs = vhost_scsi_max_io_vqs;
-+	int r = -ENOMEM, i, nvqs;
- 
- 	vs = kvzalloc_obj(*vs);
- 	if (!vs)
- 		goto err_vs;
- 	vs->inline_sg_cnt = vhost_scsi_inline_sg_cnt;
- 
--	if (nvqs > VHOST_SCSI_MAX_IO_VQ) {
--		pr_err("Invalid max_io_vqs of %d. Using %d.\n", nvqs,
--		       VHOST_SCSI_MAX_IO_VQ);
--		nvqs = VHOST_SCSI_MAX_IO_VQ;
--	} else if (nvqs == 0) {
--		pr_err("Invalid max_io_vqs of %d. Using 1.\n", nvqs);
--		nvqs = 1;
--	}
-+	nvqs = READ_ONCE(vhost_scsi_max_io_vqs);
- 	nvqs += VHOST_SCSI_VQ_IO;
- 
- 	vs->old_inflight = kmalloc_objs(*vs->old_inflight, nvqs,
--- 
-2.43.5
+Regards
+Bibo Mao
+> 
+> 
+> Huacai
+> 
+>>   }
+>>
+>>   void kvm_check_vpid(struct kvm_vcpu *vcpu)
+>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+>> index 936e4ae3e408..af972394fd55 100644
+>> --- a/arch/loongarch/kvm/switch.S
+>> +++ b/arch/loongarch/kvm/switch.S
+>> @@ -66,9 +66,8 @@
+>>          ld.d    t0, a2, KVM_ARCH_KVMPGD
+>>          csrwr   t0, LOONGARCH_CSR_PGDL
+>>
+>> -       /* Mix GID and RID */
+>> -       csrrd           t1, LOONGARCH_CSR_GSTAT
+>> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, CSR_GSTAT_GID_SHIFT
+>> +       /* Set VMID for gpa --> hpa mapping */
+>> +       ld.d            t1, a2, KVM_ARCH_VMID
+>>          csrrd           t0, LOONGARCH_CSR_GTLBC
+>>          bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END, CSR_GTLBC_TGID_SHIFT
+>>          csrwr           t0, LOONGARCH_CSR_GTLBC
+>> diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
+>> index ebdbe9264e9c..38daf936021d 100644
+>> --- a/arch/loongarch/kvm/tlb.c
+>> +++ b/arch/loongarch/kvm/tlb.c
+>> @@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
+>>
+>>   void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
+>>   {
+>> +       unsigned int vmid;
+>> +
+>>          lockdep_assert_irqs_disabled();
+>>          gpa &= (PAGE_MASK << 1);
+>> -       invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, gpa);
+>> +       vmid = (vcpu->arch.vmid << CSR_GSTAT_GID_SHIFT) & CSR_GSTAT_GID;
+>> +       invtlb(INVTLB_GID_ADDR, vmid, gpa);
+>>   }
+>> --
+>> 2.39.3
+>>
 
