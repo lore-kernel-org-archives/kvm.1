@@ -1,184 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4015409604;
-	Mon,  3 Aug 2026 11:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C39390C9F;
+	Mon,  3 Aug 2026 11:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785756460; cv=none; b=mN6yBQbxMz2yix1wHcAqrdU2wbksO9sW1JpDDqYqaWVpyu/bY2WVt5rLCntv0kx5+YdtiprNcxN+8MxT2S81snT4x7kvKjjNVlvVyZ/K62fbiwLqj2bDxLQd2DWJw7YHob+rcZ3AvqLTjFE8xRmSdWaIZHo3mvbT9sq4aqo4Wwk=
+	t=1785758101; cv=none; b=a0qfjOmavfYINgW2x8XTL+CjA43kV8axlaOIQLRvmEgyFXdJmTEW/C0UcLBMgEb9P5N44xtIXgY1xHTz/RUsDoYvjfvulRVzhDhpQjcXoGFU2cdtEZFym3qLrKxzs4iLddlZbBLyrhbxwU4f8Rp4NV5BvX493QG53LwItdTqE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785756460; c=relaxed/simple;
-	bh=Lef4IQuLjnebR5p/FsvALUdCAtneo6dIdEQCYmWVXZU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VEu/mQYxjPstCMnBOpJfgeswrQ2+GuYSGtAJmLhJcSsBdOqqXd4/OP2HYo9ohwEyvHjHfeshqUVnc0f7r8B3qWjJWyFECqAgfG4JBrbHfV1LQZLQ2e+Kbd4aWEc7YYgpGipvv/3iiJdrN0e5I7nTtXUIWx4SsYn0Y/zTkgYvPJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LD+9R/xv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785758101; c=relaxed/simple;
+	bh=4vEFrWkB7L58dxp3sSQwZLpaU96zItj1JCbs19FmGQo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IAXFtY8X6GD60GpJQ3CRqHNhtE0J51DMme9uFpUoUlW13C7SzSSDFdMQVTvv7SdXvVqlIgNFL6cXn0cdhQr2h3cNaVUda8aoQAkkDMYo8e8eAXK+c0tQBjq3JUIvYBEGWcYnYNHK+FZGEdhSqmEVloqmcSNgen2vU0vu/W2PUHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQXmk3Kn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LD+9R/xv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5C1F00A3A;
-	Mon,  3 Aug 2026 11:27:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQXmk3Kn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B81F000E9;
+	Mon,  3 Aug 2026 11:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785756458;
-	bh=/i3CPF5W25MD9Vez/azH6CCKyA9iHKYO0QYhYx2P/Sk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LD+9R/xv3NSQsat4RjeNlGLbJ1uKDtgjUp+Y/VOu4UnzZ2ojY1qwtPJGndSzD7x8K
-	 lJO2raJWfeqkFwlIIirZsXoc4yVV8HGN3aru11ybyaQETHdaNFkrpzObjJ8hpleKRR
-	 sLqkS/prEff9LFafonsANPFwmLCSyBgOUxrwJbNlQGXGBn51zNPsMJQTinGYEwGW3w
-	 /M93kGzHttMFUxc6+H1QENcytzFLQ+5Mo4ZVzD4rS/i2/X5Zh/0utKRzqfD602lPD9
-	 IYpaPZ3j+Fkp6szxuj6hRSuUaYcWkZH7oLVnzA28McYZZ9gcJeyKVPafXl23m/pmIx
-	 fL6aooRlu+2Eg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wqqpU-0000000BjIT-1j2Y;
-	Mon, 03 Aug 2026 11:27:36 +0000
-Date: Mon, 03 Aug 2026 12:27:35 +0100
-Message-ID: <864ihbcul4.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Subject: Re: [PATCH v15 16/37] KVM: arm64: CCA: Handle realm MMIO emulation
-In-Reply-To: <20260715142841.80544-17-steven.price@arm.com>
-References: <20260715142841.80544-1-steven.price@arm.com>
-	<20260715142841.80544-17-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1785758099;
+	bh=JFi+EA9EOv5ZOt8q1SqzBGAoG8UY4elQgS2T1OsiJu4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cQXmk3Knvg7dM/zcDgDPmpTPAliR8g428C/ZeCCRqCHRD7/0zZaATfRYXIafsOIzJ
+	 v8Y1ds4rE7OyDP+Th0j1Q/K9EYDZHAjVOdhQEa8LX8XzqN9eiEy2B3e+1kpLpsKbPy
+	 v2SNYPvCk+QvxRGpZKHNRkzhvkXVT+NYNCNPTMmP6JRzDgeErtSD7mgMkrJp3xOxPQ
+	 ZpRzfKgTS8Lepastwp3BkcxVPafPBQqFOI3IKvlR7C0HD/ZiSPTKQBhxVy0G6E/Cg9
+	 V4v0G3TVy8x8r1wYLm13toU6vqeEMNKwHJPMFl+IejDzzi57fsLc02iUcIgpwaLgJ2
+	 BlxjkdChydpVg==
+Message-ID: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+Date: Mon, 3 Aug 2026 13:54:55 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, lpieralisi@kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
+ followed by .pfn_mkwrite() for write faults
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260731164341.1109827-1-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, 15 Jul 2026 15:28:18 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On 7/31/26 18:43, Paolo Bonzini wrote:
+> Warning - DRM parts (i.e. most of the patches) untested; I have Cc'd
+> the reporter to help with testing these patches.
 > 
-> MMIO emulation for a realm cannot be done directly with the VM's
-> registers as they are protected from the host. However, for emulatable
-> data aborts, the RMM uses GPRS[0] to provide the read/written value.
-> We can transfer this from/to the equivalent VCPU's register entry and
-> then depend on the generic MMIO handling code in KVM.
+> Right now, users of .pfn_mkwrite() have no way to create a PTE
+> that has gone through maybe_mkwrite().  Because vma_set_page_prot()
+> will have cleared the writable PTE bit, users of fixup_user_fault()
+> will see a read-only PTE and have no clue that the page needs
+> a *second* fault to reach its final status.
 > 
-> For a MMIO read, the value is placed in the shared RecExit structure
-> during kvm_handle_mmio_return() rather than in the VCPU's register
-> entry.
-> 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> ---
-> Changes since v7:
->  * New comment for rec_exit_sync_dabt() explaining the call to
->    vcpu_set_reg().
-> Changes since v5:
->  * Inject SEA to the guest is an emulatable MMIO access triggers a data
->    abort.
->  * kvm_handle_mmio_return() - disable kvm_incr_pc() for a REC (as the PC
->    isn't under the host's control) and move the REC_ENTER_EMULATED_MMIO
->    flag setting to this location (as that tells the RMM to skip the
->    instruction).
-> ---
->  arch/arm64/kvm/inject_fault.c |  4 +++-
->  arch/arm64/kvm/mmio.c         | 16 ++++++++++++----
->  arch/arm64/kvm/rmi-exit.c     | 15 +++++++++++++++
->  3 files changed, 30 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/inject_fault.c b/arch/arm64/kvm/inject_fault.c
-> index 89982bd3345f..6492397b73d7 100644
-> --- a/arch/arm64/kvm/inject_fault.c
-> +++ b/arch/arm64/kvm/inject_fault.c
-> @@ -228,7 +228,9 @@ static void inject_abt32(struct kvm_vcpu *vcpu, bool is_pabt, u32 addr)
->  
->  static void __kvm_inject_sea(struct kvm_vcpu *vcpu, bool iabt, u64 addr)
->  {
-> -	if (vcpu_el1_is_32bit(vcpu))
-> +	if (unlikely(vcpu_is_rec(vcpu)))
-> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_INJECT_SEA;
-> +	else if (vcpu_el1_is_32bit(vcpu))
->  		inject_abt32(vcpu, iabt, addr);
->  	else
->  		inject_abt64(vcpu, iabt, addr);
+> Handling this in fixup_user_fault() is problematic: the information
+> about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
+> which is an opaque pgprot_t, therefore only follow_pfnmap_start()
+> knows how to retrieve it.
 
-Why don't you let inject_dabt64() do its job and reconcile the REC
-stuff at run time?
-
-> diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
-> index e2285ed8c91d..a8c125205695 100644
-> --- a/arch/arm64/kvm/mmio.c
-> +++ b/arch/arm64/kvm/mmio.c
-> @@ -6,6 +6,7 @@
->  
->  #include <linux/kvm_host.h>
->  #include <asm/kvm_emulate.h>
-> +#include <linux/arm-smccc-rmi.h>
->  #include <trace/events/kvm.h>
->  
->  #include "trace.h"
-> @@ -138,14 +139,21 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
->  		trace_kvm_mmio(KVM_TRACE_MMIO_READ, len, run->mmio.phys_addr,
->  			       &data);
->  		data = vcpu_data_host_to_guest(vcpu, data, len);
-> -		vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
-> +
-> +		if (vcpu_is_rec(vcpu))
-> +			vcpu->arch.rec.run->enter.gprs[0] = data;
-> +		else
-> +			vcpu_set_reg(vcpu, kvm_vcpu_dabt_get_rd(vcpu), data);
-
-This is yet another example of things I do not want to see. KVM works
-on the GPRs described in the vcpu structure. And that's it.
-
-So let the ESR information be correct for CCA, the data being written
-back to x0, and once you're ready to enter the guest again, copy
-whatever you need into the CCA data structure.
-
-But not any of this stuff.
-
->  	}
->  
->  	/*
->  	 * The MMIO instruction is emulated and should not be re-executed
->  	 * in the guest.
->  	 */
-> -	kvm_incr_pc(vcpu);
-> +	if (vcpu_is_rec(vcpu))
-> +		vcpu->arch.rec.run->enter.flags |= REC_ENTER_FLAG_EMULATED_MMIO;
-> +	else
-> +		kvm_incr_pc(vcpu);
-
-Same thing. kvm_incr_pc() sets a flag. Use that to reconcile the state
-with CCA.
-
-	M.
+How is mprotect() supposed to work in that case?
 
 -- 
-Without deviation from the norm, progress is not possible.
+Cheers,
+
+David
