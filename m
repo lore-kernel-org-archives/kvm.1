@@ -1,67 +1,64 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EAD365A03;
-	Mon,  3 Aug 2026 16:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCFA3502A5;
+	Mon,  3 Aug 2026 16:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785773381; cv=none; b=G5dk29/3oZ+T0mXbVrZLY6JlPCd6fA+36GHA0z01tho8VisDlgH8HCThcvoR3yOd5R8WV9GL5EqOZegxzF2a2HQShpy2H00mDTMrYnxm9Q7OIa+hDbvJo0e5CQd8jI3ijvnwasH0L8BdxQQmKnYUc9oIaqp0AXtZNfAsptGjY8M=
+	t=1785773381; cv=none; b=cxSYHpK2NNIth9pMN/mkCuLWJtMjct0J0Cu/j04wTnOWvH5j5RaW70m5R5NgPrxLggF3wCx8oat37zZJDWzALW/x7gGjgoCu698k0Ak+1l7ZZVVa8yCfY/66ZSJ9TVb7H64KXcEUe2vP5oC3xgjUP4OTzb5+Lg9ANGJ12TGjtmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785773381; c=relaxed/simple;
-	bh=B1msya67s3fas7tvXdb0RpnnWeQtT1SbZPzrr9m2BxU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+yzn1HyHQgsqdoNcyK3NmTOQZ/zqFoG2nrNkBn/c3eqU9zulfaOAu8EX34CEDtaFJibLlCV5Wpo9BxlIuy9CKTqNOI/Rm96H+iPmi2G4u6/rXmglJ/4TYiuFTjX1k7npX05goYqWmj33yNWetQRBWOMWkp9onRtdP+iZX7Z0+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IBU46jff; arc=none smtp.client-ip=148.163.158.5
+	bh=U7GL5Ke8vz7j+WVr2NBgaRWRFvtJSV+0iWEymZZrL8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=orZuBjSkNh822ZP0akYlvI6KC9bVACtNGqsux5mOgUY/MeaAM2RUemE6B8/Dlfmr306DJbhz43oOpDif6x7fhVNHCyjE0ZQnZtDpvVKXHQcpFXgCsyM01Xt0UyBDxkpe3anxRhDfKbxRUIiWrPPGveynl4YOHVBDskMClrGk9vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gFix5bsL; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IBU46jff"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EIF1A2342028;
-	Mon, 3 Aug 2026 16:09:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ix0flsG4Cnb5rmliN
-	HvXEzlrR6glWWcgzImNc5yA4/c=; b=IBU46jffYrQ8aZgNB3asfH5gaoBdYVVv3
-	Ekr2UB/Oxoidpgg1G+8Q2Z6q97MZiUPaFQJY2seTT4JMDN8C0p8lA7YuQRLvlN3B
-	gAIDXhpDeHTHhit57czSuv8s4pg0RfrCDrywjk0lzcGwaDlUfRnkDMNEFraDFsTD
-	xFYXhzJ99lEhdckLOsX2/3c3iEukzmlHO/UeehVeCQwxGo5vOCF8bXqkIH5UJQS6
-	goj8nWx6BxlB5r5GYT+qyYNmTu3++UQWRkOGPX+6rKAj7HBOWdw3FzteLHdlugLQ
-	0ZpOsyWpw3mKO2Kt7PtUo/ZtgF6mw+TO6bCYG1qBEQ3nyIjHiiNjA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8euhbf7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 16:09:33 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673FuGEJ022260;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gFix5bsL"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EHgnB413916;
 	Mon, 3 Aug 2026 16:09:32 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbg5xyj-1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=JvCzgcf/c37iYlEEdHVY2b4M6R0KN0/wrvKR95bVL
+	h4=; b=gFix5bsLyurul6YMQ6NPR4+YaShZC6KES9HiKDR+06mG1eIQlNcvV3aV/
+	mvfp5IUzylH2nkIQzRsw/8Us/qFfKcSn55QoSwJkWK/rx6A/YzbKGIdYhFbWw4ne
+	h8meXelTnL3N98IYbLuBbUTXFB0yB7ITN02HNvi1qX1jMYsxsaMTku/duaWe/cvW
+	IVNv9YGkhF5lrSJBeuvCpdV8d2QvpKjBls1gVe5ub2+gkgOS4hQey8thm95YcbB6
+	+OPBzR0t1oWhg6o0s1qqKrK1tVNMk2l0fDak1hVDSwL2eLk3FWDjJE6r+FEwPTHn
+	fb5wmwnd7lFEIg4HgI8XyOkbCMGvg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqhp8t-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 03 Aug 2026 16:09:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673FuIJB006959;
+	Mon, 3 Aug 2026 16:09:31 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh63tw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 16:09:31 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673G9QmY49545624
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673G9P3g29557214
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 16:09:26 GMT
+	Mon, 3 Aug 2026 16:09:25 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7905220040;
-	Mon,  3 Aug 2026 16:09:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E62A520043;
+	Mon,  3 Aug 2026 16:09:24 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 565322004F;
-	Mon,  3 Aug 2026 16:09:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id CBEDF20040;
+	Mon,  3 Aug 2026 16:09:24 +0000 (GMT)
 Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  3 Aug 2026 16:09:26 +0000 (GMT)
+	Mon,  3 Aug 2026 16:09:24 +0000 (GMT)
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 To: pbonzini@redhat.com
 Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com,
         borntraeger@de.ibm.com
-Subject: [GIT PULL v1 12/23] KVM: s390: Do not free SCA if it was not allocated
-Date: Mon,  3 Aug 2026 18:09:13 +0200
-Message-ID: <20260803160924.236807-13-imbrenda@linux.ibm.com>
+Subject: [GIT PULL v1 00/23] KVM: s390: Misc KVM and vfio-ccw fixes
+Date: Mon,  3 Aug 2026 18:09:01 +0200
+Message-ID: <20260803160924.236807-1-imbrenda@linux.ibm.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260803160924.236807-1-imbrenda@linux.ibm.com>
-References: <20260803160924.236807-1-imbrenda@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,64 +67,103 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: C076yU_6IMYBjLB-K9vKqlm2YOrFLkU0
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDE0MSBTYWx0ZWRfX2QCGn1copcxs
- vxsI3Yg2WolmozD4Yzgv1wo1FUv1rbFl1l+0UsOQGgCnzWZ8m5TdXxev6TU57QqJcsNhxup8gyi
- /38x2NmmJaxxo9MaHTo4SajGE5WW1N4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDE0MSBTYWx0ZWRfX97M0icday8Z4
- ZPkkUVJzr7t3fJAn7bYYS7zyyxmkT5ijYgew+1P4m4cL3hXVEZU23mx59yC2opdQtTB9b+uP6u1
- Db2+fWU6tI2aDLdO4rXlDXe8p/lmNxijWKoudHVO/+ZmIQ4uDlaxfQ0rmFxMKNZCEJxqw7Afm/S
- kaeUNPjISvbOengbR3U23iCP9DGhT/VXhpf/zmJsXagTFFq78RyiDbhWLeS8+1GwnTTE6s52vu5
- K25d27CNP8Qm9/pRrIKXHrdg0yfx+8QMY1h0eJe5Lp0F5zpfLWNjuxJ2Y8JhAhNn8uy6C5tGSWy
- y/UpU1MGIiW6OWHdB1N5qjakR6Y4D8gFyWnf9MqSrsreBmAxN/K4PVYV1ahdl401zroBQREDAYw
- zoOafSngo+hiJGg3bdtivAsmaSkMWnF61RYeYUvlh5R6AG3wdQlQzYDg3MIj5ukJru0UmLaFXD6
- nvSFaoxIktPkiSdVS8A==
-X-Proofpoint-GUID: C076yU_6IMYBjLB-K9vKqlm2YOrFLkU0
-X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a70bd3d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=M5uM2SGDJJfKum1V:21 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=3jiQNkuJ7WxZ42At8I0A:9
+X-Proofpoint-GUID: 3auuwwGyuYQX-kW4ASNuBvCaLeOqME90
+X-Proofpoint-ORIG-GUID: 3auuwwGyuYQX-kW4ASNuBvCaLeOqME90
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDE0MSBTYWx0ZWRfX1Q4wDLZgX9K4
+ bUnWZBMgBk8Jd/Xhyq9ofdTix5A1R1Nt/XbLZmTZP1F6l5/5sPbaIHoq2WlaudUa6dGuPzWxlFG
+ iY0xctH75hhwsF0dzKoxygzU+QXQA7I=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a70bd3c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=qfEP_K_nxXoyjRaTxD4A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDE0MSBTYWx0ZWRfXzzyzBr0GYFkN
+ WxofIl71Tp8qgKBkMRK4mI1sZrZj3HxoJweFFO4cuD7AJcddQGptQQWj2Ltmk6kQDX0J7IBP4mS
+ /myL0FFAuo5IJASWdc0nfK11rAfvHd7wR9ZMBONxoVeoX7p2E5o+pn244ZS6oS4ToX3/2wosHpH
+ rvgxcb0zuapXjoP3mEWdhCsoq9YC9xl736+nQHcnXTANjM0WPgEBXkm8GAJEmYTCJX0r1PNXVfI
+ l6TEggOoxWTbRtqsTPiTyKhWx3QowmeztkGZNoTMFDt6DiUlYsrJpGMkfN+zipI0+I8aph4zpl1
+ 3dEIYqws8kICbGzgY3oI21Zd8fd1MikPUw7cFC4GpNhfOHheLJuq3LgkxnhOi46zOP2ZvMwsQsf
+ aOG5R8j838J9ikUdS8x2650EiZdM+ULFX99AWRY3Xx4D15j0+oRll1AwicqkywXs9BX8gvca27Y
+ /20rV8UZ/SHdwhMSdEg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-03_03,2026-08-03_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030141
 
-If VM creation fails early in kvm_arch_init_vm(), the cleanup code
-tries to free up the SCA, even though the address is 0. Due to using
-free_pages_exact(), only the first page is skipped, accidentally
-freeing pages 1, 2, and 3.
+Ciao Paolo,
 
-Fix by checking whether the pointer is NULL before attempting to free
-the SCA in sca_dispose().
+In this pull request there are a bunch of fixes to various KVM/s390 and
+vfio-ccw issues.
 
-Fixes: e72753ed1267 ("KVM: s390: Use ESCA instead of BSCA at VM init")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Message-ID: <20260803124040.126471-3-imbrenda@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
----
- arch/s390/kvm/kvm-s390.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+There are still some small known bugs, which will be addressed later in
+a different series.
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index f86b4b0b356f..1b3290a5ad1a 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -3247,7 +3247,8 @@ static void kvm_s390_crypto_init(struct kvm *kvm)
- 
- static void sca_dispose(struct kvm *kvm)
- {
--	free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
-+	if (kvm->arch.sca)
-+		free_pages_exact(kvm->arch.sca, sizeof(*kvm->arch.sca));
- 	kvm->arch.sca = NULL;
- }
- 
--- 
-2.55.0
+The following changes since commit 9972befc3e34ff8b6847198c84f11bfc312dde40:
 
+  KVM: s390: Fall back to short-term pinning in MAP ioctl (2026-07-27 09:23:53 +0200)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/kvm-s390-master-7.2-3
+
+for you to fetch changes up to feadc5e84dcb53422a437556c35af9efd9826fd5:
+
+  KVM: s390: Fix cleanup in kvm_s390_pv_create_cpu() (2026-08-03 17:09:46 +0200)
+
+----------------------------------------------------------------
+KVM: s390: Misc fixes for 7.2
+
+Fix a bunch of small issues that came up during the previous round of
+fixes.
+
+They are mostly extremely unlikely races, but they should be fixed
+nonetheless.
+
+----------------------------------------------------------------
+Claudio Imbrenda (13):
+      KVM: s390: Fix unlikely NULL gmap dereference
+      KVM: s390: Do not free SCA if it was not allocated
+      KVM: s390: Fix kvm_s390_vcpu_unsetup_cmma()
+      KVM: s390: Fix overclearing ESCA in case of error
+      KVM: s390: ucontrol: Fix sca_clear_ext_call()
+      KVM: s390: Fix leaking of PGM_ADDRESSING to userspace
+      KVM: s390: Fix race in __do_essa()
+      KVM: s390: cmma: Fix dirty tracking when removing memslot
+      KVM: s390: ucontrol: Add missing locking around gmap_remove_child()
+      KVM: s390: Free the mmu cache when kvm_arch_vcpu_create() fails
+      KVM: s390: Return -EINTR if a signal is pending while faulting-in
+      KVM: s390: Fix ordering when adding to SCA
+      KVM: s390: Fix cleanup in kvm_s390_pv_create_cpu()
+
+Eric Farman (10):
+      s390/vfio_ccw: Free all memory if cp_init() fails
+      s390/vfio_ccw: Limit the number of channel program segments
+      s390/vfio_ccw: Fix out of bounds check on CCW array
+      s390/vfio_ccw: Ensure first IDAW remains constant
+      s390/vfio_ccw: Calculate idal length based on idaw type
+      s390/vfio_ccw: Ensure index for read/write regions are within range
+      s390/vfio_ccw: Cancel existing workqueues
+      s390/vfio_ccw: Move cp cleanup out of not operational
+      s390/vfio_ccw: Selectively expand io_mutex
+      s390/vfio_ccw: Implement a crw lock
+
+ arch/s390/include/asm/kvm_host.h    |   1 +
+ arch/s390/kvm/dat.c                 |  23 +++++--
+ arch/s390/kvm/dat.h                 |   2 +-
+ arch/s390/kvm/faultin.c             |   6 +-
+ arch/s390/kvm/interrupt.c           |  19 ++++--
+ arch/s390/kvm/kvm-s390.c            | 125 +++++++++++++++++++++++-------------
+ arch/s390/kvm/priv.c                |  10 +--
+ arch/s390/kvm/pv.c                  |  43 +++++++------
+ drivers/s390/cio/vfio_ccw_async.c   |  16 +++++
+ drivers/s390/cio/vfio_ccw_chp.c     |  31 +++++++--
+ drivers/s390/cio/vfio_ccw_cp.c      |  74 +++++++++++++++------
+ drivers/s390/cio/vfio_ccw_cp.h      |  10 +++
+ drivers/s390/cio/vfio_ccw_drv.c     |  21 +++++-
+ drivers/s390/cio/vfio_ccw_fsm.c     |   8 ++-
+ drivers/s390/cio/vfio_ccw_ops.c     |  39 +++++++++--
+ drivers/s390/cio/vfio_ccw_private.h |  10 ++-
+ 16 files changed, 320 insertions(+), 118 deletions(-)
