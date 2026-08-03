@@ -1,193 +1,224 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF698233704;
-	Mon,  3 Aug 2026 19:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4763AA4E4;
+	Mon,  3 Aug 2026 20:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785786863; cv=none; b=gEWJog+/kSRED/bQm082X0D6EqqT5ZogT+jjWxaZWnd0f0+8m7FqRztypriSmu7I1N3YKYUnthiiJ6byeD1cWAnTYbuJNe8WO7p3xezOb0m3NYkhm7v9qdYu9MIDHsaEXCe2nJksyW/APdLVvBwCPXhABm08j3GBfc7Ad47a11A=
+	t=1785789449; cv=none; b=HExv8Pp7FTbj1noD/X9FhCiHrECs07ooDKqaIGiIGWHz709B63lVqXF//YUqhNDZD1WvsXGN2rM0Nj3VtJltXmlFhevYzw5oYx9+boYxz4i/1UvRZ32nFmuSqyg61IeGQJJgJ3T3pYJenqKam3rEYxfY590/CIbDIoGZEEjqVOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785786863; c=relaxed/simple;
-	bh=6e/HZpZPILJEKifBNLBLxosvOjZJ/QaSMn5G6qLB+yA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SExrzJ4fZhxeRw8jG1qDWF+VOKRv7SXxgPkDYyy50ezqFljZvi0oszPp1dWtfLzM5srpn2EAZt3QbqKxGZZEZ1H9nXa17rqM/jdS4hQHRi/s7dwBpvwDOT2D9K/Jt2Pm+o8w8NIEU5WIhgND1rgOor+N88uVU9P7djZKRaLPhgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Sj9mfymY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DBJH0kYR; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1785789449; c=relaxed/simple;
+	bh=T2xeUIw/QjmeT0MG9ktXCkfmTgrNiOSpO2tTxiB/I0g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LEPQ9nWixz6X3ZDZYearQCnHZyfoxaIaWDfct8KBhItdHT2dz+3LWyvhiocHP2Ufjyrgl42tD4uamin+AW9J2IfaSXPu83kYb9X9bvsOuBMs+ubAf76lELruXkBgLOssoZ6Ei/CaTA0DrZVF/m88j3DNaFbwdsogQe2lHug/xmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H/Eu0aXF; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Sj9mfymY";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DBJH0kYR"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8E6BD7A0027;
-	Mon,  3 Aug 2026 15:54:18 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 03 Aug 2026 15:54:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785786858;
-	 x=1785873258; bh=6gvqG0h/fnfFqw/tyXSjXEQXU3l/ydB7TEWvbht+nMM=; b=
-	Sj9mfymYe69Bakliu9nrsUmEo/Pat63TMV7uS89z3b9L8hGY0Gutko5gWTpjcSQt
-	H6GLgCirsQJwQn6PBC5IpzHLpfLCKSTftgXrIQrpbIt9NlhInoR3pgAFYm2h7su6
-	1Q2dNlp6lp6aMWRr+Iq4XylKE0zcyAq5vKa7iUZRpTYTksnOyr2VTsFfROexmZNd
-	U5B7esjICFOf5kwwKGhYR10FSIJ5VjA2iEouKFE/MFEsRqi4ONwCxhFQOdF2Ni4/
-	JyqIdUyG9UdRTbBv6AwIrA5K6oKx97o+t5Ocgnk8/K+Zn2k7VYlpCSuvmUOtkPzS
-	n0ov3R626sCgiaGD8fYIfg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785786858; x=
-	1785873258; bh=6gvqG0h/fnfFqw/tyXSjXEQXU3l/ydB7TEWvbht+nMM=; b=D
-	BJH0kYR4t5Mk/RywNw8lSa3FYZUUC55+8OQhHX7AWDZlnGgkL3Wi+rkj7PpooIpk
-	qIGYT+nomqYHp6osL8gDu88COXF2goht/euTohtjPX9vrR+Nx9MrwS3oRhd6xPag
-	nJRSburNYM9ygJBmnLohHvtkwJsk+uVzbV0S70jKMhsebSThF9vXR++IoaT+YlVr
-	kp4GIj0JpuFkl3/1lmEtgm8ip5H6xHINIx8B/vs2CdL15B8VXKXpjcv6dttNiDEg
-	6mLPnLDXQG2b0qzpTJ8RyCRXYJuVYF0tKkNqWaqQ2ovcYLg/ysT/ysmal2voUVti
-	sJqhsV1xHgOTMq/+Ih2Jg==
-X-ME-Sender: <xms:6vFwas_biVn3knImByGQp3QAfjnb-ZXjOGY3FS8qy0LudxzE5xZgRw>
-    <xme:6vFwas6hdOJtwxp_y9ugpLYri1CwLA-uU1Imo9nBpbik-eYH4HdOjDoq4IMEGWpPQ
-    QDByiy7x_aKfKbp-aA1zzaP6zV69kmcn3RFL4ne5u4kXyxEitN_Ig>
-X-ME-Received: <xmr:6vFwatm6aowWXeqwCAUmGxwUsKYrSb5J1IyjfA208iQKM0Bq0QCkE9pXy3Rw4A>
-X-ME-Proxy-Cause: dmFkZTGltzPlwtmti0E2Nh31khFASEJ+ar9YxNqtyAevun1jv7a1T+z1vDJEvEhgJZm9x+
-    Fg/mgO2N+BKvSKB1WjxoRaWku66YQLbE5obBRr6hJ10xTiimC+SN4ABMnnyaXs7eYjB/hf
-    WNa6AGagpZ66ucru3QotzyCBR6Qfr2T+Kqymqc84GPjH+Ww7LnjLH4M61vdgHI0kEH+WdV
-    cRf6EurkUMcICU8gGxz2V7KwrbcDPPzcrSGLrvnIVIHPhR/etzqx6sbzE2DPfIjoQRhRSW
-    aF3yq4V66AFW2fT8N9x9i6N5dsS5iGvFs/vm/uurpTx9ktJiHQbZI0i1cjaSICV4SSvBst
-    JO+30QiMoOmCnNqXGqoxtmny+z0scYPK9h8TnOJGwQT5s4lteB0/HxhZFaoh0cwNKNl/aP
-    aXUHW4b/mxgu3ZlXDqZn1XCSstiKo/Ec62FHtvNyaCCjKpH9H04kiTBeUD/1TgTHcth42E
-    0bSo+dBeBpXAtm33/X7oZ7rHb5/9Bq6msaG99OSIiilvFIR0PAWEyGBq1uv3UbCCy2MQm+
-    JoynWvqFfxgyOVoBx1hjz7wrBLT5lw7+ASA8Fgvkg+k7V6iXRDyDdKh797GpR3iay0+7Ry
-    9HOoaKCt06FmZbjc1kaVFaEY6DywQpwCvWlkPspew6+aw2p8IOJyKm1YxIVw
-X-ME-Proxy: <xmx:6vFwanEK1X1e7UW1z-J4jVYJQ7v9G_GE1CtthfzedPfRBbpu3NkcoA>
-    <xmx:6vFwas87kZC4MDqTN5oCmWudgLf2iMfa6ah-SJjKOjZ-b4H602OjHw>
-    <xmx:6vFwaglES6WfjMt8qdjdlhlouOooj7ol7D8YYnEYsex1ih3ehWczOA>
-    <xmx:6vFwavAoQ1bL7bHD9dfr5XA8Y7y-kHrLsouPuCTgF950cSCFRQY4pQ>
-    <xmx:6vFwah9zX0s96clh4sFZs3ZBpXe9kVqyC6cLdzYLAvfjCzcRqf1yKXnS>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Aug 2026 15:54:17 -0400 (EDT)
-Date: Mon, 3 Aug 2026 13:54:15 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Farhan Ali <alifm@linux.ibm.com>
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linux-s390@vger.kernel.org, kvm@vger.kernel.org, borntraeger@linux.ibm.com,
- mattev@meta.com, schnelle@linux.ibm.com, alex@shazbot.org
-Subject: Re: [PATCH v1] vfio/pci: Avoid mapping BARs for devices with
- non-mappable BARs
-Message-ID: <20260803135415.2cfd37bb@shazbot.org>
-In-Reply-To: <c0e6803f-7e57-4dfa-a4cd-f2ee188070c8@linux.ibm.com>
-References: <20260729181116.1373-1-alifm@linux.ibm.com>
-	<e7b2da7b-2c70-46c2-9d07-6acc6949915e@linux.ibm.com>
-	<46fede14-a740-4d66-98b3-c840e03e8634@linux.ibm.com>
-	<20260729143603.175f60a7@shazbot.org>
-	<42a3b06d-ecaa-4339-9472-7c592694f877@linux.ibm.com>
-	<20260729155021.64f7e1ba@shazbot.org>
-	<c0e6803f-7e57-4dfa-a4cd-f2ee188070c8@linux.ibm.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H/Eu0aXF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785789447; x=1817325447;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=T2xeUIw/QjmeT0MG9ktXCkfmTgrNiOSpO2tTxiB/I0g=;
+  b=H/Eu0aXFw71wUiNnsTStAISxMSQ/6pYAkgn0ePK/iKAf0njrb9mLUGGv
+   xij+bSEobk6e0h6fK1fxqu79tuL7eKR+iAnw20hxv+I15oG2Hx/UCuKkk
+   pCqd0O9yhDriKlpcSycB9gJxBaPpJMiPYOR4Feam6dwzVVuOaeKLf1B7Z
+   wOGU269R4msMP0iUvxo5s3SdyIc608xn50JktYKMoUMJGjnWyOAhdgj8I
+   K42uUz+RV83fV5lDKfkhxJQanzO4xgf6sGBHBR/vz6tyMu0gAbb+mPW7g
+   52j9PBw93gQJ5Kzb6Kp+qfOZ6aj+87MtoAf0ZUaA6igtRORAhg+8Tl4SB
+   A==;
+X-CSE-ConnectionGUID: f5szpYUcQHqo+14vJMj7mw==
+X-CSE-MsgGUID: jPrNOePkTpupGfLT/1HjHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="73871980"
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="73871980"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 13:37:27 -0700
+X-CSE-ConnectionGUID: ZPvjF6IrRyysRwxwTqceDg==
+X-CSE-MsgGUID: E7orxtYyS0mlIacbXNZk2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="257428259"
+Received: from soc-cp83kr3.clients.intel.com (HELO [10.122.185.5]) ([10.122.185.5])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 13:37:26 -0700
+Message-ID: <da5eb9da-cac3-4304-a948-10ecaaab7524@intel.com>
+Date: Mon, 3 Aug 2026 15:37:25 -0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/15] KVM: x86/pmu: Emulate the GLOBAL_STATUS_SET and
+ GLOBAL_INUSE MSRs
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>,
+ Yang Weijiang <weijiang.yang@intel.com>
+References: <20260707183405.15571-1-zide.chen@intel.com>
+ <20260707183405.15571-11-zide.chen@intel.com>
+Content-Language: en-US
+From: "Chen, Zide" <zide.chen@intel.com>
+In-Reply-To: <20260707183405.15571-11-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 3 Aug 2026 09:39:19 -0700
-Farhan Ali <alifm@linux.ibm.com> wrote:
 
-> On 7/29/2026 2:50 PM, Alex Williamson wrote:
-> > On Wed, 29 Jul 2026 14:32:45 -0700
-> > Farhan Ali <alifm@linux.ibm.com> wrote:
-> >  
-> >> On 7/29/2026 1:36 PM, Alex Williamson wrote:  
-> >>> On Wed, 29 Jul 2026 13:28:46 -0700
-> >>> Farhan Ali <alifm@linux.ibm.com> wrote:
-> >>>     
-> >>>> On 7/29/2026 12:41 PM, Matthew Rosato wrote:  
-> >>>>> On 7/29/26 2:11 PM, Farhan Ali wrote:  
-> >>>>>> vfio_pci_core_map_bars() calls pci_iomap() to set up BAR resources, but not
-> >>>>>> all devices support having their BARs mapped by the CPU. The
-> >>>>>> non_mappable_bars flag indicates that a PCI device's BARs cannot be
-> >>>>>> accessed by the CPU. The ISM device on s390 is one such device. The BAR
-> >>>>>> size for an ISM device is 256 TiB, and attempting to map the BAR will lead
-> >>>>>> to warnings:
-> >>>>>>
-> >>>>>> vmalloc_node_range for size 281474976714752 failed: Address range
-> >>>>>> restricted to 0x2110bab00000 - 0x21903ab00000
-> >>>>>>
-> >>>>>> Use pdev->non_mappable_bars to skip pci_iomap() for such devices. This flag
-> >>>>>> is set by the PCI core at enumeration time and already serves the same
-> >>>>>> purpose in vfio_pci_probe_mmaps().
-> >>>>>>
-> >>>>>> Fixes: 05f2a68b407a ("vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()")
-> >>>>>> Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> >>>>>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> >>>>>> ---
-> >>>>>>     drivers/vfio/pci/vfio_pci_core.c | 3 +++
-> >>>>>>     1 file changed, 3 insertions(+)
-> >>>>>>
-> >>>>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> >>>>>> index 3f11a9624b9c..6a184588ff23 100644
-> >>>>>> --- a/drivers/vfio/pci/vfio_pci_core.c
-> >>>>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> >>>>>> @@ -554,6 +554,9 @@ static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
-> >>>>>>     
-> >>>>>>     		vdev->barmap[bar] = IOMEM_ERR_PTR(-ENODEV);
-> >>>>>>     
-> >>>>>> +		if (pdev->non_mappable_bars)
-> >>>>>> +			continue;
-> >>>>>> +  
-> >>>>> This would work for the ISM case at least, but I wonder: should we check
-> >>>>> vdev->bar_mmap_supported[bar] instead?
-> >>>>>
-> >>>>> My question boils down to: do we still want messages for some of the
-> >>>>> cases where we set vdev->bar_mmap_supported[bar] = false in
-> >>>>> vfio_pci_probe_mmaps()?  
-> >>>> AFAIU vfio_pci_probe_mmaps() is only called in
-> >>>> vfio_pci_core_finish_enable(). Since vfio_pci_core_map_bars() is called
-> >>>> in vfio_pci_core_enable(), and before vfio_pci_core_finish_enable(),
-> >>>> bar_mmap_supported would be false here for all devices. So I don't think
-> >>>> it would work here, unless I missed something?  
-> >>> Also IO Port and sub-page MMIO BARs are things that do exist.  Thanks,  
-> >> Just to clarify, are you suggesting we expand this check to also avoid
-> >> mapping IO port and sub-page MMIO BARs?  
-> > Sorry, no, I'm not.  I think we're conflating that the barmap is
-> > related to mmap access.  The barmap itself is holding the iomap of the
-> > BAR, used for read/write.  The only real relation to the mmap is that
-> > we request the resource via this path as well.
-> >
-> > Therefore not only is the ordering of setting up bar_mmap_supported
-> > wrong, it's flagging entirely the wrong thing here and keying on it
-> > would entirely break IO port and sub-page MMIO BAR access.  Thanks,
-> >
-> > Alex  
+
+On 7/7/2026 1:34 PM, Zide Chen wrote:
+> Intel PerfMon v4 introduces IA32_PERF_GLOBAL_STATUS_SET (0x391) to
+> allow software to set individual bits in the global status MSR. Reads
+> of IA32_PERF_GLOBAL_STATUS_SET always return zero.
 > 
-> Hi Alex,
+> IA32_PERF_GLOBAL_INUSE (0x392) is also introduced in v4, to track
+> which counters and the PMI are currently claimed by other agents,
+> allowing independent software agents to check counter availability
+> without a shared scheduler arbitrating between them.
 > 
-> I wanted some guidance on how we should proceed with this patch? The 
-> warning messages are a regression on s390 for ISM devices, so we would 
-> like to fix it.
+> IA32_PERF_GLOBAL_INUSE is an R/O MSR, and any write attempt results
+> in a #GP.
+> 
+> Neither MSR is part of the VM state, so they don't need to be
+> advertised to userspace, nor saved and restored during live
+> migration.
+> 
+> Originally-by: Yang Weijiang <weijiang.yang@intel.com>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+>  arch/x86/include/asm/msr-index.h |  4 ++++
+>  arch/x86/kvm/pmu.c               |  9 ++++++++
+>  arch/x86/kvm/vmx/pmu_intel.c     | 38 ++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/vmx/vmx.c           |  4 ++++
+>  4 files changed, 55 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+> index feee92aab504..46ca6b56628b 100644
+> --- a/arch/x86/include/asm/msr-index.h
+> +++ b/arch/x86/include/asm/msr-index.h
+> @@ -1241,6 +1241,10 @@
+>  #define MSR_CORE_PERF_GLOBAL_CTRL	0x0000038f
+>  #define MSR_CORE_PERF_GLOBAL_OVF_CTRL	0x00000390
+>  #define MSR_CORE_PERF_GLOBAL_STATUS_SET	0x00000391
+> +#define MSR_CORE_PERF_GLOBAL_INUSE	0x00000392
+> +
+> +/* Intel IA32_PERF_GLOBAL_INUSE MSR */
+> +#define PERF_GLOBAL_INUSE_PMI_INUSE	BIT_ULL(63)
+>  
+>  #define MSR_PERF_METRICS		0x00000329
+>  
+> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+> index bc2ca60114e9..7d58f7a2a2db 100644
+> --- a/arch/x86/kvm/pmu.c
+> +++ b/arch/x86/kvm/pmu.c
+> @@ -834,6 +834,8 @@ bool kvm_pmu_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
+>  	case MSR_CORE_PERF_GLOBAL_CTRL:
+>  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+>  		return kvm_pmu_has_perf_global_ctrl(vcpu_to_pmu(vcpu));
+> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> +		return vcpu_to_pmu(vcpu)->version > 3;
+>  	default:
+>  		break;
+>  	}
+> @@ -867,6 +869,7 @@ int kvm_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR:
+>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+>  	case MSR_CORE_PERF_GLOBAL_OVF_CTRL:
+> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+>  		msr_info->data = 0;
+>  		break;
+>  	default:
+> @@ -933,6 +936,12 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>  		if (!msr_info->host_initiated)
+>  			pmu->global_status &= ~data;
+>  		break;
+> +	case MSR_CORE_PERF_GLOBAL_STATUS_SET:
+> +		if (data & pmu->global_status_rsvd)
+> +			return 1;
+> +		if (!msr_info->host_initiated)
+> +			pmu->global_status |= data;
+> +		break;
+>  	case MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_SET:
+>  		if (!msr_info->host_initiated)
+>  			pmu->global_status |= data & ~pmu->global_status_rsvd;
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index 425f17aa9be2..cb6f9c272e03 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -205,6 +205,8 @@ static bool intel_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
+>  	switch (msr) {
+>  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
+>  		return kvm_pmu_has_perf_global_ctrl(pmu);
+> +	case MSR_CORE_PERF_GLOBAL_INUSE:
+> +		return pmu->version > 3;
+>  	case MSR_PERF_METRICS:
+>  		return kvm_vcpu_has_perf_metrics(vcpu);
+>  	case MSR_IA32_PEBS_ENABLE:
+> @@ -354,6 +356,40 @@ static bool intel_pmu_handle_lbr_msrs_access(struct kvm_vcpu *vcpu,
+>  	return true;
+>  }
+>  
+> +static int intel_pmu_get_global_inuse(struct kvm_vcpu *vcpu,
+> +				      struct msr_data *msr_info)
 
-I think the original proposal is probably the correct one.  The
-non_mmapable_bars flag doesn't restrict its application to specific BAR
-types or access, at least not beyond "can't be mapped to CPU or peers."
+Since intel_pmu_get_global_inuse() cannot realistically fail, returning
+an int solely to propagate 0 is unnecessary. Change it to return the
+emulated GLOBAL_INUSE value directly and remove the now-unused msr_info
+parameter.
 
-If we can't map the BAR to the CPU, then we don't need to request the
-region or perform the pci_iomap(), which is what I understand explodes
-here.  Therefore we really only need to establish the errno in the
-barmap here.
+> +{
+> +	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> +	unsigned long fixed_mask = kvm_fixed_pmc_mask(pmu);
+> +	unsigned long gp_mask = kvm_gp_pmc_mask(pmu);
+> +	bool pmi_inuse = false;
+> +	u32 fixed_ctrl;
+> +	u64 eventsel;
+> +	int i;
+> +
+> +	msr_info->data = 0;
+> +	kvm_for_each_set_pmc_idx(i, gp_mask, INTEL_GP) {
+> +		eventsel = pmu->gp_counters[i].eventsel;
+> +
+> +		if (eventsel & ARCH_PERFMON_EVENTSEL_EVENT)
+> +			msr_info->data |= BIT_ULL(i);
+> +		pmi_inuse |= eventsel & ARCH_PERFMON_EVENTSEL_INT;
+> +	}
+> +	kvm_for_each_set_pmc_idx(i, fixed_mask, INTEL_FIXED) {
+> +		fixed_ctrl = fixed_ctrl_field(pmu->fixed_ctr_ctrl, i);
+> +
+> +		if (fixed_ctrl & (INTEL_FIXED_0_KERNEL | INTEL_FIXED_0_USER))
+> +			msr_info->data |= BIT_ULL(KVM_FIXED_PMC_BASE_IDX + i);
+> +		pmi_inuse |= fixed_ctrl & INTEL_FIXED_0_ENABLE_PMI;
+> +	}
+> +	pmi_inuse |= pmu->pebs_enable;
+> +
+> +	if (pmi_inuse)
+> +		msr_info->data |= PERF_GLOBAL_INUSE_PMI_INUSE;
+> +
+> +	return 0;
+> +}
+> +
+>  static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>  {
+>  	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+> @@ -364,6 +400,8 @@ static int intel_pmu_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>  	case MSR_CORE_PERF_FIXED_CTR_CTRL:
+>  		msr_info->data = pmu->fixed_ctr_ctrl;
+>  		break;
+> +	case MSR_CORE_PERF_GLOBAL_INUSE:
+> +		return intel_pmu_get_global_inuse(vcpu, msr_info);
 
-The bar_mmap_supported flag describes something else, whether the BAR
-can be mapped into the user address space.  My intention was only to
-point out that there are BARs that cannot be mapped to the user address
-space because either they're not MMIO or we can't safely map the full
-page, therefore bar_mmap_supported is an invalid test for whether we
-should request the region or iomap the BAR.
+Additional benefit is to keep code style consistency:
 
-Is there still a gap with the original proposal that I'm missing?
-Thanks,
+               msr_info->data = intel_pmu_get_global_inuse(vcpu);
+               break;
 
-Alex
+>  	case MSR_PERF_METRICS:
+>  		msr_info->data = pmu->perf_metrics;
+>  		break;
