@@ -1,111 +1,207 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569DC64AA4
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 01:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2A61E0B9C;
+	Mon,  3 Aug 2026 01:33:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785720766; cv=none; b=NW5yLbcViN6xAWlhyiQWEoCiouVfI2O8VtugVCdNoYaHkad5Yapz5FU2LlipZ/1TrTeyPUOUZe5c49yNY8gqiGF8dGStt3fdY/G7zMBSR3KnxFhvuxku/yyqztCVdtgd1MByCXW9z9sTYmH6W0ah0gUkc5p9FUsGjyBwWrVQl6o=
+	t=1785720804; cv=none; b=ijFk42d+xR1AzPmPxElHirv89WwW6Ulhj96C6WYr9fqzQhde05CL3l/6Cdu9Mblr/rkps9/WeCCLta5JZUJw0H0bR3PhnXx82YIC4ubPipeIQsn633ZKzXAYv+B2xrBjWM1LI9xU+psSnPUSy2F8MOLbSplYHXUBBQutZ+7oYgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785720766; c=relaxed/simple;
-	bh=XgGSnrmiEplsuwdy9X5QAMWzJBtazd6Xs+YV0+ohndk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFs0WQwr/jJ33sjUhgTngvyjDbIamuY/W6fYl4ayyMZY1YX3HPvE1YcR6k282On4DO+tlh6Wzp0+O16SscxJMGKxAJTv8ujA4f4VrvvCuHe+l2eXLn/p2XVWsuT0mFhFW8JT4maLwVxpOFg9L8k9X5vxNIy1ui5GKQCf2ybqa+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=FBKt5gXL; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1785720804; c=relaxed/simple;
+	bh=7ITN1Zfnj0l7TX4s8QWERbygv5FfJNG4fyGt2cxZJsE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=d36ss/eOzqZLiVOFC+p1Omo/nuGlsIv4dofSOBkqaC76g0uKrEe9+tvMijXSjCFz+IwlsafKepe/+qWDlTNjYkPB4CL3jo+FlpeA2vFa4InYKJc+DoV8AW6kkOkrYZj+Hn5X1pN7PRnObuWs2h+9t+NcHS3YOu13HoyyvgCb8Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=IrrNy1Te; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="FBKt5gXL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:From:To:Cc:Subject:Date:
-	Message-ID:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=zyOoDT8YQTbXcnnqKnt2EmzdR1me4CRwRe
-	9zua4HSmM=; b=FBKt5gXLT1u3RNW1U4FFeNvI57xME8QW49VyRDDI6HWPjLhQZ/
-	fYbb3ufRsLGAz6muEkgJ6Kb7CDp6OdA0MAN2lywoU6ai+jEueTw3JXdFjA1bXsZu
-	OWMkOMJMY2dcTg3WJN+rx3SeWMUxcF2BR3sa0sSULJeaixdVQYTv819Fk=
-Received: from ur-dp1000 (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwDXEELF729qJA0WAA--.18137S2;
-	Mon, 03 Aug 2026 09:33:01 +0800 (CST)
-From: Xie Bo <xb@ultrarisc.com>
-To: kvm@vger.kernel.org
-Cc: will@kernel.org,
-	julien.thierry.kdev@gmail.com,
-	anup@brainfault.org,
-	Xie Bo <xb@ultrarisc.com>
-Subject: [PATCH kvmtool v2] virtio: 9p: Order used ring updates before notifications
-Date: Mon,  3 Aug 2026 09:32:26 +0800
-Message-ID: <20260803013226.333910-1-xb@ultrarisc.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <amzWlInb1rgkRy_4@google.com>
-References: <amzWlInb1rgkRy_4@google.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="IrrNy1Te"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=/ElVnH6G4rldSzqvkWtQlDELwbWC65DsBa935CdX90I=;
+	b=IrrNy1TeSFzMHgGn9EBDEGTdvrty/p2VhYuJSLdQZGHZKddYXkGof4FikGF8IcK8nEb4wdtKN
+	yAcNIeYBNDmxy3DDxVUnkRoGyy7oJ6KcDPxTODucoYwgjRis7JCpNwmElk+qUauaONBCP7zc/TA
+	CVeEzIK+gdzX7DfN0Xh0FH0=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hCzTR23LSz1prN4;
+	Mon,  3 Aug 2026 09:23:39 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1E48640575;
+	Mon,  3 Aug 2026 09:33:11 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 3 Aug 2026 09:33:02 +0800
+Message-ID: <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
+Date: Mon, 3 Aug 2026 09:33:02 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
+ dirty tracking
+To: Leonardo Bras <leo.bras@arm.com>
+CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
+	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
+	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
+References: <20260709104026.2612599-1-zhengtian10@huawei.com>
+ <20260709104026.2612599-4-zhengtian10@huawei.com>
+ <aliKo7dTZzKcWHzI@kernel.org>
+ <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
+ <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
+ <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
+ <amoZY8uGLf1PEpjK@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <amoZY8uGLf1PEpjK@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAfwDXEELF729qJA0WAA--.18137S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1xKw47XF1DtFy3GF4xCrg_yoW8AF13pF
-	WvkaySyr98WrnFq3WfGF48Wr17CwsxGry7Jr1Fg34UXr45XFs7AF1DK345tr1fW39Yqw1j
-	yrWvvFWqvayj9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv214x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r1j6r
-	4UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
-	026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
-	JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20x
-	vEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE
-	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa
-	7VUjiID7UUUUU==
-X-CM-SenderInfo: l0e63zxwud2x1vfou0bp/1tbiAQAFB2psG9MAEgACsd
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-virtio_p9_do_io() signals the guest immediately after adding each
-request to the used ring. Unlike the block and net backends, it bypasses
-virtio_queue__should_signal(), which provides the full memory barrier
-needed between publishing used->idx and injecting the interrupt.
 
-On weakly ordered architectures, the guest can therefore handle the
-interrupt before the updated used->idx becomes visible. If it observes
-the old index and goes back to sleep, the completed request can remain
-stuck indefinitely because no further interrupt is generated.
 
-This was observed on RISC-V with two 9p RPCs blocked while the host
-used->idx was two entries ahead of the guest's last_used_idx.
+On 7/29/2026 11:16 PM, Leonardo Bras wrote:
+> On Wed, Jul 29, 2026 at 04:51:59PM +0800, Tian Zheng wrote:
+>>
+>>
+>> On 7/20/2026 8:58 PM, Leonardo Bras wrote:
+>>> On Fri, Jul 17, 2026 at 04:21:32PM +0100, Leonardo Bras wrote:
+>>>> On Fri, Jul 17, 2026 at 11:58:06AM +0800, Tian Zheng wrote:
+>>>>>
+>>>>> On 7/16/2026 3:39 PM, Oliver Upton wrote:
+>>>>>> Hi Tian,
+>>>>>>
+>>>>>> On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+>>>>>>> -	if (prot & KVM_PGTABLE_PROT_W)
+>>>>>>> +	if (prot & KVM_PGTABLE_PROT_W) {
+>>>>>>>     		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>>>>>>
+>>>>>>> +		/*
+>>>>>>> +		 * No DEVICE filter needed here: relax_perms is only called
+>>>>>>> +		 * on FSC_PERM faults. Device pages always get full RW from
+>>>>>>> +		 * initial mapping and are never write-protected during
+>>>>>>> +		 * migration, so they never trigger a permission fault.
+>>>>>>> +		 */
+>>>>>>> +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
+>>>>>>> +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>> +	} else {
+>>>>>>> +		/*
+>>>>>>> +		 * Clear DBM on W→RO downgrade to prevent hardware from
+>>>>>>> +		 * silently upgrading RO+DBM back to W+dirty, which would
+>>>>>>> +		 * bypass KVM's write tracking and cause data corruption.
+>>>>>>> +		 */
+>>>>>>> +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>> +	}
+>>>>>>> +
+>>>>>> This block makes it pretty evident that the DBM bit really *is* the
+>>>>>> write permission bit. I'd much rather we introduce the concept of dirty
+>>>>>> state to the page table library and migrate the abstract write
+>>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
+>>>>>>
+>>>>
+>>>> Ohh, that's an amazing idea!
+>>>
+>>> Thinking about that again...
+>>> If we adopt the encoding with DBM being the write-permission bit, and all
+>>> PTEs have it since the start, how can we have lazy-splitting happening?
+>>>
+>>> Only way I think of is removing both DBM and S2_S2AP_W bit from writable
+>>> PTEs during dirty-track enable, and re-adding them during the first write
+>>> fault. If we don't remove the DBM bit, systems with HDBSS would just dirty
+>>> it by hardware, without causing a fault.
+>>>
+>>> DBM=0 would need to happen only in the first write-protect (only on
+>>> lazy-splitting). All other write-protecting would just clean the S2_S2AP_W
+>>> bit, as everything is already split.
+>>>
+>>> Is that what was intended?
+>>>
+>>> Thanks!
+>>> Leo
+>>>
+>> Hi Leo,
+>>
+>> I think the cleanest way to handle this is to simply avoid setting DBM
+>> on block mappings. If we only set DBM on page-level PTEs, then block
+>> mappings will naturally stay DBM=0 and trigger a write fault on first
+>> access — exactly what we need for lazy splitting.
+>>
+>> When the fault occurs, the block gets split into page-level PTEs, and at
+>> that point we can set DBM=1 on the resulting leaf entries. This way:
+>>
+>> 1. Lazy split works naturally (fault -> split -> set DBM=1)
+>>
+>> 2. No need to clear DBM globally at dirty-track enable
+>>
+>> 3. No special handling for block mappings
+>>
+>> So I think global DBM is still viable — we just need to filter out block
+>> mappings when setting the DBM bit. That way the lazy split path is preserved
+>> without extra complexity.
+> 
+> Hi Tian,
+> 
+> Humm, but would not that be contrary to what Oliver suggested: changing the
+> encoding from the PTE for all entries?
+> 
+> (Like, if the PTE is writable, it has to have DBM set)
+> 
+> IIUC what you said, on first faulting of the page in the VM:
+> - If the entry is a page (level-3 leaf) and writable, add DBM
+> - If it's a block entry (leaf but not a level-3), don't add DBM
+> 
+> So after we enable dirty-logging:
+> - a level-3 entry would not fault, using HDBSS, and
+> - a block entry would fault, do the splitting, and add DBM to level-3
+>    entries during the split.
+> 
+> If I got that correct, that would be clean indeed.
+> 
+> But then we would have a different encoding for block entries and page
+> entries. In page entries, DBM could be used to say if the page is writable,
+> but on block entries one would have to look at the 'dirty-bit'.
+> 
+> Would that be ok?
+> 
+> Thanks!
+> Leo
+> 
+Hi Leo,
 
-Process all available requests first, then use
-virtio_queue__should_signal() before notifying the guest. Besides
-providing the required ordering, this also honors the driver's
-notification suppression request.
+My initial concern was that clearing all DBM bits at the start of
+migration would be too expensive, so I thought distinguishing between
+level-3 entries and block entries would be better.
 
-Fixes: 1c7850f95903 ("kvm tools: Add virtio-9p")
-Signed-off-by: Xie Bo <xb@ultrarisc.com>
----
-Changes in v2:
-- Drop the completed flag and rely directly on
-  virtio_queue__should_signal(), as suggested by Will Deacon.
+However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
+turned out to be around 30ns — which I think is acceptable.
 
- virtio/9p.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+So I think we can go with your approach: simply clear DBM globally in
+kvm_arch_commit_memory_region() when dirty logging starts, before write-
+protecting the memslot.
 
-diff --git a/virtio/9p.c b/virtio/9p.c
-index e6f669c..100926a 100644
---- a/virtio/9p.c
-+++ b/virtio/9p.c
-@@ -1375,8 +1375,10 @@ static void virtio_p9_do_io(struct kvm *kvm, void *param)
- 
- 	while (virt_queue__available(vq)) {
- 		virtio_p9_do_io_request(kvm, job);
--		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
- 	}
-+
-+	if (virtio_queue__should_signal(vq))
-+		p9dev->vdev.ops->signal_vq(kvm, &p9dev->vdev, vq - p9dev->vqs);
- }
- 
- static u8 *get_config(struct kvm *kvm, void *dev)
--- 
-2.54.0
+```
+void kvm_arch_commit_memory_region(...)
+{
+     // ...
+     if (log_dirty_pages) {
+         if (change == KVM_MR_DELETE)
+             return;
 
+         kvm_mmu_clear_dbm_memory_region(kvm, new->id);
+         // ...
+     }
+     // ...
+}
+```
+
+Thanks!
+Tian
