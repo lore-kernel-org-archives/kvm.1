@@ -1,134 +1,97 @@
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFAB40F8ED
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 15:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958CE3B994A;
+	Mon,  3 Aug 2026 15:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769424; cv=none; b=D1/HAwYMi+S5mjP6vlX4Kb81ydps1Fd/YpclfDR9p9TqBASul2sDsakiCq28+UmGQ99bwt967BcolVYBG6nVPxVykvBTebIRTZ5/P0tqDzppZoJ8nndJEC0O8mGge9ew27vNa5Erp38hSfZY+5glmw9OCQGCNJ2tWdSN05uX1m8=
+	t=1785769597; cv=none; b=FFD/KVjq2ZheESAtJqIcB6fk28FmNbYNX3GG7mjksDlAlmtlehwoV4xNfvRZnMGdvc9YisJUQLLEn/aA1+BtgywgocvpwP3Y96rqO7hCejIxAN19MAy9CmkyzjuV5ZEgdZr0gI7sPUFlX1Jnh655NTkLuteaeSSEcCXIBwW6FqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769424; c=relaxed/simple;
-	bh=xpuun2FpwKl9xPy2b0ojl3YaE6k3z96AypSR1+LJ1mM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e5w3PursMrkp31KTM/Nks0VCX0VRG7ir7kklUDaAt9EtFGfpdqNoDixmtN0brbpAtUcOwOOdMk/tfWsQwiFKMhnSGeoyM4JRMihjVKq9uNHxDTlVtJDmTKyWMoFwXBc//QmuYAGDhepbaF9H6SSROOvdTgsQnHVCFhfPOp0tV6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NwgDxCAO; arc=none smtp.client-ip=209.85.210.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785769597; c=relaxed/simple;
+	bh=AKHk4mlXMEmidkB6mplFPKFhKVxhdwJ+1dQAEJAtyyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DBan0kYiTWzd7IyhKvZhAlsKSewQbPfpQ5Hj+SUSaV7sZyJUT50P2z1pq5hfKMh4Lozk2WkgYoQrcqREgi7BAnvLRNjSwJ/vveOyTKZ2ewk7OD74/9Tk9H5HZScbZkFqTuga/LrgOpommiTdHZyozMlQqRruzNQ+WsC84x9XAc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=BNQDBx3n; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NwgDxCAO"
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84857446424so6671395b3a.1
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 08:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785769422; x=1786374222; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kpmlhPaZ29dFNT38yqO3kihwGUlr59oo46zK4tKVuxM=;
-        b=NwgDxCAOP/Xtj8kYIjHtm6DbddQCtB92rxY3XZFV546upM9mp6NbsBf/OhR0+ElIny
-         F+2Zt9cfHVO5hVNYxXdXfA53A3ZkIr+BBjkSbBSt1dfLuLhXm9JsOiOpGGhbypYcS1nU
-         gxf6DtDemW0fLSSRPCtYHtFRbViRbT/DJ/tWusGe1eeILGOqWrmbe3aGO4Ri+pnd7O/N
-         TiNu3TUQZP78ygRPv3CkdOYfJ4URivnbfsPBpsUHbYoquTwi6AyQV13iBlUcFnCqykcN
-         6m5IfnXtHqnJgo9UZnFH3MFMAavHS+RUUeCzSCjV7fY/qurLk3V/Vo+L4UE2gOTGBfqu
-         5FHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785769422; x=1786374222;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kpmlhPaZ29dFNT38yqO3kihwGUlr59oo46zK4tKVuxM=;
-        b=fD5hRsxr3391IKuxmVDRVMLS3nFliiRbHdYlvdV5sY5/KZrpeGTnP20bKbu53C+QJw
-         7vhST1UgbljJ0vPzwW0KPK3ar0BocWWeyA9KMSGjg6FA8qkoeAdVwyUjZ5Vg8D0mB4vr
-         hC7ND3NCcbuklI63GhfzVbaGxc0vPzVuVsoox8E/jOgm13SegvsXlTsO+Rkfqd7can/v
-         EVNXNgI+VQJ0vKqPfXFo5MsUdvpXOC7SNg+GzVmmm+pZsvT/WEroEJfmiMv+5fzDjT44
-         vJY1Cbt0AY6TG8FldUtX+d19P3FYq/uMc6+nyLdom1Yr/cgtnDVrdtCBLNBmchHHDcmJ
-         MRnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpP1C2jhTmJhwaUvzDs/JxRWkK7Ecvw7l+Wzzl5f6ITLR8MFC8VWhww9u1uDr4KmbPFMAs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLWxVSYfbBy3UaaIYc6Bn9zucS036SKLMWjjrB7SOQLBqSVbku
-	j4xAGGJssLoUwv/e60PZ86yfTlQ+HGbBqhBwZVCMyc9M2P+/m/7omZTTpurWVmP+ADD3L90DboX
-	X/2kyQA==
-X-Received: from pfbki10.prod.google.com ([2002:a05:6a00:948a:b0:847:7765:a4c3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f08:b0:84e:d51d:86c9
- with SMTP id d2e1a72fcca58-84ee490ac84mr9200662b3a.44.1785769421725; Mon, 03
- Aug 2026 08:03:41 -0700 (PDT)
-Date: Mon, 3 Aug 2026 08:03:41 -0700
-In-Reply-To: <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="BNQDBx3n"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9A164143D;
+	Mon,  3 Aug 2026 08:06:30 -0700 (PDT)
+Received: from [10.1.25.28] (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E09E3F66F;
+	Mon,  3 Aug 2026 08:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785769594; bh=AKHk4mlXMEmidkB6mplFPKFhKVxhdwJ+1dQAEJAtyyY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BNQDBx3nISccFEihc91rkcvYVRSDUBe855HEni/Md3KgHmB0IcddGK1GnAbb/YQzG
+	 LC+n0k7cgO8GvGUmlv5JUbQ+ygUMmMUFvBKVlL7+rNiWOlx3HOAy/qxy9y7e2IryaV
+	 3E4AOCSx5ZHoMYwI6fYIZ99a5Rc2CBlcf1PbOxS4=
+Message-ID: <57225daf-4319-406a-8328-e32835e8a980@arm.com>
+Date: Mon, 3 Aug 2026 16:06:24 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
- <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
- <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
- <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
-Message-ID: <anCtzQrUkFSSq8De@google.com>
-Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-From: Sean Christopherson <seanjc@google.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ James Morse <james.morse@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, "Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <86y0enb64s.wl-maz@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <86y0enb64s.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 31, 2026, David Hildenbrand (Arm) wrote:
-> I sent a fix for the GUP code that always makes us drain right now:
+On 03/08/2026 16:01, Marc Zyngier wrote:
+> On Mon, 03 Aug 2026 14:43:16 +0100,
+> Steven Price <steven.price@arm.com> wrote:
+>>
+>> This series is based on the guest_memfd in-place conversion v9 tree[1],
+>> which is itself based on kvm-x86/next. It is also available as a git
+>> repository:
 > 
-> https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
+> Well done. Series on top of another random series, based on a random
+> tree. Unusable. Have you realised there are reasons why we (KVM/arm64)
+> ask people to base their series on a *released* tag from Linus' tree?
+> This means that Sashiko cannot, once again, provide any feedback on
+> this series, as it fails to apply.
 > 
-> Would the following (agains mm-unstable + fix) work for you?
+> Just to avoid any ambiguity: Sashiko reviews, as annoying as they are,
+> are not optional. They are very much mandatory, and I wish I could
+> turn back the clocks to run it on my own code...
 > 
-> 
-> I assume that you'd have to call it as
-> 
-> 	lru_cache_drain_for_folio(folio, 0, NULL);
-> 
-> But maybe there are indeed extra references that are not reflected in
-> folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
-> there would be a problem.
-> 
-> There is a small problem for merging:
-> 
-> (1) The patch depends on the fix.
-> 
-> (2) mm/swap.c was moved to mm/folio.c in the mm tree.
-> 
-> We could write what I have below against Linus' tree and have the conflict be
-> resolved when merging. Topic branches are unfortunately not yet a thing in MM
-> land.
+> Running it on your own is not enough, because *I* want to see what the
+> tool finds. Not to mention that non-Gemini runs of sashiko are much
+> less interesting (unsurprisingly).
 
-Are you expecting the aforementioned fix to land in 7.2, 7.3, or 7.4?  If it's
-7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where the fix
-will presumably land soonish), and target 7.4 for in-place conversion.  Then v10
-can be applied against an early 7.3-rcN and we don't need to juggle branches
-(assuming Andrew is ok taking the proposed patch through the KVM tree).
+Sorry, but I'm not sure what you expect me to do - clearly I want to
+base my changes on top of the guest_memfd series which is being worked
+on and not just ignore that work. So I've based my changes on top of the
+tree that Ackerley published.
 
-Irrespective of this small mm issue, it's getting a bit too late in the 7.3 cycle
-to land the in-place series, and we need to address Xiaoyao's comments, i.e. v10
-is going to be necessary no matter what.
+I'm certainly not trying to avoid the Sashiko reviews - it's a rather
+unfortunate limitation of the public tool that it doesn't seem to be
+able to deal with these dependencies. Or is there some magic that I can
+do to fix this?
+
+Thanks,
+Steve
+
