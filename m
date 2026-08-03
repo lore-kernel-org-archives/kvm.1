@@ -1,153 +1,259 @@
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56DA3859D7
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 13:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F194A3BFACC;
+	Mon,  3 Aug 2026 13:44:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785764459; cv=none; b=KCUj7JavK3Q5HCjIcUl5slQtGZ6E/PU1aQ42RqzIpYnsuBSQLJxIgxtzh1ATrL7ZoF6QnshRP1lE1CJGv/JjkGOV5pp5jFFIVcWh04XIzm1z9rZ3z2+hYDeR7pnQSeutzhrQafxcUwVhGUgJUjmRFNQAo/wJbqQRmJZh3EOYthQ=
+	t=1785764661; cv=none; b=iji9SbflUPbYnJaCLe5bmSL4y05lWFMh4pD2qUrS8DP9Ufwq+Z8MtXN2Qi+eTqCkD/AJjRqBCPGqGGpuhFvwVPLNhpm0E0r0qzchjl145UM1lLnFFwcgbZWgkKlw5fOQFV16npJawulwFm0cYIeBvtuvH3Jbg2bTbDu90S1Mso8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785764459; c=relaxed/simple;
-	bh=rY2g8///6Z3SBkyz4tupoNnDNJ74RHWhu0kftawIifg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LG9z88RlDzFsrm1MzAkJ3SgQyhupgErJADP9WM8WbHPDVwQNV2c9C+YX68LreVpCc2iYTjXB38sSHrosievxAMqbX3ipjuQM+iiZjHlMI9lacsKK8UNLuMEEk51pOayJMrlllEVnM9OTq4EEEXMQj4kVbu3qgF7i2gab6pdGPFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SQHHcViV; arc=none smtp.client-ip=209.85.214.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785764661; c=relaxed/simple;
+	bh=7gDW+1efL7RasAqDrD/fMjJ3ytid+vo61xlhqQvvQxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MNVHZw+vuuMWu+1aBnEzcKroVEy3NEjFSjch/stU1gNLIFU2fPB5AZ4Y/VjfusKXqSjAJ5oaAcW/1OiCn17emYBMMIRh7fRMjyBMHbJO25i3SjlWeCtYLXDuk6YVCzj3oQ7VUhnwrijpcZ9hNnGamZ4066zGIbCTNrPSmJO++so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=JzYmqgjX; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SQHHcViV"
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cee1ec30f2so38837475ad.3
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 06:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785764457; x=1786369257; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=Pw/rx9SP+mM7O539KcUF3r0TBZVycpjXm5LE9RCSGg0=;
-        b=SQHHcViVFidPeEvFTLn9e2ao2Kgn31ShLAVrbsX6s5qcXRhmh8o/VYyqQ9DdK5Bi/9
-         ItDmbqzpnx1M/3gF+kQAucobAX5PdacfyT0d/jd4g2DQrgYZOuPIdidVKBCXl27I3qnb
-         B/jlyfG1n/WqvBIOJzlrwz02lAZKG/EI6EcMnS7NmrRKbkYtFhkUTWLWDnKh+wTKmPPE
-         fUAiMUf0btWjSTJB8fPknlerA3ri7ftQCdY8gcn+JQl529ll/GHFZk8insfZ4PzWQBFk
-         nLdPdwvGrFyL1fjuKGiuwdK+T2DM+LlbJ53bYRKnMG7YdqP9p/L77IuCfun+oOR7jMKR
-         /P1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785764457; x=1786369257;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Pw/rx9SP+mM7O539KcUF3r0TBZVycpjXm5LE9RCSGg0=;
-        b=dZttWM+vMGMWLrNpD112kbX216AbyGv+gCvFO8tsy+pWeT7B6Rn3NA59hu2GZqtGd0
-         VZ1eaKjmjP/BtsHN+MSwDiKBHn/IoQqGVytV8g+Gq/ISePPHW/LiO7t3XsF6Llo0lLiP
-         +SqOjp9n1e8raElqktjQ99Ss8Y1WVgUbH34L9Glo7BOJijq1J0B17WN+1I4JXSA2mi9t
-         WqD99uxCGCaEooWkVXwNhrKvd6NzwVPWuC0o13X8rTbnuQP1UlNJl1UztWN8z6IHXYpC
-         AeM3gsgj40uhWkFhb8eupjI8HaI80tVw+VMzp0FNzZ1bHfn1e9Ldf7NEBRLA6j6uqvxJ
-         09SQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rql1izvbiEI55TRrOiZxjyCxj62/Uz5wwyR113OBO51PnzGC5/MBBQbKvSi/tJih+GSMNA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiqgtHMeX0+D9Yqdi/icbkc1Bpd80qjdV6xE/0l9mGOOH4zv+c
-	HVf8xirFGl9i5ZLPPQGe/XAc17NiwrD77PseOaGIdndhGOE0aw2fl5SXzTfyfR2xw10EWIgOwtX
-	8Resslg==
-X-Received: from plsd7.prod.google.com ([2002:a17:902:b707:b0:2cf:ee73:1d9d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc3:b0:2ca:2079:91cc
- with SMTP id d9443c01a7336-2d052188c55mr109393695ad.5.1785764456738; Mon, 03
- Aug 2026 06:40:56 -0700 (PDT)
-Date: Mon, 3 Aug 2026 06:40:53 -0700
-In-Reply-To: <CABgObfZ5sPgfJz-_reACs5WkjRRkdNuinfY+nSrdHvG5xSiKUA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="JzYmqgjX"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BC95143D;
+	Mon,  3 Aug 2026 06:44:14 -0700 (PDT)
+Received: from e122027.cambridge.arm.com (e122027.cambridge.arm.com [10.1.25.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0FC3E3F66F;
+	Mon,  3 Aug 2026 06:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785764658; bh=7gDW+1efL7RasAqDrD/fMjJ3ytid+vo61xlhqQvvQxY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JzYmqgjX4z3WBvr551f3ponsOq2UHT+MJAzIJbxuW9HArmH9jX63DI9MDTXt8+TSn
+	 B4UAqam71tvGl3zyKAkzuGjrWNxGBXgGxn0H9Bc6pP2ZJ7lsmUxPt0uzXsXciYaeUJ
+	 /IiKlSXoxqNGznnI6sZddBn7leHog3gPYcWDPESM=
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+Subject: [PATCH v16 00/45] arm64: Support for Arm CCA in KVM
+Date: Mon,  3 Aug 2026 14:43:16 +0100
+Message-ID: <20260803134403.80630-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260731175834.1121005-1-pbonzini@redhat.com> <amztmWhHXUR4zBv1@google.com>
- <CABgObfZ5sPgfJz-_reACs5WkjRRkdNuinfY+nSrdHvG5xSiKUA@mail.gmail.com>
-Message-ID: <anCZoc65i2xXNQgO@google.com>
-Subject: Re: [PATCH] kvm: apply VM_READ/VM_WRITE checks to all VMA types
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 03, 2026, Paolo Bonzini wrote:
-> On Fri, Jul 31, 2026 at 8:46=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > > * if the PTE is present, follow_pfnmap_start() sets args.writable to
-> > >   false and KVM_PFN_ERR_RO_FAULT is returned;
-> > >
-> > > * if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
-> > >   -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
-> > >   up returning KVM_PFN_ERR_FAULT.
-> > >
-> > > With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.
-> >
-> > IMO, returning KVM_PFN_ERR_RO_FAULT on a read-only VMA is wrong.  AFAIC=
-T, that
-> > behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM: do =
-not assume
-> > PTE is writable after follow_pfn").  Given that that's the only case wh=
-ere KVM
-> > returns KVM_PFN_ERR_RO_FAULT, I would much prefer to fix that wart and =
-cross our
-> > fingers nothing has come to rely on the behavior in the last ~5 years.
->=20
-> We can try, but I'd rather not do that in stable releases (while this
-> patch would be applied there, as a first step towards fixing the DRM
-> issue that Sergio reported=20
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA), including the firmware
+support needed to communicate with the Realm Management Monitor (RMM).
 
-I don't see how this would help with fixup_user_fault() not actually fixing=
- a
-fault.  Neither returning -EFAULT nor emulating is correct KVM behavior.
+For v15 the series was split into a 6-patch generic firmware/RMM series
+and a 37-patch KVM series. The two parts are combined again for v16, as
+requested to allow the complete stack to be tested by Sashiko as a
+single series.
 
-> - it avoids the sashiko issue reported for
-> https://lore.kernel.org/r/20260731160514.1101989-1-pbonzini%40redhat.com/=
-).
+The first six patches add the generic firmware layer for talking to the
+RMM, as specified by version 2.0-bet2 of the RMM specification[0]. They
+provide the RMI definitions and wrappers, discover and configure the
+RMM, implement Stateful RMI Operations (SROs), and ensure that the RMM
+has GPT entries for host memory. The remaining patches add the KVM
+support needed to create, populate and run Realm VMs.
 
-But the issue Sashiko reported is just saying that KVM sometimes does what =
-I'm
-saying KVM should do all the time: return -EFAULT.  Or did I misunderstand =
-that
-one too? :-)
+Note that RMM v2.0 Beta 3 specification should be published soon. The
+changes introduced in that are minor and I expect this series to be
+largely compatible with the new spec.
 
-> > > For regular mappings a PROT_READ VMA, if placed in a writable memslot=
-,
-> > > would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-> > > the guest writes to it.  This would cause a -EFAULT exit to userspace=
-,
-> > > instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
-> >
-> > No, arm64 is checking the memslot, not the VMA.
-> >
-> >         hva =3D gfn_to_hva_memslot_prot(memslot, gfn, &writable);
-> >         write_fault =3D kvm_is_write_fault(vcpu);
-> >         if (kvm_is_error_hva(hva) || (write_fault && !writable)) {
-> >
-> > Or are you talking about different code?
->=20
-> I am talking about the "arm" of the if/else if/else. :)
+The RMM v2.0 specification introduces SROs, which allow the RMM to
+complete an operation over several SMC calls while requesting or
+returning memory to the host. This allows interrupts to be handled in
+the middle of an operation and lets the RMM dynamically allocate memory
+for internal tracking purposes. For example, RMI_REC_CREATE no longer
+needs auxiliary granules to be provided up front, and can instead
+request memory during the operation.
 
-LOL, overthought that one a bit.
+The main changes since v15 are:
 
-> >
-> >         /*
-> >          * GUP failed.  It could be an inaccessible mapping, a pfnmap o=
-ne,
-> >          * or the page might be absent.
-> >          */
-> >         if (vma =3D=3D NULL || unlikely(!(vma->vm_flags & VM_READ)) ||
-> >             ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM=
-_WRITE)))) {
-> >                 pfn =3D KVM_PFN_ERR_FAULT;
-> >         } else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-> >                 r =3D hva_to_pfn_remapped(vma, kfp, &pfn);
-> >                 if (r =3D=3D -EAGAIN)
-> >                         goto retry;
-> >                 if (r < 0)
-> >                         pfn =3D KVM_PFN_ERR_FAULT;
-> >         } else {
-> >                 pfn =3D kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO=
- :
-> >                                                  KVM_PFN_ERR_FAULT;
-> >         }
->=20
-> Yes, but I'd do that only in 7.3.
+ * Recombine the firmware/RMM and KVM portions into one series. The
+   Realm-specific RMI wrappers remain separate from the generic
+   firmware wrappers, in a new KVM patch.
+
+ * Rewrite Realm entry and exit handling to fit into the generic KVM
+   run loop. Work which cannot be performed in the entry path is now
+   completed through KVM requests, and MMIO, PSCI, RIPAS changes and
+   host calls are adapted to the new flow.
+
+ * Rewrite Realm timer support to use KVM's IRQ-ops infrastructure and
+   software resampling.
+
+ * Improve SRO cancellation and error handling. Ensure a cancelled
+   operation isn't treated as successful, wrapper return values can carry
+   negative Linux errors as well as RMI return values, and those errors
+   are propagated through the KVM users.
+
+ * Check that the RMM supports the host page size before configuring it,
+   and exclude firmware-reserved NOMAP memory when creating GPT entries.
+
+ * Expand the KVM_ARM_RMI_POPULATE documentation to make clear that Arm
+   CCA cannot preserve memory contents during an in-place
+   shared-to-private conversion.
+
+ * Allocate Realm parameters only while creating the Realm descriptor.
+
+ * Document the encoding of the arm64 VM types and require
+   ICH_HCR_EL2.TDIR before advertising or creating Realm VMs.
+
+This series is based on the guest_memfd in-place conversion v9 tree[1],
+which is itself based on kvm-x86/next. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v16
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v13
+
+The TF-RMM branch used for testing this series is available here:
+
+https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_3
+
+There is a kvm-unit-test branch updated to support the attestation used
+in RMM v2.0 available here:
+
+https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+
+[0] https://developer.arm.com/documentation/den0137/2-0bet2/
+One bet2 change, which moves metadata out of the individual address
+range descriptors, has intentionally not been implemented because that
+part of the specification is expected to be reverted.
+
+[1] https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v9
+
+Jean-Philippe Brucker (6):
+  KVM: arm64: CCA: Propagate breakpoint and watchpoint counts to
+    userspace
+  KVM: arm64: CCA: Set breakpoint parameters through SET_ONE_REG
+  KVM: arm64: CCA: Propagate max SVE vector length from the RMM
+  KVM: arm64: CCA: Configure max SVE vector length for a Realm
+  KVM: arm64: CCA: Provide register list for unfinalized RECs
+  KVM: arm64: CCA: Provide an accurate register list
+
+Joey Gouly (2):
+  KVM: arm64: CCA: Allow userspace to inject aborts
+  KVM: arm64: CCA: Support RSI_HOST_CALL
+
+Steven Price (34):
+  firmware: arm_rmm: Add SMC definitions for calling the RMM
+  firmware: arm_rmm: Add wrappers for direct RMI calls
+  firmware: arm_rmm: Check for RMI support at init
+  firmware: arm_rmm: Configure the RMM with the host's page size
+  firmware: arm_rmm: Add support for SRO
+  firmware: arm_rmm: Ensure the RMM has GPT entries for memory
+  arm64: mm: Handle Granule Protection Faults (GPFs)
+  KVM: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+  KVM: arm64: CCA: Add wrappers for realm related RMIs
+  KVM: arm64: CCA: Check for RMI support at KVM init
+  KVM: arm64: CCA: Check for LPA2 support
+  KVM: arm64: CCA: Define the user ABI
+  KVM: arm64: CCA: Add basic infrastructure for creating a realm
+  KVM: arm64: CCA: Allow passing the machine type in KVM creation
+  KVM: arm64: CCA: Tear down RTTs
+  KVM: arm64: CCA: Allocate and free RECs to match vCPUs
+  KVM: arm64: CCA: Support the VGIC in realms
+  KVM: arm64: CCA: Support timers in realm RECs
+  KVM: arm64: CCA: Handle realm enter/exit
+  KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+  KVM: arm64: CCA: Handle realm MMIO emulation
+  KVM: arm64: Expose support for private memory
+  KVM: arm64: CCA: Create the realm descriptor
+  KVM: arm64: CCA: Activate realms on first vCPU run
+  KVM: arm64: CCA: Allow populating initial contents
+  KVM: arm64: CCA: Set RIPAS of initial memslots
+  KVM: arm64: CCA: Support runtime faulting of memory
+  KVM: arm64: CCA: Handle realm vCPU load
+  KVM: arm64: CCA: Validate register access for Realm VMs
+  KVM: arm64: CCA: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  KVM: arm64: CCA: Prevent Device mappings for realms
+  KVM: arm64: CCA: Require ICH_HCR_EL2.TDIR for realms
+  KVM: arm64: CCA: Enable realms to be created
+
+Suzuki K Poulose (3):
+  KVM: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  KVM: arm64: CCA: Don't expose unsupported capabilities for realm
+    guests
+  KVM: arm64: CCA: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |   70 +-
+ arch/arm64/Kconfig                   |    1 +
+ arch/arm64/include/asm/kvm_asm.h     |    2 +
+ arch/arm64/include/asm/kvm_emulate.h |   37 +
+ arch/arm64/include/asm/kvm_host.h    |   12 +-
+ arch/arm64/include/asm/kvm_pgtable.h |    6 +-
+ arch/arm64/include/asm/kvm_pkvm.h    |    2 +-
+ arch/arm64/include/asm/kvm_rmi.h     |  139 +++
+ arch/arm64/include/asm/rmi_cmds.h    |  465 ++++++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/kernel/cpufeature.c       |    1 +
+ arch/arm64/kvm/Kconfig               |    2 +
+ arch/arm64/kvm/Makefile              |    2 +-
+ arch/arm64/kvm/arch_timer.c          |   34 +-
+ arch/arm64/kvm/arm.c                 |  139 ++-
+ arch/arm64/kvm/guest.c               |   93 +-
+ arch/arm64/kvm/handle_exit.c         |   14 +
+ arch/arm64/kvm/hyp/pgtable.c         |    1 +
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    5 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  144 ++-
+ arch/arm64/kvm/reset.c               |   13 +-
+ arch/arm64/kvm/rmi-exit.c            |  178 +++
+ arch/arm64/kvm/rmi.c                 | 1561 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   47 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/mm/fault.c                |   28 +-
+ drivers/firmware/Kconfig             |    1 +
+ drivers/firmware/Makefile            |    1 +
+ drivers/firmware/arm_rmm/Kconfig     |   26 +
+ drivers/firmware/arm_rmm/Makefile    |    2 +
+ drivers/firmware/arm_rmm/rmi.c       |  776 +++++++++++++
+ include/kvm/arm_psci.h               |    2 +
+ include/linux/arm-rmi-cmds.h         |  201 ++++
+ include/linux/arm-smccc-rmi.h        |  493 ++++++++
+ include/uapi/linux/kvm.h             |   20 +-
+ 37 files changed, 4446 insertions(+), 95 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/kvm/rmi-exit.c
+ create mode 100644 arch/arm64/kvm/rmi.c
+ create mode 100644 drivers/firmware/arm_rmm/Kconfig
+ create mode 100644 drivers/firmware/arm_rmm/Makefile
+ create mode 100644 drivers/firmware/arm_rmm/rmi.c
+ create mode 100644 include/linux/arm-rmi-cmds.h
+ create mode 100644 include/linux/arm-smccc-rmi.h
+
+-- 
+2.43.0
+
