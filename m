@@ -1,184 +1,134 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBDA40BCA7;
-	Mon,  3 Aug 2026 15:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFAB40F8ED
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 15:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769410; cv=none; b=scsoRoV7UWhlK1fOfhNLWWbRDBrvTzfPDp8gyGGqrjFOMaf5Kap84nh2wUU8I4xGGgjcubsWPQDthBfAxaMJOpD0OJ8iAaGL/ZdYyxGhLDm/vRS+A//U3bJ6N73n9/3AzSCTE2h/tOtTq5s6wet/po5Cdgv/fRw0S+nk7mrFq1o=
+	t=1785769424; cv=none; b=D1/HAwYMi+S5mjP6vlX4Kb81ydps1Fd/YpclfDR9p9TqBASul2sDsakiCq28+UmGQ99bwt967BcolVYBG6nVPxVykvBTebIRTZ5/P0tqDzppZoJ8nndJEC0O8mGge9ew27vNa5Erp38hSfZY+5glmw9OCQGCNJ2tWdSN05uX1m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769410; c=relaxed/simple;
-	bh=PvkVr1SgPJ14lvpOe68PBhfEwunl/Wvt2IYZZN6Wk6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I5g/TNJ8OuCTXHVTnmXp/LRy8VgQgIBdHawKiOGqSV0edl69cxTSsyCxqX7+VU+hqB2NzBOq0EDflqK7l8Aa1v/GrvWx65E/m4rlbETVWWcCPYSJgZ43EXlcE6Qu0dtLy4hiBDB0dkH/QX8HJzjP/1z8ZYiUqiP/zCj+I+qV1DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nj3QCB0a; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785769424; c=relaxed/simple;
+	bh=xpuun2FpwKl9xPy2b0ojl3YaE6k3z96AypSR1+LJ1mM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=e5w3PursMrkp31KTM/Nks0VCX0VRG7ir7kklUDaAt9EtFGfpdqNoDixmtN0brbpAtUcOwOOdMk/tfWsQwiFKMhnSGeoyM4JRMihjVKq9uNHxDTlVtJDmTKyWMoFwXBc//QmuYAGDhepbaF9H6SSROOvdTgsQnHVCFhfPOp0tV6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NwgDxCAO; arc=none smtp.client-ip=209.85.210.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nj3QCB0a"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673EHxhd2341751;
-	Mon, 3 Aug 2026 15:03:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pkxgNw
-	1PuQuxqL2ET6CnD7bjNjpCRxSD/yOBVYvDH+Q=; b=nj3QCB0al51aG+feu2hN9r
-	LnD2XWkQoT3PdRhljA0AiEmhAEpgNtR9+FX9hdyYDXwIZ1ey8Zddktoysq+KRAIy
-	E8Rmn/B08q2HJmJ1rbHO1ilUWPp84Ihj5bfKr3UHWLaa7kzp3+R97PFZBfQQLEdC
-	qkKZ6uqOpXO/6TirnOH7n5GBmoaTl0vgEZq4CIH3WT/UkstCxK49h5N+VnxtNEWz
-	9aHlLpyGfeBlgieNxrWQs4ng4r+F1QIwo22MQXwEipxK7Ao1pau2TV60DEMHAPDX
-	aKykqPpsv28HUYu6TT9FRfK5DAh9NqGmKHxLf+pCIXkvfYtLnnXx420b1/Mhbx6w
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8euh2ey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 15:03:23 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673EuFi7014625;
-	Mon, 3 Aug 2026 15:03:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbg5pw8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 15:03:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673F3HX131457550
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 15:03:17 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C3EB20049;
-	Mon,  3 Aug 2026 15:03:17 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9E212004B;
-	Mon,  3 Aug 2026 15:03:16 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.224.75.30])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon,  3 Aug 2026 15:03:16 +0000 (GMT)
-Date: Mon, 3 Aug 2026 17:03:14 +0200
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: Janosch Frank <frankja@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com, david@kernel.org,
-        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
-        gra@linux.ibm.com
-Subject: Re: [PATCH v8 05/13] KVM: s390: ucontrol: Fix sca_clear_ext_call()
-Message-ID: <20260803170314.1a1f49b8@p-imbrenda>
-In-Reply-To: <8209fdba-9947-42e2-b124-81adf3419f15@linux.ibm.com>
-References: <20260803124040.126471-1-imbrenda@linux.ibm.com>
-	<20260803124040.126471-6-imbrenda@linux.ibm.com>
-	<8209fdba-9947-42e2-b124-81adf3419f15@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NwgDxCAO"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-84857446424so6671395b3a.1
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 08:03:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785769422; x=1786374222; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kpmlhPaZ29dFNT38yqO3kihwGUlr59oo46zK4tKVuxM=;
+        b=NwgDxCAOP/Xtj8kYIjHtm6DbddQCtB92rxY3XZFV546upM9mp6NbsBf/OhR0+ElIny
+         F+2Zt9cfHVO5hVNYxXdXfA53A3ZkIr+BBjkSbBSt1dfLuLhXm9JsOiOpGGhbypYcS1nU
+         gxf6DtDemW0fLSSRPCtYHtFRbViRbT/DJ/tWusGe1eeILGOqWrmbe3aGO4Ri+pnd7O/N
+         TiNu3TUQZP78ygRPv3CkdOYfJ4URivnbfsPBpsUHbYoquTwi6AyQV13iBlUcFnCqykcN
+         6m5IfnXtHqnJgo9UZnFH3MFMAavHS+RUUeCzSCjV7fY/qurLk3V/Vo+L4UE2gOTGBfqu
+         5FHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785769422; x=1786374222;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kpmlhPaZ29dFNT38yqO3kihwGUlr59oo46zK4tKVuxM=;
+        b=fD5hRsxr3391IKuxmVDRVMLS3nFliiRbHdYlvdV5sY5/KZrpeGTnP20bKbu53C+QJw
+         7vhST1UgbljJ0vPzwW0KPK3ar0BocWWeyA9KMSGjg6FA8qkoeAdVwyUjZ5Vg8D0mB4vr
+         hC7ND3NCcbuklI63GhfzVbaGxc0vPzVuVsoox8E/jOgm13SegvsXlTsO+Rkfqd7can/v
+         EVNXNgI+VQJ0vKqPfXFo5MsUdvpXOC7SNg+GzVmmm+pZsvT/WEroEJfmiMv+5fzDjT44
+         vJY1Cbt0AY6TG8FldUtX+d19P3FYq/uMc6+nyLdom1Yr/cgtnDVrdtCBLNBmchHHDcmJ
+         MRnQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpP1C2jhTmJhwaUvzDs/JxRWkK7Ecvw7l+Wzzl5f6ITLR8MFC8VWhww9u1uDr4KmbPFMAs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLWxVSYfbBy3UaaIYc6Bn9zucS036SKLMWjjrB7SOQLBqSVbku
+	j4xAGGJssLoUwv/e60PZ86yfTlQ+HGbBqhBwZVCMyc9M2P+/m/7omZTTpurWVmP+ADD3L90DboX
+	X/2kyQA==
+X-Received: from pfbki10.prod.google.com ([2002:a05:6a00:948a:b0:847:7765:a4c3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1f08:b0:84e:d51d:86c9
+ with SMTP id d2e1a72fcca58-84ee490ac84mr9200662b3a.44.1785769421725; Mon, 03
+ Aug 2026 08:03:41 -0700 (PDT)
+Date: Mon, 3 Aug 2026 08:03:41 -0700
+In-Reply-To: <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cqSBz1j3zYXxzwUCVvqmvhnPA6imF1BU
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDEzMyBTYWx0ZWRfX/okmUd1kWBhs
- KtXsdzaXW5Zevc81aFRK5HMzo4LX1YjlgeicJj0Glfa6tF4+eKxUxYtcmy5FjwhYjkQhoWpfYc/
- CCGP3C6cn/V5tHO6vVSoNMB8wpGkLmE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDEzMyBTYWx0ZWRfX4cmM4Vfhu2Ig
- buQkAW89THzHWdEAeWB00rQtg7PGJMhj7MwVzKJRBLhGrp4V/qXEI5k7q2e5O9TG3utdTbfFasq
- lazt9lz6e1R3eOPTC02F58ZCXoEfBhfCIEIjQHjIbgx1O+wyLADEjsYV1AO/Don3fFoWESQbVWQ
- 3IzPKn9s93aw7Gt4EnVjBUZN8Nz/FI1qdIFgOaAe8JGf3+wpZOqzVEKSvYFtm+BeIp4S21B9n0o
- yPBsKVTo2S+rKSu2eXFApFAcYAQdXANuPblzRH9nKk3klXV/cig4e/x+C+mqVbru2wfgWKaZkti
- ppA9E3NEh72LxJiaqcaWV03+EynuTaJaCANiSFtPe0/n6bjRChIHc/J7kk7eQrxSp7sZwjLJ0nQ
- oPAtcHsUkzPauIN8gMhEffoXVm2pQWNJ2VlsuKGA6tYYoCiz6Pz+rDfP7SE67H2vo8nv8NMX/ju
- EfNnLWNsyW0SQkR+hZw==
-X-Proofpoint-GUID: cqSBz1j3zYXxzwUCVvqmvhnPA6imF1BU
-X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a70adbb cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=joHoxSTN3CKu4gl-UVAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-03_03,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030133
+Mime-Version: 1.0
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+ <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
+ <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+Message-ID: <anCtzQrUkFSSq8De@google.com>
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+From: Sean Christopherson <seanjc@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 3 Aug 2026 16:50:30 +0200
-Janosch Frank <frankja@linux.ibm.com> wrote:
-
-> On 8/3/26 14:40, Claudio Imbrenda wrote:
-> > When cleaning up a UCONTROL VM, sca_clear_ext_call() will touch memory
-> > outside of the allocated ESCA block, and UCONTROL VMs don't even use
-> > ESCA.
-> > 
-> > Fix by not touching ESCA for UCONTROL VMs, and fence the
-> > KVM_S390_INTERRUPT ioctl altogether. Add extra checks in
-> > sca_ext_call_pending() and sca_inject_ext_call() to make sure UCONTROL
-> > VMs won't touch ESCA.
-> > 
-> > Fencing does not cause regressions with userspace, since UCONTROL VMs
-> > never used KVM_S390_INTERRUPT ioctls.
-> > 
-> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> > Fixes: 7d43bafcff17 ("KVM: s390: Make provisions for ESCA utilization")
-
-
-[...]
-
-
-> > @@ -84,10 +90,13 @@ static int sca_inject_ext_call(struct kvm_vcpu *vcpu, int src_id)
-> >   static void sca_clear_ext_call(struct kvm_vcpu *vcpu)
-> >   {
-> >   	struct esca_block *sca = vcpu->kvm->arch.sca;
-> > -	union esca_sigp_ctrl *sigp_ctrl = &sca->cpu[vcpu->vcpu_id].sigp_ctrl;
-> > +	union esca_sigp_ctrl *sigp_ctrl;
-> >   
-> > -	if (!kvm_s390_use_sca_entries() || !vcpu->arch.initialized)
-> > +	if (!kvm_s390_use_sca_entries() || !vcpu->arch.initialized || kvm_is_ucontrol(vcpu->kvm))
-> >   		return;
-> > +
-> > +	/* Initialize after the above check, to prevent going out of bounds */
-> > +	sigp_ctrl = &sca->cpu[vcpu->vcpu_id].sigp_ctrl;  
+On Fri, Jul 31, 2026, David Hildenbrand (Arm) wrote:
+> I sent a fix for the GUP code that always makes us drain right now:
 > 
-> Not sure why you only add this here and not at the other two occurences.
-
-because the other two were added later and I forgot about the comment :)
-
-> But I don't think we need these comments at all.
+> https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
 > 
-> Dereferencing things before a check is not a great idea in most cases. 
-> Especially if the check validates if the memory has been set up at all :)
+> Would the following (agains mm-unstable + fix) work for you?
 > 
-> >   	kvm_s390_clear_cpuflags(vcpu, CPUSTAT_ECALL_PEND);
-> >   
-> >   	WRITE_ONCE(sigp_ctrl->value, 0);
-> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> > index 5b2727d7dfd1..21574f57be72 100644
-> > --- a/arch/s390/kvm/kvm-s390.c
-> > +++ b/arch/s390/kvm/kvm-s390.c
-> > @@ -2934,6 +2934,9 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-> >   	case KVM_S390_INTERRUPT: {
-> >   		struct kvm_s390_interrupt s390int;
-> >   
-> > +		r = -EINVAL;
-> > +		if (kvm_is_ucontrol(kvm))
-> > +			break;
-> >   		r = -EFAULT;
-> >   		if (copy_from_user(&s390int, argp, sizeof(s390int)))
-> >   			break;
-> > @@ -5456,6 +5459,8 @@ long kvm_arch_vcpu_unlocked_ioctl(struct file *filp, unsigned int ioctl,
-> >   		struct kvm_s390_interrupt s390int;
-> >   		struct kvm_s390_irq s390irq = {};
-> >   
-> > +		if (kvm_is_ucontrol(vcpu->kvm))
-> > +			return -EINVAL;
-> >   		if (copy_from_user(&s390int, argp, sizeof(s390int)))
-> >   			return -EFAULT;
-> >   		if (s390int_to_s390irq(&s390int, &s390irq))  
 > 
-> Do we need changes to the api documentation for this rc?
+> I assume that you'd have to call it as
+> 
+> 	lru_cache_drain_for_folio(folio, 0, NULL);
+> 
+> But maybe there are indeed extra references that are not reflected in
+> folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
+> there would be a problem.
+> 
+> There is a small problem for merging:
+> 
+> (1) The patch depends on the fix.
+> 
+> (2) mm/swap.c was moved to mm/folio.c in the mm tree.
+> 
+> We could write what I have below against Linus' tree and have the conflict be
+> resolved when merging. Topic branches are unfortunately not yet a thing in MM
+> land.
 
-The existing documentation is already not describing which error codes
-are possible and when.
+Are you expecting the aforementioned fix to land in 7.2, 7.3, or 7.4?  If it's
+7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where the fix
+will presumably land soonish), and target 7.4 for in-place conversion.  Then v10
+can be applied against an early 7.3-rcN and we don't need to juggle branches
+(assuming Andrew is ok taking the proposed patch through the KVM tree).
 
+Irrespective of this small mm issue, it's getting a bit too late in the 7.3 cycle
+to land the in-place series, and we need to address Xiaoyao's comments, i.e. v10
+is going to be necessary no matter what.
