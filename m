@@ -1,172 +1,225 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E4A411FAA;
-	Mon,  3 Aug 2026 15:12:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344C9324B33
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 15:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769953; cv=none; b=aZhIg9vsD/scapkZtsvQIi+EQYFoMlQjmi39JyGzFS856NbREkVwnAFEUR5EmYfGRph1+5pYw4gfyfBcNOZD8/mtaO8XHChbDfLwGo9EeFmj+OWhaV33z8npaB9CtcUIbZ9ZCKobQb3lE6beid4leUDfDY01NU2cCv8i96e3+pA=
+	t=1785770183; cv=none; b=dFjFo7yTd5TBCVCrXH/mIjV6pGpYXwp8c936lUuXRTCWKrfifIqw0qS/LC3uWLoA9TeASMxJtY/Jrja2DPfttmhdd5aySGw7OkvUTI8YGv9SYgssYAKVmn+obflC4JTFPMb1nRaFVbc3oA+rthwxbK7qhCHoVRawifV8BvArc+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769953; c=relaxed/simple;
-	bh=k14zFgfnGlPN9U54uLm+KFjowJda3IcMW3s76+cbX/E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sv09tXl0VPUKpKjmqAIwFemJS8szJ+oqf1bNkuao5Wz4PBUnNYkDcyncwXTUs0OqEm0afrKM0zzHMmUmP1EoqBZrlMkdB+ZEI3H8MQuR7+WYTQL+A2lcjxSFa5EPhw50ZWTE1iC2NnpOQBUydJgsJcpScoixwVv1qlEAQiOwjn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMv4MQn1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785770183; c=relaxed/simple;
+	bh=QPzeVFZmTcpN5j8r7Op2BujUO3JAuEXqZv9yIZcf7x8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Disposition; b=QqPpUL2IEL17RwRUIMtAEnHuKaFD+5trMI3gXS6x3ei0raTb1yBK0sohwbJD0gNM1P6go8DxFH81wi/8ytRJdMjRMqiAdcRvjQaBmeHe3woqGcBgKVDsrBX8GSI76OpbrqrjZVDRgbiW8m7MIUQltXdPi79Pkchtk7/vwEbx+fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=gSnhFMU2; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMv4MQn1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F76F1F000E9;
-	Mon,  3 Aug 2026 15:12:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785769951;
-	bh=HsYnSY7vyOvbrcwkcxBPIWl17p0R0T5Q719oyY34OHk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UMv4MQn148Y9ly+5uk5SVNaUY/Dedy+gXUByfpQVRvsb+A+3Y3ehG+AguSawLowjP
-	 IaQ6z+ETXRlVqmYwxotNZb9wP04aqE5JLsAEJ7qYhB+feK0bJE0Dgc2t0/qSe10QJM
-	 o4ntgi3A6PxGLQ685mXr6PGAuHJ5hzFATLljCNnJn3CVMJlzN6KxF6KQq24GHxm5FT
-	 ftlOQw2deT/bER4kqFGByz8TWGJ896w81gNdF9CWErWrZKA9/2x9ZF6Va04oBftsuQ
-	 sGIS8oWMdJaqCrKyVG4hVtb2xOBChFyX/S6vQmbPXtxvdN0cFYy7ijALO/8kIe33CV
-	 yeZF4LNjgeIWQ==
-Message-ID: <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
-Date: Mon, 3 Aug 2026 17:12:13 +0200
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="gSnhFMU2"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 92FFE143D;
+	Mon,  3 Aug 2026 08:16:17 -0700 (PDT)
+Received: from LeoBrasDK.cambridge.arm.com (LeoBrasDK.cambridge.arm.com [10.2.212.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1B7C3F66F;
+	Mon,  3 Aug 2026 08:16:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785770181; bh=QPzeVFZmTcpN5j8r7Op2BujUO3JAuEXqZv9yIZcf7x8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gSnhFMU2bW9E/8YC5JxHcRwwTKvqrwkP4+wt0wXgEwpY/gcOSSYjXRMRjdwcU+Qaa
+	 Xx8LGK89Rf1aD/jUzFYrqziDv575PrwvBcvUsehXWJrtDWLLGO8PPZWAKsYrGuUK0W
+	 nSJNhPJQ9JaFb58kGFG8+C/Yn2fH5BHNHquwyPcQ=
+From: Leonardo Bras <leo.bras@arm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	kvmarm@lists.linux.dev,
+	Oliver Upton <oupton@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v3 05/11] kvm: Add arch-generic interface for hw-accelerated dirty-bitmap cleaning
+Date: Mon,  3 Aug 2026 16:16:18 +0100
+Message-ID: <anCwwnBpnetj53Dt@LeoBrasDK>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260729110015.372101F00A3A@smtp.kernel.org>
+References: <20260729104548.3439958-1-leo.bras@arm.com> <20260729104548.3439958-6-leo.bras@arm.com> <20260729110015.372101F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-coco@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
- <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org>
- <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
- <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org>
- <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
- <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
- <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org>
- <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
- <anCtzQrUkFSSq8De@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <anCtzQrUkFSSq8De@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On 8/3/26 17:03, Sean Christopherson wrote:
-> On Fri, Jul 31, 2026, David Hildenbrand (Arm) wrote:
->> I sent a fix for the GUP code that always makes us drain right now:
->>
->> https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
->>
->> Would the following (agains mm-unstable + fix) work for you?
->>
->>
->> I assume that you'd have to call it as
->>
->> 	lru_cache_drain_for_folio(folio, 0, NULL);
->>
->> But maybe there are indeed extra references that are not reflected in
->> folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
->> there would be a problem.
->>
->> There is a small problem for merging:
->>
->> (1) The patch depends on the fix.
->>
->> (2) mm/swap.c was moved to mm/folio.c in the mm tree.
->>
->> We could write what I have below against Linus' tree and have the conflict be
->> resolved when merging. Topic branches are unfortunately not yet a thing in MM
->> land.
+On Wed, Jul 29, 2026 at 11:00:14AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [Critical] Successful hardware dirty log extraction completely bypasses the generic software dirty bitmap, dropping internally-dirtied pages.
+> - [Critical] Hardware dirty bits are completely ignored when `KVM_CAP_MANUAL_DIRTY_LOG_PROTECT2` is enabled.
+> - [High] Fallback software loop clobbers partial hardware dirty log output and leaks garbage data if `kvm_arch_dirty_log_clear()` fails.
+> - [Medium] The `kvm_arch_dirty_log_clear` API overloads two distinct behaviors based on an undocumented `NULL` parameter, risking a NULL pointer dereference in arch implementations.
+> --
 > 
-> Are you expecting the aforementioned fix to land in 7.2, 7.3, or 7.4?  If it's
+> --- Patch [5]: [PATCH v3 05/11] kvm: Add arch-generic interface for hw-accelerated dirty-bitmap cleaning ---
+> commit 4c5b443921b3fcc7c6b76fa46a7c11e8755ad50f
+> Author: Leonardo Bras <leo.bras@arm.com>
+> 
+> kvm: Add arch-generic interface for hw-accelerated dirty-bitmap cleaning
+> 
+> This patch introduces kvm_arch_dirty_log_clear() to allow architectures
+> to implement hardware-accelerated dirty-bitmap clearing. It adds hooks in
+> both kvm_get_dirty_log_protect() and kvm_clear_dirty_log_protect() to try
+> the hardware implementation first, falling back to the software loop if it
+> fails or is unimplemented.
+> 
+> > diff --git a/include/linux/kvm_dirty_bit.h b/include/linux/kvm_dirty_bit.h
+> > new file mode 100644
+> > index 0000000000000..fa4f6b67b6235
+> > --- /dev/null
+> > +++ b/include/linux/kvm_dirty_bit.h
+> 
+> [ ... ]
+> 
+> > +static inline int kvm_arch_dirty_log_clear(struct kvm *kvm,
+> > +					   struct kvm_memory_slot *memslot,
+> > +					   struct kvm_clear_dirty_log *log,
+> > +					   unsigned long *bitmap,
+> > +					   bool *flush)
+> 
+> [Severity: Medium]
+> The signature here strongly implies the log parameter is a valid clear
+> operation struct. However, when this is called from
+> kvm_get_dirty_log_protect(), NULL is passed for the log parameter.
+> 
+> Could this establish an undocumented API contract where new arch
+> implementations blindly dereference the log pointer and cause a host
+> kernel panic?
 
-Andrew wants to give it some more time in -next, so I'm expecting it to land for 7.3.
+Well, there are 2 users of this functions, and one uses a NULL variable, so 
+I don't think anyone will implement something that blingly deferences the 
+log pointer.
 
-> 7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where the fix
-> will presumably land soonish), and target 7.4 for in-place conversion. Then v10> can be applied against an early 7.3-rcN and we don't need to juggle branches
-> (assuming Andrew is ok taking the proposed patch through the KVM tree).
+In any case, I am open to fixing this. How should I add that information?
+(Just a comment is enough?)
 
-Agreed. We'd also have to get the actual preparation patch into 7.3. I can send it out
-and coordinate with Andrew.
+> 
+> > +{
+> > +	return -ENXIO;
+> > +}
+> 
+> [ ... ]
+> 
+> > diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> > index 45e784462ec6e..7a13ef69b6e3e 100644
+> > --- a/virt/kvm/kvm_main.c
+> > +++ b/virt/kvm/kvm_main.c
+> 
+> [ ... ]
+> 
+> > @@ -2262,6 +2263,10 @@ static int kvm_get_dirty_log_protect(struct kvm *kvm, struct kvm_dirty_log *log)
+> >  		dirty_bitmap_buffer = kvm_second_dirty_bitmap(memslot);
+> >  		memset(dirty_bitmap_buffer, 0, n);
+> >  
+> > +		if (kvm_arch_dirty_log_clear(kvm, memslot, NULL,
+> > +					     dirty_bitmap_buffer, &flush) >= 0)
+> 
+> [Severity: Critical]
+> Since this hardware clear is invoked inside the else block of the
+> if (kvm->manual_dirty_log_protect) check, are hardware dirty bits
+> completely ignored when manual protection is enabled?
+> 
+> Modern VMMs often enable manual dirty log protection by default. Will
+> skipping the hardware tracking here result in userspace only receiving
+> the software dirty bitmap, potentially causing silent memory corruption
+> on the destination after a live migration?
+> 
 
--- 
-Cheers,
+To skip it, kvm_arch_dirty_log_clear() should return a positive (or zero) 
+value, meaning any error (ret < 0) will cause it to run the software 
+cleaning. If the arch-specific routine skips cleaning and return >=0, then 
+it's an implementation bug. 
 
-David
+> [Severity: Medium]
+> This is the call site passing NULL for the log parameter.
+> 
+> As mentioned above, does this pose a risk of NULL pointer dereferences
+> for architectural implementations expecting a valid
+> struct kvm_clear_dirty_log pointer?
+
+See previous discussion above.
+
+> 
+> > +			goto out;
+> > +
+> 
+> [Severity: Critical]
+> If kvm_arch_dirty_log_clear() succeeds, this goto out bypasses the generic
+> software dirty bitmap processing loop completely.
+> 
+
+Yeah, that's what the arch-specific version is about.
+
+> Does this mean KVM's internally-dirtied pages, such as those from MMIO
+> emulation or virtual timers marked via mark_page_dirty(), are silently
+> dropped from the dirty log?
+
+No, as those are also cleaned as long as they hit the dirty-log (bitmap).
+
+> 
+> [Severity: High]
+> If the arch-specific hardware routine fails partway through and returns
+> an error code, could it leave partial hardware bits in dirty_bitmap_buffer?
+
+It could. That's a implementation decision: should it return all bits and 
+clean all using software, or continue where arch-specific version stopped?
+
+> 
+> If it falls through to the software loop, the software loop might overwrite
+> hardware bits with software bits (if the software bit is 1) and preserve
+> garbage hardware bits (if the software bit is 0). Should
+> dirty_bitmap_buffer be cleared on failure?
+> 
+
+Depending on the fallback strategy, it should be restored to initial state, 
+not cleared.
+
+
+> >  		KVM_MMU_LOCK(kvm);
+> >  		for (i = 0; i < n / sizeof(long); i++) {
+> >  			unsigned long mask;
+> 
+> [ ... ]
+> 
+> > @@ -2373,6 +2379,10 @@ static int kvm_clear_dirty_log_protect(struct kvm *kvm,
+> >  	if (copy_from_user(dirty_bitmap_buffer, log->dirty_bitmap, n))
+> >  		return -EFAULT;
+> >  
+> > +	if (kvm_arch_dirty_log_clear(kvm, memslot, log, dirty_bitmap_buffer,
+> > +				     &flush) >= 0)
+> 
+> [Severity: High]
+> If the arch hook modifies dirty_bitmap_buffer before failing and
+> returning an error, does it corrupt the mask used by the fallback
+> clear loop?
+> 
+> The fallback software loop uses dirty_bitmap_buffer to decide which bits
+> to clear. If it contains garbage from a failed hardware clear, could this
+> cause the wrong pages to be cleared?
+
+That's the arch-version responsibility to not put garbage in the buffer, 
+and restore it depending on their strategy.
+
+> 
+> > +		goto out;
+> > +
+> 
+> [Severity: Critical]
+> Similar to the GET path, this goto out bypasses the loop that clears bits
+> in memslot->dirty_bitmap using atomic_long_fetch_andnot().
+> 
+> If the hardware clear succeeds, will the software bits remain set
+> indefinitely since they are bypassed from being cleared from KVM's
+> internal tracking?
+
+Again, it will write-protect all the pages pointed by the dirty-log, which 
+is exactly what the sw routine does.
+
+Thanks!
+Leo
