@@ -1,106 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DA627A92D
-	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 22:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDDF2F12D4
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 22:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785796663; cv=none; b=uy6e6rU0lbn0wYkZs5+265aRVML7ye8EXYJJgfNGhsCTz9sY4a5yCAlp/Bwef3aE3vL3ZfD/OvX3Ock63iPxWzcHJDP8zScG4p2NTu7lTKFK2YK6c+SwEkPfT9Vab3IsWMh7n54s1wZ8QhJ+JvrDHiXTXQx7pyGsP61DgKSo/zs=
+	t=1785796807; cv=none; b=qWCv7c3upyyEfzFTzbqvNFPStWIwbHPks31ZOuqscPsGly5kfo46gzM2SkfRLrZD/qjXc7nJERJFWfPzGb1UpizwHwZqEAdsN5MteoX7XZZPLv1PaS/Lp8ctzFJguaYSAcgZLI4wFK0AqGQRpvEUvYlxzsKM3IsMvxJFqIYyLZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785796663; c=relaxed/simple;
-	bh=6k5d/yGVFzN5oLPDHAYgfPWngvlHeA/j76H+mwv3EJs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=QEOvPq2paEdxWbpmEZYE5DtSFnfVzNiGmKWOmE6dHzbsX88oIc9yEGwBNxoDoKCP7yb2Y2XQBZo3CBJ15gRVBqdDlrm/vko75HHeaInkkpMQsb8WKc4Fjm3n4nLEzVFHAMMsilo17gKGIAPpnlvRy/+jcgjDpGi+msRo502gRdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dV2XuSU/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785796807; c=relaxed/simple;
+	bh=f5KnnCh13WH8hydIQNCRaGLNUvn6tqMF4niyKermq+o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sPw31LcilGH/nWqMjjHhaEBM6n/Q1cYWNd4QaNeMEywa1jt8k02ijRgsa2FU4C609WvaLTTe+/GXcz+SWkTGk5+yAnfKBtRGQVYsE8mePnYZhQKdapZjpaSHEaCR7fE273V/bRjXg66sT0t0ycdmuz9UIZdY8Ums+uzTAF4NxQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hOTxK6cw; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dV2XuSU/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C19C1F00A3A;
-	Mon,  3 Aug 2026 22:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785796662;
-	bh=rsJo1UVgls1GOnJ0Rget9IC/DdzO7BV9Mk8ioiFF++E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=dV2XuSU/69ffloKeolYHRmlVXGjV6iPDWRtlsunXkBSm2KD89geQPogMAKEwUTw9z
-	 cFh3n+Dodtz0bJ1IqtK/Sx621wmrXtcgosnpR6XwHjsxQNRp9C4+ZFFFm8vj0o2NO3
-	 RLpi+LIgi0qu6Yj9aUwe0rzEqbb/ugvn90PvL9kkuQxe0pWfFj6XpLPCUOJOCGPnyA
-	 bHHlQ4Ms9eA1MfSodkdNlWiS5E1iDElYXt4XbTDgn/ACsSFe7n1Dc6YomEKrAfsnyC
-	 kMURB4LaQCZdWdksl9xU3XSLN8NHpwbkJABE2Cc3eu7nISeFnJnO54snqHtK+AOg7a
-	 I92gDZ/Eurc0w==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 3/3] RISC-V: KVM: fix vcpu vector context handling
- for kernel-mode vector
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andy Chiu" <tchiu@tenstorrent.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260803215250.824417-4-tchiu@tenstorrent.com>
-References: <20260803215250.824417-1-tchiu@tenstorrent.com>
- <20260803215250.824417-4-tchiu@tenstorrent.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 22:37:41 +0000
-Message-Id: <20260803223742.0C19C1F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hOTxK6cw"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848568a6f62so7768833b3a.0
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 15:40:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785796805; x=1786401605; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Vh1mLm2+5zdW1p19BIdIC67znvPnKKEQ+YAJfKmB3X0=;
+        b=hOTxK6cwOQpkc37MOU5++un20JZvHZwEauWpbTKqzowjwdtw5pyYpCVZSCrWY3Sfax
+         6hgaCZb2YMSDlzDcO28Y/0ilYn+8JmoL7x6tVEls/O+Aez2DgZvJVuluroKi43iC3bHI
+         G84CXtfQx7q6/ZH7gW4EDptyLtdnW3UnNXN60VtnpaaSYos+0n2lgGld9avaXNXl4oXC
+         c3AtClQaYFZDzcX0n+37dkyW7zxqebsbhPR6ibLSt4A6hIgVRlpq6+Fs859kH2Ssqlpp
+         X/2zDG73buEga2vjYew50o55InVUstxUIns0kGsSvwhNzL4XD4VThLn9dfvezXALXieQ
+         Eewg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785796805; x=1786401605;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vh1mLm2+5zdW1p19BIdIC67znvPnKKEQ+YAJfKmB3X0=;
+        b=pVFHgiUEMVq/TW/D0QyAjmkGg4Nr+JfI3bvUwWrbSNdE9Fc2T8BOwoqxqsNAgDTJdp
+         /BcWBaMDDsgps5aVnZu8O7H2Z5RWnwrw3wHnTERrLq00u7cdC6CNTpoKqCZGMZ+Oguaa
+         KiaO18vR+Mj8DTZer0rWKBgWvlwIEzon0FJw1XicLz34DYZo09N4J87lSP89UgpcC9Nz
+         4PgN+DQ6juCurddXj5faGckVQlWHJrtegMdAPc4QapMzO2N6vGKDEXjfHCxvPTseLZMm
+         wdpNT7rdO5PpCPZJRSqEtf11En2Mf1SYYYed6y+qn9vmNLGtczYFbCg7LjMCp7GZPDoc
+         hLHA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7zUKX56Goey6Cuh4xQ/xnyjOAJgR5lUoSwDHGOrQkWk4R2ZmDK1UFLzgi7qpPJAXf5tw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ8rWuV3ApL0kOvBRDAMKQ4Tany1RMj7zdE1qYvAVQSE4zpRlE
+	TDRvEfhyP02gSnlC/cFSAnbtRBVc4/hdqtb//xlFOIzw1YJb2XnxTe/IE+7S3WffRjPkFBSC6vZ
+	Kptm3pA==
+X-Received: from pfau3.prod.google.com ([2002:a05:6a00:aa83:b0:848:4642:f1d3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:14d3:b0:845:48be:b046
+ with SMTP id d2e1a72fcca58-84ee4899b38mr10130120b3a.36.1785796805112; Mon, 03
+ Aug 2026 15:40:05 -0700 (PDT)
+Date: Mon, 3 Aug 2026 15:40:04 -0700
+In-Reply-To: <46663836-fd97-4328-8c7d-5efeeb222ce6@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260731175834.1121005-1-pbonzini@redhat.com> <amztmWhHXUR4zBv1@google.com>
+ <CABgObfZ5sPgfJz-_reACs5WkjRRkdNuinfY+nSrdHvG5xSiKUA@mail.gmail.com>
+ <anCZoc65i2xXNQgO@google.com> <46663836-fd97-4328-8c7d-5efeeb222ce6@redhat.com>
+Message-ID: <anEYxL8kf0O889S2@google.com>
+Subject: Re: [PATCH] kvm: apply VM_READ/VM_WRITE checks to all VMA types
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Mon, Aug 03, 2026, Paolo Bonzini wrote:
+> On 8/3/26 15:40, Sean Christopherson wrote:
+> > On Mon, Aug 03, 2026, Paolo Bonzini wrote:
+> > > On Fri, Jul 31, 2026 at 8:46=E2=80=AFPM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > > > > * if the PTE is present, follow_pfnmap_start() sets args.writable=
+ to
+> > > > >    false and KVM_PFN_ERR_RO_FAULT is returned;
+> > > > >=20
+> > > > > * if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) return=
+s
+> > > > >    -EFAULT after checking vma_permits_fault(), and hva_to_pfn() e=
+nds
+> > > > >    up returning KVM_PFN_ERR_FAULT.
+> > > > >=20
+> > > > > With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.
+> > > >=20
+> > > > IMO, returning KVM_PFN_ERR_RO_FAULT on a read-only VMA is wrong.  A=
+FAICT, that
+> > > > behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM:=
+ do not assume
+> > > > PTE is writable after follow_pfn").  Given that that's the only cas=
+e where KVM
+> > > > returns KVM_PFN_ERR_RO_FAULT, I would much prefer to fix that wart =
+and cross our
+> > > > fingers nothing has come to rely on the behavior in the last ~5 yea=
+rs.
+> > >=20
+> > > We can try, but I'd rather not do that in stable releases (while this
+> > > patch would be applied there, as a first step towards fixing the DRM
+> > > issue that Sergio reported
+> >=20
+> > I don't see how this would help with fixup_user_fault() not actually fi=
+xing a
+> > fault.  Neither returning -EFAULT nor emulating is correct KVM behavior=
+.
+> >=20
+> > > - it avoids the sashiko issue reported for
+> > > https://lore.kernel.org/r/20260731160514.1101989-1-pbonzini%40redhat.=
+com/).
+> >=20
+> > But the issue Sashiko reported is just saying that KVM sometimes does w=
+hat I'm
+> > saying KVM should do all the time: return -EFAULT.  Or did I misunderst=
+and that
+> > one too? :-)
+>=20
+> Yes, that's correct.  My point is I'd rather not introduce other changes =
+to
+> the !VM_WRITE case in stable releases.
 
-Pre-existing issues:
-- [High] Preemptible kernel-mode vector (KMV) state is corrupted by KVM pre=
-empt notifiers when a VCPU thread is preempted.
---
+Yeah, agreed.  But what I don't understand is why this would be sent to sta=
+ble@
+in the first place.
 
---- Patch [3]: [PATCH v5 3/3] RISC-V: KVM: fix vcpu vector context handling=
- for kernel-mode vector ---
-commit 077b610f9ed223f15b05bd83c13e358e4b341dc9
-Author: Andy Chiu <tchiu@tenstorrent.com>
-
-RISC-V: KVM: fix vcpu vector context handling for kernel-mode vector
-   =20
-This commit registers an RCU-protected callback to flush the vCPU vector
-context when kernel-mode vector (KMV) is serving a guest. This prevents
-KMV from misattributing the guest's vCPU context as the user's context.
-
-> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-> --- a/arch/riscv/kvm/vcpu.c
-> +++ b/arch/riscv/kvm/vcpu.c
-[ ... ]
-> @@ -654,9 +656,11 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
->  	kvm_riscv_vcpu_host_fp_restore(&vcpu->arch.host_context);
-> =20
->  	kvm_riscv_vcpu_timer_save(vcpu);
-> +	get_cpu_vector_context();
->  	kvm_riscv_vcpu_guest_vector_save(&vcpu->arch.guest_context,
->  					 vcpu->arch.isa);
->  	kvm_riscv_vcpu_host_vector_restore(&vcpu->arch.host_context);
-
-[Severity: High]
-This is a pre-existing issue, but does unconditionally restoring the host=20
-vector context here corrupt the kernel-mode vector state if the vCPU thread
-is preempted?
-
-If a vCPU thread enters a kernel-mode vector section (like
-enter_vector_usercopy() during guest I/O) and is preempted by a page fault,
-kvm_sched_out() calls kvm_arch_vcpu_put(). This unconditionally restores the
-host (QEMU) vector registers via kvm_riscv_vcpu_host_vector_restore().
-
-When switch_to() subsequently calls __switch_to_vector(), wouldn't it save
-this newly clobbered hardware state into the kernel's vector context buffer
-(kernel_vstate) instead of the actual kernel vector state?
-
-Could a malicious guest trigger this by supplying an unmapped virtual addre=
-ss
-for an I/O operation, forcing a page fault and voluntary preemption during
-the vector-optimized copy_to_user()?
-
-> +	put_cpu_vector_context();
-> =20
->  	if (kvm_riscv_nacl_available()) {
->  		nsh =3D nacl_shmem();
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803215250.8244=
-17-1-tchiu@tenstorrent.com?part=3D3
+> So, the follow_pfnmap_start() patch I posted last Friday is part of the f=
+ix
+> for Sergio's report; but it introduces one such change---which indeed we
+> agree is desirable behavior, but which I'd rather not sneak in as part of=
+ an
+> unrelated fix for a regression.
+>=20
+> So, *this* patch removes a bunch of cases in which hva_to_pfn_remapped() =
+is
+> inconsistent, but it leaves RO_FAULT in place for now.  Then separately w=
+e
+> can, uniformly, do the change from RO_FAULT to -EFAULT.
+>=20
+> Paolo
+>=20
+> > > >          /*
+> > > >           * GUP failed.  It could be an inaccessible mapping, a pfn=
+map one,
+> > > >           * or the page might be absent.
+> > > >           */
+> > > >          if (vma =3D=3D NULL || unlikely(!(vma->vm_flags & VM_READ)=
+) ||
+> > > >              ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags=
+ & VM_WRITE)))) {
+> > > >                  pfn =3D KVM_PFN_ERR_FAULT;
+> > > >          } else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
+> > > >                  r =3D hva_to_pfn_remapped(vma, kfp, &pfn);
+> > > >                  if (r =3D=3D -EAGAIN)
+> > > >                          goto retry;
+> > > >                  if (r < 0)
+> > > >                          pfn =3D KVM_PFN_ERR_FAULT;
+> > > >          } else {
+> > > >                  pfn =3D kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEE=
+DS_IO :
+> > > >                                                   KVM_PFN_ERR_FAULT=
+;
+> > > >          }
+> > >=20
+> > > Yes, but I'd do that only in 7.3.
+> >=20
+>=20
+>=20
