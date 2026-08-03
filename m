@@ -1,207 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C73395266;
-	Mon,  3 Aug 2026 16:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB682E717B
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 16:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785775912; cv=none; b=VCvOelQunc5EeBjzIWswpBDbUya2xiUJQr+zAB9iSdmM2WSseHQDW6Y8+f2The3G9AoxomZTKkJO1kyXVxJIw/REOEA1DktY7uNAnzKuGIkErTi6gwG+p9UOdZBhvKtccgzGlcV1Vt+80dRUnDGpUNHfmsxCPIxh+sZQUiMNuF8=
+	t=1785775977; cv=none; b=b9V2W+3nBOy5h3QxIDDZKQCyVP+r/06wQTR2fuul5bQZWi7fGabJjxoGbz5W4TeeACjknRPtZU79Wk5/OpMnmZIjtJewzmTiavaVr8T11w4UJzH097lpkCaJ6b4SDOM3x2O1T5aF6VpHxqaYyFCEycXLNmDXkOvUK/BFOkQLzkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785775912; c=relaxed/simple;
-	bh=cOvy2782lrXBA+cACAXYHzyIv88J6EV/DJSqvAf5B4k=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Hn89zOxktH20+5zoc1YisuEeF4lRCWAPc9BJTC0ilLW8YlsDUr08bPzbx2I/St9CUyp/mZHJUHjSUePusqo8xKlAE8LI2Ger07z/fsO2CZatDKvqZIk4lu/dAz+akm9fUhbsqJVzFDPn18iVWxVFPbEks/sm38FHicDI61tOQG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SiiTrIEn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785775977; c=relaxed/simple;
+	bh=+2xXiQZPZQdN66piYhNrDedroyxznEgo1uKMB0VL18Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AAs0hXY26jMsN2gi0nCvYVaC1qi7ohRhaBHX8bu8fJtnbBDsylP27aEkCoS+LdCTxMrPjK7tW9AIHmy2U9rgQNmbjiJ7CxtUiyV8cCfwOEzMDHj2qTnoswVB1J+m61qoe4AIxMsPZx6jtC1N40grCWyYObz1xj/WB+2Q0J7PIU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JpFvlfGp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SiiTrIEn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2461F000E9;
-	Mon,  3 Aug 2026 16:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785775910;
-	bh=5FZZhjkdxLQE0xiSbo1FR5kuHaaKn2HeuAbrlB1SOV0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SiiTrIEnsGqie/vCRqdj7o+mZS6k9QemzjEDsNusfDL3+liSHGWdfMr939RUQNmlR
-	 +sVIYs9+kD+lRKFGvZwUuom5o/w6l6/dx7z/TQNb9MmavovFTPJnZKu8ifZhHJUov1
-	 uLObTPONUTC6iaYNtBWGQbwAemxMIBAKY4DLRQPlS1gyO9hJSWg1gPgfXkpL7By3d3
-	 EshtQE+KsIVrqRrx6wYqGPi26NsKE73ROLIzmrOKUQv6Sz5flliyki6M6gGtAnhKaR
-	 gJRBQH7cv88t22Msi5CBMHpINOyxnlhb9GPQAT4FbZ8jjBcfBhdgC0aJqiw05HXpWJ
-	 v635lUK9l0Ofg==
-From: sashiko-bot@kernel.org
-Subject: Re: [GIT PULL v1 10/23] s390/vfio_ccw: Implement a crw lock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>
-In-Reply-To: <20260803160924.236807-11-imbrenda@linux.ibm.com>
-References: <20260803160924.236807-1-imbrenda@linux.ibm.com>
- <20260803160924.236807-11-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 16:51:48 +0000
-Message-Id: <20260803165150.1E2461F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JpFvlfGp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785775975;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ZtGzPJBXwX7RRhGk6ithqcA8P+0XZi1RHBFh3/RG25U=;
+	b=JpFvlfGpXe99Hc1nB/LShBbFkYIb98RnKFVIfAPdDk31X2SD/cKQ+HyRq7E/yGdMQepFxi
+	cZW9cy02n1mpJOa1vdDk1M2/AmRI78G/MVF67+JHfCiYq62Nk827FkD0vFGlzB9gyp3vO9
+	d/c3qNlPUelvxgR8MOQTdfMcZQ8tsW8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-115-IL494TFFOpGy18qDZDNHmg-1; Mon,
+ 03 Aug 2026 12:52:52 -0400
+X-MC-Unique: IL494TFFOpGy18qDZDNHmg-1
+X-Mimecast-MFC-AGG-ID: IL494TFFOpGy18qDZDNHmg_1785775970
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F4011956069;
+	Mon,  3 Aug 2026 16:52:50 +0000 (UTC)
+Received: from [10.44.48.18] (unknown [10.44.48.18])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 38B111956087;
+	Mon,  3 Aug 2026 16:52:45 +0000 (UTC)
+Message-ID: <d439aeaa-a29f-4732-b4ad-3932bcc26520@redhat.com>
+Date: Mon, 3 Aug 2026 18:52:41 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFT 0/3] mm, drm: ensure .fault() does not have to be
+ followed by .pfn_mkwrite() for write faults
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Michal Hocko <mhocko@suse.com>,
+ Sergio Lopez <slp@redhat.com>, Christian Koenig <christian.koenig@amd.com>,
+ Huang Rui <ray.huang@amd.com>, bcm-kernel-feedback-list@broadcom.com,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260731164341.1109827-1-pbonzini@redhat.com>
+ <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <8d94897f-0f56-4ecf-bcc8-50bffd6750b2@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On 8/3/26 10:55, David Hildenbrand (Arm) wrote:
+> On 7/31/26 18:05, Paolo Bonzini wrote:
+>> Reported-by: Sergio Lopez <slp@redhat.com>
+> 
+> Reported-by: without Fixes: is odd.
 
-Pre-existing issues:
-- [High] Missing synchronization when updating eventfd triggers leads to a =
-potential Use-After-Free of the `eventfd_ctx` during `eventfd_signal()`.
-- [High] Concurrent execution of asynchronous CSS hardware callbacks and md=
-ev removal allows a Use-After-Free of the `vfio_ccw_private` structure.
-- [Medium] The `eventfd_ctx` for device triggers is leaked when the device =
-file descriptor is closed without explicitly disabling the IRQs.
---
+Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API") would also be odd :) 
+but I can certainly add it.
+>> +	 * @write_fault: if true, fail with -EFAULT unless the mapping is
+> 
+> Just wondering whether EPERM would be better.
 
---- Patch [10]: [GIT PULL v1 10/23] s390/vfio_ccw: Implement a crw lock ---
-commit e6c7aa37724a25bba44b60d5d9939f115e04276a
-Author: Eric Farman <farman@linux.ibm.com>
+It would be EACCES if anything, not EPERM; but almost all callers 
+already pass EFAULT to userspace, and write() to a PROT_READ area 
+returns EFAULT, so I don't think EACCES is the right choice.
 
-s390/vfio_ccw: Implement a crw lock
+>> +	 * writable
+>>  	 */
+>>  	struct vm_area_struct *vma;
+>>  	unsigned long address;
+>> +	bool write_fault;
+> 
+> "write_fault" is a rather odd name for this, given that this function will not
+> trigger a write fault.
+> 
+> You want something that matches FOLL_WRITE.
+> 
+> "write_access" / "check_writable" maybe?
+There are no for_write, write_access or check_write in mm/,  but there 
+are a handful of each of these
 
-Unlike the channel_program struct, which covers synchronous I/O
-submissions and asynchronous interrupts, the CRW region relies
-exclusively on asynchronous events coming from hardware.
+	int write = (gup_flags & FOLL_WRITE);
+	bool write = vmf->flags & FAULT_FLAG_WRITE;
 
-Implement a lock to manage the list of those payloads, to ensure
-they are read cohesively.
+so I'll go for just "write".
 
-Cc: stable@vger.kernel.org
+Thanks,
 
-> diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_=
-drv.c
-> index 757ff5b2556e3..ab6b518cc353f 100644
-> --- a/drivers/s390/cio/vfio_ccw_drv.c
-> +++ b/drivers/s390/cio/vfio_ccw_drv.c
-> @@ -118,11 +118,14 @@ void vfio_ccw_sch_io_todo(struct work_struct *work)
->  void vfio_ccw_crw_todo(struct work_struct *work)
->  {
->  	struct vfio_ccw_private *private;
-> +	unsigned long flags;
-> =20
->  	private =3D container_of(work, struct vfio_ccw_private, crw_work);
-> =20
-> +	spin_lock_irqsave(&private->crw_lock, flags);
->  	if (!list_empty(&private->crw) && private->crw_trigger)
->  		eventfd_signal(private->crw_trigger);
-> +	spin_unlock_irqrestore(&private->crw_lock, flags);
->  }
+Paolo
 
-[Severity: High]
-This is a pre-existing issue, but does this adequately protect against
-concurrent modification of the eventfd context?
-
-While this patch adds crw_lock around the read and signal path here in
-vfio_ccw_crw_todo(), is the writer side in vfio_ccw_mdev_set_irqs()
-also protected?
-
-If vfio_ccw_mdev_set_irqs() replaces or unsets the eventfd without locks:
-
-vfio_ccw_mdev_set_irqs()
-    if (*ctx)
-        eventfd_ctx_put(*ctx);
-    *ctx =3D efdctx;
-   =20
-Could a concurrent execution of vfio_ccw_crw_todo() read the pointer,
-have the context freed by vfio_ccw_mdev_set_irqs(), and then use it in
-eventfd_signal(), resulting in a use-after-free?
-
-[ ... ]
-
-> @@ -286,6 +289,7 @@ static void vfio_ccw_queue_crw(struct vfio_ccw_privat=
-e *private,
->  			       unsigned int rsid)
->  {
->  	struct vfio_ccw_crw *crw;
-> +	unsigned long flags;
-> =20
->  	/*
->  	 * If unable to allocate a CRW, just drop the event and
->  	 * carry on.  The guest will either see a later one or
->  	 * learn when it issues its own store subchannel.
->  	 */
->  	crw =3D kzalloc_obj(*crw, GFP_ATOMIC);
->  	if (!crw)
->  		return;
-> =20
->  	/*
->  	 * Build the CRW based on the inputs given to us.
->  	 */
->  	crw->crw.rsc =3D rsc;
->  	crw->crw.erc =3D erc;
->  	crw->crw.rsid =3D rsid;
-> =20
-> +	spin_lock_irqsave(&private->crw_lock, flags);
->  	list_add_tail(&crw->next, &private->crw);
-> +	spin_unlock_irqrestore(&private->crw_lock, flags);
->  	queue_work(vfio_ccw_work_q, &private->crw_work);
->  }
-
-[Severity: High]
-This is a pre-existing issue, but could vfio_ccw_queue_crw() dereference
-a freed private pointer during device removal?
-
-If an asynchronous CSS hardware callback like vfio_ccw_chp_event() fetches
-the private struct locklessly, and concurrently the mdev is removed via
-sysfs:
-
-vfio_ccw_mdev_remove()
-    dev_set_drvdata(&parent->dev, NULL);
-    vfio_put_device(&private->vdev);
-   =20
-Since there is no synchronization stopping the CSS callback, could the
-private structure be freed before vfio_ccw_chp_event() calls
-vfio_ccw_queue_crw(), leading to a use-after-free when acquiring the
-crw_lock here?
-
-[ ... ]
-
-> diff --git a/drivers/s390/cio/vfio_ccw_ops.c b/drivers/s390/cio/vfio_ccw_=
-ops.c
-> index 1df6d649565b8..5ce91285c7d52 100644
-> --- a/drivers/s390/cio/vfio_ccw_ops.c
-> +++ b/drivers/s390/cio/vfio_ccw_ops.c
-> @@ -131,6 +132,7 @@ static void vfio_ccw_mdev_release_dev(struct vfio_dev=
-ice *vdev)
->  	struct vfio_ccw_private *private =3D
->  		container_of(vdev, struct vfio_ccw_private, vdev);
->  	struct vfio_ccw_crw *crw, *temp;
-> +	unsigned long flags;
-> =20
->  	/*
->  	 * Ensure these work items are fully drained, so none can
-> @@ -146,10 +148,12 @@ static void vfio_ccw_mdev_release_dev(struct vfio_d=
-evice *vdev)
->  	cancel_work_sync(&private->crw_work);
->  	flush_work(&private->notoper_work);
-> =20
-> +	spin_lock_irqsave(&private->crw_lock, flags);
->  	list_for_each_entry_safe(crw, temp, &private->crw, next) {
->  		list_del(&crw->next);
->  		kfree(crw);
->  	}
-> +	spin_unlock_irqrestore(&private->crw_lock, flags);
-> =20
->  	kmem_cache_free(vfio_ccw_crw_region, private->crw_region);
->  	kmem_cache_free(vfio_ccw_schib_region, private->schib_region);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does closing the device leak
-the eventfd contexts allocated for device triggers?
-
-When userspace configures IRQs via VFIO_DEVICE_SET_IRQS, eventfd_ctx_fdget()
-increments the reference count of the eventfd context.
-
-If userspace closes the device without explicitly disabling the IRQs first,
-vfio_ccw_mdev_release_dev() is invoked. Is it necessary to call
-eventfd_ctx_put() here to release the references to private->io_trigger,
-private->crw_trigger, and private->req_trigger?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803160924.2368=
-07-1-imbrenda@linux.ibm.com?part=3D10
