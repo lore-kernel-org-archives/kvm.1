@@ -1,207 +1,145 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2A61E0B9C;
-	Mon,  3 Aug 2026 01:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66785303C9C
+	for <kvm@vger.kernel.org>; Mon,  3 Aug 2026 01:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785720804; cv=none; b=ijFk42d+xR1AzPmPxElHirv89WwW6Ulhj96C6WYr9fqzQhde05CL3l/6Cdu9Mblr/rkps9/WeCCLta5JZUJw0H0bR3PhnXx82YIC4ubPipeIQsn633ZKzXAYv+B2xrBjWM1LI9xU+psSnPUSy2F8MOLbSplYHXUBBQutZ+7oYgQ=
+	t=1785721713; cv=none; b=UEqygoLdn9D8eF/+ssxqq+Lo03RGMv6cobR1dg7kIQPs2RE20ik0W1nzuxDUDxTx+r4IvSr8mtHt9EpTQFuEtmptu/4u7G6HOKT8+5NrFElAhr0i50cGWooDod3+PmBsBoV32+4922gMLR8x116Y2Z2J3CfXO0deMCVwbLiWdDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785720804; c=relaxed/simple;
-	bh=7ITN1Zfnj0l7TX4s8QWERbygv5FfJNG4fyGt2cxZJsE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=d36ss/eOzqZLiVOFC+p1Omo/nuGlsIv4dofSOBkqaC76g0uKrEe9+tvMijXSjCFz+IwlsafKepe/+qWDlTNjYkPB4CL3jo+FlpeA2vFa4InYKJc+DoV8AW6kkOkrYZj+Hn5X1pN7PRnObuWs2h+9t+NcHS3YOu13HoyyvgCb8Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=IrrNy1Te; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785721713; c=relaxed/simple;
+	bh=F5jjXvOUykyUu9zaFjniBFZS1TJ9Ywm2mqV/IlHg49A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aVuWWlxuOWyQkWRCJmtutKHHoWJALbi7AX2/kiJc+ZIpqziOgeVDQu3sljeFdHgDPV4iL/9V09pksK7B63gRj2ce7ow+fuYExGTUDL6/Q2IiduCJoNhlo0bcVvehx5Nwp8N8Sk0btyWjBkwbAuwefpf8NDlz0kVKypxewTrYI1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iBx2Ne9s; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="IrrNy1Te"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=/ElVnH6G4rldSzqvkWtQlDELwbWC65DsBa935CdX90I=;
-	b=IrrNy1TeSFzMHgGn9EBDEGTdvrty/p2VhYuJSLdQZGHZKddYXkGof4FikGF8IcK8nEb4wdtKN
-	yAcNIeYBNDmxy3DDxVUnkRoGyy7oJ6KcDPxTODucoYwgjRis7JCpNwmElk+qUauaONBCP7zc/TA
-	CVeEzIK+gdzX7DfN0Xh0FH0=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hCzTR23LSz1prN4;
-	Mon,  3 Aug 2026 09:23:39 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1E48640575;
-	Mon,  3 Aug 2026 09:33:11 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 3 Aug 2026 09:33:02 +0800
-Message-ID: <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
-Date: Mon, 3 Aug 2026 09:33:02 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iBx2Ne9s"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cf50c6f235so31497765ad.0
+        for <kvm@vger.kernel.org>; Sun, 02 Aug 2026 18:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785721711; x=1786326511; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0HsrDyLiG2SqFngrsM9H92PhXRSraWTBf1HxDTa+ur0=;
+        b=iBx2Ne9swTp6Bma3PYPm/5tO6vrXYIn59TbHwbGyzYQNGxRsr0X6/H8Qujj6GbhXXX
+         YRHFSSDFA56DZP85QmuUhxt/KZNoa7pSBVzZcE6hIlQM9I8EBQFekkO5Ix5Acac7kLG5
+         BBP4Q7EA0SB0et7lhPxPHFL8C/EgTANcSUBf+GkwjaLbxZZ9kReodvvBnYiQxt4yR1na
+         lDPx2yVYjlCUnF8JOzaJcFCO64IeihLAT+X7gM3WsTcw7IHZJAODUjcnc00yqQcMhuPI
+         EUucZMkl39oOPVbnKBye9MI0Ns7HnxA8rXwR3sjdpJOHADj5//524qyYPx8+t2RLLJ+J
+         qsYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785721711; x=1786326511;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0HsrDyLiG2SqFngrsM9H92PhXRSraWTBf1HxDTa+ur0=;
+        b=pX9OvDw5VArS7yoeMYOxvwGjCwRInK9uZGwSKpRbb5hnJmr4V6o26IGTLgJV8HgfHF
+         iFYAo7Pd4SXs765yEA3rFr+3ZO6gh91YXl+CcbgMmOwE+W581V927G3Sm1tZNyNfqUv7
+         pK4x2of+G4oU5kv2fLFygVSxjiPGsMqoOAF8I2oLjQTsdU+kx9vpenqSqrpqt3+cpPs3
+         iBrWA1XVOG1p3ISfcilD++x/WjfXKlFvSCBGU5yOWH3mF/Q1PZ5uiJZ34xuwk/p1I7ak
+         vSKkOGV7ZFMxLw4g/LJ5B3eyQILHAinjRYjvvAXXgp5QaTXxiVgi8JNrIy6P+zkmhz2X
+         nbUQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoUx3tbSVUNkgGC7brDFrPjVymhovUn/+Tcb7pzOFhwkxr74aDca+gOQNwUwpfEO6Lj8a8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1weRC31v8Cs9/HVae5rgQVvx3E7QvHZ2H4dODidwUGeUaWhvb
+	Vy9p+peIXwPBXhtFq+j/F7rnrZEy+8iK84TP3Ai1ci7axCWdP5bWEyaz
+X-Gm-Gg: AR+sD11uGzxtY0EmjWsoYmIpszR6izOn1iOLvKiwHtVOaZgun57F/ckCBfuJSntmW5G
+	R8iwpbcKpkaeielMHPhsUDNLqRGCFXRJQ6llqt3DsKKObJV/uZR4LAlqapobFEF+um8vzZEuDk4
+	gByfL5SHULYvq4Y/EkTVX5yDvgTQq6t22KNomqdwqkv9TMp6Av/UBOA1ixYBLCD0zUuLoJcfTUv
+	0g508tp67OCjk8r381QeHWXPA+9wyfIkuok/l5NDLI7vmMwm64NvkcVaLhH5LcywabCujHA+f5O
+	55jxxGuqyFWkqjWBBf+ZJ07Wmsk43+3hlm3x9h2TEqu3fJTfXsnnw5zwAvmV+V5nUZk3bXOHMpO
+	XvNQfSfaR+krcJPE4idRoz+U8o1YZ/3s5y/cTVj95uVvlYEftaRUKpcnBYIBGR4Oogs5ZYmGFFf
+	YWRYMJDFzeJ7hlQ1CF6lR2QWhlpnD2D1TtTs5ftqO3bfrVYR3NNSUmnuaaoLI+v45pz4HjDtXlI
+	TcVFxVNQpx4wAMDOoqg3If34Qomgf1zL1d3CuZwN/Cm3+Uk3w==
+X-Received: by 2002:a17:903:1a4d:b0:2cc:df15:91de with SMTP id d9443c01a7336-2d0524a2b59mr81446775ad.42.1785721710586;
+        Sun, 02 Aug 2026 18:48:30 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0eb491sm30422855ad.42.2026.08.02.18.48.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 02 Aug 2026 18:48:30 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jun Yang <junvyyang@tencent.com>,
+	stable@kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost: reset the vring metadata cache on vring reconfiguration
+Date: Mon,  3 Aug 2026 09:45:14 +0800
+Message-ID: <20260803014823.68623-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
- dirty tracking
-To: Leonardo Bras <leo.bras@arm.com>
-CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
-	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
-	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
-	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
-References: <20260709104026.2612599-1-zhengtian10@huawei.com>
- <20260709104026.2612599-4-zhengtian10@huawei.com>
- <aliKo7dTZzKcWHzI@kernel.org>
- <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
- <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
- <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
- <amoZY8uGLf1PEpjK@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <amoZY8uGLf1PEpjK@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr100010.china.huawei.com (7.202.195.125)
 
+From: Jun Yang <junvyyang@tencent.com>
 
+vq->meta_iotlb[] caches the vhost_iotlb_map that backs each vring
+metadata region, and iotlb_access_ok() returns early on a cache hit,
+taking the hit as proof that the region has already been validated:
 
-On 7/29/2026 11:16 PM, Leonardo Bras wrote:
-> On Wed, Jul 29, 2026 at 04:51:59PM +0800, Tian Zheng wrote:
->>
->>
->> On 7/20/2026 8:58 PM, Leonardo Bras wrote:
->>> On Fri, Jul 17, 2026 at 04:21:32PM +0100, Leonardo Bras wrote:
->>>> On Fri, Jul 17, 2026 at 11:58:06AM +0800, Tian Zheng wrote:
->>>>>
->>>>> On 7/16/2026 3:39 PM, Oliver Upton wrote:
->>>>>> Hi Tian,
->>>>>>
->>>>>> On Thu, Jul 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
->>>>>>> -	if (prot & KVM_PGTABLE_PROT_W)
->>>>>>> +	if (prot & KVM_PGTABLE_PROT_W) {
->>>>>>>     		set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
->>>>>>>
->>>>>>> +		/*
->>>>>>> +		 * No DEVICE filter needed here: relax_perms is only called
->>>>>>> +		 * on FSC_PERM faults. Device pages always get full RW from
->>>>>>> +		 * initial mapping and are never write-protected during
->>>>>>> +		 * migration, so they never trigger a permission fault.
->>>>>>> +		 */
->>>>>>> +		if (pgt->flags & KVM_PGTABLE_S2_DBM)
->>>>>>> +			set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>> +	} else {
->>>>>>> +		/*
->>>>>>> +		 * Clear DBM on W→RO downgrade to prevent hardware from
->>>>>>> +		 * silently upgrading RO+DBM back to W+dirty, which would
->>>>>>> +		 * bypass KVM's write tracking and cause data corruption.
->>>>>>> +		 */
->>>>>>> +		clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>> +	}
->>>>>>> +
->>>>>> This block makes it pretty evident that the DBM bit really *is* the
->>>>>> write permission bit. I'd much rather we introduce the concept of dirty
->>>>>> state to the page table library and migrate the abstract write
->>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
->>>>>>
->>>>
->>>> Ohh, that's an amazing idea!
->>>
->>> Thinking about that again...
->>> If we adopt the encoding with DBM being the write-permission bit, and all
->>> PTEs have it since the start, how can we have lazy-splitting happening?
->>>
->>> Only way I think of is removing both DBM and S2_S2AP_W bit from writable
->>> PTEs during dirty-track enable, and re-adding them during the first write
->>> fault. If we don't remove the DBM bit, systems with HDBSS would just dirty
->>> it by hardware, without causing a fault.
->>>
->>> DBM=0 would need to happen only in the first write-protect (only on
->>> lazy-splitting). All other write-protecting would just clean the S2_S2AP_W
->>> bit, as everything is already split.
->>>
->>> Is that what was intended?
->>>
->>> Thanks!
->>> Leo
->>>
->> Hi Leo,
->>
->> I think the cleanest way to handle this is to simply avoid setting DBM
->> on block mappings. If we only set DBM on page-level PTEs, then block
->> mappings will naturally stay DBM=0 and trigger a write fault on first
->> access — exactly what we need for lazy splitting.
->>
->> When the fault occurs, the block gets split into page-level PTEs, and at
->> that point we can set DBM=1 on the resulting leaf entries. This way:
->>
->> 1. Lazy split works naturally (fault -> split -> set DBM=1)
->>
->> 2. No need to clear DBM globally at dirty-track enable
->>
->> 3. No special handling for block mappings
->>
->> So I think global DBM is still viable — we just need to filter out block
->> mappings when setting the DBM bit. That way the lazy split path is preserved
->> without extra complexity.
-> 
-> Hi Tian,
-> 
-> Humm, but would not that be contrary to what Oliver suggested: changing the
-> encoding from the PTE for all entries?
-> 
-> (Like, if the PTE is writable, it has to have DBM set)
-> 
-> IIUC what you said, on first faulting of the page in the VM:
-> - If the entry is a page (level-3 leaf) and writable, add DBM
-> - If it's a block entry (leaf but not a level-3), don't add DBM
-> 
-> So after we enable dirty-logging:
-> - a level-3 entry would not fault, using HDBSS, and
-> - a block entry would fault, do the splitting, and add DBM to level-3
->    entries during the split.
-> 
-> If I got that correct, that would be clean indeed.
-> 
-> But then we would have a different encoding for block entries and page
-> entries. In page entries, DBM could be used to say if the page is writable,
-> but on block entries one would have to look at the 'dirty-bit'.
-> 
-> Would that be ok?
-> 
-> Thanks!
-> Leo
-> 
-Hi Leo,
+	if (vhost_vq_meta_fetch(vq, addr, len, type))
+		return true;
 
-My initial concern was that clearing all DBM bits at the start of
-migration would be too expensive, so I thought distinguishing between
-level-3 entries and block entries would be better.
+The cache is reset on VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE, on
+device IOTLB (re)initialisation and on vq reset, but not when
+VHOST_SET_VRING_ADDR replaces vq->desc, vq->avail and vq->used, nor when
+VHOST_SET_VRING_NUM changes the region sizes.
 
-However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
-turned out to be around 30ns — which I think is acceptable.
+With a device IOTLB attached both ioctls are accepted while the vq is
+live, and neither validates the addresses at ioctl time: vq_access_ok()
+and vq_log_used_access_ok() return true early because the addresses are
+GIOVAs, deferring validation to prefetch time.  Once the cache has been
+populated that deferred validation no longer runs -- vq_meta_prefetch()
+hits the stale entry and returns true -- and vhost_vq_meta_fetch() keeps
+translating through the old mapping as
 
-So I think we can go with your approach: simply clear DBM globally in
-kvm_arch_commit_memory_region() when dirty logging starts, before write-
-protecting the memslot.
+	map->addr + addr - map->start
 
-```
-void kvm_arch_commit_memory_region(...)
-{
-     // ...
-     if (log_dirty_pages) {
-         if (change == KVM_MR_DELETE)
-             return;
+for an address the mapping no longer covers.  vhost_copy_to_user() and
+vhost_copy_from_user() consume the result with __copy_to_user() and
+__copy_from_user(), which do not check it either, so a subsequent used
+ring update or descriptor fetch accesses memory outside the region the
+IOTLB actually maps.
 
-         kvm_mmu_clear_dbm_memory_region(kvm, new->id);
-         // ...
-     }
-     // ...
-}
-```
+Reset the metadata cache whenever the vring is reconfigured, so the new
+addresses are pushed back through iotlb_access_ok()'s slow path.
 
-Thanks!
-Tian
+Fixes: f88949138058 ("vhost: introduce O(1) vq metadata cache")
+Cc: stable@kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
+---
+ drivers/vhost/vhost.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 4c525b3e16ea..77c96993100b 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2126,6 +2126,14 @@ static long vhost_vring_set_num_addr(struct vhost_dev *d,
+ 		BUG();
+ 	}
+ 
++	/*
++	 * The metadata cache holds the IOTLB mapping that backed the previous
++	 * desc/avail/used addresses and vring size, both of which are being
++	 * replaced here.  iotlb_access_ok() takes a cache hit as proof that the
++	 * region was validated, so the stale entries have to go.
++	 */
++	__vhost_vq_meta_reset(vq);
++
+ 	mutex_unlock(&vq->mutex);
+ 
+ 	return r;
+-- 
+2.55.0
+
