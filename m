@@ -1,42 +1,32 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DA33E49F4
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 08:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFC13D3CE3;
+	Tue,  4 Aug 2026 08:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785832030; cv=none; b=VuBMnx3MYo9X0Lr3YlrUxP75MMVGr0Q0Pq+lDmAuaB6hOSU4rXlToCxQJ4OF/TOooAsGMAh3RF+TBTUBCH2DTgKsrU1xjTAj5Ld29XYThPk8xJu64yiPznw0am5kNJ/AJA3Bk4JzyTYHiU/4+CXV/w9f8idhT+DfKeEV2Usp1gc=
+	t=1785832156; cv=none; b=Y2odJSOhBFb4UjmTsB5BA7bSlgcv7wuE68HNxYTXy4odo5KY7/NMEXFlUibTOTAWYPRos8YdIhOX8+LuMfpoQCgfITDk9nN/sTV1LZ8bH3387LYkbryeqQ84vMnQZmtjQs2v70SUFvIU4AWGq/pO1WK0PuqLUlUz8vnEy0P4miY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785832030; c=relaxed/simple;
-	bh=oT6MK+nFqRDDT6381MyCKbz3RNZwGiyYyYgu0C2Gb5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F/vwym+Y1pKfIfb6GxqeefMxXn3e1SLWiviQ5Tr5CJDlOXYE8shWH16042OXzyNXcwP4uK44+MWPKszpR3bIOLXLpWkXvEFcPyTAdXIyq9yxHU6ITneYzY3UNr8HQS8zf2UUeXHhO+QS0j8DIP+1RnbAL5hZgWrePghY0MFBWbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vjeAR/pl; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vjeAR/pl"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785832014;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nVmasiSGPkk+x1jneoko6hUi583kHYVUUu//LQCwxW8=;
-	b=vjeAR/plqnY7VIMQjOpoh4d5HW8l20DJwINTiYehlOVy7ReNk1IK5PpB0cbRj25pYohZt2
-	uAoNAUVxyob/KghhCtXaTx89UzltsCUS6wqOIR26OBYhHs8XfHA5UTFWVIWnVPpHxwe366
-	3ZoEk4UB6s6Dhyj1fk1iahuuj1/AN2A=
-From: Tao Cui <cui.tao@linux.dev>
-To: zhaotianrui@loongson.cn,
-	maobibo@loongson.cn
-Cc: chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	kvm@vger.kernel.org,
+	s=arc-20240116; t=1785832156; c=relaxed/simple;
+	bh=k7yk5/b7qdepsPMCeaP36SdxlZvojFFonqwUNc0xcSs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EoQIjuHcdoRo6/n+x8b9U21zaeFoV7AtWkD0rc5ZM4lBrQ4d9/YUbtSsJvDfWMHIeTFM5XgTCyapBTpVSHiOTUioF1MgBOB5tgsvZ0mryutS8EQL/ER2VX0KuWWQr6pFUKsfJukQMsnGgfZbN6RnqJDinjdUOskLogbibTJai28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxturXonFqizYKAA--.33315S3;
+	Tue, 04 Aug 2026 16:29:11 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJDxfQfXonFqliwjAA--.5687S2;
+	Tue, 04 Aug 2026 16:29:11 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	cui.tao@linux.dev
-Subject: [PATCH] LoongArch: KVM: Advertise already-supported capabilities
-Date: Tue,  4 Aug 2026 16:26:04 +0800
-Message-ID: <20260804082604.178092-1-cui.tao@linux.dev>
+	stable@vger.kernel.org
+Subject: [PATCH] LoongArch: KVM: Set cpu before IN_GUEST_MODE is set
+Date: Tue,  4 Aug 2026 16:21:53 +0800
+Message-Id: <20260804082153.1220709-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,59 +34,42 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:qMiowJDxfQfXonFqliwjAA--.5687S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Several LoongArch KVM features are fully implemented but were never
-reported through their standard KVM_CHECK_EXTENSION probes, so userspace
-cannot discover them and either ignores them or takes a slower path.
-Advertise the ones that already work:
+In function kvm_make_vcpu_request(), it will send IPI to physical CPU
+when vCPU is in IN_GUEST_MODE mode. And physical CPU is set in function
+kvm_check_vpid(), and it should be called before IN_GUEST_MODE is set.
+Otherwise IPI will send to wrong old physical CPU where vCPU is running.
 
-  - KVM_CAP_STEAL_TIME: steal time is fully implemented (host-side
-    record plus guest paravirt), gated on kvm_pvtime_supported().
-
-  - KVM_CAP_IRQFD_RESAMPLE: the resampler is generic code backed by the
-    in-kernel irqchip; advertise it so userspace can use irqfd with
-    resample for level-triggered interrupts.
-
-  - KVM_CAP_VM_GPA_BITS: the guest physical address width is already
-    computed as BIT(cpu_vabits), so return cpu_vabits directly.
-
-  - KVM_CAP_VCPU_ATTRIBUTES: per-vCPU device-attribute ioctls are
-    implemented (CPUCFG, PVTIME control); advertise the discovery cap.
-
-This adds no new functionality; it only makes existing features
-discoverable via the standard probe.
-
-Signed-off-by: Tao Cui <cui.tao@linux.dev>
+Fixes: 2fc3bd86db4b ("LoongArch: KVM: Implement basic vcpu interfaces")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- arch/loongarch/kvm/vm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/loongarch/kvm/vcpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-index 1317c718f896..d7dd08d9be5b 100644
---- a/arch/loongarch/kvm/vm.c
-+++ b/arch/loongarch/kvm/vm.c
-@@ -120,8 +120,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_READONLY_MEM:
- 	case KVM_CAP_IMMEDIATE_EXIT:
- 	case KVM_CAP_IOEVENTFD:
-+	case KVM_CAP_IRQFD_RESAMPLE:
- 	case KVM_CAP_MP_STATE:
- 	case KVM_CAP_SET_GUEST_DEBUG:
-+	case KVM_CAP_VCPU_ATTRIBUTES:
- 		r = 1;
- 		break;
- 	case KVM_CAP_NR_VCPUS:
-@@ -136,6 +138,12 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_NR_MEMSLOTS:
- 		r = KVM_USER_MEM_SLOTS;
- 		break;
-+	case KVM_CAP_STEAL_TIME:
-+		r = kvm_pvtime_supported();
-+		break;
-+	case KVM_CAP_VM_GPA_BITS:
-+		r = cpu_vabits;
-+		break;
- 	default:
- 		r = 0;
- 		break;
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index 20c207d80e31..fd0dd22a7162 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -300,10 +300,10 @@ static int kvm_pre_enter_guest(struct kvm_vcpu *vcpu)
+ 		 */
+ 		local_irq_disable();
+ 		kvm_deliver_exception(vcpu);
++		kvm_check_vpid(vcpu);
+ 		/* Make sure the vcpu mode has been written */
+ 		smp_store_mb(vcpu->mode, IN_GUEST_MODE);
+ 		kvm_deliver_intr(vcpu);
+-		kvm_check_vpid(vcpu);
+ 
+ 		/*
+ 		 * Called after function kvm_check_vpid()
+
+base-commit: 075b74841bd0065a3bda3440873c747938e69b68
+-- 
+2.39.3
+
