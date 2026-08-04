@@ -1,42 +1,92 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA3C2E738F
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873002931E9
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785812979; cv=none; b=Q84aDM5z8Yz1RH0Zd0eJWTtNhq0Z6XVc22+RgzZ4pfjnk5bdRsVs/29u5zUmY3YBdyu/6KtJ4jEEUZ+zZm00cDv0IqvshMRxdQ4qtGj99cDCxYHWTncmjz53vgz9ye6tzpv+Y8DIv26vR1wRYu2Z/S5CmSzZRsy0nIsUnla01hg=
+	t=1785813540; cv=none; b=CquSDzRfEL03mGtvxSJDOVy66Xal1evaAWEaeyCaae26qkI80In12WjP4TJFlWF/2UlbudObnOHT1vvEMlBHFo2y0304CnWhys8OPUpuvuWRoeVppCKQZ6oaoVFjkcVgzYfLKAZeztg/6VtXUmPBsARSW71QW/WVyuis6lnQM14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785812979; c=relaxed/simple;
-	bh=iQ8khAqKQoqT7Z97u5JeT8XWZ9kj74fl9yVWyAYs3M8=;
+	s=arc-20240116; t=1785813540; c=relaxed/simple;
+	bh=vjexPMXz+uHstAFBD5kC8PIMoFh7FLyMaZtlnqi/L7s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LByli3iwCaAIJX+SAJuvnO2zh15NP6QJ48rGVqNjYEns/Xwfjx+M5a0XFXBSGb7pMX5Z8ixlTyVBLKU9IUUorFUU6cEe4fy4tEHR91L8CX6OKUcj0+GfQMfr5UO8LITyqfdPDJQBdX0RHIVrq52q1hpgvnqtil7rVhOgFDMUsOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Mg2tLFAR; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=hev4g1XGilgv60zkh66HNr6nVS21YXmGgFBZ3MdlciTH1UQqQ8diSUZshI+P6UQa3eVDkNOHNRYfqFX+45xZ83i6WgkFyakDXuJtGkG33xJ99RVP0DTBkBNKEL+Vnj05UgwusRd0CViXkFL7WABQJdnbY4OzBA5106IzACltgiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WOsmrTl0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SoJi61Lv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Mg2tLFAR"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785812966; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=m9TqxE7fyLCYVXMRCNCzUHqpEufNhcGr/4nD/q7HOCE=;
-	b=Mg2tLFAR1kBqO/SdqaH5+i1Wb9YFGgv4PowcmdQq2XXJcySMEpESGMZ1tvoy6aAE9u8m+z69nF7Z3CzO1t7NbLX/JAdFRjVIG7QPTDnXL8TQt+zFBGoJKomKzAKeddUifC6EtrTlr2/RLdxFgXBY1IehfWp4vHily7sPwoWwMO4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X8MV38Y_1785812965;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X8MV38Y_1785812965 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 04 Aug 2026 11:09:26 +0800
-Date: Tue, 4 Aug 2026 11:09:25 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Hyunwoo Kim <imv4bel@gmail.com>
-Subject: Re: [PATCH 6/6] KVM: arm64: Add VNCR TLB tracking again
-Message-ID: <jtw5wkairjo6fxsv7lclgjkaixn4dwjtdufp6vtu3mmoidqp3l@cr5bmrvzz2ng>
-References: <20260801124818.366274-1-maz@kernel.org>
- <20260801124818.366274-7-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WOsmrTl0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SoJi61Lv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785813537;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hn89OAtGF04fL1DOEPjseXWeO4u1I3kemB7CwT2Ey+4=;
+	b=WOsmrTl0WPEYOFPXeNljOcoJoRUC4RfI3uHlEBrEHkt1DiNdxBxtfXtbbsJED3LveS2Kz/
+	9vozBWMnJxCWerxFuy0Cq8xSmLck86C3emQbHWCvrg+c3UOCUn0LJo3wNkJO8Qdxac3xVf
+	kjDA205eNy6LAzx3wOe8JOsTsPKcgog=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-28-0LBPHVr-MVGmzSDrZMVZqw-1; Mon, 03 Aug 2026 23:18:56 -0400
+X-MC-Unique: 0LBPHVr-MVGmzSDrZMVZqw-1
+X-Mimecast-MFC-AGG-ID: 0LBPHVr-MVGmzSDrZMVZqw_1785813535
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69e70c286ecso4125034a12.0
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 20:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785813535; x=1786418335; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hn89OAtGF04fL1DOEPjseXWeO4u1I3kemB7CwT2Ey+4=;
+        b=SoJi61LvmxaY1ZnjLpuYCCCeAGIxGAM6ju29CT3EVUQsoPGKnoG5xs4+OqUdIgLRXg
+         E3nLwPS7VnC1DZEZGNEPG/7RDfxVzF3GEZTxwv/hvSI2xQCITE2ptnWKQTfRcQgDF2W3
+         TUl4ioE8NtKhG54asndOr2IX5eRpqBICV3RjM1pcxCx3GhMO+4dAh29JevvvciPxQs68
+         QXucKMsj3Uc36kdMVcl9xKIY5+YmFrU2Vcnn4j1rZvl5BOeYAPsNeFQ12O55/p3oCQrb
+         SlNcOFvDVqa8poymyLbc2yd8h+pGIgrOR9GYDGTYXGm+wSEDOM/c+KzQpoNboiWtk0Dm
+         5DUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785813535; x=1786418335;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hn89OAtGF04fL1DOEPjseXWeO4u1I3kemB7CwT2Ey+4=;
+        b=KTZO2A4CqIk7zWIEyJnjiaOfKxsjM06hZdKWpwhpzz1/GAa7CYTVHC+jtMbuv/11tY
+         2374mfIsc4ks5I/X/MfOql9PPB7c3PAZoDMp1DwM3dhK9xcCsyfPnyW2KZuPGzZOEgQZ
+         pfLngNWARHkHWSo6j4M1eCUGqCL814HyWmjOxRQQflT4QMY/iCLNOYeiLpOJ+pXCv9rq
+         goAMfyaKBV+20oZEArYEV9BCryrGjme5yql4uvDUd7sAkWvKETq6gabuvx+vKz1//5ki
+         FhC3Cs1AMvWuGv4fNKwhgWWmB8GeAIcpHtTc+J30camxfaPAeT3/C5b8kZaxKCx2FUvo
+         y3PQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrUUEQeWmWFoJmxw5wPRJR7E+nWSabKGYkqSeHVjQcwCQ0dl552idGqlEDW3haP/1+8eEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh3EI4/NCF9gmT2r5vFEu3dr3bYgv+LM6PospUtKt0Cv0a7wPb
+	p4Ay1T1SH6tRqeAQEd4sAsdqGODhZLvDdPCVDoLJAkIYVvsjW+3/Dhvpl5BwGgx50aC7dEEmSY3
+	9HgeiHwJB/gJnNp1XyxX9PnysoxUZROqcoy3Nngm2vdY+rue6k16O1w==
+X-Gm-Gg: AR+sD11qxNVdL0bw1TALkh+f99i2Yk/fsSVC4wdRTx5uGY2Pgu/958DhQIElTHsAFFB
+	5L0X1DB5slNlIaGGm1ShPPIXJ4dztmdPPGm81Sg4u679lakUh77pT9FpdEOh3qsgqFPNOisUnw3
+	gPFSatOhIQYD4KrliHFLFKL6NgMq29syE+TsgnAwcvr9th7oXpACVdy1lY/G1ULWP7WJ7iAPVaV
+	S9+MXtoulneiCrLACFdFCaro73c6u8YG9B8vFywKTUxOUcdOFCYi0HqscbBpURVOpLfU/De3qMX
+	VQJN+4Tr+y+5ksF94RGJR4aUHgxqEpLkx/Hy9kS8Ye02MdZld8uzkPToKDRMRFBJ/TCJ
+X-Received: by 2002:a05:6402:42c8:b0:6a1:2400:baea with SMTP id 4fb4d7f45d1cf-6a12400bf12mr1998130a12.10.1785813534915;
+        Mon, 03 Aug 2026 20:18:54 -0700 (PDT)
+X-Received: by 2002:a05:6402:42c8:b0:6a1:2400:baea with SMTP id 4fb4d7f45d1cf-6a12400bf12mr1998100a12.10.1785813534402;
+        Mon, 03 Aug 2026 20:18:54 -0700 (PDT)
+Received: from redhat.com ([186.247.166.67])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a09c5a09acsm5960120a12.4.2026.08.03.20.18.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 20:18:53 -0700 (PDT)
+Date: Mon, 3 Aug 2026 23:18:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] vhost/vsock: discard IOTLB when ACCESS_PLATFORM
+ is cleared
+Message-ID: <20260803231405-mutt-send-email-mst@kernel.org>
+References: <20260730104857-mutt-send-email-mst@kernel.org>
+ <20260731103414.1746316-1-physicalmtea@gmail.com>
+ <20260731103414.1746316-2-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,153 +95,108 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260801124818.366274-7-maz@kernel.org>
+In-Reply-To: <20260731103414.1746316-2-physicalmtea@gmail.com>
 
-On Sat, Aug 01, 2026 at 01:48:18PM +0800, Marc Zyngier wrote:
-> Having established that our VNCR TLB tracking was flawed and dropped
-> it from KVM, it is time to replace it with something that works.
->
-> The goal of that tracking is to hit the TLBI slow path if there
-> are any VNCR TLBs in the guest, irrespective of their mapping state.
->
-> For this purpose, we introduce an VM wide counter (vncr_tlb_count)
-> that tracks how many valid VNCR TLB are present. This means that
-> creating such TLB must increment the counter, and invalidation
-> decrement it, and both these operations must be done with the MMU
-> lock held for write.
->
-> On TLBI handling affecting EL2 S1, a non-zero counter forces the
-> handling to take the slow path to consider the VNCR TLBs.
->
-> Not exactly rocket science. Hopefully I got it right this time.
-
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
-
->
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
+On Fri, Jul 31, 2026 at 06:34:13PM +0800, Jia Jia wrote:
+> vhost_vsock_set_features() leaves the device IOTLB attached when
+> userspace clears VIRTIO_F_ACCESS_PLATFORM. Descriptors can therefore
+> continue to use translations installed before the feature change,
+> including HVAs made stale by a later memory table update.
+> 
+> Detach the IOTLB before acknowledging a feature mask without
+> ACCESS_PLATFORM. Hold all virtqueue mutexes in index order while clearing
+> the device and virtqueue IOTLB pointers, resetting metadata caches, and
+> updating the acknowledged features. This prevents a kick handler from
+> observing a mixed translation state.
+> 
+> Free the old IOTLB after releasing the virtqueue mutexes. Also drop
+> the old IOTLB miss messages and wake readers now that the device no
+> longer accepts IOTLB updates.
+> 
+> Fixes: e13a6915a03f ("vhost/vsock: add IOTLB API support")
+> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
 > ---
->  arch/arm64/include/asm/kvm_host.h |  3 +++
->  arch/arm64/kvm/hyp/vhe/switch.c   |  5 +++--
->  arch/arm64/kvm/nested.c           | 25 +++++++++++++++++++------
->  3 files changed, 25 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index ac16f96c878d6..108966a9db12b 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -411,6 +411,9 @@ struct kvm_arch {
->  	/* Masks for VNCR-backed and general EL2 sysregs */
->  	struct kvm_sysreg_masks	*sysreg_masks;
->
-> +	/* Count the number of VNCR_EL2 TLBs */
-> +	atomic_t vncr_tlb_count;
+>  drivers/vhost/vsock.c | 43 ++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 38 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> index 9aaab6bb8061..562b9e139a76 100644
+> --- a/drivers/vhost/vsock.c
+> +++ b/drivers/vhost/vsock.c
+> @@ -851,6 +851,34 @@ static int vhost_vsock_set_cid(struct vhost_vsock *vsock, u64 guest_cid)
+>  	return 0;
+>  }
+>  
+> +/* Caller must hold the device mutex. */
+> +static void vhost_vsock_clear_iotlb(struct vhost_vsock *vsock, u64 features)
+> +{
+> +	struct vhost_iotlb *iotlb;
+> +	struct vhost_virtqueue *vq;
+> +	int i;
 > +
->  	/*
->  	 * For an untrusted host VM, 'pkvm.handle' is used to lookup
->  	 * the associated pKVM instance in the hypervisor.
-> diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-> index c09b1d411c584..eb59549ec2172 100644
-> --- a/arch/arm64/kvm/hyp/vhe/switch.c
-> +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-> @@ -424,10 +424,11 @@ static bool kvm_hyp_handle_tlbi_el2(struct kvm_vcpu *vcpu, u64 *exit_code)
->  		return false;
->
->  	/*
-> -	 * If we have to check for any VNCR mapping being invalidated,
-> +	 * If we have to check for any VNCR TLB being invalidated,
->  	 * go back to the slow path for further processing.
->  	 */
-> -	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu))
-> +	if (vcpu_el2_e2h_is_set(vcpu) && vcpu_el2_tge_is_set(vcpu) &&
-> +	    atomic_read(&vcpu->kvm->arch.vncr_tlb_count))
->  		return false;
->
->  	__kvm_skip_instr(vcpu);
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 84915e2cff604..1e3fd98f6589b 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -48,6 +48,7 @@ void kvm_init_nested(struct kvm *kvm)
->  {
->  	kvm->arch.nested_mmus = NULL;
->  	kvm->arch.nested_mmus_size = 0;
-> +	atomic_set(&kvm->arch.vncr_tlb_count, 0);
->  }
->
->  static int init_nested_s2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu)
-> @@ -997,9 +998,11 @@ u16 get_asid_by_regime(struct kvm_vcpu *vcpu, enum trans_regime regime)
->  	return asid;
->  }
->
-> -static void invalidate_vncr(struct vncr_tlb *vt)
-> +static void invalidate_vncr(struct kvm *kvm, struct vncr_tlb *vt)
->  {
-> +	BUG_ON(!vt->valid);
->  	vt->valid = false;
-> +	atomic_dec(&kvm->arch.vncr_tlb_count);
->  	if (vt->cpu != -1)
->  		unmap_l1_vncr(vt);
->  }
-> @@ -1042,7 +1045,7 @@ static void kvm_invalidate_vncr_ipa(struct kvm *kvm, u64 start, u64 end)
->
->  	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm)
->  		if (vncr_tlb_intersects(vt, vt->wr.pa, start, end - start))
-> -			invalidate_vncr(vt);
-> +			invalidate_vncr(kvm, vt);
->  }
->
->  struct s1e2_tlbi_scope {
-> @@ -1090,7 +1093,7 @@ static void invalidate_vncr_va(struct kvm *kvm,
->  			break;
->  		}
->
-> -		invalidate_vncr(vt);
-> +		invalidate_vncr(kvm, vt);
->  	}
->  }
->
-> @@ -1326,13 +1329,20 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
->   *   intersects with the TLBI request, invalidate it, and unmap the page
->   *   from the fixmap. Because we need to look at all the vcpu-private TLBs,
->   *   this requires some wide-ranging locking to ensure that nothing races
-> - *   against it. This may require some refcounting to avoid the search when
-> - *   no such TLB is present.
-> + *   against it. This requires some refcounting to avoid the search when
-> + *   no such TLB is present (see below).
->   *
->   * - On MMU notifiers, we must invalidate our TLB in a similar way, but
->   *   looking at the IPA instead. The funny part is that there may not be a
->   *   stage-2 mapping for this page if L1 hasn't accessed it using LD/ST
->   *   instructions.
-> + *
-> + * - vncr_tlb_count tracks the number of valid VNCR TLBs VM-wide. This isn't
-> + *   the number of *mapped* L1 VNCR pages, which is likely be a subset (and
-> + *   by definition, a TLBI handled from L1 runs with the canonical VNCR
-> + *   page, not the L1's). The innermost trap handling code checks this to
-> + *   find out whether to return to the guest ASAP (no L1 TLBs) or to visit
-> + *   this part of the world for some extra invalidation work.
->   */
->
->  int kvm_vcpu_allocate_vncr_tlb(struct kvm_vcpu *vcpu)
-> @@ -1387,7 +1397,8 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
->  	 */
->  	scoped_guard(write_lock, &vcpu->kvm->mmu_lock) {
->  		this_cpu_reset_vncr_fixmap(vcpu);
-> -		vt->valid = false;
-> +		if (vt->valid)
-> +			invalidate_vncr(vcpu->kvm, vt);
->
->  		vt->wi = (struct s1_walk_info) {
->  			.regime	= TR_EL20,
-> @@ -1459,6 +1470,8 @@ static int kvm_translate_vncr(struct kvm_vcpu *vcpu, bool *is_gmem)
->  		vt->valid = true;
->  		vt->cpu = -1;
->
-> +		atomic_inc(&vcpu->kvm->arch.vncr_tlb_count);
+> +	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++)
+> +		mutex_lock_nested(&vsock->vqs[i].mutex, i);
 > +
->  		kvm_make_request(KVM_REQ_MAP_L1_VNCR_EL2, vcpu);
->  		kvm_release_faultin_page(vcpu->kvm, page, false, vt->wr.pw && vt->hpa_writable);
+> +	iotlb = vsock->dev.iotlb;
+> +	vsock->dev.iotlb = NULL;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+> +		vq = &vsock->vqs[i];
+> +		vq->iotlb = NULL;
+> +		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
+> +		vq->acked_features = features;
+> +	}
+> +
+> +	for (i = ARRAY_SIZE(vsock->vqs); i-- > 0;)
+> +		mutex_unlock(&vsock->vqs[i].mutex);
+
+Why lock down all vqs like this?  Would this work just as well instead?
+
+	iotlb = vsock->dev.iotlb;
+	vsock->dev.iotlb = NULL;
+
+	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+		mutex_lock(&vsock->vqs[i].mutex);
+		vq = &vsock->vqs[i];
+		vq->iotlb = NULL;
+		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
+		vq->acked_features = features;
+		mutex_unlock(&vsock->vqs[i].mutex);
+	}
+
+and if no why not?
+
+
+> +	vhost_clear_msg(&vsock->dev);
+> +	vhost_iotlb_free(iotlb);
+> +	wake_up_interruptible_poll(&vsock->dev.wait, EPOLLIN | EPOLLRDNORM);
+> +}
+> +
+>  static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+>  {
+>  	struct vhost_virtqueue *vq;
+> @@ -872,11 +900,16 @@ static int vhost_vsock_set_features(struct vhost_vsock *vsock, u64 features)
+>  
+>  	vsock->seqpacket_allow = features & (1ULL << VIRTIO_VSOCK_F_SEQPACKET);
+>  
+> -	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+> -		vq = &vsock->vqs[i];
+> -		mutex_lock(&vq->mutex);
+> -		vq->acked_features = features;
+> -		mutex_unlock(&vq->mutex);
+> +	if (!(features & (1ULL << VIRTIO_F_ACCESS_PLATFORM)) &&
+> +	    vsock->dev.iotlb) {
+> +		vhost_vsock_clear_iotlb(vsock, features);
+> +	} else {
+> +		for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
+> +			vq = &vsock->vqs[i];
+> +			mutex_lock(&vq->mutex);
+> +			vq->acked_features = features;
+> +			mutex_unlock(&vq->mutex);
+> +		}
 >  	}
-> --
-> 2.47.3
->
+>  	mutex_unlock(&vsock->dev.mutex);
+>  	return 0;
+> -- 
+> 2.34.1
+
