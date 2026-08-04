@@ -1,56 +1,56 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8764399E2
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139238399C
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785869475; cv=none; b=f2gI94lB14iWjXTrCthhN/F1xmcdK0hvz3gCRQf0NEL+D1c8CiFIPOiWwiKAUHmhDMZVynA2VuNwdYnACf7k3jSqi3S8HfsE7E1fOYgbpTed4VVSFOvYqodZK8DTZdDUoIsGFG47aCQtLoTERUqZjjQ5Cw1dBWxOe/wY8fZ18kE=
+	t=1785869480; cv=none; b=DmooWQIdAI/Vev/UL3BPojcs/ZS36D0CYqyiNiQexsIu/JPcBUROdiyMWj7WHd68O8W0UmHoAFDZd8iXuREhAuhPb8c9zwIiSSm1itXOwX7Y0vLLOPKSNK9HtY7TdUbiCtlrWtWAJKtrJC3PjFRjBJRSxrD149klmb76oS2BhPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785869475; c=relaxed/simple;
-	bh=/pi0kNXNY1h1pfxpiwUj6T06M1fqxSotc6q0idZPb1E=;
+	s=arc-20240116; t=1785869480; c=relaxed/simple;
+	bh=86B3BBLW8NnxL8U0IAZgS6A8MjKZ1A/OLEY6LvzwoLU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=obQ04q+/ENQDIdsSPhG8iWOR1HoW1Go1ZXW1WPMHdBjXNRNmv0xiJrXYElWJk7O7zpSrUDtAkY/ZlyxdI+lvgHuYbblpC9A0cB8WdBveYpYFrLA09uLwNNkkHT8/3FTs//VLSgPt+A/OMI0Qk52yxc7fWKNKn8lT5p27a8BGI90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r7NToLc2; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=l8s+1BXlrX4OenPAM9oGXvykHYKs7LIw19y9GyUV6xGRLUq+/5moTO1EuiTQUbMrEZ41N0q5wI8Pyi+0eewZIsZ4ww+4r3OVNUDXt8AKTG/M9yNvgM90bEcv9FSJlfPGC8ovcS6NvIXDnR3q2WaaKrP5ylqkgV1MudeMiT63yvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IyubcPC1; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r7NToLc2"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e048a801dso152750b3a.3
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IyubcPC1"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dff6253so11961745ad.1
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785869473; x=1786474273; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785869475; x=1786474275; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6S00Ge/ZDy4xJEvv5eN0PZrlFX4UFgt2/k8ihNKAOGs=;
-        b=r7NToLc206L8dkkIq/zyZt4LEG/oj1/vjEU+dV2kdHLgIViXtVxjBXt4utVsjYPnkg
-         GxOahNhBqnXoK1qG7AjVt25/deKwt3kNftL44X81bN/C9aQGHTsjdJafvs6aS6WQtkYW
-         9okE9Vti/5ca7kCR7NnUSWbbpQEDOq8T0/Iucgmbr4kIyP+6fEq0hZw9hXFMbFvh+MBc
-         ms42DINkwgPbSLdodwpJZobm5JVcwbDE/9j7tGiq+AkFtVURqzG5cHMARe+FX+GJCTeF
-         KXX2L0muy/dvchat20y512DiOXDm6sgHN46yTxQeNrfxNnwPNf1KAeIK5cXAJBfG1oHN
-         o7cg==
+        bh=t6VEXazL8yheZxsIS8BkIrSzpg52BXjB99hyFiWVn2Y=;
+        b=IyubcPC1lYxmgzhckYH+EPszSFP/J5UjnfqJVucRYaJ768WAPgWL6DciZ19cRwqYg3
+         IOSAb3Ea2v9H3OwUG8xd7FyoKubDWyz4UJoeNCf2ErjkbOXd7hU4d8lI2OflKyldxWxW
+         r9iRPvd9j1GoezGYssYhwEs4oEQgDBrHvgypHaWXC1ADSktmJptidD5MfeFVyj3y73Qo
+         yAF5cbSAOJzBkteyqcYly9g1VNin2bvgCF2SDqTlfKr/RLOk0hdF/AnqCBkfD8bESe2y
+         cGKzs3yCPNblQlQltmSDNvsQP90hwGOG/7zpvNZeFA3ZUkNbBCMQ6ztSKy2nyqCT3XpC
+         pC6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869473; x=1786474273;
+        d=1e100.net; s=20251104; t=1785869475; x=1786474275;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6S00Ge/ZDy4xJEvv5eN0PZrlFX4UFgt2/k8ihNKAOGs=;
-        b=JPEDYVngfCdjpd0q3JSVDzRVJiO4DG0ORlAP4t/SnZOt3PMZcCBKMjTnVG6BFn/kxx
-         MtogKIvn3Qk7FbdWyZRQexPc079/s/P6LmnpelO1MQAiNdaQccWfTwwjwqtIjWxL15Og
-         5FpCUS8RytSeHIi80lrA9MplGkGegGgZrqWyvMK3dK/LbEdWgQOda7K0qUNrPOiXtAZo
-         djUUlLK6WGt5W+p57hAL6OeZIRX29cASSbhcoTzv/0xSIRsW3ryl2INii+xvX0BcTyWZ
-         4f6EMUTlCooZWE6y4bpeu9Bt8cxbH4rpFaZWJj4UCAVJRxzSIY/bZxX2nOeqaD8J+JLP
-         wwxg==
-X-Forwarded-Encrypted: i=1; AHgh+RoUSstllm5vtopHdG2JbxoDWrnKZROhdBNELWgVQzySTyjFX0FLx3uf6nENv1PZCmsaid4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2/9c22qaM693wcXNkntb9X9jE+PwYZIpm37EaEuAK/fwK/h6B
-	wh1u/W7ThQR3PJ7EEiAAXViaGiu/6v+BltX3p0jduVOEHSDpLwGCRLitDNJoHZPrDKAsB7lVv36
-	AOA==
-X-Received: from pgvm5.prod.google.com ([2002:a65:62c5:0:b0:cb5:3dd0:cdbd])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:348d:b0:842:706e:ad43
- with SMTP id d2e1a72fcca58-84f2e0ccba3mr802967b3a.33.1785869472550; Tue, 04
- Aug 2026 11:51:12 -0700 (PDT)
-Date: Tue,  4 Aug 2026 18:50:48 +0000
+        bh=t6VEXazL8yheZxsIS8BkIrSzpg52BXjB99hyFiWVn2Y=;
+        b=pBNQV0kMukH3/2iciy1CHnuVDz79fapwkwEWR1Og2DJ1iYM5uhfDAp9DrBUFZTYREe
+         ER0Dsq4wTtZF5CIrPcn26Zh6nCXZn6c0TvtlFOPlcAGeF5fCl1+a2af5CckgfM26yj2B
+         0qJrOVUNbxyL9ms5n72oFQ8Qf8//Hrmqr/4K30tZvJzjQBkArw3xB48rypOhHliTX60n
+         WzUB609viECd5VawZadDoWcBuD46e/KMbLdz3G8CtRqtA8Q0PvGR/082IjlswCrbgocT
+         P8b1d8C4yowbVyeKwNGDfkKz52YC9Dkw4xY7lgHPE49CcmxnT9kG892DoeaTAuteFm8d
+         338g==
+X-Forwarded-Encrypted: i=1; AHgh+RqWUgW51H29gRHsdrpKn2HcdsKize4bPlhxjVgFnT4ed3Z9xQnuLDazwheo0OtQqpgjswE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz47RnQJXmf4CgNyZ9ouNxZwEuRJNPIPD2Ezp4nJVzoq0geaRE
+	DB77EkH1Cny04RsdUgFU8TpivI4E8x6ybf5+fG9ABigWIoX/4EgYOdsjn4xbfH7FqIxCMOh2Png
+	9UQ==
+X-Received: from plbke7.prod.google.com ([2002:a17:903:3407:b0:2c6:a078:41f8])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2c08:b0:2cc:bdb9:3c04
+ with SMTP id d9443c01a7336-2d08ab5dc5cmr53683795ad.17.1785869475101; Tue, 04
+ Aug 2026 11:51:15 -0700 (PDT)
+Date: Tue,  4 Aug 2026 18:50:49 +0000
 In-Reply-To: <20260804185050.2053672-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260804185050.2053672-1-praan@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804185050.2053672-4-praan@google.com>
-Subject: [RFC PATCH v2 3/5] vfio/pci: Implement page-backed .map_dma_buf handler
+Message-ID: <20260804185050.2053672-5-praan@google.com>
+Subject: [RFC PATCH v2 4/5] vfio/pci: Add .mmap handler for page-backed DMABUFs
 From: Pranjal Shrivastava <praan@google.com>
 To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	kvm@vger.kernel.org
@@ -73,132 +73,137 @@ Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
 	Unnati Sachan <unnatisachan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When a DMABUF is backed by ZONE_DEVICE pages, the standard raw PFN
-scatterlist builder (dma_buf_phys_vec_to_sgt) cannot be used because
-it explicitly drops page metadata pointers. Implement a map_dma_buf
-helper that loops through existing contiguous physical ranges and
-generates SGL entries directly via sg_set_page while maps using the
-standard dma_map_sgtable. Implement a corresponding .unmap_dma_buf as
-well.
+Implement mmap and a corresponding page fault handler for ZONE_DEVICE
+backed DMABUFs. Set VM_MIXEDMAP for page-backed VMAs and introduce the
+vfio_pci_vmf_insert_page() helper to insert struct page pointers into
+the user PTEs.
 
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- drivers/vfio/pci/vfio_pci_dmabuf.c | 81 ++++++++++++++++++++++++++++--
- 1 file changed, 77 insertions(+), 4 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c   | 39 +++++++++++++++++++++++++++---
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 22 +++++++++++++++--
+ include/linux/vfio_pci_core.h      |  3 +++
+ 3 files changed, 58 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index 900ac1851c9f..b936da3bcada 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -55,6 +55,7 @@ static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *
- 	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
- 	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
- 		     VM_DONTEXPAND | VM_DONTDUMP);
-+
- 	vma->vm_private_data = priv;
- 	vfio_pci_set_vma_ops(vma);
- 
-@@ -70,6 +71,66 @@ static void vfio_pci_dma_buf_done(struct kref *kref)
- 	complete(&priv->comp);
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 9ca99a5a61c3..f5c2912c3ffc 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1790,6 +1790,34 @@ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
  }
+ EXPORT_SYMBOL_GPL(vfio_pci_vmf_insert_pfn);
  
-+/*
-+ * For ZONE_DEVICE-backed DMABUFs, populate the scatterlist with struct page
-+ * pointers so that dma_map_sgtable() can detect MEMORY_DEVICE_PCI_P2PDMA and
-+ * perform peer-to-peer DMA mappings for importing devices.
-+ */
-+static struct sg_table *
-+vfio_pci_dma_buf_map_page_backed(struct dma_buf_attachment *attachment,
-+				 enum dma_data_direction dir)
++vm_fault_t vfio_pci_vmf_insert_page(struct vfio_pci_core_device *vdev,
++				    struct vm_fault *vmf,
++				    unsigned long pfn,
++				    unsigned int order)
 +{
-+	struct vfio_pci_dma_buf *priv = attachment->dmabuf->priv;
-+	struct sg_table *sgt;
-+	struct scatterlist *sgl;
-+	unsigned int nents = 0;
-+	int i, ret;
++	struct vm_area_struct *vma = vmf->vma;
++	struct page *page;
 +
-+	for (i = 0; i < priv->nr_ranges; i++) {
-+		unsigned int added = DIV_ROUND_UP(priv->phys_vec[i].len,
-+						 (UINT_MAX & PAGE_MASK));
++	lockdep_assert_held_read(&vdev->memory_lock);
 +
-+		if (check_add_overflow(nents, added, &nents))
-+			return ERR_PTR(-EOVERFLOW);
-+	}
++	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
++		return VM_FAULT_SIGBUS;
 +
-+	sgt = kzalloc(sizeof(*sgt), GFP_KERNEL);
-+	if (!sgt)
-+		return ERR_PTR(-ENOMEM);
++	/* vmf_insert_page only supports 0-order pages */
++	if (order > 0)
++		return VM_FAULT_FALLBACK;
 +
-+	ret = sg_alloc_table(sgt, nents, GFP_KERNEL);
-+	if (ret) {
-+		kfree(sgt);
-+		return ERR_PTR(ret);
-+	}
++	if (WARN_ON_ONCE(!pfn_valid(pfn)))
++		return VM_FAULT_SIGBUS;
 +
-+	sgl = sgt->sgl;
-+	for (i = 0; i < priv->nr_ranges; i++) {
-+		size_t range_len = priv->phys_vec[i].len;
-+		unsigned long pfn = priv->phys_vec[i].paddr >> PAGE_SHIFT;
++	page = pfn_to_page(pfn);
 +
-+		while (range_len > 0) {
-+			unsigned int chunk_len = min_t(size_t, range_len, (UINT_MAX & PAGE_MASK));
-+			struct page *page = pfn_to_page(pfn);
++	if (vma->vm_flags & VM_WRITE)
++		return vmf_insert_page_mkwrite(vmf, page, false);
 +
-+			sg_set_page(sgl, page, chunk_len, 0);
-+			sgl = sg_next(sgl);
-+
-+			range_len -= chunk_len;
-+			pfn += chunk_len >> PAGE_SHIFT;
-+		}
-+	}
-+
-+	ret = dma_map_sgtable(attachment->dev, sgt, dir, 0);
-+	if (ret) {
-+		sg_free_table(sgt);
-+		kfree(sgt);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return sgt;
++	return vmf_insert_page(vma, vmf->address, page);
 +}
 +
- static struct sg_table *
- vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 		     enum dma_data_direction dir)
-@@ -82,9 +143,14 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
- 	if (priv->status != VFIO_PCI_DMABUF_OK)
- 		return ERR_PTR(-ENODEV);
+ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+ 					   unsigned int order)
+ {
+@@ -1877,11 +1905,14 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+ 							     vmf->address,
+ 							     order, &pfn);
  
--	ret = dma_buf_phys_vec_to_sgt(attachment, priv->provider,
--				      priv->phys_vec, priv->nr_ranges,
--				      priv->size, dir);
+-			if (pres == 0)
+-				ret = vfio_pci_vmf_insert_pfn(vdev, vmf,
+-							      pfn, order);
+-			else if (pres == -EAGAIN)
++			if (pres == 0) {
++				if (priv->zone_device_backed)
++					ret = vfio_pci_vmf_insert_page(vdev, vmf, pfn, order);
++				else
++					ret = vfio_pci_vmf_insert_pfn(vdev, vmf, pfn, order);
++			} else if (pres == -EAGAIN) {
+ 				ret = VM_FAULT_FALLBACK;
++			}
+ 		}
+ 	}
+ 
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+index b936da3bcada..b582e856ba7a 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -4,6 +4,7 @@
+ #include <linux/dma-buf-mapping.h>
+ #include <linux/pci-p2pdma.h>
+ #include <linux/dma-resv.h>
++#include <linux/sched.h>
+ #include <uapi/linux/dma-buf.h>
+ 
+ #include "vfio_pci_priv.h"
+@@ -53,8 +54,14 @@ static int vfio_pci_dma_buf_mmap(struct dma_buf *dmabuf, struct vm_area_struct *
+ 	vma->vm_page_prot = pgprot_decrypted(vma->vm_page_prot);
+ 
+ 	/* See comments in vfio_pci_core_mmap() re VM_ALLOW_ANY_UNCACHED. */
+-	vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
+-		     VM_DONTEXPAND | VM_DONTDUMP);
 +	if (priv->zone_device_backed) {
-+		ret = vfio_pci_dma_buf_map_page_backed(attachment, dir);
++		/* VM_MIXEDMAP is required for ZONE_DEVICE pages */
++		vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_MIXEDMAP |
++			     VM_DONTEXPAND | VM_DONTDUMP);
 +	} else {
-+		ret = dma_buf_phys_vec_to_sgt(attachment, priv->provider,
-+					      priv->phys_vec, priv->nr_ranges,
-+					      priv->size, dir);
++		vm_flags_set(vma, VM_ALLOW_ANY_UNCACHED | VM_IO | VM_PFNMAP |
++			     VM_DONTEXPAND | VM_DONTDUMP);
 +	}
-+
- 	if (IS_ERR(ret))
- 		return ret;
  
-@@ -100,7 +166,14 @@ static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment,
- 
- 	dma_resv_assert_held(priv->dmabuf->resv);
- 
--	dma_buf_free_sgt(attachment, sgt, dir);
-+	if (priv->zone_device_backed) {
-+		dma_unmap_sgtable(attachment->dev, sgt, dir, 0);
-+		sg_free_table(sgt);
-+		kfree(sgt);
+ 	vma->vm_private_data = priv;
+ 	vfio_pci_set_vma_ops(vma);
+@@ -521,6 +528,17 @@ static int vfio_pci_dma_buf_alloc_struct_pages(struct vfio_pci_core_device *vdev
+ 	if (ret) {
+ 		if (ret != -EEXIST)
+ 			return ret;
 +	} else {
-+		dma_buf_free_sgt(attachment, sgt, dir);
-+	}
++		/* Initialise the refcount for the freshly allocated page. */
++		unsigned long pfn = pci_resource_start(pdev, bar_index) >> PAGE_SHIFT;
++		unsigned long npgs = pci_resource_len(pdev, bar_index) >> PAGE_SHIFT;
 +
- 	kref_put(&priv->kref, vfio_pci_dma_buf_done);
- }
++		while (npgs--) {
++			set_page_count(pfn_to_page(pfn++), 1);
++			/* Yield the CPU periodically on large BARs to prevent soft lockups */
++			if (unlikely((npgs & 4095) == 0))
++				cond_resched();
++		}
+ 	}
  
+ 	vdev->p2p_struct_page_bars |= (1 << bar_index);
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index c28f06bae302..778671194b24 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -187,6 +187,9 @@ ssize_t vfio_pci_core_write(struct vfio_device *core_vdev, const char __user *bu
+ vm_fault_t vfio_pci_vmf_insert_pfn(struct vfio_pci_core_device *vdev,
+ 				   struct vm_fault *vmf, unsigned long pfn,
+ 				   unsigned int order);
++vm_fault_t vfio_pci_vmf_insert_page(struct vfio_pci_core_device *vdev,
++				    struct vm_fault *vmf, unsigned long pfn,
++				    unsigned int order);
+ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma);
+ void vfio_pci_core_request(struct vfio_device *core_vdev, unsigned int count);
+ int vfio_pci_core_match(struct vfio_device *core_vdev, char *buf);
 -- 
 2.55.0.571.g244d577d93-goog
 
