@@ -1,122 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F2943CE55
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D51943CECD;
+	Tue,  4 Aug 2026 23:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785887525; cv=none; b=r5Qinz5QF/5nytBAWbLifavjsiOrt9QYEN8Z3M7DgKpOhxPJ9FwPuxrhyCTiD563YyYWK8ugqMZlwe1d+9cp9Fm7dZi+wRyO7h0xj8xBSGFetVFS1O1VnWl6V8hw4KHEu7qZDt9PL6QX4aVxvJpKTHTq/ujqytV97N8H3aIZrJc=
+	t=1785887551; cv=none; b=KocrhkW6WGIqqNzTPu2221Kq8qNZI1Anj6c5W4eD8iKsBtAHxYlgVGER3xtGgLz66NRSOJXkr7KnTZBP+CwLcghcAbcKmG2hrXRud+lGviyAM8q4GMUwu3/HSuIJDN9I1W8mjfPxnd3hdBIuHcl1RdwLpx/YPv0otvpDpGAsHUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785887525; c=relaxed/simple;
-	bh=/yVKj52l0/EVHXAja7jDcSfmti6GjgpZIxz4JWezye4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=p4WA0Sn1TgbN08q8azXJIGUhHTgR6pLq1kuTb3HhK9e+YlDXyA9EKIsGCFyqzjS/XESckXDnQ9NYQgax62qm/J5BMcUqWWP33TYQG6r2tqWVmfBMXMVNJGy8IjYKjcjAXynTVLLturw72CyieIwOM3MSSbZyDb6EUKr13uqOI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wnk2KjrB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785887551; c=relaxed/simple;
+	bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ScM/2KtREOsAOSkupasiFzUjJUQOHmLN8C93NqtgaQaZhnj4JPsRpOKDCz6spoEBAcgydyL02/wNqdaQP87yCDzCwXh06S7by+lXKZFHHPp4n/xqrLQdhRARRX21SA9TwGCiBG3XHwrSBt3sX9BUdu/MFVu2r3WhX7vUCr+Z+a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQlPYsV2; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wnk2KjrB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559041F00A3A;
-	Tue,  4 Aug 2026 23:52:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785887524;
-	bh=OiXrxXppzFqPj4fRYhyRgWwip8Y0N4dto0VPiI8TnbY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Wnk2KjrBE3coWbIOAK7N27pXzggqp1hHXnwWrukYaaq1+JTW33PDpNY7vxBYtwmiA
-	 XoLr6t/PlnF8xplewaKYaDTk/qK6/aacaT/qIpqQ745YzSUnZfgj4Q3+mP2QQqNDLA
-	 CDRyfJ76u2zGXPgISg+j6YrvUPPkBWzFTDUPnsMolFmhJ1dP3z0pvGNkhWlQrHYEPx
-	 CG21BkEGdjcFUW7BWMGehRzB2APcXtwHE+uyfF3duyIZ4jelHOmr2uDqj3raeU9BF9
-	 SnYFbGZ53oagLli0AuDsA48LsQhgoCnJvBto7ucfM5tyrfhuFDEZ36ogX3IJOd7f2k
-	 0+I9OJ2xfId7A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 07/17] KVM: x86: Move "no master clock" fallback from
- __get_kvmclock() to get_kvmclock()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260804233923.3504629-8-seanjc@google.com>
-References: <20260804233923.3504629-1-seanjc@google.com>
- <20260804233923.3504629-8-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 23:52:03 +0000
-Message-Id: <20260804235204.559041F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQlPYsV2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785887549; x=1817423549;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
+  b=NQlPYsV2hBeKGR3keR7C0wEpyktpzXtea+IisJCVyhs/2CO2fmRtMhXJ
+   iWrt12YQI9GxHwCg+AAR0Mz1izoUw5aToyFgMbrDXbZlpVg3OAAtglaam
+   1Pc2PVKS/MIwZBVeAuevWIxeKL51tzn6y0mxVBRkeOOrCaAqMNjIJ96gj
+   NUlslAAQhg46kONRWMpOV/PimaQnd0P1/nyiaYD61Nu5DAH4kbkKi8p8I
+   jI4TjykERMuqo2xuBWclWEGJtqS6u+Kli6KDeUd1PJPdC66KiA8xmWK6z
+   BEuOUQRZ+SCG5cLn3kLQZyA3rmdyL0eNHR21S8+CQgwYtLkCliWYOFkPa
+   A==;
+X-CSE-ConnectionGUID: MRGVD7ajTpiZvEoPZ3QQQw==
+X-CSE-MsgGUID: qZOC97qRR5ystIY7195omA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86482469"
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="86482469"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
+X-CSE-ConnectionGUID: Z2B8i/oKR1an4l+HwdwzOw==
+X-CSE-MsgGUID: 1ke4eZpMS2aDAJii3ZPlGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="260380773"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
+Message-ID: <7ecd59df-1bae-487d-a7e4-bf7bc0c45615@intel.com>
+Date: Tue, 4 Aug 2026 16:52:26 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 2/8] x86/virt/tdx: Name the TDX module global metadata
+ field IDs
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
+References: <20260804112941.19894-1-chao.gao@intel.com>
+ <20260804112941.19894-3-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260804112941.19894-3-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] The function `__get_kvmclock_master_clock()` is missing a `return =
-true;` statement on its success path, causing it to return an undefined boo=
-lean value.
---
+On 8/4/26 04:29, Chao Gao wrote:
+> From: Dave Hansen <dave@sr71.net>
+> 
+> tdx_global_metadata.c currently identifies each field by a bare 64-bit hex
+> literal, extracted from the JSON file by an out-of-tree script:
+> 
+> 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000008, &val)))
+> 		sysinfo_tdmr->max_tdmrs = val;
+> 
+> That is unreviewable on its own. Verifying any one line requires the
+> reviewer to cross-reference the JSON file.
 
---- Patch [7]: [PATCH v8 07/17] KVM: x86: Move "no master clock" fallback f=
-rom __get_kvmclock() to get_kvmclock() ---
-commit cb25993776f1881f5ff66de261984bd8992ceece
-Author: Sean Christopherson <seanjc@google.com>
+I'm looking at "global_metadata.pdf" from this[1]. I see a line with
+"MAX_TDMRS" and "0x9100000100000008". That matches the lines above. That
+seems *FAR* from unreviewable. There's also no JSON in sight.
 
-KVM: x86: Move "no master clock" fallback from __get_kvmclock() to get_kvmc=
-lock()
+What am I missing?
 
-This commit refactors the kvmclock retrieval logic by extracting the master
-clock fallback out of the inner helper and changing it to return a boolean.
+Listen, I don't like how this turned out. I'm asking for it to be
+changed. But let's not justify it with things that just aren't true.
 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index b520928579129..7366d4602f89f 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
+> The hex literals in tdx_global_metadata.c are left alone because that file
+> will be replaced by a table-driven reader in the following patches.
 
-[ ... ]
+This part of the changelog is good.
 
-> @@ -1667,8 +1673,6 @@ static void __get_kvmclock(struct kvm *kvm, struct =
-kvm_clock_data *data)
->  				   &hv_clock.tsc_shift,
->  				   &hv_clock.tsc_to_system_mul);
->  		data->clock =3D __pvclock_read_cycles(&hv_clock, data->host_tsc);
-> -	} else {
-> -		data->clock =3D get_kvmclock_base_ns() + ka->kvmclock_offset;
->  	}
->  }
+> No functional change intended.
 
-[Severity: High]
-Does this function need to return true on the success path?
+This is a bit much. :)
 
-Since __get_kvmclock_master_clock() was changed to return a bool, it returns
-false on the early exit paths, but appears to fall off the end of the
-function without explicitly returning a value on success.
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+> index bdfd0e1e337a..5f567cb6c07a 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.h
+> +++ b/arch/x86/virt/vmx/tdx/tdx.h
+> @@ -58,6 +58,57 @@
+>   */
+>  #define TDX_VERSION_SHIFT		16
+>  
+> +/*
+> + * Global Scope Metadata field IDs.
+> + *
+> + * See "Global-Scope (TDX Module) Metadata" in the Intel TDX Module ABI
+> + * spec.
+> + *
+> + * A field ID is a 64-bit value that encodes the metadata "Class"
+> + * (which Linux mirrors in 'struct tdx_sys_info' sub-structures),
+> + * the element size, and a per-class field index. Each ID below
+> + * is paired with the C member that holds its value.
+> + */
 
-Since the return value here is undefined, could it evaluate to false in the
-caller? If so, get_kvmclock() would incorrectly trigger the fallback logic:
+This is a bit verbose for my taste.
 
-get_kvmclock()
-{
-        if (!__get_kvmclock_master_clock(kvm, data))
-                data->clock =3D get_kvmclock_base_ns() + ka->kvmclock_offse=
-t;
-}
-
-This could overwrite the accurately calculated data->clock with the base
-offset calculation, while leaving data->flags populated with master clock
-flags.
-
-> =20
-> @@ -1678,8 +1682,11 @@ static void get_kvmclock(struct kvm *kvm, struct k=
-vm_clock_data *data)
->  	unsigned seq;
-> =20
->  	do {
-> +		data->flags =3D 0;
+> +/* Class "TDX Module Version" */
+> +#define MD_FIELD_ID_MINOR_VERSION		0x0800000100000003ULL
+> +#define MD_FIELD_ID_MAJOR_VERSION		0x0800000100000004ULL
+> +#define MD_FIELD_ID_UPDATE_VERSION		0x0800000100000005ULL
 > +
->  		seq =3D read_seqcount_begin(&ka->pvclock_sc);
-> -		__get_kvmclock(kvm, data);
-> +		if (!__get_kvmclock_master_clock(kvm, data))
-> +			data->clock =3D get_kvmclock_base_ns() + ka->kvmclock_offset;
->  	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
->  }
->
+> +/* Class "TDX Features" */
+> +#define MD_FIELD_ID_TDX_FEATURES0		0x0A00000300000008ULL
+> +
+> +/* Class "TDMR Info" */
+> +#define MD_FIELD_ID_MAX_TDMRS			0x9100000100000008ULL
+> +#define MD_FIELD_ID_MAX_RESERVED_PER_TDMR	0x9100000100000009ULL
+> +#define MD_FIELD_ID_PAMT_4K_ENTRY_SIZE		0x9100000100000010ULL
+> +#define MD_FIELD_ID_PAMT_2M_ENTRY_SIZE		0x9100000100000011ULL
+> +#define MD_FIELD_ID_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
+> +
+> +/* Class "TD Control Structures" */
+> +#define MD_FIELD_ID_TDR_BASE_SIZE		0x9800000100000000ULL
+> +#define MD_FIELD_ID_TDCS_BASE_SIZE		0x9800000100000100ULL
+> +#define MD_FIELD_ID_TDVPS_BASE_SIZE		0x9800000100000200ULL
+> +
+> +/* Class "TD Configuration" */
+> +#define MD_FIELD_ID_ATTRIBUTES_FIXED0		0x1900000300000000ULL
+> +#define MD_FIELD_ID_ATTRIBUTES_FIXED1		0x1900000300000001ULL
+> +#define MD_FIELD_ID_XFAM_FIXED0			0x1900000300000002ULL
+> +#define MD_FIELD_ID_XFAM_FIXED1			0x1900000300000003ULL
+> +#define MD_FIELD_ID_NUM_CPUID_CONFIG		0x9900000100000004ULL
+> +#define MD_FIELD_ID_MAX_VCPUS_PER_TD		0x9900000100000008ULL
+> +
+> +/* Class "TDX Module Handoff" */
+> +#define MD_FIELD_ID_MODULE_HV			0x8900000100000000ULL
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804233923.3504=
-629-1-seanjc@google.com?part=3D7
+These are fine on their own.
+
+> +/*
+> + * Base IDs for the configurable-CPUID arrays.  The field ID of leaf
+> + * index @i is BASE + i; for the values array, sub-entry @j of index
+> + * @i is BASE + i*2 + j.
+> + */
+> +#define MD_FIELD_ID_CPUID_CONFIG_LEAVES		0x9900000300000400ULL
+> +#define MD_FIELD_ID_CPUID_CONFIG_VALUES		0x9900000300000500ULL
+
+This is complete jibberish without more context.
+
+1,
+https://www.intel.com/content/www/us/en/content-details/865803/abi-definitions-for-intel-tdx.html
