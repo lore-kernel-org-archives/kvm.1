@@ -1,83 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD283B19CA
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D553B8BBB
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845161; cv=none; b=D4Yw2pkI4Yl0mFKoaW+SLVYjppSAZ2KEFhI1nENZwYvyrwYDGKYuYLVQvpACyuCIWBlWooJUztcgW0HPS5vH0YaEJbyX08EyDOnHoBl9BVLoeCRd1MCMhCFKUjpngem0mrMiRBxR8keHqO6aRlC8IZdD9uirpFYQXlGa9yl+RXw=
+	t=1785845174; cv=none; b=HIvvV9ZRS+GklE9sTj7jlT+FV9ljCLdy6gnfoD2+LeLHP4uLDM+eFqrsA/mI2klLacaw9KWUMJUtnavtWrhFueM7ECuFiBPYPKrUeIQ0TcL2CPZgvQVKdFZZo8dk54UQOwTJoVj60ucZ5nCsow0aAoSzmbtRXcI0mcZwA7PfY9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845161; c=relaxed/simple;
-	bh=Zcn8O1erPuSdDnXyXFymHAYFaLae2f2+vOh43hT0kQw=;
+	s=arc-20240116; t=1785845174; c=relaxed/simple;
+	bh=ShgJllGtoj3B6lj3SHwP+387ixSZNj2YWvPFDV6BseQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPyC0+Mk7klSzTXjgakz11WVSjtLnEs09O3/qxEYV8wV8eWc7qc1cggGy0owC3cYe4IkL98dulip6yK/ZmCAJ3ADjWgPMuG0fqxF0xNTt4t/3V2YIhLdSMlNIMWQjl5LJsTE+niWvpTVLR0vqgz59MnAB/acFKWYhUrzGaF3M/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZDt7huxP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gMALMmIM; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=RKYUY+WOkxHDfhW9nuCmgokjw8fKcS0w2mz7XkwpVQCY2/nQCaKmgxr+PWjT6VC/4dTPUUpTF+I/6Gyx5hZQOMhdNDFFf2dFpNRDMionweuvZ6Vu5xk2nZodmX3/dmx/gZlD1NowEyt4swN1a6TNCdsCu7fpZfNzH6lNHYqRXAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UOSrj2wE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cAIhJJ5i; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZDt7huxP";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gMALMmIM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UOSrj2wE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cAIhJJ5i"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845156;
+	s=mimecast20190719; t=1785845164;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6MKpfy5ngorVqbj+qf8v5CmiQT/j6dhAeNWojtcyJWQ=;
-	b=ZDt7huxPhM8SmqdeLVyP1TFCFgqUA5v5gPULDxylbfeV9aJX75+k1kKFL/sd9lBzSIKH2v
-	AzRbxZlJ61W27bXvu2uN2vBO1ntWIaeqpuQdqWfh2wscj9pJUQPtYS9jrGxxCiN4Vb+DT/
-	9+7+hVzx0gm/FspaGzMJ1yqvP9vOTEg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
+	b=UOSrj2wE9KGjM9bjPYH6Y3OSuWroeagStvR7Lefabc2NUuA7Xzhz9XXX1ah87KGEbLgvoo
+	f1D0aUjRW9jqN1qLDulFuHkMDz+iGq7F0Gvg1xiUfGsc35ala+YNf9tTzMnm+6IyX3mfRr
+	/JKq26vYD6kA6fhLLWivV9UFwe+j9fs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-x8UYWGeENv2xmP5Jm-AgxQ-1; Tue, 04 Aug 2026 08:05:53 -0400
-X-MC-Unique: x8UYWGeENv2xmP5Jm-AgxQ-1
-X-Mimecast-MFC-AGG-ID: x8UYWGeENv2xmP5Jm-AgxQ_1785845152
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-495474a5fbcso28411085e9.1
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:53 -0700 (PDT)
+ us-mta-232-ziPjgqv7P66pBJZNP8_fOA-1; Tue, 04 Aug 2026 08:05:47 -0400
+X-MC-Unique: ziPjgqv7P66pBJZNP8_fOA-1
+X-Mimecast-MFC-AGG-ID: ziPjgqv7P66pBJZNP8_fOA_1785845146
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f83416551so4290351f8f.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785845152; x=1786449952; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1785845146; x=1786449946; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6MKpfy5ngorVqbj+qf8v5CmiQT/j6dhAeNWojtcyJWQ=;
-        b=gMALMmIMGhsOWE09Di5u3dFbxkUKvOJmHguRc88lNDsV3F+LtSCWcOj7dt0VMNRM50
-         kAbR8X9w1Q1cVGJ0m7rMwgm5GvAIbMfEcnPfB7w07Ak1wG/RZTISnxZyNg3iLsg2XamU
-         pB+EqBEXbS8HpDOn8FS+3OjUxYmneC4D0K6eMN6wwxzghh/zlXjqOtGaeK7JdjNeF/+5
-         xXuo8k2tWrHNXM4uL+ZxnlxcwHwMT6lt7XX2LY9XUP/VZCRbI117hkDLY+AGHsoKcJ5G
-         E0KN+KZf81g0aVO2CvCWVohIuNLWgxw0oT2D+l1DNn0RT+Gc1uK1EMiKru98/xPOUyrl
-         zevg==
+        bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
+        b=cAIhJJ5iypZOUTPkcOfJVA/+T+eNpiURGumey1wvCCiEqCPTbkXpjDSGd2kXAlHDgI
+         it6fL70CYJYt++jBX6Pg7dkNwpXmtH4S8MZJHfIyPz7qSzaoI7AJWObi6LyXq1QAfh/N
+         Nr2H8i0KrzVACddd0yxSRxEE6+k/odK4HgyRlQphWwyA20wzRZgCDegc5FmKqS2c5ye6
+         RpHmIy+9gHvLWdHzrHXywY3ZWc4sDBUJ7s6R48hgs3rRopd8PtRMx2yA9PQRiWon403Q
+         VhxLqw3teQZewLTMwxlTswIepR9ZxT8+XJNtkWPVglCnSf0NucOUpwbbhFuuxmtfrjBV
+         3ijw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845152; x=1786449952;
+        d=1e100.net; s=20251104; t=1785845146; x=1786449946;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6MKpfy5ngorVqbj+qf8v5CmiQT/j6dhAeNWojtcyJWQ=;
-        b=J7++V4GY7mVEBWah3a+VLIc3heV+HR9iia8CEdDn0o3b2dcCIY4gHWrNQer7ljT3D6
-         58+G6TdKtvYbQzseIg5tiVpowMZ9sC/IMMP6sh6xTvRDEXkxFXOHWB21+FnFTtp5ZR3w
-         x3fgh7F5MTGscibgxSns81W3CHuSGMgkSDj/aFQPpWxgus4siodbClrmxz4hO9LCX9h9
-         8JnGDPZkmSjI6OtUEwVoJ0ikD5GrCtJMnl0vyac9AYyQZ/5QlhQCOJoWvaJrfe1BzTXc
-         6r3rv6xtAQ6wx4htydTMT/Ij7CS3K8rOjS8K+xUrKEx6PR2PeLVI7DyTTlJgKUNxQJXH
-         72QA==
-X-Forwarded-Encrypted: i=1; AHgh+RrGrqQrPq1bblSZEUM1/lv0eC9LXKOz8KpUVzOuRwg0Qy/Sw4e2aETmAXDQhy8FG8mLhrk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXL6F1EQSKa0HoJ5HfJE4L05Ps+nNTzGHW2ZwFCzhnXvry8nAX
-	7P7MixAJBfbGnQxtfjvh/lA3p/yzeccxD0e2Ix1CCUXMmK5i/huUg0N7zfWngEdLTb6FcfSh9NN
-	vCPKUspnrJeEEgwvhqujgdQvEn0fu1PPJGQOqqcG8l10K6rbKoyFgZQ==
-X-Gm-Gg: AR+sD10XMbUJeccjFaB6k/yGorMJ4MK5MZ6L8xG3+P9AHJZjmXzo8l7lT9+UrMrcfSj
-	eYzsbrjj9Is0MchBGusZFqYjK/GfSX30Dl5AiUnpF27dY7xe5Eg+YFZfrW24xudu0ihVYbp1NsB
-	ka1GwX1HOlO2OJu3t6EGC/qAjAxdYIqfRISLmqwb2foekr/gQn+Ycb0TjVKeGWfCoxkikq40uYH
-	PRQOn6b1oiXKf2uzXMUiFJhExSSmqtaak2CVHuQlWK84F2sjE559lrl6OTEMBY+TMtplukvnTix
-	5XYeam9R7iPF/zKE01yUMLuXU9klwllwwcuwtscWFa1jJBYna9Ve/gr+X1sYElLxj7zRYha6Rpl
-	rh5Dhvtt4Y/W35QpIH3Y161gyczsomoYP9i/Q+MgVB0CdHLBRfhG3A/MRwszzDtrKBwU0O+clu2
-	UCjGk=
-X-Received: by 2002:a05:600c:840f:b0:493:c42e:5be0 with SMTP id 5b1f17b1804b1-4980c60705amr298312305e9.0.1785845151899;
-        Tue, 04 Aug 2026 05:05:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:840f:b0:493:c42e:5be0 with SMTP id 5b1f17b1804b1-4980c60705amr298311535e9.0.1785845151462;
-        Tue, 04 Aug 2026 05:05:51 -0700 (PDT)
+        bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
+        b=bDPdz7hd+vvxE79r6KuMpxnVhPtLOTiyYum1Lcykg7tirY56ECuaR4A0zx9irprRBm
+         YqNNwhDMafbYTbO/JXctHuQKqWFkSxsWgqruBlVWg7N5hMxBbUW2hjD9q8zs8N7O5ZZy
+         oJc1AbbTbVO4QP23i+5s45ROp5dyoM4MUluGLgMreb92WLRGm9tTfRUsu4Z9dek7p5tc
+         4D8pA4oTP6+jDuJTrKAWRrfW/IoxcfP6wkhnvgUgYY76KkZOHLMWBXcRvJJAuROEid57
+         iY20tisRQsfld3vvTJjVSCEgiAo9Ev3BCqzFJ5PeoPKfNhUK8xzETgRYGOiX0Xz/V/mC
+         nXQQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0dYU9JOVbq1b5P/egc5Xz+xMfg7X1W5Z/0JhgFG63uUBzZ9czmkUcrMC+7L3L7i8ImFw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya7aADAtJjXOvNSb+Ts8C1nBpIuq3qeePNFU1b0TeRf3nx6Jdw
+	aR7RgGrRd5z6mINIdORnz9r0pcXzpg90+2357ZaYZ60jisBo5YCUiZk7dbjfQYSGZPpF7BxuX8Z
+	aeInYO9lYvB5/3+myNEYLgQm7akWzBWYt3gDMCRud44DL/DWneEZttA==
+X-Gm-Gg: AR+sD12Uzbft/E57FqSuOKRmEIADYevauBwl/JhOzT1n7rhCPkVe+XzHc6iqGZWmzDa
+	vKHMiZULR3GM9hJVUQJ7Vt98JH4Z6FUIk1D+y8ULv0zcafC899HEFGcPUWgfA6AMir1b3jZ63lp
+	mttVyujoqQu6Juc2fwy7L6gxshiQJF4dMtVDd5G1c3PENVveeCr6vhJtTXV4NET5ZPysD66WOTx
+	5ZZGDyRaC56SHM4xkaB+kUoY8v8QihgatOmIfpsXDP4XWmXKU1+FO9iblNW/NEsle5MAd+uSdgz
+	QF68Fl5JRR0220o3nhMXF2CmERFKvseABq6/abajGG3s14rw7Cer0ODtmpta2iY5C+19b416cmP
+	twwSj4YWql86ie0J2Ti1b3b3vfQtSzNQfZqpq+UJCkocs7JdfU+Xb4x9+QGRtPoABSw+mnINZ0d
+	Onj7g=
+X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813782f8f.9.1785845146059;
+        Tue, 04 Aug 2026 05:05:46 -0700 (PDT)
+X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813677f8f.9.1785845145601;
+        Tue, 04 Aug 2026 05:05:45 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949fd8df5sm88354535e9.9.2026.08.04.05.05.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd4562667sm45367660f8f.24.2026.08.04.05.05.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:50 -0700 (PDT)
+        Tue, 04 Aug 2026 05:05:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -95,10 +95,11 @@ Cc: Alex Williamson <alex@shazbot.org>,
 	Peter Xu <peterx@redhat.com>,
 	Sergio Lopez <slp@redhat.com>,
 	Sean Christopherson <seanjc@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 6/6] kvm: return -EFAULT for writes to !VM_WRITE IO mappings
-Date: Tue,  4 Aug 2026 14:05:28 +0200
-Message-ID: <20260804120529.1730187-7-pbonzini@redhat.com>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 4/6] kvm: apply VM_READ/VM_WRITE checks to all VMA types
+Date: Tue,  4 Aug 2026 14:05:26 +0200
+Message-ID: <20260804120529.1730187-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
 References: <20260804120529.1730187-1-pbonzini@redhat.com>
@@ -110,48 +111,109 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-KVM's behavior when the guest writes to a non-writable VMA is inconsistent.
-For regular, page-backed mappings it returns KVM_PFN_ERR_FAULT and thus
-returns -EFAULT to userspace (which is ABI, and relied upon by tests);
-for VM_IO/VM_PFNMAP mappings instead it returns KVM_PFN_ERR_RO_FAULT
-and thus exits to userspace with KVM_EXIT_MMIO.
+The VM_READ and VM_WRITE flags are checked only at the very end of
+hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
+mappings, this adds unnecessary cases and inconsistent error behavior.
 
-This behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM:
-do not assume PTE is writable after follow_pfn"), and even if it has been
-in place for five years it is unlikely that it is relied upon by userspace,
-since it is inconsistent with KVM itself.  Change hva_to_pfn() to return
-KVM_PFN_ERR_FAULT for all non-writable VMAs, and restrict KVM_EXIT_MMIO
-to the case of an explicitly read-only memslot.
+For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
+detect this situation.  This is fragile because hva_to_pfn_remapped()
+returns different error codes for a !VM_WRITE VMA depending on whether
+the PTE happens to be mapped:
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+* if the PTE is present, follow_pfnmap_start() sets args.writable to
+  false and KVM_PFN_ERR_RO_FAULT is returned;
+
+* if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
+  -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
+  up returning KVM_PFN_ERR_FAULT.
+
+With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
+a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
+pte_present()[1] when the guest attempted to read it; with the patch
+instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
+avoids these special cases and also sidesteps the issue pointed out at
+https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
+
+For regular mappings a PROT_READ VMA, if placed in a writable memslot,
+would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
+the guest writes to it.  This would cause a -EFAULT exit to userspace,
+instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
+however it should be considered part of the KVM API because mmu_stress_test
+relies on it.
+
+Still, even with this snag about the returned pfn error code, pull the
+vm_flags checks in front so that they are done for all VMAs and the
+above inconsistency goes away for the VM_IO|VM_PFNMAP case.
+
+[1] on x86, for example, such a page would have _PAGE_PRESENT clear
+  but _PAGE_PROTNONE set
+
+Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- virt/kvm/kvm_main.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index b7c21a48a45c..da5b0bb62590 100644
+index 45e784462ec6..576bcb21be3a 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -2999,15 +2999,10 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
- 	 * or the page might be absent.
- 	 */
+@@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
+ 	return npages;
+ }
  
--	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
-+	if (vma == NULL ||
-+	    unlikely(!(vma->vm_flags & VM_READ)) ||
-+	    ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE)))) {
+-static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
+-{
+-	if (unlikely(!(vma->vm_flags & VM_READ)))
+-		return false;
+-
+-	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
+-		return false;
+-
+-	return true;
+-}
+-
+ static int hva_to_pfn_remapped(struct vm_area_struct *vma,
+ 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
+ {
+@@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
+ retry:
+ 	vma = vma_lookup(current->mm, kfp->hva);
+ 
+-	if (vma == NULL)
++	/*
++	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
++	 * or the page might be absent.
++	 */
++
++	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
  		pfn = KVM_PFN_ERR_FAULT;
--	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
--		/*
--		 * Exit to userspace for PROT_READ mappings in a writable
--		 * memslot, as this is part of the API.
--		 */
--		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
--			KVM_PFN_ERR_FAULT;
- 	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
+-	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
++	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
++		/*
++		 * Exit to userspace for PROT_READ mappings in a writable
++		 * memslot, as this is part of the API.
++		 */
++		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
++			KVM_PFN_ERR_FAULT;
++	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
  		r = hva_to_pfn_remapped(vma, kfp, &pfn);
  		if (r == -EAGAIN)
+ 			goto retry;
+ 		if (r < 0)
+ 			pfn = KVM_PFN_ERR_FAULT;
+ 	} else {
+-		if ((kfp->flags & FOLL_NOWAIT) &&
+-		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
+-			pfn = KVM_PFN_ERR_NEEDS_IO;
+-		else
+-			pfn = KVM_PFN_ERR_FAULT;
++		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
++			KVM_PFN_ERR_FAULT;
+ 	}
+ 	mmap_read_unlock(current->mm);
+ 	return pfn;
 -- 
 2.55.0
 
