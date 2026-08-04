@@ -1,83 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78CB381EB9
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DE53A8737
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845141; cv=none; b=AB6eyL0PK0o4XqeHKnqsIwp/RFWSEePTVamxy20ccmPJwj2RgXhsDCM6AnGe+1fVskoksxLXvNQtmtSS5qPQPGM+OkeZu3PwSesw/PCEI05TOWQy0DXa0CVUY9P/FpcEtkvoQJm5gqf9tdjIZQOPw20ikMfCfAHQRBTrdycFvmo=
+	t=1785845148; cv=none; b=KbEKL6L5kBo1KT0ZgExJ7E0kKpcES2gb3RFvuEQtEe1kcyTIeDITbSXaMw+Lo0smVYxZoWtD+XqgUjCbarfFZ/uvt31RA/08TkVpD7OxpMshldmDlyW49nQhSA5BH5HhIgmX1pMljFiLOwA5/ZVens8Mgh+7oX9P8WqazxA4qFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845141; c=relaxed/simple;
-	bh=2NmEb6/L7QYcfhxZ8+lab83yjq9i9GZownbXwTIqVvs=;
+	s=arc-20240116; t=1785845148; c=relaxed/simple;
+	bh=cDZoklWx0/N7wex/E0OmJ7dckrnB/Lv/S0imotkXjpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uX8/WjIWEwVJphKflYHXLnsRINKI2QKDeCpAL4zFEJF21WSvtBnwvvQbw6aUOpEoZ4OqiDypGNY6wLr6EpD9QNUDFrGWyCPhf/RUx3EuhU/Nu6aEHfiGxU4nklCgyi6raQctq0a5fU7vErXxE+WV2XmJEoDpFkDDmkq31XZn04U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FTAQRgvT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F1vW3SkW; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Sb9cuwqW9LoD7lROUcGDmf5V3VTvLVXjQgvTP8sN4gEcEemjUFULicDoPsr0ONnulSRiSjQ8Y6Iq86usGpBBZi0ZQC2Zl8UuH28xwfSbHwrwwfqkYaqq8Yb3UXjwruVwATyz5cn84Y8ugbgDhliCZdfhOZLhoux2zqgEqSmATH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JtAD0yik; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PBlyJqgg; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FTAQRgvT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F1vW3SkW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JtAD0yik";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PBlyJqgg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845137;
+	s=mimecast20190719; t=1785845144;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-	b=FTAQRgvTANM1fFG6NqbYCmSwTq7dWrce/kHtyGKxDd9aCN+f8GoT9JIOsBRL5yKXdtyaCP
-	CG6cfKWaS3kPp69GlCkGJK0SnyABfFgukU/itiYdus+sz1JwLATkPgRbYIUTnR/gq90l8s
-	n2EhuvfSZ1W4im6mJWb/t9FZWJPAUUM=
+	bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
+	b=JtAD0yikt7uIbSB66QLsjCSn9FY/gZqBzemeBQRRqyk7eYeTVDtC3+o7EfTjoGBQOVwtOv
+	VJmUFOuvFLEsE0GK0v+6WtzqLWu/wxM5dBJryGUkUA342Joy35D/ClWZn0QkdG1hIhuGfP
+	C+n4N6sg5R0GaEmS+zGX7G4aw6aSaUQ=
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
  [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-V1ejii2qO5WOsEo3PXgrjw-1; Tue, 04 Aug 2026 08:05:36 -0400
-X-MC-Unique: V1ejii2qO5WOsEo3PXgrjw-1
-X-Mimecast-MFC-AGG-ID: V1ejii2qO5WOsEo3PXgrjw_1785845135
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so1460585e9.2
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:36 -0700 (PDT)
+ us-mta-50-24Awr-4gMnmF6ElfYhPfeg-1; Tue, 04 Aug 2026 08:05:43 -0400
+X-MC-Unique: 24Awr-4gMnmF6ElfYhPfeg-1
+X-Mimecast-MFC-AGG-ID: 24Awr-4gMnmF6ElfYhPfeg_1785845142
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4957287363bso20063685e9.0
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785845135; x=1786449935; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1785845142; x=1786449942; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-        b=F1vW3SkWmd0iZP2caG6mWqUi7foUE0PRoAB2IfQHdZ8W8jUlUzzmscOhHjV7x++J78
-         ip56G6Bcnt4C8z5+35/TlIOGeaTFS1H28jYyjBBORRDBO30S3fCLlO+JK4uoWcxI25OT
-         z722XNXVDr0SF+UU7UPpgDR3oE513ieVqVUxSUhKScb0SgytNHow7Cn/KnrCEMhnIclY
-         +cxPoaCGs6+zu7ko4HRakKnDzTzg1kve5U4cEKlPJqk99+LOvfrpM0notoU7d4InSATB
-         mO+1LZwf1i1pPd/2LH4GPYep5pNoTWMABcgxN9lx+3piMPs0u05Ryv3GKTptYXiGHB2r
-         AieA==
+        bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
+        b=PBlyJqggW557o63F/kMXtvdzr2cYcTMTTjJqXhJYSUppJ8jSsDSuNBQDc8qYBT3iTU
+         K4KnBO6ItEFRf/kI5UjlrfAuGEQfJsOYxAhhMXxbVkDiciKBVL3ljk3HV+UwvXajOhr4
+         UQuz2Ddmdw/sZDZRMsjuIeXuU/KXy84ll79fckKqYsiw+Scf5uev7spLgc8nn8Jby9Mf
+         kC/vFboTw2C6Gd2l5LecAQVE4BuR/5RCDHBzPK+Y9tnUWL0bakvh/EX9ftAmZL/ba8RW
+         Q+oHjgYaWQps0V9rkmJrz4pvSSUAGf8d88sp3v9Q7fYQp5FxRbjfLxZDf38IG9P/pVc3
+         B29Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845135; x=1786449935;
+        d=1e100.net; s=20251104; t=1785845142; x=1786449942;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
-        b=eue/uylZzN5w0xEMSCiZ0AS4eseVHuNSYSIyVIHB/KnLUCA2BOCnUrlLhs+FYGw6t/
-         796HSPtzTsMXo/l0BNdIUifyo0MHsllR8otxHWeVD8L1Ud/y1eMYtuJNrhPtJy5k9Zh7
-         R+JSpb1EhgiTteRqY4+hIA/QE2Wbl89oja3q8wanek9k7R446SaTWyATlQOzrtwyBY+B
-         c1ccyPPnSNcPvmHxaPbJvzdkabgxXTZI93Kjyb4nspXuqolAlNkts0/EKvt/wyRbsTyx
-         Bf6tSjemUaXbG1/bSOQj9HfGCGL0xIOgShiV1c2xZ3zW7lcmmSF6YgiUGNGRyEUVVLx/
-         hnDw==
-X-Forwarded-Encrypted: i=1; AHgh+Rridx1m8T8m+B3SbMbIeuJo07UaKglLw0OBIzY497osn/drVo8yjuK0YZWjy5h0SmXOqLE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6ZMYxTTts+mML9JWxxM+1EjnE4qcPY+miHqkCLBYU6Yk1+QJm
-	XhZHNJeBOKT9JTgKYb0QDZYPs3WEu7FplfXmZVv6YJm5ElyX7lCk87+iI6S1mgI4KkeJRDPIXm4
-	UfkbFZ7PuO6Qw4DgR2qJA/VGmT9r6R6MvZk/jKOCk7pAKJlQgg5pAVw==
-X-Gm-Gg: AR+sD10B5w62wV1c9tFSqpsY8YYFmczMZgZRtL4TBS/C2C0CwT8borYUg2p83sfgDfa
-	EJXcQRqgZk8y8tdueKSgPe4ktvKKVl8m5UVpnWTvWBEUZheUkO3gvr+qHEZfe59PkRRpzqiDmzI
-	8Ytq/aoeUAQT+xrD2ZQ3/GfXNi5PLk8mzxgtT4TuRlXT6wrn/y6cQzngcZhGgDohp4tNCe2MRix
-	R+fTRXl7t9A1d2MyDJsgn3kFBmv2Gbec37+at1mUbhUYkygaGxj1uy1Eh3vO4NrpLRFKJhhkghG
-	Z6uSK0yFGyuoco8U+aRj6Lw2kIdQtv83S9d2VXW9wSlFRdWJP0NqiktCOt/ipJq9dFbJeyBXbdE
-	Xlfe6HEmsjUmJRhcH5FHv2abvmzYCcnKoKVC2JX+PM+2KUbhyKCMJ96sykBUNvUdX/mTsLg5Uw2
-	b/A1Y=
-X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217894755e9.15.1785845135166;
-        Tue, 04 Aug 2026 05:05:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217893395e9.15.1785845134667;
-        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+        bh=tjD464vOIu2Voqk/KOGceV068H0b4O8GMn0RbRgTxRU=;
+        b=oeJxYjAuQSOLZJzdZhbuftf/P8vWZSfbrkSL73ycIC9HE+ZqHRjRVCgdJrM/mMAiIA
+         KSpJHmNg5wGnAy+6YwcWWPRf9A4OcdAJyjeaL1JW3RL62e80JUWKqPhdMZnOQQCO00Nm
+         nklKnawRUJpKvw+oVoB5QZR/3CWQ8Wt5Op4ckpwEF/MHEa0PlvG7Hc0YicJi94FRbGam
+         oAxwudFRVSvuNJPCKmceu2o5CkrB+ffrEFR/Ee13sbWYIQ4T/qfhVVQ8F49z6gZyCqEW
+         ND9s+jSViNfbySaoRw8F3n+fSi2XDsqS4w+33Lq9ovPW4D9mo5b/MW4ffosZ3DEy7HpD
+         AEmw==
+X-Forwarded-Encrypted: i=1; AHgh+RquGyTQeRg2DQyIlEPnVbJysRc+Cq1tyPFepZMUiGitDV1/9bH4+O9U4bguAqxPXAuafQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn7Y2wcsjqlwZIAKZAqyFs4Gu/7ZJQqt3hb4M2qF4EoD0v9Tvn
+	o3hbs5JmgHWDsfwKWSZI5LaJt2PQOVdWZPq8FFciO9YvdRyFBxwgvveSrEfuH4VCmskDnQ35vpe
+	XUfpZQuA9r4nrG4ON71JynGJ8u1N57wk4lJxZJq+pPRRXz8HZYqicFg==
+X-Gm-Gg: AR+sD10F7PCx1UvImVZOhoyFG1TMYbdGS85ZTWqPxBItD429dT1UPB9mJ72nErjU01h
+	WCCu/EZ6mOlyUhq5RWFlLxUNPvtmrQt8u3wGkXox1UShpf4Ov3kj2FBqgWDVvzWJURMyNr3S4bA
+	vMYWO64ufNBEv8Jlza5SrTok1jUWlAaNeAkxIET2sW9oW5MNJANg06k+pyLCWwv287FtrYyUbBj
+	TmlLov51RQM3X2B79ih46Pz8nzEMJwsrcNoMZtwTfPnBXjMnG8jNza2ZWkCcWbVvp6hKWjX5ube
+	8i5lAts9RtiaMwoBxNl48+FItPbj/z9BQZqf7/IQV671y2pkRy13A9rUEsc2bT/Iz1eR4N3FNme
+	sfAicrsqPYa9re1DiKMGI/iHpQIYNYDcn4f7HdOPRuRmO25PqBIllShn2Junu8wogwNW4VBjvQo
+	NBGA0=
+X-Received: by 2002:a05:600c:c8c:b0:495:4589:707 with SMTP id 5b1f17b1804b1-4980c6452f7mr312396015e9.5.1785845142071;
+        Tue, 04 Aug 2026 05:05:42 -0700 (PDT)
+X-Received: by 2002:a05:600c:c8c:b0:495:4589:707 with SMTP id 5b1f17b1804b1-4980c6452f7mr312394755e9.5.1785845141410;
+        Tue, 04 Aug 2026 05:05:41 -0700 (PDT)
 Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949f66168sm92311515e9.0.2026.08.04.05.05.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949fc2ff6sm79768615e9.1.2026.08.04.05.05.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+        Tue, 04 Aug 2026 05:05:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -97,9 +97,9 @@ Cc: Alex Williamson <alex@shazbot.org>,
 	Sean Christopherson <seanjc@google.com>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/6] mm: export vmf_insert_pfn_prot_mkwrite(), change variants to inline
-Date: Tue,  4 Aug 2026 14:05:23 +0200
-Message-ID: <20260804120529.1730187-2-pbonzini@redhat.com>
+Subject: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable PTEs when mkwrite is in use
+Date: Tue,  4 Aug 2026 14:05:25 +0200
+Message-ID: <20260804120529.1730187-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
 References: <20260804120529.1730187-1-pbonzini@redhat.com>
@@ -111,268 +111,129 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Right now, users of .pfn_mkwrite() have no way to create a PTE
-that has gone through maybe_mkwrite().  Because vma_set_page_prot()
-will have cleared the writable PTE bit, users of fixup_user_fault()
-will see a read-only PTE and have no clue that the page needs
-a *second* fault to reach its final status.
+This ensures that fixup_user_fault() users see a writable PTE when
+they request one.  The flip side is that vmw_bo_vm_fault() now has
+to record by hand the write fault, because .pfn_mkwrite() is
+not invoked.
 
-Handling this in fixup_user_fault() is problematic: the information
-about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
-which is an opaque pgprot_t, therefore only follow_pfnmap_start()
-knows how to retrieve it.
+Prefaulting works as before because only the first entry comes
+out writable, while the following ones still end up executing
+the .pfn_mkwrite() callback.
 
-There are actually some preexisting functions that suggest how this
-is supposed to be handled, namely vmf_insert_page_mkwrite() and
-vmf_insert_pfn_pmd().  Fixing the drivers requires similar variants
-of vm_insert_pfn(), namely vmf_insert_pfn_mkwrite() for the common
-case where vma->vm_page_prot is okay, and vmf_insert_pfn_prot_mkwrite()
-when really all parameters are needed.  This makes it possible
-to fix drivers that use .pfn_mkwrite together with
-vmf_insert_pfn() and vmf_insert_pfn_prot().
-
-Since vmf_insert_pfn_prot_mkwrite() is the most general variant
-and all the others are just special cases, turn them into inline
-functions in the header.
-
-Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/linux/mm.h | 81 +++++++++++++++++++++++++++++++++++++++++---
- mm/huge_memory.c   |  2 +-
- mm/memory.c        | 84 ++++++++++++++++++++--------------------------
- 3 files changed, 114 insertions(+), 53 deletions(-)
+ drivers/gpu/drm/ttm/ttm_bo_vm.c            |  7 ++--
+ drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 42 ++++++++++++----------
+ 2 files changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..01184a4bdd6f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4544,16 +4544,89 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num);
- vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
- 			bool write);
--vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn);
--vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn, pgprot_t pgprot);
-+vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma, unsigned long addr,
-+			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
- vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
- 			unsigned long pfn);
- vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long pfn);
- int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+index a80510489c45..3ebde936ce60 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+@@ -191,6 +191,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+ 	unsigned long pfn;
+ 	struct ttm_tt *ttm = NULL;
+ 	struct page *page;
++	bool mkwrite;
+ 	int err;
+ 	pgoff_t i;
+ 	vm_fault_t ret = VM_FAULT_NOPAGE;
+@@ -242,6 +243,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+ 	 * Speculatively prefault a number of pages. Only error on
+ 	 * first page.
+ 	 */
++	mkwrite = !!(vmf->flags & FAULT_FLAG_WRITE);
+ 	for (i = 0; i < num_prefault; ++i) {
+ 		if (bo->resource->bus.is_iomem) {
+ 			pfn = ttm_bo_io_mem_pfn(bo, page_offset);
+@@ -263,9 +265,10 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+ 		 * at arbitrary times while the data is mmap'ed.
+ 		 * See vmf_insert_pfn_prot() for a discussion.
+ 		 */
+-		ret = vmf_insert_pfn_prot(vma, address, pfn, prot);
++		ret = vmf_insert_pfn_prot_mkwrite(vma, address, pfn, prot, mkwrite);
  
-+
-+/**
-+ * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ * @pgprot: pgprot flags for the inserted page
-+ *
-+ * This is exactly like vmf_insert_pfn(), except that it allows drivers
-+ * to override pgprot on a per-page basis.  For more information,
-+ * see vmf_insert_pfn_prot_mkwrite().
-+ *
-+ * This only makes sense for IO mappings, and it makes no sense for
-+ * COW mappings.  In general, using multiple vmas is preferable;
-+ * vmf_insert_pfn_prot should only be used if using multiple VMAs is
-+ * impractical.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, pgprot_t pgprot)
-+{
-+	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, pgprot, false);
-+}
-+
-+/**
-+ * vmf_insert_pfn_mkwrite - insert single pfn into user vma, possibly writable
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ * @write: whether the PTE should be installed writable
-+ *
-+ * Like vmf_insert_pfn(), except that @write allows installing a writable
-+ * PTE even when @vma is under write notification.  For more information,
-+ * see vmf_insert_pfn_prot_mkwrite().
-+ *
-+ * Note that neither .pfn_mkwrite() nor .page_mkwrite() is invoked, so the
-+ * caller must itself do whatever they would have done if @write is true.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, bool write)
-+{
-+	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, vma->vm_page_prot, write);
-+}
-+
-+/**
-+ * vmf_insert_pfn - insert single pfn into user vma
-+ * @vma: user vma to map to
-+ * @addr: target user address of this page
-+ * @pfn: source kernel pfn
-+ *
-+ * Similar to vm_insert_page, this allows drivers to insert individual pages
-+ * they've allocated into a user vma. Same comments apply.
-+ *
-+ * This function should only be called from a vm_ops->fault handler, and
-+ * in that case the handler should return the result of this function.
-+ *
-+ * vma cannot be a COW mapping.
-+ *
-+ * As this is called only for pages that do not currently exist, we
-+ * do not need to flush old virtual caches or the TLB.
-+ *
-+ * Context: Process context.  May allocate using %GFP_KERNEL.
-+ * Return: vm_fault_t value.
-+ */
-+static inline vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn)
-+{
-+	return vmf_insert_pfn_mkwrite(vma, addr, pfn, false);
-+}
-+
- static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
- 				unsigned long addr, struct page *page)
- {
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index b5d1e9d4463d..2f4dcaa819b7 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
-  * @pfn: pfn to insert
-  * @write: whether it's a write fault
-  *
-- * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
-+ * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
-  *
-  * Return: vm_fault_t value.
-  */
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..b5555217b121 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2719,40 +2719,55 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+-		/* Never error on prefaulted PTEs */
++		/* Never error on prefaulted PTEs and never map them writable */
++		mkwrite = false;
+ 		if (unlikely((ret & VM_FAULT_ERROR))) {
+ 			if (i == 0)
+ 				return VM_FAULT_NOPAGE;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+index 45561bc1c9ef..3099558c0762 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
+@@ -398,15 +398,33 @@ void vmw_bo_dirty_clear_res(struct vmw_resource *res)
+ 		dirty->end = res_start;
  }
  
- /**
-- * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
-+ * vmf_insert_pfn_prot_mkwrite - insert single pfn into user vma with specified pgprot
-  * @vma: user vma to map to
-  * @addr: target user address of this page
-  * @pfn: source kernel pfn
-  * @pgprot: pgprot flags for the inserted page
-+ * @mkwrite: whether to make the page writable.
-  *
-- * This is exactly like vmf_insert_pfn(), except that it allows drivers
-- * to override pgprot on a per-page basis.
-+ * This is the function underlying all the others in the vmf_insert_pfn()
-+ * family.  It is the most flexible, as it allows drivers to override pgprot
-+ * on a per-page basis, as well as to insert the pfn as if it already had
-+ * a write fault.  vmf_insert_pfn() is usually sufficient, however.
-+ *
-+ * These functions should only be called from a vm_ops->fault handler, and
-+ * in that case the handler should return the result of these functions.
-  *
-  * This only makes sense for IO mappings, and it makes no sense for
-- * COW mappings.  In general, using multiple vmas is preferable;
-- * vmf_insert_pfn_prot should only be used if using multiple VMAs is
-- * impractical.
-+ * COW mappings.
-  *
-- * pgprot typically only differs from @vma->vm_page_prot when drivers set
-- * caching- and encryption bits different than those of @vma->vm_page_prot,
-- * because the caching- or encryption mode may not be known at mmap() time.
-+ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_mkwrite(), the
-+ * @mkwrite argument allows installing a writable PTE even when @vma is
-+ * under write notification, i.e. when it has a .pfn_mkwrite() callback.
-+ * In this case, vma_set_page_prot() has cleared the write bit from
-+ * @vma->vm_page_prot.  This lets the fault() callback install a writable
-+ * PTE in response to write faults; note that .pfn_mkwrite() is not called,
-+ * and therefore the caller has to do by itself whatever the callback would
-+ * have done.
-  *
-- * This is ok as long as @vma->vm_page_prot is not used by the core vm
-+ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_prot(),
-+ * pgprot can differ from @vma->vm_page_prot.  This typically happens only
-+ * for caching and encryption bits, which may not be known at mmap() time;
-+ * it is ok as long as @vma->vm_page_prot is not used by the core vm
-  * to set caching and encryption bits for those vmas (except for COW pages).
-- * This is ensured by core vm only modifying these page table entries using
-- * functions that don't touch caching- or encryption bits, using pte_modify()
-- * if needed. (See for example mprotect()).
-+ * This is ensured in two ways:
-  *
-- * Also when new page-table entries are created, this is only done using the
-- * fault() callback, and never using the value of vma->vm_page_prot,
-- * except for page-table entries that point to anonymous pages as the result
-- * of COW.
-+ * - core vm only modifies these page table entries using functions that don't
-+ *   touch caching- or encryption bits, using pte_modify() if needed. (See
-+ *   for example mprotect()).
-+ *
-+ * - when new page-table entries are created, this is only done using the
-+ *   fault() callback, and never using the value of vma->vm_page_prot,
-+ *   except for page-table entries that point to anonymous pages as the result
-+ *   of COW.
-  *
-  * Context: Process context.  May allocate using %GFP_KERNEL.
-  * Return: vm_fault_t value.
-  */
--vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn, pgprot_t pgprot)
-+vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma,
-+			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
-+			bool mkwrite)
++static vm_fault_t vmw_bo_dirty_mkwrite(struct vm_fault *vmf, struct ttm_buffer_object *bo)
++{
++	unsigned long page_offset;
++	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
++
++	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
++	if (unlikely(page_offset >= PFN_UP(bo->resource->size)))
++		return VM_FAULT_SIGBUS;
++
++	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
++	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
++		struct vmw_bo_dirty *dirty = vbo->dirty;
++
++		__set_bit(page_offset, &dirty->bitmap[0]);
++		dirty->start = min(dirty->start, page_offset);
++		dirty->end = max(dirty->end, page_offset + 1);
++	}
++	return 0;
++}
++
+ vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
  {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct ttm_buffer_object *bo = (struct ttm_buffer_object *)
+ 	    vma->vm_private_data;
+ 	vm_fault_t ret;
+-	unsigned long page_offset;
+ 	unsigned int save_flags;
+-	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
+ 
  	/*
- 	 * Technically, architectures with pte_special can avoid all these
-@@ -2774,36 +2789,9 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+ 	 * mkwrite() doesn't handle the VM_FAULT_RETRY return value correctly.
+@@ -419,22 +437,7 @@ vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
+ 	if (ret)
+ 		return ret;
  
- 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
- 
--	return insert_pfn(vma, addr, pfn, pgprot, false);
-+	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
- }
--EXPORT_SYMBOL(vmf_insert_pfn_prot);
+-	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
+-	if (unlikely(page_offset >= PFN_UP(bo->resource->size))) {
+-		ret = VM_FAULT_SIGBUS;
+-		goto out_unlock;
+-	}
 -
--/**
-- * vmf_insert_pfn - insert single pfn into user vma
-- * @vma: user vma to map to
-- * @addr: target user address of this page
-- * @pfn: source kernel pfn
-- *
-- * Similar to vm_insert_page, this allows drivers to insert individual pages
-- * they've allocated into a user vma. Same comments apply.
-- *
-- * This function should only be called from a vm_ops->fault handler, and
-- * in that case the handler should return the result of this function.
-- *
-- * vma cannot be a COW mapping.
-- *
-- * As this is called only for pages that do not currently exist, we
-- * do not need to flush old virtual caches or the TLB.
-- *
-- * Context: Process context.  May allocate using %GFP_KERNEL.
-- * Return: vm_fault_t value.
-- */
--vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn)
--{
--	return vmf_insert_pfn_prot(vma, addr, pfn, vma->vm_page_prot);
--}
--EXPORT_SYMBOL(vmf_insert_pfn);
-+EXPORT_SYMBOL(vmf_insert_pfn_prot_mkwrite);
+-	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
+-	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
+-		struct vmw_bo_dirty *dirty = vbo->dirty;
+-
+-		__set_bit(page_offset, &dirty->bitmap[0]);
+-		dirty->start = min(dirty->start, page_offset);
+-		dirty->end = max(dirty->end, page_offset + 1);
+-	}
+-
+-out_unlock:
++	ret = vmw_bo_dirty_mkwrite(vmf, bo);
+ 	dma_resv_unlock(bo->base.resv);
+ 	return ret;
+ }
+@@ -484,6 +487,9 @@ vm_fault_t vmw_bo_vm_fault(struct vm_fault *vmf)
+ 		prot = vm_get_page_prot(vma->vm_flags);
  
- static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
- 			bool mkwrite)
+ 	ret = ttm_bo_vm_fault_reserved(vmf, prot, num_prefault);
++	if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
++		WARN_ON_ONCE(vmw_bo_dirty_mkwrite(vmf, bo));
++
+ 	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
+ 		return ret;
+ 
 -- 
 2.55.0
 
