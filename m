@@ -1,79 +1,78 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E340331ECD
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 04:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901E733EAEC
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 04:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785817150; cv=none; b=rN5FeLBt8V+IPHU2KtWYaaW0fwark+dY4cUVz2BE4e+FbOLT9gEXjJRlU9sIpt0jsurWcyoIqtovBKxPC8F4jNkd3EyDtUNF56AYLvG9XPafJXAZ8/iZg+LEAOz6NYMjvLDi1zRW0Op+Ue42Gyy6EFFOCEpiuuVUlWSfVdpCAzs=
+	t=1785817632; cv=none; b=rw81aq/l+9aZBajZgb/hA7VhHQ7WYlsN3Uj0mV9wIBj81Wfn52XnrcIRpJXo3bK4IXW/KJAkLIN8kpfIYneRuI2TTE/w2029aklWRquqvqRcxlcuojqJvBIe6ZeKnXKg3Qv6+JDPREsqkTCu6yG/bPM1TndPa1ZGFgmA6ElZ73M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785817150; c=relaxed/simple;
-	bh=Ehv6ZpiwwQTVEJVQYx8VsZm6ew9x8gEVlTBOFfynDtc=;
+	s=arc-20240116; t=1785817632; c=relaxed/simple;
+	bh=AU0X1WC4BZKI6COQ7N4mxIbffSje1Q0jlS/WBmyJ8DU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qhf1aSB8Ic6Dr/mr51tUKW15IiKaoVEoHBRbkSxGtD/fJmcb3YmocMJE3tXus6iWRmb9GC3pnz4n1OfZtQiLIDevhokKVSRe0RktmFK+iG+Uj7gaLzLKTij4Dtv5EV2+/cOyv42iPYCp/PdrVne6I387MQmB+XE6AqC5i6jdWrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NyCoSyJ7; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=EV/3dBZlWTh/mEOjvLvG7l4FFmhjgpcQ9yxmMaf5CUb9wkfwey0fi1LRud6WoW1uQvsTqyIxbt7MEg/TyiGOYvos5vvmwY/ZHiI9h3MNXc3JXHwBW1QJyjD1ji2zMj2T5hQU+fpMFyezqhteBVPoErLIPbhmOj6j/Cym6Ta6ytk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfaBhFTp; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NyCoSyJ7"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so46327085ad.1
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 21:19:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfaBhFTp"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8487214ad2bso5817130b3a.1
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 21:27:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785817149; x=1786421949; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785817630; x=1786422430; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=osDb3QU8E2plb1DNFxL1j8vSW/KoqghbaQXI4jZIOlw=;
-        b=NyCoSyJ7A1cS8LcT42kMexYSmBGKJKViYvMxH9F558j+d+BxT0pVb3LxhNZVCXM8Cf
-         0Wxi59ZxkULRNpFCoiP7xU38szatzlnWKgUrtKuWD55xO9ZNIiZhlbqtBsFGIB5Gv/Zy
-         IP59rwtYasQfhNaGnjavyLwnVLKKYM0TzwkxPWMMXuhiAZ7C+pVYm03kKM/h8MmGQ2Rb
-         bhx783aH0CioC8cjrqjug8xauzO6nXfYAA16hDgtIFVaBZEZ/XkM3Ds9+yQinjxadz7T
-         zsSOKiB9r6Az+XMr4qPaZUzkKDnyZACgL7uj5MRFfIlrkuUvSURKEht68z9uydoL8ua8
-         sTCA==
+        bh=AU0X1WC4BZKI6COQ7N4mxIbffSje1Q0jlS/WBmyJ8DU=;
+        b=OfaBhFTp7FyTnfTUI1JOiFnK0Fp/3BPiGac7umCqFOIQ49DLQcvdaH0YUXU2/z4m2G
+         dCuVnrXhy3tdWM2IimP5ZbrbIEDLufZHCsU0xsuogV3kmtoy6JWV2NVOZRHvkYe+MjDu
+         F/Oe+2kgR4bk1y9gVoNJLx0eXDEUVJnxD4ak1qOU8ge5Ay0tS16KdZVfzzVt46sBDx8b
+         chDaDFuaHGRiBZF0vD2KDA/dmQ8ANIbQ5ButPA7cze//RNVXESLOSuWPM1RIVbpc1Un8
+         FWOvNQiHrN3iwYwqjIOHppxZT/QPdmXG5+O8D3LU2CWhwNOhzY5oqHn5ba9c+wZJU7fF
+         yOGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785817149; x=1786421949;
+        d=1e100.net; s=20251104; t=1785817630; x=1786422430;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=osDb3QU8E2plb1DNFxL1j8vSW/KoqghbaQXI4jZIOlw=;
-        b=mMHSoXWgBSbJVhEIW4fSzS066MOdx1wFA5k7iQ/m7qHTCdPCyb8gayIOnWtRJeGCTE
-         D31Zon6A0s7Lk/65clFIiPqNtiiVQ7Cr8uUOWehHi19OmFTY+ptbAw34fxOiNFHoOAP5
-         vLPKc6La6lPK4uXWr7yAuFT0mVfXSDah33TNarJoM5SbKBwld39r3Ff4nb3dk6S0/fIH
-         52OpspYihm4GMtNWdA/Be+f3I5cD3C/ElJyH5PXKkDBXQIAu5IXoAbXczL8LCjAgHIUJ
-         dnYRzcB+lpaErR4olPf4akj8CmbSPTY8QQrdFiwxQYEzzw+piyh8WG6NjSdrw3ATxbJp
-         1T1A==
-X-Forwarded-Encrypted: i=1; AHgh+RojcQgdVYYTqyOSVuJcSQyGHK1b5oMDvnnGZC0PJmAi3ChFnOMb1plZfksGpnadh+jpSeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcsucw6ze32+JDFqDysyKk/pa90epzUpcEWLCwxeo93tQ6TP3X
-	3xH8bV9Zr17/AOLF1W3EVDiQkVG3YM7TwPi/iw3gFTaLpWAj01mbHtsB3M1YbGT17m8=
-X-Gm-Gg: AR+sD10GYEM7YnQs5iVTDOTUi0aTGNV00GzxadHmJrKWLxU6aPBi7WKscCdzEheOMQ5
-	WPUxR9kiU3+ewjOID48pwIRpby8EAuSyL8Os1tVnhWMFPOsZiZrOGFzeD5gd3TlWUwIOfzr0dqP
-	ZtdaiIynm0DVyfcLOCqy+5NVLyINlYl32pk/D7pW8kk1MzeXYsknf1mPHJ9HNjAV00PHc3ELr7K
-	N0KcsXQ/K9fDZIU+k8kjigR4KGA/44A2yZlwRtcXog9yjfZQPgXfZE+OZHkqdPve5Dx3FlkG7fv
-	y4KfS273EuTgUdnzDBx5K1lzjlqgqsohyIlJ+ggyC5Z6Rmnhob5EEjpPrhk5wF1qG0uWZwTFasH
-	PBBenolX3yNhPJtotehJZfs0qsLVCEe8XYwGlt9E0t1aHLM/BAavqTHdyZGLRpIKJT4amLH3i0m
-	gFNZ0PiN/e7OiCOlURpR4NfOcWHcA3pAhQXDy+94TsfWCJaSSwuL/ZANDlTxWB+1s=
-X-Received: by 2002:a17:902:d2c9:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2d0521bb7cbmr117871245ad.14.1785817148639;
-        Mon, 03 Aug 2026 21:19:08 -0700 (PDT)
+        bh=AU0X1WC4BZKI6COQ7N4mxIbffSje1Q0jlS/WBmyJ8DU=;
+        b=K0/MiUpXTs3pcnABjFYeEIaB6/z5+WXRLZ6/4xsfabSfUYrfxakxNUpfjfgT9XRko+
+         nFQNrxqcKoFvkyRckvzfRww0u697HWFiwWAA3toatDma1Ce5O+iMwQbZmqEdy2X4D/Y/
+         e37N+Cm4H3R4OYDA9hsU4QOlT8k7G9C9sAq9kvqc2KiV4g1W23w61os7kR3f29qoBAYI
+         LsM0NOwEYqWmUvvWwgenvP8SkBseGIsTzaN4BtqQFLMXNhyhgDXcKTyU1EVl4na5sRmL
+         HN+HUA/VX8Kys+XcINTcHSUEp9BEOZeWX0LHOFMFXlbl0/r+7+V1SW7+dVU5wAP8+/Yf
+         p5TA==
+X-Forwarded-Encrypted: i=1; AHgh+RqaEEVHYLfpX6SX3qCb4/k9QohHhGtyxYR2rrTr0D+mPrVlEUDNnPL6DSufed2+m6ufHlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrIeVsdmEvBnclueZwDAxR3ijxUphWAm+AoC5tP0xJFoLzhCUi
+	rmDyL/ZAAMI0Egwkga2hG5slZBvpdHokfDxqX3mPPCYNnHj8rlud9Tx2
+X-Gm-Gg: AR+sD106mD0cQoSou9l0Dhh+WFPALtqT8E4TYTlTBq5NY7du6gSCD2OUqwdfR1SUSsH
+	ZBOKoI1i2TWB+RMV8eAb6vvHw+yBikAuMCzV7K9AnXMSTipCacnx+Hosk4XEIG9M9cbk6xcYwS+
+	mmFyHb84k3cjI+4jzTFi3yuL6U/3lzOIqtxcZF6sdrz78Z+yxuadRgdmXFBTrIuwz3+h4ELSYi6
+	WdKRSNJcKdIdZm539ta8w2JdSnEsuUQypqc3lKXOLlmAwq7CnhOCUH7J6dqtY4CWG1VgmwqCZNz
+	q/AJXzSvJ+frzBtUqWAV2YIhZ5dnXpoTCvv64OirCTpP0rw7qNHv5juaA66MHc/Fx++F9slHw2s
+	RjW6Maz5WyAqwB1Q+Sy3dbC4bTDvKiOswA5q4YjNT8FMIGxHPaoszyt4Hfjb6wmts2lx2nMIca5
+	L8B7jNKphbUt2v8nalwrnSXV4xA79RMCDxrQ6pqZeVYMRwR+yX+WUxysL8Wb0QiRI=
+X-Received: by 2002:a05:6a00:429a:b0:848:6895:b754 with SMTP id d2e1a72fcca58-84ee482bf19mr11805742b3a.28.1785817629562;
+        Mon, 03 Aug 2026 21:27:09 -0700 (PDT)
 Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0ea84asm46012645ad.43.2026.08.03.21.19.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84edc41ca4dsm4510051b3a.52.2026.08.03.21.27.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 21:19:08 -0700 (PDT)
+        Mon, 03 Aug 2026 21:27:09 -0700 (PDT)
 From: Jia Jia <physicalmtea@gmail.com>
 To: mst@redhat.com
 Cc: stefanha@redhat.com,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v2 1/2] vhost/vsock: discard IOTLB when ACCESS_PLATFORM is cleared
-Date: Tue,  4 Aug 2026 12:18:50 +0800
-Message-Id: <20260804041850.5922-1-physicalmtea@gmail.com>
+Subject: Re: [PATCH v2 2/2] vhost/vsock: keep IOTLB across feature updates
+Date: Tue,  4 Aug 2026 12:26:53 +0800
+Message-Id: <20260804042653.6014-1-physicalmtea@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260803231405-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260803232008-mutt-send-email-mst@kernel.org>
 References: <20260730104857-mutt-send-email-mst@kernel.org>
  <20260731103414.1746316-1-physicalmtea@gmail.com>
- <20260731103414.1746316-2-physicalmtea@gmail.com>
- <20260803231405-mutt-send-email-mst@kernel.org>
+ <20260731103414.1746316-3-physicalmtea@gmail.com>
+ <20260803232008-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -82,46 +81,10 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 03, 2026 at 11:18:50PM -0400, Michael S. Tsirkin wrote:
-> Why lock down all vqs like this?  Would this work just as well instead?
->
-> 	iotlb = vsock->dev.iotlb;
-> 	vsock->dev.iotlb = NULL;
->
-> 	for (i = 0; i < ARRAY_SIZE(vsock->vqs); i++) {
-> 		mutex_lock(&vsock->vqs[i].mutex);
-> 		vq = &vsock->vqs[i];
-> 		vq->iotlb = NULL;
-> 		memset(vq->meta_iotlb, 0, sizeof(vq->meta_iotlb));
-> 		vq->acked_features = features;
-> 		mutex_unlock(&vsock->vqs[i].mutex);
-> 	}
->
-> and if no why not?
+On Mon, Aug 03, 2026 at 11:20:48PM -0400, Michael S. Tsirkin wrote:
+> You did not CCc all maintainers and lists with this patchset.
+> ./scripts/get_maintainer.pl -f drivers/vhost/vsock.c
+> will help find out whom to copy.
 
-Thanks for the review.
-
-My understanding is as follows. The proposed sequence protects the
-lifetime of the old IOTLB, but it does not keep the translation state
-consistent during the transition.
-
-dev->iotlb is shared by all VQs, while vq->iotlb, meta_iotlb, and
-acked_features are per-VQ state. A kick handler only holds its own VQ
-mutex. If dev->iotlb is cleared first, a handler that already holds a VQ
-mutex can continue using the old vq->iotlb and metadata cache, while
-translate_desc() sees dev->iotlb == NULL and falls back to dev->umem. The
-same handler could therefore observe both the IOVA/IOTLB and GPA/umem
-views.
-
-Locking each VQ in turn before freeing the old IOTLB prevents a lifetime
-issue, but it does not remove this mixed-state window. Taking all VQ
-mutexes before changing dev->iotlb lets active handlers finish and
-prevents new handlers from running until the shared and per-VQ state has
-been updated consistently.
-
-If VHOST_SET_FEATURES is guaranteed to run only while all VQs are stopped
-or otherwise quiesced, then the shorter sequence should be sufficient.
-Since the ioctl itself does not enforce that, I thought this transition
-also needed to be safe while a VQ may still be active.
-
-Please correct me if I have misunderstood anything. Thank you very much.
+Sorry, I overlooked that. I will add the missing maintainers and lists in
+the next revision. Thanks for the reminder.
