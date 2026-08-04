@@ -1,171 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22F848B373
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 17:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76DA46A5E1;
+	Tue,  4 Aug 2026 17:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785863757; cv=none; b=BTtoy1NrVIbOSm79bVdOrkgzNEX1V1x514vYKzJKZUyFPtTXM2UvROPWfwBpe5nupt5kXfnq+Mkhzjb9IkN8JG9R7XMre4q1iCeaH8TZV85lqo35GplT2h4MAA254fECmLQ3WCwFAAP9wWOOH0UnBiuRCMfmcvNKMK9Se5/fzdc=
+	t=1785863938; cv=none; b=mk6v0+S6TgIbkZdxzRfXWEOA3FgdstzVda0wxYOgBoucwIOHFWoIACtxFwebyS0fKKdbyLShwX2fDzYQ0OFey0JxivNxAhvrC9OBHcuVuwbcDkfTmFMjroq7cNes+b9//dVTsuEkqaWAvYB0tEIgHrGpODeSLQrZv5m7kPikUOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785863757; c=relaxed/simple;
-	bh=awDpPZF7BBQfwzzvu/RK345LkXjSNpv6yLkI1Ha/hFs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ghns2U6Dws4cZJCz6XVBIuq6ErCz88tZAA/FE91IuST/l9ZL9tFkcO86chRWdhCNuwOSA/uCZ1IYGV4zA4ROLm1Ln7BzOhdd7fMAmtTZp311eoWO7rupyqXgAphP5nAusY3K/UPVq3pJ6UWw9cpkRzjoJ1ouR+Mv+1YLr2FFZco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lp4L0n+g; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785863938; c=relaxed/simple;
+	bh=J37+rILGjJ9tGRUFT6chBoqupmBmzzATqKwigX0Ro8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ohRRHQHFIF5U/RRhyjJTv+jBgRP60rbXuBUt36JcTpcJfVNyNwOKis6Uf3DRXxBKFsCZqIDJzrMokXtDtKQSTW5WPSup4EEnrQF1Vq1hq+zqkBuUkobYl1rJYC5UdxEpkk3po5+Zfzd33vE8HHcnYV/xviuUuRu6w4EksxplzxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lgrRDCpk; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lp4L0n+g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09C11F00A3E;
-	Tue,  4 Aug 2026 17:15:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785863741;
-	bh=kWFuFhul7zhnI4zZENNtCpG/zUMQX5WxGTghKcmAJsA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Lp4L0n+gi7elYkH7wjALehOAgC2afgu5qZjM+mKuMBMVgRd5a2v8RRZjHN1xDCmm3
-	 mm650y8Rw4ccpTW+PNBJrvCtNq6QrYRXSmTwitwpepmbo5lGouA760NKkGY/y3d7IF
-	 8cWKNVCFu3ugMX3gGrgSEC0H0sYm1kvFgE7UnvHMrMdwQISYn0xMOk18qPtcLK3VcD
-	 dffzhweI4aWU35kw2UfkeHIHXANxbzEocvTIjxT3oiny+keBosGX9TKEnSI54g0kd5
-	 yIHXiQsrYuC/U0cATMT5CmJag/k/wpgfn0fEMKFXMWv5AUsHemC/Kibocm4bAZyhFQ
-	 hTFSCKEX/frTA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/4] vfio: selftests: Introduce
- vfio_dma_mapping_perf_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Aaron Lewis" <aaronlewis@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260804165748.1060476-3-aaronlewis@google.com>
-References: <20260804165748.1060476-1-aaronlewis@google.com>
- <20260804165748.1060476-3-aaronlewis@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 17:15:40 +0000
-Message-Id: <20260804171540.F09C11F00A3E@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lgrRDCpk"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674FlpXL1254663;
+	Tue, 4 Aug 2026 17:18:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=iwk9LZ
+	XYsgVFwdXypfXiqcaQFf6rgaoM3Waefg+32DM=; b=lgrRDCpkwQe5lVFEM+JpZs
+	Dw3AOhKry+JWjGHiMg2RJ0hwc9+a6YyZkVd4EtGKjFeRaRDlF5c7T9kQojbflzf4
+	iL8tTIEjh45LSgIGhsJyweKmQgkNKW0a2AgRO9R9gNSvzWhAOhfZuACrAKKJwrkr
+	g0G4ivArtPpluIKXwrexsmAmuCuJ3qbWj6qFI5l8ht7V0OqukDLeVOhFJofOAEBd
+	vg7wTo/8d7EI9nnf2CH4RZxGkB1A7qv+GEi97J/xSEYvYF54SZzYwCpkry7FLcCn
+	JHg351QXDIi6kAeP8x6XgZqB152n97OoHlz4OFJM7ysqzf1cOUm3WAVUdk/Wd+9Q
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3y2tv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 17:18:40 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674HBNQI017772;
+	Tue, 4 Aug 2026 17:18:39 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qk3qb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 17:18:39 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674HI0Jg2097792
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 17:18:00 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A23258043;
+	Tue,  4 Aug 2026 17:18:38 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1BED258053;
+	Tue,  4 Aug 2026 17:18:36 +0000 (GMT)
+Received: from [9.61.86.222] (unknown [9.61.86.222])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 17:18:35 +0000 (GMT)
+Message-ID: <c7908e15-1683-454e-b6d9-bd32f18ce9ca@linux.ibm.com>
+Date: Tue, 4 Aug 2026 13:18:35 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/7] KVM: s390: Zero initialize irq in
+ reinject_machine_check
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        KVM <kvm@vger.kernel.org>
+Cc: Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390
+ <linux-s390@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Douglas Freimuth <freimuth@linux.ibm.com>
+References: <20260804162435.28617-1-borntraeger@linux.ibm.com>
+ <20260804162435.28617-4-borntraeger@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260804162435.28617-4-borntraeger@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a721ef0 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=WBrIipxYDB_IIsAJn0oA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 7ziYLvUDsiG2edn1zgR7DPO6xqAoDyfF
+X-Proofpoint-GUID: 7ziYLvUDsiG2edn1zgR7DPO6xqAoDyfF
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE0MCBTYWx0ZWRfX4XOGfPw6uD21
+ HIvpoK95CMMECQaXtj3rCjMcN/qN/VG9Vy83Guy2Z1gUCBK2hKKvmnb2cdILL2q4Zefmo8qdSSE
+ c7SzFiCkmRv+1pYvTiiyj1aNeVbabMc=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE0MCBTYWx0ZWRfX2oxGClG83xkG
+ LAJyegdOKRLv0w73D+B/+bX/EVHoosshZpSe6ft7Tj9as2ga3OK/bm2fjwHA4kzLPxmqGX194yP
+ tMXHIcTtfVcf9J7FRwXtp1jW2IcBUNRLlseV9Nh6LWdu6dtwIiT8YEQEVDyjDjXfC5wE6g7aJAZ
+ OYj4OR7WHhJiRDui8hM1wXHNd1e1WNz6hXmzn0VIjpZxgzHs8nCn01DNlY4/cdzR7Gk44vzwB6r
+ tvXSEHoe0k+t3PUubV6gN948a1n6hK1TnQ0ppoZR/jIliSWAVfVOi5imVDg0TzyvZrlOx4TdMqB
+ D6sgT75dwPw9lAKclZcqOigBzvUV8DDJZ8uUXAaR4BwqCCFB889kmmWQqxl5f3nRFfPD0GyxHDQ
+ naBlE4t73g6RDpdBgat3dkU+flpTxCKdu2vbAskshr09G7TCNNG6qO8f3Dkb48QdBSW7owtefSf
+ VAzTnyekaElEccRpSPg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_03,2026-08-04_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040140
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] The `TIME` macro can clobber `errno` before the caller evaluates=
- it.
-- [Low] Diagnostic output uses `printf` instead of `TH_LOG` or `ksft_print_=
-msg`, violating the Test Anything Protocol (TAP) format.
---
+On 8/4/26 12:24 PM, Christian Borntraeger wrote:
+> kvm_s390_reinject_machine_check() fills cr14, mcic, ext_damage_code and
+> failing_storage_address of the on-stack struct kvm_s390_irq, but struct
+> kvm_s390_mchk_info also has a pad word and a 16 byte fixed_logout array.
+> struct mcck_volatile_info carries no logout data, so there is nothing to
+> copy there and both stay whatever was on the stack.
+> 
+> __inject_mchk() then memcpy()s fixed_logout into the vcpu local
+> interrupt state unconditionally. This will reach the guest during
+> deliver and userspace during migration.
+> 
+> Reflecting zeroes is the correct behaviour here, as KVM has no logout
+> data for a reinjected machine check.
+> 
+> This needs a host machine check while the cpu is in SIE so not trivial
+> to trigger.
+> 
+> Fixes: 4d62fcc0b692 ("KVM: s390: Inject machine check into the guest")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
---- Patch [2]: [PATCH v2 2/4] vfio: selftests: Introduce vfio_dma_mapping_p=
-erf_test ---
-commit 3d215ae55639b2f45faac3bfc752e16beff09489
-Author: Aaron Lewis <aaronlewis@google.com>
-
-vfio: selftests: Introduce vfio_dma_mapping_perf_test
-   =20
-Introduce vfio_dma_mapping_perf_test to aid in latency testing. Rather
-than a traditional pass/fail test, which tends to be flaky when
-enforcing latency bounds, this test directly reports the latency of
-various stages in the mapping and unmapping process.
-
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio.h b/tools/t=
-esting/selftests/vfio/lib/include/libvfio.h
-> index 07862b470777b..cf322b499cfba 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio.h
-
-[ ... ]
-
-> @@ -9,6 +9,34 @@
->  #include <libvfio/vfio_pci_device.h>
->  #include <libvfio/vfio_pci_driver.h>
-> =20
-> +#include <stdint.h>
-> +#include <time.h>
-> +#include <linux/time64.h>
-
-[ ... ]
-
-> +static inline uint64_t timer_elapsed_ns(struct timespec start)
-> +{
-> +	struct timespec end;
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &end);
-> +
-> +	return (uint64_t)(end.tv_sec - start.tv_sec) * NSEC_PER_SEC +
-> +	       (uint64_t)(end.tv_nsec - start.tv_nsec);
-> +}
-> +
-> +#define TIME(_name, _expression) do {				   \
-> +	struct timespec __start;				   \
-> +								   \
-> +	timer_start(&__start);					   \
-> +	_expression;						   \
-> +	printf(_name " =3D %.2lfms\n",				   \
-
-[Severity: Medium]
-Can this TIME macro clobber errno before the caller evaluates it?
-
-If the target _expression (like mmap) fails and sets errno, the macro then
-calls clock_gettime() inside timer_elapsed_ns() and printf(). These libc
-functions can modify errno, causing the caller to read an incorrect errno
-value.
-
-For example, this happens in dma_map_unmap(), where the SKIP() check reads
-errno after mmap() is executed through this macro:
-
-tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c:dma_map_unmap() {
-    ...
-    TIME("mmap",
-         region.vaddr =3D mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -=
-1, 0));
-
-    /* Skip the test if there aren't enough HugeTLB pages available. */
-    if (flags & MAP_HUGETLB && region.vaddr =3D=3D MAP_FAILED)
-        SKIP(return, "mmap() failed: %s (%d)\n", strerror(errno), errno);
-    ...
-}
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
 
-[Severity: Low]
-Does this output violate the Test Anything Protocol (TAP) format?
-
-Since it outputs directly to stdout without the TAP diagnostic prefix
-("# "), it might confuse TAP parsers. Would it be better to use TH_LOG() or
-ksft_print_msg() here?
-
-> +	       (double)timer_elapsed_ns(__start) / NSEC_PER_MSEC); \
-> +} while (0)
-> +
-
-> diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/=
-tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-> new file mode 100644
-> index 0000000000000..26c04cabef616
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
-
-[ ... ]
-
-> +TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
-> +{
-> +	const u64 size =3D SZ_1G;
-> +	const int flags =3D variant->mmap_flags;
-> +	struct dma_region region;
-> +
-> +	printf("mmap size =3D %lluG\n", (unsigned long long)(size / SZ_1G));
-
-[Severity: Low]
-Similar to the TIME macro above, does this directly output to stdout without
-the TAP diagnostic prefix?
-
-Using ksft_print_msg() or TH_LOG() instead would ensure the diagnostic outp=
-ut
-complies with the TAP specification.
-
-> +
-> +	TIME("mmap",
-> +	     region.vaddr =3D mmap(NULL, size, PROT_READ | PROT_WRITE, flags, -=
-1, 0));
-> +
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804165748.1060=
-476-1-aaronlewis@google.com?part=3D2
