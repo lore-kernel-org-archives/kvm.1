@@ -1,126 +1,156 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6717743E9D5
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 09:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094D6448BA3;
+	Tue,  4 Aug 2026 10:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785836745; cv=none; b=OXOde8uOiVOGUq2kLZU+h+fYGDPo0yRrEX9946yO0vgjmnQo1sidBTlqRO6McBFh3z2NiDkd2nqJ5khpabyJInqST57LH1Peo4F9AbCMG/QQQlJYWOB/TokcOLKlXDC8A9T8pvFog28471Dnt1okN95ol/sdhApvWaEzc1Ntvqo=
+	t=1785838120; cv=none; b=sWK3iJ8JpJ+V5HL8GFnYNeciDoIkGHc9NNSRNSPWViCS9/EkGXVVNRBrdJt5zgPR1ZgRLiCRArAr9O0gDQx9bw/10EFrA7ilP5W1eLsnKnKPQyu6uUEwV6adEDrvK5Bm10KokbY7Q5fASqnmfs/fdlQJnfUdEa4SUgL4KTQaHGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785836745; c=relaxed/simple;
-	bh=dDky39zYJMrArXt7rlDyNBxmEhWZ3ij1bJVMuJuX4U8=;
+	s=arc-20240116; t=1785838120; c=relaxed/simple;
+	bh=BDHc8nP7Z6bvcmh/dzH94/EnBpDGFMcFm2HRu86aAz8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QeFBOW0v7PoKv9TrG67UO5zEJk8E2l15DFgyHoVty9J0oYU76eCATY5OI3gJJ2t+hrDohYO/akfla6VtESUB+yLpUM6BMubrsE4inz2m1BKNF+bJIrObvAZS2TYw0pTZFH4q5tcFkxgqSlCfZaG+rNN23SKMRk5w7B4zcYTdVow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KpWWbeDZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=RAHO7eZl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nrwC7KVB7l62pQivrN4aKgW5Pj7Jm8JOyYVJ0KUVr/S/3IlX+2k1CWOCxMPudRUhpOnq5V/YhyCWH7BR6tcZPGeNeOiLgfmgerdc0w34mZ0pt43YZNR6IqMUMTO7C0oiRWa1LFebCOexwJODLs33es7KHdSVJvQiEwUNn7l95Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Buq/jCHb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KpWWbeDZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="RAHO7eZl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785836740;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p0Vr+6epLbEBl+Ut6IFtBIqkvpbRQNZ+42wTzBOY/ns=;
-	b=KpWWbeDZ7ndT/xceTwb2ePCjmoR6aisDDPnJPkJlEpybhDHe4COnCOxxOSy1Lcq1Q74cJs
-	oUgbljMWaXHKORjr03jEI16bceeKHg3NPZUyukxImU1PpEUJWutgBAH32zb4v7HopwHeIh
-	HyMBgTz+9ZFcrq8QlMZOF5ao8EtNhq8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-IzmugsYAN0SwsdYu5tzKlw-1; Tue, 04 Aug 2026 05:45:39 -0400
-X-MC-Unique: IzmugsYAN0SwsdYu5tzKlw-1
-X-Mimecast-MFC-AGG-ID: IzmugsYAN0SwsdYu5tzKlw_1785836738
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-474170b59dfso2484012f8f.3
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 02:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785836738; x=1786441538; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p0Vr+6epLbEBl+Ut6IFtBIqkvpbRQNZ+42wTzBOY/ns=;
-        b=RAHO7eZlXxm3+DhbWaeuItMifNgK7E8YWD+a7vjY6noqh4uSwdXeGPx/SWrHlRlSst
-         T8ACswvPgPbRQTawlxDpo+5Yps/b8dwGSgKB8eGtcUzBKUZbUuqxesYL4pJVnULHCBqO
-         A0Y0PSITmLrsqdDqF16JeRlxKhKJSFpvTkhaQRLSeISURRJs3D9WMEJZMo53j33csv/B
-         qiHiypIzSMdFVwMncuIrsG4ml4znDhwdLQ1UNI93w+g1WXwOHCCBoCMnUakP3vLgDNa7
-         GShz6tIGpETemktY3aVQOpTMy3CiUTcaLRk3yfP+g8gkk068vgEitohFy7rkdePxiaSO
-         4Xzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785836738; x=1786441538;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p0Vr+6epLbEBl+Ut6IFtBIqkvpbRQNZ+42wTzBOY/ns=;
-        b=l7e9JMSLuJsJra3K3GQlgixq+VpIsmkki8aw5yuUBVO4CozXxE9L1husmm6EF7rh5K
-         /RIAUVLT6+LB96vsb+vvQ2Z8RFDTVzISF86t0oCJzvtRt7+xhpOeKhr4GEahBVG+Cquz
-         yAaeIlsubtQ0Z1TccCdjEFVULABO6b6t+irws12+hrnp8GVSYMQbKcjfsJVfD0KflYtr
-         dsmdbD6lnkAAgQZK/LT+La2pxguwJymXvxvjx7JqxRqxw5a2eGWnjhz3GbrMlgLASj2O
-         BSupDJ/h8xNEQ3XtzVJ4AaPH3uxbKhhEwtF0YvRSj0uIgQycT9hTyyPkLpJ31Lb0sen0
-         a51w==
-X-Forwarded-Encrypted: i=1; AHgh+RrCYeKePJ87eY/r1a000RlT7KcHs+zuoJZg0wuy+oWD+xiVl6craOBvyPWBn8uLRXAVg9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3RQ9zRaHh+inZaox8Xw92Keah5Iq9CpoV7QIk4Kf0V5Hlu7Xw
-	5HotHzXdUpj/AB8lj0+cPZjeYeqYPyIZ3n9o61SXrYrkn2KaFGDWvdzhitYUOJY7khtx0tEcZNY
-	ROqUoziv6M25mmTOiShcGdVdeWWXJ1+Jbzq+O64eOajPuo7usUsPcmg==
-X-Gm-Gg: AR+sD13Rq4b7NdL/NPghIsTSQUDVHC1RgDjuTfDpFch9CO9M8KsaKwIVzTJwCXJsZUH
-	TDkbHIbKsKVNegBvfO8ztF1lVrrKIioQCv+XUEsnHhi6FpPG7xvMAx7MIEh861XrjXkzc6gqInh
-	Mwxrbt9t/E7Vgs2sIk4F9hEVOxpYVdbCq8aMVfz/OfWmYeoHNSZwnJVeXrcsocH1CQG0Y5Lif5N
-	9JhXB14urztS0mlNgYKca9d1d2UBoC1E/B7opiMWP8WffPVQVdPi47NzGxtfJ0N3SzrK+7Ctmgf
-	5KEjYAXn9tcCX/2sNrJ0ltGeuhcr/yIoFDfnv4JLVXzA1ATcF+yv6oMoFIyrB+KUPOm2KtDj4OD
-	k2bM=
-X-Received: by 2002:a05:6000:1886:b0:47f:b622:fcd2 with SMTP id ffacd0b85a97d-47fd72bef88mr33977915f8f.25.1785836738277;
-        Tue, 04 Aug 2026 02:45:38 -0700 (PDT)
-X-Received: by 2002:a05:6000:1886:b0:47f:b622:fcd2 with SMTP id ffacd0b85a97d-47fd72bef88mr33977826f8f.25.1785836737765;
-        Tue, 04 Aug 2026 02:45:37 -0700 (PDT)
-Received: from sgarzare-redhat ([5.11.104.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd41d0064sm40802768f8f.5.2026.08.04.02.45.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 02:45:37 -0700 (PDT)
-Date: Tue, 4 Aug 2026 11:45:04 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH v3 0/2] vsock/virtio: fix worker access after virtqueue
- teardown
-Message-ID: <anG0WA8cvB_TnPbZ@sgarzare-redhat>
-References: <20260729185831.3247971-1-bestswngs@gmail.com>
- <cover.1785352330.git.bestswngs@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Buq/jCHb"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748HiQp236584;
+	Tue, 4 Aug 2026 10:08:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Z8TdKGnZTYMqO75p+fQ6vrp2bZD+ts
+	8wOgvcpdd/4Qo=; b=Buq/jCHb/QGsSADwcRh0KPH1n6NArC/APNstlRCcTboAoL
+	VsnXT6QFrhWKFWjZAPMQ9lM1hIpAyF3gip4qzmSkbWBa+d50xBYBx6GTWfo7yvod
+	zPghTPFEienbqqYr7pz1V2tRx7hLUAIRxQdeDyi3TRqjQ3afbWJvTAQH9jIBXeFn
+	cKJphN8Asa6Nwc7pBXhlm97PV77d6F13r7wKcY/rEpG3cE4CD4GsoNexFT7n1IFZ
+	p6ZfAptb5EreIxtZRZGlm4xWok3dkm0Mvba4SSmE+cSIg7khq1O/TtsqcTwus9pF
+	05jYfFsAvmGB5LR8oSuKlNf9wtl6OD9PMnbNrJRg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g51fs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 10:08:21 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6749uKAO010137;
+	Tue, 4 Aug 2026 10:08:20 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbg986s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 10:08:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674A8G2B31588786
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 10:08:16 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6ECB22004F;
+	Tue,  4 Aug 2026 10:08:16 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 76ED620063;
+	Tue,  4 Aug 2026 10:08:13 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  4 Aug 2026 10:08:13 +0000 (GMT)
+Date: Tue, 4 Aug 2026 15:38:56 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
+ wire up ioctl
+Message-ID: <20260804153728.0e6e98b0-7c-amachhiw@linux.ibm.com>
+Mail-Followup-To: Gautam Menghani <gautam@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Ritesh Harjani <ritesh.list@gmail.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+References: <20260701051409.51820-1-amachhiw@linux.ibm.com>
+ <20260701051409.51820-2-amachhiw@linux.ibm.com>
+ <anGT5rS60ns59jY-@Unknown_32:98:3c:96:ca:91>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1785352330.git.bestswngs@gmail.com>
+In-Reply-To: <anGT5rS60ns59jY-@Unknown_32:98:3c:96:ca:91>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA3NyBTYWx0ZWRfXwRndxZ3ZRz/I
+ K6eHC+s7Kl7YZ2ov0UNCrTPfVx35QdqdUaKaIiEyu4SnqhNi/V5P9rPaaL2YPna9wnmjSezE75f
+ 6k7wVoAIt4vCk5KwXuhIcC0uTv5P7m5+oJC4lDwzbwGL/4rUqseEODAlLFppLwdBlFu/U2OukZc
+ HgUF3N/jMn1DtsL7bblS4lvKn2pt2uJVlIWmkdsw42OD43LgwTEBsFG32Owe8D2idGgjkks4zN/
+ W6j5/Sp3TkO9ibHItKfiKHdANWc+kw2zW9eW5q+zPwvqABU9O7gHxR0ct62T+7/Pw29pa0jxGxG
+ rcq+eiDkbtyC/yDb+ekM/pcufIDllu+dEvPA48eRx4hBRF6Jicx0eqEm/yOUzaY8JbDpCPajAMV
+ DNU6z8yw6vynCGcACMVkZZWiP419iy2loGvl+y2ebO/FetTjPjht30dGx3Nchqf9e+uuRorgFZF
+ VSP8W4MOyAP6ak62a5w==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a71ba15 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=59nB_xcw9bnwkcHRuAEA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: eRu8PNi_dZMRKR78rn3p2020rGeZqJhS
+X-Proofpoint-ORIG-GUID: pG2Opiz0PKCe2Gbek78wqc5W_CAh3fEU
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA3NyBTYWx0ZWRfX0HNrs549QlTS
+ o6/27dahEtBj8LRO5GUgP1iFlVFanuByEv05Eb5KMhL6V+Zv84g+GAQmHQbn7asd5CHfCIwSybM
+ TzJlT97Mu88OM6rpc/2cMzaLuixWrh8=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040077
 
-On Wed, Jul 29, 2026 at 12:16:53PM -0700, Weiming Shi wrote:
->Virtio-vsock workers can remain queued while freeze deletes the
->virtqueues.  This series prevents workers delayed across freeze and
->restore from retaining pointers to deleted queues, and prevents the RX
->worker from refilling its queue after teardown.
->
->Changes in v3:
->- Resend the series with proper email threading; no code changes.
->
->Changes in v2:
->- Split the worker pointer changes from the RX refill fix because they
->  fix different commits.
->- Use bd50c5dc182b as the Fixes tag for the worker pointer changes.
->- Keep b917507e5ad9 as the Fixes tag for the RX refill fix.
->- Use the suggested out_nofill label when rx_run is clear.
+On 2026/08/04 12:55 PM, Gautam Menghani wrote:
+> On Wed, Jul 01, 2026 at 10:44:06AM +0530, Amit Machhiwal wrote:
+> > Introduce a new capability and ioctl to expose CPU compatibility modes
+> > supported by the host processor for nested guests.
 
-Thanks, it's already queued but sice you fixed all my comments, just for 
-record:
+<snip>
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> > diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> > index 419011097fa8..1cf9a959669e 100644
+> > --- a/include/uapi/linux/kvm.h
+> > +++ b/include/uapi/linux/kvm.h
+> > @@ -997,6 +997,7 @@ struct kvm_enable_cap {
+> >  #define KVM_CAP_S390_KEYOP 247
+> >  #define KVM_CAP_S390_VSIE_ESAMODE 248
+> >  #define KVM_CAP_S390_HPAGE_2G 249
+> > +#define KVM_CAP_PPC_COMPAT_CAPS 250
+> >  
+> >  struct kvm_irq_routing_irqchip {
+> >  	__u32 irqchip;
+> > @@ -1350,6 +1351,9 @@ struct kvm_s390_keyop {
+> >  #define KVM_GET_DEVICE_ATTR	  _IOW(KVMIO,  0xe2, struct kvm_device_attr)
+> >  #define KVM_HAS_DEVICE_ATTR	  _IOW(KVMIO,  0xe3, struct kvm_device_attr)
+> >  
+> > +/* Available with KVM_CAP_PPC_COMPAT_CAPS */
+> > +#define KVM_PPC_GET_COMPAT_CAPS	_IO(KVMIO,  0xe4)
+> 
+> Can you use another ioctl number for this? This group of ioctls is for
+> fds returned by "KVM_CREATE_DEVICE"
+
+Sure, that makes sense. I'll send a v6 with this change soon. Thanks for
+for the reviews and testing.
+
+Thanks,
+Amit
 
