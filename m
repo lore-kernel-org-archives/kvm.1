@@ -1,141 +1,152 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5450A48A8A7;
-	Tue,  4 Aug 2026 20:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D8D3A8732
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 20:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785874231; cv=none; b=PRvjIotUTfuKcLiNXYVChZHi6MJ9yxyCFZaW+xJu1W9Tp+vnodNQkoeBj8U65XY2cwPnhzzm+BaZy1IiqI+Uqs4hfxq140WSHfCM7r5YGcAcb8IJc2wc31nOde+EuyNsZPDBBbQ73r5TUJ8prWFcptcih58S2Z3YFXq4HZem8HA=
+	t=1785875623; cv=none; b=BPX26A6uxZ5u4mbIr5Y5RaujiMPuT38pet/bHHFQzc3c5hHr1Vlizz13smwITM4i6usrP6QmgSIIjPwCw55BKRf0/d3Urm+tILjBPhA8KFwSIuQYwMhAEGExPqsdf6Jnq26kcUKFLkmKkIr4Wv7Z2E8D5Q3fxw9WshFItmmOgDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785874231; c=relaxed/simple;
-	bh=AjmUzfY+vEbZcOw71ELjIqCFMK9wUupfH+b6ioJ/RAc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdiMNEMrzaQn1VbA3FGuyGhLVI0tEpbjuivjjn01tJl0zxZ3SgIlG7Em6G2MZ35zsCXGxEtaZgTVuyZuUCx79w+8dQ6AYNc8pAFhvqK5FnK/HxkRQW344MX+HONIVLeuYNorJ2H5Yj+vgq8I575tyZAqd9uZ5F/7IRp68F1shu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=TvhqnR7m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jV/BhCRP; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1785875623; c=relaxed/simple;
+	bh=vRUGJw9BAMFCGnXscACwZJ+tG0aDtT69KLt/YulbvrE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BRve65PCBz9oUfZjwXACK590JBHBqfi50spra8EOb4A3572eda31wRDYBSvzjCXj2WQ9FOkRWu9SkaNJgHMf3jLzqp5sqaDxO2WYx9Qh0ND2cCsmhTICHSJCtxPZU/OPUW02I8YgWAarswdw4gcNQ77IGFR0qWfQvc+0Kn3NrhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dn+/jGH2; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="TvhqnR7m";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jV/BhCRP"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 84DBE14000BB;
-	Tue,  4 Aug 2026 16:10:28 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 04 Aug 2026 16:10:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785874228;
-	 x=1785960628; bh=DGDpNHg7f9ztXGjzjzb4ybcoE+sIyQ0zmpGoEdgW4g4=; b=
-	TvhqnR7mCECTjp74lUFk4G4kFKYnDIbC4XNAlIU5Z3FhZ2Yp14QvfA8I5Dge0rZj
-	AVMK050Y2EXORNA+5w3npdI8mTHHzB7brHEtxkAfzizr7JwtFXQW0HIJ3EIz2p6c
-	7/CTBd2jrTNd0iFl1no3FMI1bBInZqbM/OTzKZ3o4TfdGCa5Aupf2SzrFTRaoyMO
-	kjmBg+dMDXgWk8C0iBK1iM2kS3W9XglkkC3PRvzWgxNssG6QcpCpTzb16W3+ENOQ
-	7g5ub4ierd5E1KJ8szv3WolRxMN0056ctenE+S4CGBVwqWPu6MaLqyxvOmdR+Med
-	nilmm1ADQQahAe58GZPN6g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785874228; x=
-	1785960628; bh=DGDpNHg7f9ztXGjzjzb4ybcoE+sIyQ0zmpGoEdgW4g4=; b=j
-	V/BhCRPJYsv+ODbPHoPDuYrD4LYQJrbE58aquOw6yEKnyMaQdkkrfis6i0rONgoM
-	XaS+Kd3NkLxFvwJjOq7AzGCq0uzFCabQ8qynR9/PE96snQm+uc0cp1+OE2SzaR7i
-	tk05YXDlKfRFu0TRkM1EqiIaE8vCev1iAASqrsZuP4cdsgamHovx34DiQiWjGHqj
-	SOUma0xptLjEUB/ABgR+Rth8RYrcf2zHLJnFjo/jH0RglEkkhWzz5VJpbqOZrKMD
-	XJg6TztYWZx1AoN3fRK0/WjIxmyqZpH3fyTvxULZIamL0Ok1/Bx5craoOy7qLlx3
-	7DliLKr6E5eP38TrHHATA==
-X-ME-Sender: <xms:M0dyapdXOK53MZxGFwM9IEhajUFmem4pf5oKoDXJDzp5V4CJ_WIzZw>
-    <xme:M0dyaioHLH0De3JSkLQpYHvbFqJ9hAWZRWqMIkGS6t5pn1vmTgNFN3Eyb-Kp3C9sW
-    LQzIrNB5tfJgf1364dmNBtrxOO61pnyk_xpz7SdJhj6mpbEqdSBoQ>
-X-ME-Received: <xmr:M0dyahPv1zAe0W-WWMO46nUWLEmDpBMK5JXdSwwmxUVbCIz91PqE0ge5uHPGlw>
-X-ME-Proxy-Cause: dmFkZTFz0qZml1tMgspJLvQROyFjxo2iF8dhBLG1gtWRuVGqbuDRnJRSCDTFVRpCARIfiq
-    p3San+6x+JgTfRDCa6JBZsenI68aONWfSHUYcbyfYK6A/5lMqgtwyRGiR3tIAbrTXet38u
-    i+QO8myxi9xRWUJuwDzgccQxCLFmyqcbNr9Rv28m1qlQSzbceTd2CI4KV3jnRkdZM5/zA+
-    B1dU/SLUd3a0UgVzR1Z0a0lAzAnN02ZTOGg0/5ioy3i8bBVIKEyL83cVcVtsr7pH78GSJA
-    qRYYsIFmKmGey4GXe+l8asTXRBmpS9hhZyjnvk143mQEwWjndPd5+SEps8e/cZNACoZWlE
-    4Mfpjo6x5KnZJioSCjIK5fIGt3/jP5Q5Tx1SlsHlmfBX0IYNe6wpw68EogoZ+YusOtv6YH
-    pXSFT3JE7csZCMs3A3kW/8NM+xh8MLZtZ4lCCaxvhdjr6CuUpi1dtkttZVQTATJfUeBp22
-    yWGUMbYdzUhFxjGmuWxC3aQ2wWzrIw7Xq+d0rAMbtpf9bxhA0N63qmi8YLz0ZJBJN1Tv3K
-    lO+S2hZ3hh+cpORTKTBbq045O3Pagme9MthyaugmLDiXB7AZMouCUEXeZ2VSQ+jl99CfP3
-    9qz8+Pa8I7u1ZCvyG7/cRNwNrlZstfl1eghiC4Xf7kf4/9xmo7lVxdVSejNw
-X-ME-Proxy: <xmx:M0dyagEM4gSmDssLubmn_6YVnByO9-qB8KzWbeoc1e_0-NYwK7wAUA>
-    <xmx:M0dyasFOPkII3QdfzcXRVDvt-06AFTE6dSPOamdXftyyUMcV3miqoQ>
-    <xmx:M0dyanCJkbrtLRbYedsDNmVJGg5OT6a6XLNAqLuA6whv5Gf31wK3kQ>
-    <xmx:M0dyapnVsAGlDqnw4TkWFKvLlIMrI5QLzuDd1oSD2l3NP8-qJJ3AjA>
-    <xmx:NEdyakMeyIhaiVEwdtSqBLz0DIZTbrGyTWKemyo_Ta627fyHnW7ZPhvm>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Aug 2026 16:10:25 -0400 (EDT)
-Date: Tue, 4 Aug 2026 14:10:22 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
- Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>, Pranjal
- Shrivastava <praan@google.com>, Longfang Liu <liulongfang@huawei.com>,
- Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sumit Semwal
- <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, Alistair
- Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
-Message-ID: <20260804141022.71b6429d@shazbot.org>
-In-Reply-To: <6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
-References: <20260715174737.15287-1-matt@ozlabs.org>
-	<20260715174737.15287-8-matt@ozlabs.org>
-	<20260729115204.2a9a50b2@shazbot.org>
-	<6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dn+/jGH2"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84842381150so349375b3a.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 13:33:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785875622; x=1786480422; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rgR3cl9eKhmIgasAHpP260L2tvxwInY+KO3KZG837T0=;
+        b=dn+/jGH2I3tXngtBv5rE/zC3Zowd2zf5IKB4squqPmLSGH/8LVzLmSofkDGyzn7DUY
+         RVJ+t9x8ZRDbGdqUhahAKaT/pvbaBnMxe2OByJBM0qLMr+KoebkzEZLax3WaYBLSv34a
+         byogVgkgtV7wXI4GprKZ/0ujbYEHWIyZS/8iA5fAKzMov5WMLjyrg7kQHt+7mbwso0CL
+         Mo5tgTaW5OfLe53ay/yUcQQMIHFqTIz9NT7NFRnMrz6uUz8IOinOpLotKVtu5T+2gM8D
+         CFAyFrboQ5ppynweyYNNBEBO9nwDBYHV71k7mCr3QW8zXCMJD4a9GBesp5pu1qGesKTR
+         4jVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785875622; x=1786480422;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rgR3cl9eKhmIgasAHpP260L2tvxwInY+KO3KZG837T0=;
+        b=DLM+a2nP17bp8D9iNK7ueSooR+YfUiZNhjouYb8fNprHXXfEmyDZ12ZFMxoNwRsQvv
+         V24M0n9gHqvsQRXUC+XVLWFWAMOZYtKvKbEEu8uwC4YG0g4UzBg16lrggGAqbO9R3R4G
+         DxWMA+GwpbD+WE0eIYeq2r9I1ccGkPh1MITJKnS8HyNGDt4o5BjkK12BF1JQUpAluF09
+         yfuWpZJ6LiV6LGwZzFtoAyaxJzJpje4qUdeUUVHATPW4VV/v0ehIVCp8z6ajSFWAZz2g
+         nqIzZOVSK/HBkRU6K00LTlymB2SkFaJ5pxNXtH+Me5S9H4kvpu1bFAK44ndXZRGGStFq
+         WYdA==
+X-Gm-Message-State: AOJu0YyNVRN6mLgzmihwUA4rKwXO+zhqtui9jg1QO91XaCQ1zV/62kQ+
+	5DJXSqQx3xDsRjOMmLVCw2zLdD0u+YD+a9m53wHgSmJtfyRx/Kh4wZWgityKredNZ/zM484F+1R
+	Ri3qEBA==
+X-Received: from pgiz17.prod.google.com ([2002:a63:c051:0:b0:c9f:dabd:440f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4482:b0:848:42d0:bc91
+ with SMTP id d2e1a72fcca58-84f2dfc89bemr1475759b3a.12.1785875621604; Tue, 04
+ Aug 2026 13:33:41 -0700 (PDT)
+Date: Tue, 4 Aug 2026 13:33:41 -0700
+In-Reply-To: <20260804174616.465821F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260804173437.3339269-1-seanjc@google.com> <20260804173437.3339269-3-seanjc@google.com>
+ <20260804174616.465821F00A3E@smtp.kernel.org>
+Message-ID: <anJMpZjFaWwsmiME@google.com>
+Subject: Re: [PATCH 2/2] KVM: selftests: Create one VM with many vCPUs for
+ each major PMU counters test
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 30 Jul 2026 15:47:13 +0100
-Matt Evans <matt@ozlabs.org> wrote:
-
-> Hi Alex,
+On Tue, Aug 04, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Medium] In `test_gp_counters`, the refactoring incorrectly configures every vCPU with the maximum number of GP counters, losing test coverage for intermediate values.
+> - [Low] The `vcpus` pointer array is allocated using the size of `struct kvm_vcpu` rather than the size of a pointer.
+> --
 > 
-> On 29/07/2026 18:52, Alex Williamson wrote:
-> > On Wed, 15 Jul 2026 18:47:30 +0100
-> > Matt Evans <matt@ozlabs.org> wrote:  
-> >> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> >> index 9a1674c152aa..e2b4252e7c3f 100644
-> >> --- a/include/linux/vfio_pci_core.h
-> >> +++ b/include/linux/vfio_pci_core.h
-> >> @@ -134,6 +134,7 @@ struct vfio_pci_core_device {
-> >>  	bool			pm_intx_masked;
-> >>  	bool			pm_runtime_engaged;
-> >>  	bool			sriov_active;
-> >> +	bool			zap_bars_on_revoke;
-> >>  	struct pci_saved_state	*pci_saved_state;
-> >>  	struct pci_saved_state	*pm_save;
-> >>  	int			ioeventfds_nr;  
-> > 
-> > This should be in the bitfield usage group since it's only modified at
-> > init time.  
+> --- Patch [2]: [PATCH 2/2] KVM: selftests: Create one VM with many vCPUs for each major PMU counters test ---
+> commit f846c14eae6ee2689b438ef9a6cdf2439244aee5
+> Author: Sean Christopherson <seanjc@google.com>
 > 
-> This was intentional, but happy to change it if you're certain ofc.  Is
-> it inconceivable that a sub-driver could set it after init?  I'd say
-> they _shouldn't_, but only review will stop them and this placement
-> intended to be cautious.  It seemed a low cost way to avoid issues
-> around synchronisation on the bitfield.
+> KVM: selftests: Create one VM with many vCPUs for each major PMU counters test
+> 
+> This commit refactors the PMU counters test to create a single VM per 
+> test category (arch events, GP PMCs, fixed PMCs) and provisions multiple
+> vCPUs within that VM. This drastically reduces the test runtime by
+> avoiding repeated VM creation overhead.
+> 
+> > diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> > --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> > +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
+> [ ... ]
+> > -static struct kvm_vm *pmu_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu,
+> > -						  void *guest_code,
+> > -						  u8 pmu_version,
+> > -						  u64 perf_capabilities)
+> > +static struct kvm_vm *pmu_vm_create_with_vcpus(u32 nr_vcpus, void *guest_code,
+> > +					       u8 pmu_version,
+> > +					       u64 perf_capabilities,
+> > +					       struct kvm_vcpu **__vcpus[])
+> >  {
+> > +	struct kvm_vcpu **vcpus = calloc(nr_vcpus, sizeof(struct kvm_vcpu));
+> 
+> [Severity: Low]
+> Is this allocating the correct size?
 
-I'd agree with the statement that they shouldn't, it would be difficult
-to synchronize setting the flag once there are any active mappings of
-the BARs.  Also, if we put it in the bitfield category under the
-comment that the value is only modified at setup/release, it documents
-the intentions, hopefully to the extent the author or reviewers notice.
-An argument can always be made to change it if there's a worthwhile use
-case.  Thanks,
+Gotta love Sashiko's "questions" :-)
 
-Alex
+> It looks like vcpus is an array of pointers, so this might need to be
+> sizeof(struct kvm_vcpu *) instead of sizeof(struct kvm_vcpu). While it
+> just results in a minor memory over-allocation here, it could be slightly
+> confusing.
+
+Ya, I'll change it to:
+
+	struct kvm_vcpu **vcpus = calloc(nr_vcpus, sizeof(*vcpus));
+
+> [ ... ]
+> > -static void test_gp_counters(u8 pmu_version, u64 perf_capabilities,
+> > -			     u8 nr_gp_counters)
+> > +static void test_gp_counters(u8 pmu_version, u64 perf_capabilities)
+> >  {
+> > -	struct kvm_vcpu *vcpu;
+> > +	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
+> > +	struct kvm_vcpu **vcpus;
+> >  	struct kvm_vm *vm;
+> > +	u8 j;
+> >  
+> > -	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_gp_counters,
+> > -					 pmu_version, perf_capabilities);
+> > +	pr_info("Testing %u GP counters, PMU version %u, perf_caps = %lx\n",
+> > +		nr_gp_counters, pmu_version, perf_capabilities);
+> >  
+> > -	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_NR_GP_COUNTERS,
+> > -				nr_gp_counters);
+> > +	vm = pmu_vm_create_with_vcpus(nr_gp_counters + 1, guest_test_gp_counters,
+> > +				      pmu_version, perf_capabilities, &vcpus);
+> >  
+> > -	run_vcpu(vcpu);
+> > +	for (j = 0; j <= nr_gp_counters; j++) {
+> > +		vcpu_set_cpuid_property(vcpus[j], X86_PROPERTY_PMU_NR_GP_COUNTERS,
+> > +					nr_gp_counters);
+> 
+> [Severity: Medium]
+> Does this inadvertently lose test coverage for the intermediate counter values?
+> 
+> By setting X86_PROPERTY_PMU_NR_GP_COUNTERS to the loop upper bound 
+> (nr_gp_counters) instead of the loop variable (j), we end up configuring
+> every vCPU with the maximum number of GP counters. This seems to bypass
+> testing edge cases like 0 GP counters entirely. Should this be passing j
+> instead of nr_gp_counters?
+
+Doh, yes.  I copied the code out of the helper and missed that it led to a subtle
+variable "collision".
