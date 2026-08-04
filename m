@@ -1,143 +1,131 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D549F332907;
-	Tue,  4 Aug 2026 14:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06734562A2
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 14:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785855141; cv=none; b=UgE7MAY24gyioa8ZzP0oGQT08mqU261uQPMRwL4gCfI/gfOfpbumoy4wNVYEFPhLCaC7w1dWu0nFNfFYwFhsO25LCTTDUlWlpw5eHaaj28jwavkWFvVS3QBRwiZuDRwPL1Uje5+wTbei9pfA/X/j8UQYrurHDXloCQ32m9IhmOg=
+	t=1785855288; cv=none; b=u9SiFGkFC6NuOypJoXUEEB0Pak9Ogz9ku2kHxA2WKYNXWOve0IeBOaawbOqzp4aXHVcpkE+eR8aFGOSSSEe2TronybKgx+efrYfMSnd1HV55XWy4AoMtRNI1i1w+e7D+rNYlXitKweaFCuyztpi0qPcV1RFw0aQ22wkSve1QHyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785855141; c=relaxed/simple;
-	bh=r9eUxwC2Y2tU2TryqdtvLSezfLtspXkRp+Qyq74U7sw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FmYkY+nKQzQk2YOXUucnOgaWiFSboPKy2KA7eRMg2zpsz0WX6jbdYJHRHpPe4/7oxuePzJ1CDWwT2djsLESLu0LwaYaw3JC4VFolF8HIt+QwE+mtz/PFsVDHlcuWWqQdxCJbA4tFUNt+hP1hAKicurRx3R3/bFv22UOxMc7yhyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qRib1pfr; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785855288; c=relaxed/simple;
+	bh=gcbq7gS87F6X2amgoOjqADD8qzSULoikUzvg0wE6tdc=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=iAUUMorwa03R6GrXawZSWxXOpOAibRPE8zYtTjTsNmPpZqmNzJ9NnJ3dSENUocqCYMNsiR5Qij+WyOm5v+7bnQA/DXnRKbHJJJ9dqkgamvSLFwaqvMehUXFK89GOf4T+rmo65vfmCe0VvRtbudSxW1FsnLvUTCww/yUbJTkyp5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=RQ/lJbod; arc=none smtp.client-ip=203.205.221.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qRib1pfr"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674CmVU7804682;
-	Tue, 4 Aug 2026 14:52:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=XGBjXM
-	89xOYF2Rpnke2hKuV9lCDZulbuTTmdJ/JboBo=; b=qRib1pfrWuCKtyjaxF9nw/
-	v7bxag/wXCiIMy1YYRAzcIl2zKMuOq6L9xBMqHxZYESLfThCi0wOBKmozdBoKQZs
-	U5KlcG90BspTrq9svnxq1HQfNxYtxO1RZDLUJfhhAvzKyMv8Eu7QUZdo0BSaxGuo
-	VCjT6IdSo9PaADmp3yZSqelweEUduU2YMoB+L7gJFNa//vj6RWJxFtTBDslhuZqN
-	xqvC10hCwzlpoT8iZbAnSNJ5QZI680Vf+iMHJscqpnqDIlmGOV0jbccj4LPtNmkE
-	jI/xxlk4KF+Ur/LLjgHHELr2VgvfMW3yvNTrBbiT9ZREW4zPBlWR1G4u9aNmVVgA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g63eg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 14:52:16 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674EfG6D029419;
-	Tue, 4 Aug 2026 14:52:16 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qjhka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 14:52:16 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674EqErZ65405342
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Aug 2026 14:52:14 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3317F58060;
-	Tue,  4 Aug 2026 14:52:14 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17E9D5805C;
-	Tue,  4 Aug 2026 14:52:13 +0000 (GMT)
-Received: from [9.61.86.222] (unknown [9.61.86.222])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Aug 2026 14:52:12 +0000 (GMT)
-Message-ID: <75d47b2b-9a47-407c-a02c-01fb9a58fabb@linux.ibm.com>
-Date: Tue, 4 Aug 2026 10:52:12 -0400
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="RQ/lJbod"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1785855274;
+	bh=xUgvBvReY4eP3SeenurPLuYL05CIYPmlT43QtAoByPA=;
+	h=From:To:Cc:Subject:Date;
+	b=RQ/lJbodvJ/hVTIGvZda1Am7L4UtU8nCJgXIxaFyYYd/IW89kDzjn9ltKbf8/eB7J
+	 1oPD9nrny/8XyyV4UiXhWE78rPQ0M5W8CCI4jGGi4ehyCpyz4GS2JHSz+4eI2bSqpw
+	 MvMYm3y40B2J/j9QKpatkOCLeqclpcbm6dhw+3wA=
+Received: from VM-0-7-ubuntu.. ([101.35.250.50])
+	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
+	id DA084A0B; Tue, 04 Aug 2026 22:54:32 +0800
+X-QQ-mid: xmsmtpt1785855272tnflqrual
+Message-ID: <tencent_625C0F42824E542C72B34733392AF2C49709@qq.com>
+X-QQ-XMAILINFO: ONXjbYTFhCz0Mmz9GHmO3LiWL0WjWei7ho60awZqrjeAxeqS0zBO0JKzV/4uOq
+	 x7sAMaTH8iGGYSLnaZdVFdWbqXD36ycXRT1wO4u9nzPm5YMaSAg3d9tlKzQ7dli/H17HLtLz5HGt
+	 s3Z6EpRjgH99FpIqKN6VyV6XZUO2XcFAezRv9Xr+nJ7N3IBt9D0OwH7PL+xTt8P9gpBhfSgyjQqd
+	 7mwO/NCC400+WvdseJ4Z0dzjslIRYprn8KgFQyGVHxx/+UWBh+RGKDPmxdTd1SBanZGUAfLCe+Mu
+	 FDmZuXWFLjLyMofZ45A4OiLzEBvNJ409axmowWcRj1j0cO2mjJJCSb8a/UiqSY6/vTKCTB7sTjG5
+	 wtO1GH0ezC8XwLnfm5Mk03FHXhKDLU+oG8WBxs3ioe9adO5Op8ynwtKjkNLGSMpHtpCd9ZersnJS
+	 o9oLC+4hOH08Ni7yqHALjNv0kjmgr2K5t8PdcrKWstlXERei+TqkkuQRRag8VaGoou0lotROTOPA
+	 AAz1OmCXvOqT1uRsMs6gkdt3LaScq+iKhGK3hwje2frMLjtUZlfOwnJ1M9o0jkrhexBsFn5Bxyxs
+	 5CNvkxtU65GjzYZuzzuuveyC6TLjGCfAp0dElkG7Q/NPNGY1OzFVhcvQRMWXdw+kclPuEzNP1G2H
+	 U7G6dvWNk6SkiKsYW2sfM61rdbG80zA5nuog9D0JREFcP+EWCEgGVLnIZB9GCwXJGzfuUGTZGf2N
+	 6hHSeZlsnuBM7yZpGMPVueyjNMn30YgSi/TUbXfh0NsdWw9qnKKmFOMswTN+7HXlKrwEg5pOZUkn
+	 Px90Y1Jzh9oFr9N/CJIvqzpZAyGFBaGNrtA8gaEUUjRXOF6CiJcun7BnWknKn923FUp5EyyEFP0c
+	 XCqJP83VBOCUQRogNw4rgw8CjoxHbFEIxBKqt6k51hGl8VmcFfXZXiFUjU3/zuliQ/XY8d7MTS9W
+	 QCYwcmOrbj7wTFhNC10Q+RLHLoO3O4ude0ZzRd/Z0LYXqoip9E05uXmdtgIfOOyJSFKa9r/l02qB
+	 TYOe2e383TiqhL8yxfna+fEt8DLemjMsWOhcOaeB0/Wc5PsudqV1U7p99seGxDViZ6PheGuCYZKX
+	 OZhUulHXN70vQerX4mRAu9DXXcg8UrICKfY0E4t5p9airTOf0=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Shen Yongchao <grayhat@foxmail.com>
+To: kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Shen Yongchao <grayhat@foxmail.com>
+Subject: [PATCH 1/2] KVM: SVM: Serialize the owner's mirror list in sev_migrate_from()
+Date: Tue,  4 Aug 2026 22:54:32 +0800
+X-OQ-MSGID: <20260804145432.759798-1-grayhat@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] KVM: s390: memory leak in guest debug handling
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        KVM <kvm@vger.kernel.org>
-Cc: Janosch Frank <frankja@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        linux-s390
- <linux-s390@vger.kernel.org>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Douglas Freimuth <freimuth@linux.ibm.com>
-References: <20260804120631.736919-1-borntraeger@linux.ibm.com>
- <20260804120631.736919-4-borntraeger@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260804120631.736919-4-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDEyMCBTYWx0ZWRfX69X1/BVOc/YI
- Il9jLNYdYyX2+gb+S80W8BUce6kxeLZEs/zhHy6xEFM968j49AjPyi+gfjsGZ5WtmCR8byeIxbK
- Xhwq/20b+u9g6l/RzpPSnNNkAnvbvzHqUVnLF99Sa3Lu/g3p9KinmjeTJZBqj0S034SsXPLlwC8
- JH9gjwSQ+6NdDuZM20wRaEW/t6SCXwimtEH3Y5DzU/7eQDErRMwj9f3CDv5QkgllcAtyjLcMoUU
- pUVtJkJYSfqtaGhDJO/tnY68Lgpq7H98UCvXLaaTHLJeS+kQNklgjcZPhGmys0yURzMGs3ajM4F
- 2x/7KOZ1ATK2ZY8727BrDMcxBOJK/8bludZGcaA7wEFCU/v6ZJdVpncdJddZoNbtGPwVsZne1If
- ADrrSsGpFwZ9Zn9faPey/BFXxVAnoNkHaN2JCo73727oEKcUTRxOPA4CJOMZAiD6pvLzRf64VJt
- Bj2iNRpABxZqnqnxWqw==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a71fca0 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=SojaDyzEsxftZGC-1DoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: BuSMatYEgsaEzcT1sxyHjEYwV05HPUnI
-X-Proofpoint-ORIG-GUID: BuSMatYEgsaEzcT1sxyHjEYwV05HPUnI
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDEyMCBTYWx0ZWRfX+ZXA/wyICTkT
- GZbz2kUwOlz98RdjiRhB1JBw48KoRLL4xlQH8QPO34ZfU5up3hLiY4G+sxxe9Jwm6EQOR18D9f0
- tj0/ErbPy8/mdNXLSThhp/N+9EbPMEE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040120
+Content-Transfer-Encoding: 8bit
 
-On 8/4/26 8:06 AM, Christian Borntraeger wrote:
-> bp_data is freed only for the error case by kfree(bp_data).
-> Every successful KVM_SET_GUEST_DEBUG will leak bp_data.
-> 
-> Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+In sev_migrate_from(), when the destination KVM is a mirror, the mirror
+entry is moved from the source's list to the owner's mirror_vms list
+without holding the owner's lock.  All other writers of the owner's
+mirror list (KVM_SEV_MIRROR_CREATE, sev_vm_destroy()) serialize on the
+owner's lock, so a concurrent COPY or destroy can race with
+KVM_SEV_MIGRATE_VM and corrupt the list, e.g. leaving a dangling
+mirror_entry that is later dereferenced.
 
-Maybe worth re-visiting for potential __free() usage as a follow on and
-replace the goto logic.
+All kernels with SEV mirroring and intra-host migration support
+(KVM_SEV_MIRROR_CREATE / KVM_SEV_MIGRATE_VM) are affected.  The mirror
+list mechanism was introduced by commit b2125513dfc0 ("KVM: SEV: Allow
+SEV intra-host migration of VM with mirrors", v5.18, 2022-02-18);
+upstream mainline is unfixed as of 2026-08-04.  Triggering requires an
+AMD SEV-capable host with CONFIG_KVM_AMD_SEV and a local user able to
+create SEV VMs and mirrors, racing KVM_SEV_MIGRATE_VM against
+KVM_SEV_MIRROR_CREATE or mirror destroy (instruction-level window).
 
-But as a fix this LGTM.
+Take the owner's lock around the list operations.  The lock is taken
+after sev_lock_two_vms() and the migration_in_progress flags prevent
+two migrations from interleaving.  The owner is a third VM whose lock
+is not held: the destination cannot already own an encryption context
+(sev_vm_move_enc_context_from() rejects SEV guests as the destination,
+gating on ->active), and a VM cannot be its own mirror owner.  Hence
+SINGLE_DEPTH_NESTING is sufficient and cannot deadlock.
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+This patch was drafted with AI assistance.
 
+Fixes: b2125513dfc0 ("KVM: SEV: Allow SEV intra-host migration of VM with mirrors")
+Cc: stable@vger.kernel.org
+Assisted-by: Hermes:deepseek-v4-flash
+Signed-off-by: Shen Yongchao <grayhat@foxmail.com>
+---
+Reproducer: static analysis only (no SEV-capable hardware available);
+no reproducer has been run.  The triggering sequence is described in
+the commit message.
 
-> ---
->  arch/s390/kvm/guestdbg.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/s390/kvm/guestdbg.c b/arch/s390/kvm/guestdbg.c
-> index 69835e1d4f20..4c02dbebb2eb 100644
-> --- a/arch/s390/kvm/guestdbg.c
-> +++ b/arch/s390/kvm/guestdbg.c
-> @@ -267,6 +267,7 @@ int kvm_s390_import_bp_data(struct kvm_vcpu *vcpu,
->  	vcpu->arch.guestdbg.hw_bp_info = bp_info;
->  	vcpu->arch.guestdbg.nr_hw_wp = nr_wp;
->  	vcpu->arch.guestdbg.hw_wp_info = wp_info;
-> +	kfree(bp_data);
->  	return 0;
->  error:
->  	kfree(bp_data);
+This issue was initially reported privately to security@; Sean
+Christopherson OK'd handling it on-list.
+
+Mitigations: none; SEV is an optional platform feature and the attack
+requires a local user with SEV VM creation privileges.
+ arch/x86/kvm/svm/sev.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 944aaea6501..4fa4e9bf408 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2050,8 +2050,14 @@ static void sev_migrate_from(struct kvm *dst_kvm, struct kvm *src_kvm)
+ 	if (is_mirroring_enc_context(dst_kvm)) {
+ 		struct kvm_sev_info *owner_sev_info = to_kvm_sev_info(dst->enc_context_owner);
+ 
++		/*
++		 * All other writers of the owner's mirror list (COPY,
++		 * destroy) serialize on the owner's lock; do the same.
++		 */
++		mutex_lock_nested(&dst->enc_context_owner->lock, SINGLE_DEPTH_NESTING);
+ 		list_del(&src->mirror_entry);
+ 		list_add_tail(&dst->mirror_entry, &owner_sev_info->mirror_vms);
++		mutex_unlock(&dst->enc_context_owner->lock);
+ 	}
+ 
+ 	kvm_for_each_vcpu(i, dst_vcpu, dst_kvm) {
+-- 
+2.43.0
 
