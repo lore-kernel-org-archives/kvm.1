@@ -1,73 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505D23403E8;
-	Tue,  4 Aug 2026 18:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E04483AD
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785869228; cv=none; b=kbFhSw/cWEaI0MCEiiN+FvMaEPs1fqVTyfcrlWwUb04NIgU0OHSn1JoUSl3xQGRWKT9uvVMieOtd4kUsXTm0rr4U5tVzfsdjQPxnlqIzPPAPNDM4zxlpzj/xFRf8DtsUNy9n4n1KNR6ExyokqVj/wAe3W4QVVwmR/wctEp+LtTc=
+	t=1785869466; cv=none; b=bSZhSwM1npDQglulO5QLflLriSY0edQJW42919V/LihnFDsYnypKPUsgSYagg6D4JjNxPfbf3FenUxkuMk5yPY2xrfnVyYhefrSp+zvBAOLsPraZ0tevAAGcvYkMNLM+Ca0znJsC5PhVFbd8MQK6/NbOjKr1hq8oBXhsGYVh4bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785869228; c=relaxed/simple;
-	bh=47LWcNfbqIG3/+x5FpISaKfE/u7wtl/N2p3RhkGjHT4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PIgjI1aPlXQOtWp8iuG8Y9FC8I/nIWAppjK5eMWJ1HOG+lXg5H5bx18L+7Jjzy0Y3/4sLMgvxGiqbh2dd1VThDCvPes29VD6LjOV/sbavVfWYwzVeujSG4TJWPphxF2QCn4hPhRN1H66ohBNSrWvNot37fj60v7Rux5gozZKafA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6yAQgm0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785869466; c=relaxed/simple;
+	bh=d4DCU8mD/yTPOADLz6OvOqZzysxSQNuEDRfElM8PO/E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Q34SMbm8/PJRNmQwgGjHCwMZ5oPM4DI1/98mU91erTXSRZ3aBrk3QLNBbUEPRJB/lzMRSmUr1VafTQ1Q/lw/Lm1OzV8EgtFnA9M2cUrRpH/A788qljJr57iWB1V7L+azWL13zqXveuJ0b+DF+QpZWIjfdQh7PzyojMAMZQLL4JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RTw8KdEF; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6yAQgm0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B2B1F00A3D;
-	Tue,  4 Aug 2026 18:47:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785869227;
-	bh=47LWcNfbqIG3/+x5FpISaKfE/u7wtl/N2p3RhkGjHT4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Q6yAQgm0zGX7LlpfRgOy/havIC4nRTEM1sEqr5a51glp/rvsl4e+mLz7hCDsZa+/a
-	 uJPycYJ+sPg9V787PnDtaxTdRVen1DQtG+B9wR7wtkpFFI3IKdn9+q5HkNxgAaFv4V
-	 7t67DHqf68rA1hHEzARqIJAQDN+QW6wGoWlCRecXOanpjfTTZZVlUO6k3ip1v9F6jE
-	 RiLHQaja2IcRbMtw2vPEFFAN+KIrlhdZGrMQaWQ0FLjpKpOtpRL+goAEQj3XUCW1aX
-	 yxSldcmiHtVGmIK0/LcE4nC91oE8bm4Hm/kPUxOGb37ymN8VoMLjctSlPzPcm2QqG/
-	 72JDAlT143sxw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 7/7] KVM: s390: Free guest debug data on vcpu destroy
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org
-In-Reply-To: <20260804162435.28617-8-borntraeger@linux.ibm.com>
-References: <20260804162435.28617-1-borntraeger@linux.ibm.com>
- <20260804162435.28617-8-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 18:47:06 +0000
-Message-Id: <20260804184706.E2B2B1F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RTw8KdEF"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ccb687f82eso2178125ad.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785869464; x=1786474264; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZMgXTe4N/BU5BfE5DQ6Wn9tDsHyqEvJihmfJhMDUmyg=;
+        b=RTw8KdEFOIm+3zoTDgDSbe2em3xqI3bl5dvnFA2xfz/frYIXjtaOWoTRasBKTrtCqV
+         GQ90TsCXV187DFCqFAUkGQx4ElKzMb5TVCuitq4MvmzLiAy4hhH2+LkyLPjJpdnBusRV
+         dZzmeqgEL9C9vtHBEF0wyXL65jddU1JP70BJQJXvXFl84bDA6J+U706PVgK7vIkG1BpY
+         Uoq+XEa2ilZC1ZmZ7P5ME+5Os7mnkp6fwSuNKbgnv+l/9VGCqVfdReV4njYktOwCKhAF
+         FvRDld46WCcLhadfQ0HD65gLaWJisgQU1i1TnNk2xx8EYXwiy0z4Q4QxDKvNKiyRO65q
+         eb7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785869464; x=1786474264;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZMgXTe4N/BU5BfE5DQ6Wn9tDsHyqEvJihmfJhMDUmyg=;
+        b=gqLoucaDtFgVdcj5oksYa3R/T2Pa3aOBoSULtScIr6MopqmJw61xPXk9r9IzxbtVMy
+         GuYG17wTH3D1C/GHl2RjfopUNAH8ymcaQtta/i94W+51YrP/ud0DJ977PTerjnpr3Zfn
+         5/7wmVZg93Vr7C3tiZxl1Rp7fvi/wDYKCik/pAbw19aupNbyJwblCXE4iYxL95ppfQkb
+         1XFMTxfkiYh06Ti99CMhkpnnUG1MKHZoht+E4P2wPhWwcxWIMSNDoPQGoJF7aLZ/adjd
+         DpTrFJPTvI7j90++eSjiz6vCEB4RTM33cHDBc4cfWbaxaRhtLwzC+2aUDBpb89y95d3l
+         vT/A==
+X-Forwarded-Encrypted: i=1; AHgh+RqfMTA6oc+/a6xokOyo2kJm0YTO/ZczurIYbATkrhN5vFOLz0szZkbvwQUAvhV/rdTpZME=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMpLR/64k4hmyYlx7nibcqPRMb6usa+VXFLds+ihgr20SyIAD9
+	SDfTyc2g2DC57BNx6zW8g4S87efD7qkm2eHvhApawGToJoOZ8JQKKWB/QlFUEbNwyXSO83IUiop
+	A5w==
+X-Received: from plso11.prod.google.com ([2002:a17:902:bccb:b0:2ca:c3ac:bb34])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c27:b0:2ca:62e:cc4f
+ with SMTP id d9443c01a7336-2d0ca9467bbmr8991665ad.23.1785869464151; Tue, 04
+ Aug 2026 11:51:04 -0700 (PDT)
+Date: Tue,  4 Aug 2026 18:50:45 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260804185050.2053672-1-praan@google.com>
+Subject: [RFC PATCH v2 0/5] vfio/pci: Support ZONE_DEVICE-backed DMABUF Exports
+From: Pranjal Shrivastava <praan@google.com>
+To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>, 
+	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
+	Pranjal Shrivastava <praan@google.com>, Ankit Agrawal <ankita@nvidia.com>, Matt Evans <mattev@meta.com>, 
+	Vivek Kasireddy <vivek.kasireddy@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+	Shivaji Kant <shivajikant@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Unnati Sachan <unnatisachan@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-> kvm_s390_clear_bp_data() is only called from
-> kvm_arch_vcpu_ioctl_set_guest_debug(), i.e. when user space changes or
-> disables debugging. A vCPU that is destroyed while hardware breakpoints
-> are still armed - the normal case when the VMM just exits or crashes -
-> leaks hw_bp_info, hw_wp_info and all old_data buffers, since generic KVM
-> frees the vCPU right after kvm_arch_vcpu_destroy().
->=20
-> That is bounded by MAX_BP_COUNT entries, so roughly 8 KiB per vCPU, but
-> it is unbounded over VM lifetimes. The allocations are
-> GFP_KERNEL_ACCOUNT, so the charge also outlives the exiting process and
-> pins dying memcgs.
->=20
-> Fix by clearing the debug data on vCPU destruction. Calling it
-> unconditionally is fine: struct kvm_vcpu is zero allocated, so for a vCPU
-> that never enabled debugging the counters are 0 and the pointers NULL.
->=20
-> Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Introduce ZONE_DEVICE backing for VFIO-exposed PCIe BARs via the DMABUF
+subsystem. This series is based on Matt's on-going work on VFIO DMABUF
+mmap [1].
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Currently, kernel drivers can register their BARs with the P2PDMA
+subsystem to enable high-performance, page-backed P2P DMA. However, when
+a device is bound to vfio-pci, this capability is missing. This prevents
+userspace drivers from performing zero-copy P2P DMA via standard POSIX APIs
+(e.g., O_DIRECT) which require struct page metadata.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804162435.2861=
-7-1-borntraeger@linux.ibm.com?part=3D7
+Based on feedback from v1, this series pivots away from system-wide P2P
+registration. Instead, it integrates with the ongoing VFIO DMABUF-mmap
+work [1], introducing on-demand ZONE_DEVICE allocation exclusively for
+DMABUF exports. This allows DMABUFs to optionally register with ZONE_DEVICE
+while laying the groundwork for userspace NFS clients and other storage
+targets to perform zero-copy P2PDMA against VFIO-managed memory.
 
+(Note: There's on-going work to support P2PDMA on NFS [2])
+
+Design
+======
+The proposed design involves the following:
+
+a) On-Demand ZONE_DEVICE Registration
+A new UAPI flag (VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED) is introduced to
+the VFIO_DEVICE_FEATURE_DMA_BUF ioctl to allow users to explicitly "opt-in"
+to struct page backing on a per-dmabuf export basis. This ensures we only
+allocate vmemmap memory when requested by the user (e.g., NFS + O_DIRECT).
+
+b) Sticky Registration
+In order to prevent vmemmap memory fragmentation, ZONE_DEVICE allocations
+are "sticky" at the BAR level. Since the ZONE_DEVICE registration relies
+on the pci_p2pdma_add_resource() API internally, it is guaranteed to
+have the allocations stay until the vfio-pci driver is unbound.
+
+Thus, once a DMABUF export requests page backing, struct pages are allocated
+for the entire BAR (even if the DMABUF spans a smaller region within the BAR),
+and this allocation survives DMABUF closures and device resets. 
+
+If VM1 opts-in to ZONE_DEVICE, undergoes a reset, and the device is subsequently
+assigned to VM2 without the opt-in flag, VFIO simply exports the standard DMABUF
+and ignores the underlying struct pages.
+
+c) Revocation Strategy
+During a device reset or teardown, VFIO revokes the DMABUF. the design implements
+a synchronous revocation fence that blocks indefinitely until all struct page 
+refcounts drop to 1 (meaning the importer has fully released them) to prevent
+DMA-after-free corruption.
+
+d) DMABUF Interoperability
+A custom .map_dma_buf handler is implemented to ensure a ZONE_DEVICE-backed DMABUF
+can be used as a regular VFIO-exported DMABUF ensuring importers can still use
+standard SG-table-based APIs seamlessly alongside page-based ones.
+
+e) Concurrency
+The page allocation and refcount initialization are serialized via the memory_lock
+write semaphore to prevent concurrent fault races. Additionally, we call a
+unmap_mapping_range() during revocation while holding memory_lock without triggering
+a circular rmap deadlock (mmap_lock -> memory_lock -> i_mmap_rwsem). This is safely
+avoided because pages allocated via devm_memremap_pages() do not have page->mapping
+set, rendering them invisible to the rmap.
+
+Call for Review & Design Trade-Offs
+====================================
+Please provide feedback on the sticky registration and revocation strategy.
+
+I've evaluated the following and would appreciate guidance on these tradeoffs:
+
+a) Sticky Registration vs. Ephemeral Teardown
+Instead of making vmemmap allocations sticky across resets, we could free and 
+re-allocate them per-session. While this would eliminate the need for our 
+indefinite polling loop (as the devres teardown handles it natively) and
+clean up struct pages that are not needed anymore after the fd closure.
+
+This design opts for the sticky approach to avoid vmemmap fragmentation over the 
+host's uptime. 
+
+b) pci_p2pdma_add_resource vs. Open-Coded devm_memremap
+
+This implementation relies on pci_p2pdma_add_resource(), which couples the
+vmemmap lifecycle to the vfio-pci driver unbind event. Alternatively, we 
+could open-code a devm_memremap_pages() implementation (similar to P2PDMA API)
+directly within VFIO to gain finer-grained control over the teardown
+(maybe something like vfio_p2pdma_add_resource() or something).
+
+I've avoided that in this version to first gain consensus on the fragmentation
+and revocation fence.
+
+c) Interoperability
+The propsed design assumes that an importer of a ZONE_DEVICE DMABUF may still
+want to utilize standard DMABUF operations, and thus implemented the .map_dma_buf
+op. An alternative would be to strictly enforce that ZONE_DEVICE DMABUFs only 
+support page-backed usage, explicitly rejecting standard DMABUF operations.
+
+[1] https://lore.kernel.org/all/20260715174737.15287-1-matt@ozlabs.org/
+[2] https://lore.kernel.org/all/20260720150601.2702700-1-praan@google.com/
+
+Thanks,
+Praan
+
+Pranjal Shrivastava (5):
+  vfio: Add UAPI flag for ZONE_DEVICE-backed DMABUF exports
+  vfio/pci: Implement ZONE_DEVICE registration for DMABUFs
+  vfio/pci: Implement page-backed .map_dma_buf handler
+  vfio/pci: Add .mmap handler for page-backed DMABUFs
+  vfio/pci: Add revocation fence for ZONE_DEVICE DMABUFs
+
+ drivers/vfio/pci/Kconfig           |  11 ++
+ drivers/vfio/pci/vfio_pci_core.c   |  39 +++++-
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 213 ++++++++++++++++++++++++++++-
+ drivers/vfio/pci/vfio_pci_priv.h   |   1 +
+ include/linux/vfio_pci_core.h      |   4 +
+ include/uapi/linux/vfio.h          |  10 +-
+ 6 files changed, 266 insertions(+), 12 deletions(-)
+
+-- 
+2.55.0.571.g244d577d93-goog
