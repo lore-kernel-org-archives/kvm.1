@@ -1,163 +1,113 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3E03845D3;
-	Tue,  4 Aug 2026 14:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7021F3EA953;
+	Tue,  4 Aug 2026 14:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785853164; cv=none; b=EguKHnfSJUmujm2d+jGD+W9SjYVXWJVRh3Tdov+B0A844lXQfZGjmRyEJAy08riA4rBOA1GlFLRK+pJf+vRBsl5AWO7DmcRBjesxi/3ubRBUcBJkmk5Pxodi5UDWDGFsq7ktKcdZYMqwPlhQf1gcNBjCtqinzrZckPXa7gxqg7g=
+	t=1785853321; cv=none; b=oZhu5mryb2zgCGlpNTaFgj2BKzYgSTjt18PMrcv9pgNdIV5IGcbwwU/Ca6NhzZebIDjhJzrF/vRwPaX6WmvGEvwNcmmDvqXOTGZFlzcWLbsx7jUI0rclzeyPB24/MQ0TXbxXT8N5bv2gLjZyehN6/jZjnVDYcVE50+r2gclyN0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785853164; c=relaxed/simple;
-	bh=NS2eQcNEARzMx/1ftUH+jzAoYIjMXvUFkD5/edzdfLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6y2TbDP4gHAZ2a+T4lg/Z+Otp3jM1Q6OmLZ8FSZpIqRYBiVoojifw84efunwXF77a6KSkHh6D49bbskY4kKQULt/SJpWezDNK1DfTetAIUjwnd/QeYM/8uIubWDTQva8AwYHaju40bq1pZ7tE601T9hBuBYf5AYaU1PMJWsZZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ffw0nfic; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1785853321; c=relaxed/simple;
+	bh=oUN06mSpjaj/96vwfEfNl7zrrca0BZNSSM81kIs593E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JTjiy3RmPoyhs/M0IEBFXZja7cOc2U4FPdmxKy6DVCc4iwfs9cnejemTuchTioH3IiKOeRRz77nsR+b7byzBOCT18pbrLHpie5d+u7KCC6/86Wd97VOH1RBQh/On7D7etiBUp2ll3Pk8+s6EUCco8aRs8VAqoBUWOhy1lo0uKYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kzOYKDye; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ffw0nfic"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785853137;
-	bh=NS2eQcNEARzMx/1ftUH+jzAoYIjMXvUFkD5/edzdfLU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ffw0nficG6fw00Dgg4YqWHttUR4eBd2G57pmAUJnE0hvrB18ktH1Hha5Y1ooh3HPc
-	 0d/ClqKPyRZkxs1klR968U+gQSbapFAg6hnX+IMk3KPYoXxrFAfvx46bA0/sbU+cdu
-	 xbWdxS74bwJOse7HDGJgSQeUcKUFE9aaplqh82Bk1THYh0WKcQSj741EyfCPk4e4Ml
-	 amD1v0ouOPV7oB50BZIQO2FfDbINQJuxHb0n68eJITW8VpL97wtLbc7hIew506QK3t
-	 kcRhScvhmugo3Ff8i9NNQXyRKllOVMaiJO8F8AxfwtIJS6mb9M6MrwK9ftP3yd/Fz1
-	 N5rvtBf44oRFQ==
-Received: from fedora-21.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8D80217E06DB;
-	Tue, 04 Aug 2026 16:18:56 +0200 (CEST)
-Date: Tue, 4 Aug 2026 16:18:50 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alex Williamson
- <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, Christian Koenig
- <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>,
- dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, Huang Rui
- <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, Michal
- Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez
- <slp@redhat.com>, Sean Christopherson <seanjc@google.com>, Thomas
- Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
-Message-ID: <20260804161850.58c55c6e@fedora-21.home>
-In-Reply-To: <20260804161549.4cd9a66f@fedora-21.home>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
-	<20260804120529.1730187-3-pbonzini@redhat.com>
-	<20260804161549.4cd9a66f@fedora-21.home>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kzOYKDye"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674Clp29863652;
+	Tue, 4 Aug 2026 14:21:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=2qtWGsEeszTGR7AEQvNi1tWiz8x0fCRWXO3C5tJZ+
+	sg=; b=kzOYKDye8gJf51uUJqSh0efBVzU1AJPyfDsAJ53Vi/D9OvCigJgEG6SIh
+	a7XFiFSaWBRgNAo6MmsaIKqKxdUdcp6lWql/TergiDjyboV/PrpD+JdfOVh6RS8c
+	bkBx6oMV3csVJF5dKV8GnJasIRbG5XI1+qW+81zISNd+VD/vxOKy+tRZ5fxeJQDG
+	+iPiw+KDf6reQNIN40MhdkibY1/j7hlGffaJpplVrLEAzAaAupkTq1T85B2WxfOv
+	9uBXDYZ6+R9aJvNm62UM3udZqPlKDuOR5TYHzIR06Fif5jDzGmIWVJsu3fb1Lnz3
+	uBLNCuD9vZ7zG05P267pSf2OWlnpg==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3x8ep-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 14:21:48 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674EBi4w012293;
+	Tue, 4 Aug 2026 14:21:47 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmha77q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 14:21:46 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674ELhqu51577198
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 14:21:43 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDF8720043;
+	Tue,  4 Aug 2026 14:21:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC3DF20040;
+	Tue,  4 Aug 2026 14:21:42 +0000 (GMT)
+Received: from b46lp25.lnxne.boe (unknown [9.87.84.240])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 14:21:42 +0000 (GMT)
+From: Janosch Frank <frankja@linux.ibm.com>
+To: kvm@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, imbrenda@linux.ibm.com, nrb@linux.ibm.com
+Subject: [kvm-unit-tests 0/2] s390x: Fixup test fencing
+Date: Tue,  4 Aug 2026 14:16:27 +0000
+Message-ID: <20260804142133.1745878-1-frankja@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a71f57c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=SP75oxSdw3_Y_uT2PscA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: ObtLvDNeHNqc007Q69UCzJ82sqkoUVGY
+X-Proofpoint-GUID: ObtLvDNeHNqc007Q69UCzJ82sqkoUVGY
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDExNSBTYWx0ZWRfX5rLmnLxoUIAj
+ L8jIXxNqV1yuaMCqspJ3jw+Wjj7fvMACIJAPBCVuxEyhwx5HlWpc7OM8s3PwAq6a0oWZvSPomAh
+ syrIN/ekxJukTZk/vsU5hIWY/doU4Fo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDExNSBTYWx0ZWRfX887lQuLYBvOa
+ 8TKicYNPkTDO0iNdDz64BfIeC7E5RnlK/2+aUpMdGapW+zLtyn/Q1gDY8VlE7e0lS2CtKSi3XXv
+ BvTAWbdurVAfBae+0vIKrzN3HTWyzDMXz+ATDpr4BInLyF5m2PSbzdnaRLGVzcpqzJpO81bITJ0
+ a5q11BMoUyDooLuNHnZHebpbh+F9er8mpiBkqLbZ91V41WynNy85rQYng2q6LVkqu0pcYH1bszN
+ lWixDuCVQRVN32EROIsnR+ihaU7endQL0LaeVKMeBJFIWxz+uVm9LfjizMvh1WPv1IfymFQwPFU
+ rkcT7/KiKzyDkdgqjCj8D+8dDQIyAW1BjEOVp3T944haqScFxAEcQWtpBDxsmfxqBgVghNPXCsr
+ MZQJIFhj/fKvcBkXg4Xn18EzHTUDnX7Qiu31KOg5jgf+ZOX4M24x8JnGi7OnsgfHfAnC2imkD11
+ B2c2aFR24dTaXnqFHhA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040115
 
-On Tue, 4 Aug 2026 16:15:49 +0200
-Boris Brezillon <boris.brezillon@collabora.com> wrote:
+Migration tests have been fenced for way too long in TCG due to a TCG
+bug that has been fixed ages ago.
 
-> On Tue,  4 Aug 2026 14:05:24 +0200
-> Paolo Bonzini <pbonzini@redhat.com> wrote:
-> 
-> > This ensures that KVM or VFIO correctly see a writable PTE when
-> > they request one.  Otherwise, a guest write to an unpopulated
-> > PTE from a mapping backed by a DRM GEM BO triggers a VM exit
-> > with EFAULT.
-> > 
-> > The code actually is simpler, because the same logic already
-> > applied to the hugepage mapping case using vmf_insert_pfn_pmd().
-> > 
-> > Reported-by: Sergio Lopez <slp@redhat.com>
-> > Link: https://lore.kernel.org/kvm/20260729072044.25796-1-slp@redhat.com/
-> > Tested-by: Sergio Lopez <slp@redhat.com>
-> > Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> > Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > ---
-> >  drivers/gpu/drm/drm_gem_shmem_helper.c | 38 ++++++++++++++------------
-> >  1 file changed, 20 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > index c989459eb215..c81be3e97317 100644
-> > --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-> > @@ -589,11 +589,25 @@ static void drm_gem_shmem_record_mkwrite(struct vm_fault *vmf)
-> >  	folio_mark_dirty(page_folio(shmem->pages[page_offset]));
-> >  }
-> >  
-> > +/*
-> > + * Because the vm_ops have a .pfn_mkwrite() callback, vma_set_page_prot()
-> > + * has cleared the write bit from vma->vm_page_prot.  vmf_insert_pfn()
-> > + * would install a read-only entry even for a write fault, relying on a
-> > + * second fault to reach .pfn_mkwrite() and upgrade it, but that second
-> > + * fault never happens for fixup_user_fault() callers that directly
-> > + * walk the page tables with follow_pfnmap_start().  To ensure that
-> > + * they don't see the read-only entry, pass FAULT_FLAG_WRITE info down
-> > + * to install a writable entry right away.  Because .pfn_mkwrite() is
-> > + * not invoked, record the write afterwards.
-> > + */
-> >  static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
-> >  				 unsigned long pfn)
-> >  {
-> > +	bool write = vmf->flags & FAULT_FLAG_WRITE;
-> > +	vm_fault_t ret = VM_FAULT_FALLBACK;
-> > +
-> >  	if (!order) {
-> > -		return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
-> > +		ret = vmf_insert_pfn_mkwrite(vmf->vma, vmf->address, pfn, write);
-> >  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
-> >  	} else if (order == PMD_ORDER) {
-> >  		unsigned long paddr = pfn << PAGE_SHIFT;
-> > @@ -601,27 +615,15 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
-> >  
-> >  		if (aligned &&
-> >  		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
-> > -			vm_fault_t ret;
-> > -
-> >  			pfn &= PMD_MASK >> PAGE_SHIFT;
-> > -
-> > -			/* Unlike PTEs which are automatically upgraded to
-> > -			 * writeable entries, the PMD upgrades go through
-> > -			 * .huge_fault(). Make sure we pass the "write" info
-> > -			 * along in that case.
-> > -			 * This also means we have to record the write fault
-> > -			 * here, instead of in .pfn_mkwrite().
-> > -			 */
-> > -			ret = vmf_insert_pfn_pmd(vmf, pfn,
-> > -						 vmf->flags & FAULT_FLAG_WRITE);
-> > -			if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
-> > -				drm_gem_shmem_record_mkwrite(vmf);
-> > -
-> > -			return ret;
-> > +			ret = vmf_insert_pfn_pmd(vmf, pfn, write);
-> >  		}
-> >  #endif
-> >  	}
-> > -	return VM_FAULT_FALLBACK;
-> > +
-> > +	if (ret == VM_FAULT_NOPAGE && write)
-> > +		drm_gem_shmem_record_mkwrite(vmf);  
-> 
-> Actually, if we're making the drm_gem_shmem_record_mkwrite() call
-> unconditional (for PTE and PMD updates) in that path, can't we drop the
-> drm_gem_shmem_pfn_mkwrite() call living in drm_gem_shmem_pfn_mkwrite()?
-> 
-> Also, I'm not even sure we can end up with write=true for PTE updates,
-> because our pfn_mkwrite implementation returns zero, not VM_FAULT_ERROR
-> or VM_FAULT_NOPAGE. This means the default RO -> RW PTE upgrade
-> implemented in finish_mkwrite_fault() [1] will take place. If we really
-> want out try_insert_pfn() to be called for those RO -> RW updgrades, we
-> need to call try_insert_pfn() from drm_gem_shmem_pfn_mkwrite().
+The skey access tests will always fail in TCG so it makes more sense
+to fence them in the test itself rather than to filter the CI results
+so that humans won't see the fail.
 
-Nevermind, it's all explained in the comment you've added. Sorry for
-the noise. I keep wondering if we shouldn't call try_insert_pfn() from
-pfn_mkwrite() though, like is done in other places.
+Janosch Frank (2):
+  s390x: unittests: Reenable tcg for migration tests
+  s390x: skey: Fence TCG protection checks
+
+ s390x/skey.c        | 8 ++++++++
+ s390x/unittests.cfg | 5 -----
+ 2 files changed, 8 insertions(+), 5 deletions(-)
+
+-- 
+2.53.0
+
