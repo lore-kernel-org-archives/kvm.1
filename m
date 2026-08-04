@@ -1,78 +1,143 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1422440A3C
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 11:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED574343888;
+	Tue,  4 Aug 2026 11:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785842452; cv=none; b=BBGrfVdNLBkvEx26nvZ87SpFbvZVzELPCwM7a1UXBmMkF7Wsh6Rh8z08bMlPXb4Ek4d1WUSZ1yTs/a8Ww5H780GLDX8CFT5cjxCkMI//4bnDEDZJqTMptrFeztpx0D361y7lWEemEP7SB7PQ+dNM+ri1XdZ15f++Oi9rGYSCqE4=
+	t=1785843069; cv=none; b=SW0P4glzvpjhUHTMfSYv8mfJzhnSiO8AcIAESjN/fnKQgRlyWiUK74BCS7td6w5lWsy0AV83h272xPvUOww5NXnyalLYkDTT+mitiRtKnSfiSH/EJr282vGyTtUyJw3tSziMfyajMeXJ04p/ZUR2lvq0VyzRWqBV/RZo3k9lVl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785842452; c=relaxed/simple;
-	bh=XRdPPPO2hqRYZCus6bFSfmdOS7A257YA5jWpdDEAfbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKeNa4P0cUqpJCq+38okrNkzetoZx4iy8L86oMoIgwnefOT/GkX0m4AFmthi9UZzC3GXqeEq559uXO4kYOvgB6CvlfQJYWs3pQBgEezsytG7JhDFgD4uHO2x8YlULu3pwQV5lr8FHaPf3/vjZYNXtQUoz3qOEy7SL/UjB2yQ83g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aC0IXmTK; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785843069; c=relaxed/simple;
+	bh=H4dytvN91/yFqwVRcg1SNaR9Jqkwytj5m2GncfcFwX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xt5XO+U3XNMja/hC9T0+AsWOv0Le0aUR81DHpL+DEvgNtZ0qYjgczKtZDuizwsnGycLGVCGYwzox33V8h9YCYyUNhz4seBMjJnGuhgYzWFJK/VsJLknTYOqvq/TJC5Wlzh8q8xy7v6CyZEWjoirdSGv083XIhrnEA7eEfiy0ugY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T+xuQzGW; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aC0IXmTK"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785842445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4mr5daeqt5fKnewbMpqWnCC7jArhYcGTBtc9ufR6IWo=;
-	b=aC0IXmTKb/y72xq8c4DbOsHFjuoeBqEZl8urxWLO85s50bh3aPPyysG8b/9kes5/NqCI9M
-	pZ5I4aPrvDZENGQNbb6apV7kkWxlGnicQAkt5/lBDFzIpWKFNkhsZiehpBv9NLxpqOv7TR
-	WKdg7NQKxjk0uHBWqswaQM/FwyssunE=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T+xuQzGW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785843067; x=1817379067;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=H4dytvN91/yFqwVRcg1SNaR9Jqkwytj5m2GncfcFwX8=;
+  b=T+xuQzGWZP8HlqhiKKfruH1gKa0OJXbIvWeN3RtRjJHOVnIefG+TgzvN
+   tBonRPsyoY9vmSx7SdgQIYKYCL6YJ0QYvT7i6M0c04MSASumHOLaCWNuk
+   Wqh5UzBuhBNxtDxlHqXBsmf4WeyRdLTBgSPKEn0H57m7s4xA3Nt10vj72
+   YjmqkSIlabNSYjC9fSt8+zs0+qhTJWRzL3Ne5kO2X71IvhxgHeOgsUeau
+   0LPNKhMS1BNLT9T9WeP+p5zJ+u8EriT2YUAYenKA+IdwXBENNVF5dozNK
+   k6ewdIGAZF7sA9damxlI6lnLkoNulCoPZxCXeMQ+7w3F26cfe9Xh50ldD
+   g==;
+X-CSE-ConnectionGUID: 9+V+xp9oT6WThMz5gixLdQ==
+X-CSE-MsgGUID: HhLv2mltQGK5xOpAyBkK9Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86244230"
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="86244230"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:07 -0700
+X-CSE-ConnectionGUID: PCmTF6L9SoeYk1O3zH2n2A==
+X-CSE-MsgGUID: pWL+IZe/Tk24LLCsHJ3Z8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
+   d="scan'208";a="265323091"
+Received: from jf.jf.intel.com (HELO 984fee019967.jf.intel.com) ([10.23.153.244])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:07 -0700
+From: Chao Gao <chao.gao@intel.com>
+To: x86@kernel.org,
+	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] KVM: PPC: Use min() in kvm_vm_ioctl_check_extension()
-Date: Tue,  4 Aug 2026 13:20:13 +0200
-Message-ID: <20260804112011.59416-4-thorsten.blum@linux.dev>
-In-Reply-To: <20260804112011.59416-3-thorsten.blum@linux.dev>
-References: <20260804112011.59416-3-thorsten.blum@linux.dev>
+Cc: rick.p.edgecombe@intel.com,
+	kas@kernel.org,
+	dave.hansen@linux.intel.com,
+	chao.gao@intel.com
+Subject: [PATCH v1 0/8] TDX: Stop auto-generating the global metadata code
+Date: Tue,  4 Aug 2026 04:29:28 -0700
+Message-ID: <20260804112941.19894-1-chao.gao@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=877; i=thorsten.blum@linux.dev; h=from:subject; bh=XRdPPPO2hqRYZCus6bFSfmdOS7A257YA5jWpdDEAfbo=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFmFp77Z2kR9rTBcULJgJaPtN8c6Fr81ScWiDObGGZ583 1VfyGd0lLIwiHExyIopsjyY9WOGb2lN5SaTiJ0wc1iZQIYwcHEKwES+rGX4zTpFdIHub2F5Ceb1 tsm7So19LGtW6pcx2igoNaUJL9mlxcgwRaeaqbNxp0LG/YczzLWtJ2zojD1X0bJ92vpfG58KLjz ABwA=
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Replace min_t() with the simpler min() macro since the values are
-unsigned and compatible.
+This is a long-overdue cleanup of the TDX global metadata, based on work
+from Dave [1].  Patches 1-6 keep Dave's authorship -- I only reworded the
+commit messages and comments, with no significant changes to the code.
+Note that they are missing Dave's Signed-off-by.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Changes on top of the original:
+
+  - Rebased onto the latest tip/x86/tdx branch
+  - Converted the newly added metadata (tdx module handoff)
+  - Fixed up the __init annotations. The version and handoff tables must
+    not be __initconst
+  - Refined the commit messages and comments: dropped forward references
+    to later patches and stopped restating what the code already says.
+  - Added two patches: cleaning up error handling in get_tdx_sys_info(),
+    and turning the runtime size check into a build-time one.
+
+The series is also available at:
+  https://github.com/gaochaointel/linux-dev.git tdx-metadata-v1
+
 ---
- arch/powerpc/kvm/powerpc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The TDX module exposes its capabilities and limits through "Global Scope
+Metadata" fields, defined in the Intel TDX Module ABI spec.  The kernel
+mirrors a small subset of those fields in C structures under struct
+tdx_sys_info, populated by reading each field via TDH.SYS.RD.
 
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 00302399fc37..f76322be907d 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -635,9 +635,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		 * implementations just count online CPUs.
- 		 */
- 		if (hv_enabled)
--			r = min_t(unsigned int, num_present_cpus(), KVM_MAX_VCPUS);
-+			r = min(num_present_cpus(), KVM_MAX_VCPUS);
- 		else
--			r = min_t(unsigned int, num_online_cpus(), KVM_MAX_VCPUS);
-+			r = min(num_online_cpus(), KVM_MAX_VCPUS);
- 		break;
- 	case KVM_CAP_MAX_VCPUS:
- 		r = KVM_MAX_VCPUS;
+Both the structures and the code that fills them are nominally generated
+by an out-of-tree script from a JSON file describing the module's
+metadata.  That made it trivial to add a new field, but everything else
+suffered for it:
+
+  - The generated files are edited by hand in practice, for different
+    reasons.  The VMXON rework added __init annotations to the readers,
+    and the handoff metadata is read at module shutdown into a
+    caller-local struct rather than into tdx_sys_info.  In-flight series
+    will add more: DPAMT and TDX module extension metadata may only be
+    read when the corresponding TDX_FEATURES0 bit is set.  Regenerating
+    the files would clobber all of these edits.
+
+  - The generated code is opaque to anyone who doesn't have the script
+    and the JSON file handy.  Each field is identified by a bare 64-bit
+    hex literal, so verifying any one line means cross-referencing the
+    JSON file.
+
+  - The script ships outside the tree, so reproducing changes requires
+    fetching it from a mailing list link.
+
+  - The structures are short and stable, so the script's value over
+    hand-maintained code is small.
+
+So switch to a hand-maintained implementation.  Name each field ID after
+the spec, then describe the field-ID-to-C-member mapping as a table: one
+row per field, pairing the named spec field ID with the C member that
+holds it.  Reading is then a walk over the table.
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/daveh/devel.git/log/?h=tdxtable
+
+Chao Gao (2):
+  x86/virt/tdx: Clean up error handling in get_tdx_sys_info()
+  x86/virt/tdx: Verify the C member size against the metadata field ID
+
+Dave Hansen (6):
+  x86/virt/tdx: Stop treating tdx_global_metadata.h as auto-generated
+  x86/virt/tdx: Name the TDX module global metadata field IDs
+  x86/virt/tdx: Add a table-driven TDX global metadata reader
+  x86/virt/tdx: Convert version/tdmr/td_ctrl/handoff readers
+  x86/virt/tdx: Convert td_conf reader
+  x86/virt/tdx: Remove the auto-generated tdx_global_metadata.c
+
+ arch/x86/include/asm/tdx_global_metadata.h  |  13 +-
+ arch/x86/virt/vmx/tdx/tdx.c                 | 216 +++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  66 ++++++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 133 ------------
+ 4 files changed, 290 insertions(+), 138 deletions(-)
+ delete mode 100644 arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+
+-- 
+2.52.0
+
