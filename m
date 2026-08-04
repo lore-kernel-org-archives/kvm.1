@@ -1,125 +1,234 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-49.mail.aliyun.com (out28-49.mail.aliyun.com [115.124.28.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C688F3590C3
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 02:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39A84195A3;
+	Tue,  4 Aug 2026 02:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785811722; cv=none; b=Cl93lXm+fPCoyMRYPLoCHNqC9S9gZRuBCrwpHLV213x9YRKsSL5gjrmDZGgqj+bEsDkH/9Ytbt0N21EdRDBwyOPFFdaHEOkz8tPFkMMgQQ3enaZ339a6eK9duUXDxM3xQAWFbQOd6mWygAHxU5FmM4HLccFB8uN/9svo/MOOw9M=
+	t=1785812172; cv=none; b=NwGBFeW6WK+GIuszF28q4LVKQLGhU9OvEaStWtUn5o4mtcajhmdULESpx+GGnh0HHoZyq0XVK/ZJiYu/mzkwyA/s1XOn6aeriaCh+roc89N5sKTGUWZPBeoonfnnzEAfZdor2OFSwMsJ1rGJ38OQKoWFSQPdWlB1bSwC9tRIeQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785811722; c=relaxed/simple;
-	bh=vfEfXnWX5XRHIG7xa/1KehCRje8+hVCYEYPeNc+IHz8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GqLRogMyRECKytsNpOB6jlTlT3jyT9eJgGbujhRUzLTGhzfex22468Y8si7AWSHImStjpPjoKYO0pJFxRXXRSw9yz3WHXMLIXM1/eJM1qqcAs1wXiwhYqPC3U2ul0B3ngvkbZe4sAhlhiQEgVSuRADeSGC2ALtITGnbY8Pmkc5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PXitUW0/; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785812172; c=relaxed/simple;
+	bh=nKaUF55S9WPmxp+r2ljUWSPivUo4LLXmtylscl2WqIk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=O0Y2+fi+Pmsl3YvxDmnoCV/Sfw01QZHn9Tx/aZI5ncRu0ifFcAb+BVOB0SAbJ/OvPpYMkwsuX9C2dTL9Cx+amYPY0/rzBLrCKY6IsVM0Gq8u7qeej4eiN1MjczzCCu6T+X3I517XNlNbDWRt2ma+BKUsuL5fmrs3fnSh3M68pbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn; spf=pass smtp.mailfrom=bosc.ac.cn; dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b=DctpBL7j; arc=none smtp.client-ip=115.124.28.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bosc.ac.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PXitUW0/"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cfff5f88dbso47031005ad.3
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 19:48:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785811720; x=1786416520; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uu48l08iOiq9g5Bc53dhkabEeR0zOJy6W3JS0tzyMbo=;
-        b=PXitUW0/qXsXIMqaO6h1XO7121mUhNpHLaTTn8Bz4yGMm31DRFeeMOUOzGBlPDHcek
-         V7IAn0i0y53QzTFOlr1vSNonF0AUgRhZTrHLl6ZDi12oauQaDBgzUDGJsxfwkr07ViO2
-         gaORhLlQbF/Y2pHm238jTkBXL8jjAv/460uujpdvcJbBiLtIeyiPG6LWAMl2+Fb3SdnQ
-         eW7MNVneO7XgSHFEZKoSiAqIj12Awy2/Dn3UDVCbnqPsHZBm4kX4steDCA3iav8X/FUd
-         N69WTmCe81MdRPIv1adkYyN8VoAcdFB1Yt0NjXc6gVMEw4DvDMZxPoiLQubUG9AoxuoE
-         Bihg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785811720; x=1786416520;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uu48l08iOiq9g5Bc53dhkabEeR0zOJy6W3JS0tzyMbo=;
-        b=TuwJegB7hX8HxWPDJQPjROxwwiigLxtMKWl8YrVw4y5NFKgEnEqKDoH4dn1EQftU6f
-         nWkSLdbaBpDhcOaHlsBGEbKafAAc8Ff4aEJAAtTmdA0QisBAcmUjNA0ih2j3BuFgkpox
-         RdRUInmc1xq6MS0JJ7ILnjnYUg/okA8GYH+QJspmaAy8IBUHeOIRm3yzR3Gf+c1P9Zb5
-         zvPCyZ46kLp0GATxSrLn783W/Hz7FHFnQOI5+ZT7eChb2AvgmCuOF+RN2qC06EJzQL3f
-         5e1quXmx7PYCIvTcf16V0j8PC0kTBb9OdIAzII+57cN/N6mGdnJPC0KqPb/lInVDcocP
-         2n1A==
-X-Forwarded-Encrypted: i=1; AHgh+RrqlohFWb6JM9AqIdG24KKhYci5DEAT7qjO6kW0cMXVNcB1kHBHfn58dNs9b72a8kNIAK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQpOSLHYru5KkgOgChM+3Mjk+EPHPxn0p/Chw1FXMxtS1CkSa8
-	yf9kJg1hDQzKSVz29rNDSYp/bszNevI0hGMqDLEs+FBADuZDsSinKKxp
-X-Gm-Gg: AR+sD12pmdCQWFwFcVSvkxYLws6OpBmKNbGY2+vsqmXhamrp03usXTkUFlZ8z4C8OD/
-	mrTbc6tFeHa2/1iNSkpuohHfdlpSp58PDbMsQp7hpxGuAyBKOG++Ok0I4I8WNWVkQ1b6OHngATR
-	lwjgv/FdBIaJqV4CU3hMW7pnct0EhHYwH7WgX3AGRkrYfUgbBbITmO3IGM0votZOzqypWR/rYrT
-	b+YYLq3aPKJ7Pmt2dForBw9UD2VvSyo2LhJKbnI8u8VvgSj8y89YNy/2ypV67dgXCHmZV/Fjlps
-	P1iAwXzHY2iGMrUJQMw+v2PcDHPUrhXzp33LGR0aUx559TVIulYntR7g+octgM/Ik0w+L87SDRB
-	vhi/rk7KaHj0/sU3Ya+aBL3qMiRWpeJGPWP7waLiRN5b+2xPzBykeH7O7Xn8vjP4j7kgAZkoTbu
-	rvrxh03Wh32rXxCMFWvPnjRe8LzC2XDQWQvbMJCbSVMs9ykYIyLyPUVBURuDlbJwwDyB5veuC37
-	6N47fk=
-X-Received: by 2002:a17:903:4b4c:b0:2ce:6d4a:5b8a with SMTP id d9443c01a7336-2d05242c4a2mr121069295ad.38.1785811720247;
-        Mon, 03 Aug 2026 19:48:40 -0700 (PDT)
-Received: from cyh-System-Product-Name.. ([129.227.183.200])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5a91asm44837315ad.21.2026.08.03.19.48.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 19:48:39 -0700 (PDT)
-From: "Yuhang.Chen" <yhchen312@gmail.com>
-To: Anup Patel <anup@brainfault.org>
-Cc: Atish Patra <atish.patra@linux.dev>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Quan Zhou <zhouquan@iscas.ac.cn>,
-	linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control VS-mode WFI trapping
-Date: Tue,  4 Aug 2026 10:48:22 +0800
-Message-Id: <20260804024822.2401012-1-yhchen312@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAAhSdy2r8Ei9ESdSJB8McC1T=Atp0yNa2MxEbOWNVRTUM_8YFA@mail.gmail.com>
-References: <20260709115610.287420-1-yhchen312@gmail.com>, <CAAhSdy2r8Ei9ESdSJB8McC1T=Atp0yNa2MxEbOWNVRTUM_8YFA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b="DctpBL7j"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=bosc.ac.cn; s=default;
+	t=1785812164; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=ac179LFlKinrxL9fRVGKOJl2agmbrjKMVesDXRG4rEE=;
+	b=DctpBL7jlnTqrMFNAtVqVKx+dhP57X3XoBSuVzb8xBrAwZQEMl6c7bmN8JRnkY/AsB6QyT2rZQ4N4vBHwvBHHPaqfLSVvJq6Fp+LmpxAN+MI7dTrqBCgNbuBaUu/YXT8idSuZF/v0K6UXWU0S2bZhTQ1eXf/a96SVXc4Z98V0eVEQtaWXSGzUPe8sOEvJoYqZuoJj1ptFyq+hogVeGdMx9GjrD8/aQSloqa/dFe4YaKlr6EGlIMvmZbJqp0YwwuQuX6MXhPVW7s29aevJZ5cZ7IUyMJzyTeuzPgL3NiTmWsz7wGeKWaNa6aAggPXNupr7jtYqvozhZEVoDbX1EDPkA==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07437261|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.257876-0.0162298-0.725894;FP=16570353862251865072|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037031241;MF=guoyaxing@bosc.ac.cn;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.id9mnOo_1785812161;
+Received: from 172.28.113.148(mailfrom:guoyaxing@bosc.ac.cn fp:SMTPD_---.id9mnOo_1785812161 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Aug 2026 10:56:02 +0800
+Message-ID: <55c0150b-6e1b-4b20-a74e-8be1c2982531@bosc.ac.cn>
+Date: Tue, 4 Aug 2026 10:56:01 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] RISC-V KVM: guest local sfence.vma may miss stale VS-stage
+ TLB after vCPU migration
+From: guoyaxing <guoyaxing@bosc.ac.cn>
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>, kvm-riscv@lists.infradead.org,
+ kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Hui Min Mina Chou <minachou@andestech.com>, majiuyue@bosc.ac.cn,
+ linux-kernel@vger.kernel.org, anzoso@outlook.com
+References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
+ <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
+ <0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.cn>
+In-Reply-To: <0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Anup,
++cc wangzhizun<anzoso@outlook.com>
 
-Thanks for the review.
+在 2026/8/4 10:32, guoyaxing 写道:
+> 
+> 
+> 在 2026/8/3 22:22, Anup Patel 写道:
+>> On Sun, Aug 2, 2026 at 10:30 AM Yaxing Guo <guoyaxing@bosc.ac.cn> wrote:
+>>>
+>>> Hi all,
+>>>
+>>> I would like to ask whether RISC-V KVM has a gap around guest sfence.vma
+>>> and VS-stage TLB invalidation when a vCPU migrates across host CPUs.
+>>>
+>>> On bare metal, Linux uses mm_cpumask in __flush_tlb_range() to decide
+>>> whether to send a local or remote sfence.vma. That works because the 
+>>> cpumask
+>>> reflects physical CPUs. In a guest, however, the kernel only sees 
+>>> vCPUs, so
+>>> from the guest point of view a task may never "migrate" even though the
+>>> underlying vCPU moved to a different host CPU. In other words, guest
+>>> mm_cpumask is effectively a vCPU mask, not a host CPU mask.
+>>>
+>>> There is also a related switch_mm()/set_mm_asid() aspect. With the ASID
+>>> allocator enabled, RISC-V Linux does not flush on every context 
+>>> switch. A
+>>> local_flush_tlb_all() is only done when a deferred ASID rollover 
+>>> flush is
+>>> pending for the current CPU. That is fine on bare metal, because 
+>>> previous
+>>> shootdowns are also based on physical CPUs. In a guest, however, the 
+>>> earlier
+>>> shootdown may have been only a guest-local sfence.vma and may have 
+>>> missed an
+>>> old host CPU where the same vCPU ran previously.
+>>>
+>>> A simplified sequence is:
+>>>
+>>> 1. A guest task with mm A runs on vcpu0 while vcpu0 is scheduled on host
+>>>     CPU1. CPU1 fills a VS-stage TLB entry for that mm/ASID.
+>>> 2. vcpu0 migrates to host CPU0. KVM's vCPU migration sanitization is 
+>>> local
+>>>     to the current host CPU, so it does not invalidate the VS-stage 
+>>> TLB entry
+>>>     that was left on host CPU1.
+>>
+>> When vcpu0 migrates to host CPU0, the host CPU0 may or may not have
+>> VS-stage TLB entry so VCPU migration sanitization does the right thing.
+>>
+>> In the future, vcpu0 may again move back to host CPU1 containing stale
+>> VS-stage TLB entries left in step1 above so the VCPU migration 
+>> sanitization
+>> will cleanup these stale TLB enteries.
+>>
+> 
+> Sorry, perhaps I didn't describe it clearly enough. In short, the issue 
+> is: because vcpu0 migrated away, cpu1 still has stale TLB entries while 
+> cpu0 has the new mapping. After that, neither vcpu migrated again, but 
+> the process was scheduled from vcpu0 to vcpu1 (which is on cpu1), 
+> causing it to hit the stale TLB. Consider the following scenario:
+> 
+>    1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0 is 
+> on cpu1, and a process on it reads a page, which gets cached in the TLB 
+> (let's call this the "stale TLB entry").
+>    2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on 
+> cpu0) does a CoW (copy-on-write) and establishes a new mapping.
+>    3. Neither vcpu0 nor vcpu1 migrates again. At this point, the process 
+> gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the 
+> same page, and hits the stale TLB entry.
+> 
+>>> 3. The guest later updates mm A's page table from vcpu0, for example 
+>>> due to
+>>>     COW. Since the guest still sees mm A as having run only on guest 
+>>> CPU0,
+>>>     __flush_tlb_range() can choose a local sfence.vma. That local 
+>>> sfence.vma
+>>>     only affects host CPU0, where vcpu0 is currently running, so the 
+>>> stale
+>>>     VS-stage entry on host CPU1 remains.
+>>
+>> No need to worry about stale VS-stage entry on host CPU1 because these
+>> will age-out or same guest may again move to host CPU1 resulting in
+>> VCPU migration sanitization.
+>>
+>>> 4. Later, the task is scheduled again while vcpu0 is running on host 
+>>> CPU1.
+> 
+> Sorry, that was a typo on my part. 'Later, the task is scheduled again 
+> while vcpu0 is running on host CPU1' should say vcpu1 instead of vcpu0.
+> 
+>>>     If the ASID is still valid and no deferred ASID rollover flush is 
+>>> pending,
+>>>     set_mm_asid() may not issue any flush. The access on host CPU1 
+>>> can then
+>>>     hit the old VS-stage TLB entry.
+>>
+>> See above comments.
+>>
+>>>
+>>> We hit this on a XiangShan RISC-V system. A bash task in the guest was
+>>> scheduled on vcpu0 while that vCPU was running on host CPU1. A read-only
+>>> page was prefetched and cached in CPU1's VS-stage TLB. Later the same 
+>>> vCPU
+>>> migrated to host CPU0, the guest triggered COW and updated the 
+>>> mapping, and
+>>> the guest still issued only a local sfence.vma. The stale VS-stage 
+>>> entry on
+>>> CPU1 was not invalidated. After running for some time, the task later
+>>> accessed that mapping while running on host CPU1 again and hit the stale
+>>> translation. The data in that page was a pointer from the GOT, so it
+>>> dereferenced to NULL and eventually caused a segmentation fault.
+>>
+>> The above example is already taken care by TLB flushes in KVM RISC-V.
+>> This smells like some HW errata to me.
+>>
+>>>
+>>> I checked current upstream RISC-V KVM (v7.0.2) and I do not see 
+>>> HSTATUS.VTVM
+>>> being enabled, so guest sfence.vma is not trapped. I found
+>>> kvm_riscv_local_tlb_sanitize() on host CPU migration, which handles 
+>>> G-stage
+>>> VMID entries on the current host CPU, but I do not think it generally 
+>>> solves
+>>> the stale VS-stage TLB case described above.
+>>>
+>>> I also noticed the vendor-specific kvm_riscv_vsstage_tlb_no_gpa path in
+>>> current upstream. It looks like a workaround for a particular 
+>>> implementation
+>>> issue on Andes AX66, where the VS-stage TLB does not cache guest 
+>>> physical
+>>> address and VMID, so the normal VMID/GPA-based invalidation model is
+>>> insufficient. In that sense, it does not seem to be a generic 
+>>> solution for
+>>> guest sfence.vma coherence across vCPU migration.
+>>>
+>>> I am wondering what the right direction should be. Enabling 
+>>> HSTATUS.VTVM and
+>>> trapping guest sfence.vma would allow KVM to translate guest local 
+>>> sfence.vma
+>>> into the required host-side hfence.vvma, but that may be too heavy 
+>>> for the
+>>> common case. Another possible direction may be to make the current
+>>> Andes-specific vCPU migration flush logic more generic, so 
+>>> implementations
+>>> that need VS-stage TLB sanitization on vCPU migration can opt in 
+>>> through a
+>>> common mechanism. A third possibility may be to define a lightweight SBI
+>>> interface for guest local sfence.vma, so Linux could use it in
+>>> __flush_tlb_range() for the local case when running under KVM, and 
+>>> KVM could
+>>> then decide whether a local sfence.vma is sufficient or whether host- 
+>>> side
+>>> hfence.vvma is also needed.
+>>
+>> Enabling HSTATUS.VTVM has a big impact on performance so certainly
+>> NACK from myside.
+>>
+>>>
+>>> My questions are:
+>>> 1. Is the behavior above expected on current RISC-V KVM?
+>>
+>> Yes, it should work fine unless there is some HW bug.
+>>
+>>> 2. If not, what would be the preferred fix direction?
+>>> 3. Should this be handled by trapping guest sfence.vma with VTVM, by
+>>>     generalizing the existing vCPU-migration VS-stage TLB flush 
+>>> logic, or by
+>>>     adding a lighter SBI-mediated path for guest local sfence.vma?
+>>> 4. Or is there another intended mechanism to keep VS-stage TLB state 
+>>> coherent
+>>>     across vCPU migration?
+>>>
+>>> If needed, I can send a reproducer and the exact hardware/kernel 
+>>> details.
+>>>
+>>
+>> Even if you share some reporducing code sequence, we still have don't
+>> have access to your HW so it won't help much.
+>>
+>> Regards,
+>> Anup
 
-On Tue, 28 Jul 2026, Anup Patel <anup@brainfault.org> wrote:
-> This would mean that for the "notrap" policy the VCPU would never
-> sleep and increase host CPU utilization even when VCPU is idle.
-> Is this expected behaviour ?
-
-No, that was not intended. With "notrap", HSTATUS.VTW is cleared
-unconditionally, so a VS-mode WFI never traps and the vCPU never reaches
-kvm_vcpu_halt(); since WFI is only a hint, the vCPU thread can keep
-spinning even while the guest is idle - the high host CPU you point out.
-
-v2 drops "notrap" and replaces it with "auto": HSTATUS.VTW is cleared
-only when the vCPU is the sole runnable task on its CPU
-(single_task_running()), otherwise WFI traps and KVM blocks the vCPU
-through kvm_vcpu_halt() as before. The default stays "trap", so there
-is no regression, and the policy is re-evaluated on each vcpu_load() so
-a vCPU that stops being the sole runnable task switches back to
-trapping.
-
-So to answer your question: the vCPU no longer stays busy at the
-expense of other tasks - it either blocks through kvm_vcpu_halt(), or
-runs WFI natively only when nothing else needs the CPU. On QEMU TCG,
-host CPU stays around 5% while the vCPU is the sole task and rises back
-to the trap level as soon as a competitor appears.
-
-I have posted v2 as a new thread:
-
-  [PATCH v2] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control
-  VS-mode WFI trapping
-
-Regards,
-Yuhang
