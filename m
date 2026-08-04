@@ -1,157 +1,180 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5939F40FDB9;
-	Tue,  4 Aug 2026 19:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0B031F99B;
+	Tue,  4 Aug 2026 19:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785873274; cv=none; b=OtoU/VgOtPyWoW0K64zWqev6vh1dGkh5S/OCZp9r2XYDfQSRB460ofZTOCGo49OgcC5gHTYpvANCm3aAA417LeAv9FJionag5bnsQEt+LY40bhLEKdzmFn57r5g5LV8NEOKN9fgKTTGguxXeersXW4JfH6z5H7lH+b8qaLE4Oc4=
+	t=1785873476; cv=none; b=BHxDDPuWH+HqU+QLwqiktuW9UDd/bq3NQyalYTbwh5WG7y7D/4jeakrk24zOXwfVA3445iG4Q+8n8x1qs4GP4rbx3EaQ+mfKzdL9aolEe2hBfbfeEqXz4Lav2yQcAwfGrm8CNplg7dYazIx54f2e1VS4jzBTr5e9eSiPWtgciDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785873274; c=relaxed/simple;
-	bh=rhMwPmtYKuwEVpK+0x3TQhxjvW94aYrV7QgAj5I4QPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZhJeomJkWqLADayw/q+R6sTQGVZ+TaVHEQb95j7GBRAftPJFumu8UfwUkiGqej/lfMVMr07m1iuyH51ygX2LLyXN80ic7pX09Akaaw6O83RQUVtHtuGcUGrOSFFDEK6dAnGMlXUQHv0D7HvwZnnQDa3md0Hm/04uQgI1a2uJyc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=cgc/4q5X; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1785873476; c=relaxed/simple;
+	bh=G3c42QNT69hdDNPQyXUvScdW6KhSXKl64YqUReQxUvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dXQrHYVhWFLF/5aW//mowm9n7eTwIPzOWyvAwK8DPrhwXj+SgRMuKVUF6kie6OWGQKXmOKihbpM3rTY+B5reuiDW9Et3vzp/k74oQmHZA4+l9de1aFsaQlG65UrhkAPBsPOJO+g1YNNpUOKP39k1sOU0mKTcgumLdoVPp2IHgF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EgDUdLEI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="cgc/4q5X"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=+IzxgHirXh8bANHLHHneykwXTiWqinCHzwnsN/D+w1g=; b=cgc/4q5XWxb+9KHledOTiCkjCj
-	qq0/2fvaHG7Qp83Vg+3/fUN0X2kukF2LFGusGOYQrH0obYRDUEtgSeWR3tr+4dGHM1+rpu/rLQ1Tk
-	0IRno6TRcPM9AAut3SiFQbVeIH55/1SLk/L57s2QIePicpmXv8BSEr/7MiSgs+DW6OKfkUVq4xyWW
-	f/Bg3OJHFn/zCKQb5ODfDBLhY5WYJ9QRUlrhLWFVC+XuxtxkMtKKJouvX0pcB5x+VcFKNyhAxS7MJ
-	mm2BbOwBUTRRIZYT5+BtfzMIOia+PY04wvaF7AiNa2bNuOBjcNm1RZO5LghLrrQ4rMN1nlxylF5zK
-	0KLtQp6A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrLDN-00000004dyG-3Yfn;
-	Tue, 04 Aug 2026 19:54:17 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0A184300B40; Tue, 04 Aug 2026 21:54:17 +0200 (CEST)
-Date: Tue, 4 Aug 2026 21:54:16 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Dmitry Ilvokhin <d@ilvokhin.com>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Thomas Gleixner <tglx@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 1/5] x86/paravirt: Use static_call() for the paravirt
- spinlock ops
-Message-ID: <20260804195416.GJ776954@noisy.programming.kicks-ass.net>
-References: <cover.1785778551.git.d@ilvokhin.com>
- <9a32ae399eb804a02a31af04dcabe7e7ee4f3fdf.1785778551.git.d@ilvokhin.com>
- <20260804190048.GCanI24Hb5P8qAyVZs@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EgDUdLEI"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674JmXWO4116455;
+	Tue, 4 Aug 2026 19:57:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=qLppjq
+	4kr6zhlfFvgJ4Tb0MDK6NCpw0tvAvHlE5evCA=; b=EgDUdLEIxX5ykF1JXfvT8Z
+	wlUMvDY/f9o8y/vehIKCWMMytqya/kYaEXdCcjus4yEsZrBEfSqDAjIOUFGec+eW
+	jYmn9JM5NBu5qITxhEyn8vQQMpqm9MwhhM6DDthCJfJ4NGwB2uIHfFjBgF/MotOo
+	IrRD0fuaEa2T0zl3agOlkxsBTnsCu5EjY4R30aJyy6omUq3BS7VPOuh8k+W+ITg3
+	ep9eBfZuWUMdlqHTm4sjGVCqzaixwOf8k1lCuIhuT68g8fvBH3RcovD/SNhuTJ8m
+	fuahgO0/Vh2jqmDwrNqtUt2OJAo8G8ebZnbks35yVT9tVUMVE/0xaLeQ37qNSdyA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqqnwb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 19:57:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674JugC2024765;
+	Tue, 4 Aug 2026 19:57:46 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qkp7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 19:57:46 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674Jvjem61473062
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 19:57:45 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8635F58058;
+	Tue,  4 Aug 2026 19:57:45 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 93B1F58057;
+	Tue,  4 Aug 2026 19:57:44 +0000 (GMT)
+Received: from [9.61.89.119] (unknown [9.61.89.119])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 19:57:44 +0000 (GMT)
+Message-ID: <20c2f649-10d7-469f-94ea-02cfeb767c1b@linux.ibm.com>
+Date: Tue, 4 Aug 2026 15:57:44 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260804190048.GCanI24Hb5P8qAyVZs@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/15] s390/vfio-ap: Data structures for facilitating
+ vfio device migration
+To: sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        kvm@vger.kernel.org, Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Alex Williamson <alex@shazbot.org>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+References: <20260727173239.2420754-1-akrowiak@linux.ibm.com>
+ <20260727173239.2420754-3-akrowiak@linux.ibm.com>
+ <20260727174014.E83231F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260727174014.E83231F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: S1qkl2IYLwe5drhoukdIK9aTtss7I3Gy
+X-Proofpoint-ORIG-GUID: S1qkl2IYLwe5drhoukdIK9aTtss7I3Gy
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfX1pqhoRs4zuaD
+ oZj6+NgL4IbPBMek9/parsLXIFtsIeWZRl1VKf3i+/VATScAcMLaSFuGlzS7IKgFsInpFwGhnXR
+ MOxIykjoDLmG/OwKny4gIsu2nXdfpeg=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a72443b cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=MdEa33EV34lG5rOqodIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfX00t/a+XkgP+A
+ f6Sx6vDblxtFC1nsXxjfJAxHRoNYvXM8sxnQeqMXs6DpN7vTkV8dLniuL/kxoK/CwG9rAy70AZW
+ YauHQaCNC/hqUdOll9d3kQrEgmHvOIeKJ8PeYqAFsTC3UgWW2Q88g/90PKyqPOzFjX8CC2r5qHz
+ psTkBhPu+dYyBk2U8bh1xT2r3Vm/krNNcZX3uyWWxXmEktO9m3GLGkDrPIv0bV7lOFJxmfmGLWi
+ DXKmQusmH5LKDGrdtKMONFOb5T+pSMln3AkE9PE3Tei9LzOGNydUWoZ3It0Vb1krHFhcMjEJgym
+ wKplhZ09fAewNbM6Kaww9ZCVFvSr55Dg488EBuIcVQxnPTzSwSAqlBnjmEWzEi+enYlXcrwwW3I
+ 3sGFicpHeIrBD5PlcUfsCTIDnbezDNRXIw5Io0THG2qmqwrPg4OtswjRZZe4CQZf6BtRua9xagi
+ JlgGjO+LxTC/mmllgDw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_05,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040160
 
-On Tue, Aug 04, 2026 at 12:00:48PM -0700, Borislav Petkov wrote:
-> On Tue, Aug 04, 2026 at 07:15:41AM +0000, Dmitry Ilvokhin wrote:
-> > From: Peter Zijlstra <peterz@infradead.org>
-> > 
-> > queued_spin_lock_slowpath() and queued_spin_unlock() are dispatched
-> > through pv_ops_lock via the paravirt-ops ALTERNATIVE machinery, which
-> > picks the target (native inline store / hypervisor call) once at boot
-> > and cannot change at runtime.
-> > 
-> > Convert both to static_call(). The site becomes a direct call patched in
-> > place (one byte smaller), and on native the unlock still collapses to
-> > the inline "movb $0, (%rdi)" store, so the fast path is unchanged.
-> > 
-> > Unlike the ALTERNATIVE mechanism, a static_call() target can also be
-> > updated at runtime via static_call_update(). This is a prerequisite for
-> > the contended_release tracepoint, which has to swap in a traced unlock
-> > while the system is running.
-> > 
-> > [ ilvokhin: commit message; fix PARAVIRT_SPINLOCKS=n build; teach
-> >   __static_call_validate() about the inline unlock insn; make the
-> >   slowpath site module-safe: static_call_mod() +
-> >   EXPORT_STATIC_CALL_TRAMP(); pass @lock to the callee-save unlock,
-> >   fixing a boot hang under CALL_DEPTH_TRACKING. Boot tested native + KVM
-> >   PV guest. ]
-> > 
-> > Link: https://lore.kernel.org/all/20260603120811.GW3493090@noisy.programming.kicks-ass.net/
-> > Co-developed-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> > Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> 
-> This needs Peter's SOB.
 
-Yeah, that got fixed when I applied it ;-)
 
-> > ---
-> >  arch/x86/hyperv/hv_spinlock.c            |  4 ++--
-> >  arch/x86/include/asm/cpufeatures.h       |  1 -
-> >  arch/x86/include/asm/paravirt-spinlock.h | 19 +++++++++++------
-> >  arch/x86/kernel/kvm.c                    |  5 ++---
-> >  arch/x86/kernel/paravirt-spinlocks.c     | 12 +++++------
-> >  arch/x86/kernel/static_call.c            | 27 ++++++++++++++++++++++++
-> >  arch/x86/xen/spinlock.c                  |  5 ++---
-> >  tools/arch/x86/include/asm/cpufeatures.h |  1 -
-> >  8 files changed, 51 insertions(+), 23 deletions(-)
-> > 
-> > diff --git a/arch/x86/hyperv/hv_spinlock.c b/arch/x86/hyperv/hv_spinlock.c
-> > index 210b494e4de0..6b4bdea18218 100644
-> > --- a/arch/x86/hyperv/hv_spinlock.c
-> > +++ b/arch/x86/hyperv/hv_spinlock.c
-> > @@ -78,8 +78,8 @@ void __init hv_init_spinlocks(void)
-> >  	pr_info("PV spinlocks enabled\n");
-> >  
-> >  	__pv_init_lock_hash();
-> > -	pv_ops_lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
-> > -	pv_ops_lock.queued_spin_unlock = PV_CALLEE_SAVE(__pv_queued_spin_unlock);
-> > +	static_call_update(queued_spin_lock_slowpath, __pv_queued_spin_lock_slowpath);
-> > +	static_call_update(queued_spin_unlock, __raw_callee_save___pv_queued_spin_unlock);
-> >  	pv_ops_lock.wait = hv_qlock_wait;
-> >  	pv_ops_lock.kick = hv_qlock_kick;
-> >  	pv_ops_lock.vcpu_is_preempted = PV_CALLEE_SAVE(hv_vcpu_is_preempted);
-> > diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> > index 1b4a48bff18f..e41fe5c24841 100644
-> > --- a/arch/x86/include/asm/cpufeatures.h
-> > +++ b/arch/x86/include/asm/cpufeatures.h
-> > @@ -225,7 +225,6 @@
-> >  #define X86_FEATURE_EPT_AD		( 8*32+17) /* "ept_ad" Intel Extended Page Table access-dirty bit */
-> >  #define X86_FEATURE_VMCALL		( 8*32+18) /* Hypervisor supports the VMCALL instruction */
-> >  #define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* VMware prefers VMMCALL hypercall instruction */
-> > -#define X86_FEATURE_PVUNLOCK		( 8*32+20) /* PV unlock function */
-> 
-> No, do:
-> 
-> /* free: was #define X86_FEATURE_PVUNLOCK		( 8*32+20) /* PV unlock function */
-> 
-> so that we can reuse it by finding it easier.
+On 7/27/26 1:40 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Medium] The VFIO migration data structure lacks a magic identifier and version number, and relies on an architectural macro for array sizing, posing a risk to ABI stability.
+> - [Low] Typo and grammatical error in the docstring for `resuming_mig_file`.
+> --
+>
+> --- Patch [2]: [PATCH v6 02/15] s390/vfio-ap: Data structures for facilitating vfio device migration ---
+> commit 1aa240c81b915a9ce3e59c82c532c41c1cab4d99
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Data structures for facilitating vfio device migration
+>
+> This commit creates the data structures used to facilitate state transitions
+> during vfio device migration.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> new file mode 100644
+>> --- /dev/null
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> [ ... ]
+>> +/**
+>> + * struct vfio_ap_migration_data
+>> + *
+>> + * Manages the migration state for the VFIO device that maintains the AP
+>> + * configuration of the guest being migrated.
+>> + *
+>> + * @mig_state:		the current migration state
+>> + * @resuming_mig_file:	the object used to restore the state of the vfio-ap
+>> + *			device the destination host:
+> [Severity: Low]
+> This isn't a bug, but there appears to be a missing word here. Should this
+> say "device on the destination host." instead of ending with a colon?
+>
+>> + * @stop_copy_mig_file: the object used to store the AP configuration of the
+>> + *			source guest for transfer to the destination host.
+>> + */
+>> +struct vfio_ap_migration_data {
+> [ ... ]
+>> +/**
+>> + * struct vfio_ap_config - the guest's AP configuration
+>> + *
+>> + * @num_queues:	the number of queues passed through to the guest
+>> + * @reserved:	padding to ensure proper alignment of @adm
+>> + * @adm:	bitmap specifying the control domains in the AP configuration
+>> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
+>> + *		queue information for a queue passed through to the guest
+>> + */
+>> +struct vfio_ap_config {
+>> +	u32				num_queues;
+>> +	u8				reserved[4];
+>> +	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
+> [Severity: Medium]
+> Does this data structure need a version number or magic identifier to safely
+> handle ABI stability across host migrations?
+>
+> Since this structure defines the binary layout of the migration data stream,
+> could changing the architectural macro AP_DOMAINS or the structure layout in
+> future kernel versions silently break live migration compatibility between
+> hosts running different kernel versions?
 
-Sure, I can do that.
+The next version of the patch will incorporate magic and version fields.
+
+>
+>> +	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+>> +};
+
