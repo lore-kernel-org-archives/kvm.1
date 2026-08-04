@@ -1,123 +1,130 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E625F39D6C9;
-	Tue,  4 Aug 2026 23:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493C033BBD7
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785886729; cv=none; b=vB10f6Wsy7qlk+Vo414j5MfhguaObHRsbfo3544DuoOt8uikuf+x4dm7R4hEiPNHCJtY5KcsjWI5XP2GWbVbPGWZ9TpyYaz06biSV4adp6FbD78QInvcKFXmonY3X66BVoWamwn1uhoEniTlWpIX6Uh6t7fbDwelss5TmL+w1uc=
+	t=1785886768; cv=none; b=puGCBQRSkUht1dr7OSLk+SdKR8wItCDObHSx3XszFIldoy9aBaUTz2DoUR6rzH3v4I/mYF0OW8/Nbu19u1xuHDBGXkGiZc9rGvNiuHTqhu/qDhg2DxwD7zXMBpUidwQUu5xFXjZIroat9A49Cz61cKFiuFKNJmbBIHkDHnqntmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785886729; c=relaxed/simple;
-	bh=bxVnLisrrjhyKhSC18hn+pG3orj37aPyARkM+s2ow+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=buyKkEesRD6/4vB041k9Aelu+vKjKot78TY2Vi4SUXbvFhUH0gBea6OiO/NGRZmy133qLzTlLMmnIYyRBpIQBO6yGe08OccaJAbijBdGMagb7EpfbTsV5GyKuJxf8IqDd1p1pMZvB7hOZMnoeVGmywJgnrDexrzqxnXFvynbVxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m17WnRmk; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785886768; c=relaxed/simple;
+	bh=JJOWOiazh9hbd55PEARizwtcOCwRLbjqT+V6GkpgxNw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IFa8a1EQzDo2dH8xTQTsk9aEUUAn5v8hvxITRyxwDHiDUd1dGCaxH+At22n8hVOlclWFRYmIK2HDlSXiiRDA3w/v3fb8hax61MBlqCGWKkFqCqu44LH1IfSnhyokij4tkyBNKdcb1IDUuy+DDxcw6WcyCw72AaMDQx7iUv7+/uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fNWLap3u; arc=none smtp.client-ip=209.85.210.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m17WnRmk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785886728; x=1817422728;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bxVnLisrrjhyKhSC18hn+pG3orj37aPyARkM+s2ow+8=;
-  b=m17WnRmkxUio8O50TUgGqScYS68KXDs5qAUmdYNPXbkzkgAsx30loMP0
-   W2yMv3QJTcONYkSjcAOeAdIilXyuFowMzRe4tDjFNh3rwCICckpkkS2il
-   kFcHGzrGNNd+XPhEiT9tW0x82eE7PPEY8XxcAsPYFZAWTq2qKOXvfSVIx
-   YImzQa0UGChtVxTj8OmLsiMDgS7xonj3D+d+1WVQvdsk67B4+dQTBRCn0
-   7MaYdh1ojUCmxPtAyH1Ta0rVuOAZ3C/4FQ7VeCPykv8qg1r97Cgmseob+
-   OMFA8NCDpuxA6JeG+F3SrAh19JTGn1EuD44A9FLKJvZPeVp4PIp424Ni0
-   w==;
-X-CSE-ConnectionGUID: xcC+WoGzQ5K8gqBsoLfz1g==
-X-CSE-MsgGUID: ujRdX1HYROSyI5b58NUJ4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="103853627"
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="103853627"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:38:47 -0700
-X-CSE-ConnectionGUID: Fup097ZqRq+r9jNyE3rb5g==
-X-CSE-MsgGUID: wiYnYnAEQCa4G6xx1wvttQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="266765134"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:38:47 -0700
-Message-ID: <89d0fc03-542f-4218-8b6c-f6b0fba0942e@intel.com>
-Date: Tue, 4 Aug 2026 16:38:44 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fNWLap3u"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84842381150so584854b3a.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785886767; x=1786491567; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=377A3J/TE3/FgbcypMT8C/e1RTsBxbIY6pGR8tcpmrQ=;
+        b=fNWLap3u8ARGLL0Duw6lL9s7JRHUeUSKMunLzvtNZA2eHdcecW0DSaRfOu3Id/Kh9X
+         P2wh9BOgKwfcaA+AgGy1cY4rFe2o2AWYVbj9oGYfOjdpJ60dtkOLxZlCc7Uvh78RZbfa
+         LZ/FfsTM1p1DBKpL89QuDPT2Wvggo3YqQeZtK7AOjm2DjWdpDNDgy6wHH52lqAhd++q/
+         6ARpKrKprIFaxzmL6YWeHDvpfpdh8YSADyCggqyTnEaqjkmqswdYcZzoVqofC6HKioOq
+         7movD9Zr9tHAFl96fJC0sdKrXOKATGk8y5XwLkq1PvXbv1VuZ7760fjgjYMC1YQa5qSR
+         V9Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785886767; x=1786491567;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=377A3J/TE3/FgbcypMT8C/e1RTsBxbIY6pGR8tcpmrQ=;
+        b=pue1c/aJVrUlniLSY8qF5TQOgv7wwts0pSQNWzK/XZcv7gqpMcgFC1rZ4H0jFOPm8n
+         K+OrAk2IlDyf3z2r96LD7XD5fwbecjTc+9i3FRpRetzgDeux0EWNRbDtp2X+gpC6xiFj
+         DR7dKYFfHPugOv7EICTn1Dhysi4kUoMVYN+nKnJQSTjSXmiNbSDpzblCoek4g/JFjSBu
+         kwy5vrnDlEm8NEysgTxWOEZhWrF1lfRYXIK9tJF80e3RTbHAUvd9lbhqlKjRDyVGBmRM
+         e4yZhLX62deX3qHX+QuJGRUufQ4xk3P3r/o77TKQHDLj18nKbQJrO4/DYcj2eppsdC1e
+         l6DQ==
+X-Gm-Message-State: AOJu0YyUPcQZnEKTuyxiSljadXQIj1GoPz0/k3WFJ1Z4GwxPsuNj1JOF
+	27VzAFWzFiUukN2QiIxQ9pCm3m+aO2Vf2SyYhzeqiqo6GZXnl7+JXRvUT63Q9GioMbnt/CHGPsy
+	sj9LaGQ==
+X-Received: from pfaf12.prod.google.com ([2002:a05:6a00:a11c:b0:848:866d:f119])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b03:b0:847:95a6:eb74
+ with SMTP id d2e1a72fcca58-84f2e00e9f2mr2312052b3a.23.1785886766332; Tue, 04
+ Aug 2026 16:39:26 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue,  4 Aug 2026 16:39:04 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/8] TDX: Stop auto-generating the global metadata code
-To: Chao Gao <chao.gao@intel.com>, x86@kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
-References: <20260804112941.19894-1-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260804112941.19894-1-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
+Message-ID: <20260804233923.3504629-1-seanjc@google.com>
+Subject: [PATCH v8 00/17] KVM: x86: Cleaning up the KVM clock mess, part 1
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/4/26 04:29, Chao Gao wrote:
-> This is a long-overdue cleanup of the TDX global metadata, based on work
-> from Dave [1].
+This is the first half (give or take) of David's series to clean up some of
+the mess that is timekeeping in KVM.  The "cut point" is rather arbitrary:
+I stopped when I lost confidence in my understanding of the patches.  I'm
+planning on diving back into review for the remaining patches asap, but want
+to get start landing changes since many of these are fixes.
 
-I wouldn't say "from Dave". At best, I'd say "AI slop in response to
-Dave's prompt" or "work vibe coded by Dave".
+v8:
+ - Obviously cut partway through the full series.
+ - Update commit references for 633d7652f80f ("KVM: x86/xen: Do not corrupt
+   KVM clock in kvm_xen_shared_info_init()").
+ - Chunk the "Restructure ..." patches into individual logical changes
+   ("Restructure kvm_guest_time_update() for TSC upscaling" in particular was
+   quite gnarly).
+ - Ensure the TSC+freq pair during guest time updates happens on a single
+   CPU. [Sashiko]
+ - Keep __get_kvmclock() as a masterclock-specific helper to avoid deep
+   indentation and gotos.
+ - Do waaaaay too much spelunking to try piece together the history of some
+   of the many warts.
+ - Ensure preemption is disabled in get_kvmclock() when getting the TSC freq.
 
-But seriously, all I wanted to do was show my fellow humans that it
-wasn't an insurmountable task.
+v7: https://lore.kernel.org/all/20260728144954.355376-1-dwmw2@infradead.org
 
-> Patches 1-6 keep Dave's authorship -- I only reworded the
-> commit messages and comments, with no significant changes to the code.
-> Note that they are missing Dave's Signed-off-by.
+David Woodhouse (12):
+  KVM: x86: Improve accuracy of KVM clock when TSC scaling is in force
+  KVM: x86: Explicitly disable TSC scaling without CONSTANT_TSC
+  KVM: x86: Activate master clock immediately on vCPU creation
+  KVM: x86: Avoid NTP frequency skew for KVM clock on 32-bit host
+  KVM: x86: Wrap all of __get_kvmclock_master_clock() with
+    CONFIG_X86_64=y
+  KVM: x86: Fall back to non-master-clock if clockread fails in
+    get_kvmclock()
+  KVM: x86: Fix KVM clock precision in get_kvmclock() with TSC scaling
+  KVM: x86: Use get_kvmclock() in kvm_get_wall_clock_epoch()
+  KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
+  KVM: x86: Upscale TSC to "now", not master clock when updating PV
+    clocks
+  KVM: x86: Simplify and comment kvm_get_time_scale()
+  KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
 
-Yes, and that was intentional.
+Sean Christopherson (5):
+  KVM: x86: Update "last guest TSC" snapshot prior to enabling
+    IRQs/preemption
+  KVM: x86: Drop unnecessary CPU pinning when computing/getting kvmclock
+  KVM: x86: Move "no master clock" fallback from __get_kvmclock() to
+    get_kvmclock()
+  KVM: x86: Disable preemption, not IRQs, when getting TSC+freq pair
+  KVM: x86: Make master clock logic in guest PV clock updates 64-bit
+    only
+
+ arch/x86/include/asm/kvm_host.h |   6 +-
+ arch/x86/kvm/cpuid.c            |   3 +-
+ arch/x86/kvm/msrs.c             |   3 +-
+ arch/x86/kvm/svm/svm.c          |   3 +-
+ arch/x86/kvm/vmx/vmx.c          |  10 +
+ arch/x86/kvm/x86.c              | 332 ++++++++++++++++++--------------
+ arch/x86/kvm/x86.h              |   3 +-
+ 7 files changed, 212 insertions(+), 148 deletions(-)
+
+
+base-commit: 51ba04112e93ac6e04c627eddcea5caf9cbc0134
+-- 
+2.55.0.571.g244d577d93-goog
+
