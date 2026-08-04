@@ -1,391 +1,156 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47932456294
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62092AD37
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785877254; cv=none; b=t+ol3nv6Q3zwW4kYQq5XCp4581sc3jqEXKmJvM9WhdxkHyt8VutB1+r43aBXru0l7skmH9zDTyDlYzVr4wagtx6p0yC7BZmjj5aBYlVDZ7iKcqJr4J/JxJR8ybu7ThVV0HGie1/DbqMxFz8cpdNzV5SGa8Ej+J5VkNgXboQxEIc=
+	t=1785877589; cv=none; b=YQvgs4q5hd1oX+OfEl8HXYXO6l5BMjykOX7P+X8PQyxc9X2FSPg+/mrk1tDHU17P3SVNc/ZZdzClCbZ3KAyDIlk36pKw8BxxFUAtXwat8B2xw76Dv/Q3MkPDf1UJwcerdEWMknpxwR3EWRdo+SHfK71FL3zPSbgby/iuIIus3ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785877254; c=relaxed/simple;
-	bh=em8bPXQa0YuZKpitLGdX8Arr46v4OS1CF/jT2aLBt9E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AgFYWC0uDOUBlbnDoaCjCAK0pO9QP3FTPU5vXw34xyldzX09f+gXjqz5ch/vYH+0FtWFsTpRaxemCtIRvlJsH48GwbQBU/szeU+sQyvc4mrH2fx5Mb8ldxG04AqnabeaclP4Iq47AaI3RULyO5dI5lUPFz/jhFwjyFxKHusHMQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lT4oYB8Y; arc=none smtp.client-ip=209.85.215.197
+	s=arc-20240116; t=1785877589; c=relaxed/simple;
+	bh=pfxpbIeNFSc0ZoYnjnPfD4XHfZ+dclFczBOLL7vzNQ4=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=dqDWUvb8lNMNe7uvvF7eGuAru3eoRLrwjXYsmgvP8R1At0ZQ9zynxNBqPZaXa28CbKlnHih9U0BxIKr03Gk1RFbhLq8LfI/0Wci+MZ3PBUQstdohY6wPgXeOzbjHZxvSf3SqrEbhMMjuuLNQo3WPZVe4eymvdxfW6c5/teBqNMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAxrX+kA; arc=none smtp.client-ip=209.85.167.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lT4oYB8Y"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cab3e9cd922so138705a12.0
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:00:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAxrX+kA"
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ad778bacbeso361157b6e.1
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:06:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785877251; x=1786482051; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=4aF4iKSC/QTxE4ElqXy+N1MAZBWw4jL4Lqpu34binwo=;
-        b=lT4oYB8YkmeM2T3G02iHJ48K4Y62ijPih2HnhSibOcgmu7fv8Jaa+74gp/IwHG2hTF
-         poZN3zeXWl64LCMug35aIrH3gA+3jxrTHgWPV6VFepY9R+XyOxV+TrrjLdZnjc3yKq6P
-         4zR1jfSS8lxofFpRaVtmTQhPTTyuIRIBbz2GoqXNAIHs16p3MbeHEklDyTXj3vcoyLgI
-         S174pqESlxO9zYcIMJgSK8dpCba35WR/Nc8hEp8l6hCUDaWjkQSbqrgU96RGNSrM/pYL
-         11+TDdNIFk/EgG4nPvTHJj1BtBEgZnoRN5grxIC5PVqt5jYtDrliYoFsbdUlVNFKysw1
-         tOAQ==
+        d=google.com; s=20251104; t=1785877587; x=1786482387; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i5gQ2rzJspE7/RJU8+W1PyPQZBbheaHsGbRmii6HKrA=;
+        b=VAxrX+kA5FQwKeL5zZ9VscSZ9ZYnlN6k0HLBpqDAV1U028F5dQuAUi3W6WCaWpSzD7
+         oktkwBhVvrbJ9Nenh67kHwEZW+eMlofty50B3CQk/m/J5u+INJkq6RmjzAXOomgY7ROg
+         KHby4ZSeCHgVS4P7phUdcXmWnJN3ySMnXkRRgcL0OBdoeqbCUDHH9et3n+YMVcoiBMPJ
+         nUCL8Pgl/8UirWZYl7x2Av2mh3G70Anvdz3+RQTag9dxzHiGDl/pm+WR4jSbd3n6n3vX
+         Y8ET3vSwLdfYpjQu0Mg5wLZk8yEKcfiCNr9Tto/QD8hievdduOqqMWC8685g8+TmMA74
+         K/uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785877251; x=1786482051;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4aF4iKSC/QTxE4ElqXy+N1MAZBWw4jL4Lqpu34binwo=;
-        b=S7cGTAYMVcnav7kcYFhMLSt3Bw6ZwDxEeH6lVlE18/pnZ7YrImYBoDX1syJUVHz6bQ
-         qw9aZ3Dkwav65KlFv2REC39l9ejqwsRi3qwCIebLca/ceRB8af4ky8Hz720QRJDRfpYm
-         JnxHTXoHh0d/HtgYJQWTzkO9OVTYw59Qk6LZFEQ4TdklnmcWiCkyZNfwRYZju7eXrVAB
-         b8EEfmYaNTJSiFB9wJ5h6gBSL1gQ16h+hq0RdK4gSY7+74/3Mqjb7ys/oduFkYQRLJJP
-         k0g6vw2wI2kw2eMQuPOyyV0jpanHN5qBIJiWUMz7wl40TJB443qR0zoiy9WDqAOuQiIC
-         tKZw==
-X-Gm-Message-State: AOJu0YyeCgV8KWarx2mmUrxf1S+ciRW13/cD+RKUN+1C+zRtffh42yfq
-	O8aQ+qpuqTJwAwr80Nzq+HfWDyL56HhPtrHR1MDKyK8kKkfA7INAUG8Lf1o5bSqMXESPBFd2BtE
-	+Pc1ybw==
-X-Received: from pgbl13.prod.google.com ([2002:a63:570d:0:b0:c88:868c:a1c2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:44cd:b0:84e:216d:7e4e
- with SMTP id d2e1a72fcca58-84f2e031748mr1536968b3a.1.1785877251181; Tue, 04
- Aug 2026 14:00:51 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  4 Aug 2026 14:00:46 -0700
-In-Reply-To: <20260804210046.3413149-1-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1785877587; x=1786482387;
+        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i5gQ2rzJspE7/RJU8+W1PyPQZBbheaHsGbRmii6HKrA=;
+        b=UzhKADTmFad5sShuLfBBaiHSWd4g0QztnJqQjlVnxJtB2hEilPlvYYay6kElNu0NzK
+         AjG0l7Z70R6WRFuZHDUZCk3CSGedNldWu8asKgBAVjwh6F1DTfbRsYhp0EKIwbRbo4rj
+         45wCtU5tFhtcS9s78/p3C0nI+PVPkZbCzNj1jS2qFtbi7iXNRqCjC2CwdLgX1ru6XbEd
+         NWSYo9/Ox+DDuTMmmpxYvCQfERNh26W1h8an+ZZvOSOHMjNMemOL9FVSvfbjc/U+emPi
+         rnF9w6lODtP0E6jQlt8xYUID4bQH1yUUryK9uXCGZOfZlWGGyhXUWcaDH/p3oUHfBBfs
+         5hDQ==
+X-Gm-Message-State: AOJu0Yw1fUpx1Ij0o6LzwkMnlMvHkQYcoJ2DI7W1gJde4xpyy2NZcXA/
+	Ab7yLV35yb/A5i3B9gHcaJVBqJaxHUxNdU8PTb2ON5Y6a03dYtq3l2kgO2L4EiUzH2UFCc7q4sm
+	8jUje3YLcjXZoyRAnfVr+wVv2SA==
+X-Received: from ilhw4.prod.google.com ([2002:a92:ad04:0:b0:507:c444:90fb])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:1587:b0:487:61da:70fb with SMTP id 5614622812f47-4afae0c7caamr886481b6e.10.1785877586456;
+ Tue, 04 Aug 2026 14:06:26 -0700 (PDT)
+Date: Tue, 04 Aug 2026 21:06:25 +0000
+In-Reply-To: <2941da1a-b0b4-47a6-b57c-b28703dc0454@linaro.org> (message from
+ James Clark on Mon, 27 Jul 2026 12:04:17 +0100)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260804210046.3413149-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804210046.3413149-3-seanjc@google.com>
-Subject: [PATCH v3 2/2] KVM: selftests: Create one VM with many vCPUs for each
- major PMU counters test
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <gsntse4tvbn2.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v8 00/21] ARM64 PMU Partitioning
+From: Colton Lewis <coltonlewis@google.com>
+To: James Clark <james.clark@linaro.org>
+Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
+	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
+	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-To reduce the runtime of the PMU counters test by an order of magnitude,
-create one VM per category of test (arch events, GP PMCs, fixed PMCs),
-with N vCPUs per VM, where 'N' is the number of testscases to run per
-category.  The vast majority of the test's runtime is spent creating VMs,
-because while creating a VM only takes a few milliseconds, the total time
-adds up when creating hundreds of VMs.  The only reason the test creates
-so many VMs is because KVM disallows changing the virtual PMU model after
-a vCPU runs, so rather than create an entirely new VM just to get a "fresh"
-vCPUs, simply use a different vCPU.
+James Clark <james.clark@linaro.org> writes:
 
-On an Emerald Rapids host, this reduces the runtime from 75+ seconds to
-less than 6 seconds.
+> On 23/07/2026 9:57 pm, Colton Lewis wrote:
+>> James Clark <james.clark@linaro.org> writes:
+>>>>> When running the guest on a single CPU I get different counts for the
+>>>>> same event for a single process, although this never happens on a  
+>>>>> host.
+>>>>> I think there might even be some Perf tests which expect them to be  
+>>>>> the
+>>>>> same, and this doesn't depend on whether any events are running on the
+>>>>> host or not. Not sure if you ran all the Perf selftests in a guest or
+>>>>> not?
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- .../selftests/kvm/x86/pmu_counters_test.c     | 211 ++++++++++--------
- 1 file changed, 121 insertions(+), 90 deletions(-)
+>>>> I'll investigate but I'm not sure perf is intended to guarantee
+>>>> that. perf stat just runs the event counters but may not write or read
+>>>> them at exactly the same time.
 
-diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-index 8abf17cc9469..08bfa82d7ab8 100644
---- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-+++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-@@ -87,14 +87,18 @@ static struct kvm_intel_pmu_event intel_event_to_feature(u8 idx)
- 	return __intel_event_to_feature[idx];
- }
- 
--static struct kvm_vm *pmu_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu,
--						  void *guest_code,
--						  u8 pmu_version,
--						  u64 perf_capabilities)
-+static struct kvm_vm *pmu_vm_create_with_vcpus(u32 nr_vcpus, void *guest_code,
-+					       u8 pmu_version,
-+					       u64 perf_capabilities,
-+					       struct kvm_vcpu **__vcpus[])
- {
-+	struct kvm_vcpu **vcpus = calloc(nr_vcpus, sizeof(*vcpus));
- 	struct kvm_vm *vm;
-+	int i;
- 
--	vm = vm_create_with_one_vcpu(vcpu, guest_code);
-+	*__vcpus = vcpus;
-+
-+	vm = vm_create_with_vcpus(nr_vcpus, guest_code, vcpus);
- 	sync_global_to_guest(vm, kvm_pmu_version);
- 	sync_global_to_guest(vm, hardware_pmu_arch_events);
- 
-@@ -102,13 +106,22 @@ static struct kvm_vm *pmu_vm_create_with_one_vcpu(struct kvm_vcpu **vcpu,
- 	 * Set PERF_CAPABILITIES before PMU version as KVM disallows enabling
- 	 * features via PERF_CAPABILITIES if the guest doesn't have a vPMU.
- 	 */
--	if (kvm_has_perf_caps)
--		vcpu_set_msr(*vcpu, MSR_IA32_PERF_CAPABILITIES, perf_capabilities);
-+	for (i = 0; i < nr_vcpus; i++) {
-+		if (kvm_has_perf_caps)
-+			vcpu_set_msr(vcpus[i], MSR_IA32_PERF_CAPABILITIES, perf_capabilities);
-+
-+		vcpu_set_cpuid_property(vcpus[i], X86_PROPERTY_PMU_VERSION, pmu_version);
-+	}
- 
--	vcpu_set_cpuid_property(*vcpu, X86_PROPERTY_PMU_VERSION, pmu_version);
- 	return vm;
- }
- 
-+static void pmu_vm_free(struct kvm_vm *vm, struct kvm_vcpu **vcpus)
-+{
-+	kvm_vm_free(vm);
-+	free(vcpus);
-+}
-+
- static void run_vcpu(struct kvm_vcpu *vcpu)
- {
- 	struct ucall uc;
-@@ -326,30 +339,72 @@ static void guest_test_arch_events(void)
- 	GUEST_DONE();
- }
- 
--static void test_arch_events(u8 pmu_version, u64 perf_capabilities,
--			     u8 length, u32 unavailable_mask)
-+static void __test_arch_events(struct kvm_vcpu *vcpu, u64 perf_capabilities,
-+			       u8 length, u32 unavailable_mask)
- {
--	struct kvm_vcpu *vcpu;
--	struct kvm_vm *vm;
--
--	/* Testing arch events requires a vPMU (there are no negative tests). */
--	if (!pmu_version)
--		return;
--
- 	unavailable_mask &= GENMASK(X86_PROPERTY_PMU_EVENTS_MASK.hi_bit,
- 				    X86_PROPERTY_PMU_EVENTS_MASK.lo_bit);
- 
--	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_arch_events,
--					 pmu_version, perf_capabilities);
--
- 	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_EBX_BIT_VECTOR_LENGTH,
- 				length);
- 	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_EVENTS_MASK,
- 				unavailable_mask);
- 
- 	run_vcpu(vcpu);
-+}
- 
--	kvm_vm_free(vm);
-+static void test_arch_events(u8 pmu_version, u64 perf_capabilities)
-+{
-+	struct kvm_vcpu **vcpus;
-+	struct kvm_vm *vm;
-+	int i = 0;
-+	u32 k;
-+	u8 j;
-+
-+	/*
-+	 * To keep the total runtime reasonable, test only a handful of select,
-+	 * semi-arbitrary values for the mask of unavailable PMU events.  Test
-+	 * 0 (all events available) and all ones (no events available) as well
-+	 * as alternating bit sequencues, e.g. to detect if KVM is checking the
-+	 * wrong bit(s).
-+	 */
-+	const u32 unavailable_masks[] = {
-+		0x0,
-+		0xffffffffu,
-+		0xaaaaaaaau,
-+		0x55555555u,
-+		0xf0f0f0f0u,
-+		0x0f0f0f0fu,
-+		0xa0a0a0a0u,
-+		0x0a0a0a0au,
-+		0x50505050u,
-+		0x05050505u,
-+	};
-+
-+	pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
-+		pmu_version, perf_capabilities);
-+
-+	/* Testing arch events requires a vPMU (there are no negative tests). */
-+	if (!pmu_version)
-+		return;
-+
-+	vm = pmu_vm_create_with_vcpus((NR_INTEL_ARCH_EVENTS + 2) * (ARRAY_SIZE(unavailable_masks) - 1),
-+				      guest_test_arch_events, pmu_version,
-+				      perf_capabilities, &vcpus);
-+
-+	/*
-+	 * Test single bits for all PMU version and lengths up the number of
-+	 * events +1 (to verify KVM doesn't do weird things if the guest length
-+	 * is greater than the host length).  Explicitly test a mask of '0' and
-+	 * all ones i.e. all events being available and unavailable.
-+	 */
-+	for (j = 0; j <= NR_INTEL_ARCH_EVENTS + 1; j++) {
-+		for (k = 1; k < ARRAY_SIZE(unavailable_masks); k++)
-+			__test_arch_events(vcpus[i++], perf_capabilities, j,
-+					   unavailable_masks[k]);
-+	}
-+
-+	pmu_vm_free(vm, vcpus);
- }
- 
- /*
-@@ -493,21 +548,26 @@ static void guest_test_gp_counters(void)
- 	GUEST_DONE();
- }
- 
--static void test_gp_counters(u8 pmu_version, u64 perf_capabilities,
--			     u8 nr_gp_counters)
-+static void test_gp_counters(u8 pmu_version, u64 perf_capabilities)
- {
--	struct kvm_vcpu *vcpu;
-+	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
-+	struct kvm_vcpu **vcpus;
- 	struct kvm_vm *vm;
-+	u8 j;
- 
--	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_gp_counters,
--					 pmu_version, perf_capabilities);
-+	pr_info("Testing %u GP counters, PMU version %u, perf_caps = %lx\n",
-+		nr_gp_counters, pmu_version, perf_capabilities);
- 
--	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_NR_GP_COUNTERS,
--				nr_gp_counters);
-+	vm = pmu_vm_create_with_vcpus(nr_gp_counters + 1, guest_test_gp_counters,
-+				      pmu_version, perf_capabilities, &vcpus);
- 
--	run_vcpu(vcpu);
-+	for (j = 0; j <= nr_gp_counters; j++) {
-+		vcpu_set_cpuid_property(vcpus[j], X86_PROPERTY_PMU_NR_GP_COUNTERS, j);
- 
--	kvm_vm_free(vm);
-+		run_vcpu(vcpus[j]);
-+	}
-+
-+	pmu_vm_free(vm, vcpus);
- }
- 
- static void guest_test_fixed_counters(void)
-@@ -559,59 +619,53 @@ static void guest_test_fixed_counters(void)
- 	GUEST_DONE();
- }
- 
--static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities,
--				u8 nr_fixed_counters, u32 supported_bitmask)
-+static void __test_fixed_counters(struct kvm_vcpu *vcpu, u8 nr_fixed_counters,
-+				  u32 supported_bitmask)
- {
--	struct kvm_vcpu *vcpu;
--	struct kvm_vm *vm;
--
--	vm = pmu_vm_create_with_one_vcpu(&vcpu, guest_test_fixed_counters,
--					 pmu_version, perf_capabilities);
--
- 	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_FIXED_COUNTERS_BITMASK,
- 				supported_bitmask);
- 	vcpu_set_cpuid_property(vcpu, X86_PROPERTY_PMU_NR_FIXED_COUNTERS,
- 				nr_fixed_counters);
- 
- 	run_vcpu(vcpu);
--
--	kvm_vm_free(vm);
- }
- 
--static void test_intel_counters(void)
-+static void test_fixed_counters(u8 pmu_version, u64 perf_capabilities)
- {
- 	u8 nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
--	u8 nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
-+	struct kvm_vcpu **vcpus;
-+	struct kvm_vm *vm;
-+	int i = 0;
-+	u32 k;
-+	u8 j;
-+
-+	pr_info("Testing %u fixed counters, PMU version %u, perf_caps = %lx\n",
-+		nr_fixed_counters, pmu_version, perf_capabilities);
-+
-+
-+	vm = pmu_vm_create_with_vcpus((nr_fixed_counters + 1) * BIT(nr_fixed_counters),
-+				      guest_test_fixed_counters,
-+				      pmu_version, perf_capabilities, &vcpus);
-+
-+	for (j = 0; j <= nr_fixed_counters; j++) {
-+		for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
-+			__test_fixed_counters(vcpus[i++], j, k);
-+	}
-+
-+	pmu_vm_free(vm, vcpus);
-+}
-+
-+static void test_intel_counters(void)
-+{
- 	u8 pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
- 	unsigned int i;
--	u8 v, j;
--	u32 k;
-+	u8 v;
- 
- 	const u64 perf_caps[] = {
- 		0,
- 		PMU_CAP_FW_WRITES,
- 	};
- 
--	/*
--	 * To keep the total runtime reasonable, test only a handful of select,
--	 * semi-arbitrary values for the mask of unavailable PMU events.  Test
--	 * 0 (all events available) and all ones (no events available) as well
--	 * as alternating bit sequencues, e.g. to detect if KVM is checking the
--	 * wrong bit(s).
--	 */
--	const u32 unavailable_masks[] = {
--		0x0,
--		0xffffffffu,
--		0xaaaaaaaau,
--		0x55555555u,
--		0xf0f0f0f0u,
--		0x0f0f0f0fu,
--		0xa0a0a0a0u,
--		0x0a0a0a0au,
--		0x50505050u,
--		0x05050505u,
--	};
--
- 	/*
- 	 * Test up to PMU v5, which is the current maximum version defined by
- 	 * Intel, i.e. is the last version that is guaranteed to be backwards
-@@ -647,32 +701,9 @@ static void test_intel_counters(void)
- 			if (!kvm_has_perf_caps && perf_caps[i])
- 				continue;
- 
--			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
--				v, perf_caps[i]);
--
--			/*
--			 * Test single bits for all PMU version and lengths up
--			 * the number of events +1 (to verify KVM doesn't do
--			 * weird things if the guest length is greater than the
--			 * host length).  Explicitly test a mask of '0' and all
--			 * ones i.e. all events being available and unavailable.
--			 */
--			for (j = 0; j <= NR_INTEL_ARCH_EVENTS + 1; j++) {
--				for (k = 1; k < ARRAY_SIZE(unavailable_masks); k++)
--					test_arch_events(v, perf_caps[i], j, unavailable_masks[k]);
--			}
--
--			pr_info("Testing GP counters, PMU version %u, perf_caps = %lx\n",
--				v, perf_caps[i]);
--			for (j = 0; j <= nr_gp_counters; j++)
--				test_gp_counters(v, perf_caps[i], j);
--
--			pr_info("Testing fixed counters, PMU version %u, perf_caps = %lx\n",
--				v, perf_caps[i]);
--			for (j = 0; j <= nr_fixed_counters; j++) {
--				for (k = 0; k <= (BIT(nr_fixed_counters) - 1); k++)
--					test_fixed_counters(v, perf_caps[i], j, k);
--			}
-+			test_arch_events(v, perf_caps[i]);
-+			test_gp_counters(v, perf_caps[i]);
-+			test_fixed_counters(v, perf_caps[i]);
- 		}
- 	}
- }
--- 
-2.55.0.571.g244d577d93-goog
 
+>>> Is that true? The perf core calls perf_pmu_disable() when a process is
+>>> scheduled out before reading the count of each event of that process in
+>>> an inner loop. The perf_pmu_disable() clears PMCR_EL0.E which freezes
+>>> all of the counters so they can be read out in a consistent state.
+
+>>> It's important that they're all stopped at the same time because
+>>> counters might be used in metrics as ratios of each other. So I think
+>>> it's deliberately designed that way and appears to not be working in a
+>>> guest now.
+
+>> By default I think perf assumes events can be measured independently, If
+>> you want to guarantee events are scheduled together to avoid measurement
+>> skew you need to make sure the events are grouped.
+
+>> The common way to do that is with {} around the event list:
+
+>> perf stat -e {branches,branches}
+
+>> Please see if that resolves the issue.
+
+
+> Groups only change how the events are scheduled, not how the driver
+> starts or stops multiple events running on the same PMU (grouped or
+> ungrouped). In my repro I had less events than counters in HW, so they
+> will always be scheduled at the same time regardless of grouping.
+
+> I did notice something extra though, you have to first open some amount
+> of counters, and then open more than that. Then the second time the ones
+> with different counts will be however many were opened first time, as if
+> some state has stuck.
+
+> For example if I open two counters then 6, the first two always have
+> different counts the second time:
+
+>     $ perf stat -e branches,branches true
+
+>     Performance counter stats for 'true':
+
+>               106129      branches
+
+>               106129      branches
+
+
+
+>     $ perf stat -e
+> '{branches,branches,branches,branches,branches,branches}' true
+
+>     Performance counter stats for 'true':
+
+>               117013      branches
+
+>               117013      branches
+
+>               110364      branches
+
+>               110364      branches
+
+>               110364      branches
+
+>               110364      branches
+
+
+> After opening 6 again a third time they'll all have the same counts.
+
+Interesting. Thanks. To clarify, is this happening in the host or VM?
