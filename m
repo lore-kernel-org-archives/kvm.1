@@ -1,164 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387F236B913;
-	Tue,  4 Aug 2026 12:21:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3F736C9C5
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785846090; cv=none; b=AqcZmpomYIDVqgMTH7euv+FfhLMnLVSZ8+96ij+6lsNIY1mXkz4kWaQivD/t7gUK2YGgccH+vn3G4FXGP/KrJLgHScCLQdoBsBson3BeDR7cn3jFN0jzHKf5SUN+julbvsQCu4bUUKB25L/YwRjrzgA7hWqMq2m3dQ4H1DgaQno=
+	t=1785846128; cv=none; b=ddcA5Ke8Dn0E3z46W2Z81RrKelxEFv9iZYOfJVTcZgsfc7ofZbTJDGTKQayjMQlOO7Te3XAktYI//EOKwEmltwHA5Sx7qJ1TTp90xWxjQ9O81YMHjnU3YLRfxdrCM7egRZlbHhN9YjzvQ9YIK9BmTGUuFHHhEHN0C4n+E/tusME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785846090; c=relaxed/simple;
-	bh=XCL9NpbPTUjxmZ1Fc4OINbyssUaMCbHdLP4qT/cwdr4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Ogvjoa4+U99cs/a//Nm+kW83fIpyXHou9qVg4E1pmFIlN3ka1dI2F2S0lP5I+Bbpvr2oKDSrr71UEiMLbySYaxqH8nGPimxhZLtuc3mlNHyNGZg4g9MJyfrgyrWw9VYpV0oJNzZA3X50zzgwGibtQHrcu7U1ER5dgElwP2DdcH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DiuuEZI2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785846128; c=relaxed/simple;
+	bh=K1XdpXzCqeMfT3gx1+GfQWAVnbTVzSRrQini9XusnHU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TWvtTHECoRTZGKZc+veBuAlsF0OrvL5/lK4Pcz6Xj3QxuFkWN8iEWhaXsg0HMTsxFiC1n+X2+jNV6gucJDtLF8mgzKu2doVMexgB2qTmmNxHgxauls/DrcJWGxLjHE2h8mjZj5nZM3apEquFhV2ah2xCcf2waivEnco/EeWXyBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CfJXDJ8H; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DiuuEZI2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838941F000E9;
-	Tue,  4 Aug 2026 12:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785846088;
-	bh=o55X5EFKDdd4NmpGuUIhEgn6r1Pm62pKmqmPFQ0Ddcc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=DiuuEZI2RRusBtL5jmfkXQFLnbUUrLU0bLUQyArSzaN0mkHHiy9OrjIe/uMVn8qte
-	 G8wN1I4kOJfD6tRhsIusXlMUL+9OulBHlOsJNVxvP5du1rcQYpZTZrO6RdTFJa9Uc4
-	 xvLS4tjGAtC4QTizAb2cyrhdqlWigw4Nkr1Xh7a5dHCjNxuW1wD/LBJMnUafrU74XT
-	 eri6NgYlIDeNEYTjlhC+wVZhOxl/xPrLG/qZgO4Pt9Y3+yOQQSYVolT7gwb9JDHStl
-	 2lexK1CZU5jgJ8e9buLvtTVZqwk5p/xO5weBTz6ifb4UFhvUHPE5xsxTr6a9hrXh7z
-	 ShuMnXGMvqpmw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable
- PTEs when mkwrite is in use
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, dri-devel@lists.freedesktop.org, kvm@vger.kernel.org
-In-Reply-To: <20260804120529.1730187-4-pbonzini@redhat.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
- <20260804120529.1730187-4-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 12:21:28 +0000
-Message-Id: <20260804122128.838941F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CfJXDJ8H"
+X-Forwarded-Encrypted: i=1; AHgh+RrZw9+ywK1yg5nyncHDXSpH+FfLnEAALye3IPkDJ3lRSL+qRVMkDByOJgJUxCSnBKv8pAo=@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785846124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K1XdpXzCqeMfT3gx1+GfQWAVnbTVzSRrQini9XusnHU=;
+	b=CfJXDJ8HCWGw0clNvnJdQayGbEcF4R/memE/kwOj8wlemm+gjFopmITdcCPUHE0HKwMyPk
+	dj6IJ9sqJLX4K3+mT/FsMh+V+XSr8wP0FXSMrciug2/npTbhKIumiZ2gV/o3j6BU1KxFmC
+	G8Gw9DJR5a4AjAnlnuFUabuPxAxYpgw=
+X-Gm-Message-State: AOJu0Yz4GMtOKRBz3LBw3NJdchTdnBNXwd1bbGwFRT7wlkH4GF8FK3WV
+	VhoskSVgtxSSZbXQyOgpthf9s8oTsXSSKZB73e9nFvR9eyDLpuRugLkrJOHp58fqNzr1OGoPfI+
+	bpuIK8Zs8/HJyhBii+kRToR/EwCOkT9DBCpQiZ2ID
+X-Received: by 2002:a05:622a:8349:b0:51b:ff0a:2048 with SMTP id
+ d75a77b69052e-52ce3f3c749mr201921cf.3.1785846085744; Tue, 04 Aug 2026
+ 05:21:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260715142841.80544-1-steven.price@arm.com> <20260715142841.80544-16-steven.price@arm.com>
+ <865x1rcvfw.wl-maz@kernel.org> <f971d029-84d9-4c66-9875-36fa8f1a2a1b@arm.com>
+ <86zez3b6ps.wl-maz@kernel.org> <7beafe29-0c5e-418b-8797-190f1850b18a@arm.com>
+In-Reply-To: <7beafe29-0c5e-418b-8797-190f1850b18a@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Fuad Tabba <fuad.tabba@linux.dev>
+Date: Tue, 4 Aug 2026 13:20:48 +0100
+X-Gmail-Original-Message-ID: <CA+EHjTx751071VhZPf6ABaZngTqOdPG+_aVLCTct_G_ksfYviA@mail.gmail.com>
+X-Gm-Features: AUfX_mxGnxORLKO8iAowkYu9tpNhSCXZ535sQNq-ffLHKfhzkRZPZxsKS-feAzQ
+Message-ID: <CA+EHjTx751071VhZPf6ABaZngTqOdPG+_aVLCTct_G_ksfYviA@mail.gmail.com>
+Subject: Re: [PATCH v15 15/37] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
+To: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei <alexandru.elisei@arm.com>, 
+	Christoffer Dall <christoffer.dall@arm.com>, linux-coco@lists.linux.dev, 
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
+	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Quentin Perret <qperret@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Migadu-Flow: FLOW_OUT
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Hi Suzuki,
 
-New issues:
-- [High] Missing dirty page tracking in vmw_bo_vm_fault() when prefaulting =
-fails, leading to silent data loss.
++ Quentin (who's on leave, but for when he gets back)
 
-Pre-existing issues:
-- [High] Inverted error handling logic in ttm_bo_vm_fault_reserved() hides =
-primary fault errors and propagates prefault errors.
---
+On Mon, 3 Aug 2026 at 16:30, Suzuki K Poulose <suzuki.poulose@arm.com> wrote:
+...
+> > I.e don't hack into the API. Use the information you already have to
+> > decide whether you need to use the existing API at all.
+> >
+> > If that cannot be done for whatever reason, then you need to indirect
+> > the call with a set of operations that leave the existing code
+> > untouched.
+>
+> Please let us know if you think we need to explore this ^ ?
 
---- Patch [3]: [PATCH v2 3/6] drm/ttm, drm/vmwgfx: directly create writable=
- PTEs when mkwrite is in use ---
-commit 2f0ecb57a3fc3ac93f0458269dd5ea847c608a25
-Author: Paolo Bonzini <pbonzini@redhat.com>
-Subject: drm/ttm, drm/vmwgfx: directly create writable PTEs when mkwrite is=
- in use
+FWIW, pKVM already has this kind of indirection: in protected mode,
+the kvm_pgtable_stage2_* calls in mmu.c dispatch to the
+pkvm_pgtable_stage2_* wrappers through KVM_PGT_FN(), and the callers
+don't branch. It is global today because pKVM owns the whole host, but
+a per-VM version would let the CCA backend handle the filter and the
+IPA aliasing internally, keeping __unmap_stage2_range()'s signature
+intact. That should work for pKVM as well.
 
-This patch modifies TTM BO fault handling to explicitly request writable
-PTEs for the primary page when mkwrite is in use. It also updates vmwgfx
-to manually record write faults since the .pfn_mkwrite() callback is no
-longer invoked for the primary page.
-
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo=
-_vm.c
-> index a80510489c456..3ebde936ce608 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-
-[ ... ]
-
-> @@ -242,6 +243,7 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *=
-vmf,
->  	 * Speculatively prefault a number of pages. Only error on
->  	 * first page.
->  	 */
-> +	mkwrite =3D !!(vmf->flags & FAULT_FLAG_WRITE);
->  	for (i =3D 0; i < num_prefault; ++i) {
->  		if (bo->resource->bus.is_iomem) {
->  			pfn =3D ttm_bo_io_mem_pfn(bo, page_offset);
-> @@ -263,9 +265,10 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault =
-*vmf,
->  		 * at arbitrary times while the data is mmap'ed.
->  		 * See vmf_insert_pfn_prot() for a discussion.
->  		 */
-> -		ret =3D vmf_insert_pfn_prot(vma, address, pfn, prot);
-> +		ret =3D vmf_insert_pfn_prot_mkwrite(vma, address, pfn, prot, mkwrite);
-> =20
-> -		/* Never error on prefaulted PTEs */
-> +		/* Never error on prefaulted PTEs and never map them writable */
-> +		mkwrite =3D false;
->  		if (unlikely((ret & VM_FAULT_ERROR))) {
->  			if (i =3D=3D 0)
->  				return VM_FAULT_NOPAGE;
->  			else
->  				break;
->  		}
-
-[Severity: High]
-This is a pre-existing issue, but does this error handling logic for
-ttm_bo_vm_fault_reserved() behave backwards?
-
-If vmf_insert_pfn_prot_mkwrite() fails for the primary page (i =3D=3D 0),
-returning VM_FAULT_NOPAGE hides the error from the fault handler,
-potentially causing an infinite page fault loop.
-
-Conversely, if a speculative prefault (i > 0) fails, the loop breaks
-and the error is propagated to the fault handler, which might cause
-a spurious process crash even though the primary fault succeeded.
-
-
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm=
-/vmwgfx/vmwgfx_page_dirty.c
-> index 45561bc1c9eff..3099558c0762f 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-
-[ ... ]
-
-> @@ -484,6 +487,9 @@ vm_fault_t vmw_bo_vm_fault(struct vm_fault *vmf)
->  		prot =3D vm_get_page_prot(vma->vm_flags);
-> =20
->  	ret =3D ttm_bo_vm_fault_reserved(vmf, prot, num_prefault);
-> +	if (ret =3D=3D VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
-> +		WARN_ON_ONCE(vmw_bo_dirty_mkwrite(vmf, bo));
-> +
->  	if (ret =3D=3D VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT=
-))
->  		return ret;
-> =20
-
-[Severity: High]
-If a speculative prefault fails inside ttm_bo_vm_fault_reserved(), will
-this skip tracking the dirty page and lead to silent data loss?
-
-Because the primary page is successfully mapped writable before the prefault
-loop continues:
-
-ttm_bo_vm_fault_reserved()
-    ret =3D vmf_insert_pfn_prot_mkwrite(vma, address, pfn, prot, mkwrite);
-    // ... prefault loops to next page and fails ...
-    break; // returns the error
-
-The error is returned to vmw_bo_vm_fault(), meaning ret is not
-VM_FAULT_NOPAGE.
-
-This check is skipped, leaving the primary page mapped writable without the
-driver marking it dirty.
-
-If the process survives the fault (e.g., by handling SIGBUS), could it
-then modify data without the driver tracking it?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804120529.1730=
-187-1-pbonzini@redhat.com?part=3D3
+Cheers,
+/fuad
