@@ -1,77 +1,258 @@
-Received: from out203-205-221-209.mail.qq.com (out203-205-221-209.mail.qq.com [203.205.221.209])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59F3B1009
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 15:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E523515C9;
+	Tue,  4 Aug 2026 15:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785857575; cv=none; b=KNxbHoZRWk2yCMAfVtScmSmqBSK7WmJQASzkGxmlAYCBXJLmPwH+11G6aQ2c95SRgEQjKzSo7YPxXJ+n6X/NCVQWW3GGVD0GIpy+xo3P2vlEgsW73pyz/JlZLUepnengaYlC3Ysv+WUpSy8uhQm2CeniVl3/mXjEF+4eAGvN9cg=
+	t=1785857598; cv=none; b=uq8oW3kThs3MYZp4Zxmqj76t7R122HzFfuDNPm7h9YzxxLInc8KVqbg99z1JMhRHlPigycFj/fw32qI57Z0Dp7bgwfRNiJBiv1cUDivSJABLj9QERIyX6gQN5M35B/0+hzA3El3SRyxw2Ppkn3UDZSffO/JdVgpdQUANnzzIZB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785857575; c=relaxed/simple;
-	bh=rthPXyk0iRCzdRdMD7r7ceKjzXMPZHFbOskRlPOR3QE=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=qrce1WszaYjT7BFCKgV05LE9+6SebamkYbnqSO18c+R3T8NFW2KzqSVRJgpBbvwduDTen55PDeY4IUkeKr+ys9itU0MGSF6AyhiljXWYatZPp7UWeqtYWSF25CGoTomgk9zX/LrNooghgvKd3w+dXJW6LHA5IdOSZHgyTcApbOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=eyEMwqvE; arc=none smtp.client-ip=203.205.221.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1785857598; c=relaxed/simple;
+	bh=dYq9jW2R3qmMFaWjd7MbN/kTfJNrAFA9BJigKH6JfpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ba5vsCbDXTnVDX/XklfZA/t0su1KjX1x+3jd0ewuqa1MM2bUxUCX8NZgXEXnuz7EyDE2yu2Q0dY23vkp9+qbHHSB9aq7o4Ra4mtOED6o80lmT3OUQiIkyTDEMaqKXZax/byGnpLgQVJvvBZqf41nLwP/+vl1OIvCzmunlDA2BBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rSgnqMk5; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="eyEMwqvE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1785857569;
-	bh=rthPXyk0iRCzdRdMD7r7ceKjzXMPZHFbOskRlPOR3QE=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=eyEMwqvEy05Ij2LS7RZAmq9AE0z8XI+1OiBJPBRQrUeFTHqnM93hZxksV+q67ZEGD
-	 HCoXI/kb72fR63oa5WQP2yW3OjAazsf3Fs/lIq8N41/MNjACXFEYUIOmx9urotzYPd
-	 gBuZvR1td/Q/Zi5vXXuTy32Px2HeV5BqZLsNFZe8=
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-XMAILINFO: M/BhhHt976mJj6yDh4z5r+91mooDvtzN6pC5rYB3CNVAMaUq53RKlsv39r07Jh
-	 6yp63CbkPH6yA/chgQxtV1WM7+Plhica9yMrH72EcBpuDeCauPVDtwxnVvlrfXMihTY/Jxj8Qf0QV
-	 aOETV5w9kYZEPZ0PFAsg6nWfQ+sgffAi1Z9CGEd0Syt9hDIc36RZQ/tNkjOJ8GZUbk6T51gK2LO7D
-	 uXH1aiQ3X1mtQsZ1Nv51RcWa8aNT1I+R7FlDx9HxUbAKgVkw1ETUK0hv8FnIjsS3iK0R/0foURZYI
-	 ovTPJrCk5ip4mWDne3ZvJE3oGL+NMYM3t8AytXZxD4PHgp+g6zWGwt4aAschLeBlLEdwlnyUXgPAv
-	 f9RCJWceSgQWZO9XrfmKnRbzM/MaAD8QH+iq7jb7C9SsdXJPIk8r20+Rf0VxR5BQ1BnVn1sbqk+yx
-	 tLQLqRjIL4ks7pMOOaqhaA9KMy12qFbiB37kzYYRrpz7AeKTPM2iFkAzVmaw4KA3IrFwfaU5xfHG3
-	 5ua0awIp6HhzxYFUNWTRHxiG3KeHs3SvJZSozxlEQ0l0gR+4D3q0UsV/lJUiiBV0D5k48Xilsz3qz
-	 qI6Q0gywi3UEg4u+wwq+vCZHnGlUR0o6GP7zKN79YiXcL6Ve2Rvfp0i6USiQ7Rke7QwuVSJSZzOsY
-	 GfhR45OnRA+BJc48nnQzUfOeEpddJc4q8RIL3kJD4X3zyQD9cgRlOOBuKE1bSDMFd1fo0z5E2HEf8
-	 9OGIVL/ABNVZ5LwCuJzcTzEY/05yzbJ/bxB3dLzbhGgjQjDllg2S4aWYWhB4/qfBomZBgy8mnCwoC
-	 coEx7IdxxlCjIz+d0SFf8pEzGKmCNFRVNVXhwFEjZUPsI912jx2UALoMqmcasmIVoZw/fNh6JuBWc
-	 ALncWfPAgC0+5iSGejRoU0wp4h4/c9eEGazPdUsodDjgjSXNLf+QvH9wHW7Btt308klR9h49q5Q0/
-	 9wtKmEPn4IUlkVWoBjcgtSl6u5EfBl2fXHTbBv+9NOkhrJr64vcy339hEeM/m1Q9fJXaZZg+Ttj/M
-	 9AcC0AGKNU0fQOX7SS3mpPEU/fKHcGauiJ5/qUzDjk8bAXGyf33+FMZZJCrAVBGYCkgMPjYRGNG0c
-	 DYlRC2jqCirp2Huo/64onrFy
-From: "=?utf-8?B?U2hlbiBZb25nY2hhbw==?=" <grayhat@foxmail.com>
-To: "=?utf-8?B?VG9tIExlbmRhY2t5?=" <thomas.lendacky@amd.com>, "=?utf-8?B?a3Zt?=" <kvm@vger.kernel.org>
-Cc: "=?utf-8?B?UGFvbG8gQm9uemluaQ==?=" <pbonzini@redhat.com>, "=?utf-8?B?U2VhbiBDaHJpc3RvcGhlcnNvbg==?=" <seanjc@google.com>, "=?utf-8?B?QXNoaXNoIEthbHJh?=" <ashish.kalra@amd.com>, "=?utf-8?B?cGdvbmRh?=" <pgonda@google.com>
-Subject: Re: [PATCH 1/2] KVM: SVM: Serialize the owner's mirror list in sev_migrate_from()
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rSgnqMk5"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674ClfEO3207664;
+	Tue, 4 Aug 2026 15:33:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XE02UJ
+	Romip4iJZkmfQ5moAwMXSOmCInqtS3WWhoUzM=; b=rSgnqMk5T2C2DGjhWYZhe3
+	7vNiDTx7M/pX+Ivykv8fJx9R8QJF2afOk0dnQDtbbI0b3y0Ilywu7XBEjrFi3wqI
+	mbxaohIst24XFl38RlMJyH9iOpDcDjYi1kKtXksD6vxe0KWKGitiGFUTZEd7XmIV
+	5a0bV45V0le01IblmChgOgkzrRAsd5dB1ll6AKlzEq/wN95CO7btP2AScQVITxQ7
+	sy6QdfKA8POEqv5DjqberuTSz3qf3wvtbRgdGCNI8dEwnBS4iJIWuUfxYoEmc3zF
+	6dxBiOn1Pf6UsitJ+GWtdNAaJRc7V3wlPnIDASHgbMnw1d7t80oLW1wfp7SFmwDA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqpgx5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 15:33:08 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674FQEJS010608;
+	Tue, 4 Aug 2026 15:33:07 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbgab60-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 15:33:07 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674FX5sC40763654
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 15:33:05 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6FB9C58057;
+	Tue,  4 Aug 2026 15:33:05 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5930C58062;
+	Tue,  4 Aug 2026 15:33:04 +0000 (GMT)
+Received: from [9.61.89.119] (unknown [9.61.89.119])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 15:33:04 +0000 (GMT)
+Message-ID: <45a47180-06c5-4e0e-90df-1e7f396f0a52@linux.ibm.com>
+Date: Tue, 4 Aug 2026 11:33:03 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 4 Aug 2026 23:32:46 +0800
-X-Priority: 3
-Message-ID: <tencent_CA128C6270F0E6592EA91DC804E9AA40E50A@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_625C0F42824E542C72B34733392AF2C49709@qq.com>
-	<e853c904-cfee-491f-85a0-162e1a3997d5@amd.com>
-In-Reply-To: <e853c904-cfee-491f-85a0-162e1a3997d5@amd.com>
-X-QQ-mid: xmsezc57-0t1785857566t3wynnxce
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 10/15] s390/vfio-ap: File ops called to resume the vfio
+ device migration
+To: sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Alex Williamson <alex@shazbot.org>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>
+References: <20260727173239.2420754-1-akrowiak@linux.ibm.com>
+ <20260727173239.2420754-11-akrowiak@linux.ibm.com>
+ <20260727181221.355E61F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260727181221.355E61F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: WSecPqoCJy3oRlmhObPKEhvvELTskCB_
+X-Proofpoint-ORIG-GUID: WSecPqoCJy3oRlmhObPKEhvvELTskCB_
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDEyMyBTYWx0ZWRfXywTYg6/F/hJj
+ VrFOajy8jg593p635Y3bLXZKfSzOaFSZGhy4vzUlPNEuoSXhsqhypb6ZrDQGUCRoMm2h1ntD6bN
+ A3ywu7mn0hPUfv3/agp/EEYOprYNMnE=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a720634 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=ydTiwiBtxl0LLes2vgoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDEyMyBTYWx0ZWRfX7qIA4qGuPeTI
+ VbP6TfqwoqBfHdgBpDiv93p5fFGDb47YPOj1DCaogr8SD7YTIfLHook2FSKRxUdbPurNJUPZVVW
+ 2Q0Tyo62oN4QvysolefRCVvbnQnvi/7RRkYbVPypKIKK+dy5a+/zZREouTdz2EW9X/CDQ0+GbKi
+ iZf7anbeY6G3AaNzr0wyvHHFYxQiHbU0db0ua/YaY36RBK2yb8TgKSKSkquoCXyK351hJgtIEoU
+ eXX8eUx8LcCf7Xqj55YUKZmW1HQ/9XrdlAmvPqq2KsC3mUVPA0VYWsw5gBDKiqPKD0gr3Rmearf
+ TfHoguKPGTTJ4BPnm/VC2hG1VEhs04yTUFUPP1EBkxZAqrhvCJKwcglIoNiL1PkTK4ZZWdszTaF
+ MXZF6LP2jVUQNwepKq5DL16A6jtOLT95JnMHqUxaS2hbiVI7CCMSXBLaOMxkV1U43WEpX7JB/4Y
+ mjsKL3DKuAckFB9CBWg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040123
 
-T24gOC80LzI2IDEwOjEzLCBUb20gTGVuZGFja3kgd3JvdGU6Cgo+IEZvciBmdXR1cmUgcmVm
-ZXJlbmNlLCB5b3Ugc2hvdWxkIHJ1biB5b3VyIHBhdGNoIHRocm91Z2gKPiBzY3JpcHRzL2dl
-dF9tYWludGFpbmVyLnBsIHNvIHRoYXQgeW91IGluY2x1ZGUgdGhlIHByb3BlciBwZW9wbGUv
-bGlzdHMgd2hlbgo+IHNlbmRpbmcgdGhlIHBhdGNoLCBlc3BlY2lhbGx5IHRoZSBvcmlnaW5h
-dG9yIG9mIHRoZSBwYXRjaCBiZWluZyBmaXhlZC4KCkFoLCBnb29kIHBvaW50IC0gbXkgdHJl
-ZSBoYWQgbm8gZ2l0IGhpc3RvcnksIHNvIGdldF9tYWludGFpbmVyLnBsCmNvdWxkbid0IHBv
-aW50IG1lIGF0IFBldGVyLiAgV2lsbCBrZWVwIGl0IGluIG1pbmQuCgpbK0NjIFBldGVyIEdv
-bmRhXQoKUGV0ZXIsIHRoaXMgb25lIGFuZCBpdHMgY29tcGFuaW9uICgyLzIsIHNldl92bV9k
-ZXN0cm95KSBmaXggcmFjZXMgaW4KdGhlIG1pcnJvciBsaXN0IGNvZGUgZnJvbSB5b3VyIGIy
-MTI1NTEzZGZjMC4KClNoZW4gWW9uZ2NoYW8=
+
+
+On 7/27/26 2:12 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
+> - [Critical] Double fetch vulnerability in the resuming write path allows out-of-bounds kernel reads.
+> - [Critical] Use-After-Free during concurrent device teardown while executing copy_from_user.
+> - [High] Lack of rate limiting in validation error paths allows userspace to flood the kernel log and cause a Denial of Service.
+> - [High] Unsynchronized concurrent writes can trigger premature configuration validation on uninitialized memory.
+> --
+>
+> --- Patch [10]: [PATCH v6 10/15] s390/vfio-ap: File ops called to resume the vfio device migration ---
+> commit 56776518d352cfe0d799d4f95bc7d9c8703337bf
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Subject: s390/vfio-ap: File ops called to resume the vfio device migration
+>
+> This commit implements the write callback for the vfio-ap device migration
+> file stream. It restores the source guest's AP configuration by validating
+> and hot-plugging it into the destination guest.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> index c7fecad0b6769..c12ba82ec5277 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> [ ... ]
+>
+>> @@ -881,14 +881,20 @@
+>>   static void report_qinfo_incompatibilities(const char *mdev_name,
+>>   					   unsigned long apqn,
+>>   					   struct ap_tapq_hwinfo *src_hwinfo,
+>>   					   struct ap_tapq_hwinfo *target_hwinfo)
+>>   {
+>> +	pr_err("vfio_ap_mdev %s: Migration failed: Source and target queue (%02lx.%04lx) not compatible\n",
+>> +	       mdev_name, AP_QID_CARD(apqn), AP_QID_QUEUE(apqn));
+> [Severity: High]
+> Is it possible for userspace to flood the kernel log here?
+>
+> If a configuration with a large number of incompatible queues is provided,
+> verify_ap_configs_are_compatible() continues processing rather than aborting.
+>
+> Since report_qinfo_incompatibilities() and its helpers issue unconditional
+> pr_err() calls for each mismatch, could this cause CPU stalls or a denial
+> of service?
+
+While it is highly unlikely for this to happen since it would require 
+that the
+system have an inordinate number of incompatible queue devices, the
+pr_err calls will be replaced with pr_err_ratelimited calls.
+
+>
+>> +
+>> +	report_facilities_compatibility(mdev_name, apqn, src_hwinfo, target_hwinfo);
+>> +	report_mode_compatibility(mdev_name, apqn, src_hwinfo, target_hwinfo);
+> [ ... ]
+>
+>> @@ -1071,61 +1071,80 @@
+>>   static ssize_t vfio_ap_resuming_write(struct file *filp, const char __user *buf,
+>>   				      size_t len, loff_t *pos)
+>>   {
+> [ ... ]
+>
+>> +	/*
+>> +	 * Snapshot and advance *pos under the lock before dropping it for
+>> +	 * copy_from_user().  This prevents concurrent write()s on the same
+>> +	 * stream file from computing the same destination offset and clobbering
+>> +	 * each other's data or racing to reassign mig_data->resuming_mig_file.
+>> +	 */
+>> +	write_pos = *pos;
+>> +	*pos += len;
+>> +
+>> +	mutex_unlock(&matrix_dev->mdevs_lock);
+>> +
+>> +	if (copy_from_user((char *)ap_config + write_pos, buf, len)) {
+>> +		if (new_allocation)
+>> +			kvfree(ap_config);
+>> +		return -EIO;
+>> +	}
+> [Severity: Critical]
+> Can a concurrent device teardown cause a use-after-free here?
+>
+> The mdevs_lock is dropped to perform copy_from_user(). If a concurrent
+> thread closes the VFIO device, vfio_ap_release_mig_files() will call
+> kvfree(mig_data->resuming_mig_file.ap_config). Would this result in
+> copy_from_user() writing into freed kernel memory?
+
+The vfio_ap_open_file_stream calls vfio_device_try_get_registration()
+(see patch 06/15) which pins the vfio_device reference until
+vfio_ap_release_mig_file() runs — and release only runs when the file
+descriptor is closed. The file descriptor cannot be closed while a write()
+is in progress on it. So matrix_mdev and its mig_data remain valid for
+the lifetime of the write call.
+
+>
+> [Severity: Critical]
+> Could this sequence introduce a double-fetch vulnerability?
+>
+> The first fetch in allocate_ap_config() reads num_queues to determine the
+> allocation size. The lock is then dropped, and this second copy_from_user()
+> overwrites the entire buffer, including the num_queues field.
+>
+> If userspace modifies num_queues between these fetches, could it inflate
+> ap_config->num_queues beyond the allocated size, causing out-of-bounds
+> reads in queues_available() when it loops over source_config->num_queues?
+
+A fix will be provided for this in the next patch series.
+
+>
+>> +
+>> +	/* Check if we've completed writing the entire configuration */
+>> +	if (write_pos + len == cfg_sz) {
+>> +		/*
+>> +		 * do_post_copy_validation() calls ap_tapq() which is a slow
+>> +		 * hardware instruction.  Run it before acquiring the update
+>> +		 * locks to avoid holding guests_lock, kvm->lock, and
+>> +		 * mdevs_lock across the hardware calls.
+>> +		 */
+>> +		ret = do_post_copy_validation(mdev_name, ap_config);
+> [Severity: High]
+> Does this completion check safely handle concurrent writes?
+>
+> If userspace issues asynchronous write() syscalls for different chunks of
+> the payload, they might execute copy_from_user() concurrently. If the
+> thread writing the final chunk completes its copy before threads writing
+> earlier chunks finish theirs, could do_post_copy_validation() be called
+> on a buffer that still contains uninitialized data?
+
+The completion check could theoretically fire early if concurrent writes
+are issued, but in that case the validation in do_post_copy_validation
+would catch any resulting inconsistency and return an error — the worst
+outcome is a failed migration, not a security vulnerability or kernel
+corruption.
+
+However, a write_in_progress flag will be added to vfio_ap_migration_data
+that will be set when the vfio_ap_resuming_write function is called, unless
+the flag has already been set, in which case the function will return 
+-EBUSY.write_in_progress
+
+>
+>> +		if (ret < 0) {
+>> +			if (new_allocation)
+>> +				kvfree(ap_config);
+>> +			return ret;
+>> +		}
+> [ ... ]
+>
 
