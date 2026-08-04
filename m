@@ -1,198 +1,155 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8CC1EB1AA;
-	Tue,  4 Aug 2026 01:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B74F3EBF35;
+	Tue,  4 Aug 2026 02:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785808649; cv=none; b=kA0azoa53zySq2YbDmvnvkWHyrujvH8ckpsDsfoCsLfZoUhOTUHkn5bFVbDFWVtutv1sHBbtpo7jl0G0rqerQ9YnF++mKiaH7/mx+bkhHlCwPBPpBs0eaI+6B7DowFwL5hw7nIPDO6mcja4DUhR+T7enWKIzidnJBCNesgSFCQw=
+	t=1785809492; cv=none; b=t3VGm/zg4mrG61bguNPxsyo80hn5BiEWlGxYwzL2LeHtREi4CaNXMVylJRPXU4u/D9dS7b+RQUblqlUn1ber9UWKBWc9NIwE87dpNz1TfGqGxjtvA0p0s7oTlY5FGg6XtuWGqmz5jirRAGR2zOHI0Je+JYf8upzc0uQ3GZ5lZNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785808649; c=relaxed/simple;
-	bh=8hfMPzXFg5icu3N7ulbKrmS664rccDHH789UrdEieDo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jExNcP3znlyTEDuTjSsS4yexMuqliY83z+5JLw0z5BU/3tJHxrQ0nKMLZ1uCjWWODXylNE04VLEbm2ZjPUf+D8J98v7uHhO8ZVGS+QL2u5dUY8y9rLCVCfgWnjg7Msqk4oeWfO9h6POF2DIJ5eMuPdTpMurzVlDAi1LW91vE8aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
-Received: from simon-Latitude-5450.. (tmo-075-57.customers.d1-online.com [80.187.75.57])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 673IarsC011387
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 3 Aug 2026 20:36:59 +0200 (CEST)
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
-        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
-        jon@nutanix.com, brett@librecast.net, corbet@lwn.net,
-        skhan@linuxfoundation.org, tim.gebauer@tu-dortmund.de,
-        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: [PATCH net-next v14 3/5] vhost-net: wake queue of tun/tap after ptr_ring consume
-Date: Mon,  3 Aug 2026 20:36:39 +0200
-Message-ID: <20260803183641.96882-4-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
-References: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
+	s=arc-20240116; t=1785809492; c=relaxed/simple;
+	bh=B+nmhdc2wKhIJIpBwW+MwyfYVUtbdARoiSCqxXo6ddg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q/qgCb3ElSS3P3kwWkxl1HEAMrYqjfzWvti3xg1VBazgdtF83wQjrBHNkusf+YLcWj8utRTz8qNoGrWThogDsU5dGeH18DSfmQEigCXXxKqHL6AFkMPNzsK38QMLop7qKdpwh+xjVC/7Bqa35/uzrSrnADeoVfBTNYxRfE9hSpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xtzv3LVa; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xtzv3LVa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785809488; x=1817345488;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=B+nmhdc2wKhIJIpBwW+MwyfYVUtbdARoiSCqxXo6ddg=;
+  b=Xtzv3LVa3UehsCqM6p8fBwnQS2gwu+bKqu9ZOG/dmGXYwmqs9ATRKQWI
+   VJXWn9v4cmQqCpJ86qkYYR9udXy0zQ2V67gT4a3g1J1K+f4pV7z0eTIld
+   sj9tGfLCILOi5sqMN9dCAjZMbDFin+Gelu7Eig+0MEVbwR8XKuiWD2VDq
+   ta79LDKwxFO5sB5YCrNCUs6shqKWOdgskjKyLLNVrKCVIn6vD4LENlhUQ
+   BZbxsbH6XYs9DvrADevURiVtuljG1kcJ3wuGXezbBbg/W6gHzMAfdDHM/
+   nE7IWTryuBrkEt4XAM2t8GEymy1jAX8vHvBv6G4WJ9B7Aehbqw81TrnYm
+   w==;
+X-CSE-ConnectionGUID: 5Bm+EVg0REiduRwbaRqR6g==
+X-CSE-MsgGUID: TRs68jxFSTaItZKtaKTAqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86121625"
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="86121625"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:11:25 -0700
+X-CSE-ConnectionGUID: KUMwzY9FTRiSU0SR1Bn47g==
+X-CSE-MsgGUID: U8Dg8g26SGOUT5Pc2eda4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
+   d="scan'208";a="266494953"
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:11:07 -0700
+Message-ID: <aaaa3463-87b7-4e01-9f0e-8ff1b732d260@intel.com>
+Date: Tue, 4 Aug 2026 10:11:05 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 07/41] KVM: guest_memfd: Wire up core private/shared
+ attribute interfaces
+To: Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-7-35f9aec2aed2@google.com>
+ <60d19013-d6d7-4eec-827a-2622e22cec98@intel.com>
+ <CAEvNRgF0SxmoMtqq69tUih54A9K7j_wcMFRrq=r9w6TnAGAUQQ@mail.gmail.com>
+ <dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com>
+ <amzMtg4K6qEEsudx@google.com>
+ <25ab36cf-888a-4547-b3f7-5bd4e057c1d0@intel.com>
+ <anC0uuZIrbxlGubN@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <anC0uuZIrbxlGubN@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add tun_wake_queue() to tun.c and export it for use by vhost-net. The
-function validates that the file belongs to a device implemented by
-drivers/net/tun.c, in IFF_TUN as well as in IFF_TAP mode, and that the
-tfile exists, dereferences the tun_struct under RCU, and delegates to
-__tun_wake_queue().
+On 8/3/2026 11:33 PM, Sean Christopherson wrote:
+> On Mon, Aug 03, 2026, Xiaoyao Li wrote:
+>> On 8/1/2026 12:26 AM, Sean Christopherson wrote:
+>>> On Fri, Jul 31, 2026, Xiaoyao Li wrote:
+>>>> On 7/31/2026 4:42 AM, Ackerley Tng wrote:
+>>>> If kvm_range_is_private() is useful/required by huge page support, then let
+>>>> the huge page series to introduce it. It has nothing to do with the in-place
+>>>> conversion series.
+>>>
+>>> If it weren't for the fact that the range-based search is used later in this
+>>> series, I would 100% agree with Xiaoyao.
+>>> But since the core logic is used and needed elsewhere,
+>>
+>> I don't see it a problem. Without introducing kvm_range_is_private() in this
+>> patch, the core logic of range-based search on gmem can still be introduced
+>> as kvm_gmem_range_has_attributes() directly in patch 10 or in a separate
+>> patch.
+>>
+>>> and because kvm_range_has_vm_memory_attributes() takes a range, my vote is
+>>> to provide the plumbing now, even though a small portion of it isn't
+>>> strictly necessary.
+>>
+>> So my initial feedback was "we can just use kvm_mem_is_private(kvm, gfn)".
+>> It makes code simpler.
+> 
+> My apologies, I hadn't actually applied v9 to look at the full context.  I agree,
+> providing kvm_range_is_private() is completely unnecessary.  It's not even really
+> a problem with this patch, it's a pre-existing issue that can and should be
+> addressed with a prep patch.
 
-vhost_net_buf_produce() now calls tun_wake_queue() after a successful
-batched consume of the ring to allow the netdev subqueue to be woken up.
-The point is to allow the queue to be stopped when it gets full, which is
-required for traffic shaping, implemented by the following
-"stop tail-drop when IFF_BACKPRESSURE is set".
-As __tun_wake_queue() returns early unless IFF_BACKPRESSURE is set, a
-tun/tap device that does not opt in only pays for the added check.
+yea, that's why I said "it seems can be a separate patch. "
 
-macvtap and ipvtap rings, which get_tap_ptr_ring() accepts too, are
-unaffected: their producer is the tap_handle_frame() rx_handler and not
-ndo_start_xmit, so stopping a netdev TX queue would not hold it back.
-drivers/net/tap.c has no netdev_ops of its own either. No
-tap_wake_queue() is needed.
+>> And as a bonus, the logic to choose between gmem-based attribute query and
+>> vm-based attribute query is hidden from the static call.
+> 
+> I don't follow.  What do you mean by "hidden from the static call?"  The whole
+> point of using a static call is to select between gmem-based and vm-based private
+> memory.  Or are you saying the populate() flow doesn't need to manually check
+> gmem_in_place_conversion?
 
-cons_cnt and the wake decision are best-effort and are not reverted by
-ptr_ring_unconsume(), so vhost_net_buf_unproduce() can leave the subqueue
-woken over a full ring. The producer re-stops it on the next packet, and
-that path only runs from vhost_net_stop_vq() and vhost_net_set_backend(),
-when the consumer is going away, so a stopped queue is the correct end
-state rather than a stall.
+yea. By using kvm_mem_is_private(), we don't need the 
+kvm_range_is_private() introduced by this patch, which has the 
+gmem_in_place_conversion check.
 
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
----
- drivers/net/tun.c      | 25 +++++++++++++++++++++++++
- drivers/vhost/net.c    | 21 +++++++++++++++------
- include/linux/if_tun.h |  4 ++++
- 3 files changed, 44 insertions(+), 6 deletions(-)
+>> The second bonus of dropping kvm_range_is_private() is that we can eliminate
+>> one more chunk in patch 20.
+> 
+> Ya.
+> 
+> Untested, but unless I'm missing something, patches 6 and 7 of this series can
+> be replaced with the attached patches (6 and 7 should be squashed together no
+> matter what).
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index d49b6bfd104d..dc32566588d1 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3848,6 +3848,31 @@ struct ptr_ring *tun_get_tx_ring(struct file *file)
- }
- EXPORT_SYMBOL_GPL(tun_get_tx_ring);
- 
-+/* Callers must hold ring.consumer_lock */
-+void tun_wake_queue(struct file *file, int consumed)
-+{
-+	struct tun_file *tfile;
-+	struct tun_struct *tun;
-+
-+	if (file->f_op != &tun_fops)
-+		return;
-+
-+	tfile = file->private_data;
-+	if (!tfile)
-+		return;
-+
-+	lockdep_assert_held(&tfile->tx_ring.consumer_lock);
-+
-+	rcu_read_lock();
-+
-+	tun = rcu_dereference(tfile->tun);
-+	if (tun)
-+		__tun_wake_queue(tun, tfile, consumed);
-+
-+	rcu_read_unlock();
-+}
-+EXPORT_SYMBOL_GPL(tun_wake_queue);
-+
- module_init(tun_init);
- module_exit(tun_cleanup);
- MODULE_DESCRIPTION(DRV_DESCRIPTION);
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 6949b704166d..3e72b9c6af0c 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -176,13 +176,21 @@ static void *vhost_net_buf_consume(struct vhost_net_buf *rxq)
- 	return ret;
- }
- 
--static int vhost_net_buf_produce(struct vhost_net_virtqueue *nvq)
-+static int vhost_net_buf_produce(struct sock *sk,
-+				 struct vhost_net_virtqueue *nvq)
- {
-+	struct file *file = sk->sk_socket->file;
- 	struct vhost_net_buf *rxq = &nvq->rxq;
- 
- 	rxq->head = 0;
--	rxq->tail = ptr_ring_consume_batched(nvq->rx_ring, rxq->queue,
--					      VHOST_NET_BATCH);
-+	spin_lock(&nvq->rx_ring->consumer_lock);
-+	rxq->tail = __ptr_ring_consume_batched(nvq->rx_ring, rxq->queue,
-+					       VHOST_NET_BATCH);
-+
-+	if (rxq->tail)
-+		tun_wake_queue(file, rxq->tail);
-+
-+	spin_unlock(&nvq->rx_ring->consumer_lock);
- 	return rxq->tail;
- }
- 
-@@ -209,14 +217,15 @@ static int vhost_net_buf_peek_len(void *ptr)
- 	return __skb_array_len_with_tag(ptr);
- }
- 
--static int vhost_net_buf_peek(struct vhost_net_virtqueue *nvq)
-+static int vhost_net_buf_peek(struct sock *sk,
-+			      struct vhost_net_virtqueue *nvq)
- {
- 	struct vhost_net_buf *rxq = &nvq->rxq;
- 
- 	if (!vhost_net_buf_is_empty(rxq))
- 		goto out;
- 
--	if (!vhost_net_buf_produce(nvq))
-+	if (!vhost_net_buf_produce(sk, nvq))
- 		return 0;
- 
- out:
-@@ -1004,7 +1013,7 @@ static int peek_head_len(struct vhost_net_virtqueue *rvq, struct sock *sk)
- 	unsigned long flags;
- 
- 	if (rvq->rx_ring)
--		return vhost_net_buf_peek(rvq);
-+		return vhost_net_buf_peek(sk, rvq);
- 
- 	spin_lock_irqsave(&sk->sk_receive_queue.lock, flags);
- 	head = skb_peek(&sk->sk_receive_queue);
-diff --git a/include/linux/if_tun.h b/include/linux/if_tun.h
-index 80166eb62f41..eeb9ed3c5a23 100644
---- a/include/linux/if_tun.h
-+++ b/include/linux/if_tun.h
-@@ -22,6 +22,8 @@ struct tun_msg_ctl {
- #if defined(CONFIG_TUN) || defined(CONFIG_TUN_MODULE)
- struct socket *tun_get_socket(struct file *);
- struct ptr_ring *tun_get_tx_ring(struct file *file);
-+/* Callers must hold the consumer_lock of the ring of file */
-+void tun_wake_queue(struct file *file, int consumed);
- 
- static inline bool tun_is_xdp_frame(void *ptr)
- {
-@@ -55,6 +57,8 @@ static inline struct ptr_ring *tun_get_tx_ring(struct file *f)
- 	return ERR_PTR(-EINVAL);
- }
- 
-+static inline void tun_wake_queue(struct file *f, int consumed) {}
-+
- static inline bool tun_is_xdp_frame(void *ptr)
- {
- 	return false;
--- 
-2.43.0
-
+The attached patches are just what I wanted. They look good!
