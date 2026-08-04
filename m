@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB77B41A4FC
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB96843D4F4
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785886774; cv=none; b=LOb1Pja5DcAoQ36BeDYMT2IfMW3mfFLVblL63CZLtnuI8mKxrmp8O3owASQlgxnESPOuo9DIll/QsUVVv3pBk8YXAjd5NJ8vQo3dwsOLv66YvyZo0iy8otCxDq8DVJJlkwDXVD+wKWp0+TpYoxBO7o+uNklmJMV97Ov+Gp5Od/A=
+	t=1785886775; cv=none; b=tB6K1AgmFLhSwZ5UlBzxJqutgsH3jTwXS2aMH8KZTVr+QxRFLEzDXfONYtmv4QvE8Pk0stxSuTisp6oUXDHA7cE9njC9aq0ACkpe0s+iPlW7Q+Qn/FScQYdZmZkbW2+OSobCDkg0dSg2hz2Wlv5JRPnc1WDw4fDZXnt7i5wB0lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785886774; c=relaxed/simple;
-	bh=WqiyIYDUJvoYrhXVhsOcnM9n3MISpQM9nYaqruRIwEo=;
+	s=arc-20240116; t=1785886775; c=relaxed/simple;
+	bh=bxCylr4HiPO9zwqBqEHUaooi53GWIYbqRZaq07brKjc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kjW1cSeVJOE6+Iyt/8DQIs/R+NIVsF58q/VUmT9uAKUczUEfB/PQ3Xf0AHFaGK/bvPaz++gluep3Zksn2Ln7/aOk6UdEJGbMarGRm6FO5ysyrJSJAtP8kZeL1BWH2CgdWxX0MBxoHAFCI82zkzrgECOUib795uCNim9l6MlO550=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZMDWs0B4; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=n2Ox8JmlzuXYtT8WhluR6nMbE/efuoKBWDjRSuffcQkFvNdGSMj66jqLP5ZS3t1i8huSdqSgZo+BcVvF6UNpS4Nw2F8ddxoGNjG1nDC5TkyRFTema0qjMYlUniy3VhCySPB4RATwfCLIcEGPOh2HiItHM0XA0WNTP7KWofPXhr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W5RXEdoB; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZMDWs0B4"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dfd33ffso4549275ad.0
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W5RXEdoB"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cb4bd11ddf8so349816a12.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785886772; x=1786491572; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785886773; x=1786491573; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=x5rOF7VvxtdkKkuGdXTFcuTjBzanZoFZ5hsAKXxG2sk=;
-        b=ZMDWs0B4p9YbqNPKhlrVRsNtllfcjB316CY7uxsAyQXycNamCaS/QCgH0v9ZqwqjuU
-         PuT4nKuYXClwRxSTyKG4JOob8NqFbLcGBaCAjo5nMlsfaB8TSL7qyQnQSzpESIWuapdk
-         r1muW0Gnl6p+rMHUGmI9OZFrn5sc+fVm9Jx2WTNaCta7Zlpu+js3Sm/P/wzQCvFtwyjh
-         joAtqSL60TGW94machOexOie80Al82qUHrG2zQh8dp1IqTbIRoMoR+rntnti2po9/c3d
-         GNHzZOtMEeJL+BWF3J3JLqaQXjkYbcnQegsjqYdwKMxdS5vGEfzBmiy3KXPFa5/KOiHQ
-         Tx4w==
+        bh=5KEhdOkBgt8kZo6v75UUHaCXwdu0mISEpkcWN+SxXyQ=;
+        b=W5RXEdoBiytjRahh7bmbnWZit5544wpYN6crUVZv9nhGzoqGPGbEzJeyJf6ZeE9jjC
+         V+Q+pluD8JKoGyTrU6DRDjzwsaXsttlCmj13yCfSou1OUOvgA4u1MC6OZUR7Bwu2kg+0
+         RKC+JUfRdm620aFM61yXpOxdCfbNr60FFzj6GjZZT6XvRlZm7ZJwIwZ20KEJiRP/ctGu
+         XRot9eRqGMyqCk2Z17dwX7LledL4EWO04OIq1G/3pHRSqUaiag8OyTMMeWXhqcvR/K55
+         El8jChWc9OjEufgK4jeMGpsZIV3GRQNio1RA3JoB92Hg9kVJqPl4XlB93bfwltGzvCN/
+         faCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785886772; x=1786491572;
+        d=1e100.net; s=20251104; t=1785886773; x=1786491573;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=x5rOF7VvxtdkKkuGdXTFcuTjBzanZoFZ5hsAKXxG2sk=;
-        b=HUQpce/tEVh2a3GX0bjTPlKV9AR/vdHRYzO9yjdSTtEy3XoibQqTU9YYOz3BBb6ZPW
-         Hw9Fc3X3N6Wm7oDwCyd0LDO3MtJdGWvs4B38OZRkfqud82sQgGXbLbbODrpvXoVrE7Zf
-         mSVo/A3LCglBxiKwnhHg1A5gg1ezrFIOq6jydxvF+lTTde5CuT1VwDjewrT3M9TBfc3w
-         Cb6Bbg3K9qrIsoOpVlhrg8PvmR+VDoSP22BNSUyDEil6xCs/dTZlPRDv0hwsJxIkoHwB
-         F6LEJQGHoenJx5A8V2q4rak/HtcJs0tGDcIEWMThihWlFHjNsPF/s6OdKD9s3JWZkt61
-         1Ipg==
-X-Gm-Message-State: AOJu0YyX7WbTJ35k0aRdeDZmHwBxJloH7IOyPrsCCUeWOIYVXZKQVj1e
-	Z//q9VSQ2K4P5Lt4rj7B/6GOme69up8eSPfV+AwnkZ+r/NYPb8y68dypp4rCrhWoQBkQZbhh/B6
-	H2UEyDg==
-X-Received: from plck21.prod.google.com ([2002:a17:902:f295:b0:2cc:8e87:df3c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:388c:b0:2cf:4339:aaa
- with SMTP id d9443c01a7336-2d0ca7fbb6bmr26189435ad.12.1785886771887; Tue, 04
- Aug 2026 16:39:31 -0700 (PDT)
+        bh=5KEhdOkBgt8kZo6v75UUHaCXwdu0mISEpkcWN+SxXyQ=;
+        b=AE58YBV7hhgqlk7lmsoVtFAUft7Zu2PmmXMbqYbv28apFJtO/g/AAfJXDPbUGEySYr
+         nXVd2U569Kuu46mNY2Q6rbKdk1HZPklp9feyiU89YYfTVn/KbDPr3E2OIE/jJfF7dds9
+         XlQiC81iM1pz0E6Ng5iT8Csgl7WLzfkSq3YjtfJAmAC3MN/em6aqyb4pfkOGGHSJpr87
+         6N/N5nFlvTycuG68L+ChRzHv3ZSa+yYl1PiiAXDlx1fI5ZCKoJM/QsMy4pBAF9ZSC+gc
+         28sHzgK4ynfjgf/rbbyRx9/d95doaUwjVzJPBL7xzpBiisbfrKZN11r2D+5T+kiNhw/k
+         VVJw==
+X-Gm-Message-State: AOJu0YwIFKMndiTjyrbzr0025wf2KY7ojni1zuqc5WLHZ095wBBjBLHm
+	Op8saoxUh/pzG5KmjI+tSNXnj14LD+Fw2uTtr9QUl0E1bdeGySP+nKQiTdas8NU40d9bDL/dsyL
+	HWlDlTw==
+X-Received: from pgbl10.prod.google.com ([2002:a63:570a:0:b0:c8f:d0d0:d863])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6112:b0:3c3:b628:6d17
+ with SMTP id adf61e73a8af0-3cb85e7f1bdmr2532242637.25.1785886772956; Tue, 04
+ Aug 2026 16:39:32 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  4 Aug 2026 16:39:09 -0700
+Date: Tue,  4 Aug 2026 16:39:10 -0700
 In-Reply-To: <20260804233923.3504629-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,122 +60,94 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260804233923.3504629-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804233923.3504629-6-seanjc@google.com>
-Subject: [PATCH v8 05/17] KVM: x86: Avoid NTP frequency skew for KVM clock on
- 32-bit host
+Message-ID: <20260804233923.3504629-7-seanjc@google.com>
+Subject: [PATCH v8 06/17] KVM: x86: Drop unnecessary CPU pinning when
+ computing/getting kvmclock
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+When computing the current kvmclock value, don't pin the task to the
+current CPU for the entire duration of the master clock path, as the
+CPU pinning was never about ensuring rdtsc() and cpu_tsc_khz would
+agree.  As pointed out by David, ka->use_master_clock can only be true
+when the host clocksource is TSC based, which in turn requires a stable,
+constant and synchronised TSC across all CPUs.
 
-Commit 53fafdbb8b21 ("KVM: x86: switch KVMCLOCK base to monotonic raw
-clock") did so only for 64-bit hosts, by capturing the boot offset from
-within the existing clocksource notifier update_pvclock_gtod().
+The CPU pinning was added in commit e2c2206a1899 ("KVM: x86: Fix potential
+preemption when get the current kvmclock timestamp") purely in response to
+a CONFIG_DEBUG_PREEMPT=y bug due.  Despite what the comment would suggest,
+including rdtsc() in the {get,put}_cpu() section was opportunistic.  In
+fact, Paolo even said exactly that when suggesting that KVM guarantee the
+rdtsc() would execute on the same CPU[*].
 
-That notifier was added in commit 16e8d74d2da9 ("KVM: x86: notifier for
-clocksource changes") but only on x86_64, because its original purpose
-was just to disable the "master clock" mode which is only supported on
-x86_64.
+ : Also, rdtsc() should really be on the same CPU as __this_cpu_read.  We
+ : know it's not really really necessary because the master clock is
+ : active, but since we need a get_cpu/put_cpu pair, better be clean.
 
-Now that the notifier is used for more than disabling master clock mode,
-enable it for the 32-bit build too so that get_kvmclock_base_ns() can be
-unaffected by NTP sync on 32-bit too.
+Nothing has changed in the last ~9 years, i.e. the rdtsc() still *should*
+be on the same CPU, but super strictly speaking, all will be fine if the
+task is migrated between grabbing the frequency and doing rdtsc().
+Dropping the CPU pinning will allow dropping the rdtsc() entirely without
+having to resort to a large "rewrite get_kvmclock()" patch.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
+Opportunistically add a comment to explain why KVM needs to snapshot the
+frequency, because that _is_ a hard requirement to avoid reintroducing the
+bug fixed by commit e70b57a6ce4e ("KVM: X86: Fix softlockup when get the
+current kvmclock")
+
+Link: https://lore.kernel.org/all/ae8de642-8f14-a70a-1fab-57e2c4093cd5@redhat.com [*]
+Suggested-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ arch/x86/kvm/x86.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3ebcf2f27f7d..f60f4826db1a 100644
+index f60f4826db1a..0c0bf4c14bc5 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -874,7 +874,6 @@ static inline bool kvm_vcpu_exit_request(struct kvm_vcpu *vcpu)
- 	       kvm_request_pending(vcpu) || xfer_to_guest_mode_work_pending();
- }
- 
--#ifdef CONFIG_X86_64
- struct pvclock_clock {
- 	int vclock_mode;
- 	u64 cycle_last;
-@@ -932,13 +931,6 @@ static s64 get_kvmclock_base_ns(void)
- 	/* Count up from boot time, but with the frequency of the raw clock.  */
- 	return ktime_to_ns(ktime_add(ktime_get_raw(), pvclock_gtod_data.offs_boot));
- }
--#else
--static s64 get_kvmclock_base_ns(void)
--{
--	/* Master clock not used, so we can just use CLOCK_BOOTTIME.  */
--	return ktime_get_boottime_ns();
--}
--#endif
- 
- static uint32_t div_frac(uint32_t dividend, uint32_t divisor)
+@@ -1655,13 +1655,18 @@ static void __get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
  {
-@@ -6873,6 +6865,7 @@ static void pvclock_irq_work_fn(struct irq_work *w)
- }
+ 	struct kvm_arch *ka = &kvm->arch;
+ 	struct pvclock_vcpu_time_info hv_clock;
++	u64 tsc_hz;
  
- static DEFINE_IRQ_WORK(pvclock_irq_work, pvclock_irq_work_fn);
-+#endif
+-	/* both __this_cpu_read() and rdtsc() should be on the same cpu */
++	/*
++	 * Snapshot and validate the TSC frequency as kvmclock_cpu_down_prep()
++	 * zeros the per-CPU value when a CPU is going offline.
++	 */
+ 	get_cpu();
++	tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
++	put_cpu();
  
- /*
-  * Notification about pvclock gtod data update.
-@@ -6880,26 +6873,26 @@ static DEFINE_IRQ_WORK(pvclock_irq_work, pvclock_irq_work_fn);
- static int pvclock_gtod_notify(struct notifier_block *nb, unsigned long unused,
- 			       void *priv)
- {
--	struct pvclock_gtod_data *gtod = &pvclock_gtod_data;
- 	struct timekeeper *tk = priv;
+ 	data->flags = 0;
+-	if (ka->use_master_clock &&
+-	    (static_cpu_has(X86_FEATURE_CONSTANT_TSC) || __this_cpu_read(cpu_tsc_khz))) {
++	if (ka->use_master_clock && tsc_hz) {
+ #ifdef CONFIG_X86_64
+ 		struct timespec64 ts;
  
- 	update_pvclock_gtod(tk);
- 
-+#ifdef CONFIG_X86_64
- 	/*
- 	 * Disable master clock if host does not trust, or does not use,
- 	 * TSC based clocksource. Delegate queue_work() to irq_work as
- 	 * this is invoked with tk_core.seq write held.
- 	 */
--	if (!gtod_is_based_on_tsc(gtod->clock.vclock_mode) &&
-+	if (!gtod_is_based_on_tsc(pvclock_gtod_data.clock.vclock_mode) &&
- 	    atomic_read(&kvm_guest_has_master_clock) != 0)
- 		irq_work_queue(&pvclock_irq_work);
-+#endif
- 	return 0;
- }
- 
- static struct notifier_block pvclock_gtod_notifier = {
- 	.notifier_call = pvclock_gtod_notify,
- };
--#endif
- 
- void kvm_setup_xss_caps(void)
- {
-@@ -7118,9 +7111,9 @@ int kvm_x86_vendor_init(struct kvm_x86_init_ops *ops)
- 
- 	if (pi_inject_timer == -1)
- 		pi_inject_timer = housekeeping_enabled(HK_TYPE_TIMER);
--#ifdef CONFIG_X86_64
- 	pvclock_gtod_register_notifier(&pvclock_gtod_notifier);
- 
-+#ifdef CONFIG_X86_64
- 	if (hypervisor_is_type(X86_HYPER_MS_HYPERV))
- 		set_hv_tscchange_cb(kvm_hyperv_tsc_notifier);
- #endif
-@@ -7177,8 +7170,8 @@ void kvm_x86_vendor_exit(void)
- 					    CPUFREQ_TRANSITION_NOTIFIER);
- 		cpuhp_remove_state_nocalls(CPUHP_AP_X86_KVM_CLK_ONLINE);
+@@ -1675,15 +1680,13 @@ static void __get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
+ 		data->flags |= KVM_CLOCK_TSC_STABLE;
+ 		hv_clock.tsc_timestamp = ka->master_cycle_now;
+ 		hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
+-		kvm_get_time_scale(NSEC_PER_SEC, get_cpu_tsc_khz() * 1000LL,
++		kvm_get_time_scale(NSEC_PER_SEC,  tsc_hz,
+ 				   &hv_clock.tsc_shift,
+ 				   &hv_clock.tsc_to_system_mul);
+ 		data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
+ 	} else {
+ 		data->clock = get_kvmclock_base_ns() + ka->kvmclock_offset;
  	}
--#ifdef CONFIG_X86_64
- 	pvclock_gtod_unregister_notifier(&pvclock_gtod_notifier);
-+#ifdef CONFIG_X86_64
- 	irq_work_sync(&pvclock_irq_work);
- 	cancel_work_sync(&pvclock_gtod_work);
- #endif
+-
+-	put_cpu();
+ }
+ 
+ static void get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
 -- 
 2.55.0.571.g244d577d93-goog
 
