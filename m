@@ -1,126 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F63ED3C9;
-	Tue,  4 Aug 2026 14:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D549F332907;
+	Tue,  4 Aug 2026 14:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785854681; cv=none; b=c/Q+ZXqIvT7VH0nh7syfs2FRTLOvc2bhqkJ+S1JespEuMxXP3rwyuWRnDDHy1sb9tROWs8zvLyW4e3i08NDeSszN8pwE0fQdYQVm5q40DTYRwMayiY3Km796bFIw25jkXoz91/Rl6J5jpIf4GIIAvPD3L6K1LEo8aqqpKuiLv/4=
+	t=1785855141; cv=none; b=UgE7MAY24gyioa8ZzP0oGQT08mqU261uQPMRwL4gCfI/gfOfpbumoy4wNVYEFPhLCaC7w1dWu0nFNfFYwFhsO25LCTTDUlWlpw5eHaaj28jwavkWFvVS3QBRwiZuDRwPL1Uje5+wTbei9pfA/X/j8UQYrurHDXloCQ32m9IhmOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785854681; c=relaxed/simple;
-	bh=FCEaBQlDRUm6dYO31Sm2WtF5WhrmLg76I6xWT8Sy9u8=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BJs6Nm1ovbixAzb61dUe09z+m5lOv3ulINDX+vEK37l67CDT0S7BX8Qyf7RSCaaMw581Kr2DmBNS5YQ7VxH2cMqHPHJIWNw8pbLXTU0VqO51EnoKSqjaWj13g2t9IK9Bwk/G0xX8b6TKGGGIRKirzXcW5gELadI0gK1iUvNjIp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aByPNJbb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785855141; c=relaxed/simple;
+	bh=r9eUxwC2Y2tU2TryqdtvLSezfLtspXkRp+Qyq74U7sw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FmYkY+nKQzQk2YOXUucnOgaWiFSboPKy2KA7eRMg2zpsz0WX6jbdYJHRHpPe4/7oxuePzJ1CDWwT2djsLESLu0LwaYaw3JC4VFolF8HIt+QwE+mtz/PFsVDHlcuWWqQdxCJbA4tFUNt+hP1hAKicurRx3R3/bFv22UOxMc7yhyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qRib1pfr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aByPNJbb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5D41F000E9;
-	Tue,  4 Aug 2026 14:44:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785854679;
-	bh=aZ8CvjTsE8imig+joKU5SQ3EWoaGRndjO4SfRE71EXM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aByPNJbbjlQ57OPBmEl8tJNjWE3LtGyGGF4aZBkdplun7csv9BKs4dRrYmdhKBYSe
-	 TggmkPB8+7WHmXzFr7Bg+vxLadqT/keWhiSLB72UTErsJe1SQzaS8OFc/40nSt+RJq
-	 7GO7Tdw7BEpH0cIdWugqErMXWn5aE2wtRr7ogLFkjq0wjY1qbCzwP45hf4GFE9SVri
-	 HNBz420P0E0eo7+v3hTrjywcmA3Mt88KUROBncPZiL2gGwznHgBpYpuqyryB16DFQh
-	 JkbkOoJByf+quO6BbHh196/3uAcjVbuKwQ8oGH7w+EBrZdkPUYPHPcm8BrWtU5EY3k
-	 JTIB9tLgGObFg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wrGNh-0000000CFYa-0bPg;
-	Tue, 04 Aug 2026 14:44:37 +0000
-Date: Tue, 04 Aug 2026 15:44:36 +0100
-Message-ID: <86ldamaqsr.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Oliver Upton <oupton@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/2] KVM: arm64: selftests: Add a nested S2 MMU realloc test
-In-Reply-To: <20260803224405.41468-2-kmehltretter@gmail.com>
-References: <20260803224405.41468-1-kmehltretter@gmail.com>
-	<20260803224405.41468-2-kmehltretter@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qRib1pfr"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674CmVU7804682;
+	Tue, 4 Aug 2026 14:52:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=XGBjXM
+	89xOYF2Rpnke2hKuV9lCDZulbuTTmdJ/JboBo=; b=qRib1pfrWuCKtyjaxF9nw/
+	v7bxag/wXCiIMy1YYRAzcIl2zKMuOq6L9xBMqHxZYESLfThCi0wOBKmozdBoKQZs
+	U5KlcG90BspTrq9svnxq1HQfNxYtxO1RZDLUJfhhAvzKyMv8Eu7QUZdo0BSaxGuo
+	VCjT6IdSo9PaADmp3yZSqelweEUduU2YMoB+L7gJFNa//vj6RWJxFtTBDslhuZqN
+	xqvC10hCwzlpoT8iZbAnSNJ5QZI680Vf+iMHJscqpnqDIlmGOV0jbccj4LPtNmkE
+	jI/xxlk4KF+Ur/LLjgHHELr2VgvfMW3yvNTrBbiT9ZREW4zPBlWR1G4u9aNmVVgA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g63eg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 14:52:16 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674EfG6D029419;
+	Tue, 4 Aug 2026 14:52:16 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fsu4qjhka-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 14:52:16 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674EqErZ65405342
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 14:52:14 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3317F58060;
+	Tue,  4 Aug 2026 14:52:14 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 17E9D5805C;
+	Tue,  4 Aug 2026 14:52:13 +0000 (GMT)
+Received: from [9.61.86.222] (unknown [9.61.86.222])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 14:52:12 +0000 (GMT)
+Message-ID: <75d47b2b-9a47-407c-a02c-01fb9a58fabb@linux.ibm.com>
+Date: Tue, 4 Aug 2026 10:52:12 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, tabba@google.com, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] KVM: s390: memory leak in guest debug handling
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        KVM <kvm@vger.kernel.org>
+Cc: Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390
+ <linux-s390@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Douglas Freimuth <freimuth@linux.ibm.com>
+References: <20260804120631.736919-1-borntraeger@linux.ibm.com>
+ <20260804120631.736919-4-borntraeger@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260804120631.736919-4-borntraeger@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDEyMCBTYWx0ZWRfX69X1/BVOc/YI
+ Il9jLNYdYyX2+gb+S80W8BUce6kxeLZEs/zhHy6xEFM968j49AjPyi+gfjsGZ5WtmCR8byeIxbK
+ Xhwq/20b+u9g6l/RzpPSnNNkAnvbvzHqUVnLF99Sa3Lu/g3p9KinmjeTJZBqj0S034SsXPLlwC8
+ JH9gjwSQ+6NdDuZM20wRaEW/t6SCXwimtEH3Y5DzU/7eQDErRMwj9f3CDv5QkgllcAtyjLcMoUU
+ pUVtJkJYSfqtaGhDJO/tnY68Lgpq7H98UCvXLaaTHLJeS+kQNklgjcZPhGmys0yURzMGs3ajM4F
+ 2x/7KOZ1ATK2ZY8727BrDMcxBOJK/8bludZGcaA7wEFCU/v6ZJdVpncdJddZoNbtGPwVsZne1If
+ ADrrSsGpFwZ9Zn9faPey/BFXxVAnoNkHaN2JCo73727oEKcUTRxOPA4CJOMZAiD6pvLzRf64VJt
+ Bj2iNRpABxZqnqnxWqw==
+X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a71fca0 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=SojaDyzEsxftZGC-1DoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: BuSMatYEgsaEzcT1sxyHjEYwV05HPUnI
+X-Proofpoint-ORIG-GUID: BuSMatYEgsaEzcT1sxyHjEYwV05HPUnI
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDEyMCBTYWx0ZWRfX+ZXA/wyICTkT
+ GZbz2kUwOlz98RdjiRhB1JBw48KoRLL4xlQH8QPO34ZfU5up3hLiY4G+sxxe9Jwm6EQOR18D9f0
+ tj0/ErbPy8/mdNXLSThhp/N+9EbPMEE=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_03,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040120
 
-On Mon, 03 Aug 2026 23:44:05 +0100,
-Karl Mehltretter <kmehltretter@gmail.com> wrote:
+On 8/4/26 8:06 AM, Christian Borntraeger wrote:
+> bp_data is freed only for the error case by kfree(bp_data).
+> Every successful KVM_SET_GUEST_DEBUG will leak bp_data.
 > 
-> Add a regression test for a stale vcpu->arch.hw_mmu reference when
-> initialising a vCPU grows the nested S2 MMU table.
-> 
-> The test drives vCPU0 into L2 through a minimal L1 stage-2 identity map,
-> pins it to a second pCPU where it spins in L2, and then initialises
-> vCPU1.  That initialisation grows the nested MMU table while vCPU0 still
-> holds one of its entries; keeping vCPU0 on a pCPU of its own means the
-> reference stays live without relying on hw_mmu being retained across a
-> schedule-out.  vCPU0 is then released and has to run to completion.
-> 
-> Creating vCPU1 up front is what allows the in-kernel VGIC to be used:
-> kvm_arch_vcpu_precreate() refuses KVM_CREATE_VCPU once the VGIC has been
-> initialised, which the test does before its first KVM_RUN.  Creation on
-> its own increments online_vcpus, so deferring vCPU1's KVM_ARM_VCPU_INIT
-> until vCPU0 is in L2 still grows the table.
-> 
-> With KASAN enabled, an unfixed kernel reports a slab-use-after-free in
-> kvm_handle_guest_abort(); with the fix it completes cleanly.
+> Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-The problem is that we can't mandate selftests to rely on KASAN on the
-host. Selftests are there to verify that we match the architecture
-requirements.
+Maybe worth re-visiting for potential __free() usage as a follow on and
+replace the goto logic.
 
-If anything, this is a nice hack to demonstrate the problem (and yes,
-it fires here).
+But as a fix this LGTM.
 
-> 
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+
+
 > ---
+>  arch/s390/kvm/guestdbg.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> The test requires nested virtualization and two pCPUs.  Under QEMU TCG
-> it takes ~233s, exceeding the 120s timeout in
-> tools/testing/selftests/kvm/settings; psci_test takes ~167s in the same
-> boot, so emulating the second vCPU is the dominant cost.
+> diff --git a/arch/s390/kvm/guestdbg.c b/arch/s390/kvm/guestdbg.c
+> index 69835e1d4f20..4c02dbebb2eb 100644
+> --- a/arch/s390/kvm/guestdbg.c
+> +++ b/arch/s390/kvm/guestdbg.c
+> @@ -267,6 +267,7 @@ int kvm_s390_import_bp_data(struct kvm_vcpu *vcpu,
+>  	vcpu->arch.guestdbg.hw_bp_info = bp_info;
+>  	vcpu->arch.guestdbg.nr_hw_wp = nr_wp;
+>  	vcpu->arch.guestdbg.hw_wp_info = wp_info;
+> +	kfree(bp_data);
+>  	return 0;
+>  error:
+>  	kfree(bp_data);
 
-# time /host/home/maz/nested_mmu_realloc_test 
-Random seed: 0x6b8b4567
-Running control thread on pCPU 0, vCPU thread on pCPU 1
-vCPU0 is running in L2; initializing vCPU1 to grow the table
-vCPU1 initialized; releasing vCPU0
-vCPU0 resumed after nested MMU resize
-
-real	0m0.161s
-user	0m0.007s
-sys	0m0.109s
-
-This is with KVM running as an L1 already...
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
