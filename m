@@ -1,72 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E3F3783D4;
-	Tue,  4 Aug 2026 12:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E727733A70A;
+	Tue,  4 Aug 2026 12:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845669; cv=none; b=Buk2fyjAzIAq8wCv305ZSYXj82DBCQMrnamhVJtIP28D9nShmsDE6QO4eunczFxfylXF3q23ZPX/ni+b+2Fm0t2N74kqI0+1i/JZtbKzc99e941rblocguykfHFDnWc/qcc0m8TrQjA26uQMBkBkVN0wMDmx9+KHswSypYE8700=
+	t=1785845772; cv=none; b=tfPDweMACzqEc7wsPB8rKot4QaK1vsjioTv2JA7OJ+1jqXechQWqGBIxyFS7h7QFqp69VVOhnJn3YbQl1AIzKP1rn3QXnloa44Yd159+LwnyE4djW7nMGo1rjsWXXO8dKJTb8vUSMNLG1ioEsQVZbmuH3Xmd3wPMpT0uXhu0pis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845669; c=relaxed/simple;
-	bh=ltkzRjP+TMzzVGJMvQcbS6e0PFLR8JtNZGfaAeWxFZg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=JZ9iT7UUztwdWM0CGSp8ru4LJay5ihN/NpldtBS4n+yspr8vf89J4Lx6utYbZ/xgx7fD/LC51uGGEzk4pSJC0Sy6DhPAgTD1tKp3l59v910QW2vw1z4dbtTQHsxQov5G5imZMak/yDbMUAH0U17j4r0B1w4bo70nHFTYjeMbTDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERhUFKG0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785845772; c=relaxed/simple;
+	bh=bcAMhZTiy49tEojqvYK5r5G3B51T0weL1dSTwGIlZwY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hp1eIKO+kIvgF509dqvWSKn7EqjemtgUxxL6ozIGm+X4dYCriYkoIvx7CrtcQ1tBPoOXWTWBZdmCgzh8jZuAE2mBKNapCShn8e7RMaKcE96mmDz6M4xklFqBNJNkonTmVHP5rTORAW2tpTQWG+3w9Sm8zfsaJPMfJguGa6sov5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=c6UEwA1t; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERhUFKG0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE581F000E9;
-	Tue,  4 Aug 2026 12:14:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785845668;
-	bh=WH2d1IjyHF27DdC6vZaBbK5ZTKKckHkgA9x4Qyrv4ms=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ERhUFKG0RdGHNEDYqqpM90G70jnaf19cZd1PHFi/sxUSSNtTHrz4oucBuK38VE1YZ
-	 9IP7wITGurbvbv4Cp9+0LRCYbTP4Q8q7Fj5UVUDKGytnbZfRU0t///0QS0j+kVPN2N
-	 lVF+CrA8t7olcsU90Q7U8F/UXQVu0ojDf6vsdbNF+ycOPA9D6KMcWx0OTgohmeFSob
-	 C+xnxyUV2kxdvhAcEYELd7mwxlWsZux6rHCBohrRaelLig20OXs5VDOgBvGhESkyRT
-	 1L6WJdJskiM0JoXVbzB8vSkOdzoVv1fZVvwheYedT0ncGgcaOnta+DhXEo2X1a7msU
-	 OJtXUko9vWc9Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 6/6] kvm: return -EFAULT for writes to !VM_WRITE IO
- mappings
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Paolo Bonzini" <pbonzini@redhat.com>
-Cc: "Vasily Gorbik" <gor@linux.ibm.com>, linux-s390@vger.kernel.org, kvm@vger.kernel.org, dri-devel@lists.freedesktop.org, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260804120529.1730187-7-pbonzini@redhat.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
- <20260804120529.1730187-7-pbonzini@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 12:14:27 +0000
-Message-Id: <20260804121427.BAE581F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="c6UEwA1t"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF8851476;
+	Tue,  4 Aug 2026 05:16:03 -0700 (PDT)
+Received: from [10.57.44.180] (unknown [10.57.44.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E55483F66F;
+	Tue,  4 Aug 2026 05:16:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785845768; bh=bcAMhZTiy49tEojqvYK5r5G3B51T0weL1dSTwGIlZwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=c6UEwA1tfFd2CmIo6fSWGXXuYEzA2q181oOLDQYEGFGK+6ReJcnh1HF8CmR55UEwS
+	 4KYLjtJBdGc+eGUnk52Cn0Ek0phGnFAEbNgF42/95p8y/PHexLLabxa6ezN6urQQx8
+	 oo4Cl+2TiqW9TB+qhDx/Li/qJmx1beTxD+VNJIHc=
+Message-ID: <c1f0aad2-33cb-4dab-b54d-d09998fed36e@arm.com>
+Date: Tue, 4 Aug 2026 13:16:00 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 17/45] KVM: arm64: CCA: Tear down RTTs
+Content-Language: en-GB
+To: Alper Gun <alpergun@google.com>, Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20260803134403.80630-1-steven.price@arm.com>
+ <20260803134403.80630-18-steven.price@arm.com>
+ <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CABpDEun3NPr7Na85pmOvdfYQ1DB-2nCcocsyDESXM15bzJU1og@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> KVM's behavior when the guest writes to a non-writable VMA is inconsisten=
-t.
-> For regular, page-backed mappings it returns KVM_PFN_ERR_FAULT and thus
-> returns -EFAULT to userspace (which is ABI, and relied upon by tests);
-> for VM_IO/VM_PFNMAP mappings instead it returns KVM_PFN_ERR_RO_FAULT
-> and thus exits to userspace with KVM_EXIT_MMIO.
->=20
-> This behavior for VM_{IO,PFNMAP} was added by commit bd2fae8da794 ("KVM:
-> do not assume PTE is writable after follow_pfn"), and even if it has been
-> in place for five years it is unlikely that it is relied upon by userspac=
-e,
-> since it is inconsistent with KVM itself.  Change hva_to_pfn() to return
-> KVM_PFN_ERR_FAULT for all non-writable VMAs, and restrict KVM_EXIT_MMIO
-> to the case of an explicitly read-only memslot.
->=20
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Hi there
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+On 03/08/2026 23:29, Alper Gun wrote:
+> On Mon, Aug 3, 2026 at 6:45 AM Steven Price <steven.price@arm.com> wrote:
+>> [...]
+>> +static void realm_unmap_stage2(struct kvm *kvm)
+>> +{
+>> +       struct realm *realm = &kvm->arch.realm;
+>> +
+>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +       if (realm->stage2_unmapped)
+>> +               return;
+>> +
+>> +       write_lock(&kvm->mmu_lock);
+>> +       kvm_stage2_unmap_range(&kvm->arch.mmu, 0,
+>> +                              BIT(realm->ia_bits - 1), true);
+>> +       write_unlock(&kvm->mmu_lock);
+>> +
+>> +       realm->stage2_unmapped = true;
+>> +}
+>> +
+>> +int kvm_realm_teardown_stage2(struct kvm *kvm)
+>> +{
+>> +       lockdep_assert_held(&kvm->arch.config_lock);
+>> +
+>> +       realm_unmap_stage2(kvm);
+>> +       return realm_destroy_rtts(kvm);
+>> +}
+> 
+> Hi Steven,
+> 
+> I noticed a warning in dmesg when destroying a realm:
+> 
+>    [  158.533495] Call trace:
+>    [  158.535927]  kvm_destroy_realm+0x208/0x218
+>    [  158.540356]  kvm_arch_destroy_vm+0xc8/0xd8
+>    [  158.544439]  kvm_put_kvm+0x324/0x4b0
+>    [  158.548002]  kvm_vm_stats_release+0x1c/0x38
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804120529.1730=
-187-1-pbonzini@redhat.com?part=3D6
+Thanks for the report and the detailed analysis.
+
+> 
+> I traced this and found the following:
+> 
+> At this point, calling realm_destroy_rtts() may fail destroying the RTTs
+> because RECs are still active and the Realm is not terminated, but the
+> walk finishes and still sets realm->rtts_destroyed = true.
+> 
+> Later, kvm_destroy_realm() calls rmi_realm_terminate() and then calls
+> realm_destroy_rtts(kvm) again. But because realm->rtts_destroyed is already
+> set to true, it exits early without tearing down the RTTs.
+> 
+> Consequently, rmi_realm_destroy() is invoked while the RTT tables still
+> exist in RMM, which fails and triggers WARN_ON(rmi_realm_destroy).
+> 
+> The fix I used was to remove realm_destroy_rtts() from
+> kvm_realm_teardown_stage2():
+> --- a/arch/arm64/kvm/rmi.c
+> +++ b/arch/arm64/kvm/rmi.c
+> @@ -434,7 +434,7 @@ int kvm_realm_teardown_stage2(struct kvm *kvm)
+>    lockdep_assert_held(&kvm->arch.config_lock);
+> 
+>    realm_unmap_stage2(kvm);
+> - return realm_destroy_rtts(kvm);
+> + return 0;
+>   }
+> 
+> I think we don't need RTT destruction here as it will be handled cleanly in
+> kvm_destroy_realm() later.
+
+That sounds sensible to me, I will take a look and fix it locally for 
+the next version.
+
+
+Thanks
+Suzuki
+
+> 
+> Thanks,
+> Alper
 
