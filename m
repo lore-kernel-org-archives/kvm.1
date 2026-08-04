@@ -1,56 +1,56 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E518F45DF40
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32D4459AFB
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785886782; cv=none; b=FUkKz8QsK574XE7hGnjyyuABXFhhfDQpUR/7Xptvta6QYydquJK5FX+wyLjaMqvrnwOWRFjvup9zUA09upqtQ5mMKm/Z/9YedupY3FXWE5Mr14cpu7TWcbDTLq2GAw22hBIux5j/9419JWX6fbiH2KyPtVLVHvHRmOQGuzGLmiI=
+	t=1785886783; cv=none; b=nzxkAOcSYsprV9ljp29iveZ8uGAED4YS4Vc4VKmODUzEtf5dj7fOGmT3KCcwWIfs4Tu9TWXjS/hWNCwpD1ho0UMps5dSlvNes5bvwsFz/CqBhb2ia9v29VK143jfRLJq6XgutbgUCQkD1s4q/W1PIAJ7yFVQ9SP3E5N1TPvIhT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785886782; c=relaxed/simple;
-	bh=4cNseqJHyCRSmBZnTa38ZFFXEI0fQN1xPMl3CqlFtU4=;
+	s=arc-20240116; t=1785886783; c=relaxed/simple;
+	bh=OYDmse612vK5d4FLIG9srer7eR53sZ5xbP2KgtPnjDU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hP3tbNE/H2JoF3fx8905MO8RKI4uusgPbXb0tZBaMB+7T9zbSclTUdWis2Ua8gXDYZ/TOorc2THqJ/qeH2XminzEFZYOFkPSMh1txI4JJu65WCf0NgRdUSm/HQLpx7xDgveOqe/vjY5K+P3or+vF20mVcEUt9iYYdLG+MFEkE2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gg+Th5ao; arc=none smtp.client-ip=209.85.210.197
+	 To:Cc:Content-Type; b=ES5YB3mkXswJUL5wdDBnMreF6SfRI3gE55tNCybSGLP7N4DPSgWYF8HCE+IvWy27rnOurLZLMGi8444oZ91qU/spFRL3gaGx7cu083tVmUn+kkxGmzrYrY9TjTh18g1RVXDXLy6P7F2ZjgJgi8OvEP3iHMmYbZ+lMuoi0QQCBlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WDw8Fwfz; arc=none smtp.client-ip=209.85.214.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gg+Th5ao"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84859a64079so594987b3a.3
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WDw8Fwfz"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2caf4173b1cso6408975ad.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785886780; x=1786491580; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785886781; x=1786491581; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=ylZqUeoLaLfQt/SbHDySdKd2LUI+wnxs3fPQEqBHbJQ=;
-        b=gg+Th5aoEcwvkEwH2kUQf9XXHxPS7rqMPfS9MuJMu7q3LVrTj1NJrkMH7AYuxJepRC
-         GJP1iWkQ3vLsow6bXWnRXXKhIFaCAtjire4IbfvIyq6GmFlrvQmht5NlBEUWxteBQo/l
-         ynOMvhAHfio/xNROEs5SjAhyiSjMEh5FJimMd4pQsZnBxZB03plH3eP++e5vspD/C7M6
-         7OibgjUyoy9LkhREMooGNYBjzEAT59fdKV8Ch3toVrNhmJ6Wg3BTp8o0hPSKw1XrihIB
-         Y2iOq/HHjlG0gS7yunMtXHcmtoth1N1B4vyKbVGrl7HqpEsu9LEB1lCsBeqy9Iu8sBJG
-         ZPBA==
+        bh=igGRF22UKQuGN63OKPz0N85SiBZ0lp1Jo/7y+mQANeQ=;
+        b=WDw8Fwfzm4B8zTJ1QBhQW9mVf6K+tFSaD6GeAUsocMviZg0Zij1k3lqvaWmAuWK8+o
+         s+NTNP/49xF7nJUXcITMHnEHgczhB6T77GQH5mZBxX2xp6aMzl5PRN8b3/gHd77NUdxk
+         v/sRdeKcEt+PcYfSOlSDWifZwBfvaOlfSQAFKK662+wY8nIfDQBeYDlBR7GPEIGrckyl
+         MVp94NXCXbsvMjJdk2SZa/MUBCneIRM4EWIlLidI6swR2jit4doAr/5Bck4JzuhnieaM
+         ovkB16nzUnQgeQdEdz5/sYLxLTPgHja3Frui97mjpdb+a1KIRakit3Fu0XmbenkZHIHU
+         YPeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785886780; x=1786491580;
+        d=1e100.net; s=20251104; t=1785886781; x=1786491581;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ylZqUeoLaLfQt/SbHDySdKd2LUI+wnxs3fPQEqBHbJQ=;
-        b=Z9QmKs50lAI9LZUQnVt3hCufTKghXlfz9eNPyyedy6948UBzOZ3uCkDEWBbzi+OQBY
-         bgZLStUMD1NybyE4KdOnvt/TBvBRoCLFjnTNGCr1ZlQzss4yg8M94n76ZraIkyDTPuja
-         YcthzkGHwj/NdMspKHaX8OARjSDLkYRNNENCz4yeJEPCVosB36nGvXIfjIOLmAGurgxv
-         AZTV+EqjmHm0P1CblkUuGo+O2vZEINRUoNPli2nAJ93sb+qvwbdt7beVeSm28DPLFtvk
-         6iT5jziznAa0GRKBhTfR6+GXj6r44kRGffpa/x8YnVwiI/pHzXY07nDWrA72Fo1Ww8UO
-         cfEA==
-X-Gm-Message-State: AOJu0Yxoo5SB7UMKLwnhw5QhBh2AbU+h+uFXUxEt2QtR/gI/2/Qq8HDa
-	5hBU0ZP7KDuF0P0XXg5Pc+1yhNhLu91Jl0AFFxka9TF2ujH5QYB9bEOYTwx18M/vEibyjfYHYoc
-	+zT3tgQ==
-X-Received: from pfbhu27.prod.google.com ([2002:a05:6a00:699b:b0:84a:3b83:9673])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3c89:b0:848:7f56:1e44
- with SMTP id d2e1a72fcca58-84f2dfcfcfbmr2273989b3a.7.1785886780109; Tue, 04
- Aug 2026 16:39:40 -0700 (PDT)
+        bh=igGRF22UKQuGN63OKPz0N85SiBZ0lp1Jo/7y+mQANeQ=;
+        b=PbclZAyC0/sdGzyN0l94aI4iZuBBYa6LiQ0z+jQUk96vMIDIznKUm49yFIfUnqlFt3
+         W9UMqS2+WzBQ0yhoGu83re/Gg0MpF5+dhiNEMA0QAjDX9gDbzT3B1GpptFvQztV6Ze1h
+         KUwGVwcuXDQQ+cggZG/CF2ZsjDtxstDvZ08cb3RaPiyQOBNgozs/yakBn+Ww9wX3BECE
+         GspfcDIrTPVQFUOK30QrPnQ935gNGy7YyIKy00jwoSJzUMN3NizDQpzET81BYq//2Be5
+         f7o+5QnwUn9IB2DvhbEdbdJH5g8Ic1sB3p06Ti0mRyC1RxcohvEEMIrqv59nWZ80eks6
+         r43g==
+X-Gm-Message-State: AOJu0YwjXGcaxr/l5QEfJLxdZpekChNppxy3OEq/tm30U3VfZ8+ousT2
+	EV13DFLiRAmHKQA3yvDaJo8E1CcKRxZZS9JFwQ69FeSWKqzOixHA6aAdhGGAAdR3Warop1Sripe
+	zmO4JnA==
+X-Received: from plnx14.prod.google.com ([2002:a17:902:820e:b0:2c7:ec09:a994])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d58e:b0:2c7:1200:bd7e
+ with SMTP id d9443c01a7336-2d0ca9838ebmr28241965ad.18.1785886781179; Tue, 04
+ Aug 2026 16:39:41 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  4 Aug 2026 16:39:16 -0700
+Date: Tue,  4 Aug 2026 16:39:17 -0700
 In-Reply-To: <20260804233923.3504629-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,62 +60,93 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260804233923.3504629-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804233923.3504629-13-seanjc@google.com>
-Subject: [PATCH v8 12/17] KVM: x86: Fix compute_guest_tsc() to handle negative
- time deltas
+Message-ID: <20260804233923.3504629-14-seanjc@google.com>
+Subject: [PATCH v8 13/17] KVM: x86: Disable preemption, not IRQs, when getting
+ TSC+freq pair
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Disable "just" preemption, not IRQs, when reading the TSC+frequency pair to
+update guest time, as disabling IRQs to protect against task migration is
+overkill (though it's *extremely* hard to see that it's overkill).
 
-The compute_guest_tsc() function computes the guest TSC at a given
-kernel_ns timestamp. When the master clock reference point
-(master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
-is negative. Since pvclock_scale_delta() takes a u64, the negative
-value wraps to a huge positive number, producing a wildly wrong result.
+Disabling IRQs was added by commit 18068523d3a0 ("KVM: paravirtualized
+clocksource: host part") before there was any coordination with timekeeping
+(presumably disabling IRQs prevented the kernel from completing a software-
+induced frequency change).
 
-Handle negative deltas explicitly by scaling the absolute value of the
-delta and applying it to this_tsc_write with the appropriate sign.
+After the coordination and locking was added, commit c09664bb4418 ("KVM:
+x86: fix deadlock in clock-in-progress request handling") moved the locking
+and coordination out of IRQ protection, and thus made disabling IRQs
+pointless, except for protecting get_cpu_tsc_khz().
 
-This is believed to be unreachable in practice; no path has been
-identified which invokes compute_guest_tsc() with a timestamp from
-before the vCPU's TSC generation was established. Fix it for
-robustness, in the spirit of defence in depth.
+And while cpu_tsc_khz is written only from IRQ context, and the *extremely*
+confusing double IPIs sent by __kvmclock_cpufreq_notifier() to update the
+per-CPU frequency make it seem like they would require readers to disable
+IRQs, it is safe to read and consume cpu_tsc_khz (via get_cpu_tsc_khz())
+with IRQs enabled.  The per-CPU variable is specifically written only in
+IRQ context to ensure hotplugging a CPU wouldn't write cpu_tsc_khz with a
+stale value (because apparently disabling IRQs would be too simple?!?).
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+As for the double IPIs in the frequency notifier, both IPIs are red
+herrings.  The actual sequence that ensures KVM updates guest time with the
+new frequency is that the first write is completed *before* the notifier
+sets KVM_REQ_CLOCK_UPDATE for all vCPUs that last ran on the target pCPU.
+The first write is done via IPI to adhere to the above rules, and the
+second IPI is sent purely to kick any vCPU that happens to be running on
+the target CPU out of the guest.  I.e. the second IPI writes cpu_tsc_khz
+out of pure KVM laziness: it saves having to define another IPI callback.
+In fact prior to commit 8cfdc0008542 ("KVM: x86: Make cpu_tsc_khz updates
+use local CPU"), KVM did indeed use an empty callback to ack the IPI.  As
+for why it was deemed cleaner to abuse tsc_khz_changed()...
+
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ arch/x86/kvm/x86.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ec39ca82633b..5667cd17672b 100644
+index 5667cd17672b..63702be799cc 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -1054,11 +1054,15 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
- 
- static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
+@@ -1797,7 +1797,6 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
+ int kvm_guest_time_update(struct kvm_vcpu *v)
  {
--	u64 tsc = pvclock_scale_delta(kernel_ns-vcpu->arch.this_tsc_nsec,
--				      vcpu->arch.virtual_tsc_mult,
--				      vcpu->arch.virtual_tsc_shift);
--	tsc += vcpu->arch.this_tsc_write;
--	return tsc;
-+	s64 delta_ns = kernel_ns - vcpu->arch.this_tsc_nsec;
-+	u64 tsc;
-+
-+	/* Handle negative deltas gracefully (master clock ref may be earlier) */
-+	tsc = pvclock_scale_delta(abs(delta_ns),
-+				  vcpu->arch.virtual_tsc_mult,
-+				  vcpu->arch.virtual_tsc_shift);
-+
-+	return vcpu->arch.this_tsc_write + (delta_ns >= 0 ? tsc : -tsc);
- }
+ 	struct pvclock_vcpu_time_info hv_clock = {};
+-	unsigned long flags;
+ 	u64 tgt_tsc_hz;
+ 	unsigned seq;
+ 	struct kvm_vcpu_arch *vcpu = &v->arch;
+@@ -1822,11 +1821,14 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 		}
+ 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
  
- #ifdef CONFIG_X86_64
+-	/* Keep irq disabled to prevent changes to the clock */
+-	local_irq_save(flags);
++	/*
++	 * Ensure reading the TSC+frequency pair is done on the same CPU.  When
++	 * NOT using the master clock, the TSC frequency may vary between CPUs.
++	 */
++	preempt_disable();
+ 	tgt_tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
+ 	if (unlikely(tgt_tsc_hz == 0)) {
+-		local_irq_restore(flags);
++		preempt_enable();
+ 		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
+ 		return 1;
+ 	}
+@@ -1861,7 +1863,7 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 	 */
+ 	vcpu->last_guest_tsc = tsc_timestamp;
+ 
+-	local_irq_restore(flags);
++	preempt_enable();
+ 
+ 	/* With all the info we got, fill in the values */
+ 
 -- 
 2.55.0.571.g244d577d93-goog
 
