@@ -1,169 +1,146 @@
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBFE42AFA8
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 23:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927863DA7CA;
+	Tue,  4 Aug 2026 23:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785886788; cv=none; b=tpePy/bkch5/exjfGZevXorBl7gLHX9ibhO1qv9jZlUaFMTf7nxIF+OkSFQXv9mQ9/ihpJ7WQIkoSXtBVY1yo6AgZC2Wd6+LIQWrFivUZUH8taiQXfVY9+sOXBbz4isZJSWrJ2B3RnAAQPuzYXd2XFSJxvyyaNwn5S5uIj0iY+s=
+	t=1785887028; cv=none; b=bOCw9RaZPwhLOYNRt7O1YD9NERlElo+1V3cUbuZDVjFtjxsO9pRyF73AuklksUk7Uadh2PqNhBRI9ow3ibuL1C1mEWVsBQH6GSxGbpooq0KsT7qxy1gktUMADCLP+hX9lGeJsKwmyE/Im8gIio4VTdG7t9834VAETD8RVjHVU/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785886788; c=relaxed/simple;
-	bh=8lvDeWtkfX+uoVNKASmySKo/OUYCoXFwueXvmd3AzkQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MRkK5AsSLQ8jvkbkL+cMvgZ28YU7emr2hg2EJiigr1FdA+pYkxVZ8rOIlnmXt5woGou0lsehpLq03AkUHLnjnHaE8tWH1JV29AZQgboDYuxa3mUS/KtmJ2EdPqjkZQ7mn+N9ZtJCoXmuHJGIiRaAdwaphQs11t6JysXdoW0Gv20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iSUJBOiY; arc=none smtp.client-ip=209.85.210.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785887028; c=relaxed/simple;
+	bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ANVyUOgtt299Wj05AAD58ZufjJ27DI2bp4GXcY218i3DcNGdeO0Cdr/IJmRF+94q97zLJrKdAWndwAAX+7rE43scWw/nZsmtDWbIXzlC6FKn624LxY2XVDZsttHNAW8NumCmJ3YLfunT3z0NNNKI9A0TrQPolC1NyckGXlPOB3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HA+vtzUR; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iSUJBOiY"
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8486ffba174so690758b3a.1
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 16:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785886786; x=1786491586; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=MegQ9HN/KeyZhKX/8lwjVe1LaOD5fsnTzVy8ULN73io=;
-        b=iSUJBOiY+HgMLbUGMNAotMbU5PiXqIaMaWvXY0MLVIr9o+tIRmg6rA0psRegaAno2r
-         ffPGMyGzwkojgesHc4giEzFwT0V0CdlY4ty6biHI29cTtl+vtaNOy6Fm6ucCKt/3tPDF
-         LiuiI3Zx2VMqjbHKPWlECEuhXu5JXMTPVLPEIs9S19BU3KX0/PICNQlsocBDVji4che5
-         +5NxrItGiI8B/3VsleiH0Y9kQLdiso3/VYKDR9iPTzR/yIOoOSGdkf79rNILTbj34HMW
-         vJC/BU/3drXDBH+rtCoJ+QG+7rLeJPL7U3NY3KZzD97br35c5KCsTe/unOc+9oHUPb5b
-         b7ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785886786; x=1786491586;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MegQ9HN/KeyZhKX/8lwjVe1LaOD5fsnTzVy8ULN73io=;
-        b=PNU7ieBOD79UwwLP/0h9YcZsW3eKapIBslpNcdYdXjVo/g/T3LR8n0E94/TW/w2X5R
-         CvIWUbSTSQtQJ0AMCUvxArQ6PMjwzLTUNagcifL+IjyyP+zYml2jbR1MYIjsKE3GTyIT
-         NWqKRsIvj+4fSqFvJcdfRNNuuJzXXpHhH8rBftSSWIETv8FPmItIsPuxrWxjQtXisPXk
-         F+qo1Kv0WBgojrMflO/9SdNQ5CSo5qeVIG4w4LEUIZxGMYtoVE6uyATbdO/aTWDFDxIO
-         XtDSn6ghJMxh6qicBgdwNXjZdfGZXVqfbnJazirVLHVecRXIW0KbjL4Up+jfcakCR8kx
-         f1kA==
-X-Gm-Message-State: AOJu0YzPpxWe012ZPQQYJjTRVwsi6TDTvOfAnf2nMzd2yJ9FcYbfm1yc
-	S0Rfn+K9jOHUUSJILQS3Enl8R9fK4d7vLKxArIjwowtRraBtmGo+vqFq0CBiF6ou5kmCCzfnLwv
-	7vN8E/g==
-X-Received: from pfbfv6.prod.google.com ([2002:a05:6a00:6186:b0:848:487e:d23c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c95:b0:845:3033:6cb7
- with SMTP id d2e1a72fcca58-84f2dfc8ec7mr1879050b3a.9.1785886785607; Tue, 04
- Aug 2026 16:39:45 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue,  4 Aug 2026 16:39:21 -0700
-In-Reply-To: <20260804233923.3504629-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HA+vtzUR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785887027; x=1817423027;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Kzlmampl3B9EuybpZzFLmtBI1ka1Z0J+otMGegc3jaw=;
+  b=HA+vtzUR3gs3fzAJVAexZ+OmHtp4dCAhv+W00/2LTKnm60E8SHWtEUBO
+   8Ziu7FBiIn5+zrIXn0Fyc2iaXF4cdnPgAzmytPAi6k7qY7sBKxVd46Ueh
+   jX3sB27K7eOLbYIFvKwJcCmIlrLEB2ch6+p8R+tzNT/CR0uDGN6PNizuQ
+   lEI+bODYOXwXwLMNrNk5A8gaWCPKS5IMqKAYfDGOsFf3Q7yfDBEbFQ5RB
+   r0Z+oXp9taHvK1Vhm0/3Y6oL44qhUVyAwQ8cZU31BtJ2PH4Hb/wpFGlB4
+   T/nGy9bVMzL6jeHz621O8twrr/vVOKV7G9NW/or/MLHX4UfYUHlgQN6RT
+   w==;
+X-CSE-ConnectionGUID: eCi6tmkrSzSZ6T3Vlx+8NQ==
+X-CSE-MsgGUID: IAr1ZbUXRWWWk4EgjRzyCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97955578"
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="97955578"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:47 -0700
+X-CSE-ConnectionGUID: R9t4uPgnRJaLxJTVXYyvYQ==
+X-CSE-MsgGUID: fxIRLV00QPOTRQHEx6tJDA==
+X-ExtLoop1: 1
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:43:46 -0700
+Message-ID: <43bb043e-8a01-484e-905b-41c73ae835d3@intel.com>
+Date: Tue, 4 Aug 2026 16:43:43 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260804233923.3504629-1-seanjc@google.com>
-X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804233923.3504629-18-seanjc@google.com>
-Subject: [PATCH v8 17/17] KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Paul Durrant <paul@xen.org>, David Woodhouse <dwmw@amazon.co.uk>, Dongli Zhang <dongli.zhang@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/8] x86/virt/tdx: Stop treating tdx_global_metadata.h
+ as auto-generated
+To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
+ linux-coco@lists.linux.dev, kvm@vger.kernel.org
+Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
+References: <20260804112941.19894-1-chao.gao@intel.com>
+ <20260804112941.19894-2-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
+ LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
+ lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
+ MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
+ IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
+ aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
+ I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
+ E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
+ F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
+ CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
+ P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
+ 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
+ GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
+ MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
+ Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
+ lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
+ 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
+ qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
+ BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
+ 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
+ vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
+ FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
+ l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
+ yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
+ +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
+ asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
+ WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
+ sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
+ KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
+ MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
+ hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
+ vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
+In-Reply-To: <20260804112941.19894-2-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On 8/4/26 04:29, Chao Gao wrote:
+> From: Dave Hansen <dave@sr71.net>
+> 
+> The TDX module exposes its capabilities and limits through "Global
+> Scope Metadata" fields, defined in the Intel TDX Module ABI spec.
+> The kernel mirrors a small subset of those fields in C structures
+> (for example, struct tdx_sys_info_version/features). Those structures
+> are populated by reading each field via the TDH.SYS.RD SEAMCALL.
+> 
+> Today the header that holds these structures is generated by an
+> out-of-tree script from a JSON file listing all of the TDX module's
+> metadata.  That made it trivial to add a new field, but everything
+> else suffered for it:
+> 
+>   - The header is opaque to anyone who doesn't have the script and
+>     the JSON file handy, and the "Automatically generated" tag tells
+>     reviewers their edits will be clobbered.
+>   - The script ships outside the tree, so reproducing changes
+>     requires fetching it from a mailing list link.
+>   - The structures are short and stable; the script's value over
+>     a hand-edited header is small.
 
-Let the callers pass the host TSC value in as an explicit parameter.
-This leaves some fairly obviously stupid code, which is using this
-function to compare the guest TSC at some *other* time, with the
-newly-minted TSC value from rdtsc(). Unless it's being used to measure
-*elapsed* time, that isn't very sensible.
+Well, and the big one: after we started doing this, the "ABI Definitions
+for Intel® TDX" was declared to be not an ABI. So, even if we code to
+the JSON, there's no guarantee the JSON will be stable.
 
-In this case, "obviously stupid" is an improvement over being
-non-obviously so.
+<sigh>
 
-No functional change intended.
+Honestly that's what matters. The script and all the other fluff is just
+noise.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/msrs.c |  3 ++-
- arch/x86/kvm/x86.c  | 11 ++++++-----
- arch/x86/kvm/x86.h  |  3 ++-
- 3 files changed, 10 insertions(+), 7 deletions(-)
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
 
-diff --git a/arch/x86/kvm/msrs.c b/arch/x86/kvm/msrs.c
-index 66fa7140d65d..22ceb39d41f6 100644
---- a/arch/x86/kvm/msrs.c
-+++ b/arch/x86/kvm/msrs.c
-@@ -1631,7 +1631,8 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (msr_info->host_initiated) {
- 			kvm_synchronize_tsc(vcpu, &data);
- 		} else if (!vcpu->arch.guest_tsc_protected) {
--			u64 adj = kvm_compute_l1_tsc_offset(vcpu, data) - vcpu->arch.l1_tsc_offset;
-+			u64 adj = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data) -
-+				  vcpu->arch.l1_tsc_offset;
- 			adjust_tsc_offset_guest(vcpu, adj);
- 			vcpu->arch.ia32_tsc_adjust_msr += adj;
- 		}
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 02c389523f52..cbe4fd3457b4 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1153,11 +1153,12 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio)
- 	return _tsc;
- }
- 
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc)
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc)
- {
- 	u64 tsc;
- 
--	tsc = kvm_scale_tsc(rdtsc(), vcpu->arch.l1_tsc_scaling_ratio);
-+	tsc = kvm_scale_tsc(host_tsc, vcpu->arch.l1_tsc_scaling_ratio);
- 
- 	return target_tsc - tsc;
- }
-@@ -1319,7 +1320,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 	bool synchronizing = false;
- 
- 	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
--	offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+	offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 	ns = get_kvmclock_base_ns();
- 	elapsed = ns - kvm->arch.last_tsc_nsec;
- 
-@@ -1368,7 +1369,7 @@ void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value)
- 		} else {
- 			u64 delta = nsec_to_cycles(vcpu, elapsed);
- 			data += delta;
--			offset = kvm_compute_l1_tsc_offset(vcpu, data);
-+			offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(), data);
- 		}
- 		matched = true;
- 	}
-@@ -2625,7 +2626,7 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 			mark_tsc_unstable("KVM discovered backwards TSC");
- 
- 		if (kvm_check_tsc_unstable()) {
--			u64 offset = kvm_compute_l1_tsc_offset(vcpu,
-+			u64 offset = kvm_compute_l1_tsc_offset(vcpu, rdtsc(),
- 						vcpu->arch.last_guest_tsc);
- 			kvm_vcpu_write_tsc_offset(vcpu, offset);
- 			if (!vcpu->arch.guest_tsc_protected)
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 0f5919b092e4..1d9a66048b01 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -335,7 +335,8 @@ u64 kvm_scale_tsc(u64 tsc, u64 ratio);
- u64 kvm_read_l1_tsc(struct kvm_vcpu *vcpu, u64 host_tsc);
- u64 kvm_calc_nested_tsc_offset(u64 l1_offset, u64 l2_offset, u64 l2_multiplier);
- u64 kvm_calc_nested_tsc_multiplier(u64 l1_multiplier, u64 l2_multiplier);
--u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 target_tsc);
-+u64 kvm_compute_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 host_tsc,
-+			      u64 target_tsc);
- void kvm_vcpu_write_tsc_offset(struct kvm_vcpu *vcpu, u64 l1_offset);
- 
- static inline void adjust_tsc_offset_guest(struct kvm_vcpu *vcpu,
--- 
-2.55.0.571.g244d577d93-goog
+So, I'm curious: What made you feel OK to sign-off on this? I'm not
+judging. I'm open-minded on this. All I know is *I* wasn't ready to
+sign-off on this.
 
+I really want to know what your thought process was.
