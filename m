@@ -1,56 +1,56 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1528646F4B4
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E265947ACF8
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785869469; cv=none; b=RelVEXcSBioNKz+91nTqjqWkPY0AOadIKVl/eqfkQ0ZpALvSy5kocPj/qtYrZR58+LdeYLcUwDDz9HCu4WlY4bYuzHLtNwcox5QKIR3xh+wKMZvxgj1nWFhDJzxx/pAKG3WHKzjxNHnAmdiHkYe7KD3pjoUduI1NtL/yuiXVvrM=
+	t=1785869472; cv=none; b=ELQMlVzCWVdVh4mzLiQnkJjrpE2DSxGfJjOT/MZWaQZCls8B6RiT1NdSxAYAFpFpT/wUv1692NP177FXHho42eNkoaKksBAQGBFITE8hpLxEIempVvdyiux4WRqn9oReMUqCEM6wuFjjvPA0ai8GWFHa1oJ5AouyqnQP+/Pum/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785869469; c=relaxed/simple;
-	bh=XlkRowI/Bj2yqvZSSpDH2xbYCIlXFfReqBFODIvSLbU=;
+	s=arc-20240116; t=1785869472; c=relaxed/simple;
+	bh=Ou2tVB8Q+yupGdPWWOxQVJQIDcQOWDiehp4QhnvMwYM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mjxhHclO7pG0sfB1hI19/Bkqup7BhhQUFsQGBhxcEMp75cYMcRIrRBXNH3rDw/je8I8YUntN1PL+AB6nGLNkAydCkk37Z7PFW7a5oA8lmQ1B5ksjDbU1UK2oOOZuamIzkC03Vn/Sc1xWtHRdn1vsf1eVPJLCuTdXf8nF6SHHs3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MBB4roiW; arc=none smtp.client-ip=209.85.215.200
+	 To:Cc:Content-Type; b=GdLN6bFk3bV1/F9kZWeFZVFvcazOLCElVbhtuGzg6ojjYR+on1e3+XjsMIK0A/ubuIP2c3JgSdrcjSTU6qmAANBmFF/B6KFXarPckzMMkEvI92XTnfQRzsEyq3G3fpXQ9DXtawDE7KoBLFi9+CreIWNMFr/a/DUJpn2fTTKg7kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EZk8IF3l; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MBB4roiW"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab041eced3so156483a12.1
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EZk8IF3l"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-38f283baf1fso117298a91.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785869467; x=1786474267; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785869470; x=1786474270; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mN/ftuPXHTO6yPx2v45bEY7G4dZzvWxyQXkizaq1wVU=;
-        b=MBB4roiWT6SNt7U1o9vGR9MgpQ8CYYNVUWs2n/mnVLwAcT3lrz5m2d84gRBHrner9I
-         2qmo7k+E4+aPEdqPG1cQbaTBcFi7tFBNq/YHnfrQdCHRTecNAPZll8J/uikWAw5e82NC
-         TfX0IeNYYd7CwXN8zld7fpCF5GXya/6wiTc66CCEu062Kz5VExeXik1kh4u+ZFRI1Fcy
-         tYMY69cyLbGKQKw7J+UK17te/WTkX0kVcPaN6Kr6WU7SknwPx77hsKNF5S4RBCBd/ovm
-         aVnHu5x3yx/27N5kc4iGhvH7LAlq1du0cilZUrvDU8ekadkcn3zUovBtbHu3zSkd72Nv
-         5ldA==
+        bh=/ZHDS1bDmePexnQc1y4ZiUVE4FDmrL6+107/+IDkhio=;
+        b=EZk8IF3lvbdgyFJPcGORW1dKC4H6zHlGDXLxK+uRUsjW/oM/JwSkIfjBnYJ5H7a7gf
+         lKKLPrhwDl46kofSqo0xRG/3khDXS7LYdo5JJrY/zNoR8B6XYrSb+ElPS/P7qHCidvT4
+         LwGV2yBRGXg8Xh+1FYI/VfkDBneMzKbg3yq6cZzwKda6MWX08/UBNYfbI+VoZzxx4GAA
+         0a4kjHvxpryqoVTOoJ5a1KWqdU+1aUMq6rMFyco5LqXhyo5LH9eUcwuqo0nGCFKt1SUa
+         wO4zVWd01lhnow11FuE+w6G/AN0ZnoG+gb3bh5Ey2yw4SbA7XB9MqQGD+8xjtN2iaKxR
+         26og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869467; x=1786474267;
+        d=1e100.net; s=20251104; t=1785869470; x=1786474270;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mN/ftuPXHTO6yPx2v45bEY7G4dZzvWxyQXkizaq1wVU=;
-        b=Oa1wvv2Ue1HEQ604iyZa3w/g3UvPvbWX7BjfRRPvJssQFoI64hwxU7pqRbyWVcnQWx
-         TTp14V3Fn7vkkfvojyOPcyz0Lk6r03z8n9dnMxZJmAxLoAxgox6xwXLFbsLQXjJjZhLB
-         MoBNNcqFHCRWu8y0+HVXDLwIhOY/F+M1La+TMXlvzhenAJNvHT9Rxe+D3hJbfxGO+0e9
-         TR+tRlVacLioeKK11xterUQHqdGLQjHr6HMGk/H84kwyUkJqhrmJ55CHLL7K2l2Ebmlg
-         HFdQCVTFZXHTaVLXRh2ON6n7uHsgCKY8QNFj7TwccYaSfk1HPuDF5UwwB6YCJSh2p7lB
-         VeMA==
-X-Forwarded-Encrypted: i=1; AHgh+RpmmXMire6gj+pq82gItl9zkE43sj8q2ZZkFi22RL7u+xX4u2MVAXptPHYXr3ZChgFwsHM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDpk5Dmi38H7RslNJJUKI1T9OxhjkQALM/za3hDDgDkgDv8TnI
-	n0JU0e5/9bnaOuGLqwVL4OWrFmOwC9cAqDKV5zOqrFLM7YZE1cbz+Fg93cQK8DlQkNebqf4tsWp
-	1gg==
-X-Received: from pgla35.prod.google.com ([2002:a63:b63:0:b0:c96:da8a:c09c])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:428b:b0:3c3:64cc:311a
- with SMTP id adf61e73a8af0-3cb85ef9229mr901310637.22.1785869467266; Tue, 04
- Aug 2026 11:51:07 -0700 (PDT)
-Date: Tue,  4 Aug 2026 18:50:46 +0000
+        bh=/ZHDS1bDmePexnQc1y4ZiUVE4FDmrL6+107/+IDkhio=;
+        b=QsyShCyQdKqhLfZgevErl8KWuCPDNN9vwtbBY0uXrNUChixSnA6DQokK1sNx4vYUEf
+         VNGXIsxslx80gHk6jyyHxqv3EOSx8CZfFlK3jRPz8lip3k/4CcfQEmLpTiopUebjxt10
+         9hr+zl/XROC4kf/+1YSulmFCFUCdaszNHQZaDZv+weg8Zbwg0otiR3kSRFmnDqP/gQiS
+         gpjCDJszDlRdzJ4EDBUmte6qQR3poQswoL6lT98mqEV7quNXmcqLVOrslgukEgO7/iVR
+         krmG+24S1nDcS8IAajtIqnQ9Mg84juUoxDsu3Xa5NWbfQL4Zguh+E/xOKWXd/rmlnfzh
+         8/fA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5okyqX8vs1xWHszYI7+gcwjhO7XDAwkEVKRju72xvKgN94cgdxL4d4aTs8Ai49PHYfiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvMZiCPa3TAOlihrM0kx8P0GyBTepuEr8kvTaakxdQH+2d2txy
+	wc9csC3Y6bZtFy1KPcm/rOTvYZwglt6865W5trxS0k044ybdS6OZqe7LT4lckWf5zbmtjJBQSEA
+	Phg==
+X-Received: from dlec14-n2.prod.google.com ([2002:a05:701b:428e:20b0:13d:2d28:797d])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:55c7:b0:383:f52b:d616
+ with SMTP id 98e67ed59e1d1-3903c592495mr940815a91.10.1785869469975; Tue, 04
+ Aug 2026 11:51:09 -0700 (PDT)
+Date: Tue,  4 Aug 2026 18:50:47 +0000
 In-Reply-To: <20260804185050.2053672-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260804185050.2053672-1-praan@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804185050.2053672-2-praan@google.com>
-Subject: [RFC PATCH v2 1/5] vfio: Add UAPI flag for ZONE_DEVICE-backed DMABUF exports
+Message-ID: <20260804185050.2053672-3-praan@google.com>
+Subject: [RFC PATCH v2 2/5] vfio/pci: Implement ZONE_DEVICE registration for DMABUFs
 From: Pranjal Shrivastava <praan@google.com>
 To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	kvm@vger.kernel.org
@@ -73,42 +73,158 @@ Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
 	Unnati Sachan <unnatisachan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add an opt-in UAPI flag for exporting VFIO MMIO regions via dmabuf
-backed by struct page metadata (via ZONE_DEVICE registration).
+When a DMABUF is requested with the VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED
+flag is requested during DMABUF export, invoke pci_p2pdma_add_resource()
+to register the target BAR with the ZONE_DEVICE framework. This allocates
+the underlying struct page metadata. Add internal state tracking for
+ZONE_DEVICE-backed DMABUF exports. Add p2p_struct_page_bars, a bitmask to
+track PCI BARs that have been registered. Add a zone_device_backed flag
+to track whether a specific DMABUF contains page-backed memory.
+
+Introduce a new Kconfig option, VFIO_PCI_DMABUF_ZONE_DEVICE to handle
+the dependency on PCI_P2PDMA without clobbering existing dependencies.
 
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- include/uapi/linux/vfio.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/Kconfig           | 11 ++++++
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 55 +++++++++++++++++++++++++++++-
+ drivers/vfio/pci/vfio_pci_priv.h   |  1 +
+ include/linux/vfio_pci_core.h      |  1 +
+ 4 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index cbe03e5d1009..3ae025b33e7f 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1505,7 +1505,13 @@ struct vfio_device_feature_bus_master {
-  * etc. offset/length specify a slice of the region to create the dmabuf from.
-  * nr_ranges is the total number of (P2P DMA) ranges that comprise the dmabuf.
-  *
-- * flags should be 0.
-+ * flags supports:
-+ *   - VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED: Request the kernel to allocate
-+ *     valid struct pages for the exported dmabuf range (via ZONE_DEVICE
-+ *     registration). This allows the exported dmabuf fd to be used by
-+ *     subsystems that rely on page metadata.
-+ *     (NOTE: This consumes extra system RAM to store BAR_SIZE / PAGE_SIZE
-+ *     struct pages).
-  *
-  * Return: The fd number on success, -1 and errno is set on failure.
-  */
-@@ -1516,6 +1522,8 @@ struct vfio_region_dma_range {
- 	__u64 length;
+diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+index 67a2ae1fbc04..c9cd04a16297 100644
+--- a/drivers/vfio/pci/Kconfig
++++ b/drivers/vfio/pci/Kconfig
+@@ -61,6 +61,17 @@ config VFIO_PCI_DMABUF
+ 	def_bool y if PCI_P2PDMA
+ 	depends on VFIO_PCI_CORE
+ 
++config VFIO_PCI_DMABUF_ZONE_DEVICE
++	bool "VFIO PCI DMABUF ZONE_DEVICE page-backed export support"
++	depends on VFIO_PCI_DMABUF
++	depends on PCI_P2PDMA
++	help
++	  Say Y here to enable optional struct page backing (ZONE_DEVICE)
++	  for VFIO exported DMABUFs. This is required to support peer-to-peer
++	  (P2P) DMA transactions with subsystems that rely on page metadata.
++
++	  If unsure, say N.
++
+ source "drivers/vfio/pci/mlx5/Kconfig"
+ 
+ source "drivers/vfio/pci/ism/Kconfig"
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+index 36bf07530840..900ac1851c9f 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -427,6 +427,41 @@ static int validate_dmabuf_input(struct vfio_device_feature_dma_buf *dma_buf,
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_VFIO_PCI_DMABUF_ZONE_DEVICE
++static int vfio_pci_dma_buf_alloc_struct_pages(struct vfio_pci_core_device *vdev,
++					       struct vfio_device_feature_dma_buf *dma_buf)
++{
++	struct pci_dev *pdev = vdev->pdev;
++	u32 bar_index = dma_buf->region_index;
++	int ret;
++
++	if (vdev->p2p_struct_page_bars & (1 << bar_index))
++		return 0;
++
++	/*
++	 * Allocate vmemmap (struct pages) for the ENTIRE BAR, even if the
++	 * specific DMABUF only exports a partial slice of it. This prevents
++	 * vmemmap fragmentation and ensures that any subsequent slice exports
++	 * from the same BAR get struct page backing instantly.
++	 */
++	ret = pci_p2pdma_add_resource(pdev, bar_index, 0, 0);
++	if (ret) {
++		if (ret != -EEXIST)
++			return ret;
++	}
++
++	vdev->p2p_struct_page_bars |= (1 << bar_index);
++
++	return 0;
++}
++#else
++static inline int vfio_pci_dma_buf_alloc_struct_pages(struct vfio_pci_core_device *vdev,
++						      struct vfio_device_feature_dma_buf *dma_buf)
++{
++	return -EOPNOTSUPP;
++}
++#endif
++
+ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 				  struct vfio_device_feature_dma_buf __user *arg,
+ 				  size_t argsz)
+@@ -448,7 +483,8 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	if (copy_from_user(&get_dma_buf, arg, sizeof(get_dma_buf)))
+ 		return -EFAULT;
+ 
+-	if (!get_dma_buf.nr_ranges || get_dma_buf.flags)
++	if (!get_dma_buf.nr_ranges ||
++	    (get_dma_buf.flags & ~VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED))
+ 		return -EINVAL;
+ 
+ 	/*
+@@ -468,6 +504,21 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	if (ret)
+ 		goto err_free_ranges;
+ 
++	if (get_dma_buf.flags & VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED) {
++		/*
++		 * Serialize the allocation and the page initialization.
++		 * Holding the memory_lock here prevents a race where a
++		 * concurrent ioctl bypasses the allocation + init, handing
++		 * a DMABUF to the user before the ZONE_DEVICE registration
++		 * is completed successfully.
++		 */
++		down_write(&vdev->memory_lock);
++		ret = vfio_pci_dma_buf_alloc_struct_pages(vdev, &get_dma_buf);
++		up_write(&vdev->memory_lock);
++		if (ret)
++			goto err_free_ranges;
++	}
++
+ 	priv = kzalloc_obj(*priv);
+ 	if (!priv) {
+ 		ret = -ENOMEM;
+@@ -480,6 +531,8 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+ 	}
+ 
+ 	priv->vdev = vdev;
++	if (get_dma_buf.flags & VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED)
++		priv->zone_device_backed = 1;
+ 	priv->nr_ranges = get_dma_buf.nr_ranges;
+ 	priv->size = length;
+ 	ret = vdev->pci_ops->get_dmabuf_phys(vdev, &priv->provider,
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 8741abd04461..d0bf5c118793 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -42,6 +42,7 @@ struct vfio_pci_dma_buf {
+ 	struct completion comp;
+ 	unsigned long vma_pgoff_adjust;
+ 	enum vfio_pci_dma_buf_status status;
++	u8 zone_device_backed : 1;
  };
  
-+#define VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED	(1 << 0)
-+
- struct vfio_device_feature_dma_buf {
- 	__u32	region_index;
- 	__u32	open_flags;
+ bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index e2b4252e7c3f..c28f06bae302 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -135,6 +135,7 @@ struct vfio_pci_core_device {
+ 	bool			pm_runtime_engaged;
+ 	bool			sriov_active;
+ 	bool			zap_bars_on_revoke;
++	u8			p2p_struct_page_bars;
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
+ 	int			ioeventfds_nr;
 -- 
 2.55.0.571.g244d577d93-goog
 
