@@ -1,151 +1,141 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938744BC032;
-	Tue,  4 Aug 2026 20:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5450A48A8A7;
+	Tue,  4 Aug 2026 20:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785873819; cv=none; b=ArsruaNWR75Nv1MQjGkyGiOreKGzs3t/9pNY2gr0s9heFoi+ax7YgdDyyN04tv1H4TljzhRVIFqI33EZz1vAyCR0T3JC+Kh5PCMi6SzOYCzIZ5CfLkMGybmw2a0/aWRFT3yC2n8MOl/6Jb23XnLySR+XHwamjPjYvhwjy4w79Dg=
+	t=1785874231; cv=none; b=PRvjIotUTfuKcLiNXYVChZHi6MJ9yxyCFZaW+xJu1W9Tp+vnodNQkoeBj8U65XY2cwPnhzzm+BaZy1IiqI+Uqs4hfxq140WSHfCM7r5YGcAcb8IJc2wc31nOde+EuyNsZPDBBbQ73r5TUJ8prWFcptcih58S2Z3YFXq4HZem8HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785873819; c=relaxed/simple;
-	bh=9XA8XXE7KJbrVJFdjBJ9tvLZLfG33uEeW/L/jlr0cbE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BDIN9AsRoFYp/Uiju9Ag6cwUmR4E/a9ZJqX4RFGbxFpzVEVXvD1KLXbTBwRcdN45ev3Rnu4C6WV3G23DkzOz54eW81pMbehJ92VKQc+OqOU43lPHJynxpcNHJVwqxAXe4vDP7IYkyQO3WGQiOr8EBRCkLhJaBUb4AaNbOyge1Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bUDc+RRu; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785874231; c=relaxed/simple;
+	bh=AjmUzfY+vEbZcOw71ELjIqCFMK9wUupfH+b6ioJ/RAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gdiMNEMrzaQn1VbA3FGuyGhLVI0tEpbjuivjjn01tJl0zxZ3SgIlG7Em6G2MZ35zsCXGxEtaZgTVuyZuUCx79w+8dQ6AYNc8pAFhvqK5FnK/HxkRQW344MX+HONIVLeuYNorJ2H5Yj+vgq8I575tyZAqd9uZ5F/7IRp68F1shu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=TvhqnR7m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jV/BhCRP; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bUDc+RRu"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674JmxPH4117002;
-	Tue, 4 Aug 2026 20:03:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zHvqnC
-	QKRqZ2Sl8eeDO/UCMiuGkLTWRU69qStaN1YsA=; b=bUDc+RRuXfRf8wpwExyOrB
-	etnbU5YTnrm0ybKrIGac8Q6ml7bgWa0bBa7sFQqQzjw15cB586liDrsDgMEgjZYA
-	zw9+wVS5jPudS+tg2APrmtuz4hlOl7PhAHtjQyuM1BaNQ7lC8L31jAWX/oA/xbEG
-	HnhWhh9HLJp4EKPhpM01yP2hh/iDpwSUHH/mRm9m5wI25wltDZ8BaHEQSDAz5ITi
-	caVTtl0UDjwUYsFeiosl6nWGrbnL42Rz5+BVfOUn/QU+z6xWjgZP3eSB2NaTyD4j
-	M+7nEOByYzvqzfgK9VOKL8d5I7hUWiaCB2HvrqCaGX/19i7bfRUCRMwUSUMWjTXA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqqpgy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 20:03:28 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674JupNo005354;
-	Tue, 4 Aug 2026 20:03:27 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw3nds-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 20:03:27 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674K3QWb25821752
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Aug 2026 20:03:26 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B65E5805A;
-	Tue,  4 Aug 2026 20:03:26 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2557E58054;
-	Tue,  4 Aug 2026 20:03:25 +0000 (GMT)
-Received: from [9.61.23.247] (unknown [9.61.23.247])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Aug 2026 20:03:25 +0000 (GMT)
-Message-ID: <c77e23b2-c64a-45f3-a4db-eba32a592401@linux.ibm.com>
-Date: Tue, 4 Aug 2026 16:03:24 -0400
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="TvhqnR7m";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jV/BhCRP"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 84DBE14000BB;
+	Tue,  4 Aug 2026 16:10:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 04 Aug 2026 16:10:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785874228;
+	 x=1785960628; bh=DGDpNHg7f9ztXGjzjzb4ybcoE+sIyQ0zmpGoEdgW4g4=; b=
+	TvhqnR7mCECTjp74lUFk4G4kFKYnDIbC4XNAlIU5Z3FhZ2Yp14QvfA8I5Dge0rZj
+	AVMK050Y2EXORNA+5w3npdI8mTHHzB7brHEtxkAfzizr7JwtFXQW0HIJ3EIz2p6c
+	7/CTBd2jrTNd0iFl1no3FMI1bBInZqbM/OTzKZ3o4TfdGCa5Aupf2SzrFTRaoyMO
+	kjmBg+dMDXgWk8C0iBK1iM2kS3W9XglkkC3PRvzWgxNssG6QcpCpTzb16W3+ENOQ
+	7g5ub4ierd5E1KJ8szv3WolRxMN0056ctenE+S4CGBVwqWPu6MaLqyxvOmdR+Med
+	nilmm1ADQQahAe58GZPN6g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785874228; x=
+	1785960628; bh=DGDpNHg7f9ztXGjzjzb4ybcoE+sIyQ0zmpGoEdgW4g4=; b=j
+	V/BhCRPJYsv+ODbPHoPDuYrD4LYQJrbE58aquOw6yEKnyMaQdkkrfis6i0rONgoM
+	XaS+Kd3NkLxFvwJjOq7AzGCq0uzFCabQ8qynR9/PE96snQm+uc0cp1+OE2SzaR7i
+	tk05YXDlKfRFu0TRkM1EqiIaE8vCev1iAASqrsZuP4cdsgamHovx34DiQiWjGHqj
+	SOUma0xptLjEUB/ABgR+Rth8RYrcf2zHLJnFjo/jH0RglEkkhWzz5VJpbqOZrKMD
+	XJg6TztYWZx1AoN3fRK0/WjIxmyqZpH3fyTvxULZIamL0Ok1/Bx5craoOy7qLlx3
+	7DliLKr6E5eP38TrHHATA==
+X-ME-Sender: <xms:M0dyapdXOK53MZxGFwM9IEhajUFmem4pf5oKoDXJDzp5V4CJ_WIzZw>
+    <xme:M0dyaioHLH0De3JSkLQpYHvbFqJ9hAWZRWqMIkGS6t5pn1vmTgNFN3Eyb-Kp3C9sW
+    LQzIrNB5tfJgf1364dmNBtrxOO61pnyk_xpz7SdJhj6mpbEqdSBoQ>
+X-ME-Received: <xmr:M0dyahPv1zAe0W-WWMO46nUWLEmDpBMK5JXdSwwmxUVbCIz91PqE0ge5uHPGlw>
+X-ME-Proxy-Cause: dmFkZTFz0qZml1tMgspJLvQROyFjxo2iF8dhBLG1gtWRuVGqbuDRnJRSCDTFVRpCARIfiq
+    p3San+6x+JgTfRDCa6JBZsenI68aONWfSHUYcbyfYK6A/5lMqgtwyRGiR3tIAbrTXet38u
+    i+QO8myxi9xRWUJuwDzgccQxCLFmyqcbNr9Rv28m1qlQSzbceTd2CI4KV3jnRkdZM5/zA+
+    B1dU/SLUd3a0UgVzR1Z0a0lAzAnN02ZTOGg0/5ioy3i8bBVIKEyL83cVcVtsr7pH78GSJA
+    qRYYsIFmKmGey4GXe+l8asTXRBmpS9hhZyjnvk143mQEwWjndPd5+SEps8e/cZNACoZWlE
+    4Mfpjo6x5KnZJioSCjIK5fIGt3/jP5Q5Tx1SlsHlmfBX0IYNe6wpw68EogoZ+YusOtv6YH
+    pXSFT3JE7csZCMs3A3kW/8NM+xh8MLZtZ4lCCaxvhdjr6CuUpi1dtkttZVQTATJfUeBp22
+    yWGUMbYdzUhFxjGmuWxC3aQ2wWzrIw7Xq+d0rAMbtpf9bxhA0N63qmi8YLz0ZJBJN1Tv3K
+    lO+S2hZ3hh+cpORTKTBbq045O3Pagme9MthyaugmLDiXB7AZMouCUEXeZ2VSQ+jl99CfP3
+    9qz8+Pa8I7u1ZCvyG7/cRNwNrlZstfl1eghiC4Xf7kf4/9xmo7lVxdVSejNw
+X-ME-Proxy: <xmx:M0dyagEM4gSmDssLubmn_6YVnByO9-qB8KzWbeoc1e_0-NYwK7wAUA>
+    <xmx:M0dyasFOPkII3QdfzcXRVDvt-06AFTE6dSPOamdXftyyUMcV3miqoQ>
+    <xmx:M0dyanCJkbrtLRbYedsDNmVJGg5OT6a6XLNAqLuA6whv5Gf31wK3kQ>
+    <xmx:M0dyapnVsAGlDqnw4TkWFKvLlIMrI5QLzuDd1oSD2l3NP8-qJJ3AjA>
+    <xmx:NEdyakMeyIhaiVEwdtSqBLz0DIZTbrGyTWKemyo_Ta627fyHnW7ZPhvm>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Aug 2026 16:10:25 -0400 (EDT)
+Date: Tue, 4 Aug 2026 14:10:22 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>, Logan
+ Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>, Pranjal
+ Shrivastava <praan@google.com>, Longfang Liu <liulongfang@huawei.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>, Alistair
+ Popple <apopple@nvidia.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ kvm@vger.kernel.org, linux-pci@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
+Message-ID: <20260804141022.71b6429d@shazbot.org>
+In-Reply-To: <6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
+References: <20260715174737.15287-1-matt@ozlabs.org>
+	<20260715174737.15287-8-matt@ozlabs.org>
+	<20260729115204.2a9a50b2@shazbot.org>
+	<6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/7] KVM: s390: Free guest debug data on vcpu destroy
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        KVM <kvm@vger.kernel.org>
-Cc: Janosch Frank <frankja@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        linux-s390
- <linux-s390@vger.kernel.org>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Douglas Freimuth <freimuth@linux.ibm.com>
-References: <20260804162435.28617-1-borntraeger@linux.ibm.com>
- <20260804162435.28617-8-borntraeger@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260804162435.28617-8-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: S4ovw_IRBrVWIa_C4O1DTvuUJiH6JlXY
-X-Proofpoint-ORIG-GUID: S4ovw_IRBrVWIa_C4O1DTvuUJiH6JlXY
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfX8IzuVToxzGdH
- hoXONZsSVrIYLprw99LncZ9WovikgqZhMadL2rbtZBf1ab3mA8VFDeKBv6RBOAsgPNOOiUcYpI4
- r4zjSQZGCj6B/rA2ZROlVqQQh8ND8m4=
-X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a724590 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=JkL-GdB9cJYJhCIZ8WwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfXxZtw7pvkVOJg
- aq8UE3TWdOtzYeFsfFlwWf3l/YVc4F/jYf5tZ0cTbVS6//pZiZ5gFfZFK+YrUK4dZRSiv/K5uT5
- 3ddzBbxUVhD33BF4XnS7SOSid8O6vknpHYC+A3P0BaVQ8K9+hahE+deYeOxiLfYXYqRl3oJSuwo
- m5C9ZxmfI7WzHXgPZ6ke5Z7c+orj1O2vKQh80dwo34eEQxOLZEoY+BDuNuEyyx9rPmZQ0GJo+8c
- ERzUeXQ2+YsRpywqzl4oNVvWU2DqXfj/wKKzRqwafvslM76lXd4cV16Yn3MG1ywUsklGsPB0ThV
- g3yeowF13UfE2sRLbQjese7o5ehvaZwzLeWRTXfZtdatqIz1JsR4XY2MkBQkVvLkLysYtx9dAbL
- vIXnloVkj+BuJFUPfu5OI1qDZwlKaqDFK/Uv6Mei+DX1iCvIfSgDCVEFWWUzmXOdTayXHTM/JMH
- jvpS0S0XLqtoeqkX3Cw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_05,2026-08-04_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040160
 
-On 8/4/26 12:24 PM, Christian Borntraeger wrote:
-> kvm_s390_clear_bp_data() is only called from
-> kvm_arch_vcpu_ioctl_set_guest_debug(), i.e. when user space changes or
-> disables debugging. A vCPU that is destroyed while hardware breakpoints
-> are still armed - the normal case when the VMM just exits or crashes -
-> leaks hw_bp_info, hw_wp_info and all old_data buffers, since generic KVM
-> frees the vCPU right after kvm_arch_vcpu_destroy().
-> 
-> That is bounded by MAX_BP_COUNT entries, so roughly 8 KiB per vCPU, but
-> it is unbounded over VM lifetimes. The allocations are
-> GFP_KERNEL_ACCOUNT, so the charge also outlives the exiting process and
-> pins dying memcgs.
-> 
-> Fix by clearing the debug data on vCPU destruction. Calling it
-> unconditionally is fine: struct kvm_vcpu is zero allocated, so for a vCPU
-> that never enabled debugging the counters are 0 and the pointers NULL.
-> 
-> Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+On Thu, 30 Jul 2026 15:47:13 +0100
+Matt Evans <matt@ozlabs.org> wrote:
 
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-
-> ---
->  arch/s390/kvm/kvm-s390.c | 1 +
->  1 file changed, 1 insertion(+)
+> Hi Alex,
 > 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index e0548926dc49..ccbdb109e22c 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3409,6 +3409,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
->  	trace_kvm_s390_destroy_vcpu(vcpu->vcpu_id);
->  	kvm_s390_clear_local_irqs(vcpu);
->  	kvm_clear_async_pf_completion_queue(vcpu);
-> +	kvm_s390_clear_bp_data(vcpu);
->  	if (!kvm_is_ucontrol(vcpu->kvm))
->  		sca_del_vcpu(vcpu);
->  	kvm_s390_update_topology_change_report(vcpu->kvm, 1);
+> On 29/07/2026 18:52, Alex Williamson wrote:
+> > On Wed, 15 Jul 2026 18:47:30 +0100
+> > Matt Evans <matt@ozlabs.org> wrote:  
+> >> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> >> index 9a1674c152aa..e2b4252e7c3f 100644
+> >> --- a/include/linux/vfio_pci_core.h
+> >> +++ b/include/linux/vfio_pci_core.h
+> >> @@ -134,6 +134,7 @@ struct vfio_pci_core_device {
+> >>  	bool			pm_intx_masked;
+> >>  	bool			pm_runtime_engaged;
+> >>  	bool			sriov_active;
+> >> +	bool			zap_bars_on_revoke;
+> >>  	struct pci_saved_state	*pci_saved_state;
+> >>  	struct pci_saved_state	*pm_save;
+> >>  	int			ioeventfds_nr;  
+> > 
+> > This should be in the bitfield usage group since it's only modified at
+> > init time.  
+> 
+> This was intentional, but happy to change it if you're certain ofc.  Is
+> it inconceivable that a sub-driver could set it after init?  I'd say
+> they _shouldn't_, but only review will stop them and this placement
+> intended to be cautious.  It seemed a low cost way to avoid issues
+> around synchronisation on the bitfield.
 
+I'd agree with the statement that they shouldn't, it would be difficult
+to synchronize setting the flag once there are any active mappings of
+the BARs.  Also, if we put it in the bitfield category under the
+comment that the value is only modified at setup/release, it documents
+the intentions, hopefully to the extent the author or reviewers notice.
+An argument can always be made to change it if there's a worthwhile use
+case.  Thanks,
+
+Alex
