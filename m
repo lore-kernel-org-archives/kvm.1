@@ -1,62 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EC6369D51;
-	Tue,  4 Aug 2026 11:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78CB381EB9
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785843076; cv=none; b=boO/WqrkK0fmvIDYD29TLOhJ8OW5fgKq65dWFRQnc3t35gih2Z5XE1EDG5CQRX2iFwW9KxbIoxbx4OOrT0MRTtsiJR8Ou7/xr/p2YbLs3ipQkUPQJOmuH7njO8LBOj+WRMFbbFREvTsl72dy2GFbRo5I8VHEgfvgm29YEXUkOXE=
+	t=1785845141; cv=none; b=AB6eyL0PK0o4XqeHKnqsIwp/RFWSEePTVamxy20ccmPJwj2RgXhsDCM6AnGe+1fVskoksxLXvNQtmtSS5qPQPGM+OkeZu3PwSesw/PCEI05TOWQy0DXa0CVUY9P/FpcEtkvoQJm5gqf9tdjIZQOPw20ikMfCfAHQRBTrdycFvmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785843076; c=relaxed/simple;
-	bh=Pi5qbVX2SOI5SdGfiFCW/36EzzapHXmkthYgHMyLdi8=;
+	s=arc-20240116; t=1785845141; c=relaxed/simple;
+	bh=2NmEb6/L7QYcfhxZ8+lab83yjq9i9GZownbXwTIqVvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyfrngkiMwNHlfEkFEV1DUSjOz89Y1Lq6cFkvCiGLFelqmPqwtXRXpdKoyOLLRB+35DkLnsnQywEYFtJyNICPLVbwBFlJvt/IyVnJLelZ/Wj/sMfRWbsEnYpagOBRX6uO6FoMX2DnI4PCmikLjAxJjIj4dTYWteg0ftqt5RY/U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jA8GFWk0; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 MIME-Version; b=uX8/WjIWEwVJphKflYHXLnsRINKI2QKDeCpAL4zFEJF21WSvtBnwvvQbw6aUOpEoZ4OqiDypGNY6wLr6EpD9QNUDFrGWyCPhf/RUx3EuhU/Nu6aEHfiGxU4nklCgyi6raQctq0a5fU7vErXxE+WV2XmJEoDpFkDDmkq31XZn04U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FTAQRgvT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=F1vW3SkW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jA8GFWk0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785843074; x=1817379074;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Pi5qbVX2SOI5SdGfiFCW/36EzzapHXmkthYgHMyLdi8=;
-  b=jA8GFWk0avpIlAXgTZJLhi5Vei+5Teo1ViMBOvGysmvs8rmnwtrXzt1z
-   6vSZbLZ7aEshYtfGFuo2E3wlpKocB5E+lT+sVhjxDJ+QU3iXFc8iGlOd1
-   cPdtWuaJzV+/Pm8nCIwchlGyYVuCAXyA9Z2W47sU8pGKyfnigCmxKUCLH
-   s91Cec8rgfEsoE+N342PaG9updO/BMfQf6adsefhL5wgXgMT396LVdXW0
-   0i5e3vGuHs0t5RrqLIzL2W60ZONQCu2qML2sd/c9KISSK+ufRycT6FNcJ
-   7YZAHRjATdXIf/85vXP7eR/rS0aNHZPQtBrSugmUxeWPvaOCPewmJOxIW
-   g==;
-X-CSE-ConnectionGUID: ogDKrAfRTdqaoKVhxnnqDg==
-X-CSE-MsgGUID: 5WHWkjspRD6EwIzfK4QW6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86244257"
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="86244257"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:09 -0700
-X-CSE-ConnectionGUID: 78mmNRjcQwWp/IN+2fEMVA==
-X-CSE-MsgGUID: tSqKD+oUSMCGaCKujPcEAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; 
-   d="scan'208";a="265323118"
-Received: from jf.jf.intel.com (HELO 984fee019967.jf.intel.com) ([10.23.153.244])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 04:31:09 -0700
-From: Chao Gao <chao.gao@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FTAQRgvT";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="F1vW3SkW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785845137;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
+	b=FTAQRgvTANM1fFG6NqbYCmSwTq7dWrce/kHtyGKxDd9aCN+f8GoT9JIOsBRL5yKXdtyaCP
+	CG6cfKWaS3kPp69GlCkGJK0SnyABfFgukU/itiYdus+sz1JwLATkPgRbYIUTnR/gq90l8s
+	n2EhuvfSZ1W4im6mJWb/t9FZWJPAUUM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-V1ejii2qO5WOsEo3PXgrjw-1; Tue, 04 Aug 2026 08:05:36 -0400
+X-MC-Unique: V1ejii2qO5WOsEo3PXgrjw-1
+X-Mimecast-MFC-AGG-ID: V1ejii2qO5WOsEo3PXgrjw_1785845135
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so1460585e9.2
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785845135; x=1786449935; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
+        b=F1vW3SkWmd0iZP2caG6mWqUi7foUE0PRoAB2IfQHdZ8W8jUlUzzmscOhHjV7x++J78
+         ip56G6Bcnt4C8z5+35/TlIOGeaTFS1H28jYyjBBORRDBO30S3fCLlO+JK4uoWcxI25OT
+         z722XNXVDr0SF+UU7UPpgDR3oE513ieVqVUxSUhKScb0SgytNHow7Cn/KnrCEMhnIclY
+         +cxPoaCGs6+zu7ko4HRakKnDzTzg1kve5U4cEKlPJqk99+LOvfrpM0notoU7d4InSATB
+         mO+1LZwf1i1pPd/2LH4GPYep5pNoTWMABcgxN9lx+3piMPs0u05Ryv3GKTptYXiGHB2r
+         AieA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785845135; x=1786449935;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VnnVy48ydCXauSW+w5ZraHIy4YMvaYkPwdBxROmLWeM=;
+        b=eue/uylZzN5w0xEMSCiZ0AS4eseVHuNSYSIyVIHB/KnLUCA2BOCnUrlLhs+FYGw6t/
+         796HSPtzTsMXo/l0BNdIUifyo0MHsllR8otxHWeVD8L1Ud/y1eMYtuJNrhPtJy5k9Zh7
+         R+JSpb1EhgiTteRqY4+hIA/QE2Wbl89oja3q8wanek9k7R446SaTWyATlQOzrtwyBY+B
+         c1ccyPPnSNcPvmHxaPbJvzdkabgxXTZI93Kjyb4nspXuqolAlNkts0/EKvt/wyRbsTyx
+         Bf6tSjemUaXbG1/bSOQj9HfGCGL0xIOgShiV1c2xZ3zW7lcmmSF6YgiUGNGRyEUVVLx/
+         hnDw==
+X-Forwarded-Encrypted: i=1; AHgh+Rridx1m8T8m+B3SbMbIeuJo07UaKglLw0OBIzY497osn/drVo8yjuK0YZWjy5h0SmXOqLE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6ZMYxTTts+mML9JWxxM+1EjnE4qcPY+miHqkCLBYU6Yk1+QJm
+	XhZHNJeBOKT9JTgKYb0QDZYPs3WEu7FplfXmZVv6YJm5ElyX7lCk87+iI6S1mgI4KkeJRDPIXm4
+	UfkbFZ7PuO6Qw4DgR2qJA/VGmT9r6R6MvZk/jKOCk7pAKJlQgg5pAVw==
+X-Gm-Gg: AR+sD10B5w62wV1c9tFSqpsY8YYFmczMZgZRtL4TBS/C2C0CwT8borYUg2p83sfgDfa
+	EJXcQRqgZk8y8tdueKSgPe4ktvKKVl8m5UVpnWTvWBEUZheUkO3gvr+qHEZfe59PkRRpzqiDmzI
+	8Ytq/aoeUAQT+xrD2ZQ3/GfXNi5PLk8mzxgtT4TuRlXT6wrn/y6cQzngcZhGgDohp4tNCe2MRix
+	R+fTRXl7t9A1d2MyDJsgn3kFBmv2Gbec37+at1mUbhUYkygaGxj1uy1Eh3vO4NrpLRFKJhhkghG
+	Z6uSK0yFGyuoco8U+aRj6Lw2kIdQtv83S9d2VXW9wSlFRdWJP0NqiktCOt/ipJq9dFbJeyBXbdE
+	Xlfe6HEmsjUmJRhcH5FHv2abvmzYCcnKoKVC2JX+PM+2KUbhyKCMJ96sykBUNvUdX/mTsLg5Uw2
+	b/A1Y=
+X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217894755e9.15.1785845135166;
+        Tue, 04 Aug 2026 05:05:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:3507:b0:496:cb48:5eb8 with SMTP id 5b1f17b1804b1-4980c6747fdmr217893395e9.15.1785845134667;
+        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+Received: from [192.168.10.48] ([151.95.34.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49949f66168sm92311515e9.0.2026.08.04.05.05.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 05:05:34 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
-	linux-coco@lists.linux.dev,
 	kvm@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com,
-	kas@kernel.org,
-	dave.hansen@linux.intel.com,
-	chao.gao@intel.com
-Subject: [PATCH v1 8/8] x86/virt/tdx: Verify the C member size against the metadata field ID
-Date: Tue,  4 Aug 2026 04:29:36 -0700
-Message-ID: <20260804112941.19894-9-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260804112941.19894-1-chao.gao@intel.com>
-References: <20260804112941.19894-1-chao.gao@intel.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	bcm-kernel-feedback-list@broadcom.com,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	David Hildenbrand <david@kernel.org>,
+	dri-devel@lists.freedesktop.org,
+	Fei Li <fei1.li@intel.com>,
+	Huang Rui <ray.huang@amd.com>,
+	linux-mm@kvack.org,
+	linux-s390@vger.kernel.org,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Xu <peterx@redhat.com>,
+	Sergio Lopez <slp@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/6] mm: export vmf_insert_pfn_prot_mkwrite(), change variants to inline
+Date: Tue,  4 Aug 2026 14:05:23 +0200
+Message-ID: <20260804120529.1730187-2-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,82 +111,268 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Each TDX global metadata field ID encodes the size of that field.
-read_sys_metadata_table() stores each value at the width recorded in
-the table, which TD_SYSINFO_MAP() derives from the destination C member.
-Nothing checks that the two agree.
+Right now, users of .pfn_mkwrite() have no way to create a PTE
+that has gone through maybe_mkwrite().  Because vma_set_page_prot()
+will have cleared the writable PTE bit, users of fixup_user_fault()
+will see a read-only PTE and have no clue that the page needs
+a *second* fault to reach its final status.
 
-A table entry naming the wrong field ID, or a struct member declared at
-the wrong width, would silently truncate the value read from the TDX
-module. That is a kernel-side bug rather than a TDX module problem.
+Handling this in fixup_user_fault() is problematic: the information
+about the presence of *_mkwrite is only recorded in vma->vm_page_prot,
+which is an opaque pgprot_t, therefore only follow_pfnmap_start()
+knows how to retrieve it.
 
-Add macros to extract the encoded size from a field ID, and use them in
-TD_SYSINFO_MAP() to assert that it matches the member size.  Both are
-compile-time constants, so the check costs nothing at runtime.
+There are actually some preexisting functions that suggest how this
+is supposed to be handled, namely vmf_insert_page_mkwrite() and
+vmf_insert_pfn_pmd().  Fixing the drivers requires similar variants
+of vm_insert_pfn(), namely vmf_insert_pfn_mkwrite() for the common
+case where vma->vm_page_prot is okay, and vmf_insert_pfn_prot_mkwrite()
+when really all parameters are needed.  This makes it possible
+to fix drivers that use .pfn_mkwrite together with
+vmf_insert_pfn() and vmf_insert_pfn_prot().
 
-Note that BUILD_BUG_ON() cannot be used in a structure initializer; use
-BUILD_BUG_ON_ZERO() instead, which yields 0 and so can be folded into the
-.size initializer without changing its value.
+Since vmf_insert_pfn_prot_mkwrite() is the most general variant
+and all the others are just special cases, turn them into inline
+functions in the header.
 
-No functional change intended.
-
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Chao Gao <chao.gao@intel.com>
+Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.c |  9 ++++++++-
- arch/x86/virt/vmx/tdx/tdx.h | 15 +++++++++++++++
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ include/linux/mm.h | 81 +++++++++++++++++++++++++++++++++++++++++---
+ mm/huge_memory.c   |  2 +-
+ mm/memory.c        | 84 ++++++++++++++++++++--------------------------
+ 3 files changed, 114 insertions(+), 53 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4bf21848df62..59099cc15f7a 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -357,11 +357,18 @@ struct tdx_sys_field {
- 	u8  size;
- };
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..01184a4bdd6f 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4544,16 +4544,89 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
+ 				unsigned long num);
+ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+ 			bool write);
+-vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+-			unsigned long pfn);
+-vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+-			unsigned long pfn, pgprot_t pgprot);
++vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma, unsigned long addr,
++			unsigned long pfn, pgprot_t pgprot, bool mkwrite);
+ vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+ 			unsigned long pfn);
+ vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+ 		unsigned long addr, unsigned long pfn);
+ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
  
-+/*
-+ * The size encoded in the field ID and the size of the destination C
-+ * member must agree; BUILD_BUG_ON_ZERO() enforces this at compile time.
-+ */
- #define TD_SYSINFO_MAP(_field_id, _struct, _member)				\
- 	{									\
- 		.field_id = MD_FIELD_ID_##_field_id,				\
- 		.offset   = offsetof(struct _struct, _member),			\
--		.size     = sizeof_field(struct _struct, _member),		\
-+		.size     = sizeof_field(struct _struct, _member) +		\
-+			    BUILD_BUG_ON_ZERO(					\
-+				sizeof_field(struct _struct, _member) !=	\
-+				MD_FIELD_ID_ELE_SIZE(MD_FIELD_ID_##_field_id)),	\
- 	}
- 
- /*
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 5f567cb6c07a..c612b1cf7c14 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -109,6 +109,21 @@
- #define MD_FIELD_ID_CPUID_CONFIG_LEAVES		0x9900000300000400ULL
- #define MD_FIELD_ID_CPUID_CONFIG_VALUES		0x9900000300000500ULL
- 
-+/*
-+ * Sub-field definitions of MD_FIELD_ID.
-+ *
-+ * See "MD_FIELD_ID (Metadata Field Identifier / Sequence Header)
-+ * Definition" in the Intel TDX Module ABI spec.
-+ *
-+ *  - Bit 33:32: ELEMENT_SIZE_CODE -- log2 of a single metadata
-+ *                                    element's size in bytes
-+ */
-+#define MD_FIELD_ID_ELE_SIZE_CODE(field_id)	\
-+	(((field_id) & GENMASK_ULL(33, 32)) >> 32)
 +
-+#define MD_FIELD_ID_ELE_SIZE(field_id)		\
-+	(1 << MD_FIELD_ID_ELE_SIZE_CODE(field_id))
++/**
++ * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
++ * @vma: user vma to map to
++ * @addr: target user address of this page
++ * @pfn: source kernel pfn
++ * @pgprot: pgprot flags for the inserted page
++ *
++ * This is exactly like vmf_insert_pfn(), except that it allows drivers
++ * to override pgprot on a per-page basis.  For more information,
++ * see vmf_insert_pfn_prot_mkwrite().
++ *
++ * This only makes sense for IO mappings, and it makes no sense for
++ * COW mappings.  In general, using multiple vmas is preferable;
++ * vmf_insert_pfn_prot should only be used if using multiple VMAs is
++ * impractical.
++ *
++ * Context: Process context.  May allocate using %GFP_KERNEL.
++ * Return: vm_fault_t value.
++ */
++static inline vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma,
++			unsigned long addr, unsigned long pfn, pgprot_t pgprot)
++{
++	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, pgprot, false);
++}
 +
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
++/**
++ * vmf_insert_pfn_mkwrite - insert single pfn into user vma, possibly writable
++ * @vma: user vma to map to
++ * @addr: target user address of this page
++ * @pfn: source kernel pfn
++ * @write: whether the PTE should be installed writable
++ *
++ * Like vmf_insert_pfn(), except that @write allows installing a writable
++ * PTE even when @vma is under write notification.  For more information,
++ * see vmf_insert_pfn_prot_mkwrite().
++ *
++ * Note that neither .pfn_mkwrite() nor .page_mkwrite() is invoked, so the
++ * caller must itself do whatever they would have done if @write is true.
++ *
++ * Context: Process context.  May allocate using %GFP_KERNEL.
++ * Return: vm_fault_t value.
++ */
++static inline vm_fault_t vmf_insert_pfn_mkwrite(struct vm_area_struct *vma,
++			unsigned long addr, unsigned long pfn, bool write)
++{
++	return vmf_insert_pfn_prot_mkwrite(vma, addr, pfn, vma->vm_page_prot, write);
++}
++
++/**
++ * vmf_insert_pfn - insert single pfn into user vma
++ * @vma: user vma to map to
++ * @addr: target user address of this page
++ * @pfn: source kernel pfn
++ *
++ * Similar to vm_insert_page, this allows drivers to insert individual pages
++ * they've allocated into a user vma. Same comments apply.
++ *
++ * This function should only be called from a vm_ops->fault handler, and
++ * in that case the handler should return the result of this function.
++ *
++ * vma cannot be a COW mapping.
++ *
++ * As this is called only for pages that do not currently exist, we
++ * do not need to flush old virtual caches or the TLB.
++ *
++ * Context: Process context.  May allocate using %GFP_KERNEL.
++ * Return: vm_fault_t value.
++ */
++static inline vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma,
++			unsigned long addr, unsigned long pfn)
++{
++	return vmf_insert_pfn_mkwrite(vma, addr, pfn, false);
++}
++
+ static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
+ 				unsigned long addr, struct page *page)
+ {
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index b5d1e9d4463d..2f4dcaa819b7 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1615,7 +1615,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+  * @pfn: pfn to insert
+  * @write: whether it's a write fault
+  *
+- * Insert a pmd size pfn. See vmf_insert_pfn() for additional info.
++ * Insert a pmd size pfn. See vmf_insert_pfn_mkwrite() for additional info.
+  *
+  * Return: vm_fault_t value.
+  */
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..b5555217b121 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2719,40 +2719,55 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+ }
+ 
+ /**
+- * vmf_insert_pfn_prot - insert single pfn into user vma with specified pgprot
++ * vmf_insert_pfn_prot_mkwrite - insert single pfn into user vma with specified pgprot
+  * @vma: user vma to map to
+  * @addr: target user address of this page
+  * @pfn: source kernel pfn
+  * @pgprot: pgprot flags for the inserted page
++ * @mkwrite: whether to make the page writable.
+  *
+- * This is exactly like vmf_insert_pfn(), except that it allows drivers
+- * to override pgprot on a per-page basis.
++ * This is the function underlying all the others in the vmf_insert_pfn()
++ * family.  It is the most flexible, as it allows drivers to override pgprot
++ * on a per-page basis, as well as to insert the pfn as if it already had
++ * a write fault.  vmf_insert_pfn() is usually sufficient, however.
++ *
++ * These functions should only be called from a vm_ops->fault handler, and
++ * in that case the handler should return the result of these functions.
+  *
+  * This only makes sense for IO mappings, and it makes no sense for
+- * COW mappings.  In general, using multiple vmas is preferable;
+- * vmf_insert_pfn_prot should only be used if using multiple VMAs is
+- * impractical.
++ * COW mappings.
+  *
+- * pgprot typically only differs from @vma->vm_page_prot when drivers set
+- * caching- and encryption bits different than those of @vma->vm_page_prot,
+- * because the caching- or encryption mode may not be known at mmap() time.
++ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_mkwrite(), the
++ * @mkwrite argument allows installing a writable PTE even when @vma is
++ * under write notification, i.e. when it has a .pfn_mkwrite() callback.
++ * In this case, vma_set_page_prot() has cleared the write bit from
++ * @vma->vm_page_prot.  This lets the fault() callback install a writable
++ * PTE in response to write faults; note that .pfn_mkwrite() is not called,
++ * and therefore the caller has to do by itself whatever the callback would
++ * have done.
+  *
+- * This is ok as long as @vma->vm_page_prot is not used by the core vm
++ * For vmf_insert_pfn_prot_mkwrite() and vmf_insert_pfn_prot(),
++ * pgprot can differ from @vma->vm_page_prot.  This typically happens only
++ * for caching and encryption bits, which may not be known at mmap() time;
++ * it is ok as long as @vma->vm_page_prot is not used by the core vm
+  * to set caching and encryption bits for those vmas (except for COW pages).
+- * This is ensured by core vm only modifying these page table entries using
+- * functions that don't touch caching- or encryption bits, using pte_modify()
+- * if needed. (See for example mprotect()).
++ * This is ensured in two ways:
+  *
+- * Also when new page-table entries are created, this is only done using the
+- * fault() callback, and never using the value of vma->vm_page_prot,
+- * except for page-table entries that point to anonymous pages as the result
+- * of COW.
++ * - core vm only modifies these page table entries using functions that don't
++ *   touch caching- or encryption bits, using pte_modify() if needed. (See
++ *   for example mprotect()).
++ *
++ * - when new page-table entries are created, this is only done using the
++ *   fault() callback, and never using the value of vma->vm_page_prot,
++ *   except for page-table entries that point to anonymous pages as the result
++ *   of COW.
+  *
+  * Context: Process context.  May allocate using %GFP_KERNEL.
+  * Return: vm_fault_t value.
+  */
+-vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+-			unsigned long pfn, pgprot_t pgprot)
++vm_fault_t vmf_insert_pfn_prot_mkwrite(struct vm_area_struct *vma,
++			unsigned long addr, unsigned long pfn, pgprot_t pgprot,
++			bool mkwrite)
+ {
+ 	/*
+ 	 * Technically, architectures with pte_special can avoid all these
+@@ -2774,36 +2789,9 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+ 
+ 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+ 
+-	return insert_pfn(vma, addr, pfn, pgprot, false);
++	return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
+ }
+-EXPORT_SYMBOL(vmf_insert_pfn_prot);
+-
+-/**
+- * vmf_insert_pfn - insert single pfn into user vma
+- * @vma: user vma to map to
+- * @addr: target user address of this page
+- * @pfn: source kernel pfn
+- *
+- * Similar to vm_insert_page, this allows drivers to insert individual pages
+- * they've allocated into a user vma. Same comments apply.
+- *
+- * This function should only be called from a vm_ops->fault handler, and
+- * in that case the handler should return the result of this function.
+- *
+- * vma cannot be a COW mapping.
+- *
+- * As this is called only for pages that do not currently exist, we
+- * do not need to flush old virtual caches or the TLB.
+- *
+- * Context: Process context.  May allocate using %GFP_KERNEL.
+- * Return: vm_fault_t value.
+- */
+-vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+-			unsigned long pfn)
+-{
+-	return vmf_insert_pfn_prot(vma, addr, pfn, vma->vm_page_prot);
+-}
+-EXPORT_SYMBOL(vmf_insert_pfn);
++EXPORT_SYMBOL(vmf_insert_pfn_prot_mkwrite);
+ 
+ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
+ 			bool mkwrite)
 -- 
-2.52.0
+2.55.0
 
