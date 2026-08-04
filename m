@@ -1,156 +1,152 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62092AD37
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219F243BDD7
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785877589; cv=none; b=YQvgs4q5hd1oX+OfEl8HXYXO6l5BMjykOX7P+X8PQyxc9X2FSPg+/mrk1tDHU17P3SVNc/ZZdzClCbZ3KAyDIlk36pKw8BxxFUAtXwat8B2xw76Dv/Q3MkPDf1UJwcerdEWMknpxwR3EWRdo+SHfK71FL3zPSbgby/iuIIus3ok=
+	t=1785877593; cv=none; b=EQ6Jc8JPtATZGBX554axpzYGFpg2hlwgvu02t4ljDnbEKR8T4rvYkxPMAwGjaBromvWkoifGgY2gtgmeKEzqdRPu0z96w4uwtrdGb8aWrm6mNFRDYQG754cKVL5usT2ylR2JuKz7NF94hlLgFrOtu6x/aePV0t3e734ClZE8ri8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785877589; c=relaxed/simple;
-	bh=pfxpbIeNFSc0ZoYnjnPfD4XHfZ+dclFczBOLL7vzNQ4=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=dqDWUvb8lNMNe7uvvF7eGuAru3eoRLrwjXYsmgvP8R1At0ZQ9zynxNBqPZaXa28CbKlnHih9U0BxIKr03Gk1RFbhLq8LfI/0Wci+MZ3PBUQstdohY6wPgXeOzbjHZxvSf3SqrEbhMMjuuLNQo3WPZVe4eymvdxfW6c5/teBqNMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VAxrX+kA; arc=none smtp.client-ip=209.85.167.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+	s=arc-20240116; t=1785877593; c=relaxed/simple;
+	bh=/8DQzTwgTLijC2ECNXK7PMuHIRZhvXM6dV0bMACsCz0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=B03iQuEpYutiI1S2PaX0HblTQIDN9yQEyis3I0VOA0BwhfMzCeISXSW83spPl4RZUNGdaBsf/MC3XEqKpplWs/msdFtWd+l5nDkSlxvyKfA5y94pLBkggNFmlJy+25Z48XZmIx4vf6AS5lb5u0dv1cEMqhnZkLo6LZiC+QbZzck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fpHH1Nue; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ajt4MI7p; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VAxrX+kA"
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4ad778bacbeso361157b6e.1
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:06:27 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fpHH1Nue";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ajt4MI7p"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785877591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XBEFLiJGzT1OCUxcX75MonJY16dYU9oCUCgSXPQ6riM=;
+	b=fpHH1Nueh1E+ax1h6oTmHVOfnTQfQkW1r4XBAscroDN8LGw98X8eCXg47KkeOfW10OiRS+
+	SnJMOY2iJPWhVHiIdRJUPtaNRDTPEc5PUen7dtNtq5EUizWxuBMDKCPV/j7Nayw9+w78oI
+	Hd2TqVcTi8NRrSi55CYD9JVv7EQnvro=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-685-k12hNKpfOpSEgbyWu4Qdqg-1; Tue, 04 Aug 2026 17:06:29 -0400
+X-MC-Unique: k12hNKpfOpSEgbyWu4Qdqg-1
+X-Mimecast-MFC-AGG-ID: k12hNKpfOpSEgbyWu4Qdqg_1785877589
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47485fde05aso134398f8f.0
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:06:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785877587; x=1786482387; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i5gQ2rzJspE7/RJU8+W1PyPQZBbheaHsGbRmii6HKrA=;
-        b=VAxrX+kA5FQwKeL5zZ9VscSZ9ZYnlN6k0HLBpqDAV1U028F5dQuAUi3W6WCaWpSzD7
-         oktkwBhVvrbJ9Nenh67kHwEZW+eMlofty50B3CQk/m/J5u+INJkq6RmjzAXOomgY7ROg
-         KHby4ZSeCHgVS4P7phUdcXmWnJN3ySMnXkRRgcL0OBdoeqbCUDHH9et3n+YMVcoiBMPJ
-         nUCL8Pgl/8UirWZYl7x2Av2mh3G70Anvdz3+RQTag9dxzHiGDl/pm+WR4jSbd3n6n3vX
-         Y8ET3vSwLdfYpjQu0Mg5wLZk8yEKcfiCNr9Tto/QD8hievdduOqqMWC8685g8+TmMA74
-         K/uA==
+        d=redhat.com; s=google; t=1785877588; x=1786482388; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XBEFLiJGzT1OCUxcX75MonJY16dYU9oCUCgSXPQ6riM=;
+        b=ajt4MI7p6GUvnTJXTEhBgywNy2LafUuZnqVDQJAs1cRB34RUbzqzpPpI/RFy7eZ6sM
+         /mrpgiigyC36Egm0pOR18br5hF2SoaUehbQqv9szwqrlh5HFGp3Ur/EhF1XLPK0kFpYJ
+         nMHlpX+6Hp+20PIV+KjY1f+J+pUhZTOAmwWrbpoWI3xW5rsFteAzIWsC2i0yb/Kk6Vm6
+         4dp/QZLNogNCb6nYEpjdovEY9qLaPzimHtMifIAHtSlvRyV3PTJ7gxh3Ic85tySEqxPk
+         Vm3jl08BZqFw/13/d8KntG8tYlHOlXq/tZ9JQ6GWhkcIEeCjhh859EPkH3m0OVWmQEYq
+         wPzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785877587; x=1786482387;
-        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20251104; t=1785877588; x=1786482388;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=i5gQ2rzJspE7/RJU8+W1PyPQZBbheaHsGbRmii6HKrA=;
-        b=UzhKADTmFad5sShuLfBBaiHSWd4g0QztnJqQjlVnxJtB2hEilPlvYYay6kElNu0NzK
-         AjG0l7Z70R6WRFuZHDUZCk3CSGedNldWu8asKgBAVjwh6F1DTfbRsYhp0EKIwbRbo4rj
-         45wCtU5tFhtcS9s78/p3C0nI+PVPkZbCzNj1jS2qFtbi7iXNRqCjC2CwdLgX1ru6XbEd
-         NWSYo9/Ox+DDuTMmmpxYvCQfERNh26W1h8an+ZZvOSOHMjNMemOL9FVSvfbjc/U+emPi
-         rnF9w6lODtP0E6jQlt8xYUID4bQH1yUUryK9uXCGZOfZlWGGyhXUWcaDH/p3oUHfBBfs
-         5hDQ==
-X-Gm-Message-State: AOJu0Yw1fUpx1Ij0o6LzwkMnlMvHkQYcoJ2DI7W1gJde4xpyy2NZcXA/
-	Ab7yLV35yb/A5i3B9gHcaJVBqJaxHUxNdU8PTb2ON5Y6a03dYtq3l2kgO2L4EiUzH2UFCc7q4sm
-	8jUje3YLcjXZoyRAnfVr+wVv2SA==
-X-Received: from ilhw4.prod.google.com ([2002:a92:ad04:0:b0:507:c444:90fb])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:1587:b0:487:61da:70fb with SMTP id 5614622812f47-4afae0c7caamr886481b6e.10.1785877586456;
- Tue, 04 Aug 2026 14:06:26 -0700 (PDT)
-Date: Tue, 04 Aug 2026 21:06:25 +0000
-In-Reply-To: <2941da1a-b0b4-47a6-b57c-b28703dc0454@linaro.org> (message from
- James Clark on Mon, 27 Jul 2026 12:04:17 +0100)
+        bh=XBEFLiJGzT1OCUxcX75MonJY16dYU9oCUCgSXPQ6riM=;
+        b=XIFT4ihCPwUODNKUBGJUL6wNB5Pkn+ucERC5gzzRd/+HHHziqW2WHmuag7fF1A8SIS
+         EXCtTWPpjTtMdoMCGp08YVUMcNbPW2v3kc3Qt9klB9pZ9Fuov8BwMMFLVEFJUgjxXMb/
+         J8tObagYulbi0rHozH4i4ZQEgPiI7Y0DnaSJFUT3dOuw5iD58xETKUROhk7EVXV6+LXq
+         DfgwvQGZ7+om8L026hQdNEFz9InvdehvDVN5VmIHcKUvL6fd5kTefZcHGWD6v1uaGT1R
+         q910uQlE36FZzpSokvPuZz4OpV7n8+sCoMuR2JaTIDyGCmYrYH9xZnLQ3Wf90/hCGIX7
+         tH6Q==
+X-Gm-Message-State: AOJu0YzVqLRGELjd+gwdOcaFg4FW++yr+t78tc2RDn/Du6g7unvzz6VQ
+	/ur1lRYfaDGysAeva7E2+uKCnq8ap9dXzzza+Cl8zQcbuSMq6wRB9/e8mypgqeoJxK7eXb0/Rxe
+	q1cflpJjZwFMBxVnigRL0ovTvNOelbGmroQDV+huwkTOAbvqwG8z9mA==
+X-Gm-Gg: AR+sD13D5ldjCrDbgvA4QtB+fvhMj/3qIVB+cO46BCQtV8j4i0mn1nWaMJ1jda02f1F
+	UaRibSaXtdam1zkjQwpP4OGMWNXfDKLicynrvMXmtlHzSe5Xv6oVxTsCKe0iIjkfRZC7PFj1JNR
+	vYK3I2VIndYZPKfrWjP5CT5aIkuvGGOhpBK+/NtFwZgvWDUUF4r91vs3jXQxn4K9yPueIKjVR5x
+	b9lKeFwQwtN0USTxsLWZHO8Mast9gLv1pkiToRLTJoH0FHZhER4JY/I377B04WaCCsjDBDFvbgO
+	dvyDQmV2R2aAFpsrfCROM1kYl9Cl64x46xjZ0I/712jR3MyJhM74gEKylkWqbtRYRZFN8p7CLQ8
+	ALbOiCYn72BvzzNkHYQZC1g==
+X-Received: by 2002:a05:6000:480e:b0:472:3090:d878 with SMTP id ffacd0b85a97d-47fec509a06mr3321440f8f.4.1785877588404;
+        Tue, 04 Aug 2026 14:06:28 -0700 (PDT)
+X-Received: by 2002:a05:6000:480e:b0:472:3090:d878 with SMTP id ffacd0b85a97d-47fec509a06mr3321388f8f.4.1785877587944;
+        Tue, 04 Aug 2026 14:06:27 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-28-14.inter.net.il. [80.230.28.14])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fec249a5fsm2985791f8f.33.2026.08.04.14.06.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 14:06:27 -0700 (PDT)
+Date: Tue, 4 Aug 2026 17:06:24 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alhouseenyousef@gmail.com, borntraeger@linux.ibm.com,
+	dtatulea@nvidia.com, junvyyang@tencent.com,
+	linfeng.sun.dev@gamil.com, linfeng.sun.dev@gmail.com,
+	mst@redhat.com, physicalmtea@gmail.com, slf@hdu.edu.cn,
+	stable@vger.kernel.org
+Subject: [GIT PULL] vhost,vdpa: last minute fixes
+Message-ID: <20260804170624-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <gsntse4tvbn2.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH v8 00/21] ARM64 PMU Partitioning
-From: Colton Lewis <coltonlewis@google.com>
-To: James Clark <james.clark@linaro.org>
-Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
-	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Mutt-Fcc: =sent
 
-James Clark <james.clark@linaro.org> writes:
+The following changes since commit 075b74841bd0065a3bda3440873c747938e69b68:
 
-> On 23/07/2026 9:57 pm, Colton Lewis wrote:
->> James Clark <james.clark@linaro.org> writes:
->>>>> When running the guest on a single CPU I get different counts for the
->>>>> same event for a single process, although this never happens on a  
->>>>> host.
->>>>> I think there might even be some Perf tests which expect them to be  
->>>>> the
->>>>> same, and this doesn't depend on whether any events are running on the
->>>>> host or not. Not sure if you ran all the Perf selftests in a guest or
->>>>> not?
+  Linux 7.2-rc6 (2026-08-02 16:24:24 -0700)
 
->>>> I'll investigate but I'm not sure perf is intended to guarantee
->>>> that. perf stat just runs the event counters but may not write or read
->>>> them at exactly the same time.
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
 
->>> Is that true? The perf core calls perf_pmu_disable() when a process is
->>> scheduled out before reading the count of each event of that process in
->>> an inner loop. The perf_pmu_disable() clears PMCR_EL0.E which freezes
->>> all of the counters so they can be read out in a consistent state.
+for you to fetch changes up to 42bc45df5905e2b7dccb72adaf7730f66cfbe03f:
 
->>> It's important that they're all stopped at the same time because
->>> counters might be used in metrics as ratios of each other. So I think
->>> it's deliberately designed that way and appears to not be working in a
->>> guest now.
+  vhost-scsi: reject feature changes after endpoint (2026-08-03 23:08:15 -0400)
 
->> By default I think perf assumes events can be measured independently, If
->> you want to guarantee events are scheduled together to avoid measurement
->> skew you need to make sure the events are grouped.
+----------------------------------------------------------------
+vhost,vdpa: last minute fixes
 
->> The common way to do that is with {} around the event list:
+A small number of fixes that seem too important to
+wait until the next release.
 
->> perf stat -e {branches,branches}
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
->> Please see if that resolves the issue.
+----------------------------------------------------------------
+Christian Borntraeger (1):
+      vdpa/mlx5: Fix buffer length in create_direct_keys()
 
+Jia Jia (2):
+      vhost-scsi: flush backend after device ioctls
+      vhost-scsi: reject feature changes after endpoint
 
-> Groups only change how the events are scheduled, not how the driver
-> starts or stops multiple events running on the same PMU (grouped or
-> ungrouped). In my repro I had less events than counters in HW, so they
-> will always be scheduled at the same time regardless of grouping.
+Jun Yang (1):
+      vhost: reset the vring metadata cache on vring reconfiguration
 
-> I did notice something extra though, you have to first open some amount
-> of counters, and then open more than that. Then the second time the ones
-> with different counts will be however many were opened first time, as if
-> some state has stuck.
+Linfeng Sun (1):
+      vhost-scsi: Validate T10 PI scatterlist counts
 
-> For example if I open two counters then 6, the first two always have
-> different counts the second time:
+Linfeng Sun  (1):
+      vhost_iotlb: bound map allocation in add_range
 
->     $ perf stat -e branches,branches true
+Yousef Alhouseen (1):
+      vhost/vdpa: reject overflowing PA map page counts on 32-bit
 
->     Performance counter stats for 'true':
+ drivers/vdpa/mlx5/core/mlx5_vdpa.h   |  2 ++
+ drivers/vdpa/mlx5/core/mr.c          |  8 ++++--
+ drivers/vdpa/mlx5/core/resources.c   | 11 ++++++++-
+ drivers/vdpa/vdpa_sim/vdpa_sim.c     | 10 +++++---
+ drivers/vdpa/vdpa_user/iova_domain.c | 11 ++++++++-
+ drivers/vhost/iotlb.c                | 47 +++++++++++++++++++++++++-----------
+ drivers/vhost/scsi.c                 | 20 ++++++++++++++-
+ drivers/vhost/vdpa.c                 | 18 ++++++++++++--
+ drivers/vhost/vhost.c                | 16 ++++++++++++
+ 9 files changed, 119 insertions(+), 24 deletions(-)
 
->               106129      branches
-
->               106129      branches
-
-
-
->     $ perf stat -e
-> '{branches,branches,branches,branches,branches,branches}' true
-
->     Performance counter stats for 'true':
-
->               117013      branches
-
->               117013      branches
-
->               110364      branches
-
->               110364      branches
-
->               110364      branches
-
->               110364      branches
-
-
-> After opening 6 again a third time they'll all have the same counts.
-
-Interesting. Thanks. To clarify, is this happening in the host or VM?
