@@ -1,95 +1,183 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FFE3CEBBB;
-	Tue,  4 Aug 2026 10:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDBB31F995;
+	Tue,  4 Aug 2026 10:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785840004; cv=none; b=doS6DAf+g+F4cHtFHlBOBNp2CZXnMa3qq6phVRkp3QfUOKMdkGNLzZoWV5v2A2mkA1v0BOXuhIweuhb9ZML3iAKLEwhlVsmsdAVZT9W8xgyAuJciqslRkO1RnHEDoWq2oCLgzIpvuHndXG0/EMn19sC0yPXGUe0ehimTs3Mst64=
+	t=1785840593; cv=none; b=eS8ssS+SgLvX0Cevz6COteIsJezxpioRrvnLocCXvKVhARbi83lc9hSZIJ4/9pP4WS1XbF6Bpf7vcR6GChSTXC263UptYdDuKnznwP2v4jb1yUqgbjRDKYEF5HlmXCCFnUjzISvCSCzYBVBVM0+GshKVYFmLGlBzpUvBsRF7Qa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785840004; c=relaxed/simple;
-	bh=66Vr/fy3qYcTZO6v5sVMVw5Sihq2KQZzSp511oVKZTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rc8fvoV0GqzxsYPI/nxu3byilMi4MpAZ1lmLOGmCwCKF5BptU013ZmZE2sXaNh7aVWcw2uQwyJGUJ4qOWilTa9/z/2hUdKy8amylqLBuz20bz0sbopVWPtnHZ/6Fok0A5jQeYNRNiUwiKjFL4n+B9HRogZ4p+s+qTx43gIMNtuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LGA1lkkR; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1785840593; c=relaxed/simple;
+	bh=KD9VCIcQkSM8zKdO3tZVGg8xj6KxViKMA32KyxDf4Js=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XrWoDO93dt0EE+DKcZjyy1Q/pztz+rjgMUZGSzssP13W3fZftYN8cQHbGXG+glR7xs2LOki4dlrVwPF3srWlbTwSInzsrv2iGreWI6JZ1hN6kOus2RCiDhvmHN5dVPKpddCHzwI9TqbYsoaNmXm2clHBv3vUuztPWjMy53olKJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SyIphgvZ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LGA1lkkR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=MsldYqnXOycsS4y2/7KD3GU//XDAu63pq55swDGd2xw=; b=LGA1lkkRQbVX1KW9YPvaAmrSjX
-	iVDDDoXj/8hc/CzXkHA5ffJ8pRRD8pKaS0GgylshFZGV1Gt51cxqLuoVgYiuV2+ASvLqawoyP37O2
-	ta0OHhxCiAPtEM7zdUElmcx4T8aqOOi6F0Y2q+lPdg8ionsZP3yHhQDAZ8wcCfqcYRJN5+hEbCGN8
-	sfZ+ukTa3ier64oRKtJsK+zhxdviWmRFE/G+2nNfwhkLzN58M0Lmk13/TM+rpL52AWovHxCh20cap
-	NFJT1Jbuiblfw8ziL76Tp7Ia//DA11YVN9uCIT6u7MxpE8hBCpXj1BKi8NhSEyEoqHzzQKtxscgCI
-	IVoTVISw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wrCYe-00000009nOq-2bzw;
-	Tue, 04 Aug 2026 10:39:40 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5984030045A; Tue, 04 Aug 2026 12:39:38 +0200 (CEST)
-Date: Tue, 4 Aug 2026 12:39:38 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/5] locking/qspinlock: Add contended_release tracepoint
-Message-ID: <20260804103938.GH776954@noisy.programming.kicks-ass.net>
-References: <cover.1785778551.git.d@ilvokhin.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SyIphgvZ"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748HYHK323748;
+	Tue, 4 Aug 2026 10:49:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=pBEgex
+	hAipZeVO6mAKS9pwHLXOUZrWxtgHwQMlCESuA=; b=SyIphgvZ21Mj7Z2qKpmnom
+	nRUYjzfrrTDMBkstFg0RkPPticwD93lk0hodh9Biza7OwWlRwlX8JIgCRS4iOQD3
+	ZNi2rV4vVp4C/iNbPtOwrJJC5YghZfi5TJqg40iKT2MNjBWHREm9cUKGG6TFzHI9
+	syErOHxQF8dyoinVJr/X0AjmlSm1J4rCbJTBxfuDczTcmZ/Yy/9FYCB53TnxRPps
+	+Q2EiqR+qIEHCaxOeIHVoJ6e4UaYPtX2hdSQRvyUeT4Y4Dq2Vb92KPKQhYzoBvR3
+	8o5tnorCZgwT5I93MAAz8/1cKRtJcU8k8VBD1uUiYKU8LKjSPooRS7qHG3SADaZw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8h4we19-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 10:49:38 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674AfIaZ022440;
+	Tue, 4 Aug 2026 10:49:37 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh9grg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 10:49:37 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674AnaZm24445560
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 10:49:36 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 37EF058059;
+	Tue,  4 Aug 2026 10:49:36 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1ACDE58058;
+	Tue,  4 Aug 2026 10:49:35 +0000 (GMT)
+Received: from [9.61.89.119] (unknown [9.61.89.119])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 10:49:35 +0000 (GMT)
+Message-ID: <f3d5d78c-1992-4027-a1a6-345b76b5b14c@linux.ibm.com>
+Date: Tue, 4 Aug 2026 06:49:34 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1785778551.git.d@ilvokhin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 02/15] s390/vfio-ap: Data structures for facilitating
+ vfio device migration
+To: sashiko-reviews@lists.linux.dev
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        kvm@vger.kernel.org, Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Alex Williamson <alex@shazbot.org>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>
+References: <20260727173239.2420754-1-akrowiak@linux.ibm.com>
+ <20260727173239.2420754-3-akrowiak@linux.ibm.com>
+ <20260727174014.E83231F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260727174014.E83231F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX0hhQMqoj0v0/
+ lyC8Mk6JQ8X7AVyBfgkA0aL6Wrl6LGiOaN7zlu+XnwcK+x1QEpYx2j/hSfruhGaDbJ5TyzG5GRM
+ 2PredeTMsnZUk5NWvaWPvkyOAYk8u+c=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA4NSBTYWx0ZWRfX2Xl6yXL8QBlY
+ pVL1QJEdbXPY/zoMu9fRDHlIOHnmeo+mHSmgeFZ2/FcPH7536azoQB7U7x+g3bPZyyU5KWjZ+0+
+ TIEsIjnmNzKl7sueqOhVvi6xUSir2Eiw8AGaRjImZXJGUsN1LWwixrHX4kY8POHGzwZgodbIWLw
+ LcF0ptscEcqSmFaxMGh3+IX6bz9FmnGLTioSMCi16lfRzdAoRgOOYJl4Q4/pRfUcb6C+EhMtuB7
+ 8ZH+ao2a7nL3uCukL45t55nkexr8y6MCmhm9dJvz3nfuE9Az/jFjYUmu6X/OEYauMdTcOJTuGt2
+ zJ5gnvhtW60qbJrQVRjePqUp4z0KuiRuxUnZaKAoLR2F6BxiZ/rJgBts+nEZ9oEtIQY2eGTOcwl
+ FJCoIvSMFNnkWGvZlrV4gSp7uDYct4pyA3ephWHEMXh/nsEveuP03l0vrVGSSwjuPLe75BTJGZj
+ 0DeM2Jqqg2L9nqp76mQ==
+X-Authority-Analysis: v=2.4 cv=SI1ykuvH c=1 sm=1 tr=0 ts=6a71c3c2 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=MdEa33EV34lG5rOqodIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: WJpJ4pT4CAY8v9Zox9EB6HFrRWdXcvgN
+X-Proofpoint-GUID: WJpJ4pT4CAY8v9Zox9EB6HFrRWdXcvgN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040085
 
-On Tue, Aug 04, 2026 at 07:15:40AM +0000, Dmitry Ilvokhin wrote:
 
-> Patch 1 is Peter's draft from [1] and is missing his Signed-off-by.
-> Peter, please add it if you are happy with the patch.
-> 
-> Dmitry Ilvokhin (4):
->   locking: Factor out queued_spin_release()
->   locking/qspinlock: Add contended_release tracepoint
->   tracing/lock: Use TRACE_EVENT_FN() for contended_release
->   x86/paravirt: Trace contended_release on unlock
-> 
-> Peter Zijlstra (1):
->   x86/paravirt: Use static_call() for the paravirt spinlock ops
 
-Right, this all looks nice. Let me go queue this for the robots.
+On 7/27/26 1:40 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Medium] The VFIO migration data structure lacks a magic identifier and version number, and relies on an architectural macro for array sizing, posing a risk to ABI stability.
+> - [Low] Typo and grammatical error in the docstring for `resuming_mig_file`.
+> --
+>
+> --- Patch [2]: [PATCH v6 02/15] s390/vfio-ap: Data structures for facilitating vfio device migration ---
+> commit 1aa240c81b915a9ce3e59c82c532c41c1cab4d99
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Data structures for facilitating vfio device migration
+>
+> This commit creates the data structures used to facilitate state transitions
+> during vfio device migration.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> new file mode 100644
+>> --- /dev/null
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+> [ ... ]
+>> +/**
+>> + * struct vfio_ap_migration_data
+>> + *
+>> + * Manages the migration state for the VFIO device that maintains the AP
+>> + * configuration of the guest being migrated.
+>> + *
+>> + * @mig_state:		the current migration state
+>> + * @resuming_mig_file:	the object used to restore the state of the vfio-ap
+>> + *			device the destination host:
+> [Severity: Low]
+> This isn't a bug, but there appears to be a missing word here. Should this
+> say "device on the destination host." instead of ending with a colon?
+>
+>> + * @stop_copy_mig_file: the object used to store the AP configuration of the
+>> + *			source guest for transfer to the destination host.
+>> + */
+>> +struct vfio_ap_migration_data {
+> [ ... ]
+>> +/**
+>> + * struct vfio_ap_config - the guest's AP configuration
+>> + *
+>> + * @num_queues:	the number of queues passed through to the guest
+>> + * @reserved:	padding to ensure proper alignment of @adm
+>> + * @adm:	bitmap specifying the control domains in the AP configuration
+>> + * @qinfo:	an array of vfio_ap_queue_info objects, each specifying the
+>> + *		queue information for a queue passed through to the guest
+>> + */
+>> +struct vfio_ap_config {
+>> +	u32				num_queues;
+>> +	u8				reserved[4];
+>> +	u64				adm[DIV_ROUND_UP(AP_DOMAINS, 64)];
+> [Severity: Medium]
+> Does this data structure need a version number or magic identifier to safely
+> handle ABI stability across host migrations?
+>
+> Since this structure defines the binary layout of the migration data stream,
+> could changing the architectural macro AP_DOMAINS or the structure layout in
+> future kernel versions silently break live migration compatibility between
+> hosts running different kernel versions?
 
-Thanks!
+Will add magic and version fields an check them when userspace sends
+state data to the destination host (RESUMING phase).
+
+>
+>> +	struct vfio_ap_queue_info	qinfo[] __counted_by(num_queues);
+>> +};
+
