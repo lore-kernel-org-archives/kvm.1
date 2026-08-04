@@ -1,94 +1,43 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out199-14.us.a.mail.aliyun.com (out199-14.us.a.mail.aliyun.com [47.90.199.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E9E32C957
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BC24A21;
+	Tue,  4 Aug 2026 03:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.199.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785814790; cv=none; b=fAi0QzfNtJsjlMfVr//wT62OKDgp+25NLotRaSuIQIUM3IUmJF7SsbP9+NjSRhvMKbi7f46DnpwKG3Kt03vEfomyvgt8o4+vT6BXw64clfUTkIusCtM8Rmg15upv7GYlYJ2EdEDGQqAaZ6FuP1FggPhbfSb0daNrCee6/DFi04E=
+	t=1785815238; cv=none; b=cYqYloRA9esKK0il6WKp9siKJ1S1k7D4IejN69EdroDAOWEuA0+I9wOOhs9zZfiPQMr+S7RoicHjecnP2wjd6mYXTpCyIrrLvKX5o1RRkvKYWI9lHjOe8gP5LDqnJFE666EhNGimvMrnG/oCsd7ukLTxdW1TC5ORWvnzBTPW96Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785814790; c=relaxed/simple;
-	bh=vC4qQclBoV67ud2evHeSbDFkaZmPoEXMBUWK5AoYXEM=;
+	s=arc-20240116; t=1785815238; c=relaxed/simple;
+	bh=MpNAUrNQ6mrcpoJ6eyqy8Ugz4dZpRH+hXtNtbHGIFXE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jYPd9pdhIFDb2uxSi7H9fZXzFjRK3o1Oj8QwUNCB+r2U7XLFfVqLL2Kj1b+IBaXBIRIodvfl5B7byN0PTU56s5Fro8N+2Nk/+zff5MDex6Jvx7Nky1SrdkZXcPUz4IvF4Q8H9/78Fzbmawe0RpWMiof/v9dJxR/f6Wwd5n6hgkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Juk83/iO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KeLwA2vK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6BssWNgnq3mxN+YdacN20Q2q101h6moJththszHK50eQjKOkiF+ComsgXPBREduoIONYzVNjgQdGw+cRv6wn1c7M9O3zMlMD30+lKwe3wfB6mFOn/rGbxbn5k4NiMr8hJeKBCBFI1HfxVPghhII1sMCeQCkZbkMn425wOjRWHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=BveHJmsR; arc=none smtp.client-ip=47.90.199.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Juk83/iO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KeLwA2vK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785814788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-	b=Juk83/iOdm0tjHtFCgUmf5Klhrj8uE5QeKkrODXz3iqDV1szgft0SGbIgt2KBavmJFPFCP
-	1h0RXKJ8783kGOvkIzzRAcma5EDT00isVUvp9m85YGOcK6TOXEnq40XkYL7pi4FGKWzyvy
-	jinodFs57F1V/q+Vtjvuhp9/Xr6SDwg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-RNGoaGdBOQuJQGjB-DG3tA-1; Mon, 03 Aug 2026 23:39:47 -0400
-X-MC-Unique: RNGoaGdBOQuJQGjB-DG3tA-1
-X-Mimecast-MFC-AGG-ID: RNGoaGdBOQuJQGjB-DG3tA_1785814786
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15e82278cbso334494366b.2
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 20:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785814786; x=1786419586; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-        b=KeLwA2vK3RZo27HZPVubdSmwRL0xIBz119y5Vq7xH3jZFqXyqktSwargQSQrSlBucx
-         uxv79aGqfx+actWpsxMaj0XZ3Yzexl/Lf7ljqnFot2hChf17qqgsX9hwdH1+j1suxxE/
-         NhMhEYfFPQhkMgIvHBnZ+AfVQf4WXBMfSCoBlnnIvYdVqTnibHtwsGrxnk/TuQU49z4p
-         2XFhAIPATmmsA5PWKwCz/ZSyMZnOv0PDDzt699oQywO59x+A0177013ovKZ2af0iT1Uu
-         MWeE09ukGQmq3LGhc7SVtfG3+60c4q2Lrcq7oUXqYh/7i3ctCnRsvdYzoohB0S+iOerf
-         /Tfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785814786; x=1786419586;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
-        b=SK2OMqcjuBXnUGae2vLi21RlVxqK+1sYEh0qjI3FUH2KsQYrfl4jd2oK+ZANBsx2un
-         U+LiAjbGKnr7hliutC3coI0AEfu50cgbpvpkf8MWFoOj9ioJYtNVQ3hMAM2fg+H5t4OG
-         VSs1mN9M2W8lawst3KtoQNeOkMP7LNBoUK7gSHDQojvaeLT02FsOriWI/hPzq5wBA+38
-         wNji8Gpv97hxGUSWMrw8rI1DYny8sytGkDH7b+jjh4X1yCfuovdQwwaMn2CBCuwOxCfd
-         5n8NjXSQJeJNLXo0ot1rhiUi2cKiWAMXYOmPDhwwiW2UocW7sUzqRTns45WEHNa+Qcy1
-         5d/w==
-X-Forwarded-Encrypted: i=1; AHgh+Ro8wgx3g/iLSRnhpe/2ilIcL1H2cCUO6ehDRle7priOySQJh0CCEkwEYEeq6erlkOB/xmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/4Op5DhyyZiWFBFmsoVpRAptTOx1QJtRMX8K9QVQZ0MvwR3ya
-	d3Ed3qVzusqG8/0FbJMR9q1bJneHyKd5h1bejCxeBdr8M6rAy5vgT7RiNgVaAiPUJbIwOFSEZXz
-	hbCLhT4FDSIpJl++DT2fcbVMx6QkYD+1OAdfSqiT/B+TutA/VjjXepw==
-X-Gm-Gg: AR+sD12hEatk9nCvy9J4oQqO1UXI/1uji62qYfRh92GuVrV6auak6Siwu1MKkH+ru43
-	8AOypPFROrV4ZpEcDf9/DP/bdojG338G2YBYlXcMUtK+9NP3IaQfuu/bljIBDKOu/RCcOtK3FWv
-	i9uHtORwS5F7RUqPru9kqiKcJndYfPPyGL9a8CnKRlByA6B9Wv6SzV4pT7tHK6icj0JuDYjLhrf
-	aL/ybqs57bTegY+m74TQTjti1kQK6E+lsjoUZ5T6cEbE3gTQAvIPOydTjsVTf7Vb61dyYRMthEy
-	3imhADF1R1KSns2MCUS4mKqV17yf1kvuqRdHnp6jOid9+UYv1ZQNv/6amCYyvR0mVbbk
-X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148196566b.2.1785814785642;
-        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
-X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148193466b.2.1785814785204;
-        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
-Received: from redhat.com ([186.247.166.67])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c93a87sm631061866b.18.2026.08.03.20.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 20:39:43 -0700 (PDT)
-Date: Mon, 3 Aug 2026 23:39:40 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Mike Christie <michael.christie@oracle.com>
-Cc: Jia Jia <physicalmtea@gmail.com>, jasowangio@gmail.com,
-	pbonzoni@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] vhost-scsi: flush backend after device ioctls
-Message-ID: <20260803233841-mutt-send-email-mst@kernel.org>
-References: <20260721073639.1532488-1-physicalmtea@gmail.com>
- <3d2dfa19-42f8-4d1f-a411-c72669f4c4bc@oracle.com>
- <20260723105451.1563439-1-physicalmtea@gmail.com>
- <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="BveHJmsR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785815215; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=VjSgLvpVkLAlpt0h3TqURSDDPzFkTT5uHnKOEmZFvx0=;
+	b=BveHJmsRyAwech8UWwWsPPySw3ynwY1Vy0+4I9YrwzEyIl2Bho7qMouX5tJtQHjY3MBzge9mQ5WepS7UrHAP3XTS6t8hUuwUUXVfu+1WbkrZmVb6EdRLWbBaVtSR15QfI/8wwhlu2QCZFDkl4KLKiwCOyRQ4KNNLhPZJ26N1HgM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=11;SR=0;TI=SMTPD_---0X8MUVM._1785815214;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X8MUVM._1785815214 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Aug 2026 11:46:54 +0800
+Date: Tue, 4 Aug 2026 11:46:52 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Hyunwoo Kim <imv4bel@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 4/6] KVM: arm64: Correctly handle end of VA space TLBI
+ invalidation
+Message-ID: <bebthvofsp6rdtj7da7rtqgsdi6sjoq5dmodqzpi445r3msyoh@fd4pndoqqmix>
+References: <20260801124818.366274-1-maz@kernel.org>
+ <20260801124818.366274-5-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -97,28 +46,113 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
+In-Reply-To: <20260801124818.366274-5-maz@kernel.org>
 
-On Mon, Aug 03, 2026 at 07:02:43PM -0500, Mike Christie wrote:
-> On 7/23/26 5:54 AM, Jia Jia wrote:
-> > The owner must keep the old mappings valid until the ioctl returns.
-> > Remapping or dropping them from another userspace thread before then is
-> > outside the lifetime assumption of this transition barrier.
-> 
-> Ok I get it now. For some reason I thought that was valid.
-> 
-> For the patch we don't want to flush if vhost_dev_ioctl fails
-> and there's no reason to flush for operations like
-> VHOST_GET_FORK_FROM_OWNER or VHOST_SET_OWNER.
-> 
-> Could vhost_dev_ioctl return when a flush is needed?
+On Sat, Aug 01, 2026 at 01:48:16PM +0800, Marc Zyngier wrote:
+> Our TLB invalidation by VA code is based on comparing two ranges,
+> one defined by the TLB, and one defined by the TLBI instruction.
+>
+> Each range is defined by a start and a size. However, the way the
+> comparison is done doesn't account for address rollover, as it
+> compares an address with (base + size). This works nicely until
+> this expression represent the last page/block in the TTBR1 VA space,
+> as the result is a big fat 0. And a failed TLB invalidation.
+>
+> Rewrite the comparison in a way that is immune to the address
+> rollover (making the end address inclusive instead of exclusive),
+> and move this into a common helper that is used by both VA and IPA
+> invalidations, as suggested by Hyunwoo Kim (although the IPA version
+> didn't suffer from this particular problem, obviously).
+>
+> Fixes: 4ffa72ad8f37e ("KVM: arm64: nv: Add S1 TLB invalidation primitive for VNCR_EL2")
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> Cc: stable@vger.kernel.org
+> ---
+>  arch/arm64/kvm/nested.c | 43 ++++++++++++++++++-----------------------
+>  1 file changed, 19 insertions(+), 24 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index d7dba02dc84fe..47d61d3cf053c 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -999,6 +999,20 @@ static void invalidate_vncr(struct vncr_tlb *vt)
+>  		clear_fixmap(vncr_fixmap(vt->cpu));
+>  }
+>
+> +static bool vncr_tlb_intersects(struct vncr_tlb *vt, u64 addr,
+> +				u64 scope_start, u64 scope_size)
+> +{
+> +	u64 tlb_size, tlb_start, tlb_end, scope_end;
+> +
+> +	tlb_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift, vt->wr.level));
+> +
+> +	tlb_start = addr & ~(tlb_size - 1);
+> +	tlb_end = tlb_start + tlb_size - 1;
+> +	scope_end = scope_start + scope_size - 1;
+> +
+> +	return !(tlb_end < scope_start || tlb_start > scope_end);
 
-I agree but also this is consistent with all other vhost
-devices.
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
 
-So I'm taking v2 of this, and we can iterate to optimize
-all devices with patches on top.
-
--- 
-MST
-
+> +}
+> +
+>  /*
+>   * VNCR TLB invalidation occurs from MMU notifiers or TLBI instructions, and
+>   * either can race against a vcpu not being onlined yet (no pseudo-TLB
+> @@ -1021,19 +1035,9 @@ static void kvm_invalidate_vncr_ipa(struct kvm *kvm, u64 start, u64 end)
+>  	if (!kvm_has_feat(kvm, ID_AA64MMFR4_EL1, NV_frac, NV2_ONLY))
+>  		return;
+>
+> -	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm) {
+> -		u64 ipa_start, ipa_end, ipa_size;
+> -
+> -		ipa_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
+> -							    vt->wr.level));
+> -		ipa_start = vt->wr.pa & ~(ipa_size - 1);
+> -		ipa_end = ipa_start + ipa_size;
+> -
+> -		if (ipa_end <= start || ipa_start >= end)
+> -			continue;
+> -
+> -		invalidate_vncr(vt);
+> -	}
+> +	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm)
+> +		if (vncr_tlb_intersects(vt, vt->wr.pa, start, end - start))
+> +			invalidate_vncr(vt);
+>  }
+>
+>  struct s1e2_tlbi_scope {
+> @@ -1059,28 +1063,19 @@ static void invalidate_vncr_va(struct kvm *kvm,
+>  	lockdep_assert_held_write(&kvm->mmu_lock);
+>
+>  	kvm_for_each_vncr_tlb(i, vcpu, vt, kvm) {
+> -		u64 va_start, va_end, va_size;
+> -
+> -		va_size = ttl_to_size(pgshift_level_to_ttl(vt->wi.pgshift,
+> -							   vt->wr.level));
+> -		va_start = vt->gva & ~(va_size - 1);
+> -		va_end = va_start + va_size;
+> -
+>  		switch (scope->type) {
+>  		case TLBI_ALL:
+>  			break;
+>
+>  		case TLBI_VA:
+> -			if (va_end <= scope->va ||
+> -			    va_start >= (scope->va + scope->size))
+> +			if (!vncr_tlb_intersects(vt, vt->gva, scope->va, scope->size))
+>  				continue;
+>  			if (vt->wr.nG && vt->wr.asid != scope->asid)
+>  				continue;
+>  			break;
+>
+>  		case TLBI_VAA:
+> -			if (va_end <= scope->va ||
+> -			    va_start >= (scope->va + scope->size))
+> +			if (!vncr_tlb_intersects(vt, vt->gva, scope->va, scope->size))
+>  				continue;
+>  			break;
+>
+> --
+> 2.47.3
+>
