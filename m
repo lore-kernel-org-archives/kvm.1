@@ -1,87 +1,296 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7101D331ECC
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 04:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2387175A99;
+	Tue,  4 Aug 2026 04:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785817865; cv=none; b=HhfZRrTMUKqNYTim5jRSVAPLJLsWikNQ1tTxbsqoSMIOgGkBZG0halDCiWNkeLe16RJiKzahBWa8cAGliulabEXXYvXRRAnZn5qYD2RGQj0XB2b9uioxWjSy1CrZ6MHvbOZa9lSxVmxe6FL3vfqKOAV+ut8dvynPwpWIeMfw8AU=
+	t=1785819274; cv=none; b=D1h1yIOVgQi2prvn+NBuqPCTcgtS4PpqRWMUR6A6sqdYzzH7145wU1fjG1DLHVLL026cGTll7kM53uU0yZUVqtmZqP7BNbUeILQV7nZKjDtaM3FtD3L5ZMU6PH+8zYuwkummXRwrW4UIjNiy1a8GMa26dq4q/+v+DEbOh2MwXV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785817865; c=relaxed/simple;
-	bh=KGTJ/FyRXR8JidJJnOWeIFkNrB7WqZ7CgklUiGF8c9c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EhdLm57DVK2w2AOruKrb54obJ7GCkAXqDgBD4jB+p9F5rzImihyvjta2ubadXIgv/avsu0xnBam1d1vCp2+qzQJfiHReyZjhEg9T8jP6/cchMFEaH6RkP8pfnlhxkNttoDU8KPO5quVuWCArQi7+S9WOHMd7myA7FoelaRPjMyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P1zSbQai; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785819274; c=relaxed/simple;
+	bh=q4i37Mp1h/ApZBLDJMoc5Ip8ZuaIWbsZmYh8kmdLvo0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=T85rW+1odlGQA3OquoRxJvkqZJwWFHwMMc4W8GFfKgZR4cJT/Qk48qV8P6PUgwRFPuiOX7loc9wHjDpgHlTI5ScON/WArW8p5SmIKIcNVApxJsvRWIT/fco1i/be0CQHo3W0/REcrTyEMrlIWaayCU9s26en3LKUmiaaKI64tXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=eiL8211t; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P1zSbQai"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc891373e0so45472955ad.2
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 21:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785817864; x=1786422664; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KGTJ/FyRXR8JidJJnOWeIFkNrB7WqZ7CgklUiGF8c9c=;
-        b=P1zSbQaimeaupM0kh3rz6fcL8nQv8/djuQ2rdC/els56LrkAJGf8Y9HL3gQkOilq/z
-         pBpj+DkD6J+4R/gXZ6lLfPWKdPWNWUOUy+m7ztH5nbf2i7btX4Wvd5/v7brbLp0nh5cb
-         8RRx4ja4yd628AhJc6P1chB3BR10efqgC6BSSH6Xmx1ZPX0Mj9522Vqi3vubD/IjAq9B
-         gGg8E0H9YTBmM0ZSA7XO2k82t7MBrX0Y6tpuxaYMsh22mPGXoyiQek6QzNZW19LvToS+
-         lmIS6RUI32Aa8QvR7okjWWOy81TZakC3upfOT7JXKLwwQj8Iutu6t3rZYa2MxaZNmKxc
-         bCNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785817864; x=1786422664;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KGTJ/FyRXR8JidJJnOWeIFkNrB7WqZ7CgklUiGF8c9c=;
-        b=HADgIJRIa90rvH+EhKq44O2Nwm2w9b0Itt5BdpqKDMkA+8TYQ26sobreD+Uxxt68Ib
-         JaxKF1y5kge8ruftJEZH/cWM7LEU3a+T+JtkHjfCqw+0HgNCYOXw5si6jb0ULhU4BfjF
-         NropE86sN6Q//CGCJ+g+SfDXfI6RYNw9sA70U2wXDuhOp1052daFRSTlnd5mnD2hCLtR
-         vIIRQqHrBXx/7bLputdXB73xQ+vJFSpDQS0fOJ3rDR8QAIIrpCB/LlS43Ef53AeAzw1P
-         4C0TOA6iMWuXK8IiGo2GfoNJdcsr8sdYgbN1ceSLWAcQ5YAFiK4x4LgTqkJ9YqVKS8Cu
-         UlZA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/lN8psBX7XDPeglZiCe5Ls7JQb5NvaLXZhUq1s7/VplW1t2Uuf+1mCaaHjg9Ou1YdVhg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy99+S3byzbi91JyvJYTxdh60lWslNHoXGPUFzfJbdPmJifqb9D
-	qQhOR/1YM0vlSJuID8SJWTtq0Zlh3kefH7RNM09YR9WnrAa5E2YMs2eL
-X-Gm-Gg: AR+sD11eDvSWOrnh6wAcIkibTnIYAiV5GdltqVHv5fAjfm3jzG0Agd2T1TbAQGI+zZV
-	JzwyO1sA0jaxcGuCHH+N12NYNi83iKXeQvNTRML277I4eGpxm/JYcAnupsicPYvpltXGKxOkd4X
-	qIIExAMYZf/+7h4lBIFgNv513eY4B2u8Lxxt46XjE4UPGLDeZOWnOJEDvQ71dRUTDWOKh/zLUiG
-	NOPTiTBKdl34hMAZGZQpFX9V7jEPoCCVt1Bx7m0O4FN4o3+jVU0O1vqvTiMd+n9nAUa9BSxQ1WI
-	wowCIT93LULH4u5rhRtBRvdqNTNoZ+MI0YtTucD2cefDGUhayRtKUisKXFw1NWOwwaibdNpzp5S
-	uS1AWHmlctISqDahJfYmcpjgDY79f/+UaVmeRWZgGgcms7EwYgbbxigGAMttHdpPF/Qsm6CtFhv
-	G7jI8HjZErOG/JHROntbcWPA1Yh+sMirBXZWVGXit6Yqe1kw8qb0Z0JREVFt8tkXk=
-X-Received: by 2002:a17:903:8c7:b0:2cc:741a:ff33 with SMTP id d9443c01a7336-2d05247217bmr123034885ad.43.1785817863428;
-        Mon, 03 Aug 2026 21:31:03 -0700 (PDT)
-Received: from [127.0.1.1] ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b0ea21asm46196425ad.52.2026.08.03.21.31.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 21:31:03 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: mst@redhat.com
-Cc: stefanha@redhat.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] vhost/vsock: fix device IOTLB feature lifecycle
-Date: Tue,  4 Aug 2026 12:30:46 +0800
-Message-Id: <20260804043046.6109-1-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260803231911-mutt-send-email-mst@kernel.org>
-References: <20260730104857-mutt-send-email-mst@kernel.org>
- <20260731103414.1746316-1-physicalmtea@gmail.com>
- <20260803231911-mutt-send-email-mst@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="eiL8211t"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=wHLWv1eLDUUJbnHUwLyRisJw5DZtYmidA42ix7gLJNE=;
+	b=eiL8211tflckw7TgpgBXnWXe9FMq8T38fmdJcrBysDaJ3Mrf2HRq+5LAUYvx8u0PgEGpdGLk5
+	IXY+wu9DgJmdTNxcUm+6NXUQ3PcjV2bd+fEptB34C784k2qONJD4irkMF5ay1+gkKW/i/39SQcz
+	iXrxwYWqn9KcRoI3wZHWrx0=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4hDgv50MHSz1cyPG;
+	Tue,  4 Aug 2026 12:44:49 +0800 (CST)
+Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A37440586;
+	Tue,  4 Aug 2026 12:54:18 +0800 (CST)
+Received: from [10.67.120.103] (10.67.120.103) by
+ kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 4 Aug 2026 12:54:17 +0800
+Message-ID: <2070002d-94aa-4a5b-8df1-e8e0f0fd265c@huawei.com>
+Date: Tue, 4 Aug 2026 12:54:16 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
+ dirty tracking
+To: Leonardo Bras <leo.bras@arm.com>
+CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
+	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
+	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
+	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
+	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
+References: <aliKo7dTZzKcWHzI@kernel.org>
+ <0943eb14-9ffb-4dbb-9219-060e97bca2a7@huawei.com>
+ <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
+ <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
+ <amoZY8uGLf1PEpjK@LeoBrasDK>
+ <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
+ <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com>
+ <anBrvILpcSFhW7Wg@LeoBrasDK>
+ <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
+ <anDCno9HdVI5UAls@LeoBrasDK>
+From: Tian Zheng <zhengtian10@huawei.com>
+In-Reply-To: <anDCno9HdVI5UAls@LeoBrasDK>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr100010.china.huawei.com (7.202.195.125)
 
-On Mon, Aug 03, 2026 at 11:19:30PM -0400, Michael S. Tsirkin wrote:
-> pls do not post v2 as reply to v1. confuses tools. thanks!
 
-Understood. Thanks for the reminder. I will resend the v2 patch set as a
-new thread.
+
+On 8/4/2026 12:32 AM, Leonardo Bras wrote:
+> On Mon, Aug 03, 2026 at 09:57:46PM +0800, Tian Zheng wrote:
+>>
+>>
+>> On 8/3/2026 6:21 PM, Leonardo Bras wrote:
+>>> On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
+>>>>
+>>>>
+>>>> On 8/3/2026 9:33 AM, Tian Zheng wrote:
+>>>>>>>>>>> 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
+>>>>>>>>>>>> -    if (prot & KVM_PGTABLE_PROT_W)
+>>>>>>>>>>>> +    if (prot & KVM_PGTABLE_PROT_W) {
+>>>>>>>>>>>>               set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
+>>>>>>>>>>>>
+>>>>>>>>>>>> +        /*
+>>>>>>>>>>>> +         * No DEVICE filter needed here:
+>>>>>>>>>>>> relax_perms is only called
+>>>>>>>>>>>> +         * on FSC_PERM faults. Device pages
+>>>>>>>>>>>> always get full RW from
+>>>>>>>>>>>> +         * initial mapping and are never write-protected during
+>>>>>>>>>>>> +         * migration, so they never trigger a permission fault.
+>>>>>>>>>>>> +         */
+>>>>>>>>>>>> +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
+>>>>>>>>>>>> +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>>>>>>> +    } else {
+>>>>>>>>>>>> +        /*
+>>>>>>>>>>>> +         * Clear DBM on W→RO downgrade to prevent hardware from
+>>>>>>>>>>>> +         * silently upgrading RO+DBM back to W+dirty, which would
+>>>>>>>>>>>> +         * bypass KVM's write tracking and cause data corruption.
+>>>>>>>>>>>> +         */
+>>>>>>>>>>>> +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
+>>>>>>>>>>>> +    }
+>>>>>>>>>>>> +
+>>>>>>>>>>> This block makes it pretty evident that the DBM bit really *is* the
+>>>>>>>>>>> write permission bit. I'd much rather we
+>>>>>>>>>>> introduce the concept of dirty
+>>>>>>>>>>> state to the page table library and migrate the abstract write
+>>>>>>>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
+>>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Ohh, that's an amazing idea!
+>>>>>>>>
+>>>>>>>> Thinking about that again...
+>>>>>>>> If we adopt the encoding with DBM being the write-permission
+>>>>>>>> bit, and all
+>>>>>>>> PTEs have it since the start, how can we have lazy-splitting happening?
+>>>>>>>>
+>>>>>>>> Only way I think of is removing both DBM and S2_S2AP_W bit
+>>>>>>>> from writable
+>>>>>>>> PTEs during dirty-track enable, and re-adding them during
+>>>>>>>> the first write
+>>>>>>>> fault. If we don't remove the DBM bit, systems with HDBSS
+>>>>>>>> would just dirty
+>>>>>>>> it by hardware, without causing a fault.
+>>>>>>>>
+>>>>>>>> DBM=0 would need to happen only in the first write-protect (only on
+>>>>>>>> lazy-splitting). All other write-protecting would just clean
+>>>>>>>> the S2_S2AP_W
+>>>>>>>> bit, as everything is already split.
+>>>>>>>>
+>>>>>>>> Is that what was intended?
+>>>>>>>>
+>>>>>>>> Thanks!
+>>>>>>>> Leo
+>>>>>>>>
+>>>>>>> Hi Leo,
+>>>>>>>
+>>>>>>> I think the cleanest way to handle this is to simply avoid setting DBM
+>>>>>>> on block mappings. If we only set DBM on page-level PTEs, then block
+>>>>>>> mappings will naturally stay DBM=0 and trigger a write fault on first
+>>>>>>> access — exactly what we need for lazy splitting.
+>>>>>>>
+>>>>>>> When the fault occurs, the block gets split into page-level PTEs, and at
+>>>>>>> that point we can set DBM=1 on the resulting leaf entries. This way:
+>>>>>>>
+>>>>>>> 1. Lazy split works naturally (fault -> split -> set DBM=1)
+>>>>>>>
+>>>>>>> 2. No need to clear DBM globally at dirty-track enable
+>>>>>>>
+>>>>>>> 3. No special handling for block mappings
+>>>>>>>
+>>>>>>> So I think global DBM is still viable — we just need to filter out block
+>>>>>>> mappings when setting the DBM bit. That way the lazy split path
+>>>>>>> is preserved
+>>>>>>> without extra complexity.
+>>>>>>
+>>>>>> Hi Tian,
+>>>>>>
+>>>>>> Humm, but would not that be contrary to what Oliver suggested:
+>>>>>> changing the
+>>>>>> encoding from the PTE for all entries?
+>>>>>>
+>>>>>> (Like, if the PTE is writable, it has to have DBM set)
+>>>>>>
+>>>>>> IIUC what you said, on first faulting of the page in the VM:
+>>>>>> - If the entry is a page (level-3 leaf) and writable, add DBM
+>>>>>> - If it's a block entry (leaf but not a level-3), don't add DBM
+>>>>>>
+>>>>>> So after we enable dirty-logging:
+>>>>>> - a level-3 entry would not fault, using HDBSS, and
+>>>>>> - a block entry would fault, do the splitting, and add DBM to level-3
+>>>>>>      entries during the split.
+>>>>>>
+>>>>>> If I got that correct, that would be clean indeed.
+>>>>>>
+>>>>>> But then we would have a different encoding for block entries and page
+>>>>>> entries. In page entries, DBM could be used to say if the page is
+>>>>>> writable,
+>>>>>> but on block entries one would have to look at the 'dirty-bit'.
+>>>>>>
+>>>>>> Would that be ok?
+>>>>>>
+>>>>>> Thanks!
+>>>>>> Leo
+>>>>>>
+>>>>> Hi Leo,
+>>>>>
+>>>>> My initial concern was that clearing all DBM bits at the start of
+>>>>> migration would be too expensive, so I thought distinguishing between
+>>>>> level-3 entries and block entries would be better.
+>>>>>
+>>>
+>>> I think we expect it to be expensive, but since we already clean the
+>>> dirty-bit (ro/rw) bit, we can have both happening in the same write :)
+>>>
+>>> (since we only mark the DBM bit when we fault the memory on lazy-splitting,
+>>> we are expecting to have the same amount of writes to pagetable as we have
+>>> before HDBSS, both on faulting and 1st iteration cleaning)
+>>>
+>> Hi, Leo
+>>
+>> Actually, I have thought about this approach too, but if we clear DBM in
+>> kvm_pgtable_stage2_wrprotect(), then during the first round of
+>> migration, we will fault and release RO -> W, and then add DBM.
+> 
+> Yeah, that's only for lazy-splitting, though.
+> 
+>>
+>> But next time, when we migrate the dirty pages in round two, we will run
+>> kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
+>> finally, HDBSS will be useless during migration.
+> 
+> Right, on lazy splitting, we have to clean the DBM bit on the
+> write-protect only if it's a block entry (hugepage).
+> 
+> Once it faults for the first time, it will lazy-split, and we don't need to
+> clean the DBM bit.
+> 
+>>
+>>>
+>>>>> However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
+>>>>> turned out to be around 30ns — which I think is acceptable.
+>>>>
+>>>> Just a quick correction — I misstated the unit in my previous email. The
+>>>> overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
+>>>> ns.
+>>>>
+>>>
+>>> Oh, that seems more likely :)
+>>>
+>>> Question: is tha above amount of memory initially in Level-1 blocks,
+>>> level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
+>>> hugepages?)
+>>>
+>>
+>> I'm using transparent hugepages. However, if we were to use level-3 stage-2
+>> pages with -mem-prealloc enabled in QEMU, I believe the time cost would be
+>> extremely high — potentially out of our control.
+>>
+> 
+> Yeah, that's the issue.
+> For this not to explode like this, we need to mark as RO only when the
+> entries are blocks AND we are doing lazy splitting.
+> 
+> We have:
+> Mode	DBM	Dirty bit
+> RO	0	X
+> WC	1	0
+> WD	1	1
+> 
+> On write-protect:
+> - Lazy splitting + block entry (hugepage, level 2-) -> RO
+> - Otherwise					    -> WC
+> 
+> On first fault, the block entry will be lazy-splitten, and we can set DBM=1
+> in every new page.
+> 
+> That way we guarantee that we are not faulting level-3 pages unecessarily,
+> nor need to go through the whole tree setting DBM=1 or DBM=0 on level-3
+> pages.
+> 
+> How does that sound?
+> 
+> Thanks!
+> Leo
+> 
+
+Hi Leo,
+
+I've also been thinking about this approach: clear
+KVM_PTE_LEAF_ATTR_HI_S2_DBM when kvm_pgtable_stage2_wrprotect() calls
+stage2_update_leaf_attrs(). And we can check whether a page is a block
+page during the page walk, right?
+
+So we can check the page level in the walker callback
+stage2_attr_walker(), filter there, clear DBM for block pages and
+preserve DBM on level-3 pages. Something like this:
+
+```
+pte &= ~data->attr_clr;      // wrprotect: clears S2AP_W only
+pte |= data->attr_set;
+if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
+     pte &= ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;  // strip DBM from blocks
+```
+
+My only concern is whether this breaks Oliver's model of treating DBM as
+the write permission bit — though DBM will be set back to 1 once the
+block is split into level-3 pages. So the inconsistency is temporary.
+But if you think this is acceptable, I'll go with this approach in the
+next version.
+
+What do you think?
