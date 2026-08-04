@@ -1,176 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4F130D40B;
-	Tue,  4 Aug 2026 15:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785856586; cv=none; b=Y/VVyU6TCCqhKVBnjackkU4OBi0deeguhb4AMTLlrTCqnobwGb0XRDi2pvct6jNGGZScXmGaKbtgqzX8b8SNkWIbdnROX7hTef5R9Gj0C/D0Eg4T5xm3EUbOfe83NaD3WZTdG9l1VIri4n51H8pAWNE9pDwD9uBF+ozisYAafQs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785856586; c=relaxed/simple;
-	bh=XW4UhJwwZ32w6A5v+gluvdHrownap3EA5jXPN8zoYa4=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6Om5m/sy5b+227qpp0reWs6YIyqcYebSrYE3wNIkgcVylF7BbFkQDXDGWWkNym+neGOwps7fTwvv1ZBiVDBkcfZoHpP3IYa3DZomdREeypZjLUDnMZbbWaYa12vC1/KgLwYGzhickYhkN1iEsM8b1igshpqAyRolAlQZacW+Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLZl8Pc9; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BAC46AF08
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 15:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785857220; cv=pass; b=fs6NsQkURCK8ZrjTTgBalaDZEDz9NObk/6YE20Uf9YHncGxmrsMZlmecE7JEd0VYIc3Ly4bYlFwQXiN8WQzsaexLy7DdqGseorxZLHShS7XhEwnQf7Nu+eSxCr7KvjXenmN+pF792PrzwlbfXpdSlG0T5A2lRUoyCw+qjmdMg+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785857220; c=relaxed/simple;
+	bh=PGOfUIjmK2sLYUpnc50+oNliPpC3bMJvepqZe67VyTY=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i5MVLBVE6mhe+cJecza3teGFjv2EbSkNateq5e30CfJFHfQBwgfhkD10+dX+A8l8cfwZMrI2PHWCFQpXSb3BtK2boTJah/ndsAUhsEKsyJ+4M57+m2qlzGw6fX4fCMFJwIbbq6Jhkjppo9j3xyMhj6OIoLq3Lqp2TgAQDgw83hE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PDMjDWik; arc=pass smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLZl8Pc9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705751F000E9;
-	Tue,  4 Aug 2026 15:16:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785856585;
-	bh=5bKVEcNFiFbLr1dxAdp9i5MeCT8J5gRCnSlut5TctaM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GLZl8Pc9AsSkRLZYTRt8E99d8OlNZ7RgOVfHiYonOUdCEovyjx1lDjeV7JfrL3csI
-	 9wNQbKgovsfbtpsxo/IpKu1HfUDeWUWS6YieZn4r68x+j2aEpbSGWlO/uxaSf2sk3g
-	 VExXrqYkzICC3Xe+VEmzHc93BYv/yzXAGpmMbGHM9+ZBmB1gx0Ovp3SeW61a5Kn0qA
-	 OK/Kk9/4x2Vp7yjsApHxkdw/W2Esg/bMBSbgyrzqQoIn2RWwktzfbqXfUDOVtUiIui
-	 yIrDDbg/zP7OK+jkSvAmtN1M4ofLmypu8evk6/huXxlxevQrno29XpTcLeiUH+JiFw
-	 NRteEAT0I6Gwg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wrGsR-0000000CGKT-2XG5;
-	Tue, 04 Aug 2026 15:16:23 +0000
-Date: Tue, 04 Aug 2026 16:16:23 +0100
-Message-ID: <86h5l9c3w8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Joey Gouly <joey.gouly@arm.com>
-Cc: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 3/6] KVM: arm64: Consider SCTLR_EL2.M when mapping the L1 VNCR page
-In-Reply-To: <anHHA9Fj3be5ndmB@e143914.arm.com>
-References: <20260801124818.366274-1-maz@kernel.org>
-	<20260801124818.366274-4-maz@kernel.org>
-	<anHHA9Fj3be5ndmB@e143914.arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PDMjDWik"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca97d139d8dso2688262a12.2
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 08:26:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785857217; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gjXwQLAGXZ+y4pzT5AYzZt5T93mkjjDwjZx75Rto5dDh7Pj1zf5AGk+hXj1pVe8xWd
+         mSAXGYOdornHgBqnpB0LkotlXBq/hz5QG1mtK7sjqHVTNy8IVvdRH6XqfBbkevwqZj/S
+         B0sSOc4vuUnAKqg71mVZpydzDqJmaeT2NUi5mxQvHo0vfp8x6/Ijy3u10j+P/z0Npufv
+         V7lMiKsPyp0RfpWzTDocPaMr+B/4YeJ2fViAhBWdhagffMTznvh32ktR7n4FN61HFWAQ
+         uvvu41q/mwANJ25VdyWsqKClRs59IdcbDF4LrlyCcqT7LM7hevb9KeN8BoUKMF+bhUlW
+         jFHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        fh=5aFbzTNjeuq2mGdUjsbJnW7FLOKLzkiXfj8+ytZqmNM=;
+        b=fzeSRareSyOD6AuN2Rq2bdlYd9ot0mr3ISADA0umJa+1oZvuH9jWslJZwTOvedJaKZ
+         eVNm8zbDrCm1DJp/4UkjgiC3h+9sXHm4FZf2JnQ4HQo1Ssl18GH1q4+Zn1Tug7cvf8Dm
+         +hjpIcZW9a3Q8iKyaNh+Ww6B2gZZBJ6dWsBhTbhDzDB8n6CGO8Y5LYlbPw2x9FCCYvrs
+         eFhGizHEH2nyItR36xCPOkQPLx/Z27HODbo4OLX1PV5c0GKflmcszcss1wmkxWhQW63S
+         qdqTPzxX5MDcxlAOc0Y8VENHLfIe8DENH0iDsmgfFg81IVXzHSXKabNEFqwNxg5THik/
+         TrIw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785857217; x=1786462017; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        b=PDMjDWik/eZliY/FKDi+5xK0CCxl9aGVMJT7rvsdFTfk94ev2GSUXzKySURsNCUGcQ
+         ad9QEcobYc9Tk8oHTJsfSF4Sf1xM00VBiDqgA0hEKs+WD9NAbpeKaQHPEX1uDLGJzMmy
+         zpsukHSXtfIL/Vjd//dHPdhMX/9GTxntI7/c07LS+U1+tM9BaeUb+HW++nAfAodUxPrm
+         6wBBX44pj32iewzyH88NQGK9EeFzov1pvvOFoi7hG0RMqN6InR4y7UECqZrs0fEYANqA
+         7xyFOzV7Nvu21gNfQ45z7mfdoFwfaVyl66YDJ3FLb3Ogbcz5PS4t4oho7z2zUULKx+uH
+         /dEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785857217; x=1786462017;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xHMbjbISSQ14Q5mScQWUAkMvgB0AbxoRu++R0znInKM=;
+        b=eXPfeEQY7EHeUPvwdPol8SVHPTsRQLP92L5L2it+1OxyWhWy+tVPMzqKiIrHQvAh3t
+         ROGCAyUtHKUyY/u+3EnaLKYUtLDZLBoJKsothqEcJRITQOtyPtfG3a0EzhZfpJwYAjb6
+         R0KcU3A/tn3u3wmGS64Oa7ApPiFwYvZ8ccVNCku8yWKMT/nusioyjKZi/tqOH7kIQszr
+         wecQWj+bMiJHLwTTqXi/OKuqF9gOSPVp45uQLGQtlHnZhC1hBGl6k2a7oAkmozi38Sfk
+         NL4t+fakGXYfdDr0HCDQp1puuww7RA5hx0C13Qgy+/jVuziO+MTYyMB4V+mXcfbqjrNv
+         7gZg==
+X-Forwarded-Encrypted: i=1; AHgh+RovR8VX7LT5urZS95oUNfb0K4Ct5AERQMfElgxOL/lE9T8E2bekPamY1CrKcU6s9TpSb/w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxeeke0yIU/Ru5r3bYt721Sp0GNtL4Pr8zsolcS1Jc/uKvu5zbr
+	ZX1IpbRo9az3MYGvNznsRzpWyZ8VpyJxL40FWrApXNk07gI4/BEpMzC7sycEthwFAQicmeu++hB
+	Krwl09jcBVIWs0wd0v6uVVfgO+7JZeSTpRwJi6mqA
+X-Gm-Gg: AR+sD13BlNhqpKD6VnG2myjG6LConI5jxyB3K3w1Ye2iAySlA7iCUxPHaQSwl3+cMhe
+	kUtb8S2uVzfM6Bf5a+L1PZoTxDf8rn3+vzb2nuQBLxTq9VzNZdH7xQcdOJ/aX+F8Alujzj+h0Dn
+	svCFOqIEfm0M6EOgC1qv4LmIpSq8Qjksx/oClAFQjBmLBZh66p6iXE/Sq/5r6GEA9+OPIUjZIrs
+	m7p3bmtpZYYRgLV+Tjq3kZA93NqEJEGXpkJmOUaMdPJcQgLflPe/UQrKtUune0cz5ZYWNNYyft7
+	CrqJZVAIcDhij/PwHwitU5l2lmtQzr+MqsVh7X/0WbJD+9AlUwxSsMb5lAXSR/yamfjIjVzjV8F
+	H
+X-Received: by 2002:a05:6a21:10d:b0:3c3:fb32:a004 with SMTP id
+ adf61e73a8af0-3c92a7b762fmr14007551637.34.1785857216492; Tue, 04 Aug 2026
+ 08:26:56 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 4 Aug 2026 08:26:55 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 4 Aug 2026 08:26:55 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-14-35f9aec2aed2@google.com>
+ <4460e252-b6de-4df3-bea8-0368a9d0f4ff@kernel.org> <CAEvNRgEUQSju2tW_1zMk2=QmveZNtmkjjCZdqVBgBD2JPh0k4Q@mail.gmail.com>
+ <a823e3d2-8acf-49d9-a812-ac1bb2136d7f@kernel.org> <edc3566b-370c-41a0-a71d-2e4a0e1a94f7@kernel.org>
+ <CAEvNRgEas_9BEV-cNxXu4_wQx8sR2M4_OaW6DEd4=fszALMV0w@mail.gmail.com>
+ <60552bee-3326-4917-b00f-5fb7ba3b8adb@kernel.org> <be77c2cb-6e41-4382-9d2f-cd299f634196@kernel.org>
+ <anCtzQrUkFSSq8De@google.com> <99037993-ee13-4160-8c87-b6642faea554@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: joey.gouly@arm.com, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, seiden@linux.ibm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, imv4bel@gmail.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Date: Tue, 4 Aug 2026 08:26:55 -0700
+X-Gm-Features: AUfX_mw3K43XW2l_796XUZJmj5MHabkxfpPYa5bbOl_mkX2g5tRDzjfPiVyB1Lg
+Message-ID: <CAEvNRgHYhKACDfx9ZZy4a-TTS4yWzEJt=Jc92=eXxS15LPnTYg@mail.gmail.com>
+Subject: Re: [PATCH v9 14/41] mm: swap: Introduce lru_add_drain_progressive()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, "hughd@google.com" <hughd@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 04 Aug 2026 12:03:31 +0100,
-Joey Gouly <joey.gouly@arm.com> wrote:
-> 
-> Hi Marc,
-> 
-> Two small comments/suggestions.
-> 
-> On Sat, Aug 01, 2026 at 01:48:15PM +0100, Marc Zyngier wrote:
-> > We record a VNCR TLB even when SCTLR_EL2.M is 0 in order to make
-> > our life easier. But this is not something that the architecture
-> > anticipate.
-> > 
-> > As a consequence, a hypervisor is free to set VNCR_EL2 to
-> > some PA when SCTLR_EL2.M==0, use it to run a guest which indirectly
-> > accesses the VNCR page, then eventually set SCTLR_EL2.M==1 with
-> > the same VA. Yes, this is odd, but apparently legal.
-> > 
-> > A common trick in HW is to invalidate the TLBs on SCTLR_ELx.M being
-> > flipped. But doing this is a not a good idea for us (we'd need to
-> > trap SCTLR accesses), and wouldn't scale as we nest deeper.
-> > 
-> > Instead, use the fact that the S1 MMU being off at the point of
-> > translation is cached in our TLB, and simply ignore it if it
-> > doesn't match the current MMU state.
-> 
-> Could you expand/change this a little, something like:
-> 	
-> 	Instead, use the fact that the S1 MMU being off at the point of
-> 	translation is cached in our VNCR TLB, and if it doesn't match
-> 	the current MMU state, leave the VNCR unmapped.
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
+
+> On 8/3/26 17:03, Sean Christopherson wrote:
+>> On Fri, Jul 31, 2026, David Hildenbrand (Arm) wrote:
+>>> I sent a fix for the GUP code that always makes us drain right now:
+>>>
+>>> https://lore.kernel.org/r/20260731-check_and_migrate_movable_folios-v1-1-e0002d7b791e@kernel.org
+>>>
+>>> Would the following (agains mm-unstable + fix) work for you?
+>>>
+>>>
+>>> I assume that you'd have to call it as
+>>>
+>>> 	lru_cache_drain_for_folio(folio, 0, NULL);
+>>>
+>>> But maybe there are indeed extra references that are not reflected in
+>>> folio_expected_ref_count() that you would have to consider? I doubt it, but please check if
+>>> there would be a problem.
+>>>
+>>> There is a small problem for merging:
+>>>
+>>> (1) The patch depends on the fix.
+>>>
+>>> (2) mm/swap.c was moved to mm/folio.c in the mm tree.
+>>>
+>>> We could write what I have below against Linus' tree and have the conflict be
+>>> resolved when merging. Topic branches are unfortunately not yet a thing in MM
+>>> land.
+>>
+>> Are you expecting the aforementioned fix to land in 7.2, 7.3, or 7.4?  If it's
+>
+> Andrew wants to give it some more time in -next, so I'm expecting it to land for 7.3.
+>
+>> 7.2 or 7.3, then I would strongly prefer to base v10 on linux-next (where the fix
+>> will presumably land soonish), and target 7.4 for in-place conversion. Then v10> can be applied against an early 7.3-rcN and we don't need to juggle branches
+>> (assuming Andrew is ok taking the proposed patch through the KVM tree).
+>
+> Agreed. We'd also have to get the actual preparation patch into 7.3. I can send it out
+> and coordinate with Andrew.
 >
 
-Yup, that reads better. Thanks.
+Thank you!
 
-> > 
-> > Fixes: 2a359e072596f ("KVM: arm64: nv: Handle mapping of VNCR_EL2 at EL2")
-> > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  arch/arm64/include/asm/kvm_nested.h | 7 +++++++
-> >  arch/arm64/kvm/at.c                 | 2 --
-> >  arch/arm64/kvm/nested.c             | 3 +++
-> >  3 files changed, 10 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/kvm_nested.h b/arch/arm64/include/asm/kvm_nested.h
-> > index 012d711034d17..cc48817a5bf7a 100644
-> > --- a/arch/arm64/include/asm/kvm_nested.h
-> > +++ b/arch/arm64/include/asm/kvm_nested.h
-> > @@ -388,6 +388,8 @@ struct s1_walk_result {
-> >  	bool	failed;
-> >  };
-> >  
-> > +#define S1_MMU_DISABLED		(-127)
-> > +
-> >  static inline void fail_s1_walk(struct s1_walk_result *wr, u8 fst, bool s1ptw)
-> >  {
-> >  	wr->fst		= fst;
-> > @@ -396,6 +398,11 @@ static inline void fail_s1_walk(struct s1_walk_result *wr, u8 fst, bool s1ptw)
-> >  	wr->failed	= true;
-> >  }
-> >  
-> > +static inline bool s1_mmu_disabled(struct s1_walk_result *wr)
-> > +{
-> > +	return wr->level == S1_MMU_DISABLED;
-> > +}
-> > +
-> >  int __kvm_translate_va(struct kvm_vcpu *vcpu, struct s1_walk_info *wi,
-> >  		       struct s1_walk_result *wr, u64 va);
-> >  int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa,
-> > diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-> > index 640f2dc00a8ba..0926426b87989 100644
-> > --- a/arch/arm64/kvm/at.c
-> > +++ b/arch/arm64/kvm/at.c
-> > @@ -11,8 +11,6 @@
-> >  #include <asm/kvm_mmu.h>
-> >  #include <asm/lsui.h>
-> >  
-> > -#define S1_MMU_DISABLED		(-127)
-> > -
-> >  static int get_ia_size(struct s1_walk_info *wi)
-> >  {
-> >  	return 64 - wi->txsz;
-> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> > index 035cda256e2a5..d7dba02dc84fe 100644
-> > --- a/arch/arm64/kvm/nested.c
-> > +++ b/arch/arm64/kvm/nested.c
-> > @@ -1578,6 +1578,9 @@ static void kvm_map_l1_vncr(struct kvm_vcpu *vcpu)
-> >  	if (!vt->valid)
-> >  		return;
-> >  
-> > +	if (!(vcpu_read_sys_reg(vcpu, SCTLR_EL2) & SCTLR_ELx_M) != s1_mmu_disabled(&vt->wr))
-> > +		return;
-> 
-> A comment here would also be useful for future archaeology (also current
-> reading since the !( .. != ) code is confusing).
-> 
-> Or maybe:
-> 
-> 	bool mmu_disabled_sctlr = vcpu_read_sys_reg(vcpu, SCTLR_EL2) & SCTLR_ELx_M) == 0;
-> 	if (mmu_disabled_sctlr != s1_mmu_disabled(&vt->wr)) 
+When we were discussing this earlier at guest_memfd biweekly, before
+deciding to refactor out a function like lru_cache_drain_for_folio(), we
+did say that the likelihood of actually draining in practice is low,
+especially on a machine with heavy load making allocations all the time.
 
-And maybe using positive logic? I'll see what I can do.
+I think the threads with Xiaoyao have resolved, I can put v10 out
+tomorrow. Would it be okay to go with the following from v8, and then
+clean up later when lru_cache_drain_for_folio() is available?
 
-Thanks,
+I added in David's suggestions to check for dma pinning and mapping
+before draining to trim cases where draining happens in the version
+below:
 
-	M.
+static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+					    size_t nr_pages, pgoff_t *err_index)
+{
+	struct address_space *mapping = inode->i_mapping;
+	const int filemap_get_folios_refcount = 1;
+	pgoff_t last = start + nr_pages - 1;
+	struct folio_batch fbatch;
+	bool lru_drained = false;
+	bool safe = true;
+	pgoff_t next;
+	int i;
 
--- 
-Without deviation from the norm, progress is not possible.
+	folio_batch_init(&fbatch);
+
+	next = start;
+	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+
+		for (i = 0; i < folio_batch_count(&fbatch);) {
+			struct folio *folio = fbatch.folios[i];
+
+			safe = (folio_ref_count(folio) ==
+				folio_nr_pages(folio) +
+				filemap_get_folios_refcount);
+
+			if (safe) {
+				++i;
+			} else if (!lru_drained &&
+				   folio_may_be_lru_cached(folio) &&
+				   !folio_maybe_dma_pinned(folio) &&
+				   !folio_mapped(folio)) {
+				lru_add_drain_all();
+				lru_drained = true;
+			} else {
+				*err_index = max(start, folio->index);
+				break;
+			}
+		}
+
+		folio_batch_release(&fbatch);
+		cond_resched();
+	}
+
+	return safe;
+}
+
+I'm hoping not to push this back by a full cycle to 7.4, and also hold
+back other series dependent on this one.
+
+> --
+> Cheers,
+>
+> David
