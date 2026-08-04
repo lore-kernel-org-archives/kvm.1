@@ -1,91 +1,43 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FBC3EA94A
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FACE2FDC57
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785813780; cv=none; b=SU1It3anfLIfG1Zh32CYMLCDytQoUmEQcdruaQzKvf3wl3A5LerHZXEO7SqZe9wyJXc4DcMMRW7wwWK8Cdj92YCSnK7x/eSm2XmkL/VhDULtOHckQkLGq1h8XIum5fJpxhyLsH+DaW1e0zTMyANGJxuIRlQI9/SlO0iMA/yKtZM=
+	t=1785814472; cv=none; b=X0WSYYO6dqYFSoOjWa0izN2zSuLLeIBRBXlPqrVNYNv3xf67BXa5Ff0/Wvo5ZKtNNOkCIXYXR9/8CCDBCoXIlDIuj4HILJnqIqfzhQtczuEXlpnhff4xs3Ff9/6fCkCTEAB5vxs5THEQibeLhzxl4FnaXdxvodqdzzqCskGow7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785813780; c=relaxed/simple;
-	bh=69QDEITHOpPOWzQ3L59hQQJy9vD1zUTDGKiwsGWVBos=;
+	s=arc-20240116; t=1785814472; c=relaxed/simple;
+	bh=TZzW/PJMPDU1jXSTqByWg76Kcq5EsBAxg6JD2M28RHg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=micQm3LOqsHfl6LuOcefs67ywbXr+NAbKj5dZYPGR9cuHrWcyITinJjAfmZruwf87vYCrsVTrMy8Kzxy05ECZexyI5qzJPyY5KlAPChxq3BBPNHvJJ3+UbsUCRZdO/ShKn1l5+MqNXtjnJVU8LRNq67aEKpdCpdkUXIcbAS/NWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hg+uMTeZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lvBkXxFQ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GloOTOOwjKKcp1YCWuSn0g+EVCVfL5C6a4bSbdzng4JjWmTmEGYFzfrgfcsygDfJrFjIpm+olTj6WL82MjbaoW/9qIRN9m0YS55v1xv9RinYHpvuOvACRIQia1VV7vsr1Lf3IO3uSqMMYlWfbInU8BxdxomWqFAJFtnoUNZ1ZFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CDTpmPiL; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hg+uMTeZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lvBkXxFQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785813777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L3UKhKneDgKdYIrEhObF1uoqht+Qy/GPjJ3FBr2XU/w=;
-	b=hg+uMTeZnX1iUYIW3KLQFrcraEyrN5vDTEzYRkQ9xuzL55mYtOnkVXM6kYvSFjZ/yVApDa
-	Xj2+WVvLJRXmKuG0jdLa9MRlav4WmcuKRJ1VLSRMVaA252v8hf+BTqbJvInWAZYbPnh77j
-	qZi/TnN/YGaWlYFOHKHNnkQtJKKEBeo=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-BE5bpbcWPr2kwYuJj5RDFg-1; Mon, 03 Aug 2026 23:22:56 -0400
-X-MC-Unique: BE5bpbcWPr2kwYuJj5RDFg-1
-X-Mimecast-MFC-AGG-ID: BE5bpbcWPr2kwYuJj5RDFg_1785813775
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c15ceb17a28so331278966b.3
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 20:22:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785813775; x=1786418575; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=L3UKhKneDgKdYIrEhObF1uoqht+Qy/GPjJ3FBr2XU/w=;
-        b=lvBkXxFQWKc6BcIP63br9ltd46RUCCBGpSfSj951lfX23mi5sORCth3c84bLtcN8Mx
-         hhZ5dI1TK0tXYA8EjGNk2AzRNjnQlvBoAD66bFzfYWXLZFddFR3vQ+oEUXvCcPVIngqW
-         e68ZweorhY1noMi6jfR6HxAQ8INNau2KBGsz0enuFWDCXU0EfW3+tPIlJiXUq4adVHVg
-         HAZOqyFRtyuHYJbo/6rG7SH5RiS+fsQHFthqFBdc2sMzqM7UybSfhePUpPzuoTQZ3NmO
-         4dBTxIzTrGhFzUFC6cBqWYof7oYQG+hAtoe+BduZAf7HHZQLOTiznH90vBugoNUETNcU
-         v6xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785813775; x=1786418575;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L3UKhKneDgKdYIrEhObF1uoqht+Qy/GPjJ3FBr2XU/w=;
-        b=HVNwLZrv1ezMu7/j3Fjsszb3r5DBMkZhO8Bgd+mIU/sG4p6NMRYmRZO2ADUuEMlUfz
-         dQ8wAgX/hxxcykrdrJXvoMe5EeeyJIprRxJT12GnALMXCV5x+EECFtisOFtKWnVDkk9x
-         vJzJy0ESqL2N/+s8dDfmytq/f/GEs3oaeipuqAFLe8LLWaemHRuxvnNhPGI8PoEGlBLX
-         3C0+K6A0xHPrNdH10TjQ498iOQB8WoAQMnFhFrLsd24uyANzj4FdGyLhJzJRCjoHHTO9
-         FaI6MIQ8JujfxqnE7gN/IyJp5u3PyB0lu1MnfV1lx0ridaivd5z71gzvy8jp7XltTQ5j
-         3VnQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoKpePpMRUTrWfFBXamXeo92LmS7dmN8JXlZvsQgfsqCzXDAkEKoHgRE8kSKRVyUEk/TJk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSdbHrSE68cVMGhGS5397ewJ4TNrsdVOWMk1CWc0T2N+OnIjGs
-	6eFALCC5458DOfi224fMpViFXVxLKBS9ROd9n/al+wqFLVO+wkLHHB/Xm9GxzFZigJ4nW75F9d2
-	NFZxsd+PvNTK1zDAg1KvMHsyB6nTSTBwqTU8JyGCNUhZYUjqFJbkv0A==
-X-Gm-Gg: AR+sD10xGZuyo/T/S7QiBAQolZWRJQM3uppatGixvojVLQ9BE7EhnnmkJRdVq8gCbBR
-	oAFjLUUhZmRdfxaAkg6ghWXkvK/KoBEHLK5LQXv1umgy0sNVV5g3fcv9SsUWfIgTwibBzqze6dH
-	degYxD0MmMSfiOvMcePRACuH4z7tM5IkCwFeVCJOM4hhS1zjhx5jrrnzO+88FgzF/Tjhwp4uC2+
-	K6Qyqdf4SItN8KEY41BBHprC3SJYB/TCTYwy6Nb/R0qglQ7LFjRo9rQP/5orNlR/mkcXu0qFLrc
-	XeySLg35oK4Fea/jq6rtDPF2XJtpXoAp9Zp+Qjuby07v4oXcppZOH9IlHYl3YPw6fAw+
-X-Received: by 2002:a17:906:6d54:b0:c15:deea:a178 with SMTP id a640c23a62f3a-c1fe80cad0dmr826568066b.25.1785813774969;
-        Mon, 03 Aug 2026 20:22:54 -0700 (PDT)
-X-Received: by 2002:a17:906:6d54:b0:c15:deea:a178 with SMTP id a640c23a62f3a-c1fe80cad0dmr826566666b.25.1785813774501;
-        Mon, 03 Aug 2026 20:22:54 -0700 (PDT)
-Received: from redhat.com ([186.247.166.67])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c5b387sm596422666b.2.2026.08.03.20.22.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 20:22:52 -0700 (PDT)
-Date: Mon, 3 Aug 2026 23:22:50 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: michael.christie@oracle.com, jasowangio@gmail.com, pbonzini@redhat.com,
-	stefanha@redhat.com, eperezma@redhat.com,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [PATCH v2] vhost-scsi: flush backend after device ioctls
-Message-ID: <20260803232144-mutt-send-email-mst@kernel.org>
-References: <20260721073639.1532488-1-physicalmtea@gmail.com>
- <20260724060919.1569170-1-physicalmtea@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CDTpmPiL"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1785814466; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=TTOKzgHuD3KRtjS03wNmLdJVCRW00bEzm0RyWyZwqBI=;
+	b=CDTpmPiLHmKqq3jOZmSIsQHNezWD+IUN9i59bdtI0AAgKPB94yMKIBN6Sd4Gz7xPbMGoCx4CY0quQp4N4JPrHGHFRRvGgLalJib8aC9x6aOa8OpuDqaDIP7dQlXK15G6VPMPMZ9pDTJ4POcRJue7ELyHFmOraYC6R3SLQrjZIXk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X8MUQlp_1785814464;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X8MUQlp_1785814464 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Aug 2026 11:34:25 +0800
+Date: Tue, 4 Aug 2026 11:34:24 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Hyunwoo Kim <imv4bel@gmail.com>
+Subject: Re: [PATCH 5/6] KVM: arm64: Couple VNCR fixmap clearing and CPU
+ number invalidation
+Message-ID: <wlcvwmmsu3ryj3zytcnx5xhmuhjbgofqsaw5o54qwbdwc3n7ca@wj5n4swgeokb>
+References: <20260801124818.366274-1-maz@kernel.org>
+ <20260801124818.366274-6-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,53 +46,59 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260724060919.1569170-1-physicalmtea@gmail.com>
+In-Reply-To: <20260801124818.366274-6-maz@kernel.org>
 
-On Fri, Jul 24, 2026 at 02:09:19PM +0800, Jia Jia wrote:
-> vhost-scsi translates guest response descriptors into userspace iovecs
-> when commands are submitted.  Target-core completes those commands
-> asynchronously, so VHOST_SET_MEM_TABLE can replace the memory table while
-> an in-flight command still retains response iovecs translated through the
-> old table.
-> 
-> If the old mapping is reused after VHOST_SET_MEM_TABLE returns, command
-> completion can write the response to an unrelated userspace object.
-> 
-> Flush the vhost-scsi backend after vhost_dev_ioctl() handles a device
-> ioctl.  This waits for in-flight commands that can still use the old
-> response iovecs before the ioctl returns.
-> 
-> Changes in v2:
-> - Shorten the changelog and remove investigation details.
-
-fyi changelog should go after ---
-
-
-can you pls answer mike's question on v1?
-Also pls do not post v2 as response to v1
-
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+On Sat, Aug 01, 2026 at 01:48:17PM +0800, Marc Zyngier wrote:
+> A mapped VNCR translation must indicate which CPU it is resident.
+> Unmapping such a translation must make this CPU number -1.
+>
+> Couple the unmap and the setting to -1 in a helper, so that we
+> are always sure they are done together.
+>
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
 > ---
->  drivers/vhost/scsi.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 9a1253b9d8c5..c3e8f1a0b2d4 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -2424,10 +2424,11 @@ vhost_scsi_ioctl(struct file *f, unsigned int ioctl, unsigned long arg)
->  	default:
->  		mutex_lock(&vs->dev.mutex);
->  		r = vhost_dev_ioctl(&vs->dev, ioctl, argp);
-> -		/* TODO: flush backend after dev ioctl. */
->  		if (r == -ENOIOCTLCMD)
->  			r = vhost_vring_ioctl(&vs->dev, ioctl, argp);
-> +		else
-> +			vhost_scsi_flush(vs);
->  		mutex_unlock(&vs->dev.mutex);
->  		return r;
+>  arch/arm64/kvm/nested.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 47d61d3cf053c..84915e2cff604 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -894,6 +894,12 @@ void kvm_vcpu_load_hw_mmu(struct kvm_vcpu *vcpu)
 >  	}
 >  }
-> -- 
-> 2.43.0
+>
+> +static void unmap_l1_vncr(struct vncr_tlb *vt)
+> +{
+> +	clear_fixmap(vncr_fixmap(vt->cpu));
+> +	vt->cpu = -1;
+> +}
+> +
+>  static void this_cpu_reset_vncr_fixmap(struct kvm_vcpu *vcpu)
+>  {
+>  	if (!host_data_test_flag(L1_VNCR_MAPPED))
+> @@ -902,8 +908,7 @@ static void this_cpu_reset_vncr_fixmap(struct kvm_vcpu *vcpu)
+>  	BUG_ON(vcpu->arch.vncr_tlb->cpu != smp_processor_id());
+>  	BUG_ON(is_hyp_ctxt(vcpu));
+>
+> -	clear_fixmap(vncr_fixmap(vcpu->arch.vncr_tlb->cpu));
+> -	vcpu->arch.vncr_tlb->cpu = -1;
+> +	unmap_l1_vncr(vcpu->arch.vncr_tlb);
+>  	host_data_clear_flag(L1_VNCR_MAPPED);
+>  }
+>
+> @@ -996,7 +1001,7 @@ static void invalidate_vncr(struct vncr_tlb *vt)
+>  {
+>  	vt->valid = false;
+>  	if (vt->cpu != -1)
+> -		clear_fixmap(vncr_fixmap(vt->cpu));
+> +		unmap_l1_vncr(vt);
 
+Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+
+>  }
+>
+>  static bool vncr_tlb_intersects(struct vncr_tlb *vt, u64 addr,
+> --
+> 2.47.3
+>
