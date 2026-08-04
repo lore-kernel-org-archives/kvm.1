@@ -1,153 +1,148 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082E13F8883
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 02:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E5732B10D
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785812189; cv=none; b=QxnAIEp1lVl51iOnBJ7V2TZ8ojXFRJqeH/sDYHvRrvsdNtHkDvZeu02gBtgyHhUah+eUgFl91Vw475q63Blzl0LaLz1XuylzLFV2WYOHj1FMn9wRxNltCTVUDwNoQgmReLQltqanX+OgkqJgjfptGJd1F0UhR0j/UOdPlgtmpZs=
+	t=1785812762; cv=none; b=D5czN+TRT+d+hyfsed/GlgzW3OUOVkm6LYBWmEphUXEvEUqyy6y0ZQTW/193eoIiFMW3/vRzS5DAfEsSBPQdVGF0hibuxfRtDA50jZW2Va6Qajo4/wldP4086ejVMqvQYqyhG/CYpAFJfaBZA4i4JEZmDBrAhpoNJylXqrGt0oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785812189; c=relaxed/simple;
-	bh=zqrmGtNYwoSSlb1WHgT3h/cWLH0pWZUE4OokQlWtRek=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hC0/wOHI/Bfx6ZPqFOLyQoXdoWsvM1iLMBucS61MSjrnpNZz/Gn1XKCfqNJLCQGnKJxjVNLI8CT51/34fJHZ7GX65aMpbDscvk2EnhXHEJ+KFh9+Cryf28ALCWYNc4F32ScNpU4pV3s2gi33HZLUQbOHaUJ+2/9ojkhj6W0pZlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L7yQpDaG; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785812762; c=relaxed/simple;
+	bh=0qppeNMU+E+tKVsT6n59R1c00FEjAjv7dC71avcU2w8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=NArcWOsTnPj5d3LSCknTM88VenhFeRwWyHIXS5ZKfMU/CEQFilwDXmw5wV8RHyAxktqYyI4VxcQkQ+wu8XFLg3ZoRetJwPBXX2lbeIU19JVIp8egkCPoIYnBZfg0mhoPwuViuR7yFn2MxTvQr5pNeab/u/i1NVYJ06QbNXtaZLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mClekNhy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L7yQpDaG"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-381b831d535so4579969a91.0
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 19:56:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785812187; x=1786416987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z1yxnvuZRVlxtf+BJKMZxwYjNsgm5M4Tjb/ynOLuWlk=;
-        b=L7yQpDaGnaM95Z2wqzD1DbzPkNt69swtGsm/6n3ch9JPzF4qqe/UsgMJMQbnqpc1nh
-         hcGYUyZgk4YbVzghGlIxg00VGx+48vPWp/+c03ZasT46QFT4pRmEaE4jnPz9qAAo71sE
-         Dm/IoJDix2qqSamn70MXZUGU4RngOT2io3oV8CEnRgq+STsMjsuTAQIVIBre/GjZQOhb
-         8lOZOx15CXt9tAby49Ug3r2x5xahMU8/0upRBaQVTdmbDSyxcYBhY3iPfYYFgkcI/6Kz
-         hkHCC3CveF22HtuYV/3qaLgKrDe0fdEG91c32L/npGBP97aipW/Ok3j7CrX/Q+FyD2lQ
-         SOcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785812187; x=1786416987;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z1yxnvuZRVlxtf+BJKMZxwYjNsgm5M4Tjb/ynOLuWlk=;
-        b=bNsxdg44LftQ6Q7Q5w7k8Z5qaLDkbh9n2Pyn+QdZssdRByOTYMnreWYl1iAv8Qrs0e
-         6yecyk/drMt+PRN5GM9GemGzwS+meLFER0tdN2QkBi8AaaK0LGGtbFTm2ZVl76jrNe3b
-         ftxd4ojXHqj6tHuBZqKOlBY8VcEQq2fygWM9u4tBoCpoVFJi7AEz5undObfTZ3fJ78fx
-         syxjTNZgskhWN6JsNEuAl+19Ixnw8wYM+GCEiz3WCcRHrrd8txhxNCdh3smJTJabyGZ1
-         TOo32k9O3SLgRIXL+b/2naVR+IZlSK/K5I4osns/j550ur62ZwxK9cSsKrjDlxV4Wntp
-         SKNA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3bPKMI3X3C0NTcZ2hCT0J372tqIDgGYBga3KxdJMup9zVCn6mWqXcFGMZ/mZLqg/j4r4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaHCBpfCFWhvPxo4rqsI+aHiC+mnIZycOcRo7P9uAVBXgz3pj7
-	9x/4AMHH+kTvAcZ0Q7d0e49YLiawUw4p3768yyroItzOxNEBU8u4Z3kcy3XXz4Edx7O9+uJ1
-X-Gm-Gg: AR+sD12pyKdN1SxMlIXAHpG9gI/5TVnAuCr3zHPSz6Yo7AeZuDqhSbRaY9RtrovaEXC
-	Aw3OlD/FSuHxWtlbRV9Xnac0ruFMZGlqPBHjC/oXcWH+MbQEgP+joQJ0nJcKEagrOOLTj0Ss6hM
-	G1/h2807z+bltBBkDSZvVbEm6JD0qy/143+zuNdZU5zhfNjks12BVSAiKaGzVOf15SmpagTF5hg
-	OCwddRgTz12Oaso0WdL519tqkHdFXYd9+QgM6OV45aOZwu6pQnRghOIcixfSjdEMKq4dNQPeWt7
-	mrZR6t81JOwgnlBs551rm7hrfohCBxyoPPlG94VSE2cepgRJOBgbfh3uxpGSXxw7QBl8PeWUVP8
-	dThqtoWYimeiddl6/aw+kOiwxIHNX82BWf5gIHKZ+lsmPUK/Qc49n3WPaPGFDXX3/Q8BOpOA5jt
-	RJZsRzMjpBFnul/CvfvmQ5oSsKpHmJ6xDG+TCdGIuVvjdjFrTcGgTUYpqp4KNoPOzrYUJnW/km8
-	davBdBUQAEGH/cCsIXWaHp5Xcg=
-X-Received: by 2002:a17:90b:590c:b0:387:e0db:3fb1 with SMTP id 98e67ed59e1d1-38fbc59b1aamr11609901a91.42.1785812187080;
-        Mon, 03 Aug 2026 19:56:27 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae19ef2sm45373175ad.4.2026.08.03.19.56.24
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 03 Aug 2026 19:56:26 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] vhost: reset the vring metadata cache on vring reconfiguration
-Date: Tue,  4 Aug 2026 10:55:29 +0800
-Message-ID: <20260804025621.16580-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260803014823.68623-1-juny24602@gmail.com>
-References: <20260803014823.68623-1-juny24602@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mClekNhy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93461F00A3A;
+	Tue,  4 Aug 2026 03:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785812761;
+	bh=WAZGJ3kKHQJth5YC5wm3va22If7gpHitIhzZb16jRds=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=mClekNhyoJDhanvr+ciBdugR8HUWWiajK0MsnXcr/TwODIoQBi50lxFzSb20A0kCw
+	 6XDeayYKviwbRvm+uqVbTFTSakUuFsMLEzi2CYWfvs3B/71W2EnSkRTZ3d7npEOYV1
+	 xYCMpRNYJ3Auecc29/aS+nFdm9++tSg/bLErtKzBdroJ69De/OIHvIK7qYxGsDrfXB
+	 TxqNsD5nSAEk4m1UIp3ZC5N/LatPa/dM5uGodYu4GIYDvtTA0Vi4AJEDcTXw69Ae5V
+	 NpQgrjZTChCv2zDm9ctkd4W4LdRDwVvvn/UCXJ7m9eFx8lENNP0mIrCdM0f5zyTKMn
+	 9+xLqNORPZJsQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to
+ control VS-mode WFI trapping
+Reply-To: sashiko-reviews@lists.linux.dev
+To: Yuhang.Chen <yhchen312@gmail.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260804024707.2400404-1-yhchen312@gmail.com>
+References: <20260804024707.2400404-1-yhchen312@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 04 Aug 2026 03:06:00 +0000
+Message-Id: <20260804030600.C93461F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The dynamic WFI trap policy check is performed only in `kvm_arch_v=
+cpu_load()`, leading to a TOCTOU race that causes CPU starvation for newly =
+awakened tasks.
+- [Low] Using `early_param` in a tristate KVM module breaks the build when =
+KVM is compiled as a loadable module (`CONFIG_KVM=3Dm`).
+--
 
-vq->meta_iotlb[] caches the vhost_iotlb_map that backs each vring
-metadata region, and iotlb_access_ok() returns early on a cache hit,
-taking the hit as proof that the region has already been validated:
+--- Patch [1]: [PATCH v2] RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to con=
+trol VS-mode WFI trapping ---
+commit 74512223938eb34f8681ae4dfb342e0d3e2fc417
+Author: Yuhang.Chen <yhchen312@gmail.com>
+Subject: RISC-V: KVM: Add kvm-riscv.wfi_trap_policy to control VS-mode WFI =
+trapping
 
-	if (vhost_vq_meta_fetch(vq, addr, len, type))
-		return true;
+This patch adds a kernel command-line option to control whether a WFI
+executed by a VS-mode guest traps into KVM or executes natively. The
+policy can be 'trap' or 'auto', with 'auto' dynamically allowing native
+WFI only when the vCPU is the sole runnable task.
 
-The cache is reset on VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE, on
-device IOTLB (re)initialisation and on vq reset, but not when
-VHOST_SET_VRING_ADDR replaces vq->desc, vq->avail and vq->used, nor when
-VHOST_SET_VRING_NUM changes the region sizes.
+> diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+> index 977e36ab83d3f..9a4a7d0729d37 100644
+> --- a/arch/riscv/kvm/vcpu.c
+> +++ b/arch/riscv/kvm/vcpu.c
+> @@ -26,6 +28,59 @@
+> =20
+>  static DEFINE_PER_CPU(struct kvm_vcpu *, kvm_former_vcpu);
+> =20
+> +/*
+> + * WFI trap policy for VS-mode guests, controllable through the
+> + * kvm-riscv.wfi_trap_policy=3D kernel command-line option.
+> + */
 
-With a device IOTLB attached both ioctls are accepted while the vq is
-live, and neither validates the addresses at ioctl time: vq_access_ok()
-and vq_log_used_access_ok() return true early because the addresses are
-GIOVAs, deferring validation to prefetch time.  Once the cache has been
-populated that deferred validation no longer runs -- vq_meta_prefetch()
-hits the stale entry and returns true -- and vhost_vq_meta_fetch() keeps
-translating through the old mapping as
+[ ... ]
 
-	map->addr + addr - map->start
+> +static int __init early_kvm_riscv_wfi_trap_policy_cfg(char *arg)
+> +{
+> +	if (!arg)
+> +		return -EINVAL;
+> +
+> +	if (strcmp(arg, "trap") =3D=3D 0) {
+> +		kvm_riscv_wfi_trap_policy =3D KVM_RISCV_WFI_TRAP;
+> +		return 0;
+> +	}
+> +
+> +	if (strcmp(arg, "auto") =3D=3D 0) {
+> +		kvm_riscv_wfi_trap_policy =3D KVM_RISCV_WFI_AUTO;
+> +		return 0;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +early_param("kvm-riscv.wfi_trap_policy", early_kvm_riscv_wfi_trap_policy=
+_cfg);
 
-for an address the mapping no longer covers.  vhost_copy_to_user() and
-vhost_copy_from_user() consume the result with __copy_to_user() and
-__copy_from_user(), which do not check it either, so a subsequent used
-ring update or descriptor fetch accesses memory outside the region the
-IOTLB actually maps.
+[Severity: Low]
+Does using early_param() break the build when KVM is compiled as a loadable
+module (CONFIG_KVM=3Dm)?
 
-Reset the metadata cache whenever the vring is reconfigured, so the new
-addresses are pushed back through iotlb_access_ok()'s slow path.
+The early_param macro defined in include/linux/init.h is strictly wrapped in
+an #ifndef MODULE block, leaving it undefined for loadable modules.
 
-Fixes: f88949138058 ("vhost: introduce O(1) vq metadata cache")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:kimi-k3
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
----
-v2: add Assisted-by and Acked-by tags
+Since early_kvm_riscv_wfi_trap_policy_cfg() relies on this macro, would
+compiling with CONFIG_KVM=3Dm result in implicit declaration or undefined m=
+acro
+errors?
 
- drivers/vhost/vhost.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+[ ... ]
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 4c525b3e16ea..77c96993100b 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2126,6 +2126,14 @@ static long vhost_vring_set_num_addr(struct vhost_dev *d,
- 		BUG();
- 	}
- 
-+	/*
-+	 * The metadata cache holds the IOTLB mapping that backed the previous
-+	 * desc/avail/used addresses and vring size, both of which are being
-+	 * replaced here.  iotlb_access_ok() takes a cache hit as proof that the
-+	 * region was validated, so the stale entries have to go.
-+	 */
-+	__vhost_vq_meta_reset(vq);
-+
- 	mutex_unlock(&vq->mutex);
- 
- 	return r;
--- 
-2.50.1 (Apple Git-155)
+> @@ -637,6 +693,9 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cp=
+u)
+> =20
+>  	kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
+> =20
+> +	/* Re-evaluate the WFI trap policy for this vCPU. */
+> +	kvm_riscv_vcpu_update_wfi_trap(vcpu);
+> +
+>  	vcpu->cpu =3D cpu;
+>  }
 
+[Severity: High]
+Is there a time-of-check to time-of-use race here that could cause CPU
+starvation for newly awakened tasks?
+
+The policy is evaluated in kvm_arch_vcpu_load(), which clears HSTATUS.VTW
+when the vCPU is the sole runnable task.
+
+If an interrupt wakes another task on the same CPU while the vCPU is in the
+guest, but preemption is not immediately forced (e.g., the vCPU still has C=
+FS
+timeslice remaining), KVM handles the exit and re-enters the guest loop in
+kvm_arch_vcpu_ioctl_run() without calling kvm_arch_vcpu_load().
+
+Could the guest then execute WFI natively because HSTATUS.VTW remains stale
+and cleared, halting the physical CPU and starving the newly woken task unt=
+il
+the next hardware interrupt?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804024707.2400=
+404-1-yhchen312@gmail.com?part=3D1
