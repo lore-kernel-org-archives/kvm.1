@@ -1,207 +1,206 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011035.outbound.protection.outlook.com [52.101.57.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D51943CECD;
-	Tue,  4 Aug 2026 23:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785887551; cv=none; b=KocrhkW6WGIqqNzTPu2221Kq8qNZI1Anj6c5W4eD8iKsBtAHxYlgVGER3xtGgLz66NRSOJXkr7KnTZBP+CwLcghcAbcKmG2hrXRud+lGviyAM8q4GMUwu3/HSuIJDN9I1W8mjfPxnd3hdBIuHcl1RdwLpx/YPv0otvpDpGAsHUA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785887551; c=relaxed/simple;
-	bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ScM/2KtREOsAOSkupasiFzUjJUQOHmLN8C93NqtgaQaZhnj4JPsRpOKDCz6spoEBAcgydyL02/wNqdaQP87yCDzCwXh06S7by+lXKZFHHPp4n/xqrLQdhRARRX21SA9TwGCiBG3XHwrSBt3sX9BUdu/MFVu2r3WhX7vUCr+Z+a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NQlPYsV2; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F20B45041E;
+	Tue,  4 Aug 2026 23:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785887796; cv=fail; b=AaomrlVOCghMlPQGwuDBzzk1MAXeMxesVDP4Y2tno81sfwzS/EPeIwv96UWnmYMSW/xWmCMSGLJeZOz2FeNWc6xYSye6zOj2r3IsHDB62reGi6hxaaA4gMBCqruCkqkBMOJMPZlIP7vZn/JDtXvTIXLPBFOPS0EDBdfhh8CeWhE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785887796; c=relaxed/simple;
+	bh=zsNO+0biTdVSkJLJacyuKkb7WgORQMJ2tuMUFuENKjo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qcj+EWASgTijNcGRH0w620Gtl7qHB83tObGsLjK9ByMoZ1EkwBG2dEGM/zOs9IZXysTRYsP9veU1MwvGXQ7Vo3Qz9zCRfGgoeWX8z3n0oOLx8NHFDri9rBdAO9qxsLLLwXfmjYpD3NXytKn9VWdnypsMBioHn0jYVtkvRWTJ2GA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RebieEkl; arc=fail smtp.client-ip=52.101.57.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NQlPYsV2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785887549; x=1817423549;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gBCQYuhZpbYN+w/FR6gAmqPmV2XpftJjUeBmB+rIDU0=;
-  b=NQlPYsV2hBeKGR3keR7C0wEpyktpzXtea+IisJCVyhs/2CO2fmRtMhXJ
-   iWrt12YQI9GxHwCg+AAR0Mz1izoUw5aToyFgMbrDXbZlpVg3OAAtglaam
-   1Pc2PVKS/MIwZBVeAuevWIxeKL51tzn6y0mxVBRkeOOrCaAqMNjIJ96gj
-   NUlslAAQhg46kONRWMpOV/PimaQnd0P1/nyiaYD61Nu5DAH4kbkKi8p8I
-   jI4TjykERMuqo2xuBWclWEGJtqS6u+Kli6KDeUd1PJPdC66KiA8xmWK6z
-   BEuOUQRZ+SCG5cLn3kLQZyA3rmdyL0eNHR21S8+CQgwYtLkCliWYOFkPa
-   A==;
-X-CSE-ConnectionGUID: MRGVD7ajTpiZvEoPZ3QQQw==
-X-CSE-MsgGUID: qZOC97qRR5ystIY7195omA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86482469"
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="86482469"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
-X-CSE-ConnectionGUID: Z2B8i/oKR1an4l+HwdwzOw==
-X-CSE-MsgGUID: 1ke4eZpMS2aDAJii3ZPlGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="260380773"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.109.19]) ([10.125.109.19])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 16:52:28 -0700
-Message-ID: <7ecd59df-1bae-487d-a7e4-bf7bc0c45615@intel.com>
-Date: Tue, 4 Aug 2026 16:52:26 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RebieEkl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p2wxZP+bztsH4VmJdq40HDE3KyCVpvTCQrdPLZZU6XwyXo8lbtfU7MgNZbF11OYJlWRkWdGSdHuqTKw1/9b690lt6cQLautoj2bwUIFSfnacmKlwjiQqp+xQViH94Nf3+6DlvTGQvUyF7MZ//9RRnjU9YJsI8WndX6EKm6+UVLSRpq9vT6MYm1m3kTWTeya4OScdHhDItcoXCOsADx3LLc30vq3EG/hqRutoo4qetrjA0ajBgszOIe1PwqvlrRWTcazsawigjNzdOTjoNptajxigSrsBOLHL9GlrQrVKiWAe0cF0TFDSMHBCmmBc+ByVVxb2nzoxrugU59MEiOkYgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AXBT2A5GbFbIqa2Y1X+uBuSnjzTt6DpEG45WQ68Weco=;
+ b=Oco69vVly8ek3W2R3LRTeomWvAR3AFbcIoAgl/VljJis8EIcMXPfm8xkJ8Xa87Nb8jE39dCkCjBmBzmUUX7yPT4VygeakXccYU/M3lA7gFktWG483SCd5j4l9gEgoNThVGZNoTBdgyate+ZMmE/wNZAEhXy7WwNHq5ODopLorGejo/sXpFTUDmfFZQOuEGDOQyDUJGWeqnJn4BM/4uxNuF3+JXSrJAc2x84hi0WNmiXI6dUC7l8uiNiC9FSkxlydiqvomkWaKhJFeESwr9RInq+y8LM+8DZjVN1jTALzQP1jC0BDYHhyRjmARa/02pEm+Oo3bGpurUcVf1AomNSA6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AXBT2A5GbFbIqa2Y1X+uBuSnjzTt6DpEG45WQ68Weco=;
+ b=RebieEklApCirRJ1J2bVXp1dnLPINtpQu7EQ2dsOSmB4hzuyvfBycUrspCeumROZsIgp4aKvb5oPwMTz2Kx+0wdFQowAOlJBxVd+Ly0XOS7YNcCqnrHYU4b8wMWmRO9fylSEw2JF6TyIiWs20qKbfD6eFPBcZ568XSMwZ2LWaDw=
+Received: from MN2PR11CA0001.namprd11.prod.outlook.com (2603:10b6:208:23b::6)
+ by DS7PR12MB8322.namprd12.prod.outlook.com (2603:10b6:8:ed::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Tue, 4 Aug
+ 2026 23:56:27 +0000
+Received: from BL6PEPF00020E64.namprd04.prod.outlook.com
+ (2603:10b6:208:23b:cafe::69) by MN2PR11CA0001.outlook.office365.com
+ (2603:10b6:208:23b::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Tue, 4
+ Aug 2026 23:56:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00020E64.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 23:56:27 +0000
+Received: from dryer.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 4 Aug
+ 2026 18:56:26 -0500
+From: Kim Phillips <kim.phillips@amd.com>
+To: <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <x86@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+	<pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, "Nikunj A
+ Dadhania" <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Michael
+ Roth" <michael.roth@amd.com>, Borislav Petkov <borislav.petkov@amd.com>,
+	Borislav Petkov <bp@alien8.de>, Naveen Rao <naveen.rao@amd.com>, David Kaplan
+	<david.kaplan@amd.com>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>, Kim Phillips
+	<kim.phillips@amd.com>
+Subject: [PATCH v4 00/10] KVM: SEV: Add support for IBPB-on-Entry and BTB Isolation
+Date: Tue, 4 Aug 2026 18:56:01 -0500
+Message-ID: <20260804235611.4053375-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/8] x86/virt/tdx: Name the TDX module global metadata
- field IDs
-To: Chao Gao <chao.gao@intel.com>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, kvm@vger.kernel.org
-Cc: rick.p.edgecombe@intel.com, kas@kernel.org, dave.hansen@linux.intel.com
-References: <20260804112941.19894-1-chao.gao@intel.com>
- <20260804112941.19894-3-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260804112941.19894-3-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00020E64:EE_|DS7PR12MB8322:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21a1c858-768a-4e81-9783-08def283ff7c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|376014|1800799024|82310400026|6133799003|10067099003|11063799006|56012099006|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	AX14Axiz0cX6Nsy2X2yAsq/NkgXSL6gSW2s8zlYeli19c0js/mRfaevUDIxxOEteonqthrAkQloCqmPzj+IDIUiOwm6Q6rR1zkxT2NARgtg2Id5B90QCA7KEAogbzKqQ8TxD6tdg0d29PlbeIL6vMDrJ1+IquRTAqTsxDxtCK+uldTnhox6dZASJSUrBVXNd6XLzWVYO0pM9e0dCPAM17Os0pwXy4ZMBB8QlfNFmaOVP4ZOMcdaq6DSTg6wacIGGVlsOuMEtlDonEBBtvoharyMwE5ZzSlAeo5hBTtZsMDsC+wOK37vjbsTcN958/b+jPVNylxhWicK9ZVgB1SM9yaKU+5cRn7NJa1jRR+Ipz1kqHXnB+AbmfeM8inw4RPOmkLMbm7Y8smaQdU8QCap2dDrcDbetsytMakqAiLCuCP3BXMin891NrAtldNyPm/J7bGVUMhL3PgXz7n7NloqJ0GG4deH0OMMKH1NgIVmzM13ZPvzU4h9h6FrsE0pyY1sWaiaNNGXSyh2YoTBQDaFw0cpj02zeO5uuXfcMtU6PN9OpW2EPCUHbEiQLqSQ+0G3hZzRFierhBHKsQR5Klmzu0Z72EVOOT5AF9GV4pPTe4+mUSA0gb6W4Ii45PsZDkOpAkLOS+s3X3pVDWUrGH4rpMJsj74I7shs+mysLujAdp6A18nCnYRWzCz0oG+br9ShV/1l43naTYlUjVmStgFPPBA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(1800799024)(82310400026)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Tf1bnXvL0VLt7PKNgY74qY9jyzRBnZH45ZUJ1c6YbDxTXlM2Y00TdudaxOXbiMKWFUMw8LKqkM/kO4KG87zGIHqEMLuWqduMOeggkUtOvEoCOiHDreurwhRU1xHWkeykw9w2AqGNNR7xvp6XTZPyUpfj1WL95TCw2R4fsAn012iQvUzSEuhzUeYj+0an/wxLbmlZSlVApv1Ho1XDk3fQ1Hs+351zha4/L06QoU+76Fa1NjRwG1v5RG4iS4lZUmr+xvSj+jfzoVqJdWF4mRBClN3M4aThYHb7lblF4gU59guXufGW1w27XhLJGBIk9y2zmRodXDKuOwWJMnfqPnHaZLmTiV4kUwDzrvIIWQDIurSnv6J0RtP1uJWYukKDYGvrzajAhVjYx9xrS1y3p+IP0bp2DzNl0LtmfO/hgrIATm6as4lGGOqlHrcB/qU2oBHU
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 23:56:27.3741
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21a1c858-768a-4e81-9783-08def283ff7c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00020E64.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8322
 
-On 8/4/26 04:29, Chao Gao wrote:
-> From: Dave Hansen <dave@sr71.net>
-> 
-> tdx_global_metadata.c currently identifies each field by a bare 64-bit hex
-> literal, extracted from the JSON file by an out-of-tree script:
-> 
-> 	if (!ret && !(ret = read_sys_metadata_field(0x9100000100000008, &val)))
-> 		sysinfo_tdmr->max_tdmrs = val;
-> 
-> That is unreviewable on its own. Verifying any one line requires the
-> reviewer to cross-reference the JSON file.
+IBPB-on-Entry and BTB Isolation are supplemental Spectre V2 mitigations
+available to SNP guests.
 
-I'm looking at "global_metadata.pdf" from this[1]. I see a line with
-"MAX_TDMRS" and "0x9100000100000008". That matches the lines above. That
-seems *FAR* from unreviewable. There's also no JSON in sight.
+Patch 1 fixes a misleading no-spectre-v2-mitigation error when the kernel isn't
+compiled with retpolines, but a user can still select AutoIBRS, for example.
 
-What am I missing?
+Patch 2 fixes a longstanding bug where users weren't able
+to force Automatic IBRS on SNP enabled machines using spectre_v2=eibrs.
 
-Listen, I don't like how this turned out. I'm asking for it to be
-changed. But let's not justify it with things that just aren't true.
+Patch 3 allows AutoIBRS to be used on a kernel compiled without retpolines.
 
-> The hex literals in tdx_global_metadata.c are left alone because that file
-> will be replaced by a table-driven reader in the following patches.
+Patch 4 fixes another longstanding bug where users couldn't
+select legacy / toggling SPEC_CTRL[IBRS] on AMD systems.  Users of
+the BTB Isolation feature may use IBRS to mitigate possible
+performance degradation caused by BTB Isolation.
 
-This part of the changelog is good.
+Patches 5, 6, 7 and 8 deal with code refactoring as a result of
+Sean's review of the v2 IBPB-on-Entry series: an SNP-only feature
+mask.
 
-> No functional change intended.
+Patch 9 adds support for IBPB-on-Entry.
 
-This is a bit much. :)
+Patch 10 adds support for BTB Isolation.
 
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-> index bdfd0e1e337a..5f567cb6c07a 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.h
-> +++ b/arch/x86/virt/vmx/tdx/tdx.h
-> @@ -58,6 +58,57 @@
->   */
->  #define TDX_VERSION_SHIFT		16
->  
-> +/*
-> + * Global Scope Metadata field IDs.
-> + *
-> + * See "Global-Scope (TDX Module) Metadata" in the Intel TDX Module ABI
-> + * spec.
-> + *
-> + * A field ID is a 64-bit value that encodes the metadata "Class"
-> + * (which Linux mirrors in 'struct tdx_sys_info' sub-structures),
-> + * the element size, and a per-class field index. Each ID below
-> + * is paired with the C member that holds its value.
-> + */
+Based on tip/master (currently fd0ece3c0826):
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
 
-This is a bit verbose for my taste.
+This v4 series now also available here:
 
-> +/* Class "TDX Module Version" */
-> +#define MD_FIELD_ID_MINOR_VERSION		0x0800000100000003ULL
-> +#define MD_FIELD_ID_MAJOR_VERSION		0x0800000100000004ULL
-> +#define MD_FIELD_ID_UPDATE_VERSION		0x0800000100000005ULL
-> +
-> +/* Class "TDX Features" */
-> +#define MD_FIELD_ID_TDX_FEATURES0		0x0A00000300000008ULL
-> +
-> +/* Class "TDMR Info" */
-> +#define MD_FIELD_ID_MAX_TDMRS			0x9100000100000008ULL
-> +#define MD_FIELD_ID_MAX_RESERVED_PER_TDMR	0x9100000100000009ULL
-> +#define MD_FIELD_ID_PAMT_4K_ENTRY_SIZE		0x9100000100000010ULL
-> +#define MD_FIELD_ID_PAMT_2M_ENTRY_SIZE		0x9100000100000011ULL
-> +#define MD_FIELD_ID_PAMT_1G_ENTRY_SIZE		0x9100000100000012ULL
-> +
-> +/* Class "TD Control Structures" */
-> +#define MD_FIELD_ID_TDR_BASE_SIZE		0x9800000100000000ULL
-> +#define MD_FIELD_ID_TDCS_BASE_SIZE		0x9800000100000100ULL
-> +#define MD_FIELD_ID_TDVPS_BASE_SIZE		0x9800000100000200ULL
-> +
-> +/* Class "TD Configuration" */
-> +#define MD_FIELD_ID_ATTRIBUTES_FIXED0		0x1900000300000000ULL
-> +#define MD_FIELD_ID_ATTRIBUTES_FIXED1		0x1900000300000001ULL
-> +#define MD_FIELD_ID_XFAM_FIXED0			0x1900000300000002ULL
-> +#define MD_FIELD_ID_XFAM_FIXED1			0x1900000300000003ULL
-> +#define MD_FIELD_ID_NUM_CPUID_CONFIG		0x9900000100000004ULL
-> +#define MD_FIELD_ID_MAX_VCPUS_PER_TD		0x9900000100000008ULL
-> +
-> +/* Class "TDX Module Handoff" */
-> +#define MD_FIELD_ID_MODULE_HV			0x8900000100000000ULL
+https://github.com/AMDESE/linux/tree/btb-isol-latest
 
-These are fine on their own.
+Advance qemu bits (to add feature on/off switches) available here:
 
-> +/*
-> + * Base IDs for the configurable-CPUID arrays.  The field ID of leaf
-> + * index @i is BASE + i; for the values array, sub-entry @j of index
-> + * @i is BASE + i*2 + j.
-> + */
-> +#define MD_FIELD_ID_CPUID_CONFIG_LEAVES		0x9900000300000400ULL
-> +#define MD_FIELD_ID_CPUID_CONFIG_VALUES		0x9900000300000500ULL
+https://github.com/AMDESE/qemu/tree/btb-isol-latest
 
-This is complete jibberish without more context.
+Qemu bits will be posted upstream once kernel bits are merged.
+They depend on Naveen Rao's "target/i386: SEV: Add support for
+enabling VMSA SEV features":
 
-1,
-https://www.intel.com/content/www/us/en/content-details/865803/abi-definitions-for-intel-tdx.html
+https://lore.kernel.org/qemu-devel/cover.1761648149.git.naveen@kernel.org/
+
+v4:
+   - Ran Sashiko in a loop until all(?) its comments were addressed (Boris)
+
+v3:
+   - https://lore.kernel.org/kvm/20260402202558.195005-1-kim.phillips@amd.com/
+   - Merged IBPB-on-Entry and BTB Isolation into single patchseries
+   - Addressed comments from Sean Christopherson, Pawan Gupta, kernel test robot
+   - Simplified unnecessarily complicated logic in spectre_v2=eibrs-with-SNP fix
+   - Reworded, rebased features on top of new SNP_ONLY_MASK etc. changes
+
+v2:
+[IBPB-on-Entry]
+     - https://lore.kernel.org/kvm/20260203222405.4065706-1-kim.phillips@amd.com/
+     - Change first patch's title (Nikunj)
+     - Add reviews-by (Nikunj, Tom)
+     - Change second patch's description to more generally explain what the patch does (Boris)
+     - Add new, third patch renaming SNP_FEATURES_PRESENT->SNP_FEATURES_IMPL
+[BTB Isolation]
+     - https://lore.kernel.org/kvm/20260311130611.2201214-1-kim.phillips@amd.com/
+     - Patch 1/3:
+       - Address Dave Hansen's comment to adhere to using the IBRS_ENHANCED
+         Intel feature flag also for AutoIBRS.
+
+v1:
+[IBPB-on-Entry] https://lore.kernel.org/kvm/20260126224205.1442196-1-kim.phillips@amd.com/
+[BTB Isolation] https://lore.kernel.org/kvm/20260224180157.725159-1-kim.phillips@amd.com/
+
+Kim Phillips (10):
+  x86/bugs: Only log missing retpoline when it's actually the missing
+    mitigation
+  cpu/bugs: Allow forcing Automatic IBRS with SNP active using
+    spectre_v2=eibrs
+  cpu/bugs: Fall back to AutoIBRS when retpoline unavailable on SNP CPUs
+  cpu/bugs: Allow spectre_v2=ibrs on x86 vendors other than Intel
+  KVM: SEV: Define SVM_SEV_FEAT_* flags using BIT_ULL()
+  KVM: selftests: sev_init2: Use BIT_ULL for VMSA feature bit definition
+  KVM: SEV: Disallow setting SNP-only features for non-SNP guests via a
+    single mask
+  KVM: SEV: Advertise SVM_SEV_FEAT_SNP_ACTIVE
+  KVM: SEV: Add support for IBPB-on-Entry
+  KVM: SEV: Add support for SNP BTB Isolation
+
+ arch/x86/Kconfig                              |  7 +-
+ arch/x86/include/asm/cpufeatures.h            |  1 +
+ arch/x86/include/asm/svm.h                    | 17 +++--
+ arch/x86/kernel/cpu/bugs.c                    | 71 ++++++++++++++-----
+ arch/x86/kernel/cpu/common.c                  |  6 +-
+ arch/x86/kvm/svm/sev.c                        | 18 ++++-
+ tools/arch/x86/include/asm/cpufeatures.h      |  1 +
+ .../selftests/kvm/x86/sev_init2_tests.c       | 20 ++++--
+ 8 files changed, 103 insertions(+), 38 deletions(-)
+
+
+base-commit: fd0ece3c082632334ded22076932b302a048c7de
+-- 
+2.43.0
+
