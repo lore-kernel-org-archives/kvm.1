@@ -1,66 +1,67 @@
 Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621F537269A
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 00:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976ED32B10D
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 01:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785804829; cv=none; b=dCx2Q1OrbTsGMYo+3rcBT/17kEae/Xk9zmttYQgqXWJRy0NmljKxQVin7rDcZXiIOZTYpubkAn5fOdBYQK7w5FcdnAwdDhttIWmBBgROixoPHCMhAlMcxF5lgrlSUYJQarBgOMfR0IZgWQIm0f5HVSvb/NjezBioyEN0v8Iyz6A=
+	t=1785806771; cv=none; b=Hqy6flTfbP5xf1EfhEe39ahO5nbgHIZvxNCu6vgSB7sxsfhjowtrxqtgAVDukUvIzuQXY1S5LXSJc7hMZfaPL9hAEl+MHv5wBW2V+OYYKbYupdhtiGoQt0o1iS3TgiRWgp6ZeWtztABXvdZw9kYwbrYAq19KFh7Oa/f9iOwqjjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785804829; c=relaxed/simple;
-	bh=8J9B23WsicaadDjqSUzKsTyHJmyroFDR6rynfnEEbhk=;
+	s=arc-20240116; t=1785806771; c=relaxed/simple;
+	bh=nICit+zLW5iyDklSWiuJ61NRR3/cUwfTHj7REBJ6s7g=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RAKHJRmXQkkKR5Sn6zn60HU6GiRpwUC2yAIgJDK5X7SYkpfSYJ3R3NgehVvLqETk0WBXwrkmVBZdPSUt6JDph38X02y1wsAf4CBMAJqqV5gR8itCyeG86EM0MPMX/xeODGnTxIvNfW6AsW4ZQiKYLuo7SwztBNSSDByctU6qQgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EZjzp4DA; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=saHk+lSRViQRESj5Q8vbUESykO9Gc2jZBdpSHiz+eCRUZ1b3fyncJ9GT7UtmCfIaVIiOFhwDrYhI12gboEyYf8oRchxHRkmN5lVr88mnxLZ/2LhcGcEufKb8byTFXh0fYa/qr9B1qDsPmXK1q7r/KEbye37t+Y+k8K9fghrndtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dkOIDWyD; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EZjzp4DA"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb835525b13so4991542a12.1
-        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 17:53:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dkOIDWyD"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c89704da8c7so6245256a12.0
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 18:26:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785804828; x=1786409628; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785806769; x=1786411569; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KFqZcLCrY5f3+v3uGjD/c1GxsX1WczytwYYei8eRc4I=;
-        b=EZjzp4DAIhEio1y+iLW00DfS70zI/4N3d9rMd0pGjhkVnL7LA9MLwIruY1MIadknjD
-         8NlEIYeSg7WmKMS9+4my8QUuaIXgfalnxczGo/vD/UjChRkezbzkvH8T/WQyVsna8laS
-         R9V3XVROgm94vwhUlPRdiiRrudXAiJll0E8oW94/nSIc1TnTUOmhNUmZK+vYFvFf3Cvq
-         FzPF7ECnE28eawIjqz9hmm6l3IA6PDA2cdjsdFRBHpCqwVJq1LtR2wmeoLFleLoCx9cy
-         S5xGuD76Hb6O3yblV81H11NfCn+FDvnncnll+jOr0p6mCMwZc42rkx9pvMYv/CRFcQj2
-         YXqw==
+        bh=6RexsWdhj3mVsIfZtSBkyTeZ2lUaorlH2urK3kzEKiI=;
+        b=dkOIDWyDxV+dhaHA7NE32Q+RPqQqZoDi+rLQNRJm3zT0T2FNkNlZ9O3POZ0lKP6vYI
+         SS+n8Kmy7v5TXBQ6/Nke7/mKjlt7wYF9ZgjeZzsjCIp4D+cTAUE0aj03ToPmBAiaYRYo
+         bc6re662/+Q5gAaosgpk3IFJad95oTRDurbv8yYDYqUFHgDFdhrHF1PMpN4GF7kcNwhM
+         sWHiugv7CT92w50USoMCJpIhVgXRiiU5RTp85jbWCTgUNrzhThstVhPuEycfuzzK8B0/
+         lWUOqbUZha9bQqGu5e8Jir/dNjSq8M8zbWKZnnpdfdiWmcSql0eHeGIWKh0MjwvaEzdS
+         Mx3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785804828; x=1786409628;
+        d=1e100.net; s=20251104; t=1785806769; x=1786411569;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KFqZcLCrY5f3+v3uGjD/c1GxsX1WczytwYYei8eRc4I=;
-        b=Y1Hw/8kX4Yr1AAZ/moJJuYi3aunilKbB07N5R5kYENzSXzYpmX8I7/+oZo9O3MKO0W
-         8DsksNiUuvBWVMdLRfVmEyKOmd8dQ6prnARDLplMHekDTaAjgQiWtItp4Wq23GGbH+Id
-         vXIaeOqTmEIN+IWcwa5zNJEQxkOZ+G4XaYFFcx9vQJKiwBoNFL7NMsazuNuReWVOd9LI
-         dZsiK1oYDeGIaAzXNHwxyTt1CiatxVL2zJxuZ8gwgVubXeMnmOwwcfe4HhNMaS6HQLAK
-         sWy15o22duafz76ohv4dSh2zqhzw1lu6fSt8YS1FmEHCzE2o9Ra4fLSgcEYJvnMxcbmP
-         Y1aw==
-X-Forwarded-Encrypted: i=1; AHgh+RqiPIr9gnwyb2Kv22BGc2FHxypqrvpIaOD84R9WG2BRRruTc42vUhofzpDzrn8wBRfEqYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4SyICREFeHzlPdstCPnCFW7+6uPYNYAqUuLwU1LlPb9WfDr3F
-	ZFIR7bwOuOLddUGq2yCOf0sH5WDkMYQkfu5WXU0lbtBN2FyQwuLTbQbUGv7ZrUXW0JZph2laT/R
-	WGmUjUQ==
-X-Received: from pgke23.prod.google.com ([2002:a63:f557:0:b0:c85:98b1:c613])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3397:b0:3c3:a140:9392
- with SMTP id adf61e73a8af0-3c92a28f176mr12976405637.0.1785804827335; Mon, 03
- Aug 2026 17:53:47 -0700 (PDT)
-Date: Mon, 3 Aug 2026 17:53:46 -0700
-In-Reply-To: <8b90851f38ef5b10cdcdc70e7543bd6b0b5e2773.camel@infradead.org>
+        bh=6RexsWdhj3mVsIfZtSBkyTeZ2lUaorlH2urK3kzEKiI=;
+        b=a1m0nvtkKuqnT2SPG4kEaK9u2svQ/b3vonkgznD4YT0YowysubhQumwQJHGKIVCnW4
+         UzPoZVlaFyUeDcO3Y7NS4Z1Av3aZl7ElVHrDLdeqZMjpJ+DDu5mlOKXrRWTINNPqTDgi
+         oJmyOPTCFRNJiFPA43/RMOXzVHzZhA004SU8HokD29/FNWla9nuiaSwibYr+zb06+bvE
+         KLNhtAJmby0cpLo5+SUInIG3ABRQjnWtrBESiF9X16AZEj8gKz1/rc2Flps1vmbQv06m
+         v0Enfo+Xlt5pHSZNUOh7vo1UVQ9XjaQwdSltKXuLKEToqzttko6OgoQ7yKc5LIvcD7KZ
+         wS0A==
+X-Forwarded-Encrypted: i=1; AHgh+RoMneBtcIXle5g/MfNG93Eqpjvpf6DKl62CpTxcTDQRHSxIlzD6afYkANRvuAAEd2u+IwA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzf21GiYWiXcq42R3KZkmD9+0yYvhfHkH77KENB2GHshy3gBld
+	au2aVJms5hVEC15fNtcdfMIIXmxcUv8P2+eT/tiAMHv2Nc/6hBLxQ6pUOjUzn+AMSWH/HekL4Rl
+	nKNyTuQ==
+X-Received: from pgvt1.prod.google.com ([2002:a65:64c1:0:b0:c9e:63b8:11b5])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6cc4:b0:3b4:61f:1fec
+ with SMTP id adf61e73a8af0-3c92a4c4549mr11840955637.2.1785806768677; Mon, 03
+ Aug 2026 18:26:08 -0700 (PDT)
+Date: Mon, 3 Aug 2026 18:26:08 -0700
+In-Reply-To: <20260728144954.355376-12-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <178552799129.2700794.10181439022561913222.b4-ty@google.com> <8b90851f38ef5b10cdcdc70e7543bd6b0b5e2773.camel@infradead.org>
-Message-ID: <anE4GtMa33nz7qdK@google.com>
-Subject: Re: [PATCH v6 00/36] Cleaning up the KVM clock mess
+References: <20260728144954.355376-1-dwmw2@infradead.org> <20260728144954.355376-12-dwmw2@infradead.org>
+Message-ID: <anE_sD1a0ycJBAEv@google.com>
+Subject: Re: [PATCH v7 11/36] KVM: x86: Restructure kvm_guest_time_update()
+ for TSC upscaling
 From: Sean Christopherson <seanjc@google.com>
 To: David Woodhouse <dwmw2@infradead.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
@@ -76,36 +77,195 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
 	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Sat, Aug 01, 2026, David Woodhouse wrote:
-> On Fri, 2026-07-31 at 13:09 -0700, Sean Christopherson wrote:
-> > Applied patch 1 to kvm-x86 clocks.
-> >
-> > [01/36] KVM: x86/xen: Do not corrupt KVM clock in kvm_xen_shared_info_init()
-> >         https://github.com/kvm-x86/linux/commit/3d4b20b5a7df
+On Tue, Jul 28, 2026, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
 > 
-> Thanks. Could the clocks branch be based on something that includes the
-> timekeeping work from the timers-ptp-2026-06-13 merge (in v7.2-rc1)?
-
-Yeah, I can rebase onto a 7.2-rcN.  Y'all are likely the only people that care
-about the above commit, so a late rebase isn't a big deal.
-
-There's basically zero chance I'll get the entire series applied for 7.3, but
-"Use ktime_get_snapshot_id() for master clock" is at least in striking distance,
-so there's no reason not to allow for the possibility.
-
-> The later parts of the series depend on ktime_get_snapshot_id() and the
-> reworked struct system_time_snapshot from there. Your kvm-x86/next
-> branch does have it; I'll keep my WIP kvmclock8 branch based on that
-> for now as I address the other comments.
+> Restructure kvm_guest_time_update() so that kernel_ns/host_tsc are
+> always "now" when doing TSC catchup, then swap in the master clock
+> reference values afterward for the hv_clock.
 > 
+> This makes the TSC upscaling code considerably simpler: the catchup
+> adjustment is computed as the delta between what the guest TSC *should*
+> be at "now" and what it actually is, rather than mixing "now" and
+> "master clock reference" timestamps.
 > 
-> *   2d6d57f889f3 Merge tag 'timers-ptp-2026-06-13' of tip
-> |\
-> | * bc484a509673 ptp: vmclock: Use hw_cycles from snapshot for precise TSC pairing
-> | ...
-> | * ca1ec8bfac8c timekeeping: Add clocksource read_snapshot() method and hw_cycles to snapshot
-> | ...
-> | * ef22786707e3 timekeeping: Use system_time_snapshot::systime/monoraw instead of ::real/raw
-> | * eba302268a01 timekeeping: Provide ktime_get_snapshot_id()
+> The seqcount loop now also contains the kvm_get_time_and_clockread()
+> call (matching get_kvmclock's pattern).
+> 
+> Based on a suggestion by Sean Christopherson.
 
+Looking at this with fresh eyes, it wasn't a very good suggestion.  In addition
+to the goof Sashiko reported, propagating master_host_tsc/master_kernel_ns to
+host_tsc/kernel_ns is completely unnecessary and convoluted, it's much easier to
+simply use master_{host_tsc,kernel_ns} when stuffing hv_clock.
 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  arch/x86/kvm/x86.c | 78 ++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 54 insertions(+), 24 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 52c9268007f8..12c3d7d503ca 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -1793,45 +1793,60 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
+>  int kvm_guest_time_update(struct kvm_vcpu *v)
+>  {
+>  	struct pvclock_vcpu_time_info hv_clock = {};
+> -	unsigned long flags;
+>  	u64 tgt_tsc_hz;
+>  	unsigned seq;
+>  	struct kvm_vcpu_arch *vcpu = &v->arch;
+>  	struct kvm_arch *ka = &v->kvm->arch;
+>  	s64 kernel_ns;
+>  	u64 tsc_timestamp, host_tsc;
+> +	u64 master_host_tsc = 0;
+> +	s64 master_kernel_ns = 0;
+> +	s64 kvmclock_offset = 0;
+>  	bool use_master_clock;
+>  
+> -	kernel_ns = 0;
+> -	host_tsc = 0;
+> -
+>  	/*
+>  	 * If the host uses TSC clock, then passthrough TSC as stable
+>  	 * to the guest.
+>  	 */
+>  	do {
+>  		seq = read_seqcount_begin(&ka->pvclock_sc);
+> +
+>  		use_master_clock = ka->use_master_clock;
+> +
+> +		/*
+> +		 * The TSC read and the call to get_cpu_tsc_khz() must happen
+> +		 * on the same CPU.
+> +		 */
+> +		get_cpu();
+> +
+> +		tgt_tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
+> +
+> +#ifdef CONFIG_X86_64
+> +		if (use_master_clock &&
+> +		    !kvm_get_time_and_clockread(&kernel_ns, &host_tsc) &&
+> +		    !read_seqcount_retry(&ka->pvclock_sc, seq))
+> +			use_master_clock = false;
+> +#endif
+
+Actually, the entire use_master_clock code can be thrown under CONFIG_X86_64=y
+(in a separate prep patch).
+
+> @@ -1841,17 +1856,32 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+>  	 *      entry to avoid unknown leaps of TSC even when running
+>  	 *      again on the same CPU.  This may cause apparent elapsed
+>  	 *      time to disappear, and the guest to stand still or run
+> -	 *	very slowly.
+> +	 *      very slowly.
+>  	 */
+>  	if (vcpu->tsc_catchup) {
+> -		u64 tsc = compute_guest_tsc(v, kernel_ns);
+> -		if (tsc > tsc_timestamp) {
+> -			adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
+> -			tsc_timestamp = tsc;
+> -		}
+> +		s64 adjustment;
+> +
+> +		/*
+> +		 * Calculate the delta between what the guest TSC *should* be
+> +		 * and what it actually is according to kvm_read_l1_tsc().
+> +		 */
+> +		adjustment = compute_guest_tsc(v, kernel_ns) -
+> +			     kvm_read_l1_tsc(v, host_tsc);
+> +		if (adjustment > 0)
+> +			adjust_tsc_offset_guest(v, adjustment);
+>  	}
+>  
+> -	local_irq_restore(flags);
+> +	/*
+> +	 * Now that TSC upscaling is out of the way, the remaining calculations
+> +	 * are all relative to the reference time that's placed in hv_clock.
+> +	 * If the master clock is NOT in use, the reference time is "now".  If
+> +	 * master clock is in use, the reference time comes from there.
+> +	 */
+> +	if (use_master_clock) {
+> +		host_tsc = master_host_tsc;
+> +		kernel_ns = master_kernel_ns;
+> +	}
+> +	tsc_timestamp = kvm_read_l1_tsc(v, host_tsc);
+
+And the big reason my suggestion was bad: this is wrong for vcpu->last_guest_tsc,
+because vcpu->last_guest_tsc needs to be updated to "now" (it's the same TSC
+that's shoved into TSC_OFFSET in the tsc_catchup path).
+
+This is what I have locally for the change this patch really cares about.  This,
+and several prep cleanup patches, pass your selftests with the rest of the series
+piled on top.
+
+Assuming my other testing doesn't explode, I'll get a sub-series through
+"KVM: x86: Remove implicit rdtsc() from kvm_compute_l1_tsc_offset()" posted
+tomorrow, with the plan of landing all of that in 7.3.  That'd leave about half
+the patches for 7.4, which certainly isn't ideal, but it's not too shabby either.
+
+---
+ arch/x86/kvm/x86.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 793340292d39..e826d1f8cabe 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1796,12 +1796,11 @@ static void kvm_setup_guest_pvclock(struct pvclock_vcpu_time_info *ref_hv_clock,
+ 
+ int kvm_guest_time_update(struct kvm_vcpu *v)
+ {
++	u64 tgt_tsc_hz, tsc_timestamp, host_tsc, master_tsc, master_ns;
+ 	struct kvm_arch *ka __maybe_unused = &v->kvm->arch;
+ 	struct pvclock_vcpu_time_info hv_clock = {};
+-	u64 tgt_tsc_hz;
+ 	struct kvm_vcpu_arch *vcpu = &v->arch;
+ 	s64 kernel_ns;
+-	u64 tsc_timestamp, host_tsc;
+ 
+ 	/*
+ 	 * If the host uses TSC clock, then passthrough TSC as stable
+@@ -1814,10 +1813,16 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 	do {
+ 		seq = read_seqcount_begin(&ka->pvclock_sc);
+ 		use_master_clock = ka->use_master_clock;
+-		if (use_master_clock) {
+-			host_tsc = ka->master_cycle_now;
+-			kernel_ns = ka->master_kernel_ns;
++		if (!use_master_clock)
++			continue;
++
++		if (!kvm_get_time_and_clockread(&kernel_ns, &host_tsc)) {
++			use_master_clock = false;
++			continue;
+ 		}
++
++		master_tsc = ka->master_cycle_now;
++		master_ns = ka->master_kernel_ns;
+ 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
+ #else
+ 	const bool use_master_clock = false;
+@@ -1883,8 +1888,18 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+ 
+ 	hv_clock.tsc_shift = vcpu->pvclock_tsc_shift;
+ 	hv_clock.tsc_to_system_mul = vcpu->pvclock_tsc_mul;
+-	hv_clock.tsc_timestamp = tsc_timestamp;
+-	hv_clock.system_time = kernel_ns + v->kvm->arch.kvmclock_offset;
++	/*
++	 * If the master clock is NOT in use, the reference time placed in the
++	 * hv_clock is "now".  If master clock is in use, the reference time is
++	 * the master clock's snapshot from some time in the past, not "now".
++	 */
++	if (use_master_clock) {
++		hv_clock.tsc_timestamp = kvm_read_l1_tsc(v, master_tsc);
++		hv_clock.system_time = master_ns + v->kvm->arch.kvmclock_offset;
++	} else {
++		hv_clock.tsc_timestamp = tsc_timestamp;
++		hv_clock.system_time = kernel_ns + v->kvm->arch.kvmclock_offset;
++	}
+ 
+ 	/* If the host uses TSC clocksource, then it is stable */
+ 	hv_clock.flags = 0;
+-- 
