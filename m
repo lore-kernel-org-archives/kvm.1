@@ -1,115 +1,256 @@
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC173E1D1D;
-	Tue,  4 Aug 2026 16:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9074647DD59
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 16:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785862550; cv=none; b=HKAVAKSEzvcJtrXj9qtTU5iuf3RpydMpk3QmLVtCtsZIJ7Lpsnu4icIpJw3RhQb1GfPuW/5pYeIeGWDnhv4NQLnkPl42u0ExPbPfEAdctnrTK2dTLoHvuj+3rWj7UyiugHvyIko3AniO0h6i+VdpnYQdLVsvhNrDUESb48wfZvU=
+	t=1785862686; cv=none; b=hZsgCLQ5KcchDhz7+oG5PFoZTUHrz8r7jHz49LcP3bk4UJegTqX+CLP3QsL/BP6meanmfyX50h55ZEUfn+vhYmPbhv4tx10xRx9VDJA1YE16XfHzv6E2VxAh6+k8/NFMna3/RLN3ofAVPYgFTpnomuylrq97C4jyQ5B0iU5rHZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785862550; c=relaxed/simple;
-	bh=ja4vUEJM4DDwOTHN2ArZG2G8SuCkuLWUjohHCtpfmO4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Subject; b=LUzeWFFfx78DSBKW0CaWu3rFaQZf1IkvqImfpijOBQA6K/8JsJvlHingZp+yx06Sqo3h8cL9ZeAdPZyygc0KxH8g4nQauxQ7NVCyqENsbq5N2PHgQQ/OWvdgOkRTMJVwdNGUzXaR3DiBScGOfX5a/eipGLcG5fCuWTLKCTq6OkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=YTGNKiHl; arc=none smtp.client-ip=204.191.154.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
+	s=arc-20240116; t=1785862686; c=relaxed/simple;
+	bh=svpa07L2omlhW6FPRtZqOCJp+AHo1KxV731t3CaP/H4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=AQKsAdmdYsdk+GRpv8KvstbFfZYiDv23CsWqx8Ax6oNryuvvGk3AKuCPK3ZPNKE9GeByeIlhhueGzd24Tj1+iq8s9BPGnaIWDPsYnXsKsHTu+eR2WamiG4E0142gzQQ5zv7P+xX3ycQqADqVjhzS9npQV8MkFqH0Fgn3XaoXDtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rVembk2d; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aaronlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="YTGNKiHl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=msNOem7p+wuff5GBoLB08T6D1Qgn/zf/MKSf7PCUJ9I=; b=YTGNKiHlWOxB29f/0WDUBxevAz
-	wWQbgY4hcj9VuegwPDCW2O4ETw3h8yU99cJ3iWAuHfgW7zaVgtGVRDyZw/PtB5CEn9YTipJb4Ur2j
-	XsKoAzfajZggFn6Yxm+fui4u+uD21U7vZ867CgVMajfYVICR5XKEQfUzD+k6J7SBFCqtY3HqTl2ow
-	T/ZdOTGzYJH/3mSW58cfeT5FvL8m4FUlfkUVbx+SXzbgPZqp7KKJ6XfR6+TtEjqUhA7rXGKsfHZLr
-	/epv48dfzHRXf1VRSFETvL3hqBFaBaWPxZGPTVGOn6SuylnrPYL05zybmbOygD+pgG9mR5Y1rgm38
-	daV/hkjA==;
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1wrHrS-00000006NYF-3B7f;
-	Tue, 04 Aug 2026 10:19:27 -0600
-Message-ID: <b30e75d8-37d6-478d-bc72-a9ed0b7e200c@deltatee.com>
-Date: Tue, 4 Aug 2026 10:19:11 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rVembk2d"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfe48ca1efso1148295ad.0
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 09:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785862679; x=1786467479; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Yi81QoTuUsO1sPo7YdCWTFff2b4P10cs781lVBnI9ik=;
+        b=rVembk2dH7oRoPKq6D0HQTk4OsV1wi71ZCtphk2l13GpW83t59pdkK6XzjiMQXKT1y
+         x/Q4C5Wm2Yo8cnDpLLv/cYXQ4xiTIJWC/g5ONEkzwHxi3FJcxwKYR2Oit1pYj8kUsRNt
+         43TZ62Y+Weug2r47dF5RB5+Oww1w+qH7+W6vyOyvtujWHgC2h0jdUYISQbz+0OBtzYKf
+         u/N2Ifdh9+txzIFtSnaHn6HzC1pYfK30LtS2d+Q5AaNsuQflAJvQEuRjYwKGhICQ3DRW
+         PAi8yqNdA4z81EgXmatJ/hrBUm0JCDccWTNnVHYRjdpwq2jh3EUU4S6Owqg31H4G8u1T
+         IBaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785862679; x=1786467479;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Yi81QoTuUsO1sPo7YdCWTFff2b4P10cs781lVBnI9ik=;
+        b=N46tYi1RsoUWLIo3m6Z0acYNhvHWX9B7vK328faugUiupZs+4jng04BN4g313GBqZE
+         sUYtvDhxfOfzoARtbU1PwDvLi+3PiWiwAL5a33RuvoZJQuwpfCGjMgi2foELBv7a3j6l
+         6ofYTzqxxPO6y143j26iEwB5soTlMd6NllHozIWk8CdvJQCyZC1irvnGRMFujlVN4/Fj
+         jIzJO5IuXBbnUAVMOOzw7HGSm+J7TLzZCTIknEVB/BjdcNoA5NKp0QPRZLb29o9SEN+l
+         AVIMiY80zTMC+MUUKI73iQ9eJkS/6f+DIrl1e0sIsBzdkU7xkiyXDHb9IpCLmo854sfC
+         fcdg==
+X-Gm-Message-State: AOJu0YwnAGFomNt4/F4wLW+zosNF1fqz1yDDgU+Qdfmv4RShf9Cuz+A7
+	gZ4dKKwb9cDs6Gui4Hadkzx0MmTt3IU6EKFmfWTqmNbH7GzeOnlU+oq0wsH/VR6pyyZwXDidXCA
+	6VM1JyMIlDcAfL0KEL4JLF3iene12tMmihUrAvbcPq5C+wtoqG90wov5RdiX8GbgCb/26TYAisG
+	D9lAQ6z8nOsqVdcs/yTRKC7/+MEhIL0vxWxMNvqkT8C75sTSTwH7ws+g==
+X-Received: from dycne3.prod.google.com ([2002:a05:7301:c83:b0:2f9:af7:504e])
+ (user=aaronlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:2b0d:b0:2ce:faa6:7cbb with SMTP id d9443c01a7336-2d0ca7afcc1mr2105625ad.4.1785862678442;
+ Tue, 04 Aug 2026 09:57:58 -0700 (PDT)
+Date: Tue,  4 Aug 2026 16:57:47 +0000
+In-Reply-To: <20260804165748.1060476-1-aaronlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Matt Evans <matt@ozlabs.org>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Alex Mastro <amastro@fb.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Kevin Tian <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org, Longfang Liu <liulongfang@huawei.com>
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-3-matt@ozlabs.org>
- <e90b0bd0-fb8e-4d4e-b282-609c26692e4a@ozlabs.org>
-Content-Language: en-CA
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <e90b0bd0-fb8e-4d4e-b282-609c26692e4a@ozlabs.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: matt@ozlabs.org, leon@kernel.org, jgg@nvidia.com, alex@shazbot.org, amastro@fb.com, bhelgaas@google.com, kevin.tian@intel.com, praan@google.com, mngyadam@amazon.de, dmatlack@google.com, bjorn@kernel.org, sumit.semwal@linaro.org, ankita@nvidia.com, christian.koenig@amd.com, apopple@nvidia.com, vivek.kasireddy@intel.com, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org, liulongfang@huawei.com
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Level: 
-Subject: Re: [PATCH v5 2/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Mime-Version: 1.0
+References: <20260804165748.1060476-1-aaronlewis@google.com>
+X-Mailer: git-send-email 2.55.0.654.g21b8a5bc05-goog
+Message-ID: <20260804165748.1060476-4-aaronlewis@google.com>
+Subject: [PATCH v2 3/4] vfio: selftests: Add memfd test to vfio_dma_mapping_perf_test
+From: Aaron Lewis <aaronlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: alex@shazbot.org, dmatlack@google.com, jgg@nvidia.com, 
+	Aaron Lewis <aaronlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Add a second test to "vfio_dma_mapping_perf_test" to evaluate memfd
+latencies. A key motivator for adding this test is to demonstrate that
+the IOMMU_IOAS_MAP_FILE ioctl is significantly faster than other methods
+of mapping DMA regions. While this performance difference is not fully
+apparent with the test's current capabilities, it will become evident
+as more features are introduced later in the series.
 
+To support this, add IOMMU_IOAS_MAP_FILE ioctl support to the VFIO
+selftest library via iommufd_map_file().
 
-On 2026-08-04 09:42, Matt Evans wrote:
-> 
-> Just shoving an #ifdef in mlx5 isn't right, so would be grateful for
-> your advice on the most tasteful resolution:
-> 
->  1. Imagining future drivers might use pcim_p2pdma_provider(), maybe
->     p2pdma could export a `pcim_p2pdma_supported()` or similar which
->     returns whether CONFIG_PCI_P2PDMA is present and P2P can ever work.
->     A user of pcim_p2pdma_provider() is required to also check if P2P is
->     overall supported.
-> 
->     Ugliness aside, a driver could use #ifdef CONFIG_PCI_P2PDMA to test
->     whether P2P is expected to work, except that doesn't stop modules
->     falling into the same trap.  I think a function export is better.
-> 
->  2. And/or a test (such the function from #1, or an #ifdef) in the IB
->     core DMABUF path, to avoid individual drivers from doing the test in
->     their .mmap_get_pfns().  Other future drivers would be expected to
->     do similar.
-> 
-> Any better ideas?  Sorry I didn't catch this earlier in the review
-> cycles, I know we've looked at this patch a few times now.
+Signed-off-by: Aaron Lewis <aaronlewis@google.com>
+---
+ .../vfio/lib/include/libvfio/iommu.h          |   7 ++
+ tools/testing/selftests/vfio/lib/iommu.c      |  24 +++++
+ .../vfio/vfio_dma_mapping_perf_test.c         | 102 ++++++++++++++++++
+ 3 files changed, 133 insertions(+)
 
-I see the problem now. Yes, it's a bit tricky and I don't have a great
-answer. But the proposed solution seems very confusing. I definitely
-don't think we should be adding ifdefs in the IB core for this.
+diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+index 5c77875240f4..515976fb19be 100644
+--- a/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
++++ b/tools/testing/selftests/vfio/lib/include/libvfio/iommu.h
+@@ -35,6 +35,13 @@ struct iommu {
+ struct iommu *iommu_init(const char *iommu_mode);
+ void iommu_cleanup(struct iommu *iommu);
+ 
++int __iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd);
++
++static inline void iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd)
++{
++	VFIO_ASSERT_EQ(__iommufd_map_file(iommu, region, fd), 0);
++}
++
+ int __iommu_map(struct iommu *iommu, struct dma_region *region);
+ 
+ static inline void iommu_map(struct iommu *iommu, struct dma_region *region)
+diff --git a/tools/testing/selftests/vfio/lib/iommu.c b/tools/testing/selftests/vfio/lib/iommu.c
+index b6f3c5c84e01..b76ae0a91c68 100644
+--- a/tools/testing/selftests/vfio/lib/iommu.c
++++ b/tools/testing/selftests/vfio/lib/iommu.c
+@@ -97,6 +97,30 @@ iova_t iommu_hva2iova(struct iommu *iommu, void *vaddr)
+ 	return iova;
+ }
+ 
++int __iommufd_map_file(struct iommu *iommu, struct dma_region *region, int fd)
++{
++	VFIO_ASSERT_TRUE(iommu->iommufd, "IOMMU_IOAS_MAP_FILE is an IOMMUFD IOCTL.");
++
++	struct iommu_ioas_map_file args = {
++		.size = sizeof(args),
++		.flags = IOMMU_IOAS_MAP_READABLE |
++			IOMMU_IOAS_MAP_WRITEABLE |
++			IOMMU_IOAS_MAP_FIXED_IOVA,
++		.ioas_id = iommu->ioas_id,
++		.fd = fd,
++		.start = 0,
++		.iova = region->iova,
++		.length = region->size,
++	};
++
++	if (ioctl(iommu->iommufd, IOMMU_IOAS_MAP_FILE, &args))
++		return -errno;
++
++	list_add(&region->link, &iommu->dma_regions);
++
++	return 0;
++}
++
+ static int vfio_iommu_map(struct iommu *iommu, struct dma_region *region)
+ {
+ 	struct vfio_iommu_type1_dma_map args = {
+diff --git a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+index 26c04cabef61..5ef85deba4ee 100644
+--- a/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
++++ b/tools/testing/selftests/vfio/vfio_dma_mapping_perf_test.c
+@@ -83,6 +83,108 @@ TEST_F(vfio_dma_mapping_perf_test, dma_map_unmap)
+ 	TIME("munmap", ASSERT_EQ(0, munmap(region.vaddr, size)));
+ }
+ 
++FIXTURE(vfio_dma_mapping_perf_memfd_test) {
++	struct iommu *iommu;
++	struct vfio_pci_device *device;
++	struct iova_allocator *iova_allocator;
++};
++
++FIXTURE_VARIANT(vfio_dma_mapping_perf_memfd_test) {
++	const char *iommu_mode;
++	int mmap_flags;
++	int memfd_flags;
++};
++
++#define FIXTURE_VARIANT_ADD_MEMFD_MODE(_name, _mmap_flags, _memfd_flags)      \
++FIXTURE_VARIANT_ADD(vfio_dma_mapping_perf_memfd_test, iommufd ## _ ## _name) {\
++	.iommu_mode = MODE_IOMMUFD,					      \
++	.mmap_flags = MAP_SHARED | MAP_POPULATE | (_mmap_flags),	      \
++	.memfd_flags = (_memfd_flags),					      \
++}
++
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd, 0, 0);
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_2mb,
++				    MAP_HUGETLB | MAP_HUGE_2MB,
++				    MFD_HUGETLB | MFD_HUGE_2MB);
++FIXTURE_VARIANT_ADD_MEMFD_MODE(memfd_hugetlb_1gb,
++				    MAP_HUGETLB | MAP_HUGE_1GB,
++				    MFD_HUGETLB | MFD_HUGE_1GB);
++
++#undef FIXTURE_VARIANT_ADD_MEMFD_MODE
++
++FIXTURE_SETUP(vfio_dma_mapping_perf_memfd_test)
++{
++	self->iommu = iommu_init(variant->iommu_mode);
++	self->device = vfio_pci_device_init(device_bdf, self->iommu);
++	self->iova_allocator = iova_allocator_init(self->iommu);
++}
++
++FIXTURE_TEARDOWN(vfio_dma_mapping_perf_memfd_test)
++{
++	iova_allocator_cleanup(self->iova_allocator);
++	vfio_pci_device_cleanup(self->device);
++	iommu_cleanup(self->iommu);
++}
++
++static void *setup_memfd(int *fd, u64 size, int mmap_flags, int mfd_flags)
++{
++	void *buf = MAP_FAILED;
++
++	TIME("memfd_create",
++	     *fd = memfd_create("vfio_dma_mapping_perf_memfd_test", mfd_flags));
++	if (*fd < 0)
++		return MAP_FAILED;
++
++	if (ftruncate(*fd, size))
++		goto out;
++
++	TIME("mmap",
++	     buf = mmap(NULL, size, PROT_READ | PROT_WRITE, mmap_flags, *fd, 0));
++
++out:
++	if (buf == MAP_FAILED)
++		close(*fd);
++
++	return buf;
++}
++
++static void teardown_memfd(int fd, u64 size, void *vaddr)
++{
++	if (vaddr != MAP_FAILED)
++		TIME("munmap", VFIO_ASSERT_EQ(0, munmap(vaddr, size)));
++
++	if (fd != -1)
++		TIME("close", VFIO_ASSERT_EQ(0, close(fd)));
++}
++
++TEST_F(vfio_dma_mapping_perf_memfd_test, dma_map_unmap_from_file)
++{
++	const u64 size = SZ_1G;
++	const int flags = variant->mmap_flags;
++	struct dma_region region;
++	int fd;
++
++	printf("mmap size = %lluG\n", (unsigned long long)(size / SZ_1G));
++
++	region.vaddr = setup_memfd(&fd, size, variant->mmap_flags, variant->memfd_flags);
++
++	/* Skip the test if there aren't enough HugeTLB pages available. */
++	if (flags & MAP_HUGETLB && region.vaddr == MAP_FAILED)
++		SKIP(return, "setup_memfd() failed: %s (%d)\n", strerror(errno), errno);
++	else
++		ASSERT_NE(region.vaddr, MAP_FAILED);
++
++	region.iova = iova_allocator_alloc(self->iova_allocator, size);
++	region.size = size;
++
++	TIME("IOMMU map", iommufd_map_file(self->iommu, &region, fd));
++	ASSERT_EQ(region.iova, to_iova(self->device, region.vaddr));
++
++	TIME("IOMMU unmap", iommu_unmap(self->iommu, &region));
++
++	teardown_memfd(fd, size, region.vaddr);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	device_bdf = vfio_selftests_get_bdf(&argc, argv);
+-- 
+2.55.0.654.g21b8a5bc05-goog
 
-For me, this is mainly a naming problem as there's a bunch of ways to
-address it in the code. The question is what do we call p2pdma vs. core
-p2pdma in a way that makes the distinction more obvious.
-
-There's a vague convention for this already: the term 'p2pmem' is often
-used for cases where the driver uses the allocator, etc. (I think I had
-this intention when I wrote the code and have since forgotten about it).
-I'm thinking we should lean into that more and instead of introducing
-CONFIG_PCI_P2PDMA_CORE we introduce CONFIG_PCI_P2PMEM and move all that
-code into it's own file, potentially renaming some functions. Then, in
-the end, we would probably have a pcim_p2pdma_supported() function and a
-pcim_p2pmem_supported() function, the latter being used by existing use
-cases.
-
-Logan
