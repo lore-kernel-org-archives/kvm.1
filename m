@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1142D3E5EF1;
-	Tue,  4 Aug 2026 18:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF67F381B1D
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785867566; cv=none; b=W9wLmOekXlWQq/KxGcQSEkgtgfZhpV/fE7XZlPDmLC98H8eSU+stfh+0DEQ8cmxtGus4Ar1BMlErp+gNn6zlN/H0WJ3ETVrA8t3IOoTtiAwWiF5RKakymHBQUvedZQveo3fgSfm4gEbLgZkj4uq49qQrt6sP2NaURG0fBxgDG4s=
+	t=1785867578; cv=none; b=Sr019e67K7f6P8QrafZHGpC4mZV5DFqThjxT1nVKLl3x+YeJOS6rfT6O41hBoJKrDqQjpdcAQu4Yg4iINsX+cLnZhXL8cy6rMbzuzU+1fB4Fs2PCAUu4inASXysPI1o++p2B42iY/MWlpimmmHqQMpNpB5OJt4WunBSh8hfjBgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785867566; c=relaxed/simple;
-	bh=Jf6MVU2waTh7MgGVG9Y72/HaKkGvXAyAmuswADQkemA=;
+	s=arc-20240116; t=1785867578; c=relaxed/simple;
+	bh=OHEsUoOuaM7AjqwfID4fRLpsG1beywprHeA8s1R8WE0=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ikk9NOihJH6gCrkjo3cSgL2B0917DYtqxQSMgmdUXnlfPze/dCrvynx8Zu6G1g6Gf8fXft3HktqZa5O12BVwnUx5YzicSUI/VmvwjzzrHQ7WvkUlg8TqwRxVJNbo1F/T8IzQTKN7ad4h2UmQhhLSWgL6tCC/JIvmoLkII/IfTAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmyQWy6f; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=A5ToyLamhS1uZDAZi3ZLDWQiPJV3w5qB0d3UQl1k8W7Z0eWsm0ySYkJnh/tZvZqu4rzFqFqT8JESoPUwI/9fRLxva5oWvTmnzxqSIqmc+ePrtHJSQzRGF3CFwpiVsjcbXhTvFFbSFejXs/Xw70ee8i7+oZLt95sGeJPtnN246+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2ZBU5sU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmyQWy6f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70211F000E9;
-	Tue,  4 Aug 2026 18:19:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2ZBU5sU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF2A1F000E9;
+	Tue,  4 Aug 2026 18:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785867561;
-	bh=8Em4rsSW5WvA/pIu5Gq7/dIXWb64UUL/Bx3Kq6L9KbU=;
+	s=k20260515; t=1785867577;
+	bh=vlWWqG5m01cnhtPGiJlh2RmxdNi01Y1P6Kr193nZXNQ=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CmyQWy6fcF7BsiNzA4qNz636/HUu6tjsZxWB5pJjcgQ/f70QYeklpB3G/+yNOBYYA
-	 fKHf/gQhRtV6uaOXON3i34lmOVzhTDFU2tjlxRXD1jD7x3U/o5ok6qgImJmnb68nQ3
-	 TjApOcnyyl2itonrboHdWkO4+myOotxrgnn/t2LeErIgeWP4AQTNU4EkUEQ/jIXOHX
-	 ZVz7Ooa9RNJk6gCGpOtI9Ig9nG07hOInhGU8UrGGuUy3nT0kA9cybgqRttnzH00/pI
-	 rSsWdsLF16kCliYTRmfOaWsWWablu3IupsrLMOAXyYwWhhaXOyYPHr+XmxBJ0pizr6
-	 QfINlHvvXjsxw==
+	b=N2ZBU5sUPq+pTb6nX7YfVSWTl5g1HSfw5iVdTfIbqVwkr+kx/tMUwvnLm0xDmTuWQ
+	 w9iOtKOzdwGK6Gd9+fr4RkQjT0ZF4HJHpCUAiWpWz3EQ9kINA+n0WwqJL9zyQZcMeQ
+	 qFhkabpfyVXMblbDztzVfeCfnRMW1LJ/gZBgN5NyUV5qhjdF+r50Vi7YwGCxpH2kfe
+	 KcGuPgjcfuZeSZAPu+UBOXZH1+QI4WF8tBymIdV2mNHWh25Tr5lyD/E6n+PxkWr8b4
+	 yB2nUjTa+inQgclKlwupkb9GeNHKVM6k6ocOJLEXMvafBPXcN5yTu7Flzg8GZ1RjC9
+	 UiKI3lvM08Glw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/7] KVM: s390: Fix old_data leak in guest debug
- error path
+Subject: Re: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
+ wire up ioctl
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org
-In-Reply-To: <20260804162435.28617-6-borntraeger@linux.ibm.com>
-References: <20260804162435.28617-1-borntraeger@linux.ibm.com>
- <20260804162435.28617-6-borntraeger@linux.ibm.com>
+To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260804180705.59160-2-amachhiw@linux.ibm.com>
+References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
+ <20260804180705.59160-2-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 18:19:20 +0000
-Message-Id: <20260804181920.B70211F000E9@smtp.kernel.org>
+Date: Tue, 04 Aug 2026 18:19:36 +0000
+Message-Id: <20260804181937.2EF2A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -48,118 +47,169 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Missing SRCU read lock around KVM memslot access during KVM_SE=
-T_GUEST_DEBUG causes a Use-After-Free vulnerability.
-- [High] Pre-existing memory leak of guest debug arrays (`hw_wp_info`, `hw_=
-bp_info`) and per-watchpoint `old_data` buffers on vCPU destruction.
-- [High] Integer truncation of `bp_data->len` allows unconstrained memory a=
-llocation, leading to a kernel WARNING and potential Denial of Service.
+- [High] The ioctl artificially inflates the userspace struct's `size` fiel=
+d on success, creating a memory corruption trap if userspace reuses the str=
+uct.
+- [High] The ioctl unconditionally rejects larger structs with -E2BIG, bypa=
+ssing standard UAPI zero-checking and encouraging silent input truncation.
+- [Medium] The KVM_PPC_GET_COMPAT_CAPS ioctl availability is decoupled from=
+ its KVM_CAP_PPC_COMPAT_CAPS capability, breaking capability negotiation an=
+d bisectability.
 --
 
---- Patch [5]: [PATCH v2 5/7] KVM: s390: Fix old_data leak in guest debug e=
-rror path ---
-commit a3583776c5b24b471704343b4d20b599ed4ab8ca
-Author: Christian Borntraeger <borntraeger@linux.ibm.com>
+--- Patch [1]: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS a=
+nd wire up ioctl ---
+commit bcf86bb5d3079ca2dbb4bf09693ba6e6a24b06c5
+Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-KVM: s390: Fix old_data leak in guest debug error path
+KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
 
-__import_wp_info() allocates a per-watchpoint old_data buffer to back up
-the original guest memory contents. If a later watchpoint of the same
-KVM_SET_GUEST_DEBUG request fails to import, kvm_s390_import_bp_data()
-jumps to the error label, which frees the wp_info array but not the
-old_data buffers of the entries that were imported successfully.
+This commit introduces a new capability and ioctl to expose CPU compatibili=
+ty
+modes supported by the host processor for nested guests.
 
-Cc: stable@vger.kernel.org
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index 00302399fc37b..8d6632c64ca5f 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -697,6 +697,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lo=
+ng ext)
+>  			}
+>  		}
+>  		break;
+> +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
+> +	case KVM_CAP_PPC_COMPAT_CAPS:
+> +		r =3D 0;
+> +		if (kvmhv_on_pseries())
+> +			r =3D 1;
+> +		break;
 
-> diff --git a/arch/s390/kvm/guestdbg.c b/arch/s390/kvm/guestdbg.c
-> index 4c02dbebb2eb3..f7c94d54efbe2 100644
-> --- a/arch/s390/kvm/guestdbg.c
-> +++ b/arch/s390/kvm/guestdbg.c
-> @@ -252,7 +252,7 @@ int kvm_s390_import_bp_data(struct kvm_vcpu *vcpu,
->  			ret =3D __import_wp_info(vcpu, &bp_data[i],
->  					       &wp_info[nr_wp]);
+[Severity: Medium]
+Is this capability check fully aligned with the ioctl's availability?
 
-[Severity: Critical]
-This is a pre-existing issue, but does this call path lack SRCU protection?
+This check returns 1 on a pseries host using PR KVM (since it misses the
+hv_enabled check), but the ioctl might fail with -ENOTTY if the backend
+is missing.
 
-When KVM_SET_GUEST_DEBUG calls __import_wp_info(), it eventually invokes
-read_guest_abs() which dereferences the KVM memslots array via
-gfn_to_memslot().
+Later in the ioctl execution, it succeeds on a bare-metal host using HV KVM
+(missing the kvmhv_on_pseries() check) even though this capability check
+would return 0.
 
-Neither kvm_vcpu_ioctl() nor kvm_arch_vcpu_ioctl_set_guest_debug() appears
-to acquire the kvm->srcu read lock. Can a concurrent
-KVM_SET_USER_MEMORY_REGION ioctl free the memslot structure while it is
-being accessed, triggering a use-after-free?
+Could this decoupling between the capability and the ioctl availability bre=
+ak
+capability negotiation for userspace?
 
-
-[Severity: High]
-This is a pre-existing issue, but is there an integer truncation bug inside
-__import_wp_info() for the length parameter?
-
-bp_data->len is a 64-bit user-controlled value, which is assigned to
-wp_info->len (a 32-bit signed int):
-
-arch/s390/kvm/guestdbg.c:__import_wp_info() {
-    ...
-    wp_info->len =3D bp_data->len;
-    ...
-    if (wp_info->len < 0 || wp_info->len > MAX_WP_SIZE)
-        return -EINVAL;
-
-    wp_info->old_data =3D kmalloc(bp_data->len, GFP_KERNEL_ACCOUNT);
-    ...
-}
-
-By providing a large 64-bit value (e.g., 0x100000005), the lower 32 bits
-would pass the bounds check (5 <=3D MAX_WP_SIZE), but the untruncated 64-bit
-value is then passed to kmalloc().
-
-Can this lead to an unbounded memory allocation exceeding MAX_PAGE_ORDER,
-triggering a kernel warning?
-
->  			if (ret)
-> -				goto error;
-> +				goto error_wp;
->  			nr_wp++;
->  			break;
+> +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+>  	default:
+>  		r =3D 0;
+>  		break;
 
 [ ... ]
 
-> @@ -269,6 +269,10 @@ int kvm_s390_import_bp_data(struct kvm_vcpu *vcpu,
->  	vcpu->arch.guestdbg.hw_wp_info =3D wp_info;
->  	kfree(bp_data);
->  	return 0;
+> @@ -2463,6 +2470,70 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
+int ioctl, unsigned long arg)
+>  		r =3D kvm->arch.kvm_ops->svm_off(kvm);
+>  		break;
+>  	}
+> +	case KVM_PPC_GET_COMPAT_CAPS: {
+> +		struct kvm_ppc_compat_caps host_caps =3D {};
+> +		u64 usize;
 > +
-> +error_wp:
-> +	while (nr_wp--)
-> +		kfree(wp_info[nr_wp].old_data);
->  error:
->  	kfree(bp_data);
+> +		/*
+> +		 * Read the size field first to drive copy_struct_from_user.
+> +		 * size must be the first field of the struct.
+> +		 */
+> +		r =3D -EFAULT;
+> +		if (get_user(usize, (__u64 __user *)argp))
+> +			goto out;
+> +
+> +		/*
+> +		 * Enforce a minimum: reject buffers smaller than the initial
+> +		 * struct version (VER0). This allows old userspace compiled
+> +		 * against the original struct to still work on a newer kernel
+> +		 * that has grown the struct with appended fields.
+> +		 */
+> +		r =3D -EINVAL;
+> +		if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
+> +			goto out;
+> +
+> +		/*
+> +		 * New userspace with a larger struct called an older kernel.
+> +		 * Write back ksize in host_caps.size so userspace knows which
+> +		 * older struct to retry with, then fail with -E2BIG.
+> +		 */
+> +		if (usize > sizeof(host_caps)) {
+> +			host_caps.size =3D sizeof(host_caps);
+> +			r =3D -EFAULT;
+> +			if (put_user(host_caps.size, (__u64 __user *)argp))
+> +				goto out;
+> +			r =3D -E2BIG;
+> +			goto out;
+> +		}
 
 [Severity: High]
-This is a pre-existing issue, but does kvm_arch_vcpu_destroy() leak these
-dynamically allocated buffers when tearing down a vCPU?
+Does explicitly rejecting larger structs here bypass the standard UAPI
+zero-checking?
 
-If the VM is destroyed while guest debugging is active,
-kvm_arch_vcpu_destroy() seems to skip calling kvm_s390_clear_bp_data()
-to free hw_wp_info, hw_bp_info, and the old_data buffers:
+By catching usize > sizeof(host_caps) early and returning -E2BIG, the code
+bypasses copy_struct_from_user()'s built-in validation which would safely
+reject non-zero extended fields.
 
-arch/s390/kvm/kvm-s390.c:kvm_arch_vcpu_destroy() {
-    ...
-    VCPU_EVENT(vcpu, 3, "%s", "free cpu");
-    ...
-}
+If userspace receives the smaller kernel size and retries by truncating its
+buffer size, the kernel will only read the truncated portion, silently
+ignoring any non-zero extended fields that userspace originally provided.
 
-Could a host userspace process repeatedly create and destroy vCPUs with
-guest debug enabled to exhaust host memory?
+Should this rely on copy_struct_from_user() to safely check zeroed trailing
+bytes instead?
 
->  	kfree(wp_info);
->  	kfree(bp_info);
->  	return ret;
->  }
+> +
+> +		/*
+> +		 * copy_struct_from_user() handles forward/backward compat:
+> +		 *   usize =3D=3D ksize: verbatim copy
+> +		 *   usize <  ksize: zero-pad trailing (old userspace, new kernel)
+> +		 */
+> +		r =3D copy_struct_from_user(&host_caps, sizeof(host_caps),
+> +					  argp, usize);
+> +		if (r)
+> +			goto out;
+> +
+> +		/* Reserved fields must be zero */
+> +		r =3D -EINVAL;
+> +		if (host_caps.flags)
+> +			goto out;
+> +
+> +		r =3D -ENOTTY;
+> +		if (!kvm->arch.kvm_ops->get_compat_caps)
+> +			goto out;
+> +
+> +		r =3D kvm->arch.kvm_ops->get_compat_caps(&host_caps);
+> +		if (r)
+> +			goto out;
+> +
+> +		host_caps.size =3D sizeof(host_caps);
+> +		r =3D copy_struct_to_user(argp, usize, &host_caps,
+> +					sizeof(host_caps), NULL);
+
+[Severity: High]
+Can this artificial size inflation cause an out-of-bounds read/write if
+userspace reuses the struct?
+
+If an older userspace passes a smaller struct to a newer kernel (where
+usize < sizeof(host_caps)), the kernel sets host_caps.size to its own larger
+size. It then copies the smaller usize bytes back, overwriting the userspace
+size field with the kernel's larger size.
+
+If userspace reuses this struct for a subsequent ioctl call, it will now pa=
+ss
+the larger size. The kernel would then read past the end of the originally
+allocated userspace buffer, and if successful, write back past the end
+as well.
+
+> +		break;
+> +	}
+>  	default: {
+>  		struct kvm *kvm =3D filp->private_data;
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804162435.2861=
-7-1-borntraeger@linux.ibm.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804180705.5916=
+0-1-amachhiw@linux.ibm.com?part=3D1
