@@ -1,50 +1,32 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE8735E94F;
-	Tue,  4 Aug 2026 02:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3D82472A2;
+	Tue,  4 Aug 2026 02:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785810078; cv=none; b=tVkcjfwdUyEzZ0ZnG11tzf66Rq4iWHufRO0VdlDJovkoAt5zn/mtPtf+28VTxyAG6FtiRaQW9KSEUjGzo2QjgI9dzs1Rnhszg3vvyX+ag/Jallk/Rg1dkDoXUseqLuRJA6cO/9ShoBCTYztyVwcPdrl/svlHZPYEGye6Pltv73Y=
+	t=1785811106; cv=none; b=lzyybkf4rRQ8UM0VcIp5DFO/giqOp1sa6a3PQIuTIsUl7LLokuPgTE+hoCdPimnRI50eM590U/zxBXwTwGtm7SE03p5pFTo0MQdNGiDuvOMcuCbpiyZfPDRs2Uzi85TkSlHq2Jn0TDAlS5UTaHtfs3UDRwV1BLVRAyGQK3qMjws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785810078; c=relaxed/simple;
-	bh=+ungbiIvue01mlh3xVvXxn27VLIAH9BlA+zmntBJ5rM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CU9oTbksZieUH8R2wvBL6J+lNDdxqzdeyLfeuFf1tqjFw0SGZ3vNJt3NprB4choa28DsjG59XOYWSma4crWjr6ShwsDYNnVZVuYYVPHq/pq9eUKIxxufrYKjAzSXHb2+dv70VYa7aD0T3ZdNnF1HvjgONwpGDYOERLBhsswU3Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csFzeZMQ; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785811106; c=relaxed/simple;
+	bh=C2C01QINdhhvR6FLTgLo8a14F9osuvoKNt5pPfqduzM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jKfFBbjsvuJi97WFG3HObPon0vaLdaDMssLjAJ1kW2VlDE98KxRG5tjqOOGHjQiHk0RupoUMgHn+75msqdmETG7LNRba+tIOrUjlZbIzG9/xTegzKakDpnGtt2CFgc24UX1wGvpbNebR0IPBstzXWK/yAxeEzxsDdWt/KcYCKX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn; spf=pass smtp.mailfrom=bosc.ac.cn; dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b=qeKLnyPn; arc=none smtp.client-ip=115.124.28.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bosc.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bosc.ac.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csFzeZMQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785810077; x=1817346077;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=+ungbiIvue01mlh3xVvXxn27VLIAH9BlA+zmntBJ5rM=;
-  b=csFzeZMQQkwiMu7Vlm5Sp/ekudmhx28JVy5zVVCmQr58QiHbJiO3Nzyn
-   KPBzimZhmz6CApZZqBJADE/cR3NTdjQWdmf76ccrEqE4eUPcxqSHlBaOj
-   eEH/hjqCmy8ExDUyhIZZxFQ5U/aJjOAU9Xp6KrNrINVPPrkV6zDD8eER3
-   m+d+Gj2LHNQbOeH5iPpOkJKIRmdnwt66nV7tFe62SWiVPYYGLS2mi8MoT
-   hPhJqs1KeAz4GaiFEhyyySN2z9uNqX3yprxIPL6Sy8mzBfPw55gJpK/rl
-   /Xc3YRWOkRagEU6z9+3KeVqEYsYQrELmufF6CooxPZiw0z1cL9Nu+SOvN
-   w==;
-X-CSE-ConnectionGUID: kxSHBAp9T/WPilBLbXpu8Q==
-X-CSE-MsgGUID: z0pHC6gPTP+cBmwHVBcr6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="86122340"
-X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="86122340"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:21:16 -0700
-X-CSE-ConnectionGUID: wexSi1NfRrucV12fpDeh0Q==
-X-CSE-MsgGUID: Ov1ycEjhQ0S6ouDKkZLVyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,203,1779174000"; 
-   d="scan'208";a="266496543"
-Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 19:21:03 -0700
-Message-ID: <8baf2065-b07f-4555-9c16-1330ecec4903@intel.com>
-Date: Tue, 4 Aug 2026 10:21:00 +0800
+	dkim=pass (2048-bit key) header.d=bosc.ac.cn header.i=@bosc.ac.cn header.b="qeKLnyPn"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=bosc.ac.cn; s=default;
+	t=1785811093; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=AstU9gZT3RaBuxw9uDri9Znkbk2eOHzmsbEMxKrjs14=;
+	b=qeKLnyPnyeL45fYqmWmXCfxX8Vym28f1R94ZmehHmV87aNC3KKWJhVF7RBvINpFNhKPxirqbAo7B+gSeYsSDjxRrA3omOHaZgkPc+xqVoyrCqnqt1v+PHEE3A59uqS6f1pdVnH8DoSEIHGN0BIevpsf8mtvZIC/WuW3T7wweOJFD0CP980+q4XiPhigqDRiS/23XPEkDIai2/4o2oOMdop4Ee02g54tcNuLJ0tFEjO1R/3x+Z8cqcNGentFqjO2S5quUbGxlac1kIdjpoCm3BzgNNhhd3joBb7he4pk0Qf8zXQfp2Rkv5fC/OVLKodEbh0hUSRyMxAmQQAeJWCFj8g==
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0743953|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.25817-0.0164646-0.725365;FP=16570213262202463728|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045213054;MF=guoyaxing@bosc.ac.cn;NM=1;PH=DS;RN=12;RT=12;SR=0;TI=SMTPD_---.id1w.Hb_1785810771;
+Received: from 172.28.113.148(mailfrom:guoyaxing@bosc.ac.cn fp:SMTPD_---.id1w.Hb_1785810771 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Aug 2026 10:32:52 +0800
+Message-ID: <0d15b098-b8f7-4080-9f33-e8c49c2331e1@bosc.ac.cn>
+Date: Tue, 4 Aug 2026 10:32:51 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,136 +34,161 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 18/41] KVM: TDX: Make source page optional for
- KVM_TDX_INIT_MEM_REGION
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-18-35f9aec2aed2@google.com>
- <d3fef015-0546-4993-b354-a8464d79e48c@intel.com>
- <amzJQ8u8I18B4Gdm@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <amzJQ8u8I18B4Gdm@google.com>
+From: guoyaxing <guoyaxing@bosc.ac.cn>
+Subject: Re: [RFC] RISC-V KVM: guest local sfence.vma may miss stale VS-stage
+ TLB after vCPU migration
+To: Anup Patel <anup@brainfault.org>
+Cc: Atish Patra <atish.patra@linux.dev>, kvm-riscv@lists.infradead.org,
+ kvm@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Hui Min Mina Chou <minachou@andestech.com>, majiuyue@bosc.ac.cn,
+ linux-kernel@vger.kernel.org
+References: <20260802050015.104795-1-guoyaxing@bosc.ac.cn>
+ <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
+In-Reply-To: <CAAhSdy3QE6Fe_fanKOLHLjDCb+vsVax=wy18UxzR23XN7ggJGw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 8/1/2026 12:11 AM, Sean Christopherson wrote:
-> On Fri, Jul 31, 2026, Xiaoyao Li wrote:
->> On 7/29/2026 8:35 AM, Ackerley Tng via B4 Relay wrote:
->>> From: Ackerley Tng <ackerleytng@google.com>
->>>
->>> Update tdx_gmem_post_populate() to handle cases where userspace requests
->>> "no source page". To handle "no source page", populate (perform
->>> TDH.MEM.PAGE.ADD) using memory in-place at the target PFN.
->>>
->>> Signed-off-by: Sean Christopherson <seanjc@google.com>
->>> Tested-by: Shivank Garg <shivankg@amd.com>
->>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->>> ---
->>>    Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
->>>    arch/x86/kvm/vmx/tdx.c                   | 8 +++++---
->>>    2 files changed, 9 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
->>> index 6a222e9d09541..d8d9409120e61 100644
->>> --- a/Documentation/virt/kvm/x86/intel-tdx.rst
->>> +++ b/Documentation/virt/kvm/x86/intel-tdx.rst
->>> @@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
->>>    Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
->>>    provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
->>> +If guest_memfd in-place conversion is enabled, pass 0 for @source_addr
->>> +to represent "no source page". A source page is required if in-place
->>> +conversion is not enabled or not supported.
->>> +
->>>    Note, before calling this sub command, memory attribute of the range
->>>    [gpa, gpa + nr_pages] needs to be private.  Userspace can use
->>>    KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
->>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->>> index d1af0a752e97e..e890da5f18aed 100644
->>> --- a/arch/x86/kvm/vmx/tdx.c
->>> +++ b/arch/x86/kvm/vmx/tdx.c
->>> @@ -3192,7 +3192,7 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->>>    	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->>>    		return -EIO;
->>> -	kvm_tdx->page_add_src = src_page;
->>> +	kvm_tdx->page_add_src = src_page ?: pfn_to_page(pfn);
->>>    	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
->>>    	kvm_tdx->page_add_src = NULL;
->>> @@ -3238,7 +3238,8 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
->>>    	if (copy_from_user(&region, u64_to_user_ptr(cmd->data), sizeof(region)))
->>>    		return -EFAULT;
->>> -	if (!PAGE_ALIGNED(region.source_addr) || !region.source_addr ||
->>> +	if (!PAGE_ALIGNED(region.source_addr) ||
->>> +	    (!gmem_in_place_conversion && !region.source_addr) ||
+
+
+在 2026/8/3 22:22, Anup Patel 写道:
+> On Sun, Aug 2, 2026 at 10:30 AM Yaxing Guo <guoyaxing@bosc.ac.cn> wrote:
 >>
->> Sorry, I still want to discuss why we only allow in-place PAGE.ADD for
->> gmem_in_place_conversion only. Though Yan raised this opinion[1] in previous
->> v8, I'm not quite following her argument. So let me try again.
+>> Hi all,
 >>
->> I think in-place PAGE.ADD of TDX doesn't need to depend on
->> gmem_in_place_conversion. There are two use cases actually.
+>> I would like to ask whether RISC-V KVM has a gap around guest sfence.vma
+>> and VS-stage TLB invalidation when a vCPU migrates across host CPUs.
 >>
->> 1). Userspace sets the gmem page as private, and invokes the in-place
->> PAGE.ADD by passing a 0 source_addr. Due to patch 16, the target PFN will be
->> ADD'ed to TD as a all-0 page.
+>> On bare metal, Linux uses mm_cpumask in __flush_tlb_range() to decide
+>> whether to send a local or remote sfence.vma. That works because the cpumask
+>> reflects physical CPUs. In a guest, however, the kernel only sees vCPUs, so
+>> from the guest point of view a task may never "migrate" even though the
+>> underlying vCPU moved to a different host CPU. In other words, guest
+>> mm_cpumask is effectively a vCPU mask, not a host CPU mask.
 >>
->> 2). Userspace sets the gmem page as shared, and writes the desired content
->> to it. Then converts the page to private, and invokes the in-place PAGE.ADD
->> by passing a 0 source_addr. The target PFN will be ADD'ed to TD with desired
->> content.
+>> There is also a related switch_mm()/set_mm_asid() aspect. With the ASID
+>> allocator enabled, RISC-V Linux does not flush on every context switch. A
+>> local_flush_tlb_all() is only done when a deferred ASID rollover flush is
+>> pending for the current CPU. That is fine on bare metal, because previous
+>> shootdowns are also based on physical CPUs. In a guest, however, the earlier
+>> shootdown may have been only a guest-local sfence.vma and may have missed an
+>> old host CPU where the same vCPU ran previously.
 >>
->> For gmem_in_place_conversion == false, only case 1) is possible.
->> For gmem_in_place_conversion == true, both case 1) and 2) are possible.
+>> A simplified sequence is:
 >>
->> Basically, this patch is changing the behavior of KVM_TDX_INIT_MEM_REGION.
->> Before, it returns -EINVAL when region.source_addr == 0. Now it wants to
->> allow the "region.source_addr == 0" case. If we can allow it
->> unconditionally, why bother adding the restriction to allow it only when
->> gmem_in_place_conversion == true?
+>> 1. A guest task with mm A runs on vcpu0 while vcpu0 is scheduled on host
+>>     CPU1. CPU1 fills a VS-stage TLB entry for that mm/ASID.
+>> 2. vcpu0 migrates to host CPU0. KVM's vCPU migration sanitization is local
+>>     to the current host CPU, so it does not invalidate the VS-stage TLB entry
+>>     that was left on host CPU1.
 > 
-> As I said[*] in that thread:
+> When vcpu0 migrates to host CPU0, the host CPU0 may or may not have
+> VS-stage TLB entry so VCPU migration sanitization does the right thing.
 > 
->   : Because retroactively adding support for out-of-place conversion is pointless
->   : (requires a userspace update for a feature that's being deprecated), KVM can't
->   : generally support using the source for out-of-place conversion (it's effectively
->   : an obscure zero-page optimization), and IMO rejecting the out-of-place conversion
->   : scenario is valuable for KVM developers, e.g. to help newcomers understand what
->   : exactly is and isn't possible.
+> In the future, vcpu0 may again move back to host CPU1 containing stale
+> VS-stage TLB entries left in step1 above so the VCPU migration sanitization
+> will cleanup these stale TLB enteries.
+> 
 
-Fair enough.
+Sorry, perhaps I didn't describe it clearly enough. In short, the issue 
+is: because vcpu0 migrated away, cpu1 still has stale TLB entries while 
+cpu0 has the new mapping. After that, neither vcpu migrated again, but 
+the process was scheduled from vcpu0 to vcpu1 (which is on cpu1), 
+causing it to hit the stale TLB. Consider the following scenario:
 
-Ackerley, please update the changelog to add the reason why we decided 
-to only support in-place PAGE.ADD for TDX for in-place gmem only.
+   1. vcpu0 and vcpu1 are both running on cpu1. At this point, vcpu0 is 
+on cpu1, and a process on it reads a page, which gets cached in the TLB 
+(let's call this the "stale TLB entry").
+   2. vcpu0 migrates to cpu0, and then the process (on vcpu0, now on 
+cpu0) does a CoW (copy-on-write) and establishes a new mapping.
+   3. Neither vcpu0 nor vcpu1 migrates again. At this point, the process 
+gets scheduled inside the VM onto vcpu1 (which is on cpu1), reads the 
+same page, and hits the stale TLB entry.
 
-> [*] https://lore.kernel.org/all/akMPZePBdwQlD74H@google.com
+>> 3. The guest later updates mm A's page table from vcpu0, for example due to
+>>     COW. Since the guest still sees mm A as having run only on guest CPU0,
+>>     __flush_tlb_range() can choose a local sfence.vma. That local sfence.vma
+>>     only affects host CPU0, where vcpu0 is currently running, so the stale
+>>     VS-stage entry on host CPU1 remains.
+> 
+> No need to worry about stale VS-stage entry on host CPU1 because these
+> will age-out or same guest may again move to host CPU1 resulting in
+> VCPU migration sanitization.
+> 
+>> 4. Later, the task is scheduled again while vcpu0 is running on host CPU1.
+
+Sorry, that was a typo on my part. 'Later, the task is scheduled again 
+while vcpu0 is running on host CPU1' should say vcpu1 instead of vcpu0.
+
+>>     If the ASID is still valid and no deferred ASID rollover flush is pending,
+>>     set_mm_asid() may not issue any flush. The access on host CPU1 can then
+>>     hit the old VS-stage TLB entry.
+> 
+> See above comments.
+> 
+>>
+>> We hit this on a XiangShan RISC-V system. A bash task in the guest was
+>> scheduled on vcpu0 while that vCPU was running on host CPU1. A read-only
+>> page was prefetched and cached in CPU1's VS-stage TLB. Later the same vCPU
+>> migrated to host CPU0, the guest triggered COW and updated the mapping, and
+>> the guest still issued only a local sfence.vma. The stale VS-stage entry on
+>> CPU1 was not invalidated. After running for some time, the task later
+>> accessed that mapping while running on host CPU1 again and hit the stale
+>> translation. The data in that page was a pointer from the GOT, so it
+>> dereferenced to NULL and eventually caused a segmentation fault.
+> 
+> The above example is already taken care by TLB flushes in KVM RISC-V.
+> This smells like some HW errata to me.
+> 
+>>
+>> I checked current upstream RISC-V KVM (v7.0.2) and I do not see HSTATUS.VTVM
+>> being enabled, so guest sfence.vma is not trapped. I found
+>> kvm_riscv_local_tlb_sanitize() on host CPU migration, which handles G-stage
+>> VMID entries on the current host CPU, but I do not think it generally solves
+>> the stale VS-stage TLB case described above.
+>>
+>> I also noticed the vendor-specific kvm_riscv_vsstage_tlb_no_gpa path in
+>> current upstream. It looks like a workaround for a particular implementation
+>> issue on Andes AX66, where the VS-stage TLB does not cache guest physical
+>> address and VMID, so the normal VMID/GPA-based invalidation model is
+>> insufficient. In that sense, it does not seem to be a generic solution for
+>> guest sfence.vma coherence across vCPU migration.
+>>
+>> I am wondering what the right direction should be. Enabling HSTATUS.VTVM and
+>> trapping guest sfence.vma would allow KVM to translate guest local sfence.vma
+>> into the required host-side hfence.vvma, but that may be too heavy for the
+>> common case. Another possible direction may be to make the current
+>> Andes-specific vCPU migration flush logic more generic, so implementations
+>> that need VS-stage TLB sanitization on vCPU migration can opt in through a
+>> common mechanism. A third possibility may be to define a lightweight SBI
+>> interface for guest local sfence.vma, so Linux could use it in
+>> __flush_tlb_range() for the local case when running under KVM, and KVM could
+>> then decide whether a local sfence.vma is sufficient or whether host-side
+>> hfence.vvma is also needed.
+> 
+> Enabling HSTATUS.VTVM has a big impact on performance so certainly
+> NACK from myside.
+> 
+>>
+>> My questions are:
+>> 1. Is the behavior above expected on current RISC-V KVM?
+> 
+> Yes, it should work fine unless there is some HW bug.
+> 
+>> 2. If not, what would be the preferred fix direction?
+>> 3. Should this be handled by trapping guest sfence.vma with VTVM, by
+>>     generalizing the existing vCPU-migration VS-stage TLB flush logic, or by
+>>     adding a lighter SBI-mediated path for guest local sfence.vma?
+>> 4. Or is there another intended mechanism to keep VS-stage TLB state coherent
+>>     across vCPU migration?
+>>
+>> If needed, I can send a reproducer and the exact hardware/kernel details.
+>>
+> 
+> Even if you share some reporducing code sequence, we still have don't
+> have access to your HW so it won't help much.
+> 
+> Regards,
+> Anup
 
