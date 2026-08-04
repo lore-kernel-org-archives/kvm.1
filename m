@@ -1,185 +1,124 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771CF3FB7E5
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF34440A3D
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785878145; cv=none; b=SkBbmxJuMfDI1sNqr/MCSVu66cpAS9TdsYa+Apek4Li3Vj5P1mlSWGn9CWHJpw4EbGeXUVBL96uGYkIwN2rUSQpfSoGhA3LyfOrEq6G9gTkuiPAqy8mubYdNwxeiysmrIXFYp8TQhIB2zVDyEcYgF9SUZeQCvRAU8DCK3xLv5BU=
+	t=1785878480; cv=none; b=QdsvnSLhs0VD8QOboVXg2kd0LxOrFi7IjhjGyc8N4bG3nru3Y+MO4/aEB1pKjuwessi9J8Lx/zb/qBNliXcex0Z1Su2ZWAOtA5yHTE5PznadQPt54k1927ti5mU90Teka2NV/VNLo4fMRkk7RhlwY9oayX/kBL++MTc307HUwK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785878145; c=relaxed/simple;
-	bh=V24gjxcUr3ORAZpKWAzvSMyLvHPceaEPhTg/9RjdeKU=;
+	s=arc-20240116; t=1785878480; c=relaxed/simple;
+	bh=xzRPCs/rv1FhtkiR8oU1AWkWRGI+B37AVWNvL9stlSo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F79SFlYShJgbbaKt4RnfkmH8dszbBajpeEsEEmWhQT/ieCmn4TVeWEAVxemS5+B+jIwYVg9lZNATkkHngTdoXv7BLVBhzPcqb4cIkSb46fu+neiDAXMWHKxV23zoNcxOTicKhTW5fgeoyLIfueD5UP6VlzhAuwXYYk+8tAxW9XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qx0u21El; arc=none smtp.client-ip=209.85.216.72
+	 To:Cc:Content-Type; b=Fa1/++UopCh3EWJaoFupqaQYCAczJ1QFJRjYu8WCeq0aJd4jhQI01xFQOAFWQ/S1UEmEsz5OkF3W3BLjwtAkvliUmOAyptOQwtp/Nx6NQIIsrrTv1p3zWwQDbi8bGRUDQGosQHWFG3iSUT5X8EnZaoVNh6rjXf5d/qRStWsWf/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4tnhJps; arc=none smtp.client-ip=209.85.210.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qx0u21El"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38ce7fabf76so370614a91.2
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:15:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4tnhJps"
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-848544a8496so276414b3a.0
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:21:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785878143; x=1786482943; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785878477; x=1786483277; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rHQOfCFF6yaKH9HqGSLDO98Dtf8szKrkpDeyDbaXUEA=;
-        b=qx0u21ElGri4nA2vtySnKHwHC39X73+BhlvETjTiUPqw/eyhsSzTzaIk4UWBWMy/QQ
-         0R84MhhLIDWt1n8qBRvFWLvn/3e9JEPGZzxOdEgSQI6Jo9m8QBqKVXtql8vtQpvIaf4Y
-         YATaQMOx3qW2ghW1yd6lOyqY9rImE23O5/MI2gNaLC3/Gtlyh9ZEKL2b16OIAB80okOD
-         bJvENobethFWPIDprRqPfArFi37jqbYzb7CDZursr34M7KHWJP32r32ex+RwYKtuKikY
-         RRLLkkXfoGlIyg3p/rnjdxkElkcwlM6cbmcUUpuPze6Sj6ks256u/rf3m1aR4Yz/efyl
-         8k+g==
+        bh=WFgMw4fiBgrQ1xsL5NWX1WqzYPj0vpROk8XmbnyUdOw=;
+        b=R4tnhJps62sDUI4VJMax8L3AOHXry0CSPlXwQ5esTHVA3PbdnY/vXFn56WYEibJyoS
+         42/1pXC6INuB2jP0N88ec4zgHghLNqLoU5TqgMwHiv55v/AAy+QX+uOlwGqBb2d6UtdP
+         lpQ1SenKcLAwpbDZY49d6UPLshgWWs5EvyCsOSWD439x4cMnEUSXn6gIeUvlyfH3GsCr
+         s9VW0kC0HuAn7oxv3+yrdM/pok9yD07LM3daSUOyUROwIsWQP9XdxJGdp0WUOeanC3x9
+         uTmXMNQbD7XdXXEDL79B8b7q1gCuHx2TuAU+0WXtyQUC3f/ekRNUKOPDos4akrGzuKlo
+         2pkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785878143; x=1786482943;
+        d=1e100.net; s=20251104; t=1785878477; x=1786483277;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rHQOfCFF6yaKH9HqGSLDO98Dtf8szKrkpDeyDbaXUEA=;
-        b=IhNM8Z3vvrFcxtFpM9I1GG9SzwLgYHpCyzlFS9bqJCxTMC0vcsHllq+EteojrJlzPb
-         615bjdZWlBybMktgwAR9xt7EWQdbQ7LclVxmDzQ4+4RZ4WiL5Sle6TElsGGOBRyPM7nE
-         UfQAIh63Ed5RUtPhp0PHFnjKT1fkbCt6Z95BxPVy+yfXcwNztaEeHsIfbg1wMqUcz3jH
-         86soX/BL+maKIkHgxrnRHil/vmSDaTQ2hV6a6llYzvupajZRKHUnQjLB6+Vjj9GUIuq8
-         DUcSUC4WLvOOPGnjRlKWa854ukTAGCq/DwK+1RY8y9sz2Fs+0gNF5DLcjNaNdudwFW48
-         pmjg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6/G+nMR9y5x4+cSpZ82pHjVpGF0dk6XzFMiW75RDWOnh84mHEj2UHxJeR0qMwBclnAyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydHpu3DaOrmCM7GrZA7D8QWQrhphLqd/mOnZWiJAZbp/N9e9f5
-	4BAKvedBHglsfBSM1IKTit/1/LXx6qJ/LC9HgfYWY8felgvffcOq0Les38LFbxFih93RInobl7E
-	pkso4eA==
-X-Received: from pjot9.prod.google.com ([2002:a17:90a:9509:b0:38e:1db:751c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:540e:b0:38e:6a30:4bbc
- with SMTP id 98e67ed59e1d1-3903c681346mr1785320a91.21.1785878142058; Tue, 04
- Aug 2026 14:15:42 -0700 (PDT)
-Date: Tue, 4 Aug 2026 14:15:41 -0700
-In-Reply-To: <20260804120529.1730187-5-pbonzini@redhat.com>
+        bh=WFgMw4fiBgrQ1xsL5NWX1WqzYPj0vpROk8XmbnyUdOw=;
+        b=CBjOImq3W0DXtguUyiWbDKT9EqjbTFMfct3b3f3k89AmjluX6aUEMp+DT0zRA0Otca
+         1fq6O/L4QpmUDIWGOnhkK03LILV/D7VyGo+qNPTomh3XCIc+l/9TllEG22jz/+QsWZNP
+         AvYqz5YrnwY95RMqIAzQRGkSAeYYck6wQb2w8mFSgiEJdlYf5rc7HSW/RQOxaiIx2XeA
+         UivG2iqaupPCQdnDCxbacuhjFgLYgO3nVGZyZBz0YF6o4LS4o+FO5Bu3GrPwCpAoRZN5
+         ixVssPOuerLn2HqGjrHv1sOdhk/LMpmgVlmLj2So9w9F74xn0izSr/OmDBcMhv1RXtSL
+         1dNA==
+X-Gm-Message-State: AOJu0Yw/fJrtGI4vjCi3SSqWUV0WcMaVGRGWWZ7CrOikiRa4C1hiadJa
+	bcAWl1zwNGGuIeh5BX3AUngbEXK4kQae4ffCPlxAGqf+mJNCBoBypJ8sbnNjBbdxnD2qvHqtaKQ
+	diCb7ig==
+X-Received: from pfw16.prod.google.com ([2002:a05:6a00:a270:b0:847:840c:ba17])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a20:b0:84e:f90e:492f
+ with SMTP id d2e1a72fcca58-84f2dfc338fmr1489489b3a.7.1785878476592; Tue, 04
+ Aug 2026 14:21:16 -0700 (PDT)
+Date: Tue, 4 Aug 2026 14:21:16 -0700
+In-Reply-To: <20260804211300.668C01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-5-pbonzini@redhat.com>
-Message-ID: <anJWfesPj1C8fzFr@google.com>
-Subject: Re: [PATCH v2 4/6] kvm: apply VM_READ/VM_WRITE checks to all VMA types
+References: <20260804210046.3413149-1-seanjc@google.com> <20260804210046.3413149-3-seanjc@google.com>
+ <20260804211300.668C01F000E9@smtp.kernel.org>
+Message-ID: <anJXzBxq6fbPuoQC@google.com>
+Subject: Re: [PATCH v3 2/2] KVM: selftests: Create one VM with many vCPUs for
+ each major PMU counters test
 From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
-	Boris Brezillon <boris.brezillon@collabora.com>, Christian Koenig <christian.koenig@amd.com>, 
-	David Hildenbrand <david@kernel.org>, dri-devel@lists.freedesktop.org, 
-	Fei Li <fei1.li@intel.com>, Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, 
-	linux-s390@vger.kernel.org, Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, 
-	Sergio Lopez <slp@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-KVM:
+On Tue, Aug 04, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> > +	pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
+> > +		pmu_version, perf_capabilities);
+> > +
+> > +	/* Testing arch events requires a vPMU (there are no negative tests). */
+> > +	if (!pmu_version)
+> > +		return;
+> > +
+> > +	vm = pmu_vm_create_with_vcpus((NR_INTEL_ARCH_EVENTS + 2) * (ARRAY_SIZE(unavailable_masks) - 1),
+> > +				      guest_test_arch_events, pmu_version,
+> > +				      perf_capabilities, &vcpus);
+> 
+> [Severity: Medium]
+> Could this cause the test to assert on hosts with lower vCPU limits?
+> 
+> This calculation requests up to 144 vCPUs per VM ((14 + 2) * (10 - 1)). If the 
+> host has a KVM_CAP_MAX_VCPUS limit lower than 144 (which is common in nested
+> virtualization or lightweight VMs), 
 
-On Tue, Aug 04, 2026, Paolo Bonzini wrote:
-> The VM_READ and VM_WRITE flags are checked only at the very end of
-> hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
-> mappings, this adds unnecessary cases and inconsistent error behavior.
-> 
-> For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
-> detect this situation.  This is fragile because hva_to_pfn_remapped()
-> returns different error codes for a !VM_WRITE VMA depending on whether
-> the PTE happens to be mapped:
-> 
-> * if the PTE is present, follow_pfnmap_start() sets args.writable to
->   false and KVM_PFN_ERR_RO_FAULT is returned;
-> 
-> * if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
->   -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
->   up returning KVM_PFN_ERR_FAULT.
-> 
-> With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
-> a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
-> pte_present()[1] when the guest attempted to read it; with the patch
-> instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
-> avoids these special cases and also sidesteps the issue pointed out at
-> https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
-> 
-> For regular mappings a PROT_READ VMA, if placed in a writable memslot,
-> would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-> the guest writes to it.  This would cause a -EFAULT exit to userspace,
-> instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
-> however it should be considered part of the KVM API because mmu_stress_test
-> relies on it.
-> 
-> Still, even with this snag about the returned pfn error code, pull the
-> vm_flags checks in front so that they are done for all VMAs and the
-> above inconsistency goes away for the VM_IO|VM_PFNMAP case.
-> 
-> [1] on x86, for example, such a page would have _PAGE_PRESENT clear
->   but _PAGE_PROTNONE set
-> 
-> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
->  1 file changed, 16 insertions(+), 18 deletions(-)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 45e784462ec6..576bcb21be3a 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
->  	return npages;
->  }
->  
-> -static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
-> -{
-> -	if (unlikely(!(vma->vm_flags & VM_READ)))
-> -		return false;
-> -
-> -	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
-> -		return false;
-> -
-> -	return true;
-> -}
-> -
->  static int hva_to_pfn_remapped(struct vm_area_struct *vma,
->  			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
->  {
-> @@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
->  retry:
->  	vma = vma_lookup(current->mm, kfp->hva);
->  
-> -	if (vma == NULL)
-> +	/*
-> +	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
-> +	 * or the page might be absent.
-> +	 */
-> +
+No, it's not.  Unless userspace overwrites the VM's max vCPUs, KVM x86's *minimum*
+value for KVM_CAP_MAX_VCPUS is 1024.
 
-Unnecessary newline, IMO.
+	case KVM_CAP_MAX_VCPUS:
+		r = KVM_MAX_VCPUS;
+		if (kvm)
+			r = kvm->max_vcpus;
+		break;
 
-> +	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
->  		pfn = KVM_PFN_ERR_FAULT;
-> -	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-> +	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
-> +		/*
-> +		 * Exit to userspace for PROT_READ mappings in a writable
-> +		 * memslot, as this is part of the API.
+  #ifdef CONFIG_KVM_MAX_NR_VCPUS
+  #define KVM_MAX_VCPUS CONFIG_KVM_MAX_NR_VCPUS
+  #else
+  #define KVM_MAX_VCPUS 1024
+  #endif
 
-Can we say something along the lines of "for backwards compatibility" instead
-of saying this is part of the API?  Because that's definitely not KVM's documented
-API, and we're hoping it's not part of KVM's undocumented API either.
 
-> +		 */
-> +		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
-> +			KVM_PFN_ERR_FAULT;
+  config KVM_MAX_NR_VCPUS
+	int "Maximum number of vCPUs per KVM guest"
+	depends on KVM_X86
+	range 1024 4096
+	default 4096 if MAXSMP
+	default 1024
 
-Please align the two branches of the ternary operators:
 
-		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
-							    KVM_PFN_ERR_FAULT;
-	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-		r = hva_to_pfn_remapped(vma, kfp, &pfn);
-		if (r == -EAGAIN)
-			goto retry;
-		if (r < 0)
-			pfn = KVM_PFN_ERR_FAULT;
-	} else {
-		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
-						 KVM_PFN_ERR_FAULT;
+KVM_CAP_NR_VCPUS incorporates the number of CPUs in the system, but that's purely
+a "suggestion" for userspace.
+
+	case KVM_CAP_NR_VCPUS:
+		r = min_t(unsigned int, num_online_cpus(), KVM_MAX_VCPUS);
+		break;
+
+> vm_create_with_vcpus() might fail with a hard assertion.
+> 
+> Should this check against the host limit and either skip via TEST_REQUIRE()
+> or batch the creations into smaller groups of vCPUs?
