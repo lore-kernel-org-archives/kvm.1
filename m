@@ -1,215 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF67F381B1D
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C783E9C29
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785867578; cv=none; b=Sr019e67K7f6P8QrafZHGpC4mZV5DFqThjxT1nVKLl3x+YeJOS6rfT6O41hBoJKrDqQjpdcAQu4Yg4iINsX+cLnZhXL8cy6rMbzuzU+1fB4Fs2PCAUu4inASXysPI1o++p2B42iY/MWlpimmmHqQMpNpB5OJt4WunBSh8hfjBgU=
+	t=1785867717; cv=none; b=do+BOULvT8We3vFNDM1cW6CnultftwBE0kOKAPrrxrJzjtlopF9AB1uiEllap3Hs6wIabRJmYg8ShImkSHtOEpewZyU6YruxpD/IaWdIOMLwtgvDGNQN6mrvVv2r/IUu2iao9YbnHAxKIg0iUYyJnzOABBYi7VfCnTTz/hP23pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785867578; c=relaxed/simple;
-	bh=OHEsUoOuaM7AjqwfID4fRLpsG1beywprHeA8s1R8WE0=;
+	s=arc-20240116; t=1785867717; c=relaxed/simple;
+	bh=oaJTSfrYViliM1aV1Z1D+NRbd83kG5w/JXrnawU4KNA=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=A5ToyLamhS1uZDAZi3ZLDWQiPJV3w5qB0d3UQl1k8W7Z0eWsm0ySYkJnh/tZvZqu4rzFqFqT8JESoPUwI/9fRLxva5oWvTmnzxqSIqmc+ePrtHJSQzRGF3CFwpiVsjcbXhTvFFbSFejXs/Xw70ee8i7+oZLt95sGeJPtnN246+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2ZBU5sU; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=bu2SM1mY1AG1RPmp60Y1CAkz1v1duE4l8OxIJSNT2iExvkicE3XizDGmJkTOKe5senTqeJ8O3Yke3+ULHAFW6OwlY8WQBfi4fYpwV18vg5MtBeGKGC0YPRQoq6hLyxj80plN/hn+94gnDIgKZFeEuIvm/aOvrBdViO9AvttYUic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2D8Jq7C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2ZBU5sU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF2A1F000E9;
-	Tue,  4 Aug 2026 18:19:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2D8Jq7C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D511F000E9;
+	Tue,  4 Aug 2026 18:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785867577;
-	bh=vlWWqG5m01cnhtPGiJlh2RmxdNi01Y1P6Kr193nZXNQ=;
+	s=k20260515; t=1785867716;
+	bh=ZeGePvjUVyJTVqpm8d5A9T7i0xt5HxQNBwnEsz0VWcY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=N2ZBU5sUPq+pTb6nX7YfVSWTl5g1HSfw5iVdTfIbqVwkr+kx/tMUwvnLm0xDmTuWQ
-	 w9iOtKOzdwGK6Gd9+fr4RkQjT0ZF4HJHpCUAiWpWz3EQ9kINA+n0WwqJL9zyQZcMeQ
-	 qFhkabpfyVXMblbDztzVfeCfnRMW1LJ/gZBgN5NyUV5qhjdF+r50Vi7YwGCxpH2kfe
-	 KcGuPgjcfuZeSZAPu+UBOXZH1+QI4WF8tBymIdV2mNHWh25Tr5lyD/E6n+PxkWr8b4
-	 yB2nUjTa+inQgclKlwupkb9GeNHKVM6k6ocOJLEXMvafBPXcN5yTu7Flzg8GZ1RjC9
-	 UiKI3lvM08Glw==
+	b=d2D8Jq7CZvQwBzF/Dnl7Quj/kO0Ojc//r2zdlzHd9/j0SFv6Jj721VPpnEnu9LC6Z
+	 rf4fh7AAB1Ey8ocYrSWBoiHJQlLrVbY579pUkYqEDHJzNxLcVVQF3G9L69T/4rtSD8
+	 FdXaSMvZaw3S3eEBJjJ5X+HBRCi6OkK1UCDyuiBLgmsVr7sH+YUBVWxxLjKPJkuw63
+	 txxvfgcrHjZKdrpA8GwbpiYao2n3THo9ObZZDPxR16mfTIztMKD0fVWvG4Y9yC8pHv
+	 N/Xp7wgimcjGBH70BwwHFVzHUL1JsnIO4kjC1t2+0obaS0jtVCaFzKjsYnFW2vMxHO
+	 3V1DZXBudQAKw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
- wire up ioctl
+Subject: Re: [PATCH v6 2/4] KVM: PPC: Book3S HV: Implement compat CPU
+ capability retrieval for KVM on PowerVM
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260804180705.59160-2-amachhiw@linux.ibm.com>
+In-Reply-To: <20260804180705.59160-3-amachhiw@linux.ibm.com>
 References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
- <20260804180705.59160-2-amachhiw@linux.ibm.com>
+ <20260804180705.59160-3-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 18:19:36 +0000
-Message-Id: <20260804181937.2EF2A1F000E9@smtp.kernel.org>
+Date: Tue, 04 Aug 2026 18:21:55 +0000
+Message-Id: <20260804182156.62D511F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The ioctl artificially inflates the userspace struct's `size` fiel=
-d on success, creating a memory corruption trap if userspace reuses the str=
-uct.
-- [High] The ioctl unconditionally rejects larger structs with -E2BIG, bypa=
-ssing standard UAPI zero-checking and encouraging silent input truncation.
-- [Medium] The KVM_PPC_GET_COMPAT_CAPS ioctl availability is decoupled from=
- its KVM_CAP_PPC_COMPAT_CAPS capability, breaking capability negotiation an=
-d bisectability.
+- [Medium] Mismatch between KVM_CAP_PPC_COMPAT_CAPS advertisement and ioctl=
+ implementation for unsupported environments.
 --
 
---- Patch [1]: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS a=
-nd wire up ioctl ---
-commit bcf86bb5d3079ca2dbb4bf09693ba6e6a24b06c5
+--- Patch [2]: [PATCH v6 2/4] KVM: PPC: Book3S HV: Implement compat CPU cap=
+ability retrieval for KVM on PowerVM ---
+commit 8305652489744988576b7fa55e0424452c48a633
 Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM on P=
+owerVM
+   =20
+This commit adds support for retrieving host CPU compatibility capabilities
+for nested guests on PowerVM. The capability bitmap is retrieved from the
+cached nested_capabilities value and exposed through the new
+KVM_PPC_GET_COMPAT_CAPS ioctl.
 
-This commit introduces a new capability and ioctl to expose CPU compatibili=
-ty
-modes supported by the host processor for nested guests.
-
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 00302399fc37b..8d6632c64ca5f 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -697,6 +697,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lo=
-ng ext)
->  			}
->  		}
->  		break;
-> +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
-> +	case KVM_CAP_PPC_COMPAT_CAPS:
-> +		r =3D 0;
-> +		if (kvmhv_on_pseries())
-> +			r =3D 1;
-> +		break;
-
-[Severity: Medium]
-Is this capability check fully aligned with the ioctl's availability?
-
-This check returns 1 on a pseries host using PR KVM (since it misses the
-hv_enabled check), but the ioctl might fail with -ENOTTY if the backend
-is missing.
-
-Later in the ioctl execution, it succeeds on a bare-metal host using HV KVM
-(missing the kvmhv_on_pseries() check) even though this capability check
-would return 0.
-
-Could this decoupling between the capability and the ioctl availability bre=
-ak
-capability negotiation for userspace?
-
-> +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
->  	default:
->  		r =3D 0;
->  		break;
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3b..8799124b80960 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
 
 [ ... ]
 
-> @@ -2463,6 +2470,70 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned =
-int ioctl, unsigned long arg)
->  		r =3D kvm->arch.kvm_ops->svm_off(kvm);
->  		break;
->  	}
-> +	case KVM_PPC_GET_COMPAT_CAPS: {
-> +		struct kvm_ppc_compat_caps host_caps =3D {};
-> +		u64 usize;
+> @@ -6510,6 +6510,25 @@ static bool kvmppc_hash_v3_possible(void)
+>  	return true;
+>  }
+> =20
 > +
-> +		/*
-> +		 * Read the size field first to drive copy_struct_from_user.
-> +		 * size must be the first field of the struct.
-> +		 */
-> +		r =3D -EFAULT;
-> +		if (get_user(usize, (__u64 __user *)argp))
-> +			goto out;
+> +static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
+> +{
+> +	unsigned long capabilities =3D 0;
+> +	long rc =3D -EINVAL;
 > +
-> +		/*
-> +		 * Enforce a minimum: reject buffers smaller than the initial
-> +		 * struct version (VER0). This allows old userspace compiled
-> +		 * against the original struct to still work on a newer kernel
-> +		 * that has grown the struct with appended fields.
-> +		 */
-> +		r =3D -EINVAL;
-> +		if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
-> +			goto out;
-> +
-> +		/*
-> +		 * New userspace with a larger struct called an older kernel.
-> +		 * Write back ksize in host_caps.size so userspace knows which
-> +		 * older struct to retry with, then fail with -E2BIG.
-> +		 */
-> +		if (usize > sizeof(host_caps)) {
-> +			host_caps.size =3D sizeof(host_caps);
-> +			r =3D -EFAULT;
-> +			if (put_user(host_caps.size, (__u64 __user *)argp))
-> +				goto out;
-> +			r =3D -E2BIG;
-> +			goto out;
+> +	if (kvmhv_on_pseries()) {
+> +		if (kvmhv_is_nestedv2()) {
+> +			WARN_ON_ONCE(!nested_capabilities);
+> +			capabilities =3D nested_capabilities;
+> +			rc =3D 0;
 > +		}
-
-[Severity: High]
-Does explicitly rejecting larger structs here bypass the standard UAPI
-zero-checking?
-
-By catching usize > sizeof(host_caps) early and returning -E2BIG, the code
-bypasses copy_struct_from_user()'s built-in validation which would safely
-reject non-zero extended fields.
-
-If userspace receives the smaller kernel size and retries by truncating its
-buffer size, the kernel will only read the truncated portion, silently
-ignoring any non-zero extended fields that userspace originally provided.
-
-Should this rely on copy_struct_from_user() to safely check zeroed trailing
-bytes instead?
-
-> +
-> +		/*
-> +		 * copy_struct_from_user() handles forward/backward compat:
-> +		 *   usize =3D=3D ksize: verbatim copy
-> +		 *   usize <  ksize: zero-pad trailing (old userspace, new kernel)
-> +		 */
-> +		r =3D copy_struct_from_user(&host_caps, sizeof(host_caps),
-> +					  argp, usize);
-> +		if (r)
-> +			goto out;
-> +
-> +		/* Reserved fields must be zero */
-> +		r =3D -EINVAL;
-> +		if (host_caps.flags)
-> +			goto out;
-> +
-> +		r =3D -ENOTTY;
-> +		if (!kvm->arch.kvm_ops->get_compat_caps)
-> +			goto out;
-> +
-> +		r =3D kvm->arch.kvm_ops->get_compat_caps(&host_caps);
-> +		if (r)
-> +			goto out;
-> +
-> +		host_caps.size =3D sizeof(host_caps);
-> +		r =3D copy_struct_to_user(argp, usize, &host_caps,
-> +					sizeof(host_caps), NULL);
-
-[Severity: High]
-Can this artificial size inflation cause an out-of-bounds read/write if
-userspace reuses the struct?
-
-If an older userspace passes a smaller struct to a newer kernel (where
-usize < sizeof(host_caps)), the kernel sets host_caps.size to its own larger
-size. It then copies the smaller usize bytes back, overwriting the userspace
-size field with the kernel's larger size.
-
-If userspace reuses this struct for a subsequent ioctl call, it will now pa=
-ss
-the larger size. The kernel would then read past the end of the originally
-allocated userspace buffer, and if successful, write back past the end
-as well.
-
-> +		break;
 > +	}
->  	default: {
->  		struct kvm *kvm =3D filp->private_data;
+> +
+> +	host_caps->compat_capabilities =3D capabilities & KVM_PPC_COMPAT_BITMAS=
+K;
+> +
+> +	return rc;
+> +}
+
+[Severity: Medium]
+Will this return -EINVAL for pseries hosts when nestedv1 is used?
+
+If KVM_CAP_PPC_COMPAT_CAPS advertises support by returning 1 for all pseries
+hosts (which appears to be the case in kvm_vm_ioctl_check_extension),=20
+userspace might query KVM_PPC_GET_COMPAT_CAPS and hit this path when
+kvmhv_is_nestedv2() is false.
+
+For example, if userspace checks KVM_CAP_PPC_COMPAT_CAPS and gets a positive
+result, but kvmhv_is_nestedv2() returns false here, we return -EINVAL.
+
+Since -EINVAL typically indicates invalid structure size or bad flags, could
+userspace fail to differentiate an unsupported backend from invalid inputs,
+leading to initialization failures?=20
+
+Should this gracefully return 0 capabilities (or -ENOTTY), or should the
+capability check itself verify kvmhv_is_nestedv2() before advertising suppo=
+rt?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804180705.5916=
-0-1-amachhiw@linux.ibm.com?part=3D1
+0-1-amachhiw@linux.ibm.com?part=3D2
