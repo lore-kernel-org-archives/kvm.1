@@ -1,108 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D553B8BBB
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 12:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA6F3264E9;
+	Tue,  4 Aug 2026 12:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845174; cv=none; b=HIvvV9ZRS+GklE9sTj7jlT+FV9ljCLdy6gnfoD2+LeLHP4uLDM+eFqrsA/mI2klLacaw9KWUMJUtnavtWrhFueM7ECuFiBPYPKrUeIQ0TcL2CPZgvQVKdFZZo8dk54UQOwTJoVj60ucZ5nCsow0aAoSzmbtRXcI0mcZwA7PfY9s=
+	t=1785845206; cv=none; b=XWDrLwDpy6FRJAoYmbSUhC2NIJ/Ei/LJwfJ9sEIvBl0sNKmLcW/KRJUpy7ywjC31MVbvl2rr6OoxOxcsEL4/GbmB6DkwJW3nsbmvdyw70r/CoolpCOpNWCSFrtd9sIOQZqnMx4QrROAnDdg+UjQnhALt89gw0v4Ke1KEw5cCpZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845174; c=relaxed/simple;
-	bh=ShgJllGtoj3B6lj3SHwP+387ixSZNj2YWvPFDV6BseQ=;
+	s=arc-20240116; t=1785845206; c=relaxed/simple;
+	bh=R1Xkz+bpo0V4V7inGZdD0CAbH0ZjrZAkrSEHeKYq8JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKYUY+WOkxHDfhW9nuCmgokjw8fKcS0w2mz7XkwpVQCY2/nQCaKmgxr+PWjT6VC/4dTPUUpTF+I/6Gyx5hZQOMhdNDFFf2dFpNRDMionweuvZ6Vu5xk2nZodmX3/dmx/gZlD1NowEyt4swN1a6TNCdsCu7fpZfNzH6lNHYqRXAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UOSrj2wE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cAIhJJ5i; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version; b=UvZ026ftOMyM0lCpp5IWbzKDmDViUCzegRDc8J3E3f2SmIZk/cFHNnycazoYk4os4geRTJj3YzyE8+LW/ZeaWNd6XmI0nD1N2900aK0OsqEvfWPkniLNqEHFbTeSMvKF0qMwOFb3wptxcq5vVTe6+XgTBHGcsVh7ZqsgxxQwxSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cWGUpyuw; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UOSrj2wE";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cAIhJJ5i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785845164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-	b=UOSrj2wE9KGjM9bjPYH6Y3OSuWroeagStvR7Lefabc2NUuA7Xzhz9XXX1ah87KGEbLgvoo
-	f1D0aUjRW9jqN1qLDulFuHkMDz+iGq7F0Gvg1xiUfGsc35ala+YNf9tTzMnm+6IyX3mfRr
-	/JKq26vYD6kA6fhLLWivV9UFwe+j9fs=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-ziPjgqv7P66pBJZNP8_fOA-1; Tue, 04 Aug 2026 08:05:47 -0400
-X-MC-Unique: ziPjgqv7P66pBJZNP8_fOA-1
-X-Mimecast-MFC-AGG-ID: ziPjgqv7P66pBJZNP8_fOA_1785845146
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47f83416551so4290351f8f.3
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 05:05:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1785845146; x=1786449946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-        b=cAIhJJ5iypZOUTPkcOfJVA/+T+eNpiURGumey1wvCCiEqCPTbkXpjDSGd2kXAlHDgI
-         it6fL70CYJYt++jBX6Pg7dkNwpXmtH4S8MZJHfIyPz7qSzaoI7AJWObi6LyXq1QAfh/N
-         Nr2H8i0KrzVACddd0yxSRxEE6+k/odK4HgyRlQphWwyA20wzRZgCDegc5FmKqS2c5ye6
-         RpHmIy+9gHvLWdHzrHXywY3ZWc4sDBUJ7s6R48hgs3rRopd8PtRMx2yA9PQRiWon403Q
-         VhxLqw3teQZewLTMwxlTswIepR9ZxT8+XJNtkWPVglCnSf0NucOUpwbbhFuuxmtfrjBV
-         3ijw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785845146; x=1786449946;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7VbhR/EeseCGUhv0h0yNN2Py/m+SxPzo7FfzMk4g7pY=;
-        b=bDPdz7hd+vvxE79r6KuMpxnVhPtLOTiyYum1Lcykg7tirY56ECuaR4A0zx9irprRBm
-         YqNNwhDMafbYTbO/JXctHuQKqWFkSxsWgqruBlVWg7N5hMxBbUW2hjD9q8zs8N7O5ZZy
-         oJc1AbbTbVO4QP23i+5s45ROp5dyoM4MUluGLgMreb92WLRGm9tTfRUsu4Z9dek7p5tc
-         4D8pA4oTP6+jDuJTrKAWRrfW/IoxcfP6wkhnvgUgYY76KkZOHLMWBXcRvJJAuROEid57
-         iY20tisRQsfld3vvTJjVSCEgiAo9Ev3BCqzFJ5PeoPKfNhUK8xzETgRYGOiX0Xz/V/mC
-         nXQQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0dYU9JOVbq1b5P/egc5Xz+xMfg7X1W5Z/0JhgFG63uUBzZ9czmkUcrMC+7L3L7i8ImFw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya7aADAtJjXOvNSb+Ts8C1nBpIuq3qeePNFU1b0TeRf3nx6Jdw
-	aR7RgGrRd5z6mINIdORnz9r0pcXzpg90+2357ZaYZ60jisBo5YCUiZk7dbjfQYSGZPpF7BxuX8Z
-	aeInYO9lYvB5/3+myNEYLgQm7akWzBWYt3gDMCRud44DL/DWneEZttA==
-X-Gm-Gg: AR+sD12Uzbft/E57FqSuOKRmEIADYevauBwl/JhOzT1n7rhCPkVe+XzHc6iqGZWmzDa
-	vKHMiZULR3GM9hJVUQJ7Vt98JH4Z6FUIk1D+y8ULv0zcafC899HEFGcPUWgfA6AMir1b3jZ63lp
-	mttVyujoqQu6Juc2fwy7L6gxshiQJF4dMtVDd5G1c3PENVveeCr6vhJtTXV4NET5ZPysD66WOTx
-	5ZZGDyRaC56SHM4xkaB+kUoY8v8QihgatOmIfpsXDP4XWmXKU1+FO9iblNW/NEsle5MAd+uSdgz
-	QF68Fl5JRR0220o3nhMXF2CmERFKvseABq6/abajGG3s14rw7Cer0ODtmpta2iY5C+19b416cmP
-	twwSj4YWql86ie0J2Ti1b3b3vfQtSzNQfZqpq+UJCkocs7JdfU+Xb4x9+QGRtPoABSw+mnINZ0d
-	Onj7g=
-X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813782f8f.9.1785845146059;
-        Tue, 04 Aug 2026 05:05:46 -0700 (PDT)
-X-Received: by 2002:a05:6000:2989:20b0:47f:7154:9dfc with SMTP id ffacd0b85a97d-47fd72a8e68mr29813677f8f.9.1785845145601;
-        Tue, 04 Aug 2026 05:05:45 -0700 (PDT)
-Received: from [192.168.10.48] ([151.95.34.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd4562667sm45367660f8f.24.2026.08.04.05.05.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 05:05:43 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Fei Li <fei1.li@intel.com>,
-	Huang Rui <ray.huang@amd.com>,
-	linux-mm@kvack.org,
-	linux-s390@vger.kernel.org,
-	Michal Hocko <mhocko@suse.com>,
-	Peter Xu <peterx@redhat.com>,
-	Sergio Lopez <slp@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/6] kvm: apply VM_READ/VM_WRITE checks to all VMA types
-Date: Tue,  4 Aug 2026 14:05:26 +0200
-Message-ID: <20260804120529.1730187-5-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804120529.1730187-1-pbonzini@redhat.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cWGUpyuw"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748HfdA296040;
+	Tue, 4 Aug 2026 12:06:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=ErD+OLSzl6FOPOJ2L
+	7Rs3afpED/1r9gQ0byqCkKBeYw=; b=cWGUpyuwqIgd8v23gCySM0X5zm/tY0P6+
+	TGCftwomck0BJz7rKA9+tBBn9QgWR8qiv6LfMqAW8Sbd0gVZu+ca8+MHyBJ78sUF
+	22/F5OyllRLpZ4wPrcugC4RNTvnomeihr+b1QNKGvq3IbWzKMZo7wGcQmw7Hm2b3
+	JzOdL2gFvQ8EdpVPrLIXZxcN9fgUHIlKWN6xKwYVqGuE7giu2hxbVjaweB2jxz+I
+	qamMOjZpnjkws8hZsHj/3lUuihtNCC16NSm0JF3yHe1lq5k4CH87cJkLiU8rBPrj
+	XxFNnh8yhzsxH3FHPX/Go9MfVzFKLl7anyvxInB2+ZttIcVLKi3UA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3wphu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 12:06:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674BuIoD013671;
+	Tue, 4 Aug 2026 12:06:39 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh9rn5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 12:06:39 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674C6c4i29164084
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 12:06:38 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0956C5805A;
+	Tue,  4 Aug 2026 12:06:38 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 13B9358062;
+	Tue,  4 Aug 2026 12:06:36 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 12:06:35 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: KVM <kvm@vger.kernel.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Douglas Freimuth <freimuth@linux.ibm.com>
+Subject: [PATCH 1/3] KVM: s390: remove user triggerable WARN_ON
+Date: Tue,  4 Aug 2026 14:06:29 +0200
+Message-ID: <20260804120631.736919-2-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260804120631.736919-1-borntraeger@linux.ibm.com>
+References: <20260804120631.736919-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -110,110 +77,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a71d5d0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=AABZzEHfO4awnm3PS6YA:9
+X-Proofpoint-ORIG-GUID: 3tXZiU4VQq88mehREfzrCUgQ6HrAxaSx
+X-Proofpoint-GUID: 3tXZiU4VQq88mehREfzrCUgQ6HrAxaSx
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA5NCBTYWx0ZWRfX4EkAd5D9C9Hf
+ tqTrK5zBO5T3svLM0BuRIbdp3BDqTENfOUlMVNg/laW4uM18WgWS63qcBt50b2yxpOjRhqbqIv7
+ xdJM1w3suV0qUsE9Ri3sOrhgfd77nTM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA5NCBTYWx0ZWRfX5EbbU/F5pKCz
+ PucXhFbtSVMl9umFUMEeYWR263lvlYY/6l5i2DvG97Jfoq7qYDNdvSZEUeBvPxnvpv8NwMMxGhc
+ d8BF+jNsLZGIMPoM20phOMoaG4t4JHlALB55LVjSiDlC2NgOBNNqxNbneMBUxD3SeCK3T9dtdfD
+ DXDuqUoiQGzDSo+I90OFpa/7xnKM56lJZr3ot8wLmzrQfKGE7pOWJPCxtebp96HxT3o0Py21L3M
+ QmEqPwc7BL70XiiPEpLDyEtBj59lW7vmTqvL/K/9izC17K2GnCbJOHbDgrZ8oYblyBkj2AiHix0
+ p8j8k6WiBC/i2jhH+rMaUsThgMk8KnpEFJPHZHL9q2qRjC6oMhAJVSdN8ADe+8Q8NVayLTN37Y4
+ jZxFGxScsKrOMb8Cw6EXUMc6r6N/bvGXSpcdjO0YzmiUw+xWjbOFSNfShscPYQsV33ADHyHp09m
+ mV7lpR7nxYFolRpL0OQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608040094
 
-The VM_READ and VM_WRITE flags are checked only at the very end of
-hva_to_pfn().  For both the hva_to_pfn_remapped() case and for regular
-mappings, this adds unnecessary cases and inconsistent error behavior.
+pin_map_page() fails legitimately whenever the userspace mapping behind
+the adapter route has gone away, e.g. when the VMM unmaps that memory.
+As this can happen without a kernel programming error, remove the
+WARN_ON.
 
-For hva_to_pfn_remapped(), the code is relying on fixup_user_fault() to
-detect this situation.  This is fragile because hva_to_pfn_remapped()
-returns different error codes for a !VM_WRITE VMA depending on whether
-the PTE happens to be mapped:
-
-* if the PTE is present, follow_pfnmap_start() sets args.writable to
-  false and KVM_PFN_ERR_RO_FAULT is returned;
-
-* if no PTE is present, fixup_user_fault(FAULT_FLAG_WRITE) returns
-  -EFAULT after checking vma_permits_fault(), and hva_to_pfn() ends
-  up returning KVM_PFN_ERR_FAULT.
-
-With this patch KVM_PFN_ERR_RO_FAULT is returned uniformly.  Likewise,
-a PROT_NONE pfnmap VMA would be mapped into the guest if the PTE was
-pte_present()[1] when the guest attempted to read it; with the patch
-instead KVM uniformly returns KVM_PFN_ERR_FAULT.  Doing the check early
-avoids these special cases and also sidesteps the issue pointed out at
-https://sashiko.dev/#/patchset/20260731160514.1101989-1-pbonzini%40redhat.com.
-
-For regular mappings a PROT_READ VMA, if placed in a writable memslot,
-would return KVM_PFN_ERR_FAULT instead of KVM_PFN_ERR_RO_FAULT when
-the guest writes to it.  This would cause a -EFAULT exit to userspace,
-instead of triggering emulation as the VM_IO|VM_PFNMAP arm would do;
-however it should be considered part of the KVM API because mmu_stress_test
-relies on it.
-
-Still, even with this snag about the returned pfn error code, pull the
-vm_flags checks in front so that they are done for all VMAs and the
-above inconsistency goes away for the VM_IO|VM_PFNMAP case.
-
-[1] on x86, for example, such a page would have _PAGE_PRESENT clear
-  but _PAGE_PROTNONE set
-
-Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in mmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 8c0141b7c13c ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
+Cc: Douglas Freimuth <freimuth@linux.ibm.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 ---
- virt/kvm/kvm_main.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ arch/s390/kvm/interrupt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 45e784462ec6..576bcb21be3a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2925,17 +2925,6 @@ static int hva_to_pfn_slow(struct kvm_follow_pfn *kfp, kvm_pfn_t *pfn)
- 	return npages;
- }
- 
--static bool vma_is_valid(struct vm_area_struct *vma, bool write_fault)
--{
--	if (unlikely(!(vma->vm_flags & VM_READ)))
--		return false;
--
--	if (write_fault && (unlikely(!(vma->vm_flags & VM_WRITE))))
--		return false;
--
--	return true;
--}
--
- static int hva_to_pfn_remapped(struct vm_area_struct *vma,
- 			       struct kvm_follow_pfn *kfp, kvm_pfn_t *p_pfn)
- {
-@@ -3008,20 +2997,29 @@ kvm_pfn_t hva_to_pfn(struct kvm_follow_pfn *kfp)
- retry:
- 	vma = vma_lookup(current->mm, kfp->hva);
- 
--	if (vma == NULL)
-+	/*
-+	 * GUP failed.  It could be an inaccessible mapping, a pfnmap one,
-+	 * or the page might be absent.
-+	 */
-+
-+	if (vma == NULL || unlikely(!(vma->vm_flags & VM_READ))) {
- 		pfn = KVM_PFN_ERR_FAULT;
--	else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
-+	} else if ((kfp->flags & FOLL_WRITE) && unlikely(!(vma->vm_flags & VM_WRITE))) {
-+		/*
-+		 * Exit to userspace for PROT_READ mappings in a writable
-+		 * memslot, as this is part of the API.
-+		 */
-+		pfn = vma->vm_flags & (VM_IO | VM_PFNMAP) ? KVM_PFN_ERR_RO_FAULT :
-+			KVM_PFN_ERR_FAULT;
-+	} else if (vma->vm_flags & (VM_IO | VM_PFNMAP)) {
- 		r = hva_to_pfn_remapped(vma, kfp, &pfn);
- 		if (r == -EAGAIN)
- 			goto retry;
- 		if (r < 0)
- 			pfn = KVM_PFN_ERR_FAULT;
- 	} else {
--		if ((kfp->flags & FOLL_NOWAIT) &&
--		    vma_is_valid(vma, kfp->flags & FOLL_WRITE))
--			pfn = KVM_PFN_ERR_NEEDS_IO;
--		else
--			pfn = KVM_PFN_ERR_FAULT;
-+		pfn = kfp->flags & FOLL_NOWAIT ? KVM_PFN_ERR_NEEDS_IO :
-+			KVM_PFN_ERR_FAULT;
- 	}
- 	mmap_read_unlock(current->mm);
- 	return pfn;
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 8f24bcd1a6d3..23f0e0821474 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3013,7 +3013,7 @@ static int adapter_indicators_set(struct kvm *kvm,
+ 	if (!summary_info) {
+ 		spin_unlock_irqrestore(&adapter->maps_lock, flags);
+ 		summary_page = pin_map_page(kvm, adapter_int->summary_addr, 0);
+-		if (WARN_ON_ONCE(!summary_page))
++		if (!summary_page)
+ 			return -1;
+ 		idx = srcu_read_lock(&kvm->srcu);
+ 		map = page_address(summary_page);
 -- 
-2.55.0
+2.53.0
 
