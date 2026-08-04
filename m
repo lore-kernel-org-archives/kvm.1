@@ -1,43 +1,94 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FACE2FDC57
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E9E32C957
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 03:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785814472; cv=none; b=X0WSYYO6dqYFSoOjWa0izN2zSuLLeIBRBXlPqrVNYNv3xf67BXa5Ff0/Wvo5ZKtNNOkCIXYXR9/8CCDBCoXIlDIuj4HILJnqIqfzhQtczuEXlpnhff4xs3Ff9/6fCkCTEAB5vxs5THEQibeLhzxl4FnaXdxvodqdzzqCskGow7k=
+	t=1785814790; cv=none; b=fAi0QzfNtJsjlMfVr//wT62OKDgp+25NLotRaSuIQIUM3IUmJF7SsbP9+NjSRhvMKbi7f46DnpwKG3Kt03vEfomyvgt8o4+vT6BXw64clfUTkIusCtM8Rmg15upv7GYlYJ2EdEDGQqAaZ6FuP1FggPhbfSb0daNrCee6/DFi04E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785814472; c=relaxed/simple;
-	bh=TZzW/PJMPDU1jXSTqByWg76Kcq5EsBAxg6JD2M28RHg=;
+	s=arc-20240116; t=1785814790; c=relaxed/simple;
+	bh=vC4qQclBoV67ud2evHeSbDFkaZmPoEXMBUWK5AoYXEM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GloOTOOwjKKcp1YCWuSn0g+EVCVfL5C6a4bSbdzng4JjWmTmEGYFzfrgfcsygDfJrFjIpm+olTj6WL82MjbaoW/9qIRN9m0YS55v1xv9RinYHpvuOvACRIQia1VV7vsr1Lf3IO3uSqMMYlWfbInU8BxdxomWqFAJFtnoUNZ1ZFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=CDTpmPiL; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=jYPd9pdhIFDb2uxSi7H9fZXzFjRK3o1Oj8QwUNCB+r2U7XLFfVqLL2Kj1b+IBaXBIRIodvfl5B7byN0PTU56s5Fro8N+2Nk/+zff5MDex6Jvx7Nky1SrdkZXcPUz4IvF4Q8H9/78Fzbmawe0RpWMiof/v9dJxR/f6Wwd5n6hgkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Juk83/iO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KeLwA2vK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="CDTpmPiL"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785814466; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=TTOKzgHuD3KRtjS03wNmLdJVCRW00bEzm0RyWyZwqBI=;
-	b=CDTpmPiLHmKqq3jOZmSIsQHNezWD+IUN9i59bdtI0AAgKPB94yMKIBN6Sd4Gz7xPbMGoCx4CY0quQp4N4JPrHGHFRRvGgLalJib8aC9x6aOa8OpuDqaDIP7dQlXK15G6VPMPMZ9pDTJ4POcRJue7ELyHFmOraYC6R3SLQrjZIXk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0X8MUQlp_1785814464;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X8MUQlp_1785814464 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 04 Aug 2026 11:34:25 +0800
-Date: Tue, 4 Aug 2026 11:34:24 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Steffen Eiden <seiden@linux.ibm.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Hyunwoo Kim <imv4bel@gmail.com>
-Subject: Re: [PATCH 5/6] KVM: arm64: Couple VNCR fixmap clearing and CPU
- number invalidation
-Message-ID: <wlcvwmmsu3ryj3zytcnx5xhmuhjbgofqsaw5o54qwbdwc3n7ca@wj5n4swgeokb>
-References: <20260801124818.366274-1-maz@kernel.org>
- <20260801124818.366274-6-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Juk83/iO";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KeLwA2vK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785814788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
+	b=Juk83/iOdm0tjHtFCgUmf5Klhrj8uE5QeKkrODXz3iqDV1szgft0SGbIgt2KBavmJFPFCP
+	1h0RXKJ8783kGOvkIzzRAcma5EDT00isVUvp9m85YGOcK6TOXEnq40XkYL7pi4FGKWzyvy
+	jinodFs57F1V/q+Vtjvuhp9/Xr6SDwg=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-10-RNGoaGdBOQuJQGjB-DG3tA-1; Mon, 03 Aug 2026 23:39:47 -0400
+X-MC-Unique: RNGoaGdBOQuJQGjB-DG3tA-1
+X-Mimecast-MFC-AGG-ID: RNGoaGdBOQuJQGjB-DG3tA_1785814786
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c15e82278cbso334494366b.2
+        for <kvm@vger.kernel.org>; Mon, 03 Aug 2026 20:39:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785814786; x=1786419586; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
+        b=KeLwA2vK3RZo27HZPVubdSmwRL0xIBz119y5Vq7xH3jZFqXyqktSwargQSQrSlBucx
+         uxv79aGqfx+actWpsxMaj0XZ3Yzexl/Lf7ljqnFot2hChf17qqgsX9hwdH1+j1suxxE/
+         NhMhEYfFPQhkMgIvHBnZ+AfVQf4WXBMfSCoBlnnIvYdVqTnibHtwsGrxnk/TuQU49z4p
+         2XFhAIPATmmsA5PWKwCz/ZSyMZnOv0PDDzt699oQywO59x+A0177013ovKZ2af0iT1Uu
+         MWeE09ukGQmq3LGhc7SVtfG3+60c4q2Lrcq7oUXqYh/7i3ctCnRsvdYzoohB0S+iOerf
+         /Tfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785814786; x=1786419586;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=diYn9AH5DOp5LofRkeGafvYOwV70LwGGTt9FgR+upFQ=;
+        b=SK2OMqcjuBXnUGae2vLi21RlVxqK+1sYEh0qjI3FUH2KsQYrfl4jd2oK+ZANBsx2un
+         U+LiAjbGKnr7hliutC3coI0AEfu50cgbpvpkf8MWFoOj9ioJYtNVQ3hMAM2fg+H5t4OG
+         VSs1mN9M2W8lawst3KtoQNeOkMP7LNBoUK7gSHDQojvaeLT02FsOriWI/hPzq5wBA+38
+         wNji8Gpv97hxGUSWMrw8rI1DYny8sytGkDH7b+jjh4X1yCfuovdQwwaMn2CBCuwOxCfd
+         5n8NjXSQJeJNLXo0ot1rhiUi2cKiWAMXYOmPDhwwiW2UocW7sUzqRTns45WEHNa+Qcy1
+         5d/w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro8wgx3g/iLSRnhpe/2ilIcL1H2cCUO6ehDRle7priOySQJh0CCEkwEYEeq6erlkOB/xmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/4Op5DhyyZiWFBFmsoVpRAptTOx1QJtRMX8K9QVQZ0MvwR3ya
+	d3Ed3qVzusqG8/0FbJMR9q1bJneHyKd5h1bejCxeBdr8M6rAy5vgT7RiNgVaAiPUJbIwOFSEZXz
+	hbCLhT4FDSIpJl++DT2fcbVMx6QkYD+1OAdfSqiT/B+TutA/VjjXepw==
+X-Gm-Gg: AR+sD12hEatk9nCvy9J4oQqO1UXI/1uji62qYfRh92GuVrV6auak6Siwu1MKkH+ru43
+	8AOypPFROrV4ZpEcDf9/DP/bdojG338G2YBYlXcMUtK+9NP3IaQfuu/bljIBDKOu/RCcOtK3FWv
+	i9uHtORwS5F7RUqPru9kqiKcJndYfPPyGL9a8CnKRlByA6B9Wv6SzV4pT7tHK6icj0JuDYjLhrf
+	aL/ybqs57bTegY+m74TQTjti1kQK6E+lsjoUZ5T6cEbE3gTQAvIPOydTjsVTf7Vb61dyYRMthEy
+	3imhADF1R1KSns2MCUS4mKqV17yf1kvuqRdHnp6jOid9+UYv1ZQNv/6amCYyvR0mVbbk
+X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148196566b.2.1785814785642;
+        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
+X-Received: by 2002:a17:907:1c22:b0:c15:d4f8:dade with SMTP id a640c23a62f3a-c1fe7eebb0amr1148193466b.2.1785814785204;
+        Mon, 03 Aug 2026 20:39:45 -0700 (PDT)
+Received: from redhat.com ([186.247.166.67])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1fd3c93a87sm631061866b.18.2026.08.03.20.39.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Aug 2026 20:39:43 -0700 (PDT)
+Date: Mon, 3 Aug 2026 23:39:40 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: Jia Jia <physicalmtea@gmail.com>, jasowangio@gmail.com,
+	pbonzoni@redhat.com, stefanha@redhat.com, eperezma@redhat.com,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] vhost-scsi: flush backend after device ioctls
+Message-ID: <20260803233841-mutt-send-email-mst@kernel.org>
+References: <20260721073639.1532488-1-physicalmtea@gmail.com>
+ <3d2dfa19-42f8-4d1f-a411-c72669f4c4bc@oracle.com>
+ <20260723105451.1563439-1-physicalmtea@gmail.com>
+ <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,59 +97,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260801124818.366274-6-maz@kernel.org>
+In-Reply-To: <45a33302-0b28-4d00-8724-c3af6e1783f6@oracle.com>
 
-On Sat, Aug 01, 2026 at 01:48:17PM +0800, Marc Zyngier wrote:
-> A mapped VNCR translation must indicate which CPU it is resident.
-> Unmapping such a translation must make this CPU number -1.
->
-> Couple the unmap and the setting to -1 in a helper, so that we
-> are always sure they are done together.
->
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/kvm/nested.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 47d61d3cf053c..84915e2cff604 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -894,6 +894,12 @@ void kvm_vcpu_load_hw_mmu(struct kvm_vcpu *vcpu)
->  	}
->  }
->
-> +static void unmap_l1_vncr(struct vncr_tlb *vt)
-> +{
-> +	clear_fixmap(vncr_fixmap(vt->cpu));
-> +	vt->cpu = -1;
-> +}
-> +
->  static void this_cpu_reset_vncr_fixmap(struct kvm_vcpu *vcpu)
->  {
->  	if (!host_data_test_flag(L1_VNCR_MAPPED))
-> @@ -902,8 +908,7 @@ static void this_cpu_reset_vncr_fixmap(struct kvm_vcpu *vcpu)
->  	BUG_ON(vcpu->arch.vncr_tlb->cpu != smp_processor_id());
->  	BUG_ON(is_hyp_ctxt(vcpu));
->
-> -	clear_fixmap(vncr_fixmap(vcpu->arch.vncr_tlb->cpu));
-> -	vcpu->arch.vncr_tlb->cpu = -1;
-> +	unmap_l1_vncr(vcpu->arch.vncr_tlb);
->  	host_data_clear_flag(L1_VNCR_MAPPED);
->  }
->
-> @@ -996,7 +1001,7 @@ static void invalidate_vncr(struct vncr_tlb *vt)
->  {
->  	vt->valid = false;
->  	if (vt->cpu != -1)
-> -		clear_fixmap(vncr_fixmap(vt->cpu));
-> +		unmap_l1_vncr(vt);
+On Mon, Aug 03, 2026 at 07:02:43PM -0500, Mike Christie wrote:
+> On 7/23/26 5:54 AM, Jia Jia wrote:
+> > The owner must keep the old mappings valid until the ioctl returns.
+> > Remapping or dropping them from another userspace thread before then is
+> > outside the lifetime assumption of this transition barrier.
+> 
+> Ok I get it now. For some reason I thought that was valid.
+> 
+> For the patch we don't want to flush if vhost_dev_ioctl fails
+> and there's no reason to flush for operations like
+> VHOST_GET_FORK_FROM_OWNER or VHOST_SET_OWNER.
+> 
+> Could vhost_dev_ioctl return when a flush is needed?
 
-Reviewed-by: Yuan Yao <yaoyuan@linux.alibaba.com>
+I agree but also this is consistent with all other vhost
+devices.
 
->  }
->
->  static bool vncr_tlb_intersects(struct vncr_tlb *vt, u64 addr,
-> --
-> 2.47.3
->
+So I'm taking v2 of this, and we can iterate to optimize
+all devices with patches on top.
+
+-- 
+MST
+
