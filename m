@@ -1,127 +1,149 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38063F3289
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1763E391507
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 21:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785878730; cv=none; b=jwnFZpPDjeO9S/Hih+4dm4mDpwRb3zvnTnXEwfijO0FZl6EnaTbBr0i1puVCpicUavZ9EMrGWrJ+rJSqbZwlDPXErdRQKpf4klltB5f4hpV+6Fhe6alOt2Hrn3Y3VvVixviIc06YCcIPdi8AnmKU35YacJIRjDdQee0aed0T8eY=
+	t=1785878765; cv=none; b=qbcIRJYmW8afRhZhlic9Qc+ybtsvcWOUXNPYLGTpgEEkTgxQctLhT7Tx9PFMfCzPX6Z2diMnRPNr6THsWox+E4ePKBaIhdAzU+lozaej5AVQT+ib3AiPOx51fiGfuPBcKvG4f5K49C7DjbXW6mT1rNhkADkhP9faEMISG3zoo5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785878730; c=relaxed/simple;
-	bh=huPoN5bucRUnQLu5sCfSPLzeR3X2OREye170NNUzpZQ=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=o1aBbrvNBvV9nbFkzF/3VU2nMdji6NqJT4FLpylkj0vV0IyTUFMCBdIhU4kISGBUS5J5HeuSlccyLQYhRLxY6O5vDo00C0fbw6Zro+5WFf+YnLjNldLfuFW+ScRrbCw/jhWU0nt8lmI4P6wqwh1WFtWFJRiBY2RCdcF92+Dr3zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j6TrE47T; arc=none smtp.client-ip=209.85.167.198
+	s=arc-20240116; t=1785878765; c=relaxed/simple;
+	bh=BCQAfpaUqnDRdhFBqf5W6hE9jelLT+UwP2GtKgTlhtw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XIsR4SQ+LIgw7ZUk2bYmkJ8V24zfpY+IE5IlZMZVxAB6RTzQYI+iwFhShxyeo+cTiV9VCuHKtL6vRpexgvU7v7nQwicJwFaGgQr8DcYaGDMPId8n3Mmn02BpD6v1i5zmU72NHoCzbix42IsRKJwLW9bQFx/67jejFEUFzwtDZsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGntIopd; arc=none smtp.client-ip=209.85.215.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j6TrE47T"
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab8b646492so402577b6e.0
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:25:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGntIopd"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca6bd8a190cso301131a12.0
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 14:26:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785878728; x=1786483528; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OoNJERa7N+ihiUvZZhE29iP6C+dCF84EVkVoe6Oj4kU=;
-        b=j6TrE47TkiIUjqnqlxoibCfkMDopXAbDeHw3P8PWSxhionCIkjmotZAneHaM2R5Arl
-         zq6WLxtaMGNVcFJGkYUjv+nZTiUNqA+kgflFavBQPIDM6/GaOt6TU4EvfqAjCe8Bmmll
-         3l32UBCHa40KWBQBXv7DRIErZJ28LY2IZa6ckXrOZOpZQ6u4ANf2xllwhXuYYth5u9md
-         2S90slRmai/s2f6MTNtUxESnZ+WBdxCaN3++F0VcX/V5O0JDn3qvwiPLE6M09bNr+mM1
-         WLgdQvSoD3rtPeUNYsyIdwM9TQiCe5ch6vrCTM/f9ZQ30SkZturjP8JclHfckIJqP0Lv
-         DDwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785878728; x=1786483528;
-        h=content-type:cc:to:from:subject:message-id:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785878763; x=1786483563; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OoNJERa7N+ihiUvZZhE29iP6C+dCF84EVkVoe6Oj4kU=;
-        b=KWSru9U+AdG5qQheJ71a1wPp4d93lS8VPJm/YGvQpk/YpJYyKy/VMI/Vf1CHZNZfNO
-         woMR8nk4rqMP1f3YSH4XrA+a28AcVMzXq3augN3iso0l3pf2mVXmXQgyRcEcsX+8apzl
-         OVAGjbKRptm/fVRK7eFzqWk9cuvR5owO7DuhIBfvTjIjff/eP4dSX1ySmtZlxmX1xi4d
-         EIixin96NraYSF2O1MEpZm81n9tQJ1fAsecVZZZsFd6Xh3KK0rVbPWucTPcYMIK1mwF/
-         OwD0lPT+1VXdke+8bVhMFuJEZCauNobMaIIHSEeWMXcdQLasQGhDVrfFKhwMoxvzTo8q
-         M8Zw==
-X-Gm-Message-State: AOJu0Yxcf1hQhKEpeh3My4pbRnDgilaDQKBnIAqH2dVgG7ZBd7GGyxx6
-	xgdzATtnv0QOb06TUboWMvVGFkHV1y9E+nr/B7EivnQ7zRtQ+Ma1Vqx4vHeuLvndGQ2SZ7ayxC/
-	4ltIAyls0PoPpGwvnk5qKqr9NGQ==
-X-Received: from iobmp17-n2.prod.google.com ([2002:a05:6602:a2d1:20b0:9ab:7c1:c30a])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:3986:b0:495:f85b:d08f with SMTP id 5614622812f47-4afadfd7dc5mr1041308b6e.18.1785878727621;
- Tue, 04 Aug 2026 14:25:27 -0700 (PDT)
-Date: Tue, 04 Aug 2026 21:25:27 +0000
-In-Reply-To: <b8b1fbe4-fb73-418a-b43d-086894d31ce8@arm.com> (message from
- Robin Murphy on Tue, 28 Jul 2026 16:07:44 +0100)
+        bh=D1m+pWGOS10uU1f2bsRnNlJub5JOhExh9V1AKmoVmG8=;
+        b=OGntIopdxeQgPpCguxXN77FhflQfdmSlk+3k2USXLV2CXYHffSVoYsWDw1d44U+bVR
+         6XQNlDBwgUEqMZ7i24XGlYm4fJZ5Bxe0DG5N388S07HMBNAasDLKhN4CSuRIN0ASLQ1x
+         IVryFuwDs1FXdXVLBx7vjdg3LSm3KazG4Ed6MDLNYCvduMBZTqhictb0PpyNak59T8t/
+         mdEHAp6XBvznUgVlxqviBcAHarDJi347E/vFv6t2LorVainUaaa3m3ZLXvY6sg/AYCNt
+         +3j+y+5aTmA6DpTH0e/cjTU6t3Oee8tv5+bQ7DzDNENgFdGNZfJc4hYAXRspQtFQejci
+         fijA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785878763; x=1786483563;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D1m+pWGOS10uU1f2bsRnNlJub5JOhExh9V1AKmoVmG8=;
+        b=hYaNo3JnqGUIm9LicUUrcawsBZr45QPsBkoSPkXl5GxxWnA0NnKu+vBqu2MyXDhKXM
+         +HIwNgmvwohX8Okat8a4KH1uB4QV6iIz6Op6KIugOfEFnJFBug/RX3t7SrMIp81soksJ
+         otwvAqyp/HO2+H/pnAW3LjIaKmxOH3Sp+UiQi3QSFOq2znPXkouVgdJbIjRGrrDI8z6p
+         KeJcsIN+IkNj/oX2XfiiNBA5lzbLjRb2Z3b+zU+rt8PAQC6r+lEGalUTd2q48JfLaLk5
+         cNwfd38ldvCEu2Aoc6a6y3O+QSQxA3r1rBOcCX2AN9FwSXl7ceKuonBmSNznn3qY9UrM
+         xd5g==
+X-Forwarded-Encrypted: i=1; AHgh+RrEyUlGBO8oIK+GYr/pmKbVsNgBnCW4QyeMj5X8QEv2ZUuZMEcjcL+WlG/emL9csFODCbI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeDUZQAsEcocVokS75dgxEzZ9sIQnfd1vUAkU9gCU+Gi/66/AD
+	k8lBrychIdzibO+fWo7pLtcPSzP03E7m/bxQhQxqDWZGNvSqgcQ72UlsCgpbsUXO84ROkHEMA/9
+	Z4Qbnog==
+X-Received: from pgip24.prod.google.com ([2002:a63:c158:0:b0:c82:7761:9936])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a103:b0:3bf:6237:4d3f
+ with SMTP id adf61e73a8af0-3cb85e4dc7fmr1611110637.18.1785878762819; Tue, 04
+ Aug 2026 14:26:02 -0700 (PDT)
+Date: Tue, 4 Aug 2026 14:26:02 -0700
+In-Reply-To: <CAEvNRgErZqaLPpBveBd2VxdrS_8mjMbArL_=AhzMdikXmUU5VA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Message-ID: <gsntpkzxvarc.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH 05/21] perf: arm_pmuv3: Check cntr_mask before using pmccntr
-From: Colton Lewis <coltonlewis@google.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
-	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
-	james.clark@linaro.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-20-35f9aec2aed2@google.com>
+ <7f23d149-b7f0-465a-a9c0-5c7484e289d2@intel.com> <CAEvNRgErZqaLPpBveBd2VxdrS_8mjMbArL_=AhzMdikXmUU5VA@mail.gmail.com>
+Message-ID: <anJY6opttIJ4OQHP@google.com>
+Subject: Re: [PATCH v9 20/41] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Robin, thanks for the review
+On Tue, Aug 04, 2026, Ackerley Tng wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> 
+> >
+> > [...snip...]
+> >
+> >> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> >> index ea2752989f8bd..df67a6188aa99 100644
+> >> --- a/virt/kvm/guest_memfd.c
+> >> +++ b/virt/kvm/guest_memfd.c
+> >> @@ -1137,10 +1137,12 @@ static bool kvm_range_is_private(struct file *file, pgoff_t index,
+> >>   {
+> >>   	struct inode *inode = file_inode(file);
+> >>
+> >> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> >>   	if (!gmem_in_place_conversion)
+> >>   		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> >>   							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> >>   							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> >> +#endif
+> >>
+> >>   	return kvm_gmem_range_has_attributes(inode, index, nr_pages,
+> >>   					     KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> >
+> > With my suggestion[1] on patch 7, this diff block can be dropped.
+> >
+> > [1]
+> > https://lore.kernel.org/all/dd4201f2-3660-46ad-958f-c70feb1ab1c3@intel.com/
+> >
+> > The code looks good to me,
+> >
+> > Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> >
+> 
+> I think your earlier suggestion on only defining the module_param when
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is selected still applies, since it
+> removes an avenue for a user to turn off gmem_in_place_conversion if
+> the other option (VM memory attributes) isn't available.
+> 
+>   +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>   +module_param(gmem_in_place_conversion, bool, 0444);
+>   +#endif
+> 
+> Given that we're now dropping the diff block as you suggested, do you
+> agree that we should keep this #ifdef?
 
-Robin Murphy <robin.murphy@arm.com> writes:
+Yes, the param needs to remain hidden if CONFIG_KVM_VM_MEMORY_ATTRIBUTES=n, so
+that userspace attempts to disable gmem_in_place_conversion are ignored (and
+logged as such).
 
-> On 12/06/2026 8:28 pm, Colton Lewis wrote:
->> Check cntr_mask before using pmccntr to ensure it's available. With a
->> partitioned PMU, there may be instances where pmccntr is being used by
->> the guest and will be absent from cntr_mask.
-
->> Signed-off-by: Colton Lewis <coltonlewis@google.com>
->> ---
->>    drivers/perf/arm_pmuv3.c | 3 ++-
->>    1 file changed, 2 insertions(+), 1 deletion(-)
-
->> diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
->> index 1cceb1f614515..17bb1cfdc271c 100644
->> --- a/drivers/perf/arm_pmuv3.c
->> +++ b/drivers/perf/arm_pmuv3.c
->> @@ -1028,7 +1028,8 @@ static int armv8pmu_get_event_idx(struct  
->> pmu_hw_events *cpuc,
-
->>    	/* Always prefer to place a cycle counter into the cycle counter. */
->>    	if (armv8pmu_can_use_pmccntr(cpuc, event)) {
-
-> Something smells wrong here - we can use PMCCNTR but we can't?
-
->> -		if (!test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
->> +		if (test_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->cntr_mask) &&
-
-> ...i.e. this test would seem to belong in the helper function.
->> +		    !test_and_set_bit(ARMV8_PMU_CYCLE_IDX, cpuc->used_mask))
->>    			return ARMV8_PMU_CYCLE_IDX;
->>    		else if (armv8pmu_event_is_64bit(event) &&
->>    			   armv8pmu_event_want_user_access(event) &&
-
-> Plus it also doesn't make much sense to fall through to the "we _could_
-> accommodate this event if only PMCCNTR was free" case here if we know
-> PMCCNTR can never be free because it's not even available.
-
-I agree it would be a good idea to refactor these if statements.
-
-Probably something like:
-
-/* tests moved to `armv8pmu_can_use_pmccntr` */
-if (armv8pmu_can_use_pmccntr()) {
-	set_bit(ARMV8_PMU_CYCLE_IDX, cpu_pmu->used_mask);
-         return ARMV8_PMU_CYCLE_IDX;
-}
-
-if (armv8pmu_event_is_64bit(event) &&
-     armv8pmu_event_want_user_access(event) &&
-     !armv8pmu_has_long_event(cpu_pmu))
-	return -EAGAIN;
+The obvious downside is that the param won't exist when in-place conversion is
+forced on, which is kinda weird, but I think it's the lesser evil?
