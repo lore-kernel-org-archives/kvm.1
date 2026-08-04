@@ -1,106 +1,126 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA98D393DC7;
-	Tue,  4 Aug 2026 14:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F63ED3C9;
+	Tue,  4 Aug 2026 14:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785854534; cv=none; b=IFRqsvJXXtDzjEbb/Qk7Mxsi5zSNfhtWWttgR9IW2+TedpPdo3t8N/t1sitpAXHq2HHdq+MMIyeGW/UV2BT9O5B3K8V/3pBKAgYcnHAGWuJZ17ueC4xuG1K2656bMco2fkh0b99h47eFQ6JzQY+1vKLR+fsHZXcaIrErXKtEUE8=
+	t=1785854681; cv=none; b=c/Q+ZXqIvT7VH0nh7syfs2FRTLOvc2bhqkJ+S1JespEuMxXP3rwyuWRnDDHy1sb9tROWs8zvLyW4e3i08NDeSszN8pwE0fQdYQVm5q40DTYRwMayiY3Km796bFIw25jkXoz91/Rl6J5jpIf4GIIAvPD3L6K1LEo8aqqpKuiLv/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785854534; c=relaxed/simple;
-	bh=OqhWvtZXhc+G73nSM63Uipt1epzkVmRKYCPHPRJIK0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hnttbr7OYa3gXFnoVRNAuP84U8aCMdB6UnZcM8dlqROZSO6EnE/nSL0hhHcvK8uymQP6R3ttDGxnHbhnFfOM3AAA3/HIFH3RdTD+5D5mWdWFiNuLJNMUGai7TbdxNE2s4qjSma+MU9CEcXgqMqXYOZeQR5N1EsSy6kM+7MWNBew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=HtH0Ve/V; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1785854681; c=relaxed/simple;
+	bh=FCEaBQlDRUm6dYO31Sm2WtF5WhrmLg76I6xWT8Sy9u8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BJs6Nm1ovbixAzb61dUe09z+m5lOv3ulINDX+vEK37l67CDT0S7BX8Qyf7RSCaaMw581Kr2DmBNS5YQ7VxH2cMqHPHJIWNw8pbLXTU0VqO51EnoKSqjaWj13g2t9IK9Bwk/G0xX8b6TKGGGIRKirzXcW5gELadI0gK1iUvNjIp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aByPNJbb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="HtH0Ve/V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785854530;
-	bh=OqhWvtZXhc+G73nSM63Uipt1epzkVmRKYCPHPRJIK0Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HtH0Ve/VLbxeWT20pqClozODac1Dw4+T1z2o+/A49QRdMP7pNhRDg73VMW74+qIo/
-	 1Myw+x4+SK7EUzokQ2g1afHUPDhju9Zc78F7603PJMDdlCHVA50LZCX+CJXMM0F50p
-	 UImFSnEFG1TZJLsSL1qLB3UObDnRl70W3kgJHo7UWmMd0HPita46KqAZm8wo2EZGwO
-	 h8/mYsGf/09/AoX4XceNBuio8K5egqnTVoWrj+vXJTBJLcu8FzHRYu8ek8MNSThce6
-	 toIGSNV9gvyYoypdleU7GYq4PpCRSsxB6jPAfzCFP4Eqg4S6TGjZci2m/K3t/KuWgn
-	 d6R35ElJDipgw==
-Received: from fedora-21.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 1468917E052F;
-	Tue, 04 Aug 2026 16:42:10 +0200 (CEST)
-Date: Tue, 4 Aug 2026 16:42:06 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Alex Williamson
- <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, Christian Koenig
- <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>,
- dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, Huang Rui
- <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, Michal
- Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez
- <slp@redhat.com>, Sean Christopherson <seanjc@google.com>, Thomas
- Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
-Message-ID: <20260804164206.655874ce@fedora-21.home>
-In-Reply-To: <CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com>
-References: <20260804120529.1730187-1-pbonzini@redhat.com>
-	<20260804120529.1730187-3-pbonzini@redhat.com>
-	<20260804161549.4cd9a66f@fedora-21.home>
-	<20260804161850.58c55c6e@fedora-21.home>
-	<CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aByPNJbb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5D41F000E9;
+	Tue,  4 Aug 2026 14:44:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785854679;
+	bh=aZ8CvjTsE8imig+joKU5SQ3EWoaGRndjO4SfRE71EXM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aByPNJbbjlQ57OPBmEl8tJNjWE3LtGyGGF4aZBkdplun7csv9BKs4dRrYmdhKBYSe
+	 TggmkPB8+7WHmXzFr7Bg+vxLadqT/keWhiSLB72UTErsJe1SQzaS8OFc/40nSt+RJq
+	 7GO7Tdw7BEpH0cIdWugqErMXWn5aE2wtRr7ogLFkjq0wjY1qbCzwP45hf4GFE9SVri
+	 HNBz420P0E0eo7+v3hTrjywcmA3Mt88KUROBncPZiL2gGwznHgBpYpuqyryB16DFQh
+	 JkbkOoJByf+quO6BbHh196/3uAcjVbuKwQ8oGH7w+EBrZdkPUYPHPcm8BrWtU5EY3k
+	 JTIB9tLgGObFg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wrGNh-0000000CFYa-0bPg;
+	Tue, 04 Aug 2026 14:44:37 +0000
+Date: Tue, 04 Aug 2026 15:44:36 +0100
+Message-ID: <86ldamaqsr.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Oliver Upton <oupton@kernel.org>,
+	Fuad Tabba <tabba@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/2] KVM: arm64: selftests: Add a nested S2 MMU realloc test
+In-Reply-To: <20260803224405.41468-2-kmehltretter@gmail.com>
+References: <20260803224405.41468-1-kmehltretter@gmail.com>
+	<20260803224405.41468-2-kmehltretter@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: kmehltretter@gmail.com, oupton@kernel.org, tabba@google.com, joey.gouly@arm.com, seiden@linux.ibm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, shuah@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 4 Aug 2026 16:34:10 +0200
-Paolo Bonzini <pbonzini@redhat.com> wrote:
+On Mon, 03 Aug 2026 23:44:05 +0100,
+Karl Mehltretter <kmehltretter@gmail.com> wrote:
+> 
+> Add a regression test for a stale vcpu->arch.hw_mmu reference when
+> initialising a vCPU grows the nested S2 MMU table.
+> 
+> The test drives vCPU0 into L2 through a minimal L1 stage-2 identity map,
+> pins it to a second pCPU where it spins in L2, and then initialises
+> vCPU1.  That initialisation grows the nested MMU table while vCPU0 still
+> holds one of its entries; keeping vCPU0 on a pCPU of its own means the
+> reference stays live without relying on hw_mmu being retained across a
+> schedule-out.  vCPU0 is then released and has to run to completion.
+> 
+> Creating vCPU1 up front is what allows the in-kernel VGIC to be used:
+> kvm_arch_vcpu_precreate() refuses KVM_CREATE_VCPU once the VGIC has been
+> initialised, which the test does before its first KVM_RUN.  Creation on
+> its own increments online_vcpus, so deferring vCPU1's KVM_ARM_VCPU_INIT
+> until vCPU0 is in L2 still grows the table.
+> 
+> With KASAN enabled, an unfixed kernel reports a slab-use-after-free in
+> kvm_handle_guest_abort(); with the fix it completes cleanly.
 
-> On Tue, Aug 4, 2026 at 4:19=E2=80=AFPM Boris Brezillon
-> <boris.brezillon@collabora.com> wrote:
-> > On Tue, 4 Aug 2026 16:15:49 +0200
-> > Boris Brezillon <boris.brezillon@collabora.com> wrote: =20
-> > > Actually, if we're making the drm_gem_shmem_record_mkwrite() call
-> > > unconditional (for PTE and PMD updates) in that path, can't we drop t=
-he
-> > > drm_gem_shmem_pfn_mkwrite() call living in drm_gem_shmem_pfn_mkwrite(=
-)?
-> > >
-> > > Also, I'm not even sure we can end up with write=3Dtrue for PTE updat=
-es,
-> > > because our pfn_mkwrite implementation returns zero, not VM_FAULT_ERR=
-OR
-> > > or VM_FAULT_NOPAGE. This means the default RO -> RW PTE upgrade
-> > > implemented in finish_mkwrite_fault() [1] will take place. If we real=
-ly
-> > > want out try_insert_pfn() to be called for those RO -> RW updgrades, =
-we
-> > > need to call try_insert_pfn() from drm_gem_shmem_pfn_mkwrite(). =20
-> >
-> > Nevermind, it's all explained in the comment you've added. Sorry for
-> > the noise. I keep wondering if we shouldn't call try_insert_pfn() from
-> > pfn_mkwrite() though, like is done in other places. =20
->=20
-> No, the .pfn_mkwrite() callback is invoked when a PTE already exists,
-> and mm/ already takes care of making it writable. So there's nothing
-> to insert, you just have to take note which you do with
-> drm_gem_shmem_record_mkwrite().
+The problem is that we can't mandate selftests to rely on KASAN on the
+host. Selftests are there to verify that we match the architecture
+requirements.
 
-Okay, I thought I'd ask to be sure, because of all the implementations
-of pfn_mkwrite listed here [1], only drm_gem_shmem_helper.c and
-kernel/events/core.c do that. The rest have their "generic" fault
-handler (by generic I mean a fault handler helper that covers all the
-order/WRITE_FLAG combinations) called from pfn_mkwrite(), and return a
-non-zero vm_fault_t.
+If anything, this is a nice hack to demonstrate the problem (and yes,
+it fires here).
 
-[1]https://elixir.bootlin.com/linux/v7.2-rc5/A/ident/pfn_mkwrite
+> 
+> Assisted-by: Claude:claude-fable-5
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+> 
+> The test requires nested virtualization and two pCPUs.  Under QEMU TCG
+> it takes ~233s, exceeding the 120s timeout in
+> tools/testing/selftests/kvm/settings; psci_test takes ~167s in the same
+> boot, so emulating the second vCPU is the dominant cost.
+
+# time /host/home/maz/nested_mmu_realloc_test 
+Random seed: 0x6b8b4567
+Running control thread on pCPU 0, vCPU thread on pCPU 1
+vCPU0 is running in L2; initializing vCPU1 to grow the table
+vCPU1 initialized; releasing vCPU0
+vCPU0 resumed after nested MMU resize
+
+real	0m0.161s
+user	0m0.007s
+sys	0m0.109s
+
+This is with KVM running as an L1 already...
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
