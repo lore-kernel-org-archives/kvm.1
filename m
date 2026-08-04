@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C783E9C29
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92B43DB30C
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785867717; cv=none; b=do+BOULvT8We3vFNDM1cW6CnultftwBE0kOKAPrrxrJzjtlopF9AB1uiEllap3Hs6wIabRJmYg8ShImkSHtOEpewZyU6YruxpD/IaWdIOMLwtgvDGNQN6mrvVv2r/IUu2iao9YbnHAxKIg0iUYyJnzOABBYi7VfCnTTz/hP23pY=
+	t=1785868039; cv=none; b=K9VNAK4aHTvhTDZVLeD91aeOJ/cR4gooAu5Z92byB7CGPkbquMBT2J0Q3gQrqt40KKGHZuMIqLxUkTiFcrATVC1L0ZQyAnbEvFRe9uwWYqQ3p3JLzbHm5TRTF2NpowTeEekvF2IWyWdhx0es8BrFZLXSluLpJ06DTWfo2fZ8HZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785867717; c=relaxed/simple;
-	bh=oaJTSfrYViliM1aV1Z1D+NRbd83kG5w/JXrnawU4KNA=;
+	s=arc-20240116; t=1785868039; c=relaxed/simple;
+	bh=w+vfHEeO4TTtzAmOgVv+fT/dQKIO5Qt9X86oohrZRUc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bu2SM1mY1AG1RPmp60Y1CAkz1v1duE4l8OxIJSNT2iExvkicE3XizDGmJkTOKe5senTqeJ8O3Yke3+ULHAFW6OwlY8WQBfi4fYpwV18vg5MtBeGKGC0YPRQoq6hLyxj80plN/hn+94gnDIgKZFeEuIvm/aOvrBdViO9AvttYUic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2D8Jq7C; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ZKA2ROLVtnoz2WicdjK3CRlriQo3pX1WLSURaTEEKpZriMJvSx1Ydzi3vq0cX+JUW3f7adsT8lOBI3Jfuz8jiU2l555STa6rhCfFmBwcPnRZD/+91YctnI9uGQHCTfqTvsQC1Naiw7Yj+vF4QpggJ8daQYETSmp+4TQrEXOuZBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUf9wl+u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2D8Jq7C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D511F000E9;
-	Tue,  4 Aug 2026 18:21:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUf9wl+u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4581F000E9;
+	Tue,  4 Aug 2026 18:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785867716;
-	bh=ZeGePvjUVyJTVqpm8d5A9T7i0xt5HxQNBwnEsz0VWcY=;
+	s=k20260515; t=1785868038;
+	bh=RGYmQVNi0lXqjpmeMS2BYusnZB3KdZvCHTXjcQKawPM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=d2D8Jq7CZvQwBzF/Dnl7Quj/kO0Ojc//r2zdlzHd9/j0SFv6Jj721VPpnEnu9LC6Z
-	 rf4fh7AAB1Ey8ocYrSWBoiHJQlLrVbY579pUkYqEDHJzNxLcVVQF3G9L69T/4rtSD8
-	 FdXaSMvZaw3S3eEBJjJ5X+HBRCi6OkK1UCDyuiBLgmsVr7sH+YUBVWxxLjKPJkuw63
-	 txxvfgcrHjZKdrpA8GwbpiYao2n3THo9ObZZDPxR16mfTIztMKD0fVWvG4Y9yC8pHv
-	 N/Xp7wgimcjGBH70BwwHFVzHUL1JsnIO4kjC1t2+0obaS0jtVCaFzKjsYnFW2vMxHO
-	 3V1DZXBudQAKw==
+	b=mUf9wl+u6YyOML5uV0MTZ7Zy5cTO2UA9m2+nl/gAJ6jZP2qsJII1zfNp0XcdllZe/
+	 4ydukgtne0PI8SakDVq35/d/F6beC/46/nccH/p1rqkc9yqN+pJCaUJN0DmMoriszv
+	 8ltW8VkBJQH568Qlu88HkY47aOKmGRnRFQ7c3mNC3A1Na6NXeiPnU1DYiGd/5aeuHm
+	 EdIpqvF8+FPATLq1my0FbnER7+xNtfDit2tLTgEv5cj1yKaTvPeF6ISV4hFmPIQXCT
+	 63UZ75CgOmamj9JxdVXfo+R+lNISV1Ca43f/DdbC8Z0TgA2cTXGiuD/b0sCtpr1m9u
+	 NEL+gub5mD8sQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 2/4] KVM: PPC: Book3S HV: Implement compat CPU
- capability retrieval for KVM on PowerVM
+Subject: Re: [PATCH v6 3/4] KVM: PPC: Book3S HV: Add support for compat CPU
+ capabilities for KVM on PowerNV
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260804180705.59160-3-amachhiw@linux.ibm.com>
+In-Reply-To: <20260804180705.59160-4-amachhiw@linux.ibm.com>
 References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
- <20260804180705.59160-3-amachhiw@linux.ibm.com>
+ <20260804180705.59160-4-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 04 Aug 2026 18:21:55 +0000
-Message-Id: <20260804182156.62D511F000E9@smtp.kernel.org>
+Date: Tue, 04 Aug 2026 18:27:17 +0000
+Message-Id: <20260804182718.2B4581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,73 +47,73 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Mismatch between KVM_CAP_PPC_COMPAT_CAPS advertisement and ioctl=
- implementation for unsupported environments.
+- [High] `kvmppc_get_compat_caps()` incorrectly returns `-EINVAL` when the =
+'cpu-version' property is absent, breaking the `KVM_CAP_PPC_COMPAT_CAPS` co=
+ntract.
 --
 
---- Patch [2]: [PATCH v6 2/4] KVM: PPC: Book3S HV: Implement compat CPU cap=
-ability retrieval for KVM on PowerVM ---
-commit 8305652489744988576b7fa55e0424452c48a633
+--- Patch [3]: [PATCH v6 3/4] KVM: PPC: Book3S HV: Add support for compat C=
+PU capabilities for KVM on PowerNV ---
+commit b4de9c28bb9d6eeb95ed5310169709b332b6f664
 Author: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM on P=
-owerVM
-   =20
-This commit adds support for retrieving host CPU compatibility capabilities
-for nested guests on PowerVM. The capability bitmap is retrieved from the
-cached nested_capabilities value and exposed through the new
-KVM_PPC_GET_COMPAT_CAPS ioctl.
+KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on Pow=
+erNV
+
+This commit extends host CPU compatibility capability reporting to support
+nested virtualization on PowerNV systems. For nested API v1, it derives
+compatibility capabilities from the L1 guest by reading the cpu-version
+property from the device tree and maps it to the corresponding compatibility
+capability bitmap.
 
 > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3b..8799124b80960 100644
+> index 8799124b80960..77558f6eed864 100644
 > --- a/arch/powerpc/kvm/book3s_hv.c
 > +++ b/arch/powerpc/kvm/book3s_hv.c
 
 [ ... ]
 
-> @@ -6510,6 +6510,25 @@ static bool kvmppc_hash_v3_possible(void)
->  	return true;
->  }
+>  static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
+>  {
+> +	struct device_node *np;
+>  	unsigned long capabilities =3D 0;
+>  	long rc =3D -EINVAL;
+> +	u32 cpu_version =3D 0;
 > =20
-> +
-> +static int kvmppc_get_compat_caps(struct kvm_ppc_compat_caps *host_caps)
-> +{
-> +	unsigned long capabilities =3D 0;
-> +	long rc =3D -EINVAL;
-> +
-> +	if (kvmhv_on_pseries()) {
-> +		if (kvmhv_is_nestedv2()) {
-> +			WARN_ON_ONCE(!nested_capabilities);
-> +			capabilities =3D nested_capabilities;
-> +			rc =3D 0;
-> +		}
-> +	}
-> +
-> +	host_caps->compat_capabilities =3D capabilities & KVM_PPC_COMPAT_BITMAS=
-K;
-> +
-> +	return rc;
-> +}
+>  	if (kvmhv_on_pseries()) {
+>  		if (kvmhv_is_nestedv2()) {
+>  			WARN_ON_ONCE(!nested_capabilities);
+>  			capabilities =3D nested_capabilities;
+>  			rc =3D 0;
+> +		} else {
+> +			for_each_node_by_type(np, "cpu") {
+> +				if (!of_property_read_u32(np, "cpu-version",
+> +							  &cpu_version)) {
+> +					of_node_put(np);
+> +					break;
+> +				}
+> +			}
+> +			if (!cpu_version)
+> +				return -EINVAL;
 
-[Severity: Medium]
-Will this return -EINVAL for pseries hosts when nestedv1 is used?
+[Severity: High]
+If an L1 guest is booted in native mode (e.g. without a 'compat=3D' setting=
+ in
+QEMU), the cpu-version property is intentionally omitted from the device
+tree.
 
-If KVM_CAP_PPC_COMPAT_CAPS advertises support by returning 1 for all pseries
-hosts (which appears to be the case in kvm_vm_ioctl_check_extension),=20
-userspace might query KVM_PPC_GET_COMPAT_CAPS and hit this path when
-kvmhv_is_nestedv2() is false.
+Doesn't returning -EINVAL here cause KVM_PPC_GET_COMPAT_CAPS to fail,
+thereby breaking nested virtualization initialization for native-mode L1
+guests?
 
-For example, if userspace checks KVM_CAP_PPC_COMPAT_CAPS and gets a positive
-result, but kvmhv_is_nestedv2() returns false here, we return -EINVAL.
+Could this fall back to deriving capabilities from the physical native PVR
+instead of returning an error?
 
-Since -EINVAL typically indicates invalid structure size or bad flags, could
-userspace fail to differentiate an unsupported backend from invalid inputs,
-leading to initialization failures?=20
-
-Should this gracefully return 0 capabilities (or -ENOTTY), or should the
-capability check itself verify kvmhv_is_nestedv2() before advertising suppo=
-rt?
+> +			rc =3D kvmppc_map_compat_capabilities(cpu_version,
+> +							    &capabilities);
+>  		}
+>  	}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804180705.5916=
-0-1-amachhiw@linux.ibm.com?part=3D2
+0-1-amachhiw@linux.ibm.com?part=3D3
