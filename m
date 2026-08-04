@@ -1,217 +1,202 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA1F3C9880;
-	Tue,  4 Aug 2026 08:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D15429818;
+	Tue,  4 Aug 2026 08:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785830522; cv=none; b=TbmlvwnA7EC4hKttH+gpnez35wg4s8hoVplctb8LZCTqqjDq9jmQKNY/ynNvelT+X3XJ8QRsfZYn6vusm6T2FPeXbcQiPT/viCVT0QlhV8I4gcB8QSZRhPacIZsMH2kFTpT4OPIjIfRwas5NnsuGcUa35Rl36elgkc0iJMD+uPA=
+	t=1785831365; cv=none; b=DuTqiY2DAnQ3QIPuEyB3SZNKAHs0xzO0HSLc2vS8RCR886L1WwTvJa+OWPeA3t/RAykEh5cT+BLr7PJVYb2eaOEdmscZjwbZNojFfbsZxANppwaQSsnyJidNO5UdfqfwA40rNXVRXtIdh2bm3oIbkZupfOz2IHwkFI6HaCdmWB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785830522; c=relaxed/simple;
-	bh=jv/8jh4nUeoRb+P/0T3xefwTXs5/+xJ/He96kSRljGY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JRyKWtrxuz5lu2ckJEhx2eiblbDKJI3ig2Xu9NDdxav7C8zatGd+8NRtdI3Ub68X0VLehSkSuJ4XjrVoF5eCNG14uvrJTc3PGDUs4cV9k7fpFMhJn1kBYP5ce9yg5Z6aztLW+jdHNcpuT0ai8o2aekhnkYrvveHU4WtZudo+WMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=HCq1Es2X; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1785831365; c=relaxed/simple;
+	bh=ReS3qIwpikdam47RjU9lNPefJogqUzxjAZX9bsDWAMQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
+	 MIME-Version; b=EGc428gyo8n8ArTU5gpiKaEiXaK42MNeLrEpCQ0NbDgUBIWdNRdqxmQWOXUXAP/z3GK8WdfQfFq7nOij69XZqKS8Sw8nPgkHM6AB/JpYOwGTXCE4R5DveAw4E8jOpD1kytwqgJ7V3ifgktM7Drrd1ptNS9ogkM1LzG9SNBaDAk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hbFBUPA/; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="HCq1Es2X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=GD
-	XLoRKgzjKVnPrgwJcrOOcZrQyU97XBZRb6Hz6oZlY=; b=HCq1Es2XyjzlONBs2u
-	wjs1KTefU8C1R/l72mjb6w9ZyueDEEmWlceHcp0UTFJAExFmQxlLS5bcYsnQTlA+
-	9tDCPvGS6cMOAjHIdqTDdYS0RvziQ9YwXBdhzp0T1fdOmTogxKNla0CeCJ0m+QGd
-	WbeA6uKI50m1yH+5Z+vxBA3+0=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgA3+bZVnHFqQsQvLQ--.12248S5;
-	Tue, 04 Aug 2026 16:01:29 +0800 (CST)
-From: "rom.wang" <r4o5m6e8o@163.com>
-To: virtualization@lists.linux.dev
-Cc: eperezma@redhat.com,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	pabeni@redhat.com,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yufeng Wang <wangyufeng@kylinos.cn>
-Subject: [PATCH 3/3] tools/virtio: add --features-array switch
-Date: Tue,  4 Aug 2026 16:01:25 +0800
-Message-Id: <20260804080125.79403-4-r4o5m6e8o@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260804080125.79403-1-r4o5m6e8o@163.com>
-References: <CAJaqyWfP7j5_PvOP0JiHuAQ8appGnoJDS3OB-qK7riBpZ_d_tQ@mail.gmail.com>
- <20260804080125.79403-1-r4o5m6e8o@163.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hbFBUPA/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=XgCAwTBwUHtu+RSXrGyaC32M8WtKeicQrbiqmM2AXhA=; b=hbFBUPA/F8pJ0OdkmTy2FoJRff
+	OJsBoAOuVUSOktD8dbElqnJH4uVoRXBfOIRD5+5JdRldxpCMxCNqYMqb+gmtXoPOx9k09LXslMNFz
+	ynBHk6ZrfVpJUKFBgxU20WnGsCx94eQhOLM6VzaEoq1Y/uE/VDgpLsG2yVe/PxWLxkq6CBX3qdohX
+	BxfnnuyVb0s2B5l8FjT+WxRBydJLJxrUYg17YQT36gF5ZEN9p5vC79hzuHPL0ckIqdqEyCr6kiSjn
+	3I+FtITPK3VI1zKs+mYiwMrU9yfD74l0sJWWkdNWF6ukSU9hy5d8KAgehcI5qlWV1/d+BvAMyvdG0
+	2+zMMFPA==;
+Received: from [2a07:aa00:8c:e0:4a2f:b568:d308:455f] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrAJ8-00000001R4P-1Xr4;
+	Tue, 04 Aug 2026 08:15:30 +0000
+Message-ID: <b903cba7c6be9c717c2599997a89b7f8d0466263.camel@infradead.org>
+Subject: Re: [PATCH v3 2/5] KVM: pfncache: Implement range-based
+ invalidation check for hva_to_pfn_retry()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Jeongjun Park
+ <aha310510@gmail.com>,  Heitor Alves de Siqueira	 <halves@igalia.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Paul Durrant <pdurrant@amazon.com>,
+ 	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 04 Aug 2026 10:15:29 +0200
+In-Reply-To: <Zw8DINUkJJKDByXE@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-3qk07Zh6E89In7XjZuEI"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgA3+bZVnHFqQsQvLQ--.12248S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtr1fXrW3WF4xZrWkAF17Awb_yoW7GFy8p3
-	ySqF15AF43Jr1xCa13J39ruF45Gw1xAF45ArZ2y34rC3WUGFyUAFs2ka10qa9xZ3ykXFWa
-	gFn0vr4xCFWDu3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j76p9UUUUU=
-X-CM-SenderInfo: 3uurkzkwhy0qqrwthudrp/xtbC8Bk0qWpxnFnjNAAA39
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-From: Yufeng Wang <wangyufeng@kylinos.cn>
 
-Add a --features-array command-line switch that exercises the array-variant
-feature ioctls, VHOST_SET_FEATURES_ARRAY and VHOST_GET_FEATURES_ARRAY,
-instead of the legacy VHOST_SET_FEATURES.  The legacy path is used when the
-switch is omitted, so both code paths stay covered.
+--=-3qk07Zh6E89In7XjZuEI
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SET: features are programmed via VHOST_SET_FEATURES_ARRAY.
+Resurrecting this 2024 thread in the context of=20
+https://lore.kernel.org/all/992c01aa0167a95181bc59401a3cd991906e9d60.camel@=
+infradead.org/
 
-GET: VHOST_GET_FEATURES_ARRAY is issued twice with a count above
-VIRTIO_FEATURES_U64S, once into a zero-initialized buffer and once into a
-sentinel-filled one; the two reads must match.  This verifies the kernel
-fills the prefix and clear_user()s the trailing entries, and stays correct
-as the kernel's feature-word count grows.
 
-Signed-off-by: Yufeng Wang <wangyufeng@kylinos.cn>
----
- tools/virtio/vhost_net_test.c | 70 +++++++++++++++++++++++++++++++++--
- 1 file changed, 66 insertions(+), 4 deletions(-)
+On Tue, 2024-10-15 at 17:04 -0700, Sean Christopherson wrote:
+> Note, the attached patches include the "wait" idea, but I'm not convinced=
+ that's
+> actually a good idea.  I'll respond more to your last patch.
 
-diff --git a/tools/virtio/vhost_net_test.c b/tools/virtio/vhost_net_test.c
-index 389d99a6d7c7..77191e60a7a3 100644
---- a/tools/virtio/vhost_net_test.c
-+++ b/tools/virtio/vhost_net_test.c
-@@ -26,6 +26,12 @@
- #define TEST_PTYPE	ETH_P_LOOPBACK
- #define DESC_NUM	256
- 
-+/* Number of u64 entries that the kernel uses to store all currently-defined
-+ * virtio features. Must stay in sync with the kernel's VIRTIO_FEATURES_U64S. */
-+#define FEATURES_U64S	2
-+/* Above VIRTIO_FEATURES_U64S so trailing entries hit the clear_user() tail. */
-+#define GET_FEATURES_ARRAY_COUNT	8
-+
- /* Used by implementation of kmalloc() in tools/virtio/linux/kernel.h */
- void *__kmalloc_fake, *__kfree_ignore_start, *__kfree_ignore_end;
- 
-@@ -205,8 +211,10 @@ static void vq_info_add(struct vdev_info *dev, int idx, int num, int fd)
- 	assert(!r);
- }
- 
--static void vdev_info_init(struct vdev_info *dev, unsigned long long features)
-+static void vdev_info_init(struct vdev_info *dev, unsigned long long features,
-+			   bool features_array)
- {
-+	struct vhost_features_array *fa;
- 	struct ether_header *eh;
- 	int i, r;
- 
-@@ -248,8 +256,20 @@ static void vdev_info_init(struct vdev_info *dev, unsigned long long features)
- 	r = ioctl(dev->control, VHOST_SET_MEM_TABLE, dev->mem);
- 	assert(r >= 0);
- 
--	r = ioctl(dev->control, VHOST_SET_FEATURES, &features);
--	assert(r >= 0);
-+	if (features_array) {
-+		fa = calloc(1, struct_size(fa, features, FEATURES_U64S));
-+		assert(fa);
-+		fa->count = FEATURES_U64S;
-+		fa->features[0] = features;
-+
-+		r = ioctl(dev->control, VHOST_SET_FEATURES_ARRAY, fa);
-+		assert(r >= 0);
-+
-+		free(fa);
-+	} else {
-+		r = ioctl(dev->control, VHOST_SET_FEATURES, &features);
-+		assert(r >= 0);
-+	}
- 
- 	dev->nvqs = 2;
- }
-@@ -455,6 +475,10 @@ static const struct option longopts[] = {
- 		.val = 'b',
- 		.has_arg = required_argument,
- 	},
-+	{
-+		.name = "features-array",
-+		.val = 'F',
-+	},
- 	{
- 	}
- };
-@@ -467,11 +491,43 @@ static void help(int status)
- 		" [--no-virtio-1]"
- 		" [--delayed-interrupt]"
- 		" [--buf-num]"
-+		" [--features-array]"
- 		"\n");
- 
- 	exit(status);
- }
- 
-+static void verify_get_features_array(struct vdev_info *dev)
-+{
-+	struct vhost_features_array *clean, *dirty;
-+	int r, i;
-+
-+	clean = calloc(1, struct_size(clean, features, GET_FEATURES_ARRAY_COUNT));
-+	assert(clean);
-+	clean->count = GET_FEATURES_ARRAY_COUNT;
-+	r = ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, clean);
-+	assert(r >= 0);
-+
-+	/* Sentinel-fill so the kernel's clear_user() of the tail is visible. */
-+	dirty = calloc(1, struct_size(dirty, features, GET_FEATURES_ARRAY_COUNT));
-+	assert(dirty);
-+	dirty->count = GET_FEATURES_ARRAY_COUNT;
-+	memset(dirty->features, 0xa5, GET_FEATURES_ARRAY_COUNT * sizeof(dirty->features[0]));
-+	r = ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, dirty);
-+	assert(r >= 0);
-+
-+	/* Must match; a wrong clear_user() start would leave them unequal. */
-+	for (i = 0; i < GET_FEATURES_ARRAY_COUNT; i++)
-+		assert(clean->features[i] == dirty->features[i]);
-+
-+	printf("GET_FEATURES_ARRAY: 0x%llx 0x%llx (tail zeroed) OK\n",
-+	       (unsigned long long)clean->features[0],
-+	       (unsigned long long)clean->features[1]);
-+
-+	free(clean);
-+	free(dirty);
-+}
-+
- int main(int argc, char **argv)
- {
- 	unsigned long long features = (1ULL << VIRTIO_RING_F_INDIRECT_DESC) |
-@@ -480,6 +536,7 @@ int main(int argc, char **argv)
- 	long nbufs = 0x100000;
- 	struct vdev_info dev;
- 	bool delayed = false;
-+	bool features_array = false;
- 	int o, fd;
- 
- 	for (;;) {
-@@ -503,6 +560,9 @@ int main(int argc, char **argv)
- 		case 'D':
- 			delayed = true;
- 			break;
-+		case 'F':
-+			features_array = true;
-+			break;
- 		case 'n':
- 			nbufs = strtol(optarg, NULL, 10);
- 			assert(nbufs > 0);
-@@ -520,7 +580,9 @@ int main(int argc, char **argv)
- 	fd = tun_alloc(&dev, tun_name);
- 	assert(fd >= 0);
- 
--	vdev_info_init(&dev, features);
-+	vdev_info_init(&dev, features, features_array);
-+	if (features_array)
-+		verify_get_features_array(&dev);
- 	vq_info_add(&dev, 0, DESC_NUM, fd);
- 	vq_info_add(&dev, 1, DESC_NUM, fd);
- 	vdev_create_socket(&dev, tun_name);
--- 
-2.34.1
+Yeah, I don't like the "wait" part... but I don't like it spinning
+there either.
 
+The end condition in either case is not just a single GPC being
+invalidated, but a full global drain of mn_active_invalidate_count =E2=80=
+=94
+which is basically unbounded in the hypothetical worst case.
+
+I very much prefer the model I had before, with a "needs_invalidation"
+flag on the GPC, set *before* it actually becomes valid, and if the
+refresh completes and finds "needs_invalidation" already cleared, the
+refresh goes around one more time.
+
+I'll rework the series I'd built yesterday in
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/pfncache-fixes
+
+--=-3qk07Zh6E89In7XjZuEI
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
+N8gUZcT9XvQxVRkhLm0QTR8AAAAAAAA=
+
+
+--=-3qk07Zh6E89In7XjZuEI--
