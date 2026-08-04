@@ -1,171 +1,280 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBA03C3F48;
-	Tue,  4 Aug 2026 19:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720C39B975
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 19:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785870110; cv=none; b=XX3fiv0KsXmzNxuMWkcplIpZlSFjsajstZXAYpPlvuEKzv7yMpqjGcZs4a4dQlAuF07Y4w6Y+i4j3J3+CvNbqoiIn2PTn7iZRAukjbz+CNLyJDMh+AC3tiS8XF8To8dYl0u8py5+t0SV6/fiY64teLhfECtpJDup+Fpo/odoIwA=
+	t=1785870126; cv=none; b=g+hOY3DZ2TXoiQ7HYHa+CgA1Gsbj9pRPOvkfRytG+eM2Zfc4OsKnuNcGmEPr2op2WspLBeFGhzSmNMN5josbOZyOhyj3i3gFzXH7wKITPbodK2KPPuT6KW9fFdshX7Iiyt/Ovddg+b0QaR9lg3EVAp25ujNH4Oz1TP1XdF2MZfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785870110; c=relaxed/simple;
-	bh=3vya2HqjvkHNwjwQGGPkJF62irtxeSqzqP1qfAQivR8=;
+	s=arc-20240116; t=1785870126; c=relaxed/simple;
+	bh=QWLw5d3PsFELUOtZXKJPtt4CkxNmtXjChuvttT4vh7o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=StQGm0Q4qSP+cmcBfs7P27knE8hZe92+ckB4fvJ0AX6xFr+1vUMzhpEmpveqAOPe79S3hL5Cc+5+pBPTyWrm0UkUfE10B83aoWeXUKKSbhO4QDQfI+CXMKoZ3YATdkS23r+xS0JjliGayjd7LrHScnoV6D8cpPml/W5kDpZJwnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=i0HieeVU; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=hYKaPaMpYvpvtSiEi3iI401Frvkpyw/J0cOY54oBp3/P0A5L0y0Nizq5+mhkt/k/sagZjHTTJ2jIqRMSEI9X0moJ3TIhNDyXaXaHzXuuR6oLqwTAEKEJejTDBRZSNfp715ar9HTN0cDz/FXeEV6NRC2o3f+OfatZtqxdIEJVrpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2XPeA19; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="i0HieeVU"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 45BCB40E00C4;
-	Tue,  4 Aug 2026 19:01:44 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id AlYW3JH6yZ7B; Tue,  4 Aug 2026 19:01:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785870092; bh=jTsy9ZARpgzdc80qYRTp3ZXD5rupzYp290aPlne24Qo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i0HieeVUumgJVayfbtPXTLtU9jBWToWFEfi863xOYMBKUVkhNQ0/BrVP6oPJRFif1
-	 RGcTlXKPfkv3nwc3J6ik7Eoh+noJN7Y/49GURDCHiWmmcvjurYMzUfD5PiEHDk30cJ
-	 pRNh4761TsVzHwyED8UB3oOsW/8KQRN3Mx749T5gWDfd00+A8+mFaHrqBYTGTGIryy
-	 1YPo/r7tQzScAcbHiBe85j+9dxxQ1Y731eyF2lUw4Sly7Q3WVTpF3AMKJkf1uQzBeb
-	 JYieO0HiWqsbzQPpPDzv9bTeOhd9OR72c9RvUYbqA+jOYpkvx07+CUAkReUdW59gi0
-	 DEUGAN1LYWIUv6YarDwWUXxZMIEwPcB3vzm2FdFf05VVMvdQylixP4wN45bPVdqxMU
-	 Kn3fe9OIqnxcur1gYV2y0vcl5y6+qcZQuCJISJ6PNY7JBIodKNlAd38lRkhXr5dcLn
-	 ue0Fz+kQit+Fm1CnjBOmMu8dJCugOFpc7mCGptKUAONYjDfNlE7xcYS3TW8V8TeJ0I
-	 otMAHzrkRKiVwHtrfjaDjpwIXwb7+HQ0fvxUrGTFlI1hc5AMrr8BoufCl/Fvn4BE8B
-	 iR/+7JkM+My3QbPAtTN6ne7lhMXJnvOUNGV/mcaWods81JxYTbV35yHlLwwgWKwy7S
-	 DIyILA9dtJY98R+pyzsu94ok=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 35E3D40E014A;
-	Tue,  4 Aug 2026 19:00:51 +0000 (UTC)
-Date: Tue, 4 Aug 2026 12:00:48 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Dmitry Ilvokhin <d@ilvokhin.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Thomas Gleixner <tglx@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>, Alice Ryhl <aliceryhl@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH 1/5] x86/paravirt: Use static_call() for the paravirt
- spinlock ops
-Message-ID: <20260804190048.GCanI24Hb5P8qAyVZs@fat_crate.local>
-References: <cover.1785778551.git.d@ilvokhin.com>
- <9a32ae399eb804a02a31af04dcabe7e7ee4f3fdf.1785778551.git.d@ilvokhin.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2XPeA19"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacef7d299so23795ad.1
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 12:02:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785870124; x=1786474924; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=o7hc3yljc5+LxUHQxs78+dkD3Zfo1reE/uEECJBVPac=;
+        b=V2XPeA19gXM3fPDmK7dnIChkFnwwjxXN1IothHoQUIofnJI1gMnfkmzOggGxj1rsd2
+         OupN0NEGnmjWbtz6eF7r6SJFNDqzx7iQIjnT7689gnKak6T9dnv11BFnWs1r//hr/nNP
+         Qw0wMI2ec73uAdmw1tN4In4tpWaJFKQ/dDEgx4r4PQ1f3REfkcsXhqGqoT28dWuJ4WAy
+         NtM3+HP0DpSPWSN2VocUCR2ybCWPISC9T5PfuoHL/jFvE3HXvCI73hvR6W20vaYLescI
+         xyY5eir22E6fPeJrESKjwEse3WRoOmVrMyI5D3mzuPwAF22qjH4wmz9ybeeL9LO45aM5
+         FIuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785870124; x=1786474924;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=o7hc3yljc5+LxUHQxs78+dkD3Zfo1reE/uEECJBVPac=;
+        b=EMSP24Ngs4V06/y2J2On/8rBwRZ3iNdsaf62p6Kq/LJPGIJux7wnTcnBMF0CoXfqec
+         Q3FOJpiQnLjfCly+ySCUQRi8Y73rLI8cgtruhGgsr4GVZpKJ/T0P/CWiD/RhdjSDUvvt
+         J3L3CVoRlEEv0Faug0xxOpYdYadGKct1gh+dIEX/TXevQuIw8qvLsXBoPW5Jd9P3ewoJ
+         oGpRE6Eii5guwOQXBQFFXfpDedrUOjTxxpenrFhSBqOsUPq5lIszTctrGsvbAYC71c0S
+         2UoMQXgBmm/iH42yaq8NgWKg+32bHLXBK25B9tXQX0dc2+mSIvvo+BTaNqIG8+jkFddd
+         nRyw==
+X-Forwarded-Encrypted: i=1; AHgh+RqyXA9EZ7c6B55C2mK9mF4f8NOtpL4D1/GpmG03XCqs5eEDj/3HAHnYjBuHwj2sGBwwcaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJZ90JSHNinUHQxegfqQF4nldtzKcwPLpUODasrMK1dABPYuWa
+	Bxb2e2px5a3Hi6LchsmvUy4F8XDT3XDU0tkv1CP+q7zro8CDKoGcJHqFHMzMnnAlmw==
+X-Gm-Gg: AR+sD10Mnv9eRH58d8jDjBWqQQQ4q9u9ERJX/DFNdpCwlVgSjGTZQtkOBDPCb2MmXS6
+	e1W+nRGuQAMl00zqgi8/21ykj5s0WZ/f2S8cgpAFPoawN0o6fjU3LlXoqBjTdYGKQ1JrSSaNv+A
+	KEhduomgqiNzi4EBMZBKbv11gbGoR9u5vMAjHpyiDhEMMUWGQERFEGG40zfTzjOMD0RkTCH7XXl
+	lJWdhmrfiq3NLp2Tcrc+iAmkgau4F87nzGk6WBCFDxWcohDKEU/Ug/yGskmINYE+6SkRaz2yqtY
+	n5XWd16/SW/AekpKufZZB2wONhfyIQjCFSaKCrRxs184ZkQRJ3NMWvRO/Czl7eaaJ1RXQZU0b4n
+	MXKzexuySWVUzvsqtWyBgll92Yu+BJnF1ZBKpGfmdn1ryi8ctD9diyE32t3Ez8YUGFCGvFgaOkM
+	CpSZQE2I6dPXV6exkD27j7iWSDYE5mCYquHTBnSbse2VoQziKBNuzln+780ukNOTUdndMKnS8Yj
+	GKBxNkgiIRJ02zcrnBlkuU=
+X-Received: by 2002:a17:903:3c23:b0:2ca:cbe5:c3af with SMTP id d9443c01a7336-2d0caf6bbb3mr2044475ad.7.1785870123058;
+        Tue, 04 Aug 2026 12:02:03 -0700 (PDT)
+Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f2e2c2326sm201840b3a.10.2026.08.04.12.01.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Aug 2026 12:02:02 -0700 (PDT)
+Date: Tue, 4 Aug 2026 19:01:53 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Matt Evans <matt@ozlabs.org>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v5 3/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
+Message-ID: <anI3IZVZm16BOIc5@google.com>
+References: <20260715174737.15287-1-matt@ozlabs.org>
+ <20260715174737.15287-4-matt@ozlabs.org>
+ <amvWXNRtviKEuUoV@google.com>
+ <ecf9b355-9fe1-440b-9281-08671a995139@ozlabs.org>
+ <cfae30ec-18ed-4f06-bf96-ef294a8c2744@ozlabs.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9a32ae399eb804a02a31af04dcabe7e7ee4f3fdf.1785778551.git.d@ilvokhin.com>
+In-Reply-To: <cfae30ec-18ed-4f06-bf96-ef294a8c2744@ozlabs.org>
 
-On Tue, Aug 04, 2026 at 07:15:41AM +0000, Dmitry Ilvokhin wrote:
-> From: Peter Zijlstra <peterz@infradead.org>
+On Mon, Aug 03, 2026 at 07:22:06PM +0100, Matt Evans wrote:
+
+Hi Matt,
+
+> Hi Praan,
 > 
-> queued_spin_lock_slowpath() and queued_spin_unlock() are dispatched
-> through pv_ops_lock via the paravirt-ops ALTERNATIVE machinery, which
-> picks the target (native inline store / hypervisor call) once at boot
-> and cannot change at runtime.
+> On 31/07/2026 18:43, Matt Evans wrote:
+> > Hi Praan,
+> > 
+> > On 30/07/2026 23:55, Pranjal Shrivastava wrote:
+> >> On Wed, Jul 15, 2026 at 06:47:26PM +0100, Matt Evans wrote:
+> >>> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
+> >>> find a PFN.
+> >>>
+> >>> This supports multi-range DMABUFs, which typically would be used to
+> >>> represent scattered spans but might even represent overlapping or
+> >>> aliasing spans of PFNs.
+> >>>
+> >>> Because this is intended to be used in vfio_pci_core.c, we also need
+> >>> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
+> >>>
+> >>> Signed-off-by: Matt Evans <matt@ozlabs.org>
+> >>> ---
+> >>>  drivers/vfio/pci/vfio_pci_dmabuf.c | 153 ++++++++++++++++++++++++++---
+> >>>  drivers/vfio/pci/vfio_pci_priv.h   |  20 ++++
+> >>>  2 files changed, 160 insertions(+), 13 deletions(-)
+> >>>
+> >>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >>> index c16f460c01d6..7c047400dfd1 100644
+> >>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >>> @@ -9,19 +9,6 @@
+> >>>  
+> >>>  MODULE_IMPORT_NS("DMA_BUF");
+> >>>  
+> >>> -struct vfio_pci_dma_buf {
+> >>> -	struct dma_buf *dmabuf;
+> >>> -	struct vfio_pci_core_device *vdev;
+> >>> -	struct list_head dmabufs_elm;
+> >>> -	size_t size;
+> >>> -	struct phys_vec *phys_vec;
+> >>> -	struct p2pdma_provider *provider;
+> >>> -	u32 nr_ranges;
+> >>> -	struct kref kref;
+> >>> -	struct completion comp;
+> >>> -	u8 revoked : 1;
+> >>> -};
+> >>> -
+> >>>  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
+> >>>  				   struct dma_buf_attachment *attachment)
+> >>>  {
+> >>> @@ -106,6 +93,146 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
+> >>>  	.release = vfio_pci_dma_buf_release,
+> >>>  };
+> >>>  
+> >>> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_dma_buf *priv,
+> >>> +			      struct vm_area_struct *vma,
+> >>> +			      unsigned long fault_addr,
+> >>> +			      unsigned int order,
+> >>> +			      unsigned long *out_pfn)
+> >>> +{
+> >>> +	/*
+> >>> +	 * Given a VMA (start, end, pgoffs) and a fault address,
+> >>> +	 * search the corresponding DMABUF's phys_vec[] to find the
+> >>> +	 * range representing the address's offset into the VMA, and
+> >>> +	 * its PFN.
+> >>> +	 *
+> >>> +	 * The phys_vec[] ranges represent contiguous spans of VAs
+> >>> +	 * upwards from the buffer offset 0; the actual PFNs might be
+> >>> +	 * in any order, overlap/alias, etc.  Calculate an offset of
+> >>> +	 * the desired page given VMA start/pgoff and address, then
+> >>> +	 * search upwards from 0 to find which span contains it.
+> >>> +	 *
+> >>> +	 * On success, a valid PFN for a page sized by 'order' is
+> >>> +	 * returned into out_pfn.
+> >>> +	 *
+> >>> +	 * Failure occurs if:
+> >>> +	 * - A hugepage would cross the edge of the VMA,
+> >>> +	 * - A hugepage isn't entirely contained within a range
+> >>> +	 *   (including where it straddles the boundary between
+> >>> +	 *   ranges),
+> >>> +	 * - We find a range, but the final PFN isn't aligned to the
+> >>> +	 *   requested order.
+> >>> +	 *
+> >>> +	 * Upon failure, -EAGAIN is returned and the caller is
+> >>> +	 * expected to try again with a smaller order, which will
+> >>> +	 * eventually succeed (order=0 will always work).
+> >>> +	 *
+> >>> +	 * It's suboptimal if DMABUFs are created with neighbouring
+> >>> +	 * ranges that are physically contiguous, since hugepages
+> >>> +	 * can't straddle range boundaries.  (The construction of the
+> >>> +	 * ranges should merge them in this case.)
+> >>> +	 *
+> >>> +	 * Finally, vma_pgoff_adjust is used with a DMABUF created for
+> >>> +	 * a VFIO BAR mmap: a BAR mapped with vm_pgoff > 0 creates a
+> >>> +	 * DMABUF such that byte 0 of the VMA corresponds to byte 0 of
+> >>> +	 * the DMABUF and byte 'vm_pgoff << PAGE_SHIFT' into the BAR.
+> >>> +	 * To avoid double-offsetting in this scenario, subtracting
+> >>> +	 * vma_pgoff_adjust from this (non-zero) vm_pgoff generates
+> >>> +	 * the effective offset.
+> >>> +	 */
+> >>> +
+> >>> +	const unsigned long pagesize = PAGE_SIZE << order;
+> >>> +	unsigned long vma_off = ((vma->vm_pgoff - priv->vma_pgoff_adjust) <<
+> >>> +				 PAGE_SHIFT) & VFIO_PCI_OFFSET_MASK;
+> >>
+> >> Maybe I'm getting ahead of myself here.. but it seems like this
+> >> restricts us to only mapping DMABUFs at offsets < 1TB due to the 
+> >> VFIO_PCI_OFFSET_MASK (since we have HBMs on PCI devices now, hitting 1TB
+> >> may not be a very distant future).
+> > 
+> > This is a really good question, thanks for raisiing it.  It is not too
+> > forward-thinking at all.
+> > 
+> >> While I understand this mask is needed to drop the BAR encoding in the
+> >> high bits. 
+> >>
+> >> My worry is, if in the future a user were to export a massive
+> >> contiguous DMABUF (e.g., >1TB of aggregated HBM) and tried to mmap deep
+> >> into it (passing an offset >= 1TB), this bitwise AND would silently drop
+> >> the high bits, leading to silent data corruption.
+> > 
+> > One of the big advantages of DMABUF export was that the range could be
+> > huge and unencumbered by the VFIO_PCI_OFFSET_SHIFT of the traditional
+> > mmap() interface.  It's a way to mmap huge BARs without having to change
+> > the user-visible shift).  So definitely this is a relevant concern.
+> > 
+> >> I think we should explicitly reject such an mmap with -EINVAL like:
+> >>
+> >> +const unsigned long pagesize = PAGE_SIZE << order;
+> >> +unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) << PAGE_SHIFT;
+> >>
+> >> +/*
+> >> + * Prevent silent wrap-around if the user mmaps a DMABUF at an
+> >> + * offset greater than the VFIO index mask allows.
+> >> + */
+> >> +if (unlikely(vma_off > VFIO_PCI_OFFSET_MASK))
+> >> +    return -EINVAL;
+> >>
+> >> +vma_off &= VFIO_PCI_OFFSET_MASK;
+> > 
+> > Agreed, for now this absolutely should not silently wrap if the offset
+> > is > 1TB, and we live with the restriction that a DMABUF sized >1TB
+> > can't be mapped with such an offset.  (We can still, say, map all of a
+> > 16TB DMABUF with offset=0, which is good.).  I'll add a check, thanks
+> > for pointing this out.
+> > 
+> > I suggest as something to revisit later, we flag for a DMABUF (maybe an
+> > evolution of vma_pgoff_adjust) to differentiate whether this masking
+> > needs to be applied (traditional mmap() path) or not (DMABUF mmap()),
+> > and then offsets can be arbitrarily large.
 > 
-> Convert both to static_call(). The site becomes a direct call patched in
-> place (one byte smaller), and on native the unlock still collapses to
-> the inline "movb $0, (%rdi)" store, so the fast path is unchanged.
+> Having tinkered, the two-step approach I suggested isn't great because
+> userspace has no easy way to know that step 2 has occurred and that
+> large offsets are "now supported".
 > 
-> Unlike the ALTERNATIVE mechanism, a static_call() target can also be
-> updated at runtime via static_call_update(). This is a prerequisite for
-> the contended_release tracepoint, which has to swap in a traced unlock
-> while the system is running.
+> The second problem is this isn't just a limitation to not do an mmap()
+> with offset approaching 1TB, because you could run into trouble just
+> mapping, say, a 2TB BAR and then splitting it by unmapping a hole in the
+> middle:  the second VMA now has a huge offset.
 > 
-> [ ilvokhin: commit message; fix PARAVIRT_SPINLOCKS=n build; teach
->   __static_call_validate() about the inline unlock insn; make the
->   slowpath site module-safe: static_call_mod() +
->   EXPORT_STATIC_CALL_TRAMP(); pass @lock to the callee-save unlock,
->   fixing a boot hang under CALL_DEPTH_TRACKING. Boot tested native + KVM
->   PV guest. ]
+> It seems a proper fix is easy though:
 > 
-> Link: https://lore.kernel.org/all/20260603120811.GW3493090@noisy.programming.kicks-ass.net/
-> Co-developed-by: Dmitry Ilvokhin <d@ilvokhin.com>
-> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
-
-This needs Peter's SOB.
-
-> ---
->  arch/x86/hyperv/hv_spinlock.c            |  4 ++--
->  arch/x86/include/asm/cpufeatures.h       |  1 -
->  arch/x86/include/asm/paravirt-spinlock.h | 19 +++++++++++------
->  arch/x86/kernel/kvm.c                    |  5 ++---
->  arch/x86/kernel/paravirt-spinlocks.c     | 12 +++++------
->  arch/x86/kernel/static_call.c            | 27 ++++++++++++++++++++++++
->  arch/x86/xen/spinlock.c                  |  5 ++---
->  tools/arch/x86/include/asm/cpufeatures.h |  1 -
->  8 files changed, 51 insertions(+), 23 deletions(-)
+>  unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) <<
+> 	 		  PAGE_SHIFT;  /* No masking! */
 > 
-> diff --git a/arch/x86/hyperv/hv_spinlock.c b/arch/x86/hyperv/hv_spinlock.c
-> index 210b494e4de0..6b4bdea18218 100644
-> --- a/arch/x86/hyperv/hv_spinlock.c
-> +++ b/arch/x86/hyperv/hv_spinlock.c
-> @@ -78,8 +78,8 @@ void __init hv_init_spinlocks(void)
->  	pr_info("PV spinlocks enabled\n");
->  
->  	__pv_init_lock_hash();
-> -	pv_ops_lock.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
-> -	pv_ops_lock.queued_spin_unlock = PV_CALLEE_SAVE(__pv_queued_spin_unlock);
-> +	static_call_update(queued_spin_lock_slowpath, __pv_queued_spin_lock_slowpath);
-> +	static_call_update(queued_spin_unlock, __raw_callee_save___pv_queued_spin_unlock);
->  	pv_ops_lock.wait = hv_qlock_wait;
->  	pv_ops_lock.kick = hv_qlock_kick;
->  	pv_ops_lock.vcpu_is_preempted = PV_CALLEE_SAVE(hv_vcpu_is_preempted);
-> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-> index 1b4a48bff18f..e41fe5c24841 100644
-> --- a/arch/x86/include/asm/cpufeatures.h
-> +++ b/arch/x86/include/asm/cpufeatures.h
-> @@ -225,7 +225,6 @@
->  #define X86_FEATURE_EPT_AD		( 8*32+17) /* "ept_ad" Intel Extended Page Table access-dirty bit */
->  #define X86_FEATURE_VMCALL		( 8*32+18) /* Hypervisor supports the VMCALL instruction */
->  #define X86_FEATURE_VMW_VMMCALL		( 8*32+19) /* VMware prefers VMMCALL hypercall instruction */
-> -#define X86_FEATURE_PVUNLOCK		( 8*32+20) /* PV unlock function */
+> Then in vfio_pci_core_mmap_prep_dmabuf(),
+> 
+>  priv->vma_pgoff_adjust = vma->vm_pgoff;
+> 
+> I.e., if vma_pgoff_adjust just includes the region index up high, it
+> cancels out the (same) index in the vm_pgoff.  Thus regular mmap should
+> work (up to the 1TB offset), and DMABUF VMAs can have arbitrarily large
+> offsets.
 
-No, do:
+This looks good to me! I traced through both mmap paths to verify how 
+vma_pgoff_adjust handles the offsets and it looks like this works 
+perfectly for both.
 
-/* free: was #define X86_FEATURE_PVUNLOCK		( 8*32+20) /* PV unlock function */
-
-so that we can reuse it by finding it easier.
-
->  #define X86_FEATURE_VCPUPREEMPT		( 8*32+21) /* PV vcpu_is_preempted function */
->  #define X86_FEATURE_TDX_GUEST		( 8*32+22) /* "tdx_guest" Intel Trust Domain Extensions Guest */
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Cheers,
+Praan
