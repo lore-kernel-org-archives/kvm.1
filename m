@@ -1,130 +1,77 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46273AE1B9;
-	Tue,  4 Aug 2026 12:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EC43C5856;
+	Tue,  4 Aug 2026 12:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785845216; cv=none; b=iXVTMFV//jlCvLAGqSeA/CWaV7q4/0wgbfy6m9SchvEULcjUqtyZclQNTJA3mX0PSCU258g5wd7/GFlwki9aeO5Nt6DCt+5wSMv/GBGErNf/vlJ4Tl9ayjZcuJJVsPq1kxpCuZvDth7TjiFKMloLd38t2NPGdcgspuI8O8PzxkA=
+	t=1785845659; cv=none; b=EqI39/jBO3EX327MO4apVlSjhwQy5FWShhOZRnOQgumbB/EgDfkT1EoJloYrV5YuK22wBB0NtPflzoPJcslNDRlziiWHB5p308sGegW0ntO1J3adrXyFCwVhDCUF0iv8Nor3XZrpPLuZsetEHouJZf86EBGPLQH6AKAHe3Ccs14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785845216; c=relaxed/simple;
-	bh=5WjLMNdJHCvLB5Cmbe27if+LnF2PGWwIxN6RPgcC6P8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6SpIxej2B1P2pDg6JDEb4gFAOV3aQRz+k4CQ38w3nckrp9grzLMBNJ4kOlCEJpaNO7uacYOhAhm2OyZAVu0NEmU5Hwl3cQSdMU5OF+kK4zol57TqPahwX6JU0v1HuURUdFL34c5Cx2oN0t8uHAAmfVuGORpLgJ8GYmnh4oSYb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rbnbsPBn; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785845659; c=relaxed/simple;
+	bh=i2q9E4hjJIYycbQPzz2VdUb3R7j5w3coKqI+7KL2AF4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DT2xBLMTNnjxgvYdDIlo0Gqo3M4JDglF12sCbtEn3ZnfyJLk0PHOPoafJarrTDf8bpw9dYhRZUYkv6b16rmrmHBcY5T8JuG1qqo1cIpI2dBs0e5NSR7wB2PP/mZEGkVj5p4ExGTTNR8c6OkOFBeCZ6DeH/Vh+bALcXCMqQqA3SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0i3gaYT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rbnbsPBn"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6748HqlG383260;
-	Tue, 4 Aug 2026 12:06:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=xmNZ9TW12wMT4rHjH
-	P+iTsaG4htWSdCV7GbCqhnu9YU=; b=rbnbsPBn7VT9fZJxFwEioqhxcf9JxIWVK
-	KuIXs7gzXj7rRoFKijWikd6DIAIX+7/kO/2xKhzx0X+BfMWZD0ejbswteE7drFRk
-	ivh9wEXwSUs5+2E/a1CPRjfoLsqmDpZHRTTlNSV8GUBobKawZTvilWR45dPYXxVZ
-	DgCODLXih+SILWY3c/xGQapOJxo49T2AZTLMlWTRWQL79a0540rgirhpIulRwSAZ
-	TalfN3Sd9kVxBkIGoMlT0IU8iyp93Chw0f+QTSHi9+8/nAhczK8cdkKJ03+aac4w
-	cO7Z0Pa03XHkDmTmtTn5ez+sW1McNkWyjWDmD2Q7XZqh5p03UmdYg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8eun8du-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 12:06:44 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674BuEkn030751;
-	Tue, 4 Aug 2026 12:06:44 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsv4k1tqs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 12:06:44 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674C6gqm6292384
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Aug 2026 12:06:42 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 997C95805F;
-	Tue,  4 Aug 2026 12:06:42 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A3C865805E;
-	Tue,  4 Aug 2026 12:06:40 +0000 (GMT)
-Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Aug 2026 12:06:40 +0000 (GMT)
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-To: KVM <kvm@vger.kernel.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Douglas Freimuth <freimuth@linux.ibm.com>
-Subject: [PATCH 3/3] KVM: s390: memory leak in guest debug handling
-Date: Tue,  4 Aug 2026 14:06:31 +0200
-Message-ID: <20260804120631.736919-4-borntraeger@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260804120631.736919-1-borntraeger@linux.ibm.com>
-References: <20260804120631.736919-1-borntraeger@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0i3gaYT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1D01F000E9;
+	Tue,  4 Aug 2026 12:14:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785845656;
+	bh=lo8F2pHYcPGGO3cjI9cGy2z2kBDlyc/XA0gqGb4TGhU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=m0i3gaYTjhi6Jo0IJ0Kt8kWvKLnli3ns9F0MgkWmNGsCwMPjDD3IJQ4DLl2fjcA9N
+	 WneUyZnMhJsQ8ncYx8VKIK8sv0zWj3M5wJD+tURNPk3VQPubmxDjwLrzcuNgR0L59q
+	 iEBdAp3xK91gzJQsbtxfv/BCNumTn6EygwDNVdTYnIi+0Gn3aQaVhGRDRVdoG3xhu0
+	 9cMJHShljELSqFZpSZqCMdZ7UeiXkufB+9ShaN62Vgwe6MHRCZYlPJ51hT+92sEzBG
+	 qXynHGm8v9nEsfhq3xUA2jR5/lR4tRONb47ReM1h1pTR6U6hwDggjuhV6ABA6WWdjh
+	 q2PCCBsh6jLlw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 5/6] mm: pull writability check to
+ follow_pfnmap_start()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Paolo Bonzini" <pbonzini@redhat.com>
+Cc: dri-devel@lists.freedesktop.org, "Vasily Gorbik" <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org
+In-Reply-To: <20260804120529.1730187-6-pbonzini@redhat.com>
+References: <20260804120529.1730187-1-pbonzini@redhat.com>
+ <20260804120529.1730187-6-pbonzini@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 04 Aug 2026 12:14:15 +0000
+Message-Id: <20260804121416.6C1D01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TH1UukU18Ksc_wJVYsRA6Fqs6oP4wITX
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA5NCBTYWx0ZWRfX2NJf9RP2J048
- JxoZ+u3Jn1jWZtt7GG+D7Ke8KZwhuwF4CafE+j0UY0sNo4nwzkXYUjYt8SZp5tA/fEAH08vdXa8
- /jWDi9oOdzoKz7XXCSTN8TrmP7EOrIY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA5NCBTYWx0ZWRfX3kholCxciZJ1
- oXP43QnTQhSa/Q9hc4+YKw8VVdVI6DXqouHuAsz7u4cY6TFBVkfRORAFU3/9VyA0ljugrdj5mfx
- a/YyF27Rn7s0n/VCdLbhOORUHpBxHw3Xemc1Ltj49wEUo19uBrN7pzVy/9VzPlwHd3UkUp4+U8y
- Mt5G6Amm2cKR8gBS8lvCaN2LBXZg2EjFQF+XLV0Kdqk9aAFxqJis04kStsPKyjIbCaF26P5Ekdd
- fifkoFb81oDCZ5nigC6HXxGsF79CWVR4sw9NIDG5x9SwcBca9Vwx/8ggNNLf8c+4bl4Ixqg4IZo
- pRSXRtuWysa15QcjNzM2mR6Gj2uxz7q2ePCjBlTrIbyPA9Dr3OjOooFdIxp2eYN/3UTdbEPDa0u
- ajHrs4ihMhfngaCcwCpLZ2g7tYVNKqDZXrZ8J8B1IqMjM/M6HQ1jzSQFA900nT+Qagsj14579h4
- p2ISQB11FFDhrbNpv/A==
-X-Proofpoint-GUID: TH1UukU18Ksc_wJVYsRA6Fqs6oP4wITX
-X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a71d5d4 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=EuSpeD5rqQqXJFU2zEEA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_02,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
- adultscore=0 clxscore=1015 priorityscore=1501 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040094
 
-bp_data is freed only for the error case by kfree(bp_data).
-Every successful KVM_SET_GUEST_DEBUG will leak bp_data.
+> All callers of follow_pfnmap_start() except s390_pci_mmio_write()
+> are following it, if they are doing a write, with a check that
+> args.writable is true; for s390_pci_mmio_write() that's a bug.
+> Also, most of them return -EFAULT if it is not.  Pull the check
+> directly into follow_pfnmap_start() through another input parameter
+> args.write_fault, to eliminate the need to do it in the caller.
+>=20
+> This also fixes an issue where follow_pfnmap_start() would return
+> 0 for a PFN that is mapped read-only, and the caller would not
+> attempt to call fixup_user_fault() on it; this can happen with
+> vm_ops that set .pfn_mkwrite(), for example.  Instead, now the
+> caller (for example hva_to_pfn_remapped()) sees an error,
+> does attempt to fix it, and only returns -EFAULT if the
+> fixup was fruitless.
+>=20
+> Reported-by: Sergio Lopez <slp@redhat.com>
+> Fixes: 28e3918179aa ("drm/gem-shmem: Track folio accessed/dirty status in=
+ mmap")
+> Link: https://lore.kernel.org/kvm/CAAiTLFU1ALsDoJoKW3d9bUvv990AozAoX=3DbE=
+HmfnG54qyBAHFg@mail.gmail.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
-Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
----
- arch/s390/kvm/guestdbg.c | 1 +
- 1 file changed, 1 insertion(+)
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-diff --git a/arch/s390/kvm/guestdbg.c b/arch/s390/kvm/guestdbg.c
-index 69835e1d4f20..4c02dbebb2eb 100644
---- a/arch/s390/kvm/guestdbg.c
-+++ b/arch/s390/kvm/guestdbg.c
-@@ -267,6 +267,7 @@ int kvm_s390_import_bp_data(struct kvm_vcpu *vcpu,
- 	vcpu->arch.guestdbg.hw_bp_info = bp_info;
- 	vcpu->arch.guestdbg.nr_hw_wp = nr_wp;
- 	vcpu->arch.guestdbg.hw_wp_info = wp_info;
-+	kfree(bp_data);
- 	return 0;
- error:
- 	kfree(bp_data);
--- 
-2.53.0
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804120529.1730=
+187-1-pbonzini@redhat.com?part=3D5
 
