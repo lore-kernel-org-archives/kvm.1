@@ -1,63 +1,67 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E04483AD
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1528646F4B4
+	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 18:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785869466; cv=none; b=bSZhSwM1npDQglulO5QLflLriSY0edQJW42919V/LihnFDsYnypKPUsgSYagg6D4JjNxPfbf3FenUxkuMk5yPY2xrfnVyYhefrSp+zvBAOLsPraZ0tevAAGcvYkMNLM+Ca0znJsC5PhVFbd8MQK6/NbOjKr1hq8oBXhsGYVh4bo=
+	t=1785869469; cv=none; b=RelVEXcSBioNKz+91nTqjqWkPY0AOadIKVl/eqfkQ0ZpALvSy5kocPj/qtYrZR58+LdeYLcUwDDz9HCu4WlY4bYuzHLtNwcox5QKIR3xh+wKMZvxgj1nWFhDJzxx/pAKG3WHKzjxNHnAmdiHkYe7KD3pjoUduI1NtL/yuiXVvrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785869466; c=relaxed/simple;
-	bh=d4DCU8mD/yTPOADLz6OvOqZzysxSQNuEDRfElM8PO/E=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Q34SMbm8/PJRNmQwgGjHCwMZ5oPM4DI1/98mU91erTXSRZ3aBrk3QLNBbUEPRJB/lzMRSmUr1VafTQ1Q/lw/Lm1OzV8EgtFnA9M2cUrRpH/A788qljJr57iWB1V7L+azWL13zqXveuJ0b+DF+QpZWIjfdQh7PzyojMAMZQLL4JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RTw8KdEF; arc=none smtp.client-ip=209.85.214.198
+	s=arc-20240116; t=1785869469; c=relaxed/simple;
+	bh=XlkRowI/Bj2yqvZSSpDH2xbYCIlXFfReqBFODIvSLbU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mjxhHclO7pG0sfB1hI19/Bkqup7BhhQUFsQGBhxcEMp75cYMcRIrRBXNH3rDw/je8I8YUntN1PL+AB6nGLNkAydCkk37Z7PFW7a5oA8lmQ1B5ksjDbU1UK2oOOZuamIzkC03Vn/Sc1xWtHRdn1vsf1eVPJLCuTdXf8nF6SHHs3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MBB4roiW; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RTw8KdEF"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ccb687f82eso2178125ad.3
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MBB4roiW"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cab041eced3so156483a12.1
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 11:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785869464; x=1786474264; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZMgXTe4N/BU5BfE5DQ6Wn9tDsHyqEvJihmfJhMDUmyg=;
-        b=RTw8KdEFOIm+3zoTDgDSbe2em3xqI3bl5dvnFA2xfz/frYIXjtaOWoTRasBKTrtCqV
-         GQ90TsCXV187DFCqFAUkGQx4ElKzMb5TVCuitq4MvmzLiAy4hhH2+LkyLPjJpdnBusRV
-         dZzmeqgEL9C9vtHBEF0wyXL65jddU1JP70BJQJXvXFl84bDA6J+U706PVgK7vIkG1BpY
-         Uoq+XEa2ilZC1ZmZ7P5ME+5Os7mnkp6fwSuNKbgnv+l/9VGCqVfdReV4njYktOwCKhAF
-         FvRDld46WCcLhadfQ0HD65gLaWJisgQU1i1TnNk2xx8EYXwiy0z4Q4QxDKvNKiyRO65q
-         eb7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785869464; x=1786474264;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785869467; x=1786474267; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZMgXTe4N/BU5BfE5DQ6Wn9tDsHyqEvJihmfJhMDUmyg=;
-        b=gqLoucaDtFgVdcj5oksYa3R/T2Pa3aOBoSULtScIr6MopqmJw61xPXk9r9IzxbtVMy
-         GuYG17wTH3D1C/GHl2RjfopUNAH8ymcaQtta/i94W+51YrP/ud0DJ977PTerjnpr3Zfn
-         5/7wmVZg93Vr7C3tiZxl1Rp7fvi/wDYKCik/pAbw19aupNbyJwblCXE4iYxL95ppfQkb
-         1XFMTxfkiYh06Ti99CMhkpnnUG1MKHZoht+E4P2wPhWwcxWIMSNDoPQGoJF7aLZ/adjd
-         DpTrFJPTvI7j90++eSjiz6vCEB4RTM33cHDBc4cfWbaxaRhtLwzC+2aUDBpb89y95d3l
-         vT/A==
-X-Forwarded-Encrypted: i=1; AHgh+RqfMTA6oc+/a6xokOyo2kJm0YTO/ZczurIYbATkrhN5vFOLz0szZkbvwQUAvhV/rdTpZME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMpLR/64k4hmyYlx7nibcqPRMb6usa+VXFLds+ihgr20SyIAD9
-	SDfTyc2g2DC57BNx6zW8g4S87efD7qkm2eHvhApawGToJoOZ8JQKKWB/QlFUEbNwyXSO83IUiop
-	A5w==
-X-Received: from plso11.prod.google.com ([2002:a17:902:bccb:b0:2ca:c3ac:bb34])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c27:b0:2ca:62e:cc4f
- with SMTP id d9443c01a7336-2d0ca9467bbmr8991665ad.23.1785869464151; Tue, 04
- Aug 2026 11:51:04 -0700 (PDT)
-Date: Tue,  4 Aug 2026 18:50:45 +0000
+        bh=mN/ftuPXHTO6yPx2v45bEY7G4dZzvWxyQXkizaq1wVU=;
+        b=MBB4roiWT6SNt7U1o9vGR9MgpQ8CYYNVUWs2n/mnVLwAcT3lrz5m2d84gRBHrner9I
+         2qmo7k+E4+aPEdqPG1cQbaTBcFi7tFBNq/YHnfrQdCHRTecNAPZll8J/uikWAw5e82NC
+         TfX0IeNYYd7CwXN8zld7fpCF5GXya/6wiTc66CCEu062Kz5VExeXik1kh4u+ZFRI1Fcy
+         tYMY69cyLbGKQKw7J+UK17te/WTkX0kVcPaN6Kr6WU7SknwPx77hsKNF5S4RBCBd/ovm
+         aVnHu5x3yx/27N5kc4iGhvH7LAlq1du0cilZUrvDU8ekadkcn3zUovBtbHu3zSkd72Nv
+         5ldA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785869467; x=1786474267;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mN/ftuPXHTO6yPx2v45bEY7G4dZzvWxyQXkizaq1wVU=;
+        b=Oa1wvv2Ue1HEQ604iyZa3w/g3UvPvbWX7BjfRRPvJssQFoI64hwxU7pqRbyWVcnQWx
+         TTp14V3Fn7vkkfvojyOPcyz0Lk6r03z8n9dnMxZJmAxLoAxgox6xwXLFbsLQXjJjZhLB
+         MoBNNcqFHCRWu8y0+HVXDLwIhOY/F+M1La+TMXlvzhenAJNvHT9Rxe+D3hJbfxGO+0e9
+         TR+tRlVacLioeKK11xterUQHqdGLQjHr6HMGk/H84kwyUkJqhrmJ55CHLL7K2l2Ebmlg
+         HFdQCVTFZXHTaVLXRh2ON6n7uHsgCKY8QNFj7TwccYaSfk1HPuDF5UwwB6YCJSh2p7lB
+         VeMA==
+X-Forwarded-Encrypted: i=1; AHgh+RpmmXMire6gj+pq82gItl9zkE43sj8q2ZZkFi22RL7u+xX4u2MVAXptPHYXr3ZChgFwsHM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDpk5Dmi38H7RslNJJUKI1T9OxhjkQALM/za3hDDgDkgDv8TnI
+	n0JU0e5/9bnaOuGLqwVL4OWrFmOwC9cAqDKV5zOqrFLM7YZE1cbz+Fg93cQK8DlQkNebqf4tsWp
+	1gg==
+X-Received: from pgla35.prod.google.com ([2002:a63:b63:0:b0:c96:da8a:c09c])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:428b:b0:3c3:64cc:311a
+ with SMTP id adf61e73a8af0-3cb85ef9229mr901310637.22.1785869467266; Tue, 04
+ Aug 2026 11:51:07 -0700 (PDT)
+Date: Tue,  4 Aug 2026 18:50:46 +0000
+In-Reply-To: <20260804185050.2053672-1-praan@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260804185050.2053672-1-praan@google.com>
 X-Mailer: git-send-email 2.55.0.571.g244d577d93-goog
-Message-ID: <20260804185050.2053672-1-praan@google.com>
-Subject: [RFC PATCH v2 0/5] vfio/pci: Support ZONE_DEVICE-backed DMABUF Exports
+Message-ID: <20260804185050.2053672-2-praan@google.com>
+Subject: [RFC PATCH v2 1/5] vfio: Add UAPI flag for ZONE_DEVICE-backed DMABUF exports
 From: Pranjal Shrivastava <praan@google.com>
 To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	kvm@vger.kernel.org
@@ -69,120 +73,42 @@ Cc: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe <logang@deltatee.com>,
 	Unnati Sachan <unnatisachan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Introduce ZONE_DEVICE backing for VFIO-exposed PCIe BARs via the DMABUF
-subsystem. This series is based on Matt's on-going work on VFIO DMABUF
-mmap [1].
+Add an opt-in UAPI flag for exporting VFIO MMIO regions via dmabuf
+backed by struct page metadata (via ZONE_DEVICE registration).
 
-Currently, kernel drivers can register their BARs with the P2PDMA
-subsystem to enable high-performance, page-backed P2P DMA. However, when
-a device is bound to vfio-pci, this capability is missing. This prevents
-userspace drivers from performing zero-copy P2P DMA via standard POSIX APIs
-(e.g., O_DIRECT) which require struct page metadata.
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+---
+ include/uapi/linux/vfio.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Based on feedback from v1, this series pivots away from system-wide P2P
-registration. Instead, it integrates with the ongoing VFIO DMABUF-mmap
-work [1], introducing on-demand ZONE_DEVICE allocation exclusively for
-DMABUF exports. This allows DMABUFs to optionally register with ZONE_DEVICE
-while laying the groundwork for userspace NFS clients and other storage
-targets to perform zero-copy P2PDMA against VFIO-managed memory.
-
-(Note: There's on-going work to support P2PDMA on NFS [2])
-
-Design
-======
-The proposed design involves the following:
-
-a) On-Demand ZONE_DEVICE Registration
-A new UAPI flag (VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED) is introduced to
-the VFIO_DEVICE_FEATURE_DMA_BUF ioctl to allow users to explicitly "opt-in"
-to struct page backing on a per-dmabuf export basis. This ensures we only
-allocate vmemmap memory when requested by the user (e.g., NFS + O_DIRECT).
-
-b) Sticky Registration
-In order to prevent vmemmap memory fragmentation, ZONE_DEVICE allocations
-are "sticky" at the BAR level. Since the ZONE_DEVICE registration relies
-on the pci_p2pdma_add_resource() API internally, it is guaranteed to
-have the allocations stay until the vfio-pci driver is unbound.
-
-Thus, once a DMABUF export requests page backing, struct pages are allocated
-for the entire BAR (even if the DMABUF spans a smaller region within the BAR),
-and this allocation survives DMABUF closures and device resets. 
-
-If VM1 opts-in to ZONE_DEVICE, undergoes a reset, and the device is subsequently
-assigned to VM2 without the opt-in flag, VFIO simply exports the standard DMABUF
-and ignores the underlying struct pages.
-
-c) Revocation Strategy
-During a device reset or teardown, VFIO revokes the DMABUF. the design implements
-a synchronous revocation fence that blocks indefinitely until all struct page 
-refcounts drop to 1 (meaning the importer has fully released them) to prevent
-DMA-after-free corruption.
-
-d) DMABUF Interoperability
-A custom .map_dma_buf handler is implemented to ensure a ZONE_DEVICE-backed DMABUF
-can be used as a regular VFIO-exported DMABUF ensuring importers can still use
-standard SG-table-based APIs seamlessly alongside page-based ones.
-
-e) Concurrency
-The page allocation and refcount initialization are serialized via the memory_lock
-write semaphore to prevent concurrent fault races. Additionally, we call a
-unmap_mapping_range() during revocation while holding memory_lock without triggering
-a circular rmap deadlock (mmap_lock -> memory_lock -> i_mmap_rwsem). This is safely
-avoided because pages allocated via devm_memremap_pages() do not have page->mapping
-set, rendering them invisible to the rmap.
-
-Call for Review & Design Trade-Offs
-====================================
-Please provide feedback on the sticky registration and revocation strategy.
-
-I've evaluated the following and would appreciate guidance on these tradeoffs:
-
-a) Sticky Registration vs. Ephemeral Teardown
-Instead of making vmemmap allocations sticky across resets, we could free and 
-re-allocate them per-session. While this would eliminate the need for our 
-indefinite polling loop (as the devres teardown handles it natively) and
-clean up struct pages that are not needed anymore after the fd closure.
-
-This design opts for the sticky approach to avoid vmemmap fragmentation over the 
-host's uptime. 
-
-b) pci_p2pdma_add_resource vs. Open-Coded devm_memremap
-
-This implementation relies on pci_p2pdma_add_resource(), which couples the
-vmemmap lifecycle to the vfio-pci driver unbind event. Alternatively, we 
-could open-code a devm_memremap_pages() implementation (similar to P2PDMA API)
-directly within VFIO to gain finer-grained control over the teardown
-(maybe something like vfio_p2pdma_add_resource() or something).
-
-I've avoided that in this version to first gain consensus on the fragmentation
-and revocation fence.
-
-c) Interoperability
-The propsed design assumes that an importer of a ZONE_DEVICE DMABUF may still
-want to utilize standard DMABUF operations, and thus implemented the .map_dma_buf
-op. An alternative would be to strictly enforce that ZONE_DEVICE DMABUFs only 
-support page-backed usage, explicitly rejecting standard DMABUF operations.
-
-[1] https://lore.kernel.org/all/20260715174737.15287-1-matt@ozlabs.org/
-[2] https://lore.kernel.org/all/20260720150601.2702700-1-praan@google.com/
-
-Thanks,
-Praan
-
-Pranjal Shrivastava (5):
-  vfio: Add UAPI flag for ZONE_DEVICE-backed DMABUF exports
-  vfio/pci: Implement ZONE_DEVICE registration for DMABUFs
-  vfio/pci: Implement page-backed .map_dma_buf handler
-  vfio/pci: Add .mmap handler for page-backed DMABUFs
-  vfio/pci: Add revocation fence for ZONE_DEVICE DMABUFs
-
- drivers/vfio/pci/Kconfig           |  11 ++
- drivers/vfio/pci/vfio_pci_core.c   |  39 +++++-
- drivers/vfio/pci/vfio_pci_dmabuf.c | 213 ++++++++++++++++++++++++++++-
- drivers/vfio/pci/vfio_pci_priv.h   |   1 +
- include/linux/vfio_pci_core.h      |   4 +
- include/uapi/linux/vfio.h          |  10 +-
- 6 files changed, 266 insertions(+), 12 deletions(-)
-
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index cbe03e5d1009..3ae025b33e7f 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -1505,7 +1505,13 @@ struct vfio_device_feature_bus_master {
+  * etc. offset/length specify a slice of the region to create the dmabuf from.
+  * nr_ranges is the total number of (P2P DMA) ranges that comprise the dmabuf.
+  *
+- * flags should be 0.
++ * flags supports:
++ *   - VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED: Request the kernel to allocate
++ *     valid struct pages for the exported dmabuf range (via ZONE_DEVICE
++ *     registration). This allows the exported dmabuf fd to be used by
++ *     subsystems that rely on page metadata.
++ *     (NOTE: This consumes extra system RAM to store BAR_SIZE / PAGE_SIZE
++ *     struct pages).
+  *
+  * Return: The fd number on success, -1 and errno is set on failure.
+  */
+@@ -1516,6 +1522,8 @@ struct vfio_region_dma_range {
+ 	__u64 length;
+ };
+ 
++#define VFIO_DMA_BUF_FLAG_ZONE_DEVICE_BACKED	(1 << 0)
++
+ struct vfio_device_feature_dma_buf {
+ 	__u32	region_index;
+ 	__u32	open_flags;
 -- 
 2.55.0.571.g244d577d93-goog
+
