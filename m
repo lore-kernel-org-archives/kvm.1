@@ -1,114 +1,176 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35091423764
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 07:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698213C9EDD;
+	Tue,  4 Aug 2026 07:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785828622; cv=none; b=JDqV1QjQ4/bkkazESNZh3ddfK+lo9gZzE5h5gMFpxCzZJiVmqLJh0qJ3tKgRL6fZePCRQUNZMAKTDxxWVRFgfYICYlUrbpNbzve5JFE20ok72CcKNe6TA2PFtCIqb5UY+MpIpthlGDAfFyiyeQMmMqpFepz7up9CCrK/2jq63w4=
+	t=1785828964; cv=none; b=IB92Cyvzy3UawlwvaxR2BoDU/v/E3HSlKfFjLv1di3MLjY5h8kw0Oo2UZ9rtUwbnjRrNIaKSfx0rTfoJx9NK3PJ0LoNCV3Hhp1HYJw52uMeSPPy70VvGU4LJt4lz7bhKqeXZKPJ/Q7kEXra9x/Zv5SPEb+PdDbkWkok55WvASQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785828622; c=relaxed/simple;
-	bh=VAzdkY0FhVatErfRtKHtfpFZ4GJe9PAo5SAMhtPg3dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7uRXr/H4guAgtUAa63mpkHVCOKvqlud2OW7Shh0r36ukh1bmubmc8QnSO5wbyAS21tMPmGSwKhIBlIiCgjzlBC0FQLqNMIInLFpDpYU4KfBwqRJGod8p1dmpKXxOgqs9sNYRta8d6gQWe+XVYFUu7blESe03Iak53WUpqvrpTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qDdKuz2Y; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785828964; c=relaxed/simple;
+	bh=EJJ193UySnwbWymTAPQfISlUSrqUut1CwCXNbxDNPMI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OQlTJolFWAW9+zko77oiYIDYgrLxs7Ltt3/dTqNPKqw+33RQYNS2S5k7xhMFa9CJNkRpKSmW5xMwgaJTD2FqdmQSEy8HVUdZThcOIh98d/u0jjqS1F18ANboKQivvt1H2mKbzD6/OlrvaBBE8SNzR8/WHabH+NV6n5MEHW3KESQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyqgoA41; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qDdKuz2Y"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6741J4at3633768;
-	Tue, 4 Aug 2026 07:30:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=VAzdkY0FhVatErfRtKHtfpFZ4GJe9P
-	Ao5SAMhtPg3dk=; b=qDdKuz2YpnsKMpYjBNQnYWLGfNgvYOZJzdnKJCFn9UxpeI
-	9oh/+SH8CSxLn4969LJx0Zh1n4q+nUi1Ju9TDxg4rkCc7VKI+RBOrtllNTQ/iJYS
-	aA18EkOQSj77+CN0rn8VXghPlvWHg/GqE+9EbRmMJ1HfNI38X8/ZdOu7trDjwsn2
-	VUrHYCwzXwT7Dtsha+A39PsUWbuWP9bP8gN4Jdr/ocrpJahOi5mZzKzCVFsxp7pk
-	k87cGGcKmilsAFyQTs7Vmo/VsezG2AepniGV1ciyCR2yqw5KEs6twW1gkieW1ClF
-	oHQvP3xSw+5li6C4frqCEHqepWh33F9DWXnWaQAQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a3vp83-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 07:30:13 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6747QMbN016408;
-	Tue, 4 Aug 2026 07:30:12 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw11n5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Aug 2026 07:30:12 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6747U8Rq31785304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Aug 2026 07:30:08 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AD5F2004D;
-	Tue,  4 Aug 2026 07:30:08 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA51420043;
-	Tue,  4 Aug 2026 07:30:03 +0000 (GMT)
-Received: from Unknown_32:98:3c:96:ca:91 (unknown [9.39.29.19])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  4 Aug 2026 07:30:03 +0000 (GMT)
-Date: Tue, 4 Aug 2026 13:00:00 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
-        qemu-devel@nongnu.org
-Subject: Re: [PATCH v4 0/3] ppc/kvm: Handle CPU compatibility mode correctly
- for nested guests
-Message-ID: <anGU-FnmEcxvXOsZ@Unknown_32:98:3c:96:ca:91>
-References: <20260701052341.62289-1-amachhiw@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyqgoA41"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33681F00A3A;
+	Tue,  4 Aug 2026 07:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785828963;
+	bh=j7Qmntk2tBJFBDcj/36C0Dw/HVIoGjptr9Cb3gTmcJg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=HyqgoA419F8tZr7WFw81sy0EPxzRwvUWCFIfdnhWzy7BapofKF9o1udh0d77ymLLx
+	 a5IlNPglI5KCIoG2RBPjXJXjPZHV+p1CtErT73ggFc65ETD050IBMJOQLHqcpnZN26
+	 msrP1SWkuIQLfbeiZ/6WX/9rgv+J8vIR9f6rXP3PztxiT8jPWbCysI2JvGNJiMGxWL
+	 EX4Llsh06VNa9XAHNS+h+Ni501FYUF6hqtTVTPM9R8jUpQ8HGT2XOMzhxapOKSIOqI
+	 hrKGFdjObi/Hi3NmGyKjY/5B/6cIDy6C3dKp5vv0op9ke7h0lV5OEafjdJOF4MKlIK
+	 08p2l6X6MGR6w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/5] locking/qspinlock: Add contended_release tracepoint
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Dmitry Ilvokhin" <d@ilvokhin.com>
+Cc: kvm@vger.kernel.org, linux-hyperv@vger.kernel.org
+In-Reply-To: <0d998e22a0c595f670cfc6725bb683323aced5cb.1785778551.git.d@ilvokhin.com>
+References: <cover.1785778551.git.d@ilvokhin.com>
+ <0d998e22a0c595f670cfc6725bb683323aced5cb.1785778551.git.d@ilvokhin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 04 Aug 2026 07:36:02 +0000
+Message-Id: <20260804073602.C33681F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701052341.62289-1-amachhiw@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a719505 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=B_FdNE4XmUi8kz3hM70A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: 3vyM7DjiShDHmGkLCUf6-rgjguqOm3Jn
-X-Proofpoint-GUID: Tc8di1H-Yy-fJ89SG5CDPY3qWhzA9YJu
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDA1NyBTYWx0ZWRfXyZKodADTpNu0
- GSrOHIhV1Moi6rNX46AcbhWQrMBUg5oM1Pk2dG4GR7ZGTcyVUlxJyOSJmvyCLM6rm43Wkhzsu7p
- Nx6X6wLXHuK00x4oktxB5eRyFwZiRao=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDA1NyBTYWx0ZWRfX4Ci6mcPP5Fb/
- ffjDtXbeG2g+BQS72lPCMDsg3Svt7rl8hywT4v6g1TPVuHSOCboZLV6QXw+xnDw0N5b+L1AD2Bl
- A7r0Uhi1/RFaOdj2rNqjATsffamK5MnSWhozd/BG/kOEJJKATLFADDNIUAWK5Ggf7IRpNSok1fw
- /YkpEfW1Fy61IjgxPz4dXsrr+zckspkd7MbGLvluOEM88ojT4wshW/eEVGVN4ejel1i7LX4w3o2
- HoedvijwTZlcvitaV5R3SlZnemTNWbXiJINQCMAy66xD4bC7M0olTTH0rFJeZ8FlL4l+aivV0//
- y2ZA/1yoAAYe9c6CS8BJLzxQboAH19kGtb5Rrr5kElBvljecrl85cVfLutkkKQAsJ4eAH5t/cjB
- KPFAQ3dpLKw9I4QO/iSTOEeySOI2eGrKimSs8RmzXMkvD9RQ4bH3e8qLtSuSKr0gxJ7t2K8WBCh
- 0+tDp64uhOKD8/F7N+g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-04_01,2026-08-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608040057
 
-I tested this series with different compat mode settings for KVM on LPAR
-and KVM on PowerNV.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The inline function `queued_spin_unlock()` references a GPL-only t=
+racepoint symbol, inadvertently turning `spin_unlock()` into a GPL-only API=
+ and breaking non-GPL out-of-tree modules.
+- [High] The lock release tracepoint bypasses the RCU watching check, allow=
+ing trace probes to execute unsafely in idle/offline contexts.
+--
 
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
-Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+--- Patch [3]: [PATCH 3/5] locking/qspinlock: Add contended_release tracepo=
+int ---
+commit afc21b7e9fbc296817ffabe3684c2756069801e5
+Author: Dmitry Ilvokhin <d@ilvokhin.com>
 
-Thanks,
-Gautam
+locking/qspinlock: Add contended_release tracepoint
+
+This commit adds a contended_release tracepoint to qspinlock to allow
+attributing a contended spinlock to its holder. It combines the contention
+check and trace call in an out-of-line function to minimize overhead on
+the hot path. The feature is gated behind a new configuration option.
+
+Link: https://lore.kernel.org/all/aiphFXe_TPNPxZ_n@shell.ilvokhin.com/
+
+> diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinl=
+ock.h
+> index ae45289e8ec7f..2ca94e41823b9 100644
+> --- a/include/asm-generic/qspinlock.h
+> +++ b/include/asm-generic/qspinlock.h
+[ ... ]
+> @@ -130,12 +131,32 @@ static __always_inline void queued_spin_release(str=
+uct qspinlock *lock)
+>  #endif
+> =20
+>  #ifndef queued_spin_unlock
+> +
+> +DECLARE_TRACEPOINT(contended_release);
+> +
+> +extern void queued_spin_release_traced(struct qspinlock *lock);
+> +
+>  /**
+>   * queued_spin_unlock - unlock a queued spinlock
+>   * @lock : Pointer to queued spinlock structure
+> + *
+> + * Generic tracing wrapper around the arch-overridable
+> + * queued_spin_release().
+>   */
+>  static __always_inline void queued_spin_unlock(struct qspinlock *lock)
+>  {
+> +	/*
+> +	 * Trace and release are combined in queued_spin_release_traced() so
+> +	 * the compiler does not need to preserve the lock pointer across the
+> +	 * function call, avoiding callee-saved register save/restore on the
+> +	 * hot path. queued_spin_release() is therefore called both here and in
+> +	 * queued_spin_release_traced(). Keep the two in sync.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_QUEUED_SPINLOCKS_TRACE_CONTENDED_RELEASE) &&
+> +	    tracepoint_enabled(contended_release)) {
+
+[Severity: High]
+Does this inadvertently make spin_unlock() a GPL-only API?
+
+The contended_release tracepoint is exported via EXPORT_TRACEPOINT_SYMBOL_G=
+PL
+in mutex.c.
+
+When spin_unlock() is inlined, this injects the GPL-only symbol into every
+module calling spin_unlock().
+
+Would this break the compilation or loading of non-GPL out-of-tree modules
+due to referencing a GPL-only symbol?
+
+> +		queued_spin_release_traced(lock);
+> +		return;
+> +	}
+>  	queued_spin_release(lock);
+>  }
+>  #endif
+> diff --git a/kernel/locking/qspinlock.c b/kernel/locking/qspinlock.c
+> index af8d122bb649e..33fe6d437c8f6 100644
+> --- a/kernel/locking/qspinlock.c
+> +++ b/kernel/locking/qspinlock.c
+[ ... ]
+> @@ -104,6 +104,28 @@ static __always_inline u32  __pv_wait_head_or_lock(s=
+truct qspinlock *lock,
+>  #define queued_spin_lock_slowpath	native_queued_spin_lock_slowpath
+>  #endif
+> =20
+> +#if !defined(queued_spin_unlock) && \
+> +	IS_ENABLED(CONFIG_QUEUED_SPINLOCKS_TRACE_CONTENDED_RELEASE)
+> +/*
+> + * Out-of-line trace-and-release path for queued_spin_unlock(), used when
+> + * the contended_release tracepoint is enabled.
+> + *
+> + * queued_spin_release() is duplicated here on purpose: doing the release
+> + * in this function (rather than tracing here and releasing in the calle=
+r)
+> + * lets queued_spin_unlock() return right after the call, so the
+> + * tracepoint-disabled hot path never has to keep lock live across a call
+> + * in a callee-saved register. Keep this release in sync with the one in
+> + * queued_spin_unlock().
+> + */
+> +void __lockfunc queued_spin_release_traced(struct qspinlock *lock)
+> +{
+> +	if (queued_spin_is_contended(lock))
+> +		trace_call__contended_release(lock);
+
+[Severity: High]
+Does calling trace_call__contended_release() directly bypass the RCU
+watching checks?
+
+Raw spinlocks are often used in the scheduler idle loop or CPU hotplug
+paths where RCU is explicitly not watching (for example, after
+rcu_idle_enter() is called).
+
+The standard trace_contended_release() wrapper includes a lockdep safety
+check to warn if RCU is not watching.
+
+Could this direct call allow trace probes to execute unsafely in idle or
+offline contexts, potentially causing RCU splats or use-after-free bugs if
+attached BPF programs or ftrace plugins dereference RCU-protected data?
+
+> +	queued_spin_release(lock);
+> +}
+> +EXPORT_SYMBOL(queued_spin_release_traced);
+> +#endif
+> +
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1785778551.gi=
+t.d@ilvokhin.com?part=3D3
