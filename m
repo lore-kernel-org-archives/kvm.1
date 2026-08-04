@@ -1,280 +1,149 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720C39B975
-	for <kvm@vger.kernel.org>; Tue,  4 Aug 2026 19:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE12485CE7;
+	Tue,  4 Aug 2026 19:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785870126; cv=none; b=g+hOY3DZ2TXoiQ7HYHa+CgA1Gsbj9pRPOvkfRytG+eM2Zfc4OsKnuNcGmEPr2op2WspLBeFGhzSmNMN5josbOZyOhyj3i3gFzXH7wKITPbodK2KPPuT6KW9fFdshX7Iiyt/Ovddg+b0QaR9lg3EVAp25ujNH4Oz1TP1XdF2MZfg=
+	t=1785871674; cv=none; b=ir+ZbK0IPtleyI+97sSdNuO06Tu/hh+6VLpbVtm2xt2s99R8yRRKwTZhfCersOtiELaoQJyIpu9OQzDcJzTdpZvQmQ2r0DSS9OagbKN/a0K+gE68TTRUMXUwTrw1NjhSqffAfHVy7lUkz4ArvZ69K07igw4f0OYYAbZrvGeKC50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785870126; c=relaxed/simple;
-	bh=QWLw5d3PsFELUOtZXKJPtt4CkxNmtXjChuvttT4vh7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hYKaPaMpYvpvtSiEi3iI401Frvkpyw/J0cOY54oBp3/P0A5L0y0Nizq5+mhkt/k/sagZjHTTJ2jIqRMSEI9X0moJ3TIhNDyXaXaHzXuuR6oLqwTAEKEJejTDBRZSNfp715ar9HTN0cDz/FXeEV6NRC2o3f+OfatZtqxdIEJVrpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V2XPeA19; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785871674; c=relaxed/simple;
+	bh=AZikyL524L8HVN8ioF7Xgnyfhd0VWzNT3PkYMofSnNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ctrlIWkI+IZpy9OAGV+VD7KaGUNB0VNFlixAg+vfheNcvlUF2YRQP+/w7FglsYetJy0jZxBidkys8L2hzuXBumC26mwKlo7WQGo+kg/lYtwUkxClaASHQD5seWAZGJupMCDR0Su/VAMU2nMk6Y7jYB6TSOxsU213hjPsEKQoEY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=fRUM/r5b; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jRgYn62T; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V2XPeA19"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cacef7d299so23795ad.1
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 12:02:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785870124; x=1786474924; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=o7hc3yljc5+LxUHQxs78+dkD3Zfo1reE/uEECJBVPac=;
-        b=V2XPeA19gXM3fPDmK7dnIChkFnwwjxXN1IothHoQUIofnJI1gMnfkmzOggGxj1rsd2
-         OupN0NEGnmjWbtz6eF7r6SJFNDqzx7iQIjnT7689gnKak6T9dnv11BFnWs1r//hr/nNP
-         Qw0wMI2ec73uAdmw1tN4In4tpWaJFKQ/dDEgx4r4PQ1f3REfkcsXhqGqoT28dWuJ4WAy
-         NtM3+HP0DpSPWSN2VocUCR2ybCWPISC9T5PfuoHL/jFvE3HXvCI73hvR6W20vaYLescI
-         xyY5eir22E6fPeJrESKjwEse3WRoOmVrMyI5D3mzuPwAF22qjH4wmz9ybeeL9LO45aM5
-         FIuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785870124; x=1786474924;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o7hc3yljc5+LxUHQxs78+dkD3Zfo1reE/uEECJBVPac=;
-        b=EMSP24Ngs4V06/y2J2On/8rBwRZ3iNdsaf62p6Kq/LJPGIJux7wnTcnBMF0CoXfqec
-         Q3FOJpiQnLjfCly+ySCUQRi8Y73rLI8cgtruhGgsr4GVZpKJ/T0P/CWiD/RhdjSDUvvt
-         J3L3CVoRlEEv0Faug0xxOpYdYadGKct1gh+dIEX/TXevQuIw8qvLsXBoPW5Jd9P3ewoJ
-         oGpRE6Eii5guwOQXBQFFXfpDedrUOjTxxpenrFhSBqOsUPq5lIszTctrGsvbAYC71c0S
-         2UoMQXgBmm/iH42yaq8NgWKg+32bHLXBK25B9tXQX0dc2+mSIvvo+BTaNqIG8+jkFddd
-         nRyw==
-X-Forwarded-Encrypted: i=1; AHgh+RqyXA9EZ7c6B55C2mK9mF4f8NOtpL4D1/GpmG03XCqs5eEDj/3HAHnYjBuHwj2sGBwwcaQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJZ90JSHNinUHQxegfqQF4nldtzKcwPLpUODasrMK1dABPYuWa
-	Bxb2e2px5a3Hi6LchsmvUy4F8XDT3XDU0tkv1CP+q7zro8CDKoGcJHqFHMzMnnAlmw==
-X-Gm-Gg: AR+sD10Mnv9eRH58d8jDjBWqQQQ4q9u9ERJX/DFNdpCwlVgSjGTZQtkOBDPCb2MmXS6
-	e1W+nRGuQAMl00zqgi8/21ykj5s0WZ/f2S8cgpAFPoawN0o6fjU3LlXoqBjTdYGKQ1JrSSaNv+A
-	KEhduomgqiNzi4EBMZBKbv11gbGoR9u5vMAjHpyiDhEMMUWGQERFEGG40zfTzjOMD0RkTCH7XXl
-	lJWdhmrfiq3NLp2Tcrc+iAmkgau4F87nzGk6WBCFDxWcohDKEU/Ug/yGskmINYE+6SkRaz2yqtY
-	n5XWd16/SW/AekpKufZZB2wONhfyIQjCFSaKCrRxs184ZkQRJ3NMWvRO/Czl7eaaJ1RXQZU0b4n
-	MXKzexuySWVUzvsqtWyBgll92Yu+BJnF1ZBKpGfmdn1ryi8ctD9diyE32t3Ez8YUGFCGvFgaOkM
-	CpSZQE2I6dPXV6exkD27j7iWSDYE5mCYquHTBnSbse2VoQziKBNuzln+780ukNOTUdndMKnS8Yj
-	GKBxNkgiIRJ02zcrnBlkuU=
-X-Received: by 2002:a17:903:3c23:b0:2ca:cbe5:c3af with SMTP id d9443c01a7336-2d0caf6bbb3mr2044475ad.7.1785870123058;
-        Tue, 04 Aug 2026 12:02:03 -0700 (PDT)
-Received: from google.com (21.168.124.34.bc.googleusercontent.com. [34.124.168.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84f2e2c2326sm201840b3a.10.2026.08.04.12.01.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 12:02:02 -0700 (PDT)
-Date: Tue, 4 Aug 2026 19:01:53 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Matt Evans <matt@ozlabs.org>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Longfang Liu <liulongfang@huawei.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v5 3/9] vfio/pci: Add a helper to look up PFNs for DMABUFs
-Message-ID: <anI3IZVZm16BOIc5@google.com>
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-4-matt@ozlabs.org>
- <amvWXNRtviKEuUoV@google.com>
- <ecf9b355-9fe1-440b-9281-08671a995139@ozlabs.org>
- <cfae30ec-18ed-4f06-bf96-ef294a8c2744@ozlabs.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="fRUM/r5b";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jRgYn62T"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id A30ECEC010C;
+	Tue,  4 Aug 2026 15:27:49 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 04 Aug 2026 15:27:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785871669;
+	 x=1785958069; bh=Q2ndbIxStg2G8ysKZY2SMTE0UaVR81PEOatqDsjoOLw=; b=
+	fRUM/r5b+XYZ9fEKHpRNneeBVyVT0FDRhx//4ueMdlpBItJdX61Ue0DfFWvBWLx0
+	1iW+SNRyGMlmj3KPGQif6EO1rLtwEVzVlINPOc6z5m1eQ0IJx5DJqAiGU+X7CcpB
+	AACoKnkh0Xs13Khegy58NAb1wZZ1SnN7YpLPIqOnur5bxhh83G/kxBuApW3IwKW6
+	pknsTHrPowoTzXQ+++80UDh/UWW0l6XDLS4VCe9stc9HzryyjF7uK+bS+GqtWu04
+	610AVQSlXkeEE5cOhnPRNq88fLSxpzRChYFklOV73WQqmhjjDY33L18mBneukkpS
+	WiB7wd/EDvROns858VTcmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785871669; x=
+	1785958069; bh=Q2ndbIxStg2G8ysKZY2SMTE0UaVR81PEOatqDsjoOLw=; b=j
+	RgYn62TulMOs21nRwu442dEjp+UdYaoSBXJx+CfrqVLM82pxrVnxEFBlWeMGmOsX
+	WQmPZ4+bd8aDYh1CzKIq0IeTDkKFjIZ2d1POoz0kmtzSYF3VZ0DPw9OegmmU0bvc
+	LIlHW76T8bVjnatU+pqxvTSwuoSLT+35h3SXMDaN5qQlHFL7g3y+Q21EpiNHDhEs
+	AsigUst3HmQ9s0ceOmGDU3T2cB/UCf/VN3Ef6dJvOtQJXaOSzKFwiuD6Ft1AMmJC
+	o/v3dEJpBi/j12sefIoRLwo95e9ySAZG+/8bJAL8Cl7sQLGW06fNVxXZ4MNkuJHR
+	n6UdwIxNsFTrWSt4+BmAg==
+X-ME-Sender: <xms:ND1yauGWJ6A-kIti99f_W5cFLC3SbBG8Ulbya_xk71QmKGkfR_XeKg>
+    <xme:ND1yaorTwttinEXpUzENbUiZeZddqpDAEaYJjvuwZUAbxjcw4ayn1KGcoWmA5gQwD
+    xZpsgthpxzQCOQqT5b3r0PEwppdgeu_hIH34n83MphZl89BAAewElM>
+X-ME-Received: <xmr:ND1yavbcr7F9q1EXUth3Hp4S4O9IXbxCKijLg24dHqqLTLlMrighK8KbKcELnA>
+X-ME-Proxy-Cause: dmFkZTE27WQxm8iGxfAFFUEwq2ylm6DYMQNwBiTxFGcsGILXGopQmV9WyF+yS5fm/iW2yV
+    HdtKvOj80o8zg1HZ9YBPnD2eUSKJ9B3+eUVcPrtKrKEfvS19bA4szxIDC3aS65Y8B/TjJN
+    8awqKchy9FHr0S4xgFm6J+JPSGg6QoQ2fx3VbIF/y8HiSEDs1IOMADDRK7EHcske27ki5n
+    rW/m85FCL9d1A5/U0L8eB8XxXzEFTgQSW9Itu7z3x+hNTq93PI3D2wqbCG++GfOPZXC41+
+    GrUiU9FaBN+xx04+XBSTRmcHcAh/I9H+CQbqH3rSPF9jfVFbBKOz/J5yVjFlir6UgE99C/
+    w3O1H+NfHROynZzzOFq9DTlroUGMgYCsKSK+IIrciTx0W2519932ZtSctdWgceFTouo3lp
+    xKZE0QUPo8Wc6KfR2A2lWLit+ckNfu5BqV7qeW9fnzeFCihHG+yOvKQmrOof11K028rRbW
+    FYlTtkc6BfOQBJT+ue/WGwUg3ObOmk70+xiJIA6+cj35OtPp+bQi3b6v0a4NLrEjnNbpIT
+    jRGoTOTThhol7uJJtFWb5iWuASLft67OhZHk2CuN0hjuWUd9BAw0afFYG5A7KnleXhQFBd
+    4JZy4df0lfKfL6Uz6dZcSJ6Fu4bLzK7mx2J/avrq7+QTFutDhl/pA1D60Log
+X-ME-Proxy: <xmx:ND1yapU3Xj6IXwoKYVPtl4PKX4EhoZvR5IF4BgJbj3B4dHe3SjfNYw>
+    <xmx:ND1yag__cbXnfDOuddn4wmKxdoH9y0mLmRCpmikdVHg_XvCOdj-Vzw>
+    <xmx:ND1yaq8XU8-slHx1o9Tvfw9XbWgVY9o9_OcP9HJsYjFXHRNxcPL9dQ>
+    <xmx:ND1yaoQrQHA8OjIkliAuAEd_ZwhqqVUiGZkGFGmCTvrTEGTDDAvLRg>
+    <xmx:NT1yaqI-lWC8RX1_C9n5bn2TT107y-YXHnG7GEnSXCqJrZwKZE3SSBeO>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Aug 2026 15:27:48 -0400 (EDT)
+Date: Tue, 4 Aug 2026 13:27:45 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Longfang Liu <liulongfang@huawei.com>
+Cc: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH 2/2] hisi_acc_vfio_pci: fix VF BAR2 mmap on 64KB page
+ size
+Message-ID: <20260804132745.2db9c897@shazbot.org>
+In-Reply-To: <20260803021857.2370179-3-liulongfang@huawei.com>
+References: <20260803021857.2370179-1-liulongfang@huawei.com>
+	<20260803021857.2370179-3-liulongfang@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cfae30ec-18ed-4f06-bf96-ef294a8c2744@ozlabs.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 03, 2026 at 07:22:06PM +0100, Matt Evans wrote:
+On Mon, 3 Aug 2026 10:18:57 +0800
+Longfang Liu <liulongfang@huawei.com> wrote:
 
-Hi Matt,
+>     On HW_ACC_MIG_VF_CTRL hardware, VF BAR2 is split into functional
+> and migration register regions. When kernel page size exceeds the
+> functional region size (e.g. 64KB pages vs 32KB functional region),
+> guest mmap operations get rounded up to page size, causing the VMA
+> to exceed functional boundaries and fail validation.
+>     The solution aligns mmap boundaries to page size while maintaining
+> byte-granularity access control through hisi_acc_pci_rw_access_check()
+> for read/write operations and accurate region size reporting via
+> hisi_acc_vfio_ioctl_get_region(), ensuring migration registers remain
+> protected from non-mmap access while resolving compatibility issues.
+> 
+> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+> ---
+>  drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> index 36490be7a61a..44b3e7d8fef5 100644
+> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+> @@ -1355,14 +1355,21 @@ static int hisi_acc_vfio_pci_mmap(struct vfio_device *core_vdev,
+>  	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+>  	if (index == VFIO_PCI_BAR2_REGION_INDEX) {
+>  		u64 req_len, pgoff, req_start;
+> -		resource_size_t end;
+> +		resource_size_t end, dev_len;
+>  
+> -		end = hisi_acc_get_resource_len(vdev, index);
+> +		dev_len = hisi_acc_get_resource_len(vdev, index);
+>  		req_len = vma->vm_end - vma->vm_start;
+>  		pgoff = vma->vm_pgoff &
+>  			((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+>  		req_start = pgoff << PAGE_SHIFT;
+> -
+> +		/*
+> +		 * The BAR2 functional region (dev_len) may be smaller than the
+> +		 * kernel page size. Align it to PAGE_SIZE so a page-rounded
+> +		 * guest mmap is not rejected, which would make the VF unusable.
+> +		 * The read/write path still truncates at the real functional
+> +		 * boundary, keeping the migration registers inaccessible.
+> +		 */
+> +		end = PAGE_ALIGN(dev_len);
+>  		if (req_start + req_len > end)
+>  			return -EINVAL;
+>  	}
 
-> Hi Praan,
-> 
-> On 31/07/2026 18:43, Matt Evans wrote:
-> > Hi Praan,
-> > 
-> > On 30/07/2026 23:55, Pranjal Shrivastava wrote:
-> >> On Wed, Jul 15, 2026 at 06:47:26PM +0100, Matt Evans wrote:
-> >>> Add vfio_pci_dma_buf_find_pfn(), which a VMA fault handler can use to
-> >>> find a PFN.
-> >>>
-> >>> This supports multi-range DMABUFs, which typically would be used to
-> >>> represent scattered spans but might even represent overlapping or
-> >>> aliasing spans of PFNs.
-> >>>
-> >>> Because this is intended to be used in vfio_pci_core.c, we also need
-> >>> to expose the struct vfio_pci_dma_buf in the vfio_pci_priv.h header.
-> >>>
-> >>> Signed-off-by: Matt Evans <matt@ozlabs.org>
-> >>> ---
-> >>>  drivers/vfio/pci/vfio_pci_dmabuf.c | 153 ++++++++++++++++++++++++++---
-> >>>  drivers/vfio/pci/vfio_pci_priv.h   |  20 ++++
-> >>>  2 files changed, 160 insertions(+), 13 deletions(-)
-> >>>
-> >>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>> index c16f460c01d6..7c047400dfd1 100644
-> >>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >>> @@ -9,19 +9,6 @@
-> >>>  
-> >>>  MODULE_IMPORT_NS("DMA_BUF");
-> >>>  
-> >>> -struct vfio_pci_dma_buf {
-> >>> -	struct dma_buf *dmabuf;
-> >>> -	struct vfio_pci_core_device *vdev;
-> >>> -	struct list_head dmabufs_elm;
-> >>> -	size_t size;
-> >>> -	struct phys_vec *phys_vec;
-> >>> -	struct p2pdma_provider *provider;
-> >>> -	u32 nr_ranges;
-> >>> -	struct kref kref;
-> >>> -	struct completion comp;
-> >>> -	u8 revoked : 1;
-> >>> -};
-> >>> -
-> >>>  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> >>>  				   struct dma_buf_attachment *attachment)
-> >>>  {
-> >>> @@ -106,6 +93,146 @@ static const struct dma_buf_ops vfio_pci_dmabuf_ops = {
-> >>>  	.release = vfio_pci_dma_buf_release,
-> >>>  };
-> >>>  
-> >>> +int vfio_pci_dma_buf_find_pfn(struct vfio_pci_dma_buf *priv,
-> >>> +			      struct vm_area_struct *vma,
-> >>> +			      unsigned long fault_addr,
-> >>> +			      unsigned int order,
-> >>> +			      unsigned long *out_pfn)
-> >>> +{
-> >>> +	/*
-> >>> +	 * Given a VMA (start, end, pgoffs) and a fault address,
-> >>> +	 * search the corresponding DMABUF's phys_vec[] to find the
-> >>> +	 * range representing the address's offset into the VMA, and
-> >>> +	 * its PFN.
-> >>> +	 *
-> >>> +	 * The phys_vec[] ranges represent contiguous spans of VAs
-> >>> +	 * upwards from the buffer offset 0; the actual PFNs might be
-> >>> +	 * in any order, overlap/alias, etc.  Calculate an offset of
-> >>> +	 * the desired page given VMA start/pgoff and address, then
-> >>> +	 * search upwards from 0 to find which span contains it.
-> >>> +	 *
-> >>> +	 * On success, a valid PFN for a page sized by 'order' is
-> >>> +	 * returned into out_pfn.
-> >>> +	 *
-> >>> +	 * Failure occurs if:
-> >>> +	 * - A hugepage would cross the edge of the VMA,
-> >>> +	 * - A hugepage isn't entirely contained within a range
-> >>> +	 *   (including where it straddles the boundary between
-> >>> +	 *   ranges),
-> >>> +	 * - We find a range, but the final PFN isn't aligned to the
-> >>> +	 *   requested order.
-> >>> +	 *
-> >>> +	 * Upon failure, -EAGAIN is returned and the caller is
-> >>> +	 * expected to try again with a smaller order, which will
-> >>> +	 * eventually succeed (order=0 will always work).
-> >>> +	 *
-> >>> +	 * It's suboptimal if DMABUFs are created with neighbouring
-> >>> +	 * ranges that are physically contiguous, since hugepages
-> >>> +	 * can't straddle range boundaries.  (The construction of the
-> >>> +	 * ranges should merge them in this case.)
-> >>> +	 *
-> >>> +	 * Finally, vma_pgoff_adjust is used with a DMABUF created for
-> >>> +	 * a VFIO BAR mmap: a BAR mapped with vm_pgoff > 0 creates a
-> >>> +	 * DMABUF such that byte 0 of the VMA corresponds to byte 0 of
-> >>> +	 * the DMABUF and byte 'vm_pgoff << PAGE_SHIFT' into the BAR.
-> >>> +	 * To avoid double-offsetting in this scenario, subtracting
-> >>> +	 * vma_pgoff_adjust from this (non-zero) vm_pgoff generates
-> >>> +	 * the effective offset.
-> >>> +	 */
-> >>> +
-> >>> +	const unsigned long pagesize = PAGE_SIZE << order;
-> >>> +	unsigned long vma_off = ((vma->vm_pgoff - priv->vma_pgoff_adjust) <<
-> >>> +				 PAGE_SHIFT) & VFIO_PCI_OFFSET_MASK;
-> >>
-> >> Maybe I'm getting ahead of myself here.. but it seems like this
-> >> restricts us to only mapping DMABUFs at offsets < 1TB due to the 
-> >> VFIO_PCI_OFFSET_MASK (since we have HBMs on PCI devices now, hitting 1TB
-> >> may not be a very distant future).
-> > 
-> > This is a really good question, thanks for raisiing it.  It is not too
-> > forward-thinking at all.
-> > 
-> >> While I understand this mask is needed to drop the BAR encoding in the
-> >> high bits. 
-> >>
-> >> My worry is, if in the future a user were to export a massive
-> >> contiguous DMABUF (e.g., >1TB of aggregated HBM) and tried to mmap deep
-> >> into it (passing an offset >= 1TB), this bitwise AND would silently drop
-> >> the high bits, leading to silent data corruption.
-> > 
-> > One of the big advantages of DMABUF export was that the range could be
-> > huge and unencumbered by the VFIO_PCI_OFFSET_SHIFT of the traditional
-> > mmap() interface.  It's a way to mmap huge BARs without having to change
-> > the user-visible shift).  So definitely this is a relevant concern.
-> > 
-> >> I think we should explicitly reject such an mmap with -EINVAL like:
-> >>
-> >> +const unsigned long pagesize = PAGE_SIZE << order;
-> >> +unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) << PAGE_SHIFT;
-> >>
-> >> +/*
-> >> + * Prevent silent wrap-around if the user mmaps a DMABUF at an
-> >> + * offset greater than the VFIO index mask allows.
-> >> + */
-> >> +if (unlikely(vma_off > VFIO_PCI_OFFSET_MASK))
-> >> +    return -EINVAL;
-> >>
-> >> +vma_off &= VFIO_PCI_OFFSET_MASK;
-> > 
-> > Agreed, for now this absolutely should not silently wrap if the offset
-> > is > 1TB, and we live with the restriction that a DMABUF sized >1TB
-> > can't be mapped with such an offset.  (We can still, say, map all of a
-> > 16TB DMABUF with offset=0, which is good.).  I'll add a check, thanks
-> > for pointing this out.
-> > 
-> > I suggest as something to revisit later, we flag for a DMABUF (maybe an
-> > evolution of vma_pgoff_adjust) to differentiate whether this masking
-> > needs to be applied (traditional mmap() path) or not (DMABUF mmap()),
-> > and then offsets can be arbitrarily large.
-> 
-> Having tinkered, the two-step approach I suggested isn't great because
-> userspace has no easy way to know that step 2 has occurred and that
-> large offsets are "now supported".
-> 
-> The second problem is this isn't just a limitation to not do an mmap()
-> with offset approaching 1TB, because you could run into trouble just
-> mapping, say, a 2TB BAR and then splitting it by unmapping a hole in the
-> middle:  the second VMA now has a huge offset.
-> 
-> It seems a proper fix is easy though:
-> 
->  unsigned long vma_off = (vma->vm_pgoff - priv->vma_pgoff_adjust) <<
-> 	 		  PAGE_SHIFT;  /* No masking! */
-> 
-> Then in vfio_pci_core_mmap_prep_dmabuf(),
-> 
->  priv->vma_pgoff_adjust = vma->vm_pgoff;
-> 
-> I.e., if vma_pgoff_adjust just includes the region index up high, it
-> cancels out the (same) index in the vm_pgoff.  Thus regular mmap should
-> work (up to the 1TB offset), and DMABUF VMAs can have arbitrarily large
-> offsets.
+You may still be restricting read/write access into the migration
+range of the BAR, but doesn't this give the user full access to that
+extended range through the mmap?  It seems they only need to access
+beyond the advertised region length through the mmap to bypass
+hisi_acc_pci_rw_access_check().
 
-This looks good to me! I traced through both mmap paths to verify how 
-vma_pgoff_adjust handles the offsets and it looks like this works 
-perfectly for both.
+If they can do that, what are we even still protecting?
 
-Cheers,
-Praan
+Alex
