@@ -1,32 +1,32 @@
 Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67831B3925;
-	Wed,  5 Aug 2026 02:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395F03C3442;
+	Wed,  5 Aug 2026 02:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785896471; cv=none; b=Ga9E39cAgucFI2gz9gi7LSLAcdfDRQTRISHm04U4DAQKr9eFrM4DivEmeHMNmfIqw8Ejpvvim8NkwOVigdtLLx+fblXGcMdyrXifqONFXcBmCJywGjCRc3Gr6ys+Z1mOFdece5BplRO8hJfzO+elzUKinI44lKI9Qf8sLBQsD7w=
+	t=1785897069; cv=none; b=e6m4+eTrFQWoG4razX3uZWL7rVvUHyUfG24hhFhZGuTBkOWlb/g2aFGIY/Vx86ob36NXj50u7Fq1g2HYvwWpHcuiQjlM5otBjUlbXbKUlrGqnDFI0bm8BZfupeJ7vI8c3b9jCzIl9RK5Hve8Rn7lg3q926Pe7R5Du9f/FWBAWBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785896471; c=relaxed/simple;
-	bh=CkIv0GL7V0YUyp83j0JvLPK9Esh2kKr1oM/xrZWcdqc=;
+	s=arc-20240116; t=1785897069; c=relaxed/simple;
+	bh=OHdlbRBEytdaz2OZJXal6evrARgiQzCPKqL3FAQuecA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oeo28IjYXSNqMBpu1qDUkTBwhiNvg/u7NPke3rmFZ0kNGXBJo1/owubePel/jCadSDQOaxLGFJP3bSJ3TRz26Ehzvon8pbTBYpfKI2MUPFGNEuCDVKMOCRBsML3xHTjDGaMTcckTk2YhKqHIkU0EC/9wi0oKMidv1cZlwlkCTB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Vnp3M33s; arc=none smtp.client-ip=115.124.30.98
+	 In-Reply-To:Content-Type; b=dgS3Ht00bKNC/gwg2/fWUtof6x7Z+HVfAzjjoELddba5uQu0UIXroGTQNYFIk2prBNXeYzsF9HXRebn42kk/UMKBqaAEUGtLEdn/WuE+nAI872s1VNABR5Re/SpgKPYtt7aOkKKDIz5rDRimxt1bqPWN3ROuHi/lRidE88YM7/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lKOn1On8; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Vnp3M33s"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lKOn1On8"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1785896466; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=jTDX4mKcgPJ9srE81obhGh53TCP4fN/R36nyLgZBHpU=;
-	b=Vnp3M33sXfUbxVbL4m2xyFjHGSgBb7x/EIyPtaWriFbS/Ghq81KcdcnhIyEmhUKG+G/YUWisy1KmUQnYJFIMhypPlldhb3mn2LOA0lF0jgF8XkxDJM3kYFMCgBVnc41grKq65VU5z9WHk/eYXsTs1cq8+JtzW+v9REoKLeV5ObU=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=herongguang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X8Pjkxs_1785896463;
-Received: from 30.221.106.215(mailfrom:herongguang@linux.alibaba.com fp:SMTPD_---0X8Pjkxs_1785896463 cluster:ay36)
+	t=1785897063; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4sRwgKt6/kzaEj31mtkG3npSA1XNMSbnP6nju+RVO4g=;
+	b=lKOn1On8nKP6KL7aLJhLgHlj+wvwcG347LEWRukgDiKavrpulVUItli9KDh62z1Zn62J4MDey0COEb5lne7iPXWgVS0ypbsJ5syl5SIKMz7+tmcbpDxcdfqOGBpPZWdJDW++MXmMCdtpuvi8YG19vR3r7Ih4sKU5cMOhNjTR7Qs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=herongguang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X8Plfrq_1785897060;
+Received: from 30.221.106.215(mailfrom:herongguang@linux.alibaba.com fp:SMTPD_---0X8Plfrq_1785897060 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 05 Aug 2026 10:21:04 +0800
-Message-ID: <36b6646d-3f14-4821-a804-fb590c62432d@linux.alibaba.com>
-Date: Wed, 5 Aug 2026 10:21:03 +0800
+          Wed, 05 Aug 2026 10:31:01 +0800
+Message-ID: <25605d8c-4e13-413f-bb50-6c65684fafd3@linux.alibaba.com>
+Date: Wed, 5 Aug 2026 10:31:00 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -39,7 +39,8 @@ To: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org,
  mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
  vkuznets@redhat.com, geert@linux-m68k.org, sammiee5311@gmail.com,
  lirongqing@baidu.com, schuster.simon@siemens-energy.com,
- kai.huang@intel.com, shannon.zhao@linux.alibaba.com
+ kai.huang@intel.com, shannon.zhao@linux.alibaba.com,
+ He Rongguang <herongguang@linux.alibaba.com>
 Cc: x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <e61df396-356f-4ef2-9c3a-db3c05cb5c52@linux.alibaba.com>
 From: He Rongguang <herongguang@linux.alibaba.com>
@@ -77,5 +78,5 @@ Content-Transfer-Encoding: 8bit
 > This feature is advertised via KVM_FEATURE_PV_IDLE_TIME in CPUID leaf
 > 0x40000001. Guests enable it by writing the appropriate MSR during
 > initialization, similar to the existing steal time mechanism.
-> 
-> Ping, any feedback on this patch would be appreciated.
+
+Ping, any feedback on this patch would be appreciated.
