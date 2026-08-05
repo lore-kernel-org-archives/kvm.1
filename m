@@ -1,86 +1,73 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2153C8C46;
-	Wed,  5 Aug 2026 11:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E620D413787;
+	Wed,  5 Aug 2026 11:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785929559; cv=none; b=M9q5M/wJ4eNymK2+W2lXVNufxQfnKn2xumOFyPqTMx2RrcRVb+L5cewYocdgiB24IMrmvE/LB3MDiLi3tE6I3fGMSYi24V5njF0sDPPAKQdZJuzi5hMD2LB1BXSs+h75jRVyzvuRvSrK+HrHwze1WrJ62GQ7OIqW3RELRhGqGd8=
+	t=1785929571; cv=none; b=FE1jTx2jjf16xtKiG29FbLjg3B2PQ3G5sSbk5jnjNDGvJYI53rxCtYpl/TC5530HUiNxSbiNAaMqdDtBTIDH1VtZM+7FPISdnceHijgJyyr+vKbnCNmqnwQE45QjXlVvl0HLMB49q8s9Dw25YXhn2CdYK5ZJN6ZnTmTAT5DraGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785929559; c=relaxed/simple;
-	bh=qiNUZxMrdm8mU5U+PfWSX4DHjwmMFnSj2pWqEEYMbPk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=l+FHcfYAJP+5qytAZVbajg/iYIO7HxX5TXSBSnE+JFGXD3c6sOzWlXAHgcFFD//W4lkV+29JPOpSFmmhZroR6HhGYht5/fWr/UnZmzP9A5Q+j7JW72PgThpw1I6F1mlU0qmABLGJoRJpnCx35PzJl2ja+8nlWCIKl4w2T2+m1lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D4u5DeMc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MEB8PzqI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1785929571; c=relaxed/simple;
+	bh=Zc28trPsFqTH1Fx3vXohbf7CkivyWaOCDoHcMyC/8Uo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=KbAgtxbDw4MVmv3c+7PTA1mbN9/JXWFUItnspdrH06J0yyiQ5/0fG7u319I80Zui9QfDl5viw5HpKhSr0kPoVAGZhbBEueMuTN9XjrKNLSQVmNkxqf0ZGt8DA5EcDpCQejFqz8r/qV+OPi4AuW/TgBNVyLkuRWuSuhu8BC/W65Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgBzQDX1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D4u5DeMc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MEB8PzqI"
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1785929556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P/Nf6Gxd/9lfzxOV0ouil77PrRiaEFU9fAACLKEQtOY=;
-	b=D4u5DeMcHBr5Jvn13Ts7KxRLuaWEUxiEJ45DAneVZfkLVTBIyo9wvmYiu9TU+Nv/VR6xA7
-	v79jHnmt7zVdnZLq7cZrV6iHvh3JJF6y6Lj7SYiS/22jhZe2IqAmq6OQxrDpEexT6MOfHC
-	mrLV5alkk0bi5KO0o4TH6teeP0SK1xVl/UO7ou/iYuonEIBUPaD4Ennxco2dUqlU+WAnpB
-	+meWBcqsWk4lOKVUoRucAfiyIShLcbwlLuo1qfCpmc1V6X4smcCKnJFvTAMP+zAeFON80x
-	LYX52nD/TpYB/qZfU4esytHVfC0Ryuf/20hM7ZvOiSWQ7bfSw4Zerefilm32dg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1785929556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P/Nf6Gxd/9lfzxOV0ouil77PrRiaEFU9fAACLKEQtOY=;
-	b=MEB8PzqI5BETYkCdp/BgCLKYzCRG3v74fMGD8qYkXY6irlE/pWNs1VTPronLaaa1Ov7KPA
-	pVD+5x5D8AWi/pCA==
-To: Charlie Jenkins <thecharlesjenkins@gmail.com>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti
- <alex@ghiti.fr>, Anup Patel <anup@brainfault.org>, Atish Patra
- <atish.patra@linux.dev>, Conor Dooley <conor@kernel.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah
- Khan <shuah@kernel.org>, Radim =?utf-8?B?S3LEjW3DocWZ?=
- <radim.krcmar@oss.qualcomm.com>,
- Jesse Taube <jtaubepe@redhat.com>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
- linux-kselftest@vger.kernel.org, Charlie Jenkins
- <thecharlesjenkins@gmail.com>
-Subject: Re: [PATCH v3 01/17] riscv: Introduce instruction table generation
-In-Reply-To: <20260707-riscv_insn_table-v3-1-3f8e5f75ba97@gmail.com>
-References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
- <20260707-riscv_insn_table-v3-1-3f8e5f75ba97@gmail.com>
-Date: Wed, 05 Aug 2026 13:32:35 +0200
-Message-ID: <87v79o950s.fsf@yellow.woof>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgBzQDX1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C761F000E9;
+	Wed,  5 Aug 2026 11:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785929569;
+	bh=UCax1IorClCIg4OCcaSh9Ti1ly/xvbgzEXJr6UJ9OdU=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IgBzQDX11fmRlc9wCLhjxwKFR5Lqb3jB7ESs64oFG2mA2J3/BWCYwTuxpJ6Y6WCg1
+	 VoiIp3kpONHvUfpOvyM86oDpWfZE3cB3rEuFPmixMpycXRmi4UrNPxd6ZqxUg8Fnn8
+	 T5NGYdFTUYkpgXFY7bzFcpMXK7YAKufs2JNVvUuGurgkBFAoTXoRgNY6u12UaLh6OU
+	 x4dIThOC91Musb3FohMNW+CWahykB18WcHNOppK3XX+jNl9NeLI45EItL0LC1lWM6u
+	 y3JwAqFUuXfrdwCUtER5gCYnBYiEVdcpW7sFnueqmrbkEvw4z0jT/Hwgkd83rS6/mC
+	 5tAbTH77Gh1fg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 8/8] KVM: s390: Fix length check __import_wp_info()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, kvm@vger.kernel.org
+In-Reply-To: <20260805110455.7200-9-borntraeger@linux.ibm.com>
+References: <20260805110455.7200-1-borntraeger@linux.ibm.com>
+ <20260805110455.7200-9-borntraeger@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 11:32:48 +0000
+Message-Id: <20260805113249.39C761F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Charlie Jenkins <thecharlesjenkins@gmail.com> writes:
-> +        # Replace all . with _
-> +        formatted_inst_name=$name
-> +        while [ ! ${formatted_inst_name##*.*} ]; do
-> +            prefix=${formatted_inst_name%.*}
-> +            suffix=${formatted_inst_name##*.}
-> +            contains_dot=${formatted_inst_name##*.*}
+> struct kvm_hw_breakpoint::len is a __u64 that is fully controlled by user
+> space. This is then assigned to wp_info->len, which is an int. The bounds
+> check is done on the truncated value while the allocation uses the
+> untruncated one:
+>=20
+> 	wp_info->len =3D bp_data->len;
+> 	[...]
+> 	if (wp_info->len < 0 || wp_info->len > MAX_WP_SIZE)
+> 		return -EINVAL;
+>=20
+> 	wp_info->old_data =3D kmalloc(bp_data->len, GFP_KERNEL_ACCOUNT);
+>=20
+> Use the validated value for the allocation as intended. Without this
+> fix userspace can trigger >4GB allocations which will fail and result
+> in a WARN due to MAX_PAGE_ORDER.
+>=20
+> Fixes: 27291e2165b6 ("KVM: s390: hardware support for guest debugging")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 
-Isn't contains_dot always empty, because we only get here if
-formatted_inst_name has a dot?
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-> +        # Instruction only appears in one base
-> +        only_base=
-> +        if [ "${base}" != "${base%32}" ]; then
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805110455.7200=
+-1-borntraeger@linux.ibm.com?part=3D8
 
-Does
-           if [ "${base}" = "32" ]; then
-
-work?
-
-Nam
