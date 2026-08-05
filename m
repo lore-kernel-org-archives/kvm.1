@@ -1,70 +1,70 @@
-Received: from fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.28.197.132])
+Received: from fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com [3.65.3.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48E441D622;
-	Wed,  5 Aug 2026 19:56:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.28.197.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3333D3314;
+	Wed,  5 Aug 2026 19:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=3.65.3.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785959770; cv=fail; b=QizJOSX8hDgJucftQNSlUu+pX0tC3ddCYYHkUquQ7zgIUZ2TePyum1zAWKgCR3cMSVF+QVqmMYjvGfkXMlZB44lXt3PHNuAHv6WizIgCJbBx7kI6bH1pcQcX3o4OV6yPGgCQ25dkETR+bd7bzIvcrCXBuJN/B8QJDt9NdRiZO8o=
+	t=1785959772; cv=fail; b=fhUdqrjM7XaUowYtXp+2ypAW9xkKnOQ3BK5/+sjHC1QmTkT+iPK1oIge/zn9Cbo6yMM9yZjwHANHR9D5lkprJEIqLNYXI5X6HDhpCk0W+A2NKpUpG6FHrZ6VBWl4n14YzTj/tsKrmCLDfX/fZvXD2oJwpEhinrnAo4Sx6LXpiWo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785959770; c=relaxed/simple;
-	bh=JZjJGOQQrIx81T+5vKuSRpH2m1N565vlueGni3PiYwI=;
+	s=arc-20240116; t=1785959772; c=relaxed/simple;
+	bh=AUh6yRcnBIxJLGCNijZe3uZSRYhJbzJrT4+0UQVcG2U=;
 	h=Content-Type:MIME-Version:From:To:CC:Subject:Date:Message-ID:
-	 References:In-Reply-To:MIME-Version; b=eavglfHi3Hu/wKKiVKTAp+mVjkHO3cfg9Ch/KIXzkKEGfhcgRdo5gEakcTKPwpDTfe26U8vN8K0rIluTtyDzDaBEUBnJpp8bSXKb3fqZq5ZbSwCer0HnltDjjTq3I7uj+DIRF1T0cvsy+H2fzTPuf99EliHxjBG47+NaauT2yPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=CwkuTKWn; arc=fail smtp.client-ip=52.28.197.132
+	 References:In-Reply-To:MIME-Version; b=M39Gt8w3ah79js4KmCdhT0WGFslT16HGN77k+N0BAwrnBgwf2ZIv1ttb8xW3hNFHle2JOxKSaTE6QITj6DsbIZ0jnVaabBdbnuzcj9wnGGmg5HTunnzwQXFvHY2Ck5+Hi8/kDsw7V4wiwlth4dgXuMU8/+A7FOx3GmJy0BgpJ1w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=seQGXwLO; arc=fail smtp.client-ip=3.65.3.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="CwkuTKWn"
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="seQGXwLO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1785959768; x=1817495768;
+  s=amazoncorp2; t=1785959770; x=1817495770;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to;
-  bh=ImTKuihAW9CxEm6nexwxIK4uNd1RW95VKO9iC6q1npI=;
-  b=CwkuTKWni1Nz7tacNrtP2f4orqJn8sZ+ptV6stvlAkt4zvsNh2njjmvY
-   cZD92C+IJrY6iZozDVbdodCbHCvaDHJ4posM1D5ZUrjzPYDB/ii12WRg4
-   CEN2fQ1MQmolhfnetF1U9yshtSmfINeu9OPzwO6/4wUwo3cqN6ZK45GqZ
-   N25vQ5ENPfESj4PDGd2ZEbvN4c7Cx8qiQazrgSmnVu9sUfhtTxXxRszw9
-   Pw5jeRPB7BQFSjKWGICOfVdrudbJXd3vfej9bW+WaTrVuIeHuwas3gx7V
-   C29m2rtLYORclSqw7NfECESRJEcSaK+fOGKpJQAt85VRO1P3Nefsuo1AW
-   Q==;
-X-CSE-ConnectionGUID: ud3C8OPsTMG97/HF3J2Avw==
-X-CSE-MsgGUID: lav1pMF4TiCniU/DLQwFCQ==
+  bh=RqY9KQd1J7+jXQch26fpWclpPAEJ5+H5eayVVdvm8e0=;
+  b=seQGXwLOC8zStB/m27PyGfpo7Np2tjF3qqZhsoKYiHEBcxGJGMeudRor
+   yqKxgpGqsQBoBPbc2QyOjU/v13gd2NGbLhSxIkfq8Z/Fdnd64mqyRYYMw
+   43/SO1Cp5xBOqpTPBGbySFqsPvILPcmMDOi9QaOAZSV+rtXTpHAc/cwFm
+   Svoo5UxIAYP7dr11PjUtV0Esr1epFoaTkPbfw0OZ179zmbDeTJ5pmRxVj
+   x/177k0eWWCv2X++0Pip8HsF23nZOr05pdpe1DppU+JTiCOK45oLR2Vw6
+   ITrAqoJ75on4vKmwGL4sH+O4+WgHSWaiyc9PohWnrFH0BHREt9l4YEy9n
+   g==;
+X-CSE-ConnectionGUID: r7vS/bRqTWae/gpPQKv58g==
+X-CSE-MsgGUID: CPe4SmM4R2iw6eOSKAr8hA==
 X-Amazon-filename: smime.p7s
 X-IronPort-AV: E=Sophos;i="6.25,207,1779148800"; 
-   d="p7s'346?scan'346,208,346";a="17337878"
-Content-Type: multipart/mixed; boundary="===============1397031566656956887=="
+   d="p7s'346?scan'346,208,346";a="17457524"
+Content-Type: multipart/mixed; boundary="===============5608212814748177171=="
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-011.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:56:04 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:30963]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.17.230:2525] with esmtp (Farcaster)
- id def77a63-6e72-4742-ba79-15e496ad56c4; Wed, 5 Aug 2026 19:56:03 +0000 (UTC)
-X-Farcaster-Flow-ID: def77a63-6e72-4742-ba79-15e496ad56c4
-Received: from EX19EXOEUB002.ant.amazon.com (10.252.51.83) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+Received: from ip-10-6-3-216.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.3.216])
+  by internal-fra-out-002.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:56:08 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:1568]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.19.18:2525] with esmtp (Farcaster)
+ id fd8dc019-6bac-4eb0-9937-732f74419703; Wed, 5 Aug 2026 19:56:07 +0000 (UTC)
+X-Farcaster-Flow-ID: fd8dc019-6bac-4eb0-9937-732f74419703
+Received: from EX19EXOEUC001.ant.amazon.com (10.252.51.133) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:56:03 +0000
-Received: from EX19EXOEUC002.ant.amazon.com (10.252.51.145) by
- EX19EXOEUB002.ant.amazon.com (10.252.51.83) with Microsoft SMTP Server
+ Wed, 5 Aug 2026 19:56:07 +0000
+Received: from EX19EXOEUA001.ant.amazon.com (10.252.50.110) by
+ EX19EXOEUC001.ant.amazon.com (10.252.51.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:56:02 +0000
-Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.50.44) by
- EX19EXOEUC002.ant.amazon.com (10.252.51.145) with Microsoft SMTP Server
+ Wed, 5 Aug 2026 19:56:07 +0000
+Received: from LO0P265CU003.outbound.protection.outlook.com (10.252.51.94) by
+ EX19EXOEUA001.ant.amazon.com (10.252.50.110) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45
- via Frontend Transport; Wed, 5 Aug 2026 19:56:02 +0000
+ via Frontend Transport; Wed, 5 Aug 2026 19:56:07 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lGsbMY8Nuhxx5xT+Nex/7+gni+WgrDeZN4Se5SHAGfhQw83u1fb9j0i6eNQat9TFHBPgyjaDJwssOQA3Mh30QgO7oW6mz3UisnGvCxYNd9aMV5R4lepi5/WPi0XPE/BjS0kSdGZ2BRn8fNvLM9xaYu2bEB18a3P2Yq/2a0prYogtUImvfg1AikQQuQQZdcbeqTv2cSenLHcH8U7qaPcfxCtfLriOpJIn6aseSUWvUAQOhrKBv7CKcPyjNGTWOpq3QILbcL5cFiJp9J5WCeIE/N7N7/P0yapx86vv/J20ECtUZakhITOJf86xccaMCnbLWaxZ91p8UGBZ2t/cFhh0aw==
+ b=g0d5LJvPfJ+9UHOeS4ENgWrcw6Oq2Li+XoKQpVIPaiBdmeYEsztpRvnNxMNsk54KWSuU1EBlP+53AaF7I+0kQYMP/vXOxZ1kMcBwu1rqgN6ThIMJe3muZk5YXgd2z/DOMmqb//MZ9BuJaqsAF9u+yIqHfMkWajK9l2W4z7WC9qq/DXEQh7vp+7nTiz37UjN1kzw/XjyYykXXvC+KmtY6R4dvYZHqppuPKyvuAImlFSjhphDxqI6EL4E24N4uV3RLIRCvgSpgYh44uvbOJDfxOjndQwQQEkVFlHqXr/jMWw6Lv2UNlNJeK/bK2TFsm3MEFuZdTL/HvW7clxT0QgTkEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=O1e8zWjsccn0G5w99S0guKKVZ7Nj8DD0k/9gu4JfBY0=;
- b=G1EHzJUbcCt2DNPjqm/y4eh/1eyK2RxBLQvGJjREOOPSU/u3qJFIczLos7oUozQ6aG8P1ZCURLNmqoI8df4JmXzt/WZq+JVVjWGm9LEdOo8LO7rEmzTXrmDdbUsbZRLDICrRUTN0dzEUlVZfxNjcamjKDqDw8gMDuCXOwfGaccVGl2Or5/d5peAAbSH98jl6sgb5UH28q2Im2D1HILKzOKyCmb7j14VxTSw5uJW1kbWk2ZOGRJCypmoES8wIf5yslomITHt9TyukIabMLMavXCsKJkpTaoqbBVv6kd0uYlKbPp2ZfblztgaeLhAtVQMEUekzsaZkvpgcZHLJdzLTwA==
+ bh=Ax1cIzWWDOhstZhum7SwinYWDO3XVP2gk4mQKWtXOrU=;
+ b=uPRz5AdklQWj85U5CMarpzFRQqIXmKLU5NWPPJO9KdSuKT2j508yhx8H1ZeRRQzlOdllBIYWefkEm8JHJI/2wvsO/0CGUyZrAnYfvWwOVruAEzl6WDd7toMWAG69QapzwT6h59oRRDLXmXrov5a213JsLSfPtgKY7OWn+k/YULevb6wVSslZr0Qy0mTZCQ/CwZaW1HmxzGEiOcU/cjhAx6XArisY7UeWdW5T6tx3cnK1/PSr492jsa9LmH4aRoHaYxEmo9zAOa/wXE2Jp9NnQdoNbdcmhE08bnpZ5+GzEkCYCSBTYCkIuholQt1MX7eh2iv+UqlfNHT7dZq+fzHSHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amazon.co.uk; dmarc=pass action=none header.from=amazon.co.uk;
  dkim=pass header.d=amazon.co.uk; arc=none
@@ -72,11 +72,11 @@ Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:4b4::12)
  by LO0P123MB7404.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:334::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 19:55:55 +0000
+ 2026 19:56:02 +0000
 Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6]) by LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 19:55:55 +0000
+ 19:56:01 +0000
 From: "Woodhouse, David" <dwmw@amazon.co.uk>
 To: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
 	<pbonzini@redhat.com>, "akpm@linux-foundation.org"
@@ -99,13 +99,13 @@ CC: "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterz@infradead.org"
 	<hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org"
 	<kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU into a
- separate helper
-Thread-Topic: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
- into a separate helper
-Thread-Index: AQHdJRRtvv9/yRgiRkSAahpXSy7JMw==
-Date: Wed, 5 Aug 2026 19:55:55 +0000
-Message-ID: <20260805195528.3853473-5-dwmw@amazon.co.uk>
+Subject: [PATCH v3 5/7] KVM: x86/xen: Explicitly tag "shared info" page as
+ never being dirty tracked
+Thread-Topic: [PATCH v3 5/7] KVM: x86/xen: Explicitly tag "shared info" page
+ as never being dirty tracked
+Thread-Index: AQHdJRRxVR/H8lnEzUyKD3Dll5I/ug==
+Date: Wed, 5 Aug 2026 19:56:01 +0000
+Message-ID: <20260805195528.3853473-6-dwmw@amazon.co.uk>
 References: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 In-Reply-To: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 Accept-Language: en-GB, en-US
@@ -115,228 +115,166 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amazon.co.uk;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LOZP123MB8516:EE_|LO0P123MB7404:EE_
-x-ms-office365-filtering-correlation-id: aedf672e-d32d-4bea-3815-08def32b8fdd
+x-ms-office365-filtering-correlation-id: 2a770b02-7ebb-40de-7f41-08def32b9392
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|6049299003|1800799024|376014|7416014|23010399003|22082099003|18002099003|11063799006|5023799004|56012099006|4053099003|38070700021|6133799003|10067099003;
-x-microsoft-antispam-message-info: PRmebw+lcmK8PaC22mOVpW87pK+74vtAnXegVYNnwYxR7FvnNvlmo5EhQrOxLvLwk+ohJkULJY5MxBWVPj7Qjq2n4xBSMmmaaEDmfWqiW5Vpd8Y63cJoYtVGi8sPYNy9f9iMlhQNfGU7ZJbgDZxv8IYyEK3EMpBG50ume3ooTA6rWZ3QgMJMlut9idW6sHDB9qLhq3Z+K+d4bGNRgyJvbgrwtcuAai5TaCQ4dGGABFTqpWDSDcUWWJUecspF13PqvYoBK1spiau5FXhLrFRnoE+9Xqz7vxbrYqzSyANpIi0qGhQUyCaV8jVh0LmjBVeLMrG9rzc3UXPixFWFUQy9IFNu14/kjka8vRm/zZKfZ305qZD2JzYELzYIZEhLOPxTbq0nh3eNT+VjwoNUt6F3HtklkM7WRUQsMNLe8XPjK1ZzRjlKOng3VLZ8S4Hkrtkx+XG2y//I2RtxjqtOUe5XSBZh6ZLICYUaKwWnbFyiRIIATlBaTV3tCG+U8CKrGCvIpv6Jfz89nYQaHd7ic+NUCI66MI9m6Qor8ObpbUeSbDEED6NexDonkmGsvhwB/nnDmsm9IqtH5hqOYwmlwr2aoQ7qeys3v5OuZEaGWfDkEDxqSgncqqEVQUntNNfXMCtnKhoz4XdJ1u8zcOR3jBByD1fkMd+nkrw5o6bx/ncL7BC/D3ViTTYYGSM5nsgX6W/eK2ZG/yoS3ZhTprrIt4GvqAu67saa0qpBLKVP433LSSA=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(6049299003)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(4053099003)(38070700021)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|6049299003|1800799024|376014|7416014|23010399003|22082099003|18002099003|11063799006|56012099006|4053099003|38070700021|6133799003|10067099003;
+x-microsoft-antispam-message-info: U7h85VcspYghJku1QZInoc4LmASQkts0g+bIK2UXU9Osl0t4pWbKzX+coZKha4u7J2BN1sGzYdylLCpgkXZ/pQPA8ISF+tSlOMBxQkpF1jIGOOt5f+5r7rXqjHggNUHWGPxbaUEhm1RDF4HH9USStA1ksmevFb+v9JDdbfdb4nPQwgmd+kJgJIsDlW/p1UqlgnZ6HLTqQfpgIIkYhVKHUfhJv1ZTPg/GNdVNY9Z2sHj8BE4Dr+xZ9lfQ+mzooKdgq0k8Hj3sbUkPsa4CQeQR9wJ51gFzj3UNrZGI+IVgGWmoXMpffsZNw0MW4Rs5TJGguCfbj/EpBEN+mv6Znm3bkE9CCkjFR9GnyigPc+0qdxkP2OUsZKPg6MCigoi3UzvA2xRRdvmcBYJJmY79php2sV7/YYTxkIfF3yQcLdoQBybnTfG5nheHWgUu9AHbaBuUxiFW06iGVwqpjjb3dpeKZlOE0R74s5h68EGxyrG0fyAF5vU/NN0AkBO2PhnveuKXR+b86my3E7nOCD1+Aw3zzI8Fei5IuHhQE3yhrNwcmRh/xfDFRyXeSihMpdd+KRCNxoGRxUzdRIZ/LeEL+tlBPHhX7oZXvSCPsvvFg3tRuJBPugWdYiEJBsTkRG0BqNHCg/yuA78tcauL/A1i4st1h8SPOHF3cy+fTx4gScDMkfHEoK5Nd4ADtGF7CNjng0ZJg/AI7VKYej9l9K2oHpunKlWczWii1gT5zMrcOjsEyEE=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(6049299003)(1800799024)(376014)(7416014)(23010399003)(22082099003)(18002099003)(11063799006)(56012099006)(4053099003)(38070700021)(6133799003)(10067099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?8zJC8Ka2LTp+J54nsOW0wc+s52rj7KZpy58ikN6jxPXux/jp2RGpteiPpC?=
- =?iso-8859-1?Q?U2gAFTZd6v36kRSVu4tN6udIo8DOSLhErURa9B1VgBNODHPkq4TAa5ZnNW?=
- =?iso-8859-1?Q?QR+9kX2A+IS2/aF3OFFmJVtLgPieTGZs1Se3+3KgSwdpFgBzs+CkTTZhgj?=
- =?iso-8859-1?Q?+RY9UWe/wYSBo+uGMYiZNP2wEdCGz2MpgjWt9VGZ0v+ldr8tumXPXkLHcT?=
- =?iso-8859-1?Q?PALV10M0+nrO/aQ8mmIM5a36Z56nhELEXRkA08c6c/g4h7IOFhOmsjMA5b?=
- =?iso-8859-1?Q?r7d5+5vX99tkpfKPTYPYTHL7YpFGzSw+8Q1c0LcsRums8IFS3staSnGNti?=
- =?iso-8859-1?Q?8rXa5nKf6gv8MWyLaC4HgbYVK7Hn4S9H9Aq9+TBt/keMmfpuFX6h9EFkOf?=
- =?iso-8859-1?Q?H+qKcYA3Lv06pBFaES0Usm+rsOLNmt5ApLPhk3nRZuFlgjw414dXRmLXxB?=
- =?iso-8859-1?Q?mPElFcl3WsOZd93o2JgtP27vIw3D83iZ54V/4El4tvd+HIRJiqBsqXSUkR?=
- =?iso-8859-1?Q?m7DkROReAeCeRdX+BF8iLuRl6ezdyToKqW7AUNREDbEAiR07/OPanwbjxi?=
- =?iso-8859-1?Q?QAAB13YWsA8iXGijWv0GAqj2/fcG8U7+RLBnLE0cf1fxyQPrDam/GkrhIr?=
- =?iso-8859-1?Q?qtdldlUqZZsoKsa9AuC5VcjH65gwV5gozgPGQAiqx6GAxyTUTHUkaQA81/?=
- =?iso-8859-1?Q?GNJqU+Np7zCOjI8EeKaztVdP0a2Go7ScrGlr2K6vcilmKKG0zTDqndpxmF?=
- =?iso-8859-1?Q?VpumAn8VXGGiyHLVuyOyo6LwNsH//qG83OOeiMZ2CNPsu7wJbfwewgZLsJ?=
- =?iso-8859-1?Q?oQMKL3yOMncU1oiN5YxGczNcMX39VcwPsUL1jrAbrfdE8to8twuAg5a32K?=
- =?iso-8859-1?Q?W2SpsyyroM4AnF+b7PBL2MKHnxhHKonAv+AfSOMWpJ21AaLqfXRZzkMCrv?=
- =?iso-8859-1?Q?5oGh60bIQT2nJBadZ9XYKLQMp+rG7y2dckyZWj8bFAlVoYyDrAVkeTojfw?=
- =?iso-8859-1?Q?PyYYGh+m2EMNLvgakU9nP6/AwMZgyHTAT2wIsrDtSD0CVws7zpcXwiAY++?=
- =?iso-8859-1?Q?zoxAvzV2uqF4r5s5po7ryW6dIVkVkfnUxLeDYynheE2WYKHJ/ACjphdDbH?=
- =?iso-8859-1?Q?+h2rAi/3butNbIzEqKBG3mv5KvyWbTFgn+5y6GOXCNTCntyRyZS69QYh1s?=
- =?iso-8859-1?Q?VAzeLAfeD0BV5Kl0mpxsB0vJvR7s5usgHfBmVrbaLUQn7OqcLj9w18OacW?=
- =?iso-8859-1?Q?PFq2ioeeIwbzc8FrdPAqiQRGMNZuXiDbzu4IboNR+X7Yae8sOyoccj9bG7?=
- =?iso-8859-1?Q?ChWR6MoSaXfkv0RaG/yiZedJ2l1ByN9N/Lplo/5avH83VsiTKGMqCWQgD9?=
- =?iso-8859-1?Q?rmgoPHNVuYWeuL22aXAeBa0W925WvRhSx71eagg95eKipdoIvJGw2HSYiQ?=
- =?iso-8859-1?Q?YLnJP8faJRGfPdQqjCbMGQlFGV6cD0Hv1tTQV4IrHYqbHvQHjcetzD6XU/?=
- =?iso-8859-1?Q?a7p+fIrspZegkt9cfliDeo8hg1aPRw1Y/i9THENGFGYqhk4LfO0G5fYh4J?=
- =?iso-8859-1?Q?tEAeWEMIft0u6tNH21rjGR/ADA6zQXVBVy4lnz9CFNibsnB5naGOaoy6hf?=
- =?iso-8859-1?Q?O5qXu6LOYD5NNNFYO39r0dSndcN2Bf4+HvO3B4cKptnvPDhmpQKLJ8x0s9?=
- =?iso-8859-1?Q?fuo/W1z9POJrNkWXSgweVLUnuFbukZoNZtRJ0Q3pTjgHp1TGgctaXKd7X/?=
- =?iso-8859-1?Q?uk3MTcauhJnE+JHODItbmhYsl3YQ7wFM2ghPUiLaL5qbpk?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Je3eK2uYPNdSDRoRLSlaR49l5Z14tV+owZ6jMDNo9+eV9fjp9Ydj5tq4/d?=
+ =?iso-8859-1?Q?afy7NoR3RHM9y+qjhat5ibF7Xa8TObyk+jEU02OWEIUtjLGXT44TKZLImK?=
+ =?iso-8859-1?Q?gdmI0bMC1XWqhPPDPSbKHjhh8G7EjTQ178Tscuv18ixO5a6VFSLOXHR9Vw?=
+ =?iso-8859-1?Q?QvU2xZtF6J50V0nOlxg4Pt/a95hqou1U9pPuzuHYh351xVFk+8id1BDNUS?=
+ =?iso-8859-1?Q?+i9YllOdgqUzqw28UbT1VSvXjYKPgeWgQBQdFbFvfuX9/7knysCeeU9lOG?=
+ =?iso-8859-1?Q?UGkMAfItwioqghrjAjf3fdBqFZ6z8rX2/QL8XeHSzh/7ksQfJwNl85l6O7?=
+ =?iso-8859-1?Q?vr6r2uSeKq8KZO7TS9Gp7QY8nEd5M0k5xJEfJsmWyFsLkhjJh9cBSKxMuK?=
+ =?iso-8859-1?Q?eaYT67W5f3UpHeHkJdN1CcjUOfTV6/yYaAQna1cb211dSYrej5LO4uyPLc?=
+ =?iso-8859-1?Q?Bi5lJmGx4u41ji/okycY+5IkRdeYduiqNg7YcxZT8KWq6iW32a6RgWqF1/?=
+ =?iso-8859-1?Q?K6khSdTx+0ZAom4MK6/j+EMSSgp8nvneRMIvjY5K+8T3qPTyjTTR0pKwpV?=
+ =?iso-8859-1?Q?GiuziyYOvQ7EfN08XPdtqLuK9S4BwBCFL155XOfwBdjgOVyrlH07VP/CuK?=
+ =?iso-8859-1?Q?5iUmqpG60nEM+c/8uOymXHhmPQEIHfdOpwDNdnRTV1EfygYukwVRUSO/fL?=
+ =?iso-8859-1?Q?nlzL29vxBS0uGYm+bBJy9kSPyV59y7ys1VvCC1axgK1gIxZ+UMhLorBjcW?=
+ =?iso-8859-1?Q?eTiKAiL2uHLPTqWQpiNb9xFrLpxhcgxklJJe63NmaXnlUo3aGoHj9ONcth?=
+ =?iso-8859-1?Q?D4N7UAvH/GdNtxAisvtYQo0bGniyLx+VR2VSXYkd35heVlvQchx4oNQEfe?=
+ =?iso-8859-1?Q?A1+rOJs++SJBXFuekoOT4Rp6O8jzPmoonEX79zFTSkrX5OAhpbhCfe+it+?=
+ =?iso-8859-1?Q?yHiPI7r7gZAseKbEFoMh+/AgkmGTxuUXDkZKTsnr8pUKu4nsB8+R6iVRDe?=
+ =?iso-8859-1?Q?EIcpI/xkyMeRnoNmsmlpXtAqA8ttppQQCWIOzIk2M9wzRjoltmCdmL/bya?=
+ =?iso-8859-1?Q?6b1SfhatUko33Z//SbKJNzdETg6fsF+DlMehOf6dkk0+KAHGf/kpX6AoKO?=
+ =?iso-8859-1?Q?xNpzNyypeH+8HRe/knbfoEz0FQ1WBuFpdrJ6PpQi2TUBCfFWtsk+l0F5Rq?=
+ =?iso-8859-1?Q?gE9rwsI9TLtvGM7idcp9d0BolVThlQqyOBfQE6JVjLHlqsOGAswlR+wBLb?=
+ =?iso-8859-1?Q?1aSeZ1M0hwmXiHOC8UUfd4hmC+8/X9HaHqA2q06ejqlv3dczzJV0NXgIX5?=
+ =?iso-8859-1?Q?jxvRPDtNph2zbKRirI8tb+1E0zQATdMTYB0/jWGvurNqvaLMDaLMzScKlB?=
+ =?iso-8859-1?Q?MQ5dfTmcZ0AfmERLyeziB8bxg40KXmGW3G2htGAxEKuIGbGK8jBprLh+KS?=
+ =?iso-8859-1?Q?gystXf2hK8mgNShJqP8BN+Q6t5D0BTKcvPTE1RpppeXEsQ614fuyYgW1FN?=
+ =?iso-8859-1?Q?GaborTV9AAeQ/OnPLGU8TUWsjtVFRq8b9EMfaDUSd20TZtgpmw+14Z5D5E?=
+ =?iso-8859-1?Q?EoPpHQKFPU9eMGcoTQ+2YW2om5bd07flPStCZeHr1sJUCmk/mdGm5hSB7E?=
+ =?iso-8859-1?Q?QEfdZBCQ/7P0l/GBlSheuvrbHYtWL2afuQYWpwc5yTAbYVFA70MmK05Y4n?=
+ =?iso-8859-1?Q?yRZxwuNg5kYSA4Db3J6JxZFDe+XD8BhUkOQzlURfDl0fQib5aP6W+BtaM1?=
+ =?iso-8859-1?Q?v29+3QxetYVCyFNveLnjPDb+tpwOsfw0aX2zJ3ABq641Aq?=
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: W3Wc1NuT60w/0D3kfBOe3JNw/7ymwlMMb4iYPSzyFCiLcXf3r6/E3kDRnLdlgII6DIWyYOmBpm6sDHAXFyAErKsNZGfpYriVEpl2zH4pYqvloezZQlqvgrzvQljd2O1JjARVk3Fno02l6vgfuKXKMfFtt6pjc3pPB2RWZ0NSPDRfGyHmLTL4M4cdwyBa7ANiJ84fpJeu08TBHOAcuRKqWa9Opxg0NuGDZwUsOg/xwbp3W5Hb7TiebtwjEPSlg9Erx0bOztj3hT4YIpYROKnmn4O8uK4+pD9dUg1FG4D/LeZwsVGfGl6ZMjtKZVwG4hYWqQIfuwuSfE7Jw+ITe07U/w==
+X-Exchange-RoutingPolicyChecked: Gmlr6NtjG5Q8hHHB8zbVcB4utgtkOtyYnsQQHdgoqaIKkremgpOdubGG61Rzjk5TirzS/hwD0w9kOf+hoq29c0mAeRnUAi1tRI4ux5Hy+mTzmFKKEsmANiV2ieZFXEcLZwB2wPVrXuBqHq2lSqlPOT8BekjA4qWCbEM/PspY7ftvoWeXkDeYC5xhQIcFaOos7RJ28WBBpjeIqekoAaJRtTpyKv3dsHTJ7TytLh6WPFqQeKs8fBp/AKjWkwDGS9v1B6PgEzMJxLRulc4sYfzHKs9KsHuu/TspR9MHoF2wr3RM2SA7YtYu+kKKKGWra31srqP2O6om4QOv2uJHxRxw4w==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: aedf672e-d32d-4bea-3815-08def32b8fdd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:55.5678
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a770b02-7ebb-40de-7f41-08def32b9392
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:56:01.7895
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pS2AMTK9oRcaXzt+NBma4Av88MBN4Ou9GBYSDRyQdf0GPamY65omMDv73FiLoOZp9HWKoLYhoUl/wGkOzNXeRA==
+X-MS-Exchange-CrossTenant-userprincipalname: XxVzxNbcN37JOZKHdNjdRMUr47lPIIeX1kb0Fv7UZfDrjPfBEr089QWUYkVO1g+ENJfUSt0aySwXmteq8EwdkQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P123MB7404
 X-OriginatorOrg: amazon.co.uk
 
---===============1397031566656956887==
+--===============5608212814748177171==
 Content-Language: en-US
 Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";
-	micalg=sha-256; boundary="----CACDE43EAC4A1469C09AD890A959AD0A"
+	micalg=sha-256; boundary="----14FD06F5C320B8ADDFC61DEAF40E912D"
 
-------CACDE43EAC4A1469C09AD890A959AD0A
+------14FD06F5C320B8ADDFC61DEAF40E912D
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 From: Sean Christopherson <seanjc@google.com>
 
-Move the marking of an event as pending in the target vCPU's vcpu_info
-into a separate helper, __kvm_xen_set_evtchn_fast(), invoked after the
-shared_info processing is complete and its RCU read-side critical
-section has been exited. This makes both halves easier to read.
+Explicitly mark the Xen shared info page as never being dirty tracked so
+that higher-level gpc APIs can be added to automatically take care of
+things like dirty tracking, without reintroducing the bug fixed by commit
+55749769fe60 ("KVM: x86: Fix wall clock writes in Xen shared_info not to
+mark page dirty").  And because the code _looks_ buggy.
 
 No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-[dwmw2: rebased onto the RCU conversion of the GPC locking; the
- read_trylock() failure path in the original no longer exists. The
- caller's kvm->srcu section now extends across the helper call, since
- kvm_gpc_check() on the vcpu_info cache consults the memslot
- generation and the irqfd path enters holding only irq_srcu; in Sean's
- series that was covered by a guard(srcu) spanning the whole function,
- which this series does not carry.]
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Claude:claude-mythos-5
 ---
- arch/x86/kvm/xen.c | 104 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 65 insertions(+), 39 deletions(-)
+ arch/x86/kvm/xen.c        |  2 +-
+ include/linux/kvm_host.h  | 10 ++++++++--
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       |  4 +++-
+ 4 files changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 6bcece2439f5..75fbe88c2102 100644
+index 75fbe88c2102..ff18d888ed47 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1759,6 +1759,67 @@ static void kvm_xen_check_poller(struct kvm_vcpu *vcpu, int port)
- 	}
+@@ -2329,7 +2329,7 @@ void kvm_xen_init_vm(struct kvm *kvm)
+ {
+ 	mutex_init(&kvm->arch.xen.xen_lock);
+ 	idr_init(&kvm->arch.xen.evtchn_ports);
+-	kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm);
++	__kvm_gpc_init(&kvm->arch.xen.shinfo_cache, kvm, true);
  }
  
-+/* Called with kvm->srcu held, as kvm_gpc_check() consults the memslots. */
-+static void __kvm_xen_set_evtchn_fast(struct kvm_vcpu *vcpu, int port_word_bit)
+ void kvm_xen_destroy_vm(struct kvm *kvm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index da0b3669f1a3..1725284121c9 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1465,7 +1465,13 @@ int kvm_vcpu_write_guest(struct kvm_vcpu *vcpu, gpa_t gpa, const void *data,
+  * immutable attributes.  Note, the cache must be zero-allocated (or zeroed by
+  * the caller before init).
+  */
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm);
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty);
++
++static inline void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
 +{
-+	struct gfn_to_pfn_cache *gpc = &vcpu->arch.xen.vcpu_info_cache;
-+	bool kick_vcpu = false;
-+
-+	/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
-+	rcu_read_lock();
-+	if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
-+		/*
-+		 * Could not access the vcpu_info. Set the bit in-kernel and
-+		 * prod the vCPU to deliver it for itself.
-+		 */
-+		if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
-+			kick_vcpu = true;
-+		goto out_unlock;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_64BIT) && vcpu->kvm->arch.xen.long_mode) {
-+		struct vcpu_info *vcpu_info = gpc->khva;
-+
-+		if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
-+			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
-+			kick_vcpu = true;
-+		}
-+	} else {
-+		struct compat_vcpu_info *vcpu_info = gpc->khva;
-+
-+		if (!test_and_set_bit(port_word_bit,
-+				      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
-+			WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
-+			kick_vcpu = true;
-+		}
-+	}
-+
-+out_unlock:
-+	rcu_read_unlock();
-+
-+	/*
-+	 * Deliver the upcall or kick the vCPU only after dropping the RCU
-+	 * read lock. Both paths end up in kvm_vcpu_kick(), and the MSI
-+	 * delivery also walks the APIC map and takes APIC locks; none of
-+	 * that wants to be nested inside the GPC read-side critical
-+	 * section, which must be no longer than the accesses to gpc->khva
-+	 * above. Invalidation waits for a grace period, so holding the
-+	 * read lock across the kick would extend how long a memory
-+	 * invalidation is blocked.
-+	 */
-+	if (!kick_vcpu)
-+		return;
-+
-+	/* For the per-vCPU lapic vector, deliver it as MSI. */
-+	if (vcpu->arch.xen.upcall_vector) {
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+		return;
-+	}
-+
-+	kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
-+	kvm_vcpu_kick(vcpu);
++	__kvm_gpc_init(gpc, kvm, false);
 +}
-+
- /*
-  * The return value from this function is propagated to kvm_set_irq() API,
-  * so it returns:
-@@ -1775,7 +1836,6 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 	struct kvm_vcpu *vcpu;
- 	unsigned long *pending_bits, *mask_bits;
- 	int port_word_bit;
--	bool kick_vcpu = false;
- 	int vcpu_idx, idx, rc;
  
- 	vcpu_idx = READ_ONCE(xe->vcpu_idx);
-@@ -1825,49 +1885,15 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 		kvm_xen_check_poller(vcpu, xe->port);
- 	} else {
- 		rc = 1; /* Delivered to the bitmap in shared_info. */
--		/* Now switch to the vCPU's vcpu_info to set the index and pending_sel */
--		gpc = &vcpu->arch.xen.vcpu_info_cache;
--
--		if (!kvm_gpc_check(gpc, sizeof(struct vcpu_info))) {
--			/*
--			 * Could not access the vcpu_info. Set the bit in-kernel
--			 * and prod the vCPU to deliver it for itself.
--			 */
--			if (!test_and_set_bit(port_word_bit, &vcpu->arch.xen.evtchn_pending_sel))
--				kick_vcpu = true;
--			goto out_rcu;
--		}
--
--		if (IS_ENABLED(CONFIG_64BIT) && kvm->arch.xen.long_mode) {
--			struct vcpu_info *vcpu_info = gpc->khva;
--			if (!test_and_set_bit(port_word_bit, &vcpu_info->evtchn_pending_sel)) {
--				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
--				kick_vcpu = true;
--			}
--		} else {
--			struct compat_vcpu_info *vcpu_info = gpc->khva;
--			if (!test_and_set_bit(port_word_bit,
--					      (unsigned long *)&vcpu_info->evtchn_pending_sel)) {
--				WRITE_ONCE(vcpu_info->evtchn_upcall_pending, 1);
--				kick_vcpu = true;
--			}
--		}
--
--		/* For the per-vCPU lapic vector, deliver it as MSI. */
--		if (kick_vcpu && vcpu->arch.xen.upcall_vector) {
--			kvm_xen_inject_vcpu_vector(vcpu);
--			kick_vcpu = false;
--		}
- 	}
+ /**
+  * kvm_gpc_activate - prepare a cached kernel mapping and HPA for a given guest
+@@ -1974,7 +1980,7 @@ static inline void kvm_gpc_mark_dirty_in_slot(struct gfn_to_pfn_cache *gpc)
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held(),
+ 			 "kvm_gpc_mark_dirty_in_slot() without RCU read lock");
  
-  out_rcu:
- 	rcu_read_unlock();
--	srcu_read_unlock(&kvm->srcu, idx);
+-	if (!gpc->memslot)
++	if (!gpc->memslot || gpc->never_dirty)
+ 		return;
  
--	if (kick_vcpu) {
--		kvm_make_request(KVM_REQ_UNBLOCK, vcpu);
--		kvm_vcpu_kick(vcpu);
--	}
-+	if (rc == 1)
-+		__kvm_xen_set_evtchn_fast(vcpu, port_word_bit);
-+
-+	srcu_read_unlock(&kvm->srcu, idx);
+ 	mark_page_dirty_in_slot(gpc->kvm, gpc->memslot, gpa_to_gfn(gpc->gpa));
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index fdf7d2273298..1ad35ec01f87 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -93,6 +93,7 @@ struct gfn_to_pfn_cache {
+ 	kvm_pfn_t pfn;
+ 	bool active;
+ 	bool valid;
++	bool never_dirty;
+ };
  
- 	return rc;
+ #ifdef KVM_ARCH_NR_OBJS_PER_MEMORY_CACHE
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 3bae4df49165..ffb4e6105344 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -451,7 +451,8 @@ int kvm_gpc_refresh(struct gfn_to_pfn_cache *gpc, unsigned long len)
+ 	return __kvm_gpc_refresh(gpc, gpc->gpa, uhva);
  }
+ 
+-void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
++void __kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm,
++		    bool never_dirty)
+ {
+ 	mutex_init(&gpc->refresh_lock);
+ 
+@@ -460,6 +461,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
+ 	gpc->active = gpc->valid = false;
++	gpc->never_dirty = never_dirty;
+ }
+ 
+ static int __kvm_gpc_activate(struct gfn_to_pfn_cache *gpc, gpa_t gpa, unsigned long uhva,
 -- 
 2.43.0
 
 
-------CACDE43EAC4A1469C09AD890A959AD0A
+------14FD06F5C320B8ADDFC61DEAF40E912D
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -608,28 +546,28 @@ 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
-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
+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
-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
+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
 
-------CACDE43EAC4A1469C09AD890A959AD0A--
+------14FD06F5C320B8ADDFC61DEAF40E912D--
 
---===============1397031566656956887==
-Content-Type: multipart/alternative; boundary="===============4278924174069478766=="
+--===============5608212814748177171==
+Content-Type: multipart/alternative; boundary="===============7401809164625154276=="
 MIME-Version: 1.0
 Content-Disposition: inline
 
---===============4278924174069478766==
+--===============7401809164625154276==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -643,7 +581,7 @@ ace, Worship Street, London EC2A 2FA, United Kingdom.
 
 
 
---===============4278924174069478766==
+--===============7401809164625154276==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -652,5 +590,5 @@ Content-Transfer-Encoding: quoted-printable
 d Wales with registration number 04543232 with its registered office at 1 P=
 rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
 
---===============4278924174069478766==--
---===============1397031566656956887==--
+--===============7401809164625154276==--
+--===============5608212814748177171==--
