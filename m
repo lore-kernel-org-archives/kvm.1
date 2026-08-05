@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3306A46AA7D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E565746AF1B;
 	Wed,  5 Aug 2026 11:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927856; cv=none; b=NquqtRLp5o2lHSpKP7iK58AC3TiJMe9EJwK363D8XM7I74SiBPR2tpWOA2QmCpRVERhLlzJ2neiTa00jk0sEo0BHwDc/qnBnLmzBBDSYIlC8W/9OQ74CEFEmazIfrKbT77thT88q5VIoIMu+bBxPZOwmzuOaMxv6EAnE09gzTvw=
+	t=1785927857; cv=none; b=MtMPOGY3aCJ0cBoSdQX+jdN3NBAjHCTNFgMBGy+g5HeeolpiSnnFWpLErLetOciuAkg38ts/J1DfI+oKgbXIH3iec61p0mNv/HYD3nCyk2CmBggAKzc1sYKEARqO2OaSrMgn9BsRlWCqytW3aipQoH/Lor4Kw95tDq+UxU7FKJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927856; c=relaxed/simple;
-	bh=BfpEaAGkDyfbANpfPBIaZd/uzX61Ff66TSNwy44xLiA=;
+	s=arc-20240116; t=1785927857; c=relaxed/simple;
+	bh=V/OmEqubhut8+oe2kbPfOysWHu3Q0MY+ynqiulXQ3Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdqdRQx1EHWLe19ZSvM9WHxY77bqp6+v3cp+r8cKXsYStrZEzp8KcHLhWsbobel5nHFaoL8Cq7jI0i1GIn+4GPRFRt454nixbdSLxbC9ppIyzrXoytUc05q6pt42AU+OU5+PSExqRDM7mr5C6sMK6oE+VBbfk7KX+9RNLD0j/RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kO9BUPAv; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=c9ts+et5HkwxgqkeOgr/p6/IHQLwor3Y5FAAIDZDi6VR9Mefc9Xfwcf02RNEB1NGNQtLvkQBNpsThGDikKzkW93LSaKfYM7/1XAkZ7t5vy74awjPmyeEnSz2ORkfRHvtQYFthv9/baSLrsfarEk8ceNjKgvYS9I3JF86DXfnbhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=L+cQ4xcI; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kO9BUPAv"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="L+cQ4xcI"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 08ADA20B716D;
-	Wed,  5 Aug 2026 04:03:52 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 08ADA20B716D
+	by linux.microsoft.com (Postfix) with ESMTPSA id EA4D920B716E;
+	Wed,  5 Aug 2026 04:03:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EA4D920B716E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927833;
-	bh=CZO/FdjjrPxcYw4qgRLhHr2fLzYDF8y1zRIOsjWT26g=;
+	s=default; t=1785927834;
+	bh=wj5UF/1hwIz+DHXT+8I+TLhcRxrnRC+oQlVIsaDurzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kO9BUPAvWRCzrsYobVhBUcB2xm2bM2DD4VJpERjHV/eSn5VIeK8bsumdJESYK45rF
-	 WkzGQhI4i2uMD2Z9sHvJZR5OdY1VB7ejAsN9Xe+BlMjXYG3rwnQmFYBYdLfZlLRKDe
-	 s+icGXDgINZyI4YasxfUFbj3PxI8NUqUtck1jRbE=
+	b=L+cQ4xcIqOIsMgxsYPi1VSr5W/3EWJpE46+B6mgU2ejV/wJfwkVofLr0ZdOIH+A0+
+	 cU+xU2QDJ9hGivL6kkT/PXYG8671Y53FpmhUqXxzuHZbQ2/JTYOp/OHu+p02aJSu51
+	 Udh1vQnGtusW2ry72bDG1/eFgA7o9tUrL+veRll0=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 37/42] KVM: selftests: run plane tests with a split IRQ chip
-Date: Wed,  5 Aug 2026 04:03:19 -0700
-Message-ID: <20260805110324.25067-38-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 38/42] kvm: x86: drop obsolete kvm_cache_regs.h
+Date: Wed,  5 Aug 2026 04:03:20 -0700
+Message-ID: <20260805110324.25067-39-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -42,342 +42,270 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Wire the plane selftests to actually exercise planes instead of skipping:
-
-- Add vm_create_barebones_irqchip() and create the test VMs with a split
-  IRQ chip, which planes require, and query KVM_CAP_PLANES on the VM fd
-  (system scope always returns 1).
-- Switch plane vCPU creation to KVM_CREATE_VCPU with the vCPU id, matching
-  the current plane ABI, and drop the removed KVM_CREATE_VCPU_PLANE,
-  KVM_CAP_PLANES_FPU and req_exit_planes paths from the tests and docs.
-- Rename x86/plane_test.c to x86/plane_x86_test.c.
+This header was removed upstream (its GPR/CR accessors now live in
+kvm_host.h); the linear cherry-pick spuriously recreated it while
+resolving a conflict. Delete it to match current upstream and the
+vm-planes-merged tree.
 ---
- tools/testing/selftests/kvm/Makefile.kvm      |   2 +-
- .../testing/selftests/kvm/include/kvm_util.h  |  12 ++
- tools/testing/selftests/kvm/lib/kvm_util.c    |   8 +-
- tools/testing/selftests/kvm/plane_test.c      |  20 ++--
- .../x86/{plane_test.c => plane_x86_test.c}    | 109 +++---------------
- 5 files changed, 45 insertions(+), 106 deletions(-)
- rename tools/testing/selftests/kvm/x86/{plane_test.c => plane_x86_test.c} (58%)
+ arch/x86/kvm/kvm_cache_regs.h | 249 ----------------------------------
+ 1 file changed, 249 deletions(-)
+ delete mode 100644 arch/x86/kvm/kvm_cache_regs.h
 
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 80933e942ecf..750350e187c8 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -102,7 +102,7 @@ TEST_GEN_PROGS_x86 += x86/nested_tdp_fault_test
- TEST_GEN_PROGS_x86 += x86/nested_tsc_adjust_test
- TEST_GEN_PROGS_x86 += x86/nested_tsc_scaling_test
- TEST_GEN_PROGS_x86 += x86/nested_vmsave_vmload_test
--TEST_GEN_PROGS_x86 += x86/plane_test
-+TEST_GEN_PROGS_x86 += x86/plane_x86_test
- TEST_GEN_PROGS_x86 += x86/platform_info_test
- TEST_GEN_PROGS_x86 += x86/pmu_counters_test
- TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 2ea2960f1e2d..c4726fc7b065 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -1070,6 +1070,18 @@ static inline struct kvm_vm *vm_create_barebones(void)
- 	return ____vm_create(VM_SHAPE_DEFAULT);
- }
- 
-+static inline struct kvm_vm *vm_create_barebones_irqchip(bool split)
-+{
-+	struct kvm_vm *vm = vm_create_barebones();
-+
-+	if (split)
-+		vm_enable_cap(vm, KVM_CAP_SPLIT_IRQCHIP, 24);
-+	else
-+		vm_create_irqchip(vm);
-+
-+	return vm;
-+}
-+
- static inline struct kvm_vm *vm_create_barebones_type(unsigned long type)
- {
- 	const struct vm_shape shape = {
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 43a23634b4f4..ce53230b23d0 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -790,10 +790,8 @@ static void vm_vcpu_rm(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
- void kvm_vm_release(struct kvm_vm *vmp)
- {
- 	struct kvm_vcpu *vcpu, *tmp_vcpu;
--	struct kvm_plane_vcpu *plane_vcpu, *tmp_plane_vcpu;
--	struct kvm_plane *plane, *tmp_plane;
- 
--	list_for_each_entry_safe(vcpu, tmp, &vmp->vcpus, list)
-+	list_for_each_entry_safe(vcpu, tmp_vcpu, &vmp->vcpus, list)
- 		vm_vcpu_rm(vmp, vcpu);
- 
- 	kvm_free_fd(vmp->fd);
-@@ -1366,8 +1364,8 @@ struct kvm_plane_vcpu *__vm_plane_vcpu_add(struct kvm_vcpu *vcpu, struct kvm_pla
- 	plane_vcpu = calloc(1, sizeof(*plane_vcpu));
- 	TEST_ASSERT(plane_vcpu != NULL, "Insufficient Memory");
- 
--	plane_vcpu->fd = __plane_ioctl(plane, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
--	TEST_ASSERT_VM_VCPU_IOCTL(plane_vcpu->fd >= 0, KVM_CREATE_VCPU_PLANE, plane_vcpu->fd, plane->vm);
-+	plane_vcpu->fd = __plane_ioctl(plane, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
-+	TEST_ASSERT_VM_VCPU_IOCTL(plane_vcpu->fd >= 0, KVM_CREATE_VCPU, plane_vcpu->fd, plane->vm);
- 	plane_vcpu->id = vcpu->id;
- 	plane_vcpu->plane0 = vcpu;
- 
-diff --git a/tools/testing/selftests/kvm/plane_test.c b/tools/testing/selftests/kvm/plane_test.c
-index 9cf3ab76b3cd..fd09d1f78ebe 100644
---- a/tools/testing/selftests/kvm/plane_test.c
-+++ b/tools/testing/selftests/kvm/plane_test.c
-@@ -21,7 +21,8 @@ void test_create_plane_errors(int max_planes)
- 	struct kvm_vcpu *vcpu;
- 	int planefd, plane_vcpufd;
- 
--	vm = vm_create_barebones();
-+	/* Planes require an in-kernel (split) IRQ chip. */
-+	vm = vm_create_barebones_irqchip(true);
- 	vcpu = __vm_vcpu_add(vm, 0);
- 
- 	planefd = __vm_ioctl(vm, KVM_CREATE_PLANE, (void *)(unsigned long)0);
-@@ -34,9 +35,9 @@ void test_create_plane_errors(int max_planes)
- 		    "Creating plane %d, expecting EINVAL. ret: %d, errno: %d",
- 		    max_planes, planefd, errno);
- 
--	plane_vcpufd = __vm_ioctl(vm, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
--	TEST_ASSERT(plane_vcpufd == -1 && errno == ENOTTY,
--		    "Creating vCPU for plane 0, expecting ENOTTY. ret: %d, errno: %d",
-+	plane_vcpufd = __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
-+	TEST_ASSERT(plane_vcpufd == -1 && errno == EEXIST,
-+		    "Creating existing vCPU for plane 0, expecting EEXIST. ret: %d, errno: %d",
- 		    plane_vcpufd, errno);
- 
- 	kvm_vm_free(vm);
-@@ -50,7 +51,7 @@ void test_create_plane(void)
- 	struct kvm_plane *plane;
- 	int r;
- 
--	vm = vm_create_barebones();
-+	vm = vm_create_barebones_irqchip(true);
- 	vcpu = __vm_vcpu_add(vm, 0);
- 
- 	plane = vm_plane_add(vm, 1);
-@@ -70,7 +71,7 @@ void test_create_plane(void)
- 
- 	__vm_plane_vcpu_add(vcpu, plane);
- 
--	r = __plane_ioctl(plane, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
-+	r = __plane_ioctl(plane, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
- 	TEST_ASSERT(r == -1 && errno == EEXIST,
- 		    "Creating vCPU again for plane 1. ret: %d, errno: %d",
- 		    r, errno);
-@@ -86,7 +87,10 @@ void test_create_plane(void)
- 
- int main(int argc, char *argv[])
- {
--	int cap_planes = kvm_check_cap(KVM_CAP_PLANES);
-+	struct kvm_vm *vm = vm_create_barebones_irqchip(true);
-+	int cap_planes = vm_check_cap(vm, KVM_CAP_PLANES);
-+
-+	kvm_vm_free(vm);
- 	TEST_REQUIRE(cap_planes);
- 
- 	ksft_print_header();
-@@ -98,6 +102,8 @@ int main(int argc, char *argv[])
- 
- 	if (cap_planes > 1)
- 		test_create_plane();
-+	else
-+		ksft_test_result_skip("plane creation requires KVM_CAP_PLANES > 1\n");
- 
- 	ksft_finished();
- }
-diff --git a/tools/testing/selftests/kvm/x86/plane_test.c b/tools/testing/selftests/kvm/x86/plane_x86_test.c
-similarity index 58%
-rename from tools/testing/selftests/kvm/x86/plane_test.c
-rename to tools/testing/selftests/kvm/x86/plane_x86_test.c
-index 0fdd8a066723..8f0919371383 100644
---- a/tools/testing/selftests/kvm/x86/plane_test.c
-+++ b/tools/testing/selftests/kvm/x86/plane_x86_test.c
-@@ -5,6 +5,7 @@
-  * Test for x86-specific VM plane functionality
-  */
- #include <fcntl.h>
-+#include <limits.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -26,7 +27,7 @@ static void test_plane_regs(void)
- 
- 	struct kvm_regs regs0, regs1;
- 
--	vm = vm_create_barebones();
-+	vm = vm_create_barebones_irqchip(true);
- 	vcpu = __vm_vcpu_add(vm, 0);
- 	plane = vm_plane_add(vm, 1);
- 	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
-@@ -62,8 +63,7 @@ static void test_plane_fpu_nonshared(void)
- 
- 	struct kvm_xsave xsave0, xsave1;
- 
--	vm = vm_create_barebones();
--	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), false);
-+	vm = vm_create_barebones_irqchip(true);
- 
- 	vcpu = __vm_vcpu_add(vm, 0);
- 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-@@ -93,79 +93,15 @@ static void test_plane_fpu_nonshared(void)
- 	ksft_test_result_pass("get/set FPU not shared across planes\n");
- }
- 
--static void test_plane_fpu_shared(void)
+diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
+deleted file mode 100644
+index 8ddb01191d6f..000000000000
+--- a/arch/x86/kvm/kvm_cache_regs.h
++++ /dev/null
+@@ -1,249 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef ASM_KVM_CACHE_REGS_H
+-#define ASM_KVM_CACHE_REGS_H
+-
+-#include <linux/kvm_host.h>
+-
+-#define KVM_POSSIBLE_CR0_GUEST_BITS	(X86_CR0_TS | X86_CR0_WP)
+-#define KVM_POSSIBLE_CR4_GUEST_BITS				  \
+-	(X86_CR4_PVI | X86_CR4_DE | X86_CR4_PCE | X86_CR4_OSFXSR  \
+-	 | X86_CR4_OSXMMEXCPT | X86_CR4_PGE | X86_CR4_TSD | X86_CR4_FSGSBASE \
+-	 | X86_CR4_CET)
+-
+-#define X86_CR0_PDPTR_BITS    (X86_CR0_CD | X86_CR0_NW | X86_CR0_PG)
+-#define X86_CR4_TLBFLUSH_BITS (X86_CR4_PGE | X86_CR4_PCIDE | X86_CR4_PAE | X86_CR4_SMEP)
+-#define X86_CR4_PDPTR_BITS    (X86_CR4_PGE | X86_CR4_PSE | X86_CR4_PAE | X86_CR4_SMEP)
+-
+-static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
+-
+-#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
+-static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)\
+-{									      \
+-	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
+-}									      \
+-static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	      \
+-						unsigned long val)	      \
+-{									      \
+-	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
+-}
+-BUILD_KVM_GPR_ACCESSORS(rax, RAX)
+-BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
+-BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
+-BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
+-BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
+-BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
+-BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
+-#ifdef CONFIG_X86_64
+-BUILD_KVM_GPR_ACCESSORS(r8,  R8)
+-BUILD_KVM_GPR_ACCESSORS(r9,  R9)
+-BUILD_KVM_GPR_ACCESSORS(r10, R10)
+-BUILD_KVM_GPR_ACCESSORS(r11, R11)
+-BUILD_KVM_GPR_ACCESSORS(r12, R12)
+-BUILD_KVM_GPR_ACCESSORS(r13, R13)
+-BUILD_KVM_GPR_ACCESSORS(r14, R14)
+-BUILD_KVM_GPR_ACCESSORS(r15, R15)
+-#endif
+-
+-/*
+- * Using the register cache from interrupt context is generally not allowed, as
+- * caching a register and marking it available/dirty can't be done atomically,
+- * i.e. accesses from interrupt context may clobber state or read stale data if
+- * the vCPU task is in the process of updating the cache.  The exception is if
+- * KVM is handling a PMI IRQ/NMI VM-Exit, as that bound code sequence doesn't
+- * touch the cache, it runs after the cache is reset (post VM-Exit), and PMIs
+- * need to access several registers that are cacheable.
+- */
+-#define kvm_assert_register_caching_allowed(vcpu)		\
+-	lockdep_assert_once(in_task() || kvm_arch_pmi_in_guest(vcpu))
+-
+-/*
+- * avail  dirty
+- * 0	  0	  register in VMCS/VMCB
+- * 0	  1	  *INVALID*
+- * 1	  0	  register in vcpu->arch
+- * 1	  1	  register in vcpu->arch, needs to be stored back
+- */
+-static inline bool kvm_register_is_available(struct kvm_vcpu *vcpu,
+-					     enum kvm_reg reg)
 -{
--	struct kvm_vm *vm;
--	struct kvm_vcpu *vcpu;
--	struct kvm_plane *plane;
--	struct kvm_plane_vcpu *plane_vcpu;
--
--	struct kvm_xsave xsave0, xsave1;
--
--	vm = vm_create_barebones();
--	vm_enable_cap(vm, KVM_CAP_PLANES_FPU, 1ul);
--	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), true);
--
--	vcpu = __vm_vcpu_add(vm, 0);
--	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
--	vcpu_set_cpuid(vcpu);
--
--	plane = vm_plane_add(vm, 1);
--	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
--
--	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
--
--	xsave0.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
--	xsave0.region[XMM_OFFSET] = 0x12345678;
--	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
--	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
--	TEST_ASSERT_EQ(xsave1.region[XMM_OFFSET], 0x12345678);
--
--	xsave1.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
--	xsave1.region[XMM_OFFSET] = 0x87654321;
--	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
--	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
--	TEST_ASSERT_EQ(xsave0.region[XMM_OFFSET], 0x87654321);
--
--	ksft_test_result_pass("get/set FPU shared across planes\n");
--
--	if (!this_cpu_has(X86_FEATURE_PKU)) {
--		ksft_test_result_skip("get/set PKRU with shared FPU\n");
--		goto exit;
--	}
--
--	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
--	xsave0.region[PKRU_OFFSET] = 0xffffffff;
--	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
--	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave0);
--
--	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
--	xsave0.region[PKRU_OFFSET] = 0xaaaaaaaa;
--	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
--	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
--	assert(xsave1.region[PKRU_OFFSET] == 0xffffffff);
--
--	xsave1.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
--	xsave1.region[PKRU_OFFSET] = 0x55555555;
--	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
--	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
--	assert(xsave0.region[PKRU_OFFSET] == 0xaaaaaaaa);
--
--	ksft_test_result_pass("get/set PKRU with shared FPU\n");
--
--exit:
--	kvm_vm_free(vm);
+-	kvm_assert_register_caching_allowed(vcpu);
+-	return test_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
 -}
 -
- #define APIC_SPIV		0xF0
- #define APIC_IRR		0x200
- 
- #define MYVEC			192
- 
--#define MAKE_MSI(cpu, vector) ((struct kvm_msi){		\
--	.address_lo = APIC_DEFAULT_GPA + (((cpu) & 0xff) << 8),	\
--	.address_hi = (cpu) & ~0xff,				\
--	.data = (vector),					\
-+#define MAKE_MSI(cpu, vector) ((struct kvm_msi){			\
-+	.address_lo = APIC_DEFAULT_GPA + (((cpu) & 0xff) << 8),		\
-+	.address_hi = (cpu) & ~0xff,					\
-+	.data = (vector),						\
- })
- 
- static bool has_irr(struct kvm_lapic_state *apic, int vector)
-@@ -194,7 +130,7 @@ static void test_plane_msi(void)
- 	struct kvm_msi msi = MAKE_MSI(0, MYVEC);
- 	struct kvm_lapic_state lapic0, lapic1;
- 
--	vm = __vm_create(VM_SHAPE_DEFAULT, 1, 0);
-+	vm = vm_create_barebones_irqchip(true);
- 
- 	vcpu = __vm_vcpu_add(vm, 0);
- 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
-@@ -215,6 +151,7 @@ static void test_plane_msi(void)
- 	do_enable_lapic(&lapic1);
- 	plane_vcpu_ioctl(plane_vcpu, KVM_SET_LAPIC, &lapic1);
- 
-+	/* Deliver to plane 1 (via the plane fd); it must land only in plane 1. */
- 	r = __plane_ioctl(plane, KVM_SIGNAL_MSI, &msi);
- 	TEST_ASSERT(r == 1,
- 		   "Delivering interrupt to plane 1. ret: %d, errno: %d", r, errno);
-@@ -224,46 +161,32 @@ static void test_plane_msi(void)
- 	plane_vcpu_ioctl(plane_vcpu, KVM_GET_LAPIC, &lapic1);
- 	TEST_ASSERT(has_irr(&lapic1, MYVEC), "Vector set in plane 1");
- 
--	/* req_exit_planes always has priority */
--	vcpu->run->req_exit_planes = (1 << 1);
--	vcpu_run(vcpu);
--	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
--	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
--	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 1));
--	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 1));
+-static inline bool kvm_register_is_dirty(struct kvm_vcpu *vcpu,
+-					 enum kvm_reg reg)
+-{
+-	kvm_assert_register_caching_allowed(vcpu);
+-	return test_bit(reg, (unsigned long *)&vcpu->arch.regs_dirty);
+-}
 -
-+	/* Deliver to plane 0 (via the vm fd); it must land in plane 0. */
- 	r = __vm_ioctl(vm, KVM_SIGNAL_MSI, &msi);
- 	TEST_ASSERT(r == 1,
- 		   "Delivering interrupt to plane 0. ret: %d, errno: %d", r, errno);
- 	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic0);
- 	TEST_ASSERT(has_irr(&lapic0, MYVEC), "Vector set in plane 0");
- 
--	/* req_exit_planes ignores current plane; current plane is cleared */
--	vcpu->run->plane = 1;
--	vcpu->run->req_exit_planes = (1 << 0) | (1 << 1);
--	vcpu_run(vcpu);
--	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
--	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
--	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 0));
--	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 0));
+-static inline void kvm_register_mark_available(struct kvm_vcpu *vcpu,
+-					       enum kvm_reg reg)
+-{
+-	kvm_assert_register_caching_allowed(vcpu);
+-	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
+-}
 -
- 	kvm_vm_free(vm);
--	ksft_test_result_pass("signal MSI for planes\n");
-+	ksft_test_result_pass("signal MSI routed per plane\n");
- }
- 
- int main(int argc, char *argv[])
- {
--	int cap_planes = kvm_check_cap(KVM_CAP_PLANES);
-+	struct kvm_vm *vm = vm_create_barebones_irqchip(true);
-+	int cap_planes = vm_check_cap(vm, KVM_CAP_PLANES);
-+
-+	kvm_vm_free(vm);
- 	TEST_REQUIRE(cap_planes && cap_planes > 1);
- 
- 	ksft_print_header();
--	ksft_set_plan(5);
-+	ksft_set_plan(3);
- 
- 	pr_info("# KVM_CAP_PLANES: %d\n", cap_planes);
- 
- 	test_plane_regs();
- 	test_plane_fpu_nonshared();
--	test_plane_fpu_shared();
- 	test_plane_msi();
- 
- 	ksft_finished();
+-static inline void kvm_register_mark_dirty(struct kvm_vcpu *vcpu,
+-					   enum kvm_reg reg)
+-{
+-	kvm_assert_register_caching_allowed(vcpu);
+-	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
+-	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_dirty);
+-}
+-
+-/*
+- * kvm_register_test_and_mark_available() is a special snowflake that uses an
+- * arch bitop directly to avoid the explicit instrumentation that comes with
+- * the generic bitops.  This allows code that cannot be instrumented (noinstr
+- * functions), e.g. the low level VM-Enter/VM-Exit paths, to cache registers.
+- */
+-static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu *vcpu,
+-								 enum kvm_reg reg)
+-{
+-	kvm_assert_register_caching_allowed(vcpu);
+-	return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
+-}
+-
+-/*
+- * The "raw" register helpers are only for cases where the full 64 bits of a
+- * register are read/written irrespective of current vCPU mode.  In other words,
+- * odds are good you shouldn't be using the raw variants.
+- */
+-static inline unsigned long kvm_register_read_raw(struct kvm_vcpu *vcpu, int reg)
+-{
+-	if (WARN_ON_ONCE((unsigned int)reg >= NR_VCPU_REGS))
+-		return 0;
+-
+-	if (!kvm_register_is_available(vcpu, reg))
+-		kvm_x86_call(cache_reg)(vcpu, reg);
+-
+-	return vcpu->arch.regs[reg];
+-}
+-
+-static inline void kvm_register_write_raw(struct kvm_vcpu *vcpu, int reg,
+-					  unsigned long val)
+-{
+-	if (WARN_ON_ONCE((unsigned int)reg >= NR_VCPU_REGS))
+-		return;
+-
+-	vcpu->arch.regs[reg] = val;
+-	kvm_register_mark_dirty(vcpu, reg);
+-}
+-
+-static inline unsigned long kvm_rip_read(struct kvm_vcpu *vcpu)
+-{
+-	return kvm_register_read_raw(vcpu, VCPU_REGS_RIP);
+-}
+-
+-static inline void kvm_rip_write(struct kvm_vcpu *vcpu, unsigned long val)
+-{
+-	kvm_register_write_raw(vcpu, VCPU_REGS_RIP, val);
+-}
+-
+-static inline unsigned long kvm_rsp_read(struct kvm_vcpu *vcpu)
+-{
+-	return kvm_register_read_raw(vcpu, VCPU_REGS_RSP);
+-}
+-
+-static inline void kvm_rsp_write(struct kvm_vcpu *vcpu, unsigned long val)
+-{
+-	kvm_register_write_raw(vcpu, VCPU_REGS_RSP, val);
+-}
+-
+-static inline u64 kvm_pdptr_read(struct kvm_vcpu *vcpu, int index)
+-{
+-	might_sleep();  /* on svm */
+-
+-	if (!kvm_register_is_available(vcpu, VCPU_EXREG_PDPTR))
+-		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_PDPTR);
+-
+-	return vcpu->arch.walk_mmu->pdptrs[index];
+-}
+-
+-static inline void kvm_pdptr_write(struct kvm_vcpu *vcpu, int index, u64 value)
+-{
+-	vcpu->arch.walk_mmu->pdptrs[index] = value;
+-}
+-
+-static inline ulong kvm_read_cr0_bits(struct kvm_vcpu *vcpu, ulong mask)
+-{
+-	ulong tmask = mask & KVM_POSSIBLE_CR0_GUEST_BITS;
+-	if ((tmask & vcpu->arch.cr0_guest_owned_bits) &&
+-	    !kvm_register_is_available(vcpu, VCPU_EXREG_CR0))
+-		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR0);
+-	return vcpu->arch.cr0 & mask;
+-}
+-
+-static __always_inline bool kvm_is_cr0_bit_set(struct kvm_vcpu *vcpu,
+-					       unsigned long cr0_bit)
+-{
+-	BUILD_BUG_ON(!is_power_of_2(cr0_bit));
+-
+-	return !!kvm_read_cr0_bits(vcpu, cr0_bit);
+-}
+-
+-static inline ulong kvm_read_cr0(struct kvm_vcpu *vcpu)
+-{
+-	return kvm_read_cr0_bits(vcpu, ~0UL);
+-}
+-
+-static inline ulong kvm_read_cr4_bits(struct kvm_vcpu *vcpu, ulong mask)
+-{
+-	ulong tmask = mask & KVM_POSSIBLE_CR4_GUEST_BITS;
+-	if ((tmask & vcpu->arch.cr4_guest_owned_bits) &&
+-	    !kvm_register_is_available(vcpu, VCPU_EXREG_CR4))
+-		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR4);
+-	return vcpu->arch.cr4 & mask;
+-}
+-
+-static __always_inline bool kvm_is_cr4_bit_set(struct kvm_vcpu *vcpu,
+-					       unsigned long cr4_bit)
+-{
+-	BUILD_BUG_ON(!is_power_of_2(cr4_bit));
+-
+-	return !!kvm_read_cr4_bits(vcpu, cr4_bit);
+-}
+-
+-static inline ulong kvm_read_cr3(struct kvm_vcpu *vcpu)
+-{
+-	if (!kvm_register_is_available(vcpu, VCPU_EXREG_CR3))
+-		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR3);
+-	return vcpu->arch.cr3;
+-}
+-
+-static inline ulong kvm_read_cr4(struct kvm_vcpu *vcpu)
+-{
+-	return kvm_read_cr4_bits(vcpu, ~0UL);
+-}
+-
+-static inline u64 kvm_read_edx_eax(struct kvm_vcpu *vcpu)
+-{
+-	return (kvm_rax_read(vcpu) & -1u)
+-		| ((u64)(kvm_rdx_read(vcpu) & -1u) << 32);
+-}
+-
+-static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
+-{
+-	vcpu->arch.hflags |= HF_GUEST_MASK;
+-	vcpu->stat.guest_mode = 1;
+-}
+-
+-static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
+-{
+-	vcpu->arch.hflags &= ~HF_GUEST_MASK;
+-
+-	if (vcpu->arch.load_eoi_exitmap_pending) {
+-		vcpu->arch.load_eoi_exitmap_pending = false;
+-		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
+-	}
+-
+-	vcpu->stat.guest_mode = 0;
+-}
+-
+-static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
+-{
+-	return vcpu->arch.hflags & HF_GUEST_MASK;
+-}
+-
+-#endif
 -- 
 2.55.0
 
