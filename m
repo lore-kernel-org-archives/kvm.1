@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA6B430CC0;
-	Wed,  5 Aug 2026 11:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62F34314AB;
+	Wed,  5 Aug 2026 11:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927829; cv=none; b=sRduvTX3RqQP9786uPpNJy+cNt0K+zyrEsu2Ce4lo1Tcz7UcqWd8ag+W7fnYuK29p+dNO9UDsvoOh7VbeloigjDpk+XuawWETM61tfJK6q3TJ8fNtVWq697UWOjxnZ0/sFYYZJnw9HHRuyQAh70zKTBYxPjyNuI+/AldsoR5Yko=
+	t=1785927830; cv=none; b=pRuRcF2I50AEgeKxdlGkxViq1ZxLP0ylkQvouBpabF/3K/Qe3cQStLxrYoOgOgtNe0JxPRj24UGdmQO8rcSNONjHk6wGBhugYUuNGPTIlMS16EyLbPLTvKBh5Xc++yVddsZje/HiFO50DoY0gBZG6CVI/aMjqEkFC9mPOO/+AAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927829; c=relaxed/simple;
-	bh=mWlBfRBicvr9Sp/4GK1gHvtyrXEItl+YRYkQ6JZlR/M=;
+	s=arc-20240116; t=1785927830; c=relaxed/simple;
+	bh=NCzTAqPe1CPtOwyiPAfxyC1Kikic7YuzixYDfQcexK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1PPqnI4ltdDyhNpLK+xut4s5hWlEu5mkTZyWVhgq9hM1KNbTwC1BZ3kR32z6gnAp0/yKW0h8FF+HkWOWoagURkSXss3A5DSfBskkzCwo49s23mkgz2usSeVQGKhDbQoUReiX8xCvdEOzCTRfpuRinGjnRUKNzoanpW1DwAXwa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PQjbxCLh; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=MFZdl1yORDTQicj6Ix0GVm+gB3WkS9ttVO5037eGR1GTHosOQzfMHYYcmvjTMu/xUxirep1WlRTCnQ6zCx3yAssUevQ2IbTrpeQ4AukW3rwagSdu+F8GG32sGnCCK0cQ6D4W1HTVg9Kjrmag58u8+0sopYEoDyQG9F6uVk0ZlOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CrI/cQwf; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PQjbxCLh"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CrI/cQwf"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7128A20B716A;
-	Wed,  5 Aug 2026 04:03:24 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7128A20B716A
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9C3CC20B716C;
+	Wed,  5 Aug 2026 04:03:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9C3CC20B716C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927804;
-	bh=GdugUXgaw/RRxSTb02hZRqyEZ8o4eEzaX+dPB+NEUjc=;
+	s=default; t=1785927807;
+	bh=nngqIvDsOttwEddUkU8UUGrWpj5Z4UPAk42CUedgjOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQjbxCLha3GNCGWoMc6FrQRIw0ZqcYGqe3Yv9cp8t7mHodaLU6tqW9uEA+fII+bbw
-	 1C/uaybt57CvxxOCMHUPCtIlR0SN0hz17F0UCE/Sbgxv6ULogiMwKAJzE4RCvOTUV3
-	 CoDoCi4bsidQtc8CidTH3Q19u6fLMlmu4v8274dk=
+	b=CrI/cQwfScXAxgW60vbQMlzsRJ8KFnD6wuMdj3masEuzWY/f5N5N0vlePzXrVanmR
+	 jV7FDlb3fYwS6mhf2PRRjUrMhyPbIttBQgfOmXlR4uJSbMMbh/Lcj4wHb4XtMJZuvX
+	 ynF7/a0svMheQ25LmIMpCoXVUQAxDcOsam8+6yz8=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 04/42] Fix compile errors
-Date: Wed,  5 Aug 2026 04:02:46 -0700
-Message-ID: <20260805110324.25067-5-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 07/42] skip processing plane configuration for plane 0 - plane 0 is the boot plane
+Date: Wed,  5 Aug 2026 04:02:49 -0700
+Message-ID: <20260805110324.25067-8-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -42,39 +42,26 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sriram Nambakam <snambakam@microsoft.com>
-
 ---
- arch/x86/kvm/svm/avic.c | 2 +-
- arch/x86/kvm/svm/sev.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ init/vm_planes.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 58e493a80cb0..251e36f5f0f7 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -404,7 +404,7 @@ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
- 	 * fully initialized AVIC.
- 	 */
- 	if (id > max_id) {
--		kvm_set_apicv_inhibit(vcpu->kvm, APICV_INHIBIT_REASON_PHYSICAL_ID_TOO_BIG);
-+		kvm_set_apicv_inhibit(vcpu->kvm->planes[0], APICV_INHIBIT_REASON_PHYSICAL_ID_TOO_BIG);
- 		vcpu->arch.apic->apicv_active = false;
- 		return 0;
+diff --git a/init/vm_planes.c b/init/vm_planes.c
+index 8eafb1c5f8cf..ecfe8de409a8 100644
+--- a/init/vm_planes.c
++++ b/init/vm_planes.c
+@@ -288,7 +288,10 @@ static int __init parse_vm_planes_kconfig(const char *buf, size_t len,
+ 			p++;
  	}
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index fe5e05e2162d..79fee7ebc19b 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -569,7 +569,7 @@ static int __sev_guest_init(struct kvm *kvm, struct kvm_sev_cmd *argp,
- 	INIT_LIST_HEAD(&sev->mirror_vms);
- 	sev->need_init = false;
  
--	kvm_set_apicv_inhibit(kvm->planes[[0], APICV_INHIBIT_REASON_SEV);
-+	kvm_set_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_SEV);
- 
- 	return 0;
- 
+-	for (i = 0; i < *plane_count; i++) {
++	/* Plane 0 is the already-running boot plane; only secondary planes
++	 * must provide full allocation metadata.
++	 */
++	for (i = 1; i < *plane_count; i++) {
+ 		if (state[i].load_offset == VM_PLANES_UNSET_VALUE ||
+ 		    state[i].memory_size == VM_PLANES_UNSET_VALUE ||
+ 		    !state[i].vcpu_count ||
 -- 
 2.55.0
 
