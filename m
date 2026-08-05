@@ -1,339 +1,157 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ABB3B3883;
-	Wed,  5 Aug 2026 03:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C221C84DC
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 03:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785901424; cv=none; b=m0TUam//ehhZTDRRwLr77UoMt2Vras+9Bban1S4e6SAywF5cM4asv8/2T3qjQJASRGjzoOhrlo8JpwQ7iYg1+oMQfQhJbOKn8Z3JMwo4BbTV4iKVwCUo1/t4rYcQ2w8n1OPMWn4SxHtUMuRFG9BoDjSHH7mC3ih7kbqWOhdVK48=
+	t=1785901564; cv=none; b=TUr+HLFnaSfxxta4gYiW20BgSTfRhPqoVJ51O6bHZXKLlFzW2vGQwLzg/TjpdoM4MqHmjfMcJaq3Nz6orPMou4fcalgoajH5b3j4oXyGrCMlPrh3tJt87SwTiiAuWACkSv7XJsh8CO/3aK2KrwMbc313bef1ZW/KDPRJGaOsQMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785901424; c=relaxed/simple;
-	bh=mBRchRs0PYgF+cUGmDFYH9n+P/+UJnfB1IiQ5lSW7W8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kkA6+J+iqSyTLT4FTKHO3JJ+Cab86qzVNYyAiwqB2wMkPRoYmt7rou/jlFSbEw30v2s8x0JNp/94hQumVPrGXJ0EOh6uzNC5lQND7InLZ5llsTOO9XYzrdf2Lc+SEE+P+NZ5wTQ7mHEpaYm+aamzj7qYlv1FgIEI/BVpE7WpFMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=m/eLKphe; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1785901564; c=relaxed/simple;
+	bh=K1N199QmN0+5/DMHa2jT80scNogWYCZq0/cOnNK6cZU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=EQ4xMkoNsrApgIYUCenkvGgDsgAwxr+rgujOGpViSkjpEW/FDdlepiS/uKs3NzO8BNVUFjSCY/sMntD4Peodk7Qc78iMCIAWfBzCrf98UoxJpLuRcLHlt7vsaY8zS0HNFis2rg2jjy7QLVSGrw/StLU7yawF1u1j98nb5DtYngU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9joDMZg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="m/eLKphe"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=B3lSrMpocDV/Hvep88z36Dgthq0eziOupD1/vUR+w/A=;
-	b=m/eLKphe0U0vdf134ra5FOXe/Jdx1SdB1VrNfeMXmz90/Cr9j09gSN/YbpqKLP3HFt1XUe99f
-	pbkE9eQb3ekisjALdFrXvyV6mRMMdOeegaLcL4JGFDKbG1CoScMBS4Qmt5wbplmmD0QEK6zlySO
-	gVDyzmzcDl9p6kDJ/wTQ8UI=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4hFGGw6rGDzLlTg;
-	Wed,  5 Aug 2026 11:34:00 +0800 (CST)
-Received: from kwepemr100010.china.huawei.com (unknown [7.202.195.125])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2BCA840572;
-	Wed,  5 Aug 2026 11:43:32 +0800 (CST)
-Received: from [10.67.120.103] (10.67.120.103) by
- kwepemr100010.china.huawei.com (7.202.195.125) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 5 Aug 2026 11:43:31 +0800
-Message-ID: <fe06c78d-1422-4ac2-86a8-6d78f37e866b@huawei.com>
-Date: Wed, 5 Aug 2026 11:43:30 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9joDMZg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2BB1F000E9;
+	Wed,  5 Aug 2026 03:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785901562;
+	bh=PWdUZanx74aNhl6sRRlah5U78PyR9BxnjypVoCTL2S0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=U9joDMZgC6LWEjGCN4soLRRdbY3d9VM+8wXZUfbCh1fe1WVaMwj3UKHTrYLsEfz4k
+	 c0vYGgBMdtF+X6iRixJrfYRslaXFq8Y9kgO3LodfvevnNJVfcoxS+O+cy2gBi3INxm
+	 BT4XWgLTeALgCu6jOdSR9k18gZVXhc1zdDKxeHrT0wghvGKz23J9P7ecWTeRXa/VSh
+	 6BQKXbn8/w1nT/SHB+TzJwWzdBhjCMHjW0cVtY7/ppszF/yPr5RoxrLpDjO8Cz3ndf
+	 IXyWThrsr46g8E+DYgsU1W7B82x/0RxqGbT/1r8oIOJ1cp8Be0a9LGAfwD9fBYK7hH
+	 9cc8mpTSsOt4A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Xiaoyao Li" <xiaoyao.li@intel.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260805031257.1844914-3-xiaoyao.li@intel.com>
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-3-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 03:46:01 +0000
+Message-Id: <20260805034602.5B2BB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/6] KVM: arm64: Add auto DBM support for hardware
- dirty tracking
-To: Leonardo Bras <leo.bras@arm.com>
-CC: Oliver Upton <oupton@kernel.org>, <maz@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <yuzenghui@huawei.com>,
-	<wangzhou1@hisilicon.com>, <yangjinqian1@huawei.com>,
-	<caijian11@h-partners.com>, <liuyonglong@huawei.com>, <yezhenyu2@huawei.com>,
-	<yubihong@huawei.com>, <linuxarm@huawei.com>, <joey.gouly@arm.com>,
-	<kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<seiden@linux.ibm.com>, <suzuki.poulose@arm.com>
-References: <alpIfIOFfrudBzD5@LeoBrasDK> <al4bYajWE-v6wofu@LeoBrasDK>
- <96516762-f004-4c2a-a9c6-6fbad49ad6ae@huawei.com>
- <amoZY8uGLf1PEpjK@LeoBrasDK>
- <8e36e2c8-587f-4228-ab13-d6783927a281@huawei.com>
- <45d76d0d-48e9-46a6-b1f9-691f840eba46@huawei.com>
- <anBrvILpcSFhW7Wg@LeoBrasDK>
- <95f1ebd4-be04-4684-be68-388f752a1379@huawei.com>
- <anDCno9HdVI5UAls@LeoBrasDK>
- <2070002d-94aa-4a5b-8df1-e8e0f0fd265c@huawei.com>
- <anHIa5PDnF7r9EA4@LeoBrasDK>
-From: Tian Zheng <zhengtian10@huawei.com>
-In-Reply-To: <anHIa5PDnF7r9EA4@LeoBrasDK>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemr100010.china.huawei.com (7.202.195.125)
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
+- [High] Unmasked bus_lock_detected bit breaks TDX exit handling and guest =
+execution.
+- [High] Unvalidated VMCS write for BUS_LOCK_DETECTION allows userspace to =
+trigger host WARN and crash VM.
+- [High] tdx_handle_exit() silently masks negative error codes, returning u=
+ndefined state to userspace.
+--
 
+--- Patch [2]: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit ---
+commit a95d478711dc8c7f94ecddd768bf45d636ab7635
+Author: Xiaoyao Li <xiaoyao.li@intel.com>
 
-On 8/4/2026 7:10 PM, Leonardo Bras wrote:
-> On Tue, Aug 04, 2026 at 12:54:16PM +0800, Tian Zheng wrote:
->>
->>
->> On 8/4/2026 12:32 AM, Leonardo Bras wrote:
->>> On Mon, Aug 03, 2026 at 09:57:46PM +0800, Tian Zheng wrote:
->>>>
->>>>
->>>> On 8/3/2026 6:21 PM, Leonardo Bras wrote:
->>>>> On Mon, Aug 03, 2026 at 12:04:24PM +0800, Tian Zheng wrote:
->>>>>>
->>>>>>
->>>>>> On 8/3/2026 9:33 AM, Tian Zheng wrote:
->>>>>>>>>>>>> 09, 2026 at 06:40:23PM +0800, Tian Zheng wrote:
->>>>>>>>>>>>>> -    if (prot & KVM_PGTABLE_PROT_W)
->>>>>>>>>>>>>> +    if (prot & KVM_PGTABLE_PROT_W) {
->>>>>>>>>>>>>>                set |= KVM_PTE_LEAF_ATTR_LO_S2_S2AP_W;
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> +        /*
->>>>>>>>>>>>>> +         * No DEVICE filter needed here:
->>>>>>>>>>>>>> relax_perms is only called
->>>>>>>>>>>>>> +         * on FSC_PERM faults. Device pages
->>>>>>>>>>>>>> always get full RW from
->>>>>>>>>>>>>> +         * initial mapping and are never write-protected during
->>>>>>>>>>>>>> +         * migration, so they never trigger a permission fault.
->>>>>>>>>>>>>> +         */
->>>>>>>>>>>>>> +        if (pgt->flags & KVM_PGTABLE_S2_DBM)
->>>>>>>>>>>>>> +            set |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>>>>>>>>> +    } else {
->>>>>>>>>>>>>> +        /*
->>>>>>>>>>>>>> +         * Clear DBM on W→RO downgrade to prevent hardware from
->>>>>>>>>>>>>> +         * silently upgrading RO+DBM back to W+dirty, which would
->>>>>>>>>>>>>> +         * bypass KVM's write tracking and cause data corruption.
->>>>>>>>>>>>>> +         */
->>>>>>>>>>>>>> +        clr |= KVM_PTE_LEAF_ATTR_HI_S2_DBM;
->>>>>>>>>>>>>> +    }
->>>>>>>>>>>>>> +
->>>>>>>>>>>>> This block makes it pretty evident that the DBM bit really *is* the
->>>>>>>>>>>>> write permission bit. I'd much rather we
->>>>>>>>>>>>> introduce the concept of dirty
->>>>>>>>>>>>> state to the page table library and migrate the abstract write
->>>>>>>>>>>>> permission to the DBM field, even if we don't have FEAT_HAFDBS.
->>>>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> Ohh, that's an amazing idea!
->>>>>>>>>>
->>>>>>>>>> Thinking about that again...
->>>>>>>>>> If we adopt the encoding with DBM being the write-permission
->>>>>>>>>> bit, and all
->>>>>>>>>> PTEs have it since the start, how can we have lazy-splitting happening?
->>>>>>>>>>
->>>>>>>>>> Only way I think of is removing both DBM and S2_S2AP_W bit
->>>>>>>>>> from writable
->>>>>>>>>> PTEs during dirty-track enable, and re-adding them during
->>>>>>>>>> the first write
->>>>>>>>>> fault. If we don't remove the DBM bit, systems with HDBSS
->>>>>>>>>> would just dirty
->>>>>>>>>> it by hardware, without causing a fault.
->>>>>>>>>>
->>>>>>>>>> DBM=0 would need to happen only in the first write-protect (only on
->>>>>>>>>> lazy-splitting). All other write-protecting would just clean
->>>>>>>>>> the S2_S2AP_W
->>>>>>>>>> bit, as everything is already split.
->>>>>>>>>>
->>>>>>>>>> Is that what was intended?
->>>>>>>>>>
->>>>>>>>>> Thanks!
->>>>>>>>>> Leo
->>>>>>>>>>
->>>>>>>>> Hi Leo,
->>>>>>>>>
->>>>>>>>> I think the cleanest way to handle this is to simply avoid setting DBM
->>>>>>>>> on block mappings. If we only set DBM on page-level PTEs, then block
->>>>>>>>> mappings will naturally stay DBM=0 and trigger a write fault on first
->>>>>>>>> access — exactly what we need for lazy splitting.
->>>>>>>>>
->>>>>>>>> When the fault occurs, the block gets split into page-level PTEs, and at
->>>>>>>>> that point we can set DBM=1 on the resulting leaf entries. This way:
->>>>>>>>>
->>>>>>>>> 1. Lazy split works naturally (fault -> split -> set DBM=1)
->>>>>>>>>
->>>>>>>>> 2. No need to clear DBM globally at dirty-track enable
->>>>>>>>>
->>>>>>>>> 3. No special handling for block mappings
->>>>>>>>>
->>>>>>>>> So I think global DBM is still viable — we just need to filter out block
->>>>>>>>> mappings when setting the DBM bit. That way the lazy split path
->>>>>>>>> is preserved
->>>>>>>>> without extra complexity.
->>>>>>>>
->>>>>>>> Hi Tian,
->>>>>>>>
->>>>>>>> Humm, but would not that be contrary to what Oliver suggested:
->>>>>>>> changing the
->>>>>>>> encoding from the PTE for all entries?
->>>>>>>>
->>>>>>>> (Like, if the PTE is writable, it has to have DBM set)
->>>>>>>>
->>>>>>>> IIUC what you said, on first faulting of the page in the VM:
->>>>>>>> - If the entry is a page (level-3 leaf) and writable, add DBM
->>>>>>>> - If it's a block entry (leaf but not a level-3), don't add DBM
->>>>>>>>
->>>>>>>> So after we enable dirty-logging:
->>>>>>>> - a level-3 entry would not fault, using HDBSS, and
->>>>>>>> - a block entry would fault, do the splitting, and add DBM to level-3
->>>>>>>>       entries during the split.
->>>>>>>>
->>>>>>>> If I got that correct, that would be clean indeed.
->>>>>>>>
->>>>>>>> But then we would have a different encoding for block entries and page
->>>>>>>> entries. In page entries, DBM could be used to say if the page is
->>>>>>>> writable,
->>>>>>>> but on block entries one would have to look at the 'dirty-bit'.
->>>>>>>>
->>>>>>>> Would that be ok?
->>>>>>>>
->>>>>>>> Thanks!
->>>>>>>> Leo
->>>>>>>>
->>>>>>> Hi Leo,
->>>>>>>
->>>>>>> My initial concern was that clearing all DBM bits at the start of
->>>>>>> migration would be too expensive, so I thought distinguishing between
->>>>>>> level-3 entries and block entries would be better.
->>>>>>>
->>>>>
->>>>> I think we expect it to be expensive, but since we already clean the
->>>>> dirty-bit (ro/rw) bit, we can have both happening in the same write :)
->>>>>
->>>>> (since we only mark the DBM bit when we fault the memory on lazy-splitting,
->>>>> we are expecting to have the same amount of writes to pagetable as we have
->>>>> before HDBSS, both on faulting and 1st iteration cleaning)
->>>>>
->>>> Hi, Leo
->>>>
->>>> Actually, I have thought about this approach too, but if we clear DBM in
->>>> kvm_pgtable_stage2_wrprotect(), then during the first round of
->>>> migration, we will fault and release RO -> W, and then add DBM.
->>>
->>> Yeah, that's only for lazy-splitting, though.
->>>
->>>>
->>>> But next time, when we migrate the dirty pages in round two, we will run
->>>> kvm_pgtable_stage2_wrprotect() again, which will clear DBM again. And
->>>> finally, HDBSS will be useless during migration.
->>>
->>> Right, on lazy splitting, we have to clean the DBM bit on the
->>> write-protect only if it's a block entry (hugepage).
->>>
->>> Once it faults for the first time, it will lazy-split, and we don't need to
->>> clean the DBM bit.
->>>
->>>>
->>>>>
->>>>>>> However, I ran a quick test on a 400GB VM (4 vCPUs), and the overhead
->>>>>>> turned out to be around 30ns — which I think is acceptable.
->>>>>>
->>>>>> Just a quick correction — I misstated the unit in my previous email. The
->>>>>> overhead for clearing DBM on the 400GB VM (4 vCPUs) was around 32 µs, not 30
->>>>>> ns.
->>>>>>
->>>>>
->>>>> Oh, that seems more likely :)
->>>>>
->>>>> Question: is tha above amount of memory initially in Level-1 blocks,
->>>>> level-2 blocks or level-3 pages? (aka: were you using explicit/transparent
->>>>> hugepages?)
->>>>>
->>>>
->>>> I'm using transparent hugepages. However, if we were to use level-3 stage-2
->>>> pages with -mem-prealloc enabled in QEMU, I believe the time cost would be
->>>> extremely high — potentially out of our control.
->>>>
->>>
->>> Yeah, that's the issue.
->>> For this not to explode like this, we need to mark as RO only when the
->>> entries are blocks AND we are doing lazy splitting.
->>>
->>> We have:
->>> Mode	DBM	Dirty bit
->>> RO	0	X
->>> WC	1	0
->>> WD	1	1
->>>
->>> On write-protect:
->>> - Lazy splitting + block entry (hugepage, level 2-) -> RO
->>> - Otherwise					    -> WC
->>>
->>> On first fault, the block entry will be lazy-splitten, and we can set DBM=1
->>> in every new page.
->>>
->>> That way we guarantee that we are not faulting level-3 pages unecessarily,
->>> nor need to go through the whole tree setting DBM=1 or DBM=0 on level-3
->>> pages.
->>>
->>> How does that sound?
->>>
->>> Thanks!
->>> Leo
->>>
-> 
->>
->> Hi Leo,
->>
->> I've also been thinking about this approach: clear
->> KVM_PTE_LEAF_ATTR_HI_S2_DBM when kvm_pgtable_stage2_wrprotect() calls
->> stage2_update_leaf_attrs(). And we can check whether a page is a block
->> page during the page walk, right?
-> 
-> Hi Tian,
-> That was what I was thinking :)
-> 
->>
->> So we can check the page level in the walker callback
->> stage2_attr_walker(), filter there, clear DBM for block pages and
->> preserve DBM on level-3 pages. Something like this:
->>
->> ```
->> pte &= ~data->attr_clr;      // wrprotect: clears S2AP_W only
->> pte |= data->attr_set;
->> if (ctx->level < KVM_PGTABLE_LAST_LEVEL)
-> 
-> Only on lazy splitting, right?
-> 
-> Or maybe we get the DBM bit on during eager splitting...
-> 
->>      pte &= ~KVM_PTE_LEAF_ATTR_HI_S2_DBM;  // strip DBM from blocks
->> ```
->>
->> My only concern is whether this breaks Oliver's model of treating DBM as
->> the write permission bit
-> 
-> That was my point in my previous message, we are not breaking Oliver's
-> model. IIUC in the new model/encoding, we have:
-> 
-> Mode	DBM	Dirty bit
-> RO	0	X
-> WC	1	0
-> WD	1	1
-> 
-> Let's not think about individual bits for now:
-> Blocks (hugepages) are marked RO, pages are marked WC
-> 
-> We do that so the blocks can be faulted, split and the resulting pages can
-> be marked WC. (except the page written to, which gets WD)
-> 
-> That means we are following the new encoding, but deciding to WC/RO
-> depending on the context. For dirty-logging both can be used to mark a page
-> that is not dirty, so we should be fine.
-> 
->> — though DBM will be set back to 1 once the
->> block is split into level-3 pages. So the inconsistency is temporary.
-> 
-> No inconsistency for now :)
-> 
-> What do you think?
-> 
-> Thanks!
-> Leo
-> 
-Right, totally agree.
+KVM: TDX: Enable Bus Lock VM exit
+   =20
+Enable Bus Lock VM exit functionality for TDX guests by programming the
+BUS_LOCK_DETECTION control in the TD VMCS and by adding the exit handler.
 
-Thanks!
-Tian
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index cdc0d24657acb..c037e9cb5bdfc 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2031,7 +2031,7 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu=
+, int err)
+>  }
+> =20
+> =20
+> -int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
+> +static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
+>  {
+>  	struct vcpu_tdx *tdx =3D to_tdx(vcpu);
+>  	u64 vp_enter_ret =3D tdx->vp_enter_ret;
 
+[Severity: High]
+Does this code handle the bus_lock_detected bit (bit 26) being set in
+vp_enter_ret or the raw 32-bit exit reason?
+
+If userspace triggers a bus lock concurrently with an exit, the hardware can
+set bit 26.  Will strict equality checks on vp_enter_ret (such as checking =
+for
+EXIT_REASON_EPT_MISCONFIG later in this function) fail because the bit is
+unmasked?
+
+This also appears to affect tdx_to_vmx_exit_reason(), where comparing the r=
+aw
+exit reason directly against 16-bit constants like EXIT_REASON_TDCALL will
+fail to match if the bus lock bit is set, leading to incorrect emulation.
+
+[ ... ]
+
+> @@ -2141,6 +2143,21 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpat=
+h_t fastpath)
+>  	return 0;
+>  }
+> =20
+> +int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
+> +{
+> +	int ret =3D __tdx_handle_exit(vcpu, fastpath);
+> +
+> +	/* Exit to user space when bus lock was detected */
+> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
+> +		if (ret > 0)
+> +			vcpu->run->exit_reason =3D KVM_EXIT_X86_BUS_LOCK;
+> +
+> +		vcpu->run->flags |=3D KVM_RUN_X86_BUS_LOCK;
+> +		return 0;
+
+[Severity: High]
+Does this code silently drop negative error codes?
+
+If __tdx_handle_exit() returns a negative error code (like -EIO or -EFAULT)
+while bus_lock_detected is true, it skips setting vcpu->run->exit_reason but
+still returns 0.
+
+Could this cause KVM to return success to userspace with an uninitialized or
+stale exit_reason instead of propagating the error?
+
+> +	}
+> +	return ret;
+> +}
+
+[ ... ]
+
+> @@ -3167,6 +3184,10 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, st=
+ruct kvm_tdx_cmd *cmd)
+>  				vcpu->kvm->arch.notify_window);
+>  	}
+> =20
+> +	if (vcpu->kvm->arch.bus_lock_detection_enabled)
+> +		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
+> +				 SECONDARY_EXEC_BUS_LOCK_DETECTION);
+
+[Severity: High]
+Is it safe to write this execution control to the TD VMCS without verifying=
+ if
+the TDX module supports it?
+
+If a host userspace process enables KVM_CAP_X86_BUS_LOCK_EXIT but the TDX
+module restricts this capability, could td_vmcs_setbit32() fail on TDH.VP.W=
+R,
+triggering the KVM_BUG_ON() macro and destroying the VM?
+
+> +
+>  	tdx->state =3D VCPU_TD_STATE_INITIALIZED;
+> =20
+>  	return 0;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805031257.1844=
+914-1-xiaoyao.li@intel.com?part=3D2
