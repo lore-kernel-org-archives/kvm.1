@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E565746AF1B;
-	Wed,  5 Aug 2026 11:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EF8346C828;
+	Wed,  5 Aug 2026 11:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927857; cv=none; b=MtMPOGY3aCJ0cBoSdQX+jdN3NBAjHCTNFgMBGy+g5HeeolpiSnnFWpLErLetOciuAkg38ts/J1DfI+oKgbXIH3iec61p0mNv/HYD3nCyk2CmBggAKzc1sYKEARqO2OaSrMgn9BsRlWCqytW3aipQoH/Lor4Kw95tDq+UxU7FKJs=
+	t=1785927857; cv=none; b=MiiKXeNO/yzcxbVgbyLWPeNDIJLHC+UqNJbZNySWhiZmDRwVywzLPoVseq+hjXKfIBdQsK/t75LPwNA0QhRfV4pqjhBvjeOGZ/q2snizzXbBnnVWRh6ZB8J/GBzMuP2XJyziatCt7JJ/ejWxsg2AU5fZiHZ9i4FOV9mULxfjuT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785927857; c=relaxed/simple;
-	bh=V/OmEqubhut8+oe2kbPfOysWHu3Q0MY+ynqiulXQ3Ns=;
+	bh=HjrorX9aEMR3A/jZmW1M5gilRKHOo4eaxQ8e71+nlrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9ts+et5HkwxgqkeOgr/p6/IHQLwor3Y5FAAIDZDi6VR9Mefc9Xfwcf02RNEB1NGNQtLvkQBNpsThGDikKzkW93LSaKfYM7/1XAkZ7t5vy74awjPmyeEnSz2ORkfRHvtQYFthv9/baSLrsfarEk8ceNjKgvYS9I3JF86DXfnbhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=L+cQ4xcI; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=XFe9FSmKDZ9Pe+fGOKmblc5z+VfsxlCXnOobvVmkt7lKjffx8ctU1l+qK/ztbfUrq7Hsug1i8wlqXse3mcSxYkQjZ8OXnLvsg1SEh9IbXWCXwbw6TsYeRQrDmoOcEg/B5Ys0P/ACihuBtkdjOd/0J5SoQKp3iRcdbz93HfP4hgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cDWVByI+; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="L+cQ4xcI"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cDWVByI+"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id EA4D920B716E;
-	Wed,  5 Aug 2026 04:03:53 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EA4D920B716E
+	by linux.microsoft.com (Postfix) with ESMTPSA id BE50D20B7169;
+	Wed,  5 Aug 2026 04:03:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BE50D20B7169
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1785927834;
-	bh=wj5UF/1hwIz+DHXT+8I+TLhcRxrnRC+oQlVIsaDurzY=;
+	bh=plw5PYs+q/L8H//hTTFQmxHz/itglm5JTOg6RfG0a0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+cQ4xcIqOIsMgxsYPi1VSr5W/3EWJpE46+B6mgU2ejV/wJfwkVofLr0ZdOIH+A0+
-	 cU+xU2QDJ9hGivL6kkT/PXYG8671Y53FpmhUqXxzuHZbQ2/JTYOp/OHu+p02aJSu51
-	 Udh1vQnGtusW2ry72bDG1/eFgA7o9tUrL+veRll0=
+	b=cDWVByI+Vstdqh/a+LKd41emN7NWXSn66sG6pK+5PQ42d6BimAIQhTavJj52cTjeI
+	 pKtv64YpK2tEwfw20hVCI/DTSadE3SUKFm4jKRcKwssdonqXj7d5BKf1ADCJXhbrKY
+	 WBb31Ult3tI12gUpKr85l1lW+6ZysKVePusTQTwI=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 38/42] kvm: x86: drop obsolete kvm_cache_regs.h
-Date: Wed,  5 Aug 2026 04:03:20 -0700
-Message-ID: <20260805110324.25067-39-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 39/42] kvm: arch: finalize plane hooks and kvm_arch_vcpu_create signature
+Date: Wed,  5 Aug 2026 04:03:21 -0700
+Message-ID: <20260805110324.25067-40-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -42,270 +42,143 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This header was removed upstream (its GPR/CR accessors now live in
-kvm_host.h); the linear cherry-pick spuriously recreated it while
-resolving a conflict. Delete it to match current upstream and the
-vm-planes-merged tree.
+Match the vm-planes-merged tree on non-x86 architectures: revert
+kvm_arch_vcpu_create() to its plane-less prototype (planes attach the
+vCPU to plane 0 in generic code) and add the kvm_arch_init_plane/
+kvm_arch_free_plane/kvm_arch_sync_events stubs without the stray
+conflict markers that the integration branch left committed.
 ---
- arch/x86/kvm/kvm_cache_regs.h | 249 ----------------------------------
- 1 file changed, 249 deletions(-)
- delete mode 100644 arch/x86/kvm/kvm_cache_regs.h
+ arch/arm64/include/asm/kvm_host.h   | 7 +++++++
+ arch/arm64/kvm/arm.c                | 2 +-
+ arch/mips/include/asm/kvm_host.h    | 6 ++++++
+ arch/powerpc/include/asm/kvm_host.h | 6 ++++++
+ arch/riscv/kvm/vcpu.c               | 2 +-
+ arch/s390/include/asm/kvm_host.h    | 6 ++++++
+ 6 files changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
-deleted file mode 100644
-index 8ddb01191d6f..000000000000
---- a/arch/x86/kvm/kvm_cache_regs.h
-+++ /dev/null
-@@ -1,249 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef ASM_KVM_CACHE_REGS_H
--#define ASM_KVM_CACHE_REGS_H
--
--#include <linux/kvm_host.h>
--
--#define KVM_POSSIBLE_CR0_GUEST_BITS	(X86_CR0_TS | X86_CR0_WP)
--#define KVM_POSSIBLE_CR4_GUEST_BITS				  \
--	(X86_CR4_PVI | X86_CR4_DE | X86_CR4_PCE | X86_CR4_OSFXSR  \
--	 | X86_CR4_OSXMMEXCPT | X86_CR4_PGE | X86_CR4_TSD | X86_CR4_FSGSBASE \
--	 | X86_CR4_CET)
--
--#define X86_CR0_PDPTR_BITS    (X86_CR0_CD | X86_CR0_NW | X86_CR0_PG)
--#define X86_CR4_TLBFLUSH_BITS (X86_CR4_PGE | X86_CR4_PCIDE | X86_CR4_PAE | X86_CR4_SMEP)
--#define X86_CR4_PDPTR_BITS    (X86_CR4_PGE | X86_CR4_PSE | X86_CR4_PAE | X86_CR4_SMEP)
--
--static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
--
--#define BUILD_KVM_GPR_ACCESSORS(lname, uname)				      \
--static __always_inline unsigned long kvm_##lname##_read(struct kvm_vcpu *vcpu)\
--{									      \
--	return vcpu->arch.regs[VCPU_REGS_##uname];			      \
--}									      \
--static __always_inline void kvm_##lname##_write(struct kvm_vcpu *vcpu,	      \
--						unsigned long val)	      \
--{									      \
--	vcpu->arch.regs[VCPU_REGS_##uname] = val;			      \
--}
--BUILD_KVM_GPR_ACCESSORS(rax, RAX)
--BUILD_KVM_GPR_ACCESSORS(rbx, RBX)
--BUILD_KVM_GPR_ACCESSORS(rcx, RCX)
--BUILD_KVM_GPR_ACCESSORS(rdx, RDX)
--BUILD_KVM_GPR_ACCESSORS(rbp, RBP)
--BUILD_KVM_GPR_ACCESSORS(rsi, RSI)
--BUILD_KVM_GPR_ACCESSORS(rdi, RDI)
--#ifdef CONFIG_X86_64
--BUILD_KVM_GPR_ACCESSORS(r8,  R8)
--BUILD_KVM_GPR_ACCESSORS(r9,  R9)
--BUILD_KVM_GPR_ACCESSORS(r10, R10)
--BUILD_KVM_GPR_ACCESSORS(r11, R11)
--BUILD_KVM_GPR_ACCESSORS(r12, R12)
--BUILD_KVM_GPR_ACCESSORS(r13, R13)
--BUILD_KVM_GPR_ACCESSORS(r14, R14)
--BUILD_KVM_GPR_ACCESSORS(r15, R15)
--#endif
--
--/*
-- * Using the register cache from interrupt context is generally not allowed, as
-- * caching a register and marking it available/dirty can't be done atomically,
-- * i.e. accesses from interrupt context may clobber state or read stale data if
-- * the vCPU task is in the process of updating the cache.  The exception is if
-- * KVM is handling a PMI IRQ/NMI VM-Exit, as that bound code sequence doesn't
-- * touch the cache, it runs after the cache is reset (post VM-Exit), and PMIs
-- * need to access several registers that are cacheable.
-- */
--#define kvm_assert_register_caching_allowed(vcpu)		\
--	lockdep_assert_once(in_task() || kvm_arch_pmi_in_guest(vcpu))
--
--/*
-- * avail  dirty
-- * 0	  0	  register in VMCS/VMCB
-- * 0	  1	  *INVALID*
-- * 1	  0	  register in vcpu->arch
-- * 1	  1	  register in vcpu->arch, needs to be stored back
-- */
--static inline bool kvm_register_is_available(struct kvm_vcpu *vcpu,
--					     enum kvm_reg reg)
--{
--	kvm_assert_register_caching_allowed(vcpu);
--	return test_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
--}
--
--static inline bool kvm_register_is_dirty(struct kvm_vcpu *vcpu,
--					 enum kvm_reg reg)
--{
--	kvm_assert_register_caching_allowed(vcpu);
--	return test_bit(reg, (unsigned long *)&vcpu->arch.regs_dirty);
--}
--
--static inline void kvm_register_mark_available(struct kvm_vcpu *vcpu,
--					       enum kvm_reg reg)
--{
--	kvm_assert_register_caching_allowed(vcpu);
--	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
--}
--
--static inline void kvm_register_mark_dirty(struct kvm_vcpu *vcpu,
--					   enum kvm_reg reg)
--{
--	kvm_assert_register_caching_allowed(vcpu);
--	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
--	__set_bit(reg, (unsigned long *)&vcpu->arch.regs_dirty);
--}
--
--/*
-- * kvm_register_test_and_mark_available() is a special snowflake that uses an
-- * arch bitop directly to avoid the explicit instrumentation that comes with
-- * the generic bitops.  This allows code that cannot be instrumented (noinstr
-- * functions), e.g. the low level VM-Enter/VM-Exit paths, to cache registers.
-- */
--static __always_inline bool kvm_register_test_and_mark_available(struct kvm_vcpu *vcpu,
--								 enum kvm_reg reg)
--{
--	kvm_assert_register_caching_allowed(vcpu);
--	return arch___test_and_set_bit(reg, (unsigned long *)&vcpu->arch.regs_avail);
--}
--
--/*
-- * The "raw" register helpers are only for cases where the full 64 bits of a
-- * register are read/written irrespective of current vCPU mode.  In other words,
-- * odds are good you shouldn't be using the raw variants.
-- */
--static inline unsigned long kvm_register_read_raw(struct kvm_vcpu *vcpu, int reg)
--{
--	if (WARN_ON_ONCE((unsigned int)reg >= NR_VCPU_REGS))
--		return 0;
--
--	if (!kvm_register_is_available(vcpu, reg))
--		kvm_x86_call(cache_reg)(vcpu, reg);
--
--	return vcpu->arch.regs[reg];
--}
--
--static inline void kvm_register_write_raw(struct kvm_vcpu *vcpu, int reg,
--					  unsigned long val)
--{
--	if (WARN_ON_ONCE((unsigned int)reg >= NR_VCPU_REGS))
--		return;
--
--	vcpu->arch.regs[reg] = val;
--	kvm_register_mark_dirty(vcpu, reg);
--}
--
--static inline unsigned long kvm_rip_read(struct kvm_vcpu *vcpu)
--{
--	return kvm_register_read_raw(vcpu, VCPU_REGS_RIP);
--}
--
--static inline void kvm_rip_write(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	kvm_register_write_raw(vcpu, VCPU_REGS_RIP, val);
--}
--
--static inline unsigned long kvm_rsp_read(struct kvm_vcpu *vcpu)
--{
--	return kvm_register_read_raw(vcpu, VCPU_REGS_RSP);
--}
--
--static inline void kvm_rsp_write(struct kvm_vcpu *vcpu, unsigned long val)
--{
--	kvm_register_write_raw(vcpu, VCPU_REGS_RSP, val);
--}
--
--static inline u64 kvm_pdptr_read(struct kvm_vcpu *vcpu, int index)
--{
--	might_sleep();  /* on svm */
--
--	if (!kvm_register_is_available(vcpu, VCPU_EXREG_PDPTR))
--		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_PDPTR);
--
--	return vcpu->arch.walk_mmu->pdptrs[index];
--}
--
--static inline void kvm_pdptr_write(struct kvm_vcpu *vcpu, int index, u64 value)
--{
--	vcpu->arch.walk_mmu->pdptrs[index] = value;
--}
--
--static inline ulong kvm_read_cr0_bits(struct kvm_vcpu *vcpu, ulong mask)
--{
--	ulong tmask = mask & KVM_POSSIBLE_CR0_GUEST_BITS;
--	if ((tmask & vcpu->arch.cr0_guest_owned_bits) &&
--	    !kvm_register_is_available(vcpu, VCPU_EXREG_CR0))
--		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR0);
--	return vcpu->arch.cr0 & mask;
--}
--
--static __always_inline bool kvm_is_cr0_bit_set(struct kvm_vcpu *vcpu,
--					       unsigned long cr0_bit)
--{
--	BUILD_BUG_ON(!is_power_of_2(cr0_bit));
--
--	return !!kvm_read_cr0_bits(vcpu, cr0_bit);
--}
--
--static inline ulong kvm_read_cr0(struct kvm_vcpu *vcpu)
--{
--	return kvm_read_cr0_bits(vcpu, ~0UL);
--}
--
--static inline ulong kvm_read_cr4_bits(struct kvm_vcpu *vcpu, ulong mask)
--{
--	ulong tmask = mask & KVM_POSSIBLE_CR4_GUEST_BITS;
--	if ((tmask & vcpu->arch.cr4_guest_owned_bits) &&
--	    !kvm_register_is_available(vcpu, VCPU_EXREG_CR4))
--		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR4);
--	return vcpu->arch.cr4 & mask;
--}
--
--static __always_inline bool kvm_is_cr4_bit_set(struct kvm_vcpu *vcpu,
--					       unsigned long cr4_bit)
--{
--	BUILD_BUG_ON(!is_power_of_2(cr4_bit));
--
--	return !!kvm_read_cr4_bits(vcpu, cr4_bit);
--}
--
--static inline ulong kvm_read_cr3(struct kvm_vcpu *vcpu)
--{
--	if (!kvm_register_is_available(vcpu, VCPU_EXREG_CR3))
--		kvm_x86_call(cache_reg)(vcpu, VCPU_EXREG_CR3);
--	return vcpu->arch.cr3;
--}
--
--static inline ulong kvm_read_cr4(struct kvm_vcpu *vcpu)
--{
--	return kvm_read_cr4_bits(vcpu, ~0UL);
--}
--
--static inline u64 kvm_read_edx_eax(struct kvm_vcpu *vcpu)
--{
--	return (kvm_rax_read(vcpu) & -1u)
--		| ((u64)(kvm_rdx_read(vcpu) & -1u) << 32);
--}
--
--static inline void enter_guest_mode(struct kvm_vcpu *vcpu)
--{
--	vcpu->arch.hflags |= HF_GUEST_MASK;
--	vcpu->stat.guest_mode = 1;
--}
--
--static inline void leave_guest_mode(struct kvm_vcpu *vcpu)
--{
--	vcpu->arch.hflags &= ~HF_GUEST_MASK;
--
--	if (vcpu->arch.load_eoi_exitmap_pending) {
--		vcpu->arch.load_eoi_exitmap_pending = false;
--		kvm_make_request(KVM_REQ_LOAD_EOI_EXITMAP, vcpu);
--	}
--
--	vcpu->stat.guest_mode = 0;
--}
--
--static inline bool is_guest_mode(struct kvm_vcpu *vcpu)
--{
--	return vcpu->arch.hflags & HF_GUEST_MASK;
--}
--
--#endif
+diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
+index d3807b6535cc..75b4e52c4bac 100644
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -237,6 +237,9 @@ struct kvm_s2_mmu {
+ struct kvm_arch_memory_slot {
+ };
+ 
++struct kvm_arch_plane {
++};
++
+ /**
+  * struct kvm_smccc_features: Descriptor of the hypercall services exposed to the guests
+  *
+@@ -1441,6 +1444,10 @@ static inline bool kvm_system_needs_idmapped_vectors(void)
+ 	return cpus_have_final_cap(ARM64_SPECTRE_V3A);
+ }
+ 
++static inline void kvm_arch_init_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_free_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_sync_events(struct kvm *kvm) {}
++
+ void kvm_init_host_debug_data(void);
+ void kvm_debug_init_vhe(void);
+ void kvm_vcpu_load_debug(struct kvm_vcpu *vcpu);
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index d55be436bf16..c02e19fe2b48 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -538,7 +538,7 @@ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+ 	return 0;
+ }
+ 
+-int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane)
++int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ {
+ 	int err;
+ 
+diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
+index c48bca79207b..8dc465dd9ea8 100644
+--- a/arch/mips/include/asm/kvm_host.h
++++ b/arch/mips/include/asm/kvm_host.h
+@@ -147,6 +147,9 @@ struct kvm_vcpu_stat {
+ struct kvm_arch_memory_slot {
+ };
+ 
++struct kvm_arch_plane {
++};
++
+ #ifdef CONFIG_CPU_LOONGSON64
+ struct ipi_state {
+ 	uint32_t status;
+@@ -903,6 +906,9 @@ extern unsigned long kvm_mips_get_ramsize(struct kvm *kvm);
+ extern int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu,
+ 			     struct kvm_mips_interrupt *irq);
+ 
++static inline void kvm_arch_init_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_free_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+ static inline void kvm_arch_free_memslot(struct kvm *kvm,
+ 					 struct kvm_memory_slot *slot) {}
+ static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 47d9900c4f85..5d7036888933 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -256,6 +256,9 @@ struct kvm_arch_memory_slot {
+ #endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+ };
+ 
++struct kvm_arch_plane {
++};
++
+ struct kvm_hpt_info {
+ 	/* Host virtual (linear mapping) address of guest HPT */
+ 	unsigned long virt;
+@@ -919,6 +922,9 @@ struct kvm_vcpu_arch {
+ #define __KVM_HAVE_ARCH_WQP
+ #define __KVM_HAVE_CREATE_DEVICE
+ 
++static inline void kvm_arch_init_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_free_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+ static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
+ static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+ static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index f618cd83d19a..4d7ee4059758 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -129,7 +129,7 @@ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+ 	return 0;
+ }
+ 
+-int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane)
++int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ {
+ 	int rc;
+ 
+diff --git a/arch/s390/include/asm/kvm_host.h b/arch/s390/include/asm/kvm_host.h
+index 15c831304b51..423185a09de6 100644
+--- a/arch/s390/include/asm/kvm_host.h
++++ b/arch/s390/include/asm/kvm_host.h
+@@ -476,6 +476,9 @@ struct kvm_vm_stat {
+ struct kvm_arch_memory_slot {
+ };
+ 
++struct kvm_arch_plane {
++};
++
+ struct s390_map_info {
+ 	struct list_head list;
+ 	__u64 guest_addr;
+@@ -773,6 +776,9 @@ extern int kvm_s390_gisc_unregister(struct kvm *kvm, u32 gisc);
+ 
+ bool kvm_s390_is_gpa_in_memslot(struct kvm *kvm, gpa_t gpa);
+ 
++static inline void kvm_arch_init_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_free_plane(struct kvm_plane *plane) {}
++static inline void kvm_arch_sync_events(struct kvm *kvm) {}
+ static inline void kvm_arch_free_memslot(struct kvm *kvm,
+ 					 struct kvm_memory_slot *slot) {}
+ static inline void kvm_arch_memslots_updated(struct kvm *kvm, u64 gen) {}
 -- 
 2.55.0
 
