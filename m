@@ -1,136 +1,198 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF50A360ECF
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 14:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785941355; cv=none; b=ZkgmJaM5Re0hv44KzwjPTNQ0iZ29n/uRCa05e+nANRdfLsvxSduitkpDD3TemRUe8fvJLwumNDDQOcia2+vukT2wyB5xqHOq+j9K/M8t2p9nresiub0Ne14KOltL87nV4cljw+kqwRSP/YtW5HUeW0FMrg7vGVPKW++Tt6dpCKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785941355; c=relaxed/simple;
-	bh=wWDnH3cZzQEOgNAKr12uNqGk0o51yDKPfl4zopD1s/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E7QebDbo2N7EbrdOhRDblkmNYG3qTRxvXGxSxQBp1S7+opaU+9w7uHdfK79YI1Ign38TwnWEKJp9/SRRmztwjxA7PbdDeiJ20b278J3Z3RGyJ+a+w47rKj1z9wsJoFAeUHi6iDZqVhTYQYvLvobzIS+CU2r+gyEvZ9MUDB4ICrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WXOBax5Y; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E63A1E67;
+	Wed,  5 Aug 2026 14:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785941483; cv=fail; b=auvAbtn0uhu44U/iv4MKkovXd++9NzZ2YxCrtSW/nUr5b1zhjiNzsjE0JYhbwbzlGJw4ZBezm59SI9EzI6mdD6a0MsjVIqb7jSZ3edD1VmRZNBgSXhYiBAx/5P0W3fDilp2jvfRWjQ6FjnrqVi6LhHCIF6lud2F3YLuzOPOPJjU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785941483; c=relaxed/simple;
+	bh=M/LG0rdTBWCpsLOEblYyGZe987XMByJ0MMn/bS2jqAc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lAH1JuTorpe3M4TxKbClWBPVIHjmwc+j8Uz0AEBWwL+8C0Ej1ThArMmbYLsppgy7yIJ6VsIR+o/BV3i75qkvaI7Xxv/5ZNypSXsuF9oWAlvQYp4kOa9/AqRktz1L1uY7JjI0XeQOz65BW3z/tQSGiDNcrI6Nr/sjsiZJH45vWFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BAYR5vBe; arc=fail smtp.client-ip=52.101.52.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WXOBax5Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785941352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1JhdEbvWEhrHfPPwqh3xlPX09FvDSySuhPj71HiPhw8=;
-	b=WXOBax5Y83uUMPN58cDoeqCsIH8cMx2SSuC+qFv2oybw5cp7hqKsw+g0EScl0A3pknJKfR
-	MTT5tSOGbpICx9ACgqXVRWSqtg/2DVULhVP72jXa8lxoCuaX9bO5weyGfc5lPQ61V4/U3T
-	FxVd5KVHglCxkAHjFjmpxynU7ofNgzc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-660-ljrUInx7OHWIUGmNcJXrYg-1; Wed,
- 05 Aug 2026 10:49:08 -0400
-X-MC-Unique: ljrUInx7OHWIUGmNcJXrYg-1
-X-Mimecast-MFC-AGG-ID: ljrUInx7OHWIUGmNcJXrYg_1785941345
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 681D11802566;
-	Wed,  5 Aug 2026 14:48:59 +0000 (UTC)
-Received: from [10.44.48.18] (unknown [10.44.48.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 617CF1956041;
-	Wed,  5 Aug 2026 14:48:51 +0000 (UTC)
-Message-ID: <12bd995c-e320-47c9-adb1-fff3a14bddc7@redhat.com>
-Date: Wed, 5 Aug 2026 16:48:45 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BAYR5vBe"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LUJoka4sFza18GhyvD8vwfxzPW8lpUgECdVfJyFjYBb34wNbi8aMbUXlo29llvJdWi0xSM3M2tiTesFSq7g8fFq7x11yVOIPHLtbepZ9TxMtKnsR4Olc5MgEgfUYK2uSz1Zccj8lh+1sRX+SK5ojdFXh31uXRYPXkI+AQf0X/t2crcjTvES5xC9rZytlJCs9ddt4hwEvY0S/fVyF7OlGEq+eY1K0R8fh38+KyZDyvTT9gkkwpOY8y6/ACy+/7kA7qfvIdODadsNUCBYM93Q+yrKHJrRYlhRgutkjTf9bAzGjJxYHVOjRvrq8YrUizuyEzqdkuqC+Hg9DUziPTFgb0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yjZ4xzI5ZNfqtDZvMrDXKpQt1zNdHjMnTeecz6kgqrU=;
+ b=Ucsd8E7Jx5nR2UrVpxO/wOBvlXjubI7nwpSsDE9nFaUXhu9aXMRqJ52woM2yJ2R1h545xeMPnXoqLyBA2icNHjo91teVWeeOx6TMsnJ0Pi/mtioZqVLs1WM/YTd/r4Vge7xWHzE4Un/8tOTrtMEG/2U0MPFeYV66tZFO8n1RQtAhImNcVfe0Vs7O5Aoi491rqxo+nY+l9uc9RqaNsgu2QXohEK7kAjoaNErFdcDznBL2cdMeQfNO6/W3cDDobQPfQsCiUOpPqSnmU5DFBHRsP4CDLZ+VR1JVAwWUXG78vdyla0mFtY6z8G4QReMmFiAPfS40yqJp3lsJk1AKMAiniA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yjZ4xzI5ZNfqtDZvMrDXKpQt1zNdHjMnTeecz6kgqrU=;
+ b=BAYR5vBesXFEcndoU8s/ojTyL/qI7nglyYo4B95JCJJP4ZZGDvcK4Y6XSiEQ85j8UFo2fytfFVl/U3pZqfW8398Awj2oSs5dEmIQpbM1D7qoOvTmDELGdD9dUdiolu6Omd3HJRoZ9k1/z9srMzDNAXDlmoZwBx3GrWEr2U3FNNk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS0PR12MB6655.namprd12.prod.outlook.com (2603:10b6:8:d0::12) by
+ IA1PR12MB6018.namprd12.prod.outlook.com (2603:10b6:208:3d6::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.19; Wed, 5 Aug 2026 14:51:17 +0000
+Received: from DS0PR12MB6655.namprd12.prod.outlook.com
+ ([fe80::cca7:d50e:86e3:24fb]) by DS0PR12MB6655.namprd12.prod.outlook.com
+ ([fe80::cca7:d50e:86e3:24fb%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
+ 14:51:16 +0000
+Message-ID: <65d82937-113d-405b-9399-b70973e84c50@amd.com>
+Date: Wed, 5 Aug 2026 09:51:11 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
+ actually the missing mitigation
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, x86@kernel.org,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Naveen Rao <naveen.rao@amd.com>,
+ David Kaplan <david.kaplan@amd.com>,
+ Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-2-kim.phillips@amd.com>
+ <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
+Content-Language: en-US
+From: Kim Phillips <kim.phillips@amd.com>
+In-Reply-To: <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL1PR13CA0138.namprd13.prod.outlook.com
+ (2603:10b6:208:2bb::23) To DS0PR12MB6655.namprd12.prod.outlook.com
+ (2603:10b6:8:d0::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 3/3] drm/ttm, drm/vmwgfx: directly create writable
- PTEs when mkwrite is in use
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Hildenbrand
- <david@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Huang Rui <ray.huang@amd.com>,
- bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <20260731164341.1109827-4-pbonzini@redhat.com>
- <c1652ce8-0b0a-49a1-a842-bf1a5290cc1a@amd.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <c1652ce8-0b0a-49a1-a842-bf1a5290cc1a@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6655:EE_|IA1PR12MB6018:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71810817-aff1-4194-e4ec-08def301006d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|18002099003|4143699003|56012099006|11063799006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	qi8blWPUlswBWegetb8Gik5po1g0P0LAJfeTtTG1HcnhOWZGsxQaF3l2TTwBoDqwvJRCfruKUUZe+TMPf6kouz/5L8de8Af0xMfEL6BQssqopoy+icMzAEOrO853CsmGgV6Y0cX9e6sTydZV1q59mZoO1CJ+EdaKdUb+VszQMVe6MPKwi3ql6orJyrAZXBNs/O0vNGbjSR5KeLRq8QRYu2J2pdeYQtexpTyILIYFoHeCfa1gQapQAPmHgufXOImKbhcOM4SRQ/ltbYXXBWGnt8dPAUlqTWyY0GiiNNhZFwcpdvEAsiAmcZ518iQKstgG5Hcg0iQPudkb70nK1H5a+HAXJcYy3ytM8Jw8edkrLfoHZSGjp521NdSJGKqCV3Cv47gY1ZoCZDaLSJL6AJCVT0y7rzr7bD93+LdaQzUqlwWUqR2vtJ80owWj6PTT1iUJDOJrh2/37//vnt3sym/Z8xdOPpctR4kXqfvYzXmGB4vqZ9KCy/g6ws06znEeF1kbfjWUFaw5V9cNUktY27/jRTUU1nlIagLwpheXwA+DstJ/hqIdORsyYVzUlUL9n9JcSgL4lKvhRHCwX4gPaTjur/dqT/3i/MmVyG4pTsgnqBPzhSqDq4bspjf8zrjw6/hBR76pIdbd5gT2ws2o4cKcpSnjmt4myoUAu6Sn8dbQWcc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6655.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YkhzaGpNTXdVVDcrdXI3akZyYnJjVDVCb0dkWllLMmNIWVlCOHNDTGlnU09k?=
+ =?utf-8?B?ZlROcVQwQWZrdmRrVFZEeUQvMzZudVkzVkNvakJhZGw2K25tZXVFUzhLQTNK?=
+ =?utf-8?B?elArRHpXVTd1UG9kdTVQSVN3dll2S0JXakJtWHc5Z3VpajgzdnByN2ZndUFx?=
+ =?utf-8?B?cjY3WGdOMFFTQzNST3lYVWQvY2FDSVJuU0JMQkwvaHNteXRTd0VQU0pNWU82?=
+ =?utf-8?B?cjJWQnBzajh4RlFMNG5vN3JITWZBcVQrU25yVTdYN0JFNHNhblROc0hoS1E1?=
+ =?utf-8?B?eUdyY1hvYVp2TjViNkdkRkdmYnliSEMrL2xoekdjVVdGRTB1akR0RCtVbnRD?=
+ =?utf-8?B?L1F3eFVaWEpXenlTK0l5OVFvdTdRWGJtTEdlVERrdkc2MlQ3N0RRSWJVM0x1?=
+ =?utf-8?B?SWh4Mm1SM29aVDBnRTJYQVVXU0sxQkdXRzhtUUN0NmFwUTZkZ2tYL2RPN0xN?=
+ =?utf-8?B?N3ZVNEFGUVNXN2V2ak4waVZ2RmJmU2NTMGl5eTkrMmpXWUM3cW8wK3pNSHJU?=
+ =?utf-8?B?V2ZUWFFLVld3cFN6T2MrcW0vYk53b0VTTzVISkw2L1VmczJYQng1L0tUT2Zi?=
+ =?utf-8?B?SGRFa2ZSdU1MVmhtY1YzUS95WFN5dFZ0UUlBQnZzK1UzOFRsK2FBTHBNSGVn?=
+ =?utf-8?B?akdvbGdJUEZ6Mk9pVVc4SFFLYjNNMEtiR3ZlTEl5VjY5dVJlb2FkcEl2aTdn?=
+ =?utf-8?B?dTU0SHlzMjIvUE5uY1NVOFArQXZxMGhscndpeE8ySi9BWUVkdG1DbEJEV2w5?=
+ =?utf-8?B?RDRTc3daV0QzaENUMDA3aXIyajl2QW5hUlpSKzRZUkZST3ExVHdKZ2lJUFhK?=
+ =?utf-8?B?VDZzNFdQRDQ0bzJqWmppQUNOYW1RVjl5alFBVWxEbnNXRGtSZVM0RjJHaGZH?=
+ =?utf-8?B?VEJzOXk2amcySU5PYk5HRXVGVUluN3JWdGVKaE84K09IQmxkTEgweGNGOW81?=
+ =?utf-8?B?WXBiOE5SaStvdUpOWmR4ZHpxME4rblFvSnBTNHVvaGkrTFo4cDBTZm1CR0N0?=
+ =?utf-8?B?bUQ4eXl6Z1JzWDhBOU81cDgxTlBjNjlQOThvc1NXbFZNOXZQeGl1aEgwd2ZF?=
+ =?utf-8?B?clc5SVVTaUlhUlFQcHVSYkJPT3BqMUJhSDVaU2hZZDdGdFVocWxPLzF1NGRs?=
+ =?utf-8?B?aldORmNKQTNQUG9veG5GY3FCOGt0Q3lNSFV6YU53U2U5Z3UrUUpFcjF1OThs?=
+ =?utf-8?B?TDVXWms4aUdxbHpyVXFZdUZiYU9PTTBxaE11V3VJY3czTHdvLzBqWGtQdFRu?=
+ =?utf-8?B?VVZzMDJDQWUyZjUzcHFMZTNuRTJubFpKRmpOWG9Gb0dFMFpVS3N1YW16SWhP?=
+ =?utf-8?B?MWs2VGh6dWZRVHdBZHE2Qkc3UEVuVGZaQlY3anBNM1lBbVZSNDhnT2FPMmFj?=
+ =?utf-8?B?TEVneEgxRCs2UmY4ZTRZTGFGdjNORkFjQUliWmVkaDBtVVNrUUdEUGtQS1hI?=
+ =?utf-8?B?cDFzREZDMS8yYmxUWGdnNmx2NUkrSkpNUlZROGNmMHljMitJT0k0eUZhbmZz?=
+ =?utf-8?B?UnNicWJNSlJvek0yWGpxeEZZbFdBUEVuNkxJbG1rOWtaVHBZZ1VFNmdiTm1q?=
+ =?utf-8?B?eTNkOW41bjZ4aEp0MVlJdElmNnBaNnNDa2lUNVhTMkpERWJqZFdMeHVRNlgv?=
+ =?utf-8?B?ajNzcHcwZjF2cWhVVFEzdk1WeXdCSW8rYkVmYysvT1hsQXVnZ2V6Zmt0Qk9S?=
+ =?utf-8?B?VTA2a2MvQW9HKzEyTHRDcUk4a1FrbVQrUUJQWUNUVzQ1UGF3VXF3U3hDbVhx?=
+ =?utf-8?B?NW1ka2oySjY0b1Nxc2ROWW81YlI1MFk1WjRQeXptMVRPSFgzeGJFV2JrUnds?=
+ =?utf-8?B?enY4WTlHb1ZxSUdRclVpREtwUEJETFlQRWFsRTZPR3o1cFVpd3J4WXdEVXBo?=
+ =?utf-8?B?Z0ovanF2S2ozUmVzYmFoZXAwZTA1R3lVMjJVSFVTcjdhVThkNWZEYy9iSTR2?=
+ =?utf-8?B?M0duMnB4OFkyN2dZaXp4OGd3a1ZnMDR6SmNPM2xxYUxyUkthRGtoOFJqK2k3?=
+ =?utf-8?B?M0VHek9QUE1KS2ZDQzhMcHcxVEMvdnh1WHdJSXZ1YTdzRXd1YjdnY2tQT0lJ?=
+ =?utf-8?B?aXF2NU1VdjVDcnBwRS9RNFdrWG5pT2NRZ1h1QU5PY2lnczFWVitrbjVlQTFp?=
+ =?utf-8?B?S1hoM2lNVEJSODlSTC81RzhySTZ5OU5taEZ5MUtQbEVyMm16RVA2TTlDeS9l?=
+ =?utf-8?B?SmJucDB5YkkxMFBIeGVSN3lyTHNQcU9xcE83L1hHUHNiQzBVcnZWUmJwbXVO?=
+ =?utf-8?B?NE9mWnlKN3RjdFlOMERsMWNpcndFUTM5VkgzZlRpUDdlWFdSYTh0aytWZWoz?=
+ =?utf-8?B?L0k0SlRTRWRhcm16QTZUczByU0xGd0xtcVM4Y01iQUUzbktNUFJEUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71810817-aff1-4194-e4ec-08def301006d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6655.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 14:51:16.5523
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: e3jSKolOIr3KnnXIkL/WvVBV/SYTGNUqFLCLYspTHSkN4heetO0Xpvk/68kCRN1NjcdUoc3bf3m+CjGsc17h9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6018
 
-On 8/5/26 14:58, Christian König wrote:
-> On 7/31/26 18:43, Paolo Bonzini wrote:
->> This ensures that fixup_user_fault() users see a writable PTE when 
->> they request one.  The flip side is that vmw_bo_vm_fault() now has 
->> to record by hand the write fault, because .pfn_mkwrite() is not
->> invoked.
->> 
->> Prefaulting works as before because only the first entry comes out
->> writable, while the following ones still end up executing 
->> the .pfn_mkwrite() callback.
+On 8/4/26 7:44 PM, Borislav Petkov wrote:
+> On Tue, Aug 04, 2026 at 06:56:02PM -0500, Kim Phillips wrote:
+>> spectre_v2_select_retpoline() unconditionally emits a pr_err when the
+>> kernel lacks retpoline support before returning SPECTRE_V2_NONE to its
+>> callers.
 > 
-> Please split that patch for TTM/VMWGFX. The TTM part looks
-> reasonable, but VMGFX is a completely different beast.
+> Unconditionally? There's an "if" there. :)
 
-Note that the TTM change alone would break vmwgfx without the other 
-part.  This is not obvious, and it's why I placed them together given 
-the TTM part is just one line of code, but if you prefer I can split 
-them (the TTM change can go second).
+There's a "when" in there, too:
 
-Let me know if "looks reasonable" counts as "Acked-by" for that part or not.
+...unconditionally (emits a pr_err when the kernel lacks retpoline support) before...
 
-By the way, see also 
-https://lists.freedesktop.org/archives/dri-devel/2026-August/586696.html 
-- it touches the same code, and the mistake was noticed by sashiko when 
-reviewing this one.
+So it's saying there are no additional conditions than
+!IS_ENABLED(CONFIG_MITIGATION_RETPOLINE), when there should be
+(which this patch adds).
 
-Paolo
+>> A caller may then select an alternative mitigation, making the "no
+>> mitigation available!" message alarming and misleading to administrators on
+>> a system that is actually mitigated.
+>>
+>> Drop the pr_err from the helper and emit it once from
+>> spectre_v2_update_mitigation().  Guard it on
+>> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) so it only fires when retpoline
+>> truly cannot be built in,
+> 
+> This is explaining the diff. Doesn't belong in the commit message.
+
+Ok
+
+>> and restrict it to the cases where retpoline
+>> was the implied choice: SPECTRE_V2_CMD_FORCE, or SPECTRE_V2_CMD_AUTO
+>> when should_mitigate_vuln(X86_BUG_SPECTRE_V2) indicates we actually
+>> intended to mitigate.
+> 
+>> This avoids the spurious error on a
+>> CONFIG_MITIGATION_RETPOLINE=n kernel where a caller of
+>> spectre_v2_select_retpoline() selects an alternative mitigation, leaving
+>> the system protected while the old message claimed otherwise.
+> 
+> This should be your first sentence. What the issue is.
+
+I'll see about rewording the commit text according to this and all your
+above comments in the next version.
+
+> Which begs the question: why?
+> 
+> Why do we care about a CONFIG_MITIGATION_RETPOLINE=n kernel?
+> 
+> You either disable all mitigations or enable them all (distro kernel) and they
+> get then configured at boot time. Why would I want to disable RETPOLINE only
+> but leave spectre v2?
+This patch corrects code that already cares about RETPOLINE=n kernels, but
+it's also useful if you know all the target systems for a RETPOLINE=n config have
+alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
+true as time goes by.
+
+Thanks,
+
+Kim
 
