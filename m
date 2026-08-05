@@ -1,180 +1,123 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871593DE456;
-	Wed,  5 Aug 2026 08:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24013E49F1;
+	Wed,  5 Aug 2026 08:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785919291; cv=none; b=S2MbjYaZsIUdjjf9MLQoTb2rvvXeFAipkFwUlYYNtGmdwKhPcsC9De7TX41BvjXgyZcCNOBPmF8OaCajGnFzQTs8qwXip8i39l5ZyQgZQyRO34ukb1j+K4sJttr7iAmcsFwh3poHcrpDDyd3N3OdaPkqjRII2s0wzoK26ootAKY=
+	t=1785919636; cv=none; b=UaZgwesnjHMb+vq3SIvS5YZrDV1FSuV+MHSKkhb65L0Zbcgo4kGgBDxz5+2tD11n0r1pOVNiIXDgfazW03nnxi8GS4qyltxz2p7+a+2Fs19BUD+1ktAQpm8BImSskNphMBl8EjW+ZLdEDlpIWx5X690rNgqy5xwRyojG3Nuowms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785919291; c=relaxed/simple;
-	bh=N/8smBpL3nhgl1cRNg6zSWlN20EhhEUppjKtY7oe+aI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vErmUz/ehDrkDkvD3o/puSwc64AdBOIP0tGL0mD7wwR+lAdQEIDJ0jMFfSCFm2MIecKL4hYYJfnwb/qxOoOkSpTFOoBvDPWPZaj+OlgjmFbfjo9rDmYrldAQTAheZrKNCIo8p24o6vp+NujpDyd3bgwOdoStM7lxbCM6oVXqxwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NbcQw2yX; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785919636; c=relaxed/simple;
+	bh=NCefE1mO1GlvWUkeAoReVC10N2F/jCGs0rCOQGw2TpU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qaduHyWtvuBRAOmSEDrK/nuwT+UeF4tcXNdBZZ2V6ABQ1zXQ13CKqFUU5joRJPmhvgWSuhtvG8iKGo/2oq0HPTaxm6gg2J0Ec5bqRab/Ii/xfs43+GorS5GZlCletxa2WtfaZ+xiPHPippGowzLfCplmIylZNzixwQayJmMGqnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLJl/Bok; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NbcQw2yX"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6755mCq72909930;
-	Wed, 5 Aug 2026 08:41:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=L+qstq
-	//dyXpozpdIYKJD4rprOP3/zuOpcK8yHLhFVY=; b=NbcQw2yX6Elv710yzUrRjf
-	WqpT42N8G7Pt69mkFqxRdlK0FGzZ2co5HFCvnryOcV2PlY707UADEBYgs6/cZgRV
-	lOv8Q9Lfb6gr3Ld+oTJUUL4ZY3RSIIhWB/LxbjaYPWzCVOJMzRj0S/NoICn3Y+Zb
-	/XVUueYk8pZiYDjXntzEGzHA+77W8NzKTi+NPsq/OmWm/evYJkLyOfv79GkNlb4v
-	UOAqhEc/amtpKIgD8K85JHRq9oGN742vcyzxtipP01yJq8zt+bbL/zurbtGXM/58
-	yG4gdmG3T4o5SV2AEYa7Im4U4WArxIUsGx6uYaqlwq1B6ZT/9GQCctYuayeeFptA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs77g9stb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 08:41:26 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6758QJAX023752;
-	Wed, 5 Aug 2026 08:41:26 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw5vax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 08:41:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6758fLaL31588944
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 08:41:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD1EB2004B;
-	Wed,  5 Aug 2026 08:41:21 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FBB820040;
-	Wed,  5 Aug 2026 08:41:21 +0000 (GMT)
-Received: from [9.224.77.173] (unknown [9.224.77.173])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 08:41:21 +0000 (GMT)
-Message-ID: <dabd9090-e1b6-4695-8782-47b6c8e37a73@linux.ibm.com>
-Date: Wed, 5 Aug 2026 10:21:41 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLJl/Bok"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714721F000E9;
+	Wed,  5 Aug 2026 08:47:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785919634;
+	bh=kszMkcQKqrIYgW/Oo0EZOBH4I8hWpCPVD1GaXYgTgbg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mLJl/BokC8Mo53uR+QWaVydHsO6EXtOh06TDIVqz3tZirYkI2kZ0XrZ+19FdkM3wm
+	 d7HWfNeF+4UMGMGz9UZteAlSvRRnWZzeqRyxSyqq6wWn4tJdRfAeek88Yf63oJ6sbR
+	 TfUaPxDN4NLSahez5SjUo80Uc5rE/vAyTAR2PvTWdQe3aCEyzBBS7KX1hhDG/nhXsc
+	 oY3shvzY0qZDZj2eHBiAzU/Nx7RmGfE0abAFOr6DUatPCZzXUnTJyGF0eLtCpIFQE4
+	 SHx++8Kr/ojSi8BZKfPixbsQ770UCSKncjr9xcZGNqzsIjMXHJF/bZJcBwa7A9yGKc
+	 OYW3RQ799aKcg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wrXHM-0000000CWRv-0CXA;
+	Wed, 05 Aug 2026 08:47:12 +0000
+Date: Wed, 05 Aug 2026 09:47:11 +0100
+Message-ID: <86cxvxar8w.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jing Zhang <jingzhangos@google.com>,Mostafa Saleh <smostafa@google.com>
+Cc: 	KVM <kvm@vger.kernel.org>,
+	KVMARM <kvmarm@lists.linux.dev>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	David Matlack <dmatlack@google.com>
+Subject: Re: [RFC] KVM: Proposed uAPI for querying GSI and irqbypass status
+In-Reply-To: <anLz0HJ9CKuRbTPh@google.com>
+References: <20260717162658.2833515-1-jingzhangos@google.com>
+	<amh6OLH38hsO7ZWj@google.com>
+	<CAAdAUtjrnNe1Kn2_Fqtjy6igEEca-6Zd=SSbncswZtnA5FngPA@mail.gmail.com>
+	<anLz0HJ9CKuRbTPh@google.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] KVM: s390: Take srcu when importing watchpoint
- data
-To: sashiko-reviews@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>, linux-s390@vger.kernel.org,
-        kvm@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-References: <20260804162435.28617-1-borntraeger@linux.ibm.com>
- <20260804162435.28617-7-borntraeger@linux.ibm.com>
- <20260804184024.B9A961F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260804184024.B9A961F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfX0canNU0jnPmw
- 7+UPzm4Hu6XddtIMEyCMmKqssapoBaMPs1BDEtgdCZpQnyhofM8jn0Ou3Xj7rqjXvBdaijHLzkQ
- bRg1iJWjECjzPwHB/5+XNOsElw8kI0y1UEmzOVzxg1/ZSOVXgfRlHNtEplbV6BVPOr8vfFG8Kei
- Rs+S0yrFTZhViFrxvbe2dMso5NP67GVJkDwVuTjPTgJs0K7bn54i7W76jzrWfztN8fRlc3u97+b
- lkHP66QBmS9O69pJTx9Fk/A7Rg0U4I9Hw39muDz3bkO7wmeiPba10YQrW67x+ob2k6WQRmXm8SO
- lbeNyZ+rMrAqMFggUi7UNEVDIcnMTR5xL9ebFd+KslY6HOwRt4Mq7xFIW0qB1GFTnAxhOhSCl2n
- /PKK2uQGPo5PCme+izmwsJD8L83Y043hE4hb/tpFYCJIbbqHSY4ZBLGXh4yZ7+JCYw+Wg60xEJz
- 0usdzdeWw2FqqK8TGXw==
-X-Authority-Analysis: v=2.4 cv=WIFPmHsR c=1 sm=1 tr=0 ts=6a72f736 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=CqDQVMNXfGTbBfhByaQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: I3wRAU3sU_BApMvTViLDZlucNOwDRvAR
-X-Proofpoint-ORIG-GUID: I3wRAU3sU_BApMvTViLDZlucNOwDRvAR
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA2NCBTYWx0ZWRfXx5Y/wssZU1AZ
- Eot5B2AALe30BXfIVeO+01BGVEwr9OWk+8H6QrC2rjELLi/sg+CarkRBLdloKZfX1RtBA3ce5Kv
- bZ7TA+uVL0FSQZ46QEKFR4cRlKQ9cLs=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_02,2026-08-04_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 clxscore=1015 impostorscore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050064
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: jingzhangos@google.com, smostafa@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, seanjc@google.com, mizhang@google.com, dmatlack@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Am 04.08.26 um 20:40 schrieb sashiko-bot@kernel.org:
+On Wed, 05 Aug 2026 09:26:56 +0100,
+Mostafa Saleh <smostafa@google.com> wrote:
 > 
-> [Severity: High]
-> Could holding the SRCU read lock across this call introduce a userfaultfd
-> deadlock?
+> Hi Jing,
 > 
-> Inside kvm_s390_import_bp_data(), the very first operation is:
+> On Fri, Jul 31, 2026 at 10:26:26AM -0700, Jing Zhang wrote:
+
+[drop the LLM generated stuff]
+
+> > While interfaces in debugfs are fantastic for manual, retroactive
+> > debugging on a developer workstation, they are not Dependable for
+> > fleet-wide observability. This RFC aims to provide a proactive
+> > monitoring solution that aligns KVM with production operational
+> > requirements across architectures (both ARM and x86).
+> > 
+> > Would love to hear your thoughts on this perspective.
 > 
-> arch/s390/kvm/guestdbg.c:kvm_s390_import_bp_data() {
->      ...
->      bp_data = memdup_array_user(dbg->arch.hw_bp, dbg->arch.nr_hw_bp,
->                                  sizeof(*bp_data));
->      ...
-> }
+> I agree that debugfs is not suitable for that purpose.
 > 
-> If user space maps this array using userfaultfd, the VCPU thread will block
-> in copy_from_user() while holding the kvm->srcu read lock. If the user space
-> userfaultfd handler attempts to execute a VM-wide KVM ioctl that modifies
-> memslots (such as KVM_SET_USER_MEMORY_REGION), that ioctl will call
-> synchronize_srcu(&kvm->srcu). The VCPU thread would wait for the page fault
-> to be resolved, and the userfaultfd handler would wait for the SRCU lock to
-> be released.
+> My main concerns are:
+> 1- Why is /proc/interrupts not enough, it should show whether the
+> interrupts are going through the host (not bypassed) and it should
+> show when the host get a doorbell if the vCPU was not resident.
 
+This.
 
-Now I am puzzled. Sashiko basically asked for srcu protection for the guest access
-in the same review series. But I want to followup nevertheless.
+Also, there is a very long standing ask to represent the output of
+/proc/interrupts as a structured set, retrieved through a generic
+kernel interface. I.e. *not* something KVM specific. Everybody asks,
+nobody does. As usual.
 
+And if you are interested in things being "Dependable for fleet-wide
+observability" (I *love* the LLM-generated jargon), there is no way
+you can make sense of what the guest sees without looking at the full
+picture, i.e. the full machine.
 
-There are other places in KVM code which do access guest memory under the srcu.
+> 2- Technical feasibility on arm64. Since the host does not have
+> visibility into interrupts directly injected into the guest, it
+> cannot accurately maintain the proposed counters vgic_its_vlpis_hw.
 
-1.
-KVM_SET_NESTED_STATE — arch/x86/kvm/x86.c
-               idx = srcu_read_lock(&vcpu->kvm->srcu);
-               r = kvm_x86_ops.nested_ops->set_state(vcpu, user_kvm_nested_state, &kvm_state);
-               srcu_read_unlock(&vcpu->kvm->srcu, idx);
-with  vmx_set_nested_state() then copying  the vmcs12 from user
+And GICv5 is going to make things even less observable, as only
+doorbells fire on the host. My take is that for these, a PMU-type
+interface is better suited.
 
+But in general, a KVM-specific for something that is a system-wide
+problem is IMO the wrong approach. You may want to put tglx in that
+loop and see what he has to say.
 
-2.
-KVM_GET_MSRS / KVM_SET_MSRS — arch/x86/kvm/x86.c
+Thanks,
 
-       case KVM_SET_MSRS: {
-               int idx = srcu_read_lock(&vcpu->kvm->srcu);
-               r = msr_io(vcpu, argp, do_set_msr, 0);
-               srcu_read_unlock(&vcpu->kvm->srcu, idx);
-               break;
-       }
-argp goes in as a raw void __user *, and msr_io() does both user copies inside that section:
+	M.
 
-       if (copy_from_user(&msrs, user_msrs, sizeof(msrs)))
-
-
-3.
-KVM_S390_MEM_OP
-kvm_s390_vm_mem_op_abs() has
-         scoped_guard(srcu, &kvm->srcu) {
-[...]
-                 if (acc_mode == GACC_STORE && copy_from_user(tmpbuf, uaddr, mop->size))
-                         return -EFAULT;
-
-
-4.
-KVM_PRE_FAULT_MEMORY generic KVM holds srcu across a loop of kvm_arch_vcpu_pre_fault_memory() calls that fault in guest memory,
-
-5.
-and last but not least,isnt vcpu_run also holding kvm->srcu when handling page faults?
-
-In the end the cycle seems userspace constructed. It deadlocks only if its own uffd handler
-is made to depend on a vcpu blocked on that same handler.The faulting side waits in
-TASK_KILLABLE (mm/userfaultfd.c:2673) — SIGKILL to the process releases the srcu section
-and lets the other thread finish.  So we can get out of it.
-
-
-So I think this finding is wrong. Paolo?
+-- 
+Without deviation from the norm, progress is not possible.
