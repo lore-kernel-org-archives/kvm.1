@@ -1,247 +1,265 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012062.outbound.protection.outlook.com [52.101.48.62])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22A946D2C9;
-	Wed,  5 Aug 2026 12:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785934733; cv=fail; b=mZjMp7Sg8AuktxBbsra+ktSF5bgYSWX6/g00+dgf+ghMccJXP1xI2e7BiJYRr7c9nnFNb4pJr0oFIbM3ED4efkCqOIK/cTgVq+Bta+ig88FzG1aqGbiPdHWAV3ZoKH0cvczdcO17DvjQYUjN+gEFrG45QzhXWBIdoqk4xSZa24U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785934733; c=relaxed/simple;
-	bh=TTmDde9Jd1GYNHL4oN40kxk0dFXnLc63YWXSsTJmyYY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Fz3McUWEM70nINxJGSd1J5nZglZXYX0jM23ogWKi/R2hJNGVd/Xk1Q/sQNQJgxK0Y8IWimUT6hMt1DF7ZPX7P0bUci1Q6mZeVP7cCMHbj58BZO+3v+RrHXGCNoL2K94d5DIaXB/cqo9ma7Pqi1biQ/hca9oVOb6qPpjWrlQLB0Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eXPjQmI5; arc=fail smtp.client-ip=52.101.48.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957AF2BDC0F;
+	Wed,  5 Aug 2026 13:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785935683; cv=none; b=SJAAdMgJY8Ard63uJSUwSJCqy6Xb5jLDAOeX214jKWTTQ1D/2PY8ah55eTHFDba0h0ftqDs9T214UdH8knapHFi1J98TVE+gYG5LmtuQwbqbiqBrPbRMPUThj7sTfGHINcySdV/Wkar/WiBiaigUh5SdEw6hw9m6DPcRPeh9BdE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785935683; c=relaxed/simple;
+	bh=1upffbS6T6+L5b1jXkxWDuMHXx4j7qqm+y/mFpQT11c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GP4kao5ppzPB4BAVq2w/l5GemMuKSMIsTrtsIYrLSPfyQEBzyo3RPWrl7omfvrT9b4wb4DgDvJpKKA0n+L+v5n5ti4ecMNl2b4Xpw8cJYupoG5q68mtl+EkPmeYtL3Md4e+Q4QS0VkiHQne+ehLVyTRdP9kmKuyQ76DeOQILGOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HU/zsaxV; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eXPjQmI5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=moXOYgho5naY073GoF7MC2p06iEzGLTlG5mqnflPMKqJqw1y7PPVi4FxzKTAprBN+Nbl3gZ64Bxmar3I73dwwePd5yN5nC1tjBj2Xei0bjvgAawBBE7G/FkU0GQkhIV5GeF6Bhe5WQQzpdlMHEntGwHP0o/1PqHy9Klvrjf8BbMzwOp1OSTGuv2GiUIgVRaZbR1Bxy8+yFIkQZ85eIe0ByzpxDb77Jb7pRs5XLaCVZ4Lit95pJHmKedjNQ9DgBKmTjNxjpb0RY6k4qYitUcvGgS7P8f5Nu1Gc9304Qck4UKInYWjidZ22c0uj5lJEDdfb8lyWJLGtumetIOWJV6IGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q9msKueQ8HEv0XwtIedb6zmnyTvoYJnx29irE/03m5A=;
- b=AOs6eCSs6R37wdlx8PsAJSSjWcatbAZ7/Zgk6bB15xHGnrxQx4oIa7O42ESWPQhdO+E8XgGDv+o5YC0oyv5Dg4GbfRUKaiw0gSUFa2byNlilVPqPFsiNFq+sMAEC6fGbxeVjU/Yl24USm0wHdaPGjhU5LVS0Ou1O3IY5irnfRhP78sKtEvon0Cyx2sUhSIvvZH+J/jzCZBBWOsTEsurFRe+eiyKSCJ1JZye9BCrMvJUTiD+UzB9tyZzoFs/9lI6yJ9ZoARIi2WmfGef5uc4gdZeCkjM5RoFcrqXX+YYGpAmfVl8/am5K5fI491VKDKGvwSEEytRRvoUi+vmv1CA3bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q9msKueQ8HEv0XwtIedb6zmnyTvoYJnx29irE/03m5A=;
- b=eXPjQmI5smoHGO9QIbLfblMN09zLXkM2HUiMGprSU+RJOw91R4R73l5FN84D8wYca8Z6wpkR+7T3tTWiGTHJKAS+hGU0BiZ0qaOaBM47zyw7OylUdi4H1Bw7mnD2V+hcktzUrYHYz1dRNei4zy+DtfgdEwk/OoEGlJCgEYgUzyw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS0PR12MB8319.namprd12.prod.outlook.com (2603:10b6:8:f7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.17; Wed, 5 Aug
- 2026 12:58:40 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0270.017; Wed, 5 Aug 2026
- 12:58:40 +0000
-Message-ID: <c1652ce8-0b0a-49a1-a842-bf1a5290cc1a@amd.com>
-Date: Wed, 5 Aug 2026 14:58:34 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 3/3] drm/ttm, drm/vmwgfx: directly create writable
- PTEs when mkwrite is in use
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: Boris Brezillon <boris.brezillon@collabora.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Hildenbrand
- <david@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Sergio Lopez <slp@redhat.com>, Huang Rui <ray.huang@amd.com>,
- bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org
-References: <20260731164341.1109827-1-pbonzini@redhat.com>
- <20260731164341.1109827-4-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260731164341.1109827-4-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0094.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9b::20) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HU/zsaxV"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675CHfQ61940678;
+	Wed, 5 Aug 2026 13:14:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PNWbA9
+	mFx/Ff+b2UyvAAw0TKu3AJCLpFPyiHJdIQ4iY=; b=HU/zsaxVi8mfT9CUoj8xdd
+	GU/pHY86O7XCtoa6GK9z8DKEwBlbkW8z78W5tz1d4qcUe7DX+dIDxAjUdmQbVRIZ
+	wFOdxhq5LwwR1cPKub3NjVAw0JWc/iwevn6+sRGVWmcJ6zG31wYNr/YE6dVojIrT
+	riPD6xZVfj+7h62KoTxtjKLz+Ac1R07JKG+WzZiY0qV6gwdaZzuaXQSO4xFzAphr
+	EZDXJVR4+XkOb6SdE+xkXxZXREWr5JpDa3/GagmpZEvh9RfllkhYWINFzQ9mN4HS
+	MNadtUZUhWvXMv70Sjr3SiET1+gtFQK9wV/7uzYK1IsEirf76Fqf89gBmC5/AZ4A
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8fqu3d3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 13:14:40 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675DBKLh019497;
+	Wed, 5 Aug 2026 13:14:39 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswbgeg4y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 13:14:39 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675DEb4v49479936
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 13:14:38 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BCF625805F;
+	Wed,  5 Aug 2026 13:14:37 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFA405805C;
+	Wed,  5 Aug 2026 13:14:36 +0000 (GMT)
+Received: from [9.61.13.108] (unknown [9.61.13.108])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Aug 2026 13:14:36 +0000 (GMT)
+Message-ID: <74826403-39d5-48f1-809b-d5ff62b790e8@linux.ibm.com>
+Date: Wed, 5 Aug 2026 09:14:36 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS0PR12MB8319:EE_
-X-MS-Office365-Filtering-Correlation-Id: b5382a5e-c26a-43d8-ccff-08def2f14571
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|6133799003|10067099003|11063799006|5023799004|56012099006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	FM0SfpFUtNjp9GLh5M3FgsReAG8UpRvqcQXXAC+cY1/s3yz73mtJ+pQNbNGyUeS8De6lnm9c8yHN9pJYK5+PQE7sXy8rgpWLSavA3W2ZewjgUhy4bPYMcqiskSN4bYEquvuJD8AyuD28udbtAgs5jEGgFOkSV8WY3E5yYPwKj5FC2dqrRq+eniKEtI0j9AWsDldTMA4hua8OZRr6dR+XH49Recc3zxrTZ0k3550AGTw055lkiZ5uLG6NsnXatp7QTibD8Q0VTXx37oMPHLvF8LdWcbGwRXiieABnYjAm8k3v5bL3urqPU00t6AFNmJ+SB0EtOj8fDAxaZ0zVM2DDK/o11JD8rhPBp1gdGDx/Gk1hPk0Ggm/hAE2oL0o0Ki63SnsYiQVSbd+yTCcPteOXBRTJjThxdgE5qRQwKGMuyJJ5fBCIOPvL/Tq5HyPhckmtI8TTQ0a2dUzi2u307nJMFz9B3vkA6EKEa59K1YXeq+RkJF8nxDE9XppRrtiN6cxlr8ZO4Ckgtxjsp5OQsU3nQ9osZTbXIXYVA/OmF6avDLOVZ/+a5VWyG0JiJH1NZuStJzEWc1uOHqPrDNbgLZPJOnkTto7c61ep+yN12HxRvzzdONCVz4RXZIhCJSLGBPt29dWMOs1Qo8eYNPtVJg9E7zHEGicDQDU1phKxpLhXKd4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QjlkL21obXhJczNzMEkrZFUxUUFtQ245WE1VUGxKYUpQcndFYkU1Z2llSi8v?=
- =?utf-8?B?SnZtZ2R0dmt0cW5oMHBTOHRBL1pNVXhnQVNJMVZEaHRGNkxNQ3lHbzdCTWhN?=
- =?utf-8?B?UE91K2xDckwvNlVINThFdDV4dTlPeXgrUnB4V1FsbWhsdVVlZXZHaTl4ZHU3?=
- =?utf-8?B?ektRZ21lVmR6dmdhTGhSVHlRS1NyY2NyTkVwc3RpRnZWa3hoUDVOeDBQV09S?=
- =?utf-8?B?VnZLRDY3bXBHQU5oMkQ2MkF1NjFlbVFrYzVuU2dDMytncitzbGt0YWxCaEpr?=
- =?utf-8?B?clNuTWE3WFE3d25QTnpzMUlqRmQ5NUEvV2dILzZMODhORkwrUTd5K2tUc1Y2?=
- =?utf-8?B?VkpQa1ZWY1BmaC9GdWJNQmdKSjRzbW1rUVc5MXJ5bGMzWFQ2Qk1FRUJNd3du?=
- =?utf-8?B?Zm40S2UyZitoSldCMHBZRlVncUZhM1NWSEw5V01JdE1oSk1admFVVEtRakVm?=
- =?utf-8?B?YlN2dHkrblN1T0g2aE1EMnhkZEIwcHd5dm9aQ1RET1NWVWxkb3R0cUJJOW1z?=
- =?utf-8?B?Y1d6eFhHOTZ6a2N4T05aNjRCdGNiSHdjZ1dQdUJ6dDB1M3hVU1B0QkdMRFVh?=
- =?utf-8?B?THBQSUZ2VEZ0bml0NVAxdnNPNGNPSXpjenc5R0JBTmhxQkhyNkE4Q3NtTVA3?=
- =?utf-8?B?NzZrU3dtdnNzbThxVC83OSsyTFhjYnAwdmZReTF6RlNqZlYzdUZGbGZrQUJs?=
- =?utf-8?B?Rm1PU2pneCsweHFqSDJUZWhxZGp5SStmN1BsQzQxS1EreHFVd0EvV3Q4YjZH?=
- =?utf-8?B?S0htRm12dWQrWnF2NVJub3FTVXE4MWV5NnM5cUo3TlNhTUhvNDNCZXU3elpo?=
- =?utf-8?B?YldBUHpGVWlNTWdwSkl2cm9QQmh1S2ZqeFRDSGYwU1Rmc2lsRlZ5RUxDRU5D?=
- =?utf-8?B?ZEw1YTF4OWQ1TWdoTWN1SUFXejl5WEFnV3J4VGpTL3pVUVNpSUNDemVBQXVM?=
- =?utf-8?B?QVV6UUd3WEx6TnN0eWtUcmxoUWhDUS9idEFpb0MrbW9mRkZ5dzU1UTZJVUdV?=
- =?utf-8?B?MC9PUnFEU0dObm5xcHd6ZFQ0UWJxSVdEc2xyRkwvbjdtNGVmVXpWVW44dnNa?=
- =?utf-8?B?aC9uano1d0N4WGRzRmNzcGlvNE93TG1qdFZEWUlyWUFXeW5RTUhwdDhPSUFa?=
- =?utf-8?B?WlpNNmJWS01LYnpkTEhSV3JNNDhiWk5rVStZa3p0ZGJLSEFVYVlBd2ttUUpJ?=
- =?utf-8?B?TkV4UnI5RWtUTU9vSUF4SEE5STZIak1DMGVEMTc3M3RoeHFTWEp3WmtyRFNS?=
- =?utf-8?B?ZVRIU2hVcXdkcWJjTGNUZjJkQ1RjMlAzNEZVMEl1YldZUVpQblYvRXlVRWkz?=
- =?utf-8?B?cVFWcTFXckZTeWxIVUl2RkdQemtMOTJkcHJoRmJOTVhTaHI3djl4dHFOSE9Q?=
- =?utf-8?B?dTJNb01mZnFiL0xFeDFPdE5pZWVNSHBQMiswQ0Y2bUJUdi9nZE5HakhFSHNo?=
- =?utf-8?B?WUM4bVlkSFdjekY4UmxDOE40bHRsa1FDcFNmK3BiWmY2bzRzT0liWUpkTDht?=
- =?utf-8?B?bzlYR1NISVl5Zkt1MTZnYjFIY3FXM0xpSGtlYW5CMksvb0JwaXA2aTU4RHBy?=
- =?utf-8?B?OVFYNGZSdGNVdGl4emp2bS9EMlNubmU3cHVGWXNsRnFRcGVDNUpqRVZpeDNl?=
- =?utf-8?B?eGRXZitvRSs3S2RWTENTaUdEeTFLTzhWUGpGRVRGeVpUWllRNHFMTTFqajcx?=
- =?utf-8?B?VTFTVVJaZXJGTTQ0M2JzMkw2Q2p0RjQvQlQrNkc1dmxJZStLanBHUytORHJD?=
- =?utf-8?B?Tjc3aXZRTmY4U1pvaWNzWE42MXpuaHNmREhyN0cyREFIK3poYjloMUFiYnJI?=
- =?utf-8?B?bGtUeTRXY0xJc0xTYlN4WGZxRzVTK0xhbGZaV0N0VWJiazdibW9Id2h4K3Ar?=
- =?utf-8?B?QlZYVERoSWxnZk05YzFZYmJ1MlpkVmZFZzZrdU9sam51dFl4UWliOEtsUnRU?=
- =?utf-8?B?MGNkSng1MzA3eGVUcUZPVDhIQTBobU0vaHc5ejhncFFxRnhSTFN0VTY0RTkv?=
- =?utf-8?B?RHlyQnBESVU0Z00yL2NmWFUxbUpaRjdpRmp6K1pBWDgzZm9wb0JwdndLQlNG?=
- =?utf-8?B?Tkt3VWl3dkhGb01HMTVBaTloQ0hXTUpEK3FLNUIrampmTVRtajdQU1I4Tjhp?=
- =?utf-8?B?bFB5MFlTcy9RWkFXc3hoelZwd1JtMTZkUmxxSnhINDlUQkZhekVJN3JXMHBU?=
- =?utf-8?B?RFFsZmZ6WTFKV2U5VFRraFI1aTRKcm4zSlhjMHY4bW5pa1ZoaDJZdHNCeFhz?=
- =?utf-8?B?azVyMGFTM3VVUDMrRnc3bDB0ZHRNNkx2Z2hlam1Oa3FUWVhZT1BoUm1WOVBa?=
- =?utf-8?Q?puQxVgdnaLagDTtxY+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5382a5e-c26a-43d8-ccff-08def2f14571
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 12:58:40.4099
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r5vaASJE957nyichUXpmq2sdCVmJ7x98c98O1VwXymV1IGtueSltiwDxOy81moQ2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8319
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 12/15] s390/vfio-ap: Transition device migration state
+ from STOP to RUNNING and vice versa
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+        linux-s390@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Jason Herne <jjherne@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>
+References: <20260727173239.2420754-1-akrowiak@linux.ibm.com>
+ <20260727173239.2420754-13-akrowiak@linux.ibm.com>
+ <20260727182852.ABF2A1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20260727182852.ABF2A1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: V0JhO58-YzNqUaIDoZP2wlo-WK-MxQK0
+X-Proofpoint-ORIG-GUID: V0JhO58-YzNqUaIDoZP2wlo-WK-MxQK0
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDEwMyBTYWx0ZWRfX5i4sjvrVbOMB
+ kvMVE68PUQ2KQmFfPtj/GqV0q0WB3HCLi19np42YDfYMQE41VbN3fSB2eHxhtXpF9I6SB8Clb87
+ E5zJSctmM6lST8euyfn+Qr6ut+Ysk08=
+X-Authority-Analysis: v=2.4 cv=K8cS2SWI c=1 sm=1 tr=0 ts=6a733740 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=_UpRN81A3srhLPRKp3oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDEwMyBTYWx0ZWRfX8Bn1GWt/yMU7
+ ++/lyTvWv10xhMRHCBQrQya2RJqqpebRG7f/vwHlRe1EpP2vRjUs/n2RWLDaakslDVW0wdC3Duo
+ k/FCknFbHmJIKYIybYSyfVEd73FIDXoGFFPNxzvvQdHSrc2/KdI7gi2XRuRL3AWN4CL5OOLc21J
+ lBECnAnJxu0kka4ZnBIGtvvtP+KnvxZCKfw/4j+VMBlBM1Jys3j/HVcb7416O/DVxB45wn2Z04K
+ NhEFVUfBhKaeDPUGbYeOx/qIfGRhOcFfaIDpdCiWWxeaaEMFkZAF3BM6YUQb/1//133eFQqbVwy
+ cz7GQ/K8V8TLXiXZ5JXw7CRABrrJpDUUmHhxq36xvTiYNpMnnCc3GioamrnRs1HUsM2xkTLvESn
+ OCxC8xhqWWjJ8t35RlOAnq0u1h4/DV0r1+ZBh94Deb6qS0ePl71yO9XQjbOt1aiTu+TOfoTYWJw
+ yRZpBHnIl3lW8ZUUTcg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_04,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050103
 
-On 7/31/26 18:43, Paolo Bonzini wrote:
-> This ensures that fixup_user_fault() users see a writable PTE when
-> they request one.  The flip side is that vmw_bo_vm_fault() now has
-> to record by hand the write fault, because .pfn_mkwrite() is
-> not invoked.
-> 
-> Prefaulting works as before because only the first entry comes
-> out writable, while the following ones still end up executing
-> the .pfn_mkwrite() callback.
 
-Please split that patch for TTM/VMWGFX. The TTM part looks reasonable, but VMGFX is a completely different beast.
 
-Regards,
-Christian.
+On 7/27/26 2:28 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [Critical] Concurrent device reset, closure, or state transitions during migration data transfer cause Use-After-Free or Write-After-Free of `ap_config`.
+> - [High] Overwriting the active migration file descriptor during state transitions allows silent migration of stale state and leaks file references.
+> --
+>
+> --- Patch [12]: [PATCH v6 12/15] s390/vfio-ap: Transition device migration state from STOP to RUNNING and vice versa ---
+> commit 2b837152c9f64c5082507b5aa41ffc56027c1e29
+> Author: Anthony Krowiak <akrowiak@linux.ibm.com>
+>
+> s390/vfio-ap: Transition device migration state from STOP to RUNNING and vice versa
+>
+> The transition from STOP to RUNNING and vice versa indicates that
+> the vfio device is operating normally and migration is not
+> currently taking place. In this case, just set the new state.
+>
+>> diff --git a/drivers/s390/crypto/vfio_ap_migration.c b/drivers/s390/crypto/vfio_ap_migration.c
+>> index fc4cb893f0f00..1c385908fc39b 100644
+>> --- a/drivers/s390/crypto/vfio_ap_migration.c
+>> +++ b/drivers/s390/crypto/vfio_ap_migration.c
+>> @@ -1280,12 +1280,17 @@ vfio_ap_transition_to_state(struct ap_matrix_mdev *matrix_mdev,
+> [ ... ]
+>> +	/*
+>> +	 * These states indicate migration has either not been initiated or
+>> +	 * has completed and the vfio-ap device is operating normally. Since the
+>> +	 * vfio-ap device does not virtualize a DMA device, there is no internal
+>> +	 * device state to incorporate into the vfio-ap device on the target.
+>> +	 */
+>>   	if ((cur_state == VFIO_DEVICE_STATE_STOP &&
+>>   	     new_state == VFIO_DEVICE_STATE_RUNNING) ||
+>>   	    (cur_state == VFIO_DEVICE_STATE_RUNNING &&
+>>   	     new_state == VFIO_DEVICE_STATE_STOP)) {
+>> -		/* TODO */
+>> -		return ERR_PTR(-EOPNOTSUPP);
+>> +		return NULL;
+> [Severity: High]
+> Does returning NULL here instead of -EOPNOTSUPP allow userspace to silently
+> leak the active migration file and state?
+>
+> If a live migration is aborted and transitioned gracefully from STOP to
+> RUNNING, the old file descriptor could remain active in mig_data because
+> the driver still holds a reference to the file.
+>
+> If the process later starts a new migration and transitions to STOP_COPY
+> again, it looks like vfio_ap_transition_to_state() unconditionally
+> overwrites mig_data->stop_copy_mig_file.filp:
+>
+> vfio_ap_transition_to_state() {
+>      ...
+>      if (cur_state == VFIO_DEVICE_STATE_STOP &&
+>          new_state == VFIO_DEVICE_STATE_STOP_COPY) {
+>          ...
+>          mig_data->stop_copy_mig_file.filp = filp;
+>          return filp;
+>      }
+>      ...
+> }
+>
+> Will this cause the driver's reference to the old file to be permanently lost?
 
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  drivers/gpu/drm/ttm/ttm_bo_vm.c            |  3 +-
->  drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 42 ++++++++++++----------
->  2 files changed, 26 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> index a80510489c45..ef27a2d7afc0 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> @@ -263,7 +263,8 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
->  		 * at arbitrary times while the data is mmap'ed.
->  		 * See vmf_insert_pfn_prot() for a discussion.
->  		 */
-> -		ret = vmf_insert_pfn_prot(vma, address, pfn, prot);
-> +		ret = __vmf_insert_pfn_prot(vma, address, pfn, prot,
-> +					    i == 0 && !!(vmf->flags & FAULT_FLAG_WRITE));
->  
->  		/* Never error on prefaulted PTEs */
->  		if (unlikely((ret & VM_FAULT_ERROR))) {
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-> index 45561bc1c9ef..2cc490e7d758 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-> @@ -398,15 +398,33 @@ void vmw_bo_dirty_clear_res(struct vmw_resource *res)
->  		dirty->end = res_start;
->  }
->  
-> +static vm_fault_t vmw_bo_dirty_mkwrite(struct vm_fault *vmf, struct ttm_buffer_object *bo)
-> +{
-> +	unsigned long page_offset;
-> +	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
-> +
-> +	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
-> +	if (unlikely(page_offset >= PFN_UP(bo->resource->size)))
-> +		return VM_FAULT_SIGBUS;
-> +
-> +	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
-> +	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
-> +		struct vmw_bo_dirty *dirty = vbo->dirty;
-> +
-> +		__set_bit(page_offset, &dirty->bitmap[0]);
-> +		dirty->start = min(dirty->start, page_offset);
-> +		dirty->end = max(dirty->end, page_offset + 1);
-> +	}
-> +	return 0;
-> +}
-> +
->  vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
->  {
->  	struct vm_area_struct *vma = vmf->vma;
->  	struct ttm_buffer_object *bo = (struct ttm_buffer_object *)
->  	    vma->vm_private_data;
->  	vm_fault_t ret;
-> -	unsigned long page_offset;
->  	unsigned int save_flags;
-> -	struct vmw_bo *vbo = to_vmw_bo(&bo->base);
->  
->  	/*
->  	 * mkwrite() doesn't handle the VM_FAULT_RETRY return value correctly.
-> @@ -419,22 +437,7 @@ vm_fault_t vmw_bo_vm_mkwrite(struct vm_fault *vmf)
->  	if (ret)
->  		return ret;
->  
-> -	page_offset = vmf->pgoff - drm_vma_node_start(&bo->base.vma_node);
-> -	if (unlikely(page_offset >= PFN_UP(bo->resource->size))) {
-> -		ret = VM_FAULT_SIGBUS;
-> -		goto out_unlock;
-> -	}
-> -
-> -	if (vbo->dirty && vbo->dirty->method == VMW_BO_DIRTY_MKWRITE &&
-> -	    !test_bit(page_offset, &vbo->dirty->bitmap[0])) {
-> -		struct vmw_bo_dirty *dirty = vbo->dirty;
-> -
-> -		__set_bit(page_offset, &dirty->bitmap[0]);
-> -		dirty->start = min(dirty->start, page_offset);
-> -		dirty->end = max(dirty->end, page_offset + 1);
-> -	}
-> -
-> -out_unlock:
-> +	ret = vmw_bo_dirty_mkwrite(vmf, bo);
->  	dma_resv_unlock(bo->base.resv);
->  	return ret;
->  }
-> @@ -484,6 +487,9 @@ vm_fault_t vmw_bo_vm_fault(struct vm_fault *vmf)
->  		prot = vm_get_page_prot(vma->vm_flags);
->  
->  	ret = ttm_bo_vm_fault_reserved(vmf, prot, num_prefault);
-> +	if (ret == VM_FAULT_NOPAGE && (vmf->flags & FAULT_FLAG_WRITE))
-> +		WARN_ON_ONCE(vmw_bo_dirty_mkwrite(vmf, bo));
-> +
->  	if (ret == VM_FAULT_RETRY && !(vmf->flags & FAULT_FLAG_RETRY_NOWAIT))
->  		return ret;
->  
+>
+> If the old fd is read, vfio_ap_stop_copy_read() might observe that
+> mig_file->ap_config is already populated and skip updating it, serving
+> stale configuration to the target.
+>
+> Additionally, when userspace closes the old fd, its release handler might
+> fail to match the overwritten filp pointer, which would skip
+> vfio_device_put_registration() and permanently pin the device.
+
+The NULL return for STOP<->RUNNING transitions is the correct
+VFIO API response when no data fd needs to be handed to
+userspace — it does not touch any filp field in mig_data.
+The scenario you describe — a new STOP->STOP_COPY transition
+silently overwriting a still-live stop_copy_mig_file.filp —
+cannot happen, for the following reasons:
+
+File descriptor cleanup is always performed before a new fd
+can be opened. vfio_ap_release_mig_files() is called by
+both vfio_ap_reset_migration_state() (on VFIO_DEVICE_RESET)
+and vfio_ap_release_migration_data() (on device close),
+both under mdevs_lock. Either path nulls out
+stop_copy_mig_file.filp before any subsequent
+STOP->STOP_COPY transition can reach the code that writes
+to it.
+
+vfio_device_put_registration() is always balanced.
+vfio_ap_release_mig_file() — the file_operations.release
+handler invoked when userspace closes the fd —
+unconditionally calls vfio_device_put_registration()
+regardless of mig_data state. There is no code path that
+causes it to be skipped.
+
+The stale-data scenario does not apply.
+validate_stop_copy_read_parms() rejects any read where
+mig_data->stop_copy_mig_file.filp != filp. A fd from a
+previous session will fail that check with -EINVAL and
+never serve any data.
+
+>
+> [Severity: Critical]
+> With these new state transitions, is there also a risk of use-after-free or
+> write-after-free regressions during concurrent migration data transfers?
+>
+> If a userspace process calls read() or write() on the migration file
+> descriptor, mdevs_lock is temporarily dropped during the data copy:
+>
+> vfio_ap_stop_copy_read() {
+>      ...
+>      mutex_unlock(&matrix_dev->mdevs_lock);
+>
+>      if (copy_to_user(buf, (char *)mig_file->ap_config + read_pos, len))
+>      ...
+> }
+>
+> Similarly in vfio_ap_resuming_write():
+>
+> vfio_ap_resuming_write() {
+>      ...
+>      mutex_unlock(&matrix_dev->mdevs_lock);
+>
+>      if (copy_from_user((char *)ap_config + write_pos, buf, len)) {
+>      ...
+> }
+>
+> Can a concurrent thread issue a VFIO_DEVICE_RESET ioctl, close the
+> device fd, or trigger a state transition that acquires mdevs_lock and
+> frees ap_config and mig_data?
+>
+> If so, when the read/write thread resumes execution, it appears it
+> would access the freed ap_config memory, leading to arbitrary kernel
+> memory corruption or information leaks.
+
+This is a valid observation. At the commit under review,
+vfio_ap_resuming_write() drops mdevs_lock for
+copy_from_user() while holding a raw pointer to an
+ap_config buffer that has not yet been stored into mig_data.
+For subsequent writes (non-new-allocation path), the pointer
+is retrieved from mig_data->resuming_mig_file.ap_config
+under the lock but then used after the lock is dropped. A
+concurrent VFIO_DEVICE_RESET calling
+vfio_ap_release_mig_files() under the same lock could
+kvfree() that buffer while the write path is copying into
+it.
+
+This will be addressed in the next patch series.
+
+>
+>>   	}
+>>   
+>>   	/* vfio_mig_get_next_state() does not use arcs other than the above */
 
