@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6AA46D09D;
-	Wed,  5 Aug 2026 11:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B98046D2DC;
+	Wed,  5 Aug 2026 11:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927859; cv=none; b=lsaGNv0Trneo6UZm/URs4KrgwPFHkkYeHectjiRtzLIkzTyUaiXZTcTbKGQrrYvBfBRBVk/CX0a/1Qf76ywZw9AfPfN3iafNCtjwCsLpN9PHJ0U992q2jxHqUXRzIKXubQ5dis8wykffc6sQnPrt+o/w9O4gNHK3AEwV6C2TscU=
+	t=1785927861; cv=none; b=JjGAN5Aw4Vdz6xF3OeOhzMi7dcOlXaTxJ1bGxKwfxm9eSzp0iKGV9i6d/cT721+92wsTp0TKP9zj9R7NBnK28U9WaocY5Eb3LbgKKlJ1A9623pcaGklwp0C03ZAgmL3z7KUbUQqxk3ju538appeCKW+7lvZnuhhYsY47rS6nRis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927859; c=relaxed/simple;
-	bh=b6vgVm6RVK+tWU7Cnq/kwRlgOp/aiCgLOzkYg61p8pk=;
+	s=arc-20240116; t=1785927861; c=relaxed/simple;
+	bh=B3Jxs51JdpOLNuoiHj+NQ4cy2Io/khf5jp/0C3Oso7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsaHong+Wlr67N77++hGclpvj/wut06FiWr6e6s4EnRjJH4oADR3XXxftTOsPEafKohkrYFAq0jbiV586wdJIOO6BPex3FqO5/yRV3XfkKdIEuUh+68Ckup0KSYSkRrVHrZb/wuEUNJmMYYlOg6XKunllvR56nL9KWox3Ix5X+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=fsomZdNq; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=O2KH9NLw9ZlXOQ5k4cMk65/DFGWTEdHSIhkd92OC3eg1I76kqSVn1lqC+Xg9yYWRYnGXlrdYK/B8x0nfHGiZ0mofTEWkSLFiGZzbt2Q4+YXZvlB2WBh138zwhSlkknBuCm0sUdIAmabjfHa5CiELO2IBLGLvDmoufBf1tLAQDno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Exn2+wgE; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="fsomZdNq"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Exn2+wgE"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E654520B716B;
-	Wed,  5 Aug 2026 04:03:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E654520B716B
+	by linux.microsoft.com (Postfix) with ESMTPSA id B78F920B716C;
+	Wed,  5 Aug 2026 04:03:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B78F920B716C
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1785927836;
-	bh=kcbPiVYhmTkNV/i4qwxJbLgGTIdkavUIqaLTCvU7H4Q=;
+	bh=9DGQDZMGnVdkLT+T7BFikYvxxukUnodYkNvYZab2Vlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsomZdNqRIkAX1VHRyHMmzo6JnxZ2VyrpSWQ9rdp845pbXl/nMBUDnj1Tl6o50GbZ
-	 y0J6IDK0k4Ad+36Gw2bvgt72+ef0QR6XPEYTH2D5lhGNXJ6DSXOm2m01NT95lr5mxp
-	 uDKiOv4iCKe6ILDgqeIGyKyQ/YNC7DvU4ciNNkiU=
+	b=Exn2+wgEZEQjnftki+F4cbY08suL61hBripewKHY+1bvdTNJJ8FIcCW+VnTXs3f9V
+	 iqpq9YgXEResAzTTxSZ7GFTRwd4hLJiAx+ZG7cT7R48Yig5xxZh51ZUGzrh2ulGC2c
+	 joeoC/FcthRR2u1f4Z5N2FRdTiOC3B2h/L2dix1c=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 41/42] kvm: x86: finalize per-plane APIC state and CPUID placement
-Date: Wed,  5 Aug 2026 04:03:23 -0700
-Message-ID: <20260805110324.25067-42-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 42/42] kvm: planes: reconcile core plane state, UAPI and hypercall exit
+Date: Wed,  5 Aug 2026 04:03:24 -0700
+Message-ID: <20260805110324.25067-43-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -42,322 +42,667 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Adopt the vm-planes-merged design for x86 plane state: keep CPUID and
-cpu_caps in kvm_vcpu_arch_common, make apic_map and APICv-inhibit
-tracking VM-scoped again, and drop the superseded intermediate fields
-(planes_share_fpu, irr_pending_planes, kvm_arch_plane.apicv_inhibit_reasons,
-kvm_lapic_irq.plane). These changes originated in merge-commit conflict
-resolutions that a --no-merges linearization could not carry over.
+Align the generic plane core and its userspace ABI with vm-planes-merged:
+the kvm_vcpu_common/kvm_plane layout and helpers, the KVM_CAP_PLANES /
+KVM_EXIT_PLANE_EVENT definitions and documentation, and the x86 handling
+that exits VM-plane and VBS hypercalls to userspace. These deltas came
+from the integration branch's merge-commit conflict resolutions.
 ---
- arch/x86/include/asm/kvm_host.h | 36 +++++-----------------
- arch/x86/kvm/cpuid.c            | 19 +-----------
- arch/x86/kvm/hyperv.c           |  1 -
- arch/x86/kvm/i8254.c            |  4 +--
- arch/x86/kvm/lapic.c            | 53 +++++++--------------------------
- arch/x86/kvm/xen.c              |  1 -
- 6 files changed, 20 insertions(+), 94 deletions(-)
+ Documentation/virt/kvm/api.rst | 35 +++++++-------
+ arch/x86/kvm/svm/sev.c         |  5 +-
+ arch/x86/kvm/x86.c             | 86 ++++++++++------------------------
+ include/linux/kvm_host.h       |  8 ++--
+ include/uapi/linux/kvm.h       | 23 +--------
+ virt/kvm/kvm_main.c            | 86 +++++++++++++++-------------------
+ 6 files changed, 86 insertions(+), 157 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index bbccb9d3d801..b1a7e4ca8870 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -956,12 +956,6 @@ struct kvm_vcpu_arch {
- 	u64 ia32_xss;
- 	u64 guest_supported_xss;
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index c6b109fa8945..269be00c8dcf 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -9101,27 +9101,20 @@ helpful if user space wants to emulate instructions which are not
+ This capability can be enabled dynamically even if VCPUs were already
+ created and are running.
  
--	/*
--	 * Only valid in plane0.  The bitmask of planes that received
--	 * an interrupt, to be checked against req_exit_planes.
--	 */
--	atomic_t irr_pending_planes;
+-hpage_2g module parameter is not set to 1, -EINVAL is returned.
 -
- 	struct kvm_pio_request pio;
- 	void *pio_data;
- 	void *sev_pio_data;
-@@ -1175,10 +1169,6 @@ struct kvm_arch_memory_slot {
- 	unsigned short *gfn_write_track;
- };
- 
--struct kvm_arch_plane {
--	unsigned long apicv_inhibit_reasons;
--};
+-7.47 KVM_CAP_PLANES_FPU
+------------------------
 -
- /*
-  * Track the mode of the optimized logical map, as the rules for decoding the
-  * destination vary per mode.  Enabling the optimized logical map requires all
-@@ -1397,13 +1387,11 @@ enum kvm_apicv_inhibit {
- 	/*
- 	 * PIT (i8254) 're-inject' mode, relies on EOI intercept,
- 	 * which AVIC doesn't support for edge triggered interrupts.
--	 * Applied only to plane 0.
- 	 */
- 	APICV_INHIBIT_REASON_PIT_REINJ,
+-:Architectures: x86
+-:Parameters: arg[0] is 0 if each vCPU plane has a separate FPU,
+-             1 if the FPU is shared
+-:Type: vm
++7.47 KVM_CAP_S390_HPAGE_2G
++--------------------------
  
- 	/*
--	 * AVIC is disabled because SEV doesn't support it.  Sticky and applied
--	 * only to plane 0.
-+	 * AVIC is disabled because SEV doesn't support it.
- 	 */
- 	APICV_INHIBIT_REASON_SEV,
+-When enabled, such as KVM_SET_XSAVE or KVM_SET_FPU *are* available for
+-vCPU on all planes, but they will read and write the same data that is presented
+-to other planes.  Note that KVM_GET/SET_XSAVE also allows access to some
+-registers that are *not* part of FPU state; right now this is just PKRU.
+-Those are never shared.
++:Architectures: s390
++:Parameters: none
++:Returns: 0 on success; -EINVAL if hpage_2g module parameter was not set,
++          cmma is enabled, or the VM has the KVM_VM_S390_UCONTROL
++          flag set; -EBUSY if vCPUs were already created for the VM.
  
-@@ -1483,7 +1471,6 @@ struct kvm_arch {
- 	unsigned int indirect_shadow_pages;
- 	u8 mmu_valid_gen;
- 	u8 vm_type;
--	bool planes_share_fpu;
- 	bool has_private_mem;
- 	bool has_protected_state;
- 	bool has_protected_eoi;
-@@ -1805,7 +1792,6 @@ struct kvm_lapic_irq {
- 	u16 delivery_mode;
- 	u16 dest_mode;
- 	bool level;
--	u8 plane;
- 	u16 trig_mode;
- 	u32 shorthand;
- 	u32 dest_id;
-@@ -2399,21 +2385,21 @@ gpa_t kvm_mmu_gva_to_gpa_system(struct kvm_vcpu *vcpu, gva_t gva,
- bool kvm_apicv_activated(struct kvm *kvm);
- bool kvm_vcpu_apicv_activated(struct kvm_vcpu *vcpu);
- void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu);
--void __kvm_set_or_clear_apicv_inhibit(struct kvm_plane *plane,
-+void __kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
- 				      enum kvm_apicv_inhibit reason, bool set);
--void kvm_set_or_clear_apicv_inhibit(struct kvm_plane *plane,
-+void kvm_set_or_clear_apicv_inhibit(struct kvm *kvm,
- 				    enum kvm_apicv_inhibit reason, bool set);
+-KVM_CAP_PLANES_FPU is experimental; userspace must *not* assume that
+-KVM_CAP_PLANES_FPU is present on x86 for *any* VM type and different
+-VM types may or may not allow enabling KVM_CAP_PLANES_FPU.  Like for other
+-capabilities, KVM_CAP_PLANES_FPU can be queried on the VM file descriptor;
+-KVM_CHECK_EXTENSION returns 1 if it is possible to enable shared FPU mode.
++With this capability the KVM support for memory backing with 2g pages
++through hugetlbfs can be enabled for a VM. After the capability is
++enabled, cmma can't be enabled anymore and pfmfi and the storage key
++interpretation are disabled. If cmma has already been enabled or the
++hpage_2g module parameter is not set to 1, -EINVAL is returned.
  
--static inline void kvm_set_apicv_inhibit(struct kvm_plane *plane,
-+static inline void kvm_set_apicv_inhibit(struct kvm *kvm,
- 					 enum kvm_apicv_inhibit reason)
- {
--	kvm_set_or_clear_apicv_inhibit(plane, reason, true);
-+	kvm_set_or_clear_apicv_inhibit(kvm, reason, true);
+ 8. Other capabilities.
+ ======================
+@@ -9674,6 +9667,10 @@ check for this capability on the VM file descriptor.
+ When called on the system file descriptor, KVM returns the highest
+ value supported on any machine type.
+ 
++When called on a plane file descriptor, KVM returns 0, because a
++plane cannot host planes of its own.  Other capabilities are
++forwarded to the plane's parent VM.
++
+ 8.47 KVM_CAP_S390_VSIE_ESAMODE
+ ------------------------------
+ 
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index b9b0bbb72394..b94de3b8967a 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4488,7 +4488,7 @@ static void sev_get_apic_ids(struct vcpu_svm *svm)
+ 	desc->num_entries = n;
+ 	kvm_for_each_vcpu(i, loop_vcpu, kvm) {
+ 		/*TODO: is this possible? */
+-		if (i > n)
++		if (i >= n)
+ 			break;
+ 
+ 		desc->apic_ids[i] = loop_vcpu->vcpu_id;
+@@ -4713,6 +4713,9 @@ static bool is_snp_only_vmgexit(u64 exit_code)
+ 	case SVM_VMGEXIT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
+ 	case SVM_VMGEXIT_PSC:
++	case SVM_VMGEXIT_HVDB_PAGE:
++	case SVM_VMGEXIT_HV_IPI:
++	case SVM_VMGEXIT_SNP_RUN_VMPL:
+ 		return true;
+ 	default:
+ 		return false;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index c8c37d569023..d80b1caefc70 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -517,31 +517,6 @@ void kvm_free_plane(struct kvm_plane *plane)
+ 	kvm_x86_call(free_plane)(plane);
  }
  
--static inline void kvm_clear_apicv_inhibit(struct kvm_plane *plane,
-+static inline void kvm_clear_apicv_inhibit(struct kvm *kvm,
- 					   enum kvm_apicv_inhibit reason)
- {
--	kvm_set_or_clear_apicv_inhibit(plane, reason, false);
-+	kvm_set_or_clear_apicv_inhibit(kvm, reason, false);
- }
- 
- void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc);
-@@ -2503,8 +2489,6 @@ enum {
- # define kvm_memslots_for_spte_role(kvm, role) __kvm_memslots(kvm, 0)
- #endif
- 
--#define KVM_MAX_VCPU_PLANES	16
--
- int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v);
- int kvm_cpu_has_interrupt(struct kvm_vcpu *vcpu);
- int kvm_cpu_has_extint(struct kvm_vcpu *v);
-@@ -2539,9 +2523,6 @@ void kvm_make_scan_ioapic_request(struct kvm *kvm);
- void kvm_make_scan_ioapic_request_mask(struct kvm *kvm,
- 				       unsigned long *vcpu_bitmap);
- 
--void kvm_arch_init_plane(struct kvm_plane *plane);
--void kvm_arch_free_plane(struct kvm_plane *plane);
--
- bool kvm_arch_async_page_not_present(struct kvm_vcpu *vcpu,
- 				     struct kvm_async_pf *work);
- void kvm_arch_async_page_present(struct kvm_vcpu *vcpu,
-@@ -2612,7 +2593,4 @@ static inline bool kvm_arch_has_irq_bypass(void)
- 	return enable_device_posted_irqs;
- }
- 
--int kvm_arch_nr_vcpu_planes(struct kvm *kvm);
--bool kvm_arch_planes_share_fpu(struct kvm *kvm);
--
- #endif /* _ASM_X86_KVM_HOST_H */
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index ce337c6d3bcf..7b8cd379ba9f 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -555,7 +555,7 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
- 	 * KVM_SET_CPUID{,2} again. To support this legacy behavior, check
- 	 * whether the supplied CPUID data is equal to what's already set.
- 	 */
--	if (!kvm_can_set_cpuid_and_feature_msrs(vcpu) || vcpu->has_planes) {
-+	if (!kvm_can_set_cpuid_and_feature_msrs(vcpu)) {
- 		r = kvm_cpuid_check_equal(vcpu, e2, nent);
- 		if (r)
- 			goto err;
-@@ -594,23 +594,6 @@ static int kvm_set_cpuid(struct kvm_vcpu *vcpu, struct kvm_cpuid_entry2 *e2,
- 	return r;
- }
- 
--int kvm_dup_cpuid(struct kvm_vcpu *vcpu, struct kvm_vcpu *source)
+-struct kvm_plane *x86_alloc_plane(void)
 -{
--	if (WARN_ON_ONCE(vcpu->arch.cpuid_entries || vcpu->arch.cpuid_nent))
--		return -EEXIST;
+-	/* For better type checking, do not return kzalloc() value directly */
+-	struct kvm_plane *plane = kzalloc(sizeof(*plane), GFP_KERNEL_ACCOUNT);
 -
--	vcpu->arch.cpuid_entries = kmemdup(source->arch.cpuid_entries,
--		     source->arch.cpuid_nent * sizeof(struct kvm_cpuid_entry2),
--		     GFP_KERNEL_ACCOUNT);
--	if (!vcpu->arch.cpuid_entries)
--		return -ENOMEM;
+-	return plane;
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_alloc_plane);
 -
--	memcpy(vcpu->arch.cpu_caps, source->arch.cpu_caps, sizeof(source->arch.cpu_caps));
--	vcpu->arch.cpuid_nent = source->arch.cpuid_nent;
+-void x86_free_plane(struct kvm_plane *plane)
+-{
+-	kfree(plane);
+-}
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_free_plane);
 -
--	return 0;
+-struct kvm_plane *kvm_alloc_plane(void)
+-{
+-	return kvm_x86_call(alloc_plane)();
 -}
 -
- /* when an old userspace process fills a new kernel module */
- int kvm_vcpu_ioctl_set_cpuid(struct kvm_vcpu *vcpu,
- 			     struct kvm_cpuid *cpuid,
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 8ef09b8125b7..ee6b32d2a5cb 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -491,7 +491,6 @@ static int synic_set_irq(struct kvm_vcpu_hv_synic *synic, u32 sint)
- 	irq.delivery_mode = APIC_DM_FIXED;
- 	irq.vector = vector;
- 	irq.level = 1;
+-void kvm_free_plane(struct kvm_plane *plane)
+-{
+-	kvm_x86_call(free_plane)(plane);
+-}
 -
- 	ret = kvm_irq_delivery_to_apic(vcpu->plane, vcpu->arch.apic, &irq);
- 	trace_kvm_hv_synic_set_irq(vcpu->vcpu_id, sint, irq.vector, ret);
- 	return ret;
-diff --git a/arch/x86/kvm/i8254.c b/arch/x86/kvm/i8254.c
-index cd47fd88c9f7..bfe590378bd2 100644
---- a/arch/x86/kvm/i8254.c
-+++ b/arch/x86/kvm/i8254.c
-@@ -305,13 +305,13 @@ static void kvm_pit_set_reinject(struct kvm_pit *pit, bool reinject)
- 	 * So, deactivate APICv when PIT is in reinject mode.
+ /*
+  * All feature MSRs except uCode revID, which tracks the currently loaded uCode
+  * patch, are immutable once the vCPU model is defined.
+@@ -1026,7 +1001,7 @@ static int complete_emulated_insn_gp(struct kvm_vcpu *vcpu, int err)
+ void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault,
+ 			   bool from_hardware)
+ {
+-	++vcpu->stat->pf_guest;
++	++vcpu->stat.pf_guest;
+ 
+ 	/*
+ 	 * Async #PF in L2 is always forwarded to L1 as a VM-Exit regardless of
+@@ -3732,7 +3707,7 @@ static void kvmclock_reset(struct kvm_vcpu *vcpu)
+ 
+ static void kvm_vcpu_flush_tlb_all(struct kvm_vcpu *vcpu)
+ {
+-	++vcpu->stat->tlb_flush;
++	++vcpu->stat.tlb_flush;
+ 	kvm_x86_call(flush_tlb_all)(vcpu);
+ 
+ 	/* Flushing all ASIDs flushes the current ASID... */
+@@ -3741,7 +3716,7 @@ static void kvm_vcpu_flush_tlb_all(struct kvm_vcpu *vcpu)
+ 
+ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
+ {
+-	++vcpu->stat->tlb_flush;
++	++vcpu->stat.tlb_flush;
+ 
+ 	if (!tdp_enabled) {
+ 		/*
+@@ -3766,7 +3741,7 @@ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
+ 
+ static inline void kvm_vcpu_flush_tlb_current(struct kvm_vcpu *vcpu)
+ {
+-	++vcpu->stat->tlb_flush;
++	++vcpu->stat.tlb_flush;
+ 	kvm_x86_call(flush_tlb_current)(vcpu);
+ }
+ 
+@@ -5305,11 +5280,11 @@ static void kvm_steal_time_set_preempted(struct kvm_vcpu *vcpu)
+ 	 * preempted if and only if the VM-Exit was due to a host interrupt.
  	 */
- 	if (reinject) {
--		kvm_set_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_PIT_REINJ);
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_PIT_REINJ);
- 		/* The initial state is preserved while ps->reinject == 0. */
- 		kvm_pit_reset_reinject(pit);
- 		kvm_register_irq_ack_notifier(kvm, &ps->irq_ack_notifier);
- 		kvm_register_irq_mask_notifier(kvm, 0, &pit->mask_notifier);
- 	} else {
--		kvm_clear_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_PIT_REINJ);
-+		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_PIT_REINJ);
- 		kvm_unregister_irq_ack_notifier(kvm, &ps->irq_ack_notifier);
- 		kvm_unregister_irq_mask_notifier(kvm, 0, &pit->mask_notifier);
+ 	if (!vcpu->arch.at_instruction_boundary) {
+-		vcpu->stat->preemption_other++;
++		vcpu->stat.preemption_other++;
+ 		return;
  	}
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4cca1ea6a16e..ff923133a834 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -405,7 +405,6 @@ enum {
  
- static void kvm_recalculate_apic_map(struct kvm_plane *plane)
+-	vcpu->stat->preemption_reported++;
++	vcpu->stat.preemption_reported++;
+ 	if (!(vcpu->arch.st.msr_val & KVM_MSR_ENABLED))
+ 		return;
+ 
+@@ -6845,7 +6820,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		r = -EEXIST;
+ 		if (irqchip_in_kernel(kvm) || kvm->has_planes)
+ 			goto split_irqchip_unlock;
+-		if (kvm->created_vcpus || kvm->has_planes)
++		if (kvm->created_vcpus)
+ 			goto split_irqchip_unlock;
+ 		/* Pairs with irqchip_in_kernel. */
+ 		smp_wmb();
+@@ -9278,7 +9253,7 @@ static int handle_emulation_failure(struct kvm_vcpu *vcpu, int emulation_type)
  {
--	struct kvm_plane *plane = kvm->planes[0];
- 	struct kvm_apic_map *new, *old = NULL;
- 	struct kvm *kvm = plane->kvm;
- 	struct kvm_vcpu *vcpu;
-@@ -486,19 +485,19 @@ static void kvm_recalculate_apic_map(struct kvm_plane *plane)
- 	 * map also applies to APICv.
- 	 */
- 	if (!new)
--		kvm_set_apicv_inhibit(plane, APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED);
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED);
- 	else
--		kvm_clear_apicv_inhibit(plane, APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED);
-+		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_PHYSICAL_ID_ALIASED);
+ 	struct kvm *kvm = vcpu->kvm;
  
- 	if (!new || new->logical_mode == KVM_APIC_MODE_MAP_DISABLED)
--		kvm_set_apicv_inhibit(plane, APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED);
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED);
- 	else
--		kvm_clear_apicv_inhibit(plane, APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED);
-+		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_LOGICAL_ID_ALIASED);
+-	++vcpu->stat->insn_emulation_fail;
++	++vcpu->stat.insn_emulation_fail;
+ 	trace_kvm_emulate_insn_failed(vcpu);
  
- 	if (xapic_id_mismatch)
--		kvm_set_apicv_inhibit(plane, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
-+		kvm_set_apicv_inhibit(kvm, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
- 	else
--		kvm_clear_apicv_inhibit(plane, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
-+		kvm_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_APIC_ID_MODIFIED);
+ 	if (emulation_type & EMULTYPE_VMWARE_GP) {
+@@ -9510,7 +9485,7 @@ int x86_decode_emulated_instruction(struct kvm_vcpu *vcpu, int emulation_type,
+ 	r = x86_decode_insn(ctxt, insn, insn_len, emulation_type);
  
- 	old = rcu_dereference_protected(plane->arch.apic_map,
- 			lockdep_is_held(&plane->arch.apic_map_lock));
-@@ -1396,39 +1395,6 @@ int __kvm_irq_delivery_to_apic(struct kvm_plane *plane, struct kvm_lapic *src,
+ 	trace_kvm_emulate_insn_start(vcpu);
+-	++vcpu->stat->insn_emulation;
++	++vcpu->stat.insn_emulation;
+ 
  	return r;
  }
+@@ -9685,7 +9660,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 		}
+ 		r = 0;
+ 	} else if (vcpu->mmio_needed) {
+-		++vcpu->stat->mmio_exits;
++		++vcpu->stat.mmio_exits;
  
--static void kvm_lapic_deliver_interrupt(struct kvm_vcpu *vcpu, struct kvm_lapic *apic,
--					int delivery_mode, int trig_mode, int vector)
--{
--	struct kvm_vcpu *plane0_vcpu = vcpu->plane0;
--	struct kvm_plane *running_plane;
--	u16 req_exit_planes;
+ 		if (!vcpu->mmio_is_write)
+ 			writeback = false;
+@@ -10452,7 +10427,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
+ 	struct kvm_vcpu *target = NULL;
+ 	struct kvm_apic_map *map;
+ 
+-	vcpu->stat->directed_yield_attempted++;
++	vcpu->stat.directed_yield_attempted++;
+ 
+ 	if (single_task_running())
+ 		goto no_yield;
+@@ -10478,7 +10453,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
+ 	if (kvm_vcpu_yield_to(target) <= 0)
+ 		goto no_yield;
+ 
+-	vcpu->stat->directed_yield_successful++;
++	vcpu->stat.directed_yield_successful++;
+ 
+ no_yield:
+ 	return;
+@@ -10555,7 +10530,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 	int op_64_bit = is_64_bit_hypercall(vcpu);
+ 	unsigned long ret, nr, a0, a1, a2, a3;
+ 
+-	++vcpu->stat->hypercalls;
++	++vcpu->stat.hypercalls;
+ 
+ 	if (op_64_bit) {
+ 		nr = kvm_rax_read_raw(vcpu);
+@@ -10673,7 +10648,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 
+ 				if (common->vtl_plane_ready) {
+ 					/* Parked in vtl_return: deliver now. */
+-					kvm_rax_write(secure, a0);
++					kvm_rax_write_raw(secure, a0);
+ 					common->vtl_call_pending = false;
+ 				} else {
+ 					/* Still booting: deliver on readiness. */
+@@ -11388,7 +11363,7 @@ void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc)
+ 	 */
+ 	guard(rwsem_write)(&kvm->arch.apicv_update_lock);
+ 	if (atomic_add_return(add, &kvm->arch.apicv_nr_irq_window_req) == inc)
+-		__kvm_set_or_clear_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_IRQWIN, inc);
++		__kvm_set_or_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_IRQWIN, inc);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_inc_or_dec_irq_window_inhibit);
+ 
+@@ -11644,22 +11619,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		goto out;
+ 	}
+ 
+-	if (kvm_check_plane0_events(vcpu)) {
+-		kvm_vcpu_set_plane_runnable(vcpu->common->vcpus[0]);
 -
--	kvm_x86_call(deliver_interrupt)(apic, delivery_mode, trig_mode, vector);
--
--	/*
--	 * test_and_set_bit implies a memory barrier, so IRR is written before
--	 * reading irr_pending_planes below...
--	 */
--	if (!test_and_set_bit(vcpu->plane, &plane0_vcpu->arch.irr_pending_planes)) {
--		/*
--		 * ... and also running_plane and req_exit_planes are read after writing
--		 * irr_pending_planes.  Both barriers pair with kvm_arch_vcpu_ioctl_run().
--		 */
--		smp_mb__after_atomic();
--
--		running_plane = READ_ONCE(plane0_vcpu->running_plane);
--		if (!running_plane)
--			return;
--
--		req_exit_planes = READ_ONCE(plane0_vcpu->req_exit_planes);
--		if (!(req_exit_planes & BIT(vcpu->plane)))
--			return;
--
--		kvm_make_request(KVM_REQ_PLANE_INTERRUPT,
--				 kvm_get_plane_vcpu(running_plane, vcpu->vcpu_id));
+-		kvm_make_request(KVM_REQ_EVENT, vcpu);
+-		kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
 -	}
--}
 -
- /*
-  * Add a pending IRQ into lapic.
-  * Return 1 if successfully added and 0 if discarded.
-@@ -1470,7 +1436,8 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
- 				apic_clear_vector(vector, apic->regs + APIC_TMR);
+-	if (kvm_check_request(KVM_REQ_PLANE_RESCHED, vcpu)) {
+-		vcpu->common->plane_switch = true;
+-		r = 0;
+-		goto out;
+-	}
+-
+ 	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
+ 	    kvm_xen_has_interrupt(vcpu)) {
+-		++vcpu->stat->req_event;
++		++vcpu->stat.req_event;
+ 		r = kvm_apic_accept_events(vcpu);
+ 		if (r < 0) {
+ 			r = 0;
+@@ -11815,7 +11777,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 		run_flags = 0;
+ 
+ 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
+-		++vcpu->stat->exits;
++		++vcpu->stat.exits;
+ 	}
+ 
+ 	kvm_load_host_pkru(vcpu);
+@@ -11881,11 +11843,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 	 * VM-Exit on SVM and any ticks that occur between VM-Exit and now.
+ 	 * An instruction is required after local_irq_enable() to fully unblock
+ 	 * interrupts on processors that implement an interrupt shadow, the
+-	 * stat->exits increment will do nicely.
++	 * stat.exits increment will do nicely.
+ 	 */
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+ 	local_irq_enable();
+-	++vcpu->stat->exits;
++	++vcpu->stat.exits;
+ 	local_irq_disable();
+ 	kvm_after_interrupt(vcpu);
+ 
+@@ -12103,7 +12065,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+ 			kvm_vcpu_ready_for_interrupt_injection(vcpu)) {
+ 			r = 0;
+ 			vcpu->run->exit_reason = KVM_EXIT_IRQ_WINDOW_OPEN;
+-			++vcpu->stat->request_irq_exits;
++			++vcpu->stat.request_irq_exits;
+ 			break;
  		}
  
--		kvm_lapic_deliver_interrupt(vcpu, apic, delivery_mode, trig_mode, vector);
-+		kvm_x86_call(deliver_interrupt)(apic, delivery_mode,
-+						trig_mode, vector);
- 		break;
- 
- 	case APIC_DM_REMRD:
-@@ -2087,7 +2054,7 @@ static void apic_timer_expired(struct kvm_lapic *apic, bool from_timer_fn)
- 	if (apic_lvtt_tscdeadline(apic) || ktimer->hv_timer_in_use)
- 		ktimer->expired_tscdeadline = ktimer->tscdeadline;
- 
--	if (!from_timer_fn && apic->apicv_active && vcpu->wants_to_run) {
-+	if (!from_timer_fn && apic->apicv_active && kvm_vcpu_wants_to_run(vcpu)) {
- 		WARN_ON(kvm_get_running_vcpu() != vcpu);
- 		kvm_apic_inject_pending_timer_irqs(apic);
+@@ -12128,7 +12090,7 @@ static int __kvm_emulate_halt(struct kvm_vcpu *vcpu, int state, int reason)
+ 	 * managed by userspace, in which case userspace is responsible for
+ 	 * handling wake events.
+ 	 */
+-	++vcpu->stat->halt_exits;
++	++vcpu->stat.halt_exits;
+ 	if (lapic_in_kernel(vcpu)) {
+ 		if (kvm_vcpu_has_events(vcpu) || vcpu->arch.pv.pv_unhalted)
+ 			state = KVM_MP_STATE_RUNNABLE;
+@@ -12300,7 +12262,7 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
  		return;
-@@ -2867,7 +2834,7 @@ static void __kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value)
  
- 	if ((value & MSR_IA32_APICBASE_ENABLE) &&
- 	     apic->base_address != APIC_DEFAULT_PHYS_BASE) {
--		kvm_set_apicv_inhibit(vcpu_to_plane(vcpu),
-+		kvm_set_apicv_inhibit(apic->vcpu->kvm,
- 				      APICV_INHIBIT_REASON_APIC_BASE_MODIFIED);
+ 	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, false);
+-	++vcpu->stat->fpu_reload;
++	++vcpu->stat.fpu_reload;
+ 	trace_kvm_fpu(0);
+ }
+ 
+@@ -12387,7 +12349,7 @@ static int __kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 		if (signal_pending(current)) {
+ 			r = -EINTR;
+ 			kvm_run->exit_reason = KVM_EXIT_INTR;
+-			++vcpu->stat->signal_exits;
++			++vcpu->stat.signal_exits;
+ 		}
+ 		goto out;
+ 	}
+@@ -13180,7 +13142,7 @@ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
+ 	return 0;
+ }
+ 
+-int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane)
++int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
+ {
+ 	int r;
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 05c9edd4a73d..bee8eaea05bc 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -453,8 +453,7 @@ struct kvm_vcpu {
+ #endif
+ 
+ 	struct kvm_vcpu_arch arch;
+-	struct kvm_vcpu_stat *stat;
+-	struct kvm_vcpu_stat __stat;
++	struct kvm_vcpu_stat stat;
+ 	char stats_id[KVM_STATS_NAME_SIZE];
+ 
+ 	/*
+@@ -1012,7 +1011,6 @@ struct kvm {
+ 	bool dirty_ring_with_bitmap;
+ 	bool vm_bugged;
+ 	bool vm_dead;
+-	bool has_planes;
+ 
+ #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
+ 	struct notifier_block pm_notifier;
+@@ -1801,7 +1799,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu);
+ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
+ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu);
+ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id);
+-int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane);
++int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu);
+ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu);
+ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu);
+ 
+@@ -2664,7 +2662,7 @@ static inline int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
+ static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
+ {
+ 	vcpu->run->exit_reason = KVM_EXIT_INTR;
+-	vcpu->stat->signal_exits++;
++	vcpu->stat.signal_exits++;
+ }
+ 
+ static inline int kvm_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu)
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 3118b31d13f6..fa2799c4dddb 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -140,16 +140,6 @@ struct kvm_xen_exit {
+ 	} u;
+ };
+ 
+-struct kvm_plane_event_exit {
+-#define KVM_PLANE_EVENT_INTERRUPT    1
+-	__u16 cause;
+-	__u16 pending_event_planes;
+-	__u16 target;
+-	__u16 padding;
+-	__u32 flags;
+-	__u64 extra[8];
+-};
+-
+ struct kvm_exit_snp_req_certs {
+ 	__u64 gpa;
+ 	__u64 npages;
+@@ -243,13 +233,7 @@ struct kvm_run {
+ 	/* in */
+ 	__u8 request_interrupt_window;
+ 	__u8 HINT_UNSAFE_IN_KVM(immediate_exit);
+-
+-	/* in/out */
+-	__u8 plane;
+-	__u16 suspended_planes;
+-
+-	/* in */
+-	__u16 req_exit_planes;
++	__u8 padding1[6];
+ 
+ 	/* out */
+ 	__u32 exit_reason;
+@@ -486,8 +470,6 @@ struct kvm_run {
+ 			__u64 gpa;
+ 			__u64 size;
+ 		} memory_fault;
+-		/* KVM_EXIT_PLANE_EVENT */
+-		struct kvm_plane_event_exit plane_event;
+ 		/* KVM_EXIT_TDX */
+ 		struct {
+ 			__u64 flags;
+@@ -1709,7 +1691,4 @@ struct kvm_pre_fault_memory {
+ 	__u64 padding[5];
+ };
+ 
+-#define KVM_CREATE_PLANE	_IO(KVMIO, 0xd6)
+-#define KVM_CREATE_VCPU_PLANE	_IO(KVMIO, 0xd7)
+-
+ #endif /* __LINUX_KVM_H */
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 6e4f3f3e6881..6b2d272797d3 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -440,7 +440,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
+ 
+ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned long id)
+ {
+-	struct kvm_vcpu_common *common = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
++	struct kvm_vcpu_common *common __free(kfree) = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
+ 	struct page *page;
+ 	int r;
+ 
+@@ -503,10 +503,7 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+ 	if (r)
+ 		goto out_free_dirty_ring;
+ 
+-	vcpu->common = common;
+-
+-	kvm_vcpu_set_in_spin_loop(vcpu, false);
+-	kvm_vcpu_set_dy_eligible(vcpu, false);
++	vcpu->common = no_free_ptr(common);
+ 
+ 	kvm_vcpu_set_in_spin_loop(vcpu, false);
+ 	kvm_vcpu_set_dy_eligible(vcpu, false);
+@@ -522,8 +519,6 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
+ 	kvm->created_vcpus--;
+ 	mutex_unlock(&kvm->lock);
+ 
+-	kfree(common);
+-
+ 	return r;
+ }
+ 
+@@ -1243,7 +1238,6 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
+ 	if (kvm_arch_plane_init(kvm, plane, plane_level))
+ 		goto out_free_plane;
+ 
+-
+ 	kvm->planes[plane_level] = plane;
+ 
+ 	return plane;
+@@ -1490,6 +1484,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ 	xa_destroy(&kvm->mem_attr_array);
+ #endif
++	kvm_destroy_planes(kvm);
+ 	kvm_arch_free_vm(kvm);
+ 	kvm_destroy_planes(kvm);
+ 	preempt_notifier_dec();
+@@ -4383,6 +4378,7 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
+ {
+ 	struct kvm *kvm = plane->kvm;
+ 	struct kvm_vcpu *vcpu;
++	struct kvm_vcpu *prev_current_vcpu;
+ 	int r;
+ 
+ 	mutex_lock(&kvm->lock);
+@@ -4427,7 +4423,25 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
+ 
+ 	kvm_vcpu_init(vcpu, kvm, id);
+ 
+-	r = kvm_arch_vcpu_create(vcpu, plane);
++	/*
++	 * For planes above plane-0 the vCPU shares plane-0's kvm_vcpu_common,
++	 * including ->current_vcpu and the preempt notifier consulted by
++	 * kvm_sched_in()/kvm_sched_out().  kvm_arch_vcpu_create() (and
++	 * kvm_arch_vcpu_postcreate() below) load this vCPU's VMCS via
++	 * vcpu_load() but do not update ->current_vcpu, which still points at
++	 * plane-0's vCPU.  The arch create path performs GFP_KERNEL
++	 * allocations, so the creating task can sleep and be rescheduled while
++	 * this vCPU's VMCS is loaded; the shared notifier would then
++	 * save/restore plane-0's vCPU and desync the per-CPU loaded_vmcs
++	 * tracking from the hardware-current VMCS, wedging VMX (host hard
++	 * lockup).  Mirror the run loop's invariant (see
++	 * kvm_vcpu_select_plane()): make ->current_vcpu the vCPU whose VMCS is
++	 * loaded for the duration, then restore it.
++	 */
++	prev_current_vcpu = vcpu->common->current_vcpu;
++	vcpu->common->current_vcpu = vcpu;
++	r = kvm_arch_vcpu_create(vcpu);
++	vcpu->common->current_vcpu = prev_current_vcpu;
+ 	if (r)
+ 		goto vcpu_free_common;
+ 
+@@ -4456,14 +4470,18 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
+ 	kvm_vcpu_unlock(vcpu);
+ 
+ 	mutex_unlock(&kvm->lock);
++	/* Same VMCS/current_vcpu invariant as above (vcpu_load in postcreate). */
++	prev_current_vcpu = vcpu->common->current_vcpu;
++	vcpu->common->current_vcpu = vcpu;
+ 	kvm_arch_vcpu_postcreate(vcpu);
++	vcpu->common->current_vcpu = prev_current_vcpu;
+ 	kvm_create_vcpu_debugfs(vcpu);
+ 	return r;
+ 
+ kvm_put_xa_erase:
+ 	kvm_vcpu_unlock(vcpu);
+ 	kvm_put_kvm_no_destroy(kvm);
+-	xa_erase(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx);
++	xa_erase(&plane->vcpu_array, vcpu->vcpu_idx);
+ unlock_vcpu_destroy:
+ 	mutex_unlock(&kvm->lock);
+ 	kvm_arch_vcpu_destroy(vcpu);
+@@ -4614,38 +4632,16 @@ static int kvm_wait_for_vcpu_online(struct kvm_vcpu *vcpu)
+ static inline bool kvm_is_vcpu_plane_ioctl(unsigned ioctl)
+ {
+ 	switch (ioctl) {
+-	case KVM_GET_DEBUGREGS:
+-	case KVM_SET_DEBUGREGS:
+ 	case KVM_GET_FPU:
+ 	case KVM_SET_FPU:
+-	case KVM_GET_LAPIC:
+-	case KVM_SET_LAPIC:
+-	case KVM_GET_MSRS:
+-	case KVM_SET_MSRS:
+-	case KVM_GET_NESTED_STATE:
+-	case KVM_SET_NESTED_STATE:
+-	case KVM_GET_ONE_REG:
+-	case KVM_SET_ONE_REG:
+ 	case KVM_GET_REGS:
+ 	case KVM_SET_REGS:
+ 	case KVM_GET_SREGS:
+ 	case KVM_SET_SREGS:
+-	case KVM_GET_SREGS2:
+-	case KVM_SET_SREGS2:
+-	case KVM_GET_VCPU_EVENTS:
+-	case KVM_SET_VCPU_EVENTS:
+-	case KVM_GET_XCRS:
+-	case KVM_SET_XCRS:
+-	case KVM_GET_XSAVE:
+-	case KVM_GET_XSAVE2:
+-	case KVM_SET_XSAVE:
+-
+-	case KVM_GET_REG_LIST:
+ 	case KVM_TRANSLATE:
+ 		return true;
+-
+ 	default:
+-		return false;
++		return kvm_arch_is_vcpu_plane_ioctl(ioctl);
  	}
  }
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 399406752108..4527f04c6617 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -625,7 +625,6 @@ void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
- 	irq.shorthand = APIC_DEST_NOSHORT;
- 	irq.delivery_mode = APIC_DM_FIXED;
- 	irq.level = 1;
--
- 	kvm_irq_delivery_to_apic(v->plane, NULL, &irq);
+ 
+@@ -4950,7 +4946,6 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg);
+ 
+ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsigned long arg)
+ {
+-	void __user *argp = (void __user *)arg;
+ 	long r;
+ 
+ 	switch (ioctl) {
+@@ -4966,38 +4961,35 @@ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsig
+ 		break;
+ #ifdef CONFIG_HAVE_KVM_MSI
+ 	case KVM_SIGNAL_MSI: {
++		void __user *argp = (void __user *)arg;
+ 		struct kvm_msi msi;
+ 
+-		r = -EFAULT;
+ 		if (copy_from_user(&msi, argp, sizeof(msi)))
+-			goto out;
++			return -EFAULT;
+ 		r = kvm_send_userspace_msi(plane->kvm, &msi, plane->level);
+ 		break;
+ 	}
+ #endif
+ #ifdef CONFIG_HAVE_KVM_IRQ_ROUTING
+ 	case KVM_SET_GSI_ROUTING: {
++		void __user *argp = (void __user *)arg;
+ 		struct kvm_irq_routing routing;
+ 		struct kvm_irq_routing __user *urouting;
+ 		struct kvm_irq_routing_entry *entries = NULL;
+ 
+-		r = -EFAULT;
+ 		if (copy_from_user(&routing, argp, sizeof(routing)))
+-			goto out;
+-		r = -EINVAL;
+-		if (!kvm_arch_can_set_irq_routing(plane->kvm))
+-			goto out;
+-		if (routing.nr > KVM_MAX_IRQ_ROUTES)
+-			goto out;
+-		if (routing.flags)
+-			goto out;
++			return -EFAULT;
++		if (!kvm_arch_can_set_irq_routing(plane->kvm) ||
++		    routing.nr > KVM_MAX_IRQ_ROUTES ||
++		    routing.flags)
++			return -EINVAL;
+ 		if (routing.nr) {
+ 			urouting = argp;
+ 			entries = vmemdup_array_user(urouting->entries,
+ 						     routing.nr, sizeof(*entries));
+ 			if (IS_ERR(entries)) {
+ 				r = PTR_ERR(entries);
+-				goto out;
++				return r;
+ 			}
+ 		}
+ 		r = kvm_set_irq_routing(plane->kvm, entries, routing.nr,
+@@ -5010,7 +5002,6 @@ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsig
+ 		r = -ENOTTY;
+ 	}
+ 
+-out:
+ 	return r;
  }
  
+@@ -5590,7 +5581,6 @@ static int kvm_vm_ioctl_create_plane(struct kvm *kvm, unsigned id)
+ 		goto put_kvm;
+ 	}
+ 
+-	kvm->planes[id] = plane;
+ 	kvm->has_planes = true;
+ 	fd_install(fd, file);
+ 	return fd;
 -- 
 2.55.0
 
