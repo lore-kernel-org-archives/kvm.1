@@ -1,150 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476FE392806
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 06:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785909998; cv=none; b=r/jD4MKAKYBSPqIvvFwX/n0V8+07uVFKv2ML3UiKw5LPE9cmO7miONMbGlOIHpQl7ShUpKcTbcNcq1kZW3q/GTOli5ZrRa2rIwr297JqTbk7OYsYEot2ztwvLV573A2pxIo5GqjD/+Q6p2yhyixZaOpStzvd88YgGmCCRdq6RiY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785909998; c=relaxed/simple;
-	bh=3GXcnlNHdbzVM0skL2v+PYc4ksRDG5RrhUjeJc9pbRo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VRkLxEXdgnIbagL/15/kIkRYWB4HIThJqAVy8542Id0tLdl2yRcGy6sViiuEVgfooeenOJdh96GhqGCwO3R71cf18xZxI071PPP8YN19TfLFbRJBV2LpO46HmV8vWRsTIQZJnviLQ/N7TBcpcvkt+vdAyyq+tV68RXn7e8MXZMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsOspUUv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86E53DAAB9
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 06:08:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785910118; cv=pass; b=o5dR5hy+t055mmEe7uwW7r3lPEqjP54eyaVv2ARdqqnWWQaDVUXon6FKo+gv/6KAFMY30cJVHCPlwPx5d+8M+FAKpjDb28iMVq5/5qEJv54quMI4k+4pjJxoNZCKWNJxEbMiebM/Qiuedw0HzfAC/FcQbBsyuU993V04RyZvBCE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785910118; c=relaxed/simple;
+	bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U7/HAtbuexYXSm37jQewVZTLoCoQzj8F5BC8a35QmmUvACPjm1t2f3CW+kohK0cOu3+aYOYu9a9mUBibYbU/wYDwRF/uvw5ATNbEcQB97/+qEKOKK9rHZU13DDz8Kt9F9/SNTi+26z0v/DAb9VxaDBQyRfQV9baW9WsfWLfrpq4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hZFLiu3U; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i+y5LgfF; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsOspUUv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FB11F000E9;
-	Wed,  5 Aug 2026 06:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785909996;
-	bh=hzLGyHPZOa8JigCsSos3tG4HiHa3iDxTVfElWwUPBbk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XsOspUUvB2fRzJHgYy6oBpUyEpny3Loylhrq12YihIu4fc0a51eGhTNICG3r4Fx2+
-	 VQZHOFmObx2dDvkqRTENpBuieqCSjcBulwbDizLzwnVAwMtNnLSDHoB6yYxpWOFQvh
-	 7y9wDyvPfbGUI3CSbmvU+RvhpXir1lJHIbbFnA4FYtCwsmLG2VmKY7jVa5XfWFkikK
-	 H6OdrMZLq6cZg10L4cTNfLPbjq5KtLl3DSc2sFZOvZb2X3LbcQj4CogP6Oc3igucrX
-	 +m2n+S0SRZUfbcEGIILscKiXfCsZzXFErDQY6zuBhSwLDN44/L5ccyi/PdSvYoU2+q
-	 T4saQPkv1oAwQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] LoongArch: KVM: Advertise already-supported
- capabilities
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tao Cui" <cui.tao@linux.dev>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260805054549.287648-1-cui.tao@linux.dev>
-References: <20260805054549.287648-1-cui.tao@linux.dev>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 06:06:36 +0000
-Message-Id: <20260805060636.A0FB11F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hZFLiu3U";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i+y5LgfF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1785910112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+	b=hZFLiu3UwUoW2CwdY6gEUvQDxXKoHngko7VL2leRakgVyhEHNySZZVGhEE3N85C9iKFZtE
+	SR9Xm6562dgTI6qF/wnLs+3EMkGa5lzbkFlQwNZPNsBXioSXpQIdxeRfedTBj5Lx0E0Qqr
+	h+mFlBMv4c+GA3DKqa1wBOQ5iaFmzb8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-496-nBEjX4WaPCq5vYKkeBsYPw-1; Wed, 05 Aug 2026 02:08:31 -0400
+X-MC-Unique: nBEjX4WaPCq5vYKkeBsYPw-1
+X-Mimecast-MFC-AGG-ID: nBEjX4WaPCq5vYKkeBsYPw_1785910110
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-475e540a0ffso309532f8f.3
+        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 23:08:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785910110; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nA+QvWK6FFIMzjGrIfGelA4C+fwCevJlNgjI5jxPxdyZf5KZY3VXMJ2dCn4+HBbmBo
+         DHfnX9J0+SabqAW5AGylRoRrPQ0RxZQ7N+HpHu+aEw9ibRcWXdmh7C4rZMJ33LGTiREl
+         OMv49l3GXOAA4QgTTOBxOP5qRJvcMRSYZu2RCQCtdLMoz5QY8sgoOO7lgjabsNyM3H3q
+         bTfpKMpqdJabh8/UPof8jYYxBSv31Nt0ypMyb16wx8aXaxB4DFGPWyiA9T1V4aRVvJJJ
+         Ejh1TOqPJtwSSFqdIopIZZqTM8CNZkrkoA/yzNWzYdMjMg+dGzlteVeJ6D2zEf4Nupkz
+         xf8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+        fh=wQle5coEvhKm6CQdJF4igNuSditm7qhAHI3Uknfd/ko=;
+        b=DSiSW4IvUfrcJ5SnIEU7oV9/GpDsXqRHzp63pxNfo/UNDZDMddnqi4GjHYkmeeJa7a
+         MGFfhbzf9xeEPb2b5zbXXR0P7gDTSlosOsxf19Pbr01W/A7M042J5VOR4UWUwTAtegeM
+         VL09tTtIo++2/ZtpezkNu8Dtk+jitQcO+7iIdiWB2JcfwH2u6aY7HG/KC4lPwzXpqgs0
+         RF5FAEd5Is2hgY2ZS16gF9XUv6fRBuDry80Y6Rb3hCEMdEO3oBsUrj7twUxAiUEDuxvj
+         qU/Ujuhe+/sT6rMszr/7lxndcxivVkKhbSTM3p0cYBgmIThpCb2vbW5ED2CV2+zAzEBk
+         cPqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1785910110; x=1786514910; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+        b=i+y5LgfFY/jp9p2qY1DrA/Aq5Jgf2ReSbS7NdouwIkk8bNPUozzCpHECiXVSuaVsIU
+         A9zKCMSZnzsvYsYCIing134gae5QMiD/89iX1i91Lyn3wT7WUBE4SOx/UkpGRLHzFlg0
+         aSHMiH95oOmJonCtFxg+j0u8aiAGUHrZlXfyNpHfbJh2BBnUPy8UCmjVZ2ZsP+1mmvF+
+         xDotYXJiCaF8bFgjP2pmM8wER8RFrR+abo76NpO39d7lwMT5RqtJ4f4Ppu83VNII9krf
+         xQdunnII9lWsEydnDOS30fuvQk4txoU5zwr+nbwIoJxFmInpBatGIiOw9e7QVSnAVBE6
+         YOaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785910110; x=1786514910;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W0Sm6aitHsc62gyEgQg2/9qpXlfx9wA/VX2KIRUAVSU=;
+        b=bKxotni8dT74zcB0oQhGj2i+cfwoWRd4cBuonCZSvxToSrYGu5S0N0xR+hSjGj5Q9c
+         lu0qn5vSid356hd4qyd4X9kHoOoGIOm6MESNvMuE0kpWs4E5d/MnGJEJJ12ewpq+Chp5
+         3u3/5j6fqERvzIincrMADzM6EhNxlG9hX7gATrnqWVC0GitXlH68Gw3H/avWIhNOt2wZ
+         6SM7XXAfMSFTCiFYxXMClSikzxWc9NHjHhx0CzKXiJo0KF5PvS5kKU4Togw+lVBYP9oc
+         5ghaiF5nHgEdSdr6ucCfXJi+BtMg31fzbxqYbOXRDtQSO45/cH6NFWaXFD/AAUmD6mrM
+         QsEQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr+lPlDIuxdc6cIUDI0KcqwA/OPlXTfBT2LMGGKTdGtsms4kqxbLuefvaiGERF/enGFTRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE6EHkzs1bkveJN+47Ln9NlOLg4M0WrUmtoFsA64UeRAfh47i3
+	qsnjeRRfR9UHh+3UJ7MiJN7uy+UNN+yO3Qw+S8zm3AtkrANoHAl4MunUSkQRDz1v4hwlo36n4lm
+	PMi4kKB2I1qiQ03LxxybfyEPya14iSNDPdwuC4kq/hBDoFwetUksZ3sRtntzSQZxQKTpUuwOVn8
+	Cz3QC7RRK4Ryq4awamuBVetpLFWGo9
+X-Gm-Gg: AR+sD11o9wKZxIh1QqxPzd79vd0EayLt/5Yqr1dNvg63WPG8lb9k90wMnSQe+yfO1hZ
+	y9YQAO+mlTu+YDta9bHEfH0fpVy8g1L0won0WgnvmWALZQTCP1HxPfCDqpo6gsjayvhisVycpt2
+	IFL2Ua1JSu/8t35V2FUBMCKw4MQlBSuaSnwMDt2W51elgQk+vFyThnwLVVyTbsIRvvY/tSd9Y42
+	b4Y54xCcVzkA2FX1FEQVmrFbeQ+H34xqiw16dRNrU1G7Sr5sgaVECUa9YY=
+X-Received: by 2002:adf:e012:0:20b0:47f:753c:5393 with SMTP id ffacd0b85a97d-47fec4e888cmr5402600f8f.6.1785910109911;
+        Tue, 04 Aug 2026 23:08:29 -0700 (PDT)
+X-Received: by 2002:adf:e012:0:20b0:47f:753c:5393 with SMTP id
+ ffacd0b85a97d-47fec4e888cmr5402532f8f.6.1785910109519; Tue, 04 Aug 2026
+ 23:08:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260804120529.1730187-1-pbonzini@redhat.com> <20260804120529.1730187-3-pbonzini@redhat.com>
+ <20260804161549.4cd9a66f@fedora-21.home> <20260804161850.58c55c6e@fedora-21.home>
+ <CABgObfbAveuhkjXzmemvGtycmcmDePKABr8Q35Y9mZP0den5aA@mail.gmail.com> <20260804164206.655874ce@fedora-21.home>
+In-Reply-To: <20260804164206.655874ce@fedora-21.home>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 5 Aug 2026 08:08:17 +0200
+X-Gm-Features: AUfX_mzo9t9ubVXz5xpYzVx4R9t4U8bdls__QKfQW65v6eCkMtC4FUkJ5hgXDI8
+Message-ID: <CABgObfY67mdG9QZ5__Q9GDrEq9Wutc42_tHo8YGSMOPnruZmsg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] drm/shmem_helper: use vmf_insert_pfn_mkwrite()
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Alex Williamson <alex@shazbot.org>, bcm-kernel-feedback-list@broadcom.com, 
+	Christian Koenig <christian.koenig@amd.com>, David Hildenbrand <david@kernel.org>, 
+	dri-devel@lists.freedesktop.org, Fei Li <fei1.li@intel.com>, 
+	Huang Rui <ray.huang@amd.com>, linux-mm@kvack.org, linux-s390@vger.kernel.org, 
+	Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>, Sergio Lopez <slp@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+On Tue, Aug 4, 2026 at 4:42=E2=80=AFPM Boris Brezillon
+<boris.brezillon@collabora.com> wrote:
+> Okay, I thought I'd ask to be sure, because of all the implementations
+> of pfn_mkwrite listed here [1], only drm_gem_shmem_helper.c and
+> kernel/events/core.c do that.
 
-Pre-existing issues:
-- [High] The unsafe user-access macros (`unsafe_put_user()` and `unsafe_get=
-_user()`) are used without the required `user_access_begin()` and `user_acc=
-ess_end()` guards, violating the kernel API contract.
-- [High] A lockless read-modify-write on the shared VM state `kvm->arch.pv_=
-features` allows userspace to bypass the validation check that requires all=
- vCPUs to share identical PV features.
---
+Also the vmwgfx one in patch 3; and for the !DAX case ext4 and XFS too
+(e.g. xfs_filemap_pfn_mkwrite gets to iomap_page_mkwrite, not to
+filemap_fault).
 
---- Patch [1]: [PATCH v2] LoongArch: KVM: Advertise already-supported capab=
-ilities ---
-commit 91e3758510b96f271c2589373d1340c246fab45a
-Author: Tao Cui <cui.tao@linux.dev>
+> The rest have their "generic" fault
+> handler (by generic I mean a fault handler helper that covers all the
+> order/WRITE_FLAG combinations) called from pfn_mkwrite(), and return a
+> non-zero vm_fault_t.
 
-LoongArch: KVM: Advertise already-supported capabilities
-   =20
-This commit advertises KVM_CAP_STEAL_TIME and KVM_CAP_VCPU_ATTRIBUTES on
-LoongArch, making existing features discoverable to userspace.
+I see; I think you can do that, it is handled at
+https://elixir.bootlin.com/linux/v7.2-rc5/source/mm/memory.c#L2681 and
+indeed it returns VM_FAULT_NOPAGE. But it's more or work for no real
+reason. Your .pfn_mkwrite is a single line of code and it is clearer
+IMO if you can see that try_insert_pfn() is calling the same helper as
+.pfn_mkwrite().
 
-> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> index 1317c718f896a..0a51931d6f6e0 100644
-> --- a/arch/loongarch/kvm/vm.c
-> +++ b/arch/loongarch/kvm/vm.c
-> @@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->  	case KVM_CAP_IOEVENTFD:
->  	case KVM_CAP_MP_STATE:
->  	case KVM_CAP_SET_GUEST_DEBUG:
-> +	case KVM_CAP_VCPU_ATTRIBUTES:
+Paolo
 
-[Severity: High]
-This is a pre-existing issue, but does advertising KVM_CAP_VCPU_ATTRIBUTES
-expose a data race in kvm_loongarch_cpucfg_set_attr()?
-
-Looking at arch/loongarch/kvm/vcpu.c, there is a lockless read-modify-write
-sequence on the shared VM state:
-
-arch/loongarch/kvm/vcpu.c:kvm_loongarch_cpucfg_set_attr() {
-...
-	/* All vCPUs need set the same PV features */
-	if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
-			&& ((kvm->arch.pv_features & valid) !=3D val))
-		return -EINVAL;
-	kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED;
-...
-}
-
-If multiple threads concurrently call KVM_SET_DEVICE_ATTR on different vCPU=
-s,
-can they bypass this validation check by both reading before either writes,
-resulting in divergent configurations being silently applied globally inste=
-ad
-of returning -EINVAL?
-
->  		r =3D 1;
->  		break;
->  	case KVM_CAP_NR_VCPUS:
-
-[ ... ]
-
-> @@ -136,6 +137,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
-g ext)
->  	case KVM_CAP_NR_MEMSLOTS:
->  		r =3D KVM_USER_MEM_SLOTS;
->  		break;
-> +	case KVM_CAP_STEAL_TIME:
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does advertising
-KVM_CAP_STEAL_TIME expose an issue with unsafe memory accesses?
-
-In arch/loongarch/kvm/vcpu.c, unsafe_put_user() is used without the required
-user_access_begin() and user_access_end() guards:
-
-arch/loongarch/kvm/vcpu.c:kvm_update_stolen_time() {
-...
-	unsafe_put_user(0, &st->preempted, out);
-...
-}
-
-And similarly in kvm_vcpu_set_pv_preempted():
-
-arch/loongarch/kvm/vcpu.c:kvm_vcpu_set_pv_preempted() {
-...
-	unsafe_put_user(KVM_VCPU_PREEMPTED, &st->preempted, out);
-...
-}
-
-Since omitting user_access_begin() skips the access_ok() check at the access
-site, could this cause a kernel fault if hardware-enforced user access
-protections are introduced?
-
-> +		r =3D kvm_pvtime_supported();
-> +		break;
->  	default:
->  		r =3D 0;
->  		break;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805054549.2876=
-48-1-cui.tao@linux.dev?part=3D1
