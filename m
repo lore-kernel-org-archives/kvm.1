@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC4546983C;
-	Wed,  5 Aug 2026 11:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3306A46AA7D;
+	Wed,  5 Aug 2026 11:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927855; cv=none; b=t8pNCBRarZ3NjMylX0tFqdDN1v8sOo5yeZbSwYJuVE9wplM1QEGFcU2eSo2XpMXmEIzR8+IO/iJhPM/dqxHbxQpYDPmv1azPGYYlVfxcPDbOEyvNekjfW0vIlg9H0ZkkJtzXwOpjR92zV3u60EjEx+Ixhst6VO9FMCyRb9hzRGA=
+	t=1785927856; cv=none; b=NquqtRLp5o2lHSpKP7iK58AC3TiJMe9EJwK363D8XM7I74SiBPR2tpWOA2QmCpRVERhLlzJ2neiTa00jk0sEo0BHwDc/qnBnLmzBBDSYIlC8W/9OQ74CEFEmazIfrKbT77thT88q5VIoIMu+bBxPZOwmzuOaMxv6EAnE09gzTvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927855; c=relaxed/simple;
-	bh=pyKS7+F0zwetOCNSEOXtWXwvWirtCIBTLIx9T8AhX8Q=;
+	s=arc-20240116; t=1785927856; c=relaxed/simple;
+	bh=BfpEaAGkDyfbANpfPBIaZd/uzX61Ff66TSNwy44xLiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QgGfZJEjLj0yzoKjSBhLZ5nT/pzBgZsmlF+rMQj0JXmpKhH4GA3Smf54+PDJpTTSGujH5HIOg9oS6iqpIDuvcWm71cnHwZTZClbkg+LXNO9hTHKnHZHW12feao/1GtkB5EX56028BgPmBudBd1Y4gmVz5O3BOpz+LZvo78ed75o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CJlBgF8l; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=FdqdRQx1EHWLe19ZSvM9WHxY77bqp6+v3cp+r8cKXsYStrZEzp8KcHLhWsbobel5nHFaoL8Cq7jI0i1GIn+4GPRFRt454nixbdSLxbC9ppIyzrXoytUc05q6pt42AU+OU5+PSExqRDM7mr5C6sMK6oE+VBbfk7KX+9RNLD0j/RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kO9BUPAv; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CJlBgF8l"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kO9BUPAv"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D0DFB20B716A;
-	Wed,  5 Aug 2026 04:03:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D0DFB20B716A
+	by linux.microsoft.com (Postfix) with ESMTPSA id 08ADA20B716D;
+	Wed,  5 Aug 2026 04:03:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 08ADA20B716D
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927831;
-	bh=dl2+i7STnM4/26bHF7J69Rp6JVzOlj+gj+sfuPNR6s8=;
+	s=default; t=1785927833;
+	bh=CZO/FdjjrPxcYw4qgRLhHr2fLzYDF8y1zRIOsjWT26g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJlBgF8lev9RS7nfdVY4Vpj2J4+DZg2iLqrSaQxFGTNGPDGpPTv5UG+0XNnaV2R98
-	 /Z7MGecRVQElK9jfGkRu9rWCHJ6yMqsTwIXCsF46CfFen9IV+6nR12q7zC20y1oOy7
-	 HZRUqPtvmBZMM2CrlZ6I+SWc8gVH/vfdMlLW7Qw0=
+	b=kO9BUPAvWRCzrsYobVhBUcB2xm2bM2DD4VJpERjHV/eSn5VIeK8bsumdJESYK45rF
+	 WkzGQhI4i2uMD2Z9sHvJZR5OdY1VB7ejAsN9Xe+BlMjXYG3rwnQmFYBYdLfZlLRKDe
+	 s+icGXDgINZyI4YasxfUFbj3PxI8NUqUtck1jRbE=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 35/42] KVM: x86: deny normal-plane access to secure-plane memory
-Date: Wed,  5 Aug 2026 04:03:17 -0700
-Message-ID: <20260805110324.25067-36-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 37/42] KVM: selftests: run plane tests with a split IRQ chip
+Date: Wed,  5 Aug 2026 04:03:19 -0700
+Message-ID: <20260805110324.25067-38-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -40,160 +40,344 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-VM planes share one guest physical address space (one set of memslots),
-so today the normal plane (plane 0) can read the secure plane's RAM.
-Add per-plane access control so a higher-privilege plane can hide its
-memory from a lower one:
+Wire the plane selftests to actually exercise planes instead of skipping:
 
- - Encode the plane into union kvm_mmu_page_role (the previously spare
-   4 bits) so each plane gets its own TDP/EPT root instead of sharing
-   one set of page tables.
-
- - Give each struct kvm_plane its own access_attr_array (xarray),
-   independent of kvm->mem_attr_array, to avoid coupling with the
-   private/CoCo memory-attribute machinery.
-
- - Add KVM_MEMORY_ATTRIBUTE_NO_READ.  NO_READ cannot be expressed as a
-   present-but-unreadable EPT entry on all hardware, so it is enforced
-   in the fault path: kvm_mmu_faultin_pfn() refuses to map a NO_READ
-   gfn (and a write to a NO_WRITE gfn) for the faulting plane and exits
-   with KVM_EXIT_MEMORY_FAULT instead of building an SPTE the access
-   would immediately re-fault on.  NO_WRITE/NO_EXEC continue to be
-   stripped in kvm_plane_filter_pte_access().
-
- - KVM_HC_VBS_SET_MEM_ATTRS lets a plane >0 apply NO_READ/NO_WRITE/
-   NO_EXEC to the plane directly below it (the secure plane cannot issue
-   the host KVM_SET_MEMORY_ATTRIBUTES ioctl).  a2 is an allow-mask:
-   bit0 read, bit1 write, bit2 exec; a cleared bit adds the matching
-   restriction, a2 == 0 hides the range entirely.
-
-drivers/virt/secure_monitor.c uses this to seal the secure plane's own
-RAM (walk_system_ram_range -> SET_MEM_ATTRS with perms 0) from the
-normal plane before handing control back, so plane 0 can no longer read
-plane 1.
+- Add vm_create_barebones_irqchip() and create the test VMs with a split
+  IRQ chip, which planes require, and query KVM_CAP_PLANES on the VM fd
+  (system scope always returns 1).
+- Switch plane vCPU creation to KVM_CREATE_VCPU with the vCPU id, matching
+  the current plane ABI, and drop the removed KVM_CREATE_VCPU_PLANE,
+  KVM_CAP_PLANES_FPU and req_exit_planes paths from the tests and docs.
+- Rename x86/plane_test.c to x86/plane_x86_test.c.
 ---
- drivers/virt/secure_monitor.c | 79 +++++++++++++++++++++++++++++++++--
- 1 file changed, 76 insertions(+), 3 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   2 +-
+ .../testing/selftests/kvm/include/kvm_util.h  |  12 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c    |   8 +-
+ tools/testing/selftests/kvm/plane_test.c      |  20 ++--
+ .../x86/{plane_test.c => plane_x86_test.c}    | 109 +++---------------
+ 5 files changed, 45 insertions(+), 106 deletions(-)
+ rename tools/testing/selftests/kvm/x86/{plane_test.c => plane_x86_test.c} (58%)
 
-diff --git a/drivers/virt/secure_monitor.c b/drivers/virt/secure_monitor.c
-index 2d181c32c439..028ae222037a 100644
---- a/drivers/virt/secure_monitor.c
-+++ b/drivers/virt/secure_monitor.c
-@@ -25,11 +25,15 @@
-  * Because all planes of a VM share the same memslots (struct kvm_plane has no
-  * memslots of its own; they live in struct kvm), the secure plane sees the
-  * same guest-physical address space as the normal plane and can read the
-- * calling area and the GPAs referenced by each request directly.
-+ * calling area and the GPAs referenced by each request directly.  This same
-+ * sharing means the secure plane must explicitly hide its own RAM from the
-+ * normal plane: on startup it walks its system RAM and asks KVM (via
-+ * KVM_HC_VBS_SET_MEM_ATTRS) to deny the normal plane read/write/exec access,
-+ * so plane 0 cannot read secure-plane memory.
-  *
-  * For now every VTL call is acknowledged as a no-op so the normal plane can
-- * make progress; the real per-call handlers (self-protection, HEKI memory
-- * protection, kernel sealing, …) are plumbed in incrementally.
-+ * make progress; the remaining per-call handlers (HEKI memory protection,
-+ * kernel sealing, …) are plumbed in incrementally.
-  *
-  * Activated by the "secure_monitor" kernel command-line option; without it
-  * this kernel boots normally and never parks.
-@@ -41,10 +45,13 @@
- #include <linux/init.h>
- #include <linux/kthread.h>
- #include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/memblock.h>
- #include <linux/mm.h>
- #include <linux/types.h>
- #include <linux/errno.h>
- #include <linux/err.h>
-+#include <linux/vbs.h>
- #include <linux/kvm_para.h>
- #include <asm/kvm_para.h>
- 
-@@ -85,12 +92,78 @@ static u64 secmon_vtl_return(long status)
- 	return kvm_hypercall1(KVM_HC_VBS_VTL_RETURN, (unsigned long)status);
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 80933e942ecf..750350e187c8 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -102,7 +102,7 @@ TEST_GEN_PROGS_x86 += x86/nested_tdp_fault_test
+ TEST_GEN_PROGS_x86 += x86/nested_tsc_adjust_test
+ TEST_GEN_PROGS_x86 += x86/nested_tsc_scaling_test
+ TEST_GEN_PROGS_x86 += x86/nested_vmsave_vmload_test
+-TEST_GEN_PROGS_x86 += x86/plane_test
++TEST_GEN_PROGS_x86 += x86/plane_x86_test
+ TEST_GEN_PROGS_x86 += x86/platform_info_test
+ TEST_GEN_PROGS_x86 += x86/pmu_counters_test
+ TEST_GEN_PROGS_x86 += x86/pmu_event_filter_test
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index 2ea2960f1e2d..c4726fc7b065 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -1070,6 +1070,18 @@ static inline struct kvm_vm *vm_create_barebones(void)
+ 	return ____vm_create(VM_SHAPE_DEFAULT);
  }
  
-+/*
-+ * Apply EPT permissions on a normal-plane GPA range from the secure plane.
-+ *
-+ * The secure plane cannot issue the host KVM_SET_MEMORY_ATTRIBUTES ioctl, so
-+ * it asks KVM to do it via the KVM_HC_VBS_SET_MEM_ATTRS hypercall, which KVM
-+ * honours only for a higher-privilege plane (it applies the attributes to the
-+ * plane directly below the caller).  @perms carries the access bits the
-+ * normal plane should retain (VBS_MEM_*); KVM translates a cleared
-+ * read/write/exec bit into NO_READ / NO_WRITE / NO_EXEC.  @perms == 0 hides
-+ * the range entirely.
-+ */
-+static int secmon_apply_attrs(u64 gpa, u64 size, u32 perms)
++static inline struct kvm_vm *vm_create_barebones_irqchip(bool split)
 +{
-+	long ret;
++	struct kvm_vm *vm = vm_create_barebones();
 +
-+	pr_debug("apply_attrs gpa=0x%llx size=0x%llx perms=%c%c%c\n",
-+		 gpa, size,
-+		 (perms & VBS_MEM_READ)  ? 'r' : '-',
-+		 (perms & VBS_MEM_WRITE) ? 'w' : '-',
-+		 (perms & VBS_MEM_EXEC)  ? 'x' : '-');
-+
-+	ret = kvm_hypercall3(KVM_HC_VBS_SET_MEM_ATTRS, gpa, size, perms);
-+	if (ret)
-+		return (int)ret;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Hide one range of this plane's RAM from the normal plane.  perms = 0 means
-+ * "retain no access" (no read/write/exec), so the normal plane faults and is
-+ * denied if it tries to touch secure-plane memory.
-+ */
-+static int secmon_hide_range(unsigned long start_pfn, unsigned long nr_pages,
-+			     void *arg)
-+{
-+	unsigned long gpa = start_pfn << PAGE_SHIFT;
-+	unsigned long size = nr_pages << PAGE_SHIFT;
-+	int r;
-+
-+	r = secmon_apply_attrs(gpa, size, 0);
-+	if (r)
-+		pr_warn("failed to protect RAM [0x%lx+0x%lx]: %d\n",
-+			gpa, size, r);
++	if (split)
++		vm_enable_cap(vm, KVM_CAP_SPLIT_IRQCHIP, 24);
 +	else
-+		pr_info("protected RAM [0x%lx+0x%lx] from normal plane\n",
-+			gpa, size);
++		vm_create_irqchip(vm);
 +
-+	/* Continue with the remaining ranges even if one fails. */
-+	return 0;
++	return vm;
 +}
 +
-+/*
-+ * Deny the normal plane access to all of the secure plane's own RAM.  Runs
-+ * while the normal plane is frozen in the KVM_RUN that switched to us, so
-+ * there is no window during which the memory is both populated and still
-+ * readable by the normal plane.
-+ */
-+static void secmon_protect_self(void)
-+{
-+	walk_system_ram_range(0, max_pfn, NULL, secmon_hide_range);
-+}
-+
- static int secmon_monitor_fn(void *unused)
+ static inline struct kvm_vm *vm_create_barebones_type(unsigned long type)
  {
- 	long status = 0;
+ 	const struct vm_shape shape = {
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 43a23634b4f4..ce53230b23d0 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -790,10 +790,8 @@ static void vm_vcpu_rm(struct kvm_vm *vm, struct kvm_vcpu *vcpu)
+ void kvm_vm_release(struct kvm_vm *vmp)
+ {
+ 	struct kvm_vcpu *vcpu, *tmp_vcpu;
+-	struct kvm_plane_vcpu *plane_vcpu, *tmp_plane_vcpu;
+-	struct kvm_plane *plane, *tmp_plane;
  
- 	pr_info("secure monitor started\n");
+-	list_for_each_entry_safe(vcpu, tmp, &vmp->vcpus, list)
++	list_for_each_entry_safe(vcpu, tmp_vcpu, &vmp->vcpus, list)
+ 		vm_vcpu_rm(vmp, vcpu);
  
-+	/* Seal our memory from the normal plane before handing control back. */
-+	secmon_protect_self();
+ 	kvm_free_fd(vmp->fd);
+@@ -1366,8 +1364,8 @@ struct kvm_plane_vcpu *__vm_plane_vcpu_add(struct kvm_vcpu *vcpu, struct kvm_pla
+ 	plane_vcpu = calloc(1, sizeof(*plane_vcpu));
+ 	TEST_ASSERT(plane_vcpu != NULL, "Insufficient Memory");
+ 
+-	plane_vcpu->fd = __plane_ioctl(plane, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
+-	TEST_ASSERT_VM_VCPU_IOCTL(plane_vcpu->fd >= 0, KVM_CREATE_VCPU_PLANE, plane_vcpu->fd, plane->vm);
++	plane_vcpu->fd = __plane_ioctl(plane, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
++	TEST_ASSERT_VM_VCPU_IOCTL(plane_vcpu->fd >= 0, KVM_CREATE_VCPU, plane_vcpu->fd, plane->vm);
+ 	plane_vcpu->id = vcpu->id;
+ 	plane_vcpu->plane0 = vcpu;
+ 
+diff --git a/tools/testing/selftests/kvm/plane_test.c b/tools/testing/selftests/kvm/plane_test.c
+index 9cf3ab76b3cd..fd09d1f78ebe 100644
+--- a/tools/testing/selftests/kvm/plane_test.c
++++ b/tools/testing/selftests/kvm/plane_test.c
+@@ -21,7 +21,8 @@ void test_create_plane_errors(int max_planes)
+ 	struct kvm_vcpu *vcpu;
+ 	int planefd, plane_vcpufd;
+ 
+-	vm = vm_create_barebones();
++	/* Planes require an in-kernel (split) IRQ chip. */
++	vm = vm_create_barebones_irqchip(true);
+ 	vcpu = __vm_vcpu_add(vm, 0);
+ 
+ 	planefd = __vm_ioctl(vm, KVM_CREATE_PLANE, (void *)(unsigned long)0);
+@@ -34,9 +35,9 @@ void test_create_plane_errors(int max_planes)
+ 		    "Creating plane %d, expecting EINVAL. ret: %d, errno: %d",
+ 		    max_planes, planefd, errno);
+ 
+-	plane_vcpufd = __vm_ioctl(vm, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
+-	TEST_ASSERT(plane_vcpufd == -1 && errno == ENOTTY,
+-		    "Creating vCPU for plane 0, expecting ENOTTY. ret: %d, errno: %d",
++	plane_vcpufd = __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
++	TEST_ASSERT(plane_vcpufd == -1 && errno == EEXIST,
++		    "Creating existing vCPU for plane 0, expecting EEXIST. ret: %d, errno: %d",
+ 		    plane_vcpufd, errno);
+ 
+ 	kvm_vm_free(vm);
+@@ -50,7 +51,7 @@ void test_create_plane(void)
+ 	struct kvm_plane *plane;
+ 	int r;
+ 
+-	vm = vm_create_barebones();
++	vm = vm_create_barebones_irqchip(true);
+ 	vcpu = __vm_vcpu_add(vm, 0);
+ 
+ 	plane = vm_plane_add(vm, 1);
+@@ -70,7 +71,7 @@ void test_create_plane(void)
+ 
+ 	__vm_plane_vcpu_add(vcpu, plane);
+ 
+-	r = __plane_ioctl(plane, KVM_CREATE_VCPU_PLANE, (void *)(unsigned long)vcpu->fd);
++	r = __plane_ioctl(plane, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu->id);
+ 	TEST_ASSERT(r == -1 && errno == EEXIST,
+ 		    "Creating vCPU again for plane 1. ret: %d, errno: %d",
+ 		    r, errno);
+@@ -86,7 +87,10 @@ void test_create_plane(void)
+ 
+ int main(int argc, char *argv[])
+ {
+-	int cap_planes = kvm_check_cap(KVM_CAP_PLANES);
++	struct kvm_vm *vm = vm_create_barebones_irqchip(true);
++	int cap_planes = vm_check_cap(vm, KVM_CAP_PLANES);
 +
- 	for (;;) {
- 		struct vbs_kvm_ca *ca;
- 		u64 ca_gpa;
++	kvm_vm_free(vm);
+ 	TEST_REQUIRE(cap_planes);
+ 
+ 	ksft_print_header();
+@@ -98,6 +102,8 @@ int main(int argc, char *argv[])
+ 
+ 	if (cap_planes > 1)
+ 		test_create_plane();
++	else
++		ksft_test_result_skip("plane creation requires KVM_CAP_PLANES > 1\n");
+ 
+ 	ksft_finished();
+ }
+diff --git a/tools/testing/selftests/kvm/x86/plane_test.c b/tools/testing/selftests/kvm/x86/plane_x86_test.c
+similarity index 58%
+rename from tools/testing/selftests/kvm/x86/plane_test.c
+rename to tools/testing/selftests/kvm/x86/plane_x86_test.c
+index 0fdd8a066723..8f0919371383 100644
+--- a/tools/testing/selftests/kvm/x86/plane_test.c
++++ b/tools/testing/selftests/kvm/x86/plane_x86_test.c
+@@ -5,6 +5,7 @@
+  * Test for x86-specific VM plane functionality
+  */
+ #include <fcntl.h>
++#include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -26,7 +27,7 @@ static void test_plane_regs(void)
+ 
+ 	struct kvm_regs regs0, regs1;
+ 
+-	vm = vm_create_barebones();
++	vm = vm_create_barebones_irqchip(true);
+ 	vcpu = __vm_vcpu_add(vm, 0);
+ 	plane = vm_plane_add(vm, 1);
+ 	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
+@@ -62,8 +63,7 @@ static void test_plane_fpu_nonshared(void)
+ 
+ 	struct kvm_xsave xsave0, xsave1;
+ 
+-	vm = vm_create_barebones();
+-	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), false);
++	vm = vm_create_barebones_irqchip(true);
+ 
+ 	vcpu = __vm_vcpu_add(vm, 0);
+ 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+@@ -93,79 +93,15 @@ static void test_plane_fpu_nonshared(void)
+ 	ksft_test_result_pass("get/set FPU not shared across planes\n");
+ }
+ 
+-static void test_plane_fpu_shared(void)
+-{
+-	struct kvm_vm *vm;
+-	struct kvm_vcpu *vcpu;
+-	struct kvm_plane *plane;
+-	struct kvm_plane_vcpu *plane_vcpu;
+-
+-	struct kvm_xsave xsave0, xsave1;
+-
+-	vm = vm_create_barebones();
+-	vm_enable_cap(vm, KVM_CAP_PLANES_FPU, 1ul);
+-	TEST_ASSERT_EQ(vm_check_cap(vm, KVM_CAP_PLANES_FPU), true);
+-
+-	vcpu = __vm_vcpu_add(vm, 0);
+-	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+-	vcpu_set_cpuid(vcpu);
+-
+-	plane = vm_plane_add(vm, 1);
+-	plane_vcpu = __vm_plane_vcpu_add(vcpu, plane);
+-
+-	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
+-
+-	xsave0.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
+-	xsave0.region[XMM_OFFSET] = 0x12345678;
+-	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
+-	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
+-	TEST_ASSERT_EQ(xsave1.region[XMM_OFFSET], 0x12345678);
+-
+-	xsave1.region[XSTATE_BV_OFFSET] |= XFEATURE_MASK_FP | XFEATURE_MASK_SSE;
+-	xsave1.region[XMM_OFFSET] = 0x87654321;
+-	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
+-	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
+-	TEST_ASSERT_EQ(xsave0.region[XMM_OFFSET], 0x87654321);
+-
+-	ksft_test_result_pass("get/set FPU shared across planes\n");
+-
+-	if (!this_cpu_has(X86_FEATURE_PKU)) {
+-		ksft_test_result_skip("get/set PKRU with shared FPU\n");
+-		goto exit;
+-	}
+-
+-	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
+-	xsave0.region[PKRU_OFFSET] = 0xffffffff;
+-	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
+-	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave0);
+-
+-	xsave0.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
+-	xsave0.region[PKRU_OFFSET] = 0xaaaaaaaa;
+-	vcpu_ioctl(vcpu, KVM_SET_XSAVE, &xsave0);
+-	plane_vcpu_ioctl(plane_vcpu, KVM_GET_XSAVE, &xsave1);
+-	assert(xsave1.region[PKRU_OFFSET] == 0xffffffff);
+-
+-	xsave1.region[XSTATE_BV_OFFSET] = XFEATURE_MASK_PKRU;
+-	xsave1.region[PKRU_OFFSET] = 0x55555555;
+-	plane_vcpu_ioctl(plane_vcpu, KVM_SET_XSAVE, &xsave1);
+-	vcpu_ioctl(vcpu, KVM_GET_XSAVE, &xsave0);
+-	assert(xsave0.region[PKRU_OFFSET] == 0xaaaaaaaa);
+-
+-	ksft_test_result_pass("get/set PKRU with shared FPU\n");
+-
+-exit:
+-	kvm_vm_free(vm);
+-}
+-
+ #define APIC_SPIV		0xF0
+ #define APIC_IRR		0x200
+ 
+ #define MYVEC			192
+ 
+-#define MAKE_MSI(cpu, vector) ((struct kvm_msi){		\
+-	.address_lo = APIC_DEFAULT_GPA + (((cpu) & 0xff) << 8),	\
+-	.address_hi = (cpu) & ~0xff,				\
+-	.data = (vector),					\
++#define MAKE_MSI(cpu, vector) ((struct kvm_msi){			\
++	.address_lo = APIC_DEFAULT_GPA + (((cpu) & 0xff) << 8),		\
++	.address_hi = (cpu) & ~0xff,					\
++	.data = (vector),						\
+ })
+ 
+ static bool has_irr(struct kvm_lapic_state *apic, int vector)
+@@ -194,7 +130,7 @@ static void test_plane_msi(void)
+ 	struct kvm_msi msi = MAKE_MSI(0, MYVEC);
+ 	struct kvm_lapic_state lapic0, lapic1;
+ 
+-	vm = __vm_create(VM_SHAPE_DEFAULT, 1, 0);
++	vm = vm_create_barebones_irqchip(true);
+ 
+ 	vcpu = __vm_vcpu_add(vm, 0);
+ 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+@@ -215,6 +151,7 @@ static void test_plane_msi(void)
+ 	do_enable_lapic(&lapic1);
+ 	plane_vcpu_ioctl(plane_vcpu, KVM_SET_LAPIC, &lapic1);
+ 
++	/* Deliver to plane 1 (via the plane fd); it must land only in plane 1. */
+ 	r = __plane_ioctl(plane, KVM_SIGNAL_MSI, &msi);
+ 	TEST_ASSERT(r == 1,
+ 		   "Delivering interrupt to plane 1. ret: %d, errno: %d", r, errno);
+@@ -224,46 +161,32 @@ static void test_plane_msi(void)
+ 	plane_vcpu_ioctl(plane_vcpu, KVM_GET_LAPIC, &lapic1);
+ 	TEST_ASSERT(has_irr(&lapic1, MYVEC), "Vector set in plane 1");
+ 
+-	/* req_exit_planes always has priority */
+-	vcpu->run->req_exit_planes = (1 << 1);
+-	vcpu_run(vcpu);
+-	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 1));
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 1));
+-
++	/* Deliver to plane 0 (via the vm fd); it must land in plane 0. */
+ 	r = __vm_ioctl(vm, KVM_SIGNAL_MSI, &msi);
+ 	TEST_ASSERT(r == 1,
+ 		   "Delivering interrupt to plane 0. ret: %d, errno: %d", r, errno);
+ 	vcpu_ioctl(vcpu, KVM_GET_LAPIC, &lapic0);
+ 	TEST_ASSERT(has_irr(&lapic0, MYVEC), "Vector set in plane 0");
+ 
+-	/* req_exit_planes ignores current plane; current plane is cleared */
+-	vcpu->run->plane = 1;
+-	vcpu->run->req_exit_planes = (1 << 0) | (1 << 1);
+-	vcpu_run(vcpu);
+-	TEST_ASSERT_EQ(vcpu->run->exit_reason, KVM_EXIT_PLANE_EVENT);
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.cause, KVM_PLANE_EVENT_INTERRUPT);
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.pending_event_planes, (1 << 0));
+-	TEST_ASSERT_EQ(vcpu->run->plane_event.target, (1 << 0));
+-
+ 	kvm_vm_free(vm);
+-	ksft_test_result_pass("signal MSI for planes\n");
++	ksft_test_result_pass("signal MSI routed per plane\n");
+ }
+ 
+ int main(int argc, char *argv[])
+ {
+-	int cap_planes = kvm_check_cap(KVM_CAP_PLANES);
++	struct kvm_vm *vm = vm_create_barebones_irqchip(true);
++	int cap_planes = vm_check_cap(vm, KVM_CAP_PLANES);
++
++	kvm_vm_free(vm);
+ 	TEST_REQUIRE(cap_planes && cap_planes > 1);
+ 
+ 	ksft_print_header();
+-	ksft_set_plan(5);
++	ksft_set_plan(3);
+ 
+ 	pr_info("# KVM_CAP_PLANES: %d\n", cap_planes);
+ 
+ 	test_plane_regs();
+ 	test_plane_fpu_nonshared();
+-	test_plane_fpu_shared();
+ 	test_plane_msi();
+ 
+ 	ksft_finished();
 -- 
 2.55.0
 
