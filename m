@@ -1,66 +1,33 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B32A3FF896
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 10:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0A42AD2E;
+	Wed,  5 Aug 2026 10:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785924554; cv=none; b=kXSb1a+eQWdvAoAfLBnIkVbwBxPkqxyEaMR+Ctisp/5DL3EwuuLnd5vP397KAHPjmNlQzbawHKS/BOgxse2VhOd8+MWNpRti3kpGAm4GnBq8wIsuBaXuho/Y/bPBwgI8MBVVeWhXYCeufhLCKxxprAKXPfbWnWiFWvXoE+4RThU=
+	t=1785927128; cv=none; b=Yc/UORB48r55JaZtIyD8UGm69xL2e0oBtkII/AGJ7zM30rEJ2K9rKuWNwpOhMSCOJNKfMTwoFte7k4SP+60qE8Sj7xLJ/iyup7NK/13siUpG++dLHUgAvtpr7Mh5mVhMP3djKcsOUJyfJeXQDheGikZ37O08oh1g4k0AdXQ/J0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785924554; c=relaxed/simple;
-	bh=M2jF0Jt2bDRZzymZQmRY6Uui16djwBoVWK1VjhYmc30=;
+	s=arc-20240116; t=1785927128; c=relaxed/simple;
+	bh=osqcgEZrB4tIRuddtFyChcekiAZrXeFH6SN6KLCXUeQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a4npNz8ugBgV6r3vkpMBLTlYToNLgMqFRVGLL+mYuXzIq51qL4oAdqhwNgiRj7b2ZV60enIWBCLqoGBUn4TVyh2N47wdqBT9Nw0DHOmrmWKmf9Jk1ypbE/dnETO9YGZEDXp0k0h86Sw2bon2oZ2kDGxsnYHsSNhFnkXScWO1b2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TE/KrOhR; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=AvOsIV7T3at0VUBo9jkuBNMbB5iJeG0y25BvSHOUhJAihdxk+IPMvuc+TPiZAcgZWLMpTliDvNXYGnpczZETQr1VIY5+8eLSNTg6H1wsqe1qoDsdhvhOSqRIwY+M7PvnL84bubsofztc1bpaG2Cxxzqluw2mZXMcxXT0f4FQFWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=MccCTMFj; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TE/KrOhR"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47f7027ca11so503984f8f.3
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 03:09:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785924550; x=1786529350; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XrcStaMXdkE1hM0cDDyjF0ywdDXESAjsr6s/h+tclqU=;
-        b=TE/KrOhR+hPudONkTR1ud9BiEGids6A4j5g+iSX3NQwqqv6UfQ47ho6Hh78BSarN2j
-         VWzEyTQE8opn3ybr4nWb3fjO7eL+EqXnotKCRyt60OPtewwHVI83MmxQZ0mugzSrfWSR
-         srhdnWhCAL9c4niOLoY674o7bU8UFewIHCw+UewJbpeCNUsTKFEbjz7zh4+rSi11hefP
-         WHUIykpewpxsiYaBLNXJsg12u+XR49pDltYLOwA7VaQ5irinX+W/K7zA1hKrKNV9RHOb
-         psGh+0pSrS7J7E2cxeXYEt60vzL1QgUcqBQJ4tIDLN8LVd7OttdhMhnvv8Rd22OJaTxt
-         N18g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785924550; x=1786529350;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XrcStaMXdkE1hM0cDDyjF0ywdDXESAjsr6s/h+tclqU=;
-        b=Ke5xMslu1cVbJS/scMDJuaDF/P/RUnLEDCDfMFTMBq8PZH6mMtxdcV5ccV7VQhf+A3
-         MBvF0RiJ52J+ZM1kjLTKq9eNnHe9vVoDw+HZIrAQkiZWHl0dNYF6B+rdeqegg1T9K2KT
-         TPY1dINiVEXp4G5vJ5ZQfzI63Kya8Y9VFlW/SHx+BZSWq2+cRszjrtdIMDCKiR0bqWee
-         4fTgDlE/NufFRdt1j3KBwccc7VHuP4HSJEZC5voetRqF/+RhxBxbKGQQVm+KwdGX7YMn
-         gBbBePkG3WqF7saEOsmNheySKoejLBWFXX5ADRSx/16xHVYB9sUExUeU/LYmfpECqBPW
-         gwdA==
-X-Gm-Message-State: AOJu0YzrY4VAK2S0zXr7BhevpLIzQHHrcMmKjFt/qqMiXr3evFC/ZERG
-	AOPTw30NiEj6tzy4eHb9N2yYTqg8fD6ZKH/eh+UTxkhkGMsgFQ+cTfmzeKwCz2aGzro=
-X-Gm-Gg: AR+sD13vcN4deMvSsWOWXY3N2O6c0KocAHoTcU6IDdLd6uGsgMEKXiYT24WQPSUoMYD
-	YZK0Gu48s8QlDZNElIBXqDlc0+egFOgYFdT5BrNI4gjzoGJvAqDEzKWKZ7o9OsJHEn/k+I4cwIE
-	LrZuh+qZpxSUZugyviMHk3LXqFJFwshkWMF9gi2EXuJE4U2R+u+oQquZE/HpO19mXIv68QFIOQV
-	Dj1uOVHkuwCsOx58H5Vv0ELc/5a54iZJpljlF/nKQh2NObywnpU1K1yHLHCNuIwyg582ZpUF+X7
-	UV6ZyA0j6Tns5MKJaVMoKaxeAbE0KHxEOeBF0wfU9gAFhfiaFk5KjEquaRx6Fgtx1Ai3LSpd6Yy
-	szVr5SROxJGXvDbuSZc0KZRjp/CwXQrpaUxNl1xGamUgZtv+viexg6t17DZXhGecQaPixMucdij
-	0jkYrQqCUcUEG1qCKRVOkueC9a+r3JQlnVuW6LwucC529LEpCYnSldasbuYbiqKzailXM=
-X-Received: by 2002:a5d:5291:0:b0:47f:d072:87d7 with SMTP id ffacd0b85a97d-47fec4f663fmr7081483f8f.9.1785924550297;
-        Wed, 05 Aug 2026 03:09:10 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.141.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47febfda0cbsm7427247f8f.6.2026.08.05.03.09.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2026 03:09:09 -0700 (PDT)
-Message-ID: <ebb8a1b7-d5c8-4be0-af64-1496a7fd29d0@linaro.org>
-Date: Wed, 5 Aug 2026 11:09:08 +0100
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="MccCTMFj"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A7A4153B;
+	Wed,  5 Aug 2026 03:52:02 -0700 (PDT)
+Received: from [10.57.44.180] (unknown [10.57.44.180])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 743203F632;
+	Wed,  5 Aug 2026 03:51:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1785927126; bh=osqcgEZrB4tIRuddtFyChcekiAZrXeFH6SN6KLCXUeQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MccCTMFj2hIMMjW795szcS5FxXktDxGWArGGS9xJv4VDpKX5Fq4pBTHZ+Dqo3dGwn
+	 I3za+Zt5GbrL3mgj2p5MRpqTGbT/okZGd5AlVXHozUBVFgINdiUcI9YZ5TtSpFFehy
+	 9K99FQyL3HUPo3MkG8rpZnXuHfDYEsMZGyYwsLhU=
+Message-ID: <d2584ac3-51c7-4eac-8f37-ae29d899169c@arm.com>
+Date: Wed, 5 Aug 2026 11:51:55 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,110 +35,63 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/21] ARM64 PMU Partitioning
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com,
- corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com,
- will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com,
- joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
- mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <gsntse4tvbn2.fsf@coltonlewis-kvm.c.googlers.com>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <gsntse4tvbn2.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v9 09/41] KVM: guest_memfd: Filter both shared and private
+ when invalidating
+Content-Language: en-GB
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, aneesh.kumar@kernel.org,
+ liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20260728-gmem-inplace-conversion-v9-9-35f9aec2aed2@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
+On 29/07/2026 01:35, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> Before conversion, a guest_memfd could be either all shared, or all
+> private, configured at creation time using the INIT_SHARED flag. Hence,
+> when zapping pages from stage 2 page tables, guest_memfd can filter which
+> to zap based on the initial shared/private state.
+> 
+> With conversion, guest_memfd tracks shared/private state on a per-page
+> level, so a range can contain both private and shared pages. Zap both
+> private and shared pages for simplicity.
+> 
+> An alternative would be to iterate guest_memfd attributes and only zap both
+> if shared and private pages exist within the range. Setting both the shared
+> and private filters lets the zapping logic do that iteration instead.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-
-On 04/08/2026 10:06 pm, Colton Lewis wrote:
-> James Clark <james.clark@linaro.org> writes:
-> 
->> On 23/07/2026 9:57 pm, Colton Lewis wrote:
->>> James Clark <james.clark@linaro.org> writes:
->>>>>> When running the guest on a single CPU I get different counts for the
->>>>>> same event for a single process, although this never happens on a 
->>>>>> host.
->>>>>> I think there might even be some Perf tests which expect them to 
->>>>>> be the
->>>>>> same, and this doesn't depend on whether any events are running on 
->>>>>> the
->>>>>> host or not. Not sure if you ran all the Perf selftests in a guest or
->>>>>> not?
-> 
->>>>> I'll investigate but I'm not sure perf is intended to guarantee
->>>>> that. perf stat just runs the event counters but may not write or read
->>>>> them at exactly the same time.
-> 
-> 
->>>> Is that true? The perf core calls perf_pmu_disable() when a process is
->>>> scheduled out before reading the count of each event of that process in
->>>> an inner loop. The perf_pmu_disable() clears PMCR_EL0.E which freezes
->>>> all of the counters so they can be read out in a consistent state.
-> 
->>>> It's important that they're all stopped at the same time because
->>>> counters might be used in metrics as ratios of each other. So I think
->>>> it's deliberately designed that way and appears to not be working in a
->>>> guest now.
-> 
->>> By default I think perf assumes events can be measured independently, If
->>> you want to guarantee events are scheduled together to avoid measurement
->>> skew you need to make sure the events are grouped.
-> 
->>> The common way to do that is with {} around the event list:
-> 
->>> perf stat -e {branches,branches}
-> 
->>> Please see if that resolves the issue.
-> 
-> 
->> Groups only change how the events are scheduled, not how the driver
->> starts or stops multiple events running on the same PMU (grouped or
->> ungrouped). In my repro I had less events than counters in HW, so they
->> will always be scheduled at the same time regardless of grouping.
-> 
->> I did notice something extra though, you have to first open some amount
->> of counters, and then open more than that. Then the second time the ones
->> with different counts will be however many were opened first time, as if
->> some state has stuck.
-> 
->> For example if I open two counters then 6, the first two always have
->> different counts the second time:
-> 
->>     $ perf stat -e branches,branches true
-> 
->>     Performance counter stats for 'true':
-> 
->>               106129      branches
-> 
->>               106129      branches
-> 
-> 
-> 
->>     $ perf stat -e
->> '{branches,branches,branches,branches,branches,branches}' true
-> 
->>     Performance counter stats for 'true':
-> 
->>               117013      branches
-> 
->>               117013      branches
-> 
->>               110364      branches
-> 
->>               110364      branches
-> 
->>               110364      branches
-> 
->>               110364      branches
-> 
-> 
->> After opening 6 again a third time they'll all have the same counts.
-> 
-> Interesting. Thanks. To clarify, is this happening in the host or VM?
-
-This is in the VM
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 
