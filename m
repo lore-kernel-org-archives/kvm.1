@@ -1,234 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893AC3D9680
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 07:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6B93DE453
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 08:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785916416; cv=none; b=OpW2Qv1lKn2f5aEPIg58rRAkpZSxe0sCZUmHf26tfuJWJNuv9Pf38VpOfZlMBGMBWz9/VovIHQnGMhrHKbTLpA3ZLHkjvDEO0mIIu8gVjQo6jr3AMeqrKenh6PcVBRi4NC6SiEjRmUxzBNiQoSMnfsYVx9pWfAUXtn4910LUdRk=
+	t=1785916929; cv=none; b=XeoBLIdPSioyXctjROyNR/RuPyzw9rve3oTweuWMSRkegMPwSt59kZe4kjUknvX1mcAnRBluqFqtPmjP4st3IxnK0i+Gw4WE2eFVoCifXJ6ugqz41IU3twcnjs0IIfqkKH+8s7SDmTuY5Ku+UXc22JzWWfrtrj7Hfj3gkg+96vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785916416; c=relaxed/simple;
-	bh=pknl9TYvrxvyOFWsgkanW5sgMZO4eSyzokheV0jIqaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oUEVP1lYACcmWcJzke2jQ+4Jy2Q97E+GKGY6cOluJSaWFhCqaCDWiuqlaZyyz/6L+ujgVOTd+aQ2vMXxrkv7ndLAF9O8XBjnyAk1/ghbEIiRodp39XX0VbRLpeXVfxDj4zLku3GJYlMS2NRovtSg49QKyT0Mc3OgX1lDhEjqeTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hwjPFYgc; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785916929; c=relaxed/simple;
+	bh=Wfwi2tb7uuSJ+kY+YguXvc2iCX+gynPhnN7zJehm99Q=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=CcN5obyN7agfeVrRWOTDUYQgMlAmi/Gr0676CYADgDHH5VpgcTA80ZPdy30JEhW+RK6aMQQ8p3awq7uO/IODk3eau5Omdbk1eVng7m9dsBWBr0d96naiF2LYeZq21etwm1YWJSA7a2IbsoBHmo7s8rYgZ/ZSVlg6PYjY2pcngwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ovwfUZdQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hwjPFYgc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785916415; x=1817452415;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pknl9TYvrxvyOFWsgkanW5sgMZO4eSyzokheV0jIqaA=;
-  b=hwjPFYgchtT7tCYmePh1y9CzTEBXfNpe6bEZjuryffLlncAlkPR2OT8F
-   hl7/gvql/ARQY6b3cwUtttbvMB/+oyBmWVKkcUui2S3woRSeGn6pG+Qni
-   Q10sUTx5UukxU8CqjfLQQVfdHqrnZYbELaci+C3ppklD0Husfy5iKCbsx
-   wLCfwV8GlID9loUdJ5Pf054c8fynd2CkqcWLFJyjj87/SGV6ZZ7Dxmwj7
-   ZZqv9GQxoih6CpFlW5kjo3YM3zNnPNGq3C5OGPT/dUkg3AwCWJfbYeJMp
-   n/cnyJzGneYjp48e4CWbfK77xMh8L8+OTM417sEO7yyUIhsytADGq6H1H
-   Q==;
-X-CSE-ConnectionGUID: jOMFJG4xRKmCFPAS0O9/vg==
-X-CSE-MsgGUID: lozOC43KQvGsJ2UCDo2RLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97643025"
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="97643025"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 00:53:34 -0700
-X-CSE-ConnectionGUID: vYnFk2RDSXG54R7vQ54xqA==
-X-CSE-MsgGUID: qRVFZR06QYWKWpAvvGwsgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="261166542"
-Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 00:53:34 -0700
-Message-ID: <4fedcaa6-d710-48f8-84c4-de682350bb2f@intel.com>
-Date: Wed, 5 Aug 2026 15:53:31 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ovwfUZdQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EF61F000E9;
+	Wed,  5 Aug 2026 08:02:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785916928;
+	bh=5gqG2VGJGryiZmCkxl4fktlbbTGK0RUix/2nenwp6mw=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ovwfUZdQLOuhk7o/YkjlTnfMzyxhRIOLVyA9UHUlMDc/PqrXK1+kFG7Dny9hDybhE
+	 x/3pdMBsM4pZWYWu0XmE+VSyqLDplXkGpPVf3N41XUpT/Pb/JqlcFPeR5FRzNmlsjT
+	 Qbd+5LLj+bsksiwkGDIN3PIvaNsAB1djvP+DJDJKZ74y4/1MayxUgRfA3FnziME1fv
+	 hhemJFEPH4z3pf4UbsP4JJtL5r5+TETbTryuIitXSb1jc9ACtlsJym7EH+WY9EZ9fI
+	 Vr5SL7+7wQbRA2CGRTqNsgqA9hZwqD4pBeXS2GqQ1lWYoayAa3GEjor9lfONVo+qWe
+	 NQ3ZxOBSgcylQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 3/3] tools/virtio: add --features-array switch
+Reply-To: sashiko-reviews@lists.linux.dev
+To: rom.wang <r4o5m6e8o@163.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260804080125.79403-4-r4o5m6e8o@163.com>
+References: <CAJaqyWfP7j5_PvOP0JiHuAQ8appGnoJDS3OB-qK7riBpZ_d_tQ@mail.gmail.com>
+ <20260804080125.79403-1-r4o5m6e8o@163.com>
+ <20260804080125.79403-4-r4o5m6e8o@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 08:02:07 +0000
+Message-Id: <20260805080207.E3EF61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
- <20260805031257.1844914-3-xiaoyao.li@intel.com>
- <20260805034602.5B2BB1F000E9@smtp.kernel.org>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260805034602.5B2BB1F000E9@smtp.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 8/5/2026 11:46 AM, sashiko-bot@kernel.org wrote:
->> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> index cdc0d24657acb..c037e9cb5bdfc 100644
->> --- a/arch/x86/kvm/vmx/tdx.c
->> +++ b/arch/x86/kvm/vmx/tdx.c
->> @@ -2031,7 +2031,7 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
->>   }
->>   
->>   
->> -int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->> +static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->>   {
->>   	struct vcpu_tdx *tdx = to_tdx(vcpu);
->>   	u64 vp_enter_ret = tdx->vp_enter_ret;
-> 
-> [Severity: High]
-> Does this code handle the bus_lock_detected bit (bit 26) being set in
-> vp_enter_ret or the raw 32-bit exit reason?
-> 
-> If userspace triggers a bus lock concurrently with an exit, the hardware can
-> set bit 26.  Will strict equality checks on vp_enter_ret (such as checking for
-> EXIT_REASON_EPT_MISCONFIG later in this function) fail because the bit is
-> unmasked?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Sashiko is correct. I think the handling like
+Pre-existing issues:
+- [High] The kernel implementation of VHOST_GET_FEATURES_ARRAY zeroes out t=
+he returned features instead of the tail, causing incorrect ioctl behavior =
+and causing the newly added test to fail.
+--
 
-   (vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)
+--- Patch [3]: [PATCH 3/3] tools/virtio: add --features-array switch ---
+commit 62c148ff31dfbcede0d6da6c8873dc84602618f3
+Author: Yufeng Wang <wangyufeng@kylinos.cn>
 
-is not safe, we need to first mask vp_enter_ret. Will add a separate 
-patch for it.
+tools/virtio: add --features-array switch
 
-> This also appears to affect tdx_to_vmx_exit_reason(), where comparing the raw
-> exit reason directly against 16-bit constants like EXIT_REASON_TDCALL will
-> fail to match if the bus lock bit is set, leading to incorrect emulation.
+This patch adds a --features-array switch to vhost_net_test to exercise the
+VHOST_SET_FEATURES_ARRAY and VHOST_GET_FEATURES_ARRAY ioctls. The test veri=
+fies
+that the kernel correctly copies the features and clears the trailing space=
+ when
+the requested count exceeds the kernel's defined feature entries.
 
-This is valid. We need to adjust tdx_to_vmx_exit_reason().
+> diff --git a/tools/virtio/vhost_net_test.c b/tools/virtio/vhost_net_test.c
+> index 389d99a6d7c76..77191e60a7a35 100644
+> --- a/tools/virtio/vhost_net_test.c
+> +++ b/tools/virtio/vhost_net_test.c
+[ ... ]
+> @@ -467,11 +491,43 @@ static void help(int status)
+[ ... ]
+> +static void verify_get_features_array(struct vdev_info *dev)
+> +{
+> +	struct vhost_features_array *clean, *dirty;
+> +	int r, i;
+> +
+> +	clean =3D calloc(1, struct_size(clean, features, GET_FEATURES_ARRAY_COU=
+NT));
+> +	assert(clean);
+> +	clean->count =3D GET_FEATURES_ARRAY_COUNT;
+> +	r =3D ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, clean);
+> +	assert(r >=3D 0);
+> +
+> +	/* Sentinel-fill so the kernel's clear_user() of the tail is visible. */
+> +	dirty =3D calloc(1, struct_size(dirty, features, GET_FEATURES_ARRAY_COU=
+NT));
+> +	assert(dirty);
+> +	dirty->count =3D GET_FEATURES_ARRAY_COUNT;
+> +	memset(dirty->features, 0xa5, GET_FEATURES_ARRAY_COUNT * sizeof(dirty->=
+features[0]));
+> +	r =3D ioctl(dev->control, VHOST_GET_FEATURES_ARRAY, dirty);
+> +	assert(r >=3D 0);
+> +
+> +	/* Must match; a wrong clear_user() start would leave them unequal. */
+> +	for (i =3D 0; i < GET_FEATURES_ARRAY_COUNT; i++)
+> +		assert(clean->features[i] =3D=3D dirty->features[i]);
 
-However, there is a more important problem. Since Bus Lock VM exit makes 
-bit 26 possible in EXIT REASON, the trick of "return -1" in 
-tdx_to_vmx_exit_reason() will introduce false-positive in the following 
-check of if(vmx_get_exit_reason(vcpu).bus_lock_detected) added by this 
-patch.
+[Severity: High]
+This is a pre-existing issue, but will this assert consistently fail agains=
+t the
+current kernel implementation of VHOST_GET_FEATURES_ARRAY?
 
-how about something like below:
+Looking at vhost_net_ioctl() in drivers/vhost/net.c, when handling the array
+features and zeroing the trailing space, it appears to start at argp:
 
----8<---
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index c037e9cb5bdf..54598dcda938 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -927,7 +927,7 @@ static __always_inline u32 
-tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-  static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-  {
-         struct vcpu_tdx *tdx = to_tdx(vcpu);
--       u32 exit_reason;
-+       union vmx_exit_reason exit_reason;
+        /* Zero the trailing space provided by user-space, if any */
+        if (clear_user(argp, size_mul(count - copied, sizeof(u64))))
+                return -EFAULT;
 
-         switch (tdx->vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
-         case TDX_SUCCESS:
-@@ -937,28 +937,29 @@ static __always_inline u32 
-tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
-         case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
-                 break;
-         default:
--               return -1u;
-+               return (u16)-1u;
-         }
+Because argp is not advanced by copied * sizeof(u64), clear_user() zeroes o=
+ut
+the newly copied features at the beginning of the array instead of the tail.
 
--       exit_reason = tdx->vp_enter_ret;
-+       exit_reason.full = tdx->vp_enter_ret;
+Since the kernel implementation leaves the actual trailing space uninitiali=
+zed,
+will this cause the test introduced here to always crash via the assertion?
 
--       switch (exit_reason) {
-+       switch (exit_reason.basic) {
-         case EXIT_REASON_TDCALL:
-                 if (tdvmcall_exit_type(vcpu))
--                       return EXIT_REASON_VMCALL;
-+                       exit_reason.basic = EXIT_REASON_VMCALL;
+> +
+> +	printf("GET_FEATURES_ARRAY: 0x%llx 0x%llx (tail zeroed) OK\n",
+> +	       (unsigned long long)clean->features[0],
+> +	       (unsigned long long)clean->features[1]);
+> +
+> +	free(clean);
+> +	free(dirty);
+> +}
 
--               return tdcall_to_vmx_exit_reason(vcpu);
-+               exit_reason.basic = tdcall_to_vmx_exit_reason(vcpu);
-+               break;
-         case EXIT_REASON_EPT_MISCONFIG:
-                 /*
-                  * Defer KVM_BUG_ON() until tdx_handle_exit() because 
-this is in
-                  * non-instrumentable code with interrupts disabled.
-                  */
--               return -1u;
-+               return (u16)-1u;
-         default:
-                 break;
-         }
-
--       return exit_reason;
-+       return exit_reason.full;
-  }
-
-  static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
-
-> [ ... ]
-> 
->> @@ -2141,6 +2143,21 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->>   	return 0;
->>   }
->>   
->> +int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->> +{
->> +	int ret = __tdx_handle_exit(vcpu, fastpath);
->> +
->> +	/* Exit to user space when bus lock was detected */
->> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
->> +		if (ret > 0)
->> +			vcpu->run->exit_reason = KVM_EXIT_X86_BUS_LOCK;
->> +
->> +		vcpu->run->flags |= KVM_RUN_X86_BUS_LOCK;
->> +		return 0;
-> 
-> [Severity: High]
-> Does this code silently drop negative error codes?
-> 
-> If __tdx_handle_exit() returns a negative error code (like -EIO or -EFAULT)
-> while bus_lock_detected is true, it skips setting vcpu->run->exit_reason but
-> still returns 0.
-> 
-> Could this cause KVM to return success to userspace with an uninitialized or
-> stale exit_reason instead of propagating the error?
-
-It won't return uninitialized or stale exit_reason. But changing the 
-negative error codes to 0 is a wrong behavior. I will fix it.
-
-The VMX handler looks to have the issue. I'll cook a separate patch to 
-fix it.
-
->> +	}
->> +	return ret;
->> +}
-> 
-> [ ... ]
-> 
->> @@ -3167,6 +3184,10 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
->>   				vcpu->kvm->arch.notify_window);
->>   	}
->>   
->> +	if (vcpu->kvm->arch.bus_lock_detection_enabled)
->> +		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
->> +				 SECONDARY_EXEC_BUS_LOCK_DETECTION);
-> 
-> [Severity: High]
-> Is it safe to write this execution control to the TD VMCS without verifying if
-> the TDX module supports it?
-> 
-> If a host userspace process enables KVM_CAP_X86_BUS_LOCK_EXIT but the TDX
-> module restricts this capability, could td_vmcs_setbit32() fail on TDH.VP.WR,
-> triggering the KVM_BUG_ON() macro and destroying the VM?
-
-Same for the patch 1. This is not possible, TDX module itself should 
-always support Bus Lock VM exit unless the hardware doesn't support it. 
-But in the case of hardware doesn't it, KVM doesn't set 
-kvm_caps.has_bus_lock_exit thus userspace cannot enable 
-KVM_CAP_X86_BUS_LOCK_EXIT.
-
->> +
->>   	tdx->state = VCPU_TD_STATE_INITIALIZED;
->>   
->>   	return 0;
-> 
-
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260804080125.7940=
+3-1-r4o5m6e8o@163.com?part=3D3
