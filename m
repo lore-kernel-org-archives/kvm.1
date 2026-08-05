@@ -1,745 +1,137 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2F84334C8
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 11:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D22430312;
+	Wed,  5 Aug 2026 11:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927880; cv=none; b=LuYB+mXqD9hjnpvWd6+S/7VMfeX0EvMCZptQ0StATWPzWDaHKpsgck5sfmvazae42EvPOX+aVPlcQI0rrJ09QlrXn22FZ2O7CUNScbFEB+lmIZS0H1BQQH7GU8wv64FKmddmZOgiCyPz6vhZp+jcJ/Q98fq53TeKOWA4Fs0O7Cw=
+	t=1785927907; cv=none; b=IrAUOoXlh181bXEA1QZ8/U47wyFPTnQrt2DGUqENErLuQOn9ib3sHrxQwhFm4n3NFo9rbUZUt474X73AYatPPJoAlSUDn1Ukqsl1Bc1INEaGvsNsZv4S7fZOcfrJuzFbvJiPNOcwHrI6njgfpAc8sd3fhMnt4br4EXHoaUV9ZEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927880; c=relaxed/simple;
-	bh=Elu5gaekJSlFeMJAGUCojnpsMu2HSHMFMopiinoMAp4=;
+	s=arc-20240116; t=1785927907; c=relaxed/simple;
+	bh=tMjyiE9i+m1yk7/6OdRzQtBf80/YXyVeGUoP2VS1Pto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IEcEzAJKCcb7y0UwxG7M9KLECWxqhVgKTnsWXf3pZErpRFLc6Zd0wnkQR5cswEcO5XUJsdxPPPJyvvcLL0KUKDcDXifgdSLKt872sEFqxlKw0RWmhAi88+dH4l5oYYncWUH/3VJmdFAWh7nuBBSTVDT8R1jfqxNVQR7kk0Lydm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=sbFYykHA; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	 MIME-Version; b=sJWjntTuYjLFnsp1lLWDmYTXwkVbgB18qkk7wY20PP8q6O7HUM0vETExjC6jL2tM45BTl0SmAI4A1dJ1IGHM4QtubiYtOrQilbunlZjB4effeNu4fLSyVmyZXqdYCIpO4mq4F0DiozogSQG58Y00DtCsJBdOeEZigROwahnXL9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UpMvWIFZ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="sbFYykHA"
-Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 9046920B716D;
-	Wed,  5 Aug 2026 04:04:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9046920B716D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927856;
-	bh=yjbu25v6uYx/tC7572WVZCaIO5Pyb1mNt2gKgiiUzwo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbFYykHAZKwQXyxWBPI0FoBVuLeeMLplg1WhwbCEb+VeSDKbfCGu4ufDU6bZ6amKK
-	 JkOIhOM3ijItBvFOviFBGuNLTSxKpENfJNrjMEt2vjqFYEW21xpykxAxlU6hLK5MZu
-	 E9jIH1iDv9WtFn39jaSumxVZdrxHaZ71Vj1shxDw=
-From: Sriram Nambakam <snambakam@linux.microsoft.com>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org
-Subject: [RFC PATCH v1 4/5] target/i386/kvm: run the secure plane in-kernel (Option B)
-Date: Wed,  5 Aug 2026 04:04:31 -0700
-Message-ID: <20260805110432.25167-5-snambakam@linux.microsoft.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805110432.25167-1-snambakam@linux.microsoft.com>
-References: <20260805110432.25167-1-snambakam@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UpMvWIFZ"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6758ldHK3288595;
+	Wed, 5 Aug 2026 11:05:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=BdV1EEgZTdS28cIdH
+	TdG/ugUikT1YS4Lf6lmOP0HUgo=; b=UpMvWIFZvpskcXTXOxcCB3pPma15j05Nz
+	mMgjIBrTak63jEU/bRJ2R8ybf3ajAdtnxKfLTlsgSn3pkLtV0+MzPmbM9+y2MrnN
+	FaES1erFg5+GWTJ5QuHttrG/rBvBJA3+Rs0Lq41hFSGA2yh9Zmbe8qIA+mv8VJAH
+	K0sJim/GAse4+OeFL+VmJSJAl7SdIT7XHyx3D9uIaaEJqQ+od1ONxFJxNllbLaY2
+	4DkWqb/8Yq+CFXkHOpRKxf76blDyjkY9sPoI8TDCF2eZtS/2g+vXQ/GjyPM4YeF5
+	XHRZ3ROPPtWF67gAF28A7lXcIvfH8XB6kZjdc1tziHRB10YGFL7Ww==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67htexv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 11:05:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675AuJOG003253;
+	Wed, 5 Aug 2026 11:05:02 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsugw6act-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Aug 2026 11:05:02 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675B50a422610502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Aug 2026 11:05:01 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0AB858219;
+	Wed,  5 Aug 2026 11:05:00 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D037558216;
+	Wed,  5 Aug 2026 11:04:58 +0000 (GMT)
+Received: from b35lp69.lnxne.boe (unknown [9.87.84.240])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Aug 2026 11:04:58 +0000 (GMT)
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+To: KVM <kvm@vger.kernel.org>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Douglas Freimuth <freimuth@linux.ibm.com>
+Subject: [PATCH v3 1/8] KVM: s390: Remove user triggerable WARN_ON
+Date: Wed,  5 Aug 2026 13:04:48 +0200
+Message-ID: <20260805110455.7200-2-borntraeger@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260805110455.7200-1-borntraeger@linux.ibm.com>
+References: <20260805110455.7200-1-borntraeger@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDA4NiBTYWx0ZWRfX90OoFZALQDUV
+ 6bLJX1x47Frz/YHITXUhwxgwwwug3lqnLk0MPCfXM2zdDGtueRkY4b1qKe3G+nCSBREZS6vAkL5
+ kjVUxS6WyXmSfSfCW25mLLU5DBiqWnw=
+X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a7318de cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=-vZO4XS2Tn_gDkGoK2UA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDA4NiBTYWx0ZWRfXzd/bxr7eNjVq
+ qRQg4+yQHwALWBy4PpmNwtF/KcOAOPnQ93Zx63Qq+M5vWBIOYg8E46uGt4coF71paG0aVH2sJyb
+ w6mOibm0oMPQlHw35ER13fpAPgZSa7MHzEP0hOcbuAz5D+9wUXw5/vbzy9hKg5KK5JoYy0gDy+k
+ K4XnK0qm0bMwHxrar1S3iDRhcbU9x9jmcHDSWJoSt2EWOAs8VDV5yhEjK4d2EYpkKDy8tENviG3
+ 8TR4xueSfetlhqmAaWnLYMPWehqB8LqrbWZMH0r5yed5f7xFohtZKPvJle9j2WSFhCfTi/kPt04
+ Tao6hooqCgrig93ZJEefo7IyjAQXO2jeozh+N2nDr7KgUP1FMxibEHvt/CS5c8Y2jw8z9l11VUF
+ 5S0Q1+OLiHuzzlna+R7bCRFWKvHucMMmgOhSITHFYvjnAwfX1u5gMK9jKdrsfhJEUwAMp/xRMu8
+ GY636DxwTW0vYAGeqQQ==
+X-Proofpoint-ORIG-GUID: vQsvFb8SBHNlVBGIq8zdMkR_54UYJjRN
+X-Proofpoint-GUID: vQsvFb8SBHNlVBGIq8zdMkR_54UYJjRN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-05_03,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050086
 
-Move secure-plane execution into the kernel and out of QEMU. Plane vCPUs
-are now created and initialised on their owning plane-0 CPU thread via
-run_on_cpu() (plane_vcpu_create_cb / plane_vcpu_init_cb), and the
-activate path leaves the secure vCPU stopped: it boots lazily inside KVM
-on the first KVM_HC_VBS_VTL_CALL, which KVM now services itself.
+pin_map_page() fails legitimately whenever the userspace mapping behind
+the adapter route has gone away, e.g. when the VMM unmaps that memory.
+As this can happen without a kernel programming error, remove the
+WARN_ON.
 
-Drop the userspace secure-world emulation that this replaces: the
-dedicated vm_plane_vcpu_thread (with its 8250 emulation and per-plane
-serial capture), vbs_apply_protection, vbs_handle_protect_memory,
-vbs_handle_seal_kernel and the kvm_handle_hc_vbs_vtl_call dispatch.
-Track each plane vCPU's owning CPU index (vcpu_cpu_index) so the
-run_on_cpu callbacks target the right thread.
-
-Signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
-(cherry picked from commit cbecc9eda1514d200fefe2bb89f330be4f1ab1be)
+Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use mapped pages")
+Cc: Douglas Freimuth <freimuth@linux.ibm.com>
+Cc: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Douglas Freimuth <freimuth@linux.ibm.com>
 ---
- include/system/kvm_int.h |   1 +
- target/i386/kvm/kvm.c    | 536 ++++++++++++---------------------------
- 2 files changed, 157 insertions(+), 380 deletions(-)
+ arch/s390/kvm/interrupt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/system/kvm_int.h b/include/system/kvm_int.h
-index e7c9dc95a2..cde0a148e1 100644
---- a/include/system/kvm_int.h
-+++ b/include/system/kvm_int.h
-@@ -114,6 +114,7 @@ struct KVMPlane {
-  * kvm_get_plane_fd(s, plane_id); only LVBS-specific state lives here. */
- struct kvm_vm_plane_state {
-     int *vcpu_fds;
-+    unsigned int *vcpu_cpu_index;  /* owning plane-0 CPU index per plane vCPU */
-     unsigned int vcpu_count;
-     uint64_t load_offset;
-     uint64_t memory_size;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 9d89e5cac6..5ac7962e61 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -6541,10 +6541,9 @@ static int kvm_handle_hc_map_gpa_range(X86CPU *cpu, struct kvm_run *run)
-  *   off  0  u64  load_offset
-  *   off  8  u64  memory_size
-  *   off 16  u64  entry_point
-- *   off 24  u32  vcpu_count
-- *   off 28  u32  kernel_format
-- *   off 32  char kernel[128]
-- *   off 160 char cmdline[512]
-+ *   off 24  u32  kernel_format
-+ *   off 28  char kernel[128]
-+ *   off 156 char cmdline[512]
-  * ======================================================================== */
- 
- #define VM_PLANE_CFG_STRIDE     672
-@@ -6568,23 +6567,37 @@ static int kvm_handle_hc_map_gpa_range(X86CPU *cpu, struct kvm_run *run)
- #define CA_OFF_RESP_SIZE  16
- #define CA_OFF_BUFFER     20
- 
--struct vm_plane_boot_ctx {
--    int vcpu_fd;
--    int vcpu_mmap_size;
--    unsigned int vcpu_idx;
--    uint64_t plane_id;
--    unsigned int *halted_count;
--    QemuMutex *mutex;
--    QemuCond *cond;
--    int result;
--    int log_fd;
--    QemuMutex wake_mutex;
--    QemuCond wake_cond;
--    bool halted;
--    bool kick;
--    bool stopped;
-+/*
-+ * Plane>0 vCPU creation and initialization must run on the OWNING plane-0
-+ * vCPU's thread.  A plane>0 vCPU shares its plane-0 sibling's
-+ * struct kvm_vcpu_common, including the single embedded preempt_notifier.
-+ * KVM_CREATE_VCPU and KVM_SET_{S,}REGS / KVM_SET_MP_STATE all vcpu_load()
-+ * the plane vCPU, which registers that shared notifier on the *calling*
-+ * task.  If issued from the config/activate-hypercall vCPU's thread while a
-+ * sibling is concurrently in KVM_RUN on another host CPU, the same
-+ * hlist_node would be linked onto two tasks' preempt-notifier lists ->
-+ * list corruption -> host hard lockup.  run_on_cpu() forces the sibling out
-+ * of KVM_RUN (KVM_RUN returns, vcpu_put() unregisters the notifier) and
-+ * runs the work on that sibling's own thread, so the notifier is owned by
-+ * exactly one task.  For the current vCPU, run_on_cpu() runs inline.
-+ */
-+struct plane_vcpu_create_ctx {
-+    KVMState *s;
-+    unsigned int plane_id;
-+    unsigned int vcpu_id;
-+    int fd;                 /* out: vcpu fd, or -errno on failure */
- };
- 
-+static void plane_vcpu_create_cb(CPUState *cs, run_on_cpu_data data)
-+{
-+    struct plane_vcpu_create_ctx *ctx = data.host_ptr;
-+    int fd;
-+
-+    fd = kvm_vm_plane_ioctl(ctx->s, ctx->plane_id, KVM_CREATE_VCPU,
-+                            (void *)(uintptr_t)ctx->vcpu_id);
-+    ctx->fd = (fd < 0) ? -errno : fd;
-+}
-+
- static int kvm_handle_hc_vm_planes_config(X86CPU *cpu, struct kvm_run *run)
- {
-     uint64_t gpa = run->hypercall.args[0];
-@@ -6645,7 +6658,7 @@ static int kvm_handle_hc_vm_planes_config(X86CPU *cpu, struct kvm_run *run)
-     for (plane_id = 1; plane_id < plane_count; plane_id++) {
-         uint64_t plane_gpa = gpa + (plane_id * VM_PLANE_CFG_STRIDE);
-         uint64_t load_offset = 0, memory_size = 0, entry_point = 0;
--        uint32_t vcpu_count = 0;
-+        uint32_t vcpu_count = plane0_vcpu_count;
-         struct kvm_vm_plane_state *ps = &s->vm_planes[plane_id];
-         char cmdline_buf[512];
-         MemoryRegionSection section;
-@@ -6655,29 +6668,24 @@ static int kvm_handle_hc_vm_planes_config(X86CPU *cpu, struct kvm_run *run)
-         cpu_physical_memory_read(plane_gpa + 0,  &load_offset, 8);
-         cpu_physical_memory_read(plane_gpa + 8,  &memory_size, 8);
-         cpu_physical_memory_read(plane_gpa + 16, &entry_point, 8);
--        cpu_physical_memory_read(plane_gpa + 24, &vcpu_count,  4);
- 
--        if (!memory_size || !vcpu_count) {
-+        /*
-+         * joergroedel plane model: a plane has exactly one vCPU per
-+         * plane-0 vCPU — each is the sibling of a plane-0 vCPU sharing the
-+         * same logical CPU.  The guest does not configure a count; QEMU
-+         * mirrors the plane-0 vCPU set.
-+         */
-+        if (!memory_size) {
-             error_report("vm_planes: plane %" PRIu64 " invalid "
--                         "(load_offset=0x%" PRIx64 " size=0x%" PRIx64
--                         " vcpus=%u)",
--                         plane_id, load_offset, memory_size, vcpu_count);
--            g_free(plane0_vcpu_ids);
--            run->hypercall.ret = -EINVAL;
--            return 0;
--        }
--
--        if (vcpu_count > plane0_vcpu_count) {
--            error_report("vm_planes: plane %" PRIu64 " requests %u vCPUs, "
--                         "but plane0 has %u", plane_id, vcpu_count,
--                         plane0_vcpu_count);
-+                         "(load_offset=0x%" PRIx64 " size=0x%" PRIx64 ")",
-+                         plane_id, load_offset, memory_size);
-             g_free(plane0_vcpu_ids);
-             run->hypercall.ret = -EINVAL;
-             return 0;
-         }
- 
-         memset(cmdline_buf, 0, sizeof(cmdline_buf));
--        cpu_physical_memory_read(plane_gpa + 160, cmdline_buf,
-+        cpu_physical_memory_read(plane_gpa + 156, cmdline_buf,
-                                  sizeof(cmdline_buf));
-         cmdline_buf[sizeof(cmdline_buf) - 1] = '\0';
-         memcpy(ps->cmdline, cmdline_buf, sizeof(ps->cmdline));
-@@ -6714,24 +6722,46 @@ static int kvm_handle_hc_vm_planes_config(X86CPU *cpu, struct kvm_run *run)
-         memory_region_unref(section.mr);
- 
-         ps->vcpu_fds = g_new0(int, vcpu_count);
-+        ps->vcpu_cpu_index = g_new0(unsigned int, vcpu_count);
-         for (i = 0; i < vcpu_count; i++) {
--            int vcpu_fd;
-             unsigned int vcpu_id = plane0_vcpu_ids[i];
-+            CPUState *target = qemu_get_cpu(vcpu_id);
-+            struct plane_vcpu_create_ctx cctx = {
-+                .s = s,
-+                .plane_id = plane_id,
-+                .vcpu_id = vcpu_id,
-+                .fd = -EINVAL,
-+            };
-+
-+            if (!target) {
-+                error_report("vm_planes: plane %" PRIu64 " no CPU for id=%u",
-+                             plane_id, vcpu_id);
-+                close(plane_fd);
-+                kvm_set_plane_fd(s, plane_id, -1);
-+                g_free(plane0_vcpu_ids);
-+                run->hypercall.ret = -EINVAL;
-+                return 0;
-+            }
- 
--            vcpu_fd = kvm_vm_plane_ioctl(s, plane_id, KVM_CREATE_VCPU,
--                                         (void *)(uintptr_t)vcpu_id);
--            if (vcpu_fd < 0) {
-+            /* Create on the owning CPU's thread; see plane_vcpu_create_cb. */
-+            bql_lock();
-+            run_on_cpu(target, plane_vcpu_create_cb,
-+                       RUN_ON_CPU_HOST_PTR(&cctx));
-+            bql_unlock();
-+
-+            if (cctx.fd < 0) {
-                 error_report("vm_planes: KVM_CREATE_VCPU plane %" PRIu64
-                              " vcpu %u failed: %s",
--                             plane_id, vcpu_id, strerror(errno));
-+                             plane_id, vcpu_id, strerror(-cctx.fd));
-                 close(plane_fd);
-                 kvm_set_plane_fd(s, plane_id, -1);
-                 g_free(plane0_vcpu_ids);
--                run->hypercall.ret = -errno;
-+                run->hypercall.ret = cctx.fd;
-                 return 0;
-             }
- 
--            ps->vcpu_fds[i] = vcpu_fd;
-+            ps->vcpu_fds[i] = cctx.fd;
-+            ps->vcpu_cpu_index[i] = vcpu_id;
-         }
- 
-         ps->vcpu_count  = vcpu_count;
-@@ -6757,10 +6787,6 @@ static int kvm_init_plane_vcpu(int vcpu_fd, uint64_t entry_addr,
- {
-     struct kvm_regs regs = {};
-     struct kvm_sregs sregs = {};
--    struct kvm_mp_state mp = {
--        .mp_state = is_bsp ? KVM_MP_STATE_RUNNABLE
--                           : KVM_MP_STATE_INIT_RECEIVED,
--    };
-     int ret;
- 
-     sregs.cs.base = 0; sregs.cs.limit = 0xffffffff; sregs.cs.selector = 0x10;
-@@ -6806,144 +6832,42 @@ static int kvm_init_plane_vcpu(int vcpu_fd, uint64_t entry_addr,
-         return -errno;
-     }
- 
--    ret = ioctl(vcpu_fd, KVM_SET_MP_STATE, &mp);
--    if (ret < 0) {
--        error_report("vm_planes: KVM_SET_MP_STATE: %s", strerror(errno));
--        return -errno;
--    }
-+    /*
-+     * Do NOT issue KVM_SET_MP_STATE on a plane (plane_level > 0) vCPU fd:
-+     * the VM-planes kernel only whitelists a subset of vCPU ioctls for
-+     * plane vCPUs (KVM_SET_*REGS/SREGS/FPU/LAPIC/...), and KVM_SET_MP_STATE
-+     * is intentionally excluded -> it returns -EINVAL.  The kernel already
-+     * establishes the correct initial MP state at create time: the plane
-+     * BSP (vcpu_id == bsp_vcpu_id) is left RUNNABLE, and APs are left
-+     * UNINITIALIZED (wait-for-INIT), which is the correct power-on state.
-+     * The plane guest's own SMP bringup INIT/SIPIs its APs via the
-+     * in-kernel LAPIC, so no userspace MP-state poke is needed.
-+     */
-     return 0;
- }
- 
--static void *vm_plane_vcpu_thread(void *arg)
--{
--    struct vm_plane_boot_ctx *ctx = arg;
--    struct kvm_run *kvm_run;
--    int ret;
--    bool boot_signaled = false;
--
--    kvm_run = mmap(NULL, ctx->vcpu_mmap_size, PROT_READ | PROT_WRITE,
--                   MAP_SHARED, ctx->vcpu_fd, 0);
--    if (kvm_run == MAP_FAILED) {
--        error_report("vm_planes: plane %" PRIu64 " vcpu %u: mmap failed: %s",
--                     ctx->plane_id, ctx->vcpu_idx, strerror(errno));
--        ctx->result = -errno;
--        qemu_mutex_lock(ctx->mutex);
--        (*ctx->halted_count)++;
--        qemu_cond_signal(ctx->cond);
--        qemu_mutex_unlock(ctx->mutex);
--        return NULL;
--    }
--
--    for (;;) {
--        ret = ioctl(ctx->vcpu_fd, KVM_RUN, 0);
--        if (ret < 0) {
--            if (errno == EINTR || errno == EAGAIN) {
--                continue;
--            }
--            error_report("vm_planes: plane %" PRIu64 " vcpu %u: KVM_RUN: %s",
--                         ctx->plane_id, ctx->vcpu_idx, strerror(errno));
--            ctx->result = -errno;
--            break;
--        }
--
--        switch (kvm_run->exit_reason) {
--        case KVM_EXIT_HLT:
--            if (!boot_signaled) {
--                boot_signaled = true;
--                qemu_mutex_lock(ctx->mutex);
--                (*ctx->halted_count)++;
--                qemu_cond_signal(ctx->cond);
--                qemu_mutex_unlock(ctx->mutex);
--            }
--            qemu_mutex_lock(&ctx->wake_mutex);
--            ctx->halted = true;
--            while (!ctx->kick && !ctx->stopped) {
--                qemu_cond_wait(&ctx->wake_cond, &ctx->wake_mutex);
--            }
--            ctx->halted = false;
--            ctx->kick = false;
--            if (ctx->stopped) {
--                qemu_mutex_unlock(&ctx->wake_mutex);
--                goto done;
--            }
--            qemu_mutex_unlock(&ctx->wake_mutex);
--            break;
--
--        case KVM_EXIT_IO: {
--            uint8_t *io_data = (uint8_t *)kvm_run + kvm_run->io.data_offset;
--            size_t io_size = kvm_run->io.size * kvm_run->io.count;
--            uint16_t port = kvm_run->io.port;
--
--            if (kvm_run->io.direction == KVM_EXIT_IO_OUT) {
--                if (port == 0x3f8 && ctx->log_fd >= 0) {
--                    ssize_t w = write(ctx->log_fd, io_data, io_size);
--                    (void)w;
--                }
--            } else {
--                memset(io_data, 0, io_size);
--                switch (port) {
--                case 0x3fa: memset(io_data, 0xc1, io_size); break;
--                case 0x3fb: memset(io_data, 0x03, io_size); break;
--                case 0x3fc: memset(io_data, 0x08, io_size); break;
--                case 0x3fd: memset(io_data, 0x60, io_size); break;
--                case 0x3fe: memset(io_data, 0xb0, io_size); break;
--                default: break;
--                }
--            }
--            usleep(100);
--            break;
--        }
--
--        case KVM_EXIT_MMIO:
--            usleep(100);
--            break;
--
--        case KVM_EXIT_SHUTDOWN: {
--            struct kvm_regs dbg = {};
--            ioctl(ctx->vcpu_fd, KVM_GET_REGS, &dbg);
--            error_report("vm_planes: plane %" PRIu64 " vcpu %u: shutdown "
--                         "RIP=0x%" PRIx64 " RSP=0x%" PRIx64,
--                         ctx->plane_id, ctx->vcpu_idx,
--                         (uint64_t)dbg.rip, (uint64_t)dbg.rsp);
--            ctx->result = -EFAULT;
--            goto done;
--        }
--
--        case KVM_EXIT_FAIL_ENTRY:
--            error_report("vm_planes: plane %" PRIu64 " vcpu %u: entry failure "
--                         "0x%" PRIx64, ctx->plane_id, ctx->vcpu_idx,
--                         (uint64_t)kvm_run->fail_entry.hardware_entry_failure_reason);
--            ctx->result = -EFAULT;
--            goto done;
--
--        case KVM_EXIT_INTERNAL_ERROR:
--            error_report("vm_planes: plane %" PRIu64 " vcpu %u: internal "
--                         "error %u", ctx->plane_id, ctx->vcpu_idx,
--                         kvm_run->internal.suberror);
--            ctx->result = -EFAULT;
--            goto done;
-+/* Initialize a plane vCPU on its owning CPU's thread (see
-+ * plane_vcpu_create_cb for why KVM_SET_*REGS / KVM_SET_MP_STATE, which
-+ * vcpu_load() the shared common, must not race the running sibling). */
-+struct plane_vcpu_init_ctx {
-+    int vcpu_fd;
-+    uint64_t entry_addr;
-+    uint64_t stack_addr;
-+    uint64_t zero_page_gpa;
-+    uint64_t page_table_gpa;
-+    uint64_t gdt_gpa;
-+    bool is_bsp;
-+    int ret;                /* out: 0 on success, -errno on failure */
-+};
- 
--        default:
--            error_report("vm_planes: plane %" PRIu64 " vcpu %u: unexpected "
--                         "exit %u", ctx->plane_id, ctx->vcpu_idx,
--                         kvm_run->exit_reason);
--            ctx->result = -EFAULT;
--            goto done;
--        }
--    }
-+static void plane_vcpu_init_cb(CPUState *cs, run_on_cpu_data data)
-+{
-+    struct plane_vcpu_init_ctx *ctx = data.host_ptr;
- 
--done:
--    if (ctx->log_fd >= 0 && ctx->vcpu_idx == 0) {
--        close(ctx->log_fd);
--    }
--    munmap(kvm_run, ctx->vcpu_mmap_size);
--    qemu_mutex_lock(ctx->mutex);
--    if (!boot_signaled) {
--        (*ctx->halted_count)++;
--        qemu_cond_signal(ctx->cond);
--    }
--    qemu_mutex_unlock(ctx->mutex);
--    return NULL;
-+    ctx->ret = kvm_init_plane_vcpu(ctx->vcpu_fd, ctx->entry_addr,
-+                                   ctx->stack_addr, ctx->zero_page_gpa,
-+                                   ctx->page_table_gpa, ctx->gdt_gpa,
-+                                   ctx->is_bsp);
- }
- 
- static int kvm_handle_hc_vm_planes_activate(X86CPU *cpu, struct kvm_run *run)
-@@ -6952,7 +6876,6 @@ static int kvm_handle_hc_vm_planes_activate(X86CPU *cpu, struct kvm_run *run)
-     uint64_t plane_count = run->hypercall.args[1];
-     uint64_t plane_id;
-     KVMState *s = kvm_state;
--    int vcpu_mmap_size;
- 
-     if (!gpa || !plane_count || !s->vm_planes ||
-         plane_count != s->vm_plane_count) {
-@@ -6960,26 +6883,13 @@ static int kvm_handle_hc_vm_planes_activate(X86CPU *cpu, struct kvm_run *run)
-         return 0;
-     }
- 
--    vcpu_mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
--    if (vcpu_mmap_size <= 0) {
--        error_report("vm_planes: KVM_GET_VCPU_MMAP_SIZE failed");
--        run->hypercall.ret = -EINVAL;
--        return 0;
--    }
--
-     for (plane_id = 1; plane_id < plane_count; plane_id++) {
-         struct kvm_vm_plane_state *ps = &s->vm_planes[plane_id];
-         uint64_t stack_addr;
-         uint64_t entry_point = 0;
-         uint64_t cmdline_gpa, zero_page_gpa;
-         uint64_t pt_base, pml4_gpa, pdpt_gpa, pd_base, gdt_gpa_val;
--        struct vm_plane_boot_ctx *ctxs;
--        QemuThread *threads;
--        QemuMutex mutex;
--        QemuCond cond;
--        unsigned int halted_count = 0;
-         unsigned int i;
--        int plane_log_fd = -1;
- 
-         if (kvm_get_plane_fd(s, plane_id) < 0 || !ps->vcpu_count ||
-             !ps->host_addr) {
-@@ -7086,98 +6996,60 @@ static int kvm_handle_hc_vm_planes_activate(X86CPU *cpu, struct kvm_run *run)
-             memcpy(PLANE_HOST(gdt_gpa_val), gdt, sizeof(gdt));
-         }
- 
--        /* Initialize all plane vCPUs */
-+        /* Initialize all plane vCPUs on their owning CPU threads. */
-         for (i = 0; i < ps->vcpu_count; i++) {
--            int ret = kvm_init_plane_vcpu(ps->vcpu_fds[i], entry_point,
--                                          stack_addr, zero_page_gpa, pml4_gpa,
--                                          gdt_gpa_val, i == 0);
--            if (ret) {
--                error_report("vm_planes: init plane %" PRIu64 " vcpu %u "
--                             "failed", plane_id, i);
--                run->hypercall.ret = ret;
-+            CPUState *target = qemu_get_cpu(ps->vcpu_cpu_index[i]);
-+            struct plane_vcpu_init_ctx ictx = {
-+                .vcpu_fd = ps->vcpu_fds[i],
-+                .entry_addr = entry_point,
-+                .stack_addr = stack_addr,
-+                .zero_page_gpa = zero_page_gpa,
-+                .page_table_gpa = pml4_gpa,
-+                .gdt_gpa = gdt_gpa_val,
-+                .is_bsp = (i == 0),
-+                .ret = -EINVAL,
-+            };
-+
-+            if (!target) {
-+                error_report("vm_planes: plane %" PRIu64 " no CPU for vcpu %u",
-+                             plane_id, i);
-+                run->hypercall.ret = -EINVAL;
-                 return 0;
-             }
--        }
--#undef PLANE_HOST
--
--        /* Serial log */
--        {
--            char lp[256];
--            snprintf(lp, sizeof(lp), "/tmp/plane%" PRIu64 "-serial.log",
--                     plane_id);
--            plane_log_fd = open(lp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
--        }
- 
--        /* Spawn vCPU threads */
--        qemu_mutex_init(&mutex);
--        qemu_cond_init(&cond);
--
--        ctxs = g_new0(struct vm_plane_boot_ctx, ps->vcpu_count);
--        threads = g_new0(QemuThread, ps->vcpu_count);
-+            /* See plane_vcpu_init_cb: must run on the sibling's own thread. */
-+            bql_lock();
-+            run_on_cpu(target, plane_vcpu_init_cb,
-+                       RUN_ON_CPU_HOST_PTR(&ictx));
-+            bql_unlock();
- 
--        for (i = 0; i < ps->vcpu_count; i++) {
--            char name[48];
--
--            ctxs[i].vcpu_fd        = ps->vcpu_fds[i];
--            ctxs[i].vcpu_mmap_size = vcpu_mmap_size;
--            ctxs[i].vcpu_idx       = i;
--            ctxs[i].plane_id       = plane_id;
--            ctxs[i].halted_count   = &halted_count;
--            ctxs[i].mutex          = &mutex;
--            ctxs[i].cond           = &cond;
--            ctxs[i].result         = 0;
--            ctxs[i].log_fd         = (i == 0) ? plane_log_fd : -1;
--            qemu_mutex_init(&ctxs[i].wake_mutex);
--            qemu_cond_init(&ctxs[i].wake_cond);
--            ctxs[i].halted  = false;
--            ctxs[i].kick    = false;
--            ctxs[i].stopped = false;
--
--            snprintf(name, sizeof(name), "plane%" PRIu64 "-vcpu%u",
--                     plane_id, i);
--            qemu_thread_create(&threads[i], name, vm_plane_vcpu_thread,
--                               &ctxs[i], QEMU_THREAD_JOINABLE);
--        }
--
--        /* Wait up to 5s for plane to reach first HLT */
--        {
--            int64_t dl = qemu_clock_get_ns(QEMU_CLOCK_REALTIME) +
--                         5LL * 1000000000LL;
--            qemu_mutex_lock(&mutex);
--            while (halted_count < ps->vcpu_count) {
--                int64_t now = qemu_clock_get_ns(QEMU_CLOCK_REALTIME);
--                if (now >= dl) {
--                    info_report("vm_planes: plane %" PRIu64 " boot timeout "
--                                "(%u/%u halted)", plane_id, halted_count,
--                                ps->vcpu_count);
--                    break;
--                }
--                qemu_cond_timedwait(&cond, &mutex, 1000);
-+            if (ictx.ret) {
-+                error_report("vm_planes: init plane %" PRIu64 " vcpu %u "
-+                             "failed", plane_id, i);
-+                run->hypercall.ret = ictx.ret;
-+                return 0;
-             }
--            qemu_mutex_unlock(&mutex);
-         }
-+#undef PLANE_HOST
- 
--        /* Note: threads keep running for the plane's lifetime; we
--         * intentionally leak ctxs/threads — they outlive this call. */
--
--        /* Seal plane memory via KVM_SET_MEMORY_ATTRIBUTES(NO_WRITE|NO_EXEC) */
--        {
--            struct kvm_memory_attributes ma = {
--                .address    = ps->load_offset,
--                .size       = ps->memory_size,
--                .attributes = KVM_MEMORY_ATTRIBUTE_NO_WRITE |
--                              KVM_MEMORY_ATTRIBUTE_NO_EXEC,
--                .flags      = 0,
--            };
--            int pr = kvm_vm_ioctl(s, KVM_SET_MEMORY_ATTRIBUTES, &ma);
--            if (pr < 0) {
--                warn_report("vm_planes: plane %" PRIu64 " seal failed (%d)",
--                            plane_id, pr);
--            } else {
--                info_report("vm_planes: plane %" PRIu64 " memory sealed",
--                            plane_id);
--            }
--        }
-+        /*
-+         * Full Option B: do NOT run the secure plane from a dedicated
-+         * userspace thread.  The plane's vCPU has been initialized (entry
-+         * point, page tables, MP state) but is left STOPPED.  It boots
-+         * lazily and in-kernel the first time the normal plane issues a
-+         * VBS/VTL call: KVM switches to the secure plane within the normal
-+         * plane's KVM_RUN, the secure kernel boots to its dispatch loop and
-+         * parks itself via KVM_HC_VBS_VTL_RETURN.  This removes the racy
-+         * per-plane thread that concurrently drove the shared vcpu->run
-+         * page and caused host lockups.
-+         *
-+         * NB: the secure plane's own memory is intentionally NOT sealed
-+         * here.  Because memory attributes are currently applied to every
-+         * plane's EPT alike, sealing the secure plane's region NO_EXEC
-+         * would prevent the secure kernel from executing its own dispatch
-+         * loop.  Protecting the secure plane's memory from the normal plane
-+         * requires plane-aware EPT attributes and is left as a follow-up.
-+         */
-         ps->host_addr = NULL;
- 
-         info_report("vm_planes: plane %" PRIu64 " launched — entry 0x%" PRIx64
-@@ -7188,107 +7060,13 @@ static int kvm_handle_hc_vm_planes_activate(X86CPU *cpu, struct kvm_run *run)
-     return 0;
- }
- 
--static int vbs_apply_protection(KVMState *s, uint64_t gpa, uint64_t size,
--                                uint32_t perms)
--{
--    uint64_t attrs = 0;
--    struct kvm_memory_attributes ma;
--
--    if (!(perms & 2)) {
--        attrs |= KVM_MEMORY_ATTRIBUTE_NO_WRITE;
--    }
--    if (!(perms & 4)) {
--        attrs |= KVM_MEMORY_ATTRIBUTE_NO_EXEC;
--    }
--    if (!attrs) {
--        return 0;
--    }
--
--    ma.address    = gpa;
--    ma.size       = size;
--    ma.attributes = attrs;
--    ma.flags      = 0;
--    return kvm_vm_ioctl(s, KVM_SET_MEMORY_ATTRIBUTES, &ma);
--}
--
--static int32_t vbs_handle_protect_memory(KVMState *s, uint64_t ca_gpa)
--{
--    uint64_t gpa, size;
--    uint32_t perms, arg_size;
--
--    cpu_physical_memory_read(ca_gpa + CA_OFF_ARG_SIZE, &arg_size, 4);
--    if (arg_size < 24) {
--        return -22;
--    }
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 0,  &gpa,   8);
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 8,  &size,  8);
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 16, &perms, 4);
--    return vbs_apply_protection(s, gpa, size, perms);
--}
--
--static int32_t vbs_handle_seal_kernel(KVMState *s, uint64_t ca_gpa)
--{
--    uint64_t text_gpa, text_size, rodata_gpa, rodata_size;
--    uint32_t arg_size;
--    int ret;
--
--    cpu_physical_memory_read(ca_gpa + CA_OFF_ARG_SIZE, &arg_size, 4);
--    if (arg_size < 40) {
--        return -22;
--    }
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 0,  &text_gpa,    8);
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 8,  &text_size,   8);
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 16, &rodata_gpa,  8);
--    cpu_physical_memory_read(ca_gpa + CA_OFF_BUFFER + 24, &rodata_size, 8);
--
--    ret = vbs_apply_protection(s, text_gpa, text_size, 1 | 4);
--    if (ret < 0) {
--        return ret;
--    }
--    return vbs_apply_protection(s, rodata_gpa, rodata_size, 1);
--}
--
--static int kvm_handle_hc_vbs_vtl_call(X86CPU *cpu, struct kvm_run *run)
--{
--    uint64_t ca_gpa = run->hypercall.args[0];
--    uint32_t call_id;
--    int32_t status;
--    KVMState *s = kvm_state;
--
--    cpu_physical_memory_read(ca_gpa + CA_OFF_CALL_ID, &call_id, 4);
--
--    switch (call_id) {
--    case VBS_CALL_INIT:
--    case VBS_CALL_SHUTDOWN:
--        status = 0;
--        break;
--    case VBS_CALL_PROTECT_MEMORY:
--        status = vbs_handle_protect_memory(s, ca_gpa);
--        break;
--    case VBS_CALL_SEAL_KERNEL:
--        status = vbs_handle_seal_kernel(s, ca_gpa);
--        break;
--    case VBS_CALL_VALIDATE_MODULE:
--    case VBS_CALL_SET_MODULE_PERMS:
--    case VBS_CALL_UNLOAD_MODULE:
--    case VBS_CALL_ADD_KEY:
--    case VBS_CALL_REVOKE_KEY:
--    case VBS_CALL_SEND_CERTS:
--    case VBS_CALL_KEXEC_VALIDATE:
--    case VBS_CALL_KEXEC_INVALIDATE:
--        status = 0;  /* acknowledge */
--        break;
--    default:
--        warn_report("vbs_vtl_call: unknown call_id 0x%04x", call_id);
--        status = -38;
--        break;
--    }
--
--    cpu_physical_memory_write(ca_gpa + CA_OFF_STATUS, &status, 4);
--    run->hypercall.ret = 0;
--    return 0;
--}
--
-+/*
-+ * Full Option B: VBS/VTL calls (KVM_HC_VBS_VTL_CALL / _RETURN) are now
-+ * serviced entirely in-kernel by switching to the secure plane, which runs
-+ * a real in-guest dispatcher.  QEMU no longer emulates the secure world, so
-+ * those hypercalls never exit to userspace here.  Only the plane
-+ * configuration/activation hypercalls are handled by QEMU.
-+ */
- static int kvm_handle_hypercall(X86CPU *cpu, struct kvm_run *run)
- {
-     if (run->hypercall.nr == KVM_HC_MAP_GPA_RANGE)
-@@ -7297,8 +7075,6 @@ static int kvm_handle_hypercall(X86CPU *cpu, struct kvm_run *run)
-         return kvm_handle_hc_vm_planes_config(cpu, run);
-     if (run->hypercall.nr == KVM_HC_VM_PLANES_ACTIVATE)
-         return kvm_handle_hc_vm_planes_activate(cpu, run);
--    if (run->hypercall.nr == KVM_HC_VBS_VTL_CALL)
--        return kvm_handle_hc_vbs_vtl_call(cpu, run);
- 
-     return -EINVAL;
- }
+diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+index 8f24bcd1a6d3..23f0e0821474 100644
+--- a/arch/s390/kvm/interrupt.c
++++ b/arch/s390/kvm/interrupt.c
+@@ -3013,7 +3013,7 @@ static int adapter_indicators_set(struct kvm *kvm,
+ 	if (!summary_info) {
+ 		spin_unlock_irqrestore(&adapter->maps_lock, flags);
+ 		summary_page = pin_map_page(kvm, adapter_int->summary_addr, 0);
+-		if (WARN_ON_ONCE(!summary_page))
++		if (!summary_page)
+ 			return -1;
+ 		idx = srcu_read_lock(&kvm->srcu);
+ 		map = page_address(summary_page);
 -- 
-2.55.0
+2.53.0
 
