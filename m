@@ -1,157 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C221C84DC
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 03:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CB9EEA8
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 04:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785901564; cv=none; b=TUr+HLFnaSfxxta4gYiW20BgSTfRhPqoVJ51O6bHZXKLlFzW2vGQwLzg/TjpdoM4MqHmjfMcJaq3Nz6orPMou4fcalgoajH5b3j4oXyGrCMlPrh3tJt87SwTiiAuWACkSv7XJsh8CO/3aK2KrwMbc313bef1ZW/KDPRJGaOsQMw=
+	t=1785903385; cv=none; b=oaWYqGfPtQieeuoIu7/WUgt6rA29A0fdKj0oUUVelxjJsJOVNHGcdSKSui0f4kTg8USjfq/lnZ2Tv7L+iSci4Qvoq4YBEthHw1gF51YEagoF6msoo00CtFvmjvUXDrdnMwEFcBcFB+iBI+nyUw/xpPb6ufrLYZSsSM79gVGLvIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785901564; c=relaxed/simple;
-	bh=K1N199QmN0+5/DMHa2jT80scNogWYCZq0/cOnNK6cZU=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EQ4xMkoNsrApgIYUCenkvGgDsgAwxr+rgujOGpViSkjpEW/FDdlepiS/uKs3NzO8BNVUFjSCY/sMntD4Peodk7Qc78iMCIAWfBzCrf98UoxJpLuRcLHlt7vsaY8zS0HNFis2rg2jjy7QLVSGrw/StLU7yawF1u1j98nb5DtYngU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9joDMZg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785903385; c=relaxed/simple;
+	bh=unJQYHAH6hDo54l3GGjfz1wcZg/tgXLXapLpNN6tdGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g03dCmh/w1qb7LXN0Rll5sDQu80cUIpVYnCmc+sTq6eDxRV3+nEzJTLPXV+DBn+VZv9DDdaODzWyCRrPRlx8NV94zA6S8/oCxiNuXFrAtF2ZZ60wOA47QuW8Fvdhr7IpKQEblBsNRA5QrTH1BtBpqqnr2I4amOiwgEZshkyt94I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YGBP6wmf; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9joDMZg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2BB1F000E9;
-	Wed,  5 Aug 2026 03:46:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785901562;
-	bh=PWdUZanx74aNhl6sRRlah5U78PyR9BxnjypVoCTL2S0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U9joDMZgC6LWEjGCN4soLRRdbY3d9VM+8wXZUfbCh1fe1WVaMwj3UKHTrYLsEfz4k
-	 c0vYGgBMdtF+X6iRixJrfYRslaXFq8Y9kgO3LodfvevnNJVfcoxS+O+cy2gBi3INxm
-	 BT4XWgLTeALgCu6jOdSR9k18gZVXhc1zdDKxeHrT0wghvGKz23J9P7ecWTeRXa/VSh
-	 6BQKXbn8/w1nT/SHB+TzJwWzdBhjCMHjW0cVtY7/ppszF/yPr5RoxrLpDjO8Cz3ndf
-	 IXyWThrsr46g8E+DYgsU1W7B82x/0RxqGbT/1r8oIOJ1cp8Be0a9LGAfwD9fBYK7hH
-	 9cc8mpTSsOt4A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Xiaoyao Li" <xiaoyao.li@intel.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260805031257.1844914-3-xiaoyao.li@intel.com>
-References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
- <20260805031257.1844914-3-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 03:46:01 +0000
-Message-Id: <20260805034602.5B2BB1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YGBP6wmf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785903384; x=1817439384;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=unJQYHAH6hDo54l3GGjfz1wcZg/tgXLXapLpNN6tdGI=;
+  b=YGBP6wmfQJdG5pSmnYQVbSMIc4nbweXEz/unPCIj7aTUXsEeOb9D+zmy
+   JhrF5+X1sJpcws4FywvVJvLPI/3U4k0LnRf9KjVktctajvyWseLE0AK3o
+   sgXziGriXVNqmAXve6/UbKoJWWQvv2nnmNu9Md1d35HQKFaXvbwXb3sn2
+   QfzIM2+3mx35V/chWyYE25mpxJWgtq13yXGNETBB01Mf6FmjDbZajsk6h
+   /hWskOuukLoy6mc0drgZO6HMzWirHmfGWPF8PuQO7mHdqrF9K2tQ6kXHY
+   256lQADiW/7B9RAHK5Fuy87QjeIr2KUcuwTSMGssTp0jx/sZ1AUI6H+hL
+   w==;
+X-CSE-ConnectionGUID: 3EQMvAdcRdu7MGPxHYFA4w==
+X-CSE-MsgGUID: xwNe5xbDT2ahEazklgBFFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="90281431"
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="90281431"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 21:16:23 -0700
+X-CSE-ConnectionGUID: saPUjthZQEC+zZ44+8ENYw==
+X-CSE-MsgGUID: Yb5wcbtWTjmrCl1Im0fBBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
+   d="scan'208";a="286339715"
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 21:16:22 -0700
+Message-ID: <cab386d6-ddd1-4768-952b-9b7c05087312@intel.com>
+Date: Wed, 5 Aug 2026 12:16:19 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] KVM: TDX: Enable Notify VM exit
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-2-xiaoyao.li@intel.com>
+ <20260805033851.38FAD1F000E9@smtp.kernel.org>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260805033851.38FAD1F000E9@smtp.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] Unmasked bus_lock_detected bit breaks TDX exit handling and guest =
-execution.
-- [High] Unvalidated VMCS write for BUS_LOCK_DETECTION allows userspace to =
-trigger host WARN and crash VM.
-- [High] tdx_handle_exit() silently masks negative error codes, returning u=
-ndefined state to userspace.
---
+On 8/5/2026 11:38 AM, sashiko-bot@kernel.org wrote:
+>> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> index 545b03d9d10b8..cdc0d24657acb 100644
+>> --- a/arch/x86/kvm/vmx/tdx.c
+>> +++ b/arch/x86/kvm/vmx/tdx.c
+> [ ... ]
+>> @@ -3157,6 +3160,13 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *cmd)
+>>   	td_vmcs_write64(tdx, POSTED_INTR_DESC_ADDR, __pa(&tdx->vt.pi_desc));
+>>   	td_vmcs_setbit32(tdx, PIN_BASED_VM_EXEC_CONTROL, PIN_BASED_POSTED_INTR);
+>>   
+>> +	if (kvm_notify_vmexit_enabled(vcpu->kvm)) {
+>> +		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
+>> +				 SECONDARY_EXEC_NOTIFY_VM_EXITING);
+> [Severity: High]
+> Does this allow an unprivileged userspace process to trigger a host-side
+> KVM_BUG_ON() and crash the host if panic_on_warn is enabled?
+> 
+> If KVM advertises KVM_CAP_X86_NOTIFY_VMEXIT globally based solely on CPU
+> hardware support, userspace can enable it for a TDX VM. If the underlying
+> TDX module (e.g., v1.0) does not support Notify VM Exiting, this write
+> will fail.
+> 
+> When the TDX module write operation fails, the macro backing
+> td_vmcs_setbit32() calls tdh_vp_wr_failed(), which triggers a KVM_BUG_ON():
+> 
+> arch/x86/kvm/vmx/tdx.c:tdh_vp_wr_failed() {
+> 	KVM_BUG_ON(1, tdx->vcpu.kvm);
+> 	pr_err("TDH_VP_WR[%s.0x%x]%s0x%llx failed: 0x%llx\n", ...);
+> }
+> 
+> Should we verify that the loaded TDX module actually supports the Notify VM
+> Exit feature before attempting to program these TD VMCS fields?
 
---- Patch [2]: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit ---
-commit a95d478711dc8c7f94ecddd768bf45d636ab7635
-Author: Xiaoyao Li <xiaoyao.li@intel.com>
+Every TDX module should support this feature and SEAMCALLs to set the TD 
+VMCS will not fail as long as the hardware supports the feature. The 
+hardware support is checked by KVM and reflected in 
+kvm_caps.has_notify_vmexit.
 
-KVM: TDX: Enable Bus Lock VM exit
-   =20
-Enable Bus Lock VM exit functionality for TDX guests by programming the
-BUS_LOCK_DETECTION control in the TD VMCS and by adding the exit handler.
-
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index cdc0d24657acb..c037e9cb5bdfc 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -2031,7 +2031,7 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu=
-, int err)
->  }
-> =20
-> =20
-> -int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-> +static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
->  {
->  	struct vcpu_tdx *tdx =3D to_tdx(vcpu);
->  	u64 vp_enter_ret =3D tdx->vp_enter_ret;
-
-[Severity: High]
-Does this code handle the bus_lock_detected bit (bit 26) being set in
-vp_enter_ret or the raw 32-bit exit reason?
-
-If userspace triggers a bus lock concurrently with an exit, the hardware can
-set bit 26.  Will strict equality checks on vp_enter_ret (such as checking =
-for
-EXIT_REASON_EPT_MISCONFIG later in this function) fail because the bit is
-unmasked?
-
-This also appears to affect tdx_to_vmx_exit_reason(), where comparing the r=
-aw
-exit reason directly against 16-bit constants like EXIT_REASON_TDCALL will
-fail to match if the bus lock bit is set, leading to incorrect emulation.
-
-[ ... ]
-
-> @@ -2141,6 +2143,21 @@ int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpat=
-h_t fastpath)
->  	return 0;
->  }
-> =20
-> +int tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
-> +{
-> +	int ret =3D __tdx_handle_exit(vcpu, fastpath);
-> +
-> +	/* Exit to user space when bus lock was detected */
-> +	if (vmx_get_exit_reason(vcpu).bus_lock_detected) {
-> +		if (ret > 0)
-> +			vcpu->run->exit_reason =3D KVM_EXIT_X86_BUS_LOCK;
-> +
-> +		vcpu->run->flags |=3D KVM_RUN_X86_BUS_LOCK;
-> +		return 0;
-
-[Severity: High]
-Does this code silently drop negative error codes?
-
-If __tdx_handle_exit() returns a negative error code (like -EIO or -EFAULT)
-while bus_lock_detected is true, it skips setting vcpu->run->exit_reason but
-still returns 0.
-
-Could this cause KVM to return success to userspace with an uninitialized or
-stale exit_reason instead of propagating the error?
-
-> +	}
-> +	return ret;
-> +}
-
-[ ... ]
-
-> @@ -3167,6 +3184,10 @@ static int tdx_vcpu_init(struct kvm_vcpu *vcpu, st=
-ruct kvm_tdx_cmd *cmd)
->  				vcpu->kvm->arch.notify_window);
->  	}
-> =20
-> +	if (vcpu->kvm->arch.bus_lock_detection_enabled)
-> +		td_vmcs_setbit32(tdx, SECONDARY_VM_EXEC_CONTROL,
-> +				 SECONDARY_EXEC_BUS_LOCK_DETECTION);
-
-[Severity: High]
-Is it safe to write this execution control to the TD VMCS without verifying=
- if
-the TDX module supports it?
-
-If a host userspace process enables KVM_CAP_X86_BUS_LOCK_EXIT but the TDX
-module restricts this capability, could td_vmcs_setbit32() fail on TDH.VP.W=
-R,
-triggering the KVM_BUG_ON() macro and destroying the VM?
-
-> +
->  	tdx->state =3D VCPU_TD_STATE_INITIALIZED;
-> =20
->  	return 0;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805031257.1844=
-914-1-xiaoyao.li@intel.com?part=3D2
+If any TDX module doesn't allow to program the TD VMCS fields of Notify 
+VM exit, it's just a bug of TDX module.
