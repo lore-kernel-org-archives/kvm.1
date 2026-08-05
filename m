@@ -1,198 +1,372 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956E63A1E67;
-	Wed,  5 Aug 2026 14:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785941483; cv=fail; b=auvAbtn0uhu44U/iv4MKkovXd++9NzZ2YxCrtSW/nUr5b1zhjiNzsjE0JYhbwbzlGJw4ZBezm59SI9EzI6mdD6a0MsjVIqb7jSZ3edD1VmRZNBgSXhYiBAx/5P0W3fDilp2jvfRWjQ6FjnrqVi6LhHCIF6lud2F3YLuzOPOPJjU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785941483; c=relaxed/simple;
-	bh=M/LG0rdTBWCpsLOEblYyGZe987XMByJ0MMn/bS2jqAc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lAH1JuTorpe3M4TxKbClWBPVIHjmwc+j8Uz0AEBWwL+8C0Ej1ThArMmbYLsppgy7yIJ6VsIR+o/BV3i75qkvaI7Xxv/5ZNypSXsuF9oWAlvQYp4kOa9/AqRktz1L1uY7JjI0XeQOz65BW3z/tQSGiDNcrI6Nr/sjsiZJH45vWFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BAYR5vBe; arc=fail smtp.client-ip=52.101.52.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1586399004
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 14:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785941764; cv=none; b=cu6zWZSE9ggvuoMxvnLuVFIQs9dNlQqwgPiBFpejAPwWM/im+LEi+w7XwOBPrrdeoEWVVpg1xJIuP12NNJPCu92PKv1qTs/P4vRNci8DBmUkxF6Z5rhRoln/DKnMXcDfpfWcxBJAvYQWkgcnScmv1MrgGZ/Q6Hyd7Y+WG49BL/o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785941764; c=relaxed/simple;
+	bh=WONSZrEfTEQHhDLMWBsW7H4r4I/kwHAKWrWnmd+EM0I=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o6idver0WjmOjnM0YSZ1qAKbqIepicYUxeD/M+RjoekoIg6HqQY6+uILw+Swt2A5FHCk3EMdAH2rpNSoh5IcfcsdcgOVc8PaXzqbOq5NaY1mkLkBb4+2RU6rW2Tie8+lmT9ahbLVDyLdw4m+BxJaBbUsJ1CMYCjHf0r5nm7MCQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u60XywTo; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BAYR5vBe"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LUJoka4sFza18GhyvD8vwfxzPW8lpUgECdVfJyFjYBb34wNbi8aMbUXlo29llvJdWi0xSM3M2tiTesFSq7g8fFq7x11yVOIPHLtbepZ9TxMtKnsR4Olc5MgEgfUYK2uSz1Zccj8lh+1sRX+SK5ojdFXh31uXRYPXkI+AQf0X/t2crcjTvES5xC9rZytlJCs9ddt4hwEvY0S/fVyF7OlGEq+eY1K0R8fh38+KyZDyvTT9gkkwpOY8y6/ACy+/7kA7qfvIdODadsNUCBYM93Q+yrKHJrRYlhRgutkjTf9bAzGjJxYHVOjRvrq8YrUizuyEzqdkuqC+Hg9DUziPTFgb0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yjZ4xzI5ZNfqtDZvMrDXKpQt1zNdHjMnTeecz6kgqrU=;
- b=Ucsd8E7Jx5nR2UrVpxO/wOBvlXjubI7nwpSsDE9nFaUXhu9aXMRqJ52woM2yJ2R1h545xeMPnXoqLyBA2icNHjo91teVWeeOx6TMsnJ0Pi/mtioZqVLs1WM/YTd/r4Vge7xWHzE4Un/8tOTrtMEG/2U0MPFeYV66tZFO8n1RQtAhImNcVfe0Vs7O5Aoi491rqxo+nY+l9uc9RqaNsgu2QXohEK7kAjoaNErFdcDznBL2cdMeQfNO6/W3cDDobQPfQsCiUOpPqSnmU5DFBHRsP4CDLZ+VR1JVAwWUXG78vdyla0mFtY6z8G4QReMmFiAPfS40yqJp3lsJk1AKMAiniA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yjZ4xzI5ZNfqtDZvMrDXKpQt1zNdHjMnTeecz6kgqrU=;
- b=BAYR5vBesXFEcndoU8s/ojTyL/qI7nglyYo4B95JCJJP4ZZGDvcK4Y6XSiEQ85j8UFo2fytfFVl/U3pZqfW8398Awj2oSs5dEmIQpbM1D7qoOvTmDELGdD9dUdiolu6Omd3HJRoZ9k1/z9srMzDNAXDlmoZwBx3GrWEr2U3FNNk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS0PR12MB6655.namprd12.prod.outlook.com (2603:10b6:8:d0::12) by
- IA1PR12MB6018.namprd12.prod.outlook.com (2603:10b6:208:3d6::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.19; Wed, 5 Aug 2026 14:51:17 +0000
-Received: from DS0PR12MB6655.namprd12.prod.outlook.com
- ([fe80::cca7:d50e:86e3:24fb]) by DS0PR12MB6655.namprd12.prod.outlook.com
- ([fe80::cca7:d50e:86e3:24fb%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 14:51:16 +0000
-Message-ID: <65d82937-113d-405b-9399-b70973e84c50@amd.com>
-Date: Wed, 5 Aug 2026 09:51:11 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
- actually the missing mitigation
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, x86@kernel.org,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Naveen Rao <naveen.rao@amd.com>,
- David Kaplan <david.kaplan@amd.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-2-kim.phillips@amd.com>
- <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
-Content-Language: en-US
-From: Kim Phillips <kim.phillips@amd.com>
-In-Reply-To: <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL1PR13CA0138.namprd13.prod.outlook.com
- (2603:10b6:208:2bb::23) To DS0PR12MB6655.namprd12.prod.outlook.com
- (2603:10b6:8:d0::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u60XywTo"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-ca6bd8a190cso1391507a12.0
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 07:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785941762; x=1786546562; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=x+u/ptws/w0ERMyPQldrsepzUvylkhuQnBIDzncP5Dw=;
+        b=u60XywTotDCOED3D5WuZEUrp1NABXhVQCq5dQRz1Q39XWW0pjntz9HASaawUQTEwhn
+         RXsOFebKWucplwn4iNBo0FK5NkMe2PQJu2B1RL9cMOdnaRWe2wZiQR6pRSca11GmdC6s
+         xvNe/KkQQX6SiHRtmpqvFnTg2UN240efUftaVnqHVZyrn7/9Vbjh/l3J3OzO50BcygQr
+         hmSxD9pXKNnMmacATMW2ruiBwqJoM8s8j/puattk8SNLOxiOyWX2AjWW1gMDccNfCTyh
+         tF9y0X9daef7iomTggRPVI5SeM7urakSKMwqdChrbddIeCezzKFAJ+qZQyI2Ky0vgUpp
+         66GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785941762; x=1786546562;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x+u/ptws/w0ERMyPQldrsepzUvylkhuQnBIDzncP5Dw=;
+        b=P2MdKLkdYFqtPreFuqaN1uMIJ3oKAflW3FAQb8fmPn4PgBrUFiuA3+PwgUbHzXTp1t
+         NKzCuplSA8sL57nSEDtyKVkze7vjT7JtJE9/16ip232Y4PX5iQXdL7aRL7pKWqJPuy5j
+         uYdWWpHpzR7MRNqm0nXliXsILlPrOca4sMN7iJiKGRvavxbhHYMA2HZAa92bLeVpSdzh
+         FAu3F1qaLAwI2j0P55E26pmzw/3efxyRQg2mMom7VlrfQEf9IfPOPp4vIe/bYAtWH4x2
+         2IwU2ds1GmfIUTfO85Hd8ySk5gGO6kURTrvOGlzMCy+JhJNhe+0ab9mKJVUD9nybu+xu
+         oBrw==
+X-Forwarded-Encrypted: i=1; AHgh+RoEVOnt1g3Kz98PldaM3IVGhaerctn6dc9FHbgXSRe0cOY41m9/vAahr2TV2vTKqoDmczA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmjWAV55pqBifUJNmGZNf1BYFnqlPYj4zXGL2o/iKlHaxTz+/U
+	sqvcgcUiPRD+jEXp459JBhGWAHEasbQCPKuttE3ao414t43V9H9bndEYSUomPXBU5B87OrzmmME
+	rdELQUA==
+X-Received: from pfdf15.prod.google.com ([2002:aa7:8b0f:0:b0:847:9805:8254])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2295:b0:848:62ab:7b7
+ with SMTP id d2e1a72fcca58-84f2e0402b9mr8103173b3a.16.1785941761779; Wed, 05
+ Aug 2026 07:56:01 -0700 (PDT)
+Date: Wed, 5 Aug 2026 07:56:01 -0700
+In-Reply-To: <4fedcaa6-d710-48f8-84c4-de682350bb2f@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB6655:EE_|IA1PR12MB6018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71810817-aff1-4194-e4ec-08def301006d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|18002099003|4143699003|56012099006|11063799006|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	qi8blWPUlswBWegetb8Gik5po1g0P0LAJfeTtTG1HcnhOWZGsxQaF3l2TTwBoDqwvJRCfruKUUZe+TMPf6kouz/5L8de8Af0xMfEL6BQssqopoy+icMzAEOrO853CsmGgV6Y0cX9e6sTydZV1q59mZoO1CJ+EdaKdUb+VszQMVe6MPKwi3ql6orJyrAZXBNs/O0vNGbjSR5KeLRq8QRYu2J2pdeYQtexpTyILIYFoHeCfa1gQapQAPmHgufXOImKbhcOM4SRQ/ltbYXXBWGnt8dPAUlqTWyY0GiiNNhZFwcpdvEAsiAmcZ518iQKstgG5Hcg0iQPudkb70nK1H5a+HAXJcYy3ytM8Jw8edkrLfoHZSGjp521NdSJGKqCV3Cv47gY1ZoCZDaLSJL6AJCVT0y7rzr7bD93+LdaQzUqlwWUqR2vtJ80owWj6PTT1iUJDOJrh2/37//vnt3sym/Z8xdOPpctR4kXqfvYzXmGB4vqZ9KCy/g6ws06znEeF1kbfjWUFaw5V9cNUktY27/jRTUU1nlIagLwpheXwA+DstJ/hqIdORsyYVzUlUL9n9JcSgL4lKvhRHCwX4gPaTjur/dqT/3i/MmVyG4pTsgnqBPzhSqDq4bspjf8zrjw6/hBR76pIdbd5gT2ws2o4cKcpSnjmt4myoUAu6Sn8dbQWcc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6655.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YkhzaGpNTXdVVDcrdXI3akZyYnJjVDVCb0dkWllLMmNIWVlCOHNDTGlnU09k?=
- =?utf-8?B?ZlROcVQwQWZrdmRrVFZEeUQvMzZudVkzVkNvakJhZGw2K25tZXVFUzhLQTNK?=
- =?utf-8?B?elArRHpXVTd1UG9kdTVQSVN3dll2S0JXakJtWHc5Z3VpajgzdnByN2ZndUFx?=
- =?utf-8?B?cjY3WGdOMFFTQzNST3lYVWQvY2FDSVJuU0JMQkwvaHNteXRTd0VQU0pNWU82?=
- =?utf-8?B?cjJWQnBzajh4RlFMNG5vN3JITWZBcVQrU25yVTdYN0JFNHNhblROc0hoS1E1?=
- =?utf-8?B?eUdyY1hvYVp2TjViNkdkRkdmYnliSEMrL2xoekdjVVdGRTB1akR0RCtVbnRD?=
- =?utf-8?B?L1F3eFVaWEpXenlTK0l5OVFvdTdRWGJtTEdlVERrdkc2MlQ3N0RRSWJVM0x1?=
- =?utf-8?B?SWh4Mm1SM29aVDBnRTJYQVVXU0sxQkdXRzhtUUN0NmFwUTZkZ2tYL2RPN0xN?=
- =?utf-8?B?N3ZVNEFGUVNXN2V2ak4waVZ2RmJmU2NTMGl5eTkrMmpXWUM3cW8wK3pNSHJU?=
- =?utf-8?B?V2ZUWFFLVld3cFN6T2MrcW0vYk53b0VTTzVISkw2L1VmczJYQng1L0tUT2Zi?=
- =?utf-8?B?SGRFa2ZSdU1MVmhtY1YzUS95WFN5dFZ0UUlBQnZzK1UzOFRsK2FBTHBNSGVn?=
- =?utf-8?B?akdvbGdJUEZ6Mk9pVVc4SFFLYjNNMEtiR3ZlTEl5VjY5dVJlb2FkcEl2aTdn?=
- =?utf-8?B?dTU0SHlzMjIvUE5uY1NVOFArQXZxMGhscndpeE8ySi9BWUVkdG1DbEJEV2w5?=
- =?utf-8?B?RDRTc3daV0QzaENUMDA3aXIyajl2QW5hUlpSKzRZUkZST3ExVHdKZ2lJUFhK?=
- =?utf-8?B?VDZzNFdQRDQ0bzJqWmppQUNOYW1RVjl5alFBVWxEbnNXRGtSZVM0RjJHaGZH?=
- =?utf-8?B?VEJzOXk2amcySU5PYk5HRXVGVUluN3JWdGVKaE84K09IQmxkTEgweGNGOW81?=
- =?utf-8?B?WXBiOE5SaStvdUpOWmR4ZHpxME4rblFvSnBTNHVvaGkrTFo4cDBTZm1CR0N0?=
- =?utf-8?B?bUQ4eXl6Z1JzWDhBOU81cDgxTlBjNjlQOThvc1NXbFZNOXZQeGl1aEgwd2ZF?=
- =?utf-8?B?clc5SVVTaUlhUlFQcHVSYkJPT3BqMUJhSDVaU2hZZDdGdFVocWxPLzF1NGRs?=
- =?utf-8?B?aldORmNKQTNQUG9veG5GY3FCOGt0Q3lNSFV6YU53U2U5Z3UrUUpFcjF1OThs?=
- =?utf-8?B?TDVXWms4aUdxbHpyVXFZdUZiYU9PTTBxaE11V3VJY3czTHdvLzBqWGtQdFRu?=
- =?utf-8?B?VVZzMDJDQWUyZjUzcHFMZTNuRTJubFpKRmpOWG9Gb0dFMFpVS3N1YW16SWhP?=
- =?utf-8?B?MWs2VGh6dWZRVHdBZHE2Qkc3UEVuVGZaQlY3anBNM1lBbVZSNDhnT2FPMmFj?=
- =?utf-8?B?TEVneEgxRCs2UmY4ZTRZTGFGdjNORkFjQUliWmVkaDBtVVNrUUdEUGtQS1hI?=
- =?utf-8?B?cDFzREZDMS8yYmxUWGdnNmx2NUkrSkpNUlZROGNmMHljMitJT0k0eUZhbmZz?=
- =?utf-8?B?UnNicWJNSlJvek0yWGpxeEZZbFdBUEVuNkxJbG1rOWtaVHBZZ1VFNmdiTm1q?=
- =?utf-8?B?eTNkOW41bjZ4aEp0MVlJdElmNnBaNnNDa2lUNVhTMkpERWJqZFdMeHVRNlgv?=
- =?utf-8?B?ajNzcHcwZjF2cWhVVFEzdk1WeXdCSW8rYkVmYysvT1hsQXVnZ2V6Zmt0Qk9S?=
- =?utf-8?B?VTA2a2MvQW9HKzEyTHRDcUk4a1FrbVQrUUJQWUNUVzQ1UGF3VXF3U3hDbVhx?=
- =?utf-8?B?NW1ka2oySjY0b1Nxc2ROWW81YlI1MFk1WjRQeXptMVRPSFgzeGJFV2JrUnds?=
- =?utf-8?B?enY4WTlHb1ZxSUdRclVpREtwUEJETFlQRWFsRTZPR3o1cFVpd3J4WXdEVXBo?=
- =?utf-8?B?Z0ovanF2S2ozUmVzYmFoZXAwZTA1R3lVMjJVSFVTcjdhVThkNWZEYy9iSTR2?=
- =?utf-8?B?M0duMnB4OFkyN2dZaXp4OGd3a1ZnMDR6SmNPM2xxYUxyUkthRGtoOFJqK2k3?=
- =?utf-8?B?M0VHek9QUE1KS2ZDQzhMcHcxVEMvdnh1WHdJSXZ1YTdzRXd1YjdnY2tQT0lJ?=
- =?utf-8?B?aXF2NU1VdjVDcnBwRS9RNFdrWG5pT2NRZ1h1QU5PY2lnczFWVitrbjVlQTFp?=
- =?utf-8?B?S1hoM2lNVEJSODlSTC81RzhySTZ5OU5taEZ5MUtQbEVyMm16RVA2TTlDeS9l?=
- =?utf-8?B?SmJucDB5YkkxMFBIeGVSN3lyTHNQcU9xcE83L1hHUHNiQzBVcnZWUmJwbXVO?=
- =?utf-8?B?NE9mWnlKN3RjdFlOMERsMWNpcndFUTM5VkgzZlRpUDdlWFdSYTh0aytWZWoz?=
- =?utf-8?B?L0k0SlRTRWRhcm16QTZUczByU0xGd0xtcVM4Y01iQUUzbktNUFJEUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71810817-aff1-4194-e4ec-08def301006d
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6655.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 14:51:16.5523
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e3jSKolOIr3KnnXIkL/WvVBV/SYTGNUqFLCLYspTHSkN4heetO0Xpvk/68kCRN1NjcdUoc3bf3m+CjGsc17h9A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6018
+Mime-Version: 1.0
+References: <20260805031257.1844914-1-xiaoyao.li@intel.com>
+ <20260805031257.1844914-3-xiaoyao.li@intel.com> <20260805034602.5B2BB1F000E9@smtp.kernel.org>
+ <4fedcaa6-d710-48f8-84c4-de682350bb2f@intel.com>
+Message-ID: <anNPAXShf1gjDdeu@google.com>
+Subject: Re: [PATCH 2/2] KVM: TDX: Enable Bus Lock VM exit
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 8/4/26 7:44 PM, Borislav Petkov wrote:
-> On Tue, Aug 04, 2026 at 06:56:02PM -0500, Kim Phillips wrote:
->> spectre_v2_select_retpoline() unconditionally emits a pr_err when the
->> kernel lacks retpoline support before returning SPECTRE_V2_NONE to its
->> callers.
+On Wed, Aug 05, 2026, Xiaoyao Li wrote:
+> On 8/5/2026 11:46 AM, sashiko-bot@kernel.org wrote:
+> > This also appears to affect tdx_to_vmx_exit_reason(), where comparing the raw
+> > exit reason directly against 16-bit constants like EXIT_REASON_TDCALL will
+> > fail to match if the bus lock bit is set, leading to incorrect emulation.
 > 
-> Unconditionally? There's an "if" there. :)
-
-There's a "when" in there, too:
-
-...unconditionally (emits a pr_err when the kernel lacks retpoline support) before...
-
-So it's saying there are no additional conditions than
-!IS_ENABLED(CONFIG_MITIGATION_RETPOLINE), when there should be
-(which this patch adds).
-
->> A caller may then select an alternative mitigation, making the "no
->> mitigation available!" message alarming and misleading to administrators on
->> a system that is actually mitigated.
->>
->> Drop the pr_err from the helper and emit it once from
->> spectre_v2_update_mitigation().  Guard it on
->> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) so it only fires when retpoline
->> truly cannot be built in,
+> This is valid. We need to adjust tdx_to_vmx_exit_reason().
 > 
-> This is explaining the diff. Doesn't belong in the commit message.
-
-Ok
-
->> and restrict it to the cases where retpoline
->> was the implied choice: SPECTRE_V2_CMD_FORCE, or SPECTRE_V2_CMD_AUTO
->> when should_mitigate_vuln(X86_BUG_SPECTRE_V2) indicates we actually
->> intended to mitigate.
+> However, there is a more important problem. Since Bus Lock VM exit makes bit
+> 26 possible in EXIT REASON, the trick of "return -1" in
+> tdx_to_vmx_exit_reason() will introduce false-positive in the following
+> check of if(vmx_get_exit_reason(vcpu).bus_lock_detected) added by this
+> patch.
 > 
->> This avoids the spurious error on a
->> CONFIG_MITIGATION_RETPOLINE=n kernel where a caller of
->> spectre_v2_select_retpoline() selects an alternative mitigation, leaving
->> the system protected while the old message claimed otherwise.
-> 
-> This should be your first sentence. What the issue is.
+> how about something like below:
 
-I'll see about rewording the commit text according to this and all your
-above comments in the next version.
+Way too subtle.  tdx_to_vmx_exit_reason() should return the actual union, not a
+raw u32, otherwise it's going to be extremely difficult to avoid reintroducing
+similar bugs.
 
-> Which begs the question: why?
-> 
-> Why do we care about a CONFIG_MITIGATION_RETPOLINE=n kernel?
-> 
-> You either disable all mitigations or enable them all (distro kernel) and they
-> get then configured at boot time. Why would I want to disable RETPOLINE only
-> but leave spectre v2?
-This patch corrects code that already cares about RETPOLINE=n kernels, but
-it's also useful if you know all the target systems for a RETPOLINE=n config have
-alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
-true as time goes by.
+And looking at this all again, we should change the handling of actual
+EXIT_REASON_EPT_MISCONFIG exits.  Stuffing a bogus value into the exit_reason
+is "fine", but as Sashiko points out, it's extremely brittle.  Rather than
+stuff the exit reason, we should stuff the status to signal TDX_SW_ERROR.
 
-Thanks,
+And to do that without introducing more fragility, we should flag the raw
+vp_enter_ret as "unsafe", and explicitly track vp_enter_status.  I.e. separate
+the status from the exit_reason immediately after VP.ENTER, instead of mixing
+and matching the two concepts.
 
-Kim
+The fastpath "handler" is also all kinds of messed up.  KVM fails to trace_kvm_exit()
+EPT misconfigs and software errors; even though the exit reason is undefined, it
+should still be captured in the trace, otherwise it's a huge blindspot.  And AFAICT,
+OPERAND_BUSY should be mutually exclusive with actual VM-Entry failures, so manually
+checking for VM-Entry failure is completely unnecessary, just handle OPERAND_BUSY.
+If TDX ever gains fastpath handlers, then we can add a true fastpath handler at
+that time.  But OPERAND_BUSY should be a "never do the fastpath", because AIUI,
+VM-Enter wasn't attempted, i.e. there's nothing to handle.
 
+Compile tested only, and it should be chunked over several patches, but this?
+
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 299c051d648e..19e8e3703ce1 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -921,12 +921,12 @@ static __always_inline u32 tdcall_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 	return EXIT_REASON_TDCALL;
+ }
+ 
+-static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
++static __always_inline union vmx_exit_reason tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu,
++								    u64 vp_enter_ret)
+ {
+-	struct vcpu_tdx *tdx = to_tdx(vcpu);
+-	u32 exit_reason;
++	union vmx_exit_reason exit_reason;
+ 
+-	switch (tdx->vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
++	switch (vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) {
+ 	case TDX_SUCCESS:
+ 	case TDX_NON_RECOVERABLE_VCPU:
+ 	case TDX_NON_RECOVERABLE_TD:
+@@ -934,40 +934,38 @@ static __always_inline u32 tdx_to_vmx_exit_reason(struct kvm_vcpu *vcpu)
+ 	case TDX_NON_RECOVERABLE_TD_WRONG_APIC_MODE:
+ 		break;
+ 	default:
+-		return -1u;
++		/*
++		 * Synthesize an invalid bogus Exit Reason, as the TDX-Module
++		 * never attempted to run the vCPU, i.e. the Exit Reason is
++		 * undefined, but this is NOT a failed VM-Enter.
++		 */
++		return (union vmx_exit_reason) {
++			.basic = -1,
++		};
+ 	}
+ 
+-	exit_reason = tdx->vp_enter_ret;
++	exit_reason.full = (u32)vp_enter_ret;
+ 
+-	switch (exit_reason) {
+-	case EXIT_REASON_TDCALL:
++	if (exit_reason.basic == EXIT_REASON_TDCALL) {
+ 		if (tdvmcall_exit_type(vcpu))
+-			return EXIT_REASON_VMCALL;
+-
+-		return tdcall_to_vmx_exit_reason(vcpu);
+-	case EXIT_REASON_EPT_MISCONFIG:
+-		/*
+-		 * Defer KVM_BUG_ON() until tdx_handle_exit() because this is in
+-		 * non-instrumentable code with interrupts disabled.
+-		 */
+-		return -1u;
+-	default:
+-		break;
++			exit_reason.basic = EXIT_REASON_VMCALL;
++		else
++			exit_reason.basic = tdcall_to_vmx_exit_reason(vcpu);
+ 	}
+-
+ 	return exit_reason;
+ }
+ 
+-static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
++static noinstr u64 tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 	struct vcpu_vt *vt = to_vt(vcpu);
++	u64 ret;
+ 
+ 	guest_state_enter_irqoff();
+ 
+-	tdx->vp_enter_ret = tdh_vp_enter(&tdx->vp, &tdx->vp_enter_args);
++	ret = tdh_vp_enter(&tdx->vp, &tdx->vp_enter_args);
+ 
+-	vt->exit_reason.full = tdx_to_vmx_exit_reason(vcpu);
++	vt->exit_reason = tdx_to_vmx_exit_reason(vcpu, ret);
+ 
+ 	vt->exit_qualification = tdx->vp_enter_args.rcx;
+ 	tdx->ext_exit_qualification = tdx->vp_enter_args.rdx;
+@@ -977,33 +975,8 @@ static noinstr void tdx_vcpu_enter_exit(struct kvm_vcpu *vcpu)
+ 	vmx_handle_nmi(vcpu);
+ 
+ 	guest_state_exit_irqoff();
+-}
+ 
+-static bool tdx_failed_vmentry(struct kvm_vcpu *vcpu)
+-{
+-	return vmx_get_exit_reason(vcpu).failed_vmentry &&
+-	       vmx_get_exit_reason(vcpu).full != -1u;
+-}
+-
+-static fastpath_t tdx_exit_handlers_fastpath(struct kvm_vcpu *vcpu)
+-{
+-	u64 vp_enter_ret = to_tdx(vcpu)->vp_enter_ret;
+-
+-	/*
+-	 * TDX_OPERAND_BUSY could be returned for SEPT due to 0-step mitigation
+-	 * or for TD EPOCH due to contention with TDH.MEM.TRACK on TDH.VP.ENTER.
+-	 *
+-	 * When KVM requests KVM_REQ_OUTSIDE_GUEST_MODE, which has both
+-	 * KVM_REQUEST_WAIT and KVM_REQUEST_NO_ACTION set, it requires target
+-	 * vCPUs leaving fastpath so that interrupt can be enabled to ensure the
+-	 * IPIs can be delivered. Return EXIT_FASTPATH_EXIT_HANDLED instead of
+-	 * EXIT_FASTPATH_REENTER_GUEST to exit fastpath, otherwise, the
+-	 * requester may be blocked endlessly.
+-	 */
+-	if (unlikely(tdx_operand_busy(vp_enter_ret)))
+-		return EXIT_FASTPATH_EXIT_HANDLED;
+-
+-	return EXIT_FASTPATH_NONE;
++	return ret;
+ }
+ 
+ #define TDX_REGS_AVAIL_SET	(BIT(VCPU_REG_EXIT_INFO_1) | \
+@@ -1053,8 +1026,8 @@ static void tdx_load_host_xsave_state(struct kvm_vcpu *vcpu)
+ 
+ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ {
+-	struct vcpu_tdx *tdx = to_tdx(vcpu);
+ 	struct vcpu_vt *vt = to_vt(vcpu);
++	u64 vp_enter_ret;
+ 
+ 	/*
+ 	 * WARN if KVM wants to force an immediate exit, as the TDX module does
+@@ -1084,7 +1057,7 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 			kvm_wait_lapic_expire(vcpu);
+ 	}
+ 
+-	tdx_vcpu_enter_exit(vcpu);
++	vp_enter_ret = tdx_vcpu_enter_exit(vcpu);
+ 
+ 	if (vcpu->arch.host_debugctl & ~TDX_DEBUGCTL_PRESERVED)
+ 		update_debugctlmsr(vcpu->arch.host_debugctl);
+@@ -1093,18 +1066,23 @@ fastpath_t tdx_vcpu_run(struct kvm_vcpu *vcpu, u64 run_flags)
+ 
+ 	kvm_clear_available_registers(vcpu, ~TDX_REGS_AVAIL_SET);
+ 
+-	if (unlikely(tdx->vp_enter_ret == EXIT_REASON_EPT_MISCONFIG))
+-		return EXIT_FASTPATH_NONE;
+-
+-	if (unlikely((tdx->vp_enter_ret & TDX_SW_ERROR) == TDX_SW_ERROR))
+-		return EXIT_FASTPATH_NONE;
+-
+ 	trace_kvm_exit(vcpu, KVM_ISA_VMX);
+ 
+-	if (unlikely(tdx_failed_vmentry(vcpu)))
+-		return EXIT_FASTPATH_NONE;
++	/*
++	 * TDX_OPERAND_BUSY could be returned for SEPT due to 0-step mitigation
++	 * or for TD EPOCH due to contention with TDH.MEM.TRACK on TDH.VP.ENTER.
++	 *
++	 * When KVM requests KVM_REQ_OUTSIDE_GUEST_MODE, which has both
++	 * KVM_REQUEST_WAIT and KVM_REQUEST_NO_ACTION set, it requires target
++	 * vCPUs leaving fastpath so that interrupt can be enabled to ensure the
++	 * IPIs can be delivered. Return EXIT_FASTPATH_EXIT_HANDLED instead of
++	 * EXIT_FASTPATH_REENTER_GUEST to exit fastpath, otherwise, the
++	 * requester may be blocked endlessly.
++	 */
++	if (unlikely(tdx_operand_busy(vp_enter_ret)))
++		return EXIT_FASTPATH_EXIT_HANDLED;
+ 
+-	return tdx_exit_handlers_fastpath(vcpu);
++	return EXIT_FASTPATH_NONE;
+ }
+ 
+ void tdx_inject_nmi(struct kvm_vcpu *vcpu)
+@@ -1300,7 +1278,7 @@ static int tdx_report_fatal_error(struct kvm_vcpu *vcpu)
+ 	vcpu->run->system_event.ndata = 16;
+ 
+ 	/* Dump 16 general-purpose registers to userspace in ascending order. */
+-	regs[index++] = tdx->vp_enter_ret;
++	regs[index++] = tdx->vp_enter_ret__unsafe;
+ 	regs[index++] = tdx->vp_enter_args.rcx;
+ 	regs[index++] = tdx->vp_enter_args.rdx;
+ 	regs[index++] = tdx->vp_enter_args.rbx;
+@@ -2030,48 +2008,44 @@ int tdx_complete_emulated_msr(struct kvm_vcpu *vcpu, int err)
+ 
+ static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
+ {
+-	struct vcpu_tdx *tdx = to_tdx(vcpu);
+-	u64 vp_enter_ret = tdx->vp_enter_ret;
+ 	union vmx_exit_reason exit_reason = vmx_get_exit_reason(vcpu);
++	struct vcpu_tdx *tdx = to_tdx(vcpu);
++	u64 status = tdx->vp_enter_ret__unsafe & TDX_SEAMCALL_STATUS_MASK;
+ 
+ 	if (fastpath != EXIT_FASTPATH_NONE)
+ 		return 1;
+ 
+-	if (unlikely(vp_enter_ret == EXIT_REASON_EPT_MISCONFIG)) {
+-		KVM_BUG_ON(1, vcpu->kvm);
++	if (KVM_BUG_ON(exit_reason.basic == EXIT_REASON_EPT_MISCONFIG, vcpu->kvm))
+ 		return -EIO;
+-	}
+ 
+ 	/*
+ 	 * Handle TDX SW errors, including TDX_SEAMCALL_UD, TDX_SEAMCALL_GP and
+ 	 * TDX_SEAMCALL_VMFAILINVALID.
+ 	 */
+-	if (unlikely((vp_enter_ret & TDX_SW_ERROR) == TDX_SW_ERROR)) {
++	if (unlikely(status == TDX_SW_ERROR)) {
+ 		KVM_BUG_ON(!virt_rebooting, vcpu->kvm);
+ 		goto unhandled_exit;
+ 	}
+ 
+-	if (unlikely(tdx_failed_vmentry(vcpu))) {
++	if (unlikely(exit_reason.failed_vmentry)) {
+ 		/*
+ 		 * If the guest state is protected, that means off-TD debug is
+ 		 * not enabled, TDX_NON_RECOVERABLE must be set.
+ 		 */
+ 		WARN_ON_ONCE(vcpu->arch.guest_state_protected &&
+-				!(vp_enter_ret & TDX_NON_RECOVERABLE));
++			     !(status & TDX_NON_RECOVERABLE));
+ 		vcpu->run->exit_reason = KVM_EXIT_FAIL_ENTRY;
+ 		vcpu->run->fail_entry.hardware_entry_failure_reason = exit_reason.full;
+ 		vcpu->run->fail_entry.cpu = vcpu->arch.last_vmentry_cpu;
+ 		return 0;
+ 	}
+ 
+-	if (unlikely(vp_enter_ret & (TDX_ERROR | TDX_NON_RECOVERABLE)) &&
+-		exit_reason.basic != EXIT_REASON_TRIPLE_FAULT) {
+-		kvm_pr_unimpl("TD vp_enter_ret 0x%llx\n", vp_enter_ret);
++	if (unlikely(status & (TDX_ERROR | TDX_NON_RECOVERABLE)) &&
++	    exit_reason.basic != EXIT_REASON_TRIPLE_FAULT)
+ 		goto unhandled_exit;
+-	}
+ 
+-	WARN_ON_ONCE(exit_reason.basic != EXIT_REASON_TRIPLE_FAULT &&
+-		     (vp_enter_ret & TDX_SEAMCALL_STATUS_MASK) != TDX_SUCCESS);
++	WARN_ON_ONCE(status != TDX_SUCCESS &&
++		     exit_reason.basic != EXIT_REASON_TRIPLE_FAULT);
+ 
+ 	switch (exit_reason.basic) {
+ 	case EXIT_REASON_TRIPLE_FAULT:
+@@ -2136,7 +2110,8 @@ static int __tdx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t fastpath)
+ 	}
+ 
+ unhandled_exit:
+-	kvm_prepare_unexpected_reason_exit(vcpu, vp_enter_ret);
++	kvm_pr_unimpl("TD vp_enter_ret 0x%llx\n", tdx->vp_enter_ret__unsafe);
++	kvm_prepare_unexpected_reason_exit(vcpu, tdx->vp_enter_ret__unsafe);
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
+index ac8323a68b16..5564617fc12a 100644
+--- a/arch/x86/kvm/vmx/tdx.h
++++ b/arch/x86/kvm/vmx/tdx.h
+@@ -66,7 +66,12 @@ struct vcpu_tdx {
+ 
+ 	struct list_head cpu_list;
+ 
+-	u64 vp_enter_ret;
++	/*
++	 * Discourage direct use of the raw VP.ENTER return value, as there are
++	 * several subtleties that need to be accounted for when working with
++	 * the raw value.
++	 */
++	u64 HINT_UNSAFE_IN_KVM(vp_enter_ret);
+ 
+ 	enum vcpu_tdx_state state;
