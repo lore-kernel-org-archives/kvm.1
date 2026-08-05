@@ -1,130 +1,150 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF7037F328
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 06:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476FE392806
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 06:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785909900; cv=none; b=pHw3VAX0khY38GoTwJkyeLzb5nV/cltP56T71eyamDJ081QwuDv7C8MLMUDl05TsTtV9XzGQRkgOb11dvwZopWW4xJeLp+MrCFPII5nNsnZ3MQCxCUJ/2bTn/1ie25U+JBsTSKMXbVZZjbUXsSKyJidKxHHe+L4Egqz/JTYc4XM=
+	t=1785909998; cv=none; b=r/jD4MKAKYBSPqIvvFwX/n0V8+07uVFKv2ML3UiKw5LPE9cmO7miONMbGlOIHpQl7ShUpKcTbcNcq1kZW3q/GTOli5ZrRa2rIwr297JqTbk7OYsYEot2ztwvLV573A2pxIo5GqjD/+Q6p2yhyixZaOpStzvd88YgGmCCRdq6RiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785909900; c=relaxed/simple;
-	bh=CB4E9tesUSB9o3AhDvNVi6mi06zrRypeEK96wkAEacw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGjVHrXReOm7FzXZ6EQtBYdK1Z5RU1LbfKxdGGe4OXykbTVEjOrlOd4zQkBHgMrjAqRMu8B1Y8fhcs7i4bjYhvSBsYmJeKvZ6RBXuOh491MeIH+0cz6mzrbFcflnTHaab+xBGv1ZT1pRyJ+VI3ytC2vw/1oGzh+u0bnms4kyeJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=keIoLmbT; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785909998; c=relaxed/simple;
+	bh=3GXcnlNHdbzVM0skL2v+PYc4ksRDG5RrhUjeJc9pbRo=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VRkLxEXdgnIbagL/15/kIkRYWB4HIThJqAVy8542Id0tLdl2yRcGy6sViiuEVgfooeenOJdh96GhqGCwO3R71cf18xZxI071PPP8YN19TfLFbRJBV2LpO46HmV8vWRsTIQZJnviLQ/N7TBcpcvkt+vdAyyq+tV68RXn7e8MXZMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsOspUUv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="keIoLmbT"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccdf36f63dso84575ad.0
-        for <kvm@vger.kernel.org>; Tue, 04 Aug 2026 23:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785909899; x=1786514699; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VSMqYBzIGEd+bEQZKAp6F83EI/D8TARVrS07DYO5Xqo=;
-        b=keIoLmbTx9DmY6tRjnzpOXG9A9TKwPQn+aNAcTV9DQ/w2l0q8GdVV84YUdq6Diix+x
-         9KTUH6XRa69dG/yPL5lA8hmrwaEsu40hzMANBt7kJLviveLKpfGOcIo3VzqtPyl9bsUY
-         MJhvo04xcMzmjKrzgCgQutYqaWr+M99eJSQTRPES8K1tmOK0BSz6QTylfdP5j8XdQEBF
-         Fqjsz/XzlnBOjtwC4Dv1SdiDzVWPRnvzlGAHXJtF+GjdARuZ4raz3gz273DCnCXTycj6
-         Tz+/8eoOX3E3ic2Rixvmd4G3ZLAoujg0ksxkcsSG1IOg37pLiYAKxHxMvC+vivN2Db3x
-         LuAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785909899; x=1786514699;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VSMqYBzIGEd+bEQZKAp6F83EI/D8TARVrS07DYO5Xqo=;
-        b=a4gUbaJT7AZI9Pkc0GV/O7AkcEsxjO417+Cfnil/VQLssMZ5bLqtl1quCRTu83TaJV
-         lvI4DDOI9CBF6rdoW0xu7V1EPVHSiC5XUR4hD3sHzzRX0EEtNok6Di0qPSWl9TmWG6RP
-         SlZ10imHVLGy2xoXALx3lrOQ5zM/naIJoIixjGHeejZhhOs4cbfXyQCa0lfmOnPzGomT
-         lbmyODHw6RG2IOVO1CTP3/PAOzTFDjQU2d9XSqmGjYwew2zjigNEo9/rmVX9P07q9EQm
-         3b2o2a+TLs5ClA85aEWeBaOpKGa321ZIgJVvVR+JbM6/HNJQcp09StCRd4ipXjpvATN6
-         klvw==
-X-Forwarded-Encrypted: i=1; AHgh+RoywLCole/x1Va+PapfftBX9f7ORxr4pG8e8lgsT2ZX7eDTH2wK7AghTnRzh63RBKc3hTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBj3wxFeZDfRTqigp0AOryeVYUZG+3J/sF2EVkeg7YHgEwc5hE
-	2a8CbrMF+5QNaYWYdyDM4T0IWOQMTfhaSXMd8Hje0ZFP7OnLofMO6lhuvKlv34Q+YA==
-X-Gm-Gg: AR+sD130KhUl7R2py6yrFrc6paEdesjtQL/I2jotMXSA4L+9iDO0nSjgnmx1rvUt305
-	1qsr9wb7IaNSyRHfDwTMZIwkf38QbCQdcjjfA1pkrYrTmv3xuhRkQX97Mct+/zU54MB23gG+NZL
-	a5wESl7GrZ+MT8zaRoxCtXMGNhqyoSZZVy+4Z9Za95zZISW8zGoVRbH9no8NY9AoPecuGUZZE++
-	scoNKa+JZIDDTc8j3xuVdOzE6QkqBQ3it6mGoR0+ZzjkyP9Dn+e3a3T2bPzgXqfULx+ZJ6KFZlO
-	l0qoo+Ju4J3/LvGEjy8rpzScnkozZfgRRtAXtesZWf3VASirLV1j9uYwMoKlbXb3rmjqik75+1/
-	lnHYzTX8NSBiR/0v/UooZTaDjRiEuNeLl/9/NZ0UNW+QZ5Vzbohp1zprH/bD2vyU4ErqC+DzALW
-	+A0EM11U4TRy/wS83Li1hzyJSpdn8i+8THfOo2Dw8kvcYKn/60Gi0KY9uB/pi7xZ+2dRa3XxFql
-	VCTe8Qrvg1HFCVMXRELf9j2Tg==
-X-Received: by 2002:a17:902:da89:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2d0cae8f44amr8339885ad.8.1785909897932;
-        Tue, 04 Aug 2026 23:04:57 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe707cab37sm740464a12.7.2026.08.04.23.04.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Aug 2026 23:04:57 -0700 (PDT)
-Date: Tue, 4 Aug 2026 23:04:53 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: alex@shazbot.org, rppt@kernel.org, pasha.tatashin@soleen.com, 
-	pratyush@kernel.org
-Cc: ajayachandra@nvidia.com, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
-	corbet@lwn.net, dmatlack@google.com, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kees@kernel.org, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com, michal.winiarski@intel.com, 
-	parav@nvidia.com, praan@google.com, rananta@google.com, rientjes@google.com, 
-	rodrigo.vivi@intel.com, saeedm@nvidia.com, schnelle@linux.ibm.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 00/20] vfio/pci: Base Live Update support for VFIO
-Message-ID: <20260805060336.GB806762.vipinsh@google.com>
-References: <20260714151505.3466855-1-vipinsh@google.com>
- <20260723215749.GC260824.vipinsh@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsOspUUv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FB11F000E9;
+	Wed,  5 Aug 2026 06:06:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785909996;
+	bh=hzLGyHPZOa8JigCsSos3tG4HiHa3iDxTVfElWwUPBbk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XsOspUUvB2fRzJHgYy6oBpUyEpny3Loylhrq12YihIu4fc0a51eGhTNICG3r4Fx2+
+	 VQZHOFmObx2dDvkqRTENpBuieqCSjcBulwbDizLzwnVAwMtNnLSDHoB6yYxpWOFQvh
+	 7y9wDyvPfbGUI3CSbmvU+RvhpXir1lJHIbbFnA4FYtCwsmLG2VmKY7jVa5XfWFkikK
+	 H6OdrMZLq6cZg10L4cTNfLPbjq5KtLl3DSc2sFZOvZb2X3LbcQj4CogP6Oc3igucrX
+	 +m2n+S0SRZUfbcEGIILscKiXfCsZzXFErDQY6zuBhSwLDN44/L5ccyi/PdSvYoU2+q
+	 T4saQPkv1oAwQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2] LoongArch: KVM: Advertise already-supported
+ capabilities
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Tao Cui" <cui.tao@linux.dev>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260805054549.287648-1-cui.tao@linux.dev>
+References: <20260805054549.287648-1-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 06:06:36 +0000
+Message-Id: <20260805060636.A0FB11F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260723215749.GC260824.vipinsh@google.com>
 
-On Thu, Jul 23, 2026 at 03:58:45PM -0700, Vipin Sharma wrote:
-> On Tue, Jul 14, 2026 at 08:14:45AM -0700, Vipin Sharma wrote:
-> > Hello,
-> > 
-> > This series can be found on Github:
-> > 
-> >   https://github.com/shvipin/linux vfio/liveupdate/v5
-> > 
-> > This series provides the base support to enable Live Update feature for
-> > VFIO PCI devices using the Live Update Orchestrator (LUO) and Kexec
-> > Handover (KHO).
-> > 
-> 
-> Hi Alex, Pasha, Mike, and Pratyush,
-> 
-> I'd like to discuss which maintainer tree should take the VFIO Live
-> Update series.
-> 
-> For context on related efforts:
-> 
->   - PCI Live Update is targeting the Live Update tree (maintained by
->     Pasha, Mike, and Pratyush, with David Matlack maintaining the
->     PCI-specific code).
->     https://lore.kernel.org/linux-pci/20260710212616.1351130-2-dmatlack@google.com/
-> 
->   - IOMMU Live Update is planned to go through the IOMMU tree.
->     https://lore.kernel.org/linux-iommu/20260614233728.2212104-3-skhawaja@google.com/
-> 
-> Given these different approaches, what is your preference for routing
-> the VFIO Live Update code?
-> 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Hi Alex,
+Pre-existing issues:
+- [High] The unsafe user-access macros (`unsafe_put_user()` and `unsafe_get=
+_user()`) are used without the required `user_access_begin()` and `user_acc=
+ess_end()` guards, violating the kernel API contract.
+- [High] A lockless read-modify-write on the shared VM state `kvm->arch.pv_=
+features` allows userspace to bypass the validation check that requires all=
+ vCPUs to share identical PV features.
+--
 
-Gentle ping. 
+--- Patch [1]: [PATCH v2] LoongArch: KVM: Advertise already-supported capab=
+ilities ---
+commit 91e3758510b96f271c2589373d1340c246fab45a
+Author: Tao Cui <cui.tao@linux.dev>
 
-Thanks
-Vipin
+LoongArch: KVM: Advertise already-supported capabilities
+   =20
+This commit advertises KVM_CAP_STEAL_TIME and KVM_CAP_VCPU_ATTRIBUTES on
+LoongArch, making existing features discoverable to userspace.
+
+> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> index 1317c718f896a..0a51931d6f6e0 100644
+> --- a/arch/loongarch/kvm/vm.c
+> +++ b/arch/loongarch/kvm/vm.c
+> @@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+>  	case KVM_CAP_IOEVENTFD:
+>  	case KVM_CAP_MP_STATE:
+>  	case KVM_CAP_SET_GUEST_DEBUG:
+> +	case KVM_CAP_VCPU_ATTRIBUTES:
+
+[Severity: High]
+This is a pre-existing issue, but does advertising KVM_CAP_VCPU_ATTRIBUTES
+expose a data race in kvm_loongarch_cpucfg_set_attr()?
+
+Looking at arch/loongarch/kvm/vcpu.c, there is a lockless read-modify-write
+sequence on the shared VM state:
+
+arch/loongarch/kvm/vcpu.c:kvm_loongarch_cpucfg_set_attr() {
+...
+	/* All vCPUs need set the same PV features */
+	if ((kvm->arch.pv_features & LOONGARCH_PV_FEAT_UPDATED)
+			&& ((kvm->arch.pv_features & valid) !=3D val))
+		return -EINVAL;
+	kvm->arch.pv_features =3D val | LOONGARCH_PV_FEAT_UPDATED;
+...
+}
+
+If multiple threads concurrently call KVM_SET_DEVICE_ATTR on different vCPU=
+s,
+can they bypass this validation check by both reading before either writes,
+resulting in divergent configurations being silently applied globally inste=
+ad
+of returning -EINVAL?
+
+>  		r =3D 1;
+>  		break;
+>  	case KVM_CAP_NR_VCPUS:
+
+[ ... ]
+
+> @@ -136,6 +137,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+>  	case KVM_CAP_NR_MEMSLOTS:
+>  		r =3D KVM_USER_MEM_SLOTS;
+>  		break;
+> +	case KVM_CAP_STEAL_TIME:
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does advertising
+KVM_CAP_STEAL_TIME expose an issue with unsafe memory accesses?
+
+In arch/loongarch/kvm/vcpu.c, unsafe_put_user() is used without the required
+user_access_begin() and user_access_end() guards:
+
+arch/loongarch/kvm/vcpu.c:kvm_update_stolen_time() {
+...
+	unsafe_put_user(0, &st->preempted, out);
+...
+}
+
+And similarly in kvm_vcpu_set_pv_preempted():
+
+arch/loongarch/kvm/vcpu.c:kvm_vcpu_set_pv_preempted() {
+...
+	unsafe_put_user(KVM_VCPU_PREEMPTED, &st->preempted, out);
+...
+}
+
+Since omitting user_access_begin() skips the access_ok() check at the access
+site, could this cause a kernel fault if hardware-enforced user access
+protections are introduced?
+
+> +		r =3D kvm_pvtime_supported();
+> +		break;
+>  	default:
+>  		r =3D 0;
+>  		break;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805054549.2876=
+48-1-cui.tao@linux.dev?part=3D1
