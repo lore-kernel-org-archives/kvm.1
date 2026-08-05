@@ -1,185 +1,134 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCDA3DD537
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 19:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6174E397E64;
+	Wed,  5 Aug 2026 19:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785957247; cv=none; b=scaxCKab0gGk4qSb+sZheEMzNMekGba/A1fqlcCZ3DtUTIVGEbKU6A0R7mPpS6m2c0stEdTPkeDwanxz+1KZDI3yrXQ13fBSF9RR78qVaKYHOFhxFxn5z6/S8aFGMmA19k0i5XmQZBwAi7YnpLbHFVnPJdXg4h26KVGdjCifa+0=
+	t=1785958177; cv=none; b=K/CyIX2PKhIbRD41JHq2dlnzzxFoUFrImaoQdo/tYl6eFY3JKRyNq8eSLAqMbtZwcF5n/lULyrNpL2A4bzu7oi6xUnS7CijvM06AvLaQ/rzn/U7pKZ6T18nwA0KuPtsejW9djKAD809T2E11k70P4Iib66cZ4g+wSZjYLy/FM3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785957247; c=relaxed/simple;
-	bh=2S6GP0bBdb1VzSR/nhiXfZceYSzLO1zycm5l8hXXlDI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OVq1n3uPp6cgxgaf95wn5vYGcOkEjnQ0dzpjBi2F400zYE1qg+r1sZOEnys7/uHkTJFBoUGyOPyVbZA9MhdNaUllhGgiNUQVChEFArz5DxY4ds79P05iYmYEB7rmuGxLdJYCGynPHUiwZCiT67Q+rd4Ic/6gWqFiIA1xHb1Cez0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JqSWOU9i; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785958177; c=relaxed/simple;
+	bh=cX2eQD1esFsEsgIcg2HJwleFbF+Z7MfZEa+31I7mwq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J2GQhbWyfIUa1gXpi250kGC9ID7BDpt9jSf1og3G1nBUYTtDVpyj9oA5sfMZX99niUlpL2d1MDqrnOJeoBlZtaTMHXIsSTcvdgR9PBPNt4y8SSD/FkZIv3d1KlDDx7f7NRP9VH2AwlgM6v6zfy48gyMnJ+sJ0+qwjUKOgLDWzM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hjXIUoMK reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JqSWOU9i"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cccfa32670so18580925ad.2
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 12:14:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785957246; x=1786562046; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p4UHFDLmQWuRE5PrI1VsBpiXB9qx3KKZYbuNff/89QI=;
-        b=JqSWOU9inYyyKfGk6g8YO4EjJUTo2SmIdnnKiZOW/fEywaNKGLMrv+dCjhMH/vKukU
-         DtGDeWHhzJpZqKQD86Mw759rUisGt8GhG60fphYMVabqptXkJ0iyqrN9Xd5gzX6pQPAh
-         eDeIUCIUZVDhJeInjE3CPYc9yo1lmX99Nsu5AHAXs6n+ysn7NcxaVwWuHYdkmlSEYNpy
-         md3E55+OpSiQ0dZkAy+Ebgj8UDhRxV41j9PZj6mwyLghvTFR2goaEa6TKbX4NKh3TdrK
-         NNR3rpyU7gV7Swo4mZF63a3lMgeduDHe+G85UUPn3GDqWCQgFZbIlXif+E6Et25HTPuU
-         5Ocw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785957246; x=1786562046;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p4UHFDLmQWuRE5PrI1VsBpiXB9qx3KKZYbuNff/89QI=;
-        b=LG+wPPTsGvmz1PBYyZX+s0PFCyPCw0wdBY23kVSI/9GSowxkySZad577LCSPreiXVV
-         1Crd/rn6OTiFj3EWEHWeCBtjBQX8LXXiQBW6479CRsYrcqSrhznJq75KBPYFu2sAP1Om
-         DVutAU6OhNAymiU48LI7UVr1o64VOIP0Zvdre41mA/hEBnVtWYasJbSip13TC0ldtE++
-         e2p/ZMyTT4Q86GUmgzSuL0AGeQPZTZIQJyniHxiHLlq6Y0mn4ED4GcyT2kNHtwo5dTMo
-         CJwrAeyfHyO6CMbWvrV9VC1q64H5PSEaDQtadw18Mw6AnI/e7WLiEHGPxWIVl4xgHT/V
-         i/iA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2REpCEVQ6L6x0G91WozllrqVK1Da3UFpxlIX8DdNxT6sJPfoturZ8N0gCyusBoXFgHTs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNi/5/n78GuiOmOAAYxX89JsN4FiPYiWL63zZxPWVHPgoTKzVs
-	XJ2A63nDaRKn8bpcAhainyr6cZjFPxRLoKvFnUR36LM7y2v79scghbcp+cG21D/hEpaTm9btron
-	82Po+ig==
-X-Received: from plje15.prod.google.com ([2002:a17:902:ed8f:b0:2c9:a5a0:a677])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2447:b0:2c9:d539:61e7
- with SMTP id d9443c01a7336-2d0ca962f17mr94331945ad.19.1785957245262; Wed, 05
- Aug 2026 12:14:05 -0700 (PDT)
-Date: Wed, 5 Aug 2026 12:14:04 -0700
-In-Reply-To: <CAH+3ta4uD-QYju=6YRqHvd4Vwa-WAa9T9a65soCzdu49wNxV8g@mail.gmail.com>
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hjXIUoMK"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5051940E00C3;
+	Wed,  5 Aug 2026 19:29:26 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id oViidsjl9PKq; Wed,  5 Aug 2026 19:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785958156; bh=hEouxIsC4Je+jV925zCURKIYMNOO0ioFdfYsQd5pUSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hjXIUoMKfFxquwnhUuFDR9nrRJlVNoc7/dPpG++TYMCi5IHFj8vFrc+wIzar9tVD7
+	 H+RtKvWdJMNISb9oyDJk/XRKR2zMRZvTH57A/yXjdWvq/DZnSkyj9257DsubNTeD8f
+	 aYjYa4avZSsoAoqYS82i74zvlv36dQvPBRZcvDgAYNpG5psJ9+Zta9ME2338WY0gB9
+	 NBklYCp1F0Zt1DovGuFAIYAxGkxZRBWl58IESua3z+s6JJhIsM9SlKYW7LaXCi39EA
+	 8Tu2Sa35wa2mCT/EKRMMC1a1s14Fsa6+kLhzt8vX1izZWoFOX372P4brrh5lZXuPmM
+	 RWZMhGp9llNc3rtA64HlWYmNa8i19+LJDnXxcX7zkHge1B/1Vwh767psY8ySN5FoNe
+	 PjFoYoSzP6fXnvnLcOQdY5iq6oTWoXabwAchfcmq8qLeSmMUb/4nlH+ueLyRYerWoY
+	 AM4lErXuqfoNHNiPSoGLyy0aHL6E88z1mwME81NYKeQU5lhfYHpxdRaH5hhCud2c/w
+	 lqJF3g6Ki/o+l2AKNm2qy/PkyhjMJdNwONyWdla0q51JdnH6PgunG0iR7N+Jnf1lC5
+	 es0A39lkDdd04CF15wdyYyBxspckvx3BDJhKUPy8vA3nrsDo+/p2oaSvufQAxgYWRY
+	 kSTMEQxiSTviOAhCL6DeAUSg=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3F1DD40E0031;
+	Wed,  5 Aug 2026 19:28:41 +0000 (UTC)
+Date: Wed, 5 Aug 2026 12:28:37 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260805192837.GAanOO5SU78CzNgblB@fat_crate.local>
+References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
+ <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
+ <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
+ <8DAAEA48-F2FA-4D52-8E56-4B7213155F12@alien8.de>
+ <d7a17bde-4af0-45ad-96bc-4717a1fa1545@amd.com>
+ <60B4B369-19E7-44DF-BCCF-FC8DD851B2E7@alien8.de>
+ <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
+ <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
+ <63867f3f-a7a3-4d6e-83b4-0683688512e9@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260804105755.276646-1-kimjw04271234@gmail.com>
- <anHk2wTLHYxdB0jD@google.com> <CAH+3ta4uD-QYju=6YRqHvd4Vwa-WAa9T9a65soCzdu49wNxV8g@mail.gmail.com>
-Message-ID: <anOLfLhAGbOXT30p@google.com>
-Subject: Re: [PATCH v2] KVM: x86/mmu: Write-protect tracked GFNs in all
- address spaces
-From: Sean Christopherson <seanjc@google.com>
-To: Jinu Kim <kimjw04271234@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <63867f3f-a7a3-4d6e-83b4-0683688512e9@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 05, 2026, Jinu Kim wrote:
-> Thanks. After considering your comments, I think v2 is trying to solve a
-> broader problem than the one reported, and that the resulting complexity
-> is difficult to justify.
-> 
-> One thing I do not understand is the proposed revert of 0f38453cdb2e.
-> The original pte_list_remove() panic was reproduced on then-current
-> mainline with 0cb2af2ea66a, 81ccda30b4e8, and aad885e774966 already
-> present.  The panic remained reachable there, and 0f38453cdb2e stopped
-> it.  How would those three commits prevent the original upper-level
-> shadow page from becoming unsync?
+On Tue, Aug 04, 2026 at 09:38:05PM -0500, Kalra, Ashish wrote:
+> - Under churn (many SNP guests terminating and respawning), an hourly s=
+can
+> is too coarse =E2=80=94 freed regions would sit un-optimized for up to =
+an hour. The
+> teardown trigger re-optimizes right after each burst of terminations
+> (batched by the timeout), so it's more responsive than a periodic scan
+> exactly when there's the most optimization work to do.
 
-That's why I prefaced that with "Assuming the true badness referenced by commits";
-it wasn't clear to me how marking an upper-level SP as unsync leads to a corrupted
-rmap, and I hadn't thought too hard about it.
+Yes.
 
-I assume it gets triggered by way of FNAME(sync_spte)() calling drop_spte(),
-either directly or via FNAME(prefetch_invalid_gpte)().  Though it's somewhat of
-a moot point because marking an upper-level SP unsync triggers a pile of WARNs
-in so many other places.
+> - When no SNP guests run, a periodic scan achieves nothing: the initial=
+ pass
+> already optimized all of memory and nothing has changed, so it just re-=
+scans
+> physmem for zero benefit.
 
-Hmm, but *if* we decide to officially say cross-address-space gPTE writes are
-unsupported, then I think I'd vote to revert (to make it abundantly clear that
-the behavior is unsupported), and then suppress the issue by skipping like so:
+Well, no. You won't even run that when there are no SNP guests present.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..34d3949b6362 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2997,6 +2997,12 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
-                if (prefetch)
-                        return -EEXIST;
- 
-+               /* Comment here about abusing SMM. */
-+               if (sp->role.level != PG_LEVEL_4K) {
-+                       WARN_ON_ONCE(!!sp->role.smm == !!slot->as_id);
-+                       continue;
-+               }
-+
-                /*
-                 * TDP MMU page faults require an additional spinlock as they
-                 * run with mmu_lock held for read, not write, and the unsync
-@@ -3020,7 +3026,6 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
-                                continue;
-                }
- 
--               WARN_ON_ONCE(sp->role.level != PG_LEVEL_4K);
-                kvm_unsync_page(kvm, sp);
-        }
-        if (locked)
+> So the event-driven approach self-scales with real work =E2=80=94 it ru=
+ns as often
+> as memory is actually freed and not at all when the system is idle =E2=80=
+=94 whereas
+> a fixed timer is both too slow under load and pure overhead when idle. =
+The
+> mid-life contiguous-1 GB case is then caught precisely by the 1 GB-huge=
+tlb
+> page-cleanup hook when that lands, rather than by a coarse sweep.
 
-Actually, irrespective of what we do with SMM, we should harden KVM to skip
-marking upper-level SPs as unsync, because while corrupting guest memory is bad,
-corrupting guest memory *and* crashing/compromising the host is worse.
+I wanted to have this in case pages do get freed up from time to time and=
+ you
+get some sort of a fragmentation. But I'm being told that we don't suppor=
+t
+balooning yet, neither memory hotplug and when the pages get freed, they
+remain guest-owned. So yes, the points in time where those page become
+HV-owned and potentially freed, then we should optimize.
 
-So as an immediate defense-in-depth, I think this? (BUG the VM to reduce the
-probability of the guest consuming corrupted data).
+Please hold down that in the commit message so that it is clear for futur=
+e
+readers why we did it this way.
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c519e8e8d646..8d53d37750c5 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -2997,6 +2997,9 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
-                if (prefetch)
-                        return -EEXIST;
- 
-+               if (KVM_BUG_ON(sp->role.level != PG_LEVEL_4K, kvm))
-+                       continue;
-+
-                /*
-                 * TDP MMU page faults require an additional spinlock as they
-                 * run with mmu_lock held for read, not write, and the unsync
-@@ -3020,7 +3023,6 @@ int mmu_try_to_unsync_pages(struct kvm *kvm, const struct kvm_memory_slot *slot,
-                                continue;
-                }
- 
--               WARN_ON_ONCE(sp->role.level != PG_LEVEL_4K);
-                kvm_unsync_page(kvm, sp);
-        }
-        if (locked)
+Thx.
 
+--=20
+Regards/Gruss,
+    Boris.
 
-> Your comments also made me separate the general limitations of write
-> tracking from a narrower issue in this case.  I understand that KVM
-> cannot guarantee write tracking for every way guest page-table memory can
-> be modified, and I have not established a current-mainline host-security
-> consequence for the remaining cross-address-space revocation issue.
-> 
-> In that narrower framing, there may still be something worth fixing.  In
-> the reported SMM configuration, KVM creates CPU SPTEs in both address
-> spaces for the same GFN and backing page, accounts that GFN as backing an
-> indirect shadow page, but can leave the peer SPTE MMU-writable.  KVM's
-> shadow-page accounting state and the permissions installed by KVM are
-> therefore inconsistent with each other.
-
-I agree it's a bug, I just don't want to fix it. :-)
-
-> Fixing that local mismatch would not imply support for DMA, host writes,
-> arbitrary aliases, or a general guarantee that KVM observes all writes to
-> guest page-table memory.  Those cases can remain unsupported and be
-> documented as such.
-> 
-> If this narrower boundary makes sense to you, I will rework the patch
-> around the existing shadow-page accounting and synchronization
-> transitions.  A replacement would keep the normal mapping and memslot
-> lifecycle paths unchanged and avoid introducing persistent
-> cross-address-space state.
-
-Honestly, I'd wrather support host userspace writes than cross-address-space
-writes.  At least those could have a somewhat plausible use case, e.g. if userspace
-were to implement its own emulator.
-
-But I am also very biased against KVM's SMM emulation, which is why I want Paolo's
-input.
+https://people.kernel.org/tglx/notes-about-netiquette
