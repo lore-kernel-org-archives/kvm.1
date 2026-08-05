@@ -1,52 +1,46 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A73CB8EB;
-	Wed,  5 Aug 2026 21:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7814A41D12F;
+	Wed,  5 Aug 2026 22:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785966712; cv=none; b=euOVfBiCOfjXW8b4wnNBh0CVGk23itzJtqvFmKvxakRLW2Y4hBvCFvDralesvqAkoQnmp+0AxEahKXosRKk7pEGHHAmGDrvEArhFLFw6rLJEHlcA5mo7Yo4wxL1ELlHyol4n6orbyMl4wIY0rXnn86I2Fd9wQYInOYSWXNXmuE8=
+	t=1785969355; cv=none; b=RYzI17OTYx+UUsJjfOBi2XkkV5oyA9EmIJcx6tQcwHLoEQCMtDgWf1tWHjnL0HC3Ei447bCilwgceLsZStuCih3VZ2b5R+jahwh+N2x2yD1UYB0ZZbxU/TJ4U6HvOuM0i13GcBRwrUF3NpJW9g8omWRlxaYMDk0Aol91v78sVrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785966712; c=relaxed/simple;
-	bh=95E1PqNczrCxavV/o6/W8K1u1uirBmlax+9507nO5CQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vke9btvz3jQnoL42hDjm4cW8Ug926d6L/5BTWcr7iABOzuegxNytE5iWbji3Ep18Hhqlmx53cfekAnM9BLPM3zy29Rmr+gGWF2OqsaYA/P7VAWSHDYPmsc5t6F+KGVH7qLQ8gqtHiUfnxTfxhHChP7YNCuM8v1eR1RZ7absSVXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rG5WTlqw; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1785969355; c=relaxed/simple;
+	bh=ajrukVUXktpnvfDvMyAOXTZmu2DfunKGEqFv0jglXMM=;
+	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
+	 MIME-Version; b=LsvGoOWxcHjJ8PpwHM+QtCyJUKcdt1/WgitS1aRutJirSrcYHbyr7Q/ggI/Mp1rer1vGmtRetro5aFxTlCtPCLpTAIQYKYflsRnlRXvNQ+NyG8APxIKT/iMODtHkE+vvGVeYyz6KIW5EvRxw20GMHLePItWCo4yk55qzRh0BG5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c+VAzuhQ; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rG5WTlqw"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c+VAzuhQ"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=95E1PqNczrCxavV/o6/W8K1u1uirBmlax+9507nO5CQ=; b=rG5WTlqwm7eX1a1kDC++Y/f7jK
-	jLvtZMKHt2Eqlb643JryzaAtTNyWBBAC1YR63elRPcP9+JZ4nPO3u5FLav0BwnYbHAPPqt8sIsSXz
-	YXURmUDmMO2Bqd5uAvNoMVtw2fj8Au4jvGom5+aYU2Ya+3/Kt+SmyJ56SlbuA9WBIyy0uUg8Zfu5i
-	PcZ21NZlIoJGoaDZcKb6uBFtV83Aje6QT0WkW/FNC49oUGIcI+vIh/mln0LaAkc/6RnKOa3RDlJlN
-	FSMio25Y9H32WAQw3aTubRmZcR0d5gGBoJdZCyXJCiAnjjzxJE988T3EXrUwEifXKTnDp49GbASYg
-	PAKOSB7g==;
-Received: from [2a07:aa00:8c:e0:768e:3fdc:fdc:fe75] (helo=u09cd745991455d.ant.amazon.com)
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
+	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:References;
+	bh=t+7aWok7HNqW1TdO8T63qwIRFgt2Ja5lGRx3aPI/JnQ=; b=c+VAzuhQjvDbFlAyDWXPQWIna7
+	JZaMTBnZyan69B0WtcpsFOJmsc5Dbx6CYcRl5VsDqhlgMpORyCdi1BgNXM584NyJEDgzP/ttf1Ggv
+	NxnKoQNoda8zru08MN+gy5vEDqDcrJG2bJO7R8bnxeVVnKhUNP5qw/BASt6vxS6GEfgFPRYRkujNR
+	4DizalSI0fdnFQsfxc8FPkH1shWr6BmT1Ac+EbY9K6bF/wQVoWJqT2xO5TOQ6pkFFi3dQKVrsR7WS
+	FlK3B9rRrWEkj0fIe6b7OUKi9jwmTHIjN2q+imalNznW6p1K1Z/6UOv0rcsfgSG+rNattIz+Wa0lX
+	0V3g0PMQ==;
+Received: from [54.239.6.184] (helo=freeip.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrjWY-00000004lPX-2Rt8;
-	Wed, 05 Aug 2026 21:51:42 +0000
-Message-ID: <3a19ec60be238ba56ebe9c519fbeda0582aed67a.camel@infradead.org>
-Subject: Re: [PATCH v2 20/20] KVM: x86: Use gfn_to_pfn_cache for
- record_steal_time
+	id 1wrkCz-00000004qOh-2zbQ;
+	Wed, 05 Aug 2026 22:35:37 +0000
+Message-ID: <e19783f0c897f69afdd7bf623f668714ae728523.camel@infradead.org>
+Subject: Re: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
+ into a separate helper
 From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: sashiko-bot@kernel.org, pbonzini@redhat.com, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org, 	hpa@zytor.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	sashiko-reviews@lists.linux.dev,
- stollmc@amazon.com
-Date: Wed, 05 Aug 2026 23:51:48 +0200
-In-Reply-To: <aidiOemcna1Un9wG@google.com>
-References: <20260530061932.7849D1F00893@smtp.kernel.org>
-	 <3291d47ea5fdd6ee2f284cadb518473130954cfc.camel@infradead.org>
-	 <aidiOemcna1Un9wG@google.com>
+To: sashiko-bot@kernel.org
+Cc: sashiko-reviews@lists.linux.dev, seanjc@google.com, pbonzini@redhat.com,
+ 	paul@xen.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 06 Aug 2026 00:35:21 +0200
+in-reply-to: <20260805204755.EA0371F000E9@smtp.kernel.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-PRxjyfeCJLGFk/3HZnP8"
+	boundary="=-Pn38uUS5+IC0z6fzoGTl"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -57,53 +51,42 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-PRxjyfeCJLGFk/3HZnP8
+--=-Pn38uUS5+IC0z6fzoGTl
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-06-08 at 17:45 -0700, Sean Christopherson wrote:
-> On Tue, Jun 02, 2026, David Woodhouse wrote:
-> > On Sat, 30 May 2026 06:19:32 +0000, sashiko-bot@kernel.org=C2=A0wrote:
-> > > [Severity: High]
-> > > Does this introduce a scheduling while atomic bug on non-PREEMPT_RT k=
-ernels?
-> > >=20
-> > > The CLASS(gpc_map_local, st_map) macro acquires a read_lock on gpc->l=
-ock,
-> > > which disables preemption. While this lock is held, if the guest supp=
-orts
-> > > PV TLB flush, the code calls kvm_vcpu_flush_tlb_guest().
-> > >=20
-> > > If TDP is disabled (shadow paging), kvm_vcpu_flush_tlb_guest() calls
-> > > kvm_mmu_sync_roots() and eventually mmu_sync_children(). This path ca=
-n yield
-> > > via cond_resched_rwlock_write(). Yielding while preemption is disable=
-d by
-> > > the gpc read lock will trigger a BUG.
-> >=20
-> > Ah, that issue exists in the previous versions too, but it's simple
-> > enough to fix. There's no particular timing constraint for flushing the
-> > TLB; it just have to be done before this vCPU ever runs again. It can
-> > just be moved to the end of the function after the lock is dropped.
-> >=20
-> > That does mean record_steal_time() should use the explicit
-> > gpc_map_local_lock()/gpc_map_local_unlock() instead of the CLASS()
-> > macro, but that's easy enough.
->=20
-> Actually, we use KVM_REQ_TLB_FLUSH_GUEST and "optimize" the code for the =
-rare
-> case where KVM already have a TLB flushed queued for the vCPU.=C2=A0 E.g.=
- over two
-> patches (so that changing the order of the request processing is isolated=
-):
+On Wed, 2026-08-05 at 20:47 +0000, sashiko-bot@kernel.org wrote:
+> [Severity: High]
+> Does this new helper inadvertently bypass the required vCPU kick when the
+> vcpu_info cache check fails?
 
-D'oh! Missed this when preparing the RCU-based v3, and Sashiko had to
-point it out again. (And I'm fairly sure most of the rest of the
-Sashiko feedback rings a bell too).
+Oops, I frowned at that for doing the kick *within* the RCU read section,
+and missed the bug when moving it down. Will fix.
 
-Fixing...=20
+> [Severity: Critical]
+> This is a pre-existing issue, but does test_and_set_bit() here risk a
+> host denial of service via a hardware split lock?
 
---=-PRxjyfeCJLGFk/3HZnP8
+It does, and likewise for the lockless double read of long_mode
+reported against v2 patch 7=C2=B9: max_evtchn_port() and the branch below i=
+t
+can disagree, in which case port_word_bit can be up to 127 and the
+test_and_set_bit() runs off the end of evtchn_pending_sel.
+
+I knew I'd looked at those both before... they're both covered by the
+series I posted in June:
+
+  https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org/
+
+I owe a refresh and repost of that one.
+
+
+
+
+=C2=B9 https://lore.kernel.org/all/20260529174710.29CB31F00893@smtp.kernel.=
+org/
+
+--=-Pn38uUS5+IC0z6fzoGTl
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -201,22 +184,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MDUyMTUxNDhaMC8GCSqGSIb3DQEJBDEiBCBKqyjQUzC1yo+EkbWeGhTVcjLaEvwm
-qcqAh+uFJFSW6DCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MDUyMjM1MjFaMC8GCSqGSIb3DQEJBDEiBCClRW270M227gedzDrR+z/Kn/ecdHWF
+rwFG1ZsoYKbHnDCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAVqgK82aMh0iGaN8z7s5J3YdmOK0/aqPqfY7WBZDD+k4gOylFw7f1
-C1dFP1/eK/SHX+wyBlLjtPQUADigof6kz9ZLxZ/a7JV8A7QqGoBHX2/bE/qbbwKBUwu3ByLsqi/4
-RXLIrdD9v8qqetQuP2KMGE+8Osjp01aZaxuO3iWw4uk2B/GxNvUtlRdB2oPqteVV2hkM+2KiE9Pv
-VeIvVQGvjwOnXPxGaFQDEB2sXe9caCJ/bxon9H0ygof+vYT2+iiDEPjzfl0pd30uX0KEIFPM0V0y
-yIgZpGqQNurpcaN40UsdaX5qCiKvMSRoEHUkfAVZcXKjuusgccNVRJ2IU/9hrsHqnCjKPtENC+I+
-3lviX3Ln3Y5+PCdXvoyVvowRlQA/6Mdc58wbsPyBZd8CfsY6v3hHB85OVWR9E3dF6ZAAPfTQmBPt
-+go/faxsXVxdEqViOF3jjS0KyTjhYpD3ncSZQES3sGPD0px4eCSYhPPbXxZyD6gHFevQQJbgQvzy
-ohCi9Jf+EdheAJK2NktYzAxbpJKPpojzKAiYP8aoACfG9b8tQSAbU1UitRoLI2bMISyk0VRrbsBX
-Ff2ezl5QXz/t2OjBTjiZ6+hcCyUyH5i1GV5ajwEO7nOBvr48BWOGJzbZiMMfeWr+juCLCppI4RlB
-5ye+1JcNuQ2KgsZsX6RpRy4AAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIARp2jdDusnpedQZtUF3S2Fd2sAm5AgnkRrR3aesHnHa0i8aWu5W6z
+G+EgtBbMjhElA2DpM2y+brR6geYmkI1LWJPE9+gtazKC3HZ24pwmlbFGSWEDfM/+zZi9yKeX5OsJ
+0NKINBNvTqopvKNYqDCUrRoq45Hlpx68HklCVa7p1Rq7OaOS/qxEZ0ozM1/TOrQQD0XRtAEbybsh
+ErL49jblVtKFwCRslLD78k4wGal2c1bNQtk5j/CmOzGBOnWDSHZE+P687h1r1i0KFD7YmmX0KYN4
+TK4xo2aDuFRZXUWkGgxm2KV2r007qoVUeWR2NGfvzzFXiIj2nE8cizP9qv3q3fyEMmkVAsj+Tvle
+7CiYj+7ttSDOdRihpQwwm9KsQadhCORU1+cCpYEYeAtMoGV4i+g6W3XnmE8t5gon5w9ZqQ+3ZO+P
+QA70ZBpBv8fbAjWawspPFivr/EVO9/BkU98jtpk+GgKBkiLU+VcNp6LuornNtG0JHN/KpfDMuMyZ
+aMNEWk2SibW/ySmn2uMu3n2N8+FsfkQnyBfcJsdQkvgNG+ERdg2VJiXsqct67sABHTUCyccKvlDB
+syvMCcToFVZ8j0E95QxuHaimjStPeGSc7Nh0WJw+uQPFUxHImcztS5eNFYGjLuJ57ChBJdoMn+I1
+TylVAlWCZryMVLZZxbiRoMEAAAAAAAA=
 
 
---=-PRxjyfeCJLGFk/3HZnP8--
+--=-Pn38uUS5+IC0z6fzoGTl--
