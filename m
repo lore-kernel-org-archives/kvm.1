@@ -1,82 +1,132 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395F03C3442;
-	Wed,  5 Aug 2026 02:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1D21F419A;
+	Wed,  5 Aug 2026 02:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785897069; cv=none; b=e6m4+eTrFQWoG4razX3uZWL7rVvUHyUfG24hhFhZGuTBkOWlb/g2aFGIY/Vx86ob36NXj50u7Fq1g2HYvwWpHcuiQjlM5otBjUlbXbKUlrGqnDFI0bm8BZfupeJ7vI8c3b9jCzIl9RK5Hve8Rn7lg3q926Pe7R5Du9f/FWBAWBU=
+	t=1785897417; cv=none; b=Sa0dK8Sw/wGEcFtZNMA2EkjtgTG1ycxXM/cIMadZymYZD+rh4+inR4C8kf2zM1Ciq1DZLppNBXhgkeroOmRQTNXy4IxSA+DtSF12U5OAKLn5vegLPM1xWB+G7C/tMiMlK4Gf3cdrQhWoRTvDIS6I59arP0UGiWdnFlnG6+4lv9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785897069; c=relaxed/simple;
-	bh=OHdlbRBEytdaz2OZJXal6evrARgiQzCPKqL3FAQuecA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dgS3Ht00bKNC/gwg2/fWUtof6x7Z+HVfAzjjoELddba5uQu0UIXroGTQNYFIk2prBNXeYzsF9HXRebn42kk/UMKBqaAEUGtLEdn/WuE+nAI872s1VNABR5Re/SpgKPYtt7aOkKKDIz5rDRimxt1bqPWN3ROuHi/lRidE88YM7/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lKOn1On8; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lKOn1On8"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1785897063; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=4sRwgKt6/kzaEj31mtkG3npSA1XNMSbnP6nju+RVO4g=;
-	b=lKOn1On8nKP6KL7aLJhLgHlj+wvwcG347LEWRukgDiKavrpulVUItli9KDh62z1Zn62J4MDey0COEb5lne7iPXWgVS0ypbsJ5syl5SIKMz7+tmcbpDxcdfqOGBpPZWdJDW++MXmMCdtpuvi8YG19vR3r7Ih4sKU5cMOhNjTR7Qs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=herongguang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X8Plfrq_1785897060;
-Received: from 30.221.106.215(mailfrom:herongguang@linux.alibaba.com fp:SMTPD_---0X8Plfrq_1785897060 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 05 Aug 2026 10:31:01 +0800
-Message-ID: <25605d8c-4e13-413f-bb50-6c65684fafd3@linux.alibaba.com>
-Date: Wed, 5 Aug 2026 10:31:00 +0800
+	s=arc-20240116; t=1785897417; c=relaxed/simple;
+	bh=rTW1eer9rX9UkPFiKKz7hwuNMEOs+yhUf0sg6v2ehQY=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=joZIPZAJDQu6tPbELz/sRtI+SUPxNGlfCDURsSzhKAPD+1O+w51ZB+LO4l58V8T9XYRLpM1mCKJwm7fhamvA/TmlfMs8Tougf14dZelA6huws/OMUltsSyAQvIixYODETOCD5pznwQXPG2nfIcXj11qOx7aO54TbFTqdOfPdfwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8BxvKHEoXJq7oEKAA--.10895S3;
+	Wed, 05 Aug 2026 10:36:52 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxTsW9oXJqYS8kAA--.64818S2;
+	Wed, 05 Aug 2026 10:36:46 +0800 (CST)
+Subject: Re: [PATCH] LoongArch: KVM: Advertise already-supported capabilities
+To: Tao Cui <cui.tao@linux.dev>, zhaotianrui@loongson.cn
+Cc: chenhuacai@kernel.org, kernel@xen0n.name, kvm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260804082604.178092-1-cui.tao@linux.dev>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <5bbfd376-d3e2-e62a-f07d-9a4ee0635780@loongson.cn>
+Date: Wed, 5 Aug 2026 10:36:29 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/kvm: introduce pv idle time
-To: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- vkuznets@redhat.com, geert@linux-m68k.org, sammiee5311@gmail.com,
- lirongqing@baidu.com, schuster.simon@siemens-energy.com,
- kai.huang@intel.com, shannon.zhao@linux.alibaba.com,
- He Rongguang <herongguang@linux.alibaba.com>
-Cc: x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <e61df396-356f-4ef2-9c3a-db3c05cb5c52@linux.alibaba.com>
-From: He Rongguang <herongguang@linux.alibaba.com>
-In-Reply-To: <e61df396-356f-4ef2-9c3a-db3c05cb5c52@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20260804082604.178092-1-cui.tao@linux.dev>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxTsW9oXJqYS8kAA--.64818S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7KF17trW7tw1DKFW5JF4rCrX_yoW5JFW7pr
+	409wsFyFW8Jr92vas7J3ykWF4F9rsrJrWSqa4Yvryjkr15Kr1jqFy0krs8XF1DGr1furyI
+	qFnYqrnYgayDKabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+	xVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jYSoJU
+	UUUU=
 
-在 2026/7/21 11:00, He Rongguang 写道:
-> Hi, this patch introduces a PV mechanism for guests to publish their
-> vCPU idle state and accumulated idle time to the host. This allows
-> the host to efficiently determine whether a vCPU is currently in its
-> idle loop, and knows vCPU idled for how long. QEMU patch and ARM64
-> support patch will follow in a subsequent series.
+On 2026/8/4 下午4:26, Tao Cui wrote:
+> Several LoongArch KVM features are fully implemented but were never
+> reported through their standard KVM_CHECK_EXTENSION probes, so userspace
+> cannot discover them and either ignores them or takes a slower path.
+> Advertise the ones that already work:
 > 
-> The guest writes a GPA pointing to a struct kvm_idle_time via
-> MSR_KVM_PV_IDLE_TIME. When entering idle, the guest sets the flag field
-> to KVM_PV_VCPU_IDLE. On idle exit, it clears the flag back to
-> KVM_PV_VCPU_RUNNING and adds the elapsed idle duration to idle_accum
-> (in nanoseconds).
+>    - KVM_CAP_STEAL_TIME: steal time is fully implemented (host-side
+>      record plus guest paravirt), gated on kvm_pvtime_supported().
 > 
-> The host can read the flag at any time through
-> kvm_arch_is_vcpu_pv_idle() to make better scheduling or resource
-> allocation decisions. For example, host may overcommit those vCPUs
-> which are mostly idle. An in-guest agent may be absent, or may not
-> report the status in time.
+>    - KVM_CAP_IRQFD_RESAMPLE: the resampler is generic code backed by the
+>      in-kernel irqchip; advertise it so userspace can use irqfd with
+>      resample for level-triggered interrupts.
 > 
-> The accumulated idle time provides visibility into per-vCPU usage for
-> monitoring purposes. An in-guest agent can report VM CPU usage, but
-> this PV mechanism allows the host to obtain guest CPU usage even when
-> no agent is installed. This is especially helpful when the hypervisor
-> enables exitless-hlt/mwait (for better guest performance) or when the
-> guest uses idle halt-polling, both of which make QEMU vCPU thread usage
-> deviate from the actual in-guest vCPU usage.
+>    - KVM_CAP_VM_GPA_BITS: the guest physical address width is already
+>      computed as BIT(cpu_vabits), so return cpu_vabits directly.
 > 
-> This feature is advertised via KVM_FEATURE_PV_IDLE_TIME in CPUID leaf
-> 0x40000001. Guests enable it by writing the appropriate MSR during
-> initialization, similar to the existing steal time mechanism.
+>    - KVM_CAP_VCPU_ATTRIBUTES: per-vCPU device-attribute ioctls are
+>      implemented (CPUCFG, PVTIME control); advertise the discovery cap.
+> 
+> This adds no new functionality; it only makes existing features
+> discoverable via the standard probe.
+> 
+> Signed-off-by: Tao Cui <cui.tao@linux.dev>
+> ---
+>   arch/loongarch/kvm/vm.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+> index 1317c718f896..d7dd08d9be5b 100644
+> --- a/arch/loongarch/kvm/vm.c
+> +++ b/arch/loongarch/kvm/vm.c
+> @@ -120,8 +120,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>   	case KVM_CAP_READONLY_MEM:
+>   	case KVM_CAP_IMMEDIATE_EXIT:
+>   	case KVM_CAP_IOEVENTFD:
+> +	case KVM_CAP_IRQFD_RESAMPLE:
+By my understanding, KVM_CAP_IRQFD_RESAMPLE is used for VFIO intx 
+irqline interrupt injection, is that true? now IOMMU and VFIO is not 
+supported on LoongArch.
 
-Ping, any feedback on this patch would be appreciated.
+>   	case KVM_CAP_MP_STATE:
+>   	case KVM_CAP_SET_GUEST_DEBUG:
+> +	case KVM_CAP_VCPU_ATTRIBUTES:
+this is ok.
+>   		r = 1;
+>   		break;
+>   	case KVM_CAP_NR_VCPUS:
+> @@ -136,6 +138,12 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+>   	case KVM_CAP_NR_MEMSLOTS:
+>   		r = KVM_USER_MEM_SLOTS;
+>   		break;
+> +	case KVM_CAP_STEAL_TIME:
+> +		r = kvm_pvtime_supported();
+> +		break;
+this is ok.
+
+> +	case KVM_CAP_VM_GPA_BITS:
+> +		r = cpu_vabits;
+Feature KVM_CAP_VM_GPA_BITS is also to control max supported GPA bit of 
+VM, only only max supported PA bit on host. For example max PA bit is 48 
+on host, it is ok to set GPA bit with 40 or 48, only if it is smaller 
+than one on host.
+If my understanding is correct, it is not supported on LoongArch now.
+
+Regards
+Bibo Mao
+> +		break;
+>   	default:
+>   		r = 0;
+>   		break;
+> 
+
