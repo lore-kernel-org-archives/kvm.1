@@ -1,124 +1,163 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E731A681C;
-	Wed,  5 Aug 2026 00:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E42017A305
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 01:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785891005; cv=none; b=Y8cTVg2Jy9jSXKwRkwbHbaMwp+KIZ3To/eDFkbd7T74zKijwVa3KYM0WaOPJgMwsuw/m6jOzM+cfBYASntywl+Ry0pzivFL/lyoTwtbU4+Ir0r5hyhYMhZOiSI6JAh9jfYyLlDYbd8rYbReDfR+O5Waw6pFiskD/KhiLe/mv16o=
+	t=1785891794; cv=none; b=oYyYM0OgYvH4SKOtH6jyQoyJKcapUYaxphWpu+Fr5xW43Ew1HkMoTltCbqs6uLNbxO7A8uer3wto3l/yEj08QMe72Ewmm+YDrrek+2rTyg8Emm059pbW6RTCW1H4B/ovMVMnhzPCzS8tSu1p4sUR5jj+px0l+l9LG7aU83QZciw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785891005; c=relaxed/simple;
-	bh=QlM00SFoLt3SgpwM5yns+MvvMSc3chlByAGXz9p99Sk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EN9VAmRi4hzhBeIVp1ocqzvIyPJ/PAKAUQYbe/iWVrXMnpERDhKPzP6HqOymLr7dLpqP8zcaaYof14MnI0gebl6SFgGV4W4c7MhOF/F6vNxpn8BLUkVn7Woau9l5DcQHPIY9z08bwN97Atp5rRT+U1lXcuzmwht3/VnC7aj4NRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VnS3br3T reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1785891794; c=relaxed/simple;
+	bh=QVj27sZg1ZhkFfNnzqgZUOZwlUX4dGsL53JRMD+3C/8=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=BAOzTHfM5dd6lq7GT1SNhnOYl9T+RKJ6h18inkwvxlF/nPtOivTI4yHbnikwoXIoDG7A+I601bzR1SGaWSGM282iaEi3F/QbAntDhK3qMic/koU4lnzjtlTNSpG0Fk/G9H9+l+Do963l252b3uANI5sxFCR6T7c1zTYQH+8ez7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AuWNDKjH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VnS3br3T"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CAC5540E0031;
-	Wed,  5 Aug 2026 00:50:00 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id xQGTgCeBaw9Q; Wed,  5 Aug 2026 00:49:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785890990; bh=SwRMflM/G6Wl3HyHAlXjWRPLk8KQM08C1ikUPXNLpnw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VnS3br3TMpVJeA1wPy6Tsy8Hb2w/olsQ56p+I9gLYVYNpHXlUTiIbE2JDG4e9HWci
-	 FcrundY2KMgn3fy46OP+DInemzWUFmXEZhnDQ49h/hHxvqvF7J68VB+IU8gGP6cIOw
-	 kAcP2pcZxD4TQYzu7UWp+foY3YUW2YqjgxwJWXlM7gq8zhquXSBqzI2v3yTXiBrjm8
-	 dKsLg3AY5iIQg8GClCuTJoRNHe5WiTNefyBxZqXcsxJqgVZheYa5PT4JEr5GArToqI
-	 Xn+No8zQaFRrTma140uGjJkYKtgYzsABoTN/prceMpe7fIuV7JZKzrtlty+gPZjDCb
-	 ROL6FCBzUen7RQpyDlkPAM9t7b1o1EdJyyH8KBynsjwmGpokjPTLTKPoqGdykEnSyR
-	 FAT35nrU706FLH0tL6OmqrOIRBHLriQR/LlZbrrlj/cETZv5/Rl5hzUuoW25fD0mUt
-	 FgUojrMdhYBwtxM5yfE8h9TNBjdEMHeQC6LUSYPAdBEfpf7xgRzyri43NlpelIthfI
-	 OR/NgFwdVpj20M8Hh5bvWZnyAlbKJDziWAsTQUytCt72wv32yhjmUYY25YU4HRDera
-	 0JiDUUBbMZC/mQGVMrYLsvB3MtSsSvdLGB/MTP4qk7ecLN41u1SpCWU+CjWX1IO6LM
-	 FEJp0/JoBEGO9z9I6fEA1NBQ=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C1A6440E00B8;
-	Wed,  5 Aug 2026 00:49:15 +0000 (UTC)
-Date: Tue, 4 Aug 2026 17:49:13 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: "Kalra, Ashish" <ashish.kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
-	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
-	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
-	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
-	john.allen@amd.com, darwi@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	kvm@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
- optimizations asynchronously
-Message-ID: <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
-References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
- <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
- <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
- <8DAAEA48-F2FA-4D52-8E56-4B7213155F12@alien8.de>
- <d7a17bde-4af0-45ad-96bc-4717a1fa1545@amd.com>
- <60B4B369-19E7-44DF-BCCF-FC8DD851B2E7@alien8.de>
- <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AuWNDKjH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403391F000E9;
+	Wed,  5 Aug 2026 01:03:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785891793;
+	bh=Cs4JgPNb0P4OwwXvEZMWNrNtu/42fhjT0LFu23P1vvs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=AuWNDKjH+fmpjVjeuFLdvW3CAN0ov1ASKn8/OHEqYKMNClvFXMQd4eDJWtwhYj7cS
+	 +rdFfIhm+t1iNghstvnQ+GQMq5PiOaaU2ScjYULNkalqjXNo/lhGxwTPa4h/z+MzB8
+	 oynPoVX7520t5aphYgIuqNexINRCQNjTpRWB3u47oYkmU6g/85tayS8mEw29U2GcMJ
+	 Df48dOBT5gp3nqKZntvXMPobXcKMQ9OTLoWGVO47JIAyzNGsGYRx7TjhSEDsUwmAw6
+	 TzlQTGXkP7ole+gqFD09CXSYYF2gvVMU4w72tmg8A/XvpdOl5UHhCZzhktOuoyHl/W
+	 n32wx/Cq2g7/A==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Samiullah Khawaja" <skhawaja@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260805003355.728299-2-skhawaja@google.com>
+References: <20260805003355.728299-1-skhawaja@google.com>
+ <20260805003355.728299-2-skhawaja@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 01:03:12 +0000
+Message-Id: <20260805010313.403391F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 05:22:17PM -0500, Kalra, Ashish wrote:
-> Periodic re-optimization was already considered in an earlier RMPOPT se=
-ries
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] Acquiring `device_lock()` inside `vfio_pci_core_close_device()` in=
+troduces a guaranteed AB-BA deadlock if the device is unbound from the driv=
+er while still in use by userspace.
+- [High] Synchronously tearing down SR-IOV VFs from the PF's `close_device`=
+ path deadlocks if any VF is actively in use by VFIO.
+- [High] Calling `pci_disable_sriov()` without holding `pci_rescan_remove_l=
+ock` causes an immediate lockdep splat and races with PCI bus enumeration.
+- [Medium] Time-of-Check to Time-of-Use (TOCTOU) races around `device_lock(=
+)` allow VFs to be enabled immediately before hardware reset, defeating the=
+ purpose of the patch.
+--
 
-Link?
+--- Patch [1]: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close -=
+--
+commit 996eca93815cca91725d215b78730f993e057c49
+Author: Samiullah Khawaja <skhawaja@google.com>
 
-> and dropped because of being too disruptive =E2=80=94 a timer-based sca=
-n would run
-> on all cores every time it fires, even when no memory has been freed.
+vfio/pci: Disable sriov on PF device close
 
-What if it ran very seldomly, say once an hour?
+When a user closes a VFIO device file descriptor for an SR-IOV Physical
+Function, the device is reset. This reset disrupts the VFs without notifying
+the core PCI driver model. This commit disables SR-IOV prior to issuing the
+PF reset so VFs are torn down gracefully at the software level.
 
-> Running it at guest teardown (batched by the timeout) is a better fit:
-> teardown is when large contiguous regions actually go back to the
-> hypervisor, so the scan only runs when there's real work to do instead =
-of on
-> a fixed timer. The case of a guest freeing a 1 GB region mid-life is th=
-en
-> handled by the 1 GB-hugetlb page-cleanup follow-on, not by a periodic s=
-can.
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index a113c55845e10..b36c77eb3c407 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device *=
+core_vdev)
+>  #if IS_ENABLED(CONFIG_EEH)
+>  	eeh_dev_release(vdev->pdev);
+>  #endif
+> +
+> +	if (pci_num_vf(vdev->pdev)) {
 
-Are you saying a periodic scan won't handle anything?
+[Severity: Medium]
+Is it possible for VFs to be enabled concurrently right after this check?
 
-Because if it catches something, it will handle that something.
+Since pci_num_vf() is evaluated locklessly before acquiring the device lock=
+, a
+concurrent sysfs write to sriov_numvfs could enable VFs immediately after t=
+his
+returns 0, causing the teardown to be skipped.
 
-> I will also like to avoid looping on this =E2=80=94 periodic vs teardow=
-n was already
-> worked through in an earlier revision, and this is where we landed. Hap=
-py to
-> revisit if there's a specific new concern, but otherwise I'd prefer to =
-keep
-> the current approach.
+Additionally, because the device lock is dropped before the hardware reset =
+in
+vfio_pci_core_disable(), a concurrent sysfs write can acquire the lock,
+successfully enable SR-IOV, and release the lock before the reset occurs.
 
-Sorry, this is not how upstream review works.
+Could this recreate the exact hardware state mismatch the patch attempts to=
+ fix?
+
+> +		device_lock(&vdev->pdev->dev);
+
+[Severity: High]
+Does acquiring the device lock here introduce an AB-BA deadlock during devi=
+ce
+unbind?
+
+When a device is unbound, the PCI core acquires the device lock in
+device_release_driver() and invokes the driver's remove callback. For
+vfio-pci, this calls vfio_unregister_group_dev(), which blocks indefinitely
+waiting for userspace to close all active file descriptors.
+
+When userspace closes the device fd, vfio_pci_core_close_device() is invoke=
+d.
+Because this patch tries to acquire the device lock, the fd release thread
+will block forever waiting for the unbind thread, and the unbind thread will
+wait forever for the fd release thread to finish.
+
+> +		vfio_pci_core_sriov_configure(vdev, 0);
+
+[Severity: High]
+Can tearing down VFs from the PF's close path deadlock if a VF is actively =
+in
+use by VFIO?
+
+When vfio_pci_core_close_device() calls pci_disable_sriov(), the PCI core
+synchronously removes all VF devices from the bus. If a VF is also bound to
+vfio-pci and currently opened by userspace, removing the VF triggers
+vfio_pci_remove(), which blocks indefinitely until the VF file descriptor is
+closed.
+
+If a single process holds both the PF and VF open and exits, exit_files()
+schedules the fput() for both file descriptors sequentially. If the PF is
+closed first, the thread hangs here waiting for the VF to close, preventing
+the VF's fput() from ever running.
+
+[Severity: High]
+Does this code trigger a lockdep warning by manipulating the PCI bus topolo=
+gy
+without the required lock?
+
+Calling vfio_pci_core_sriov_configure() here ultimately calls
+pci_stop_and_remove_bus_device() to remove VFs from the PCI bus. That funct=
+ion
+enforces a strict locking requirement via
+lockdep_assert_held(&pci_rescan_remove_lock).
+
+Because this global mutex is omitted, closing a PF with active VFs could ra=
+ce
+against concurrent PCI hotplug or sysfs rescan operations.
+
+> +		device_unlock(&vdev->pdev->dev);
+> +	}
+> +
+>  	vfio_pci_dma_buf_cleanup(vdev);
+> =20
+>  	vfio_pci_core_disable(vdev);
 
 --=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805003355.7282=
+99-2-skhawaja@google.com?part=3D1
