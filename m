@@ -1,123 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24013E49F1;
-	Wed,  5 Aug 2026 08:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8443D9680;
+	Wed,  5 Aug 2026 08:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785919636; cv=none; b=UaZgwesnjHMb+vq3SIvS5YZrDV1FSuV+MHSKkhb65L0Zbcgo4kGgBDxz5+2tD11n0r1pOVNiIXDgfazW03nnxi8GS4qyltxz2p7+a+2Fs19BUD+1ktAQpm8BImSskNphMBl8EjW+ZLdEDlpIWx5X690rNgqy5xwRyojG3Nuowms=
+	t=1785919895; cv=none; b=DtUM0ExM/Tdk3tWrmZLXSs4D9gg7JNHuXl7YE3xsUVfEFLZSJpYuH8K3soqsIZvO7tM6k7k/zEXxQ6ZBBe2zUQDo9AgUv9XOKMQd5NfB2VfaD6yOgVwxYIfpW3oy6phBhPKpIY/+b3M1Yfa72D9qCKr4q26xF10wNa4BBxmkfms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785919636; c=relaxed/simple;
-	bh=NCefE1mO1GlvWUkeAoReVC10N2F/jCGs0rCOQGw2TpU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qaduHyWtvuBRAOmSEDrK/nuwT+UeF4tcXNdBZZ2V6ABQ1zXQ13CKqFUU5joRJPmhvgWSuhtvG8iKGo/2oq0HPTaxm6gg2J0Ec5bqRab/Ii/xfs43+GorS5GZlCletxa2WtfaZ+xiPHPippGowzLfCplmIylZNzixwQayJmMGqnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLJl/Bok; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785919895; c=relaxed/simple;
+	bh=906UFDydbGu9lslP/ICAwTRGBdF+G9rFbkPozEz0hlg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y9r02/hZzZ/yFRY+l4eRaIz8jYz9Nt8sKg3kBAWvQeXH9H8zX0UTGok8x7WDW0egCIouhh5/ejHKTy4Pa2zEspUXJPdgeYVrN2woUNkAdk7/wjSaNblXtYASFXzZyZBGOpU6Cr35YiZ7wL5WOSJb4Sa54rEQHOGxh5WkrNnn4AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CdykzEKh; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLJl/Bok"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714721F000E9;
-	Wed,  5 Aug 2026 08:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785919634;
-	bh=kszMkcQKqrIYgW/Oo0EZOBH4I8hWpCPVD1GaXYgTgbg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mLJl/BokC8Mo53uR+QWaVydHsO6EXtOh06TDIVqz3tZirYkI2kZ0XrZ+19FdkM3wm
-	 d7HWfNeF+4UMGMGz9UZteAlSvRRnWZzeqRyxSyqq6wWn4tJdRfAeek88Yf63oJ6sbR
-	 TfUaPxDN4NLSahez5SjUo80Uc5rE/vAyTAR2PvTWdQe3aCEyzBBS7KX1hhDG/nhXsc
-	 oY3shvzY0qZDZj2eHBiAzU/Nx7RmGfE0abAFOr6DUatPCZzXUnTJyGF0eLtCpIFQE4
-	 SHx++8Kr/ojSi8BZKfPixbsQ770UCSKncjr9xcZGNqzsIjMXHJF/bZJcBwa7A9yGKc
-	 OYW3RQ799aKcg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wrXHM-0000000CWRv-0CXA;
-	Wed, 05 Aug 2026 08:47:12 +0000
-Date: Wed, 05 Aug 2026 09:47:11 +0100
-Message-ID: <86cxvxar8w.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jing Zhang <jingzhangos@google.com>,Mostafa Saleh <smostafa@google.com>
-Cc: 	KVM <kvm@vger.kernel.org>,
-	KVMARM <kvmarm@lists.linux.dev>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Mingwei Zhang <mizhang@google.com>,
-	David Matlack <dmatlack@google.com>
-Subject: Re: [RFC] KVM: Proposed uAPI for querying GSI and irqbypass status
-In-Reply-To: <anLz0HJ9CKuRbTPh@google.com>
-References: <20260717162658.2833515-1-jingzhangos@google.com>
-	<amh6OLH38hsO7ZWj@google.com>
-	<CAAdAUtjrnNe1Kn2_Fqtjy6igEEca-6Zd=SSbncswZtnA5FngPA@mail.gmail.com>
-	<anLz0HJ9CKuRbTPh@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CdykzEKh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785919893; x=1817455893;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=906UFDydbGu9lslP/ICAwTRGBdF+G9rFbkPozEz0hlg=;
+  b=CdykzEKhc42+Nti0stbtS7X1dG29jphW6pF+dAHEAM4K2QrX2MqAkCoI
+   qVPSeiUXmcIQO9MfMVW/fACheBjLzzXaux6s4RnG4zozbYYuCaeamd3eW
+   xeqpcR1P8bFW0xqkbqLtWKFkU6nu+VxliDxec6Hv0d2nMoWFfQ1bk8fgg
+   yRv7t7ua0TiLjr1VbOWSlJnS9G7myuPTGoSoQ/jmkfQQTTD8Q/jhq706X
+   qk8oOpE1aG/6p5xbC4egWaX3tgCn88I5CdQvU0GOlVAe84A/9lJ17yuog
+   XkT8KPw5yg+ABFRz6egyynJ8KPcCLTl6A43Mp5hGt2EJ4zL13LhEmbMuA
+   Q==;
+X-CSE-ConnectionGUID: Rqx5RGBeQ+63N3qA/+2XRQ==
+X-CSE-MsgGUID: rxxCj8zgQmeXKyfEpKawYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="86603454"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="86603454"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 01:51:32 -0700
+X-CSE-ConnectionGUID: xl8+sgnqTkGG1UwygjFcIw==
+X-CSE-MsgGUID: MdQoRWnhTqKbstjwpzVllg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="259988166"
+Received: from fuxiaogu-mobl1.ccr.corp.intel.com (HELO [10.238.208.47]) ([10.238.208.47])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 01:51:20 -0700
+Message-ID: <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
+Date: Wed, 5 Aug 2026 16:51:17 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: jingzhangos@google.com, smostafa@google.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, oliver.upton@linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, pbonzini@redhat.com, seanjc@google.com, mizhang@google.com, dmatlack@google.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
+ kvm_arch_has_private_mem is defined
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
+ <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
+ <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com>
+ <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 05 Aug 2026 09:26:56 +0100,
-Mostafa Saleh <smostafa@google.com> wrote:
+On 7/31/2026 4:34 AM, Ackerley Tng wrote:
+> I think another way to phrase this is that if we don't make this change,
+> say, on the foo architecture where there's no CoCo and no private mem
+> support, kvm_supported_mem_attributes() would return true for the !kvm
+> case, which is over-reporting.
+
+Under the condition that the foo architecture enables 
+CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
+
+> How about this, replacing the entire changelog paragraph above:
 > 
-> Hi Jing,
+>    Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
+>    based on kvm_arch_has_private_mem being #defined. This improves
+>    reporting accuracy by not reporting support for
+>    KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
+>    called with kvm == NULL.
+
+It doesn't help for the case where kvm == NULL, but help for the case 
+where CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but 
+kvm_arch_has_private_mem not.
+
+sorry for being picky. I think we can say
+
+This improves the reporting accuracy by avoiding the case where 
+KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without 
+kvm_arch_has_private_mem being #defined.
+
+>    Give architectures full control over overriding the default definition
+>    of kvm_arch_has_private_mem() by removing the coupling with
+>    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 > 
-> On Fri, Jul 31, 2026 at 10:26:26AM -0700, Jing Zhang wrote:
+>    In a later patch, kvm_arch_has_private_mem() will be defined based on
+>    whether architectural features are compiled in, and made orthogonal to
+>    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 
-[drop the LLM generated stuff]
-
-> > While interfaces in debugfs are fantastic for manual, retroactive
-> > debugging on a developer workstation, they are not Dependable for
-> > fleet-wide observability. This RFC aims to provide a proactive
-> > monitoring solution that aligns KVM with production operational
-> > requirements across architectures (both ARM and x86).
-> > 
-> > Would love to hear your thoughts on this perspective.
-> 
-> I agree that debugfs is not suitable for that purpose.
-> 
-> My main concerns are:
-> 1- Why is /proc/interrupts not enough, it should show whether the
-> interrupts are going through the host (not bypassed) and it should
-> show when the host get a doorbell if the vCPU was not resident.
-
-This.
-
-Also, there is a very long standing ask to represent the output of
-/proc/interrupts as a structured set, retrieved through a generic
-kernel interface. I.e. *not* something KVM specific. Everybody asks,
-nobody does. As usual.
-
-And if you are interested in things being "Dependable for fleet-wide
-observability" (I *love* the LLM-generated jargon), there is no way
-you can make sense of what the guest sees without looking at the full
-picture, i.e. the full machine.
-
-> 2- Technical feasibility on arm64. Since the host does not have
-> visibility into interrupts directly injected into the guest, it
-> cannot accurately maintain the proposed counters vgic_its_vlpis_hw.
-
-And GICv5 is going to make things even less observable, as only
-doorbells fire on the host. My take is that for these, a PMU-type
-interface is better suited.
-
-But in general, a KVM-specific for something that is a system-wide
-problem is IMO the wrong approach. You may want to put tglx in that
-loop and see what he has to say.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
