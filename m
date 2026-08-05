@@ -1,163 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E42017A305
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 01:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6537F25524C;
+	Wed,  5 Aug 2026 01:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785891794; cv=none; b=oYyYM0OgYvH4SKOtH6jyQoyJKcapUYaxphWpu+Fr5xW43Ew1HkMoTltCbqs6uLNbxO7A8uer3wto3l/yEj08QMe72Ewmm+YDrrek+2rTyg8Emm059pbW6RTCW1H4B/ovMVMnhzPCzS8tSu1p4sUR5jj+px0l+l9LG7aU83QZciw=
+	t=1785892922; cv=none; b=WVe7SXZR7MSU29qk6s0R6q4FPbpIIOPOFiRn5dRVCamsBnsM3w9JHMwHLuQisveaV5M/qbObHwp6lAWt+ib4lxweU/1hN1t+JTSh32vx/KVJLJ2MclBEuEZwOh9UD0OpR+PS/eqq+GKLeMwbVCJYXdUUADX+UJFeK0Rn2KlaKLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785891794; c=relaxed/simple;
-	bh=QVj27sZg1ZhkFfNnzqgZUOZwlUX4dGsL53JRMD+3C/8=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BAOzTHfM5dd6lq7GT1SNhnOYl9T+RKJ6h18inkwvxlF/nPtOivTI4yHbnikwoXIoDG7A+I601bzR1SGaWSGM282iaEi3F/QbAntDhK3qMic/koU4lnzjtlTNSpG0Fk/G9H9+l+Do963l252b3uANI5sxFCR6T7c1zTYQH+8ez7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AuWNDKjH; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AuWNDKjH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403391F000E9;
-	Wed,  5 Aug 2026 01:03:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785891793;
-	bh=Cs4JgPNb0P4OwwXvEZMWNrNtu/42fhjT0LFu23P1vvs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AuWNDKjH+fmpjVjeuFLdvW3CAN0ov1ASKn8/OHEqYKMNClvFXMQd4eDJWtwhYj7cS
-	 +rdFfIhm+t1iNghstvnQ+GQMq5PiOaaU2ScjYULNkalqjXNo/lhGxwTPa4h/z+MzB8
-	 oynPoVX7520t5aphYgIuqNexINRCQNjTpRWB3u47oYkmU6g/85tayS8mEw29U2GcMJ
-	 Df48dOBT5gp3nqKZntvXMPobXcKMQ9OTLoWGVO47JIAyzNGsGYRx7TjhSEDsUwmAw6
-	 TzlQTGXkP7ole+gqFD09CXSYYF2gvVMU4w72tmg8A/XvpdOl5UHhCZzhktOuoyHl/W
-	 n32wx/Cq2g7/A==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Samiullah Khawaja" <skhawaja@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260805003355.728299-2-skhawaja@google.com>
-References: <20260805003355.728299-1-skhawaja@google.com>
- <20260805003355.728299-2-skhawaja@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 01:03:12 +0000
-Message-Id: <20260805010313.403391F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1785892922; c=relaxed/simple;
+	bh=DI+wDnoY2lneZk4a7R3EPl9DQU2UjDGuZ05DBh26Tj4=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jUFIcvmhE4oN1lj5APSL/hXLAKEsULARvCAOLGplvjAcj3mrZNNREyBu+U2E7OsxfNPnoE5zAH9RD8pchxEYZp/nretPLyW6TwZ1jCDFRLc29rDOqvWlk8+1VMSvVz3eOdOA8X89mGxuOThRDLrBY+iOQC4CHaOeJvVFkuMUum0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Cxqus0kHJqHn0KAA--.34215S3;
+	Wed, 05 Aug 2026 09:21:56 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxu8QykHJq0h8kAA--.13293S2;
+	Wed, 05 Aug 2026 09:21:56 +0800 (CST)
+Subject: Re: [PATCH 1/6] LoongArch: KVM: Add vmid support for stage2 MMU
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
+ Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260727072109.2151675-1-maobibo@loongson.cn>
+ <20260727072109.2151675-2-maobibo@loongson.cn>
+ <CAAhV-H6sEXa6XM-4=OTuPw=gNKgVxC7ZwqO6T-F81pvt_gBN8Q@mail.gmail.com>
+ <dc67eb43-adb2-c26b-a54f-ccd52ce910eb@loongson.cn>
+ <CAAhV-H7C+NbBOWtypwaLrn5Ehc6kv=W2jABz=r4O941QjAWhvQ@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <ba9ef849-65c7-b377-e5f5-9c6ca4a712c7@loongson.cn>
+Date: Wed, 5 Aug 2026 09:21:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <CAAhV-H7C+NbBOWtypwaLrn5Ehc6kv=W2jABz=r4O941QjAWhvQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxu8QykHJq0h8kAA--.13293S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3JF13uF1kKw1UCryruryrXwc_yoW7trWUpF
+	yUCF4kCr48WrykAa4qqw1Fgrn0q34DKw12gF1xtFyFyrnFqF1xJry8CryDuFy5Jw4rJF40
+	vF95KanI9F4Dt3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5xhLUUUUU=
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] Acquiring `device_lock()` inside `vfio_pci_core_close_device()` in=
-troduces a guaranteed AB-BA deadlock if the device is unbound from the driv=
-er while still in use by userspace.
-- [High] Synchronously tearing down SR-IOV VFs from the PF's `close_device`=
- path deadlocks if any VF is actively in use by VFIO.
-- [High] Calling `pci_disable_sriov()` without holding `pci_rescan_remove_l=
-ock` causes an immediate lockdep splat and races with PCI bus enumeration.
-- [Medium] Time-of-Check to Time-of-Use (TOCTOU) races around `device_lock(=
-)` allow VFs to be enabled immediately before hardware reset, defeating the=
- purpose of the patch.
---
 
---- Patch [1]: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close -=
---
-commit 996eca93815cca91725d215b78730f993e057c49
-Author: Samiullah Khawaja <skhawaja@google.com>
 
-vfio/pci: Disable sriov on PF device close
+On 2026/8/4 下午10:14, Huacai Chen wrote:
+> On Mon, Aug 3, 2026 at 9:21 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/8/2 下午10:11, Huacai Chen wrote:
+>>> Hi, Bibo,
+>>>
+>>> On Mon, Jul 27, 2026 at 3:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>> LoongArch KVM hypervisor supports two-level MMU, vpid index is used
+>>>> for stage1 MMU and vmid index is used for stage2 MMU.
+>>>>
+>>>> On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
+>>>> may separate from vpid. If vcpu migrate to different physical CPUs,
+>>>> vpid need change however vmid can keep the same with old value. Also
+>>>> vmid index of the while VM machine on physical CPU the same, all vCPUs
+>>>> on the VM can share the same vmid index on one physical CPU.
+>>>>
+>>>> Here vmid index is added and it keeps the same with vpid still.
+>>>>
+>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>> ---
+>>>>    arch/loongarch/include/asm/kvm_host.h | 3 +++
+>>>>    arch/loongarch/kernel/asm-offsets.c   | 1 +
+>>>>    arch/loongarch/kvm/main.c             | 1 +
+>>>>    arch/loongarch/kvm/switch.S           | 5 ++---
+>>>>    arch/loongarch/kvm/tlb.c              | 5 ++++-
+>>>>    5 files changed, 11 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
+>>>> index 23cfbecebbd7..ec7b0c402385 100644
+>>>> --- a/arch/loongarch/include/asm/kvm_host.h
+>>>> +++ b/arch/loongarch/include/asm/kvm_host.h
+>>>> @@ -189,6 +189,9 @@ struct kvm_vcpu_arch {
+>>>>           unsigned long host_tp;
+>>>>           unsigned long host_pgd;
+>>>>
+>>>> +       /* vmid info for guest VM */
+>>>> +       unsigned long vmid;
+>>> Put it near vpid?
+>> yes, it it better to near vpid. will do this.
+>>>
+>>>> +
+>>>>           /* Host CSRs are used when handling exits from guest */
+>>>>           unsigned long badi;
+>>>>           unsigned long badv;
+>>>> diff --git a/arch/loongarch/kernel/asm-offsets.c b/arch/loongarch/kernel/asm-offsets.c
+>>>> index 1b861cbc5e10..32ef6adfc8dd 100644
+>>>> --- a/arch/loongarch/kernel/asm-offsets.c
+>>>> +++ b/arch/loongarch/kernel/asm-offsets.c
+>>>> @@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
+>>>>           OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
+>>>>           OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
+>>>>           OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
+>>>> +       OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, vmid);
+>>>>           OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
+>>>>           OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
+>>>>           OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
+>>>> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+>>>> index 3e1005526f4b..6e3e8efa1dc2 100644
+>>>> --- a/arch/loongarch/kvm/main.c
+>>>> +++ b/arch/loongarch/kvm/main.c
+>>>> @@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu *vcpu, int cpu)
+>>>>
+>>>>           context->vpid_cache = vpid;
+>>>>           vcpu->arch.vpid = vpid;
+>>>> +       vcpu->arch.vmid = vcpu->arch.vpid & vpid_mask;
+>>>
+>>> I think both vpid and vmid need "& vpid_mask".
+>> vpid used in function kvm_check_vcpuid() includes version information
+>> also. vmid here is hardware id directly used by LOONGARCH_CSR_GTLBC in
+>> arch/loongarch/kvm/switch.S.
+> I'm not sure, but it seems both vpid and vmid have a sw version and a
+> hw version? The hw version will be written into register so its width
+> is limited, while the sw version is 64bit. If I'm right, I think the
+yes, it is.
 
-When a user closes a VFIO device file descriptor for an SR-IOV Physical
-Function, the device is reset. This reset disrupts the VFs without notifying
-the core PCI driver model. This commit disables SR-IOV prior to issuing the
-PF reset so VFs are torn down gracefully at the software level.
+> "& vpid_mask" is only used when writing registers, in other places
+> they are full 64bit (in other words, they need the same treatment).
+If vmid includes version, it requires one extra shift operation when 
+writing to real HW in file arch/loongarch/kvm/switch.S.
+-       /* Mix GID and RID */
+-       csrrd           t1, LOONGARCH_CSR_GSTAT
+-       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, CSR_GSTAT_GID_SHIFT
++       /* Set VMID for gpa --> hpa mapping */
++       ld.d            t1, a2, KVM_ARCH_VMID
+          csrrd           t0, LOONGARCH_CSR_GTLBC
+          bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END,
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index a113c55845e10..b36c77eb3c407 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device *=
-core_vdev)
->  #if IS_ENABLED(CONFIG_EEH)
->  	eeh_dev_release(vdev->pdev);
->  #endif
-> +
-> +	if (pci_num_vf(vdev->pdev)) {
+vpid is per-vcpu and it is represented with *vcpu->arch.vpid*, vmid is 
+per-vm,it is shared by vCPUs and represented with 
+*vcpu->kvm->arch.vmid[cpu]*. Instead arch.vmid is special for HW 
+register writing with LOONGARCH_CSR_GTLBC, if there is misleading, how 
+about renaming it with hw_vmid?
 
-[Severity: Medium]
-Is it possible for VFs to be enabled concurrently right after this check?
+Regards
+Bibo Mao
 
-Since pci_num_vf() is evaluated locklessly before acquiring the device lock=
-, a
-concurrent sysfs write to sriov_numvfs could enable VFs immediately after t=
-his
-returns 0, causing the teardown to be skipped.
+> 
+> Huacai
+> 
+>>
+>> Regards
+>> Bibo Mao
+>>>
+>>>
+>>> Huacai
+>>>
+>>>>    }
+>>>>
+>>>>    void kvm_check_vpid(struct kvm_vcpu *vcpu)
+>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
+>>>> index 936e4ae3e408..af972394fd55 100644
+>>>> --- a/arch/loongarch/kvm/switch.S
+>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>> @@ -66,9 +66,8 @@
+>>>>           ld.d    t0, a2, KVM_ARCH_KVMPGD
+>>>>           csrwr   t0, LOONGARCH_CSR_PGDL
+>>>>
+>>>> -       /* Mix GID and RID */
+>>>> -       csrrd           t1, LOONGARCH_CSR_GSTAT
+>>>> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, CSR_GSTAT_GID_SHIFT
+>>>> +       /* Set VMID for gpa --> hpa mapping */
+>>>> +       ld.d            t1, a2, KVM_ARCH_VMID
+>>>>           csrrd           t0, LOONGARCH_CSR_GTLBC
+>>>>           bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END, CSR_GTLBC_TGID_SHIFT
+>>>>           csrwr           t0, LOONGARCH_CSR_GTLBC
+>>>> diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
+>>>> index ebdbe9264e9c..38daf936021d 100644
+>>>> --- a/arch/loongarch/kvm/tlb.c
+>>>> +++ b/arch/loongarch/kvm/tlb.c
+>>>> @@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
+>>>>
+>>>>    void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
+>>>>    {
+>>>> +       unsigned int vmid;
+>>>> +
+>>>>           lockdep_assert_irqs_disabled();
+>>>>           gpa &= (PAGE_MASK << 1);
+>>>> -       invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, gpa);
+>>>> +       vmid = (vcpu->arch.vmid << CSR_GSTAT_GID_SHIFT) & CSR_GSTAT_GID;
+>>>> +       invtlb(INVTLB_GID_ADDR, vmid, gpa);
+>>>>    }
+>>>> --
+>>>> 2.39.3
+>>>>
+>>
 
-Additionally, because the device lock is dropped before the hardware reset =
-in
-vfio_pci_core_disable(), a concurrent sysfs write can acquire the lock,
-successfully enable SR-IOV, and release the lock before the reset occurs.
-
-Could this recreate the exact hardware state mismatch the patch attempts to=
- fix?
-
-> +		device_lock(&vdev->pdev->dev);
-
-[Severity: High]
-Does acquiring the device lock here introduce an AB-BA deadlock during devi=
-ce
-unbind?
-
-When a device is unbound, the PCI core acquires the device lock in
-device_release_driver() and invokes the driver's remove callback. For
-vfio-pci, this calls vfio_unregister_group_dev(), which blocks indefinitely
-waiting for userspace to close all active file descriptors.
-
-When userspace closes the device fd, vfio_pci_core_close_device() is invoke=
-d.
-Because this patch tries to acquire the device lock, the fd release thread
-will block forever waiting for the unbind thread, and the unbind thread will
-wait forever for the fd release thread to finish.
-
-> +		vfio_pci_core_sriov_configure(vdev, 0);
-
-[Severity: High]
-Can tearing down VFs from the PF's close path deadlock if a VF is actively =
-in
-use by VFIO?
-
-When vfio_pci_core_close_device() calls pci_disable_sriov(), the PCI core
-synchronously removes all VF devices from the bus. If a VF is also bound to
-vfio-pci and currently opened by userspace, removing the VF triggers
-vfio_pci_remove(), which blocks indefinitely until the VF file descriptor is
-closed.
-
-If a single process holds both the PF and VF open and exits, exit_files()
-schedules the fput() for both file descriptors sequentially. If the PF is
-closed first, the thread hangs here waiting for the VF to close, preventing
-the VF's fput() from ever running.
-
-[Severity: High]
-Does this code trigger a lockdep warning by manipulating the PCI bus topolo=
-gy
-without the required lock?
-
-Calling vfio_pci_core_sriov_configure() here ultimately calls
-pci_stop_and_remove_bus_device() to remove VFs from the PCI bus. That funct=
-ion
-enforces a strict locking requirement via
-lockdep_assert_held(&pci_rescan_remove_lock).
-
-Because this global mutex is omitted, closing a PF with active VFs could ra=
-ce
-against concurrent PCI hotplug or sysfs rescan operations.
-
-> +		device_unlock(&vdev->pdev->dev);
-> +	}
-> +
->  	vfio_pci_dma_buf_cleanup(vdev);
-> =20
->  	vfio_pci_core_disable(vdev);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805003355.7282=
-99-2-skhawaja@google.com?part=3D1
