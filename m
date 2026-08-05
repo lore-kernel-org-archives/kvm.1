@@ -1,118 +1,165 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8ED3E00B4
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 15:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16C13B6356;
+	Wed,  5 Aug 2026 15:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942148; cv=none; b=uigJJLgMDa0OZWXF0iaL4V1k+0rMgIYkjGvBOLu7dJe3HNzJU75KGFKl6N5ShJkR9azPG62H2ZCdoNsRtxolk50c3TMcNzew/EZ5K8WkVAdJD18KUKjWIJW6zkkkvjnSzsKMdyjvb79usXBiopJjWiREnmY0ECmnvwLYsHp/sl0=
+	t=1785942213; cv=none; b=BmUX6jIaWdeEVJACVrSHa4lDrqLOLLDEZCG7/dTjMqnEv832F4BNmJeknFdM3skWaUyMRKHgHfq6As0M9VOmLiTW25UjGEwQZIkoMWOPrrO8TojhvoHAvQdImB7sDJe7xlJjLx87ikhYq1tXzxl3wWYOy0x5AUrJHnbFM7s793A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942148; c=relaxed/simple;
-	bh=8LMT5bU0zQEOYfpuxQllNsPHFyfqkRQIq/eWwPqpts0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aT/RcxMzqfsvgMcwsQHaq7eWpWRQtnJIxSsZ99BQ7iR8YDR9dJqw3zhguScgA14iCP50txpaZJnwexyxF/U6pQ/YvavWiWUTiptssQq8Fp38oSk4ztCo7+m+lKpeUbNaE/0NaKd4n8LZf2xQXTDb1+r0YnbEob29nn1wYWyb6PM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AhCrC0bl; arc=none smtp.client-ip=209.85.216.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785942213; c=relaxed/simple;
+	bh=I7aePYUIG4BFdgEDFWj6xIpf4oc+PMrZ6XtBS6g8VPQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=loR7zaBajy/NNjpuShgXORmp9ClY7b72bDoJn4A3HyIqvDXKHl1PIAZpFA9rKqkbVVBQd6xnc9sGzE8SWni5LHfb0hPmE2/tLlf9K7aWagnkdlVUB4n7FuJWKpytBXvMbvUUodVLBiyS/4kWtnZcoL37tWsVx+SBOoxpSSh1QSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=gGm7/nu8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mpKGu/u/; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AhCrC0bl"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so1241620a91.1
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 08:02:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785942146; x=1786546946; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=VjfqoR3w5axB8x7Z39XZV2zZhI8umK3vx0Q0ZTY5HpI=;
-        b=AhCrC0blkBQV530YNcOWubte1v2wYV4LdgnYjyqf/EHQK8UTkD/KHwGMbfXxYk/2g+
-         8aipBFirIRk2/d1lrgkfEcwAiKDCNuS5EDNlNeaDlxSJe1Sly+86CHdM+uYtV0lnMKPx
-         /VJhh4L/wTGJYXmyLG01+fETu5wC5EFAwrvlqdMcsKWFc3600jdXgEb7RFcVDcvq64/j
-         6d17iEaDwnltelT5GqBZmO0DM2CXjRr4XfM4ppBl/VTi8rhsjT/BdkQ5jphAe7mgV+pO
-         p8heMZJ54lstta3gzHM61YPdvPfU/UiGpWy7KsrIT0ooLM37VZ6ZUiW2U55WOwcpJatr
-         Q6gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785942146; x=1786546946;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VjfqoR3w5axB8x7Z39XZV2zZhI8umK3vx0Q0ZTY5HpI=;
-        b=KO+UEn9nReZWVAUqq4GMJXCqiEmAPxdXCzahflTwUflsdEfDfo/fcEOL84Djgq3m7m
-         6c6w7yQysQlIhfWO5rA4eK1YF72kR++uXTwYcey7e4LZCvGgdV9oNwRNI26vEJr8V0ts
-         BkD3EFyt+2HKWqgAfwh9X97DST1H/8EndLnp4cfoHsvVA1PiSkmgdH3m9TinoHfBVGl0
-         FOKxw7qvWCw8XCx70mDrspRc8OKCZ+VN/IOz/9ynXI3sXy+Y5VOgqW8TCZfGhAJCFJDe
-         7mtUClBDy9m2uqgR6kgvqSIPGqbg7jeJ1bC/e1xHytNO6QJoXEU2HS0fNCd6+TNbwznK
-         2egQ==
-X-Gm-Message-State: AOJu0YwD8HfoUt9x+0BDZ5qDKA5jIC9R5LnOIwY0V8a6RMoW9uFboh4Z
-	WwF7/+VB/o1Wh3Tu6AACyPENcKo0FZ79/yNszKJHFEwAYDHHS5OKj2zKqfGhNI4CLXhC2v0ATFK
-	i9tlBCQ==
-X-Received: from pjboo14.prod.google.com ([2002:a17:90b:1c8e:b0:38f:a3cc:f600])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:17c6:b0:38f:1a2e:6e56
- with SMTP id 98e67ed59e1d1-3903c59330amr7021405a91.9.1785942145048; Wed, 05
- Aug 2026 08:02:25 -0700 (PDT)
-Date: Wed, 5 Aug 2026 08:02:24 -0700
-In-Reply-To: <88a9c8a0ccd2268216b9ac7af708cd2d7ad1a986.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="gGm7/nu8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mpKGu/u/"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B52F47A015C;
+	Wed,  5 Aug 2026 11:03:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 05 Aug 2026 11:03:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785942206;
+	 x=1786028606; bh=TUsrbgP/JWNiomNHn14rg5Mzaihuw2O7tBE8a4VSyxM=; b=
+	gGm7/nu8haPxZ0Nwvz2scE6aXlEVI+U7ZAhYOaCDNW+mgBncjnxh3egjNdgojmbp
+	79tnsG9IE0qc9OVcFTNfOiOtc12SYgC5XoLJnXhUPck/K0OEEDPZM9vm8MdCKizl
+	l0uZx1BdXczlZ+L7Pxl05RveoaOkD9YHIU8U0N/JfxjBiORx16KwBzpA68KHGgNZ
+	vuHifwA410kry6otbTtb7d1KiQ3rmGgsPE6SWu0SFgO3tZJuwgDR7D0GFrcQh70L
+	tW+9QITVtjI2IuHejVsQpB+efE7ptxf1D6Lwpam3AyvXc7NTWBRRbf7GvDDNNlM6
+	9FiDgE9F3nTkU58erN9RgQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785942206; x=
+	1786028606; bh=TUsrbgP/JWNiomNHn14rg5Mzaihuw2O7tBE8a4VSyxM=; b=m
+	pKGu/u/g2jxza9KM/bnPYZPRz/m1+IuGVLxn/brTQgApq01a0o8QuFwEQqijbroM
+	YodifxUS8ZPOa/ty47IAbkLmpcajvgTM1ptrwBqREwhWahkCQIsCSPrPMHR1/FUP
+	YcOLUqWXuzXVSKtkKmnCPg+jLT+rx7oyPIsi1gxGI9ZUdYgz4VSx2HqMdmzTdFsR
+	3ti8d+23A1wE0KnGilRo0ANT4AsQfNGHjkhCf3JpJEv0/IPvvSR6VGfWD9ABNeSA
+	DbvixaQgIgtvSG99e8ygD0zqZZeg3dDcj1seQ5wJ13TT/haiXdgbtFVrom5jhwJA
+	Q379XqT2zYPbDajcMPF5A==
+X-ME-Sender: <xms:vVBzatQCGyT3xf5t42Joaz-ZiDNPAEukrFq36mB4OEzBDOvON-Tzig>
+    <xme:vVBzarthByV5oxBgFeOLphhRMOQWxpbJb7Itpbt3BDrrYqOFUDipy_TiE8xf459Xy
+    t3mwzDocA6SosIr04RyQ3asye3KgkjThjLaFoP2fzPDmmgQdK-ayA>
+X-ME-Received: <xmr:vVBzanHO1inIK4RLHyCh-KXMnsuNzAw3Py-eTSrbcY4vRK491SsIqgrmygdV6A>
+X-ME-Proxy-Cause: dmFkZTF+4Ov8C+HdZnyTfQD7gDHz1fWNgkQPOeCD+wkXV3Cl6xh49Lme4GZAwDjXinHsKZ
+    3gFTABlBGESg8bq2oIpwdYJK/+QpbV0vUn0O02VKW4FFBcrct2tlQA9LSodmzb5CEWMbiF
+    W0UxkP6pofbBb0DjBMafDprtW/oGXIKbFs4JJGYsBPodQnT91Ics7Qor66MKBXVMcGoA08
+    KTvPJbdNbqKJup44U8/mjHa1L2tDtjs1EB71VchEhbET4aV1hcJPgS12YvdubcwF/V4rSg
+    5kE2Cs71swI9IksWdFLwvSkP6HijQag4sXIwYaxfu86hEKCXPJv4KAHQ1rVWfoHRgtZOag
+    JBGlcbOHwSsgmxrSElAHQSL9BsdG3kL5ZB4XNEMsXPducpOlEAxM8KpRGoo/afh+Wz1T4S
+    78ay0TCJDEn8XV3QIGt/3g1RkZoSnIiNdc7JUfCktpXoQ20aEaUwhfFpbiPvAZaH5TzroE
+    SU9erfxGXRMRAhsLxwji6a6ThJ+c3Jn4yD8KnejM3vhxTDaS/+RLxNRQG78kQqwuhw0e8h
+    RtHWx52ZVaiX72o22nc7lmaKbo0CSBea2uKeKqjOp7G5O1oMeLFU/vCUvhEPMWa/PgQQcL
+    VmWLG0AucgXE3yBzsYD84fz1L09YWBicbq/IO4dsSsty7rJTc9DVmyNMxUsw
+X-ME-Proxy: <xmx:vVBzakwivS2ahbosZtvHlxojXSNAYliCmqBIf5dLs6krCz50PIENSA>
+    <xmx:vVBzap3ebrUcOZ0VnPOZm_PWqlNz1XheXj73tHEjghrH8Hz7MsXv3Q>
+    <xmx:vVBzasq9vbJlFovzakpm1mjtAMHu7KeI_BxFWqB3eUyl-TvpW8WyIw>
+    <xmx:vVBzauWDKympasIXcXM9N2_ev7t_2y18XjoATvvPW9Shj0pH5xBoMQ>
+    <xmx:vlBzahwRb2_CvCdJ7F2iNvKvVMrRvQO5v3rE_eaD4Ls3hVxp6dwI2Ygd>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Aug 2026 11:03:24 -0400 (EDT)
+Date: Wed, 5 Aug 2026 09:03:23 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, bhelgaas@google.com, Kevin Tian
+ <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ dmatlack@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
+Message-ID: <20260805090323.01b1a36f@shazbot.org>
+In-Reply-To: <20260805003355.728299-2-skhawaja@google.com>
+References: <20260805003355.728299-1-skhawaja@google.com>
+	<20260805003355.728299-2-skhawaja@google.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260805000640.827BF1F00A3A@smtp.kernel.org> <88a9c8a0ccd2268216b9ac7af708cd2d7ad1a986.camel@infradead.org>
-Message-ID: <anNQgDSbZmgOuPRD@google.com>
-Subject: Re: [PATCH v8 04/17] KVM: x86: Activate master clock immediately on
- vCPU creation
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev, pbonzini@redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 05, 2026, David Woodhouse wrote:
-> On Wed, 2026-08-05 at 00:06 +0000, sashiko-bot@kernel.org wrote:
-> > [Severity: High]
-> > Instead of checking the boolean use_master_clock, should this check and
-> > consume the pending KVM_REQ_MASTERCLOCK_UPDATE request via kvm_check_re=
-quest?
->=20
-> Oh, all right then :)
+On Wed,  5 Aug 2026 00:33:55 +0000
+Samiullah Khawaja <skhawaja@google.com> wrote:
 
-LOL.
+> When userspace closes a VFIO device file descriptor, the vfio driver
+> performs a hardware reset on the PCIe device to ensure it is returned to
+> a clean state. However, if the closed device is an SR-IOV Physical
+> Function (PF), it may have instantiated Virtual Functions (VFs) that are
+> actively bound to host kernel drivers (or other vfio instances).
 
-> Sean suggested exactly that in a previous round=C2=B9 and I said I though=
-t
-> I'd tried it and the request wasn't set. Having paged back in some of
-> that context... the thing which didn't work was a different variant =E2=
-=80=94
-> deferring with a bare kvm_make_request()=C2=B2, which fails because
-> KVM_GET_CLOCK doesn't process vCPU requests, so calling it before the
-> first KVM_RUN still didn't work. That isn't what's being suggested
-> here.
->=20
-> With the code as it stands in this series, the first vCPU's
-> kvm_synchronize_tsc() reliably queues KVM_REQ_MASTERCLOCK_UPDATE via
-> the use_master_clock toggle in kvm_track_tsc_matching(). So
->=20
-> 	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
-> 		kvm_update_masterclock(vcpu->kvm);
->=20
-> should work, and is better than checking the boolean: it avoids the
-> repeated masterclock update that Sashiko is whining about, while still
-> honouring the case where a mismatched new vCPU should *disable* the
-> master clock.
+Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
+from being bound to host drivers other than vfio-pci.  You need to
+overwrite the imposed driver_override to make this happen and you're in
+a very precarious security model to have the VF owned by a trusted
+in-kernel driver while the PF is owned by userspace.
+ 
+> When the PF is hardware-reset via VFIO, it implicitly disrupts SR-IOV
+> operations at the device level. Because this reset happens without notifying
+> the core PCI driver model, the kernel drivers bound to the VFs remain loaded
+> and operate under the assumption that the VF hardware is still functional.
 
-Roger that, I'll update for v9.
+And this is a) why we actively try to prevent VFs from being bound to
+native host kernel drivers and b) part of the vf_token negotiation of
+trust opt-in that must be performed by userspace drivers of the VFs.
+ 
+> This creates a state mismatch between the kernel's view of the hardware
+> and the actual device state. Subsequent attempts by the host OS or bound
+> drivers to interact with the VFs will fail, leading to unexpected
+> errors.
 
-> By the end of my full series, this call gets removed entirely in favour
-> of setting up the whole clock epoch from kvm_arch_init_vm()=C2=B3, which =
-is
-> why I didn't care much before. But that's now on the far side of the
-> part 1 / part 2 split, so it's worth fixing here.
->=20
-> =C2=B9 https://lore.kernel.org/all/amPW1eAPpUuxLoj_@google.com/
-> =C2=B2 https://lore.kernel.org/all/58c5a521b94e8d90e101602cfe160d1fb128a5=
-dd.camel@infradead.org/
-> =C2=B3 https://lore.kernel.org/all/20260728144954.355376-29-dwmw2@infrade=
-ad.org/
+The described model is not a supported use case, there are fundamental
+security issues with a userspace vfio-pci driver owning the PF with VFs
+bound to in-kernel drivers.
 
+> Disable SR-IOV on the device prior to issuing the PF reset so that the
+> VFs can teardown and remove at the software level also.
+
+The below only accounts for the close reset path, not reset in general.
+Also note that the SR-IOV model in vfio-pci does have a path by which a
+PF can be re-opened with existing VFs.  Whether that's actually used is
+a separate question, but this fundamentally disallows that design.
+
+It's possible there are gaps that closing the PF can interrupt the VFs
+and we need to defer a reset until the VFs are closed, but the behavior
+here seems counter to the original design, and the use case of
+in-kernel VF drivers is certainly counter to that design and guardrails
+installed to prevent it.  Thanks,
+
+Alex
+
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index a113c55845e1..b36c77eb3c40 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
+>  #if IS_ENABLED(CONFIG_EEH)
+>  	eeh_dev_release(vdev->pdev);
+>  #endif
+> +
+> +	if (pci_num_vf(vdev->pdev)) {
+> +		device_lock(&vdev->pdev->dev);
+> +		vfio_pci_core_sriov_configure(vdev, 0);
+> +		device_unlock(&vdev->pdev->dev);
+> +	}
+> +
+>  	vfio_pci_dma_buf_cleanup(vdev);
+>  
+>  	vfio_pci_core_disable(vdev);
 
