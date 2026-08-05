@@ -1,165 +1,155 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16C13B6356;
-	Wed,  5 Aug 2026 15:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693363BCD38;
+	Wed,  5 Aug 2026 15:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942213; cv=none; b=BmUX6jIaWdeEVJACVrSHa4lDrqLOLLDEZCG7/dTjMqnEv832F4BNmJeknFdM3skWaUyMRKHgHfq6As0M9VOmLiTW25UjGEwQZIkoMWOPrrO8TojhvoHAvQdImB7sDJe7xlJjLx87ikhYq1tXzxl3wWYOy0x5AUrJHnbFM7s793A=
+	t=1785942771; cv=none; b=DCdKaZpLMfq72EPnpjxJJfz/V2PZa7rkz480Fla5LaTfHJ/TX/QtkFnaEzEkIjEOOS+ZTTCiSpHIAK9EbeWALefyLnrV5Lbx4ZpUNSUNXMwwhlyO7boJjpTPeghHhwWGBb+JM6MlmDYUljHNc4+NCHD1EE0FWh+vTCySqE+YqQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942213; c=relaxed/simple;
-	bh=I7aePYUIG4BFdgEDFWj6xIpf4oc+PMrZ6XtBS6g8VPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=loR7zaBajy/NNjpuShgXORmp9ClY7b72bDoJn4A3HyIqvDXKHl1PIAZpFA9rKqkbVVBQd6xnc9sGzE8SWni5LHfb0hPmE2/tLlf9K7aWagnkdlVUB4n7FuJWKpytBXvMbvUUodVLBiyS/4kWtnZcoL37tWsVx+SBOoxpSSh1QSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=gGm7/nu8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mpKGu/u/; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1785942771; c=relaxed/simple;
+	bh=czbRC9+rWbtMkQ5CBYD+iKfFFQP+ieRrIj1vbzFo0xU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s44I99Nmp1S3nGMN+Qu/CAriIAm6WwyagPDTvFPd28ct90MuaH0QNK6SIePTiu4fNwKM95LokQa+Z6md3fs+A8RDx+AG21CR29dB8lwwgI+24Rt1QsK7oE3a/H9giBXMl/Ra9fsGCXkPfFbEwUuTlTZ69l0yMo4CStwj/ZDp0No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a1PuzCNg; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="gGm7/nu8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mpKGu/u/"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B52F47A015C;
-	Wed,  5 Aug 2026 11:03:26 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 05 Aug 2026 11:03:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785942206;
-	 x=1786028606; bh=TUsrbgP/JWNiomNHn14rg5Mzaihuw2O7tBE8a4VSyxM=; b=
-	gGm7/nu8haPxZ0Nwvz2scE6aXlEVI+U7ZAhYOaCDNW+mgBncjnxh3egjNdgojmbp
-	79tnsG9IE0qc9OVcFTNfOiOtc12SYgC5XoLJnXhUPck/K0OEEDPZM9vm8MdCKizl
-	l0uZx1BdXczlZ+L7Pxl05RveoaOkD9YHIU8U0N/JfxjBiORx16KwBzpA68KHGgNZ
-	vuHifwA410kry6otbTtb7d1KiQ3rmGgsPE6SWu0SFgO3tZJuwgDR7D0GFrcQh70L
-	tW+9QITVtjI2IuHejVsQpB+efE7ptxf1D6Lwpam3AyvXc7NTWBRRbf7GvDDNNlM6
-	9FiDgE9F3nTkU58erN9RgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785942206; x=
-	1786028606; bh=TUsrbgP/JWNiomNHn14rg5Mzaihuw2O7tBE8a4VSyxM=; b=m
-	pKGu/u/g2jxza9KM/bnPYZPRz/m1+IuGVLxn/brTQgApq01a0o8QuFwEQqijbroM
-	YodifxUS8ZPOa/ty47IAbkLmpcajvgTM1ptrwBqREwhWahkCQIsCSPrPMHR1/FUP
-	YcOLUqWXuzXVSKtkKmnCPg+jLT+rx7oyPIsi1gxGI9ZUdYgz4VSx2HqMdmzTdFsR
-	3ti8d+23A1wE0KnGilRo0ANT4AsQfNGHjkhCf3JpJEv0/IPvvSR6VGfWD9ABNeSA
-	DbvixaQgIgtvSG99e8ygD0zqZZeg3dDcj1seQ5wJ13TT/haiXdgbtFVrom5jhwJA
-	Q379XqT2zYPbDajcMPF5A==
-X-ME-Sender: <xms:vVBzatQCGyT3xf5t42Joaz-ZiDNPAEukrFq36mB4OEzBDOvON-Tzig>
-    <xme:vVBzarthByV5oxBgFeOLphhRMOQWxpbJb7Itpbt3BDrrYqOFUDipy_TiE8xf459Xy
-    t3mwzDocA6SosIr04RyQ3asye3KgkjThjLaFoP2fzPDmmgQdK-ayA>
-X-ME-Received: <xmr:vVBzanHO1inIK4RLHyCh-KXMnsuNzAw3Py-eTSrbcY4vRK491SsIqgrmygdV6A>
-X-ME-Proxy-Cause: dmFkZTF+4Ov8C+HdZnyTfQD7gDHz1fWNgkQPOeCD+wkXV3Cl6xh49Lme4GZAwDjXinHsKZ
-    3gFTABlBGESg8bq2oIpwdYJK/+QpbV0vUn0O02VKW4FFBcrct2tlQA9LSodmzb5CEWMbiF
-    W0UxkP6pofbBb0DjBMafDprtW/oGXIKbFs4JJGYsBPodQnT91Ics7Qor66MKBXVMcGoA08
-    KTvPJbdNbqKJup44U8/mjHa1L2tDtjs1EB71VchEhbET4aV1hcJPgS12YvdubcwF/V4rSg
-    5kE2Cs71swI9IksWdFLwvSkP6HijQag4sXIwYaxfu86hEKCXPJv4KAHQ1rVWfoHRgtZOag
-    JBGlcbOHwSsgmxrSElAHQSL9BsdG3kL5ZB4XNEMsXPducpOlEAxM8KpRGoo/afh+Wz1T4S
-    78ay0TCJDEn8XV3QIGt/3g1RkZoSnIiNdc7JUfCktpXoQ20aEaUwhfFpbiPvAZaH5TzroE
-    SU9erfxGXRMRAhsLxwji6a6ThJ+c3Jn4yD8KnejM3vhxTDaS/+RLxNRQG78kQqwuhw0e8h
-    RtHWx52ZVaiX72o22nc7lmaKbo0CSBea2uKeKqjOp7G5O1oMeLFU/vCUvhEPMWa/PgQQcL
-    VmWLG0AucgXE3yBzsYD84fz1L09YWBicbq/IO4dsSsty7rJTc9DVmyNMxUsw
-X-ME-Proxy: <xmx:vVBzakwivS2ahbosZtvHlxojXSNAYliCmqBIf5dLs6krCz50PIENSA>
-    <xmx:vVBzap3ebrUcOZ0VnPOZm_PWqlNz1XheXj73tHEjghrH8Hz7MsXv3Q>
-    <xmx:vVBzasq9vbJlFovzakpm1mjtAMHu7KeI_BxFWqB3eUyl-TvpW8WyIw>
-    <xmx:vVBzauWDKympasIXcXM9N2_ev7t_2y18XjoATvvPW9Shj0pH5xBoMQ>
-    <xmx:vlBzahwRb2_CvCdJ7F2iNvKvVMrRvQO5v3rE_eaD4Ls3hVxp6dwI2Ygd>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Aug 2026 11:03:24 -0400 (EDT)
-Date: Wed, 5 Aug 2026 09:03:23 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, bhelgaas@google.com, Kevin Tian
- <kevin.tian@intel.com>, Leon Romanovsky <leon@kernel.org>,
- dmatlack@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- alex@shazbot.org
-Subject: Re: [RFC PATCH 1/1] vfio/pci: Disable sriov on PF device close
-Message-ID: <20260805090323.01b1a36f@shazbot.org>
-In-Reply-To: <20260805003355.728299-2-skhawaja@google.com>
-References: <20260805003355.728299-1-skhawaja@google.com>
-	<20260805003355.728299-2-skhawaja@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a1PuzCNg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785942768; x=1817478768;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=czbRC9+rWbtMkQ5CBYD+iKfFFQP+ieRrIj1vbzFo0xU=;
+  b=a1PuzCNg9mY5tNchVCyPVN96oicUGXOAtmsUBeuVkYwuSUAZYaIJUs0I
+   0qyZ5kzL6YzksYEQ5aDtHyjakontBOQv+ode7q+4SE27fJweHLpSlvDfW
+   yyalAFdsuXoH2MR/POaEKjpQRl8KOr0OAfgrO1rNEFz7hq83hAUidFqe2
+   6zBMVIOe9qttWtl+LIBZR2vJQkUMJkDn29ZjJPuJOUkrn5XMIfymE6b/W
+   DpQgp4k2YDz0qJpkACXsdtzsCr/dqbaZBSy3x0MDHSuQcaWPGxLHkEYrS
+   6UkJajOHagKvMllG2SCnYhLXdA1amIkUHN/+hto4q/LulfBnV1u1NeP/P
+   w==;
+X-CSE-ConnectionGUID: UsrFqbzJSGKOL4pLpThwXQ==
+X-CSE-MsgGUID: K+14mbqSQ3mUyz7Jx+5bqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="103923902"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="103923902"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 08:12:47 -0700
+X-CSE-ConnectionGUID: OZLA0WuaSMqib/L7YEofOQ==
+X-CSE-MsgGUID: unTyXRFcQ4WM5GtwORuVrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
+   d="scan'208";a="265323834"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.109.35]) ([10.125.109.35])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 08:12:47 -0700
+Message-ID: <ea4c1117-197b-4267-87ff-7ec48c2b7e2c@intel.com>
+Date: Wed, 5 Aug 2026 08:12:45 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP optimizations
+ asynchronously
+To: Borislav Petkov <bp@alien8.de>, "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com, seanjc@google.com, peterz@infradead.org,
+ thomas.lendacky@amd.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+ ardb@kernel.org, pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ ackerleytng@google.com, jackyli@google.com, pgonda@google.com,
+ rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
+ pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com, dyoung@redhat.com,
+ nikunj@amd.com, john.allen@amd.com, darwi@linutronix.de,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
+ <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
+ <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
+ <8DAAEA48-F2FA-4D52-8E56-4B7213155F12@alien8.de>
+ <d7a17bde-4af0-45ad-96bc-4717a1fa1545@amd.com>
+ <60B4B369-19E7-44DF-BCCF-FC8DD851B2E7@alien8.de>
+ <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
+ <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed,  5 Aug 2026 00:33:55 +0000
-Samiullah Khawaja <skhawaja@google.com> wrote:
+On 8/4/26 17:49, Borislav Petkov wrote:
+>> and dropped because of being too disruptive — a timer-based scan would run
+>> on all cores every time it fires, even when no memory has been freed.
+> What if it ran very seldomly, say once an hour?
 
-> When userspace closes a VFIO device file descriptor, the vfio driver
-> performs a hardware reset on the PCIe device to ensure it is returned to
-> a clean state. However, if the closed device is an SR-IOV Physical
-> Function (PF), it may have instantiated Virtual Functions (VFs) that are
-> actively bound to host kernel drivers (or other vfio instances).
+The kernel knows what events open up the system to new RMP
+optimizations. They don't happen randomly or without the kernel knowing.
 
-Wait, what?  We actively try to prevent VFs from a vfio-pci owned PF
-from being bound to host drivers other than vfio-pci.  You need to
-overwrite the imposed driver_override to make this happen and you're in
-a very precarious security model to have the VF owned by a trusted
-in-kernel driver while the PF is owned by userspace.
- 
-> When the PF is hardware-reset via VFIO, it implicitly disrupts SR-IOV
-> operations at the device level. Because this reset happens without notifying
-> the core PCI driver model, the kernel drivers bound to the VFs remain loaded
-> and operate under the assumption that the VF hardware is still functional.
+A scan once an hour for very long-lived guests will waste resources once
+an hour.
 
-And this is a) why we actively try to prevent VFs from being bound to
-native host kernel drivers and b) part of the vf_token negotiation of
-trust opt-in that must be performed by userspace drivers of the VFs.
- 
-> This creates a state mismatch between the kernel's view of the hardware
-> and the actual device state. Subsequent attempts by the host OS or bound
-> drivers to interact with the VFs will fail, leading to unexpected
-> errors.
+A scan once an hour when guests have shorter lifetimes means that there
+will be hour-long windows when the system could have been optimized but
+was not.
 
-The described model is not a supported use case, there are fundamental
-security issues with a userspace vfio-pci driver owning the PF with VFs
-bound to in-kernel drivers.
+>> Running it at guest teardown (batched by the timeout) is a better fit:
+>> teardown is when large contiguous regions actually go back to the
+>> hypervisor, so the scan only runs when there's real work to do instead of on
+>> a fixed timer. The case of a guest freeing a 1 GB region mid-life is then
+>> handled by the 1 GB-hugetlb page-cleanup follow-on, not by a periodic scan.
+> Are you saying a periodic scan won't handle anything?
 
-> Disable SR-IOV on the device prior to issuing the PF reset so that the
-> VFs can teardown and remove at the software level also.
+A periodic scan could be useful but only if it coincides with a VM
+teardown event, or other event that opens up new RMP optimizations. I
+_think_ we decided that with current upstream code, the only event that
+matters is VM teardown.
 
-The below only accounts for the close reset path, not reset in general.
-Also note that the SR-IOV model in vfio-pci does have a path by which a
-PF can be re-opened with existing VFs.  Whether that's actually used is
-a separate question, but this fundamentally disallows that design.
-
-It's possible there are gaps that closing the PF can interrupt the VFs
-and we need to defer a reset until the VFs are closed, but the behavior
-here seems counter to the original design, and the use case of
-in-kernel VF drivers is certainly counter to that design and guardrails
-installed to prevent it.  Thanks,
-
-Alex
-
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index a113c55845e1..b36c77eb3c40 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -826,6 +826,13 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
->  #if IS_ENABLED(CONFIG_EEH)
->  	eeh_dev_release(vdev->pdev);
->  #endif
-> +
-> +	if (pci_num_vf(vdev->pdev)) {
-> +		device_lock(&vdev->pdev->dev);
-> +		vfio_pci_core_sriov_configure(vdev, 0);
-> +		device_unlock(&vdev->pdev->dev);
-> +	}
-> +
->  	vfio_pci_dma_buf_cleanup(vdev);
->  
->  	vfio_pci_core_disable(vdev);
-
+The thing I really don't like about picking an arbitrary window is that
+there's no right or wrong time. Folks are then going to want to tune it.
+They're going to want knobs, and ABI and documentation.
