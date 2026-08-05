@@ -1,284 +1,252 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710001B3925;
-	Wed,  5 Aug 2026 02:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F024428314C;
+	Wed,  5 Aug 2026 02:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785896387; cv=none; b=TmX/tGFuU1TgVi4QJweZLL2IUBmPpCPwGiYCDrHE7cbm2jczvyFjfRwaKvQcv8tZGoxFChq2aQlW49l6VDgZwKMfMJFe3OP5MiFXAy0TfWKgB6uO5riqeOwp2HxTxR5cL5QB2hAEeCyRcSDKOOm2qJcYD9i9WDWKP/9m67obfnE=
+	t=1785896434; cv=none; b=iRNEJPFKC7v/JLHm9Av4WP7zVPmG1+/rvpfgasxi0OS5zcurgd1TSB7Hi2iQtLxTOSc7ryE5M2jfkNr+e2qi9jm7aFB4oTDd4ZWdw1eGeQiPH99nnzd8cqfLC5JA45ayBrJEJqZc4iQvM2OHv4l8ArKlZgFrlILIO8svToN8snQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785896387; c=relaxed/simple;
-	bh=4dXq908M3GQGImzf0rsQntjUjdm+blYz7prHaKkyC+4=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=UIChPIM6NCVLjjft+jRBPfWTshXX6W9NDeau7GHr/X+Tg71RBurhPkGsXGRa8blNxa+/Ys+aF4w9IofVuHd9qb7iWp1mgasNmXX8CbBZH9E9O7HuibEE07mmt4kN2buFEex/UQTqQsZ39uYMGV+qadaCDKE92F1Tza5wNCODVfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jaxmMh0s; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jaxmMh0s"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=OZ8QOqsCWTkfIgYT+Zson2kkujl0gOR9TX2BEPrSJTw=;
-	b=jaxmMh0sDmbqwFR7oor7uJErCATMnHEgzvdtaQOtjyPa1xzDHjbO8Pw52oPSkGkIqTmDqFsIg
-	2Ltuya3s8wuM1ZR7Bj4jmR9xaPXrtdNBma6peBNjoi4Gea6KGvTdSq2x4lkI2OMU1bIIXBSbPpu
-	EhFmJmwj4XaUlt4e8keaVlI=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hFDQ54HZGzmV7C;
-	Wed,  5 Aug 2026 10:10:05 +0800 (CST)
-Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
-	by mail.maildlp.com (Postfix) with ESMTPS id EFBCD4056C;
-	Wed,  5 Aug 2026 10:19:36 +0800 (CST)
-Received: from [10.67.121.110] (10.67.121.110) by
- dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 5 Aug 2026 10:19:36 +0800
-Subject: Re: [PATCH 1/2] hisi_acc_vfio_pci: fix live migration enable
- conditions for PF passthrough
-To: Alex Williamson <alex@shazbot.org>
-CC: <alex.williamson@redhat.com>, <jgg@nvidia.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260803021857.2370179-1-liulongfang@huawei.com>
- <20260803021857.2370179-2-liulongfang@huawei.com>
- <20260804132805.68023c24@shazbot.org>
-From: liulongfang <liulongfang@huawei.com>
-Message-ID: <07d8a508-980b-0974-c793-b355be0a624f@huawei.com>
-Date: Wed, 5 Aug 2026 10:19:35 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	s=arc-20240116; t=1785896434; c=relaxed/simple;
+	bh=/KhJUy5z63IL9mVD0kb1U6UNd4lVrK4bNzt+ERSwiMk=;
+	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=RoOrImIcDzn0Q7/x8DYZBKHMZ+iqqcmM9Cyljx/NYrqu8BR8sngSY7dZc5TSBPcOflDyRF2gz45Uuy8hXhz/G8KxESiRxNVsFIAto/arBTy+8pmKc2T1/J9Ae0FWJZEyXaaGML9TjwtXQ/ayDU/EIavD/C/c9jVw76ff8fAJcVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8AxuvDmnXJq8IAKAA--.34203S3;
+	Wed, 05 Aug 2026 10:20:22 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJCxPsfanXJq8SskAA--.3589S2;
+	Wed, 05 Aug 2026 10:20:13 +0800 (CST)
+Subject: Re: [PATCH 1/6] LoongArch: KVM: Add vmid support for stage2 MMU
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
+ Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20260727072109.2151675-1-maobibo@loongson.cn>
+ <20260727072109.2151675-2-maobibo@loongson.cn>
+ <CAAhV-H6sEXa6XM-4=OTuPw=gNKgVxC7ZwqO6T-F81pvt_gBN8Q@mail.gmail.com>
+ <dc67eb43-adb2-c26b-a54f-ccd52ce910eb@loongson.cn>
+ <CAAhV-H7C+NbBOWtypwaLrn5Ehc6kv=W2jABz=r4O941QjAWhvQ@mail.gmail.com>
+ <ba9ef849-65c7-b377-e5f5-9c6ca4a712c7@loongson.cn>
+ <6fe4816a-5b78-3d58-cb7b-3ac817791104@loongson.cn>
+Message-ID: <56a9a272-d8e5-75e8-0cca-b109a663a6c9@loongson.cn>
+Date: Wed, 5 Aug 2026 10:19:54 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260804132805.68023c24@shazbot.org>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500015.china.huawei.com (7.185.36.143)
+In-Reply-To: <6fe4816a-5b78-3d58-cb7b-3ac817791104@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxPsfanXJq8SskAA--.3589S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3Xr18CFy7Jw4xGFW7tryUtwc_yoW3Zr4kpr
+	ykAF1kJrWrGr1kJw1jqw18Xryjqr1UKw1UXr1UJFy8JrsFqF1jqr48Wr1q9F15Jw4rJF10
+	qr15Jr17ZF1UJwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_GFv_Wrylx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4SoGDUUUU
 
-On 2026/8/5 3:28, Alex Williamson wrote:
-> On Mon, 3 Aug 2026 10:18:56 +0800
-> Longfang Liu <liulongfang@huawei.com> wrote:
+
+
+On 2026/8/5 上午9:27, Bibo Mao wrote:
 > 
->>     In the previous implementation of live migration support for
->> Hisilicon accelerator devices, there was insufficient consideration
->> for the fact that PFs cannot support virtualization live migration.
->> If a user unbinds the PF device driver from the host and directly
->> passes it through to a VM, then attempts a live migration operation,
->> it will trigger a calltrace exception.
+> 
+> On 2026/8/5 上午9:21, Bibo Mao wrote:
 >>
->>     To address this, we conducted a detailed analysis of potential
->> failure points. We added checks for all operations that depend on
->> PF driver commands and incorporated relevant conditional judgments
->> to prevent system calltrace exceptions when users attempt live
->> migration after passing PFs through to VMs.
-> 
-> I don't understand your core premise here.  hisi_acc_vfio_pci_probe()
-> sets the default ops to hisi_acc_vfio_pci_ops.  This ops structure uses
-> vfio-pci-core callbacks for everything except .open_device, for which it
-> uses hisi_acc_vfio_pci_open_device().  This function has exactly one
-> migration related branch, which is entered only when core_vdev->mig_ops
-> is set, but mig_ops is only set in the .init callback of the ops
-> structure supporting migration.
-> 
-> In order to get the migration ops structure, hisi_acc_get_pf_qm() must
-> return a pf_qm, the version of that object must be at least QM_HW_V3,
-> and the vf_id must be valid.  hisi_acc_get_pf_qm()'s very first action
-> is:
-> 
->         if (!pdev->is_virtfn)
->                 return NULL;
-> 
-> Therefore, how is a PF ever getting associated to the migration ops
-> structure?
->
-
-This Hisilicon live migration driver actually utilizes two hardware-related
-configuration functions. The first is the PF control function, obtained directly
-through hisi_acc_get_pf_qm, which handles mailbox command operations, device health
-status checks, device reset verification, device stop commands, and other device
-control processes. The second is the VF configuration function, which is passed
-through via VFIO direct assignment and serves as the main entity for device live
-migration, responsible for current service device data migration and recovery operations.
-
-The aforementioned issue occurs when users incorrectly pass the PF directly to this
-driver through driver_override. In this scenario, the vf_dev in the driver structure
-erroneously points to this PF. When the PF attempts to migrate itself, it will directly
-cause exceptions. Therefore, it's necessary to add pdev checks here.
-
-Thanks.
-Longfang.
-
->> Fixes: b0eed085903e ("hisi_acc_vfio_pci: Add support for VFIO live migration")
->> Signed-off-by: Longfang Liu <liulongfang@huawei.com>
->> ---
->>  .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 48 +++++++++++++++----
->>  1 file changed, 40 insertions(+), 8 deletions(-)
 >>
->> diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> index 86362ec424a5..36490be7a61a 100644
->> --- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> +++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
->> @@ -378,6 +378,11 @@ static int vf_qm_check_match(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>  	if (migf->total_length < QM_MATCH_SIZE || hisi_acc_vdev->match_done)
->>  		return 0;
->>  
->> +	if (!pf_qm || !pf_qm->io_base) {
->> +		dev_err(dev, "failed to match check for PF QM migration\n");
->> +		return -ENODEV;
->> +	}
->> +
+>> On 2026/8/4 下午10:14, Huacai Chen wrote:
+>>> On Mon, Aug 3, 2026 at 9:21 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2026/8/2 下午10:11, Huacai Chen wrote:
+>>>>> Hi, Bibo,
+>>>>>
+>>>>> On Mon, Jul 27, 2026 at 3:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>>>
+>>>>>> LoongArch KVM hypervisor supports two-level MMU, vpid index is used
+>>>>>> for stage1 MMU and vmid index is used for stage2 MMU.
+>>>>>>
+>>>>>> On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
+>>>>>> may separate from vpid. If vcpu migrate to different physical CPUs,
+>>>>>> vpid need change however vmid can keep the same with old value. Also
+>>>>>> vmid index of the while VM machine on physical CPU the same, all 
+>>>>>> vCPUs
+>>>>>> on the VM can share the same vmid index on one physical CPU.
+>>>>>>
+>>>>>> Here vmid index is added and it keeps the same with vpid still.
+>>>>>>
+>>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>>>>>> ---
+>>>>>>    arch/loongarch/include/asm/kvm_host.h | 3 +++
+>>>>>>    arch/loongarch/kernel/asm-offsets.c   | 1 +
+>>>>>>    arch/loongarch/kvm/main.c             | 1 +
+>>>>>>    arch/loongarch/kvm/switch.S           | 5 ++---
+>>>>>>    arch/loongarch/kvm/tlb.c              | 5 ++++-
+>>>>>>    5 files changed, 11 insertions(+), 4 deletions(-)
+>>>>>>
+>>>>>> diff --git a/arch/loongarch/include/asm/kvm_host.h 
+>>>>>> b/arch/loongarch/include/asm/kvm_host.h
+>>>>>> index 23cfbecebbd7..ec7b0c402385 100644
+>>>>>> --- a/arch/loongarch/include/asm/kvm_host.h
+>>>>>> +++ b/arch/loongarch/include/asm/kvm_host.h
+>>>>>> @@ -189,6 +189,9 @@ struct kvm_vcpu_arch {
+>>>>>>           unsigned long host_tp;
+>>>>>>           unsigned long host_pgd;
+>>>>>>
+>>>>>> +       /* vmid info for guest VM */
+>>>>>> +       unsigned long vmid;
+>>>>> Put it near vpid?
+>>>> yes, it it better to near vpid. will do this.
+>>>>>
+>>>>>> +
+>>>>>>           /* Host CSRs are used when handling exits from guest */
+>>>>>>           unsigned long badi;
+>>>>>>           unsigned long badv;
+>>>>>> diff --git a/arch/loongarch/kernel/asm-offsets.c 
+>>>>>> b/arch/loongarch/kernel/asm-offsets.c
+>>>>>> index 1b861cbc5e10..32ef6adfc8dd 100644
+>>>>>> --- a/arch/loongarch/kernel/asm-offsets.c
+>>>>>> +++ b/arch/loongarch/kernel/asm-offsets.c
+>>>>>> @@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
+>>>>>>           OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
+>>>>>>           OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
+>>>>>>           OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
+>>>>>> +       OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, vmid);
+>>>>>>           OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
+>>>>>>           OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
+>>>>>>           OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
+>>>>>> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
+>>>>>> index 3e1005526f4b..6e3e8efa1dc2 100644
+>>>>>> --- a/arch/loongarch/kvm/main.c
+>>>>>> +++ b/arch/loongarch/kvm/main.c
+>>>>>> @@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu 
+>>>>>> *vcpu, int cpu)
+>>>>>>
+>>>>>>           context->vpid_cache = vpid;
+>>>>>>           vcpu->arch.vpid = vpid;
+>>>>>> +       vcpu->arch.vmid = vcpu->arch.vpid & vpid_mask;
+>>>>>
+>>>>> I think both vpid and vmid need "& vpid_mask".
+>>>> vpid used in function kvm_check_vcpuid() includes version information
+>>>> also. vmid here is hardware id directly used by LOONGARCH_CSR_GTLBC in
+>>>> arch/loongarch/kvm/switch.S.
+>>> I'm not sure, but it seems both vpid and vmid have a sw version and a
+>>> hw version? The hw version will be written into register so its width
+>>> is limited, while the sw version is 64bit. If I'm right, I think the
+>> yes, it is.
+>>
+>>> "& vpid_mask" is only used when writing registers, in other places
+>>> they are full 64bit (in other words, they need the same treatment).
+>> If vmid includes version, it requires one extra shift operation when 
+>> writing to real HW in file arch/loongarch/kvm/switch.S.
+>> -       /* Mix GID and RID */
+>> -       csrrd           t1, LOONGARCH_CSR_GSTAT
+>> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, 
+>> CSR_GSTAT_GID_SHIFT
+>> +       /* Set VMID for gpa --> hpa mapping */
+>> +       ld.d            t1, a2, KVM_ARCH_VMID
+>>           csrrd           t0, LOONGARCH_CSR_GTLBC
+>>           bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END,
+>>
+>> vpid is per-vcpu and it is represented with *vcpu->arch.vpid*, vmid is 
+>> per-vm,it is shared by vCPUs and represented with 
+>> *vcpu->kvm->arch.vmid[cpu]*. Instead arch.vmid is special for HW 
+>> register writing with LOONGARCH_CSR_GTLBC, if there is misleading, how 
+>> about renaming it with hw_vmid?
+> hw_vmid is strange, I am ok with vmid with version information, so that 
+> the name is clear, one shift assemble code is not too much. Will change 
+> in the next version.
+Sorry to response too hurry. If vmid represents software version, it is 
+hard to write with assemble language such as:
++  /* Set VMID for gpa --> hpa mapping */
++       ld.d            t1, a2, KVM_ARCH_VMID
++        ld.d            t0, vpid_mask
+module variable vpid_mask need export and put in structure kvm_vcpu_arch.
++        add             t1, t1, t0
+         csrrd           t0, LOONGARCH_CSR_GTLBC
+
+Regards
+Bibo Mao
 > 
-> This function is called by hisi_acc_vf_resume_write(), which is part of
-> hisi_acc_vf_resume_fops, which is set as the file ops for the migration file created in hisi_acc_vf_pci_resume().  The call path is:
-> 
-> hisi_acc_vfio_pci_migrn_state_ops.migration_set_state (hisi_acc_vfio_pci_set_device_state())
->   hisi_acc_vf_set_device_state()
->     hisi_acc_vf_pci_resume()
-> 
-> hisi_acc_vfio_pci_migrn_state_ops is mig_ops.  It's never set for a PF!
-> 
->>  	ret = vf_qm_version_check(vf_data, dev);
->>  	if (ret) {
->>  		dev_err(dev, "failed to match ACC_DEV_MAGIC\n");
->> @@ -423,10 +428,15 @@ static int vf_qm_get_match_data(struct hisi_acc_vf_core_device *hisi_acc_vdev,
->>  				struct acc_vf_data *vf_data)
->>  {
->>  	struct hisi_qm *pf_qm = hisi_acc_vdev->pf_qm;
->> -	struct device *dev = &pf_qm->pdev->dev;
->> +	struct device *dev = &hisi_acc_vdev->vf_dev->dev;
->>  	int vf_id = hisi_acc_vdev->vf_id;
->>  	int ret;
->>  
->> +	if (!pf_qm || !pf_qm->io_base) {
->> +		dev_err(dev, "failed to check PF QM available!\n");
->> +		return -ENODEV;
->> +	}
->> +
->>  	vf_data->acc_magic = ACC_DEV_MAGIC_V2;
->>  	vf_data->major_ver = ACC_DRV_MAJOR_VER;
->>  	vf_data->minor_ver = ACC_DRV_MINOR_VER;
-> 
-> This is called from opening the migration save file.  Prove how a PF
-> can get here.
-> 
-> 
->> @@ -601,9 +611,14 @@ hisi_acc_check_int_state(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->>  	struct hisi_qm *vfqm = &hisi_acc_vdev->vf_qm;
->>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>  	struct pci_dev *vf_pdev = hisi_acc_vdev->vf_dev;
->> -	struct device *dev = &qm->pdev->dev;
->> +	struct device *dev = &vf_pdev->dev;
->>  	u32 state;
->>  
->> +	if (!qm || !qm->io_base) {
->> +		dev_err(dev, "failed to interrupt state check for PF QM!\n");
->> +		return -ENODEV;
->> +	}
->> +
->>  	/* Check RAS state */
->>  	state = qm_check_reg_state(qm, QM_ABNORMAL_INT_STATUS);
->>  	if (state) {
-> 
-> This is called from hisi_acc_vf_stop_device(), the same set_device path
-> as above.  A PF cannot get here!
-> 
->> @@ -1154,9 +1169,14 @@ static void hisi_acc_vf_pci_reset_prepare(struct pci_dev *pdev)
->>  {
->>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->> -	struct device *dev = &qm->pdev->dev;
->> +	struct device *dev = &pdev->dev;
->>  	u32 delay = 0;
->>  
->> +	if (!qm || !qm->io_base) {
->> +		dev_err(dev, "PF QM not available for reset\n");
->> +		return;
->> +	}
->> +
->>  	/* All reset requests need to be queued for processing */
->>  	while (test_and_set_bit(QM_RESETTING, &qm->misc_ctl)) {
->>  		msleep(1);
-> 
-> Finally, something that matches the fix this patch claims, a function
-> reachable by the PF!
-> 
-> Is this actually the issue you're trying to fix, not a migration
-> induced fault, migration isn't reachable by a PF, but an error handling
-> bug?
-> 
->> @@ -1174,8 +1194,12 @@ static void hisi_acc_vf_pci_aer_reset_done(struct pci_dev *pdev)
->>  	struct hisi_acc_vf_core_device *hisi_acc_vdev = hisi_acc_drvdata(pdev);
->>  	struct hisi_qm *qm = hisi_acc_vdev->pf_qm;
->>  
->> -	if (hisi_acc_vdev->set_reset_flag)
->> -		clear_bit(QM_RESETTING, &qm->misc_ctl);
->> +	if (hisi_acc_vdev->set_reset_flag) {
->> +		if (qm && qm->io_base)
->> +			clear_bit(QM_RESETTING, &qm->misc_ctl);
->> +		else
->> +			dev_err(&pdev->dev, "PF QM not available for reset done\n");
->> +	}
->>  
->>  	if (!hisi_acc_vdev->core_device.vdev.mig_ops)
->>  		return;
-> 
-> Another, but notice you've already accounted for the non-migration case
-> here.  Can they be combined?
-> 
->> @@ -1193,6 +1217,11 @@ static int hisi_acc_vf_qm_init(struct hisi_acc_vf_core_device *hisi_acc_vdev)
->>  	struct pci_dev *vf_dev = vdev->pdev;
->>  	u32 val;
->>  
->> +	if (!pf_qm || !pf_qm->io_base) {
->> +		dev_err(&vf_dev->dev, "PF QM not available for init\n");
->> +		return -ENODEV;
->> +	}
->> +
->>  	val = readl(pf_qm->io_base + QM_MIG_REGION_SEL);
->>  	if (pf_qm->ver > QM_HW_V3 && (val & QM_MIG_REGION_EN))
->>  		hisi_acc_vdev->drv_mode = HW_ACC_MIG_PF_CTRL;
-> 
-> Unreachable by PF.
-> 
->> @@ -1565,6 +1594,11 @@ static int hisi_acc_vfio_pci_migrn_init_dev(struct vfio_device *core_vdev)
->>  	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
->>  	struct hisi_qm *pf_qm = hisi_acc_get_pf_qm(pdev);
->>  
->> +	if (!pf_qm) {
->> +		dev_err(&pdev->dev, "PF driver not loaded, cannot enable migration\n");
->> +		return -ENODEV;
->> +	}
->> +
->>  	hisi_acc_vdev->vf_id = pci_iov_vf_id(pdev) + 1;
->>  	hisi_acc_vdev->pf_qm = pf_qm;
->>  	hisi_acc_vdev->vf_dev = pdev;
-> 
-> Unreachable by PF.
-> 
->> @@ -1670,13 +1704,11 @@ static int hisi_acc_vfio_pci_probe(struct pci_dev *pdev, const struct pci_device
->>  	struct hisi_acc_vf_core_device *hisi_acc_vdev;
->>  	const struct vfio_device_ops *ops = &hisi_acc_vfio_pci_ops;
->>  	struct hisi_qm *pf_qm;
->> -	int vf_id;
->>  	int ret;
->>  
->>  	pf_qm = hisi_acc_get_pf_qm(pdev);
->>  	if (pf_qm && pf_qm->ver >= QM_HW_V3) {
->> -		vf_id = pci_iov_vf_id(pdev);
->> -		if (vf_id >= 0)
->> +		if (pdev->is_virtfn)
->>  			ops = &hisi_acc_vfio_pci_migrn_ops;
->>  		else
->>  			pci_warn(pdev, "migration support failed, continue with generic interface\n");
-> 
-> Redundant to the test in hisi_acc_get_pf_pm() which would have returned
-> NULL, so we can't even get here.
-> 
-> Please do better.  Thanks,
-> 
-> Alex
-> .
-> 
+> Regards
+> Bibo Mao
+>>
+>> Regards
+>>
+>>
+>>>
+>>> Huacai
+>>>
+>>>>
+>>>> Regards
+>>>> Bibo Mao
+>>>>>
+>>>>>
+>>>>> Huacai
+>>>>>
+>>>>>>    }
+>>>>>>
+>>>>>>    void kvm_check_vpid(struct kvm_vcpu *vcpu)
+>>>>>> diff --git a/arch/loongarch/kvm/switch.S 
+>>>>>> b/arch/loongarch/kvm/switch.S
+>>>>>> index 936e4ae3e408..af972394fd55 100644
+>>>>>> --- a/arch/loongarch/kvm/switch.S
+>>>>>> +++ b/arch/loongarch/kvm/switch.S
+>>>>>> @@ -66,9 +66,8 @@
+>>>>>>           ld.d    t0, a2, KVM_ARCH_KVMPGD
+>>>>>>           csrwr   t0, LOONGARCH_CSR_PGDL
+>>>>>>
+>>>>>> -       /* Mix GID and RID */
+>>>>>> -       csrrd           t1, LOONGARCH_CSR_GSTAT
+>>>>>> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, 
+>>>>>> CSR_GSTAT_GID_SHIFT
+>>>>>> +       /* Set VMID for gpa --> hpa mapping */
+>>>>>> +       ld.d            t1, a2, KVM_ARCH_VMID
+>>>>>>           csrrd           t0, LOONGARCH_CSR_GTLBC
+>>>>>>           bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END, 
+>>>>>> CSR_GTLBC_TGID_SHIFT
+>>>>>>           csrwr           t0, LOONGARCH_CSR_GTLBC
+>>>>>> diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
+>>>>>> index ebdbe9264e9c..38daf936021d 100644
+>>>>>> --- a/arch/loongarch/kvm/tlb.c
+>>>>>> +++ b/arch/loongarch/kvm/tlb.c
+>>>>>> @@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
+>>>>>>
+>>>>>>    void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
+>>>>>>    {
+>>>>>> +       unsigned int vmid;
+>>>>>> +
+>>>>>>           lockdep_assert_irqs_disabled();
+>>>>>>           gpa &= (PAGE_MASK << 1);
+>>>>>> -       invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, 
+>>>>>> gpa);
+>>>>>> +       vmid = (vcpu->arch.vmid << CSR_GSTAT_GID_SHIFT) & 
+>>>>>> CSR_GSTAT_GID;
+>>>>>> +       invtlb(INVTLB_GID_ADDR, vmid, gpa);
+>>>>>>    }
+>>>>>> -- 
+>>>>>> 2.39.3
+>>>>>>
+>>>>
+
