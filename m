@@ -1,146 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478543F9294;
-	Wed,  5 Aug 2026 11:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2153C8C46;
+	Wed,  5 Aug 2026 11:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785929498; cv=none; b=dMl7uqy/wNBWFwe9Qr/WnIDmQMrbvSI55zo528wQ33cABGn6Rj65m/rEZzHwdhk1jwB+1caIcAGvGxx9KEKl1m/yCnFWsOj14kwqmTD9OCM8EW9T3dvm0f2rK/PYyJxnoZXb1t2Zlip84g7l5U0hYzXj12meSRTk0epkbUTOTjU=
+	t=1785929559; cv=none; b=M9q5M/wJ4eNymK2+W2lXVNufxQfnKn2xumOFyPqTMx2RrcRVb+L5cewYocdgiB24IMrmvE/LB3MDiLi3tE6I3fGMSYi24V5njF0sDPPAKQdZJuzi5hMD2LB1BXSs+h75jRVyzvuRvSrK+HrHwze1WrJ62GQ7OIqW3RELRhGqGd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785929498; c=relaxed/simple;
-	bh=iKt+sKaDlZjOKLFWRf1Kai3i9VcDvSZy6CoDu/v+eLc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=cYUDk8uVQdBq1VR/Tcs1DPI5LAUSJyP9OspIr7hSnIedrO40NWiaewjpWWCbQ8O7DRY1gMmrzqiaCdh1vX8DXK47ZJnaIJAflFiBog6xljpEdg84hYQffmJUISqb2RGpBqzxlCiEhSREWYU1LZULMrHSxRWEbxScJp3TPGdPpZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9zD2zCi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785929559; c=relaxed/simple;
+	bh=qiNUZxMrdm8mU5U+PfWSX4DHjwmMFnSj2pWqEEYMbPk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=l+FHcfYAJP+5qytAZVbajg/iYIO7HxX5TXSBSnE+JFGXD3c6sOzWlXAHgcFFD//W4lkV+29JPOpSFmmhZroR6HhGYht5/fWr/UnZmzP9A5Q+j7JW72PgThpw1I6F1mlU0qmABLGJoRJpnCx35PzJl2ja+8nlWCIKl4w2T2+m1lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D4u5DeMc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MEB8PzqI; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9zD2zCi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC791F00A3A;
-	Wed,  5 Aug 2026 11:31:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785929497;
-	bh=W0rQJkbtnhYnXnAF82PIvkescxRO6NFKtWSOLKP565E=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=f9zD2zCiNHXqk9Mt1ur8gbty3puZz5bTbRKXoUxb9G6tbtCwLoUVRhC+w1CBvkqka
-	 6F1S79X28k9iam+gpqKoAC717YHOsxlV5+ap3mr3prZ9ALw7A2o7tiCFx2BDU74yNt
-	 8uZla7uPx9qO8vHmGMGdxTN2GPsYzlPJwzKEMJvXzB41W+TKCpDrHzSZunyMIOfN1E
-	 IesZbs57bIDnr4LlM7kR8c+mYZ3eSNyMTNLRTMN6wh5m2wOqQ6TgdIW3qNoe7sRchH
-	 O91Oqx+Tx7N91XQM4Bgi7fhUDbaWdrYVEV5ujqWUviIl595S15zG6x/y4tBkzgEakM
-	 47dD3W9qBXDhg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/8] KVM: s390: Zero initialize data structures for
- inject_pfault_token
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org, "Vasily
- Gorbik" <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>
-In-Reply-To: <20260805110455.7200-3-borntraeger@linux.ibm.com>
-References: <20260805110455.7200-1-borntraeger@linux.ibm.com>
- <20260805110455.7200-3-borntraeger@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 11:31:36 +0000
-Message-Id: <20260805113136.CCC791F00A3A@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D4u5DeMc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MEB8PzqI"
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1785929556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P/Nf6Gxd/9lfzxOV0ouil77PrRiaEFU9fAACLKEQtOY=;
+	b=D4u5DeMcHBr5Jvn13Ts7KxRLuaWEUxiEJ45DAneVZfkLVTBIyo9wvmYiu9TU+Nv/VR6xA7
+	v79jHnmt7zVdnZLq7cZrV6iHvh3JJF6y6Lj7SYiS/22jhZe2IqAmq6OQxrDpEexT6MOfHC
+	mrLV5alkk0bi5KO0o4TH6teeP0SK1xVl/UO7ou/iYuonEIBUPaD4Ennxco2dUqlU+WAnpB
+	+meWBcqsWk4lOKVUoRucAfiyIShLcbwlLuo1qfCpmc1V6X4smcCKnJFvTAMP+zAeFON80x
+	LYX52nD/TpYB/qZfU4esytHVfC0Ryuf/20hM7ZvOiSWQ7bfSw4Zerefilm32dg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1785929556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P/Nf6Gxd/9lfzxOV0ouil77PrRiaEFU9fAACLKEQtOY=;
+	b=MEB8PzqI5BETYkCdp/BgCLKYzCRG3v74fMGD8qYkXY6irlE/pWNs1VTPronLaaa1Ov7KPA
+	pVD+5x5D8AWi/pCA==
+To: Charlie Jenkins <thecharlesjenkins@gmail.com>, Paul Walmsley
+ <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Alexandre Ghiti
+ <alex@ghiti.fr>, Anup Patel <anup@brainfault.org>, Atish Patra
+ <atish.patra@linux.dev>, Conor Dooley <conor@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Shuah
+ Khan <shuah@kernel.org>, Radim =?utf-8?B?S3LEjW3DocWZ?=
+ <radim.krcmar@oss.qualcomm.com>,
+ Jesse Taube <jtaubepe@redhat.com>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ linux-kselftest@vger.kernel.org, Charlie Jenkins
+ <thecharlesjenkins@gmail.com>
+Subject: Re: [PATCH v3 01/17] riscv: Introduce instruction table generation
+In-Reply-To: <20260707-riscv_insn_table-v3-1-3f8e5f75ba97@gmail.com>
+References: <20260707-riscv_insn_table-v3-0-3f8e5f75ba97@gmail.com>
+ <20260707-riscv_insn_table-v3-1-3f8e5f75ba97@gmail.com>
+Date: Wed, 05 Aug 2026 13:32:35 +0200
+Message-ID: <87v79o950s.fsf@yellow.woof>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+Charlie Jenkins <thecharlesjenkins@gmail.com> writes:
+> +        # Replace all . with _
+> +        formatted_inst_name=$name
+> +        while [ ! ${formatted_inst_name##*.*} ]; do
+> +            prefix=${formatted_inst_name%.*}
+> +            suffix=${formatted_inst_name##*.}
+> +            contains_dot=${formatted_inst_name##*.*}
 
-Pre-existing issues:
-- [Critical] Invalid Free / Kernel Panic in kvm_s390_reinject_machine_check=
-() due to kfree() on a stack pointer.
-- [High] Stack Information Leak to userspace in kvm_s390_reinject_machine_c=
-heck() during local machine check reinjection.
---
+Isn't contains_dot always empty, because we only get here if
+formatted_inst_name has a dot?
 
---- Patch [2]: [PATCH v3 2/8] KVM: s390: Zero initialize data structures fo=
-r inject_pfault_token ---
-commit 99d37a57e11716f103a611788767010736475aa3
-Author: Christian Borntraeger <borntraeger@linux.ibm.com>
+> +        # Instruction only appears in one base
+> +        only_base=
+> +        if [ "${base}" != "${base%32}" ]; then
 
-KVM: s390: Zero initialize data structures for inject_pfault_token
+Does
+           if [ "${base}" = "32" ]; then
 
-This commit fixes a stack information leak by zero-initializing the
-kvm_s390_interrupt and kvm_s390_irq structures in
-__kvm_inject_pfault_token. This prevents stale stack values from leaking to
-host userspace via migration ioctls.
+work?
 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 518a69c55e85c..611dcb5342101 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -4474,8 +4474,8 @@ int kvm_s390_try_set_tod_clock(struct kvm *kvm, con=
-st struct kvm_s390_vm_tod_clo
->  static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_=
-token,
->  				     unsigned long token)
->  {
-> -	struct kvm_s390_interrupt inti;
-> -	struct kvm_s390_irq irq;
-> +	struct kvm_s390_interrupt inti =3D {};
-> +	struct kvm_s390_irq irq =3D {};
->  	struct kvm_s390_interrupt_info *inti_mem =3D NULL;
-
-[Severity: Critical]
-This isn't a bug introduced by this patch, but while reviewing this fix,
-I noticed a similar pre-existing issue in arch/s390/kvm/interrupt.c that
-appears to pass a stack pointer to kfree().
-
-In kvm_s390_reinject_machine_check(), a stack-allocated interrupt info
-structure is passed to __inject_vm():
-
-kvm_s390_reinject_machine_check() {
-    ...
-    struct kvm_s390_interrupt_info inti;
-    ...
-    rc =3D __inject_vm(vcpu->kvm, &inti);
-
-When the machine check is a floating machine check, this routes to
-__inject_float_mchk(), which unconditionally frees the pointer:
-
-__inject_float_mchk() {
-    ...
-    kfree(inti);
-
-Could this result in a kernel panic if a nested guest execution triggers
-this path, attempting to free a stack-allocated variable?
-
-[Severity: High]
-This is also a pre-existing issue, but I noticed another potential stack
-information leak in arch/s390/kvm/interrupt.c.
-
-Does kvm_s390_reinject_machine_check() leak uninitialized stack memory
-during local machine check reinjection?
-
-kvm_s390_reinject_machine_check() {
-    ...
-    struct kvm_s390_irq irq;
-    ...
-    kvm_s390_inject_vcpu(vcpu, &irq);
-
-Because irq is uninitialized on the stack, the padding and fixed_logout
-array contain stale data. __inject_mchk() then copies this data into the
-persistent vCPU state:
-
-__inject_mchk() {
-    ...
-    memcpy(&mchk->fixed_logout, &irq->u.mchk.fixed_logout,
-           sizeof(mchk->fixed_logout));
-
-Later, when userspace retrieves the interrupt state, store_local_irq()
-copies it back out:
-
-store_local_irq() {
-    ...
-    irq->u.mchk =3D li->irq.mchk;
-
-Could this allow a host userspace process to access uninitialized kernel
-stack memory via the KVM migration ioctls, similar to the issue fixed in
-this patch?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805110455.7200=
--1-borntraeger@linux.ibm.com?part=3D2
+Nam
