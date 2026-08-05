@@ -1,39 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B98046D2DC;
-	Wed,  5 Aug 2026 11:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C8D4314A0
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 11:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927861; cv=none; b=JjGAN5Aw4Vdz6xF3OeOhzMi7dcOlXaTxJ1bGxKwfxm9eSzp0iKGV9i6d/cT721+92wsTp0TKP9zj9R7NBnK28U9WaocY5Eb3LbgKKlJ1A9623pcaGklwp0C03ZAgmL3z7KUbUQqxk3ju538appeCKW+7lvZnuhhYsY47rS6nRis=
+	t=1785927875; cv=none; b=YxmrVKAYaFVOTSjEfMI4ACtKZSZgCThvwXdTTeHvfKHOZ7zGcVlAQczPC/zLnF4rId7DY83AnIymA5Hzxs2UL4C3rQILPefkxZdTf+D+G5q0vKvYBUSeoU4ozk64/LVUuFITxRA7aL95dBngRerqjBH75kp9KrKI3/i5gJFbxkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927861; c=relaxed/simple;
-	bh=B3Jxs51JdpOLNuoiHj+NQ4cy2Io/khf5jp/0C3Oso7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2KH9NLw9ZlXOQ5k4cMk65/DFGWTEdHSIhkd92OC3eg1I76kqSVn1lqC+Xg9yYWRYnGXlrdYK/B8x0nfHGiZ0mofTEWkSLFiGZzbt2Q4+YXZvlB2WBh138zwhSlkknBuCm0sUdIAmabjfHa5CiELO2IBLGLvDmoufBf1tLAQDno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Exn2+wgE; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1785927875; c=relaxed/simple;
+	bh=xIZNkwMDFEjjWLECZU545nYhcnHtWMO56ZlghFxw1wQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mLY6X3YpY7+cTk/blpA8VOWu9IVf5YY0w3PXTu+yxUSXr4Th7d++788Lxp6BsHP8ysxXAn7ROTLE3pRXQfiv2rekFDTICwGWQ3AAloX/tU9bqF4gGMM/Jd0TH2Pt7ykxsTpIehJC9hQjAuOUpd2q70wQIyGTMFEgxvimjMJdWl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mPHn30/W; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Exn2+wgE"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mPHn30/W"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B78F920B716C;
-	Wed,  5 Aug 2026 04:03:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B78F920B716C
+	by linux.microsoft.com (Postfix) with ESMTPSA id F403420B7169;
+	Wed,  5 Aug 2026 04:04:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F403420B7169
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927836;
-	bh=9DGQDZMGnVdkLT+T7BFikYvxxukUnodYkNvYZab2Vlo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Exn2+wgEZEQjnftki+F4cbY08suL61hBripewKHY+1bvdTNJJ8FIcCW+VnTXs3f9V
-	 iqpq9YgXEResAzTTxSZ7GFTRwd4hLJiAx+ZG7cT7R48Yig5xxZh51ZUGzrh2ulGC2c
-	 joeoC/FcthRR2u1f4Z5N2FRdTiOC3B2h/L2dix1c=
+	s=default; t=1785927853;
+	bh=mBopCGB9U0UQQPrdHpzVGND3qjL34aJmORw3g1OLW1w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mPHn30/Wp0dlRDuCM3epRYEhPWX+7eoxi4ijvSauJLHBLwB1rcsfIPH6Y2iwV/Cmx
+	 fn9T/i7UAYfcfkQQQZDqI1C9ECUhtcOcSVeOgzv9086mDz8dBk4k+c77pYPEqbCf3I
+	 ZuyZOYxTsPQyrjltD2TFFTXEautQinPZWvAkEF5s=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
-To: kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 42/42] kvm: planes: reconcile core plane state, UAPI and hypercall exit
-Date: Wed,  5 Aug 2026 04:03:24 -0700
-Message-ID: <20260805110324.25067-43-snambakam@linux.microsoft.com>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org
+Subject: [RFC PATCH v1 0/5] VBS/VSM-on-KVM: QEMU support for the secure VM plane
+Date: Wed,  5 Aug 2026 04:04:27 -0700
+Message-ID: <20260805110432.25167-1-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
-References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,667 +39,74 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Align the generic plane core and its userspace ABI with vm-planes-merged:
-the kvm_vcpu_common/kvm_plane layout and helpers, the KVM_CAP_PLANES /
-KVM_EXIT_PLANE_EVENT definitions and documentation, and the x86 handling
-that exits VM-plane and VBS hypercalls to userspace. These deltas came
-from the integration branch's merge-commit conflict resolutions.
----
- Documentation/virt/kvm/api.rst | 35 +++++++-------
- arch/x86/kvm/svm/sev.c         |  5 +-
- arch/x86/kvm/x86.c             | 86 ++++++++++------------------------
- include/linux/kvm_host.h       |  8 ++--
- include/uapi/linux/kvm.h       | 23 +--------
- virt/kvm/kvm_main.c            | 86 +++++++++++++++-------------------
- 6 files changed, 86 insertions(+), 157 deletions(-)
+This RFC adds the QEMU support needed to run a Virtualization-Based
+Security (VBS), or Hyper-V VSM-style, secure environment using KVM VM
+Planes.  It is the QEMU counterpart to the Linux VBS/VSM-on-KVM series.
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index c6b109fa8945..269be00c8dcf 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -9101,27 +9101,20 @@ helpful if user space wants to emulate instructions which are not
- This capability can be enabled dynamically even if VCPUs were already
- created and are running.
- 
--hpage_2g module parameter is not set to 1, -EINVAL is returned.
--
--7.47 KVM_CAP_PLANES_FPU
-------------------------
--
--:Architectures: x86
--:Parameters: arg[0] is 0 if each vCPU plane has a separate FPU,
--             1 if the FPU is shared
--:Type: vm
-+7.47 KVM_CAP_S390_HPAGE_2G
-+--------------------------
- 
--When enabled, such as KVM_SET_XSAVE or KVM_SET_FPU *are* available for
--vCPU on all planes, but they will read and write the same data that is presented
--to other planes.  Note that KVM_GET/SET_XSAVE also allows access to some
--registers that are *not* part of FPU state; right now this is just PKRU.
--Those are never shared.
-+:Architectures: s390
-+:Parameters: none
-+:Returns: 0 on success; -EINVAL if hpage_2g module parameter was not set,
-+          cmma is enabled, or the VM has the KVM_VM_S390_UCONTROL
-+          flag set; -EBUSY if vCPUs were already created for the VM.
- 
--KVM_CAP_PLANES_FPU is experimental; userspace must *not* assume that
--KVM_CAP_PLANES_FPU is present on x86 for *any* VM type and different
--VM types may or may not allow enabling KVM_CAP_PLANES_FPU.  Like for other
--capabilities, KVM_CAP_PLANES_FPU can be queried on the VM file descriptor;
--KVM_CHECK_EXTENSION returns 1 if it is possible to enable shared FPU mode.
-+With this capability the KVM support for memory backing with 2g pages
-+through hugetlbfs can be enabled for a VM. After the capability is
-+enabled, cmma can't be enabled anymore and pfmfi and the storage key
-+interpretation are disabled. If cmma has already been enabled or the
-+hpage_2g module parameter is not set to 1, -EINVAL is returned.
- 
- 8. Other capabilities.
- ======================
-@@ -9674,6 +9667,10 @@ check for this capability on the VM file descriptor.
- When called on the system file descriptor, KVM returns the highest
- value supported on any machine type.
- 
-+When called on a plane file descriptor, KVM returns 0, because a
-+plane cannot host planes of its own.  Other capabilities are
-+forwarded to the plane's parent VM.
-+
- 8.47 KVM_CAP_S390_VSIE_ESAMODE
- ------------------------------
- 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index b9b0bbb72394..b94de3b8967a 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -4488,7 +4488,7 @@ static void sev_get_apic_ids(struct vcpu_svm *svm)
- 	desc->num_entries = n;
- 	kvm_for_each_vcpu(i, loop_vcpu, kvm) {
- 		/*TODO: is this possible? */
--		if (i > n)
-+		if (i >= n)
- 			break;
- 
- 		desc->apic_ids[i] = loop_vcpu->vcpu_id;
-@@ -4713,6 +4713,9 @@ static bool is_snp_only_vmgexit(u64 exit_code)
- 	case SVM_VMGEXIT_GUEST_REQUEST:
- 	case SVM_VMGEXIT_EXT_GUEST_REQUEST:
- 	case SVM_VMGEXIT_PSC:
-+	case SVM_VMGEXIT_HVDB_PAGE:
-+	case SVM_VMGEXIT_HV_IPI:
-+	case SVM_VMGEXIT_SNP_RUN_VMPL:
- 		return true;
- 	default:
- 		return false;
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index c8c37d569023..d80b1caefc70 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -517,31 +517,6 @@ void kvm_free_plane(struct kvm_plane *plane)
- 	kvm_x86_call(free_plane)(plane);
- }
- 
--struct kvm_plane *x86_alloc_plane(void)
--{
--	/* For better type checking, do not return kzalloc() value directly */
--	struct kvm_plane *plane = kzalloc(sizeof(*plane), GFP_KERNEL_ACCOUNT);
--
--	return plane;
--}
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_alloc_plane);
--
--void x86_free_plane(struct kvm_plane *plane)
--{
--	kfree(plane);
--}
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(x86_free_plane);
--
--struct kvm_plane *kvm_alloc_plane(void)
--{
--	return kvm_x86_call(alloc_plane)();
--}
--
--void kvm_free_plane(struct kvm_plane *plane)
--{
--	kvm_x86_call(free_plane)(plane);
--}
--
- /*
-  * All feature MSRs except uCode revID, which tracks the currently loaded uCode
-  * patch, are immutable once the vCPU model is defined.
-@@ -1026,7 +1001,7 @@ static int complete_emulated_insn_gp(struct kvm_vcpu *vcpu, int err)
- void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault,
- 			   bool from_hardware)
- {
--	++vcpu->stat->pf_guest;
-+	++vcpu->stat.pf_guest;
- 
- 	/*
- 	 * Async #PF in L2 is always forwarded to L1 as a VM-Exit regardless of
-@@ -3732,7 +3707,7 @@ static void kvmclock_reset(struct kvm_vcpu *vcpu)
- 
- static void kvm_vcpu_flush_tlb_all(struct kvm_vcpu *vcpu)
- {
--	++vcpu->stat->tlb_flush;
-+	++vcpu->stat.tlb_flush;
- 	kvm_x86_call(flush_tlb_all)(vcpu);
- 
- 	/* Flushing all ASIDs flushes the current ASID... */
-@@ -3741,7 +3716,7 @@ static void kvm_vcpu_flush_tlb_all(struct kvm_vcpu *vcpu)
- 
- static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
- {
--	++vcpu->stat->tlb_flush;
-+	++vcpu->stat.tlb_flush;
- 
- 	if (!tdp_enabled) {
- 		/*
-@@ -3766,7 +3741,7 @@ static void kvm_vcpu_flush_tlb_guest(struct kvm_vcpu *vcpu)
- 
- static inline void kvm_vcpu_flush_tlb_current(struct kvm_vcpu *vcpu)
- {
--	++vcpu->stat->tlb_flush;
-+	++vcpu->stat.tlb_flush;
- 	kvm_x86_call(flush_tlb_current)(vcpu);
- }
- 
-@@ -5305,11 +5280,11 @@ static void kvm_steal_time_set_preempted(struct kvm_vcpu *vcpu)
- 	 * preempted if and only if the VM-Exit was due to a host interrupt.
- 	 */
- 	if (!vcpu->arch.at_instruction_boundary) {
--		vcpu->stat->preemption_other++;
-+		vcpu->stat.preemption_other++;
- 		return;
- 	}
- 
--	vcpu->stat->preemption_reported++;
-+	vcpu->stat.preemption_reported++;
- 	if (!(vcpu->arch.st.msr_val & KVM_MSR_ENABLED))
- 		return;
- 
-@@ -6845,7 +6820,7 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		r = -EEXIST;
- 		if (irqchip_in_kernel(kvm) || kvm->has_planes)
- 			goto split_irqchip_unlock;
--		if (kvm->created_vcpus || kvm->has_planes)
-+		if (kvm->created_vcpus)
- 			goto split_irqchip_unlock;
- 		/* Pairs with irqchip_in_kernel. */
- 		smp_wmb();
-@@ -9278,7 +9253,7 @@ static int handle_emulation_failure(struct kvm_vcpu *vcpu, int emulation_type)
- {
- 	struct kvm *kvm = vcpu->kvm;
- 
--	++vcpu->stat->insn_emulation_fail;
-+	++vcpu->stat.insn_emulation_fail;
- 	trace_kvm_emulate_insn_failed(vcpu);
- 
- 	if (emulation_type & EMULTYPE_VMWARE_GP) {
-@@ -9510,7 +9485,7 @@ int x86_decode_emulated_instruction(struct kvm_vcpu *vcpu, int emulation_type,
- 	r = x86_decode_insn(ctxt, insn, insn_len, emulation_type);
- 
- 	trace_kvm_emulate_insn_start(vcpu);
--	++vcpu->stat->insn_emulation;
-+	++vcpu->stat.insn_emulation;
- 
- 	return r;
- }
-@@ -9685,7 +9660,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
- 		}
- 		r = 0;
- 	} else if (vcpu->mmio_needed) {
--		++vcpu->stat->mmio_exits;
-+		++vcpu->stat.mmio_exits;
- 
- 		if (!vcpu->mmio_is_write)
- 			writeback = false;
-@@ -10452,7 +10427,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
- 	struct kvm_vcpu *target = NULL;
- 	struct kvm_apic_map *map;
- 
--	vcpu->stat->directed_yield_attempted++;
-+	vcpu->stat.directed_yield_attempted++;
- 
- 	if (single_task_running())
- 		goto no_yield;
-@@ -10478,7 +10453,7 @@ static void kvm_sched_yield(struct kvm_vcpu *vcpu, unsigned long dest_id)
- 	if (kvm_vcpu_yield_to(target) <= 0)
- 		goto no_yield;
- 
--	vcpu->stat->directed_yield_successful++;
-+	vcpu->stat.directed_yield_successful++;
- 
- no_yield:
- 	return;
-@@ -10555,7 +10530,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 	int op_64_bit = is_64_bit_hypercall(vcpu);
- 	unsigned long ret, nr, a0, a1, a2, a3;
- 
--	++vcpu->stat->hypercalls;
-+	++vcpu->stat.hypercalls;
- 
- 	if (op_64_bit) {
- 		nr = kvm_rax_read_raw(vcpu);
-@@ -10673,7 +10648,7 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 
- 				if (common->vtl_plane_ready) {
- 					/* Parked in vtl_return: deliver now. */
--					kvm_rax_write(secure, a0);
-+					kvm_rax_write_raw(secure, a0);
- 					common->vtl_call_pending = false;
- 				} else {
- 					/* Still booting: deliver on readiness. */
-@@ -11388,7 +11363,7 @@ void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc)
- 	 */
- 	guard(rwsem_write)(&kvm->arch.apicv_update_lock);
- 	if (atomic_add_return(add, &kvm->arch.apicv_nr_irq_window_req) == inc)
--		__kvm_set_or_clear_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_IRQWIN, inc);
-+		__kvm_set_or_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_IRQWIN, inc);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_inc_or_dec_irq_window_inhibit);
- 
-@@ -11644,22 +11619,9 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		goto out;
- 	}
- 
--	if (kvm_check_plane0_events(vcpu)) {
--		kvm_vcpu_set_plane_runnable(vcpu->common->vcpus[0]);
--
--		kvm_make_request(KVM_REQ_EVENT, vcpu);
--		kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
--	}
--
--	if (kvm_check_request(KVM_REQ_PLANE_RESCHED, vcpu)) {
--		vcpu->common->plane_switch = true;
--		r = 0;
--		goto out;
--	}
--
- 	if (kvm_check_request(KVM_REQ_EVENT, vcpu) || req_int_win ||
- 	    kvm_xen_has_interrupt(vcpu)) {
--		++vcpu->stat->req_event;
-+		++vcpu->stat.req_event;
- 		r = kvm_apic_accept_events(vcpu);
- 		if (r < 0) {
- 			r = 0;
-@@ -11815,7 +11777,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 		run_flags = 0;
- 
- 		/* Note, VM-Exits that go down the "slow" path are accounted below. */
--		++vcpu->stat->exits;
-+		++vcpu->stat.exits;
- 	}
- 
- 	kvm_load_host_pkru(vcpu);
-@@ -11881,11 +11843,11 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
- 	 * VM-Exit on SVM and any ticks that occur between VM-Exit and now.
- 	 * An instruction is required after local_irq_enable() to fully unblock
- 	 * interrupts on processors that implement an interrupt shadow, the
--	 * stat->exits increment will do nicely.
-+	 * stat.exits increment will do nicely.
- 	 */
- 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
- 	local_irq_enable();
--	++vcpu->stat->exits;
-+	++vcpu->stat.exits;
- 	local_irq_disable();
- 	kvm_after_interrupt(vcpu);
- 
-@@ -12103,7 +12065,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
- 			kvm_vcpu_ready_for_interrupt_injection(vcpu)) {
- 			r = 0;
- 			vcpu->run->exit_reason = KVM_EXIT_IRQ_WINDOW_OPEN;
--			++vcpu->stat->request_irq_exits;
-+			++vcpu->stat.request_irq_exits;
- 			break;
- 		}
- 
-@@ -12128,7 +12090,7 @@ static int __kvm_emulate_halt(struct kvm_vcpu *vcpu, int state, int reason)
- 	 * managed by userspace, in which case userspace is responsible for
- 	 * handling wake events.
- 	 */
--	++vcpu->stat->halt_exits;
-+	++vcpu->stat.halt_exits;
- 	if (lapic_in_kernel(vcpu)) {
- 		if (kvm_vcpu_has_events(vcpu) || vcpu->arch.pv.pv_unhalted)
- 			state = KVM_MP_STATE_RUNNABLE;
-@@ -12300,7 +12262,7 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
- 		return;
- 
- 	fpu_swap_kvm_fpstate(&vcpu->arch.guest_fpu, false);
--	++vcpu->stat->fpu_reload;
-+	++vcpu->stat.fpu_reload;
- 	trace_kvm_fpu(0);
- }
- 
-@@ -12387,7 +12349,7 @@ static int __kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 		if (signal_pending(current)) {
- 			r = -EINTR;
- 			kvm_run->exit_reason = KVM_EXIT_INTR;
--			++vcpu->stat->signal_exits;
-+			++vcpu->stat.signal_exits;
- 		}
- 		goto out;
- 	}
-@@ -13180,7 +13142,7 @@ int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id)
- 	return 0;
- }
- 
--int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane)
-+int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- {
- 	int r;
- 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 05c9edd4a73d..bee8eaea05bc 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -453,8 +453,7 @@ struct kvm_vcpu {
- #endif
- 
- 	struct kvm_vcpu_arch arch;
--	struct kvm_vcpu_stat *stat;
--	struct kvm_vcpu_stat __stat;
-+	struct kvm_vcpu_stat stat;
- 	char stats_id[KVM_STATS_NAME_SIZE];
- 
- 	/*
-@@ -1012,7 +1011,6 @@ struct kvm {
- 	bool dirty_ring_with_bitmap;
- 	bool vm_bugged;
- 	bool vm_dead;
--	bool has_planes;
- 
- #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
- 	struct notifier_block pm_notifier;
-@@ -1801,7 +1799,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu);
- void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu);
- void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu);
- int kvm_arch_vcpu_precreate(struct kvm *kvm, unsigned int id);
--int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu, struct kvm_plane *plane);
-+int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu);
- void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu);
- void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu);
- 
-@@ -2664,7 +2662,7 @@ static inline int kvm_arch_vcpu_run_pid_change(struct kvm_vcpu *vcpu)
- static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
- {
- 	vcpu->run->exit_reason = KVM_EXIT_INTR;
--	vcpu->stat->signal_exits++;
-+	vcpu->stat.signal_exits++;
- }
- 
- static inline int kvm_xfer_to_guest_mode_handle_work(struct kvm_vcpu *vcpu)
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 3118b31d13f6..fa2799c4dddb 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -140,16 +140,6 @@ struct kvm_xen_exit {
- 	} u;
- };
- 
--struct kvm_plane_event_exit {
--#define KVM_PLANE_EVENT_INTERRUPT    1
--	__u16 cause;
--	__u16 pending_event_planes;
--	__u16 target;
--	__u16 padding;
--	__u32 flags;
--	__u64 extra[8];
--};
--
- struct kvm_exit_snp_req_certs {
- 	__u64 gpa;
- 	__u64 npages;
-@@ -243,13 +233,7 @@ struct kvm_run {
- 	/* in */
- 	__u8 request_interrupt_window;
- 	__u8 HINT_UNSAFE_IN_KVM(immediate_exit);
--
--	/* in/out */
--	__u8 plane;
--	__u16 suspended_planes;
--
--	/* in */
--	__u16 req_exit_planes;
-+	__u8 padding1[6];
- 
- 	/* out */
- 	__u32 exit_reason;
-@@ -486,8 +470,6 @@ struct kvm_run {
- 			__u64 gpa;
- 			__u64 size;
- 		} memory_fault;
--		/* KVM_EXIT_PLANE_EVENT */
--		struct kvm_plane_event_exit plane_event;
- 		/* KVM_EXIT_TDX */
- 		struct {
- 			__u64 flags;
-@@ -1709,7 +1691,4 @@ struct kvm_pre_fault_memory {
- 	__u64 padding[5];
- };
- 
--#define KVM_CREATE_PLANE	_IO(KVMIO, 0xd6)
--#define KVM_CREATE_VCPU_PLANE	_IO(KVMIO, 0xd7)
--
- #endif /* __LINUX_KVM_H */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 6e4f3f3e6881..6b2d272797d3 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -440,7 +440,7 @@ void *kvm_mmu_memory_cache_alloc(struct kvm_mmu_memory_cache *mc)
- 
- static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned long id)
- {
--	struct kvm_vcpu_common *common = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
-+	struct kvm_vcpu_common *common __free(kfree) = kzalloc(sizeof(*common), GFP_KERNEL_ACCOUNT);
- 	struct page *page;
- 	int r;
- 
-@@ -503,10 +503,7 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 	if (r)
- 		goto out_free_dirty_ring;
- 
--	vcpu->common = common;
--
--	kvm_vcpu_set_in_spin_loop(vcpu, false);
--	kvm_vcpu_set_dy_eligible(vcpu, false);
-+	vcpu->common = no_free_ptr(common);
- 
- 	kvm_vcpu_set_in_spin_loop(vcpu, false);
- 	kvm_vcpu_set_dy_eligible(vcpu, false);
-@@ -522,8 +519,6 @@ static int kvm_vcpu_init_common(struct kvm_vcpu *vcpu, struct kvm *kvm, unsigned
- 	kvm->created_vcpus--;
- 	mutex_unlock(&kvm->lock);
- 
--	kfree(common);
--
- 	return r;
- }
- 
-@@ -1243,7 +1238,6 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
- 	if (kvm_arch_plane_init(kvm, plane, plane_level))
- 		goto out_free_plane;
- 
--
- 	kvm->planes[plane_level] = plane;
- 
- 	return plane;
-@@ -1490,6 +1484,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
- 	xa_destroy(&kvm->mem_attr_array);
- #endif
-+	kvm_destroy_planes(kvm);
- 	kvm_arch_free_vm(kvm);
- 	kvm_destroy_planes(kvm);
- 	preempt_notifier_dec();
-@@ -4383,6 +4378,7 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
- {
- 	struct kvm *kvm = plane->kvm;
- 	struct kvm_vcpu *vcpu;
-+	struct kvm_vcpu *prev_current_vcpu;
- 	int r;
- 
- 	mutex_lock(&kvm->lock);
-@@ -4427,7 +4423,25 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
- 
- 	kvm_vcpu_init(vcpu, kvm, id);
- 
--	r = kvm_arch_vcpu_create(vcpu, plane);
-+	/*
-+	 * For planes above plane-0 the vCPU shares plane-0's kvm_vcpu_common,
-+	 * including ->current_vcpu and the preempt notifier consulted by
-+	 * kvm_sched_in()/kvm_sched_out().  kvm_arch_vcpu_create() (and
-+	 * kvm_arch_vcpu_postcreate() below) load this vCPU's VMCS via
-+	 * vcpu_load() but do not update ->current_vcpu, which still points at
-+	 * plane-0's vCPU.  The arch create path performs GFP_KERNEL
-+	 * allocations, so the creating task can sleep and be rescheduled while
-+	 * this vCPU's VMCS is loaded; the shared notifier would then
-+	 * save/restore plane-0's vCPU and desync the per-CPU loaded_vmcs
-+	 * tracking from the hardware-current VMCS, wedging VMX (host hard
-+	 * lockup).  Mirror the run loop's invariant (see
-+	 * kvm_vcpu_select_plane()): make ->current_vcpu the vCPU whose VMCS is
-+	 * loaded for the duration, then restore it.
-+	 */
-+	prev_current_vcpu = vcpu->common->current_vcpu;
-+	vcpu->common->current_vcpu = vcpu;
-+	r = kvm_arch_vcpu_create(vcpu);
-+	vcpu->common->current_vcpu = prev_current_vcpu;
- 	if (r)
- 		goto vcpu_free_common;
- 
-@@ -4456,14 +4470,18 @@ static int kvm_plane_ioctl_create_vcpu(struct kvm_plane *plane, unsigned long id
- 	kvm_vcpu_unlock(vcpu);
- 
- 	mutex_unlock(&kvm->lock);
-+	/* Same VMCS/current_vcpu invariant as above (vcpu_load in postcreate). */
-+	prev_current_vcpu = vcpu->common->current_vcpu;
-+	vcpu->common->current_vcpu = vcpu;
- 	kvm_arch_vcpu_postcreate(vcpu);
-+	vcpu->common->current_vcpu = prev_current_vcpu;
- 	kvm_create_vcpu_debugfs(vcpu);
- 	return r;
- 
- kvm_put_xa_erase:
- 	kvm_vcpu_unlock(vcpu);
- 	kvm_put_kvm_no_destroy(kvm);
--	xa_erase(&kvm->planes[0]->vcpu_array, vcpu->vcpu_idx);
-+	xa_erase(&plane->vcpu_array, vcpu->vcpu_idx);
- unlock_vcpu_destroy:
- 	mutex_unlock(&kvm->lock);
- 	kvm_arch_vcpu_destroy(vcpu);
-@@ -4614,38 +4632,16 @@ static int kvm_wait_for_vcpu_online(struct kvm_vcpu *vcpu)
- static inline bool kvm_is_vcpu_plane_ioctl(unsigned ioctl)
- {
- 	switch (ioctl) {
--	case KVM_GET_DEBUGREGS:
--	case KVM_SET_DEBUGREGS:
- 	case KVM_GET_FPU:
- 	case KVM_SET_FPU:
--	case KVM_GET_LAPIC:
--	case KVM_SET_LAPIC:
--	case KVM_GET_MSRS:
--	case KVM_SET_MSRS:
--	case KVM_GET_NESTED_STATE:
--	case KVM_SET_NESTED_STATE:
--	case KVM_GET_ONE_REG:
--	case KVM_SET_ONE_REG:
- 	case KVM_GET_REGS:
- 	case KVM_SET_REGS:
- 	case KVM_GET_SREGS:
- 	case KVM_SET_SREGS:
--	case KVM_GET_SREGS2:
--	case KVM_SET_SREGS2:
--	case KVM_GET_VCPU_EVENTS:
--	case KVM_SET_VCPU_EVENTS:
--	case KVM_GET_XCRS:
--	case KVM_SET_XCRS:
--	case KVM_GET_XSAVE:
--	case KVM_GET_XSAVE2:
--	case KVM_SET_XSAVE:
--
--	case KVM_GET_REG_LIST:
- 	case KVM_TRANSLATE:
- 		return true;
--
- 	default:
--		return false;
-+		return kvm_arch_is_vcpu_plane_ioctl(ioctl);
- 	}
- }
- 
-@@ -4950,7 +4946,6 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg);
- 
- static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsigned long arg)
- {
--	void __user *argp = (void __user *)arg;
- 	long r;
- 
- 	switch (ioctl) {
-@@ -4966,38 +4961,35 @@ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsig
- 		break;
- #ifdef CONFIG_HAVE_KVM_MSI
- 	case KVM_SIGNAL_MSI: {
-+		void __user *argp = (void __user *)arg;
- 		struct kvm_msi msi;
- 
--		r = -EFAULT;
- 		if (copy_from_user(&msi, argp, sizeof(msi)))
--			goto out;
-+			return -EFAULT;
- 		r = kvm_send_userspace_msi(plane->kvm, &msi, plane->level);
- 		break;
- 	}
- #endif
- #ifdef CONFIG_HAVE_KVM_IRQ_ROUTING
- 	case KVM_SET_GSI_ROUTING: {
-+		void __user *argp = (void __user *)arg;
- 		struct kvm_irq_routing routing;
- 		struct kvm_irq_routing __user *urouting;
- 		struct kvm_irq_routing_entry *entries = NULL;
- 
--		r = -EFAULT;
- 		if (copy_from_user(&routing, argp, sizeof(routing)))
--			goto out;
--		r = -EINVAL;
--		if (!kvm_arch_can_set_irq_routing(plane->kvm))
--			goto out;
--		if (routing.nr > KVM_MAX_IRQ_ROUTES)
--			goto out;
--		if (routing.flags)
--			goto out;
-+			return -EFAULT;
-+		if (!kvm_arch_can_set_irq_routing(plane->kvm) ||
-+		    routing.nr > KVM_MAX_IRQ_ROUTES ||
-+		    routing.flags)
-+			return -EINVAL;
- 		if (routing.nr) {
- 			urouting = argp;
- 			entries = vmemdup_array_user(urouting->entries,
- 						     routing.nr, sizeof(*entries));
- 			if (IS_ERR(entries)) {
- 				r = PTR_ERR(entries);
--				goto out;
-+				return r;
- 			}
- 		}
- 		r = kvm_set_irq_routing(plane->kvm, entries, routing.nr,
-@@ -5010,7 +5002,6 @@ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsig
- 		r = -ENOTTY;
- 	}
- 
--out:
- 	return r;
- }
- 
-@@ -5590,7 +5581,6 @@ static int kvm_vm_ioctl_create_plane(struct kvm *kvm, unsigned id)
- 		goto put_kvm;
- 	}
- 
--	kvm->planes[id] = plane;
- 	kvm->has_planes = true;
- 	fd_install(fd, file);
- 	return fd;
+The five patches in this mail series are authored by me and add:
+
+  - userspace handlers for VM Plane and VBS VTL-call exits from KVM;
+  - the VBS VTL hypercall definitions from the Linux UAPI;
+  - loading and running the secure-plane kernel in-kernel; and
+  - plane configuration access through the QEMU address-space API.
+
+This series depends on the QEMU VM Planes infrastructure from Joerg
+Roedel and related prerequisite work.  Those patches are not duplicated
+in this mail series.  The integrated QEMU branch linked below contains
+the complete tree, including Joerg's patches and the other prerequisites,
+used for development and testing.
+
+The complete implementation is available in three repositories under the
+safe-tee organization:
+
+  QEMU support and complete integrated tree:
+  https://github.com/safe-tee/qemu/tree/qemu-planes-v11.1.0-rc1
+
+  Linux and KVM support:
+  https://github.com/safe-tee/linux/tree/kvm-planes-v7.2-rc5
+
+  Build, test, and integration tooling:
+  https://github.com/safe-tee/lvbs
+
+Current build and run instructions are maintained in the lvbs repository:
+
+  https://github.com/safe-tee/lvbs/blob/main/docs/how-to/how-to-build.md
+
+This is prototype code and is not yet intended for production use.
+Feedback on the QEMU integration, VTL-call handling, and division of
+responsibility between QEMU and the in-kernel VM Plane implementation
+would be appreciated.
+
+Acknowledgments
+===============
+
+This work stands on top of, and is indebted to, several prior efforts:
+
+  - Joerg Roedel, whose QEMU and KVM VM Planes work provides the
+    infrastructure that the VBS/VSM secure plane relies on.
+
+  - Paolo Bonzini, whose "[RFC PATCH 00/29] KVM: VM planes" introduced
+    the VM Plane concept to KVM as a common in-kernel model for AMD VMPLs,
+    Intel TDX partitions, Hyper-V VTLs, and Arm CCA planes.
+    https://lwn.net/Articles/1016113/
+
+  - James Bottomley and James Morris, for their ongoing VSM-on-KVM work,
+    which informed the design and direction of this series.
+
+Sriram Nambakam (5):
+  kvm: add userspace handlers for VM planes and VBS VTL calls
+  vm_planes: Add VBS VTL call handling and plane memory sealing
+  linux-headers: sync kvm_para.h VBS VTL hypercalls
+  target/i386/kvm: run the secure plane in-kernel (Option B)
+  target/i386/kvm: read plane config via address_space API
+
+ accel/kvm/kvm-all.c                       |  18 +
+ include/standard-headers/linux/kvm_para.h |   7 +-
+ include/system/kvm_int.h                  |  18 +
+ linux-headers/linux/kvm.h                 |  16 +
+ target/i386/kvm/kvm.c                     | 561 ++++++++++++++++++++++
+ 5 files changed, 619 insertions(+), 1 deletion(-)
+
 -- 
 2.55.0
 
