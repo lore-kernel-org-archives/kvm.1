@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBCB459ADD;
-	Wed,  5 Aug 2026 11:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1DD44D014;
+	Wed,  5 Aug 2026 11:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927850; cv=none; b=VbopevkULLBPuh5N3PIOHM94kHZz4Ejc3HH/unBcmYofuqZO+GvWmQnJOM29a39dQNnlQqOwKInvgwa5gbdja2+HD7zrRHDpjAudlAeHOlO4xNctMU+3ptZyp0JH0Nu4x4/+ngXkB3taq1kz8RpgVfzoxdH5b8dkYBjMzOZxe9U=
+	t=1785927851; cv=none; b=hUxykJaKoEQbir3zbxDv5iCydt5qdlZdJ5ouizSEe3qvUwPpNlEANJMsmzW3KKttq1ZNVIf6AZuYlz+JxouOc4vaLxQKzDU8+oNCC+qSM+6ZgGEpivFu//h4fJWyI8Ujgo5j3KSVEQieeYTVZhah/AKfs/AhuU2eXhV2JZxvf4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927850; c=relaxed/simple;
-	bh=ZWZtr/YxItABnDHd3G+/oX76N8nDR9WlNY/bBv8eJ4s=;
+	s=arc-20240116; t=1785927851; c=relaxed/simple;
+	bh=G+vUSvo/oC1dWxiI188iu8T0tlEnrBKSqZS4qPUU4mM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KsUxCZaB4pAJ5OcXLralcXmIp2Ziepg6BNw+ftjPtwv62XIDrzGu09r5oFjdz5rGv48fCATl/7SufHqfnUd2HVcVwpOdPrYp114Yj0oMuDdL7NL8jfvF+PYrGwc9b37dYJy0WcsJHhJlulWRzYmNz0etZNihoUbPblC143DgNWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ddNAv6EP; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version:Content-Type; b=FWz4xNblZMNixRA+JEdOU1WIt4TnOn8FycqKvUx6RXbhWskcbSU3ClHPFRhHezg91W5K1vYfFVTXEeZE7t7455GdFRMHFdz1KcfkCPIdEgAyINl+J8rq53S/gV6xUGCHCwB5k8I2zZWddaFVxslMhFv489ONe6KQW4LNfQmgLw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=awelbRcU; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ddNAv6EP"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="awelbRcU"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 0B87220B716D;
+	by linux.microsoft.com (Postfix) with ESMTPSA id A1EB620B716B;
 	Wed,  5 Aug 2026 04:03:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0B87220B716D
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A1EB620B716B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1785927828;
-	bh=2o5bvQY6ffcuSOPfk6NCrggFxJBplKNTmYmcX0G06So=;
+	bh=49pTtJaJB/MDKkTjz4La9OyPCRwD8GJr97cXGLVijQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddNAv6EPbbXoWPkhl/gcJwz/AywpxwuTGtNIpjZkuwUPY6iz2ImKfH9VChoMWy/NN
-	 uIMebT6WVmSKBlgwLw/+7a6/Ng3Ka97NvJihnCGHaHEkRuOPE4NZYy6BP5FEWERItS
-	 5zI973udU9G7HORd/0jCgpMImwiTV5AsV4bC2dpY=
+	b=awelbRcU1/osbLX8fs8tPuAktv26CLD+tenLMZSW2q6rb7pOOfxuxr2lHKNVhxlwp
+	 XWvMxjqdijWpziRnlsujNNuwnyD/o5hKLsIqFmJ8w+5sGSOSJghxo+nlMQ774sQqkp
+	 NhsQs+M/xkUD1yqmnwSzSXdeV5NIzoF1SQ+OaV9s=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 31/42] security/vbs: pin the VTL call hypercall to CPU0
-Date: Wed,  5 Aug 2026 04:03:13 -0700
-Message-ID: <20260805110324.25067-32-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 32/42] security/vbs: add secure-plane monitor backend
+Date: Wed,  5 Aug 2026 04:03:14 -0700
+Message-ID: <20260805110324.25067-33-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -43,123 +43,307 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-KVM switches planes per logical CPU, and the secure plane is a single
-in-guest kernel that boots only on CPU0's sibling (common->vcpus[1] of
-CPU0). A VTL call issued from any other CPU would switch that CPU's
-non-existent secure sibling and fail. Drive the hypercall through
-work_on_cpu(0, ...) so the calling area build and the plane switch
-always land on CPU0 regardless of the caller's CPU. The request/response
-marshalling moves into a kvm_vtl_call_ctx run on CPU0; the validation
-(calling-area present, arg size) stays on the caller.
+Add the secure-plane counterpart of the normal-plane kvm_planes backend.
+The same kernel image boots as both planes; when started as the secure
+plane (via the "vbs_secure_plane" command-line option) this monitor
+takes over, parks via KVM_HC_VBS_VTL_RETURN, and dispatches the VTL
+calls issued by the normal plane from the shared calling area.
+
+Unlike the minimal CONFIG_VBS_PARK stub, this backend is part of the
+full VBS stack and is meant to grow real handlers (seal, memory
+protection, attestation). Built with CONFIG_VBS_KVM_PLANES.
 
 Signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
 ---
- security/vbs/kvm_planes.c | 67 ++++++++++++++++++++++++++++-----------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ security/vbs/Makefile         |   1 +
+ security/vbs/secure_monitor.c | 266 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 267 insertions(+)
+ create mode 100644 security/vbs/secure_monitor.c
 
-diff --git a/security/vbs/kvm_planes.c b/security/vbs/kvm_planes.c
-index 061163a4d303..c41ea7fdb472 100644
---- a/security/vbs/kvm_planes.c
-+++ b/security/vbs/kvm_planes.c
-@@ -25,6 +25,7 @@
- #include <linux/kvm_para.h>
- #include <linux/module.h>
- #include <linux/string.h>
-+#include <linux/workqueue.h>
- #include <linux/elf.h>
- #include <asm/sections.h>
- #include <asm/kvm_para.h>
-@@ -59,28 +60,34 @@ static void *kvm_ca_page;	/* single calling-area page		*/
+diff --git a/security/vbs/Makefile b/security/vbs/Makefile
+index 01e831e28ac7..f24f31727a65 100644
+--- a/security/vbs/Makefile
++++ b/security/vbs/Makefile
+@@ -7,6 +7,7 @@ vbs-y := probe.o core.o
  
- /* ── low-level VTL call ───────────────────────────────────────────────── */
- 
--static int kvm_planes_vtl_call(enum vbs_call_id id,
--			       const void *arg, size_t arg_size,
--			       void *resp, size_t resp_size)
-+struct kvm_vtl_call_ctx {
-+	enum vbs_call_id id;
-+	const void	*arg;
-+	size_t		arg_size;
-+	void		*resp;
-+	size_t		resp_size;
-+};
+ vbs-$(CONFIG_VBS_HEKI)		+= heki.o
+ obj-$(CONFIG_VBS_KVM_PLANES)	+= kvm_planes.o
++obj-$(CONFIG_VBS_KVM_PLANES)	+= secure_monitor.o
+ obj-$(CONFIG_VBS_SEV_SNP)	+= sev_snp.o
+ obj-$(CONFIG_VBS_TDX)		+= tdx.o
+ obj-$(CONFIG_VBS_HV_VSM)	+= hv_vsm.o
+diff --git a/security/vbs/secure_monitor.c b/security/vbs/secure_monitor.c
+new file mode 100644
+index 000000000000..c1221ad5019b
+--- /dev/null
++++ b/security/vbs/secure_monitor.c
+@@ -0,0 +1,266 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS secure-plane monitor — in-guest VTL dispatcher
++ *
++ * This is the secure-plane counterpart of the normal-plane kvm_planes
++ * backend.  The SAME kernel image boots as both the normal plane and the
++ * secure plane; when booted as the secure plane (selected via the
++ * "vbs_secure_plane" kernel command-line option) this monitor takes over
++ * and services VTL calls issued by the normal plane.
++ *
++ * "Secure plane" is the highest-privilege plane of the VM (conventionally
++ * plane 1 / VTL1 / VMPL0, but a VM may have up to KVM_MAX_PLANES planes and
++ * the index is not hard-coded here).  "Normal plane" is the requesting,
++ * lower-privilege plane (conventionally plane 0).
++ *
++ * Control flow (all within the normal plane's single KVM_RUN, see
++ * arch/x86/kvm/x86.c ____kvm_emulate_hypercall):
++ *
++ *   normal plane                   KVM                       secure plane
++ *   ------------                   ---                       ------------
++ *   fill calling area
++ *   HC_VBS_VTL_CALL(ca_gpa) ─────▶ switch_plane ───────────▶ resume in
++ *                                  (RAX := ca_gpa)            secmon_vtl_return()
++ *                                                            dispatch(call_id)
++ *                                                            write ca->status
++ *   resume after VTL_CALL ◀─────── switch_plane ◀─────────── HC_VBS_VTL_RETURN(status)
++ *   read ca->status
++ *
++ * Because all planes of a VM share the same memslots (struct kvm_plane has
++ * no memslots of its own; they live in struct kvm), the secure plane sees
++ * the same guest-physical address space as the normal plane and can read
++ * the calling area and the GPAs referenced by each request directly.
++ */
++
++#define pr_fmt(fmt) "vbs-secmon: " fmt
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/kthread.h>
++#include <linux/io.h>
++#include <linux/mm.h>
++#include <linux/types.h>
++#include <linux/errno.h>
++#include <linux/vbs.h>
++#include <linux/kvm_para.h>
++#include <asm/kvm_para.h>
++
++#include "heki.h"
 +
 +/*
-+ * Issue the VTL call hypercall.  MUST run on the BSP (CPU0): KVM switches
-+ * planes per logical CPU (the secure sibling is common->vcpus[1] of the
-+ * *calling* CPU), and the secure plane is a single in-guest kernel that
-+ * boots only on CPU0's sibling.  Driven via work_on_cpu() so the hypercall
-+ * always lands on CPU0 regardless of the caller's CPU.
++ * Shared-memory calling area — must match struct vbs_kvm_ca in kvm_planes.c
++ * (this is the normal-plane <-> secure-plane wire ABI).
++ *
++ *   [ call_pending | call_id | status | arg_size | resp_size | buffer ]
 + */
-+static long kvm_planes_vtl_call_on_cpu(void *data)
- {
--	struct vbs_kvm_ca *ca;
-+	struct kvm_vtl_call_ctx *ctx = data;
-+	struct vbs_kvm_ca *ca = kvm_ca_page;
- 	long hc_ret;
- 
--	if (!kvm_ca_page)
--		return -ENOMEM;
--
--	if (arg_size > VBS_CA_BUF_SIZE)
--		return -E2BIG;
--
--	ca = kvm_ca_page;
--
- 	/* Build request */
--	ca->call_id  = id;
--	ca->arg_size = arg_size;
-+	ca->call_id  = ctx->id;
-+	ca->arg_size = ctx->arg_size;
- 	ca->status   = 0;
- 	ca->resp_size = 0;
--	if (arg_size && arg)
--		memcpy(ca->buffer, arg, arg_size);
-+	if (ctx->arg_size && ctx->arg)
-+		memcpy(ca->buffer, ctx->arg, ctx->arg_size);
- 	ca->call_pending = 1;
- 
- 	/* Issue hypercall: pass physical address of the calling area */
-@@ -97,14 +104,36 @@ static int kvm_planes_vtl_call(enum vbs_call_id id,
- 		return ca->status;
- 
- 	/* Read response from the same buffer */
--	if (resp && resp_size && ca->resp_size) {
--		size_t copy = min_t(size_t, resp_size, ca->resp_size);
-+	if (ctx->resp && ctx->resp_size && ca->resp_size) {
-+		size_t copy = min_t(size_t, ctx->resp_size, ca->resp_size);
- 
--		memcpy(resp, ca->buffer, copy);
-+		memcpy(ctx->resp, ca->buffer, copy);
- 	}
- 	return 0;
- }
- 
-+static int kvm_planes_vtl_call(enum vbs_call_id id,
-+			       const void *arg, size_t arg_size,
-+			       void *resp, size_t resp_size)
++struct vbs_kvm_ca {
++	__u8	call_pending;	/* 1 while call is in flight		*/
++	__u8	rsvd[3];
++	__u32	call_id;	/* enum vbs_call_id (set by caller)	*/
++	__s32	status;		/* return code (set by responder)	*/
++	__u32	arg_size;	/* request payload size			*/
++	__u32	resp_size;	/* response payload size		*/
++	__u8	buffer[];	/* request data in, response data out	*/
++} __packed;
++
++/* Set from the "vbs_secure_plane" kernel command-line option. */
++static bool secmon_active __ro_after_init;
++
++static int __init secmon_setup(char *str)
 +{
-+	struct kvm_vtl_call_ctx ctx = {
-+		.id        = id,
-+		.arg       = arg,
-+		.arg_size  = arg_size,
-+		.resp      = resp,
-+		.resp_size = resp_size,
-+	};
++	secmon_active = true;
++	return 1;
++}
++__setup("vbs_secure_plane", secmon_setup);
 +
-+	if (!kvm_ca_page)
-+		return -ENOMEM;
-+
-+	if (arg_size > VBS_CA_BUF_SIZE)
-+		return -E2BIG;
-+
-+	/* Pin the plane switch to CPU0's secure sibling (the only booted one). */
-+	return work_on_cpu(0, kvm_planes_vtl_call_on_cpu, &ctx);
++/*
++ * Park the secure plane and hand control back to the normal plane.  On the
++ * next VTL call, KVM resumes us here with the calling-area GPA in the
++ * hypercall return value (RAX).  @status is carried for tracing only; the
++ * real result is already in the calling area.
++ */
++static u64 secmon_vtl_return(long status)
++{
++	return kvm_hypercall1(KVM_HC_VBS_VTL_RETURN, (unsigned long)status);
 +}
 +
- /* ── memory protection ────────────────────────────────────────────────── */
- 
- struct vbs_protect_args {
++/*
++ * Apply EPT permissions on a normal-plane GPA range from the secure plane.
++ *
++ * The secure plane cannot issue the host KVM_SET_MEMORY_ATTRIBUTES ioctl,
++ * so it asks KVM to do it via the KVM_HC_VBS_SET_MEM_ATTRS hypercall, which
++ * KVM honours only for a higher-privilege plane.  @perms carries the access
++ * bits the normal plane should retain (VBS_MEM_*); KVM translates a cleared
++ * write/exec bit into NO_WRITE / NO_EXEC memory attributes.
++ */
++static int secmon_apply_attrs(u64 gpa, u64 size, u32 perms)
++{
++	long ret;
++
++	pr_debug("apply_attrs gpa=0x%llx size=0x%llx perms=%c%c%c\n",
++		 gpa, size,
++		 (perms & VBS_MEM_READ)  ? 'r' : '-',
++		 (perms & VBS_MEM_WRITE) ? 'w' : '-',
++		 (perms & VBS_MEM_EXEC)  ? 'x' : '-');
++
++	ret = kvm_hypercall3(KVM_HC_VBS_SET_MEM_ATTRS, gpa, size, perms);
++	if (ret)
++		return (int)ret;
++
++	return 0;
++}
++
++/* ── per-call handlers ────────────────────────────────────────────────── */
++
++static int secmon_do_protect_memory(const void *arg, u32 arg_size)
++{
++	const struct vbs_protect_memory_req *r = arg;
++
++	if (arg_size < sizeof(*r))
++		return -EINVAL;
++
++	return secmon_apply_attrs(r->gpa, r->size, r->perms);
++}
++
++static int secmon_do_seal_kernel(const void *arg, u32 arg_size)
++{
++	const struct vbs_seal_kernel_req *r = arg;
++	int ret;
++
++	if (arg_size < sizeof(*r))
++		return -EINVAL;
++
++	/* Kernel text: read + execute, no write. */
++	ret = secmon_apply_attrs(r->text_gpa, r->text_size,
++				 VBS_MEM_READ | VBS_MEM_EXEC);
++	if (ret)
++		return ret;
++
++	/* Kernel rodata: read only, no write, no execute. */
++	return secmon_apply_attrs(r->rodata_gpa, r->rodata_size,
++				  VBS_MEM_READ);
++}
++
++static int secmon_do_set_module_perms(const void *arg, u32 arg_size)
++{
++	const struct vbs_set_module_perms_req *hdr = arg;
++	const struct vbs_module_section *sec;
++	u32 i, n;
++
++	if (arg_size < sizeof(*hdr))
++		return -EINVAL;
++
++	n = hdr->nr_sections;
++	if (arg_size < sizeof(*hdr) + n * sizeof(*sec))
++		return -EINVAL;
++
++	sec = (const struct vbs_module_section *)(hdr + 1);
++	for (i = 0; i < n; i++) {
++		int ret = secmon_apply_attrs(sec[i].gpa, sec[i].size,
++					     sec[i].perms);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static long secmon_dispatch(u32 call_id, const void *arg, u32 arg_size,
++			    u32 *resp_size)
++{
++	*resp_size = 0;
++
++	switch (call_id) {
++	case VBS_CALL_INIT:
++	case VBS_CALL_SHUTDOWN:
++		return 0;
++
++	case VBS_CALL_PROTECT_MEMORY:
++		return secmon_do_protect_memory(arg, arg_size);
++	case VBS_CALL_SEAL_KERNEL:
++		return secmon_do_seal_kernel(arg, arg_size);
++
++	case VBS_CALL_SET_MODULE_PERMS:
++		return secmon_do_set_module_perms(arg, arg_size);
++
++	/*
++	 * Module/kexec validation and key management are acknowledged for
++	 * now (mirroring the previous userspace dispatcher); real signature
++	 * verification runs here in a later stage.
++	 */
++	case VBS_CALL_VALIDATE_MODULE:
++	case VBS_CALL_UNLOAD_MODULE:
++	case VBS_CALL_ADD_KEY:
++	case VBS_CALL_REVOKE_KEY:
++	case VBS_CALL_SEND_CERTS:
++	case VBS_CALL_KEXEC_VALIDATE:
++	case VBS_CALL_KEXEC_INVALIDATE:
++		return 0;
++
++	default:
++		pr_warn_ratelimited("unknown call_id 0x%x\n", call_id);
++		return -ENOSYS;
++	}
++}
++
++/* ── monitor loop ─────────────────────────────────────────────────────── */
++
++static int secmon_monitor_fn(void *unused)
++{
++	long status = 0;
++
++	pr_info("secure monitor started\n");
++
++	for (;;) {
++		struct vbs_kvm_ca *ca;
++		u64 ca_gpa;
++		u32 call_id, arg_size, resp_size = 0;
++
++		/* Park; resume with the next request's calling-area GPA. */
++		ca_gpa = secmon_vtl_return(status);
++		if (!ca_gpa) {
++			status = -EINVAL;
++			continue;
++		}
++
++		ca = memremap(ca_gpa, PAGE_SIZE, MEMREMAP_WB);
++		if (!ca) {
++			pr_err_ratelimited("failed to map calling area 0x%llx\n",
++					   ca_gpa);
++			status = -EFAULT;
++			continue;
++		}
++
++		call_id  = ca->call_id;
++		arg_size = ca->arg_size;
++		if (arg_size > PAGE_SIZE - sizeof(*ca))
++			arg_size = PAGE_SIZE - sizeof(*ca);
++
++		status = secmon_dispatch(call_id, ca->buffer, arg_size,
++					 &resp_size);
++
++		ca->status    = (s32)status;
++		ca->resp_size = resp_size;
++
++		memunmap(ca);
++	}
++
++	return 0;
++}
++
++static int __init secmon_init(void)
++{
++	struct task_struct *t;
++
++	if (!secmon_active)
++		return 0;
++
++	t = kthread_run(secmon_monitor_fn, NULL, "vbs-secmon");
++	if (IS_ERR(t)) {
++		pr_err("failed to start secure monitor: %ld\n", PTR_ERR(t));
++		return PTR_ERR(t);
++	}
++
++	return 0;
++}
++late_initcall(secmon_init);
 -- 
 2.55.0
 
