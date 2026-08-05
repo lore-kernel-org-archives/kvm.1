@@ -1,117 +1,175 @@
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C59A4248B7;
-	Wed,  5 Aug 2026 13:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDDF2D6E5C
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 14:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785938355; cv=none; b=Jp+sasILZd09iUnboHWYEAg+I1ZN8F4bW/ZJasYyejIAigHvTKW8wXBwkBRtQV/Qud+C4rBhgmL8oTKpeqBb2zWrMZGvkE/KbLzappT4xJtcRZp9iztsvcYC/M8bnyheOH/3NugF75NNmXsc4yZ7hzQ79S6/Tuz/whV5E/9mWUI=
+	t=1785938492; cv=none; b=XOdE8YvcO+YBsqQSy7OSB2h4VOn8MHyXtmKs0JIAmHCOuWISk/ZSwRQ6t7t9HeAnQ95SH93JBN0UivvwG8GdIMofXXy7Qc4JW9EcMgPITfgbKkl7+N1uyN4jr+tSZgHOOnmM8HU/t6s0GlkvkFPXjgnX8uKshdk78ea69a8YUss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785938355; c=relaxed/simple;
-	bh=nZCWmFKl3LfWD6TOgQV63DvFZ0w2b2tqc7cSKVYPHH0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sUlZbITZ5u+ijAZ5tI/1dz4aXAYhRBiYE9tuZhCttr1zFxjn0+r9ceD8cM0UPdhH1IX1SI4AJpme8Cla1x0eQD7tsOCgrk0RO1Bt3wj4Ksn+af+RfoZ5mM2aT0kcyuK555p3chF6LerhXWpiCUUe75ZYMH35f61exGDNToq40Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=b95gvb2T; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="b95gvb2T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1785938349;
-	bh=8ZKev4Gomd2h4BZnMddpS4sItcYMIlEiLKSOtv/oACM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b95gvb2TP5dDfbztGLQkGg1Hsi8rixtPTT0hgwmZ9XUcMkRJ8rigLdQSh4aWOCfdz
-	 CIaOEgN96ojAF6jurM7yvXzvVQU/1+RpADhFufOUReH1qGjfq0lq04b1RpH9Hq53g9
-	 Bq/ZXpW7qGfEakb2jw486rve0G81KGFJ2WTLNDNY9VdrPfsF3pwhUI4dWbKghdUoc/
-	 +Vbe7vL7l61WpF3dThn7HKcDkusFrazYFY9/DzmJ0FAPmEP6+pHL/y2bqvQnwfVPZZ
-	 ZUgFQ5FVBqPGLymqLUrR+qUuR4smm3aE/seJs/rp5Z0JTLhuDFvl18wUnTFH83wK3e
-	 /MMTQALaNga0w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hFX836TVwz4w23;
-	Wed, 05 Aug 2026 23:58:59 +1000 (AEST)
-Message-ID: <a0e71704-074a-415c-b910-d4e8b623874e@ozlabs.org>
-Date: Wed, 5 Aug 2026 14:58:55 +0100
+	s=arc-20240116; t=1785938492; c=relaxed/simple;
+	bh=k2fhYxdCRfpecQ2myWXJI5lz9KYdQfTTJ3HbH5BTX4s=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=g3gOzSed3KSA8OXO5XTwZ7GoJXaGyM5XE3t+AKFk54KwSCB46fxaSTsusOitZ21/G9Aa74vGXFTYkCt1kL8KXed1HMVOFe1JwggPMpd7lKALblq1o1OqCPsFdDn8UD2Nd8jod8tcJbjR+EgoEsPLgKyoPaaKgyuu4DCcJYcNdJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e9fdc2870fso563381a34.2
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 07:01:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785938489; x=1786543289;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=0QdrHkt5hZY2NWnOKDR/D0JaMn6oDghAXHp9WeWqdoU=;
+        b=ABgtXtBvQth/DxqsOH7eGWux5PWEJ1q03U8gHgNcrASMEPnvCEgDEwSv6yjFiodvcC
+         jMI4a9PQUISifRjcD8+GbeKfCgnMNC8mLflJeeChBNrbnJlOXS3IyGFBqfMQdnhiBlNN
+         9A0X1la7dkYHPGuWqWU8j+22nfX6CVUEiKJyJChZbpX6zgyGI6sUdf16lLM6A7QtDwc/
+         bQtRzF/4V4r7B/9rK3vGMClKpasiAfoEPHN1PBuYdMpJoayuSP2x/kKNPSbaogkC6/MD
+         jTnM56UlmNFwaESZB4nEkzomo6YJQlIOZjbW0x+XNZrP2pDX9aWvZys6KWBl9azaZLBS
+         eaJg==
+X-Forwarded-Encrypted: i=1; AHgh+RodtI/hG8H7rq8w+a1a9p6pS7hyGlXV6dgDz82j+pk+uXaNir7y1/AQGGEtMIxq05ec5MI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFqwrPJb6rh4I6x5RJ3rmgeQhYT6UGiqk0Nhy+36eLZb4TSz1N
+	Ll+F4xOCcZ8CTzdIyMW/YOaPSnj70v1GUWXf3cRDWf4EEjo9knPq35l7aaRkbmRhDRWrOqww5Of
+	Aam48EvS9oNuIEyX5Xx2cRmr5EQsa5wJr0Gy1U1Ag4/rQu6RAxxElgcTyaxk=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] vfio/pci: Clean up BAR zap and revocation
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Kevin Tian <kevin.tian@intel.com>,
- Pranjal Shrivastava <praan@google.com>, Longfang Liu
- <liulongfang@huawei.com>, Mahmoud Adam <mngyadam@amazon.de>,
- David Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Ankit Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260715174737.15287-1-matt@ozlabs.org>
- <20260715174737.15287-8-matt@ozlabs.org>
- <20260729115204.2a9a50b2@shazbot.org>
- <6a964960-722c-44b5-837d-9d582aeb0a3c@ozlabs.org>
- <20260804141022.71b6429d@shazbot.org>
-From: Matt Evans <matt@ozlabs.org>
-In-Reply-To: <20260804141022.71b6429d@shazbot.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a4a:e841:0:b0:6a3:8738:4106 with SMTP id
+ 006d021491bc7-6ae96f22d3fmr3721052eaf.26.1785938489456; Wed, 05 Aug 2026
+ 07:01:29 -0700 (PDT)
+Date: Wed, 05 Aug 2026 07:01:29 -0700
+In-Reply-To: <6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a734239.d1b4d54b.5552d.001c.GAE@google.com>
+Subject: Re: [syzbot] [kvm?] [kvm-x86?] KASAN: use-after-free Read in kvm_xen_shared_info_init
+From: syzbot <syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com>
+To: aha310510@gmail.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	dwmw2@infradead.org, dwmw@amazon.co.uk, halves@igalia.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	paul@xen.org, pbonzini@redhat.com, pdurrant@amazon.com, seanjc@google.com, 
+	souradiptodas6@gmail.com, stable@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, tglx@kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Alex,
+syzbot has found a reproducer for the following issue on:
 
-On 04/08/2026 21:10, Alex Williamson wrote:
-> On Thu, 30 Jul 2026 15:47:13 +0100
-> Matt Evans <matt@ozlabs.org> wrote:
-> 
->> Hi Alex,
->>
->> On 29/07/2026 18:52, Alex Williamson wrote:
->>> On Wed, 15 Jul 2026 18:47:30 +0100
->>> Matt Evans <matt@ozlabs.org> wrote:  
->>>> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
->>>> index 9a1674c152aa..e2b4252e7c3f 100644
->>>> --- a/include/linux/vfio_pci_core.h
->>>> +++ b/include/linux/vfio_pci_core.h
->>>> @@ -134,6 +134,7 @@ struct vfio_pci_core_device {
->>>>  	bool			pm_intx_masked;
->>>>  	bool			pm_runtime_engaged;
->>>>  	bool			sriov_active;
->>>> +	bool			zap_bars_on_revoke;
->>>>  	struct pci_saved_state	*pci_saved_state;
->>>>  	struct pci_saved_state	*pm_save;
->>>>  	int			ioeventfds_nr;  
->>>
->>> This should be in the bitfield usage group since it's only modified at
->>> init time.  
->>
->> This was intentional, but happy to change it if you're certain ofc.  Is
->> it inconceivable that a sub-driver could set it after init?  I'd say
->> they _shouldn't_, but only review will stop them and this placement
->> intended to be cautious.  It seemed a low cost way to avoid issues
->> around synchronisation on the bitfield.
-> 
-> I'd agree with the statement that they shouldn't, it would be difficult
-> to synchronize setting the flag once there are any active mappings of
-> the BARs.  Also, if we put it in the bitfield category under the
-> comment that the value is only modified at setup/release, it documents
-> the intentions, hopefully to the extent the author or reviewers notice.
-> An argument can always be made to change it if there's a worthwhile use
-> case.  Thanks,
+HEAD commit:    c21bb4193868 Merge tag 'for_linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12ceecc6580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=145fa60d73086782
+dashboard link: https://syzkaller.appspot.com/bug?extid=0948c82180d475ad24e2
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16080e49580000
 
-Okay, book removed in favour of bit.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
 
-Thanks,
+==================================================================
+BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x3c6/0x440 arch/x86/kvm/xen.c:90
+Read of size 4 at addr ffff8880719c4900 by task syz.4.159/7379
+
+CPU: 0 UID: 0 PID: 7379 Comm: syz.4.159 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x13d/0x4b0 mm/kasan/report.c:482
+ kasan_report+0xdf/0x1c0 mm/kasan/report.c:595
+ kvm_xen_shared_info_init+0x3c6/0x440 arch/x86/kvm/xen.c:90
+ kvm_xen_hvm_set_attr+0xcef/0x16a0 arch/x86/kvm/xen.c:806
+ kvm_arch_vm_ioctl+0x2a0/0x18d0 arch/x86/kvm/x86.c:7514
+ kvm_vm_ioctl+0x1560/0x4180 virt/kvm/kvm_main.c:5381
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f11c5d9e019
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f11c6d15028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f11c6026090 RCX: 00007f11c5d9e019
+RDX: 0000200000000840 RSI: 000000004048aec9 RDI: 0000000000000004
+RBP: 00007f11c5e3500c R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f11c6026128 R14: 00007f11c6026090 R15: 00007ffd79c7b7b8
+ </TASK>
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xe pfn:0x719c4
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+raw: 00fff00000000000 ffffea0001865f08 ffff8880b84414b0 0000000000000000
+raw: 000000000000000e 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as freed
+page last allocated via order 0, migratetype Movable, gfp_mask 0x140cca(GFP_HIGHUSER_MOVABLE|__GFP_COMP), pid 7379, tgid 7374 (syz.4.159), ts 201002456742, free_ts 201021576054
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0xfd/0x120 mm/page_alloc.c:1859
+ prep_new_page mm/page_alloc.c:1867 [inline]
+ get_page_from_freelist+0xf48/0x3530 mm/page_alloc.c:3946
+ __alloc_frozen_pages_noprof+0x299/0x2dc0 mm/page_alloc.c:5304
+ alloc_pages_mpol+0x1fb/0x540 mm/mempolicy.c:2490
+ folio_alloc_mpol_noprof+0x36/0x260 mm/mempolicy.c:2509
+ shmem_alloc_folio+0x135/0x160 mm/shmem.c:1917
+ shmem_alloc_and_add_folio+0x371/0xd40 mm/shmem.c:1959
+ shmem_get_folio_gfp+0x6ad/0x1910 mm/shmem.c:2512
+ shmem_fault+0x1f9/0xa20 mm/shmem.c:2713
+ __do_fault+0x10b/0x440 mm/memory.c:5425
+ do_shared_fault mm/memory.c:5924 [inline]
+ do_fault+0x2db/0x1750 mm/memory.c:5998
+ do_pte_missing mm/memory.c:4566 [inline]
+ handle_pte_fault mm/memory.c:6379 [inline]
+ __handle_mm_fault+0x187d/0x2a00 mm/memory.c:6517
+ handle_mm_fault+0x37b/0xa30 mm/memory.c:6686
+ faultin_page mm/gup.c:1126 [inline]
+ __get_user_pages+0x1178/0x32a0 mm/gup.c:1428
+ __get_user_pages_locked mm/gup.c:1752 [inline]
+ get_user_pages_unlocked+0x30a/0x7d0 mm/gup.c:2681
+ hva_to_pfn_slow virt/kvm/kvm_main.c:2903 [inline]
+ hva_to_pfn+0x871/0xd60 virt/kvm/kvm_main.c:2999
+page last free pid 7379 tgid 7374 stack trace:
+ reset_page_owner include/linux/page_owner.h:25 [inline]
+ __free_pages_prepare mm/page_alloc.c:1406 [inline]
+ __free_frozen_pages+0x79f/0x1090 mm/page_alloc.c:2950
+ __folio_put+0x3b4/0x5f0 mm/swap.c:112
+ folio_put include/linux/mm.h:2124 [inline]
+ put_page include/linux/mm.h:2193 [inline]
+ kvm_release_page_clean virt/kvm/kvm_main.c:2813 [inline]
+ kvm_release_page_clean+0x1dc/0x250 virt/kvm/kvm_main.c:2807
+ hva_to_pfn_retry virt/kvm/pfncache.c:246 [inline]
+ __kvm_gpc_refresh+0x1a63/0x22d0 virt/kvm/pfncache.c:330
+ __kvm_gpc_activate+0x2ab/0x490 virt/kvm/pfncache.c:424
+ kvm_gpc_activate_hva+0x73/0xa0 virt/kvm/pfncache.c:444
+ kvm_xen_hvm_set_attr+0x395/0x16a0 arch/x86/kvm/xen.c:798
+ kvm_arch_vm_ioctl+0x2a0/0x18d0 arch/x86/kvm/x86.c:7514
+ kvm_vm_ioctl+0x1560/0x4180 virt/kvm/kvm_main.c:5381
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x115/0x870 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Memory state around the buggy address:
+ ffff8880719c4800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8880719c4880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+>ffff8880719c4900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ^
+ ffff8880719c4980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff8880719c4a00: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+==================================================================
 
 
-Matt
-
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
