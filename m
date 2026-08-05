@@ -1,235 +1,105 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C4C30D411;
-	Wed,  5 Aug 2026 01:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2851E3A4F50
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 01:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785893272; cv=none; b=dEfvez68Nde+gg0lFAdzzStmJPuWrDcwFVjPtqVEkbe5UpX6gU6kPY8ADMcF2l03FfZnrQyqZ3p7sr35nKhvNPcdhz0tjARO66G7Nzv63PAmflNfnlJU7BPF7XpAStjcJ48amF64L273NCcT0dDOb76ajLkW7G97svksN7CKKRs=
+	t=1785895056; cv=none; b=Wb4VNFBcU91oLg0lZBP9Nka/rvbsS/lLhYn1o0trwqANe5EVcvdFyNY6FzSPaMeyNlVPSvdphIRXmkEb18hJoP+PvWbn8vH42S4qI6MOUkGaEdyisgq3eaj392vla681gS+m2m3COwgeiJDibcO0jaNtu1G+zaeA/3DzQZA5g8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785893272; c=relaxed/simple;
-	bh=1izKDZa6CBNAdcPTLXZ+l4YWWX/NparFEpEs1Qbxgys=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=C+izc8JWjuvmsIImMtHZU+Gy+FnhXZe0UjR1qYyWRt4vWJFf4W16TEVBFq21FaAdm6aM1cRqPGwtdWJB0lZBad/wNmNUXPvQ8gtg+L9+X+n2dUu7/N0Sc4mzKr1nDVLzlOgtDldFPyxiUocahtwzVz3TFgRDLUe5535/PAWQ+7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8CxzKGUkXJqu30KAA--.10944S3;
-	Wed, 05 Aug 2026 09:27:48 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxb8eTkXJqGiEkAA--.1184S2;
-	Wed, 05 Aug 2026 09:27:47 +0800 (CST)
-Subject: Re: [PATCH 1/6] LoongArch: KVM: Add vmid support for stage2 MMU
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, WANG Xuerui <kernel@xen0n.name>,
- Arnd Bergmann <arnd@arndb.de>, Xi Ruoyao <xry111@xry111.site>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260727072109.2151675-1-maobibo@loongson.cn>
- <20260727072109.2151675-2-maobibo@loongson.cn>
- <CAAhV-H6sEXa6XM-4=OTuPw=gNKgVxC7ZwqO6T-F81pvt_gBN8Q@mail.gmail.com>
- <dc67eb43-adb2-c26b-a54f-ccd52ce910eb@loongson.cn>
- <CAAhV-H7C+NbBOWtypwaLrn5Ehc6kv=W2jABz=r4O941QjAWhvQ@mail.gmail.com>
- <ba9ef849-65c7-b377-e5f5-9c6ca4a712c7@loongson.cn>
-Message-ID: <6fe4816a-5b78-3d58-cb7b-3ac817791104@loongson.cn>
-Date: Wed, 5 Aug 2026 09:27:31 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1785895056; c=relaxed/simple;
+	bh=TzNCLU6iZoJ9RIkpyqTkubtXhiHs02wHdvoMIBwwk5o=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=uFYh3PpQvJUuZlS+LU5r9/2Fp1uNOaJLtqi4pqn4uvyfxPyKA+fEodKI6OW/E2mxVWifzJxfcJd17fMSgsnTqADR4TeOZK52S5CtjsWdeEH4hfSA0m+WSed/EN0rTqRjhy5zKP1MfH+dvZg+rgasdRRWQq55xOn/Vc9CSMhDsNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kq243A5P; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kq243A5P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6D31F00A3A;
+	Wed,  5 Aug 2026 01:57:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785895054;
+	bh=Nuzc2n+QIRveMvSIonts8BKS+TdA8T+fmX//3YggpMs=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Kq243A5PbsvoNE2TPXdnCPn5ypD6WiyPv8iXKwDg0RKMJP6AVDVuQFt87S35X+SgC
+	 SDgIhJ+vdIsRUPU0wXdJVaJck4tHnC0U9TBKXOKwkv0LIv5UixjOcdihXcffODz/2P
+	 geiBB6GSWvpZ7BC0SwCt1wbKN7zyAHnD5MLVwWl0oPum7+dzhf7XwhD21FRv2UrlCY
+	 7lj7FTGWxGrSadnblxM4Z9GRowNPbk5lHELhLhG3d51dj3QyjuxjBVuDwCp7IREuWC
+	 uXiyv5hEUcmZXFV/daZSv06lMKtiaiUgT1hiibEdtXvkXDST5x8+wvPqGERJGIGwX0
+	 xEuKcREe1VfTQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH net-next v14 1/5] tun/tap: add IFF_BACKPRESSURE flag
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Simon Schippers" <simon.schippers@tu-dortmund.de>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260803183641.96882-2-simon.schippers@tu-dortmund.de>
+References: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
+ <20260803183641.96882-2-simon.schippers@tu-dortmund.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 05 Aug 2026 01:57:33 +0000
+Message-Id: <20260805015734.9D6D31F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <ba9ef849-65c7-b377-e5f5-9c6ca4a712c7@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxb8eTkXJqGiEkAA--.1184S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxKrWxWFW5WrWUJw4UXF48Xwc_yoW3Gr4xpr
-	ykAF1kJrWrGr1kJ34jqw18Xryjqr1UKw1UXr18JFy8JrsFqF1jqr48WryqgF15Jw4rJF10
-	qr15Jr17ZF4UJwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
-	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jw0_GFylx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4Xo7DUUUU
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
+Pre-existing issues:
+- [High] UAPI Bit Collision between IFF_NO_PI and IFF_NOFILTER causes silen=
+t failure to re-attach socket filters.
+--
 
-On 2026/8/5 上午9:21, Bibo Mao wrote:
-> 
-> 
-> On 2026/8/4 下午10:14, Huacai Chen wrote:
->> On Mon, Aug 3, 2026 at 9:21 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>>
->>>
->>>
->>> On 2026/8/2 下午10:11, Huacai Chen wrote:
->>>> Hi, Bibo,
->>>>
->>>> On Mon, Jul 27, 2026 at 3:29 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>>>>
->>>>> LoongArch KVM hypervisor supports two-level MMU, vpid index is used
->>>>> for stage1 MMU and vmid index is used for stage2 MMU.
->>>>>
->>>>> On 3A5000, vmid must be the same with vpid. On 3A6000 platform vmid
->>>>> may separate from vpid. If vcpu migrate to different physical CPUs,
->>>>> vpid need change however vmid can keep the same with old value. Also
->>>>> vmid index of the while VM machine on physical CPU the same, all vCPUs
->>>>> on the VM can share the same vmid index on one physical CPU.
->>>>>
->>>>> Here vmid index is added and it keeps the same with vpid still.
->>>>>
->>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
->>>>> ---
->>>>>    arch/loongarch/include/asm/kvm_host.h | 3 +++
->>>>>    arch/loongarch/kernel/asm-offsets.c   | 1 +
->>>>>    arch/loongarch/kvm/main.c             | 1 +
->>>>>    arch/loongarch/kvm/switch.S           | 5 ++---
->>>>>    arch/loongarch/kvm/tlb.c              | 5 ++++-
->>>>>    5 files changed, 11 insertions(+), 4 deletions(-)
->>>>>
->>>>> diff --git a/arch/loongarch/include/asm/kvm_host.h 
->>>>> b/arch/loongarch/include/asm/kvm_host.h
->>>>> index 23cfbecebbd7..ec7b0c402385 100644
->>>>> --- a/arch/loongarch/include/asm/kvm_host.h
->>>>> +++ b/arch/loongarch/include/asm/kvm_host.h
->>>>> @@ -189,6 +189,9 @@ struct kvm_vcpu_arch {
->>>>>           unsigned long host_tp;
->>>>>           unsigned long host_pgd;
->>>>>
->>>>> +       /* vmid info for guest VM */
->>>>> +       unsigned long vmid;
->>>> Put it near vpid?
->>> yes, it it better to near vpid. will do this.
->>>>
->>>>> +
->>>>>           /* Host CSRs are used when handling exits from guest */
->>>>>           unsigned long badi;
->>>>>           unsigned long badv;
->>>>> diff --git a/arch/loongarch/kernel/asm-offsets.c 
->>>>> b/arch/loongarch/kernel/asm-offsets.c
->>>>> index 1b861cbc5e10..32ef6adfc8dd 100644
->>>>> --- a/arch/loongarch/kernel/asm-offsets.c
->>>>> +++ b/arch/loongarch/kernel/asm-offsets.c
->>>>> @@ -300,6 +300,7 @@ static void __used output_kvm_defines(void)
->>>>>           OFFSET(KVM_ARCH_HSP, kvm_vcpu_arch, host_sp);
->>>>>           OFFSET(KVM_ARCH_HTP, kvm_vcpu_arch, host_tp);
->>>>>           OFFSET(KVM_ARCH_HPGD, kvm_vcpu_arch, host_pgd);
->>>>> +       OFFSET(KVM_ARCH_VMID, kvm_vcpu_arch, vmid);
->>>>>           OFFSET(KVM_ARCH_KVMPGD, kvm_vcpu_arch, kvm_pgd);
->>>>>           OFFSET(KVM_ARCH_HANDLE_EXIT, kvm_vcpu_arch, handle_exit);
->>>>>           OFFSET(KVM_ARCH_HEENTRY, kvm_vcpu_arch, host_eentry);
->>>>> diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
->>>>> index 3e1005526f4b..6e3e8efa1dc2 100644
->>>>> --- a/arch/loongarch/kvm/main.c
->>>>> +++ b/arch/loongarch/kvm/main.c
->>>>> @@ -223,6 +223,7 @@ static void kvm_update_vpid(struct kvm_vcpu 
->>>>> *vcpu, int cpu)
->>>>>
->>>>>           context->vpid_cache = vpid;
->>>>>           vcpu->arch.vpid = vpid;
->>>>> +       vcpu->arch.vmid = vcpu->arch.vpid & vpid_mask;
->>>>
->>>> I think both vpid and vmid need "& vpid_mask".
->>> vpid used in function kvm_check_vcpuid() includes version information
->>> also. vmid here is hardware id directly used by LOONGARCH_CSR_GTLBC in
->>> arch/loongarch/kvm/switch.S.
->> I'm not sure, but it seems both vpid and vmid have a sw version and a
->> hw version? The hw version will be written into register so its width
->> is limited, while the sw version is 64bit. If I'm right, I think the
-> yes, it is.
-> 
->> "& vpid_mask" is only used when writing registers, in other places
->> they are full 64bit (in other words, they need the same treatment).
-> If vmid includes version, it requires one extra shift operation when 
-> writing to real HW in file arch/loongarch/kvm/switch.S.
-> -       /* Mix GID and RID */
-> -       csrrd           t1, LOONGARCH_CSR_GSTAT
-> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, 
-> CSR_GSTAT_GID_SHIFT
-> +       /* Set VMID for gpa --> hpa mapping */
-> +       ld.d            t1, a2, KVM_ARCH_VMID
->           csrrd           t0, LOONGARCH_CSR_GTLBC
->           bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END,
-> 
-> vpid is per-vcpu and it is represented with *vcpu->arch.vpid*, vmid is 
-> per-vm,it is shared by vCPUs and represented with 
-> *vcpu->kvm->arch.vmid[cpu]*. Instead arch.vmid is special for HW 
-> register writing with LOONGARCH_CSR_GTLBC, if there is misleading, how 
-> about renaming it with hw_vmid?
-hw_vmid is strange, I am ok with vmid with version information, so that 
-the name is clear, one shift assemble code is not too much. Will change 
-in the next version.
+--- Patch [1]: [PATCH net-next v14 1/5] tun/tap: add IFF_BACKPRESSURE flag =
+---
+commit a863b69cf20b684debe10f1f06a9f4273abcd009
+Author: Simon Schippers <simon.schippers@tu-dortmund.de>
 
-Regards
-Bibo Mao
-> 
-> Regards
-> 
-> 
->>
->> Huacai
->>
->>>
->>> Regards
->>> Bibo Mao
->>>>
->>>>
->>>> Huacai
->>>>
->>>>>    }
->>>>>
->>>>>    void kvm_check_vpid(struct kvm_vcpu *vcpu)
->>>>> diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
->>>>> index 936e4ae3e408..af972394fd55 100644
->>>>> --- a/arch/loongarch/kvm/switch.S
->>>>> +++ b/arch/loongarch/kvm/switch.S
->>>>> @@ -66,9 +66,8 @@
->>>>>           ld.d    t0, a2, KVM_ARCH_KVMPGD
->>>>>           csrwr   t0, LOONGARCH_CSR_PGDL
->>>>>
->>>>> -       /* Mix GID and RID */
->>>>> -       csrrd           t1, LOONGARCH_CSR_GSTAT
->>>>> -       bstrpick.w      t1, t1, CSR_GSTAT_GID_SHIFT_END, 
->>>>> CSR_GSTAT_GID_SHIFT
->>>>> +       /* Set VMID for gpa --> hpa mapping */
->>>>> +       ld.d            t1, a2, KVM_ARCH_VMID
->>>>>           csrrd           t0, LOONGARCH_CSR_GTLBC
->>>>>           bstrins.w       t0, t1, CSR_GTLBC_TGID_SHIFT_END, 
->>>>> CSR_GTLBC_TGID_SHIFT
->>>>>           csrwr           t0, LOONGARCH_CSR_GTLBC
->>>>> diff --git a/arch/loongarch/kvm/tlb.c b/arch/loongarch/kvm/tlb.c
->>>>> index ebdbe9264e9c..38daf936021d 100644
->>>>> --- a/arch/loongarch/kvm/tlb.c
->>>>> +++ b/arch/loongarch/kvm/tlb.c
->>>>> @@ -23,7 +23,10 @@ void kvm_flush_tlb_all(void)
->>>>>
->>>>>    void kvm_flush_tlb_gpa(struct kvm_vcpu *vcpu, unsigned long gpa)
->>>>>    {
->>>>> +       unsigned int vmid;
->>>>> +
->>>>>           lockdep_assert_irqs_disabled();
->>>>>           gpa &= (PAGE_MASK << 1);
->>>>> -       invtlb(INVTLB_GID_ADDR, read_csr_gstat() & CSR_GSTAT_GID, 
->>>>> gpa);
->>>>> +       vmid = (vcpu->arch.vmid << CSR_GSTAT_GID_SHIFT) & 
->>>>> CSR_GSTAT_GID;
->>>>> +       invtlb(INVTLB_GID_ADDR, vmid, gpa);
->>>>>    }
->>>>> -- 
->>>>> 2.39.3
->>>>>
->>>
+tun/tap: add IFF_BACKPRESSURE flag
 
+This commit adds the IFF_BACKPRESSURE flag to the TUN/TAP UAPI headers.
+The flag acts as an opt-in switch for qdisc backpressure logic.
+
+> diff --git a/include/uapi/linux/if_tun.h b/include/uapi/linux/if_tun.h
+> index 79d53c7a1ebdc..a0ddc50a75342 100644
+> --- a/include/uapi/linux/if_tun.h
+> +++ b/include/uapi/linux/if_tun.h
+> @@ -69,6 +69,10 @@
+>  #define IFF_NAPI_FRAGS	0x0020
+>  /* Used in TUNSETIFF to bring up tun/tap without carrier */
+>  #define IFF_NO_CARRIER	0x0040
+> +/* Stop the queue instead of dropping when the internal ring is full, so=
+ an
+> + * attached qdisc applies backpressure instead of being bypassed.
+> + */
+> +#define IFF_BACKPRESSURE	0x0080
+>  #define IFF_NO_PI	0x1000
+
+[Severity: High]
+This is a pre-existing issue, but I noticed that IFF_NO_PI shares the same =
+bit
+value (0x1000) as IFF_NOFILTER in this header.
+
+Does this bit collision cause a silent failure when re-attaching socket fil=
+ters
+on persistent TUN/TAP devices?
+
+When userspace creates a persistent device and sets IFF_NO_PI, and later
+re-attaches to it via TUNSETIFF, tun_set_iff() in drivers/net/tun.c evaluat=
+es
+the flags:
+
+		err =3D tun_attach(tun, file, ifr->ifr_flags & IFF_NOFILTER,
+				 ifr->ifr_flags & IFF_NAPI,
+				 ifr->ifr_flags & IFF_NAPI_FRAGS, true);
+
+Since ifr_flags & IFF_NOFILTER matches IFF_NO_PI (0x1000), it seems this wo=
+uld
+pass skip_filter =3D true to tun_attach(), silently bypassing the BPF filte=
+rs.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260803183641.9688=
+2-1-simon.schippers@tu-dortmund.de?part=3D1
