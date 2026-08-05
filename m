@@ -1,45 +1,61 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3232B3DBD51;
-	Wed,  5 Aug 2026 09:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6333FB7DD;
+	Wed,  5 Aug 2026 09:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785921125; cv=none; b=mGTqMEeHc5w5AetbGNte7vp1pnyOcupu0Ck+u1u41lH8/zbFmIfjnPaPUfimVOBmUeLXH9IflyS0Jfeu0fodTJZtCSzvRtw6HE9zD83linzBx/U5Nvo18G7hmexF5EmW3NHWKx0zQDm6VwKcttrVp17o1A3XEfVSYH7fvAD3w9k=
+	t=1785922290; cv=none; b=exS1nuKMppyrblyxCHaAepSbigLldY5LwXsDZc0P4GXjoYSh/WdNRVgtd7j9RuF3kotVAN1oZHlNrxcQ7DXrzO9Ogc5DjDirA4ySHLYt+/LC9Bg0GhPrvGZcP8c7uNkE/et55wnOsj/9xdBOrV+gcHGmM3ZnJSFBzxs8zIDozlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785921125; c=relaxed/simple;
-	bh=LGtnwH2uUkVEkSBaFSZmZrbbGvm04tqW3pIP5EY2BQs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:Content-Type:
-	 MIME-Version; b=EnW1OcNa7zEekK7kJtNaCgaqvimc/s0Tz5G7Wxi3VMj83tLdnny6h4tk4Bs8eoi1xW8nPDnsUPMD4nvbZynxZP3ywfw6hXklqiRPyR2+RXvlsyUAqNpgAtkry2zJRs7/DOgL4IkYyzhycTGmncgqgnK1WWt7C/6HXsgbTRHbv2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lUtnuMg4; arc=none smtp.client-ip=90.155.50.34
+	s=arc-20240116; t=1785922290; c=relaxed/simple;
+	bh=FVYv55IBEwcQrHQ6rs2iggdCKCYsB3hRc6patjAnlnY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uemFjbD9qtGRlalxm0D7JL+4tng6U+9NhO/vHj9hFPFh2luq7DTGI3EscwJddU1KDvI5LJFRJWSIdgA9hMOMB9TXTEDTp+H5wQghAimLdTudnSCvfevAB6LA9SO9UmqRl7GehdxYb92gds5iLjcr5Hu0Gb1enKNNvIA40hS61qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jhXinj0C; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lUtnuMg4"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jhXinj0C"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:In-Reply-To:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=CGjM2GzhKurM2X2fdPCSVCB4H6j9EApYt5Ds+P4svwI=; b=lUtnuMg4VrJh0x3Q3f7G+1Vkfm
-	k2U2OyOHkzVuB90FcyLxbPZY2F9i1Vrh2R7uE6qsRVEZGsCzjiuzaeJPbTCYhXwJ6Clz7EiXnzQke
-	vSs7E5vwFC2bNY0V6UkOcR1CUTMsiNAv1xx/OPMgUjpF5FWopCrR0bJVCk09PQb3aMEI2g1xqwcxf
-	wN1UD7iDunIUkRhZFRnXgPauSrJXs86dXtBED7HI7bCjq+adIQgiVbahpGLfIg8fKw7pPbKh/+Y9S
-	q4GuSnIQP0KziyWg+kbyrzHoYKK4gq+2wdeMykhQ2DU4TOnLefsARFexw1AsI7hJdimivcJwweNya
-	/6Imv78g==;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HCP6mO+wKKfIvYSWgV3yoR0hiLYWZQCLwXNtJuiZRtM=; b=jhXinj0CchuihGOKOsi5MD6O4W
+	u+At7TWxLwHWZ3B6/Gu53v8QbU8MF7wc6mubv18a/7llwgDbUTK4o2l9pTEoKzPZNxhTsp6IXYZW1
+	34UGn9+6hCOBNkXnyllVTAVvqzrbK+MenGznX5Z0AV05Ovwzahhsd6cWVADXSH0PVimAwVsMynMRO
+	YxxdS+qtR/HRGBrYoZb9ggUG1LsPb5CWp4Iakz1AAyal6SuzahPza41YtGfgUOVcif/6dpbEAOvak
+	3B3cNx4fYOe2YP8o3Ys98BjnwUBBl1f72Q+qSLeDu4q7aLEvOBMBFnNSuJyNNxs6SSOuQnLvns6q3
+	Vo6/Hqmg==;
 Received: from [2a07:aa00:8c:e0:2ef0:7ea2:4f15:3280] (helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrXf1-00000000igw-1blK;
-	Wed, 05 Aug 2026 09:11:40 +0000
-Message-ID: <88a9c8a0ccd2268216b9ac7af708cd2d7ad1a986.camel@infradead.org>
-Subject: Re: [PATCH v8 04/17] KVM: x86: Activate master clock immediately on
- vCPU creation
+	id 1wrXtU-00000001ABs-2rNZ;
+	Wed, 05 Aug 2026 09:26:38 +0000
+Message-ID: <38e16d4386a5ca428366a55ffa83ab34e0e1b72a.camel@infradead.org>
+Subject: Re: [PATCH v7 31/36] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
 From: David Woodhouse <dwmw2@infradead.org>
-To: seanjc@google.com
-Cc: kvm@vger.kernel.org, sashiko-reviews@lists.linux.dev, pbonzini@redhat.com
-Date: Wed, 05 Aug 2026 11:11:37 +0200
-In-Reply-To: <20260805000640.827BF1F00A3A@smtp.kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov	 <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"	
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross	
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant	 <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff	 <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly	 <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang	 <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Wed, 05 Aug 2026 11:26:30 +0200
+In-Reply-To: <anJ36SBzN7HL4A2D@google.com>
+References: <20260728144954.355376-1-dwmw2@infradead.org>
+	 <20260728144954.355376-32-dwmw2@infradead.org>
+	 <am0upFND1r93HPxq@google.com>
+	 <d2d98dd31718eb925ae44b0eceb325538a8174ae.camel@infradead.org>
+	 <anJ36SBzN7HL4A2D@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-CMhBHduKg4nVTA5WOqLN"
+	boundary="=-oAGZuj5i7ES/IfXkCZMt"
 User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -50,51 +66,54 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-CMhBHduKg4nVTA5WOqLN
+--=-oAGZuj5i7ES/IfXkCZMt
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-08-05 at 00:06 +0000, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> Instead of checking the boolean use_master_clock, should this check and
-> consume the pending KVM_REQ_MASTERCLOCK_UPDATE request via kvm_check_requ=
-est?
+On Tue, 2026-08-04 at 16:38 -0700, Sean Christopherson wrote:
+> On Sat, Aug 01, 2026, David Woodhouse wrote:
+> > On Fri, 2026-07-31 at 16:24 -0700, Sean Christopherson wrote:
+> > >=20
+> > > > +	/*
+> > > > +	 * Allow for a discrepancy of 1 kHz either way between the TSC
+> > > > +	 * frequency used to generate the user's pvclock and the current
+> > > > +	 * host's measured frequency, since they may not precisely match.
+> > > > +	 */
+> > > > +	if (user_tsc_hz < curr_tsc_hz - 1000 ||
+> > > > +	=C2=A0=C2=A0=C2=A0 user_tsc_hz > curr_tsc_hz + 1000) {
+> > >=20
+> > > I don't follow, why is KVM restricting what frequency userspace can s=
+et?
+> >=20
+> > Userspace actually sets the frequency with KVM_SET_TSC_KHZ. What KVM is
+> > insisting upon here is that the input to KVM_SET_CLOCK_GUEST is
+> > *consistent* with the guest's TSC frequency (within a little slop
+> > caused by different host TSCs).
+>=20
+> Why does KVM care though?=C2=A0 I know some people hate that KVM's uAPI i=
+s permissive
+> to a fault, but trying to "help" userspace often ends badly for everyone.=
+=C2=A0 E.g.
+> what happens if userspace does KVM_SET_TSC_KHZ after KVM_SET_CLOCK_GUEST?
 
-Oh, all right then :)
+The two operations have to be considered in isolation, at the time they
+happen.
 
-Sean suggested exactly that in a previous round=C2=B9 and I said I thought
-I'd tried it and the request wasn't set. Having paged back in some of
-that context... the thing which didn't work was a different variant =E2=80=
-=94
-deferring with a bare kvm_make_request()=C2=B2, which fails because
-KVM_GET_CLOCK doesn't process vCPU requests, so calling it before the
-first KVM_RUN still didn't work. That isn't what's being suggested
-here.
+The KVM clock provides a y=3Dmx+c relationship from TSC (x) to kvmclock
+(y), where the rate (m) depends on the TSC frequency.
 
-With the code as it stands in this series, the first vCPU's
-kvm_synchronize_tsc() reliably queues KVM_REQ_MASTERCLOCK_UPDATE via
-the use_master_clock toggle in kvm_track_tsc_matching(). So
+The KVM_SET_CLOCK_GUEST function provides an equivalent y=3Dmx+c
+relationship, instructing the kernel to make them match.
 
-	if (kvm_check_request(KVM_REQ_MASTERCLOCK_UPDATE, vcpu))
-		kvm_update_masterclock(vcpu->kvm);
+If the rates are the *same* then this is basically a case of adjusting
+the constant epoch (c) to make the two parallel lines coincide.
 
-should work, and is better than checking the boolean: it avoids the
-repeated masterclock update that Sashiko is whining about, while still
-honouring the case where a mismatched new vCPU should *disable* the
-master clock.
+If they *aren't* parallel, then what is KVM_SET_CLOCK_GUEST even asking
+for? I guess the kernel can adjust the guest's kvmclock so that it
+*intersects* the requested line at some point around now, but that
+really isn't what KVM_SET_CLOCK_GUEST exists for.
 
-By the end of my full series, this call gets removed entirely in favour
-of setting up the whole clock epoch from kvm_arch_init_vm()=C2=B3, which is
-why I didn't care much before. But that's now on the far side of the
-part 1 / part 2 split, so it's worth fixing here.
-
-=C2=B9 https://lore.kernel.org/all/amPW1eAPpUuxLoj_@google.com/
-=C2=B2 https://lore.kernel.org/all/58c5a521b94e8d90e101602cfe160d1fb128a5dd=
-.camel@infradead.org/
-=C2=B3 https://lore.kernel.org/all/20260728144954.355376-29-dwmw2@infradead=
-.org/
-
---=-CMhBHduKg4nVTA5WOqLN
+--=-oAGZuj5i7ES/IfXkCZMt
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -192,22 +211,22 @@ vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
 MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
 c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
 MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNjA4MDUwOTExMzdaMC8GCSqGSIb3DQEJBDEiBCBDUE3TQ7fI2x5VnZqWGU/d3CWsV+33
-hgGkNfg3LKTNMTCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+BTEPFw0yNjA4MDUwOTI2MzBaMC8GCSqGSIb3DQEJBDEiBCDrMFuo3LMQwgzSkoKKUNMxtBxlyjvN
+7KZ2Dl4YbaXEJzCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
 aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
 SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
 CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
 c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
-DQYJKoZIhvcNAQEBBQAEggIAk8UrPS6UOGLO6XRRSNR2dGKLSPLHzS9xZZaWYGw5Sux4Tw7sdqTo
-OqwJbw52PxCW8a3jspwimguyDpBnVh+qqmV07G0s+rwbUeKh0fXlbWF3O8WF6n9T0B5Wzwd0eWNS
-5IuIlkTWPzasD/Au4pIFmfl5J3ilwnoJ4IBOFq4YPV11uVdLcvyix6CrzlBAb68g6j1fkr2bLP6x
-x2H31+McvFWnovzl2DoNV8X0n/xKRegstCOOoC+KxC1celfkI5ZsL5fn0P9h2YA28byFWH4nYZHY
-uriWugb+LJfWe/JQmic/pKmwZxuQDbwWTCw7tIBdu48DsAzULiJ2qdDaHGiV27WsBXMSigTo8JB4
-POMhYVl1r6czKcXjL1MVSXnCFdImcWRhH38nV8y2wmVyL8TSK0V86XPmrsua478tzj1HlVWUaMWi
-cW/jnopMQrar41szKmsRE3qz5Y5DhYOHvQI2ooe0U4PAW3UuTa2NW+1gnPeoIocJU/FTEAGU3y4S
-wTzQgkzZnqF4CW+uDWP8+DEUA7PflbMyVUNd0Cf6y4Cii4/XOhwjiJnJH7US0CanWBpAuHUhH1Th
-CzvR+ok7C861KGAZTc7TkW9YGtdNheIL0oCw9pmnLftNQfJJ7CwrnVUh1FaI8TO3w7D82YgZmleI
-guhQtxPtygdjQNrX52yhLycAAAAAAAA=
+DQYJKoZIhvcNAQEBBQAEggIAkOdbfLkZuku+SQVaoiGVaHf6YcFf5yzLX87vOO9o/+sDyzbNJ2Zu
+REjNQ+5aojh9XoZcgeiWMi5e7VXN2WdEkSqtBBKsfNY982ZOLWo2uitaEdKaV4YgOe2xt/NZ2qWc
+OWV3T4Cg8bUinS+IcMGkWhyZrbraASc1MJcM5d22cJ93gls9ovwf4jtbDyCZOjT4poCDMR+T9jqH
+qkTBLtG+tso/Yw9Wp3ME4ZB2WPtaT39H2c63mrXIAMVQISPw8HQavnhB3z50Ns4cwLNkQVT03ZEu
+kJG5MweXfkfgS9TqHS6YLTenDY6OiPEet5R5qY5TTdUHFc3eGcjLQXSNmM+WvQnFRyCDUVxw8mZA
+WXhnp6QtN1VYMDJvFAmwj0l/HS7hBkKGEzf7wsuOpM46sa0hjhIuzCsGDsPVVYdPTgsbXbYiOTRi
+w0ByXpLtlEzLDrP9JnrU/D/r8TOtfr3XubQvKJMFWkTkucYEhRV+QkupvIkEyR7840rPPJuESPEK
+QxvQfJsUJlcbsPzg3thAE5TMCF7IOEKkUJZ+8ZPbgd3kuzpHvOCq319byh3dNTu+N+VAwjBG+nVk
+PIu6y0roSGeVTegr8bwUeTIj6VplZgAkZNuB3PopN4/nVlvkjLOuH9SjTJVooMHu/Cm92It9VMhI
+h/TFd2tqzGcQBYemqXDhjKcAAAAAAAA=
 
 
---=-CMhBHduKg4nVTA5WOqLN--
+--=-oAGZuj5i7ES/IfXkCZMt--
