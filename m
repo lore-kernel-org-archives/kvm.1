@@ -1,46 +1,46 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010071.outbound.protection.outlook.com [52.101.193.71])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012071.outbound.protection.outlook.com [52.101.53.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070E53DB314;
-	Wed,  5 Aug 2026 06:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4223DDAF5;
+	Wed,  5 Aug 2026 06:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785912129; cv=fail; b=akA4FErFc/Xoggm6T3R30Qy1xmA7sCtSdKRlR7rXWBm5xX/ZSEDZIKYvbZ2oksFJeZldSwWFk08xttMjhMI+DIXB49AHiL+3ffOLVV3h5an4V/gBW6tbbRYylaje8EQj5rDf3jmZdULU0hYZxaLoNKm1uq92vQY+3ZApV+Yo0rY=
+	t=1785912140; cv=fail; b=ad3L16aOD3cSqy43ME567p5mvj24h46WSGVyNJEz3uqZVzKhWzL5Dmoy38khExzNCrzsN9SGHZ7VeKmxV3eq6vTSkdUlUJ+cSVfSqkjacxX6459gstn19zF0e0gWhCcVZikT1y6h+STnbaLSunY6Scoxo+au9JpIaJCGf6xVeBM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785912129; c=relaxed/simple;
-	bh=UW99vnlEjKtw6Uukt3JuYaFIVOn3I1MNi2dXAdU8AWs=;
+	s=arc-20240116; t=1785912140; c=relaxed/simple;
+	bh=xdz0cv1bEGnNHOIr7trKMzS64Sig04rLZJRJ4QKywfM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=brT71bEDWh4d5WFsq3hHuxojLnmw4jEOejrokE3iprqq1nvzFK7y6q/zG7htqdlVVkMQc6uY0Tarnoc9R1KXlpC1N/KS1MbmO7ExwcQcDvBJx9RM8eO5AoghiK8YAm10vtUI5x3Omc5LusH+W312RZKymCWh8dn/IKgOh6KozAs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=H2qyaRsG; arc=fail smtp.client-ip=52.101.193.71
+	 In-Reply-To:To:CC; b=HTB9zFitFLB7d+KdTTjC6kJnyR1KPYAOfxTkTIkb6Yynk+M+Tr6kl5YHy71zifcwzAtoykkwGxmYA8oFDlCBooklyfyDT7WSisA4X+O6zVGCLMq8BpkepicoQ7sspdGOBE+N/dRUIA5PgsseCka9AQzyq4I/l1eHOhbzgrqpOqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=InJL/Oxr; arc=fail smtp.client-ip=52.101.53.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="H2qyaRsG"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="InJL/Oxr"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pX8sGB7EfTBvqUv6iJpYdWHyd48fZQlX3YU54xxvTr80RhEpWTWaj8nQgdB5daCRof8bUmqWXRbDOXitv4pCutPewFMV4ljb5/KhidmToTwhAG60pgj9mhs+vZ6HLIdaSL2q5PWIaLgXRIQbv5rF1lb4sSC3KnfTwph3ch56DMTBSKEI26wTNv4cUezaDRsVgAFm6le5JD8/wt7Z5kjFY6B0Pc7Tp6qiMJ6ZJ+JQpqy9wzLSfbRweSaOoPSOovEGhZVZZVq6pZWQVFwKp4t36yC0hCJhCZiLLhrav9hFaGQUUkfw6DHj6cEaqYXeRhaoDxLQ6k5/ixQyNggT8WCT9A==
+ b=LqwfuxTk47EGYmf/oC36WbYWpsL3dbcYZ+QlOdTFwR5jzmkqLTcZFNTceYpcKuKG/V2VL99DtDNBZxoJGYtV7NqJPgBxUvolAMNO2gWV/HcC8Sxo0R4HAbfoDK4hYrlesAtVFGfN3zseTk1Mc4FG18AS2WqlG7v1PUfa1d9uQPumQpzMZaHIjaRIK5v2O81BavoaKkjuaWTYV+e6fSyErBhseZQL1d3bh6eEJVvnDsTy+13/YYqrVfYq/JyOazAax5vVSIQhxGaKBarAE3hJ+KqSzIIw2LrlfTL4OdvSzVlrB/fXWQV8F4ndm9vuGfqG2OKRFF0UhL2qv1IrOran8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ze9sg6BRov+gURM7aaIAO711ZASBEebsh+lEEAUSNV4=;
- b=jw3eGQlhcdIhC5InluGbeORsM6njEmmc7p1pZfuQ5cAjlCYeYiV8K+yfFf6xnSG05/uR5THmjBbfG5NJQXlUpkAvL2ullNeZEYeFkX0Ikb/n+5lG0+6+/F9xzoLV7LOAEdiKtYLg+7WHESVrmtcqtl6hIN+3t0hQu9+2rmPi5uqgsfdDcj2CzUUcDCjg0mla8tBPE7XrJ1ugyXVRFn5h8emT90ea6yEItbR4gB3uROdjeqHLn+oFAh3kajVMGOaO06Gp4WxiSq4k97OtwApsAn9s7s7QOhnx9U8H27pgKIryVFNn8mTuozpZXoLsnhDyxbAjDEAh9716pokNdlXO1A==
+ bh=N34Ji46MQUOaxw7HEVol/v79VQNhg+WYZSyv+4DFDJw=;
+ b=Sp0cNEKSg1YRHwyFeP61bbb32CZ48vHEtDYWpskPrtXa18di6Nm5lhMHnrcY8O7LMsj71PGwbgTJUIwErDaQAa4ezOU3QGMuZEoU3vCbXgcXBePavw4GcuR6aLPpIhfgWnsRoutW1cj8ImASfd+t/Q8rq+WEypemJ1U/XzeCLRa4S5hEKCT5exyMPNY1tAyJdiBZafCZY0WTt7o4Jk+DQxhWhUc4yvd0BhXCKlP80+LUrgi9F5ACwefJLHmiXZ9xN1KteLgKs78zxKeYWUGS9XRrWrU0qrShyMIb+snfzatF4Cd+WTqxTPEXvDRFEwMYcykiqlPVmfgnl3vxgLsABg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ze9sg6BRov+gURM7aaIAO711ZASBEebsh+lEEAUSNV4=;
- b=H2qyaRsGFvTK+tgCYK713GgTmC477VAfcWHn82SA/oHW8roAa5p1xb4FArDe2cCOJADoHMUgXHMjsm/J8CO4bCgYPXn0SovdgifQNSCr9FUzGKPjVjvRaYWY5jkz+VmEBHsS9x1I/otlCMCtY3JMpezNLeMRaKwrTJQB+z1+zbM=
-Received: from BL1PR13CA0429.namprd13.prod.outlook.com (2603:10b6:208:2c3::14)
- by DM4PR12MB5771.namprd12.prod.outlook.com (2603:10b6:8:62::16) with
+ bh=N34Ji46MQUOaxw7HEVol/v79VQNhg+WYZSyv+4DFDJw=;
+ b=InJL/Oxrz1UTTMSpBbCtI9+ByVKu9M7Uj7mS4R6gM1SLFu2zz9DIvxmCmTwDtU5uVJ6f1gZo3fk7X/B5sEtZCxHvj1VpfyqHzq8dnBOfYQMljiO6qV+nLyp3PjxlhYFS1TXYhPmq/C50wYaJYv6GyeO4aUDOPRZNc5GmKp9HAmA=
+Received: from BL1PR13CA0099.namprd13.prod.outlook.com (2603:10b6:208:2b9::14)
+ by SA1PR12MB6725.namprd12.prod.outlook.com (2603:10b6:806:254::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Wed, 5 Aug
- 2026 06:41:59 +0000
-Received: from BL02EPF0001A106.namprd05.prod.outlook.com
- (2603:10b6:208:2c3:cafe::56) by BL1PR13CA0429.outlook.office365.com
- (2603:10b6:208:2c3::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.16 via Frontend Transport; Wed, 5
- Aug 2026 06:41:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Wed, 5 Aug
+ 2026 06:42:11 +0000
+Received: from BL02EPF0001A101.namprd05.prod.outlook.com
+ (2603:10b6:208:2b9:cafe::71) by BL1PR13CA0099.outlook.office365.com
+ (2603:10b6:208:2b9::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Wed, 5
+ Aug 2026 06:42:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,16 +48,17 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A106.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Wed, 5 Aug 2026 06:41:58 +0000
+ 15.21.292.8 via Frontend Transport; Wed, 5 Aug 2026 06:42:11 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 5 Aug
- 2026 01:41:46 -0500
+ 2026 01:41:58 -0500
 From: Shivank Garg <shivankg@amd.com>
-Date: Wed, 5 Aug 2026 06:40:33 +0000
-Subject: [PATCH v3 4/9] KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
+Date: Wed, 5 Aug 2026 06:40:34 +0000
+Subject: [PATCH v3 5/9] KVM: selftests: fix maxnode arguments in
+ xapic_ipi_test
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,7 +67,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260805-shivank-gmem-migrate-v3-4-00d8bdec4e1d@amd.com>
+Message-ID: <20260805-shivank-gmem-migrate-v3-5-00d8bdec4e1d@amd.com>
 References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
 In-Reply-To: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
@@ -96,186 +97,69 @@ CC: <linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<linux-kselftest@vger.kernel.org>, <linux-doc@vger.kernel.org>, Shivank Garg
 	<shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785912059; l=5974;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785912059; l=1320;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=UW99vnlEjKtw6Uukt3JuYaFIVOn3I1MNi2dXAdU8AWs=;
- b=QioaAc0rylkmD5ljqpqwKygsTAxiDzwteGibPSoESiYh/jhguOG48+7BL6wZ8qGynJF4Faw5L
- 54297XX8mAeDs4iW9Q2PxiXND2Pvg8lwOIDsM60dtwtyUA2QeFCWo31
+ bh=xdz0cv1bEGnNHOIr7trKMzS64Sig04rLZJRJ4QKywfM=;
+ b=Yy5Onvb99RGNj+yemRKzIss6ntKGZUGY0iWot+iDqs9l3dwIpZb5T/DMFlFei27mIKPgCjRoa
+ G7XzBp4IAVWBr/DDV3mYKt/wPmxhSwDDpLZ34miJURHzHaPFjE3UAcD
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A106:EE_|DM4PR12MB5771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a64408e-bfcd-49bf-e9d4-08def2bca61c
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|SA1PR12MB6725:EE_
+X-MS-Office365-Filtering-Correlation-Id: b8bc933e-4613-404b-504a-08def2bcad9e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|23010399003|376014|1800799024|7416014|82310400026|10067099003|56012099006|11063799006|6133799003|22082099003|18002099003|921020;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700016|23010399003|22082099003|18002099003|11063799006|921020|6133799003|10067099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	VTeuoAfeSMKToxYS5Bg0XSbXkwizvMOPkn9eE4DaXy8JqyPHKCEleen4yefteRWjY2iqOOWV6g8A6s0MoUK6s6Vum+cQJrd6+fOjdLabBit9pDNStBI0bnd7wR6eNOduO3pS3hKa82EyKzy5G5ZIS/N9uqwHrX/lgIw+HST2l2o1NqZR3g/R1HwPG9QCR3iLWrzezvls+zwQhPfCg75POo44iei/JbTK+TP3KFp1x2cXWrjtJSZnGd4YBZ6J1HiA/FtbUsFb1798FENLUXqdvb7Xd0cCPtew4wmM5188+rUNCyK6N9o7LBiuxBpzw8pP3rECtFkysMUtJQKOj0am2934TRJopocGw7q6go1tAJyqaH5E658AntMQDiosU0ZPX7FqpsXqclr/Kbl9RwiGwj0ZeU9wI4nHmZ/55XPwtbeu6Foyv7IC7hEK/hzbeGLS3pctVUu1rmrQswC3F7evxHyS5QJ4aTT9LL8nELfDLJHbirdg5no9ABI4pS6eMjlhiWbtfmV3JI9h7h89glI778B3knuwbrfdJqzfDnHVuNayW6q5TgZXmu4T6wuuFaqretrf+m3/10KdeMrLxJHjWUrTRzuJDP3S/z0SnJnXaj7HwEPxtu79gXBRGvHaqZ3m+ZJa8KO3CN+q0h5VlZc1xJWlntiSM0yY0sruTBv2V44vkIws5FhHhry98isZCspvtUHFMjIEPhL5aZSm939y1XIwggC8VLM1kJ5967ukubU6JhsS/oBz2oXxusvcprc2
+	Gk+eew8fEwUbJajpxZgPXZHLzxT0Oo2OolUlY2A+hmJ7xEnsdSLZeN6IL7mei85sNH2nOu5Zh9fMiCSIMHWnmpipNBgduJ9F6dJGuAjDrZrsQCVsoydqqMJ9uOkIkUbUtzNLASw+/vG5WkoFipWD1+ZGkDZdYinKlfID4BRz2LLHAZD3laTvmYm0opJ3qneLUmN0FoewYqee2PchJXAuSSKn3Tm7Q4e7Q1tS+kS3YyHpKBY5z6hwc5eJ/KHdzkwFCbEABZwo8Z8YHOEYYZaGn0jbQIQ5t4PMZrxCWayHoVeLy7i72hb47pjKDhDW1TX5V8VukidyT46RcUzMI3AZ/NL5C36X+nsttDG56DkvOAa30+S2PHXJvmMLywYeEyiMrlqDtFAALVWosUvod/xkDbsIvoujK6tWmhXa0zEwJ/8UlGdzh5g/n4wsINy2eJLfm9bcjAMTCj+LQASS0/35RAPOA7ZfG5WURdmkgMwoMBIK1Ub+kns4kgD8VcoNKWOh2aIHI0xJ85mVombYXAmgiQuPt7LV1TXE+2bESy+vdu23gKiXGkOES/F6lCMDGe6m92J1xE3Q5f1xh+76XN1GfKGYQyJ9zEKxaDcIycF+UsNeykFAigtb1s1kLPPC4f1u5cE+5CTSg4I2brqGZPt7D1CCMiMybXaw7ds0ZKRwfnt8HNuBSy/Le2f4iXXEYa5O9wNXvbqbTvHNXJw0FfITDr3Ffc2C8TPOABQWR/ocgv7QF+O0u6KNZdmTtVIWDFFS
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(376014)(1800799024)(7416014)(82310400026)(10067099003)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700016)(23010399003)(22082099003)(18002099003)(11063799006)(921020)(6133799003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ZrBelWsLTZD5TBr30msZ39WTC87si6zQAy9Mk8wEK5Fi4ZX4ozgvNwhHNjaU0l0h2ukfglRBqQIwT1nNy6/xvClYACkCfGoE6ycNAyWVV/dJ0CCZNi4Hr2PJCJTTItoWV2QzwvyHp/6xuTJndJHZHocaKkw3B5MsgdCP2PdDWZSeQ89Rw5YqAR4ejiq6K8VBrjucOaKPvkvmzTG9zBxqeuWOV+2kPgFWNG8pQOiKJsIC3m9xNyU9t0hLxccSch6c4GdzctKj2MTczNHmTKoBMslErkcgxoIXfcfMFPBGiqrGlLdcl2af5XyBQ5Woc7/xKhFPNeKqVnGXkn6edbujVHua7JbHuzNeVGnlUgbEVpXHly2+FxrAFrKorS56ITAQwAZb9LJqjgm3KAUNTlPd7vEsp8NIhMSy8+cTC9R2QiemXsGd1Zi3iaXr+co3mMoT
+	+iRfefz4Iv3AXuRVXadVoJrHcSrgIkSCMYnoJpiw9xncj8ZF/s9ZDIF39Ui9pUTrbrknhKqeeW0IFqgzy6gK++PwMuoy+vTcxNLrPizIh5zYcRcbPRNsqXDd+6ukEkx56/1IoyjSZm7ql7Bzu84yf7ymyhzxLQnik5wEBGLG2ielP81ZSkUtzC1OaJloO8l4RsGNp8HL42/Z9ja1jOiJRMHafBRFTG9kEUkNGCANtftc1gND0jZThGX96WQemFYgHLcOQi4WVXeG+FR7l9g9jHizfnQgYY2g7Pt001C7dPUSAdW43Mw5+6+whroKxkymONI8k59QdgNKhGD+IrDoS0u0dPRzAHMdUE164w8I8/vD4xtLtMRSm9FUGtOGANLX/dLugIbYY11EkhTlVILRpDEyAIG4z1OoF9G6I5MUVUOAGSYvttNXNi+a9HwA/OWL
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 06:41:58.7517
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 06:42:11.3066
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a64408e-bfcd-49bf-e9d4-08def2bca61c
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8bc933e-4613-404b-504a-08def2bcad9e
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A106.namprd05.prod.outlook.com
+	BL02EPF0001A101.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5771
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6725
 
-guest_memfd folios are currently always marked unmovable, which
-prevents the MM from invoking ->migrate_folio callback in scenarios
-like compaction, offlining, etc. This is unavoidable for confidential VMs
-(SEV-SNP, TDX), since memory is encrypted and copying it needs firmware
-assistance. However, for non-confidential VMs (like firecracker), we
-can still migrate the folios.
+migrate_pages() syscall expect maxnode to be one greater than the
+number of bits in the nodemask. do_migrations() passes the size of
+nodemask in bytes to migrate_pages(). This sets the maxnode to 8,
+so kernel only checks node IDs 0-6 even though the nodemask covers
+node IDs 0-63.
 
-Add kvm_arch_supports_gmem_migration() so an architecture can control
-whether migration is supported. Add GUEST_MEMFD_FLAG_MIGRATABLE so
-userspace can opt-in to folio migration.
+Pass the nodemask size in bits plus one.
 
-For opted-in guest_memfds, use GFP_HIGHUSER_MOVABLE so their folios can
-be allocated from ZONE_MOVABLE/CMA and grouped by mobility, otherwise
-keep the existing unmovable behavior.
-
-Remove redundant WARN_ON_ONCE for checking unevictable mapping.
-
+Fixes: 678e90a349a4 ("KVM: selftests: Test IPI to halted vCPU in xAPIC while backing page moves")
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
- Documentation/virt/kvm/api.rst |  3 +++
- arch/x86/kvm/x86.c             |  9 +++++++++
- include/linux/kvm_host.h       |  4 ++++
- include/uapi/linux/kvm.h       |  1 +
- tools/include/uapi/linux/kvm.h |  1 +
- virt/kvm/guest_memfd.c         | 18 ++++++++++++++----
- 6 files changed, 32 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kvm/x86/xapic_ipi_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index e3003a241d5b..976921527ef9 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -6461,6 +6461,9 @@ specified via KVM_CREATE_GUEST_MEMFD.  Currently defined flags:
-                                without INIT_SHARED will be marked private).
-                                Shared memory can be faulted into host userspace
-                                page tables. Private memory cannot.
-+ GUEST_MEMFD_FLAG_MIGRATABLE   Allow MM to migrate guest_memfd folios.
-+                               Availability is architecture sepecific. Without
-+                               this flag, folios remain unmovable.
-   ============================ ================================================
- 
- When the KVM MMU performs a PFN lookup to service a guest fault and the backing
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 47cb9eba113b..7087b0b8f973 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -14130,6 +14130,15 @@ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return !kvm_arch_has_private_mem(kvm);
- }
- 
-+/*
-+ * Migration of guest_memfd with private memory is not supported yet
-+ * as this may require architecture-specific handling.
-+ */
-+bool kvm_arch_supports_gmem_migration(struct kvm *kvm)
-+{
-+	return !kvm_arch_has_private_mem(kvm);
-+}
-+
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
- int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_order)
- {
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index ab8cfaec82d3..7b2f15b21970 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -731,6 +731,7 @@ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
- 
- #ifdef CONFIG_KVM_GUEST_MEMFD
- bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm);
-+bool kvm_arch_supports_gmem_migration(struct kvm *kvm);
- 
- static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
- {
-@@ -738,6 +739,9 @@ static inline u64 kvm_gmem_get_supported_flags(struct kvm *kvm)
- 
- 	if (!kvm || kvm_arch_supports_gmem_init_shared(kvm))
- 		flags |= GUEST_MEMFD_FLAG_INIT_SHARED;
-+	if (IS_ENABLED(CONFIG_MIGRATION) &&
-+	    (!kvm || kvm_arch_supports_gmem_migration(kvm)))
-+		flags |= GUEST_MEMFD_FLAG_MIGRATABLE;
- 
- 	return flags;
- }
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 419011097fa8..e1615a62ed78 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1654,6 +1654,7 @@ struct kvm_memory_attributes {
- #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
- #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
- #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
-+#define GUEST_MEMFD_FLAG_MIGRATABLE	(1ULL << 2)
- 
- struct kvm_create_guest_memfd {
- 	__u64 size;
-diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-index 419011097fa8..e1615a62ed78 100644
---- a/tools/include/uapi/linux/kvm.h
-+++ b/tools/include/uapi/linux/kvm.h
-@@ -1654,6 +1654,7 @@ struct kvm_memory_attributes {
- #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
- #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
- #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
-+#define GUEST_MEMFD_FLAG_MIGRATABLE	(1ULL << 2)
- 
- struct kvm_create_guest_memfd {
- 	__u64 size;
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 583341d593c9..a2b7c2f1c49f 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -589,6 +589,11 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return true;
- }
- 
-+bool __weak kvm_arch_supports_gmem_migration(struct kvm *kvm)
-+{
-+	return false;
-+}
-+
- static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- {
- 	static const char *name = "[kvm-gmem]";
-@@ -623,11 +628,16 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	inode->i_mapping->a_ops = &kvm_gmem_aops;
- 	inode->i_mode |= S_IFREG;
- 	inode->i_size = size;
--	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
- 	mapping_set_inaccessible(inode->i_mapping);
--	mapping_set_unmovable(inode->i_mapping);
--	/* Unmovable mappings are supposed to be marked unevictable as well. */
--	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-+	/* guest_memfd mappings should be marked unevictable. */
-+	mapping_set_unevictable(inode->i_mapping);
-+
-+	if (flags & GUEST_MEMFD_FLAG_MIGRATABLE) {
-+		mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER_MOVABLE);
-+	} else {
-+		mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-+		mapping_set_unmovable(inode->i_mapping);
-+	}
- 
- 	GMEM_I(inode)->flags = flags;
- 
+diff --git a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+index 39ce9a9369f5..761e47e4cae2 100644
+--- a/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
++++ b/tools/testing/selftests/kvm/x86/xapic_ipi_test.c
+@@ -310,7 +310,7 @@ void do_migrations(struct test_data_page *data, int run_secs, int delay_usecs,
+ 		 * KVM_CREATE_VCPU ioctl. If that assumption ever changes this
+ 		 * test may break or give a false positive signal.
+ 		 */
+-		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]),
++		pages_not_moved = migrate_pages(0, sizeof(nodemasks[from]) * 8 + 1,
+ 						&nodemasks[from],
+ 						&nodemasks[to]);
+ 		if (pages_not_moved < 0)
 
 -- 
 2.43.0
