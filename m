@@ -1,114 +1,120 @@
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F22E394499
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 18:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9133DAAD4
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 19:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785955923; cv=none; b=Yk7fd+aKvSp/s1X0Iw9hRUHIwDKGsilEcjuNqVfyLY1/nQKakTixrwAmhOvF2BtduUWViqQ97m+o6qhe0CDCMx/CigdiuI2XFLMM190p1Aq6Xu8uizS6QRqfgQcxj+VscCaO6ZnqyubOCJwMwxoAIqjFV2Q+dhQtUH+Tdfg70tY=
+	t=1785956673; cv=none; b=rKsk9HUludP7zn0dTLd4eZUxmURgnYNF5Ai9edc9DDNUNZPNwAwPJAuSS6TQtFSaOIC3oO47s4z2Bg4sXK4G3r+sRTroG77/KQ8iM+d4yFHoUOR72lG1Q/GLH/iTVPljgQEMQh2gs3KqvnW1l1PJKdk5QKlolvICNv6Kce9S0yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785955923; c=relaxed/simple;
-	bh=AJISq/mX2kSr5kvSQbLRpVzSC8SDiz9SMVxObBq6r4A=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LyEBSQDdmoLb9nY03rtkldzHYctzOrjnALoxpJU9rR2IOiNkV/Xo3BRCHBPCEroHEmsLs1RPfEcx7b+aI8j/lCfahLgHvgLSOVYY4DrCgMHao1ajerSxpq8F/jtMg0+qfUgyIOHZQiFEdGW/+fuJxUkbSHlJIT1JDqM/Mzv5MXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ye+q1YYN; arc=none smtp.client-ip=209.85.215.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785956673; c=relaxed/simple;
+	bh=cHTJQT/RBVKmLBGY8jEZzpAPKstx7GoblZ2qvVZvaPk=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=gUjmDaZFB77Q7PUaz1FnlQEoWR89HVvJF3gfjfEeHMKKvrPNKEk5xK+RNxwo8Okwsx9nbfa8WZh+ej3GJ+x/xTNND/F6BLva6uRweuL/vtYou0clT1r2e2I14O4nnruiFB34R+P3a+vr2RYzH+LHOsyfCRjMjlZkvEezrbNo3gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CoCQUYah; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ye+q1YYN"
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso1567614a12.0
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 11:52:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CoCQUYah"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cbe3fed2f58so1133663a12.3
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 12:04:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785955922; x=1786560722; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4ToGqmYCLIsCza1nv6x574MwhjIbpl6LQnMNJCZ7DMg=;
-        b=Ye+q1YYNwI/hIRllhz0etQ8Go54c0pBf4iQTi97BDzxjJxpxsyZEi8/YLbqQDf0Vid
-         8fADBQDM4Mi098drKKCNAUp9aYYlPuk3UMPBNxFJlEUg4OksTtsAugHy3GRKmHxqwl1o
-         oD6Xxf+DqnxelVRErNHJE7NzGOhwNX5ubfj/JxZp15fFxqro69tBJk6NJB2pD3GZ7NdW
-         5vQCtO+bOQj2KzC5z9q0yjU2AJE0sd+NLdpKGxYpZo258528SLYN9Pmr4ao64KbMOpc/
-         P1EhW+dsi9LRNq+7CmXyIWIGZGbP6SS9L5sNxxYAyQLlK6Alb9x/nd3PZmbuxzaMsUwE
-         i9ww==
+        d=gmail.com; s=20251104; t=1785956669; x=1786561469; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=V5Nj3gKC4yEN6e3D1EtvSjC4Has3vClSVMr6RcOyF2w=;
+        b=CoCQUYahxJaR1S7hhSRrAFui2LryVSJqbPV+GSjVS0HCJl/B60TxQ4kKasB3XckfH1
+         CzSeHKIWy+1LS9p+JPflidlb7iG/yX3f392aSX2Fa+qQED00IdUzxKXwGaqr8W1t2I9h
+         0SfrhS1LCptm/4IdK9I6bd5XWlXhPCWMOeUd/GLYL7Lq+8W4XGY+suweD1YfRx613lq6
+         4jKJ2YKKUJduNnK07kGOovESYfagvbLXQL15l/75akhpBd1CUjsjAXXj0ftMqVqoPvpZ
+         mnK2AcjkfgDyZ12cpada6aM9OH2GRpjCrum2mT+8UFcbRfQbe04xbBaO9EQz1wDJyalr
+         mfNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785955922; x=1786560722;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4ToGqmYCLIsCza1nv6x574MwhjIbpl6LQnMNJCZ7DMg=;
-        b=IsH1lSIMwLVeTz8RQHvAkPK9etcmEt1ghTcIxi7ofE4ZC6noHycozD5EaP2QO83Cca
-         zsEtWS0bWqohpP6UpMhjDWHduC7zG9On8XBpivpYu26NsA6Jp+eEZmYxtRG8RniEsPFh
-         nUkyqZpV8ozNxp1WS4I2zwcglzGEK61zkA8ImmCSSl9NfH0AI4dlYXjlD5Xds9asnvXk
-         dF84CfQZZ6gDJdFkfShZ2A1T8166xeQ1m1HU/UmGF6ZgdiSbk+n4902lNgRY0ddIEIMv
-         kOp98gXGSPlZ6A4BU+hAnCMOTwZuwoet6pdyWAnoz1Y1qopw9UnARIT+SdfZ+iOXV0wb
-         Et2A==
-X-Gm-Message-State: AOJu0YyBKAzmvvwR/wv7U/iyXaORQ+6PfLuEvp9TNevofCxOXiQ5Ux4s
-	Cg9znsbfbe3uIWFF06Al+lFfIoB0p6HODazhfQ/jRbL9YRZfgcS+nMHRr6HhyJSy5ZA3mzO03Z3
-	DsnlBow==
-X-Received: from pgjz15.prod.google.com ([2002:a63:e54f:0:b0:c85:9c9a:ab4a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4288:b0:847:83bc:d2a4
- with SMTP id d2e1a72fcca58-84f2dfc8c42mr10676600b3a.2.1785955921695; Wed, 05
- Aug 2026 11:52:01 -0700 (PDT)
-Date: Wed, 5 Aug 2026 11:52:01 -0700
-In-Reply-To: <20260803180849.2323590-1-abdelkareem.abdelsaamad@citrix.com>
+        d=1e100.net; s=20251104; t=1785956669; x=1786561469;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V5Nj3gKC4yEN6e3D1EtvSjC4Has3vClSVMr6RcOyF2w=;
+        b=JSEC4x6qrl9wRnBw4MTKWupSKGqrE0LmRNLcigja+Ml0Ao41XBifBs21MOU8dhH9GF
+         aO2k7gPT5B1mupIDV+P8xBB8dCZnjKh1p3RMY1sbY3C4rIJfk1+S7chVXxIkwC1+vR3S
+         JH+55sqdyxm/DItwNrXucpp/SCwfxGIJ1ZNLWTm76UoyU04BQvhQEa2bUAzujkhk0HYs
+         wfQ2BTaxJvLHeXpNI9muMkfusSWBeCDQ6QLVLzEHREYqL/fFKJZwXx0SwvAPTIm+7qU9
+         tzSx3+wglvclD0JWrug2NFTO+YgzHWsrfU4on/m+ZKNWh/UM7wR68qPbg+H4/oRgScJF
+         w7iA==
+X-Forwarded-Encrypted: i=1; AHgh+RrNRBe+IyyIsvUVJqilLGOj9Rfqzc9a3z14smNvtg5EG1CsyZvGFk9A5KxrolSe+U203fs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgPAZw8UsOXQzVkyZFMFAT5302MqElfFs9PL9L+EUAstPydZkl
+	Sgg8oTWjFhPZM8H4sotOLdMtjrh7tBDvYa0vjckRNSsWpTIBIoisJe/D
+X-Gm-Gg: AR+sD13H4lrJAMyh2HAOqdoPw0WnvgFogA5HXI5Xa055EtebKiiplUqACWaNSsF7Cas
+	0/BCjUxBGrlpQ9T3JfV1aWbPX6T9wl4vIGiu1qoju6zxKQhIQtqwwTvZxfehbxUYqa9cZlI+X92
+	eFu5j1OEm+Lp9bOl7hSiVFv3KYpU5RahYwe1dfcJ5ojxJX2pOzYQ2Bv/a8ZxdFdmz0d4YB9cYCC
+	t3ow8XbKFU7tjxnPGvkwEvb7JDuX+ykf0FiF1tL7+4mIQjjjx4ID68jMvinnDk/RdKoJ5SkI1GW
+	vfOaOamEkPCL+KbxR4MwjZd+iN3ozhgUOdNyJVCRfTVDDiwzfrNlIsj+HOZI2J4gTqG0aP4aIuK
+	ZWjTKoV/TsgIQEciuQBU4Nk75vVsDV1oIsxcuuJoNlHwvSunTu9rD3lC2qa3AjDM8rYW5fV93Kl
+	SE2lQzVHEVH3YBKf3RzlvauKuNydqV26zsgtfA95D/EF2ASUymbeCnAgdZl9k=
+X-Received: by 2002:a05:6a20:918e:b0:3c4:46ca:334b with SMTP id adf61e73a8af0-3cb85e2acc2mr8616548637.9.1785956669049;
+        Wed, 05 Aug 2026 12:04:29 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315867a68fdsm31787485eec.25.2026.08.05.12.04.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 12:04:28 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] KVM: PPC: Expose CPU compatibility modes for nested guests
+In-Reply-To: <20260804180705.59160-1-amachhiw@linux.ibm.com>
+Date: Thu, 06 Aug 2026 00:09:43 +0530
+Message-ID: <tsp8l8cw.ritesh.list@gmail.com>
+References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <kvm-20260303003421.2185681-18-yosry@kernel.org> <20260803180849.2323590-1-abdelkareem.abdelsaamad@citrix.com>
-Message-ID: <anOGUUe9mSowlmEQ@google.com>
-Subject: Re: [PATCH v7 17/26] KVM: nSVM: Add missing consistency check for EVENTINJ
-From: Sean Christopherson <seanjc@google.com>
-To: Abdelkareem Abdelsaamad <abdelkareem.abdelsaamad@citrix.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Yosry Ahmed <yosry@kernel.org>, pbonzini@redhat.com, teddy.astie@vates.tech, 
-	jbeulich@suse.com, andrew.cooper3@citrix.com, roger.pau@citrix.com, 
-	jason.andryuk@amd.com
-Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Aug 03, 2026, Abdelkareem Abdelsaamad wrote:
-> Hey,
-> I am currently working on hardening the Xen hypervisor's nested SVM
-> implementation to add the VMRUN consistency checks for injected events,
-> see the Xen patch discussion thread in [1].
-> 
-> While reviewing KVM's logic in nested_svm_event_inj_valid_exept(), I
-> can see that BR_VECTOR (5) and OF_VECTOR (4) are treated as
-> unconditionally valid. The referenced AMD APM Vol 2, Section 15.20
-> explicitly state otherwise:
-> "If the VMM attempts to inject an event that is impossible for the
-> guest mode (e.g., a #BR exception when the guest is in 64-bit mode),
-> the event injection will fail... VMRUN will immediately exit with
-> VMEXIT_INVALID."
-> "Injecting an exception (TYPE = 3) with vectors 3 or 4 behaves like
-> a trap raised by INT3 and INTO instructions, respectively"
-> 
-> Also, the APM volume 3 chapter 3 (INTO instruction), states that the
-> #OF triggering instruction, INTO, is Invalid in 64-bit mode.
 
-LOL, _that's_ what SVM decides is worthy of a consistency check?
+Hi Amit,
 
-> I attempted testing the injection with Xen-Testing-Framework (XTF)
-> bare-minimum testing setup. I injected an exception (TYPE=3) with the
-> named vectors (BR_VECTOR (5) and OF_VECTOR (4)) on Genoa host. They
-> both caused VMEXIT_INVALID.
-> 
-> I think the check in nested_svm_event_inj_valid_exept() needs to be
-> gated on a condition that only allows Type 3 exception injections for
-> OF_VECTOR (4) and BR_VECTOR (5) when the guest is not in 64-bit mode.
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-It'd probably require a dedicated check in nested_svm_check_cached_vmcb12(),
-because the consistency check involves both control state and save state.  Given
-that event injection validaton on SVM is inherently flawed due to hardware behavior
-being microarchitecture specific, addressing this is very low down on the priority
-list.  If someone wants to tackle it, by all means, but realistically I doubt this
-will get fixed anytime soon.
+> On POWER systems, newer processor generations can operate in compatibility
+> modes corresponding to earlier generations (e.g., a Power11 system running
+> in Power10 compatibility mode). In such cases, the effective CPU level
+> exposed to guests differs from the physical processor generation.
+>
+> This creates a problem for nested virtualization. When booting a nested KVM
+> guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+> userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+> and attempt to configure the nested guest accordingly. However, the L1
+> partition is constrained by the compatibility level negotiated with the
+> hypervisor (L0), and requests exceeding that level are rejected, leading to
+> guest boot failures such as:
+>
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>
+> This series provides a mechanism for userspace to query the effective CPU
+> compatibility modes supported by the host, so it can select an appropriate
+> CPU model for nested guests.
+>
+> To achieve this, the series introduces a new KVM capability and ioctl
+> (KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+> compatibility modes supported by the host.
+>
 
-> Please, could you have a look and share your insights on the
-> implemented logic?
-> 
-> [1] https://lists.xenproject.org/archives/html/xen-devel/2026-07/msg00808.html
-> 
-> --Abdelkareem
+Sorry, but I am somehow not convinced on whether we need all of this
+machinary just to get these 3 bits of information, which we are
+returning today.
+
+Since KVM_CHECK_EXTENSION can already return an int, so why can't we use
+KVM_CAP_PPC_COMPAT_CAPS itself and return the bitmap of supported compat
+modes to the user?
+Say if the cap is not supported, we can return 0, otherwise we can
+return the bitmap of supported compat modes. This will easily allow us
+to use 31-bits which as I see would be hardly a problem in the near
+future. In the future if it grows - we can always use KVM_CAP_PPC_COMPAT_CAPS2.
+
+This should reduce the code complexity both in the kernel and
+userspace and we don't even need a new ioctl then.
+
+Thoughts?
+
+-ritesh
+
