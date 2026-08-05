@@ -1,115 +1,146 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7B93EB10C
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 16:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68CA3E7624;
+	Wed,  5 Aug 2026 16:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785946952; cv=none; b=Ox1K1WXNiB8iJaiEIGt3P3MI1M5A69d2KxjVTD9nK180gBzjeTgN0WDnfKZJCla7Ka09zbK/5c1QD6h04YGRDD2kvhhkps4fijOj0+t2kF0ZO77k9fHX0288tx+2AbVI9lKTjn+M/ExMBHdwp/4Euv/h9yYjWuYM5ePOnXnmA2c=
+	t=1785947325; cv=none; b=Jmyo+/vCCfEYvMksgwttPF1L+TwjxaeCXIS664CT1zv36CEFtVMCwA+T4Q1KyKoyOKwAQVggLCywJeU+r1dN9tyRr1HM4Wl3I9INzft2b8o7h9GNwwuBr+v00cfe5/tvdMqwtKLrSh1gaWsiCw26RibCxE2bShPK10rIf/VOzwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785946952; c=relaxed/simple;
-	bh=hzAEZfHfz3LBP2Um9gcgl4RChWFL9tShRjbTlGb2/U4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gTxC40MUcl4QJZ1HW4YiC6hgmQxrMHTq/rWQI6OTNvC10raE7pRUyOFoX43k1+iKy3UcBm2wfbO+MbMl1xGR6rV8YCxWYAPzBOVZLkS9yRaJAme8Qmp5jgPm8RByOoEJs+MKKNtr4qhC0LwGvKQQXN0ReoFLGHk+BAJ9pyU53VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EgCK0ctD; arc=none smtp.client-ip=209.85.214.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1785947325; c=relaxed/simple;
+	bh=UC+0+PLfHTPTHDNTKDbyDhy6KVKZjo9o+zKkqnY0JpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G1cXjuVmR5BjvwWcOHlPcK3ywdqyq8VKFs5eJuS2b2EeyfpMsRu8IBPd2SFZwr20bxod1hM0PZpFQGsRwBXap0nd8iOXVrQKnmThSQPdV4TDZ0/3kbKL3UOxlF/nC9w8nvPGjKVAMqqmOtBnJjCH8bN3DN+5XziEeOs+pvG9SWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; spf=pass smtp.mailfrom=ozlabs.org; dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b=pLiGjIXv; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ozlabs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EgCK0ctD"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cce14a21faso461505ad.0
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 09:22:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785946950; x=1786551750; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=uvAahgqgkqHs7pRp0ExYF6yyigspnFoR+gCKglHPWIY=;
-        b=EgCK0ctDupjRYM4vFBSBZ0uLtswJLZL+GhrXpvzhTbZbr9aNso8AXhpQ2ZXbIaN/tq
-         E6vQrcZPbRygn8K/O8mqZJTn4QLtLBeX1tuFQ0aSFJ4VesPhBrjpx6FCG1Mm7dNKjkS7
-         hcIIxprGsKusTPRWCcYOfxZYVl3k7uZJU5lGd+30lmhzL9uOHqElLSzqJ7FsB21///CR
-         H3SgPfI66qtHGz7ZGptodX2scGohm1l1uuc0iDkmp67/egWVoNrDknDngzYSQfvx4SHX
-         zrAOM5Smi1rheOeLGbOSlcits4VuJOAkbuCiwkJmJx/H16ALTMSxvcf6KhiuV5Ea9gwa
-         6JXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785946950; x=1786551750;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uvAahgqgkqHs7pRp0ExYF6yyigspnFoR+gCKglHPWIY=;
-        b=UCFI3ALx/qDaGiVsVXHT3oz4iEtvJjjFsxLQ5w7NDW52kCzBhVm7X1oL89IkYOEr/T
-         xVlk+p509jI2Sz5iH+CZlGX3jmd3nam8yByixK9LfAb5aXKQChtpci+JwJmokUlFScXf
-         6rVyVqOcNeCdNTAjGE82gPZ4+3Kr4XNrAWgWUJyPaxwqDTBcJIr+rnUCGAJo2d/EVlqn
-         T2iMSz6+mz5qBIh4+lQPX+Obxi/heHTujsAO39a2e/mw7ohvOfWAi4XFAP4NCItq8GCI
-         d1tVvloa1AK4K42JWGOftVwpecHZ97gTEAFC1+S3JG+t3eFKVw0Xzrf4PNsPKC16AKb0
-         18bA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro4TC4YYltK/YMg4f9K0k9eIyroZH7hpmPSHt8UIXhr54nppF+E3bwUo5tliAP21KbKI0c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtbUebOQk05PJ4flSlIjX6aIbnSBrF3PW/p0CKSH5MuLpmcyrL
-	sChYgH49ZV0PKmE5JnEBHE/CBNExAqAOxAsVbveAHNQmiBIX4egg30s3Nq7JcDVmt3A6meY79ET
-	OQX4Trg==
-X-Received: from plbd20.prod.google.com ([2002:a17:902:f154:b0:2c7:ef74:dfc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fd8d:b0:2d0:8c40:a788
- with SMTP id d9443c01a7336-2d0f1adb05cmr1635525ad.18.1785946949861; Wed, 05
- Aug 2026 09:22:29 -0700 (PDT)
-Date: Wed, 5 Aug 2026 09:22:29 -0700
-In-Reply-To: <04c395bb7d7a63e6b38a8d5684cffde1a1ebcf3f.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=ozlabs.org header.i=@ozlabs.org header.b="pLiGjIXv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1785947320;
+	bh=yiJ0+hNTlQaOQvii0b1/wQkPz1RfzFD08P9jZ5t1mCM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pLiGjIXvuuBR0foWf+7hbol+tQ2nqtHgBTowXwiG/iVfYgg5DzvokbKKtw7zqgG/R
+	 AuiEghtscPfI8zQ+ywOuqeT7a8ZJe83SbP8PeAW5Q0v07W5NbGH38FDIF8xH7Kh3+/
+	 pETfzzbLWjT37tneMWCwUDqIToWOJNUEq1adNmvrFxXfNHk3rNc/9BfSyMdY04nbZu
+	 Uqymsh6DW9R7SRZc526cKtU95caOMNzc6cK1iJUkzdUR5a4nKPU27UW6wLYUJrxU83
+	 bmzxNoG1faU5G84PcehHrAa+OC2MGPmnLqCBCOcDueljKnUVfjoKSOgp7EEqeM/EH0
+	 4ox3yohMVB8Qg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4hFbSb5XpRz4w9d;
+	Thu, 06 Aug 2026 02:28:31 +1000 (AEST)
+Message-ID: <554c73c8-bc17-4336-8e38-f4cfe8d8b3fe@ozlabs.org>
+Date: Wed, 5 Aug 2026 17:28:27 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260804233923.3504629-1-seanjc@google.com> <20260804233923.3504629-14-seanjc@google.com>
- <20260804235652.56E811F00A3A@smtp.kernel.org> <anNTtCYh7BpURA3n@google.com> <04c395bb7d7a63e6b38a8d5684cffde1a1ebcf3f.camel@infradead.org>
-Message-ID: <anNjRbdR1P0yZZa2@google.com>
-Subject: Re: [PATCH v8 13/17] KVM: x86: Disable preemption, not IRQs, when
- getting TSC+freq pair
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@nvidia.com>, Logan Gunthorpe <logang@deltatee.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Alex Williamson <alex@shazbot.org>,
+ Alex Mastro <amastro@fb.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kevin Tian <kevin.tian@intel.com>, Pranjal Shrivastava <praan@google.com>,
+ Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Ankit Agrawal <ankita@nvidia.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-pci@vger.kernel.org, Longfang Liu <liulongfang@huawei.com>
+References: <20260715174737.15287-1-matt@ozlabs.org>
+ <20260715174737.15287-3-matt@ozlabs.org>
+ <e90b0bd0-fb8e-4d4e-b282-609c26692e4a@ozlabs.org>
+ <b30e75d8-37d6-478d-bc72-a9ed0b7e200c@deltatee.com>
+ <20260805003914.GK27883@nvidia.com>
+From: Matt Evans <matt@ozlabs.org>
+In-Reply-To: <20260805003914.GK27883@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 05, 2026, David Woodhouse wrote:
-> On Wed, 2026-08-05 at 08:16 -0700, Sean Christopherson wrote:
-> >=20
-> > David, any thoughts?=C2=A0 I'm leaning towards keeping IRQs disabled to=
- minimize the
-> > chances of introducing a regression, even though I highly doubt disabli=
-ng IRQs
-> > to provide an atomic-ish pair was ever done deliberately.=C2=A0 My main=
- concern with
-> > disabling IRQs is that it will further muddy the waters with respect to=
- what is
-> > actually necessary, versus weird things KVM does for historical reasons=
-.=C2=A0 Though
-> > that can largely be solved with a verbose changelog.
->=20
-> I'm not sure I'd bother. There are plenty of other places we use an
-> "atomic-ish pair", although I've tried to kill most of those by the
-> time we get to the end of my series. And we don't disable interrupts
-> around them all; why should this one do so just because it accidentally
-> inherited it for other reasons?
+Hi both (Logan thanks for your comments!),
 
-Ya, after trying to write a changelog and reconcile the new "rule" with the
-existing code, I agree.  For kvmclock, the badness is that the guest's view=
- of
-time would be off by a smidge until the next kvm_guest_time_update(), but t=
-hat's
-a complete non-issue when considering that a host IRQ at any time immediate=
-ly
-introduces significantly lag into the guest's read of "now".
+On 05/08/2026 01:39, Jason Gunthorpe wrote:
+> On Tue, Aug 04, 2026 at 10:19:11AM -0600, Logan Gunthorpe wrote:
+> 
+>> There's a vague convention for this already: the term 'p2pmem' is often
+>> used for cases where the driver uses the allocator, etc. (I think I had
+>> this intention when I wrote the code and have since forgotten about
+>> it).
+> 
+> I've been calling it the genalloc layer and the core layer. p2pmem
+> would be OK to refer to the genalloc stuff. So if you want to have
+> CONFIG_PCI_P2PDMA and CONFIG_PCI_P2PMEM that seem sOk
+> 
+>> code into it's own file, potentially renaming some functions. Then, in
+>> the end, we would probably have a pcim_p2pdma_supported() function and a
+>> pcim_p2pmem_supported() function, the latter being used by existing use
+>> cases.
+> 
+> Not quite sure why we need this?
 
-TSC catchup due to an unstable TSC is a similar story.  The "bad" offset wi=
-ll be
-corrected on the next kvm_arch_vcpu_load().
+( [1] )
 
-So it's really just the "always catchup" mode for software-based TSC scalin=
-g that
-would have a persistent flaw, because as Sashiko pointed out, KVM would adj=
-ust
-the offset by "too much".  But that's a fundamental flaw in the catchup log=
-ic:
-KVM should compute an guest TSC as an absolute value by using the current t=
-ime
-and a reference time, not by accumulating delta.
+> Matt, the mlx5 stuff is the same as VFIO, it just uses the "core"
+> layer and does not use the genalloc. So there shouldn't be an issue
+> here, if the genalloc is off then the mlx5 stuff should still
+> work. There shouldn't be a case where CONFIG_PCI_P2PDMA=y and mlx5 is
+> broken?
+
+Oh, when CONFIG_PCI_P2PDMA=y it's all good.
+
+The issue is when CONFIG_PCI_P2PDMA=n, as mlx5 still seems to permit a
+DMABUF export solely because pcim_p2pdma_provider() succeeds.  (This
+patch's CONFIG_PCI_P2PDMA_CORE enables that.)  mlx5 assumes that getting
+a provider means P2P DMA is also available.
+
+Later, DMABUF attach would fail, but it'd be good to keep the original
+failure mode where UVERBS_METHOD_DMABUF_ALLOC fails early if no P2PDMA.
+
+I was thinking something trivial like the following would let things
+like IB fail the DMABUF_ALLOC early still, instead of making the
+assupmtion that having a provider means having P2P DMA.  E.g. OK
+provider's available, but test for P2P DMA support too:
+
+ bool pcim_p2pdma_supported(void)
+ {
+ #ifdef CONFIG_P2PDMA
+	return true;
+ #else
+	/* CONFIG_P2PDMA_CORE only */
+	return false;
+ #endif
+ }
+
+I can't yet see places [1] would be used (IIUC that's indicating "core
+is present"? and feels ~similar to _provider returning something) but I
+don't know all the consumers well enough yet.  Agree the two groups of
+functionality could be named more distinctly, though.
+
+
+Cheers,
+
+
+Matt
+
+(PS: Wanted to v.tactfully ask, as I'm eager to avoid as much
+renaming/refactoring in this pair of P2PDMA patches as possible since
+folks now seem happy with them, what could be a fix in this series vs a
+revisit.)
+
+
+> Did some of APIs get mixed into the genalloc family that should not
+> have?
+> 
+> Jason
+> 
+
+
