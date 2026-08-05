@@ -1,70 +1,76 @@
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D0B33F8B1;
-	Wed,  5 Aug 2026 00:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E731A681C;
+	Wed,  5 Aug 2026 00:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785890714; cv=none; b=Y2mYRQNw70Na1S9xUpxHf852mYYdZIaBtsPiCwrVPcImsi2VWnzJSO9aAd171aXf60OshNEwM3EdAdixeSAo2p1xZXyFFi98+8oMpdZIYqJsigip5fhM7AxO6l4oSuvwZsLFhUX/4mR+OqodhTpAlrZh054nUCeoKPkPyTimvUY=
+	t=1785891005; cv=none; b=Y8cTVg2Jy9jSXKwRkwbHbaMwp+KIZ3To/eDFkbd7T74zKijwVa3KYM0WaOPJgMwsuw/m6jOzM+cfBYASntywl+Ry0pzivFL/lyoTwtbU4+Ir0r5hyhYMhZOiSI6JAh9jfYyLlDYbd8rYbReDfR+O5Waw6pFiskD/KhiLe/mv16o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785890714; c=relaxed/simple;
-	bh=2FqqpqrMiLh/534TCcOdGxt8r09/4sRomYo5XCHm5tg=;
+	s=arc-20240116; t=1785891005; c=relaxed/simple;
+	bh=QlM00SFoLt3SgpwM5yns+MvvMSc3chlByAGXz9p99Sk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i4m7VjGEE0HjXkNCqX1NF01Y0sghhgvnuoXCw+GARH0sugLYXsH7+mDKU24ziQ85V9kGveJMNvyVW80dskHYMKc3DaArtpM/ZBi8TGAuHu8fa+BMJSApb1IEbh5ZpYei4lrMoHd8dZYLuU1d3Vc/c93Yq9+Ve5clbhv2vzhbX3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DaJE3+H1; arc=none smtp.client-ip=65.109.113.108
+	 Content-Type:Content-Disposition:In-Reply-To; b=EN9VAmRi4hzhBeIVp1ocqzvIyPJ/PAKAUQYbe/iWVrXMnpERDhKPzP6HqOymLr7dLpqP8zcaaYof14MnI0gebl6SFgGV4W4c7MhOF/F6vNxpn8BLUkVn7Woau9l5DcQHPIY9z08bwN97Atp5rRT+U1lXcuzmwht3/VnC7aj4NRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=VnS3br3T reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DaJE3+H1"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="VnS3br3T"
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 520D240E014A;
-	Wed,  5 Aug 2026 00:45:10 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CAC5540E0031;
+	Wed,  5 Aug 2026 00:50:00 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 55nEz_bmw26Z; Wed,  5 Aug 2026 00:45:00 +0000 (UTC)
+	with ESMTP id xQGTgCeBaw9Q; Wed,  5 Aug 2026 00:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1785890700; bh=6Dltynf3hrVUO0HJCc60UWNi7IECzyisxqB1tEwAGZo=;
+	t=1785890990; bh=SwRMflM/G6Wl3HyHAlXjWRPLk8KQM08C1ikUPXNLpnw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DaJE3+H113DkAOykYV/Jpz2vLkAGpBUPVfLygtXYS3Apx5hagBITTQ6JP0sXhaxKf
-	 s8GBpmfmzvgCbV1ieGleB+OW8ZzNhkeLKsB6KZPZN5Z8bP7dfFxB+G7ZRRdbRXUPzc
-	 2+LkDTK2TVqCZNa9IR+lvsEdjVxSQNqjmOeXHmLkNFhIeNYP8ToEaHz6ie+7KjEsf2
-	 DzedcMH5eLdga1O4t8NDWxJ1b3H6kX24rSJtwTc6FKjQrc55iIBore+eCDC1XRm5/8
-	 y1mGFRlFPaz+wb1z5IsBcmmC++qozay053Rt5FhxmCUCIKhPlU35Gbx72rDrcVAEUE
-	 gYQC5ot/QLT7bug6dU3nZoOEpciUvQqLvA5zkMhQAXEhrxrewyBWmiTiZoFU56ZASK
-	 xPFjtZZaP0mf4DqNIG0zPSXmZJcXx3amnM36DA+YqEqiTdQ8sFMksUyoj2gDsURHtp
-	 Hyu2fePp7fFhYp7ZFJkeBag7vk0Scaji1AGdm0J3en6P/81wdRjV8GVRRJvQF/9rI9
-	 Y09YKFBpl+/bIYkPsCZvQLFhX4g9NThV64PF4sYizXiBkJQXyZya0dnPfOT7xO5Kco
-	 q7ir5d9fU07A3pyFAjjwR8ypODdsENIYC30RmWLR+Hkk38gh7vLIxmD4PnxwIukfFP
-	 n+kcq7a407ybVWwH1sVh+waQ=
+	b=VnS3br3TMpVJeA1wPy6Tsy8Hb2w/olsQ56p+I9gLYVYNpHXlUTiIbE2JDG4e9HWci
+	 FcrundY2KMgn3fy46OP+DInemzWUFmXEZhnDQ49h/hHxvqvF7J68VB+IU8gGP6cIOw
+	 kAcP2pcZxD4TQYzu7UWp+foY3YUW2YqjgxwJWXlM7gq8zhquXSBqzI2v3yTXiBrjm8
+	 dKsLg3AY5iIQg8GClCuTJoRNHe5WiTNefyBxZqXcsxJqgVZheYa5PT4JEr5GArToqI
+	 Xn+No8zQaFRrTma140uGjJkYKtgYzsABoTN/prceMpe7fIuV7JZKzrtlty+gPZjDCb
+	 ROL6FCBzUen7RQpyDlkPAM9t7b1o1EdJyyH8KBynsjwmGpokjPTLTKPoqGdykEnSyR
+	 FAT35nrU706FLH0tL6OmqrOIRBHLriQR/LlZbrrlj/cETZv5/Rl5hzUuoW25fD0mUt
+	 FgUojrMdhYBwtxM5yfE8h9TNBjdEMHeQC6LUSYPAdBEfpf7xgRzyri43NlpelIthfI
+	 OR/NgFwdVpj20M8Hh5bvWZnyAlbKJDziWAsTQUytCt72wv32yhjmUYY25YU4HRDera
+	 0JiDUUBbMZC/mQGVMrYLsvB3MtSsSvdLGB/MTP4qk7ecLN41u1SpCWU+CjWX1IO6LM
+	 FEJp0/JoBEGO9z9I6fEA1NBQ=
 Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A75C840E00B8;
-	Wed,  5 Aug 2026 00:44:44 +0000 (UTC)
-Date: Tue, 4 Aug 2026 17:44:41 -0700
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C1A6440E00B8;
+	Wed,  5 Aug 2026 00:49:15 +0000 (UTC)
+Date: Tue, 4 Aug 2026 17:49:13 -0700
 From: Borislav Petkov <bp@alien8.de>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev, x86@kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Naveen Rao <naveen.rao@amd.com>,
-	David Kaplan <david.kaplan@amd.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
- actually the missing mitigation
-Message-ID: <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
-References: <20260804235611.4053375-1-kim.phillips@amd.com>
- <20260804235611.4053375-2-kim.phillips@amd.com>
+To: "Kalra, Ashish" <ashish.kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v11 4/6] x86/sev: Add support to perform RMP
+ optimizations asynchronously
+Message-ID: <20260805004913.GBanKIiW-O3pDjIqjH@fat_crate.local>
+References: <748785f1-f176-4f0a-8b8d-eadf46b20960@amd.com>
+ <178578506318.2377606.14791252769672870038@Ubuntu-2204-jammy-amd64-base>
+ <df5f5f6f-7278-42e7-bc7d-8e56187d1438@amd.com>
+ <8DAAEA48-F2FA-4D52-8E56-4B7213155F12@alien8.de>
+ <d7a17bde-4af0-45ad-96bc-4717a1fa1545@amd.com>
+ <60B4B369-19E7-44DF-BCCF-FC8DD851B2E7@alien8.de>
+ <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,47 +79,45 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260804235611.4053375-2-kim.phillips@amd.com>
+In-Reply-To: <59e8b0cf-0ab0-4b7a-9e05-4de6f83c9a10@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 04, 2026 at 06:56:02PM -0500, Kim Phillips wrote:
-> spectre_v2_select_retpoline() unconditionally emits a pr_err when the
-> kernel lacks retpoline support before returning SPECTRE_V2_NONE to its
-> callers.
+On Mon, Aug 03, 2026 at 05:22:17PM -0500, Kalra, Ashish wrote:
+> Periodic re-optimization was already considered in an earlier RMPOPT se=
+ries
 
-Unconditionally? There's an "if" there. :)
+Link?
 
-> A caller may then select an alternative mitigation, making the "no
-> mitigation available!" message alarming and misleading to administrators on
-> a system that is actually mitigated.
-> 
-> Drop the pr_err from the helper and emit it once from
-> spectre_v2_update_mitigation().  Guard it on
-> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) so it only fires when retpoline
-> truly cannot be built in,
+> and dropped because of being too disruptive =E2=80=94 a timer-based sca=
+n would run
+> on all cores every time it fires, even when no memory has been freed.
 
-This is explaining the diff. Doesn't belong in the commit message.
+What if it ran very seldomly, say once an hour?
 
-> and restrict it to the cases where retpoline
-> was the implied choice: SPECTRE_V2_CMD_FORCE, or SPECTRE_V2_CMD_AUTO
-> when should_mitigate_vuln(X86_BUG_SPECTRE_V2) indicates we actually
-> intended to mitigate. 
+> Running it at guest teardown (batched by the timeout) is a better fit:
+> teardown is when large contiguous regions actually go back to the
+> hypervisor, so the scan only runs when there's real work to do instead =
+of on
+> a fixed timer. The case of a guest freeing a 1 GB region mid-life is th=
+en
+> handled by the 1 GB-hugetlb page-cleanup follow-on, not by a periodic s=
+can.
 
-> This avoids the spurious error on a
-> CONFIG_MITIGATION_RETPOLINE=n kernel where a caller of
-> spectre_v2_select_retpoline() selects an alternative mitigation, leaving
-> the system protected while the old message claimed otherwise.
+Are you saying a periodic scan won't handle anything?
 
-This should be your first sentence. What the issue is.
+Because if it catches something, it will handle that something.
 
-Which begs the question: why?
+> I will also like to avoid looping on this =E2=80=94 periodic vs teardow=
+n was already
+> worked through in an earlier revision, and this is where we landed. Hap=
+py to
+> revisit if there's a specific new concern, but otherwise I'd prefer to =
+keep
+> the current approach.
 
-Why do we care about a CONFIG_MITIGATION_RETPOLINE=n kernel?
+Sorry, this is not how upstream review works.
 
-You either disable all mitigations or enable them all (distro kernel) and they
-get then configured at boot time. Why would I want to disable RETPOLINE only
-but leave spectre v2?
-
--- 
+--=20
 Regards/Gruss,
     Boris.
 
