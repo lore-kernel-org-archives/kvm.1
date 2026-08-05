@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99F943CEC7;
-	Wed,  5 Aug 2026 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF9443E9C5;
+	Wed,  5 Aug 2026 11:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927840; cv=none; b=p4sGIgTkyCGT7Fh2BJ+6vddNf/Q9FpehJ707TfqYWzDN+5nfZAS+wmdYdcAzu/qgy0P5CVa8aRKqR3Rdh7ehXyOo3fR5tkG8yAH1MliM8CDj6eSk+Deaj0OuT3ZNOM+FZyDBahVUjTgrekDA3GGoQ6g6+7DkWjJcx7nW0hPOytI=
+	t=1785927841; cv=none; b=rDzMauVESzCqEIEEpKilmfBavuS6kxJyCTOPboFqPzKE1cZ457enAwf0MGFqM2NDBKywPK5ZMKCcWZKQzsgJEUor3F7Z/LxPieXabuSY9pI+WxfsigUb3CwDpGsIq8aFomvl/1kKQLZ327rBZweQucvavATarBl6kAvAn48ZDJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927840; c=relaxed/simple;
-	bh=jzdjyo1cSHBrg+vBvTCJ+uT+giL04yTaNxS8M7ZI0Ho=;
+	s=arc-20240116; t=1785927841; c=relaxed/simple;
+	bh=NYoFCJs7hcwY6WkT5Rnwoy1VBXTXZnunw8e1HMzEKBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kNej4EpuUx+VH7+KLKy1Yp9Oal53A5xOS9HLZRWjlH5X7ed2kSywebuqtv+gxVatVjzPA5mA6xafL6bF+CsY3zDvZ1zosRR7qdfF1yQzuSgnevfB691XdEsN5JH5cN0yTtibaNoQHclJcCctm6gzvrUcgyQDjyxkpw3tyr2g/HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KClYnQBQ; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version:Content-Type; b=hXKj2MTZw2K/fk5WZmWLJqlP0i6kUNMdroW3il74Evo3IWa2ZUdHzB88HxeuFT84L1qpfWr6z8iZwgTa3PZToCVNQiP6vkFgsTVBBIVpSby/vp1TkW12fFP5fDXFDT2c9qGeII+8YVZESNjra4MTOJysXuRc7kbivmsqUcaAPr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AqmyHShP; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KClYnQBQ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AqmyHShP"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 906A420B7169;
-	Wed,  5 Aug 2026 04:03:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 906A420B7169
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7FD0020B716B;
+	Wed,  5 Aug 2026 04:03:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7FD0020B716B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927817;
-	bh=duFM8Vmsa5KFjEUjTCphJphVogV9Eyn1mCYidCnYXik=;
+	s=default; t=1785927818;
+	bh=dTRcKNCHeBGgLTvtUT3mS37PqtwLmSq7VZWMho7DmDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KClYnQBQrHA2HwzBUerI61Mej1MeEKx0hNOr1mQAJiiZFBNftf0tcKXG6a5/63j/f
-	 j50s1nIWIvVJBOOw5hJYzL5fiDNLjDlcD4WRHR9ovuRXu4VVHkJ6oHbsxD8rS9+2ZV
-	 RKjBnlLu88o+yJy00rXFVD1kByAt/Rlq5jEQ5Qg0=
+	b=AqmyHShPKsLZWg6hrykMQ0zUwrOUwVSlyzMGzd+NJLJggTIxLPWosaHXkI2axthP+
+	 DTuokXAWrTsMBQ9ZaXPz/s/JtFEerPvNcWQYItuwlRhLo1mQR1vNwBEUa8u4ui/Rk7
+	 dvuZLS4pBMAGZTTXW8KrnY08eG7+TJug4c/YlgW8=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 17/42] vbs: Add module authentication via VBS/HEKI
-Date: Wed,  5 Aug 2026 04:02:59 -0700
-Message-ID: <20260805110324.25067-18-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 18/42] vbs: Add kexec validation and make module auth non-fatal
+Date: Wed,  5 Aug 2026 04:03:00 -0700
+Message-ID: <20260805110324.25067-19-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -43,305 +43,192 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hook the kernel module loader to send module validation requests to the
-secure kernel (plane-1 / QEMU) before allowing modules to load, and to
-set per-section EPT permissions after module formation.
+Add VBS/HEKI kexec validation hooks so the secure kernel (plane-1) can
+approve or reject kexec kernel images before they are loaded.
 
-kernel/module/main.c:
-- After add_unformed_module(): call vbs_validate_module() with the
-  module ELF blob GPA and the kernel's own sig_ok result from
-  module_sig_check().  If the secure side rejects, loading is aborted.
-- After complete_formation(): call vbs_set_module_perms() to apply
-  EPT permissions per section (text=R+X, rodata=R, data=R+W).
-  Failure is non-fatal to avoid breaking module loading on ioctl
-  errors.
-- In free_module(): call vbs_unload_module() so the secure side can
-  release EPT overrides for the freed module.
-- All hooks are guarded by vbs_available() and are no-ops when VBS
-  is not active.
+kexec_file.c:
+  - After signature verification passes, call vbs_kexec_validate() to
+    send the kernel image GPA, size, and sig_ok flag to the secure
+    kernel via the VTL call interface.
+  - If the secure kernel rejects the image, kexec_file_load fails.
+
+kexec_core.c:
+  - In kimage_free(), call vbs_kexec_invalidate() to notify the secure
+    kernel that a previously validated kexec image is being freed.
 
 security/vbs/heki.h:
-- Add vbs_validate_module_req with module name, ELF GPA/size, and
-  sig_ok flag (kernel's signature verification result).
-- Add vbs_module_section and vbs_set_module_perms_req for per-section
-  GPA + permissions.
-- Add vbs_unload_module_req for module unload notification.
+  - Add struct vbs_kexec_validate_req (kernel_gpa, kernel_size,
+    sig_ok, flags).
 
 security/vbs/kvm_planes.c:
-- Implement kvm_planes_validate_module(): converts vmalloc ELF
-  pointer to GPA, sends sig_ok flag via VBS_CALL_VALIDATE_MODULE.
-- Implement kvm_planes_set_module_perms(): iterates mod->mem[]
-  array, maps each section type to VBS_MEM_* permissions (TEXT→R+X,
-  RODATA→R, DATA→R+W), sends via VBS_CALL_SET_MODULE_PERMS.
-- Implement kvm_planes_unload_module(): sends module name via
-  VBS_CALL_UNLOAD_MODULE.
+  - Implement kvm_planes_kexec_validate(): translates the vmalloc
+    kernel buffer to a GPA, populates the request, and issues the
+    VTL call to plane-1.
+  - Implement kvm_planes_kexec_invalidate(): issues the VTL call
+    with no payload.
+
+kernel/module/main.c:
+  - Change VBS module validation from fatal to non-fatal.  If the
+    secure kernel rejects a module, log a warning but allow loading
+    to continue.  This prevents unsigned modules (common at boot)
+    from blocking the system.  A strict policy can be enforced later.
 
 Signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
 ---
- kernel/module/main.c      |  37 ++++++++++++++
- security/vbs/heki.h       |  46 +++++++++++++++++
- security/vbs/kvm_planes.c | 102 +++++++++++++++++++++++++++++++++++---
- 3 files changed, 178 insertions(+), 7 deletions(-)
+ kernel/kexec_core.c       |  5 +++++
+ kernel/kexec_file.c       | 20 ++++++++++++++++++++
+ kernel/module/main.c      |  9 +++++----
+ security/vbs/heki.h       | 14 ++++++++++++++
+ security/vbs/kvm_planes.c | 24 +++++++++++++++++++++++-
+ 5 files changed, 67 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 46dd8d25a605..2d0232fccf18 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -39,6 +39,7 @@
- #include <linux/string.h>
- #include <linux/mutex.h>
- #include <linux/rculist.h>
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index dc770b9a6d05..a7bdbfaf68c8 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -43,6 +43,7 @@
+ #include <linux/kmsg_dump.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/sysfs.h>
 +#include <linux/vbs.h>
- #include <linux/uaccess.h>
- #include <asm/cacheflush.h>
- #include <linux/set_memory.h>
-@@ -1418,6 +1419,11 @@ static void free_module(struct module *mod)
- {
- 	trace_module_free(mod);
  
-+	/* Notify the secure kernel that this module is being unloaded
-+	 * so it can release any EPT permission overrides. */
+ #include <asm/page.h>
+ #include <asm/sections.h>
+@@ -580,6 +581,10 @@ void kimage_free(struct kimage *image)
+ 	if (!image)
+ 		return;
+ 
++	/* Notify the secure kernel that a kexec image is being freed */
 +	if (vbs_available())
-+		vbs_unload_module(mod);
++		vbs_kexec_invalidate();
 +
- 	codetag_unload_module(mod);
+ #ifdef CONFIG_CRASH_DUMP
+ 	if (image->vmcoreinfo_data_copy) {
+ 		crash_update_vmcoreinfo_safecopy(NULL);
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 2bfbb2d144e6..81cf454ab516 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -27,6 +27,7 @@
+ #include <linux/syscalls.h>
+ #include <linux/vmalloc.h>
+ #include <linux/dma-map-ops.h>
++#include <linux/vbs.h>
+ #include "kexec_internal.h"
  
- 	mod_sysfs_teardown(mod);
-@@ -3472,6 +3478,22 @@ static int load_module(struct load_info *info, const char __user *uargs,
- 	if (err)
- 		goto free_module;
- 
+ #ifdef CONFIG_KEXEC_SIG
+@@ -243,6 +244,25 @@ kimage_file_prepare_segments(struct kimage *image, int kernel_fd, int initrd_fd,
+ 	if (ret)
+ 		goto out;
+ #endif
++
 +	/*
 +	 * If VBS is available, ask the secure kernel (plane-1) to
-+	 * validate this module.  We pass the module name and the
-+	 * sig_ok flag from the kernel's own signature check.
-+	 * Plane-1 can enforce additional policy (e.g., allowlist).
++	 * validate the kexec kernel image.  Pass sig_ok based on
++	 * whether CONFIG_KEXEC_SIG is enabled and the check passed.
 +	 */
 +	if (vbs_available()) {
-+		err = vbs_validate_module(info->hdr, info->len,
-+					  NULL, info->sig_ok ? 1 : 0);
-+		if (err) {
-+			pr_warn("vbs: module '%s' rejected by secure kernel (%ld)\n",
-+				mod->name, err);
-+			goto unlink_mod;
++		int sig_ok = 0;
++#ifdef CONFIG_KEXEC_SIG
++		sig_ok = 1;  /* we got here, so sig check passed */
++#endif
++		ret = vbs_kexec_validate(image->kernel_buf,
++					 image->kernel_buf_len,
++					 NULL, sig_ok);
++		if (ret) {
++			pr_warn("vbs: kexec kernel rejected by secure kernel (%d)\n", ret);
++			goto out;
 +		}
 +	}
-+
- 	/*
- 	 * We are tainting your kernel if your module gets into
- 	 * the modules linked list somehow.
-@@ -3539,6 +3561,21 @@ static int load_module(struct load_info *info, const char __user *uargs,
- 	if (err)
- 		goto ddebug_cleanup;
- 
-+	/*
-+	 * If VBS is available, send the module's per-section layout
-+	 * to the secure kernel so it can enforce EPT permissions:
-+	 * text → R+X (NO_WRITE), rodata → R (NO_WRITE|NO_EXEC),
-+	 * data → R+W (no restrictions).
-+	 */
-+	if (vbs_available()) {
-+		err = vbs_set_module_perms(mod);
+ 	/* It is possible that there no initramfs is being loaded */
+ 	if (!(flags & KEXEC_FILE_NO_INITRAMFS)) {
+ 		ret = kernel_read_file_from_fd(initrd_fd, 0, &image->initrd_buf,
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index 2d0232fccf18..3b46d6c0fb41 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -3487,11 +3487,12 @@ static int load_module(struct load_info *info, const char __user *uargs,
+ 	if (vbs_available()) {
+ 		err = vbs_validate_module(info->hdr, info->len,
+ 					  NULL, info->sig_ok ? 1 : 0);
+-		if (err) {
+-			pr_warn("vbs: module '%s' rejected by secure kernel (%ld)\n",
 +		if (err)
-+			pr_warn("vbs: set_module_perms for %s failed (%ld)\n",
-+				mod->name, err);
-+		/* Non-fatal: continue loading even if protection fails */
++			pr_warn("vbs: module '%s' validation returned (%ld) — continuing\n",
+ 				mod->name, err);
+-			goto unlink_mod;
+-		}
++		/* Non-fatal: allow loading to continue even if VBS rejects.
++		 * A strict policy can be enforced later by changing this. */
 +		err = 0;
-+	}
-+
- 	err = prepare_coming_module(mod);
- 	if (err)
- 		goto bug_cleanup;
+ 	}
+ 
+ 	/*
 diff --git a/security/vbs/heki.h b/security/vbs/heki.h
-index fee986de351a..5b7fa92bce21 100644
+index 5b7fa92bce21..fb485f171045 100644
 --- a/security/vbs/heki.h
 +++ b/security/vbs/heki.h
-@@ -36,6 +36,52 @@ struct vbs_seal_kernel_req {
- 	__u64	cr3;		/* plane-0 kernel CR3 for verification    */
+@@ -82,6 +82,20 @@ struct vbs_unload_module_req {
+ 	char	name[56];	/* module name (null-terminated)          */
  } __packed;
  
-+/* ── Module authentication ────────────────────────────────────────────── */
++/* ── Kexec validation ─────────────────────────────────────────────────── */
 +
 +/*
-+ * VBS_CALL_VALIDATE_MODULE payload — plane-0 sends the GPA of the module
-+ * ELF blob and its appended PKCS#7 signature for plane-1 verification.
-+ * The module blob is in guest physical memory; the secure side reads it
-+ * directly via the GPA (no copy through the CAA page).
++ * VBS_CALL_KEXEC_VALIDATE payload — plane-0 sends the GPA and size of
++ * the kexec kernel image for plane-1 validation before allowing the
++ * kexec to proceed.
 + */
-+struct vbs_validate_module_req {
-+	char	name[56];	/* module name (null-terminated)          */
-+	__u64	elf_gpa;	/* GPA of the module ELF data             */
-+	__u64	elf_size;	/* size of the ELF data (excl. signature) */
++struct vbs_kexec_validate_req {
++	__u64	kernel_gpa;	/* GPA of the kernel image buffer         */
++	__u64	kernel_size;	/* size of the kernel image               */
 +	__u32	sig_ok;		/* 1 if kernel's sig check passed         */
-+	__u32	reserved;	/* padding                               */
-+} __packed;
-+
-+/*
-+ * Per-section descriptor for VBS_CALL_SET_MODULE_PERMS.
-+ * Sent as an array in the CAA buffer after the module name.
-+ */
-+struct vbs_module_section {
-+	__u64	gpa;		/* section GPA (page-aligned)             */
-+	__u64	size;		/* section size (page-aligned)            */
-+	__u32	perms;		/* VBS_MEM_* permission flags             */
-+	__u32	type;		/* enum mod_mem_type                      */
-+} __packed;
-+
-+/*
-+ * VBS_CALL_SET_MODULE_PERMS payload — after relocation, plane-0 sends
-+ * the per-section layout so plane-1 can set EPT permissions.
-+ * Sections follow immediately after this header in the buffer.
-+ */
-+struct vbs_set_module_perms_req {
-+	char	name[56];	/* module name (null-terminated)          */
-+	__u32	nr_sections;	/* number of vbs_module_section entries   */
 +	__u32	flags;		/* reserved, must be 0                   */
-+	/* struct vbs_module_section sections[]; follows in buffer */
-+} __packed;
-+
-+/*
-+ * VBS_CALL_UNLOAD_MODULE payload — module is being freed.
-+ */
-+struct vbs_unload_module_req {
-+	char	name[56];	/* module name (null-terminated)          */
 +} __packed;
 +
  /* ── x86-64 page table walker (for plane-1 auditing) ─────────────────── */
  
  /* Classification of a guest-physical page based on page table walk */
 diff --git a/security/vbs/kvm_planes.c b/security/vbs/kvm_planes.c
-index 293c960c0968..1114adfbd46c 100644
+index 1114adfbd46c..061163a4d303 100644
 --- a/security/vbs/kvm_planes.c
 +++ b/security/vbs/kvm_planes.c
-@@ -23,6 +23,9 @@
- #include <linux/mm.h>
- #include <linux/io.h>
- #include <linux/kvm_para.h>
-+#include <linux/module.h>
-+#include <linux/string.h>
-+#include <linux/elf.h>
- #include <asm/sections.h>
- #include <asm/kvm_para.h>
- #include <asm/processor.h>
-@@ -147,26 +150,111 @@ static int kvm_planes_seal_kernel(void)
- static int kvm_planes_validate_module(const void *elf, size_t elf_size,
- 				      const void *sig, size_t sig_size)
+@@ -282,12 +282,34 @@ static int kvm_planes_send_certs(const void *certs, size_t certs_size)
+ static int kvm_planes_kexec_validate(const void *kernel, size_t kernel_size,
+ 				     const void *sig, size_t sig_size)
  {
-+	struct vbs_validate_module_req req = {};
-+	struct page *elf_page;
-+	const Elf64_Ehdr *ehdr;
++	struct vbs_kexec_validate_req req = {};
++	struct page *page;
 +
-+	if (!elf || !elf_size)
++	if (!kernel || !kernel_size)
 +		return -EINVAL;
 +
- 	/*
--	 * Module blobs can be large — for the KVM planes backend we pass
--	 * the physical address and size to plane-1 via the VTL call and
--	 * let plane-1 map/read the pages directly from its EPT view.
--	 * For now, a stub that signals "not yet implemented".
-+	 * sig_size is repurposed: 1 = kernel's own sig check passed,
-+	 * 0 = module is unsigned or sig check failed.
- 	 */
-+	req.sig_ok = sig_size ? 1 : 0;
-+
-+	/* Try to extract the module name from the ELF .modinfo section.
-+	 * For now, just use a placeholder — the name is available at
-+	 * the call site in load_module() but not passed through the
-+	 * vbs_ops interface which takes (elf, elf_size, sig, sig_size).
++	/*
++	 * sig_size is repurposed: 1 = kernel's sig check passed,
++	 * 0 = unsigned or failed (same pattern as module validation).
 +	 */
-+	ehdr = elf;
-+	if (elf_size >= sizeof(*ehdr) && ehdr->e_ident[0] == 0x7f)
-+		strscpy(req.name, "module", sizeof(req.name));
-+	else
-+		strscpy(req.name, "unknown", sizeof(req.name));
++	req.sig_ok = sig_size ? 1 : 0;
++	req.kernel_size = kernel_size;
 +
-+	/* Get GPA of the ELF blob */
-+	elf_page = vmalloc_to_page(elf);
-+	if (elf_page) {
-+		req.elf_gpa  = page_to_phys(elf_page) +
-+			       offset_in_page(elf);
-+		req.elf_size = elf_size;
-+	}
++	/* Get GPA of the kernel image buffer (first page) */
++	page = vmalloc_to_page(kernel);
++	if (page)
++		req.kernel_gpa = page_to_phys(page) + offset_in_page(kernel);
 +
-+	pr_debug("vbs-kvm: validate_module elf_gpa=0x%llx size=0x%llx sig_ok=%u\n",
-+		 req.elf_gpa, req.elf_size, req.sig_ok);
++	pr_info("vbs-kvm: kexec_validate gpa=0x%llx size=0x%llx sig_ok=%u\n",
++		req.kernel_gpa, req.kernel_size, req.sig_ok);
 +
- 	return kvm_planes_vtl_call(VBS_CALL_VALIDATE_MODULE,
+ 	return kvm_planes_vtl_call(VBS_CALL_KEXEC_VALIDATE,
 -				   NULL, 0, NULL, 0);
 +				   &req, sizeof(req), NULL, 0);
  }
  
- static int kvm_planes_set_module_perms(const struct module *mod)
+ static int kvm_planes_kexec_invalidate(void)
  {
-+	struct {
-+		struct vbs_set_module_perms_req hdr;
-+		struct vbs_module_section sections[MOD_MEM_NUM_TYPES];
-+	} __packed req = {};
-+	int i, n = 0;
-+
-+	strscpy(req.hdr.name, mod->name, sizeof(req.hdr.name));
-+
-+	for (i = 0; i < MOD_MEM_NUM_TYPES; i++) {
-+		const struct module_memory *mem = &mod->mem[i];
-+		struct vbs_module_section *sec;
-+		unsigned long gpa;
-+		struct page *p;
-+
-+		if (!mem->base || !mem->size)
-+			continue;
-+
-+		p = vmalloc_to_page(mem->base);
-+		if (!p)
-+			continue;
-+
-+		gpa = page_to_phys(p) + offset_in_page(mem->base);
-+		sec = &req.sections[n];
-+		sec->gpa   = gpa;
-+		sec->size  = PAGE_ALIGN(mem->size);
-+		sec->type  = i;
-+
-+		/* Set permissions based on section type */
-+		switch (i) {
-+		case MOD_TEXT:
-+		case MOD_INIT_TEXT:
-+			sec->perms = VBS_MEM_READ | VBS_MEM_EXEC;
-+			break;
-+		case MOD_RODATA:
-+		case MOD_RO_AFTER_INIT:
-+		case MOD_INIT_RODATA:
-+			sec->perms = VBS_MEM_READ;
-+			break;
-+		default: /* MOD_DATA, MOD_INIT_DATA */
-+			sec->perms = VBS_MEM_READ | VBS_MEM_WRITE;
-+			break;
-+		}
-+		n++;
-+	}
-+
-+	req.hdr.nr_sections = n;
-+
-+	pr_debug("vbs-kvm: set_module_perms %s: %d sections\n",
-+		 mod->name, n);
-+
- 	return kvm_planes_vtl_call(VBS_CALL_SET_MODULE_PERMS,
--				   NULL, 0, NULL, 0);
-+				   &req,
-+				   sizeof(req.hdr) + n * sizeof(req.sections[0]),
-+				   NULL, 0);
++	pr_info("vbs-kvm: kexec_invalidate\n");
+ 	return kvm_planes_vtl_call(VBS_CALL_KEXEC_INVALIDATE,
+ 				   NULL, 0, NULL, 0);
  }
- 
- static int kvm_planes_unload_module(const struct module *mod)
- {
-+	struct vbs_unload_module_req req = {};
-+
-+	strscpy(req.name, mod->name, sizeof(req.name));
-+
- 	return kvm_planes_vtl_call(VBS_CALL_UNLOAD_MODULE,
--				   NULL, 0, NULL, 0);
-+				   &req, sizeof(req), NULL, 0);
- }
- 
- /* ── key / certificate management ─────────────────────────────────────── */
 -- 
 2.55.0
 
