@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B9F44E043;
-	Wed,  5 Aug 2026 11:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6300C4503FF;
+	Wed,  5 Aug 2026 11:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927847; cv=none; b=JIwnGm5UaFiJO7Gh0sO7nkF/apIL1ETVaRNh/Xvjui0+lGGq/Fr702T0N0LDCoV7CO/McrQUAj/ZONdwwUOp1HNRdHajCCiZSssrjxVd8ekEJQNTMEv0S84UYZZ58Dz6hdRtWOOpgnM2difeyK7AUob9gYUHExcd1/esWjrBoi4=
+	t=1785927848; cv=none; b=ATdyR8trI1E3f+udL0iH7qonBAvDiuXHO8n4Ie2NjiHYxwlPYSnhc9O0ykimbEKzBNoj11rNeuNySI/phY1HTThmZj/640QOimt1l8EMWo3/YY4l3XZrMf/9946/SLgdEjQODAWZwgHC4Ch+BK6cdW1pQ6CJB7NOnpzgGLN+LVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927847; c=relaxed/simple;
-	bh=4dPfLjvwm2dCi1BpCMDr3OP9+uCo2/wqxW9zUls3bwQ=;
+	s=arc-20240116; t=1785927848; c=relaxed/simple;
+	bh=kpkgZl0Tcw92oo543975qMU66f9hJ6QM9ee1afXBaws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WybgL+mf6uQx3Xbx5IOIPFHZvyy6b/od/lg3W2zomQVuLy5CwdxUNL6VdnAb17FsYbrbjCkPL+FK1PzBlzYlVAtINhIRQdcYlHLT9gBzAUwV8U96rcR13b653CExyPq3yRDreuF4T7sgySGCu8u3RFCeVbU2YZgSy9lG3WmiJnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=McK/7jlH; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=fdCdXcgAtqmOPdhHooXaF+BbyW8RTrAgYZeaY3sPPjT7SJSEzp/P3Pu20t1l0cwQnV3eepjJBgyPKNKD7PXK9t8Q6z0GUnPMg8Z1sD06gmfbtpSH9F/oBFBqQZuN9USCEZpoV+MdNBjWSLm7l7hdAgKc07WFvnV61Gu9D1lnQF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Cf3aD486; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="McK/7jlH"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Cf3aD486"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B1C0820B7169;
-	Wed,  5 Aug 2026 04:03:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B1C0820B7169
+	by linux.microsoft.com (Postfix) with ESMTPSA id 871C420B716B;
+	Wed,  5 Aug 2026 04:03:45 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 871C420B716B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927824;
-	bh=YC/fxgTEyFQzMd6QeSrs/+l70c1o6pfZQI4vPOn5O4s=;
+	s=default; t=1785927825;
+	bh=m4DXXDJSWrtuCFV6AD4mQm8ZCb5skNiU0wv/knEqjsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=McK/7jlH+ZQ6BTAv7M9GKKYFCIpIGiF7OBWPc4hD5x/M/GkXhkX4mmnYkqfjFWx4s
-	 CU5Zz/4yLZKczsVWIQ3eyLVvMklhUE0QeKrbDt6xHRb8CImgbVJl7gs+fzafVaPZEv
-	 7eWY0gzTQ4PGWTjAkGYE+XzZi/7wWTKrodZLGi3w=
+	b=Cf3aD486bf0MQTJDeii5vYS8j3k5l8EsuGlzg38ch2TmPmq/NtypvT9PxXDjT4QvO
+	 8fU/Y57P59/iBcJ1AunXewWG9wJFwITnkNVEM1nmlOivyInmTvSEwOQcPTSdF/N4sO
+	 94gYroOQvmAGaG7dtuA6y9K/CyMP0w0EnJvfSc2E=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 26/42] drivers/virt: add VBS secure-plane park loop
-Date: Wed,  5 Aug 2026 04:03:08 -0700
-Message-ID: <20260805110324.25067-27-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 27/42] KVM: planes: add arch-neutral in-kernel plane switch helper
+Date: Wed,  5 Aug 2026 04:03:09 -0700
+Message-ID: <20260805110324.25067-28-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -40,208 +40,108 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a minimal, self-contained driver that lets an otherwise ordinary
-kernel act as the secure plane (plane >0) of a KVM VM-planes guest. When
-the "vbs_park" command-line option is present, a kernel thread hands
-control back to the normal plane via KVM_HC_VBS_VTL_RETURN and then
-services VTL calls from a shared calling area, acknowledging each as a
-no-op.
+Factor the in-kernel plane switch out of the SEV-SNP VMPL path into a
+generic kvm_vcpu_switch_plane(). Both vCPUs share the same vcpu->common,
+so the switch only validates the sibling relationship, flips the
+per-plane runnable/stopped state, and returns 1 to keep the caller
+inside KVM_RUN; the run loop then re-selects the target plane via
+kvm_vcpu_select_plane().
 
-This is deliberately independent of the full VBS/HEKI stack (CONFIG_VBS):
-it implements only the park/dispatch handshake so that any secure kernel
-(or a future SVSM) can act as plane 1. Gated behind CONFIG_VBS_PARK.
+This is the common core shared by all secure-plane backends (SEV-SNP
+VMPL today, VBS/VTL next); vendor-specific state preparation stays in
+the caller. Convert __sev_snp_run_vmpl() to use it.
 
 Signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
 ---
- drivers/virt/Kconfig    |  15 +++++
- drivers/virt/Makefile   |   1 +
- drivers/virt/vbs_park.c | 136 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 152 insertions(+)
- create mode 100644 drivers/virt/vbs_park.c
+ arch/x86/kvm/svm/sev.c   | 13 ++++++-------
+ include/linux/kvm_host.h |  1 +
+ virt/kvm/kvm_main.c      | 27 +++++++++++++++++++++++++++
+ 3 files changed, 34 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-index 52eb7e4ba71f..88e40eaba1c2 100644
---- a/drivers/virt/Kconfig
-+++ b/drivers/virt/Kconfig
-@@ -13,6 +13,21 @@ menuconfig VIRT_DRIVERS
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 53e76d22eb08..b9b0bbb72394 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -4507,21 +4507,20 @@ static int __sev_snp_run_vmpl(struct vcpu_svm *svm, unsigned int vmpl)
+ {
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct kvm_vcpu *target = vcpu->common->vcpus[vmpl];
+-	struct vcpu_svm *target_svm = to_svm(target);
++	struct vcpu_svm *target_svm;
  
- if VIRT_DRIVERS
+ 	if (!target)
+ 		return -EINVAL;
  
-+config VBS_PARK
-+	bool "KVM VM-planes secure-plane park loop"
-+	depends on X86 && KVM_GUEST
-+	help
-+	  Minimal in-kernel handler for the secure plane (plane >0) of a KVM
-+	  VM-planes guest.  When enabled and the "vbs_park" kernel command-line
-+	  option is present, a kernel thread hands control back to the normal
-+	  plane via the KVM_HC_VBS_VTL_RETURN hypercall and then services VTL
-+	  calls from a shared calling area.
+-	/* Mark current plane as stopped so it is not selected */
++	target_svm = to_svm(target);
 +
-+	  This is independent of the full VBS/HEKI stack (CONFIG_VBS): it
-+	  implements only the park/dispatch handshake so that any secure kernel
-+	  can act as plane 1.  Calls are acknowledged as no-ops.  Say N unless
-+	  this kernel is used as a VM-planes secure plane.
-+
- config VMGENID
- 	tristate "Virtual Machine Generation ID driver"
- 	default y
-diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
-index f29901bd7820..fa91899a356d 100644
---- a/drivers/virt/Makefile
-+++ b/drivers/virt/Makefile
-@@ -5,6 +5,7 @@
++	/* SEV-specific preparation for the target VMPL before switching. */
+ 	kvm_set_mp_state(target, KVM_MP_STATE_RUNNABLE);
+ 	/* In case KVM_REQ_UPDATE_PROTECTED_GUEST_STATE is set - mark the new VMSA as runnable */
+ 	target_svm->sev_es.snp_ap_runnable = true;
+-	kvm_vcpu_set_plane_runnable(target);
+-	kvm_vcpu_set_plane_stopped(vcpu);
+-
+-	kvm_make_request(KVM_REQ_PLANE_RESCHED, vcpu);
  
- obj-$(CONFIG_FSL_HV_MANAGER)	+= fsl_hypervisor.o
- obj-$(CONFIG_VMGENID)		+= vmgenid.o
-+obj-$(CONFIG_VBS_PARK)		+= vbs_park.o
- obj-y				+= vboxguest/
+-	return 1;
++	/* Perform the arch-neutral in-kernel plane switch. */
++	return kvm_vcpu_switch_plane(vcpu, target);
+ }
  
- obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
-diff --git a/drivers/virt/vbs_park.c b/drivers/virt/vbs_park.c
-new file mode 100644
-index 000000000000..fabb6beeea7b
---- /dev/null
-+++ b/drivers/virt/vbs_park.c
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+ static int sev_snp_run_vmpl(struct vcpu_svm *svm)
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 82e557e66152..c6cf2b6c0076 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -455,6 +455,7 @@ struct kvm_vcpu {
+ 
+ void kvm_vcpu_set_plane_runnable(struct kvm_vcpu *vcpu);
+ void kvm_vcpu_set_plane_stopped(struct kvm_vcpu *vcpu);
++int kvm_vcpu_switch_plane(struct kvm_vcpu *vcpu, struct kvm_vcpu *target);
+ struct kvm_vcpu *kvm_vcpu_select_plane(struct kvm_vcpu *vcpu);
+ 
+ static inline bool kvm_vcpu_wants_to_run(struct kvm_vcpu *vcpu)
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 9623ab8ebd9e..553c282500fd 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -5039,6 +5039,33 @@ void kvm_vcpu_set_plane_stopped(struct kvm_vcpu *vcpu)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_set_plane_stopped);
+ 
 +/*
-+ * vbs_park - minimal KVM VM-planes secure-plane park loop
++ * Switch the logical CPU from the currently-running plane (@vcpu) to a sibling
++ * plane (@target) without leaving KVM_RUN.  Both vCPUs share the same
++ * vcpu->common, so this only flips the per-plane runnable/stopped state and
++ * requests a plane reschedule; the run loop in kvm_arch_vcpu_ioctl_run() then
++ * re-selects @target via kvm_vcpu_select_plane() and re-enters the guest.
 + *
-+ * This provides only the secure-plane (plane >0) side of the VM-planes
-+ * park/dispatch handshake so that an otherwise ordinary kernel can act as
-+ * plane 1.  It is deliberately independent of the full VBS/HEKI stack
-+ * (CONFIG_VBS): it implements no security policy.  Its single job is to hand
-+ * control back to the normal plane (plane 0) via the KVM_HC_VBS_VTL_RETURN
-+ * hypercall and then service VTL calls from the shared calling area.
++ * This is the arch-neutral core of the in-kernel plane switch shared by all
++ * secure-plane backends (SEV-SNP VMPL, VBS/VTL on Intel and AMD, and, in the
++ * future, Arm stage-2).  Any vendor-specific state preparation must be done by
++ * the caller before invoking this helper.
 + *
-+ * Control flow (all within plane 0's single KVM_RUN; see
-+ * arch/x86/kvm/x86.c __kvm_emulate_hypercall):
-+ *
-+ *   plane 0                        KVM                       plane 1 (here)
-+ *   -------                        ---                       --------------
-+ *   fill calling area
-+ *   HC_VBS_VTL_CALL(ca_gpa) ─────▶ switch_plane ───────────▶ resume in
-+ *                                  (RAX := ca_gpa)            vtl_return()
-+ *                                                            handle call_id
-+ *                                                            write ca->status
-+ *   resume after VTL_CALL ◀─────── switch_plane ◀─────────── HC_VBS_VTL_RETURN
-+ *
-+ * Activated by the "vbs_park" kernel command-line option; without it this
-+ * kernel boots normally and never parks.
++ * Returns 1 to keep the caller inside KVM_RUN, or -EINVAL if @target is not a
++ * valid sibling plane of @vcpu.
 + */
-+
-+#define pr_fmt(fmt) "vbs-park: " fmt
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/kthread.h>
-+#include <linux/io.h>
-+#include <linux/mm.h>
-+#include <linux/types.h>
-+#include <linux/errno.h>
-+#include <linux/err.h>
-+#include <linux/kvm_para.h>
-+#include <asm/kvm_para.h>
-+
-+/*
-+ * Shared-memory calling area.  MUST match struct vbs_kvm_ca in
-+ * security/vbs/kvm_planes.c (the normal-plane <-> secure-plane wire ABI):
-+ *
-+ *   [ call_pending | call_id | status | arg_size | resp_size | buffer ]
-+ */
-+struct vtl_ca {
-+	__u8	call_pending;	/* 1 while call is in flight		*/
-+	__u8	rsvd[3];
-+	__u32	call_id;	/* request id (set by caller)		*/
-+	__s32	status;		/* return code (set by responder)	*/
-+	__u32	arg_size;	/* request payload size			*/
-+	__u32	resp_size;	/* response payload size		*/
-+	__u8	buffer[];	/* request data in, response data out	*/
-+} __packed;
-+
-+/* Set from the "vbs_park" kernel command-line option. */
-+static bool vbs_park_active __ro_after_init;
-+
-+static int __init vbs_park_setup(char *str)
++int kvm_vcpu_switch_plane(struct kvm_vcpu *vcpu, struct kvm_vcpu *target)
 +{
-+	vbs_park_active = true;
++	if (!target || target->common != vcpu->common)
++		return -EINVAL;
++
++	kvm_vcpu_set_plane_runnable(target);
++	kvm_vcpu_set_plane_stopped(vcpu);
++
 +	return 1;
 +}
-+__setup("vbs_park", vbs_park_setup);
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_vcpu_switch_plane);
 +
-+/*
-+ * Park the secure plane and hand control back to the normal plane.  On the
-+ * next VTL call KVM resumes us here with the calling-area GPA in the
-+ * hypercall return value (RAX).  @status is carried for tracing only; the
-+ * real result is already in the calling area.
-+ */
-+static u64 vtl_return(long status)
-+{
-+	return kvm_hypercall1(KVM_HC_VBS_VTL_RETURN, (unsigned long)status);
-+}
-+
-+static int vbs_park_fn(void *unused)
-+{
-+	long status = 0;
-+
-+	pr_info("secure-plane park loop started\n");
-+
-+	for (;;) {
-+		struct vtl_ca *ca;
-+		u64 ca_gpa;
-+
-+		/* Park; resume with the next request's calling-area GPA. */
-+		ca_gpa = vtl_return(status);
-+		if (!ca_gpa) {
-+			status = -EINVAL;
-+			continue;
-+		}
-+
-+		ca = memremap(ca_gpa, PAGE_SIZE, MEMREMAP_WB);
-+		if (!ca) {
-+			pr_err_ratelimited("failed to map calling area 0x%llx\n",
-+					   ca_gpa);
-+			status = -EFAULT;
-+			continue;
-+		}
-+
-+		/*
-+		 * No security policy lives here: acknowledge the call as a
-+		 * no-op so the normal plane can make progress.  Replace this
-+		 * with real handlers (or move plane 1 to a dedicated SVSM) to
-+		 * enforce actual VBS semantics.
-+		 */
-+		pr_info_ratelimited("VTL call id=0x%x arg_size=%u (no-op)\n",
-+				    ca->call_id, ca->arg_size);
-+		ca->status    = 0;
-+		ca->resp_size = 0;
-+		status = 0;
-+
-+		memunmap(ca);
-+	}
-+
-+	return 0;
-+}
-+
-+static int __init vbs_park_init(void)
-+{
-+	struct task_struct *t;
-+
-+	if (!vbs_park_active)
-+		return 0;
-+
-+	t = kthread_run(vbs_park_fn, NULL, "vbs-park");
-+	if (IS_ERR(t)) {
-+		pr_err("failed to start park loop: %ld\n", PTR_ERR(t));
-+		return PTR_ERR(t);
-+	}
-+
-+	return 0;
-+}
-+late_initcall(vbs_park_init);
+ struct kvm_vcpu *kvm_vcpu_select_plane(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_vcpu_common *common = vcpu->common;
 -- 
 2.55.0
 
