@@ -1,236 +1,208 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54422481A82
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 15:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785945567; cv=pass; b=SAo+xZdSv/w6H06x8QmPeQZlWok9v3CMruIdG0WzzVzZWNq0g3VCrFSfkKDmC2txCooxbXlOx8xtTqGzEPbqahcuzsSobqeohc683FrZNclI5qU51Sd1LuFGCbr0P6BdM83bBHWx3JyC/pegPCkbCWJXZXE4j35tSggYCvWhAxk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785945567; c=relaxed/simple;
-	bh=vBtrTO+xzdjdKu06LW7AV+Jy0mqjzAYX4zJzogz18Ig=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LZPod6GBo6iryhhXFRs12j3VcZ1lzaY6jJrsMPOARMetfSR//MF9/mD2aMpYXY/Jt/V4N0sCSzWg9GagxxSNgAValrj33lsnucWKrg/giRd9sWVArrYMVYIszCq738EdSVmgT7HG+bj+uzPrzt8//Hku3Sbc0ES+BLrv+EYDHL8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J8ktlrc/; arc=pass smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DC43A6B82;
+	Wed,  5 Aug 2026 16:00:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785945634; cv=none; b=qAQ8+bPBEESY++etO471rTzkCLEVbLZXXdPra1Ei94NIGPAqchStl8YUdln1X/e3ZqAgG74n0NCWEuniykfp3js9I7pgBc5ouNkFe6Mm5rtHpGUks5MXhTRDnFjszCCg+Yx/Pk5Cdnw38EwREuPOe5baC8ofXbWHgODXOnO8H/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785945634; c=relaxed/simple;
+	bh=+I9wAJlcFp52HzDo9SadpDSkTcLov57Moay5aLJVK34=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q3K91QuTjKbhBiZcNzjl0QE9ltjJ7ofoI7dftU1bLC1pogGj79NBNxwmBWXMk+lhqwG7ZAaB2NGG7faaCpyL/6UltQdXhuwBbtZXSGOzZNDy/NBF4wrdQ8zV2cTcpj6nyp7bzR2+zJZ/8vTBIbtWjP4gft8fiuf2OHsFPysIbnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LkdPep/f; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J8ktlrc/"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so934382a12.2
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 08:59:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785945555; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MiTqIwn+vXT3I2uraglKgXbafeBFZQkvuc3WbqLCaCy6Up6aNPr03P4LXrMwM1Ij4f
-         BaQ11gnpsYuX0gnGd+N/WVFkNTF0HbA2pbf7IldFW6RZskFmdmsK0aq8eOCyOFr4ahDe
-         2tqz1Mru7h07iZCfGxt35HU265ifsiVXnVXGLkUV0aRCofWB94zEqcuNw21snQ9dSyWo
-         mybPQcmGTUPwpvwwpzJTK4gM3LMl+z5JE2Upo+a1n1ELhh9N5Q5opvUaqqFyIv7rSooR
-         xfHBgLazZqioqsAJxdltkoM2MDaBT5fIfJBzfmQEe8Vsko8nXCpadB3AJZWzBpbTL/Z1
-         ksuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=6P2+ujme6g+HTSW6n7ztSC163pEV3pR8Oo8zV1D+dnQ=;
-        fh=k84Vay+56fA29mevdbd/oWEC0feeGMH6htTcDMlT/GI=;
-        b=VfATKuqSekrQ9P3GJM2NKix6b1gGT2cTGEpZYMjIcWBBEvzUlOwCt2AHKpBqFcwwi1
-         ytBFdcIH1yvpNtEhXuLZMJ3hMNXGuhujECG/CPoCcTxrwCAK8lVdbswC7LrR3JZYL6mc
-         5zyVN02UWQ+Kz2VgXAaCmISRZs+MHjPTv5SSpNYuUJBX7VJUho8ZTjREThOswCxCRKNF
-         /ic5lmuFJpVZ/QfiAMkDC+9LxLH+DTuai0zYw4unD1NtQ27i6BHL2nP5SZnMSwChI58w
-         10edWEr8vRdbwT7Yk/EMBFAvKrVpq1KbWRUjXjrBAvZbNvfa/x0GDLEC9U0jrcyXNOrV
-         w0ZQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785945555; x=1786550355; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6P2+ujme6g+HTSW6n7ztSC163pEV3pR8Oo8zV1D+dnQ=;
-        b=J8ktlrc/TfiNR9D0wK4FhsgKsN90H3SAowC1uFvSNxQcPTgYAtv8Vwx+euZl8yMlM7
-         JQXY5ydjvRcl1DgGdk/JWBbFJVZfYFgMKtXIcYOKZJxr+V/V/SgHLRCbYq7+ZFs9VQhM
-         QMEJ27a28ZbfVb4RTQ8/rAtu47LJRm4RUZxwAyDKIsgiYgREQOPAPF4WFSkWnaPXYIrs
-         eXtcPuJsAUh/KviM5TUUllrjd5b6Lgd2mysRFrK+6cjmsilGshucz9ajQI9xm36nbkzx
-         tVGDZ3P+OxpUFtFAMvrtFwXiyZtWlTaU8Y3MHxuiWSg7f1RdHjJnWJKMgcg4ijy7z0NI
-         5Vxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785945555; x=1786550355;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6P2+ujme6g+HTSW6n7ztSC163pEV3pR8Oo8zV1D+dnQ=;
-        b=dtjcRie4G4STDBDh896gqqST+b4nX55SYM8c8EwaG1RFRsjftnQZQN6BWkGS4ttiQj
-         RrztAI5ghnAvcOKldOfqBZ1Qr7rro5cBU2xusTVLE4v6j1st8Lr2r87X3FFCeWFvQhL/
-         ACYthwPMdC14KByUlZzhDlTL7exHZf8AWLkCk164Qp3Og+E3PperVw0w6kyWmMTQwO4o
-         Tig0Ro76ihTPpXeWLk2lPkuNNAHCVbfQGbGOKz65aCURm6/hYWhub4Ph/C1uvtFcmA6B
-         tKZov7I7yEzl6wqUkj7OKHGKRu3Fzidi9Chcv8KnBJUup0cMcTG3R+IZ/jVE90yalr/I
-         gusw==
-X-Forwarded-Encrypted: i=1; AHgh+RqCOXzTPeKyNZSjfrotLOacgrD8gfuBIG2i7f88LaTD4rUIt3KI3zmwt7FnGf8F+dHTk2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWN0JTPMI6fzIFC7MuVWWBMK4yMX/fNL/AhLoLWzsvVbulwJiE
-	AGWXGxJV9i9yGpzATIkiL2bDnjlyde75QfhwXzoGNfMaWQ88z9tJ/7+hBsRE3ueAECMKfAW2R0/
-	TNM988SdMhwo1Sh/BnFNBF6schY/ox9TOAELcOieA
-X-Gm-Gg: AR+sD11ec2JqHAMAX4XfqG27qQYuva9Zi0ZzEM+y+LsVL4kq0AvEt/xsYRkb/YoWaNN
-	HfT02t36+94ghIA+bolVr1xGYYFCNEjKseU7TL2KrfXH5QGD1Xhmj8/E6gBycgEk1DBp6caGa9W
-	e+GCJzBY2+pFiwRdq6C5pDLDDbcvVQOQlHGWQrfGkPoqkceC2jRUl8ziyZ/kkyw8gFJZ39sGyL2
-	nQ9TS6EZtAmp0FjtphhXhQvL9vT+XRWW3Tu0TeRPdmv0dAesb4KtG4ERFRsw8WMdZj9B+OsZtxX
-	yY6ekZGfuVNDUedQrbOMq1tacooj4aZ5THfE8UfrpU+w8dsew1Fquc/ccEfVIcnlElLJyluDymN
-	SP53rvnfU1BNpGDLt/v6qJeDPS8Ywi4T5/Ys=
-X-Received: by 2002:a05:6a20:9392:b0:3c3:a140:9380 with SMTP id
- adf61e73a8af0-3cb85e469d1mr8503935637.16.1785945554052; Wed, 05 Aug 2026
- 08:59:14 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Aug 2026 08:59:13 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Aug 2026 08:59:13 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260803134403.80630-23-steven.price@arm.com>
-References: <20260803134403.80630-1-steven.price@arm.com> <20260803134403.80630-23-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LkdPep/f"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+I9wAJlcFp52HzDo9SadpDSkTcLov57Moay5aLJVK34=; b=LkdPep/fLNGPweGMTPMoBoHoJL
+	gSwvHsVtGETSVYI5xiB/Cri9vrc0kCsEdk+tqzCjIp5db2SPXf8pgOWCFYf5f/6H1CmdR/SQbkQuG
+	M7KCEsuukWPTf5SXyQvuVuQmaT0GBGifmdpLaNXCykR/aKfjlG8lptKI9yqq2c4yFUKV+uB83mWaY
+	ybQJUIFB5Dyul+muuIFEHMlsnBQzD74Nf32VBLbhiwx0afbkjGNEz8QkVhU8dbpDc36CCfFuwGmBG
+	3E3/6wVLLKiZDjh3YrCU8Tk8uMg22MEWcb0moRko6r2pmPoKic1hdHqNMcAXl+fFfCJPyffuEdw6d
+	genA9dPQ==;
+Received: from [2a07:aa00:8c:e0:9faf:5742:60f5:922] (helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wre2W-00000004F4K-30PS;
+	Wed, 05 Aug 2026 16:00:21 +0000
+Message-ID: <faea706ef539a1a2d8620d97c59fd403155987e9.camel@infradead.org>
+Subject: Re: [syzbot] [kvm?] [kvm-x86?] KASAN: use-after-free Read in
+ kvm_xen_shared_info_init
+From: David Woodhouse <dwmw2@infradead.org>
+To: syzbot <syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com>, 
+	aha310510@gmail.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ halves@igalia.com, 	hpa@zytor.com, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, 	paul@xen.org,
+ pbonzini@redhat.com, pdurrant@amazon.com, seanjc@google.com, 
+	souradiptodas6@gmail.com, stable@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, tglx@kernel.org, x86@kernel.org
+Date: Wed, 05 Aug 2026 18:00:26 +0200
+In-Reply-To: <6a735ab9.41e285c5.91630.006b.GAE@google.com>
+References: <6a735ab9.41e285c5.91630.006b.GAE@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-BQM6bzofiSINuNuMWZH8"
+User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 5 Aug 2026 08:59:13 -0700
-X-Gm-Features: AUfX_mw87HguPfWFRxAUKpdtMQ3QriucOf-WRaZA41ldEtA-bI259FcP0zXpgjI
-Message-ID: <CAEvNRgH+HWHgf26XDHN6aMLYjRh4M8okntBfjDFCBreXRXL=TA@mail.gmail.com>
-Subject: Re: [PATCH v16 22/45] KVM: arm64: CCA: Handle RMI_EXIT_RIPAS_CHANGE
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-BQM6bzofiSINuNuMWZH8
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Steven Price <steven.price@arm.com> writes:
+On Wed, 2026-08-05 at 08:46 -0700, syzbot wrote:
+> Hello,
+>=20
+> syzbot has tested the proposed patch and the reproducer did not trigger a=
+ny issue:
+>=20
+> Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+> Tested-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+>=20
+> Tested on:
+>=20
+> commit:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bd2b92fd [NOT-FOR=
+-UPSTREAM] repro: pfncache HVA-invali..
+> git tree:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 git://git.infradead.org/use=
+rs/dwmw2/linux.git pfncache-fixes
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D10362bb958000=
+0
+> kernel config:=C2=A0 https://syzkaller.appspot.com/x/.config?x=3D145fa60d=
+73086782
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3D0948c82180d475a=
+d24e2
+> compiler:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gcc (Debian 14.2.0-19) 14.2=
+.0, GNU ld (GNU Binutils for Debian) 2.44
+>=20
+> Note: no patches were applied.
+> Note: testing is done by a robot and is best-effort only.
 
-> The guest can request that a region of its protected address space is
-> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
-> RSI_IPA_STATE_SET. This causes a guest exit with the
-> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
-> protected region to unprotected (or back), exiting to the VMM to make
-> the necessary changes to the guest_memfd and memslot mappings. On the
-> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
-> calls.
->
-> The VMM may wish to reject the RIPAS change requested by the guest. For
-> now it can only do this by no longer scheduling the VCPU as we don't
-> currently have a usecase for returning that rejection to the guest, but
-> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
-> open for adding a new ioctl in the future for this purpose.
->
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v15:
->  * Propagate negative error returns.
-> Changes since v14:
->  * Use addition rather than bitwise OR for adding the shared_bit in
->    realm_unmap_shared_range(), this handles the case where the region
->    includes the last address (which means 'end' already has the bit
->    set).
-> Changes since v13:
->  * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
->  * Drop ugly hack for RMM bug which errored when the RIPAS was already
->    set to the desired value.
-> Changes since v12:
->  * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
->    address range.
-> Changes since v11:
->  * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
->    adding functions before they are used.
->  * Drop the CAP for setting RIPAS and adapt to changes from previous
->    patches.
-> Changes since v10:
->  * Add comment explaining the assignment of rec->run->exit.ripas_base in
->    kvm_complete_ripas_change().
-> Changes since v8:
->  * Make use of ripas_change() from a previous patch to implement
->    realm_set_ipa_state().
->  * Update exit.ripas_base after a RIPAS change so that, if instead of
->    entering the guest we exit to user space, we don't attempt to repeat
->    the RIPAS change (triggering an error from the RMM).
-> Changes since v7:
->  * Rework the loop in realm_set_ipa_state() to make it clear when the
->    'next' output value of rmi_rtt_set_ripas() is used.
-> New patch for v7: The code was previously split awkwardly between two
-> other patches.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   6 +
->  arch/arm64/kvm/mmu.c             |   8 +-
->  arch/arm64/kvm/rmi.c             | 473 +++++++++++++++++++++++++++++++
->  3 files changed, 484 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 1e5026039458..751659a48be3 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -107,6 +107,12 @@ int kvm_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->  int kvm_rec_handle_request(struct kvm_vcpu *vcpu);
->  bool kvm_rec_handle_hvc(struct kvm_vcpu *vcpu, int *ret);
->
-> +void kvm_realm_unmap_range(struct kvm *kvm,
-> +			   unsigned long ipa,
-> +			   unsigned long size,
-> +			   bool unmap_private,
-> +			   bool may_block);
-> +
->  static inline bool kvm_realm_is_private_address(struct realm *realm,
->  						unsigned long addr)
->  {
+#syz test: git://git.infradead.org/users/dwmw2/linux.git pfncache-rcu
 
-Coming here from guest_memfd, would like to look more closely at the
-conversions-related stuff, and learn more about ARM CCA in the process :)
+--=-BQM6bzofiSINuNuMWZH8
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index cd06881c1497..dcc2ab08d0e4 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -319,6 +319,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->   * @start: The intermediate physical base address of the range to unmap
->   * @size:  The size of the area to unmap
->   * @may_block: Whether or not we are permitted to block
-> + * @only_shared: If true then protected mappings should not be unmapped
->   *
->   * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
->   * be called while holding mmu_lock (unless for freeing the stage2 pgd before
-> @@ -326,7 +327,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->   * with things behind our backs.
->   */
->  static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
-> -				 bool may_block)
-> +				 bool may_block, bool only_shared)
->  {
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+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
++ZeG6JufyGjZlAMV315VnSQAAAAAAAA=
 
-Why convert attr_filter to a boolean, why not pass the filter through? I
-think that might allow all the 3 states - unmapping private, unmapping
-shared, and unmapping both. (Assuming unmapping none == not even calling
-this function).
 
-Also, perhaps it's better to add this parameter to
-__unmap_stage2_range() together with the patch that uses the only_shared
-information :)
-
-I see that in [1] not changing __unmap_stage2_range() was going to be
-explored, did that work out?
-
-[1] https://lore.kernel.org/all/3b8d49be-f031-4134-bd20-a8c51632f4ad@arm.com/
-
->  	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->  	phys_addr_t end = start + size;
-> @@ -343,7 +344,7 @@ void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
->  	if (kvm_vm_is_protected(kvm_s2_mmu_to_kvm(mmu)))
->  		return;
->
-> -	__unmap_stage2_range(mmu, start, size, may_block);
-> +	__unmap_stage2_range(mmu, start, size, may_block, false);
->  }
->
->
-> [...snip...]
->
+--=-BQM6bzofiSINuNuMWZH8--
