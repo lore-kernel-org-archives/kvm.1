@@ -1,104 +1,114 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300FC2DECC2
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 18:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F22E394499
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 18:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785955026; cv=none; b=mNNY9W13vneQFN9hiTt1xwXKEEzLaIjeBSpRM0G42qx1Z41RsLOn2LIf0MIvUjld4/zm3JnyVjewcsDWdP6wzmW8YKujwcvLM+ec7aTlZrD6jEsf/VxKfWSY3JgehQg8Hx8PXn1faW5WW4lTQc5minU5jX0VZcjroq9Rhwuxc7g=
+	t=1785955923; cv=none; b=Yk7fd+aKvSp/s1X0Iw9hRUHIwDKGsilEcjuNqVfyLY1/nQKakTixrwAmhOvF2BtduUWViqQ97m+o6qhe0CDCMx/CigdiuI2XFLMM190p1Aq6Xu8uizS6QRqfgQcxj+VscCaO6ZnqyubOCJwMwxoAIqjFV2Q+dhQtUH+Tdfg70tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785955026; c=relaxed/simple;
-	bh=Tf9syscAZW5PE8qDFT2Yh4y+Oi/xeH7ih1X/P3PhvsY=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PKRCLFE6XuUTTm+PiXg568zfTHwTFC643IvEANCAocWE5YDFKXtjxry2SpGIWdC+pj+9W3YGx5yKr4yXRdPfRPWNvMhEuICA/Ww3yYBZMOq/BSb4gjUP/Jsj0rGsZYPiDmMLZ5Pltfs8cKKdWvBrG05jvla1evjgjkEkXuzpfpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=jhNQd57d; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1785955923; c=relaxed/simple;
+	bh=AJISq/mX2kSr5kvSQbLRpVzSC8SDiz9SMVxObBq6r4A=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LyEBSQDdmoLb9nY03rtkldzHYctzOrjnALoxpJU9rR2IOiNkV/Xo3BRCHBPCEroHEmsLs1RPfEcx7b+aI8j/lCfahLgHvgLSOVYY4DrCgMHao1ajerSxpq8F/jtMg0+qfUgyIOHZQiFEdGW/+fuJxUkbSHlJIT1JDqM/Mzv5MXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ye+q1YYN; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="jhNQd57d"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-8ee88fce572so14012676d6.1
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 11:37:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ye+q1YYN"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb20f82a0eso1567614a12.0
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 11:52:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1785955024; x=1786559824; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Tf9syscAZW5PE8qDFT2Yh4y+Oi/xeH7ih1X/P3PhvsY=;
-        b=jhNQd57d/5RFTMm/Uy5rP7pgx/NBI9hYroqjEZoK19E6AEzW57ciTbO5EiR78dzu4+
-         lz8r/LlG+IIoVcIPiFPRu9jRl8lK31e7EAMs4nqrvkdFxP/26x3ST8kEldHGuYzAzLpN
-         ZHuQgq633y3Y/NICC5s3XWYQwQEfuwGE44+76X9OXwU1Eljwg3wi1/nwV1rAmovQNjtz
-         Pyj/CxyD5gUAgactg9sXYlMDe3G6+zo9YjDxUr2sCMHTObxDpNQkGx7+5R3WDuwWlRAc
-         4ter0qS6r+znnJuy0ethP9gUPinBfq5fBYxddMvFwuSosm0jSbPOuYR2vkDOevPaqz5j
-         0YJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785955024; x=1786559824;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1785955922; x=1786560722; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Tf9syscAZW5PE8qDFT2Yh4y+Oi/xeH7ih1X/P3PhvsY=;
-        b=DKehoRTavl9pbSKAiYdfZjjcM1USjF7HKEYgZmaoSNj7w7YWmQZz6g6lEAzGz9ypoS
-         h3wphfawuTtIWlqzodC58SAIYyJ+ojHzrYpq4hXeeLaZ/jZHNBRTYmH85dxijGUAp+rw
-         pFJ7Zfx2bR54rVNNAEMooCbDsuq2tI6kMQSFDfgoE69Aw55yt0Y/CIu6JRvCXMxubZUa
-         8navdv6X8+ZgTr0ifQnswh+8yROjpCH/0DDXDnDdc94itNF9mGVCGc2g7cUWVs0ZU8Tr
-         9NRPULl/9zaosOekmOMavvMkaGLzCV1scmPQoIk3oEsvAHMmRRAq2P9xdW6p16AXirWV
-         IWqw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr96wnZaQbIrdjgbf7j4+4k6jYrv6WLDUUClo2pFbagLbXrUipr1R5hY/u9EQzqnHiiHyg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqaE3NGzJKTjdAyn0Ga56uiP4ASAcIgMcJPjwDybKgg/syM6OV
-	TG5ZZzNkmGZat3WDLse/pajGP4YkXgyFY/5AQyUVSBhMEdWgHGvuXRWhgFM8ogRIDZc=
-X-Gm-Gg: AR+sD13CkUfjPIVoXjH2JTYoVTj7JbzgIernNMFmSxSQwk/dT8beDEC670HR0eMCTC9
-	vuGp8y93vPrMnQPB5T6ULQvAbXLA2CxPBKrD427s+/lR6RhsE37XSG5W5FYZKu/7zr+msQjscYB
-	CbMMvkOC4BgikzVWmvbtuva0m/mCXEWpVzLO/ri/Xf4xb+h9yb3sYh8Qm++7pJB26S+QPcLs40E
-	g4IbsqrElMUTwCDRGFq9RTJI2HwgsHluyrd7zErodFqz2CX3UgE6LlzQP6DHfyrijDPZJxTXNCz
-	H6fwuov5+3QqWeauANkxTGtrwyrFhYux2sYuejlmyBF5t+bw/Keo+z7ss64WR0ei2unb6HHwNfr
-	52PhXhNmyYLrxjKmWyyl1Gnj8CNMmBqcshQKx0tdrYZixB9NOkjpE0yERYwSNukwm5mLIBR5osr
-	Pgf5f82PC7UHExWU+QEIBv2oBLWjviSsNQgPgOdQ==
-X-Received: by 2002:a05:6214:f08:b0:8f0:a849:f392 with SMTP id 6a1803df08f44-90881203d0cmr103220766d6.14.1785955024046;
-        Wed, 05 Aug 2026 11:37:04 -0700 (PDT)
-Received: from ziepe.ca ([142.166.156.215])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9087ff9d807sm31895686d6.2.2026.08.05.11.37.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Aug 2026 11:37:03 -0700 (PDT)
-From: jgg@ziepe.ca
-X-Google-Original-From: Jason Gunthorpe <jgg@nvidia.com>, David Matlack <dmatlack@google.com>
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wrgUA-00000000Iyd-2zvD;
-	Wed, 05 Aug 2026 15:37:02 -0300
-Date: Wed, 5 Aug 2026 15:37:02 -0300
-To: Alex Williamson <alex@shazbot.org>,
-	Justin Stitt <justinstitt@google.com>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, llvm@lists.linux.dev,
-	Mark Bloch <mbloch@nvidia.com>, Bill Wendling <morbo@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>, netdev@vger.kernel.org,
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>
-Cc: patches@lists.linux.dev
-Subject: Re: [PATCH v3 00/11] mlx5 support for VFIO self test
-Message-ID: <20260805183702.GA72896@nvidia.com>
-References: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+        bh=4ToGqmYCLIsCza1nv6x574MwhjIbpl6LQnMNJCZ7DMg=;
+        b=Ye+q1YYNwI/hIRllhz0etQ8Go54c0pBf4iQTi97BDzxjJxpxsyZEi8/YLbqQDf0Vid
+         8fADBQDM4Mi098drKKCNAUp9aYYlPuk3UMPBNxFJlEUg4OksTtsAugHy3GRKmHxqwl1o
+         oD6Xxf+DqnxelVRErNHJE7NzGOhwNX5ubfj/JxZp15fFxqro69tBJk6NJB2pD3GZ7NdW
+         5vQCtO+bOQj2KzC5z9q0yjU2AJE0sd+NLdpKGxYpZo258528SLYN9Pmr4ao64KbMOpc/
+         P1EhW+dsi9LRNq+7CmXyIWIGZGbP6SS9L5sNxxYAyQLlK6Alb9x/nd3PZmbuxzaMsUwE
+         i9ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785955922; x=1786560722;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4ToGqmYCLIsCza1nv6x574MwhjIbpl6LQnMNJCZ7DMg=;
+        b=IsH1lSIMwLVeTz8RQHvAkPK9etcmEt1ghTcIxi7ofE4ZC6noHycozD5EaP2QO83Cca
+         zsEtWS0bWqohpP6UpMhjDWHduC7zG9On8XBpivpYu26NsA6Jp+eEZmYxtRG8RniEsPFh
+         nUkyqZpV8ozNxp1WS4I2zwcglzGEK61zkA8ImmCSSl9NfH0AI4dlYXjlD5Xds9asnvXk
+         dF84CfQZZ6gDJdFkfShZ2A1T8166xeQ1m1HU/UmGF6ZgdiSbk+n4902lNgRY0ddIEIMv
+         kOp98gXGSPlZ6A4BU+hAnCMOTwZuwoet6pdyWAnoz1Y1qopw9UnARIT+SdfZ+iOXV0wb
+         Et2A==
+X-Gm-Message-State: AOJu0YyBKAzmvvwR/wv7U/iyXaORQ+6PfLuEvp9TNevofCxOXiQ5Ux4s
+	Cg9znsbfbe3uIWFF06Al+lFfIoB0p6HODazhfQ/jRbL9YRZfgcS+nMHRr6HhyJSy5ZA3mzO03Z3
+	DsnlBow==
+X-Received: from pgjz15.prod.google.com ([2002:a63:e54f:0:b0:c85:9c9a:ab4a])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4288:b0:847:83bc:d2a4
+ with SMTP id d2e1a72fcca58-84f2dfc8c42mr10676600b3a.2.1785955921695; Wed, 05
+ Aug 2026 11:52:01 -0700 (PDT)
+Date: Wed, 5 Aug 2026 11:52:01 -0700
+In-Reply-To: <20260803180849.2323590-1-abdelkareem.abdelsaamad@citrix.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0-v3-76f117ad04f1+28a90-mlx5st_jgg@nvidia.com>
+Mime-Version: 1.0
+References: <kvm-20260303003421.2185681-18-yosry@kernel.org> <20260803180849.2323590-1-abdelkareem.abdelsaamad@citrix.com>
+Message-ID: <anOGUUe9mSowlmEQ@google.com>
+Subject: Re: [PATCH v7 17/26] KVM: nSVM: Add missing consistency check for EVENTINJ
+From: Sean Christopherson <seanjc@google.com>
+To: Abdelkareem Abdelsaamad <abdelkareem.abdelsaamad@citrix.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Yosry Ahmed <yosry@kernel.org>, pbonzini@redhat.com, teddy.astie@vates.tech, 
+	jbeulich@suse.com, andrew.cooper3@citrix.com, roger.pau@citrix.com, 
+	jason.andryuk@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jul 16, 2026 at 02:03:16PM -0300, Jason Gunthorpe wrote:
-> Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> to issue RDMA WRITE operations which effectively perform memory
-> copies using DMA. Since mlx5 has a stable programming ABI this
-> should work on devices from CX5 to current HW. The device FW must
-> support the QP loopback configuration.
+On Mon, Aug 03, 2026, Abdelkareem Abdelsaamad wrote:
+> Hey,
+> I am currently working on hardening the Xen hypervisor's nested SVM
+> implementation to add the VMRUN consistency checks for injected events,
+> see the Xen patch discussion thread in [1].
+> 
+> While reviewing KVM's logic in nested_svm_event_inj_valid_exept(), I
+> can see that BR_VECTOR (5) and OF_VECTOR (4) are treated as
+> unconditionally valid. The referenced AMD APM Vol 2, Section 15.20
+> explicitly state otherwise:
+> "If the VMM attempts to inject an event that is impossible for the
+> guest mode (e.g., a #BR exception when the guest is in 64-bit mode),
+> the event injection will fail... VMRUN will immediately exit with
+> VMEXIT_INVALID."
+> "Injecting an exception (TYPE = 3) with vectors 3 or 4 behaves like
+> a trap raised by INT3 and INTO instructions, respectively"
+> 
+> Also, the APM volume 3 chapter 3 (INTO instruction), states that the
+> #OF triggering instruction, INTO, is Invalid in 64-bit mode.
 
-David I was going to respin this to fix the minor nits, do you have
-any more feedback or are we good to merge it ?
+LOL, _that's_ what SVM decides is worthy of a consistency check?
 
-Thanks,
-Jason
+> I attempted testing the injection with Xen-Testing-Framework (XTF)
+> bare-minimum testing setup. I injected an exception (TYPE=3) with the
+> named vectors (BR_VECTOR (5) and OF_VECTOR (4)) on Genoa host. They
+> both caused VMEXIT_INVALID.
+> 
+> I think the check in nested_svm_event_inj_valid_exept() needs to be
+> gated on a condition that only allows Type 3 exception injections for
+> OF_VECTOR (4) and BR_VECTOR (5) when the guest is not in 64-bit mode.
+
+It'd probably require a dedicated check in nested_svm_check_cached_vmcb12(),
+because the consistency check involves both control state and save state.  Given
+that event injection validaton on SVM is inherently flawed due to hardware behavior
+being microarchitecture specific, addressing this is very low down on the priority
+list.  If someone wants to tackle it, by all means, but realistically I doubt this
+will get fixed anytime soon.
+
+> Please, could you have a look and share your insights on the
+> implemented logic?
+> 
+> [1] https://lists.xenproject.org/archives/html/xen-devel/2026-07/msg00808.html
+> 
+> --Abdelkareem
