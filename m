@@ -1,138 +1,101 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B313A2543
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 15:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F41F477987
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 15:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942969; cv=none; b=bU/RRCrI7XzbzALk1mxBhe8AaxB6xNdG3+uDe7vS7P6LbsLYQYjOYqaxSmKNtQ8cSBQWJUU/MXug1Zd2oOXDgojl2D8KMyygXRjxTDc7BgrEpMBjs7oXahPQDw8tYNLRg4X6+5q/CpEsaHAc7qjd3k1DgAGZYhrHHsKhS0IMDOk=
+	t=1785943075; cv=none; b=uk7TaKlHbdm+HQwapqYm1RjeYMdv3RNPPvXk1e9OFkbxNoxEXOL0tsWNTXQTXzh+5YiP7/abnRDEipNz37QstgD5uNT4niMbDgn640Q4DnV6xGfJhF4lY5PPZZQSlccy4vZ7z1NprBlfPuJXmzbXU93BS91lUw9QUBvJl23TBxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942969; c=relaxed/simple;
-	bh=/jsnyeL31Ho9o2A2RGw3IIZL5oIJUrAhbAI6FLENcnk=;
+	s=arc-20240116; t=1785943075; c=relaxed/simple;
+	bh=S3Z3rnyOq7JZQ53Rdv4tbQRYk3CanTRKPf6nPJmbOXE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Iu6WoB7WfxXBt1fsSvxtKJoMEjTfqPucs3ra719nAy6oZn8JdCK/WLWaPYv+x24Iwsj75xdVkApDea3pAtVVEbbhb1cBo0+h9xGIAV5fIuCF5MnohOrCdoDyVQ9o+bON8KLh94t7rm5mpR9ST9o3qTAWF0LtzR0X2T59fgS6G4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ICMhu5Uf; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=M+7KqhrVhjrj0qOnzbRCFDg5xlRrcy4ubHHPbIGJhlSIRkJiGPAvgGOfUZtwPZ4UBNpKMLj+GBt58c91iPYHYD5Zqp5G+gBTiGuaO/B9v4CP4t8vZU5+61nCSep9acIvPo94vsq2gSU9AhBSIKzwfeXlMEHuMQZyc3d3hv2SF6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FoSktNmw; arc=none smtp.client-ip=209.85.210.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ICMhu5Uf"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cca3673560so18753705ad.1
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 08:16:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FoSktNmw"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-84eccf9d899so1547500b3a.2
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 08:17:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785942965; x=1786547765; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785943073; x=1786547873; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4yhOJIAa5pFjp3z2I6OHq3rdcIlnjtUlrPTkzMvt2+A=;
-        b=ICMhu5UffoL7l/TO4tFuwzOR2daPEfMLZVYuYuLN2p8CU8oS8cH86fiCzJ6sqKFc3m
-         P8LC68gPdiec8Mz+uUVQ5Ol4QlLjFP38V3KMYQaoxuVNF9TfKo7F6FSFwP99JOAvDSQ1
-         37y615KMSahwWskATsawO+DSI4aboOppcYg/PbDW8DmIfBIhfz1FHJVO9K4y9qVk9erA
-         8v6/tBOpy9/x2cMoq9LAzvDSKMHUXX2zUavjx0zWw7YXfh+qhPcLtxMgz5cWVr2A39NS
-         e9giIKOSNIV18BsizK7NpE5WQUYzUTrpJQARn2kbutoffr5+nbCJ0HWMw+smqPix5+aE
-         SZyA==
+        bh=g3YZ5iTtFS4MrvF1HOSKp5JT5qkAOW11RqUF8i4nnDI=;
+        b=FoSktNmwrnLuQZ/A5WPYx2x79RDHYUWltJBsnAkkaXevwqr/ENx6wUSOqsBOgojfDW
+         +8uEVtxVPwhjMtNl6bdCghJwpYpA3t3kYTUyt6GPCmeYTa1v39T0tyx3qmH9mkxcxa8E
+         FfnwYbURyUNgTjA5Z1w/+87/zhcT6tiZv61wcZhlm4i4NtQa5ZcfWbO2gYk+heu5p3DY
+         IyZ8YtFmQK/Q+AbjF9vsMzEb1yeb7Hm27Q68nJKjUxiQhLICpMbHi3gOxR/CefWZhRmH
+         F5SlnorsaOfTmI6WgH3bE2ARdQ3S/5WTz5mAfyuwWwKEjz41ffv9+cRXjfcS4344MDXy
+         1nfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785942965; x=1786547765;
+        d=1e100.net; s=20251104; t=1785943073; x=1786547873;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4yhOJIAa5pFjp3z2I6OHq3rdcIlnjtUlrPTkzMvt2+A=;
-        b=Oj0raeLsf7/TK1Tv0i+AsBkhCQAlLFOtkSl2unqe/IhmbYJ8MfViwJk/tFlwFY7TBY
-         YRpXrqAXOxJ3czcfyHJEDSMCB7JTa9eMCsVPffCX5bY+B8zvgoEHnKa1ESQwpb8ihzSw
-         eZxPIum7+mHX5HaLlCZ2D+bVxxwSS4+sfh4/eH9gOXPeVPcjvYYuYhREyyW3djPbuV32
-         gLYyXcItwledi0omQk5tGmmwk+W/pAlicPSlNetx8TCGvM8dgjbHmtvN+VfF6JYeA4nm
-         ggCdbahqbqOltcbcyG5419xO2GvpBfa/+BK/jSRynCMDh/xu+GQZCA8kOlpH90KYQk+g
-         qS4g==
-X-Gm-Message-State: AOJu0YxypQmMW9s39R9sGyAs+R1dKk4rD/Dxaql50BfuGN8z31rLPMdd
-	7v0YclwhAPu5ze1V8dadb63KjnDmp8Sts/6ZOVOGsdIrTNI2ZmDTHOpTdZapmSluWimSSTzyo5o
-	cYx3e6A==
-X-Received: from plbmu15.prod.google.com ([2002:a17:903:b4f:b0:2cf:7a5b:f7ad])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2290:b0:2c0:db23:4c4
- with SMTP id d9443c01a7336-2d0ca78d505mr81371305ad.16.1785942964856; Wed, 05
- Aug 2026 08:16:04 -0700 (PDT)
-Date: Wed, 5 Aug 2026 08:16:04 -0700
-In-Reply-To: <20260804235652.56E811F00A3A@smtp.kernel.org>
+        bh=g3YZ5iTtFS4MrvF1HOSKp5JT5qkAOW11RqUF8i4nnDI=;
+        b=Zr+Ub5LfOGLr8pyyV6DPJ3kCNCLvFia6a8ThF/B+YcBSQr7bhzbrCLXa3BX28JL67/
+         thEkmouE3pPdKK5SUguiDZ7J9zPkHGqu+sjHEnFmFfVl3qILe4EDVllazflKlRwgEviU
+         TOmRCB2uvj+zm0Op4e7PeZS7yRvJGLmGrro8shWhvx400ApqV9oi2c87Vg+0Phmk7I5t
+         S1XjzVhnqv4f9Iv8wzCu7/LoQOHLUyiyUGMeqPL+cFm3nxmv7N55rvrGDM64slzC4I2r
+         UVCDbirp8h759tDc5lfjNc/HCKbcZCMOTy2eup9IJGYxlEhE1VlVydbAdrPqb82kYjBq
+         ukXw==
+X-Gm-Message-State: AOJu0Yyci+OGqGBUQ0cQTFotkK7mkHWZ2abyUsBcSUazLqPt8uIN40nt
+	otQAiLNWWYK/PLdkgmuNDHavytFl2SgQ9zyzBSMGqNgsomKgcZ6yTNAxfOoos0ziOBvfJaf2IDj
+	zwKTabQ==
+X-Received: from pgj4.prod.google.com ([2002:a63:904:0:b0:c8b:19f4:6228])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3928:b0:84e:d5e6:a085
+ with SMTP id d2e1a72fcca58-84f2de7e930mr6860423b3a.0.1785943072271; Wed, 05
+ Aug 2026 08:17:52 -0700 (PDT)
+Date: Wed, 5 Aug 2026 08:17:51 -0700
+In-Reply-To: <20260804235204.559041F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260804233923.3504629-1-seanjc@google.com> <20260804233923.3504629-14-seanjc@google.com>
- <20260804235652.56E811F00A3A@smtp.kernel.org>
-Message-ID: <anNTtCYh7BpURA3n@google.com>
-Subject: Re: [PATCH v8 13/17] KVM: x86: Disable preemption, not IRQs, when
- getting TSC+freq pair
+References: <20260804233923.3504629-1-seanjc@google.com> <20260804233923.3504629-8-seanjc@google.com>
+ <20260804235204.559041F00A3A@smtp.kernel.org>
+Message-ID: <anNUHwk5JvUik6Ra@google.com>
+Subject: Re: [PATCH v8 07/17] KVM: x86: Move "no master clock" fallback from
+ __get_kvmclock() to get_kvmclock()
 From: Sean Christopherson <seanjc@google.com>
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-+David
-
 On Tue, Aug 04, 2026, sashiko-bot@kernel.org wrote:
+> commit cb25993776f1881f5ff66de261984bd8992ceece
+> Author: Sean Christopherson <seanjc@google.com>
+> 
+> KVM: x86: Move "no master clock" fallback from __get_kvmclock() to get_kvmclock()
+> 
+> This commit refactors the kvmclock retrieval logic by extracting the master
+> clock fallback out of the inner helper and changing it to return a boolean.
+> 
 > > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> > index fa00799ba13da..e0e8c6883b831 100644
+> > index b520928579129..7366d4602f89f 100644
 > > --- a/arch/x86/kvm/x86.c
 > > +++ b/arch/x86/kvm/x86.c
+> 
 > [ ... ]
-> > @@ -1805,11 +1804,14 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
-> >  		}
-> >  	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
-> >  
-> > -	/* Keep irq disabled to prevent changes to the clock */
-> > -	local_irq_save(flags);
-> > +	/*
-> > +	 * Ensure reading the TSC+frequency pair is done on the same CPU.  When
-> > +	 * NOT using the master clock, the TSC frequency may vary between CPUs.
-> > +	 */
-> > +	preempt_disable();
-> >  	tgt_tsc_hz = (u64)get_cpu_tsc_khz() * HZ_PER_KHZ;
-> >  	if (unlikely(tgt_tsc_hz == 0)) {
-> > -		local_irq_restore(flags);
-> > +		preempt_enable();
-> >  		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
-> >  		return 1;
+> 
+> > @@ -1667,8 +1673,6 @@ static void __get_kvmclock(struct kvm *kvm, struct kvm_clock_data *data)
+> >  				   &hv_clock.tsc_shift,
+> >  				   &hv_clock.tsc_to_system_mul);
+> >  		data->clock = __pvclock_read_cycles(&hv_clock, data->host_tsc);
+> > -	} else {
+> > -		data->clock = get_kvmclock_base_ns() + ka->kvmclock_offset;
 > >  	}
+> >  }
 > 
 > [Severity: High]
-> Could replacing local_irq_save() with preempt_disable() allow hardware
-> interrupts to break the temporal atomicity of the fallback clock reads?
-> 
-> If KVM falls back to the non-master clock path just below this code,
-> host_tsc and kernel_ns are read sequentially:
-> 
->         if (!use_master_clock) {
->                 host_tsc = rdtsc();
->                 kernel_ns = get_kvmclock_base_ns();
->         }
-> 
-> If an interrupt fires between these two reads, it would cause kernel_ns
-> to be sampled later than host_tsc.
-> 
-> Could this inflated kernel_ns then falsely trigger a catch-up adjustment
-> later in kvm_guest_time_update():
-> 
->         if (vcpu->tsc_catchup) {
->                 u64 tsc = compute_guest_tsc(v, kernel_ns);
->                 if (tsc > tsc_timestamp) {
->                         adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
->                         tsc_timestamp = tsc;
->                 }
->         }
-> 
-> and permanently advance the guest's TSC offset or cause temporary time freezes?
+> Does this function need to return true on the success path?
 
-Hmm, yes?  Though it's worth pointing out that NMIs can introduce the same issue,
-and that's not really a solvable problem.
-
-And if we keep the "disable IRQs" logic, then I think we should also disable IRQs
-when doing kvm_get_time_and_clockread() for the same reasons, because that too
-grabs a TSC+nanoseconds pair.  And that would mean disabling IRQs in get_kvmclock(),
-so that kvm_vm_ioctl_get_clock() in particular provides an atomic-as-possible pair.
-
-David, any thoughts?  I'm leaning towards keeping IRQs disabled to minimize the
-chances of introducing a regression, even though I highly doubt disabling IRQs
-to provide an atomic-ish pair was ever done deliberately.  My main concern with
-disabling IRQs is that it will further muddy the waters with respect to what is
-actually necessary, versus weird things KVM does for historical reasons.  Though
-that can largely be solved with a verbose changelog.
+Doh, yes.  I botched the splitting and incorrectly added the "return true" in
+"KVM: x86: Wrap all of __get_kvmclock_master_clock() with CONFIG_X86_64=y".  I'll
+fix, and properly compile test all patches (I did that before splitting the patch,
+but obviously not after).
