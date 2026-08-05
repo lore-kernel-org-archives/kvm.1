@@ -1,129 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2A7381E81;
-	Wed,  5 Aug 2026 15:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785943614; cv=none; b=FOrs43YNHMGAzldatas4gmgnG8+2IsdvyfpItuoDMCURYFmcaUjNV3pLZWI42RZYQfRoM3Ve7SH/5y984m8liidWnI8nUO6eOh7uXBYHq5eADRep2mPy9kTyQruAes6Vv/+ncUH4hj6sbox76ls8XxlD1d3O3eJD7ISFhlmIzaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785943614; c=relaxed/simple;
-	bh=e6MYRkc/znnXa7GE/LJNZQtcA1ZHDyt8tjVhd18hCX4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dpw+uyRpE0PKoycN4Vs37y3MFW9zGkpmpvvwQoHGN7BwlRDsL0ibqipS2c67irocmhvlr84ZxW+fKqLqlojN0PtgkBt9NtRGJQVKBI0v3JlWQu731+S8kvFokdUF7WuE50XNpBcXluSRncW6XhxypHbJTHar8oE/0qFQkNcXTI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l/zL6n2h; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFD247FB16
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 15:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785944231; cv=pass; b=QSf5ri+yhBKhqgXJSE8ZGgJW4DiKRIXBXuqyIs52LQLrIoVBWhW+wE1cR3PceOhefzpiTxlLD+mSIQYiOLK0FBdAhkO7tz2s/n28zS4kwgbBnp9P2UCNhkKg6LjgJzr2qgtoYNH2L1NNv8fDaUwxcsc2MHJYAn2PZtrEr0dS7Is=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785944231; c=relaxed/simple;
+	bh=VwKUYmxVxqEZjhmvBZ9dI/uOunK+7pumWVYmnPAIuds=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jQJWtTFhKcvuiNlNsyKjJFiOwVZxo7v1HJmmI6k9+y+ADedBFf5SI5huE7aQAbaPVUk7y8vRc1OZfLsVJGNGhB0HytXuG/t+Z7D/S8J3G/XS8OXRZ8tDfqa7sq4WGNNoXt9cA20wxJOJPpChP5Hlm3+hAW4Jeg1VHADMDTMn82g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jbcTv9pa; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l/zL6n2h"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785943606; x=1817479606;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=e6MYRkc/znnXa7GE/LJNZQtcA1ZHDyt8tjVhd18hCX4=;
-  b=l/zL6n2h1cyLP7RdqdPRQcn3HhxVxIF9WDJma7H/75vSrpgF9OVq6Gnw
-   gc2Fr0xUrzwafTDTaaLRX2Odcrl0+FxFDnOHz9j5zZEe6g1zcIfotfdM1
-   Wm3pqmnXVHc3QU+pmKY1A5ZXQkTDoP08CPDWOzswrFZWodnEjYAduZxT7
-   SjOKDdu4ug/nWQfChJ6jFRG+QVFCXXFLxbzZis/8eaL+HoFYsOnyfI/0j
-   MEGsoDgGNWX8Cj3kS4bq59FC9od20D1R43fcTDYq7YkvyvZ0cqCSLTWvV
-   KFtylFubIfAHnyc56rI89CBKtbhYeLAX3aQt5NjuqZbyRkq4PWCkcy2qz
-   w==;
-X-CSE-ConnectionGUID: ByoLroDEQ1a3bGR1p+OWTQ==
-X-CSE-MsgGUID: Qq0KY0/wS4eE1smv+SD6SA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="86399658"
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="86399658"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 08:26:38 -0700
-X-CSE-ConnectionGUID: V7a+4vUJStC7GKwXaXQdrg==
-X-CSE-MsgGUID: StUcd3N2RICqNk8uriSE5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; 
-   d="scan'208";a="261901637"
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.109.35]) ([10.125.109.35])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 08:26:37 -0700
-Message-ID: <06ae29b7-b079-43f0-a5a5-ce254ecdfaa6@intel.com>
-Date: Wed, 5 Aug 2026 08:26:36 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jbcTv9pa"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-698b78c05b0so10699a12.1
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 08:37:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785944223; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ydow+IjZ0I7oqUBNYne2fUBIMMfXKsxAfWB8tUmyPGCoawq5J3nEs0f6BXDaIHZpEP
+         zFWfyN2Y+LR4AFySFbii29u6jeMpOCsdGmJPDwoysyyLfWsKTmcRNd1EP8APncgOuXH5
+         9gPGiTuuuig9QrBswJxnL4EkZYZJRxqgiwmQI2nvqWJtBQqxMySuBmi92Wsc5zirPvnO
+         mHPl9Og2dsPEF/4GQ/rnwNKmuFFIWAKhzF9kilA7bmnHPoEIerAHJ+UszWRm3BSQmM6K
+         4vCehYz2/82LXrgM7e0tFgnxdfMrkFDaMgdcwQe42U8y43JtmU8Yq4GKb3AK+afy2fNx
+         Vwug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VwKUYmxVxqEZjhmvBZ9dI/uOunK+7pumWVYmnPAIuds=;
+        fh=HW5LeYgJ0LBdjgqakWN1Y24n3hEM/HMQD7zITLQW+Nc=;
+        b=cTDXfZK4b17Ze8z1+CVfYFf1T652kafzGXIywiS0w7tA8fEFksT7rjoSvzTy9T/hxR
+         er8Wr5I0etXYuYZJhnfoDg1lo5WrpKxj6BIQ3i20ZPwIbVgvYBFso0zvVitZj7GdXwVi
+         FqajBGMFDCpRmsMyvSiv0PEGrbR7yOMIm9fwedcCkFJu80///KPWXrNQ6w6jo/HMBioz
+         jEcQtWykQn/4LtsQcchgxW1vbUeVSf81cA6plOL0pDbx7ujim+NY/OqusBV8t45RDluu
+         di48Dw2AyVo7+Ifpog5jO7W+C7WbnKWCqxxUJ+utWGIh7So8rQE1cgBuYUs8niv3MBO9
+         0F8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785944223; x=1786549023; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VwKUYmxVxqEZjhmvBZ9dI/uOunK+7pumWVYmnPAIuds=;
+        b=jbcTv9pao3dkNkpvdWLIk0D9mF+ey05N8NqBJUE3IU0RyKINuD7kCybqSDA+71R+lU
+         Zdctc6VlW7XtZJp2ZCpcbMAGCQJmm4RegoWU6vAk2D+mmQkbGKJDn0YeLR9/rwW0y8NG
+         sclMOJRBpaWlvBbuxI9x0jBe1QcUipyCdtPnrVXYsngzlDaIpBKEdX5feYSTaKLdu31b
+         9Mce6o5FX4NuwXSMONVIp+kwSK/Wl0jvFzC0rlTdDWx/3CCKXHmJDVWJgFrgV9CBW7E+
+         nugW86K1QSpMoEbUq6+QJ74gi1JS/4FaADRIEizd8UosZYOf5SD1yZCeM4NtTuYvntrW
+         +Fag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785944223; x=1786549023;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VwKUYmxVxqEZjhmvBZ9dI/uOunK+7pumWVYmnPAIuds=;
+        b=TZs5xHxR7/uOe6CaTRAjVeWg61YPTMLUo7C/zFKeOiv7aLE4eeyDMaQpWPz5a/WYv8
+         EvRYdcJJjE6k5vr/8qG0Ni0jIOtobM74Hq+fAy63N1fcgV9yn/PKl4TblmdBckNKSEcf
+         S59DwQNxKZ7ZRuQQCSM06gc+RR3kSJIvmJsUeu6AQ6wJZnIVkhxxnvfQuueOF7iHmieT
+         +icLHJ+dyNnEq4sKNX7kGVVVcYadaMZ46/yiZH5xwJJZ2pRP7o66VUCdk8LbqW+1FtUk
+         0LZ9pP4nftvGCcyXxlZnbr7Rj6h7sb0u/yrpYehUp6Gf2rAJ/+JUctarGuMjKSznrkEL
+         J3gA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrw3Xn6rMPJCM90sM9koQFltjXW7ovbGY6VDROusH1KVko4z82CYmMQh6mzAGfaevgPPJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBSzaWCsn5jyuP19fS2AHXxAYo7NVYU9aFnEw/osPf4rjL5/Xr
+	pZOcmI1JW4p21DhMElK1cto9Z6qfvTX54Sf7txvoGKlGbJzFaKk445E6kYRU5inOZcuPVyhJl9z
+	NyDIDmgj1aj1iHU1uekVwqKWOVvw/Kkp+Jfg74KHj
+X-Gm-Gg: AR+sD12eclOqe6PXg9zymdIxQdD9uDnAW+HkzJroLfSdsQUBRNEQP7VnhxaIEVavFYK
+	bk9mu2jq8i0RgXwtQeV7rRbOC9Ewr76psqyNekHs7f6QdZtMSfHR70As0Wqmvba0x7zt+2UXLbo
+	hpVm23ScjvdeUACN8L5UDuMu0RN/bbdDnGjKItoTpkNZrkNHBOMndS6cz/NnlyBVG//QY0R1yJ3
+	9eidZAKryUYCwmG6AU+6RQHw8O/wMkPdgl/k3vt9m0DVmwukySgYxwkBgJ1UiEqoGTCMLiuHg+p
+	JtNfxmqpGOihaRvyMcFCSB6c5jqB2zuiPQjkJtMmLN1b
+X-Received: by 2002:aa7:d406:0:b0:69f:d4ca:3c8c with SMTP id
+ 4fb4d7f45d1cf-6a14fc679dfmr64188a12.6.1785944222437; Wed, 05 Aug 2026
+ 08:37:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/8] x86/virt/tdx: Stop treating tdx_global_metadata.h
- as auto-generated
-To: Chao Gao <chao.gao@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, rick.p.edgecombe@intel.com, kas@kernel.org,
- dave.hansen@linux.intel.com
-References: <20260804112941.19894-1-chao.gao@intel.com>
- <20260804112941.19894-2-chao.gao@intel.com>
- <43bb043e-8a01-484e-905b-41c73ae835d3@intel.com> <anMnX5Zcje0vAxNf@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <anMnX5Zcje0vAxNf@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260804232344.2976694-2-yiranirenewang@gmail.com>
+In-Reply-To: <20260804232344.2976694-2-yiranirenewang@gmail.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 5 Aug 2026 08:36:49 -0700
+X-Gm-Features: AUfX_mzBi7KGm9KuY-5Bkr6iTz2mUOM8G4OdCp2sFdezDb4zX4ATJ8wCzBteZfo
+Message-ID: <CALMp9eQyRbAa-YO06uVmFGp5T8AcG8+U9XmAr4Uoq1yNxwn=Hw@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v2] x86: pci: Support unaligned register
+ access in PCI config read/write
+To: Irene Wang <yiranirenewang@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Andrew Jones <andrew.jones@linux.dev>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosryahmed@google.com>, David Matlack <dmatlack@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/5/26 05:06, Chao Gao wrote:
-...
-> One thing I'd like to confirm: is the concern that the JSON could be wrong
-> about what modules actually implement, or just that there's no commitment
-> to keep the JSON stable? or both?
-
-Actually, the JSON from what I understand is _quite_ closely tied to the
-implementation. It is always "right".
-
-The problem is that the JSON is *too* closely tied. There is no separate
-implementation and ABI. The published "ABI" really is just an artifact
-of the implementation. It changes as the implementation changes, and
-that's not something the kernel can use in practice.
-
-Really "ABI" to TDX means something very different from what it means to
-the kernel.
-
+On Tue, Aug 4, 2026 at 4:28=E2=80=AFPM Irene Wang <yiranirenewang@gmail.com=
+> wrote:
+>
+> Per the PCI Local Bus Specification (Section 3.2.2.3.2, "Configuration
+> Mechanism #1"), port 0xCF8 (CONFIG_ADDRESS) requires a DWORD-aligned
+> register offset (bits [1:0] =3D 00b), while byte and word offsets within
+> the DWORD must be selected via data port 0xCFC + (reg & 3).
+>
+> Previously, PCI_CONF1_ADDRESS did not clear bits [1:0], and 8-bit /
+> 16-bit helpers always accessed base port 0xCFC directly. This worked
+> in QEMU because its PCI host bridge emulation preserves unaligned bits
+> in CONFIG_ADDRESS and uses them during CONFIG_DATA accesses. However,
+> in strictly spec-compliant VMMs (and potentially real hardware), bits
+> [1:0] of 0xCF8 are ignored, causing non-aligned reads/writes at port
+> 0xCFC to erroneously target byte 0 of the DWORD. In practice, this
+> causes pci_find_dev() to read the vendor ID twice instead of reading
+> the vendor ID and device ID.
+>
+> Fix this by masking `reg` with `~3` in PCI_CONF1_ADDRESS and adding
+> the `(reg & 3)` offset to the CONFIG_DATA port for 8-bit and 16-bit
+> accessors, ensuring compatibility across QEMU and other VMMs. Additionall=
+y,
+> assert that 16-bit accesses do not use an offset of 3, as reading/writing=
+ a
+> word across DWORD boundaries (port 0xCFC + 3) is invalid per spec.
+>
+> Assisted-by: Gemini:gemini-3.6-flash
+> Signed-off-by: Irene Wang <yiranirenewang@gmail.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
