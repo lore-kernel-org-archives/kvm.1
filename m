@@ -1,70 +1,66 @@
-Received: from fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.156.205.64])
+Received: from fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.197.217.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D73D427F97;
-	Wed,  5 Aug 2026 19:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=18.156.205.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B43423794;
+	Wed,  5 Aug 2026 19:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=18.197.217.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785959748; cv=fail; b=B0r13uO/TuS2PkVhhEnf2IzCdk24r3Ddy6dVGcUymeorP3Y5JbxGU0u2GroBEsDB9SHofTdtwRBfSrA2S5oP+dRe6SBEQPsraF1TAYtRU51FimR2XulVvZEjyNLzHctRYQ+ff1OtpP0lsxXE2j9hMZYRoO2gGFMT5qHpeDTZp1Y=
+	t=1785959755; cv=fail; b=Q0mvJAIihM8MM9DLdI0/yszAsvaToOKngaEyLyEzEZnL/AcmMpYJjd3psrxFW+S2L8HkRg5c6Q0OvXjncsOjH/qd4rF8J6ahqGtCD0C1Z/xqtYIhxaR62j4JYYrml0hJ/ZhPFdFG1dre0Dod+ODJq++eJc9XwMlmRnGaks7PjZM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785959748; c=relaxed/simple;
-	bh=ZaCRjYfIjw2kNu3DrICHJolETJJY0746QsN5wVmeG/w=;
+	s=arc-20240116; t=1785959755; c=relaxed/simple;
+	bh=FfLO1BUMBAMnyxwaT4PTToAiWiKkXvsXY0YvkGIVzYI=;
 	h=Content-Type:MIME-Version:From:To:CC:Subject:Date:Message-ID:
-	 References:In-Reply-To:MIME-Version; b=tWJqtbfhwSPbARrzGr4B7GDhajVa1DRaM9XcWOC52VszO2jnVUjJivO4g1zCWOUovuQkskPE5q7yBBfqj4POSi3Uatq+RgfR8eSBTMT2cJgrt7erA+sfnTXZ6IA34zxO3T6guo6+yk2WGJvoirWuZi0YVCsDbLVHsA95iMwS1/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=Rnk2uolt; arc=fail smtp.client-ip=18.156.205.64
+	 References:In-Reply-To:MIME-Version; b=dVsliTpM+SgEl+Vk1ZOBdQjN+TWIWzd5JetVleZYgwsVVmjMOWARc/jvM+gwbKutMHhOCBRqVrYXfu7GlHj/5USIqO5ndeKvVMO/DL2trxHX7toVXy/CHFzSMMh+KQVAvUmRGGHhn74q73AEOIUgBMkta12HbnjkngOfk0g+vO4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=lB4BQvEy; arc=fail smtp.client-ip=18.197.217.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="Rnk2uolt"
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="lB4BQvEy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
-  s=amazoncorp2; t=1785959746; x=1817495746;
+  s=amazoncorp2; t=1785959753; x=1817495753;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to;
-  bh=J6ayiSCTaQlH1glWOxR280+LBKoVrczZBGAn4hq2B5k=;
-  b=Rnk2uolt8YmeUZ8hcDWdEtn8F/0E+MfGhOUpnHossUxmWla/8b1NOWk3
-   2NoP08WSGGHjSdmHPx4mq9ELry81E3VPnsK5HNdC6Jfi/LE4okQ2qI08g
-   3htu2w71XJ284441NI7k/GP742uCuOYfTZcjJ3msFPtT5f3RE4WnbsX9Q
-   AZSyLwUjqYRdwISYa+/WLfjvTIPfEJ2JFfn96ENmDQ1vLDQcXYiDCkRFa
-   jUjtHeJ/Wj15qNKbdvZIaicEFI2da8PJHaQ+NpHNtHsXiyzJicng2h5TI
-   pWtJYGs/1fOKWLTI2e4yZAjwbFUe4LmDqVcEJ1yFc8EbQY/71yyyxlFOO
-   g==;
-X-CSE-ConnectionGUID: AWcTbD5NTDiQdiPVH5FpMA==
-X-CSE-MsgGUID: qslL7uG2TimdjU3L6hv9Cw==
+  bh=njTDX1l4CAMUN/iEQUDf+0M5RTBTQgWABYStuDaS7VY=;
+  b=lB4BQvEy+sekQmJv3Y/MZa5GJ3jxAdSR9M0OEUFG6xK+vL+cq/WBwAdb
+   2E4IGnfd7EBduLJaOk7Ep7bpJZK9VQAsMkWEmVEGXILEnOqSNJmTGlJSw
+   YC+1pI2STz14kS/8kAglxwEeyqkxivI3lZKZMN7n0bYgk+c9Ycqcv1JRz
+   A67Yr3BvpWwtXgWW661bJl1StsHE9gnzOZy19N4YuGbnk2q+XVGVEyyKS
+   TxBRj9YcZ4Zv/mdW6y9/U4PA9F3tIN7XTF+wx5uBlbvmLamZ/dDZbjaqx
+   ZB99WsjYLP+YEXEmYzXy4+LQ310rrcoCzmvg1naVPm6H4DkE2ZuYMi8lW
+   A==;
+X-CSE-ConnectionGUID: dJr9cmJqReS75e5DfuF/1w==
+X-CSE-MsgGUID: fzKmzQ4wSomoJ7AkBdW2FQ==
 X-Amazon-filename: smime.p7s
 X-IronPort-AV: E=Sophos;i="6.25,207,1779148800"; 
-   d="p7s'346?scan'346,208,346";a="17142845"
-Content-Type: multipart/mixed; boundary="===============4076452882560077655=="
+   d="p7s'346?scan'346,208,346";a="17438940"
+Content-Type: multipart/mixed; boundary="===============2525170940429881838=="
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
-  by internal-fra-out-001.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:55:42 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.225:1967]
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-006.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2026 19:55:48 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [54.240.197.233:29786]
  by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.15.0:2525] with esmtp (Farcaster)
- id 70c464ee-a1e9-419c-a2a6-745b024a8e25; Wed, 5 Aug 2026 19:55:41 +0000 (UTC)
-X-Farcaster-Flow-ID: 70c464ee-a1e9-419c-a2a6-745b024a8e25
+ id 2fb6c594-df1c-439d-9767-69952b92e381; Wed, 5 Aug 2026 19:55:48 +0000 (UTC)
+X-Farcaster-Flow-ID: 2fb6c594-df1c-439d-9767-69952b92e381
 Received: from EX19EXOEUC002.ant.amazon.com (10.252.51.145) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:41 +0000
-Received: from EX19EXOEUA002.ant.amazon.com (10.252.50.139) by
+ Wed, 5 Aug 2026 19:55:47 +0000
+Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.51.199) by
  EX19EXOEUC002.ant.amazon.com (10.252.51.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Wed, 5 Aug 2026 19:55:41 +0000
-Received: from LO2P265CU024.outbound.protection.outlook.com (10.252.51.94) by
- EX19EXOEUA002.ant.amazon.com (10.252.50.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45
- via Frontend Transport; Wed, 5 Aug 2026 19:55:41 +0000
+ via Frontend Transport; Wed, 5 Aug 2026 19:55:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DUmIFi8UmyH8e03KV6pyf9/zNjdCt2SsBHC32g2YjGeXFJvX7eO+WYtzckJUdH6NGCGTLDJAlomT5NVYeZWsD0+OniJ7Z6WJ2FBwapi90Kl48+xL8AGrBYP3kgOrtOgTRXJ6Ln9q44RDJMyYZqJP11La2/WMw8beePyTfXXkzMo5jVUVbXAucwStrbPXMpDpQewsM4FaAbQ49IP7L8u2Qe7GWrZ+uLh12MFf9gO4s1jayhH55s//rKZu/kXRAaHnsjpvDlkiXPN5ww3VNudDa4vbHpIvbPwCr1DUshA552gJZZooFMDMLkILMgWdGBd2vJZfMWXXeoKEg02T558NJw==
+ b=P1BqVgaDvHS9XbneNuHQcZfc8QEwjWNbYiFGVQ7wsWiIUvFiAa9vvZTuxXTlfdsDQD/FlMcZch3yYcHSQNljF46SNI7m1zio1TRHGdZZwlmgmJvuujSOOxc1BqQenGRgUCrjSlI6BVwTDGn7korls8qQxjkFx3OOPHEc5xY1SRLw4UbO3VY8HRfgGhGxxCXex/Jm+FsyLDPsnV3DmDvcoJMI56+NApONHaUY8w2VrC6NTeZdrei2sJGjOg4I/t/+uuK1OAbjscqa+2gHJBd7AGgVAfnFLsSeqA+vMJ/6Em7yWO9uj/Aj0ToEJu6qiFxQR9PR6zgyXFfIrze+UvF5qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=QbbaeiSGu/RXJRzRfoK56xcdhyDdwi2icWARLY3jaPQ=;
- b=eGhxlHDmQ9iWxP8jmgDk8FX+bZCv16s2Gpc3KI4xb3h6lInKstzvgx6RBH4Uk9Z/15VTOk7aZyrMSOchepAz05lCrK7seZ5Zr88LxQliaqmDKSu6lnUrUUlClV60umDZUlGfM1BARGR5jAVjfeOdFZRZMhrLCT+yCJ4lcmgkJP2Lncs0T/3qzEjgsJuUlQjQqBSNVRMOruuNPnZZmat3J1HC4bJ7ITYamvh6JYreAp3lqTelUuplNPaUeAJfBZjmttwM0A0PBjQ7Uw5gddZLU1VLrCAqPdk+JveQCP9YvivGYU0Nf4a8mPL7lsobE6x+AOoU5yZuRjpeDxSETN6mIg==
+ bh=bT3fymG17kWp32rRdkPivHdHo5QDE2woxfI3mm9HRIQ=;
+ b=A2u0Rq/IG0FuGmr7WlDaZ30LRkm+N6yyPhIt5VNDy2vGC9Ce3TZQhgKp+x5ggU6PNZQm/n9aREMXMC/6jUCBVI5waaE/7wU+g6EA8fLgkLWHcghtY6hWHcOcxhq8MSvLiVdMsadraWyptt7lMxI4v46uPQ75oRRIxHI1ZzhlUlroM0RIy9cZVEFlxFtS2H2Mv1xB80Jyt01rz8BL+wEDYQbln7J7RT3Z4OOqta2vQ7tvQZP1gCgEkAc+AwHqpjppobyJHnt7PykP0wNB4PGV6H24IIAFV8UojL0uMbEIzJgeVjwBkY28mug7dETKtrIlAue4h3XWXUcgc25J1mB3Pw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amazon.co.uk; dmarc=pass action=none header.from=amazon.co.uk;
  dkim=pass header.d=amazon.co.uk; arc=none
@@ -72,11 +68,11 @@ Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:4b4::12)
  by LO3P123MB3417.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:bd::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 19:55:36 +0000
+ 2026 19:55:43 +0000
 Received: from LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6]) by LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
  ([fe80::c7e3:476c:6170:8f6%6]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 19:55:36 +0000
+ 19:55:43 +0000
 From: "Woodhouse, David" <dwmw@amazon.co.uk>
 To: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
 	<pbonzini@redhat.com>, "akpm@linux-foundation.org"
@@ -98,19 +94,14 @@ CC: "bigeasy@linutronix.de" <bigeasy@linutronix.de>, "peterz@infradead.org"
 	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "hpa@zytor.com"
 	<hpa@zytor.com>, "x86@kernel.org" <x86@kernel.org>, "kvm@vger.kernel.org"
 	<kvm@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com"
-	<syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com>,
-	"syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com"
-	<syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH v3 1/7] KVM: pfncache: use a dedicated invalidation sequence
- for cache refresh
-Thread-Topic: [PATCH v3 1/7] KVM: pfncache: use a dedicated invalidation
- sequence for cache refresh
-Thread-Index: AQHdJRRitrDUC7gEH0eDi6O5EYFcdA==
-Date: Wed, 5 Aug 2026 19:55:36 +0000
-Message-ID: <20260805195528.3853473-2-dwmw@amazon.co.uk>
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 2/7] mm/mmu_notifier: Remove non_block_start/end() from
+ notifier invocation
+Thread-Topic: [PATCH v3 2/7] mm/mmu_notifier: Remove non_block_start/end()
+ from notifier invocation
+Thread-Index: AQHdJRRl4fRVBAHJ5keGRxUdcdrlzw==
+Date: Wed, 5 Aug 2026 19:55:43 +0000
+Message-ID: <20260805195528.3853473-3-dwmw@amazon.co.uk>
 References: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 In-Reply-To: <20260805195528.3853473-1-dwmw@amazon.co.uk>
 Accept-Language: en-GB, en-US
@@ -120,235 +111,153 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amazon.co.uk;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LOZP123MB8516:EE_|LO3P123MB3417:EE_
-x-ms-office365-filtering-correlation-id: b84317d5-45da-4122-3cf9-08def32b84b5
+x-ms-office365-filtering-correlation-id: 56523a69-8d5d-48df-e66f-08def32b886d
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|6049299003|7416014|23010399003|376014|366016|1800799024|38070700021|4053099003|10067099003|11063799006|56012099006|18002099003|22082099003;
-x-microsoft-antispam-message-info: MCkAKauzvu2HTthJA3kcxGMkMwRgsM+loGLAK7SlwF7hf0mbWbGtOm/dm7sPTWV/cncY2mzoaWd4vKDjrez/g6fYBT94x9ledvGTLn4Brnt/dxj5Qe6K0rtngT45C1ADfGUaViC92gSAQ5Spo2BV038+9dAo9tkAIZluKxq9NKhRVKlONEGibrdRp6QQsPoZVurjRnqS9lVuAo4hl1zuBq4FSjQ12+3BqbzsNDKOP1eKBHJiGCUPoOdy1oQmLnnBCf3gxvSMDqudAoIdOWcT0sNt+DcwafywaZT2oGmoQFo6BBKit7VB84Kw8tchXMEqAkS52AUULvSe+ZaZvXcUPY6Qt3aAdIH3IxFe5d+XA+E8oOZdUcG5OdSkdfek199vVQxoTZaLFKz7BBhEs4mXfp2HbNwpZD59tDAZKNlbJeEbtQb5WCUJSA6LKBcMzIBDI1PFivh5YpfcGCrfBKe+KDjCx649cOWrNaBSeRLEsRIJGvXYsAmdPSfJN6tCmslpG1wIFiIANazFpxqt+ONTJknLlSxbMU1Xl4tfoXEO3j7022RqOOSyCTxGeE+tJ13l8FxEp9GleXzKelU6C+cKKDpLqrw/cqVpnZ61WLyTk45sXg0M4hi/vi+TGcDJAh/KuZH615y5OuE7NiA2oepmuuC6pg7sEfLyjPZ2HjRgGPmtX1vV9VWSZve+TOf9mpUetHp3j/xXMntmfw6pV/b10wzQPeWshfyuhi29ZS/7FuY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(7416014)(23010399003)(376014)(366016)(1800799024)(38070700021)(4053099003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|6049299003|7416014|23010399003|376014|366016|1800799024|38070700021|4053099003|6133799003|10067099003|11063799006|56012099006|5023799004|18002099003|22082099003;
+x-microsoft-antispam-message-info: +ReZBZezTIucOLcL1rMqgrdvG6rhqGLrejv8hbkKxrBFG3aqMbYdAr0QCWuCm4ZvKQZCqTmeL7VwV1oD4xtNNQGLO5PGknmItxQ0PBjSjmDnBlXwgFrFdrXTeTZLlizxWKlmoJUKxFd6QOZG76dReiZcUBrK9uHfOKgDbBaUrcdvzOa7olGM4ivPmCp0woUV5MA89NBiQ2s9L/HcrjXmdZ0mxUM2gh3iBRBiCriHooHX1ADgTwGeG+NumA7iP+JKsPWQB5Jv5HxpTYvxtRunUdpjp1eBjzPmIu/1DmzyVf1IfTB1Yr0lj/h3xlhGj5JVD6e+mRu5lhFUoA7U2Yvr8DdiOYV2DaaEAgCchAfOqw0/HqXRTOT595W5N+5P8o5qX174t+S5Y0k6yDrYtu1dDnctc+foq2D/5/NkmXCke2PNaPBrHSFl9T0Jnfo5/62VOs3G6Gde8VGPFArTVLM/jJC0E3hxq3cdOjzs0e4ux4SbgMHDFytIPhQGIOs2CmC/aPVgwAu2vAIrrsvfNS/SLE28BdjiGAyg1BynVPnFsESrQX8UxHQDr3aPDNBYti+/kg17kRxQtv98DSfGt47qP3dbg2MD3hQpFILwYOaBUdbz31e7q9Gsux/LNJ7+AojhhMdL9OUAfwdpgDqc58kGw56xWM+czGsk84aGwmrA+ur+E4hDLc0jA2axFA9wevpzCHQrCBkGpYJZXsDUvH3xa9qTAitjZmoht+DmIHPwVn8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(6049299003)(7416014)(23010399003)(376014)(366016)(1800799024)(38070700021)(4053099003)(6133799003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?yQmspfNEIE2y6Gj1u6BwoClPG5z/1vkdZ16wjw/O6bQH1FtXt8wkaMPsuI?=
- =?iso-8859-1?Q?N3oes5+N2LY1DRjj4uBTjqx+yHvA9Hr8bG/IeWhCsGLVZWSF8Fi69SCHxA?=
- =?iso-8859-1?Q?f349/zvZYkqOWa4VW2WCOla6TQ1rw9STAbd8axJCTtKqam07xzynQ2tZ1M?=
- =?iso-8859-1?Q?dCK/8+Brnk4QJRvzoSUKJuF1WEC2BTqK2eFPkPwDkrPV3h8PZ8E0Cq/QJu?=
- =?iso-8859-1?Q?yd6hue5A2CXyf9nSXf/Fo4tByjddPB2fU0h8tInIR0F1TT4zHswiZyIPr6?=
- =?iso-8859-1?Q?/GpVbek0n/LW66lMCG8e2AbCL5uc6t6XlMuYfmFXzYUNK4uq4f5j9QT204?=
- =?iso-8859-1?Q?9nS0W0BIMVlaAg7cD64n8LWE8Cw+A2tLgi3zag0xU3Z0lOV5W3+JkfkLti?=
- =?iso-8859-1?Q?neotfZtejlwQTJhXD+kkZwVdVqg/A78Sk+GDe0YdSb7n9mwTCQ4TYrD87t?=
- =?iso-8859-1?Q?FUglIrbCtxCqYI4rAqrZD9OUGeypTnEiuf/u3lN/MEMYpeV64rednkxJuN?=
- =?iso-8859-1?Q?fgmjM4uVvscbCkWV3fKlTgy03qCB25j/qdVjhfnILF7UTxslCk8bmm6vfA?=
- =?iso-8859-1?Q?IxG3NTi9+XkXPx7p8GIpSMg1BKBktiZgLWeLAmq/GQYC/PzNXG08LNts2M?=
- =?iso-8859-1?Q?2VZrbsDqExAuRDj1pT8lesgD6K4r9EjROuJx5BKPbJABXJ0B8ktCdzAHR2?=
- =?iso-8859-1?Q?9EXQuBpR1TLWZvzTSUzzxdzlDdHxRh5zpUR8vyK/XN5Ro4ldlanto3732B?=
- =?iso-8859-1?Q?ttGB9C9whx3G8koCLen0NaERVsYM+HmbVdcDoxXlxySBTUmSvyt7/iQHCB?=
- =?iso-8859-1?Q?WwBUjTHGznQ+H/tBrwGoNcIL1zDCRKy/h+N77UhD74z/9AZ3rtSPSFNUev?=
- =?iso-8859-1?Q?4bdJ8OyciNG03NfVyUeXqMYV6xa7oIzQUroxrBU3URh0w5AvK6n+gJ7EIH?=
- =?iso-8859-1?Q?TjWX5Ujd56biulVvG6XYKABqXQk4aKtLbeA2oH9I0pGUJILTVGBH/KQM/j?=
- =?iso-8859-1?Q?V2qmcsz4XqenHjKxn8YalP9pZgb5RsZVC/6k9QMZq2mNaYDvGpitkJC9gk?=
- =?iso-8859-1?Q?bftC/qbi2McGBIDYGH8jdJnXtJ+oxCYAJUQ74OoJmwwmkXINuZjmR+Den4?=
- =?iso-8859-1?Q?LoxpIyAnrT6bECtfjMiM7VlDNlguueu0EhnNhsxbFwV0ms1iR7DMVyIsj6?=
- =?iso-8859-1?Q?RgDhSs0co1YnRwtckWatVAT3KikZDMIoBX9Bz9XwYQQlLN9H7JKjCeJQZH?=
- =?iso-8859-1?Q?9hLbrgx7O4geNh2AmxG6H8J7xo60vI94ftMkX8pH8+esQ0CZPXTZ/hmTXH?=
- =?iso-8859-1?Q?K86580TVXw/pN2RBWy8d/gM5xvsBrS4WxVjrYJV5Xh3fNejFYBL1bT/07c?=
- =?iso-8859-1?Q?FnwCnjCJ4LAe5rx1Aj82NSoHvVI9ClzOqq1oYPJTHrDm+0rdpQBsp6Tgpt?=
- =?iso-8859-1?Q?IZ8WIgwOds5Hd67QtLB6+5VF9M8zx1Hyh3NjWmz2ZB6VmumjVt9flFk6/G?=
- =?iso-8859-1?Q?ftbRLmaSOzrm6TstDEKfApNhNBn+QJZ98mstUvpy08OdNSCLPLO211tekV?=
- =?iso-8859-1?Q?CXVMAec+QxaWOxriTKQbj4rEJWgeERyDGbduLdJ+olCLi2mIfSsck5zl1Q?=
- =?iso-8859-1?Q?SH2ariSAGVQV5onEIggSa02oCQkuDIRv1iYQQ+iclpHTeuzwFqw3dW1BvL?=
- =?iso-8859-1?Q?WMtBDiUCBwyOEAbD6PyjRzcrRkB359pwDXaLoom6gwVzV6T1yZIIB7hQU5?=
- =?iso-8859-1?Q?eRWUaGJD7I0xCyZ2rKYgso+ytLAqamHulXmuCubrFYvhrI?=
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q0dwWEVaTHhYcmgwOXdEUm1TTERGckxBOFhvUmZ2Z0ViR256YlZyM0NlNmxl?=
+ =?utf-8?B?Z3pWVDFIRVVMOGlXNXg0c2JTVG1mcitpemtGbWtwakJPNXJFWWtNdkl0U2N4?=
+ =?utf-8?B?YlNGZW5raWwzWWQzdHN4ekl4SzZLT2lnZ1RNMEk5TkdzV0ZqcUZNa0tLSUha?=
+ =?utf-8?B?Y0Zqc0hBaVcwMTlHb1NERktiZHBxOEMzMGNnTjRFYUxMUS9kbjRtRG5UakdT?=
+ =?utf-8?B?VS9IUWRyTHZPQ2pSSzVhTHU2Wm1BSUlXSTVJZFFidHJxL1BpSWlkZmtjRE1r?=
+ =?utf-8?B?cEM5enVISXFKQ2IwQkVIblVQZHdDNXRDZXdTZElaMkhEVnp3aXk3VDVJaWtU?=
+ =?utf-8?B?OEVyMHhzR2YveDdKOXVJVXV5MXdZVDFKb0Evek9KT1NwRGNxZFVuT3JQR3Br?=
+ =?utf-8?B?SURkMzg0T3lzRUlaOHlkQi9HY0Rkem1qL1VzQ0VkQmRVU3RCbnQyWlpGMmY2?=
+ =?utf-8?B?dHRSc2dGdmtMSnhXY2FtanBMRE9hQzNsbzF0aGZybElWakJqVVBGUHFiZVR1?=
+ =?utf-8?B?V0ZGbE9lWjljaERGMGtoeGlvQzFmSFZlWEJ6UzZHSnVmK3V3aWpOWm9GWlkv?=
+ =?utf-8?B?TzVWK2V3WThDejJPVDVYdWgwTWFDamQ4QjZKQzVEb04wT2R3U1hJMzdxWURL?=
+ =?utf-8?B?b1QvQ3BMZHJIcXZrNEYzT0Nma0w2K3UyYjBDYUFyRE00cW1TWW5VdnVOaFRu?=
+ =?utf-8?B?T2NKekorbjRtbTFHSUEwQ3B2YkVnMGFqT3cyd3BBcmR3dUVmczJDYS9GVXRV?=
+ =?utf-8?B?WFBRQU93TElLOFd3YXdvYVR3WUpQV2t4NHI0cnRDN29DeWxMTlBGY1hIc3p1?=
+ =?utf-8?B?MXlkSUZzdC91WTh6eUFTdDZ5SEE2STZCUVJ1SFYyKzhRVnNQM1dMQkxWdzFB?=
+ =?utf-8?B?amMyZ2lQbmpHYlROOE1Ra3dVZ3JTZFpsVVVtU1ZjVElGMEZGS3lUeDdUSC95?=
+ =?utf-8?B?TDhBVTQwaUpSblVjZTdXZER3TW02SkF3em1DeHFLbnV1clpLVWlqYUh2eEtk?=
+ =?utf-8?B?Z1FoNVRMS2I0VlNVVGY1TGxuVmtjaFFidkU4bEJaR3JwTUpZMWE1cEJIdmhO?=
+ =?utf-8?B?N1hYSng2elNTVGZ3UHdJTzJPNHdYenRsc0laSm9pY05tbVl4eGdHUEpBVm1Q?=
+ =?utf-8?B?Q3VoN3ZPTGkrMW5adnRZeWVFMm1DRlcrN1VQbjA2SVVPYm9DYWVyaE00c2c2?=
+ =?utf-8?B?OTV0VDNRSHc1TW5YbTdhTlozZmxDNjdYTjlKWEFHSWxPNE5zUXNSTllsdTRz?=
+ =?utf-8?B?bGZ2L2QrRzN2bUxYSTdWbWdybkYzQm0wQlpydWlYY1NHWndnOWdRZzN3MWps?=
+ =?utf-8?B?TG0yOGF3b1lFWXdZVWNhWHExNjNLVHRSRHpFQkdvbFAxbkdHOEZVN0ZlM2Mz?=
+ =?utf-8?B?WHpnWFB6bU4yMVpVbEFLK1o2VkE2NTB5c2RJeWJleCtwaGhmdnczenFhZmhX?=
+ =?utf-8?B?RDRKczc2SmYvOFQwVTBIOHR1aWpqbXp0S3lBTVpaTTV2OUxsTWNBZ2t5T0k0?=
+ =?utf-8?B?bXBPYnhYY0VmdWZLV20vR2QweWlUQUQxdUkzSUhvUTdqOHNHOWdUVUhZRXA0?=
+ =?utf-8?B?SkhsbEs2YTFaTHVkR1FkeUYrTXRXWUlxaVEyZ0Y4SzV5Uy9LTzM2MVZEN01l?=
+ =?utf-8?B?NmI3aTJuTzA5TnM2azZFTFM1TmJtM2RNMHhHRGlvVDgxallaNCs1WU4zVzcx?=
+ =?utf-8?B?TVhhakxtOEF4em9sYTJnbU9rbXRJMnNUUVdDeERsQWNXSHpPSER1WnMzOG1Y?=
+ =?utf-8?B?K00ySmhYNDVOdXpSRDJUdVAxSTlyZkRsRGhPNFEwVlkrYUxVc1RPeTB2UGsx?=
+ =?utf-8?B?aUZsTERQU0tFV2VPaTZkZ1hSSXg2MDk3SjJBckJ5UkdOZ2tjYXE5cUVPU2VH?=
+ =?utf-8?B?NlpweG85WnBQZitUS01CdlJXOU02TmM5U1lzVUgxY1pyVVZhQld4RzFidzZV?=
+ =?utf-8?B?T3ZLa29KNThycmR0ZFMzakd1UnFuRXlNTG1pcmdUcVozY1hUWlBHbTA4RVUv?=
+ =?utf-8?B?YzRLbjFYYkthMjFmd3FQRCtBNEpqK0h0Z044T2tkdnBhcXJyRGI2RUpBV3kx?=
+ =?utf-8?B?N21hTEtvYTlQSGNDK2FlUzhMZVJnTzJybW00aXNlUkVFRCtBTnp5N0JjVlNC?=
+ =?utf-8?B?bzltSC9KU1NlOFlvUnByQ1RTWE9DV3diTE1SU3RiK08velpDSmNpQmRoUHZS?=
+ =?utf-8?B?dEdtYm5UNC9UNjFTR3l2R2tDZk0zVWwvMkhkcFY1ZGVTbC9HdW5RbWFvQTFI?=
+ =?utf-8?B?R0wvSU5Yd081QlVuNHl1eWIxcm9sanUrOEUzU0dRZ1l5MW5sMm1LWFlvM29m?=
+ =?utf-8?Q?9CuXMmoiJJPNXMrcR0?=
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: LEFif/QFQQ/RdRMkaHE/nQAWg3svbQxFC9M0HJTdnQ3udvJL7wdXdHlRRhwBY+vzoAto6r0NKCkCkkwZ8OHDLjCgmp4S4czT5jy18l9JTpU845tfXB/ZowxwxzFZOYUrdzlzIvEx+gJQg7hkgPLEnzsTb3IN2v7BIa27U6IikO6+fiLUYAebeOxI4NtN/6MgfXppff/0i1nQaq+rS/84I/Nae/Jh/Vzo0rKscwp2mGXD/VmL4DbNLIwmb4vLYlsCcFwMOLn1nmK+GnzH1ynWRt61Vq5avwY4k41kV19PaxO7mVNUGKXE4jlX/Y0vgj7HLbJprzrgr3SOp5ey8Ny3hw==
+X-Exchange-RoutingPolicyChecked: Qx98TTpSbkfvm/mfdOVsNSzMJNIennZjQxEViJJXPcPH6wbeul7biSBa9cEDhd4v3PZuUGD17uKfLPmppX7EA2TwNyND2B1JAwJT7Ja/6RtP4GNHYR4sr0454muMOC8ujs6gD6TZQ2NeRIkjPP9qA8iOeIzNnQmiV9Kqp8jVj6RPBOj/wYOBmsYAC29nK9vpqjWP0fDK8wp38qJ+XxDTaq2ijPdQwpRfNUJVoTHlGwuk5zrq3Crnjj9xv0jI7e1kef0WYby4fcaYHZ8m23bRURrkpYsGfty8pcdoxFvln7fwRte3PocgtYrZ2WUCQIzWfSjvXpj7RYznJSuPjAJC+A==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LOZP123MB8516.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b84317d5-45da-4122-3cf9-08def32b84b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:36.8510
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56523a69-8d5d-48df-e66f-08def32b886d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2026 19:55:43.0336
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 5280104a-472d-4538-9ccf-1e1d0efe8b1b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5XFrnTEdDKWxoC4FpNvqBgvxjf93TSl9CxcR4P/jBoLJuCdABoouGkvx+tvLcsRbKXEBy3HtcfxgYQNCSkKj1w==
+X-MS-Exchange-CrossTenant-userprincipalname: fhVgbFydsx4YN+PgABxcRhXzXfUah51p1HXm+wC8NGrgUzKdFX3xqAhz4mLstPq+gy7x+NkVBU+p+EIH0u8GNw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P123MB3417
 X-OriginatorOrg: amazon.co.uk
 
---===============4076452882560077655==
+--===============2525170940429881838==
 Content-Language: en-US
 Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";
-	micalg=sha-256; boundary="----A5620834ADBE581CC9892966FA9ECB3A"
+	micalg=sha-256; boundary="----F3F7044912BB47D11515E6DE65EE77DA"
 
-------A5620834ADBE581CC9892966FA9ECB3A
+------F3F7044912BB47D11515E6DE65EE77DA
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The gfn_to_pfn_cache refresh path guards against mmu notifier
-invalidations which complete while it has dropped gpc->lock for the
-HVA->PFN lookup: hva_to_pfn_retry() samples kvm->mmu_invalidate_seq
-and retries if it changed, or if mn_active_invalidate_count is still
-elevated.
+This effectively reverts commit ba170f76b69d ("mm, notifier: Catch
+sleeping/blocking for !blockable") for the mmu_notifier call sites.
 
-That is insufficient for HVA-based caches. mmu_invalidate_seq is only
-advanced by kvm_mmu_invalidate_end() when the invalidated range
-overlaps a memslot, and an HVA-based cache (e.g. the Xen shared_info
-page mapped with KVM_XEN_ATTR_TYPE_SHARED_INFO_HVA) need not be backed
-by any memslot at all. An invalidation of the cached HVA which starts
-and ends entirely within the lookup window is thus invisible to the
-retry check: mn_active_invalidate_count is back to zero and the
-sequence never moved. The refresh then publishes a mapping of a page
-which has already been freed, and the next reader dereferences it:
+The non_block_start/end() annotation causes the scheduler to complain
+about *any* voluntary sleep in a non-blockable notifier. But that was
+never the actual constraint. As Michal Hocko put it when the
+annotation was first proposed, the OOM reaper "shouldn't depend on any
+locks or sleepable conditionals" and checking for sleepable context
+was "the best thing we could come up with that would describe these
+demands at least partially". The real requirement is that the reaper
+must not block on anything which may itself depend on memory
+allocation (or on the dying mm) to make progress — which is why
+spinning locks were always considered fine.
 
-  BUG: KASAN: use-after-free in kvm_xen_shared_info_init+0x3c6/0x440
-  Read of size 4 at addr ffff8880599c2900 by task syz.2.383/7257
+That distinction now matters in both directions:
 
-Since gfn_to_pfn_cache_invalidate_start() deliberately skips caches
-which are not currently valid (including one whose refresh is in
-progress, as the refresh clears the valid flag before dropping the
-lock), the retry check is the only line of defence, and it must fire
-for *any* invalidation, not just those hitting a memslot.
+ - On PREEMPT_RT, spinning locks become sleeping locks, and perfectly
+   legitimate spinlock/rwlock usage in notifier implementations (e.g.
+   KVM's mn_invalidate_lock and gfn_to_pfn_cache locks) triggers the
+   splat despite having no allocator dependency whatsoever.
 
-Add a dedicated kvm->gpc_invalidate_seq, incremented by every
-kvm_mmu_notifier_invalidate_range_end() under mn_invalidate_lock
-before mn_active_invalidate_count is decremented, and check it in
-hva_to_pfn_retry() instead of mmu_invalidate_seq. Incrementing in
-range_end() in the same critical section as the in-progress count
-also closes the variant where the cache is activated with the
-contested HVA only after invalidate_range_start() has run.
+ - A notifier implementation may legitimately need to wait for an RCU
+   grace period before allowing the caller to proceed with unmapping
+   (in the manner of a TLB shootdown, waiting for readers of a cached
+   translation to drain). A grace period completes without any memory
+   allocation and cannot deadlock against the reaper, but the
+   annotation forbids it.
 
-The same bug is also reachable through the per-vCPU vcpu_info cache
-(KVM_XEN_VCPU_ATTR_TYPE_VCPU_INFO_HVA), where the stale mapping is
-then dereferenced by kvm_setup_guest_pvclock() on the next KVM_RUN:
+Checking for genuinely forbidden dependencies mechanically would
+require tracking *what* is being waited on, which this annotation
+never did. Remove it from the notifier invocation and leave the
+constraint where it always really lived: in review and documentation
+of the notifier implementations.
 
-  BUG: KASAN: use-after-free in kvm_setup_guest_pvclock+0x5bf/0x660
-
-This intentionally makes refresh retry on *unrelated* mmu notifier
-events; restoring precision (and reworking the GPC locking more
-generally) is left for a subsequent series.
-
-Reproducers: https://david.woodhou.se/xen_shinfo_race.c
-             https://david.woodhou.se/vcpu_info_race.c
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com/
-Tested-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
-Reported-by: syzbot+fb7c2dd166d3ea63df2a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a426dd2.854d4ab9.360e1d.0008.GAE@google.com/
-Fixes: b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA")
-Cc: stable@vger.kernel.org
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Assisted-by: Claude:claude-mythos-5
 ---
- include/linux/kvm_host.h |  2 ++
- virt/kvm/kvm_main.c      | 10 ++++++++++
- virt/kvm/pfncache.c      | 18 +++++++++---------
- 3 files changed, 21 insertions(+), 9 deletions(-)
+ mm/mmu_notifier.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 03bfc92864b6..3dd04605f2e5 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -855,6 +855,8 @@ struct kvm {
- 	gfn_t mmu_invalidate_range_start;
- 	gfn_t mmu_invalidate_range_end;
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index 245b74f39f91..cd5d15cd646a 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -520,11 +520,7 @@ static int mn_hlist_invalidate_range_start(
+ 		if (ops->invalidate_range_start) {
+ 			int _ret;
  
-+	unsigned long gpc_invalidate_seq;
-+
- 	struct list_head devices;
- 	u64 manual_dirty_log_protect;
- 	struct dentry *debugfs_dentry;
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 345d56a15fa4..41c88a8ade95 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -812,6 +812,16 @@ static void kvm_mmu_notifier_invalidate_range_end(struct mmu_notifier *mn,
- 
- 	/* Pairs with the increment in range_start(). */
- 	spin_lock(&kvm->mn_invalidate_lock);
-+	kvm->gpc_invalidate_seq++;
-+
-+	/*
-+	 * As with the MMU sequence counter and mmu_invalidate_in_progress, the
-+	 * GPC sequence increase must be visible before the invalidate count
-+	 * goes to zero.  Pairs with the smp_rmb() in
-+	 * mmu_notifier_retry_cache().
-+	 */
-+	smp_wmb();
-+
- 	if (!WARN_ON_ONCE(!kvm->mn_active_invalidate_count))
- 		--kvm->mn_active_invalidate_count;
- 	wake = !kvm->mn_active_invalidate_count;
-diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
-index 728d2c1b488a..3659686b97c2 100644
---- a/virt/kvm/pfncache.c
-+++ b/virt/kvm/pfncache.c
-@@ -124,7 +124,7 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
- #endif
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_start();
+ 			_ret = ops->invalidate_range_start(subscription, range);
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_end();
+ 			if (_ret) {
+ 				pr_info("%pS callback failed with %d in %sblockable context.\n",
+ 					ops->invalidate_range_start, _ret,
+@@ -591,14 +587,9 @@ mn_hlist_invalidate_end(struct mmu_notifier_subscriptions *subscriptions,
+ 	id = srcu_read_lock(&srcu);
+ 	hlist_for_each_entry_srcu(subscription, &subscriptions->list, hlist,
+ 				 srcu_read_lock_held(&srcu)) {
+-		if (subscription->ops->invalidate_range_end) {
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_start();
++		if (subscription->ops->invalidate_range_end)
+ 			subscription->ops->invalidate_range_end(subscription,
+ 								range);
+-			if (!mmu_notifier_range_blockable(range))
+-				non_block_end();
+-		}
+ 	}
+ 	srcu_read_unlock(&srcu, id);
  }
- 
--static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
-+static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long gpc_seq)
- {
- 	/*
- 	 * mn_active_invalidate_count acts for all intents and purposes
-@@ -136,20 +136,20 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
- 	 * Note, it does not matter that mn_active_invalidate_count
- 	 * is not protected by gpc->lock.  It is guaranteed to
- 	 * be elevated before the mmu_notifier acquires gpc->lock, and
--	 * isn't dropped until after mmu_invalidate_seq is updated.
-+	 * isn't dropped until after gpc_invalidate_seq is updated.
- 	 */
- 	if (kvm->mn_active_invalidate_count)
- 		return true;
- 
- 	/*
- 	 * Ensure mn_active_invalidate_count is read before
--	 * mmu_invalidate_seq.  This pairs with the smp_wmb() in
--	 * mmu_notifier_invalidate_range_end() to guarantee either the
-+	 * gpc_invalidate_seq.  This pairs with the smp_wmb() in
-+	 * kvm_mmu_notifier_invalidate_range_end() to guarantee either the
- 	 * old (non-zero) value of mn_active_invalidate_count or the
--	 * new (incremented) value of mmu_invalidate_seq is observed.
-+	 * new (incremented) value of gpc_invalidate_seq is observed.
- 	 */
- 	smp_rmb();
--	return kvm->mmu_invalidate_seq != mmu_seq;
-+	return kvm->gpc_invalidate_seq != gpc_seq;
- }
- 
- static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
-@@ -158,7 +158,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	void *old_khva = (void *)PAGE_ALIGN_DOWN((uintptr_t)gpc->khva);
- 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
- 	void *new_khva = NULL;
--	unsigned long mmu_seq;
-+	unsigned long gpc_seq;
- 	struct page *page;
- 
- 	struct kvm_follow_pfn kfp = {
-@@ -181,7 +181,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 	gpc->valid = false;
- 
- 	do {
--		mmu_seq = gpc->kvm->mmu_invalidate_seq;
-+		gpc_seq = gpc->kvm->gpc_invalidate_seq;
- 		smp_rmb();
- 
- 		write_unlock_irq(&gpc->lock);
-@@ -232,7 +232,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
- 		 * attempting to refresh.
- 		 */
- 		WARN_ON_ONCE(gpc->valid);
--	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
-+	} while (mmu_notifier_retry_cache(gpc->kvm, gpc_seq));
- 
- 	gpc->valid = true;
- 	gpc->pfn = new_pfn;
-
-base-commit: 51ba04112e93ac6e04c627eddcea5caf9cbc0134
 -- 
 2.43.0
 
 
-------A5620834ADBE581CC9892966FA9ECB3A
+------F3F7044912BB47D11515E6DE65EE77DA
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -620,28 +529,28 @@ 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
-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
+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
-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
+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
 
-------A5620834ADBE581CC9892966FA9ECB3A--
+------F3F7044912BB47D11515E6DE65EE77DA--
 
---===============4076452882560077655==
-Content-Type: multipart/alternative; boundary="===============4862635828317429347=="
+--===============2525170940429881838==
+Content-Type: multipart/alternative; boundary="===============3309014326949955468=="
 MIME-Version: 1.0
 Content-Disposition: inline
 
---===============4862635828317429347==
+--===============3309014326949955468==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -655,7 +564,7 @@ ace, Worship Street, London EC2A 2FA, United Kingdom.
 
 
 
---===============4862635828317429347==
+--===============3309014326949955468==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -664,5 +573,5 @@ Content-Transfer-Encoding: quoted-printable
 d Wales with registration number 04543232 with its registered office at 1 P=
 rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
 
---===============4862635828317429347==--
---===============4076452882560077655==--
+--===============3309014326949955468==--
+--===============2525170940429881838==--
