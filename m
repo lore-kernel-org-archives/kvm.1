@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8511D43FD04;
-	Wed,  5 Aug 2026 11:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7527743B3F6;
+	Wed,  5 Aug 2026 11:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927841; cv=none; b=edPvV/gVMDjC61YM++pwPLFpx7SDHC6tv7dGmzA9eXFUYCVGg0uFwsUXXkKMu5ZGHGQFthx5HLw/pcT3rS5FiVDf7G6DiSqxTEK8gMcssqIK9npOCQTqHMwJfArP0Vijym5O94xRw7ghVt+E9TmPNpRaccUbRzN/8C1YOQKFKUM=
+	t=1785927843; cv=none; b=A05d/PKTZDE028MLuA6wdFoWLSEmF1wLooxWNaEeC61PH4D0I6axYjoQi6i6RgcZYITPbvNHm23vQlBgQ7NPjnV2wCVdkRud/1oHzvmXzdYcNwz9RE33sg1fUrienP1UP+btp0V7Vn2NXzxsfoCzY7Cc1EOFS+wcpzFD5MLhXYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927841; c=relaxed/simple;
-	bh=D9VOq56B9kZmsm/OCIMpL/keYWy0pJvDDZkuomsAm3Y=;
+	s=arc-20240116; t=1785927843; c=relaxed/simple;
+	bh=fd1fZGkKlRI0hsVdzhb2l4RtI1jIs/V9mpyhR9PBfEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1s95ooSHlrJEUr+ZXfITLQQu6gw3bg7PUHrgWd9EBdGa0G1y10x6qLcIZ68etnBnWGq+ToiCMoqreDfdhJraJr1dWgvzej8GycknXBeibSbhF0LPehJCEAdrv7dlzA1Dez6GAZUP/HmnswMhF08mGQX3kHE8C+2ZJxSTsCoK9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=eva/5TAa; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=YJJBhkMiSLoIvq0wLEQulaXyjF93DBWD1QavLg22/i/l34cJUuyOPa9xePHIh5LPTMyoOADfbg8i3WUreuFJx/B2y5aIzYf7aTlp/GwErdJGWdL9dxfxK+Wq8dcPFEjHMEnylQhKvp5SIL0OdFh/UI9kt7vJWk8shdk+pseB1QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=T5DO/7Vt; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="eva/5TAa"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="T5DO/7Vt"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 6854120B716C;
-	Wed,  5 Aug 2026 04:03:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6854120B716C
+	by linux.microsoft.com (Postfix) with ESMTPSA id C617D20B716A;
+	Wed,  5 Aug 2026 04:03:41 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C617D20B716A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927819;
-	bh=KADTfjk6xMNFkykpB6ZFJP7LLPsxtzvPwQF0sjffH+E=;
+	s=default; t=1785927821;
+	bh=67aOwmHOj/Q52K+V5Ek1yk9wbvv+XpwwjutWPwsyzDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eva/5TAa9sagOk/0+z0Q89BEuXl0wyBzL4Le9cVirI9YYNj5FHHoLGc6AhPXOx+cb
-	 Luuou3TmfgJIIqTkGrg8AHevoxP2TCNEI5grvaKVP9JzvGteqn798i+O+p+7RRWQYb
-	 QWIvok70Cjz2SP5mUqsuA/SnHNDBsiwU6t0J48Pg=
+	b=T5DO/7VtUathSgXOq+CnarGbw7kLvSYGcG/eiyvh26+fgo7zbwYm9s/4rPSKvKWe1
+	 3KsN04n5qtQ+fzvEDEu14uGRZMz6Mx9wXkWcFFy0Hg96AL1Bw924uDzH68BYAEPIHa
+	 R7cBrXwOVShJWgHqJNmOBfoIYeIZtcLHLzeF6NiU=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 19/42] Merge branch 'master' into vm-planes
-Date: Wed,  5 Aug 2026 04:03:01 -0700
-Message-ID: <20260805110324.25067-20-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 21/42] KVM: x86: exit VM planes and VBS hypercalls to userspace
+Date: Wed,  5 Aug 2026 04:03:03 -0700
+Message-ID: <20260805110324.25067-22-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -43,50 +43,38 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 ---
- arch/x86/kvm/svm/svm.c | 2 +-
- arch/x86/kvm/x86.c     | 2 +-
- kernel/kexec_file.c    | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ce242e86c5ea..bc281fbc54c2 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -3240,7 +3240,7 @@ static int interrupt_window_interception(struct kvm_vcpu *vcpu)
- 	kvm_make_request(KVM_REQ_EVENT, vcpu);
- 	svm_clear_vintr(to_svm(vcpu));
- 
--	++vcpu->stat.irq_window_exits;
-+	++vcpu->stat->irq_window_exits;
- 	return 1;
- }
- 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 4b99016fe536..d4210053e6b8 100644
+index d4210053e6b8..00dcdd0e22a4 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -11129,7 +11129,7 @@ void kvm_inc_or_dec_irq_window_inhibit(struct kvm *kvm, bool inc)
- 	 */
- 	guard(rwsem_write)(&kvm->arch.apicv_update_lock);
- 	if (atomic_add_return(add, &kvm->arch.apicv_nr_irq_window_req) == inc)
--		__kvm_set_or_clear_apicv_inhibit(kvm, APICV_INHIBIT_REASON_IRQWIN, inc);
-+		__kvm_set_or_clear_apicv_inhibit(kvm->planes[0], APICV_INHIBIT_REASON_IRQWIN, inc);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_inc_or_dec_irq_window_inhibit);
+@@ -119,10 +119,11 @@ u64 __read_mostly efer_reserved_bits = ~((u64)(EFER_SCE | EFER_LME | EFER_LMA));
+ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
+ #endif
  
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 81cf454ab516..da44bac7df74 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -259,7 +259,7 @@ kimage_file_prepare_segments(struct kimage *image, int kernel_fd, int initrd_fd,
- 					 image->kernel_buf_len,
- 					 NULL, sig_ok);
- 		if (ret) {
--			pr_warn("vbs: kexec kernel rejected by secure kernel (%d)\n", ret);
-+			pr_warn("vbs: kexec kernel rejected by secure kernel (%zd)\n", ret);
- 			goto out;
- 		}
- 	}
+-#define KVM_EXIT_HYPERCALL_VALID_MASK (BIT(KVM_HC_MAP_GPA_RANGE) | \
+-					 BIT(KVM_HC_VM_PLANES_CONFIG) | \
+-					 BIT(KVM_HC_VM_PLANES_ACTIVATE) | \
+-					 BIT(KVM_HC_VBS_VTL_CALL))
++#define KVM_EXIT_HYPERCALL_VALID_MASK		\
++	((1 << KVM_HC_MAP_GPA_RANGE)		|	\
++	 (1 << KVM_HC_VM_PLANES_CONFIG)		|	\
++	 (1 << KVM_HC_VM_PLANES_ACTIVATE)	|	\
++	 (1 << KVM_HC_VBS_VTL_CALL))
+ 
+ #define KVM_CAP_PMU_VALID_MASK KVM_PMU_CAP_DISABLE
+ 
+@@ -478,7 +479,7 @@ static unsigned int num_msr_based_features;
+ 
+ unsigned kvm_x86_default_max_planes(struct kvm *kvm)
+ {
+-	return 1;
++	return 2;
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x86_default_max_planes);
+ 
 -- 
 2.55.0
 
