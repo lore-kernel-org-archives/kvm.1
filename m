@@ -1,143 +1,115 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E6E3EDE42
-	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 16:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785945772; cv=pass; b=I6CupoEprLpJrTub4bpUJyy4mwsMkeYINFTjl8lUEtfJqJ3k1QhN7LFaL5o4IH5lJwRb3kPg5NOYvmjd77ZmVBFcUWpIRpo4nNWTuLKV/vOu/lbCRBh40S534mqB+Qwbt7113INis8tf7WBrHdrp5GWG25Hl0ZUDq1ktdVGh0mg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785945772; c=relaxed/simple;
-	bh=urqjPATeIdTfgUOdfXyZZ1lXjN9fdXK4VUOiuTSdems=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A7vogHJsSLinwmWM6DbuNi/+Lem5zwxxKUJwwCYY4Cn7iyE8RDwlPsYiKAcziXj/NUtquLzTwhuUh6/FFVKO0gNYWegOTkG/qOEsyRcY8KFThB1wkQZYJy1ugDit0I679QhoxBJ9SFRuLS0RcAyD6g6rQ0NT+AeBj2bi1EEJJGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EHeCl0OG; arc=pass smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7B93EB10C
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 16:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785946952; cv=none; b=Ox1K1WXNiB8iJaiEIGt3P3MI1M5A69d2KxjVTD9nK180gBzjeTgN0WDnfKZJCla7Ka09zbK/5c1QD6h04YGRDD2kvhhkps4fijOj0+t2kF0ZO77k9fHX0288tx+2AbVI9lKTjn+M/ExMBHdwp/4Euv/h9yYjWuYM5ePOnXnmA2c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785946952; c=relaxed/simple;
+	bh=hzAEZfHfz3LBP2Um9gcgl4RChWFL9tShRjbTlGb2/U4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gTxC40MUcl4QJZ1HW4YiC6hgmQxrMHTq/rWQI6OTNvC10raE7pRUyOFoX43k1+iKy3UcBm2wfbO+MbMl1xGR6rV8YCxWYAPzBOVZLkS9yRaJAme8Qmp5jgPm8RByOoEJs+MKKNtr4qhC0LwGvKQQXN0ReoFLGHk+BAJ9pyU53VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EgCK0ctD; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EHeCl0OG"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38e347638adso1285524a91.0
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 09:02:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785945761; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sZ9X7Zf3K35J58jgsLdkjZqi47pWFbakQwGq+I5phbXRFd3pKe2+XEiIcOAR2U2UMC
-         vo25m6R8AQV0JdciFM2S4r4nLT/lyRN5uIN+LkN6E1AgtWC596A9EZkp+AX83J19UHBL
-         rbcTrnn4cBxMz43VvL/pSnw5RJ4pU2VVKTabSHxspXg2Ae6EzxqZoZWcaWqCWPTymMN7
-         WLFvDugLln6Mc00Lg8Mf75UaoayhVKfPkaMxu6v/pc8eaZN1jVt8/C818f3E4w5pWMCC
-         r8AaQlod50xZD0dEUsF3QhwvTTro/qBLqVsIXiEt1aQ+B1NdlREB0qUVrFGVlAbA9eZe
-         0IBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=dDxVaJA0qLhUpRmzRVBWfrwvszjITp7kHu2WvQfbt0A=;
-        fh=57MkjwnbybMKssYOyCzy2153Vev2vrYV4VU70uMMoiE=;
-        b=hB8SzBSkinCTPgpCraNEhW5Y7N8OsrbpqQAVTZAynLN6OvzFAoNf8f0tD5gXNos7CL
-         PYAxvfYURhb4/53Cie78ShaJS1f+lBUcao9P6nz1olBvU6zLhE292J9QXzbg3Ch/w7QY
-         TGEQqJStTAKa+S6RWTSyPOJnWmYSvf1m9glTPR2MDt6jbKnSfwUNCOIRLn4J7MZEg0rz
-         3nzTSA09j9myL0MgMBqtCwNIlutmtzDunCmOhpDo+QgX8DAKa16y1IetQEJyaEDrahor
-         /S3mYtJfmJF5hUaGKyrOLkeVyw56MrYQ2rpswkzfkbhV1oAVU49KGGKuN+a2pL+L57NF
-         +dOA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EgCK0ctD"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cce14a21faso461505ad.0
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 09:22:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785945761; x=1786550561; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dDxVaJA0qLhUpRmzRVBWfrwvszjITp7kHu2WvQfbt0A=;
-        b=EHeCl0OG2eG0nUAMg7DYEoUZ1cMlqJmTSWktmQsVgl2qnNRWnsAMPu7+QYNy/HQpd/
-         9sf+O2/tndbLiIw3e69n/jRhvocW0nzjqoaofaKuMdhM+dQqUZLmZGc7VjcTxO4iw+B5
-         KUi7a9J6M8TLHUPZWUhit0fIDIswhnwCB+relMLigeHVMr5tYs/4MywFecqgRfl9yh4/
-         nFy3HaPjm2/dsVrd1FxJCPUO/YdvTiEYKjyBFzu12sTbdBME9002eYj2bEWBFoiwBMAI
-         XeeWaZ/BPJSTrIHYSmTiCkMjoGHuxCyFzuyruFzEdZEtZapyWd+9gK3XbZJC4PcSgifT
-         d9YQ==
+        d=google.com; s=20251104; t=1785946950; x=1786551750; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=uvAahgqgkqHs7pRp0ExYF6yyigspnFoR+gCKglHPWIY=;
+        b=EgCK0ctDupjRYM4vFBSBZ0uLtswJLZL+GhrXpvzhTbZbr9aNso8AXhpQ2ZXbIaN/tq
+         E6vQrcZPbRygn8K/O8mqZJTn4QLtLBeX1tuFQ0aSFJ4VesPhBrjpx6FCG1Mm7dNKjkS7
+         hcIIxprGsKusTPRWCcYOfxZYVl3k7uZJU5lGd+30lmhzL9uOHqElLSzqJ7FsB21///CR
+         H3SgPfI66qtHGz7ZGptodX2scGohm1l1uuc0iDkmp67/egWVoNrDknDngzYSQfvx4SHX
+         zrAOM5Smi1rheOeLGbOSlcits4VuJOAkbuCiwkJmJx/H16ALTMSxvcf6KhiuV5Ea9gwa
+         6JXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785945761; x=1786550561;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dDxVaJA0qLhUpRmzRVBWfrwvszjITp7kHu2WvQfbt0A=;
-        b=BpMleST5yhHIKX/617sXePCbl5XYYUnIbGN5uXYSdogNHG8afNA+q8NMDkb70WnNTm
-         bwqLJgvwP9QWuhZnjJeCqNoAmxxPpTj+eI2tMAV7HgUMkoiOVEZs8mNrp97ZOvryV727
-         ojz7zm3nCTOpmH10U7f2AuCGnf+QkeZJyI3egkmrIp1Z/H0thOIigQGQPiJNU0JZ0FkT
-         mxCN1WKzF0BDBuBwzb649mEwfkmU5sNwYB69wBxBTytMCdS2gj4nLCQGX7yRSlgd1RJ6
-         OR/kAPCShLtTIAq7w4fkmNurkYtyXnctPHnNVqTk1FGU5J+uiqsc5L/HCHHIZnaVpjNq
-         6yKg==
-X-Forwarded-Encrypted: i=1; AHgh+RqwptmT6cziDjK7uSFXbl8a7DesvW7NJap2WnGdYF4ejwZuZ+qk5VzLmvvMGr+o4yLYUxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvOshHfAywn9TeAF2Pf5TxUTslJf7PE5SVG4Cw6hvWEZKsd465
-	mHomX7Z5C5pptS4z/GtH5smPvBBcSz1LJsJNXK/bHVJFYNaouzyWsSaeydHvvCOmvUmG0u0+uhH
-	ZzgsrgC5t6MXJyDWfrBaqHIpLvBhVX02qS2P+GSHd
-X-Gm-Gg: AR+sD123K5Vopqu4AKvCUNglMiHiwj2AX1fJNpe4LF6ZqjrcH6Z8J33drLb5sIy8mDw
-	mg+AHYcrE8hzrmWwrtQl00GSLhcKflwhkiWClB/AYEf+moKnqNfg21bypcVuDfGadeqeYtHEd2e
-	1NzFtDzo8DO5BnUmUyrmn8BIKk13rdvhrN9HoDh5eWYZ6DpLknf666T6cGgho/hy5WnTsn7X7B3
-	LrVi2XUjH82nr7lmVBD2W4GGmTqxcrrkw7QSO60zVahZh7RB+2Ur4BTwUMee1YULL9Q7LGflqpv
-	UbNRt8PX05Dl2JwIPS+1lKlNL+fCkTxF4PblrKFsAERjyxOuwBQGgs+pLstUi37JoXszyU/YQZO
-	EL9OFA7nRaPTa8sfq0wXW0yMMYuT3Y3C6XNs=
-X-Received: by 2002:a17:90a:dfcf:b0:38e:9045:babe with SMTP id
- 98e67ed59e1d1-3903c5589ecmr8554536a91.7.1785945758439; Wed, 05 Aug 2026
- 09:02:38 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Aug 2026 09:02:37 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 5 Aug 2026 09:02:37 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260803134403.80630-25-steven.price@arm.com>
-References: <20260803134403.80630-1-steven.price@arm.com> <20260803134403.80630-25-steven.price@arm.com>
+        d=1e100.net; s=20251104; t=1785946950; x=1786551750;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uvAahgqgkqHs7pRp0ExYF6yyigspnFoR+gCKglHPWIY=;
+        b=UCFI3ALx/qDaGiVsVXHT3oz4iEtvJjjFsxLQ5w7NDW52kCzBhVm7X1oL89IkYOEr/T
+         xVlk+p509jI2Sz5iH+CZlGX3jmd3nam8yByixK9LfAb5aXKQChtpci+JwJmokUlFScXf
+         6rVyVqOcNeCdNTAjGE82gPZ4+3Kr4XNrAWgWUJyPaxwqDTBcJIr+rnUCGAJo2d/EVlqn
+         T2iMSz6+mz5qBIh4+lQPX+Obxi/heHTujsAO39a2e/mw7ohvOfWAi4XFAP4NCItq8GCI
+         d1tVvloa1AK4K42JWGOftVwpecHZ97gTEAFC1+S3JG+t3eFKVw0Xzrf4PNsPKC16AKb0
+         18bA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro4TC4YYltK/YMg4f9K0k9eIyroZH7hpmPSHt8UIXhr54nppF+E3bwUo5tliAP21KbKI0c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtbUebOQk05PJ4flSlIjX6aIbnSBrF3PW/p0CKSH5MuLpmcyrL
+	sChYgH49ZV0PKmE5JnEBHE/CBNExAqAOxAsVbveAHNQmiBIX4egg30s3Nq7JcDVmt3A6meY79ET
+	OQX4Trg==
+X-Received: from plbd20.prod.google.com ([2002:a17:902:f154:b0:2c7:ef74:dfc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fd8d:b0:2d0:8c40:a788
+ with SMTP id d9443c01a7336-2d0f1adb05cmr1635525ad.18.1785946949861; Wed, 05
+ Aug 2026 09:22:29 -0700 (PDT)
+Date: Wed, 5 Aug 2026 09:22:29 -0700
+In-Reply-To: <04c395bb7d7a63e6b38a8d5684cffde1a1ebcf3f.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Wed, 5 Aug 2026 09:02:37 -0700
-X-Gm-Features: AUfX_mzwYvzVqQkuKFkuAOMZ9a38FvddXqwH3nl4jjle1d5YB5Md9uRdePzF8HY
-Message-ID: <CAEvNRgE5O4FcNQDHwh+DWsHH7gLs3qzm+L4ZQ9FHkt=WoTV2Hw@mail.gmail.com>
-Subject: Re: [PATCH v16 24/45] KVM: arm64: Expose support for private memory
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>, 
-	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <20260804233923.3504629-1-seanjc@google.com> <20260804233923.3504629-14-seanjc@google.com>
+ <20260804235652.56E811F00A3A@smtp.kernel.org> <anNTtCYh7BpURA3n@google.com> <04c395bb7d7a63e6b38a8d5684cffde1a1ebcf3f.camel@infradead.org>
+Message-ID: <anNjRbdR1P0yZZa2@google.com>
+Subject: Re: [PATCH v8 13/17] KVM: x86: Disable preemption, not IRQs, when
+ getting TSC+freq pair
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Steven Price <steven.price@arm.com> writes:
+On Wed, Aug 05, 2026, David Woodhouse wrote:
+> On Wed, 2026-08-05 at 08:16 -0700, Sean Christopherson wrote:
+> >=20
+> > David, any thoughts?=C2=A0 I'm leaning towards keeping IRQs disabled to=
+ minimize the
+> > chances of introducing a regression, even though I highly doubt disabli=
+ng IRQs
+> > to provide an atomic-ish pair was ever done deliberately.=C2=A0 My main=
+ concern with
+> > disabling IRQs is that it will further muddy the waters with respect to=
+ what is
+> > actually necessary, versus weird things KVM does for historical reasons=
+.=C2=A0 Though
+> > that can largely be solved with a verbose changelog.
+>=20
+> I'm not sure I'd bother. There are plenty of other places we use an
+> "atomic-ish pair", although I've tried to kill most of those by the
+> time we get to the end of my series. And we don't disable interrupts
+> around them all; why should this one do so just because it accidentally
+> inherited it for other reasons?
 
-> Select KVM_GENERIC_MEMORY_ATTRIBUTES and provide the necessary support
-> functions.
->
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v14:
->  * Switch to guest_memfd in-place memory conversion and drop support
->    for KVM_VM_MEMORY_ATTRIBUTES.
->
-> [...snip...]
->
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 15d42d1993bb..146c52f867c0 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -1510,6 +1510,8 @@ struct kvm *kvm_arch_alloc_vm(void);
->
->  #define vcpu_is_protected(vcpu)		kvm_vm_is_protected((vcpu)->kvm)
->
-> +#define kvm_arch_has_private_mem(kvm) ((kvm)->arch.is_realm)
-> +
+Ya, after trying to write a changelog and reconcile the new "rule" with the
+existing code, I agree.  For kvmclock, the badness is that the guest's view=
+ of
+time would be off by a smidge until the next kvm_guest_time_update(), but t=
+hat's
+a complete non-issue when considering that a host IRQ at any time immediate=
+ly
+introduces significantly lag into the guest's read of "now".
 
-Perhaps related to Fuad's question about pKVM and CCA state: would
-conditioning this on is_realm mess up pKVM?
+TSC catchup due to an unstable TSC is a similar story.  The "bad" offset wi=
+ll be
+corrected on the next kvm_arch_vcpu_load().
 
->  int kvm_arm_vcpu_finalize(struct kvm_vcpu *vcpu, int feature);
->  bool kvm_arm_vcpu_is_finalized(struct kvm_vcpu *vcpu);
->
-> --
-> 2.43.0
+So it's really just the "always catchup" mode for software-based TSC scalin=
+g that
+would have a persistent flaw, because as Sashiko pointed out, KVM would adj=
+ust
+the offset by "too much".  But that's a fundamental flaw in the catchup log=
+ic:
+KVM should compute an guest TSC as an absolute value by using the current t=
+ime
+and a reference time, not by accumulating delta.
