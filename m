@@ -1,45 +1,46 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011021.outbound.protection.outlook.com [40.107.208.21])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011013.outbound.protection.outlook.com [52.101.57.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10683CA4AF;
-	Wed,  5 Aug 2026 06:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6BF3DBD55;
+	Wed,  5 Aug 2026 06:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785912079; cv=fail; b=Qx5NIq+Uvvvo0OOk7vUz93/ofrbb2wyEuoPiCbTm7EYJFnIOQOFHoJiUx/ItySYNk7C8ExzFpUbRJ1aDQFKn3/Mpl0E4QhMCWsy8LrXnvq2ZMX7DKMbUTvgeyHBa+IOOmNoOhtYK1QqCY9UFjFCmtsMDC0HHJO6s/T8w2EzwDTs=
+	t=1785912107; cv=fail; b=N9nBZyBRKQzYjgVgS/6YBrm0cZ2EZBgEhZnfQ/coFpPWyE5x2+6Yryr2UrYXwM7hpo+LK/1GYCiLsMyTWV/jbGKIVrg05EylBpE9KC0jklAEDRZHN0PQaQp8hKKRc/hXP9yq4SGKAjCqLhVZv1kdhIICfxapVSlkUb/7j1kB2aM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785912079; c=relaxed/simple;
-	bh=6YpaUZG/dEytQdwZs+uQW7CIHQm9uiyT1mCFeYw/aiA=;
-	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=ufiOQA42t8Xp6YfM5niwokijNKr641n2SGAWlPn5BdFJkuhzNqjRHFNxYjIt8YS96F/MdMeJuFSbyU4J/7ZYLKBegOyxcSRmjLx5gxFF5y9KRe5T6A4o3cZtrOHKp8ycMhHEINpWNXkOLjyzuP0JB2qzq9ffk/HdJ9KzPx3gkCA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=oUGBCddW; arc=fail smtp.client-ip=40.107.208.21
+	s=arc-20240116; t=1785912107; c=relaxed/simple;
+	bh=JxMj0y/S7bFLlD1nwUvnMUQhs3qj6rMOH/yENOwr9I4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=I9MdlY1N16Onae/NPHnzPjWesKNAkw5W3FgnorjZgY7aW5MWrBbTOipoPuKaWAnfc/ev2x67kb/0AMWNIzg95eh0a2oyZvhSOrfVGNB2zTFwHDvINnaEHcoJEMLWPY9Y3H/yJ2/7Caf2bdISuGTL+8fIJdRMI2dzMTXXdvic7/U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HcNkNgk4; arc=fail smtp.client-ip=52.101.57.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="oUGBCddW"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HcNkNgk4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PGAW3w3LViXmPsh8V3DEGzvOaXZj1usnWwb1+I2wC+BitNEp7HYdk7ta1W3sEPi5HjIcNR9smmMLGkAkhkPfXZRDNsOBb9Nz5ibypn3o4/VHi5sg/K1UbU9GkHd5gJA6cycBPt1AfnMRcYCRpPLMQFKnoHzy0PX0dY/9e7BZ/U70Apr/LscaK6FYOS4fdJAbkfbOdI7/1mMyCL+ypVDa5KiX3dJyF1BN/v6uBYmtttAl6Oz7ITMreostKmP1J9s6d2StHG5oNxqgbK8k3ONjI/Q1iT+pnyhNJWjd+PY5h8mGSp2C3owL75+XoGroSw2ApSIrGCZ/QMYgM/touG48Mw==
+ b=xgU+jjDr+6cFzGofPHdeN2zRSppaKSnOU357URVNI8j30J/9b3Pb595px33y+XbW3xmlimn3XW9EGoeegKsCBrJ6kmszulqijDtKqU6f8OWOGxaqWjYgxqCWBZkHvha+nbVrnvhpcrf7dnXutZX5VMM9sfCql5jGBJcSQxRFkhWb+Mamt6jEPafN7XnBZCucBWmZLzKYcMUfW3TG9gAhsCwAmaecKayCaYNCSrBN4YnvVMeKt+1Or0nSrP8/ZCnbn+5qNNnB1sPpKiXjZILXdX8DYVxvBaGgorI4eCF1CQLrF1xgRrIZQ5Vs3tVwtg4RsJ3Lyh/7+q9rhcKNSQBwEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R3x7VEe6Nw3J8dp/2fK+blzdJ9zV/j4pRmT1R964lPQ=;
- b=QzQB8/KZNBW7GJEEFl7bXp34pIb3tw7BoY6j9/g2mtd9JpEGpxXlfJEKv+fqcLHrslw+AJLG5d8GaSuWzT/lWUKzguoOfsB3yrvxSYu2s4ivGy9r6OVRmC9EYFw6py2FQpvOZMOcvNYwe9e7SqDhauCwVlE15MGocBEP/lK5J7PXF5/F+iP8RRrjYkn9dt0Q8eNPzegqKrgL2efVSsB9g6mEo8Lrk8j3T2sBLBEQ2UgkOuJhYuD0nQM+SnGBmberp7/bUgK1GBgy1CaRAOQTZbwMj1HetpXQqY7hiX8ONRPiKP2Y1Tn4XL61OMB6BvtTn6YnBU9MVgy+Ws6wOLgmuA==
+ bh=Wb5cEvLHp0OlCkZ1kwUW+yulx3ll561bdMS0g7x2yOc=;
+ b=O6do9QXsWr63rGp/wjqMZ1tgJ8fpFxo80btU68kC6fnxiXrXTrXcGShpajcK38XHYu34U42W66c089ai45kjQXXeHbNDWEFGUx6xOmooMTopO6h1w2sHN8HXGmPCluw8nZZCfLLCf13PmhYTwPbF9V0EiKcB+lmjlfd+uWUtg/8JNX06+hTFB0MAVF1xQ5GaUzROtlGU0zIBHd8zNLLUrenEg+QujRe94tnj+YvTa86GmUTGtKIHMY3O3i5MmMtMGdTl/t401X5h99P+vphREh5T3jUkPijEQjYAfBd2bwO6X2aasgifmSXdY90RIZsitb4P2KdCPFUg5Fdzv82eIg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R3x7VEe6Nw3J8dp/2fK+blzdJ9zV/j4pRmT1R964lPQ=;
- b=oUGBCddWlHegtqlGGkykEgKyh25H1XxVfe2sFapXL3XxctJzY7/N4cBDuc7LKDwnY6+8NusUPlFipSGbPhiwArPfrKb3IDyWq2uLNeITqRobIXq99V3nJr/h7x8uNtFtErJy5p+/p/6J/ZE7Kkcp+OzhccTTPz7rLKqKtcSSnm0=
-Received: from BL0PR05CA0008.namprd05.prod.outlook.com (2603:10b6:208:91::18)
- by LV3PR12MB9117.namprd12.prod.outlook.com (2603:10b6:408:195::10) with
+ bh=Wb5cEvLHp0OlCkZ1kwUW+yulx3ll561bdMS0g7x2yOc=;
+ b=HcNkNgk44DPGSRGzrxGvH36ghSjjNwouC4vwVdmeBczH+WWczC8aDhIXwrVlqqrU8wGE6WrY7MvBO/ejkh3PFdGF0hLFL+WuAbROgRQmf4EbspZ+G2GPLIXFWNNru91/jG/HIffX96sx+R0+05/x5kfZjui26ye1vXgpcbOA/q8=
+Received: from SJ0PR13CA0097.namprd13.prod.outlook.com (2603:10b6:a03:2c5::12)
+ by SJ2PR12MB8692.namprd12.prod.outlook.com (2603:10b6:a03:543::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 06:41:11 +0000
-Received: from BL02EPF0001A103.namprd05.prod.outlook.com
- (2603:10b6:208:91:cafe::69) by BL0PR05CA0008.outlook.office365.com
- (2603:10b6:208:91::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Wed, 5 Aug
+ 2026 06:41:38 +0000
+Received: from MWH0EPF000C6189.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::86) by SJ0PR13CA0097.outlook.office365.com
+ (2603:10b6:a03:2c5::12) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.16 via Frontend Transport; Wed, 5
- Aug 2026 06:41:11 +0000
+ Aug 2026 06:41:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -47,18 +48,16 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A103.mail.protection.outlook.com (10.167.241.133) with Microsoft
+ MWH0EPF000C6189.mail.protection.outlook.com (10.167.249.121) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.292.8 via Frontend Transport; Wed, 5 Aug 2026 06:41:11 +0000
+ 15.21.292.8 via Frontend Transport; Wed, 5 Aug 2026 06:41:38 +0000
 Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 5 Aug
- 2026 01:40:59 -0500
+ 2026 01:41:23 -0500
 From: Shivank Garg <shivankg@amd.com>
-Subject: [PATCH v3 0/9] KVM: guest_memfd: folio migration for
- non-confidential VMs
-Date: Wed, 5 Aug 2026 06:40:29 +0000
-Message-ID: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+Date: Wed, 5 Aug 2026 06:40:31 +0000
+Subject: [PATCH v3 2/9] mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -67,11 +66,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN3acmoC/4XNQQ6CMBCF4auYrq1pBxnBlfcwLkqZwsQUTEsaD
- eHuFjasjMv/JfPNLCIFpiiuh1kEShx5HHIUx4OwvRk6ktzmFqAAFWotY8/JDE/ZefLScxfMRLK
- y2pa6bgplUOTTVyDH7429P3L3HKcxfLYvSa/rHzBpqSS0gNg4i64ub8a3Jzt6sXIJduIC1Q8CV
- gJrY7WrzgTNTizL8gWpNTKA+QAAAA==
-X-Change-ID: 20260611-shivank-gmem-migrate-8c1c519b30a6
+Message-ID: <20260805-shivank-gmem-migrate-v3-2-00d8bdec4e1d@amd.com>
+References: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
+In-Reply-To: <20260805-shivank-gmem-migrate-v3-0-00d8bdec4e1d@amd.com>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
 	<vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
@@ -97,138 +94,195 @@ To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
 CC: <linux-fsdevel@vger.kernel.org>, <linux-coco@lists.linux.dev>,
 	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
 	<linux-kselftest@vger.kernel.org>, <linux-doc@vger.kernel.org>, Shivank Garg
-	<shivankg@amd.com>, Sashiko <sashiko-bot@kernel.org>
+	<shivankg@amd.com>
 X-Mailer: b4 0.15-dev-47d62
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785912059; l=4784;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785912059; l=6122;
  i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
- bh=6YpaUZG/dEytQdwZs+uQW7CIHQm9uiyT1mCFeYw/aiA=;
- b=N9UBFTS3Klw9d7OkUXWnt7t1k25cHHAtXyr/C4esTFUtisMCAIBlE0Iehm6wGSmcMHIdgagk2
- O4T2PiVurvkBhnU0k7FccTVO6Ss1TZZijn5xrss25UZi64RBL6MWwUj
+ bh=JxMj0y/S7bFLlD1nwUvnMUQhs3qj6rMOH/yENOwr9I4=;
+ b=2XuNYeCPl49Ii4Rs1HQcchjrB0786BJfqQSmKd8m3icYgH/W5p5fr8NjEb0XpDMXWAZ3Uo6Vn
+ 5HcT1xCv+s/BYD1JJyHa1riG8y34kBAJMmT6sgFXwa1DHhf4qzXqbq1
 X-Developer-Key: i=shivankg@amd.com; a=ed25519;
  pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
 X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A103:EE_|LV3PR12MB9117:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ac01d0a-20c9-4f66-a3e6-08def2bc89c7
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6189:EE_|SJ2PR12MB8692:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a905a83-6897-45ef-cb3d-08def2bc99d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|36860700016|1800799024|82310400026|13003099007|921020|6133799003|10067099003|11063799006|56012099006|18002099003;
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|7416014|23010399003|11063799006|10067099003|56012099006|18002099003|22082099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	k5WxsUpEjy+W6sM6mYdAQ59xkWyKr7LFUET5BMGtY5IAC++hKH90PPN4mav0l3ulh/jLfGq5eNx7Ap6s8pwvJsxX/ryjmehW0pxoU2fWE77xnTxbF6egZ2KwoK8F6k7NSaa0i0Cs2YeMerH/nQ1Fmo7AfEwwzlkZG5U91qt2k1jXiS59/hwo7PsS09L9MNFVWLMI39gY2rfLyTIVSv/G1eoS2RQlZm+mm3Q8/KcTuBSsb1bPUDIuHOYq9QIjgEAPNCt4L4NnOPANLa9dEOekLXSFmH6qa4n7eLbY3Tb1y0KBEZWod3qU11eWY3pfgfby7VcUmxsQ68j+sebC0Jel7sdptdeYy4Rm7mD9y//aQASZKcSQUHo3r0az8ga8ROuPMsWNyQhYmfSG+AAboHcSJfIQFyeC5aRuVkg7yCyQbtrk+fg6qVsmoElgN73Gd0hHEBuq8Udz6vQz+Cg3qWOw30VhwgeY8W12ehVg2RcGywBcpa5aryrdi06gbTUN3wpLCyRqeA9BBug50RCNyb9HErni2r8m0W+mGuDdZTYUaDuVFSEm7Vysnj4JCJCRPYp1BvzY7evTbMdV6APKUfkav+3Qa89+ITmHodAAAA3D1NblVsBZmG5VBe6B4BMwzu5Ug2NJS2ZZDltqz2vfFuWEIvxYfPNMcpirxHA8+9E3EW6ca+EYacsqFN37mEai0qBB
+	ErlsFPdngcH7s5uYWP4kV9qEJuPMHubOwK3c2mzUsge3p6ZEWEIpqsJ2Buy7YQ4VWpM8PgZlabgLvPXBlBhasoj4XmfN5gjvyQQ1FKEvPnEZhhlTkqg3KZbOHynIKQjLzlKNawDo5hTogRe43vr29F+wVvX3jGR6Zea3JAAd3IC7HhFrsHNk/4i7W34aOZ7U/b6fL3fsJB1TrH9YKKNhSzJ5un5pS0ykowa0/qzfOh68O/aiwC+HusXLdM0y9uAlQAX7/92uW6sIZlcBBHA7nKYQMOTisvw4B9vrg2apT5IsjeSEHRDHVtgUBvpyg66cXKGsIK7nF390lsH5L8CZc6+YUUzBV/Fiud7MsDGXbLMGtmRjJvdCziH2qr+kW652Dp0x3j79gHkDGlvZl61T++lNao+NhirWo7ocLjA9L0FlVEJ8ZlV3nY6qnj4R7GjYyxkdHFEUIY1YS0TSlVGqOfCEfb9wFleMyPPFtwhTbIOkLI++NqiZtKSfYcucXQxWXz2Ql+Vt/nFtwR6n0pYz8Z0++sbkKHntrRWnnuRtH2Tv6m+47wYfCVQ30fE5hxnmerk/nc2ZvHfsSiwfQ82y6bxxwq8apC5w9KWqGMx+uJohhikXTpd6Gt8sWvReB0aRUjnt3k4KpouMhBXtz89D6FBjNsUKomkj1d8/Z5oNucXC+LNChyOx5zLqo0SIXJufI5E6IOmmclEcEbfAroDiueYQGv9qrVqKboOBjy7Ima4yqbxFoLgN7wSTe1xBZpcr
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(36860700016)(1800799024)(82310400026)(13003099007)(921020)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(7416014)(23010399003)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ykodeOeYq94s5WR8QSr2rY8/M/wrVcJ8k08vAtY/KkU8Gfb5dpAt+S069A8TeDze8o55cgMXPXF7Ghcbs310pZmWH+8HCWs/k/8Arp97noUjcSrsWBcXN2SZBWDNIDjA7t0SZ/bcWB69+Z3yGXOi2yF5UYlUdcvhOYKbb26UYLma9dqec98O7sCAYmU6ddq5aMcHcaFtv2eoPhYI9t+jiBBgIS8LgmCuRyEkrgCe9XuyieiAP9YRO4LmiFsTjtGiEvrmCVV8iQ3plYe4Tcv83D+TFKGGoWeDCdmkVgg8CdZt5afGe5FY6ubo+pbI6j5Ewelw3v0Ha/jY3BJylwBYo6gS1KiaJxmnkZab7ktzQO/Q//2xNHER05OQmEgxoRtQdl5FvBsVOGXK4MFTjcV7ok55mphWM3GaFhHJH8m4LD2hFj0eCbAipk6RbJ4fz3V5
+	01W4IImRINZWw/pcCL9qJpPsOO2KcKbbdHCUozfFRRF8HbuF0s48LuDw8ntNq43PgPtCa/M62r0gRKYQ/XfT/E3KbanXxeAXjtHGpK1RIThaBKAQb/3o+foFSeRyAvKMEGqBH69GhnATB/8uEDLiNvCwY2l0qpz+cY6sG2D3b87LL8ioE5BmWRkXrcWIcKijSRr9gRUe7Bd9xn983paawXmwD2a5zX6kzsKJn65REbkNN0M0MTcgowSc8CSj0InMAKNBsDAIaoQrn7ADEc2kKiaPMPKmI2D2AQdDrTiOUF8GYf3LcPi6S1sEPyV38IQ1VB9+H4KTAzTPxXgXC0FdzJhku18khis7fCyxxiCrzL6uf1Tiqm1JEH9BU5K9F2ZsmlY07zz9ubkGnMah4wO7fOh5dLK7lbP3Tiydgk5agCQuiK97gQ/0juYVBs4U6z3z
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 06:41:11.2085
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 06:41:38.1057
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ac01d0a-20c9-4f66-a3e6-08def2bc89c7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a905a83-6897-45ef-cb3d-08def2bc99d5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A103.namprd05.prod.outlook.com
+	MWH0EPF000C6189.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9117
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8692
 
-guest_memfd folios are currently always marked unmovable, so the kernel cannot
-perform memory compaction, offlining, etc. This is unavoidable for
-confidential VMs (SEV-SNP, TDX), since memory is encrypted and copying it
-needs firmware assistance. However, for non-confidential VMs (like
-Firecracker), we can migrate the folios.
+Commit 27e6a24a4cf3 ("mm, virt: merge AS_UNMOVABLE and AS_INACCESSIBLE")
+folded the two flags into one, on the grounds that guest_memfd was the
+only user and always set both. But the two flags were added for
+different reasons and guard different things:
 
-This series enables folio migration for non-confidential guest_memfd and
-also lays the groundwork for migrating confidential guest_memfd later.
-Once firmware-assisted copying support is available, those VMs can be
-made movable, the confidential folio content can be copied separately,
-and the destination folio marked with FOLIO_CONTENT_COPIED[4] so
-__migrate_folio() skips the host-side folio_mc_copy().
+  AS_UNMOVABLE (0003e2a41468) marks a mapping whose folios cannot be
+  migrated.
 
-Testing
--------
-Host: 7.2-rc6+(c21bb419386) + this, AMD EPYC ZEN 3, 2 NUMA nodes
+  AS_INACCESSIBLE (c72ceafbd12c) marks a mapping whose contents must
+  not be directly R/W accessed. Its only job is to stop
+  truncate_inode_partial_folio() from zeroing the folio.
 
-- KVM selftest: allocate folios on node 0, migrate them to node 1 and
-  back and verify resulting NUMA node and the folio contents at each
-  step.
+The merge assumed unmovable and inaccessible were the same thing.
+This cannot express a mapping that is inaccessible yet still movable,
+which is exactly what guest_memfd wants.
 
-- Firecracker [1]: booted a microVM backed by guest_memfd. While the
-  guest was running, forced host-side migration of its folios via
-  migratepages(8) and explicit move_pages(2) of guest_memfd
-  pages. Verify with /proc/firecracker_pid/numa_maps.
+Reintroduce AS_UNMOVABLE and restore the original split: truncate keeps
+checking AS_INACCESSIBLE, while migration and compaction go back to
+checking AS_UNMOVABLE.
 
-Notes
------
-- Sashiko pointed out a pre-existing ABBA deadlock between
-  kvm_gmem_error_folio() and truncation. It's being addressed separately
-  by Hao Zhang. [2][3]
-
-[1] https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
-    In builder.rs, add GUEST_MEMFD_FLAG_MIGRATABLE to bit-2 and pass it instead
-    of GUEST_MEMFD_FLAG_NO_DIRECT_MAP to vm.create_guest_memfd().
-[2] https://lore.kernel.org/all/ambEdSPjerZIVN0b@192.168.1.215/
-[3] https://sashiko.dev/#/patchset/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95%40amd.com
-[4] https://lore.kernel.org/all/20260630-shivank-batch-migrate-offload-v6-1-da95d7e8b8a2@amd.com
+Currently guest_memfd sets both, so the resulting flags and behaviour
+are unchanged. Preparatory change to support folio migration for
+non-confidential guest_memfd VMs.
 
 Signed-off-by: Shivank Garg <shivankg@amd.com>
 ---
-Changes in v3:
-- Fix unbalanced mmu_invalidate_in_progress count unbinding dying guest_memfd. (Sashiko)
-- Fix maxnode handling in xapic_ipi_test selftest.
-- Add GUEST_MEMFD_FLAG_MIGRATABLE documentation
-- Replace open-coded sizeof() * 8 calculation with BITS_PER_TYPE()
-- Add get_numa_mem_nodes() and use  MPOL_F_MEMS_ALLOWED for allowed NUMA ndoes
-  instead of hardcoded NUMA node IDs. (Sashiko)
-- Extend migration selftest to verify rejection without MIGRATABLE flag and
-  move repeated checks into common helpers.
-- Drop RFC tag.
-- Link to v2: https://lore.kernel.org/r/20260728-shivank-gmem-migrate-v2-0-269ac1f84e2b@amd.com
+ include/linux/pagemap.h | 24 ++++++++++++++++++++----
+ mm/compaction.c         | 12 ++++++------
+ mm/migrate.c            |  2 +-
+ virt/kvm/guest_memfd.c  |  1 +
+ 4 files changed, 28 insertions(+), 11 deletions(-)
 
-Changes in v2:
-- Make folio migration opt-in through GUEST_MEMFD_FLAG_MIGRATABLE,
-  preserving unmovable behavior if userspace don't explictly ask. (Alexandru, David, Sean)
-- Add kvm_arch_supports_gmem_migration() so arch can control whether
-  GUEST_MEMFD_FLAG_MIGRATABLE is advertised.
-- Allocate movable folios with GFP_HIGHUSER_MOVABLE. (David)
-- Keep guest_memfd unevictable. (David, Sashiko, Sean)
-- Split migrate_folio() implementation and enablement as separate patches.
-- Update selftest with new flag.
-- Link to v1: https://lore.kernel.org/r/20260611-shivank-gmem-migrate-v1-0-2d266bfc6f95@amd.com
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 2c3718d592d6..a7dcaa66e4e3 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_UNMOVABLE = 11,	/* The mapping cannot be moved, ever */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -322,11 +323,10 @@ static inline void mapping_clear_stable_writes(struct address_space *mapping)
+ static inline void mapping_set_inaccessible(struct address_space *mapping)
+ {
+ 	/*
+-	 * It's expected inaccessible mappings are also unevictable. Compaction
+-	 * migrate scanner (isolate_migratepages_block()) relies on this to
+-	 * reduce page locking.
++	 * The mapping's contents must not be accessed by the CPU through
++	 * the kernel direct map or other internal paths (e.g. zeroing of
++	 * pages during truncation).
+ 	 */
+-	set_bit(AS_UNEVICTABLE, &mapping->flags);
+ 	set_bit(AS_INACCESSIBLE, &mapping->flags);
+ }
+ 
+@@ -335,6 +335,22 @@ static inline bool mapping_inaccessible(const struct address_space *mapping)
+ 	return test_bit(AS_INACCESSIBLE, &mapping->flags);
+ }
+ 
++static inline void mapping_set_unmovable(struct address_space *mapping)
++{
++	/*
++	 * It's expected unmovable mappings are also unevictable. Compaction
++	 * migrate scanner (isolate_migratepages_block()) relies on this to
++	 * reduce page locking.
++	 */
++	set_bit(AS_UNEVICTABLE, &mapping->flags);
++	set_bit(AS_UNMOVABLE, &mapping->flags);
++}
++
++static inline bool mapping_unmovable(const struct address_space *mapping)
++{
++	return test_bit(AS_UNMOVABLE, &mapping->flags);
++}
++
+ static inline void mapping_set_writeback_may_deadlock_on_reclaim(struct address_space *mapping)
+ {
+ 	set_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f08765ade014..e6b0fdfaf79d 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1133,22 +1133,22 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		if (((mode & ISOLATE_ASYNC_MIGRATE) && is_dirty) ||
+ 		    (mapping && is_unevictable)) {
+ 			bool migrate_dirty = true;
+-			bool is_inaccessible;
++			bool is_unmovable;
+ 
+ 			/*
+ 			 * Only folios without mappings or that have
+ 			 * a ->migrate_folio callback are possible to migrate
+ 			 * without blocking.
+ 			 *
+-			 * Folios from inaccessible mappings are not migratable.
++			 * Folios from unmovable mappings are not migratable.
+ 			 *
+ 			 * However, we can be racing with truncation, which can
+ 			 * free the mapping that we need to check. Truncation
+ 			 * holds the folio lock until after the folio is removed
+ 			 * from the page so holding it ourselves is sufficient.
+ 			 *
+-			 * To avoid locking the folio just to check inaccessible,
+-			 * assume every inaccessible folio is also unevictable,
++			 * To avoid locking the folio just to check unmovable,
++			 * assume every unmovable folio is also unevictable,
+ 			 * which is a cheaper test.  If our assumption goes
+ 			 * wrong, it's not a correctness bug, just potentially
+ 			 * wasted cycles.
+@@ -1161,9 +1161,9 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 				migrate_dirty = !mapping ||
+ 						mapping->a_ops->migrate_folio;
+ 			}
+-			is_inaccessible = mapping && mapping_inaccessible(mapping);
++			is_unmovable = mapping && mapping_unmovable(mapping);
+ 			folio_unlock(folio);
+-			if (!migrate_dirty || is_inaccessible)
++			if (!migrate_dirty || is_unmovable)
+ 				goto isolate_fail_put;
+ 		}
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index dd15a84b2a52..d4dcd7f142ce 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1101,7 +1101,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+ 
+ 	if (!mapping)
+ 		rc = migrate_folio(mapping, dst, src, mode);
+-	else if (mapping_inaccessible(mapping))
++	else if (mapping_unmovable(mapping))
+ 		rc = -EOPNOTSUPP;
+ 	else if (mapping->a_ops->migrate_folio)
+ 		/*
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 45cbdf4801ec..169f75f95433 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -593,6 +593,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	inode->i_size = size;
+ 	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+ 	mapping_set_inaccessible(inode->i_mapping);
++	mapping_set_unmovable(inode->i_mapping);
+ 	/* Unmovable mappings are supposed to be marked unevictable as well. */
+ 	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+ 
 
----
-Shivank Garg (9):
-      KVM: guest_memfd: take the invalidate lock when unbinding a dying file
-      mm: split AS_UNMOVABLE back out of AS_INACCESSIBLE
-      KVM: guest_memfd: implement folio migration for non-confidential VMs
-      KVM: guest_memfd: add GUEST_MEMFD_FLAG_MIGRATABLE
-      KVM: selftests: fix maxnode arguments in xapic_ipi_test
-      KVM: selftests: use BITS_PER_TYPE() for NUMA masks
-      KVM: selftests: add get_numa_mem_nodes()
-      KVM: selftests: use allowed NUMA nodes in guest_memfd_test
-      KVM: selftests: exercise guest_memfd folio migration
-
- Documentation/virt/kvm/api.rst                   |   3 +
- arch/x86/kvm/x86.c                               |   9 ++
- include/linux/kvm_host.h                         |   4 +
- include/linux/pagemap.h                          |  24 ++-
- include/uapi/linux/kvm.h                         |   1 +
- mm/compaction.c                                  |  12 +-
- mm/migrate.c                                     |   2 +-
- tools/include/uapi/linux/kvm.h                   |   1 +
- tools/testing/selftests/kvm/guest_memfd_test.c   | 193 +++++++++++++++++++----
- tools/testing/selftests/kvm/include/numaif.h     |  52 +-----
- tools/testing/selftests/kvm/x86/xapic_ipi_test.c |  14 +-
- virt/kvm/guest_memfd.c                           |  76 +++++++--
- 12 files changed, 284 insertions(+), 107 deletions(-)
----
-base-commit: c21bb4193868a8de71fc4693fa741e195fdf5d86
-change-id: 20260611-shivank-gmem-migrate-8c1c519b30a6
-
-Best regards,
 -- 
-Shivank Garg <shivankg@amd.com>
+2.43.0
 
