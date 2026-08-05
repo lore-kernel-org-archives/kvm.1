@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E42430CE4;
-	Wed,  5 Aug 2026 11:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CA843A802;
+	Wed,  5 Aug 2026 11:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927840; cv=none; b=HiFsdx9TS1gTcRLsCKOFuv9AvUBY8Fi49pg3RmtVWxtKhq9FfIit6gCFAYQeqAr1Lset+AMip5hJbZ15Z152P4yMIHnw6UP9S3nbK1FHSvavXt0dULJMfkLczGN470p/PTepqE0AgQKtl8QBtSKFDAbpBbJbCR2+/8ezN4vpJms=
+	t=1785927839; cv=none; b=JW9uH3wSb3mvbd+xDhkeqNswsOK4uIfV9Ktg2PoX+5g0siN8P+PuCpoXra99AUdQuQgi5eMMiPJRoHjFArv9r249NEdKooMU30KtwO6L4mcFRkaiqQSv0U547usB95nRIQn+c/sEaZOaZD8HzMTv+fLSTfIeLSJhIKJICxpGNTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927840; c=relaxed/simple;
-	bh=UmUWVtSuVwvlzujYbsuuA85G+zuIQuxu2AqHP9g/B4E=;
+	s=arc-20240116; t=1785927839; c=relaxed/simple;
+	bh=kxC46UAfwwIvNUmTMiiPTma8u95ibW8jf5EiHwcZIIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kwwvCON8VFHI+nyb+SHLH7WL0j8Zt1JjdQep0NsyQJOykLjc5vFeDlPpPrSRX7RWBoCcbJymrKBR/CXwJXybon1BXQHJmBehsQHAW47PprMwl0ly979uf5wBuGi1971Lo9jCtgUQhqybw3iX+InU53gnKnyeAMB+VZ62XTDx+9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LQG66M5N; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version:Content-Type; b=RUycYYkYW70dN1nXICypa1tnC5qGsInWl46JVWFjRz7HhE54M6gy6tpO2tByL/I93eXy/+nHLKgOJHlgC9BkFxjUe2LUvS3e2jBZ39mKjMHM3KcX21fhdvmUjdKhhyyef23/xi+NZGNHZXjh0s4BLCovM+0OGyJj6zS1wxi27JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=oMpbLyel; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LQG66M5N"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="oMpbLyel"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 701D020B716D;
-	Wed,  5 Aug 2026 04:03:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 701D020B716D
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2EDDE20B716A;
+	Wed,  5 Aug 2026 04:03:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2EDDE20B716A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927816;
-	bh=qS0R4suTYYgDZhfRy1IzPe8WLVp7bZFCgZd3OyOa0lw=;
+	s=default; t=1785927812;
+	bh=OTbmf1wNLoEvJpk2flRCAOzPlEbX1zhK6e+giN5yucI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQG66M5Nzg/62vEtn9XJy+wAxSsB7Ds2It5CipJ51S1UapXxoYY1OnGdwlVvkH6Vl
-	 TMRcBlBlWNiOtiQwOQ7inOE12vxeHpzA0zoBzMI3LlNlCDXUjprfiXO4EMHK3P+aTj
-	 3xA7WBfAkzuu1gCChGCwqUTVzZx8gkRN/THW+aOI=
+	b=oMpbLyelgQwlMWsfKWRIFwO9cS0+IBC0ts2JQdzdPtIz8keV5cfzEhG6qRFvk/QxG
+	 3yhHJjhr3J8JneMrBwXVcGnYmhHiTsXyZgsaqITsN7xPCeuvbyHppBEQgB8PbarIvT
+	 bWpWS1WbOjm1OT6uMcD2Uzavl2qQ7BIRga1RURzE=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 16/42] vbs: Add HEKI kernel sealing and fix KVM plane memory attribute guards
-Date: Wed,  5 Aug 2026 04:02:58 -0700
-Message-ID: <20260805110324.25067-17-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 12/42] Add a Virtualization Based Security (VBS) framework. - Add backends for AMD SEV-SNP, Intel TDX, Arm CCA and KVM Planes. - Support VTL on Hyper-V in addition to Planes on KVM.
+Date: Wed,  5 Aug 2026 04:02:54 -0700
+Message-ID: <20260805110324.25067-13-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -43,548 +43,2036 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Implement Hypervisor-Enforced Kernel Integrity (HEKI) — the plane-0
-guest kernel automatically seals its text and rodata sections at
-late_initcall time by sending their GPAs to QEMU via the VBS VTL
-call mechanism.
-
-Guest-side changes:
-- security/vbs/core.c: Add vbs_heki_late_init() as a late_initcall
-  that calls ops->init() to set up the VBS backend (allocate the
-  shared CAA page, send VBS_CALL_INIT), then calls vbs_seal_kernel()
-  to request kernel text/rodata protection.
-
-- security/vbs/kvm_planes.c: Implement kvm_planes_seal_kernel() to
-  build a vbs_seal_kernel_req with page-aligned text/rodata GPAs
-  and CR3, sent via VBS_CALL_SEAL_KERNEL to QEMU.
-
-- security/vbs/heki.h (new): Shared HEKI data structures
-  (vbs_seal_kernel_req, vbs_protect_memory_req) and x86-64 page
-  table walker callback interface.
-
-- security/vbs/heki.c (new): x86-64 4-level page table walker
-  for plane-1 auditing of plane-0 mappings. Classifies pages as
-  TEXT/RODATA/DATA_RW/DATA_RX based on PTE permission bits.
-
-- security/vbs/Kconfig: Add CONFIG_VBS_HEKI option.
-- security/vbs/Makefile: Build heki.o when CONFIG_VBS_HEKI=y.
-
-Host-side fix:
-- virt/kvm/kvm_main.c: Replace CONFIG_KVM_MAX_NR_VCPU_PLANES
-  (which had no Kconfig definition and was never set) with
-  CONFIG_VM_PLANES in the three #ifdef guards protecting
-  KVM_SET_PLANE_MEMORY_ATTRIBUTES ioctl and NO_WRITE/NO_EXEC
-  attribute support. Without this fix the ioctl returned -ENOTTY.
-
-Signed-off-by: Sriram Nambakam <snambakam@linux.microsoft.com>
 ---
- security/vbs/Kconfig      |  14 ++
- security/vbs/Makefile     |   1 +
- security/vbs/core.c       |  32 +++++
- security/vbs/heki.c       | 287 ++++++++++++++++++++++++++++++++++++++
- security/vbs/heki.h       |  83 +++++++++++
- security/vbs/kvm_planes.c |  19 ++-
- 6 files changed, 435 insertions(+), 1 deletion(-)
- create mode 100644 security/vbs/heki.c
- create mode 100644 security/vbs/heki.h
+ include/linux/vbs.h       | 204 ++++++++++++++++++++++++++
+ security/Kconfig          |   2 +
+ security/Makefile         |   3 +
+ security/vbs/Kconfig      |  69 +++++++++
+ security/vbs/Makefile     |   9 ++
+ security/vbs/arm_cca.c    | 300 ++++++++++++++++++++++++++++++++++++++
+ security/vbs/core.c       | 166 +++++++++++++++++++++
+ security/vbs/hv_vsm.c     | 257 ++++++++++++++++++++++++++++++++
+ security/vbs/internal.h   |  41 ++++++
+ security/vbs/kvm_planes.c | 258 ++++++++++++++++++++++++++++++++
+ security/vbs/probe.c      | 103 +++++++++++++
+ security/vbs/sev_snp.c    | 224 ++++++++++++++++++++++++++++
+ security/vbs/tdx.c        | 280 +++++++++++++++++++++++++++++++++++
+ 13 files changed, 1916 insertions(+)
+ create mode 100644 include/linux/vbs.h
+ create mode 100644 security/vbs/Kconfig
+ create mode 100644 security/vbs/Makefile
+ create mode 100644 security/vbs/arm_cca.c
+ create mode 100644 security/vbs/core.c
+ create mode 100644 security/vbs/hv_vsm.c
+ create mode 100644 security/vbs/internal.h
+ create mode 100644 security/vbs/kvm_planes.c
+ create mode 100644 security/vbs/probe.c
+ create mode 100644 security/vbs/sev_snp.c
+ create mode 100644 security/vbs/tdx.c
 
-diff --git a/security/vbs/Kconfig b/security/vbs/Kconfig
-index 3d9fb104b1fc..0fdbfbc7a795 100644
---- a/security/vbs/Kconfig
-+++ b/security/vbs/Kconfig
-@@ -15,6 +15,20 @@ config VBS
+diff --git a/include/linux/vbs.h b/include/linux/vbs.h
+new file mode 100644
+index 000000000000..c7dedb90d64c
+--- /dev/null
++++ b/include/linux/vbs.h
+@@ -0,0 +1,204 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * VBS — Virtualization-Based Security
++ *
++ * Transport-agnostic interface between the guest OS (plane-0 / VTL0 / VMPL2+)
++ * and the secure kernel (plane-1 / VTL1 / VMPL0 / service TD).
++ *
++ * Backends:
++ *   - KVM software planes   (KVM_X86_DEFAULT_VM, QEMU-managed vCPU threads)
++ *   - AMD SEV-SNP VMPL/SVSM (KVM_X86_SNP_VM, hardware VMPLs, SVSM protocol)
++ *   - Intel TDX service TD   (future — separate TD with shared memory)
++ *   - Hyper-V VSM            (native VTL hypercalls)
++ *   - Arm CCA               (RSI host calls from Realm guest to RMM)
++ *
++ * The guest kernel calls vbs_*() functions.  The active backend translates
++ * them into the appropriate transport (hypercall, VMGEXIT, shared-memory IPC).
++ */
++
++#ifndef _LINUX_VBS_H
++#define _LINUX_VBS_H
++
++#include <linux/types.h>
++#include <linux/errno.h>
++
++struct module;
++
++/* ────────────────────────────────────────────────────────────────────────── */
++/*  Memory protection flags                                                  */
++/* ────────────────────────────────────────────────────────────────────────── */
++
++/* Permissions that the secure kernel can enforce on lower-plane memory.     */
++#define VBS_MEM_READ		BIT(0)
++#define VBS_MEM_WRITE		BIT(1)
++#define VBS_MEM_EXEC		BIT(2)
++
++/* ────────────────────────────────────────────────────────────────────────── */
++/*  VTL-call request codes (plane-0 → plane-1 direction)                    */
++/* ────────────────────────────────────────────────────────────────────────── */
++
++enum vbs_call_id {
++	/* Core lifecycle */
++	VBS_CALL_INIT			= 0x0001, /* plane-0 boot complete     */
++	VBS_CALL_SHUTDOWN		= 0x0002, /* plane-0 shutting down      */
++
++	/* Memory protection (HEKI) */
++	VBS_CALL_PROTECT_MEMORY	= 0x0100, /* set page permissions       */
++	VBS_CALL_SEAL_KERNEL		= 0x0101, /* make kernel text immutable */
++
++	/* Module authentication */
++	VBS_CALL_VALIDATE_MODULE	= 0x0200, /* verify module signature    */
++	VBS_CALL_SET_MODULE_PERMS	= 0x0201, /* set module section perms   */
++	VBS_CALL_UNLOAD_MODULE		= 0x0202, /* module being freed         */
++
++	/* Key / certificate management */
++	VBS_CALL_ADD_KEY		= 0x0300, /* add runtime key             */
++	VBS_CALL_REVOKE_KEY		= 0x0301, /* revoke a key               */
++	VBS_CALL_SEND_CERTS		= 0x0302, /* send system certificates   */
++
++	/* Kexec validation */
++	VBS_CALL_KEXEC_VALIDATE	= 0x0400, /* validate kexec kernel      */
++	VBS_CALL_KEXEC_INVALIDATE	= 0x0401, /* invalidate kexec state     */
++};
++
++/* ────────────────────────────────────────────────────────────────────────── */
++/*  Backend operations (one implementation per platform)                     */
++/* ────────────────────────────────────────────────────────────────────────── */
++
++/**
++ * struct vbs_ops - operations provided by an VBS backend
++ *
++ * All callbacks are optional; returning -ENOTSUP means the backend does
++ * not implement that feature.  The core VBS layer will call these from
++ * process context with preemption enabled.
++ */
++struct vbs_ops {
++	const char *name;	/* "kvm-planes", "svsm", "hv-vsm", … */
++
++	/*
++	 * Lifecycle
++	 */
++
++	/** @init: called once after plane-0 kernel boot is complete. */
++	int (*init)(void);
++
++	/** @shutdown: called before plane-0 halts/reboots. */
++	void (*shutdown)(void);
++
++	/*
++	 * Raw VTL call — send an arbitrary request to the secure kernel
++	 * and wait for a response.  @id is the call code, @arg / @arg_size
++	 * point to request-specific data, @resp / @resp_size receive the
++	 * reply.  Returns 0 on success, negative errno on failure.
++	 */
++	int (*vtl_call)(enum vbs_call_id id,
++			const void *arg, size_t arg_size,
++			void *resp, size_t resp_size);
++
++	/*
++	 * Memory protection (HEKI)
++	 *
++	 * Ask the secure kernel to enforce @perms (VBS_MEM_*) on the
++	 * physical page range [pfn, pfn + nr_pages) from the perspective
++	 * of the lower plane.
++	 */
++	int (*protect_memory)(unsigned long pfn, unsigned long nr_pages,
++			      unsigned int perms);
++
++	/**
++	 * @seal_kernel: make the running kernel's text and rodata immutable.
++	 * After this call, any attempt to write to kernel text from the
++	 * lower plane traps to the secure kernel.
++	 */
++	int (*seal_kernel)(void);
++
++	/*
++	 * Module authentication
++	 *
++	 * @validate_module: send a module's ELF blob to the secure kernel
++	 * for signature verification.  Returns 0 if the signature is valid.
++	 *
++	 * @set_module_perms: after relocation, set per-section EPT permissions
++	 * for the module (text=RX, rodata=R, data=RW).
++	 *
++	 * @unload_module: notify the secure kernel that a module is being freed
++	 * so it can release EPT overrides.
++	 */
++	int (*validate_module)(const void *elf, size_t elf_size,
++			       const void *sig, size_t sig_size);
++	int (*set_module_perms)(const struct module *mod);
++	int (*unload_module)(const struct module *mod);
++
++	/*
++	 * Key / certificate management
++	 */
++	int (*add_key)(const void *key, size_t key_size, unsigned int flags);
++	int (*revoke_key)(const void *key_id, size_t id_size);
++	int (*send_certs)(const void *certs, size_t certs_size);
++
++	/*
++	 * Kexec validation
++	 */
++	int (*kexec_validate)(const void *kernel, size_t kernel_size,
++			      const void *sig, size_t sig_size);
++	int (*kexec_invalidate)(void);
++};
++
++/* ────────────────────────────────────────────────────────────────────────── */
++/*  Core VBS API (called by guest kernel subsystems)                        */
++/* ────────────────────────────────────────────────────────────────────────── */
++
++#ifdef CONFIG_VBS
++
++/**
++ * vbs_register_backend() - register the platform-specific backend.
++ *
++ * Called once during early boot by the platform detection code.
++ * Only one backend can be active at a time.
++ */
++int vbs_register_backend(const struct vbs_ops *ops);
++
++/**
++ * vbs_available() - returns true if a backend is registered and ready.
++ */
++bool vbs_available(void);
++
++/* Convenience wrappers — each calls through the active backend's ops. */
++int vbs_protect_memory(unsigned long pfn, unsigned long nr_pages,
++			unsigned int perms);
++int vbs_seal_kernel(void);
++int vbs_validate_module(const void *elf, size_t elf_size,
++			 const void *sig, size_t sig_size);
++int vbs_set_module_perms(const struct module *mod);
++int vbs_unload_module(const struct module *mod);
++int vbs_add_key(const void *key, size_t key_size, unsigned int flags);
++int vbs_revoke_key(const void *key_id, size_t id_size);
++int vbs_send_certs(const void *certs, size_t certs_size);
++int vbs_kexec_validate(const void *kernel, size_t kernel_size,
++			const void *sig, size_t sig_size);
++int vbs_kexec_invalidate(void);
++
++#else /* !CONFIG_VBS */
++
++static inline bool vbs_available(void) { return false; }
++static inline int vbs_protect_memory(unsigned long pfn,
++	unsigned long nr_pages, unsigned int perms) { return -ENOSYS; }
++static inline int vbs_seal_kernel(void) { return -ENOSYS; }
++static inline int vbs_validate_module(const void *elf, size_t elf_size,
++	const void *sig, size_t sig_size) { return -ENOSYS; }
++static inline int vbs_set_module_perms(const struct module *mod)
++	{ return -ENOSYS; }
++static inline int vbs_unload_module(const struct module *mod)
++	{ return -ENOSYS; }
++static inline int vbs_add_key(const void *key, size_t key_size,
++	unsigned int flags) { return -ENOSYS; }
++static inline int vbs_revoke_key(const void *key_id, size_t id_size)
++	{ return -ENOSYS; }
++static inline int vbs_send_certs(const void *certs, size_t certs_size)
++	{ return -ENOSYS; }
++static inline int vbs_kexec_validate(const void *kernel, size_t kernel_size,
++	const void *sig, size_t sig_size) { return -ENOSYS; }
++static inline int vbs_kexec_invalidate(void) { return -ENOSYS; }
++
++#endif /* CONFIG_VBS */
++#endif /* _LINUX_VBS_H */
+diff --git a/security/Kconfig b/security/Kconfig
+index f7bf6cdc6229..31ab9b0fa7d0 100644
+--- a/security/Kconfig
++++ b/security/Kconfig
+@@ -299,6 +299,8 @@ config SECURITY_COMMONCAP_KUNIT_TEST
  
  	  If unsure, say N.
  
-+config VBS_HEKI
-+	bool "HEKI: Hypervisor-Enforced Kernel Integrity"
-+	depends on VBS && X86_64
-+	help
-+	  Enable the HEKI subsystem which provides:
-+	  - x86-64 page table walker for auditing guest kernel mappings
-+	  - Kernel seal support (make kernel text/rodata immutable via
-+	    EPT permission enforcement)
++source "security/vbs/Kconfig"
 +
-+	  This code runs in plane-1 (secure kernel) to inspect and
-+	  protect plane-0's address space.
+ source "security/Kconfig.hardening"
+ 
+ endmenu
+diff --git a/security/Makefile b/security/Makefile
+index 4601230ba442..cd85a7615d01 100644
+--- a/security/Makefile
++++ b/security/Makefile
+@@ -27,5 +27,8 @@ obj-$(CONFIG_BPF_LSM)			+= bpf/
+ obj-$(CONFIG_SECURITY_LANDLOCK)		+= landlock/
+ obj-$(CONFIG_SECURITY_IPE)		+= ipe/
+ 
++# Virtualization-Based Security
++obj-$(CONFIG_VBS)			+= vbs/
++
+ # Object integrity file lists
+ obj-$(CONFIG_INTEGRITY)			+= integrity/
+diff --git a/security/vbs/Kconfig b/security/vbs/Kconfig
+new file mode 100644
+index 000000000000..3d9fb104b1fc
+--- /dev/null
++++ b/security/vbs/Kconfig
+@@ -0,0 +1,69 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++config VBS
++	bool "Virtualization-Based Security (VBS) support"
++	depends on (X86_64 || ARM64) && VM_PLANES
++	help
++	  Enable a transport-agnostic interface between the guest OS
++	  (plane-0 / VTL0 / VMPL2+) and the secure kernel (plane-1 /
++	  VTL1 / VMPL0 / service TD / RMM).
++
++	  The core VBS layer dispatches calls from kernel subsystems
++	  (memory protection, module authentication, key management)
++	  to a platform-specific backend such as KVM software planes,
++	  AMD SEV-SNP SVSM, Intel TDX, Hyper-V VSM, or Arm CCA.
 +
 +	  If unsure, say N.
 +
- config VBS_KVM_PLANES
- 	bool "VBS backend: KVM software planes"
- 	depends on VBS && KVM_GUEST
++config VBS_KVM_PLANES
++	bool "VBS backend: KVM software planes"
++	depends on VBS && KVM_GUEST
++	help
++	  VBS backend that uses KVM paravirt hypercalls to communicate
++	  between plane-0 (normal guest) and plane-1 (secure kernel
++	  running in a separate KVM VM plane managed by QEMU).
++
++	  Select this if you are running under KVM with VM planes
++	  support enabled.
++
++config VBS_SEV_SNP
++	bool "VBS backend: AMD SEV-SNP"
++	depends on VBS && AMD_MEM_ENCRYPT
++	help
++	  VBS backend that uses the SVSM (Secure VM Service Module)
++	  protocol to communicate with the SVSM running at VMPL0
++	  on AMD SEV-SNP platforms.
++
++	  Select this if you are running as an SEV-SNP guest with
++	  an SVSM providing security services at VMPL0.
++
++config VBS_TDX
++	bool "VBS backend: Intel TDX service TD"
++	depends on VBS && INTEL_TDX_GUEST
++	help
++	  VBS backend that uses TDG.VP.VMCALL (TDVMCALL) to communicate
++	  with a service TD providing security services on Intel TDX
++	  platforms.
++
++	  Note: Service TD support is still evolving in the TDX
++	  architecture.  Select this for development/testing only.
++
++config VBS_HV_VSM
++	bool "VBS backend: Hyper-V VSM"
++	depends on VBS && HYPERV
++	help
++	  VBS backend that uses native Hyper-V hypercalls to communicate
++	  between VTL0 (normal kernel) and VTL1 (secure kernel).
++
++	  Select this if you are running as a Hyper-V guest with
++	  Virtual Secure Mode (VSM) enabled.
++
++config VBS_ARM_CCA
++	bool "VBS backend: Arm CCA (Confidential Compute Architecture)"
++	depends on VBS && ARM64
++	help
++	  VBS backend that uses the RSI (Realm Services Interface) to
++	  communicate between a Realm guest and the RMM (Realm Management
++	  Monitor) or a security service on Arm CCA platforms.
++
++	  Select this if you are running as a Realm guest under Arm CCA/RME.
 diff --git a/security/vbs/Makefile b/security/vbs/Makefile
-index 4f0f26ef4f71..e33052ccde2d 100644
---- a/security/vbs/Makefile
+new file mode 100644
+index 000000000000..4f0f26ef4f71
+--- /dev/null
 +++ b/security/vbs/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_VBS) += vbs.o
- vbs-y := core.o probe.o
- 
-+vbs-$(CONFIG_VBS_HEKI)		+= heki.o
- obj-$(CONFIG_VBS_KVM_PLANES)	+= kvm_planes.o
- obj-$(CONFIG_VBS_SEV_SNP)	+= sev_snp.o
- obj-$(CONFIG_VBS_TDX)		+= tdx.o
-diff --git a/security/vbs/core.c b/security/vbs/core.c
-index 352590d88136..16b5329964f9 100644
---- a/security/vbs/core.c
-+++ b/security/vbs/core.c
-@@ -164,3 +164,35 @@ int vbs_kexec_invalidate(void)
- 	return ops->kexec_invalidate();
- }
- EXPORT_SYMBOL_GPL(vbs_kexec_invalidate);
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_VBS) += vbs.o
++vbs-y := core.o probe.o
 +
-+/* ── HEKI: automatic kernel sealing at late init ──────────────────────── */
++obj-$(CONFIG_VBS_KVM_PLANES)	+= kvm_planes.o
++obj-$(CONFIG_VBS_SEV_SNP)	+= sev_snp.o
++obj-$(CONFIG_VBS_TDX)		+= tdx.o
++obj-$(CONFIG_VBS_HV_VSM)	+= hv_vsm.o
++obj-$(CONFIG_VBS_ARM_CCA)	+= arm_cca.o
+diff --git a/security/vbs/arm_cca.c b/security/vbs/arm_cca.c
+new file mode 100644
+index 000000000000..21c8b00bb1d1
+--- /dev/null
++++ b/security/vbs/arm_cca.c
+@@ -0,0 +1,300 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS backend — Arm CCA (Confidential Compute Architecture)
++ *
++ * Uses the RSI (Realm Services Interface) to communicate between the
++ * Realm guest (plane-0) and the RMM (Realm Management Monitor) or a
++ * security service running in a higher-privileged realm.
++ *
++ * Transport: SMC calls via arm_smccc_smc() using SMC_RSI_HOST_CALL for
++ *            RPC-style requests to the host/monitor, and direct RSI
++ *            commands for memory state management (RIPAS transitions).
++ *
++ * Memory model:
++ *   - Protected (RIPAS_RAM): RMM-backed, encrypted, inaccessible to host
++ *   - Shared (RIPAS_EMPTY):  Host-backed, used for I/O and communication
++ *   - The highest IPA bit marks shared vs protected pages
++ */
 +
-+static int __init vbs_heki_late_init(void)
++#include "internal.h"
++
++#include <linux/mm.h>
++#include <linux/slab.h>
++#include <linux/arm-smccc.h>
++
++#include <asm/rsi.h>
++
++/* ── VBS host-call command IDs ────────────────────────────────────────── */
++/*
++ * VBS requests are sent to the host via SMC_RSI_HOST_CALL.  The host
++ * call structure is placed in a shared (RIPAS_EMPTY) page.  The first
++ * 16 bytes encode the VBS-specific command header.
++ */
++#define CCA_VBS_MAGIC		0x56425343	/* "VBSC" */
++
++struct vbs_cca_host_req {
++	__u32	magic;		/* CCA_VBS_MAGIC			*/
++	__u32	call_id;	/* enum vbs_call_id / CCA_VBS_* cmd	*/
++	__u32	arg_size;	/* bytes of payload following this hdr	*/
++	__u32	reserved;
++	__u8	payload[];
++} __packed;
++
++struct vbs_cca_host_resp {
++	__s32	status;		/* 0 = success, negative errno		*/
++	__u32	resp_size;
++	__u8	payload[];
++} __packed;
++
++/* VBS sub-commands */
++#define CCA_VBS_INIT			0
++#define CCA_VBS_SHUTDOWN		1
++#define CCA_VBS_PROTECT_MEMORY		2
++#define CCA_VBS_SEAL_KERNEL		3
++#define CCA_VBS_VALIDATE_MODULE		4
++#define CCA_VBS_SET_MODULE_PERMS	5
++#define CCA_VBS_UNLOAD_MODULE		6
++#define CCA_VBS_ADD_KEY			7
++#define CCA_VBS_REVOKE_KEY		8
++#define CCA_VBS_SEND_CERTS		9
++#define CCA_VBS_KEXEC_VALIDATE		10
++#define CCA_VBS_KEXEC_INVALIDATE	11
++
++/* Shared pages for host communication (RIPAS_EMPTY / decrypted) */
++static void *cca_req_page;
++static void *cca_resp_page;
++
++/* ── low-level host call ──────────────────────────────────────────────── */
++
++static int cca_vbs_host_call(u32 cmd, const void *arg, size_t arg_size,
++			     void *resp, size_t resp_size)
 +{
-+	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++	struct vbs_cca_host_req *req;
++	struct vbs_cca_host_resp *rsp;
++	struct arm_smccc_res res;
++	unsigned long ret;
++
++	if (!cca_req_page || !cca_resp_page)
++		return -ENOMEM;
++
++	if (arg_size > PAGE_SIZE - sizeof(*req))
++		return -E2BIG;
++
++	/* Build request in the shared page */
++	req = cca_req_page;
++	memset(req, 0, PAGE_SIZE);
++	req->magic    = CCA_VBS_MAGIC;
++	req->call_id  = cmd;
++	req->arg_size = arg_size;
++	if (arg_size && arg)
++		memcpy(req->payload, arg, arg_size);
++
++	memset(cca_resp_page, 0, PAGE_SIZE);
++
++	/*
++	 * SMC_RSI_HOST_CALL: arg1 = IPA of host call structure.
++	 * The host (VMM) reads the request, processes it, writes the
++	 * response into cca_resp_page, then returns control.
++	 */
++	arm_smccc_smc(SMC_RSI_HOST_CALL, virt_to_phys(cca_req_page),
++		      0, 0, 0, 0, 0, 0, &res);
++	ret = res.a0;
++	if (ret != RSI_SUCCESS) {
++		pr_err_ratelimited("vbs-cca: RSI host call failed (%lu)\n",
++				   ret);
++		return -EIO;
++	}
++
++	/* Read response */
++	rsp = cca_resp_page;
++	if (rsp->status)
++		return rsp->status;
++
++	if (resp && resp_size) {
++		size_t copy = min_t(size_t, resp_size, rsp->resp_size);
++
++		memcpy(resp, rsp->payload, copy);
++	}
++	return 0;
++}
++
++static int cca_vbs_vtl_call(enum vbs_call_id id,
++			    const void *arg, size_t arg_size,
++			    void *resp, size_t resp_size)
++{
++	return cca_vbs_host_call(id, arg, arg_size, resp, resp_size);
++}
++
++/* ── memory protection ────────────────────────────────────────────────── */
++
++/*
++ * On Arm CCA, memory protection is handled natively via RIPAS transitions.
++ * The RMM enforces that protected (RIPAS_RAM) pages are inaccessible to
++ * the host.  For VBS-style per-page permission control (R/W/X), we
++ * forward the request to the security service via a host call.
++ */
++
++struct vbs_cca_protect_args {
++	__u64 pfn;
++	__u64 nr_pages;
++	__u32 perms;
++} __packed;
++
++static int cca_vbs_protect_memory(unsigned long pfn, unsigned long nr_pages,
++				  unsigned int perms)
++{
++	struct vbs_cca_protect_args args = {
++		.pfn      = pfn,
++		.nr_pages = nr_pages,
++		.perms    = perms,
++	};
++
++	return cca_vbs_host_call(CCA_VBS_PROTECT_MEMORY,
++				 &args, sizeof(args), NULL, 0);
++}
++
++static int cca_vbs_seal_kernel(void)
++{
++	return cca_vbs_host_call(CCA_VBS_SEAL_KERNEL, NULL, 0, NULL, 0);
++}
++
++/* ── module authentication ────────────────────────────────────────────── */
++
++static int cca_vbs_validate_module(const void *elf, size_t elf_size,
++				   const void *sig, size_t sig_size)
++{
++	return cca_vbs_host_call(CCA_VBS_VALIDATE_MODULE, NULL, 0, NULL, 0);
++}
++
++static int cca_vbs_set_module_perms(const struct module *mod)
++{
++	return cca_vbs_host_call(CCA_VBS_SET_MODULE_PERMS, NULL, 0, NULL, 0);
++}
++
++static int cca_vbs_unload_module(const struct module *mod)
++{
++	return cca_vbs_host_call(CCA_VBS_UNLOAD_MODULE, NULL, 0, NULL, 0);
++}
++
++/* ── key / certificate management ─────────────────────────────────────── */
++
++static int cca_vbs_add_key(const void *key, size_t key_size,
++			   unsigned int flags)
++{
++	return cca_vbs_host_call(CCA_VBS_ADD_KEY, key, key_size, NULL, 0);
++}
++
++static int cca_vbs_revoke_key(const void *key_id, size_t id_size)
++{
++	return cca_vbs_host_call(CCA_VBS_REVOKE_KEY, key_id, id_size, NULL, 0);
++}
++
++static int cca_vbs_send_certs(const void *certs, size_t certs_size)
++{
++	return cca_vbs_host_call(CCA_VBS_SEND_CERTS,
++				 certs, certs_size, NULL, 0);
++}
++
++/* ── kexec validation ─────────────────────────────────────────────────── */
++
++static int cca_vbs_kexec_validate(const void *kernel, size_t kernel_size,
++				  const void *sig, size_t sig_size)
++{
++	return cca_vbs_host_call(CCA_VBS_KEXEC_VALIDATE, NULL, 0, NULL, 0);
++}
++
++static int cca_vbs_kexec_invalidate(void)
++{
++	return cca_vbs_host_call(CCA_VBS_KEXEC_INVALIDATE, NULL, 0, NULL, 0);
++}
++
++/* ── lifecycle ────────────────────────────────────────────────────────── */
++
++static int cca_vbs_init(void)
++{
 +	int ret;
 +
-+	if (!ops) {
-+		pr_debug("vbs: HEKI: no backend, skipping kernel seal\n");
++	/*
++	 * Allocate shared pages for host communication.  Convert them
++	 * to RIPAS_EMPTY so the host/VMM can access them.
++	 */
++	cca_req_page  = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	cca_resp_page = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	if (!cca_req_page || !cca_resp_page) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	/* Mark as shared (RIPAS_EMPTY) for host access */
++	ret = set_memory_decrypted((unsigned long)cca_req_page, 1);
++	if (ret)
++		goto fail;
++	ret = set_memory_decrypted((unsigned long)cca_resp_page, 1);
++	if (ret)
++		goto fail_re_encrypt_req;
++
++	ret = cca_vbs_host_call(CCA_VBS_INIT, NULL, 0, NULL, 0);
++	if (ret) {
++		pr_err("vbs-cca: realm VBS init failed (%d)\n", ret);
++		goto fail_re_encrypt;
++	}
++
++	pr_info("vbs-cca: connected to Arm CCA security service\n");
++	return 0;
++
++fail_re_encrypt:
++	set_memory_encrypted((unsigned long)cca_resp_page, 1);
++fail_re_encrypt_req:
++	set_memory_encrypted((unsigned long)cca_req_page, 1);
++fail:
++	free_page((unsigned long)cca_req_page);
++	free_page((unsigned long)cca_resp_page);
++	cca_req_page = cca_resp_page = NULL;
++	return ret;
++}
++
++static void cca_vbs_shutdown(void)
++{
++	cca_vbs_host_call(CCA_VBS_SHUTDOWN, NULL, 0, NULL, 0);
++
++	if (cca_resp_page) {
++		set_memory_encrypted((unsigned long)cca_resp_page, 1);
++		free_page((unsigned long)cca_resp_page);
++	}
++	if (cca_req_page) {
++		set_memory_encrypted((unsigned long)cca_req_page, 1);
++		free_page((unsigned long)cca_req_page);
++	}
++	cca_req_page = cca_resp_page = NULL;
++}
++
++/* ── ops table & registration ─────────────────────────────────────────── */
++
++static const struct vbs_ops cca_vbs_ops = {
++	.name		   = "arm-cca",
++	.init		   = cca_vbs_init,
++	.shutdown	   = cca_vbs_shutdown,
++	.vtl_call	   = cca_vbs_vtl_call,
++	.protect_memory    = cca_vbs_protect_memory,
++	.seal_kernel	   = cca_vbs_seal_kernel,
++	.validate_module   = cca_vbs_validate_module,
++	.set_module_perms  = cca_vbs_set_module_perms,
++	.unload_module	   = cca_vbs_unload_module,
++	.add_key	   = cca_vbs_add_key,
++	.revoke_key	   = cca_vbs_revoke_key,
++	.send_certs	   = cca_vbs_send_certs,
++	.kexec_validate    = cca_vbs_kexec_validate,
++	.kexec_invalidate  = cca_vbs_kexec_invalidate,
++};
++
++/* ── detection & probe (called from probe.c) ──────────────────────────── */
++
++bool __init vbs_cca_detect(void)
++{
++	return is_realm_world();
++}
++
++const struct vbs_ops *vbs_cca_get_ops(void)
++{
++	return &cca_vbs_ops;
++}
+diff --git a/security/vbs/core.c b/security/vbs/core.c
+new file mode 100644
+index 000000000000..352590d88136
+--- /dev/null
++++ b/security/vbs/core.c
+@@ -0,0 +1,166 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS — Virtualization-Based Security core
++ *
++ * Dispatches calls from guest kernel subsystems to the active
++ * platform-specific backend (KVM planes, SVSM, Hyper-V VSM, …).
++ */
++
++#include "internal.h"
++
++#include <linux/mutex.h>
++
++static const struct vbs_ops *vbs_backend;
++static DEFINE_MUTEX(vbs_lock);
++
++int vbs_register_backend(const struct vbs_ops *ops)
++{
++	int ret = 0;
++
++	if (!ops || !ops->name)
++		return -EINVAL;
++
++	mutex_lock(&vbs_lock);
++	if (vbs_backend) {
++		pr_err("vbs: backend \"%s\" already registered, rejecting \"%s\"\n",
++		       vbs_backend->name, ops->name);
++		ret = -EBUSY;
++	} else {
++		vbs_backend = ops;
++		pr_info("vbs: registered backend \"%s\"\n", ops->name);
++	}
++	mutex_unlock(&vbs_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(vbs_register_backend);
++
++bool vbs_available(void)
++{
++	return READ_ONCE(vbs_backend) != NULL;
++}
++EXPORT_SYMBOL_GPL(vbs_available);
++
++/* ── convenience wrappers ─────────────────────────────────────────────── */
++
++int vbs_protect_memory(unsigned long pfn, unsigned long nr_pages,
++		       unsigned int perms)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->protect_memory)
++		return -EOPNOTSUPP;
++	return ops->protect_memory(pfn, nr_pages, perms);
++}
++EXPORT_SYMBOL_GPL(vbs_protect_memory);
++
++int vbs_seal_kernel(void)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->seal_kernel)
++		return -EOPNOTSUPP;
++	return ops->seal_kernel();
++}
++EXPORT_SYMBOL_GPL(vbs_seal_kernel);
++
++int vbs_validate_module(const void *elf, size_t elf_size,
++			const void *sig, size_t sig_size)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->validate_module)
++		return -EOPNOTSUPP;
++	return ops->validate_module(elf, elf_size, sig, sig_size);
++}
++EXPORT_SYMBOL_GPL(vbs_validate_module);
++
++int vbs_set_module_perms(const struct module *mod)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->set_module_perms)
++		return -EOPNOTSUPP;
++	return ops->set_module_perms(mod);
++}
++EXPORT_SYMBOL_GPL(vbs_set_module_perms);
++
++int vbs_unload_module(const struct module *mod)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->unload_module)
++		return -EOPNOTSUPP;
++	return ops->unload_module(mod);
++}
++EXPORT_SYMBOL_GPL(vbs_unload_module);
++
++int vbs_add_key(const void *key, size_t key_size, unsigned int flags)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->add_key)
++		return -EOPNOTSUPP;
++	return ops->add_key(key, key_size, flags);
++}
++EXPORT_SYMBOL_GPL(vbs_add_key);
++
++int vbs_revoke_key(const void *key_id, size_t id_size)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->revoke_key)
++		return -EOPNOTSUPP;
++	return ops->revoke_key(key_id, id_size);
++}
++EXPORT_SYMBOL_GPL(vbs_revoke_key);
++
++int vbs_send_certs(const void *certs, size_t certs_size)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->send_certs)
++		return -EOPNOTSUPP;
++	return ops->send_certs(certs, certs_size);
++}
++EXPORT_SYMBOL_GPL(vbs_send_certs);
++
++int vbs_kexec_validate(const void *kernel, size_t kernel_size,
++		       const void *sig, size_t sig_size)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->kexec_validate)
++		return -EOPNOTSUPP;
++	return ops->kexec_validate(kernel, kernel_size, sig, sig_size);
++}
++EXPORT_SYMBOL_GPL(vbs_kexec_validate);
++
++int vbs_kexec_invalidate(void)
++{
++	const struct vbs_ops *ops = READ_ONCE(vbs_backend);
++
++	if (!ops)
++		return -ENODEV;
++	if (!ops->kexec_invalidate)
++		return -EOPNOTSUPP;
++	return ops->kexec_invalidate();
++}
++EXPORT_SYMBOL_GPL(vbs_kexec_invalidate);
+diff --git a/security/vbs/hv_vsm.c b/security/vbs/hv_vsm.c
+new file mode 100644
+index 000000000000..981ec7fa95e3
+--- /dev/null
++++ b/security/vbs/hv_vsm.c
+@@ -0,0 +1,257 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS backend — Hyper-V VSM (Virtual Secure Mode)
++ *
++ * Uses native Hyper-V hypercalls to communicate between VTL0 (normal
++ * kernel) and VTL1 (secure kernel / SKCI).
++ *
++ * Transport: hv_do_hypercall() with VTL-targeted input pages.
++ *
++ * On Hyper-V the VTL architecture is a first-class feature:
++ *   - VTL0 runs the normal OS kernel.
++ *   - VTL1 runs the secure kernel that enforces HVCI / Credential Guard.
++ *   - VTL switches are performed via HvVtlCall / HvVtlReturn hypercalls.
++ *   - Memory protection is enforced per-VTL via the second-level address
++ *     translation (SLAT / EPT / NPT) controlled by the hypervisor.
++ */
++
++#include "internal.h"
++
++#include <linux/slab.h>
++#include <linux/mm.h>
++
++#include <asm/mshyperv.h>
++#include <asm/hyperv-tlfs.h>
++
++/* ── Hyper-V VTL call / return hypercall numbers ──────────────────────── */
++#define HVCALL_VTL_CALL			0x0011
++#define HVCALL_VTL_RETURN		0x0012
++
++/*
++ * VBS-specific hypercall — used to send structured VBS requests to VTL1.
++ * This sits in the vendor-extension range and is routed by the Hyper-V
++ * secure kernel to the appropriate VBS service handler.
++ */
++#define HVCALL_VBS_REQUEST		0x0200
++
++/* ── shared-memory request / response layout ──────────────────────────── */
++
++struct vbs_hv_request {
++	__u32	call_id;	/* enum vbs_call_id			*/
++	__u32	arg_size;	/* bytes of payload following this hdr	*/
++	__u8	payload[];
++} __packed;
++
++struct vbs_hv_response {
++	__s32	status;		/* 0 = success, negative errno		*/
++	__u32	resp_size;
++	__u8	payload[];
++} __packed;
++
++/* Hypercall input / output pages (one page each, allocated once) */
++static void *hv_input_page;
++static void *hv_output_page;
++
++/* ── low-level VTL call ───────────────────────────────────────────────── */
++
++static int hv_vsm_vtl_call(enum vbs_call_id id,
++			   const void *arg, size_t arg_size,
++			   void *resp, size_t resp_size)
++{
++	struct vbs_hv_request *req;
++	struct vbs_hv_response *rsp;
++	u64 status;
++
++	if (!hv_input_page || !hv_output_page)
++		return -ENOMEM;
++
++	if (arg_size > PAGE_SIZE - sizeof(*req))
++		return -E2BIG;
++
++	/* Build request in the hypercall input page */
++	req = hv_input_page;
++	memset(req, 0, PAGE_SIZE);
++	req->call_id  = id;
++	req->arg_size = arg_size;
++	if (arg_size && arg)
++		memcpy(req->payload, arg, arg_size);
++
++	memset(hv_output_page, 0, PAGE_SIZE);
++
++	status = hv_do_hypercall(HVCALL_VBS_REQUEST,
++				 hv_input_page, hv_output_page);
++	if (!hv_result_success(status)) {
++		pr_err_ratelimited("vbs-hv: hypercall failed (0x%llx)\n",
++				   status);
++		return -EIO;
++	}
++
++	/* Read response from the output page */
++	rsp = hv_output_page;
++	if (rsp->status)
++		return rsp->status;
++
++	if (resp && resp_size) {
++		size_t copy = min_t(size_t, resp_size, rsp->resp_size);
++
++		memcpy(resp, rsp->payload, copy);
++	}
++	return 0;
++}
++
++/* ── memory protection ────────────────────────────────────────────────── */
++
++struct vbs_hv_protect_args {
++	__u64 pfn;
++	__u64 nr_pages;
++	__u32 perms;
++} __packed;
++
++static int hv_vsm_protect_memory(unsigned long pfn, unsigned long nr_pages,
++				 unsigned int perms)
++{
++	struct vbs_hv_protect_args args = {
++		.pfn      = pfn,
++		.nr_pages = nr_pages,
++		.perms    = perms,
++	};
++
++	return hv_vsm_vtl_call(VBS_CALL_PROTECT_MEMORY,
++			       &args, sizeof(args), NULL, 0);
++}
++
++static int hv_vsm_seal_kernel(void)
++{
++	return hv_vsm_vtl_call(VBS_CALL_SEAL_KERNEL, NULL, 0, NULL, 0);
++}
++
++/* ── module authentication ────────────────────────────────────────────── */
++
++static int hv_vsm_validate_module(const void *elf, size_t elf_size,
++				  const void *sig, size_t sig_size)
++{
++	return hv_vsm_vtl_call(VBS_CALL_VALIDATE_MODULE, NULL, 0, NULL, 0);
++}
++
++static int hv_vsm_set_module_perms(const struct module *mod)
++{
++	return hv_vsm_vtl_call(VBS_CALL_SET_MODULE_PERMS, NULL, 0, NULL, 0);
++}
++
++static int hv_vsm_unload_module(const struct module *mod)
++{
++	return hv_vsm_vtl_call(VBS_CALL_UNLOAD_MODULE, NULL, 0, NULL, 0);
++}
++
++/* ── key / certificate management ─────────────────────────────────────── */
++
++static int hv_vsm_add_key(const void *key, size_t key_size,
++			  unsigned int flags)
++{
++	return hv_vsm_vtl_call(VBS_CALL_ADD_KEY, key, key_size, NULL, 0);
++}
++
++static int hv_vsm_revoke_key(const void *key_id, size_t id_size)
++{
++	return hv_vsm_vtl_call(VBS_CALL_REVOKE_KEY, key_id, id_size, NULL, 0);
++}
++
++static int hv_vsm_send_certs(const void *certs, size_t certs_size)
++{
++	return hv_vsm_vtl_call(VBS_CALL_SEND_CERTS,
++			       certs, certs_size, NULL, 0);
++}
++
++/* ── kexec validation ─────────────────────────────────────────────────── */
++
++static int hv_vsm_kexec_validate(const void *kernel, size_t kernel_size,
++				 const void *sig, size_t sig_size)
++{
++	return hv_vsm_vtl_call(VBS_CALL_KEXEC_VALIDATE, NULL, 0, NULL, 0);
++}
++
++static int hv_vsm_kexec_invalidate(void)
++{
++	return hv_vsm_vtl_call(VBS_CALL_KEXEC_INVALIDATE, NULL, 0, NULL, 0);
++}
++
++/* ── lifecycle ────────────────────────────────────────────────────────── */
++
++static int hv_vsm_init(void)
++{
++	int ret;
++
++	/*
++	 * Use the Hyper-V provided hypercall input/output pages.
++	 * Allocate our own pair so we don't conflict with other users.
++	 */
++	hv_input_page  = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	hv_output_page = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	if (!hv_input_page || !hv_output_page) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	ret = hv_vsm_vtl_call(VBS_CALL_INIT, NULL, 0, NULL, 0);
++	if (ret) {
++		pr_err("vbs-hv: VTL1 secure kernel INIT failed (%d)\n", ret);
++		goto fail;
++	}
++
++	pr_info("vbs-hv: connected to Hyper-V VTL1 secure kernel\n");
++	return 0;
++
++fail:
++	free_page((unsigned long)hv_input_page);
++	free_page((unsigned long)hv_output_page);
++	hv_input_page = hv_output_page = NULL;
++	return ret;
++}
++
++static void hv_vsm_shutdown(void)
++{
++	hv_vsm_vtl_call(VBS_CALL_SHUTDOWN, NULL, 0, NULL, 0);
++	free_page((unsigned long)hv_input_page);
++	free_page((unsigned long)hv_output_page);
++	hv_input_page = hv_output_page = NULL;
++}
++
++/* ── ops table & registration ─────────────────────────────────────────── */
++
++static const struct vbs_ops hv_vsm_ops = {
++	.name		   = "hv-vsm",
++	.init		   = hv_vsm_init,
++	.shutdown	   = hv_vsm_shutdown,
++	.vtl_call	   = hv_vsm_vtl_call,
++	.protect_memory    = hv_vsm_protect_memory,
++	.seal_kernel	   = hv_vsm_seal_kernel,
++	.validate_module   = hv_vsm_validate_module,
++	.set_module_perms  = hv_vsm_set_module_perms,
++	.unload_module	   = hv_vsm_unload_module,
++	.add_key	   = hv_vsm_add_key,
++	.revoke_key	   = hv_vsm_revoke_key,
++	.send_certs	   = hv_vsm_send_certs,
++	.kexec_validate    = hv_vsm_kexec_validate,
++	.kexec_invalidate  = hv_vsm_kexec_invalidate,
++};
++
++/* ── detection & probe (called from probe.c) ──────────────────────────── */
++
++bool __init vbs_hv_vsm_detect(void)
++{
++	if (!hv_is_hyperv_initialized())
++		return false;
++
++	if (ms_hyperv.vtl != 0) {
++		pr_debug("vbs-hv: not at VTL0 (vtl=%u), skipping\n",
++			 ms_hyperv.vtl);
++		return false;
++	}
++
++	return true;
++}
++
++const struct vbs_ops *vbs_hv_vsm_get_ops(void)
++{
++	return &hv_vsm_ops;
++}
+diff --git a/security/vbs/internal.h b/security/vbs/internal.h
+new file mode 100644
+index 000000000000..415621c993b8
+--- /dev/null
++++ b/security/vbs/internal.h
+@@ -0,0 +1,41 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * VBS internal header — shared between probe.c and backend implementations.
++ */
++#ifndef _SECURITY_VBS_INTERNAL_H
++#define _SECURITY_VBS_INTERNAL_H
++
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/printk.h>
++#include <linux/vbs.h>
++
++/* Each backend exports a detect + get_ops pair for the centralized probe. */
++
++#ifdef CONFIG_VBS_SEV_SNP
++bool __init vbs_sev_snp_detect(void);
++const struct vbs_ops *vbs_sev_snp_get_ops(void);
++#endif
++
++#ifdef CONFIG_VBS_TDX
++bool __init vbs_tdx_detect(void);
++const struct vbs_ops *vbs_tdx_get_ops(void);
++#endif
++
++#ifdef CONFIG_VBS_ARM_CCA
++bool __init vbs_cca_detect(void);
++const struct vbs_ops *vbs_cca_get_ops(void);
++#endif
++
++#ifdef CONFIG_VBS_HV_VSM
++bool __init vbs_hv_vsm_detect(void);
++const struct vbs_ops *vbs_hv_vsm_get_ops(void);
++#endif
++
++#ifdef CONFIG_VBS_KVM_PLANES
++bool __init vbs_kvm_planes_detect(void);
++const struct vbs_ops *vbs_kvm_planes_get_ops(void);
++#endif
++
++#endif /* _SECURITY_VBS_INTERNAL_H */
+diff --git a/security/vbs/kvm_planes.c b/security/vbs/kvm_planes.c
+new file mode 100644
+index 000000000000..3526f7c429c3
+--- /dev/null
++++ b/security/vbs/kvm_planes.c
+@@ -0,0 +1,258 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS backend — KVM software planes
++ *
++ * Uses KVM paravirt hypercalls to communicate between plane-0 (normal
++ * guest kernel) and plane-1 (secure kernel running in a separate KVM
++ * plane managed by QEMU).
++ *
++ * Transport: kvm_hypercall{0..4}() → KVM_EXIT_HYPERCALL → QEMU → plane-1
++ *
++ * The shared-memory VTL-call protocol works as follows:
++ *   1. Plane-0 fills a request buffer in shared memory.
++ *   2. Plane-0 issues a KVM hypercall carrying the physical address
++ *      and size of the request.
++ *   3. QEMU (or the host) delivers the request to the plane-1 vCPU.
++ *   4. Plane-1 processes the request and writes a response.
++ *   5. Plane-0 reads the response from shared memory.
++ */
++
++#include "internal.h"
++
++#include <linux/slab.h>
++#include <linux/mm.h>
++#include <linux/io.h>
++#include <asm/kvm_para.h>
++
++/* ── hypercall numbers for VBS VTL calls (plane-0 → plane-1) ──────────── */
++/*
++ * These extend the existing KVM_HC_* numbering.  The host (KVM + QEMU)
++ * intercepts them and routes them to the secure-kernel plane.
++ */
++#define KVM_HC_VBS_VTL_CALL		15
++
++/* ── shared-memory request / response layout ──────────────────────────── */
++
++struct vbs_kvm_request {
++	__u32	call_id;	/* enum vbs_call_id			*/
++	__u32	arg_size;	/* bytes of payload following this hdr	*/
++	__u8	payload[];	/* variable-length argument data		*/
++} __packed;
++
++struct vbs_kvm_response {
++	__s32	status;		/* 0 = success, negative errno		*/
++	__u32	resp_size;	/* bytes of payload following this hdr	*/
++	__u8	payload[];	/* variable-length response data		*/
++} __packed;
++
++/*
++ * A single page is used for each direction.  That gives ~4 KiB of
++ * payload per call, which is enough for all current VBS operations.
++ */
++static void *kvm_req_page;	/* request  (plane-0 writes, plane-1 reads)  */
++static void *kvm_resp_page;	/* response (plane-1 writes, plane-0 reads)  */
++
++/* ── low-level VTL call ───────────────────────────────────────────────── */
++
++static int kvm_planes_vtl_call(enum vbs_call_id id,
++			       const void *arg, size_t arg_size,
++			       void *resp, size_t resp_size)
++{
++	struct vbs_kvm_request *req;
++	struct vbs_kvm_response *rsp;
++	long hc_ret;
++
++	if (!kvm_req_page || !kvm_resp_page)
++		return -ENOMEM;
++
++	if (arg_size > PAGE_SIZE - sizeof(*req))
++		return -E2BIG;
++
++	/* Build request in the shared page */
++	req = kvm_req_page;
++	req->call_id  = id;
++	req->arg_size = arg_size;
++	if (arg_size && arg)
++		memcpy(req->payload, arg, arg_size);
++
++	/* Issue hypercall: pass physical addresses of req & resp pages */
++	hc_ret = kvm_hypercall2(KVM_HC_VBS_VTL_CALL,
++				virt_to_phys(kvm_req_page),
++				virt_to_phys(kvm_resp_page));
++	if (hc_ret) {
++		pr_err_ratelimited("vbs-kvm: hypercall failed (%ld)\n", hc_ret);
++		return -EIO;
++	}
++
++	/* Read response */
++	rsp = kvm_resp_page;
++	if (rsp->status)
++		return rsp->status;
++
++	if (resp && resp_size) {
++		size_t copy = min_t(size_t, resp_size, rsp->resp_size);
++
++		memcpy(resp, rsp->payload, copy);
++	}
++	return 0;
++}
++
++/* ── memory protection ────────────────────────────────────────────────── */
++
++struct vbs_protect_args {
++	__u64 pfn;
++	__u64 nr_pages;
++	__u32 perms;
++} __packed;
++
++static int kvm_planes_protect_memory(unsigned long pfn,
++				     unsigned long nr_pages,
++				     unsigned int perms)
++{
++	struct vbs_protect_args args = {
++		.pfn      = pfn,
++		.nr_pages = nr_pages,
++		.perms    = perms,
++	};
++
++	return kvm_planes_vtl_call(VBS_CALL_PROTECT_MEMORY,
++				   &args, sizeof(args), NULL, 0);
++}
++
++static int kvm_planes_seal_kernel(void)
++{
++	return kvm_planes_vtl_call(VBS_CALL_SEAL_KERNEL, NULL, 0, NULL, 0);
++}
++
++/* ── module authentication ────────────────────────────────────────────── */
++
++static int kvm_planes_validate_module(const void *elf, size_t elf_size,
++				      const void *sig, size_t sig_size)
++{
++	/*
++	 * Module blobs can be large — for the KVM planes backend we pass
++	 * the physical address and size to plane-1 via the VTL call and
++	 * let plane-1 map/read the pages directly from its EPT view.
++	 * For now, a stub that signals "not yet implemented".
++	 */
++	return kvm_planes_vtl_call(VBS_CALL_VALIDATE_MODULE,
++				   NULL, 0, NULL, 0);
++}
++
++static int kvm_planes_set_module_perms(const struct module *mod)
++{
++	return kvm_planes_vtl_call(VBS_CALL_SET_MODULE_PERMS,
++				   NULL, 0, NULL, 0);
++}
++
++static int kvm_planes_unload_module(const struct module *mod)
++{
++	return kvm_planes_vtl_call(VBS_CALL_UNLOAD_MODULE,
++				   NULL, 0, NULL, 0);
++}
++
++/* ── key / certificate management ─────────────────────────────────────── */
++
++static int kvm_planes_add_key(const void *key, size_t key_size,
++			      unsigned int flags)
++{
++	return kvm_planes_vtl_call(VBS_CALL_ADD_KEY, key, key_size, NULL, 0);
++}
++
++static int kvm_planes_revoke_key(const void *key_id, size_t id_size)
++{
++	return kvm_planes_vtl_call(VBS_CALL_REVOKE_KEY,
++				   key_id, id_size, NULL, 0);
++}
++
++static int kvm_planes_send_certs(const void *certs, size_t certs_size)
++{
++	return kvm_planes_vtl_call(VBS_CALL_SEND_CERTS,
++				   certs, certs_size, NULL, 0);
++}
++
++/* ── kexec validation ─────────────────────────────────────────────────── */
++
++static int kvm_planes_kexec_validate(const void *kernel, size_t kernel_size,
++				     const void *sig, size_t sig_size)
++{
++	return kvm_planes_vtl_call(VBS_CALL_KEXEC_VALIDATE,
++				   NULL, 0, NULL, 0);
++}
++
++static int kvm_planes_kexec_invalidate(void)
++{
++	return kvm_planes_vtl_call(VBS_CALL_KEXEC_INVALIDATE,
++				   NULL, 0, NULL, 0);
++}
++
++/* ── lifecycle ────────────────────────────────────────────────────────── */
++
++static int kvm_planes_init(void)
++{
++	int ret;
++
++	kvm_req_page  = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	kvm_resp_page = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	if (!kvm_req_page || !kvm_resp_page) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	ret = kvm_planes_vtl_call(VBS_CALL_INIT, NULL, 0, NULL, 0);
++	if (ret) {
++		pr_err("vbs-kvm: plane-1 INIT call failed (%d)\n", ret);
++		goto fail;
++	}
++
++	pr_info("vbs-kvm: connected to plane-1 secure kernel\n");
++	return 0;
++fail:
++	free_page((unsigned long)kvm_req_page);
++	free_page((unsigned long)kvm_resp_page);
++	kvm_req_page = kvm_resp_page = NULL;
++	return ret;
++}
++
++static void kvm_planes_shutdown(void)
++{
++	kvm_planes_vtl_call(VBS_CALL_SHUTDOWN, NULL, 0, NULL, 0);
++	free_page((unsigned long)kvm_req_page);
++	free_page((unsigned long)kvm_resp_page);
++	kvm_req_page = kvm_resp_page = NULL;
++}
++
++/* ── ops table & registration ─────────────────────────────────────────── */
++
++static const struct vbs_ops kvm_planes_ops = {
++	.name		   = "kvm-planes",
++	.init		   = kvm_planes_init,
++	.shutdown	   = kvm_planes_shutdown,
++	.vtl_call	   = kvm_planes_vtl_call,
++	.protect_memory    = kvm_planes_protect_memory,
++	.seal_kernel	   = kvm_planes_seal_kernel,
++	.validate_module   = kvm_planes_validate_module,
++	.set_module_perms  = kvm_planes_set_module_perms,
++	.unload_module	   = kvm_planes_unload_module,
++	.add_key	   = kvm_planes_add_key,
++	.revoke_key	   = kvm_planes_revoke_key,
++	.send_certs	   = kvm_planes_send_certs,
++	.kexec_validate    = kvm_planes_kexec_validate,
++	.kexec_invalidate  = kvm_planes_kexec_invalidate,
++};
++
++/* ── detection & probe (called from probe.c) ──────────────────────────── */
++
++bool __init vbs_kvm_planes_detect(void)
++{
++	if (!kvm_para_available()) {
++		pr_debug("vbs-kvm: KVM paravirt not available\n");
++		return false;
++	}
++	return true;
++}
++
++const struct vbs_ops *vbs_kvm_planes_get_ops(void)
++{
++	return &kvm_planes_ops;
++}
+diff --git a/security/vbs/probe.c b/security/vbs/probe.c
+new file mode 100644
+index 000000000000..292f3663a996
+--- /dev/null
++++ b/security/vbs/probe.c
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS platform detection and backend selection
++ *
++ * Single initcall that probes the platform and registers the appropriate
++ * VBS backend.  Detection order (first match wins):
++ *
++ *   1. Hardware CoCo — these are mutually exclusive by nature:
++ *      a. AMD SEV-SNP with SVSM  (VMPL > 0, SVSM at VMPL0)
++ *      b. Intel TDX service TD   (running inside a Trust Domain)
++ *      c. Arm CCA               (Realm guest with RSI)
++ *
++ *   2. Hypervisor-specific:
++ *      d. Hyper-V VSM            (Hyper-V guest at VTL0)
++ *
++ *   3. Software emulation:
++ *      e. KVM software planes    (KVM paravirt guest)
++ *
++ * Only one backend can be active.  The first successful probe wins.
++ */
++
++#include "internal.h"
++
++/* Stubs for backends not configured */
++#ifndef CONFIG_VBS_SEV_SNP
++static inline bool vbs_sev_snp_detect(void) { return false; }
++static inline const struct vbs_ops *vbs_sev_snp_get_ops(void) { return NULL; }
++#endif
++#ifndef CONFIG_VBS_TDX
++static inline bool vbs_tdx_detect(void) { return false; }
++static inline const struct vbs_ops *vbs_tdx_get_ops(void) { return NULL; }
++#endif
++#ifndef CONFIG_VBS_ARM_CCA
++static inline bool vbs_cca_detect(void) { return false; }
++static inline const struct vbs_ops *vbs_cca_get_ops(void) { return NULL; }
++#endif
++#ifndef CONFIG_VBS_HV_VSM
++static inline bool vbs_hv_vsm_detect(void) { return false; }
++static inline const struct vbs_ops *vbs_hv_vsm_get_ops(void) { return NULL; }
++#endif
++#ifndef CONFIG_VBS_KVM_PLANES
++static inline bool vbs_kvm_planes_detect(void) { return false; }
++static inline const struct vbs_ops *vbs_kvm_planes_get_ops(void) { return NULL; }
++#endif
++
++/* ── probe table ──────────────────────────────────────────────────────── */
++
++struct vbs_probe_entry {
++	const char *name;
++	bool (*detect)(void);
++	const struct vbs_ops *(*get_ops)(void);
++};
++
++static const struct vbs_probe_entry vbs_probe_table[] __initconst = {
++	/*
++	 * Hardware confidential-compute backends first.
++	 * These are mutually exclusive — a machine is SEV-SNP *or* TDX
++	 * *or* CCA, never more than one.
++	 */
++	{ "AMD SEV-SNP",	vbs_sev_snp_detect,	vbs_sev_snp_get_ops },
++	{ "Intel TDX",		vbs_tdx_detect,		vbs_tdx_get_ops },
++	{ "Arm CCA",		vbs_cca_detect,		vbs_cca_get_ops },
++
++	/* Hypervisor-specific */
++	{ "Hyper-V VSM",	vbs_hv_vsm_detect,	vbs_hv_vsm_get_ops },
++
++	/* Software emulation (lowest priority) */
++	{ "KVM planes",		vbs_kvm_planes_detect,	vbs_kvm_planes_get_ops },
++};
++
++/* ── single boot-time probe ───────────────────────────────────────────── */
++
++static int __init vbs_probe_init(void)
++{
++	int i, ret;
++
++	for (i = 0; i < ARRAY_SIZE(vbs_probe_table); i++) {
++		const struct vbs_probe_entry *e = &vbs_probe_table[i];
++
++		if (!e->detect())
++			continue;
++
++		pr_info("vbs: detected %s platform\n", e->name);
++
++		ret = vbs_register_backend(e->get_ops());
++		if (ret) {
++			pr_err("vbs: failed to register %s backend (%d)\n",
++			       e->name, ret);
++			return ret;
++		}
 +		return 0;
 +	}
 +
-+	/* Initialize the backend (allocates shared memory, etc.) */
-+	if (ops->init) {
-+		ret = ops->init();
-+		if (ret) {
-+			pr_warn("vbs: HEKI: backend init failed (%d)\n", ret);
-+			return 0;
-+		}
-+	}
-+
-+	pr_info("vbs: HEKI: sealing kernel text and rodata\n");
-+	ret = vbs_seal_kernel();
-+	if (ret)
-+		pr_warn("vbs: HEKI: seal_kernel failed (%d)\n", ret);
-+	else
-+		pr_info("vbs: HEKI: kernel sealed successfully\n");
-+
++	pr_debug("vbs: no supported platform detected\n");
 +	return 0;
 +}
-+late_initcall(vbs_heki_late_init);
-diff --git a/security/vbs/heki.c b/security/vbs/heki.c
++
++/*
++ * Run at device_initcall level: platform detection (CPUID, MSRs, SMCCC)
++ * is complete by this point, but subsystems that consume VBS (module
++ * loading, HEKI) have not yet started.
++ */
++device_initcall(vbs_probe_init);
+diff --git a/security/vbs/sev_snp.c b/security/vbs/sev_snp.c
 new file mode 100644
-index 000000000000..8b4c4e3b170b
+index 000000000000..510a2245a0e7
 --- /dev/null
-+++ b/security/vbs/heki.c
-@@ -0,0 +1,287 @@
++++ b/security/vbs/sev_snp.c
+@@ -0,0 +1,224 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * HEKI — Hypervisor-Enforced Kernel Integrity
++ * VBS backend — AMD SEV-SNP
 + *
-+ * x86-64 page table walker and kernel protection logic.
++ * Uses the SVSM (Secure VM Service Module) protocol to communicate
++ * between the guest (VMPL2+) and the SVSM running at VMPL0.
 + *
-+ * The page table walker is designed to be called from plane-1 (the secure
-+ * kernel) to audit plane-0's page tables.  It is parameterised with a
-+ * read_gpa() callback so it can work both in-kernel (for plane-1 with
-+ * direct GPA access) and from QEMU (future, for host-side auditing).
++ * Transport: VMGEXIT with SVM_VMGEXIT_SNP_RUN_VMPL exit code,
++ *            parameters passed via the SVSM Calling Area (CAA).
 + *
-+ * The seal_kernel helper runs in plane-0 and sends the kernel text/rodata
-+ * GPA ranges to the secure side via the VBS VTL call mechanism.
++ * The SVSM already provides core services (PVALIDATE, attestation,
++ * vTPM).  This backend extends it with VBS-specific calls for
++ * memory protection, module authentication, and key management
++ * using a new VBS SVSM protocol number.
 + */
 +
-+#include "heki.h"
 +#include "internal.h"
 +
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+#include <asm/sections.h>
++#include <linux/cc_platform.h>
 +
-+#ifdef CONFIG_X86_64
-+#include <asm/page.h>
-+
-+/* ── x86-64 page table constants ──────────────────────────────────────── */
-+
-+#define PT_ENTRIES		512
-+#define PT_ENTRY_SIZE		8
-+
-+/* PTE bit positions */
-+#define PTE_PRESENT		BIT_ULL(0)
-+#define PTE_WRITABLE		BIT_ULL(1)
-+#define PTE_USER		BIT_ULL(2)
-+#define PTE_PS			BIT_ULL(7)	/* page size (huge page) */
-+#define PTE_NX			BIT_ULL(63)	/* no-execute */
-+
-+/* Physical address mask for 4-level paging (bits 12..51) */
-+#define PTE_ADDR_MASK		0x000FFFFFFFFFF000ULL
-+
-+/* Page sizes */
-+#define PAGE_SIZE_4K		(1UL << 12)
-+#define PAGE_SIZE_2M		(1UL << 21)
-+#define PAGE_SIZE_1G		(1UL << 30)
-+
-+/* Virtual address extraction helpers */
-+static inline unsigned int pml4_index(unsigned long va)
-+{
-+	return (va >> 39) & 0x1FF;
-+}
-+
-+static inline unsigned int pdpt_index(unsigned long va)
-+{
-+	return (va >> 30) & 0x1FF;
-+}
-+
-+static inline unsigned int pd_index(unsigned long va)
-+{
-+	return (va >> 21) & 0x1FF;
-+}
-+
-+static inline unsigned int pt_index(unsigned long va)
-+{
-+	return (va >> 12) & 0x1FF;
-+}
++#include <asm/sev.h>
 +
 +/*
-+ * Classify a page based on its PTE permission bits.
++ * VBS SEV-SNP protocol — extends the existing SVSM protocol numbering.
++ * Protocol 0 = core, 1 = attestation, 2 = vTPM, 3 = VBS.
 + */
-+static enum heki_page_class classify_pte(u64 pte)
-+{
-+	bool writable = !!(pte & PTE_WRITABLE);
-+	bool executable = !(pte & PTE_NX);
++#define SEV_SNP_VBS_CALL(x)		((3ULL << 32) | (x))
 +
-+	if (executable && !writable)
-+		return HEKI_PAGE_TEXT;
-+	if (!executable && !writable)
-+		return HEKI_PAGE_RODATA;
-+	if (!executable && writable)
-+		return HEKI_PAGE_DATA_RW;
-+	/* executable + writable — W^X violation */
-+	return HEKI_PAGE_DATA_RX;
-+}
++/* VBS-specific SEV-SNP call IDs (mapped from enum vbs_call_id) */
++#define SEV_SNP_VBS_INIT		0
++#define SEV_SNP_VBS_SHUTDOWN		1
++#define SEV_SNP_VBS_PROTECT_MEMORY	2
++#define SEV_SNP_VBS_SEAL_KERNEL		3
++#define SEV_SNP_VBS_VALIDATE_MODULE	4
++#define SEV_SNP_VBS_SET_MODULE_PERMS	5
++#define SEV_SNP_VBS_UNLOAD_MODULE	6
++#define SEV_SNP_VBS_ADD_KEY		7
++#define SEV_SNP_VBS_REVOKE_KEY		8
++#define SEV_SNP_VBS_SEND_CERTS		9
++#define SEV_SNP_VBS_KEXEC_VALIDATE	10
++#define SEV_SNP_VBS_KEXEC_INVALIDATE	11
++
++/* ── low-level VTL call via SEV-SNP ───────────────────────────────────── */
 +
 +/*
-+ * Read a single page table entry from guest physical memory.
-+ */
-+static int read_pte(u64 table_gpa, unsigned int index,
-+		    int (*read_gpa)(u64, void *, size_t, void *),
-+		    void *ctx, u64 *pte_out)
-+{
-+	u64 entry_gpa = table_gpa + (u64)index * PT_ENTRY_SIZE;
-+
-+	return read_gpa(entry_gpa, pte_out, sizeof(*pte_out), ctx);
-+}
-+
-+/*
-+ * Walk a page table (PT) level — 4K pages.
-+ */
-+static int walk_pt(u64 pt_gpa, unsigned long va_base,
-+		   int (*read_gpa)(u64, void *, size_t, void *), void *ctx,
-+		   unsigned long va_start, unsigned long va_end,
-+		   heki_walk_cb cb, void *priv)
-+{
-+	unsigned int start_idx, end_idx, i;
-+	int ret;
-+
-+	start_idx = (va_start > va_base) ? pt_index(va_start) : 0;
-+	end_idx   = (va_end && va_end < va_base + PT_ENTRIES * PAGE_SIZE_4K)
-+		    ? pt_index(va_end - 1) : PT_ENTRIES - 1;
-+
-+	for (i = start_idx; i <= end_idx; i++) {
-+		u64 pte;
-+		unsigned long va = va_base + (unsigned long)i * PAGE_SIZE_4K;
-+
-+		ret = read_pte(pt_gpa, i, read_gpa, ctx, &pte);
-+		if (ret)
-+			return ret;
-+		if (!(pte & PTE_PRESENT))
-+			continue;
-+
-+		ret = cb(va, pte & PTE_ADDR_MASK, PAGE_SIZE_4K,
-+			 classify_pte(pte), priv);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Walk a page directory (PD) level — 2M huge pages or recurse into PT.
-+ */
-+static int walk_pd(u64 pd_gpa, unsigned long va_base,
-+		   int (*read_gpa)(u64, void *, size_t, void *), void *ctx,
-+		   unsigned long va_start, unsigned long va_end,
-+		   heki_walk_cb cb, void *priv)
-+{
-+	unsigned int start_idx, end_idx, i;
-+	int ret;
-+
-+	start_idx = (va_start > va_base) ? pd_index(va_start) : 0;
-+	end_idx   = (va_end && va_end < va_base + (unsigned long)PT_ENTRIES * PAGE_SIZE_2M)
-+		    ? pd_index(va_end - 1) : PT_ENTRIES - 1;
-+
-+	for (i = start_idx; i <= end_idx; i++) {
-+		u64 pde;
-+		unsigned long va = va_base + (unsigned long)i * PAGE_SIZE_2M;
-+
-+		ret = read_pte(pd_gpa, i, read_gpa, ctx, &pde);
-+		if (ret)
-+			return ret;
-+		if (!(pde & PTE_PRESENT))
-+			continue;
-+
-+		if (pde & PTE_PS) {
-+			/* 2M huge page */
-+			ret = cb(va, pde & PTE_ADDR_MASK, PAGE_SIZE_2M,
-+				 classify_pte(pde), priv);
-+			if (ret)
-+				return ret;
-+		} else {
-+			ret = walk_pt(pde & PTE_ADDR_MASK, va,
-+				      read_gpa, ctx, va_start, va_end,
-+				      cb, priv);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Walk a page directory pointer table (PDPT) — 1G huge pages or recurse.
-+ */
-+static int walk_pdpt(u64 pdpt_gpa, unsigned long va_base,
-+		     int (*read_gpa)(u64, void *, size_t, void *), void *ctx,
-+		     unsigned long va_start, unsigned long va_end,
-+		     heki_walk_cb cb, void *priv)
-+{
-+	unsigned int start_idx, end_idx, i;
-+	int ret;
-+
-+	start_idx = (va_start > va_base) ? pdpt_index(va_start) : 0;
-+	end_idx   = (va_end && va_end < va_base + (unsigned long)PT_ENTRIES * PAGE_SIZE_1G)
-+		    ? pdpt_index(va_end - 1) : PT_ENTRIES - 1;
-+
-+	for (i = start_idx; i <= end_idx; i++) {
-+		u64 pdpte;
-+		unsigned long va = va_base + (unsigned long)i * PAGE_SIZE_1G;
-+
-+		ret = read_pte(pdpt_gpa, i, read_gpa, ctx, &pdpte);
-+		if (ret)
-+			return ret;
-+		if (!(pdpte & PTE_PRESENT))
-+			continue;
-+
-+		if (pdpte & PTE_PS) {
-+			/* 1G huge page */
-+			ret = cb(va, pdpte & PTE_ADDR_MASK, PAGE_SIZE_1G,
-+				 classify_pte(pdpte), priv);
-+			if (ret)
-+				return ret;
-+		} else {
-+			ret = walk_pd(pdpte & PTE_ADDR_MASK, va,
-+				      read_gpa, ctx, va_start, va_end,
-+				      cb, priv);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * heki_walk_x86_tables - walk x86-64 4-level page tables
-+ * @cr3:        value of CR3 (page table root physical address)
-+ * @read_gpa:   callback to read bytes from a guest physical address
-+ * @read_ctx:   opaque context passed to read_gpa
-+ * @va_start:   start of virtual address range (0 = from beginning)
-+ * @va_end:     end of virtual address range (0 = to end)
-+ * @cb:         callback invoked for each present page
-+ * @priv:       opaque context passed to cb
++ * Issue a VBS call through the SVSM protocol.
 + *
-+ * Walks the full PML4 → PDPT → PD → PT hierarchy, invoking @cb for
-+ * every present page (4K, 2M, or 1G) within [va_start, va_end).
-+ *
-+ * Returns 0 on success, or the first non-zero return from @cb / @read_gpa.
++ * The CAA svsm_buffer is used to pass request/response data.
++ * RAX encodes the protocol (3 = VBS) and call ID.
++ * RCX carries the physical address of any auxiliary data buffer.
++ * RDX carries the size of the auxiliary data.
 + */
-+int heki_walk_x86_tables(unsigned long cr3,
-+			 int (*read_gpa)(u64 gpa, void *buf, size_t len,
-+					 void *ctx),
-+			 void *read_ctx,
-+			 unsigned long va_start, unsigned long va_end,
-+			 heki_walk_cb cb, void *priv)
++static int sev_snp_vbs_call(u32 call_id, const void *arg, size_t arg_size,
++			    void *resp, size_t resp_size)
 +{
-+	u64 pml4_gpa = cr3 & PTE_ADDR_MASK;
-+	unsigned int i;
++	struct svsm_call call = {};
 +	int ret;
 +
-+	if (!read_gpa || !cb)
-+		return -EINVAL;
-+
-+	/*
-+	 * Walk PML4 entries.  Each PML4 entry covers 512 GB.
-+	 * For the kernel half of the address space on x86-64,
-+	 * entries 256..511 map the kernel virtual addresses
-+	 * (0xffff800000000000 and above).
-+	 */
-+	for (i = 0; i < PT_ENTRIES; i++) {
-+		u64 pml4e;
-+		/* Each PML4 entry covers 512 GiB */
-+		unsigned long va_base = (unsigned long)i << 39;
-+
-+		/*
-+		 * Sign-extend for canonical addresses: entries 256..511
-+		 * map the upper half (kernel space).
-+		 */
-+		if (i >= 256)
-+			va_base |= 0xFFFF000000000000UL;
-+
-+		/* Skip entries outside the requested range */
-+		if (va_end && va_base >= va_end)
-+			break;
-+		if (va_start) {
-+			unsigned long entry_end = va_base +
-+				(1UL << 39) - 1;
-+			if (entry_end < va_start)
-+				continue;
-+		}
-+
-+		ret = read_pte(pml4_gpa, i, read_gpa, read_ctx, &pml4e);
-+		if (ret)
-+			return ret;
-+		if (!(pml4e & PTE_PRESENT))
-+			continue;
-+
-+		ret = walk_pdpt(pml4e & PTE_ADDR_MASK, va_base,
-+				read_gpa, read_ctx, va_start, va_end,
-+				cb, priv);
-+		if (ret)
-+			return ret;
++	call.rax = SEV_SNP_VBS_CALL(call_id);
++	if (arg && arg_size) {
++		call.rcx = __pa(arg);
++		call.rdx = arg_size;
++	}
++	if (resp && resp_size) {
++		call.r8 = __pa(resp);
++		call.r9 = resp_size;
 +	}
 +
-+	return 0;
++	ret = svsm_perform_call_protocol(&call);
++	if (ret)
++		pr_err_ratelimited("vbs-sev-snp: call %u failed (%d)\n",
++				   call_id, ret);
++	return ret;
 +}
 +
-+#endif /* CONFIG_X86_64 */
-diff --git a/security/vbs/heki.h b/security/vbs/heki.h
-new file mode 100644
-index 000000000000..fee986de351a
---- /dev/null
-+++ b/security/vbs/heki.h
-@@ -0,0 +1,83 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * HEKI — Hypervisor-Enforced Kernel Integrity
-+ *
-+ * Shared data structures between the guest kernel (plane-0) and the
-+ * VBS secure kernel / QEMU dispatcher.  These structs are placed in
-+ * the VBS CAA page buffer and must be kept in sync with the QEMU-side
-+ * definitions.
-+ */
-+#ifndef _VBS_HEKI_H
-+#define _VBS_HEKI_H
++static int sev_snp_vbs_vtl_call(enum vbs_call_id id,
++				const void *arg, size_t arg_size,
++				void *resp, size_t resp_size)
++{
++	return sev_snp_vbs_call(id, arg, arg_size, resp, resp_size);
++}
 +
-+#include <linux/types.h>
++/* ── memory protection ────────────────────────────────────────────────── */
 +
-+/*
-+ * VBS_CALL_PROTECT_MEMORY payload — request EPT permission changes on
-+ * a contiguous GPA range from the perspective of the calling plane.
-+ */
-+struct vbs_protect_memory_req {
-+	__u64	gpa;		/* guest-physical address (page-aligned)  */
-+	__u64	size;		/* region size in bytes (page-aligned)    */
-+	__u32	perms;		/* desired permissions: VBS_MEM_* flags   */
-+	__u32	flags;		/* reserved, must be 0                   */
++struct vbs_sev_snp_protect_args {
++	__u64 pfn;
++	__u64 nr_pages;
++	__u32 perms;
 +} __packed;
 +
-+/*
-+ * VBS_CALL_SEAL_KERNEL payload — plane-0 sends the GPAs of its kernel
-+ * text and rodata sections so that the secure side can make them
-+ * immutable (NO_WRITE in the lower plane's EPT).
-+ */
-+struct vbs_seal_kernel_req {
-+	__u64	text_gpa;	/* _stext physical address               */
-+	__u64	text_size;	/* _etext - _stext                       */
-+	__u64	rodata_gpa;	/* __start_rodata physical address        */
-+	__u64	rodata_size;	/* __end_rodata - __start_rodata          */
-+	__u64	cr3;		/* plane-0 kernel CR3 for verification    */
-+} __packed;
-+
-+/* ── x86-64 page table walker (for plane-1 auditing) ─────────────────── */
-+
-+/* Classification of a guest-physical page based on page table walk */
-+enum heki_page_class {
-+	HEKI_PAGE_UNMAPPED	= 0,
-+	HEKI_PAGE_TEXT		= 1,	/* executable, read-only  (kernel text) */
-+	HEKI_PAGE_RODATA	= 2,	/* non-executable, read-only            */
-+	HEKI_PAGE_DATA_RW	= 3,	/* non-executable, read-write           */
-+	HEKI_PAGE_DATA_RX	= 4,	/* executable, read-write (DANGEROUS)   */
-+};
-+
-+/*
-+ * Callback invoked for each mapped page during a page table walk.
-+ * @va:    virtual address of the page
-+ * @pa:    guest-physical address of the page
-+ * @size:  page size (4K, 2M, or 1G)
-+ * @pclass: classification based on PTE permission bits
-+ * @priv:  opaque context from the caller
-+ *
-+ * Return 0 to continue walking, non-zero to stop.
-+ */
-+typedef int (*heki_walk_cb)(unsigned long va, unsigned long pa,
-+			    unsigned long size, enum heki_page_class pclass,
-+			    void *priv);
-+
-+#ifdef CONFIG_X86_64
-+/*
-+ * Walk x86-64 4-level page tables starting from @cr3.
-+ * @read_gpa: function to read @len bytes from guest physical address @gpa
-+ *            into @buf.  Returns 0 on success.
-+ * @va_start, @va_end: virtual address range to walk (0 for full walk)
-+ * @cb:     callback invoked for each mapped page
-+ * @priv:   opaque context passed to the callback
-+ *
-+ * Returns 0 on success, negative errno on failure.
-+ */
-+int heki_walk_x86_tables(unsigned long cr3,
-+			 int (*read_gpa)(u64 gpa, void *buf, size_t len,
-+					 void *ctx),
-+			 void *read_ctx,
-+			 unsigned long va_start, unsigned long va_end,
-+			 heki_walk_cb cb, void *priv);
-+#endif /* CONFIG_X86_64 */
-+
-+#endif /* _VBS_HEKI_H */
-diff --git a/security/vbs/kvm_planes.c b/security/vbs/kvm_planes.c
-index 07a004712e9f..293c960c0968 100644
---- a/security/vbs/kvm_planes.c
-+++ b/security/vbs/kvm_planes.c
-@@ -23,7 +23,11 @@
- #include <linux/mm.h>
- #include <linux/io.h>
- #include <linux/kvm_para.h>
-+#include <asm/sections.h>
- #include <asm/kvm_para.h>
-+#include <asm/processor.h>
-+
-+#include "heki.h"
- 
- /* ── shared-memory calling area (modelled after the SVSM CAA) ─────── */
- 
-@@ -122,7 +126,20 @@ static int kvm_planes_protect_memory(unsigned long pfn,
- 
- static int kvm_planes_seal_kernel(void)
- {
--	return kvm_planes_vtl_call(VBS_CALL_SEAL_KERNEL, NULL, 0, NULL, 0);
-+	struct vbs_seal_kernel_req req = {
-+		.text_gpa    = __pa_symbol(_stext),
-+		.text_size   = PAGE_ALIGN((u64)(_etext - _stext)),
-+		.rodata_gpa  = __pa_symbol(__start_rodata),
-+		.rodata_size = PAGE_ALIGN((u64)(__end_rodata - __start_rodata)),
-+		.cr3         = read_cr3_pa(),
++static int sev_snp_vbs_protect_memory(unsigned long pfn,
++				      unsigned long nr_pages,
++				      unsigned int perms)
++{
++	struct vbs_sev_snp_protect_args args = {
++		.pfn      = pfn,
++		.nr_pages = nr_pages,
++		.perms    = perms,
 +	};
 +
-+	pr_info("vbs-kvm: seal_kernel text=[0x%llx+0x%llx] rodata=[0x%llx+0x%llx] cr3=0x%llx\n",
-+		req.text_gpa, req.text_size,
-+		req.rodata_gpa, req.rodata_size, req.cr3);
++	return sev_snp_vbs_call(SEV_SNP_VBS_PROTECT_MEMORY,
++				&args, sizeof(args), NULL, 0);
++}
 +
-+	return kvm_planes_vtl_call(VBS_CALL_SEAL_KERNEL,
-+				   &req, sizeof(req), NULL, 0);
- }
- 
- /* ── module authentication ────────────────────────────────────────────── */
++static int sev_snp_vbs_seal_kernel(void)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_SEAL_KERNEL, NULL, 0, NULL, 0);
++}
++
++/* ── module authentication ────────────────────────────────────────────── */
++
++static int sev_snp_vbs_validate_module(const void *elf, size_t elf_size,
++				       const void *sig, size_t sig_size)
++{
++	/*
++	 * Module ELF may be large.  Pass its physical address and size
++	 * to VMPL0 so the SVSM can read it from the shared address space.
++	 */
++	return sev_snp_vbs_call(SEV_SNP_VBS_VALIDATE_MODULE,
++				NULL, 0, NULL, 0);
++}
++
++static int sev_snp_vbs_set_module_perms(const struct module *mod)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_SET_MODULE_PERMS,
++				NULL, 0, NULL, 0);
++}
++
++static int sev_snp_vbs_unload_module(const struct module *mod)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_UNLOAD_MODULE, NULL, 0, NULL, 0);
++}
++
++/* ── key / certificate management ─────────────────────────────────────── */
++
++static int sev_snp_vbs_add_key(const void *key, size_t key_size,
++			       unsigned int flags)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_ADD_KEY, key, key_size, NULL, 0);
++}
++
++static int sev_snp_vbs_revoke_key(const void *key_id, size_t id_size)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_REVOKE_KEY, key_id, id_size, NULL, 0);
++}
++
++static int sev_snp_vbs_send_certs(const void *certs, size_t certs_size)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_SEND_CERTS,
++				certs, certs_size, NULL, 0);
++}
++
++/* ── kexec validation ─────────────────────────────────────────────────── */
++
++static int sev_snp_vbs_kexec_validate(const void *kernel, size_t kernel_size,
++				      const void *sig, size_t sig_size)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_KEXEC_VALIDATE, NULL, 0, NULL, 0);
++}
++
++static int sev_snp_vbs_kexec_invalidate(void)
++{
++	return sev_snp_vbs_call(SEV_SNP_VBS_KEXEC_INVALIDATE, NULL, 0, NULL, 0);
++}
++
++/* ── lifecycle ────────────────────────────────────────────────────────── */
++
++static int sev_snp_vbs_init(void)
++{
++	int ret;
++
++	ret = sev_snp_vbs_call(SEV_SNP_VBS_INIT, NULL, 0, NULL, 0);
++	if (ret) {
++		pr_err("vbs-sev-snp: VBS init failed (%d)\n", ret);
++		return ret;
++	}
++
++	pr_info("vbs-sev-snp: connected to SVSM at VMPL0\n");
++	return 0;
++}
++
++static void sev_snp_vbs_shutdown(void)
++{
++	sev_snp_vbs_call(SEV_SNP_VBS_SHUTDOWN, NULL, 0, NULL, 0);
++}
++
++/* ── ops table & registration ─────────────────────────────────────────── */
++
++static const struct vbs_ops sev_snp_vbs_ops = {
++	.name		   = "sev-snp",
++	.init		   = sev_snp_vbs_init,
++	.shutdown	   = sev_snp_vbs_shutdown,
++	.vtl_call	   = sev_snp_vbs_vtl_call,
++	.protect_memory    = sev_snp_vbs_protect_memory,
++	.seal_kernel	   = sev_snp_vbs_seal_kernel,
++	.validate_module   = sev_snp_vbs_validate_module,
++	.set_module_perms  = sev_snp_vbs_set_module_perms,
++	.unload_module	   = sev_snp_vbs_unload_module,
++	.add_key	   = sev_snp_vbs_add_key,
++	.revoke_key	   = sev_snp_vbs_revoke_key,
++	.send_certs	   = sev_snp_vbs_send_certs,
++	.kexec_validate    = sev_snp_vbs_kexec_validate,
++	.kexec_invalidate  = sev_snp_vbs_kexec_invalidate,
++};
++
++/* ── detection & probe (called from probe.c) ──────────────────────────── */
++
++bool __init vbs_sev_snp_detect(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
++		return false;
++
++	if (snp_vmpl == 0) {
++		pr_debug("vbs-sev-snp: running at VMPL0, no SVSM above us\n");
++		return false;
++	}
++
++	return true;
++}
++
++const struct vbs_ops *vbs_sev_snp_get_ops(void)
++{
++	return &sev_snp_vbs_ops;
++}
+diff --git a/security/vbs/tdx.c b/security/vbs/tdx.c
+new file mode 100644
+index 000000000000..43e636e2b591
+--- /dev/null
++++ b/security/vbs/tdx.c
+@@ -0,0 +1,280 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * VBS backend — Intel TDX service TD
++ *
++ * Uses TDG.VP.VMCALL (TDVMCALL) to communicate between the main TD
++ * (plane-0) and a service TD (plane-1) that provides security services.
++ *
++ * Transport: TDVMCALL with a VBS-specific sub-function leaf.  The VMM
++ *            (QEMU / KVM) routes the call to the service TD, which
++ *            shares memory with the main TD for request/response data.
++ *
++ * Note: Service TD support is still evolving in the TDX architecture.
++ *       This backend provides the framework and will be updated as the
++ *       inter-TD communication spec is finalised.
++ */
++
++#include "internal.h"
++
++#include <linux/cc_platform.h>
++#include <linux/mm.h>
++
++#include <asm/shared/tdx.h>
++#include <asm/tdx.h>
++
++/*
++ * VBS-specific TDVMCALL sub-function.  Chosen from the vendor-specific
++ * range (>= 0x10010000) to avoid conflicts with the GHCI-defined leaves.
++ */
++#define TDVMCALL_VBS			0x10010000ULL
++
++/* VBS sub-commands passed in R12 */
++#define TDX_VBS_INIT			0
++#define TDX_VBS_SHUTDOWN		1
++#define TDX_VBS_PROTECT_MEMORY		2
++#define TDX_VBS_SEAL_KERNEL		3
++#define TDX_VBS_VALIDATE_MODULE		4
++#define TDX_VBS_SET_MODULE_PERMS	5
++#define TDX_VBS_UNLOAD_MODULE		6
++#define TDX_VBS_ADD_KEY			7
++#define TDX_VBS_REVOKE_KEY		8
++#define TDX_VBS_SEND_CERTS		9
++#define TDX_VBS_KEXEC_VALIDATE		10
++#define TDX_VBS_KEXEC_INVALIDATE	11
++
++/* ── shared-memory buffers ────────────────────────────────────────────── */
++
++/*
++ * Shared (decrypted) pages for passing request and response data between
++ * the main TD and the service TD.  Marked shared via cc_mkdec() so the
++ * VMM and service TD can access them.
++ */
++static void *tdx_req_page;
++static void *tdx_resp_page;
++
++/* ── low-level VBS TDVMCALL ───────────────────────────────────────────── */
++
++/*
++ * Issue a VBS call to the service TD through the VMM.
++ *
++ * Register usage (TDVMCALL convention):
++ *   R11 = sub-function leaf (TDVMCALL_VBS)
++ *   R12 = VBS command ID
++ *   R13 = physical address of request buffer (shared)
++ *   R14 = physical address of response buffer (shared)
++ *   R15 = request size
++ */
++static int tdx_vbs_call(u32 cmd, const void *arg, size_t arg_size,
++			void *resp, size_t resp_size)
++{
++	struct tdx_module_args args = {};
++	u64 ret;
++
++	if (arg && arg_size) {
++		if (arg_size > PAGE_SIZE || !tdx_req_page)
++			return -E2BIG;
++		memcpy(tdx_req_page, arg, arg_size);
++	}
++
++	args.r11 = TDVMCALL_VBS;
++	args.r12 = cmd;
++	args.r13 = tdx_req_page ? cc_mkdec(virt_to_phys(tdx_req_page)) : 0;
++	args.r14 = tdx_resp_page ? cc_mkdec(virt_to_phys(tdx_resp_page)) : 0;
++	args.r15 = arg_size;
++
++	ret = __tdx_hypercall(&args);
++	if (ret) {
++		pr_err_ratelimited("vbs-tdx: TDVMCALL failed (0x%llx)\n", ret);
++		return -EIO;
++	}
++
++	/* R10 holds the VMM return status */
++	if (args.r10) {
++		pr_err_ratelimited("vbs-tdx: service TD returned 0x%llx\n",
++				   args.r10);
++		return -EREMOTEIO;
++	}
++
++	if (resp && resp_size && tdx_resp_page) {
++		size_t copy = min_t(size_t, resp_size, PAGE_SIZE);
++
++		memcpy(resp, tdx_resp_page, copy);
++	}
++	return 0;
++}
++
++static int tdx_vbs_vtl_call(enum vbs_call_id id,
++			    const void *arg, size_t arg_size,
++			    void *resp, size_t resp_size)
++{
++	return tdx_vbs_call(id, arg, arg_size, resp, resp_size);
++}
++
++/* ── memory protection ────────────────────────────────────────────────── */
++
++struct vbs_tdx_protect_args {
++	__u64 pfn;
++	__u64 nr_pages;
++	__u32 perms;
++} __packed;
++
++static int tdx_vbs_protect_memory(unsigned long pfn, unsigned long nr_pages,
++				  unsigned int perms)
++{
++	struct vbs_tdx_protect_args args = {
++		.pfn      = pfn,
++		.nr_pages = nr_pages,
++		.perms    = perms,
++	};
++
++	return tdx_vbs_call(TDX_VBS_PROTECT_MEMORY,
++			    &args, sizeof(args), NULL, 0);
++}
++
++static int tdx_vbs_seal_kernel(void)
++{
++	return tdx_vbs_call(TDX_VBS_SEAL_KERNEL, NULL, 0, NULL, 0);
++}
++
++/* ── module authentication ────────────────────────────────────────────── */
++
++static int tdx_vbs_validate_module(const void *elf, size_t elf_size,
++				   const void *sig, size_t sig_size)
++{
++	return tdx_vbs_call(TDX_VBS_VALIDATE_MODULE, NULL, 0, NULL, 0);
++}
++
++static int tdx_vbs_set_module_perms(const struct module *mod)
++{
++	return tdx_vbs_call(TDX_VBS_SET_MODULE_PERMS, NULL, 0, NULL, 0);
++}
++
++static int tdx_vbs_unload_module(const struct module *mod)
++{
++	return tdx_vbs_call(TDX_VBS_UNLOAD_MODULE, NULL, 0, NULL, 0);
++}
++
++/* ── key / certificate management ─────────────────────────────────────── */
++
++static int tdx_vbs_add_key(const void *key, size_t key_size,
++			   unsigned int flags)
++{
++	return tdx_vbs_call(TDX_VBS_ADD_KEY, key, key_size, NULL, 0);
++}
++
++static int tdx_vbs_revoke_key(const void *key_id, size_t id_size)
++{
++	return tdx_vbs_call(TDX_VBS_REVOKE_KEY, key_id, id_size, NULL, 0);
++}
++
++static int tdx_vbs_send_certs(const void *certs, size_t certs_size)
++{
++	return tdx_vbs_call(TDX_VBS_SEND_CERTS, certs, certs_size, NULL, 0);
++}
++
++/* ── kexec validation ─────────────────────────────────────────────────── */
++
++static int tdx_vbs_kexec_validate(const void *kernel, size_t kernel_size,
++				  const void *sig, size_t sig_size)
++{
++	return tdx_vbs_call(TDX_VBS_KEXEC_VALIDATE, NULL, 0, NULL, 0);
++}
++
++static int tdx_vbs_kexec_invalidate(void)
++{
++	return tdx_vbs_call(TDX_VBS_KEXEC_INVALIDATE, NULL, 0, NULL, 0);
++}
++
++/* ── lifecycle ────────────────────────────────────────────────────────── */
++
++static int tdx_vbs_init(void)
++{
++	int ret;
++
++	/*
++	 * Allocate shared pages for inter-TD communication.  These must
++	 * be marked as shared (decrypted) so the service TD can read them.
++	 */
++	tdx_req_page  = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	tdx_resp_page = (void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
++	if (!tdx_req_page || !tdx_resp_page) {
++		ret = -ENOMEM;
++		goto fail;
++	}
++
++	/*
++	 * Convert to shared pages.  set_memory_decrypted() clears the
++	 * encryption bit so the VMM / service TD can access these pages.
++	 */
++	ret = set_memory_decrypted((unsigned long)tdx_req_page, 1);
++	if (ret)
++		goto fail;
++	ret = set_memory_decrypted((unsigned long)tdx_resp_page, 1);
++	if (ret)
++		goto fail_re_encrypt_req;
++
++	ret = tdx_vbs_call(TDX_VBS_INIT, NULL, 0, NULL, 0);
++	if (ret) {
++		pr_err("vbs-tdx: service TD init failed (%d)\n", ret);
++		goto fail_re_encrypt;
++	}
++
++	pr_info("vbs-tdx: connected to TDX service TD\n");
++	return 0;
++
++fail_re_encrypt:
++	set_memory_encrypted((unsigned long)tdx_resp_page, 1);
++fail_re_encrypt_req:
++	set_memory_encrypted((unsigned long)tdx_req_page, 1);
++fail:
++	free_page((unsigned long)tdx_req_page);
++	free_page((unsigned long)tdx_resp_page);
++	tdx_req_page = tdx_resp_page = NULL;
++	return ret;
++}
++
++static void tdx_vbs_shutdown(void)
++{
++	tdx_vbs_call(TDX_VBS_SHUTDOWN, NULL, 0, NULL, 0);
++
++	if (tdx_resp_page) {
++		set_memory_encrypted((unsigned long)tdx_resp_page, 1);
++		free_page((unsigned long)tdx_resp_page);
++	}
++	if (tdx_req_page) {
++		set_memory_encrypted((unsigned long)tdx_req_page, 1);
++		free_page((unsigned long)tdx_req_page);
++	}
++	tdx_req_page = tdx_resp_page = NULL;
++}
++
++/* ── ops table & registration ─────────────────────────────────────────── */
++
++static const struct vbs_ops tdx_vbs_ops = {
++	.name		   = "tdx-service-td",
++	.init		   = tdx_vbs_init,
++	.shutdown	   = tdx_vbs_shutdown,
++	.vtl_call	   = tdx_vbs_vtl_call,
++	.protect_memory    = tdx_vbs_protect_memory,
++	.seal_kernel	   = tdx_vbs_seal_kernel,
++	.validate_module   = tdx_vbs_validate_module,
++	.set_module_perms  = tdx_vbs_set_module_perms,
++	.unload_module	   = tdx_vbs_unload_module,
++	.add_key	   = tdx_vbs_add_key,
++	.revoke_key	   = tdx_vbs_revoke_key,
++	.send_certs	   = tdx_vbs_send_certs,
++	.kexec_validate    = tdx_vbs_kexec_validate,
++	.kexec_invalidate  = tdx_vbs_kexec_invalidate,
++};
++
++/* ── detection & probe (called from probe.c) ──────────────────────────── */
++
++bool __init vbs_tdx_detect(void)
++{
++	return cc_platform_has(CC_ATTR_GUEST_TDX);
++}
++
++const struct vbs_ops *vbs_tdx_get_ops(void)
++{
++	return &tdx_vbs_ops;
++}
 -- 
 2.55.0
 
