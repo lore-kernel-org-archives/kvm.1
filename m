@@ -1,64 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4E4322F6;
-	Wed,  5 Aug 2026 11:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855D542E8F1;
+	Wed,  5 Aug 2026 11:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785928515; cv=none; b=uAPxXUJvF43EBRdRLysSX9q74B1Hu1JfHEabZDbsi1f1nAhEO8DHc5Wpt6XE8DM3tsUXH4uuYODEJZl6h2Y6+HEIERDDQJELPco0fMAPK09XKr8lePA5wnyyTlz29PLG07rexaTrZyR3oADbqEA06oAxbIk0q5Q4Ij6/6vuQ3bc=
+	t=1785929217; cv=none; b=lTdyMjswGrLlgFSFBnTv7WeuYM7yV0OHDafORiss4szwOeJu7fOkuGlMfvxLXJHA6besTqaGyXIb2MlC+LXyulMFgF1hid1aY30QTq/KImCI60ru2BwlB/I0Rx8p6FN/G3lWAx7aSoz6akfAkl8lpUzn5X5cGRT9w755Vu9h0/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785928515; c=relaxed/simple;
-	bh=H4t/9kixMBa0z3h5v7DH1H1LxU6xoIa+FBTDDXvH5+I=;
+	s=arc-20240116; t=1785929217; c=relaxed/simple;
+	bh=pe+ryBEZgXskHN7Mfzq3Sijs8Qe3mDDiXS0t+7/g3Zk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=GCaW3zq0+IDeo+uJ9UYpsYQtRM9M2Z2wbjdrkDfgccPl9vnZ1G+jvlziMRcvGB6FLKEqL9jFPB2KAjbE+kZNhIkTxW0zdoi619y8+cpRMDs6SqenF6450lbthpGqt4HLsL7nPfwCHNQVdM6Azw/BOtsswo/L5qd38u1uNcQIVu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WE6gyaec; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=cSIlw/rGKWoO65TAYY8Dn7/DLzgJPCDECbTaD6W6z2WAGUeeqoATLX71ttdlCP3+zepw/AesTGs/Zy/9sgGKXijhAY9H4XF+sE6lr8oPxqqBlYUh6vbCkUgQPwR63oiyXF77aZPgm2UrHx+/b9crDFrUte5KRjZe9vjvAQVZIjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnrifeLL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WE6gyaec"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555B41F000E9;
-	Wed,  5 Aug 2026 11:15:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnrifeLL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29451F00A3A;
+	Wed,  5 Aug 2026 11:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785928513;
-	bh=H4t/9kixMBa0z3h5v7DH1H1LxU6xoIa+FBTDDXvH5+I=;
+	s=k20260515; t=1785929216;
+	bh=gS+fMrzxXKey9DJcxqixd5aukDZ8dxaZnYKonF1G1DM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WE6gyaecEZK6mxpf2aunvSU9nMUWe1uGF/ICfnQZcbwD62xj58yYMRgHmh7r0o5XY
-	 vol5Q4LU2QDx+LAkJFz4lLH1oOLXteG6NOc39XKSrbzC+BSnqxmJ+H0gnXcrDxJ804
-	 AXidTTqlisi3Y8NkqdHDrNaSPXjIxoot2uk2tnCKEy9PW6q6LwJvp3MdFEL2XNuQRj
-	 p0LUWszzpVv2bxYaoDDNkccHcvgTeMFKZOn+FVUnZW7hrv0+90XKbtWys2+JOFw9v6
-	 pafMwb+18ZQkFeTUwq3+IwqRqKu+WcPsLSMmOaPHlzM/Y2gzokgnc3FGYWDkSOOx69
-	 Er5weHE0dN1wA==
+	b=KnrifeLLltzCckQc3Zd9ciJ5LqAr4+3QhYFdJCesGNFqXP179gA1CaAPgDqnwd/eA
+	 TT+vNVinPbYxM/+tPnQS1uQ+TCohdO9TGs8JFea7XXWyjZkvXAYH52Rvg6iJsL1uHn
+	 RWHalJa9QK/rq/eILeO5F05rkCPdCxTyschtwuaTxBgVOxbg9OxulgmI/cXUvHse9s
+	 yP41m0VgwkGFFcqb9g4qBOwzTTgcfYX02u1jjCH520g/2dwvTO57DB/lSd1vikq3od
+	 de2sjGvJMJEXmwLCgC37xp1ZaDfTwaCk3ul3ocdJubxKqV5N/PCEhRPsK6gM2R1KuC
+	 8PNbZeFIKlDbQ==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/8] KVM: s390: Remove user triggerable WARN_ON
+Subject: Re: [PATCH v3 7/8] KVM: s390: Free guest debug data on vcpu destroy
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Borntraeger" <borntraeger@linux.ibm.com>
-Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, linux-s390@vger.kernel.org
-In-Reply-To: <20260805110455.7200-2-borntraeger@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, "Heiko Carstens" <hca@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, kvm@vger.kernel.org, "Vasily Gorbik" <gor@linux.ibm.com>
+In-Reply-To: <20260805110455.7200-8-borntraeger@linux.ibm.com>
 References: <20260805110455.7200-1-borntraeger@linux.ibm.com>
- <20260805110455.7200-2-borntraeger@linux.ibm.com>
+ <20260805110455.7200-8-borntraeger@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 05 Aug 2026 11:15:12 +0000
-Message-Id: <20260805111513.555B41F000E9@smtp.kernel.org>
+Date: Wed, 05 Aug 2026 11:26:55 +0000
+Message-Id: <20260805112655.B29451F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-> pin_map_page() fails legitimately whenever the userspace mapping behind
-> the adapter route has gone away, e.g. when the VMM unmaps that memory.
-> As this can happen without a kernel programming error, remove the
-> WARN_ON.
->=20
-> Fixes: 1e95e3bc6b05 ("KVM: s390: Enable adapter_indicators_set to use map=
-ped pages")
-> Cc: Douglas Freimuth <freimuth@linux.ibm.com>
-> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-> Signed-off-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Pre-existing issues:
+- [High] Integer truncation in `__import_wp_info()` allows bounds check byp=
+ass and host Denial of Service via a massive `kmalloc()` allocation.
+--
+
+--- Patch [7]: [PATCH v3 7/8] KVM: s390: Free guest debug data on vcpu dest=
+roy ---
+commit 9d3d46230dbc0cbf211fd1bcc98310a2f3252d6f
+Author: Christian Borntraeger <borntraeger@linux.ibm.com>
+
+KVM: s390: Free guest debug data on vcpu destroy
+
+kvm_s390_clear_bp_data() is only called from
+kvm_arch_vcpu_ioctl_set_guest_debug(), i.e. when user space changes or
+disables debugging. A vCPU that is destroyed while hardware breakpoints
+are still armed leaks hw_bp_info, hw_wp_info and all old_data buffers.
+This commit fixes the issue by clearing the debug data on vCPU destruction.
+
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 0a197e055cad0..095c9ba0aa5cc 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -3410,6 +3410,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
+>  	trace_kvm_s390_destroy_vcpu(vcpu->vcpu_id);
+>  	kvm_s390_clear_local_irqs(vcpu);
+>  	kvm_clear_async_pf_completion_queue(vcpu);
+> +	kvm_s390_clear_bp_data(vcpu);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but while reviewing the debug
+data cleanup I noticed a potential integer truncation in __import_wp_info().
+
+Could a malicious user bypass the bounds check by providing a massive 64-bit
+length?
+
+In arch/s390/include/asm/kvm_host.h, struct kvm_hw_wp_info_arch defines
+len as a 32-bit integer:
+
+struct kvm_hw_wp_info_arch {
+	unsigned long addr;
+	unsigned long phys_addr;
+	int len;
+	char *old_data;
+};
+
+When __import_wp_info() in arch/s390/kvm/guestdbg.c imports the data:
+
+	wp_info->len =3D bp_data->len;
+	...
+	if (wp_info->len < 0 || wp_info->len > MAX_WP_SIZE)
+		return -EINVAL;
+
+	wp_info->old_data =3D kmalloc(bp_data->len, GFP_KERNEL_ACCOUNT);
+
+If a user-space process calls the KVM_SET_GUEST_DEBUG ioctl and sets
+bp_data->len to a value like 0x100000005, would the 32-bit truncation
+cause wp_info->len to become 5?
+
+If so, this would pass the MAX_WP_SIZE check, but the kmalloc() call
+would use the original 64-bit bp_data->len, resulting in an enormous
+allocation request.
+
+Since GFP_KERNEL_ACCOUNT lacks __GFP_NOWARN, couldn't this trigger a
+WARN_ON_ONCE splat in the page allocator and cause a host panic on
+systems with panic_on_warn enabled?
+
+>  	if (!kvm_is_ucontrol(vcpu->kvm))
+>  		sca_del_vcpu(vcpu);
+>  	kvm_s390_update_topology_change_report(vcpu->kvm, 1);
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260805110455.7200=
--1-borntraeger@linux.ibm.com?part=3D1
-
+-1-borntraeger@linux.ibm.com?part=3D7
