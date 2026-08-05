@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E654611C9;
-	Wed,  5 Aug 2026 11:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240CF468C0B;
+	Wed,  5 Aug 2026 11:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927853; cv=none; b=uwWnABoJFEqJj9GhCaHUSHtiATjy6f0yY6EmL6TQi70A9lv7heOFigS25S0/6kykHN2G4d83qM6s8XN25iDL+Zk35sjmVJe+P65jlZbQaK/DEMY60evjAjSsLZFUYmY0/iepOG+SzU/MKISEdEKiNokkHY5wsOhl4cfAOEkYYuk=
+	t=1785927854; cv=none; b=GOp60DOYu4Im4ZJTcZxj9QGhThdhVwqhkzBUczgZ+gLwHWq/K0dfXHLIX+4dRM3Z2FzNKgHia89OwzsRVRXF0XOulpWkk9SFmZFXBMZYaRttotFjJl1pEiphHIrU/XeUMkJbOQUeSWecEQ0l6knd5YJHeb3eaHVrAdSRLpMXVIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785927853; c=relaxed/simple;
-	bh=zvjJV8tV8BE05JUgc1FNynSS0+u5Qt0BznrK47FN39g=;
+	s=arc-20240116; t=1785927854; c=relaxed/simple;
+	bh=hp3inTy6vwa9u/UMgIvXdXMwZDjFfkMf6mB3v768YOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lqylFYLIF2XsqzDRwDg+DNtVt7vwxmtNZk5iwuOaWK30FAoBu8dV7PpzO15Ae4kuMOxRu/sLUXJqkFFbsEY84c1j6behS744bBLJb3cnOK2Nb2tXbU0mpX3Zyt0u0sBfRTGUpe+Pm/utRakUclRT8JQf80Xkf7Fys2/KnKZOAxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qGrVX46l; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=tlt+AELtqV6XH62ZfjapG/PY+0UpER9/NRAmUMNOlOpzORfWLR7fo9mUHSK7ytKDkypoQQ4PCUf1GDlfMCTPziR/vL5+ag3x3g/vmiKzFYNWZhAFG9bx3+xPZ39vSdtl9IWcVPRLut+ue7/qe4A8Bn0qW/og4c2TL+dhrhgkR4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bOqp6a9e; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qGrVX46l"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bOqp6a9e"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 9075020B716C;
-	Wed,  5 Aug 2026 04:03:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9075020B716C
+	by linux.microsoft.com (Postfix) with ESMTPSA id C624520B7169;
+	Wed,  5 Aug 2026 04:03:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C624520B7169
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927829;
-	bh=bI49O7Gio+nXUuiVovapNuGTXo7eViF48ve8j7ZvVjM=;
+	s=default; t=1785927830;
+	bh=RQx/+tS3Gguj0oQsRoaGqW2DUL7VawR8cXjvWahtnwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGrVX46lltvkMIYvrvJjjOesOgiErdHK0KSfU7RG8vgTO7nnPH6pvxNMqqSFBaXJ1
-	 Qwk18H4HLMtLRtzg9BmcS8KAiYjAf+HUPNoTp1Rsh+uU1tlESsvRfcCHip7pF4km7V
-	 L2Vv7luez3Ct/vq1MRoz2AqdBPFNtIP3NRUYwWws=
+	b=bOqp6a9eBubODjXnHNNo2eaStXBqrL+wwVpv5ToXbO2JjG20yOvPCdt1l6fsPtnf6
+	 vg/4UWdFR4XKfOK99EjjFyNgZRwjzPIu1jpo9fVFLEn7WueYm4YdEiP9CQE27sw0ZZ
+	 T4BqH/1kdeh/cGHoF3h7OVTljuzFN+Golll62xcg=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 33/42] drivers/virt: rename VBS park loop to secure_monitor
-Date: Wed,  5 Aug 2026 04:03:15 -0700
-Message-ID: <20260805110324.25067-34-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 34/42] x86/realmode: skip the sub-1M trampoline for the VBS secure plane
+Date: Wed,  5 Aug 2026 04:03:16 -0700
+Message-ID: <20260805110324.25067-35-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -40,520 +40,406 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Replace the secure-plane park loop (drivers/virt/vbs_park.c, CONFIG_VBS_PARK)
-with drivers/virt/secure_monitor.c (CONFIG_VBS_SECURE_MONITOR), activated by
-the "secure_monitor" kernel command-line option.  Behaviour is unchanged: a
-late_initcall spawns the "vbs-secmon" kthread which hands control back to the
-normal plane via KVM_HC_VBS_VTL_RETURN and acknowledges VTL calls as no-ops;
-real per-call handlers are plumbed in incrementally.
+The VBS secure plane (plane >0) boots from a single high-memory region
+carved out of the normal plane's address space and therefore has no
+sub-1M RAM for the x86 real-mode AP trampoline.  reserve_real_mode()
+followed by init_real_mode() then panics with "Real mode trampoline was
+not allocated".
 
-Also drop the unused security/vbs/secure_monitor.c, which was never wired into
-the running secure-plane path (it keyed off "vbs_secure_plane" under
-CONFIG_VBS_KVM_PLANES but was never activated).
+The secure plane is uniprocessor, enters directly in long mode and never
+uses the trampoline, so point x86_platform.realmode_reserve/realmode_init
+at x86_init_noop for it.  This mirrors how the Hyper-V VTL (hv_vtl.c) and
+Xen PV ports disable the trampoline.
+
+Gated at compile time on CONFIG_VBS_SECURE_MONITOR (only the secure-plane
+kernel sets it) and at runtime on the "secure_monitor" early param (the
+normal plane never passes it), so plane 0 is unaffected.
 ---
- drivers/virt/Kconfig                          |  16 +-
- drivers/virt/Makefile                         |   2 +-
- drivers/virt/{vbs_park.c => secure_monitor.c} |  77 ++---
- security/vbs/Makefile                         |   1 -
- security/vbs/secure_monitor.c                 | 266 ------------------
- 5 files changed, 52 insertions(+), 310 deletions(-)
- rename drivers/virt/{vbs_park.c => secure_monitor.c} (50%)
- delete mode 100644 security/vbs/secure_monitor.c
+ arch/x86/include/asm/kvm_host.h | 17 +++++--
+ arch/x86/kvm/mmu/mmu.c          | 36 ++++++++++++++
+ arch/x86/kvm/mmu/spte.h         | 12 +++--
+ arch/x86/kvm/x86.c              | 85 +++++++++++++++++++++++++++++----
+ arch/x86/realmode/init.c        | 26 ++++++++++
+ include/linux/kvm_host.h        | 35 ++++++++++++++
+ include/uapi/linux/kvm.h        |  1 +
+ virt/kvm/kvm_main.c             |  6 +++
+ 8 files changed, 202 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-index 88e40eaba1c2..5d964f124afe 100644
---- a/drivers/virt/Kconfig
-+++ b/drivers/virt/Kconfig
-@@ -13,20 +13,20 @@ menuconfig VIRT_DRIVERS
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index b7d478dcc1a5..bbccb9d3d801 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -380,15 +380,24 @@ union kvm_mmu_page_role {
+ 		 */
+ 		unsigned cr4_smep:1;
  
- if VIRT_DRIVERS
- 
--config VBS_PARK
--	bool "KVM VM-planes secure-plane park loop"
-+config VBS_SECURE_MONITOR
-+	bool "KVM VM-planes secure-plane monitor"
- 	depends on X86 && KVM_GUEST
- 	help
--	  Minimal in-kernel handler for the secure plane (plane >0) of a KVM
--	  VM-planes guest.  When enabled and the "vbs_park" kernel command-line
-+	  In-kernel monitor for the secure plane (plane >0) of a KVM VM-planes
-+	  guest.  When enabled and the "secure_monitor" kernel command-line
- 	  option is present, a kernel thread hands control back to the normal
- 	  plane via the KVM_HC_VBS_VTL_RETURN hypercall and then services VTL
- 	  calls from a shared calling area.
- 
--	  This is independent of the full VBS/HEKI stack (CONFIG_VBS): it
--	  implements only the park/dispatch handshake so that any secure kernel
--	  can act as plane 1.  Calls are acknowledged as no-ops.  Say N unless
--	  this kernel is used as a VM-planes secure plane.
-+	  This is independent of the full VBS/HEKI stack (CONFIG_VBS) so that
-+	  any secure kernel can act as plane 1.  Per-call handlers are plumbed
-+	  in incrementally; until then calls are acknowledged as no-ops.  Say N
-+	  unless this kernel is used as a VM-planes secure plane.
- 
- config VMGENID
- 	tristate "Virtual Machine Generation ID driver"
-diff --git a/drivers/virt/Makefile b/drivers/virt/Makefile
-index fa91899a356d..22d1121ba5bd 100644
---- a/drivers/virt/Makefile
-+++ b/drivers/virt/Makefile
-@@ -5,7 +5,7 @@
- 
- obj-$(CONFIG_FSL_HV_MANAGER)	+= fsl_hypervisor.o
- obj-$(CONFIG_VMGENID)		+= vmgenid.o
--obj-$(CONFIG_VBS_PARK)		+= vbs_park.o
-+obj-$(CONFIG_VBS_SECURE_MONITOR)	+= secure_monitor.o
- obj-y				+= vboxguest/
- 
- obj-$(CONFIG_NITRO_ENCLAVES)	+= nitro_enclaves/
-diff --git a/drivers/virt/vbs_park.c b/drivers/virt/secure_monitor.c
-similarity index 50%
-rename from drivers/virt/vbs_park.c
-rename to drivers/virt/secure_monitor.c
-index fabb6beeea7b..2d181c32c439 100644
---- a/drivers/virt/vbs_park.c
-+++ b/drivers/virt/secure_monitor.c
-@@ -1,31 +1,41 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * vbs_park - minimal KVM VM-planes secure-plane park loop
-+ * secure_monitor - KVM VM-planes secure-plane monitor
-  *
-- * This provides only the secure-plane (plane >0) side of the VM-planes
-- * park/dispatch handshake so that an otherwise ordinary kernel can act as
-- * plane 1.  It is deliberately independent of the full VBS/HEKI stack
-- * (CONFIG_VBS): it implements no security policy.  Its single job is to hand
-- * control back to the normal plane (plane 0) via the KVM_HC_VBS_VTL_RETURN
-- * hypercall and then service VTL calls from the shared calling area.
-+ * This is the secure-plane (plane >0) side of the VM-planes park/dispatch
-+ * handshake.  It lets an otherwise ordinary kernel act as the secure plane
-+ * (conventionally plane 1 / VTL1 / VMPL0, though the index is not hard-coded)
-+ * without pulling in the full VBS/HEKI stack (CONFIG_VBS).  Its single job is
-+ * to hand control back to the normal plane (plane 0) via the
-+ * KVM_HC_VBS_VTL_RETURN hypercall and then service VTL calls from the shared
-+ * calling area.
-  *
-  * Control flow (all within plane 0's single KVM_RUN; see
-  * arch/x86/kvm/x86.c __kvm_emulate_hypercall):
-  *
-- *   plane 0                        KVM                       plane 1 (here)
-- *   -------                        ---                       --------------
-+ *   normal plane                   KVM                       secure plane
-+ *   ------------                   ---                       ------------
-  *   fill calling area
-  *   HC_VBS_VTL_CALL(ca_gpa) ─────▶ switch_plane ───────────▶ resume in
-- *                                  (RAX := ca_gpa)            vtl_return()
-- *                                                            handle call_id
-+ *                                  (RAX := ca_gpa)            secmon_vtl_return()
-+ *                                                            dispatch(call_id)
-  *                                                            write ca->status
-  *   resume after VTL_CALL ◀─────── switch_plane ◀─────────── HC_VBS_VTL_RETURN
-  *
-- * Activated by the "vbs_park" kernel command-line option; without it this
-- * kernel boots normally and never parks.
-+ * Because all planes of a VM share the same memslots (struct kvm_plane has no
-+ * memslots of its own; they live in struct kvm), the secure plane sees the
-+ * same guest-physical address space as the normal plane and can read the
-+ * calling area and the GPAs referenced by each request directly.
-+ *
-+ * For now every VTL call is acknowledged as a no-op so the normal plane can
-+ * make progress; the real per-call handlers (self-protection, HEKI memory
-+ * protection, kernel sealing, …) are plumbed in incrementally.
-+ *
-+ * Activated by the "secure_monitor" kernel command-line option; without it
-+ * this kernel boots normally and never parks.
-  */
- 
--#define pr_fmt(fmt) "vbs-park: " fmt
-+#define pr_fmt(fmt) "vbs-secmon: " fmt
- 
- #include <linux/kernel.h>
- #include <linux/init.h>
-@@ -44,7 +54,7 @@
-  *
-  *   [ call_pending | call_id | status | arg_size | resp_size | buffer ]
-  */
--struct vtl_ca {
-+struct vbs_kvm_ca {
- 	__u8	call_pending;	/* 1 while call is in flight		*/
- 	__u8	rsvd[3];
- 	__u32	call_id;	/* request id (set by caller)		*/
-@@ -54,15 +64,15 @@ struct vtl_ca {
- 	__u8	buffer[];	/* request data in, response data out	*/
- } __packed;
- 
--/* Set from the "vbs_park" kernel command-line option. */
--static bool vbs_park_active __ro_after_init;
-+/* Set from the "secure_monitor" kernel command-line option. */
-+static bool secmon_active __ro_after_init;
- 
--static int __init vbs_park_setup(char *str)
-+static int __init secmon_setup(char *str)
- {
--	vbs_park_active = true;
-+	secmon_active = true;
- 	return 1;
- }
--__setup("vbs_park", vbs_park_setup);
-+__setup("secure_monitor", secmon_setup);
- 
- /*
-  * Park the secure plane and hand control back to the normal plane.  On the
-@@ -70,23 +80,23 @@ __setup("vbs_park", vbs_park_setup);
-  * hypercall return value (RAX).  @status is carried for tracing only; the
-  * real result is already in the calling area.
-  */
--static u64 vtl_return(long status)
-+static u64 secmon_vtl_return(long status)
- {
- 	return kvm_hypercall1(KVM_HC_VBS_VTL_RETURN, (unsigned long)status);
- }
- 
--static int vbs_park_fn(void *unused)
-+static int secmon_monitor_fn(void *unused)
- {
- 	long status = 0;
- 
--	pr_info("secure-plane park loop started\n");
-+	pr_info("secure monitor started\n");
- 
- 	for (;;) {
--		struct vtl_ca *ca;
-+		struct vbs_kvm_ca *ca;
- 		u64 ca_gpa;
- 
- 		/* Park; resume with the next request's calling-area GPA. */
--		ca_gpa = vtl_return(status);
-+		ca_gpa = secmon_vtl_return(status);
- 		if (!ca_gpa) {
- 			status = -EINVAL;
- 			continue;
-@@ -101,10 +111,9 @@ static int vbs_park_fn(void *unused)
- 		}
+-		unsigned:3;
++		/*
++		 * Plane (privilege level) that owns this shadow page.  VM
++		 * planes share memslots but must have independent page
++		 * tables so that a higher-privilege plane can restrict a
++		 * lower plane's access (e.g. deny reads of secure-plane
++		 * memory).  Tagging the role keeps each plane's roots and
++		 * SPTEs separate.  Always 0 when CONFIG_VM_PLANES is off.
++		 */
++		unsigned plane:4;
  
  		/*
--		 * No security policy lives here: acknowledge the call as a
--		 * no-op so the normal plane can make progress.  Replace this
--		 * with real handlers (or move plane 1 to a dedicated SVSM) to
--		 * enforce actual VBS semantics.
-+		 * No handlers are plumbed in yet: acknowledge the call as a
-+		 * no-op so the normal plane can make progress.  Real per-call
-+		 * dispatch is added incrementally.
+ 		 * This is left at the top of the word so that
+ 		 * kvm_memslots_for_spte_role can extract it with a
+-		 * simple shift.  While there is room, give it a whole
+-		 * byte so it is also faster to load it from memory.
++		 * simple shift.  smm is only ever used as a boolean, so it
++		 * is reduced to 7 bits (from a full byte) to make room for
++		 * cr4_smep and the VM-planes plane tag above.
  		 */
- 		pr_info_ratelimited("VTL call id=0x%x arg_size=%u (no-op)\n",
- 				    ca->call_id, ca->arg_size);
-@@ -118,19 +127,19 @@ static int vbs_park_fn(void *unused)
- 	return 0;
- }
+-		unsigned smm:8;
++		unsigned smm:7;
+ 	};
+ };
  
--static int __init vbs_park_init(void)
-+static int __init secmon_init(void)
- {
- 	struct task_struct *t;
- 
--	if (!vbs_park_active)
-+	if (!secmon_active)
- 		return 0;
- 
--	t = kthread_run(vbs_park_fn, NULL, "vbs-park");
-+	t = kthread_run(secmon_monitor_fn, NULL, "vbs-secmon");
- 	if (IS_ERR(t)) {
--		pr_err("failed to start park loop: %ld\n", PTR_ERR(t));
-+		pr_err("failed to start secure monitor: %ld\n", PTR_ERR(t));
- 		return PTR_ERR(t);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 6e41c5df72ed..960e212c5ee3 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4708,6 +4708,34 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
+ 		return -EFAULT;
  	}
  
- 	return 0;
- }
--late_initcall(vbs_park_init);
-+late_initcall(secmon_init);
-diff --git a/security/vbs/Makefile b/security/vbs/Makefile
-index f24f31727a65..01e831e28ac7 100644
---- a/security/vbs/Makefile
-+++ b/security/vbs/Makefile
-@@ -7,7 +7,6 @@ vbs-y := probe.o core.o
++	/*
++	 * A higher-privilege plane may forbid this plane from accessing a gfn
++	 * (e.g. to hide secure-plane memory from the normal plane).  Two cases
++	 * cannot be represented as a present SPTE and must be denied outright,
++	 * exiting to userspace with a memory fault rather than (re)building an
++	 * SPTE the access will immediately re-fault on:
++	 *
++	 *  - NO_READ: there is no present-but-unreadable EPT entry, so leave the
++	 *    gfn unmapped for this plane.
++	 *
++	 *  - NO_WRITE on a write fault: make_spte() strips ACC_WRITE_MASK and
++	 *    builds a read-only SPTE, so a guest write would re-fault forever
++	 *    (an unresolvable EPT write-violation livelock).  Deny it instead so
++	 *    the violation is visible and can be mediated (e.g. HEKI text_poke
++	 *    is routed through the secure plane rather than written directly).
++	 */
++	{
++		unsigned long plane_attrs =
++			kvm_plane_access_attributes(vcpu->plane, fault->gfn);
++
++		if ((plane_attrs & KVM_MEMORY_ATTRIBUTE_NO_READ) ||
++		    (fault->write &&
++		     (plane_attrs & KVM_MEMORY_ATTRIBUTE_NO_WRITE))) {
++			kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
++			return -EFAULT;
++		}
++	}
++
+ 	if (unlikely(!slot))
+ 		return kvm_handle_noslot_fault(vcpu, fault, access);
  
- vbs-$(CONFIG_VBS_HEKI)		+= heki.o
- obj-$(CONFIG_VBS_KVM_PLANES)	+= kvm_planes.o
--obj-$(CONFIG_VBS_KVM_PLANES)	+= secure_monitor.o
- obj-$(CONFIG_VBS_SEV_SNP)	+= sev_snp.o
- obj-$(CONFIG_VBS_TDX)		+= tdx.o
- obj-$(CONFIG_VBS_HV_VSM)	+= hv_vsm.o
-diff --git a/security/vbs/secure_monitor.c b/security/vbs/secure_monitor.c
-deleted file mode 100644
-index c1221ad5019b..000000000000
---- a/security/vbs/secure_monitor.c
-+++ /dev/null
-@@ -1,266 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * VBS secure-plane monitor — in-guest VTL dispatcher
-- *
-- * This is the secure-plane counterpart of the normal-plane kvm_planes
-- * backend.  The SAME kernel image boots as both the normal plane and the
-- * secure plane; when booted as the secure plane (selected via the
-- * "vbs_secure_plane" kernel command-line option) this monitor takes over
-- * and services VTL calls issued by the normal plane.
-- *
-- * "Secure plane" is the highest-privilege plane of the VM (conventionally
-- * plane 1 / VTL1 / VMPL0, but a VM may have up to KVM_MAX_PLANES planes and
-- * the index is not hard-coded here).  "Normal plane" is the requesting,
-- * lower-privilege plane (conventionally plane 0).
-- *
-- * Control flow (all within the normal plane's single KVM_RUN, see
-- * arch/x86/kvm/x86.c ____kvm_emulate_hypercall):
-- *
-- *   normal plane                   KVM                       secure plane
-- *   ------------                   ---                       ------------
-- *   fill calling area
-- *   HC_VBS_VTL_CALL(ca_gpa) ─────▶ switch_plane ───────────▶ resume in
-- *                                  (RAX := ca_gpa)            secmon_vtl_return()
-- *                                                            dispatch(call_id)
-- *                                                            write ca->status
-- *   resume after VTL_CALL ◀─────── switch_plane ◀─────────── HC_VBS_VTL_RETURN(status)
-- *   read ca->status
-- *
-- * Because all planes of a VM share the same memslots (struct kvm_plane has
-- * no memslots of its own; they live in struct kvm), the secure plane sees
-- * the same guest-physical address space as the normal plane and can read
-- * the calling area and the GPAs referenced by each request directly.
-- */
--
--#define pr_fmt(fmt) "vbs-secmon: " fmt
--
--#include <linux/kernel.h>
--#include <linux/init.h>
--#include <linux/kthread.h>
--#include <linux/io.h>
--#include <linux/mm.h>
--#include <linux/types.h>
--#include <linux/errno.h>
--#include <linux/vbs.h>
--#include <linux/kvm_para.h>
--#include <asm/kvm_para.h>
--
--#include "heki.h"
--
--/*
-- * Shared-memory calling area — must match struct vbs_kvm_ca in kvm_planes.c
-- * (this is the normal-plane <-> secure-plane wire ABI).
-- *
-- *   [ call_pending | call_id | status | arg_size | resp_size | buffer ]
-- */
--struct vbs_kvm_ca {
--	__u8	call_pending;	/* 1 while call is in flight		*/
--	__u8	rsvd[3];
--	__u32	call_id;	/* enum vbs_call_id (set by caller)	*/
--	__s32	status;		/* return code (set by responder)	*/
--	__u32	arg_size;	/* request payload size			*/
--	__u32	resp_size;	/* response payload size		*/
--	__u8	buffer[];	/* request data in, response data out	*/
--} __packed;
--
--/* Set from the "vbs_secure_plane" kernel command-line option. */
--static bool secmon_active __ro_after_init;
--
--static int __init secmon_setup(char *str)
--{
--	secmon_active = true;
--	return 1;
--}
--__setup("vbs_secure_plane", secmon_setup);
--
--/*
-- * Park the secure plane and hand control back to the normal plane.  On the
-- * next VTL call, KVM resumes us here with the calling-area GPA in the
-- * hypercall return value (RAX).  @status is carried for tracing only; the
-- * real result is already in the calling area.
-- */
--static u64 secmon_vtl_return(long status)
--{
--	return kvm_hypercall1(KVM_HC_VBS_VTL_RETURN, (unsigned long)status);
--}
--
--/*
-- * Apply EPT permissions on a normal-plane GPA range from the secure plane.
-- *
-- * The secure plane cannot issue the host KVM_SET_MEMORY_ATTRIBUTES ioctl,
-- * so it asks KVM to do it via the KVM_HC_VBS_SET_MEM_ATTRS hypercall, which
-- * KVM honours only for a higher-privilege plane.  @perms carries the access
-- * bits the normal plane should retain (VBS_MEM_*); KVM translates a cleared
-- * write/exec bit into NO_WRITE / NO_EXEC memory attributes.
-- */
--static int secmon_apply_attrs(u64 gpa, u64 size, u32 perms)
--{
--	long ret;
--
--	pr_debug("apply_attrs gpa=0x%llx size=0x%llx perms=%c%c%c\n",
--		 gpa, size,
--		 (perms & VBS_MEM_READ)  ? 'r' : '-',
--		 (perms & VBS_MEM_WRITE) ? 'w' : '-',
--		 (perms & VBS_MEM_EXEC)  ? 'x' : '-');
--
--	ret = kvm_hypercall3(KVM_HC_VBS_SET_MEM_ATTRS, gpa, size, perms);
--	if (ret)
--		return (int)ret;
--
--	return 0;
--}
--
--/* ── per-call handlers ────────────────────────────────────────────────── */
--
--static int secmon_do_protect_memory(const void *arg, u32 arg_size)
--{
--	const struct vbs_protect_memory_req *r = arg;
--
--	if (arg_size < sizeof(*r))
--		return -EINVAL;
--
--	return secmon_apply_attrs(r->gpa, r->size, r->perms);
--}
--
--static int secmon_do_seal_kernel(const void *arg, u32 arg_size)
--{
--	const struct vbs_seal_kernel_req *r = arg;
--	int ret;
--
--	if (arg_size < sizeof(*r))
--		return -EINVAL;
--
--	/* Kernel text: read + execute, no write. */
--	ret = secmon_apply_attrs(r->text_gpa, r->text_size,
--				 VBS_MEM_READ | VBS_MEM_EXEC);
--	if (ret)
--		return ret;
--
--	/* Kernel rodata: read only, no write, no execute. */
--	return secmon_apply_attrs(r->rodata_gpa, r->rodata_size,
--				  VBS_MEM_READ);
--}
--
--static int secmon_do_set_module_perms(const void *arg, u32 arg_size)
--{
--	const struct vbs_set_module_perms_req *hdr = arg;
--	const struct vbs_module_section *sec;
--	u32 i, n;
--
--	if (arg_size < sizeof(*hdr))
--		return -EINVAL;
--
--	n = hdr->nr_sections;
--	if (arg_size < sizeof(*hdr) + n * sizeof(*sec))
--		return -EINVAL;
--
--	sec = (const struct vbs_module_section *)(hdr + 1);
--	for (i = 0; i < n; i++) {
--		int ret = secmon_apply_attrs(sec[i].gpa, sec[i].size,
--					     sec[i].perms);
--		if (ret)
--			return ret;
--	}
--
--	return 0;
--}
--
--static long secmon_dispatch(u32 call_id, const void *arg, u32 arg_size,
--			    u32 *resp_size)
--{
--	*resp_size = 0;
--
--	switch (call_id) {
--	case VBS_CALL_INIT:
--	case VBS_CALL_SHUTDOWN:
--		return 0;
--
--	case VBS_CALL_PROTECT_MEMORY:
--		return secmon_do_protect_memory(arg, arg_size);
--	case VBS_CALL_SEAL_KERNEL:
--		return secmon_do_seal_kernel(arg, arg_size);
--
--	case VBS_CALL_SET_MODULE_PERMS:
--		return secmon_do_set_module_perms(arg, arg_size);
--
--	/*
--	 * Module/kexec validation and key management are acknowledged for
--	 * now (mirroring the previous userspace dispatcher); real signature
--	 * verification runs here in a later stage.
--	 */
--	case VBS_CALL_VALIDATE_MODULE:
--	case VBS_CALL_UNLOAD_MODULE:
--	case VBS_CALL_ADD_KEY:
--	case VBS_CALL_REVOKE_KEY:
--	case VBS_CALL_SEND_CERTS:
--	case VBS_CALL_KEXEC_VALIDATE:
--	case VBS_CALL_KEXEC_INVALIDATE:
--		return 0;
--
--	default:
--		pr_warn_ratelimited("unknown call_id 0x%x\n", call_id);
--		return -ENOSYS;
--	}
--}
--
--/* ── monitor loop ─────────────────────────────────────────────────────── */
--
--static int secmon_monitor_fn(void *unused)
--{
--	long status = 0;
--
--	pr_info("secure monitor started\n");
--
--	for (;;) {
--		struct vbs_kvm_ca *ca;
--		u64 ca_gpa;
--		u32 call_id, arg_size, resp_size = 0;
--
--		/* Park; resume with the next request's calling-area GPA. */
--		ca_gpa = secmon_vtl_return(status);
--		if (!ca_gpa) {
--			status = -EINVAL;
--			continue;
--		}
--
--		ca = memremap(ca_gpa, PAGE_SIZE, MEMREMAP_WB);
--		if (!ca) {
--			pr_err_ratelimited("failed to map calling area 0x%llx\n",
--					   ca_gpa);
--			status = -EFAULT;
--			continue;
--		}
--
--		call_id  = ca->call_id;
--		arg_size = ca->arg_size;
--		if (arg_size > PAGE_SIZE - sizeof(*ca))
--			arg_size = PAGE_SIZE - sizeof(*ca);
--
--		status = secmon_dispatch(call_id, ca->buffer, arg_size,
--					 &resp_size);
--
--		ca->status    = (s32)status;
--		ca->resp_size = resp_size;
--
--		memunmap(ca);
--	}
--
--	return 0;
--}
--
--static int __init secmon_init(void)
--{
--	struct task_struct *t;
--
--	if (!secmon_active)
--		return 0;
--
--	t = kthread_run(secmon_monitor_fn, NULL, "vbs-secmon");
--	if (IS_ERR(t)) {
--		pr_err("failed to start secure monitor: %ld\n", PTR_ERR(t));
--		return PTR_ERR(t);
--	}
--
--	return 0;
--}
--late_initcall(secmon_init);
+@@ -5884,6 +5912,14 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
+ 	role.direct = true;
+ 	role.has_4_byte_gpte = false;
+ 
++	/*
++	 * Give each VM plane its own TDP root.  Planes share memslots but
++	 * need independent page tables so a higher-privilege plane can
++	 * restrict a lower plane's access to a GFN.  plane_level is 0 (and
++	 * thus a no-op) on non-plane VMs and when CONFIG_VM_PLANES is off.
++	 */
++	role.plane = vcpu->plane_level;
++
+ 	/* All TDP pages are supervisor-executable */
+ 	role.access = ACC_ALL;
+ 	if (role.cr4_smep && shadow_user_mask)
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 144f7c5a1040..ed03bcdbf82d 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -580,9 +580,13 @@ void __init kvm_mmu_spte_module_init(void);
+ void kvm_mmu_reset_all_pte_masks(void);
+ 
+ /*
+- * Apply memory protection attributes to pte_access.
+- * If memory attributes have NO_WRITE or NO_EXEC set for a GFN,
+- * strip the corresponding access bits before building the SPTE.
++ * Apply cross-plane access restrictions to pte_access when building an SPTE
++ * for the faulting plane.  A higher-privilege plane may downgrade a lower
++ * plane's access to a GFN via its per-plane access_attr_array.  NO_WRITE and
++ * NO_EXEC are enforced here by stripping the corresponding access bits.
++ * NO_READ cannot be expressed as a present-but-unreadable SPTE on EPT, so it
++ * is enforced earlier in the fault handler (kvm_mmu_faultin_pfn) by refusing
++ * to map the page.
+  */
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+ static inline unsigned int kvm_plane_filter_pte_access(struct kvm_vcpu *vcpu,
+@@ -591,7 +595,7 @@ static inline unsigned int kvm_plane_filter_pte_access(struct kvm_vcpu *vcpu,
+ {
+ 	unsigned long attrs;
+ 
+-	attrs = kvm_get_memory_attributes(vcpu->kvm, gfn);
++	attrs = kvm_plane_access_attributes(vcpu->plane, gfn);
+ 	if (attrs & KVM_MEMORY_ATTRIBUTE_NO_WRITE)
+ 		pte_access &= ~ACC_WRITE_MASK;
+ 	if (attrs & KVM_MEMORY_ATTRIBUTE_NO_EXEC)
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3c73ab1dcfe8..c8c37d569023 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10494,6 +10494,61 @@ static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
+ 	return kvm_skip_emulated_instruction(vcpu);
+ }
+ 
++#if defined(CONFIG_VM_PLANES) && defined(CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES)
++/*
++ * Apply cross-plane access restrictions requested by a higher-privilege plane.
++ * Stores @attrs (NO_READ/NO_WRITE/NO_EXEC) for [@start, @end) in @plane's
++ * access_attr_array and zaps the range so any pages already mapped in @plane's
++ * EPT re-fault and pick up the restriction.  @attrs == 0 clears the
++ * restriction for the range.
++ */
++static int kvm_plane_set_access_attrs(struct kvm *kvm, struct kvm_plane *plane,
++				      gfn_t start, gfn_t end, unsigned long attrs)
++{
++	void *entry = attrs ? xa_mk_value(attrs) : NULL;
++	gfn_t gfn;
++	int r = 0;
++
++	mutex_lock(&kvm->slots_lock);
++
++	/*
++	 * Reserve slots up front so the store loop below cannot fail partway
++	 * through and leave a gap (a still-readable page) in the protected
++	 * range.  Clearing a restriction (entry == NULL) never allocates.
++	 */
++	if (entry) {
++		for (gfn = start; gfn < end; gfn++) {
++			r = xa_reserve(&plane->access_attr_array, gfn,
++				       GFP_KERNEL_ACCOUNT);
++			if (r)
++				goto out_unlock;
++
++			cond_resched();
++		}
++	}
++
++	for (gfn = start; gfn < end; gfn++) {
++		r = xa_err(xa_store(&plane->access_attr_array, gfn, entry,
++				    GFP_KERNEL_ACCOUNT));
++		if (KVM_BUG_ON(r, kvm))
++			goto out_unlock;
++
++		cond_resched();
++	}
++
++	/*
++	 * Re-fault the affected gfns in the plane's EPT so the new restriction
++	 * takes effect on existing mappings.  Zapping all roots is harmless;
++	 * other planes simply rebuild identical entries on next access.
++	 */
++	kvm_zap_gfn_range(kvm, start, end);
++
++out_unlock:
++	mutex_unlock(&kvm->slots_lock);
++	return r;
++}
++#endif /* CONFIG_VM_PLANES && CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++
+ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 			      int (*complete_hypercall)(struct kvm_vcpu *))
+ {
+@@ -10683,16 +10738,21 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 	case KVM_HC_VBS_SET_MEM_ATTRS:
+ #if defined(CONFIG_VM_PLANES) && defined(CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES)
+ 		/*
+-		 * The secure plane (plane >0) enforces EPT permissions on the
+-		 * normal plane's memory.  It cannot issue the host
++		 * The secure plane (plane >0) enforces EPT permissions on a
++		 * lower plane's memory.  It cannot issue the host
+ 		 * KVM_SET_MEMORY_ATTRIBUTES ioctl, so it asks KVM to do it via
+-		 * this hypercall.  Only a higher-privilege plane may call it.
++		 * this hypercall.  Only a higher-privilege plane may call it;
++		 * the restriction is applied to the plane directly below the
++		 * caller.
+ 		 *
+ 		 *   a0 = guest-physical address (page aligned)
+ 		 *   a1 = region size in bytes  (page aligned)
+-		 *   a2 = access bits to retain for lower planes:
+-		 *        bit0 read (implicit), bit1 write, bit2 exec
+-		 *        (matches VBS_MEM_READ/WRITE/EXEC)
++		 *   a2 = access bits to retain for the lower plane:
++		 *        bit0 read, bit1 write, bit2 exec
++		 *        (matches VBS_MEM_READ/WRITE/EXEC).  A cleared bit adds
++		 *        the corresponding NO_READ/NO_WRITE/NO_EXEC restriction;
++		 *        a2 = 0 hides the range entirely (e.g. secure-plane
++		 *        memory that the normal plane must not read).
+ 		 */
+ 		if (vcpu->plane_level == 0) {
+ 			ret = -KVM_EPERM;
+@@ -10704,17 +10764,26 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
+ 			ret = -KVM_EINVAL;
+ 			goto out;
+ 		} else {
++			struct kvm_plane *target;
+ 			unsigned long attrs = 0;
+ 			gfn_t start = a0 >> PAGE_SHIFT;
+ 			gfn_t end = (a0 + a1) >> PAGE_SHIFT;
+ 
++			target = vcpu->kvm->planes[vcpu->plane_level - 1];
++			if (!target) {
++				ret = -KVM_EINVAL;
++				goto out;
++			}
++
++			if (!(a2 & BIT(0)))
++				attrs |= KVM_MEMORY_ATTRIBUTE_NO_READ;
+ 			if (!(a2 & BIT(1)))
+ 				attrs |= KVM_MEMORY_ATTRIBUTE_NO_WRITE;
+ 			if (!(a2 & BIT(2)))
+ 				attrs |= KVM_MEMORY_ATTRIBUTE_NO_EXEC;
+ 
+-			if (kvm_vm_set_mem_attributes(vcpu->kvm, start, end,
+-						      attrs))
++			if (kvm_plane_set_access_attrs(vcpu->kvm, target, start,
++						       end, attrs))
+ 				ret = -KVM_EINVAL;
+ 			else
+ 				ret = 0;
+diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
+index 694d80a5c68e..01855a913b10 100644
+--- a/arch/x86/realmode/init.c
++++ b/arch/x86/realmode/init.c
+@@ -11,6 +11,7 @@
+ #include <asm/crash.h>
+ #include <asm/msr.h>
+ #include <asm/sev.h>
++#include <asm/x86_init.h>
+ 
+ struct real_mode_header *real_mode_header;
+ u32 *trampoline_cr4_features;
+@@ -44,6 +45,31 @@ void load_trampoline_pgtable(void)
+ 	__flush_tlb_all();
+ }
+ 
++#ifdef CONFIG_VBS_SECURE_MONITOR
++/*
++ * A KVM VM-planes secure plane (plane > 0) is entered directly in 64-bit long
++ * mode and boots from a single carved-out high-memory region that contains no
++ * RAM below 1 MiB.  It runs uniprocessor with no firmware, ACPI sleep, or
++ * hibernation, so the 16-bit real-mode trampoline can neither be allocated
++ * (there is no sub-1M memory) nor is it ever used (no AP bringup or wakeup).
++ *
++ * Disable the real-mode setup the same way Hyper-V VTL and Xen PV do, by
++ * pointing the x86_platform real-mode hooks at the no-op handler.  This is
++ * installed from an early_param so it takes effect before setup_arch() calls
++ * x86_platform.realmode_reserve().  Triggered by the "secure_monitor"
++ * command-line option, the same switch that activates the in-kernel
++ * secure-plane monitor.
++ */
++static int __init secure_plane_no_real_mode(char *arg)
++{
++	x86_platform.realmode_reserve = x86_init_noop;
++	x86_platform.realmode_init = x86_init_noop;
++	pr_info("realmode: secure plane: skipping sub-1M trampoline\n");
++	return 0;
++}
++early_param("secure_monitor", secure_plane_no_real_mode);
++#endif /* CONFIG_VBS_SECURE_MONITOR */
++
+ void __init reserve_real_mode(void)
+ {
+ 	phys_addr_t mem, limit = x86_init.resources.realmode_limit;
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index f14d78fd8cd3..05c9edd4a73d 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -895,6 +895,18 @@ struct kvm_plane {
+ 	/* Per-Plane VCPU array */
+ 	struct xarray vcpu_array;
+ 
++#ifdef CONFIG_VM_PLANES
++	/*
++	 * Cross-plane access restrictions imposed on THIS plane by a
++	 * higher-privilege plane.  Each entry holds NO_READ/NO_WRITE/NO_EXEC
++	 * bits for a gfn and is enforced when building this plane's SPTEs
++	 * (planes have independent EPT roots).  Distinct from
++	 * kvm->mem_attr_array, which holds VM-wide PRIVATE/CoCo attributes.
++	 * Protected by kvm->slots_lock for writes, RCU for reads.
++	 */
++	struct xarray access_attr_array;
++#endif
++
+ 	struct kvm_arch_plane arch;
+ };
+ 
+@@ -2739,6 +2751,29 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ }
+ #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
+ 
++#ifdef CONFIG_VM_PLANES
++/*
++ * Cross-plane access restrictions: a higher-privilege plane downgrades a
++ * lower plane's access (NO_READ/NO_WRITE/NO_EXEC) to a gfn by storing bits in
++ * that lower plane's access_attr_array.  Enforced when building the lower
++ * plane's SPTEs (planes have independent EPT roots).  Returns 0 when no
++ * restriction applies.
++ */
++static inline unsigned long kvm_plane_access_attributes(struct kvm_plane *plane,
++							gfn_t gfn)
++{
++	if (!plane)
++		return 0;
++	return xa_to_value(xa_load(&plane->access_attr_array, gfn));
++}
++#else
++static inline unsigned long kvm_plane_access_attributes(struct kvm_plane *plane,
++							gfn_t gfn)
++{
++	return 0;
++}
++#endif /* CONFIG_VM_PLANES */
++
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+index 348628c7b17e..3118b31d13f6 100644
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -1688,6 +1688,7 @@ struct kvm_memory_attributes {
+ #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
+ #define KVM_MEMORY_ATTRIBUTE_NO_WRITE          (1ULL << 4)
+ #define KVM_MEMORY_ATTRIBUTE_NO_EXEC           (1ULL << 5)
++#define KVM_MEMORY_ATTRIBUTE_NO_READ           (1ULL << 6)
+ 
+ #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
+ #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 553c282500fd..3a1a09f26340 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1236,6 +1236,9 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
+ 	plane->level = plane_level;
+ 
+ 	xa_init(&plane->vcpu_array);
++#ifdef CONFIG_VM_PLANES
++	xa_init(&plane->access_attr_array);
++#endif
+ 
+ 	if (kvm_arch_plane_init(kvm, plane, plane_level))
+ 		goto out_free_plane;
+@@ -1254,6 +1257,9 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
+ static void kvm_destroy_one_plane(struct kvm_plane *plane)
+ {
+ 	kvm_arch_plane_destroy(plane);
++#ifdef CONFIG_VM_PLANES
++	xa_destroy(&plane->access_attr_array);
++#endif
+ 	kvm_free_plane(plane);
+ }
+ 
 -- 
 2.55.0
 
