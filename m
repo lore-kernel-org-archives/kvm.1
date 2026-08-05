@@ -1,205 +1,106 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7814A41D12F;
-	Wed,  5 Aug 2026 22:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8570242CAF5;
+	Wed,  5 Aug 2026 22:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785969355; cv=none; b=RYzI17OTYx+UUsJjfOBi2XkkV5oyA9EmIJcx6tQcwHLoEQCMtDgWf1tWHjnL0HC3Ei447bCilwgceLsZStuCih3VZ2b5R+jahwh+N2x2yD1UYB0ZZbxU/TJ4U6HvOuM0i13GcBRwrUF3NpJW9g8omWRlxaYMDk0Aol91v78sVrc=
+	t=1785970180; cv=none; b=lnORpsa2W1gjcsE47PhZfUBNDY+jCn3VA1LX2XNvxKp9VJDc7WfME0poDhzm448N/kgHpQ5GP9Wy8tuAr1GrBR1DxSwEGSwFzs0gZW1W9mYdTm750h5yoXKH1d0Y1AVrUcMYq6D+zk6pQEtEgJwMIxPYPmQmHp5I8s9WT1pCky8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785969355; c=relaxed/simple;
-	bh=ajrukVUXktpnvfDvMyAOXTZmu2DfunKGEqFv0jglXMM=;
-	h=Message-ID:Subject:From:To:Cc:Date:in-reply-to:Content-Type:
-	 MIME-Version; b=LsvGoOWxcHjJ8PpwHM+QtCyJUKcdt1/WgitS1aRutJirSrcYHbyr7Q/ggI/Mp1rer1vGmtRetro5aFxTlCtPCLpTAIQYKYflsRnlRXvNQ+NyG8APxIKT/iMODtHkE+vvGVeYyz6KIW5EvRxw20GMHLePItWCo4yk55qzRh0BG5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=c+VAzuhQ; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1785970180; c=relaxed/simple;
+	bh=jfOV2obLipkD+y3jvt4DBvBwYkaZOEFMfwoNYs3XlQ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HBRXGHLPkIPhd3K8StUPeA2b3AscBRG36o1gCpeV+GxuzdYzoW02IZeSORc3D1EKi2MH0feOVTubJMFPKEqEwNqEDykuViqM8C7fH5tR/1K2a/qrmc2g5h9EcAYVlOY1E1l4WgiprhWFkc9OYtTLiBMHNgsAOlCA4zJc6kCGw0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=WW3mUzgw; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="c+VAzuhQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:in-reply-to:
-	Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:References;
-	bh=t+7aWok7HNqW1TdO8T63qwIRFgt2Ja5lGRx3aPI/JnQ=; b=c+VAzuhQjvDbFlAyDWXPQWIna7
-	JZaMTBnZyan69B0WtcpsFOJmsc5Dbx6CYcRl5VsDqhlgMpORyCdi1BgNXM584NyJEDgzP/ttf1Ggv
-	NxnKoQNoda8zru08MN+gy5vEDqDcrJG2bJO7R8bnxeVVnKhUNP5qw/BASt6vxS6GEfgFPRYRkujNR
-	4DizalSI0fdnFQsfxc8FPkH1shWr6BmT1Ac+EbY9K6bF/wQVoWJqT2xO5TOQ6pkFFi3dQKVrsR7WS
-	FlK3B9rRrWEkj0fIe6b7OUKi9jwmTHIjN2q+imalNznW6p1K1Z/6UOv0rcsfgSG+rNattIz+Wa0lX
-	0V3g0PMQ==;
-Received: from [54.239.6.184] (helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrkCz-00000004qOh-2zbQ;
-	Wed, 05 Aug 2026 22:35:37 +0000
-Message-ID: <e19783f0c897f69afdd7bf623f668714ae728523.camel@infradead.org>
-Subject: Re: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
- into a separate helper
-From: David Woodhouse <dwmw2@infradead.org>
-To: sashiko-bot@kernel.org
-Cc: sashiko-reviews@lists.linux.dev, seanjc@google.com, pbonzini@redhat.com,
- 	paul@xen.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 06 Aug 2026 00:35:21 +0200
-in-reply-to: <20260805204755.EA0371F000E9@smtp.kernel.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Pn38uUS5+IC0z6fzoGTl"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="WW3mUzgw"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 24B6E40E00C3;
+	Wed,  5 Aug 2026 22:49:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id XevHoCsztfrX; Wed,  5 Aug 2026 22:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1785970166; bh=11a3rOlS1cYOCSqhdbwbQhgoopQLgWS4fQ0LjBkvf34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WW3mUzgwjw846piHFFCgM5ltUSssCsDK7wmazWbRmFiLyqM4OY4TfWWS+6+KNZ8iM
+	 vt4AThrjXaNorLh6b+b3mE6CUy/Fv2HzLbwosxw8XdlEixwjDATNhKhx0CIwZ+mhVP
+	 ncC/gp1oUwT5CAX4kdORns6B7NQqnKz9bhBEy3nHZulB57TlaLC9/SGe9Hl1WivVlg
+	 5pWE317oGyK74uM8KJjE+Fj/jIgCbb3q4NvMiH6goYE08ymwg6VjP9zVSKvvvPhvXo
+	 BMtcFGPEIX+ceJR1hLHELKhtzpE4pkpkFksxW8mru5X8AgxR0umsAEB7SVG3W17f9e
+	 C9L2MVzJ0k4Pp0VtyufITUgITfYPb+BCxxP6kdRVoXV4i1Ao64dw2/V0wVYoXck9Zk
+	 lmROqgPdWvZS7MehL5UFRQywvCrSXGJT+lXwNSfERY8lmphY2jZEPSwNphRAUKnT8m
+	 wanax6wrJAiafHdaKiqqinYGPpUmYxlV2u5h8PixPktE5dvZK5/A6b8OSgI1fZcH1h
+	 maTjbSDcYJuf797etD7KuURMzIuFgUYi+k/uNna2+FLDlxbmfW1AVKfTCBRODbDG5C
+	 tkcKFthdkIssHFmkuhbCJNfz+KAz5NNFE75DX+MLAulhw/PZAy8egDZZeu2xT/SVE9
+	 N4tMWPs2t7SQt5UKKUnG1s5g=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 862CD40E0031;
+	Wed,  5 Aug 2026 22:49:10 +0000 (UTC)
+Date: Wed, 5 Aug 2026 15:49:07 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Kim Phillips <kim.phillips@amd.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev, x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Naveen Rao <naveen.rao@amd.com>,
+	David Kaplan <david.kaplan@amd.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v4 01/10] x86/bugs: Only log missing retpoline when it's
+ actually the missing mitigation
+Message-ID: <20260805224907.GDanO942iYDbai1kFx@fat_crate.local>
+References: <20260804235611.4053375-1-kim.phillips@amd.com>
+ <20260804235611.4053375-2-kim.phillips@amd.com>
+ <20260805004441.GAanKHecgJwfAOzZzp@fat_crate.local>
+ <65d82937-113d-405b-9399-b70973e84c50@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <65d82937-113d-405b-9399-b70973e84c50@amd.com>
 
+On Wed, Aug 05, 2026 at 09:51:11AM -0500, Kim Phillips wrote:
+> So it's saying there are no additional conditions than
+> !IS_ENABLED(CONFIG_MITIGATION_RETPOLINE), when there should be
+> (which this patch adds).
 
---=-Pn38uUS5+IC0z6fzoGTl
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Then say that pls.
 
-On Wed, 2026-08-05 at 20:47 +0000, sashiko-bot@kernel.org wrote:
-> [Severity: High]
-> Does this new helper inadvertently bypass the required vCPU kick when the
-> vcpu_info cache check fails?
+> This patch corrects code that already cares about RETPOLINE=n kernels, but
+> it's also useful if you know all the target systems for a RETPOLINE=n config have
+> alternatives to RETPOLINE, such as {,e,Auto}IBRS.  This will become more and more
+> true as time goes by.
 
-Oops, I frowned at that for doing the kick *within* the RCU read section,
-and missed the bug when moving it down. Will fix.
+Why would more and more configs become relevant which disable
+CONFIG_MITIGATION_RETPOLINE?
 
-> [Severity: Critical]
-> This is a pre-existing issue, but does test_and_set_bit() here risk a
-> host denial of service via a hardware split lock?
+What is the compelling use case which warrants to have this in the upstream
+kernel?
 
-It does, and likewise for the lockless double read of long_mode
-reported against v2 patch 7=C2=B9: max_evtchn_port() and the branch below i=
-t
-can disagree, in which case port_word_bit can be up to 127 and the
-test_and_set_bit() runs off the end of evtchn_pending_sel.
+Give me a concrete example pls.
 
-I knew I'd looked at those both before... they're both covered by the
-series I posted in June:
+Thx.
 
-  https://lore.kernel.org/all/20260605143034.3603-1-dwmw2@infradead.org/
+-- 
+Regards/Gruss,
+    Boris.
 
-I owe a refresh and repost of that one.
-
-
-
-
-=C2=B9 https://lore.kernel.org/all/20260529174710.29CB31F00893@smtp.kernel.=
-org/
-
---=-Pn38uUS5+IC0z6fzoGTl
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-TylVAlWCZryMVLZZxbiRoMEAAAAAAAA=
-
-
---=-Pn38uUS5+IC0z6fzoGTl--
+https://people.kernel.org/tglx/notes-about-netiquette
