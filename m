@@ -1,77 +1,95 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from out-164.mta1.migadu.com (out-164.mta1.migadu.com [95.215.58.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CFF33F383;
-	Wed,  5 Aug 2026 05:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC6F377AB4
+	for <kvm@vger.kernel.org>; Wed,  5 Aug 2026 05:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785907442; cv=none; b=m4l7QmOnfSwFD0mYAdr9RbskdV97lfaQF8kg8y4uN1My3gCtFhnBTI1XlfTcGpbqPRSy8HrjgJ3WM169SkPLvapZBMriqBRMp78zmG8Q+EDxaUKP0D6HrUWO9kFzmNx4GkcUh9b3UT6t1sM4wrFTf2LjluYfOsiLgPNhJENsJ00=
+	t=1785908788; cv=none; b=dp/5x99xKw6PVLj7nhCXRib2t1tPsroBNyy+QuPBkhgtHeJqnpXQs23MjayAzwJDfuVGS68goaz2NgmqbP57Pp9gzelVP79z3IFWxaLFAZePkFyy1jvehTwSA/lodxoV0CHkwN3VM0OorLViuFi2tE5nyxR8CAjlnFml7YjlEd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785907442; c=relaxed/simple;
-	bh=s1uXNVpEAHN4f/x9IHGPV+gZso6zL17IL/l6/kWi1+w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=oSzCLAhGuOC1MJRkQ2mthZX3BAu3XEtjuIfxh3Qfy6Hrx7sCZzKwFefPhqca9Baq8kdT3NQ/uARzmJ/wlcuaU0k06vmRYziCEN1gY0v268pwjxFaNBjr8ryRbTomZzHBsY2wP2eGagtgHuAieIWppC84rBC7FiY/u/QwGUMcXac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=dM1nqOnD; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1785908788; c=relaxed/simple;
+	bh=vaKNIEBZelWchPfm7/fqoe6xrkAvsarEnLBxT9PUXqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1Y6+hhjODs4bafyPFRXFBSw5JboTjEsTMUt1y1yO9QCGjy9oqCVf7GOi6/kEvvwfhapkA/nMhxvC47Bzdl055lL6tWcQpdC8IGLf3jGlTFkHXyPC9ywb57jbps2vazVd6Z2Cf7xwZ9LN4YFj4r6WBStMxJw/X5Fk2IE3++gPLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cOvtqnJw; arc=none smtp.client-ip=95.215.58.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="dM1nqOnD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
-	s=unimail; t=1785907230;
-	bh=tnJ1K0fIN2izUR1UfRoFKGa/WS2bVfZZL5bJfos5cCk=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=dM1nqOnDArETP2YaQuChbwXjt658w2p/8a01FVV3lZYiPmkV1Km9pfbmjAeaqhEVb
-	 SyYdPGTZea9DQ4qf3zTB6goRoae/8SULlKeBjeVhLJMQzr3ntFv0/lRjkWv0grkOWC
-	 VFyAS9aFOZrv8ai5fBGfbXZKmXziVrsqNufENRPM=
-Received: from [IPV6:2a01:599:232:c1b0:84f0:11ed:69b4:d86b] (tmo-075-246.customers.d1-online.com [80.187.75.246])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 6755KRMg017404
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 5 Aug 2026 07:20:27 +0200 (CEST)
-Message-ID: <0e3efa4a-e9bb-4e98-8b1f-1a8637c429db@tu-dortmund.de>
-Date: Wed, 5 Aug 2026 07:20:26 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cOvtqnJw"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1785908775;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fv3F37YwyrErPSl69qBUjTJbxlH3Hl4dP6cRAtWROGc=;
+	b=cOvtqnJwreftTXpZkJBunpLozlY39LVS5mpQcea6Rpl9q5DDlLWRW86MQ7KryvWtsXKeIb
+	liGQTlkjSclGG2ezm7tl8FTqbpAHhveBZ08u6pJtM6RH0q18h18VuTAzNNj6gRLDQuNEyB
+	q5+T46xi4ZUF8pzkTyfvWeOyIWus4Ek=
+From: Tao Cui <cui.tao@linux.dev>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn
+Cc: chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	cui.tao@linux.dev
+Subject: [PATCH v2] LoongArch: KVM: Advertise already-supported capabilities
+Date: Wed,  5 Aug 2026 13:45:49 +0800
+Message-ID: <20260805054549.287648-1-cui.tao@linux.dev>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v14 0/5] tun/tap & vhost-net: apply qdisc
- backpressure on full ptr_ring to reduce TX drops
-To: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
-        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
-        jon@nutanix.com, brett@librecast.net, corbet@lwn.net,
-        skhan@linuxfoundation.org, tim.gebauer@tu-dortmund.de,
-        netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <20260803183641.96882-1-simon.schippers@tu-dortmund.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 8/3/26 20:36, Simon Schippers wrote:
-> This patch series deals with tun/tap & vhost-net which drop incoming
-> SKBs whenever their internal ptr_ring buffer is full. Instead, with this
-> patch series, the associated netdev queue is stopped, but only when the
-> new IFF_BACKPRESSURE flag is set and a qdisc is attached. Without the
-> flag, or if no qdisc is present, the existing behavior is preserved. The
-> XDP transmit path is not affected. This patch series touches tun/tap and
-> vhost-net, as they share common logic and must be updated together.
-> Modifying only one of them would break the other.
-> 
+Several LoongArch KVM features are fully implemented but were never
+reported through their standard KVM_CHECK_EXTENSION probes, so userspace
+cannot discover them.  Advertise the ones that already work and have a
+real consumer:
 
-Sashiko is happy now.
+  - KVM_CAP_STEAL_TIME: steal time works end-to-end (host-side record
+    plus guest paravirt side), and the probe returns kvm_pvtime_supported().
 
-Gemini reports in patch 2:
-"[Severity: Medium]
-Will vhost-net bypass this wrapper and cause permanent TX queue stalls when
-IFF_BACKPRESSURE is enabled?"
-... but this is added in patch 3. It just cant cross-reference it.
-So it is fine.
+  - KVM_CAP_VCPU_ATTRIBUTES: per-vCPU device-attribute ioctls are
+    implemented (CPUCFG, PVTIME control); advertise the discovery cap.
 
+This adds no new functionality; it only makes existing features
+discoverable via the standard probe.
+
+Signed-off-by: Tao Cui <cui.tao@linux.dev>
+---
+Changes in v2:
+  - Drop KVM_CAP_IRQFD_RESAMPLE: the only consumer is VFIO INTx, which
+    needs IOMMU/VFIO not yet available on LoongArch.
+  - Drop KVM_CAP_VM_GPA_BITS: the cap implies a GPA-width setter that
+    LoongArch does not implement.
+
+ arch/loongarch/kvm/vm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
+index 1317c718f896..0a51931d6f6e 100644
+--- a/arch/loongarch/kvm/vm.c
++++ b/arch/loongarch/kvm/vm.c
+@@ -122,6 +122,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_IOEVENTFD:
+ 	case KVM_CAP_MP_STATE:
+ 	case KVM_CAP_SET_GUEST_DEBUG:
++	case KVM_CAP_VCPU_ATTRIBUTES:
+ 		r = 1;
+ 		break;
+ 	case KVM_CAP_NR_VCPUS:
+@@ -136,6 +137,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+ 	case KVM_CAP_NR_MEMSLOTS:
+ 		r = KVM_USER_MEM_SLOTS;
+ 		break;
++	case KVM_CAP_STEAL_TIME:
++		r = kvm_pvtime_supported();
++		break;
+ 	default:
+ 		r = 0;
+ 		break;
