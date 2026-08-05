@@ -1,36 +1,36 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240CF468C0B;
-	Wed,  5 Aug 2026 11:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D10B46A5F2;
+	Wed,  5 Aug 2026 11:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785927854; cv=none; b=GOp60DOYu4Im4ZJTcZxj9QGhThdhVwqhkzBUczgZ+gLwHWq/K0dfXHLIX+4dRM3Z2FzNKgHia89OwzsRVRXF0XOulpWkk9SFmZFXBMZYaRttotFjJl1pEiphHIrU/XeUMkJbOQUeSWecEQ0l6knd5YJHeb3eaHVrAdSRLpMXVIk=
+	t=1785927854; cv=none; b=T3+G3A6OyO70hLfTHjf7cv+zq692Pt/S3Efnwsn3aVBOOIM2hY6+IDRf/25FQc9bp9HAR8V5vd9I3tdTsRgWkjFXxbRlPA4BZE4jm6uhchLc6agh9QNxoN7PKxCpaWP3zrGZ2b7lPGWEo5gKmTzgYzLOgIrXdJJ7hUfYl79Q0r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785927854; c=relaxed/simple;
-	bh=hp3inTy6vwa9u/UMgIvXdXMwZDjFfkMf6mB3v768YOU=;
+	bh=CMtQOBxsOyZafsRq9Hm/+RIAhu7pzUJUx0wZ70Pn+qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlt+AELtqV6XH62ZfjapG/PY+0UpER9/NRAmUMNOlOpzORfWLR7fo9mUHSK7ytKDkypoQQ4PCUf1GDlfMCTPziR/vL5+ag3x3g/vmiKzFYNWZhAFG9bx3+xPZ39vSdtl9IWcVPRLut+ue7/qe4A8Bn0qW/og4c2TL+dhrhgkR4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=bOqp6a9e; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=anso/W7X+S+jIrGR7EgxoSdpASDlfXkm5cB1OoaE4283rDLu3ayBe2XHuexuVrDIXUdngde2/ILdZEUiR01ycnJZhXTRwkRmYfe5sMlqcgUIm9ICNdAdNKT01/3PYUXsUTXQ17qoUe4BXkEAXAMI/0s3LdhWbjbzNNtex6gqJzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ptqwnP4n; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="bOqp6a9e"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ptqwnP4n"
 Received: from fedora.hsd1.wa.comcast.net (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C624520B7169;
-	Wed,  5 Aug 2026 04:03:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C624520B7169
+	by linux.microsoft.com (Postfix) with ESMTPSA id 703A420B716B;
+	Wed,  5 Aug 2026 04:03:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 703A420B716B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1785927830;
-	bh=RQx/+tS3Gguj0oQsRoaGqW2DUL7VawR8cXjvWahtnwE=;
+	s=default; t=1785927832;
+	bh=sI2sXVp/yDVu/Cytrm86fNxGZAmR2vZkYQFR/0LYH8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOqp6a9eBubODjXnHNNo2eaStXBqrL+wwVpv5ToXbO2JjG20yOvPCdt1l6fsPtnf6
-	 vg/4UWdFR4XKfOK99EjjFyNgZRwjzPIu1jpo9fVFLEn7WueYm4YdEiP9CQE27sw0ZZ
-	 T4BqH/1kdeh/cGHoF3h7OVTljuzFN+Golll62xcg=
+	b=ptqwnP4nE71RqbshWWQTSPUb724PWfo3h4jWJQ1rQmspZmSAZ54+nGmQsODPrqLn3
+	 HGa6y//yfmt3xJoUAeSsCRDCgaxyLgfA3tmd298neLoDt56lGmEuKSV/yJuwn4Hayc
+	 ntfx8/TaAJsQHEZ8mPVOOhbSFfoWkGvTS4FOHKps=
 From: Sriram Nambakam <snambakam@linux.microsoft.com>
 To: kvm@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 34/42] x86/realmode: skip the sub-1M trampoline for the VBS secure plane
-Date: Wed,  5 Aug 2026 04:03:16 -0700
-Message-ID: <20260805110324.25067-35-snambakam@linux.microsoft.com>
+Subject: [RFC PATCH v1 36/42] KVM: plane: handle KVM_CHECK_EXTENSION on the plane fd
+Date: Wed,  5 Aug 2026 04:03:18 -0700
+Message-ID: <20260805110324.25067-37-snambakam@linux.microsoft.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260805110324.25067-1-snambakam@linux.microsoft.com>
 References: <20260805110324.25067-1-snambakam@linux.microsoft.com>
@@ -42,404 +42,40 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The VBS secure plane (plane >0) boots from a single high-memory region
-carved out of the normal plane's address space and therefore has no
-sub-1M RAM for the x86 real-mode AP trampoline.  reserve_real_mode()
-followed by init_real_mode() then panics with "Real mode trampoline was
-not allocated".
-
-The secure plane is uniprocessor, enters directly in long mode and never
-uses the trampoline, so point x86_platform.realmode_reserve/realmode_init
-at x86_init_noop for it.  This mirrors how the Hyper-V VTL (hv_vtl.c) and
-Xen PV ports disable the trampoline.
-
-Gated at compile time on CONFIG_VBS_SECURE_MONITOR (only the secure-plane
-kernel sets it) and at runtime on the "secure_monitor" early param (the
-normal plane never passes it), so plane 0 is unaffected.
+A plane file descriptor did not implement KVM_CHECK_EXTENSION and failed
+with -ENOTTY, but userspace needs to be able to query capabilities on it.
+Forward the query to the plane's parent VM, except for KVM_CAP_PLANES
+which returns 0 because a plane cannot host planes of its own.
 ---
- arch/x86/include/asm/kvm_host.h | 17 +++++--
- arch/x86/kvm/mmu/mmu.c          | 36 ++++++++++++++
- arch/x86/kvm/mmu/spte.h         | 12 +++--
- arch/x86/kvm/x86.c              | 85 +++++++++++++++++++++++++++++----
- arch/x86/realmode/init.c        | 26 ++++++++++
- include/linux/kvm_host.h        | 35 ++++++++++++++
- include/uapi/linux/kvm.h        |  1 +
- virt/kvm/kvm_main.c             |  6 +++
- 8 files changed, 202 insertions(+), 16 deletions(-)
+ virt/kvm/kvm_main.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index b7d478dcc1a5..bbccb9d3d801 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -380,15 +380,24 @@ union kvm_mmu_page_role {
- 		 */
- 		unsigned cr4_smep:1;
- 
--		unsigned:3;
-+		/*
-+		 * Plane (privilege level) that owns this shadow page.  VM
-+		 * planes share memslots but must have independent page
-+		 * tables so that a higher-privilege plane can restrict a
-+		 * lower plane's access (e.g. deny reads of secure-plane
-+		 * memory).  Tagging the role keeps each plane's roots and
-+		 * SPTEs separate.  Always 0 when CONFIG_VM_PLANES is off.
-+		 */
-+		unsigned plane:4;
- 
- 		/*
- 		 * This is left at the top of the word so that
- 		 * kvm_memslots_for_spte_role can extract it with a
--		 * simple shift.  While there is room, give it a whole
--		 * byte so it is also faster to load it from memory.
-+		 * simple shift.  smm is only ever used as a boolean, so it
-+		 * is reduced to 7 bits (from a full byte) to make room for
-+		 * cr4_smep and the VM-planes plane tag above.
- 		 */
--		unsigned smm:8;
-+		unsigned smm:7;
- 	};
- };
- 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 6e41c5df72ed..960e212c5ee3 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4708,6 +4708,34 @@ static int kvm_mmu_faultin_pfn(struct kvm_vcpu *vcpu,
- 		return -EFAULT;
- 	}
- 
-+	/*
-+	 * A higher-privilege plane may forbid this plane from accessing a gfn
-+	 * (e.g. to hide secure-plane memory from the normal plane).  Two cases
-+	 * cannot be represented as a present SPTE and must be denied outright,
-+	 * exiting to userspace with a memory fault rather than (re)building an
-+	 * SPTE the access will immediately re-fault on:
-+	 *
-+	 *  - NO_READ: there is no present-but-unreadable EPT entry, so leave the
-+	 *    gfn unmapped for this plane.
-+	 *
-+	 *  - NO_WRITE on a write fault: make_spte() strips ACC_WRITE_MASK and
-+	 *    builds a read-only SPTE, so a guest write would re-fault forever
-+	 *    (an unresolvable EPT write-violation livelock).  Deny it instead so
-+	 *    the violation is visible and can be mediated (e.g. HEKI text_poke
-+	 *    is routed through the secure plane rather than written directly).
-+	 */
-+	{
-+		unsigned long plane_attrs =
-+			kvm_plane_access_attributes(vcpu->plane, fault->gfn);
-+
-+		if ((plane_attrs & KVM_MEMORY_ATTRIBUTE_NO_READ) ||
-+		    (fault->write &&
-+		     (plane_attrs & KVM_MEMORY_ATTRIBUTE_NO_WRITE))) {
-+			kvm_mmu_prepare_memory_fault_exit(vcpu, fault);
-+			return -EFAULT;
-+		}
-+	}
-+
- 	if (unlikely(!slot))
- 		return kvm_handle_noslot_fault(vcpu, fault, access);
- 
-@@ -5884,6 +5912,14 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
- 	role.direct = true;
- 	role.has_4_byte_gpte = false;
- 
-+	/*
-+	 * Give each VM plane its own TDP root.  Planes share memslots but
-+	 * need independent page tables so a higher-privilege plane can
-+	 * restrict a lower plane's access to a GFN.  plane_level is 0 (and
-+	 * thus a no-op) on non-plane VMs and when CONFIG_VM_PLANES is off.
-+	 */
-+	role.plane = vcpu->plane_level;
-+
- 	/* All TDP pages are supervisor-executable */
- 	role.access = ACC_ALL;
- 	if (role.cr4_smep && shadow_user_mask)
-diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 144f7c5a1040..ed03bcdbf82d 100644
---- a/arch/x86/kvm/mmu/spte.h
-+++ b/arch/x86/kvm/mmu/spte.h
-@@ -580,9 +580,13 @@ void __init kvm_mmu_spte_module_init(void);
- void kvm_mmu_reset_all_pte_masks(void);
- 
- /*
-- * Apply memory protection attributes to pte_access.
-- * If memory attributes have NO_WRITE or NO_EXEC set for a GFN,
-- * strip the corresponding access bits before building the SPTE.
-+ * Apply cross-plane access restrictions to pte_access when building an SPTE
-+ * for the faulting plane.  A higher-privilege plane may downgrade a lower
-+ * plane's access to a GFN via its per-plane access_attr_array.  NO_WRITE and
-+ * NO_EXEC are enforced here by stripping the corresponding access bits.
-+ * NO_READ cannot be expressed as a present-but-unreadable SPTE on EPT, so it
-+ * is enforced earlier in the fault handler (kvm_mmu_faultin_pfn) by refusing
-+ * to map the page.
-  */
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
- static inline unsigned int kvm_plane_filter_pte_access(struct kvm_vcpu *vcpu,
-@@ -591,7 +595,7 @@ static inline unsigned int kvm_plane_filter_pte_access(struct kvm_vcpu *vcpu,
- {
- 	unsigned long attrs;
- 
--	attrs = kvm_get_memory_attributes(vcpu->kvm, gfn);
-+	attrs = kvm_plane_access_attributes(vcpu->plane, gfn);
- 	if (attrs & KVM_MEMORY_ATTRIBUTE_NO_WRITE)
- 		pte_access &= ~ACC_WRITE_MASK;
- 	if (attrs & KVM_MEMORY_ATTRIBUTE_NO_EXEC)
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3c73ab1dcfe8..c8c37d569023 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10494,6 +10494,61 @@ static int complete_hypercall_exit(struct kvm_vcpu *vcpu)
- 	return kvm_skip_emulated_instruction(vcpu);
- }
- 
-+#if defined(CONFIG_VM_PLANES) && defined(CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES)
-+/*
-+ * Apply cross-plane access restrictions requested by a higher-privilege plane.
-+ * Stores @attrs (NO_READ/NO_WRITE/NO_EXEC) for [@start, @end) in @plane's
-+ * access_attr_array and zaps the range so any pages already mapped in @plane's
-+ * EPT re-fault and pick up the restriction.  @attrs == 0 clears the
-+ * restriction for the range.
-+ */
-+static int kvm_plane_set_access_attrs(struct kvm *kvm, struct kvm_plane *plane,
-+				      gfn_t start, gfn_t end, unsigned long attrs)
-+{
-+	void *entry = attrs ? xa_mk_value(attrs) : NULL;
-+	gfn_t gfn;
-+	int r = 0;
-+
-+	mutex_lock(&kvm->slots_lock);
-+
-+	/*
-+	 * Reserve slots up front so the store loop below cannot fail partway
-+	 * through and leave a gap (a still-readable page) in the protected
-+	 * range.  Clearing a restriction (entry == NULL) never allocates.
-+	 */
-+	if (entry) {
-+		for (gfn = start; gfn < end; gfn++) {
-+			r = xa_reserve(&plane->access_attr_array, gfn,
-+				       GFP_KERNEL_ACCOUNT);
-+			if (r)
-+				goto out_unlock;
-+
-+			cond_resched();
-+		}
-+	}
-+
-+	for (gfn = start; gfn < end; gfn++) {
-+		r = xa_err(xa_store(&plane->access_attr_array, gfn, entry,
-+				    GFP_KERNEL_ACCOUNT));
-+		if (KVM_BUG_ON(r, kvm))
-+			goto out_unlock;
-+
-+		cond_resched();
-+	}
-+
-+	/*
-+	 * Re-fault the affected gfns in the plane's EPT so the new restriction
-+	 * takes effect on existing mappings.  Zapping all roots is harmless;
-+	 * other planes simply rebuild identical entries on next access.
-+	 */
-+	kvm_zap_gfn_range(kvm, start, end);
-+
-+out_unlock:
-+	mutex_unlock(&kvm->slots_lock);
-+	return r;
-+}
-+#endif /* CONFIG_VM_PLANES && CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
-+
- int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 			      int (*complete_hypercall)(struct kvm_vcpu *))
- {
-@@ -10683,16 +10738,21 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 	case KVM_HC_VBS_SET_MEM_ATTRS:
- #if defined(CONFIG_VM_PLANES) && defined(CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES)
- 		/*
--		 * The secure plane (plane >0) enforces EPT permissions on the
--		 * normal plane's memory.  It cannot issue the host
-+		 * The secure plane (plane >0) enforces EPT permissions on a
-+		 * lower plane's memory.  It cannot issue the host
- 		 * KVM_SET_MEMORY_ATTRIBUTES ioctl, so it asks KVM to do it via
--		 * this hypercall.  Only a higher-privilege plane may call it.
-+		 * this hypercall.  Only a higher-privilege plane may call it;
-+		 * the restriction is applied to the plane directly below the
-+		 * caller.
- 		 *
- 		 *   a0 = guest-physical address (page aligned)
- 		 *   a1 = region size in bytes  (page aligned)
--		 *   a2 = access bits to retain for lower planes:
--		 *        bit0 read (implicit), bit1 write, bit2 exec
--		 *        (matches VBS_MEM_READ/WRITE/EXEC)
-+		 *   a2 = access bits to retain for the lower plane:
-+		 *        bit0 read, bit1 write, bit2 exec
-+		 *        (matches VBS_MEM_READ/WRITE/EXEC).  A cleared bit adds
-+		 *        the corresponding NO_READ/NO_WRITE/NO_EXEC restriction;
-+		 *        a2 = 0 hides the range entirely (e.g. secure-plane
-+		 *        memory that the normal plane must not read).
- 		 */
- 		if (vcpu->plane_level == 0) {
- 			ret = -KVM_EPERM;
-@@ -10704,17 +10764,26 @@ int ____kvm_emulate_hypercall(struct kvm_vcpu *vcpu, int cpl,
- 			ret = -KVM_EINVAL;
- 			goto out;
- 		} else {
-+			struct kvm_plane *target;
- 			unsigned long attrs = 0;
- 			gfn_t start = a0 >> PAGE_SHIFT;
- 			gfn_t end = (a0 + a1) >> PAGE_SHIFT;
- 
-+			target = vcpu->kvm->planes[vcpu->plane_level - 1];
-+			if (!target) {
-+				ret = -KVM_EINVAL;
-+				goto out;
-+			}
-+
-+			if (!(a2 & BIT(0)))
-+				attrs |= KVM_MEMORY_ATTRIBUTE_NO_READ;
- 			if (!(a2 & BIT(1)))
- 				attrs |= KVM_MEMORY_ATTRIBUTE_NO_WRITE;
- 			if (!(a2 & BIT(2)))
- 				attrs |= KVM_MEMORY_ATTRIBUTE_NO_EXEC;
- 
--			if (kvm_vm_set_mem_attributes(vcpu->kvm, start, end,
--						      attrs))
-+			if (kvm_plane_set_access_attrs(vcpu->kvm, target, start,
-+						       end, attrs))
- 				ret = -KVM_EINVAL;
- 			else
- 				ret = 0;
-diff --git a/arch/x86/realmode/init.c b/arch/x86/realmode/init.c
-index 694d80a5c68e..01855a913b10 100644
---- a/arch/x86/realmode/init.c
-+++ b/arch/x86/realmode/init.c
-@@ -11,6 +11,7 @@
- #include <asm/crash.h>
- #include <asm/msr.h>
- #include <asm/sev.h>
-+#include <asm/x86_init.h>
- 
- struct real_mode_header *real_mode_header;
- u32 *trampoline_cr4_features;
-@@ -44,6 +45,31 @@ void load_trampoline_pgtable(void)
- 	__flush_tlb_all();
- }
- 
-+#ifdef CONFIG_VBS_SECURE_MONITOR
-+/*
-+ * A KVM VM-planes secure plane (plane > 0) is entered directly in 64-bit long
-+ * mode and boots from a single carved-out high-memory region that contains no
-+ * RAM below 1 MiB.  It runs uniprocessor with no firmware, ACPI sleep, or
-+ * hibernation, so the 16-bit real-mode trampoline can neither be allocated
-+ * (there is no sub-1M memory) nor is it ever used (no AP bringup or wakeup).
-+ *
-+ * Disable the real-mode setup the same way Hyper-V VTL and Xen PV do, by
-+ * pointing the x86_platform real-mode hooks at the no-op handler.  This is
-+ * installed from an early_param so it takes effect before setup_arch() calls
-+ * x86_platform.realmode_reserve().  Triggered by the "secure_monitor"
-+ * command-line option, the same switch that activates the in-kernel
-+ * secure-plane monitor.
-+ */
-+static int __init secure_plane_no_real_mode(char *arg)
-+{
-+	x86_platform.realmode_reserve = x86_init_noop;
-+	x86_platform.realmode_init = x86_init_noop;
-+	pr_info("realmode: secure plane: skipping sub-1M trampoline\n");
-+	return 0;
-+}
-+early_param("secure_monitor", secure_plane_no_real_mode);
-+#endif /* CONFIG_VBS_SECURE_MONITOR */
-+
- void __init reserve_real_mode(void)
- {
- 	phys_addr_t mem, limit = x86_init.resources.realmode_limit;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index f14d78fd8cd3..05c9edd4a73d 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -895,6 +895,18 @@ struct kvm_plane {
- 	/* Per-Plane VCPU array */
- 	struct xarray vcpu_array;
- 
-+#ifdef CONFIG_VM_PLANES
-+	/*
-+	 * Cross-plane access restrictions imposed on THIS plane by a
-+	 * higher-privilege plane.  Each entry holds NO_READ/NO_WRITE/NO_EXEC
-+	 * bits for a gfn and is enforced when building this plane's SPTEs
-+	 * (planes have independent EPT roots).  Distinct from
-+	 * kvm->mem_attr_array, which holds VM-wide PRIVATE/CoCo attributes.
-+	 * Protected by kvm->slots_lock for writes, RCU for reads.
-+	 */
-+	struct xarray access_attr_array;
-+#endif
-+
- 	struct kvm_arch_plane arch;
- };
- 
-@@ -2739,6 +2751,29 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- }
- #endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
- 
-+#ifdef CONFIG_VM_PLANES
-+/*
-+ * Cross-plane access restrictions: a higher-privilege plane downgrades a
-+ * lower plane's access (NO_READ/NO_WRITE/NO_EXEC) to a gfn by storing bits in
-+ * that lower plane's access_attr_array.  Enforced when building the lower
-+ * plane's SPTEs (planes have independent EPT roots).  Returns 0 when no
-+ * restriction applies.
-+ */
-+static inline unsigned long kvm_plane_access_attributes(struct kvm_plane *plane,
-+							gfn_t gfn)
-+{
-+	if (!plane)
-+		return 0;
-+	return xa_to_value(xa_load(&plane->access_attr_array, gfn));
-+}
-+#else
-+static inline unsigned long kvm_plane_access_attributes(struct kvm_plane *plane,
-+							gfn_t gfn)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_VM_PLANES */
-+
- #ifdef CONFIG_KVM_GUEST_MEMFD
- int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 348628c7b17e..3118b31d13f6 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1688,6 +1688,7 @@ struct kvm_memory_attributes {
- #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
- #define KVM_MEMORY_ATTRIBUTE_NO_WRITE          (1ULL << 4)
- #define KVM_MEMORY_ATTRIBUTE_NO_EXEC           (1ULL << 5)
-+#define KVM_MEMORY_ATTRIBUTE_NO_READ           (1ULL << 6)
- 
- #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
- #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
 diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 553c282500fd..3a1a09f26340 100644
+index 3a1a09f26340..6e4f3f3e6881 100644
 --- a/virt/kvm/kvm_main.c
 +++ b/virt/kvm/kvm_main.c
-@@ -1236,6 +1236,9 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
- 	plane->level = plane_level;
- 
- 	xa_init(&plane->vcpu_array);
-+#ifdef CONFIG_VM_PLANES
-+	xa_init(&plane->access_attr_array);
-+#endif
- 
- 	if (kvm_arch_plane_init(kvm, plane, plane_level))
- 		goto out_free_plane;
-@@ -1254,6 +1257,9 @@ static struct kvm_plane *kvm_create_plane(struct kvm *kvm, unsigned plane_level)
- static void kvm_destroy_one_plane(struct kvm_plane *plane)
- {
- 	kvm_arch_plane_destroy(plane);
-+#ifdef CONFIG_VM_PLANES
-+	xa_destroy(&plane->access_attr_array);
-+#endif
- 	kvm_free_plane(plane);
+@@ -4946,12 +4946,21 @@ static long kvm_vcpu_compat_ioctl(struct file *filp,
  }
+ #endif
  
++static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg);
++
+ static long __kvm_plane_ioctl(struct kvm_plane *plane, unsigned int ioctl, unsigned long arg)
+ {
+ 	void __user *argp = (void __user *)arg;
+ 	long r;
+ 
+ 	switch (ioctl) {
++	case KVM_CHECK_EXTENSION:
++		/* A plane cannot host planes of its own. */
++		if (arg == KVM_CAP_PLANES)
++			r = 0;
++		else
++			r = kvm_vm_ioctl_check_extension_generic(plane->kvm, arg);
++		break;
+ 	case KVM_CREATE_VCPU:
+ 		r = kvm_plane_ioctl_create_vcpu(plane, arg);
+ 		break;
 -- 
 2.55.0
 
