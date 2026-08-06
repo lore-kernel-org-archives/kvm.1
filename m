@@ -1,57 +1,57 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DF34DB57D
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DAC4A5800
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 23:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786059420; cv=none; b=I5wVxrrnUlIpbdUYPI9yLIwNCMz89X2rS2T5hQrOWcOJu+9ZmukmzknLbgn4CP70ohQBhJxMMaOgJ0h2NZAevZwtMfVV0LRoPBaL8usYRw2mI3DNav2MZI8TTKLMhdAWBVB38tOvA1rsMsIsa9eAGFKZoW4HLqr7AWtqqxlZhlQ=
+	t=1786059421; cv=none; b=awIx+h0qAigPAqu9QdK3vSgPjd3IkJyogFk9u/vBsBIcLwnNKyBEU6lHL2x9Zc8wkcBe/3fwQFbyeWwriiZsQZ/Cxt9hbqMwOk+rgSA4XN8ky3ItWS0bwZZj37O6U33GaFRdPALBbjRi4nRXvQEdorFOwPKlziwZOq/FAiD0T/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786059420; c=relaxed/simple;
-	bh=pvk61KgZsdgezrqmuUH0lmIu4eH6UZ//mUcKEN2ubd8=;
+	s=arc-20240116; t=1786059421; c=relaxed/simple;
+	bh=ZukvIBi+c+C/EBZ813NQs+KodZX1Q5CgQXvRxFbx3mY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p9aIeviY5PCCYafwZW3jzrarkkPS7BeAwH/ySA1NJCamlfY9Rxn3qe7FEU966JAiJj1uoIJ/ry1Z/PzR7GLG8YYY3b7Oc7Zjw+RJ7sBEEQ78Ie+8KskSBBPc1aI6spwkVtt72Qt2l2uXmklpF4gMYqODN8TjB2h4XVL8dk3WRTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JgeuRY+G; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=sRnIsVNvvf1cCTHE1I5Mzfr0ylH/hz/tzkwBPO+c2hnLfmUKTBTqWNNRe12fZFJkFqNIy9xj6HTq+7wcgaFS/RvM7zMu17h1D6a9hMZWONepONBn+KUJweOylEcip9JEeXuMqkcXc23o/ZmmmWDpbQI9jL6uWxU9wkIQ2z4wejw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p/x2sPMw; arc=none smtp.client-ip=209.85.215.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JgeuRY+G"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cab041eced3so4024494a12.1
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:36:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p/x2sPMw"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbe77d6864dso2958508a12.2
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 16:36:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786059418; x=1786664218; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786059419; x=1786664219; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=heSuqSIgeH92pLRWbhNi7GYX8HqrNShkMIs22IEn4aI=;
-        b=JgeuRY+G87SI6mEJFTSetd951fXXpqnhpp2TqQRSxfa88MqKJD0jaFS1egNVCLlWy4
-         iXwzU3V+X4Ps0A/pyPrWbE0+PQPvv92+qhwK5pHcAV69EdRBCfXOtAeGpYAE3LziETYJ
-         vtKuYNGX4v9UIJ1xwDTkkCFNVQjqN6rZ1P3a2wQd0Clz85cKjsqEING7YqmH1yL1p0uT
-         Gm6Yn/yldjsvSIdY4nK5z08iiI6KstDKtml7Jtiz/xv4lBmEak5NIXlteg3tGXsQVXd7
-         64rntZ5m/l1qBNuqXkfrFUhe+Ke2qXunUXfy/DNV1Ugqcx19RfRJjleApH1jHG6Y/R7B
-         skmA==
+        bh=IDybt2K9QzXIIF0RtAPpPcNbJv3nyQQRnp+0cGRBepM=;
+        b=p/x2sPMwGMd3N0VhVG2mJ1eKTJOsNtOMX69tt02bbyl29eBLpSeRC637RFxTzj+Vsi
+         y+j0gvbCOzujCKnDlJ61f/IjhI0eF5yWhgug6sU2dflbzmmGhd1GcfCnxs3r16u488TR
+         e9X+5TrcMKQjlMnqqSu7ECdsk5yXA/GiOpF9vw6tC2M02Li4KdcIYQfvshfdi1F7wsTQ
+         omMclz9yewMqzA6epRgFtBls09DrQKebtJ9hnMZbo9lSitkW4DyxnUWQKbjGSGApC631
+         W/ZEAUG1oxCZmIoCOamF5KvVdPmb5K+CczQ58U4lseroet0HcR4WqF8QX5Mkb668zAW2
+         SIwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786059418; x=1786664218;
+        d=1e100.net; s=20251104; t=1786059419; x=1786664219;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:reply-to:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=heSuqSIgeH92pLRWbhNi7GYX8HqrNShkMIs22IEn4aI=;
-        b=RWSBJJQFT93fdBWC1GjTEhS5x0oHdjDLFMhH3w9HEsxlnBQ3bWa13Vffajbu2sdlV5
-         f3yDlnvx/9ThJ6rBYyBnqKsAZ42Ynhf6jMJCfVU0rGu/nkvjS5Rtxix9puXKf9jquApj
-         3XfsxdSvr/5dkJmcHTF3ccTrSNVFDVsOfe0m6lvk9AZrEcG5ZRYFTXQ5YwM6pvOvcM/B
-         vNR+b0aW1K6zq4UgQ56Xnro+XGBcLMA9m8I+5mQnBpRhsJfxW1Cgg052Bude8WtA0OK4
-         k+b+LpnWT0Dezy31Pf4BLwn4lziekCKRrYygIvgi4LAbZINLNS6VwWZk8+GizG1Bthtq
-         Q+Aw==
-X-Forwarded-Encrypted: i=1; AHgh+RrERTl0MJu1Og4tSoz9ajeTu0UEBBknGxr7jk+FuAP3nKDXvMc1wWGSRiCXc0OH3Vhns3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs/WbiI7EGQkb6GaxQZgTqpWOulq4bQKkWUau+FYQJsasO5T6Z
-	U9vgotdbTlx1GA7nV2Lly/6yeJzdwFTeQhXNev6LnuM18ArN6ScV2QNecnHnfbAeMIWB62VLTle
-	sry3WVw==
-X-Received: from pgmc19.prod.google.com ([2002:a63:1c53:0:b0:c98:2639:852e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7344:b0:3bf:6acf:2940
- with SMTP id adf61e73a8af0-3cb85df0a1bmr20575846637.11.1786059417589; Thu, 06
- Aug 2026 16:36:57 -0700 (PDT)
+        bh=IDybt2K9QzXIIF0RtAPpPcNbJv3nyQQRnp+0cGRBepM=;
+        b=T9sLYnU7CitxcaZSZoILm3uIJbtP4z4C/jwLiUhuKuBpn+MEIvPnp+2/AEVilSXeyg
+         gIJqAIhFs8P6ukaDKN3inv2gBM/Zh0ZieDaODb/SC2BqBMoa9Lnff2ci10NSEJTcSr/1
+         i8AlM+qlEV8L+mI7vGnjF1OpP/YWauaLSdTOPFSl6/u29GntKIATllQ+F02tMWDKQ29T
+         3KinkI1qe9PtbCiwRXBSyStxAe/8Hrpcg3G6/b51sEYzfMLX814+ggjGqGWMnCHJtBvl
+         aTnEDrTzgRSwo1CzkRzrX8M8yzuj9/qlc6fGDDpROjUf8e+DHu76BZabklYHYoVluKT5
+         qWqg==
+X-Forwarded-Encrypted: i=1; AHgh+RoqFjecGax7g+3q+lWcvtvepzwHGp4QpncpnmbgnUVS67G6PkDRbNWcyPdQ5UkySlHXfzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFwNZC2P3NfqL2g2TBwTCbvGqh/0oSL3cGpkjNpcLb5VHzhUok
+	mmZzuI39CvirUPCID6kMb7/6wrEXD636siVamPiwoIED+6aJ+661Aqtw7sdN5Xu4kHI+D/mEA26
+	8mD5P+A==
+X-Received: from pgbcp2.prod.google.com ([2002:a05:6a02:4002:b0:c8b:fa4f:f001])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4314:b0:3c3:89ce:b5bc
+ with SMTP id adf61e73a8af0-3cb85e28fd0mr22042606637.15.1786059418706; Thu, 06
+ Aug 2026 16:36:58 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu,  6 Aug 2026 16:35:44 -0700
+Date: Thu,  6 Aug 2026 16:35:45 -0700
 In-Reply-To: <20260806233609.212337-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -61,9 +61,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260806233609.212337-1-seanjc@google.com>
 X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260806233609.212337-28-seanjc@google.com>
-Subject: [PATCH v6 27/51] clocksource: hyper-v: Don't save/restore TSC offset
- when using HV sched_clock
+Message-ID: <20260806233609.212337-29-seanjc@google.com>
+Subject: [PATCH v6 28/51] x86/kvmclock: Setup kvmclock for secondary CPUs iff CONFIG_SMP=y
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
 	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -86,69 +85,40 @@ Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that Hyper-V overrides the sched_clock save/restore hooks if and only
-sched_clock itself is set to the Hyper-V reference counter, drop the
-invocation of the "old" save/restore callbacks.  When the registration of
-the PV sched_clock was done separately from overriding the save/restore
-hooks, it was possible for Hyper-V to clobber the TSC save/restore
-callbacks without actually switching to the Hyper-V refcounter.
+Gate kvmclock's secondary CPU code on CONFIG_SMP, not CONFIG_X86_LOCAL_APIC.
+Originally, kvmclock piggybacked PV APIC ops to setup secondary CPUs.
+When that wart was fixed by commit df156f90a0f9 ("x86: Introduce
+x86_cpuinit.early_percpu_clock_init hook"), the dependency on a local APIC
+got carried forward unnecessarily.
 
-Enabling a PV sched_clock is a one-way street, i.e. the kernel will never
-revert to using TSC for sched_clock, and so there is no need to invoke the
-TSC save/restore hooks (and if there was, it belongs in common PV code).
-
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
 Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- drivers/clocksource/hyperv_timer.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/kernel/kvmclock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index daa8cbfe61ee..220668207d19 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -544,9 +544,6 @@ static __always_inline void hv_setup_sched_clock(void *sched_clock)
- #include <asm/timer.h>
+diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+index 2e7ab54cb9dc..b0c871ba8232 100644
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -208,7 +208,7 @@ static void kvm_restore_sched_clock_state(void)
+ 	kvm_register_clock("primary cpu clock, resume");
+ }
  
- static u64 hv_ref_counter_at_suspend;
--static void (*old_save_sched_clock_state)(void);
--static void (*old_restore_sched_clock_state)(void);
--
- /*
-  * Hyper-V clock counter resets during hibernation. Save and restore clock
-  * offset during suspend/resume, while also considering the time passed
-@@ -556,8 +553,6 @@ static void (*old_restore_sched_clock_state)(void);
-  */
- static void hv_save_sched_clock_state(void)
+-#ifdef CONFIG_X86_LOCAL_APIC
++#ifdef CONFIG_SMP
+ static void kvm_setup_secondary_clock(void)
  {
--	old_save_sched_clock_state();
--
- 	hv_ref_counter_at_suspend = hv_read_reference_counter();
- }
- 
-@@ -570,8 +565,6 @@ static void hv_restore_sched_clock_state(void)
- 	 *                - reference counter (time) now.
- 	 */
- 	hv_sched_clock_offset -= (hv_ref_counter_at_suspend - hv_read_reference_counter());
--
--	old_restore_sched_clock_state();
- }
- 
- static __always_inline void hv_setup_sched_clock(void *sched_clock)
-@@ -579,10 +572,7 @@ static __always_inline void hv_setup_sched_clock(void *sched_clock)
- 	/* We're on x86/x64 *and* using PV ops */
- 	paravirt_set_sched_clock(sched_clock);
- 
--	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
- 	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
--
--	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
- 	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
- }
- #else /* !CONFIG_GENERIC_SCHED_CLOCK && !CONFIG_PARAVIRT */
+ 	kvm_register_clock("secondary cpu clock");
+@@ -348,7 +348,7 @@ void __init kvmclock_init(bool prefer_tsc)
+ 		x86_init.hyper.get_cpu_khz = kvmclock_get_tsc_khz;
+ 	x86_platform.get_wallclock = kvm_get_wallclock;
+ 	x86_platform.set_wallclock = kvm_set_wallclock;
+-#ifdef CONFIG_X86_LOCAL_APIC
++#ifdef CONFIG_SMP
+ 	x86_cpuinit.early_percpu_clock_init = kvm_setup_secondary_clock;
+ #endif
+ 	x86_platform.save_sched_clock_state = kvm_save_sched_clock_state;
 -- 
 2.55.0.679.g6767b8d81c-goog
 
