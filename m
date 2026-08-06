@@ -1,148 +1,112 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C190B37B41B
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 00:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B4A3A8741
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 01:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785977033; cv=none; b=M93Up1YAxaHcT4HLPS9cE4GdmZNRooQRcAdr4uDsDjJovvRDoH+Qg997g+GX7rH1LooeOxmbBZO1pFHIieTrT37+4G+atvrAK+dkU/SAc9z/3TMOQIPaiozrsgRQcRpxDKBH0OMaMLCiVH/QBDry306HbVWrygeGGl5unB07RxE=
+	t=1785978857; cv=none; b=cNwRWBFEGjEN+ADvw8RD6aye6jZxFIGisB6XQmZ2QkUgLHacb4mPqRZHwEjstqm1Fi2V5/kbbtu5jl2Jvzj/NzOsUlkJ1N5/vf+P49QyaSarjdQl5wC0kHqoEGCZ8yBvAo5AlELWB74tugs7XqccVfXRNgoAjY+q7e37tukGZP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785977033; c=relaxed/simple;
-	bh=MOBnrAzJHjAXv0busTUd8AQe2wVTRESDC3GYmdGx6Jc=;
+	s=arc-20240116; t=1785978857; c=relaxed/simple;
+	bh=FnURd9znNvpM1kqH7h6q11jvcJIcgM8HdPz6ZSRX88c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pqT4YUaYAtv/wZ85y1YOflWK9x/CJvMnt1rBGL8kODlLApVnCrPXDDO/Z57iCuZ9oyUvHkoZsX7pCOYrOFo1TW63jo6E1m9GIQvxYYYRH1mbk6V2kFS9AlxJacTxFxlbPY6ZcFd0LRyqmcb+2oyzzGQb11RN3YDF7mmkl94JIt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s9W9uVBX; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=idtsJ/O110XntkuUiqUqbU0XHpM/CEo4l9OpubhRQ+AuPBlqYecLDOd6yXZj7v7GhA7duThmfjLVJmFPPSPJrtO5uTLAUOp8FTYP1xfZzpEuS6CQ/ot2QeNEV7VH0ehERENpsa4eNnDSZmvyis70igpCgj62SqobTEAXYOgk0fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sYOyrgWI; arc=none smtp.client-ip=209.85.210.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s9W9uVBX"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c9fe4c5eb39so1186885a12.1
-        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 17:43:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sYOyrgWI"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-84e1da97175so2207049b3a.0
+        for <kvm@vger.kernel.org>; Wed, 05 Aug 2026 18:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785977031; x=1786581831; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785978855; x=1786583655; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GW1XyS3pE1vmBMrFND4uaqlT60WFAOcGNZed7ARn/tI=;
-        b=s9W9uVBXMZADMYL3esIoidDW/3wdqPJ/VWnjeAbH6rJQJRQPL0AggH0/MOCz7FWeoV
-         EGW4WNmQRuMx2WRkobs6JklVdkd+HnuAtR8jtJ4gUbjU23NQXBvQlRiBLlu8KpzKJc1G
-         XUx5jKHagJDb77xXRqa877eee8TI6vhVWvZHj0OBitBkg8QBF3NnBLs+k1wcrnH1WrKL
-         Xba3KfjDaCPDRtpnL5ff33HcpEBLdJPB3hzbvB37BGUJNXddi1+omIEmN9n8Qnw3NCYi
-         L3wzawiNBzx2tbrN/pDuO+IiJRzFiJ5msDIUPSakKdCbGAicfGYnrwjwmfFT+s7HPha/
-         aMog==
+        bh=EllBK4pohN2CB4+9rC08wwxbJTVXkdymq5nTAYfElqk=;
+        b=sYOyrgWI4BzQCdEdgFFdQmu1RfpPiH9XKuSID1VkZA+l1jy26IbG3vugDJA3y4Q2sc
+         2qPrEx3Z6P8Dha4wVJRMskaNIXTzizNoXidkt/mfpvZyJ8aA8eSNpoQBnEbzwtcy5nXh
+         sTV9csqek50hQ1edjx17Yh1d9scI9toINbKo4n5aSq9TS1FGSMEX1VotLIaLonCEXXJe
+         Wq6iF1N5qHwfQUieIMkqPjd2oEIKlWFXBilINxqMHBfOEKefURlbpjDed4cwkS5yqMGh
+         CmTKoXci2ukkQP4l2wrdwklnvBXHjM3rh8y3bvvbVWFPDf7vyXvIZq19oa7B/Ujldv8v
+         kZ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785977031; x=1786581831;
+        d=1e100.net; s=20251104; t=1785978855; x=1786583655;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GW1XyS3pE1vmBMrFND4uaqlT60WFAOcGNZed7ARn/tI=;
-        b=WaMNKIxz26GfWQomkMTefk+uHcOAa7ec2VqdWvoZm8fyVLd82ENTkfYfcWphS6wsbi
-         RFRRFi/idIJYBGerc7v60v972IeYaex4FKAUVtg+YQcIOwACHYW4gKDTrP7tYx7tye53
-         LubpyrU/I9fXlQIKgkXy2Qf+0qrzpzBEfI6Y0kCwy6sjh1YO2/lHWvRRk8coeWRZ7fBa
-         C7B89wGps8c+FEypERDkr5TMNoDLVPNtXMriSyEAozJk1rxECYE4WnUcQeqDq0qRfl89
-         KdLFel2OkLuvJKGflfsjcSSwwfCiV/nDbrbpOk6VHqXe2ich/vglZGX36yJEafACxQfN
-         LJVg==
-X-Forwarded-Encrypted: i=1; AHgh+RoELMTAtArbczYHRFkPuAolJLTyZhJq/17qqMGyw/fehJ2Vo5R95xHVQGOigWsOTXUUBVs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJva4G78Wg20A7FI0yD5+5GktMk0SwHEWLsj/SNg3hPuWWr+ag
-	u2A9FO5yTbkfj4iFnjL1oLWazC+i8tlWKClQO8+smvpBX4HcMT4iKuMhUzijFYqnL1C7O9IJTt7
-	LkuQAoA==
-X-Received: from pgki21.prod.google.com ([2002:a63:e455:0:b0:c9e:9c6:a85e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6112:b0:3b4:e4f6:4f15
- with SMTP id adf61e73a8af0-3cb85e9922cmr13235742637.5.1785977030773; Wed, 05
- Aug 2026 17:43:50 -0700 (PDT)
-Date: Wed, 5 Aug 2026 17:43:50 -0700
-In-Reply-To: <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
+        bh=EllBK4pohN2CB4+9rC08wwxbJTVXkdymq5nTAYfElqk=;
+        b=Ob+XrGsftXUtNxuPmox1ypYD/ttinK2HQk8XFNvnfUag46LrBGL8PhO16+yFStl6tK
+         cIbPWYswA2e/6FtEJQ6uOe5VG4+cW3n2X+s7Ez+e7C2NHgSI2Pi46A76Nbnl7OrPGOtw
+         jw2bR+UmnB8A4z7fneuxx/gc3XBiRoAyfVdUk9pu5yrW5OtoZIauLuCqCXQJspoMwC7v
+         qxrz8gtZtOTqkB2YL/ZiUE29/VXBCeBX3QrIxnPMWzdeAmbJ1c6amPn0LAhv9JesKVts
+         sLyA4SuMsKepgJcRGXx35hD/q+DC4adwj4hUH0oqlmBA0TxSOLtTSWg16Kk6gi1VIZmU
+         HptQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpPFa5YINCz+iUAYcdfThdrIQMXNhadUXiCKTYvHuxaLyJ4UcsbssvstlG9rw9EQQ5w+1M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI8Z6G3R+FYoU2A5sNnaqImcEGOxUhGvS94CE+SSTT1yCVAxUs
+	Ly8f0rWh92RWnkCJUbb6LZWJtRJYx02TjrJJyHLfKUcGyaNdV+GLkviKtGgeoiJEWdDPKRNs9/L
+	Fw7zJyg==
+X-Received: from pfbi27-n2.prod.google.com ([2002:a05:6a00:a51b:20b0:84e:99ac:46cc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c93:b0:84a:29a7:f650
+ with SMTP id d2e1a72fcca58-84f2de6ab12mr11213223b3a.0.1785978855213; Wed, 05
+ Aug 2026 18:14:15 -0700 (PDT)
+Date: Wed, 5 Aug 2026 18:14:14 -0700
+In-Reply-To: <CAEvNRgGDhcu2LUqhwVtGJSUo4uXQHrGOYRDaM2qzPTO4LX=jKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260728-gmem-inplace-conversion-v9-0-35f9aec2aed2@google.com>
- <20260728-gmem-inplace-conversion-v9-3-35f9aec2aed2@google.com>
- <7dafaa90-f3d4-4be4-a5cc-472163f18040@intel.com> <CAEvNRgG3qXrG2ix2MEcyVo0GXaen-Pte4gFAwEN+9AY=VtGU5w@mail.gmail.com>
- <b9ad1a1d-c167-4adb-980b-90096515a363@intel.com>
-Message-ID: <anPYxp-LMWaLDbMk@google.com>
-Subject: Re: [PATCH v9 03/41] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
+References: <20260728121138.1103610-1-tarunsahu@google.com>
+ <20260728121138.1103610-4-tarunsahu@google.com> <20260728122655.17C791F00A3A@smtp.kernel.org>
+ <CAEvNRgGDhcu2LUqhwVtGJSUo4uXQHrGOYRDaM2qzPTO4LX=jKQ@mail.gmail.com>
+Message-ID: <anPf5lLNZ5OtwXor@google.com>
+Subject: Re: [PATCH v4 03/11] KVM: Export kvm_uevent_notify_vm_create()
 From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: sashiko-reviews@lists.linux.dev, Tarun Sahu <tarunsahu@google.com>, 
+	kvm@vger.kernel.org, kvmarm@lists.linux.dev, Oliver Upton <oupton@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Aug 05, 2026, Xiaoyao Li wrote:
-> On 7/31/2026 4:34 AM, Ackerley Tng wrote:
-> > I think another way to phrase this is that if we don't make this change,
-> > say, on the foo architecture where there's no CoCo and no private mem
-> > support, kvm_supported_mem_attributes() would return true for the !kvm
-> > case, which is over-reporting.
+On Thu, Jul 30, 2026, Ackerley Tng wrote:
+> sashiko-bot@kernel.org writes:
+> > --- Patch [3]: [PATCH v4 03/11] KVM: Export kvm_uevent_notify_vm_create() ---
+> > commit 5e642ea16f0d267e622a352de60bfe397ecf79df
+> > Author: Tarun Sahu <tarunsahu@google.com>
+> >
+> > KVM: Export kvm_uevent_notify_vm_create()
+> >
+> > This commit exposes the kvm_uevent_notify_vm_create function to allow
+> > triggering KVM event notifications during VM creation.
+> >
+> > [ ... ]
+> >
+> >> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> >> --- a/virt/kvm/kvm_main.c
+> >> +++ b/virt/kvm/kvm_main.c
+> >> @@ -6348,6 +6348,11 @@ static void kvm_uevent_notify_change(unsigned int type, struct kvm *kvm)
+> >>  	kfree(env);
+> >>  }
+> >>
+> >> +void kvm_uevent_notify_vm_create(struct kvm *kvm)
+> >> +{
+> >> +	kvm_uevent_notify_change(KVM_EVENT_CREATE_VM, kvm);
+> >> +}
+> >
+> > [Severity: Low]
+> > The commit message mentions exporting this function, but is it missing an
+> > EXPORT_SYMBOL_GPL or EXPORT_SYMBOL_FOR_KVM_INTERNAL declaration?
+> >
+> > Without the macro, won't dynamically loaded architecture-specific modules
+> > like kvm-intel.ko hit undefined symbol linking errors when they try to
+> > call it?
 > 
-> Under the condition that the foo architecture enables
-> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> 
-> > How about this, replacing the entire changelog paragraph above:
-> > 
-> >    Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE
-> >    based on kvm_arch_has_private_mem being #defined. This improves
-> >    reporting accuracy by not reporting support for
-> >    KVM_MEMORY_ATTRIBUTE_PRIVATE when kvm_supported_mem_attributes() is
-> >    called with kvm == NULL.
-> 
-> It doesn't help for the case where kvm == NULL, but help for the case where
-> CONFIG_KVM_VM_MEMORY_ATTRIBUTES is defined but kvm_arch_has_private_mem not.
-> 
-> sorry for being picky. I think we can say
-> 
-> This improves the reporting accuracy by avoiding the case where
-> KVM_MEMORY_ATTRIBUTE_PRIVATE is reported when kvm == null even without
-> kvm_arch_has_private_mem being #defined.
+> I'm not 100% sure about the use of EXPORT_SYMBOL... here but usually I
+> compile kvm as a module to try and catch these types of linking
+> issues. Maybe Sean will have a better method/explanation for this.
 
-How about this?
-
-Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-on kvm_arch_has_private_mem being #defined in anticipation of tracking
-PRIVATE vs. SHARED state per-guest_memfd, not per-VM (to allow in-place
-conversion).
-
-guest_memfd support for memory attributes is expected to be unconditional
-to avoid yet more macros (all architectures that support guest_memfd are
-expected to use per-gmem attributes at some point), at which point
-enumerating support KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory
-attributes being supported by KVM at-large would result in a system-scope
-check (NULL @kvm) over-reporting support on arm64.
-
-> 
-> >    Give architectures full control over overriding the default definition
-> >    of kvm_arch_has_private_mem() by removing the coupling with
-> >    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> > 
-> >    In a later patch, kvm_arch_has_private_mem() will be defined based on
-> >    whether architectural features are compiled in, and made orthogonal to
-> >    CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> 
+The issue is the shortlog, not the code.  The intent is to make the function
+globally visible, not to truly export it (the eventual usage is code that's
+linked into kvm.ko, i.e. doesn't need an export).
