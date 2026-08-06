@@ -1,234 +1,305 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E55480320;
-	Thu,  6 Aug 2026 15:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856223E325;
+	Thu,  6 Aug 2026 16:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786031965; cv=none; b=EEs28vklvcl/89GKIEhfmu2xxJzF05QryI+TarqLgLkod763baPulLTMap3WMQ+HyMKfY2hAl5dvJMcfbiYpLe8f1LR6sUtt4dJTcCCuklsoc7LiH3w9LWJd2f/o0o7s0u0jxRJeABwVSq9X959MkjCmwmREEhcdS0W/Cef7uXs=
+	t=1786032398; cv=none; b=aFtCuYMwTRXRifzPheNyITY/5UL3wTeZsjKicRwe4zhi0bNDJMY7tF6o7HoiGC+/H2A+7OH3Wgoy1B/60DMYmDz8/LMQyDwCpR66R4lDrt7xL4dNWixk188xc8xVz/Z6lZi4AXYm/jBEUtPdI2RLcZ0U8peeu5jl95TMwnUPqnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786031965; c=relaxed/simple;
-	bh=DsQhJSsHEQE43kK5jWaI1aAMVBj678UMFW/duDvV5/w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hqxGilPXt6CQjpAZoBD8ssda/VXjanzX/otoXjgdUoVLj7nJ4C8iqDSivNoiB0oC+6ROa3CX+b5y1GDFoSAGQT3kk22mU/rpJXyzYrSObd0WJm1wNxS1b4gj/HEKOdRfLbUKEjX/gA1no4iImNmiUgs34hTqAYt42RfAytG2Jv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=I5HqGRM1; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1786032398; c=relaxed/simple;
+	bh=EDNffItBrzBc2yFrQyApte0aDzP2Cz9QaErcHpzLVKU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XTl00GPl8xoK2pGiIeYI1o8bpnDV/RkXmgeHdu67/vpMJT4SMeWuJJpGJrs80/2I7FXuKysm9vpBkkaDrP6lOghqRspyu/DjncC23kiEIrs8Rcn02sHUvpnAXQDWVKN9lWgL/oeC6MOJbp4Ra8wsNiNXMFT6kkzdjgGlJLyMjV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Bi0TCVdR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="I5HqGRM1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=DsQhJSsHEQE43kK5jWaI1aAMVBj678UMFW/duDvV5/w=; b=I5HqGRM1TVoomezStofd+GUo64
-	wePqHM67pdVLakvd67KZAgeVP005GmQ7lvtAeNgCbtokzzbCQVV1j/vvocYSsiXXByCRv+qL9KOml
-	2MDfor/YdJWubc3BLHWB/S0xqL5+3v564PPPtb+mW5uQz4gAKcBLZgZCNcGVEju8LGxO47XcSgxcB
-	/Ovzo9qzWJzaQ9j5Qfk5DIFOZ7rFndorzHql4pIhCcgMvZcY9dX364HPZgxCzlSab7Pu4ioOrPB1A
-	arfojilF6tKcfIj3pQ+PtXjy7/V7o91awKaB+WiJNo0xCdoN7q5NxU7LWZ2cKRnrbmmdBFuUyqGkC
-	afhdHWXw==;
-Received: from [2a07:aa00:8c:e0:19eb:2ef2:e05e:71ba] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrz9y-0000000BDvA-23Az;
-	Thu, 06 Aug 2026 14:33:26 +0000
-Message-ID: <c2141d42c45ac2f480146c73ff23bcdacc7803e0.camel@infradead.org>
-Subject: Re: [PATCH v3 4/7] KVM: x86/xen: Extract delivery of event to vCPU
- into a separate helper
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, paul@xen.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 06 Aug 2026 16:32:56 +0200
-In-Reply-To: <283252e3ff0dabd2593053b3ec5fad2e7f00bc24.camel@infradead.org>
-References: <e19783f0c897f69afdd7bf623f668714ae728523.camel@infradead.org>
-	 <283252e3ff0dabd2593053b3ec5fad2e7f00bc24.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-fNFCgqww+spMzNz/7GHK"
-User-Agent: Evolution 3.60.3-0ubuntu1~ppa9~24.04 
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Bi0TCVdR"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 676En46L2939450;
+	Thu, 6 Aug 2026 16:06:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=mzGEVm
+	etbGjsMDpWjtcnXUBmusbrgdkIn6JsyNh8xeY=; b=Bi0TCVdR5/z62UjrWOQdce
+	UpuYimmGOp8jHzYBZY6gYtXZYXFcGFww/Up1dRxrQcSA3uREFRwRKFREdoIR+E1g
+	w1GB7UgZbZlwTeNtkmZS76KlfUg8YuKzEhsAvNs6vIBe/SvGKIzx+NuB1a18OE4x
+	jVb6swfTTWImK9dxTxfhD7McMLCwkmXLrSvSecPT6fJszukd8Jlvfrc+iQKpS3wl
+	aeUm7GJ/4kGVFwt5zi5EQK7B2Ne001jQClOFuImmNoaOgLR0jxSV7//ZkmqHj75Q
+	kMJdVx29hkSwp/52twli25ijLh/cLDy/7gcmr+8UmeNgErgmmZ7zbgWXN4BDULhg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8a495d5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 16:06:35 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 676FuI78027270;
+	Thu, 6 Aug 2026 16:06:34 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4fswtyunfg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Aug 2026 16:06:34 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 676G6Uwn17367424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Aug 2026 16:06:30 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8FEDF20049;
+	Thu,  6 Aug 2026 16:06:30 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A75D420040;
+	Thu,  6 Aug 2026 16:06:29 +0000 (GMT)
+Received: from fedora (unknown [9.5.7.39])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Aug 2026 16:06:29 +0000 (GMT)
+Date: Thu, 6 Aug 2026 21:37:19 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
+ wire up ioctl
+Message-ID: <20260806211428.e98e021d-5c-amachhiw@linux.ibm.com>
+Mail-Followup-To: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org
+References: <20260804180705.59160-1-amachhiw@linux.ibm.com>
+ <20260804180705.59160-2-amachhiw@linux.ibm.com>
+ <20260804181937.2EF2A1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260804181937.2EF2A1F000E9@smtp.kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=E6P9Y6dl c=1 sm=1 tr=0 ts=6a74b10b cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
+ a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=WvqGrGUc94HQVLc0aSkA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-ORIG-GUID: SXJwvlrgoFFVVsUN-1U6vXnC9LHlGu4A
+X-Proofpoint-GUID: SXJwvlrgoFFVVsUN-1U6vXnC9LHlGu4A
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA2MDEyMiBTYWx0ZWRfX6OJF3iZcJm3Y
+ UxtuyO1rsVkUeeaeAl6DNXCCYadXVBIjw801obXMdwEx8rcq7rNEvz6iFReMYQKxY7CEaW/fcFL
+ O0dT8GMQFh4IEkaH7CaYJXl7omLHroE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA2MDEyMiBTYWx0ZWRfXyMxso1R3AK8A
+ reYE8iG6RLY4eDm1szYdBRp7X3b6Cd/0n0QgDViTLi3hEOOR1WvsnVtvLrqac6iW3vm9CUjgZHE
+ JL0doqsjORZfhxyTiHZSc5x2kcFvhLUoBPr/6CEiM1BKlaTlOTefocrUjgtIcPcJSlxH2SKCWTX
+ rWneTeFxu1EyNexlpAJ6h0+uJqJlfc4JlhIBo9LqggwXkhhBfv/Wyxk1l47fWXYpoMQEoWCCXeT
+ 2LdzSM8njD8ouLdWQ+xlpgfttMjIVJs06xZp24QOCoiJ9sLTNChE1vdeFHSvaZ7QKYXSrgK3pQN
+ qYp2Zng6TgxcPc4FEaqfL7uZdji+ZtzHTKWvMpGTpa5BM3DQZy1cBWnPEqS+NO4LIyWDr87fbff
+ az7IDvXKwSzPx2JgGtwF0pXl+aOKNlzxf23gSPHZaSxZN6KLLPC5fAfE93ILuJsoKqA2UbwJ+4y
+ Fi3leOhJH71XBR1zKZw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-06_01,2026-08-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2608060122
 
+On 2026/08/04 06:19 PM, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
+> - [High] The ioctl artificially inflates the userspace struct's `size` field on success, creating a memory corruption trap if userspace reuses the struct.
+> - [High] The ioctl unconditionally rejects larger structs with -E2BIG, bypassing standard UAPI zero-checking and encouraging silent input truncation.
+> - [Medium] The KVM_PPC_GET_COMPAT_CAPS ioctl availability is decoupled from its KVM_CAP_PPC_COMPAT_CAPS capability, breaking capability negotiation and bisectability.
+> --
+> 
+> --- Patch [1]: [PATCH v6 1/4] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl ---
+> commit bcf86bb5d3079ca2dbb4bf09693ba6e6a24b06c5
+> Author: Amit Machhiwal <amachhiw@linux.ibm.com>
+> 
+> KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+> 
+> This commit introduces a new capability and ioctl to expose CPU compatibility
+> modes supported by the host processor for nested guests.
+> 
+> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> > index 00302399fc37b..8d6632c64ca5f 100644
+> > --- a/arch/powerpc/kvm/powerpc.c
+> > +++ b/arch/powerpc/kvm/powerpc.c
+> > @@ -697,6 +697,13 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
+> >  			}
+> >  		}
+> >  		break;
+> > +#if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE)
+> > +	case KVM_CAP_PPC_COMPAT_CAPS:
+> > +		r = 0;
+> > +		if (kvmhv_on_pseries())
+> > +			r = 1;
+> > +		break;
+> 
+> [Severity: Medium]
+> Is this capability check fully aligned with the ioctl's availability?
+> 
+> This check returns 1 on a pseries host using PR KVM (since it misses the
+> hv_enabled check), but the ioctl might fail with -ENOTTY if the backend
+> is missing.
 
---=-fNFCgqww+spMzNz/7GHK
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Looking closely, it looks like a good catch. PPC kernels can be built
+both KVM-PR and as well KVM-HV config enabled. Though at one point in
+time only one of kvm-pr and kvm-hv can be loaded, a PR KVM guest on a
+pseries system can see cap=1 but then get -ENOTTY from the ioctl
+(thought the documentation explicitly covers this case: "ENOTTY if the
+backend does not implement the get_compat_caps operation (e.g., on
+non-HV KVM implementations). But anyway, I'll fix in v7:
 
-On Thu, 2026-08-06 at 12:00 +0200, David Woodhouse wrote:
->=20
-> Hm, it probably wants to live before the RCU part. I think the plan
-> should be to first send these in parallel as they don't conflict:
->=20
-> =C2=A0=E2=80=A2 Patch 1 from this series (the syzbot races).
-> =C2=A0=E2=80=A2 The updated xen series.
->=20
-> Separately, we can remove the non_block_start() from the OOM reaper
-> path (patch 2 of this series), marking it as fixing the existing KVM
-> mn_invalidate_lock splat under RT=C2=B9.
->=20
-> The actual conversion to RCU (which fixes the GPC RT issues) can be
-> rebased on top of all of the above, and wait in the wings for a little
-> while longer until they've landed.
->=20
-> I'll build a 'xen-rcu' branch with that all in a single linear set, and
-> redo all the testing.
+	case KVM_CAP_PPC_COMPAT_CAPS:
+		r = 0;
+		if (hv_enabled && kvmhv_on_pseries())
+			r = 1;
+		break;
 
-Pushed to
-https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
-heads/xen-rcu
+> 
+> Later in the ioctl execution, it succeeds on a bare-metal host using HV KVM
+> (missing the kvmhv_on_pseries() check) even though this capability check
+> would return 0.
 
-I'm not going to spam yet another patch series just yet; I'll wait for
-Sean to opine. There's an extra SRCU fix that's tacked on to the end of
-the xen series, which showed up in testing.=20
+On bare-metal, kvmhv_on_pseries() is false (CPU_FTR_HVMODE is set), so
+the cap correctly returns 0 there regardless of hv_enabled. The ioctl is
+only meaningful on pseries (PAPR guests) where KVM acts as L1 under a
+hypervisor, which is why both conditions are required
 
-bfc8471128bb (xen-rcu) KVM: x86: Use gfn_to_pfn_cache for steal time / pree=
-mpted status
-641309005314 KVM: x86: Request the guest TLB flush from record_steal_time()
-f36625fcee41 KVM: x86/xen: Don't dirty track "vCPU info" page
-ee5a6622c42d KVM: x86/xen: Explicitly tag "shared info" page as never being=
- dirty tracked
-77cf50babaa2 KVM: x86/xen: Extract delivery of event to vCPU into a separat=
-e helper
-5435b60f92ad KVM: pfncache: Use RCU for readers instead of a rwlock
-bee88a71959c mm/mmu_notifier: Remove non_block_start/end() from notifier in=
-vocation
-c3b0e9347be8 (syzbot) KVM: pfncache: use a dedicated invalidation sequence =
-for cache refresh
-e8c3b5bdc2b1 (xen-v2) KVM: x86/xen: Take kvm->srcu in __kvm_xen_has_interru=
-pt()
-bc35ad561196 KVM: x86/xen: Use atomic*() APIs instead of open coded equival=
-ents
-b363d2ca18aa KVM: x86/xen: Use 32-bit atomics if vCPU's evtchn_pending_sel =
-isn't aligned
-da38f64bd735 KVM: x86/xen: Use 32-bit locked bts for vcpu_info evtchn_pendi=
-ng_sel
-725a62d774ea KVM: x86/xen: Enforce 4-byte alignment of vcpu_info registrati=
-on
-0267ff414f71 KVM: x86/xen: Latch shinfo mode in kvm_xen_schedop_poll()
-6ceac154447d KVM: x86/xen: Latch shinfo mode in kvm_xen_set_evtchn_fast()
-3300e2ca471e KVM: x86/xen: Rename max_evtchn_port() to kvm_max_evtchn_port(=
-)
-e8b7e8ae6de8 KVM: x86/xen: Introduce kvm_xen_has_64bit_shinfo() macro
-9643c9d83837 KVM: x86/xen: Rename 'longmode' to 'is_64bit' in hypercall han=
-dling
+> 
+> Could this decoupling between the capability and the ioctl availability break
+> capability negotiation for userspace?
+> 
+> > +#endif /* CONFIG_KVM_BOOK3S_HV_POSSIBLE */
+> >  	default:
+> >  		r = 0;
+> >  		break;
+> 
+> [ ... ]
+> 
+> > @@ -2463,6 +2470,70 @@ int kvm_arch_vm_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
+> >  		r = kvm->arch.kvm_ops->svm_off(kvm);
+> >  		break;
+> >  	}
+> > +	case KVM_PPC_GET_COMPAT_CAPS: {
+> > +		struct kvm_ppc_compat_caps host_caps = {};
+> > +		u64 usize;
+> > +
+> > +		/*
+> > +		 * Read the size field first to drive copy_struct_from_user.
+> > +		 * size must be the first field of the struct.
+> > +		 */
+> > +		r = -EFAULT;
+> > +		if (get_user(usize, (__u64 __user *)argp))
+> > +			goto out;
+> > +
+> > +		/*
+> > +		 * Enforce a minimum: reject buffers smaller than the initial
+> > +		 * struct version (VER0). This allows old userspace compiled
+> > +		 * against the original struct to still work on a newer kernel
+> > +		 * that has grown the struct with appended fields.
+> > +		 */
+> > +		r = -EINVAL;
+> > +		if (usize < KVM_PPC_COMPAT_CAPS_SIZE_VER0)
+> > +			goto out;
+> > +
+> > +		/*
+> > +		 * New userspace with a larger struct called an older kernel.
+> > +		 * Write back ksize in host_caps.size so userspace knows which
+> > +		 * older struct to retry with, then fail with -E2BIG.
+> > +		 */
+> > +		if (usize > sizeof(host_caps)) {
+> > +			host_caps.size = sizeof(host_caps);
+> > +			r = -EFAULT;
+> > +			if (put_user(host_caps.size, (__u64 __user *)argp))
+> > +				goto out;
+> > +			r = -E2BIG;
+> > +			goto out;
+> > +		}
+> 
+> [Severity: High]
+> Does explicitly rejecting larger structs here bypass the standard UAPI
+> zero-checking?
 
---=-fNFCgqww+spMzNz/7GHK
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+The pre-check `usize > sizeof(host_caps)` is required, not a bypass. The
+-E2BIG path writes back ksize so userspace can discover the kernel's
+size and retry explicitly. Userspace that retries with the smaller size
+is making a deliberate choice to use the older interface; the kernel
+cannot have seen the truncated extra fields, so there is nothing
+silently ignored. copy_struct_from_user() itself would also return
+-E2BIG for non-zero trailing bytes — but it cannot be called safely with
+an arbitrary usize against a fixed-size kernel struct.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-iFUweSoHBF1Dg+lbGuT2/SwAAAAAAAA=
+> 
+> By catching usize > sizeof(host_caps) early and returning -E2BIG, the code
+> bypasses copy_struct_from_user()'s built-in validation which would safely
+> reject non-zero extended fields.
+> 
+> If userspace receives the smaller kernel size and retries by truncating its
+> buffer size, the kernel will only read the truncated portion, silently
+> ignoring any non-zero extended fields that userspace originally provided.
+> 
+> Should this rely on copy_struct_from_user() to safely check zeroed trailing
+> bytes instead?
+> 
+> > +
+> > +		/*
+> > +		 * copy_struct_from_user() handles forward/backward compat:
+> > +		 *   usize == ksize: verbatim copy
+> > +		 *   usize <  ksize: zero-pad trailing (old userspace, new kernel)
+> > +		 */
+> > +		r = copy_struct_from_user(&host_caps, sizeof(host_caps),
+> > +					  argp, usize);
+> > +		if (r)
+> > +			goto out;
+> > +
+> > +		/* Reserved fields must be zero */
+> > +		r = -EINVAL;
+> > +		if (host_caps.flags)
+> > +			goto out;
+> > +
+> > +		r = -ENOTTY;
+> > +		if (!kvm->arch.kvm_ops->get_compat_caps)
+> > +			goto out;
+> > +
+> > +		r = kvm->arch.kvm_ops->get_compat_caps(&host_caps);
+> > +		if (r)
+> > +			goto out;
+> > +
+> > +		host_caps.size = sizeof(host_caps);
+> > +		r = copy_struct_to_user(argp, usize, &host_caps,
+> > +					sizeof(host_caps), NULL);
+> 
+> [Severity: High]
+> Can this artificial size inflation cause an out-of-bounds read/write if
+> userspace reuses the struct?
+> 
+> If an older userspace passes a smaller struct to a newer kernel (where
+> usize < sizeof(host_caps)), the kernel sets host_caps.size to its own larger
+> size. It then copies the smaller usize bytes back, overwriting the userspace
+> size field with the kernel's larger size.
+> 
+> If userspace reuses this struct for a subsequent ioctl call, it will now pass
+> the larger size. The kernel would then read past the end of the originally
+> allocated userspace buffer, and if successful, write back past the end
+> as well.
 
+Not a bug. `copy_struct_to_user(argp, usize, &host_caps,
+sizeof(host_caps), NULL)` copies min(usize, ksize) bytes back to
+userspace. Today usize == ksize == 24, so exactly 24 bytes are written.
+In a future kernel where ksize grows, the function correctly copies only
+usize bytes (old userspace case), meaning userspace sees its own size
+field reflected back — not the kernel's larger size. The kernel sets
+host_caps.size = sizeof(host_caps) in the kernel-side copy so that the
+output `size` field documents the kernel's struct version when it is
+within the copied range, which is the designed semantics for versioned
+structs. No out-of-bounds access occurs.
 
---=-fNFCgqww+spMzNz/7GHK--
+> 
+> > +		break;
+> > +	}
+> >  	default: {
+> >  		struct kvm *kvm = filp->private_data;
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260804180705.59160-1-amachhiw@linux.ibm.com?part=1
