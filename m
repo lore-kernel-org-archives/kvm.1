@@ -1,90 +1,189 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861063B6C15
-	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 13:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC63A83A9
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 14:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786024396; cv=none; b=ltVKdi9n8AfoLNWXBKnrR5si7okZc16OefyPHSUR2UZj36rAw8l1nDRrigLOpzDcCxChoRypfbkRHc+98tgG9Jbs/Gr0CngXiKaVcs8yOJiRC8RMzTAJUJ8U31psLfXPSeMteUxTNUMUCrFU7rxpedWQQy+yg3r/haQ4ietdxVw=
+	t=1786024887; cv=none; b=sxIx2ch/CV/8ZjG7RjN9DEpwQ2cUtVWRkbrF+5UQK70Drdq9+w/VfKZyCF4fRm3m7Dkw3SIy+6XNKWLmLGZZ5IDv9mzzTrP+JH9WL0tnbNzlgK/W7dOcWtm4FQcqSUhnOHpd2W+26hUdxdAgpmpKBzVCXkEVo09U8+ej1bM4KOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786024396; c=relaxed/simple;
-	bh=m2qiwyT0gBlgrPaEvfZGXkwH8PZ+oMXWE+y7LnPQMIc=;
+	s=arc-20240116; t=1786024887; c=relaxed/simple;
+	bh=tOGpweSDpvytxjG8ICUpA9MBJ5AuUOH1CPncR+4OrAM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=l8J7k/Mk5IQhcKp4DaBL+JFVcbhk23brbE+cS67KFQNPMpa5RCtoKDZkPEuYAW/IxLmI4c+jboopCpIFb6mCmdUwMp9A+5cT4+ZYbwRg/aR8pT6L/kygv/g/AIpploGG+2e89RaRXrcsiLKIF32u088nYuJ2qQ4lSXyA/Z5BaDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d11aICYu; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=WkzdUu436I9p2P8efL7Ma1jQs459VKYkO1qnG51Hrftb+MQj8fdGESC3HsLldSsRuQyjoxOd0N1pH75NlVt9cTSyHJk6NmEd9WSEXEFxk5OgLpxhkFbRomAoPkAkUIB6w8GZQ3VAHFKmg1//ql3PZYYkEX27yGW+XvwP+Xnbuao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QOv/+I2o; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d11aICYu"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cacd6d37edso28533085ad.0
-        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 06:53:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QOv/+I2o"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so37547805ad.3
+        for <kvm@vger.kernel.org>; Thu, 06 Aug 2026 07:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786024394; x=1786629194; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1786024885; x=1786629685; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
-        b=d11aICYu7WC3NMAQesLKIyF3pFUcsgX5lOPiMsGAGsrIIYHz0V1+gOXIwZ/X0waLvA
-         f87YmyDWxFvRnj+f4OQ2OJC3E5GH+YkEOATcXe84KaKw8fGoDsvM48GDYOSPHe5AJod9
-         +MZAI/m1Wjtb8deX3teBA2S1ezrZXZ1p31aH3yDokfNEiXF2jVudJ/3OXwx/bU5q4eBC
-         aEIUZQiiJmft0gXdsblwvIav63zYdcilCdXryd8S4zBn8DrcI4iz7YDQMx/J8IJdrI+y
-         tW6N18k6RsLV9zLS8p0RuLWa7chCxFOrvW8OO5mH5d4H5fkqeAGLcBfS/TYJrDsbAhY/
-         ceAA==
+        bh=gCifv/Ja/oCMj8s+HfoBf/f+SWTBvdmMy4I6JqPIJ3E=;
+        b=QOv/+I2oyY5hSqWyeOI/t4T3rN5DanuHrDQ/2pnN7nDrBVKZSd916NOOqhTymbX9SZ
+         cgH9fgIwqw0nosgVCW/fObCdEu6lKy+MuHIiMATp4xreNCifvOluHMhEVuXX2neXLnTw
+         RUavZqy5Ue6RcbIN+Hhtgfi1p6Pj18OAzQQXpnuCY/feb4RMZWAnYPnYa32H7tJmfzg1
+         BolpcPRFctaXZewcWm+XQYb+brcF7fNjzk3CmQ79rcvqM5yLqKWPgrjiRYIylvhAWRB3
+         qlenvdHRzWNFgOhqTnd/y9w+hSzAhMO4QV2jD3FO8BBewR8LjdrQUU1Cm6gUqPJrj2ka
+         B+VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786024394; x=1786629194;
+        d=1e100.net; s=20251104; t=1786024885; x=1786629685;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KurGLp5j0TRPb0GM1o+RkfUsTRyZPXyOf0pcclYokSw=;
-        b=JxLeXi85VvmWtnwoHen10Vj//dfVUxYvO7NNrFfej3sMpSnlTmGFwGW9YinvVE66ib
-         xj24pYzZK/+r/9GYwwCkkRlNeldjPJi3PYyCurU713NAYdfudxL9PuxVxc9c1a2lKYOy
-         4tlUhTnMnOFXw9pPXnvqXxahXCuKRai2UP4SLxNcupE0OBZa8mKmIs4uTEXzHE92A2PO
-         ihIoqPnQknilDDYPI01Nof4NXqWh+TSWy31iN5tt/mXXqe//6LzSNIOqKeum2Au+Z3JO
-         oHdpyvn4S1wcvSarchQ4P82v4p5894Ut7IN0+E0IUS0I/SjNTh6M4mtFQLtXb30BHOOd
-         6fRQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5BJ7Zct3PIezSELP45rWBrPMk/Gs81xrh5nBwLkvQ03znq1kLDOmuRnMF/wYXAV0XwX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywe8ioOwk1eKHiv+Zj9YzfZpuKXGUgK+50j/O1jJBMfNZuOc5CS
-	7N9cM6ROlDmocX9Ao46IDoiJQsfWGVuIFCogVf+YO0zQJ65QAexe6AHgdVv26B6LdC5gbyqjNrP
-	nRisKuQ==
-X-Received: from plao6.prod.google.com ([2002:a17:903:3006:b0:2ca:da0a:7296])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc5:b0:2cf:906c:7d1
- with SMTP id d9443c01a7336-2d0ca946776mr183858535ad.20.1786024393599; Thu, 06
- Aug 2026 06:53:13 -0700 (PDT)
-Date: Thu, 6 Aug 2026 06:53:12 -0700
-In-Reply-To: <anSMBpQJ8x-vXYy2@sgarzare-redhat>
+        bh=gCifv/Ja/oCMj8s+HfoBf/f+SWTBvdmMy4I6JqPIJ3E=;
+        b=HknLSBBS2tZuCRqswzIW0x1P4gUw4HnAKfZcC/7juJ/8dnjkFW+SnT1JiEC4WVOHky
+         2Pi1lBJbx2iCPFTjuVN4RGCWGl+gF7YHhWt/lQIzWm/cNjOyUx8opdW3CxUUCbyXouo4
+         n57F5rADO/1E8vf7RpW11WCfhMFE7FuosiTtVIAf8IzUnBnYo10OieYZjSXgWkMLuhPn
+         gV1Dfd8lF4m4i4f4QP4ZlswWruO08iepmED8uSjNBgLFsXyZkiFBcjp2veLc1uG0v+Z2
+         z2BhmsEz5AAXSNDY4xEJ+ILFfpQwQSNBWLBLvOu1foBDwaL5ygVYw4RvOTXJN07nEdCK
+         bgKQ==
+X-Gm-Message-State: AOJu0Ywrs/v+xJCSiqZhJj4CXJ/slNBshWyPWoAWfsRN0r4CTD19V+PC
+	o8vm8GmR4wOkabq0Yn0ezcDQJi2hMeC2CTf/91UxHjS1NIQ1BU5C3cQ0RpkeTxe7Lgyig9Ljat2
+	TyA8iig==
+X-Received: from plas9.prod.google.com ([2002:a17:903:2009:b0:2ca:cefb:826e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:946:b0:2cf:82e6:a5
+ with SMTP id d9443c01a7336-2d0ca7f8ec1mr181848465ad.13.1786024884789; Thu, 06
+ Aug 2026 07:01:24 -0700 (PDT)
+Date: Thu, 6 Aug 2026 07:01:24 -0700
+In-Reply-To: <bug-221841-28872@https.bugzilla.kernel.org/>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260723153310.745855-1-andrey.drobyshev@virtuozzo.com> <anSMBpQJ8x-vXYy2@sgarzare-redhat>
-Message-ID: <anSRyFTNGC-XcFM1@google.com>
-Subject: Re: [PATCH] vhost: clear vq->worker under vq->mutex when freeing workers
+References: <bug-221841-28872@https.bugzilla.kernel.org/>
+Message-ID: <anSTtLor3F4phcn4@google.com>
+Subject: Re: [Bug 221841] New: KVM: nested VMX eVMCS VMPTRLD/VMPTRST causes
+ infinite VM-Exit loop due to missing RIP advance
 From: Sean Christopherson <seanjc@google.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	mst@redhat.com, stefanha@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com
+To: bugzilla-daemon@kernel.org
+Cc: kvm@vger.kernel.org, Vitaly Kuznetsov <vkuznets@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Aug 06, 2026, Stefano Garzarella wrote:
-> On Thu, Jul 23, 2026 at 06:33:10PM +0300, Andrey Drobyshev wrote:
-> > The effect is harmless in practice, as this only happens while the
-> > owning process (and thus the whole device) is dying, but the lockless
-> > write is inconsistent with the rest of the code.  Clear vq->worker under
-> > vq->mutex, like everyone else, so that all writers of vq->worker follow
-> > the same locking rule.
-> > 
-> > This issue was found by Sashiko AI review.
-> 
-> Can you share a link to the review?
-> 
-> I don't know if it's common or not, but having the link in the commit or
-> after --- will help the reviewers.
++Vitaly
 
-+1.  FWIW, I've been using and encouraging the "standard" Reported-by+Closes, e.g.
+On Thu, Aug 06, 2026, bugzilla-daemon@kernel.org wrote:
+> https://bugzilla.kernel.org/show_bug.cgi?id=221841
+> 
+>             Bug ID: 221841
+>            Summary: KVM: nested VMX eVMCS VMPTRLD/VMPTRST causes infinite
+>                     VM-Exit loop due to missing RIP advance
+>            Product: Virtualization
+>            Version: unspecified
+>           Hardware: All
+>                 OS: Linux
+>             Status: NEW
+>           Severity: high
+>           Priority: P3
+>          Component: kvm
+>           Assignee: virtualization_kvm@kernel-bugs.osdl.org
+>           Reporter: f734222792@gmail.com
+>         Regression: No
+> 
+> Created attachment 310582
+>   --> https://bugzilla.kernel.org/attachment.cgi?id=310582&action=edit
+> Proof-of-concept exploit demonstrating infinite VM-Exit loop caused by missing
+> RIP advancement in KVM nested VMX eVMCS VMPTRLD handler.
+> 
+> When eVMCS (enlightened VMCS, Hyper-V enlightened VMCS) is enabled, 
+> the nested VMX handlers for VMPTRLD and VMPTRST return directly without 
+> advancing the guest instruction pointer (RIP).
+> 
+> Affected code paths:
+> 
+> arch/x86/kvm/vmx/nested.c
+> 
+> handle_vmptrld():
+>     if (evmcs)
+>         return 1;
+> 
+> handle_vmptrst():
+>     if (evmcs)
+>         return 1;
+> 
+> 
+> Unlike other VMX instruction handlers, these paths do not call:
+> 
+> - kvm_skip_emulated_instruction()
+> - nested_vmx_succeed()
+> - nested_vmx_fail()
+> - nested_vmx_failInvalid()
+> 
+> Therefore, the L1 guest RIP remains unchanged after VM-Exit handling.
+> 
+> Reproduction logic:
+> 
+> 1. Enable nested VMX with Hyper-V enlightened VMCS (eVMCS).
+> 2. Run an L1 guest.
+> 3. Execute VMPTRLD or VMPTRST instruction inside L1 guest.
+> 
+> Execution flow:
+> 
+> L1 guest executes VMPTRLD
+>         |
+>         v
+> VM-Exit to L0 KVM
+>         |
+>         v
+> handle_vmptrld()
+>         |
+>         v
+> if (evmcs)
+>         return 1;
+>         |
+>         v
+> No RIP advance
+>         |
+>         v
+> VM-Entry resumes L1 guest
+>         |
+>         v
+> Same VMPTRLD instruction executes again
+> 
+> This creates an infinite VM-Exit loop.
+> 
+> Impact:
+> 
+> A malicious L1 guest can continuously trigger VM-Exit handling and consume
+> host CPU resources, resulting in denial of service.
 
-    Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-    Closes: https://lore.kernel.org/all/20260625212001.3B6561F000E9@smtp.kernel.org
+No, it doesn't.  There are no "host CPU" vs. "guest CPU" resources, it's all just
+physical CPU resources.  Whether the CPU is running guest code or host code is
+irrelevant.  What matters is that KVM honors NEED_RESCHED (especially on
+non-preemptible kernels, i.e. before PREEMPT_LAZY came along), which it very much
+does in the slow path VM-Entry/VM-Exit loop.
+
+> The issue affects availability only.
+
+Only the availibility of the L1 hypervisor.
+
+> Technical analysis:
+> 
+> The eVMCS path should behave similarly to other unsupported nested VMX
+> instructions.
+
+Only if the TLFS allows it.  I assume it just says "unsupported" or "undefined
+behavior", i.e. KVM can probably do whatever it wants.  Vitaly?
+
+> Replace the direct return:
+> 
+>     if (evmcs)
+>         return 1;
+> 
+> with an error handling path that advances RIP, for example:
+> 
+>     if (evmcs)
+>         return nested_vmx_fail(vcpu,
+>             VMXERR_VMPTRLD_VMPTRST_WITH_EVMCS_NOT_SUPPORTED);
+
+VMXERR_VMPTRLD_INCORRECT_VMCS_REVISION_ID is probably the best fit?
+
+> or at minimum explicitly call:
+> 
+>     kvm_skip_emulated_instruction(vcpu);
