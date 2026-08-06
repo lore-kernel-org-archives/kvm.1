@@ -1,142 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9357E3672B0;
-	Thu,  6 Aug 2026 21:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91AB423E9B
+	for <kvm@vger.kernel.org>; Thu,  6 Aug 2026 21:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786053129; cv=none; b=cAwzJKPaBBIeyAkmec56K8T1FmMKCcKoAY2ISvd4fOVbWq++v2X3wWoSqGuLDnoxkrbejJO+5BOJkW5LzJu/I4FXg45bzAEoynciNeTmRe2CyrRJJRFOM/xbzRf7qBD2MAsQRVQTMOwc0bWuMdotY+rcjrLrAEYOsY5CwxF7jxw=
+	t=1786053254; cv=none; b=CNocm9XYmL9KpusnRzgZeP0hpCg6cT8NUWxaeJI2QKGW6T8usqs2MOkCKPbfxMZ0XPUfSH9+iKkX6rogTRL2oAa7ndZPE+VIbuAorIt7mpWdPP+4AHe3JrD3iycw3Ur9PR+HNU9fQuHz5RGA11l/f/eWLw4KJad563VlvlKUKyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786053129; c=relaxed/simple;
-	bh=bHm7tPqqbCBEQHY3/tdCUmPG3EBvM5ITb/n6WdWjFBw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPP6xk2t8rHm5ZWWavYBXtlko8iXzZV25e2WIzc0L3k2VvJY0KlJupxzjiDkzSekZweip/Wz50r9+VmtVfO2bIdf1FWHqcV1VLCEUIYkaSOGsZf7Adwnl2lfViskuI5wqGAnETKPqK5CauSuupF9NSmlaMTihDD7pE38u7D7jow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itAbg8iN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786053254; c=relaxed/simple;
+	bh=5ZPrV1g6KbPo59whUdxRwjI/Z4cxaNbLApuZK0NsPjE=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=R0qzv74bUAOb1vabzxz1gFx4wJLP1TZ4Tq6YWF74KGZoAhLQOWEoax5w1URKzI60Vn0uUuQ/I/s6HpZfgqyUVoYq9Dy7FALGmn0+eT1NWjU4DpI35sGNXm/P22XxyzoaWdgr0pht9HZlNoZjqSDuj9UC3qOiYC0lLNmyKyebD7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyw2YaFm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itAbg8iN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E7F1F000E9;
-	Thu,  6 Aug 2026 21:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyw2YaFm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537841F000E9;
+	Thu,  6 Aug 2026 21:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786053127;
-	bh=ZlGSKNo0J5TFuA1dSwO6QbUwOgWanrO/2tMeNn7pmYo=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=itAbg8iN1Tv8CZ5kX+4yDW98dbPZCAtVLcVq62yQaVyPIeMmVsxZpn7CI8Ju6ls8A
-	 f5IlgQE7toyDoeHPatWyciJUbtU2htnPjiQIBxXa0wkCHIwJAnBsYWUj8/qOhjcBIn
-	 1UeP8JnzkSxfUZ7JF9A3Bxsaj1d94T5qRdP94b+YnRl/j4mDxlG9LUlGThBY7LAdpe
-	 +MQ/AxbFeWa7kfNAyjxzYdlkiaozQ/DuhSMhNDeRLZMYAfJ8ejKo9C0qFz5bMEOgxF
-	 FyHCcscmQV28jTdLu9JJZKrMRq9pEMnhpjS0213FWqEciPpoZpmkxGKLHh5Fz8VdAR
-	 WxBPb3bvRuEfw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id DCC40CE19F3; Thu,  6 Aug 2026 14:52:06 -0700 (PDT)
-Date: Thu, 6 Aug 2026 14:52:06 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Sean Christopherson <seanjc@google.com>, Boqun Feng <boqun@kernel.org>,
-	kvm@vger.kernel.org, rcu@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] KVM: pfncache: Use RCU for readers instead of a
- rwlock
-Message-ID: <31e9a043-7d4b-40f3-8fdb-62701b730c5d@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260805195528.3853473-1-dwmw@amazon.co.uk>
- <20260805195528.3853473-4-dwmw@amazon.co.uk>
- <20260805203608.D3CA61F000E9@smtp.kernel.org>
- <anS8C4Cxqy6ehCo3@google.com>
- <bbb2ad42d2ee3b2c20cfc31c3d58a9fecebb77e4.camel@amazon.co.uk>
- <7dbe2929b5e7be6a2b9de860649598403d52f9a9.camel@infradead.org>
+	s=k20260515; t=1786053253;
+	bh=cWpz8zH9M8mRk1C+RqXlg4uEFcvFuFTtN3U1HOC19j8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=dyw2YaFmjmv2GWUt5dQKOLH+T8er0jnzrAdXqo6kOTnlApwJqJCx4Tc45qD+PThvH
+	 elIQt7wUmpm3KH/iKeESfEYg7KuWYfy4bwUq29lzubhY6qBqNEQZOx7PRT/frMu3GA
+	 YCNo3sG9D+E/ZTkWFJ7sqQk+xJrkC910LZNwDR5GWHtuWQ9ZEeeapJay0P6bN2mGpG
+	 nOQdgKLSjvzJJz0kCDpXy6XH2ct3WibKkz5I27OkcWBnegcg/yrQeKP3ui7YOX7QS2
+	 uPgcYPZZOVXKZ6ihhuNRHPirCAUJDaH1RZLlHrZUQiZOCYwvHuk80gW1HfIfyrP3e+
+	 dz4zITIsDUe1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 4/4] KVM: x86/mmu: Add sanity check to detect stale page
+ faults in "map private PFN"
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sean Christopherson" <seanjc@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260806214050.78058-5-seanjc@google.com>
+References: <20260806214050.78058-1-seanjc@google.com>
+ <20260806214050.78058-5-seanjc@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 06 Aug 2026 21:54:12 +0000
+Message-Id: <20260806215413.537841F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7dbe2929b5e7be6a2b9de860649598403d52f9a9.camel@infradead.org>
 
-On Thu, Aug 06, 2026 at 10:38:56PM +0200, David Woodhouse wrote:
-> On Thu, 2026-08-06 at 19:59 +0200, Woodhouse, David wrote:
-> > On Thu, 2026-08-06 at 09:53 -0700, Sean Christopherson wrote:
-> > > On Wed, Aug 05, 2026, sashiko-bot@kernel.org wrote:
-> > > > Replace the per-cache rwlock with RCU for the read side.
-> > > 
-> > > I don't hate the idea, but I am very against using RCU.  Unless it's "impossible",
-> > > e.g. because synchronize_srcu() allocates memory and breaks OOM kill, I would
-> > > strongly prefer to use SRCU, probably with a dedicated kvm->gpc_srcu, so that
-> > > synchronization doesn't need to wait on all CPUs in the system.  The tail latencies
-> > > for synchronize_rcu() are horrendous, especially for many-CPU systems.  If it
-> > > were only mmu_notifiers that got hit, it miiiight be acceptable, but since this
-> > > will affect vCPU tasks in the refresh() path as well, normal RCU is pretty much
-> > > a non-starter.
-> > 
-> > Yeah, the refresh() path got pretty slow in my first attempt, before
-> > optimising that *not* to have a grace period if the memslot generation
-> > changed but the actual GPA→uHVA (and memslot) don't *change*.
-> > 
-> > > Even SRCU could be problematic: if synchronize_srcu_expedited() is forced to wait,
-> > > the wait time can easily get to 20+ milliseconds, which again is a non-starter for
-> > > things like steal-time updates and nVMX pages.
-> > 
-> > But we don't have to synchronize from the read side. The code path
-> > which will do so most often is gfn_to_pfn_cache_invalidate_start(). And
-> > the refresh() path which is already the fallback slow path which can
-> > sleep. Although in my tree I've optimised that *not* to incur a grace
-> > period when it's avoidable, as noted above.
-> > 
-> > I'm more concerned by the fact that srcu_gp_end() might have to
-> > *allocate*, while the OOM reaper path waits for it. I'll see how we can
-> > deal with that...
-> 
-> I think I need to invoke Paul et al for that one...
-> 
-> Paul, Boqun, please could I trouble you to look at the top commit in
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/xen-rcu-srcu
-> 
-> The "gfn_to_pfn_cache" (GPC) here is for all extents and purposes a
-> TLB. It's caching the full two-stage translation through KVM memslots
-> which map a guest physical address to a userspace virtual address, and
-> then through the standard process page tables to a host physical
-> address.
-> 
-> It is the second stage we are interested in here. Invalidation happens
-> through an MMU notifier, which (after I obey Sean's request to switch
-> to SRCU) calls synchronize_srcu_expedited().
-> 
-> My problem:
-> 
->  1. The MMU notifier invalidation can be called from the OOM reaper
->     path. In this case it MUST NOT sleep to allocate memory, or block
->     on anything which does so. cf.
->     https://lore.kernel.org/all/787aa26cf62dfd361eea8ed19f384fc517892501.camel@infradead.org/
-> 
->  2. srcu_gp_end() does so, through init_srcu_struct_nodes(), while
->     synchronize_srcu_expedited() effectively waits for it — precisely
->     the thing we must not do. (Strictly, the waiter's completion is
->     queued to the same workqueue on which process_srcu() could be
->     blocked in init_srcu_struct_nodes(…, GFP_KERNEL)).
-> 
-> On a system with >= 128 CPUs it's actually OK because that allocation
-> path never happens; everything's allocated in advance ("rcu: srcu_init:
-> Setting srcu_struct sizes to big"). But on smaller systems I don't see
-> that we have a way to ensure that things are safe. (I don't count
-> setting big_cpu_lim to zero!)
-> 
-> Could we change that init_srcu_struct_nodes(…, GFP_KERNEL) to a non-
-> sleeping allocation? If the allocation fails, that isn't fatal, is it?
-> Or some other way to trigger the transition to big under controlled
-> circumstances in advance...? 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The `continue` statement executed on a stale page fault inadverten=
+tly terminates the retry loop, causing a fatal `-EIO` failure instead of re=
+trying.
+- [High] The KVM MMU invalidation retry protocol order is violated by captu=
+ring the sequence after acquiring `mmu_lock` and after the PFN is resolved.
+--
 
-We could easily provide such an interface.  However, is there some
-check that would allow us to determine when it is OK to use GFP_KERNEL?
-If there was, we could replace that GFP_KERNEL with something like this:
+--- Patch [4]: [PATCH 4/4] KVM: x86/mmu: Add sanity check to detect stale p=
+age faults in "map private PFN" ---
+commit 8ecbe739b111e2504c32794278902d5137202a16
+Author: Sean Christopherson <seanjc@google.com>
 
-	sleeping_alloc_ok() ? GFP_KERNEL : GPF_HEY_YOU_TELL_ME
+KVM: x86/mmu: Add sanity check to detect stale page faults in "map private =
+PFN"
+   =20
+This commit hardens the "map private PFN" flow against stale page faults pr=
+ior
+to mapping the PFN into the guest. It adds a sanity check using a sequence
+counter snapshot taken under the mmu_lock.
 
-My best guess for GPF_HEY_YOU_TELL_ME is GFP_NOWAIT.
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 379f570ef04f8..76e3cd717324b 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -5210,6 +5210,16 @@ int kvm_tdp_mmu_map_private_pfn(struct kvm_vcpu *v=
+cpu, gfn_t gfn, kvm_pfn_t pfn)
+>  		 */
+>  		WARN_ON_ONCE(kvm_test_request(KVM_REQ_MMU_FREE_OBSOLETE_ROOTS, vcpu));
+> =20
+> +		/*
+> +		 * Snapshot the invalidation sequence counter after acquiring
+> +		 * mmu_lock, as guest_memfd guarantees the validity of the pfn,
+> +		 * i.e. any concurrent invalidations are guaranteed to be
+> +		 * irrelevant.
+> +		 */
+> +		fault.mmu_seq =3D vcpu->kvm->mmu_invalidate_seq;
 
-That way, you don't need another SRCU API to transition to big, and
-everything "just works".
+[Severity: High]
+Does capturing the invalidation sequence after acquiring mmu_lock violate
+the KVM MMU invalidation retry protocol order?
 
-What say you?
+The sequence is explicitly captured inside the mmu_lock critical section
+after the PFN has already been resolved by the caller. This bypasses the
+mandatory generation safety sequence (capture sequence, resolve PFN, acquire
+lock).
 
-							Thanx, Paul
+Additionally, could this still cause false positives since
+mmu_invalidate_retry_gfn() checks mmu_invalidate_in_progress?
+
+> +		if (is_page_fault_stale(vcpu, &fault))
+> +			continue;
+
+[Severity: High]
+Does this continue statement inadvertently exit the loop without retrying?
+
+In C, a continue statement within a do-while loop jumps to the while
+condition evaluation, not the beginning of the loop block. If r is not
+RET_PF_RETRY when this continue is hit, the condition r =3D=3D RET_PF_RETRY
+will evaluate to false.
+
+Will this cause the function to exit the loop prematurely and return -EIO?
+
+>  		r =3D kvm_tdp_mmu_map(vcpu, &fault);
+>  	} while (r =3D=3D RET_PF_RETRY);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260806214050.7805=
+8-1-seanjc@google.com?part=3D4
